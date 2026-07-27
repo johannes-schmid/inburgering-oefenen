@@ -1,0 +1,571 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+@import "shadcn/tailwind.css";
+
+@source "../data/**/*.ts";
+@source "../components/**/*.tsx";
+
+@custom-variant dark (&:is(.dark *));
+
+/* ── KNM Brand Tokens (ported 1:1 from tailwind.config.js) ── */
+@theme {
+  /* Colours */
+  --color-primary:                    #002b6d;
+  --color-primary-container:          #1d428a;
+  --color-on-primary:                 #ffffff;
+  --color-secondary:                  #a24000;
+  --color-secondary-container:        #fe762c;
+  --color-on-secondary-container:     #5f2200;
+  --color-surface:                    #f8f9fb;
+  --color-surface-container-lowest:   #ffffff;
+  --color-surface-container-low:      #f2f4f6;
+  --color-surface-container:          #eceef0;
+  --color-surface-container-high:     #e6e8ea;
+  --color-surface-container-highest:  #e0e3e5;
+  --color-on-surface:                 #191c1e;
+  --color-on-surface-variant:         #434651;
+  --color-outline-variant:            #c4c6d2;
+  --color-outline:                    #747782;
+  --color-error:                      #ba1a1a;
+
+  /* Font families */
+  --font-headline: var(--font-manrope), sans-serif;
+  --font-body:     var(--font-public-sans), sans-serif;
+
+  /* Border radii (ported from config) */
+  --radius:     0.125rem;
+  --radius-lg:  0.25rem;
+  --radius-xl:  0.5rem;
+  --radius-2xl: 0.75rem;
+  --radius-3xl: 1rem;
+}
+
+/* ── Audio equalizer animation (used by ExamQuestionCard / ExamAudioCheck) ── */
+@keyframes eq {
+  0%, 100% { transform: scaleY(0.30); }
+  50%       { transform: scaleY(1); }
+}
+
+/* ── Shared design tokens (gradient, shadow) not expressible in @theme ── */
+:root {
+  --gradient-brand: linear-gradient(135deg, #002b6d 0%, #1d428a 100%);
+  --gradient-btn-orange: linear-gradient(135deg, #fe762c 0%, #d94f00 100%);
+  --shadow-card: 0 1px 4px rgba(0, 0, 0, 0.06);
+  --shadow-card-md: 0 2px 16px rgba(0, 43, 109, 0.06);
+  --shadow-card-lg: 0 2px 32px rgba(0, 43, 109, 0.06);
+  --shadow-btn-orange: inset 0 1px 0 rgba(255, 255, 255, 0.12), 0 4px 16px rgba(254, 118, 44, 0.35);
+  --shadow-btn-orange-hover: inset 0 1px 0 rgba(255, 255, 255, 0.12), 0 8px 24px rgba(254, 118, 44, 0.45);
+  --destructive-foreground:                    var(--color-red-800);
+  --success:                    var(--color-emerald-500);
+  --success-foreground:                    var(--color-emerald-900);
+  --info:                    var(--color-violet-500);
+  --info-foreground:                    var(--color-violet-900);
+  --warning:                    var(--color-yellow-500);
+  --warning-foreground:                    var(--color-yellow-900);
+  --invert:                    var(--color-zinc-900);
+  --invert-foreground:                    var(--color-zinc-50);
+}
+
+/* ── Base styles — must live in @layer base so Tailwind utilities (in
+   @layer utilities) keep higher cascade priority ── */
+@layer base {
+  *,
+  *::before,
+  *::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
+
+  html {
+    scroll-behavior: smooth;
+    @apply font-sans;
+  }
+
+  body {
+    background-color: var(--color-surface);
+    color: var(--color-on-surface);
+    font-family: var(--font-body);
+    line-height: 1.7;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    @apply bg-background text-foreground;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-headline);
+  }
+  * {
+    @apply border-border outline-ring/50;
+  }
+}
+
+/* ── Glass nav ── */
+.glass-nav {
+  background: rgba(248, 249, 251, 0.88);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+}
+
+/* ── Prose (legal/content pages) ── */
+.prose h2 {
+  font-family: var(--font-headline);
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--color-primary);
+  margin: 2.5rem 0 0.75rem;
+  letter-spacing: -0.01em;
+}
+.prose p,
+.prose ul,
+.prose ol {
+  color: var(--color-on-surface-variant);
+  margin-bottom: 1rem;
+  font-size: 0.95rem;
+  line-height: 1.75;
+}
+.prose ul {
+  list-style: none;
+  padding-left: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.prose ul li {
+  display: flex;
+  gap: 10px;
+}
+.prose ul li::before {
+  content: '→';
+  color: var(--color-secondary-container);
+  font-weight: 700;
+  flex-shrink: 0;
+  margin-top: 1px;
+}
+.prose strong {
+  color: var(--color-on-surface);
+  font-weight: 600;
+}
+.prose a {
+  color: var(--color-secondary);
+  text-decoration: underline;
+  text-decoration-color: rgba(162, 64, 0, 0.3);
+}
+.prose a:hover {
+  text-decoration-color: var(--color-secondary);
+}
+
+/* ── Blog article layout ── */
+.article-layout {
+  max-width: 1160px;
+  margin: 0 auto;
+  padding: 48px 24px 80px;
+  display: grid;
+  grid-template-columns: 1fr 300px;
+  gap: 56px;
+  align-items: start;
+}
+@media (max-width: 900px) {
+  .article-layout { grid-template-columns: 1fr; gap: 40px; }
+  .sidebar { position: static !important; }
+}
+
+.sidebar {
+  position: sticky;
+  top: 88px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.article-body h2 {
+  font-family: var(--font-headline);
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: #002b6d;
+  letter-spacing: -0.01em;
+  margin: 40px 0 14px;
+  padding-top: 40px;
+}
+.article-body h2:first-of-type { margin-top: 8px; padding-top: 0; }
+.article-body h3 {
+  font-family: var(--font-headline);
+  font-size: 1rem;
+  font-weight: 700;
+  color: #191c1e;
+  margin: 24px 0 10px;
+}
+.article-body p { color: #434651; margin-bottom: 16px; font-size: 0.97rem; line-height: 1.75; }
+.article-body strong { color: #191c1e; font-weight: 600; }
+.article-body a { color: #a24000; text-decoration: underline; text-decoration-color: rgba(162,64,0,0.3); }
+.article-body a:hover { text-decoration-color: #a24000; }
+.article-body ul { list-style: none; display: flex; flex-direction: column; gap: 8px; margin-bottom: 16px; }
+.article-body ul li { display: flex; gap: 10px; color: #434651; font-size: 0.95rem; line-height: 1.7; }
+.article-body ul li::before { content: '→'; color: #fe762c; font-weight: 700; flex-shrink: 0; margin-top: 1px; }
+
+/* ── Info boxes ── */
+.info-box { background: #f2f4f6; border-radius: 12px; padding: 20px 22px; margin: 24px 0; }
+.info-box p { margin-bottom: 0; }
+.info-box-green { background: rgba(76,175,122,0.06); border-left: 3px solid rgba(76,175,122,0.4); border-radius: 0 12px 12px 0; }
+
+/* ── Facts table ── */
+.facts-table { width: 100%; border-collapse: collapse; }
+.facts-table tr:nth-child(odd) td { background: #f8f9fb; }
+.facts-table tr:nth-child(even) td { background: #ffffff; }
+.facts-table td { padding: 12px 16px; font-size: 0.9rem; }
+.facts-table td:first-child { color: #434651; width: 50%; }
+.facts-table td:last-child { color: #191c1e; font-weight: 600; }
+
+/* ── Tip cards (knm-examen-tips) ── */
+.tip-card {
+  background: #f8f9fb;
+  border-radius: 14px;
+  padding: 20px 22px;
+  margin: 16px 0 8px;
+  display: flex;
+  gap: 16px;
+  align-items: flex-start;
+  border: 1px solid rgba(196,198,210,0.3);
+}
+.tip-number {
+  width: 34px; height: 34px; border-radius: 10px;
+  background: linear-gradient(135deg, #002b6d 0%, #1d428a 100%);
+  color: #fff; font-weight: 800; font-size: 0.9rem;
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0; font-family: var(--font-headline);
+}
+
+/* ── Theme sections (knm-onderwerpen) ── */
+.theme-section {
+  background: #fff;
+  border-radius: 16px;
+  padding: 22px 24px;
+  margin: 20px 0;
+  border: 1px solid rgba(196,198,210,0.3);
+}
+.theme-header { display: flex; gap: 14px; align-items: center; margin-bottom: 12px; }
+.theme-icon {
+  width: 44px; height: 44px; border-radius: 12px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1.4rem; flex-shrink: 0;
+}
+.theme-title { font-family: var(--font-headline); font-size: 1rem; font-weight: 700; color: #191c1e; }
+.difficulty-badge {
+  display: inline-block; padding: 2px 10px; border-radius: 999px;
+  font-size: 0.72rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em;
+  margin-top: 4px;
+}
+.difficulty-hard { background: rgba(186,26,26,0.08); color: #ba1a1a; }
+.difficulty-medium { background: rgba(232,160,58,0.12); color: #a06000; }
+.difficulty-easy { background: rgba(76,175,122,0.10); color: #2d7a52; }
+
+/* ── Step items (knm-examen-dag) ── */
+.step-item {
+  display: flex;
+  gap: 16px;
+  align-items: flex-start;
+  padding: 16px 0;
+  border-bottom: 1px solid #eceef0;
+}
+.step-item:last-child { border-bottom: none; }
+.step-num {
+  width: 32px; height: 32px; border-radius: 9px;
+  background: linear-gradient(135deg, #002b6d 0%, #1d428a 100%);
+  color: #fff; font-weight: 800; font-size: 0.85rem;
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0; font-family: var(--font-headline);
+}
+
+/* ── Blog inline quiz cards ── */
+.blog-quiz-card {
+  background: #f8f9fb;
+  border-radius: 14px;
+  padding: 22px;
+  margin: 20px 0;
+  border: 1px solid rgba(196,198,210,0.3);
+}
+.blog-quiz-q {
+  font-family: var(--font-headline);
+  font-size: 0.97rem;
+  font-weight: 700;
+  color: #191c1e;
+  line-height: 1.5;
+  margin-bottom: 14px !important;
+}
+.blog-quiz-opts { display: flex; flex-direction: column; gap: 8px; }
+.blog-quiz-opt {
+  display: flex; align-items: flex-start; gap: 12px;
+  background: #fff; border: 2px solid transparent; border-radius: 10px;
+  padding: 13px 16px; text-align: left; cursor: pointer; color: #191c1e;
+  font-size: 0.9rem; line-height: 1.5; width: 100%;
+  transition: background 0.15s ease, border-color 0.15s ease;
+}
+.blog-quiz-opt:hover:not(:disabled) { background: #eceef0; }
+.blog-quiz-opt:disabled { cursor: default; }
+.blog-quiz-correct { border-color: #2d7a52 !important; background: rgba(44,130,83,0.06) !important; }
+.blog-quiz-wrong { border-color: #ba1a1a !important; background: rgba(186,26,26,0.05) !important; }
+.blog-quiz-letter {
+  width: 24px; height: 24px; border-radius: 6px; background: #eceef0;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 0.72rem; font-weight: 700; color: #434651; flex-shrink: 0;
+}
+.blog-quiz-ans {
+  display: none;
+  margin-top: 14px;
+  padding: 13px 16px;
+  border-radius: 0 10px 10px 0;
+  border-left: 3px solid rgba(44,130,83,0.4);
+  background: rgba(44,130,83,0.06);
+  color: #434651;
+  font-size: 0.9rem;
+  line-height: 1.6;
+}
+
+/* ── Post card hover ── */
+.post-card { transition: transform 0.2s ease, box-shadow 0.2s ease; }
+.post-card:hover { transform: translateY(-3px); box-shadow: 0 12px 32px rgba(0,43,109,0.1); }
+
+/* ── Oefenvragen topic cards ── */
+.topic-card {
+  background: #ffffff; border-radius: 16px; padding: 22px;
+  text-decoration: none; display: flex; align-items: flex-start; gap: 16px;
+  transition: box-shadow 0.2s ease, transform 0.2s ease;
+  box-shadow: 0 1px 4px rgba(0,43,109,0.06);
+}
+.topic-card:hover { box-shadow: 0 8px 32px rgba(0,43,109,0.1); transform: translateY(-2px); }
+.topic-icon {
+  width: 44px; height: 44px; border-radius: 12px;
+  background: rgba(0,43,109,0.06); display: flex; align-items: center;
+  justify-content: center; font-size: 1.3rem; flex-shrink: 0;
+}
+.topic-name { font-family: var(--font-headline); font-size: 1rem; font-weight: 700; color: #191c1e; margin-bottom: 4px; line-height: 1.3; }
+.topic-count { font-size: 0.78rem; color: #434651; line-height: 1.5; }
+.topic-arrow { color: #c4c6d2; transition: color 0.2s ease, transform 0.2s ease; flex-shrink: 0; align-self: center; }
+.topic-card:hover .topic-arrow { color: #fe762c; transform: translateX(3px); }
+
+/* ── Quiz widget (oefenvragen topic pages) ── */
+.quiz-wrap { max-width: 780px; margin: 0 auto; padding: 40px 24px 80px; }
+.progress-bar-track { height: 6px; background: #e0e3e5; border-radius: 9999px; margin-bottom: 32px; overflow: hidden; }
+.progress-bar-fill { height: 6px; background: linear-gradient(to right, #a24000, #fe762c); border-radius: 9999px; transition: width 0.4s cubic-bezier(.4,0,.2,1); }
+.question-card { background: #ffffff; border-radius: 20px; padding: 36px; box-shadow: 0 2px 32px rgba(0,43,109,0.06); }
+.q-label { font-size: 0.75rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: #434651; margin-bottom: 14px; }
+.q-text { font-family: var(--font-headline); font-size: clamp(1.05rem, 2.5vw, 1.2rem); color: #191c1e; line-height: 1.5; letter-spacing: -0.01em; margin-bottom: 28px; font-weight: 600; }
+.options { display: flex; flex-direction: column; gap: 10px; }
+.opt-btn {
+  display: flex; align-items: flex-start; gap: 14px; width: 100%;
+  background: #f2f4f6; border: 2px solid transparent; border-radius: 12px;
+  padding: 16px 18px; text-align: left; cursor: pointer; color: #191c1e;
+  font-size: 0.95rem; line-height: 1.5;
+  transition: background 0.15s ease, border-color 0.15s ease, transform 0.15s ease;
+}
+.opt-btn:hover:not(:disabled) { background: #eceef0; transform: translateX(2px); }
+.opt-btn:disabled { cursor: default; }
+.opt-btn.correct { border-color: #2d7a52; background: rgba(44,130,83,0.06); }
+.opt-btn.incorrect { border-color: #ba1a1a; background: rgba(186,26,26,0.05); }
+.opt-label {
+  width: 26px; height: 26px; border-radius: 7px; background: #ffffff;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 0.75rem; font-weight: 700; color: #434651; flex-shrink: 0; margin-top: 1px;
+}
+.opt-btn.correct .opt-label { background: rgba(44,130,83,0.12); color: #2d7a52; }
+.opt-btn.incorrect .opt-label { background: rgba(186,26,26,0.1); color: #ba1a1a; }
+.opt-text { flex: 1; }
+.feedback {
+  margin-top: 20px; padding: 16px 20px; border-radius: 12px;
+  font-size: 0.9rem; line-height: 1.6;
+}
+.feedback.correct { background: rgba(44,130,83,0.06); border-left: 3px solid rgba(44,130,83,0.4); color: #434651; border-radius: 0 12px 12px 0; }
+.feedback.correct strong { color: #2d7a52; }
+.feedback.incorrect { background: rgba(186,26,26,0.05); border-left: 3px solid rgba(186,26,26,0.3); color: #434651; border-radius: 0 12px 12px 0; }
+.feedback.incorrect strong { color: #ba1a1a; }
+.next-btn-wrap { margin-top: 20px; }
+.results-card { background: #ffffff; border-radius: 20px; padding: 40px; text-align: center; box-shadow: 0 2px 32px rgba(0,43,109,0.06); }
+.score-ring {
+  width: 100px; height: 100px; margin: 0 auto 24px; border-radius: 50%;
+  background: conic-gradient(#fe762c var(--pct, 0%), #e0e3e5 0%);
+  display: flex; align-items: center; justify-content: center;
+  box-shadow: 0 0 0 8px #f8f9fb;
+}
+.score-inner { width: 76px; height: 76px; border-radius: 50%; background: #ffffff; display: flex; align-items: center; justify-content: center; }
+@media (max-width: 640px) { .question-card { padding: 24px; } }
+
+/* ── Scroll reveal ── */
+.reveal {
+  opacity: 0;
+  transform: translateY(16px);
+  transition: opacity 0.5s ease, transform 0.5s cubic-bezier(0.4,0,0.2,1);
+}
+.reveal.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ── Utility ── */
+.button-inner-glow {
+  box-shadow: inset 0 1px 0 0 rgba(255,255,255,0.12);
+}
+
+/* ── Form inputs (ported 1:1 from original HTML pages) ── */
+.form-input {
+  width: 100%;
+  background: #f2f4f6;
+  border: 2px solid transparent;
+  border-radius: 12px;
+  padding: 13px 16px;
+  font-size: 15px;
+  font-family: inherit;
+  color: #191c1e;
+  outline: none;
+  transition: border-color 0.15s ease, background 0.15s ease;
+}
+.form-input:focus {
+  border-color: rgba(0,43,109,0.35);
+  background: #fff;
+}
+.form-input::placeholder { color: #9ca3af; }
+
+.form-label {
+  display: block;
+  font-size: 14px;
+  font-weight: 600;
+  color: #434651;
+  margin-bottom: 6px;
+}
+
+@theme inline {
+  --font-heading:                    var(--font-sans);
+  --font-sans:                    var(--font-sans);
+  --color-sidebar-ring:                    var(--sidebar-ring);
+  --color-sidebar-border:                    var(--sidebar-border);
+  --color-sidebar-accent-foreground:                    var(--sidebar-accent-foreground);
+  --color-sidebar-accent:                    var(--sidebar-accent);
+  --color-sidebar-primary-foreground:                    var(--sidebar-primary-foreground);
+  --color-sidebar-primary:                    var(--sidebar-primary);
+  --color-sidebar-foreground:                    var(--sidebar-foreground);
+  --color-sidebar:                    var(--sidebar);
+  --color-chart-5:                    var(--chart-5);
+  --color-chart-4:                    var(--chart-4);
+  --color-chart-3:                    var(--chart-3);
+  --color-chart-2:                    var(--chart-2);
+  --color-chart-1:                    var(--chart-1);
+  --color-ring:                    var(--ring);
+  --color-input:                    var(--input);
+  --color-border:                    var(--border);
+  --color-destructive:                    var(--destructive);
+  --color-accent-foreground:                    var(--accent-foreground);
+  --color-accent:                    var(--accent);
+  --color-muted-foreground:                    var(--muted-foreground);
+  --color-muted:                    var(--muted);
+  --color-secondary-foreground:                    var(--secondary-foreground);
+  --color-secondary:                    var(--secondary);
+  --color-primary-foreground:                    var(--primary-foreground);
+  --color-primary:                    var(--primary);
+  --color-popover-foreground:                    var(--popover-foreground);
+  --color-popover:                    var(--popover);
+  --color-card-foreground:                    var(--card-foreground);
+  --color-card:                    var(--card);
+  --color-foreground:                    var(--foreground);
+  --color-background:                    var(--background);
+  --radius-sm:                    calc(var(--radius) * 0.6);
+  --radius-md:                    calc(var(--radius) * 0.8);
+  --radius-lg:                    var(--radius);
+  --radius-xl:                    calc(var(--radius) * 1.4);
+  --radius-2xl:                    calc(var(--radius) * 1.8);
+  --radius-3xl:                    calc(var(--radius) * 2.2);
+  --radius-4xl:                    calc(var(--radius) * 2.6);
+  --color-invert-foreground:                    var(--invert-foreground);
+  --color-invert:                    var(--invert);
+  --color-warning-foreground:                    var(--warning-foreground);
+  --color-warning:                    var(--warning);
+  --color-info-foreground:                    var(--info-foreground);
+  --color-info:                    var(--info);
+  --color-success-foreground:                    var(--success-foreground);
+  --color-success:                    var(--success);
+  --color-destructive-foreground:                    var(--destructive-foreground);
+}
+
+:root {
+  --background:                    oklch(1 0 0);
+  --foreground:                    oklch(0.145 0 0);
+  --card:                    oklch(1 0 0);
+  --card-foreground:                    oklch(0.145 0 0);
+  --popover:                    oklch(1 0 0);
+  --popover-foreground:                    oklch(0.145 0 0);
+  --primary:                    oklch(0.205 0 0);
+  --primary-foreground:                    oklch(0.985 0 0);
+  --secondary:                    oklch(0.97 0 0);
+  --secondary-foreground:                    oklch(0.205 0 0);
+  --muted:                    oklch(0.97 0 0);
+  --muted-foreground:                    oklch(0.556 0 0);
+  --accent:                    oklch(0.97 0 0);
+  --accent-foreground:                    oklch(0.205 0 0);
+  --destructive:                    oklch(0.577 0.245 27.325);
+  --border:                    oklch(0.922 0 0);
+  --input:                    oklch(0.922 0 0);
+  --ring:                    oklch(0.708 0 0);
+  --chart-1:                    oklch(0.87 0 0);
+  --chart-2:                    oklch(0.556 0 0);
+  --chart-3:                    oklch(0.439 0 0);
+  --chart-4:                    oklch(0.371 0 0);
+  --chart-5:                    oklch(0.269 0 0);
+  --radius:                    0.625rem;
+  --sidebar:                    oklch(0.985 0 0);
+  --sidebar-foreground:                    oklch(0.145 0 0);
+  --sidebar-primary:                    oklch(0.205 0 0);
+  --sidebar-primary-foreground:                    oklch(0.985 0 0);
+  --sidebar-accent:                    oklch(0.97 0 0);
+  --sidebar-accent-foreground:                    oklch(0.205 0 0);
+  --sidebar-border:                    oklch(0.922 0 0);
+  --sidebar-ring:                    oklch(0.708 0 0);
+}
+
+/* KNM brand colors — must come after shadcn :root block so these win the cascade */
+:root {
+  --primary:            #002b6d;
+  --primary-foreground: #ffffff;
+  --secondary:          #a24000;
+  --secondary-foreground: #ffffff;
+}
+
+.dark {
+  --background:                    oklch(0.145 0 0);
+  --foreground:                    oklch(0.985 0 0);
+  --card:                    oklch(0.205 0 0);
+  --card-foreground:                    oklch(0.985 0 0);
+  --popover:                    oklch(0.205 0 0);
+  --popover-foreground:                    oklch(0.985 0 0);
+  --primary:                    oklch(0.922 0 0);
+  --primary-foreground:                    oklch(0.205 0 0);
+  --secondary:                    oklch(0.269 0 0);
+  --secondary-foreground:                    oklch(0.985 0 0);
+  --muted:                    oklch(0.269 0 0);
+  --muted-foreground:                    oklch(0.708 0 0);
+  --accent:                    oklch(0.269 0 0);
+  --accent-foreground:                    oklch(0.985 0 0);
+  --destructive:                    oklch(0.704 0.191 22.216);
+  --border:                    oklch(1 0 0 / 10%);
+  --input:                    oklch(1 0 0 / 15%);
+  --ring:                    oklch(0.556 0 0);
+  --chart-1:                    oklch(0.87 0 0);
+  --chart-2:                    oklch(0.556 0 0);
+  --chart-3:                    oklch(0.439 0 0);
+  --chart-4:                    oklch(0.371 0 0);
+  --chart-5:                    oklch(0.269 0 0);
+  --sidebar:                    oklch(0.205 0 0);
+  --sidebar-foreground:                    oklch(0.985 0 0);
+  --sidebar-primary:                    oklch(0.488 0.243 264.376);
+  --sidebar-primary-foreground:                    oklch(0.985 0 0);
+  --sidebar-accent:                    oklch(0.269 0 0);
+  --sidebar-accent-foreground:                    oklch(0.985 0 0);
+  --sidebar-border:                    oklch(1 0 0 / 10%);
+  --sidebar-ring:                    oklch(0.556 0 0);
+  --destructive-foreground:                    var(--color-red-600);
+  --success:                    var(--color-emerald-500);
+  --success-foreground:                    var(--color-emerald-600);
+  --info:                    var(--color-violet-500);
+  --info-foreground:                    var(--color-violet-600);
+  --warning:                    var(--color-yellow-500);
+  --warning-foreground:                    var(--color-yellow-600);
+  --invert:                    var(--color-zinc-700);
+  --invert-foreground:                    var(--color-zinc-50);
+}

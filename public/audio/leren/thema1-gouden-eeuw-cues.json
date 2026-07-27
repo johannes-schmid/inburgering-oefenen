@@ -1,0 +1,102 @@
+[
+  {
+    "time": 0,
+    "subtitle": "Welkom bij de Gouden Eeuw."
+  },
+  {
+    "time": 0,
+    "route": null,
+    "good": null
+  },
+  {
+    "time": 3.367,
+    "subtitle": "In de zeventiende eeuw werd Nederland heel rijk door de handel."
+  },
+  {
+    "time": 8.823,
+    "subtitle": "Schepen van de VOC voeren naar het oosten, naar Azië. Ze zeilden om Afrika heen."
+  },
+  {
+    "time": 8.823,
+    "route": "oost",
+    "good": null
+  },
+  {
+    "time": 18.286,
+    "subtitle": "Uit Azië haalden ze peper, een dure specerij."
+  },
+  {
+    "time": 18.286,
+    "good": "peper"
+  },
+  {
+    "time": 23.974,
+    "subtitle": "Ze brachten ook koffie mee uit Azië."
+  },
+  {
+    "time": 23.974,
+    "good": "koffie"
+  },
+  {
+    "time": 27.748,
+    "subtitle": "En thee, een populaire drank."
+  },
+  {
+    "time": 27.748,
+    "good": "thee"
+  },
+  {
+    "time": 31.8,
+    "subtitle": "Andere schepen voeren naar het westen, over de oceaan naar Amerika."
+  },
+  {
+    "time": 31.8,
+    "route": "west",
+    "good": null
+  },
+  {
+    "time": 38.94,
+    "subtitle": "Daar kwam suiker vandaan, van de grote plantages."
+  },
+  {
+    "time": 38.94,
+    "good": "suiker"
+  },
+  {
+    "time": 44.977,
+    "subtitle": "Ook cacao kwam uit Amerika. Daar maken we chocolade van."
+  },
+  {
+    "time": 44.977,
+    "good": "cacao"
+  },
+  {
+    "time": 52.57,
+    "subtitle": "En tabak, dat in Amerika werd verbouwd."
+  },
+  {
+    "time": 52.57,
+    "good": "tabak"
+  },
+  {
+    "time": 57.864,
+    "subtitle": "Alle producten kwamen aan in Amsterdam. Zo werd de stad heel rijk."
+  },
+  {
+    "time": 57.864,
+    "route": null,
+    "good": null,
+    "home": true
+  },
+  {
+    "time": 65.91,
+    "subtitle": "Maar er was ook een andere kant. Bij de handel werd veel geweld gebruikt, en mensen moesten werken zonder betaling."
+  },
+  {
+    "time": 77.223,
+    "subtitle": "",
+    "route": null,
+    "good": null,
+    "home": null
+  }
+]

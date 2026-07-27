@@ -1,0 +1,127 @@
+[
+  {
+    "time": 0,
+    "subtitle": "Je hebt een huis en een contract getekend."
+  },
+  {
+    "time": 3.773,
+    "subtitle": "Maar voordat je echt kunt wonen, moet je nog iets regelen: energie en water."
+  },
+  {
+    "time": 11.273,
+    "subtitle": "Gas, elektriciteit, water en internet regelt niemand voor jou."
+  },
+  {
+    "time": 18.865,
+    "subtitle": "Dat doe je zelf."
+  },
+  {
+    "time": 21.42,
+    "subtitle": "Voor gas en elektriciteit kies je zelf een energieleverancier."
+  },
+  {
+    "time": 28.931,
+    "subtitle": "Er zijn veel leveranciers en de prijzen verschillen, dus vergelijk ze op internet."
+  },
+  {
+    "time": 37.36,
+    "subtitle": "Water is anders: het waterbedrijf kun je niet kiezen, want elk deel van Nederland heeft één eigen waterbedrijf."
+  },
+  {
+    "time": 50.155,
+    "subtitle": "Internet, televisie en telefoon kies je wel zelf, bij een provider."
+  },
+  {
+    "time": 57.98,
+    "subtitle": "In je huis heb je 3 meters."
+  },
+  {
+    "time": 61.614,
+    "subtitle": "Een meter meet hoeveel je gebruikt."
+  },
+  {
+    "time": 66.118,
+    "subtitle": "De gasmeter meet hoeveel gas je gebruikt."
+  },
+  {
+    "time": 66.118,
+    "meter": "gas"
+  },
+  {
+    "time": 71.273,
+    "subtitle": "De elektriciteitsmeter meet hoeveel stroom je gebruikt."
+  },
+  {
+    "time": 71.273,
+    "meter": "stroom"
+  },
+  {
+    "time": 77.473,
+    "subtitle": "En de watermeter meet hoeveel water je gebruikt."
+  },
+  {
+    "time": 77.473,
+    "meter": "water"
+  },
+  {
+    "time": 83.626,
+    "subtitle": "Je geeft de meterstand één keer per jaar door aan je leverancier."
+  },
+  {
+    "time": 90.662,
+    "subtitle": "Heb je een slimme meter, dan gaat dat automatisch."
+  },
+  {
+    "time": 96.966,
+    "subtitle": "Bij een energiecontract kies je tussen een vast tarief en een variabel tarief."
+  },
+  {
+    "time": 105.291,
+    "subtitle": "Bij een vast tarief blijft de prijs hetzelfde, meestal één, twee of drie jaar, en je weet altijd wat je betaalt."
+  },
+  {
+    "time": 105.291,
+    "tarief": "vast",
+    "meter": null
+  },
+  {
+    "time": 118.41,
+    "subtitle": "Bij een variabel tarief kan de prijs stijgen of dalen, en je kunt altijd stoppen."
+  },
+  {
+    "time": 118.41,
+    "tarief": "variabel"
+  },
+  {
+    "time": 127.942,
+    "subtitle": "Wordt energie goedkoper, dan betaal je minder."
+  },
+  {
+    "time": 133.689,
+    "subtitle": "Eén keer per jaar krijg je een jaarrekening."
+  },
+  {
+    "time": 133.689,
+    "tarief": null
+  },
+  {
+    "time": 139.32,
+    "subtitle": "Heb je te weinig betaald, dan moet je bijbetalen."
+  },
+  {
+    "time": 145.195,
+    "subtitle": "Heb je te veel betaald, dan krijg je geld terug."
+  },
+  {
+    "time": 151.545,
+    "subtitle": "Tot slot: energie besparen is goed voor je portemonnee en voor de natuur."
+  },
+  {
+    "time": 160.496,
+    "subtitle": "Zet de verwarming wat lager, gebruik ledlampen, zet apparaten echt uit, douche kort, haal opladers uit het stopcontact, en isoleer je huis."
+  },
+  {
+    "time": 172.402,
+    "subtitle": ""
+  }
+]

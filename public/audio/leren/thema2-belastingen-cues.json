@@ -1,0 +1,174 @@
+[
+  {
+    "time": 0,
+    "subtitle": "Welkom terug."
+  },
+  {
+    "time": 1.556,
+    "subtitle": "Je woont nu in Nederland."
+  },
+  {
+    "time": 3.866,
+    "subtitle": "Of je huurt of koopt: je krijgt te maken met belastingen en verzekeringen."
+  },
+  {
+    "time": 9.834,
+    "subtitle": "Eerst de gemeentelijke belastingen."
+  },
+  {
+    "time": 13.468,
+    "subtitle": "Iedereen betaalt belasting aan de gemeente waar je woont."
+  },
+  {
+    "time": 18.483,
+    "subtitle": "Hoeveel verschilt per gemeente, en je betaalt elk jaar."
+  },
+  {
+    "time": 24.172,
+    "subtitle": "Er zijn vier veelvoorkomende gemeentelijke belastingen."
+  },
+  {
+    "time": 29.327,
+    "subtitle": "De rioolbelasting betaal je voor het riool in jouw straat."
+  },
+  {
+    "time": 29.327,
+    "belasting": "riool"
+  },
+  {
+    "time": 35.469,
+    "subtitle": "De parkeerbelasting betaal je als je je auto in de gemeente parkeert."
+  },
+  {
+    "time": 35.469,
+    "belasting": "parkeer"
+  },
+  {
+    "time": 42.203,
+    "subtitle": "De afvalstoffenheffing betaal je voor het ophalen en verwerken van je afval."
+  },
+  {
+    "time": 42.203,
+    "belasting": "afval"
+  },
+  {
+    "time": 49.587,
+    "subtitle": "En de hondenbelasting betaal je in veel gemeenten als je een hond hebt."
+  },
+  {
+    "time": 49.854,
+    "belasting": "hond"
+  },
+  {
+    "time": 56.297,
+    "subtitle": "Heb je een koopwoning?"
+  },
+  {
+    "time": 59.188,
+    "subtitle": "Dan betaal je ook de onroerende zaakbelasting, de OZB."
+  },
+  {
+    "time": 60.744,
+    "belasting": "ozb"
+  },
+  {
+    "time": 66.178,
+    "subtitle": "Dat is belasting over je eigen huis."
+  },
+  {
+    "time": 70.578,
+    "subtitle": "Let op: huurders betalen geen OZB."
+  },
+  {
+    "time": 76.894,
+    "subtitle": "Dan de verzekeringen."
+  },
+  {
+    "time": 79.936,
+    "subtitle": "Een verzekering is een afspraak met een verzekeraar die risico's voor jou opvangt."
+  },
+  {
+    "time": 88.353,
+    "subtitle": "Bij schade betaalt de verzekeraar de kosten, en dat heet vergoeden."
+  },
+  {
+    "time": 96.306,
+    "subtitle": "Twee verzekeringen zijn in bepaalde situaties verplicht."
+  },
+  {
+    "time": 102.482,
+    "subtitle": "De opstalverzekering is verplicht als je een koopwoning hebt; die dekt schade aan het gebouw zelf, zoals storm, brand of lekkage."
+  },
+  {
+    "time": 102.482,
+    "verzekering": "opstal",
+    "cover": "opstal",
+    "belasting": null
+  },
+  {
+    "time": 116.507,
+    "subtitle": "De WA-verzekering is verplicht als je een auto, motor of scooter hebt; die dekt schade die jij maakt aan het voertuig van iemand anders."
+  },
+  {
+    "time": 116.507,
+    "verzekering": "wa"
+  },
+  {
+    "time": 131.484,
+    "subtitle": "Twee andere verzekeringen zijn niet verplicht, maar wel handig."
+  },
+  {
+    "time": 138.334,
+    "subtitle": "De AVP, de aansprakelijkheidsverzekering voor particulieren, betaalt schade die jij of je kind bij iemand anders maakt."
+  },
+  {
+    "time": 138.334,
+    "verzekering": "avp"
+  },
+  {
+    "time": 151.198,
+    "subtitle": "En de inboedelverzekering dekt je spullen in huis, zoals je tv, laptop of meubels."
+  },
+  {
+    "time": 151.465,
+    "verzekering": "inboedel",
+    "cover": "inboedel"
+  },
+  {
+    "time": 160.858,
+    "subtitle": "Let op het verschil: de opstalverzekering dekt het gebouw, en de inboedelverzekering dekt de spullen erin."
+  },
+  {
+    "time": 172.398,
+    "subtitle": "Tot slot goed nieuws: de huurtoeslag."
+  },
+  {
+    "time": 172.398,
+    "cover": null,
+    "verzekering": null
+  },
+  {
+    "time": 177.948,
+    "subtitle": "Kun je de huur niet goed betalen, dan heb je misschien recht op huurtoeslag."
+  },
+  {
+    "time": 185.378,
+    "subtitle": "Je inkomen en je huur mogen niet te hoog zijn."
+  },
+  {
+    "time": 191.183,
+    "subtitle": "Je vraagt het aan bij Dienst Toeslagen, een afdeling van de Belastingdienst."
+  },
+  {
+    "time": 199.24,
+    "subtitle": "Verandert je inkomen?"
+  },
+  {
+    "time": 202.108,
+    "subtitle": "Geef dat dan direct door, anders moet je geld terugbetalen."
+  },
+  {
+    "time": 208.046,
+    "subtitle": ""
+  }
+]

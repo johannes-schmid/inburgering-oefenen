@@ -1,0 +1,158 @@
+[
+  {
+    "time": 0,
+    "subtitle": "Welkom bij de kaart van Nederland."
+  },
+  {
+    "time": 4.377,
+    "subtitle": "Nederland is een klein land in het westen van Europa, maar het heeft twaalf provincies, elk met een eigen hoofdstad."
+  },
+  {
+    "time": 16.011,
+    "subtitle": "Laten we beginnen in het noorden."
+  },
+  {
+    "time": 19.946,
+    "subtitle": "De meest noordelijke provincies zijn Groningen, Friesland en Drenthe."
+  },
+  {
+    "time": 23.522,
+    "province": "Groningen"
+  },
+  {
+    "time": 24.846,
+    "province": "Fryslân"
+  },
+  {
+    "time": 26.32,
+    "province": "Drenthe"
+  },
+  {
+    "time": 28.48,
+    "subtitle": "In het oosten liggen Overijssel en Gelderland, twee grote provincies met veel natuur."
+  },
+  {
+    "time": 30.43,
+    "province": "Overijssel"
+  },
+  {
+    "time": 32.009,
+    "province": "Gelderland"
+  },
+  {
+    "time": 38.755,
+    "subtitle": "In het midden van Nederland liggen Utrecht en Flevoland."
+  },
+  {
+    "time": 41.46,
+    "province": "Utrecht"
+  },
+  {
+    "time": 42.691,
+    "province": "Flevoland"
+  },
+  {
+    "time": 45.129,
+    "subtitle": "Flevoland is bijzonder: deze provincie is gewonnen op het water."
+  },
+  {
+    "time": 45.129,
+    "province": "Flevoland"
+  },
+  {
+    "time": 52.606,
+    "subtitle": "In het westen vinden we Noord-Holland en Zuid-Holland."
+  },
+  {
+    "time": 54.475,
+    "province": "Noord-Holland"
+  },
+  {
+    "time": 56.135,
+    "province": "Zuid-Holland"
+  },
+  {
+    "time": 58.341,
+    "subtitle": "Dit zijn de dichtstbevolkte provincies van Nederland."
+  },
+  {
+    "time": 64.378,
+    "subtitle": "In het zuiden liggen Zeeland, Noord-Brabant en Limburg."
+  },
+  {
+    "time": 65.934,
+    "province": "Zeeland"
+  },
+  {
+    "time": 66.956,
+    "province": "Noord-Brabant"
+  },
+  {
+    "time": 68.732,
+    "province": "Limburg"
+  },
+  {
+    "time": 70.961,
+    "subtitle": "Nu de twee belangrijkste steden voor het KNM-examen."
+  },
+  {
+    "time": 77.405,
+    "subtitle": "Amsterdam is de officiële hoofdstad van Nederland."
+  },
+  {
+    "time": 77.405,
+    "city": "amsterdam"
+  },
+  {
+    "time": 83.534,
+    "subtitle": "Amsterdam ligt in Noord-Holland."
+  },
+  {
+    "time": 83.534,
+    "city": "amsterdam"
+  },
+  {
+    "time": 85.346,
+    "province": "Noord-Holland"
+  },
+  {
+    "time": 87.749,
+    "subtitle": "Den Haag is niet de hoofdstad, maar toch heel belangrijk: de Nederlandse regering en het parlement zitten in Den Haag."
+  },
+  {
+    "time": 87.749,
+    "city": "den-haag"
+  },
+  {
+    "time": 99.045,
+    "city": "den-haag"
+  },
+  {
+    "time": 101.193,
+    "subtitle": "Den Haag ligt in Zuid-Holland."
+  },
+  {
+    "time": 101.193,
+    "city": "den-haag"
+  },
+  {
+    "time": 102.946,
+    "province": "Zuid-Holland"
+  },
+  {
+    "time": 105.442,
+    "subtitle": "Onthoud dit goed: Amsterdam is de hoofdstad, maar de regering werkt in Den Haag."
+  },
+  {
+    "time": 107.717,
+    "city": "amsterdam"
+  },
+  {
+    "time": 112.013,
+    "city": "den-haag"
+  },
+  {
+    "time": 113.129,
+    "subtitle": ""
+  }
+]

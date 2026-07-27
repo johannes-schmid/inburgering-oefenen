@@ -1,0 +1,147 @@
+[
+  {
+    "time": 0,
+    "subtitle": "Welkom bij de les over wonen in Nederland."
+  },
+  {
+    "time": 4.296,
+    "subtitle": "In Nederland kun je een huis huren of kopen."
+  },
+  {
+    "time": 8.347,
+    "subtitle": "De meeste mensen huren."
+  },
+  {
+    "time": 10.681,
+    "subtitle": "En als je huurt, zijn er twee soorten huursectoren."
+  },
+  {
+    "time": 15.836,
+    "subtitle": "De eerste is de sociale huursector."
+  },
+  {
+    "time": 15.836,
+    "sector": "sociaal"
+  },
+  {
+    "time": 19.992,
+    "subtitle": "Sociale huur is voor mensen met een laag of gemiddeld inkomen."
+  },
+  {
+    "time": 25.89,
+    "subtitle": "Het grote voordeel is dat er een maximale huurprijs is."
+  },
+  {
+    "time": 31.37,
+    "subtitle": "De huur mag niet te hoog zijn en mag ook niet veel omhoog gaan."
+  },
+  {
+    "time": 37.778,
+    "subtitle": "Onthoud: sociale huur is beschermd."
+  },
+  {
+    "time": 42.759,
+    "subtitle": "De tweede is de vrije huursector."
+  },
+  {
+    "time": 42.759,
+    "sector": "vrij"
+  },
+  {
+    "time": 47.055,
+    "subtitle": "De vrije huursector is voor mensen met een hoog inkomen."
+  },
+  {
+    "time": 52.987,
+    "subtitle": "Hier is de huur hoog, en de huur kan elk jaar veel stijgen."
+  },
+  {
+    "time": 59.768,
+    "subtitle": "Er is geen maximum, want de verhuurder bepaalt zelf de prijs."
+  },
+  {
+    "time": 66.56,
+    "subtitle": "De vrije sector is dus duurder en geeft minder bescherming."
+  },
+  {
+    "time": 72.968,
+    "subtitle": "Nu een nieuw onderwerp: samenwonen en trouwen."
+  },
+  {
+    "time": 79.609,
+    "subtitle": "In Nederland mag je zelf kiezen met wie je samenwoont en met wie je trouwt."
+  },
+  {
+    "time": 87.179,
+    "subtitle": "Veel mensen wonen samen zonder te trouwen."
+  },
+  {
+    "time": 92.252,
+    "subtitle": "Wil je trouwen, dan mag dat vanaf 18 jaar."
+  },
+  {
+    "time": 97.57,
+    "subtitle": "De eerste optie is het huwelijk."
+  },
+  {
+    "time": 97.57,
+    "relatie": "huwelijk",
+    "sector": null
+  },
+  {
+    "time": 101.436,
+    "subtitle": "Trouwen mag voor iedereen: een man en een vrouw, twee mannen, of twee vrouwen."
+  },
+  {
+    "time": 110.852,
+    "subtitle": "Bij een huwelijk geef je elkaar het ja-woord bij de trouwambtenaar."
+  },
+  {
+    "time": 117.644,
+    "subtitle": "Pas dan is het huwelijk officieel."
+  },
+  {
+    "time": 121.428,
+    "subtitle": "Wil je later scheiden, dan ga je altijd naar de rechter."
+  },
+  {
+    "time": 127.477,
+    "subtitle": "De tweede optie is het geregistreerd partnerschap."
+  },
+  {
+    "time": 127.477,
+    "relatie": "partnerschap"
+  },
+  {
+    "time": 133.457,
+    "subtitle": "Dit lijkt veel op het huwelijk en staat ook in de wet."
+  },
+  {
+    "time": 139.691,
+    "subtitle": "Maar er zijn twee verschillen."
+  },
+  {
+    "time": 143.058,
+    "subtitle": "Bij een partnerschap hoef je geen ja-woord te geven."
+  },
+  {
+    "time": 148.7,
+    "subtitle": "En je kunt het partnerschap beëindigen zonder rechter, als je geen kinderen onder de 18 hebt."
+  },
+  {
+    "time": 158.999,
+    "subtitle": "Onthoud voor het examen deze twee verschillen: het ja-woord is wel bij het huwelijk, maar niet bij het partnerschap."
+  },
+  {
+    "time": 158.999,
+    "relatie": null
+  },
+  {
+    "time": 171.584,
+    "subtitle": "En de rechter is bij scheiden altijd nodig bij het huwelijk, maar bij het partnerschap alleen als er kinderen onder de 18 zijn."
+  },
+  {
+    "time": 183.408,
+    "subtitle": ""
+  }
+]

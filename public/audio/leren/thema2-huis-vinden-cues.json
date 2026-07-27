@@ -1,0 +1,216 @@
+[
+  {
+    "time": 0,
+    "subtitle": "Welkom terug."
+  },
+  {
+    "time": 1.997,
+    "subtitle": "Je weet wat voor woning je wilt."
+  },
+  {
+    "time": 5.074,
+    "subtitle": "Maar hoe vind je die woning in Nederland?"
+  },
+  {
+    "time": 9.137,
+    "subtitle": "We doen twee routes: eerst een huurwoning zoeken, daarna een koopwoning kopen."
+  },
+  {
+    "time": 18.193,
+    "subtitle": "We beginnen met huren."
+  },
+  {
+    "time": 18.193,
+    "pad": "huren",
+    "stap": 0
+  },
+  {
+    "time": 21.397,
+    "subtitle": "Een huurwoning vinden gaat in 6 stappen."
+  },
+  {
+    "time": 26.494,
+    "subtitle": "Stap één: schrijf je in bij de woningcorporatie."
+  },
+  {
+    "time": 26.494,
+    "stap": 1
+  },
+  {
+    "time": 33.065,
+    "subtitle": "Een woningcorporatie beheert sociale huurwoningen."
+  },
+  {
+    "time": 39.01,
+    "subtitle": "Je betaalt inschrijfgeld."
+  },
+  {
+    "time": 42.702,
+    "subtitle": "Schrijf je zo vroeg mogelijk in, want hoe langer je ingeschreven staat, hoe meer kans je hebt."
+  },
+  {
+    "time": 52.535,
+    "subtitle": "Stap twee: zoek op de website van de woningcorporatie."
+  },
+  {
+    "time": 52.535,
+    "stap": 2
+  },
+  {
+    "time": 59.536,
+    "subtitle": "Daar zie je foto's en informatie."
+  },
+  {
+    "time": 64.285,
+    "subtitle": "Let op: er zijn regels over je inkomen, je leeftijd en je inschrijftijd."
+  },
+  {
+    "time": 74.246,
+    "subtitle": "Stap drie: reageer op een huis."
+  },
+  {
+    "time": 74.246,
+    "stap": 3
+  },
+  {
+    "time": 79.575,
+    "subtitle": "Zie je een woning die je wilt, dan reageer je via de website."
+  },
+  {
+    "time": 86.646,
+    "subtitle": "Maar let op, want veel mensen reageren op hetzelfde huis."
+  },
+  {
+    "time": 94.749,
+    "subtitle": "Stap vier: de woningcorporatie beslist."
+  },
+  {
+    "time": 94.749,
+    "stap": 4
+  },
+  {
+    "time": 100.775,
+    "subtitle": "Zij kijken naar wie het langst is ingeschreven en wie de huur kan betalen."
+  },
+  {
+    "time": 109.146,
+    "subtitle": "Stap vijf: kijk in het huis en teken het huurcontract."
+  },
+  {
+    "time": 109.146,
+    "stap": 5
+  },
+  {
+    "time": 117.029,
+    "subtitle": "Eerst kijken, dan beslissen, dan tekenen."
+  },
+  {
+    "time": 124.355,
+    "subtitle": "Stap zes: geef je nieuwe adres door aan de gemeente."
+  },
+  {
+    "time": 124.355,
+    "stap": 6
+  },
+  {
+    "time": 131.576,
+    "subtitle": "Dit moet binnen 5 dagen na je verhuizing."
+  },
+  {
+    "time": 137.033,
+    "subtitle": "Je adres komt dan in de Basisregistratie Personen, de BRP."
+  },
+  {
+    "time": 146.89,
+    "subtitle": "Nu de tweede route: een koopwoning kopen."
+  },
+  {
+    "time": 146.89,
+    "pad": "kopen",
+    "stap": 0
+  },
+  {
+    "time": 152.904,
+    "subtitle": "Dat gaat in 5 stappen."
+  },
+  {
+    "time": 156.851,
+    "subtitle": "Allereerst vraag je een hypotheek aan bij de bank."
+  },
+  {
+    "time": 156.851,
+    "stap": 1
+  },
+  {
+    "time": 161.634,
+    "subtitle": "Een hypotheek is geld dat je leent om een huis te kopen."
+  },
+  {
+    "time": 166.974,
+    "subtitle": "De bank geeft dit bijna alleen als je werk hebt."
+  },
+  {
+    "time": 171.839,
+    "subtitle": "Daarna zoek je een huis, online of via een makelaar."
+  },
+  {
+    "time": 171.839,
+    "stap": 2
+  },
+  {
+    "time": 177.946,
+    "subtitle": "Een makelaar helpt je bij het zoeken en kopen, maar dat kost geld."
+  },
+  {
+    "time": 184.947,
+    "subtitle": "Vervolgens kijk je in het huis en doe je een bod."
+  },
+  {
+    "time": 184.947,
+    "stap": 3
+  },
+  {
+    "time": 190.148,
+    "subtitle": "Een bod is wat jij wilt betalen."
+  },
+  {
+    "time": 194.258,
+    "subtitle": "De verkoper kan ja zeggen, nee zeggen, of onderhandelen."
+  },
+  {
+    "time": 201.166,
+    "subtitle": "Dan ga je naar de notaris en teken je het koopcontract."
+  },
+  {
+    "time": 201.166,
+    "stap": 4
+  },
+  {
+    "time": 207.273,
+    "subtitle": "De notaris regelt de officiële overdracht."
+  },
+  {
+    "time": 212.706,
+    "subtitle": "Vanaf dat moment is het huis van jou."
+  },
+  {
+    "time": 217.42,
+    "subtitle": "Tot slot geef je je nieuwe adres door aan de gemeente."
+  },
+  {
+    "time": 217.42,
+    "stap": 5
+  },
+  {
+    "time": 223.167,
+    "subtitle": "Net als bij huren: binnen 5 dagen, en je adres komt in de BRP."
+  },
+  {
+    "time": 232.907,
+    "subtitle": "Onthoud: geef je nieuwe adres altijd binnen 5 dagen door aan de gemeente."
+  },
+  {
+    "time": 240.912,
+    "subtitle": ""
+  }
+]

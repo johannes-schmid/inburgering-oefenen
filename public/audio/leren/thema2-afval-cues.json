@@ -1,0 +1,150 @@
+[
+  {
+    "time": 0,
+    "subtitle": "Welkom terug."
+  },
+  {
+    "time": 2.473,
+    "subtitle": "We hebben het over afval."
+  },
+  {
+    "time": 5.086,
+    "subtitle": "In Nederland gooi je niet alles in één bak."
+  },
+  {
+    "time": 8.998,
+    "subtitle": "Je moet je afval scheiden."
+  },
+  {
+    "time": 12.063,
+    "subtitle": "Waarom?"
+  },
+  {
+    "time": 13.944,
+    "subtitle": "Omdat gescheiden afval voor een groot deel kan worden gerecycled, en dat is beter voor de natuur."
+  },
+  {
+    "time": 23.441,
+    "subtitle": "Er zijn zes soorten."
+  },
+  {
+    "time": 26.482,
+    "subtitle": "De eerste is GFT: groente, fruit en tuinafval, zoals schillen en etensresten."
+  },
+  {
+    "time": 26.482,
+    "bak": "gft"
+  },
+  {
+    "time": 37.628,
+    "subtitle": "Dit gaat in de groene bak."
+  },
+  {
+    "time": 40.844,
+    "subtitle": "De tweede is papier: kranten, dozen en post."
+  },
+  {
+    "time": 40.844,
+    "bak": "papier"
+  },
+  {
+    "time": 49.377,
+    "subtitle": "Dit gaat in de blauwe bak."
+  },
+  {
+    "time": 53.127,
+    "subtitle": "De derde is glas: flessen en potten."
+  },
+  {
+    "time": 53.127,
+    "bak": "glas"
+  },
+  {
+    "time": 59.722,
+    "subtitle": "Glas heeft een eigen container, vaak bij de supermarkt."
+  },
+  {
+    "time": 66.583,
+    "subtitle": "De vierde is textiel: oude kleding en stoffen."
+  },
+  {
+    "time": 66.583,
+    "bak": "textiel"
+  },
+  {
+    "time": 73.781,
+    "subtitle": "Die breng je naar een textielcontainer."
+  },
+  {
+    "time": 78.425,
+    "subtitle": "De vijfde is plastic: flessen en verpakkingen."
+  },
+  {
+    "time": 78.425,
+    "bak": "plastic"
+  },
+  {
+    "time": 86.111,
+    "subtitle": "Dit gaat in de oranje bak."
+  },
+  {
+    "time": 90.082,
+    "subtitle": "De zesde is restafval: alles wat niet apart kan."
+  },
+  {
+    "time": 90.082,
+    "bak": "rest"
+  },
+  {
+    "time": 97.489,
+    "subtitle": "Dit gaat in de grijze bak."
+  },
+  {
+    "time": 101.425,
+    "subtitle": "Er zijn twee soorten afval die je niet in een gewone bak gooit."
+  },
+  {
+    "time": 108.356,
+    "subtitle": "Chemisch afval, zoals verf, batterijen en medicijnen, is gevaarlijk, en dat breng je naar het afvalpunt van de gemeente."
+  },
+  {
+    "time": 108.356,
+    "bak": "chemisch"
+  },
+  {
+    "time": 122.01,
+    "subtitle": "En groot afval, zoals een oude bank of kast, breng je naar het afvalpunt, of de gemeente haalt het op."
+  },
+  {
+    "time": 133.585,
+    "subtitle": "Dan nog iets: statiegeld."
+  },
+  {
+    "time": 133.585,
+    "bak": null
+  },
+  {
+    "time": 138.067,
+    "subtitle": "Als je een blikje of plastic fles koopt, betaal je statiegeld, een klein extra bedrag."
+  },
+  {
+    "time": 148.063,
+    "subtitle": "Lever je het lege blikje of de lege fles weer in, dan krijg je dat geld terug."
+  },
+  {
+    "time": 156.642,
+    "subtitle": "Wie betaalt de afvalinzameling?"
+  },
+  {
+    "time": 160.125,
+    "subtitle": "Dat doet de gemeente, met de afvalstoffenheffing."
+  },
+  {
+    "time": 165.071,
+    "subtitle": "Dat is een gemeentelijke belasting die iedereen betaalt."
+  },
+  {
+    "time": 169.523,
+    "subtitle": ""
+  }
+]

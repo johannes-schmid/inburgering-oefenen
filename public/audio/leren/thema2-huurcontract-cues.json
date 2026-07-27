@@ -1,0 +1,164 @@
+[
+  {
+    "time": 0,
+    "subtitle": "Welkom terug."
+  },
+  {
+    "time": 1.533,
+    "subtitle": "Je hebt een huurwoning gevonden."
+  },
+  {
+    "time": 4.168,
+    "subtitle": "Maar voordat je de sleutel krijgt, teken je het huurcontract."
+  },
+  {
+    "time": 9.44,
+    "subtitle": "Een huurcontract is een officiële afspraak tussen de verhuurder, de eigenaar van het huis, en de huurder, en dat ben jij."
+  },
+  {
+    "time": 21.363,
+    "subtitle": "Houdt iemand zich niet aan de afspraken, dan heet dat contractbreuk."
+  },
+  {
+    "time": 28.712,
+    "subtitle": "Wat staat er in een huurcontract?"
+  },
+  {
+    "time": 32.59,
+    "subtitle": "Ik loop vijf punten met je door."
+  },
+  {
+    "time": 36.351,
+    "subtitle": "Punt één: het adres van de woning."
+  },
+  {
+    "time": 36.351,
+    "clause": 1
+  },
+  {
+    "time": 41.39,
+    "subtitle": "Dit is het huis dat je precies huurt."
+  },
+  {
+    "time": 45.593,
+    "subtitle": "Punt twee: de huurprijs per maand, plus de servicekosten."
+  },
+  {
+    "time": 45.593,
+    "clause": 2
+  },
+  {
+    "time": 53.348,
+    "subtitle": "Servicekosten zijn extra kosten, bijvoorbeeld voor het schoonhouden van de trap of de lift."
+  },
+  {
+    "time": 62.311,
+    "subtitle": "Punt drie: de jaarlijkse huurverhoging."
+  },
+  {
+    "time": 62.311,
+    "clause": 3
+  },
+  {
+    "time": 67.756,
+    "subtitle": "De huur gaat elk jaar een beetje omhoog, altijd op 1 juli."
+  },
+  {
+    "time": 74.874,
+    "subtitle": "Punt vier: de borg."
+  },
+  {
+    "time": 74.874,
+    "clause": 4
+  },
+  {
+    "time": 78.647,
+    "subtitle": "De borg is een garantiebedrag dat je vooraf betaalt."
+  },
+  {
+    "time": 84.719,
+    "subtitle": "Punt vijf: het soort woning en de begindatum van het contract."
+  },
+  {
+    "time": 84.719,
+    "clause": 5
+  },
+  {
+    "time": 92.381,
+    "subtitle": "Laten we de borg bekijken."
+  },
+  {
+    "time": 95.888,
+    "subtitle": "Eerst trek je in: je betaalt vooraf een borg, bijvoorbeeld €800."
+  },
+  {
+    "time": 95.888,
+    "borg": "intrek",
+    "clause": null
+  },
+  {
+    "time": 105.059,
+    "subtitle": "Vertrek je later en is alles in orde, dan krijg je de hele borg terug."
+  },
+  {
+    "time": 109.042,
+    "borg": "ok"
+  },
+  {
+    "time": 112.92,
+    "subtitle": "Maar is er schade, dan houdt de verhuurder een deel van de borg in."
+  },
+  {
+    "time": 112.92,
+    "borg": "schade"
+  },
+  {
+    "time": 120.002,
+    "subtitle": "Als huurder heb je rechten."
+  },
+  {
+    "time": 123.438,
+    "subtitle": "De verhuurder mag de huur niet zomaar stopzetten, de huur mag niet veel omhoog, er mag geen discriminatie zijn, en de verhuurder moet de woning goed onderhouden."
+  },
+  {
+    "time": 139.262,
+    "subtitle": "Maar je hebt ook plichten: de huur op tijd betalen, kleine reparaties zelf doen, geen overlast geven, en de woning niet onderverhuren."
+  },
+  {
+    "time": 154.82,
+    "subtitle": "Heb je een probleem met je verhuurder?"
+  },
+  {
+    "time": 159.058,
+    "subtitle": "Praat er dan eerst over."
+  },
+  {
+    "time": 161.949,
+    "subtitle": "Lukt dat niet, dan kun je hulp vragen."
+  },
+  {
+    "time": 166.593,
+    "subtitle": "De Huurcommissie helpt bij problemen over de huurprijs of de kwaliteit van de woning."
+  },
+  {
+    "time": 166.593,
+    "hulp": "huurcommissie",
+    "borg": null
+  },
+  {
+    "time": 174.22,
+    "subtitle": "Het Juridisch Loket geeft gratis juridisch advies."
+  },
+  {
+    "time": 174.22,
+    "hulp": "juridischloket"
+  },
+  {
+    "time": 179.654,
+    "subtitle": "Je staat er niet alleen voor."
+  },
+  {
+    "time": 182.178,
+    "subtitle": ""
+  }
+]

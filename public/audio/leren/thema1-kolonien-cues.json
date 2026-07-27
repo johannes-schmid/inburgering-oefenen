@@ -1,0 +1,159 @@
+[
+  {
+    "time": 0,
+    "subtitle": "Welkom bij de les over de koloniën en de slavernij."
+  },
+  {
+    "time": 0,
+    "mode": "kolonien",
+    "colony": null,
+    "leg": null
+  },
+  {
+    "time": 5.561,
+    "subtitle": "Nederland had vroeger koloniën in verschillende delen van de wereld."
+  },
+  {
+    "time": 11.68,
+    "subtitle": "De drie belangrijkste koloniën waren Nederlands-Indië, Suriname en de Nederlandse Antillen."
+  },
+  {
+    "time": 21.2,
+    "subtitle": "Nederlands-Indië was de grootste kolonie. Dit gebied heet nu Indonesië."
+  },
+  {
+    "time": 21.2,
+    "colony": "indie"
+  },
+  {
+    "time": 30.152,
+    "subtitle": "Nederland verdiende hier veel geld met specerijen, koffie en suiker."
+  },
+  {
+    "time": 37.849,
+    "subtitle": "Suriname ligt in Zuid-Amerika. Daar waren grote plantages."
+  },
+  {
+    "time": 37.849,
+    "colony": "suriname"
+  },
+  {
+    "time": 46.103,
+    "subtitle": "Op deze plantages werkten mensen die tot slaaf waren gemaakt."
+  },
+  {
+    "time": 53.209,
+    "subtitle": "De Nederlandse Antillen zijn eilanden in de Caraïben."
+  },
+  {
+    "time": 53.209,
+    "colony": "antillen"
+  },
+  {
+    "time": 59.676,
+    "subtitle": "Deze eilanden waren belangrijk voor de handel."
+  },
+  {
+    "time": 65.179,
+    "subtitle": "Nu de driehoekshandel."
+  },
+  {
+    "time": 65.179,
+    "mode": "handel",
+    "colony": null,
+    "leg": null
+  },
+  {
+    "time": 68.685,
+    "subtitle": "In de zeventiende en achttiende eeuw was er handel tussen Europa, Afrika en Amerika."
+  },
+  {
+    "time": 78.705,
+    "subtitle": "Eerst voeren de schepen van Nederland naar Afrika, met goederen zoals textiel en wapens."
+  },
+  {
+    "time": 78.705,
+    "leg": "leg1"
+  },
+  {
+    "time": 88.353,
+    "subtitle": "In Afrika kochten de Nederlanders mensen en brachten ze met de schepen naar Amerika."
+  },
+  {
+    "time": 88.353,
+    "leg": "leg2"
+  },
+  {
+    "time": 97.234,
+    "subtitle": "Dit was een vreselijke reis. Veel mensen werden ziek en gingen dood."
+  },
+  {
+    "time": 105.28,
+    "subtitle": "In Amerika moesten zij op de plantages werken, zonder geld en vaak mishandeld."
+  },
+  {
+    "time": 115.508,
+    "subtitle": "Daarna voeren de schepen terug naar Nederland, met suiker, koffie, tabak en katoen."
+  },
+  {
+    "time": 115.508,
+    "leg": "leg3"
+  },
+  {
+    "time": 125.934,
+    "subtitle": "In Nederland werden deze producten voor veel geld verkocht."
+  },
+  {
+    "time": 132.97,
+    "subtitle": "In 1863 werd de slavernij verboden."
+  },
+  {
+    "time": 132.97,
+    "mode": "kolonien",
+    "colony": null,
+    "leg": null
+  },
+  {
+    "time": 140.028,
+    "subtitle": "Maar de mensen moesten nog tien jaar op de plantages blijven werken. Pas daarna waren ze echt vrij."
+  },
+  {
+    "time": 150.419,
+    "subtitle": "Elk jaar op 1 juli is er Keti Koti. Dat betekent: ketenen gebroken."
+  },
+  {
+    "time": 160.891,
+    "subtitle": "Op deze dag herdenken we het einde van de slavernij. In Suriname is het een nationale feestdag."
+  },
+  {
+    "time": 171.7,
+    "subtitle": "Later werden de koloniën onafhankelijk. In 1945 werd Nederlands-Indië onafhankelijk als Indonesië."
+  },
+  {
+    "time": 171.7,
+    "colony": "indie"
+  },
+  {
+    "time": 176.367,
+    "subtitle": "In 1975 werd Suriname een zelfstandig land."
+  },
+  {
+    "time": 176.367,
+    "colony": "suriname"
+  },
+  {
+    "time": 194.142,
+    "subtitle": "Onthoud goed: de slavernij werd afgeschaft in 1863, en Keti Koti is op 1 juli."
+  },
+  {
+    "time": 194.142,
+    "colony": null
+  },
+  {
+    "time": 205.107,
+    "subtitle": "",
+    "mode": null,
+    "colony": null,
+    "leg": null
+  }
+]

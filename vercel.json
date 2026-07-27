@@ -1,0 +1,12 @@
+{
+  "crons": [
+    {
+      "path": "/api/send-campaign-emails",
+      "schedule": "0 9 * * *"
+    },
+    {
+      "path": "/api/reconcile-payments",
+      "schedule": "0 8 * * *"
+    }
+  ]
+}
