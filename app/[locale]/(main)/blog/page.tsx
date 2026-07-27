@@ -78,7 +78,7 @@ export default async function BlogIndexPage({ params }: Props) {
                     {lp.category}
                   </span>
                   <h2 className="font-headline font-bold text-lg text-on-surface leading-snug">{lp.heroTitle}</h2>
-                  <p className="text-on-surface-variant text-sm leading-relaxed flex-grow">{lp.description.replace(' | KNM Oefenen', '')}</p>
+                  <p className="text-on-surface-variant text-sm leading-relaxed flex-grow">{lp.description.replace(' | Inburgering Oefenen', '')}</p>
                   <div className="flex items-center justify-between mt-1">
                     <div className="flex items-center gap-2">
                       <div className="w-7 h-7 rounded-lg overflow-hidden flex-shrink-0" style={{ border: '1px solid rgba(196,198,210,0.3)' }}>

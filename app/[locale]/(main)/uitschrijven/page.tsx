@@ -37,7 +37,7 @@ export default function UitschrijvenPage() {
           <div className="w-8 h-8 rounded-lg flex items-center justify-center" style={{ background: '#FF4F00' }}>
             <svg width="18" height="18" fill="none" stroke="#fff" strokeWidth="2.2" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/></svg>
           </div>
-          <span className="font-headline font-extrabold text-white text-lg">KNM Oefenen</span>
+          <span className="font-headline font-extrabold text-white text-lg">Inburgering Oefenen</span>
         </a>
       </header>
 
@@ -56,7 +56,7 @@ export default function UitschrijvenPage() {
                   <p className="text-sm mb-1" style={{ color: '#6b7280' }}>Je schrijft je uit voor:</p>
                   <p className="inline-block text-sm font-semibold px-4 py-2 rounded-xl mb-5" style={{ background: '#f3f4f6', color: '#374151' }}>{email || '(onbekend e-mailadres)'}</p>
                   <p className="text-sm mb-8 leading-relaxed" style={{ color: '#6b7280' }}>
-                    Je ontvangt dan geen follow-up e-mails meer van KNM Oefenen.<br/>
+                    Je ontvangt dan geen follow-up e-mails meer van Inburgering Oefenen.<br/>
                     <span style={{ color: '#9ca3af' }}>Je account blijft actief.</span>
                   </p>
                   <button
@@ -77,9 +77,9 @@ export default function UitschrijvenPage() {
                     <svg width="32" height="32" fill="none" stroke="#16a34a" strokeWidth="2" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7"/></svg>
                   </div>
                   <h2 className="font-headline font-extrabold text-2xl mb-3" style={{ color: '#002b6d' }}>Je bent uitgeschreven</h2>
-                  <p className="text-sm mb-8 leading-relaxed" style={{ color: '#6b7280' }}>Je ontvangt geen follow-up e-mails meer van KNM Oefenen. Je kunt deze pagina sluiten.</p>
+                  <p className="text-sm mb-8 leading-relaxed" style={{ color: '#6b7280' }}>Je ontvangt geen follow-up e-mails meer van Inburgering Oefenen. Je kunt deze pagina sluiten.</p>
                   <a href="/" className="inline-flex items-center gap-1.5 font-semibold no-underline" style={{ color: '#FF4F00' }}>
-                    Terug naar KNM Oefenen
+                    Terug naar Inburgering Oefenen
                     <svg width="16" height="16" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7"/></svg>
                   </a>
                 </>
@@ -100,7 +100,7 @@ export default function UitschrijvenPage() {
               )}
             </div>
           </div>
-          <p className="text-center text-xs mt-6" style={{ color: '#9ca3af' }}>© 2026 KNM Oefenen · <a href="/" style={{ color: '#9ca3af' }}>inburgeringoefenen.nl</a></p>
+          <p className="text-center text-xs mt-6" style={{ color: '#9ca3af' }}>© 2026 Inburgering Oefenen · <a href="/" style={{ color: '#9ca3af' }}>inburgeringoefenen.nl</a></p>
         </div>
       </main>
     </div>

@@ -26,7 +26,7 @@ export default function KnmLoader({ fullPage = true }: { fullPage?: boolean }) {
               lineHeight: 1,
             }}
           >
-            KNM Oefenen
+            Inburgering Oefenen
           </span>
         </div>
 

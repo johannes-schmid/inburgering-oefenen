@@ -75,7 +75,7 @@ export default function RegisterPage() {
         <div className="max-w-6xl mx-auto px-6 py-4 flex items-center justify-between">
           <Link href="/" className="flex items-center gap-2 no-underline">
             <span className="w-1.5 h-6 bg-secondary-container rounded-full" />
-            <span className="text-xl font-extrabold tracking-tight text-white font-headline">KNM Oefenen</span>
+            <span className="text-xl font-extrabold tracking-tight text-white font-headline">Inburgering Oefenen</span>
           </Link>
           <Link href="/login" className="text-sm font-semibold text-white/90 hover:text-white transition-colors no-underline">Al een account? Inloggen →</Link>
         </div>
@@ -123,7 +123,7 @@ export default function RegisterPage() {
 
           {/* Floating form card */}
           <div className="bg-white rounded-[22px] p-7 sm:p-8 flex flex-col" style={{ boxShadow: '0 30px 70px rgba(0,0,0,0.40),0 2px 8px rgba(0,0,0,0.12)' }}>
-            <h2 className="font-headline font-extrabold text-on-surface mb-1" style={{ fontSize: '1.3rem', letterSpacing: '-0.015em' }}>Word lid van KNM Oefenen</h2>
+            <h2 className="font-headline font-extrabold text-on-surface mb-1" style={{ fontSize: '1.3rem', letterSpacing: '-0.015em' }}>Word lid van Inburgering Oefenen</h2>
             <p className="text-on-surface-variant text-sm mb-6 leading-relaxed">Vul je gegevens in om direct te beginnen.</p>
 
             {error && (
@@ -173,7 +173,7 @@ export default function RegisterPage() {
       </main>
 
       <footer className="relative text-center py-6 text-xs text-white/55 border-t border-white/10">
-        © 2026 KNM Oefenen ·{' '}
+        © 2026 Inburgering Oefenen ·{' '}
         <a href="mailto:contact@inburgeringoefenen.nl" className="hover:text-white no-underline transition-colors">contact@inburgeringoefenen.nl</a>
       </footer>
     </div>

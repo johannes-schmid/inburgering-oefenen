@@ -260,7 +260,7 @@ export default function ExamsView({ plan, progress, session, supabase, activeExa
             feedbackTag: 'Directe feedback',
             sectionsHeading: 'Vragen per onderwerp',
             startBtn: 'Start proefexamen',
-            teacherTitle: 'NT2-docent & KNM-specialist — vragen persoonlijk geselecteerd',
+            teacherTitle: 'NT2-docent — opgaven persoonlijk gecontroleerd',
             audio: {
               heading: 'Test je geluid',
               desc: 'Elke vraag kan worden voorgelezen — zet je geluid aan.',

@@ -113,7 +113,7 @@ export default function QuizWidget({ questions, topicTotal, strings, slug }: Pro
         <div className="bg-surface-container-low rounded-2xl p-5 text-left">
           <p className="text-xs font-bold uppercase tracking-widest text-on-surface-variant mb-2">Gecertificeerde docent</p>
           <p className="text-sm text-on-surface-variant leading-relaxed">
-            Deze vragen zijn samengesteld door Marieke Schipper, gecertificeerde NT2-docent en KNM-specialist.{' '}
+            Deze vragen zijn samengesteld door Marieke Schipper, gecertificeerde NT2-docent.{' '}
             <a href="/docent" className="text-secondary underline hover:opacity-80">Lees meer over de docent →</a>
           </p>
         </div>

@@ -9,3 +9,6 @@ next-env.d.ts
 /test-results
 /temporary_screenshots
 .DS_Store
+
+.claude/worktrees
+supabase/.temp

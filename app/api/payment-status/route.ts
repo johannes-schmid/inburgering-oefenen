@@ -65,7 +65,7 @@ export async function GET(request: Request): Promise<Response> {
 
           const firstName = userData?.user?.user_metadata?.full_name?.split(' ')[0] || '';
           const baseUrl = process.env.BASE_URL || 'https://inburgeringoefenen.nl';
-          const FROM = 'KNM Oefenen <support@inburgeringoefenen.nl>';
+          const FROM = 'Inburgering Oefenen <support@inburgeringoefenen.nl>';
           const isUpgrade = meta?.product === 'upgrade_to_plus';
 
           // Claim the send slot — only one path (webhook vs payment-status poll) will get rows back

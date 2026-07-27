@@ -31,7 +31,7 @@ export function activationEmail(
 <div class="sec">
   <p class="sec-body">${s.supportText} <a href="mailto:${t[locale].common.support}" style="color:#fe762c;">${t[locale].common.support}</a></p>
   <p class="sec-body" style="margin-top:12px;">${s.closing}</p>
-  <p class="sec-body" style="margin-top:6px;font-weight:700;color:#002b6d;">KNM Oefenen</p>
+  <p class="sec-body" style="margin-top:6px;font-weight:700;color:#002b6d;">Inburgering Oefenen</p>
 </div>`;
 
   return renderEmail({

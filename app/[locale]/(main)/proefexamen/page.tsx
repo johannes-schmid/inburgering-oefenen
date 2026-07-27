@@ -94,7 +94,7 @@ export default async function ProefexamenPage({ searchParams }: Props) {
             <div className="flex items-center gap-2">
               <span className="w-1.5 h-5 bg-secondary-container rounded-full" />
               <span className="text-base font-extrabold tracking-tight text-primary font-headline">
-                KNM Oefenen
+                Inburgering Oefenen
               </span>
             </div>
             <span className="text-xs text-on-surface-variant hidden sm:block" />

@@ -57,7 +57,7 @@ const jsonLd = {
       '@type': 'Person',
       '@id': 'https://inburgeringoefenen.nl/#teacher',
       name: 'Marieke Schipper',
-      jobTitle: 'NT2-docent & KNM-specialist',
+      jobTitle: 'NT2-docent',
       description: 'Gecertificeerde NT2-docent met meer dan 10 jaar ervaring in inburgering en KNM-examenvoorbereiding.',
       image: 'https://inburgeringoefenen.nl/images/marieke-schipper.jpg',
       knowsAbout: ['KNM examen', 'Kennis van de Nederlandse Maatschappij', 'NT2 staatsexamen', 'Inburgering Nederland'],
@@ -89,7 +89,7 @@ export default function DocentPage() {
             <EyebrowBadge tone="dark" className="mb-5">Gecertificeerde KNM-docent</EyebrowBadge>
             <h1 className="font-headline font-extrabold text-white mb-5" style={{ fontSize: 'clamp(1.9rem,4vw,3rem)', letterSpacing: '-0.02em', lineHeight: '1.15' }}>
               <span className="block">Marieke Schipper —</span>
-              <span style={{ color: '#fe762c' }}>NT2-docent &amp; KNM-specialist</span>
+              <span style={{ color: '#fe762c' }}>NT2-docent</span>
             </h1>
             <p className="text-white/70 text-lg mb-8 leading-relaxed max-w-xl">
               Meer dan 10 jaar begeleidt Marieke inburgeraars door het Nederlandse onderwijs- en examenstelsel. Haar KNM-oefenvragen zijn gebaseerd op directe ervaring in de klas — niet op theorie.
@@ -109,13 +109,13 @@ export default function DocentPage() {
           <div className="flex-shrink-0">
             <div style={{ position: 'relative', width: '200px', height: '240px', borderRadius: '18px', overflow: 'hidden', border: '2px solid rgba(255,255,255,0.2)', boxShadow: '0 16px 48px rgba(0,0,0,0.3)' }}>
               {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src="/images/marieke-schipper.jpg" alt="Marieke Schipper — gecertificeerde NT2-docent en KNM-specialist" width={200} height={240} style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'center top' }} />
+              <img src="/images/marieke-schipper.jpg" alt="Marieke Schipper — gecertificeerde NT2-docent" width={200} height={240} style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'center top' }} />
               <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to top,rgba(0,43,109,0.3) 0%,transparent 50%)' }} />
             </div>
             <div className="mt-4 flex flex-col gap-2">
               <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-semibold" style={{ background: 'rgba(255,255,255,0.12)', color: 'rgba(255,255,255,0.85)' }}>✓ NT2-gecertificeerd</span>
               <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-semibold" style={{ background: 'rgba(255,255,255,0.12)', color: 'rgba(255,255,255,0.85)' }}>✓ 10+ jaar ervaring</span>
-              <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-semibold" style={{ background: 'rgba(254,118,44,0.25)', color: '#fe762c' }}>✓ KNM-specialist</span>
+              <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-semibold" style={{ background: 'rgba(254,118,44,0.25)', color: '#fe762c' }}>✓ Inburgering A2</span>
             </div>
           </div>
         </div>
@@ -250,7 +250,7 @@ export default function DocentPage() {
                 </div>
                 <div>
                   <p className="text-sm font-bold text-on-surface font-headline">Marieke Schipper</p>
-                  <p className="text-xs text-on-surface-variant">NT2-docent &amp; KNM-specialist</p>
+                  <p className="text-xs text-on-surface-variant">NT2-docent</p>
                 </div>
               </div>
             </div>

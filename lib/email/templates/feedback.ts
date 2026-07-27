@@ -22,7 +22,7 @@ export function feedbackEmail({ firstName }: { firstName: string }, locale: Emai
 <div class="div"></div>
 <div class="sec">
   <p class="sec-body">${s.closing}</p>
-  <p class="sec-body" style="margin-top:10px;font-weight:700;color:#002b6d;">KNM Oefenen</p>
+  <p class="sec-body" style="margin-top:10px;font-weight:700;color:#002b6d;">Inburgering Oefenen</p>
 </div>`;
 
   return renderEmail({ locale, title: s.title, bodyHtml: body, isTransactional: true });

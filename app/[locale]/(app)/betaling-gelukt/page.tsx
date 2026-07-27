@@ -72,7 +72,7 @@ export default function BetalingGeluktPage() {
         <div className="max-w-5xl mx-auto px-6 py-4 flex items-center justify-center">
           <div className="flex items-center gap-2">
             <span className="w-1.5 h-5 bg-secondary-container rounded-full" />
-            <span className="text-lg font-extrabold tracking-tight text-primary font-headline">KNM Oefenen</span>
+            <span className="text-lg font-extrabold tracking-tight text-primary font-headline">Inburgering Oefenen</span>
           </div>
         </div>
       </header>

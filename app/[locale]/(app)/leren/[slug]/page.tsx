@@ -182,7 +182,7 @@ export default function LerenPage({ params }: { params: Promise<{ locale: string
         <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 24 }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
             <div style={{ width: 5, height: 36, borderRadius: 99, background: 'linear-gradient(180deg,#fe762c,#d94f00)' }} />
-            <span style={{ fontWeight: 800, fontSize: 26, color: '#002b6d', letterSpacing: '-0.02em', lineHeight: 1, fontFamily: 'Arial Black, sans-serif' }}>KNM Oefenen</span>
+            <span style={{ fontWeight: 800, fontSize: 26, color: '#002b6d', letterSpacing: '-0.02em', lineHeight: 1, fontFamily: 'Arial Black, sans-serif' }}>Inburgering Oefenen</span>
           </div>
           <div style={{ width: 160, height: 3, borderRadius: 99, background: '#e0e3e5', overflow: 'hidden' }}>
             <div style={{ height: '100%', borderRadius: 99, background: 'linear-gradient(90deg,#002b6d,#fe762c)', animation: 'knm-sweep 1.4s ease-in-out infinite' }} />

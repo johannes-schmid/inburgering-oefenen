@@ -40,9 +40,9 @@ export const metadata: Metadata = {
     apple: '/favicon-32x32.png',
   },
   openGraph: {
-    siteName: 'KNM Oefenen',
+    siteName: 'Inburgering Oefenen',
     type: 'website',
-    images: [{ url: 'https://inburgeringoefenen.nl/images/marieke-schipper.jpg', width: 800, height: 800, alt: 'KNM Oefenen — Gecertificeerde KNM-oefenvragen' }],
+    images: [{ url: 'https://inburgeringoefenen.nl/images/marieke-schipper.jpg', width: 800, height: 800, alt: 'Inburgering Oefenen — Gecertificeerde KNM-oefenvragen' }],
   },
   twitter: { card: 'summary_large_image' },
 };

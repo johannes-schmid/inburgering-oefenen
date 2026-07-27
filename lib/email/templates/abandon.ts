@@ -49,7 +49,7 @@ export function abandonEmail(firstName: string, locale: EmailLocale, unsubscribe
 </div>
 <div class="sec">
   <p class="sec-body">${s.closingNote} <a href="mailto:${t[locale].common.support}" style="color:#fe762c;">${t[locale].common.support}</a></p>
-  <p class="sec-body" style="margin-top:10px;font-weight:700;color:#002b6d;">KNM Oefenen</p>
+  <p class="sec-body" style="margin-top:10px;font-weight:700;color:#002b6d;">Inburgering Oefenen</p>
 </div>`;
 
   return renderEmail({ locale, title: s.title, bodyHtml: body, unsubscribeUrl });

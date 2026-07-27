@@ -184,7 +184,7 @@ export default function DashboardPage() {
       <header id="dash-mobile-header" className="sticky top-0 z-50 items-center justify-between px-4 py-3" style={{ display: 'none', background: 'linear-gradient(135deg,#001d4e,#002b6d)', borderBottom: '1px solid rgba(255,255,255,0.08)' }}>
         <button type="button" onClick={() => setView('exams')} className="flex items-center gap-2" style={{ background: 'none', border: 'none', cursor: 'pointer', padding: 0 }}>
           <span className="w-1.5 h-5 rounded-full" style={{ background: '#fe762c', display: 'block' }} />
-          <span className="text-lg font-extrabold tracking-tight font-headline" style={{ color: '#fff' }}>KNM Oefenen</span>
+          <span className="text-lg font-extrabold tracking-tight font-headline" style={{ color: '#fff' }}>Inburgering Oefenen</span>
         </button>
         {session ? (
           <Avatar className="h-8 w-8">

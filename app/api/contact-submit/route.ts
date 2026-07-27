@@ -35,7 +35,7 @@ export async function POST(request: Request): Promise<Response> {
     html: `
       <table style="font-family:Arial,sans-serif;font-size:15px;color:#191c1e;border-collapse:collapse;width:100%;max-width:600px;">
         <tr><td style="padding:24px 24px 0;">
-          <h2 style="margin:0 0 20px;color:#002b6d;font-size:20px;">Nieuw contactbericht via KNM Oefenen</h2>
+          <h2 style="margin:0 0 20px;color:#002b6d;font-size:20px;">Nieuw contactbericht via Inburgering Oefenen</h2>
         </td></tr>
         <tr><td style="padding:0 24px;">
           <table style="width:100%;border-collapse:collapse;">

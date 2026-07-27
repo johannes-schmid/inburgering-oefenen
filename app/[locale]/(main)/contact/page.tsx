@@ -52,7 +52,7 @@ export default function ContactPage() {
 
           <div className="mt-6 rounded-2xl px-6 py-5 flex flex-col sm:flex-row items-center gap-4 justify-between" style={{ background: 'rgba(0,43,109,0.04)', border: '1px solid rgba(0,43,109,0.10)' }}>
             <div>
-              <p className="font-semibold text-primary text-sm">Al een account bij KNM Oefenen?</p>
+              <p className="font-semibold text-primary text-sm">Al een account bij Inburgering Oefenen?</p>
               <p className="text-on-surface-variant text-sm">Ga direct naar je studieportaal voor je oefenresultaten en woordkaarten.</p>
             </div>
             <Link href="/dashboard" className="shrink-0 inline-flex items-center gap-2 text-sm font-bold text-primary hover:text-primary-container transition-colors no-underline whitespace-nowrap">

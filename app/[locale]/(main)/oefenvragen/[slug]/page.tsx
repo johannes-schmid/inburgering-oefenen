@@ -20,7 +20,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const topic = getTopicBySlug(slug);
   if (!topic) return {};
   return {
-    title: `KNM Oefenvragen ${topic.name} — Oefen gericht op dit thema | KNM Oefenen`,
+    title: `KNM Oefenvragen ${topic.name} — Oefen gericht op dit thema | Inburgering Oefenen`,
     description: `Oefen KNM-vragen over ${topic.name}: ${topic.sublabel}. ${topic.questions.length} vragen met uitleg van een gecertificeerde NT2-docent.`,
     alternates: {
       canonical: `https://inburgeringoefenen.nl/${locale}/oefenvragen/${slug}`,

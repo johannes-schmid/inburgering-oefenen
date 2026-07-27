@@ -4,7 +4,7 @@ import { routing } from '@/i18n/routing';
 import { Link } from '@/i18n/navigation';
 import { cn } from '@/lib/utils';
 import { buttonVariants } from '@/components/ui/button';
-import { TeacherCard, ReviewCard } from '@/components/site';
+import { TeacherCard } from '@/components/site';
 import PricingViewTracker from '@/components/PricingViewTracker';
 
 type Props = { params: Promise<{ locale: string }> };
@@ -58,7 +58,7 @@ function BrowserMockup() {
           <div style={{ padding:'16px 16px 12px', borderBottom:'1px solid #eceef0' }}>
             <div style={{ display:'flex',alignItems:'center',gap:'6px' }}>
               <span style={{ width:'4px',height:'16px',background:'#fe762c',borderRadius:'2px',display:'block' }}/>
-              <span style={{ fontFamily:'var(--font-headline)',fontWeight:800,color:'#002b6d',fontSize:'12px' }}>KNM Oefenen</span>
+              <span style={{ fontFamily:'var(--font-headline)',fontWeight:800,color:'#002b6d',fontSize:'12px' }}>Inburgering Oefenen</span>
             </div>
             <p style={{ fontSize:'9px',color:'#747782',marginTop:'2px',paddingLeft:'10px' }}>Studieportaal</p>
           </div>
@@ -241,66 +241,7 @@ function AudioMockup() {
   );
 }
 
-function LerenMockup() {
-  return (
-    <div style={{ padding:'20px', background:'#f8f9fb', borderBottom:'1px solid #eceef0' }}>
-      <div style={{ display:'flex',flexDirection:'column',gap:'7px' }}>
-        {[
-          { icon:'🗺️', title:'Geschiedenis & Geografie', progress:100, done:true },
-          { icon:'🏛️', title:'Overheid & Democratie', progress:62, done:false },
-          { icon:'⚕️', title:'Gezondheid', progress:0, locked:false },
-        ].map(t => (
-          <div key={t.title} style={{ background:'#fff',borderRadius:'10px',border:'1px solid #eceef0',padding:'10px 12px' }}>
-            <div style={{ display:'flex',alignItems:'center',gap:'8px',marginBottom:'6px' }}>
-              <span style={{ fontSize:'14px' }}>{t.icon}</span>
-              <span style={{ fontSize:'10px',fontWeight:700,color:'#191c1e',flex:1,lineHeight:1.2 }}>{t.title}</span>
-              {t.done
-                ? <span style={{ fontSize:'8px',fontWeight:700,color:'#15803d',background:'#f0fdf4',padding:'2px 5px',borderRadius:'99px' }}>✓ Klaar</span>
-                : <span style={{ fontSize:'8px',color:'#747782' }}>{t.progress}%</span>
-              }
-            </div>
-            <div style={{ height:'4px',background:'#f2f4f6',borderRadius:'99px',overflow:'hidden' }}>
-              <div style={{ height:'100%',width:`${t.progress}%`,borderRadius:'99px',background: t.done ? '#22c55e' : 'linear-gradient(90deg,#002b6d,#fe762c)' }}/>
-            </div>
-          </div>
-        ))}
-      </div>
-      <div style={{ marginTop:'8px',background:'linear-gradient(135deg,#002b6d,#0044ad)',borderRadius:'10px',padding:'12px' }}>
-        <p style={{ fontSize:'9px',fontWeight:700,color:'rgba(255,255,255,0.6)',marginBottom:'2px' }}>Nu bezig</p>
-        <p style={{ fontSize:'11px',fontWeight:800,color:'#fff',marginBottom:'6px' }}>Overheid &amp; Democratie</p>
-        <div style={{ display:'flex',alignItems:'center',gap:'6px' }}>
-          <div style={{ flex:1,height:'4px',background:'rgba(255,255,255,0.2)',borderRadius:'99px',overflow:'hidden' }}>
-            <div style={{ height:'100%',width:'62%',borderRadius:'99px',background:'#fe762c' }}/>
-          </div>
-          <span style={{ fontSize:'9px',fontWeight:700,color:'#fe762c' }}>62%</span>
-        </div>
-      </div>
-    </div>
-  );
-}
 
-function WoordkaartenMockup() {
-  return (
-    <div style={{ padding:'20px', background:'#f8f9fb', borderBottom:'1px solid #eceef0' }}>
-      <div style={{ background:'#fff',borderRadius:'12px',border:'1px solid #eceef0',padding:'16px',marginBottom:'10px' }}>
-        <div style={{ display:'flex',alignItems:'center',justifyContent:'space-between',marginBottom:'12px' }}>
-          <span style={{ fontSize:'24px' }}>🏥</span>
-          <span style={{ fontSize:'10px',fontWeight:700,color:'#002b6d',background:'#eff6ff',padding:'3px 8px',borderRadius:'99px' }}>58%</span>
-        </div>
-        <p style={{ fontSize:'12px',fontWeight:700,color:'#191c1e',marginBottom:'4px' }}>Gezondheid en Gezondheidszorg</p>
-        <p style={{ fontSize:'10px',color:'#747782',marginBottom:'8px' }}>72 woorden · 42 gekend</p>
-        <div style={{ height:'6px',background:'#f2f4f6',borderRadius:'99px',overflow:'hidden' }}>
-          <div style={{ height:'100%',width:'58%',borderRadius:'99px',background:'linear-gradient(90deg,#002b6d,#fe762c)' }}/>
-        </div>
-      </div>
-      <div style={{ background:'#002b6d',borderRadius:'12px',padding:'16px',textAlign:'center' }}>
-        <span style={{ fontSize:'10px',color:'rgba(255,255,255,0.6)' }}>de</span>
-        <p style={{ fontFamily:'var(--font-headline)',fontWeight:800,fontSize:'20px',color:'#fff',lineHeight:1.2 }}>premie</p>
-        <p style={{ fontSize:'10px',color:'rgba(255,255,255,0.6)',marginTop:'4px' }}>Tik om de vertaling te zien</p>
-      </div>
-    </div>
-  );
-}
 
 function DashboardMockup() {
   return (
@@ -347,12 +288,13 @@ export default async function PremiumPage({ params }: Props) {
   const allFeatures: { label: string; free: boolean; premium: boolean; compleet: boolean }[] = [
     { label: tP('feat_1'),         free: true,  premium: true,  compleet: true  },
     { label: tP('feat_2'),         free: false, premium: true,  compleet: true  },
-    { label: tP('feat_3'),         free: false, premium: true,  compleet: true  },
+    { label: tP('feat_3'),         free: true,  premium: true,  compleet: true  },
+    { label: tP('feat_4'),         free: false, premium: true,  compleet: true  },
     { label: tP('feat_5'),         free: false, premium: true,  compleet: true  },
     { label: tP('feat_6'),         free: false, premium: true,  compleet: true  },
     { label: tP('feat_7'),         free: false, premium: true,  compleet: true  },
     { label: tP('feat_8'),         free: false, premium: true,  compleet: true  },
-    { label: tP('feat_9'),         free: false, premium: true,  compleet: true  },
+    { label: tP('feat_9'),         free: false, premium: false, compleet: true  },
     { label: tP('feat_leren_1'),   free: true,  premium: true,  compleet: true  },
     { label: tP('feat_leren_all'), free: false, premium: false, compleet: true  },
   ];
@@ -438,10 +380,12 @@ export default async function PremiumPage({ params }: Props) {
                 </div>
                 <p className="text-xs text-on-surface-variant mb-6">— geen betaling vereist</p>
                 <div className="space-y-2.5">
-                  <div className="flex items-start gap-2.5 text-sm text-on-surface">
-                    <CheckGreen /><span>{tP('free_f1')}</span>
-                  </div>
-                  {[tP('free_f2'), tP('free_f3'), tP('free_f4')].map(f => (
+                  {[tP('free_f1'), tP('free_f2')].map(f => (
+                    <div key={f} className="flex items-start gap-2.5 text-sm text-on-surface">
+                      <CheckGreen /><span>{f}</span>
+                    </div>
+                  ))}
+                  {[tP('free_f3'), tP('free_f4')].map(f => (
                     <div key={f} className="flex items-start gap-2.5 text-sm" style={{ color:'#b0b3c1' }}>
                       <XGray /><span>{f}</span>
                     </div>
@@ -535,16 +479,6 @@ export default async function PremiumPage({ params }: Props) {
             <span className="text-xs text-on-surface-variant">{tP('trust_note')}</span>
           </div>
 
-          {/* testimonials */}
-          <div className="grid md:grid-cols-3 gap-4 mb-10">
-            {[
-              { quote: '"De uitleg per vraag maakte echt het verschil. Na 3 weken oefenen ben ik geslaagd."', name: 'Ahmed K.', initials: 'A' },
-              { quote: '"Voor €9,95 is dit absoluut de beste voorbereiding. Het dashboard liet me zien welke onderwerpen ik nog moest studeren."', name: 'Soraya M.', initials: 'S' },
-              { quote: '"Je merkt dat een docent de vragen heeft gemaakt. Veel realistischer dan andere sites."', name: 'Rania T.', initials: 'R' },
-            ].map(r => (
-              <ReviewCard key={r.name} compact quote={r.quote} name={r.name} initials={r.initials} avatarClass="bg-primary text-white" location="✓ Geslaagd" />
-            ))}
-          </div>
         </div>
       </section>
 
@@ -561,28 +495,11 @@ export default async function PremiumPage({ params }: Props) {
             </p>
           </div>
 
-          {/* top row: 3 cards */}
-          <div className="grid md:grid-cols-3 gap-6 mb-6">
+          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
             {[
               { mockup: <ExamensMockup />, title: tP('feature1_title'), desc: tP('feature1_desc') },
-              { mockup: <FeedbackMockup />, title: tP('feature2_title'), desc: tP('feature2_desc') },
               { mockup: <AudioMockup />, title: tP('feature_audio_title'), desc: tP('feature_audio_desc') },
-            ].map(f => (
-              <div key={f.title} className="bg-white rounded-2xl border border-outline-variant/50 overflow-hidden flex flex-col" style={{ boxShadow:'0 2px 8px rgba(0,43,109,0.04),0 10px 32px rgba(0,43,109,0.07)' }}>
-                {f.mockup}
-                <div className="p-5 flex-1">
-                  <h3 className="font-headline font-extrabold text-on-surface text-base mb-2 leading-snug">{f.title}</h3>
-                  <p className="text-sm text-on-surface-variant leading-relaxed">{f.desc}</p>
-                </div>
-              </div>
-            ))}
-          </div>
-
-          {/* bottom row: 3 cards */}
-          <div className="grid md:grid-cols-3 gap-6 mb-12">
-            {[
-              { mockup: <LerenMockup />, title: tP('feature5_title'), desc: tP('feature5_desc') },
-              { mockup: <WoordkaartenMockup />, title: tP('feature4_title'), desc: tP('feature4_desc') },
+              { mockup: <FeedbackMockup />, title: tP('feature2_title'), desc: tP('feature2_desc') },
               { mockup: <DashboardMockup />, title: tP('feature3_title'), desc: tP('feature3_desc') },
             ].map(f => (
               <div key={f.title} className="bg-white rounded-2xl border border-outline-variant/50 overflow-hidden flex flex-col" style={{ boxShadow:'0 2px 8px rgba(0,43,109,0.04),0 10px 32px rgba(0,43,109,0.07)' }}>
@@ -597,113 +514,9 @@ export default async function PremiumPage({ params }: Props) {
 
           <TeacherCard
             variant="compact"
-            quote="Alle vragen zijn door mij persoonlijk samengesteld en gecontroleerd. Geen AI, geen crowd-sourcing. De uitleg is gebaseerd op wat ik zie dat studenten missen in de examenruimte."
-            stats={[{ value: '8+', label: 'jaar ervaring' }, { value: '1.200+', label: 'studenten geholpen' }]}
+            quote="Alle opgaven zijn door mij persoonlijk geschreven of gecontroleerd. Geen AI-gegenereerde content. De beoordelingsrubric voor Schrijven en Spreken komt ook van mij — ik controleer de beoordelingen en stuur bij waar nodig."
+            stats={[{ value: '10+', label: 'jaar ervaring' }, { value: '40', label: 'oefenexamens' }]}
           />
-        </div>
-      </section>
-
-      {/* ── 4. LEREN MODULES (compact) ───────────────────────────────────── */}
-      <section className="py-14 px-6" style={{ background:'linear-gradient(180deg,#f0f4ff 0%,#f8f9fb 100%)' }}>
-        <div className="max-w-6xl mx-auto">
-          <div className="grid lg:grid-cols-2 gap-14 items-center">
-            <div>
-              <p className="text-xs font-bold uppercase tracking-widest mb-3" style={{ color:'#fe762c' }}>{tP('leren_eyebrow')}</p>
-              <h2 className="font-headline font-extrabold text-on-surface mb-5" style={{ fontSize:'clamp(1.7rem,3.5vw,2.4rem)',letterSpacing:'-0.025em' }}>
-                {tP('leren_heading')}
-              </h2>
-              <p className="text-on-surface-variant text-lg leading-relaxed mb-7">
-                {tP('leren_body')}
-              </p>
-
-              {/* compact 2-column thema chip grid */}
-              <div className="grid grid-cols-2 gap-2.5 mb-8">
-                {[
-                  { icon:'🗺️', title: tP('leren_t1_title') },
-                  { icon:'🏛️', title: tP('leren_t2_title') },
-                  { icon:'⚕️', title: tP('leren_t3_title') },
-                  { icon:'💼', title: tP('leren_t4_title') },
-                  { icon:'🏠', title: tP('leren_t5_title') },
-                  { icon:'👥', title: tP('leren_t6_title') },
-                  { icon:'🎓', title: tP('leren_t7_title') },
-                ].map(t => (
-                  <div key={t.title} className="flex items-center gap-2.5 px-3 py-2.5 rounded-xl bg-white border border-outline-variant/50" style={{ boxShadow:'0 1px 4px rgba(0,43,109,0.05)' }}>
-                    <span className="text-base flex-shrink-0">{t.icon}</span>
-                    <p className="font-semibold text-on-surface text-xs leading-snug">{t.title}</p>
-                  </div>
-                ))}
-              </div>
-
-              <Link href="/register" className={cn(buttonVariants({ variant: 'orange', size: 'cta' }))}>
-                <span>{tP('leren_cta')}</span>
-                <svg width="15" height="15" viewBox="0 0 16 16" fill="none"><path d="M6 3l5 5-5 5" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg>
-              </Link>
-            </div>
-
-            {/* leren screen mockup */}
-            <div>
-              <div style={{ background:'#fff',borderRadius:'16px',overflow:'hidden',boxShadow:'0 2px 0 rgba(0,0,0,0.06),0 20px 56px rgba(0,43,109,0.18),0 6px 18px rgba(0,43,109,0.08)',border:'1px solid rgba(0,0,0,0.07)' }}>
-                <div style={{ background:'#f2f2f2',borderBottom:'1px solid #e0e0e0',padding:'9px 12px',display:'flex',alignItems:'center',gap:'7px' }}>
-                  <span style={{ width:9,height:9,borderRadius:'50%',background:'#ff5f57',flexShrink:0,display:'block' }}/>
-                  <span style={{ width:9,height:9,borderRadius:'50%',background:'#febc2e',flexShrink:0,display:'block' }}/>
-                  <span style={{ width:9,height:9,borderRadius:'50%',background:'#28c840',flexShrink:0,display:'block' }}/>
-                  <span style={{ flex:1,background:'#fff',borderRadius:'5px',padding:'3px 10px',fontSize:'11px',color:'#747782',fontFamily:'monospace',border:'1px solid #e0e0e0' }}>inburgeringoefenen.nl/leren/thema-2</span>
-                </div>
-                <div style={{ background:'#f8f9fb',padding:'20px' }}>
-                  <div style={{ background:'linear-gradient(135deg,#002b6d,#0044ad)',borderRadius:'12px',padding:'16px',marginBottom:'14px',color:'#fff' }}>
-                    <div style={{ display:'flex',alignItems:'center',gap:'10px',marginBottom:'8px' }}>
-                      <span style={{ fontSize:'24px' }}>🏛️</span>
-                      <div>
-                        <p style={{ fontSize:'9px',fontWeight:700,color:'rgba(255,255,255,0.6)',textTransform:'uppercase',letterSpacing:'0.05em' }}>Thema 2</p>
-                        <p style={{ fontSize:'13px',fontWeight:800,color:'#fff',lineHeight:1.2 }}>Overheid &amp; Democratie</p>
-                      </div>
-                    </div>
-                    <div style={{ display:'flex',alignItems:'center',gap:'6px' }}>
-                      <div style={{ flex:1,height:'5px',background:'rgba(255,255,255,0.2)',borderRadius:'99px',overflow:'hidden' }}>
-                        <div style={{ height:'100%',width:'62%',background:'#fe762c',borderRadius:'99px' }}/>
-                      </div>
-                      <span style={{ fontSize:'9px',fontWeight:700,color:'#fe762c' }}>62%</span>
-                    </div>
-                  </div>
-                  {/* audio player in leren mockup */}
-                  <div style={{ background:'#fff',borderRadius:'12px',border:'1px solid #eceef0',overflow:'hidden',marginBottom:'10px' }}>
-                    <div style={{ padding:'8px 12px 6px',borderBottom:'1px solid #eceef0',display:'flex',alignItems:'center',gap:'8px' }}>
-                      <div style={{ width:'26px',height:'26px',borderRadius:'50%',background:'#fe762c',display:'flex',alignItems:'center',justifyContent:'center',flexShrink:0 }}>
-                        <svg width="9" height="9" viewBox="0 0 24 24" fill="#fff"><polygon points="5 3 19 12 5 21 5 3"/></svg>
-                      </div>
-                      <div style={{ flex:1 }}>
-                        <p style={{ fontSize:'8px',fontWeight:700,color:'#fe762c',marginBottom:'1px' }}>AUDIO LES</p>
-                        <div style={{ height:'3px',background:'#f2f4f6',borderRadius:'99px',overflow:'hidden' }}>
-                          <div style={{ height:'100%',width:'38%',background:'#fe762c',borderRadius:'99px' }}/>
-                        </div>
-                      </div>
-                      <span style={{ fontSize:'8px',color:'#747782' }}>1:24</span>
-                    </div>
-                    <div style={{ padding:'8px 12px',background:'#f8f9fb' }}>
-                      <p style={{ fontSize:'9px',color:'#434651',lineHeight:1.5 }}>&ldquo;De Staten-Generaal bestaat uit de <strong>Eerste</strong> en <strong>Tweede Kamer</strong>...&rdquo;</p>
-                    </div>
-                  </div>
-                  <div style={{ background:'#fff',borderRadius:'12px',border:'1px solid #eceef0',padding:'14px',marginBottom:'10px' }}>
-                    <p style={{ fontSize:'11px',fontWeight:800,color:'#002b6d',marginBottom:'6px' }}>Het Nederlandse parlement</p>
-                    <p style={{ fontSize:'10px',color:'#434651',lineHeight:1.6,marginBottom:'10px' }}>
-                      Nederland heeft een <strong>tweekamerstelsel</strong>. Het parlement heet de <strong>Staten-Generaal</strong> en bestaat uit de Eerste Kamer (75 leden) en de Tweede Kamer (150 leden).
-                    </p>
-                    <div style={{ background:'#eff6ff',borderRadius:'8px',padding:'10px',border:'1px solid rgba(59,130,246,0.15)' }}>
-                      <p style={{ fontSize:'9px',fontWeight:700,color:'#002b6d',marginBottom:'3px' }}>⭐ Tip van de docent</p>
-                      <p style={{ fontSize:'9px',color:'rgba(0,43,109,0.75)',lineHeight:1.5 }}>Op het examen wordt vaak gevraagd hoeveel leden de Tweede Kamer heeft. Onthoud: 150 leden.</p>
-                    </div>
-                  </div>
-                  <div style={{ background:'linear-gradient(135deg,#fe762c,#d94f00)',borderRadius:'10px',padding:'12px',display:'flex',alignItems:'center',justifyContent:'space-between' }}>
-                    <div>
-                      <p style={{ fontSize:'11px',fontWeight:800,color:'#fff',lineHeight:1.2 }}>Test je kennis</p>
-                      <p style={{ fontSize:'9px',color:'rgba(255,255,255,0.75)',marginTop:'2px' }}>8 vragen over dit thema</p>
-                    </div>
-                    <div style={{ background:'rgba(255,255,255,0.2)',borderRadius:'8px',padding:'6px 10px',fontSize:'9px',fontWeight:700,color:'#fff' }}>Start quiz →</div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
         </div>
       </section>
 

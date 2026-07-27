@@ -5,7 +5,7 @@ type Variant = 'full' | 'compact' | 'chip';
 export default function TeacherCard({
   variant = 'full',
   name = 'Marieke Schipper',
-  title = 'NT2-docent & KNM-specialist',
+  title = 'NT2-docent',
   experience,
   quote,
   credentials,
@@ -52,7 +52,7 @@ export default function TeacherCard({
           </div>
         </div>
         <div className="text-center sm:text-left flex-1">
-          <p className="font-headline font-extrabold text-on-surface text-sm">Gemaakt door {name} — gecertificeerde KNM-docent</p>
+          <p className="font-headline font-extrabold text-on-surface text-sm">Gemaakt door {name} — gecertificeerde NT2-docent</p>
           {quote && <p className="text-sm text-on-surface-variant mt-1 leading-relaxed">&quot;{quote}&quot;</p>}
         </div>
         {stats && (
@@ -72,7 +72,7 @@ export default function TeacherCard({
       <div className="flex gap-5 items-center mb-6">
         <div className="w-20 h-20 min-w-20 rounded-xl overflow-hidden flex-shrink-0" style={{ border: '2px solid rgba(196,198,210,0.30)' }}>
           {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src="/images/marieke-schipper.jpg" alt={`${name} — gecertificeerde KNM-docent en NT2-specialist`} width={80} height={80} className="w-full h-full object-cover object-center" />
+          <img src="/images/marieke-schipper.jpg" alt={`${name} — gecertificeerde NT2-docent`} width={80} height={80} className="w-full h-full object-cover object-center" />
         </div>
         <div>
           <h3 className="font-headline font-bold text-xl text-on-surface mb-1">{name}</h3>

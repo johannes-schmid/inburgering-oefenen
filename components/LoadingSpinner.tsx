@@ -20,7 +20,7 @@ export default function LoadingSpinner({ label }: { size?: string; label?: strin
               lineHeight: 1,
             }}
           >
-            KNM Oefenen
+            Inburgering Oefenen
           </span>
         </div>
 

@@ -1,9 +1,10 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { useTranslations, useLocale } from 'next-intl';
 import { Link, usePathname, useRouter } from '@/i18n/navigation';
-import { getAbVariant } from '@/lib/ab-variant';
+import { SKILLS } from '@/data/skills';
+import { FEATURES } from '@/lib/features';
 
 const LOCALES = [
   { code: 'nl', labelShort: '🇳🇱 NL', labelLong: '🇳🇱 Nederlands' },
@@ -13,16 +14,12 @@ const LOCALES = [
 
 export default function Nav() {
   const t = useTranslations('nav');
+  const tSkills = useTranslations('skills');
   const locale = useLocale();
   const router = useRouter();
   const pathname = usePathname();
   const [mobileOpen, setMobileOpen] = useState(false);
-  const [ctaHref, setCtaHref] = useState('/proefexamen');
-
-  useEffect(() => {
-    const v = getAbVariant();
-    setCtaHref(v === 'platform-cta' ? '/dashboard' : '/proefexamen');
-  }, []);
+  const [skillsOpen, setSkillsOpen] = useState(false);
 
   function handleLangChange(newLocale: string) {
     router.replace(pathname, { locale: newLocale });
@@ -39,25 +36,64 @@ export default function Nav() {
         {/* Logo */}
         <Link href="/" className="flex items-center gap-2 no-underline shrink-0">
           <span className="w-1.5 h-6 bg-secondary-container rounded-full shrink-0" />
-          <span className="text-xl font-extrabold tracking-tight text-primary font-headline whitespace-nowrap">
-            KNM Oefenen
+          <span className="text-base sm:text-xl font-extrabold tracking-tight text-primary font-headline whitespace-nowrap">
+            Inburgering Oefenen
           </span>
         </Link>
 
         {/* Desktop nav links */}
         <nav className="hidden md:flex items-center gap-8 text-sm font-semibold" aria-label={t('ariaDesktop')}>
-          <Link href="/dashboard" className="text-on-surface-variant hover:text-primary transition-colors no-underline">
-            {t('proefexamen')}
-          </Link>
+          {/* Exam components dropdown */}
+          <div
+            className="relative"
+            onMouseEnter={() => setSkillsOpen(true)}
+            onMouseLeave={() => setSkillsOpen(false)}
+          >
+            <button
+              type="button"
+              className="flex items-center gap-1.5 text-on-surface-variant hover:text-primary transition-colors"
+              aria-expanded={skillsOpen}
+              aria-haspopup="true"
+              onClick={() => setSkillsOpen(o => !o)}
+            >
+              {t('oefenexamens')}
+              <svg width="10" height="10" viewBox="0 0 12 12" fill="none" aria-hidden="true">
+                <path d="M3 4.5L6 7.5L9 4.5" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
+              </svg>
+            </button>
+
+            {skillsOpen && (
+              <div className="absolute left-0 top-full pt-3 w-64">
+                <div
+                  className="flex flex-col p-2 rounded-xl bg-surface-container-lowest border border-outline-variant/40"
+                  style={{ boxShadow: '0 12px 32px rgba(0,43,109,0.14)' }}
+                >
+                  {SKILLS.map(skill => (
+                    <a
+                      key={skill.slug}
+                      href={`/${locale}/oefenexamen/${skill.slug}`}
+                      className="flex items-center gap-3 px-3 py-2.5 rounded-lg no-underline hover:bg-surface-container-low transition-colors"
+                    >
+                      <span aria-hidden="true">{skill.icon}</span>
+                      <span className="text-on-surface font-semibold">{tSkills(`${skill.key}.name`)}</span>
+                    </a>
+                  ))}
+                </div>
+              </div>
+            )}
+          </div>
+
           <Link href="/premium" className="text-on-surface-variant hover:text-primary transition-colors no-underline">
             {t('premium')}
           </Link>
           <Link href="/docent" className="text-on-surface-variant hover:text-primary transition-colors no-underline">
             {t('docent')}
           </Link>
-          <Link href="/blog" className="text-on-surface-variant hover:text-primary transition-colors no-underline">
-            {t('blog')}
-          </Link>
+          {FEATURES.blog && (
+            <Link href="/blog" className="text-on-surface-variant hover:text-primary transition-colors no-underline">
+              {t('blog')}
+            </Link>
+          )}
         </nav>
 
         {/* Right: lang switcher + auth + CTA + hamburger */}
@@ -73,7 +109,6 @@ export default function Nav() {
             ))}
           </select>
 
-          {/* Auth links — stubbed; wired in M5 */}
           <Link
             href="/login"
             className="hidden sm:block text-primary font-semibold text-sm px-4 py-2 hover:bg-surface-container-low rounded-xl transition-colors no-underline whitespace-nowrap"
@@ -82,7 +117,7 @@ export default function Nav() {
           </Link>
 
           <a
-            href={ctaHref}
+            href={`/${locale}/oefenexamen/lezen`}
             className="inline-flex items-center gap-1.5 bg-secondary-container px-3 py-2 sm:px-5 sm:py-2.5 rounded-xl font-bold text-sm button-inner-glow hover:-translate-y-px transition-transform active:scale-95 no-underline whitespace-nowrap"
             style={{ color: '#ffffff' }}
           >
@@ -118,23 +153,47 @@ export default function Nav() {
             >
               {t('login')}
             </Link>
-            {(
-              [
-                { href: '/dashboard', label: t('proefexamen') },
-                { href: '/premium',   label: t('premium')     },
-                { href: '/docent',    label: t('docent')      },
-                { href: '/blog',      label: t('blog')        },
-              ] as { href: '/dashboard' | '/premium' | '/docent' | '/blog'; label: string }[]
-            ).map(({ href, label }) => (
+
+            <p className="text-xs font-bold uppercase tracking-widest text-on-surface-variant/60 px-3 pt-2 pb-1">
+              {t('oefenexamens')}
+            </p>
+            {SKILLS.map(skill => (
+              <a
+                key={skill.slug}
+                href={`/${locale}/oefenexamen/${skill.slug}`}
+                onClick={() => setMobileOpen(false)}
+                className="flex items-center gap-3 text-on-surface-variant font-semibold text-base px-3 py-2.5 rounded-xl hover:bg-surface-container-low hover:text-primary transition-colors no-underline"
+              >
+                <span aria-hidden="true">{skill.icon}</span>
+                {tSkills(`${skill.key}.name`)}
+              </a>
+            ))}
+
+            <div className="border-t border-outline-variant/20 mt-2 pt-2 flex flex-col gap-1">
               <Link
-                key={href}
-                href={href}
+                href="/premium"
                 onClick={() => setMobileOpen(false)}
                 className="text-on-surface-variant font-semibold text-base px-3 py-2.5 rounded-xl hover:bg-surface-container-low hover:text-primary transition-colors no-underline"
               >
-                {label}
+                {t('premium')}
               </Link>
-            ))}
+              <Link
+                href="/docent"
+                onClick={() => setMobileOpen(false)}
+                className="text-on-surface-variant font-semibold text-base px-3 py-2.5 rounded-xl hover:bg-surface-container-low hover:text-primary transition-colors no-underline"
+              >
+                {t('docent')}
+              </Link>
+              {FEATURES.blog && (
+                <Link
+                  href="/blog"
+                  onClick={() => setMobileOpen(false)}
+                  className="text-on-surface-variant font-semibold text-base px-3 py-2.5 rounded-xl hover:bg-surface-container-low hover:text-primary transition-colors no-underline"
+                >
+                  {t('blog')}
+                </Link>
+              )}
+            </div>
 
             <div className="pt-2 mt-1 border-t border-outline-variant/20">
               <select

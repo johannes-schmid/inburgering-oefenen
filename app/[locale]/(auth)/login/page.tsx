@@ -65,7 +65,7 @@ export default function LoginPage() {
         <div className="max-w-6xl mx-auto px-6 py-4 flex items-center justify-between">
           <Link href="/" className="flex items-center gap-2 no-underline">
             <span className="w-1.5 h-6 bg-secondary-container rounded-full" />
-            <span className="text-xl font-extrabold tracking-tight text-primary font-headline">KNM Oefenen</span>
+            <span className="text-xl font-extrabold tracking-tight text-primary font-headline">Inburgering Oefenen</span>
           </Link>
           <Link href="/premium" className="text-sm font-semibold text-primary hover:underline no-underline">Nog geen account? Bekijk het pakket →</Link>
         </div>
@@ -76,7 +76,7 @@ export default function LoginPage() {
           <div className="bg-white rounded-2xl border border-outline-variant/50 p-8 animate-[fadeUp_0.5s_cubic-bezier(0.4,0,0.2,1)_both]" style={{ boxShadow: '0 4px 16px rgba(0,43,109,0.06),0 16px 48px rgba(0,43,109,0.08)' }}>
             <div className="flex items-center gap-2 mb-6">
               <span className="w-1.5 h-6 bg-secondary-container rounded-full" />
-              <span className="text-lg font-extrabold tracking-tight text-primary font-headline">KNM Oefenen</span>
+              <span className="text-lg font-extrabold tracking-tight text-primary font-headline">Inburgering Oefenen</span>
             </div>
 
             <h1 className="font-headline font-extrabold text-xl text-on-surface mb-1">Welkom terug</h1>
@@ -125,7 +125,7 @@ export default function LoginPage() {
       </main>
 
       <footer className="text-center py-6 text-xs text-on-surface-variant border-t border-outline-variant/30">
-        © 2026 KNM Oefenen ·{' '}
+        © 2026 Inburgering Oefenen ·{' '}
         <a href="mailto:contact@inburgeringoefenen.nl" className="hover:text-primary no-underline transition-colors">contact@inburgeringoefenen.nl</a>
       </footer>
     </div>

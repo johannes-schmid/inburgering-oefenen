@@ -101,7 +101,7 @@ export default async function BlogPostPage({ params }: Props) {
                 <p className="text-sm font-semibold text-white">
                   <Link href="/docent" className="text-white no-underline hover:opacity-80 transition-opacity">Marieke Schipper</Link>
                 </p>
-                <p className="text-xs" style={{ color: 'rgba(255,255,255,0.5)' }}>NT2-docent &amp; KNM-specialist · {post.dateLabel}</p>
+                <p className="text-xs" style={{ color: 'rgba(255,255,255,0.5)' }}>NT2-docent · {post.dateLabel}</p>
               </div>
             </div>
           </div>

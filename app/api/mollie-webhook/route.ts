@@ -75,7 +75,7 @@ export async function POST(request: Request): Promise<Response> {
           const baseUrl = process.env.BASE_URL || 'https://inburgeringoefenen.nl';
           const loginUrl = `${baseUrl}/login`;
           const segmentId = process.env.RESEND_PREMIUM_SEGMENT_ID;
-          const FROM = 'KNM Oefenen <support@inburgeringoefenen.nl>';
+          const FROM = 'Inburgering Oefenen <support@inburgeringoefenen.nl>';
           const isUpgrade = meta?.product === 'upgrade_to_plus';
 
           if (segmentId) {

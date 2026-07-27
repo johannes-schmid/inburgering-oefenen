@@ -57,7 +57,7 @@ export default function PlatformSidebar({ locale, email, avatarUrl = '', activeV
       <div className="px-5 pt-6 pb-5" style={{ borderBottom: '1px solid rgba(255,255,255,0.1)' }}>
         <a href={`/${locale}/dashboard`} onClick={(e) => handleNav('exams', e)} className="flex items-center gap-2 w-full" style={{ textDecoration: 'none' }}>
           <span className="w-1.5 h-6 rounded-full flex-shrink-0" style={{ background: '#fe762c', display: 'block' }} />
-          <span className="text-xl font-extrabold tracking-tight font-headline" style={{ color: '#fff' }}>KNM Oefenen</span>
+          <span className="text-xl font-extrabold tracking-tight font-headline" style={{ color: '#fff' }}>Inburgering Oefenen</span>
         </a>
         <p className="text-xs mt-1.5" style={{ color: 'rgba(255,255,255,0.45)', paddingLeft: 14 }}>{t('sidebar_subtitle')}</p>
         {isGuest && (

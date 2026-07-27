@@ -55,8 +55,8 @@ export default async function GebruiksvoorwaardenPage({ params }: Props) {
       >
         <p>Door gebruik te maken van de website <strong>inburgeringoefenen.nl</strong> ga je akkoord met de onderstaande gebruiksvoorwaarden. Lees deze zorgvuldig door voordat je het platform gebruikt.</p>
 
-        <h2>1. Over KNM Oefenen</h2>
-        <p>KNM Oefenen is een online oefenplatform voor de <strong>KNM-toets (Kennis van de Nederlandse Maatschappij)</strong>, onderdeel van het inburgeringsexamen in Nederland. Het platform biedt gratis oefenvragen samengesteld door een gecertificeerde NT2-docent.</p>
+        <h2>1. Over Inburgering Oefenen</h2>
+        <p>Inburgering Oefenen is een online oefenplatform voor de <strong>KNM-toets (Kennis van de Nederlandse Maatschappij)</strong>, onderdeel van het inburgeringsexamen in Nederland. Het platform biedt gratis oefenvragen samengesteld door een gecertificeerde NT2-docent.</p>
 
         <h2>2. Gebruik van het platform</h2>
         <p>Het platform is bestemd voor persoonlijk en niet-commercieel gebruik. Je mag het platform gebruiken om te oefenen voor het KNM-examen. Het is niet toegestaan om:</p>
@@ -71,10 +71,10 @@ export default async function GebruiksvoorwaardenPage({ params }: Props) {
         <p>De oefenvragen zijn samengesteld door een gecertificeerde NT2-docent op basis van officieel KNM-examenmateriaal. Wij streven naar nauwkeurigheid, maar kunnen <strong>geen garantie geven</strong> dat de inhoud altijd volledig up-to-date of foutloos is. Het officiële KNM-examen wordt beheerd door <a href="https://www.duo.nl" target="_blank" rel="noopener noreferrer">DUO (Dienst Uitvoering Onderwijs)</a>. Raadpleeg altijd de officiële DUO-richtlijnen voor de meest actuele informatie.</p>
 
         <h2>4. Intellectueel eigendom</h2>
-        <p>Alle inhoud op dit platform — inclusief teksten, vragen, ontwerp en code — is eigendom van KNM Oefenen of wordt gebruikt met toestemming. Niets van dit platform mag worden gekopieerd, verspreid of gepubliceerd zonder uitdrukkelijke schriftelijke toestemming, tenzij anders bepaald door de wet.</p>
+        <p>Alle inhoud op dit platform — inclusief teksten, vragen, ontwerp en code — is eigendom van Inburgering Oefenen of wordt gebruikt met toestemming. Niets van dit platform mag worden gekopieerd, verspreid of gepubliceerd zonder uitdrukkelijke schriftelijke toestemming, tenzij anders bepaald door de wet.</p>
 
         <h2>5. Aansprakelijkheid</h2>
-        <p>KNM Oefenen is niet aansprakelijk voor:</p>
+        <p>Inburgering Oefenen is niet aansprakelijk voor:</p>
         <ul>
           <li>Onjuiste of onvolledige informatie op het platform</li>
           <li>Het niet slagen voor het officiële KNM-examen na gebruik van dit platform</li>
@@ -84,7 +84,7 @@ export default async function GebruiksvoorwaardenPage({ params }: Props) {
         <p>Het platform wordt aangeboden &quot;zoals het is&quot; (<em>as is</em>), zonder enige garantie van ononderbroken beschikbaarheid.</p>
 
         <h2>6. E-mail en communicatie</h2>
-        <p>Door je e-mailadres in te voeren ga je akkoord met het ontvangen van jouw persoonlijke toetsresultaten en optionele gratis oefenmaterialen van KNM Oefenen. Je kunt je op elk moment afmelden via de afmeldlink in onze e-mails of door te mailen naar <a href="mailto:contact@inburgeringoefenen.nl">contact@inburgeringoefenen.nl</a>.</p>
+        <p>Door je e-mailadres in te voeren ga je akkoord met het ontvangen van jouw persoonlijke toetsresultaten en optionele gratis oefenmaterialen van Inburgering Oefenen. Je kunt je op elk moment afmelden via de afmeldlink in onze e-mails of door te mailen naar <a href="mailto:contact@inburgeringoefenen.nl">contact@inburgeringoefenen.nl</a>.</p>
 
         <h2>7. Privacy</h2>
         <p>Het verzamelen en verwerken van persoonsgegevens is beschreven in ons <a href="/privacybeleid">Privacybeleid</a>, dat onderdeel uitmaakt van deze gebruiksvoorwaarden.</p>

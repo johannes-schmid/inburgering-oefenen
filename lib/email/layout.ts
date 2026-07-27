@@ -108,7 +108,7 @@ export function renderEmail({
   <div class="ec">
     <div class="eh">
       <a href="https://inburgeringoefenen.nl" class="logo-wrap">
-        <span class="logo-bar"></span><span class="logo-txt">KNM Oefenen</span>
+        <span class="logo-bar"></span><span class="logo-txt">Inburgering Oefenen</span>
       </a>
       <p class="logo-tag">${strings.tagline}</p>
     </div>

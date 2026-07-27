@@ -57,7 +57,7 @@ export async function POST(request: Request): Promise<Response> {
   }
 
   const resend = new Resend(process.env.RESEND_API_KEY);
-  const FROM = 'KNM Oefenen <support@inburgeringoefenen.nl>';
+  const FROM = 'Inburgering Oefenen <support@inburgeringoefenen.nl>';
 
   try {
     const { data } = await resend.emails.send({

@@ -61,7 +61,7 @@ export default async function PrivacybeleidPage({ params }: Props) {
         >
           {/* Content is Dutch — this page is noindex and the legal text doesn't require translation */}
           <p>
-            KNM Oefenen (&quot;wij&quot;, &quot;ons&quot;) respecteert jouw privacy en verwerkt persoonsgegevens
+            Inburgering Oefenen (&quot;wij&quot;, &quot;ons&quot;) respecteert jouw privacy en verwerkt persoonsgegevens
             zorgvuldig en veilig. In dit privacybeleid leggen wij uit welke gegevens wij verzamelen, waarom
             wij dat doen en wat jouw rechten zijn. Dit beleid is van toepassing op de website{' '}
             <strong>inburgeringoefenen.nl</strong>.
@@ -70,7 +70,7 @@ export default async function PrivacybeleidPage({ params }: Props) {
           <h2>1. Wie is verantwoordelijk?</h2>
           <p>De verwerkingsverantwoordelijke is:</p>
           <ul>
-            <li><strong>KNM Oefenen</strong></li>
+            <li><strong>Inburgering Oefenen</strong></li>
             <li>E-mail: <a href="mailto:contact@inburgeringoefenen.nl">contact@inburgeringoefenen.nl</a></li>
           </ul>
 

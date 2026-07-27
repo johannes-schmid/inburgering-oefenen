@@ -9,8 +9,8 @@ export async function generateStaticParams() {
 
 export async function generateMetadata(): Promise<Metadata> {
   return {
-    title: 'Terugbetalingsbeleid | KNM Oefenen',
-    description: 'Lees ons terugbetalingsbeleid voor aankopen op KNM Oefenen.',
+    title: 'Terugbetalingsbeleid | Inburgering Oefenen',
+    description: 'Lees ons terugbetalingsbeleid voor aankopen op Inburgering Oefenen.',
     robots: { index: false, follow: true },
     alternates: {
       canonical: 'https://inburgeringoefenen.nl/nl/terugbetalingsbeleid',
@@ -42,7 +42,7 @@ export default async function TerugbetalingsbeleidPage() {
         style={{ boxShadow: '0 2px 24px rgba(0,43,109,0.06)' }}
       >
         <p>
-          KNM Oefenen biedt digitale leerproducten aan: online oefenexamens, woordkaarten en leermodules.
+          Inburgering Oefenen biedt digitale leerproducten aan: online oefenexamens, woordkaarten en leermodules.
           Omdat toegang tot digitale content direct na aankoop beschikbaar is, hanteren wij het volgende beleid.
         </p>
 
