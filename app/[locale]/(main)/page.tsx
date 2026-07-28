@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import { getTranslations } from 'next-intl/server';
+import { Check, X, PenLine, Target, Laptop } from 'lucide-react';
 import { routing } from '@/i18n/routing';
 import FaqAccordion from '@/components/FaqAccordion';
 import { SectionHeader, TeacherCard, FeatureCard, SkillCard } from '@/components/site';
@@ -333,7 +334,7 @@ export default async function HomePage({ params }: Props) {
               <ul className="flex flex-col gap-3 list-none p-0 m-0">
                 {[t('ai_us_1'), t('ai_us_2'), t('ai_us_3')].map(item => (
                   <li key={item} className="flex gap-3 text-sm text-on-surface-variant leading-relaxed">
-                    <span className="flex-shrink-0 mt-0.5" style={{ color: '#15803d' }} aria-hidden="true">✓</span>
+                    <Check size={16} strokeWidth={2.6} className="flex-shrink-0 mt-0.5" style={{ color: '#15803d' }} aria-hidden="true" />
                     <span>{item}</span>
                   </li>
                 ))}
@@ -346,7 +347,7 @@ export default async function HomePage({ params }: Props) {
               <ul className="flex flex-col gap-3 list-none p-0 m-0">
                 {[t('ai_them_1'), t('ai_them_2'), t('ai_them_3')].map(item => (
                   <li key={item} className="flex gap-3 text-sm text-on-surface-variant leading-relaxed opacity-80">
-                    <span className="flex-shrink-0 mt-0.5 text-outline" aria-hidden="true">✕</span>
+                    <X size={16} strokeWidth={2.6} className="flex-shrink-0 mt-0.5 text-outline" aria-hidden="true" />
                     <span>{item}</span>
                   </li>
                 ))}
@@ -376,9 +377,9 @@ export default async function HomePage({ params }: Props) {
             />
 
             <div className="flex flex-col gap-4">
-              <FeatureCard icon="📝" iconBg="rgba(0,43,109,0.06)" title={t('trust_1_title')} description={t('trust_1_text')} />
-              <FeatureCard icon="🎯" iconBg="rgba(76,175,122,0.08)" title={t('trust_2_title')} description={t('trust_2_text')} />
-              <FeatureCard icon="💻" iconBg="rgba(0,43,109,0.06)" title={t('trust_3_title')} description={t('trust_3_text')} />
+              <FeatureCard icon={PenLine} iconBg="rgba(0,43,109,0.06)" title={t('trust_1_title')} description={t('trust_1_text')} />
+              <FeatureCard icon={Target} iconBg="rgba(76,175,122,0.08)" iconColor="#15803d" title={t('trust_2_title')} description={t('trust_2_text')} />
+              <FeatureCard icon={Laptop} iconBg="rgba(0,43,109,0.06)" title={t('trust_3_title')} description={t('trust_3_text')} />
             </div>
           </div>
         </div>

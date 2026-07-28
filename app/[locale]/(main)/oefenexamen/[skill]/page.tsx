@@ -2,7 +2,7 @@ import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import { getTranslations } from 'next-intl/server';
 import { routing } from '@/i18n/routing';
-import { SectionHeader } from '@/components/site';
+import { SectionHeader, SkillIcon } from '@/components/site';
 import { SKILLS, getSkill, isFreeExam } from '@/data/skills';
 import { fetchExamsForSkill } from '@/lib/exams';
 
@@ -71,7 +71,7 @@ export default async function SkillOverviewPage({ params }: Props) {
       <section className="px-6 pt-16 pb-12" style={{ background: 'var(--gradient-brand)' }}>
         <div className="max-w-5xl mx-auto">
           <span className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-bold uppercase tracking-widest text-white/85 mb-5" style={{ background: 'rgba(255,255,255,0.15)' }}>
-            <span aria-hidden="true">{skill.icon}</span>
+            <SkillIcon skill={skill.slug} size="sm" variant="bare" onDark />
             {tSkills('exams_count', { count: skill.examCount })}
           </span>
           <h1 className="font-headline font-extrabold text-white tracking-tight mb-4" style={{ fontSize: 'clamp(2rem, 4vw, 3rem)', letterSpacing: '-0.03em' }}>
@@ -197,7 +197,7 @@ export default async function SkillOverviewPage({ params }: Props) {
                 className="exam-card flex items-center gap-4 p-5 rounded-2xl bg-surface-container-lowest no-underline"
                 style={{ boxShadow: 'var(--shadow-card)' }}
               >
-                <span className="text-xl" aria-hidden="true">{other.icon}</span>
+                <SkillIcon skill={other.slug} size="md" />
                 <div>
                   <p className="font-headline font-semibold text-on-surface text-sm">{tSkills(`${other.key}.name`)}</p>
                   <p className="text-xs text-on-surface-variant">{tSkills('exams_count', { count: other.examCount })}</p>

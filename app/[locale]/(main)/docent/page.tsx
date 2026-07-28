@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import { getTranslations } from 'next-intl/server';
+import { GraduationCap, ClipboardList, School, PenLine } from 'lucide-react';
 import { routing } from '@/i18n/routing';
 import { Link } from '@/i18n/navigation';
 import { Breadcrumb, GradientHero, EyebrowBadge, FeatureCard } from '@/components/site';
@@ -193,17 +194,17 @@ export default function DocentPage() {
           </div>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
             <FeatureCard
-              icon="🎓"
+              icon={GraduationCap}
               title="NT2-bevoegdheid"
               description="Erkende bevoegdheid voor lesgeven in Nederlands als tweede taal aan volwassenen, uitgegeven via DUO."
             />
             <FeatureCard
-              icon="📋"
+              icon={ClipboardList}
               title="KNM-examen expertise"
               description="Uitgebreide kennis van het KNM-examenformaat (45 vragen, 40 minuten) en de weging per thema."
             />
             <FeatureCard
-              icon="🏫"
+              icon={School}
               title="Bevoegd basisonderwijs & VO"
               description="Volledig bevoegde leerkracht voor basis- en voortgezet onderwijs. Brede didactische achtergrond."
             />
@@ -261,7 +262,7 @@ export default function DocentPage() {
       {/* CTA */}
       <div style={{ background: 'var(--gradient-brand)' }} className="py-20">
         <div className="max-w-7xl mx-auto px-6 text-center">
-          <div className="text-5xl mb-5">📝</div>
+          <PenLine size={44} strokeWidth={1.6} className="mx-auto mb-5 text-white" aria-hidden="true" />
           <h2 className="font-headline font-extrabold text-white mb-4" style={{ fontSize: 'clamp(1.8rem,3vw,2.4rem)', letterSpacing: '-0.02em' }}>
             Oefen nu met Marieke&apos;s vragen
           </h2>

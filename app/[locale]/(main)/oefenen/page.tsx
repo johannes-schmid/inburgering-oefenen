@@ -3,6 +3,8 @@ import { getTranslations } from 'next-intl/server';
 import { routing } from '@/i18n/routing';
 import { SKILLS } from '@/data/skills';
 import { hasFreePractice, getFreePractice } from '@/data/free-practice';
+import { SkillIcon } from '@/components/site';
+import { ArrowRight } from 'lucide-react';
 
 type Props = { params: Promise<{ locale: string }> };
 
@@ -87,7 +89,7 @@ export default async function OefenenPickerPage({ params }: Props) {
                       style={{ boxShadow: 'var(--shadow-card)' }}
                     >
                       <div className="flex items-center justify-between gap-3">
-                        <span className="text-2xl" aria-hidden="true">{skill.icon}</span>
+                        <SkillIcon skill={skill.slug} size="lg" />
                         <span className="text-[0.68rem] font-bold uppercase tracking-widest px-2.5 py-1 rounded-full bg-surface-container text-on-surface-variant">
                           {t('pick_soon')}
                         </span>
@@ -109,7 +111,7 @@ export default async function OefenenPickerPage({ params }: Props) {
                     style={{ boxShadow: 'var(--shadow-card-md)' }}
                   >
                     <div className="flex items-center justify-between gap-3">
-                      <span className="text-2xl" aria-hidden="true">{skill.icon}</span>
+                      <SkillIcon skill={skill.slug} size="lg" />
                       <span
                         className="text-[0.68rem] font-bold uppercase tracking-widest px-2.5 py-1 rounded-full"
                         style={{ background: '#f0fdf4', color: '#15803d' }}
@@ -140,8 +142,9 @@ export default async function OefenenPickerPage({ params }: Props) {
                     <p className="text-xs text-on-surface-variant mt-auto">
                       {t('pick_questions')} · {t('pick_minutes')}
                     </p>
-                    <span className="pick-cta text-sm font-bold" style={{ color: '#a24000' }}>
-                      {t('pick_cta')} →
+                    <span className="pick-cta inline-flex items-center gap-1.5 text-sm font-bold" style={{ color: '#a24000' }}>
+                      {t('pick_cta')}
+                      <ArrowRight size={15} strokeWidth={2.2} aria-hidden="true" />
                     </span>
                   </a>
                 </li>
@@ -151,8 +154,9 @@ export default async function OefenenPickerPage({ params }: Props) {
 
           <p className="text-center text-sm text-on-surface-variant mt-10 leading-relaxed">
             {t('pick_footer')}{' '}
-            <a href={`/${locale}/oefenexamen/lezen`} className="font-semibold" style={{ color: '#a24000' }}>
+            <a href={`/${locale}/oefenexamen/lezen`} className="inline-flex items-center gap-1 font-semibold" style={{ color: '#a24000' }}>
               {t('pick_footer_link')}
+              <ArrowRight size={14} strokeWidth={2.2} aria-hidden="true" />
             </a>
           </p>
         </div>

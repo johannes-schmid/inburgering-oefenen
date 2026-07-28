@@ -1,3 +1,4 @@
+import { BadgeCheck } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
 type Variant = 'full' | 'compact' | 'chip';
@@ -89,6 +90,7 @@ export default function TeacherCard({
         <div className="flex flex-wrap gap-2 mb-5">
           {credentials.map((c) => (
             <span key={c} className="inline-flex items-center gap-1.5 px-3 py-1 text-primary text-xs font-semibold rounded-full" style={{ background: 'rgba(0,43,109,0.05)' }}>
+              <BadgeCheck size={13} strokeWidth={2.2} aria-hidden="true" />
               {c}
             </span>
           ))}

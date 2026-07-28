@@ -80,7 +80,6 @@ export default async function FreePracticePage({ params }: Props) {
         <FreePracticeEngine
           skill={skill.slug}
           skillName={tSkills(`${skill.key}.name`)}
-          skillIcon={skill.icon}
           items={set.items}
           locale={locale}
         />

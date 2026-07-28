@@ -6,6 +6,7 @@ import { cn } from '@/lib/utils';
 import { buttonVariants } from '@/components/ui/button';
 import { TeacherCard } from '@/components/site';
 import PricingViewTracker from '@/components/PricingViewTracker';
+import { Lock, Check, Headphones } from 'lucide-react';
 
 type Props = { params: Promise<{ locale: string }> };
 
@@ -109,11 +110,11 @@ function BrowserMockup() {
               <div key={ex.n} style={{ background:ex.locked?'#f8f9fb':'#fff',border:'1px solid #eceef0',borderRadius:'8px',padding:'10px',opacity:ex.locked?0.55:1 }}>
                 <div style={{ display:'flex',alignItems:'center',justifyContent:'space-between',marginBottom:'6px' }}>
                   <span style={{ fontSize:'9px',fontWeight:700,color:ex.locked?'#747782':'#191c1e' }}>Examen {ex.n}</span>
-                  {ex.pass && <span style={{ fontSize:'8px',fontWeight:700,color:'#15803d',background:'#f0fdf4',padding:'2px 5px',borderRadius:'99px' }}>✓ Gesl.</span>}
+                  {ex.pass && <span style={{ fontSize:'8px',fontWeight:700,color:'#15803d',background:'#f0fdf4',padding:'2px 5px',borderRadius:'99px',display:'inline-flex',alignItems:'center',gap:'2px' }}><Check size={8} strokeWidth={3} aria-hidden="true" />Gesl.</span>}
                   {ex.locked && <svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="#747782" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>}
                 </div>
                 {ex.s && <div style={{ fontFamily:'var(--font-headline)',fontWeight:800,fontSize:'18px',color:'#002b6d',lineHeight:1 }}>{ex.s}</div>}
-                {ex.locked && <div style={{ fontSize:'9px',color:'#747782',marginTop:'4px' }}>🔒 Upgrade vereist</div>}
+                {ex.locked && <div style={{ fontSize:'9px',color:'#747782',marginTop:'4px',display:'flex',alignItems:'center',gap:'3px' }}><Lock size={9} strokeWidth={2.2} aria-hidden="true" />Upgrade vereist</div>}
                 {ex.s && <div style={{ height:'4px',background:'#f2f4f6',borderRadius:'99px',marginTop:'6px',overflow:'hidden' }}><div style={{ height:'100%',background:'#22c55e',borderRadius:'99px',width:ex.s }}/></div>}
               </div>
             ))}
@@ -202,10 +203,10 @@ function AudioMockup() {
     <div style={{ padding:'20px', background:'#f8f9fb', borderBottom:'1px solid #eceef0' }}>
       {/* thema header */}
       <div style={{ background:'linear-gradient(135deg,#002b6d,#0044ad)',borderRadius:'12px',padding:'12px 14px',marginBottom:'10px',display:'flex',alignItems:'center',gap:'10px' }}>
-        <span style={{ fontSize:'18px' }}>🏛️</span>
+        <Headphones size={18} strokeWidth={1.9} style={{ color:'#fff',flexShrink:0 }} aria-hidden="true" />
         <div>
-          <p style={{ fontSize:'8px',fontWeight:700,color:'rgba(255,255,255,0.55)',textTransform:'uppercase',letterSpacing:'0.06em' }}>Thema 2</p>
-          <p style={{ fontSize:'11px',fontWeight:800,color:'#fff',lineHeight:1.2 }}>Overheid &amp; Democratie</p>
+          <p style={{ fontSize:'8px',fontWeight:700,color:'rgba(255,255,255,0.55)',textTransform:'uppercase',letterSpacing:'0.06em' }}>Luisteren · vraag 4</p>
+          <p style={{ fontSize:'11px',fontWeight:800,color:'#fff',lineHeight:1.2 }}>Gesprek bij de huisarts</p>
         </div>
       </div>
       {/* audio player */}

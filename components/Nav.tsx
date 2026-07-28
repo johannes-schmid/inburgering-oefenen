@@ -5,6 +5,7 @@ import { useTranslations, useLocale } from 'next-intl';
 import { Link, usePathname, useRouter } from '@/i18n/navigation';
 import { SKILLS } from '@/data/skills';
 import { FEATURES } from '@/lib/features';
+import SkillIcon from '@/components/site/SkillIcon';
 
 const LOCALES = [
   { code: 'nl', labelShort: '🇳🇱 NL', labelLong: '🇳🇱 Nederlands' },
@@ -74,7 +75,7 @@ export default function Nav() {
                       href={`/${locale}/oefenexamen/${skill.slug}`}
                       className="flex items-center gap-3 px-3 py-2.5 rounded-lg no-underline hover:bg-surface-container-low transition-colors"
                     >
-                      <span aria-hidden="true">{skill.icon}</span>
+                      <SkillIcon skill={skill.slug} size="sm" />
                       <span className="text-on-surface font-semibold">{tSkills(`${skill.key}.name`)}</span>
                     </a>
                   ))}
@@ -164,7 +165,7 @@ export default function Nav() {
                 onClick={() => setMobileOpen(false)}
                 className="flex items-center gap-3 text-on-surface-variant font-semibold text-base px-3 py-2.5 rounded-xl hover:bg-surface-container-low hover:text-primary transition-colors no-underline"
               >
-                <span aria-hidden="true">{skill.icon}</span>
+                <SkillIcon skill={skill.slug} size="sm" />
                 {tSkills(`${skill.key}.name`)}
               </a>
             ))}

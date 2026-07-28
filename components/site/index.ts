@@ -7,4 +7,5 @@ export { default as GradientHero } from './GradientHero';
 export { default as ReviewCard } from './ReviewCard';
 export { default as SectionHeader } from './SectionHeader';
 export { default as SkillCard } from './SkillCard';
+export { default as SkillIcon, SKILL_ICONS } from './SkillIcon';
 export { default as TeacherCard } from './TeacherCard';

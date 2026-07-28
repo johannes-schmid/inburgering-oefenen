@@ -449,3 +449,54 @@ Also: Claude Code injects a `skills` symlink at the project root pointing to `~/
 **Outcome:** `SUCCESS`
 **What worked:** `npx tsc --noEmit` clean; 47/47 Playwright tests pass. Kept existing GA-only events untouched and added new dual-destination events beside them rather than rewriting call sites.
 **Lesson:** Two exploration blind spots to avoid: (1) the `/oefenen` route (10-question onboarding flow, control A/B variant) and (2) the `/dashboard/analyse` + `/dashboard/fouten` routes all exist on main but a first grep pass missed them — always verify "doesn't exist" claims with a direct `find`/`grep` before planning around absence. Also: CLAUDE.md wrongly lists Mixpanel; the real stack is PostHog (primary) + GA4 + Meta Pixel + Clarity. The AbTestCta flag is `trail-conversation-experiment-2` (control → `/oefenen`, `platform-cta` → `/dashboard`).
+
+## 2026-07-28 — Fork KNM → Inburgering Oefenen: landing page, free funnel, icon system
+
+**Changed:** (1) Re-init'd git, stripped the KNM content domain (question bank, blog posts,
+topic quizzes, leren themas, KNM SEO pages) into typed-EMPTY stubs so the engines survive
+behind a new `lib/features.ts`; removed PostHog entirely (`track()` in `lib/analytics.ts`
+now sends to GA4 only); rebranded (domain, `knm_`→`io_` storage prefix, footer, llms.txt,
+sitemap). (2) New `data/skills.ts` four-skill taxonomy + `skills` i18n namespace in nl/en/ar;
+rebuilt the homepage around four SkillCards with per-skill `Course` schema and a
+"teacher-made, not AI-made" block; new `/oefenexamen/[skill]` overview reading
+`lib/exams.ts`. (3) Rewrote `/premium` copy for the A2 product, removed the leren-thema
+section and two disabled-feature cards. (4) New free funnel: `/oefenen` picker →
+`/oefenen/[skill]` 10-question taster (`FreePracticeEngine.tsx`) in the DUO two-pane layout,
+email gate before the score, results with per-text-type breakdown + wrong-answer review.
+20 original items in `data/free-practice.ts`; `scripts/generate-free-practice-audio.mjs`
+renders 10 two-voice ElevenLabs mp3s stitched with ffmpeg into `public/audio/free-practice/`.
+(5) Replaced every emoji with lucide icons — new `components/site/SkillIcon.tsx`,
+`FeatureCard` now takes a `LucideIcon`.
+**Outcome:** `SUCCESS` (tsc clean, `next build` clean, full funnel driven end-to-end with
+Playwright on desktop + mobile, no console errors)
+
+**What worked:** The KNM `OefenenEngine` already did 10-questions-plus-email-capture, so the
+taster was an extension rather than a rewrite — the win was recognising the funnel shape was
+already there and only the item *renderer* was KNM-specific. Keeping deleted content as
+typed-but-empty modules (`data/questions.ts` etc.) meant ~20 files kept compiling with zero
+edits; deleting the modules outright would have cascaded through dashboard, admin and blog.
+
+**What went wrong:**
+1. `for f in $(grep -rl ...)` silently no-op'd — **zsh does not word-split unquoted
+   parameter expansions**, so the whole file list arrived as one argument and perl errored on
+   a single absurd filename. Every "rename" appeared to succeed while changing nothing.
+   Use `grep -rl ... | while IFS= read -r f; do ... done`.
+2. Verified the rename with `grep -oE "io_[a-z_]+"`, which matched `aud`+`io_a` inside
+   `audio_a`/`audio_question` and looked like the substitution had mangled DB columns. The
+   substitution was fine; the *check* was wrong.
+3. `redirect()` from a server component rendered the target's content but returned **200**,
+   not 307, while `generateMetadata` had already produced the *original* page's title — so
+   an unavailable skill served picker content under a "Gratis Schrijven oefenen" title.
+   Fixed by returning `robots: { index: false }` from `generateMetadata` for those slugs.
+4. A throwaway Playwright script in `/tmp` failed with `ERR_MODULE_NOT_FOUND` — confirming
+   again that scripts importing playwright/puppeteer must live in the **project root**.
+5. `rm -f temporary_screenshots/*.png` aborted the whole compound command under zsh when the
+   glob matched nothing (`no matches found`), skipping every command after it. Use
+   `rm -f dir/*.png 2>/dev/null` or `setopt null_glob`.
+
+**Lesson:** In zsh, never rely on `$(...)` word-splitting for file loops and never let an
+unmatched glob sit in the middle of a `&&` chain. And when a bulk rename "succeeds", verify
+it with a check that can't false-positive on substrings — anchor the pattern (`'io_`) rather
+than matching bare. Separately: when `generateMetadata` and the page body can disagree
+(redirect, notFound, feature flag), the metadata must be made consistent too, or the page
+ships a title that describes content it never renders.

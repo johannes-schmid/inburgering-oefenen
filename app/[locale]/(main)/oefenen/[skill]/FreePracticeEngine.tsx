@@ -5,6 +5,8 @@ import { useTranslations } from 'next-intl';
 import { track } from '@/lib/analytics';
 import type { FreePracticeItem } from '@/data/free-practice';
 import type { SkillSlug } from '@/data/skills';
+import SkillIcon from '@/components/site/SkillIcon';
+import { Check, Star, UserRoundCheck, Headphones } from 'lucide-react';
 
 const PASS_PCT = 70;
 
@@ -14,12 +16,11 @@ type Phase = 'intro' | 'quiz' | 'gate' | 'results';
 type Props = {
   skill: SkillSlug;
   skillName: string;
-  skillIcon: string;
   items: FreePracticeItem[];
   locale: string;
 };
 
-export default function FreePracticeEngine({ skill, skillName, skillIcon, items, locale }: Props) {
+export default function FreePracticeEngine({ skill, skillName, items, locale }: Props) {
   const t = useTranslations('oefenen');
 
   const [phase, setPhase] = useState<Phase>('intro');
@@ -119,22 +120,22 @@ export default function FreePracticeEngine({ skill, skillName, skillIcon, items,
               {t('eyebrow')}
             </div>
             <h1 className="font-headline font-extrabold text-white flex items-center gap-3" style={{ fontSize: '1.9rem', lineHeight: 1.1, letterSpacing: '-0.02em' }}>
-              <span aria-hidden="true">{skillIcon}</span>
+              <SkillIcon skill={skill} size="md" onDark />
               {t('heading', { count: total, skill: skillName })}
             </h1>
             <div className="flex flex-wrap gap-2 mt-5">
               {[
-                { val: String(total), label: t('stat_questions') },
-                { val: '★', label: t('stat_free') },
-                { val: '✓', label: t('stat_no_account') },
-              ].map(({ val, label }) => (
-                <div key={label} className="flex items-baseline gap-2 rounded-full px-3.5 py-2" style={{ background: 'rgba(255,255,255,0.10)', border: '1px solid rgba(255,255,255,0.14)' }}>
-                  <span className="font-headline font-extrabold text-white text-base">{val}</span>
+                { node: <span className="font-headline font-extrabold text-white text-base">{total}</span>, label: t('stat_questions') },
+                { node: <Star size={15} strokeWidth={2.2} className="text-white" aria-hidden="true" />, label: t('stat_free') },
+                { node: <UserRoundCheck size={15} strokeWidth={2.2} className="text-white" aria-hidden="true" />, label: t('stat_no_account') },
+              ].map(({ node, label }) => (
+                <div key={label} className="flex items-center gap-2 rounded-full px-3.5 py-2" style={{ background: 'rgba(255,255,255,0.10)', border: '1px solid rgba(255,255,255,0.14)' }}>
+                  {node}
                   <span className="font-semibold uppercase" style={{ color: 'rgba(255,255,255,0.6)', fontSize: '0.58rem', letterSpacing: '0.06em' }}>{label}</span>
                 </div>
               ))}
               <div className="flex items-center gap-1.5 rounded-full px-3 py-2" style={{ background: 'rgba(254,118,44,0.16)', border: '1px solid rgba(254,118,44,0.32)' }}>
-                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#ffb27a" strokeWidth="2.6" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5" /></svg>
+                <Check size={13} strokeWidth={2.6} style={{ color: '#ffb27a' }} aria-hidden="true" />
                 <span className="font-semibold" style={{ color: '#ffd1ab', fontSize: '0.68rem' }}>{t('feedback_tag')}</span>
               </div>
             </div>
@@ -155,9 +156,7 @@ export default function FreePracticeEngine({ skill, skillName, skillIcon, items,
 
           {isListening && (
             <div className="flex items-start gap-3 mb-6 rounded-2xl p-3.5" style={{ background: '#fff7ed', border: '1px solid #fed7aa' }}>
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#a24000" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="flex-shrink-0 mt-0.5" aria-hidden="true">
-                <path d="M3 18v-6a9 9 0 0 1 18 0v6" /><path d="M21 19a2 2 0 0 1-2 2h-1a2 2 0 0 1-2-2v-3a2 2 0 0 1 2-2h3zM3 19a2 2 0 0 0 2 2h1a2 2 0 0 0 2-2v-3a2 2 0 0 0-2-2H3z" />
-              </svg>
+              <Headphones size={18} strokeWidth={2} style={{ color: '#a24000' }} className="flex-shrink-0 mt-0.5" aria-hidden="true" />
               <p className="text-sm leading-relaxed" style={{ color: '#7c2d12' }}>{t('audio_hint')}</p>
             </div>
           )}
@@ -258,7 +257,7 @@ export default function FreePracticeEngine({ skill, skillName, skillIcon, items,
           <ul className="flex flex-col gap-2.5 mb-7 list-none p-0 m-0">
             {[t('gate_bullet_1'), t('gate_bullet_2'), t('gate_bullet_3')].map(b => (
               <li key={b} className="flex items-start gap-2.5" style={{ color: 'rgba(255,255,255,.9)', fontSize: '.92rem' }}>
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#7ee2a8" strokeWidth="2.6" strokeLinecap="round" strokeLinejoin="round" className="flex-shrink-0 mt-0.5" aria-hidden="true"><path d="M20 6 9 17l-5-5" /></svg>
+                <Check size={16} strokeWidth={2.6} style={{ color: '#7ee2a8' }} className="flex-shrink-0 mt-0.5" aria-hidden="true" />
                 <span>{b}</span>
               </li>
             ))}

@@ -1,4 +1,6 @@
 import type { Skill } from '@/data/skills';
+import { ArrowRight } from 'lucide-react';
+import SkillIcon from './SkillIcon';
 
 type Props = {
   skill: Skill;
@@ -28,13 +30,7 @@ export default function SkillCard({
       style={{ boxShadow: 'var(--shadow-card-md)' }}
     >
       <div className="flex items-start justify-between gap-3">
-        <span
-          className="flex items-center justify-center text-2xl flex-shrink-0"
-          style={{ width: 52, height: 52, background: 'rgba(0,43,109,0.06)', borderRadius: 14 }}
-          aria-hidden="true"
-        >
-          {skill.icon}
-        </span>
+        <SkillIcon skill={skill.slug} size="lg" />
         <span
           className="text-[0.68rem] font-bold uppercase tracking-widest px-2.5 py-1 rounded-full"
           style={{ background: '#f0fdf4', color: '#15803d' }}
@@ -65,7 +61,10 @@ export default function SkillCard({
         </div>
       </dl>
 
-      <span className="skill-card-cta text-sm font-semibold" style={{ color: '#a24000' }}>{cta}</span>
+      <span className="skill-card-cta inline-flex items-center gap-1.5 text-sm font-semibold" style={{ color: '#a24000' }}>
+        {cta}
+        <ArrowRight size={15} strokeWidth={2.2} aria-hidden="true" />
+      </span>
     </a>
   );
 }
