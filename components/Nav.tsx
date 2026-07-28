@@ -117,7 +117,7 @@ export default function Nav() {
           </Link>
 
           <a
-            href={`/${locale}/oefenexamen/lezen`}
+            href={`/${locale}/oefenen`}
             className="inline-flex items-center gap-1.5 bg-secondary-container px-3 py-2 sm:px-5 sm:py-2.5 rounded-xl font-bold text-sm button-inner-glow hover:-translate-y-px transition-transform active:scale-95 no-underline whitespace-nowrap"
             style={{ color: '#ffffff' }}
           >

@@ -182,7 +182,7 @@ export default async function HomePage({ params }: Props) {
 
               <div className="flex flex-wrap gap-3 mb-10">
                 <a
-                  href="#onderdelen"
+                  href={`/${locale}/oefenen`}
                   className="hero-cta-primary inline-flex items-center gap-2 px-7 py-3.5 bg-white font-bold rounded-xl no-underline"
                   style={{ color: '#002B6D', boxShadow: '0 8px 24px rgba(0,0,0,0.22)' }}
                 >
