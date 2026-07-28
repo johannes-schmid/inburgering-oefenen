@@ -1,6 +1,6 @@
 {
-  "roos":  { "id": "7qdUFMklKPaaAVMsBTBt", "name": "Roos", "gender": "female" },
-  "ruth":  { "id": "YUdpWWny7k5yb4QCeweX", "name": "Ruth", "gender": "female" },
-  "eric":  { "id": "vY9oBYvK4JJ9fCOB5lmn", "name": "Eric", "gender": "male" },
-  "ido":   { "id": "dLPO5AsXc3FZDbTh1IKa", "name": "Ido",  "gender": "male" }
+  "woman_young": { "id": "g1BnPf5p6fv5zKMcrpTY", "name": "Female Voice 1 — younger woman", "gender": "female", "age": "young" },
+  "woman_older": { "id": "ULmkhRyAInKrnTGbI1tP", "name": "Female Voice 2 — older woman",   "gender": "female", "age": "older" },
+  "man_young":   { "id": "OpT3f686GHWDhFJ6mQc0", "name": "Male Voice 1 — younger man",     "gender": "male",   "age": "young" },
+  "man_older":   { "id": "KrIPnHYMx3oBz9wPeJuW", "name": "Male Voice 2 — older man",       "gender": "male",   "age": "older" }
 }

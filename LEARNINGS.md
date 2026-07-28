@@ -506,3 +506,10 @@ ships a title that describes content it never renders.
 **Outcome:** SUCCESS (`npx tsc --noEmit` clean)
 **What worked:** JSON as the shared source (TS imports it via `resolveJsonModule`, the `.mjs` script reads it with `fs`) — avoids duplicating IDs across a TS/ESM boundary on Node 20.
 **Lesson:** shared constants needed by both app code and `scripts/*.mjs` belong in JSON, not a `.ts` file.
+
+## 2026-07-28 — ElevenLabs v3 dialogue for the taster audio
+**Changed:** `scripts/generate-free-practice-audio.mjs` moved from per-turn `/v1/text-to-speech` (multilingual_v2) to a single `/v1/text-to-dialogue` v3 call per item with per-turn delivery tags; added per-item `CASTING` (gender-matched voices) and two-pass loudnorm to -20 LUFS; regenerated all 10 taster mp3s. Four new voices in `data/tts-voices.json`.
+**Outcome:** SUCCESS — all 10 render at -20.3..-20.6 LUFS.
+**What worked:** measuring the official DUO reference with ffmpeg (`ebur128`, `silencedetect`) turned "the audio sounds wrong" into numbers: -20.5 LUFS, 3.7 LU range, 57% speech, 0.82-2.06s turn gaps. Our 0.45s gap was a sentence-internal breath length, not a turn boundary.
+**What went wrong:** two false starts. (1) loudnorm prints its JSON to **stderr**, so `execFileSync` returning only stdout gave "Unexpected end of JSON input" — use `spawnSync` and concat both streams. (2) Dropping `speed` without replacing it with pauses made lu-3 29% shorter (165 wpm) — pacing has to come from somewhere.
+**Lesson:** v3 has NO pacing control — no `speed`, and `<break time>` is silently ignored (renders differing only in breaks were byte-identical). Verify a tag actually changed the output by comparing file sizes before believing it works. Measure the reference material rather than guessing at settings.

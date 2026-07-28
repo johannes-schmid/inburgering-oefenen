@@ -145,7 +145,7 @@ without an explicit decision from the owner.
 │   └── supabase/{client,server,admin}.ts
 │
 ├── i18n/ messages/{nl,en,ar}.json
-├── public/audio/free-practice/         # 10 committed taster mp3s (2.5MB)
+├── public/audio/free-practice/         # 10 committed taster mp3s (3.5MB)
 ├── resources/                          # LOCAL ONLY, gitignored except images/ — see below
 │   ├── images/                         #   hero source + CREDITS.md (tracked)
 │   └── exam-references/A2/             #   official DUO examples — REFERENCE ONLY
@@ -200,18 +200,53 @@ anyone else's.
 via `lib/tts-voices.ts` (`VOICES`, `NARRATOR`, `DIALOGUE_VOICES`, `voiceId()`) in app code,
 or read the JSON directly in `scripts/*.mjs`. **Never hardcode a voice ID anywhere.**
 
-| Key | Voice | Gender |
-|---|---|---|
-| `roos` | Roos | female |
-| `ruth` | Ruth | female |
-| `eric` | Eric | male |
-| `ido` | Ido | male |
+| Key | Voice | Gender | Age |
+|---|---|---|---|
+| `woman_young` | Female Voice 1 | female | younger |
+| `woman_older` | Female Voice 2 | female | older |
+| `man_young` | Male Voice 1 | male | younger |
+| `man_older` | Male Voice 2 | male | older |
 
+**The voice must match the speaker's gender.** A woman speaking gets a female voice, a man
+gets a male voice — always. The script establishes gender through names and address forms
+(`Sara Yilmaz`, `Hoi Peter`, `Meneer El Amrani`, `mevrouw De Wit`, `Youssef`, `mevrouw`), and
+a mismatch there is an immediately audible content bug, not a stylistic slip.
+
+- Casting is **per item**, never a blanket "A = female, B = male". `CASTING` in
+  `scripts/generate-free-practice-audio.mjs` holds one entry per item with a comment
+  recording what forces each choice; the script throws on an uncast item rather than
+  guessing.
+- Where the script leaves a speaker's gender open (a desk clerk, an announcer), the choice
+  is ours — spread it across items so all ten don't sound like the same two people.
+- Speaker A and B must always be **different voices**, and consistent within one item.
 - Single-narrator surfaces (question read-aloud, lesson audio, woordkaarten) use `NARRATOR`.
-- Dialogues / conversations use `DIALOGUE_VOICES` — speaker A and B must be **different
-  voices**, and consistent within one exam so the listener can follow who is speaking.
-- Need more than two speakers, or variety across exams? Pick further keys from the table.
-  Do not add a fifth voice without the owner's approval.
+- Do not add a fifth voice without the owner's approval.
+
+### Generation settings — two pipelines, deliberately different
+
+| | Taster listening audio | Read-aloud / lessons / woordkaarten |
+|---|---|---|
+| Script | `scripts/generate-free-practice-audio.mjs` | the three `generate-*-audio` API routes |
+| Endpoint | `/v1/text-to-dialogue` (whole scene, one call) | `/v1/text-to-speech` (per request) |
+| Model | `eleven_v3` | `eleven_multilingual_v2` |
+| Settings | `stability 0.5` (Natural), speaker boost | `stability 0.45`, `similarity 0.75`, `speed 0.9` |
+| Direction | delivery tags per turn (`DELIVERY`) | none |
+
+Both apply `apply_text_normalization: 'on'` (Dutch prices/times/abbreviations), a stable seed,
+and a two-pass ffmpeg `loudnorm` to **−20 LUFS** — measured off the official DUO audio
+(−20.5 LUFS, 3.7 LU range). Never ship a taster mp3 that skipped the loudnorm pass.
+
+**Delivery tags** (`DELIVERY` in the script) are v3 audio events, not spoken words. Rules:
+no sound effects under exam speech; tag at the **start** of a turn; never around a time, day
+or name; `[interrupting]` / `[overlapping]` are **banned in exam content** — they attack the
+comprehension being tested. They are fine on marketing surfaces.
+
+**Known tradeoff, accepted by the owner (2026-07-28):** v3 has no pacing control — no `speed`,
+and it ignores `<break time>` outright (two renders differing only in breaks came back
+byte-identical). The taster audio therefore runs ~150 wpm vs the ~110 wpm the multilingual_v2
+pipeline reached and DUO's 57% speech ratio. If A2 candidates report it as too fast, set
+`POST_ATEMPO = 0.88` in the script — a pitch-preserving time-stretch, the only lever left.
+Don't "fix" this by switching models without raising it first.
 
 ---
 
