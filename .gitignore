@@ -12,3 +12,12 @@ next-env.d.ts
 
 .claude/worktrees
 supabase/.temp
+
+# Official DUO exam material — © Ministerie van SZW, explicitly not for redistribution.
+# Kept locally as a format reference only; must never reach a remote.
+resources/exam-references/
+
+# Stale KNM source material and a stray duplicate image dir (not referenced by any code)
+resources/Content-Topics/
+resources/Redesign/
+/images/
