@@ -13,11 +13,13 @@ next-env.d.ts
 .claude/worktrees
 supabase/.temp
 
-# Official DUO exam material — © Ministerie van SZW, explicitly not for redistribution.
-# Kept locally as a format reference only; must never reach a remote.
-resources/exam-references/
+# resources/ is local working material and is NOT published. It holds the official DUO
+# exam material (© Ministerie van SZW, explicitly not for redistribution) plus inherited
+# KNM source files. Everything stays on disk; nothing reaches the remote.
+# Exception: resources/images/ holds the hero source that scripts/build-hero-image.mjs
+# needs, so that one directory is tracked.
+/resources/*
+!/resources/images/
 
-# Stale KNM source material and a stray duplicate image dir (not referenced by any code)
-resources/Content-Topics/
-resources/Redesign/
+# Stray duplicate image dir (not referenced by any code)
 /images/

@@ -146,7 +146,9 @@ without an explicit decision from the owner.
 │
 ├── i18n/ messages/{nl,en,ar}.json
 ├── public/audio/free-practice/         # 10 committed taster mp3s (2.5MB)
-├── resources/exam-references/A2/       # official DUO examples — REFERENCE ONLY, see below
+├── resources/                          # LOCAL ONLY, gitignored except images/ — see below
+│   ├── images/                         #   hero source + CREDITS.md (tracked)
+│   └── exam-references/A2/             #   official DUO examples — REFERENCE ONLY
 ├── scripts/generate-free-practice-audio.mjs
 ├── supabase/migrations/
 ├── tests/                              # Playwright — being rewritten per skill
@@ -170,6 +172,12 @@ without an explicit decision from the owner.
 ## Content rules
 
 ### DUO reference material is copyright — do not reproduce
+**`resources/` is local working material and is not published.** The repo is public, so
+`.gitignore` excludes all of `resources/` except `resources/images/` (the hero source that
+`scripts/build-hero-image.mjs` needs). Everything else — the DUO exam material and the
+inherited KNM source files — stays on your disk and must never be committed. If you add
+reference material, put it in `resources/` and it is excluded automatically.
+
 `resources/exam-references/A2/` holds the official DUO practice exams. They carry
 *"© Ministerie van SZW … U mag de vragen van dit examen niet delen"* and an explicit
 no-reproduction notice.
