@@ -23,3 +23,7 @@ supabase/.temp
 
 # Stray duplicate image dir (not referenced by any code)
 /images/
+
+# Machine-local Claude settings. The permissions allowlist records past shell commands
+# verbatim, so it can contain API keys that were passed inline — never commit it.
+.claude/settings.local.json
