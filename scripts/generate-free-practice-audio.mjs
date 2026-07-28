@@ -20,7 +20,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 import os from 'node:os';
 import { fileURLToPath } from 'node:url';
-import { execFileSync } from 'node:child_process';
+import { execFileSync, spawnSync } from 'node:child_process';
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const OUT_DIR = path.join(ROOT, 'public', 'audio', 'free-practice');
@@ -51,13 +51,39 @@ if (!API_KEY) {
 // Speaker A is the one who opens the conversation (receptionist, colleague, announcer);
 // speaker B is the candidate's counterpart. Two distinct voices so the dialogue is
 // followable, which is exactly what the real DUO listening exam tests.
+// IDs come from data/tts-voices.json — the single source of truth for every TTS surface.
+const VOICE_LIBRARY = JSON.parse(
+  fs.readFileSync(path.join(ROOT, 'data', 'tts-voices.json'), 'utf8')
+);
 const VOICES = {
-  A: 'S2OWP8siwXK4AZRAs2ec',  // female, the voice already used across the platform
-  B: 'cjVigY5qzO86Huf0OWal',  // Eric — male, smooth
+  A: VOICE_LIBRARY.roos.id,
+  B: VOICE_LIBRARY.eric.id,
 };
-const MODEL_ID = 'eleven_flash_v2_5';
-const VOICE_SETTINGS = { stability: 1.0, similarity_boost: 1.0, speed: 0.88 };
-const GAP_SECONDS = 0.45;
+// multilingual_v2, not flash: this audio is baked once and committed, so there is no
+// latency requirement to trade quality against. `language_code` is deliberately absent —
+// the API ignores it on multilingual_v2.
+const MODEL_ID = 'eleven_multilingual_v2';
+
+// stability 0.45 (not 1.0) — maxed stability makes delivery monotonous, which killed the
+// question intonation. similarity_boost 0.75 (not 1.0) — max adherence drags breath noise
+// and clicks out of the source sample. speed 0.92: A2 pacing comes from the pauses below,
+// not from stretching phonemes.
+const VOICE_SETTINGS = {
+  stability: 0.45,
+  similarity_boost: 0.75,
+  use_speaker_boost: true,
+  speed: 0.92,
+};
+
+// Measured off the official DUO listening audio: turn boundaries sit at 0.82–2.06s
+// (clustered around 0.9–1.2), while 0.45s is what DUO leaves for a breath *inside* a
+// sentence. The old 0.45s gap is why our speakers stepped on each other at every handover.
+const GAP_SECONDS = 1.0;
+
+// Also measured off the DUO reference: -20.5 LUFS integrated with a very tight 3.7 LU
+// range. Each turn is a separate API call, so without this the level steps between
+// speakers.
+const LOUDNESS = { i: -20, tp: -2, lra: 4 };
 
 /* ── item source ─────────────────────────────────────────────────────────── */
 // data/free-practice.ts is TypeScript, so pull the fields out with a light parse rather
@@ -93,15 +119,34 @@ function parseLines(script) {
 }
 
 /* ── tts ─────────────────────────────────────────────────────────────────── */
-async function tts(text, voiceId) {
+// A stable seed per line, so regenerating one item does not produce a take that no longer
+// matches its neighbours. Deterministic — never Math.random().
+function seedFor(itemId, index) {
+  let h = 2166136261;
+  for (const ch of `${itemId}:${index}`) {
+    h = (Math.imul(h ^ ch.charCodeAt(0), 16777619) >>> 0);
+  }
+  return h % 4294967295;
+}
+
+// `previous_text` / `next_text` give the model the surrounding turns so prosody does not
+// restart from zero on every line — this is what makes sentence-final intonation and
+// energy carry across the dialogue. Note we do NOT use previous_request_ids: that stitches
+// contiguous audio from one voice, and our turns alternate between two voices.
+async function tts(text, voiceId, { previousText, nextText, seed }) {
   const res = await fetch(`https://api.elevenlabs.io/v1/text-to-speech/${voiceId}`, {
     method: 'POST',
     headers: { 'xi-api-key': API_KEY, 'Content-Type': 'application/json' },
     body: JSON.stringify({
       text,
       model_id: MODEL_ID,
-      language_code: 'nl',
       voice_settings: VOICE_SETTINGS,
+      // Dutch prices, times and abbreviations (€9,95 / 8:30 / dhr. / t/m) are exactly where
+      // "auto" guesses wrong.
+      apply_text_normalization: 'on',
+      ...(previousText ? { previous_text: previousText } : {}),
+      ...(nextText ? { next_text: nextText } : {}),
+      seed,
     }),
   });
   if (!res.ok) throw new Error(`ElevenLabs ${res.status}: ${(await res.text()).slice(0, 200)}`);
@@ -120,9 +165,43 @@ function stitch(partPaths, outPath, tmpDir) {
   const withGaps = partPaths.flatMap((p, i) => (i === 0 ? [p] : [silence, p]));
   fs.writeFileSync(listFile, withGaps.map(p => `file '${p.replace(/'/g, "'\\''")}'`).join('\n'));
 
+  const joined = path.join(tmpDir, 'joined.mp3');
   execFileSync('ffmpeg', [
     '-y', '-f', 'concat', '-safe', '0', '-i', listFile,
-    '-c:a', 'libmp3lame', '-q:a', '4', outPath,
+    '-c:a', 'libmp3lame', '-b:a', '128k', '-ar', '44100', '-ac', '1', joined,
+  ], { stdio: 'ignore' });
+
+  normalizeLoudness(joined, outPath);
+}
+
+// Two-pass loudnorm: pass 1 measures, pass 2 applies a linear gain. Single-pass loudnorm is
+// dynamic and pumps on speech with long pauses — which is most of this material.
+function normalizeLoudness(inPath, outPath) {
+  const filter = `loudnorm=I=${LOUDNESS.i}:TP=${LOUDNESS.tp}:LRA=${LOUDNESS.lra}`;
+  // loudnorm prints its measurement to stderr, not stdout.
+  const probe = spawnSync('ffmpeg', [
+    '-hide_banner', '-i', inPath, '-af', `${filter}:print_format=json`, '-f', 'null', '-',
+  ], { encoding: 'utf8' });
+  const report = `${probe.stderr ?? ''}${probe.stdout ?? ''}`;
+  const open = report.lastIndexOf('{');
+  const close = report.lastIndexOf('}');
+  if (open === -1 || close === -1) {
+    throw new Error(`loudnorm measurement failed: ${report.slice(-300)}`);
+  }
+  const measured = JSON.parse(report.slice(open, close + 1));
+
+  execFileSync('ffmpeg', [
+    '-y', '-i', inPath,
+    '-af', [
+      filter,
+      'linear=true',
+      `measured_I=${measured.input_i}`,
+      `measured_TP=${measured.input_tp}`,
+      `measured_LRA=${measured.input_lra}`,
+      `measured_thresh=${measured.input_thresh}`,
+      `offset=${measured.target_offset}`,
+    ].join(':'),
+    '-c:a', 'libmp3lame', '-b:a', '128k', '-ar', '44100', '-ac', '1', outPath,
   ], { stdio: 'ignore' });
 }
 
@@ -157,7 +236,11 @@ for (const item of items) {
   try {
     const parts = [];
     for (const [i, line] of lines.entries()) {
-      const buf = await tts(line.text, VOICES[line.speaker]);
+      const buf = await tts(line.text, VOICES[line.speaker], {
+        previousText: lines[i - 1]?.text,
+        nextText: lines[i + 1]?.text,
+        seed: seedFor(item.id, i),
+      });
       const partPath = path.join(tmpDir, `${String(i).padStart(2, '0')}.mp3`);
       fs.writeFileSync(partPath, buf);
       parts.push(partPath);

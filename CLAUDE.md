@@ -187,6 +187,24 @@ anyone else's.
   Regenerate one item: `node scripts/generate-free-practice-audio.mjs lu-3`.
 - **Paid exam audio:** Supabase Storage `question-audio` bucket, per-question from admin.
 
+### TTS voices — always use the four in `data/tts-voices.json`
+`data/tts-voices.json` is the **single source of truth** for ElevenLabs voice IDs; import it
+via `lib/tts-voices.ts` (`VOICES`, `NARRATOR`, `DIALOGUE_VOICES`, `voiceId()`) in app code,
+or read the JSON directly in `scripts/*.mjs`. **Never hardcode a voice ID anywhere.**
+
+| Key | Voice | Gender |
+|---|---|---|
+| `roos` | Roos | female |
+| `ruth` | Ruth | female |
+| `eric` | Eric | male |
+| `ido` | Ido | male |
+
+- Single-narrator surfaces (question read-aloud, lesson audio, woordkaarten) use `NARRATOR`.
+- Dialogues / conversations use `DIALOGUE_VOICES` — speaker A and B must be **different
+  voices**, and consistent within one exam so the listener can follow who is speaking.
+- Need more than two speakers, or variety across exams? Pick further keys from the table.
+  Do not add a fifth voice without the owner's approval.
+
 ---
 
 ## Design rules

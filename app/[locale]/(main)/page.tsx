@@ -136,39 +136,33 @@ export default async function HomePage({ params }: Props) {
         className="relative overflow-hidden -mt-20"
         style={{ minHeight: '680px', paddingTop: 'calc(5rem + 5rem)', paddingBottom: '6rem' }}
       >
-        {/* Solid brand base — the whole left half of the hero is this, uncovered. */}
-        <div
-          className="absolute inset-0"
-          style={{ background: 'radial-gradient(120% 100% at 12% 8%, #143d8a 0%, #002b6d 55%)' }}
-        />
-
-        {/* Photo occupies the right half on desktop; full-bleed behind a scrim on mobile.
-            Built from resources/images/hero-source.jpg by scripts/build-hero-image.mjs */}
+        {/* Full-bleed background photo.
+            Built from resources/images/hero-source.png by scripts/build-hero-image.mjs */}
         <picture>
           <source srcSet="/images/hero.webp" type="image/webp" />
           <img
             src="/images/hero-compressed.jpg"
-            alt="Amsterdamse trapgevel met het opschrift 'Het Vergulde Duifke, juli 1945' en de Nederlandse vlag"
-            data-credit="Photo by Pourya Gohari on Unsplash"
-            className="absolute inset-y-0 right-0 h-full w-full lg:w-[58%] object-cover"
+            alt="Nederlandse trapgevels met het opschrift 'Het Vergulde Duifke, juli 1945', een kerktoren en de Nederlandse vlag"
+            className="absolute inset-0 w-full h-full object-cover"
             width={1600}
-            height={1200}
-            style={{ objectPosition: '24% 42%' }}
+            height={1067}
+            style={{ objectPosition: 'center 40%' }}
             fetchPriority="high"
             decoding="async"
           />
         </picture>
 
-        {/* Feathers the photo's left edge into the navy so the seam is not a hard line. */}
+        {/* Navy scrim: opaque behind the copy on the left, clearing to reveal the gable and
+            flag on the right. The subject sits right-of-centre, so this can run further. */}
         <div
-          className="absolute inset-y-0 right-0 w-full lg:w-[58%] pointer-events-none"
-          style={{ background: 'linear-gradient(90deg, #002B6D 0%, #002B6D 12%, rgba(0,43,109,0.80) 26%, rgba(0,43,109,0.40) 44%, rgba(0,43,109,0.12) 62%, transparent 80%)' }}
+          className="absolute inset-0 pointer-events-none"
+          style={{ background: 'linear-gradient(100deg, #002B6D 0%, #002B6D 30%, rgba(0,43,109,0.90) 42%, rgba(0,43,109,0.62) 55%, rgba(0,43,109,0.30) 70%, rgba(0,43,109,0.10) 85%, rgba(0,43,109,0.04) 100%)' }}
         />
 
-        {/* Mobile has no separate column, so the copy sits over the photo — darken it. */}
+        {/* Mobile has no separate column, so the copy sits over the photo — darken further. */}
         <div
           className="absolute inset-0 lg:hidden pointer-events-none"
-          style={{ background: 'rgba(0,43,109,0.72)' }}
+          style={{ background: 'rgba(0,43,109,0.55)' }}
         />
 
         {/* Top darkening so the fixed nav keeps contrast */}
@@ -188,8 +182,8 @@ export default async function HomePage({ params }: Props) {
               </div>
 
               <h1
-                className="font-headline font-extrabold text-white leading-tight tracking-tight mb-6"
-                style={{ fontSize: 'clamp(1.85rem, 5vw, 3.8rem)' }}
+                className="font-headline font-extrabold text-white tracking-tight mb-6"
+                style={{ fontSize: 'clamp(1.85rem, 5vw, 3.8rem)', lineHeight: 1.06, letterSpacing: '-0.03em' }}
               >
                 <span className="block">{t('hero_line1')}</span>
                 <span className="italic" style={{ color: 'rgba(255,255,255,0.90)' }}>{t('hero_line2')}</span>

@@ -1,9 +1,13 @@
 import { createAdminClient } from '@/lib/supabase/admin';
 import { extractCues } from '@/lib/leren-audio-cues';
 import { NextRequest, NextResponse } from 'next/server';
+import { NARRATOR, voiceId } from '@/lib/tts-voices';
 
-const VOICE_ID = 'S2OWP8siwXK4AZRAs2ec';
-const MODEL_ID = 'eleven_flash_v2_5';
+const VOICE_ID = voiceId(NARRATOR);
+// multilingual_v2, not flash: this audio is generated once and cached in Storage, so there
+// is no latency budget to trade quality against. `language_code` is dropped — the API
+// ignores it on multilingual_v2.
+const MODEL_ID = 'eleven_multilingual_v2';
 const BUCKET   = 'leren-audio';
 
 export async function POST(req: NextRequest) {
@@ -41,8 +45,8 @@ export async function POST(req: NextRequest) {
       body: JSON.stringify({
         text: script,
         model_id: MODEL_ID,
-        language_code: 'nl',
-        voice_settings: { stability: 1.0, similarity_boost: 1.0, speed: 0.76 },
+        voice_settings: { stability: 0.45, similarity_boost: 0.75, use_speaker_boost: true, speed: 0.9 },
+        apply_text_normalization: 'on',
       }),
     }
   );

@@ -5,13 +5,18 @@
  *
  *   node scripts/build-hero-image.mjs
  *
- * The source is a portrait shot; the hero is a wide band, so we crop a landscape window
- * rather than squashing it. The crop is expressed as a fraction of the source height so it
- * survives a different source resolution.
- *
  * Two outputs, both consumed by the <picture> in app/[locale]/(main)/page.tsx:
  *   hero.webp            — what modern browsers actually load
  *   hero-compressed.jpg  — <img> fallback
+ *
+ * ── Why the crop window is explicit ──────────────────────────────────────────
+ * The hero is full-bleed, and the floating question cards sit over its right-centre.
+ * If the flag lands under those cards it is invisible, which is most of the point of the
+ * photo. So rather than letting `object-position` fight a near-matching aspect ratio, the
+ * subject is placed here: RIGHT_TRIM pushes the flag rightward until it clears the cards,
+ * and the output aspect matches the band so CSS adds no cropping of its own.
+ *
+ * Tune RIGHT_TRIM / TOP_TRIM and re-run; nothing else needs to change.
  */
 import sharp from 'sharp';
 import path from 'node:path';
@@ -19,43 +24,39 @@ import fs from 'node:fs';
 import { fileURLToPath } from 'node:url';
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
-const SRC = path.join(ROOT, 'resources', 'images', 'hero-source.jpg');
+const SRC_DIR = path.join(ROOT, 'resources', 'images');
 const OUT_DIR = path.join(ROOT, 'public', 'images');
 
-// Output geometry — 4:3 rather than a wide 3:2. The hero renders this with
-// `object-fit: cover`, so a taller frame gives CSS room to reframe per viewport instead of
-// baking one wide crop in. At 3:2 the source is too short to hold both the flag and the
-// gable inscription, and the bottom edge lands mid-word on "JULI 1945".
 const OUT_WIDTH = 1600;
-const OUT_HEIGHT = 1200;
+const OUT_HEIGHT = 1200;          // 4:3 — roughly the hero band's aspect at desktop widths
+const TARGET_ASPECT = OUT_WIDTH / OUT_HEIGHT;
 
-// Where to take the window from, as a fraction of source height. 0.13 keeps the flag near
-// the top of frame and the full "HET VERGULDE DUIFKE / JULI 1945" gable inside the bottom.
-const CROP_TOP_FRACTION = 0.13;
+// Fraction of source width trimmed off the RIGHT edge. Higher = subject further right.
+const RIGHT_TRIM = 0.205;
+// Fraction of the resulting window's height trimmed off the TOP (empty sky).
+const TOP_TRIM = 0.10;
 
-if (!fs.existsSync(SRC)) {
-  console.error(`Missing source image: ${SRC}`);
+const src = ['hero-source.png', 'hero-source.jpg', 'hero-source.jpeg', 'hero-source.webp']
+  .map(f => path.join(SRC_DIR, f))
+  .find(fs.existsSync);
+
+if (!src) {
+  console.error(`No hero-source.{png,jpg,jpeg,webp} found in ${SRC_DIR}`);
   process.exit(1);
 }
 
-const meta = await sharp(SRC).metadata();
-const srcW = meta.width;
-const srcH = meta.height;
-console.log(`source: ${srcW}×${srcH}`);
+const { width: srcW, height: srcH } = await sharp(src).metadata();
+console.log(`source: ${path.basename(src)} ${srcW}×${srcH}`);
 
-// Full source width, height derived from the target aspect ratio.
-const cropW = srcW;
-const cropH = Math.round(cropW * (OUT_HEIGHT / OUT_WIDTH));
-const cropTop = Math.min(Math.round(srcH * CROP_TOP_FRACTION), Math.max(0, srcH - cropH));
+const winW = Math.round(srcW * (1 - RIGHT_TRIM));
+// Height that gives the target aspect for that width, capped at what the source has.
+const winH = Math.min(srcH, Math.round(winW / TARGET_ASPECT));
+const winTop = Math.min(Math.round(srcH * TOP_TRIM), srcH - winH);
 
-if (cropH > srcH) {
-  console.error(`Source is too short to crop ${OUT_WIDTH}:${OUT_HEIGHT} at full width.`);
-  process.exit(1);
-}
-console.log(`crop: ${cropW}×${cropH} at y=${cropTop}`);
+console.log(`window: ${winW}×${winH} at (0, ${winTop})  → aspect ${(winW / winH).toFixed(2)}`);
 
-const base = sharp(SRC)
-  .extract({ left: 0, top: cropTop, width: cropW, height: cropH })
+const base = sharp(src)
+  .extract({ left: 0, top: winTop, width: winW, height: winH })
   .resize(OUT_WIDTH, OUT_HEIGHT, { fit: 'cover' });
 
 await base.clone().webp({ quality: 82 }).toFile(path.join(OUT_DIR, 'hero.webp'));

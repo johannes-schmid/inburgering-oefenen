@@ -1,9 +1,13 @@
 import { createAdminClient } from '@/lib/supabase/admin';
 import { NextRequest, NextResponse } from 'next/server';
+import { NARRATOR, voiceId } from '@/lib/tts-voices';
 
-const VOICE_ID = 'S2OWP8siwXK4AZRAs2ec';
-const MODEL_ID = 'eleven_flash_v2_5';
-const SPEED    = 0.76;
+const VOICE_ID = voiceId(NARRATOR);
+// multilingual_v2, not flash: this audio is generated once and cached in Storage, so there
+// is no latency budget to trade quality against. `language_code` is dropped — the API
+// ignores it on multilingual_v2.
+const MODEL_ID = 'eleven_multilingual_v2';
+const SPEED    = 0.9;
 const BUCKET   = 'wordcard-audio';
 
 async function synthesize(text: string, apiKey: string): Promise<ArrayBuffer> {
@@ -13,8 +17,8 @@ async function synthesize(text: string, apiKey: string): Promise<ArrayBuffer> {
     body: JSON.stringify({
       text,
       model_id: MODEL_ID,
-      language_code: 'nl',
-      voice_settings: { stability: 1.0, similarity_boost: 1.0, speed: SPEED },
+      voice_settings: { stability: 0.45, similarity_boost: 0.75, use_speaker_boost: true, speed: SPEED },
+      apply_text_normalization: 'on',
     }),
   });
   if (!res.ok) throw new Error(`ElevenLabs error ${res.status}: ${await res.text()}`);

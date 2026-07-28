@@ -500,3 +500,9 @@ it with a check that can't false-positive on substrings — anchor the pattern (
 than matching bare. Separately: when `generateMetadata` and the page body can disagree
 (redirect, notFound, feature flag), the metadata must be made consistent too, or the page
 ships a title that describes content it never renders.
+
+## 2026-07-28 — Central TTS voice library
+**Changed:** added `data/tts-voices.json` (Roos/Ruth/Eric/Ido) + typed `lib/tts-voices.ts`; replaced the hardcoded voice ID in `scripts/generate-free-practice-audio.mjs` and the three ElevenLabs API routes; documented the rule in CLAUDE.md.
+**Outcome:** SUCCESS (`npx tsc --noEmit` clean)
+**What worked:** JSON as the shared source (TS imports it via `resolveJsonModule`, the `.mjs` script reads it with `fs`) — avoids duplicating IDs across a TS/ESM boundary on Node 20.
+**Lesson:** shared constants needed by both app code and `scripts/*.mjs` belong in JSON, not a `.ts` file.
