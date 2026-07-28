@@ -5,6 +5,7 @@ import { Link } from '@/i18n/navigation';
 import { createClient } from '@/lib/supabase/client';
 import { trackMetaEvent } from '@/components/MetaPixel';
 import { track } from '@/lib/analytics';
+import LogoMark from '@/components/site/LogoMark';
 
 type State = 'loading' | 'success' | 'pending' | 'failed' | 'noid';
 
@@ -71,7 +72,7 @@ export default function BetalingGeluktPage() {
       <header className="sticky top-0 z-50 bg-white border-b border-outline-variant/40" style={{ boxShadow: '0 1px 4px rgba(0,43,109,0.06)' }}>
         <div className="max-w-5xl mx-auto px-6 py-4 flex items-center justify-center">
           <div className="flex items-center gap-2">
-            <span className="w-1.5 h-5 bg-secondary-container rounded-full" />
+            <LogoMark size={28} />
             <span className="text-lg font-extrabold tracking-tight text-primary font-headline">Inburgering Oefenen</span>
           </div>
         </div>

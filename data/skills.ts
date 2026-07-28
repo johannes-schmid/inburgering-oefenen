@@ -3,7 +3,17 @@
  *
  * This is the static shape of the product — exam *content* lives in Supabase
  * (`exams` / `questions` / `open_tasks`), but the skill taxonomy itself is fixed by DUO
- * and is safe to hardcode. `itemCount` and `durationMinutes` mirror the real DUO exams.
+ * and is safe to hardcode.
+ *
+ * `durationMinutes` is published by DUO:
+ *   https://www.inburgeren.nl/examen-doen/inhoud-taalexamens-a2-b1-b2.jsp
+ * and restated in the Examenreglement, Artikel 9:
+ *   https://www.inburgeren.nl/images/examenreglement.pdf
+ *
+ * `itemCount` is NOT published by DUO anywhere. These counts were read off the start screens
+ * of DUO's own public practice exams (all 10 online A2 exams, verified 2026-07-28) — see
+ * `SEO/facts.md` §1 for the method and the exact wording that is defensible in copy.
+ * Do not restate these as an official DUO norm; attribute them to the practice exams.
  */
 export type SkillSlug = 'lezen' | 'luisteren' | 'schrijven' | 'spreken';
 

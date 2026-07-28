@@ -2,6 +2,7 @@ import { useTranslations } from 'next-intl';
 import { Link } from '@/i18n/navigation';
 import { SKILLS } from '@/data/skills';
 import { FEATURES } from '@/lib/features';
+import LogoMark from '@/components/site/LogoMark';
 
 export default function Footer() {
   const t = useTranslations('footer');
@@ -13,7 +14,7 @@ export default function Footer() {
         {/* Brand */}
         <div className="space-y-4">
           <div className="flex items-center gap-2">
-            <span className="w-1.5 h-6 bg-secondary-container rounded-full" />
+            <LogoMark size={34} surface="dark" />
             <span className="text-xl font-extrabold text-white font-headline tracking-tight">Inburgering Oefenen</span>
           </div>
           <p className="text-sm text-white/55 leading-relaxed max-w-xs">{t('tagline')}</p>

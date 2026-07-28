@@ -5,6 +5,7 @@ import { useTranslations } from 'next-intl';
 import { createClient } from '@/lib/supabase/client';
 import { ClipboardList, BookOpen, User, Mail, LogOut, UserPlus } from 'lucide-react';
 import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
+import LogoMark from '@/components/site/LogoMark';
 
 type ActiveView = 'exams' | 'leren' | 'woordkaarten' | 'profile';
 
@@ -56,12 +57,12 @@ export default function PlatformSidebar({ locale, email, avatarUrl = '', activeV
       {/* Logo area */}
       <div className="px-5 pt-6 pb-5" style={{ borderBottom: '1px solid rgba(255,255,255,0.1)' }}>
         <a href={`/${locale}/dashboard`} onClick={(e) => handleNav('exams', e)} className="flex items-center gap-2 w-full" style={{ textDecoration: 'none' }}>
-          <span className="w-1.5 h-6 rounded-full flex-shrink-0" style={{ background: '#fe762c', display: 'block' }} />
+          <LogoMark size={32} surface="dark" />
           <span className="text-xl font-extrabold tracking-tight font-headline" style={{ color: '#fff' }}>Inburgering Oefenen</span>
         </a>
-        <p className="text-xs mt-1.5" style={{ color: 'rgba(255,255,255,0.45)', paddingLeft: 14 }}>{t('sidebar_subtitle')}</p>
+        <p className="text-xs mt-1.5" style={{ color: 'rgba(255,255,255,0.45)', paddingLeft: 40 }}>{t('sidebar_subtitle')}</p>
         {isGuest && (
-          <a href={`/${locale}`} className="text-xs mt-2 block" style={{ color: 'rgba(255,255,255,0.35)', paddingLeft: 14, textDecoration: 'none' }} onMouseEnter={e => (e.currentTarget.style.color = 'rgba(255,255,255,0.65)')} onMouseLeave={e => (e.currentTarget.style.color = 'rgba(255,255,255,0.35)')}>{t('nav_back_home')}</a>
+          <a href={`/${locale}`} className="text-xs mt-2 block" style={{ color: 'rgba(255,255,255,0.35)', paddingLeft: 40, textDecoration: 'none' }} onMouseEnter={e => (e.currentTarget.style.color = 'rgba(255,255,255,0.65)')} onMouseLeave={e => (e.currentTarget.style.color = 'rgba(255,255,255,0.35)')}>{t('nav_back_home')}</a>
         )}
       </div>
 

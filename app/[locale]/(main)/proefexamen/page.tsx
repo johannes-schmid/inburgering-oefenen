@@ -5,6 +5,7 @@ import { Link } from '@/i18n/navigation';
 import { createClient } from '@/lib/supabase/server';
 import ProefexamenEngine from './ProefexamenEngine';
 import { fetchAllQuestions } from '@/lib/questions';
+import LogoMark from '@/components/site/LogoMark';
 
 export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }) {
   const { locale } = await params;
@@ -92,7 +93,7 @@ export default async function ProefexamenPage({ searchParams }: Props) {
               Dashboard
             </Link>
             <div className="flex items-center gap-2">
-              <span className="w-1.5 h-5 bg-secondary-container rounded-full" />
+              <LogoMark size={28} />
               <span className="text-base font-extrabold tracking-tight text-primary font-headline">
                 Inburgering Oefenen
               </span>

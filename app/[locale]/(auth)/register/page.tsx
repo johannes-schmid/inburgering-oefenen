@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import { Link } from '@/i18n/navigation';
 import { createClient } from '@/lib/supabase/client';
 import { track } from '@/lib/analytics';
+import LogoMark from '@/components/site/LogoMark';
 
 const GoogleIcon = () => (
   <svg width="20" height="20" viewBox="0 0 24 24">
@@ -74,7 +75,7 @@ export default function RegisterPage() {
       <header className="relative border-b border-white/10">
         <div className="max-w-6xl mx-auto px-6 py-4 flex items-center justify-between">
           <Link href="/" className="flex items-center gap-2 no-underline">
-            <span className="w-1.5 h-6 bg-secondary-container rounded-full" />
+            <LogoMark size={32} surface="dark" />
             <span className="text-xl font-extrabold tracking-tight text-white font-headline">Inburgering Oefenen</span>
           </Link>
           <Link href="/login" className="text-sm font-semibold text-white/90 hover:text-white transition-colors no-underline">Al een account? Inloggen →</Link>

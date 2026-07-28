@@ -6,6 +6,7 @@ import { Link, usePathname, useRouter } from '@/i18n/navigation';
 import { SKILLS } from '@/data/skills';
 import { FEATURES } from '@/lib/features';
 import SkillIcon from '@/components/site/SkillIcon';
+import LogoMark from '@/components/site/LogoMark';
 
 const LOCALES = [
   { code: 'nl', labelShort: '🇳🇱 NL', labelLong: '🇳🇱 Nederlands' },
@@ -23,7 +24,13 @@ export default function Nav() {
   const [skillsOpen, setSkillsOpen] = useState(false);
 
   function handleLangChange(newLocale: string) {
-    router.replace(pathname, { locale: newLocale });
+    // `usePathname()` is typed as the union of declared pathnames, which now includes dynamic
+    // templates like '/blog/[slug]'. At runtime it returns the *concrete* path
+    // ('/blog/mijn-slug'), which router.replace handles fine — but the typed router wants
+    // `{ pathname, params }` for a template, so the union no longer assigns. Cast is safe.
+    // NB: this is why blog slugs are kept identical across locales — a per-locale slug would
+    // survive the type check here and 404 after switching language.
+    router.replace(pathname as Parameters<typeof router.replace>[0], { locale: newLocale });
     setMobileOpen(false);
   }
 
@@ -36,8 +43,8 @@ export default function Nav() {
       <div className="flex justify-between items-center max-w-7xl mx-auto px-6 py-4">
         {/* Logo */}
         <Link href="/" className="flex items-center gap-2 no-underline shrink-0">
-          <span className="w-1.5 h-6 bg-secondary-container rounded-full shrink-0" />
-          <span className="text-base sm:text-xl font-extrabold tracking-tight text-primary font-headline whitespace-nowrap">
+          <LogoMark size={32} className="w-6 h-6 sm:w-8 sm:h-8" />
+          <span className="text-sm sm:text-xl font-extrabold tracking-tight text-primary font-headline whitespace-nowrap">
             Inburgering Oefenen
           </span>
         </Link>

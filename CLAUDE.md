@@ -250,6 +250,36 @@ Don't "fix" this by switching models without raising it first.
 
 ---
 
+## Blog & SEO — read `SEO/README.md` before writing any post
+
+The blog lives in `data/blog-posts.ts` as data (`BlogPost` entries with `articleHtml` strings);
+the routes in `app/[locale]/(main)/blog/` already generate all metadata, hreflang and JSON-LD.
+**Do not create `app/blog/[slug]/page.jsx`** — that is not this project's shape.
+
+`SEO/` holds the standard: `README.md` (process + on-page checklist), `facts.md`, `keywords.md`,
+`used-keywords.md`, `voice.md`.
+
+The three rules most likely to be broken:
+
+1. **Every number comes from `SEO/facts.md`, with a `FactBox` carrying its source URL and
+   consulted-on date.** If it is not in that file, it does not ship. `facts.md` §9 is an explicit
+   do-not-publish list — chiefly the "18 van de 25" pass norm and the "500 punten" threshold,
+   both of which every competitor states and none can source. DUO publishes no raw cut-off: the
+   zak-slaaggrens is *"een cesuur, vastgesteld door de Minister"* (Examenreglement Artikel 10
+   lid 5). Saying so is the wedge.
+2. **Blog posts never target practice-exam keywords.** `inburgeringsexamen oefenen` and friends
+   return tool SERPs that an article cannot win; they belong to `/oefenen/[skill]` and
+   `/oefenexamen/[skill]`. The blog takes explanatory queries only.
+3. **Write for an A2 reader.** Dutch posts: sentences averaging ≤15 words, `je` not `u`, common
+   vocabulary, every term explained on first use. See `SEO/voice.md`.
+
+Item counts (Lezen 25, Luisteren 25, Schrijven 4, Spreken 16) are **verified** off the start
+screens of DUO's own public practice exams and match `data/skills.ts` — see `SEO/facts.md` §1 for
+the method and the exact wording that is defensible. DUO's practice-exam content is copyright and
+secret: counting items is fine, reproducing a question is not.
+
+---
+
 ## Design rules
 
 ### No emoji anywhere in the UI

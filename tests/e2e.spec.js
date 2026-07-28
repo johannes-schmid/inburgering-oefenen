@@ -84,14 +84,14 @@ test('proefexamen quiz renders questions and answer options', async ({ page }) =
 // ── 4. Blog pages ────────────────────────────────────────────────────────────
 
 test('blog page renders with nav and footer', async ({ page }) => {
-  await page.goto(BASE + '/blog/knm-examen-tips');
+  await page.goto(BASE + '/blog/inburgeringsexamen-a2-uitleg');
   await expect(page.locator('h1')).toBeVisible();
   await expect(page.locator('footer').first()).toBeVisible();
   await expect(page.locator('header')).toBeVisible();
 });
 
 test('blog page loads GA4 via the GoogleAnalytics component, no inline Clarity', async ({ page }) => {
-  const response = await page.goto(BASE + '/blog/knm-examen-tips');
+  const response = await page.goto(BASE + '/blog/inburgeringsexamen-a2-uitleg');
   const html = await response.text();
   // GA4 is loaded via @next/third-parties GoogleAnalytics (official Next.js best practice).
   expect(html).toContain('googletagmanager.com/gtag/js?id=G-KBZTYHGX2L');
@@ -120,7 +120,7 @@ test('dashboard loads in guest mode when unauthenticated', async ({ page }) => {
 test.describe('analytics is loaded on non-admin pages', () => {
   const PAGES = [
     '/login', '/register', '/proefexamen',
-    '/blog/knm-examen-tips', '/oefenvragen/politiek-en-instellingen',
+    '/blog/inburgeringsexamen-a2-uitleg', '/oefenvragen/politiek-en-instellingen',
   ];
   for (const path of PAGES) {
     test(`${path} loads GA4 and Clarity`, async ({ page }) => {

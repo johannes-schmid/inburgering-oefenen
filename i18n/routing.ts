@@ -19,6 +19,7 @@ export const routing = defineRouting({
     '/dashboard/analyse': '/dashboard/analyse',
     '/dashboard/fouten': '/dashboard/fouten',
     '/blog': '/blog',
+    '/blog/[slug]': '/blog/[slug]',
     '/oefenvragen': '/oefenvragen',
     '/leren': '/leren',
     '/activate': '/activate',
@@ -37,6 +38,8 @@ export const routing = defineRouting({
     },
     '/proefexamen': '/proefexamen',
     '/oefenen': '/oefenen',
+    '/oefenen/[skill]': '/oefenen/[skill]',
+    '/oefenexamen/[skill]': '/oefenexamen/[skill]',
   },
 });
 

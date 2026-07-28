@@ -5,6 +5,7 @@ import { useTranslations, useLocale } from 'next-intl';
 import { Link } from '@/i18n/navigation';
 import { createClient } from '@/lib/supabase/client';
 import { track } from '@/lib/analytics';
+import LogoMark from '@/components/site/LogoMark';
 
 export default function ActivatePage() {
   const t = useTranslations('activate');
@@ -92,7 +93,7 @@ export default function ActivatePage() {
             <span className="text-sm font-semibold text-on-surface-variant">{t('back')}</span>
           </Link>
           <div className="flex items-center gap-2">
-            <span className="w-1.5 h-5 bg-secondary-container rounded-full" />
+            <LogoMark size={28} />
             <span className="text-lg font-extrabold tracking-tight text-primary font-headline">Inburgering Oefenen</span>
           </div>
           <span className="text-xs text-on-surface-variant hidden sm:block max-w-[180px] truncate">{userEmail}</span>

@@ -15,6 +15,7 @@ import LerenView from './components/LerenView';
 import LerenThemaView from './components/LerenThemaView';
 import ProfileView from './components/ProfileView';
 import PlatformSidebar from '../components/PlatformSidebar';
+import LogoMark from '@/components/site/LogoMark';
 
 type Plan = 'free' | 'premium' | 'premium_plus';
 type View = 'exams' | 'leren' | 'woordkaarten' | 'profile';
@@ -183,7 +184,7 @@ export default function DashboardPage() {
       {/* Mobile header */}
       <header id="dash-mobile-header" className="sticky top-0 z-50 items-center justify-between px-4 py-3" style={{ display: 'none', background: 'linear-gradient(135deg,#001d4e,#002b6d)', borderBottom: '1px solid rgba(255,255,255,0.08)' }}>
         <button type="button" onClick={() => setView('exams')} className="flex items-center gap-2" style={{ background: 'none', border: 'none', cursor: 'pointer', padding: 0 }}>
-          <span className="w-1.5 h-5 rounded-full" style={{ background: '#fe762c', display: 'block' }} />
+          <LogoMark size={28} surface="dark" />
           <span className="text-lg font-extrabold tracking-tight font-headline" style={{ color: '#fff' }}>Inburgering Oefenen</span>
         </button>
         {session ? (

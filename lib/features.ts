@@ -9,7 +9,7 @@
  * Flip a flag to `true` once the corresponding content is authored.
  */
 export const FEATURES = {
-  blog: false,
+  blog: true,
   oefenvragen: false,
   leren: false,
   woordkaarten: false,

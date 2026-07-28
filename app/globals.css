@@ -170,6 +170,12 @@
   .sidebar { position: static !important; }
 }
 
+/* A grid item's automatic minimum size is its min-content width, so one wide descendant
+   (a table, a long URL) stretches the whole column and scrolls the page sideways. These two
+   rules keep the overflow inside the scroll container where it belongs. */
+.article-layout > * { min-width: 0; }
+.article-table-wrap { max-width: 100%; }
+
 .sidebar {
   position: sticky;
   top: 88px;
@@ -207,6 +213,104 @@
 .info-box { background: #f2f4f6; border-radius: 12px; padding: 20px 22px; margin: 24px 0; }
 .info-box p { margin-bottom: 0; }
 .info-box-green { background: rgba(76,175,122,0.06); border-left: 3px solid rgba(76,175,122,0.4); border-radius: 0 12px 12px 0; }
+
+/* ── Fact box ──
+   Every number in a blog post is wrapped in one of these. It carries the claim, the official
+   source URL and the date we checked it. See SEO/facts.md — this is the USP made visible.
+   Markup:
+     <div class="fact-box">
+       <p class="fact-box-claim">Lezen A2 duurt 65 minuten.</p>
+       <p class="fact-box-source">Bron: <a href="…" rel="nofollow noopener" target="_blank">DUO</a> — geraadpleegd 28-07-2026</p>
+     </div>
+*/
+.fact-box {
+  background: rgba(0,43,109,0.03);
+  border-left: 3px solid #002b6d;
+  border-radius: 0 12px 12px 0;
+  padding: 16px 20px;
+  margin: 22px 0;
+}
+.fact-box-claim {
+  color: #191c1e !important;
+  font-weight: 600;
+  margin-bottom: 6px !important;
+}
+.fact-box-source {
+  font-size: 0.8rem !important;
+  color: #5b5e6b !important;
+  margin-bottom: 0 !important;
+  line-height: 1.5 !important;
+}
+.fact-box-source a { color: #a24000; }
+
+/* ── Jump-link table of contents ── */
+.article-toc {
+  background: #f8f9fb;
+  border: 1px solid rgba(196,198,210,0.3);
+  border-radius: 14px;
+  padding: 20px 22px;
+  margin: 0 0 28px;
+}
+.article-toc-title {
+  font-family: var(--font-headline);
+  font-size: 0.78rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: #5b5e6b;
+  margin-bottom: 12px !important;
+}
+.article-toc ol { counter-reset: toc; list-style: none; display: flex; flex-direction: column; gap: 7px; margin: 0; }
+.article-toc li { counter-increment: toc; display: flex; gap: 10px; font-size: 0.92rem; line-height: 1.5; }
+.article-toc li::before { content: counter(toc) '.'; color: #fe762c; font-weight: 700; flex-shrink: 0; }
+.article-toc a { color: #002b6d; text-decoration: none; }
+.article-toc a:hover { text-decoration: underline; }
+
+/* Anchor offset so a jump link doesn't hide the heading under the sticky nav */
+.article-body h2[id] { scroll-margin-top: 96px; }
+
+/* ── Numbered lists and tables in article bodies ── */
+.article-body ol {
+  counter-reset: abody;
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 16px;
+}
+.article-body ol li { counter-increment: abody; display: flex; gap: 10px; color: #434651; font-size: 0.95rem; line-height: 1.7; }
+.article-body ol li::before { content: counter(abody) '.'; color: #fe762c; font-weight: 700; flex-shrink: 0; }
+
+.article-table-wrap { overflow-x: auto; margin: 22px 0; }
+.article-body table { width: 100%; border-collapse: collapse; font-size: 0.9rem; min-width: 460px; }
+.article-body th {
+  text-align: left;
+  font-family: var(--font-headline);
+  font-size: 0.78rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: #fff;
+  background: #002b6d;
+  padding: 11px 14px;
+}
+.article-body th:first-child { border-radius: 8px 0 0 0; }
+.article-body th:last-child { border-radius: 0 8px 0 0; }
+.article-body td { padding: 11px 14px; color: #434651; border-bottom: 1px solid #eceef0; }
+.article-body tbody tr:nth-child(even) td { background: #f8f9fb; }
+.article-body td strong { color: #191c1e; }
+
+/* ── FAQ block ── */
+.article-faq { margin-top: 8px; }
+.article-faq-item { border-bottom: 1px solid #eceef0; padding: 18px 0; }
+.article-faq-item:last-child { border-bottom: none; }
+.article-faq-q {
+  font-family: var(--font-headline);
+  font-size: 0.97rem;
+  font-weight: 700;
+  color: #191c1e;
+  margin-bottom: 8px !important;
+  line-height: 1.5;
+}
 
 /* ── Facts table ── */
 .facts-table { width: 100%; border-collapse: collapse; }

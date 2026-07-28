@@ -1,6 +1,7 @@
 import type { MetadataRoute } from 'next';
 import { SKILLS } from '@/data/skills';
 import { FEATURES } from '@/lib/features';
+import { getSortedPosts, getPostSlug, hasTranslation } from '@/data/blog-posts';
 
 const BASE = 'https://inburgeringoefenen.nl';
 const LOCALES = ['nl', 'en', 'ar'] as const;
@@ -35,9 +36,32 @@ export default function sitemap(): MetadataRoute.Sitemap {
     }
   }
 
-  // Blog and topic-quiz pages stay out of the sitemap until their A2 content exists.
-  // When these flags flip, add their slug loops here.
-  void FEATURES.blog;
+  if (FEATURES.blog) {
+    for (const locale of LOCALES) {
+      entries.push({
+        url: `${BASE}/${locale}/blog`,
+        changeFrequency: 'weekly',
+        priority: 0.7,
+        lastModified: TODAY,
+      });
+    }
+
+    // Only locales with a translated body — the rest are noindex, so listing them would
+    // advertise URLs we are telling Google to ignore.
+    for (const post of getSortedPosts()) {
+      for (const locale of LOCALES) {
+        if (!hasTranslation(post, locale)) continue;
+        entries.push({
+          url: `${BASE}/${locale}/blog/${getPostSlug(post, locale)}`,
+          changeFrequency: 'monthly',
+          priority: 0.7,
+          lastModified: post.dateModified,
+        });
+      }
+    }
+  }
+
+  // Topic quizzes stay out of the sitemap until their A2 content exists.
   void FEATURES.oefenvragen;
 
   return entries;

@@ -4,6 +4,7 @@ export { default as CTABanner } from './CTABanner';
 export { default as EyebrowBadge } from './EyebrowBadge';
 export { default as FeatureCard } from './FeatureCard';
 export { default as GradientHero } from './GradientHero';
+export { default as LogoMark } from './LogoMark';
 export { default as ReviewCard } from './ReviewCard';
 export { default as SectionHeader } from './SectionHeader';
 export { default as SkillCard } from './SkillCard';
