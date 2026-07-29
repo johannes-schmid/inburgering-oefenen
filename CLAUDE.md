@@ -8,27 +8,38 @@ PATH="/opt/homebrew/bin:$PATH" npm run dev     # next dev -p 3001, hot reload
 Always **port 3001**. If it's already running, don't start a second instance.
 All `check-ui.mjs` calls target `http://localhost:3001`.
 
-### Local database
+### Local database — ports 544xx, NOT the default 543xx
 The app runs against the **local Supabase stack**, not a cloud project. `.env.development.local`
-already points at it (`http://127.0.0.1:54321` + the standard local CLI keys) and takes
+already points at it (`http://127.0.0.1:54421` + the standard local CLI keys) and takes
 precedence over `.env.local` in dev — so `npm run dev` never touches production data.
 
-| | URL |
-|---|---|
-| API | http://127.0.0.1:54321 |
-| Studio (browse tables) | http://127.0.0.1:54323 |
-| Mailpit (catches all outgoing mail) | http://127.0.0.1:54324 |
-| Postgres | `postgresql://postgres:postgres@127.0.0.1:54322/postgres` |
+**This project deliberately uses the 544xx port block** so its stack can run at the same time
+as the `knm-website` stack, which keeps the default 543xx block. Don't "fix" the ports back to
+the defaults — the two would fight over 54321/54322 and only one could run.
+
+| | This project | knm-website |
+|---|---|---|
+| API | http://127.0.0.1:54421 | http://127.0.0.1:54321 |
+| Studio (browse tables) | http://127.0.0.1:54423 | http://127.0.0.1:54323 |
+| Mailpit (catches all mail) | http://127.0.0.1:54424 | http://127.0.0.1:54324 |
+| Postgres | `…@127.0.0.1:54422/postgres` | `…@127.0.0.1:54322/postgres` |
+| Next dev | 3001 | 3002 (`npx next dev -p 3002`) |
 
 ```bash
 supabase db reset     # re-apply the baseline + seed.sql — the way to test a schema change
 supabase status       # URLs and keys
-supabase stop         # free the ports
+supabase stop         # free the ports — WITHOUT --no-backup
 ```
+
+**Never pass `--no-backup` to `supabase stop`.** It deletes the project's Docker volumes
+rather than dumping them. Used on `--project-id knm-website`, it destroyed that project's
+local database; it was only recoverable because its repo still had `seed.sql` and
+`seed_woordkaarten.sql`. To free a port held by another project, stop it plainly.
 
 `psql` is not installed on the host; query the DB through the container:
 ```bash
 docker exec -i supabase_db_inburgering-oefenen psql -U postgres -d postgres -c '<sql>'
+docker exec -i supabase_db_knm-website        psql -U postgres -d postgres -c '<sql>'
 ```
 
 **Schema lives in exactly one file:** `supabase/migrations/20260729000000_a2_baseline.sql`.
