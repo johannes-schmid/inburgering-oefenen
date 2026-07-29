@@ -54,40 +54,45 @@ export async function POST(req: NextRequest) {
   const supabase = createAdminClient();
   const { data: q, error } = await supabase
     .from('questions')
-    .select('id, question, option_a, option_b, option_c')
+    .select('id, prompt, option_layout, question_options(id, label, body)')
     .eq('id', id)
     .single();
 
   if (error || !q) return NextResponse.json({ error: 'Question not found' }, { status: 404 });
 
-  const tracks: Record<string, string> = {};
+  // Options are rows now, and there may be three or four of them. Image options have no
+  // text to read, so they are skipped rather than synthesised as an empty string.
+  const options = ((q.question_options ?? []) as { id: number; label: string; body: string | null }[])
+    .filter((o) => o.body?.trim())
+    .sort((a, b) => a.label.localeCompare(b.label));
 
-  const items: [string, string][] = [
-    ['question', q.question],
-    ['a', q.option_a],
-    ['b', q.option_b],
-    ['c', q.option_c],
-  ];
+  // The spoken question itself. On Luisteren this is the second player in the question
+  // pane, independent of the stimulus audio.
+  const promptAudio = await synthesize(q.prompt, apiKey);
+  const promptUrl = await uploadAudio(supabaseUrl, serviceKey, `${id}/question.mp3`, promptAudio);
 
-  for (const [track, text] of items) {
-    const audio = await synthesize(text, apiKey);
-    const url   = await uploadAudio(supabaseUrl, serviceKey, `${id}/${track}.mp3`, audio);
-    tracks[track] = url;
+  const { error: promptErr } = await supabase
+    .from('questions')
+    .update({ prompt_audio_url: promptUrl })
+    .eq('id', id);
+  if (promptErr) return NextResponse.json({ error: promptErr.message }, { status: 500 });
+
+  // One UPDATE per option row — no read-modify-write of a shared array, so two
+  // concurrent generations cannot lose each other's writes. The path is keyed on the
+  // option's own id, which stays stable if the options are reordered.
+  const optionUrls: Record<string, string> = {};
+  for (const o of options) {
+    const audio = await synthesize(o.body!, apiKey);
+    const url = await uploadAudio(
+      supabaseUrl, serviceKey, `${id}/option-${o.id}.mp3`, audio
+    );
+    const { error: optErr } = await supabase
+      .from('question_options')
+      .update({ audio_url: url })
+      .eq('id', o.id);
+    if (optErr) return NextResponse.json({ error: optErr.message }, { status: 500 });
+    optionUrls[o.label] = url;
   }
 
-  const { error: updateErr } = await supabase.from('questions').update({
-    audio_question: tracks.question,
-    audio_a:        tracks.a,
-    audio_b:        tracks.b,
-    audio_c:        tracks.c,
-  }).eq('id', id);
-
-  if (updateErr) return NextResponse.json({ error: updateErr.message }, { status: 500 });
-
-  return NextResponse.json({
-    audio_question: tracks.question,
-    audio_a:        tracks.a,
-    audio_b:        tracks.b,
-    audio_c:        tracks.c,
-  });
+  return NextResponse.json({ prompt_audio_url: promptUrl, options: optionUrls });
 }

@@ -9,22 +9,30 @@ import type { Session } from '@supabase/supabase-js';
 import ExamQuestionCard from '@/components/proefexamen/ExamQuestionCard';
 import { useAudioEnabled } from '@/lib/audio-pref';
 import { awardXp, awardCorrectAnswer } from '@/lib/xp';
+import { recordExamAttempt } from '@/lib/attempts';
+import { PASS_THRESHOLD_PCT } from '@/lib/api-constants';
 import { LEREN_CATEGORY_META, DB_SECTION_TO_LEREN, lerenLinkForSectionSlug, lerenLinkForCategory, type LerenLink } from '@/lib/leren-links';
 
 export type QuizQuestion = {
   id: number;
+  /** From the stimulus' exam; needed to record which skill an attempt belongs to. */
+  skill?: 'lezen' | 'luisteren';
   category: string;
   question: string;
   optionA: string;
   optionB: string;
   optionC: string;
-  correct: 'A' | 'B' | 'C';
+  /** DUO uses 3 OR 4 options — undefined for a three-option item. */
+  optionD?: string;
+  correct: 'A' | 'B' | 'C' | 'D';
   explanation: string;
   imageUrl?: string | null;
+  optionLayout?: 'text' | 'image' | 'image_grid';
   audioQuestion?: string | null;
   audioA?: string | null;
   audioB?: string | null;
   audioC?: string | null;
+  audioD?: string | null;
   exam: number | null;
   section_id?: number | null;
   section_slug?: string;
@@ -108,7 +116,7 @@ export default function InlineQuiz({ questions, examNum, topicLabel, timerSecond
     setGuestEmailInFlight(true);
     const finalScore = scoreRef.current;
     const pct = total > 0 ? Math.round((finalScore / total) * 100) : 0;
-    const passed = pct >= 60;
+    const passed = pct >= PASS_THRESHOLD_PCT;
     const result = { score: finalScore, total, pct, passed, catScores };
     try {
       await fetch('/api/submit-results', {
@@ -154,20 +162,29 @@ export default function InlineQuiz({ questions, examNum, topicLabel, timerSecond
     const pct = total > 0 ? Math.round((scoreRef.current / total) * 100) : 0;
     sendGAEvent('event', 'leren_quiz_finished', { thema: examNum ?? topicLabel ?? 'unknown', score: scoreRef.current, total, pct });
     if (examNum) {
-      track('exam_finished', { source: 'dashboard_exam', exam_number: examNum, score: scoreRef.current, total, pct, passed: pct >= 60 });
+      track('exam_finished', { source: 'dashboard_exam', exam_number: examNum, score: scoreRef.current, total, pct, passed: pct >= PASS_THRESHOLD_PCT });
     }
   }
 
   useEffect(() => {
     if (done && examNum) {
       const pct = total > 0 ? Math.round((scoreRef.current / total) * 100) : 0;
-      const result: ExamResult = { score: scoreRef.current, total, pct, passed: pct >= 60 };
+      const result: ExamResult = { score: scoreRef.current, total, pct, passed: pct >= PASS_THRESHOLD_PCT };
       if (session && examNum) {
-        supabase.from('exam_results').upsert({
-          user_id: session.user.id, exam_number: examNum,
-          score: result.score, total: result.total, pct: result.pct, passed: result.passed,
-          cat_scores: catScores, completed_at: new Date().toISOString(),
-        }, { onConflict: 'user_id,exam_number' }).then(() => {});
+        // Append a sitting rather than upserting exam_results, which is a view now. The
+        // old upsert named a two-column conflict target against a three-column key, so it
+        // had been failing on every finished exam.
+        recordExamAttempt(supabase, {
+          userId: session.user.id,
+          skill: questions[0]?.skill ?? 'lezen',
+          examNumber: examNum,
+          score: result.score,
+          total: result.total,
+          pct: result.pct,
+          passed: result.passed,
+          catScores,
+          passThresholdPct: PASS_THRESHOLD_PCT,
+        }).then(() => {});
         awardXp(supabase, session.user.id, 'exam_completed', examNum);
         if (result.passed) awardXp(supabase, session.user.id, 'exam_passed', examNum);
       }
@@ -184,7 +201,7 @@ export default function InlineQuiz({ questions, examNum, topicLabel, timerSecond
   if (done) {
     const finalScore = scoreRef.current;
     const pct = total > 0 ? Math.round((finalScore / total) * 100) : 0;
-    const passed = pct >= 60;
+    const passed = pct >= PASS_THRESHOLD_PCT;
 
     // Guest email gate: show email form before revealing score for exam 1
     if (isGuest && examNum && !guestScoreRevealed) {

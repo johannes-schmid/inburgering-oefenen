@@ -7,7 +7,7 @@ export default async function QuestionsPage() {
   const supabase = await createClient();
 
   const { data: questions } = await supabase
-    .from('questions')
+    .from('questions_flat')
     .select('id, category, question, option_a, option_b, option_c, correct, explanation, image_url, exam, review_status, updated_at, reviewed_at, audio_question, audio_a, audio_b, audio_c')
     .order('id');
 

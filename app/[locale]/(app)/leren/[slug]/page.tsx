@@ -108,7 +108,7 @@ export default function LerenPage({ params }: { params: Promise<{ locale: string
   async function startQuiz() {
     if (!thema) return;
     const { data } = await supabase
-      .from('questions')
+      .from('questions_flat')
       .select('id, category, question, option_a, option_b, option_c, correct, explanation, image_url, exam')
       .eq('category', thema.quizCategory);
     const pool: KnmQuestion[] = (data ?? []).map(r => ({

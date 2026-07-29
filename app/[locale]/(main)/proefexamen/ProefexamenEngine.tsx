@@ -5,6 +5,8 @@ import { useTranslations } from 'next-intl';
 import { Link } from '@/i18n/navigation';
 import { createClient } from '@/lib/supabase/client';
 import { awardXp, awardCorrectAnswer } from '@/lib/xp';
+import { recordExamAttempt } from '@/lib/attempts';
+import { PASS_THRESHOLD_PCT } from '@/lib/api-constants';
 import { sendGAEvent } from '@next/third-parties/google';
 import { track } from '@/lib/analytics';
 import type { KnmQuestion } from '@/data/questions';
@@ -13,7 +15,10 @@ import ExamIntro from '@/components/proefexamen/ExamIntro';
 import { useAudioEnabled } from '@/lib/audio-pref';
 
 const TOTAL_SECONDS = 2700;
-const PASS_THRESHOLD_PCT = 0.7;
+// Was a local 0.7 while lib/api-constants said 60 — the same concept in two units, so a
+// candidate could pass in the engine and fail in the results email. One source now.
+// Phase 3 reads it per exam from `exams.pass_threshold_pct` instead.
+const PASS_THRESHOLD_FRACTION = PASS_THRESHOLD_PCT / 100;
 
 type AnsweredEntry = {
   q: KnmQuestion;
@@ -202,7 +207,7 @@ export default function ProefexamenEngine({ examNum, isDashboardMode, allQuestio
     const total = questions.length;
     const computedScore = answeredLogRef.current.filter((e) => e.isCorrect).length;
     const pct = Math.round((computedScore / total) * 100);
-    const passed = computedScore >= Math.ceil(total * PASS_THRESHOLD_PCT);
+    const passed = computedScore >= Math.ceil(total * PASS_THRESHOLD_FRACTION);
     const timeTaken = TOTAL_SECONDS - secondsRef.current;
 
     const res: ExamResults = {
@@ -233,21 +238,19 @@ export default function ProefexamenEngine({ examNum, isDashboardMode, allQuestio
         localStorage.setItem(key, JSON.stringify(existing));
       } catch {}
 
-      supabase
-        .from('exam_results')
-        .upsert(
-          {
-            user_id: userId,
-            exam_number: examNum,
-            score: res.score,
-            total: res.total,
-            pct: res.pct,
-            passed: res.passed,
-            cat_scores: res.catScores,
-          },
-          { onConflict: 'user_id,exam_number' }
-        )
-        .then(() => {});
+      // Append a sitting. exam_results is a view now, and the previous upsert here was
+      // failing on every submit (onConflict 'user_id,exam_number' vs a three-column key).
+      recordExamAttempt(supabase, {
+        userId,
+        skill: questions[0]?.skill ?? 'lezen',
+        examNumber: examNum,
+        score: res.score,
+        total: res.total,
+        pct: res.pct,
+        passed: res.passed,
+        catScores: res.catScores,
+        passThresholdPct: PASS_THRESHOLD_PCT,
+      }).then(() => {});
       awardXp(supabase, userId, 'exam_completed', examNum);
       if (res.passed) awardXp(supabase, userId, 'exam_passed', examNum);
     }

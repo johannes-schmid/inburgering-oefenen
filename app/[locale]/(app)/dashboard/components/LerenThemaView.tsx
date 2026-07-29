@@ -92,7 +92,7 @@ export default function LerenThemaView({ slug, locale, onBack, session, supabase
 
     const [qRes, secRes, resultsRes] = await Promise.all([
       supabase
-        .from('questions')
+        .from('questions_flat')
         .select('id, category, question, option_a, option_b, option_c, correct, explanation, image_url, exam, section_id')
         .eq('category', thema.quizCategory),
       supabase

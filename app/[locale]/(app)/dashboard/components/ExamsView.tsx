@@ -113,7 +113,7 @@ export default function ExamsView({ plan, progress, session, supabase, activeExa
     // Fetch questions (with section_id) and sections in parallel
     const [qRes, secRes] = await Promise.all([
       supabase
-        .from('questions')
+        .from('questions_flat')
         .select('id, category, question, option_a, option_b, option_c, correct, explanation, image_url, audio_question, audio_a, audio_b, audio_c, exam, section_id')
         .order('id'),
       supabase

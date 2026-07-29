@@ -14,7 +14,7 @@ export default async function EditQuestionPage({
   const supabase = await createClient();
 
   const { data: question } = await supabase
-    .from('questions')
+    .from('questions_flat')
     .select('*')
     .eq('id', parseInt(id))
     .single();

@@ -42,6 +42,18 @@ docker exec -i supabase_db_inburgering-oefenen psql -U postgres -d postgres -c '
 docker exec -i supabase_db_knm-website        psql -U postgres -d postgres -c '<sql>'
 ```
 
+### The content model in one paragraph
+An **exam** has **stimuli** (the left pane: a text, an image, or an audio fragment), and each
+stimulus carries **1..N questions** — DUO shares one text across 2–3 questions, so the stimulus
+cannot live on the question. Each question has 3 or 4 **question_options** rows, which may hold
+text or images. Schrijven/Spreken use **open_tasks** (+ **open_task_images** for captioned
+pictures) grouped into **exam_parts** (Spreken's four onderdelen). Answers are append-only:
+**exam_attempts** is one row per sitting, **user_question_results** every MCQ answer,
+**open_submissions** every written/spoken answer, and **open_criterion_scores** one row per
+rubric criterion — which is what makes Schrijven/Spreken progress chartable. `exam_results` is
+a **view** of the latest attempt; never write to it. Read `questions_flat` for the old flat
+option_a/b/c shape; write `question_options`.
+
 **Schema lives in exactly one file:** `supabase/migrations/20260729000000_a2_baseline.sql`.
 The 26 inherited KNM migrations are archived in `supabase/legacy-knm-migrations/` and are
 **not** applied — that chain could not be replayed on an empty database at all, because one
@@ -443,12 +455,22 @@ Log failed attempts separately — a fix that took three tries is three entries.
   as the sub-skills. Verified against the local stack. **Still to do:** run it on a new hosted
   Supabase project and point `.env.local` at it — only local is set up.
 - **Phase 3 — exam engine.** Split `ProefexamenEngine.tsx` (820 lines, hard-wired to 3-option
-  MCQ) into `ExamShell` + four item renderers. **Note:** the engine and four dashboard
-  surfaces still read the *old* `questions` columns (`category`, `exam`) which the baseline
-  removed. They compile — Supabase queries are untyped strings — but will fail at runtime
-  against real data. Reconciling them is the first job of this phase.
-- **Phase 4 — admin.** Skill switch, stimulus editor, `admin/opgaven`, four-tab exam builder,
-  two-voice stimulus audio + bulk generator.
+  MCQ) into `ExamShell` + four item renderers. It must render a **stimulus shared by 1..N
+  questions** (the pane must not remount when advancing within a stimulus, or Luisteren audio
+  restarts), **3 or 4 options**, and `option_layout = image | image_grid` as thumbnails. Read
+  `duration_seconds` and `pass_threshold_pct` from the exam row instead of the two module
+  constants.
+- **Phase 4 — admin. ⚠ THE QUESTION EDITOR CANNOT SAVE RIGHT NOW.** `QuestionForm`,
+  `QuestionsTable` and `ExamsGrid` still write `category` / `exam` / `option_a..c`, which the
+  new schema does not have, so saving shows *"column category does not exist"*. It fails
+  loudly rather than corrupting anything, but it is broken until this phase lands:
+  a stimulus picker, a repeatable option editor with per-option image upload, and exam
+  assignment through `stimuli.exam_id` rather than a `questions.exam` integer. Reads already
+  work — they go through the `questions_flat` view.
+  Also in this phase: skill switch, `admin/opgaven` for `open_tasks`, four-tab exam builder,
+  two-voice stimulus audio (`/v1/text-to-dialogue`, reading `stimuli.voice_cast`) + a bulk
+  generator, and a publish button wired to `exam_publish_issues(exam_id)` — which replaces
+  `ExamsGrid`'s hardcoded "40 questions / 7 KNM categories" warnings.
 - **Phase 5 — rubric grading.** `/api/grade-open` via AI Gateway, `/api/transcribe` for
   Spreken, `/admin/beoordeling` with the docent's correction → few-shot → eval loop.
 - **Phase 6 — seed** exam 1 of each skill. **Phase 7 —** rewrite the test suite.

@@ -43,7 +43,9 @@ export default async function AdminDashboard() {
     supabase.from('questions').select('*', { count: 'exact', head: true }).eq('review_status', 'pending'),
     supabase.from('user_question_results').select('answered_at').gte('answered_at', since),
     supabase.from('exam_submissions').select('created_at').gte('created_at', since),
-    supabase.from('user_question_results').select('question_id, was_correct, questions(category)'),
+    // The sub-skill now lives on the stimulus, not the question, so the breakdown walks
+    // user_question_results → questions → stimuli → sections.
+    supabase.from('user_question_results').select('question_id, was_correct, questions(stimuli(sections(name_nl)))'),
     supabase.from('payments').select('amount_cents').eq('status', 'paid').gte('created_at', todayStart.toISOString()),
     supabase.from('payments').select('amount_cents').eq('status', 'paid').gte('created_at', weekStart.toISOString()),
     supabase.from('payments').select('amount_cents').eq('status', 'paid'),
@@ -80,11 +82,12 @@ export default async function AdminDashboard() {
   const totalQuestions = (questionActivity ?? []).length;
   const totalExams = (examActivity ?? []).length;
 
-  // Aggregate correct/total per category
+  // Aggregate correct/total per sub-skill (advertentie, gesprek, e-mail …)
   const catMap: Record<string, { correct: number; total: number }> = {};
   for (const row of categoryResults ?? []) {
-    const q = row.questions as unknown as { category: string } | null;
-    const cat = q?.category;
+    const q = row.questions as unknown as
+      { stimuli: { sections: { name_nl: string } | null } | null } | null;
+    const cat = q?.stimuli?.sections?.name_nl;
     if (!cat) continue;
     if (!catMap[cat]) catMap[cat] = { correct: 0, total: 0 };
     catMap[cat].total++;

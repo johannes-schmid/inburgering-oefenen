@@ -58,7 +58,7 @@ export default function AnalysePage({ params }: { params: Promise<{ locale: stri
       }
 
       const [qRes, secRes, resultsRes, examRes] = await Promise.all([
-        supabase.from('questions').select('id, category, section_id, exam'),
+        supabase.from('questions_flat').select('id, category, section_id, exam'),
         supabase.from('sections').select('id, slug, name_nl, sort_order, topic').order('sort_order'),
         supabase.from('user_question_results').select('question_id, was_correct, answered_at').eq('user_id', userId).order('answered_at', { ascending: true }),
         supabase.from('exam_results').select('exam_number, pct, passed').eq('user_id', userId),

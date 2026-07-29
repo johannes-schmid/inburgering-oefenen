@@ -319,6 +319,28 @@ CREATE INDEX IF NOT EXISTS exam_attempts_user_idx
 CREATE INDEX IF NOT EXISTS exam_attempts_user_skill_idx
   ON public.exam_attempts (user_id, skill, exam_number);
 
+-- Assign the next attempt number server-side when the client does not supply one, so the
+-- app never has to read-then-write (which would race with itself on a double submit) and
+-- cannot silently collide with exam_attempts_no_key.
+CREATE OR REPLACE FUNCTION public.exam_attempts_set_attempt_no()
+RETURNS trigger LANGUAGE plpgsql AS $$
+BEGIN
+  IF NEW.attempt_no IS NULL OR NEW.attempt_no = 1 THEN
+    SELECT COALESCE(MAX(a.attempt_no), 0) + 1 INTO NEW.attempt_no
+    FROM public.exam_attempts a
+    WHERE a.user_id = NEW.user_id
+      AND a.skill = NEW.skill
+      AND a.exam_number = NEW.exam_number;
+  END IF;
+  RETURN NEW;
+END;
+$$;
+
+DROP TRIGGER IF EXISTS exam_attempts_set_attempt_no ON public.exam_attempts;
+CREATE TRIGGER exam_attempts_set_attempt_no
+  BEFORE INSERT ON public.exam_attempts
+  FOR EACH ROW EXECUTE FUNCTION public.exam_attempts_set_attempt_no();
+
 ALTER TABLE public.exam_attempts ENABLE ROW LEVEL SECURITY;
 DROP POLICY IF EXISTS "Users manage own attempts" ON public.exam_attempts;
 CREATE POLICY "Users manage own attempts"
@@ -1071,6 +1093,14 @@ WITH (security_invoker = true) AS
     q.reviewed_at,
     q.created_at,
     q.updated_at,
+    -- Three more aliases so this view is a true drop-in for the old `questions` shape.
+    -- `category` now resolves to the sub-skill's display name, which is what the
+    -- per-question-type score breakdown was always meant to be keyed by.
+    sec.name_nl         AS category,
+    e.number            AS exam,
+    -- The A2 free taster is static (data/free-practice.ts), so nothing is flagged into a
+    -- DB-driven practice pool any more. Constant false keeps admin/exams working.
+    false               AS oefenen,
     max(o.body)      FILTER (WHERE o.label = 'A') AS option_a,
     max(o.body)      FILTER (WHERE o.label = 'B') AS option_b,
     max(o.body)      FILTER (WHERE o.label = 'C') AS option_c,
@@ -1083,8 +1113,10 @@ WITH (security_invoker = true) AS
     count(o.id)                                   AS option_count
   FROM public.questions q
   JOIN public.stimuli s ON s.id = q.stimulus_id
+  LEFT JOIN public.sections sec ON sec.id = s.section_id
+  LEFT JOIN public.exams e ON e.id = q.exam_id
   LEFT JOIN public.question_options o ON o.question_id = q.id
-  GROUP BY q.id, s.skill, s.section_id, s.sort_order;
+  GROUP BY q.id, s.skill, s.section_id, s.sort_order, sec.name_nl, e.number;
 
 COMMENT ON VIEW public.questions_flat IS
   'Back-compat for read sites still expecting option_a/b/c. Read-only; write to '
