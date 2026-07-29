@@ -7,7 +7,7 @@ import { MetaPixel } from './MetaPixel';
 export default function AnalyticsProviders() {
   return (
     <>
-      <GoogleAnalytics gaId="G-KBZTYHGX2L" />
+      <GoogleAnalytics gaId="G-S2REC7DCXZ" />
       <Suspense>
         <GoogleAnalyticsTracker />
       </Suspense>
