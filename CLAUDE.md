@@ -33,9 +33,14 @@ supabase stop         # free the ports — WITHOUT --no-backup
 
 ### Hosted project
 `bbgrsfcevbavgsmnqjrd` · **Inburgering Oefenen** · Central EU (Frankfurt) · linked, and the
-baseline is recorded as applied in its migration history. Vercel project
-`inburgering-oefenen` (`prj_94BtwDjLI3WNdPeGESCLTZKdtRl9`) serves www.inburgeringoefenen.nl
-and already has the three Supabase vars from the Supabase↔Vercel integration.
+baseline is recorded as applied in its migration history.
+
+### Deploys go through GitHub only
+The Vercel project `inburgering-oefenen` builds from a push to `main`; it serves
+www.inburgeringoefenen.nl and already has the three Supabase vars from the Supabase↔Vercel
+integration. **There is deliberately no `.vercel/` CLI link in this repo** — don't run
+`vercel link`, `vercel deploy` or `vercel env pull` here. Push to `main` and let the Git
+integration build. `vercel.json` (the two crons) is committed project config and stays.
 
 `.env.local` targets the hosted project; **`.env.development.local` targets the local stack and
 takes precedence in dev**, so `npm run dev` cannot write to production. Keep it that way.
