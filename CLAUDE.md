@@ -31,6 +31,22 @@ supabase status       # URLs and keys
 supabase stop         # free the ports — WITHOUT --no-backup
 ```
 
+### Hosted project
+`bbgrsfcevbavgsmnqjrd` · **Inburgering Oefenen** · Central EU (Frankfurt) · linked, and the
+baseline is recorded as applied in its migration history. Vercel project
+`inburgering-oefenen` (`prj_94BtwDjLI3WNdPeGESCLTZKdtRl9`) serves www.inburgeringoefenen.nl
+and already has the three Supabase vars from the Supabase↔Vercel integration.
+
+`.env.local` targets the hosted project; **`.env.development.local` targets the local stack and
+takes precedence in dev**, so `npm run dev` cannot write to production. Keep it that way.
+
+Two live mismatches worth knowing:
+- **Local Postgres is 15, hosted is 17.** `supabase link` warns about it. Aligning means
+  `major_version = 17` in `config.toml` plus recreating the local volume, so local dev currently
+  tests against a different major version than production.
+- **Never copy `MOLLIE_API_KEY` from `.env.local` to Vercel** — the local one is a `test_` key,
+  and `MOLLIE_WEBHOOK_URL` is an ngrok tunnel. Production needs the live key and the real URL.
+
 **Never pass `--no-backup` to `supabase stop`.** It deletes the project's Docker volumes
 rather than dumping them. Used on `--project-id knm-website`, it destroyed that project's
 local database; it was only recoverable because its repo still had `seed.sql` and
