@@ -1,4 +1,4 @@
-project_id = "knm-website"
+project_id = "inburgering-oefenen"
 
 [api]
 port = 54321

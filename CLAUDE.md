@@ -2,10 +2,44 @@
 
 ## Dev server (always use this)
 ```bash
+supabase start                                 # local Postgres + Auth + Storage (Docker)
 PATH="/opt/homebrew/bin:$PATH" npm run dev     # next dev -p 3001, hot reload
 ```
 Always **port 3001**. If it's already running, don't start a second instance.
 All `check-ui.mjs` calls target `http://localhost:3001`.
+
+### Local database
+The app runs against the **local Supabase stack**, not a cloud project. `.env.development.local`
+already points at it (`http://127.0.0.1:54321` + the standard local CLI keys) and takes
+precedence over `.env.local` in dev — so `npm run dev` never touches production data.
+
+| | URL |
+|---|---|
+| API | http://127.0.0.1:54321 |
+| Studio (browse tables) | http://127.0.0.1:54323 |
+| Mailpit (catches all outgoing mail) | http://127.0.0.1:54324 |
+| Postgres | `postgresql://postgres:postgres@127.0.0.1:54322/postgres` |
+
+```bash
+supabase db reset     # re-apply the baseline + seed.sql — the way to test a schema change
+supabase status       # URLs and keys
+supabase stop         # free the ports
+```
+
+`psql` is not installed on the host; query the DB through the container:
+```bash
+docker exec -i supabase_db_inburgering-oefenen psql -U postgres -d postgres -c '<sql>'
+```
+
+**Schema lives in exactly one file:** `supabase/migrations/20260729000000_a2_baseline.sql`.
+The 26 inherited KNM migrations are archived in `supabase/legacy-knm-migrations/` and are
+**not** applied — that chain could not be replayed on an empty database at all, because one
+migration backfills from an `exam_results` table no migration ever created. See the README
+there. Add real migrations *after* the baseline; never edit it once it has run on production.
+
+`supabase/seed.sql` seeds only structural data — the admin allowlist and the 40 exam slots,
+exam 1 of each skill published and free. **No exam items**: placeholder questions would be
+indistinguishable from the docent's real content in admin.
 
 ---
 
@@ -392,11 +426,16 @@ Log failed attempts separately — a fix that took three tries is three entries.
 ---
 
 ## Outstanding work (see `~/.claude/plans/` for the full plan)
-- **Phase 2 — data model.** Needs a **new Supabase project**. Tables: `exams`, reworked
-  `questions` (skill, exam_id, stimulus_html/script, sub_skill), `open_tasks`, `rubrics`,
-  `open_submissions`, `grading_examples`.
+- ~~**Phase 2 — data model.**~~ **DONE** — `supabase/migrations/20260729000000_a2_baseline.sql`
+  squashes the KNM chain and adds `exams`, reshaped `questions` (skill, exam_id, stimulus_*),
+  `open_tasks`, `rubrics`, `open_submissions`, `grading_examples`, plus `sections` repurposed
+  as the sub-skills. Verified against the local stack. **Still to do:** run it on a new hosted
+  Supabase project and point `.env.local` at it — only local is set up.
 - **Phase 3 — exam engine.** Split `ProefexamenEngine.tsx` (820 lines, hard-wired to 3-option
-  MCQ) into `ExamShell` + four item renderers.
+  MCQ) into `ExamShell` + four item renderers. **Note:** the engine and four dashboard
+  surfaces still read the *old* `questions` columns (`category`, `exam`) which the baseline
+  removed. They compile — Supabase queries are untyped strings — but will fail at runtime
+  against real data. Reconciling them is the first job of this phase.
 - **Phase 4 — admin.** Skill switch, stimulus editor, `admin/opgaven`, four-tab exam builder,
   two-voice stimulus audio + bulk generator.
 - **Phase 5 — rubric grading.** `/api/grade-open` via AI Gateway, `/api/transcribe` for
