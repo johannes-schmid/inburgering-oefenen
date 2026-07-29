@@ -9,7 +9,6 @@ const BRAND_CSS = `
   /* Header */
   .eh { background:#002b6d; padding:28px 40px; }
   .logo-wrap { display:inline-block; text-decoration:none; }
-  .logo-bar { display:inline-block; width:4px; height:20px; background:#fe762c; border-radius:3px; vertical-align:middle; margin-right:9px; }
   .logo-txt { font-family:Manrope,-apple-system,Arial,sans-serif; color:#ffffff; font-size:19px; font-weight:800; letter-spacing:-0.4px; vertical-align:middle; text-decoration:none; }
   .logo-tag { color:rgba(255,255,255,0.45); font-size:11px; margin-top:5px; letter-spacing:0.2px; }
   /* Hero band */
@@ -108,9 +107,17 @@ export function renderEmail({
   <div class="ec">
     <div class="eh">
       <a href="https://inburgeringoefenen.nl" class="logo-wrap">
-        <span class="logo-bar"></span><span class="logo-txt">Inburgering Oefenen</span>
+        <table cellpadding="0" cellspacing="0" border="0" dir="${d}"><tr>
+          <td width="34" valign="middle">
+            <img src="https://inburgeringoefenen.nl/images/logo-email.png" width="34" height="34" alt="Inburgering Oefenen"
+              style="display:block;width:34px;height:34px;border:0;border-radius:8px;" />
+          </td>
+          <td valign="middle" style="padding-${d === 'rtl' ? 'right' : 'left'}:11px;">
+            <span class="logo-txt">Inburgering Oefenen</span>
+            <span class="logo-tag" style="display:block;">${strings.tagline}</span>
+          </td>
+        </tr></table>
       </a>
-      <p class="logo-tag">${strings.tagline}</p>
     </div>
     ${bodyHtml}
     <div class="ef">

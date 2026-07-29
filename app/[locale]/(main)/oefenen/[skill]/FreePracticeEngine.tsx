@@ -96,6 +96,7 @@ export default function FreePracticeEngine({ skill, skillName, items, locale }: 
           pct,
           passed: pct >= PASS_PCT,
           locale,
+          skill,
           source: `free_practice_${skill}`,
         }),
       });

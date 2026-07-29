@@ -3,6 +3,7 @@ import { createAdminClient } from '@/lib/supabase/admin';
 import { TABLE, CAMPAIGN, jsonOk, jsonError } from '@/lib/api-constants';
 import { resultsEmail, resultsSubject } from '@/lib/email/templates/results';
 import { type EmailLocale } from '@/lib/email/i18n';
+import { SKILL_SLUGS } from '@/data/skills';
 
 const resend = new Resend(process.env.RESEND_API_KEY);
 
@@ -12,10 +13,11 @@ export async function POST(request: Request): Promise<Response> {
   const body = await request.json().catch(() => ({})) as {
     email?: string; score?: number; total?: number; passed?: boolean;
     pct?: number; catScores?: Record<string, CatScore>; timeTaken?: number;
-    locale?: string;
+    locale?: string; skill?: string;
   };
 
   const { email, score, total, passed, pct, catScores, locale: rawLocale } = body;
+  const skill = (SKILL_SLUGS as string[]).includes(body.skill ?? '') ? body.skill : undefined;
   const locale: EmailLocale = (['nl', 'en', 'ar'].includes(rawLocale ?? '') ? rawLocale as EmailLocale : 'nl');
 
   if (!email || typeof email !== 'string' || !email.includes('@')) {
@@ -44,9 +46,9 @@ export async function POST(request: Request): Promise<Response> {
   const { error: emailError } = await resend.emails.send({
     from: process.env.RESEND_FROM_EMAIL || 'Marieke <marieke@inburgeringoefenen.nl>',
     to: normalizedEmail,
-    subject: resultsSubject(pct ?? 0, passed ?? false, locale),
+    subject: resultsSubject(pct ?? 0, passed ?? false, locale, skill),
     html: resultsEmail(
-      { score, total, passed: passed ?? false, pct: pct ?? 0, catScores: catScores ?? {} },
+      { score, total, passed: passed ?? false, pct: pct ?? 0, catScores: catScores ?? {}, skill },
       locale,
       `https://inburgeringoefenen.nl/uitschrijven?email=${encodeURIComponent(normalizedEmail)}`,
     ),
@@ -63,7 +65,7 @@ export async function POST(request: Request): Promise<Response> {
       email: normalizedEmail,
       campaign_type: CAMPAIGN.DAY2,
       scheduled_for: new Date(now + 2 * 24 * 60 * 60 * 1000).toISOString(),
-      payload: { score, total, pct, passed, exam_name: 'KNM Proefexamen', catScores, locale },
+      payload: { score, total, pct, passed, exam_name: 'Oefentoets', catScores, locale, skill },
     },
     {
       email: normalizedEmail,

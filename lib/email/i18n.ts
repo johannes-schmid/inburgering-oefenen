@@ -7,24 +7,29 @@ export function dir(locale: EmailLocale): 'ltr' | 'rtl' {
 export const t = {
   nl: {
     results: {
-      subject: (pct: number, passed: boolean) =>
-        passed ? `✓ Geslaagd! Jouw KNM proefexamen resultaat — ${pct}%` : `Jouw KNM proefexamen resultaat — ${pct}%`,
-      title: 'Jouw Proefexamen Resultaat',
-      passLabel: '✓ Geslaagd',
-      failLabel: '✗ Nog niet geslaagd',
-      passSubtext: 'Je haalt de slagingsgrens van 60% (27 van 44 vragen).',
-      failSubtext: 'Je hebt minimaal 27 van 44 vragen nodig voor de slagingsgrens.',
-      goodScore: 'Uitstekend! Je bent goed voorbereid voor het echte examen.',
+      subject: (pct: number, passed: boolean, skill?: string) => {
+        const wat = skill ? `oefentoets ${skill}` : 'oefentoets';
+        return passed ? `Goed gedaan! Jouw ${wat} — ${pct}%` : `Jouw ${wat} — ${pct}%`;
+      },
+      title: 'Jouw resultaat',
+      eyebrow: (skill?: string) => (skill ? `Oefentoets ${skill}` : 'Oefentoets'),
+      scoreLabel: 'Jouw score',
+      passLabel: 'Boven de oefengrens',
+      failLabel: 'Nog niet op de oefengrens',
+      passSubtext: 'Je zit boven onze oefengrens van 60% goed.',
+      failSubtext: 'Onze oefengrens is 60% goed. Daar zit je nog net onder.',
+      thresholdNote: 'De echte zak-slaaggrens stelt de minister vast en DUO maakt die niet openbaar. 60% is onze eigen oefengrens.',
+      goodScore: 'Uitstekend! Je bent goed op weg naar het echte examen.',
       okScore: 'Goed gedaan! Oefen nog een keer voor meer zekerheid.',
-      badScore: 'Herhaal de moeilijke onderwerpen en probeer het nog eens.',
-      catTitle: 'Score per onderwerp',
-      ctaText: 'Ga naar mijn dashboard →',
-      upsellLabel: 'Wil je verder oefenen?',
-      upsellTitle: '10 proefexamens + volledig KNM-pakket',
-      upsellBody: 'Toegang tot alle proefexamens, woordkaarten en leermodules — gevalideerd door een gecertificeerde docent.',
-      upsellBtn: 'Bekijk de pakketten →',
-      footerNote: 'Je ontvangt deze e-mail omdat je het KNM proefexamen hebt afgerond op',
-      studyTipsLabel: '📘 Studietips voor jouw zwakke onderwerpen',
+      badScore: 'Herhaal de moeilijke onderdelen en probeer het nog eens.',
+      catTitle: 'Score per onderdeel',
+      nextLabel: 'Wil je verder oefenen?',
+      nextTitle: 'Doe een volledig oefenexamen',
+      nextBody: 'Elke oefening is geschreven en nagekeken door een gecertificeerde NT2-docent — geen AI-content.',
+      nextBtn: 'Verder oefenen →',
+      footerNote: 'Je ontvangt deze e-mail omdat je een oefentoets hebt afgerond op',
+      studyTipsLabel: 'Studietips voor jouw zwakke onderdelen',
+      skillNames: { lezen: 'Lezen', luisteren: 'Luisteren', schrijven: 'Schrijven', spreken: 'Spreken' } as Record<string, string>,
     },
     day2: {
       subject: (pct: number) => `Je scoorde ${pct}% op KNM Proefexamen — dit kun je nog verbeteren`,
@@ -139,7 +144,7 @@ export const t = {
       packagesLabel: 'Kies jouw pakket',
     },
     common: {
-      tagline: 'Jouw voorbereiding op het KNM-examen',
+      tagline: 'Oefenen voor het inburgeringsexamen A2',
       copyright: '© 2026 Inburgering Oefenen',
       contact: 'contact@inburgeringoefenen.nl',
       unsubscribe: 'Uitschrijven',
@@ -181,24 +186,29 @@ export const t = {
 
   en: {
     results: {
-      subject: (pct: number, passed: boolean) =>
-        passed ? `✓ Passed! Your KNM practice exam result — ${pct}%` : `Your KNM practice exam result — ${pct}%`,
-      title: 'Your Practice Exam Result',
-      passLabel: '✓ Passed',
-      failLabel: '✗ Not yet passed',
-      passSubtext: 'You meet the passing threshold of 60% (27 of 44 questions).',
-      failSubtext: 'You need at least 27 of 44 questions to meet the passing threshold.',
-      goodScore: 'Excellent! You are well prepared for the real exam.',
+      subject: (pct: number, passed: boolean, skill?: string) => {
+        const what = skill ? `${skill} practice test` : 'practice test';
+        return passed ? `Well done! Your ${what} — ${pct}%` : `Your ${what} — ${pct}%`;
+      },
+      title: 'Your result',
+      eyebrow: (skill?: string) => (skill ? `${skill} practice test` : 'Practice test'),
+      scoreLabel: 'Your score',
+      passLabel: 'Above our practice mark',
+      failLabel: 'Not at our practice mark yet',
+      passSubtext: 'You are above our practice mark of 60% correct.',
+      failSubtext: 'Our practice mark is 60% correct. You are just below it.',
+      thresholdNote: 'The real pass mark is set by the minister and DUO does not publish it. 60% is our own practice mark.',
+      goodScore: 'Excellent! You are well on your way to the real exam.',
       okScore: 'Good job! Practice once more for extra confidence.',
-      badScore: 'Review the difficult topics and try again.',
-      catTitle: 'Score per topic',
-      ctaText: 'Go to my dashboard →',
-      upsellLabel: 'Want to practice more?',
-      upsellTitle: '10 practice exams + complete KNM package',
-      upsellBody: 'Access to all practice exams, vocabulary cards and learning modules — validated by a certified teacher.',
-      upsellBtn: 'View the packages →',
-      footerNote: 'You receive this email because you completed the KNM practice exam on',
-      studyTipsLabel: '📘 Study tips for your weak topics',
+      badScore: 'Review the difficult parts and try again.',
+      catTitle: 'Score per part',
+      nextLabel: 'Want to practice more?',
+      nextTitle: 'Take a full practice exam',
+      nextBody: 'Every exercise is written and checked by a certified NT2 teacher — no AI content.',
+      nextBtn: 'Keep practising →',
+      footerNote: 'You receive this email because you completed a practice test on',
+      studyTipsLabel: 'Study tips for your weak parts',
+      skillNames: { lezen: 'Reading', luisteren: 'Listening', schrijven: 'Writing', spreken: 'Speaking' } as Record<string, string>,
     },
     day2: {
       subject: (pct: number) => `You scored ${pct}% on the KNM Practice Exam — here's how to improve`,
@@ -313,7 +323,7 @@ export const t = {
       packagesLabel: 'Choose your package',
     },
     common: {
-      tagline: 'Your preparation for the KNM exam',
+      tagline: 'Practice for the A2 inburgering exam',
       copyright: '© 2026 Inburgering Oefenen',
       contact: 'contact@inburgeringoefenen.nl',
       unsubscribe: 'Unsubscribe',
@@ -355,24 +365,29 @@ export const t = {
 
   ar: {
     results: {
-      subject: (pct: number, passed: boolean) =>
-        passed ? `✓ نجحت! نتيجة اختبارك التجريبي لـ KNM — ${pct}%` : `نتيجة اختبارك التجريبي لـ KNM — ${pct}%`,
-      title: 'نتيجة اختبارك التجريبي',
-      passLabel: '✓ نجحت',
-      failLabel: '✗ لم تنجح بعد',
-      passSubtext: 'لقد تجاوزت حد النجاح 60% (27 من 44 سؤالاً).',
-      failSubtext: 'تحتاج إلى 27 سؤالاً على الأقل من 44 لتجاوز حد النجاح.',
-      goodScore: 'ممتاز! أنت مستعد جيداً للامتحان الحقيقي.',
+      subject: (pct: number, passed: boolean, skill?: string) => {
+        const what = skill ? `اختبار ${skill} التدريبي` : 'الاختبار التدريبي';
+        return passed ? `أحسنت! ${what} — ${pct}%` : `${what} — ${pct}%`;
+      },
+      title: 'نتيجتك',
+      eyebrow: (skill?: string) => (skill ? `اختبار ${skill} التدريبي` : 'اختبار تدريبي'),
+      scoreLabel: 'نتيجتك',
+      passLabel: 'فوق حدّ التدريب',
+      failLabel: 'لم تبلغ حدّ التدريب بعد',
+      passSubtext: 'أنت فوق حدّ التدريب الخاص بنا وهو 60% صحيحة.',
+      failSubtext: 'حدّ التدريب الخاص بنا هو 60% صحيحة. أنت أدناه بقليل.',
+      thresholdNote: 'حدّ النجاح الحقيقي يحدّده الوزير ولا تنشره DUO. نسبة 60% هي حدّ التدريب الخاص بنا.',
+      goodScore: 'ممتاز! أنت على الطريق الصحيح للامتحان الحقيقي.',
       okScore: 'أحسنت! تدرّب مرة أخرى لمزيد من الثقة.',
-      badScore: 'راجع المواضيع الصعبة وحاول مجدداً.',
-      catTitle: 'النتيجة لكل موضوع',
-      ctaText: 'اذهب إلى لوحتي →',
-      upsellLabel: 'هل تريد مزيداً من التدريب؟',
-      upsellTitle: '10 اختبارات تجريبية + الحزمة الكاملة لـ KNM',
-      upsellBody: 'وصول إلى جميع الاختبارات التجريبية وبطاقات المفردات ووحدات التعلم — تم التحقق منها من قِبَل مدرّس معتمد.',
-      upsellBtn: 'عرض الحزم →',
-      footerNote: 'تلقّيت هذا البريد لأنك أكملت الاختبار التجريبي لـ KNM على',
-      studyTipsLabel: '📘 نصائح للدراسة في مواضيعك الضعيفة',
+      badScore: 'راجع الأجزاء الصعبة وحاول مجدداً.',
+      catTitle: 'النتيجة لكل جزء',
+      nextLabel: 'هل تريد مزيداً من التدريب؟',
+      nextTitle: 'قم باختبار تدريبي كامل',
+      nextBody: 'كل تمرين مكتوب ومراجَع من قِبَل مدرّس NT2 معتمد — بدون محتوى من الذكاء الاصطناعي.',
+      nextBtn: 'واصل التدريب →',
+      footerNote: 'تلقّيت هذا البريد لأنك أكملت اختباراً تدريبياً على',
+      studyTipsLabel: 'نصائح للدراسة في أجزائك الضعيفة',
+      skillNames: { lezen: 'القراءة', luisteren: 'الاستماع', schrijven: 'الكتابة', spreken: 'المحادثة' } as Record<string, string>,
     },
     day2: {
       subject: (pct: number) => `حصلت على ${pct}% في اختبار KNM التجريبي — إليك كيفية التحسين`,
@@ -487,7 +502,7 @@ export const t = {
       packagesLabel: 'اختر حزمتك',
     },
     common: {
-      tagline: 'تحضيرك لامتحان KNM',
+      tagline: 'التدريب على امتحان الاندماج A2',
       copyright: '© 2026 Inburgering Oefenen',
       contact: 'contact@inburgeringoefenen.nl',
       unsubscribe: 'إلغاء الاشتراك',
