@@ -32,8 +32,20 @@ supabase stop         # free the ports — WITHOUT --no-backup
 ```
 
 ### Hosted project
-`bbgrsfcevbavgsmnqjrd` · **Inburgering Oefenen** · Central EU (Frankfurt) · linked, and the
-baseline is recorded as applied in its migration history.
+`bbgrsfcevbavgsmnqjrd` · **Inburgering Oefenen** · Central EU (Frankfurt) · linked.
+
+**The baseline's migration history lied, and cost a production outage.** The hosted project ran an
+*earlier* version of `20260729000000_a2_baseline.sql`; the file was later rewritten in place during
+the schema rework, and because the version number did not change, the rewritten file was recorded as
+applied without ever running. `supabase migration list` showed the baseline applied on both sides
+while the schemas differed by three columns, three CHECK constraints and the `questions_flat` view.
+Every exam 404'd on production because `fetchExamContent()` selects `exams.pass_threshold_pct`, which
+did not exist there. `20260731200000_align_production_schema.sql` closes the gap.
+
+**So: never edit a migration that has run anywhere, including "recorded as applied".** And when
+production misbehaves in a way local does not, diff the two schemas — the migration history is a
+record of intent, not of fact. `supabase db diff --linked` finds the drift but writes the correction
+**backwards** (it drops from local to match production), so read it and invert it by hand.
 
 ### Deploys go through GitHub only
 The Vercel project `inburgering-oefenen` builds from a push to `main`; it serves

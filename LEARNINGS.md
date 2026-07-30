@@ -783,3 +783,28 @@ since the old build also served that.
 **Also:** a flag commented "TEMPORARY — REVERT BEFORE LAUNCH" that then ships to production must
 have its comment rewritten in the same breath. Left alone it tells the next reader the state was an
 accident, and someone silently "fixes" a deliberate decision.
+
+## 2026-07-30 — Production 404'd every exam: a migration recorded as applied that never ran
+**Changed:** `supabase/migrations/20260731200000_align_production_schema.sql`, applied to
+`bbgrsfcevbavgsmnqjrd`; CLAUDE.md's hosted-project section rewritten.
+**Outcome:** SUCCESS — all four exams now resolve on production; `questions_flat` restored.
+**What went wrong:** the owner reported "page not found" on the live writing and speaking exams. It
+was neither writing nor speaking: `fetchExamContent()` selects `exams.pass_threshold_pct`, that
+column did not exist on production, PostgREST answered `42703`, the function returned its error path,
+and the page read that as "no such exam" and called `notFound()`. All four skills were broken; the
+owner had only tried two.
+**Root cause:** production ran an *earlier* version of the baseline. That file was then rewritten in
+place during the schema rework — same timestamp — so the rewritten version was recorded as applied
+without executing. `supabase migration list` showed identical history on both sides while the
+schemas differed by three columns, three CHECK constraints and a view.
+**Lessons:**
+1. **Never edit a migration that has run anywhere.** The rule already existed in CLAUDE.md for
+   production; "recorded as applied" counts as having run, and that is the case that bit.
+2. **When production behaves differently from local, diff the schemas, not the migration history.**
+   The history is a record of intent. Comparing `information_schema.columns` locally against the
+   PostgREST OpenAPI spec remotely took two minutes and found everything.
+3. **`supabase db diff --linked` writes the fix backwards** — it generated DROPs to bring local down
+   to production. Useful as a *detector*, dangerous as a generator. Read it, invert it, delete it.
+4. **An error from the data layer must not be indistinguishable from "not found".**
+   `fetchExamContent()` returns `null` for both a missing exam and a failed query, so a schema fault
+   surfaced as a 404 with nothing in the logs pointing at the column. Worth separating.
