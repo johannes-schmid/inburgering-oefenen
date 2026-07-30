@@ -110,9 +110,23 @@ type Step =
 
 type Props = {
   content: ExamContent;
-  /** Compleet plan — per-question explanations in the review. */
+  /** Compleet plan — per-question explanations in the MCQ review. */
   canSeeExplanations: boolean;
 };
+
+/**
+ * Rubric feedback is **not** tier-gated, deliberately.
+ *
+ * Grading costs money per use, so it is rationed by the free allowance instead — two graded
+ * exercises per skill, enforced server-side in `lib/grading-limits.ts`. Hiding the feedback behind
+ * Compleet as well would mean paying a model to produce text the candidate cannot read, which is the
+ * worst of both: our cost, no conversion, and a candidate who spent their allowance on a score with
+ * no explanation. The paywall arrives when the allowance runs out, which is the moment the value has
+ * actually been demonstrated.
+ *
+ * Per-question explanations on Lezen/Luisteren stay Compleet: those are free to serve.
+ */
+const RUBRIC_FEEDBACK_IS_GATED = false;
 
 const RECORDING_BUCKET = 'speaking-submissions';
 
@@ -546,7 +560,7 @@ export default function ExamShell({ content, canSeeExplanations }: Props) {
                   task={step.task}
                   grade={grades[step.task.id] ?? EMPTY_GRADE}
                   hasAnswer={hasAnswer(written[step.task.id], spoken[step.task.id])}
-                  canSeeDetail={canSeeExplanations}
+                  canSeeDetail={!RUBRIC_FEEDBACK_IS_GATED || canSeeExplanations}
                   passThresholdPct={exam.pass_threshold_pct}
                   onGrade={() => void gradeTask(step.task)}
                   hideAction
@@ -589,7 +603,7 @@ export default function ExamShell({ content, canSeeExplanations }: Props) {
                   task={step.task}
                   grade={grades[step.task.id] ?? EMPTY_GRADE}
                   hasAnswer={hasAnswer(written[step.task.id], spoken[step.task.id])}
-                  canSeeDetail={canSeeExplanations}
+                  canSeeDetail={!RUBRIC_FEEDBACK_IS_GATED || canSeeExplanations}
                   passThresholdPct={exam.pass_threshold_pct}
                   onGrade={() => void gradeTask(step.task)}
                   hideAction
@@ -739,7 +753,7 @@ export default function ExamShell({ content, canSeeExplanations }: Props) {
                 scores={g.scores}
                 answerText={g.answerText}
                 highlights={g.highlights}
-                canSeeDetail={canSeeExplanations}
+                canSeeDetail={!RUBRIC_FEEDBACK_IS_GATED || canSeeExplanations}
                 premiumHref="/premium?vanaf=rubriek-feedback"
                 passThresholdPct={exam.pass_threshold_pct}
               />

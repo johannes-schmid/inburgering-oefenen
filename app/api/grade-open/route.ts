@@ -4,6 +4,8 @@ import { createAdminClient } from '@/lib/supabase/admin';
 import { rubricCategory, type Rubric, type RubricCriterion } from '@/lib/rubrics';
 import { gradeOpenAnswer, type FewShotExample, type GradeTask } from '@/lib/ai/grade';
 import { transcribeRecording } from '@/lib/ai/transcribe';
+import { planFromMetadata } from '@/lib/entitlements';
+import { checkGradingAllowed, clientIp, logGradeAttempt } from '@/lib/grading-limits';
 
 /**
  * Grade one open submission against the docent's rubric.
@@ -163,6 +165,37 @@ export async function POST(request: Request) {
         { status: 429 }
       );
     }
+  }
+
+  // ── Spend controls ──────────────────────────────────────────────────────────────────────────
+  // After we know the skill, before any provider is touched. Admins re-grading from the review inbox
+  // are exempt: that is the docent doing her job, not a candidate consuming a free tier.
+  if (!isAdmin) {
+    const ip = clientIp(request);
+    const verdict = await checkGradingAllowed({
+      userId: user.id,
+      ip,
+      skill: raw.skill,
+      plan: planFromMetadata(user.user_metadata),
+    });
+
+    if (!verdict.allowed) {
+      return NextResponse.json(
+        {
+          error: verdict.message,
+          code: verdict.code,
+          reason: verdict.reason,
+          freeLimit: verdict.freeLimit,
+        },
+        // 402 for "pay to continue" so the client can tell a paywall from a cooldown without
+        // string-matching the message.
+        { status: verdict.reason === 'paywall' ? 402 : 429 }
+      );
+    }
+
+    // Logged before the call, not after: the providers bill for the attempt, so the window must
+    // count attempts. Logging on success would let a loop of failures run free.
+    await logGradeAttempt(user.id, ip, raw.skill);
   }
 
   const rubric = await resolveRubric(supabase, raw.skill, raw.rubric_id, task);
