@@ -594,3 +594,115 @@ ships a title that describes content it never renders.
 **Outcome:** SUCCESS
 **What worked / went wrong:** Gmail striptes de inline `<svg>` van `svgScoreRing` volledig — de score was in de echte mail onzichtbaar. Score nu als tekst in een table-cel. Ook bleek "Score per onderwerp" leeg te renderen omdat de taster geen `catScores` stuurt; die sectie wordt nu weggelaten als er niets is. Verificatie via een eigen tsx-preview + puppeteer-screenshot op `file://` (logo-URL lokaal ge-rewrite, anders broken image in de preview).
 **Lesson:** Geen inline SVG in e-mailtemplates — Gmail verwijdert het. En pas-normen: de oude copy noemde "27 van 44 vragen", precies de niet-onderbouwde grens uit `SEO/facts.md` §9; e-mailcopy valt onder dezelfde factcheck als de blog.
+
+## 2026-07-29 — Phase 3 exam engine, Phase 4 admin rework, Google-only auth
+**Changed:**
+- **Engine:** new `lib/exam-content.ts` (`fetchExamContent`), `components/exam/{ExamShell,StimulusPane,McqQuestion,AudioPlayer,WritingTask,SpeakingTask}.tsx`, route `app/[locale]/(app)/oefenexamen/[skill]/[number]/page.tsx`. `lib/attempts.ts` gained `startExamAttempt` / `completeExamAttempt`. New `lib/entitlements.ts`.
+- **Admin:** `QuestionForm` rewritten against `stimuli` + `question_options`; new `OptionImagePicker`; new `/admin/exams` (40 slots) and `/admin/exams/[id]` builder (`ExamBuilder`) wired to `exam_publish_issues()`; `QuestionsTable` replaced (1132 → ~290 lines); `ExamsGrid` deleted; new `lib/admin/stimuli.ts`.
+- **Auth:** `components/auth/{AuthPanel,AuthShell}.tsx`; login/register/admin-login rewritten; `/auth/callback` hardened; `env:` block removed from `next.config.ts`; admin sidebar de-KNM'd.
+**Outcome:** SUCCESS — `tsc --noEmit` and `next build` clean; Lezen and Schrijven exam 1 played end to end against the local fixture (intro → questions → submit → results).
+**What worked / went wrong:**
+- **The stimulus pane must be keyed on the stimulus, not the question index.** `<StimulusPane key={step.stimulus.id}>` plus `memo` comparing only `stimulus.id`. Keying on the step index remounts the `<audio>` element between two questions on the same fragment, which restarts Luisteren playback mid-item. This is the one thing the old flat engine could not express at all.
+- **Answers are held in state until submit, not written per click.** The old engine inserted a `user_question_results` row on every click, so a candidate who changed their mind left a superseded row that skews the mastery series. Going back and editing is also how the real exam behaves.
+- **`startExamAttempt` before the first answer, `completeExamAttempt` at submit.** Inserting the attempt only at submit would leave every per-answer row without an `attempt_id` for the whole sitting. `completed_at` stays NULL until submit, and `exam_results` filters on it, so an abandoned attempt never appears as a result.
+- **The unique partial index forces a two-step option save.** `question_options_one_correct_idx` is `UNIQUE (question_id) WHERE is_correct`, so upserting the new correct option while the old one is still `true` is a duplicate-key error. The editor writes every row with `is_correct: false`, then flips one. Options are also reconciled **by label**, never deleted and re-inserted — a delete cascades `user_question_results.chosen_option_id` to NULL and silently erases which answer past candidates picked.
+- **`next.config.ts`'s `env:` block was a live hazard even after the service-key leak was fixed.** Mapping `NEXT_PUBLIC_SUPABASE_URL: process.env.SUPABASE_URL` overrides a correctly-set public var with `undefined` on any environment that defines only the non-public name. Deleted; the browser client reads the `NEXT_PUBLIC_*` names directly.
+- **Requirements arrived mid-build three times** (exams belong in the portal; then Google + email login; then Google only). Moving the route from `(main)` to `(app)` was cheap because the engine was a component taking `content` as a prop and the page was a thin server shell. Ripping the email/password path back out of `AuthPanel` was cheap for the same reason — one component owned all auth. The `/wachtwoord` reset page went with it, since there is no password to reset.
+- **The React compiler lint caught three real bugs in new code** that `tsc` and `next build` both passed: a ref written during render (`chosenRef.current = chosen`), and two setState-in-effect resets. The ref one mattered — the timer's auto-submit closes over the first render, so without the latest-ref it would have scored an empty answer set on timeout. Run `npx eslint <new paths>` on new code; the repo-wide run is 219 pre-existing errors and drowns it.
+**Lesson:** When a route's shell and its engine are separate, a late "this belongs somewhere else" is a file move, not a rewrite — worth the split even for one caller. And `next build` passing is not "it compiles cleanly": ESLint's react-hooks rules find render-correctness bugs the type checker cannot see, so lint the new files specifically when the repo-wide baseline is dirty.
+
+## 2026-07-30 — Local Postgres stranded on a CLI upgrade
+**Changed:** `supabase/config.toml` `major_version` 15 → 17; recreated the local db volume.
+**Outcome:** SUCCESS
+**What worked / went wrong:** `supabase stop && start` (needed for an `additional_redirect_urls`
+change) failed with *"database files are incompatible with server… initialized by PostgreSQL
+version 15, which is not compatible with this version 17.6"*. The CLI no longer honours
+`db.major_version` and forces 17, so the PG15 volume could not mount and the stack would not
+come up at all. Dumped the volume first with a matching `postgres:15-alpine` container
+(`pg_dumpall`, 6 MB) before deleting it — the contents were reproducible from the baseline +
+`seed.sql`, but proving that after the fact is not the same as having a dump.
+**Lesson:** A stack that "just needs a restart" can be a one-way door after a CLI upgrade. Dump
+before recreating a volume, with an image matching the *data*, not the config.
+
+## 2026-07-30 — Local Google OAuth: two clients, and the file the CLI actually reads
+**Changed:** repointed `GOOGLE_CLIENT_*` in `.env.development.local` at the dedicated client;
+added a gitignored root `.env`; `.gitignore` now covers `.env` / `.env.*`.
+**Outcome:** SUCCESS
+**What worked / went wrong:** `redirect_uri_mismatch` persisted after the owner added both
+callback URLs in Google Cloud, because they had edited the *product's* client while the auth
+container was still running KNM's. Only `docker exec … env | grep GOOGLE` settled it. An earlier
+attempt to fix it copied the ID from `.env.local` — which has no secret — leaving a new ID paired
+with the old secret; reverted from a backup.
+**Lesson:** For OAuth failures, read the client id **out of the running container**, never off a
+file. And the Supabase CLI reads `.env` at the repo root — *not* `.env.development.local`, which
+is a Next.js convention. Copy an ID and a secret as a pair or not at all.
+
+## 2026-07-30 — Study portal rebuilt as real routes
+**Changed:** rewrote `(app)/dashboard/page.tsx` as a server component; new
+`(app)/dashboard/[skill]/page.tsx`, `(app)/dashboard/profiel/`,
+`dashboard/components/ExamSegments.tsx`, `lib/portal-progress.ts`,
+`(app)/components/nav.ts`; rewrote `PlatformSidebar` and `AppShell`; new `portal` i18n namespace
+in nl/en/ar; `i18n/routing.ts` entries.
+**Outcome:** SUCCESS
+**What worked / went wrong:** Found a live data bug while writing the progress layer: KNM keyed
+progress `exam_${number}` with no skill, so exam 1 of all four onderdelen collided on one key.
+Two contradictions only the screenshots caught — a card reading "1 van 10 gedaan" *and* "Nog geen
+oefenexamens beschikbaar", and a passed exam row reading "Nog niet beschikbaar" under its own
+checkmark. At 390px the row's sub-line wrapped into the right-hand "Binnenkort beschikbaar",
+which was duplicate information anyway.
+**Lesson:** Two independent truths about one row (progress, availability) need an explicit
+precedence, or they will contradict each other in some state. And portal screenshots need a real
+session — `check-ui.mjs` only ever photographs `/login`, which looks like a pass if you don't read
+the final URL.
+
+## 2026-07-30 — Phase 5: rubric grading for Schrijven en Spreken
+**Changed:** `supabase/migrations/20260731000000_grading.sql`; `lib/rubrics.ts`,
+`lib/rubric-templates.ts`, `lib/wav-recorder.ts`, `lib/grading-evals.ts`, `lib/ai/{gateway,transcribe,grade}.ts`;
+`app/api/grade-open/route.ts`; `components/exam/{RubricFeedback,SpeakingTask,ExamShell}.tsx`;
+`(admin)/admin/rubrics/*` and `(admin)/admin/beoordeling/*`; `scripts/check-audio-model.mjs`.
+**Outcome:** SUCCESS — graded a real answer end to end; 5 criterion rows with the rubric version
+stamped; 401/404/400/429 and idempotency all verified.
+**What worked:** writing a *falsifiable* pre-check before committing to the audio path.
+`scripts/check-audio-model.mjs` synthesises a Dutch sentence with four words the model cannot guess,
+sends only the audio, and requires them back. It passed, which is what justified rewriting the
+recorder to WAV. Asking a model "did you receive audio?" would have returned true either way.
+**Lesson:** when a decision rests on a vendor capability, spend the hour on a test that can **fail**
+before spending the day on the code that assumes it. And don't trust capability metadata —
+AI Gateway's `audio-input` tag is known-missing (vercel/ai#9417).
+
+## 2026-07-30 — `next build` cannot catch a client/server boundary call
+**Changed:** moved `emptyDraft()` out of `RubricForm.tsx` (`'use client'`) into
+`(admin)/admin/rubrics/_draft.ts`.
+**Outcome:** FAILURE, found by the owner loading the page.
+**What went wrong:** a server component imported and *called* a function exported from a
+`'use client'` module. `tsc --noEmit` passed, `next build` compiled all five routes, and
+`/admin/rubrics/new` threw at request time. My curl check reported 200 because the `(admin)` layout
+redirects an unauthenticated request to `/admin-login` — so I was measuring the login page.
+**Lesson:** a 200 from an auth-gated route proves nothing unless you assert the **final URL**. Only
+*types* may cross a `'use client'` boundary; values must live in a module without the directive. The
+scratchpad `admin-session.mjs` now mints an allowlisted session and fails loudly on a redirect.
+
+## 2026-07-30 — check-ui.mjs runs Chromium 101 and misrenders Tailwind v4
+**Changed:** `GradingInbox.tsx` slides its drawer with an explicit `transform` instead of
+`translate-x-full`.
+**Outcome:** SUCCESS, after chasing a bug that did not exist in a real browser.
+**What went wrong:** the review drawer appeared on top of the table in every screenshot. Measuring
+it gave `transform: none` with the class present, and `getComputedStyle().translate` came back
+`undefined` — puppeteer 13.7 bundles **Chromium 101** (2022), and the standalone `translate` CSS
+property that Tailwind v4 emits landed in Chrome 104.
+**Lesson:** every screenshot this project has ever taken was in a 2022 browser. Before believing a
+visual bug, check whether the harness can render the CSS. When a component cannot be verified by the
+harness, prefer the formulation that can be — an unverifiable component is worse than a verbose one.
+Upgrading puppeteer is outstanding work.
+
+## 2026-07-30 — the open-answer submit path had the stale-closure bug the MCQ path had fixed
+**Changed:** `writtenRef` / `spokenRef` / `gradesRef` in `ExamShell.tsx`; `openResultFrom()` made a
+pure module-scope function taking its maps as arguments.
+**Outcome:** SUCCESS.
+**What went wrong:** `saveOpenSubmissions` read `written`/`spoken` from the render closure while the
+MCQ path already used `chosenRef.current`. A timer auto-submit would have saved the answers as of the
+first render — i.e. nothing — on a 40-minute Schrijven exam. Then the first fix read those refs
+during render, which the React compiler rejected outright.
+**Lesson:** when one branch of a component has a ref-based escape hatch, check whether the sibling
+branch needs it too; a fix applied to one path is not applied to the file. And a helper that both
+render and an event handler call must take its data as arguments rather than reaching for refs.

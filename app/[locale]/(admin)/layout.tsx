@@ -1,6 +1,7 @@
 import type { ReactNode } from 'react';
 import { redirect } from 'next/navigation';
 import { createClient } from '@/lib/supabase/server';
+import LogoMark from '@/components/site/LogoMark';
 import LogoutButton from './_components/LogoutButton';
 import { AdminMobileNav } from './_components/AdminMobileNav';
 
@@ -57,9 +58,9 @@ function AdminSidebar({ locale, userEmail }: { locale: string; userEmail: string
     <aside className="hidden lg:flex fixed left-0 top-0 h-full w-64 bg-primary flex-col z-10">
       <div className="p-6 border-b border-white/10">
         <div className="flex items-center gap-2 mb-1">
-          <span className="text-2xl">🇳🇱</span>
+          <LogoMark size={24} surface="dark" />
           <span className="font-headline font-bold text-white text-sm leading-tight">
-            KNM Admin
+            Inburgering Oefenen
           </span>
         </div>
         <p className="text-white/50 text-xs truncate">{userEmail}</p>
@@ -67,12 +68,17 @@ function AdminSidebar({ locale, userEmail }: { locale: string; userEmail: string
 
       <nav className="flex-1 p-4 space-y-1">
         <NavItem href={`/${locale}/admin`} icon="dashboard" label="Dashboard" />
-        <NavItem href={`/${locale}/admin/questions`} icon="quiz" label="Vragen" />
         <NavItem href={`/${locale}/admin/exams`} icon="assignment" label="Examens" />
-        <NavItem href={`/${locale}/admin/leren`} icon="menu_book" label="Lessen" />
-        <NavItem href={`/${locale}/admin/woordkaarten`} icon="style" label="Woordkaarten" />
-        <div className="pt-3 mt-2 border-t border-white/10">
+        <NavItem href={`/${locale}/admin/questions`} icon="quiz" label="Vragen" />
+        <NavItem href={`/${locale}/admin/rubrics`} icon="checklist" label="Rubrieken" />
+        <NavItem href={`/${locale}/admin/beoordeling`} icon="rate_review" label="Beoordelen" />
+        {/* Lessen and woordkaarten are feature-flagged off on the public site
+            (lib/features.ts); their admin surfaces stay reachable so content can be authored
+            ahead of the flag being flipped, but they sit below the divider. */}
+        <div className="pt-3 mt-2 border-t border-white/10 space-y-1">
           <NavItem href={`/${locale}/admin/users`} icon="group" label="Gebruikers" />
+          <NavItem href={`/${locale}/admin/leren`} icon="menu_book" label="Lessen" />
+          <NavItem href={`/${locale}/admin/woordkaarten`} icon="style" label="Woordkaarten" />
         </div>
       </nav>
 

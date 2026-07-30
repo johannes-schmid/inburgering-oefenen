@@ -1,0 +1,370 @@
+import { NextResponse } from 'next/server';
+import { createClient } from '@/lib/supabase/server';
+import { rubricCategory, type Rubric, type RubricCriterion } from '@/lib/rubrics';
+import { gradeOpenAnswer, type FewShotExample, type GradeTask } from '@/lib/ai/grade';
+import { transcribeRecording } from '@/lib/ai/transcribe';
+
+/**
+ * Grade one open submission against the docent's rubric.
+ *
+ * Called per answer, right after the candidate presses "Nakijken" — the owner chose per-answer
+ * feedback over an end-of-exam batch, so the submission row exists before this runs and the
+ * candidate keeps their answer even if grading fails.
+ *
+ * ## Why this is a server route and not a client call
+ * `rubrics` has **no non-admin SELECT policy** at all (see the baseline migration), so the
+ * criteria are unreachable from the browser by design — the anchors describe exactly what earns a
+ * 3, which is a scoring key. `open_tasks.model_answer` is likewise never sent to the browser.
+ *
+ * ## Ownership is checked by hand, on purpose
+ * `lib/supabase/server.ts` builds its cookie client with the **service key**, so every query here
+ * bypasses RLS. `getUser()` still authenticates from the session cookie, but nothing stops a
+ * service-key query reading another user's submission — so the `user_id` comparison below is the
+ * only thing enforcing it. Do not remove it on the assumption a policy has your back.
+ *
+ * ## Abuse guard
+ * Every call spends money on two providers. Three grades per (attempt, task) is enough to cover a
+ * genuine retry and a revision after feedback; past that it is a loop. Admins can pass `force` to
+ * re-grade from the review inbox.
+ */
+
+const MAX_GRADES_PER_TASK = 3;
+const FEW_SHOT_LIMIT = 4;
+const RECORDING_BUCKET = 'speaking-submissions';
+
+type SubmissionRow = {
+  id: number;
+  user_id: string;
+  exam_id: number | null;
+  task_id: number;
+  attempt_id: number | null;
+  answer_text: string | null;
+  answer_json: Record<string, unknown> | null;
+  audio_url: string | null;
+  transcript: string | null;
+  audio_seconds: number | null;
+  speech_signals: Record<string, unknown> | null;
+  ai_result: unknown;
+  status: 'submitted' | 'ai_graded' | 'teacher_reviewed';
+};
+
+const TASK_SELECT =
+  'id, skill, task_type, title, prompt_html, bullet_points, email_to, email_cc, email_subject, ' +
+  'greeting, closing, min_sentences, form_schema, image_usage, max_record_seconds, ' +
+  'model_answer, rubric_id, ' +
+  'open_task_images(sort_order, caption, alt_text, group_label)';
+
+export async function POST(request: Request) {
+  let body: { submissionId?: number; force?: boolean };
+  try {
+    body = await request.json();
+  } catch {
+    return NextResponse.json({ error: 'Ongeldige aanvraag.' }, { status: 400 });
+  }
+
+  const submissionId = Number(body.submissionId);
+  if (!Number.isFinite(submissionId)) {
+    return NextResponse.json({ error: 'submissionId ontbreekt.' }, { status: 400 });
+  }
+
+  const supabase = await createClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+  if (!user) {
+    return NextResponse.json({ error: 'Niet ingelogd.' }, { status: 401 });
+  }
+
+  const { data: subRaw, error: subErr } = await supabase
+    .from('open_submissions')
+    .select(
+      'id, user_id, exam_id, task_id, attempt_id, answer_text, answer_json, audio_url, ' +
+        'transcript, audio_seconds, speech_signals, ai_result, status'
+    )
+    .eq('id', submissionId)
+    .maybeSingle();
+
+  if (subErr || !subRaw) {
+    return NextResponse.json({ error: 'Inzending niet gevonden.' }, { status: 404 });
+  }
+  const submission = subRaw as unknown as SubmissionRow;
+
+  const { data: adminRow } = await supabase
+    .from('admin_users')
+    .select('email')
+    .eq('email', user.email ?? '')
+    .maybeSingle();
+  const isAdmin = Boolean(adminRow);
+
+  if (submission.user_id !== user.id && !isAdmin) {
+    return NextResponse.json({ error: 'Geen toegang tot deze inzending.' }, { status: 403 });
+  }
+
+  const force = Boolean(body.force) && isAdmin;
+
+  // Already graded: hand back what is stored rather than paying to produce it twice.
+  if (submission.status !== 'submitted' && !force) {
+    return NextResponse.json(await storedResult(supabase, submission));
+  }
+
+  const { data: taskRaw, error: taskErr } = await supabase
+    .from('open_tasks')
+    .select(TASK_SELECT)
+    .eq('id', submission.task_id)
+    .maybeSingle();
+
+  if (taskErr || !taskRaw) {
+    return NextResponse.json({ error: 'Opdracht niet gevonden.' }, { status: 404 });
+  }
+
+  type RawTask = Omit<GradeTask, 'images'> & {
+    skill: 'schrijven' | 'spreken';
+    rubric_id: number | null;
+    open_task_images: GradeTask['images'];
+  };
+  const raw = taskRaw as unknown as RawTask;
+  const task: GradeTask = { ...raw, images: raw.open_task_images ?? [] };
+
+  // Rate limit on completed grades for this task, not on submission rows: a candidate who saves a
+  // draft three times without grading is not abusing anything.
+  //
+  // Scoped to the attempt when there is one, and to (user, task) when there is not. `attempt_id` is
+  // nullable — `startExamAttempt` can fail, and the anonymous-taster path never sets it — and an
+  // `.eq('attempt_id', null)` would have matched nothing, so the cap silently did not exist for
+  // exactly the submissions least likely to be well-formed.
+  if (!force) {
+    let query = supabase
+      .from('open_submissions')
+      .select('id', { count: 'exact', head: true })
+      .eq('task_id', submission.task_id)
+      .neq('status', 'submitted');
+
+    query =
+      submission.attempt_id != null
+        ? query.eq('attempt_id', submission.attempt_id)
+        : query.eq('user_id', submission.user_id).is('attempt_id', null);
+
+    const { count } = await query;
+
+    if ((count ?? 0) >= MAX_GRADES_PER_TASK) {
+      return NextResponse.json(
+        {
+          error: `Je kunt deze opdracht maximaal ${MAX_GRADES_PER_TASK} keer laten nakijken.`,
+          code: 'grade_limit',
+        },
+        { status: 429 }
+      );
+    }
+  }
+
+  const rubric = await resolveRubric(supabase, raw.skill, raw.rubric_id, task);
+  if (!rubric) {
+    const message = `Er is nog geen actieve rubriek voor "${rubricCategory(task)}".`;
+    await supabase.from('open_submissions').update({ grade_error: message }).eq('id', submission.id);
+    return NextResponse.json({ error: message, code: 'no_rubric' }, { status: 409 });
+  }
+
+  try {
+    // ---- Spreken: transcribe first, and persist that before grading. A transcript is worth
+    // keeping even if the grader then fails; re-running should not re-pay for Scribe.
+    let transcript = submission.transcript;
+    let signals = submission.speech_signals as never;
+    let audioSeconds = submission.audio_seconds;
+    let audio: Uint8Array | null = null;
+
+    if (submission.audio_url) {
+      const { data: file, error: dlErr } = await supabase.storage
+        .from(RECORDING_BUCKET)
+        .download(submission.audio_url);
+      if (dlErr || !file) throw new Error(`Opname niet leesbaar: ${dlErr?.message ?? 'onbekend'}`);
+
+      audio = new Uint8Array(await file.arrayBuffer());
+
+      if (transcript == null || force) {
+        const result = await transcribeRecording(audio, `${submission.task_id}.wav`);
+        transcript = result.text;
+        signals = result.signals as never;
+        audioSeconds = audioSeconds ?? (Math.round(result.audio_duration_secs ?? 0) || null);
+
+        await supabase
+          .from('open_submissions')
+          .update({
+            transcript,
+            speech_signals: signals,
+            audio_seconds: audioSeconds,
+          })
+          .eq('id', submission.id);
+      }
+    }
+
+    const examples = await fetchFewShot(supabase, raw.skill, task);
+
+    const result = await gradeOpenAnswer({
+      rubric,
+      task,
+      answer: {
+        answer_text: submission.answer_text,
+        answer_json: submission.answer_json,
+        transcript,
+        audio_seconds: audioSeconds,
+        speech_signals: signals,
+        audio,
+      },
+      examples,
+    });
+
+    await supabase
+      .from('open_submissions')
+      .update({
+        ai_result: result,
+        rubric_version: rubric.version,
+        status: submission.status === 'teacher_reviewed' ? 'teacher_reviewed' : 'ai_graded',
+        grade_error: null,
+        updated_at: new Date().toISOString(),
+      })
+      .eq('id', submission.id);
+
+    // One row per criterion. `UNIQUE (submission_id, criterion_key, source)` makes a re-grade an
+    // update in place, and leaves any teacher row for the same criterion untouched beside it.
+    const rows = result.criteria.map(c => ({
+      submission_id: submission.id,
+      rubric_id: rubric.id,
+      rubric_version: rubric.version,
+      criterion_key: c.key,
+      score: c.score,
+      feedback: c.feedback,
+      source: 'ai' as const,
+    }));
+
+    const { error: scoreErr } = await supabase
+      .from('open_criterion_scores')
+      .upsert(rows, { onConflict: 'submission_id,criterion_key,source' });
+
+    if (scoreErr) throw new Error(`Cijfers opslaan mislukt: ${scoreErr.message}`);
+
+    return NextResponse.json({
+      status: 'ai_graded',
+      overall: result.overall,
+      tips: result.tips,
+      transcript,
+      criteria: rows.map(r => ({
+        criterion_key: r.criterion_key,
+        score: r.score,
+        feedback: r.feedback,
+        source: r.source,
+      })),
+      rubric: { id: rubric.id, version: rubric.version, criteria: rubric.criteria },
+    });
+  } catch (err) {
+    const message = err instanceof Error ? err.message : 'Nakijken mislukt.';
+    // Recorded on the row so a stuck answer is visible in /admin/beoordeling rather than looking
+    // like an answer nobody has got round to.
+    await supabase
+      .from('open_submissions')
+      .update({ grade_error: message.slice(0, 1000) })
+      .eq('id', submission.id);
+    console.error('[grade-open]', submissionId, message);
+    return NextResponse.json({ error: 'Nakijken is niet gelukt.', detail: message }, { status: 502 });
+  }
+}
+
+type Db = Awaited<ReturnType<typeof createClient>>;
+
+/** The task's own rubric if it names one, else the live rubric for its category. */
+async function resolveRubric(
+  supabase: Db,
+  skill: 'schrijven' | 'spreken',
+  rubricId: number | null,
+  task: GradeTask
+): Promise<Rubric | null> {
+  const cols = 'id, skill, task_type, version, criteria, system_prompt, active';
+
+  if (rubricId != null) {
+    const { data } = await supabase.from('rubrics').select(cols).eq('id', rubricId).maybeSingle();
+    if (data) return normaliseRubric(data);
+  }
+
+  const { data } = await supabase
+    .from('rubrics')
+    .select(cols)
+    .eq('skill', skill)
+    .eq('task_type', rubricCategory(task))
+    .eq('active', true)
+    .maybeSingle();
+
+  return data ? normaliseRubric(data) : null;
+}
+
+function normaliseRubric(row: unknown): Rubric {
+  const r = row as Rubric & { criteria: unknown };
+  return {
+    ...r,
+    criteria: (Array.isArray(r.criteria) ? r.criteria : []) as RubricCriterion[],
+  };
+}
+
+/**
+ * Few-shot examples: only the ones the docent promoted.
+ *
+ * `use_as_fewshot = false` is the **test set** for /admin/beoordeling/evals. Feeding those in here
+ * would train on the evaluation data and make every agreement number meaningless.
+ */
+async function fetchFewShot(
+  supabase: Db,
+  skill: 'schrijven' | 'spreken',
+  task: GradeTask
+): Promise<FewShotExample[]> {
+  const { data } = await supabase
+    .from('grading_examples')
+    .select('answer_text, transcript, teacher_result, notes')
+    .eq('skill', skill)
+    .eq('task_type', rubricCategory(task))
+    .eq('use_as_fewshot', true)
+    .order('created_at', { ascending: false })
+    .limit(FEW_SHOT_LIMIT);
+
+  return (data ?? []) as unknown as FewShotExample[];
+}
+
+/** The stored grade, for an idempotent repeat call. */
+async function storedResult(supabase: Db, submission: SubmissionRow) {
+  const { data: scores } = await supabase
+    .from('open_criterion_scores')
+    .select('criterion_key, score, feedback, source, rubric_id')
+    .eq('submission_id', submission.id);
+
+  const rows = (scores ?? []) as {
+    criterion_key: string;
+    score: number;
+    feedback: string | null;
+    source: 'ai' | 'teacher';
+    rubric_id: number | null;
+  }[];
+
+  const rubricId = rows.find(r => r.rubric_id != null)?.rubric_id ?? null;
+  let rubric: Rubric | null = null;
+  if (rubricId != null) {
+    const { data } = await supabase
+      .from('rubrics')
+      .select('id, skill, task_type, version, criteria, system_prompt, active')
+      .eq('id', rubricId)
+      .maybeSingle();
+    if (data) rubric = normaliseRubric(data);
+  }
+
+  const ai = submission.ai_result as { overall?: string; tips?: string[] } | null;
+
+  return {
+    status: submission.status,
+    overall: ai?.overall ?? null,
+    tips: ai?.tips ?? [],
+    transcript: submission.transcript,
+    criteria: rows.map(r => ({
+      criterion_key: r.criterion_key,
+      score: r.score,
+      feedback: r.feedback,
+      source: r.source,
+    })),
+    rubric: rubric ? { id: rubric.id, version: rubric.version, criteria: rubric.criteria } : null,
+  };
+}

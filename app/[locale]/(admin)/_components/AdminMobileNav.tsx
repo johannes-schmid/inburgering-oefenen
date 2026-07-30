@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import LogoMark from '@/components/site/LogoMark';
 import LogoutButton from './LogoutButton';
 
 interface Props {
@@ -36,8 +37,8 @@ export function AdminMobileNav({ locale, userEmail }: Props) {
           <span className="material-symbols-outlined text-[24px]">menu</span>
         </button>
         <div className="flex items-center gap-2">
-          <span className="text-lg">🇳🇱</span>
-          <span className="font-headline font-bold text-white text-sm">KNM Admin</span>
+          <LogoMark size={22} surface="dark" />
+          <span className="font-headline font-bold text-white text-sm">Admin</span>
         </div>
       </header>
 
@@ -58,8 +59,8 @@ export function AdminMobileNav({ locale, userEmail }: Props) {
         <div className="p-6 border-b border-white/10 flex items-center justify-between">
           <div>
             <div className="flex items-center gap-2 mb-1">
-              <span className="text-2xl">🇳🇱</span>
-              <span className="font-headline font-bold text-white text-sm">KNM Admin</span>
+              <LogoMark size={24} surface="dark" />
+              <span className="font-headline font-bold text-white text-sm">Admin</span>
             </div>
             <p className="text-white/50 text-xs truncate">{userEmail}</p>
           </div>
@@ -72,6 +73,8 @@ export function AdminMobileNav({ locale, userEmail }: Props) {
           <NavItem href={`/${locale}/admin`} icon="dashboard" label="Dashboard" onClick={() => setOpen(false)} />
           <NavItem href={`/${locale}/admin/questions`} icon="quiz" label="Vragen" onClick={() => setOpen(false)} />
           <NavItem href={`/${locale}/admin/exams`} icon="assignment" label="Examens" onClick={() => setOpen(false)} />
+          <NavItem href={`/${locale}/admin/rubrics`} icon="checklist" label="Rubrieken" onClick={() => setOpen(false)} />
+          <NavItem href={`/${locale}/admin/beoordeling`} icon="rate_review" label="Beoordelen" onClick={() => setOpen(false)} />
           <NavItem href={`/${locale}/admin/leren`} icon="menu_book" label="Lessen" onClick={() => setOpen(false)} />
           <NavItem href={`/${locale}/admin/woordkaarten`} icon="style" label="Woordkaarten" onClick={() => setOpen(false)} />
           <div className="pt-3 mt-2 border-t border-white/10">

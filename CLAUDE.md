@@ -141,6 +141,39 @@ Admin routes are **not** in `i18n/routing.ts` and need no translations.
 
 ---
 
+## Authentication — Google only, one component
+
+`components/auth/AuthPanel.tsx` is the **only** place that calls Supabase Auth. Three pages are
+thin shells around it: `/login`, `/register` and `/admin-login` (the last lives in `(auth)`, not
+`(admin)`, or the admin layout's redirect would loop).
+
+- **Google is the only method**, for users and admins alike. The Microsoft (`azure`) button that
+  came across from KNM was never configured on this Supabase project — it rendered and failed on
+  click — and is gone. There is deliberately **no e-mail + wachtwoord**, hence no password-reset
+  flow to maintain. Adding one means editing one component.
+- **`?next=` is honoured but validated.** `safeNext()` in `AuthPanel` and `safePath()` in
+  `app/auth/callback/route.ts` both accept only same-site absolute paths. `/auth/callback` sets a
+  session cookie, so an unvalidated `next` there is an open redirect that hands over a session.
+- **Admin access is not a separate credential.** Anyone signs in with the same Google account;
+  the `(admin)` layout then checks the `admin_users` allowlist and bounces with `?error=not_admin`.
+  The login page therefore cannot distinguish "wrong account" from "not an admin", and shouldn't.
+- **`?error=` is read on the server** and passed in as `initialError`. Reading it from
+  `window.location` in an effect rendered the card once without the message.
+- **`next.config.ts` has no `env:` block, deliberately.** It used to map
+  `NEXT_PUBLIC_SUPABASE_ANON_KEY` from the service key — the leak recorded below — and even the
+  corrected version silently overrode a correctly-set `NEXT_PUBLIC_SUPABASE_URL` with `undefined`
+  wherever only the non-public name was defined. Set the `NEXT_PUBLIC_*` names directly.
+
+### Google OAuth setup (per environment)
+Supabase → Authentication → Providers → Google needs a client ID/secret from Google Cloud, and
+the Google client needs **`https://<project-ref>.supabase.co/auth/v1/callback`** as an authorised
+redirect URI — the Supabase URL, not ours. Then in Supabase → Authentication → URL Configuration
+set **Site URL** to the environment's origin and add `<origin>/auth/callback` to Redirect URLs.
+Local dev uses `config.toml`'s `[auth.external.google]` block with the same credentials and
+`http://127.0.0.1:3001` as the site URL.
+
+---
+
 ## Funnel — how a visitor becomes a customer
 
 ```
@@ -151,7 +184,9 @@ Admin routes are **not** in `i18n/routing.ts` and need no translations.
               ├─ per-question explanation revealed inline
               ├─ EMAIL GATE — score withheld until submitted (skip link provided)
               └─ results → CTA to /oefenexamen/[skill]
-/oefenexamen/[skill]       10 exam slots; exam 1 free, rest locked → /premium
+/oefenexamen/[skill]       PUBLIC overview — 10 exam slots, the SEO + funnel surface
+  └─ /oefenexamen/[skill]/[n]  THE PLAYER — lives in (app), login required
+       exam 1 free with an account; 2–10 → /premium
 /premium                   €9,95 / €19,95 → Mollie → /betaling-gelukt → /dashboard
 ```
 
@@ -397,22 +432,120 @@ Checkmarks, crosses and arrows in UI are lucide `Check` / `X` / `ArrowRight`, no
 
 ---
 
-## Dashboard shadow copies — recurring trap
+## The study portal — real routes, four onderdelen
 
-`/dashboard` is a **client-side SPA**: every view renders via `useState` inside one page and
-the URL never changes. `app/[locale]/(app)/dashboard/components/` therefore holds its **own
-implementations** of features that also exist as standalone routes. Fixing the shared
-component does **not** fix the dashboard.
+Rebuilt 2026-07-30 around the product's actual shape: **four onderdelen, ten oefenexamens
+behind each.** The KNM SPA is gone — `/dashboard` was one client page holding every view in
+`useState`, so the URL never changed, a skill was not linkable and back left the portal.
 
-| Feature | Standalone route | Dashboard copy |
-|---|---|---|
-| Leren thema | `(app)/leren/[slug]/page.tsx` | `dashboard/components/LerenThemaView.tsx` |
-| Exams | `(main)/oefenexamen/` | `dashboard/components/ExamsView.tsx` |
-| Woordkaarten | *(none)* | `dashboard/components/WoordkaartenView.tsx` |
+| Route | What it is |
+|---|---|
+| `(app)/dashboard/page.tsx` | overview — four skill cards, ten-segment progress strip each |
+| `(app)/dashboard/[skill]/page.tsx` | the ten oefenexamens of one onderdeel |
+| `(app)/dashboard/profiel/page.tsx` | account + per-onderdeel totals |
+| `(app)/oefenexamen/[skill]/[number]` | the player (`components/exam/ExamShell.tsx`) |
 
-**For new dashboard features:** build a real nested route (`/dashboard/feature/`) with a
-shared layout. The sidebar is a layout component and stays mounted across navigations —
-there is no reason to use client state for routing.
+All are **server components**. `AppShell` (sidebar + mobile tab bar) is wrapped per page rather
+than by the layout, because the player needs the same chrome from a different route segment.
+The portal chrome CSS lives in `AppShell` **only** — it used to be duplicated there and in
+`dashboard/page.tsx`, and the two had already drifted.
+
+- **Progress reads `exam_attempts`, keyed by (skill, exam_number)** — see
+  `lib/portal-progress.ts`. KNM keyed it `exam_${number}` with no skill, so Lezen 1 /
+  Luisteren 1 / Schrijven 1 / Spreken 1 all wrote to `exam_1` and overwrote each other. It
+  reads attempts rather than the `exam_results` view because that view exposes only the *latest*
+  attempt, so a worse retake would lower the card.
+- **Leren and woordkaarten are out of the portal.** `lib/features.ts` already flagged them off;
+  the nav was advertising two dead ends. The old `dashboard/components/*View.tsx` files are
+  still on disk but nothing routes to them — delete them once the decision is final.
+- `/dashboard/analyse` and `/dashboard/fouten` still exist and are still KNM-shaped (flat
+  question pool, topic mastery). Nothing links to them. They are the next thing to rebuild or
+  remove.
+- A slot has **three distinct not-openable reasons** — unpublished, paid-plan-only, already
+  passed — and they must stay visually distinct. One "locked" state for all three tells the
+  candidate nothing.
+- **Verifying the portal needs a session.** `check-ui.mjs` cannot: every page redirects to
+  `/login`. Mint a local user via the auth admin API and hand-write the `sb-127-auth-token`
+  cookie (`base64-` + base64 of the session JSON).
+
+---
+
+## Rubric grading — Schrijven en Spreken
+
+The docent authors the criteria; a model applies them; the docent reviews the result. Never frame
+it as "de AI beoordeelt je antwoord" — that inverts the product's only claim.
+
+| Piece | Where |
+|---|---|
+| Rubric keying + scoring maths | `lib/rubrics.ts` |
+| Draft criteria (form prefill **only**) | `lib/rubric-templates.ts` |
+| Model ids, timeout, temperature | `lib/ai/gateway.ts` |
+| Scribe transcription + measured signals | `lib/ai/transcribe.ts` |
+| The one grading prompt | `lib/ai/grade.ts` |
+| The endpoint | `app/api/grade-open/route.ts` |
+| Candidate-facing result | `components/exam/RubricFeedback.tsx` |
+| Rubric authoring | `(admin)/admin/rubrics/` |
+| Review inbox + agreement eval | `(admin)/admin/beoordeling/` |
+
+**Two models, and why.** Schrijven grades on text. Spreken transcribes with ElevenLabs Scribe
+(`scribe_v2`) *and* sends the recording to an audio-capable model, because the owner's decision
+(2026-07-30) is that pronunciation is judged from the audio, not inferred from a transcript. Two
+calls per spoken answer is deliberate: the transcript is shown to candidate and docent, and Scribe's
+per-word `logprob` yields an **objective** intelligibility number the docent can verify. That is
+what keeps the pronunciation criterion defensible.
+
+**Spreken records WAV, not WebM.** Verified: the grading model accepts wav/mp3/aiff/aac/ogg/flac and
+**not** WebM or Opus, which is all `MediaRecorder` can emit. `lib/wav-recorder.ts` encodes 16 kHz
+mono WAV in the browser (AudioWorklet + a 44-byte header, no dependency). Costs ~30 MB per Spreken
+exam versus ~2 MB for Opus; buys one artifact that the browser, Scribe, the model and the docent's
+inbox all read with no transcode anywhere. **Before changing the audio model, re-run
+`npm run check:audio-model`** — it synthesises a Dutch sentence with unguessable words, sends only
+the audio, and fails if they do not come back. Asking a model "did you get audio?" gets a yes either
+way.
+
+**Rubric keying needs no migration.** `rubrics.task_type` is free text. Schrijven uses `task_type`
+(`email`, `short_text`, `form`, `picture_note`); Spreken has one task_type but four onderdelen with
+different image rules, so it is keyed by `image_usage` → `speaking_none` / `speaking_describe` /
+`speaking_choose` / `speaking_cover_all`. `rubricCategory()` is the only place that convention
+lives. Eight rubrics cover all 20 open exams.
+
+**Editing a rubric that has graded someone mints version + 1.** `open_criterion_scores.rubric_version`
+is what makes a stored score interpretable later; rewriting v1 in place changes the meaning of every
+grade already recorded against it. The decider is `used_count` from `open_criterion_scores`, **not**
+`active` — a deactivated rubric can still have graded hundreds. `rubrics_one_active_idx` is
+`UNIQUE (skill, task_type) WHERE active`, so activating v2 must deactivate v1 **first**.
+
+**AI and teacher scores coexist by design.** `UNIQUE (submission_id, criterion_key, source)`. The
+candidate sees one number per criterion and it is the docent's where she entered one
+(`effectiveScores()`); the pair is the dataset `/admin/beoordeling/evals` runs on. The headline
+metric there is **signed bias per criterion**, not accuracy — "0.6 milder dan jij op grammatica" is
+actionable, "71% overeenkomst" is not.
+
+**`grading_examples.use_as_fewshot` is a train/test split.** `true` is fed to the grader; `false` is
+held back to measure it. Promoting a held-back example inflates the next eval without the model
+having improved. Never pass `use_as_fewshot = false` rows to `fetchFewShot`.
+
+**A missing criterion is missing, not zero.** `pctFromCriteria` drops unscored criteria from the
+denominator and the UI says so. Scoring them 0 would turn a grading bug into a failed exam.
+
+**`exam_attempts.feedback_mode`.** The owner chose per-answer feedback inside full exams. A
+`practice` sitting therefore lets the candidate revise after being told what was wrong, so its score
+does not predict DUO. `exam` mode withholds feedback until submit. Anything claiming readiness must
+filter on `feedback_mode = 'exam'`.
+
+**Rubric attempts have a null score until graded.** `completeExamAttempt` takes
+`score`/`pct`/`passed` as nullable. It used to write `0 / 0% / false` for open skills, which the
+dashboard rendered as a fail and averaged in.
+
+**`/api/grade-open` spends money per call.** It is capped at 3 grades per task (per attempt, or per
+`(user, task)` when `attempt_id` is null), idempotent unless an admin passes `force`, and it records
+`grade_error` on the row so a stuck answer surfaces in the inbox. There is deliberately **no
+`/api/transcribe`** — transcription only ever runs as the first step of a grade.
+
+**Never select `model_answer` or rubric criteria into a client component.** `ExamContent` goes
+straight into `ExamShell`, so anything in `TASK_COLS` is in the page payload. The exemplar answer and
+the anchors are a scoring key. `rubrics` has no non-admin SELECT policy for the same reason, which is
+why grading is a server route.
 
 ---
 
@@ -475,35 +608,57 @@ Log failed attempts separately — a fix that took three tries is three entries.
   `open_tasks`, `rubrics`, `open_submissions`, `grading_examples`, plus `sections` repurposed
   as the sub-skills. Verified against the local stack. **Still to do:** run it on a new hosted
   Supabase project and point `.env.local` at it — only local is set up.
-- **Phase 3 — exam engine.** Split `ProefexamenEngine.tsx` (820 lines, hard-wired to 3-option
-  MCQ) into `ExamShell` + four item renderers. It must render a **stimulus shared by 1..N
-  questions** (the pane must not remount when advancing within a stimulus, or Luisteren audio
-  restarts), **3 or 4 options**, and `option_layout = image | image_grid` as thumbnails. Read
-  `duration_seconds` and `pass_threshold_pct` from the exam row instead of the two module
-  constants.
-- **Phase 4 — admin. ⚠ THE QUESTION EDITOR CANNOT SAVE RIGHT NOW.** `QuestionForm`,
-  `QuestionsTable` and `ExamsGrid` still write `category` / `exam` / `option_a..c`, which the
-  new schema does not have, so saving shows *"column category does not exist"*. It fails
-  loudly rather than corrupting anything, but it is broken until this phase lands:
-  a stimulus picker, a repeatable option editor with per-option image upload, and exam
-  assignment through `stimuli.exam_id` rather than a `questions.exam` integer. Reads already
-  work — they go through the `questions_flat` view.
-  Also in this phase: skill switch, `admin/opgaven` for `open_tasks`, four-tab exam builder,
-  two-voice stimulus audio (`/v1/text-to-dialogue`, reading `stimuli.voice_cast`) + a bulk
-  generator, and a publish button wired to `exam_publish_issues(exam_id)` — which replaces
-  `ExamsGrid`'s hardcoded "40 questions / 7 KNM categories" warnings.
+- ~~**Phase 3 — exam engine.**~~ **DONE** — `components/exam/` holds `ExamShell` plus the
+  renderers: `StimulusPane` (memoised on `stimulus.id` so the pane and its `<audio>` survive
+  advancing within one stimulus), `McqQuestion` (3 or 4 options, `text | image | image_grid`),
+  `WritingTask` (the four Schrijven shapes) and `SpeakingTask` (MediaRecorder, capped at
+  `max_record_seconds`). `AudioPlayer` is DUO's ⟲10 / play / 10⟳ with a seek bar and
+  **no play limit**. `lib/exam-content.ts` loads the exam; `duration_seconds` and
+  `pass_threshold_pct` come off the exam row and the two module constants are gone.
+  **Answers are held in state until submit** — going back and changing one is how the real
+  exam works, and writing a row per click left superseded results skewing the mastery series.
+  `startExamAttempt` opens the sitting before the first answer so every
+  `user_question_results` / `open_submissions` row carries its `attempt_id`;
+  `completeExamAttempt` closes it. Spreken recordings go to the private
+  `speaking-submissions` bucket and the **path**, not a URL, is stored.
+- ~~**Phase 4 — admin.**~~ **MOSTLY DONE — the question editor saves again.** `QuestionForm`
+  writes `questions` + `question_options` (stimulus picker, 3–4 repeatable options, per-option
+  image sets via `OptionImagePicker`). `/admin/exams` is the 40 slots with real counts;
+  `/admin/exams/[id]` is the builder — stimulus CRUD, questions per stimulus, and a publish
+  button gated on `exam_publish_issues()` (blocked on `error` rows only, never on warnings).
+  `ExamsGrid` and `QuestionsTable`'s own edit drawer are **deleted**: that drawer was a second
+  save path writing `category`/`option_a..c`, and one editor means one place to break.
+  **Still open in this phase:** `admin/opgaven` for `open_tasks` (the builder lists them
+  read-only), and two-voice stimulus audio (`/v1/text-to-dialogue` reading `stimuli.voice_cast`)
+  plus a bulk generator — today an audio stimulus takes a pasted URL.
+
+  Two option-table rules the editor depends on, worth knowing before touching it:
+  `question_options_one_correct_idx` is `UNIQUE (question_id) WHERE is_correct`, so every row
+  is written `is_correct: false` first and one is then flipped; and options are reconciled
+  **by label**, never deleted and re-inserted, because a delete cascades
+  `user_question_results.chosen_option_id` to NULL and erases what past candidates picked.
 - **Phase 5 — rubric grading.** `/api/grade-open` via AI Gateway, `/api/transcribe` for
   Spreken, `/admin/beoordeling` with the docent's correction → few-shot → eval loop.
 - **Phase 6 — seed** exam 1 of each skill. **Phase 7 —** rewrite the test suite.
 
 ### Known carried-over issues
-- `proefexamen/page.tsx` paywall reads `user_metadata.tier` while the payment routes write
-  `user_metadata.plan` — a paid user gets bounced to `/activate`. Standardise on `plan`.
+- ~~`user_metadata.tier` vs `plan`~~ **FIXED** — `lib/entitlements.ts` (`planFromMetadata`,
+  `canOpenExam`, `canSeeExplanations`) reads `plan` with a `tier` fallback and is the single
+  source of truth. `proefexamen/page.tsx` uses it. Other `tier`-reading sites
+  (`dashboard/fouten`, `leren/[slug]`) should move to it too.
 - `submit-results` never writes `exam_number` despite `UNIQUE(email, exam_number)`.
 - `exam_results` and `exam_submissions` coexist unreconciled; a migration dropped the former
   but its header says it never reached prod, and the dashboard still reads it.
 - `ProefexamenEngine` ships **all** questions to the browser instead of filtering by exam.
-- Two different `PASS_THRESHOLD_PCT` values (engine 0.7 vs `api-constants` 60).
+- ~~Two different `PASS_THRESHOLD_PCT` values~~ **FIXED for the new engine** — it reads
+  `exams.pass_threshold_pct`. The legacy `ProefexamenEngine` still uses the constant.
+- **`ProefexamenEngine.tsx` + `/proefexamen` are now dead weight.** The A2 player is
+  `components/exam/ExamShell.tsx`; the old engine survives only for the KNM-shaped flat-question
+  route and still says "KNM Proefexamen" on screen. Delete it once nothing links there.
+- **Marketing/legal copy still says KNM** in `gebruiksvoorwaarden`, `privacybeleid`, `docent`
+  (including the claim "108 KNM-oefenvragen ontwikkeld") and the `oefenvragen` pages. These are
+  factual claims about the product and about a real person, so they need the owner's wording, not
+  a search-and-replace.
 - Legal pages (voorwaarden, privacy, terugbetaling) still describe the KNM product.
 - Domain is a placeholder: `inburgeringoefenen.nl`. The Instagram link points at a handle
   that may not exist.
