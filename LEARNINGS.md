@@ -706,3 +706,25 @@ during render, which the React compiler rejected outright.
 **Lesson:** when one branch of a component has a ref-based escape hatch, check whether the sibling
 branch needs it too; a fix applied to one path is not applied to the file. And a helper that both
 render and an event handler call must take its data as arguments rather than reaching for refs.
+
+## 2026-07-30 — Spreken grading died on a missing API-key scope, and on owner-only storage
+**Changed:** `app/api/grade-open/route.ts` — transcription failure is non-fatal, the recording is
+downloaded with `createAdminClient()`, and the header comment about RLS is corrected.
+**Outcome:** SUCCESS — Spreken now grades from the audio alone when Scribe is unavailable.
+**What went wrong:** two independent single points of failure in one path.
+1. The ElevenLabs key lacked the `speech_to_text` permission, so `transcribeRecording` threw and
+   took the whole grade with it. But the grading model *hears the recording* — the transcript is a
+   convenience for the candidate and the docent, not an input the grade depends on. One missing
+   vendor scope had disabled an entire skill.
+2. The route downloaded the recording through the caller's session. `speaking-submissions` has one
+   SELECT policy, `owner = auth.uid()`, so a candidate could grade their own answer and an **admin
+   re-grading someone else's never could** — the `force` path was structurally broken and no test
+   covered it because I only ever graded as the owner.
+**Lesson:** ask of every external call "if this fails, what is the smallest correct degradation?"
+Transcription failing should cost the transcript, not the feature. And when a route does work on
+behalf of a user *and* on behalf of an admin, exercise both — an owner-only storage policy is
+invisible until someone who is not the owner tries.
+**Also corrected a wrong belief I had written down:** `lib/supabase/server.ts` uses the service key,
+but `@supabase/ssr` sends the user's JWT as `Authorization`, which overrides the key's role. RLS
+therefore *does* apply to authenticated requests; the service key only takes effect when there is no
+session. I had told the owner the opposite.

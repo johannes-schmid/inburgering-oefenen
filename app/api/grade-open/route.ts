@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server';
 import { createClient } from '@/lib/supabase/server';
+import { createAdminClient } from '@/lib/supabase/admin';
 import { rubricCategory, type Rubric, type RubricCriterion } from '@/lib/rubrics';
 import { gradeOpenAnswer, type FewShotExample, type GradeTask } from '@/lib/ai/grade';
 import { transcribeRecording } from '@/lib/ai/transcribe';
@@ -16,11 +17,18 @@ import { transcribeRecording } from '@/lib/ai/transcribe';
  * criteria are unreachable from the browser by design — the anchors describe exactly what earns a
  * 3, which is a scoring key. `open_tasks.model_answer` is likewise never sent to the browser.
  *
- * ## Ownership is checked by hand, on purpose
- * `lib/supabase/server.ts` builds its cookie client with the **service key**, so every query here
- * bypasses RLS. `getUser()` still authenticates from the session cookie, but nothing stops a
- * service-key query reading another user's submission — so the `user_id` comparison below is the
- * only thing enforcing it. Do not remove it on the assumption a policy has your back.
+ * ## Ownership is checked by hand, and RLS is *also* in force
+ * `lib/supabase/server.ts` builds its cookie client with the service key, but `@supabase/ssr` sends
+ * the signed-in user's JWT as `Authorization`, and that overrides the key's role — so on an
+ * authenticated request PostgREST runs as `authenticated` and RLS applies. (The service key only
+ * takes effect when there is no session, which is why `fetchExamContent` can read unpublished rows
+ * on a public page.)
+ *
+ * Both layers are deliberate. RLS means a non-owner gets 404 before the explicit check runs; the
+ * explicit `user_id` comparison is what still holds when the caller *is* an admin, whose SELECT
+ * policy lets them read every submission. Do not remove either on the assumption the other covers
+ * it — and note the consequence for storage: an admin cannot read the recording through this
+ * client, because that bucket's policy is owner-only. See the download below.
  *
  * ## Abuse guard
  * Every call spends money on two providers. Three grades per (attempt, task) is enough to cover a
@@ -171,29 +179,52 @@ export async function POST(request: Request) {
     let signals = submission.speech_signals as never;
     let audioSeconds = submission.audio_seconds;
     let audio: Uint8Array | null = null;
+    let transcriptionNote: string | null = null;
 
     if (submission.audio_url) {
-      const { data: file, error: dlErr } = await supabase.storage
-        .from(RECORDING_BUCKET)
+      // Read the object with the service key, not the caller's session.
+      //
+      // `speaking-submissions` is private and its only SELECT policy is `owner = auth.uid()`, and
+      // `supabase` here carries the caller's JWT — which overrides the service-key role, so RLS
+      // applies. That works for a candidate grading their own answer and fails for **an admin
+      // re-grading someone else's**, which is the whole point of the force path. Authorisation was
+      // already decided above; fetching the bytes is an internal step.
+      const { data: file, error: dlErr } = await createAdminClient()
+        .storage.from(RECORDING_BUCKET)
         .download(submission.audio_url);
       if (dlErr || !file) throw new Error(`Opname niet leesbaar: ${dlErr?.message ?? 'onbekend'}`);
 
       audio = new Uint8Array(await file.arrayBuffer());
 
       if (transcript == null || force) {
-        const result = await transcribeRecording(audio, `${submission.task_id}.wav`);
-        transcript = result.text;
-        signals = result.signals as never;
-        audioSeconds = audioSeconds ?? (Math.round(result.audio_duration_secs ?? 0) || null);
+        // Transcription failure is NOT fatal. The grading model hears the recording itself, so
+        // losing Scribe costs the stored transcript and the measured intelligibility signals — not
+        // the candidate's feedback. Failing the whole grade here meant one missing API-key scope
+        // took Spreken down entirely.
+        //
+        // It is recorded rather than swallowed: `grade_error` keeps the reason so the docent's inbox
+        // shows that this answer was graded without its objective signals, which is exactly the
+        // context she needs when reviewing the verstaanbaarheid score.
+        try {
+          const result = await transcribeRecording(audio, `${submission.task_id}.wav`);
+          transcript = result.text;
+          signals = result.signals as never;
+          audioSeconds = audioSeconds ?? (Math.round(result.audio_duration_secs ?? 0) || null);
 
-        await supabase
-          .from('open_submissions')
-          .update({
-            transcript,
-            speech_signals: signals,
-            audio_seconds: audioSeconds,
-          })
-          .eq('id', submission.id);
+          await supabase
+            .from('open_submissions')
+            .update({
+              transcript,
+              speech_signals: signals,
+              audio_seconds: audioSeconds,
+            })
+            .eq('id', submission.id);
+        } catch (err) {
+          transcriptionNote = `Transcriptie mislukt: ${
+            err instanceof Error ? err.message : 'onbekend'
+          }`;
+          console.warn('[grade-open] transcription failed, grading from audio only', transcriptionNote);
+        }
       }
     }
 
@@ -219,7 +250,9 @@ export async function POST(request: Request) {
         ai_result: result,
         rubric_version: rubric.version,
         status: submission.status === 'teacher_reviewed' ? 'teacher_reviewed' : 'ai_graded',
-        grade_error: null,
+        // Cleared on success, except for a transcription note — the grade stands, but the docent
+        // should know it was produced without a transcript or measured signals.
+        grade_error: transcriptionNote,
         updated_at: new Date().toISOString(),
       })
       .eq('id', submission.id);
@@ -247,6 +280,7 @@ export async function POST(request: Request) {
       overall: result.overall,
       tips: result.tips,
       transcript,
+      warning: transcriptionNote,
       criteria: rows.map(r => ({
         criterion_key: r.criterion_key,
         score: r.score,
