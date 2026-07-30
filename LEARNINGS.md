@@ -765,3 +765,21 @@ add the assert this session (`exam_publish_issues`, the inline RubricFeedback) t
 immediately.
 **Also:** the same class of bug hid a CSS template-literal break — a comment containing backticks
 inside `` <style>{`…`}</style> `` terminated the string. That one at least failed loudly at tsc.
+
+## 2026-07-30 — First production deploy of Phase 5: migration before code, not after
+**Changed:** applied `20260731000000_grading` and `20260731100000_picture_note_images` to
+`bbgrsfcevbavgsmnqjrd`, then pushed 11 commits to `main`.
+**Outcome:** SUCCESS — live routes verified by their own 401 payloads rather than by a 200.
+**What nearly went wrong:** asked to "push this live", the tempting move is `git push`. But
+`supabase migration list` showed production still on the baseline alone, and the new code writes
+`exam_attempts.feedback_mode` on **every** exam start — including Lezen and Luisteren, which work
+in production today. Pushing code first would have broken two working skills to ship two unfinished
+ones. Order is not a preference: additive schema goes first, always.
+**Lesson:** before any deploy that touches the data layer, diff local migrations against remote.
+`supabase migration list` takes ten seconds and is the difference between a deploy and an outage.
+And verify a deploy by asking for something only the new code can answer — `/api/stt-token`
+returning *my* `{"error":"Niet ingelogd."}` proves the build; a 200 on the homepage proves nothing,
+since the old build also served that.
+**Also:** a flag commented "TEMPORARY — REVERT BEFORE LAUNCH" that then ships to production must
+have its comment rewritten in the same breath. Left alone it tells the next reader the state was an
+accident, and someone silently "fixes" a deliberate decision.
