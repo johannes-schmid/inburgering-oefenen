@@ -281,6 +281,10 @@ export async function POST(request: Request) {
       tips: result.tips,
       transcript,
       warning: transcriptionNote,
+      // The highlights carry start/end offsets, so the text they index into must travel with them —
+      // for Spreken that is the transcript, which the client did not have until now.
+      answerText: submission.answer_text ?? transcript ?? null,
+      highlights: result.highlights,
       criteria: rows.map(r => ({
         criterion_key: r.criterion_key,
         score: r.score,
@@ -386,13 +390,19 @@ async function storedResult(supabase: Db, submission: SubmissionRow) {
     if (data) rubric = normaliseRubric(data);
   }
 
-  const ai = submission.ai_result as { overall?: string; tips?: string[] } | null;
+  const ai = submission.ai_result as {
+    overall?: string;
+    tips?: string[];
+    highlights?: unknown[];
+  } | null;
 
   return {
     status: submission.status,
     overall: ai?.overall ?? null,
     tips: ai?.tips ?? [],
     transcript: submission.transcript,
+    answerText: submission.answer_text ?? submission.transcript ?? null,
+    highlights: Array.isArray(ai?.highlights) ? ai.highlights : [],
     criteria: rows.map(r => ({
       criterion_key: r.criterion_key,
       score: r.score,

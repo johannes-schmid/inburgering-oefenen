@@ -30,9 +30,22 @@ import {
 
 export type RubricFeedbackState = 'idle' | 'grading' | 'graded' | 'error';
 
+/** A span of the candidate's own words, already located in the text by `matchHighlights`. */
+export type FeedbackHighlight = {
+  quote: string;
+  criterion_key: string;
+  note: string;
+  kind: 'improve' | 'good';
+  start: number;
+  end: number;
+};
+
 type Props = {
   criteria: RubricCriterion[];
   scores: CriterionScore[];
+  /** The candidate's answer, or the transcript for Spreken — what the highlights index into. */
+  answerText?: string | null;
+  highlights?: FeedbackHighlight[];
   state?: RubricFeedbackState;
   /** Compleet sees the per-criterion feedback; lower tiers see the band and an upsell. */
   canSeeDetail?: boolean;
@@ -55,6 +68,8 @@ const BAND_LABEL: Record<string, string> = {
 export default function RubricFeedback({
   criteria,
   scores,
+  answerText,
+  highlights = [],
   state = 'graded',
   canSeeDetail = true,
   premiumHref,
@@ -138,6 +153,14 @@ export default function RubricFeedback({
         </p>
       )}
 
+      {canSeeDetail && answerText?.trim() && highlights.length > 0 && (
+        <AnnotatedAnswer
+          text={answerText}
+          highlights={highlights}
+          criteria={criteria}
+        />
+      )}
+
       {canSeeDetail ? (
         <ul className="rf-list">
           {criteria.flatMap(c => {
@@ -191,6 +214,73 @@ export default function RubricFeedback({
   );
 }
 
+/**
+ * The candidate's own words with the graded spans marked.
+ *
+ * This is what turns "grammatica: 2" from an assertion into evidence — the score points at the
+ * words that earned it. Spans arrive already located (`start`/`end` from `matchHighlights`), and
+ * every quote has been verified to be a literal substring, so nothing here can underline text the
+ * candidate did not write.
+ */
+function AnnotatedAnswer({
+  text,
+  highlights,
+  criteria,
+}: {
+  text: string;
+  highlights: FeedbackHighlight[];
+  criteria: RubricCriterion[];
+}) {
+  const label = (key: string) => criteria.find(c => c.key === key)?.criterion ?? key;
+
+  // Walk the text once, emitting plain runs and marked runs in order. The spans are sorted and
+  // non-overlapping by construction.
+  const parts: React.ReactNode[] = [];
+  let cursor = 0;
+  for (const [i, h] of highlights.entries()) {
+    if (h.start > cursor) parts.push(text.slice(cursor, h.start));
+    parts.push(
+      <mark key={i} className={`rf-mark rf-mark-${h.kind}`}>
+        {text.slice(h.start, h.end)}
+        <span className="rf-mark-note" role="note">
+          <strong>{label(h.criterion_key)}</strong>
+          {h.note}
+        </span>
+      </mark>
+    );
+    cursor = h.end;
+  }
+  if (cursor < text.length) parts.push(text.slice(cursor));
+
+  const improve = highlights.filter(h => h.kind === 'improve').length;
+
+  return (
+    <div className="rf-annotated">
+      <p className="rf-annotated-head">
+        Jouw antwoord
+        {improve > 0 && (
+          <span className="rf-annotated-count">
+            {improve} {improve === 1 ? 'aandachtspunt' : 'aandachtspunten'}
+          </span>
+        )}
+      </p>
+      <p className="rf-annotated-body">{parts}</p>
+      {/* The marks carry their note in a tooltip, which is unreachable by touch and by keyboard —
+          so the same notes are listed below. The list is the accessible version, not a fallback. */}
+      <ul className="rf-notes">
+        {highlights.map((h, i) => (
+          <li key={i} className={`rf-note rf-note-${h.kind}`}>
+            <span className="rf-note-quote">&ldquo;{h.quote}&rdquo;</span>
+            <span className="rf-note-body">
+              <strong>{label(h.criterion_key)}</strong> — {h.note}
+            </span>
+          </li>
+        ))}
+      </ul>
+    </div>
+  );
+}
+
 const CSS = `
   .rf { border:1.5px solid var(--color-outline-variant); border-radius:16px; background:#fff; padding:16px; box-shadow:var(--shadow-card); }
   .rf-error { border-color:color-mix(in srgb, var(--color-error) 30%, transparent); }
@@ -219,6 +309,26 @@ const CSS = `
   .rf-bar span { flex:1; height:5px; border-radius:3px; background:var(--color-surface-container-high); }
   .rf-bar span.on { background:linear-gradient(90deg,#1d428a,#002b6d); }
   .rf-fb { font-size:0.79rem; line-height:1.65; color:var(--color-on-surface-variant); margin-top:6px; }
+
+  .rf-annotated { margin-top:14px; padding:14px; border-radius:14px; background:var(--color-surface-container-low); }
+  .rf-annotated-head { display:flex; align-items:baseline; justify-content:space-between; gap:10px; font-size:0.68rem; font-weight:800; letter-spacing:0.1em; text-transform:uppercase; color:var(--color-outline); margin:0 0 8px; }
+  .rf-annotated-count { font-size:0.65rem; letter-spacing:0.04em; text-transform:none; font-weight:700; color:var(--color-secondary); }
+  .rf-annotated-body { margin:0; font-size:0.95rem; line-height:1.9; color:var(--color-on-surface); }
+
+  .rf-mark { position:relative; background:none; color:inherit; padding:1px 0; border-radius:3px; cursor:help; }
+  .rf-mark-improve { box-shadow:inset 0 -0.42em 0 rgba(254,118,44,0.28); }
+  .rf-mark-good { box-shadow:inset 0 -0.42em 0 rgba(0,43,109,0.13); }
+  .rf-mark-note { position:absolute; left:0; bottom:calc(100% + 8px); z-index:5; width:max-content; max-width:270px; padding:8px 10px; border-radius:10px; background:var(--color-on-surface); color:#fff; font-size:0.75rem; line-height:1.5; opacity:0; pointer-events:none; transition:opacity .14s ease; }
+  .rf-mark-note strong { display:block; font-size:0.62rem; letter-spacing:0.08em; text-transform:uppercase; opacity:0.72; margin-bottom:2px; }
+  .rf-mark:hover .rf-mark-note, .rf-mark:focus-visible .rf-mark-note { opacity:1; }
+
+  .rf-notes { list-style:none; margin:12px 0 0; padding:0; display:flex; flex-direction:column; gap:8px; }
+  .rf-note { display:flex; flex-direction:column; gap:2px; padding-left:11px; border-left:3px solid var(--color-outline-variant); }
+  .rf-note-improve { border-left-color:var(--color-secondary-container); }
+  .rf-note-good { border-left-color:var(--color-primary); }
+  .rf-note-quote { font-size:0.82rem; font-style:italic; color:var(--color-on-surface); }
+  .rf-note-body { font-size:0.78rem; line-height:1.55; color:var(--color-on-surface-variant); }
+  .rf-note-body strong { font-weight:800; color:var(--color-on-surface); }
 
   .rf-locked { margin-top:14px; padding:14px; border-radius:12px; background:var(--color-surface-container-low); border:1px dashed var(--color-outline-variant); }
   .rf-locked p { display:flex; align-items:center; gap:7px; font-size:0.8rem; line-height:1.6; color:var(--color-on-surface-variant); }

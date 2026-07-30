@@ -20,7 +20,10 @@ import StimulusPane from './StimulusPane';
 import McqQuestion from './McqQuestion';
 import WritingTask, { type WritingAnswer } from './WritingTask';
 import SpeakingTask, { type SpeakingAnswer } from './SpeakingTask';
-import RubricFeedback, { type RubricFeedbackState } from './RubricFeedback';
+import RubricFeedback, {
+  type FeedbackHighlight,
+  type RubricFeedbackState,
+} from './RubricFeedback';
 
 type Phase = 'intro' | 'part' | 'exam' | 'results';
 
@@ -42,6 +45,9 @@ type TaskGrade = {
   scores: CriterionScore[];
   overall: string | null;
   tips: string[];
+  /** The text the highlights index into: the written answer, or the transcript for Spreken. */
+  answerText: string | null;
+  highlights: FeedbackHighlight[];
   error: string | null;
 };
 
@@ -52,6 +58,8 @@ const EMPTY_GRADE: TaskGrade = {
   scores: [],
   overall: null,
   tips: [],
+  answerText: null,
+  highlights: [],
   error: null,
 };
 
@@ -416,6 +424,8 @@ export default function ExamShell({ content, canSeeExplanations }: Props) {
         scores: json.criteria ?? [],
         overall: json.overall ?? null,
         tips: json.tips ?? [],
+        answerText: json.answerText ?? null,
+        highlights: json.highlights ?? [],
         error: null,
       };
       setGrades(p => ({ ...p, [task.id]: g }));
@@ -527,6 +537,9 @@ export default function ExamShell({ content, canSeeExplanations }: Props) {
             onChange={a => setSpoken(prev => ({ ...prev, [step.task.id]: a }))}
             taskNumber={idx + 1}
             total={totalItems}
+            // Examenmodus withholds the readback: DUO gives none, and reading your own words while
+            // speaking trains self-correction rather than speaking.
+            liveTranscript={feedbackMode === 'practice'}
           />
         ) : (
           <WritingTask
@@ -679,6 +692,8 @@ export default function ExamShell({ content, canSeeExplanations }: Props) {
               <RubricFeedback
                 criteria={g.criteria}
                 scores={g.scores}
+                answerText={g.answerText}
+                highlights={g.highlights}
                 canSeeDetail={canSeeExplanations}
                 premiumHref="/premium?vanaf=rubriek-feedback"
                 passThresholdPct={exam.pass_threshold_pct}
