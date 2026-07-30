@@ -34,7 +34,6 @@ import {
 } from './test-exam-content.mjs';
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
-const CONTAINER = 'supabase_db_inburgering-oefenen';
 const BUCKET = 'question-audio';
 
 const args = process.argv.slice(2);
@@ -43,6 +42,19 @@ const NO_AUDIO = args.includes('--no-audio');
 // are reused unless --force-audio, so re-seeding after a content edit costs nothing.
 const FORCE_AUDIO = args.includes('--force-audio');
 const command = args.find(a => !a.startsWith('--')) ?? 'all';
+/**
+ * Write to the **hosted** project instead of the local stack.
+ *
+ * Off by default and deliberately awkward to reach. The owner authorised production seeding on
+ * 2026-07-30 having been told what it means: this content is not written by the docent, and
+ * publishing it puts AI-written items in front of candidates on a site whose claim is "echt door een
+ * docent gevalideerd, geen AI". She reviews and replaces it afterwards in /admin/opgaven.
+ *
+ * The one thing here that lies: to satisfy `exam_publish_issues()` every stimulus and task is
+ * written `review_status = 'validated'`, which for this content is not yet true. There is no
+ * "published but unreviewed" state in the schema.
+ */
+const PRODUCTION = args.includes('--production');
 
 /* ── env + guard ─────────────────────────────────────────────────────────── */
 
@@ -58,54 +70,90 @@ function readEnv(file) {
   );
 }
 
-const env = { ...readEnv('.env.local'), ...readEnv('.env.development.local') };
+// `.env.development.local` points at 127.0.0.1 and takes precedence in dev by design, so targeting
+// production means deliberately *not* reading it — `.env.local` is the hosted project (CLAUDE.md).
+const env = PRODUCTION
+  ? readEnv('.env.local')
+  : { ...readEnv('.env.local'), ...readEnv('.env.development.local') };
 const SUPABASE_URL = env.NEXT_PUBLIC_SUPABASE_URL ?? '';
 const SERVICE_KEY = env.SUPABASE_SERVICE_KEY ?? '';
 
-// The whole point of the guard: this content must never reach a real candidate.
-if (!/^https?:\/\/(127\.0\.0\.1|localhost)[:/]/.test(SUPABASE_URL)) {
+const IS_LOCAL = /^https?:\/\/(127\.0\.0\.1|localhost)[:/]/.test(SUPABASE_URL);
+
+// Default is still refusal. `--production` is an explicit, logged decision, never a convenience.
+if (!IS_LOCAL && !PRODUCTION) {
   console.error(
     `REFUSING TO RUN.\n\n` +
       `  NEXT_PUBLIC_SUPABASE_URL = ${SUPABASE_URL || '(unset)'}\n\n` +
-      `This script seeds placeholder exam content that is not written by the docent. It only runs\n` +
-      `against the local stack (127.0.0.1). Nothing here may reach production.`
+      `This seeds exam content that is not written by the docent. Pass --production if that is\n` +
+      `genuinely intended for the hosted project.`
   );
   process.exit(1);
 }
-
-/* ── sql helper ──────────────────────────────────────────────────────────── */
-
-function sql(text, { quiet = true } = {}) {
-  const res = spawnSync(
-    'docker',
-    ['exec', '-i', CONTAINER, 'psql', '-U', 'postgres', '-d', 'postgres', ...(quiet ? ['-q'] : []), '-v', 'ON_ERROR_STOP=1'],
-    { input: text, encoding: 'utf8' }
-  );
-  if (res.status !== 0) {
-    throw new Error(`psql failed:\n${res.stderr || res.stdout}`);
-  }
-  return res.stdout;
+if (PRODUCTION && IS_LOCAL) {
+  console.error('--production given but the URL is local. Check .env.local.');
+  process.exit(1);
+}
+if (PRODUCTION) {
+  console.log('!! PRODUCTION SEED');
+  console.log(`!! ${SUPABASE_URL}`);
+  console.log('!! Content is not authored by the docent; she reviews it in /admin/opgaven.');
+  console.log('');
 }
 
+/* ── data layer: PostgREST ────────────────────────────────────────────────── */
 /**
- * One scalar back from psql.
+ * Every write goes through PostgREST with the service key, for both the local stack and the hosted
+ * project.
  *
- * `-q` matters: without it psql writes the command tag ("INSERT 0 1") to stdout alongside the
- * RETURNING value, so `Number(...)` on the result is NaN and the id silently becomes garbage that
- * only surfaces two statements later as "column nan does not exist".
+ * It used to shell out to `docker exec … psql`, which is fine locally and impossible against
+ * production — `psql` is not installed on this host and the hosted database password is not in the
+ * repo. One transport that works everywhere is worth more than the terser SQL.
  */
-function scalar(query) {
-  const out = spawnSync(
-    'docker',
-    ['exec', '-i', CONTAINER, 'psql', '-U', 'postgres', '-d', 'postgres', '-q', '-tAc', query],
-    { encoding: 'utf8' }
-  );
-  if (out.status !== 0) throw new Error(out.stderr || out.stdout);
-  return out.stdout.trim().split('\n')[0].trim();
+const REST = `${SUPABASE_URL}/rest/v1`;
+const HEADERS = {
+  apikey: SERVICE_KEY,
+  Authorization: `Bearer ${SERVICE_KEY}`,
+  'Content-Type': 'application/json',
+};
+
+async function rest(path, init = {}) {
+  const res = await fetch(`${REST}/${path}`, { ...init, headers: { ...HEADERS, ...init.headers } });
+  const text = await res.text();
+  if (!res.ok) throw new Error(`${init.method ?? 'GET'} ${path} → ${res.status}: ${text.slice(0, 400)}`);
+  return text ? JSON.parse(text) : null;
 }
 
-const q = v => (v == null ? 'NULL' : `'${String(v).replace(/'/g, "''")}'`);
-const jsonb = v => `${q(JSON.stringify(v))}::jsonb`;
+/** Insert rows and return them, so callers get the generated ids. */
+async function insert(table, rows) {
+  const body = Array.isArray(rows) ? rows : [rows];
+  if (body.length === 0) return [];
+  const out = await rest(table, {
+    method: 'POST',
+    headers: { Prefer: 'return=representation' },
+    body: JSON.stringify(body),
+  });
+  return out ?? [];
+}
+
+/** Insert one row and return its id. */
+async function insertOne(table, row) {
+  const [out] = await insert(table, row);
+  if (!out?.id) throw new Error(`${table}: insert returned no id`);
+  return out.id;
+}
+
+async function patch(table, filter, values) {
+  return rest(`${table}?${filter}`, { method: 'PATCH', body: JSON.stringify(values) });
+}
+
+async function remove(table, filter) {
+  return rest(`${table}?${filter}`, { method: 'DELETE' });
+}
+
+async function selectRows(table, query) {
+  return (await rest(`${table}?${query}`)) ?? [];
+}
 
 /* ── rubrics ─────────────────────────────────────────────────────────────── */
 /**
@@ -198,21 +246,29 @@ function criteriaJson(kind) {
   }));
 }
 
-function ensureRubrics() {
+async function ensureRubrics() {
   let made = 0;
   for (const [skill, category, kind] of CATEGORIES) {
-    const existing = scalar(
-      `select id from rubrics where skill='${skill}' and task_type='${category}' and active limit 1`
+    const active = await selectRows(
+      'rubrics',
+      `select=id&skill=eq.${skill}&task_type=eq.${category}&active=is.true&limit=1`
     );
-    if (existing) continue;
-    const next = scalar(
-      `select coalesce(max(version),0)+1 from rubrics where skill='${skill}' and task_type='${category}'`
+    if (active.length > 0) continue;
+
+    const versions = await selectRows(
+      'rubrics',
+      `select=version&skill=eq.${skill}&task_type=eq.${category}&order=version.desc&limit=1`
     );
-    sql(`
-      insert into rubrics (skill, task_type, version, criteria, system_prompt, active)
-      values ('${skill}', '${category}', ${next}, ${jsonb(criteriaJson(kind))},
-              ${q(SYSTEM_PROMPT_MARKER)}, true);
-    `);
+    const version = (versions[0]?.version ?? 0) + 1;
+
+    await insert('rubrics', {
+      skill,
+      task_type: category,
+      version,
+      criteria: criteriaJson(kind),
+      system_prompt: SYSTEM_PROMPT_MARKER,
+      active: true,
+    });
     made++;
   }
   return made;
@@ -324,96 +380,123 @@ async function upload(objectPath, buf) {
 
 /* ── shared helpers ──────────────────────────────────────────────────────── */
 
-function examId(skill) {
-  const id = scalar(`select id from exams where skill='${skill}' and number=1`);
-  if (!id) throw new Error(`No exam row for ${skill} 1 — run supabase db reset first.`);
-  return Number(id);
+async function examId(skill) {
+  const rows = await selectRows('exams', `select=id&skill=eq.${skill}&number=eq.1`);
+  if (!rows[0]) throw new Error(`No exam row for ${skill} 1 — seed.sql has not run on this project.`);
+  return rows[0].id;
 }
 
-function sectionId(skill, name) {
-  const id = scalar(
-    `select id from sections where topic='${skill}' and name_nl=${q(name)} limit 1`
-  );
-  return id ? Number(id) : null;
+/** Section names are looked up once per run and cached; there are 15 of them. */
+let sectionCache = null;
+async function sectionId(skill, name) {
+  sectionCache ??= await selectRows('sections', 'select=id,name_nl,topic');
+  return sectionCache.find(s => s.topic === skill && s.name_nl === name)?.id ?? null;
 }
 
 /** Deterministic placeholder image. Obviously not real exam art, which is the point. */
 const img = (seed, n = 0) => `https://picsum.photos/seed/${seed}-${n}/640/480`;
 
+const SKILL_TITLES = {
+  lezen: 'Oefenexamen Lezen 1',
+  luisteren: 'Oefenexamen Luisteren 1',
+  schrijven: 'Oefenexamen Schrijven 1',
+  spreken: 'Oefenexamen Spreken 1',
+};
+
+/**
+ * The TESTDATA marker exists so nobody mistakes this for authored content *while developing*. In
+ * production the owner has sanctioned it for candidates, and a visitor reading "TESTDATA" in an exam
+ * title sees a broken product rather than an honest one — so production gets a real title and the
+ * provenance lives in the rubric's `system_prompt`, which only admin ever reads.
+ */
 function markTitle(skill) {
-  return `${TEST_MARKER} — oefenexamen ${skill} 1`;
+  return PRODUCTION ? SKILL_TITLES[skill] : `${TEST_MARKER} — oefenexamen ${skill} 1`;
 }
 
-function publish(id, skill) {
-  sql(`update exams set published = true, title = ${q(markTitle(skill))} where id = ${id};`);
-  const issues = spawnSync(
-    'docker',
-    ['exec', '-i', CONTAINER, 'psql', '-U', 'postgres', '-d', 'postgres', '-tAc',
-     `select severity || ' · ' || entity || ' · ' || issue from exam_publish_issues(${id}) where severity='error'`],
-    { encoding: 'utf8' }
-  ).stdout.trim();
-  return issues ? issues.split('\n') : [];
+async function publish(id, skill) {
+  await patch('exams', `id=eq.${id}`, { published: true, title: markTitle(skill) });
+  // exam_publish_issues() is a SQL function, reachable over PostgREST as an RPC.
+  const issues = await rest('rpc/exam_publish_issues', {
+    method: 'POST',
+    body: JSON.stringify({ p_exam_id: id }),
+  });
+  return (issues ?? [])
+    .filter(i => i.severity === 'error')
+    .map(i => `${i.severity} · ${i.entity} · ${i.issue}`);
 }
 
 /* ── seeders ─────────────────────────────────────────────────────────────── */
 
-function seedMcq(skill, stimuli, audioUrls = {}) {
-  const id = examId(skill);
-  sql(`delete from stimuli where exam_id = ${id};`);
+async function seedMcq(skill, stimuli, audioUrls = {}) {
+  const id = await examId(skill);
+  await remove('stimuli', `exam_id=eq.${id}`);
 
-  let order = 0;
   let questionCount = 0;
 
-  for (const [i, s] of stimuli.entries()) {
-    order++;
-    const sec = s.section ? sectionId(skill, s.section) : null;
+  for (const [i, st] of stimuli.entries()) {
+    const sec = st.section ? await sectionId(skill, st.section) : null;
     const isAudio = skill === 'luisteren';
     const audioUrl = audioUrls[i] ?? null;
 
     // An audio stimulus must carry audio (a CHECK enforces it), so fall back to a text stimulus
-    // when --no-audio is used: a half-authored pane renders empty and looks like a bug.
+    // when --no-audio is used: a half-authored stimulus renders an empty pane and looks like a bug.
     const kind = isAudio && audioUrl ? 'audio' : 'text';
     const body =
       kind === 'text' && isAudio
-        ? `<p><em>[${TEST_MARKER}] Geen audio gegenereerd. Transcript:</em></p>` +
-          s.lines.map(([sp, t]) => `<p><strong>${sp}:</strong> ${t}</p>`).join('')
-        : (s.body_html ?? null);
+        ? `<p><em>Transcript:</em></p>` +
+          st.lines.map(([sp, t]) => `<p><strong>${sp}:</strong> ${t}</p>`).join('')
+        : (st.body_html ?? null);
 
-    const script = isAudio ? s.lines.map(([sp, t]) => `${sp}: ${t}`).join('\n') : null;
+    const stimulusId = await insertOne('stimuli', {
+      exam_id: id,
+      skill,
+      sort_order: i + 1,
+      section_id: sec,
+      kind,
+      title: st.title,
+      body_html: body,
+      audio_url: audioUrl,
+      script: isAudio ? st.lines.map(([sp, t]) => `${sp}: ${t}`).join('\n') : null,
+      voice_cast: st.voice_cast ?? {},
+      review_status: 'validated',
+      reviewed_at: new Date().toISOString(),
+    });
 
-    const sid = Number(
-      scalar(`
-        insert into stimuli (exam_id, skill, sort_order, section_id, kind, title, body_html, audio_url,
-                             script, voice_cast, review_status, reviewed_at)
-        values (${id}, '${skill}', ${order}, ${sec ?? 'NULL'}, '${kind}', ${q(s.title)}, ${q(body)},
-                ${q(audioUrl)}, ${q(script)}, ${s.voice_cast ? jsonb(s.voice_cast) : "'{}'::jsonb"},
-                'validated', now())
-        returning id
-      `.replace(/\s+/g, ' '))
-    );
+    for (const [j, qq] of st.questions.entries()) {
+      const questionId = await insertOne('questions', {
+        stimulus_id: stimulusId,
+        exam_id: id,
+        sort_order: j + 1,
+        prompt: qq.prompt,
+        explanation: qq.explanation,
+        option_layout: 'text',
+        review_status: 'validated',
+        reviewed_at: new Date().toISOString(),
+      });
 
-    for (const [j, qq] of s.questions.entries()) {
-      const qid = Number(
-        scalar(`
-          insert into questions (stimulus_id, exam_id, sort_order, prompt, explanation,
-                                 option_layout, review_status, reviewed_at)
-          values (${sid}, ${id}, ${j + 1}, ${q(qq.prompt)}, ${q(qq.explanation)},
-                  'text', 'validated', now())
-          returning id
-        `.replace(/\s+/g, ' '))
-      );
       const labels = ['A', 'B', 'C', 'D'];
-      const values = qq.options
-        .map((body, k) => `(${qid}, '${labels[k]}', ${k + 1}, ${q(body)}, false)`)
-        .join(',');
-      sql(`insert into question_options (question_id, label, sort_order, body, is_correct) values ${values};`);
-      sql(`update question_options set is_correct = true
-           where question_id = ${qid} and label = '${labels[qq.correct]}';`);
+      // Written all-false first, then one flipped: `question_options_one_correct_idx` is
+      // UNIQUE (question_id) WHERE is_correct, so two true rows can never coexist even briefly.
+      await insert(
+        'question_options',
+        qq.options.map((bodyText, k) => ({
+          question_id: questionId,
+          label: labels[k],
+          sort_order: k + 1,
+          body: bodyText,
+          is_correct: false,
+        }))
+      );
+      await patch(
+        'question_options',
+        `question_id=eq.${questionId}&label=eq.${labels[qq.correct]}`,
+        { is_correct: true }
+      );
       questionCount++;
     }
   }
 
-  const errors = publish(id, skill);
+  const errors = await publish(id, skill);
   return { stimuli: stimuli.length, questions: questionCount, errors };
 }
 
@@ -444,64 +527,77 @@ async function seedLuisteren() {
   return seedMcq('luisteren', LUISTEREN, audioUrls);
 }
 
-function rubricFor(skill, category) {
-  const id = scalar(
-    `select id from rubrics where skill='${skill}' and task_type='${category}' and active limit 1`
+async function rubricFor(skill, category) {
+  const rows = await selectRows(
+    'rubrics',
+    `select=id&skill=eq.${skill}&task_type=eq.${category}&active=is.true&limit=1`
   );
-  return id ? Number(id) : null;
+  return rows[0]?.id ?? null;
 }
 
 async function seedSchrijven() {
-  const id = examId('schrijven');
-  sql(`delete from open_tasks where exam_id = ${id};`);
+  const id = await examId('schrijven');
+  await remove('open_tasks', `exam_id=eq.${id}`);
 
   for (const [i, t] of SCHRIJVEN.entries()) {
-    const rid = rubricFor('schrijven', t.task_type);
-    const tid = Number(
-      scalar(`
-        insert into open_tasks (exam_id, skill, sort_order, task_type, title, prompt_html,
-                                bullet_points, email_to, email_subject, greeting, closing,
-                                min_sentences, form_schema, image_usage, model_answer, rubric_id,
-                                review_status, reviewed_at)
-        values (${id}, 'schrijven', ${i + 1}, '${t.task_type}', ${q(t.title)}, ${q(t.prompt_html)},
-                ${jsonb(t.bullet_points ?? [])}, ${q(t.email_to)}, ${q(t.email_subject)},
-                ${q(t.greeting)}, ${q(t.closing)}, ${t.min_sentences ?? 'NULL'},
-                ${t.form_schema ? jsonb(t.form_schema) : 'NULL'}, 'none', ${q(t.model_answer)},
-                ${rid ?? 'NULL'}, 'validated', now())
-        returning id
-      `.replace(/\s+/g, ' '))
-    );
+    const taskId = await insertOne('open_tasks', {
+      exam_id: id,
+      skill: 'schrijven',
+      sort_order: i + 1,
+      task_type: t.task_type,
+      title: t.title,
+      prompt_html: t.prompt_html,
+      bullet_points: t.bullet_points ?? [],
+      email_to: t.email_to ?? null,
+      email_subject: t.email_subject ?? null,
+      greeting: t.greeting ?? null,
+      closing: t.closing ?? null,
+      min_sentences: t.min_sentences ?? null,
+      form_schema: t.form_schema ?? null,
+      image_usage: 'none',
+      model_answer: t.model_answer ?? null,
+      rubric_id: await rubricFor('schrijven', t.task_type),
+      review_status: 'validated',
+      reviewed_at: new Date().toISOString(),
+    });
 
-    for (const [k, im] of (t.images ?? []).entries()) {
-      sql(`
-        insert into open_task_images (task_id, sort_order, image_url, caption, alt_text, group_label)
-        values (${tid}, ${k + 1}, ${q(img(im.seed))}, ${q(im.caption)}, ${q(im.caption)},
-                ${q(im.group_label)});
-      `);
+    if (t.images?.length) {
+      await insert(
+        'open_task_images',
+        t.images.map((im, k) => ({
+          task_id: taskId,
+          sort_order: k + 1,
+          image_url: img(im.seed),
+          caption: im.caption ?? null,
+          alt_text: im.caption ?? null,
+          group_label: im.group_label ?? null,
+        }))
+      );
     }
   }
 
-  const errors = publish(id, 'schrijven');
+  const errors = await publish(id, 'schrijven');
   return { tasks: SCHRIJVEN.length, errors };
 }
 
 async function seedSpreken() {
-  const id = examId('spreken');
-  sql(`delete from open_tasks where exam_id = ${id}; delete from exam_parts where exam_id = ${id};`);
+  const id = await examId('spreken');
+  await remove('open_tasks', `exam_id=eq.${id}`);
+  await remove('exam_parts', `exam_id=eq.${id}`);
 
   let order = 0;
   let audioMade = 0;
 
   for (const [pi, part] of SPREKEN_PARTS.entries()) {
-    const pid = Number(
-      scalar(`
-        insert into exam_parts (exam_id, sort_order, title, instruction_html, show_instruction)
-        values (${id}, ${pi + 1}, ${q(part.title)}, ${q(part.instruction_html)}, true)
-        returning id
-      `.replace(/\s+/g, ' '))
-    );
+    const partId = await insertOne('exam_parts', {
+      exam_id: id,
+      sort_order: pi + 1,
+      title: part.title,
+      instruction_html: part.instruction_html,
+      show_instruction: true,
+    });
 
-    const rid = rubricFor('spreken', `speaking_${part.image_usage}`);
+    const rubricId = await rubricFor('spreken', `speaking_${part.image_usage}`);
 
     for (const t of part.tasks) {
       order++;
@@ -512,8 +608,7 @@ async function seedSpreken() {
         if (!promptAudio) {
           process.stdout.write(`    audio ${order}/16… `);
           try {
-            const buf = await narratorAudio(t.prompt);
-            promptAudio = await upload(objectPath, buf);
+            promptAudio = await upload(objectPath, await narratorAudio(t.prompt));
             console.log('ok');
           } catch (err) {
             console.log(`FAILED (${err.message})`);
@@ -522,43 +617,56 @@ async function seedSpreken() {
         if (promptAudio) audioMade++;
       }
 
-      const tid = Number(
-        scalar(`
-          insert into open_tasks (exam_id, part_id, skill, sort_order, task_type, prompt_html,
-                                  bullet_points, image_usage, prompt_audio_url, prompt_script,
-                                  max_record_seconds, rubric_id, review_status, reviewed_at)
-          values (${id}, ${pid}, 'spreken', ${order}, 'speaking', ${q(`<p>${t.prompt}</p>`)},
-                  '[]'::jsonb, '${part.image_usage}', ${q(promptAudio)}, ${q(t.prompt)}, 60,
-                  ${rid ?? 'NULL'}, 'validated', now())
-          returning id
-        `.replace(/\s+/g, ' '))
-      );
+      const taskId = await insertOne('open_tasks', {
+        exam_id: id,
+        part_id: partId,
+        skill: 'spreken',
+        sort_order: order,
+        task_type: 'speaking',
+        prompt_html: `<p>${t.prompt}</p>`,
+        bullet_points: [],
+        image_usage: part.image_usage,
+        prompt_audio_url: promptAudio,
+        prompt_script: t.prompt,
+        max_record_seconds: 60,
+        rubric_id: rubricId,
+        review_status: 'validated',
+        reviewed_at: new Date().toISOString(),
+      });
 
-      for (let k = 0; k < t.images; k++) {
-        sql(`
-          insert into open_task_images (task_id, sort_order, image_url, alt_text)
-          values (${tid}, ${k + 1}, ${q(img(t.seed, k))}, ${q(`${TEST_MARKER} plaatje ${k + 1}`)});
-        `);
+      if (t.images > 0) {
+        await insert(
+          'open_task_images',
+          Array.from({ length: t.images }, (_, k) => ({
+            task_id: taskId,
+            sort_order: k + 1,
+            image_url: img(t.seed, k),
+            alt_text: `plaatje ${k + 1}`,
+          }))
+        );
       }
     }
   }
 
-  const errors = publish(id, 'spreken');
+  const errors = await publish(id, 'spreken');
   return { parts: SPREKEN_PARTS.length, tasks: order, audio: audioMade, errors };
 }
 
 /* ── teardown ────────────────────────────────────────────────────────────── */
 
-function teardown() {
-  const ids = ['lezen', 'luisteren', 'schrijven', 'spreken'].map(s => examId(s));
-  sql(`
-    delete from stimuli where exam_id in (${ids.join(',')});
-    delete from open_tasks where exam_id in (${ids.join(',')});
-    delete from exam_parts where exam_id in (${ids.join(',')});
-    delete from rubrics where system_prompt = ${q(SYSTEM_PROMPT_MARKER)};
-    update exams set published = (skill in ('lezen','luisteren')), title = null
-      where id in (${ids.join(',')});
-  `);
+async function teardown() {
+  if (PRODUCTION) {
+    console.error('Refusing to tear down production. Remove content through /admin instead.');
+    process.exit(1);
+  }
+  const ids = [];
+  for (const s of ['lezen', 'luisteren', 'schrijven', 'spreken']) ids.push(await examId(s));
+  const inList = `in.(${ids.join(',')})`;
+  await remove('stimuli', `exam_id=${inList}`);
+  await remove('open_tasks', `exam_id=${inList}`);
+  await remove('exam_parts', `exam_id=${inList}`);
+  await remove('rubrics', `system_prompt=eq.${encodeURIComponent(SYSTEM_PROMPT_MARKER)}`);
+  await patch('exams', `id=${inList}`, { published: false, title: null });
   console.log('Removed the test stimuli, questions, tasks, parts and draft rubrics.');
   console.log('Audio objects under question-audio/testdata/ are left; they are harmless and free.');
 }
@@ -590,7 +698,7 @@ async function main() {
     console.log('! ffmpeg not on PATH — audio will skip the -20 LUFS loudnorm pass.\n');
   }
 
-  const madeRubrics = ensureRubrics();
+  const madeRubrics = await ensureRubrics();
   if (madeRubrics > 0) {
     console.log(`Created ${madeRubrics} DRAFT rubric(s) so the publish gate passes.`);
     console.log('  These are placeholders, not the docent\'s criteria. Rewrite them in');
@@ -612,8 +720,14 @@ async function main() {
     }
   }
 
-  console.log('\nSeeded as TESTDATA. Not exam material — see the header of this file.');
-  console.log('Remove it with: node scripts/seed-test-exams.mjs teardown');
+  if (PRODUCTION) {
+    console.log('\nSeeded to PRODUCTION and published.');
+    console.log('Marieke still has to review every item — /admin/opgaven and /admin/questions.');
+    console.log('The rubrics are drafts: rewrite them in /admin/rubrics before a grade counts.');
+  } else {
+    console.log('\nSeeded as TESTDATA. Not exam material — see the header of this file.');
+    console.log('Remove it with: node scripts/seed-test-exams.mjs teardown');
+  }
   process.exit(allErrors.length ? 1 : 0);
 }
 
