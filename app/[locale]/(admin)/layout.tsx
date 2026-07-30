@@ -70,6 +70,7 @@ function AdminSidebar({ locale, userEmail }: { locale: string; userEmail: string
         <NavItem href={`/${locale}/admin`} icon="dashboard" label="Dashboard" />
         <NavItem href={`/${locale}/admin/exams`} icon="assignment" label="Examens" />
         <NavItem href={`/${locale}/admin/questions`} icon="quiz" label="Vragen" />
+        <NavItem href={`/${locale}/admin/opgaven`} icon="edit_note" label="Opgaven" />
         <NavItem href={`/${locale}/admin/rubrics`} icon="checklist" label="Rubrieken" />
         <NavItem href={`/${locale}/admin/beoordeling`} icon="rate_review" label="Beoordelen" />
         {/* Lessen and woordkaarten are feature-flagged off on the public site

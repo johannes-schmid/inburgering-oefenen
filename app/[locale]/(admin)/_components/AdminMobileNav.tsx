@@ -73,6 +73,7 @@ export function AdminMobileNav({ locale, userEmail }: Props) {
           <NavItem href={`/${locale}/admin`} icon="dashboard" label="Dashboard" onClick={() => setOpen(false)} />
           <NavItem href={`/${locale}/admin/questions`} icon="quiz" label="Vragen" onClick={() => setOpen(false)} />
           <NavItem href={`/${locale}/admin/exams`} icon="assignment" label="Examens" onClick={() => setOpen(false)} />
+          <NavItem href={`/${locale}/admin/opgaven`} icon="edit_note" label="Opgaven" onClick={() => setOpen(false)} />
           <NavItem href={`/${locale}/admin/rubrics`} icon="checklist" label="Rubrieken" onClick={() => setOpen(false)} />
           <NavItem href={`/${locale}/admin/beoordeling`} icon="rate_review" label="Beoordelen" onClick={() => setOpen(false)} />
           <NavItem href={`/${locale}/admin/leren`} icon="menu_book" label="Lessen" onClick={() => setOpen(false)} />
