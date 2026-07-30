@@ -2,6 +2,12 @@ node_modules
 .next
 out
 .env*.local
+# The Supabase CLI reads `.env` from the repo root (it does NOT read .env.development.local,
+# which is a Next.js convention), so `.env` holds the local Google OAuth credentials. This repo
+# is public — everything except the checked-in example stays out.
+.env
+.env.*
+!.env.example
 .vercel
 *.tsbuildinfo
 next-env.d.ts

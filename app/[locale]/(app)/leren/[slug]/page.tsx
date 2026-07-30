@@ -233,7 +233,7 @@ export default function LerenPage({ params }: { params: Promise<{ locale: string
       `}</style>
 
       <div id="dash-layout" className="flex">
-        <PlatformSidebar locale={locale} email={email} activeView="leren" />
+        <PlatformSidebar locale={locale} email={email} active="overview" />
 
         <main id="dash-main" className="flex-1 px-6 py-8 md:px-10">
           <div style={{ maxWidth: 860, margin: '0 auto' }}>

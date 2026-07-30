@@ -9,7 +9,10 @@ max_rows = 1000
 [db]
 port = 54422
 shadow_port = 54420
-major_version = 15
+# Postgres 17, matching the hosted project. The CLI stopped honouring `major_version = 15`
+# and forces 17 locally, which stranded the old PG15 volume ("database files are incompatible
+# with server"). Aligning here is the fix, not a preference.
+major_version = 17
 
 [studio]
 port = 54423
@@ -30,7 +33,10 @@ file_size_limit = "50MiB"
 
 [auth]
 site_url = "http://localhost:3001"
-additional_redirect_urls = ["https://localhost:3000", "http://localhost:3000", "http://localhost:3001", "http://localhost:3001/dashboard"]
+# `/auth/callback` must be listed explicitly (or via the wildcard): Supabase matches the
+# redirect_to it is handed, and `http://localhost:3001` alone does not cover a sub-path — the
+# Google round-trip fails with "requested path is invalid" without this.
+additional_redirect_urls = ["http://localhost:3001/**", "http://127.0.0.1:3001/**"]
 jwt_expiry = 3600
 enable_refresh_token_rotation = true
 refresh_token_reuse_interval = 10

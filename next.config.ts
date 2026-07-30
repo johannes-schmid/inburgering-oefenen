@@ -5,11 +5,14 @@ const withNextIntl = createNextIntlPlugin('./i18n/request.ts');
 
 const nextConfig: NextConfig = {
   skipTrailingSlashRedirect: true,
-  // Map server-side SUPABASE_URL into the NEXT_PUBLIC_ name expected by @supabase/ssr browser client
-  env: {
-    NEXT_PUBLIC_SUPABASE_URL: process.env.SUPABASE_URL,
-    NEXT_PUBLIC_SUPABASE_ANON_KEY: process.env.SUPABASE_ANON_KEY,
-  },
+
+  // There is deliberately NO `env:` block here. It used to map
+  //   NEXT_PUBLIC_SUPABASE_ANON_KEY: process.env.SUPABASE_SERVICE_KEY
+  // which inlined the service-role key into every browser bundle — the leak recorded in
+  // CLAUDE.md. Even the corrected version was a hazard: it silently overrode a correctly-set
+  // NEXT_PUBLIC_SUPABASE_URL with `undefined` on any environment that only defined the
+  // non-public names. The browser client reads NEXT_PUBLIC_SUPABASE_URL and
+  // NEXT_PUBLIC_SUPABASE_ANON_KEY directly; set those, and nothing else.
 
   async redirects() {
     return [

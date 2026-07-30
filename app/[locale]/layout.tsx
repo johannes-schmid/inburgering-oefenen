@@ -43,7 +43,7 @@ export const metadata: Metadata = {
   openGraph: {
     siteName: 'Inburgering Oefenen',
     type: 'website',
-    images: [{ url: 'https://inburgeringoefenen.nl/images/marieke-schipper.jpg', width: 800, height: 800, alt: 'Inburgering Oefenen — Gecertificeerde KNM-oefenvragen' }],
+    images: [{ url: 'https://inburgeringoefenen.nl/images/marieke-schipper.jpg', width: 800, height: 800, alt: 'Inburgering Oefenen — oefenexamens inburgering A2 van een NT2-docent' }],
   },
   twitter: { card: 'summary_large_image' },
 };

@@ -1,0 +1,115 @@
+/**
+ * Admin reads for the stimulus-shaped content model.
+ *
+ * `createClient()` runs on the service key, and every caller here already sits behind the
+ * `(admin)` layout's `admin_users` allowlist guard, so these deliberately see draft and
+ * unpublished content — that is the whole point of the authoring surface.
+ */
+import { createClient } from '@/lib/supabase/server';
+import type { StimulusChoice } from '@/app/[locale]/(admin)/admin/questions/_components/QuestionForm';
+
+export type AdminStimulus = {
+  id: number;
+  exam_id: number;
+  part_id: number | null;
+  skill: 'lezen' | 'luisteren';
+  sort_order: number;
+  section_id: number | null;
+  kind: 'text' | 'audio' | 'image';
+  intro: string | null;
+  title: string | null;
+  body_html: string | null;
+  image_url: string | null;
+  image_alt: string | null;
+  audio_url: string | null;
+  script: string | null;
+  voice_cast: Record<string, string> | null;
+  review_status: 'pending' | 'validated';
+  questions: {
+    id: number;
+    sort_order: number;
+    prompt: string;
+    option_layout: 'text' | 'image' | 'image_grid';
+    review_status: 'pending' | 'validated';
+    question_options: {
+      id: number;
+      label: 'A' | 'B' | 'C' | 'D';
+      sort_order: number;
+      body: string | null;
+      image_urls: string[];
+      image_alt: string | null;
+      is_correct: boolean;
+    }[];
+  }[];
+};
+
+/** Every stimulus in the database, labelled for the question editor's picker. */
+export async function fetchStimulusChoices(): Promise<StimulusChoice[]> {
+  const supabase = await createClient();
+  const { data } = await supabase
+    .from('stimuli')
+    .select('id, sort_order, title, kind, exams!inner(skill, number)')
+    .order('exam_id')
+    .order('sort_order');
+
+  type Row = {
+    id: number; sort_order: number; title: string | null; kind: string;
+    exams: { skill: string; number: number } | { skill: string; number: number }[];
+  };
+
+  return ((data ?? []) as unknown as Row[]).map(r => {
+    const e = Array.isArray(r.exams) ? r.exams[0] : r.exams;
+    return {
+      id: r.id,
+      skill: e?.skill ?? '?',
+      exam_number: e?.number ?? 0,
+      sort_order: r.sort_order,
+      title: r.title,
+      kind: r.kind,
+    };
+  });
+}
+
+/** One exam's stimuli with their questions and options, for the exam builder. */
+export async function fetchExamStimuli(examId: number): Promise<AdminStimulus[]> {
+  const supabase = await createClient();
+  const { data } = await supabase
+    .from('stimuli')
+    .select(
+      'id, exam_id, part_id, skill, sort_order, section_id, kind, intro, title, body_html, ' +
+      'image_url, image_alt, audio_url, script, voice_cast, review_status, ' +
+      'questions(id, sort_order, prompt, option_layout, review_status, ' +
+      'question_options(id, label, sort_order, body, image_urls, image_alt, is_correct))'
+    )
+    .eq('exam_id', examId)
+    .order('sort_order');
+
+  return ((data ?? []) as unknown as AdminStimulus[]).map(s => ({
+    ...s,
+    questions: [...(s.questions ?? [])]
+      .sort((a, b) => a.sort_order - b.sort_order)
+      .map(q => ({
+        ...q,
+        question_options: [...(q.question_options ?? [])].sort((a, b) => a.sort_order - b.sort_order),
+      })),
+  }));
+}
+
+export type PublishIssue = {
+  severity: 'error' | 'warning';
+  entity: string;
+  entity_id: number | null;
+  issue: string;
+};
+
+/**
+ * The publish gate. `exam_publish_issues()` is a read-only validator in the database rather
+ * than a trigger, so a half-authored exam stays savable — the docent should not have to fight
+ * the tool to park work in progress.
+ */
+export async function fetchPublishIssues(examId: number): Promise<PublishIssue[]> {
+  const supabase = await createClient();
+  const { data, error } = await supabase.rpc('exam_publish_issues', { p_exam_id: examId });
+  if (error) return [];
+  return (data ?? []) as PublishIssue[];
+}

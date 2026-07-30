@@ -16,6 +16,8 @@ export const routing = defineRouting({
     '/contact': '/contact',
     '/login': '/login',
     '/dashboard': '/dashboard',
+    '/dashboard/[skill]': '/dashboard/[skill]',
+    '/dashboard/profiel': '/dashboard/profiel',
     '/dashboard/analyse': '/dashboard/analyse',
     '/dashboard/fouten': '/dashboard/fouten',
     '/blog': '/blog',
@@ -40,6 +42,7 @@ export const routing = defineRouting({
     '/oefenen': '/oefenen',
     '/oefenen/[skill]': '/oefenen/[skill]',
     '/oefenexamen/[skill]': '/oefenexamen/[skill]',
+    '/oefenexamen/[skill]/[number]': '/oefenexamen/[skill]/[number]',
   },
 });
 

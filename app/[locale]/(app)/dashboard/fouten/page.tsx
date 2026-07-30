@@ -132,7 +132,7 @@ export default function FoutenPage({ params }: { params: Promise<{ locale: strin
 
   if (practice) {
     return (
-      <AppShell locale={locale} email={email} activeView="exams">
+      <AppShell locale={locale} email={email} active="overview">
         <div style={{ maxWidth: 760, margin: '0 auto', padding: '24px 20px 80px' }}>
           <InlineQuiz
             questions={practice}
@@ -154,7 +154,7 @@ export default function FoutenPage({ params }: { params: Promise<{ locale: strin
   const total = mistakeIds.length;
 
   return (
-    <AppShell locale={locale} email={email} activeView="exams">
+    <AppShell locale={locale} email={email} active="overview">
       <div style={{ maxWidth: 680, margin: '0 auto', padding: '24px 20px 80px' }}>
         <BackLink fallbackHref={`/${locale}/dashboard`} />
         <h1 className="font-headline" style={{ fontSize: 24, fontWeight: 800, color: '#002b6d', letterSpacing: '-0.02em' }}>{t('leerwachtrij_title')}</h1>

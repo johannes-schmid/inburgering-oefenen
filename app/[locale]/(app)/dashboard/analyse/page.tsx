@@ -127,7 +127,7 @@ export default function AnalysePage({ params }: { params: Promise<{ locale: stri
   const totalMistakes = topics.reduce((a, tp) => a + tp.mistakes, 0);
 
   return (
-    <AppShell locale={locale} email={email} activeView="exams">
+    <AppShell locale={locale} email={email} active="overview">
       <div style={{ maxWidth: 720, margin: '0 auto', padding: '24px 20px 80px' }}>
         <BackLink fallbackHref={`/${locale}/dashboard`} />
         <div style={{ marginBottom: 18 }}>

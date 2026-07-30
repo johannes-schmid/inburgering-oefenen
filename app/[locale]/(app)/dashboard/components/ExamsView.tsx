@@ -252,7 +252,7 @@ export default function ExamsView({ plan, progress, session, supabase, activeExa
           sampleUrl={sampleAudio}
           onStart={() => setIntroExam(activeExam.num)}
           labels={{
-            eyebrow: 'KNM Proefexamen',
+            eyebrow: 'Oefenexamen',
             title: `Proefexamen ${activeExam.num}`,
             statQuestions: 'Vragen',
             statMinutes: 'Minuten',

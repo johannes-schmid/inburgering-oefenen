@@ -3,6 +3,7 @@ import { cookies } from 'next/headers';
 import { getTranslations } from 'next-intl/server';
 import { Link } from '@/i18n/navigation';
 import { createClient } from '@/lib/supabase/server';
+import { planFromMetadata } from '@/lib/entitlements';
 import ProefexamenEngine from './ProefexamenEngine';
 import { fetchAllQuestions } from '@/lib/questions';
 import LogoMark from '@/components/site/LogoMark';
@@ -48,10 +49,9 @@ export default async function ProefexamenPage({ searchParams }: Props) {
         redirect(`/activate?upgrade=premium`);
       }
 
-      const tier: string = (user.user_metadata?.tier as string) ?? 'free';
-      const isPremium = tier === 'premium' || tier === 'premium_plus';
-
-      if (!isPremium) {
+      // Reads `plan` (what the payment routes write) with a `tier` fallback — this used to
+      // read `tier` only, so every paying user was redirected to /activate.
+      if (planFromMetadata(user.user_metadata) === 'free') {
         redirect(`/activate?upgrade=premium`);
       }
     }
