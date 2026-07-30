@@ -542,6 +542,32 @@ dashboard rendered as a fail and averaged in.
 `grade_error` on the row so a stuck answer surfaces in the inbox. There is deliberately **no
 `/api/transcribe`** — transcription only ever runs as the first step of a grade.
 
+**Live transcript: browser → ElevenLabs directly, no relay.** `/api/stt-token` mints a single-use
+token (`POST /v1/single-use-token/realtime_scribe`, 15-minute expiry) so the key never reaches the
+browser; the client then opens `wss://api.elevenlabs.io/v1/speech-to-text/realtime` itself with
+`model_id=scribe_v2_realtime&audio_format=pcm_16000&commit_strategy=vad&filter_background_audio=true`.
+Proxying would mean our infrastructure carrying audio it has no use for.
+
+`WavRecorder` already produces 16 kHz mono PCM, which is what that endpoint wants, so
+`lib/realtime-transcript.ts` taps the recorder's frames via `start({ onPcm })` rather than opening a
+second `getUserMedia` — two mic streams conflict on some platforms and would capture subtly
+different audio from the file that actually gets graded. The tap can never break the recording.
+
+**`filter_background_audio=true` is not optional.** Without it Scribe invents words from silence: a
+4.8-second probe followed by quiet produced a trailing "Ja." nobody said. A candidate who finishes
+early leaves exactly that silence, and a readback showing words they did not say destroys the only
+thing the pane is for.
+
+**The live transcript is never the graded transcript.** Grading runs on the submitted WAV through the
+batch call in `lib/ai/transcribe.ts`, which also yields the per-word confidence the docent reviews.
+The two can differ, and the UI says so. The readback is Oefenmodus-only — DUO gives none, and reading
+your own words mid-answer trains self-correction rather than speaking.
+
+**ElevenLabs keys are per-product scoped.** Text-to-speech and `speech_to_text` are separate
+permissions, and a key without the latter 401s with `missing the permission speech_to_text` on both
+Scribe paths while TTS keeps returning 200. Rotating the key does not help; the scope does. Every
+transcription path degrades rather than failing the grade.
+
 **Never select `model_answer` or rubric criteria into a client component.** `ExamContent` goes
 straight into `ExamShell`, so anything in `TASK_COLS` is in the page payload. The exemplar answer and
 the anchors are a scoring key. `rubrics` has no non-admin SELECT policy for the same reason, which is

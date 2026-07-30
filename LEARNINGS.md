@@ -728,3 +728,23 @@ invisible until someone who is not the owner tries.
 but `@supabase/ssr` sends the user's JWT as `Authorization`, which overrides the key's role. RLS
 therefore *does* apply to authenticated requests; the service key only takes effect when there is no
 session. I had told the owner the opposite.
+
+## 2026-07-30 — Live transcript for Spreken, and a key that looked broken four times
+**Changed:** `lib/realtime-transcript.ts`, `app/api/stt-token/route.ts`, `onPcm` tap in
+`lib/wav-recorder.ts`, `SpeakingTask.tsx` rebuilt to design 1a.
+**Outcome:** SUCCESS — verified end to end by feeding a real WAV into Chrome as a fake microphone
+(`--use-file-for-fake-audio-capture`). Partial text at t+4.5s, committed sentence by t+7.5s, and the
+level meter animated, which also closed an earlier "unverified with real speech" caveat.
+**What worked:** reading the API reference before designing. The plan assumed a WebSocket relay on
+Vercel; the docs showed ElevenLabs issues single-use tokens precisely so a browser can connect
+directly, which deleted a whole component. And the recorder already emitted exactly the PCM format
+the endpoint wants, so the integration was a tap rather than a second capture path.
+**What went wrong twice:**
+1. `filter_background_audio` defaults off, and Scribe invents words from silence — a 4.8s probe
+   followed by quiet produced a trailing "Ja." nobody said. Only visible because the test fed a
+   *finite* file; a looping fake device would have hidden it.
+2. I reported "three keys, same restriction" when the file had not changed between two of the tests.
+   I had tested one key twice. `stat` on the env file would have caught it immediately.
+**Lesson:** when a credential appears unchanged across attempts, check the file's mtime before
+concluding anything about the credential — and prefer a *finite* audio fixture over a looping one,
+because the interesting failures live in what happens after the speech stops.

@@ -118,7 +118,11 @@ export class RealtimeTranscriber {
       `&audio_format=pcm_${SAMPLE_RATE}` +
       // VAD commits a segment when the speaker pauses, which is what turns a growing partial into
       // stable text. With `manual` we would have to guess sentence boundaries ourselves.
-      `&commit_strategy=vad`;
+      `&commit_strategy=vad` +
+      // Silence makes Scribe invent words: a 4.8s probe followed by quiet produced a trailing
+      // "Ja." that nobody said. A candidate who finishes early leaves exactly that silence, and a
+      // readback showing words they did not say undermines the one thing this pane is for.
+      `&filter_background_audio=true`;
 
     return new Promise<boolean>(resolve => {
       let settled = false;
