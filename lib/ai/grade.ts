@@ -36,11 +36,72 @@ export type GradeCriterionResult = {
   feedback: string;
 };
 
+/**
+ * A specific stretch of the candidate's own words, tied to a criterion.
+ *
+ * This is what makes "grammatica: 2" mean something: the score points at the words that earned it.
+ * `quote` must be an **exact substring** of the answer (or of the transcript, for Spreken) so the UI
+ * can locate and mark it. Quotes that cannot be found are dropped — see `matchHighlights`.
+ */
+export type GradeHighlight = {
+  quote: string;
+  criterion_key: string;
+  note: string;
+  kind: 'improve' | 'good';
+};
+
 export type GradeResult = {
   criteria: GradeCriterionResult[];
   overall: string;
   tips: string[];
+  highlights: GradeHighlight[];
 };
+
+/** A highlight located in the answer, ready to render. */
+export type LocatedHighlight = GradeHighlight & { start: number; end: number };
+
+/**
+ * Find each highlight in the answer and drop the ones that are not really there.
+ *
+ * A model asked to quote will sometimes paraphrase, normalise punctuation, or invent. Any of those
+ * produce a `quote` that does not occur in the text, and rendering it would either silently
+ * highlight nothing or — worse, if we fuzzy-matched — underline words the candidate never wrote and
+ * attach a criticism to them. So the rule is exact match (case-insensitive), first occurrence,
+ * non-overlapping; everything else is discarded.
+ *
+ * Exported for the UI and kept pure so it can be unit-tested without a model call.
+ */
+export function matchHighlights(answer: string, highlights: GradeHighlight[]): LocatedHighlight[] {
+  const haystack = answer.toLowerCase();
+  const located: LocatedHighlight[] = [];
+  const taken: [number, number][] = [];
+
+  for (const h of highlights) {
+    const needle = h.quote.trim().toLowerCase();
+    if (needle.length < 2) continue;
+
+    let from = 0;
+    let start = -1;
+    // First occurrence that does not overlap something already marked.
+    while (from <= haystack.length) {
+      const at = haystack.indexOf(needle, from);
+      if (at === -1) break;
+      const end = at + needle.length;
+      if (!taken.some(([s, e]) => at < e && end > s)) {
+        start = at;
+        break;
+      }
+      from = at + 1;
+    }
+    if (start === -1) continue;
+
+    const end = start + needle.length;
+    taken.push([start, end]);
+    located.push({ ...h, start, end });
+  }
+
+  return located.sort((a, b) => a.start - b.start);
+}
 
 /** The task, loaded server-side. Includes fields never sent to the browser (`model_answer`). */
 export type GradeTask = {
@@ -293,6 +354,40 @@ function buildSchema(criteria: RubricCriterion[]) {
         items: { type: 'string' },
         description: 'Concrete dingen die de kandidaat de volgende keer anders kan doen.',
       },
+      highlights: {
+        type: 'array',
+        maxItems: 8,
+        description:
+          'Plekken in het antwoord van de kandidaat die je beoordeling onderbouwen. Laat leeg ' +
+          'als er niets concreets aan te wijzen is.',
+        items: {
+          type: 'object',
+          additionalProperties: false,
+          required: ['quote', 'criterion_key', 'note', 'kind'],
+          properties: {
+            quote: {
+              type: 'string',
+              description:
+                'LETTERLIJK overgenomen stuk tekst uit het antwoord van de kandidaat — exact ' +
+                'dezelfde woorden en spelling, inclusief eventuele fouten. Verbeter of parafraseer ' +
+                'niets. Hou het kort: een woord of een halve zin. Als je niet letterlijk kunt ' +
+                'citeren, neem dit stuk dan niet op.',
+            },
+            criterion_key: { type: 'string', enum: keys },
+            note: {
+              type: 'string',
+              description:
+                'Één korte zin in eenvoudig Nederlands over dit stukje: wat er goed is, of wat ' +
+                'er anders kan en hoe.',
+            },
+            kind: {
+              type: 'string',
+              enum: ['improve', 'good'],
+              description: "'improve' als het beter kan, 'good' als het juist goed gedaan is.",
+            },
+          },
+        },
+      },
     },
   });
 }
@@ -309,6 +404,9 @@ const BASE_INSTRUCTION = [
   '- Beoordeel wat er staat, niet wat je had gehoopt te lezen of horen.',
   '- Schrijf alle feedback in het Nederlands op A2-niveau: korte zinnen, "je", gewone woorden.',
   '- Geef geen herschreven modelantwoord.',
+  '- Wijs in "highlights" concrete plekken in het antwoord aan. Citeer daarbij LETTERLIJK uit het',
+  '  antwoord van de kandidaat: dezelfde woorden, dezelfde spelling, ook als daar een fout in zit.',
+  '  Een geparafraseerd citaat is onbruikbaar en wordt weggegooid.',
 ].join('\n');
 
 /**
@@ -385,5 +483,21 @@ export async function gradeOpenAnswer({
     throw new Error(`Beoordeling mist criteria: ${missing.join(', ')}`);
   }
 
-  return result;
+  // Highlights are advisory, so a bad one is dropped rather than failing the grade — but it is
+  // dropped *here*, once, so no consumer has to wonder whether a quote is real. The text a quote is
+  // matched against is what the candidate actually produced: the written answer, or the transcript
+  // for a spoken one.
+  const source = (answer.answer_text ?? answer.transcript ?? '').trim();
+  const raw = Array.isArray(result.highlights) ? result.highlights : [];
+  const kept = source
+    ? matchHighlights(source, raw.filter(h => known.has(h.criterion_key)))
+    : [];
+  if (raw.length !== kept.length) {
+    console.warn(
+      `[grade] dropped ${raw.length - kept.length} of ${raw.length} highlight(s) that were not ` +
+        `literal quotes from the answer`
+    );
+  }
+
+  return { ...result, highlights: kept };
 }

@@ -104,6 +104,14 @@ export class WavRecorder {
   private source: MediaStreamAudioSourceNode | null = null;
   private workletUrl: string | null = null;
   private chunks: Float32Array[] = [];
+  /**
+   * Optional tap on the PCM as it arrives, for the live transcript.
+   *
+   * One microphone, two consumers. Opening a second `getUserMedia` for the live transcript would
+   * conflict on some platforms and would capture subtly different audio from the file that actually
+   * gets graded; teeing the same frames cannot drift.
+   */
+  private onPcm: ((frame: Float32Array) => void) | null = null;
 
   /** True between `start()` resolving and `stop()`/`cancel()`. */
   get active(): boolean {
@@ -114,8 +122,9 @@ export class WavRecorder {
    * Open the microphone and begin collecting. Must be called from a user gesture — an
    * `AudioContext` created without one starts suspended.
    */
-  async start(): Promise<void> {
+  async start(opts: { onPcm?: (frame: Float32Array) => void } = {}): Promise<void> {
     this.chunks = [];
+    this.onPcm = opts.onPcm ?? null;
 
     this.stream = await navigator.mediaDevices.getUserMedia({
       audio: {
@@ -138,7 +147,17 @@ export class WavRecorder {
     this.source = this.ctx.createMediaStreamSource(this.stream);
     this.node = new AudioWorkletNode(this.ctx, 'pcm-collector');
     this.node.port.onmessage = e => {
-      this.chunks.push(e.data as Float32Array);
+      const frame = e.data as Float32Array;
+      this.chunks.push(frame);
+      // The tap must never be able to break the recording, which is the artifact that actually
+      // matters — a live transcript is a nicety.
+      if (this.onPcm) {
+        try {
+          this.onPcm(frame);
+        } catch {
+          this.onPcm = null;
+        }
+      }
     };
 
     // Connected to the destination because some browsers do not pull audio through a worklet whose
@@ -186,6 +205,7 @@ export class WavRecorder {
     this.stream?.getTracks().forEach(t => t.stop());
     void this.ctx?.close();
     if (this.workletUrl) URL.revokeObjectURL(this.workletUrl);
+    this.onPcm = null;
     this.node = null;
     this.source = null;
     this.stream = null;

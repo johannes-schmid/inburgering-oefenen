@@ -20,3 +20,19 @@ export type FeatureKey = keyof typeof FEATURES;
 export function isEnabled(key: FeatureKey): boolean {
   return FEATURES[key];
 }
+
+/* ═══════════════════════════════════════════════════════════════════════════
+ * ⚠️  TEMPORARY — REVERT BEFORE LAUNCH
+ *
+ * `UNGATE_PAID_FEATURES` makes every plan behave as Compleet (€19,95): rubric
+ * feedback and per-question explanations are visible to free and Professioneel
+ * accounts too. Turned on 2026-07-30 at the owner's request, because the paid
+ * gate hid exactly the output that needed reviewing while the grader was being
+ * built.
+ *
+ * **Shipping with this `true` gives the Compleet tier away for free.** It is a
+ * single flag rather than deleted checks precisely so that it is one line to
+ * find and one line to undo — `canSeeExplanations()` in lib/entitlements.ts is
+ * the only reader. Set it back to `false` before the first paid customer.
+ * ═══════════════════════════════════════════════════════════════════════════ */
+export const UNGATE_PAID_FEATURES = true;
