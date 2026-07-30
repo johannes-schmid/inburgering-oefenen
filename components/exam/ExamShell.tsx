@@ -540,6 +540,20 @@ export default function ExamShell({ content, canSeeExplanations }: Props) {
             // Examenmodus withholds the readback: DUO gives none, and reading your own words while
             // speaking trains self-correction rather than speaking.
             liveTranscript={feedbackMode === 'practice'}
+            feedback={
+              feedbackMode === 'practice' && (grades[step.task.id]?.state ?? 'idle') !== 'idle' ? (
+                <TaskReview
+                  task={step.task}
+                  grade={grades[step.task.id] ?? EMPTY_GRADE}
+                  hasAnswer={hasAnswer(written[step.task.id], spoken[step.task.id])}
+                  canSeeDetail={canSeeExplanations}
+                  passThresholdPct={exam.pass_threshold_pct}
+                  onGrade={() => void gradeTask(step.task)}
+                  hideAction
+                  compact
+                />
+              ) : null
+            }
             review={
               feedbackMode === 'practice'
                 ? {
@@ -563,7 +577,7 @@ export default function ExamShell({ content, canSeeExplanations }: Props) {
 
         {/* Per-answer feedback, Oefenmodus only. In Examenmodus the candidate gets nothing until
             submit, which is what makes that sitting's score comparable to a real exam. */}
-        {step.kind === 'task' && feedbackMode === 'practice' && (
+        {step.kind === 'task' && feedbackMode === 'practice' && step.task.task_type !== 'speaking' && (
           <TaskReview
             task={step.task}
             grade={grades[step.task.id] ?? EMPTY_GRADE}
@@ -574,8 +588,9 @@ export default function ExamShell({ content, canSeeExplanations }: Props) {
             )}
             canSeeDetail={canSeeExplanations}
             passThresholdPct={exam.pass_threshold_pct}
+            // Only Schrijven reaches here — Spreken renders its assessment inside its own layout,
+            // under the question, so it keeps both the action and the card in that column.
             onGrade={() => void gradeTask(step.task)}
-            hideAction={step.task.task_type === 'speaking'}
           />
         )}
 
@@ -1034,6 +1049,7 @@ function TaskReview({
   passThresholdPct,
   onGrade,
   hideAction = false,
+  compact = false,
 }: {
   task: OpenTaskItem;
   grade: TaskGrade;
@@ -1043,6 +1059,7 @@ function TaskReview({
   onGrade: () => void;
   /** Spreken renders its own "Nakijken" inside the transcript pane, next to the words. */
   hideAction?: boolean;
+  compact?: boolean;
 }) {
   const busy = grade.state === 'grading';
   const graded = grade.state === 'graded';
@@ -1058,6 +1075,7 @@ function TaskReview({
           state={grade.state}
           canSeeDetail={canSeeDetail}
           answerShownElsewhere={hideAction}
+          compact={compact}
           premiumHref="/premium?vanaf=rubriek-feedback"
           errorMessage={grade.error}
           passThresholdPct={passThresholdPct}
@@ -1068,11 +1086,16 @@ function TaskReview({
       {graded && grade.overall && canSeeDetail && (
         <div
           className="rounded-2xl bg-surface-container-lowest"
-          style={{ padding: '1rem 1.125rem', boxShadow: 'var(--shadow-card)' }}
+          style={{
+            padding: compact ? '0.8rem 0.9rem' : '1rem 1.125rem',
+            boxShadow: 'var(--shadow-card)',
+          }}
         >
-          <p className="text-sm leading-relaxed text-on-surface m-0">{grade.overall}</p>
+          <p className={`${compact ? 'text-xs' : 'text-sm'} leading-relaxed text-on-surface m-0`}>
+            {grade.overall}
+          </p>
           {grade.tips.length > 0 && (
-            <ul className="text-sm leading-relaxed text-on-surface-variant mt-2 mb-0 pl-5">
+            <ul className={`${compact ? 'text-xs' : 'text-sm'} leading-relaxed text-on-surface-variant mt-2 mb-0 pl-5`}>
               {grade.tips.map((t, i) => (
                 <li key={i}>{t}</li>
               ))}

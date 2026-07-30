@@ -60,6 +60,8 @@ type Props = {
    * the transcript in place, and a second annotated copy in this card is just duplication.
    */
   answerShownElsewhere?: boolean;
+  /** Denser type and spacing, for the in-exam card that now sits beside the question. */
+  compact?: boolean;
   className?: string;
 };
 
@@ -89,6 +91,7 @@ export default function RubricFeedback({
   passThresholdPct = 60,
   showSources = false,
   answerShownElsewhere = false,
+  compact = false,
   className = '',
 }: Props) {
   if (state === 'grading') {
@@ -143,25 +146,35 @@ export default function RubricFeedback({
   const weakKeys = new Set(weak.map(c => c.key));
 
   return (
-    <div className={`rf ${className}`}>
+    <div className={`rf${compact ? ' rf-compact' : ''} ${className}`}>
       <div className="rf-head">
         <div>
           <span className={`rf-band rf-band-${band}`}>{BAND_LABEL[band]}</span>
           <span className="rf-pct">{pct}%</span>
         </div>
-        <p className="rf-prov">
+      </div>
+
+      {/* Whose criteria these are, with a face.
+          The product's claim is that a certified NT2 docent stands behind every assessment, and an
+          unattributed percentage reads exactly like the AI grading this product exists to be
+          distinguished from. Wording stays honest about the order of events: her criteria applied
+          now, her review to follow. */}
+      <div className="rf-docent">
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img src="/images/marieke-schipper.jpg" alt="" className="rf-docent-face" />
+        <p>
           {reviewed ? (
             <>
-              <Check size={12} strokeWidth={3} aria-hidden />
-              Nagekeken door de docent
+              <strong>Nagekeken door Marieke Schipper</strong>, gecertificeerde NT2-docent.
             </>
           ) : (
             <>
-              <Info size={12} aria-hidden />
-              Voorbeoordeling met de criteria van de docent. Zij controleert je beoordeling.
+              Beoordeeld met de criteria van <strong>Marieke Schipper</strong>, gecertificeerde
+              NT2-docent. Zij controleert deze beoordeling na.
             </>
           )}
         </p>
+        {reviewed && <Check size={14} strokeWidth={3} className="rf-docent-check" aria-hidden />}
       </div>
 
       {missing.length > 0 && (
@@ -335,13 +348,33 @@ const CSS = `
   .rf-retry { display:inline-flex; align-items:center; gap:6px; margin-top:10px; font-size:0.78rem; font-weight:700; color:var(--color-primary); background:none; border:none; padding:0; cursor:pointer; }
   .rf-retry:hover { text-decoration:underline; }
 
-  .rf-head { display:flex; flex-wrap:wrap; align-items:baseline; justify-content:space-between; gap:8px; padding-bottom:12px; border-bottom:1px solid var(--color-surface-container-high); }
+  .rf-head { display:flex; flex-wrap:wrap; align-items:baseline; gap:8px; padding-bottom:12px; border-bottom:1px solid var(--color-surface-container-high); }
   .rf-band { font-family:var(--font-body); font-size:0.66rem; font-weight:800; letter-spacing:0.08em; text-transform:uppercase; padding:3px 8px; border-radius:7px; margin-right:9px; }
   .rf-band-goed, .rf-band-voldoende { background:rgba(0,43,109,0.09); color:var(--color-primary); }
   .rf-band-bijna { background:rgba(254,118,44,0.13); color:var(--color-secondary); }
   .rf-band-onvoldoende { background:color-mix(in srgb, var(--color-error) 11%, transparent); color:var(--color-error); }
   .rf-pct { font-family:var(--font-headline); font-size:1.4rem; font-weight:800; letter-spacing:-0.03em; color:var(--color-primary); font-variant-numeric:tabular-nums; }
   .rf-prov { display:flex; align-items:center; gap:5px; font-size:0.72rem; color:var(--color-outline); line-height:1.5; max-width:34ch; }
+
+  .rf-docent { display:flex; align-items:center; gap:10px; margin-top:12px; padding:10px 12px; border-radius:12px; background:var(--color-surface-container-low); }
+  .rf-docent-face { width:34px; height:34px; border-radius:999px; object-fit:cover; object-position:65% 30%; flex-shrink:0; }
+  .rf-docent p { margin:0; font-size:0.75rem; line-height:1.5; color:var(--color-on-surface-variant); }
+  .rf-docent strong { font-weight:800; color:var(--color-on-surface); }
+  .rf-docent-check { color:var(--color-primary); flex-shrink:0; }
+
+  /* Compact: the card now shares the column with the question, so it trades air for fit. */
+  .rf-compact { padding:14px; }
+  .rf-compact .rf-pct { font-size:1.2rem; }
+  .rf-compact .rf-list { gap:10px; margin-top:12px; }
+  .rf-compact .rf-crit { font-size:0.8rem; }
+  .rf-compact .rf-fb { font-size:0.74rem; margin-top:4px; }
+  .rf-compact .rf-bar span { height:4px; }
+  .rf-compact .rf-focus { font-size:0.8rem; padding:9px 11px; margin-top:12px; }
+  .rf-compact .rf-docent { margin-top:10px; padding:8px 10px; }
+  .rf-compact .rf-docent-face { width:30px; height:30px; }
+  .rf-compact .rf-spans { gap:5px; }
+  .rf-compact .rf-span-quote { font-size:0.74rem; }
+  .rf-compact .rf-span-note { font-size:0.71rem; }
 
   .rf-focus { display:flex; align-items:flex-start; gap:8px; margin:14px 0 0; padding:11px 13px; border-radius:12px; background:rgba(254,118,44,0.1); border-left:3px solid var(--color-secondary-container); font-size:0.85rem; line-height:1.55; color:var(--color-on-secondary-container); }
   .rf-focus svg { flex-shrink:0; margin-top:2px; }

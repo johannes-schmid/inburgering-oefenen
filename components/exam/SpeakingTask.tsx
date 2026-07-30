@@ -1,6 +1,6 @@
 'use client';
 
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState, type ReactNode } from 'react';
 import { Check, Info, Loader2, Mic, RotateCcw, Square, TriangleAlert } from 'lucide-react';
 import type { FeedbackHighlight, RubricFeedbackState } from './RubricFeedback';
 import AudioPlayer from './AudioPlayer';
@@ -43,6 +43,14 @@ type Props = {
     answerText: string | null;
     highlights: FeedbackHighlight[];
   };
+  /**
+   * The assessment, rendered **under the question** rather than full-width below everything.
+   *
+   * The original 1a spec put it across the bottom, which in practice left the question column half
+   * empty and pushed the result a screen and a half down. Sitting it beside the recorder puts the
+   * score next to the question it answers and roughly halves the page.
+   */
+  feedback?: ReactNode;
 };
 
 const IMAGE_RULE: Record<OpenTaskItem['image_usage'], string | null> = {
@@ -80,6 +88,7 @@ export default function SpeakingTask({
   total,
   liveTranscript = true,
   review,
+  feedback,
 }: Props) {
   const [recording, setRecording] = useState(false);
   const [elapsed, setElapsed] = useState(0);
@@ -247,6 +256,11 @@ export default function SpeakingTask({
           </div>
         )}
       </section>
+
+      {/* The assessment lives in the question column, so on a phone it must fall *after* the
+          recorder — you cannot read a score before you have answered. `order` does that without
+          duplicating the node. */}
+      {feedback && <div className="sp-feedback">{feedback}</div>}
 
       {/* ── Right: recording + transcription ── */}
       <section className="sp-pane sp-record">
@@ -458,7 +472,16 @@ const CSS = `
      speaking. */
   @media (min-width: 900px) {
     .sp-split { grid-template-columns: minmax(0, 1.05fr) minmax(0, 1fr); gap: 22px; }
+    /* Question and assessment stack in column 1; recorder spans both rows in column 2, so the
+       assessment fills what used to be dead space under a short question. */
+    .sp-question { grid-column: 1; grid-row: 1; }
+    .sp-feedback { grid-column: 1; grid-row: 2; }
+    .sp-record   { grid-column: 2; grid-row: 1 / span 2; }
   }
+  /* Single column: question → recorder → assessment. */
+  .sp-question { order: 1; }
+  .sp-record { order: 2; }
+  .sp-feedback { order: 3; min-width: 0; }
 
   .sp-pane {
     background: var(--color-surface-container-lowest);
