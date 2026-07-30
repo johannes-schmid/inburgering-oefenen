@@ -55,8 +55,19 @@ type Props = {
   passThresholdPct?: number;
   /** Admin drawer: show every score with its source instead of collapsing to one per criterion. */
   showSources?: boolean;
+  /**
+   * Set when the surrounding surface already shows the answer with its marks — Spreken annotates
+   * the transcript in place, and a second annotated copy in this card is just duplication.
+   */
+  answerShownElsewhere?: boolean;
   className?: string;
 };
+
+/** "a", "a en b", "a, b en c" — Dutch joins the final item with "en", not a comma. */
+function dutchList(items: string[]): string {
+  if (items.length <= 1) return items[0] ?? '';
+  return `${items.slice(0, -1).join(', ')} en ${items[items.length - 1]}`;
+}
 
 const BAND_LABEL: Record<string, string> = {
   goed: 'Goed',
@@ -77,6 +88,7 @@ export default function RubricFeedback({
   onRetry,
   passThresholdPct = 60,
   showSources = false,
+  answerShownElsewhere = false,
   className = '',
 }: Props) {
   if (state === 'grading') {
@@ -121,6 +133,15 @@ export default function RubricFeedback({
   const scoredKeys = new Set(effectiveScores(scores).map(s => s.criterion_key));
   const missing = criteria.filter(c => !scoredKeys.has(c.key));
 
+  // Which criteria actually lost points. Everything in the card looked equally weighted before, so
+  // a 2/3 that is the whole lesson read the same as three 3/3s that need no action at all.
+  const byKey = new Map(effectiveScores(scores).map(s => [s.criterion_key, s]));
+  const weak = criteria.filter(c => {
+    const sc = byKey.get(c.key);
+    return sc != null && sc.score < MAX_CRITERION_SCORE;
+  });
+  const weakKeys = new Set(weak.map(c => c.key));
+
   return (
     <div className={`rf ${className}`}>
       <div className="rf-head">
@@ -153,7 +174,23 @@ export default function RubricFeedback({
         </p>
       )}
 
-      {canSeeDetail && answerText?.trim() && highlights.length > 0 && (
+      {canSeeDetail && weak.length > 0 && (
+        <p className="rf-focus">
+          <TriangleAlert size={14} strokeWidth={2.4} aria-hidden />
+          {/* Naming the weak criteria only helps while they are the minority. Once everything lost
+              points there is nothing to single out, and a list of all five reads as a scolding. */}
+          {weak.length === criteria.length ? (
+            <span>Op alle punten valt nog winst te halen. Begin bij de inhoud van je antwoord.</span>
+          ) : (
+            <span>
+              Let op <strong>{dutchList(weak.map(c => c.criterion.toLowerCase()))}</strong> — daar
+              liggen je punten.
+            </span>
+          )}
+        </p>
+      )}
+
+      {canSeeDetail && !answerShownElsewhere && answerText?.trim() && highlights.length > 0 && (
         <AnnotatedAnswer
           text={answerText}
           highlights={highlights}
@@ -162,12 +199,16 @@ export default function RubricFeedback({
       )}
 
       {canSeeDetail ? (
-        <ul className="rf-list">
+        <ul className={`rf-list${weak.length > 0 ? ' rf-has-weak' : ''}`}>
           {criteria.flatMap(c => {
             const rows = shown.filter(s => s.criterion_key === c.key);
             if (rows.length === 0) return [];
+            const spans = highlights.filter(h => h.criterion_key === c.key);
             return rows.map(s => (
-              <li key={`${c.key}-${s.source}`} className="rf-item">
+              <li
+                key={`${c.key}-${s.source}`}
+                className={`rf-item${weakKeys.has(c.key) ? ' rf-item-weak' : ''}`}
+              >
                 <div className="rf-item-head">
                   <span className="rf-crit">{c.criterion}</span>
                   {showSources && (
@@ -190,6 +231,19 @@ export default function RubricFeedback({
                   ))}
                 </div>
                 {s.feedback && <p className="rf-fb">{s.feedback}</p>}
+                {/* The spans this specific criterion was judged on. Without them a score is an
+                    assertion; with them the candidate can see which of their own words it is
+                    about. */}
+                {spans.length > 0 && (
+                  <ul className="rf-spans">
+                    {spans.map((h, i) => (
+                      <li key={i} className={`rf-span rf-span-${h.kind}`}>
+                        <span className="rf-span-quote">&ldquo;{h.quote}&rdquo;</span>
+                        <span className="rf-span-note">{h.note}</span>
+                      </li>
+                    ))}
+                  </ul>
+                )}
               </li>
             ));
           })}
@@ -265,18 +319,10 @@ function AnnotatedAnswer({
         )}
       </p>
       <p className="rf-annotated-body">{parts}</p>
-      {/* The marks carry their note in a tooltip, which is unreachable by touch and by keyboard —
-          so the same notes are listed below. The list is the accessible version, not a fallback. */}
-      <ul className="rf-notes">
-        {highlights.map((h, i) => (
-          <li key={i} className={`rf-note rf-note-${h.kind}`}>
-            <span className="rf-note-quote">&ldquo;{h.quote}&rdquo;</span>
-            <span className="rf-note-body">
-              <strong>{label(h.criterion_key)}</strong> — {h.note}
-            </span>
-          </li>
-        ))}
-      </ul>
+      {/* No note list here: the same spans are listed under the criterion they belong to, which is
+          both the accessible route (a hover tooltip is unreachable by touch and keyboard) and the
+          answer to "how does this score relate to what I said". Repeating them twice on one card
+          was noise. */}
     </div>
   );
 }
@@ -296,6 +342,23 @@ const CSS = `
   .rf-band-onvoldoende { background:color-mix(in srgb, var(--color-error) 11%, transparent); color:var(--color-error); }
   .rf-pct { font-family:var(--font-headline); font-size:1.4rem; font-weight:800; letter-spacing:-0.03em; color:var(--color-primary); font-variant-numeric:tabular-nums; }
   .rf-prov { display:flex; align-items:center; gap:5px; font-size:0.72rem; color:var(--color-outline); line-height:1.5; max-width:34ch; }
+
+  .rf-focus { display:flex; align-items:flex-start; gap:8px; margin:14px 0 0; padding:11px 13px; border-radius:12px; background:rgba(254,118,44,0.1); border-left:3px solid var(--color-secondary-container); font-size:0.85rem; line-height:1.55; color:var(--color-on-secondary-container); }
+  .rf-focus svg { flex-shrink:0; margin-top:2px; }
+  .rf-focus strong { font-weight:800; }
+
+  .rf-has-weak .rf-item { opacity:0.62; }
+  .rf-has-weak .rf-item-weak { opacity:1; }
+  .rf-item-weak .rf-crit { color:var(--color-on-surface); }
+  .rf-item-weak .rf-bar span.on { background:linear-gradient(90deg,#fe762c,#a24000); }
+  .rf-item-weak .rf-score { color:var(--color-secondary); }
+
+  .rf-spans { list-style:none; margin:8px 0 0; padding:0; display:flex; flex-direction:column; gap:6px; }
+  .rf-span { padding-left:10px; border-left:2px solid var(--color-outline-variant); }
+  .rf-span-improve { border-left-color:var(--color-secondary-container); }
+  .rf-span-good { border-left-color:var(--color-primary); }
+  .rf-span-quote { display:block; font-size:0.78rem; font-style:italic; color:var(--color-on-surface); }
+  .rf-span-note { display:block; font-size:0.74rem; line-height:1.5; color:var(--color-on-surface-variant); }
 
   .rf-list { list-style:none; margin:0; padding:0; display:flex; flex-direction:column; gap:14px; margin-top:14px; }
   .rf-item-head { display:flex; align-items:baseline; gap:8px; }

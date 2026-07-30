@@ -2,6 +2,7 @@
 
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { Check, Info, Loader2, Mic, RotateCcw, Square, TriangleAlert } from 'lucide-react';
+import type { FeedbackHighlight, RubricFeedbackState } from './RubricFeedback';
 import AudioPlayer from './AudioPlayer';
 import { WavRecorder, canRecordWav } from '@/lib/wav-recorder';
 import {
@@ -30,6 +31,18 @@ type Props = {
    * speaking, which is a different skill.
    */
   liveTranscript?: boolean;
+  /**
+   * The review action lives in this pane rather than under the whole task, so "Nakijken" sits next
+   * to the words it is about. Once graded, the same pane marks the spans in place — the candidate
+   * reads the criticism against their own sentence instead of a second copy of it further down.
+   */
+  review?: {
+    state: RubricFeedbackState;
+    onGrade: () => void;
+    /** The graded transcript. Differs from the live readback, so highlights index into this. */
+    answerText: string | null;
+    highlights: FeedbackHighlight[];
+  };
 };
 
 const IMAGE_RULE: Record<OpenTaskItem['image_usage'], string | null> = {
@@ -66,6 +79,7 @@ export default function SpeakingTask({
   taskNumber,
   total,
   liveTranscript = true,
+  review,
 }: Props) {
   const [recording, setRecording] = useState(false);
   const [elapsed, setElapsed] = useState(0);
@@ -183,7 +197,12 @@ export default function SpeakingTask({
   const remaining = Math.max(limit - elapsed, 0);
   const rule = IMAGE_RULE[task.image_usage];
   const hasRecording = Boolean(answer.blob);
-  const shownTranscript = transcript || answer.liveTranscript || '';
+  const grading = review?.state === 'grading';
+  const graded = review?.state === 'graded';
+  // Once graded, the authoritative transcript replaces the live readback: it is what was actually
+  // scored, and it is what the highlight offsets index into.
+  const gradedText = graded ? review?.answerText?.trim() || '' : '';
+  const shownTranscript = gradedText || transcript || answer.liveTranscript || '';
 
   return (
     <div className="sp-split">
@@ -320,10 +339,30 @@ export default function SpeakingTask({
             </div>
 
             <div className="sp-transcript-body" aria-live="polite">
-              {shownTranscript ? (
-                <p>
-                  {transcript.slice(0, transcript.length - partial.length)}
-                  {partial && <span className="sp-partial">{partial}</span>}
+              {graded && gradedText && review ? (
+                <MarkedTranscript text={gradedText} highlights={review.highlights} />
+              ) : shownTranscript ? (
+                <p className={grading ? 'sp-reading' : undefined}>
+                  {grading
+                    ? shownTranscript
+                        .split(/(\s+)/)
+                        .map((w, i) =>
+                          /^\s+$/.test(w) ? (
+                            w
+                          ) : (
+                            // Each word lights in turn, so "being read" is legible as a pass over
+                            // the sentence rather than an undifferentiated shimmer.
+                            <span key={i} style={{ animationDelay: `${i * 55}ms` }}>
+                              {w}
+                            </span>
+                          )
+                        )
+                    : (
+                      <>
+                        {transcript.slice(0, transcript.length - partial.length)}
+                        {partial && <span className="sp-partial">{partial}</span>}
+                      </>
+                    )}
                 </p>
               ) : sttError ? (
                 <p className="sp-tx-muted">
@@ -340,9 +379,35 @@ export default function SpeakingTask({
             </div>
 
             <p className="sp-transcript-note">
-              Dit is wat de spraakherkenning live oppikt — een hulpmiddel, niet je beoordeling. Je
-              wordt beoordeeld op je opname zelf.
+              {graded
+                ? 'Dit is de tekst waarop je beoordeeld bent. Streepjes zijn plekken uit je antwoord die meetellen — beweeg erover voor de uitleg.'
+                : 'Dit is wat de spraakherkenning live oppikt — een hulpmiddel, niet je beoordeling. Je wordt beoordeeld op je opname zelf.'}
             </p>
+
+            {review && (
+              <div className="sp-review-action">
+                <button
+                  type="button"
+                  onClick={review.onGrade}
+                  disabled={grading || !hasRecording}
+                  className="sp-btn sp-btn-check"
+                >
+                  {grading ? (
+                    <>
+                      <Loader2 size={16} className="sp-spin" aria-hidden /> Nakijken…
+                    </>
+                  ) : (
+                    <>
+                      <Check size={16} strokeWidth={2.8} aria-hidden />
+                      {graded ? 'Opnieuw nakijken' : 'Nakijken'}
+                    </>
+                  )}
+                </button>
+                {!hasRecording && (
+                  <span className="sp-review-hint">Neem eerst je antwoord op.</span>
+                )}
+              </div>
+            )}
           </div>
         )}
       </section>
@@ -350,6 +415,35 @@ export default function SpeakingTask({
       <style>{CSS}</style>
     </div>
   );
+}
+
+/**
+ * The graded transcript with its spans marked in place.
+ *
+ * Offsets come from `matchHighlights` server-side, where every quote was verified to be a literal
+ * substring — so nothing here can underline words the candidate did not say.
+ */
+function MarkedTranscript({
+  text,
+  highlights,
+}: {
+  text: string;
+  highlights: FeedbackHighlight[];
+}) {
+  const parts: React.ReactNode[] = [];
+  let cursor = 0;
+  for (const [i, h] of [...highlights].sort((a, b) => a.start - b.start).entries()) {
+    if (h.start > cursor) parts.push(text.slice(cursor, h.start));
+    parts.push(
+      <mark key={i} className={`sp-mark sp-mark-${h.kind}`} tabIndex={0}>
+        {text.slice(h.start, h.end)}
+        <span className="sp-mark-note">{h.note}</span>
+      </mark>
+    );
+    cursor = h.end;
+  }
+  if (cursor < text.length) parts.push(text.slice(cursor));
+  return <p className="sp-marked">{parts}</p>;
 }
 
 const CSS = `
@@ -532,9 +626,43 @@ const CSS = `
     margin: 0; font-size: 0.7rem; line-height: 1.5; color: var(--color-outline);
   }
 
+  .sp-review-action {
+    display: flex; align-items: center; gap: 10px; flex-wrap: wrap;
+    padding-top: 12px; border-top: 1px solid var(--color-surface-container-high);
+  }
+  .sp-btn-check {
+    background: var(--color-primary); font-size: 0.85rem; padding: 0.7rem 1.15rem;
+  }
+  .sp-btn-check:disabled { opacity: 0.5; cursor: default; }
+  .sp-btn-check:disabled:hover { transform: none; }
+  .sp-review-hint { font-size: 0.75rem; color: var(--color-outline); }
+
+  /* Word-by-word pass while the answer is being checked. */
+  .sp-reading span { animation: sp-read 1.5s ease-in-out infinite; }
+  @keyframes sp-read {
+    0%, 100% { color: var(--color-on-surface); }
+    50% { color: var(--color-secondary-container); }
+  }
+
+  .sp-marked { margin: 0; font-size: 0.95rem; line-height: 1.95; color: var(--color-on-surface); }
+  .sp-mark {
+    position: relative; background: none; color: inherit; border-radius: 3px; padding: 1px 0;
+    cursor: help;
+  }
+  .sp-mark-improve { box-shadow: inset 0 -0.42em 0 rgba(254,118,44,0.3); }
+  .sp-mark-good { box-shadow: inset 0 -0.42em 0 rgba(0,43,109,0.14); }
+  .sp-mark-note {
+    position: absolute; left: 0; bottom: calc(100% + 8px); z-index: 5;
+    width: max-content; max-width: 240px; padding: 8px 10px; border-radius: 10px;
+    background: var(--color-on-surface); color: #fff; font-size: 0.75rem; line-height: 1.5;
+    opacity: 0; pointer-events: none; transition: opacity 140ms ease;
+  }
+  .sp-mark:hover .sp-mark-note, .sp-mark:focus-visible .sp-mark-note { opacity: 1; }
+
   @media (prefers-reduced-motion: reduce) {
     .sp-meter span, .sp-btn, .sp-progress > div { transition: none; }
     .sp-btn:hover { transform: none; }
     .sp-dot, .sp-spin { animation: none; }
+    .sp-reading span { animation: none; }
   }
 `;

@@ -748,3 +748,20 @@ the endpoint wants, so the integration was a tap rather than a second capture pa
 **Lesson:** when a credential appears unchanged across attempts, check the file's mtime before
 concluding anything about the credential — and prefer a *finite* audio fixture over a looping one,
 because the interesting failures live in what happens after the speech stops.
+
+## 2026-07-30 — Two scripted edits silently did not match, and one shipped as a missing feature
+**Changed:** highlights now reach the inline in-exam feedback; `hideAction` added to `TaskReview`'s
+signature; Spreken's review action moved into the transcript pane; weak criteria emphasised.
+**Outcome:** FAILURE found by the owner's screenshot, then fixed.
+**What went wrong:** I patch files with `python str.replace()`. Two replacements this session did not
+match and returned the file unchanged — one because the real indentation was 8 spaces where my
+pattern had 10, one because a type block differed. `str.replace` on a non-match is a **silent
+no-op**: the script printed "ok", `tsc` passed (the props were optional), the build passed, and the
+result was a feature that existed on the results screen and was simply absent from the player. The
+owner saw a rating card with no highlights and reported it as a design gap; it was a failed edit.
+**Lesson:** every scripted replacement needs `assert old in s` before writing, and a count check
+when it should apply more than once. A patch that cannot fail loudly will fail quietly. Where I did
+add the assert this session (`exam_publish_issues`, the inline RubricFeedback) the mismatch surfaced
+immediately.
+**Also:** the same class of bug hid a CSS template-literal break — a comment containing backticks
+inside `` <style>{`…`}</style> `` terminated the string. That one at least failed loudly at tsc.

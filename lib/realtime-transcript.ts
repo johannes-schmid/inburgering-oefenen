@@ -122,7 +122,16 @@ export class RealtimeTranscriber {
       // Silence makes Scribe invent words: a 4.8s probe followed by quiet produced a trailing
       // "Ja." that nobody said. A candidate who finishes early leaves exactly that silence, and a
       // readback showing words they did not say undermines the one thing this pane is for.
-      `&filter_background_audio=true`;
+      `&filter_background_audio=true` +
+      // Drop "uh", "uhm" and other disfluencies from the **readback only**.
+      //
+      // A wall of "Uh, … uh, … Uhm," is what the candidate sees while trying to speak, and it reads
+      // as the tool mocking them rather than helping. The graded transcript is produced separately
+      // by the batch call in `lib/ai/transcribe.ts` and stays **verbatim on purpose**: the docent
+      // must see what was actually said, and hesitation is the evidence for the vloeiendheid
+      // criterion. Spreken is also graded from the audio itself, so the model hears every pause
+      // regardless of what this readback shows.
+      `&no_verbatim=true`;
 
     return new Promise<boolean>(resolve => {
       let settled = false;

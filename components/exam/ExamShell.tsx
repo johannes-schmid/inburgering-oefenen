@@ -540,6 +540,16 @@ export default function ExamShell({ content, canSeeExplanations }: Props) {
             // Examenmodus withholds the readback: DUO gives none, and reading your own words while
             // speaking trains self-correction rather than speaking.
             liveTranscript={feedbackMode === 'practice'}
+            review={
+              feedbackMode === 'practice'
+                ? {
+                    state: (grades[step.task.id] ?? EMPTY_GRADE).state,
+                    onGrade: () => void gradeTask(step.task),
+                    answerText: (grades[step.task.id] ?? EMPTY_GRADE).answerText,
+                    highlights: (grades[step.task.id] ?? EMPTY_GRADE).highlights,
+                  }
+                : undefined
+            }
           />
         ) : (
           <WritingTask
@@ -565,10 +575,11 @@ export default function ExamShell({ content, canSeeExplanations }: Props) {
             canSeeDetail={canSeeExplanations}
             passThresholdPct={exam.pass_threshold_pct}
             onGrade={() => void gradeTask(step.task)}
+            hideAction={step.task.task_type === 'speaking'}
           />
         )}
 
-        <div className="flex items-center justify-between gap-3 flex-wrap">
+        <div className="exam-nav flex items-center justify-between gap-3 flex-wrap">
           <button
             type="button"
             onClick={() => goTo(idx - 1)}
@@ -605,6 +616,17 @@ export default function ExamShell({ content, canSeeExplanations }: Props) {
         </div>
 
         <style>{`
+          /* Feedback makes this page several screens long. Pinning the step controls means the
+             candidate never has to scroll past their own assessment to continue — the reason the
+             next action felt lost. Sticky rather than fixed, so it stays in flow and does not cover
+             the last line of content. */
+          .exam-nav {
+            position: sticky; bottom: 0; z-index: 20;
+            margin: 0 -0.75rem -0.5rem; padding: 0.75rem;
+            background: linear-gradient(to top, var(--color-surface) 72%, transparent);
+            backdrop-filter: blur(4px);
+          }
+          @media (max-width: 768px) { .exam-nav { bottom: 78px; } }
           .exam-ghost-btn { transition: background-color .16s ease, transform .16s ease; }
           .exam-ghost-btn:not(:disabled):hover { background: var(--color-surface-container-high); transform: translateY(-1px); }
           .exam-ghost-btn:disabled { opacity: 0.45; cursor: default; }
@@ -1011,6 +1033,7 @@ function TaskReview({
   canSeeDetail,
   passThresholdPct,
   onGrade,
+  hideAction = false,
 }: {
   task: OpenTaskItem;
   grade: TaskGrade;
@@ -1018,6 +1041,8 @@ function TaskReview({
   canSeeDetail: boolean;
   passThresholdPct: number;
   onGrade: () => void;
+  /** Spreken renders its own "Nakijken" inside the transcript pane, next to the words. */
+  hideAction?: boolean;
 }) {
   const busy = grade.state === 'grading';
   const graded = grade.state === 'graded';
@@ -1028,8 +1053,11 @@ function TaskReview({
         <RubricFeedback
           criteria={grade.criteria}
           scores={grade.scores}
+          answerText={grade.answerText}
+          highlights={grade.highlights}
           state={grade.state}
           canSeeDetail={canSeeDetail}
+          answerShownElsewhere={hideAction}
           premiumHref="/premium?vanaf=rubriek-feedback"
           errorMessage={grade.error}
           passThresholdPct={passThresholdPct}
@@ -1053,30 +1081,32 @@ function TaskReview({
         </div>
       )}
 
-      <div className="flex items-center gap-3 flex-wrap">
-        <button
-          type="button"
-          onClick={onGrade}
-          disabled={busy || !hasAnswer}
-          className="exam-ghost-btn inline-flex items-center gap-2 rounded-xl font-bold text-sm cursor-pointer"
-          style={{
-            padding: '0.7rem 1.15rem',
-            border: '1.5px solid var(--color-primary)',
-            background: 'transparent',
-            color: 'var(--color-primary)',
-          }}
-        >
-          <Check size={15} strokeWidth={2.6} aria-hidden />
-          {busy ? 'Nakijken…' : graded ? 'Opnieuw nakijken' : 'Nakijken'}
-        </button>
-        {!hasAnswer && (
-          <span className="text-xs text-on-surface-variant">
-            {task.task_type === 'speaking'
-              ? 'Neem eerst je antwoord op.'
-              : 'Schrijf eerst je antwoord.'}
-          </span>
-        )}
-      </div>
+      {!hideAction && (
+        <div className="flex items-center gap-3 flex-wrap">
+          <button
+            type="button"
+            onClick={onGrade}
+            disabled={busy || !hasAnswer}
+            className="exam-ghost-btn inline-flex items-center gap-2 rounded-xl font-bold text-sm cursor-pointer"
+            style={{
+              padding: '0.7rem 1.15rem',
+              border: '1.5px solid var(--color-primary)',
+              background: 'transparent',
+              color: 'var(--color-primary)',
+            }}
+          >
+            <Check size={15} strokeWidth={2.6} aria-hidden />
+            {busy ? 'Nakijken…' : graded ? 'Opnieuw nakijken' : 'Nakijken'}
+          </button>
+          {!hasAnswer && (
+            <span className="text-xs text-on-surface-variant">
+              {task.task_type === 'speaking'
+                ? 'Neem eerst je antwoord op.'
+                : 'Schrijf eerst je antwoord.'}
+            </span>
+          )}
+        </div>
+      )}
     </div>
   );
 }
