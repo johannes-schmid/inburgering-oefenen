@@ -22,17 +22,20 @@ export function isEnabled(key: FeatureKey): boolean {
 }
 
 /* ═══════════════════════════════════════════════════════════════════════════
- * ⚠️  TEMPORARY — REVERT BEFORE LAUNCH
+ * `UNGATE_PAID_FEATURES` — every plan behaves as Compleet (€19,95)
  *
- * `UNGATE_PAID_FEATURES` makes every plan behave as Compleet (€19,95): rubric
- * feedback and per-question explanations are visible to free and Professioneel
- * accounts too. Turned on 2026-07-30 at the owner's request, because the paid
- * gate hid exactly the output that needed reviewing while the grader was being
- * built.
+ * Rubric feedback and per-question explanations are visible to free and
+ * Professioneel accounts too. Turned on 2026-07-30 because the paid gate hid
+ * exactly the output that needed reviewing while the grader was being built, and
+ * then **deployed to production in that state as a deliberate decision by the
+ * owner** the same day, having been told what it costs:
  *
- * **Shipping with this `true` gives the Compleet tier away for free.** It is a
- * single flag rather than deleted checks precisely so that it is one line to
- * find and one line to undo — `canSeeExplanations()` in lib/entitlements.ts is
- * the only reader. Set it back to `false` before the first paid customer.
+ *   Compleet's only distinguishing feature is this feedback. While the flag is
+ *   `true` there is nothing to buy at €19,95 over Professioneel, and anyone who
+ *   buys it later will already have seen it free.
+ *
+ * It stays a single flag rather than deleted checks so restoring the paywall is
+ * one line. `canSeeExplanations()` in lib/entitlements.ts is the only reader —
+ * set this to `false` and the gate is back everywhere at once.
  * ═══════════════════════════════════════════════════════════════════════════ */
 export const UNGATE_PAID_FEATURES = true;
