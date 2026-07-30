@@ -1,6 +1,8 @@
 'use client';
 
-import { useMemo } from 'react';
+import { useMemo, type ReactNode } from 'react';
+import { Check, Info, Loader2, Lock, RotateCcw } from 'lucide-react';
+import type { FeedbackHighlight, RubricFeedbackState } from './RubricFeedback';
 import type { FormField, OpenTaskItem } from '@/lib/exam-content';
 
 export type WritingAnswer = { text: string; json: Record<string, string> | null };
@@ -11,6 +13,17 @@ type Props = {
   onChange: (next: WritingAnswer) => void;
   taskNumber: number;
   total: number;
+  /** The review action sits under the answer, next to what it judges — as in Spreken. */
+  review?: {
+    state: RubricFeedbackState;
+    onGrade: () => void;
+    answerText: string | null;
+    highlights: FeedbackHighlight[];
+  };
+  /** The assessment, rendered full-width below both panes. */
+  feedback?: ReactNode;
+  /** Compleet gates the docent's model answer; below it the candidate sees only that it exists. */
+  canSeeModelAnswer?: boolean;
 };
 
 /**
@@ -21,151 +34,341 @@ type Props = {
  *
  * `form` answers go to `answer_json`, everything else to `answer_text` — flattening a filled
  * form into prose is what makes a rubric prompt unparseable later.
+ *
+ * ## Layout
+ * Split, like Spreken: the opdracht on the left, the answer surface on the right, assessment
+ * full-width beneath. Schrijven differs from Spreken in one way that matters — the answer is a
+ * paragraph rather than a 20-second recording, so its column is the tall one and the assessment
+ * reads better as a wide strip under both panes than as a narrow column beside them.
+ *
+ * Once graded, the textarea is replaced by the marked-up text. Leaving an editable field next to a
+ * score invites the candidate to "fix" it and wonder why the score does not move — a re-grade is
+ * an explicit action.
  */
-export default function WritingTask({ task, answer, onChange, taskNumber, total }: Props) {
+export default function WritingTask({
+  task,
+  answer,
+  onChange,
+  taskNumber,
+  total,
+  review,
+  feedback,
+  canSeeModelAnswer = false,
+}: Props) {
   const fields = useMemo(() => flattenFields(task), [task]);
   const words = answer.text.trim() ? answer.text.trim().split(/\s+/).length : 0;
+  const isForm = task.task_type === 'form';
+  const grading = review?.state === 'grading';
+  const graded = review?.state === 'graded';
+  const gradedText = graded ? review?.answerText?.trim() || '' : '';
+
+  const paneLabel = task.task_type === 'email' ? 'Jouw e-mail' : isForm ? 'Het formulier' : 'Jouw tekst';
 
   return (
-    <div className="flex flex-col gap-4">
-      <div
-        className="rounded-2xl bg-surface-container-lowest"
-        style={{ padding: '1.375rem 1.5rem', boxShadow: 'var(--shadow-card-md)' }}
-      >
-        <div className="flex items-center justify-between gap-3 mb-3 flex-wrap">
-          <span className="text-[0.65rem] font-bold uppercase tracking-widest text-on-surface-variant/70">
-            Opdracht {taskNumber} van {total}
+    <div className="wr-split">
+      {/* ── Left: the opdracht ── */}
+      <section className="wr-pane wr-brief">
+        <header className="wr-brief-head">
+          <span className="wr-eyebrow">De opdracht</span>
+          <span className="wr-step">
+            {taskNumber} / {total}
           </span>
-          {task.min_sentences && (
-            <span
-              className="text-[0.65rem] font-bold px-2.5 py-1 rounded-full whitespace-nowrap"
-              style={{ background: '#fcecdd', color: '#a24000' }}
-            >
-              Minimaal {task.min_sentences} zinnen
-            </span>
-          )}
-        </div>
+        </header>
 
-        {task.title && (
-          <h2
-            className="font-headline font-bold text-on-surface mb-2.5"
-            style={{ fontSize: '1.15rem', letterSpacing: '-0.01em', textWrap: 'balance' }}
-          >
-            {task.title}
-          </h2>
-        )}
+        {task.title && <h2 className="wr-title">{task.title}</h2>}
 
         {task.prompt_html && (
-          <div
-            className="exam-task-prompt text-on-surface-variant"
-            dangerouslySetInnerHTML={{ __html: task.prompt_html }}
-          />
+          <div className="wr-prompt" dangerouslySetInnerHTML={{ __html: task.prompt_html }} />
         )}
 
+        {/* Numbered rather than bulleted: these are the points the rubric checks off one by one,
+            so the candidate can count them against what they wrote. */}
         {task.bullet_points.length > 0 && (
-          <ul className="mt-3 mb-0 pl-5 flex flex-col gap-1.5">
+          <ol className="wr-points">
             {task.bullet_points.map((b, i) => (
-              <li key={i} className="text-sm leading-relaxed text-on-surface">{b}</li>
+              <li key={i}>
+                <span className="wr-num">{i + 1}</span>
+                <span>{b}</span>
+              </li>
             ))}
-          </ul>
+          </ol>
+        )}
+
+        {(task.min_sentences || task.greeting) && (
+          <p className="wr-hint">
+            <Info size={15} strokeWidth={2.3} aria-hidden />
+            <span>
+              {task.min_sentences ? (
+                <>
+                  Schrijf <strong>minimaal {task.min_sentences} zinnen</strong>.{' '}
+                </>
+              ) : null}
+              Gebruik hele zinnen{task.greeting ? ' en schrijf tussen de aanhef en de afsluiting' : ''}.
+            </span>
+          </p>
         )}
 
         {task.images.length > 0 && (
-          <div
-            className="grid gap-3 mt-4"
-            style={{ gridTemplateColumns: `repeat(auto-fit, minmax(140px, 1fr))` }}
-          >
+          <div className="wr-images">
             {task.images.map(img => (
-              <figure key={img.id} className="m-0">
+              <figure key={img.id}>
                 {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img
-                  src={img.image_url}
-                  alt={img.alt_text ?? ''}
-                  className="rounded-xl"
-                  style={{ width: '100%', aspectRatio: '4 / 3', objectFit: 'cover', display: 'block' }}
-                />
-                {img.caption && (
-                  <figcaption className="text-xs font-semibold text-on-surface-variant mt-1.5 text-center">
-                    {img.caption}
-                  </figcaption>
-                )}
+                <img src={img.image_url} alt={img.alt_text ?? ''} />
+                {img.caption && <figcaption>{img.caption}</figcaption>}
               </figure>
             ))}
           </div>
         )}
+      </section>
 
-        <style>{`
-          .exam-task-prompt { font-size: 0.95rem; line-height: 1.7; }
-          .exam-task-prompt > * + * { margin-top: 0.75rem; }
-          .exam-task-prompt p { margin: 0; }
-        `}</style>
-      </div>
-
-      {/* ── The answer surface ── */}
-      {task.task_type === 'form' ? (
-        <FormAnswer
-          fields={fields}
-          value={answer.json ?? {}}
-          onChange={json => onChange({ ...answer, json })}
-        />
-      ) : (
-        <div
-          className="rounded-2xl bg-surface-container-lowest"
-          style={{ padding: '1.25rem 1.375rem', boxShadow: 'var(--shadow-card-md)' }}
-        >
-          {task.task_type === 'email' && (
-            <dl
-              className="grid gap-x-4 gap-y-1.5 mb-4 pb-4 m-0"
-              style={{ gridTemplateColumns: 'auto 1fr', borderBottom: '1px solid var(--color-outline-variant)' }}
-            >
-              {task.email_to && <MailRow label="Aan" value={task.email_to} />}
-              {task.email_cc && <MailRow label="Cc" value={task.email_cc} />}
-              {task.email_subject && <MailRow label="Onderwerp" value={task.email_subject} />}
-            </dl>
+      {/* ── Right: the answer ── */}
+      <section className="wr-pane wr-answer">
+        <header className="wr-answer-head">
+          <span className="wr-eyebrow">{paneLabel}</span>
+          {!isForm && (
+            <span className="wr-words">
+              {graded ? 'Ingeleverd' : `${words} ${words === 1 ? 'woord' : 'woorden'}`}
+            </span>
           )}
+        </header>
 
-          {task.greeting && (
-            <p className="text-sm font-semibold text-on-surface m-0 mb-2.5">{task.greeting}</p>
-          )}
+        {isForm ? (
+          <FormAnswer
+            fields={fields}
+            value={answer.json ?? {}}
+            onChange={json => onChange({ ...answer, json })}
+          />
+        ) : (
+          <div className="wr-letter">
+            {task.task_type === 'email' && (
+              <dl className="wr-mail">
+                {task.email_to && <MailRow label="Aan" value={task.email_to} />}
+                {task.email_cc && <MailRow label="Cc" value={task.email_cc} />}
+                {task.email_subject && <MailRow label="Onderwerp" value={task.email_subject} />}
+              </dl>
+            )}
 
-          <label className="block">
-            <span className="sr-only">Jouw antwoord</span>
-            <textarea
-              value={answer.text}
-              onChange={e => onChange({ ...answer, text: e.target.value })}
-              rows={task.task_type === 'email' ? 9 : 7}
-              placeholder="Schrijf hier je antwoord…"
-              className="exam-textarea w-full rounded-xl bg-surface-container text-on-surface"
-              style={{
-                padding: '0.875rem 1rem',
-                fontSize: '0.95rem',
-                lineHeight: 1.7,
-                border: '1.5px solid var(--color-outline-variant)',
-                resize: 'vertical',
-                font: 'inherit',
-              }}
-            />
-          </label>
+            <div className="wr-body">
+              {task.greeting && <p className="wr-fixed">{task.greeting}</p>}
 
-          {task.closing && (
-            <p className="text-sm font-semibold text-on-surface m-0 mt-2.5">{task.closing}</p>
-          )}
+              {graded && gradedText && review ? (
+                <MarkedText text={gradedText} highlights={review.highlights} />
+              ) : (
+                <label className="block">
+                  <span className="sr-only">Jouw antwoord</span>
+                  <textarea
+                    value={answer.text}
+                    onChange={e => onChange({ ...answer, text: e.target.value })}
+                    rows={task.task_type === 'email' ? 8 : 7}
+                    placeholder="Schrijf hier je antwoord…"
+                    className={`wr-textarea${grading ? ' wr-reading' : ''}`}
+                    readOnly={grading}
+                  />
+                </label>
+              )}
 
-          <p className="text-xs text-on-surface-variant mt-2.5 mb-0" style={{ fontVariantNumeric: 'tabular-nums' }}>
-            {words} {words === 1 ? 'woord' : 'woorden'}
-          </p>
+              {task.closing && <p className="wr-fixed wr-fixed-end">{task.closing}</p>}
+            </div>
+          </div>
+        )}
 
-          <style>{`
-            .exam-textarea { transition: border-color .18s ease; }
-            .exam-textarea:focus { outline: none; border-color: #fe762c; }
-            .exam-textarea:focus-visible { outline: 3px solid var(--color-secondary); outline-offset: 1px; }
-            @media (prefers-reduced-motion: reduce) { .exam-textarea { transition: none; } }
-          `}</style>
-        </div>
-      )}
+        {review && (
+          <div className="wr-actions">
+            {graded ? (
+              <button type="button" onClick={review.onGrade} className="wr-btn wr-btn-ghost">
+                <RotateCcw size={16} strokeWidth={2.4} aria-hidden />
+                Opnieuw nakijken
+              </button>
+            ) : (
+              <button
+                type="button"
+                onClick={review.onGrade}
+                disabled={grading || (!answer.text.trim() && !answer.json)}
+                className="wr-btn wr-btn-primary"
+              >
+                {grading ? (
+                  <>
+                    <Loader2 size={16} className="wr-spin" aria-hidden /> Nakijken…
+                  </>
+                ) : (
+                  <>
+                    <Check size={16} strokeWidth={2.8} aria-hidden /> Beoordeel mijn tekst
+                  </>
+                )}
+              </button>
+            )}
+
+            {graded && !canSeeModelAnswer && (
+              <span className="wr-locked">
+                <Lock size={13} aria-hidden />
+                Modelantwoord van de docent in Compleet
+              </span>
+            )}
+          </div>
+        )}
+      </section>
+
+      {feedback && <div className="wr-feedback">{feedback}</div>}
+
+      <style>{CSS}</style>
     </div>
   );
 }
+
+/**
+ * The graded answer with its spans marked.
+ *
+ * Offsets come from `matchHighlights` server-side, where every quote was verified to be a literal
+ * substring of what the candidate wrote.
+ */
+function MarkedText({ text, highlights }: { text: string; highlights: FeedbackHighlight[] }) {
+  const parts: ReactNode[] = [];
+  let cursor = 0;
+  for (const [i, h] of [...highlights].sort((a, b) => a.start - b.start).entries()) {
+    if (h.start > cursor) parts.push(text.slice(cursor, h.start));
+    parts.push(
+      <mark key={i} className={`wr-mark wr-mark-${h.kind}`} tabIndex={0}>
+        {text.slice(h.start, h.end)}
+        <span className="wr-mark-note">{h.note}</span>
+      </mark>
+    );
+    cursor = h.end;
+  }
+  if (cursor < text.length) parts.push(text.slice(cursor));
+  return <p className="wr-marked">{parts}</p>;
+}
+
+const CSS = `
+  .wr-split { display: grid; grid-template-columns: 1fr; gap: 18px; align-items: start; }
+  @media (min-width: 900px) {
+    /* The brief is reference material and needs less room than the answer being written in it. */
+    .wr-split { grid-template-columns: minmax(0, 0.78fr) minmax(0, 1fr); gap: 22px; }
+    .wr-brief { grid-column: 1; grid-row: 1; }
+    .wr-answer { grid-column: 2; grid-row: 1; }
+    .wr-feedback { grid-column: 1 / -1; grid-row: 2; }
+  }
+  .wr-brief { order: 1; } .wr-answer { order: 2; } .wr-feedback { order: 3; min-width: 0; }
+
+  .wr-pane {
+    background: var(--color-surface-container-lowest); border-radius: 24px; padding: 22px 24px;
+    box-shadow: 0 12px 40px rgba(0, 43, 109, 0.12); min-width: 0;
+  }
+  @media (max-width: 520px) { .wr-pane { padding: 18px 16px; border-radius: 20px; } }
+
+  .wr-brief-head, .wr-answer-head {
+    display: flex; align-items: center; justify-content: space-between; gap: 10px;
+    flex-wrap: wrap; margin-bottom: 12px;
+  }
+  .wr-eyebrow {
+    font-size: 0.65rem; font-weight: 800; letter-spacing: 0.14em; text-transform: uppercase;
+    color: var(--color-on-surface-variant); opacity: 0.72;
+  }
+  .wr-step, .wr-words {
+    font-size: 0.7rem; font-weight: 700; color: var(--color-outline);
+    font-variant-numeric: tabular-nums;
+  }
+
+  .wr-title {
+    font-family: var(--font-headline); font-size: 1.45rem; font-weight: 800;
+    letter-spacing: -0.025em; color: var(--color-primary); margin: 0 0 10px;
+    text-wrap: balance; line-height: 1.2;
+  }
+  .wr-prompt { font-size: 0.95rem; line-height: 1.7; color: var(--color-on-surface-variant); }
+  .wr-prompt > * + * { margin-top: 0.7rem; }
+  .wr-prompt p { margin: 0; }
+
+  .wr-points { list-style: none; margin: 16px 0 0; padding: 0; display: flex; flex-direction: column; gap: 10px; }
+  .wr-points li { display: flex; align-items: flex-start; gap: 10px; font-size: 0.92rem; line-height: 1.55; color: var(--color-on-surface); }
+  .wr-num {
+    flex-shrink: 0; display: inline-flex; align-items: center; justify-content: center;
+    width: 22px; height: 22px; border-radius: 999px; margin-top: 1px;
+    background: rgba(0, 43, 109, 0.08); color: var(--color-primary);
+    font-size: 0.72rem; font-weight: 800; font-variant-numeric: tabular-nums;
+  }
+
+  .wr-hint {
+    display: flex; align-items: flex-start; gap: 8px; margin: 16px 0 0; padding: 11px 13px;
+    border-radius: 12px; background: var(--color-surface-container-low);
+    border: 1px solid var(--color-outline-variant);
+    font-size: 0.83rem; line-height: 1.55; color: var(--color-on-surface-variant);
+  }
+  .wr-hint svg { flex-shrink: 0; margin-top: 1px; color: var(--color-secondary); }
+  .wr-hint strong { color: var(--color-on-surface); font-weight: 800; }
+
+  .wr-images { display: grid; gap: 10px; margin-top: 16px; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); }
+  .wr-images figure { margin: 0; }
+  .wr-images img { width: 100%; aspect-ratio: 4 / 3; object-fit: cover; display: block; border-radius: 14px; background: var(--color-surface-container); }
+  .wr-images figcaption { font-size: 0.75rem; font-weight: 700; text-align: center; margin-top: 6px; color: var(--color-on-surface-variant); }
+
+  /* The letter frame: fixed chrome the candidate cannot edit, around the part they write. */
+  .wr-letter { border: 1.5px solid var(--color-outline-variant); border-radius: 16px; overflow: hidden; }
+  .wr-mail { display: grid; grid-template-columns: auto 1fr; margin: 0; }
+  .wr-mail dt {
+    padding: 11px 14px; font-size: 0.68rem; font-weight: 800; letter-spacing: 0.09em;
+    text-transform: uppercase; color: var(--color-on-surface-variant); align-self: center;
+    background: var(--color-surface-container-low);
+  }
+  .wr-mail dd {
+    margin: 0; padding: 11px 14px; font-size: 0.9rem; color: var(--color-on-surface);
+    background: var(--color-surface-container-low);
+  }
+  .wr-mail dt, .wr-mail dd { border-bottom: 1px solid var(--color-outline-variant); }
+  .wr-body { padding: 16px; }
+  .wr-fixed { margin: 0 0 12px; font-size: 0.95rem; color: var(--color-on-surface); }
+  .wr-fixed-end { margin: 12px 0 0; }
+
+  .wr-textarea {
+    width: 100%; border-radius: 12px; padding: 0.875rem 1rem; font: inherit; font-size: 0.95rem;
+    line-height: 1.75; resize: vertical; background: var(--color-surface);
+    color: var(--color-on-surface); border: 1.5px solid var(--color-outline-variant);
+    transition: border-color .18s ease;
+  }
+  .wr-textarea:focus { outline: none; border-color: var(--color-secondary-container); }
+  .wr-textarea:focus-visible { outline: 3px solid var(--color-secondary); outline-offset: 1px; }
+  .wr-reading { animation: wr-pulse 1.6s ease-in-out infinite; }
+  @keyframes wr-pulse {
+    0%, 100% { border-color: var(--color-outline-variant); }
+    50% { border-color: var(--color-secondary-container); }
+  }
+
+  .wr-marked { margin: 0; font-size: 0.95rem; line-height: 2; color: var(--color-on-surface); }
+  .wr-mark { position: relative; background: none; color: inherit; border-radius: 3px; padding: 1px 0; cursor: help; }
+  /* Green is already this codebase's success accent (globals.css .info-box-green). */
+  .wr-mark-good { box-shadow: inset 0 -0.42em 0 rgba(76, 175, 122, 0.26); }
+  .wr-mark-improve { box-shadow: inset 0 -0.42em 0 rgba(254, 118, 44, 0.32); }
+  .wr-mark-note {
+    position: absolute; left: 0; bottom: calc(100% + 8px); z-index: 5; width: max-content;
+    max-width: 250px; padding: 8px 10px; border-radius: 10px; background: var(--color-on-surface);
+    color: #fff; font-size: 0.75rem; line-height: 1.5; opacity: 0; pointer-events: none;
+    transition: opacity 140ms ease;
+  }
+  .wr-mark:hover .wr-mark-note, .wr-mark:focus-visible .wr-mark-note { opacity: 1; }
+
+  .wr-actions { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; margin-top: 14px; }
+  .wr-btn {
+    display: inline-flex; align-items: center; justify-content: center; gap: 9px;
+    padding: 0.8rem 1.35rem; border-radius: 14px; cursor: pointer; font: inherit;
+    font-size: 0.88rem; font-weight: 800; border: 0;
+    transition: transform 180ms cubic-bezier(0.22, 1, 0.36, 1), box-shadow 180ms ease;
+  }
+  .wr-btn:hover { transform: translateY(-2px); }
+  .wr-btn:active { transform: translateY(0) scale(0.98); }
+  .wr-btn:focus-visible { outline: 3px solid var(--color-secondary); outline-offset: 2px; }
+  .wr-btn:disabled { opacity: 0.5; cursor: default; }
+  .wr-btn:disabled:hover { transform: none; }
+  .wr-btn-primary { background: var(--gradient-btn-orange); color: #5f2200; box-shadow: var(--shadow-btn-orange); }
+  .wr-btn-ghost { background: transparent; color: var(--color-primary); border: 1.5px solid var(--color-primary); }
+
+  .wr-locked { display: inline-flex; align-items: center; gap: 6px; font-size: 0.76rem; color: var(--color-outline); }
+  .wr-spin { animation: wr-rotate 900ms linear infinite; }
+  @keyframes wr-rotate { to { transform: rotate(360deg); } }
+
+  @media (prefers-reduced-motion: reduce) {
+    .wr-btn, .wr-textarea { transition: none; }
+    .wr-btn:hover { transform: none; }
+    .wr-spin, .wr-reading { animation: none; }
+  }
+`;
 
 function MailRow({ label, value }: { label: string; value: string }) {
   return (

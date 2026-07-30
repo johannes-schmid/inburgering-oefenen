@@ -126,6 +126,25 @@ export function pctFromCriteria(
 }
 
 /**
+ * Raw points, for showing "13 van 15 punten" beside the percentage.
+ *
+ * A percentage alone hides how much a single band is worth: on a five-criterion rubric one step is
+ * ~7%, which reads as noise until you see it is 1 of 15 points.
+ */
+export function pointsFromCriteria(
+  scores: Pick<CriterionScore, 'criterion_key' | 'score'>[],
+  criteria: RubricCriterion[]
+): { earned: number; max: number } | null {
+  const known = new Set(criteria.map(c => c.key));
+  const scored = scores.filter(s => known.has(s.criterion_key));
+  if (scored.length === 0) return null;
+  return {
+    earned: scored.reduce((n, s) => n + s.score, 0),
+    max: MAX_CRITERION_SCORE * scored.length,
+  };
+}
+
+/**
  * Percentage across a whole sitting: the mean of the per-task percentages.
  *
  * Averaging percentages rather than raw points keeps a task with more criteria from silently

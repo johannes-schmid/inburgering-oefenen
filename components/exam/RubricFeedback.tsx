@@ -1,11 +1,12 @@
 'use client';
 
-import { Check, Info, Lock, Loader2, RefreshCw, TriangleAlert } from 'lucide-react';
+import { ArrowUp, Check, Info, Lock, Loader2, RefreshCw, TriangleAlert } from 'lucide-react';
 import {
   effectiveScores,
   isTeacherReviewed,
   MAX_CRITERION_SCORE,
   pctFromCriteria,
+  pointsFromCriteria,
   scoreBand,
   type CriterionScore,
   type RubricCriterion,
@@ -52,6 +53,8 @@ type Props = {
   premiumHref?: string;
   errorMessage?: string | null;
   onRetry?: () => void;
+  /** The grader's forward-looking advice, listed under "wat kan beter" in the wide layout. */
+  tips?: string[];
   passThresholdPct?: number;
   /** Admin drawer: show every score with its source instead of collapsing to one per criterion. */
   showSources?: boolean;
@@ -62,6 +65,12 @@ type Props = {
   answerShownElsewhere?: boolean;
   /** Denser type and spacing, for the in-exam card that now sits beside the question. */
   compact?: boolean;
+  /**
+   * `wide` spreads the criteria across a grid and splits the notes into "wat ging goed" and "wat
+   * kan beter" — the Schrijven treatment, where the answer is long enough that a full-width strip
+   * below reads better than a narrow column beside it.
+   */
+  layout?: 'stack' | 'wide';
   className?: string;
 };
 
@@ -88,10 +97,12 @@ export default function RubricFeedback({
   premiumHref,
   errorMessage,
   onRetry,
+  tips = [],
   passThresholdPct = 60,
   showSources = false,
   answerShownElsewhere = false,
   compact = false,
+  layout = 'stack',
   className = '',
 }: Props) {
   if (state === 'grading') {
@@ -130,6 +141,8 @@ export default function RubricFeedback({
   if (pct == null) return null;
 
   const band = scoreBand(pct, passThresholdPct);
+  const wide = layout === 'wide';
+  const points = pointsFromCriteria(effectiveScores(scores), criteria);
 
   // A criterion the rubric defines but nobody scored is a grading bug, and it silently shrinks
   // the denominator. Say so rather than showing a percentage that quietly means something else.
@@ -145,12 +158,26 @@ export default function RubricFeedback({
   });
   const weakKeys = new Set(weak.map(c => c.key));
 
+  // The two columns are a re-cut of data already present rather than a second model call: spans the
+  // grader marked "good" on one side, spans marked "improve" plus its tips on the other. Quoting the
+  // candidate's own words is what stops "wat ging goed" reading as flattery.
+  const good = highlights.filter(h => h.kind === 'good').map(h => `${h.note} ("${h.quote}")`);
+  const better = [
+    ...highlights.filter(h => h.kind === 'improve').map(h => `${h.note} ("${h.quote}")`),
+    ...tips,
+  ];
+
   return (
-    <div className={`rf${compact ? ' rf-compact' : ''} ${className}`}>
+    <div className={`rf${compact ? ' rf-compact' : ''}${wide ? ' rf-wide' : ''} ${className}`}>
       <div className="rf-head">
         <div>
           <span className={`rf-band rf-band-${band}`}>{BAND_LABEL[band]}</span>
           <span className="rf-pct">{pct}%</span>
+          {points && (
+            <span className="rf-points">
+              {points.earned} van {points.max} punten
+            </span>
+          )}
         </div>
       </div>
 
@@ -211,6 +238,10 @@ export default function RubricFeedback({
         />
       )}
 
+      {canSeeDetail && wide && (
+        <p className="rf-section-label">Beoordeling per onderdeel</p>
+      )}
+
       {canSeeDetail ? (
         <ul className={`rf-list${weak.length > 0 ? ' rf-has-weak' : ''}`}>
           {criteria.flatMap(c => {
@@ -247,7 +278,7 @@ export default function RubricFeedback({
                 {/* The spans this specific criterion was judged on. Without them a score is an
                     assertion; with them the candidate can see which of their own words it is
                     about. */}
-                {spans.length > 0 && (
+                {!wide && spans.length > 0 && (
                   <ul className="rf-spans">
                     {spans.map((h, i) => (
                       <li key={i} className={`rf-span rf-span-${h.kind}`}>
@@ -272,6 +303,37 @@ export default function RubricFeedback({
             <a href={premiumHref} className="rf-cta">
               Bekijk Compleet — €19,95
             </a>
+          )}
+        </div>
+      )}
+
+      {canSeeDetail && wide && (good.length > 0 || better.length > 0) && (
+        <div className="rf-cols">
+          {good.length > 0 && (
+            <section className="rf-col rf-col-good">
+              <h4>
+                <Check size={14} strokeWidth={3} aria-hidden />
+                Wat ging goed
+              </h4>
+              <ul>
+                {good.map((t, i) => (
+                  <li key={i}>{t}</li>
+                ))}
+              </ul>
+            </section>
+          )}
+          {better.length > 0 && (
+            <section className="rf-col rf-col-better">
+              <h4>
+                <ArrowUp size={14} strokeWidth={3} aria-hidden />
+                Wat kan beter
+              </h4>
+              <ul>
+                {better.map((t, i) => (
+                  <li key={i}>{t}</li>
+                ))}
+              </ul>
+            </section>
           )}
         </div>
       )}
@@ -332,7 +394,8 @@ function AnnotatedAnswer({
         )}
       </p>
       <p className="rf-annotated-body">{parts}</p>
-      {/* No note list here: the same spans are listed under the criterion they belong to, which is
+      {/* No note list here in the stacked layout: the same spans are listed under the criterion they
+          belong to, which is
           both the accessible route (a hover tooltip is unreachable by touch and keyboard) and the
           answer to "how does this score relate to what I said". Repeating them twice on one card
           was noise. */}
@@ -375,6 +438,30 @@ const CSS = `
   .rf-compact .rf-spans { gap:5px; }
   .rf-compact .rf-span-quote { font-size:0.74rem; }
   .rf-compact .rf-span-note { font-size:0.71rem; }
+
+  .rf-points { font-size:0.78rem; font-weight:700; color:var(--color-outline); margin-left:9px; }
+  .rf-section-label { margin:14px 0 0; font-size:0.66rem; font-weight:800; letter-spacing:0.11em; text-transform:uppercase; color:var(--color-outline); }
+
+  /* Wide: criteria side by side so a five-criterion rubric is one band of the page, not five. */
+  .rf-wide .rf-list { display:grid; gap:16px 22px; grid-template-columns:1fr; align-items:start; }
+  /* auto-fit rather than a fixed count: the docent decides how many criteria a rubric has, and
+     four columns strand a fifth on a row of its own. */
+  @media (min-width:700px) { .rf-wide .rf-list { grid-template-columns:repeat(auto-fit,minmax(215px,1fr)); } }
+
+  .rf-cols { display:grid; grid-template-columns:1fr; gap:12px; margin-top:16px; }
+  @media (min-width:700px) { .rf-cols { grid-template-columns:repeat(2,1fr); } }
+  .rf-col { padding:13px 15px; border-radius:14px; }
+  .rf-col h4 { display:flex; align-items:center; gap:7px; margin:0 0 8px; font-family:var(--font-headline); font-size:0.85rem; font-weight:800; }
+  .rf-col ul { list-style:none; margin:0; padding:0; display:flex; flex-direction:column; gap:6px; }
+  .rf-col li { position:relative; padding-left:15px; font-size:0.8rem; line-height:1.55; color:var(--color-on-surface-variant); }
+  .rf-col li::before { position:absolute; left:0; top:0; font-weight:800; }
+  /* #4caf7a is already the codebase's green (globals.css .info-box-green) — not a new hue. */
+  .rf-col-good { background:rgba(76,175,122,0.08); }
+  .rf-col-good h4 { color:#2f7d55; }
+  .rf-col-good li::before { content:'✓'; color:#4caf7a; }
+  .rf-col-better { background:rgba(254,118,44,0.09); }
+  .rf-col-better h4 { color:var(--color-secondary); }
+  .rf-col-better li::before { content:'→'; color:var(--color-secondary-container); }
 
   .rf-focus { display:flex; align-items:flex-start; gap:8px; margin:14px 0 0; padding:11px 13px; border-radius:12px; background:rgba(254,118,44,0.1); border-left:3px solid var(--color-secondary-container); font-size:0.85rem; line-height:1.55; color:var(--color-on-secondary-container); }
   .rf-focus svg { flex-shrink:0; margin-top:2px; }

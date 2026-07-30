@@ -572,28 +572,36 @@ export default function ExamShell({ content, canSeeExplanations }: Props) {
             onChange={a => setWritten(prev => ({ ...prev, [step.task.id]: a }))}
             taskNumber={idx + 1}
             total={totalItems}
+            canSeeModelAnswer={canSeeExplanations}
+            review={
+              feedbackMode === 'practice'
+                ? {
+                    state: (grades[step.task.id] ?? EMPTY_GRADE).state,
+                    onGrade: () => void gradeTask(step.task),
+                    answerText: (grades[step.task.id] ?? EMPTY_GRADE).answerText,
+                    highlights: (grades[step.task.id] ?? EMPTY_GRADE).highlights,
+                  }
+                : undefined
+            }
+            feedback={
+              feedbackMode === 'practice' && (grades[step.task.id]?.state ?? 'idle') !== 'idle' ? (
+                <TaskReview
+                  task={step.task}
+                  grade={grades[step.task.id] ?? EMPTY_GRADE}
+                  hasAnswer={hasAnswer(written[step.task.id], spoken[step.task.id])}
+                  canSeeDetail={canSeeExplanations}
+                  passThresholdPct={exam.pass_threshold_pct}
+                  onGrade={() => void gradeTask(step.task)}
+                  hideAction
+                  layout="wide"
+                />
+              ) : null
+            }
           />
         )}
 
         {/* Per-answer feedback, Oefenmodus only. In Examenmodus the candidate gets nothing until
             submit, which is what makes that sitting's score comparable to a real exam. */}
-        {step.kind === 'task' && feedbackMode === 'practice' && step.task.task_type !== 'speaking' && (
-          <TaskReview
-            task={step.task}
-            grade={grades[step.task.id] ?? EMPTY_GRADE}
-            hasAnswer={Boolean(
-              written[step.task.id]?.text?.trim() ||
-                written[step.task.id]?.json ||
-                spoken[step.task.id]?.blob
-            )}
-            canSeeDetail={canSeeExplanations}
-            passThresholdPct={exam.pass_threshold_pct}
-            // Only Schrijven reaches here — Spreken renders its assessment inside its own layout,
-            // under the question, so it keeps both the action and the card in that column.
-            onGrade={() => void gradeTask(step.task)}
-          />
-        )}
-
         <div className="exam-nav flex items-center justify-between gap-3 flex-wrap">
           <button
             type="button"
@@ -1050,6 +1058,7 @@ function TaskReview({
   onGrade,
   hideAction = false,
   compact = false,
+  layout = 'stack',
 }: {
   task: OpenTaskItem;
   grade: TaskGrade;
@@ -1060,6 +1069,7 @@ function TaskReview({
   /** Spreken renders its own "Nakijken" inside the transcript pane, next to the words. */
   hideAction?: boolean;
   compact?: boolean;
+  layout?: 'stack' | 'wide';
 }) {
   const busy = grade.state === 'grading';
   const graded = grade.state === 'graded';
@@ -1076,6 +1086,8 @@ function TaskReview({
           canSeeDetail={canSeeDetail}
           answerShownElsewhere={hideAction}
           compact={compact}
+          layout={layout}
+          tips={grade.tips}
           premiumHref="/premium?vanaf=rubriek-feedback"
           errorMessage={grade.error}
           passThresholdPct={passThresholdPct}
@@ -1083,7 +1095,7 @@ function TaskReview({
         />
       )}
 
-      {graded && grade.overall && canSeeDetail && (
+      {graded && grade.overall && canSeeDetail && layout !== 'wide' && (
         <div
           className="rounded-2xl bg-surface-container-lowest"
           style={{
