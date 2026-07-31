@@ -36,3 +36,26 @@ export function canSeeExplanations(plan: Plan): boolean {
   if (UNGATE_PAID_FEATURES) return true;
   return plan === 'premium_plus';
 }
+
+
+/* ── Per-module access ────────────────────────────────────────────────────── */
+
+/**
+ * Which exam components this account has bought.
+ *
+ * Stored as `user_metadata.modules`, a list of skill slugs, because the product is sold per
+ * onderdeel. The legacy global `plan` still grants everything: accounts that bought Professioneel or
+ * Compleet before modules existed keep what they paid for, and a `plan` check is the fallback rather
+ * than the primary. Do not delete it — it is somebody's purchase.
+ */
+export function modulesFromMetadata(meta: Meta): string[] {
+  const raw = (meta as { modules?: unknown } | null | undefined)?.modules;
+  if (!Array.isArray(raw)) return [];
+  return raw.filter((x): x is string => typeof x === 'string');
+}
+
+/** Does this account have paid access to one skill? */
+export function ownsModule(meta: Meta, skill: string): boolean {
+  if (planFromMetadata(meta) !== 'free') return true; // legacy all-access purchase
+  return modulesFromMetadata(meta).includes(skill);
+}

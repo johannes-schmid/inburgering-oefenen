@@ -1,20 +1,14 @@
 import type { Metadata } from 'next';
 import { redirect } from 'next/navigation';
-import { ArrowRight, Check, Lock } from 'lucide-react';
+import { Check } from 'lucide-react';
 import { createClient } from '@/lib/supabase/server';
-import { planFromMetadata } from '@/lib/entitlements';
+import { ownsModule, planFromMetadata } from '@/lib/entitlements';
 import { FREE_GRADED_PER_SKILL } from '@/lib/grading-limits';
-import {
-  BUNDLE_LIST_PRICE_CENTS,
-  BUNDLE_PRICE_CENTS,
-  BUNDLE_SAVING_CENTS,
-  MODULE_PRICE_CENTS,
-  MODULES,
-  euro,
-} from '@/lib/pricing';
+import { MODULES } from '@/lib/pricing';
 import { SKILLS } from '@/data/skills';
 import SkillIcon from '@/components/site/SkillIcon';
 import AppShell from '../../components/AppShell';
+import ModulePicker from './ModulePicker';
 
 export const metadata: Metadata = {
   title: 'Pakketten | Inburgering Oefenen',
@@ -83,82 +77,23 @@ export default async function PakkettenPage({
             </p>
           )}
 
-          {/* ── Per module ── */}
-          <div className="pk-grid">
-            {MODULES.map(mod => {
+          <ModulePicker
+            locale={locale}
+            initialSelection={focus ? [focus] : []}
+            modules={MODULES.map(mod => {
               const skill = SKILLS.find(s => s.slug === mod.slug)!;
-              return (
-                <section
-                  key={mod.slug}
-                  className={`pk-card${focus === mod.slug ? ' pk-card-focus' : ''}`}
-                >
-                  <div className="pk-card-head">
-                    <SkillIcon skill={mod.slug} size="md" />
-                    <div className="min-w-0">
-                      <h2 className="pk-card-title">{skill.slug}</h2>
-                      <p className="pk-card-meta">
-                        {mod.examCount} oefenexamens · {mod.itemCount}{' '}
-                        {skill.scoring === 'open' ? 'opdrachten' : 'vragen'}
-                      </p>
-                    </div>
-                  </div>
-
-                  <p className="pk-price">
-                    <span>{euro(mod.priceCents)}</span>
-                    <small>per maand</small>
-                  </p>
-
-                  <ul className="pk-list">
-                    <li>
-                      <Check size={13} strokeWidth={3} aria-hidden />
-                      Alle {mod.examCount} oefenexamens
-                    </li>
-                    <li>
-                      <Check size={13} strokeWidth={3} aria-hidden />
-                      Score per onderdeel en per vraagsoort
-                    </li>
-                    {mod.hasRubricFeedback && (
-                      <li>
-                        <Check size={13} strokeWidth={3} aria-hidden />
-                        Onbeperkt nakijken met de criteria van de docent
-                      </li>
-                    )}
-                  </ul>
-
-                  <a
-                    href={`/${locale}/activate?module=${mod.slug}`}
-                    className="pk-cta no-underline"
-                  >
-                    <span className="pk-cap">{skill.slug}</span> ontgrendelen
-                    <ArrowRight size={15} strokeWidth={2.5} aria-hidden />
-                  </a>
-                </section>
-              );
+              return {
+                slug: mod.slug,
+                label: skill.slug,
+                examCount: mod.examCount,
+                itemCount: mod.itemCount,
+                itemNoun: skill.scoring === 'open' ? 'opdrachten' : 'vragen',
+                hasRubricFeedback: mod.hasRubricFeedback,
+                owned: ownsModule(meta, mod.slug),
+              };
             })}
-          </div>
+          />
 
-          {/* ── Bundle ── */}
-          <section className="pk-bundle">
-            <div className="min-w-0">
-              <p className="pk-bundle-eyebrow">Alle vier de onderdelen</p>
-              <h2 className="pk-bundle-title">
-                {euro(BUNDLE_PRICE_CENTS)} <small>per maand</small>
-              </h2>
-              <p className="pk-bundle-note">
-                Los kosten alle vier {euro(BUNDLE_LIST_PRICE_CENTS)} per maand — samen bespaar je{' '}
-                {euro(BUNDLE_SAVING_CENTS)}, bijna een hele module.
-              </p>
-            </div>
-            <a href={`/${locale}/activate?module=alles`} className="pk-bundle-cta no-underline">
-              Alles ontgrendelen
-              <ArrowRight size={16} strokeWidth={2.5} aria-hidden />
-            </a>
-          </section>
-
-          <p className="pk-foot">
-            <Lock size={13} aria-hidden />
-            Betalen gaat via iDEAL of creditcard. Je kunt maandelijks opzeggen.
-          </p>
         </div>
       </div>
 

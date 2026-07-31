@@ -66,3 +66,42 @@ export function getModule(slug: string): ModuleOffer | undefined {
 
 /** Every practice exam across all four modules. */
 export const TOTAL_EXAMS = MODULES.reduce((n, m) => n + m.examCount, 0);
+
+
+/* ── What a selection costs ───────────────────────────────────────────────── */
+
+export type ModuleSelection = ModuleSlug[];
+
+/**
+ * Price for a set of modules, in cents.
+ *
+ * All four is the bundle price, not four times the module price — that is the whole offer. Any
+ * other combination is simply per module.
+ *
+ * **Always compute this server-side.** The checkout route must never accept an amount from the
+ * client: a posted total is a posted discount.
+ */
+export function priceForSelection(selection: ModuleSelection): number {
+  const unique = [...new Set(selection)].filter(s => MODULES.some(m => m.slug === s));
+  if (unique.length === 0) return 0;
+  if (unique.length === SKILLS.length) return BUNDLE_PRICE_CENTS;
+  return unique.length * MODULE_PRICE_CENTS;
+}
+
+/** Undiscounted total, for showing what the bundle saves. */
+export function listPriceForSelection(selection: ModuleSelection): number {
+  const unique = [...new Set(selection)].filter(s => MODULES.some(m => m.slug === s));
+  return unique.length * MODULE_PRICE_CENTS;
+}
+
+/** Only the full set is discounted today; kept as a function so tiers can change in one place. */
+export function savingForSelection(selection: ModuleSelection): number {
+  return listPriceForSelection(selection) - priceForSelection(selection);
+}
+
+/** Narrow an untrusted array of strings to real module slugs. */
+export function parseSelection(raw: unknown): ModuleSelection {
+  if (!Array.isArray(raw)) return [];
+  const valid = new Set(MODULES.map(m => m.slug as string));
+  return [...new Set(raw.filter((x): x is string => typeof x === 'string' && valid.has(x)))] as ModuleSelection;
+}

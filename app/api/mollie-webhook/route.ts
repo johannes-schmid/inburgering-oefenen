@@ -1,6 +1,8 @@
 import { createMollieClient } from '@mollie/api-client';
 import { Resend } from 'resend';
 import { createAdminClient } from '@/lib/supabase/admin';
+import { parseSelection } from '@/lib/pricing';
+import { modulesFromMetadata } from '@/lib/entitlements';
 import { TABLE, PAYMENT_STATUS, PRODUCTS } from '@/lib/api-constants';
 import { activationEmail, activationSubject } from '@/lib/email/templates/activation';
 import { upgradeEmail, upgradeSubject } from '@/lib/email/templates/upgrade';
@@ -27,20 +29,67 @@ export async function POST(request: Request): Promise<Response> {
       .eq('mollie_payment_id', paymentId);
 
     if (payment.status === PAYMENT_STATUS.PAID) {
-      const meta = payment.metadata as { userId?: string; product?: string; locale?: string; pricingVariant?: string; ab_variant?: string } | undefined;
+      const meta = payment.metadata as {
+        userId?: string;
+        product?: string;
+        locale?: string;
+        pricingVariant?: string;
+        ab_variant?: string;
+        /** Set by /api/checkout-modules — a per-module subscription rather than a one-off tier. */
+        kind?: string;
+        modules?: unknown;
+      } | undefined;
       const userId = meta?.userId;
       const locale: EmailLocale = (['nl', 'en', 'ar'].includes(meta?.locale ?? '') ? meta!.locale as EmailLocale : 'nl');
 
       if (userId) {
-        const productDef = PRODUCTS[(meta?.product as keyof typeof PRODUCTS) ?? 'premium'] ?? PRODUCTS.premium;
-        const grantedPlan = productDef.grantsPlan;
-
         const { data: userData } = await supabase.auth.admin.getUserById(userId);
         const existingMeta = userData?.user?.user_metadata ?? {};
-        const finalPlan = existingMeta.plan === 'premium_plus' ? 'premium_plus' : grantedPlan;
-        await supabase.auth.admin.updateUserById(userId, {
-          user_metadata: { ...existingMeta, premium: true, plan: finalPlan },
-        });
+
+        // The activation email distinguishes only "full access" from "exams only". A module purchase
+        // is neither tier, and Schrijven or Spreken include rubric feedback — which is what
+        // premium_plus meant — so a module buyer gets the fuller email.
+        let finalPlan: 'premium' | 'premium_plus' = 'premium';
+
+        if (meta?.kind === 'modules') {
+          // ── Per-module subscription ──────────────────────────────────────────────────────────
+          // Grant exactly what was bought, merged with what the account already had: buying
+          // Spreken must not revoke a Lezen bought last month.
+          const bought = parseSelection(meta.modules);
+          const owned = [...new Set([...modulesFromMetadata(existingMeta), ...bought])];
+          if (owned.some(m => m === 'schrijven' || m === 'spreken')) finalPlan = 'premium_plus';
+
+          await supabase.auth.admin.updateUserById(userId, {
+            user_metadata: { ...existingMeta, modules: owned },
+          });
+
+          // The first payment established a mandate; this is what makes it recur. Created here
+          // rather than at checkout because a mandate only exists once the payment is actually paid.
+          if (payment.customerId) {
+            try {
+              await mollie.customerSubscriptions.create({
+                customerId: payment.customerId,
+                amount: payment.amount,
+                interval: '1 month',
+                description: `Inburgering Oefenen — ${owned.join(', ')} (${userId.slice(0, 8)})`,
+                webhookUrl: payment.webhookUrl ?? undefined,
+                metadata: { userId, modules: owned, kind: 'modules' },
+              });
+            } catch (subErr) {
+              // The candidate has paid and has access; a failed subscription only means it will not
+              // renew. Loud in the log rather than a failed webhook, which Mollie would retry and
+              // which would re-grant repeatedly.
+              console.error('[mollie-webhook] subscription create failed', userId, subErr);
+            }
+          }
+        } else {
+          const productDef = PRODUCTS[(meta?.product as keyof typeof PRODUCTS) ?? 'premium'] ?? PRODUCTS.premium;
+          const grantedPlan = productDef.grantsPlan;
+          finalPlan = existingMeta.plan === 'premium_plus' ? 'premium_plus' : grantedPlan;
+          await supabase.auth.admin.updateUserById(userId, {
+            user_metadata: { ...existingMeta, premium: true, plan: finalPlan },
+          });
+        }
 
         const email = userData?.user?.email;
         if (email) {
