@@ -81,6 +81,55 @@ export default async function OefenenPickerPage({ params }: Props) {
               const set = getFreePractice(skill.slug);
               const genres = set ? Array.from(new Set(set.items.map(i => i.subSkill))) : [];
 
+              /**
+               * Schrijven and Spreken have no anonymous taster and cannot have one: every answer
+               * is graded by a model, which costs money per submission, so it has to be attributable
+               * to an account before it runs. They therefore point at oefenexamen 1 — free, but
+               * behind a login. The player redirects to /login?next= itself, so signing up lands the
+               * candidate straight in the exercise rather than back on this page.
+               *
+               * The two-free-exercises limit is not enforced here; `lib/grading-limits.ts` counts
+               * actual graded submissions. This card only has to state it honestly.
+               */
+              const accountRequired = !available && skill.scoring === 'open';
+
+              if (accountRequired) {
+                return (
+                  <li key={skill.slug}>
+                    <a
+                      href={`/${locale}/oefenexamen/${skill.slug}/1`}
+                      className="pick-card h-full flex flex-col gap-3 p-6 rounded-2xl bg-surface-container-lowest no-underline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-secondary-container"
+                      style={{ boxShadow: 'var(--shadow-card-md)' }}
+                    >
+                      <div className="flex items-center justify-between gap-3">
+                        <SkillIcon skill={skill.slug} size="lg" />
+                        <span
+                          className="text-[0.68rem] font-bold uppercase tracking-widest px-2.5 py-1 rounded-full"
+                          style={{ background: '#eef4ff', color: '#002b6d' }}
+                        >
+                          {t('pick_account_badge')}
+                        </span>
+                      </div>
+
+                      <h2 className="font-headline font-bold text-on-surface text-lg tracking-tight">
+                        {tSkills(`${skill.key}.name`)}
+                      </h2>
+                      <p className="text-sm text-on-surface-variant leading-relaxed">
+                        {tSkills(`${skill.key}.tagline`)}
+                      </p>
+
+                      <p className="text-xs text-on-surface-variant mt-auto">
+                        {t('pick_account_note')}
+                      </p>
+                      <span className="pick-cta inline-flex items-center gap-1.5 text-sm font-bold" style={{ color: '#a24000' }}>
+                        {t('pick_account_cta')}
+                        <ArrowRight size={15} strokeWidth={2.2} aria-hidden="true" />
+                      </span>
+                    </a>
+                  </li>
+                );
+              }
+
               if (!available) {
                 return (
                   <li key={skill.slug}>

@@ -225,11 +225,11 @@
   },
   "oefenen": {
     "meta_title": "Gratis oefenen — 10 oefenvragen inburgering A2 | Inburgering Oefenen",
-    "meta_description": "Oefen gratis met 10 echte oefenvragen voor het inburgeringsexamen A2. Kies Lezen of Luisteren, krijg direct uitleg per vraag en zie hoe je ervoor staat. Geen account nodig.",
+    "meta_description": "Oefen gratis voor het inburgeringsexamen A2. Lezen en Luisteren met 10 oefenvragen en directe uitleg, Schrijven en Spreken met echte opgaven en feedback op de criteria van de docent.",
     "breadcrumb": "Gratis oefenen",
-    "pick_eyebrow": "Gratis · Geen account nodig",
+    "pick_eyebrow": "Gratis oefenen",
     "pick_heading": "Kies een onderdeel om te oefenen",
-    "pick_sub": "Tien vragen, net als in het echte examen. Je krijgt bij elke vraag direct uitleg van de docent. Het kost je ongeveer tien minuten.",
+    "pick_sub": "Kies een onderdeel en oefen met echte opgaven. Bij Lezen en Luisteren krijg je bij elke vraag direct uitleg. Voor Schrijven en Spreken maak je een gratis account, omdat je antwoord persoonlijk wordt nagekeken.",
     "pick_cta": "Start met 10 vragen",
     "pick_soon": "Binnenkort beschikbaar",
     "pick_soon_note": "De docent werkt aan de oefenvragen voor dit onderdeel.",
@@ -291,7 +291,10 @@
     "login_prompt": "Al een account?",
     "login_link": "Inloggen",
     "retry": "Opnieuw oefenen",
-    "other_skill": "Ander onderdeel oefenen"
+    "other_skill": "Ander onderdeel oefenen",
+    "pick_account_badge": "Gratis met account",
+    "pick_account_note": "Oefenexamen 1 · 2 opdrachten gratis nagekeken met de criteria van de docent",
+    "pick_account_cta": "Maak een gratis account"
   },
   "activate": {
     "back": "Terug naar dashboard",

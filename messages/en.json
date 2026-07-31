@@ -225,11 +225,11 @@
   },
   "oefenen": {
     "meta_title": "Practise for free — 10 A2 integration exam questions | Inburgering Oefenen",
-    "meta_description": "Practise for free with 10 real questions for the Dutch A2 integration exam. Pick Reading or Listening, get an explanation after every question, and see where you stand. No account needed.",
+    "meta_description": "Practise for free for the Dutch A2 integration exam. Reading and Listening with 10 questions and instant explanations, Writing and Speaking with real tasks and feedback against the teacher’s criteria.",
     "breadcrumb": "Free practice",
-    "pick_eyebrow": "Free · No account needed",
+    "pick_eyebrow": "Practise for free",
     "pick_heading": "Choose a part to practise",
-    "pick_sub": "Ten questions, just like the real exam. You get an explanation from the teacher after every question. It takes about ten minutes.",
+    "pick_sub": "Pick a component and practise with real tasks. Reading and Listening explain every question as you go. Writing and Speaking need a free account, because your answer is marked individually.",
     "pick_cta": "Start 10 questions",
     "pick_soon": "Coming soon",
     "pick_soon_note": "The teacher is writing the practice questions for this part.",
@@ -291,7 +291,10 @@
     "login_prompt": "Already have an account?",
     "login_link": "Log in",
     "retry": "Practise again",
-    "other_skill": "Practise another part"
+    "other_skill": "Practise another part",
+    "pick_account_badge": "Free with an account",
+    "pick_account_note": "Practice exam 1 · 2 tasks marked free against the teacher’s criteria",
+    "pick_account_cta": "Create a free account"
   },
   "activate": {
     "back": "Back to dashboard",
