@@ -51,6 +51,33 @@ export function canSeeExplanations(plan: Plan): boolean {
 export function modulesFromMetadata(meta: Meta): string[] {
   const raw = (meta as { modules?: unknown } | null | undefined)?.modules;
   if (!Array.isArray(raw)) return [];
+  if (modulesExpired(meta)) return [];
+  return raw.filter((x): x is string => typeof x === 'string');
+}
+
+/**
+ * After cancelling, access runs to the end of the period already paid for.
+ *
+ * `modules_until` is written by `/api/cancel-subscription` as the date the next charge would have
+ * fallen. It is absent for an active subscriber, so this is `false` for everyone who has not
+ * cancelled. Expiry is therefore a pure function of the metadata — no cron job has to run on the
+ * right day for access to lapse, and a cron that failed to run cannot leave someone with free
+ * access indefinitely.
+ *
+ * The raw list is still in `user_metadata.modules`, so resubscribing restores exactly what was
+ * owned rather than making the candidate re-pick.
+ */
+export function modulesExpired(meta: Meta): boolean {
+  const until = (meta as { modules_until?: unknown } | null | undefined)?.modules_until;
+  if (typeof until !== 'string') return false;
+  const ts = Date.parse(until);
+  return Number.isFinite(ts) && ts < Date.now();
+}
+
+/** The modules the account bought, ignoring whether access has lapsed. For account/billing UI. */
+export function purchasedModules(meta: Meta): string[] {
+  const raw = (meta as { modules?: unknown } | null | undefined)?.modules;
+  if (!Array.isArray(raw)) return [];
   return raw.filter((x): x is string => typeof x === 'string');
 }
 

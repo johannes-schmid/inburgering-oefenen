@@ -3,12 +3,15 @@ import { redirect } from 'next/navigation';
 import { getTranslations } from 'next-intl/server';
 import { ArrowRight } from 'lucide-react';
 import { createClient } from '@/lib/supabase/server';
-import { planFromMetadata } from '@/lib/entitlements';
+import { modulesExpired, planFromMetadata } from '@/lib/entitlements';
 import { fetchPortalProgress } from '@/lib/portal-progress';
 import { SKILLS } from '@/data/skills';
 import SkillIcon from '@/components/site/SkillIcon';
 import AppShell from '../../components/AppShell';
 import LogoutButton from './LogoutButton';
+import CancelSubscription from './CancelSubscription';
+import { listLiveSubscriptions } from '@/lib/subscriptions';
+import { euro } from '@/lib/pricing';
 
 export const metadata: Metadata = {
   title: 'Mijn account | Inburgering Oefenen',
@@ -33,6 +36,21 @@ export default async function ProfilePage({ params }: { params: Promise<{ locale
   const plan = planFromMetadata(user.user_metadata);
   const progress = await fetchPortalProgress(user.id);
   const meta = user.user_metadata ?? {};
+
+  // Read live from Mollie rather than from metadata — see lib/subscriptions.ts. Returns [] when
+  // Mollie is unreachable, which hides the section rather than showing a wrong billing state.
+  const customerId = typeof meta.mollie_customer_id === 'string' ? meta.mollie_customer_id : null;
+  const subscriptions = customerId ? await listLiveSubscriptions(customerId) : [];
+  const monthlyCents = subscriptions.reduce((n, s) => n + s.amountCents, 0);
+  const nextPayment = subscriptions
+    .map(s => s.nextPaymentDate)
+    .filter((d): d is string => Boolean(d))
+    .sort()[0];
+  const canceledAt = typeof meta.subscription_canceled_at === 'string' ? meta.subscription_canceled_at : null;
+  const modulesUntil = typeof meta.modules_until === 'string' ? meta.modules_until : null;
+
+  // Same predicate the entitlement check uses, so the page can never claim access the app denies.
+  const accessLapsed = modulesExpired(meta);
 
   const totalExams = SKILLS.reduce((n, s) => n + s.examCount, 0);
   const totalDone = SKILLS.reduce((n, s) => n + progress[s.slug].examsDone, 0);
@@ -70,6 +88,44 @@ export default async function ProfilePage({ params }: { params: Promise<{ locale
               <LogoutButton />
             </div>
           </section>
+
+          {(subscriptions.length > 0 || modulesUntil) && (
+            <section className="panel mt-5">
+              <h2 className="panel-title">Abonnement</h2>
+
+              {subscriptions.length > 0 ? (
+                <>
+                  <dl className="kv">
+                    <dt>Per maand</dt>
+                    <dd style={{ fontVariantNumeric: 'tabular-nums' }}>{euro(monthlyCents)}</dd>
+                    {nextPayment && (
+                      <>
+                        <dt>Volgende afschrijving</dt>
+                        <dd style={{ fontVariantNumeric: 'tabular-nums' }}>{formatDutchDate(nextPayment)}</dd>
+                      </>
+                    )}
+                  </dl>
+                  <p className="sub-note">
+                    Wordt automatisch verlengd via SEPA-incasso. Opzeggen kan elke maand; je houdt
+                    toegang tot het einde van de periode die je al betaald hebt.
+                  </p>
+                  <div className="mt-4">
+                    <CancelSubscription accessHint={nextPayment ? formatDutchDate(nextPayment) : null} />
+                  </div>
+                </>
+              ) : (
+                // Cancelled but still inside the paid period. Stated plainly, with the end date,
+                // because "je bent opgezegd" alone reads as "your access is gone" and it is not.
+                <p className="sub-note">
+                  Je abonnement is opgezegd{canceledAt ? ` op ${formatDutchDate(canceledAt.slice(0, 10))}` : ''}.{' '}
+                  {accessLapsed
+                    ? 'Je toegang is verlopen.'
+                    : `Je houdt toegang tot ${formatDutchDate(modulesUntil!)}.`}{' '}
+                  <a href={`/${locale}/dashboard/pakketten`}>Opnieuw starten</a>
+                </p>
+              )}
+            </section>
+          )}
 
           <section className="panel mt-5">
             <h2 className="panel-title">{t('profile_per_skill')}</h2>
@@ -115,6 +171,23 @@ export default async function ProfilePage({ params }: { params: Promise<{ locale
         .logout-btn { display:inline-flex; align-items:center; gap:8px; padding:9px 15px; border-radius:11px; border:1.5px solid var(--color-surface-container-high); background:var(--color-surface-container-low); font-family:inherit; font-size:0.82rem; font-weight:700; color:var(--color-on-surface-variant); cursor:pointer; transition:background .18s ease, border-color .18s ease; }
         .logout-btn:hover { background:var(--color-surface-container); border-color:var(--color-outline-variant); }
         .logout-btn:focus-visible { outline:2px solid var(--color-secondary-container); outline-offset:2px; }
+        .sub-note { margin-top:12px; font-size:0.78rem; line-height:1.6; color:var(--color-on-surface-variant); }
+        .sub-note a { color:var(--color-secondary); font-weight:700; text-decoration:underline; }
+        .cancel-link { background:none; border:0; padding:0; font:inherit; font-size:0.8rem; font-weight:700; color:var(--color-outline); text-decoration:underline; cursor:pointer; }
+        .cancel-link:hover { color:var(--color-on-surface); }
+        .cancel-link:focus-visible { outline:2px solid var(--color-secondary); outline-offset:3px; border-radius:3px; }
+        .cancel-confirm { padding:14px 16px; border-radius:13px; background:var(--color-surface-container-low); border:1.5px solid var(--color-surface-container-high); }
+        .cancel-q { margin:0 0 10px; font-size:0.83rem; font-weight:700; color:var(--color-on-surface); }
+        .cancel-actions { display:flex; flex-wrap:wrap; gap:9px; }
+        .cancel-yes { display:inline-flex; align-items:center; gap:7px; padding:9px 15px; border-radius:11px; border:1.5px solid var(--color-error, #b3261e); background:#fff; font:inherit; font-size:0.8rem; font-weight:700; color:var(--color-error, #b3261e); cursor:pointer; }
+        .cancel-yes:disabled { opacity:0.55; cursor:default; }
+        .cancel-no { padding:9px 15px; border-radius:11px; border:1.5px solid var(--color-surface-container-high); background:var(--color-surface-container); font:inherit; font-size:0.8rem; font-weight:700; color:var(--color-on-surface); cursor:pointer; }
+        .cancel-yes:focus-visible, .cancel-no:focus-visible { outline:2px solid var(--color-secondary); outline-offset:2px; }
+        .cancel-done { margin:0; font-size:0.83rem; font-weight:700; color:var(--color-on-surface); }
+        .cancel-error { display:flex; align-items:center; gap:7px; margin:10px 0 0; font-size:0.8rem; color:var(--color-error, #b3261e); }
+        .cancel-spin { animation:cancel-rotate 900ms linear infinite; }
+        @keyframes cancel-rotate { to { transform:rotate(360deg); } }
+        @media (prefers-reduced-motion: reduce) { .cancel-spin { animation:none; } }
         .skill-line { display:flex; align-items:center; gap:12px; padding:10px 12px; border-radius:12px; background:var(--color-surface-container-low); transition:background .18s ease; }
         .skill-line:hover { background:var(--color-surface-container); }
         .skill-line:focus-visible { outline:2px solid var(--color-secondary-container); outline-offset:2px; }
@@ -128,4 +201,15 @@ export default async function ProfilePage({ params }: { params: Promise<{ locale
       `}</style>
     </AppShell>
   );
+}
+
+/** `2026-08-31` → `31 augustus 2026`. Mollie returns plain dates, so no timezone shifting. */
+function formatDutchDate(iso: string): string {
+  const [y, m, d] = iso.split('-').map(Number);
+  if (!y || !m || !d) return iso;
+  const months = [
+    'januari', 'februari', 'maart', 'april', 'mei', 'juni',
+    'juli', 'augustus', 'september', 'oktober', 'november', 'december',
+  ];
+  return `${d} ${months[m - 1]} ${y}`;
 }

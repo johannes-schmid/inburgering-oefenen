@@ -34,6 +34,15 @@ export const BUNDLE_SAVING_CENTS = BUNDLE_LIST_PRICE_CENTS - BUNDLE_PRICE_CENTS;
 /** How many modules the bundle effectively costs, for copy like "bijna drie van de vier". */
 export const BUNDLE_PAID_MODULES = Math.round(BUNDLE_PRICE_CENTS / MODULE_PRICE_CENTS);
 
+/**
+ * The bundle discount as a whole percentage — 24.75% today, shown as 25%.
+ *
+ * Derived, never typed by hand: a "25%" that stops matching the prices beside it is a false price
+ * claim, and the two numbers must move together if the owner reprices. Rounded down, so the stated
+ * percentage is never larger than the discount actually given.
+ */
+export const BUNDLE_SAVING_PCT = Math.floor((BUNDLE_SAVING_CENTS / BUNDLE_LIST_PRICE_CENTS) * 100);
+
 /** `1295` → `"12,95"`. Dutch decimal comma; pricing must always show a concrete number. */
 export function euro(cents: number): string {
   return `€${(cents / 100).toFixed(2).replace('.', ',')}`;

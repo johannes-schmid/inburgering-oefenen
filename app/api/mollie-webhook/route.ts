@@ -59,13 +59,29 @@ export async function POST(request: Request): Promise<Response> {
           const owned = [...new Set([...modulesFromMetadata(existingMeta), ...bought])];
           if (owned.some(m => m === 'schrijven' || m === 'spreken')) finalPlan = 'premium_plus';
 
+          // `modules_until` and `subscription_canceled_at` are cleared: a fresh purchase means this
+          // account is subscribed again, and a leftover expiry date from a previous cancellation
+          // would lock the candidate out of modules they have just paid for.
+          // Set to null rather than omitted: GoTrue *merges* `user_metadata`, so a key left out of
+          // the update survives. Only an explicit null clears it.
           await supabase.auth.admin.updateUserById(userId, {
-            user_metadata: { ...existingMeta, modules: owned },
+            user_metadata: {
+              ...existingMeta,
+              modules: owned,
+              modules_until: null,
+              subscription_canceled_at: null,
+            },
           });
 
           // The first payment established a mandate; this is what makes it recur. Created here
           // rather than at checkout because a mandate only exists once the payment is actually paid.
-          if (payment.customerId) {
+          //
+          // `subscriptionId` is set on every payment Mollie generates *from* a subscription, i.e. on
+          // every monthly renewal — and those renewals carry the subscription's metadata, which is
+          // the same `kind: 'modules'` shape. Without this guard month two would create a second
+          // subscription, month three a third, and the candidate would be charged compounding
+          // amounts for the same modules.
+          if (payment.customerId && !payment.subscriptionId) {
             try {
               await mollie.customerSubscriptions.create({
                 customerId: payment.customerId,

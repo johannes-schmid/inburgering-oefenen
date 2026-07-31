@@ -1,11 +1,13 @@
 'use client';
 
 import { useMemo, useState } from 'react';
-import { ArrowRight, Check, Loader2, Lock, TriangleAlert } from 'lucide-react';
+import { ArrowRight, Check, Loader2, Lock, Sparkles, TriangleAlert } from 'lucide-react';
 import SkillIcon from '@/components/site/SkillIcon';
 import type { SkillSlug } from '@/data/skills';
 import {
+  BUNDLE_LIST_PRICE_CENTS,
   BUNDLE_PRICE_CENTS,
+  BUNDLE_SAVING_PCT,
   euro,
   MODULE_PRICE_CENTS,
   priceForSelection,
@@ -127,9 +129,22 @@ export default function ModulePicker({
       </div>
 
       {buyable.length === modules.length && (
-        <button type="button" onClick={selectAll} className="mp-all">
-          {allSelected ? 'Selectie wissen' : `Selecteer alle vier — ${euro(BUNDLE_PRICE_CENTS)} p/m`}
-        </button>
+        <div className="mp-bundle">
+          {/* The list price stays visible beside the discounted one. A saving claim without its
+              reference price is the part consumer-protection rules actually object to. */}
+          <span className="mp-bundle-badge">
+            <Sparkles size={13} strokeWidth={2.4} aria-hidden />
+            Bespaar {BUNDLE_SAVING_PCT}% met alle vier de onderdelen
+          </span>
+          <p className="mp-bundle-price">
+            {euro(BUNDLE_PRICE_CENTS)}{' '}
+            <s>{euro(BUNDLE_LIST_PRICE_CENTS)}</s> <small>p/m</small>
+          </p>
+          <button type="button" onClick={selectAll} className="mp-all">
+            {allSelected ? 'Selectie wissen' : 'Selecteer alle vier'}
+            {!allSelected && <ArrowRight size={15} strokeWidth={2.5} aria-hidden />}
+          </button>
+        </div>
       )}
 
       {/* ── Running total ── */}
@@ -179,6 +194,15 @@ export default function ModulePicker({
         </p>
       )}
 
+      {/* Mollie is explicit that an iDEAL transaction is not itself an authorisation for direct
+          debit, so the consent to a recurring collection has to be given here, in our own words,
+          before the candidate leaves for the payment screen. */}
+      <p className="mp-consent">
+        Je start een maandelijks abonnement van {euro(total || MODULE_PRICE_CENTS)} per maand. Het
+        wordt elke maand automatisch verlengd en via SEPA-incasso van je rekening afgeschreven,
+        totdat je opzegt. Opzeggen kan elk moment bij <strong>Mijn account</strong>.
+      </p>
+
       <p className="mp-foot">
         <Lock size={13} aria-hidden />
         Betalen gaat via iDEAL of creditcard. Je kunt maandelijks opzeggen.
@@ -219,10 +243,30 @@ export default function ModulePicker({
 
         .mp-perk { font-size:0.72rem; line-height:1.45; color:var(--color-on-surface-variant); }
 
+        .mp-bundle {
+          margin-top:12px; padding:16px 18px; border-radius:16px; text-align:center;
+          display:flex; flex-direction:column; align-items:center; gap:8px;
+          background:var(--color-surface-container-lowest);
+          border:1.5px solid var(--color-surface-container-high);
+          box-shadow:var(--shadow-card);
+        }
+        .mp-bundle-badge {
+          display:inline-flex; align-items:center; gap:6px; padding:5px 12px; border-radius:999px;
+          background:#fff1e6; color:var(--color-secondary);
+          font-size:0.74rem; font-weight:800; letter-spacing:0.01em;
+        }
+        .mp-bundle-price {
+          margin:0; font-family:var(--font-headline); font-size:1.5rem; font-weight:800;
+          letter-spacing:-0.03em; color:var(--color-primary);
+        }
+        .mp-bundle-price s { font-size:0.95rem; font-weight:700; color:var(--color-outline); margin-left:4px; }
+        .mp-bundle-price small { font-size:0.72rem; font-weight:600; color:var(--color-outline); }
+
         .mp-all {
-          margin-top:12px; background:none; border:1.5px dashed var(--color-outline-variant);
-          border-radius:12px; padding:10px 14px; font:inherit; font-size:0.82rem; font-weight:700;
-          color:var(--color-primary); cursor:pointer; width:100%;
+          display:inline-flex; align-items:center; justify-content:center; gap:7px;
+          background:none; border:1.5px solid var(--color-outline-variant);
+          border-radius:12px; padding:9px 18px; font:inherit; font-size:0.82rem; font-weight:700;
+          color:var(--color-primary); cursor:pointer;
           transition:background-color .16s ease, border-color .16s ease;
         }
         .mp-all:hover { background:var(--color-surface-container-low); border-color:var(--color-primary); }
@@ -257,6 +301,7 @@ export default function ModulePicker({
         .mp-cta:focus-visible { outline:3px solid #fff; outline-offset:2px; }
 
         .mp-error { display:flex; align-items:center; gap:7px; margin:12px 0 0; font-size:0.82rem; color:var(--color-error); }
+        .mp-consent { margin:14px 0 0; font-size:0.76rem; line-height:1.6; color:var(--color-on-surface-variant); }
         .mp-foot { display:flex; align-items:center; gap:7px; margin:14px 0 0; font-size:0.75rem; color:var(--color-outline); }
         .mp-spin { animation:mp-rotate 900ms linear infinite; }
         @keyframes mp-rotate { to { transform:rotate(360deg); } }
