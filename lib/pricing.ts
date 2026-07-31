@@ -17,13 +17,22 @@
 import { SKILLS, type SkillSlug } from '@/data/skills';
 
 /** Price of a single module, per month, in cents. */
-export const MODULE_PRICE_CENTS = 1295;
+export const MODULE_PRICE_CENTS = 995;
 
-/** Taking all four modules is billed as three — one module is free. */
-export const BUNDLE_PAID_MODULES = SKILLS.length - 1;
-export const BUNDLE_PRICE_CENTS = MODULE_PRICE_CENTS * BUNDLE_PAID_MODULES;
+/**
+ * All four modules, per month.
+ *
+ * Set explicitly rather than derived as 3 × module. The owner priced the bundle at €29,95, which is
+ * ten cents above three modules (€29,85) — so "vier voor de prijs van drie" is no longer literally
+ * true and the copy says "bijna" instead. Deriving it would silently overrule the stated price;
+ * rounding the module price to make the arithmetic work would overrule that instead.
+ */
+export const BUNDLE_PRICE_CENTS = 2995;
+
 export const BUNDLE_LIST_PRICE_CENTS = MODULE_PRICE_CENTS * SKILLS.length;
 export const BUNDLE_SAVING_CENTS = BUNDLE_LIST_PRICE_CENTS - BUNDLE_PRICE_CENTS;
+/** How many modules the bundle effectively costs, for copy like "bijna drie van de vier". */
+export const BUNDLE_PAID_MODULES = Math.round(BUNDLE_PRICE_CENTS / MODULE_PRICE_CENTS);
 
 /** `1295` → `"12,95"`. Dutch decimal comma; pricing must always show a concrete number. */
 export function euro(cents: number): string {

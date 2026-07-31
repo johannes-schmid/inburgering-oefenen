@@ -169,7 +169,7 @@ export default async function DashboardPage({ params }: { params: Promise<{ loca
                   {t('upsell_body', { total: totalExams })}
                 </p>
               </div>
-              <a href={`/${locale}/premium?vanaf=portaal`} className="upsell-cta no-underline">
+              <a href={`/${locale}/dashboard/pakketten?vanaf=portaal`} className="upsell-cta no-underline">
                 {t('upsell_cta')}
                 <ArrowRight size={16} strokeWidth={2.4} />
               </a>

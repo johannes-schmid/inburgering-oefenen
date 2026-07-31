@@ -754,7 +754,7 @@ export default function ExamShell({ content, canSeeExplanations }: Props) {
                 answerText={g.answerText}
                 highlights={g.highlights}
                 canSeeDetail={!RUBRIC_FEEDBACK_IS_GATED || canSeeExplanations}
-                premiumHref="/premium?vanaf=rubriek-feedback"
+                premiumHref="/dashboard/pakketten?vanaf=rubriek-feedback"
                 passThresholdPct={exam.pass_threshold_pct}
               />
               {canSeeExplanations && g.overall && (
@@ -1102,7 +1102,7 @@ function TaskReview({
           compact={compact}
           layout={layout}
           tips={grade.tips}
-          premiumHref="/premium?vanaf=rubriek-feedback"
+          premiumHref="/dashboard/pakketten?vanaf=rubriek-feedback"
           errorMessage={grade.error}
           passThresholdPct={passThresholdPct}
           onRetry={onGrade}

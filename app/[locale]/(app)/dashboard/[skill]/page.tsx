@@ -118,7 +118,7 @@ export default async function SkillExamsPage({ params }: Props) {
               const href = openable
                 ? `/${locale}/oefenexamen/${skill.slug}/${n}`
                 : isPublished
-                  ? `/${locale}/premium?vanaf=oefenexamen-${skill.slug}-${n}`
+                  ? `/${locale}/dashboard/pakketten?onderdeel=${skill.slug}&vanaf=oefenexamen-${n}`
                   : undefined;
 
               const Row = href ? 'a' : 'div';

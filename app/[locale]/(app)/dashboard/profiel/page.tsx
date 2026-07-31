@@ -98,7 +98,7 @@ export default async function ProfilePage({ params }: { params: Promise<{ locale
           </section>
 
           {plan === 'free' && (
-            <a href={`/${locale}/premium?vanaf=profiel`} className="premium-cta no-underline mt-5">
+            <a href={`/${locale}/dashboard/pakketten?vanaf=profiel`} className="premium-cta no-underline mt-5">
               {t('upsell_cta')}
               <ArrowRight size={16} strokeWidth={2.4} />
             </a>
