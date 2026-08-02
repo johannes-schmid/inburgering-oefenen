@@ -8,11 +8,10 @@
  * Deliberately derived from `data/skills.ts` rather than restated: exam and item counts must
  * never drift from the taxonomy.
  *
- * NOTE — this file describes the offer, not the entitlement. Mollie recurring payments
- * (mandate + customer + recurring webhook) and per-module access control are not built yet;
- * `lib/api-constants.ts` still holds the one-off `premium` / `premium_plus` products that
- * the checkout routes use today. Wiring the module subscriptions through checkout is the
- * next piece of work.
+ * NOTE — this file describes the offer, not the entitlement. The recurring machinery lives in
+ * `/api/checkout-modules` (customer + `sequenceType: first`) and `lib/mollie-modules.ts` (grant +
+ * subscription); entitlement is `lib/entitlements.ts`. `PRODUCTS` in `lib/api-constants.ts` is
+ * now only read to describe *historic* one-off payments — nothing sells those tiers any more.
  */
 import { SKILLS, type SkillSlug } from '@/data/skills';
 

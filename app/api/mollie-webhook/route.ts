@@ -1,8 +1,7 @@
 import { createMollieClient } from '@mollie/api-client';
 import { Resend } from 'resend';
 import { createAdminClient } from '@/lib/supabase/admin';
-import { parseSelection } from '@/lib/pricing';
-import { modulesFromMetadata } from '@/lib/entitlements';
+import { fulfilModulePayment, isModulePayment } from '@/lib/mollie-modules';
 import { TABLE, PAYMENT_STATUS, PRODUCTS } from '@/lib/api-constants';
 import { activationEmail, activationSubject } from '@/lib/email/templates/activation';
 import { upgradeEmail, upgradeSubject } from '@/lib/email/templates/upgrade';
@@ -51,53 +50,12 @@ export async function POST(request: Request): Promise<Response> {
         // premium_plus meant — so a module buyer gets the fuller email.
         let finalPlan: 'premium' | 'premium_plus' = 'premium';
 
-        if (meta?.kind === 'modules') {
+        if (isModulePayment(meta)) {
           // ── Per-module subscription ──────────────────────────────────────────────────────────
-          // Grant exactly what was bought, merged with what the account already had: buying
-          // Spreken must not revoke a Lezen bought last month.
-          const bought = parseSelection(meta.modules);
-          const owned = [...new Set([...modulesFromMetadata(existingMeta), ...bought])];
-          if (owned.some(m => m === 'schrijven' || m === 'spreken')) finalPlan = 'premium_plus';
-
-          // `modules_until` and `subscription_canceled_at` are cleared: a fresh purchase means this
-          // account is subscribed again, and a leftover expiry date from a previous cancellation
-          // would lock the candidate out of modules they have just paid for.
-          // Set to null rather than omitted: GoTrue *merges* `user_metadata`, so a key left out of
-          // the update survives. Only an explicit null clears it.
-          await supabase.auth.admin.updateUserById(userId, {
-            user_metadata: {
-              ...existingMeta,
-              modules: owned,
-              modules_until: null,
-              subscription_canceled_at: null,
-            },
-          });
-
-          // The first payment established a mandate; this is what makes it recur. Created here
-          // rather than at checkout because a mandate only exists once the payment is actually paid.
-          //
-          // `subscriptionId` is set on every payment Mollie generates *from* a subscription, i.e. on
-          // every monthly renewal — and those renewals carry the subscription's metadata, which is
-          // the same `kind: 'modules'` shape. Without this guard month two would create a second
-          // subscription, month three a third, and the candidate would be charged compounding
-          // amounts for the same modules.
-          if (payment.customerId && !payment.subscriptionId) {
-            try {
-              await mollie.customerSubscriptions.create({
-                customerId: payment.customerId,
-                amount: payment.amount,
-                interval: '1 month',
-                description: `Inburgering Oefenen — ${owned.join(', ')} (${userId.slice(0, 8)})`,
-                webhookUrl: payment.webhookUrl ?? undefined,
-                metadata: { userId, modules: owned, kind: 'modules' },
-              });
-            } catch (subErr) {
-              // The candidate has paid and has access; a failed subscription only means it will not
-              // renew. Loud in the log rather than a failed webhook, which Mollie would retry and
-              // which would re-grant repeatedly.
-              console.error('[mollie-webhook] subscription create failed', userId, subErr);
-            }
-          }
+          // Grant + subscription both live in lib/mollie-modules.ts, because /api/payment-status
+          // has to do exactly the same thing when the webhook does not fire.
+          const result = await fulfilModulePayment(mollie, supabase, payment);
+          finalPlan = result.plan;
         } else {
           const productDef = PRODUCTS[(meta?.product as keyof typeof PRODUCTS) ?? 'premium'] ?? PRODUCTS.premium;
           const grantedPlan = productDef.grantsPlan;

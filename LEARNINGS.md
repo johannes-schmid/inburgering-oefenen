@@ -826,3 +826,9 @@ schemas differed by three columns, three CHECK constraints and a view.
 **Outcome:** SUCCESS
 **What worked / went wrong:** Production 409'd `no_rubric` on `/nl/oefenexamen/spreken/1`. `rubrics` has one policy, `Admins manage rubrics USING (is_admin())`, and no non-admin SELECT policy — so a candidate's JWT made both SELECTs return **zero rows with no error**, and the route concluded no rubric existed. It worked for the docent because she is an admin, which hid it entirely in testing.
 **Lesson:** A table with an admin-only RLS policy read through a session client fails *silently* — empty result, not an error. Any server route that must read such a table for a non-admin has to use the service key explicitly; "it works when I test it" from an admin account proves nothing about the candidate path.
+
+## 2026-08-02 — Cancellation confirmation email
+**Changed:** New `lib/email/templates/cancellation.ts` + a `cancellation` block in all three locales of `lib/email/i18n.ts`; `/api/cancel-subscription` sends it via Resend after a successful cancellation (non-throwing helper).
+**Outcome:** SUCCESS
+**What worked / went wrong:** First draft reused `featureListDark()` for the cancelled modules — the orange ticks read as "still included", the opposite of the message. Rendered all three locales to HTML with `npx tsx` and screenshotted them with Puppeteer, which is how it was caught; a plain `Lezen · Spreken` line replaced it.
+**Lesson:** Email templates can be rendered and screenshotted outside Next in seconds (`npx tsx` + the template function) — do that instead of reasoning about the HTML, and check the RTL locale too, since the shared layout mirrors the whole card.

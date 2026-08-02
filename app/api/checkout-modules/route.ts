@@ -3,13 +3,14 @@ import createMollieClient, { SequenceType, type PaymentCreateParams } from '@mol
 import { createClient } from '@/lib/supabase/server';
 import { createAdminClient } from '@/lib/supabase/admin';
 import { euro, parseSelection, priceForSelection } from '@/lib/pricing';
+import { TABLE, PAYMENT_STATUS } from '@/lib/api-constants';
 
 /**
- * Start payment for a set of modules, straight from the portal's selection page.
+ * Start payment for a set of modules — **the only checkout in the product.**
  *
- * Replaces the `/activate` detour: the candidate has already chosen on `/dashboard/pakketten`, and
- * showing them a second, differently-priced choice screen (the old Professioneel / Compleet
- * one-off tiers) was asking the same question twice with different answers.
+ * It replaced the `/activate` detour, which sold differently-priced one-off tiers through
+ * `/api/mollie-checkout`. Both are gone: `/activate` now redirects here, so there is one price
+ * list, one flow, and no path that takes money without establishing a mandate.
  *
  * ## The price is computed here, never accepted
  * The client posts only which modules it wants. `priceForSelection()` turns that into an amount on
@@ -18,13 +19,14 @@ import { euro, parseSelection, priceForSelection } from '@/lib/pricing';
  *
  * ## Recurring
  * The modules are sold per month, so this creates a Mollie **customer** and takes a first payment
- * with `sequenceType: 'first'`, which is what establishes the mandate. The webhook then creates the
- * subscription against that mandate. A plain one-off payment would charge once and grant forever,
- * which is not what the page promises.
+ * with `sequenceType: 'first'`, which is what establishes the mandate. The subscription itself is
+ * created after the payment is paid — a mandate does not exist before then — by
+ * `fulfilModulePayment()` in `lib/mollie-modules.ts`, called from both `/api/mollie-webhook` and
+ * `/api/payment-status`. A plain one-off payment would charge once and grant forever, which is not
+ * what the page promises.
  *
- * **Not built yet: cancellation.** "Maandelijks opzeggen" is a promise on the pricing page and there
- * is no self-service way to keep it — see the note in the webhook. That has to exist before this is
- * offered to real customers.
+ * Cancellation is `/api/cancel-subscription` + `lib/subscriptions.ts`, which keeps the
+ * "maandelijks opzeggen" promise on the pricing page.
  */
 
 const mollieKey = process.env.MOLLIE_API_KEY;
@@ -119,8 +121,23 @@ export async function POST(request: Request) {
 
     const payment = await mollie.payments.create(params);
 
+    // Recorded before the candidate leaves for Mollie. `activation_email_sent` on this row is what
+    // the webhook and /api/payment-status race over to claim the send slot — with no row, both
+    // claims match zero rows and the activation email is never sent at all.
+    const { error: insertError } = await admin.from(TABLE.PAYMENTS).insert({
+      mollie_payment_id: payment.id,
+      user_id: user.id,
+      email: user.email,
+      amount_cents: amountCents,
+      status: PAYMENT_STATUS.OPEN,
+      product: `modules:${modules.join(',')}`,
+      locale,
+    });
+    if (insertError) console.error('[checkout-modules] payments insert failed:', insertError.message);
+
     return NextResponse.json({
       checkoutUrl: payment.getCheckoutUrl(),
+      paymentId: payment.id,
       amount: euro(amountCents),
       modules,
     });

@@ -2,6 +2,7 @@ import { createMollieClient } from '@mollie/api-client';
 import { Resend } from 'resend';
 import { createAdminClient } from '@/lib/supabase/admin';
 import { TABLE, PAYMENT_STATUS, PRODUCTS, jsonOk, jsonError } from '@/lib/api-constants';
+import { fulfilModulePayment, isModulePayment } from '@/lib/mollie-modules';
 import { activationEmail, activationSubject } from '@/lib/email/templates/activation';
 import { upgradeEmail, upgradeSubject } from '@/lib/email/templates/upgrade';
 import { type EmailLocale } from '@/lib/email/i18n';
@@ -25,13 +26,23 @@ export async function GET(request: Request): Promise<Response> {
       const locale: EmailLocale = (['nl', 'en', 'ar'].includes(meta?.locale ?? '') ? meta!.locale as EmailLocale : 'nl');
       let grantedPlan = 'premium';
       if (userId) {
-        const productDef = PRODUCTS[(meta?.product as keyof typeof PRODUCTS) ?? 'premium'] ?? PRODUCTS.premium;
         const { data: userData } = await supabase.auth.admin.getUserById(userId);
         const existingMeta = userData?.user?.user_metadata ?? {};
-        grantedPlan = existingMeta.plan === 'premium_plus' ? 'premium_plus' : productDef.grantsPlan;
-        await supabase.auth.admin.updateUserById(userId, {
-          user_metadata: { ...existingMeta, premium: true, plan: grantedPlan },
-        });
+
+        if (isModulePayment(meta)) {
+          // The candidate came back from Mollie. This is the *only* path that runs locally and
+          // whenever the webhook is late or lost, so the subscription has to be created here too —
+          // otherwise a module purchase quietly behaves as a one-off. Idempotent against the
+          // webhook: whichever arrives first creates it, the second finds it already live.
+          const result = await fulfilModulePayment(mollie, supabase, payment);
+          grantedPlan = result.plan;
+        } else {
+          const productDef = PRODUCTS[(meta?.product as keyof typeof PRODUCTS) ?? 'premium'] ?? PRODUCTS.premium;
+          grantedPlan = existingMeta.plan === 'premium_plus' ? 'premium_plus' : productDef.grantsPlan;
+          await supabase.auth.admin.updateUserById(userId, {
+            user_metadata: { ...existingMeta, premium: true, plan: grantedPlan },
+          });
+        }
 
         const email = userData?.user?.email;
         if (email) {

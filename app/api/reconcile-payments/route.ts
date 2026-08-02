@@ -1,6 +1,7 @@
 import { createMollieClient } from '@mollie/api-client';
 import { createAdminClient } from '@/lib/supabase/admin';
 import { TABLE, PAYMENT_STATUS, PRODUCTS } from '@/lib/api-constants';
+import { fulfilModulePayment, isModulePayment } from '@/lib/mollie-modules';
 
 // Reconcile non-final payments against Mollie and upgrade users if paid.
 // Called hourly by Vercel Cron (see vercel.json). Guarded by CRON_SECRET.
@@ -48,7 +49,16 @@ export async function GET(request: Request): Promise<Response> {
         const meta = payment.metadata as { userId?: string; product?: string } | undefined;
         const userId = meta?.userId || row.user_id;
 
-        if (userId) {
+        if (userId && isModulePayment(payment.metadata)) {
+          // A module payment reconciled late is still a subscription: the same fulfilment runs, so
+          // a purchase whose webhook *and* return poll were both lost still starts recurring.
+          const result = await fulfilModulePayment(mollie, supabase, payment);
+          upgraded++;
+          console.log(
+            `[reconcile-payments] modules ${userId} → ${result.modules.join(',')}` +
+            `${result.subscriptionCreated ? ' (subscription created)' : ''} (${row.mollie_payment_id})`
+          );
+        } else if (userId) {
           const productSlug = (meta?.product ?? row.product ?? 'premium') as keyof typeof PRODUCTS;
           const productDef = PRODUCTS[productSlug] ?? PRODUCTS.premium;
           const grantedPlan = productDef.grantsPlan;

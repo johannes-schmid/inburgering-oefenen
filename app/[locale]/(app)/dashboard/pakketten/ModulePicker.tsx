@@ -76,6 +76,11 @@ export default function ModulePicker({
       });
       const json = await res.json();
       if (!res.ok || !json.checkoutUrl) throw new Error(json.error || 'Betalen is niet gelukt.');
+      // /betaling-gelukt polls /api/payment-status with this id, and that is the path that grants
+      // the modules and creates the subscription when the webhook has not fired.
+      if (json.paymentId) {
+        try { localStorage.setItem('io_pending_payment_id', json.paymentId); } catch {}
+      }
       // Straight to Mollie. No interstitial: the choice was made on this page.
       window.location.href = json.checkoutUrl;
     } catch (err) {
