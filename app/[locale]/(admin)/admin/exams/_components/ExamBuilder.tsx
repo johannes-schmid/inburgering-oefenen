@@ -4,10 +4,12 @@ import { useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import {
-  AlertTriangle, Check, ChevronDown, Loader2, Pencil, Plus, Trash2, TriangleAlert, X,
+  AlertTriangle, AudioLines, Check, ChevronDown, Loader2, Pencil, Plus, Trash2, TriangleAlert, X,
 } from 'lucide-react';
 import { createClient } from '@/lib/supabase/client';
 import type { AdminStimulus, PublishIssue } from '@/lib/admin/stimuli';
+import { VOICES, type VoiceKey } from '@/lib/tts-voices';
+import { speakersInScript } from '@/lib/tts-dialogue';
 
 type Exam = {
   id: number;
@@ -41,6 +43,7 @@ type StimulusDraft = {
   image_alt: string;
   audio_url: string;
   script: string;
+  voice_cast: Record<string, string>;
   review_status: 'pending' | 'validated';
 };
 
@@ -70,6 +73,8 @@ export default function ExamBuilder({
   const router = useRouter();
   const supabase = createClient();
   const [editing, setEditing] = useState<StimulusDraft | null>(null);
+  const [genBusy, setGenBusy] = useState(false);
+  const [genNote, setGenNote] = useState('');
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState('');
   const [openId, setOpenId] = useState<number | null>(stimuli[0]?.id ?? null);
@@ -91,6 +96,7 @@ export default function ExamBuilder({
       image_alt: '',
       audio_url: '',
       script: '',
+      voice_cast: {},
       review_status: 'pending',
     };
   }
@@ -108,8 +114,68 @@ export default function ExamBuilder({
       image_alt: s.image_alt ?? '',
       audio_url: s.audio_url ?? '',
       script: s.script ?? '',
+      voice_cast: s.voice_cast ?? {},
       review_status: s.review_status,
     };
+  }
+
+  /**
+   * Render the dialogue in the editor and drop the resulting URL into the audio field.
+   *
+   * Deliberately does not save: the docent listens first, and a take they reject should not have
+   * replaced the one currently in the exam.
+   */
+  async function generateDraftAudio() {
+    if (!editing) return;
+    setGenBusy(true);
+    setGenNote('');
+    setError('');
+    try {
+      const res = await fetch('/api/generate-stimulus-audio', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ examId: exam.id, script: editing.script, voiceCast: editing.voice_cast }),
+      });
+      const json = await res.json();
+      if (!res.ok || !json.audio_url) throw new Error(json.error || 'Genereren is niet gelukt.');
+      setEditing(prev => (prev ? { ...prev, audio_url: json.audio_url } : prev));
+      setGenNote('Audio gegenereerd. Luister hem na en sla daarna op.');
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Genereren is niet gelukt.');
+    } finally {
+      setGenBusy(false);
+    }
+  }
+
+  /** Generate every audio stimulus in this exam that has no file yet. */
+  async function generateMissingAudio() {
+    setGenBusy(true);
+    setGenNote('');
+    setError('');
+    try {
+      const res = await fetch('/api/generate-stimulus-audio', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ examId: exam.id }),
+      });
+      const json = await res.json();
+      if (!res.ok) throw new Error(json.error || 'Genereren is niet gelukt.');
+      const made = json.generated?.length ?? 0;
+      const bad = json.failed ?? [];
+      // Failures are named per stimulus rather than summarised: "3 mislukt" tells the docent
+      // nothing about which script to fix.
+      setGenNote(
+        made === 0 && bad.length === 0
+          ? 'Alle audiostimuli hebben al een bestand.'
+          : `${made} gegenereerd.` +
+            (bad.length ? ` Mislukt: ${bad.map((f: { id: number; error: string }) => `#${f.id} — ${f.error}`).join('; ')}` : '')
+      );
+      if (made > 0) router.refresh();
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Genereren is niet gelukt.');
+    } finally {
+      setGenBusy(false);
+    }
   }
 
   async function saveStimulus() {
@@ -126,7 +192,7 @@ export default function ExamBuilder({
       setError(
         d.kind === 'text' ? 'Een tekststimulus heeft een tekst nodig.'
         : d.kind === 'image' ? 'Een afbeeldingsstimulus heeft een afbeelding-URL nodig.'
-        : 'Een audiostimulus heeft een audio-URL nodig.'
+        : 'Genereer eerst de audio (of plak een URL) voordat je opslaat.'
       );
       return;
     }
@@ -146,6 +212,7 @@ export default function ExamBuilder({
       image_alt: d.image_alt.trim() || null,
       audio_url: d.audio_url.trim() || null,
       script: d.script.trim() || null,
+      voice_cast: Object.keys(d.voice_cast).length ? d.voice_cast : null,
       review_status: d.review_status,
     };
 
@@ -271,14 +338,27 @@ export default function ExamBuilder({
             <h2 className="text-base font-headline font-bold text-on-surface m-0">
               Stimuli <span className="text-on-surface-variant font-normal">({stimuli.length})</span>
             </h2>
-            <button
-              type="button"
-              onClick={() => { setEditing(blankStimulus()); setError(''); }}
-              className="inline-flex items-center gap-1.5 bg-primary text-white px-3.5 py-2 rounded-xl text-sm font-medium hover:bg-primary-container transition-colors"
-            >
-              <Plus size={15} aria-hidden />
-              Nieuwe stimulus
-            </button>
+            <div className="flex items-center gap-2">
+              {exam.skill === 'luisteren' && stimuli.some(s => s.kind === 'audio' && !s.audio_url) && (
+                <button
+                  type="button"
+                  onClick={generateMissingAudio}
+                  disabled={genBusy}
+                  className="inline-flex items-center gap-1.5 border border-outline-variant px-3.5 py-2 rounded-xl text-sm font-medium hover:bg-surface-container transition-colors disabled:opacity-50"
+                >
+                  {genBusy ? <Loader2 size={15} className="animate-spin" aria-hidden /> : <AudioLines size={15} aria-hidden />}
+                  Genereer ontbrekende audio
+                </button>
+              )}
+              <button
+                type="button"
+                onClick={() => { setEditing(blankStimulus()); setError(''); }}
+                className="inline-flex items-center gap-1.5 bg-primary text-white px-3.5 py-2 rounded-xl text-sm font-medium hover:bg-primary-container transition-colors"
+              >
+                <Plus size={15} aria-hidden />
+                Nieuwe stimulus
+              </button>
+            </div>
           </div>
 
           {stimuli.length === 0 && (
@@ -500,23 +580,50 @@ export default function ExamBuilder({
 
           {editing.kind === 'audio' && (
             <>
-              <Field label="Audio-URL" hint="Bestand in de question-audio bucket.">
-                <input
-                  value={editing.audio_url}
-                  onChange={e => setEditing({ ...editing, audio_url: e.target.value })}
-                  placeholder="https://…/stimulus.mp3"
-                  className="field"
-                />
-              </Field>
               <Field
                 label="Script"
-                hint="De dialoog waar de audio uit is gegenereerd. Bewaren, anders is regenereren onmogelijk."
+                hint="Eén regel per beurt, met een sprekerlabel: “A: Goedemorgen.”. Bewaren — zonder script is regenereren onmogelijk."
               >
                 <textarea
                   value={editing.script}
                   onChange={e => setEditing({ ...editing, script: e.target.value })}
-                  rows={6}
+                  rows={8}
+                  placeholder={'A: Goedemorgen, kan ik u helpen?\nB: Ja, ik zoek de afdeling burgerzaken.'}
                   className="field resize-y font-mono text-xs"
+                />
+              </Field>
+
+              {/* Casting is authored per speaker. The generator refuses an uncast speaker rather
+                  than choosing a voice itself — a wrong-gender voice is an audible content bug
+                  that cannot be recovered from the mp3 afterwards. */}
+              <VoiceCasting
+                script={editing.script}
+                cast={editing.voice_cast}
+                onChange={next => setEditing({ ...editing, voice_cast: next })}
+              />
+
+              <div className="flex flex-wrap items-center gap-2">
+                <button
+                  type="button"
+                  onClick={generateDraftAudio}
+                  disabled={genBusy || !editing.script.trim()}
+                  className="inline-flex items-center gap-2 bg-secondary-container text-on-secondary-container px-4 py-2 rounded-xl text-sm font-medium disabled:opacity-50"
+                >
+                  {genBusy ? <Loader2 size={15} className="animate-spin" aria-hidden /> : <AudioLines size={15} aria-hidden />}
+                  {editing.audio_url ? 'Opnieuw genereren' : 'Genereer audio'}
+                </button>
+                {editing.audio_url && (
+                  <audio controls src={editing.audio_url} className="h-9 max-w-[280px]" />
+                )}
+              </div>
+              {genNote && <p className="text-xs text-on-surface-variant m-0">{genNote}</p>}
+
+              <Field label="Audio-URL" hint="Wordt ingevuld door de generator. Handmatig plakken kan ook.">
+                <input
+                  value={editing.audio_url}
+                  onChange={e => setEditing({ ...editing, audio_url: e.target.value })}
+                  placeholder="https://…/stimulus.mp3"
+                  className="field font-mono text-xs"
                 />
               </Field>
             </>
@@ -576,6 +683,72 @@ function Field({
       <label className="text-sm font-medium text-on-surface block">{label}</label>
       {children}
       {hint && <p className="text-xs text-on-surface-variant">{hint}</p>}
+    </div>
+  );
+}
+
+/**
+ * One voice per speaker, derived from the script.
+ *
+ * The speaker list comes from parsing the script rather than from a fixed A/B pair, so a
+ * three-hander or a single announcer both work without a schema or UI change. Voices are the four
+ * in data/tts-voices.json and nothing else — adding a fifth is an owner decision, not an
+ * authoring one, so there is deliberately no free-text field here.
+ *
+ * The gender hint beside each option is the whole point of the control: the script establishes who
+ * is speaking ("mevrouw De Wit", "Youssef") and the docent has to match it. Nothing downstream can
+ * check that for them.
+ */
+function VoiceCasting({
+  script,
+  cast,
+  onChange,
+}: {
+  script: string;
+  cast: Record<string, string>;
+  onChange: (next: Record<string, string>) => void;
+}) {
+  const speakers = speakersInScript(script);
+  if (speakers.length === 0) return null;
+
+  const used = speakers.map(sp => cast[sp]).filter(Boolean);
+  const duplicate = new Set(used).size < used.length;
+
+  return (
+    <div className="space-y-1.5">
+      <label className="text-sm font-medium text-on-surface block">
+        Stemmen ({speakers.length} {speakers.length === 1 ? 'spreker' : 'sprekers'})
+      </label>
+      <div className="grid gap-2 sm:grid-cols-2">
+        {speakers.map(sp => (
+          <div key={sp} className="flex items-center gap-2">
+            <span className="text-xs font-bold text-on-surface-variant w-16 shrink-0 truncate" title={sp}>
+              {sp}
+            </span>
+            <select
+              value={cast[sp] ?? ''}
+              onChange={e => onChange({ ...cast, [sp]: e.target.value })}
+              className="field"
+            >
+              <option value="">Kies een stem…</option>
+              {(Object.keys(VOICES) as VoiceKey[]).map(k => (
+                <option key={k} value={k}>
+                  {VOICES[k].gender === 'female' ? 'vrouw' : 'man'} · {VOICES[k].age === 'young' ? 'jonger' : 'ouder'}
+                </option>
+              ))}
+            </select>
+          </div>
+        ))}
+      </div>
+      {duplicate && (
+        <p className="text-xs text-error m-0">
+          Twee sprekers hebben dezelfde stem. Een dialoog in één stem klinkt als een monoloog.
+        </p>
+      )}
+      <p className="text-xs text-on-surface-variant">
+        De stem moet bij de spreker passen: een vrouw krijgt een vrouwenstem, een man een mannenstem.
+        Het script bepaalt dat via namen en aanspreekvormen.
+      </p>
     </div>
   );
 }

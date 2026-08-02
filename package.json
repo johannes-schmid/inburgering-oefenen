@@ -10,7 +10,9 @@
     "test": "playwright test",
     "test:e2e": "PATH=\"/opt/homebrew/bin:$PATH\" playwright test",
     "test:open": "PATH=\"/opt/homebrew/bin:$PATH\" playwright show-report",
-    "check:audio-model": "node scripts/check-audio-model.mjs"
+    "check:audio-model": "node scripts/check-audio-model.mjs",
+    "test:unit": "vitest run",
+    "test:unit:watch": "vitest"
   },
   "dependencies": {
     "@base-ui/react": "^1.5.0",
@@ -57,6 +59,7 @@
     "eslint-config-next": "16.2.6",
     "puppeteer": "^13.7.0",
     "tailwindcss": "^4",
-    "typescript": "^5"
+    "typescript": "^5",
+    "vitest": "^4.1.10"
   }
 }
