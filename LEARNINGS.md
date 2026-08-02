@@ -814,3 +814,15 @@ schemas differed by three columns, three CHECK constraints and a view.
 **Outcome:** SUCCESS
 **What worked / went wrong:** First pass only restyled `LoadingSpinner`, which renders on two dead KNM-shaped pages (`dashboard/analyse`, `dashboard/fouten`) that nothing links to — so nothing changed on screen. The loader the user actually sees is the route-level `loading.tsx` → `KnmLoader`.
 **Lesson:** Before restyling a shared UI component, grep who imports it and confirm that route is reachable. Four near-identical loader copies existed; the styled one was the unused one.
+
+## 2026-08-02 — One checkout flow, and the subscription actually gets created
+**Changed:** New `lib/mollie-modules.ts` (`fulfilModulePayment` — grant modules + create/replace the monthly subscription, idempotent). Called from `/api/mollie-webhook`, `/api/payment-status` and `/api/reconcile-payments`. `/api/checkout-modules` now inserts the `payments` row and returns `paymentId`; `ModulePicker` stores it. Deleted `/api/mollie-checkout`; `/activate` is now a redirect to `/dashboard/pakketten`.
+**Outcome:** SUCCESS (code); one production blocker found that is not code.
+**What worked / went wrong:** The subscription was only ever created in the webhook, and the webhook is skipped locally (Mollie refuses localhost) — so every local module purchase silently behaved as a one-off. Mollie test data confirmed it: 0 subscriptions, 0 mandates, all `sequenceType: first` payments expired, and all 19 genuinely paid payments were old `oneoff` tiers. Probing `/v2/methods?sequenceType=first` showed only `creditcard` — SEPA Direct Debit is not enabled on the account, so iDEAL cannot start a subscription at all.
+**Lesson:** Any grant path must be reachable without the webhook, because one environment never gets webhooks. And before promising "iDEAL, maandelijks", check `GET /v2/methods?sequenceType=first` — the recurring method set is an account setting, not a code choice.
+
+## 2026-08-02 — grade-open 409 no_rubric for every candidate
+**Changed:** `app/api/grade-open/route.ts` — `resolveRubric()` and `storedResult()`'s rubric lookup now read via `createAdminClient()` instead of the caller-scoped client.
+**Outcome:** SUCCESS
+**What worked / went wrong:** Production 409'd `no_rubric` on `/nl/oefenexamen/spreken/1`. `rubrics` has one policy, `Admins manage rubrics USING (is_admin())`, and no non-admin SELECT policy — so a candidate's JWT made both SELECTs return **zero rows with no error**, and the route concluded no rubric existed. It worked for the docent because she is an admin, which hid it entirely in testing.
+**Lesson:** A table with an admin-only RLS policy read through a session client fails *silently* — empty result, not an error. Any server route that must read such a table for a non-admin has to use the service key explicitly; "it works when I test it" from an admin account proves nothing about the candidate path.

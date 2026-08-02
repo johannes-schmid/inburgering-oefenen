@@ -198,7 +198,7 @@ export async function POST(request: Request) {
     await logGradeAttempt(user.id, ip, raw.skill);
   }
 
-  const rubric = await resolveRubric(supabase, raw.skill, raw.rubric_id, task);
+  const rubric = await resolveRubric(raw.skill, raw.rubric_id, task);
   if (!rubric) {
     const message = `Er is nog geen actieve rubriek voor "${rubricCategory(task)}".`;
     await supabase.from('open_submissions').update({ grade_error: message }).eq('id', submission.id);
@@ -341,13 +341,22 @@ export async function POST(request: Request) {
 
 type Db = Awaited<ReturnType<typeof createClient>>;
 
-/** The task's own rubric if it names one, else the live rubric for its category. */
+/**
+ * The task's own rubric if it names one, else the live rubric for its category.
+ *
+ * Reads with the service key, not the caller's session. `rubrics` has exactly one policy —
+ * `Admins manage rubrics USING (is_admin())` — and no non-admin SELECT policy, on purpose: the
+ * criteria and anchors are a scoring key. With the caller's JWT the lookup returns zero rows for
+ * every candidate, so grading 409'd with `no_rubric` even when an active rubric existed.
+ * Authorisation is settled before this point and the rubric never leaves the server — it goes into
+ * the grading prompt, not the response.
+ */
 async function resolveRubric(
-  supabase: Db,
   skill: 'schrijven' | 'spreken',
   rubricId: number | null,
   task: GradeTask
 ): Promise<Rubric | null> {
+  const supabase = createAdminClient();
   const cols = 'id, skill, task_type, version, criteria, system_prompt, active';
 
   if (rubricId != null) {
@@ -415,7 +424,9 @@ async function storedResult(supabase: Db, submission: SubmissionRow) {
   const rubricId = rows.find(r => r.rubric_id != null)?.rubric_id ?? null;
   let rubric: Rubric | null = null;
   if (rubricId != null) {
-    const { data } = await supabase
+    // Service key, same reason as `resolveRubric`: the caller's JWT cannot see `rubrics`, and a
+    // repeat call must return the same criteria the fresh grade did.
+    const { data } = await createAdminClient()
       .from('rubrics')
       .select('id, skill, task_type, version, criteria, system_prompt, active')
       .eq('id', rubricId)
