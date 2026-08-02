@@ -7,6 +7,7 @@ import { createClient } from '@/lib/supabase/client';
 import { awardXp, awardCorrectAnswer } from '@/lib/xp';
 import PlatformSidebar from '../../components/PlatformSidebar';
 import SectionContent from '@/components/leren/SectionContent';
+import BrandLoader from '@/components/BrandLoader';
 import { getThema } from '@/data/leren';
 import type { LerenThema, LerenSection } from '@/data/leren';
 import type { KnmQuestion } from '@/data/questions';
@@ -177,20 +178,7 @@ export default function LerenPage({ params }: { params: Promise<{ locale: string
   }
 
   if (loading) {
-    return (
-      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', minHeight: '100vh', background: '#f8f9fb' }}>
-        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 24 }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
-            <div style={{ width: 5, height: 36, borderRadius: 99, background: 'linear-gradient(180deg,#fe762c,#d94f00)' }} />
-            <span style={{ fontWeight: 800, fontSize: 26, color: '#002b6d', letterSpacing: '-0.02em', lineHeight: 1, fontFamily: 'Arial Black, sans-serif' }}>Inburgering Oefenen</span>
-          </div>
-          <div style={{ width: 160, height: 3, borderRadius: 99, background: '#e0e3e5', overflow: 'hidden' }}>
-            <div style={{ height: '100%', borderRadius: 99, background: 'linear-gradient(90deg,#002b6d,#fe762c)', animation: 'knm-sweep 1.4s ease-in-out infinite' }} />
-          </div>
-        </div>
-        <style>{`@keyframes knm-sweep { 0%{transform:translateX(-100%) scaleX(0.3)} 50%{transform:translateX(0%) scaleX(1)} 100%{transform:translateX(100%) scaleX(0.3)} }`}</style>
-      </div>
-    );
+    return <BrandLoader />;
   }
 
   if (!thema) {

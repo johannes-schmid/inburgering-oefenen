@@ -808,3 +808,9 @@ schemas differed by three columns, three CHECK constraints and a view.
 4. **An error from the data layer must not be indistinguishable from "not found".**
    `fetchExamContent()` returns `null` for both a missing exam and a failed query, so a schema fault
    surfaced as a 404 with nothing in the logs pointing at the column. Worth separating.
+
+## 2026-08-02 — Branded loading indicator
+**Changed:** New `components/BrandLoader.tsx` (animated LogoMark: spinning ring, pulsing orange bar, breathing tile, reduced-motion escape). `components/KnmLoader.tsx` deleted; `(app)/loading.tsx`, `(auth)/loading.tsx`, `(main)/layout.tsx` import BrandLoader. `components/LoadingSpinner.tsx` is now a thin wrapper; the inline copy in `(app)/leren/[slug]/page.tsx` was replaced.
+**Outcome:** SUCCESS
+**What worked / went wrong:** First pass only restyled `LoadingSpinner`, which renders on two dead KNM-shaped pages (`dashboard/analyse`, `dashboard/fouten`) that nothing links to — so nothing changed on screen. The loader the user actually sees is the route-level `loading.tsx` → `KnmLoader`.
+**Lesson:** Before restyling a shared UI component, grep who imports it and confirm that route is reachable. Four near-identical loader copies existed; the styled one was the unused one.

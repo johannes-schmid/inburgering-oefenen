@@ -1,7 +1,7 @@
 import { Suspense } from 'react';
 import Nav from '@/components/Nav';
 import Footer from '@/components/Footer';
-import KnmLoader from '@/components/KnmLoader';
+import BrandLoader from '@/components/BrandLoader';
 import AnalyticsProviders from '@/components/AnalyticsProviders';
 
 export default function MainLayout({ children }: { children: React.ReactNode }) {
@@ -10,7 +10,7 @@ export default function MainLayout({ children }: { children: React.ReactNode }) 
       <AnalyticsProviders />
       <Nav />
       <div className="pt-20">
-        <Suspense fallback={<KnmLoader fullPage={false} />}>
+        <Suspense fallback={<BrandLoader fullPage={false} />}>
           {children}
         </Suspense>
       </div>

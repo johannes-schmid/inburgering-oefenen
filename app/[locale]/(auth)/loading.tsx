@@ -1,4 +1,4 @@
-import KnmLoader from '@/components/KnmLoader';
+import BrandLoader from '@/components/BrandLoader';
 export default function Loading() {
-  return <KnmLoader />;
+  return <BrandLoader />;
 }
