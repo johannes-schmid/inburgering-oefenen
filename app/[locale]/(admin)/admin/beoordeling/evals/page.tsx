@@ -8,6 +8,7 @@ import {
   summariseAgreement,
   type ScoreRow,
 } from '@/lib/grading-evals';
+import RunEval from './RunEval';
 
 export const revalidate = 0;
 
@@ -81,6 +82,8 @@ export default async function EvalsPage({
           richting.
         </p>
       </div>
+
+      <RunEval skills={['schrijven', 'spreken']} />
 
       <div
         className={`rounded-xl border p-4 text-sm leading-relaxed ${

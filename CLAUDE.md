@@ -218,7 +218,8 @@ without an explicit decision from the owner.
 - **Vercel AI Gateway** — rubric grading for Schrijven/Spreken (planned, Phase 5)
 - **GA4** analytics. **PostHog was removed** — don't reintroduce it; `track()` in
   `lib/analytics.ts` sends to GA only.
-- **Playwright** e2e (targets localhost:3001), **Puppeteer** via `check-ui.mjs`
+- **Vitest** unit tests (`tests-unit/`), **Playwright** e2e (targets localhost:3001),
+  **Puppeteer** via `check-ui.mjs` / `check-ui-auth.mjs`
 
 ---
 
@@ -287,6 +288,10 @@ without an explicit decision from the owner.
 | `claim-submissions` | links anon submissions to a new account |
 | `mollie-checkout` / `mollie-webhook` / `payment-status` | payment + entitlement |
 | `generate-question-audio` | ElevenLabs → `question-audio` bucket |
+| `generate-stimulus-audio` | two-voice Luisteren stimulus audio from `script` + `voice_cast` |
+| `admin/run-eval` | re-grades the held-out `grading_examples` and scores the model |
+| `cancel-subscription` | cancels every live Mollie subscription; sets `modules_until` |
+| `checkout-modules` | per-module subscription checkout, price computed server-side |
 | `generate-wordcard-audio` / `admin/generate-lesson-audio` | other TTS surfaces |
 | `pexels-search` / `pexels-query` / `upload-pexels-image` | admin image tooling |
 | `send-campaign-emails` | Vercel Cron, daily 9am UTC |
@@ -587,6 +592,40 @@ why grading is a server route.
 
 ---
 
+## Stimulus audio is generated from admin
+
+`/api/generate-stimulus-audio` renders a Luisteren stimulus from `stimuli.script` and
+`stimuli.voice_cast` in **one** `/v1/text-to-dialogue` call (`eleven_v3`), uploads to the
+`question-audio` bucket and writes `stimuli.audio_url`. Three modes: a **draft** (script not saved
+yet, returns a URL and writes no row), one saved stimulus, or every audio stimulus in an exam that
+has no file. `lib/tts-dialogue.ts` holds the parsing and casting rules and is the server twin of
+`scripts/generate-free-practice-audio.mjs` — change one, look at the other.
+
+- **Generation refuses rather than guesses.** An uncast speaker, an unknown voice key, or two
+  speakers sharing a voice are all 400s. Casting is a content decision the script forces
+  (`mevrouw De Wit` is female) and is **not** recoverable from the mp3, so a generator that picked
+  for you would produce plausible audio that is quietly wrong.
+- **Draft mode exists because of the CHECK, not by preference.**
+  `stimuli_payload_matches_kind` requires an audio stimulus to have an `audio_url`, so a new one
+  cannot be saved script-first and generated from afterwards. The editor generates first and saves
+  the URL it gets back. Don't "simplify" this by relaxing the constraint — that is what keeps a
+  half-authored stimulus out of a published exam.
+- **Scripts may put every turn on one line.** The seeded exams store `A: … B: … A: …` as a single
+  paragraph, so the parser splits on inline tags as well as newlines. An inline tag must start with
+  a capital and contain no spaces (which keeps `Hij zei: kom maar` out); a multi-word label like
+  `Mevrouw De Wit:` is only honoured at the start of a line.
+- **No loudness normalisation here.** The taster pipeline runs a two-pass ffmpeg loudnorm to
+  −20 LUFS and there is no ffmpeg binary in a serverless function, so exam audio generated from
+  admin sits at ElevenLabs' native level. Known and accepted — do not "fix" it by dropping the
+  loudnorm from the taster script, which is the surface where a level mismatch inside one sitting
+  would actually hurt.
+
+**`lib/admin/guard.ts` (`requireAdmin()`) is how an `/api` route checks the allowlist.** The
+`(admin)` layout guards pages; a route handler has no layout above it. `generate-stimulus-audio`
+and `admin/run-eval` use it. **`generate-question-audio`, `generate-wordcard-audio` and
+`admin/generate-lesson-audio` still do not** — they are reachable by anyone who knows the path and
+each spends ElevenLabs credits per call. Worth closing.
+
 ## Verification — required after every change
 
 1. `npx tsc --noEmit`
@@ -595,16 +634,32 @@ why grading is a server route.
 3. **UI changes:** `node check-ui.mjs http://localhost:3001/<path> <label>` → writes mobile
    (390px) + desktop (1440px) full-page shots to `temporary_screenshots/`. **Read both**,
    fix what you find, re-run. Never declare a UI task done without this loop.
+   For `(app)` and `(admin)` routes use **`check-ui-auth.mjs`** instead — `check-ui.mjs` can only
+   ever photograph the login page there, because those routes redirect an anonymous visitor:
+   ```bash
+   node check-ui-auth.mjs http://localhost:3001/nl/admin/exams/2 label /path/to/cookie.txt \
+     'button[aria-label="Stimulus bewerken"]'    # optional: click before the shot
+   ```
+   The cookie file holds one line, `sb-127-auth-token=base64-<base64 of the session JSON>`; mint
+   the session with the auth admin API against the local stack. The optional selector is how a
+   drawer or an inline editor gets into the picture at all — without it you photograph a page that
+   looks fine and proves nothing.
 4. **Schema changes:** query the table afterwards to confirm it landed.
 5. **Deploys:** curl the live URL.
 
 Report the actual output. Don't declare done without running these.
 
-### Pre-commit test gate
+### Two test suites, different questions
 ```bash
-PATH="/opt/homebrew/bin:$PATH" npm run test:e2e     # pass/fail per test
-PATH="/opt/homebrew/bin:$PATH" npm run test:open    # HTML report
+npm run test:unit                                   # vitest — pure logic, fast, must stay green
+PATH="/opt/homebrew/bin:$PATH" npm run test:e2e     # playwright — browser
+PATH="/opt/homebrew/bin:$PATH" npm run test:open    # playwright HTML report
 ```
+**`tests-unit/`** (vitest, `vitest.config.mts`) covers logic that needs no browser: `lib/pricing.ts`,
+`lib/rubrics.ts`, `lib/entitlements.ts`, `lib/tts-dialogue.ts`. It runs in ~100 ms and **is
+expected to be green** — unlike the Playwright suite below. Add a case here whenever you fix a
+logic bug; the dialogue parser regression (inline speaker tags read as one speaker) is pinned that
+way. **`tests/`** stays Playwright's and is excluded from vitest's glob.
 Locale is `nl-NL` in `playwright.config.js` — prevents the i18n redirect to `/en/`.
 Auth-gated tests use `mockAuth()` (intercepts the Supabase CDN + fakes a session).
 

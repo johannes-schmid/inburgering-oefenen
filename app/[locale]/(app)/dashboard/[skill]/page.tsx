@@ -7,6 +7,8 @@ import { planFromMetadata } from '@/lib/entitlements';
 import { fetchPortalProgress, fetchPublishedExamNumbers } from '@/lib/portal-progress';
 import { getSkill, isFreeExam } from '@/data/skills';
 import SkillIcon from '@/components/site/SkillIcon';
+import CriterionProgress from '@/components/exam/CriterionProgress';
+import { fetchCriterionSeries } from '@/lib/criterion-progress';
 import AppShell from '../../components/AppShell';
 
 type Props = { params: Promise<{ locale: string; skill: string }> };
@@ -51,6 +53,13 @@ export default async function SkillExamsPage({ params }: Props) {
   const pub = published[skill.slug];
   const meta = user.user_metadata ?? {};
   const isRubric = skill.scoring === 'open';
+
+  // Only the two rubric skills have criteria to chart. `fetchCriterionSeries` returns [] until the
+  // candidate has a graded answer, and CriterionProgress renders nothing for an empty series — so
+  // this is quiet rather than an empty-state box on a page the candidate has just opened.
+  const criterionSeries = isRubric
+    ? await fetchCriterionSeries(user.id, skill.slug as 'schrijven' | 'spreken')
+    : [];
 
   return (
     <AppShell
@@ -107,6 +116,8 @@ export default async function SkillExamsPage({ params }: Props) {
               <p className="rubric-note mt-4">{t('rubric_note')}</p>
             )}
           </header>
+
+          {criterionSeries.length > 0 && <CriterionProgress series={criterionSeries} className="mb-6" />}
 
           <ol className="flex flex-col gap-2.5">
             {Array.from({ length: skill.examCount }, (_, i) => i + 1).map(n => {
