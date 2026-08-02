@@ -1,6 +1,18 @@
 import { createAdminClient } from '@/lib/supabase/admin';
 import { NextRequest, NextResponse } from 'next/server';
 import { NARRATOR, voiceId } from '@/lib/tts-voices';
+import { requireAdmin } from '@/lib/admin/guard';
+
+/**
+ * Single-narrator exam audio: a question read aloud, or a Spreken prompt.
+ *
+ * Two-voice Luisteren *stimuli* are a different pipeline — /api/generate-stimulus-audio, which
+ * uses text-to-dialogue. This one is one voice reading one text, which is why the Spreken prompt
+ * belongs here rather than in a fourth TTS endpoint.
+ *
+ * **This route used to have no authentication at all.** It spends ElevenLabs credits per call and
+ * was reachable by anyone who knew the path. `requireAdmin()` closes that.
+ */
 
 const VOICE_ID = voiceId(NARRATOR);
 // multilingual_v2, not flash: this audio is generated once and cached in Storage, so there
@@ -42,16 +54,50 @@ async function uploadAudio(supabaseUrl: string, serviceKey: string, storagePath:
 }
 
 export async function POST(req: NextRequest) {
+  const admin = await requireAdmin();
+  if (!admin.ok) return NextResponse.json({ error: admin.error }, { status: admin.status });
+
   const apiKey = process.env.ELEVEN_LAPS_API_KEY;
   if (!apiKey) return NextResponse.json({ error: 'Missing ELEVEN_LAPS_API_KEY' }, { status: 500 });
 
   const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
   const serviceKey  = process.env.SUPABASE_SERVICE_KEY!;
 
-  const { id } = await req.json();
-  if (!id) return NextResponse.json({ error: 'Missing question id' }, { status: 400 });
-
+  const { id, openTaskId } = await req.json();
   const supabase = createAdminClient();
+
+  /* ── Spreken prompt audio ──────────────────────────────────────────────────────────────────
+   * Until now nothing generated `open_tasks.prompt_audio_url` at all — it could only be pasted.
+   */
+  if (openTaskId) {
+    const { data: task, error: taskErr } = await supabase
+      .from('open_tasks')
+      .select('id, prompt_script')
+      .eq('id', openTaskId)
+      .single();
+    if (taskErr || !task) return NextResponse.json({ error: 'Opgave niet gevonden.' }, { status: 404 });
+
+    // `prompt_script` is what the candidate should HEAR; `prompt_html` is what they read. They are
+    // not the same text, and reading the HTML aloud would speak the layout.
+    const spoken = (task.prompt_script ?? '').trim();
+    if (!spoken) {
+      return NextResponse.json(
+        { error: 'Deze opgave heeft nog geen gesproken tekst (prompt_script).' },
+        { status: 400 }
+      );
+    }
+
+    const audio = await synthesize(spoken, apiKey);
+    const url = await uploadAudio(supabaseUrl, serviceKey, `task-${task.id}/prompt.mp3`, audio);
+    const { error: updErr } = await supabase
+      .from('open_tasks')
+      .update({ prompt_audio_url: url })
+      .eq('id', task.id);
+    if (updErr) return NextResponse.json({ error: updErr.message }, { status: 500 });
+    return NextResponse.json({ prompt_audio_url: url });
+  }
+
+  if (!id) return NextResponse.json({ error: 'Missing question id' }, { status: 400 });
   const { data: q, error } = await supabase
     .from('questions')
     .select('id, prompt, option_layout, question_options(id, label, body)')

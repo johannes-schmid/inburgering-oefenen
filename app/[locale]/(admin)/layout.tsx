@@ -69,6 +69,7 @@ function AdminSidebar({ locale, userEmail }: { locale: string; userEmail: string
       <nav className="flex-1 p-4 space-y-1">
         <NavItem href={`/${locale}/admin`} icon="dashboard" label="Dashboard" />
         <NavItem href={`/${locale}/admin/exams`} icon="assignment" label="Examens" />
+        <NavItem href={`/${locale}/admin/content`} icon="library_books" label="Content" />
         <NavItem href={`/${locale}/admin/questions`} icon="quiz" label="Vragen" />
         <NavItem href={`/${locale}/admin/opgaven`} icon="edit_note" label="Opgaven" />
         <NavItem href={`/${locale}/admin/rubrics`} icon="checklist" label="Rubrieken" />
