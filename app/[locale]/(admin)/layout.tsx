@@ -69,9 +69,7 @@ function AdminSidebar({ locale, userEmail }: { locale: string; userEmail: string
       <nav className="flex-1 p-4 space-y-1">
         <NavItem href={`/${locale}/admin`} icon="dashboard" label="Dashboard" />
         <NavItem href={`/${locale}/admin/exams`} icon="assignment" label="Examens" />
-        <NavItem href={`/${locale}/admin/content`} icon="library_books" label="Content" />
-        <NavItem href={`/${locale}/admin/questions`} icon="quiz" label="Vragen" />
-        <NavItem href={`/${locale}/admin/opgaven`} icon="edit_note" label="Opgaven" />
+        <NavItem href={`/${locale}/admin/questions`} icon="quiz" label="Vragen & opdrachten" />
         <NavItem href={`/${locale}/admin/rubrics`} icon="checklist" label="Rubrieken" />
         <NavItem href={`/${locale}/admin/beoordeling`} icon="rate_review" label="Beoordelen" />
         {/* Lessen and woordkaarten are feature-flagged off on the public site
@@ -79,7 +77,6 @@ function AdminSidebar({ locale, userEmail }: { locale: string; userEmail: string
             ahead of the flag being flipped, but they sit below the divider. */}
         <div className="pt-3 mt-2 border-t border-white/10 space-y-1">
           <NavItem href={`/${locale}/admin/users`} icon="group" label="Gebruikers" />
-          <NavItem href={`/${locale}/admin/leren`} icon="menu_book" label="Lessen" />
           <NavItem href={`/${locale}/admin/woordkaarten`} icon="style" label="Woordkaarten" />
         </div>
       </nav>

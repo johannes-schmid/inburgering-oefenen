@@ -146,6 +146,14 @@ This is a **hard constraint on the code, not just the copy**:
 | **Auth** | `app/[locale]/(auth)/` | minimal shell | login/register/activate |
 | **Admin** | `app/[locale]/(admin)/` | admin shell, `admin_users` allowlist guard | internal only |
 
+**`/admin/questions` is the single content surface.** It lists `questions` *and* `open_tasks`
+together — skill as tabs, the row's shape as a column — because the split between those two tables
+is a database fact and the docent thinks in "de items van examen 3". `/admin/opgaven` and a
+short-lived `/admin/content` were the same list twice and are gone; the per-item routes they owned
+(`opgaven/[id]/edit`, `opgaven/new`) stay and are reached from the drawer's "Volledige editor".
+`/admin/leren` is deleted too — `FEATURES.leren` is off, so it authored content nothing could
+display. Woordkaarten stays.
+
 **Rule:** needs the sidebar → `(app)`. Needs the public nav → `(main)`. Auth → `(auth)`.
 Internal content management → `(admin)`.
 `/admin-login` lives in `(auth)`, not `(admin)`, to avoid a redirect loop.

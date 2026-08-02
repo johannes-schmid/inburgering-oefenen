@@ -32,12 +32,27 @@ const name = raw.slice(0, eq);
 const value = raw.slice(eq + 1);
 const domain = new URL(url).hostname;
 
+/**
+ * Chromium rejects a cookie over ~4 KB with "Invalid cookie fields", and a Supabase session that
+ * carries any real user_metadata goes past it. `@supabase/ssr` splits the token into `.0`, `.1`
+ * chunks for exactly this reason and reassembles them on read, so the harness has to write the
+ * same shape — a single oversized cookie silently fails and you photograph the login page.
+ */
+const CHUNK = 3180;
+const cookies =
+  value.length <= CHUNK
+    ? [{ name, value }]
+    : Array.from({ length: Math.ceil(value.length / CHUNK) }, (_, i) => ({
+        name: `${name}.${i}`,
+        value: value.slice(i * CHUNK, (i + 1) * CHUNK),
+      }));
+
 const browser = await puppeteer.launch({ headless: 'new', args: ['--no-sandbox'] });
 
 for (const [width, height, tag] of [[390, 844, 'mobile'], [1440, 900, 'desktop']]) {
   const page = await browser.newPage();
   await page.setViewport({ width, height });
-  await page.setCookie({ name, value, domain, path: '/' });
+  await page.setCookie(...cookies.map(c => ({ ...c, domain, path: '/' })));
   await page.goto(url, { waitUntil: 'networkidle2', timeout: 45000 });
   await new Promise(r => setTimeout(r, 800));
 

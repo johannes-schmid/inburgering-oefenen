@@ -2,6 +2,7 @@
 
 import { useMemo, useState } from 'react';
 import { Check, CircleAlert, Search } from 'lucide-react';
+
 import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import {
   Select,
@@ -16,6 +17,41 @@ import { SKILLS } from '@/data/skills';
 import type { ContentRow } from '@/lib/admin/content-rows';
 import ContentSheet from './ContentSheet';
 
+const SKILL_LABELS: Record<string, string> = {
+  lezen: 'Lezen',
+  luisteren: 'Luisteren',
+  schrijven: 'Schrijven',
+  spreken: 'Spreken',
+};
+
+const STATUS_LABELS: Record<string, string> = {
+  all: 'Alle statussen',
+  pending: 'Concept',
+  validated: 'Nagekeken',
+};
+
+/**
+ * What is missing on an item, as a list of Dutch words.
+ *
+ * A `null` flag means the field does not apply here — a Lezen question has no audio to be missing —
+ * and is skipped rather than counted as incomplete. Shared by the column and the filter so the
+ * count on the toggle can never disagree with the rows it shows.
+ */
+function missingFields(row: ContentRow): string[] {
+  const missing: string[] = [];
+  if (row.hasAnswerKey === false) missing.push('antwoord');
+  if (row.hasExplanation === false) missing.push('uitleg');
+  if (row.hasAudio === false) missing.push('audio');
+  if (row.hasImages === false) missing.push('plaatjes');
+  if (row.hasModelAnswer === false) missing.push('voorbeeld');
+  if (row.hasRubric === false) missing.push('rubriek');
+  return missing;
+}
+
+function isIncomplete(row: ContentRow): boolean {
+  return missingFields(row).length > 0;
+}
+
 /**
  * The merged content list.
  *
@@ -28,6 +64,8 @@ export default function ContentTable({ rows, locale }: { rows: ContentRow[]; loc
   const [skill, setSkill] = useState<string>(SKILLS[0].slug);
   const [level, setLevel] = useState('a2');
   const [exam, setExam] = useState('all');
+  const [status, setStatus] = useState('all');
+  const [onlyIncomplete, setOnlyIncomplete] = useState(false);
   const [query, setQuery] = useState('');
   const [openUid, setOpenUid] = useState<string | null>(null);
 
@@ -44,10 +82,18 @@ export default function ContentTable({ rows, locale }: { rows: ContentRow[]; loc
     [forSkill]
   );
 
+  const incompleteCount = useMemo(() => forSkill.filter(isIncomplete).length, [forSkill]);
+  const pendingCount = useMemo(
+    () => forSkill.filter(r => r.reviewStatus === 'pending').length,
+    [forSkill]
+  );
+
   const filtered = useMemo(() => {
     const q = query.trim().toLowerCase();
     return forSkill.filter(r => {
       if (exam !== 'all' && String(r.examNumber) !== exam) return false;
+      if (status !== 'all' && r.reviewStatus !== status) return false;
+      if (onlyIncomplete && !isIncomplete(r)) return false;
       if (!q) return true;
       return (
         r.title.toLowerCase().includes(q) ||
@@ -55,7 +101,7 @@ export default function ContentTable({ rows, locale }: { rows: ContentRow[]; loc
         r.typeLabel.toLowerCase().includes(q)
       );
     });
-  }, [forSkill, exam, query]);
+  }, [forSkill, exam, status, onlyIncomplete, query]);
 
   const open = rows.find(r => r.uid === openUid) ?? null;
 
@@ -68,12 +114,13 @@ export default function ContentTable({ rows, locale }: { rows: ContentRow[]; loc
           // The exam filter is per skill — Lezen 7 and Spreken 7 are different exams, and keeping
           // the number selected across a tab switch silently hides most of the new tab.
           setExam('all');
+          setOnlyIncomplete(false);
         }}
       >
         <TabsList variant="line" className="w-full justify-start overflow-x-auto">
           {SKILLS.map(s => (
-            <TabsTrigger key={s.slug} value={s.slug} className="flex-none px-3 capitalize">
-              {s.slug}
+            <TabsTrigger key={s.slug} value={s.slug} className="flex-none px-3">
+              {SKILL_LABELS[s.slug]}
               <span className="ml-1.5 text-xs text-on-surface-variant tabular-nums">
                 {counts[s.slug] ?? 0}
               </span>
@@ -113,6 +160,34 @@ export default function ContentTable({ rows, locale }: { rows: ContentRow[]; loc
             ))}
           </SelectContent>
         </Select>
+
+        <Select value={status} onValueChange={v => setStatus(String(v))}>
+          <SelectTrigger className="h-9 w-[160px]" aria-label="Status">
+            <SelectValue>{(v: unknown) => STATUS_LABELS[String(v)] ?? 'Status'}</SelectValue>
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="all">Alle statussen</SelectItem>
+            <SelectItem value="pending">Concept ({pendingCount})</SelectItem>
+            <SelectItem value="validated">Nagekeken</SelectItem>
+          </SelectContent>
+        </Select>
+
+        {/* A toggle rather than a third dropdown: "wat moet ik nog afmaken" is the one question
+            this screen exists to answer, and it should be one click away. */}
+        <button
+          type="button"
+          onClick={() => setOnlyIncomplete(v => !v)}
+          aria-pressed={onlyIncomplete}
+          className={`inline-flex h-9 items-center gap-1.5 rounded-xl border px-3 text-sm font-medium transition-colors ${
+            onlyIncomplete
+              ? 'border-primary bg-primary text-white'
+              : 'border-outline-variant text-on-surface-variant hover:bg-surface-container'
+          }`}
+        >
+          <CircleAlert size={14} aria-hidden />
+          Alleen onvolledig
+          <span className="tabular-nums opacity-70">{incompleteCount}</span>
+        </button>
 
         {/* Level exists as a control before it exists as data: the product is A2 only, and
             `exams` has no level column. Showing B1 as a disabled option is a roadmap statement,
@@ -221,14 +296,7 @@ export default function ContentTable({ rows, locale }: { rows: ContentRow[]; loc
  * no audio to be missing — and is skipped rather than shown as incomplete.
  */
 function Completeness({ row }: { row: ContentRow }) {
-  const missing: string[] = [];
-  if (row.hasAnswerKey === false) missing.push('antwoord');
-  if (row.hasExplanation === false) missing.push('uitleg');
-  if (row.hasAudio === false) missing.push('audio');
-  if (row.hasImages === false) missing.push('plaatjes');
-  if (row.hasModelAnswer === false) missing.push('voorbeeld');
-  if (row.hasRubric === false) missing.push('rubriek');
-
+  const missing = missingFields(row);
   if (missing.length === 0) {
     return <span className="text-xs text-on-surface-variant">—</span>;
   }
