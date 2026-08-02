@@ -1,6 +1,6 @@
 import { type EmailLocale, t } from '../i18n';
 import { renderEmail } from '../layout';
-import { featureDuo, packageCards, paymentBadges } from '../components';
+import { skillsShowcase, packageCards, paymentBadges } from '../components';
 
 export function day2NoScoreSubject(locale: EmailLocale): string {
   return t[locale].day2NoScore.subject;
@@ -8,8 +8,9 @@ export function day2NoScoreSubject(locale: EmailLocale): string {
 
 export function day2NoScoreEmail(firstName: string, locale: EmailLocale, unsubscribeUrl: string): string {
   const s = t[locale].day2NoScore;
-  const examUrl = 'https://inburgeringoefenen.nl/proefexamen';
-  const dashboardUrl = 'https://inburgeringoefenen.nl/dashboard?view=woordkaarten';
+  /* `/oefenen` is the skill picker — the free funnel. `/proefexamen` was the KNM flat-question
+     player and `?view=woordkaarten` a dashboard view that no longer exists. */
+  const examUrl = 'https://inburgeringoefenen.nl/oefenen';
 
   const body = `
 <div class="hero">
@@ -28,10 +29,10 @@ export function day2NoScoreEmail(firstName: string, locale: EmailLocale, unsubsc
   </div>
 </div>
 <div class="div"></div>
-${featureDuo(locale)}
+${skillsShowcase(locale)}
 <div class="div"></div>
 <div class="sec" style="background:#f8f9fb;">
-  <p class="sec-label" style="text-align:center;">Klaar voor toegang?</p>
+  <p class="sec-label" style="text-align:center;">${s.readyLabel}</p>
   ${packageCards(locale)}
   ${paymentBadges(locale)}
   <p style="font-size:11px;color:#9CA3AF;text-align:center;margin-top:10px;">🔒 ${locale === 'ar' ? 'دفع آمن · وصول فوري' : locale === 'en' ? 'Secure payment · Instant access' : 'Veilig betalen · Directe toegang'}</p>

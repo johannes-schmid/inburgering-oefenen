@@ -8,14 +8,12 @@ export function abandonSubject(locale: EmailLocale): string {
 
 export function abandonEmail(firstName: string, locale: EmailLocale, unsubscribeUrl: string): string {
   const s = t[locale].abandon;
-  const activateUrl = 'https://inburgeringoefenen.nl/activate';
+  /* `/activate` only redirects to the module picker, which needs a login. This e-mail goes to
+     addresses that may not have an account yet, so it points at the public pricing page. */
+  const activateUrl = 'https://inburgeringoefenen.nl/premium';
 
-  const testimonialHtml = [...s.testimonials].map(tm => `
-<div class="testi">
-  <p class="testi-q">${tm.quote}</p>
-  <p class="testi-n">${tm.name}</p>
-</div>`).join('');
-
+  /* No testimonials. The two that used to sit here were invented, and the product has no
+     customers yet — see the fabricated-social-proof note in CLAUDE.md. */
   const benefitsHtml = [...s.benefits].map(b => `
 <div style="display:flex;align-items:flex-start;gap:10px;padding:6px 0;">
   <span style="color:#10b981;font-weight:700;font-size:15px;flex-shrink:0;margin-top:1px;">✓</span>
@@ -31,12 +29,7 @@ export function abandonEmail(firstName: string, locale: EmailLocale, unsubscribe
 </div>
 <div class="sec">
   <p class="sec-label">${s.body2}</p>
-  ${testimonialHtml}
-</div>
-<div class="div"></div>
-<div class="sec">
-  <p class="sec-label">${s.benefitsLabel}</p>
-  <h2 class="sec-title" style="font-size:17px;margin-bottom:16px;">${s.packagesLabel}</h2>
+  <h2 class="sec-title" style="font-size:17px;margin-bottom:16px;">${s.benefitsLabel}</h2>
   ${benefitsHtml}
 </div>
 <div class="div"></div>

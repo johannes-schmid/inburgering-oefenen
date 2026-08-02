@@ -12,7 +12,7 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.join(__dirname, '..');
 
 const load = (p) => import(path.join(ROOT, p));
-const [day2, day2NoScore, day7, activation, upgrade, feedback, abandon, results, optA] = await Promise.all([
+const [day2, day2NoScore, day7, activation, upgrade, feedback, abandon, results] = await Promise.all([
   load('lib/email/templates/day2.ts'),
   load('lib/email/templates/day2NoScore.ts'),
   load('lib/email/templates/day7.ts'),
@@ -21,69 +21,48 @@ const [day2, day2NoScore, day7, activation, upgrade, feedback, abandon, results,
   load('lib/email/templates/feedback.ts'),
   load('lib/email/templates/abandon.ts'),
   load('lib/email/templates/results.ts'),
-  load('lib/email/templates/results-option-a.ts'),
 ]);
 
 const LOCALES = ['nl', 'en', 'ar'];
-const UNSUB = 'https://knmoefenen.nl/uitschrijven?email=preview%40test.com';
+const UNSUB = 'https://inburgeringoefenen.nl/uitschrijven?email=preview%40test.com';
 
 const CATS_PASS = {
-  'Werk en Inkomen': { correct: 6, total: 8 },
-  'Wonen': { correct: 7, total: 8 },
-  'Onderwijs en Opvoeding': { correct: 4, total: 6 },
-  'Gezondheid en Gezondheidszorg': { correct: 5, total: 6 },
-  'Staatsinrichting en Rechtsstaat': { correct: 5, total: 8 },
-  'Instanties': { correct: 3, total: 4 },
-  'Geschiedenis en Geografie': { correct: 3, total: 4 },
+  'Hoofdgedachte': { correct: 6, total: 7 },
+  'Detail': { correct: 5, total: 8 },
+  'Bedoeling van de schrijver': { correct: 4, total: 6 },
+  'Woordbetekenis': { correct: 2, total: 4 },
 };
 const CATS_FAIL = {
-  'Werk en Inkomen': { correct: 3, total: 8 },
-  'Wonen': { correct: 4, total: 8 },
-  'Onderwijs en Opvoeding': { correct: 2, total: 6 },
-  'Gezondheid en Gezondheidszorg': { correct: 3, total: 6 },
-  'Staatsinrichting en Rechtsstaat': { correct: 3, total: 8 },
-  'Instanties': { correct: 2, total: 4 },
-  'Geschiedenis en Geografie': { correct: 1, total: 4 },
+  'Hoofdgedachte': { correct: 3, total: 7 },
+  'Detail': { correct: 3, total: 8 },
+  'Bedoeling van de schrijver': { correct: 2, total: 6 },
+  'Woordbetekenis': { correct: 1, total: 4 },
 };
 
 const emails = [];
 
-// ── RESULTS REDESIGN OPTIONS ──────────────────────────────────────────────────
+// ── RESULTS ──────────────────────────────────────────────────────────────────
 emails.push({
-  id: 'opt-a-pass',
-  group: '🆕 Option A — Momentum',
-  label: 'Option A — Geslaagd (62%)',
-  html: optA.resultsEmailA({ score: 27, total: 44, passed: true, pct: 62, catScores: CATS_PASS }, 'nl', UNSUB),
+  id: 'results-pass',
+  group: '📧 Results',
+  label: 'Results — Lezen, boven de oefengrens (68%)',
+  html: results.resultsEmail({ score: 17, total: 25, passed: true, pct: 68, catScores: CATS_PASS, skill: 'lezen' }, 'nl', UNSUB, true),
 });
 emails.push({
-  id: 'opt-a-fail',
-  group: '🆕 Option A — Momentum',
-  label: 'Option A — Gezakt (45%)',
-  html: optA.resultsEmailA({ score: 20, total: 44, passed: false, pct: 45, catScores: CATS_FAIL }, 'nl', UNSUB),
-});
-emails.push({
-  id: 'opt-a-excellent',
-  group: '🆕 Option A — Momentum',
-  label: 'Option A — Uitstekend (84%)',
-  html: optA.resultsEmailA({ score: 37, total: 44, passed: true, pct: 84, catScores: CATS_PASS }, 'nl', UNSUB),
-});
-
-// ── CURRENT RESULTS (for comparison) ─────────────────────────────────────────
-emails.push({
-  id: 'current-results',
-  group: '📧 Current (reference)',
-  label: 'Current Results (62%)',
-  html: results.resultsEmail({ score: 27, total: 44, passed: true, pct: 62, catScores: CATS_PASS }, 'nl', UNSUB, true),
+  id: 'results-fail',
+  group: '📧 Results',
+  label: 'Results — Lezen, onder de oefengrens (36%)',
+  html: results.resultsEmail({ score: 9, total: 25, passed: false, pct: 36, catScores: CATS_FAIL, skill: 'lezen' }, 'nl', UNSUB, true),
 });
 
 // ── ALL OTHER EMAILS × 3 LOCALES ─────────────────────────────────────────────
 for (const locale of LOCALES) {
-  emails.push({ id: `day2-${locale}`, group: `📧 Day-2 (${locale.toUpperCase()})`, label: `Day-2 with Score`, html: day2.day2Email({ pct: 62, score: 27, total: 44, passed: true, exam_name: 'KNM Proefexamen 1', catScores: CATS_PASS }, 'Fatima', locale, UNSUB) });
+  emails.push({ id: `day2-${locale}`, group: `📧 Day-2 (${locale.toUpperCase()})`, label: `Day-2 with Score`, html: day2.day2Email({ pct: 68, score: 17, total: 25, passed: true, exam_name: 'Lezen — oefenexamen 1', catScores: CATS_PASS }, 'Fatima', locale, UNSUB) });
   emails.push({ id: `day2-noscore-${locale}`, group: `📧 Day-2 (${locale.toUpperCase()})`, label: `Day-2 No Score`, html: day2NoScore.day2NoScoreEmail('Mohammed', locale, UNSUB) });
   emails.push({ id: `day7-${locale}`, group: `📧 Day-7 (${locale.toUpperCase()})`, label: `Day-7 Urgency`, html: day7.day7Email('Ahmed', locale, UNSUB) });
-  emails.push({ id: `activation-premium-${locale}`, group: `📧 Activation (${locale.toUpperCase()})`, label: `Activation — Professioneel`, html: activation.activationEmail({ firstName: 'Sara', loginUrl: 'https://knmoefenen.nl/login', plan: 'premium' }, locale) });
-  emails.push({ id: `activation-compleet-${locale}`, group: `📧 Activation (${locale.toUpperCase()})`, label: `Activation — Compleet`, html: activation.activationEmail({ firstName: 'Sara', loginUrl: 'https://knmoefenen.nl/login', plan: 'premium_plus' }, locale) });
-  emails.push({ id: `upgrade-${locale}`, group: `📧 Upgrade (${locale.toUpperCase()})`, label: `Upgrade Confirmation`, html: upgrade.upgradeEmail({ firstName: 'Yusuf', dashboardUrl: 'https://knmoefenen.nl/dashboard' }, locale) });
+  emails.push({ id: `activation-premium-${locale}`, group: `📧 Activation (${locale.toUpperCase()})`, label: `Activation — één onderdeel`, html: activation.activationEmail({ firstName: 'Sara', loginUrl: 'https://inburgeringoefenen.nl/login', plan: 'premium' }, locale) });
+  emails.push({ id: `activation-compleet-${locale}`, group: `📧 Activation (${locale.toUpperCase()})`, label: `Activation — met Schrijven/Spreken`, html: activation.activationEmail({ firstName: 'Sara', loginUrl: 'https://inburgeringoefenen.nl/login', plan: 'premium_plus' }, locale) });
+  emails.push({ id: `upgrade-${locale}`, group: `📧 Upgrade (${locale.toUpperCase()})`, label: `Upgrade Confirmation`, html: upgrade.upgradeEmail({ firstName: 'Yusuf', dashboardUrl: 'https://inburgeringoefenen.nl/dashboard' }, locale) });
   emails.push({ id: `feedback-${locale}`, group: `📧 Feedback (${locale.toUpperCase()})`, label: `Feedback +7d`, html: feedback.feedbackEmail({ firstName: 'Nadia' }, locale) });
   emails.push({ id: `abandon-${locale}`, group: `📧 Abandon ✨ (${locale.toUpperCase()})`, label: `Abandon Email`, html: abandon.abandonEmail('Khalid', locale, UNSUB) });
 }
@@ -121,7 +100,7 @@ const page = `<!DOCTYPE html>
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Email Preview — KNM Oefenen</title>
+<title>Email Preview — Inburgering Oefenen</title>
 <style>
   *{margin:0;padding:0;box-sizing:border-box;}
   body{font-family:-apple-system,Arial,sans-serif;background:#f0f2f5;color:#191c1e;}
@@ -159,7 +138,7 @@ const page = `<!DOCTYPE html>
 </nav>
 <main class="main">
   <div class="page-header">
-    <h1>KNM Oefenen — Email Preview</h1>
+    <h1>Inburgering Oefenen — Email Preview</h1>
     <p>Results options A & B at the top · All ${emails.length} emails below · Toggle mobile/desktop per email</p>
   </div>
   ${sections}
@@ -184,7 +163,7 @@ window.addEventListener('scroll',()=>{
 </body>
 </html>`;
 
-const outPath = '/tmp/knm-email-preview.html';
+const outPath = '/tmp/inburgering-email-preview.html';
 fs.writeFileSync(outPath, page, 'utf-8');
 console.log(`\n✅ ${emails.length} emails → ${outPath}`);
 execSync(`open -a "Google Chrome" "${outPath}"`);

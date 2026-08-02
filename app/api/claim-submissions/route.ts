@@ -102,7 +102,7 @@ export async function POST(request: Request): Promise<Response> {
       email,
       campaign_type: CAMPAIGN.DAY2,
       scheduled_for: new Date(now + 2 * 24 * 60 * 60 * 1000).toISOString(),
-      payload: { score: resultData.score, total: resultData.total, pct: resultData.pct, passed: resultData.passed, exam_name: 'KNM Proefexamen', catScores, locale },
+      payload: { score: resultData.score, total: resultData.total, pct: resultData.pct, passed: resultData.passed, exam_name: 'Oefentoets', catScores, locale },
     },
     {
       email,

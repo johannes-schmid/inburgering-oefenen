@@ -11,8 +11,11 @@ export function activationEmail(
   locale: EmailLocale,
 ): string {
   const s = t[locale].activation;
+  /* `premium_plus` no longer means a "Compleet" tier — `fulfilModulePayment` sets it when the
+     account owns Schrijven or Spreken, i.e. an onderdeel with rubric feedback. The e-mail says
+     what was unlocked; there is no tier name left to print. */
   const isCompleet = plan === 'premium_plus';
-  const planLabel = isCompleet ? t[locale].common.compleetTitle : t[locale].common.proTitle;
+  const planLabel = 'Inburgering Oefenen';
   const features = isCompleet ? [...s.featCompleet] : [...s.featPremium];
 
   const body = `

@@ -1,7 +1,11 @@
 import { NextResponse } from 'next/server';
+import { Resend } from 'resend';
 import { createClient } from '@/lib/supabase/server';
 import { createAdminClient } from '@/lib/supabase/admin';
 import { cancelAllSubscriptions, listLiveSubscriptions } from '@/lib/subscriptions';
+import { modulesFromMetadata } from '@/lib/entitlements';
+import { cancellationEmail, cancellationSubject } from '@/lib/email/templates/cancellation';
+import { type EmailLocale } from '@/lib/email/i18n';
 
 /**
  * Self-service cancellation.
@@ -65,6 +69,14 @@ export async function POST() {
         ...(accessUntil ? { modules_until: accessUntil } : {}),
       },
     });
+
+    await sendCancellationEmail({
+      email: user.email,
+      firstName: typeof meta.full_name === 'string' ? meta.full_name.split(' ')[0] : '',
+      locale: emailLocale(meta.locale),
+      accessUntil,
+      modules: modulesFromMetadata(meta),
+    });
   }
 
   if (failed.length > 0) {
@@ -80,4 +92,46 @@ export async function POST() {
   }
 
   return NextResponse.json({ cancelled: cancelled.length, accessUntil });
+}
+
+function emailLocale(raw: unknown): EmailLocale {
+  return raw === 'en' || raw === 'ar' ? raw : 'nl';
+}
+
+/**
+ * Confirmation of the cancellation.
+ *
+ * Never throws: the subscription is already cancelled and the metadata already written by the time
+ * this runs, so a Resend outage must not turn a successful cancellation into an error the candidate
+ * sees — they would click again and be told there is nothing to cancel. Logged loudly instead.
+ */
+async function sendCancellationEmail({
+  email,
+  firstName,
+  locale,
+  accessUntil,
+  modules,
+}: {
+  email?: string;
+  firstName: string;
+  locale: EmailLocale;
+  accessUntil: string | null;
+  modules: string[];
+}): Promise<void> {
+  if (!email || !process.env.RESEND_API_KEY) return;
+  try {
+    const baseUrl = process.env.BASE_URL || 'https://inburgeringoefenen.nl';
+    const resend = new Resend(process.env.RESEND_API_KEY);
+    await resend.emails.send({
+      from: 'Inburgering Oefenen <support@inburgeringoefenen.nl>',
+      to: email,
+      subject: cancellationSubject(locale),
+      html: cancellationEmail(
+        { firstName, accessUntil, modules, accountUrl: `${baseUrl}/${locale}/dashboard/profiel` },
+        locale
+      ),
+    });
+  } catch (err) {
+    console.error('[cancel-subscription] confirmation email failed:', email, (err as Error)?.message);
+  }
 }
