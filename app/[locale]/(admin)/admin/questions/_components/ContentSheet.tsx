@@ -132,7 +132,16 @@ export default function ContentSheet({
       const res = await fetch('/api/admin/draft-content', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ action, text: current, context, skill: row?.skill }),
+        // `level` decides the register the draft is written at, so it comes off the row being
+        // edited rather than defaulting — a B1 item drafted at A2 register reads fine and tests
+        // the wrong thing.
+        body: JSON.stringify({
+          action,
+          text: current,
+          context,
+          skill: row?.skill,
+          level: row?.level,
+        }),
       });
       const json = await res.json();
       if (!res.ok || !json.text) throw new Error(json.error || 'Het voorstel is niet gelukt.');

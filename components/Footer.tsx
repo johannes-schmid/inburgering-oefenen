@@ -1,6 +1,6 @@
 import { useTranslations } from 'next-intl';
 import { Link } from '@/i18n/navigation';
-import { SKILLS } from '@/data/skills';
+import { DEFAULT_LEVEL, SKILLS } from '@/data/skills';
 import { FEATURES } from '@/lib/features';
 import LogoMark from '@/components/site/LogoMark';
 
@@ -25,7 +25,7 @@ export default function Footer() {
           <h5 className="text-xs font-bold uppercase tracking-widest text-white/35">{t('platform')}</h5>
           <nav className="flex flex-col gap-3 text-sm" aria-label="Footer navigatie">
             {SKILLS.map(skill => (
-              <a key={skill.slug} href={`/oefenexamen/${skill.slug}`} className="hover:text-white transition-colors no-underline">
+              <a key={skill.slug} href={`/oefenexamen/${DEFAULT_LEVEL}/${skill.slug}`} className="hover:text-white transition-colors no-underline">
                 {tSkills(`${skill.key}.name`)}
               </a>
             ))}

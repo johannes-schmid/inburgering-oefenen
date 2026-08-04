@@ -13,7 +13,8 @@
  * subscription); entitlement is `lib/entitlements.ts`. `PRODUCTS` in `lib/api-constants.ts` is
  * now only read to describe *historic* one-off payments — nothing sells those tiers any more.
  */
-import { SKILLS, type SkillSlug } from '@/data/skills';
+import { LEVELS, SKILLS, getFormat, type Level, type SkillSlug } from '@/data/skills';
+import { moduleId, type ModuleId } from './entitlements';
 
 /** Price of a single module, per month, in cents. */
 export const MODULE_PRICE_CENTS = 995;
@@ -47,33 +48,61 @@ export function euro(cents: number): string {
   return `€${(cents / 100).toFixed(2).replace('.', ',')}`;
 }
 
-export type ModuleSlug = SkillSlug;
+/** A module is one skill at one level — `a2:lezen`. See lib/entitlements.ts. */
+export type ModuleSlug = ModuleId;
 
 export type ModuleOffer = {
   slug: ModuleSlug;
+  level: Level;
+  skill: SkillSlug;
   priceCents: number;
-  /** Practice exams included — all of them for this skill. */
+  /** Practice exams included — all of them for this skill at this level. */
   examCount: number;
-  /** Total questions or tasks across those exams. */
-  itemCount: number;
+  /** Total questions or tasks across those exams. `null` where the format is unverified. */
+  itemCount: number | null;
   /** Rubric feedback on open answers only exists for the two open-scored skills. */
   hasRubricFeedback: boolean;
 };
 
-export const MODULES: ModuleOffer[] = SKILLS.map(skill => ({
-  slug: skill.slug,
-  priceCents: MODULE_PRICE_CENTS,
-  examCount: skill.examCount,
-  itemCount: skill.itemCount * skill.examCount,
-  hasRubricFeedback: skill.scoring === 'open',
-}));
+export const MODULES: ModuleOffer[] = LEVELS.flatMap(level =>
+  SKILLS.map(skill => {
+    const fmt = getFormat(level, skill.slug);
+    return {
+      slug: moduleId(level, skill.slug),
+      level,
+      skill: skill.slug,
+      priceCents: MODULE_PRICE_CENTS,
+      examCount: fmt.examCount,
+      // Stays null rather than collapsing to 0: "0 vragen" on a pricing page is a false
+      // claim about the product, whereas an em dash is an honest "not counted yet".
+      itemCount: fmt.itemCount === null ? null : fmt.itemCount * fmt.examCount,
+      hasRubricFeedback: skill.scoring === 'open',
+    };
+  }),
+);
 
 export function getModule(slug: string): ModuleOffer | undefined {
   return MODULES.find(m => m.slug === slug);
 }
 
-/** Every practice exam across all four modules. */
-export const TOTAL_EXAMS = MODULES.reduce((n, m) => n + m.examCount, 0);
+export function modulesForLevel(level: Level): ModuleOffer[] {
+  return MODULES.filter(m => m.level === level);
+}
+
+/** Every practice exam at one level — what "alle oefenexamens" means in that level's copy. */
+export function totalExamsForLevel(level: Level): number {
+  return modulesForLevel(level).reduce((n, m) => n + m.examCount, 0);
+}
+
+/**
+ * There is deliberately no `TOTAL_EXAMS` constant any more.
+ *
+ * It used to mean "every exam in the product" and equalled 40, which was both the catalogue
+ * size and the number of exams that actually exist. Adding B1 silently made it 80 while forty
+ * of those were empty slots, turning two pieces of marketing copy ("40 oefenexamens") into
+ * claims about content nobody has written. Call `totalExamsForLevel(level)` and say which
+ * level you are advertising.
+ */
 
 
 /* ── What a selection costs ───────────────────────────────────────────────── */
@@ -83,33 +112,60 @@ export type ModuleSelection = ModuleSlug[];
 /**
  * Price for a set of modules, in cents.
  *
- * All four is the bundle price, not four times the module price — that is the whole offer. Any
- * other combination is simply per module.
+ * **The bundle is per level.** All four onderdelen of *one* level is the bundle price; the
+ * discount does not compound across levels. Someone taking all eight pays two bundles.
+ *
+ * This is the arithmetic that quietly broke when B1 arrived: the old rule was
+ * `selection.length === 4 → bundle`, which would have sold all four B1 modules at the A2
+ * bundle price, and — worse — charged one bundle for a mixed basket of two A2 and two B1
+ * modules that gets no discount at all under the stated offer.
  *
  * **Always compute this server-side.** The checkout route must never accept an amount from the
  * client: a posted total is a posted discount.
  */
 export function priceForSelection(selection: ModuleSelection): number {
-  const unique = [...new Set(selection)].filter(s => MODULES.some(m => m.slug === s));
+  const unique = uniqueValid(selection);
   if (unique.length === 0) return 0;
-  if (unique.length === SKILLS.length) return BUNDLE_PRICE_CENTS;
-  return unique.length * MODULE_PRICE_CENTS;
+
+  let total = 0;
+  for (const level of LEVELS) {
+    const n = unique.filter(s => getModule(s)?.level === level).length;
+    if (n === 0) continue;
+    total += n === SKILLS.length ? BUNDLE_PRICE_CENTS : n * MODULE_PRICE_CENTS;
+  }
+  return total;
 }
 
 /** Undiscounted total, for showing what the bundle saves. */
 export function listPriceForSelection(selection: ModuleSelection): number {
-  const unique = [...new Set(selection)].filter(s => MODULES.some(m => m.slug === s));
-  return unique.length * MODULE_PRICE_CENTS;
+  return uniqueValid(selection).length * MODULE_PRICE_CENTS;
 }
 
-/** Only the full set is discounted today; kept as a function so tiers can change in one place. */
+/** Only a complete level is discounted today; kept as a function so tiers can change here. */
 export function savingForSelection(selection: ModuleSelection): number {
   return listPriceForSelection(selection) - priceForSelection(selection);
 }
 
-/** Narrow an untrusted array of strings to real module slugs. */
+function uniqueValid(selection: ModuleSelection): ModuleSlug[] {
+  return [...new Set(selection)].filter(s => MODULES.some(m => m.slug === s));
+}
+
+/**
+ * Narrow an untrusted array of strings to real module ids.
+ *
+ * A bare skill slug is accepted and read as A2, matching `normaliseModule` in
+ * lib/entitlements.ts — an older client (or a stale cached bundle) posting `['lezen']` must
+ * still buy the thing it meant, not silently price to zero.
+ */
 export function parseSelection(raw: unknown): ModuleSelection {
   if (!Array.isArray(raw)) return [];
-  const valid = new Set(MODULES.map(m => m.slug as string));
-  return [...new Set(raw.filter((x): x is string => typeof x === 'string' && valid.has(x)))] as ModuleSelection;
+  const out: ModuleSlug[] = [];
+  for (const x of raw) {
+    if (typeof x !== 'string') continue;
+    const candidate = (SKILL_SLUG_SET.has(x) ? moduleId('a2', x as SkillSlug) : x) as ModuleSlug;
+    if (MODULES.some(m => m.slug === candidate)) out.push(candidate);
+  }
+  return [...new Set(out)];
 }
+
+const SKILL_SLUG_SET = new Set<string>(SKILLS.map(s => s.slug));

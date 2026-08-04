@@ -16,7 +16,7 @@ export const routing = defineRouting({
     '/contact': '/contact',
     '/login': '/login',
     '/dashboard': '/dashboard',
-    '/dashboard/[skill]': '/dashboard/[skill]',
+    '/dashboard/[level]/[skill]': '/dashboard/[level]/[skill]',
     '/dashboard/profiel': '/dashboard/profiel',
     '/dashboard/pakketten': '/dashboard/pakketten',
     '/dashboard/analyse': '/dashboard/analyse',
@@ -42,8 +42,10 @@ export const routing = defineRouting({
     '/proefexamen': '/proefexamen',
     '/oefenen': '/oefenen',
     '/oefenen/[skill]': '/oefenen/[skill]',
-    '/oefenexamen/[skill]': '/oefenexamen/[skill]',
-    '/oefenexamen/[skill]/[number]': '/oefenexamen/[skill]/[number]',
+    // The level is part of the path at both levels, including A2 — see the redirects in
+    // next.config.ts that 301 the old A2-implicit URLs onto these.
+    '/oefenexamen/[level]/[skill]': '/oefenexamen/[level]/[skill]',
+    '/oefenexamen/[level]/[skill]/[number]': '/oefenexamen/[level]/[skill]/[number]',
   },
 });
 

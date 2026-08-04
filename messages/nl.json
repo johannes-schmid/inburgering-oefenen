@@ -677,9 +677,9 @@
     "duration_label": "minuten"
   },
   "oefenexamen": {
-    "meta_title": "{skill} A2 oefenen — 10 oefenexamens van een NT2-docent",
-    "meta_description": "Oefen {skill_lower} voor het inburgeringsexamen A2 met 10 volledige oefenexamens. Zelfde opbouw en tijdsduur als bij DUO, gemaakt en gecontroleerd door een gecertificeerde NT2-docent.",
-    "heading": "{skill} A2 oefenen",
+    "meta_title": "{skill} {level} oefenen — 10 oefenexamens van een NT2-docent",
+    "meta_description": "Oefen {skill_lower} voor het inburgeringsexamen {level} met 10 volledige oefenexamens. Zelfde opbouw en tijdsduur als bij DUO, gemaakt en gecontroleerd door een gecertificeerde NT2-docent.",
+    "heading": "{skill} {level} oefenen",
     "exam_label": "Oefenexamen {number}",
     "free": "Gratis",
     "locked": "In het pakket",
@@ -743,6 +743,8 @@
     "profile_per_skill": "Voortgang per onderdeel",
     "plan_free": "Gratis",
     "plan_premium": "Professioneel",
-    "plan_premium_plus": "Compleet"
+    "plan_premium_plus": "Compleet",
+    "level_section": "Niveau {level}",
+    "level_section_sub": "Alle vier de onderdelen op {level}-niveau"
   }
 }

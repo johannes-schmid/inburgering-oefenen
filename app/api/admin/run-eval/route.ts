@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server';
 import { createAdminClient } from '@/lib/supabase/admin';
+import { DEFAULT_LEVEL, isLevel, type Level } from '@/data/skills';
 import { requireAdmin } from '@/lib/admin/guard';
 import { gradeOpenAnswer, type FewShotExample, type GradeTask } from '@/lib/ai/grade';
 import { MAX_CRITERION_SCORE, type Rubric } from '@/lib/rubrics';
@@ -58,13 +59,17 @@ export async function POST(request: Request) {
   const admin = await requireAdmin();
   if (!admin.ok) return NextResponse.json({ error: admin.error }, { status: admin.status });
 
-  let body: { skill?: unknown };
+  let body: { skill?: unknown; level?: unknown };
   try {
     body = await request.json();
   } catch {
     body = {};
   }
   const skill = body.skill === 'spreken' ? 'spreken' : body.skill === 'schrijven' ? 'schrijven' : null;
+  // An eval mixing levels measures nothing: it would grade B1 answers with the A2 rubric that
+  // happens to be active, then average the disagreement across both. Defaults to A2, which is
+  // where every example recorded so far came from.
+  const level: Level = isLevel(body.level) ? body.level : DEFAULT_LEVEL;
   if (!skill) return NextResponse.json({ error: 'Kies schrijven of spreken.' }, { status: 400 });
 
   const db = createAdminClient();
@@ -72,6 +77,7 @@ export async function POST(request: Request) {
   const { data: heldOut, error: heldErr } = await db
     .from('grading_examples')
     .select('id, skill, task_type, task_id, answer_text, transcript, teacher_result, notes')
+    .eq('level', level)
     .eq('skill', skill)
     .eq('use_as_fewshot', false)
     .order('created_at', { ascending: true })
@@ -92,6 +98,7 @@ export async function POST(request: Request) {
   const { count: trainSize } = await db
     .from('grading_examples')
     .select('id', { count: 'exact', head: true })
+    .eq('level', level)
     .eq('skill', skill)
     .eq('use_as_fewshot', true);
 
@@ -109,12 +116,16 @@ export async function POST(request: Request) {
     const { data: rubricRow } = await db
       .from('rubrics')
       .select('*')
+      .eq('level', level)
       .eq('skill', skill)
       .eq('task_type', ex.task_type)
       .eq('active', true)
       .maybeSingle();
     if (!rubricRow) {
-      failures.push({ id: ex.id, error: `Geen actieve rubriek voor ${ex.task_type}.` });
+      failures.push({
+        id: ex.id,
+        error: `Geen actieve ${level.toUpperCase()}-rubriek voor ${ex.task_type}.`,
+      });
       continue;
     }
 

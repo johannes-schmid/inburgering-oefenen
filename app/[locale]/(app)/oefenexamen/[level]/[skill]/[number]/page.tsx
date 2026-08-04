@@ -1,13 +1,15 @@
 import type { Metadata } from 'next';
 import { notFound, redirect } from 'next/navigation';
-import { getSkill } from '@/data/skills';
+import { getSkillAtLevel, isLevel } from '@/data/skills';
 import { fetchExamContent } from '@/lib/exam-content';
 import { createClient } from '@/lib/supabase/server';
 import { canOpenExam, canSeeExplanations, planFromMetadata } from '@/lib/entitlements';
-import AppShell from '../../../components/AppShell';
+import AppShell from '../../../../components/AppShell';
 import ExamShell from '@/components/exam/ExamShell';
 
-type Props = { params: Promise<{ locale: string; skill: string; number: string }> };
+type Props = {
+  params: Promise<{ locale: string; level: string; skill: string; number: string }>;
+};
 
 /**
  * The exam player lives in the **study portal**, not on the public site.
@@ -23,21 +25,23 @@ export const metadata: Metadata = {
 };
 
 export default async function ExamPage({ params }: Props) {
-  const { locale, skill: slug, number: raw } = await params;
-  const skill = getSkill(slug);
+  const { locale, level: rawLevel, skill: slug, number: raw } = await params;
+  if (!isLevel(rawLevel)) notFound();
+  const level = rawLevel;
+  const skill = getSkillAtLevel(level, slug);
   const number = parseInt(raw, 10);
   if (!skill || !Number.isInteger(number) || number < 1 || number > skill.examCount) notFound();
 
   const supabase = await createClient();
   const { data: { user } } = await supabase.auth.getUser();
-  if (!user) redirect(`/${locale}/login?next=/oefenexamen/${skill.slug}/${number}`);
+  if (!user) redirect(`/${locale}/login?next=/oefenexamen/${level}/${skill.slug}/${number}`);
 
-  const content = await fetchExamContent(skill.slug, number);
+  const content = await fetchExamContent(level, skill.slug, number);
   if (!content) notFound();
 
   const plan = planFromMetadata(user.user_metadata);
   if (!canOpenExam(plan, content.exam.is_free)) {
-    redirect(`/${locale}/premium?vanaf=oefenexamen-${skill.slug}-${number}`);
+    redirect(`/${locale}/premium?vanaf=oefenexamen-${level}-${skill.slug}-${number}`);
   }
 
   return (

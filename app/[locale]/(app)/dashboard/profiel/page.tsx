@@ -5,7 +5,7 @@ import { ArrowRight } from 'lucide-react';
 import { createClient } from '@/lib/supabase/server';
 import { modulesExpired, planFromMetadata } from '@/lib/entitlements';
 import { fetchPortalProgress } from '@/lib/portal-progress';
-import { SKILLS } from '@/data/skills';
+import { LEVELS, SKILLS, levelLabel, skillsAtLevel } from '@/data/skills';
 import SkillIcon from '@/components/site/SkillIcon';
 import AppShell from '../../components/AppShell';
 import LogoutButton from './LogoutButton';
@@ -52,8 +52,15 @@ export default async function ProfilePage({ params }: { params: Promise<{ locale
   // Same predicate the entitlement check uses, so the page can never claim access the app denies.
   const accessLapsed = modulesExpired(meta);
 
-  const totalExams = SKILLS.reduce((n, s) => n + s.examCount, 0);
-  const totalDone = SKILLS.reduce((n, s) => n + progress[s.slug].examsDone, 0);
+  // Levels the candidate has actually touched, plus A2 which is always listed. Totals count
+  // only those, so "3 van de 40" does not silently become "3 van de 80" the day B1 slots exist.
+  const activeLevels = LEVELS.filter(
+    l => l === 'a2' || SKILLS.some(s => progress[l][s.slug].examsDone > 0),
+  );
+  const totalExams = activeLevels.reduce(
+    (n, l) => n + skillsAtLevel(l).reduce((m, s) => m + s.examCount, 0), 0);
+  const totalDone = activeLevels.reduce(
+    (n, l) => n + SKILLS.reduce((m, s) => m + progress[l][s.slug].examsDone, 0), 0);
   const planLabel = t(`plan_${plan}` as 'plan_free');
 
   return (
@@ -130,14 +137,19 @@ export default async function ProfilePage({ params }: { params: Promise<{ locale
           <section className="panel mt-5">
             <h2 className="panel-title">{t('profile_per_skill')}</h2>
             <ul className="flex flex-col gap-2.5">
-              {SKILLS.map(s => {
-                const p = progress[s.slug];
+              {activeLevels.flatMap(level => skillsAtLevel(level).map(s => {
+                const p = progress[level][s.slug];
                 return (
-                  <li key={s.slug}>
-                    <a href={`/${locale}/dashboard/${s.slug}`} className="skill-line no-underline">
+                  <li key={`${level}:${s.slug}`}>
+                    <a href={`/${locale}/dashboard/${level}/${s.slug}`} className="skill-line no-underline">
                       <SkillIcon skill={s.slug} size="sm" />
                       <span className="flex-1 min-w-0 font-headline font-bold text-on-surface" style={{ fontSize: '0.9rem' }}>
                         {tSkills(`${s.key}.name`)}
+                        {activeLevels.length > 1 && (
+                          <span className="text-[0.65rem] font-bold uppercase tracking-wider text-outline ml-1.5">
+                            {levelLabel(level)}
+                          </span>
+                        )}
                       </span>
                       <span className="text-xs font-bold text-on-surface-variant" style={{ fontVariantNumeric: 'tabular-nums' }}>
                         {t('stat_exams_value', { done: p.examsDone, total: s.examCount })}
@@ -149,7 +161,7 @@ export default async function ProfilePage({ params }: { params: Promise<{ locale
                     </a>
                   </li>
                 );
-              })}
+              }))}
             </ul>
           </section>
 

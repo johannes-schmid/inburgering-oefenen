@@ -4,7 +4,7 @@ import { useState, useRef, useEffect, useCallback } from 'react';
 import { useTranslations } from 'next-intl';
 import { track } from '@/lib/analytics';
 import type { FreePracticeItem } from '@/data/free-practice';
-import type { SkillSlug } from '@/data/skills';
+import { DEFAULT_LEVEL, type SkillSlug } from '@/data/skills';
 import SkillIcon from '@/components/site/SkillIcon';
 import { Check, Star, UserRoundCheck, Headphones } from 'lucide-react';
 
@@ -398,7 +398,7 @@ export default function FreePracticeEngine({ skill, skillName, items, locale }: 
         </h3>
         <p className="text-sm text-on-surface-variant leading-relaxed mb-5">{t('signup_desc')}</p>
         <a
-          href={`/${locale}/oefenexamen/${skill}`}
+          href={`/${locale}/oefenexamen/${DEFAULT_LEVEL}/${skill}`}
           className="w-full inline-flex items-center justify-center gap-2 text-white font-black no-underline hover:-translate-y-0.5 transition-transform active:scale-[.99]"
           style={{ fontSize: 16, padding: '15px', borderRadius: 14, background: 'linear-gradient(135deg,#fe762c 0%,#d94f00 100%)', boxShadow: '0 8px 22px rgba(254,118,44,0.38)' }}
         >

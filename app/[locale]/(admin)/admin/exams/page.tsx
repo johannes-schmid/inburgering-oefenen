@@ -1,11 +1,12 @@
 import Link from 'next/link';
 import { createClient } from '@/lib/supabase/server';
-import { SKILLS } from '@/data/skills';
+import { LEVELS, SKILLS, formatCount, getFormat, levelLabel } from '@/data/skills';
 
 export const revalidate = 0;
 
 type ExamRow = {
   id: number;
+  level: string;
   skill: string;
   number: number;
   title: string | null;
@@ -31,7 +32,7 @@ export default async function ExamsPage({
   const supabase = await createClient();
 
   const [examsRes, questionsRes, tasksRes, stimuliRes] = await Promise.all([
-    supabase.from('exams').select('id, skill, number, title, is_free, published').order('skill').order('number'),
+    supabase.from('exams').select('id, level, skill, number, title, is_free, published').order('level').order('skill').order('number'),
     supabase.from('questions').select('exam_id'),
     supabase.from('open_tasks').select('exam_id'),
     supabase.from('stimuli').select('exam_id'),
@@ -56,24 +57,34 @@ export default async function ExamsPage({
         </p>
       </div>
 
-      <div className="space-y-9">
+      <div className="space-y-12">
+        {LEVELS.map(level => (
+        <div key={level}>
+          <h2 className="text-lg font-headline font-extrabold text-on-surface mb-4 pb-2 border-b border-outline-variant">
+            Niveau {levelLabel(level)}
+          </h2>
+          <div className="space-y-9">
         {SKILLS.map(skill => {
-          const rows = exams.filter(e => e.skill === skill.slug);
+          const rows = exams.filter(e => e.level === level && e.skill === skill.slug);
           const open = skill.scoring === 'open';
+          // `null` where DUO's format for this level has not been verified — the progress bar
+          // and the "complete" check below both fall back to "unknown" rather than to zero,
+          // which would mark every empty B1 exam as finished.
+          const { itemCount } = getFormat(level, skill.slug);
 
           return (
             <section key={skill.slug}>
               <div className="flex items-baseline justify-between gap-4 mb-3">
-                <h2 className="text-base font-headline font-bold text-on-surface capitalize">{skill.slug}</h2>
+                <h3 className="text-base font-headline font-bold text-on-surface capitalize">{skill.slug}</h3>
                 <p className="text-xs text-on-surface-variant">
-                  {skill.itemCount} {open ? 'opdrachten' : 'vragen'} per examen · {skill.durationMinutes} min
+                  {formatCount(itemCount)} {open ? 'opdrachten' : 'vragen'} per examen · {formatCount(getFormat(level, skill.slug).durationMinutes)} min
                 </p>
               </div>
 
               <ul className="grid gap-3 list-none m-0 p-0 sm:grid-cols-2 lg:grid-cols-5">
                 {rows.map(exam => {
                   const items = open ? (taskCount[exam.id] ?? 0) : (questionCount[exam.id] ?? 0);
-                  const complete = items >= skill.itemCount;
+                  const complete = itemCount !== null && items >= itemCount;
 
                   return (
                     <li key={exam.id}>
@@ -94,7 +105,7 @@ export default async function ExamsPage({
                           </span>
                         </div>
                         <p className="text-xs text-on-surface-variant m-0 tabular-nums">
-                          {items} / {skill.itemCount} {open ? 'opdrachten' : 'vragen'}
+                          {items} / {formatCount(itemCount)} {open ? 'opdrachten' : 'vragen'}
                         </p>
                         {!open && (
                           <p className="text-xs text-on-surface-variant m-0 tabular-nums">
@@ -104,7 +115,7 @@ export default async function ExamsPage({
                         <div className="mt-2 h-1 rounded-full bg-surface-container overflow-hidden">
                           <div
                             className={`h-full rounded-full ${complete ? 'bg-success' : 'bg-secondary'}`}
-                            style={{ width: `${Math.min(100, (items / skill.itemCount) * 100)}%` }}
+                            style={{ width: itemCount === null ? '0%' : `${Math.min(100, (items / itemCount) * 100)}%` }}
                           />
                         </div>
                         {exam.is_free && (
@@ -120,6 +131,9 @@ export default async function ExamsPage({
             </section>
           );
         })}
+          </div>
+        </div>
+        ))}
       </div>
     </div>
   );

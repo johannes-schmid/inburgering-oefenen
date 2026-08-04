@@ -1,5 +1,5 @@
 import type { MetadataRoute } from 'next';
-import { SKILLS } from '@/data/skills';
+import { DEFAULT_LEVEL, SKILLS } from '@/data/skills';
 import { FEATURES } from '@/lib/features';
 import { getSortedPosts, getPostSlug, hasTranslation } from '@/data/blog-posts';
 
@@ -24,11 +24,16 @@ export default function sitemap(): MetadataRoute.Sitemap {
     }
   }
 
-  // One overview page per exam component (lezen / luisteren / schrijven / spreken)
+  // One overview page per exam component (lezen / luisteren / schrijven / spreken).
+  //
+  // A2 only. The B1 pages exist and resolve, but every one of their forty slots is
+  // "Binnenkort" — submitting forty empty grids spends crawl budget on pages that answer
+  // nothing, and their `robots` meta is `noindex` anyway (see the overview page), so listing
+  // them here would only contradict it. They join the sitemap when the docent publishes.
   for (const skill of SKILLS) {
     for (const locale of LOCALES) {
       entries.push({
-        url: `${BASE}/${locale}/oefenexamen/${skill.slug}`,
+        url: `${BASE}/${locale}/oefenexamen/${DEFAULT_LEVEL}/${skill.slug}`,
         changeFrequency: 'weekly',
         priority: 0.9,
         lastModified: TODAY,

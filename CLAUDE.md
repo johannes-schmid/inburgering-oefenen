@@ -58,9 +58,9 @@ integration build. `vercel.json` (the two crons) is committed project config and
 takes precedence in dev**, so `npm run dev` cannot write to production. Keep it that way.
 
 Two live mismatches worth knowing:
-- **Local Postgres is 15, hosted is 17.** `supabase link` warns about it. Aligning means
-  `major_version = 17` in `config.toml` plus recreating the local volume, so local dev currently
-  tests against a different major version than production.
+- **Local Postgres and hosted are both 17.** This used to be a 15/17 mismatch; it is aligned now.
+  Worth knowing because `20260803000000_open_skill_axis.sql` relies on `UNIQUE NULLS NOT
+  DISTINCT`, which is PostgreSQL 15+. Do not drop the local major version below 15.
 - **Never copy `MOLLIE_API_KEY` from `.env.local` to Vercel** — the local one is a `test_` key,
   and `MOLLIE_WEBHOOK_URL` is an ngrok tunnel. Production needs the live key and the real URL.
 
@@ -87,11 +87,93 @@ rubric criterion — which is what makes Schrijven/Spreken progress chartable. `
 a **view** of the latest attempt; never write to it. Read `questions_flat` for the old flat
 option_a/b/c shape; write `question_options`.
 
-**Schema lives in exactly one file:** `supabase/migrations/20260729000000_a2_baseline.sql`.
+**Schema lives in three files:** `supabase/migrations/20260729000000_a2_baseline.sql`,
+`20260802000000_b1_level.sql` (the second CEFR level) and `20260803000000_open_skill_axis.sql`
+(makes a fifth onderdeel addable without a migration). See the two sections below.
 The 26 inherited KNM migrations are archived in `supabase/legacy-knm-migrations/` and are
 **not** applied — that chain could not be replayed on an empty database at all, because one
 migration backfills from an `exam_results` table no migration ever created. See the README
 there. Add real migrations *after* the baseline; never edit it once it has run on production.
+
+### Two levels: A2 and B1
+
+`20260802000000_b1_level.sql` added B1 beside A2. The level is on `exams`, `sections`, `rubrics`,
+`grading_examples` and `exam_attempts`, and it is part of the **key** in every one of them —
+exam numbers restart at 1 per level, so `(skill, number)` is no longer unique on its own.
+
+- **`data/skills.ts` splits identity from format.** `SKILLS` is the four onderdelen and never
+  carries a count; `getSkillAtLevel(level, slug)` / `skillsAtLevel(level)` add `itemCount`,
+  `durationMinutes` and `examCount`. There is deliberately **no default level** in that lookup —
+  a silent A2 fallback is the bug the split exists to prevent.
+- **B1's item counts and durations are `null`, on purpose.** Nobody has counted them off DUO's B1
+  practice exams the way A2's were counted (`SEO/facts.md` §1), and `SEO/facts.md` forbids
+  publishing an unsourced number. `null` renders as an em dash, and `exam_formats.item_count` is
+  NULL so `exam_publish_issues()` **skips** the count check rather than blocking the docent on a
+  guess. Fill both in together — the table and `data/skills.ts` must not drift.
+- **B1's 40 slots are unpublished and none is free.** The free tier is A2 exam 1 of each
+  onderdeel; giving away a B1 exam is a pricing decision nobody has made. Their
+  `duration_seconds` is a placeholder copied from A2 — confirm it before publishing.
+- **A module is `level:skill`.** `a2:lezen`, `b1:spreken`. A bare slug in existing metadata means
+  A2 and `normaliseModule()` reads it that way on the fly; there is no backfill, because the
+  webhook, the cron and the cancel route all write that field. The **bundle discount is per
+  level** — four modules spread across two levels get no discount.
+- **URLs carry the level at both levels**, including A2. `next.config.ts` 308s the old
+  A2-implicit paths; the `(?!a2$|b1$)` guard in those rules is what stops them looping.
+- **Nothing about B1 is advertised until it has content.** The dashboard section, the module
+  picker entry, the sitemap and `robots` all gate on published exams, so an empty B1 is invisible
+  rather than a wall of "Binnenkort".
+- **`lib/ai/level-register.ts` is the only place a level's register is described.** The grader,
+  the authoring helper and the rubric prefill all read it. Cross-level contamination here is the
+  quietest failure in the system: an A2 few-shot example shown while grading B1 returns a
+  confident, plausible, wrong mark and no error anywhere. `fetchFewShot` and `resolveRubric` are
+  both level-scoped for that reason.
+
+### A fifth onderdeel is addable without a migration
+
+`20260803000000_open_skill_axis.sql` shipped the *capability* for a fifth exam component (KNM
+is the likely one) without adding it. Nothing about the four skills changed.
+
+- **`skills` is a reference table and the eight CHECK constraints are now foreign keys to it.**
+  They had already drifted — `stimuli` listed two skills, the others four — and nothing would
+  have caught a fifth being added to seven of the eight. Adding an onderdeel is one INSERT:
+  ```sql
+  INSERT INTO skills (slug, name_nl, sort_order, scoring, requires_stimulus, is_levelled)
+  VALUES ('knm', 'KNM', 50, 'mcq', false, false);
+  ```
+- **`questions.stimulus_id` is nullable, behind a trigger.** Lezen/Luisteren share one stimulus
+  across 2–3 questions; a KNM-style question stands alone. `skills.requires_stimulus` decides,
+  and `questions_require_stimulus()` still makes a stimulus-less Lezen question a hard error —
+  the guarantee moved from NOT NULL to per-onderdeel, it was not weakened. It resolves the skill
+  through `exam_id`, not through the stimulus, which is the point.
+- **`questions_sync_exam_id()` had to change too.** It derived `exam_id` from the stimulus and
+  raised when the lookup found nothing, which for a NULL stimulus is always — so nullable alone
+  would still have rejected every standalone question. With a stimulus it is unchanged; without
+  one the supplied `exam_id` stands.
+- **`exams.level` is nullable, behind a trigger.** KNM is not examined at A2 versus B1; forcing
+  `level = 'a2'` would file it under the A2 dashboard and bundle while B1 candidates need it too.
+  `skills.is_levelled` decides, and `exams_level_matches_skill()` enforces both directions. The
+  `DEFAULT 'a2'` is gone deliberately — a default would silently mis-file rather than fail.
+- **The unique keys use `NULLS NOT DISTINCT`.** This is the trap: in a plain UNIQUE constraint
+  NULLs are *distinct*, so a nullable level would let two rows for the same non-levelled exam
+  number both exist — the duplicate the constraint exists to prevent, reappearing precisely for
+  the new case. `NULLS NOT DISTINCT` keeps the column list intact so existing
+  `ON CONFLICT (level, skill, number)` clauses still work; an expression index over `COALESCE`
+  would have broken them.
+- **Two inner joins had to become left joins**, or a standalone question would exist in the
+  database and appear on no screen: `questions_flat` (which now takes `skill` from `exams`, not
+  from the stimulus) and the `questions` select in `lib/admin/content-rows.ts`. A `null` level in
+  the admin list shows under *every* level tab, not none — see `atLevel()` in `ContentTable`.
+- **`exam_publish_issues()` matches the format NULL-safely** (`IS NOT DISTINCT FROM`). `f.level =
+  e.level` is never true for two NULLs, so the item-count check would have failed *open* on a new
+  onderdeel — silently skipping validation exactly where it is needed most.
+- **The code side is still four-onderdeel, deliberately.** That is cheap and safe to change (no
+  data to migrate), so it waits for a real decision. `data/skills.ts` has the exact list of what
+  it takes, including the `Level | null` plumbing a non-levelled onderdeel needs and the fact
+  that `fetchExamsForSkill`'s `.eq('level', …)` never matches NULL.
+- **Verified by actually adding KNM and rolling it back**: standalone question accepted, visible
+  in `questions_flat`, publish validator running on it; and all six guarantees still rejecting
+  bad data (stimulus-less Lezen, levelled skill with no level, non-levelled skill with a level,
+  unknown slug, duplicate NULL-level exam, stimulus on a stimulus-less onderdeel).
 
 `supabase/seed.sql` seeds only structural data — the admin allowlist and the 40 exam slots,
 exam 1 of each skill published and free. **No exam items**: placeholder questions would be
@@ -113,7 +195,8 @@ Resend, Supabase auth/entitlements, dashboard — is reused.
 | **Schrijven** (writing) | 4 | 40 min | open task: e-mail / short text / form | rubric |
 | **Spreken** (speaking) | 16 | 35 min | audio prompt + image(s) → 60s recording | rubric |
 
-**10 practice exams per skill = 40 exams.** All four must stay visible on the landing page.
+**10 practice exams per (level, skill) = 40 exams per level.** All four onderdelen must stay
+visible on the landing page. A2 is the shipped product; B1's 40 slots exist and are empty.
 The taxonomy lives in `data/skills.ts` — the single source of truth for counts and durations.
 
 ### The USP, and what it constrains
@@ -203,9 +286,9 @@ Local dev uses `config.toml`'s `[auth.external.google]` block with the same cred
          └─ /oefenen/[skill]       10-question taster, static content, no DB
               ├─ per-question explanation revealed inline
               ├─ EMAIL GATE — score withheld until submitted (skip link provided)
-              └─ results → CTA to /oefenexamen/[skill]
-/oefenexamen/[skill]       PUBLIC overview — 10 exam slots, the SEO + funnel surface
-  └─ /oefenexamen/[skill]/[n]  THE PLAYER — lives in (app), login required
+              └─ results → CTA to /oefenexamen/a2/[skill]
+/oefenexamen/[level]/[skill]      PUBLIC overview — 10 exam slots, the SEO + funnel surface
+  └─ /oefenexamen/[level]/[skill]/[n]  THE PLAYER — lives in (app), login required
        exam 1 free with an account; 2–10 → /premium
 /premium                   €9,95 / €19,95 → Mollie → /betaling-gelukt → /dashboard
 ```
@@ -240,7 +323,7 @@ without an explicit decision from the owner.
 │   │   │   ├── page.tsx                # homepage — four skill cards
 │   │   │   ├── oefenen/                # free funnel: picker
 │   │   │   │   └── [skill]/            #   10-question taster + FreePracticeEngine
-│   │   │   ├── oefenexamen/[skill]/    # 10 exam slots per skill
+│   │   │   ├── oefenexamen/[level]/[skill]/  # 10 exam slots per (level, skill)
 │   │   │   ├── premium/                # pricing (€9,95 / €19,95)
 │   │   │   ├── docent/ contact/        # trust pages
 │   │   │   ├── blog/ oefenvragen/      # DISABLED — see lib/features.ts
@@ -407,7 +490,7 @@ The three rules most likely to be broken:
    lid 5). Saying so is the wedge.
 2. **Blog posts never target practice-exam keywords.** `inburgeringsexamen oefenen` and friends
    return tool SERPs that an article cannot win; they belong to `/oefenen/[skill]` and
-   `/oefenexamen/[skill]`. The blog takes explanatory queries only.
+   `/oefenexamen/[level]/[skill]`. The blog takes explanatory queries only.
 3. **Write for an A2 reader.** Dutch posts: sentences averaging ≤15 words, `je` not `u`, common
    vocabulary, every term explained on first use. See `SEO/voice.md`.
 
@@ -466,9 +549,9 @@ behind each.** The KNM SPA is gone — `/dashboard` was one client page holding 
 | Route | What it is |
 |---|---|
 | `(app)/dashboard/page.tsx` | overview — four skill cards, ten-segment progress strip each |
-| `(app)/dashboard/[skill]/page.tsx` | the ten oefenexamens of one onderdeel |
+| `(app)/dashboard/[level]/[skill]/page.tsx` | the ten oefenexamens of one onderdeel |
 | `(app)/dashboard/profiel/page.tsx` | account + per-onderdeel totals |
-| `(app)/oefenexamen/[skill]/[number]` | the player (`components/exam/ExamShell.tsx`) |
+| `(app)/oefenexamen/[level]/[skill]/[number]` | the player (`components/exam/ExamShell.tsx`) |
 
 All are **server components**. `AppShell` (sidebar + mobile tab bar) is wrapped per page rather
 than by the layout, because the player needs the same chrome from a different route segment.
@@ -528,7 +611,7 @@ inbox all read with no transcode anywhere. **Before changing the audio model, re
 the audio, and fails if they do not come back. Asking a model "did you get audio?" gets a yes either
 way.
 
-**Rubric keying needs no migration.** `rubrics.task_type` is free text. Schrijven uses `task_type`
+**Rubric keying is `(level, skill, task_type)`.** `rubrics.task_type` is free text. Schrijven uses `task_type`
 (`email`, `short_text`, `form`, `picture_note`); Spreken has one task_type but four onderdelen with
 different image rules, so it is keyed by `image_usage` → `speaking_none` / `speaking_describe` /
 `speaking_choose` / `speaking_cover_all`. `rubricCategory()` is the only place that convention
@@ -538,7 +621,8 @@ lives. Eight rubrics cover all 20 open exams.
 is what makes a stored score interpretable later; rewriting v1 in place changes the meaning of every
 grade already recorded against it. The decider is `used_count` from `open_criterion_scores`, **not**
 `active` — a deactivated rubric can still have graded hundreds. `rubrics_one_active_idx` is
-`UNIQUE (skill, task_type) WHERE active`, so activating v2 must deactivate v1 **first**.
+`UNIQUE (level, skill, task_type) WHERE active`, so activating v2 must deactivate v1 **first** —
+and the deactivation must be scoped to the level, or activating a B1 rubric switches off A2's.
 
 **AI and teacher scores coexist by design.** `UNIQUE (submission_id, criterion_key, source)`. The
 candidate sees one number per criterion and it is the docent's where she entered one

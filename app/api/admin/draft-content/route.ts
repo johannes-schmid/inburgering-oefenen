@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server';
 import { requireAdmin } from '@/lib/admin/guard';
 import { draftContent, type AuthorAction } from '@/lib/ai/author';
+import { isLevel } from '@/data/skills';
 
 /**
  * Drafting assistance for the authoring screens. Returns text; writes nothing.
@@ -31,7 +32,7 @@ export async function POST(request: Request) {
   const admin = await requireAdmin();
   if (!admin.ok) return NextResponse.json({ error: admin.error }, { status: admin.status });
 
-  let body: { action?: unknown; text?: unknown; context?: unknown; skill?: unknown };
+  let body: { action?: unknown; text?: unknown; context?: unknown; skill?: unknown; level?: unknown };
   try {
     body = await request.json();
   } catch {
@@ -51,9 +52,12 @@ export async function POST(request: Request) {
 
   const context = typeof body.context === 'string' ? body.context.slice(0, MAX_CHARS) : undefined;
   const skill = typeof body.skill === 'string' ? body.skill.slice(0, 40) : undefined;
+  // Validated rather than passed through: `draftContent` falls back to A2 on anything it does
+  // not recognise, so a typo'd level would quietly author B1 content at A2 register.
+  const level = isLevel(body.level) ? body.level : undefined;
 
   try {
-    const result = await draftContent({ action, text, context, skill });
+    const result = await draftContent({ action, text, context, skill, level });
     if (!result) return NextResponse.json({ error: 'Het model gaf niets terug.' }, { status: 502 });
     return NextResponse.json({ text: result });
   } catch (err) {

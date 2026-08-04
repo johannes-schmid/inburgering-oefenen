@@ -5,13 +5,13 @@ import { ArrowRight, Check, Lock, Clock, ListChecks, RotateCcw } from 'lucide-re
 import { createClient } from '@/lib/supabase/server';
 import { planFromMetadata } from '@/lib/entitlements';
 import { fetchPortalProgress, fetchPublishedExamNumbers } from '@/lib/portal-progress';
-import { getSkill, isFreeExam } from '@/data/skills';
+import { formatCount, getSkillAtLevel, isFreeExam, isLevel } from '@/data/skills';
 import SkillIcon from '@/components/site/SkillIcon';
 import CriterionProgress from '@/components/exam/CriterionProgress';
 import { fetchCriterionSeries } from '@/lib/criterion-progress';
-import AppShell from '../../components/AppShell';
+import AppShell from '../../../components/AppShell';
 
-type Props = { params: Promise<{ locale: string; skill: string }> };
+type Props = { params: Promise<{ locale: string; level: string; skill: string }> };
 
 export const metadata: Metadata = {
   title: 'Oefenexamens | Inburgering Oefenen',
@@ -31,8 +31,10 @@ export const metadata: Metadata = {
  * single "locked" state for all three tells the candidate nothing.
  */
 export default async function SkillExamsPage({ params }: Props) {
-  const { locale, skill: slug } = await params;
-  const skill = getSkill(slug);
+  const { locale, level: rawLevel, skill: slug } = await params;
+  if (!isLevel(rawLevel)) notFound();
+  const level = rawLevel;
+  const skill = getSkillAtLevel(level, slug);
   if (!skill) notFound();
 
   const t = await getTranslations('portal');
@@ -40,7 +42,7 @@ export default async function SkillExamsPage({ params }: Props) {
 
   const supabase = await createClient();
   const { data: { user } } = await supabase.auth.getUser();
-  if (!user) redirect(`/${locale}/login?next=/dashboard/${skill.slug}`);
+  if (!user) redirect(`/${locale}/login?next=/dashboard/${level}/${skill.slug}`);
 
   const plan = planFromMetadata(user.user_metadata);
   const hasPaidPlan = plan !== 'free';
@@ -49,8 +51,8 @@ export default async function SkillExamsPage({ params }: Props) {
     fetchPublishedExamNumbers(),
   ]);
 
-  const p = progress[skill.slug];
-  const pub = published[skill.slug];
+  const p = progress[level][skill.slug];
+  const pub = published[level][skill.slug];
   const meta = user.user_metadata ?? {};
   const isRubric = skill.scoring === 'open';
 
@@ -100,11 +102,11 @@ export default async function SkillExamsPage({ params }: Props) {
               </div>
               <div>
                 <dt>{t('stat_items')}</dt>
-                <dd>{skill.itemCount}</dd>
+                <dd>{formatCount(skill.itemCount)}</dd>
               </div>
               <div>
                 <dt>{t('stat_duration')}</dt>
-                <dd>{t('stat_duration_value', { minutes: skill.durationMinutes })}</dd>
+                <dd>{t('stat_duration_value', { minutes: formatCount(skill.durationMinutes) })}</dd>
               </div>
               <div>
                 <dt>{t('stat_average')}</dt>
@@ -123,13 +125,15 @@ export default async function SkillExamsPage({ params }: Props) {
             {Array.from({ length: skill.examCount }, (_, i) => i + 1).map(n => {
               const done = p.exams[n];
               const isPublished = pub.has(n);
-              const free = isFreeExam(n);
+              const free = isFreeExam(level, n);
               const openable = isPublished && (free || hasPaidPlan);
 
               const href = openable
-                ? `/${locale}/oefenexamen/${skill.slug}/${n}`
+                ? `/${locale}/oefenexamen/${level}/${skill.slug}/${n}`
                 : isPublished
-                  ? `/${locale}/dashboard/pakketten?onderdeel=${skill.slug}&vanaf=oefenexamen-${n}`
+                  // `onderdeel` carries the full module id, so the picker preselects the
+                  // right level's module rather than defaulting to A2's.
+                  ? `/${locale}/dashboard/pakketten?onderdeel=${level}:${skill.slug}&vanaf=oefenexamen-${n}`
                   : undefined;
 
               const Row = href ? 'a' : 'div';
@@ -164,9 +168,9 @@ export default async function SkillExamsPage({ params }: Props) {
                         ) : (
                           <>
                             <ListChecks size={12} strokeWidth={2} className="inline-block mr-1 -mt-px" />
-                            {skill.itemCount}
+                            {formatCount(skill.itemCount)}
                             <Clock size={12} strokeWidth={2} className="inline-block ml-2.5 mr-1 -mt-px" />
-                            {t('stat_duration_value', { minutes: skill.durationMinutes })}
+                            {t('stat_duration_value', { minutes: formatCount(skill.durationMinutes) })}
                           </>
                         )}
                       </span>

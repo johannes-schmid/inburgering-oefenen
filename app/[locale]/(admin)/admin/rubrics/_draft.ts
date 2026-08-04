@@ -8,9 +8,12 @@
  * boundary. `next build` does not catch this; loading the page does.
  */
 import { categoriesForSkill, type RubricCriterion, type RubricSkill } from '@/lib/rubrics';
+import { DEFAULT_LEVEL, type Level } from '@/data/skills';
 
 export type RubricDraft = {
   id?: number;
+  /** Anchors mean different things per level, so this is part of the rubric's identity. */
+  level: Level;
   skill: RubricSkill;
   task_type: string;
   version: number;
@@ -21,8 +24,13 @@ export type RubricDraft = {
   used_count: number;
 };
 
-export function emptyDraft(skill: RubricSkill = 'schrijven', category?: string): RubricDraft {
+export function emptyDraft(
+  skill: RubricSkill = 'schrijven',
+  category?: string,
+  level: Level = DEFAULT_LEVEL,
+): RubricDraft {
   return {
+    level,
     skill,
     task_type: category ?? categoriesForSkill(skill)[0],
     version: 1,

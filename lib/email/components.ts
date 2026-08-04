@@ -1,5 +1,5 @@
 import { type EmailLocale, t, dir } from './i18n';
-import { SKILLS } from '@/data/skills';
+import { DEFAULT_LEVEL, skillsAtLevel } from '@/data/skills';
 import { MODULE_PRICE_CENTS, BUNDLE_PRICE_CENTS, BUNDLE_SAVING_CENTS, euro } from '@/lib/pricing';
 
 /** Where every pricing CTA in an e-mail goes: the public pricing page, readable without a login. */
@@ -68,13 +68,22 @@ export function skillsShowcase(locale: EmailLocale = 'nl'): string {
   const rtl = dir(locale) === 'rtl';
   const align = rtl ? 'left' : 'right';
 
-  const rows = SKILLS.map(skill => {
-    const items = skill.scoring === 'open' ? s.itemsOpen(skill.itemCount) : s.itemsMcq(skill.itemCount);
+  // A2 only — these e-mails go to people in the A2 funnel and quote the A2 offer.
+  //
+  // Skills whose format is unverified are dropped rather than rendered with a dash: an e-mail
+  // is already sent and cannot be corrected, so a row reading "— vragen · — minuten" is worse
+  // than a row that is not there. All four A2 formats are known, so nothing is dropped today.
+  const rows = skillsAtLevel(DEFAULT_LEVEL)
+    .filter(skill => skill.itemCount !== null && skill.durationMinutes !== null)
+    .map(skill => {
+    const itemCount = skill.itemCount as number;
+    const durationMinutes = skill.durationMinutes as number;
+    const items = skill.scoring === 'open' ? s.itemsOpen(itemCount) : s.itemsMcq(itemCount);
     return `
 <tr>
   <td style="padding:10px 0;border-bottom:1px solid rgba(255,255,255,0.08);">
     <p style="margin:0;font-family:Manrope,-apple-system,Arial,sans-serif;font-size:14px;font-weight:800;color:#ffffff;">${s.names[skill.slug]}</p>
-    <p style="margin:2px 0 0;font-size:11px;color:rgba(255,255,255,0.45);">${items} · ${s.minutes(skill.durationMinutes)}</p>
+    <p style="margin:2px 0 0;font-size:11px;color:rgba(255,255,255,0.45);">${items} · ${s.minutes(durationMinutes)}</p>
   </td>
   <td align="${align}" style="padding:10px 0;border-bottom:1px solid rgba(255,255,255,0.08);">
     <span style="display:inline-block;background:rgba(254,118,44,0.15);border:1px solid rgba(254,118,44,0.35);color:#fdba74;font-size:11px;font-weight:700;padding:3px 10px;border-radius:6px;">${skill.examCount}×</span>

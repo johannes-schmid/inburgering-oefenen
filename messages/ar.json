@@ -677,9 +677,9 @@
     "duration_label": "دقيقة"
   },
   "oefenexamen": {
-    "meta_title": "التدريب على {skill} A2 — ١٠ اختبارات تدريبية من معلمة NT2",
-    "meta_description": "تدرّب على {skill_lower} لامتحان الاندماج الهولندي A2 عبر ١٠ اختبارات تدريبية كاملة، بنفس بنية ومدة اختبارات DUO، من إعداد ومراجعة معلمة NT2 معتمدة.",
-    "heading": "التدريب على {skill} A2",
+    "meta_title": "التدريب على {skill} {level} — ١٠ اختبارات تدريبية من معلمة NT2",
+    "meta_description": "تدرّب على {skill_lower} لامتحان الاندماج الهولندي {level} عبر ١٠ اختبارات تدريبية كاملة، بنفس بنية ومدة اختبارات DUO، من إعداد ومراجعة معلمة NT2 معتمدة.",
+    "heading": "التدريب على {skill} {level}",
     "exam_label": "اختبار تدريبي {number}",
     "free": "مجاني",
     "locked": "ضمن الباقة",
@@ -743,6 +743,8 @@
     "profile_per_skill": "التقدم لكل قسم",
     "plan_free": "مجاني",
     "plan_premium": "احترافي",
-    "plan_premium_plus": "كامل"
+    "plan_premium_plus": "كامل",
+    "level_section": "المستوى {level}",
+    "level_section_sub": "الأجزاء الأربعة كلها في مستوى {level}"
   }
 }

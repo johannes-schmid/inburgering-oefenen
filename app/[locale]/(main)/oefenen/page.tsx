@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import { getTranslations } from 'next-intl/server';
 import { routing } from '@/i18n/routing';
 import { SKILLS } from '@/data/skills';
+import { DEFAULT_LEVEL } from '@/data/skills';
 import { hasFreePractice, getFreePractice } from '@/data/free-practice';
 import { SkillIcon } from '@/components/site';
 import { ArrowRight } from 'lucide-react';
@@ -97,7 +98,7 @@ export default async function OefenenPickerPage({ params }: Props) {
                 return (
                   <li key={skill.slug}>
                     <a
-                      href={`/${locale}/oefenexamen/${skill.slug}/1`}
+                      href={`/${locale}/oefenexamen/${DEFAULT_LEVEL}/${skill.slug}/1`}
                       className="pick-card h-full flex flex-col gap-3 p-6 rounded-2xl bg-surface-container-lowest no-underline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-secondary-container"
                       style={{ boxShadow: 'var(--shadow-card-md)' }}
                     >
@@ -203,7 +204,7 @@ export default async function OefenenPickerPage({ params }: Props) {
 
           <p className="text-center text-sm text-on-surface-variant mt-10 leading-relaxed">
             {t('pick_footer')}{' '}
-            <a href={`/${locale}/oefenexamen/lezen`} className="inline-flex items-center gap-1 font-semibold" style={{ color: '#a24000' }}>
+            <a href={`/${locale}/oefenexamen/${DEFAULT_LEVEL}/lezen`} className="inline-flex items-center gap-1 font-semibold" style={{ color: '#a24000' }}>
               {t('pick_footer_link')}
               <ArrowRight size={14} strokeWidth={2.2} aria-hidden="true" />
             </a>

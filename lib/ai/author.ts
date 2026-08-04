@@ -13,12 +13,18 @@
  * `exam_publish_issues()` still gates publishing, so an item nobody validated cannot go live by
  * accident. If that ever stops being true, this file is where the problem started.
  *
- * The A2 register is not a style preference here: an item written above A2 tests the wrong thing.
- * Every prompt states it, and `shorter`/`longer` state it again, because "make it longer" is
- * exactly the instruction that drifts vocabulary upward.
+ * The register is not a style preference here: an item written above its level tests the wrong
+ * thing. Every prompt states the level, and `shorter`/`longer` state it again, because "make it
+ * longer" is exactly the instruction that drifts vocabulary upward.
+ *
+ * The level comes from the caller (the exam being authored), never from a default buried in this
+ * file — a B1 stimulus drafted against A2 rules is indistinguishable from a correct one until a
+ * candidate sits the exam.
  */
 import { generateText } from 'ai';
 import { assertGatewayConfigured, GRADER_TEXT } from './gateway';
+import { registerFor } from './level-register';
+import { DEFAULT_LEVEL, isLevel, type Level } from '@/data/skills';
 
 export const AUTHOR_MODEL = process.env.AI_AUTHOR_MODEL || GRADER_TEXT;
 export const AUTHOR_TIMEOUT_MS = 40_000;
@@ -46,18 +52,19 @@ export const AUTHOR_ACTION_LABELS: Record<AuthorAction, string> = {
   simpler: 'Makkelijker',
 };
 
-const A2 = [
-  'Je schrijft materiaal voor het Nederlandse inburgeringsexamen op niveau A2.',
-  'Regels voor A2:',
-  '- Korte zinnen, gemiddeld maximaal 15 woorden.',
-  '- Alledaagse woorden. Geen formeel of ambtelijk jargon, geen spreekwoorden.',
-  '- Concrete, herkenbare situaties: de gemeente, de huisarts, school, werk, de buurt.',
-  '- Nederlands van Nederland, geen Vlaamse varianten.',
-  'Schrijf alleen de gevraagde tekst. Geen inleiding, geen uitleg over wat je doet, geen opmaak',
-  'met sterretjes of kopjes, tenzij er expliciet om gevraagd wordt.',
-].join('\n');
+function registerRules(level: Level): string {
+  return [
+    ...registerFor(level).authoring,
+    '- Nederlands van Nederland, geen Vlaamse varianten.',
+    '- Geen formeel of ambtelijk jargon, geen spreekwoorden.',
+    'Schrijf alleen de gevraagde tekst. Geen inleiding, geen uitleg over wat je doet, geen opmaak',
+    'met sterretjes of kopjes, tenzij er expliciet om gevraagd wordt.',
+  ].join('\n');
+}
 
-const INSTRUCTION: Record<AuthorAction, string> = {
+function instructions(level: Level): Record<AuthorAction, string> {
+  const lvl = registerFor(level).label;
+  return {
   draft_question:
     'Schrijf één meerkeuzevraag bij de gegeven tekst of het gegeven fragment. Geef alleen de vraagzin.',
   draft_explanation:
@@ -76,14 +83,15 @@ const INSTRUCTION: Record<AuthorAction, string> = {
     'punten moeten erin staan.',
   draft_model_answer:
     'Schrijf een voorbeeldantwoord dat precies voldoet aan de opdracht — niet beter dan een goede ' +
-    'A2-kandidaat zou schrijven.',
+    `${lvl}-kandidaat zou schrijven.`,
   longer:
-    'Maak de tekst langer en concreter, maar houd hem op A2. Voeg geen moeilijkere woorden toe en ' +
-    'maak de zinnen niet langer — voeg inhoud toe, geen complexiteit.',
+    `Maak de tekst langer en concreter, maar houd hem op ${lvl}. Voeg geen moeilijkere woorden ` +
+    'toe en maak de zinnen niet langer — voeg inhoud toe, geen complexiteit.',
   shorter: 'Maak de tekst korter zonder informatie weg te laten die nodig is om de vraag te maken.',
   simpler:
     'Vereenvoudig de tekst: kortere zinnen en gewonere woorden. De inhoud blijft precies hetzelfde.',
-};
+  };
+}
 
 export type AuthorRequest = {
   action: AuthorAction;
@@ -92,6 +100,8 @@ export type AuthorRequest = {
   /** Surrounding content — the stimulus, the prompt, the task — so a draft fits its item. */
   context?: string;
   skill?: string;
+  /** The exam's CEFR level. Defaults to A2 only so an older caller keeps its old behaviour. */
+  level?: string;
 };
 
 /**
@@ -103,7 +113,8 @@ export type AuthorRequest = {
 export async function draftContent(req: AuthorRequest): Promise<string> {
   assertGatewayConfigured();
 
-  const instruction = INSTRUCTION[req.action];
+  const level: Level = isLevel(req.level) ? req.level : DEFAULT_LEVEL;
+  const instruction = instructions(level)[req.action];
   if (!instruction) throw new Error(`Onbekende actie: ${req.action}`);
 
   const needsText: AuthorAction[] = ['longer', 'shorter', 'simpler'];
@@ -112,7 +123,7 @@ export async function draftContent(req: AuthorRequest): Promise<string> {
   }
 
   const parts = [
-    A2,
+    registerRules(level),
     '',
     instruction,
     req.skill ? `\nOnderdeel: ${req.skill}.` : '',

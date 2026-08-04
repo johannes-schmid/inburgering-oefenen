@@ -5,6 +5,7 @@ import { createClient } from '@/lib/supabase/server';
 import { categoryLabel, type RubricCriterion, type RubricSkill } from '@/lib/rubrics';
 import RubricForm from '../../_components/RubricForm';
 import type { RubricDraft } from '../../_draft';
+import type { Level } from '@/data/skills';
 
 export const revalidate = 0;
 
@@ -18,13 +19,14 @@ export default async function EditRubricPage({
 
   const { data } = await supabase
     .from('rubrics')
-    .select('id, skill, task_type, version, criteria, system_prompt, active')
+    .select('id, level, skill, task_type, version, criteria, system_prompt, active')
     .eq('id', Number(id))
     .maybeSingle();
 
   if (!data) notFound();
   const row = data as {
     id: number;
+    level: Level;
     skill: RubricSkill;
     task_type: string;
     version: number;
@@ -42,6 +44,7 @@ export default async function EditRubricPage({
 
   const initial: RubricDraft = {
     id: row.id,
+    level: row.level,
     skill: row.skill,
     task_type: row.task_type,
     version: row.version,

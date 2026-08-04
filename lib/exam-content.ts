@@ -1,5 +1,5 @@
 /**
- * Loading one A2 exam in the shape the player needs.
+ * Loading one exam in the shape the player needs.
  *
  * The shape is the point: an exam is a list of **stimuli**, and each stimulus owns 1..N
  * questions. DUO shares one text across 2–3 questions, so flattening to a question list
@@ -12,7 +12,7 @@
  * this module rather than querying the tables directly.
  */
 import { createClient } from './supabase/server';
-import type { SkillSlug } from '@/data/skills';
+import type { Level, SkillSlug } from '@/data/skills';
 
 export type OptionItem = {
   id: number;
@@ -114,6 +114,7 @@ export type ExamPartItem = {
 
 export type ExamMeta = {
   id: number;
+  level: Level;
   skill: SkillSlug;
   number: number;
   title: string | null;
@@ -153,14 +154,21 @@ const byOrder = <T extends { sort_order: number }>(rows: T[]) =>
  * select applies per parent and is easy to get silently wrong.
  */
 export async function fetchExamContent(
+  level: Level,
   skill: SkillSlug,
   number: number
 ): Promise<ExamContent | null> {
   const supabase = await createClient();
 
+  // `maybeSingle()` throws when the filter matches more than one row. Before `level` existed
+  // on this query that is exactly what a second level would have caused — (skill, number) is
+  // no longer unique on its own.
   const { data: exam, error } = await supabase
     .from('exams')
-    .select('id, skill, number, title, is_free, duration_seconds, pass_threshold_pct, published')
+    .select(
+      'id, level, skill, number, title, is_free, duration_seconds, pass_threshold_pct, published',
+    )
+    .eq('level', level)
     .eq('skill', skill)
     .eq('number', number)
     .maybeSingle();
@@ -175,7 +183,10 @@ export async function fetchExamContent(
       .eq('exam_id', meta.id),
     supabase.from('stimuli').select(STIMULUS_COLS).eq('exam_id', meta.id),
     supabase.from('open_tasks').select(TASK_COLS).eq('exam_id', meta.id),
-    supabase.from('sections').select('id, name_nl').eq('topic', skill),
+    // Filtered by level too: the sub-skill names are per (level, skill) since sections
+    // became keyed (level, slug), and an unfiltered read would map a section_id to the
+    // other level's label in the score breakdown.
+    supabase.from('sections').select('id, name_nl').eq('level', level).eq('topic', skill),
   ]);
 
   type RawStimulus = Omit<StimulusItem, 'questions'> & {
@@ -208,6 +219,7 @@ export async function fetchExamContent(
   return {
     exam: {
       id: meta.id,
+      level: meta.level,
       skill: meta.skill,
       number: meta.number,
       title: meta.title,

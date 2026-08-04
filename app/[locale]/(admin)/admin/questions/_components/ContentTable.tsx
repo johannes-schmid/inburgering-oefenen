@@ -13,7 +13,7 @@ import {
 } from '@/components/ui/select';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { Badge } from '@/components/ui/badge';
-import { SKILLS } from '@/data/skills';
+import { DEFAULT_LEVEL, LEVELS, SKILLS, levelLabel, type Level } from '@/data/skills';
 import type { ContentRow } from '@/lib/admin/content-rows';
 import ContentSheet from './ContentSheet';
 
@@ -60,22 +60,44 @@ function isIncomplete(row: ContentRow): boolean {
  * ever reaches a size where that stops being true, this is the component to paginate — the data
  * loader is already a single call.
  */
+/**
+ * Does this row belong under the level tab being viewed?
+ *
+ * A `null` level means the onderdeel is not CEFR-graded (KNM's shape), so it shows under
+ * every tab rather than none — it is required alongside A2 *and* B1, and hiding it from both
+ * would make its content unreachable from the only screen that lists items.
+ */
+function atLevel(rowLevel: Level | null, tab: Level): boolean {
+  return rowLevel === null || rowLevel === tab;
+}
+
 export default function ContentTable({ rows, locale }: { rows: ContentRow[]; locale: string }) {
   const [skill, setSkill] = useState<string>(SKILLS[0].slug);
-  const [level, setLevel] = useState('a2');
+  const [level, setLevel] = useState<Level>(DEFAULT_LEVEL);
   const [exam, setExam] = useState('all');
   const [status, setStatus] = useState('all');
   const [onlyIncomplete, setOnlyIncomplete] = useState(false);
   const [query, setQuery] = useState('');
   const [openUid, setOpenUid] = useState<string | null>(null);
 
+  // Per level, so switching to B1 shows how much of each skill is authored there rather than
+  // A2's totals over an empty table.
   const counts = useMemo(() => {
     const m: Record<string, number> = {};
-    for (const r of rows) m[r.skill] = (m[r.skill] ?? 0) + 1;
+    for (const r of rows) if (atLevel(r.level, level)) m[r.skill] = (m[r.skill] ?? 0) + 1;
+    return m;
+  }, [rows, level]);
+
+  const levelCounts = useMemo(() => {
+    const m: Record<string, number> = {};
+    for (const r of rows) for (const l of LEVELS) if (atLevel(r.level, l)) m[l] = (m[l] ?? 0) + 1;
     return m;
   }, [rows]);
 
-  const forSkill = useMemo(() => rows.filter(r => r.skill === skill), [rows, skill]);
+  const forSkill = useMemo(
+    () => rows.filter(r => atLevel(r.level, level) && r.skill === skill),
+    [rows, level, skill]
+  );
 
   const examNumbers = useMemo(
     () => [...new Set(forSkill.map(r => r.examNumber))].sort((a, b) => a - b),
@@ -189,18 +211,20 @@ export default function ContentTable({ rows, locale }: { rows: ContentRow[]; loc
           <span className="tabular-nums opacity-70">{incompleteCount}</span>
         </button>
 
-        {/* Level exists as a control before it exists as data: the product is A2 only, and
-            `exams` has no level column. Showing B1 as a disabled option is a roadmap statement,
-            not a filter — the moment it filters something, it needs a migration first. */}
-        <Select value={level} onValueChange={v => setLevel(String(v))}>
+        {/* A real filter now: `exams.level` exists (20260802000000_b1_level.sql) and every
+            ContentRow carries it. The count beside each option is what makes an empty B1 list
+            read as "nothing authored yet" rather than as a broken filter. */}
+        <Select value={level} onValueChange={v => setLevel(v as Level)}>
           <SelectTrigger className="h-9 w-[130px]" aria-label="Niveau">
             <SelectValue>{(v: unknown) => String(v).toUpperCase()}</SelectValue>
           </SelectTrigger>
           <SelectContent>
-            <SelectItem value="a2">A2</SelectItem>
-            <SelectItem value="b1" disabled>
-              B1 — later
-            </SelectItem>
+            {LEVELS.map(l => (
+              <SelectItem key={l} value={l}>
+                {levelLabel(l)}
+                <span className="ml-1.5 tabular-nums opacity-60">{levelCounts[l] ?? 0}</span>
+              </SelectItem>
+            ))}
           </SelectContent>
         </Select>
       </div>

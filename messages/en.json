@@ -677,9 +677,9 @@
     "duration_label": "minutes"
   },
   "oefenexamen": {
-    "meta_title": "{skill} A2 practice — 10 practice exams from an NT2 teacher",
-    "meta_description": "Practise {skill_lower} for the Dutch A2 integration exam with 10 full practice exams. Same structure and timing as DUO, written and reviewed by a certified NT2 teacher.",
-    "heading": "Practise {skill_lower} A2",
+    "meta_title": "{skill} {level} practice — 10 practice exams from an NT2 teacher",
+    "meta_description": "Practise {skill_lower} for the Dutch {level} integration exam with 10 full practice exams. Same structure and timing as DUO, written and reviewed by a certified NT2 teacher.",
+    "heading": "Practise {skill_lower} {level}",
     "exam_label": "Practice exam {number}",
     "free": "Free",
     "locked": "In the package",
@@ -743,6 +743,8 @@
     "profile_per_skill": "Progress per component",
     "plan_free": "Free",
     "plan_premium": "Professional",
-    "plan_premium_plus": "Complete"
+    "plan_premium_plus": "Complete",
+    "level_section": "Level {level}",
+    "level_section_sub": "All four parts at {level} level"
   }
 }

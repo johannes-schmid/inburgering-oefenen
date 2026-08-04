@@ -14,12 +14,16 @@ INSERT INTO public.admin_users (email) VALUES
   ('johannes@settly.nl')
 ON CONFLICT (email) DO NOTHING;
 
--- ── the 40 exam slots ───────────────────────────────────────────────────────
+-- ── the 40 A2 exam slots ────────────────────────────────────────────────────
 -- Exam 1 of every skill is free and published, so the overview pages and the paywall
 -- boundary are both exercisable locally. Exams 2–10 exist but stay unpublished, which is
 -- how they render as "Binnenkort" until the docent has authored and reviewed them.
-INSERT INTO public.exams (skill, number, title, is_free, duration_seconds, published)
+--
+-- B1's 40 slots are NOT here — they are created by 20260802000000_b1_level.sql, so that
+-- production gets them too. seed.sql only ever runs on a local `db reset`.
+INSERT INTO public.exams (level, skill, number, title, is_free, duration_seconds, published)
 SELECT
+  'a2',
   s.skill,
   n.number,
   format('%s — oefenexamen %s', initcap(s.skill), n.number),
@@ -33,4 +37,4 @@ FROM (VALUES
   ('spreken',   35 * 60)
 ) AS s(skill, duration_seconds)
 CROSS JOIN generate_series(1, 10) AS n(number)
-ON CONFLICT (skill, number) DO NOTHING;
+ON CONFLICT (level, skill, number) DO NOTHING;

@@ -3,7 +3,7 @@ import { notFound } from 'next/navigation';
 import { ArrowLeft } from 'lucide-react';
 import { createClient } from '@/lib/supabase/server';
 import { fetchExamStimuli, fetchPublishIssues } from '@/lib/admin/stimuli';
-import { getSkill } from '@/data/skills';
+import { formatCount, getFormat, getSkill, levelLabel, type Level } from '@/data/skills';
 import ExamBuilder from '../_components/ExamBuilder';
 
 export const revalidate = 0;
@@ -20,13 +20,13 @@ export default async function ExamBuilderPage({
   const supabase = await createClient();
   const { data: exam } = await supabase
     .from('exams')
-    .select('id, skill, number, title, is_free, published, duration_seconds, pass_threshold_pct')
+    .select('id, level, skill, number, title, is_free, published, duration_seconds, pass_threshold_pct')
     .eq('id', examId)
     .maybeSingle();
 
   if (!exam) notFound();
   const row = exam as {
-    id: number; skill: string; number: number; title: string | null;
+    id: number; level: Level; skill: string; number: number; title: string | null;
     is_free: boolean; published: boolean; duration_seconds: number; pass_threshold_pct: number;
   };
   const skill = getSkill(row.skill);
@@ -34,7 +34,7 @@ export default async function ExamBuilderPage({
   const [stimuli, issues, sectionsRes, tasksRes] = await Promise.all([
     fetchExamStimuli(examId),
     fetchPublishIssues(examId),
-    supabase.from('sections').select('id, name_nl').eq('topic', row.skill).order('sort_order'),
+    supabase.from('sections').select('id, name_nl').eq('level', row.level).eq('topic', row.skill).order('sort_order'),
     supabase
       .from('open_tasks')
       .select('id, sort_order, task_type, title, image_usage, review_status')
@@ -53,12 +53,12 @@ export default async function ExamBuilderPage({
           <ArrowLeft size={20} aria-hidden />
         </Link>
         <h1 className="text-2xl font-headline font-bold text-on-surface capitalize">
-          {row.skill} — examen {row.number}
+          {levelLabel(row.level)} {row.skill} — examen {row.number}
         </h1>
       </div>
       <p className="text-sm text-on-surface-variant mb-6 ml-8">
         {skill
-          ? `${skill.itemCount} opgaven · ${Math.round(row.duration_seconds / 60)} minuten · oefengrens ${row.pass_threshold_pct}%`
+          ? `${formatCount(getFormat(row.level, skill.slug).itemCount)} opgaven · ${Math.round(row.duration_seconds / 60)} minuten · oefengrens ${row.pass_threshold_pct}%`
           : `${Math.round(row.duration_seconds / 60)} minuten`}
       </p>
 

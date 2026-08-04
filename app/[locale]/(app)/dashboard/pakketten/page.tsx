@@ -5,7 +5,8 @@ import { createClient } from '@/lib/supabase/server';
 import { ownsModule, planFromMetadata } from '@/lib/entitlements';
 import { FREE_GRADED_PER_SKILL } from '@/lib/grading-limits';
 import { MODULES } from '@/lib/pricing';
-import { SKILLS } from '@/data/skills';
+import { DEFAULT_LEVEL, getSkill, levelLabel } from '@/data/skills';
+import { fetchPublishedExamNumbers } from '@/lib/portal-progress';
 import SkillIcon from '@/components/site/SkillIcon';
 import AppShell from '../../components/AppShell';
 import ModulePicker from './ModulePicker';
@@ -46,9 +47,22 @@ export default async function PakkettenPage({
 
   const plan = planFromMetadata(user.user_metadata);
   const meta = user.user_metadata ?? {};
+
+  /**
+   * A level is only sellable once it has published exams.
+   *
+   * Otherwise the picker would offer a €9,95/month B1 module whose ten oefenexamens are all
+   * "Binnenkort" — a subscription to an empty shelf. A2 stays listed unconditionally so the
+   * page is never empty; every other level earns its place by having content.
+   */
+  const published = await fetchPublishedExamNumbers();
+  const sellable = MODULES.filter(
+    m => m.level === DEFAULT_LEVEL || published[m.level][m.skill].size > 0,
+  );
+
   // Highlighted when the candidate arrived from a specific locked onderdeel, so the module they
-  // actually need is the one they see first.
-  const focus = SKILLS.find(s => s.slug === onderdeel)?.slug ?? null;
+  // actually need is the one they see first. The param carries a full `level:skill` id.
+  const focus = sellable.find(m => m.slug === onderdeel)?.slug ?? null;
 
   return (
     <AppShell
@@ -80,16 +94,19 @@ export default async function PakkettenPage({
           <ModulePicker
             locale={locale}
             initialSelection={focus ? [focus] : []}
-            modules={MODULES.map(mod => {
-              const skill = SKILLS.find(s => s.slug === mod.slug)!;
+            modules={sellable.map(mod => {
+              const skill = getSkill(mod.skill)!;
               return {
                 slug: mod.slug,
+                level: mod.level,
+                levelLabel: levelLabel(mod.level),
+                skill: mod.skill,
                 label: skill.slug,
                 examCount: mod.examCount,
                 itemCount: mod.itemCount,
                 itemNoun: skill.scoring === 'open' ? 'opdrachten' : 'vragen',
                 hasRubricFeedback: mod.hasRubricFeedback,
-                owned: ownsModule(meta, mod.slug),
+                owned: ownsModule(meta, mod.level, mod.skill),
               };
             })}
           />

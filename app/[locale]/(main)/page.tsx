@@ -4,7 +4,7 @@ import { Check, X, PenLine, Target, Laptop } from 'lucide-react';
 import { routing } from '@/i18n/routing';
 import FaqAccordion from '@/components/FaqAccordion';
 import { SectionHeader, TeacherCard, FeatureCard, SkillCard } from '@/components/site';
-import { SKILLS } from '@/data/skills';
+import { DEFAULT_LEVEL, SKILLS, formatCount, skillsAtLevel } from '@/data/skills';
 
 type Props = { params: Promise<{ locale: string }> };
 
@@ -103,7 +103,7 @@ export default async function HomePage({ params }: Props) {
         educationalLevel: 'A2',
         inLanguage: 'nl',
         isAccessibleForFree: true,
-        url: `${BASE}/${locale}/oefenexamen/${skill.slug}`,
+        url: `${BASE}/${locale}/oefenexamen/${DEFAULT_LEVEL}/${skill.slug}`,
       })),
       {
         '@type': 'FAQPage',
@@ -312,16 +312,19 @@ export default async function HomePage({ params }: Props) {
             subtitle={t('skills_subheading')}
           />
 
+          {/* A2 explicitly, not "the default level": the homepage sells the A2 product and
+              its copy, JSON-LD educationalLevel and free offer are all A2. A B1 section here
+              is a marketing decision, not something this grid should acquire by itself. */}
           <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-5">
-            {SKILLS.map(skill => (
+            {skillsAtLevel(DEFAULT_LEVEL).map(skill => (
               <SkillCard
                 key={skill.slug}
                 skill={skill}
                 name={tSkills(`${skill.key}.name`)}
                 tagline={tSkills(`${skill.key}.tagline`)}
                 examsLabel={tSkills('exams_count', { count: skill.examCount })}
-                itemsLabel={tSkills('items_count', { count: skill.itemCount })}
-                durationLabel={tSkills('duration', { minutes: skill.durationMinutes })}
+                itemsLabel={tSkills('items_count', { count: formatCount(skill.itemCount) })}
+                durationLabel={tSkills('duration', { minutes: formatCount(skill.durationMinutes) })}
                 freeNote={t('skill_free_note')}
                 cta={t('skill_cta')}
               />

@@ -13,6 +13,7 @@ import {
 } from '@/lib/rubrics';
 import { draftCriteria, draftSystemPrompt } from '@/lib/rubric-templates';
 import type { RubricDraft } from '../_draft';
+import { LEVELS, levelLabel, type Level } from '@/data/skills';
 
 /**
  * The rubric editor.
@@ -95,7 +96,7 @@ export default function RubricForm({
   function prefill() {
     patch({
       criteria: draftCriteria(form.task_type as never),
-      system_prompt: form.system_prompt.trim() || draftSystemPrompt(form.task_type as never),
+      system_prompt: form.system_prompt.trim() || draftSystemPrompt(form.task_type as never, form.level),
     });
   }
 
@@ -140,6 +141,7 @@ export default function RubricForm({
     }));
 
     const payload = {
+      level: form.level,
       skill: form.skill,
       task_type: form.task_type,
       criteria,
@@ -149,10 +151,15 @@ export default function RubricForm({
     try {
       // The unique partial index allows one active version per category, so clear the incumbent
       // before claiming the flag. Doing it the other way round fails on the index.
+      //
+      // Scoped to the level: the index is UNIQUE (level, skill, task_type) WHERE active, so
+      // without this filter activating a B1 e-mail rubric would silently deactivate the A2 one
+      // and leave every A2 Schrijven task with no active rubric to grade against.
       if (form.active) {
         await supabase
           .from('rubrics')
           .update({ active: false })
+          .eq('level', form.level)
           .eq('skill', form.skill)
           .eq('task_type', form.task_type)
           .eq('active', true);
@@ -164,6 +171,7 @@ export default function RubricForm({
         const { data: latest } = await supabase
           .from('rubrics')
           .select('version')
+          .eq('level', form.level)
           .eq('skill', form.skill)
           .eq('task_type', form.task_type)
           .order('version', { ascending: false })
@@ -214,7 +222,25 @@ export default function RubricForm({
         </p>
       </div>
 
-      <div className="grid gap-4 sm:grid-cols-2">
+      <div className="grid gap-4 sm:grid-cols-3">
+        {/* Locked after creation, like skill and task_type: together they are the rubric's
+            identity, and moving an existing rubric to another level would silently reinterpret
+            every grade already recorded against it. Make a new one instead. */}
+        <Field label="Niveau">
+          <select
+            value={form.level}
+            onChange={e => patch({ level: e.target.value as Level })}
+            disabled={!isNew}
+            className="field"
+          >
+            {LEVELS.map(l => (
+              <option key={l} value={l}>
+                {levelLabel(l)}
+              </option>
+            ))}
+          </select>
+        </Field>
+
         <Field label="Onderdeel">
           <select
             value={form.skill}

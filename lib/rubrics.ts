@@ -6,18 +6,22 @@
  * both client and server components.
  *
  * ## How a rubric is keyed
- * `rubrics (skill, task_type, version)` with `UNIQUE (skill, task_type) WHERE active`, so exactly
- * one rubric is live per category. Schrijven maps straight onto `open_tasks.task_type`. Spreken
- * does not: it has a single task_type (`speaking`) but four onderdelen whose image rule changes
- * what a good answer even is — "gebruik steeds het plaatje" is a different task from "gebruik
- * alle plaatjes". So Spreken is keyed by `image_usage`, giving `speaking_describe`,
- * `speaking_choose`, `speaking_cover_all`, `speaking_none`.
+ * `rubrics (level, skill, task_type, version)` with `UNIQUE (level, skill, task_type) WHERE
+ * active`, so exactly one rubric is live per category per level. Schrijven maps straight onto
+ * `open_tasks.task_type`. Spreken does not: it has a single task_type (`speaking`) but four
+ * onderdelen whose image rule changes what a good answer even is — "gebruik steeds het plaatje"
+ * is a different task from "gebruik alle plaatjes". So Spreken is keyed by `image_usage`, giving
+ * `speaking_describe`, `speaking_choose`, `speaking_cover_all`, `speaking_none`.
  *
- * `rubrics.task_type` is plain `text` with no CHECK constraint, so this convention needs no
- * migration — but it does need to live in one place, which is `rubricCategory()` below. Eight
- * categories cover all 20 open exams.
+ * **Level is part of the key, not a label on it.** A rubric's anchors define what a score of 2
+ * *means*, and "voldoende grammatica" is a different bar at A2 than at B1. Sharing one rubric
+ * across levels would not be a simplification — it would grade B1 candidates against A2
+ * expectations and produce marks that look entirely legitimate. Eight categories per level.
+ *
+ * `rubrics.task_type` is plain `text` with no CHECK constraint, so the category convention needs
+ * no migration — but it does need to live in one place, which is `rubricCategory()` below.
  */
-import type { SkillSlug } from '@/data/skills';
+import type { Level, SkillSlug } from '@/data/skills';
 
 export type RubricSkill = 'schrijven' | 'spreken';
 export type ImageUsage = 'none' | 'describe' | 'choose' | 'cover_all';
@@ -40,6 +44,7 @@ export type RubricCriterion = {
 
 export type Rubric = {
   id: number;
+  level: Level;
   skill: RubricSkill;
   task_type: RubricCategory | string;
   version: number;

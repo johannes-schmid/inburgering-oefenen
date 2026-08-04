@@ -3,9 +3,17 @@ import { redirect } from 'next/navigation';
 import { getTranslations } from 'next-intl/server';
 import { ArrowRight, Lock } from 'lucide-react';
 import { createClient } from '@/lib/supabase/server';
-import { planFromMetadata } from '@/lib/entitlements';
+import { ownsModule, planFromMetadata } from '@/lib/entitlements';
 import { fetchPortalProgress, fetchPublishedExamNumbers } from '@/lib/portal-progress';
-import { SKILLS } from '@/data/skills';
+import {
+  DEFAULT_LEVEL,
+  LEVELS,
+  SKILLS,
+  formatCount,
+  levelLabel,
+  skillsAtLevel,
+} from '@/data/skills';
+import { totalExamsForLevel } from '@/lib/pricing';
 import SkillIcon from '@/components/site/SkillIcon';
 import AppShell from '../components/AppShell';
 import ExamSegments, { segmentState, type SegmentState } from './components/ExamSegments';
@@ -50,8 +58,28 @@ export default async function DashboardPage({ params }: { params: Promise<{ loca
     unpublished: t('seg_unpublished'),
   };
 
-  const totalExams = SKILLS.reduce((n, s) => n + s.examCount, 0);
-  const totalDone = SKILLS.reduce((n, s) => n + progress[s.slug].examsDone, 0);
+  /**
+   * Which levels get a section on the overview.
+   *
+   * A2 is always shown — it is the product. A second level appears only once it has
+   * something in it: published exams, a sitting the candidate has already done, or a module
+   * they have bought. Rendering an empty B1 section by default would advertise forty
+   * "Binnenkort" slots to every A2 candidate, which is the same dead-end the leren and
+   * woordkaarten nav entries were removed for.
+   */
+  const visibleLevels = LEVELS.filter(level => {
+    if (level === DEFAULT_LEVEL) return true;
+    const anyPublished = SKILLS.some(s => published[level][s.slug].size > 0);
+    const anySat = SKILLS.some(s => progress[level][s.slug].examsDone > 0);
+    const anyOwned = SKILLS.some(s => ownsModule(user.user_metadata, level, s.slug));
+    return anyPublished || anySat || anyOwned;
+  });
+
+  const totalExams = visibleLevels.reduce((n, l) => n + totalExamsForLevel(l), 0);
+  const totalDone = visibleLevels.reduce(
+    (n, l) => n + SKILLS.reduce((m, s) => m + progress[l][s.slug].examsDone, 0),
+    0,
+  );
   const meta = user.user_metadata ?? {};
   const firstName = String(meta.full_name ?? meta.name ?? '').trim().split(' ')[0];
 
@@ -83,10 +111,27 @@ export default async function DashboardPage({ params }: { params: Promise<{ loca
             </p>
           </header>
 
+          {visibleLevels.map(level => (
+          <section key={level} className={level === visibleLevels[0] ? '' : 'mt-10'}>
+            {/* The heading is suppressed when only one level is on offer: "Niveau A2" above
+                the sole grid is a label for a distinction the candidate cannot yet make. */}
+            {visibleLevels.length > 1 && (
+              <header className="mb-4">
+                <h2
+                  className="font-headline font-extrabold text-on-surface"
+                  style={{ fontSize: '1.15rem', letterSpacing: '-0.02em' }}
+                >
+                  {t('level_section', { level: levelLabel(level) })}
+                </h2>
+                <p className="text-xs text-outline mt-0.5">
+                  {t('level_section_sub', { level: levelLabel(level) })}
+                </p>
+              </header>
+            )}
           <div className="grid gap-4 sm:gap-5 md:grid-cols-2">
-            {SKILLS.map(skill => {
-              const p = progress[skill.slug];
-              const pub = published[skill.slug];
+            {skillsAtLevel(level).map(skill => {
+              const p = progress[level][skill.slug];
+              const pub = published[level][skill.slug];
               const states = Array.from({ length: skill.examCount }, (_, i) =>
                 segmentState(i + 1, p, pub, hasPaidPlan),
               );
@@ -95,7 +140,7 @@ export default async function DashboardPage({ params }: { params: Promise<{ loca
               return (
                 <a
                   key={skill.slug}
-                  href={`/${locale}/dashboard/${skill.slug}`}
+                  href={`/${locale}/dashboard/${level}/${skill.slug}`}
                   className="skill-card no-underline flex flex-col"
                 >
                   <div className="flex items-start gap-3 mb-4">
@@ -108,7 +153,10 @@ export default async function DashboardPage({ params }: { params: Promise<{ loca
                         {tSkills(`${skill.key}.name`)}
                       </h2>
                       <p className="text-xs text-outline mt-0.5">
-                        {t('card_meta', { items: skill.itemCount, minutes: skill.durationMinutes })}
+                        {t('card_meta', {
+                          items: formatCount(skill.itemCount),
+                          minutes: formatCount(skill.durationMinutes),
+                        })}
                       </p>
                     </div>
                     <span className="skill-card-arrow" aria-hidden="true">
@@ -158,6 +206,8 @@ export default async function DashboardPage({ params }: { params: Promise<{ loca
               );
             })}
           </div>
+          </section>
+          ))}
 
           {!hasPaidPlan && (
             <aside className="upsell mt-8">

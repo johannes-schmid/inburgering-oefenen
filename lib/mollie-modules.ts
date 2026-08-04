@@ -19,7 +19,7 @@ import type createMollieClient from '@mollie/api-client';
 import type { Payment } from '@mollie/api-client';
 import type { SupabaseClient } from '@supabase/supabase-js';
 import { parseSelection } from '@/lib/pricing';
-import { modulesFromMetadata } from '@/lib/entitlements';
+import { modulesFromMetadata, parseModuleId } from '@/lib/entitlements';
 import { listLiveSubscriptions } from '@/lib/subscriptions';
 
 /** The client object `createMollieClient()` returns — the package exports no name for it. */
@@ -61,8 +61,14 @@ export async function fulfilModulePayment(
   // not revoke a Lezen bought last month.
   const bought = parseSelection(meta.modules);
   const owned = [...new Set([...modulesFromMetadata(existingMeta), ...bought])];
-  const plan: 'premium' | 'premium_plus' =
-    owned.some(m => m === 'schrijven' || m === 'spreken') ? 'premium_plus' : 'premium';
+  // The rubric-graded onderdelen are the Compleet tier, at either level — module ids are now
+  // `level:skill`, so this matches on the skill half rather than the whole id.
+  const plan: 'premium' | 'premium_plus' = owned.some(m => {
+    const skill = parseModuleId(m)?.skill;
+    return skill === 'schrijven' || skill === 'spreken';
+  })
+    ? 'premium_plus'
+    : 'premium';
 
   // `modules_until` and `subscription_canceled_at` are cleared: a fresh purchase means this account
   // is subscribed again, and a leftover expiry from a previous cancellation would lock the

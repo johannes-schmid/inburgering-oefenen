@@ -8,6 +8,8 @@ import {
 } from './gateway';
 import { describeSignals, type SpeechSignals } from './transcribe';
 import { MAX_CRITERION_SCORE, type Rubric, type RubricCriterion } from '@/lib/rubrics';
+import { registerFor } from './level-register';
+import type { Level } from '@/data/skills';
 
 /**
  * Applying a docent's rubric to one open answer.
@@ -311,7 +313,7 @@ function renderFewShot(examples: FewShotExample[]): string {
  * entry per criterion. Without it the model happily returns three of five and the percentage
  * silently changes meaning.
  */
-function buildSchema(criteria: RubricCriterion[]) {
+function buildSchema(criteria: RubricCriterion[], level: Level) {
   const keys = criteria.map(c => c.key);
   return jsonSchema<GradeResult>({
     type: 'object',
@@ -337,8 +339,8 @@ function buildSchema(criteria: RubricCriterion[]) {
             feedback: {
               type: 'string',
               description:
-                'Eén of twee korte zinnen in eenvoudig Nederlands (A2), gericht aan de ' +
-                'kandidaat met "je". Noem iets concreets uit het antwoord.',
+                `Eén of twee korte zinnen in eenvoudig Nederlands (${registerFor(level).label}), ` +
+                'gericht aan de kandidaat met "je". Noem iets concreets uit het antwoord.',
             },
           },
         },
@@ -392,22 +394,30 @@ function buildSchema(criteria: RubricCriterion[]) {
   });
 }
 
-const BASE_INSTRUCTION = [
-  'Je past de beoordelingscriteria van een NT2-docent toe op het antwoord van een kandidaat die',
-  'het Nederlandse inburgeringsexamen op A2-niveau oefent.',
+/**
+ * The default system prompt, per level.
+ *
+ * Built from `LEVEL_REGISTER` rather than written twice: the tolerance line is the sentence
+ * that decides how harshly the model marks, and an A2 "fouten zijn normaal" applied to a B1
+ * answer inflates every grade on the exam without anything looking wrong.
+ */
+function baseInstruction(level: Level): string {
+  const reg = registerFor(level);
+  return [
+  reg.summary,
   '',
   'Regels:',
   '- Gebruik alleen de criteria en ankerbeschrijvingen die je krijgt. Voeg niets toe.',
   '- Kies per criterium het anker dat het antwoord het beste beschrijft en geef dat cijfer.',
-  '- A2 is een beginnersniveau. Eenvoudige zinnen met fouten zijn normaal en horen geen laag',
-  '  cijfer te krijgen zolang de boodschap duidelijk is.',
+  `- ${reg.tolerance}`,
   '- Beoordeel wat er staat, niet wat je had gehoopt te lezen of horen.',
-  '- Schrijf alle feedback in het Nederlands op A2-niveau: korte zinnen, "je", gewone woorden.',
+  `- ${reg.writeIn}`,
   '- Geef geen herschreven modelantwoord.',
   '- Wijs in "highlights" concrete plekken in het antwoord aan. Citeer daarbij LETTERLIJK uit het',
   '  antwoord van de kandidaat: dezelfde woorden, dezelfde spelling, ook als daar een fout in zit.',
   '  Een geparafraseerd citaat is onbruikbaar en wordt weggegooid.',
-].join('\n');
+  ].join('\n');
+}
 
 /**
  * Grade one answer. Throws on model or validation failure; the caller records that on the
@@ -431,7 +441,7 @@ export async function gradeOpenAnswer({
   }
 
   const system = [
-    rubric.system_prompt?.trim() || BASE_INSTRUCTION,
+    rubric.system_prompt?.trim() || baseInstruction(rubric.level),
     '',
     renderRubric(rubric),
   ].join('\n');
@@ -462,7 +472,7 @@ export async function gradeOpenAnswer({
 
   const { object } = await generateObject({
     model: useAudio ? GRADER_AUDIO : GRADER_TEXT,
-    schema: buildSchema(rubric.criteria),
+    schema: buildSchema(rubric.criteria, rubric.level),
     system,
     messages: content,
     temperature: GRADER_TEMPERATURE,

@@ -5,7 +5,7 @@ import { createClient } from '@/lib/supabase/server';
 import LogoMark from '@/components/site/LogoMark';
 import AuthPanel from '@/components/auth/AuthPanel';
 import { authErrorMessage, safeNext } from '@/lib/auth-redirect';
-import { SKILLS } from '@/data/skills';
+import { SKILLS, getFormat } from '@/data/skills';
 
 export const metadata: Metadata = {
   title: 'Account aanmaken | Inburgering Oefenen',
@@ -31,9 +31,12 @@ export default async function RegisterPage({ params, searchParams }: Props) {
   const { data: { user } } = await supabase.auth.getUser();
   if (user) redirect(safeNext(next ?? null, `/${locale}/dashboard`));
 
+  // A2's numbers: this panel sells the free tier, and the free tier is A2 exam 1 of each
+  // onderdeel (isFreeExam). Quoting the combined A2+B1 catalogue here would advertise exams
+  // that signing up does not get you.
   const stats = [
     { val: String(SKILLS.length), label: 'onderdelen' },
-    { val: String(SKILLS[0].examCount), label: 'oefenexamens elk' },
+    { val: String(getFormat('a2', 'lezen').examCount), label: 'oefenexamens elk' },
     { val: '4', label: 'gratis examens' },
   ];
 

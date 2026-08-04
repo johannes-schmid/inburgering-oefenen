@@ -1,4 +1,4 @@
-import type { Skill } from '@/data/skills';
+import { DEFAULT_LEVEL, type Skill } from '@/data/skills';
 import { ArrowRight } from 'lucide-react';
 import SkillIcon from './SkillIcon';
 
@@ -18,14 +18,15 @@ type Props = {
 
 /**
  * One of the four A2 exam components on the homepage / overview grid.
- * Links to the skill's exam overview at /oefenexamen/{slug}.
+ * Links to the skill's exam overview at /oefenexamen/{level}/{slug}. A2 only — this card
+ * is a marketing component and the homepage that renders it sells A2.
  */
 export default function SkillCard({
   skill, name, tagline, examsLabel, itemsLabel, durationLabel, freeNote, cta,
 }: Props) {
   return (
     <a
-      href={`/oefenexamen/${skill.slug}`}
+      href={`/oefenexamen/${DEFAULT_LEVEL}/${skill.slug}`}
       className="skill-card group flex flex-col gap-4 p-7 rounded-2xl bg-surface-container-lowest no-underline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-secondary-container"
       style={{ boxShadow: 'var(--shadow-card-md)' }}
     >

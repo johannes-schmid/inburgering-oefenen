@@ -8,6 +8,7 @@
  * fallback for accounts that predate the rename.
  */
 import { UNGATE_PAID_FEATURES } from './features';
+import { DEFAULT_LEVEL, isLevel, isSkillSlug, type Level, type SkillSlug } from '@/data/skills';
 
 export type Plan = 'free' | 'premium' | 'premium_plus';
 
@@ -20,7 +21,7 @@ export function planFromMetadata(meta: Meta): Plan {
   return 'free';
 }
 
-/** Exam 1 of every skill is free; the rest need a paid plan. */
+/** A free exam is open to anyone with an account; the rest need a paid plan. */
 export function canOpenExam(plan: Plan, isFree: boolean): boolean {
   return isFree || plan !== 'free';
 }
@@ -41,18 +42,57 @@ export function canSeeExplanations(plan: Plan): boolean {
 /* ── Per-module access ────────────────────────────────────────────────────── */
 
 /**
- * Which exam components this account has bought.
+ * A module is one skill at one level: `a2:lezen`, `b1:spreken`.
  *
- * Stored as `user_metadata.modules`, a list of skill slugs, because the product is sold per
- * onderdeel. The legacy global `plan` still grants everything: accounts that bought Professioneel or
- * Compleet before modules existed keep what they paid for, and a `plan` check is the fallback rather
- * than the primary. Do not delete it — it is somebody's purchase.
+ * The level has to be part of the identity because the two levels are separately authored,
+ * separately priced products. A bare `lezen` would grant B1 Lezen to every A2 customer the
+ * moment B1 content ships — giving away the entire second catalogue to people who paid for
+ * the first.
  */
-export function modulesFromMetadata(meta: Meta): string[] {
+export type ModuleId = `${Level}:${SkillSlug}`;
+
+export function moduleId(level: Level, skill: SkillSlug): ModuleId {
+  return `${level}:${skill}`;
+}
+
+export function parseModuleId(raw: string): { level: Level; skill: SkillSlug } | null {
+  const [level, skill] = raw.split(':');
+  if (!isLevel(level) || !isSkillSlug(skill)) return null;
+  return { level, skill };
+}
+
+/**
+ * Normalise one stored module string to a `ModuleId`.
+ *
+ * **A bare skill slug means A2**, because that is what it meant when it was written. Every
+ * module sold before this change was an A2 module — the product had no other level — so
+ * `['lezen','spreken']` in an existing customer's metadata is `['a2:lezen','a2:spreken']`.
+ *
+ * Done on read rather than by backfilling `auth.users.user_metadata`: the metadata is written
+ * by the Mollie webhook, the reconcile cron and the cancel route, and a backfill would race
+ * with all three. Reading is idempotent and cannot lose a purchase.
+ */
+export function normaliseModule(raw: string): ModuleId | null {
+  if (isSkillSlug(raw)) return moduleId(DEFAULT_LEVEL, raw);
+  return parseModuleId(raw) ? (raw as ModuleId) : null;
+}
+
+/**
+ * Which exam components this account has bought, as normalised `level:skill` ids.
+ *
+ * Stored as `user_metadata.modules` because the product is sold per onderdeel. The legacy global
+ * `plan` still grants everything: accounts that bought Professioneel or Compleet before modules
+ * existed keep what they paid for, and a `plan` check is the fallback rather than the primary.
+ * Do not delete it — it is somebody's purchase.
+ */
+export function modulesFromMetadata(meta: Meta): ModuleId[] {
   const raw = (meta as { modules?: unknown } | null | undefined)?.modules;
   if (!Array.isArray(raw)) return [];
   if (modulesExpired(meta)) return [];
-  return raw.filter((x): x is string => typeof x === 'string');
+  return raw
+    .filter((x): x is string => typeof x === 'string')
+    .map(normaliseModule)
+    .filter((x): x is ModuleId => x !== null);
 }
 
 /**
@@ -75,14 +115,24 @@ export function modulesExpired(meta: Meta): boolean {
 }
 
 /** The modules the account bought, ignoring whether access has lapsed. For account/billing UI. */
-export function purchasedModules(meta: Meta): string[] {
+export function purchasedModules(meta: Meta): ModuleId[] {
   const raw = (meta as { modules?: unknown } | null | undefined)?.modules;
   if (!Array.isArray(raw)) return [];
-  return raw.filter((x): x is string => typeof x === 'string');
+  return raw
+    .filter((x): x is string => typeof x === 'string')
+    .map(normaliseModule)
+    .filter((x): x is ModuleId => x !== null);
 }
 
-/** Does this account have paid access to one skill? */
-export function ownsModule(meta: Meta, skill: string): boolean {
+/**
+ * Does this account have paid access to one skill at one level?
+ *
+ * The legacy all-access `plan` check grants **both** levels. That is deliberate and it is a
+ * real giveaway, but the alternative is worse: those accounts bought "alle oefenexamens" as
+ * the offer was then worded, and retroactively fencing off half of what they can see today is
+ * a support problem, not a revenue win. There are few enough of them to absorb.
+ */
+export function ownsModule(meta: Meta, level: Level, skill: SkillSlug): boolean {
   if (planFromMetadata(meta) !== 'free') return true; // legacy all-access purchase
-  return modulesFromMetadata(meta).includes(skill);
+  return modulesFromMetadata(meta).includes(moduleId(level, skill));
 }

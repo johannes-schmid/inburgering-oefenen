@@ -30,6 +30,30 @@ const nextConfig: NextConfig = {
       // Docent has a translated slug for EN
       { source: '/en/docent', destination: '/en/teacher', permanent: true },
 
+      // ── A2-implicit URLs → the levelled shape ────────────────────────────
+      // Every exam URL used to omit the level and mean A2. Those paths are indexed and
+      // linked from e-mails already sent, so they 301 rather than 404.
+      //
+      // The `(?!a2|b1)` guard is what stops these from matching the new URLs and looping:
+      // without it `/nl/oefenexamen/a2/lezen` would redirect to
+      // `/nl/oefenexamen/a2/a2/lezen`. Next matches redirects before routing, so a
+      // too-greedy pattern here takes down the page it is meant to preserve.
+      {
+        source: '/:locale(nl|en|ar)/oefenexamen/:skill((?!a2$|b1$)[^/]+)',
+        destination: '/:locale/oefenexamen/a2/:skill',
+        permanent: true,
+      },
+      {
+        source: '/:locale(nl|en|ar)/oefenexamen/:skill((?!a2$|b1$)[^/]+)/:number(\\d+)',
+        destination: '/:locale/oefenexamen/a2/:skill/:number',
+        permanent: true,
+      },
+      {
+        source: '/:locale(nl|en|ar)/dashboard/:skill(lezen|luisteren|schrijven|spreken)',
+        destination: '/:locale/dashboard/a2/:skill',
+        permanent: true,
+      },
+
       // AR translated route redirects
       { source: '/ar/premium',  destination: '/ar/%D8%A7%D9%84%D8%A8%D8%A7%D9%82%D8%A9-%D8%A7%D9%84%D9%85%D9%85%D9%8A%D8%B2%D8%A9', permanent: true },
       { source: '/ar/docent',   destination: '/ar/%D8%A7%D9%84%D9%85%D8%B9%D9%84%D9%85%D8%A9', permanent: true },

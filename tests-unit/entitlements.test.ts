@@ -3,6 +3,7 @@ import {
   canOpenExam,
   modulesExpired,
   modulesFromMetadata,
+  normaliseModule,
   ownsModule,
   planFromMetadata,
   purchasedModules,
@@ -67,8 +68,11 @@ describe('modulesExpired', () => {
 });
 
 describe('modulesFromMetadata', () => {
-  it('returns the bought modules', () => {
-    expect(modulesFromMetadata({ modules: ['lezen', 'spreken'] } as never)).toEqual(['lezen', 'spreken']);
+  /** Normalised on the way out: a stored bare slug predates levels and means A2. */
+  it('returns the bought modules as level-scoped ids', () => {
+    expect(modulesFromMetadata({ modules: ['lezen', 'spreken'] } as never))
+      .toEqual(['a2:lezen', 'a2:spreken']);
+    expect(modulesFromMetadata({ modules: ['b1:lezen'] } as never)).toEqual(['b1:lezen']);
   });
 
   it('returns nothing once access has lapsed', () => {
@@ -76,7 +80,7 @@ describe('modulesFromMetadata', () => {
   });
 
   it('filters non-strings', () => {
-    expect(modulesFromMetadata({ modules: ['lezen', 7, null] } as never)).toEqual(['lezen']);
+    expect(modulesFromMetadata({ modules: ['lezen', 7, null] } as never)).toEqual(['a2:lezen']);
   });
 
   it('is [] when there is no list', () => {
@@ -87,26 +91,62 @@ describe('modulesFromMetadata', () => {
 describe('purchasedModules', () => {
   /** Billing UI has to show what was bought even after access lapses. */
   it('still lists the modules after expiry', () => {
-    expect(purchasedModules({ modules: ['lezen'], modules_until: PAST } as never)).toEqual(['lezen']);
+    expect(purchasedModules({ modules: ['a2:lezen'], modules_until: PAST } as never)).toEqual(['a2:lezen']);
   });
 });
 
 describe('ownsModule', () => {
   it('grants a bought module', () => {
-    expect(ownsModule({ modules: ['schrijven'] } as never, 'schrijven')).toBe(true);
-    expect(ownsModule({ modules: ['schrijven'] } as never, 'spreken')).toBe(false);
+    expect(ownsModule({ modules: ['a2:schrijven'] } as never, 'a2', 'schrijven')).toBe(true);
+    expect(ownsModule({ modules: ['a2:schrijven'] } as never, 'a2', 'spreken')).toBe(false);
+  });
+
+  /**
+   * The whole point of putting the level in the module id: buying A2 Schrijven must not hand
+   * over B1 Schrijven, which is a separately authored and separately sold product.
+   */
+  it('does not grant the same skill at another level', () => {
+    expect(ownsModule({ modules: ['a2:schrijven'] } as never, 'b1', 'schrijven')).toBe(false);
+    expect(ownsModule({ modules: ['b1:schrijven'] } as never, 'a2', 'schrijven')).toBe(false);
   });
 
   /** Accounts that bought Professioneel or Compleet before modules existed keep everything. */
   it('grants everything on a legacy all-access plan', () => {
-    expect(ownsModule({ plan: 'premium' } as never, 'spreken')).toBe(true);
+    expect(ownsModule({ plan: 'premium' } as never, 'a2', 'spreken')).toBe(true);
   });
 
   it('revokes a module once the subscription period has ended', () => {
-    expect(ownsModule({ modules: ['schrijven'], modules_until: PAST } as never, 'schrijven')).toBe(false);
+    expect(ownsModule({ modules: ['a2:schrijven'], modules_until: PAST } as never, 'a2', 'schrijven')).toBe(false);
   });
 
   it('keeps it until then', () => {
-    expect(ownsModule({ modules: ['schrijven'], modules_until: FUTURE } as never, 'schrijven')).toBe(true);
+    expect(ownsModule({ modules: ['a2:schrijven'], modules_until: FUTURE } as never, 'a2', 'schrijven')).toBe(true);
+  });
+});
+
+describe('normaliseModule — the legacy bare slug', () => {
+  /**
+   * Every module sold before levels existed was an A2 module, because there was no other
+   * level. Reading a stored `lezen` as anything else would silently revoke a real purchase.
+   */
+  it('reads a bare skill slug as A2', () => {
+    expect(normaliseModule('lezen')).toBe('a2:lezen');
+    expect(ownsModule({ modules: ['lezen'] } as never, 'a2', 'lezen')).toBe(true);
+  });
+
+  it('does not let a legacy slug leak into B1', () => {
+    expect(ownsModule({ modules: ['lezen'] } as never, 'b1', 'lezen')).toBe(false);
+  });
+
+  it('passes an explicit id through and rejects nonsense', () => {
+    expect(normaliseModule('b1:spreken')).toBe('b1:spreken');
+    expect(normaliseModule('c1:lezen')).toBeNull();
+    expect(normaliseModule('a2:zwemmen')).toBeNull();
+    expect(normaliseModule('')).toBeNull();
+  });
+
+  it('drops unparseable entries rather than failing the whole list', () => {
+    expect(modulesFromMetadata({ modules: ['lezen', 'c1:lezen', 'b1:spreken'] } as never))
+      .toEqual(['a2:lezen', 'b1:spreken']);
   });
 });

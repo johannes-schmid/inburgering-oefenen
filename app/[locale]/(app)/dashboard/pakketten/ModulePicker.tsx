@@ -3,7 +3,7 @@
 import { useMemo, useState } from 'react';
 import { ArrowRight, Check, Loader2, Lock, Sparkles, TriangleAlert } from 'lucide-react';
 import SkillIcon from '@/components/site/SkillIcon';
-import type { SkillSlug } from '@/data/skills';
+import type { Level, SkillSlug } from '@/data/skills';
 import {
   BUNDLE_LIST_PRICE_CENTS,
   BUNDLE_PRICE_CENTS,
@@ -12,13 +12,21 @@ import {
   MODULE_PRICE_CENTS,
   priceForSelection,
   savingForSelection,
+  type ModuleSlug,
 } from '@/lib/pricing';
 
 export type PickerModule = {
-  slug: SkillSlug;
+  /** The full `level:skill` module id — what gets posted to checkout. */
+  slug: ModuleSlug;
+  level: Level;
+  /** `'A2'` — for the group heading. */
+  levelLabel: string;
+  /** The bare skill, for the icon (which keys on skill, not on module id). */
+  skill: SkillSlug;
   label: string;
   examCount: number;
-  itemCount: number;
+  /** `null` where DUO's format for this level is unverified. */
+  itemCount: number | null;
   itemNoun: string;
   hasRubricFeedback: boolean;
   /** Already paid for — shown as owned and excluded from the total. */
@@ -43,9 +51,9 @@ export default function ModulePicker({
 }: {
   modules: PickerModule[];
   locale: string;
-  initialSelection: SkillSlug[];
+  initialSelection: ModuleSlug[];
 }) {
-  const [selected, setSelected] = useState<SkillSlug[]>(initialSelection);
+  const [selected, setSelected] = useState<ModuleSlug[]>(initialSelection);
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -54,7 +62,24 @@ export default function ModulePicker({
   const saving = savingForSelection(selected);
   const allSelected = selected.length === modules.length;
 
-  function toggle(slug: SkillSlug) {
+  /**
+   * Modules grouped by level, preserving the order the server sent.
+   *
+   * The bundle discount applies per level (`priceForSelection`), so the levels have to be
+   * visually separate — a single flat grid of eight would make "bespaar 25% met alle vier"
+   * read as a claim about any four, which is not the offer.
+   */
+  const groups = useMemo(() => {
+    const out: { level: Level; levelLabel: string; mods: PickerModule[] }[] = [];
+    for (const m of modules) {
+      const g = out.find(x => x.level === m.level);
+      if (g) g.mods.push(m);
+      else out.push({ level: m.level, levelLabel: m.levelLabel, mods: [m] });
+    }
+    return out;
+  }, [modules]);
+
+  function toggle(slug: ModuleSlug) {
     setError(null);
     setSelected(prev => (prev.includes(slug) ? prev.filter(s => s !== slug) : [...prev, slug]));
   }
@@ -91,8 +116,12 @@ export default function ModulePicker({
 
   return (
     <div className="mp">
-      <div className="mp-grid">
-        {modules.map(mod => {
+      {groups.map(group => (
+      <section key={group.level} className="mp-group">
+        {/* Only labelled when there is more than one level to tell apart. */}
+        {groups.length > 1 && <h2 className="mp-group-title">Niveau {group.levelLabel}</h2>}
+        <div className="mp-grid">
+        {group.mods.map(mod => {
           const on = selected.includes(mod.slug);
           return (
             <label
@@ -112,11 +141,15 @@ export default function ModulePicker({
               </span>
 
               <span className="mp-head">
-                <SkillIcon skill={mod.slug} size="md" />
+                <SkillIcon skill={mod.skill} size="md" />
                 <span className="min-w-0">
                   <span className="mp-name">{mod.label}</span>
                   <span className="mp-meta">
-                    {mod.examCount} oefenexamens · {mod.itemCount} {mod.itemNoun}
+                    {/* The item count is dropped rather than shown as "—" when DUO's format
+                        for this level is unverified: a dash on a price card reads as a
+                        broken template, and the exam count alone is still true. */}
+                    {mod.examCount} oefenexamens
+                    {mod.itemCount !== null && ` · ${mod.itemCount} ${mod.itemNoun}`}
                   </span>
                 </span>
               </span>
@@ -131,12 +164,18 @@ export default function ModulePicker({
             </label>
           );
         })}
-      </div>
+        </div>
+      </section>
+      ))}
 
-      {buyable.length === modules.length && (
+      {buyable.length === modules.length && groups.length === 1 && (
         <div className="mp-bundle">
           {/* The list price stays visible beside the discounted one. A saving claim without its
-              reference price is the part consumer-protection rules actually object to. */}
+              reference price is the part consumer-protection rules actually object to.
+
+              Hidden once a second level is on sale: the discount is per level, so "alle vier"
+              beside a grid of eight would be an ambiguous claim about which four. Restoring a
+              per-level bundle badge is the follow-up when B1 content actually ships. */}
           <span className="mp-bundle-badge">
             <Sparkles size={13} strokeWidth={2.4} aria-hidden />
             Bespaar {BUNDLE_SAVING_PCT}% met alle vier de onderdelen
@@ -164,9 +203,13 @@ export default function ModulePicker({
             {euro(total)} <small>per maand</small>
           </p>
           {saving > 0 && <p className="mp-bar-saving">Je bespaart {euro(saving)} per maand</p>}
-          {selected.length === 3 && (
+          {selected.length === 3 && groups.length === 1 && (
             // Three modules cost €29,85 and four cost €29,95 — ten cents more for a whole extra
             // onderdeel. Not saying so would be withholding the obvious.
+            //
+            // Single-level only: with two levels on sale, three selected modules may span both,
+            // and `BUNDLE_PRICE_CENTS - total` would then quote a saving that no completion of
+            // the basket actually reaches.
             <p className="mp-bar-nudge">
               Voor {euro(BUNDLE_PRICE_CENTS - total)} meer krijg je het vierde onderdeel er ook bij.
             </p>
@@ -214,6 +257,9 @@ export default function ModulePicker({
       </p>
 
       <style>{`
+        .mp-group + .mp-group { margin-top:22px; }
+        .mp-group-title { font-family:var(--font-headline); font-size:0.95rem; font-weight:800; letter-spacing:-0.01em; color:var(--color-on-surface); margin:0 0 10px; }
+
         .mp-grid { display:grid; grid-template-columns:1fr; gap:12px; }
         @media (min-width:640px)  { .mp-grid { grid-template-columns:repeat(2,1fr); } }
         @media (min-width:1024px) { .mp-grid { grid-template-columns:repeat(4,1fr); } }

@@ -1,5 +1,6 @@
 import { type EmailLocale, t, dir } from '../i18n';
 import { renderEmail } from '../layout';
+import { DEFAULT_LEVEL } from '@/data/skills';
 
 type CatScore = { correct: number; total: number };
 
@@ -86,7 +87,7 @@ export function resultsEmail(
   }
 
   const practiceUrl = data.skill
-    ? `https://inburgeringoefenen.nl/oefenexamen/${data.skill}`
+    ? `https://inburgeringoefenen.nl/oefenexamen/${DEFAULT_LEVEL}/${data.skill}`
     : 'https://inburgeringoefenen.nl/oefenen';
 
   /* The score is plain text in a table cell, not an SVG ring: Gmail strips inline <svg>

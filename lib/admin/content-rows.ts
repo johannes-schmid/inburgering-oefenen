@@ -12,7 +12,7 @@
  * scoring changes.
  */
 import { createClient } from '@/lib/supabase/server';
-import type { SkillSlug } from '@/data/skills';
+import type { Level, SkillSlug } from '@/data/skills';
 
 export type ContentKind = 'question' | 'task';
 
@@ -21,6 +21,11 @@ export type ContentRow = {
   uid: string;
   kind: ContentKind;
   id: number;
+  /**
+   * `null` for a non-levelled onderdeel (KNM's shape) — those exist in the schema, so the
+   * list has to be able to hold one rather than crash or hide it.
+   */
+  level: Level | null;
   skill: SkillSlug;
   examNumber: number;
   examPublished: boolean;
@@ -72,7 +77,14 @@ export async function fetchContentRows(): Promise<ContentRow[]> {
       .select(
         'id, sort_order, prompt, explanation, option_layout, review_status, updated_at, prompt_audio_url, ' +
           'question_options(id, is_correct), ' +
-          'stimuli!inner(id, sort_order, title, kind, audio_url, exams!inner(skill, number, published))'
+          // `exams` is joined off the question directly, and `stimuli` is a LEFT join
+          // (no `!inner`). It used to reach the exam *through* the stimulus, which
+          // silently dropped every standalone question — a question with no stimulus is
+          // legal since 20260803000000_open_skill_axis.sql, and this list is the only
+          // screen that shows it. `questions.exam_id` is NOT NULL, so the exam is always
+          // there whether the stimulus is or not.
+          'exams!inner(level, skill, number, published), ' +
+          'stimuli(id, sort_order, title, kind, audio_url)'
       )
       .order('id'),
     supabase
@@ -80,7 +92,7 @@ export async function fetchContentRows(): Promise<ContentRow[]> {
       .select(
         'id, sort_order, skill, task_type, title, prompt_html, image_usage, review_status, updated_at, ' +
           'rubric_id, model_answer, prompt_audio_url, ' +
-          'exams!inner(number, published), open_task_images(id)'
+          'exams!inner(level, number, published), open_task_images(id)'
       )
       .order('id'),
   ]);
@@ -90,10 +102,11 @@ export async function fetchContentRows(): Promise<ContentRow[]> {
     option_layout: string; review_status: 'pending' | 'validated'; updated_at: string | null;
     prompt_audio_url: string | null;
     question_options: { id: number; is_correct: boolean }[];
+    exams: { level: Level | null; skill: SkillSlug; number: number; published: boolean };
+    /** null for a standalone question — see the select above. */
     stimuli: {
       id: number; sort_order: number; title: string | null; kind: string; audio_url: string | null;
-      exams: { skill: SkillSlug; number: number; published: boolean };
-    };
+    } | null;
   };
 
   type TRaw = {
@@ -101,7 +114,7 @@ export async function fetchContentRows(): Promise<ContentRow[]> {
     title: string | null; prompt_html: string | null; image_usage: string;
     review_status: 'pending' | 'validated'; updated_at: string | null;
     rubric_id: number | null; model_answer: string | null; prompt_audio_url: string | null;
-    exams: { number: number; published: boolean };
+    exams: { level: Level | null; number: number; published: boolean };
     open_task_images: { id: number }[];
   };
 
@@ -113,9 +126,10 @@ export async function fetchContentRows(): Promise<ContentRow[]> {
       uid: `question:${q.id}`,
       kind: 'question',
       id: q.id,
-      skill: q.stimuli.exams.skill,
-      examNumber: q.stimuli.exams.number,
-      examPublished: q.stimuli.exams.published,
+      level: q.exams.level,
+      skill: q.exams.skill,
+      examNumber: q.exams.number,
+      examPublished: q.exams.published,
       sortOrder: q.sort_order,
       title: q.prompt,
       typeLabel: `${options.length} opties${q.option_layout === 'text' ? '' : ` · ${q.option_layout}`}`,
@@ -124,13 +138,13 @@ export async function fetchContentRows(): Promise<ContentRow[]> {
       hasAnswerKey: options.some(o => o.is_correct),
       hasExplanation: Boolean(q.explanation?.trim()),
       // Luisteren needs the stimulus fragment; the per-question read-aloud is optional everywhere.
-      hasAudio: q.stimuli.kind === 'audio' ? Boolean(q.stimuli.audio_url) : null,
+      hasAudio: q.stimuli?.kind === 'audio' ? Boolean(q.stimuli.audio_url) : null,
       hasImages: null,
       hasModelAnswer: null,
       hasRubric: null,
-      stimulusId: q.stimuli.id,
-      stimulusTitle: q.stimuli.title,
-      stimulusKind: q.stimuli.kind,
+      stimulusId: q.stimuli?.id ?? null,
+      stimulusTitle: q.stimuli?.title ?? null,
+      stimulusKind: q.stimuli?.kind ?? null,
     });
   }
 
@@ -143,6 +157,7 @@ export async function fetchContentRows(): Promise<ContentRow[]> {
       uid: `task:${t.id}`,
       kind: 'task',
       id: t.id,
+      level: t.exams.level,
       skill: t.skill,
       examNumber: t.exams.number,
       examPublished: t.exams.published,

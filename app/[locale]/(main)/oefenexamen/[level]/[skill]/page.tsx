@@ -3,64 +3,81 @@ import { notFound } from 'next/navigation';
 import { getTranslations } from 'next-intl/server';
 import { routing } from '@/i18n/routing';
 import { SectionHeader, SkillIcon } from '@/components/site';
-import { SKILLS, getSkill, isFreeExam } from '@/data/skills';
+import {
+  LEVELS,
+  SKILLS,
+  formatCount,
+  getFormat,
+  getSkillAtLevel,
+  isFreeExam,
+  isLevel,
+  levelLabel,
+} from '@/data/skills';
 import { fetchExamsForSkill } from '@/lib/exams';
 
-type Props = { params: Promise<{ locale: string; skill: string }> };
+type Props = { params: Promise<{ locale: string; level: string; skill: string }> };
 
 const BASE = 'https://inburgeringoefenen.nl';
 
 export async function generateStaticParams() {
   return routing.locales.flatMap(locale =>
-    SKILLS.map(skill => ({ locale, skill: skill.slug }))
+    LEVELS.flatMap(level => SKILLS.map(skill => ({ locale, level, skill: skill.slug })))
   );
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
-  const { locale, skill: slug } = await params;
-  const skill = getSkill(slug);
+  const { locale, level: rawLevel, skill: slug } = await params;
+  if (!isLevel(rawLevel)) return {};
+  const level = rawLevel;
+  const skill = getSkillAtLevel(level, slug);
   if (!skill) return {};
 
   const t = await getTranslations({ locale, namespace: 'oefenexamen' });
   const tSkills = await getTranslations({ locale, namespace: 'skills' });
   const name = tSkills(`${skill.key}.name`);
-  const vars = { skill: name, skill_lower: name.toLowerCase() };
+  const vars = { skill: name, skill_lower: name.toLowerCase(), level: levelLabel(level) };
+  const path = `oefenexamen/${level}/${skill.slug}`;
 
   return {
     title: t('meta_title', vars),
     description: t('meta_description', vars),
-    robots: { index: true, follow: true },
+    // B1 has no content yet. Letting Google index forty empty "Binnenkort" grids would
+    // spend crawl budget on pages that answer nothing and invite a thin-content read of
+    // the whole section; they go back in the index when the docent publishes.
+    robots: { index: level === 'a2', follow: true },
     alternates: {
-      canonical: `${BASE}/${locale}/oefenexamen/${skill.slug}`,
+      canonical: `${BASE}/${locale}/${path}`,
       languages: {
-        nl: `${BASE}/nl/oefenexamen/${skill.slug}`,
-        en: `${BASE}/en/oefenexamen/${skill.slug}`,
-        ar: `${BASE}/ar/oefenexamen/${skill.slug}`,
-        'x-default': `${BASE}/nl/oefenexamen/${skill.slug}`,
+        nl: `${BASE}/nl/${path}`,
+        en: `${BASE}/en/${path}`,
+        ar: `${BASE}/ar/${path}`,
+        'x-default': `${BASE}/nl/${path}`,
       },
     },
     openGraph: {
       title: t('meta_title', vars),
       description: t('meta_description', vars),
       type: 'website',
-      url: `${BASE}/${locale}/oefenexamen/${skill.slug}`,
+      url: `${BASE}/${locale}/${path}`,
       siteName: 'Inburgering Oefenen',
     },
   };
 }
 
 export default async function SkillOverviewPage({ params }: Props) {
-  const { locale, skill: slug } = await params;
-  const skill = getSkill(slug);
+  const { locale, level: rawLevel, skill: slug } = await params;
+  if (!isLevel(rawLevel)) notFound();
+  const level = rawLevel;
+  const skill = getSkillAtLevel(level, slug);
   if (!skill) notFound();
 
   const t = await getTranslations({ locale, namespace: 'oefenexamen' });
   const tSkills = await getTranslations({ locale, namespace: 'skills' });
 
   const name = tSkills(`${skill.key}.name`);
-  const vars = { skill: name, skill_lower: name.toLowerCase() };
+  const vars = { skill: name, skill_lower: name.toLowerCase(), level: levelLabel(level) };
 
-  const exams = await fetchExamsForSkill(skill.slug);
+  const exams = await fetchExamsForSkill(level, skill.slug);
   const publishedByNumber = new Map(exams.map(e => [e.number, e]));
   const slots = Array.from({ length: skill.examCount }, (_, i) => i + 1);
   const anyPublished = exams.length > 0;
@@ -81,20 +98,29 @@ export default async function SkillOverviewPage({ params }: Props) {
             {tSkills(`${skill.key}.tagline`)}
           </p>
 
-          <dl className="flex flex-wrap gap-8 mt-8">
-            <div className="border-l-2 pl-4" style={{ borderColor: 'rgba(255,255,255,0.40)' }}>
-              <dd className="text-white font-extrabold text-xl font-headline tracking-tight">{skill.itemCount}</dd>
-              <dt className="text-xs uppercase tracking-wider font-semibold" style={{ color: 'rgba(255,255,255,0.65)' }}>
-                {tSkills('items_label')}
-              </dt>
-            </div>
-            <div className="border-l-2 pl-4" style={{ borderColor: 'rgba(255,255,255,0.40)' }}>
-              <dd className="text-white font-extrabold text-xl font-headline tracking-tight">{skill.durationMinutes}</dd>
-              <dt className="text-xs uppercase tracking-wider font-semibold" style={{ color: 'rgba(255,255,255,0.65)' }}>
-                {tSkills('duration_label')}
-              </dt>
-            </div>
-          </dl>
+          {/* Dropped entirely where DUO's format for this level is unverified. Two em dashes
+              under "VRAGEN" and "MINUTEN" is honest but reads as a broken template, and the
+              stats return by themselves once exam_formats has real numbers. */}
+          {(skill.itemCount !== null || skill.durationMinutes !== null) && (
+            <dl className="flex flex-wrap gap-8 mt-8">
+              {skill.itemCount !== null && (
+                <div className="border-l-2 pl-4" style={{ borderColor: 'rgba(255,255,255,0.40)' }}>
+                  <dd className="text-white font-extrabold text-xl font-headline tracking-tight">{skill.itemCount}</dd>
+                  <dt className="text-xs uppercase tracking-wider font-semibold" style={{ color: 'rgba(255,255,255,0.65)' }}>
+                    {tSkills('items_label')}
+                  </dt>
+                </div>
+              )}
+              {skill.durationMinutes !== null && (
+                <div className="border-l-2 pl-4" style={{ borderColor: 'rgba(255,255,255,0.40)' }}>
+                  <dd className="text-white font-extrabold text-xl font-headline tracking-tight">{skill.durationMinutes}</dd>
+                  <dt className="text-xs uppercase tracking-wider font-semibold" style={{ color: 'rgba(255,255,255,0.65)' }}>
+                    {tSkills('duration_label')}
+                  </dt>
+                </div>
+              )}
+            </dl>
+          )}
         </div>
       </section>
 
@@ -111,14 +137,14 @@ export default async function SkillOverviewPage({ params }: Props) {
           <ul className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4 list-none p-0 m-0">
             {slots.map(number => {
               const exam = publishedByNumber.get(number);
-              const free = isFreeExam(number);
+              const free = isFreeExam(level, number);
               const available = Boolean(exam);
 
               return (
                 <li key={number}>
                   {available ? (
                     <a
-                      href={`/${locale}/oefenexamen/${skill.slug}/${number}`}
+                      href={`/${locale}/oefenexamen/${level}/${skill.slug}/${number}`}
                       className={`exam-card${free ? '' : ' locked'} flex flex-col gap-3 p-6 rounded-2xl bg-surface-container-lowest no-underline`}
                       style={{ boxShadow: 'var(--shadow-card-md)' }}
                     >
@@ -193,14 +219,14 @@ export default async function SkillOverviewPage({ params }: Props) {
             {SKILLS.filter(s => s.slug !== skill.slug).map(other => (
               <a
                 key={other.slug}
-                href={`/${locale}/oefenexamen/${other.slug}`}
+                href={`/${locale}/oefenexamen/${level}/${other.slug}`}
                 className="exam-card flex items-center gap-4 p-5 rounded-2xl bg-surface-container-lowest no-underline"
                 style={{ boxShadow: 'var(--shadow-card)' }}
               >
                 <SkillIcon skill={other.slug} size="md" />
                 <div>
                   <p className="font-headline font-semibold text-on-surface text-sm">{tSkills(`${other.key}.name`)}</p>
-                  <p className="text-xs text-on-surface-variant">{tSkills('exams_count', { count: other.examCount })}</p>
+                  <p className="text-xs text-on-surface-variant">{tSkills('exams_count', { count: getFormat(level, other.slug).examCount })}</p>
                 </div>
               </a>
             ))}

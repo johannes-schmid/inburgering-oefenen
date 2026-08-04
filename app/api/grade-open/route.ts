@@ -2,6 +2,7 @@ import { NextResponse } from 'next/server';
 import { createClient } from '@/lib/supabase/server';
 import { createAdminClient } from '@/lib/supabase/admin';
 import { rubricCategory, type Rubric, type RubricCriterion } from '@/lib/rubrics';
+import type { Level } from '@/data/skills';
 import { gradeOpenAnswer, type FewShotExample, type GradeTask } from '@/lib/ai/grade';
 import { transcribeRecording } from '@/lib/ai/transcribe';
 import { planFromMetadata } from '@/lib/entitlements';
@@ -62,6 +63,9 @@ const TASK_SELECT =
   'id, skill, task_type, title, prompt_html, bullet_points, email_to, email_cc, email_subject, ' +
   'greeting, closing, min_sentences, form_schema, image_usage, max_record_seconds, ' +
   'model_answer, rubric_id, ' +
+  // The task's level, via its exam. `open_tasks` has no level column of its own — the exam is
+  // the single place it is recorded, and grading must not guess it.
+  'exams!inner(level), ' +
   'open_task_images(sort_order, caption, alt_text, group_label)';
 
 export async function POST(request: Request) {
@@ -129,6 +133,7 @@ export async function POST(request: Request) {
 
   type RawTask = Omit<GradeTask, 'images'> & {
     skill: 'schrijven' | 'spreken';
+    exams: { level: Level };
     rubric_id: number | null;
     open_task_images: GradeTask['images'];
   };
@@ -198,7 +203,7 @@ export async function POST(request: Request) {
     await logGradeAttempt(user.id, ip, raw.skill);
   }
 
-  const rubric = await resolveRubric(raw.skill, raw.rubric_id, task);
+  const rubric = await resolveRubric(raw.exams.level, raw.skill, raw.rubric_id, task);
   if (!rubric) {
     const message = `Er is nog geen actieve rubriek voor "${rubricCategory(task)}".`;
     await supabase.from('open_submissions').update({ grade_error: message }).eq('id', submission.id);
@@ -261,7 +266,7 @@ export async function POST(request: Request) {
       }
     }
 
-    const examples = await fetchFewShot(supabase, raw.skill, task);
+    const examples = await fetchFewShot(supabase, rubric.level, raw.skill, task);
 
     const result = await gradeOpenAnswer({
       rubric,
@@ -352,21 +357,32 @@ type Db = Awaited<ReturnType<typeof createClient>>;
  * the grading prompt, not the response.
  */
 async function resolveRubric(
+  level: Level,
   skill: 'schrijven' | 'spreken',
   rubricId: number | null,
   task: GradeTask
 ): Promise<Rubric | null> {
   const supabase = createAdminClient();
-  const cols = 'id, skill, task_type, version, criteria, system_prompt, active';
+  const cols = 'id, level, skill, task_type, version, criteria, system_prompt, active';
 
   if (rubricId != null) {
     const { data } = await supabase.from('rubrics').select(cols).eq('id', rubricId).maybeSingle();
-    if (data) return normaliseRubric(data);
+    // An explicitly linked rubric from the wrong level is a mis-authored task, not a fallback
+    // case. Refusing here beats grading against the other level's anchors and returning a mark
+    // that looks fine; `exam_publish_issues()` flags the same mismatch before publish.
+    if (data) {
+      const r = normaliseRubric(data);
+      if (r.level !== level) return null;
+      return r;
+    }
   }
 
+  // `rubrics_one_active_idx` is UNIQUE (level, skill, task_type) WHERE active, so this is one
+  // row per level. Without the level filter it would match both and `maybeSingle()` would throw.
   const { data } = await supabase
     .from('rubrics')
     .select(cols)
+    .eq('level', level)
     .eq('skill', skill)
     .eq('task_type', rubricCategory(task))
     .eq('active', true)
@@ -384,19 +400,26 @@ function normaliseRubric(row: unknown): Rubric {
 }
 
 /**
- * Few-shot examples: only the ones the docent promoted.
+ * Few-shot examples: only the ones the docent promoted, and only from this level.
  *
  * `use_as_fewshot = false` is the **test set** for /admin/beoordeling/evals. Feeding those in here
  * would train on the evaluation data and make every agreement number meaningless.
+ *
+ * The `level` filter matters just as much and fails more quietly. An A2 exemplar carries the
+ * docent's marks for an A2 answer; shown while grading B1 it teaches the model that A2 work
+ * earns those scores at B1. Nothing errors — the grades simply come back inflated, and the
+ * eval that would catch it is scored against the same contaminated prompt.
  */
 async function fetchFewShot(
   supabase: Db,
+  level: Level,
   skill: 'schrijven' | 'spreken',
   task: GradeTask
 ): Promise<FewShotExample[]> {
   const { data } = await supabase
     .from('grading_examples')
     .select('answer_text, transcript, teacher_result, notes')
+    .eq('level', level)
     .eq('skill', skill)
     .eq('task_type', rubricCategory(task))
     .eq('use_as_fewshot', true)

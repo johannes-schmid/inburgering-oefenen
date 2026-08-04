@@ -6,16 +6,16 @@ import { cn } from '@/lib/utils';
 import { buttonVariants } from '@/components/ui/button';
 import { TeacherCard, SkillIcon } from '@/components/site';
 import PricingViewTracker from '@/components/PricingViewTracker';
-import { SKILLS, getSkill } from '@/data/skills';
+import { DEFAULT_LEVEL, SKILLS, formatCount, getSkill, getSkillAtLevel } from '@/data/skills';
 import { FEATURES } from '@/lib/features';
 import {
-  MODULES,
   MODULE_PRICE_CENTS,
   BUNDLE_PRICE_CENTS,
   BUNDLE_LIST_PRICE_CENTS,
   BUNDLE_SAVING_CENTS,
-  TOTAL_EXAMS,
   euro,
+  modulesForLevel,
+  totalExamsForLevel,
 } from '@/lib/pricing';
 import { Lock, Check, Headphones, RefreshCw } from 'lucide-react';
 
@@ -147,7 +147,7 @@ function BrowserMockup() {
 
 /* ─── Feature mockups ───────────────────────────────────────────────────── */
 function ExamensMockup() {
-  const lezen = getSkill('lezen')!;
+  const lezen = getSkillAtLevel(DEFAULT_LEVEL, 'lezen')!;
   return (
     <div style={{ padding:'20px', background:'#f8f9fb', borderBottom:'1px solid #eceef0' }}>
       <div className="space-y-2">
@@ -159,7 +159,7 @@ function ExamensMockup() {
           <div key={ex.n} style={{ background:'#fff',border:'1px solid #eceef0',borderRadius:'12px',padding:'12px 14px',display:'flex',alignItems:'center',justifyContent:'space-between' }}>
             <div>
               <p style={{ fontSize:'12px',fontWeight:700,color:'#191c1e' }}>Lezen · oefenexamen {ex.n}</p>
-              <p style={{ fontSize:'10px',color:'#747782' }}>{lezen.itemCount} vragen · {lezen.durationMinutes} min</p>
+              <p style={{ fontSize:'10px',color:'#747782' }}>{formatCount(lezen.itemCount)} vragen · {formatCount(lezen.durationMinutes)} min</p>
             </div>
             <div style={{ textAlign:'right' }}>
               {ex.s ? <>
@@ -309,7 +309,11 @@ export default async function PremiumPage({ params }: Props) {
   const bundle = euro(BUNDLE_PRICE_CENTS);
   const list = euro(BUNDLE_LIST_PRICE_CENTS);
   const saving = euro(BUNDLE_SAVING_CENTS);
-  const examsPerModule = MODULES[0].examCount;
+  // This page sells A2: its prices, its bundle copy and its free offer are all A2's, and B1
+  // has no published content to advertise. Explicitly A2 rather than "all modules".
+  const a2Modules = modulesForLevel(DEFAULT_LEVEL);
+  const examsPerModule = a2Modules[0].examCount;
+  const totalExams = totalExamsForLevel(DEFAULT_LEVEL);
 
   /* Lessons and the word list are part of every module, but their A2 content is not
      authored yet — `lib/features.ts` still has them off. Mark those rows honestly rather
@@ -428,8 +432,8 @@ export default async function PremiumPage({ params }: Props) {
 
           {/* four module cards */}
           <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
-            {MODULES.map(mod => {
-              const skill = getSkill(mod.slug)!;
+            {a2Modules.map(mod => {
+              const skill = getSkill(mod.skill)!;
               return (
                 <div
                   key={mod.slug}
@@ -437,7 +441,7 @@ export default async function PremiumPage({ params }: Props) {
                   style={{ boxShadow:'0 1px 4px rgba(0,43,109,0.05),0 6px 20px rgba(0,43,109,0.05)' }}
                 >
                   <div className="px-5 pt-6 pb-5 flex-1">
-                    <SkillIcon skill={mod.slug} size="md" />
+                    <SkillIcon skill={mod.skill} size="md" />
                     <h3 className="font-headline font-extrabold text-on-surface text-lg mt-3.5 mb-1">{tS(`${skill.key}.name`)}</h3>
                     <p className="text-xs text-on-surface-variant leading-relaxed mb-4 min-h-[2.6rem]">{tS(`${skill.key}.tagline`)}</p>
 
@@ -453,8 +457,8 @@ export default async function PremiumPage({ params }: Props) {
                       <div className="flex items-start gap-2 text-sm text-on-surface-variant">
                         <CheckGreen />
                         <span>{mod.hasRubricFeedback
-                          ? tP('module_items_open', { count: mod.itemCount })
-                          : tP('module_items', { count: mod.itemCount })}</span>
+                          ? tP('module_items_open', { count: formatCount(mod.itemCount) })
+                          : tP('module_items', { count: formatCount(mod.itemCount) })}</span>
                       </div>
                       <div className="flex items-start gap-2 text-sm text-on-surface-variant">
                         <CheckGreen /><span>{tP('feat_7')}{soon(FEATURES.leren)}</span>
@@ -509,7 +513,7 @@ export default async function PremiumPage({ params }: Props) {
 
                 <div className="grid sm:grid-cols-2 gap-x-6 gap-y-2.5">
                   {[
-                    tP('bundle_f1', { exams: TOTAL_EXAMS }),
+                    tP('bundle_f1', { exams: totalExams }),
                     tP('bundle_f2'),
                     tP('bundle_f3'),
                     tP('bundle_f4'),
@@ -607,7 +611,7 @@ export default async function PremiumPage({ params }: Props) {
             <TeacherCard
               variant="compact"
               quote="Alle opgaven zijn door mij persoonlijk geschreven of gecontroleerd. Geen AI-gegenereerde content. De beoordelingsrubric voor Schrijven en Spreken komt ook van mij — ik controleer de beoordelingen en stuur bij waar nodig."
-              stats={[{ value: '10+', label: 'jaar ervaring' }, { value: String(TOTAL_EXAMS), label: 'oefenexamens' }]}
+              stats={[{ value: '10+', label: 'jaar ervaring' }, { value: String(totalExams), label: 'oefenexamens' }]}
             />
             <div className="bg-white rounded-2xl border border-outline-variant/50 overflow-hidden" style={{ boxShadow:'0 2px 8px rgba(0,43,109,0.04),0 10px 32px rgba(0,43,109,0.07)' }}>
               <RubricMockup />

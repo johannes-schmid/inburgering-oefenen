@@ -17,6 +17,8 @@
  * we do not have it. See `resources/exam-references/A2/` and the content rules in CLAUDE.md.
  */
 import type { RubricCategory, RubricCriterion } from './rubrics';
+import { registerFor } from './ai/level-register';
+import { DEFAULT_LEVEL, type Level } from '@/data/skills';
 
 /** A criterion shared by every writing category; the docent edits per category from here. */
 const WRITING_BASE: RubricCriterion[] = [
@@ -41,7 +43,7 @@ const WRITING_BASE: RubricCriterion[] = [
       '0': 'Te weinig woorden om de boodschap over te brengen.',
       '1': 'Zeer beperkte woordenschat; verkeerde woordkeuze hindert het begrip.',
       '2': 'Voldoende woorden voor het onderwerp; soms een onhandige keuze.',
-      '3': 'Passende woorden voor een alledaags onderwerp op A2-niveau.',
+      '3': 'Passende woorden voor een alledaags onderwerp op dit niveau.',
     },
   },
   {
@@ -102,7 +104,7 @@ const SPEAKING_BASE: RubricCriterion[] = [
       '0': 'Te weinig woorden om de boodschap over te brengen.',
       '1': 'Zeer beperkte woordenschat; verkeerde woordkeuze hindert het begrip.',
       '2': 'Voldoende woorden voor het onderwerp; soms een onhandige keuze.',
-      '3': 'Passende woorden voor een alledaags onderwerp op A2-niveau.',
+      '3': 'Passende woorden voor een alledaags onderwerp op dit niveau.',
     },
   },
   {
@@ -203,24 +205,32 @@ export function draftCriteria(category: RubricCategory): RubricCriterion[] {
   }
 }
 
-/** Draft system prompt. Same status as the criteria: a starting point for the docent. */
-export function draftSystemPrompt(category: RubricCategory): string {
+/**
+ * Draft system prompt. Same status as the criteria: a starting point for the docent.
+ *
+ * The level's tolerance line comes from `LEVEL_REGISTER`, shared with the live grader in
+ * `lib/ai/grade.ts`. Duplicating it here is how the prefilled prompt and the default prompt
+ * would drift into marking the same answer differently depending on whether the docent
+ * happened to save the prefill.
+ */
+export function draftSystemPrompt(
+  category: RubricCategory,
+  level: Level = DEFAULT_LEVEL,
+): string {
   const spoken = category.startsWith('speaking_');
+  const reg = registerFor(level);
   return [
     `Je past de beoordelingscriteria van een NT2-docent toe op ${
       spoken ? 'een spreekantwoord' : 'een schrijfantwoord'
-    } van een kandidaat die het inburgeringsexamen op A2-niveau oefent.`,
+    } van een kandidaat die het inburgeringsexamen op ${reg.label}-niveau oefent.`,
     '',
     'Je bepaalt niet zelf wat goed Nederlands is: je gebruikt uitsluitend de criteria en de',
     'ankerbeschrijvingen hieronder. Kies per criterium het anker dat het antwoord het beste',
     'beschrijft en geef dat cijfer.',
     '',
-    'A2 is een beginnersniveau. Eenvoudige zinnen met fouten zijn op dit niveau normaal en mogen',
-    'geen laag cijfer krijgen zolang de boodschap duidelijk is. Beoordeel niet strenger dan de',
-    'ankers voorschrijven.',
+    reg.tolerance,
     '',
-    'Schrijf de feedback in het Nederlands, op A2-niveau: korte zinnen, "je" in plaats van "u",',
-    'gewone woorden. Noem per criterium één concreet ding dat goed ging en één ding dat de',
+    `${reg.writeIn} Noem per criterium één concreet ding dat goed ging en één ding dat de`,
     'kandidaat de volgende keer anders kan doen. Geef geen herschreven modelantwoord.',
   ].join('\n');
 }

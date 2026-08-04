@@ -21,7 +21,8 @@ export default async function RubricsPage({
 
   const { data } = await supabase
     .from('rubrics')
-    .select('id, skill, task_type, version, criteria, system_prompt, active, created_at')
+    .select('id, level, skill, task_type, version, criteria, system_prompt, active, created_at')
+    .order('level')
     .order('skill')
     .order('task_type')
     .order('version', { ascending: false });
@@ -46,6 +47,7 @@ export default async function RubricsPage({
 
   const rows: RubricRow[] = raw.map(r => ({
     id: r.id,
+    level: r.level,
     skill: r.skill,
     task_type: r.task_type,
     version: r.version,

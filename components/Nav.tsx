@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import { useTranslations, useLocale } from 'next-intl';
 import { Link, usePathname, useRouter } from '@/i18n/navigation';
-import { SKILLS } from '@/data/skills';
+import { DEFAULT_LEVEL, SKILLS } from '@/data/skills';
 import { FEATURES } from '@/lib/features';
 import SkillIcon from '@/components/site/SkillIcon';
 import LogoMark from '@/components/site/LogoMark';
@@ -79,7 +79,7 @@ export default function Nav() {
                   {SKILLS.map(skill => (
                     <a
                       key={skill.slug}
-                      href={`/${locale}/oefenexamen/${skill.slug}`}
+                      href={`/${locale}/oefenexamen/${DEFAULT_LEVEL}/${skill.slug}`}
                       className="flex items-center gap-3 px-3 py-2.5 rounded-lg no-underline hover:bg-surface-container-low transition-colors"
                     >
                       <SkillIcon skill={skill.slug} size="sm" />
@@ -168,7 +168,7 @@ export default function Nav() {
             {SKILLS.map(skill => (
               <a
                 key={skill.slug}
-                href={`/${locale}/oefenexamen/${skill.slug}`}
+                href={`/${locale}/oefenexamen/${DEFAULT_LEVEL}/${skill.slug}`}
                 onClick={() => setMobileOpen(false)}
                 className="flex items-center gap-3 text-on-surface-variant font-semibold text-base px-3 py-2.5 rounded-xl hover:bg-surface-container-low hover:text-primary transition-colors no-underline"
               >

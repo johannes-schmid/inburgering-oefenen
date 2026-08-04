@@ -45,18 +45,21 @@ export async function fetchOpenTaskChoices(): Promise<{
   const [examsRes, partsRes, rubricsRes, sectionsRes, ordersRes] = await Promise.all([
     supabase
       .from('exams')
-      .select('id, skill, number, title, published')
+      .select('id, level, skill, number, title, published')
       .in('skill', ['schrijven', 'spreken'])
       .order('skill')
       .order('number'),
     supabase.from('exam_parts').select('id, exam_id, sort_order, title').order('sort_order'),
     supabase
       .from('rubrics')
-      .select('id, skill, task_type, version, active')
+      // Level included so the task editor can offer only rubrics of the exam's own level —
+      // an A2 rubric attached to a B1 task grades against the wrong anchors.
+      .select('id, level, skill, task_type, version, active')
+      .order('level')
       .order('skill')
       .order('task_type')
       .order('version', { ascending: false }),
-    supabase.from('sections').select('id, name_nl, topic').in('topic', ['schrijven', 'spreken']),
+    supabase.from('sections').select('id, level, name_nl, topic').in('topic', ['schrijven', 'spreken']),
     supabase.from('open_tasks').select('exam_id, sort_order'),
   ]);
 

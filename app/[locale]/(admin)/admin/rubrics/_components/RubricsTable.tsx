@@ -4,9 +4,11 @@ import { useMemo, useState } from 'react';
 import Link from 'next/link';
 import { AlertTriangle, Check, Plus } from 'lucide-react';
 import { categoriesForSkill, categoryLabel, type RubricSkill } from '@/lib/rubrics';
+import { DEFAULT_LEVEL, LEVELS, levelLabel, type Level } from '@/data/skills';
 
 export type RubricRow = {
   id: number;
+  level: Level;
   skill: RubricSkill;
   task_type: string;
   version: number;
@@ -26,6 +28,7 @@ const SKILLS: RubricSkill[] = ['schrijven', 'spreken'];
  */
 export default function RubricsTable({ rows, locale }: { rows: RubricRow[]; locale: string }) {
   const [skill, setSkill] = useState<RubricSkill | 'all'>('all');
+  const [level, setLevel] = useState<Level>(DEFAULT_LEVEL);
 
   const groups = useMemo(() => {
     return SKILLS.filter(s => skill === 'all' || s === skill).map(s => ({
@@ -33,21 +36,34 @@ export default function RubricsTable({ rows, locale }: { rows: RubricRow[]; loca
       categories: categoriesForSkill(s).map(category => ({
         category,
         versions: rows
-          .filter(r => r.skill === s && r.task_type === category)
+          .filter(r => r.level === level && r.skill === s && r.task_type === category)
           .sort((a, b) => b.version - a.version),
       })),
     }));
-  }, [rows, skill]);
+  }, [rows, skill, level]);
 
+  /**
+   * Uncovered categories in the level being viewed.
+   *
+   * Counted per level, because coverage is per level: an active A2 `email` rubric says nothing
+   * about whether B1 `email` can be graded. Counting across both would report full coverage
+   * while every B1 Schrijven task silently fails to grade.
+   */
   const missing = useMemo(
     () =>
       SKILLS.flatMap(s =>
         categoriesForSkill(s).filter(
-          c => !rows.some(r => r.skill === s && r.task_type === c && r.active)
+          c => !rows.some(r => r.level === level && r.skill === s && r.task_type === c && r.active)
         )
       ).length,
-    [rows]
+    [rows, level]
   );
+
+  const levelCounts = useMemo(() => {
+    const m: Record<string, number> = {};
+    for (const r of rows) m[r.level] = (m[r.level] ?? 0) + 1;
+    return m;
+  }, [rows]);
 
   return (
     <div className="space-y-6">
@@ -75,8 +91,8 @@ export default function RubricsTable({ rows, locale }: { rows: RubricRow[]; loca
           <AlertTriangle size={18} className="text-secondary shrink-0 mt-0.5" aria-hidden />
           <p className="text-sm text-on-surface leading-relaxed">
             <strong className="font-semibold">
-              {missing} {missing === 1 ? 'categorie heeft' : 'categorieën hebben'} nog geen actieve
-              rubriek.
+              {missing} {missing === 1 ? 'categorie heeft' : 'categorieën hebben'} op{' '}
+              {levelLabel(level)} nog geen actieve rubriek.
             </strong>{' '}
             Opdrachten in die categorieën kunnen niet beoordeeld worden — de kandidaat levert in en
             krijgt geen feedback.
@@ -84,7 +100,24 @@ export default function RubricsTable({ rows, locale }: { rows: RubricRow[]; loca
         </div>
       )}
 
-      <div className="flex items-center gap-2">
+      <div className="flex flex-wrap items-center gap-2">
+        {/* Level first: it scopes everything below it, including the missing-rubric warning. */}
+        <div className="flex items-center gap-1 mr-2 pr-2 border-r border-outline-variant">
+          {LEVELS.map(l => (
+            <button
+              key={l}
+              onClick={() => setLevel(l)}
+              className={`px-3 py-1.5 rounded-lg text-sm font-bold transition-colors ${
+                level === l
+                  ? 'bg-primary text-white'
+                  : 'text-on-surface-variant hover:bg-surface-container-high'
+              }`}
+            >
+              {levelLabel(l)}
+              <span className="ml-1.5 tabular-nums opacity-70">{levelCounts[l] ?? 0}</span>
+            </button>
+          ))}
+        </div>
         {(['all', ...SKILLS] as const).map(s => (
           <button
             key={s}
