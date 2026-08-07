@@ -87,9 +87,10 @@ rubric criterion — which is what makes Schrijven/Spreken progress chartable. `
 a **view** of the latest attempt; never write to it. Read `questions_flat` for the old flat
 option_a/b/c shape; write `question_options`.
 
-**Schema lives in three files:** `supabase/migrations/20260729000000_a2_baseline.sql`,
-`20260802000000_b1_level.sql` (the second CEFR level) and `20260803000000_open_skill_axis.sql`
-(makes a fifth onderdeel addable without a migration). See the two sections below.
+**Schema lives in four files:** `supabase/migrations/20260729000000_a2_baseline.sql`,
+`20260802000000_b1_level.sql` (the second CEFR level), `20260803000000_open_skill_axis.sql`
+(makes a fifth onderdeel addable without a migration) and `20260804000000_question_backlog.sql`
+(exam number 0 as a holding area, plus the stimulus→questions exam_id cascade). See the two sections below.
 The 26 inherited KNM migrations are archived in `supabase/legacy-knm-migrations/` and are
 **not** applied — that chain could not be replayed on an empty database at all, because one
 migration backfills from an `exam_results` table no migration ever created. See the README
@@ -127,6 +128,47 @@ exam numbers restart at 1 per level, so `(skill, number)` is no longer unique on
   quietest failure in the system: an A2 few-shot example shown while grading B1 returns a
   confident, plausible, wrong mark and no error anywhere. `fetchFewShot` and `resolveRubric` are
   both level-scoped for that reason.
+
+### What an exam has to look like inside — `exam_formats` and `sections`
+
+`20260805000000_exam_structure_rules.sql` gave the shape of an exam a home. `exam_formats` already
+held the item count and the duration; it now also holds `stimulus_count`,
+`questions_per_stimulus_min/_max`, `options_min/_max` and `audio_seconds_min/_max`, and `sections`
+is the tekstsoort axis (`stimuli.section_id` already pointed at it). **A2 Luisteren is the only
+worked-out pair: 25 questions over 10 fragments, 2–3 questions each, 3 or 4 options, 40–50 seconds
+of audio.** A2 Lezen carries the option range only.
+
+- **Every rule column is nullable and NULL means unverified.** The validator skips the check rather
+  than blocking the docent on a guess — the same convention `item_count` established, and the same
+  reason: a number invented in this table silently becomes the standard her work is measured
+  against. Fill one in only by working the shape out against DUO's material, and change
+  `RULES` in `data/skills.ts` in the same commit.
+- **There is deliberately no per-tekstsoort quota.** How many gesprekken versus mededelingen a DUO
+  exam holds is not something anyone has verified, so `exam_structure_summary(exam_id)` reports the
+  distribution and the docent judges it. The "Opbouw" card in the exam builder renders that, with a
+  second column showing what is waiting in the backlog per tekstsoort.
+- **Every structure rule is a warning, never an error** (owner's decision, 2026-08-07). A 24-of-25
+  exam she wants live must be able to go live. The one exception is the option count, which was
+  already a hard error and now merely reads its 3/4 from the format instead of hardcoding it.
+- **The validator's output scales with the content, so identical issues are grouped in the UI.**
+  Ten fragments with no recorded duration produced ten identical lines that pushed the real
+  blocking errors off the panel. `groupIssues()` in `ExamBuilder` collapses them into one line
+  naming the ids.
+- **`stimuli.audio_seconds` exists because the length is not recoverable from a URL.**
+  `/api/generate-stimulus-audio` writes it in the same UPDATE as `audio_url` (via
+  `lib/mp3-duration.ts`, which counts MPEG frame headers — there is no ffmpeg in a serverless
+  function), and for a pasted URL the editor reads it off the `<audio>` element's metadata.
+- **The backlog is exempt from every exam-level count**, including the pre-existing item-count
+  error, via `e.number > 0`. It is a holding area, not an exam; its publish panel is hidden too,
+  because `exams_backlog_never_published` rejects the UPDATE anyway.
+
+**Luisteren replays the fragment for every question; Lezen does not.** `ExamShell` keys
+`StimulusPane` on `stimulus:question` for Luisteren, so the audio remounts and starts at 0:00 on
+each question the way DUO presents it, and on the stimulus id for Lezen, so a text holds its scroll
+position across its 2–3 questions. This reverses the earlier behaviour (playback continued across a
+fragment's questions) on the owner's decision, 2026-08-07 — the doc comments in both files say so,
+because the previous ones asserted the opposite rule. Replay stays unlimited either way, and
+back-navigation with editable answers was already the case.
 
 ### A fifth onderdeel is addable without a migration
 
@@ -212,11 +254,27 @@ This is a **hard constraint on the code, not just the copy**:
   of 4.8 came across in the fork and were removed — the product has no customers yet.
   Reviews go back only when they are real.
 
-### Revenue model
-- **Free:** exam 1 of every skill, plus a 10-question taster per skill (no account).
-- **Professioneel €9,95:** all 40 exams, score per skill and per question type.
-- **Compleet €19,95:** + per-question explanations + rubric feedback on Schrijven/Spreken.
-- Payments via **Mollie** (iDEAL-first). One-off, lifetime access, no subscription.
+### Revenue model — one subscription per onderdeel
+
+**`lib/pricing.ts` is the single source of truth; the numbers below are a summary and must not be
+read as authoritative.** The old two-tier one-off model (Professioneel €9,95 / Compleet €19,95,
+lifetime) is **gone** — nothing sells it. `PRODUCTS` in `lib/api-constants.ts` survives only to
+describe historic one-off payments, and `plan: 'premium' | 'premium_plus'` in metadata is a legacy
+grant that still opens everything those customers bought.
+
+- **Free:** exam 1 of every A2 onderdeel (needs an account), plus a 10-question taster per skill
+  (no account).
+- **€9,95 per month per module**, where a module is `level:skill` — its 10 practice exams, lessons
+  and vocabulary cards.
+- **€29,95 per month for all four**, ten cents above three modules, so the copy says *bijna* four
+  for the price of three. `BUNDLE_SAVING_PCT` is derived, never typed by hand.
+- Payments via **Mollie**, iDEAL-first for the first payment, then SEPA Direct Debit for renewals.
+  Cancellable in `/dashboard/profiel`; access then runs to `modules_until`.
+
+**Entitlement is `ownsModule(meta, level, skill)` — never a bare plan check.** Both the player and
+the per-skill dashboard used to gate on "has any paid plan", so a customer who had bought the Lezen
+module was bounced to `/premium` from every Lezen exam while the dashboard overview — which already
+read `ownsModule` — showed the module as owned. Pinned by `tests/portal.spec.js`.
 
 ---
 
@@ -236,6 +294,78 @@ short-lived `/admin/content` were the same list twice and are gone; the per-item
 (`opgaven/[id]/edit`, `opgaven/new`) stay and are reached from the drawer's "Volledige editor".
 `/admin/leren` is deleted too — `FEATURES.leren` is off, so it authored content nothing could
 display. Woordkaarten stays.
+
+**The level is in the admin navigation, not in a filter on the page.** `lib/admin/nav.ts` is the
+single definition of the admin sidebar — the desktop shell and the mobile drawer had already drifted
+apart, so both render `_components/AdminNav.tsx`. Sections marked `levelled` (Examens, Vragen &
+opdrachten, Rubrieken) get an A2/B1 sub-menu and their pages read `?niveau=` through
+`levelFromSearch()`, which falls back to A2 on anything unrecognised. That makes a level linkable
+and reload-proof, which the old `useState` dropdown was not. **Beoordelen is deliberately not
+levelled** — it is a queue of what is waiting, and splitting the inbox by level hides work.
+
+**Items are written in `/admin/questions` and only assigned in `/admin/exams`** (owner's decision,
+2026-08-07). Two screens able to create the same rows meant two places to break the same
+constraints, and the exam builder's question is "is examen 3 complete?", not "what does this
+fragment say?".
+
+- **`_components/StimulusEditor.tsx` is the one fragment editor** — kind, tekstsoort, intro, body,
+  script, voice casting, audio generation, length, review status. It owns its own draft state and
+  writes directly, so any screen can drop it in with an `onSaved` callback.
+- **The tekstsoort is a column everywhere it matters.** `ContentRow.sectionName` carries it into
+  the grid (a question inherits its fragment's; an open task has its own), and the exam list shows
+  a chip row per card — "gesprek 3 · mededeling 3 · telefoongesprek 2" — so "is examen 3 the right
+  shape?" is answerable without opening it. An uncategorised fragment is shown as **geen** in the
+  brand orange rather than omitted; it is the gap most worth seeing. Note `text-warning` resolves
+  to `yellow-500` and is unreadable on its own 10% tint — use `#a24000` on `#fcecdd`.
+- **`/admin/questions` is the ReUI `DataGrid`** (same shape as `UsersTable`): sortable columns, a
+  pencil per row, exam/status filter popovers, an "alleen onvolledig" toggle and pagination, with
+  **the fragment as a parent row with its questions nested underneath** (built by hand — the ReUI
+  grid's expand hook renders a custom panel, not tree rows) and the existing `ContentSheet` drawer
+  on row click. A fragment stays listed even when the filters hide all of its questions: "which
+  fragment has nothing on it yet" is exactly what the screen is for. Clicking one opens
+  `StimulusSheet`, the same right-hand drawer the question editor uses.
+  `?onderdeel=` opens a tab and `?fragment=` opens that fragment's editor — which is how the exam
+  builder links out rather than editing in place.
+- **`ExamBuilder` is assignment-only**: Opbouw, the publish gate, the backlog pull-in, an ordered
+  read-only fragment list with the ⇄ move control, and the per-exam "genereer ontbrekende audio"
+  batch. No create, no inline editor, no delete.
+
+**Items are authored in a backlog and then assigned to an exam.** `exams.number = 0` is the
+per-(level, skill) **backlog**: a holding area for items that do not belong to an oefenexamen yet.
+It exists because `questions.exam_id` and `stimuli.exam_id` are both NOT NULL, so there was nowhere
+for an unassigned item to live and every authoring path started *inside* an exam — writing an item
+and filling a slot were the same action.
+
+- **`lib/admin/backlog.ts` is the only place the number 0 means anything** (client-safe: labels and
+  the constant). The queries are in `backlog-server.ts`. Anything that *lists or counts* the ten real
+  exams must skip it — `exams_real` is the view for that; resolving an exam by id can treat it as an
+  exam, because it is one.
+- **A backlog can never be published or free**, enforced by `exams_backlog_never_published`. A
+  published exam 0 would show up in the funnel as an eleventh oefenexamen full of drafts.
+- **Assignment is one UPDATE of `stimuli.exam_id`.** The exam builder's "Uit de backlog" panel pulls
+  items in; the ⇄ control on each stimulus and open task moves them anywhere, including back.
+- **`stimuli_sync_questions` cascades that UPDATE to the questions.** Without it — and it did not
+  exist before 2026-08-04 — moving a stimulus left its questions pointing at the *old* exam:
+  `questions_sync_exam_id` is a trigger on **questions** (`UPDATE OF stimulus_id`) and nothing
+  watched `stimuli.exam_id`. A stimulus and its questions are one unit; a Lezen text shared by three
+  questions cannot be split across two exams.
+- **Moving out of a published exam warns rather than refuses** (owner's decision, 2026-08-04), naming
+  how many recorded answers are attached. That count is read on the **service key**:
+  `user_question_results` has one policy, `auth.uid() = user_id`, and no admin SELECT — so the
+  docent's own session sees zero rows and the warning silently never fires. Same trap as `rubrics`.
+
+**Images are edited in the drawer, and uploaded to our own bucket.** `/api/admin/upload-image`
+takes a file off the docent's disk *or* a remote URL, re-encodes to WebP at ≤1600px and stores it in
+`question-images`. Everything goes through it — uploads, pasted URLs and Pexels picks — because an
+exam item pointing at a third-party CDN breaks silently months later with nobody having touched it.
+`OptionImagePicker` is the one picker, shared by the drawer and the full editors.
+
+The drawer may edit an option's `image_urls`, the image stimulus and `open_task_images`, because none
+of that inserts or deletes an option row. Adding, removing or re-labelling options stays in the full
+editor: deleting a `question_options` row cascades `user_question_results.chosen_option_id` to NULL
+and erases what past candidates picked. `/api/upload-pexels-image` and `/api/upload-wordcard-image`
+now require an admin too — both were reachable by anyone who knew the path, and both fetch an
+arbitrary URL from our infrastructure into a public bucket.
 
 **Rule:** needs the sidebar → `(app)`. Needs the public nav → `(main)`. Auth → `(auth)`.
 Internal content management → `(admin)`.
@@ -748,17 +878,40 @@ PATH="/opt/homebrew/bin:$PATH" npm run test:e2e     # playwright — browser
 PATH="/opt/homebrew/bin:$PATH" npm run test:open    # playwright HTML report
 ```
 **`tests-unit/`** (vitest, `vitest.config.mts`) covers logic that needs no browser: `lib/pricing.ts`,
-`lib/rubrics.ts`, `lib/entitlements.ts`, `lib/tts-dialogue.ts`. It runs in ~100 ms and **is
-expected to be green** — unlike the Playwright suite below. Add a case here whenever you fix a
-logic bug; the dialogue parser regression (inline speaker tags read as one speaker) is pinned that
-way. **`tests/`** stays Playwright's and is excluded from vitest's glob.
-Locale is `nl-NL` in `playwright.config.js` — prevents the i18n redirect to `/en/`.
-Auth-gated tests use `mockAuth()` (intercepts the Supabase CDN + fakes a session).
+`lib/rubrics.ts`, `lib/entitlements.ts`, `lib/tts-dialogue.ts`. It runs in ~200 ms and **is expected
+to be green.** Add a case here whenever you fix a logic bug; the dialogue parser regression (inline
+speaker tags read as one speaker) is pinned that way. **`tests/`** is Playwright's and is excluded
+from vitest's glob.
 
-**Current state: the suite is KNM-shaped and partly red.** The failures are the deliberately
-emptied content areas (oefenvragen topics, blog, leren thema) and the redesigned homepage
-CTA selector. Rewriting it per skill is outstanding work — until then, check that your
-change didn't break anything *else*, and don't treat green as achievable yet.
+**`tests/` was rewritten per onderdeel (2026-08-04) and is green: 53 pass, 2 documented skips.**
+Five files, each asking one question:
+
+| File | What it pins |
+|---|---|
+| `public.spec.js` | four onderdelen always visible, the funnel's entry point, ten slots per overview, concrete prices, the disabled surfaces |
+| `free-practice.spec.js` | feedback per question, the score withheld until the e-mail step, **the skip link** |
+| `seo.spec.js` | 140–160 char descriptions, unique titles, per-locale canonical, hreflang, sitemap |
+| `portal.spec.js` | **entitlement** — free vs paid vs module vs expired vs legacy plan |
+| `admin.spec.js` | the allowlist, the single content surface, and that every credit-spending route 401s |
+
+Locale is `nl-NL` in `playwright.config.js` — prevents the i18n redirect to `/en/`.
+
+- **Auth is real, not mocked.** `tests/helpers/session.mjs` mints a session against the local stack
+  through the same GoTrue endpoint the app uses, and chunks the cookie into `.0`/`.1` the way
+  `@supabase/ssr` does — Chromium drops a cookie over ~4 KB, so an unchunked one silently runs the
+  whole "authenticated" suite as an anonymous visitor. The old `mockAuth()` faked a session *and*
+  overrode `document.cookie` so nothing could notice; it kept passing against a page no real user
+  could reach. Run with `SUPABASE_SERVICE_KEY` and `NEXT_PUBLIC_SUPABASE_ANON_KEY` in the
+  environment; without them the auth-gated specs **skip** rather than fail.
+- **Entitlement can only be tested on an exam that has items.** With no content the player calls
+  `notFound()` before the gate is reached and the test passes for the wrong reason. The fixtures are
+  therefore B1 exam 1 of each onderdeel (the only seeded content), and `setExamFree()` borrows one of
+  them as the free case and restores it in `afterAll`.
+- **Two skips are findings, not flakes.** `test.fixme` marks the flag emoji in the language switcher
+  and the missing `<main>` landmark on the public pages. Both are one-line fixes waiting on a
+  decision; deleting the tests would lose the record.
+- **Assert structure and promises, not wording.** Copy changes weekly. A suite that fails on a
+  reworded heading is a suite people learn to ignore.
 
 ---
 

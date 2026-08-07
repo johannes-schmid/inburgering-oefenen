@@ -225,7 +225,7 @@
   },
   "oefenen": {
     "meta_title": "Gratis oefenen — 10 oefenvragen inburgering A2 | Inburgering Oefenen",
-    "meta_description": "Oefen gratis voor het inburgeringsexamen A2. Lezen en Luisteren met 10 oefenvragen en directe uitleg, Schrijven en Spreken met echte opgaven en feedback op de criteria van de docent.",
+    "meta_description": "Oefen gratis voor het inburgeringsexamen A2. Lezen en Luisteren met 10 vragen en directe uitleg, Schrijven en Spreken met feedback van de docent.",
     "breadcrumb": "Gratis oefenen",
     "pick_eyebrow": "Gratis oefenen",
     "pick_heading": "Kies een onderdeel om te oefenen",
@@ -678,7 +678,7 @@
   },
   "oefenexamen": {
     "meta_title": "{skill} {level} oefenen — 10 oefenexamens van een NT2-docent",
-    "meta_description": "Oefen {skill_lower} voor het inburgeringsexamen {level} met 10 volledige oefenexamens. Zelfde opbouw en tijdsduur als bij DUO, gemaakt en gecontroleerd door een gecertificeerde NT2-docent.",
+    "meta_description": "Oefen {skill_lower} voor het inburgeringsexamen {level} met 10 volledige oefenexamens. Dezelfde opbouw en tijdsduur als bij DUO, gemaakt door een NT2-docent.",
     "heading": "{skill} {level} oefenen",
     "exam_label": "Oefenexamen {number}",
     "free": "Gratis",

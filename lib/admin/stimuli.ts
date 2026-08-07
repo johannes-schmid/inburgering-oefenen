@@ -22,6 +22,7 @@ export type AdminStimulus = {
   image_url: string | null;
   image_alt: string | null;
   audio_url: string | null;
+  audio_seconds: number | null;
   script: string | null;
   voice_cast: Record<string, string> | null;
   review_status: 'pending' | 'validated';
@@ -77,7 +78,7 @@ export async function fetchExamStimuli(examId: number): Promise<AdminStimulus[]>
     .from('stimuli')
     .select(
       'id, exam_id, part_id, skill, sort_order, section_id, kind, intro, title, body_html, ' +
-      'image_url, image_alt, audio_url, script, voice_cast, review_status, ' +
+      'image_url, image_alt, audio_url, audio_seconds, script, voice_cast, review_status, ' +
       'questions(id, sort_order, prompt, option_layout, review_status, ' +
       'question_options(id, label, sort_order, body, image_urls, image_alt, is_correct))'
     )
@@ -112,4 +113,25 @@ export async function fetchPublishIssues(examId: number): Promise<PublishIssue[]
   const { data, error } = await supabase.rpc('exam_publish_issues', { p_exam_id: examId });
   if (error) return [];
   return (data ?? []) as PublishIssue[];
+}
+
+/** One row per tekstsoort present in an exam, plus a trailing 'Geen tekstsoort' row. */
+export type StructureRow = {
+  section_id: number | null;
+  name_nl: string;
+  sort_order: number;
+  stimulus_count: number;
+  question_count: number;
+};
+
+/**
+ * The Opbouw panel's data: how this exam's fragments and questions are spread across the
+ * text types. Reports only — there is deliberately no per-tekstsoort quota to compare it
+ * against, because nobody has verified one for DUO's exams.
+ */
+export async function fetchStructureSummary(examId: number): Promise<StructureRow[]> {
+  const supabase = await createClient();
+  const { data, error } = await supabase.rpc('exam_structure_summary', { p_exam_id: examId });
+  if (error) return [];
+  return (data ?? []) as StructureRow[];
 }

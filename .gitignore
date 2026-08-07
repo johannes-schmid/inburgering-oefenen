@@ -33,3 +33,8 @@ supabase/.temp
 # Machine-local Claude settings. The permissions allowlist records past shell commands
 # verbatim, so it can contain API keys that were passed inline — never commit it.
 .claude/settings.local.json
+
+# Exam working material. Same rule as /resources: this repo is public, and these exports
+# show the *correct answer* for every item — publishing them hands over the answer key,
+# quite apart from DUO's no-reproduction notice on the material they were modelled on.
+/Example Exams/

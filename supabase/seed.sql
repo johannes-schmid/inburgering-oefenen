@@ -38,3 +38,17 @@ FROM (VALUES
 ) AS s(skill, duration_seconds)
 CROSS JOIN generate_series(1, 10) AS n(number)
 ON CONFLICT (level, skill, number) DO NOTHING;
+
+-- ── The per-(level, skill) backlogs ───────────────────────────────────────────
+-- Exam number 0 is a holding area for items that have not been assigned to an oefenexamen yet;
+-- see 20260804000000_question_backlog.sql for why it is an exam row rather than a nullable exam_id.
+--
+-- Seeded here as well as in that migration because the two run in different situations: the
+-- migration's INSERT reads existing exam rows, which is right for a database that already has them
+-- (the hosted project) and a no-op on a fresh `supabase db reset`, where migrations run before this
+-- file. Both are `ON CONFLICT DO NOTHING`, so whichever gets there first wins.
+INSERT INTO public.exams (level, skill, number, title, duration_seconds, pass_threshold_pct, published, is_free)
+SELECT e.level, e.skill, 0, 'Backlog', e.duration_seconds, e.pass_threshold_pct, false, false
+FROM public.exams e
+WHERE e.number = 1
+ON CONFLICT (level, skill, number) DO NOTHING;

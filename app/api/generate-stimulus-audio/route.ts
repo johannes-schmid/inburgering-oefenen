@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server';
 import { createAdminClient } from '@/lib/supabase/admin';
 import { requireAdmin } from '@/lib/admin/guard';
+import { mp3DurationSeconds } from '@/lib/mp3-duration';
 import {
   buildDialogueInputs,
   DIALOGUE_ENDPOINT,
@@ -141,7 +142,9 @@ export async function POST(request: Request) {
     try {
       const audio = await synthesizeDialogue(buildDialogueInputs(body.script, cast.cast), apiKey);
       const url = await uploadAudio(`exam-${body.examId}/draft-${Date.now()}.mp3`, audio);
-      return NextResponse.json({ audio_url: url });
+      // The editor saves this alongside the URL: there is no row to write it to yet, and the
+      // length is not recoverable from the URL afterwards.
+      return NextResponse.json({ audio_url: url, audio_seconds: mp3DurationSeconds(audio) });
     } catch (err) {
       const message = err instanceof Error ? err.message : String(err);
       console.error('[generate-stimulus-audio] draft', message);
@@ -181,7 +184,7 @@ export async function POST(request: Request) {
     );
   }
 
-  const generated: { id: number; audio_url: string }[] = [];
+  const generated: { id: number; audio_url: string; audio_seconds: number | null }[] = [];
   const failed: { id: number; error: string }[] = [];
 
   for (const row of rows) {
@@ -208,10 +211,16 @@ export async function POST(request: Request) {
       // published keeps one canonical object rather than accumulating orphans in the bucket.
       const url = await uploadAudio(`stimulus-${row.id}/stimulus.mp3`, audio);
 
-      const { error: updErr } = await db.from('stimuli').update({ audio_url: url }).eq('id', row.id);
+      // Written in the same UPDATE as the URL, so the two can never disagree about which
+      // file the length describes.
+      const seconds = mp3DurationSeconds(audio);
+      const { error: updErr } = await db
+        .from('stimuli')
+        .update({ audio_url: url, audio_seconds: seconds })
+        .eq('id', row.id);
       if (updErr) throw new Error(updErr.message);
 
-      generated.push({ id: row.id, audio_url: url });
+      generated.push({ id: row.id, audio_url: url, audio_seconds: seconds });
     } catch (err) {
       const message = err instanceof Error ? err.message : String(err);
       console.error('[generate-stimulus-audio]', row.id, message);

@@ -531,9 +531,20 @@ export default function ExamShell({ content, canSeeExplanations }: Props) {
 
         {step.kind === 'mcq' ? (
           <div className="grid gap-5 lg:grid-cols-2 items-start">
-            {/* Keyed on the stimulus, not the question index: two questions on one e-mail
-                must reuse this subtree so Luisteren audio keeps playing. */}
-            <StimulusPane key={step.stimulus.id} stimulus={step.stimulus} />
+            {/* The key decides whether the pane survives moving between two questions on one
+                stimulus, and the two skills want opposite things:
+                  · Lezen keys on the stimulus, so the text stays mounted and does not
+                    re-scroll while the candidate works through its questions;
+                  · Luisteren keys on stimulus+question, so the fragment remounts and the audio
+                    plays again from 0:00 for every question, the way DUO presents it (owner's
+                    decision, 2026-08-07). Replay stays unlimited within a question.
+                Changing this back would silently change what the exam tests. */}
+            <StimulusPane
+              key={exam.skill === 'luisteren'
+                ? `${step.stimulus.id}:${step.question.id}`
+                : step.stimulus.id}
+              stimulus={step.stimulus}
+            />
             <McqQuestion
               question={step.question}
               questionNumber={idx + 1}

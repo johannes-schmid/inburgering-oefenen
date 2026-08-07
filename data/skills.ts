@@ -120,6 +120,29 @@ export type SkillFormat = {
 
 export type LevelledSkill = Skill & SkillFormat & { level: Level };
 
+/**
+ * The authoring rules for one (level, skill) — what an exam has to look like *inside*,
+ * beyond its item count.
+ *
+ * Deliberately separate from `SkillFormat`: those two numbers are read by marketing pages
+ * and the dashboard, these are read only by admin. Folding them together would put the
+ * docent's authoring rules into the page payload of every public route.
+ *
+ * Mirrors the matching columns on `exam_formats` — change both in the same commit. `null`
+ * means unverified, exactly as it does there, and every consumer must skip the rule rather
+ * than substitute a guess: `exam_publish_issues()` does not check what it does not know.
+ */
+export type SkillRules = {
+  /** Fragments (teksten of audio) in one exam. */
+  stimulusCount: number | null;
+  /** Questions hanging off one fragment. */
+  questionsPerStimulus: [number, number] | null;
+  /** Answer options per question. */
+  options: [number, number] | null;
+  /** Length of one audio fragment, in seconds. Meaningless for a non-audio onderdeel. */
+  audioSeconds: [number, number] | null;
+};
+
 export const SKILLS: Skill[] = [
   { slug: 'lezen',     key: 'lezen',     scoring: 'mcq',  requiresStimulus: true, isLevelled: true },
   { slug: 'luisteren', key: 'luisteren', scoring: 'mcq',  requiresStimulus: true, isLevelled: true },
@@ -147,6 +170,30 @@ const FORMATS: Record<Level, Record<SkillSlug, SkillFormat>> = {
     schrijven: { itemCount: null, durationMinutes: null, examCount: 10 },
     spreken:   { itemCount: null, durationMinutes: null, examCount: 10 },
   },
+};
+
+const NO_RULES: SkillRules = {
+  stimulusCount: null, questionsPerStimulus: null, options: null, audioSeconds: null,
+};
+
+/**
+ * Mirrors the rule columns on `exam_formats`.
+ *
+ * Only A2 Luisteren is worked out: 25 questions over 10 fragments, 2–3 questions each,
+ * 3 or 4 options, 40–50 seconds of audio. A2 Lezen carries the option range only, because
+ * that one rule was already hardcoded in the publish validator and moving it here is not a
+ * new claim. Everything else stays `null` until someone works the shape out against DUO's
+ * material the way A2 Luisteren was — a number invented here silently becomes the standard
+ * the docent's work is measured against.
+ */
+const RULES: Record<Level, Record<SkillSlug, SkillRules>> = {
+  a2: {
+    lezen:     { ...NO_RULES, options: [3, 4] },
+    luisteren: { stimulusCount: 10, questionsPerStimulus: [2, 3], options: [3, 4], audioSeconds: [40, 50] },
+    schrijven: NO_RULES,
+    spreken:   NO_RULES,
+  },
+  b1: { lezen: NO_RULES, luisteren: NO_RULES, schrijven: NO_RULES, spreken: NO_RULES },
 };
 
 export function isSkillSlug(x: unknown): x is SkillSlug {
@@ -199,4 +246,16 @@ export function isFreeExam(level: Level, examNumber: number): boolean {
  */
 export function formatCount(n: number | null): string {
   return n === null ? '—' : String(n);
+}
+
+/** The authoring rules for one (level, skill). See `SkillRules`. */
+export function formatRules(level: Level, slug: SkillSlug): SkillRules {
+  return RULES[level][slug];
+}
+
+/** `[2, 3]` → `'2–3'`, `[3, 3]` → `'3'`, `null` → `'—'`. En dash, not a hyphen. */
+export function formatRange(range: [number, number] | null): string {
+  if (range === null) return '—';
+  const [lo, hi] = range;
+  return lo === hi ? String(lo) : `${lo}–${hi}`;
 }

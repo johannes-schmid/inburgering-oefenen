@@ -3,7 +3,7 @@ import { notFound, redirect } from 'next/navigation';
 import { getTranslations } from 'next-intl/server';
 import { ArrowRight, Check, Lock, Clock, ListChecks, RotateCcw } from 'lucide-react';
 import { createClient } from '@/lib/supabase/server';
-import { planFromMetadata } from '@/lib/entitlements';
+import { ownsModule } from '@/lib/entitlements';
 import { fetchPortalProgress, fetchPublishedExamNumbers } from '@/lib/portal-progress';
 import { formatCount, getSkillAtLevel, isFreeExam, isLevel } from '@/data/skills';
 import SkillIcon from '@/components/site/SkillIcon';
@@ -44,8 +44,10 @@ export default async function SkillExamsPage({ params }: Props) {
   const { data: { user } } = await supabase.auth.getUser();
   if (!user) redirect(`/${locale}/login?next=/dashboard/${level}/${skill.slug}`);
 
-  const plan = planFromMetadata(user.user_metadata);
-  const hasPaidPlan = plan !== 'free';
+  // Per-onderdeel ownership, not "has any paid plan". The dashboard overview already read it this
+  // way, so the two screens disagreed: the card said the module was owned and its ten slots all
+  // showed locked.
+  const ownsThisSkill = ownsModule(user.user_metadata, level, skill.slug);
   const [progress, published] = await Promise.all([
     fetchPortalProgress(user.id),
     fetchPublishedExamNumbers(),
@@ -126,7 +128,7 @@ export default async function SkillExamsPage({ params }: Props) {
               const done = p.exams[n];
               const isPublished = pub.has(n);
               const free = isFreeExam(level, n);
-              const openable = isPublished && (free || hasPaidPlan);
+              const openable = isPublished && (free || ownsThisSkill);
 
               const href = openable
                 ? `/${locale}/oefenexamen/${level}/${skill.slug}/${n}`

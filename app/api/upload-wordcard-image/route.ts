@@ -1,8 +1,15 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { createAdminClient } from '@/lib/supabase/admin';
+import { requireAdmin } from '@/lib/admin/guard';
 import sharp from 'sharp';
 
 export async function POST(req: NextRequest) {
+  // Was reachable by anyone who knew the path: it fetches an arbitrary URL from our
+  // infrastructure and writes the result into a public bucket, so an unauthenticated version
+  // is a free image host with our egress. See /api/admin/upload-image, which supersedes this.
+  const admin = await requireAdmin();
+  if (!admin.ok) return NextResponse.json({ error: admin.error }, { status: admin.status });
+
   const { url, wordcardId } = await req.json();
   if (!url || !wordcardId) return NextResponse.json({ error: 'Missing url or wordcardId' }, { status: 400 });
 

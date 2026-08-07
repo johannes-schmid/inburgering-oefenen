@@ -7,10 +7,19 @@ import type { StimulusItem } from '@/lib/exam-content';
 /**
  * The left pane: the text, scan or audio fragment a stimulus's 1..N questions all refer to.
  *
- * `memo` on the stimulus id is not cosmetic. Advancing from question 1 to question 2 of the
- * same e-mail must not re-render this subtree, or the <audio> element unmounts and Luisteren
- * playback restarts from zero halfway through a fragment. `ExamShell` therefore keys the
- * pane on `stimulus.id`, never on the question index.
+ * `memo` keeps this subtree alive across a re-render of the shell, so the pane does not flash
+ * and re-scroll every time the candidate picks an option. Whether it survives *moving between
+ * questions* is decided by the `key` `ExamShell` gives it, and the two skills want opposite
+ * things:
+ *
+ *   · **Lezen** is keyed on the stimulus id: the same text stays mounted across its 2–3
+ *     questions, holding its scroll position.
+ *   · **Luisteren** is keyed on stimulus+question, so the fragment remounts and the audio
+ *     starts again from 0:00 for every question — DUO plays the fragment once per question,
+ *     and the owner's decision (2026-08-07) is to match it. This deliberately reverses the
+ *     earlier behaviour, where playback continued across the questions of one fragment.
+ *
+ * Replay stays unlimited either way; see `AudioPlayer`.
  */
 function StimulusPane({ stimulus }: { stimulus: StimulusItem }) {
   const s = stimulus;

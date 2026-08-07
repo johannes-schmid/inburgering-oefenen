@@ -11,6 +11,21 @@ export async function generateStaticParams() {
   return routing.locales.map((locale) => ({ locale }));
 }
 
+/**
+ * Canonical and hreflang, per locale, from one map.
+ *
+ * The canonical used to be hardcoded to the `/nl` URL for all three locales, which tells Google the
+ * English and Arabic pages are duplicates of the Dutch one — so neither can ever rank, and the
+ * hreflang block right below it said the opposite. The pathnames are localised (i18n/routing.ts),
+ * so the right URL cannot be built by interpolating the locale; it has to come from this map.
+ */
+const ALTERNATES = {
+  nl: 'https://inburgeringoefenen.nl/nl/docent',
+  en: 'https://inburgeringoefenen.nl/en/teacher',
+  ar: 'https://inburgeringoefenen.nl/ar/%D8%A7%D9%84%D9%85%D8%B9%D9%84%D9%85%D8%A9',
+  'x-default': 'https://inburgeringoefenen.nl/nl/docent',
+} as const;
+
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { locale } = await params;
   const t = await getTranslations({ locale, namespace: 'docent' });
@@ -18,13 +33,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     title: t('meta_title'),
     description: t('meta_description'),
     alternates: {
-      canonical: 'https://inburgeringoefenen.nl/nl/docent',
-      languages: {
-        nl: 'https://inburgeringoefenen.nl/nl/docent',
-        en: 'https://inburgeringoefenen.nl/en/teacher',
-        ar: 'https://inburgeringoefenen.nl/ar/%D8%A7%D9%84%D9%85%D8%B9%D9%84%D9%85%D8%A9',
-        'x-default': 'https://inburgeringoefenen.nl/nl/docent',
-      },
+      canonical: ALTERNATES[locale as 'nl' | 'en' | 'ar'] ?? ALTERNATES.nl,
+      languages: ALTERNATES,
     },
     openGraph: {
       title: 'Marieke Schipper — Gecertificeerde KNM-docent',

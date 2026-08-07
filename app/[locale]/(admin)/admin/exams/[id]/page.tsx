@@ -2,7 +2,11 @@ import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { ArrowLeft } from 'lucide-react';
 import { createClient } from '@/lib/supabase/server';
-import { fetchExamStimuli, fetchPublishIssues } from '@/lib/admin/stimuli';
+import { fetchExamStimuli, fetchPublishIssues, fetchStructureSummary } from '@/lib/admin/stimuli';
+import { examLabel, isBacklog } from '@/lib/admin/backlog';
+import {
+  countRecordedAnswers, fetchAssignTargets, fetchBacklogExamId,
+} from '@/lib/admin/backlog-server';
 import { formatCount, getFormat, getSkill, levelLabel, type Level } from '@/data/skills';
 import ExamBuilder from '../_components/ExamBuilder';
 
@@ -31,16 +35,42 @@ export default async function ExamBuilderPage({
   };
   const skill = getSkill(row.skill);
 
-  const [stimuli, issues, sectionsRes, tasksRes] = await Promise.all([
-    fetchExamStimuli(examId),
-    fetchPublishIssues(examId),
-    supabase.from('sections').select('id, name_nl').eq('level', row.level).eq('topic', row.skill).order('sort_order'),
-    supabase
-      .from('open_tasks')
-      .select('id, sort_order, task_type, title, image_usage, review_status')
-      .eq('exam_id', examId)
-      .order('sort_order'),
-  ]);
+  const backlogExamId = await fetchBacklogExamId(row.level, row.skill);
+  const viewingBacklog = isBacklog(row.number);
+
+  const [
+    stimuli, issues, tasksRes, targets, backlogStimuli, backlogTasksRes,
+    structure, backlogStructure,
+  ] =
+    await Promise.all([
+      fetchExamStimuli(examId),
+      fetchPublishIssues(examId),
+      supabase
+        .from('open_tasks')
+        .select('id, sort_order, task_type, title, image_usage, review_status')
+        .eq('exam_id', examId)
+        .order('sort_order'),
+      fetchAssignTargets(row.level, row.skill),
+      // The pull-in list. Empty when this *is* the backlog — you cannot take items from yourself.
+      backlogExamId && !viewingBacklog ? fetchExamStimuli(backlogExamId) : Promise.resolve([]),
+      backlogExamId && !viewingBacklog
+        ? supabase
+            .from('open_tasks')
+            .select('id, sort_order, task_type, title, image_usage, review_status')
+            .eq('exam_id', backlogExamId)
+            .order('sort_order')
+        : Promise.resolve({ data: [] }),
+      fetchStructureSummary(examId),
+      // What is waiting in the backlog, per tekstsoort — the other half of "wat mis ik nog".
+      backlogExamId && !viewingBacklog
+        ? fetchStructureSummary(backlogExamId)
+        : Promise.resolve([]),
+    ]);
+
+  // Only for what is in this exam: it is the number the docent needs before moving an item *out*.
+  const recordedAnswers = row.published
+    ? Object.fromEntries(await countRecordedAnswers(stimuli.map(s => s.id)))
+    : {};
 
   return (
     <div>
@@ -53,13 +83,15 @@ export default async function ExamBuilderPage({
           <ArrowLeft size={20} aria-hidden />
         </Link>
         <h1 className="text-2xl font-headline font-bold text-on-surface capitalize">
-          {levelLabel(row.level)} {row.skill} — examen {row.number}
+          {levelLabel(row.level)} {row.skill} — {examLabel(row.number).toLowerCase()}
         </h1>
       </div>
       <p className="text-sm text-on-surface-variant mb-6 ml-8">
-        {skill
-          ? `${formatCount(getFormat(row.level, skill.slug).itemCount)} opgaven · ${Math.round(row.duration_seconds / 60)} minuten · oefengrens ${row.pass_threshold_pct}%`
-          : `${Math.round(row.duration_seconds / 60)} minuten`}
+        {viewingBacklog
+          ? 'Werk hier items uit zonder ze aan een oefenexamen te binden. Wijs ze daarna toe met “Verplaats naar”.'
+          : skill
+            ? `${formatCount(getFormat(row.level, skill.slug).itemCount)} opgaven · ${Math.round(row.duration_seconds / 60)} minuten · oefengrens ${row.pass_threshold_pct}%`
+            : `${Math.round(row.duration_seconds / 60)} minuten`}
       </p>
 
       <ExamBuilder
@@ -67,7 +99,16 @@ export default async function ExamBuilderPage({
         exam={row}
         stimuli={stimuli}
         issues={issues}
-        sections={(sectionsRes.data ?? []) as { id: number; name_nl: string }[]}
+        targets={targets.filter(t => t.id !== examId)}
+        backlogStimuli={backlogStimuli}
+        backlogTasks={(backlogTasksRes.data ?? []) as {
+          id: number; sort_order: number; task_type: string;
+          title: string | null; image_usage: string; review_status: string;
+        }[]}
+        recordedAnswers={recordedAnswers}
+        viewingBacklog={viewingBacklog}
+        structure={structure}
+        backlogStructure={backlogStructure}
         tasks={(tasksRes.data ?? []) as {
           id: number; sort_order: number; task_type: string;
           title: string | null; image_usage: string; review_status: string;

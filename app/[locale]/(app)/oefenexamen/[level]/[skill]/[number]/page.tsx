@@ -3,7 +3,7 @@ import { notFound, redirect } from 'next/navigation';
 import { getSkillAtLevel, isLevel } from '@/data/skills';
 import { fetchExamContent } from '@/lib/exam-content';
 import { createClient } from '@/lib/supabase/server';
-import { canOpenExam, canSeeExplanations, planFromMetadata } from '@/lib/entitlements';
+import { canSeeExplanations, ownsModule, planFromMetadata } from '@/lib/entitlements';
 import AppShell from '../../../../components/AppShell';
 import ExamShell from '@/components/exam/ExamShell';
 
@@ -40,7 +40,12 @@ export default async function ExamPage({ params }: Props) {
   if (!content) notFound();
 
   const plan = planFromMetadata(user.user_metadata);
-  if (!canOpenExam(plan, content.exam.is_free)) {
+  // `ownsModule` — not `canOpenExam(plan, …)`. The product is sold per onderdeel, and the plan-only
+  // check meant somebody who had bought the Lezen module was still bounced to /premium from every
+  // Lezen exam: the dashboard showed the module as owned (it already used `ownsModule`) and the
+  // player disagreed, so a paid customer saw "unlocked" and then got the upsell. `ownsModule` still
+  // returns true for the legacy all-access plans, so nothing that used to open has closed.
+  if (!content.exam.is_free && !ownsModule(user.user_metadata, level, skill.slug)) {
     redirect(`/${locale}/premium?vanaf=oefenexamen-${level}-${skill.slug}-${number}`);
   }
 

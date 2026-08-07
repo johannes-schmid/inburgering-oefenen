@@ -56,16 +56,19 @@ for (const [width, height, tag] of [[390, 844, 'mobile'], [1440, 900, 'desktop']
   await page.goto(url, { waitUntil: 'networkidle2', timeout: 45000 });
   await new Promise(r => setTimeout(r, 800));
 
-  if (clickSelector) {
-    const clicked = await page.evaluate(sel => {
-      const el = document.querySelector(sel);
+  // Comma-separated selectors are clicked in order, because reaching a drawer often takes two
+  // steps — switch to the Spreken tab, *then* open the first row. One click could only ever
+  // photograph the default tab.
+  for (const sel of (clickSelector ? clickSelector.split(',') : []).map(s => s.trim()).filter(Boolean)) {
+    const clicked = await page.evaluate(s => {
+      const el = document.querySelector(s);
       if (el) { el.click(); return true; }
       return false;
-    }, clickSelector);
+    }, sel);
     // Reported rather than silently skipped: a shot of the page *without* the drawer open looks
     // fine and proves nothing about the thing being reviewed.
-    console.log(`${tag}: clicked ${clickSelector} → ${clicked}`);
-    await new Promise(r => setTimeout(r, 1500));
+    console.log(`${tag}: clicked ${sel} → ${clicked}`);
+    await new Promise(r => setTimeout(r, 1200));
   }
 
   const out = `temporary_screenshots/auth-${label}-${tag}.png`;

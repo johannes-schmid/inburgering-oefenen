@@ -850,3 +850,184 @@ schemas differed by three columns, three CHECK constraints and a view.
 **Outcome:** SUCCESS — `tsc` clean, `next build` clean, 82 unit tests green, `db reset` replays, KNM added end-to-end in a transaction and rolled back, all six negative cases still rejected.
 **What worked / went wrong:** Two failures caught only by *actually inserting KNM* rather than reasoning about the schema. First, `ALTER COLUMN level DROP NOT NULL` failed with `42P16` because `exam_formats` had `PRIMARY KEY (level, skill)` and the PK drop was two sections further down — ordering, not design. Second and much worse: after making `stimulus_id` nullable, the standalone-question insert still failed, because the **baseline already had a `questions_sync_exam_id()` trigger** that derives `exam_id` from the stimulus and raises when the lookup returns nothing — which for a NULL stimulus is always. I did not know that trigger existed; nullable-plus-my-own-trigger looked complete and would have shipped a "capability" that rejected the only thing it was for. The `NULLS NOT DISTINCT` decision was the other near-miss: with a plain UNIQUE constraint, making `level` nullable would have silently re-permitted duplicate exam numbers for exactly the new non-levelled case — the constraint would have looked intact while no longer constraining anything.
 **Lesson:** Before relaxing a NOT NULL, **enumerate the triggers on that table**, not just its constraints — `\d table` shows constraints prominently and triggers as an afterthought, and an inherited trigger can enforce the invariant you think you just removed. Then prove the capability by inserting the thing it exists for and rolling back; "the migration applied" is not evidence the new shape is accepted. And whenever a column inside a UNIQUE key becomes nullable, that key stops constraining the NULL case unless it says `NULLS NOT DISTINCT` — nullability and uniqueness interact, and the failure is silent duplicates rather than an error.
+
+## 2026-08-04 — Level sub-menus in the admin nav
+**Changed:** `lib/admin/nav.ts` + `(admin)/_components/AdminNav.tsx` as the one nav definition for
+both shells; Examens / Vragen & opdrachten / Rubrieken now carry an A2·B1 sub-menu and read
+`?niveau=` via `levelFromSearch()`. Removed the niveau dropdowns from `ContentTable` and
+`RubricsTable`, and stopped `admin/exams` stacking both levels on one screen.
+**Outcome:** SUCCESS — tsc, next build, 82 unit tests, screenshots at 390/1440 read.
+**What worked:** the desktop sidebar and the mobile drawer had already drifted (different order,
+Woordkaarten on the wrong side of the divider). Collapsing them onto one definition was the actual
+fix; the sub-menu was the easy part.
+**Lesson:** when a "filter" selects between two separately authored catalogues, it is navigation, not
+state. Putting it in the URL made it linkable, reload-proof, and deletable from two components.
+
+## 2026-08-04 — Image upload in the content drawer
+**Changed:** new `app/api/admin/upload-image/route.ts` (multipart *or* URL → sharp → WebP ≤1600px →
+`question-images`); `OptionImagePicker` gained an upload button and now rehosts Pexels picks;
+`ContentSheet` edits per-option image sets, the image stimulus and `open_task_images`. Added
+`requireAdmin()` to `upload-pexels-image` and `upload-wordcard-image`.
+**Outcome:** SUCCESS — verified all four paths against the running dev server: file upload 200 (2 KB
+webp), Pexels rehost 200 (63 KB, 1600×1067 webp, fetchable), `http://127.0.0.1` blocked 400,
+anonymous 401.
+**What worked / went wrong:** the picker's inputs used a `.field` class defined in `QuestionForm`'s
+local `<style>` block, so inside the drawer they rendered with no border at all. Only the screenshot
+showed it. Self-contained utility classes now.
+**Lesson:** a component moved into a new host loses any styling that lived in the old host's page.
+Photograph a reused component in its new context, don't assume it travels.
+
+## 2026-08-04 — Phase 7: the Playwright suite, rewritten per onderdeel
+**Changed:** deleted `tests/e2e.spec.js` and `tests/scenarios.spec.js` (KNM topic pages, flat
+question pool, a faked session); added `tests/helpers/session.mjs` and five specs — public,
+free-practice, seo, portal, admin. 53 pass, 2 documented `test.fixme` findings.
+**Outcome:** SUCCESS, and the suite immediately earned itself: it found six real bugs (see below).
+**What worked / went wrong:**
+- The old `mockAuth()` faked a session *and* overrode `document.cookie` so nothing could notice. It
+  tested a browser that had been lied to. Real sessions minted against the local stack, chunked into
+  `.0`/`.1` — Chromium drops a cookie over ~4 KB, which silently runs "authenticated" tests as
+  anonymous.
+- First run: 39/52. Triage found that most failures were the product, not the tests.
+- Entitlement tests cannot run on an exam with no items: the player calls `notFound()` before the
+  gate, so the test passes for the wrong reason. Borrowing a seeded B1 exam via `setExamFree()` and
+  restoring it in `afterAll` was the fix.
+- `page.locator('main')` matched nothing on the public pages — no `<main>` landmark exists — so the
+  emoji assertion was passing against an empty string. Reconstructed the content by cloning the body
+  and removing the chrome.
+**Lesson:** a test that passes because its locator matched nothing is worse than no test. When
+writing an assertion about absence, first prove the positive case fails.
+
+## 2026-08-04 — What the new suite found
+**Changed (fixed):** `ownsModule` in the exam player and the per-skill dashboard — a module customer
+was bounced to `/premium` from the onderdeel they had paid for, while the dashboard overview showed
+it as owned; per-locale `canonical` on `/premium` and `/docent`, which pointed every locale at the
+`/nl` URL and told Google the EN and AR pages were duplicates; five NL meta descriptions over 160
+chars; `/oefenvragen` served a 200 with an empty topic list and a "KNM" title, now redirects to
+`/oefenen` while its flag is off.
+**Outcome:** SUCCESS for those four. **Reported, not fixed:** flag emoji in the language switcher
+(breaks the no-emoji rule on every page), and the missing `<main>` landmark. Both are `test.fixme`.
+**What went wrong:** `notFound()` in a page with `generateStaticParams` streams a 200 shell and
+resolves the not-found page on the client — a soft 404, the worst of both. `redirect()` was the right
+tool for a feature-flagged surface, and it also keeps any inbound link's value.
+**Lesson:** the revenue-critical bug was the one nobody could see by clicking: the dashboard and the
+player disagreed, and whoever tested manually was on a legacy all-access account where both paths
+happen to open. Test the boundary with the account that sits *on* it.
+
+## 2026-08-04 — A question backlog, and assigning items to exams
+**Changed:** `supabase/migrations/20260804000000_question_backlog.sql` (exam number 0 per
+(level, skill), `exams_backlog_never_published`, the `exams_real` view, and a
+`stimuli_sync_questions` trigger); `lib/admin/backlog.ts` + `backlog-server.ts`; the exam builder
+gained an "Uit de backlog" pull-in panel and a ⇄ move control per stimulus and open task; the exams
+grid links each skill's backlog and excludes it from the ten cards; `ContentTable` labels exam 0.
+**Outcome:** SUCCESS — tsc, next build, 84 unit tests, 53 e2e, and the move verified in SQL both
+directions (questions and options travel with the stimulus, no skew left behind).
+**What worked / went wrong:**
+- Chose exam 0 over a nullable `exam_id` because a question resolves its skill *and* its level
+  through `exams`: nullable means a new `stimuli.level`, two rewritten triggers, and teaching
+  `questions_flat`, the RLS policy and the publish validator about NULL. The cost of exam 0 is one
+  fake row that listings must skip, which is a grep for one constant.
+- **The first test of the flow failed and exposed an older bug.** `UPDATE stimuli SET exam_id`
+  moved the stimulus and left its questions behind: `questions_sync_exam_id` is a trigger on
+  *questions*, firing on `UPDATE OF stimulus_id`, and nothing watched the stimulus. Fixed at the
+  database with `stimuli_sync_questions` so any script or SQL console gets it too, plus a repair
+  UPDATE for rows already skewed.
+- **The "live exam" warning could never have fired.** `countRecordedAnswers` read
+  `user_question_results` through the docent's session client, and that table has only
+  `auth.uid() = user_id` — no admin SELECT. Zero rows, no error, no warning. Only visible because I
+  screenshotted the case with answers present and saw nothing.
+- The move popover was clipped to its row by `overflow-hidden` on the `<li>`, hiding exams 9 and 10.
+**Lesson:** two of the three bugs here were *silent* — an empty result and a trigger that fires on the
+wrong table. Both were found by exercising the flow and checking the data afterwards, not by reading
+the code. After any cross-table write, query the other table.
+
+## 2026-08-07 — `supabase db reset` destroyed the local exam content
+**Changed:** nothing — ran `supabase db reset` as the first verification step of the exam-structure
+work, before checking whether the local database held anything `seed.sql` could not rebuild.
+**Outcome:** FAILURE
+**What went wrong:** it did. `seed.sql` seeds only the admin allowlist and the 80 empty exam slots,
+so every authored item was lost — including the ten A2 Luisteren fragments exported to
+`Example Exams/A2/Listening/`. The hosted project had a *different* set, so those ten are gone.
+Recovered a working local dataset by pulling exams/stimuli/questions/options/open_tasks/rubrics out
+of the hosted project over PostgREST and re-inserting them with the ids remapped by
+`(level, skill, number)` and `(level, slug)` — hosted and local assign different serials.
+**Lesson:** `supabase db reset` is destructive to everything not in `seed.sql`, and on this project
+that is *all the content*. Dump first — `docker exec supabase_db_… pg_dump -a -t stimuli -t questions
+…` — or do not reset. The reflex "reset is how you test a migration" is right about the schema and
+catastrophic about the data.
+
+## 2026-08-07 — Exam structure: format rules, tekstsoort breakdown, per-question audio
+**Changed:** `supabase/migrations/20260805000000_exam_structure_rules.sql` (seven rule columns on
+`exam_formats`, `stimuli.audio_seconds`, four warning branches + a NULL-safe option-count branch in
+`exam_publish_issues()`, and `exam_structure_summary()`); `data/skills.ts` (`SkillRules`,
+`formatRules`, `formatRange`); `lib/mp3-duration.ts` + `tests-unit/mp3-duration.test.ts`;
+`lib/admin/stimuli.ts`; the exams grid, the exam builder's new "Opbouw" card, and
+`app/api/generate-stimulus-audio/route.ts`; `ExamShell`/`StimulusPane` key the pane per question
+for Luisteren.
+**Outcome:** SUCCESS — tsc, next build, 91 unit tests, 53 e2e / 2 fixme, both admin screens
+screenshotted at 390 and 1440, and the audio restart verified in a real browser (same `src`,
+`currentTime` back to 0 on question 2).
+**What worked / went wrong:**
+- **Rules in the database, not in the client.** The per-stimulus warning badges read the `issues`
+  array the validator already returns rather than re-deriving the bounds in React. One copy of
+  "2–3 questions per fragment" means a changed bound cannot leave the two disagreeing.
+- **The first render was unusable and the screenshot caught it.** Ten fragments with no recorded
+  duration produced ten identical warning lines, which pushed the real blocking errors off the
+  panel. Grouping identical issues into one line naming the ids turned 20 rows into 2.
+- **The backlog screen exposed two things the new card made obvious**: a "0 van 10 fragmenten"
+  target that means nothing in a holding area, and a "Publiceren" button that
+  `exams_backlog_never_published` rejects outright — it could only ever have produced a constraint
+  error. Both fixed; the pre-existing item-count error on the backlog is now skipped with
+  `e.number > 0`.
+- **No ffmpeg in a serverless function**, so the mp3 length is counted off the MPEG frame headers.
+  Within 30 ms of `ffprobe` on the committed taster files, which a 40–50 second rule does not care
+  about; a `bytes / bitrate` estimate would have been wrong on VBR output.
+- **No per-tekstsoort quota, deliberately.** Nobody has verified how many gesprekken versus
+  mededelingen a DUO exam holds, and a number invented in `exam_formats` silently becomes the
+  standard the docent's work is measured against.
+**Lesson:** a validator that reports per item scales its output with the content, and a rule that
+reads fine on one row is noise on ten. Look at the panel with a full exam behind it before calling
+the rule done.
+
+## 2026-08-07 — Authoring moves to Vragen & opdrachten; exams only assign
+**Changed:** new `app/[locale]/(admin)/_components/StimulusEditor.tsx` (the fragment editor, voice
+casting and audio generation, lifted out of `ExamBuilder` with its own draft state) and
+`lib/admin/authoring.ts`; `/admin/questions` rebuilt on the ReUI `DataGrid` with a Fragmenten panel
+and `?onderdeel=` / `?fragment=` deep links; `ExamBuilder` lost "Nieuwe stimulus", the inline
+editor, per-question "Bewerken"/"toevoegen" and delete — it keeps Opbouw, the publish gate, the
+backlog pull-in and the ⇄ move control.
+**Outcome:** SUCCESS — tsc, next build, 88 unit, 53 e2e / 2 fixme, and all four screens
+screenshotted including the `?fragment=12` deep link opening that fragment's editor.
+**What worked / went wrong:**
+- **Order mattered more than the diff.** Stripping the exam builder first would have left the app
+  with no way to create a stimulus at all. Extract → wire into the new home → strip.
+- The extraction was not a pure move: `ExamBuilder` kept `generateMissingAudio` (a per-exam batch
+  action, not an authoring one), and deleting the editor's line range took that with it. Caught by
+  `tsc`, but a reminder that "delete lines A–B" is a blunt instrument on a 1200-line component.
+- Dropping the editor made the `sections` prop dead on the exam page; removing it there too kept
+  the screen from fetching data nothing reads.
+- Column `size` values in a TanStack grid are a budget, not a hint — 420 + 130 + 180 + 130 over-ran
+  the container and the last column sat under a horizontal scrollbar. Screenshot, then trim.
+**Lesson:** when moving a capability between screens, the safe order is always add-then-remove, and
+the thing to grep for afterwards is the props the removed block was the only consumer of.
+
+## 2026-08-07 — Fragment as a parent row, and the tekstsoort everywhere
+**Changed:** `/admin/questions` groups questions under their fragment (`GridRow` union built by
+hand in `ContentTable`), fragments open in a new `StimulusSheet` drawer instead of an inline card,
+`ContentRow` gained `sectionName`, a Tekstsoort column, and `/admin/exams` shows a tekstsoort chip
+row per exam card. Every existing local item was assigned a tekstsoort.
+**Outcome:** SUCCESS — tsc, next build, 88 unit, 53 e2e / 2 fixme, all three screens screenshotted.
+**What worked / went wrong:**
+- **The ReUI grid does not do tree rows.** `row.getIsExpanded()` renders a custom
+  `meta.expandedContent` panel, and TanStack's `getSubRows` + `getExpandedRowModel` would have
+  emitted a stray empty `<tr>` per expanded parent. Building the flat parent-then-children array
+  in a `useMemo` was less code than fighting it, at the cost of per-column sorting on those tabs —
+  which the grouping makes meaningless anyway, since a question must follow its fragment.
+- **The indent has to clear the parent's own chevron and icon**, or a nested row sits visually to
+  the *left* of the thing it belongs to. Only obvious in the screenshot.
+- **`text-warning` is `yellow-500` and disappears on `bg-warning/10`.** Rendered as a solid
+  unreadable blob. The brand pair (`#a24000` on `#fcecdd`) is what the rest of the UI uses.
+- **The A2 Lezen taxonomy has no category for a notice, a sign or a usage instruction.** Three
+  fragments were filed under the nearest section rather than left blank, and flagged to the owner
+  — mis-filing quietly is worse than either fixing the taxonomy or leaving the gap visible.
+**Lesson:** before adopting a component's built-in feature (grouping, expansion), read how it
+actually renders. "Shadcn has this already" was true of the primitive and false of this wrapper.

@@ -1,4 +1,7 @@
 import { fetchContentRows } from '@/lib/admin/content-rows';
+import { fetchAuthoringContext } from '@/lib/admin/authoring';
+import { levelFromSearch } from '@/lib/admin/nav';
+import { levelLabel } from '@/data/skills';
 import ContentTable from './_components/ContentTable';
 
 export const revalidate = 0;
@@ -16,13 +19,28 @@ export const revalidate = 0;
  * `questions/[id]/edit`, `questions/new`, `opgaven/[id]/edit`, `opgaven/new`. They hold the parts
  * the drawer deliberately does not — per-option image sets, stimulus reassignment, the form schema.
  */
-export default async function QuestionsPage({ params }: { params: Promise<{ locale: string }> }) {
+export default async function QuestionsPage({
+  params,
+  searchParams,
+}: {
+  params: Promise<{ locale: string }>;
+  searchParams: Promise<{ niveau?: string; onderdeel?: string; fragment?: string }>;
+}) {
   const { locale } = await params;
-  const rows = await fetchContentRows();
+  const search = await searchParams;
+  const level = levelFromSearch(search.niveau);
+  const [rows, authoring] = await Promise.all([
+    fetchContentRows(),
+    fetchAuthoringContext(level),
+  ]);
+  const fragment = Number(search.fragment);
 
   return (
     <div className="space-y-6">
       <header>
+        <p className="font-headline text-xs font-bold tracking-[0.08em] text-secondary uppercase">
+          Niveau {levelLabel(level)}
+        </p>
         <h1 className="font-headline text-2xl font-extrabold tracking-tight text-on-surface">
           Vragen en opdrachten
         </h1>
@@ -32,7 +50,14 @@ export default async function QuestionsPage({ params }: { params: Promise<{ loca
         </p>
       </header>
 
-      <ContentTable rows={rows} locale={locale} />
+      <ContentTable
+        rows={rows}
+        locale={locale}
+        level={level}
+        authoring={authoring}
+        initialSkill={search.onderdeel}
+        initialStimulusId={Number.isInteger(fragment) && fragment > 0 ? fragment : undefined}
+      />
     </div>
   );
 }

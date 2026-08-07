@@ -4,6 +4,7 @@ import { createClient } from '@/lib/supabase/server';
 import LogoMark from '@/components/site/LogoMark';
 import LogoutButton from './_components/LogoutButton';
 import { AdminMobileNav } from './_components/AdminMobileNav';
+import AdminNav from './_components/AdminNav';
 
 export const metadata = {
   robots: 'noindex, nofollow',
@@ -66,20 +67,7 @@ function AdminSidebar({ locale, userEmail }: { locale: string; userEmail: string
         <p className="text-white/50 text-xs truncate">{userEmail}</p>
       </div>
 
-      <nav className="flex-1 p-4 space-y-1">
-        <NavItem href={`/${locale}/admin`} icon="dashboard" label="Dashboard" />
-        <NavItem href={`/${locale}/admin/exams`} icon="assignment" label="Examens" />
-        <NavItem href={`/${locale}/admin/questions`} icon="quiz" label="Vragen & opdrachten" />
-        <NavItem href={`/${locale}/admin/rubrics`} icon="checklist" label="Rubrieken" />
-        <NavItem href={`/${locale}/admin/beoordeling`} icon="rate_review" label="Beoordelen" />
-        {/* Lessen and woordkaarten are feature-flagged off on the public site
-            (lib/features.ts); their admin surfaces stay reachable so content can be authored
-            ahead of the flag being flipped, but they sit below the divider. */}
-        <div className="pt-3 mt-2 border-t border-white/10 space-y-1">
-          <NavItem href={`/${locale}/admin/users`} icon="group" label="Gebruikers" />
-          <NavItem href={`/${locale}/admin/woordkaarten`} icon="style" label="Woordkaarten" />
-        </div>
-      </nav>
+      <AdminNav locale={locale} />
 
       <div className="p-4 border-t border-white/10 space-y-1">
         <a
@@ -96,15 +84,4 @@ function AdminSidebar({ locale, userEmail }: { locale: string; userEmail: string
   );
 }
 
-function NavItem({ href, icon, label }: { href: string; icon: string; label: string }) {
-  return (
-    <a
-      href={href}
-      className="flex items-center gap-3 px-3 py-2.5 rounded-xl text-white/70 hover:text-white hover:bg-white/10 transition-colors text-sm font-medium"
-    >
-      <span className="material-symbols-outlined text-[20px]">{icon}</span>
-      {label}
-    </a>
-  );
-}
 

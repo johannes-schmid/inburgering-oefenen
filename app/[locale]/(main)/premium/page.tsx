@@ -25,6 +25,21 @@ export async function generateStaticParams() {
   return routing.locales.map((locale) => ({ locale }));
 }
 
+/**
+ * Canonical and hreflang, per locale, from one map.
+ *
+ * The canonical used to be hardcoded to the `/nl` URL for all three locales, which tells Google the
+ * English and Arabic pages are duplicates of the Dutch one — so neither can ever rank, and the
+ * hreflang block right below it said the opposite. The pathnames are localised (i18n/routing.ts),
+ * so the right URL cannot be built by interpolating the locale; it has to come from this map.
+ */
+const ALTERNATES = {
+  nl: 'https://inburgeringoefenen.nl/nl/premium',
+  en: 'https://inburgeringoefenen.nl/en/premium',
+  ar: 'https://inburgeringoefenen.nl/ar/%D8%A7%D9%84%D8%A8%D8%A7%D9%82%D8%A9-%D8%A7%D9%84%D9%85%D9%85%D9%8A%D8%B2%D8%A9',
+  'x-default': 'https://inburgeringoefenen.nl/nl/premium',
+} as const;
+
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { locale } = await params;
   const t = await getTranslations({ locale, namespace: 'premium' });
@@ -32,13 +47,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     title: t('meta_title'),
     description: t('meta_description'),
     alternates: {
-      canonical: 'https://inburgeringoefenen.nl/nl/premium',
-      languages: {
-        nl: 'https://inburgeringoefenen.nl/nl/premium',
-        en: 'https://inburgeringoefenen.nl/en/premium',
-        ar: 'https://inburgeringoefenen.nl/ar/%D8%A7%D9%84%D8%A8%D8%A7%D9%82%D8%A9-%D8%A7%D9%84%D9%85%D9%85%D9%8A%D8%B2%D8%A9',
-        'x-default': 'https://inburgeringoefenen.nl/nl/premium',
-      },
+      canonical: ALTERNATES[locale as 'nl' | 'en' | 'ar'] ?? ALTERNATES.nl,
+      languages: ALTERNATES,
     },
   };
 }

@@ -4,23 +4,24 @@ import { useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import {
-  AlertTriangle, AudioLines, Check, ChevronDown, Loader2, Pencil, Plus, Trash2, TriangleAlert, X,
+  AlertTriangle, ArrowRightLeft, AudioLines, Check, ChevronDown, Inbox, Loader2, Pencil, Plus,
+  TriangleAlert, X,
 } from 'lucide-react';
 import { createClient } from '@/lib/supabase/client';
-import type { AdminStimulus, PublishIssue } from '@/lib/admin/stimuli';
-import { VOICES, type VoiceKey } from '@/lib/tts-voices';
-import { speakersInScript } from '@/lib/tts-dialogue';
+import type { AdminStimulus, PublishIssue, StructureRow } from '@/lib/admin/stimuli';
+import type { AssignTarget } from '@/lib/admin/backlog';
+import { formatCount, formatRange, formatRules, isSkillSlug, type Level } from '@/data/skills';
 
 type Exam = {
   id: number;
+  level: Level;
   skill: string;
+  /** 0 is the backlog — see lib/admin/backlog.ts. */
   number: number;
   title: string | null;
   is_free: boolean;
   published: boolean;
 };
-
-type Section = { id: number; name_nl: string };
 
 type Task = {
   id: number;
@@ -31,21 +32,6 @@ type Task = {
   review_status: string;
 };
 
-type StimulusDraft = {
-  id?: number;
-  sort_order: number;
-  section_id: number | null;
-  kind: 'text' | 'audio' | 'image';
-  intro: string;
-  title: string;
-  body_html: string;
-  image_url: string;
-  image_alt: string;
-  audio_url: string;
-  script: string;
-  voice_cast: Record<string, string>;
-  review_status: 'pending' | 'validated';
-};
 
 /**
  * The authoring surface for one exam.
@@ -60,91 +46,80 @@ export default function ExamBuilder({
   exam,
   stimuli,
   issues,
-  sections,
   tasks,
+  targets,
+  backlogStimuli,
+  backlogTasks,
+  recordedAnswers,
+  viewingBacklog,
+  structure,
+  backlogStructure,
 }: {
   locale: string;
   exam: Exam;
   stimuli: AdminStimulus[];
   issues: PublishIssue[];
-  sections: Section[];
   tasks: Task[];
+  targets: AssignTarget[];
+  backlogStimuli: AdminStimulus[];
+  backlogTasks: Task[];
+  recordedAnswers: Record<string, number>;
+  viewingBacklog: boolean;
+  structure: StructureRow[];
+  backlogStructure: StructureRow[];
 }) {
   const router = useRouter();
   const supabase = createClient();
-  const [editing, setEditing] = useState<StimulusDraft | null>(null);
   const [genBusy, setGenBusy] = useState(false);
   const [genNote, setGenNote] = useState('');
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState('');
   const [openId, setOpenId] = useState<number | null>(stimuli[0]?.id ?? null);
-  const [confirmDelete, setConfirmDelete] = useState<number | null>(null);
+  /** Which item's "verplaats naar" dropdown is open, as `stimuli:12` / `open_tasks:4`. */
+  const [moving, setMoving] = useState<string | null>(null);
+  const [pulling, setPulling] = useState<number | null>(null);
 
   const isOpenSkill = exam.skill === 'schrijven' || exam.skill === 'spreken';
   const errors = issues.filter(i => i.severity === 'error');
   const warnings = issues.filter(i => i.severity !== 'error');
 
-  function blankStimulus(): StimulusDraft {
-    return {
-      sort_order: (stimuli.at(-1)?.sort_order ?? 0) + 1,
-      section_id: null,
-      kind: exam.skill === 'luisteren' ? 'audio' : 'text',
-      intro: '',
-      title: '',
-      body_html: '',
-      image_url: '',
-      image_alt: '',
-      audio_url: '',
-      script: '',
-      voice_cast: {},
-      review_status: 'pending',
-    };
-  }
+  /**
+   * The authoring rules for this (level, skill). Every field can be `null` — that means DUO's
+   * shape has not been verified for this pair, and the rule is not shown rather than guessed.
+   */
+  const rules = isSkillSlug(exam.skill) ? formatRules(exam.level, exam.skill) : null;
 
-  function toDraft(s: AdminStimulus): StimulusDraft {
-    return {
-      id: s.id,
-      sort_order: s.sort_order,
-      section_id: s.section_id,
-      kind: s.kind,
-      intro: s.intro ?? '',
-      title: s.title ?? '',
-      body_html: s.body_html ?? '',
-      image_url: s.image_url ?? '',
-      image_alt: s.image_alt ?? '',
-      audio_url: s.audio_url ?? '',
-      script: s.script ?? '',
-      voice_cast: s.voice_cast ?? {},
-      review_status: s.review_status,
-    };
+  const totalStimuli = structure.reduce((n, r) => n + r.stimulus_count, 0);
+  const totalQuestions = structure.reduce((n, r) => n + r.question_count, 0);
+  /** Backlog counts by tekstsoort, so a shortfall can be read next to what is already waiting. */
+  const backlogBySection = new Map(backlogStructure.map(r => [r.section_id, r]));
+
+  /**
+   * The structure warnings for one stimulus, taken from `issues` rather than re-derived here.
+   * One source of truth: the rules live in `exam_publish_issues()`, and a second copy in the
+   * client would drift the moment a bound changes.
+   */
+  function stimulusIssues(id: number): PublishIssue[] {
+    return issues.filter(i => i.entity === 'stimulus' && i.entity_id === id);
   }
 
   /**
-   * Render the dialogue in the editor and drop the resulting URL into the audio field.
+   * Collapse identical issues into one line naming the items they apply to.
    *
-   * Deliberately does not save: the docent listens first, and a take they reject should not have
-   * replaced the one currently in the exam.
+   * The structure rules apply per fragment, so one missing habit produces one row per item —
+   * ten copies of "Lengte van de audio niet vastgelegd" pushed the actual blocking errors off
+   * the screen. Grouped, the panel says what is wrong once and where, which is what the docent
+   * needs in order to act.
    */
-  async function generateDraftAudio() {
-    if (!editing) return;
-    setGenBusy(true);
-    setGenNote('');
-    setError('');
-    try {
-      const res = await fetch('/api/generate-stimulus-audio', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ examId: exam.id, script: editing.script, voiceCast: editing.voice_cast }),
-      });
-      const json = await res.json();
-      if (!res.ok || !json.audio_url) throw new Error(json.error || 'Genereren is niet gelukt.');
-      setEditing(prev => (prev ? { ...prev, audio_url: json.audio_url } : prev));
-      setGenNote('Audio gegenereerd. Luister hem na en sla daarna op.');
-    } catch (err) {
-      setError(err instanceof Error ? err.message : 'Genereren is niet gelukt.');
-    } finally {
-      setGenBusy(false);
+  function groupIssues(list: PublishIssue[]) {
+    const groups = new Map<string, { issue: PublishIssue; ids: number[] }>();
+    for (const i of list) {
+      const key = `${i.severity}|${i.entity}|${i.issue}`;
+      const g = groups.get(key);
+      if (g) { if (i.entity_id != null) g.ids.push(i.entity_id); }
+      else groups.set(key, { issue: i, ids: i.entity_id == null ? [] : [i.entity_id] });
     }
+    return [...groups.values()];
   }
 
   /** Generate every audio stimulus in this exam that has no file yet. */
@@ -178,64 +153,6 @@ export default function ExamBuilder({
     }
   }
 
-  async function saveStimulus() {
-    if (!editing) return;
-    const d = editing;
-
-    // Mirrors the `stimuli_payload_matches_kind` CHECK so the docent gets a sentence rather
-    // than a Postgres constraint name.
-    const missing =
-      d.kind === 'text' ? !d.body_html.trim()
-      : d.kind === 'image' ? !d.image_url.trim()
-      : !d.audio_url.trim();
-    if (missing) {
-      setError(
-        d.kind === 'text' ? 'Een tekststimulus heeft een tekst nodig.'
-        : d.kind === 'image' ? 'Een afbeeldingsstimulus heeft een afbeelding-URL nodig.'
-        : 'Genereer eerst de audio (of plak een URL) voordat je opslaat.'
-      );
-      return;
-    }
-
-    setBusy(true);
-    setError('');
-    const row = {
-      exam_id: exam.id,
-      skill: exam.skill,
-      sort_order: d.sort_order,
-      section_id: d.section_id,
-      kind: d.kind,
-      intro: d.intro.trim() || null,
-      title: d.title.trim() || null,
-      body_html: d.kind === 'text' ? d.body_html : (d.body_html.trim() || null),
-      image_url: d.image_url.trim() || null,
-      image_alt: d.image_alt.trim() || null,
-      audio_url: d.audio_url.trim() || null,
-      script: d.script.trim() || null,
-      voice_cast: Object.keys(d.voice_cast).length ? d.voice_cast : null,
-      review_status: d.review_status,
-    };
-
-    const { error: err } = d.id
-      ? await supabase.from('stimuli').update(row).eq('id', d.id)
-      : await supabase.from('stimuli').insert(row);
-
-    setBusy(false);
-    if (err) { setError(err.message); return; }
-    setEditing(null);
-    router.refresh();
-  }
-
-  async function deleteStimulus(id: number) {
-    if (confirmDelete !== id) { setConfirmDelete(id); return; }
-    setBusy(true);
-    const { error: err } = await supabase.from('stimuli').delete().eq('id', id);
-    setBusy(false);
-    setConfirmDelete(null);
-    if (err) { setError(err.message); return; }
-    router.refresh();
-  }
-
   async function togglePublished() {
     setBusy(true);
     setError('');
@@ -248,14 +165,135 @@ export default function ExamBuilder({
     router.refresh();
   }
 
+  /**
+   * Move a stimulus (with its questions) or an open task into another exam.
+   *
+   * One UPDATE of `exam_id`. For a stimulus the `questions_sync_exam_id` trigger carries its
+   * questions across, which is exactly why assignment is modelled this way rather than as a
+   * per-question field: a Lezen text and its three questions are one unit and cannot be split
+   * across two exams.
+   *
+   * `sort_order` is renumbered to the end of the destination, because `(stimulus_id, sort_order)`
+   * and `(exam_id, sort_order)` are unique — dropping an item in at its old position would collide
+   * with whatever is already there. The constraint is DEFERRABLE, so the collision would surface at
+   * commit as an opaque error rather than here.
+   */
+  async function moveItem(
+    table: 'stimuli' | 'open_tasks',
+    id: number,
+    targetId: number,
+    nextSortOrder: number,
+  ) {
+    setBusy(true);
+    setError('');
+    const { error: err } = await supabase
+      .from(table)
+      .update({ exam_id: targetId, sort_order: nextSortOrder })
+      .eq('id', id);
+    setBusy(false);
+    setMoving(null);
+    if (err) { setError(err.message); return; }
+    router.refresh();
+  }
+
+  /**
+   * How many items the destination already holds, so the moved item lands after them.
+   *
+   * Read off `targets` rather than counted again: it is the same number shown in the dropdown, so
+   * the position cannot disagree with what the docent was told.
+   */
+  function nextSortOrderIn(targetId: number): number {
+    return (targets.find(t => t.id === targetId)?.itemCount ?? 0) + 1;
+  }
+
   return (
     <div className="space-y-6 max-w-4xl">
       {error && (
         <div className="bg-error/10 border border-error/20 rounded-xl p-3 text-sm text-error">{error}</div>
       )}
 
-      {/* ── Publish gate ── */}
+      {/* ── Opbouw: how the exam is spread across the tekstsoorten ──
+          There is deliberately no per-tekstsoort target to compare against. Nobody has
+          verified how many gesprekken versus mededelingen a DUO exam contains, so this
+          reports the distribution and the docent judges it. What *is* verified — the
+          fragment count and the per-fragment rules — is stated underneath. */}
+      {!isOpenSkill && (
+        <div className="rounded-2xl border border-outline-variant p-4">
+          <div className="flex items-baseline justify-between gap-3 flex-wrap mb-3">
+            <h2 className="text-sm font-medium text-on-surface m-0">Opbouw</h2>
+            <p className="text-xs text-on-surface-variant m-0 tabular-nums">
+              {/* No target on the backlog: it is a holding area, not an exam, so "0 van 10"
+                  would invent a shortfall the docent is not supposed to close there. */}
+              {viewingBacklog
+                ? `${totalStimuli} fragmenten · ${totalQuestions} vragen`
+                : `${totalStimuli} van ${formatCount(rules?.stimulusCount ?? null)} fragmenten · ${totalQuestions} vragen`}
+            </p>
+          </div>
+
+          {structure.length === 0 ? (
+            <p className="text-xs text-on-surface-variant m-0">
+              {viewingBacklog
+                ? 'Nog niets in de backlog. Wat je hier maakt, wijs je later aan een examen toe.'
+                : 'Nog geen fragmenten. Voeg er een toe, of haal er een uit de backlog.'}
+            </p>
+          ) : (
+            <table className="w-full text-xs border-collapse">
+              <thead>
+                <tr className="text-on-surface-variant text-left">
+                  <th className="font-medium pb-1.5">Tekstsoort</th>
+                  <th className="font-medium pb-1.5 text-right tabular-nums">Fragmenten</th>
+                  <th className="font-medium pb-1.5 text-right tabular-nums">Vragen</th>
+                  {!viewingBacklog && (
+                    <th className="font-medium pb-1.5 text-right tabular-nums">In de backlog</th>
+                  )}
+                </tr>
+              </thead>
+              <tbody>
+                {structure.map(r => {
+                  const waiting = backlogBySection.get(r.section_id)?.stimulus_count ?? 0;
+                  return (
+                    <tr key={r.section_id ?? 'none'} className="border-t border-outline-variant">
+                      <td className="py-1.5 text-on-surface">
+                        {r.section_id === null
+                          ? <span className="text-warning">{r.name_nl}</span>
+                          : r.name_nl}
+                      </td>
+                      <td className="py-1.5 text-right tabular-nums text-on-surface">{r.stimulus_count}</td>
+                      <td className="py-1.5 text-right tabular-nums text-on-surface">{r.question_count}</td>
+                      {!viewingBacklog && (
+                        <td className="py-1.5 text-right tabular-nums text-on-surface-variant">
+                          {waiting || '—'}
+                        </td>
+                      )}
+                    </tr>
+                  );
+                })}
+              </tbody>
+            </table>
+          )}
+
+          {rules && (rules.stimulusCount || rules.questionsPerStimulus || rules.options || rules.audioSeconds) && (
+            <p className="text-xs text-on-surface-variant m-0 mt-3 pt-3 border-t border-outline-variant">
+              {[
+                rules.stimulusCount !== null && `${rules.stimulusCount} fragmenten`,
+                rules.questionsPerStimulus && `${formatRange(rules.questionsPerStimulus)} vragen per fragment`,
+                rules.options && `${formatRange(rules.options)} antwoorden`,
+                rules.audioSeconds && `${formatRange(rules.audioSeconds)} sec audio`,
+              ].filter(Boolean).join(' · ')}
+            </p>
+          )}
+        </div>
+      )}
+
+      {/* ── Publish gate ──
+          Hidden on the backlog. `exams_backlog_never_published` rejects the UPDATE outright,
+          so the button could only ever produce a constraint error — and a backlog that *could*
+          be published would appear in the funnel as an eleventh oefenexamen full of drafts.
+          The issue list still renders below, because those are real authoring problems — but
+          an empty bordered box would be worse than nothing, so the whole card goes too. */}
+      {(!viewingBacklog || issues.length > 0) && (
       <div className="rounded-2xl border border-outline-variant p-4">
+        {!viewingBacklog && (
         <div className="flex items-start justify-between gap-4 flex-wrap">
           <div>
             <p className="text-sm font-medium text-on-surface m-0">
@@ -281,10 +319,11 @@ export default function ExamBuilder({
             {exam.published ? 'Offline halen' : 'Publiceren'}
           </button>
         </div>
+        )}
 
         {issues.length > 0 && (
           <ul className="list-none m-0 mt-3 p-0 space-y-1.5">
-            {[...errors, ...warnings].map((i, n) => (
+            {groupIssues([...errors, ...warnings]).map(({ issue: i, ids }, n) => (
               <li key={n} className="flex items-start gap-2 text-xs">
                 <span className={i.severity === 'error' ? 'text-error' : 'text-warning'} style={{ marginTop: 1 }}>
                   {i.severity === 'error'
@@ -292,14 +331,101 @@ export default function ExamBuilder({
                     : <AlertTriangle size={13} strokeWidth={2.4} aria-hidden />}
                 </span>
                 <span className="text-on-surface-variant">
-                  <span className="font-medium text-on-surface">{i.entity}</span>
-                  {i.entity_id != null && <span className="tabular-nums"> #{i.entity_id}</span>} — {i.issue}
+                  <span className="font-medium text-on-surface">
+                    {ids.length > 1 ? `${ids.length} ${i.entity}` : i.entity}
+                  </span>
+                  {ids.length > 0 && (
+                    <span className="tabular-nums"> #{ids.join(', #')}</span>
+                  )} — {i.issue}
                 </span>
               </li>
             ))}
           </ul>
         )}
       </div>
+      )}
+
+      {/* ── Pull items in from the backlog ──
+          The answer to "the exams should pull from the existing questions": everything authored for
+          this (level, skill) but not yet assigned, one click from landing in this exam. Hidden when
+          viewing the backlog itself, and hidden when it is empty rather than showing an empty box on
+          every exam. */}
+      {!viewingBacklog && (backlogStimuli.length > 0 || backlogTasks.length > 0) && (
+        <section className="rounded-2xl border border-outline-variant bg-surface-container-low p-4">
+          <div className="flex items-center gap-2 mb-1">
+            <Inbox size={16} className="text-on-surface-variant" aria-hidden />
+            <h2 className="text-base font-headline font-bold text-on-surface m-0">
+              Uit de backlog{' '}
+              <span className="font-normal text-on-surface-variant">
+                ({backlogStimuli.length + backlogTasks.length})
+              </span>
+            </h2>
+          </div>
+          <p className="text-xs text-on-surface-variant m-0 mb-3">
+            Klaar gezette items voor dit onderdeel. Toevoegen verplaatst het item hierheen — het
+            staat daarna niet meer in de backlog.
+          </p>
+
+          <ul className="list-none m-0 p-0 space-y-2">
+            {backlogStimuli.map(s => (
+              <li
+                key={`bs-${s.id}`}
+                className="flex items-center gap-3 rounded-xl border border-outline-variant bg-surface px-3.5 py-2.5"
+              >
+                <span className="text-sm text-on-surface truncate min-w-0">
+                  {s.title || `${s.kind} stimulus`}
+                </span>
+                <span className="text-xs text-on-surface-variant whitespace-nowrap ml-auto">
+                  {s.kind} · {s.questions.length} {s.questions.length === 1 ? 'vraag' : 'vragen'}
+                </span>
+                <button
+                  type="button"
+                  disabled={busy || pulling === s.id}
+                  onClick={() => {
+                    setPulling(s.id);
+                    void moveItem('stimuli', s.id, exam.id, (stimuli.at(-1)?.sort_order ?? 0) + 1);
+                  }}
+                  className="inline-flex items-center gap-1.5 rounded-lg bg-primary px-2.5 py-1.5 text-xs font-medium text-white transition-colors hover:bg-primary-container disabled:opacity-50"
+                >
+                  {pulling === s.id
+                    ? <Loader2 size={13} className="animate-spin" aria-hidden />
+                    : <Plus size={13} aria-hidden />}
+                  Toevoegen
+                </button>
+              </li>
+            ))}
+
+            {backlogTasks.map(t => (
+              <li
+                key={`bt-${t.id}`}
+                className="flex items-center gap-3 rounded-xl border border-outline-variant bg-surface px-3.5 py-2.5"
+              >
+                <span className="text-sm text-on-surface truncate min-w-0">
+                  {t.title || `${t.task_type} opdracht`}
+                </span>
+                <span className="text-xs text-on-surface-variant whitespace-nowrap ml-auto">
+                  {t.task_type}
+                  {t.image_usage !== 'none' && ` · ${t.image_usage}`}
+                </span>
+                <button
+                  type="button"
+                  disabled={busy || pulling === t.id}
+                  onClick={() => {
+                    setPulling(t.id);
+                    void moveItem('open_tasks', t.id, exam.id, (tasks.at(-1)?.sort_order ?? 0) + 1);
+                  }}
+                  className="inline-flex items-center gap-1.5 rounded-lg bg-primary px-2.5 py-1.5 text-xs font-medium text-white transition-colors hover:bg-primary-container disabled:opacity-50"
+                >
+                  {pulling === t.id
+                    ? <Loader2 size={13} className="animate-spin" aria-hidden />
+                    : <Plus size={13} aria-hidden />}
+                  Toevoegen
+                </button>
+              </li>
+            ))}
+          </ul>
+        </section>
+      )}
 
       {/* ── Open tasks (Schrijven / Spreken) ── */}
       {isOpenSkill && (
@@ -320,9 +446,21 @@ export default function ExamBuilder({
                     <span className="tabular-nums text-on-surface-variant">{t.sort_order}.</span>{' '}
                     {t.title || `${t.task_type} opdracht`}
                   </span>
-                  <span className="text-xs text-on-surface-variant">
+                  <span className="flex items-center gap-1 text-xs text-on-surface-variant">
                     {t.task_type}
                     {t.image_usage !== 'none' && ` · ${t.image_usage}`}
+                    <MoveControl
+                      targets={targets}
+                      open={moving === `open_tasks:${t.id}`}
+                      busy={busy}
+                      // Open tasks carry no `user_question_results`; their answers live in
+                      // `open_submissions`, which references `exam_id` with ON DELETE SET NULL and is
+                      // not invalidated by a move. So there is nothing to warn about here.
+                      recorded={0}
+                      sourcePublished={exam.published}
+                      onToggle={() => setMoving(moving === `open_tasks:${t.id}` ? null : `open_tasks:${t.id}`)}
+                      onMove={id => void moveItem('open_tasks', t.id, id, nextSortOrderIn(id))}
+                    />
                   </span>
                 </li>
               ))}
@@ -331,12 +469,16 @@ export default function ExamBuilder({
         </section>
       )}
 
-      {/* ── Stimuli (Lezen / Luisteren) ── */}
+      {/* ── Fragmenten (Lezen / Luisteren) — read-only ──
+          This screen assigns; it does not author. Writing a fragment or a question happens in
+          Vragen & opdrachten (owner's decision, 2026-08-07), so there is no "nieuw", no editor
+          and no delete here — only the ⇄ control and a link into the authoring surface. Two
+          screens able to create the same content meant two places to break the same rules. */}
       {!isOpenSkill && (
         <section>
           <div className="flex items-center justify-between gap-4 mb-3">
             <h2 className="text-base font-headline font-bold text-on-surface m-0">
-              Stimuli <span className="text-on-surface-variant font-normal">({stimuli.length})</span>
+              Fragmenten <span className="text-on-surface-variant font-normal">({stimuli.length})</span>
             </h2>
             <div className="flex items-center gap-2">
               {exam.skill === 'luisteren' && stimuli.some(s => s.kind === 'audio' && !s.audio_url) && (
@@ -350,21 +492,22 @@ export default function ExamBuilder({
                   Genereer ontbrekende audio
                 </button>
               )}
-              <button
-                type="button"
-                onClick={() => { setEditing(blankStimulus()); setError(''); }}
-                className="inline-flex items-center gap-1.5 bg-primary text-white px-3.5 py-2 rounded-xl text-sm font-medium hover:bg-primary-container transition-colors"
+              <Link
+                href={`/${locale}/admin/questions?niveau=${exam.level}&onderdeel=${exam.skill}`}
+                className="inline-flex items-center gap-1.5 border border-outline-variant px-3.5 py-2 rounded-xl text-sm font-medium no-underline text-on-surface hover:bg-surface-container transition-colors"
               >
                 <Plus size={15} aria-hidden />
-                Nieuwe stimulus
-              </button>
+                Nieuw item schrijven
+              </Link>
             </div>
           </div>
 
+          {genNote && <p className="text-xs text-on-surface-variant mb-3">{genNote}</p>}
+
           {stimuli.length === 0 && (
             <p className="text-sm text-on-surface-variant">
-              Nog geen stimuli. Een vraag kan pas bestaan als er een tekst, afbeelding of
-              fragment is om naar te verwijzen.
+              Nog geen fragmenten. Schrijf ze in Vragen &amp; opdrachten en haal ze hier uit de
+              backlog, of verplaats ze vanuit een ander examen.
             </p>
           )}
 
@@ -372,7 +515,9 @@ export default function ExamBuilder({
             {stimuli.map(s => {
               const open = openId === s.id;
               return (
-                <li key={s.id} className="rounded-xl border border-outline-variant overflow-hidden">
+                // No `overflow-hidden`: it clipped the "verplaats naar" popover to the row, so the
+                // lower half of the exam list was unreachable. The children round their own corners.
+                <li key={s.id} className="rounded-xl border border-outline-variant">
                   <div className="flex items-center gap-2 px-3.5 py-2.5">
                     <button
                       type="button"
@@ -394,30 +539,40 @@ export default function ExamBuilder({
                         <span className="tabular-nums text-on-surface-variant">{s.sort_order}.</span>{' '}
                         {s.title || `${s.kind} stimulus`}
                       </span>
-                      <span className="text-xs text-on-surface-variant whitespace-nowrap ml-auto">
+                      <span className="text-xs text-on-surface-variant whitespace-nowrap ml-auto flex items-center gap-1.5">
+                        {stimulusIssues(s.id).length > 0 && (
+                          <span
+                            className="text-warning inline-flex"
+                            title={stimulusIssues(s.id).map(i => i.issue).join(' · ')}
+                          >
+                            <AlertTriangle size={13} strokeWidth={2.4} aria-hidden />
+                            <span className="sr-only">
+                              {stimulusIssues(s.id).map(i => i.issue).join('. ')}
+                            </span>
+                          </span>
+                        )}
                         {s.kind} · {s.questions.length} {s.questions.length === 1 ? 'vraag' : 'vragen'}
                       </span>
                     </button>
 
-                    <button
-                      type="button"
-                      onClick={() => { setEditing(toDraft(s)); setError(''); }}
-                      aria-label="Stimulus bewerken"
+                    <MoveControl
+                      targets={targets}
+                      open={moving === `stimuli:${s.id}`}
+                      busy={busy}
+                      recorded={recordedAnswers[String(s.id)] ?? 0}
+                      sourcePublished={exam.published}
+                      onToggle={() => setMoving(moving === `stimuli:${s.id}` ? null : `stimuli:${s.id}`)}
+                      onMove={id => void moveItem('stimuli', s.id, id, nextSortOrderIn(id))}
+                    />
+                    {/* Editing and deleting live in Vragen & opdrachten. */}
+                    <Link
+                      href={`/${locale}/admin/questions?niveau=${exam.level}&onderdeel=${exam.skill}&fragment=${s.id}`}
+                      aria-label="Fragment bewerken in Vragen en opdrachten"
+                      title="Bewerken in Vragen & opdrachten"
                       className="text-on-surface-variant hover:text-primary transition-colors p-1"
                     >
                       <Pencil size={14} aria-hidden />
-                    </button>
-                    <button
-                      type="button"
-                      onClick={() => deleteStimulus(s.id)}
-                      aria-label="Stimulus verwijderen"
-                      title={confirmDelete === s.id ? 'Klik opnieuw om te verwijderen — de vragen gaan mee' : 'Verwijderen'}
-                      className={`transition-colors p-1 ${
-                        confirmDelete === s.id ? 'text-error' : 'text-on-surface-variant hover:text-error'
-                      }`}
-                    >
-                      <Trash2 size={14} aria-hidden />
-                    </button>
+                    </Link>
                   </div>
 
                   {open && (
@@ -465,13 +620,6 @@ export default function ExamBuilder({
                         })}
                       </ul>
 
-                      <Link
-                        href={`/${locale}/admin/questions/new`}
-                        className="inline-flex items-center gap-1.5 text-xs font-medium text-primary hover:underline"
-                      >
-                        <Plus size={13} aria-hidden />
-                        Vraag toevoegen
-                      </Link>
                     </div>
                   )}
                 </li>
@@ -481,176 +629,6 @@ export default function ExamBuilder({
         </section>
       )}
 
-      {/* ── Stimulus editor ── */}
-      {editing && (
-        <div className="rounded-2xl border border-primary/40 p-4 space-y-4">
-          <div className="flex items-center justify-between">
-            <h3 className="text-sm font-headline font-bold text-on-surface m-0">
-              {editing.id ? `Stimulus #${editing.id} bewerken` : 'Nieuwe stimulus'}
-            </h3>
-            <button
-              type="button"
-              onClick={() => { setEditing(null); setError(''); }}
-              aria-label="Sluiten"
-              className="text-on-surface-variant hover:text-on-surface p-1"
-            >
-              <X size={16} aria-hidden />
-            </button>
-          </div>
-
-          <div className="grid grid-cols-3 gap-3">
-            <Field label="Soort">
-              <select
-                value={editing.kind}
-                onChange={e => setEditing({ ...editing, kind: e.target.value as StimulusDraft['kind'] })}
-                className="field"
-              >
-                <option value="text">Tekst</option>
-                <option value="image">Afbeelding</option>
-                {exam.skill === 'luisteren' && <option value="audio">Audio</option>}
-              </select>
-            </Field>
-            <Field label="Positie">
-              <input
-                type="number"
-                min={1}
-                value={editing.sort_order}
-                onChange={e => setEditing({ ...editing, sort_order: Math.max(1, parseInt(e.target.value, 10) || 1) })}
-                className="field"
-              />
-            </Field>
-            <Field label="Tekstsoort">
-              <select
-                value={editing.section_id ?? ''}
-                onChange={e => setEditing({ ...editing, section_id: e.target.value ? parseInt(e.target.value, 10) : null })}
-                className="field"
-              >
-                <option value="">—</option>
-                {sections.map(sec => <option key={sec.id} value={sec.id}>{sec.name_nl}</option>)}
-              </select>
-            </Field>
-          </div>
-
-          <Field label="Inleiding" hint="De regel boven het fragment: “Jasper ontvangt een e-mail van zijn collega.”">
-            <input
-              value={editing.intro}
-              onChange={e => setEditing({ ...editing, intro: e.target.value })}
-              className="field"
-            />
-          </Field>
-
-          <Field label="Titel">
-            <input
-              value={editing.title}
-              onChange={e => setEditing({ ...editing, title: e.target.value })}
-              className="field"
-            />
-          </Field>
-
-          {editing.kind === 'text' && (
-            <Field label="Tekst (HTML)" hint="Alinea's als <p>…</p>. Dit is de linkerkolom die de kandidaat leest.">
-              <textarea
-                value={editing.body_html}
-                onChange={e => setEditing({ ...editing, body_html: e.target.value })}
-                rows={8}
-                className="field resize-y font-mono text-xs"
-              />
-            </Field>
-          )}
-
-          {(editing.kind === 'image' || editing.kind === 'audio') && (
-            <div className="grid grid-cols-2 gap-3">
-              <Field label={editing.kind === 'image' ? 'Afbeelding-URL' : 'Afbeelding-URL (optioneel)'}>
-                <input
-                  value={editing.image_url}
-                  onChange={e => setEditing({ ...editing, image_url: e.target.value })}
-                  placeholder="https://…"
-                  className="field"
-                />
-              </Field>
-              <Field label="Alt-tekst">
-                <input
-                  value={editing.image_alt}
-                  onChange={e => setEditing({ ...editing, image_alt: e.target.value })}
-                  className="field"
-                />
-              </Field>
-            </div>
-          )}
-
-          {editing.kind === 'audio' && (
-            <>
-              <Field
-                label="Script"
-                hint="Eén regel per beurt, met een sprekerlabel: “A: Goedemorgen.”. Bewaren — zonder script is regenereren onmogelijk."
-              >
-                <textarea
-                  value={editing.script}
-                  onChange={e => setEditing({ ...editing, script: e.target.value })}
-                  rows={8}
-                  placeholder={'A: Goedemorgen, kan ik u helpen?\nB: Ja, ik zoek de afdeling burgerzaken.'}
-                  className="field resize-y font-mono text-xs"
-                />
-              </Field>
-
-              {/* Casting is authored per speaker. The generator refuses an uncast speaker rather
-                  than choosing a voice itself — a wrong-gender voice is an audible content bug
-                  that cannot be recovered from the mp3 afterwards. */}
-              <VoiceCasting
-                script={editing.script}
-                cast={editing.voice_cast}
-                onChange={next => setEditing({ ...editing, voice_cast: next })}
-              />
-
-              <div className="flex flex-wrap items-center gap-2">
-                <button
-                  type="button"
-                  onClick={generateDraftAudio}
-                  disabled={genBusy || !editing.script.trim()}
-                  className="inline-flex items-center gap-2 bg-secondary-container text-on-secondary-container px-4 py-2 rounded-xl text-sm font-medium disabled:opacity-50"
-                >
-                  {genBusy ? <Loader2 size={15} className="animate-spin" aria-hidden /> : <AudioLines size={15} aria-hidden />}
-                  {editing.audio_url ? 'Opnieuw genereren' : 'Genereer audio'}
-                </button>
-                {editing.audio_url && (
-                  <audio controls src={editing.audio_url} className="h-9 max-w-[280px]" />
-                )}
-              </div>
-              {genNote && <p className="text-xs text-on-surface-variant m-0">{genNote}</p>}
-
-              <Field label="Audio-URL" hint="Wordt ingevuld door de generator. Handmatig plakken kan ook.">
-                <input
-                  value={editing.audio_url}
-                  onChange={e => setEditing({ ...editing, audio_url: e.target.value })}
-                  placeholder="https://…/stimulus.mp3"
-                  className="field font-mono text-xs"
-                />
-              </Field>
-            </>
-          )}
-
-          <Field label="Status">
-            <select
-              value={editing.review_status}
-              onChange={e => setEditing({ ...editing, review_status: e.target.value as 'pending' | 'validated' })}
-              className="field"
-            >
-              <option value="pending">Nog nakijken</option>
-              <option value="validated">Nagekeken door docent</option>
-            </select>
-          </Field>
-
-          <button
-            type="button"
-            onClick={saveStimulus}
-            disabled={busy}
-            className="inline-flex items-center gap-2 bg-primary text-white px-5 py-2.5 rounded-xl text-sm font-medium hover:bg-primary-container transition-colors disabled:opacity-50"
-          >
-            {busy ? <Loader2 size={16} className="animate-spin" aria-hidden /> : <Check size={16} aria-hidden />}
-            Opslaan
-          </button>
-        </div>
-      )}
 
       <style>{`
         .field {
@@ -669,86 +647,100 @@ export default function ExamBuilder({
   );
 }
 
-function Field({
-  label,
-  hint,
-  children,
-}: {
-  label: string;
-  hint?: string;
-  children: React.ReactNode;
-}) {
-  return (
-    <div className="space-y-1.5">
-      <label className="text-sm font-medium text-on-surface block">{label}</label>
-      {children}
-      {hint && <p className="text-xs text-on-surface-variant">{hint}</p>}
-    </div>
-  );
-}
+
 
 /**
- * One voice per speaker, derived from the script.
+ * "Verplaats naar" — the assignment control, on every stimulus and every open task.
  *
- * The speaker list comes from parsing the script rather than from a fixed A/B pair, so a
- * three-hander or a single announcer both work without a schema or UI change. Voices are the four
- * in data/tts-voices.json and nothing else — adding a fifth is an owner decision, not an
- * authoring one, so there is deliberately no free-text field here.
- *
- * The gender hint beside each option is the whole point of the control: the script establishes who
- * is speaking ("mevrouw De Wit", "Youssef") and the docent has to match it. Nothing downstream can
- * check that for them.
+ * ## Warn, then allow
+ * Moving an item out of a **published** exam is permitted, but not silently. `user_question_results`
+ * rows point at the questions, so after the move an already-recorded score is a score of an exam
+ * that no longer contains those items. The count is shown first and the docent confirms; the answers
+ * are never deleted. (The alternative — refusing outright — was considered and rejected: fixing a
+ * misfiled item in a live exam is a normal thing to need to do.)
  */
-function VoiceCasting({
-  script,
-  cast,
-  onChange,
+function MoveControl({
+  targets,
+  open,
+  busy,
+  recorded,
+  sourcePublished,
+  onToggle,
+  onMove,
 }: {
-  script: string;
-  cast: Record<string, string>;
-  onChange: (next: Record<string, string>) => void;
+  targets: AssignTarget[];
+  open: boolean;
+  busy: boolean;
+  recorded: number;
+  sourcePublished: boolean;
+  onToggle: () => void;
+  onMove: (targetId: number) => void;
 }) {
-  const speakers = speakersInScript(script);
-  if (speakers.length === 0) return null;
+  const [confirmed, setConfirmed] = useState(false);
+  const needsConfirm = sourcePublished && recorded > 0 && !confirmed;
 
-  const used = speakers.map(sp => cast[sp]).filter(Boolean);
-  const duplicate = new Set(used).size < used.length;
+  if (targets.length === 0) return null;
 
   return (
-    <div className="space-y-1.5">
-      <label className="text-sm font-medium text-on-surface block">
-        Stemmen ({speakers.length} {speakers.length === 1 ? 'spreker' : 'sprekers'})
-      </label>
-      <div className="grid gap-2 sm:grid-cols-2">
-        {speakers.map(sp => (
-          <div key={sp} className="flex items-center gap-2">
-            <span className="text-xs font-bold text-on-surface-variant w-16 shrink-0 truncate" title={sp}>
-              {sp}
-            </span>
-            <select
-              value={cast[sp] ?? ''}
-              onChange={e => onChange({ ...cast, [sp]: e.target.value })}
-              className="field"
-            >
-              <option value="">Kies een stem…</option>
-              {(Object.keys(VOICES) as VoiceKey[]).map(k => (
-                <option key={k} value={k}>
-                  {VOICES[k].gender === 'female' ? 'vrouw' : 'man'} · {VOICES[k].age === 'young' ? 'jonger' : 'ouder'}
-                </option>
+    <div className="relative">
+      <button
+        type="button"
+        onClick={onToggle}
+        aria-expanded={open}
+        aria-label="Verplaats naar een ander examen"
+        title="Verplaats naar een ander examen"
+        className="p-1 text-on-surface-variant transition-colors hover:text-primary"
+      >
+        <ArrowRightLeft size={14} aria-hidden />
+      </button>
+
+      {open && (
+        <div
+          className="absolute right-0 z-20 mt-1 max-h-[19rem] w-64 overflow-y-auto rounded-xl border border-outline-variant bg-surface p-2"
+          style={{ boxShadow: 'var(--shadow-card-md)' }}
+        >
+          {needsConfirm ? (
+            <div className="space-y-2 p-1.5">
+              <p className="m-0 flex items-start gap-1.5 text-xs leading-relaxed text-on-surface">
+                <TriangleAlert size={13} className="mt-0.5 shrink-0 text-warning" aria-hidden />
+                <span>
+                  Dit examen staat live en er zijn{' '}
+                  <strong className="font-semibold tabular-nums">{recorded}</strong> antwoorden op
+                  gegeven. Die blijven bewaard, maar horen daarna bij een examen zonder deze vragen.
+                </span>
+              </p>
+              <button
+                type="button"
+                onClick={() => setConfirmed(true)}
+                className="w-full rounded-lg bg-surface-container px-2.5 py-1.5 text-xs font-medium text-on-surface transition-colors hover:bg-surface-container-high"
+              >
+                Toch verplaatsen
+              </button>
+            </div>
+          ) : (
+            <ul className="m-0 list-none p-0">
+              {targets.map(t => (
+                <li key={t.id}>
+                  <button
+                    type="button"
+                    disabled={busy}
+                    onClick={() => onMove(t.id)}
+                    className="flex w-full items-center gap-2 rounded-lg px-2.5 py-1.5 text-left text-xs text-on-surface transition-colors hover:bg-surface-container disabled:opacity-50"
+                  >
+                    <span className="flex-1">{t.label}</span>
+                    <span className="tabular-nums text-on-surface-variant">{t.itemCount}</span>
+                    {t.published && (
+                      <span className="text-[0.6rem] font-bold uppercase tracking-wider text-success">
+                        live
+                      </span>
+                    )}
+                  </button>
+                </li>
               ))}
-            </select>
-          </div>
-        ))}
-      </div>
-      {duplicate && (
-        <p className="text-xs text-error m-0">
-          Twee sprekers hebben dezelfde stem. Een dialoog in één stem klinkt als een monoloog.
-        </p>
+            </ul>
+          )}
+        </div>
       )}
-      <p className="text-xs text-on-surface-variant">
-        De stem moet bij de spreker passen: een vrouw krijgt een vrouwenstem, een man een mannenstem.
-        Het script bepaalt dat via namen en aanspreekvormen.
-      </p>
     </div>
   );
 }

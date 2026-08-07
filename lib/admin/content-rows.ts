@@ -49,6 +49,14 @@ export type ContentRow = {
   stimulusId: number | null;
   stimulusTitle: string | null;
   stimulusKind: string | null;
+  /**
+   * The tekstsoort (`sections.name_nl`) this item is filed under — a gesprek, a mededeling, a
+   * telefoongesprek. `null` means none has been chosen, which is a real authoring gap: an
+   * uncategorised fragment is invisible in the exam's Opbouw panel and in the candidate's
+   * per-tekstsoort score breakdown. For a question it is inherited from its fragment; for an
+   * open task it is the task's own `section_id`.
+   */
+  sectionName: string | null;
 };
 
 const TASK_TYPE_LABEL: Record<string, string> = {
@@ -84,7 +92,7 @@ export async function fetchContentRows(): Promise<ContentRow[]> {
           // screen that shows it. `questions.exam_id` is NOT NULL, so the exam is always
           // there whether the stimulus is or not.
           'exams!inner(level, skill, number, published), ' +
-          'stimuli(id, sort_order, title, kind, audio_url)'
+          'stimuli(id, sort_order, title, kind, audio_url, sections(name_nl))'
       )
       .order('id'),
     supabase
@@ -92,7 +100,7 @@ export async function fetchContentRows(): Promise<ContentRow[]> {
       .select(
         'id, sort_order, skill, task_type, title, prompt_html, image_usage, review_status, updated_at, ' +
           'rubric_id, model_answer, prompt_audio_url, ' +
-          'exams!inner(level, number, published), open_task_images(id)'
+          'exams!inner(level, number, published), open_task_images(id), sections(name_nl)'
       )
       .order('id'),
   ]);
@@ -106,6 +114,7 @@ export async function fetchContentRows(): Promise<ContentRow[]> {
     /** null for a standalone question — see the select above. */
     stimuli: {
       id: number; sort_order: number; title: string | null; kind: string; audio_url: string | null;
+      sections: { name_nl: string } | null;
     } | null;
   };
 
@@ -116,6 +125,7 @@ export async function fetchContentRows(): Promise<ContentRow[]> {
     rubric_id: number | null; model_answer: string | null; prompt_audio_url: string | null;
     exams: { level: Level | null; number: number; published: boolean };
     open_task_images: { id: number }[];
+    sections: { name_nl: string } | null;
   };
 
   const rows: ContentRow[] = [];
@@ -145,6 +155,7 @@ export async function fetchContentRows(): Promise<ContentRow[]> {
       stimulusId: q.stimuli?.id ?? null,
       stimulusTitle: q.stimuli?.title ?? null,
       stimulusKind: q.stimuli?.kind ?? null,
+      sectionName: q.stimuli?.sections?.name_nl ?? null,
     });
   }
 
@@ -175,6 +186,7 @@ export async function fetchContentRows(): Promise<ContentRow[]> {
       stimulusId: null,
       stimulusTitle: null,
       stimulusKind: null,
+      sectionName: t.sections?.name_nl ?? null,
     });
   }
 

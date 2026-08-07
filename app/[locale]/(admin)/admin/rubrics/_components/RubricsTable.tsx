@@ -4,7 +4,7 @@ import { useMemo, useState } from 'react';
 import Link from 'next/link';
 import { AlertTriangle, Check, Plus } from 'lucide-react';
 import { categoriesForSkill, categoryLabel, type RubricSkill } from '@/lib/rubrics';
-import { DEFAULT_LEVEL, LEVELS, levelLabel, type Level } from '@/data/skills';
+import { levelLabel, type Level } from '@/data/skills';
 
 export type RubricRow = {
   id: number;
@@ -26,9 +26,17 @@ const SKILLS: RubricSkill[] = ['schrijven', 'spreken'];
  * "which categories do I still have no live rubric for?" — and a flat list of versions buries it.
  * A category with no active rubric is called out: every open task in it will fail to grade.
  */
-export default function RubricsTable({ rows, locale }: { rows: RubricRow[]; locale: string }) {
+export default function RubricsTable({
+  rows,
+  locale,
+  level,
+}: {
+  rows: RubricRow[];
+  locale: string;
+  /** From `?niveau=`, set by the sidebar sub-menu. It scopes the coverage warning too. */
+  level: Level;
+}) {
   const [skill, setSkill] = useState<RubricSkill | 'all'>('all');
-  const [level, setLevel] = useState<Level>(DEFAULT_LEVEL);
 
   const groups = useMemo(() => {
     return SKILLS.filter(s => skill === 'all' || s === skill).map(s => ({
@@ -59,16 +67,13 @@ export default function RubricsTable({ rows, locale }: { rows: RubricRow[]; loca
     [rows, level]
   );
 
-  const levelCounts = useMemo(() => {
-    const m: Record<string, number> = {};
-    for (const r of rows) m[r.level] = (m[r.level] ?? 0) + 1;
-    return m;
-  }, [rows]);
-
   return (
     <div className="space-y-6">
       <header className="flex flex-wrap items-end justify-between gap-4">
         <div>
+          <p className="font-headline text-xs font-bold uppercase tracking-[0.08em] text-secondary">
+            Niveau {levelLabel(level)}
+          </p>
           <h1 className="font-headline text-2xl font-extrabold text-on-surface tracking-tight">
             Rubrieken
           </h1>
@@ -101,23 +106,6 @@ export default function RubricsTable({ rows, locale }: { rows: RubricRow[]; loca
       )}
 
       <div className="flex flex-wrap items-center gap-2">
-        {/* Level first: it scopes everything below it, including the missing-rubric warning. */}
-        <div className="flex items-center gap-1 mr-2 pr-2 border-r border-outline-variant">
-          {LEVELS.map(l => (
-            <button
-              key={l}
-              onClick={() => setLevel(l)}
-              className={`px-3 py-1.5 rounded-lg text-sm font-bold transition-colors ${
-                level === l
-                  ? 'bg-primary text-white'
-                  : 'text-on-surface-variant hover:bg-surface-container-high'
-              }`}
-            >
-              {levelLabel(l)}
-              <span className="ml-1.5 tabular-nums opacity-70">{levelCounts[l] ?? 0}</span>
-            </button>
-          ))}
-        </div>
         {(['all', ...SKILLS] as const).map(s => (
           <button
             key={s}

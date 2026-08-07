@@ -3,23 +3,11 @@
 import { useState } from 'react';
 import LogoMark from '@/components/site/LogoMark';
 import LogoutButton from './LogoutButton';
+import AdminNav from './AdminNav';
 
 interface Props {
   locale: string;
   userEmail: string;
-}
-
-function NavItem({ href, icon, label, onClick }: { href: string; icon: string; label: string; onClick?: () => void }) {
-  return (
-    <a
-      href={href}
-      onClick={onClick}
-      className="flex items-center gap-3 px-3 py-2.5 rounded-xl text-white/70 hover:text-white hover:bg-white/10 transition-colors text-sm font-medium"
-    >
-      <span className="material-symbols-outlined text-[20px]">{icon}</span>
-      {label}
-    </a>
-  );
 }
 
 export function AdminMobileNav({ locale, userEmail }: Props) {
@@ -69,17 +57,7 @@ export function AdminMobileNav({ locale, userEmail }: Props) {
           </button>
         </div>
 
-        <nav className="flex-1 p-4 space-y-1">
-          <NavItem href={`/${locale}/admin`} icon="dashboard" label="Dashboard" onClick={() => setOpen(false)} />
-          <NavItem href={`/${locale}/admin/questions`} icon="quiz" label="Vragen & opdrachten" onClick={() => setOpen(false)} />
-          <NavItem href={`/${locale}/admin/exams`} icon="assignment" label="Examens" onClick={() => setOpen(false)} />
-          <NavItem href={`/${locale}/admin/rubrics`} icon="checklist" label="Rubrieken" onClick={() => setOpen(false)} />
-          <NavItem href={`/${locale}/admin/beoordeling`} icon="rate_review" label="Beoordelen" onClick={() => setOpen(false)} />
-          <NavItem href={`/${locale}/admin/woordkaarten`} icon="style" label="Woordkaarten" onClick={() => setOpen(false)} />
-          <div className="pt-3 mt-2 border-t border-white/10">
-            <NavItem href={`/${locale}/admin/users`} icon="group" label="Gebruikers" onClick={() => setOpen(false)} />
-          </div>
-        </nav>
+        <AdminNav locale={locale} onNavigate={() => setOpen(false)} />
 
         <div className="p-4 border-t border-white/10 space-y-1">
           <a

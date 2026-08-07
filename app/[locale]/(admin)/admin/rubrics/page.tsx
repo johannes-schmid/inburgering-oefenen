@@ -1,4 +1,5 @@
 import { createClient } from '@/lib/supabase/server';
+import { levelFromSearch } from '@/lib/admin/nav';
 import RubricsTable, { type RubricRow } from './_components/RubricsTable';
 
 export const revalidate = 0;
@@ -13,10 +14,13 @@ export const revalidate = 0;
  */
 export default async function RubricsPage({
   params,
+  searchParams,
 }: {
   params: Promise<{ locale: string }>;
+  searchParams: Promise<{ niveau?: string }>;
 }) {
   const { locale } = await params;
+  const level = levelFromSearch((await searchParams).niveau);
   const supabase = await createClient();
 
   const { data } = await supabase
@@ -58,5 +62,5 @@ export default async function RubricsPage({
     used_count: used.get(r.id) ?? 0,
   }));
 
-  return <RubricsTable rows={rows} locale={locale} />;
+  return <RubricsTable rows={rows} locale={locale} level={level} />;
 }

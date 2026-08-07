@@ -1,9 +1,11 @@
 import type { Metadata } from 'next';
+import { redirect } from 'next/navigation';
 import { getTranslations } from 'next-intl/server';
 import { routing } from '@/i18n/routing';
 import { Link } from '@/i18n/navigation';
 import TOPICS from '@/data/oefenvragen-topics';
 import { Breadcrumb, GradientHero, EyebrowBadge, CTABanner } from '@/components/site';
+import { FEATURES } from '@/lib/features';
 
 type Props = { params: Promise<{ locale: string }> };
 
@@ -13,6 +15,16 @@ export async function generateStaticParams() {
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { locale } = await params;
+  // The flag kept this out of the nav and the sitemap, but the route still served a 200 with an
+  // empty topic list — an indexable page with no content, which is the exact thing the flag exists
+  // to prevent. `data/oefenvragen-topics.ts` is a typed-empty stub until A2 topics are authored.
+  //
+  // A redirect rather than `notFound()`, for two reasons: `notFound()` here streams a 200 shell and
+  // resolves to the not-found page client-side, which is a soft 404 — the worst of both; and any
+  // inbound link to this KNM-era URL is better spent on the live funnel than on an error. Flip
+  // FEATURES.oefenvragen when the topics exist.
+  if (!FEATURES.oefenvragen) redirect(`/${locale}/oefenen`);
+
   const t = await getTranslations({ locale, namespace: 'oefenvragen' });
   return {
     title: t('meta_title'),
@@ -33,6 +45,17 @@ const totalQuestions = TOPICS.reduce((s, t) => s + t.total, 0);
 
 export default async function OefenIndexPage({ params }: Props) {
   const { locale } = await params;
+
+  // The flag kept this out of the nav and the sitemap, but the route still served a 200 with an
+  // empty topic list — an indexable page with no content, which is the exact thing the flag exists
+  // to prevent. `data/oefenvragen-topics.ts` is a typed-empty stub until A2 topics are authored.
+  //
+  // A redirect rather than `notFound()`, for two reasons: `notFound()` here streams a 200 shell and
+  // resolves to the not-found page on the client, which is a soft 404 — the worst of both; and any
+  // inbound link to this KNM-era URL is better spent on the live funnel than on an error page. Flip
+  // FEATURES.oefenvragen when the topics exist.
+  if (!FEATURES.oefenvragen) redirect(`/${locale}/oefenen`);
+
   const t = await getTranslations({ locale, namespace: 'oefenvragen' });
 
   return (
