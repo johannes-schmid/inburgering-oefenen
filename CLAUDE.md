@@ -162,6 +162,105 @@ of audio.** A2 Lezen carries the option range only.
   error, via `e.number > 0`. It is a holding area, not an exam; its publish panel is hidden too,
   because `exams_backlog_never_published` rejects the UPDATE anyway.
 
+### The open onderdelen have their own axis — `exam_task_rules`
+
+`20260806000000_open_skill_structure.sql` filled in the other three onderdelen off DUO's material
+(`SEO/facts.md` §1, "The shape inside an exam"). Lezen is now 1–3 vragen per tekst; Schrijven and
+Spreken got a table of their own, because their rules are **per soort opgave** and `exam_formats`
+is one flat row per (level, skill).
+
+- **The category axis is `rubricCategory()`, deliberately reused rather than invented.** Schrijven's
+  `task_type` and Spreken's `image_usage` already collapse onto one string, and rubric authoring
+  and grading key on it — so structure validation keys the same way, and a fifth soort opgave is
+  one row in three places instead of a new concept. `exam_task_rules.category` **must** equal what
+  `rubricCategory()` returns; `exam_task_summary()` derives it in SQL with the same CASE.
+- **`image_usage` gained `react`** — DUO's Spreken onderdeel 1. At DUO it is a video; here it is one
+  still image (owner's decision, 2026-08-08), because a video pipeline for 4 of 16 items buys
+  nothing the still does not. It carries one plaatje exactly like `describe`, so **`image_usage` is
+  the only thing separating the two**, and they grade against different criteria — which is why the
+  value exists at all instead of reusing `describe`. Seven files declare that union inline; all
+  seven were updated, including `lib/ai/grade.ts` (no entry = no instruction line to the grader)
+  and `components/exam/SpeakingTask.tsx` (no entry = no instruction to the candidate).
+- **Schrijven's composition is a quota, not a blueprint.** All three DUO oefenexamens hold exactly
+  one formulier and one korte tekst; they order the four opgaven differently. So `min_per_exam` /
+  `max_per_exam` are checked and the order is not.
+- **A missing soort is rendered, not omitted.** `exam_task_summary()` FULL OUTER JOINs the rules,
+  so a category with no opgaven comes back at 0 — "er zit geen formulier in dit examen" is the most
+  useful thing the panel can say, and a row that is not there cannot say it. `ExamBuilder` renders
+  the shortfall in `text-secondary` (`#a24000`), **not** `text-warning`, which is `yellow-500`.
+- **`sections` is retired for the open skills.** The genre *is* `task_type` and the shape *is*
+  `image_usage`; a second axis saying the same thing is a second place to disagree. The six rows
+  are deleted at both levels, and the "Geen tekstsoort gekozen" branch self-disables because it is
+  guarded by an `EXISTS` over sections for the skill. A2 Lezen gained `regels` ("Regels of
+  instructie"), which DUO uses and we had no row for.
+- **A2 Lezen's `stimulus_count` stays NULL.** Only 13 of the 25 items were captured; 13 items is
+  not a count of texts. Same rule as B1's item counts.
+- **`data/skills.ts` mirrors both tables** (`RULES` and `TASK_RULES`) and must change in the same
+  commit. `tests-unit/skills.test.ts` pins the invariants that matter: the minimums must fit inside
+  `itemCount` and the maximums must reach it, or the docent is shown a target she can never hit.
+
+### Rubrics are bound to the categories — `task_categories`
+
+`20260807000000_rubric_categories.sql` made the category convention a table. `rubrics.task_type`
+had always *held* the `rubricCategory()` string and nothing enforced it, which left two silent
+failures: a typo'd category saved cleanly and then matched nothing (`resolveRubric` returns null,
+grading 409s pointing at nothing), and a task could be linked to a rubric for a **different**
+category — graded against anchors written for another task, returning a confident wrong mark.
+
+- **`task_categories` is level-independent, deliberately.** A category is a *kind of opgave*; it
+  exists whether or not anyone has worked out its rules at a given level. The rules stay
+  level-keyed in `exam_task_rules`, and B1 having no rule rows must not also mean B1 has no
+  categories — a B1 rubric could then not be authored at all.
+- **Both `rubrics.task_type` and `exam_task_rules.category` are FKs into it.** `label_nl` moved
+  there too; it used to be per (level, skill, category) and could disagree with itself across
+  levels for no reason.
+- **The rubrics FK is added `NOT VALID` and validated in a `DO` block that downgrades failure to a
+  NOTICE.** A pre-existing mis-typed row must not turn this into a failed deploy; the constraint
+  governs every future write either way. It validated cleanly locally.
+- **A rubric from the wrong category is now an error**, beside the existing wrong-level error.
+  Both are errors rather than warnings for the same reason: they produce a mark that looks
+  entirely legitimate.
+- **`exam_task_summary()` is `SECURITY DEFINER`** solely to read the active rubric's id and version
+  past the admin-only policy on `rubrics`. It returns **no rubric content** — `criteria` and
+  `system_prompt` are a scoring key and must never reach a client component.
+- **`/admin/rubrics` already had the coverage grid** (`categoriesForSkill()` per level, uncovered
+  categories called out). It picked up `speaking_react` for free. Don't build a second one.
+
+### The onderdeel's setup is editable from the exam builder
+
+The "Opzet" button in the Opbouw card opens `ExamSetupSheet`, which edits `exam_formats`,
+`sections` and `exam_task_rules` for the (level, skill) — **not for the exam it was opened from**.
+All three tables are keyed by (level, skill), so one save changes what all ten oefenexamens are
+measured against. The sheet says so in an orange banner and every button reads "Opslaan voor alle
+examens"; keep that if you add another entry point.
+
+- **A blank field writes NULL, which means unverified**, and the validator then skips that check.
+  Clearing is a real action, not a mistake — the placeholder reads "onbepaald", never `0`. The
+  owner declined a bronvermelding requirement (2026-08-08); `verified_note` is an optional field.
+  This is the one place `SEO/facts.md`'s discipline is not machine-enforced.
+- **Section edits apply to the current level only** (owner's decision) — B1's tekstsoorten may
+  genuinely differ, so they are edited from a B1 exam rather than mirrored.
+- **`sections` had no write policy at all** before this; it could only be changed by a migration.
+  `exam_task_rules` and `task_categories` got admin-write policies in the same migration.
+- **An RLS-denied UPDATE through PostgREST returns 200 with zero rows**, so a missing policy looks
+  exactly like a successful save. Every write path here was therefore tested end-to-end through a
+  real browser session, not by reading the policy — `exam_formats` UPDATE, `sections` INSERT and
+  `exam_task_rules` UPSERT.
+- **`lib/admin/exam-setup.ts` is client-safe (types + `slugify`); the queries are in
+  `exam-setup-server.ts`.** Same split as `backlog.ts` / `backlog-server.ts`, and for the same
+  reason: the sheet is a client component, and one module would drag `lib/supabase/server` into
+  the browser bundle and fail the build.
+
+**Two bugs were fixed on the way through, both from a re-`CREATE OR REPLACE` losing an earlier
+fix.** `20260803000000_open_skill_axis.sql` rewrote `exam_publish_issues()` from the wrong ancestor
+and dropped the `AND t.skill = 'spreken'` filter that `20260731100000_picture_note_images.sql` had
+added to the image-count branch; `20260805` copied it forward. A Schrijven `picture_note` with
+pictures necessarily has `image_usage = 'none'` (forced by `open_tasks_image_usage_is_speaking`), so
+its images were counted against an expectation of zero and reported as a **hard publish error**.
+Separately, `ContentSheet.tsx` had `cover_all: 4` in a map whose own comment said it mirrored
+`REQUIRED_IMAGES`, where it is 3. **A big function re-created in a later migration is a rewrite —
+diff it against the version actually in the database, not against the file you copied.**
+
 **Luisteren replays the fragment for every question; Lezen does not.** `ExamShell` keys
 `StimulusPane` on `stimulus:question` for Luisteren, so the audio remounts and starts at 0:00 on
 each question the way DUO presents it, and on the stimulus id for Lezen, so a text holds its scroll

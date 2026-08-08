@@ -119,7 +119,7 @@ export type GradeTask = {
   closing: string | null;
   min_sentences: number | null;
   form_schema: unknown;
-  image_usage: 'none' | 'describe' | 'choose' | 'cover_all';
+  image_usage: 'none' | 'react' | 'describe' | 'choose' | 'cover_all';
   max_record_seconds: number;
   model_answer: string | null;
   images: { sort_order: number; caption: string | null; alt_text: string | null; group_label: string | null }[];
@@ -144,6 +144,7 @@ export type FewShotExample = {
 
 const IMAGE_RULE: Record<GradeTask['image_usage'], string> = {
   none: '',
+  react: 'De kandidaat moest reageren op de situatie op het plaatje.',
   describe: 'De kandidaat moest steeds het plaatje gebruiken in het antwoord.',
   choose: 'De kandidaat moest één plaatje kiezen en die keuze toelichten.',
   cover_all: 'De kandidaat moest alle plaatjes gebruiken.',

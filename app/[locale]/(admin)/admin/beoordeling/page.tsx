@@ -107,7 +107,7 @@ export default async function BeoordelingPage({
       greeting: string | null;
       closing: string | null;
       min_sentences: number | null;
-      image_usage: 'none' | 'describe' | 'choose' | 'cover_all';
+      image_usage: 'none' | 'react' | 'describe' | 'choose' | 'cover_all';
       max_record_seconds: number;
       exams: { number: number } | null;
       open_task_images: InboxRow['images'];

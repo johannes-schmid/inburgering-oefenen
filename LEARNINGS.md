@@ -1031,3 +1031,78 @@ row per exam card. Every existing local item was assigned a tekstsoort.
   — mis-filing quietly is worse than either fixing the taxonomy or leaving the gap visible.
 **Lesson:** before adopting a component's built-in feature (grouping, expansion), read how it
 actually renders. "Shadcn has this already" was true of the primitive and false of this wrapper.
+
+## 2026-08-08 — Standardising A2 Lezen, Schrijven en Spreken
+**Changed:** `supabase/migrations/20260806000000_open_skill_structure.sql` — `image_usage` gains
+`react`, new `exam_task_rules` table (8 A2 rows), `exam_formats.items_per_part`, A2 Lezen's 1–3
+vragen per tekst, the `regels` tekstsoort, `sections` retired for the open skills,
+`exam_task_summary()`, and six new warning branches in `exam_publish_issues()`. Mirrored in
+`data/skills.ts` (`TASK_RULES`, `formatTaskRules`, `SkillRules.partCount/itemsPerPart`),
+`lib/rubrics.ts`, `lib/rubric-templates.ts`, `lib/admin/stimuli.ts` (`fetchTaskSummary`),
+`ExamBuilder.tsx` (Opbouw now renders for all four onderdelen) and five files that redeclare the
+`image_usage` union inline. New `tests-unit/skills.test.ts`.
+**Outcome:** SUCCESS — `db reset` replays clean, tsc, next build, 94 unit, 49 e2e passing.
+**What worked / went wrong:**
+- **Reusing `rubricCategory()` as the structure axis was the whole design.** Schrijven's
+  `task_type` and Spreken's `image_usage` already collapse onto one string that rubrics and
+  grading key on. Inventing a second taxonomy would have been a third thing to keep in sync;
+  instead `exam_task_rules.category` *is* that string and `exam_task_summary()` derives it in SQL
+  with the same CASE.
+- **A re-`CREATE OR REPLACE` of a big function is a rewrite, and it silently lost a fix.**
+  `20260803` rebuilt `exam_publish_issues()` from the wrong ancestor and dropped the
+  `AND t.skill = 'spreken'` filter added by `20260731100000`; `20260805` copied the regression
+  forward. Live effect: a Schrijven briefje with pictures (which *must* have `image_usage='none'`)
+  was a hard publish error. Found only by reading every migration that touched the branch.
+- **A union type declared inline in seven files is seven chances to miss one.** Adding `react` had
+  to reach `lib/ai/grade.ts` (no entry ⇒ no instruction line to the grader) and
+  `components/exam/SpeakingTask.tsx` (no entry ⇒ no instruction to the candidate). `tsc` caught
+  the `Record<ImageUsage, …>` maps because they are exhaustive; it did **not** catch
+  `Record<string, number>` in `ContentSheet.tsx`, which had been silently wrong (`cover_all: 4`)
+  against its own stated mirror. Exhaustive `Record<Union, …>` is load-bearing, not style.
+- **A FULL OUTER JOIN, not a left join, is what makes the panel useful.** "Er zit geen formulier in
+  dit examen" is the most valuable row, and it only exists if categories with zero opgaven are
+  rendered. A left join from `open_tasks` would have shown a tidy table that says nothing.
+- **Proving a warning fires needs a probe, not a reading.** A throwaway exam in a rolled-back
+  transaction showed the composition warnings appearing *and* no new errors — the second half
+  matters just as much, since the whole design promise is that structure never gates the docent.
+- **`portal.spec.js` cannot survive `supabase db reset`.** It needs B1 exam 1 to have items;
+  `seed.sql` deliberately seeds none. 4 tests fail on a freshly reset database — confirmed by
+  stashing every change and re-running, which failed identically. Not caused here, but it means
+  "reset the DB to test a schema change" and "run the e2e suite" are mutually exclusive today.
+**Lesson:** when a migration re-creates a function that earlier migrations also re-created, diff it
+against the definition **in the database** (`\sf`), never against the file you copied from. The
+migration history records intent; only the database records fact.
+
+## 2026-08-08 — Rubrics bound to the categories, and an editable onderdeel-opzet
+**Changed:** `supabase/migrations/20260807000000_rubric_categories.sql` — new `task_categories`
+reference table (9 rows), FKs from `rubrics.task_type` and `exam_task_rules.category`, `label_nl`
+moved there, admin-write policies on `sections` / `exam_task_rules` / `task_categories`, a new
+publish error for a rubric whose category does not match its opgave, and `exam_task_summary()`
+now reporting the active rubric per soort. New `ExamSetupSheet` + `lib/admin/exam-setup.ts` /
+`exam-setup-server.ts` editing `exam_formats`, `sections` and `exam_task_rules` from the exam
+builder. `ExamBuilder` gained an "Opzet" trigger and a Rubriek column.
+**Outcome:** SUCCESS — `db reset` clean, FK validated, tsc, next build, 94 unit tests; all three
+write paths verified through a real browser session.
+**What worked / went wrong:**
+- **An RLS-denied UPDATE through PostgREST returns 200 with zero rows.** A missing policy is
+  therefore indistinguishable from a successful save: no error, no thrown exception, the field
+  just silently reverts on refresh. `sections` genuinely had no write policy. Reading the policy
+  list is not a test — each path (UPDATE / INSERT / UPSERT) was driven through a real session and
+  then checked in psql. This is the single most valuable thing in this session.
+- **A client component importing a module that transitively imports `lib/supabase/server` fails
+  the build, not the typecheck.** `tsc --noEmit` passed; `next build` reported it as an
+  "Ecmascript file had an error" with an import trace. The project had already solved this once
+  (`backlog.ts` / `backlog-server.ts`) — the convention existed and I had to hit the wall to find
+  it. Look for an existing `*-server.ts` twin before writing a new `lib/admin/` module.
+- **`.field` carries `w-full`, so a `w-24` on the same input loses.** Every field in the sheet
+  stacked full-width instead of wrapping into rows. Same-specificity classes are resolved by
+  stylesheet order, not by the order in the `className` string. Width goes on the wrapper.
+- **The coverage grid I was about to build already existed.** `/admin/rubrics` groups by
+  `categoriesForSkill()` per level and calls out uncovered categories; adding `speaking_react` to
+  the union made it appear there for free. Read the screen before rebuilding it.
+- **Making reference data editable weakens a documented rule, and that is the owner's call.**
+  `SEO/facts.md` forbids an unsourced number; a form invites one. Offered a bronvermelding
+  requirement, owner declined — so the rule now lives in judgement, not in the schema. Recorded in
+  CLAUDE.md rather than silently accepted.
+**Lesson:** for anything behind RLS, "the code is right" and "the write lands" are different
+claims. Prove the second one against the database, through the same client the user uses.

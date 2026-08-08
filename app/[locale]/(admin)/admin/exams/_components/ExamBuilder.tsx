@@ -5,12 +5,17 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import {
   AlertTriangle, ArrowRightLeft, AudioLines, Check, ChevronDown, Inbox, Loader2, Pencil, Plus,
-  TriangleAlert, X,
+  Settings2, TriangleAlert, X,
 } from 'lucide-react';
 import { createClient } from '@/lib/supabase/client';
-import type { AdminStimulus, PublishIssue, StructureRow } from '@/lib/admin/stimuli';
+import type { AdminStimulus, PublishIssue, StructureRow, TaskSummaryRow } from '@/lib/admin/stimuli';
 import type { AssignTarget } from '@/lib/admin/backlog';
-import { formatCount, formatRange, formatRules, isSkillSlug, type Level } from '@/data/skills';
+import type { ExamSetup } from '@/lib/admin/exam-setup';
+import ExamSetupSheet from './ExamSetupSheet';
+import {
+  formatCount, formatRange, formatRules, formatTaskRules, getFormat, isSkillSlug,
+  type Level, type SkillSlug,
+} from '@/data/skills';
 
 type Exam = {
   id: number;
@@ -54,6 +59,8 @@ export default function ExamBuilder({
   viewingBacklog,
   structure,
   backlogStructure,
+  taskStructure,
+  setup,
 }: {
   locale: string;
   exam: Exam;
@@ -67,6 +74,9 @@ export default function ExamBuilder({
   viewingBacklog: boolean;
   structure: StructureRow[];
   backlogStructure: StructureRow[];
+  taskStructure: TaskSummaryRow[];
+  /** The onderdeel's shared rules. `null` only for an unknown skill slug. */
+  setup: ExamSetup | null;
 }) {
   const router = useRouter();
   const supabase = createClient();
@@ -78,6 +88,7 @@ export default function ExamBuilder({
   /** Which item's "verplaats naar" dropdown is open, as `stimuli:12` / `open_tasks:4`. */
   const [moving, setMoving] = useState<string | null>(null);
   const [pulling, setPulling] = useState<number | null>(null);
+  const [setupOpen, setSetupOpen] = useState(false);
 
   const isOpenSkill = exam.skill === 'schrijven' || exam.skill === 'spreken';
   const errors = issues.filter(i => i.severity === 'error');
@@ -91,6 +102,20 @@ export default function ExamBuilder({
 
   const totalStimuli = structure.reduce((n, r) => n + r.stimulus_count, 0);
   const totalQuestions = structure.reduce((n, r) => n + r.question_count, 0);
+  const totalTasks = taskStructure.reduce((n, r) => n + r.task_count, 0);
+
+  /**
+   * The recording cap, if every soort opgave in this onderdeel agrees on one. They do at A2
+   * (60 seconds throughout), but a single number is only printable while that holds — so it
+   * is derived rather than assumed, and the line is dropped if they ever diverge.
+   */
+  const recordSeconds = (() => {
+    if (!isSkillSlug(exam.skill)) return null;
+    const secs = formatTaskRules(exam.level, exam.skill)
+      .map(r => r.recordSeconds)
+      .filter((s): s is number => s !== null);
+    return secs.length > 0 && secs.every(s => s === secs[0]) ? secs[0] : null;
+  })();
   /** Backlog counts by tekstsoort, so a shortfall can be read next to what is already waiting. */
   const backlogBySection = new Map(backlogStructure.map(r => [r.section_id, r]));
 
@@ -208,6 +233,16 @@ export default function ExamBuilder({
 
   return (
     <div className="space-y-6 max-w-4xl">
+      {setup && isSkillSlug(exam.skill) && (
+        <ExamSetupSheet
+          open={setupOpen}
+          level={exam.level}
+          skill={exam.skill}
+          setup={setup}
+          onClose={() => setSetupOpen(false)}
+        />
+      )}
+
       {error && (
         <div className="bg-error/10 border border-error/20 rounded-xl p-3 text-sm text-error">{error}</div>
       )}
@@ -217,10 +252,135 @@ export default function ExamBuilder({
           verified how many gesprekken versus mededelingen a DUO exam contains, so this
           reports the distribution and the docent judges it. What *is* verified — the
           fragment count and the per-fragment rules — is stated underneath. */}
-      {!isOpenSkill && (
+      {isOpenSkill ? (
+        /* ── Opbouw for Schrijven en Spreken ──
+           The axis here is the soort opgave, not the tekstsoort: for Schrijven the genre *is*
+           `task_type` and for Spreken the shape *is* `image_usage`, which is why `sections` was
+           retired for these two. Unlike the tekstsoort breakdown this one does have a verified
+           quota to compare against — DUO's three A2 Schrijven oefenexamens agree on the mix
+           (always one formulier, always one korte tekst) even though they order it differently.
+
+           A soort with zero opgaven is the row most worth seeing, so it is rendered rather than
+           omitted, in the brand orange. */
         <div className="rounded-2xl border border-outline-variant p-4">
           <div className="flex items-baseline justify-between gap-3 flex-wrap mb-3">
-            <h2 className="text-sm font-medium text-on-surface m-0">Opbouw</h2>
+            <div className="flex items-baseline gap-3">
+              <h2 className="text-sm font-medium text-on-surface m-0">Opbouw</h2>
+              <button
+                type="button"
+                onClick={() => setSetupOpen(true)}
+                aria-label="Opzet van het onderdeel bewerken"
+                className="inline-flex items-center gap-1 text-xs text-on-surface-variant hover:text-on-surface transition-colors"
+              >
+                <Settings2 size={13} aria-hidden /> Opzet
+              </button>
+            </div>
+            <p className="text-xs text-on-surface-variant m-0 tabular-nums">
+              {viewingBacklog
+                ? `${totalTasks} opgaven`
+                : `${totalTasks} van ${formatCount(getFormat(exam.level, exam.skill as SkillSlug).itemCount)} opgaven`}
+            </p>
+          </div>
+
+          {taskStructure.length === 0 ? (
+            <p className="text-xs text-on-surface-variant m-0">
+              {viewingBacklog
+                ? 'Nog niets in de backlog. Wat je hier maakt, wijs je later aan een examen toe.'
+                : 'Nog geen opgaven. Voeg er een toe, of haal er een uit de backlog.'}
+            </p>
+          ) : (
+            <table className="w-full text-xs border-collapse">
+              <thead>
+                <tr className="text-on-surface-variant text-left">
+                  <th className="font-medium pb-1.5">Soort opgave</th>
+                  <th className="font-medium pb-1.5 text-right tabular-nums">Opgaven</th>
+                  {!viewingBacklog && (
+                    <th className="font-medium pb-1.5 text-right tabular-nums">Verwacht</th>
+                  )}
+                  {/* A total across the soort, not a per-opgave count — the per-opgave rule is
+                      already a hard error in the validator, so this is the "hoeveel plaatjes
+                      heb ik hier eigenlijk staan" number. */}
+                  <th className="font-medium pb-1.5 text-right tabular-nums">Afbeeldingen totaal</th>
+                  <th className="font-medium pb-1.5 text-right">Rubriek</th>
+                </tr>
+              </thead>
+              <tbody>
+                {taskStructure.map(r => {
+                  // A gap only counts as a gap against a verified expectation. On the backlog
+                  // there is no expectation at all — it is a holding area, not an exam.
+                  const short = !viewingBacklog
+                    && r.expected_min !== null && r.task_count < r.expected_min;
+                  return (
+                    <tr key={r.category} className="border-t border-outline-variant">
+                      <td className={`py-1.5 ${short ? 'text-secondary' : 'text-on-surface'}`}>
+                        {r.label_nl}
+                      </td>
+                      <td className={`py-1.5 text-right tabular-nums ${short ? 'text-secondary' : 'text-on-surface'}`}>
+                        {r.task_count}
+                      </td>
+                      {!viewingBacklog && (
+                        <td className="py-1.5 text-right tabular-nums text-on-surface-variant">
+                          {formatRange(
+                            r.expected_min !== null && r.expected_max !== null
+                              ? [r.expected_min, r.expected_max]
+                              : null,
+                          )}
+                        </td>
+                      )}
+                      <td className="py-1.5 text-right tabular-nums text-on-surface-variant">
+                        {r.image_count || '—'}
+                      </td>
+                      {/* Without a rubriek this soort cannot be graded at all — a harder gap
+                          than a missing opgave, and one the publish gate only reports per
+                          opgave, never per soort. */}
+                      <td className="py-1.5 text-right">
+                        {r.rubric_id === null ? (
+                          <Link
+                            href={`/${locale}/admin/rubrics/new?niveau=${exam.level}&onderdeel=${exam.skill}&categorie=${r.category}`}
+                            className="text-secondary hover:underline"
+                          >
+                            ontbreekt
+                          </Link>
+                        ) : (
+                          <Link
+                            href={`/${locale}/admin/rubrics/${r.rubric_id}`}
+                            className="text-on-surface-variant hover:text-on-surface hover:underline tabular-nums"
+                          >
+                            v{r.rubric_version}
+                          </Link>
+                        )}
+                      </td>
+                    </tr>
+                  );
+                })}
+              </tbody>
+            </table>
+          )}
+
+          {rules && (rules.partCount || rules.itemsPerPart || recordSeconds) && (
+            <p className="text-xs text-on-surface-variant m-0 mt-3 pt-3 border-t border-outline-variant">
+              {[
+                rules.partCount !== null && `${rules.partCount} onderdelen`,
+                rules.itemsPerPart !== null && `${rules.itemsPerPart} opgaven per onderdeel`,
+                recordSeconds !== null && `${recordSeconds} sec opname`,
+              ].filter(Boolean).join(' · ')}
+            </p>
+          )}
+        </div>
+      ) : (
+        <div className="rounded-2xl border border-outline-variant p-4">
+          <div className="flex items-baseline justify-between gap-3 flex-wrap mb-3">
+            <div className="flex items-baseline gap-3">
+              <h2 className="text-sm font-medium text-on-surface m-0">Opbouw</h2>
+              <button
+                type="button"
+                onClick={() => setSetupOpen(true)}
+                aria-label="Opzet van het onderdeel bewerken"
+                className="inline-flex items-center gap-1 text-xs text-on-surface-variant hover:text-on-surface transition-colors"
+              >
+                <Settings2 size={13} aria-hidden /> Opzet
+              </button>
+            </div>
             <p className="text-xs text-on-surface-variant m-0 tabular-nums">
               {/* No target on the backlog: it is a holding area, not an exam, so "0 van 10"
                   would invent a shortfall the docent is not supposed to close there. */}
@@ -255,7 +415,8 @@ export default function ExamBuilder({
                     <tr key={r.section_id ?? 'none'} className="border-t border-outline-variant">
                       <td className="py-1.5 text-on-surface">
                         {r.section_id === null
-                          ? <span className="text-warning">{r.name_nl}</span>
+                          /* Brand orange, not `text-warning` — that resolves to yellow-500. */
+                          ? <span className="text-secondary">{r.name_nl}</span>
                           : r.name_nl}
                       </td>
                       <td className="py-1.5 text-right tabular-nums text-on-surface">{r.stimulus_count}</td>

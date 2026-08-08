@@ -2,12 +2,15 @@ import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { ArrowLeft } from 'lucide-react';
 import { createClient } from '@/lib/supabase/server';
-import { fetchExamStimuli, fetchPublishIssues, fetchStructureSummary } from '@/lib/admin/stimuli';
+import {
+  fetchExamStimuli, fetchPublishIssues, fetchStructureSummary, fetchTaskSummary,
+} from '@/lib/admin/stimuli';
 import { examLabel, isBacklog } from '@/lib/admin/backlog';
 import {
   countRecordedAnswers, fetchAssignTargets, fetchBacklogExamId,
 } from '@/lib/admin/backlog-server';
 import { formatCount, getFormat, getSkill, levelLabel, type Level } from '@/data/skills';
+import { fetchExamSetup } from '@/lib/admin/exam-setup-server';
 import ExamBuilder from '../_components/ExamBuilder';
 
 export const revalidate = 0;
@@ -38,9 +41,11 @@ export default async function ExamBuilderPage({
   const backlogExamId = await fetchBacklogExamId(row.level, row.skill);
   const viewingBacklog = isBacklog(row.number);
 
+  // Schrijven/Spreken are counted per soort opgave, the other two per tekstsoort. Both are
+  // fetched rather than branched on, because the branch belongs where the table is rendered.
   const [
     stimuli, issues, tasksRes, targets, backlogStimuli, backlogTasksRes,
-    structure, backlogStructure,
+    structure, backlogStructure, taskStructure, setup,
   ] =
     await Promise.all([
       fetchExamStimuli(examId),
@@ -65,6 +70,9 @@ export default async function ExamBuilderPage({
       backlogExamId && !viewingBacklog
         ? fetchStructureSummary(backlogExamId)
         : Promise.resolve([]),
+      fetchTaskSummary(examId),
+      // The onderdeel's shared setup — edited from here, applies to all ten exams.
+      skill ? fetchExamSetup(row.level, skill.slug) : Promise.resolve(null),
     ]);
 
   // Only for what is in this exam: it is the number the docent needs before moving an item *out*.
@@ -109,6 +117,8 @@ export default async function ExamBuilderPage({
         viewingBacklog={viewingBacklog}
         structure={structure}
         backlogStructure={backlogStructure}
+        taskStructure={taskStructure}
+        setup={setup}
         tasks={(tasksRes.data ?? []) as {
           id: number; sort_order: number; task_type: string;
           title: string | null; image_usage: string; review_status: string;

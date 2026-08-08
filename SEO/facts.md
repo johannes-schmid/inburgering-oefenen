@@ -52,6 +52,32 @@ not guaranteed to match its practice exams. Always attribute to the practice exa
 `data/skills.ts` (25/25/4/16) matches these counts exactly. It was already right; it simply had
 no source. This file is that source.
 
+### The shape *inside* an exam — VERIFIED 2026-08-08, format only
+
+Established the same way and under the same restriction: read off DUO's own practice exams in
+`resources/exam-references/A2/`. These describe **structure**, never content, and they are what
+`exam_formats` / `exam_task_rules` encode.
+
+| Onderdeel | What is verified | Evidence |
+|---|---|---|
+| **Lezen** | one tekst carries **1 to 3 vragen**; **3 of 4** antwoordopties, mixed within one exam | 13 of the 25 items of oefenexamen 1. Q10+Q11 share one e-mail, Q18+Q20 one folder, Q24+Q25 one regelblad; 9 items had 3 options, 4 had 4 |
+| **Luisteren** | 10 fragmenten, 2–3 vragen elk, 3 of 4 opties, 40–50 sec audio | established 2026-08-07, unchanged |
+| **Schrijven** | **4 opgaven**; always exactly **één formulier** and exactly **één korte tekst** (wijkkrant); the other two are e-mails, or one e-mail and one briefje | all three oefenexamens, cover to cover |
+| **Spreken** | **4 onderdelen × 4 vragen = 16**; **60 seconden** opname per vraag; onderdeel 1 video, 2 één plaatje, 3 twee plaatjes (kies er één), 4 drie plaatjes (gebruik alle) | oefenexamen 1 player, counter 1..16, recorder capped at 01:00; the onderdeel list is quoted on DUO's own start screen (see the table above) |
+
+**Not verified, and therefore not recorded anywhere:**
+- **How many fragmenten a Lezen exam has.** Only 13 of 25 items were captured, and 13 items is
+  not a count of texts. `exam_formats.stimulus_count` is NULL for A2 Lezen on purpose.
+- **The order of the four Schrijven opgaven.** The three oefenexamens order the genres
+  differently, so only the mix is a rule.
+- **How many teksten of each tekstsoort a Lezen exam holds.** Never counted; the admin reports
+  the distribution and the docent judges it.
+- **Anything at all about B1.** No B1 rule is filled in, at either level of the schema.
+
+**Correct wording in an article:** "In DUO's eigen oefenexamens Spreken zitten vier onderdelen
+van vier vragen." Never "het examen bestaat uit vier onderdelen" — same attribution rule as the
+item counts above.
+
 ### Do not reproduce practice-exam content
 Both the PDFs and the online exams carry *"© Ministerie van Sociale Zaken en Werkgelegenheid;
 Inburgeringsexamen, 2024. Auteursrecht voorbehouden."* and the Schrijven PDFs add *"Het examen

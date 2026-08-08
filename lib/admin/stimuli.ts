@@ -135,3 +135,32 @@ export async function fetchStructureSummary(examId: number): Promise<StructureRo
   if (error) return [];
   return (data ?? []) as StructureRow[];
 }
+
+export type TaskSummaryRow = {
+  category: string;
+  label_nl: string;
+  sort_order: number;
+  task_count: number;
+  image_count: number;
+  expected_min: number | null;
+  expected_max: number | null;
+  /** The active rubric that would grade this soort, or null if none is authored yet. */
+  rubric_id: number | null;
+  rubric_version: number | null;
+};
+
+/**
+ * The Opbouw panel's data for Schrijven and Spreken: how many opgaven of each soort, against
+ * what `exam_task_rules` expects. Unlike the tekstsoort breakdown this one *does* have a quota
+ * to compare against — DUO's three A2 Schrijven oefenexamens agree on the mix.
+ *
+ * A category the exam is missing entirely comes back with `task_count: 0` rather than being
+ * absent, which is the whole point: "er zit geen formulier in dit examen" is the most useful
+ * thing the panel can say, and a row that is not there cannot say it.
+ */
+export async function fetchTaskSummary(examId: number): Promise<TaskSummaryRow[]> {
+  const supabase = await createClient();
+  const { data, error } = await supabase.rpc('exam_task_summary', { p_exam_id: examId });
+  if (error) return [];
+  return (data ?? []) as TaskSummaryRow[];
+}

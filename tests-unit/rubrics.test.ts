@@ -1,5 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import {
+  SPEAKING_CATEGORIES,
+  categoryLabel,
   effectiveScores,
   examPctFromTaskPcts,
   isPassing,
@@ -26,6 +28,16 @@ describe('rubricCategory', () => {
   it('keys Spreken on image_usage', () => {
     expect(rubricCategory({ task_type: 'speaking', image_usage: 'describe' })).toBe('speaking_describe');
     expect(rubricCategory({ task_type: 'speaking', image_usage: 'cover_all' })).toBe('speaking_cover_all');
+  });
+
+  /**
+   * DUO's onderdeel 1. It carries one plaatje like `describe` does, so nothing but the
+   * image_usage separates the two — and they grade against different criteria.
+   */
+  it('keys DUO onderdeel 1 as speaking_react', () => {
+    expect(rubricCategory({ task_type: 'speaking', image_usage: 'react' })).toBe('speaking_react');
+    expect(SPEAKING_CATEGORIES).toContain('speaking_react');
+    expect(categoryLabel('speaking_react')).not.toBe('speaking_react');
   });
 
   it('falls back to speaking_none when no image usage is set', () => {

@@ -141,6 +141,36 @@ export type SkillRules = {
   options: [number, number] | null;
   /** Length of one audio fragment, in seconds. Meaningless for a non-audio onderdeel. */
   audioSeconds: [number, number] | null;
+  /** Onderdelen (`exam_parts`) in one exam. Only Spreken has them. */
+  partCount: number | null;
+  /** Opgaven in one onderdeel. */
+  itemsPerPart: number | null;
+};
+
+/**
+ * What one *kind* of open opgave looks like. Mirrors a row of `exam_task_rules`.
+ *
+ * The key is the `rubricCategory()` string from `lib/rubrics.ts` — a Schrijven `task_type`,
+ * or `'speaking_' + image_usage` for Spreken. That axis is deliberately reused rather than
+ * invented: rubric authoring, grading and structure validation then all key the same way,
+ * and a fifth kind of opgave is one row in three places instead of a new concept.
+ *
+ * Kept as plain strings here so `data/` imports nothing from `lib/`. There is deliberately no
+ * label: `task_categories.label_nl` is the one in the database and `CATEGORY_LABELS` in
+ * `lib/rubrics.ts` is the one on the client. A third copy here would be a third thing to drift.
+ */
+export type TaskRule = {
+  category: string;
+  /** Opgaven of this kind in one exam. A quota, not a slot — the order is not fixed. */
+  perExam: [number, number] | null;
+  /** Pictures on one opgave. Null where the count genuinely varies. */
+  imageCount: number | null;
+  /** The stated minimum, as in "Schrijf minimaal drie zinnen op." */
+  minSentences: number | null;
+  /** Bullets in the opdracht. */
+  bullets: [number, number] | null;
+  /** Recording cap in seconds. */
+  recordSeconds: number | null;
 };
 
 export const SKILLS: Skill[] = [
@@ -174,26 +204,68 @@ const FORMATS: Record<Level, Record<SkillSlug, SkillFormat>> = {
 
 const NO_RULES: SkillRules = {
   stimulusCount: null, questionsPerStimulus: null, options: null, audioSeconds: null,
+  partCount: null, itemsPerPart: null,
 };
 
 /**
  * Mirrors the rule columns on `exam_formats`.
  *
- * Only A2 Luisteren is worked out: 25 questions over 10 fragments, 2–3 questions each,
- * 3 or 4 options, 40–50 seconds of audio. A2 Lezen carries the option range only, because
- * that one rule was already hardcoded in the publish validator and moving it here is not a
- * new claim. Everything else stays `null` until someone works the shape out against DUO's
- * material the way A2 Luisteren was — a number invented here silently becomes the standard
- * the docent's work is measured against.
+ * A2 Luisteren is fully worked out: 25 questions over 10 fragments, 2–3 questions each,
+ * 3 or 4 options, 40–50 seconds of audio. A2 Lezen carries the option range and a 1–3
+ * questions-per-text range — DUO shares a text across up to three questions, and short
+ * texts carry one. Its `stimulusCount` stays `null` on purpose: only 13 of the 25 items
+ * were captured, and 13 items is not a count of fragments. A2 Spreken carries its four
+ * onderdelen of four opgaven.
+ *
+ * Everything still `null` stays `null` until someone works the shape out against DUO's
+ * material — a number invented here silently becomes the standard the docent's work is
+ * measured against.
  */
 const RULES: Record<Level, Record<SkillSlug, SkillRules>> = {
   a2: {
-    lezen:     { ...NO_RULES, options: [3, 4] },
-    luisteren: { stimulusCount: 10, questionsPerStimulus: [2, 3], options: [3, 4], audioSeconds: [40, 50] },
+    lezen:     { ...NO_RULES, questionsPerStimulus: [1, 3], options: [3, 4] },
+    luisteren: { ...NO_RULES, stimulusCount: 10, questionsPerStimulus: [2, 3], options: [3, 4], audioSeconds: [40, 50] },
     schrijven: NO_RULES,
-    spreken:   NO_RULES,
+    spreken:   { ...NO_RULES, partCount: 4, itemsPerPart: 4 },
   },
   b1: { lezen: NO_RULES, luisteren: NO_RULES, schrijven: NO_RULES, spreken: NO_RULES },
+};
+
+const NO_TASK_RULES: TaskRule[] = [];
+
+/**
+ * Mirrors `exam_task_rules`. A2 only — nobody has worked B1's open onderdelen out, and an
+ * empty list means "unverified", which the Opbouw panel renders as no expectation at all
+ * rather than as an expectation of zero.
+ *
+ * Schrijven: four opgaven, always exactly one formulier and exactly one korte tekst voor
+ * de wijkkrant; the other two are e-mails, or one e-mail and one briefje. Verified across
+ * all three DUO A2 oefenexamens. The *order* varies between them, so only the mix is here.
+ *
+ * Spreken: four onderdelen of four opgaven, 60 seconden opname each, distinguished by how
+ * many plaatjes they carry and what the candidate must do with them.
+ */
+const TASK_RULES: Record<Level, Record<SkillSlug, TaskRule[]>> = {
+  a2: {
+    lezen: NO_TASK_RULES,
+    luisteren: NO_TASK_RULES,
+    schrijven: [
+      { category: 'email',        perExam: [1, 2], imageCount: null, minSentences: null, bullets: [2, 4], recordSeconds: null },
+      { category: 'short_text',   perExam: [1, 1], imageCount: null, minSentences: 3,    bullets: null,   recordSeconds: null },
+      { category: 'form',         perExam: [1, 1], imageCount: null, minSentences: null, bullets: null,   recordSeconds: null },
+      { category: 'picture_note', perExam: [0, 1], imageCount: null, minSentences: 3,    bullets: null,   recordSeconds: null },
+    ],
+    spreken: [
+      { category: 'speaking_react',     perExam: [4, 4], imageCount: 1, minSentences: null, bullets: null, recordSeconds: 60 },
+      { category: 'speaking_describe',  perExam: [4, 4], imageCount: 1, minSentences: null, bullets: null, recordSeconds: 60 },
+      { category: 'speaking_choose',    perExam: [4, 4], imageCount: 2, minSentences: null, bullets: null, recordSeconds: 60 },
+      { category: 'speaking_cover_all', perExam: [4, 4], imageCount: 3, minSentences: null, bullets: null, recordSeconds: 60 },
+    ],
+  },
+  b1: {
+    lezen: NO_TASK_RULES, luisteren: NO_TASK_RULES,
+    schrijven: NO_TASK_RULES, spreken: NO_TASK_RULES,
+  },
 };
 
 export function isSkillSlug(x: unknown): x is SkillSlug {
@@ -251,6 +323,14 @@ export function formatCount(n: number | null): string {
 /** The authoring rules for one (level, skill). See `SkillRules`. */
 export function formatRules(level: Level, slug: SkillSlug): SkillRules {
   return RULES[level][slug];
+}
+
+/**
+ * The per-soort rules for one (level, skill), in display order. Empty means unverified —
+ * render no expectation, rather than an expectation of nothing.
+ */
+export function formatTaskRules(level: Level, slug: SkillSlug): TaskRule[] {
+  return TASK_RULES[level][slug];
 }
 
 /** `[2, 3]` → `'2–3'`, `[3, 3]` → `'3'`, `null` → `'—'`. En dash, not a hyphen. */

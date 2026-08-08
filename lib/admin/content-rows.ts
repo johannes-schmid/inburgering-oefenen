@@ -69,6 +69,7 @@ const TASK_TYPE_LABEL: Record<string, string> = {
 
 const IMAGE_USAGE_LABEL: Record<string, string> = {
   none: 'geen plaatje',
+  react: 'reageer op situatie',
   describe: 'beschrijf',
   choose: 'kies er één',
   cover_all: 'alle plaatjes',

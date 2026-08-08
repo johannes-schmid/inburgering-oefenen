@@ -55,6 +55,7 @@ type Props = {
 
 const IMAGE_RULE: Record<OpenTaskItem['image_usage'], string | null> = {
   none: null,
+  react: 'Kijk naar het plaatje en reageer op de situatie.',
   describe: 'Gebruik steeds het plaatje.',
   choose: 'Kies één plaatje en leg uit waarom.',
   cover_all: 'Vertel iets bij elk plaatje.',

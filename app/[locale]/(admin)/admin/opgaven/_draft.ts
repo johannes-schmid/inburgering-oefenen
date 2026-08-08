@@ -8,7 +8,7 @@
 import type { FormField } from '@/lib/exam-content';
 
 export type TaskType = 'email' | 'short_text' | 'form' | 'picture_note' | 'speaking';
-export type ImageUsage = 'none' | 'describe' | 'choose' | 'cover_all';
+export type ImageUsage = 'none' | 'react' | 'describe' | 'choose' | 'cover_all';
 
 export type TaskImageDraft = {
   id?: number;
@@ -56,8 +56,10 @@ export const TASK_TYPE_LABELS: Record<TaskType, string> = {
   speaking: 'Spreekopdracht',
 };
 
+/** DUO's four Spreken onderdelen, in order. See `exam_task_rules`. */
 export const IMAGE_USAGE_LABELS: Record<ImageUsage, string> = {
   none: 'Geen plaatjes',
+  react: 'Reageren op een situatie (1 plaatje)',
   describe: 'Gebruik steeds het plaatje (1 plaatje)',
   choose: 'Kies steeds één plaatje (2 plaatjes)',
   cover_all: 'Gebruik alle plaatjes (3 plaatjes)',
@@ -66,6 +68,7 @@ export const IMAGE_USAGE_LABELS: Record<ImageUsage, string> = {
 /** How many images `exam_publish_issues()` requires for each Spreken image rule. */
 export const REQUIRED_IMAGES: Record<ImageUsage, number> = {
   none: 0,
+  react: 1,
   describe: 1,
   choose: 2,
   cover_all: 3,

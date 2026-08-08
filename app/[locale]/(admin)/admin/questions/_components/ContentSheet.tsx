@@ -89,9 +89,12 @@ type TaskDetail = {
 /** How many pictures each Spreken image rule expects. Mirrors REQUIRED_IMAGES in OpgaveForm. */
 const REQUIRED_IMAGES: Record<string, number> = {
   none: 0,
+  react: 1,
   describe: 1,
   choose: 2,
-  cover_all: 4,
+  // Three, not four. This said 4 and so disagreed with both the constraint in
+  // `exam_publish_issues()` and the map it claims to mirror.
+  cover_all: 3,
 };
 
 export default function ContentSheet({

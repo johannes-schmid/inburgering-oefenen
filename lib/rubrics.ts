@@ -11,12 +11,17 @@
  * `open_tasks.task_type`. Spreken does not: it has a single task_type (`speaking`) but four
  * onderdelen whose image rule changes what a good answer even is — "gebruik steeds het plaatje"
  * is a different task from "gebruik alle plaatjes". So Spreken is keyed by `image_usage`, giving
- * `speaking_describe`, `speaking_choose`, `speaking_cover_all`, `speaking_none`.
+ * `speaking_react`, `speaking_describe`, `speaking_choose`, `speaking_cover_all`, `speaking_none`.
+ *
+ * Those four `image_usage` values are DUO's four Spreken onderdelen, in order: reageren op een
+ * situatie (one plaatje), gebruik het plaatje, kies er een van twee, gebruik alle drie.
+ * `speaking_none` is unused at A2 and kept for an onderdeel that turns out to need no picture.
  *
  * **Level is part of the key, not a label on it.** A rubric's anchors define what a score of 2
  * *means*, and "voldoende grammatica" is a different bar at A2 than at B1. Sharing one rubric
  * across levels would not be a simplification — it would grade B1 candidates against A2
- * expectations and produce marks that look entirely legitimate. Eight categories per level.
+ * expectations and produce marks that look entirely legitimate. Nine categories per level, of
+ * which eight are in use at A2.
  *
  * `rubrics.task_type` is plain `text` with no CHECK constraint, so the category convention needs
  * no migration — but it does need to live in one place, which is `rubricCategory()` below.
@@ -24,11 +29,12 @@
 import type { Level, SkillSlug } from '@/data/skills';
 
 export type RubricSkill = 'schrijven' | 'spreken';
-export type ImageUsage = 'none' | 'describe' | 'choose' | 'cover_all';
+export type ImageUsage = 'none' | 'react' | 'describe' | 'choose' | 'cover_all';
 
 export type WritingCategory = 'email' | 'short_text' | 'form' | 'picture_note';
 export type SpeakingCategory =
   | 'speaking_none'
+  | 'speaking_react'
   | 'speaking_describe'
   | 'speaking_choose'
   | 'speaking_cover_all';
@@ -71,6 +77,7 @@ export const WRITING_CATEGORIES: WritingCategory[] = [
 ];
 export const SPEAKING_CATEGORIES: SpeakingCategory[] = [
   'speaking_none',
+  'speaking_react',
   'speaking_describe',
   'speaking_choose',
   'speaking_cover_all',
@@ -103,6 +110,7 @@ export const CATEGORY_LABELS: Record<RubricCategory, string> = {
   form: 'Formulier invullen',
   picture_note: 'Bericht bij plaatjes',
   speaking_none: 'Spreken — vragen zonder plaatje',
+  speaking_react: 'Spreken — reageren op een situatie',
   speaking_describe: 'Spreken — gebruik steeds het plaatje',
   speaking_choose: 'Spreken — kies steeds één plaatje',
   speaking_cover_all: 'Spreken — gebruik alle plaatjes',

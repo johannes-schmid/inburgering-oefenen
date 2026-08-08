@@ -146,6 +146,17 @@ const SPEAKING_BASE: RubricCriterion[] = [
 ];
 
 const SPEAKING_IMAGE_RULE: Record<string, RubricCriterion> = {
+  speaking_react: {
+    key: 'reactie',
+    criterion: 'Reactie op de situatie',
+    description: 'De opdracht toont een situatie en vraagt om daar passend op te reageren.',
+    anchors: {
+      '0': 'Reageert niet op de situatie.',
+      '1': 'Reageert, maar de reactie past niet bij de situatie.',
+      '2': 'Reageert passend, maar erg kort of algemeen.',
+      '3': 'Reageert passend en volledig op wat de situatie vraagt.',
+    },
+  },
   speaking_describe: {
     key: 'plaatjegebruik',
     criterion: 'Gebruik van het plaatje',

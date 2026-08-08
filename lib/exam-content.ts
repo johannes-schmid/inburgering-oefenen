@@ -76,7 +76,7 @@ export type OpenTaskItem = {
   closing: string | null;
   min_sentences: number | null;
   form_schema: FormSchema | null;
-  image_usage: 'none' | 'describe' | 'choose' | 'cover_all';
+  image_usage: 'none' | 'react' | 'describe' | 'choose' | 'cover_all';
   prompt_audio_url: string | null;
   max_record_seconds: number;
   images: TaskImage[];
