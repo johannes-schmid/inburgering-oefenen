@@ -11,6 +11,7 @@ import { createClient } from '@/lib/supabase/client';
 import type { AdminStimulus, PublishIssue, StructureRow, TaskSummaryRow } from '@/lib/admin/stimuli';
 import type { AssignTarget } from '@/lib/admin/backlog';
 import type { ExamSetup } from '@/lib/admin/exam-setup';
+import { categoryColors, type CategoryColor } from '@/lib/admin/category-colors';
 import ExamSetupSheet from './ExamSetupSheet';
 import {
   formatCount, formatRange, formatRules, formatTaskRules, getFormat, isSkillSlug,
@@ -118,6 +119,54 @@ export default function ExamBuilder({
   })();
   /** Backlog counts by tekstsoort, so a shortfall can be read next to what is already waiting. */
   const backlogBySection = new Map(backlogStructure.map(r => [r.section_id, r]));
+
+  /**
+   * The tekstsoort breakdown, over *every* soort the onderdeel has — not only the ones this
+   * exam happens to use.
+   *
+   * `exam_structure_summary()` can only report what is in the exam, so an empty exam produced
+   * an empty panel: the screen that is supposed to answer "how is an examen opgebouwd, and how
+   * far is this one?" said nothing at all until the first fragment existed. The soorten come
+   * from `setup.sections` (the same rows the Opzet-sheet edits) and the counts are joined onto
+   * them, so a soort with nothing in it is a visible zero rather than an absence.
+   */
+  const sectionRows = (() => {
+    const counted = new Map(structure.map(r => [r.section_id, r]));
+    const rows = (setup?.sections ?? []).map(sec => ({
+      key: sec.slug,
+      section_id: sec.id as number | null,
+      name_nl: sec.name_nl,
+      stimulus_count: counted.get(sec.id)?.stimulus_count ?? 0,
+      question_count: counted.get(sec.id)?.question_count ?? 0,
+    }));
+    // Uncategorised fragments are not a soort and have no row to join onto, but they are the
+    // gap most worth seeing — so they are appended rather than dropped.
+    const none = counted.get(null);
+    if (none) {
+      rows.push({
+        key: '', section_id: null, name_nl: none.name_nl,
+        stimulus_count: none.stimulus_count, question_count: none.question_count,
+      });
+    }
+    return rows;
+  })();
+
+  /**
+   * What one box in the Lezen/Luisteren strip stands for.
+   *
+   * A fragment where the fragment count is verified (A2 Luisteren: 10), a vraag otherwise — the
+   * item count is verified far more often than the fragment count, and a strip with no total to
+   * reach for cannot show progress at all. Both fall back to counting what exists.
+   */
+  const stripUnit: 'fragment' | 'vraag' =
+    rules?.stimulusCount != null ? 'fragment' : 'vraag';
+  const stripTarget = stripUnit === 'fragment'
+    ? rules?.stimulusCount ?? null
+    : (isSkillSlug(exam.skill) ? getFormat(exam.level, exam.skill).itemCount : null);
+
+  /** One colour per tekstsoort / soort opgave, shared with every other surface. */
+  const sectionColors = categoryColors(sectionRows.map(r => (r.section_id === null ? null : r.key)));
+  const taskColors = categoryColors(taskStructure.map(r => r.category));
 
   /**
    * The structure warnings for one stimulus, taken from `issues` rather than re-derived here.
@@ -282,13 +331,31 @@ export default function ExamBuilder({
             </p>
           </div>
 
-          {taskStructure.length === 0 ? (
-            <p className="text-xs text-on-surface-variant m-0">
+          {/* Here the strip can show the *quota* as well as the total, because Schrijven and
+              Spreken have one: each soort gets at least `expected_min` boxes, filled ones in the
+              soort's colour and the shortfall as outlines. So "er zit geen formulier in dit
+              examen" is visible without reading a single number. */}
+          <StructureStrip
+            label="Opgaven"
+            groups={taskStructure.map(r => ({
+              label: r.label_nl,
+              count: r.task_count,
+              expected: viewingBacklog ? null : r.expected_min,
+              color: taskColors.get(r.category)!,
+            }))}
+            target={viewingBacklog ? null : getFormat(exam.level, exam.skill as SkillSlug).itemCount}
+            unit="opgave"
+          />
+
+          {totalTasks === 0 && (
+            <p className="text-xs text-on-surface-variant m-0 mb-3">
               {viewingBacklog
                 ? 'Nog niets in de backlog. Wat je hier maakt, wijs je later aan een examen toe.'
                 : 'Nog geen opgaven. Voeg er een toe, of haal er een uit de backlog.'}
             </p>
-          ) : (
+          )}
+
+          {taskStructure.length > 0 && (
             <table className="w-full text-xs border-collapse">
               <thead>
                 <tr className="text-on-surface-variant text-left">
@@ -313,7 +380,17 @@ export default function ExamBuilder({
                   return (
                     <tr key={r.category} className="border-t border-outline-variant">
                       <td className={`py-1.5 ${short ? 'text-secondary' : 'text-on-surface'}`}>
-                        {r.label_nl}
+                        <span className="inline-flex items-center gap-2">
+                          <span
+                            aria-hidden
+                            className="h-2.5 w-2.5 rounded-[3px] shrink-0"
+                            style={{
+                              backgroundColor: taskColors.get(r.category)!.base,
+                              opacity: r.task_count === 0 ? 0.35 : 1,
+                            }}
+                          />
+                          {r.label_nl}
+                        </span>
                       </td>
                       <td className={`py-1.5 text-right tabular-nums ${short ? 'text-secondary' : 'text-on-surface'}`}>
                         {r.task_count}
@@ -390,13 +467,37 @@ export default function ExamBuilder({
             </p>
           </div>
 
-          {structure.length === 0 ? (
-            <p className="text-xs text-on-surface-variant m-0">
+          {/* The shape of the exam at a glance: one box per fragment, grouped and coloured by
+              tekstsoort, with the still-empty slots of the verified fragment count drawn as
+              outlines behind them. That is the comparison the docent actually makes — "hoe ziet
+              een examen eruit, en hoe ver is dit er mee" — and it is readable before the table
+              underneath is. */}
+          {/* Counted in fragments where DUO's fragment count is verified, in vragen otherwise —
+              A2 Lezen has 25 verified items and no verified text count (only 13 of the 25 were
+              captured), so a strip in fragments there would have nothing to reach for. The unit
+              is named beside the boxes rather than left to be inferred. */}
+          <StructureStrip
+            label={stripUnit === 'fragment' ? 'Fragmenten' : 'Vragen'}
+            groups={sectionRows
+              .map(r => ({
+                label: r.name_nl,
+                count: stripUnit === 'fragment' ? r.stimulus_count : r.question_count,
+                color: sectionColors.get(r.section_id === null ? null : r.key)!,
+              }))
+              .filter(g => g.count > 0)}
+            target={viewingBacklog ? null : stripTarget}
+            unit={stripUnit}
+          />
+
+          {totalStimuli === 0 && (
+            <p className="text-xs text-on-surface-variant m-0 mb-3">
               {viewingBacklog
                 ? 'Nog niets in de backlog. Wat je hier maakt, wijs je later aan een examen toe.'
                 : 'Nog geen fragmenten. Voeg er een toe, of haal er een uit de backlog.'}
             </p>
-          ) : (
+          )}
+
+          {sectionRows.length > 0 && (
             <table className="w-full text-xs border-collapse">
               <thead>
                 <tr className="text-on-surface-variant text-left">
@@ -409,18 +510,31 @@ export default function ExamBuilder({
                 </tr>
               </thead>
               <tbody>
-                {structure.map(r => {
+                {sectionRows.map(r => {
                   const waiting = backlogBySection.get(r.section_id)?.stimulus_count ?? 0;
+                  const color = sectionColors.get(r.section_id === null ? null : r.key)!;
+                  const empty = r.stimulus_count === 0;
                   return (
                     <tr key={r.section_id ?? 'none'} className="border-t border-outline-variant">
-                      <td className="py-1.5 text-on-surface">
-                        {r.section_id === null
-                          /* Brand orange, not `text-warning` — that resolves to yellow-500. */
-                          ? <span className="text-secondary">{r.name_nl}</span>
-                          : r.name_nl}
+                      <td className="py-1.5">
+                        <span className="inline-flex items-center gap-2">
+                          <span
+                            aria-hidden
+                            className="h-2.5 w-2.5 rounded-[3px] shrink-0"
+                            style={{ backgroundColor: color.base, opacity: empty ? 0.35 : 1 }}
+                          />
+                          {r.section_id === null
+                            /* Brand orange, not `text-warning` — that resolves to yellow-500. */
+                            ? <span className="text-secondary">{r.name_nl}</span>
+                            : <span className={empty ? 'text-on-surface-variant' : 'text-on-surface'}>{r.name_nl}</span>}
+                        </span>
                       </td>
-                      <td className="py-1.5 text-right tabular-nums text-on-surface">{r.stimulus_count}</td>
-                      <td className="py-1.5 text-right tabular-nums text-on-surface">{r.question_count}</td>
+                      <td className={`py-1.5 text-right tabular-nums ${empty ? 'text-on-surface-variant' : 'text-on-surface'}`}>
+                        {r.stimulus_count || '—'}
+                      </td>
+                      <td className={`py-1.5 text-right tabular-nums ${empty ? 'text-on-surface-variant' : 'text-on-surface'}`}>
+                        {r.question_count || '—'}
+                      </td>
                       {!viewingBacklog && (
                         <td className="py-1.5 text-right tabular-nums text-on-surface-variant">
                           {waiting || '—'}
@@ -902,6 +1016,86 @@ function MoveControl({
           )}
         </div>
       )}
+    </div>
+  );
+}
+
+/**
+ * The exam's shape as boxes: one box per item, grouped and coloured by category.
+ *
+ * A filled box is an item that exists, an outlined box is a slot that is still expected. The
+ * expectation comes from two places and both may be absent:
+ *   · `expected` — the per-category minimum (Schrijven/Spreken only; there is deliberately no
+ *     per-tekstsoort quota, see the migration notes)
+ *   · `target`   — the verified total for the onderdeel, drawn as a trailing run of outlines
+ *
+ * A NULL expectation means unverified, so nothing is drawn for it rather than a guessed slot —
+ * the same convention the validator uses. That is why the strip renders nothing at all for an
+ * empty exam of an onderdeel whose count has never been counted; the card falls back to its
+ * sentence in that case.
+ */
+function StructureStrip({
+  label,
+  groups,
+  target,
+  unit,
+}: {
+  /** What one box is, named beside the strip — "Fragmenten", "Vragen", "Opgaven". */
+  label: string;
+  groups: { label: string; count: number; expected?: number | null; color: CategoryColor }[];
+  target: number | null;
+  unit: string;
+}) {
+  const filled = groups.reduce((n, g) => n + g.count, 0);
+  // Slots already accounted for by a per-category minimum must not be counted a second time in
+  // the trailing run, or a complete exam would still show empty boxes after it.
+  const placed = groups.reduce((n, g) => n + Math.max(g.count, g.expected ?? 0), 0);
+  const trailing = target === null ? 0 : Math.max(0, target - placed);
+  if (filled === 0 && trailing === 0 && !groups.some(g => (g.expected ?? 0) > 0)) return null;
+
+  return (
+    <div className="flex flex-wrap items-center gap-x-3 gap-y-2 mb-3">
+      <span className="text-xs text-on-surface-variant tabular-nums">
+        {label} {filled}{target === null ? '' : `/${target}`}
+      </span>
+      {groups.map(g => {
+        const missing = Math.max(0, (g.expected ?? 0) - g.count);
+        if (g.count === 0 && missing === 0) return null;
+        return (
+          <span key={g.label} className="flex flex-wrap items-center gap-[3px]" title={`${g.label}: ${g.count}`}>
+            {Array.from({ length: g.count }, (_, i) => (
+              <span
+                key={`f${i}`}
+                aria-hidden
+                className="h-4 w-4 rounded-[4px]"
+                style={{ backgroundColor: g.color.base }}
+              />
+            ))}
+            {Array.from({ length: missing }, (_, i) => (
+              <span
+                key={`m${i}`}
+                aria-hidden
+                className="h-4 w-4 rounded-[4px] border border-dashed"
+                style={{ borderColor: g.color.base, backgroundColor: g.color.tint }}
+              />
+            ))}
+          </span>
+        );
+      })}
+      {trailing > 0 && (
+        <span className="flex flex-wrap items-center gap-[3px]" title={`Nog ${trailing} te gaan`}>
+          {Array.from({ length: trailing }, (_, i) => (
+            <span
+              key={i}
+              aria-hidden
+              className="h-4 w-4 rounded-[4px] border border-dashed border-outline-variant"
+            />
+          ))}
+        </span>
+      )}
+      <span className="sr-only">
+        {label}: {filled} van {target ?? filled} ingevuld.
+      </span>
     </div>
   );
 }

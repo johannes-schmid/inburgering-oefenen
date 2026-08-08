@@ -144,11 +144,15 @@ export default function ContentTable({
   const [onlyIncomplete, setOnlyIncomplete] = useState(false);
   const [query, setQuery] = useState('');
   const [openUid, setOpenUid] = useState<string | null>(null);
-  /** Which fragment's drawer is open. `'new'` is an unsaved one. */
-  const [editingStimulus, setEditingStimulus] = useState<AuthoringStimulus | 'new' | null>(
-    initialStimulusId != null
-      ? authoring.stimuli.find(s => s.id === initialStimulusId) ?? null
-      : null
+  /**
+   * Which fragment's drawer is open, **by id** rather than by object. `'new'` is an unsaved one.
+   *
+   * The id, because the drawer now edits the fragment's questions too and stays open across the
+   * `router.refresh()` that follows: a stored object would be the snapshot from before the add or
+   * the delete, so the list would not move until she closed and reopened it.
+   */
+  const [editingStimulusId, setEditingStimulusId] = useState<number | 'new' | null>(
+    initialStimulusId ?? null
   );
   /** Collapsed fragments, by id. Expanded is the default — the nesting is the point. */
   const [collapsed, setCollapsed] = useState<Set<number>>(new Set());
@@ -283,7 +287,7 @@ export default function ContentTable({
             type="button"
             onClick={e => {
               e.stopPropagation();
-              if (r.kind === 'fragment') setEditingStimulus(r.stimulus);
+              if (r.kind === 'fragment') setEditingStimulusId(r.stimulus.id);
               else setOpenUid(r.row.uid);
             }}
             aria-label={r.kind === 'fragment' ? 'Fragment bewerken' : 'Item bewerken'}
@@ -477,6 +481,10 @@ export default function ContentTable({
   });
 
   const open = rows.find(r => r.uid === openUid) ?? null;
+  const editingStimulus =
+    editingStimulusId === 'new' || editingStimulusId === null
+      ? null
+      : authoring.stimuli.find(s => s.id === editingStimulusId) ?? null;
   const fragmentCount = gridRows.filter(r => r.kind === 'fragment').length;
 
   return (
@@ -501,7 +509,7 @@ export default function ContentTable({
         tableClassNames={{ edgeCell: 'px-4' }}
         onRowClick={row => {
           const r = row as GridRow;
-          if (r.kind === 'fragment') setEditingStimulus(r.stimulus);
+          if (r.kind === 'fragment') setEditingStimulusId(r.stimulus.id);
           else setOpenUid(r.row.uid);
         }}
         emptyMessage="Geen items die aan deze filters voldoen."
@@ -614,7 +622,7 @@ export default function ContentTable({
               {!isOpenSkill && (
                 <Button
                   variant="outline"
-                  onClick={() => setEditingStimulus('new')}
+                  onClick={() => setEditingStimulusId('new')}
                   disabled={!backlogExamId}
                   title={backlogExamId ? undefined : 'Geen backlog voor dit onderdeel gevonden.'}
                 >
@@ -661,15 +669,20 @@ export default function ContentTable({
       </DataGrid>
 
       <StimulusSheet
-        open={editingStimulus !== null}
-        stimulus={editingStimulus === 'new' ? null : editingStimulus}
+        open={editingStimulusId !== null}
+        stimulus={editingStimulusId === 'new' ? null : editingStimulus}
         backlogExamId={backlogExamId}
         level={level}
         skill={skill}
         sections={sectionsForSkill}
         nextSortOrder={(stimuliForSkill.at(-1)?.sort_order ?? 0) + 1}
-        onClose={() => setEditingStimulus(null)}
-        onSaved={() => { setEditingStimulus(null); router.refresh(); }}
+        onClose={() => setEditingStimulusId(null)}
+        onSaved={() => { setEditingStimulusId(null); router.refresh(); }}
+        // Adding or removing a question keeps the drawer open — she is still working on this
+        // fragment — so this refreshes without closing. Resolving `editingStimulus` by id above is
+        // what makes the reopened list the new one.
+        onQuestionsChanged={() => router.refresh()}
+        onOpenQuestion={id => { setEditingStimulusId(null); setOpenUid(`question:${id}`); }}
       />
 
       <ContentSheet row={open} locale={locale} onClose={() => setOpenUid(null)} />

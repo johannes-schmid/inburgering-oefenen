@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation';
 import { Check, Loader2, Plus, Save, Trash2, X } from 'lucide-react';
 import { createClient } from '@/lib/supabase/client';
 import OptionImagePicker from './OptionImagePicker';
+import MagicFill from '../../../_components/MagicFill';
 
 /**
  * The question editor, against the post-fork schema.
@@ -42,6 +43,8 @@ export type QuestionDraft = {
 export type StimulusChoice = {
   id: number;
   skill: string;
+  /** From the fragment's exam. Null for a non-levelled onderdeel; see `skills.is_levelled`. */
+  level: string | null;
   exam_number: number;
   sort_order: number;
   title: string | null;
@@ -97,6 +100,39 @@ export default function QuestionForm({
     }
     return acc;
   }, [stimuli]);
+
+  /** The fragment currently picked — it decides the level and skill a suggestion is written at. */
+  const chosen = stimuli.find(s => s.id === form.stimulus_id) ?? null;
+
+  /**
+   * Drop a suggested question into the form.
+   *
+   * Options are replaced wholesale in the *draft*, which is not the same as replacing them in the
+   * database: `handleSave` still reconciles by label and never deletes a row that a candidate's
+   * `chosen_option_id` points at. Nothing here saves, and `review_status` is untouched — the
+   * suggestion is a starting point the docent then owns.
+   */
+  function applySuggestion(s: {
+    prompt: string;
+    explanation: string;
+    options: { label: 'A' | 'B' | 'C' | 'D'; body: string; is_correct: boolean }[];
+  }) {
+    patch({
+      prompt: s.prompt || form.prompt,
+      explanation: s.explanation || form.explanation,
+      // Text only. An image-option question's answers are pictures the docent picks herself, so
+      // overwriting the layout's option bodies there would say nothing and lose her image sets.
+      options: usesImages
+        ? form.options
+        : s.options.map(o => ({
+            label: o.label,
+            body: o.body,
+            image_urls: [],
+            image_alt: '',
+            is_correct: o.is_correct,
+          })),
+    });
+  }
 
   function patch(next: Partial<QuestionDraft>) {
     setForm(f => ({ ...f, ...next }));
@@ -256,6 +292,26 @@ export default function QuestionForm({
           />
         </Field>
       </div>
+
+      {/* Below the picker, not above it: the suggestion is written *for* a fragment, so the
+          fragment is the first decision. Disabled until one is chosen, with the reason said out
+          loud — the route rejects it anyway, and a button that 400s teaches nothing. */}
+      <MagicFill
+        placeholder="Bijv. een vraag over de openingstijden (mag leeg)"
+        disabled={!chosen}
+        disabledReason={
+          chosen
+            ? undefined
+            : 'Kies eerst een stimulus — een vraag wordt bij een bestaand fragment bedacht.'
+        }
+        body={() => ({
+          target: 'question',
+          stimulusId: form.stimulus_id,
+          level: chosen?.level ?? undefined,
+          skill: chosen?.skill,
+        })}
+        onSuggestion={applySuggestion}
+      />
 
       {stimuli.length === 0 && (
         <p className="text-sm text-on-surface-variant">

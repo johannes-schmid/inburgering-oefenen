@@ -1106,3 +1106,79 @@ write paths verified through a real browser session.
   CLAUDE.md rather than silently accepted.
 **Lesson:** for anything behind RLS, "the code is right" and "the write lands" are different
 claims. Prove the second one against the database, through the same client the user uses.
+
+## 2026-08-08 — "Magisch invullen": whole-item suggestions grounded in existing content
+**Changed:** `lib/ai/suggest.ts` (fragment + MCQ generation via `generateObject`),
+`lib/ai/suggest-examples.ts` (few-shot from the docent's own rows, level-scoped),
+`app/api/admin/suggest-item/route.ts`, `app/[locale]/(admin)/_components/MagicFill.tsx`, wired into
+`StimulusEditor` and `QuestionForm`; `fetchStimulusChoices` now selects `exams.level` so a question
+suggestion is written at the level of the fragment it hangs off.
+**Outcome:** SUCCESS — `next build` clean, 94 unit tests green, both targets verified with real
+gateway calls (audio fragment cast `Sanne → woman_young`, `Mike → man_older`; MCQ with one correct
+option and two afleiders from the fragment), screenshots at 390 and 1440.
+**What worked / went wrong:** The few-shot query is what makes this worth having — `groundedIn`
+went 0 → 1 the moment one fragment existed, and the suggestion picked up its subject matter. Three
+things had to be re-validated server-side rather than trusted: a hallucinated `section_id` (a
+foreign-key error three clicks later), a `voice_cast` naming a speaker not in the script (the
+audio route refuses it), and the option count (the format's 3/4 is the authority, not the model).
+Verification cost two dead ends: the `ui-check-admin@example.com` session was invalidated twice
+mid-run by a concurrent local session re-minting the same user — GoTrue answers
+`session_not_found`, which the app surfaces as an anonymous visitor, so it looks exactly like a
+malformed cookie. Minting a dedicated user fixed it. Note the repo had another session's
+uncommitted work in the tree; `git stash` to check whether a `tsc` error pre-existed moved *their*
+work too. Don't do that in a shared tree.
+**Lesson:** An AI authoring affordance is only as good as what it is grounded in — prompt-only
+generation returns the model's register, not the docent's. And every field a model returns that is
+a **key** into something (a section id, a speaker label, an option count) must be re-validated
+against the real list at the boundary, or the failure surfaces at save time with nothing pointing
+at the cause.
+
+## 2026-08-08 — Fragment drawer: rich text, grouped form, questions in place
+**Changed:** New `app/[locale]/(admin)/_components/RichTextEditor.tsx` (TipTap 3, already a
+dependency and unused until now) replaces the raw-HTML textarea for `stimuli.body_html`;
+`StimulusEditor` regrouped into Plaatsing / Inhoud / Audio / Status cards; new
+`admin/questions/_components/StimulusQuestions.tsx` adds and removes a fragment's questions from its
+own drawer; `lib/admin/authoring.ts` now carries `questionList` per stimulus and
+`lib/admin/backlog-server.ts` gained `countAnswersPerQuestion`; `ContentTable` tracks the open
+fragment **by id**; `components/exam/StimulusPane.tsx` got list markers back.
+**Outcome:** SUCCESS
+**What worked / went wrong:**
+- Three real bugs found only by looking at the screenshots, not by the build:
+  1. Tailwind's preflight strips `list-style` from every `ul`/`ol`. The editor rendered lists as
+     unindented lines — and so, it turned out, did **the player**, for every exam text with an
+     opsomming. Restating `list-style` fixed both.
+  2. `sm:max-w-2xl` on `SheetContent` did nothing: the Sheet primitive states its own width as
+     `data-[side=right]:sm:max-w-sm`, which outranks a bare utility no matter what `cn()` does.
+     The override has to carry the same `data-[side=right]:` prefix.
+  3. A backtick inside a comment in a `<style>{`…`}</style>` template literal ends the literal.
+     `` /* `list-style` restated */ `` broke the file into 26 syntax errors.
+- The drawer had to stop storing the fragment *object* and store its **id**, resolving it from
+  props each render. It now stays open across the `router.refresh()` that follows adding or
+  deleting a question, and a stored snapshot would have shown the pre-change list.
+- A minted local session cookie is good for **one browser run**: `@supabase/ssr` refreshes on the
+  first load and GoTrue revokes the old refresh token, so the file is stale afterwards. Re-mint
+  before every Puppeteer run — a stale one silently photographs the login page.
+**Lesson:** When a UI change lands on a surface that renders stored HTML, check the *reader* as well
+as the *writer* — the editor and the player were missing the same CSS rule, and only authoring in
+the new editor made the older bug visible.
+
+## 2026-08-08 — The Opbouw card shows the shape of an exam, in colour
+**Changed:** new `lib/admin/category-colors.ts` (one stable colour per tekstsoort / soort opgave);
+`ExamBuilder.tsx`'s two Opbouw cards now draw a box-per-item strip above the breakdown, colour the
+breakdown rows, and list *every* soort of the onderdeel instead of only the ones the exam uses.
+**Outcome:** SUCCESS — `npx tsc --noEmit`, `next build`, `npm run test:unit` (94 pass), and
+`check-ui-auth.mjs` on A2 Lezen (empty), A2 Spreken (empty, quota) and B1 Lezen (10 fragments).
+**What worked / went wrong:**
+- The empty state was the whole complaint: `exam_structure_summary()` can only report what is *in*
+  the exam, so an empty exam rendered an empty panel — the screen meant to answer "how is an
+  examen opgebouwd?" said nothing until the first fragment existed. Joining the counts onto
+  `setup.sections` (the rows the Opzet-sheet already edits) fixes it at the source.
+- A2 Lezen has a verified item count (25) and a deliberately NULL `stimulus_count`, so a strip in
+  fragments had nothing to reach for. The strip counts fragments where the fragment count is
+  verified and vragen otherwise, and names its unit beside the boxes.
+- A group of 25 boxes in a `flex` row without `flex-wrap` overflowed the card on mobile. The outer
+  row wrapping is not enough — each group has to wrap internally too.
+- `check-ui-auth.mjs` invalidated its own session between the mobile and desktop shots more than
+  once; re-mint immediately before each URL rather than reusing one cookie across a loop.
+**Lesson:** a panel that renders from "what exists" cannot teach the shape of the thing being
+built. Render from the rule table and join reality onto it — the zero rows are the content.

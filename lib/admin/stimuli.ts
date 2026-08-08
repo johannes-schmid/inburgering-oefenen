@@ -49,13 +49,18 @@ export async function fetchStimulusChoices(): Promise<StimulusChoice[]> {
   const supabase = await createClient();
   const { data } = await supabase
     .from('stimuli')
-    .select('id, sort_order, title, kind, exams!inner(skill, number)')
+    // `level` rides along because the question editor's suggestion has to be written at the level
+    // of the fragment it hangs off. Reading it off the picked stimulus rather than off the page is
+    // the same rule as everywhere else: a page-level default silently authors B1 at A2 register.
+    // It is nullable — a non-levelled onderdeel (see `skills.is_levelled`) has no level at all.
+    .select('id, sort_order, title, kind, exams!inner(skill, number, level)')
     .order('exam_id')
     .order('sort_order');
 
+  type ExamRef = { skill: string; number: number; level: string | null };
   type Row = {
     id: number; sort_order: number; title: string | null; kind: string;
-    exams: { skill: string; number: number } | { skill: string; number: number }[];
+    exams: ExamRef | ExamRef[];
   };
 
   return ((data ?? []) as unknown as Row[]).map(r => {
@@ -63,6 +68,7 @@ export async function fetchStimulusChoices(): Promise<StimulusChoice[]> {
     return {
       id: r.id,
       skill: e?.skill ?? '?',
+      level: e?.level ?? null,
       exam_number: e?.number ?? 0,
       sort_order: r.sort_order,
       title: r.title,

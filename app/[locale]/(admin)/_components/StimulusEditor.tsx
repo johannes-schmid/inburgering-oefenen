@@ -7,6 +7,8 @@ import type { AdminStimulus } from '@/lib/admin/stimuli';
 import { VOICES, type VoiceKey } from '@/lib/tts-voices';
 import { speakersInScript } from '@/lib/tts-dialogue';
 import { formatRange, formatRules, isSkillSlug, type Level } from '@/data/skills';
+import MagicFill from './MagicFill';
+import RichTextEditor from './RichTextEditor';
 
 /**
  * Authoring a fragment — the text, image or audio a stimulus's 1..N questions refer to.
@@ -60,7 +62,7 @@ export function blankStimulus(skill: string, nextSortOrder: number): Draft {
   };
 }
 
-export function toStimulusDraft(s: AdminStimulus): Draft {
+export function toStimulusDraft(s: Omit<AdminStimulus, 'questions'>): Draft {
   return {
     id: s.id,
     sort_order: s.sort_order,
@@ -108,6 +110,45 @@ export default function StimulusEditor({
   const [error, setError] = useState('');
 
   const rules = isSkillSlug(skill) ? formatRules(level, skill) : null;
+
+  /**
+   * Drop a whole suggested fragment into the form.
+   *
+   * Overwrites the content fields rather than filling only the blanks: this is a draft in a form,
+   * nothing is saved, and a button that silently does nothing on a half-written fragment is worse
+   * than one that replaces it. `review_status` is never touched — only the docent's own click moves
+   * a fragment to `validated`.
+   *
+   * The audio is **cleared** along with a new script, deliberately. Keeping the old URL would let a
+   * fragment be saved whose mp3 says something else entirely, and that mismatch is invisible in
+   * admin — the script is what the player never shows.
+   */
+  function applySuggestion(s: {
+    intro: string;
+    title: string;
+    body_html: string;
+    script: string;
+    voice_cast: Record<string, string>;
+    image_alt: string;
+    section_id: number | null;
+  }) {
+    setEditing(prev => {
+      const scriptChanged = prev.kind === 'audio' && s.script.trim() && s.script !== prev.script;
+      return {
+        ...prev,
+        intro: s.intro || prev.intro,
+        title: s.title || prev.title,
+        body_html: prev.kind === 'text' ? s.body_html || prev.body_html : prev.body_html,
+        script: prev.kind === 'audio' ? s.script || prev.script : prev.script,
+        voice_cast:
+          prev.kind === 'audio' && Object.keys(s.voice_cast).length ? s.voice_cast : prev.voice_cast,
+        image_alt: prev.kind === 'image' ? s.image_alt || prev.image_alt : prev.image_alt,
+        section_id: s.section_id ?? prev.section_id,
+        audio_url: scriptChanged ? '' : prev.audio_url,
+        audio_seconds: scriptChanged ? '' : prev.audio_seconds,
+      };
+    });
+  }
 
   /**
    * Render the dialogue and drop the resulting URL into the audio field.
@@ -195,7 +236,7 @@ export default function StimulusEditor({
   }
 
   return (
-    <div className={embedded ? 'space-y-4' : 'rounded-2xl border border-primary/40 p-4 space-y-4'}>
+    <div className={embedded ? 'space-y-5' : 'rounded-2xl border border-primary/40 p-4 space-y-5'}>
       {!embedded && (
         <div className="flex items-center justify-between">
           <h3 className="text-sm font-headline font-bold text-on-surface m-0">
@@ -216,30 +257,45 @@ export default function StimulusEditor({
         <div className="bg-error/10 border border-error/20 rounded-xl p-3 text-sm text-error">{error}</div>
       )}
 
-      <div className="grid grid-cols-2 gap-3">
-        <Field label="Soort">
-          <select
-            value={editing.kind}
-            onChange={e => setEditing({ ...editing, kind: e.target.value as StimulusKind })}
-            className="field"
-          >
-            <option value="text">Tekst</option>
-            <option value="image">Afbeelding</option>
-            {skill === 'luisteren' && <option value="audio">Audio</option>}
-          </select>
-        </Field>
-        <Field label="Positie">
-          <input
-            type="number"
-            min={1}
-            value={editing.sort_order}
-            onChange={e => setEditing({ ...editing, sort_order: Math.max(1, parseInt(e.target.value, 10) || 1) })}
-            className="field"
-          />
-        </Field>
-      </div>
+      <MagicFill
+        placeholder="Bijv. een afspraak afzeggen bij de tandarts (mag leeg)"
+        body={() => ({
+          target: 'stimulus',
+          level,
+          skill,
+          kind: editing.kind,
+          // Sent so the suggestion can pick a tekstsoort; the route only accepts an id back that
+          // is in this list, so a hallucinated one cannot reach the save.
+          sections,
+        })}
+        onSuggestion={applySuggestion}
+      />
 
-      <div className="grid grid-cols-1 gap-3">
+      {/* ── Waar het fragment staat ──────────────────────────────────────────────────────── */}
+      <Group title="Plaatsing">
+        <div className="grid grid-cols-2 gap-3">
+          <Field label="Soort">
+            <select
+              value={editing.kind}
+              onChange={e => setEditing({ ...editing, kind: e.target.value as StimulusKind })}
+              className="field"
+            >
+              <option value="text">Tekst</option>
+              <option value="image">Afbeelding</option>
+              {skill === 'luisteren' && <option value="audio">Audio</option>}
+            </select>
+          </Field>
+          <Field label="Positie">
+            <input
+              type="number"
+              min={1}
+              value={editing.sort_order}
+              onChange={e => setEditing({ ...editing, sort_order: Math.max(1, parseInt(e.target.value, 10) || 1) })}
+              className="field tabular-nums"
+            />
+          </Field>
+        </div>
+
         <Field
           label="Tekstsoort"
           hint={editing.section_id === null ? 'Zonder tekstsoort telt dit fragment nergens mee.' : undefined}
@@ -253,57 +309,62 @@ export default function StimulusEditor({
             {sections.map(sec => <option key={sec.id} value={sec.id}>{sec.name_nl}</option>)}
           </select>
         </Field>
-      </div>
+      </Group>
 
-      <Field label="Inleiding" hint="De regel boven het fragment: “Jasper ontvangt een e-mail van zijn collega.”">
-        <input
-          value={editing.intro}
-          onChange={e => setEditing({ ...editing, intro: e.target.value })}
-          className="field"
-        />
-      </Field>
-
-      <Field label="Titel">
-        <input
-          value={editing.title}
-          onChange={e => setEditing({ ...editing, title: e.target.value })}
-          className="field"
-        />
-      </Field>
-
-      {editing.kind === 'text' && (
-        <Field label="Tekst (HTML)" hint="Alinea's als <p>…</p>. Dit is de linkerkolom die de kandidaat leest.">
-          <textarea
-            value={editing.body_html}
-            onChange={e => setEditing({ ...editing, body_html: e.target.value })}
-            rows={8}
-            className="field resize-y font-mono text-xs"
+      {/* ── Wat de kandidaat ziet ────────────────────────────────────────────────────────── */}
+      <Group title="Inhoud">
+        <Field label="Inleiding" hint="De regel boven het fragment: “Jasper ontvangt een e-mail van zijn collega.”">
+          <input
+            value={editing.intro}
+            onChange={e => setEditing({ ...editing, intro: e.target.value })}
+            className="field"
           />
         </Field>
-      )}
 
-      {(editing.kind === 'image' || editing.kind === 'audio') && (
-        <div className="grid grid-cols-2 gap-3">
-          <Field label={editing.kind === 'image' ? 'Afbeelding-URL' : 'Afbeelding-URL (optioneel)'}>
-            <input
-              value={editing.image_url}
-              onChange={e => setEditing({ ...editing, image_url: e.target.value })}
-              placeholder="https://…"
-              className="field"
+        <Field label="Titel">
+          <input
+            value={editing.title}
+            onChange={e => setEditing({ ...editing, title: e.target.value })}
+            className="field"
+          />
+        </Field>
+
+        {editing.kind === 'text' && (
+          <Field
+            label="Tekst"
+            hint="Dit is de linkerkolom die de kandidaat leest. Opmaak wordt als HTML bewaard — via ‹› zie en bewerk je die rechtstreeks."
+          >
+            <RichTextEditor
+              value={editing.body_html}
+              onChange={html => setEditing(prev => ({ ...prev, body_html: html }))}
+              minHeight={220}
             />
           </Field>
-          <Field label="Alt-tekst">
-            <input
-              value={editing.image_alt}
-              onChange={e => setEditing({ ...editing, image_alt: e.target.value })}
-              className="field"
-            />
-          </Field>
-        </div>
-      )}
+        )}
+
+        {(editing.kind === 'image' || editing.kind === 'audio') && (
+          <div className="grid grid-cols-2 gap-3">
+            <Field label={editing.kind === 'image' ? 'Afbeelding-URL' : 'Afbeelding-URL (optioneel)'}>
+              <input
+                value={editing.image_url}
+                onChange={e => setEditing({ ...editing, image_url: e.target.value })}
+                placeholder="https://…"
+                className="field"
+              />
+            </Field>
+            <Field label="Alt-tekst">
+              <input
+                value={editing.image_alt}
+                onChange={e => setEditing({ ...editing, image_alt: e.target.value })}
+                className="field"
+              />
+            </Field>
+          </div>
+        )}
+      </Group>
 
       {editing.kind === 'audio' && (
-        <>
+        <Group title="Audio">
           <Field
             label="Script"
             hint="Eén regel per beurt, met een sprekerlabel: “A: Goedemorgen.”. Bewaren — zonder script is regenereren onmogelijk."
@@ -381,29 +442,35 @@ export default function StimulusEditor({
               />
             </Field>
           </div>
-        </>
+        </Group>
       )}
 
-      <Field label="Status">
-        <select
-          value={editing.review_status}
-          onChange={e => setEditing({ ...editing, review_status: e.target.value as 'pending' | 'validated' })}
-          className="field"
-        >
-          <option value="pending">Nog nakijken</option>
-          <option value="validated">Nagekeken door docent</option>
-        </select>
-      </Field>
+      <Group title="Status">
+        <Field label="Nakijken">
+          <select
+            value={editing.review_status}
+            onChange={e => setEditing({ ...editing, review_status: e.target.value as 'pending' | 'validated' })}
+            className="field"
+          >
+            <option value="pending">Nog nakijken</option>
+            <option value="validated">Nagekeken door docent</option>
+          </select>
+        </Field>
+      </Group>
 
-      <button
-        type="button"
-        onClick={save}
-        disabled={busy}
-        className="inline-flex items-center gap-2 bg-primary text-white px-5 py-2.5 rounded-xl text-sm font-medium hover:bg-primary-container transition-colors disabled:opacity-50"
-      >
-        {busy ? <Loader2 size={16} className="animate-spin" aria-hidden /> : <Check size={16} aria-hidden />}
-        Opslaan
-      </button>
+      {/* Closes the fragment form. Deliberately not sticky: the drawer continues below with the
+          fragment's questions, and a bar floating over those reads as if it saved them too. */}
+      <div className="border-t border-outline-variant pt-4">
+        <button
+          type="button"
+          onClick={save}
+          disabled={busy}
+          className="inline-flex items-center gap-2 bg-primary text-white px-5 py-2.5 rounded-xl text-sm font-medium hover:bg-primary-container transition-colors disabled:opacity-50"
+        >
+          {busy ? <Loader2 size={16} className="animate-spin" aria-hidden /> : <Check size={16} aria-hidden />}
+          Fragment opslaan
+        </button>
+      </div>
 
       <style>{`
         .field {
@@ -413,12 +480,30 @@ export default function StimulusEditor({
           padding: 0.5rem 0.75rem;
           font-size: 0.875rem;
           outline: none;
-          background: var(--color-surface);
+          background: var(--color-surface-container-lowest);
           color: var(--color-on-surface);
         }
         .field:focus { border-color: var(--color-primary); }
       `}</style>
     </div>
+  );
+}
+
+/**
+ * One labelled block of the form.
+ *
+ * The editor had thirteen fields in one flat column, which made "waar zet ik de tekstsoort ook
+ * alweer" a scanning exercise every time. Grouping them by the question they answer — waar staat
+ * het, wat staat erin, hoe klinkt het — is the whole change; nothing about the fields moved.
+ */
+function Group({ title, children }: { title: string; children: React.ReactNode }) {
+  return (
+    <section className="space-y-3 rounded-2xl border border-outline-variant bg-surface-container-low/40 p-4">
+      <h3 className="m-0 font-headline text-xs font-bold tracking-widest text-on-surface-variant uppercase">
+        {title}
+      </h3>
+      {children}
+    </section>
   );
 }
 

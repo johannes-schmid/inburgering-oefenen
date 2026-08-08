@@ -7,6 +7,7 @@ import { examLabel, isBacklog } from '@/lib/admin/backlog';
 import StimulusEditor, {
   blankStimulus, toStimulusDraft,
 } from '../../../_components/StimulusEditor';
+import StimulusQuestions from './StimulusQuestions';
 
 /**
  * The fragment editor, in the same right-hand drawer the question editor uses.
@@ -26,6 +27,8 @@ export default function StimulusSheet({
   nextSortOrder,
   onClose,
   onSaved,
+  onQuestionsChanged,
+  onOpenQuestion,
 }: {
   open: boolean;
   /** `null` = a new fragment, which lands in the backlog. */
@@ -37,12 +40,22 @@ export default function StimulusSheet({
   nextSortOrder: number;
   onClose: () => void;
   onSaved: () => void;
+  /** Refreshes the list without closing — adding a question is not finishing with the fragment. */
+  onQuestionsChanged: () => void;
+  /** Opens one of this fragment's questions in the item drawer. */
+  onOpenQuestion: (id: number) => void;
 }) {
   const examId = stimulus ? stimulus.exam_id : backlogExamId;
 
   return (
     <Sheet open={open} onOpenChange={(next: boolean) => !next && onClose()}>
-      <SheetContent side="right" className="w-full overflow-y-auto p-0 sm:max-w-xl">
+      {/* `data-[side=right]:` prefixed, because that is how the Sheet primitive states its own
+          `sm:max-w-sm` — a bare `sm:max-w-2xl` loses the specificity contest and the drawer stays
+          384px wide, which is too narrow to read a fragment's text in. */}
+      <SheetContent
+        side="right"
+        className="w-full overflow-y-auto p-0 data-[side=right]:sm:max-w-2xl"
+      >
         <div className="flex flex-col gap-5 p-6">
           <header className="pr-8">
             <p className="text-xs font-bold tracking-widest text-on-surface-variant uppercase">
@@ -83,6 +96,20 @@ export default function StimulusSheet({
               onClose={onClose}
               onSaved={onSaved}
               embedded
+            />
+          )}
+
+          {/* Only on a fragment that exists: a question needs a `stimulus_id` to hang off, and
+              offering "vraag toevoegen" before the fragment is saved would promise a row that
+              cannot be written. */}
+          {stimulus && (
+            <StimulusQuestions
+              stimulusId={stimulus.id}
+              level={level}
+              skill={skill}
+              questions={stimulus.questionList}
+              onChanged={onQuestionsChanged}
+              onOpenQuestion={onOpenQuestion}
             />
           )}
         </div>

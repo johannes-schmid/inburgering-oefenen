@@ -106,3 +106,27 @@ export async function countRecordedAnswers(stimulusIds: number[]): Promise<Map<n
   }
   return out;
 }
+
+/**
+ * Recorded candidate answers, per question id.
+ *
+ * The per-question twin of `countRecordedAnswers` above, and it reads on the service key for the
+ * same reason: `user_question_results` has exactly one policy, `auth.uid() = user_id`, so the
+ * docent's own session counts zero of other people's answers and the warning that depends on this
+ * number would quietly never fire. Server-only — it is a count, never the rows.
+ */
+export async function countAnswersPerQuestion(questionIds: number[]): Promise<Map<number, number>> {
+  const out = new Map<number, number>();
+  if (questionIds.length === 0) return out;
+
+  const supabase = createAdminClient();
+  const { data } = await supabase
+    .from('user_question_results')
+    .select('question_id')
+    .in('question_id', questionIds);
+
+  for (const r of (data ?? []) as { question_id: number }[]) {
+    out.set(r.question_id, (out.get(r.question_id) ?? 0) + 1);
+  }
+  return out;
+}
