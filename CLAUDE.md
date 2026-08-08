@@ -320,6 +320,57 @@ is the likely one) without adding it. Nothing about the four skills changed.
 exam 1 of each skill published and free. **No exam items**: placeholder questions would be
 indistinguishable from the docent's real content in admin.
 
+### The A2 dataset lives in `scripts/a2-content/`, not in seed.sql
+
+All forty A2 oefenexamens — 700 items — are authored as data in git and written to a project by
+`scripts/seed-a2-content.mjs`. They are in git rather than only in Postgres so the content is
+reviewable in a diff and a run is repeatable.
+
+```bash
+node scripts/seed-a2-content.mjs all --dry-run        # validate the dataset, touch nothing
+node scripts/seed-a2-content.mjs lezen --exam 3       # local stack, one exam
+node scripts/seed-a2-content.mjs all                  # local stack, all forty
+node scripts/seed-a2-content.mjs lezen --production   # the hosted project
+```
+
+- **This content is machine-authored and was published before the docent reviewed it** (owner's
+  decision, 2026-08-08). Every stimulus and task is written `review_status = 'validated'` because
+  that is the only state in which `exam_publish_issues()` lets an exam go live — that field is the
+  one thing here that lies, and the provenance lives in the seed script's header and in the draft
+  rubrics' `system_prompt`. The USP is unchanged: she validates and corrects in `/admin`.
+- **`index.mjs` validates the whole dataset before any network call**, against the same numbers
+  `exam_formats` and `exam_task_rules` hold. Every rule it checks is one `exam_publish_issues()`
+  would otherwise catch *after* the content was written and the audio paid for. `--partial` drops
+  only the "must be ten exams" rule for authoring, and is refused with `--production`.
+- **Sections are looked up by `slug`, never by `name_nl`.** The older `seed-test-exams.mjs` matched
+  on the display name with values that matched nothing, so every stimulus it ever wrote landed with
+  `section_id = NULL` and the tekstsoort chips in `/admin/exams` were empty for all forty exams.
+- **`images.lock.json` holds the Pexels *pick*, not a URL of ours.** Local and hosted are different
+  buckets on different hosts; a lock recording `127.0.0.1:54421/...` would make a production run
+  write items pointing at a dead host. The lock fixes *which photo* (id + source + attribution) and
+  each project keeps its own copy at `question-images/a2/<slot>.webp`, derived from the slot. A
+  re-run is therefore a HEAD, and the docent never sees a picture silently swap under a checked
+  item. Images are WebP at 1200px/q72 — tighter than the admin route's 1600/82, because a
+  `cover_all` task shows three at once on mobile data during a timed exam.
+- **`alt_text` is the authored caption, never Pexels' `alt`** — that is English, and an English
+  description read aloud mid-exam is worse than a plain label.
+- **A2 Luisteren audio is 25–45 s, corrected from 40–50 on 2026-08-08.** Ninety generated fragments
+  all landed at 29–37 s, and the DUO reference puts the real fragments at roughly 25–40 s / 70–110
+  woorden — so 40–50 was a number set too high, not a standard the content failed. eleven_v3 runs
+  at about **200 wpm**, not the 150 previously assumed. The figure has three mirrors —
+  `exam_formats`, `RULES` in `data/skills.ts`, `FORMAT` in `scripts/a2-content/index.mjs` — plus
+  `tests-unit/length-targets.test.ts`, which is what stops them drifting.
+- **Spreken onderdeel 1 is `react`, and it needs its audio.** At DUO somebody addresses the
+  candidate and asks something; here it is one still plus the spoken remark, so each onderdeel-1
+  opgave carries `prompt_spoken` and a `voice` that must match the person in the picture.
+  Onderdelen 2–4 are read on screen — DUO speaks those too, which is ~450 more clips and a later
+  pass.
+- **`speaking_react` had no rubric at all** until this ran; the runner mints a draft one (marked in
+  `system_prompt`) rather than failing the onderdeel, because `rubric_id IS NULL` is a blocking
+  publish error. It is a draft: rewrite it in `/admin/rubrics` before a grade counts.
+- **`scripts/a2-content/lib.mjs` is shared with `seed-test-exams.mjs`** — env resolution, PostgREST,
+  Storage, ElevenLabs, loudnorm and an mp3-duration counter that mirrors `lib/mp3-duration.ts`.
+
 ---
 
 ## Project Overview

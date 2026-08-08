@@ -224,7 +224,11 @@ const NO_RULES: SkillRules = {
 const RULES: Record<Level, Record<SkillSlug, SkillRules>> = {
   a2: {
     lezen:     { ...NO_RULES, questionsPerStimulus: [1, 3], options: [3, 4] },
-    luisteren: { ...NO_RULES, stimulusCount: 10, questionsPerStimulus: [2, 3], options: [3, 4], audioSeconds: [40, 50] },
+    // audioSeconds was 40–50. Corrected to 25–45 on 2026-08-08 against the DUO reference material
+    // in `resources/exam-references/A2/Listening/`, where the fragments run roughly 25–40 seconds
+    // (70–110 woorden). 40–50 was too long and would have made every authored fragment warn.
+    // Mirrors `exam_formats` for (a2, luisteren) — the two must not drift.
+    luisteren: { ...NO_RULES, stimulusCount: 10, questionsPerStimulus: [2, 3], options: [3, 4], audioSeconds: [25, 45] },
     schrijven: NO_RULES,
     spreken:   { ...NO_RULES, partCount: 4, itemsPerPart: 4 },
   },

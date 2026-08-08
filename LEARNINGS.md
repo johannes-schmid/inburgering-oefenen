@@ -1294,3 +1294,34 @@ for that produces no change at all, suspect the *comparison*, not the write.
 **Lesson:** "It's missing" from a user usually means "I cannot see it", not "it does not exist" —
 check the affordance before building the feature again. And a preview or a suggestion that reads
 from the database on a page whose whole point is unsaved state will quietly describe the old row.
+
+## 2026-08-08 — Ten oefenexamens per onderdeel: the A2 dataset, in git
+**Changed:** `scripts/a2-content/{lezen,luisteren,schrijven,spreken,index,lib,images}.mjs` and
+`scripts/seed-a2-content.mjs` — 700 authored A2 items, a validator, a Pexels→WebP pipeline and a
+runner; `data/skills.ts`, `tests-unit/length-targets.test.ts` and `exam_formats` re-derived for
+Luisteren's audio band.
+**Outcome:** SUCCESS
+**What worked / went wrong:**
+- **Validating the whole dataset in memory before the first network call was the single highest
+  leverage thing here.** Every rule it checks is one `exam_publish_issues()` would otherwise raise
+  *after* the rows were written and the ElevenLabs credit spent. It caught four off-by-one item
+  counts and three short scripts across 700 items, each as a line number instead of a half-seeded
+  exam.
+- **The image lock file was designed wrong the first time and it would only have failed in
+  production.** Locking the *uploaded URL* works perfectly against the local stack and writes
+  `127.0.0.1:54421/...` into forty hosted exams. Locking the *Pexels pick* and deriving the object
+  path from the slot gives the same caching, the same stability, and works across both projects.
+  The bug was invisible until I asked "what does this file mean on the other host?".
+- **A rule in a table is not evidence.** `exam_formats` said A2 Luisteren audio is 40–50 s. Ninety
+  generated fragments landed at 29–37 s, and the DUO reference puts the real ones at 25–40 s. The
+  temptation was to pad every script by 40% to satisfy the number; the right move was to re-derive
+  the number against the source material and correct all three mirrors plus the test that pins them.
+  eleven_v3 runs at ~200 wpm, not the 150 the earlier estimate assumed.
+- The failing unit test was the system working: `length-targets.test.ts` exists precisely to fail
+  when one of the three mirrors moves without the others.
+- `--partial` (drop only the "must be ten exams" rule) made it possible to seed and play a
+  half-written onderdeel locally while authoring, and is refused with `--production` — a
+  nine-of-ten exam set shipped as ten is exactly the failure nobody notices until a customer does.
+**Lesson:** When a stored rule and the artefact disagree, find out which one was measured before
+you change either. And any cache keyed on an environment-specific value — a URL, a host, a bucket —
+is a bug that only appears in the environment you test last.

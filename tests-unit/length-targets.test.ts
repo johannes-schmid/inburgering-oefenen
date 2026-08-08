@@ -56,10 +56,16 @@ describe('counting', () => {
 
 describe('targets', () => {
   it('takes the script band from the format, not from a guideline', () => {
-    // A2 Luisteren is the one worked-out pair (40–50s off DUO's material), so this must be
-    // `format`; anything else means the meter is quoting an invented number as a measured one.
+    // A2 Luisteren is the one worked-out pair, so this must be `format`; anything else means the
+    // meter is quoting an invented number as a measured one.
+    //
+    // The band was 40–50 and is 25–45 since 2026-08-08. It was re-derived against the DUO
+    // reference in `resources/exam-references/A2/Listening/` (fragments run roughly 25–40 s /
+    // 70–110 woorden) after ninety generated fragments all landed at 29–37 s and warned. The
+    // number lives in three mirrors — `exam_formats`, `data/skills.ts` and
+    // `scripts/a2-content/index.mjs` — and this test is what stops them drifting apart.
     const target = lengthTarget('a2', 'script', 'luisteren');
-    expect(target).toEqual({ unit: 'seconden', min: 40, max: 50, source: 'format' });
+    expect(target).toEqual({ unit: 'seconden', min: 25, max: 45, source: 'format' });
     expect(target).toEqual(
       expect.objectContaining({ min: formatRules('a2', 'luisteren').audioSeconds![0] })
     );
