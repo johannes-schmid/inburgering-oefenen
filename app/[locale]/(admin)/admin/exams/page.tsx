@@ -3,6 +3,8 @@ import { createClient } from '@/lib/supabase/server';
 import { SKILLS, formatCount, formatRules, getFormat, levelLabel } from '@/data/skills';
 import { levelFromSearch } from '@/lib/admin/nav';
 import { isBacklog } from '@/lib/admin/backlog';
+import { fetchExamSetup } from '@/lib/admin/exam-setup-server';
+import ExamSetupButton from './_components/ExamSetupButton';
 
 export const revalidate = 0;
 
@@ -55,6 +57,16 @@ export default async function ExamsPage({
     for (const r of rows ?? []) acc[r.exam_id] = (acc[r.exam_id] ?? 0) + 1;
     return acc;
   };
+  /**
+   * The onderdeel's setup, per skill — what the "Opzet" button edits.
+   *
+   * Fetched here rather than in the exam builder: these rows are keyed by (level, skill), so this
+   * page is the surface whose scope actually matches them. Four parallel reads, admin-only.
+   */
+  const setups = Object.fromEntries(
+    await Promise.all(SKILLS.map(async s => [s.slug, await fetchExamSetup(level, s.slug)] as const)),
+  );
+
   const questionCount = tally(questionsRes.data as { exam_id: number }[] | null);
   const taskCount = tally(tasksRes.data as { exam_id: number }[] | null);
   const stimulusCount = tally(stimuliRes.data as { exam_id: number }[] | null);
@@ -124,9 +136,16 @@ export default async function ExamsPage({
                     </Link>
                   )}
                 </h3>
-                <p className="text-xs text-on-surface-variant">
-                  {formatCount(itemCount)} {open ? 'opdrachten' : 'vragen'} per examen · {formatCount(getFormat(level, skill.slug).durationMinutes)} min
-                </p>
+                <div className="flex items-center gap-3">
+                  <p className="text-xs text-on-surface-variant m-0">
+                    {formatCount(itemCount)} {open ? 'opdrachten' : 'vragen'} per examen ·{' '}
+                    {formatCount(getFormat(level, skill.slug).durationMinutes)} min
+                    {/* Only stated when the ten agree — see `ExamDefaults`. */}
+                    {setups[skill.slug].defaults.passThresholdPct !== null &&
+                      ` · geslaagd vanaf ${setups[skill.slug].defaults.passThresholdPct}%`}
+                  </p>
+                  <ExamSetupButton level={level} skill={skill.slug} setup={setups[skill.slug]} />
+                </div>
               </div>
 
               <ul className="grid gap-3 list-none m-0 p-0 sm:grid-cols-2 lg:grid-cols-5">

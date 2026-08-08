@@ -29,6 +29,9 @@ import { z } from 'zod';
 import { assertGatewayConfigured, GRADER_TEXT } from './gateway';
 import { registerFor } from './level-register';
 import { formatRules, formatRange, isSkillSlug, type Level } from '@/data/skills';
+import {
+  SPEECH_WPM, lengthTarget, targetSentence, type LengthField,
+} from '@/lib/admin/length-targets';
 import { VOICES, type VoiceKey } from '@/lib/tts-voices';
 import type { SuggestExamples } from './suggest-examples';
 
@@ -119,6 +122,18 @@ export type QuestionRequest = SuggestRequest & {
   stimulusText: string;
 };
 
+/**
+ * One line of length guidance, or '' when there is no defensible target.
+ *
+ * The guidance goes into the prompt as well as under the field. A meter the suggestion cannot see
+ * produces content that is reliably the wrong length, and then the docent trims every suggestion by
+ * hand — which is the work this button exists to remove.
+ */
+function lengthLine(req: SuggestRequest, field: LengthField, what: string): string {
+  const band = targetSentence(lengthTarget(req.level, field, req.skill));
+  return band ? `${what}: ${band}.` : '';
+}
+
 /** The shared preamble: register, house rules, and what already exists. */
 function preamble(req: SuggestRequest): string[] {
   const lines = [
@@ -135,9 +150,13 @@ function preamble(req: SuggestRequest): string[] {
     lines.push(`Een vraag heeft ${formatRange(rules.options)} antwoordopties.`);
   }
   if (rules?.audioSeconds) {
+    // Stated as words as well as seconds: the model cannot time speech, but it can count. The rate
+    // is the one the generator actually renders at — see `SPEECH_WPM`.
+    const [lo, hi] = rules.audioSeconds;
     lines.push(
-      `Een fragment duurt voorgelezen ${formatRange(rules.audioSeconds)} seconden — schrijf een ` +
-        'script van die lengte.'
+      `Een fragment duurt voorgelezen ${formatRange(rules.audioSeconds)} seconden — dat is ongeveer ` +
+        `${Math.round((lo / 60) * SPEECH_WPM)} tot ${Math.round((hi / 60) * SPEECH_WPM)} woorden ` +
+        'gesproken tekst, sprekerlabels niet meegerekend. Houd je aan die lengte.'
     );
   }
   if (rules?.questionsPerStimulus) {
@@ -184,7 +203,8 @@ export async function suggestStimulus(req: StimulusRequest): Promise<StimulusSug
 
   const shape =
     req.kind === 'text'
-      ? 'Schrijf een leestekst: vul intro, title en body_html. Laat script, voice_cast en image_alt leeg.'
+      ? 'Schrijf een leestekst: vul intro, title en body_html. Laat script, voice_cast en image_alt leeg. ' +
+          lengthLine(req, 'stimulus_text', 'Lengte van de tekst')
       : req.kind === 'audio'
         ? 'Schrijf een luisterfragment: vul intro, title, script en voice_cast. Laat body_html en ' +
           'image_alt leeg. Maak via namen en aanspreekvormen duidelijk of een spreker een man of ' +
@@ -232,10 +252,13 @@ export async function suggestQuestion(req: QuestionRequest): Promise<QuestionSug
       `Geef ${count} opties, gelabeld vanaf "A". Precies één is juist.`,
       'Het antwoord moet uit het fragment te halen zijn — niet uit algemene kennis.',
       'De afleiders komen uit hetzelfde fragment en zijn aannemelijk, niet flauw.',
+      lengthLine(req, 'prompt', 'Lengte van de vraagzin'),
+      lengthLine(req, 'option', 'Lengte per antwoordoptie'),
+      lengthLine(req, 'explanation', 'Lengte van de uitleg'),
       '',
       'Het fragment:',
       req.stimulusText,
-    ].join('\n'),
+    ].filter(Boolean).join('\n'),
   });
 
   return object;

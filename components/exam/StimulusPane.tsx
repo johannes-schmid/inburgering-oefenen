@@ -96,3 +96,13 @@ function StimulusImage({ src, alt }: { src: string; alt: string | null }) {
 }
 
 export default memo(StimulusPane, (prev, next) => prev.stimulus.id === next.stimulus.id);
+
+/**
+ * The same pane, without the id-only memo.
+ *
+ * The admin fragment preview renders an *unsaved* draft, whose id never changes while its text
+ * does — through the memo above it would paint once and then never update again, which is the one
+ * thing a live preview must not do. The player keeps the memoised export; nothing else should use
+ * this one.
+ */
+export { StimulusPane as StimulusPaneLive };

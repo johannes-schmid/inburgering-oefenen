@@ -407,9 +407,44 @@ levelled** — it is a queue of what is waiting, and splitting the inbox by leve
 constraints, and the exam builder's question is "is examen 3 complete?", not "what does this
 fragment say?".
 
-- **`_components/StimulusEditor.tsx` is the one fragment editor** — kind, tekstsoort, intro, body,
-  script, voice casting, audio generation, length, review status. It owns its own draft state and
-  writes directly, so any screen can drop it in with an `onSaved` callback.
+- **A fragment is edited on its own page: `/admin/fragmenten/[id]`, `…/nieuw?niveau=&onderdeel=`.**
+  Two thirds authoring, one third live candidate preview. It replaced a right-hand drawer, which
+  could show about a fifth of a fragment at a time and edited its questions on a different screen
+  from the text they are about. Clicking a fragment row anywhere lands here — there is exactly one
+  fragment editor, the same rule already applied to questions and options.
+  - **One draft, one save.** The fragment *and every one of its questions* live in
+    `FragmentEditor`'s state and are written by a single "Opslaan". That is what makes the preview
+    honest: it renders the draft, not the database. Write order is load-bearing — fragment first
+    (a new one has no id, and `questions.stimulus_id` is NOT NULL), then **park reordered questions
+    at negative `sort_order`**, then the questions, then deletions.
+  - **`questions_stimulus_sort_key` is `DEFERRABLE INITIALLY DEFERRED`, and that does not help
+    here.** Deferral applies inside one transaction; PostgREST runs every request in its own, so
+    swapping questions 1 and 2 fails on the first UPDATE. The parking pass compares against the
+    **database's** order (`savedOrder`), never the draft's — the draft is renumbered the moment she
+    clicks the arrow, so comparing to it parks nothing and the bug comes straight back.
+  - **`lib/admin/question-write.ts` holds every rule about writing a question**: options reconciled
+    by label (a delete cascades `user_question_results.chosen_option_id` to NULL), every row
+    upserted `is_correct: false` first (the correct one flipped after, or the unique partial index
+    trips), and `exam_id` never sent. `QuestionForm` and the fragment page both call it.
+  - **`_components/StimulusEditor.tsx` is the fragment's own fields** — kind, tekstsoort, intro,
+    body, script, voice casting, audio generation, length, review status. Pass `value`/`onChange`
+    for controlled mode (the page); leave them off and it keeps its own state and save button.
+  - **The tekstsoort's colour is on the page**, as a chip and a rail, from `categoryColors()` over
+    the (level, skill)'s full section list in `sort_order` — the same list `ExamBuilder` passes.
+    Colours are assigned *per list*, so a different list is a different colour and the two screens
+    would disagree.
+  - **Magic fill sits on each question, not on the page**, and sends `stimulusText` from the
+    **draft** — the fragment may be unsaved, or saved with the old text, and reading the row would
+    then write a question about a fragment that no longer says that. `/api/admin/suggest-item`
+    prefers `stimulusText` over `stimulusId` for exactly that reason and caps it at 8k chars;
+    `QuestionForm` sends only the id and still reads the saved row.
+  - **The answer key is labelled.** A bare radio beside a text field reads as decoration, so the
+    column has a "Juist" header, the chosen row is tinted green with a check, and the collapsed
+    card says "juist: B" or "geen juist antwoord".
+  - **The preview renders the player's own components** (`StimulusPaneLive`, `McqQuestion`), never
+    lookalikes. `StimulusPaneLive` is the un-memoised export: the memoised one compares `stimulus.id`
+    only, and a draft's id never changes while its text does, so the preview would paint once and
+    freeze. It always shows feedback (Oefenmodus) and records nothing.
 - **The tekstsoort is a column everywhere it matters.** `ContentRow.sectionName` carries it into
   the grid (a question inherits its fragment's; an open task has its own), and the exam list shows
   a chip row per card — "gesprek 3 · mededeling 3 · telefoongesprek 2" — so "is examen 3 the right
@@ -421,10 +456,9 @@ fragment say?".
   **the fragment as a parent row with its questions nested underneath** (built by hand — the ReUI
   grid's expand hook renders a custom panel, not tree rows) and the existing `ContentSheet` drawer
   on row click. A fragment stays listed even when the filters hide all of its questions: "which
-  fragment has nothing on it yet" is exactly what the screen is for. Clicking one opens
-  `StimulusSheet`, the same right-hand drawer the question editor uses.
-  `?onderdeel=` opens a tab and `?fragment=` opens that fragment's editor — which is how the exam
-  builder links out rather than editing in place.
+  fragment has nothing on it yet" is exactly what the screen is for. Clicking a fragment row
+  navigates to `/admin/fragmenten/[id]`; `?onderdeel=` opens a tab. The exam builder links to the
+  same page rather than editing in place.
 - **`ExamBuilder` is assignment-only**: Opbouw, the publish gate, the backlog pull-in, an ordered
   read-only fragment list with the ⇄ move control, and the per-exam "genereer ontbrekende audio"
   batch. No create, no inline editor, no delete.

@@ -1,6 +1,6 @@
 'use client';
 
-import { useMemo, useState } from 'react';
+import { useMemo, useState, useCallback } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import {
@@ -37,7 +37,7 @@ import { SKILLS, type Level } from '@/data/skills';
 import type { ContentRow } from '@/lib/admin/content-rows';
 import type { AuthoringContext, AuthoringStimulus } from '@/lib/admin/authoring';
 import { examLabel, isBacklog } from '@/lib/admin/backlog';
-import StimulusSheet from './StimulusSheet';
+import CatalogueProgress from './CatalogueProgress';
 import ContentSheet from './ContentSheet';
 
 const SKILL_LABELS: Record<string, string> = {
@@ -123,7 +123,6 @@ export default function ContentTable({
   level,
   authoring,
   initialSkill,
-  initialStimulusId,
 }: {
   rows: ContentRow[];
   locale: string;
@@ -131,8 +130,6 @@ export default function ContentTable({
   authoring: AuthoringContext;
   /** `?onderdeel=` — how the exam builder deep-links into the right tab. */
   initialSkill?: string;
-  /** `?fragment=` — opens that fragment's editor straight away. */
-  initialStimulusId?: number;
 }) {
   const router = useRouter();
 
@@ -145,14 +142,15 @@ export default function ContentTable({
   const [query, setQuery] = useState('');
   const [openUid, setOpenUid] = useState<string | null>(null);
   /**
-   * Which fragment's drawer is open, **by id** rather than by object. `'new'` is an unsaved one.
+   * A fragment is edited on its own page, not in a drawer — `/admin/fragmenten/[id]`.
    *
-   * The id, because the drawer now edits the fragment's questions too and stays open across the
-   * `router.refresh()` that follows: a stored object would be the snapshot from before the add or
-   * the delete, so the list would not move until she closed and reopened it.
+   * The drawer could show about a fifth of a fragment at a time, and its questions were edited on
+   * a different screen from the text they are about. `openFragment` is the only way this table
+   * opens one, so there is exactly one place that decides where a fragment is edited.
    */
-  const [editingStimulusId, setEditingStimulusId] = useState<number | 'new' | null>(
-    initialStimulusId ?? null
+  const openFragment = useCallback(
+    (id: number) => router.push(`/${locale}/admin/fragmenten/${id}`),
+    [router, locale]
   );
   /** Collapsed fragments, by id. Expanded is the default — the nesting is the point. */
   const [collapsed, setCollapsed] = useState<Set<number>>(new Set());
@@ -287,7 +285,7 @@ export default function ContentTable({
             type="button"
             onClick={e => {
               e.stopPropagation();
-              if (r.kind === 'fragment') setEditingStimulusId(r.stimulus.id);
+              if (r.kind === 'fragment') openFragment(r.stimulus.id);
               else setOpenUid(r.row.uid);
             }}
             aria-label={r.kind === 'fragment' ? 'Fragment bewerken' : 'Item bewerken'}
@@ -481,10 +479,6 @@ export default function ContentTable({
   });
 
   const open = rows.find(r => r.uid === openUid) ?? null;
-  const editingStimulus =
-    editingStimulusId === 'new' || editingStimulusId === null
-      ? null
-      : authoring.stimuli.find(s => s.id === editingStimulusId) ?? null;
   const fragmentCount = gridRows.filter(r => r.kind === 'fragment').length;
 
   return (
@@ -502,6 +496,8 @@ export default function ContentTable({
         </TabsList>
       </Tabs>
 
+      <CatalogueProgress rows={forSkill} level={level} skill={skill} />
+
       <DataGrid
         table={table}
         recordCount={gridRows.length || 0}
@@ -509,7 +505,7 @@ export default function ContentTable({
         tableClassNames={{ edgeCell: 'px-4' }}
         onRowClick={row => {
           const r = row as GridRow;
-          if (r.kind === 'fragment') setEditingStimulusId(r.stimulus.id);
+          if (r.kind === 'fragment') openFragment(r.stimulus.id);
           else setOpenUid(r.row.uid);
         }}
         emptyMessage="Geen items die aan deze filters voldoen."
@@ -622,7 +618,11 @@ export default function ContentTable({
               {!isOpenSkill && (
                 <Button
                   variant="outline"
-                  onClick={() => setEditingStimulusId('new')}
+                  onClick={() =>
+                    router.push(
+                      `/${locale}/admin/fragmenten/nieuw?niveau=${level}&onderdeel=${skill}`
+                    )
+                  }
                   disabled={!backlogExamId}
                   title={backlogExamId ? undefined : 'Geen backlog voor dit onderdeel gevonden.'}
                 >
@@ -667,23 +667,6 @@ export default function ContentTable({
           </FrameFooter>
         </Frame>
       </DataGrid>
-
-      <StimulusSheet
-        open={editingStimulusId !== null}
-        stimulus={editingStimulusId === 'new' ? null : editingStimulus}
-        backlogExamId={backlogExamId}
-        level={level}
-        skill={skill}
-        sections={sectionsForSkill}
-        nextSortOrder={(stimuliForSkill.at(-1)?.sort_order ?? 0) + 1}
-        onClose={() => setEditingStimulusId(null)}
-        onSaved={() => { setEditingStimulusId(null); router.refresh(); }}
-        // Adding or removing a question keeps the drawer open — she is still working on this
-        // fragment — so this refreshes without closing. Resolving `editingStimulus` by id above is
-        // what makes the reopened list the new one.
-        onQuestionsChanged={() => router.refresh()}
-        onOpenQuestion={id => { setEditingStimulusId(null); setOpenUid(`question:${id}`); }}
-      />
 
       <ContentSheet row={open} locale={locale} onClose={() => setOpenUid(null)} />
     </div>

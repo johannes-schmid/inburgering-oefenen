@@ -24,7 +24,7 @@ export default async function QuestionsPage({
   searchParams,
 }: {
   params: Promise<{ locale: string }>;
-  searchParams: Promise<{ niveau?: string; onderdeel?: string; fragment?: string }>;
+  searchParams: Promise<{ niveau?: string; onderdeel?: string }>;
 }) {
   const { locale } = await params;
   const search = await searchParams;
@@ -33,7 +33,6 @@ export default async function QuestionsPage({
     fetchContentRows(),
     fetchAuthoringContext(level),
   ]);
-  const fragment = Number(search.fragment);
 
   return (
     <div className="space-y-6">
@@ -56,7 +55,6 @@ export default async function QuestionsPage({
         level={level}
         authoring={authoring}
         initialSkill={search.onderdeel}
-        initialStimulusId={Number.isInteger(fragment) && fragment > 0 ? fragment : undefined}
       />
     </div>
   );

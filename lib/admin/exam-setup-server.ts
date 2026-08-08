@@ -1,6 +1,6 @@
 import { createClient } from '@/lib/supabase/server';
 import type { Level, SkillSlug } from '@/data/skills';
-import type { ExamSetup, FormatRow, SectionRow, TaskRuleRow } from './exam-setup';
+import type { ExamDefaults, ExamSetup, FormatRow, SectionRow, TaskRuleRow } from './exam-setup';
 
 /**
  * Everything the setup sheet edits, for one onderdeel. Server half of `exam-setup.ts`.
@@ -11,7 +11,7 @@ import type { ExamSetup, FormatRow, SectionRow, TaskRuleRow } from './exam-setup
 export async function fetchExamSetup(level: Level, skill: SkillSlug): Promise<ExamSetup> {
   const supabase = await createClient();
 
-  const [formatRes, sectionRes, categoryRes, ruleRes, usageRes] = await Promise.all([
+  const [formatRes, sectionRes, categoryRes, ruleRes, usageRes, examRes] = await Promise.all([
     supabase
       .from('exam_formats')
       .select(
@@ -44,7 +44,27 @@ export async function fetchExamSetup(level: Level, skill: SkillSlug): Promise<Ex
     // How many fragments each tekstsoort holds, across every exam of this onderdeel — the
     // number that turns "verwijderen" from a guess into a decision.
     supabase.from('stimuli').select('section_id').eq('skill', skill),
+    // The two settings the player actually reads. They live per exam, so they are summarised
+    // here and only reported as a number when the ten oefenexamens agree — see `ExamDefaults`.
+    // The backlog is excluded: exam 0 is a holding area and its duration means nothing.
+    supabase
+      .from('exams')
+      .select('duration_seconds, pass_threshold_pct, number')
+      .eq('level', level)
+      .eq('skill', skill)
+      .gt('number', 0),
   ]);
+
+  const examRows = (examRes.data ?? []) as
+    { duration_seconds: number; pass_threshold_pct: number; number: number }[];
+  const agreed = <T,>(vals: T[]): T | null =>
+    vals.length > 0 && vals.every(v => v === vals[0]) ? vals[0] : null;
+  const durationSeconds = agreed(examRows.map(e => e.duration_seconds));
+  const defaults: ExamDefaults = {
+    durationMinutes: durationSeconds === null ? null : Math.round(durationSeconds / 60),
+    passThresholdPct: agreed(examRows.map(e => e.pass_threshold_pct)),
+    examCount: examRows.length,
+  };
 
   const usage = new Map<number, number>();
   for (const s of (usageRes.data ?? []) as { section_id: number | null }[]) {
@@ -83,6 +103,7 @@ export async function fetchExamSetup(level: Level, skill: SkillSlug): Promise<Ex
         record_seconds: r?.record_seconds ?? null,
       };
     }),
+    defaults,
   };
 }
 

@@ -42,6 +42,8 @@ type Body = {
   scenario?: unknown;
   sections?: unknown;
   stimulusId?: unknown;
+  /** The fragment's text as the caller currently has it, saved or not. */
+  stimulusText?: unknown;
 };
 
 export async function POST(request: Request) {
@@ -121,14 +123,29 @@ export async function POST(request: Request) {
 
     if (body.target === 'question') {
       const stimulusId = typeof body.stimulusId === 'number' ? body.stimulusId : null;
-      if (!stimulusId) {
+
+      /**
+       * The fragment's text, from the caller's **draft** when it sends one.
+       *
+       * The fragment page suggests questions while the fragment itself is still unsaved, or has
+       * unsaved edits — reading the row would then either find nothing or return the old text and
+       * produce a question about a fragment that no longer says that. `QuestionForm` sends no draft
+       * and keeps reading the saved row, which is right there: it picks an existing fragment.
+       *
+       * Capped, because it goes straight into a prompt. A2 fragments run to a few hundred words;
+       * 8k characters is far past any of them and past anything worth paying to tokenise.
+       */
+      const draftText =
+        typeof body.stimulusText === 'string' ? body.stimulusText.trim().slice(0, 8000) : '';
+
+      if (!stimulusId && !draftText) {
         return NextResponse.json(
           { error: 'Kies eerst een fragment — een vraag wordt bij een fragment bedacht.' },
           { status: 400 }
         );
       }
 
-      const stimulusText = await fetchStimulusText(stimulusId);
+      const stimulusText = draftText || (stimulusId ? await fetchStimulusText(stimulusId) : null);
       if (!stimulusText) {
         return NextResponse.json(
           { error: 'Dit fragment heeft nog geen tekst of script om een vraag bij te bedenken.' },

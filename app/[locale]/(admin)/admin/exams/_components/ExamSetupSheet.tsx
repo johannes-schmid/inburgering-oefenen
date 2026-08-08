@@ -6,10 +6,13 @@ import { GripVertical, Loader2, Plus, Trash2, TriangleAlert } from 'lucide-react
 import { Sheet, SheetContent } from '@/components/ui/sheet';
 import { createClient } from '@/lib/supabase/client';
 import { levelLabel, type Level, type SkillSlug } from '@/data/skills';
-import { slugify, type ExamSetup, type SectionRow, type TaskRuleRow } from '@/lib/admin/exam-setup';
+import {
+  slugify, type ExamDefaults, type ExamSetup, type SectionRow, type TaskRuleRow,
+} from '@/lib/admin/exam-setup';
 
 /**
- * The setup of an onderdeel, edited from inside one exam.
+ * The setup of an onderdeel — opened from the Examens overview, where the ten exams it governs
+ * are all on screen.
  *
  * **Everything in here is shared by all ten oefenexamens of the onderdeel**, because
  * `exam_formats`, `sections` and `exam_task_rules` are keyed by (level, skill) and not by exam.
@@ -53,16 +56,18 @@ export default function ExamSetupSheet({
             </h2>
           </header>
 
-          {/* The one thing that is easy to get wrong from this entry point. */}
+          {/* Still stated outright, even now that the sheet opens from the overview: two of
+              these panels write to (level, skill) rows and one writes to all ten exam rows. */}
           <p className="flex gap-2 items-start text-xs rounded-xl px-3 py-2.5 m-0"
              style={{ background: '#fcecdd', color: '#a24000' }}>
             <TriangleAlert size={15} className="shrink-0 mt-px" aria-hidden />
             <span>
               Deze instellingen gelden voor <strong>alle tien de oefenexamens</strong> van{' '}
-              {levelLabel(level)} {skill}, niet alleen voor dit examen.
+              {levelLabel(level)} {skill}.
             </span>
           </p>
 
+          <ExamDefaultsPanel level={level} skill={skill} defaults={setup.defaults} />
           <RulesPanel level={level} skill={skill} setup={setup} />
           {isOpenSkill
             ? <TaskRulesPanel level={level} skill={skill} rows={setup.taskRules} />
@@ -127,6 +132,96 @@ function SaveRow({ busy, error, onSave }: { busy: boolean; error: string; onSave
   );
 }
 
+
+/* ── Duur en cesuur (exams) ───────────────────────────────────────────────── */
+
+/**
+ * The two settings that sit on the exam rows themselves.
+ *
+ * `duration_seconds` and `pass_threshold_pct` are columns on `exams` because the player reads
+ * them off the exam it is running — but they are not a per-exam *decision*: oefenexamen 3 and 4
+ * of the same onderdeel differing in length is a mistake, not a feature. So they are edited here
+ * once and written to all ten in one UPDATE.
+ *
+ * A blank field here does **not** mean "unverified" the way it does in the panel below — there is
+ * no NULL to write, `exams.duration_seconds` and `pass_threshold_pct` are both NOT NULL. Blank
+ * means "leave the ten as they are", which is what makes the "verschilt" state safe: the docent
+ * can change the cesuur without flattening ten deliberately different durations.
+ *
+ * The duur is also mirrored into `exam_formats.duration_seconds`, which is the *documented* rule
+ * and what `data/skills.ts` states on the public pages. Two fields for one number would be two
+ * places to disagree.
+ */
+function ExamDefaultsPanel({
+  level, skill, defaults,
+}: { level: Level; skill: SkillSlug; defaults: ExamDefaults }) {
+  const router = useRouter();
+  const supabase = createClient();
+  const [busy, setBusy] = useState(false);
+  const [error, setError] = useState('');
+  const [minutes, setMinutes] = useState<number | null>(defaults.durationMinutes);
+  const [pct, setPct] = useState<number | null>(defaults.passThresholdPct);
+
+  async function save() {
+    setBusy(true);
+    setError('');
+    const patch: { duration_seconds?: number; pass_threshold_pct?: number } = {};
+    if (minutes !== null) patch.duration_seconds = minutes * 60;
+    if (pct !== null) patch.pass_threshold_pct = pct;
+
+    if (Object.keys(patch).length > 0) {
+      const { error: err } = await supabase
+        .from('exams')
+        .update(patch)
+        .eq('level', level)
+        .eq('skill', skill)
+        .gt('number', 0);
+      if (err) { setBusy(false); return setError(err.message); }
+    }
+    // The format row carries the same duur as the published rule. Cleared here, it is cleared
+    // there too — that is the "niet vastgesteld" state the validator and the public pages read.
+    const { error: fErr } = await supabase
+      .from('exam_formats')
+      .update({ duration_seconds: minutes === null ? null : minutes * 60 })
+      .eq('level', level)
+      .eq('skill', skill);
+    setBusy(false);
+    if (fErr) return setError(fErr.message);
+    router.refresh();
+  }
+
+  const differs = (v: number | null) => v === null && defaults.examCount > 0;
+
+  return (
+    <section className="rounded-2xl border border-outline-variant p-4 space-y-3">
+      <div>
+        <h3 className="text-sm font-medium text-on-surface m-0">Duur en cesuur</h3>
+        <p className="text-xs text-on-surface-variant m-0 mt-0.5">
+          Wordt weggeschreven naar alle {defaults.examCount} oefenexamens. Leeg laten = de examens
+          blijven zoals ze zijn.
+        </p>
+      </div>
+
+      <div className="flex flex-wrap gap-x-4 gap-y-3">
+        <NumField
+          label="Duur (min)"
+          value={minutes}
+          onChange={setMinutes}
+          hint={differs(defaults.durationMinutes) ? 'verschilt per examen' : undefined}
+        />
+        <NumField
+          label="Oefengrens (%)"
+          value={pct}
+          onChange={setPct}
+          hint={differs(defaults.passThresholdPct) ? 'verschilt per examen' : 'geslaagd vanaf'}
+        />
+      </div>
+
+      <SaveRow busy={busy} error={error} onSave={save} />
+    </section>
+  );
+}
+
 /* ── The numeric rules (exam_formats) ─────────────────────────────────────── */
 
 function RulesPanel({ level, skill, setup }: { level: Level; skill: SkillSlug; setup: ExamSetup }) {
@@ -159,7 +254,6 @@ function RulesPanel({ level, skill, setup }: { level: Level; skill: SkillSlug; s
       .from('exam_formats')
       .update({
         item_count: f.item_count,
-        duration_seconds: f.duration_seconds,
         part_count: f.part_count,
         items_per_part: f.items_per_part,
         stimulus_count: f.stimulus_count,
@@ -191,11 +285,6 @@ function RulesPanel({ level, skill, setup }: { level: Level; skill: SkillSlug; s
 
       <div className="flex flex-wrap gap-x-4 gap-y-3">
         <NumField label="Opgaven" value={f.item_count} onChange={n => set({ item_count: n })} />
-        <NumField
-          label="Duur (min)"
-          value={f.duration_seconds === null ? null : Math.round(f.duration_seconds / 60)}
-          onChange={n => set({ duration_seconds: n === null ? null : n * 60 })}
-        />
         {isOpenSkill ? (
           <>
             <NumField label="Onderdelen" value={f.part_count} onChange={n => set({ part_count: n })} />

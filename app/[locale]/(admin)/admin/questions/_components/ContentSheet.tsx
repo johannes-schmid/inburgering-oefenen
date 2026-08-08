@@ -4,7 +4,7 @@ import { useCallback, useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import {
-  AudioLines, BadgeCheck, Check, ExternalLink, ImagePlus, Loader2, Sparkles, TriangleAlert,
+  AudioLines, BadgeCheck, Check, ExternalLink, ImagePlus, Loader2, Plus, Sparkles, TriangleAlert,
 } from 'lucide-react';
 import { Sheet, SheetContent } from '@/components/ui/sheet';
 import { Badge } from '@/components/ui/badge';
@@ -12,6 +12,10 @@ import { createClient } from '@/lib/supabase/client';
 import type { ContentRow } from '@/lib/admin/content-rows';
 import type { AuthorAction } from '@/lib/ai/author';
 import OptionImagePicker from './OptionImagePicker';
+import LengthMeter from '../../../_components/LengthMeter';
+import MagicFill from '../../../_components/MagicFill';
+import { formatRules, isSkillSlug, type Level } from '@/data/skills';
+import { stripHtml } from '@/lib/admin/length-targets';
 
 /**
  * The editing drawer for one item, whichever table it came from.
@@ -57,6 +61,8 @@ type QuestionDetail = {
     id: number;
     title: string | null;
     kind: string;
+    /** The framing line above the fragment; part of what the question has to make sense against. */
+    intro: string | null;
     body_html: string | null;
     script: string | null;
     audio_url: string | null;
@@ -85,6 +91,15 @@ type TaskDetail = {
   prompt_audio_url: string | null;
   images: TaskImage[];
 };
+
+const LABELS = ['A', 'B', 'C', 'D'] as const;
+
+/** Mirrors `LAYOUTS` in `QuestionForm` — the same three shapes `questions.option_layout` allows. */
+const LAYOUTS: { value: 'text' | 'image' | 'image_grid'; label: string; hint: string }[] = [
+  { value: 'text', label: 'Tekst', hint: 'Elke optie is een korte tekst.' },
+  { value: 'image', label: 'Eén afbeelding', hint: 'Elke optie is één afbeelding.' },
+  { value: 'image_grid', label: 'Meerdere afbeeldingen', hint: 'Elke optie is een setje afbeeldingen.' },
+];
 
 /** How many pictures each Spreken image rule expects. Mirrors REQUIRED_IMAGES in OpgaveForm. */
 const REQUIRED_IMAGES: Record<string, number> = {
@@ -129,7 +144,7 @@ export default function ContentSheet({
         .select(
           'id, prompt, explanation, option_layout, review_status, prompt_audio_url, ' +
             'question_options(id, label, body, is_correct, image_urls, image_alt), ' +
-            'stimuli(id, title, kind, body_html, script, audio_url, image_url, image_alt)'
+            'stimuli(id, title, kind, intro, body_html, script, audio_url, image_url, image_alt)'
         )
         .eq('id', row.id)
         .single();
@@ -231,23 +246,123 @@ export default function ContentSheet({
   }
 
   /**
-   * Write one row of a related table.
+   * Save the whole question in one action: the question row, every option, and the answer key.
    *
-   * Kept separate from `save()` because that one targets the item's own table. This is an update of
-   * an existing related row by id — never an insert or a delete, which is what makes it safe here:
-   * deleting a `question_options` row cascades `user_question_results.chosen_option_id` to NULL and
-   * erases what past candidates picked, so adding and removing options stays in the full editor.
+   * This replaces the per-field saves. Six buttons meant six ways to end up with half a question
+   * saved — a reworded vraag stored against the old options, or new option text with the answer key
+   * still pointing at what used to be the right answer.
+   *
+   * The order is forced by the schema, not chosen:
+   *
+   * 1. New options are inserted first, so an option added in this same edit can be the correct one.
+   * 2. Every option is then written `is_correct: false`. `question_options_one_correct_idx` is
+   *    `UNIQUE (question_id) WHERE is_correct`, so flipping the new answer on while the old one is
+   *    still true trips a duplicate-key error.
+   * 3. Only then is the one correct option flipped true.
+   *
+   * Options are still matched **by label and never deleted** — a delete cascades
+   * `user_question_results.chosen_option_id` to NULL and erases what past candidates picked.
+   * Removing an option therefore stays in the full editor, which does it deliberately.
    */
-  async function saveRelated(table: 'question_options' | 'stimuli', id: number, patch: Record<string, unknown>) {
-    setBusy('save');
-    setError(null);
-    const { error: err } = await supabase.from(table).update(patch).eq('id', id);
-    setBusy(null);
-    if (err) {
-      setError(err.message);
+  async function saveQuestionAll(next: QuestionDetail) {
+    if (!row) return;
+
+    const usesImages = next.option_layout !== 'text';
+    if (!next.prompt.trim()) {
+      setError('De vraag mag niet leeg zijn.');
       return;
     }
-    setNote('Opgeslagen.');
+    // Checked here rather than left to the index: a missing answer key saves cleanly and leaves a
+    // question no candidate can ever get right.
+    const correct = next.question_options.filter(o => o.is_correct);
+    if (correct.length !== 1) {
+      setError('Markeer precies één optie als het juiste antwoord.');
+      return;
+    }
+    const emptyOption = next.question_options.find(o =>
+      usesImages ? (o.image_urls ?? []).length === 0 : !(o.body ?? '').trim()
+    );
+    if (emptyOption) {
+      setError(
+        `Optie ${emptyOption.label} heeft nog geen ${usesImages ? 'afbeelding' : 'tekst'}.`
+      );
+      return;
+    }
+
+    setBusy('save');
+    setError(null);
+    setNote(null);
+
+    const fail = (message: string) => {
+      setBusy(null);
+      setError(message);
+    };
+
+    const { error: qErr } = await supabase
+      .from('questions')
+      .update({
+        prompt: next.prompt.trim(),
+        explanation: next.explanation?.trim() || '',
+        option_layout: next.option_layout,
+      })
+      .eq('id', row.id);
+    if (qErr) return fail(qErr.message);
+
+    // A negative id is an option added in this drawer and not yet in the database — see
+    // `addOption` in `QuestionEditor`.
+    const fresh = next.question_options.filter(o => o.id < 0);
+    if (fresh.length) {
+      const { error: insErr } = await supabase.from('question_options').insert(
+        fresh.map((o, i) => ({
+          question_id: row.id,
+          label: o.label,
+          sort_order: next.question_options.length - fresh.length + i + 1,
+          body: (o.body ?? '').trim(),
+          image_urls: o.image_urls ?? [],
+          image_alt: o.image_alt?.trim() || null,
+          is_correct: false,
+        }))
+      );
+      if (insErr) return fail(insErr.message);
+    }
+
+    for (const o of next.question_options.filter(o => o.id > 0)) {
+      const { error: optErr } = await supabase
+        .from('question_options')
+        .update({
+          body: (o.body ?? '').trim(),
+          image_urls: o.image_urls ?? [],
+          image_alt: o.image_alt?.trim() || null,
+          is_correct: false,
+        })
+        .eq('id', o.id);
+      if (optErr) return fail(optErr.message);
+    }
+
+    const { error: corErr } = await supabase
+      .from('question_options')
+      .update({ is_correct: true })
+      .eq('question_id', row.id)
+      .eq('label', correct[0].label);
+    if (corErr) return fail(corErr.message);
+
+    // The image stimulus rides along, so "Opslaan" means what it says on this screen. The CHECK
+    // `stimuli_payload_matches_kind` requires a URL, so an emptied picker is refused here with a
+    // sentence rather than by Postgres with a constraint name.
+    if (next.stimuli && next.stimuli.kind === 'image') {
+      if (!next.stimuli.image_url) return fail('Een beeldstimulus moet een afbeelding hebben.');
+      const { error: stimErr } = await supabase
+        .from('stimuli')
+        .update({
+          image_url: next.stimuli.image_url,
+          image_alt: next.stimuli.image_alt?.trim() || null,
+        })
+        .eq('id', next.stimuli.id);
+      if (stimErr) return fail(stimErr.message);
+    }
+
+    setBusy(null);
+    setNote('Opgeslagen — vraag, opties en het juiste antwoord.');
     router.refresh();
     void load(true);
   }
@@ -374,10 +489,11 @@ export default function ContentSheet({
               <QuestionEditor
                 q={question}
                 busy={busy}
+                level={row.level}
+                skill={row.skill}
+                onSaveAll={saveQuestionAll}
                 onChange={setQuestion}
                 onDraft={draft}
-                onSave={save}
-                onSaveRelated={saveRelated}
                 onAudio={generateAudio}
               />
             )}
@@ -386,6 +502,7 @@ export default function ContentSheet({
               <TaskEditor
                 t={task}
                 busy={busy}
+                level={row.level}
                 skill={row.skill}
                 onChange={setTask}
                 onDraft={draft}
@@ -431,24 +548,73 @@ export default function ContentSheet({
   );
 }
 
+/**
+ * What `/api/admin/suggest-item` returns for `target: 'question'`.
+ *
+ * Declared here rather than imported from `lib/ai/suggest.ts`: that module pulls in the `ai` SDK and
+ * the gateway config, and this is a client component — importing it would drag all of that into the
+ * browser bundle. The route re-labels options from "A" and guarantees exactly one `is_correct`.
+ */
+type QuestionSuggestionShape = {
+  prompt: string;
+  explanation: string;
+  options: { label: 'A' | 'B' | 'C' | 'D'; body: string; is_correct: boolean }[];
+};
+
 /* ── Editors ──────────────────────────────────────────────────────────────────────────────── */
 
 type DraftFn = (action: AuthorAction, current: string, apply: (t: string) => void) => void;
 
 function QuestionEditor({
-  q, busy, onChange, onDraft, onSave, onSaveRelated, onAudio,
+  q, busy, level, skill, onChange, onDraft, onSaveAll, onAudio,
 }: {
   q: QuestionDetail;
   busy: string | null;
+  /** Null on a non-levelled onderdeel — there is no register, so no meter is shown. */
+  level: Level | null;
+  skill: string;
   onChange: (q: QuestionDetail) => void;
   onDraft: DraftFn;
-  onSave: (patch: Record<string, unknown>) => void;
-  onSaveRelated: (table: 'question_options' | 'stimuli', id: number, patch: Record<string, unknown>) => void;
+  onSaveAll: (q: QuestionDetail) => void;
   onAudio: (k: 'question' | 'stimulus' | 'task') => void;
 }) {
   // `image` → one picture per option, `image_grid` → up to three. `text` options have none, and
   // showing an empty picker on all 25 Lezen questions would be noise.
   const perOption = q.option_layout === 'image_grid' ? 3 : q.option_layout === 'image' ? 1 : 0;
+
+  const options = [...q.question_options].sort((a, b) => a.label.localeCompare(b.label));
+
+  /** How many options this onderdeel allows, from `exam_formats`. */
+  const maxOptions =
+    (level && isSkillSlug(skill) ? formatRules(level, skill).options?.[1] : null) ?? 4;
+
+  /** Mark one option as the answer. Exactly one, always — a radio, not a checkbox. */
+  function setCorrect(label: string) {
+    onChange({
+      ...q,
+      question_options: q.question_options.map(o => ({ ...o, is_correct: o.label === label })),
+    });
+  }
+
+  /**
+   * Add an option, unsaved.
+   *
+   * Negative ids mark a row that does not exist yet; `saveQuestionAll` inserts those and updates the
+   * rest. Adding is safe here because it is an INSERT — it is *removing* an option that cascades
+   * `user_question_results.chosen_option_id` to NULL, which is why that stays in the full editor.
+   */
+  function addOption() {
+    const label = LABELS[options.length];
+    if (!label) return;
+    const tempId = Math.min(0, ...q.question_options.map(o => o.id)) - 1;
+    onChange({
+      ...q,
+      question_options: [
+        ...q.question_options,
+        { id: tempId, label, body: '', is_correct: false, image_urls: [], image_alt: null },
+      ],
+    });
+  }
 
   return (
     <div className="space-y-5">
@@ -458,6 +624,52 @@ function QuestionEditor({
             Stimulus · {q.stimuli.kind}
           </p>
           <p className="mt-1 text-sm font-medium text-on-surface">{q.stimuli.title || '—'}</p>
+
+          {/* The text the question is *about*, read-only and right here.
+              Judging "does this vraag have exactly one defensible answer?" means reading the
+              fragment, and the drawer used to show only its title — so the docent either guessed or
+              opened a second screen. Capped in height because a Lezen text is longer than the
+              fields below it and would push the whole editor off-screen. */}
+          {(q.stimuli.body_html || q.stimuli.script || q.stimuli.intro) && (
+            <div className="mt-2 max-h-52 overflow-y-auto rounded-lg bg-surface-container-low p-2.5">
+              {q.stimuli.intro && (
+                <p className="m-0 mb-1.5 text-xs italic text-on-surface-variant">{q.stimuli.intro}</p>
+              )}
+              <p className="m-0 whitespace-pre-wrap text-xs leading-relaxed text-on-surface">
+                {q.stimuli.script?.trim() || stripHtml(q.stimuli.body_html ?? '')}
+              </p>
+            </div>
+          )}
+
+          {/* A whole question suggested against this fragment — vraagzin, opties and uitleg in one
+              go, which is the only way the three can be consistent with each other. Filling them
+              one button at a time produced an explanation for an answer the options did not offer. */}
+          {level && (
+            <div className="mt-2.5">
+              <MagicFill<QuestionSuggestionShape>
+                placeholder="Waar de vraag over moet gaan (mag leeg)"
+                body={() => ({
+                  target: 'question',
+                  stimulusId: q.stimuli?.id,
+                  level,
+                  skill,
+                })}
+                onSuggestion={sug => {
+                  const byLabel = new Map<string, string>(sug.options.map(o => [o.label, o.body]));
+                  onChange({
+                    ...q,
+                    prompt: sug.prompt || q.prompt,
+                    explanation: sug.explanation || q.explanation,
+                    // Matched by label, and only the text is touched: `is_correct` stays where it
+                    // is because flipping it needs the unique-index dance in the full editor.
+                    question_options: q.question_options.map(o =>
+                      byLabel.has(o.label) ? { ...o, body: byLabel.get(o.label) ?? o.body } : o
+                    ),
+                  });
+                }}
+              />
+            </div>
+          )}
 
           {q.stimuli.kind === 'image' && (
             <div className="mt-2.5 space-y-2">
@@ -483,27 +695,13 @@ function QuestionEditor({
                 placeholder="Alt-tekst — beschrijf wat er te zien is"
                 className="admin-field"
               />
-              <Row>
-                {/* The CHECK `stimuli_payload_matches_kind` requires an image stimulus to have a
-                    URL, so saving an emptied picker fails at the database rather than quietly
-                    breaking the item. Blocked here so the docent gets a sentence, not a constraint. */}
-                <SaveButton
-                  busy={busy === 'save'}
-                  disabled={!q.stimuli.image_url}
-                  onClick={() =>
-                    q.stimuli &&
-                    onSaveRelated('stimuli', q.stimuli.id, {
-                      image_url: q.stimuli.image_url,
-                      image_alt: q.stimuli.image_alt?.trim() || null,
-                    })
-                  }
-                />
-                {!q.stimuli.image_url && (
-                  <span className="text-xs text-secondary">
-                    Een beeldstimulus moet een afbeelding hebben.
-                  </span>
-                )}
-              </Row>
+              {!q.stimuli.image_url && (
+                <p className="m-0 text-xs text-[#a24000]">
+                  {/* The CHECK `stimuli_payload_matches_kind` requires a URL, so the save refuses
+                      this rather than letting Postgres answer with a constraint name. */}
+                  Een beeldstimulus moet een afbeelding hebben.
+                </p>
+              )}
             </div>
           )}
 
@@ -530,6 +728,7 @@ function QuestionEditor({
           rows={3}
           className="admin-field"
         />
+        {level && <LengthMeter text={q.prompt} level={level} field="prompt" skill={skill} />}
         <Row>
           <AiButton busy={busy === 'draft_question'} disabled={busy !== null}
             onClick={() => onDraft('draft_question', q.prompt, t => onChange({ ...q, prompt: t }))}>
@@ -539,23 +738,89 @@ function QuestionEditor({
             onClick={() => onDraft('simpler', q.prompt, t => onChange({ ...q, prompt: t }))}>
             Makkelijker
           </AiButton>
-          <SaveButton busy={busy === 'save'} onClick={() => onSave({ prompt: q.prompt })} />
         </Row>
       </Field>
 
+      <Field label="Soort vraag" hint="Bepaalt of de antwoorden tekst of afbeeldingen zijn.">
+        <div className="flex flex-wrap gap-1.5">
+          {LAYOUTS.map(l => (
+            <button
+              key={l.value}
+              type="button"
+              onClick={() => onChange({ ...q, option_layout: l.value })}
+              aria-pressed={q.option_layout === l.value}
+              className={`rounded-full px-3 py-1.5 text-xs font-medium transition-colors ${
+                q.option_layout === l.value
+                  ? 'bg-primary text-white'
+                  : 'border border-outline-variant text-on-surface-variant hover:bg-surface-container'
+              }`}
+            >
+              {l.label}
+            </button>
+          ))}
+        </div>
+        <p className="mt-1 mb-0 text-xs text-on-surface-variant">
+          {LAYOUTS.find(l => l.value === q.option_layout)?.hint}
+        </p>
+      </Field>
+
       <section>
-        <p className="mb-2 text-sm font-medium text-on-surface">Antwoordopties</p>
+        <div className="mb-2 flex items-center justify-between">
+          <p className="m-0 text-sm font-medium text-on-surface">Antwoordopties</p>
+          {options.length < maxOptions && (
+            <button
+              type="button"
+              onClick={addOption}
+              className="inline-flex items-center gap-1 text-xs font-medium text-primary hover:underline"
+            >
+              <Plus size={13} aria-hidden /> Optie {LABELS[options.length]}
+            </button>
+          )}
+        </div>
         <ul className="list-none space-y-1.5 p-0">
-          {[...q.question_options].sort((a, b) => a.label.localeCompare(b.label)).map(o => (
-            <li key={o.id} className={perOption > 0 ? 'rounded-xl border border-outline-variant p-3' : ''}>
+          {options.map(o => (
+            <li key={o.id} className="rounded-xl border border-outline-variant p-3">
               <div className="flex items-start gap-2 text-sm">
-                <span className={`mt-0.5 w-5 shrink-0 font-bold ${o.is_correct ? 'text-primary' : 'text-on-surface-variant'}`}>
-                  {o.label}
-                </span>
-                <span className="text-on-surface">
-                  {o.body || <em className="text-on-surface-variant">afbeelding</em>}
-                </span>
-                {o.is_correct && <Check size={14} className="mt-0.5 shrink-0 text-primary" aria-hidden />}
+                {/* The answer key, editable at last. A radio rather than a toggle per option,
+                    because `question_options_one_correct_idx` allows exactly one correct row per
+                    question — the input mirrors the constraint instead of letting her build a
+                    state the database will refuse. */}
+                <label className="mt-0.5 flex shrink-0 cursor-pointer items-center gap-1.5">
+                  <input
+                    type="radio"
+                    name={`correct-${q.id}`}
+                    checked={o.is_correct}
+                    onChange={() => setCorrect(o.label)}
+                    aria-label={`Optie ${o.label} is het juiste antwoord`}
+                    className="accent-primary"
+                  />
+                  <span className={`w-4 font-bold ${o.is_correct ? 'text-primary' : 'text-on-surface-variant'}`}>
+                    {o.label}
+                  </span>
+                </label>
+
+                {/* The answer text is editable here, and that is not a loosening of the drawer's
+                    rule: writing `body` is an UPDATE of a row that already exists, exactly like
+                    `image_urls` below. What stays in the full editor is adding, removing and
+                    re-labelling options, because a *delete* cascades
+                    `user_question_results.chosen_option_id` to NULL.
+
+                    It used to be read-only, which meant a question whose options were still empty
+                    could not be answered at all from this screen — and an empty option rendered as
+                    the italic word "afbeelding" whatever its layout, so a text question read as a
+                    picture question. */}
+                <div className="min-w-0 flex-1">
+                  <input
+                    value={o.body ?? ''}
+                    onChange={e =>
+                      onChange({ ...q, question_options: replace(q.question_options, o.id, { body: e.target.value }) })
+                    }
+                    placeholder={perOption > 0 ? 'Tekst naast de afbeelding (optioneel)' : `Antwoord ${o.label}`}
+                    className="admin-field"
+                  />
+                  {level && perOption === 0 && <LengthMeter text={o.body ?? ''} level={level} field="option" />}
+                </div>
+
               </div>
 
               {perOption > 0 && (
@@ -572,28 +837,11 @@ function QuestionEditor({
                     placeholder="Alt-tekst"
                     className="admin-field"
                   />
-                  <Row>
-                    <SaveButton
-                      busy={busy === 'save'}
-                      onClick={() =>
-                        onSaveRelated('question_options', o.id, {
-                          image_urls: o.image_urls ?? [],
-                          image_alt: o.image_alt?.trim() || null,
-                        })
-                      }
-                    />
-                  </Row>
                 </div>
               )}
             </li>
           ))}
         </ul>
-        <p className="mt-2 text-xs text-on-surface-variant">
-          {/* Images are editable here because setting `image_urls` updates an existing row.
-              Adding, removing or re-labelling options is not, and the reason is in `saveRelated`. */}
-          Welke optie juist is, en het toevoegen of verwijderen van opties, doe je in de volledige
-          editor — die bewaart de koppeling met eerder gegeven antwoorden.
-        </p>
       </section>
 
       <Field label="Uitleg">
@@ -604,6 +852,9 @@ function QuestionEditor({
           placeholder="Waarom is dit het juiste antwoord?"
           className="admin-field"
         />
+        {level && (
+          <LengthMeter text={q.explanation ?? ''} level={level} field="explanation" skill={skill} showSentences />
+        )}
         <Row>
           <AiButton busy={busy === 'draft_explanation'} disabled={busy !== null}
             onClick={() => onDraft('draft_explanation', q.explanation ?? '', t => onChange({ ...q, explanation: t }))}>
@@ -613,7 +864,6 @@ function QuestionEditor({
             onClick={() => onDraft('shorter', q.explanation ?? '', t => onChange({ ...q, explanation: t }))}>
             Korter
           </AiButton>
-          <SaveButton busy={busy === 'save'} onClick={() => onSave({ explanation: q.explanation })} />
         </Row>
       </Field>
 
@@ -625,15 +875,41 @@ function QuestionEditor({
           </AiButton>
         </div>
       </Field>
+
+      {/* One save for the whole question — vraag, soort, alle opties, het juiste antwoord and the
+          image stimulus. It sits at the bottom of the editor rather than beside each field, because
+          six buttons meant six ways to save half a question. Validation stays its own action in the
+          drawer's footer: marking an item "nagekeken" is a human judgement, never a side effect of
+          saving text. */}
+      <div className="sticky bottom-0 -mx-0.5 flex flex-wrap items-center gap-2 border-t border-outline-variant bg-surface px-0.5 py-3">
+        <button
+          type="button"
+          disabled={busy !== null}
+          onClick={() => onSaveAll(q)}
+          className="inline-flex items-center gap-2 rounded-xl bg-primary px-5 py-2.5 text-sm font-medium text-white transition-colors hover:bg-primary-container disabled:opacity-50"
+        >
+          {busy === 'save' ? (
+            <Loader2 size={15} className="animate-spin motion-reduce:animate-none" aria-hidden />
+          ) : (
+            <Check size={15} aria-hidden />
+          )}
+          Alles opslaan
+        </button>
+        <span className="text-xs text-on-surface-variant">
+          Een optie verwijderen doe je in de volledige editor — dat wist wat kandidaten kozen.
+        </span>
+      </div>
     </div>
   );
 }
 
 function TaskEditor({
-  t, busy, skill, onChange, onDraft, onSave, onSaveImages, onAudio,
+  t, busy, level, skill, onChange, onDraft, onSave, onSaveImages, onAudio,
 }: {
   t: TaskDetail;
   busy: string | null;
+  /** Null on a non-levelled onderdeel — there is no register, so no meter is shown. */
+  level: Level | null;
   skill: string;
   onChange: (t: TaskDetail) => void;
   onDraft: DraftFn;
@@ -665,6 +941,15 @@ function TaskEditor({
           rows={6}
           className="admin-field font-mono text-xs"
         />
+        {level && (
+          <LengthMeter
+            text={stripHtml(t.prompt_html ?? '')}
+            level={level}
+            field="task_prompt"
+            skill={skill}
+            showSentences
+          />
+        )}
         <Row>
           <AiButton busy={busy === 'draft_task'} disabled={busy !== null}
             onClick={() => onDraft('draft_task', t.prompt_html ?? '', v => onChange({ ...t, prompt_html: v }))}>
@@ -796,6 +1081,15 @@ function TaskEditor({
           rows={5}
           className="admin-field"
         />
+        {level && (
+          <LengthMeter
+            text={t.model_answer ?? ''}
+            level={level}
+            field="model_answer"
+            skill={skill}
+            showSentences
+          />
+        )}
         <Row>
           <AiButton busy={busy === 'draft_model_answer'} disabled={busy !== null}
             onClick={() => onDraft('draft_model_answer', t.model_answer ?? '', v => onChange({ ...t, model_answer: v }))}>

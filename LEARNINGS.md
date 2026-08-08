@@ -1182,3 +1182,115 @@ breakdown rows, and list *every* soort of the onderdeel instead of only the ones
   once; re-mint immediately before each URL rather than reusing one cookie across a loop.
 **Lesson:** a panel that renders from "what exists" cannot teach the shape of the thing being
 built. Render from the rule table and join reality onto it — the zero rows are the content.
+
+## 2026-08-08 — De opzet van een onderdeel verhuist naar het examenoverzicht
+**Changed:** new `_components/ExamSetupButton.tsx` (client island beside each onderdeel's heading
+on `/admin/exams`); `ExamSetupSheet` gained a "Duur en cesuur" panel writing all ten exam rows;
+`lib/admin/exam-setup{,-server}.ts` gained `ExamDefaults`; the Opzet button in `ExamBuilder` is
+now a link back to the overview.
+**Outcome:** SUCCESS — `tsc`, `next build`, 109 unit tests, and a real browser click-through that
+set the oefengrens to 61 and confirmed 10 rows updated with the backlog (number 0) untouched.
+**What worked / went wrong:**
+- The old entry point put a (level, skill)-wide edit behind a button inside one exam, which needed
+  a warning banner to undo the impression the label gave. On the overview the ten cards it governs
+  are on screen; the scope is the placement.
+- `duration_seconds` exists twice — on `exam_formats` (the documented rule) and on `exams` (what
+  the player reads). One field now writes both; two fields would have been two places to disagree.
+- `exams.duration_seconds` and `pass_threshold_pct` are NOT NULL, so "leeg" cannot mean unverified
+  the way it does in the rules panel. It means "laat de tien staan", which is what makes the
+  "verschilt per examen" state safe to show instead of silently flattening ten values.
+- Verified through a real session, per the rule that an RLS-denied PostgREST UPDATE returns 200
+  with zero rows and is indistinguishable from a save.
+**Lesson:** put an edit on the screen whose scope matches the rows it writes. A banner explaining
+that a button does more than its context suggests is a sign the button is in the wrong place.
+
+## 2026-08-08 — Length meters, and the drawer becomes a real question editor
+**Changed:** `lib/admin/length-targets.ts` + `LengthMeter.tsx` (counts, targets, speech estimate),
+targets injected into `lib/ai/suggest.ts` and `lib/ai/author.ts`; `ContentSheet` gained the fragment's
+own text, a whole-question "Magisch invullen", editable option text, a correct-answer radio, an
+`option_layout` picker and **one** `saveQuestionAll` replacing six per-field saves; `QuestionForm`
+shows the picked fragment's text and per-field meters. `tests-unit/length-targets.test.ts` (10 cases).
+**Outcome:** SUCCESS — build clean, 109 unit tests green, and the drawer driven end-to-end in a real
+browser: typed three answers, marked B correct, pressed one save, and the database came back
+`A/f, B/t, C/f` with all three bodies written.
+**What worked / went wrong:** Three bugs found by *rendering* what the code claimed. (1) An empty
+option printed the italic word "afbeelding" whatever its layout, so a `text` question read as a
+picture question — and option `body` was not editable at all, though writing it is an UPDATE exactly
+as safe as `image_urls`, which was already editable. (2) The meter said "richtlijn … (eigen
+richtlijn)", saying it twice and distinguishing nothing, and printed "0 woorden · 0 tekens" three
+times on a question with three blank options. (3) After making the answer key editable, the footnote
+still told the docent to go to the full editor for it. Each was invisible in the diff and obvious in
+the screenshot. Verification note: the drawer scrolls internally, so `check-ui-auth.mjs` cannot
+photograph anything below the fold — a short puppeteer driver that scrolls, clicks and then queries
+the database proved more than another screenshot would have.
+**Lesson:** When a restriction is documented with a reason, check the reason covers the whole
+restriction. "Options are read-only because deleting one erases candidate answers" was true of
+deletes and quietly froze *writes* too, which cost nothing to allow. And a meter that cannot say
+where its number came from will be obeyed as if measured — the only measured band here is the audio
+one, and the UI has to say so.
+
+## 2026-08-08 — Voortgang-catalogus panel op /admin/questions
+**Changed:** new `app/[locale]/(admin)/admin/questions/_components/CatalogueProgress.tsx`, rendered
+between the onderdeel-tabs and the grid in `ContentTable.tsx`.
+**Outcome:** SUCCESS
+**What worked / went wrong:** The panel counts the current (level, skill)'s items per category and
+measures the total against `itemCount × examCount` from `data/skills.ts` (A2 Lezen: 250). The
+category axis had to differ per onderdeel — `sections` is retired for Schrijven/Spreken, so those
+group on `typeLabel` (the soort opgave) instead of `sectionName`. `itemCount` is NULL at B1, so the
+bar is hidden there rather than drawn against a guess. It reads `forSkill` (pre-filter), so the
+panel does not move when she filters the grid. `npx tsc --noEmit` reports one **pre-existing**
+error unrelated to this change: `admin/fragmenten/_components/FragmentPreview.tsx` imports
+`StimulusPaneLive` as a named export when it is the default — that untracked directory blocks
+`next build`.
+**Lesson:** There is deliberately no per-tekstsoort quota, so a progress panel may report the
+distribution but must only measure the one total that is verified. Inventing a per-category target
+would quietly become the standard the docent's work is judged against.
+
+## 2026-08-08 — The fragment gets its own page, with a live candidate preview
+**Changed:** New `/admin/fragmenten/[id]` and `…/nieuw` (`_components/FragmentEditor.tsx`,
+`QuestionCard.tsx`, `FragmentPreview.tsx`) — two thirds authoring, one third preview, one draft
+holding the fragment *and* its questions, one save. New `lib/admin/question-write.ts` holds the
+question/option write rules, called by both `QuestionForm` and the page. `StimulusEditor` gained a
+controlled mode plus `toStimulusRow`/`missingPayload`; `StimulusPane` gained `StimulusPaneLive`;
+`fetchFragment`/`fetchNewFragmentContext` in `lib/admin/stimuli.ts`. `StimulusSheet.tsx` and
+`StimulusQuestions.tsx` deleted; `ContentTable` and `ExamBuilder` navigate to the page.
+**Outcome:** SUCCESS
+**What worked / went wrong:**
+- **`DEFERRABLE INITIALLY DEFERRED` bought nothing across PostgREST requests.** Reordering two
+  questions failed on `questions_stimulus_sort_key` because deferral only holds inside one
+  transaction and every PostgREST call is its own. Fixed with a parking pass at negative
+  `sort_order`.
+- **The first version of that fix was silently a no-op**, and it took a second failing run to see
+  why: it compared each question's *draft* `sort_order` to its new index, but `moveQuestion`
+  renumbers the draft immediately, so nothing ever looked moved. The comparison has to be against
+  the database's order, captured at load.
+- **`memo` is a trap for any live preview.** `StimulusPane` is memoised on `stimulus.id` alone, and
+  a draft's id never changes — reusing it directly would have rendered once and then ignored every
+  keystroke, which looks like a broken preview rather than a caching decision.
+- **Extracting the write rules before writing the second editor was the right order.** They are
+  three non-obvious constraints; a second hand-written copy would have looked correct and quietly
+  erased `chosen_option_id` history.
+- Puppeteer: `document.querySelector('aside')` matched the admin **sidebar**, not the preview, and
+  made three passing behaviours read as failures. Assert against something the feature owns.
+**Lesson:** A constraint declared `DEFERRABLE` is only deferred if the writes share a transaction —
+over PostgREST they do not, so any multi-row reorder needs an explicit parking pass. And when a fix
+for that produces no change at all, suspect the *comparison*, not the write.
+
+## 2026-08-08 — Magic fill per question, and an answer key you can actually see
+**Changed:** `QuestionCard` gained a `MagicFill` block and a labelled "Juist" column;
+`FragmentEditor` passes the fragment's draft text down; `/api/admin/suggest-item` accepts
+`stimulusText` and prefers it over `stimulusId`.
+**Outcome:** SUCCESS
+**What worked / went wrong:**
+- **The radio was there the whole time and the owner could not find it.** Three plain radios in a
+  column beside three text inputs read as decoration. What fixed it was naming the column
+  ("Juist"), tinting the chosen row green with a check, and repeating the answer on the collapsed
+  card — none of it new function, all of it the difference between shipped and missing.
+- Suggesting a question needed the fragment's text, and on this page that text is often not in the
+  database yet. Sending the draft is also more correct for a *saved* fragment mid-edit: the row
+  holds the old text, so a suggestion read from it would be about a fragment that no longer says
+  that. Verified on a fragment that had never been saved — disabled until text was typed, then a
+  200 with a correctly-keyed question ("9 tot 17 uur" → "8 uur" marked correct).
+**Lesson:** "It's missing" from a user usually means "I cannot see it", not "it does not exist" —
+check the affordance before building the feature again. And a preview or a suggestion that reads
+from the database on a page whose whole point is unsaved state will quietly describe the old row.

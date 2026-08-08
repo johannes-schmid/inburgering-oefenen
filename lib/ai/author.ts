@@ -25,6 +25,9 @@ import { generateText } from 'ai';
 import { assertGatewayConfigured, GRADER_TEXT } from './gateway';
 import { registerFor } from './level-register';
 import { DEFAULT_LEVEL, isLevel, type Level } from '@/data/skills';
+import {
+  SPEECH_WPM, lengthTarget, targetSentence, type LengthField,
+} from '@/lib/admin/length-targets';
 
 export const AUTHOR_MODEL = process.env.AI_AUTHOR_MODEL || GRADER_TEXT;
 export const AUTHOR_TIMEOUT_MS = 40_000;
@@ -93,6 +96,23 @@ function instructions(level: Level): Record<AuthorAction, string> {
   };
 }
 
+/**
+ * Which length guideline applies to each action, so a per-field draft comes back the same length
+ * the meter under that field is asking for.
+ *
+ * `longer` / `shorter` / `simpler` are deliberately absent: those transform whatever the docent
+ * already has, and quoting a band at them turns "make this a bit shorter" into "rewrite it to 45
+ * words", which is not what she pressed. The band is stated for the *drafting* actions only.
+ */
+const ACTION_LENGTH: Partial<Record<AuthorAction, { field: LengthField; what: string }>> = {
+  draft_question: { field: 'prompt', what: 'Lengte van de vraagzin' },
+  draft_explanation: { field: 'explanation', what: 'Lengte van de uitleg' },
+  draft_options: { field: 'option', what: 'Lengte per antwoordoptie' },
+  draft_task: { field: 'task_prompt', what: 'Lengte van de opdracht' },
+  draft_model_answer: { field: 'model_answer', what: 'Lengte van het voorbeeldantwoord' },
+  draft_script: { field: 'script', what: 'Lengte van het script' },
+};
+
 export type AuthorRequest = {
   action: AuthorAction;
   /** The text being transformed, for longer/shorter/simpler. */
@@ -122,10 +142,24 @@ export async function draftContent(req: AuthorRequest): Promise<string> {
     throw new Error('Er is nog geen tekst om aan te passen.');
   }
 
+  // Same source as the meter under the field — see `lib/admin/length-targets.ts`. A script's band
+  // is in seconds, so it is restated as words: the model cannot time speech but it can count.
+  const lengthSpec = ACTION_LENGTH[req.action];
+  const band = lengthSpec ? lengthTarget(level, lengthSpec.field, req.skill) : null;
+  const lengthLine =
+    band && lengthSpec
+      ? band.unit === 'seconden'
+        ? `${lengthSpec.what}: ${band.min} tot ${band.max} seconden voorgelezen, ongeveer ` +
+          `${Math.round((band.min / 60) * SPEECH_WPM)} tot ${Math.round((band.max / 60) * SPEECH_WPM)} ` +
+          'woorden, sprekerlabels niet meegerekend.'
+        : `${lengthSpec.what}: ${targetSentence(band)}.`
+      : '';
+
   const parts = [
     registerRules(level),
     '',
     instruction,
+    lengthLine,
     req.skill ? `\nOnderdeel: ${req.skill}.` : '',
     req.context?.trim() ? `\nContext:\n${req.context.trim()}` : '',
     req.text?.trim() ? `\nDe tekst:\n${req.text.trim()}` : '',

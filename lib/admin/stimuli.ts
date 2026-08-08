@@ -6,6 +6,9 @@
  * unpublished content — that is the whole point of the authoring surface.
  */
 import { createClient } from '@/lib/supabase/server';
+import { BACKLOG_EXAM_NUMBER } from '@/lib/admin/backlog';
+import { countAnswersPerQuestion } from '@/lib/admin/backlog-server';
+import type { Level } from '@/data/skills';
 import type { StimulusChoice } from '@/app/[locale]/(admin)/admin/questions/_components/QuestionForm';
 
 export type AdminStimulus = {
@@ -169,4 +172,130 @@ export async function fetchTaskSummary(examId: number): Promise<TaskSummaryRow[]
   const { data, error } = await supabase.rpc('exam_task_summary', { p_exam_id: examId });
   if (error) return [];
   return (data ?? []) as TaskSummaryRow[];
+}
+
+/* ── The fragment page ────────────────────────────────────────────────────────────────────── */
+
+export type FragmentQuestion = {
+  id: number;
+  sort_order: number;
+  prompt: string;
+  explanation: string;
+  image_url: string | null;
+  prompt_audio_url: string | null;
+  option_layout: 'text' | 'image' | 'image_grid';
+  review_status: 'pending' | 'validated';
+  options: {
+    id: number;
+    label: 'A' | 'B' | 'C' | 'D';
+    sort_order: number;
+    body: string | null;
+    image_urls: string[];
+    image_alt: string | null;
+    is_correct: boolean;
+  }[];
+  /** Recorded candidate answers. Server-only count — see `countAnswersPerQuestion`. */
+  answerCount: number;
+};
+
+export type FragmentContext = {
+  stimulus: Omit<AdminStimulus, 'questions'> | null;
+  questions: FragmentQuestion[];
+  exam: { id: number; number: number; level: Level | null; skill: string };
+  /** Every tekstsoort of this (level, skill), in `sort_order` — the colour key list, see below. */
+  sections: { id: number; slug: string; name_nl: string }[];
+};
+
+const FRAGMENT_COLS =
+  'id, exam_id, part_id, skill, sort_order, section_id, kind, intro, title, body_html, ' +
+  'image_url, image_alt, audio_url, audio_seconds, script, voice_cast, review_status, ' +
+  'questions(id, sort_order, prompt, explanation, image_url, prompt_audio_url, option_layout, ' +
+  'review_status, question_options(id, label, sort_order, body, image_urls, image_alt, is_correct))';
+
+/**
+ * Everything the fragment page edits, in one read: the fragment, its questions with their
+ * options, the exam it sits in, and the tekstsoorten it can be filed under.
+ *
+ * The page holds all of this as **one draft** and saves it in one action, so it has to arrive as
+ * one object — a preview that renders unsaved questions cannot be assembled from a fragment here
+ * and a question list fetched somewhere else.
+ *
+ * `sections` is the full list for the (level, skill) in `sort_order`, not just the one this
+ * fragment uses, because `categoryColors()` assigns colours **per list**: passing the same ordered
+ * list the exam builder passes is what makes "gesprek" the same colour on both screens.
+ */
+export async function fetchFragment(stimulusId: number): Promise<FragmentContext | null> {
+  const supabase = await createClient();
+
+  const { data } = await supabase
+    .from('stimuli')
+    .select(`${FRAGMENT_COLS}, exams!inner(id, number, level, skill)`)
+    .eq('id', stimulusId)
+    .maybeSingle();
+  if (!data) return null;
+
+  type Row = Omit<AdminStimulus, 'questions'> & {
+    exams: { id: number; number: number; level: Level | null; skill: string };
+    questions: (Omit<FragmentQuestion, 'options' | 'answerCount'> & {
+      question_options: FragmentQuestion['options'];
+    })[] | null;
+  };
+  const row = data as unknown as Row;
+  const exam = Array.isArray(row.exams) ? row.exams[0] : row.exams;
+
+  const raw = [...(row.questions ?? [])].sort((a, b) => a.sort_order - b.sort_order);
+  const answers = await countAnswersPerQuestion(raw.map(q => q.id));
+
+  const { stimulus, questions } = {
+    stimulus: row,
+    questions: raw.map(q => ({
+      ...q,
+      options: [...(q.question_options ?? [])].sort((a, b) => a.sort_order - b.sort_order),
+      answerCount: answers.get(q.id) ?? 0,
+    })),
+  };
+
+  return {
+    stimulus: stimulus as FragmentContext['stimulus'],
+    questions,
+    exam,
+    sections: await fetchSections(exam.level, exam.skill),
+  };
+}
+
+/** The context a *new* fragment needs: which backlog it lands in, and the tekstsoort options. */
+export async function fetchNewFragmentContext(
+  level: Level,
+  skill: string
+): Promise<FragmentContext | null> {
+  const supabase = await createClient();
+  const { data } = await supabase
+    .from('exams')
+    .select('id, number, level, skill')
+    .eq('level', level)
+    .eq('skill', skill)
+    .eq('number', BACKLOG_EXAM_NUMBER)
+    .maybeSingle();
+  if (!data) return null;
+
+  const exam = data as { id: number; number: number; level: Level | null; skill: string };
+  return {
+    stimulus: null,
+    questions: [],
+    exam,
+    sections: await fetchSections(level, skill),
+  };
+}
+
+async function fetchSections(level: Level | null, skill: string) {
+  const supabase = await createClient();
+  let query = supabase
+    .from('sections')
+    .select('id, slug, name_nl')
+    .eq('topic', skill)
+    .order('sort_order');
+  // A non-levelled onderdeel has NULL sections; `.eq` never matches NULL.
+  query = level === null ? query.is('level', null) : query.eq('level', level);
+  const { data } = await query;
+  return (data ?? []) as { id: number; slug: string; name_nl: string }[];
 }

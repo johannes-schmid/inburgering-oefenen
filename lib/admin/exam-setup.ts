@@ -66,10 +66,27 @@ export type TaskRuleRow = {
   record_seconds: number | null;
 };
 
+/**
+ * The two settings that live on `exams` rather than on `exam_formats`, summarised over the ten
+ * oefenexamens of the onderdeel.
+ *
+ * They are per-exam columns — the player reads them off the exam row — but nobody wants them to
+ * differ between oefenexamen 3 and 4, so the sheet edits them for all ten at once. A value is
+ * `null` here when the ten do **not** agree, which is the only case worth seeing: the field then
+ * shows "verschilt" and only overwrites the ten if the docent types something.
+ */
+export type ExamDefaults = {
+  durationMinutes: number | null;
+  passThresholdPct: number | null;
+  /** How many real exams (number > 0) the save would touch. */
+  examCount: number;
+};
+
 export type ExamSetup = {
   format: FormatRow | null;
   sections: SectionRow[];
   taskRules: TaskRuleRow[];
+  defaults: ExamDefaults;
 };
 
 /**

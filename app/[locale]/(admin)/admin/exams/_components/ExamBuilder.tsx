@@ -12,7 +12,6 @@ import type { AdminStimulus, PublishIssue, StructureRow, TaskSummaryRow } from '
 import type { AssignTarget } from '@/lib/admin/backlog';
 import type { ExamSetup } from '@/lib/admin/exam-setup';
 import { categoryColors, type CategoryColor } from '@/lib/admin/category-colors';
-import ExamSetupSheet from './ExamSetupSheet';
 import {
   formatCount, formatRange, formatRules, formatTaskRules, getFormat, isSkillSlug,
   type Level, type SkillSlug,
@@ -89,7 +88,6 @@ export default function ExamBuilder({
   /** Which item's "verplaats naar" dropdown is open, as `stimuli:12` / `open_tasks:4`. */
   const [moving, setMoving] = useState<string | null>(null);
   const [pulling, setPulling] = useState<number | null>(null);
-  const [setupOpen, setSetupOpen] = useState(false);
 
   const isOpenSkill = exam.skill === 'schrijven' || exam.skill === 'spreken';
   const errors = issues.filter(i => i.severity === 'error');
@@ -282,16 +280,6 @@ export default function ExamBuilder({
 
   return (
     <div className="space-y-6 max-w-4xl">
-      {setup && isSkillSlug(exam.skill) && (
-        <ExamSetupSheet
-          open={setupOpen}
-          level={exam.level}
-          skill={exam.skill}
-          setup={setup}
-          onClose={() => setSetupOpen(false)}
-        />
-      )}
-
       {error && (
         <div className="bg-error/10 border border-error/20 rounded-xl p-3 text-sm text-error">{error}</div>
       )}
@@ -315,14 +303,15 @@ export default function ExamBuilder({
           <div className="flex items-baseline justify-between gap-3 flex-wrap mb-3">
             <div className="flex items-baseline gap-3">
               <h2 className="text-sm font-medium text-on-surface m-0">Opbouw</h2>
-              <button
-                type="button"
-                onClick={() => setSetupOpen(true)}
-                aria-label="Opzet van het onderdeel bewerken"
-                className="inline-flex items-center gap-1 text-xs text-on-surface-variant hover:text-on-surface transition-colors"
+              {/* The onderdeel's setup is edited from the Examens overview, not from here: it is
+                  keyed by (level, skill) and changes all ten exams, so it belongs on the screen
+                  that shows all ten. This is a way back to it, not a second editor. */}
+              <Link
+                href={`/${locale}/admin/exams?niveau=${exam.level}`}
+                className="inline-flex items-center gap-1 text-xs text-on-surface-variant hover:text-on-surface transition-colors no-underline"
               >
                 <Settings2 size={13} aria-hidden /> Opzet
-              </button>
+              </Link>
             </div>
             <p className="text-xs text-on-surface-variant m-0 tabular-nums">
               {viewingBacklog
@@ -449,14 +438,15 @@ export default function ExamBuilder({
           <div className="flex items-baseline justify-between gap-3 flex-wrap mb-3">
             <div className="flex items-baseline gap-3">
               <h2 className="text-sm font-medium text-on-surface m-0">Opbouw</h2>
-              <button
-                type="button"
-                onClick={() => setSetupOpen(true)}
-                aria-label="Opzet van het onderdeel bewerken"
-                className="inline-flex items-center gap-1 text-xs text-on-surface-variant hover:text-on-surface transition-colors"
+              {/* The onderdeel's setup is edited from the Examens overview, not from here: it is
+                  keyed by (level, skill) and changes all ten exams, so it belongs on the screen
+                  that shows all ten. This is a way back to it, not a second editor. */}
+              <Link
+                href={`/${locale}/admin/exams?niveau=${exam.level}`}
+                className="inline-flex items-center gap-1 text-xs text-on-surface-variant hover:text-on-surface transition-colors no-underline"
               >
                 <Settings2 size={13} aria-hidden /> Opzet
-              </button>
+              </Link>
             </div>
             <p className="text-xs text-on-surface-variant m-0 tabular-nums">
               {/* No target on the backlog: it is a holding area, not an exam, so "0 van 10"
@@ -841,7 +831,7 @@ export default function ExamBuilder({
                     />
                     {/* Editing and deleting live in Vragen & opdrachten. */}
                     <Link
-                      href={`/${locale}/admin/questions?niveau=${exam.level}&onderdeel=${exam.skill}&fragment=${s.id}`}
+                      href={`/${locale}/admin/fragmenten/${s.id}`}
                       aria-label="Fragment bewerken in Vragen en opdrachten"
                       title="Bewerken in Vragen & opdrachten"
                       className="text-on-surface-variant hover:text-primary transition-colors p-1"

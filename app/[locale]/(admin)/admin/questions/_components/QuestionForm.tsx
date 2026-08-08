@@ -1,11 +1,18 @@
 'use client';
 
-import { useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { Check, Loader2, Plus, Save, Trash2, X } from 'lucide-react';
 import { createClient } from '@/lib/supabase/client';
 import OptionImagePicker from './OptionImagePicker';
 import MagicFill from '../../../_components/MagicFill';
+import LengthMeter from '../../../_components/LengthMeter';
+import { isLevel } from '@/data/skills';
+import { stripHtml } from '@/lib/admin/length-targets';
+import {
+  OPTION_LABELS, blankQuestion, saveQuestionDraft, validateQuestion,
+  type OptionDraft, type QuestionDraft,
+} from '@/lib/admin/question-write';
 
 /**
  * The question editor, against the post-fork schema.
@@ -20,25 +27,10 @@ import MagicFill from '../../../_components/MagicFill';
  * candidates actually picked.
  */
 
-export type OptionDraft = {
-  id?: number;
-  label: 'A' | 'B' | 'C' | 'D';
-  body: string;
-  image_urls: string[];
-  image_alt: string;
-  is_correct: boolean;
-};
-
-export type QuestionDraft = {
-  id?: number;
-  stimulus_id: number | null;
-  sort_order: number;
-  prompt: string;
-  explanation: string;
-  image_url: string;
-  option_layout: 'text' | 'image' | 'image_grid';
-  options: OptionDraft[];
-};
+// The drafts and the write rules moved to `lib/admin/question-write.ts` when the fragment page
+// became a second thing that saves questions. Re-exported because the page routes import them
+// from here.
+export type { OptionDraft, QuestionDraft };
 
 export type StimulusChoice = {
   id: number;
@@ -51,27 +43,13 @@ export type StimulusChoice = {
   kind: string;
 };
 
-const LABELS = ['A', 'B', 'C', 'D'] as const;
+const LABELS = OPTION_LABELS;
 
 const LAYOUTS: { value: QuestionDraft['option_layout']; label: string; hint: string }[] = [
   { value: 'text', label: 'Tekst', hint: 'Elke optie is een korte tekst.' },
   { value: 'image', label: 'Eén afbeelding', hint: 'Elke optie is één afbeelding.' },
   { value: 'image_grid', label: 'Meerdere afbeeldingen', hint: 'Elke optie is een setje afbeeldingen.' },
 ];
-
-function emptyDraft(): QuestionDraft {
-  return {
-    stimulus_id: null,
-    sort_order: 1,
-    prompt: '',
-    explanation: '',
-    image_url: '',
-    option_layout: 'text',
-    options: LABELS.slice(0, 3).map(label => ({
-      label, body: '', image_urls: [], image_alt: '', is_correct: label === 'A',
-    })),
-  };
-}
 
 export default function QuestionForm({
   initial,
@@ -83,7 +61,7 @@ export default function QuestionForm({
   locale: string;
 }) {
   const router = useRouter();
-  const [form, setForm] = useState<QuestionDraft>(initial ?? emptyDraft());
+  const [form, setForm] = useState<QuestionDraft>(initial ?? blankQuestion(1));
   const [saving, setSaving] = useState(false);
   const [saved, setSaved] = useState(false);
   const [error, setError] = useState('');
@@ -103,6 +81,49 @@ export default function QuestionForm({
 
   /** The fragment currently picked — it decides the level and skill a suggestion is written at. */
   const chosen = stimuli.find(s => s.id === form.stimulus_id) ?? null;
+
+  /**
+   * The text of the picked fragment.
+   *
+   * Fetched on demand rather than shipped with the picker: `fetchStimulusChoices` returns every
+   * fragment in the database, and carrying 400 `body_html` values into the page payload to display
+   * one of them is a large cost for a small panel. The browser client reads it under the same admin
+   * policies the rest of this screen uses.
+   */
+  const [fragment, setFragment] = useState<{
+    id: number; intro: string | null; body_html: string | null; script: string | null;
+  } | null>(null);
+
+  const loadFragment = useCallback(async (id: number | null) => {
+    if (id == null) { setFragment(null); return; }
+    const { data } = await createClient()
+      .from('stimuli')
+      .select('id, intro, body_html, script')
+      .eq('id', id)
+      .maybeSingle();
+    setFragment((data as typeof fragment) ?? null);
+  }, []);
+
+  useEffect(() => {
+    // Synchronising with the database when the selection changes is what effects are for; the
+    // state it sets is the fetched row, after an await, and it cannot loop because the only
+    // dependency is the id itself.
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    void loadFragment(form.stimulus_id);
+  }, [form.stimulus_id, loadFragment]);
+
+  const fragmentText = fragment
+    ? (fragment.script?.trim() || stripHtml(fragment.body_html ?? ''))
+    : '';
+
+  /**
+   * The level the length meters measure against.
+   *
+   * Read off the picked fragment, so before one is chosen there is no meter rather than an A2 one:
+   * a B1 item measured against A2 guidance reads as "wat lang" on every field, which trains the
+   * docent to ignore the meter exactly where it would have been worth something.
+   */
+  const meterLevel = isLevel(chosen?.level) ? chosen.level : null;
 
   /**
    * Drop a suggested question into the form.
@@ -164,82 +185,24 @@ export default function QuestionForm({
     patch({ options: dropped.is_correct ? kept.map(o => ({ ...o, is_correct: o.label === 'A' })) : kept });
   }
 
-  function validate(): string | null {
-    if (!form.stimulus_id) return 'Kies eerst een stimulus — een vraag hangt altijd aan een tekst, afbeelding of fragment.';
-    if (!form.prompt.trim()) return 'De vraag mag niet leeg zijn.';
-    if (!form.explanation.trim()) return 'Vul de uitleg in — die hoort bij het Compleet-pakket.';
-    if (form.options.length < 3) return 'Een vraag heeft minimaal 3 opties.';
-    if (!form.options.some(o => o.is_correct)) return 'Markeer één optie als het juiste antwoord.';
-    for (const o of form.options) {
-      const hasContent = usesImages ? o.image_urls.length > 0 : Boolean(o.body.trim());
-      if (!hasContent) return `Optie ${o.label} heeft nog geen ${usesImages ? 'afbeelding' : 'tekst'}.`;
-    }
-    return null;
-  }
-
   async function handleSave(e: React.FormEvent) {
     e.preventDefault();
-    const problem = validate();
+    const problem = validateQuestion(form);
     if (problem) { setError(problem); return; }
 
     setSaving(true);
     setError('');
-    const supabase = createClient();
 
-    // `exam_id` is deliberately absent: a BEFORE trigger derives it from the stimulus, so
-    // sending it here would just create a second version of the truth.
-    const row = {
-      stimulus_id: form.stimulus_id,
-      sort_order: form.sort_order,
-      prompt: form.prompt.trim(),
-      explanation: form.explanation.trim(),
-      image_url: form.image_url.trim() || null,
-      option_layout: form.option_layout,
-    };
-
-    let questionId = form.id;
-    if (isNew) {
-      const { data, error: err } = await supabase.from('questions').insert(row).select('id').single();
-      if (err) { setSaving(false); setError(err.message); return; }
-      questionId = (data as { id: number }).id;
-    } else {
-      const { error: err } = await supabase.from('questions').update(row).eq('id', questionId!);
-      if (err) { setSaving(false); setError(err.message); return; }
+    // Every rule about how these rows are written lives in `saveQuestionDraft` — reconciliation
+    // by label, the false-first upsert, and never sending `exam_id`. See the note at the top of
+    // that module for why each one matters.
+    try {
+      await saveQuestionDraft(createClient(), form);
+    } catch (err) {
+      setSaving(false);
+      setError(err instanceof Error ? err.message : 'Opslaan is niet gelukt.');
+      return;
     }
-
-    const optionRows = form.options.map((o, i) => ({
-      question_id: questionId!,
-      label: o.label,
-      sort_order: i + 1,
-      body: usesImages ? (o.body.trim() || null) : o.body.trim(),
-      image_urls: usesImages ? o.image_urls : [],
-      image_alt: o.image_alt.trim() || null,
-      // Written false for every row first: `question_options_one_correct_idx` is a unique
-      // partial index, so upserting the new correct option while the old one is still true
-      // trips a duplicate-key error.
-      is_correct: false,
-    }));
-
-    const { error: optErr } = await supabase
-      .from('question_options')
-      .upsert(optionRows, { onConflict: 'question_id,label' });
-    if (optErr) { setSaving(false); setError(optErr.message); return; }
-
-    const keptLabels = form.options.map(o => o.label);
-    const { error: delErr } = await supabase
-      .from('question_options')
-      .delete()
-      .eq('question_id', questionId!)
-      .not('label', 'in', `(${keptLabels.join(',')})`);
-    if (delErr) { setSaving(false); setError(delErr.message); return; }
-
-    const correctLabel = form.options.find(o => o.is_correct)!.label;
-    const { error: corErr } = await supabase
-      .from('question_options')
-      .update({ is_correct: true })
-      .eq('question_id', questionId!)
-      .eq('label', correctLabel);
-    if (corErr) { setSaving(false); setError(corErr.message); return; }
 
     setSaving(false);
     setSaved(true);
@@ -293,6 +256,23 @@ export default function QuestionForm({
         </Field>
       </div>
 
+      {/* The fragment's own words, so "does this vraag have one defensible answer?" is answerable
+          without opening a second screen. Read-only: this editor owns the question, and a second
+          place to edit the fragment is a second place to break `stimuli_payload_matches_kind`. */}
+      {(fragmentText || fragment?.intro) && (
+        <section className="rounded-xl border border-outline-variant bg-surface-container-low p-3">
+          <p className="m-0 mb-1.5 text-xs font-bold uppercase tracking-widest text-on-surface-variant">
+            Het fragment
+          </p>
+          {fragment?.intro && (
+            <p className="m-0 mb-1.5 text-xs italic text-on-surface-variant">{fragment.intro}</p>
+          )}
+          <p className="m-0 max-h-56 overflow-y-auto whitespace-pre-wrap text-sm leading-relaxed text-on-surface">
+            {fragmentText}
+          </p>
+        </section>
+      )}
+
       {/* Below the picker, not above it: the suggestion is written *for* a fragment, so the
           fragment is the first decision. Disabled until one is chosen, with the reason said out
           loud — the route rejects it anyway, and a button that 400s teaches nothing. */}
@@ -327,6 +307,9 @@ export default function QuestionForm({
           rows={3}
           className="field resize-none"
         />
+        {meterLevel && (
+          <LengthMeter text={form.prompt} level={meterLevel} field="prompt" skill={chosen?.skill} />
+        )}
       </Field>
 
       <Field label="Soort opties">
@@ -402,6 +385,11 @@ export default function QuestionForm({
                 className="field flex-1"
               />
             </div>
+            {/* Text options only: on an image question the body is an optional caption, and a
+                guideline about its length would be advice about the wrong thing. */}
+            {meterLevel && !usesImages && (
+              <LengthMeter text={o.body} level={meterLevel} field="option" skill={chosen?.skill} />
+            )}
 
             {usesImages && (
               <div className="pl-[52px] space-y-2">
@@ -434,6 +422,15 @@ export default function QuestionForm({
           rows={3}
           className="field resize-none"
         />
+        {meterLevel && (
+          <LengthMeter
+            text={form.explanation}
+            level={meterLevel}
+            field="explanation"
+            skill={chosen?.skill}
+            showSentences
+          />
+        )}
       </Field>
 
       <Field label="Afbeelding bij de vraag zelf (optioneel)" hint="Niet de stimulus — een plaatje dat bij deze ene vraag hoort.">

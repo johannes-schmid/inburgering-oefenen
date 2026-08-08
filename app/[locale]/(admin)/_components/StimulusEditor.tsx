@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useCallback, useState } from 'react';
 import { AudioLines, Check, Loader2, X } from 'lucide-react';
 import { createClient } from '@/lib/supabase/client';
 import type { AdminStimulus } from '@/lib/admin/stimuli';
@@ -8,6 +8,8 @@ import { VOICES, type VoiceKey } from '@/lib/tts-voices';
 import { speakersInScript } from '@/lib/tts-dialogue';
 import { formatRange, formatRules, isSkillSlug, type Level } from '@/data/skills';
 import MagicFill from './MagicFill';
+import LengthMeter from './LengthMeter';
+import { stripHtml } from '@/lib/admin/length-targets';
 import RichTextEditor from './RichTextEditor';
 
 /**
@@ -81,6 +83,46 @@ export function toStimulusDraft(s: Omit<AdminStimulus, 'questions'>): Draft {
   };
 }
 
+/**
+ * The `stimuli` row a draft becomes. Exported because the fragment page writes the fragment and
+ * its questions in one save of its own, and a second copy of this mapping is a second place for
+ * `audio_seconds` to end up on a text stimulus.
+ */
+export function toStimulusRow(d: Draft, examId: number, skill: string) {
+  return {
+    exam_id: examId,
+    skill,
+    sort_order: d.sort_order,
+    section_id: d.section_id,
+    kind: d.kind,
+    intro: d.intro.trim() || null,
+    title: d.title.trim() || null,
+    body_html: d.kind === 'text' ? d.body_html : (d.body_html.trim() || null),
+    image_url: d.image_url.trim() || null,
+    image_alt: d.image_alt.trim() || null,
+    audio_url: d.audio_url.trim() || null,
+    // Only meaningful on an audio stimulus; a leftover value on a text one would be checked
+    // against the audio-length rule and reported as wrong.
+    audio_seconds:
+      d.kind === 'audio' && d.audio_seconds.trim() && Number.isFinite(Number(d.audio_seconds))
+        ? Number(d.audio_seconds)
+        : null,
+    script: d.script.trim() || null,
+    voice_cast: Object.keys(d.voice_cast).length ? d.voice_cast : null,
+    review_status: d.review_status,
+  };
+}
+
+/** Mirrors the `stimuli_payload_matches_kind` CHECK, in a sentence rather than a constraint name. */
+export function missingPayload(d: Draft): string | null {
+  if (d.kind === 'text' && !d.body_html.trim()) return 'Een tekststimulus heeft een tekst nodig.';
+  if (d.kind === 'image' && !d.image_url.trim()) return 'Een afbeeldingsstimulus heeft een afbeelding-URL nodig.';
+  if (d.kind === 'audio' && !d.audio_url.trim()) return 'Genereer eerst de audio (of plak een URL) voordat je opslaat.';
+  return null;
+}
+
+export type { Draft as StimulusDraft };
+
 export default function StimulusEditor({
   examId,
   level,
@@ -90,6 +132,9 @@ export default function StimulusEditor({
   onClose,
   onSaved,
   embedded = false,
+  value,
+  onChange,
+  showSave = true,
 }: {
   /** Where a new fragment lands. In the questions view this is the backlog. */
   examId: number;
@@ -101,9 +146,31 @@ export default function StimulusEditor({
   onSaved: () => void;
   /** Inside a drawer that already draws its own header and frame. */
   embedded?: boolean;
+  /**
+   * Controlled mode: the parent owns the draft and saves it itself.
+   *
+   * The fragment page needs this — its preview renders from the same draft these fields edit, and
+   * it writes the fragment and its questions in one action, so the draft cannot live in here. With
+   * `value` omitted the component keeps its own state and its own save button, which is how it has
+   * always worked.
+   */
+  value?: Draft;
+  onChange?: (next: Draft) => void;
+  showSave?: boolean;
 }) {
   const supabase = createClient();
-  const [editing, setEditing] = useState<Draft>(initial);
+  const [internal, setInternal] = useState<Draft>(initial);
+  const controlled = value !== undefined;
+  const editing = value ?? internal;
+  // Accepts both call shapes the fields below already use — `setEditing({...editing, x})` and the
+  // updater form — so switching to controlled mode changed no call site.
+  const setEditing = useCallback(
+    (next: Draft | ((prev: Draft) => Draft)) => {
+      if (onChange) onChange(typeof next === 'function' ? next(value ?? internal) : next);
+      else setInternal(next);
+    },
+    [onChange, value, internal]
+  );
   const [busy, setBusy] = useState(false);
   const [genBusy, setGenBusy] = useState(false);
   const [genNote, setGenNote] = useState('');
@@ -184,50 +251,14 @@ export default function StimulusEditor({
   }
 
   async function save() {
-    const d = editing;
-
-    // Mirrors the `stimuli_payload_matches_kind` CHECK so the docent gets a sentence rather
-    // than a Postgres constraint name.
-    const missing =
-      d.kind === 'text' ? !d.body_html.trim()
-      : d.kind === 'image' ? !d.image_url.trim()
-      : !d.audio_url.trim();
-    if (missing) {
-      setError(
-        d.kind === 'text' ? 'Een tekststimulus heeft een tekst nodig.'
-        : d.kind === 'image' ? 'Een afbeeldingsstimulus heeft een afbeelding-URL nodig.'
-        : 'Genereer eerst de audio (of plak een URL) voordat je opslaat.'
-      );
-      return;
-    }
+    const problem = missingPayload(editing);
+    if (problem) { setError(problem); return; }
 
     setBusy(true);
     setError('');
-    const row = {
-      exam_id: examId,
-      skill,
-      sort_order: d.sort_order,
-      section_id: d.section_id,
-      kind: d.kind,
-      intro: d.intro.trim() || null,
-      title: d.title.trim() || null,
-      body_html: d.kind === 'text' ? d.body_html : (d.body_html.trim() || null),
-      image_url: d.image_url.trim() || null,
-      image_alt: d.image_alt.trim() || null,
-      audio_url: d.audio_url.trim() || null,
-      // Only meaningful on an audio stimulus; a leftover value on a text one would be checked
-      // against the audio-length rule and reported as wrong.
-      audio_seconds:
-        d.kind === 'audio' && d.audio_seconds.trim() && Number.isFinite(Number(d.audio_seconds))
-          ? Number(d.audio_seconds)
-          : null,
-      script: d.script.trim() || null,
-      voice_cast: Object.keys(d.voice_cast).length ? d.voice_cast : null,
-      review_status: d.review_status,
-    };
-
-    const { error: err } = d.id
-      ? await supabase.from('stimuli').update(row).eq('id', d.id)
+    const row = toStimulusRow(editing, examId, skill);
+    const { error: err } = editing.id
+      ? await supabase.from('stimuli').update(row).eq('id', editing.id)
       : await supabase.from('stimuli').insert(row);
 
     setBusy(false);
@@ -339,6 +370,15 @@ export default function StimulusEditor({
               onChange={html => setEditing(prev => ({ ...prev, body_html: html }))}
               minHeight={220}
             />
+            {/* Measured on the stripped text: a word count that counts `<p>` is one the docent
+                cannot act on. */}
+            <LengthMeter
+              text={stripHtml(editing.body_html)}
+              level={level}
+              field="stimulus_text"
+              skill={skill}
+              showSentences
+            />
           </Field>
         )}
 
@@ -376,6 +416,10 @@ export default function StimulusEditor({
               placeholder={'A: Goedemorgen, kan ik u helpen?\nB: Ja, ik zoek de afdeling burgerzaken.'}
               className="field resize-y font-mono text-xs"
             />
+            {/* Seconds *before* generating, so a fragment that is going to come back at 20 seconds
+                against a 40–50 band can be lengthened without spending a generation first. The
+                real length is read off the file afterwards — see `lib/mp3-duration.ts`. */}
+            <LengthMeter text={editing.script} level={level} field="script" skill={skill} />
           </Field>
 
           {/* Casting is authored per speaker. The generator refuses an uncast speaker rather
@@ -458,8 +502,9 @@ export default function StimulusEditor({
         </Field>
       </Group>
 
-      {/* Closes the fragment form. Deliberately not sticky: the drawer continues below with the
-          fragment's questions, and a bar floating over those reads as if it saved them too. */}
+      {/* Hidden in controlled mode: the fragment page saves the fragment and its questions
+          together, and a second button that saves only half of that is a trap. */}
+      {showSave && !controlled && (
       <div className="border-t border-outline-variant pt-4">
         <button
           type="button"
@@ -471,6 +516,7 @@ export default function StimulusEditor({
           Fragment opslaan
         </button>
       </div>
+      )}
 
       <style>{`
         .field {
