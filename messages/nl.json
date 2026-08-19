@@ -20,6 +20,12 @@
     "langLabel": "Taal",
     "oefenexamens": "Oefenexamens"
   },
+  "breadcrumbs": {
+    "home": "Home",
+    "premium": "Modules",
+    "oefenen": "Gratis oefenen",
+    "oefenexamen": "Oefenexamens"
+  },
   "footer": {
     "copyright": "© 2026 Inburgering Oefenen",
     "byTeacher": "Opgaven gemaakt door een gecertificeerde NT2-docent",
@@ -39,15 +45,15 @@
     "meta_description": "Gebruiksvoorwaarden van Inburgering Oefenen — de voorwaarden voor het gebruik van ons platform.",
     "eyebrow": "Juridisch",
     "heading": "Gebruiksvoorwaarden",
-    "last_updated": "Laatste update: 17 maart 2026"
+    "last_updated": "Laatste update: 19 augustus 2026"
   },
   "contact": {
     "meta_title": "Contact — Inburgering Oefenen",
     "meta_description": "Neem contact op met Inburgering Oefenen. Heb je een vraag over het examen, een technisch probleem of een vraag over het premium pakket? Wij helpen je graag."
   },
   "docent": {
-    "meta_title": "Marieke Schipper — Gecertificeerde KNM-docent & NT2-specialist | Inburgering Oefenen",
-    "meta_description": "Leer Marieke Schipper kennen: gecertificeerde NT2-docent met 10+ jaar ervaring in KNM-examenvoorbereiding. Bekijk haar achtergrond, certificeringen en aanpak."
+    "meta_title": "Marieke Schipper — gecertificeerde NT2-docent | Inburgering Oefenen",
+    "meta_description": "Leer Marieke Schipper kennen: gecertificeerde NT2-docent met 10+ jaar ervaring in de voorbereiding op het inburgeringsexamen A2. Haar achtergrond en aanpak."
   },
   "premium": {
     "meta_title": "Modules — oefen het inburgeringsexamen A2 vanaf €9,95 per maand",
@@ -58,7 +64,7 @@
     "meta_description": "Privacybeleid van Inburgering Oefenen — hoe wij omgaan met jouw persoonsgegevens.",
     "eyebrow": "Juridisch",
     "heading": "Privacybeleid",
-    "last_updated": "Laatste update: 17 maart 2026"
+    "last_updated": "Laatste update: 19 augustus 2026"
   },
   "blog": {
     "meta_title": "Blog over het inburgeringsexamen A2 | Inburgering Oefenen",
@@ -180,49 +186,6 @@
     "faq_q6": "Worden de opgaven door AI gemaakt?",
     "faq_a6": "Nee. Elke opgave is geschreven of gecontroleerd door een gecertificeerde NT2-docent voordat die live gaat. Bij Schrijven en Spreken helpt een model bij het toepassen van de rubric, maar de rubric, de voorbeeldantwoorden en de controle komen van de docent."
   },
-  "proefexamen": {
-    "meta_title": "KNM Proefexamen 2026 — Gratis oefenexamen met 45 vragen en timer | Inburgering Oefenen",
-    "meta_description": "Doe het gratis KNM oefenexamen: 45 meerkeuzevragen, 40 minuten timer, direct resultaat en uitleg. Samengesteld door een gecertificeerde NT2-docent.",
-    "badge": "40 vragen · 45 minuten · Officieel formaat",
-    "badge_num_pre": "Proefexamen",
-    "badge_num_post": "40 vragen · 45 minuten",
-    "heading": "KNM Oefenexamen — Gratis proefexamen met 40 vragen",
-    "description": "Simuleer het echte KNM-examen. Alle 40 vragen, dezelfde tijdslimiet van 45 minuten, en direct je score met uitleg per vraag.",
-    "breadcrumb": "KNM Proefexamen",
-    "breadcrumb_num_pre": "Proefexamen",
-    "intro_heading": "Klaar om te beginnen?",
-    "intro_desc": "Dit proefexamen is zo dicht mogelijk bij het echte KNM-examen. Gebruik het om jezelf te testen voordat je het officiële examen doet bij DUO.",
-    "start_btn": "Start proefexamen",
-    "practice_topics": "Oefen per onderwerp eerst",
-    "stat_questions": "Vragen",
-    "stat_minutes": "Minuten",
-    "stat_passing": "Slagingsgrens",
-    "topics_label": "Dit proefexamen dekt alle 7 officiële thema's",
-    "topic_work": "Werk en Inkomen",
-    "topic_housing": "Wonen",
-    "topic_health": "Gezondheid en Gezondheidszorg",
-    "topic_education": "Onderwijs en Opvoeding",
-    "topic_institutions": "Instanties",
-    "topic_government": "Staatsinrichting en Rechtsstaat",
-    "topic_history": "Geschiedenis en Geografie",
-    "teacher_title": "NT2-docent & KNM-specialist — vragen persoonlijk geselecteerd",
-    "back_btn": "Terug",
-    "pass_label": "Uitslag",
-    "fail_label": "Uitslag",
-    "pass_sub": "Gefeliciteerd — je bent geslaagd!",
-    "fail_sub": "Nog niet geslaagd — blijf oefenen!",
-    "score_text": "vragen goed",
-    "score_label": "score",
-    "lees_voor": "Lees voor",
-    "stop_audio": "Stop",
-    "audio_check_heading": "Test je geluid",
-    "audio_check_desc": "Elke vraag kan worden voorgelezen — zet je geluid aan.",
-    "audio_play_sample": "Speel af",
-    "audio_on": "Audio aan",
-    "audio_off": "Audio uit",
-    "sections_heading": "Vragen per onderwerp",
-    "feedback_tag": "Directe feedback"
-  },
   "oefenen": {
     "meta_title": "Gratis oefenen — 10 oefenvragen inburgering A2 | Inburgering Oefenen",
     "meta_description": "Oefen gratis voor het inburgeringsexamen A2. Lezen en Luisteren met 10 vragen en directe uitleg, Schrijven en Spreken met feedback van de docent.",
@@ -294,7 +257,9 @@
     "other_skill": "Ander onderdeel oefenen",
     "pick_account_badge": "Gratis met account",
     "pick_account_note": "Oefenexamen 1 · 2 opdrachten gratis nagekeken met de criteria van de docent",
-    "pick_account_cta": "Maak een gratis account"
+    "pick_account_cta": "Maak een gratis account",
+    "schema_quiz_name": "Gratis oefenvragen {skill} — inburgeringsexamen A2",
+    "schema_quiz_description": "Tien gratis oefenvragen {skill} in het formaat van het inburgeringsexamen A2, met na elke vraag uitleg van een gecertificeerde NT2-docent."
   },
   "activate": {
     "back": "Terug naar dashboard",
@@ -412,7 +377,11 @@
     "module_feedback": "Feedback per criterium op je antwoord",
     "feature4_title": "Feedback op Schrijven en Spreken",
     "feature4_desc": "Je e-mail of opname krijgt per criterium een score met uitleg, volgens de beoordelingsrubric van de docent — met het voorbeeldantwoord ernaast.",
-    "cell_partial": "jouw onderdeel"
+    "cell_partial": "jouw onderdeel",
+    "schema_product_name": "Oefenmodules inburgeringsexamen A2",
+    "schema_product_description": "Maandabonnement per onderdeel van het inburgeringsexamen A2: tien oefenexamens in DUO-formaat, samengesteld door een gecertificeerde NT2-docent. Eén onderdeel of alle vier.",
+    "schema_offer_module": "Module {skill} A2 — per maand",
+    "schema_offer_bundle": "Alle vier de onderdelen A2 — per maand"
   },
   "dashboard": {
     "sidebar_subtitle": "Studieportaal",
@@ -427,7 +396,7 @@
     "loading": "Laden…",
     "readiness_title": "Examengereedheid",
     "readiness_label": "gereed",
-    "readiness_excellent": "Uitstekend! Je bent goed voorbereid voor het KNM-examen.",
+    "readiness_excellent": "Uitstekend! Je bent goed voorbereid voor het inburgeringsexamen.",
     "readiness_improve": "Maak meer proefexamens om je gereedheid te verhogen naar 85%.",
     "readiness_start": "Begin met Proefexamen 1 — gratis en direct beschikbaar.",
     "slaagkans_label": "Slaagkans",
@@ -466,7 +435,7 @@
     "weakness_more_desktop": "+{count} meer in analyse",
     "cta_review_mistakes": "Herhaal mijn fouten",
     "cta_weakness_overview": "Zwakte-overzicht",
-    "analyse_subtitle": "Jouw persoonlijke KNM-analyse",
+    "analyse_subtitle": "Jouw persoonlijke analyse",
     "analyse_fix_all": "Herhaal al mijn fouten ({count})",
     "analyse_whatswrong": "Wat ging er mis",
     "analyse_steps_title": "Jouw stappen",
@@ -545,7 +514,7 @@
     "exam_duration": "{questions} vragen · 45 minuten",
     "btn_start_exam": "Start examen",
     "topics_title": "Onderwerpen",
-    "topics_count": "7 KNM-GEBIEDEN",
+    "topics_count": "7 THEMA’S",
     "topic_mastered": "Beheerst",
     "topic_review": "Herhalen",
     "topic_new": "Nieuw",
@@ -556,7 +525,7 @@
     "btn_back_to_dashboard": "Terug naar dashboard",
     "btn_back": "← Terug",
     "quiz_header_practice": "Oefenen per onderwerp",
-    "quiz_header_exam": "KNM Proefexamen",
+    "quiz_header_exam": "Oefenexamen",
     "quiz_score_label": "Score",
     "quiz_question_of": "Vraag {current} van {total}",
     "quiz_pct_done": "{pct}% voltooid",
@@ -567,7 +536,7 @@
     "quiz_incorrect": "✗ Niet correct.",
     "quiz_correct_answer": "Het juiste antwoord is",
     "leren_title": "Leermodules",
-    "leren_desc": "Alle leerstof voor het KNM-examen, georganiseerd in 7 thema's. Lees, begrijp en test jezelf — per onderwerp.",
+    "leren_desc": "Alle leerstof voor het inburgeringsexamen, georganiseerd in thema’s. Lees, begrijp en test jezelf — per onderwerp.",
     "leren_theme_label": "Thema {id}",
     "leren_locked_badge": "Compleet pakket",
     "leren_locked_text": "Ontgrendel met Compleet pakket",
@@ -589,7 +558,7 @@
     "upgrade_badge_free": "Wil je alles ontgrendelen?",
     "upgrade_title_premium": "Compleet Pakket",
     "upgrade_title_free": "Professioneel Pakket",
-    "upgrade_desc_premium": "Ontgrendel alle 7 leermodules — leer elk onderwerp voor het KNM-examen.",
+    "upgrade_desc_premium": "Ontgrendel alle leermodules — leer elk onderwerp voor het inburgeringsexamen.",
     "upgrade_desc_free": "450+ gevalideerde vragen, 10 proefexamens, 366 woordkaarten en directe feedback.",
     "btn_upgrade": "Upgrade naar Compleet →",
     "btn_buy": "Koop het pakket",
@@ -602,7 +571,7 @@
     "wk_lang_detected": "Automatisch gedetecteerd: {lang}. Klik om te wijzigen.",
     "account_title": "Account",
     "wk_title": "Woordkaarten",
-    "wk_desc": "Leer de KNM-woordenschat met flashcards — bekijk de vertaling door op de kaart te tikken.",
+    "wk_desc": "Leer de woordenschat met flashcards — bekijk de vertaling door op de kaart te tikken.",
     "wk_progress": "Totale voortgang",
     "wk_progress_stats": "{known} van {total} woorden gekend",
     "wk_locked_badge": "Professioneel Pakket",

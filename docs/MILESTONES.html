@@ -1,0 +1,326 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Milestones — Van A2-oefensite naar inburgeringsplatform</title>
+<style>
+  :root {
+    --primary: #002b6d;
+    --primary-soft: #eaf0fa;
+    --accent: #fe762c;
+    --accent-text: #a24000;
+    --accent-tint: #fcecdd;
+    --ink: #1a2233;
+    --muted: #5b6577;
+    --line: #e3e8f0;
+    --bg: #f7f9fc;
+    --card: #ffffff;
+    --good: #1a7f4e;
+    --good-tint: #e6f4ec;
+    --shadow: 0 1px 2px rgba(0,43,109,.06), 0 8px 24px rgba(0,43,109,.08);
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: "Public Sans", -apple-system, "Segoe UI", Helvetica, Arial, sans-serif;
+    background: var(--bg);
+    color: var(--ink);
+    line-height: 1.7;
+    font-size: 16px;
+  }
+  h1, h2, h3, h4 { font-family: "Manrope", -apple-system, "Segoe UI", Helvetica, Arial, sans-serif; letter-spacing: -0.03em; line-height: 1.2; color: var(--primary); }
+  .wrap { max-width: 980px; margin: 0 auto; padding: 0 24px 96px; }
+
+  header.hero {
+    background: linear-gradient(135deg, #002b6d 0%, #0a3d8f 60%, #114aa5 100%);
+    color: #fff; padding: 64px 24px 56px; margin-bottom: 48px;
+  }
+  header.hero .wrap { padding-bottom: 0; }
+  .kicker {
+    display: inline-block; background: rgba(255,255,255,.12); border: 1px solid rgba(255,255,255,.25);
+    border-radius: 999px; padding: 4px 14px; font-size: 13px; font-weight: 600; letter-spacing: .04em;
+    text-transform: uppercase; margin-bottom: 20px;
+  }
+  header.hero h1 { color: #fff; font-size: clamp(30px, 4.5vw, 44px); margin-bottom: 14px; }
+  header.hero p.sub { color: #c9d7ef; font-size: 18px; max-width: 46em; }
+  header.hero .meta { margin-top: 20px; font-size: 13px; color: #9db4dc; }
+
+  section { margin-bottom: 56px; }
+  h2 { font-size: 26px; margin-bottom: 6px; padding-top: 8px; }
+  .h2sub { color: var(--muted); margin-bottom: 22px; font-size: 15px; }
+  h3 { font-size: 18px; margin: 26px 0 10px; }
+  p + p { margin-top: 12px; }
+  strong { color: var(--primary); }
+
+  .card {
+    background: var(--card); border: 1px solid var(--line); border-radius: 14px;
+    padding: 24px 26px; box-shadow: var(--shadow); margin-bottom: 18px;
+  }
+  .grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
+  @media (max-width: 720px) { .grid2 { grid-template-columns: 1fr; } }
+
+  .stat-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 14px; margin: 18px 0 6px; }
+  .stat { background: var(--primary-soft); border-radius: 12px; padding: 16px 18px; }
+  .stat .n { font-family: "Manrope", sans-serif; font-weight: 800; font-size: 26px; color: var(--primary); letter-spacing: -0.02em; }
+  .stat .l { font-size: 13px; color: var(--muted); margin-top: 2px; }
+
+  .tablebox { overflow-x: auto; }
+  table { border-collapse: collapse; width: 100%; font-size: 14.5px; background: var(--card); border-radius: 12px; overflow: hidden; box-shadow: var(--shadow); }
+  th { background: var(--primary); color: #fff; text-align: left; padding: 11px 14px; font-family: "Manrope", sans-serif; font-size: 13.5px; letter-spacing: .01em; }
+  td { padding: 11px 14px; border-top: 1px solid var(--line); vertical-align: top; }
+  tr:nth-child(even) td { background: #fafbfe; }
+
+  .pill { display: inline-block; border-radius: 999px; padding: 1px 10px; font-size: 12px; font-weight: 700; letter-spacing: .03em; }
+  .pill.tofu { background: #e3ecfb; color: #1d4fa1; }
+  .pill.mofu { background: #fdf3d7; color: #8a6400; }
+  .pill.bofu { background: var(--good-tint); color: var(--good); }
+
+  .ms { background: var(--card); border: 1px solid var(--line); border-left: 5px solid var(--accent); border-radius: 14px; padding: 26px 28px; box-shadow: var(--shadow); margin-bottom: 22px; }
+  .ms .mshead { display: flex; flex-wrap: wrap; align-items: baseline; gap: 10px 14px; margin-bottom: 4px; }
+  .ms h3 { margin: 0; font-size: 20px; }
+  .ms .when { font-size: 13px; font-weight: 700; color: var(--accent-text); background: var(--accent-tint); border-radius: 999px; padding: 2px 12px; }
+  .ms .goal { color: var(--muted); font-size: 15px; margin-bottom: 14px; }
+  .ms ul { margin: 8px 0 8px 20px; }
+  .ms li { margin-bottom: 6px; }
+  .ms .dod { margin-top: 14px; padding: 12px 16px; background: var(--good-tint); border-radius: 10px; font-size: 14.5px; }
+  .ms .dod b { color: var(--good); }
+  .ms .kpi { margin-top: 8px; padding: 12px 16px; background: var(--primary-soft); border-radius: 10px; font-size: 14.5px; }
+  .ms .kpi b { color: var(--primary); }
+  .ms.done { border-left-color: var(--good); }
+  .ms .status { font-size: 13px; font-weight: 700; color: var(--good); background: var(--good-tint); border-radius: 999px; padding: 2px 12px; }
+
+  .guard { border-left: 5px solid var(--accent); background: var(--accent-tint); border-radius: 10px; padding: 16px 20px; margin-bottom: 12px; }
+  .guard b { color: var(--accent-text); }
+
+  ol.rank { margin-left: 22px; }
+  ol.rank li { margin-bottom: 10px; }
+
+  .src { font-size: 12.5px; color: var(--muted); }
+  a { color: var(--primary); }
+  .footnote { font-size: 13px; color: var(--muted); border-top: 1px solid var(--line); padding-top: 18px; margin-top: 40px; }
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="wrap">
+    <div class="kicker">Milestone-plan · 19 augustus 2026</div>
+    <h1>Van A2-oefensite naar het complete inburgeringsplatform</h1>
+    <p class="sub">Implementatieplan voor het strategisch content- &amp; structuuradvies: TOFU/MOFU-uitbreiding, pillar-cluster architectuur, KNM-consolidatie en kanaalopbouw — zonder de bestaande A2-conversie en de docent-USP te breken.</p>
+    <div class="meta">Bronnen: "Strategisch Contentadvies &amp; Sitestructuur" (18 slides) · site-audit inburgeringoefenen.nl · marktonderzoek CBS/Divosa/DUO · concurrentieanalyse</div>
+  </div>
+</header>
+
+<div class="wrap">
+
+<section>
+  <h2>1. Waarom deze shift</h2>
+  <p class="h2sub">Het advies in één alinea, getoetst aan de huidige site.</p>
+  <div class="card">
+    <p>De site vangt vandaag alleen bezoekers die <em>al</em> op zoek zijn naar een oefenexamen (BOFU). Het advies: word de autoriteit voor de hele inburgering, want <strong>80% van de zoekopdrachten rond inburgering is informatief</strong> (oriëntatiefase) en dat volume is enorm terwijl de concurrentie laag is. Gratis kennisgidsen leiden via conversieblokken naar het gratis proefexamen en daarna naar de betaalde modules.</p>
+    <div class="stat-row">
+      <div class="stat"><div class="n">283.770</div><div class="l">zoekopdrachten/maand, 579 keywords rond "inburgering"</div></div>
+      <div class="stat"><div class="n">+35%</div><div class="l">groei zoekvolume in 24 maanden</div></div>
+      <div class="stat"><div class="n">Laag</div><div class="l">gemiddelde concurrentie (10/100)</div></div>
+      <div class="stat"><div class="n">80%</div><div class="l">van de zoekvraag is informatief (TOFU/MOFU)</div></div>
+    </div>
+    <p class="src">Cijfers uit het slidedeck (keyword-tool, NL). Topkeywords: mijn inburgering 135k · inburgering 40,5k · duo inburgering 12,1k · inburgering examen 2,4k (+230%).</p>
+  </div>
+  <div class="grid2">
+    <div class="card">
+      <h3 style="margin-top:0">Huidige positionering</h3>
+      <p>H1: "Inburgeringsexamen A2 oefenen — gratis oefenexamens". Menu: Oefenexamens · Modules · Over de docent · Blog. Geen KNM, MAP, PVT of oriëntatiecontent in de propositie. Alles wat de site zegt is BOFU.</p>
+    </div>
+    <div class="card">
+      <h3 style="margin-top:0">Wat er al klaarstaat</h3>
+      <p>De infrastructuur voor de shift bestaat grotendeels al: blog (5 posts live), oefenvragen-quizpagina's, lessen en woordkaarten (feature-flags uit), en een databasemodel waarin KNM als vijfde onderdeel <em>zonder migratie</em> toevoegbaar is. Het KNM-materiaal (450+ gevalideerde vragen) staat in het zusterproject knmoefenen.nl.</p>
+    </div>
+  </div>
+</section>
+
+<section>
+  <h2>2. Markt &amp; doelgroep</h2>
+  <p class="h2sub">Wie zoekt er, en wie betaalt er echt zelf.</p>
+  <div class="card">
+    <div class="stat-row">
+      <div class="stat"><div class="n">± 30–37k</div><div class="l">nieuwe inburgeringsplichtigen per jaar (CBS SWI 2024)</div></div>
+      <div class="stat"><div class="n">± 10–12k</div><div class="l">gezinsmigranten/jaar — betalen zélf (of DUO-lening tot €10.000)</div></div>
+      <div class="stat"><div class="n">€50</div><div class="l">examenkosten per onderdeel bij DUO (± €250 totaal)</div></div>
+      <div class="stat"><div class="n">57,8%</div><div class="l">statushouders in de B1-route; velen schalen af naar A2</div></div>
+    </div>
+    <p><strong>De betalende zelfstudieklant is primair de gezinsmigrant</strong> (partner van een NL-ingezetene, vaak Engels/Arabisch/Turks-sprekend, self-funded). Statushouders krijgen hun cursus via de gemeente en twee gratis examenpogingen — zij zijn een groot gratis-content- en YouTube-publiek (merkopbouw) en later een B2B-kans via taalscholen en gemeenten, geen directe koper.</p>
+    <p>Prijsanker voor alle copy: <strong>"één maand oefenen kost minder dan één herkansing"</strong> (€9,95 vs €50).</p>
+    <p class="src">Bronnen: CBS Statistiek Wet inburgering 2024 (97.745 plichtigen over cohorten 2022–2024) · Divosa benchmark statushouders 2024 (leerroutes) · inburgeren.nl (DUO-lening, examenkosten). Afschaal-percentage B1-naar-A2 is niet exact gepubliceerd.</p>
+  </div>
+
+  <h3>Concurrentieveld</h3>
+  <div class="tablebox">
+  <table>
+    <tr><th>Speler</th><th>Aanbod</th><th>Prijs</th><th>Zwakte</th></tr>
+    <tr><td><strong>inburgeren.nl</strong> (DUO)</td><td>Gratis oefenexamens, alle onderdelen</td><td>Gratis</td><td>Kleine vaste set, geen feedback of voortgang</td></tr>
+    <tr><td><strong>Ad Appel</strong></td><td>Boeken, cursussen, 16k-leden Facebookgroep</td><td>Boek €39, pakketten €96+</td><td>Boek-eerst, gedateerde web-UX; oefenexamens zijn leadmagnet</td></tr>
+    <tr><td><strong>InburgeringOnline</strong></td><td>Zelfstudiecursus A2+B1, video, proefexamens</td><td>€8,95–14,95/mnd</td><td>Cursus-eerst, zwakker in echte DUO-examensimulatie</td></tr>
+    <tr><td><strong>PassInburgering</strong></td><td>71 mock exams incl. KNM, Engels-eerst</td><td>€24,99 eenmalig</td><td>AI-content, geen docent, geen spreek-feedback</td></tr>
+    <tr><td><strong>inburgering.org</strong></td><td>Hub/spoke-bibliotheek + oefenen A1–B2</td><td>Freemium</td><td>Generieke AI-content, dunne trust-signalen — wél de structurele SEO-concurrent</td></tr>
+    <tr><td><strong>NT2TaalMenu</strong></td><td>Grote gratis oefenbibliotheek</td><td>Gratis</td><td>PDF-tijdperk UX, geen tracking — vangt vraag die het niet verzilvert</td></tr>
+    <tr><td><strong>YouTube-kanalen</strong> (Learn Dutch with Kim 150k subs, MarianNT2, NT2 Academy)</td><td>Gratis lessen, KNM-playlists, live examentraining</td><td>Gratis</td><td>Geen platform — zij stúren verkeer naar wie het oefenproduct heeft</td></tr>
+  </table>
+  </div>
+  <div class="card" style="margin-top:18px">
+    <h3 style="margin-top:0">Het gat dat niemand vult</h3>
+    <p><strong>Docent-gevalideerde oefening in DUO-formaat over de héle inburgeringsplicht</strong> (A2 + B1 taal + KNM + MAP/PVT-begeleiding), met voortgang en rubric-feedback op Schrijven en Spreken. Dat is exact de bestaande USP, verbreed. Geen enkele concurrent combineert dit.</p>
+  </div>
+</section>
+
+<section>
+  <h2>3. Doelarchitectuur</h2>
+  <p class="h2sub">Het nieuwe menu uit het advies, gemapt op funnel-fase.</p>
+  <div class="tablebox">
+  <table>
+    <tr><th>Menu-item</th><th>Inhoud</th><th>Fase</th><th>Doel</th></tr>
+    <tr><td><strong>Inburgering</strong></td><td>Stappenplan, Wi2021, A2 vs B1, kosten &amp; DUO, boete &amp; termijn, vrijstelling, Mijn Inburgering uitgelegd, MAP &amp; PVT</td><td><span class="pill tofu">TOFU</span></td><td>Informatiezoekers aantrekken</td></tr>
+    <tr><td><strong>KNM Kennisgidsen</strong></td><td>Pillars van de 8 officiële KNM-thema's (Zorg, Wonen, Werk &amp; Inkomen, …)</td><td><span class="pill mofu">MOFU</span></td><td>Inhoudelijke autoriteit bouwen</td></tr>
+    <tr><td><strong>Taalexamens A2/B1</strong></td><td>Gidsen per onderdeel: Lezen, Luisteren, Schrijven, Spreken</td><td><span class="pill mofu">MOFU</span></td><td>Verbreding naar taalvaardigheid</td></tr>
+    <tr><td><strong>Oefenexamens</strong></td><td>Gratis en betaalde proefexamens (taal &amp; KNM)</td><td><span class="pill bofu">BOFU</span></td><td>Conversie &amp; modulverkoop</td></tr>
+  </table>
+  </div>
+  <div class="card" style="margin-top:18px">
+    <h3 style="margin-top:0">Domeinbesluit (genomen, 19-08-2026)</h3>
+    <p><strong>inburgeringoefenen.nl wordt het ene merk.</strong> KNM wordt een vijfde onderdeel binnen dit platform (content op /knm/, oefenexamens in het bestaande systeem). knmoefenen.nl blijft live tot de KNM-content en -rankings hier staan en 301't daarna gefaseerd — nooit eerder, want dat domein rankt nu goed en is tot die tijd een cross-sell-asset.</p>
+  </div>
+</section>
+
+<section>
+  <h2>4. De milestones</h2>
+  <p class="h2sub">Zeven milestones. Elk levert zelfstandig waarde op; goedkope en omzet-nabije winst eerst. Weken zijn indicatief bij het huidige tempo (solo + docent-review).</p>
+
+  <div class="ms done">
+    <div class="mshead"><h3>M0 — Technisch fundament</h3><div class="when">week 1–2</div><div class="status">Afgerond 19-08-2026</div></div>
+    <p class="goal">Repareren wat nu stilletjes rankings kost, en een meetbare nulmeting neerzetten.</p>
+    <ul>
+      <li>Structured data compleet maken: <strong>Product + Offer schema op /premium</strong> (expliciet voorbeeld uit het advies), schema op /oefenen en de /oefenexamen-overzichten; alles valideren met de schema.org-validator.</li>
+      <li>Sitemap-gaten dichten (/oefenen en /oefenen/[skill] ontbreken).</li>
+      <li>KNM-restanten opruimen die het merk tegenspreken: /proefexamen toont nog "KNM Proefexamen", docent-meta zegt "KNM-docent", oefenvragen-meta is KNM-gekleurd. (Let op: juridische pagina's zijn eigenaarstekst — die herschrijft de docent, geen search-and-replace.)</li>
+      <li>Nulmeting vastleggen: Google Search Console posities + GA4 organisch verkeer per pagina, als baseline voor M5.</li>
+    </ul>
+    <div class="dod"><b>Afgerond:</b> Product+Offer op /premium en schema op /oefenen, /oefenen/[skill] en de /oefenexamen-overzichten (B1 bewust zonder, want noindex); sitemap volledig (56 URL's, alle 200); /proefexamen verwijderd en 301'd; /docent, beide juridische pagina's en zeven portaalteksten herschreven; nulmeting in <code>docs/BASELINE.md</code>.</div>
+    <div class="kpi"><b>KPI:</b> 0 schema-fouten (<code>scripts/check-schema.mjs</code>, 11 routes groen) · baseline-rapport bestaat. <b>Open:</b> het GSC-verificatietoken moet nog in Vercel, daarna §5 van de baseline invullen.</div>
+    <div class="guard" style="margin-top:12px;margin-bottom:0"><b>Onderweg gevonden en gerepareerd:</b> de Arabische contactpagina was onbereikbaar (301 naar een slug die in <code>i18n/routing.ts</code> niet bestond — 404 vanaf elke footerlink én in de sitemap), <code>#organization</code> en <code>#teacher</code> waren op twee pagina's verschillend gedefinieerd, en het privacybeleid ontkende analytische cookies terwijl GA4, Clarity en de Meta-pixel laden.</div>
+  </div>
+
+  <div class="ms">
+    <div class="mshead"><h3>M1 — Architectuur &amp; herpositionering</h3><div class="when">week 2–4 · advies fase 1</div></div>
+    <p class="goal">De site zegt en structureert wat hij wil worden, vóórdat de content er is.</p>
+    <ul>
+      <li>Nieuwe navigatie: Inburgering · KNM Kennisgidsen · Taalexamens A2/B1 · Oefenexamens (+ bestaande Modules/Docent).</li>
+      <li>Gids-routes als eersteklas pagina's, niet als blogposts: <code>/inburgering/[slug]</code> en <code>/knm/[thema]</code> met eigen hub-pagina's. Blog blijft voor losse explainer-artikelen.</li>
+      <li>Homepage-hero herpositioneren: van "A2 oefenen" naar "alles voor je inburgering — oefenexamens, kennisgidsen en uitleg, gecontroleerd door een NT2-docent". A2-conversiepad blijft prominent.</li>
+      <li>i18n-pathnames, redirects en sitemap voor de nieuwe structuur; e2e-navigatiespecs bijwerken.</li>
+    </ul>
+    <div class="dod"><b>Klaar wanneer:</b> nieuwe IA live, oude URL's 301'en, build en testsuite groen.</div>
+    <div class="kpi"><b>KPI:</b> hub-pagina's geïndexeerd; bounce op homepage niet verslechterd.</div>
+  </div>
+
+  <div class="ms">
+    <div class="mshead"><h3>M2 — TOFU: Inburgering-gidsen</h3><div class="when">week 4–8 · advies fase 2</div></div>
+    <p class="goal">De oriëntatiefase vangen met de gidsen waar het volume zit.</p>
+    <ul>
+      <li>Pillar: <strong>"Inburgeren in Nederland: het complete stappenplan"</strong>.</li>
+      <li>Spokes (volgorde = winbaarheid): Wet inburgering 2021 uitgelegd · A2 of B1 + afschalen · kosten &amp; DUO-lening · boete &amp; inburgeringstermijn · vrijstelling (kandidaat voor interactieve checker) · "Mijn Inburgering uitgelegd" (vangt de long-tail van 135k/mnd navigatiezoekvolume) · MAP &amp; PVT (nagenoeg nul concurrentie).</li>
+      <li>Eerst <code>SEO/facts.md</code> uitbreiden met gebronde feiten (€50/onderdeel, leningsregels, termijnen, boetes) — geen cijfer zonder bron, bestaande discipline.</li>
+      <li>Werkwijze: AI-concept → docentreview → publicatie (eigenaarsbesluit 19-08). Elke gids krijgt een conversieblok naar het gratis proefexamen.</li>
+      <li>Top-3 gidsen ook in het Engels (gezinsmigranten zoeken in het Engels).</li>
+    </ul>
+    <div class="dod"><b>Klaar wanneer:</b> pillar + minimaal 6 spokes live in NL, top-3 in EN, alle feiten gebrond.</div>
+    <div class="kpi"><b>KPI:</b> eerste top-20 posities op informatieve keywords; organische sessies op gidsen &gt; 0-meting.</div>
+  </div>
+
+  <div class="ms">
+    <div class="mshead"><h3>M3 — KNM-consolidatie</h3><div class="when">week 6–12 · advies fase 3 + domeinbesluit</div></div>
+    <p class="goal">KNM als vijfde onderdeel op dit platform: content, oefenexamens en omzet.</p>
+    <ul>
+      <li>KNM als vijfde skill toevoegen — het gedocumenteerde migratievrije pad (één INSERT in <code>skills</code> + de <code>Level&nbsp;|&nbsp;null</code>-plumbing die <code>data/skills.ts</code> al beschrijft).</li>
+      <li>Gevalideerde KNM-content (450+ vragen, lessen, woordkaarten) migreren uit het knm-website-project.</li>
+      <li><code>oefenvragen</code>-flag aan: de bestaande quizpagina's worden gratis KNM-themaquizzen (MOFU + gratis funnel-instap).</li>
+      <li>8 KNM-themagidsen (pillar-cluster) met interne links naar de quizzen en oefenexamens.</li>
+      <li>KNM-module verkoopbaar voor €9,95/mnd; bundelprijs herzien (5 modules — besluit eigenaar).</li>
+      <li>knmoefenen.nl: gefaseerd 301-plan, pas uitvoeren als de KNM-pagina's hier ranken.</li>
+    </ul>
+    <div class="dod"><b>Klaar wanneer:</b> KNM-oefenexamens verkoopbaar op dit platform, 8 gidsen live, redirect uitgevoerd of bewust uitgesteld met datum.</div>
+    <div class="kpi"><b>KPI:</b> eerste KNM-module-abonnees; "knm oefenen"-rankings behouden of verbeterd na migratie.</div>
+  </div>
+
+  <div class="ms">
+    <div class="mshead"><h3>M4 — Taalexamen-gidsen &amp; B1</h3><div class="when">week 10–16</div></div>
+    <p class="goal">MOFU-verbreding op taal en de commerciële B1-uitbreiding.</p>
+    <ul>
+      <li>Gidsen per onderdeel (Lezen, Luisteren, Schrijven, Spreken) per niveau — concurrentie is dun op B1.</li>
+      <li>B1-content vullen: de 40 bestaande lege examenslots, gepubliceerd per onderdeel zodra de docent heeft gevalideerd. Upsell-pad: "geslaagd voor A2? Door naar B1."</li>
+      <li>Engelstalige landing + funnel voor gezinsmigranten/expats ("dutch integration exam practice").</li>
+    </ul>
+    <div class="dod"><b>Klaar wanneer:</b> 4 skill-gidsen live; B1 per onderdeel gepubliceerd zodra gevalideerd.</div>
+    <div class="kpi"><b>KPI:</b> eerste B1-module-abonnees; EN-landing converteert naar registraties.</div>
+  </div>
+
+  <div class="ms">
+    <div class="mshead"><h3>M5 — CRO &amp; interne linking</h3><div class="when">doorlopend vanaf M2 · advies fase 4</div></div>
+    <p class="goal">Van verkeer naar omzet: elke gids heeft een gemeten pad naar het proefexamen.</p>
+    <ul>
+      <li>Conversieblokken per funnel-fase (TOFU: "check je startpunt" → gratis taster; MOFU: themaquiz → registratie; BOFU: module-CTA met prijsanker €9,95 vs €50 herkansing).</li>
+      <li>GA4-events per gids (scroll, CTA-klik, taster-start, registratie, checkout).</li>
+      <li>Interne-linkmatrix pillar ↔ spokes ↔ oefenexamens onderhouden.</li>
+      <li>Maandelijkse keyword-review tegen de M0-baseline; onderpresterende gidsen herschrijven.</li>
+    </ul>
+    <div class="dod"><b>Klaar wanneer:</b> elk gepubliceerd stuk content heeft een meetbaar conversiepad en verschijnt in het maandrapport.</div>
+    <div class="kpi"><b>KPI:</b> gids → taster-conversie; taster → registratie; registratie → betaald.</div>
+  </div>
+
+  <div class="ms">
+    <div class="mshead"><h3>M6 — Video &amp; kanalen</h3><div class="when">na M2/M3</div></div>
+    <p class="goal">Zichtbaarheid waar Google video toont en waar de doelgroep al zit.</p>
+    <ul>
+      <li>YouTube: walkthrough-oefenexamens per onderdeel mét de docent in beeld — het anti-AI-verhaal wordt letterlijk zichtbaar. Embedden op de pillar-pagina's, CTA naar het platform.</li>
+      <li>Backlink-outreach volgens het advies: NT2-taalscholen met "handige links"-pagina's, vrijwilligersorganisaties (VluchtelingenWerk, taalmaatjes), bibliotheken/Expertisepunt Basisvaardigheden, educatieve directories.</li>
+      <li>Facebook: aanwezigheid in bestaande inburgeringsgroepen; op termijn eigen groep met wekelijkse docent-Q&amp;A.</li>
+      <li>Later: meertalige short-form (TikTok/Reels, eenvoudig NL met EN/AR/TR/UA-ondertiteling).</li>
+    </ul>
+    <div class="dod"><b>Klaar wanneer:</b> ≥ 4 video's live en embedded; ≥ 10 outreach-mails verstuurd met bijgehouden respons.</div>
+    <div class="kpi"><b>KPI:</b> YouTube-doorkliks naar de site; eerste externe backlinks van taalscholen.</div>
+  </div>
+</section>
+
+<section>
+  <h2>5. Kansenlijst content</h2>
+  <p class="h2sub">Gerangschikt op winbaarheid (zwakte van de huidige SERP × relevantie), niet op volume.</p>
+  <div class="card">
+    <ol class="rank">
+      <li><strong>KNM oefenen / KNM examen oefenen</strong> — zwakke SERP, eigen gevalideerd materiaal bestaat al. <span class="pill bofu">BOFU</span></li>
+      <li><strong>Inburgeringsexamen B1 oefenen</strong> — concurrenten dun op B1, slots bestaan al. <span class="pill bofu">BOFU</span></li>
+      <li><strong>A2 of B1 / afschalen naar A2</strong> — beslismoment van elke B1-route-kandidaat; alleen gemeente-PDF's ranken. <span class="pill tofu">TOFU</span></li>
+      <li><strong>Inburgering kosten / DUO-lening</strong> — beantwoordbaar met gebronde feiten; SERP is DUO + leningspam. <span class="pill tofu">TOFU</span></li>
+      <li><strong>Boete &amp; inburgeringstermijn</strong> — urgentiegedreven, evergreen; niemand die rankt converteert naar oefenen. <span class="pill tofu">TOFU</span></li>
+      <li><strong>MAP (module arbeidsmarkt &amp; participatie)</strong> — vrijwel nul commerciële concurrentie. <span class="pill mofu">MOFU</span></li>
+      <li><strong>Vrijstelling inburgering</strong> — interactieve checker verslaat elk artikel. <span class="pill tofu">TOFU</span></li>
+      <li><strong>Mijn Inburgering uitgelegd</strong> — DUO zelf versla je niet, de long-tail eromheen wel (aanmelden, uitslag, inloggen-problemen). <span class="pill tofu">TOFU</span></li>
+      <li><strong>Engelse funnel</strong> ("dutch integration exam practice") — artikelen ranken er, tools niet. <span class="pill mofu">MOFU</span></li>
+      <li><strong>Basisexamen buitenland (MVV, A1)</strong> — per definitie self-paying publiek, natuurlijke instap vóór A2. <span class="pill tofu">TOFU</span></li>
+    </ol>
+    <p class="src">Zoekvolumes per keyword uit het slidedeck; SERP-zwaktes uit eigen onderzoek 19-08-2026.</p>
+  </div>
+</section>
+
+<section>
+  <h2>6. Vaste spelregels</h2>
+  <p class="h2sub">Wat er in geen enkele milestone verandert.</p>
+  <div class="guard"><b>De USP blijft hard:</b> geen AI-gegenereerde examencontent, en beoordeling wordt nooit geframed als "de AI beoordeelt je antwoord". Nieuw en expliciet: informatieve <em>gidsen</em> mogen AI-concept zijn, maar publiceren pas na docentreview (eigenaarsbesluit 19-08-2026).</div>
+  <div class="guard"><b>Elk cijfer heeft een bron:</b> de <code>SEO/facts.md</code>-discipline geldt ook voor alle nieuwe gidsen. De "18 van de 25"-zaknorm en "500 punten" blijven op de do-not-publish-lijst.</div>
+  <div class="guard"><b>Schrijfniveau A2:</b> zinnen ≤ 15 woorden gemiddeld, "je" niet "u", elk begrip uitgelegd bij eerste gebruik (SEO/voice.md).</div>
+  <div class="guard"><b>knmoefenen.nl gaat pas om als de rankings hier staan.</b> Tot die tijd is het een asset, geen achterstallig onderhoud.</div>
+  <div class="guard"><b>Meten voor veranderen:</b> M0-baseline eerst; elke milestone rapporteert tegen die nulmeting.</div>
+</section>
+
+<p class="footnote">Intern werkdocument · docs/MILESTONES.html · gegenereerd 19 augustus 2026 op basis van het externe contentadvies, site-audit en marktonderzoek. Marktcijfers: CBS Statistiek Wet inburgering 2024, Divosa benchmark 2024, inburgeren.nl. Niet-geverifieerde cijfers zijn als zodanig gemarkeerd in de brontekst.</p>
+
+</div>
+</body>
+</html>

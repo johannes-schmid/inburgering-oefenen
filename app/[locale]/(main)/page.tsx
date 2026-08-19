@@ -5,6 +5,9 @@ import { routing } from '@/i18n/routing';
 import FaqAccordion from '@/components/FaqAccordion';
 import { SectionHeader, TeacherCard, FeatureCard, SkillCard } from '@/components/site';
 import { DEFAULT_LEVEL, SKILLS, formatCount, skillsAtLevel } from '@/data/skills';
+import JsonLd from '@/components/JsonLd';
+import { courseId } from '@/lib/schema';
+import { TEACHER_ID } from '@/lib/site';
 
 type Props = { params: Promise<{ locale: string }> };
 
@@ -73,38 +76,36 @@ export default async function HomePage({ params }: Props) {
         educationalLevel: 'A2',
         areaServed: 'NL',
         inLanguage: 'nl-NL',
+        employee: { '@id': TEACHER_ID },
       },
+      /* The `Person` node lives on `/docent`, not here.
+       *
+       * Both pages used to define `#teacher` in full, with different `description`s and
+       * different `knowsAbout` lists. One `@id`, two sets of facts — a contradiction no
+       * validator flags, resolved by whichever page a crawler happened to read. The profile
+       * page owns it; the organisation below simply employs her. */
+      /* The four onderdelen, as an `ItemList` of **references**.
+       *
+       * These used to be four full `Course` nodes whose `url` was the
+       * `/oefenexamen/a2/[skill]` overview page. Those pages now define their own `Course`,
+       * and two complete Course nodes for one URL — with different names, descriptions and a
+       * blanket `isAccessibleForFree: true` here versus the honest per-exam split there — is a
+       * contradiction no validator flags: a search engine just picks one.
+       *
+       * So the overview page owns the node and the homepage points at it. The list still gives
+       * each onderdeel its own entry, which is what let them surface independently. */
       {
-        '@type': 'Person',
-        '@id': `${BASE}/#teacher`,
-        name: 'Marieke Schipper',
-        jobTitle: 'NT2-docent',
-        knowsAbout: ['inburgeringsexamen A2', 'NT2', 'Nederlands als tweede taal', 'NT2 staatsexamen'],
-        image: `${BASE}/images/marieke-schipper.jpg`,
-        description: 'NT2-docent met 10+ jaar ervaring in basis- en voortgezet onderwijs, inburgering en NT2-staatsexamen voorbereiding',
-        hasCredential: [
-          {
-            '@type': 'EducationalOccupationalCredential',
-            name: 'NT2-docent certificering',
-            credentialCategory: 'certificate',
-            recognizedBy: { '@type': 'Organization', name: 'DUO — Dienst Uitvoering Onderwijs' },
-          },
-        ],
-        sameAs: [`${BASE}/docent`],
+        '@type': 'ItemList',
+        '@id': `${BASE}/#onderdelen`,
+        name: 'De vier onderdelen van het inburgeringsexamen A2',
+        numberOfItems: SKILLS.length,
+        itemListElement: SKILLS.map((skill, i) => ({
+          '@type': 'ListItem',
+          position: i + 1,
+          name: tSkills(`${skill.key}.name`),
+          item: { '@id': courseId(locale, DEFAULT_LEVEL, skill.slug) },
+        })),
       },
-      // One Course per exam component, so each skill can surface independently in search
-      ...SKILLS.map(skill => ({
-        '@type': 'Course',
-        name: `${tSkills(`${skill.key}.name`)} A2 — oefenexamens`,
-        description: tSkills(`${skill.key}.tagline`),
-        provider: { '@id': `${BASE}/#organization` },
-        instructor: { '@id': `${BASE}/#teacher` },
-        hasCourseInstance: { '@type': 'CourseInstance', courseMode: 'online' },
-        educationalLevel: 'A2',
-        inLanguage: 'nl',
-        isAccessibleForFree: true,
-        url: `${BASE}/${locale}/oefenexamen/${DEFAULT_LEVEL}/${skill.slug}`,
-      })),
       {
         '@type': 'FAQPage',
         '@id': `${BASE}/#faq`,
@@ -128,7 +129,7 @@ export default async function HomePage({ params }: Props) {
   return (
     <>
       <link rel="preload" as="image" href="/images/hero.webp" type="image/webp" fetchPriority="high" />
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
+      <JsonLd data={jsonLd} />
 
       {/* ── HERO ── */}
       <section

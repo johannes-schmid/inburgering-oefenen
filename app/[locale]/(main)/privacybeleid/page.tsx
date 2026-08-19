@@ -75,19 +75,35 @@ export default async function PrivacybeleidPage({ params }: Props) {
           </ul>
 
           <h2>2. Welke gegevens verzamelen wij?</h2>
-          <p>Wij verzamelen uitsluitend de volgende persoonsgegevens:</p>
+          <p>Dat hangt af van hoe je het platform gebruikt.</p>
+          <p><strong>Als je zonder account oefent:</strong></p>
           <ul>
-            <li><strong>E-mailadres</strong> — ingevoerd via het formulier na het voltooien van de oefentoets</li>
-            <li><strong>Toetsresultaat</strong> — je score (anoniem) op de oefenvragen, verzonden samen met je e-mailadres</li>
+            <li><strong>Je e-mailadres</strong>, als je het invult om je resultaat te bekijken. Je kunt deze stap overslaan.</li>
+            <li><strong>Je score</strong> op de gratis oefenvragen.</li>
           </ul>
-          <p>Wij verzamelen geen bijzondere persoonsgegevens (zoals nationaliteit, religie of gezondheidsgegevens).</p>
+          <p><strong>Als je een account maakt:</strong></p>
+          <ul>
+            <li><strong>Je naam, e-mailadres en profielfoto</strong> van je Google-account. Inloggen gaat uitsluitend via Google: wij ontvangen geen wachtwoord en bewaren er ook geen.</li>
+            <li><strong>Je voortgang:</strong> welke oefenexamens je hebt gemaakt, welk antwoord je per vraag gaf, je scores en je tijden.</li>
+            <li><strong>Je antwoorden op open opdrachten:</strong> de teksten die je schrijft bij Schrijven.</li>
+            <li><strong>Je spreekopnames.</strong> Bij Spreken neem je je antwoord op. Die opname wordt bewaard in een niet-openbare opslag, samen met de uitgeschreven tekst en de beoordeling.</li>
+            <li><strong>Betaalgegevens:</strong> welke modules je hebt, tot wanneer, en de klant- en abonnementsnummers van onze betaaldienst. Je rekeningnummer en je kaartgegevens komen niet bij ons terecht: die verwerkt de betaaldienst zelf.</li>
+          </ul>
+          <p>
+            Wij vragen <strong>geen</strong> bijzondere persoonsgegevens zoals nationaliteit, religie of
+            gezondheidsgegevens. Houd er rekening mee dat je bij een open opdracht zelf over je situatie kunt
+            schrijven of spreken: schrijf niet meer over jezelf dan je kwijt wil.
+          </p>
 
           <h2>3. Waarvoor gebruiken wij jouw gegevens?</h2>
-          <p>Wij verwerken jouw e-mailadres uitsluitend voor de volgende doeleinden:</p>
+          <p>Wij gebruiken jouw gegevens voor de volgende doeleinden:</p>
           <ul>
             <li>Het toesturen van jouw persoonlijke toetsresultaten</li>
-            <li>Het toesturen van gratis KNM-oefenvragen en studiemateriaal</li>
-            <li>Incidentele communicatie over het KNM-oefenplatform</li>
+            <li>Het toesturen van gratis oefenmateriaal en studietips voor het inburgeringsexamen</li>
+            <li>Incidentele communicatie over het platform</li>
+            <li>Het bijhouden van jouw voortgang, zodat je ziet waar je staat en welk onderdeel aandacht nodig heeft</li>
+            <li>Het nakijken van je antwoorden op Schrijven en Spreken aan de hand van de beoordelingscriteria van de docent, en het bewaren van die beoordeling zodat de docent haar kan nakijken en corrigeren</li>
+            <li>Het geven van toegang tot de modules die je hebt afgenomen, en het innen van het abonnement</li>
           </ul>
 
           <h2>4. Rechtsgrond</h2>
@@ -103,17 +119,33 @@ export default async function PrivacybeleidPage({ params }: Props) {
             <strong>2 jaar</strong> na het laatste contact, tenzij een wettelijke bewaarplicht een langere
             bewaartermijn vereist.
           </p>
+          <p>
+            Heb je een account, dan bewaren wij je voortgang, je antwoorden, je opnames en je beoordelingen{' '}
+            <strong>zolang je account bestaat</strong>. Vraag je om verwijdering van je account, dan
+            verwijderen wij ook die gegevens. Voor betaalgegevens geldt de wettelijke administratieplicht van{' '}
+            <strong>7 jaar</strong>.
+          </p>
 
           <h2>6. Delen met derden</h2>
           <p>
-            Wij delen jouw gegevens niet met derden, behalve met <strong>Formspree, Inc.</strong> als
-            verwerker van het contactformulier. Formspree verwerkt de gegevens uitsluitend in opdracht van ons
-            en conform de AVG. Meer informatie:{' '}
-            <a href="https://formspree.io/legal/privacy-policy" target="_blank" rel="noopener">
-              formspree.io/legal/privacy-policy
-            </a>
-            .
+            Wij schakelen de volgende partijen in als <strong>verwerker</strong>. Zij mogen jouw gegevens
+            uitsluitend gebruiken om hun dienst aan ons te leveren.
           </p>
+          <ul>
+            <li><strong>Supabase</strong> — database, inloggen en opslag van bestanden. Onze gegevens staan in de EU (Frankfurt).</li>
+            <li><strong>Vercel</strong> — hosting van de website.</li>
+            <li><strong>Google</strong> — inloggen met je Google-account, en Google Analytics voor bezoekcijfers.</li>
+            <li><strong>Mollie</strong> — betalingen en abonnementen.</li>
+            <li><strong>Resend</strong> — het versturen van onze e-mails.</li>
+            <li><strong>ElevenLabs</strong> — het uitschrijven van je spreekantwoord naar tekst, en het maken van het geluid bij de oefenexamens.</li>
+            <li>
+              <strong>Vercel AI Gateway</strong> — bij Schrijven en Spreken wordt je antwoord (bij Spreken:
+              ook de geluidsopname) naar een taalmodel gestuurd, dat de beoordelingscriteria van de docent
+              toepast. Je naam en e-mailadres gaan daarbij niet mee.
+            </li>
+            <li><strong>Microsoft Clarity</strong> — inzicht in hoe de website gebruikt wordt, inclusief opnames van muisbewegingen en kliks.</li>
+            <li><strong>Meta</strong> — meten van het resultaat van onze advertenties.</li>
+          </ul>
           <p>Wij verkopen jouw gegevens nooit aan derden.</p>
 
           <h2>7. Beveiliging</h2>
@@ -149,10 +181,20 @@ export default async function PrivacybeleidPage({ params }: Props) {
           </p>
 
           <h2>10. Cookies</h2>
+          <p>Deze website gebruikt twee soorten cookies en vergelijkbare technieken.</p>
+          <ul>
+            <li>
+              <strong>Noodzakelijk</strong> — om je ingelogd te houden en om je voorkeuren (zoals geluid
+              aan of uit) te onthouden. Zonder deze werkt het platform niet.
+            </li>
+            <li>
+              <strong>Analyse en advertenties</strong> — Google Analytics, Microsoft Clarity en de Meta-pixel.
+              Deze meten hoe de website gebruikt wordt en hoe onze advertenties presteren.
+            </li>
+          </ul>
           <p>
-            Deze website gebruikt geen tracking cookies of analytische cookies. Er worden geen gegevens
-            opgeslagen in cookies of lokale opslag, behalve technisch noodzakelijke sessiegegevens die
-            automatisch worden verwijderd wanneer je de browser sluit.
+            Je kunt cookies altijd weigeren of verwijderen via de instellingen van je browser. Weiger je de
+            noodzakelijke cookies, dan kun je niet inloggen.
           </p>
 
           <h2>11. Wijzigingen</h2>

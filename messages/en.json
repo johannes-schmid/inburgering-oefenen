@@ -20,6 +20,12 @@
     "langLabel": "Language",
     "oefenexamens": "Practice exams"
   },
+  "breadcrumbs": {
+    "home": "Home",
+    "premium": "Modules",
+    "oefenen": "Free practice",
+    "oefenexamen": "Practice exams"
+  },
   "footer": {
     "copyright": "© 2026 Inburgering Oefenen",
     "byTeacher": "Tasks made by a certified NT2 teacher",
@@ -39,15 +45,15 @@
     "meta_description": "Terms of use for Inburgering Oefenen — the conditions for using our platform.",
     "eyebrow": "Legal",
     "heading": "Terms of Use",
-    "last_updated": "Last updated: 17 March 2026"
+    "last_updated": "Last updated: 19 August 2026"
   },
   "contact": {
     "meta_title": "Contact — Inburgering Oefenen",
     "meta_description": "Contact Inburgering Oefenen. Do you have a question about the exam, a technical issue or a question about the premium package? We are happy to help."
   },
   "docent": {
-    "meta_title": "Marieke Schipper — Certified KNM Teacher & NT2 Specialist | Inburgering Oefenen",
-    "meta_description": "Meet Marieke Schipper: certified NT2 teacher with 10+ years of experience in KNM exam preparation. View her background, certifications and approach."
+    "meta_title": "Marieke Schipper — certified NT2 teacher | Inburgering Oefenen",
+    "meta_description": "Meet Marieke Schipper: certified NT2 teacher with 10+ years of experience preparing candidates for the Dutch A2 integration exam. Her background and approach."
   },
   "premium": {
     "meta_title": "Modules — practise the A2 integration exam from €12.95 a month",
@@ -58,7 +64,7 @@
     "meta_description": "Privacy policy of Inburgering Oefenen — how we handle your personal data.",
     "eyebrow": "Legal",
     "heading": "Privacy Policy",
-    "last_updated": "Last updated: 17 March 2026"
+    "last_updated": "Last updated: 19 August 2026"
   },
   "blog": {
     "meta_title": "Blog about the A2 integration exam | Inburgering Oefenen",
@@ -180,49 +186,6 @@
     "faq_q6": "Are the tasks made by AI?",
     "faq_a6": "No. Every task is written or reviewed by a certified NT2 teacher before it goes live. For Writing and Speaking a model helps apply the rubric, but the rubric, the model answers and the review all come from the teacher."
   },
-  "proefexamen": {
-    "meta_title": "KNM Practice Exam 2026 — Free mock exam with 45 questions and timer | Inburgering Oefenen",
-    "meta_description": "Take the free KNM practice exam: 45 multiple-choice questions, 40-minute timer, instant results and explanations. Compiled by a certified NT2 teacher.",
-    "badge": "40 questions · 45 minutes · Official format",
-    "badge_num_pre": "Practice exam",
-    "badge_num_post": "40 questions · 45 minutes",
-    "heading": "KNM Practice Exam — Free mock exam with 40 questions",
-    "description": "Simulate the real KNM exam. All 40 questions, the same 45-minute time limit, and your score with explanation per question.",
-    "breadcrumb": "KNM Practice Exam",
-    "breadcrumb_num_pre": "Practice exam",
-    "intro_heading": "Ready to begin?",
-    "intro_desc": "This practice exam is as close as possible to the real KNM exam. Use it to test yourself before taking the official exam at DUO.",
-    "start_btn": "Start practice exam",
-    "practice_topics": "Practice by topic first",
-    "stat_questions": "Questions",
-    "stat_minutes": "Minutes",
-    "stat_passing": "Passing score",
-    "topics_label": "This exam covers all 7 official topics",
-    "topic_work": "Work and Income",
-    "topic_housing": "Housing",
-    "topic_health": "Health and Healthcare",
-    "topic_education": "Education and Parenting",
-    "topic_institutions": "Government Institutions",
-    "topic_government": "Government and Rule of Law",
-    "topic_history": "History and Geography",
-    "teacher_title": "NT2 teacher & KNM specialist — questions personally selected",
-    "back_btn": "Back",
-    "pass_label": "Result",
-    "fail_label": "Result",
-    "pass_sub": "Congratulations — you passed!",
-    "fail_sub": "Not passed yet — keep practicing!",
-    "score_text": "questions correct",
-    "score_label": "score",
-    "lees_voor": "Read aloud",
-    "stop_audio": "Stop",
-    "audio_check_heading": "Test your audio",
-    "audio_check_desc": "Every question can be read aloud — make sure your sound is on.",
-    "audio_play_sample": "Play sample",
-    "audio_on": "Audio on",
-    "audio_off": "Audio off",
-    "sections_heading": "Questions per topic",
-    "feedback_tag": "Instant feedback"
-  },
   "oefenen": {
     "meta_title": "Practise for free — 10 A2 integration exam questions | Inburgering Oefenen",
     "meta_description": "Practise for free for the Dutch A2 integration exam. Reading and Listening with 10 questions and instant explanations, Writing and Speaking with real tasks and feedback against the teacher’s criteria.",
@@ -294,7 +257,9 @@
     "other_skill": "Practise another part",
     "pick_account_badge": "Free with an account",
     "pick_account_note": "Practice exam 1 · 2 tasks marked free against the teacher’s criteria",
-    "pick_account_cta": "Create a free account"
+    "pick_account_cta": "Create a free account",
+    "schema_quiz_name": "Free {skill} practice questions — Dutch integration exam A2",
+    "schema_quiz_description": "Ten free {skill} practice questions in the format of the Dutch A2 integration exam, each with an explanation from a certified NT2 teacher."
   },
   "activate": {
     "back": "Back to dashboard",
@@ -412,7 +377,11 @@
     "module_feedback": "Feedback per criterion on your answer",
     "feature4_title": "Feedback on Writing and Speaking",
     "feature4_desc": "Your e-mail or recording gets a score per criterion with an explanation, using the teacher's marking rubric — with the model answer next to it.",
-    "cell_partial": "your part"
+    "cell_partial": "your part",
+    "schema_product_name": "Practice modules for the Dutch integration exam (A2)",
+    "schema_product_description": "Monthly subscription per component of the Dutch integration exam at A2 level: ten practice exams in DUO format, written by a certified NT2 teacher. One component or all four.",
+    "schema_offer_module": "{skill} A2 module — per month",
+    "schema_offer_bundle": "All four A2 components — per month"
   },
   "dashboard": {
     "sidebar_subtitle": "Study Portal",
@@ -427,7 +396,7 @@
     "loading": "Loading…",
     "readiness_title": "Exam Readiness",
     "readiness_label": "ready",
-    "readiness_excellent": "Excellent! You are well prepared for the KNM exam.",
+    "readiness_excellent": "Excellent! You are well prepared for the integration exam.",
     "readiness_improve": "Take more mock exams to raise your readiness to 85%.",
     "readiness_start": "Start with Mock Exam 1 — free and available immediately.",
     "slaagkans_label": "Pass likelihood",
@@ -466,7 +435,7 @@
     "weakness_more_desktop": "+{count} more in analysis",
     "cta_review_mistakes": "Review my mistakes",
     "cta_weakness_overview": "Weakness overview",
-    "analyse_subtitle": "Your personal KNM analysis",
+    "analyse_subtitle": "Your personal analysis",
     "analyse_fix_all": "Review all my mistakes ({count})",
     "analyse_whatswrong": "What went wrong",
     "analyse_steps_title": "Your steps",
@@ -545,7 +514,7 @@
     "exam_duration": "{questions} questions · 45 minutes",
     "btn_start_exam": "Start exam",
     "topics_title": "Topics",
-    "topics_count": "7 KNM AREAS",
+    "topics_count": "7 THEMES",
     "topic_mastered": "Mastered",
     "topic_review": "Review",
     "topic_new": "New",
@@ -556,7 +525,7 @@
     "btn_back_to_dashboard": "Back to dashboard",
     "btn_back": "← Back",
     "quiz_header_practice": "Practise by topic",
-    "quiz_header_exam": "KNM Mock Exam",
+    "quiz_header_exam": "Practice exam",
     "quiz_score_label": "Score",
     "quiz_question_of": "Question {current} of {total}",
     "quiz_pct_done": "{pct}% completed",
@@ -567,7 +536,7 @@
     "quiz_incorrect": "✗ Incorrect.",
     "quiz_correct_answer": "The correct answer is",
     "leren_title": "Learning Modules",
-    "leren_desc": "All study material for the KNM exam, organised in 7 themes. Read, understand and test yourself — per topic.",
+    "leren_desc": "All study material for the integration exam, organised in themes. Read, understand and test yourself — per topic.",
     "leren_theme_label": "Theme {id}",
     "leren_locked_badge": "Complete package",
     "leren_locked_text": "Unlock with Complete package",
@@ -589,7 +558,7 @@
     "upgrade_badge_free": "Want to unlock everything?",
     "upgrade_title_premium": "Complete Package",
     "upgrade_title_free": "Professional Package",
-    "upgrade_desc_premium": "Unlock all 7 learning modules — study every topic for the KNM exam.",
+    "upgrade_desc_premium": "Unlock all learning modules — study every topic for the integration exam.",
     "upgrade_desc_free": "450+ validated questions, 10 mock exams, 366 flashcards and direct feedback.",
     "btn_upgrade": "Upgrade to Complete →",
     "btn_buy": "Buy the package",
@@ -602,7 +571,7 @@
     "wk_lang_detected": "Automatically detected: {lang}. Click to change.",
     "account_title": "Account",
     "wk_title": "Flashcards",
-    "wk_desc": "Learn KNM vocabulary with flashcards — see the translation by tapping the card.",
+    "wk_desc": "Learn the vocabulary with flashcards — see the translation by tapping the card.",
     "wk_progress": "Overall progress",
     "wk_progress_stats": "{known} of {total} words mastered",
     "wk_locked_badge": "Professional Package",

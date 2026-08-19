@@ -82,6 +82,12 @@
     "langLabel": "اللغة",
     "oefenexamens": "الاختبارات التدريبية"
   },
+  "breadcrumbs": {
+    "home": "الرئيسية",
+    "premium": "الوحدات",
+    "oefenen": "تدريب مجاني",
+    "oefenexamen": "امتحانات تدريبية"
+  },
   "footer": {
     "copyright": "© 2026 Inburgering Oefenen",
     "byTeacher": "مهام من إعداد معلمة NT2 معتمدة",
@@ -101,15 +107,15 @@
     "meta_description": "شروط استخدام Inburgering Oefenen — شروط استخدام منصتنا.",
     "eyebrow": "قانوني",
     "heading": "شروط الاستخدام",
-    "last_updated": "آخر تحديث: 17 مارس 2026"
+    "last_updated": "آخر تحديث: ١٩ أغسطس ٢٠٢٦"
   },
   "contact": {
     "meta_title": "اتصل بنا — Inburgering Oefenen",
     "meta_description": "تواصل مع Inburgering Oefenen. هل لديك سؤال حول الامتحان؟ نحن هنا للمساعدة."
   },
   "docent": {
-    "meta_title": "ماريكه سخيبر — معلمة KNM المعتمدة | Inburgering Oefenen",
-    "meta_description": "تعرف على ماريكه سخيبر: معلمة NT2 معتمدة بخبرة أكثر من 10 سنوات في التحضير لامتحان KNM."
+    "meta_title": "ماريكه سخيبر — معلمة NT2 معتمدة | Inburgering Oefenen",
+    "meta_description": "تعرّف على ماريكه سخيبر: معلمة NT2 معتمدة بخبرة تتجاوز عشر سنوات في التحضير لامتحان الاندماج الهولندي بمستوى A2. خلفيتها وطريقتها في التدريس."
   },
   "premium": {
     "meta_title": "الوحدات — تدرّب على امتحان الاندماج A2 من ١٢٫٩٥ يورو شهرياً",
@@ -120,7 +126,7 @@
     "meta_description": "سياسة خصوصية Inburgering Oefenen — كيف نتعامل مع بياناتك الشخصية.",
     "eyebrow": "قانوني",
     "heading": "سياسة الخصوصية",
-    "last_updated": "آخر تحديث: 17 مارس 2026"
+    "last_updated": "آخر تحديث: ١٩ أغسطس ٢٠٢٦"
   },
   "blog": {
     "meta_title": "مدونة عن امتحان الاندماج A2 | Inburgering Oefenen",
@@ -179,49 +185,6 @@
     "quiz_score_desc": "لقد أجبت على {score} من {total} أسئلة بشكل صحيح.",
     "quiz_retry": "التدرب مرة أخرى",
     "quiz_proef": "ابدأ الاختبار التجريبي"
-  },
-  "proefexamen": {
-    "meta_title": "اختبار KNM التجريبي 2026 — اختبار تجريبي مجاني مع 45 سؤالاً ومؤقت | Inburgering Oefenen",
-    "meta_description": "أجرِ اختبار KNM التجريبي المجاني: 45 سؤالاً متعدد الخيارات، مؤقت 40 دقيقة، نتائج فورية وشرح. من تأليف معلمة NT2 معتمدة.",
-    "badge": "40 سؤالاً · 45 دقيقة · الصيغة الرسمية",
-    "badge_num_pre": "اختبار تجريبي",
-    "badge_num_post": "40 سؤالاً · 45 دقيقة",
-    "heading": "الاختبار التجريبي KNM — اختبار مجاني بـ 40 سؤالاً",
-    "description": "محاكاة الامتحان الحقيقي KNM. جميع الأسئلة الـ 40، بنفس مؤقت 45 دقيقة، ودرجتك مع شرح لكل سؤال.",
-    "breadcrumb": "الاختبار التجريبي KNM",
-    "breadcrumb_num_pre": "اختبار تجريبي",
-    "intro_heading": "هل أنت مستعد للبدء؟",
-    "intro_desc": "هذا الاختبار التجريبي مشابه قدر الإمكان لامتحان KNM الحقيقي. استخدمه لاختبار نفسك قبل أداء الامتحان الرسمي في DUO.",
-    "start_btn": "ابدأ الاختبار التجريبي",
-    "practice_topics": "تدرب حسب الموضوع أولاً",
-    "stat_questions": "الأسئلة",
-    "stat_minutes": "الدقائق",
-    "stat_passing": "درجة النجاح",
-    "topics_label": "يغطي هذا الاختبار جميع المواضيع الرسمية السبعة",
-    "topic_work": "العمل والدخل",
-    "topic_housing": "السكن",
-    "topic_health": "الصحة والرعاية الصحية",
-    "topic_education": "التعليم والأطفال",
-    "topic_institutions": "المؤسسات الحكومية",
-    "topic_government": "الحكومة وسيادة القانون",
-    "topic_history": "التاريخ والجغرافيا",
-    "teacher_title": "معلمة NT2 وأخصائية KNM — أسئلة مختارة شخصياً",
-    "back_btn": "رجوع",
-    "pass_label": "النتيجة",
-    "fail_label": "النتيجة",
-    "pass_sub": "تهانينا — لقد نجحت!",
-    "fail_sub": "لم تنجح بعد — استمر في التدرب!",
-    "score_text": "إجابات صحيحة",
-    "score_label": "الدرجة",
-    "lees_voor": "اقرأ بصوت عالٍ",
-    "stop_audio": "إيقاف",
-    "audio_check_heading": "اختبر الصوت",
-    "audio_check_desc": "يمكن قراءة كل سؤال بصوت عالٍ — تأكد من تشغيل الصوت.",
-    "audio_play_sample": "تشغيل مثال",
-    "audio_on": "الصوت مفعّل",
-    "audio_off": "الصوت معطّل",
-    "sections_heading": "الأسئلة حسب الموضوع",
-    "feedback_tag": "ملاحظات فورية"
   },
   "oefenen": {
     "meta_title": "تدرّب مجاناً — ١٠ أسئلة من امتحان الاندماج A2 | Inburgering Oefenen",
@@ -294,7 +257,9 @@
     "other_skill": "تدرّب على جزء آخر",
     "pick_account_badge": "مجاني مع حساب",
     "pick_account_note": "الامتحان التدريبي ١ · تصحيح مجاني لواجبين وفق معايير المعلمة",
-    "pick_account_cta": "أنشئ حساباً مجانياً"
+    "pick_account_cta": "أنشئ حساباً مجانياً",
+    "schema_quiz_name": "أسئلة تدريب مجانية في {skill} — امتحان الاندماج A2",
+    "schema_quiz_description": "عشرة أسئلة تدريب مجانية في {skill} بصيغة امتحان الاندماج A2، مع شرح بعد كل سؤال من مُعلِّمة NT2 معتمدة."
   },
   "activate": {
     "back": "العودة إلى لوحة التحكم",
@@ -412,7 +377,11 @@
     "module_feedback": "تقييم لكل معيار في إجابتك",
     "feature4_title": "تقييم الكتابة والتحدث",
     "feature4_desc": "تحصل رسالتك أو تسجيلك على درجة لكل معيار مع شرح، وفق معايير التصحيح التي وضعتها المعلمة — مع الإجابة النموذجية بجانبها.",
-    "cell_partial": "جزؤك"
+    "cell_partial": "جزؤك",
+    "schema_product_name": "وحدات التدريب لامتحان الاندماج A2",
+    "schema_product_description": "اشتراك شهري لكل جزء من امتحان الاندماج بمستوى A2: عشرة امتحانات تدريبية بصيغة DUO، من إعداد مُعلِّمة NT2 معتمدة. جزء واحد أو الأجزاء الأربعة.",
+    "schema_offer_module": "وحدة {skill} A2 — شهريًا",
+    "schema_offer_bundle": "الأجزاء الأربعة A2 — شهريًا"
   },
   "dashboard": {
     "sidebar_subtitle": "بوابة الدراسة",
@@ -427,7 +396,7 @@
     "loading": "جارٍ التحميل…",
     "readiness_title": "الاستعداد للامتحان",
     "readiness_label": "مستعد",
-    "readiness_excellent": "ممتاز! أنت مستعد جيداً لامتحان KNM.",
+    "readiness_excellent": "ممتاز! أنت مستعد جيداً لامتحان الاندماج.",
     "readiness_improve": "أجرِ المزيد من الامتحانات التجريبية لرفع استعدادك إلى 85%.",
     "readiness_start": "ابدأ بالامتحان التجريبي 1 — مجاني ومتاح فوراً.",
     "slaagkans_label": "احتمال النجاح",
@@ -466,7 +435,7 @@
     "weakness_more_desktop": "+{count} المزيد في التحليل",
     "cta_review_mistakes": "راجع أخطائي",
     "cta_weakness_overview": "نظرة عامة على نقاط الضعف",
-    "analyse_subtitle": "تحليلك الشخصي لـ KNM",
+    "analyse_subtitle": "تحليلك الشخصي",
     "analyse_fix_all": "راجع كل أخطائي ({count})",
     "analyse_whatswrong": "ما الذي حدث خطأ",
     "analyse_steps_title": "خطواتك",
@@ -545,7 +514,7 @@
     "exam_duration": "{questions} سؤال · 45 دقيقة",
     "btn_start_exam": "ابدأ الامتحان",
     "topics_title": "المواضيع",
-    "topics_count": "7 مجالات KNM",
+    "topics_count": "7 موضوعات",
     "topic_mastered": "متقن",
     "topic_review": "مراجعة",
     "topic_new": "جديد",
@@ -556,7 +525,7 @@
     "btn_back_to_dashboard": "العودة إلى لوحة التحكم",
     "btn_back": "← رجوع",
     "quiz_header_practice": "تدرب حسب الموضوع",
-    "quiz_header_exam": "امتحان KNM التجريبي",
+    "quiz_header_exam": "امتحان تدريبي",
     "quiz_score_label": "النتيجة",
     "quiz_question_of": "السؤال {current} من {total}",
     "quiz_pct_done": "{pct}% مكتمل",
@@ -567,7 +536,7 @@
     "quiz_incorrect": "✗ غير صحيح.",
     "quiz_correct_answer": "الإجابة الصحيحة هي",
     "leren_title": "وحدات التعلم",
-    "leren_desc": "جميع مواد الدراسة لامتحان KNM، منظمة في 7 موضوعات. اقرأ وافهم واختبر نفسك — لكل موضوع.",
+    "leren_desc": "جميع مواد الدراسة لامتحان الاندماج، منظمة في موضوعات. اقرأ وافهم واختبر نفسك — لكل موضوع.",
     "leren_theme_label": "موضوع {id}",
     "leren_locked_badge": "الباقة الكاملة",
     "leren_locked_text": "افتح مع الباقة الكاملة",
@@ -589,7 +558,7 @@
     "upgrade_badge_free": "هل تريد إلغاء قفل كل شيء؟",
     "upgrade_title_premium": "الباقة الكاملة",
     "upgrade_title_free": "الباقة الاحترافية",
-    "upgrade_desc_premium": "افتح جميع وحدات التعلم الـ 7 — ادرس كل موضوع لامتحان KNM.",
+    "upgrade_desc_premium": "افتح جميع وحدات التعلم — ادرس كل موضوع لامتحان الاندماج.",
     "upgrade_desc_free": "450+ سؤال مُتحقق، 10 امتحانات تجريبية، 366 بطاقة مفردات وتغذية راجعة فورية.",
     "btn_upgrade": "ترقية إلى الكامل →",
     "btn_buy": "اشترِ الباقة",
@@ -602,7 +571,7 @@
     "wk_lang_detected": "تم الكشف التلقائي: {lang}. انقر للتغيير.",
     "account_title": "الحساب",
     "wk_title": "بطاقات المفردات",
-    "wk_desc": "تعلم مفردات KNM مع البطاقات التعليمية — شاهد الترجمة بالنقر على البطاقة.",
+    "wk_desc": "تعلم المفردات مع البطاقات التعليمية — شاهد الترجمة بالنقر على البطاقة.",
     "wk_progress": "التقدم الإجمالي",
     "wk_progress_stats": "{known} من {total} كلمة متقنة",
     "wk_locked_badge": "الباقة الاحترافية",

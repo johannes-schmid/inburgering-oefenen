@@ -5,6 +5,10 @@ import { routing } from '@/i18n/routing';
 import { SKILLS, getSkill } from '@/data/skills';
 import { getFreePractice, hasFreePractice } from '@/data/free-practice';
 import FreePracticeEngine from './FreePracticeEngine';
+import JsonLd from '@/components/JsonLd';
+import { langTag } from '@/lib/site';
+import { absUrl, breadcrumbs, courseId, PROVIDER_REF } from '@/lib/schema';
+import { DEFAULT_LEVEL } from '@/data/skills';
 
 type Props = { params: Promise<{ locale: string; skill: string }> };
 
@@ -73,9 +77,56 @@ export default async function FreePracticePage({ params }: Props) {
   if (!set) redirect(`/${locale}/oefenen`);
 
   const tSkills = await getTranslations({ locale, namespace: 'skills' });
+  const tB = await getTranslations({ locale, namespace: 'breadcrumbs' });
+  const tOefenen = await getTranslations({ locale, namespace: 'oefenen' });
+  const name = tSkills(`${skill.key}.name`);
+
+  /* ── Structured data ──────────────────────────────────────────────────────
+   * A `Quiz`, which is what this page actually is: ten questions with an explanation each.
+   *
+   * `numberOfQuestions` is counted off the set rather than written as 10 — the copy and the
+   * schema must not be able to disagree about how many questions a visitor gets.
+   *
+   * `isAccessibleForFree: true` is the honest and the useful claim here: no account, no
+   * payment, and the score is shown after an e-mail step that has a skip link. Only reached
+   * when a taster exists — the other skills redirect above, so this code never runs for them.
+   */
+  const url = absUrl(locale, `oefenen/${skill.slug}`);
+  const jsonLd = {
+    '@context': 'https://schema.org',
+    '@graph': [
+      {
+        '@type': 'Quiz',
+        '@id': `${url}#quiz`,
+        url,
+        name: tOefenen('schema_quiz_name', { skill: name }),
+        description: tOefenen('schema_quiz_description', { skill: name.toLowerCase() }),
+        numberOfQuestions: set.items.length,
+        educationalLevel: 'A2',
+        educationalAlignment: {
+          '@type': 'AlignmentObject',
+          alignmentType: 'educationalLevel',
+          educationalFramework: 'Common European Framework of Reference for Languages',
+          targetName: 'A2',
+        },
+        learningResourceType: 'Quiz',
+        isAccessibleForFree: true,
+        inLanguage: langTag(locale),
+        // The exam itself is in Dutch whatever language the interface is in.
+        teaches: 'Nederlands als tweede taal',
+        provider: PROVIDER_REF,
+        about: { '@id': courseId(locale, DEFAULT_LEVEL, skill.slug) },
+      },
+      breadcrumbs(locale, tB('home'), [
+        { name: tB('oefenen'), path: 'oefenen' },
+        { name, path: `oefenen/${skill.slug}` },
+      ]),
+    ],
+  };
 
   return (
     <main className="bg-surface min-h-screen">
+      <JsonLd data={jsonLd} />
       <div className="max-w-5xl mx-auto px-4 sm:px-6 pt-8 pb-24">
         <FreePracticeEngine
           skill={skill.slug}

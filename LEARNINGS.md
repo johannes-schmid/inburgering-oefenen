@@ -1325,3 +1325,65 @@ Luisteren's audio band.
 **Lesson:** When a stored rule and the artefact disagree, find out which one was measured before
 you change either. And any cache keyed on an environment-specific value — a URL, a host, a bucket —
 is a bug that only appears in the environment you test last.
+
+## 2026-08-19 — Milestone plan for the all-in-one repositioning
+**Changed:** `docs/MILESTONES.html` (new — the M0–M6 milestone plan from the external SEO deck +
+market research), CLAUDE.md (Project Overview repositioned, new "Strategy 2026" section, USP scope
+clarified for guides, Outstanding work points at the milestone doc).
+**Outcome:** SUCCESS
+**What worked / went wrong:** The SEO deck ("Strategisch Contentadvies & Sitestructuur") mapped
+cleanly onto infrastructure that already exists: the oefenvragen quiz pages, leren and woordkaarten
+are flagged-off containers, and `data/skills.ts` already documents the migration-free fifth-skill
+path — so "become the all-in-one platform" is mostly content and navigation work, not schema work.
+Three owner decisions were captured before planning: full KNM consolidation into
+inburgeringoefenen.nl (knmoefenen.nl 301s only after rankings hold), guides are AI-drafted +
+docent-reviewed (exam items unchanged), video is a later milestone. Market research pinned who
+actually pays: gezinsmigranten (~10–12k/yr, self-funded), not statushouders (municipality-paid).
+**Lesson:** Before planning an expansion, inventory the flagged-off surfaces first — this repo
+carries its future features as dormant code, and a plan that ignores them invents work that is
+already done.
+
+## 2026-08-19 — M0 technisch fundament: structured data, sitemap, KNM-restanten, nulmeting
+**Changed:** New `components/JsonLd.tsx` (one escaped `ld+json` block), `lib/schema.ts`
+(`absUrl`/`breadcrumbs`/`courseId`/`omitEmpty`), `lib/site.ts` (+`WEBSITE_ID`),
+`scripts/check-schema.mjs`, `docs/BASELINE.md`. Structured data added to `/premium`
+(`Product` + `AggregateOffer` + 5 `Offer`s, every figure read from `lib/pricing.ts`), `/oefenen`
+(`CollectionPage`), `/oefenen/[skill]` (`Quiz`), `/oefenexamen/[level]/[skill]` (`Course`, A2 only)
+— plus `BreadcrumbList` on each and a new `breadcrumbs` i18n namespace in nl/en/ar. `app/sitemap.ts`
+gained `/oefenen`, the two tasters (gated on `hasFreePractice`) and `terugbetalingsbeleid`.
+`app/[locale]/(main)/proefexamen/` **deleted** (+301 in `next.config.ts`, entry removed from
+`i18n/routing.ts`, `proefexamen` namespace dropped from all three locale files). `/docent` rewritten
+off KNM; seven `dashboard.*` portal strings rewritten in all three locales; both legal pages
+rewritten; `llms.txt` corrected; `verification` added to `app/[locale]/layout.tsx`.
+**Outcome:** SUCCESS (tsc clean, `next build` clean, 109/109 vitest, 52 e2e pass + 2 documented
+fixmes, `check-schema.mjs` green on 11 routes, every one of the 56 sitemap URLs returns 200)
+**What worked / went wrong:**
+- **Two pages each defined `#organization` and `#teacher` in full, and disagreed** — the org was
+  "KNM Oefenvragen" on `/docent` and "Inburgering Oefenen" on the homepage. Nothing reports this: a
+  crawler resolves one `@id` with two bodies by picking one. Fixed by giving each node exactly one
+  owner (homepage: org + website; `/docent`: the Person; the overview page: its Course) and making
+  everything else reference it. `check-schema.mjs` now fails the check if it recurs.
+- **The Arabic contact page was unreachable and nobody had noticed.** `next.config.ts` 301s
+  `/ar/contact` → `/ar/تواصل-معنا`, but `i18n/routing.ts` had no per-locale mapping for `/contact`,
+  so the target matched no route. Footer links 404'd for every Arabic visitor and the sitemap listed
+  the same dead URL. Found only by fetching every sitemap URL and checking the status code.
+- **`.prose ul li` is `display:flex`, so every element child becomes its own column.** A second
+  `<strong>` inside one `<li>` splits the sentence into columns and renders it out of order. My new
+  privacy §2 items hit this twice. One leading `<strong>` per `<li>`, no more.
+- **The timeline years on `/docent` all read "201"** — the dot is absolutely positioned at
+  `left:-26px` in the next grid column and painted over the last digit. Pre-existing, invisible
+  until the screenshot was actually read.
+- **Sourcing `.env.development.local` with `set -a; . file` dies** on a value containing `\n`; the
+  Playwright auth specs then skip silently and 22 tests look like they ran. Export the two keys with
+  `grep -m1 ... | cut -d= -f2-` instead, and check the count of *passed* tests, not just for absence
+  of failures.
+- **`localhost:3001` was serving the knm-website dev server**, so my first curl checks tested the
+  wrong application and returned a confident 200. CLAUDE.md says that project belongs on 3002.
+- One e2e failure (`portal.spec.js` "unlocks the bought onderdeel") is **pre-existing**, verified by
+  `git stash`ing the whole change and reproducing it: B1 spreken exam 1 has zero items locally, so
+  the player `notFound()`s before the entitlement gate — the exact trap CLAUDE.md documents.
+**Lesson:** For structured data, the failure that matters is not an invalid property — validators
+catch those — it is **one `@id` with two definitions across pages**, which is valid everywhere and
+still wrong. Give every node a single owning page and reference it elsewhere, and assert it in a
+script. And a sitemap is only "complete" once every URL in it has been fetched: an entry pointing at
+a 404 looks identical to a correct one in the file.

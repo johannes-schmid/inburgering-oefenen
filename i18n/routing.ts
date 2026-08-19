@@ -13,7 +13,17 @@ export const routing = defineRouting({
     '/privacybeleid': '/privacybeleid',
     '/gebruiksvoorwaarden': '/gebruiksvoorwaarden',
     '/terugbetalingsbeleid': '/terugbetalingsbeleid',
-    '/contact': '/contact',
+    /* Arabic has a translated slug here, like `/docent` and `/premium`.
+     *
+     * It was missing, and the effect was a page nobody could reach: `next.config.ts` 301s
+     * `/ar/contact` to `/ar/تواصل-معنا`, and without this entry that slug matched no route, so
+     * the Arabic contact page 404'd from every link in the footer. The sitemap listed the same
+     * dead URL. Adding the mapping is what makes both resolve. */
+    '/contact': {
+      nl: '/contact',
+      en: '/contact',
+      ar: '/تواصل-معنا',
+    },
     '/login': '/login',
     '/dashboard': '/dashboard',
     '/dashboard/[level]/[skill]': '/dashboard/[level]/[skill]',
@@ -39,7 +49,6 @@ export const routing = defineRouting({
       en: '/premium',
       ar: '/الباقة-المميزة',
     },
-    '/proefexamen': '/proefexamen',
     '/oefenen': '/oefenen',
     '/oefenen/[skill]': '/oefenen/[skill]',
     // The level is part of the path at both levels, including A2 — see the redirects in

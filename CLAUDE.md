@@ -375,10 +375,14 @@ node scripts/seed-a2-content.mjs lezen --production   # the hosted project
 
 ## Project Overview
 
-Practice platform for the **four language components of the Dutch inburgeringsexamen at
-A2 level**. Forked from the KNM platform (`knm-website`) in July 2026 and rebuilt around a
-new content domain; the whole machine — exam engine, admin CRUD, ElevenLabs TTS, Mollie,
-Resend, Supabase auth/entitlements, dashboard — is reused.
+**Target positioning (decided 2026-08-19): the all-in-one platform for the whole Dutch
+inburgering** — language exams (A2 shipped, B1 slots empty), KNM as a planned fifth onderdeel
+(consolidated in from `knm-website`), and orientation/knowledge content across the funnel.
+See "Strategy 2026" below and `docs/MILESTONES.html` for the milestone plan. Today's shipped
+product is still the **four language components at A2 level**; forked from the KNM platform
+(`knm-website`) in July 2026 and rebuilt around a new content domain; the whole machine —
+exam engine, admin CRUD, ElevenLabs TTS, Mollie, Resend, Supabase auth/entitlements,
+dashboard — is reused.
 
 | Skill | Items/exam | Duration | Item shape | Scoring |
 |---|---|---|---|---|
@@ -397,6 +401,10 @@ at least one disclaims accuracy in its own terms. That is the wedge.
 
 This is a **hard constraint on the code, not just the copy**:
 - No AI-generated exam content. Every item is written or reviewed by a certified NT2 docent.
+- **Scope of the claim (clarified 2026-08-19): it covers exam content and grading framing.**
+  Informational *guides* (Inburgering/KNM kennisgidsen, blog) may be machine-drafted, but
+  publish only after the docent has reviewed them — same model as the A2 dataset. Never
+  extend the "geen AI" copy to claim guides were hand-written if they were not.
 - Schrijven/Spreken feedback is **rubric-driven**: the docent authors the rubric and the
   model answers, a model applies them, and the docent reviews the gradings. Never frame or
   build it as "the AI grades your answer".
@@ -425,6 +433,94 @@ grant that still opens everything those customers bought.
 the per-skill dashboard used to gate on "has any paid plan", so a customer who had bought the Lezen
 module was bounced to `/premium` from every Lezen exam while the dashboard overview — which already
 read `ownsModule` — showed the module as owned. Pinned by `tests/portal.spec.js`.
+
+---
+
+## Strategy 2026 — van A2-oefensite naar inburgeringsplatform
+
+Based on an external SEO advice deck ("Strategisch Contentadvies & Sitestructuur", Aug 2026)
+and owner decisions of 2026-08-19. **The full milestone plan is `docs/MILESTONES.html`** (M0–M6:
+technisch fundament → architectuur → TOFU-gidsen → KNM-consolidatie → taalgidsen & B1 → CRO →
+video & kanalen). Key facts any session touching public pages should know:
+
+- **The funnel shift:** ~80% of the ±284k/mo "inburgering" search volume is informational
+  (oriëntatiefase). The site today is BOFU-only; the strategy adds TOFU/MOFU authority content
+  (pillar-cluster) that converts via gids → gratis proefexamen → module.
+- **Target menu structure:** Inburgering (TOFU gidsen: stappenplan, Wi2021, A2 vs B1, kosten &
+  DUO, boete/termijn, vrijstelling, MAP & PVT) · KNM Kennisgidsen (8 officiële thema's, MOFU) ·
+  Taalexamens A2/B1 (per-skill gidsen, MOFU) · Oefenexamens (BOFU). Guides get first-class
+  routes (`/inburgering/[slug]`, `/knm/[thema]`), not blog posts; the blog stays for explainers.
+- **Domain decision:** inburgeringoefenen.nl is the one brand. KNM becomes the fifth onderdeel
+  here (the migration-free path documented in `data/skills.ts`; content migrates from
+  `knm-website`). **knmoefenen.nl 301s only after KNM rankings hold here** — until then it is
+  a ranking asset, not tech debt.
+- **Who pays:** the self-study buyer is primarily gezinsmigranten (±10–12k/yr, self-funded or
+  DUO-loan, often EN/AR/TR-speaking); statushouders are the free-content/B2B audience
+  (municipality-paid courses). Price anchor for copy: DUO exams cost €50 per onderdeel —
+  "één maand oefenen kost minder dan één herkansing".
+- **Content ops:** guides are AI-drafted, docent-reviewed before publish (owner decision
+  2026-08-19). Exam items keep the unchanged USP. Every number in a guide still comes from
+  `SEO/facts.md` with a source.
+- The empty, flagged-off `oefenvragen` quiz pages are earmarked as free KNM topic quizzes in M3;
+  don't repurpose or delete them for something else.
+
+### M0 — technisch fundament — DONE (2026-08-19)
+
+Structured data, sitemap, KNM cleanup and the nulmeting. What a later session needs to know:
+
+- **One JSON-LD `@id`, one owning page.** `components/JsonLd.tsx` renders the block (it escapes
+  `<`, which `JSON.stringify` does not — a `</script>` inside any string value truncates the graph);
+  `lib/schema.ts` holds `absUrl`, `breadcrumbs`, `courseId` and `omitEmpty`; `lib/site.ts` holds the
+  three site-wide anchors. **The homepage owns `#organization` and `#website`, `/docent` owns
+  `#teacher`, and `/oefenexamen/[level]/[skill]` owns its `#course`.** Everything else references
+  by `@id` and never restates the node. Two pages used to define both the organisation and the
+  docent in full and disagreed — the org was called "KNM Oefenvragen" on one and "Inburgering
+  Oefenen" on the other. No validator reports that; a crawler picks one body and the facts that win
+  are luck. `node scripts/check-schema.mjs [origin]` fails if it recurs, and also if a block stops
+  parsing, an `@id` reference resolves to nothing, or **any page grows an `aggregateRating` or
+  `review`** — the product still has no customers.
+- **`/premium` is the only page with `Offer` nodes, and every figure is read from `lib/pricing.ts`.**
+  Never retype a price into a schema object: a stale `Offer` is a false price claim that keeps
+  showing in the SERP after the page itself is corrected. `priceValidUntil` is deliberately absent
+  (open-ended subscriptions; an invented expiry makes Google drop the offer).
+- **B1 carries no structured data at all**, deliberately. Those pages are `robots: index:false`
+  until the docent publishes, and rich data on a noindex page contradicts the page's own meta tag.
+  `omitEmpty()` exists for the same discipline as `formatCount`: B1's counts are `null`, and in
+  JSON-LD an absent property means "not stated" while `0` is a claim.
+- **`/proefexamen` is gone** — route and `ProefexamenEngine.tsx` deleted, 301 to `/oefenen` in
+  `next.config.ts`, entry removed from `i18n/routing.ts`, `proefexamen` namespace dropped from all
+  three locale files. `components/proefexamen/ExamIntro.tsx` and `ExamQuestionCard.tsx` **stay** —
+  the dashboard's `InlineQuiz` and `ExamsView` import them. This also removed the second
+  `PASS_THRESHOLD_PCT` and the namespace whose own strings disagreed about 40 versus 45 vragen.
+- **`/contact` now has an Arabic slug in `i18n/routing.ts`, and it had to.** `next.config.ts` 301s
+  `/ar/contact` → `/ar/تواصل-معنا`; without a per-locale mapping that target matched no route, so
+  the Arabic contact page 404'd from every footer link and the sitemap advertised the dead URL.
+  **A sitemap is only complete once every URL in it has been fetched** — see the loop in
+  `docs/BASELINE.md` §6, which is how this was found.
+- **`.prose ul li` is `display: flex`**, so every element child of an `<li>` becomes its own column
+  and the text between them becomes anonymous ones. One leading `<strong>` per `<li>`; a second one
+  renders the sentence out of order. Both legal pages are written to that rule.
+- **The docent page's "108 KNM-oefenvragen" stat was dropped, not replaced with another number.**
+  `KNM_QUESTIONS` is an empty array and nothing substantiates 108 or a successor, so the tile shows
+  a figure read from `data/skills.ts` instead. The KNM quotation was turned into prose rather than
+  reworded: rewriting words inside quotation marks puts a claim in a real person's mouth.
+- **Both legal pages were rewritten** (owner instruction, overriding the milestone card). The
+  privacy policy's §2 had described only an e-mail address and a score; it now covers accounts,
+  payments, written answers and **Spreken voice recordings**, and §10 no longer claims the site
+  sets no analytical cookies while loading GA4, Clarity and the Meta pixel. §6 lists the real
+  processors. **Retention periods and the legal basis are the owner's commitments** — the draft
+  states what the code does and nothing more.
+- **The nulmeting is `docs/BASELINE.md`**, and §5 (GSC + GA4) is empty because the numbers have not
+  been read out yet — every blank reads `— niet gemeten —`, never `0`, so an unmeasured row can
+  never be mistaken for a measured zero. **Search Console ownership was already verified on
+  2026-07-29** via a **Domain property** (DNS TXT), which the absence of a meta tag in this repo
+  made look like the opposite. So `NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION` is **not needed and should
+  stay unset**; the `verification` block in `app/[locale]/layout.tsx` renders nothing without it and
+  exists only as a fallback for a future URL-prefix property. **Copy the file to
+  `docs/baseline/YYYY-MM.md` before refreshing it**, or M5 has a current reading and no trend.
+- Still stale, needing owner wording: `(app)/betaling-gelukt` says "Professioneel Pakket" and "alle
+  10 proefexamens", neither of which the per-module pricing sells. The `oefenvragen` namespace keeps
+  its KNM copy on purpose — M3 repurposes that surface.
 
 ---
 
@@ -1125,6 +1221,12 @@ Log failed attempts separately — a fix that took three tries is three entries.
 ---
 
 ## Outstanding work (see `~/.claude/plans/` for the full plan)
+
+**The current roadmap is the milestone plan in `docs/MILESTONES.html` (M0–M6, 2026-08-19)** —
+**M0 is done (2026-08-19) — see "M0 — technisch fundament" under Strategy 2026.** M1
+(architectuur & herpositionering) is the next thing to build.
+The phases below are the original build-out, kept for their still-open items.
+
 - ~~**Phase 2 — data model.**~~ **DONE** — `supabase/migrations/20260729000000_a2_baseline.sql`
   squashes the KNM chain and adds `exams`, reshaped `questions` (skill, exam_id, stimulus_*),
   `open_tasks`, `rubrics`, `open_submissions`, `grading_examples`, plus `sections` repurposed

@@ -6,6 +6,9 @@ import { DEFAULT_LEVEL } from '@/data/skills';
 import { hasFreePractice, getFreePractice } from '@/data/free-practice';
 import { SkillIcon } from '@/components/site';
 import { ArrowRight } from 'lucide-react';
+import JsonLd from '@/components/JsonLd';
+import { langTag, WEBSITE_ID } from '@/lib/site';
+import { absUrl, breadcrumbs, PROVIDER_REF } from '@/lib/schema';
 
 type Props = { params: Promise<{ locale: string }> };
 
@@ -49,9 +52,51 @@ export default async function OefenenPickerPage({ params }: Props) {
   const { locale } = await params;
   const t = await getTranslations({ locale, namespace: 'oefenen' });
   const tSkills = await getTranslations({ locale, namespace: 'skills' });
+  const tB = await getTranslations({ locale, namespace: 'breadcrumbs' });
+
+  /* ── Structured data ──────────────────────────────────────────────────────
+   * A `CollectionPage` whose `ItemList` is the four onderdelen, in the taxonomy's order. This
+   * page is the entry point of the free funnel and carried no structured data at all, while
+   * also being absent from the sitemap — the two omissions this milestone closes.
+   *
+   * Every onderdeel is listed, including the two whose taster does not exist yet: the list
+   * describes the exam, and the cards on the page say which are available. What the list must
+   * not do is point at a URL that redirects, so the two without a taster link to their
+   * oefenexamen overview instead.
+   */
+  const jsonLd = {
+    '@context': 'https://schema.org',
+    '@graph': [
+      {
+        '@type': 'CollectionPage',
+        '@id': `${absUrl(locale, 'oefenen')}#page`,
+        url: absUrl(locale, 'oefenen'),
+        name: t('meta_title'),
+        description: t('meta_description'),
+        inLanguage: langTag(locale),
+        isPartOf: { '@id': WEBSITE_ID },
+        provider: PROVIDER_REF,
+        mainEntity: {
+          '@type': 'ItemList',
+          '@id': `${absUrl(locale, 'oefenen')}#list`,
+          numberOfItems: SKILLS.length,
+          itemListElement: SKILLS.map((skill, i) => ({
+            '@type': 'ListItem',
+            position: i + 1,
+            name: tSkills(`${skill.key}.name`),
+            url: hasFreePractice(skill.slug)
+              ? absUrl(locale, `oefenen/${skill.slug}`)
+              : absUrl(locale, `oefenexamen/${DEFAULT_LEVEL}/${skill.slug}`),
+          })),
+        },
+      },
+      breadcrumbs(locale, tB('home'), [{ name: t('breadcrumb'), path: 'oefenen' }]),
+    ],
+  };
 
   return (
     <main className="bg-surface min-h-screen">
+      <JsonLd data={jsonLd} />
       {/* Header */}
       <section className="px-6 pt-14 pb-12" style={{ background: 'var(--gradient-brand)' }}>
         <div className="max-w-4xl mx-auto text-center">

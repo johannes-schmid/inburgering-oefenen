@@ -14,6 +14,9 @@ import {
   levelLabel,
 } from '@/data/skills';
 import { fetchExamsForSkill } from '@/lib/exams';
+import JsonLd from '@/components/JsonLd';
+import { langTag, TEACHER_ID } from '@/lib/site';
+import { absUrl, breadcrumbs, courseId, omitEmpty, PROVIDER_REF } from '@/lib/schema';
 
 type Props = { params: Promise<{ locale: string; level: string; skill: string }> };
 
@@ -77,13 +80,73 @@ export default async function SkillOverviewPage({ params }: Props) {
   const name = tSkills(`${skill.key}.name`);
   const vars = { skill: name, skill_lower: name.toLowerCase(), level: levelLabel(level) };
 
+  const tB = await getTranslations({ locale, namespace: 'breadcrumbs' });
+
   const exams = await fetchExamsForSkill(level, skill.slug);
   const publishedByNumber = new Map(exams.map(e => [e.number, e]));
   const slots = Array.from({ length: skill.examCount }, (_, i) => i + 1);
   const anyPublished = exams.length > 0;
 
+  /* ── Structured data ──────────────────────────────────────────────────────
+   * **This page owns the `Course` node for its onderdeel.** The homepage also describes these
+   * four courses; it now references `courseId(...)` instead of restating them, because two
+   * full `Course` nodes for one `url` with different descriptions is a contradiction that no
+   * validator reports and a search engine settles by picking one.
+   *
+   * Emitted for A2 only. `generateMetadata` returns `robots: { index: false }` for B1 — forty
+   * empty "Binnenkort" slots — and shipping rich data for a page we ask Google to ignore says
+   * the opposite of the meta tag on the same page.
+   *
+   * `omitEmpty` matters here: B1's `itemCount` and `durationMinutes` are `null` (unverified,
+   * see `data/skills.ts`), and in JSON-LD an absent property means "not stated" while `0` is a
+   * claim. Applied even though only A2 renders today, so filling B1 in cannot silently publish
+   * a zero.
+   */
+  const path = `oefenexamen/${level}/${skill.slug}`;
+  const url = absUrl(locale, path);
+  const jsonLd = level !== 'a2' ? null : {
+    '@context': 'https://schema.org',
+    '@graph': [
+      omitEmpty({
+        '@type': 'Course',
+        '@id': courseId(locale, level, skill.slug),
+        url,
+        name: t('meta_title', vars),
+        description: t('meta_description', vars),
+        provider: PROVIDER_REF,
+        instructor: { '@id': TEACHER_ID },
+        inLanguage: langTag(locale),
+        teaches: 'Nederlands als tweede taal',
+        educationalLevel: levelLabel(level),
+        timeRequired: skill.durationMinutes ? `PT${skill.durationMinutes}M` : null,
+        hasCourseInstance: {
+          '@type': 'CourseInstance',
+          courseMode: 'online',
+          courseWorkload: skill.durationMinutes ? `PT${skill.durationMinutes}M` : undefined,
+        },
+        // Exam 1 of every A2 onderdeel is free with an account; 2–10 need the module. So the
+        // course as a whole is neither free nor paid, and `hasPart` is where that is stated
+        // honestly rather than by picking one flag for all ten.
+        hasPart: {
+          '@type': 'ItemList',
+          numberOfItems: skill.examCount,
+          itemListElement: slots.map(n => ({
+            '@type': 'ListItem',
+            position: n,
+            name: t('exam_label', { number: n }),
+          })),
+        },
+      }),
+      breadcrumbs(locale, tB('home'), [
+        { name: tB('oefenexamen'), path: 'oefenen' },
+        { name, path },
+      ]),
+    ],
+  };
+
   return (
     <>
+      {jsonLd && <JsonLd data={jsonLd} />}
       {/* ── HEADER ── */}
       <section className="px-6 pt-16 pb-12" style={{ background: 'var(--gradient-brand)' }}>
         <div className="max-w-5xl mx-auto">

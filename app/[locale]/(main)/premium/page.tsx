@@ -6,6 +6,7 @@ import { cn } from '@/lib/utils';
 import { buttonVariants } from '@/components/ui/button';
 import { TeacherCard, SkillIcon } from '@/components/site';
 import PricingViewTracker from '@/components/PricingViewTracker';
+import JsonLd from '@/components/JsonLd';
 import { DEFAULT_LEVEL, SKILLS, formatCount, getSkill, getSkillAtLevel } from '@/data/skills';
 import { FEATURES } from '@/lib/features';
 import {
@@ -17,6 +18,8 @@ import {
   modulesForLevel,
   totalExamsForLevel,
 } from '@/lib/pricing';
+import { ORG_ID, langTag } from '@/lib/site';
+import { breadcrumbs, courseId } from '@/lib/schema';
 import { Lock, Check, Headphones, RefreshCw } from 'lucide-react';
 
 type Props = { params: Promise<{ locale: string }> };
@@ -314,6 +317,7 @@ export default async function PremiumPage({ params }: Props) {
   const { locale } = await params;
   const tP = await getTranslations({ locale, namespace: 'premium_page' });
   const tS = await getTranslations({ locale, namespace: 'skills' });
+  const tB = await getTranslations({ locale, namespace: 'breadcrumbs' });
 
   const price = euro(MODULE_PRICE_CENTS);
   const bundle = euro(BUNDLE_PRICE_CENTS);
@@ -365,6 +369,89 @@ export default async function PremiumPage({ params }: Props) {
     return state ? <CheckGreen /> : <XGray />;
   };
 
+  /* ── Structured data ──────────────────────────────────────────────────────
+   * `Product` + `AggregateOffer`: this page's whole job is to state what the modules cost,
+   * and it was the one commercial page on the site with no structured data at all.
+   *
+   * Every figure is read from `lib/pricing.ts`. Retyping €9,95 here would create a second
+   * source of truth for a price, and a stale `Offer` is a false price claim that Google shows
+   * in the SERP long after the page itself was corrected.
+   *
+   * There is deliberately **no `aggregateRating` and no `review`**. The product has no
+   * customers yet; three fabricated testimonials and a 4.8 rating came across in the KNM fork
+   * and were removed. Review markup goes back when the reviews are real.
+   *
+   * `priceValidUntil` is omitted rather than guessed — these are open-ended subscriptions, and
+   * an invented expiry date makes Google drop the offer once it passes.
+   */
+  const pageUrl = ALTERNATES[locale as 'nl' | 'en' | 'ar'] ?? ALTERNATES.nl;
+  const moduleOffers = a2Modules.map(m => ({
+    '@type': 'Offer',
+    '@id': `${pageUrl}#offer-${m.slug}`,
+    name: tP('schema_offer_module', { skill: tS(`${m.skill}.name`) }),
+    price: (m.priceCents / 100).toFixed(2),
+    priceCurrency: 'EUR',
+    availability: 'https://schema.org/InStock',
+    url: pageUrl,
+    category: 'subscription',
+    eligibleCustomerType: 'https://schema.org/Enduser',
+    // The recurring nature is the offer's most material term, so it is stated as data and
+    // not only in the copy: €9,95 read as a one-off price would misrepresent the product.
+    priceSpecification: {
+      '@type': 'UnitPriceSpecification',
+      price: (m.priceCents / 100).toFixed(2),
+      priceCurrency: 'EUR',
+      billingDuration: 1,
+      billingIncrement: 1,
+      unitCode: 'MON',
+    },
+    itemOffered: { '@id': courseId(locale, m.level, m.skill) },
+  }));
+
+  const bundleOffer = {
+    '@type': 'Offer',
+    '@id': `${pageUrl}#offer-bundle`,
+    name: tP('schema_offer_bundle'),
+    price: (BUNDLE_PRICE_CENTS / 100).toFixed(2),
+    priceCurrency: 'EUR',
+    availability: 'https://schema.org/InStock',
+    url: pageUrl,
+    category: 'subscription',
+    priceSpecification: {
+      '@type': 'UnitPriceSpecification',
+      price: (BUNDLE_PRICE_CENTS / 100).toFixed(2),
+      priceCurrency: 'EUR',
+      billingDuration: 1,
+      billingIncrement: 1,
+      unitCode: 'MON',
+    },
+    itemOffered: a2Modules.map(m => ({ '@id': courseId(locale, m.level, m.skill) })),
+  };
+
+  const jsonLd = {
+    '@context': 'https://schema.org',
+    '@graph': [
+      {
+        '@type': 'Product',
+        '@id': `${pageUrl}#product`,
+        name: tP('schema_product_name'),
+        description: tP('schema_product_description'),
+        url: pageUrl,
+        brand: { '@id': ORG_ID },
+        category: 'Educational subscription',
+        inLanguage: langTag(locale),
+        offers: {
+          '@type': 'AggregateOffer',
+          priceCurrency: 'EUR',
+          lowPrice: (MODULE_PRICE_CENTS / 100).toFixed(2),
+          highPrice: (BUNDLE_PRICE_CENTS / 100).toFixed(2),
+          offerCount: moduleOffers.length + 1,
+          offers: [...moduleOffers, bundleOffer],
+        },
+      },
+      breadcrumbs(locale, tB('home'), [{ name: tB('premium') }], pageUrl),
+    ],
+  };
   const trustLine = (dark = false) => (
     <p className="text-center text-xs mt-3 flex items-center justify-center gap-1.5" style={{ color: dark ? 'rgba(255,255,255,0.4)' : '#9ba1b0' }}>
       <RefreshCw size={11} strokeWidth={2.4} aria-hidden="true" />
@@ -374,6 +461,7 @@ export default async function PremiumPage({ params }: Props) {
 
   return (
     <>
+      <JsonLd data={jsonLd} />
       <PricingViewTracker />
       {/* ── 1. HERO ─────────────────────────────────────────────────────── */}
       <section

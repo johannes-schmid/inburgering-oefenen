@@ -4,6 +4,9 @@ import { GraduationCap, ClipboardList, School, PenLine } from 'lucide-react';
 import { routing } from '@/i18n/routing';
 import { Link } from '@/i18n/navigation';
 import { Breadcrumb, GradientHero, EyebrowBadge, FeatureCard } from '@/components/site';
+import JsonLd from '@/components/JsonLd';
+import { ORG_ID, SITE_URL, TEACHER_ID } from '@/lib/site';
+import { DEFAULT_LEVEL, formatCount, getFormat, getSkillAtLevel } from '@/data/skills';
 
 type Props = { params: Promise<{ locale: string }> };
 
@@ -37,77 +40,103 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       languages: ALTERNATES,
     },
     openGraph: {
-      title: 'Marieke Schipper — Gecertificeerde KNM-docent',
-      description: 'NT2-docent met 10+ jaar ervaring in inburgeringsexamen voorbereiding.',
+      title: t('meta_title'),
+      description: t('meta_description'),
       type: 'profile',
-      url: 'https://inburgeringoefenen.nl/docent',
-      locale: 'nl_NL',
+      // The localised URL, not the locale-less `/docent`, which resolves for nobody.
+      url: ALTERNATES[locale as 'nl' | 'en' | 'ar'] ?? ALTERNATES.nl,
+      locale: locale === 'nl' ? 'nl_NL' : locale === 'ar' ? 'ar_AR' : 'en_GB',
       images: [{ url: 'https://inburgeringoefenen.nl/images/marieke-schipper.jpg' }],
     },
   };
 }
 
-const jsonLd = {
-  '@context': 'https://schema.org',
-  '@graph': [
-    {
-      '@type': 'ProfilePage',
-      '@id': 'https://inburgeringoefenen.nl/docent#profilepage',
-      url: 'https://inburgeringoefenen.nl/docent',
-      name: 'Marieke Schipper — Gecertificeerde KNM-docent',
-      inLanguage: 'nl-NL',
-      breadcrumb: {
-        '@type': 'BreadcrumbList',
-        itemListElement: [
-          { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://inburgeringoefenen.nl/' },
-          { '@type': 'ListItem', position: 2, name: 'Over de docent', item: 'https://inburgeringoefenen.nl/docent' },
-        ],
+/**
+ * **This page owns the `Person` node.** It used to *redefine* both `#teacher` and
+ * `#organization`, which the homepage also defines — and it disagreed with itself: the
+ * organisation was called "KNM Oefenvragen" here and "Inburgering Oefenen" there. Two
+ * definitions of one `@id` is a contradiction no validator reports; a search engine settles it
+ * by picking one, so which facts win is luck.
+ *
+ * So: the docent page defines the docent (it is the profile page for her, and the homepage now
+ * references `TEACHER_ID`), and the organisation is referenced, never restated.
+ *
+ * Built per locale rather than as a module constant, because the URLs are localised.
+ */
+function buildJsonLd(locale: string) {
+  const url = ALTERNATES[locale as 'nl' | 'en' | 'ar'] ?? ALTERNATES.nl;
+  return {
+    '@context': 'https://schema.org',
+    '@graph': [
+      {
+        '@type': 'ProfilePage',
+        '@id': `${url}#profilepage`,
+        url,
+        name: 'Marieke Schipper — NT2-docent',
+        inLanguage: locale === 'nl' ? 'nl-NL' : locale === 'ar' ? 'ar' : 'en',
+        mainEntity: { '@id': TEACHER_ID },
+        breadcrumb: {
+          '@type': 'BreadcrumbList',
+          '@id': `${url}#breadcrumb`,
+          itemListElement: [
+            { '@type': 'ListItem', position: 1, name: 'Home', item: `${SITE_URL}/${locale}` },
+            { '@type': 'ListItem', position: 2, name: 'Over de docent' },
+          ],
+        },
       },
-    },
-    {
-      '@type': 'Person',
-      '@id': 'https://inburgeringoefenen.nl/#teacher',
-      name: 'Marieke Schipper',
-      jobTitle: 'NT2-docent',
-      description: 'Gecertificeerde NT2-docent met meer dan 10 jaar ervaring in inburgering en KNM-examenvoorbereiding.',
-      image: 'https://inburgeringoefenen.nl/images/marieke-schipper.jpg',
-      knowsAbout: ['KNM examen', 'Kennis van de Nederlandse Maatschappij', 'NT2 staatsexamen', 'Inburgering Nederland'],
-      hasCredential: [{ '@type': 'EducationalOccupationalCredential', name: 'NT2-bevoegdheid', credentialCategory: 'Onderwijsbevoegdheid', recognizedBy: { '@type': 'Organization', name: 'DUO — Dienst Uitvoering Onderwijs' } }],
-      worksFor: { '@id': 'https://inburgeringoefenen.nl/#organization' },
-      url: 'https://inburgeringoefenen.nl/docent',
-    },
-    {
-      '@type': 'EducationalOrganization',
-      '@id': 'https://inburgeringoefenen.nl/#organization',
-      name: 'KNM Oefenvragen',
-      url: 'https://inburgeringoefenen.nl/',
-      description: 'Platform voor KNM-examenvoorbereiding met gecertificeerde docent',
-      areaServed: 'NL',
-    },
-  ],
-};
+      {
+        '@type': 'Person',
+        '@id': TEACHER_ID,
+        name: 'Marieke Schipper',
+        jobTitle: 'NT2-docent',
+        description: 'Gecertificeerde NT2-docent met meer dan 10 jaar ervaring in het onderwijs, inburgering en de voorbereiding op het inburgeringsexamen en het NT2-staatsexamen.',
+        image: `${SITE_URL}/images/marieke-schipper.jpg`,
+        knowsAbout: [
+          'inburgeringsexamen A2',
+          'NT2 — Nederlands als tweede taal',
+          'NT2 staatsexamen',
+          'Inburgering Nederland',
+        ],
+        hasCredential: [{
+          '@type': 'EducationalOccupationalCredential',
+          name: 'NT2-bevoegdheid',
+          credentialCategory: 'Onderwijsbevoegdheid',
+          recognizedBy: { '@type': 'Organization', name: 'DUO — Dienst Uitvoering Onderwijs' },
+        }],
+        worksFor: { '@id': ORG_ID },
+        url,
+      },
+    ],
+  };
+}
 
-export default function DocentPage() {
+export default async function DocentPage({ params }: Props) {
+  const { locale } = await params;
+  const lezen = getSkillAtLevel(DEFAULT_LEVEL, 'lezen')!;
+  const luisteren = getSkillAtLevel(DEFAULT_LEVEL, 'luisteren')!;
+  const schrijven = getSkillAtLevel(DEFAULT_LEVEL, 'schrijven')!;
+  const spreken = getSkillAtLevel(DEFAULT_LEVEL, 'spreken')!;
+
   return (
     <>
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
+      <JsonLd data={buildJsonLd(locale)} />
 
       <Breadcrumb items={[{ label: 'Home', href: '/' }, { label: 'Over de docent' }]} />
 
       <GradientHero className="pb-16">
         <div className="flex flex-col md:flex-row gap-16 items-start">
           <div className="flex-1">
-            <EyebrowBadge tone="dark" className="mb-5">Gecertificeerde KNM-docent</EyebrowBadge>
+            <EyebrowBadge tone="dark" className="mb-5">Gecertificeerde NT2-docent</EyebrowBadge>
             <h1 className="font-headline font-extrabold text-white mb-5" style={{ fontSize: 'clamp(1.9rem,4vw,3rem)', letterSpacing: '-0.02em', lineHeight: '1.15' }}>
               <span className="block">Marieke Schipper —</span>
               <span style={{ color: '#fe762c' }}>NT2-docent</span>
             </h1>
             <p className="text-white/70 text-lg mb-8 leading-relaxed max-w-xl">
-              Meer dan 10 jaar begeleidt Marieke inburgeraars door het Nederlandse onderwijs- en examenstelsel. Haar KNM-oefenvragen zijn gebaseerd op directe ervaring in de klas — niet op theorie.
+              Meer dan 10 jaar begeleidt Marieke inburgeraars door het Nederlandse onderwijs- en examenstelsel. De oefenexamens op dit platform zijn gebaseerd op directe ervaring in de klas — niet op theorie.
             </p>
             <div className="flex gap-3 flex-wrap">
-              <Link href="/" className="inline-flex items-center gap-2 bg-secondary-container text-on-secondary-container px-6 py-3 rounded-xl font-bold text-sm hover:-translate-y-px transition-transform active:scale-95 no-underline" style={{ boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.1)' }}>
-                <span>Oefen met haar vragen</span>
+              <Link href="/oefenen" className="inline-flex items-center gap-2 bg-secondary-container text-on-secondary-container px-6 py-3 rounded-xl font-bold text-sm hover:-translate-y-px transition-transform active:scale-95 no-underline" style={{ boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.1)' }}>
+                <span>Begin met oefenen</span>
                 <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M3 7h8M7 3l4 4-4 4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/></svg>
               </Link>
               <Link href="/contact" className="inline-flex items-center gap-2 px-6 py-3 rounded-xl font-semibold text-sm text-white/80 hover:text-white hover:bg-white/10 transition-colors no-underline" style={{ border: '1px solid rgba(255,255,255,0.2)' }}>
@@ -139,7 +168,10 @@ export default function DocentPage() {
             {[
               { value: '10+', label: 'Jaar docentervaring' },
               { value: '100+', label: 'Studenten geholpen' },
-              { value: '108', label: 'KNM-oefenvragen ontwikkeld' },
+              // Was "108 KNM-oefenvragen ontwikkeld". Nothing in the product substantiates
+              // that number any more, and SEO/facts.md's rule is that an unsourceable figure is
+              // cut rather than replaced with a guess. This one is read off the taxonomy.
+              { value: String(getFormat(DEFAULT_LEVEL, 'lezen').examCount), label: 'Oefenexamens per onderdeel' },
             ].map((s) => (
               <div key={s.label} className="bg-surface-container-lowest rounded-2xl p-7 text-center" style={{ boxShadow: 'var(--shadow-card-md)' }}>
                 <div className="font-headline font-extrabold text-primary mb-1" style={{ fontSize: '2.4rem', letterSpacing: '-0.04em', lineHeight: 1 }}>{s.value}</div>
@@ -162,8 +194,11 @@ export default function DocentPage() {
               <div className="flex flex-col gap-4 text-on-surface-variant text-sm leading-relaxed">
                 <p>Marieke begon haar loopbaan in het basisonderwijs en stapte later over naar het voortgezet onderwijs. Haar passie voor taalontwikkeling bracht haar uiteindelijk naar het vakgebied van NT2 — Nederlands als tweede taal — en inburgering.</p>
                 <p>In haar dagelijkse werk begeleidt ze mensen die de Nederlandse taal leren als volwassene. Ze ziet dagelijks welke vragen inburgeraars lastig vinden, waar de examens op focussen, en hoe je het beste kunt oefenen. Dat inzicht vertaalt ze naar dit platform.</p>
-                <p>&quot;Het KNM-examen is niet moeilijk als je weet wat je kunt verwachten. De meeste studenten zakken omdat ze niet genoeg oefenen met het <strong className="text-on-surface not-italic font-semibold">echte formaat</strong> — meerkeuzevragen over situaties uit het dagelijkse leven in Nederland.&quot;</p>
-                <p className="text-on-surface-variant/60 text-xs">— Marieke Schipper</p>
+                {/* Deliberately not a quotation. The sentence this replaces was a quote about the
+                    KNM exam attributed to a real person; rewriting words inside quotation marks
+                    puts a claim in her mouth that she never made. As prose it is the platform
+                    speaking, which is what it always was. */}
+                <p>Het inburgeringsexamen valt of staat bij bekendheid met het formaat. Wie weet hoe een tekst bij een vraag hoort, hoe lang een fragment duurt en wat er bij Schrijven en Spreken van je gevraagd wordt, verliest geen tijd meer aan de vorm en kan zich op de taal concentreren.</p>
               </div>
             </div>
 
@@ -174,14 +209,17 @@ export default function DocentPage() {
                 {[
                   { year: '2014', title: 'Start in het basisonderwijs', desc: 'Eerste jaren als leerkracht, focus op taalontwikkeling bij jonge leerlingen.' },
                   { year: '2016', title: 'NT2-bevoegdheid behaald', desc: 'Certificering als NT2-docent via erkende opleiding — toegang tot werken met volwassen anderstaligen.' },
-                  { year: '2018', title: 'Inburgering & KNM-focus', desc: 'Start begeleiding van inburgeraars specifiek gericht op het KNM-examen en NT2-staatsexamen.' },
-                  { year: '2024', title: 'KNM Oefenvragen platform', desc: 'Ontwikkeling van 108 KNM-oefenvragen voor dit platform, gebaseerd op examenervaringen uit de klas.' },
+                  { year: '2018', title: 'Inburgering & NT2-focus', desc: 'Start begeleiding van inburgeraars, gericht op het inburgeringsexamen en het NT2-staatsexamen.' },
+                  { year: '2024', title: 'Oefenplatform inburgering A2', desc: 'Opzet van dit platform: oefenexamens voor de vier taalonderdelen, in het formaat van het echte examen.' },
                 ].map((item, i, arr) => (
                   <div key={item.year} className="grid pb-8" style={{ gridTemplateColumns: '80px 1fr', gap: '20px', position: 'relative' }}>
                     {i < arr.length - 1 && (
                       <div style={{ position: 'absolute', left: '89px', top: '8px', bottom: 0, width: '1px', background: 'linear-gradient(to bottom,#c4c6d2,transparent)' }} />
                     )}
-                    <div className="text-xs font-bold text-secondary text-right pt-0.5" style={{ letterSpacing: '0.04em' }}>{item.year}</div>
+                    {/* paddingRight clears the timeline dot, which is absolutely positioned at left:-26px in
+                        the next column and was painting over the year's last digit — every year read
+                        "201" at both breakpoints. */}
+                    <div className="text-xs font-bold text-secondary text-right pt-0.5" style={{ letterSpacing: '0.04em', paddingRight: '10px' }}>{item.year}</div>
                     <div style={{ position: 'relative' }}>
                       <div style={{ position: 'absolute', left: '-26px', top: '6px', width: '12px', height: '12px', borderRadius: '50%', background: '#fe762c', boxShadow: '0 0 0 3px rgba(254,118,44,0.15)' }} />
                       <h3 className="text-sm font-bold text-on-surface mb-1 font-headline">{item.title}</h3>
@@ -208,10 +246,13 @@ export default function DocentPage() {
               title="NT2-bevoegdheid"
               description="Erkende bevoegdheid voor lesgeven in Nederlands als tweede taal aan volwassenen, uitgegeven via DUO."
             />
+            {/* The counts and durations come from data/skills.ts, and are attributed to DUO's own
+                practice exams rather than stated as an official norm — DUO publishes no item
+                count anywhere. See SEO/facts.md §1. */}
             <FeatureCard
               icon={ClipboardList}
-              title="KNM-examen expertise"
-              description="Uitgebreide kennis van het KNM-examenformaat (45 vragen, 40 minuten) en de weging per thema."
+              title="Kennis van het examenformaat"
+              description={`Kent het formaat van alle vier de taalonderdelen: Lezen ${formatCount(lezen.itemCount)} vragen in ${formatCount(lezen.durationMinutes)} minuten, Luisteren ${formatCount(luisteren.itemCount)} in ${formatCount(luisteren.durationMinutes)}, Schrijven ${formatCount(schrijven.itemCount)} opdrachten in ${formatCount(schrijven.durationMinutes)} en Spreken ${formatCount(spreken.itemCount)} vragen in ${formatCount(spreken.durationMinutes)} — zoals in DUO's eigen oefenexamens.`}
             />
             <FeatureCard
               icon={School}
@@ -229,16 +270,16 @@ export default function DocentPage() {
             <div>
               <EyebrowBadge tone="primary" className="mb-5">Aanpak &amp; methode</EyebrowBadge>
               <h2 className="font-headline font-bold text-on-surface mb-5 mt-4" style={{ fontSize: 'clamp(1.5rem,2.5vw,2rem)', letterSpacing: '-0.01em' }}>
-                Zo bereid je je voor op het KNM-examen
+                Zo bereid je je voor op het inburgeringsexamen A2
               </h2>
               <p className="text-on-surface-variant mb-6 leading-relaxed text-sm">
-                Marieke&apos;s aanpak is gebaseerd op drie pijlers: <strong className="text-on-surface">herhaling</strong>, <strong className="text-on-surface">begrip</strong> en <strong className="text-on-surface">situationeel denken</strong>. Het KNM-examen test niet puur kennis van feiten — het test of jij begrijpt hoe de Nederlandse maatschappij werkt.
+                Marieke&apos;s aanpak is gebaseerd op drie pijlers: <strong className="text-on-surface">herhaling</strong>, <strong className="text-on-surface">begrip</strong> en <strong className="text-on-surface">situationeel denken</strong>. Het examen test niet of je losse woordjes kent — het test of je Nederlands begrijpt en gebruikt in alledaagse situaties.
               </p>
               <div className="flex flex-col gap-4">
                 {[
                   { n: 1, title: 'Oefen met echte examenvragen', desc: 'Gebruik vragen die qua formaat en moeilijkheidsgraad overeenkomen met het echte examen.' },
                   { n: 2, title: 'Leer van je fouten', desc: 'Na elk fout antwoord lees je de uitleg. Begrijpen waarom het fout is, voorkomt herhaling.' },
-                  { n: 3, title: 'Focus op zwakke thema\'s', desc: 'De meeste studenten maken fouten in Werk & Inkomen en Wonen & Rechten. Besteed hier extra aandacht aan.' },
+                  { n: 3, title: 'Focus op je zwakste onderdeel', desc: 'Je portaal laat per onderdeel zien hoe je ervoor staat. Oefen het onderdeel waar je het minst scoort, niet het onderdeel dat je het leukst vindt.' },
                 ].map(s => (
                   <div key={s.n} className="flex gap-4 items-start">
                     <div className="flex items-center justify-center text-white font-headline font-extrabold text-xs flex-shrink-0 mt-0.5" style={{ width: 28, height: 28, minWidth: 28, background: '#002b6d', borderRadius: 7 }}>{s.n}</div>
@@ -277,9 +318,9 @@ export default function DocentPage() {
             Oefen nu met Marieke&apos;s vragen
           </h2>
           <p className="text-white/60 max-w-md mx-auto mb-8 leading-relaxed">
-            20 gratis KNM-oefenvragen, samengesteld op basis van haar jarenlange klaservaring. Geen account nodig.
+            Tien gratis oefenvragen Lezen en tien Luisteren, met uitleg bij elke vraag. Geen account nodig.
           </p>
-          <Link href="/" className="inline-flex items-center gap-2 bg-secondary-container text-on-secondary-container px-8 py-4 rounded-xl font-bold hover:-translate-y-px transition-transform active:scale-95 no-underline" style={{ boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.1)' }}>
+          <Link href="/oefenen" className="inline-flex items-center gap-2 bg-secondary-container text-on-secondary-container px-8 py-4 rounded-xl font-bold hover:-translate-y-px transition-transform active:scale-95 no-underline" style={{ boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.1)' }}>
             <span>Start gratis oefenen</span>
             <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/></svg>
           </Link>

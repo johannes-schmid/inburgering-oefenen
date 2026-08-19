@@ -1,15 +1,25 @@
 import type { MetadataRoute } from 'next';
 import { DEFAULT_LEVEL, SKILLS } from '@/data/skills';
+import { hasFreePractice } from '@/data/free-practice';
 import { FEATURES } from '@/lib/features';
 import { getSortedPosts, getPostSlug, hasTranslation } from '@/data/blog-posts';
 
 const BASE = 'https://inburgeringoefenen.nl';
 const LOCALES = ['nl', 'en', 'ar'] as const;
 
+/**
+ * `/docent`, `/premium` and `/contact` have translated Arabic slugs (`i18n/routing.ts`);
+ * everything else keeps the Dutch one at every locale.
+ *
+ * The Arabic contact URL listed here was a 404 until 2026-08-19: the slug was right, but
+ * `routing.ts` had no per-locale mapping for `/contact`, so nothing served it. The router now
+ * defines it. If an entry here ever needs a slug the router does not know, the bug is the
+ * missing route — do not "fix" it by listing the Dutch path instead.
+ */
 const STATIC_PATHS: Record<typeof LOCALES[number], string[]> = {
-  nl: ['', 'premium', 'docent', 'contact', 'privacybeleid', 'gebruiksvoorwaarden'],
-  en: ['', 'premium', 'teacher', 'contact', 'privacybeleid', 'gebruiksvoorwaarden'],
-  ar: ['', 'الباقة-المميزة', 'المعلمة', 'تواصل-معنا', 'privacybeleid', 'gebruiksvoorwaarden'],
+  nl: ['', 'premium', 'docent', 'contact', 'privacybeleid', 'gebruiksvoorwaarden', 'terugbetalingsbeleid'],
+  en: ['', 'premium', 'teacher', 'contact', 'privacybeleid', 'gebruiksvoorwaarden', 'terugbetalingsbeleid'],
+  ar: ['', 'الباقة-المميزة', 'المعلمة', 'تواصل-معنا', 'privacybeleid', 'gebruiksvoorwaarden', 'terugbetalingsbeleid'],
 };
 
 const TODAY = new Date().toISOString().split('T')[0];
@@ -21,6 +31,29 @@ export default function sitemap(): MetadataRoute.Sitemap {
     for (const path of STATIC_PATHS[locale]) {
       const url = path ? `${BASE}/${locale}/${path}` : `${BASE}/${locale}`;
       entries.push({ url, changeFrequency: 'monthly', priority: path === '' ? 1.0 : 0.8, lastModified: TODAY });
+    }
+  }
+
+  /* The free funnel: the picker and the tasters behind it.
+   *
+   * These were indexable, linked from the homepage's primary CTA and absent from the sitemap —
+   * the entry point of the whole funnel was the one thing not submitted.
+   *
+   * The tasters are gated on `hasFreePractice`: Schrijven and Spreken have no set yet, their
+   * pages `redirect()` to the picker and return `robots: { index: false }`. Same reasoning as
+   * the `hasTranslation()` gate on blog posts below — never advertise a URL whose own meta tag
+   * tells Google to ignore it.
+   */
+  for (const locale of LOCALES) {
+    entries.push({ url: `${BASE}/${locale}/oefenen`, changeFrequency: 'weekly', priority: 0.9, lastModified: TODAY });
+    for (const skill of SKILLS) {
+      if (!hasFreePractice(skill.slug)) continue;
+      entries.push({
+        url: `${BASE}/${locale}/oefenen/${skill.slug}`,
+        changeFrequency: 'monthly',
+        priority: 0.8,
+        lastModified: TODAY,
+      });
     }
   }
 

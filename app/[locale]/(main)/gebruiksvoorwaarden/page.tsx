@@ -56,10 +56,10 @@ export default async function GebruiksvoorwaardenPage({ params }: Props) {
         <p>Door gebruik te maken van de website <strong>inburgeringoefenen.nl</strong> ga je akkoord met de onderstaande gebruiksvoorwaarden. Lees deze zorgvuldig door voordat je het platform gebruikt.</p>
 
         <h2>1. Over Inburgering Oefenen</h2>
-        <p>Inburgering Oefenen is een online oefenplatform voor de <strong>KNM-toets (Kennis van de Nederlandse Maatschappij)</strong>, onderdeel van het inburgeringsexamen in Nederland. Het platform biedt gratis oefenvragen samengesteld door een gecertificeerde NT2-docent.</p>
+        <p>Inburgering Oefenen is een online oefenplatform voor de <strong>vier taalonderdelen van het inburgeringsexamen op niveau A2</strong>: Lezen, Luisteren, Schrijven en Spreken. Het platform biedt een gratis gedeelte — een korte oefenset per onderdeel en het eerste oefenexamen van elk onderdeel met een account — en <strong>betaalde maandabonnementen per onderdeel</strong> voor de overige oefenexamens. De inhoud wordt samengesteld en gecontroleerd door een gecertificeerde NT2-docent.</p>
 
         <h2>2. Gebruik van het platform</h2>
-        <p>Het platform is bestemd voor persoonlijk en niet-commercieel gebruik. Je mag het platform gebruiken om te oefenen voor het KNM-examen. Het is niet toegestaan om:</p>
+        <p>Het platform is bestemd voor persoonlijk en niet-commercieel gebruik. Je mag het platform gebruiken om te oefenen voor het inburgeringsexamen. Het is niet toegestaan om:</p>
         <ul>
           <li>De inhoud van het platform commercieel te exploiteren of te reproduceren zonder schriftelijke toestemming</li>
           <li>Geautomatiseerde systemen (bots, scrapers) te gebruiken om inhoud te kopiëren</li>
@@ -68,7 +68,7 @@ export default async function GebruiksvoorwaardenPage({ params }: Props) {
         </ul>
 
         <h2>3. Inhoud en nauwkeurigheid</h2>
-        <p>De oefenvragen zijn samengesteld door een gecertificeerde NT2-docent op basis van officieel KNM-examenmateriaal. Wij streven naar nauwkeurigheid, maar kunnen <strong>geen garantie geven</strong> dat de inhoud altijd volledig up-to-date of foutloos is. Het officiële KNM-examen wordt beheerd door <a href="https://www.duo.nl" target="_blank" rel="noopener noreferrer">DUO (Dienst Uitvoering Onderwijs)</a>. Raadpleeg altijd de officiële DUO-richtlijnen voor de meest actuele informatie.</p>
+        <p>Alle oefenvragen en oefenopdrachten op dit platform zijn <strong>zelf geschreven</strong> en worden gecontroleerd door een gecertificeerde NT2-docent. Ze volgen de <em>vorm</em> van het officiële examen — het aantal vragen, de tijdsduur en het soort opgaven — maar zijn geen weergave van examenmateriaal van DUO: dat materiaal is auteursrechtelijk beschermd en mag niet worden overgenomen. Wij streven naar nauwkeurigheid, maar kunnen <strong>geen garantie geven</strong> dat de inhoud altijd volledig up-to-date of foutloos is. Het officiële inburgeringsexamen wordt beheerd door <a href="https://www.duo.nl" target="_blank" rel="noopener noreferrer">DUO (Dienst Uitvoering Onderwijs)</a>. Raadpleeg altijd de officiële DUO-richtlijnen voor de meest actuele informatie.</p>
 
         <h2>4. Intellectueel eigendom</h2>
         <p>Alle inhoud op dit platform — inclusief teksten, vragen, ontwerp en code — is eigendom van Inburgering Oefenen of wordt gebruikt met toestemming. Niets van dit platform mag worden gekopieerd, verspreid of gepubliceerd zonder uitdrukkelijke schriftelijke toestemming, tenzij anders bepaald door de wet.</p>
@@ -77,7 +77,7 @@ export default async function GebruiksvoorwaardenPage({ params }: Props) {
         <p>Inburgering Oefenen is niet aansprakelijk voor:</p>
         <ul>
           <li>Onjuiste of onvolledige informatie op het platform</li>
-          <li>Het niet slagen voor het officiële KNM-examen na gebruik van dit platform</li>
+          <li>Het niet slagen voor het officiële inburgeringsexamen na gebruik van dit platform</li>
           <li>Technische storingen of onderbreking van de dienstverlening</li>
           <li>Schade die voortvloeit uit het gebruik of het niet kunnen gebruiken van het platform</li>
         </ul>

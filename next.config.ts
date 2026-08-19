@@ -30,6 +30,15 @@ const nextConfig: NextConfig = {
       // Docent has a translated slug for EN
       { source: '/en/docent', destination: '/en/teacher', permanent: true },
 
+      /* `/proefexamen` was the KNM flat-question player, deleted in M0 (2026-08-19).
+       *
+       * It rendered an untranslated "KNM Proefexamen N" heading over what is now A2 content,
+       * carried a second `PASS_THRESHOLD_PCT`, and was reachable and crawlable while nothing on
+       * the site linked to it. The free funnel it duplicated is `/oefenen`, so that is where
+       * anything still holding the old URL — an old e-mail, an index entry — lands. */
+      { source: '/:locale(nl|en|ar)/proefexamen', destination: '/:locale/oefenen', permanent: true },
+      { source: '/proefexamen', destination: '/nl/oefenen', permanent: true },
+
       // ── A2-implicit URLs → the levelled shape ────────────────────────────
       // Every exam URL used to omit the level and mean A2. Those paths are indexed and
       // linked from e-mails already sent, so they 301 rather than 404.

@@ -31,6 +31,19 @@ const notoArabic = Noto_Sans_Arabic({
 
 export const metadata: Metadata = {
   metadataBase: new URL('https://inburgeringoefenen.nl'),
+
+  /* Search Console ownership.
+   *
+   * The property has never been verified, which is why no baseline of positions or impressions
+   * exists (see docs/BASELINE.md). The token comes from the environment rather than the repo —
+   * not because it is a secret (it is public in the page source by design) but because it is
+   * per-property: a token committed here would be wrong for anyone else's Search Console, and
+   * `undefined` renders no tag at all, which is the correct behaviour locally.
+   *
+   * Set NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION in Vercel, then verify via the HTML-tag method. */
+  verification: process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION
+    ? { google: process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION }
+    : undefined,
   icons: {
     icon: [
       { url: '/favicon.svg', type: 'image/svg+xml' },
