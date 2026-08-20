@@ -1535,3 +1535,86 @@ write their own marks from the browser.
 **Lesson:** a server route that runs under the caller's JWT is subject to RLS. Any table with no
 owner-INSERT policy must be written with the service key — and testing a write path while signed in
 as an admin proves nothing, because the admin FOR ALL policy covers every table here.
+
+## 2026-08-21 — het menu naar de mockup: vijf items, A2 en B1 naast elkaar
+**Changed:** `components/Nav.tsx` rebuilt to the owner's `menu-mockup_1.html` — five top-level items
+(Inburgeren · Examens · KNM · Over de docent · Blog), a wide Examens panel with A2 and B1 as
+columns, an icon tile plus one grey line of explanation per link, and a mobile accordion drawer.
+New/renamed `nav.*` keys in all three locale files (subtitles, section labels, level heads, the two
+green notes); six dead keys pruned (`group_gidsen`, `group_tools`, `group_gratis`,
+`group_onderdeel`, `group_toegang`, `oefenexamens`, plus `nav.inburgering/knm/taalexamens/docent`).
+Both nav tests in `tests/public.spec.js` rewritten.
+**Outcome:** SUCCESS — `tsc` clean, `next build` clean, 129 unit tests, 44 e2e pass (1 documented skip).
+**What worked / went wrong:**
+- The mockup lists five Inburgeren guides, KNM-onderwerpen and a "waarom geen AI" page that do not
+  exist. Linking them would have been four site-wide links to 404s, so the sections carry only live
+  pages plus the registered `planned-surfaces.ts` placeholders with their "binnenkort" chip.
+  "Taalexamens" stopped being a top-level section: its hub, woordenlijst and grammatica moved under
+  the two level columns, which is where the mockup's own logic puts them.
+- **`bg-primary/[0.07]` rendered as solid primary**, so every icon tile in the dropdown was a navy
+  square with an invisible navy icon. Caught only by reading the screenshot. The tint is now an
+  inline hex.
+- **The dev server for this project is on port 3011, not 3001** — 3001 is held by `knm-website`, and
+  a screenshot of `localhost:3001` shows the *KNM* header (flag emoji, "Proefexamen", "Pakketten")
+  which looks exactly like "my change did not apply". `CLAUDE.md` and `playwright.config.js` both
+  say 3001; pass `TEST_BASE_URL` until that is resolved.
+- Puppeteer: re-query the nav buttons inside the hover loop (React replaces the nodes, and a stale
+  handle throws "Node is detached from document"), and scope drawer clicks to
+  `[aria-label="Mobiel menu"]` — `header nav button` also matches the display:none desktop bar, so
+  the click silently lands on the wrong menu.
+**Lesson:** A menu mockup is a structure decision plus a copy deck, and the copy deck usually
+promises pages that do not exist yet. Implement the structure; link only what is live or registered
+as a placeholder — a nav item is a site-wide link, so an invented one is a site-wide 404.
+
+## 2026-08-20 — M2 spokes: drie Inburgering-gidsen en een tweede visuele laag
+**Changed:** `data/guides/{moet-ik-inburgeren,welke-wet-en-welke-route,wat-kost-inburgeren}.ts`
+plus `kit.ts` (gedeelde lucide-iconen, `docent()`, `note()`, `inlineCta()`); registratie in
+`index.ts`, `related` op de pillar; "Kennisgids infographics" in `app/globals.css`; vier
+gidsen-entries in `components/Nav.tsx` met zes nieuwe `nav.*`-keys in nl/en/ar; `SEO/facts.md`
+§11; drie rijen in `scripts/check-schema.mjs`; twee tests in `tests/public.spec.js`.
+**Outcome:** SUCCESS — tsc schoon, build schoon, unit 129/129, e2e 50 passed / 21 skipped,
+check-schema OK, mobiel + desktop gefotografeerd en twee bevindingen gefixt.
+**What worked / went wrong:**
+- De aangeleverde bronbeelden waren 4800–5200px landscape. Als `<img>` zijn ze op een telefoon
+  een horizontale scrollstrook, ze zijn niet te vertalen en een gecorrigeerd bedrag betekent
+  nieuwe artwork. Nagebouwd als HTML/CSS (`.compare-2`, `.route-grid`, `.termijn`, `.price-list`,
+  `.verdict`, `.picker`) — reflowt op 640px, echte tekst, en een correctie is één woord diff.
+- Twee fouten kwamen **alleen** uit de screenshots, niet uit de tests: de route-badge werd
+  geknipt tot "B1 OF HOG" (`nowrap` in een niet-wrappende flexrij) en de subregel in `.price-list`
+  erfde `line-height: 1.7`. Beide onzichtbaar in tsc, build en Playwright.
+- Zeven claims uit de manuscripten haalden de factcheck niet ongewijzigd — o.a. praktijkonderwijs
+  als vrijstelling, "800 + 800" voor de hele Z-route, en "onderwijsroute duurt 1,5 jaar". De
+  "max. 2 jaar verlenging" van het bronbeeld is nergens te bronnen en is **niet** gepubliceerd.
+- `next dev` draaide al op **3011**, niet op 3001; een tweede instance weigert met een melding die
+  je alleen in het logbestand ziet. Curl op 3001 gaf 200 vanaf een stale server, dus elke nieuwe
+  route leek een 404. Eerst `lsof`/log lezen, dan pas conclusies over routes trekken.
+**Lesson:** Een aangeleverd bronbeeld is een *ontwerp*, geen asset — bouw het na in markup en
+factcheck elke claim erop apart, want een getal in een plaatje ontsnapt aan `SEO/facts.md`.
+En: een groen testpak zegt niets over layout; de screenshotloop is niet optioneel.
+
+## 2026-08-20 — De vier Inburgering-gidsen in het Engels en het Arabisch
+**Changed:** `translations: { en, ar }` op alle vier de gidsen in `data/guides/`; `title`,
+`breadcrumb` en `dateLabel` toegevoegd aan `GuideLocale`/`ResolvedGuide` + `getGuideLocale`;
+`lg.*` in plaats van `guide.*` in de drie `[slug]`-routes en in `GuideArticle`; `factIn()` en
+`docentIn()` in `kit.ts`; `guides.author_role` in nl/en/ar; sitemap-test herschreven.
+**Outcome:** SUCCESS — tsc schoon, build schoon, unit 129/129, e2e 50 passed / 21 skipped,
+check-schema OK, twaalf URL's (4 gidsen × 3 talen) 200 en indexeerbaar, RTL visueel gecontroleerd.
+**What worked / went wrong:**
+- **Drie strings waren hardcoded Nederlands op elke locale** en werden pas zichtbaar toen er
+  vertalingen waren: `generateMetadata` gebruikte `guide.title` (dus een Nederlandse `<title>` op
+  de Engelse pagina — precies de string die een zoeker als eerste ziet), `GuideArticle` gebruikte
+  `guide.breadcrumb` en `guide.dateLabel`, en de byline had letterlijk `NT2-docent` in de JSX.
+  Geen test ving dit; ze waren onzichtbaar zolang alles Nederlands was.
+- **De pillar linkte hardcoded naar `/nl/oefenen` en `/nl/blog/…`.** In een Engelse body zet dat
+  de lezer midden in een zin op een Nederlandse pagina. Elke vertaling wijst nu naar de eigen
+  locale — controleer dit bij elke nieuwe vertaalde body.
+- **De 140–160 tekens-eis geldt per locale** en de Arabische omschrijvingen vielen er drie keer
+  onder (119, 132, 138). Arabisch is compacter dan Nederlands; reken op één extra bijzin.
+- **Eén e2e-test codeerde de oude toestand**: `expect(xml).not.toContain('/en/inburgering/…')`
+  met de opmerking "Dutch only: the guide has no translations yet". Die assertie moest omgekeerd,
+  niet geschrapt — de regel (een onvertaalde locale hoort niet in de sitemap) geldt nog steeds.
+- RTL werkte zonder aanpassing: `dir` staat op `<html>` en de flex/grid-blokken spiegelen mee.
+  De prijslijst, de termijnbalk en de drie routekaarten lezen correct van rechts naar links.
+**Lesson:** Een i18n-bug is pas zichtbaar zodra de tweede taal bestaat. Ga bij het toevoegen van
+een vertaling eerst langs *elk* veld dat de route rendert — niet alleen het veld dat je vertaalt —
+en langs elke hardcoded link in de body.

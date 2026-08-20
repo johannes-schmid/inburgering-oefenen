@@ -179,57 +179,92 @@ test.describe('the kennisgids sections', () => {
     await expect(page.locator('footer a[href="/nl/knm"]')).toHaveCount(1);
   });
 
-  test('the header groups both hubs and the blog under one content dropdown', async ({ page }) => {
-    /* One content parent, not one top-level item per section — the pattern theorie.nl and IELTS
-     * use. Pinning it because the alternative (a top-level item per section) is what a later edit
-     * drifts back towards, and it grows the header by one item per milestone. */
-    // The desktop bar only exists at `xl` — six items do not fit at `md`, where it used to live.
+  test('the header carries five items and every section keeps its links', async ({ page }) => {
+    /* The owner's menu mockup (2026-08-21): Inburgeren · Examens · KNM · Over de docent · Blog.
+     * Pinned because the shape is a decision, not an accident — the level is a column head inside
+     * Examens rather than a top-level split, and there is no separate "Oefenen" item because the
+     * uitleg and the oefenexamens share a page. */
+    // The desktop bar only exists at `menu:` (1152px) — five items do not fit at `md`.
     await page.setViewportSize({ width: 1440, height: 900 });
     await page.goto('/nl');
     const nav = page.locator('nav[aria-label="Hoofdmenu"]');
 
-    /* Five top-level entries: three content sections, Oefenexamens, Docent. MILESTONES §3's four
-     * sections plus the docent page. Modules is deliberately *inside* the Oefenexamens dropdown
-     * (owner's decision, 2026-08-20) — buying access and practising are one intent apart, and it
-     * keeps the bar uncrowded. This pinned 4 under M1's single dropdown and 6 before Modules moved. */
+    // Four dropdowns plus the Blog link.
     expect(await nav.locator(':scope > *').count()).toBe(5);
 
-    // Each content section opens on hover — not click, which toggles it shut again — and holds its
-    // own Gidsen/Tools groups. Asserted per section because the desktop panel and the mobile
-    // drawer render from one definition, and a regression would drop a whole group silently.
+    // Each section opens on hover — not click, which toggles it shut again. Asserted per section
+    // because the desktop panels and the mobile accordion render from one definition, and a
+    // regression would drop a whole section silently.
     const sections = [
-      { i: 0, links: ['/nl/inburgering', '/nl/blog', '/nl/inburgering/tools/tijdlijn'] },
-      { i: 1, links: ['/nl/knm', '/nl/knm/woordenlijst'] },
-      { i: 2, links: ['/nl/taalexamens', '/nl/taalexamens/woordenlijst', '/nl/taalexamens/grammatica'] },
-      // Oefenexamens: the four onderdelen, then the way to unlock them. Premium is reachable from
-      // the header only through here now, so if this link goes the money page loses its nav entry.
-      { i: 3, links: ['/nl/premium'] },
+      // Inburgeren: the four published guides in reading order, then the hub, then the tool.
+      // Named individually because this is the one section that lists guides rather than only a
+      // hub, and a guide dropped from here is a guide most readers never reach.
+      {
+        i: 0,
+        links: [
+          '/nl/inburgering/moet-ik-inburgeren', '/nl/inburgering/welke-wet-en-welke-route',
+          '/nl/inburgering/inburgering-stappenplan', '/nl/inburgering/wat-kost-inburgeren',
+          '/nl/inburgering', '/nl/inburgering/tools/tijdlijn',
+        ],
+      },
+      // Examens: both levels side by side, the material below them, and the two foot links.
+      // Premium is reachable from the header only through here, so if it goes the money page
+      // loses its nav entry.
+      {
+        i: 1,
+        links: [
+          '/nl/oefenexamen/a2/lezen', '/nl/oefenexamen/a2/spreken',
+          '/nl/oefenexamen/b1/lezen', '/nl/oefenexamen/b1/spreken',
+          '/nl/taalexamens', '/nl/taalexamens/woordenlijst', '/nl/taalexamens/grammatica',
+          '/nl/oefenen', '/nl/premium',
+        ],
+      },
+      { i: 2, links: ['/nl/knm', '/nl/knm/woordenlijst'] },
+      { i: 3, links: ['/nl/docent', '/nl/contact'] },
     ];
     for (const { i, links } of sections) {
       await nav.getByRole('button').nth(i).hover();
       for (const href of links) {
-        await expect(nav.locator(`a[href="${href}"]`)).toHaveCount(1);
+        await expect(nav.locator(`a[href="${href}"]`), href).toHaveCount(1);
       }
     }
+
+    // The blog keeps its own top-level entry, and appears nowhere else in the bar.
+    await expect(nav.locator('a[href="/nl/blog"]')).toHaveCount(1);
   });
 
   test('the mobile drawer holds every section, each link once', async ({ page }) => {
-    /* The drawer is the whole menu below `xl`, so it must be complete — and it renders every label
-     * a second time from the same definition. In M1 that duplication shipped the Blog link twice
-     * on mobile after it was removed once on desktop, caught only by reading a screenshot. */
+    /* The drawer is the whole menu below `menu:`, so it must be complete — and it renders every
+     * label a second time from the same definition. In M1 that duplication shipped the Blog link
+     * twice on mobile after it was removed once on desktop, caught only by reading a screenshot.
+     * It is an accordion, so each row has to be opened before its links exist in the DOM. */
     await page.setViewportSize({ width: 390, height: 844 });
     await page.goto('/nl');
     await page.getByRole('button', { name: /menu openen/i }).click();
 
     const drawer = page.locator('nav[aria-label="Mobiel menu"], header nav').last();
-    for (const href of [
-      '/nl/inburgering', '/nl/blog', '/nl/inburgering/tools/tijdlijn',
-      '/nl/knm', '/nl/knm/woordenlijst',
-      '/nl/taalexamens', '/nl/taalexamens/woordenlijst', '/nl/taalexamens/grammatica',
-      '/nl/premium', '/nl/docent',
-    ]) {
-      await expect(drawer.locator(`a[href="${href}"]`), href).toHaveCount(1);
+    const rows = [
+      { name: 'Inburgeren', links: ['/nl/inburgering/inburgering-stappenplan', '/nl/inburgering', '/nl/inburgering/tools/tijdlijn'] },
+      {
+        name: 'Examens',
+        links: [
+          '/nl/oefenexamen/a2/lezen', '/nl/oefenexamen/b1/spreken',
+          '/nl/taalexamens', '/nl/taalexamens/woordenlijst', '/nl/taalexamens/grammatica',
+          '/nl/premium',
+        ],
+      },
+      { name: 'KNM', links: ['/nl/knm', '/nl/knm/woordenlijst'] },
+      { name: 'Over de docent', links: ['/nl/docent', '/nl/contact'] },
+    ];
+    for (const { name, links } of rows) {
+      await drawer.getByRole('button', { name, exact: true }).click();
+      for (const href of links) {
+        await expect(drawer.locator(`a[href="${href}"]`), `${name} → ${href}`).toHaveCount(1);
+      }
     }
+    // Outside the accordion: the blog, and the CTA at the bottom where the thumb is.
+    await expect(drawer.locator('a[href="/nl/blog"]')).toHaveCount(1);
+    await expect(drawer.locator('a[href="/nl/oefenen"]').last()).toBeVisible();
   });
 
   test('a planned surface is reachable, noindex, and never a dead end', async ({ page }) => {
@@ -263,14 +298,55 @@ test.describe('the kennisgids sections', () => {
     await expect(page.locator('a[href="/nl/inburgering/inburgering-stappenplan"]').first()).toBeVisible();
   });
 
-  test('the sitemap lists the hubs and the published pillar', async ({ request }) => {
+  test('the four Inburgering guides are published and listed on their hub', async ({ page }) => {
+    /* The cluster shipped 2026-08-20 as the "Inburgeren" dropdown's four entries. Pinned as a set
+     * rather than one by one, because the failure this guards against is one of them silently
+     * dropping out — a menu item that 404s, or a guide flipped back to `draft` and still linked
+     * from every page's header. The header side is pinned by the section list above; this test
+     * owns the guides themselves. The order is the order a reader needs them in. */
+    const SPOKES = [
+      'moet-ik-inburgeren',
+      'welke-wet-en-welke-route',
+      'inburgering-stappenplan',
+      'wat-kost-inburgeren',
+    ];
+
+    for (const slug of SPOKES) {
+      const res = await page.goto(`/nl/inburgering/${slug}`);
+      expect(res?.status(), slug).toBe(200);
+      const robots = await page.locator('meta[name="robots"]').getAttribute('content');
+      expect(robots ?? '', slug).not.toMatch(/noindex/);
+      // A reviewed guide always names its reviewer — that line is the USP made visible.
+      await expect(page.getByText(/Marieke Schipper/i).first(), slug).toBeVisible();
+    }
+
+    await page.goto('/nl/inburgering');
+    for (const slug of SPOKES) {
+      await expect(
+        page.locator(`a[href="/nl/inburgering/${slug}"]`).first(),
+        `${slug} on the hub`,
+      ).toBeVisible();
+    }
+  });
+
+  test('the sitemap lists the hubs and every translated guide', async ({ request }) => {
     const xml = await (await request.get('/sitemap.xml')).text();
     expect(xml).toContain('/nl/inburgering');
     expect(xml).toContain('/nl/knm');
     expect(xml).toContain('/nl/taalexamens');
-    // Dutch only: the guide has no translations yet, and an untranslated locale is noindex.
-    expect(xml).toContain('/nl/inburgering/inburgering-stappenplan');
-    expect(xml).not.toContain('/en/inburgering/inburgering-stappenplan');
+    /* All four Inburgering guides carry English and Arabic bodies since 2026-08-20, so all three
+     * locales belong in the sitemap. Until then this asserted the opposite — Dutch only — because
+     * a locale without its own body is noindex and advertising it would contradict that tag.
+     * **That rule still holds.** If a future guide ships Dutch-first, its `en`/`ar` URLs must be
+     * absent here, and this list is where that gets caught. */
+    for (const slug of [
+      'inburgering-stappenplan', 'moet-ik-inburgeren',
+      'welke-wet-en-welke-route', 'wat-kost-inburgeren',
+    ]) {
+      for (const locale of ['nl', 'en', 'ar']) {
+        expect(xml, `${locale}/${slug}`).toContain(`/${locale}/inburgering/${slug}`);
+      }
+    }
     // Planned surfaces are noindex, so advertising them would contradict their own meta tag.
     for (const slug of ['tijdlijn', 'woordenlijst', 'grammatica']) {
       expect(xml, `${slug} must not be in the sitemap`).not.toContain(slug);

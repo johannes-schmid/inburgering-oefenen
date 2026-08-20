@@ -28,7 +28,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const publishable = guide.status === 'reviewed' && hasTranslation(guide, locale);
 
   return {
-    title: guide.title,
+    title: lg.title,
     description: lg.description,
     robots: { index: publishable, follow: true },
     alternates: alternatesFor(locale, `inburgering/${guide.slug}`),

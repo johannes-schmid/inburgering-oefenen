@@ -495,6 +495,186 @@
 .article-body a.guide-cta-btn:active { transform: scale(0.98); }
 .article-body a.guide-cta-btn svg { width: 14px; height: 14px; }
 
+/* ── Kennisgids infographics ──
+   The second layer of the guide vocabulary, added 2026-08-20 for the four Inburgering spokes.
+   Everything here replaces what would otherwise be a wide raster infographic. The source
+   artwork for these blocks was 4800–5200px landscape: legible on a desktop, a horizontal
+   scroll-strip on the phone that most of this audience reads on, untranslatable, and stale the
+   moment a figure changes. So each one is markup: it reflows at 640px, the text is real text
+   (selectable, searchable, screen-readable) and a corrected number is a one-word diff.
+
+   Two rules that are load-bearing rather than stylistic:
+
+   1. **Every list inside these blocks must kill `.article-body ul li::before`.** That rule adds
+      an orange arrow AND makes the li a flex row, so a second element child becomes a second
+      column and the sentence renders out of order — the same trap `.prose ul li` already set on
+      the legal pages. Every block below that contains a `ul` resets it.
+   2. **Colour comes from the brand tokens only.** The source artwork used a yellow/sage/terracotta
+      palette that is not this site's. Level and route accents are drawn from the existing
+      primary (#002b6d), accent (#fe762c), orange text (#a24000) and the green/red already used
+      by `.yesno-col`. */
+
+/* Two-way comparison — Wet 2013 vs Wet 2021, statushouder vs overige inburgeraar. */
+.compare-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin: 22px 0; }
+@media (max-width: 700px) { .compare-2 { grid-template-columns: 1fr; } }
+.compare-card {
+  border: 1px solid rgba(196,198,210,0.45); border-radius: 16px; overflow: hidden;
+  background: #fff; display: flex; flex-direction: column;
+}
+.compare-card.is-primary { border-color: rgba(0,43,109,0.28); }
+.compare-head { padding: 14px 18px 13px; background: #f8f9fb; border-bottom: 1px solid rgba(196,198,210,0.4); }
+.compare-card.is-primary .compare-head { background: rgba(0,43,109,0.06); border-bottom-color: rgba(0,43,109,0.14); }
+.article-body .compare-head h3 {
+  margin: 0 0 3px; font-size: 0.98rem; letter-spacing: -0.01em;
+}
+.compare-when {
+  font-size: 0.8rem !important; color: #5b5e6b !important; margin: 0 !important; line-height: 1.45;
+}
+.compare-rows { padding: 6px 18px 16px; }
+.compare-row { padding: 11px 0; border-bottom: 1px solid #f0f1f4; }
+.compare-row:last-child { border-bottom: none; padding-bottom: 0; }
+.compare-key {
+  font-family: var(--font-headline);
+  font-size: 0.68rem !important; font-weight: 700; text-transform: uppercase; letter-spacing: 0.07em;
+  color: #8a8d99 !important; margin: 0 0 3px !important;
+}
+.compare-val { font-size: 0.91rem !important; color: #191c1e !important; margin: 0 !important; line-height: 1.55; }
+
+/* Three-up route cards. The accent bar is the only thing that differs per route. */
+.route-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; margin: 22px 0; }
+@media (max-width: 860px) { .route-grid { grid-template-columns: 1fr; } }
+.route-card {
+  border: 1px solid rgba(196,198,210,0.45); border-radius: 16px; background: #fff;
+  overflow: hidden; display: flex; flex-direction: column;
+}
+.route-accent { height: 4px; background: #002b6d; }
+.route-card.r-onderwijs .route-accent { background: #2d7a52; }
+.route-card.r-z .route-accent { background: #a24000; }
+/* `flex-wrap` is load-bearing: the level badge is `nowrap` (a broken "B1 of\nB2" is worse than a
+   second line) and the longest one — "B1 of B2" beside "Onderwijsroute" — does not fit a third of
+   the article column. Without the wrap the badge is clipped to "B1 OF HOG". */
+.route-top { padding: 16px 18px 12px; display: flex; align-items: baseline; flex-wrap: wrap; justify-content: space-between; gap: 6px 10px; }
+.article-body .route-top h3 { margin: 0; font-size: 1rem; min-width: 0; }
+.route-level {
+  font-family: var(--font-headline); font-size: 0.68rem; font-weight: 800; letter-spacing: 0.06em;
+  text-transform: uppercase; padding: 4px 9px; border-radius: 999px; white-space: nowrap;
+  background: rgba(0,43,109,0.08); color: #002b6d;
+}
+.route-card.r-onderwijs .route-level { background: rgba(44,130,83,0.1); color: #2d7a52; }
+.route-card.r-z .route-level { background: #fcecdd; color: #a24000; }
+.route-rows { padding: 0 18px 16px; }
+.route-rows .compare-row:first-child { padding-top: 4px; }
+
+/* The inburgeringstermijn as a bar. Three equal segments, not a to-scale timeline —
+   nobody's three years are evenly spread and pretending otherwise invents a schedule. */
+.termijn {
+  border: 1px solid rgba(196,198,210,0.45); border-radius: 16px; padding: 20px; margin: 22px 0;
+  background: #f8f9fb;
+}
+.termijn-ends { display: flex; justify-content: space-between; gap: 12px; margin-bottom: 10px; }
+.termijn-end { font-size: 0.78rem; color: #5b5e6b; line-height: 1.4; max-width: 46%; }
+.termijn-end:last-child { text-align: right; }
+.termijn-end strong {
+  display: block; font-family: var(--font-headline); font-size: 0.72rem; letter-spacing: 0.07em;
+  text-transform: uppercase; color: #191c1e; margin-bottom: 2px;
+}
+.termijn-bar { display: flex; gap: 4px; }
+.termijn-seg {
+  flex: 1; height: 34px; border-radius: 8px; display: flex; align-items: center; justify-content: center;
+  font-family: var(--font-headline); font-size: 0.75rem; font-weight: 700; letter-spacing: 0.03em; color: #fff;
+  background: linear-gradient(135deg, #002b6d 0%, #1d428a 100%);
+}
+.termijn-seg.s2 { background: linear-gradient(135deg, #1d428a 0%, #2f5aa8 100%); }
+.termijn-seg.s3 { background: linear-gradient(135deg, #2f5aa8 0%, #4a74c0 100%); }
+.termijn-seg.s-extra {
+  flex: 0 0 auto; padding: 0 14px; background: transparent; color: #a24000;
+  border: 2px dashed rgba(162,64,0,0.4);
+}
+.termijn-note { font-size: 0.85rem !important; color: #434651 !important; margin: 12px 0 0 !important; }
+
+/* Price rows. Deliberately not a <table>: the only two columns are a label and a figure, and
+   `.article-body table` sets a 460px min-width that would scroll on a phone for no reason. */
+.price-list { border: 1px solid rgba(196,198,210,0.45); border-radius: 16px; overflow: hidden; margin: 22px 0; }
+.price-row {
+  display: flex; align-items: center; gap: 12px; padding: 13px 18px;
+  border-bottom: 1px solid #f0f1f4; background: #fff;
+}
+.price-row:last-child { border-bottom: none; }
+.price-icon {
+  width: 30px; height: 30px; border-radius: 9px; flex-shrink: 0;
+  background: rgba(0,43,109,0.07); color: #002b6d;
+  display: flex; align-items: center; justify-content: center;
+}
+.price-icon svg { width: 15px; height: 15px; }
+.price-name { flex: 1; min-width: 0; font-size: 0.93rem; color: #191c1e; line-height: 1.4; }
+.price-name span { display: block; font-size: 0.79rem; color: #5b5e6b; line-height: 1.45; margin-top: 1px; }
+.price-amount {
+  font-family: var(--font-headline); font-weight: 800; font-size: 0.98rem; color: #191c1e;
+  white-space: nowrap;
+}
+.price-row.is-total { background: rgba(0,43,109,0.05); }
+.price-row.is-total .price-name { font-weight: 700; }
+.price-row.is-total .price-amount { color: #002b6d; font-size: 1.1rem; }
+
+/* A verdict panel: one short answer in large type, then what it means. */
+.verdict { border-radius: 16px; padding: 20px; margin: 22px 0; border: 1px solid transparent; }
+.verdict.ok { background: rgba(44,130,83,0.06); border-color: rgba(44,130,83,0.2); }
+.verdict.warn { background: #fcecdd; border-color: rgba(162,64,0,0.2); }
+.verdict-answer {
+  font-family: var(--font-headline); font-size: clamp(1.3rem, 4vw, 1.7rem) !important; font-weight: 800;
+  letter-spacing: -0.03em; line-height: 1.15; margin: 0 0 6px !important;
+}
+.verdict.ok .verdict-answer { color: #2d7a52 !important; }
+.verdict.warn .verdict-answer { color: #a24000 !important; }
+.verdict p:last-child { margin-bottom: 0 !important; }
+.verdict p { font-size: 0.93rem !important; }
+
+/* Inline note with an icon — a caveat that must not read as body text. */
+.note-strip {
+  display: flex; gap: 12px; align-items: flex-start;
+  border-left: 3px solid #fe762c; background: #f8f9fb;
+  border-radius: 0 12px 12px 0; padding: 14px 18px; margin: 20px 0;
+}
+.note-strip svg { width: 17px; height: 17px; flex-shrink: 0; margin-top: 2px; color: #a24000; }
+.note-strip p { margin: 0 !important; font-size: 0.91rem !important; }
+
+/* CSS-only "kies jouw situatie" picker. No JavaScript: a guide body is rendered as a raw HTML
+   string, so `<details>` is the only interactivity available — and it degrades to plain,
+   fully-readable text with JS off, in print, and for a crawler. */
+.picker { display: flex; flex-direction: column; gap: 10px; margin: 22px 0; }
+.picker details {
+  border: 1px solid rgba(196,198,210,0.45); border-radius: 14px; background: #fff; overflow: hidden;
+}
+.picker details[open] { border-color: rgba(0,43,109,0.28); }
+.picker summary {
+  display: flex; align-items: center; gap: 12px; cursor: pointer; list-style: none;
+  padding: 15px 18px; font-family: var(--font-headline); font-weight: 700; font-size: 0.95rem;
+  color: #191c1e; transition: background 0.15s ease;
+}
+.picker summary::-webkit-details-marker { display: none; }
+.picker summary:hover { background: #f8f9fb; }
+.picker summary:focus-visible { outline: 2px solid #002b6d; outline-offset: -2px; }
+.picker summary::after {
+  content: ''; margin-left: auto; width: 9px; height: 9px; flex-shrink: 0;
+  border-right: 2px solid #fe762c; border-bottom: 2px solid #fe762c;
+  transform: rotate(45deg) translateY(-2px); transition: transform 0.18s cubic-bezier(0.22,1,0.36,1);
+}
+.picker details[open] summary::after { transform: rotate(-135deg) translateY(-2px); }
+.picker-icon {
+  width: 30px; height: 30px; border-radius: 9px; flex-shrink: 0;
+  background: rgba(0,43,109,0.07); color: #002b6d;
+  display: flex; align-items: center; justify-content: center;
+}
+.picker-icon svg { width: 15px; height: 15px; }
+.picker-body { padding: 0 18px 16px; }
+.picker-body p { font-size: 0.92rem !important; margin-bottom: 10px !important; }
+.picker-body p:last-child { margin-bottom: 0 !important; }
+.article-body .picker-body ul { margin-bottom: 0; gap: 6px; }
+.article-body .picker-body ul li { font-size: 0.9rem; }
+@media (prefers-reduced-motion: reduce) {
+  .picker summary::after, .picker summary { transition: none; }
+}
+
 /* ── Blog inline quiz cards ── */
 .blog-quiz-card {
   background: #f8f9fb;

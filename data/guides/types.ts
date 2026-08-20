@@ -56,6 +56,16 @@ export type GuideLocale = {
   heroTitle: string;
   description: string;
   eyebrow: string;
+  /**
+   * Meta title for this locale. Optional only so an existing translation cannot break; **write it
+   * on every new one.** Before 2026-08-20 the route used `guide.title` unconditionally, so an
+   * English page carried a Dutch `<title>` — the one string a searcher sees before clicking.
+   */
+  title?: string;
+  /** Last breadcrumb crumb, both in the visible trail and in the BreadcrumbList JSON-LD. */
+  breadcrumb?: string;
+  /** Human publication date for the byline, written out in this locale's own convention. */
+  dateLabel?: string;
   heroSubtitle?: string;
   articleHtml?: string;
   sidebarHtml?: string;
@@ -124,6 +134,9 @@ export type ResolvedGuide = {
   heroTitle: string;
   description: string;
   eyebrow: string;
+  title: string;
+  breadcrumb: string;
+  dateLabel: string;
   heroSubtitle: string;
   articleHtml: string;
   sidebarHtml: string;

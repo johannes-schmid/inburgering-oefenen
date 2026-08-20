@@ -3,8 +3,13 @@
 import { useState } from 'react';
 import { useTranslations, useLocale } from 'next-intl';
 import { useParams } from 'next/navigation';
+import type { LucideIcon } from 'lucide-react';
+import {
+  BookA, CalendarClock, Compass, Euro, HelpCircle, Landmark, Layers, Mail, Route, Scale,
+  SpellCheck, UserRound,
+} from 'lucide-react';
 import { Link, usePathname, useRouter } from '@/i18n/navigation';
-import { DEFAULT_LEVEL, SKILLS } from '@/data/skills';
+import { LEVELS, SKILLS, levelLabel, type Level } from '@/data/skills';
 import { FEATURES } from '@/lib/features';
 import SkillIcon from '@/components/site/SkillIcon';
 import LogoMark from '@/components/site/LogoMark';
@@ -26,37 +31,50 @@ const LOCALES = [
 ] as const;
 
 /**
- * The content sections of the header, and what sits inside each one.
+ * The header, rebuilt to the owner's menu mockup (2026-08-21) — five items:
+ * **Inburgeren · Examens · KNM · Over de docent · Blog**.
  *
- * **This implements `docs/MILESTONES.html` §3 ("Doelarchitectuur") and supersedes M1's
- * single-dropdown decision** (owner's call, 2026-08-20). M1 put all content in one "Inburgering"
- * dropdown on the reasoning that a top-level item per section is thin content twice over while KNM
- * and Taalexamens had nothing behind them. That reason has expired: the M2 pillar is live, the
- * Taalexamens hub carries the two per-onderdeel blog posts that already exist, and each section now
- * has tools or free material of its own. The old argument — that comparable sites use one
- * "Examentips"-style dropdown — is still true and simply lost to a stronger one: §3 is the site's
- * own published architecture, and the funnel phases it names are the sections.
+ * This supersedes the M2b arrangement (Inburgering / KNM / Taalexamens / Oefenexamens / Docent).
+ * Four decisions carry over from the mockup and are the reason the shape is what it is:
  *
- * Each section splits into **Gidsen** (read) and **Tools / Gratis oefenen** (do), because mixing a
- * finished guide and an unbuilt tool in one flat list tells the reader nothing about which is which.
+ * 1. **The level is a column head, not part of a link's name.** A2 and B1 sit side by side in one
+ *    wide Examens panel, so a visitor sees that both exist without clicking a page deep. This is
+ *    also why there is no separate "Taalexamens" section any more: the hub and its material moved
+ *    into that panel, beneath the two level columns.
+ * 2. **There is no separate "Oefenen" item.** Uitleg and oefenexamens live on the same page, so a
+ *    second entry would point at the place the first one already goes. The orange CTA and the
+ *    "Alle oefenexamens" link in the panel foot carry that intent.
+ * 3. **The docent is in the bar.** That a certified NT2 docent writes the items is the product's
+ *    only claim, so it is a top-level dropdown with Contact under it — being reachable is part of
+ *    the same proof.
+ * 4. **One line of explanation per link.** For a reader at A2, "Stappenplan" alone is abstract and
+ *    "stap voor stap naar je diploma" is not. Every link therefore has a `sub` key, and adding a
+ *    link without one is a type error.
  *
- * Section labels are deliberately the head terms — "Inburgering" (~284k searches/month), "KNM",
- * "Taalexamens". A nav label is site-wide anchor text; "Kennisbank" or "Resources" is a word nobody
- * searches for, and at A2 may not even be understood.
+ * **Links point only at pages that exist.** The mockup lists guides that are not written yet
+ * (regels van de overheid, wat kost het, KNM-onderwerpen, "waarom wij geen AI"); those are M2/M3
+ * spokes and are deliberately absent rather than stubbed — every entry here is either live or a
+ * registered `data/planned-surfaces.ts` placeholder wearing the "binnenkort" chip.
  *
- * **One definition, two renderers.** The desktop panel and the mobile drawer both walk this array.
- * They used to hold their own copy of every label, and in M1 that shipped the Blog link twice on
- * mobile after it was removed once on desktop — caught only by reading a screenshot. With three
- * sections that duplication is not survivable, so there is exactly one list.
+ * **One definition, two renderers.** The desktop panels and the mobile accordion both walk these
+ * arrays. They used to hold their own copy of every label, and in M1 that shipped the Blog link
+ * twice on mobile after it was removed once on desktop — caught only by reading a screenshot.
  *
- * Guides are listed by their hub, never enumerated here. `Nav` is a client component, and importing
- * the guide registry would ship every `articleHtml` string into the browser bundle.
+ * Guides are listed by their hub (plus the one published pillar), never enumerated. `Nav` is a
+ * client component, and importing the guide registry would ship every `articleHtml` into the bundle.
  */
+type NavHref =
+  | '/inburgering' | '/knm' | '/taalexamens' | '/blog' | '/docent' | '/contact'
+  | '/premium' | '/oefenen'
+  | '/inburgering/tools/tijdlijn' | '/knm/woordenlijst'
+  | '/taalexamens/woordenlijst' | '/taalexamens/grammatica'
+  | { pathname: '/inburgering/[slug]'; params: { slug: string } };
+
 type NavLink = {
-  href: '/inburgering' | '/knm' | '/taalexamens' | '/blog'
-    | '/inburgering/tools/tijdlijn' | '/knm/woordenlijst'
-    | '/taalexamens/woordenlijst' | '/taalexamens/grammatica';
+  href: NavHref;
+  /** `nav.<label>` for the title and `nav.<label>_sub` for the grey line under it. */
   label: string;
+  icon: LucideIcon;
   /** Hidden when false — used for `FEATURES.blog`. Absent means always shown. */
   flag?: boolean;
   /** Renders a "binnenkort" chip. Set on every `data/planned-surfaces.ts` entry, so the menu
@@ -65,56 +83,101 @@ type NavLink = {
 };
 
 type NavSection = {
-  /** Drives `openMenu`; also the `nav.<id>` label key. */
-  id: 'inburgering' | 'knm' | 'taalexamens';
-  groups: { key: string; items: NavLink[] }[];
+  /** Drives `openMenu`; also the `nav.sec_<id>` label key. */
+  id: 'inburgeren' | 'knm' | 'docent';
+  items: NavLink[];
+  /** A green aside at the foot of the panel — `nav.note_<id>`. Optional. */
+  note?: boolean;
 };
 
 const CONTENT_SECTIONS: NavSection[] = [
   {
-    id: 'inburgering',
-    groups: [
+    id: 'inburgeren',
+    items: [
+      /* The four published Inburgering guides, in the order a reader needs them: do I have to,
+       * under which law, what happens when, what does it cost. The hub follows as the catch-all.
+       * This is the one section that names individual guides rather than only its hub — the four
+       * of them *are* the orientation phase, and a dropdown that offers only "Alle gidsen" makes
+       * the reader take two clicks to find out whether the plicht applies to them at all.
+       * Keep it at four: `menu:` (1152px) was measured against five top-level items, and the
+       * panel's own height is what limits this list. A fifth guide goes to the hub only. */
       {
-        key: 'group_gidsen',
-        items: [
-          { href: '/inburgering', label: 'inburgering_hub' },
-          /* The blog stays in the header. §3's table does not mention it, but it is a live indexed
-           * surface and a header link is a site-wide internal link on every page — dropping it for
-           * a tidier menu would be a self-inflicted ranking cost. The footer's link uses a
-           * different namespace, so it is not a substitute. */
-          { href: '/blog', label: 'blog', flag: FEATURES.blog },
-        ],
+        href: { pathname: '/inburgering/[slug]', params: { slug: 'moet-ik-inburgeren' } },
+        label: 'guide_moet',
+        icon: HelpCircle,
       },
       {
-        key: 'group_tools',
-        items: [{ href: '/inburgering/tools/tijdlijn', label: 'tool_tijdlijn', soon: true }],
+        href: { pathname: '/inburgering/[slug]', params: { slug: 'welke-wet-en-welke-route' } },
+        label: 'guide_wet',
+        icon: Scale,
       },
+      {
+        href: { pathname: '/inburgering/[slug]', params: { slug: 'inburgering-stappenplan' } },
+        label: 'guide_stappenplan',
+        icon: Route,
+      },
+      {
+        href: { pathname: '/inburgering/[slug]', params: { slug: 'wat-kost-inburgeren' } },
+        label: 'guide_kosten',
+        icon: Euro,
+      },
+      { href: '/inburgering', label: 'inburgering_hub', icon: Compass },
+      { href: '/inburgering/tools/tijdlijn', label: 'tool_tijdlijn', icon: CalendarClock, soon: true },
+      /* The blog is deliberately **not** here: the mockup gives it its own top-level item, and
+       * listing it in both places is the M1 duplication bug over again. */
     ],
   },
   {
     id: 'knm',
-    groups: [
-      { key: 'group_gidsen', items: [{ href: '/knm', label: 'knm_hub' }] },
-      {
-        key: 'group_gratis',
-        items: [{ href: '/knm/woordenlijst', label: 'knm_woorden', soon: true }],
-      },
+    items: [
+      { href: '/knm', label: 'knm_hub', icon: Landmark },
+      { href: '/knm/woordenlijst', label: 'knm_woorden', icon: BookA, soon: true },
     ],
+    note: true,
   },
   {
-    id: 'taalexamens',
-    groups: [
-      { key: 'group_gidsen', items: [{ href: '/taalexamens', label: 'taalexamens_hub' }] },
-      {
-        key: 'group_gratis',
-        items: [
-          { href: '/taalexamens/woordenlijst', label: 'taal_woorden', soon: true },
-          { href: '/taalexamens/grammatica', label: 'taal_grammatica', soon: true },
-        ],
-      },
+    id: 'docent',
+    items: [
+      { href: '/docent', label: 'docent_over', icon: UserRound },
+      { href: '/contact', label: 'docent_contact', icon: Mail },
     ],
+    note: true,
   },
 ];
+
+/** The material under the two level columns in the Examens panel. */
+const EXAM_MATERIAL: NavLink[] = [
+  { href: '/taalexamens', label: 'taalexamens_hub', icon: Layers },
+  { href: '/taalexamens/woordenlijst', label: 'taal_woorden', icon: BookA, soon: true },
+  { href: '/taalexamens/grammatica', label: 'taal_grammatica', icon: SpellCheck, soon: true },
+];
+
+function SoonChip({ label }: { label: string }) {
+  return (
+    <span
+      className="text-[0.6rem] font-bold uppercase tracking-widest px-1.5 py-0.5 rounded-full shrink-0"
+      style={{ background: '#fcecdd', color: '#a24000' }}
+    >
+      {label}
+    </span>
+  );
+}
+
+function Caret({ open }: { open: boolean }) {
+  return (
+    <svg
+      width="10"
+      height="10"
+      viewBox="0 0 12 12"
+      fill="none"
+      aria-hidden="true"
+      className="transition-transform shrink-0 opacity-60"
+      style={{ transform: open ? 'rotate(180deg)' : undefined }}
+    >
+      <path d="M3 4.5L6 7.5L9 4.5" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
+    </svg>
+  );
+}
 
 export default function Nav() {
   const t = useTranslations('nav');
@@ -124,10 +187,12 @@ export default function Nav() {
   const pathname = usePathname();
   const params = useParams();
   const [mobileOpen, setMobileOpen] = useState(false);
-  /* One `openMenu` rather than a boolean per dropdown: there are four now (three content
-   * sections plus Oefenexamens) and hovering one has to close the others. A `useState(false)` per
-   * dropdown would let several panels sit open at once. */
+  /* One `openMenu` rather than a boolean per dropdown: there are four, and hovering one has to
+   * close the others. A `useState(false)` per dropdown would let several panels sit open. */
   const [openMenu, setOpenMenu] = useState<string | null>(null);
+  /* The mobile drawer is an accordion, one row open at a time — the mockup's shape, and what keeps
+   * five sections with a line of explanation each inside one screen. */
+  const [mobileSection, setMobileSection] = useState<string | null>('examens');
 
   function handleLangChange(newLocale: string) {
     /* `usePathname()` returns the *template* for a dynamic route — '/blog/[slug]', not
@@ -150,6 +215,74 @@ export default function Nav() {
     setMobileOpen(false);
   }
 
+  /** One dropdown row: tinted icon tile, title, one grey line. Shared by all four panels. */
+  function DropLink({ item, onNavigate }: { item: NavLink; onNavigate?: () => void }) {
+    const Icon = item.icon;
+    return (
+      <Link
+        href={item.href as never}
+        onClick={onNavigate}
+        className="flex items-start gap-3 px-3 py-2.5 rounded-lg no-underline hover:bg-surface-container-low transition-colors"
+      >
+        {/* The tint is an inline hex, not `bg-primary/[0.07]`: with the `@theme` tokens the
+            opacity modifier resolved to solid primary and the icon disappeared into it. */}
+        <span
+          className="flex items-center justify-center w-8 h-8 shrink-0 rounded-lg"
+          style={{ background: '#eef3fa', color: '#002b6d' }}
+        >
+          <Icon size={16} strokeWidth={2} aria-hidden="true" />
+        </span>
+        <span className="min-w-0 flex-1">
+          <span className="flex items-center gap-2">
+            <span className="text-sm font-semibold text-on-surface leading-snug">{t(item.label)}</span>
+            {item.soon && <SoonChip label={t('badge_soon')} />}
+          </span>
+          <span className="block text-xs text-on-surface-variant/80 leading-snug mt-0.5">
+            {t(`${item.label}_sub`)}
+          </span>
+        </span>
+      </Link>
+    );
+  }
+
+  /** A level column in the Examens panel: pill + head, then the four onderdelen at that level. */
+  function LevelColumn({ level, onNavigate }: { level: Level; onNavigate?: () => void }) {
+    return (
+      <div>
+        <p className="flex items-center gap-2 px-3 pt-2 pb-1.5 text-[0.65rem] font-bold uppercase tracking-widest text-primary">
+          <span
+            className="px-1.5 py-0.5 rounded text-[0.6rem] tracking-wider"
+            style={{
+              background: level === 'a2' ? '#002b6d' : '#2e7d5b',
+              color: '#ffffff',
+            }}
+          >
+            {levelLabel(level)}
+          </span>
+          {t(`head_${level}`)}
+        </p>
+        {SKILLS.map(skill => (
+          <a
+            key={skill.slug}
+            href={`/${locale}/oefenexamen/${level}/${skill.slug}`}
+            onClick={onNavigate}
+            className="flex items-start gap-3 px-3 py-2.5 rounded-lg no-underline hover:bg-surface-container-low transition-colors"
+          >
+            <SkillIcon skill={skill.slug} size="sm" />
+            <span className="min-w-0">
+              <span className="block text-sm font-semibold text-on-surface leading-snug">
+                {tSkills(`${skill.key}.name`)} {levelLabel(level)}
+              </span>
+              <span className="block text-xs text-on-surface-variant/80 leading-snug mt-0.5">
+                {t(`exsub_${level}_${skill.slug}`)}
+              </span>
+            </span>
+          </a>
+        ))}
+      </div>
+    );
+  }
+
   return (
     <header
       className="fixed top-0 w-full z-50 border-b border-outline-variant/30"
@@ -168,119 +301,71 @@ export default function Nav() {
         {/* Desktop nav links */}
         {/* `menu:` (1152px, defined in globals.css) not `md:`, and `gap-5` not `gap-7` — measured,
             not guessed. The logo is 234px and the right-hand cluster 362px, so at 1152px the links
-            get 508px and the five items need 486px. At `md` (768px) there was ~344px, where "Over
-            de docent" was already squeezed from 99px to 46px with four items. Below `menu:` the
-            drawer is the full menu — it carries every item including Modules, Docent, login and
-            the language select, which is what makes raising the breakpoint safe.
+            get 508px; the five items here ("Inburgeren · Examens · KNM · Over de docent · Blog")
+            need ~470px. At `md` (768px) there was ~344px, where "Over de docent" was squeezed from
+            99px to 46px. Below `menu:` the drawer is the full menu — it carries every item
+            including Modules, login and the language select, which is what makes this safe.
             **Re-measure if you add an item or lengthen the CTA.** */}
-          <nav className="hidden menu:flex items-center gap-5 text-sm font-semibold" aria-label={t('ariaDesktop')}>
-          {/* The three content sections of §3, each with its Gidsen / Tools headings. */}
-          {CONTENT_SECTIONS.map(section => (
-            <div
-              key={section.id}
-              className="relative"
-              onMouseEnter={() => setOpenMenu(section.id)}
-              onMouseLeave={() => setOpenMenu(null)}
-            >
-              <button
-                type="button"
-                className="flex items-center gap-1.5 text-on-surface-variant hover:text-primary transition-colors whitespace-nowrap"
-                aria-expanded={openMenu === section.id}
-                aria-haspopup="true"
-                onClick={() => setOpenMenu(o => (o === section.id ? null : section.id))}
-              >
-                {t(section.id)}
-                <svg width="10" height="10" viewBox="0 0 12 12" fill="none" aria-hidden="true">
-                  <path d="M3 4.5L6 7.5L9 4.5" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
-                </svg>
-              </button>
-
-              {openMenu === section.id && (
-                <div className="absolute left-0 top-full pt-3 w-72">
-                  <div
-                    className="flex flex-col p-2 rounded-xl bg-surface-container-lowest border border-outline-variant/40"
-                    style={{ boxShadow: '0 12px 32px rgba(0,43,109,0.14)' }}
-                  >
-                    {section.groups.map((group, i) => (
-                      <div key={group.key} className={i > 0 ? 'mt-1 pt-1 border-t border-outline-variant/25' : undefined}>
-                        <p className="px-3 pt-2 pb-1 text-[0.65rem] font-bold uppercase tracking-widest text-on-surface-variant/60">
-                          {t(group.key)}
-                        </p>
-                        {group.items.map(item => (
-                          (item.flag ?? true) && (
-                            <Link
-                              key={item.href}
-                              href={item.href}
-                              className="flex items-center justify-between gap-2 px-3 py-2 rounded-lg no-underline text-on-surface font-semibold hover:bg-surface-container-low transition-colors"
-                            >
-                              {t(item.label)}
-                              {item.soon && (
-                                <span
-                                  className="text-[0.6rem] font-bold uppercase tracking-widest px-1.5 py-0.5 rounded-full shrink-0"
-                                  style={{ background: '#fcecdd', color: '#a24000' }}
-                                >
-                                  {t('badge_soon')}
-                                </span>
-                              )}
-                            </Link>
-                          )
-                        ))}
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              )}
-            </div>
+        <nav className="hidden menu:flex items-center gap-5 text-sm font-semibold" aria-label={t('ariaDesktop')}>
+          {/* Inburgeren — the TOFU section, first because it is where the funnel starts. */}
+          {CONTENT_SECTIONS.filter(s => s.id === 'inburgeren').map(section => (
+            <SingleColumnMenu key={section.id} section={section} />
           ))}
 
-          {/* Oefenexamens — BOFU. **Modules lives in here, not as a top-level item** (owner's
-              decision, 2026-08-20): buying access and practising are the same intent one step
-              apart, so the dropdown holds the four onderdelen and then the way to unlock all ten
-              exams of each. It also takes the header from six items to five. */}
+          {/* Examens — the wide panel: A2 and B1 as columns, then the material, then the foot. */}
           <div
             className="relative"
-            onMouseEnter={() => setOpenMenu('skills')}
+            onMouseEnter={() => setOpenMenu('examens')}
             onMouseLeave={() => setOpenMenu(null)}
           >
             <button
               type="button"
               className="flex items-center gap-1.5 text-on-surface-variant hover:text-primary transition-colors whitespace-nowrap"
-              aria-expanded={openMenu === 'skills'}
+              aria-expanded={openMenu === 'examens'}
               aria-haspopup="true"
-              onClick={() => setOpenMenu(o => (o === 'skills' ? null : 'skills'))}
+              onClick={() => setOpenMenu(o => (o === 'examens' ? null : 'examens'))}
             >
-              {t('oefenexamens')}
-              <svg width="10" height="10" viewBox="0 0 12 12" fill="none" aria-hidden="true">
-                <path d="M3 4.5L6 7.5L9 4.5" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
-              </svg>
+              {t('sec_examens')}
+              <Caret open={openMenu === 'examens'} />
             </button>
 
-            {openMenu === 'skills' && (
-              <div className="absolute left-0 top-full pt-3 w-64">
+            {openMenu === 'examens' && (
+              <div className="absolute left-0 top-full pt-3 w-[42rem]">
                 <div
-                  className="flex flex-col p-2 rounded-xl bg-surface-container-lowest border border-outline-variant/40"
+                  className="p-3 rounded-xl bg-surface-container-lowest border border-outline-variant/40"
                   style={{ boxShadow: '0 12px 32px rgba(0,43,109,0.14)' }}
                 >
-                  <p className="px-3 pt-2 pb-1 text-[0.65rem] font-bold uppercase tracking-widest text-on-surface-variant/60">
-                    {t('group_onderdeel')}
-                  </p>
-                  {SKILLS.map(skill => (
-                    <a
-                      key={skill.slug}
-                      href={`/${locale}/oefenexamen/${DEFAULT_LEVEL}/${skill.slug}`}
-                      className="flex items-center gap-3 px-3 py-2.5 rounded-lg no-underline hover:bg-surface-container-low transition-colors"
-                    >
-                      <SkillIcon skill={skill.slug} size="sm" />
-                      <span className="text-on-surface font-semibold">{tSkills(`${skill.key}.name`)}</span>
-                    </a>
-                  ))}
-                  <div className="mt-1 pt-1 border-t border-outline-variant/25">
-                    <p className="px-3 pt-2 pb-1 text-[0.65rem] font-bold uppercase tracking-widest text-on-surface-variant/60">
-                      {t('group_toegang')}
+                  <div className="grid grid-cols-2 gap-x-4">
+                    {LEVELS.map(level => (
+                      <LevelColumn key={level} level={level} />
+                    ))}
+                  </div>
+
+                  <div className="mt-2 pt-2 border-t border-outline-variant/25">
+                    <p className="px-3 pt-1 pb-1 text-[0.65rem] font-bold uppercase tracking-widest text-on-surface-variant/60">
+                      {t('group_materiaal')}
                     </p>
+                    <div className="grid grid-cols-2 gap-x-4">
+                      {EXAM_MATERIAL.map(item => (
+                        <DropLink key={item.label} item={item} />
+                      ))}
+                    </div>
+                  </div>
+
+                  {/* The foot carries the two intents a level column cannot: start somewhere, or
+                      unlock everything. **Modules is reachable from the header only through here**,
+                      so if this link goes the money page loses its nav entry. */}
+                  <div className="mt-2 pt-3 px-3 border-t border-outline-variant/25 flex items-center justify-between gap-4">
+                    <a
+                      href={`/${locale}/oefenen`}
+                      className="text-sm font-bold no-underline"
+                      style={{ color: '#a24000' }}
+                    >
+                      {t('all_exams')} →
+                    </a>
                     <Link
                       href="/premium"
-                      className="block px-3 py-2 rounded-lg no-underline text-on-surface font-semibold hover:bg-surface-container-low transition-colors"
+                      className="text-xs font-semibold text-on-surface-variant hover:text-primary transition-colors no-underline"
                     >
                       {t('premium')}
                     </Link>
@@ -290,9 +375,16 @@ export default function Nav() {
             )}
           </div>
 
-          <Link href="/docent" className="text-on-surface-variant hover:text-primary transition-colors no-underline whitespace-nowrap">
-            {t('docent')}
-          </Link>
+          {/* KNM and Over de docent — single-column panels. */}
+          {CONTENT_SECTIONS.filter(s => s.id !== 'inburgeren').map(section => (
+            <SingleColumnMenu key={section.id} section={section} />
+          ))}
+
+          {FEATURES.blog && (
+            <Link href="/blog" className="text-on-surface-variant hover:text-primary transition-colors no-underline whitespace-nowrap">
+              {t('blog')}
+            </Link>
+          )}
         </nav>
 
         {/* Right: lang switcher + auth + CTA + hamburger.
@@ -342,100 +434,85 @@ export default function Nav() {
         </div>
       </div>
 
-      {/* Mobile menu */}
+      {/* Mobile menu — the mockup's accordion. Every section is a row that opens in place, the
+          level is a sub-heading rather than an extra layer of clicks, and the orange CTA sits at
+          the bottom where the thumb is. */}
       {mobileOpen && (
         <div
-          className="menu:hidden border-t border-outline-variant/30"
+          className="menu:hidden border-t border-outline-variant/30 max-h-[calc(100dvh-4.5rem)] overflow-y-auto"
           style={{ background: '#f8f9fb' }}
           aria-label={t('ariaMobile')}
         >
-          <nav className="flex flex-col px-6 py-3 gap-1">
+          <nav className="flex flex-col px-4 py-2">
+            <MobileRow id="inburgeren" label={t('sec_inburgeren')}>
+              {CONTENT_SECTIONS[0].items.map(item => (
+                <DropLink key={item.label} item={item} onNavigate={() => setMobileOpen(false)} />
+              ))}
+            </MobileRow>
+
+            <MobileRow id="examens" label={t('sec_examens')}>
+              {LEVELS.map(level => (
+                <LevelColumn key={level} level={level} onNavigate={() => setMobileOpen(false)} />
+              ))}
+              <p className="px-3 pt-2 pb-1 text-[0.65rem] font-bold uppercase tracking-widest text-on-surface-variant/60">
+                {t('group_materiaal')}
+              </p>
+              {EXAM_MATERIAL.map(item => (
+                <DropLink key={item.label} item={item} onNavigate={() => setMobileOpen(false)} />
+              ))}
+              <a
+                href={`/${locale}/oefenen`}
+                onClick={() => setMobileOpen(false)}
+                className="block px-3 pt-3 pb-1 text-sm font-bold no-underline"
+                style={{ color: '#a24000' }}
+              >
+                {t('all_exams')} →
+              </a>
+              <Link
+                href="/premium"
+                onClick={() => setMobileOpen(false)}
+                className="block px-3 py-2 text-sm font-semibold text-on-surface-variant no-underline"
+              >
+                {t('premium')}
+              </Link>
+            </MobileRow>
+
+            {CONTENT_SECTIONS.filter(s => s.id !== 'inburgeren').map(section => (
+              <MobileRow key={section.id} id={section.id} label={t(`sec_${section.id}`)}>
+                {section.items.map(item => (
+                  <DropLink key={item.label} item={item} onNavigate={() => setMobileOpen(false)} />
+                ))}
+              </MobileRow>
+            ))}
+
+            {FEATURES.blog && (
+              <Link
+                href="/blog"
+                onClick={() => setMobileOpen(false)}
+                className="border-b border-outline-variant/20 px-3 py-3.5 text-base font-semibold text-on-surface no-underline"
+              >
+                {t('blog')}
+              </Link>
+            )}
+
             <Link
               href="/login"
               onClick={() => setMobileOpen(false)}
-              className="flex items-center gap-2 text-primary font-bold text-base px-3 py-3 rounded-xl hover:bg-surface-container-low transition-colors no-underline border-b border-outline-variant/20 mb-1"
+              className="border-b border-outline-variant/20 px-3 py-3.5 text-base font-semibold text-primary no-underline"
             >
               {t('login')}
             </Link>
 
-            {/* The same `CONTENT_SECTIONS` the desktop panel walks. The section name is the
-                heading here and the group name a sub-heading, because a drawer has no hover. */}
-            {CONTENT_SECTIONS.map(section => (
-              <div key={section.id} className="border-b border-outline-variant/20 pb-2 mb-1">
-                <p className="text-xs font-bold uppercase tracking-widest text-primary px-3 pt-2 pb-1">
-                  {t(section.id)}
-                </p>
-                {section.groups.map(group => (
-                  <div key={group.key}>
-                    <p className="text-[0.65rem] font-bold uppercase tracking-widest text-on-surface-variant/50 px-3 pt-1.5 pb-0.5">
-                      {t(group.key)}
-                    </p>
-                    {group.items.map(item => (
-                      (item.flag ?? true) && (
-                        <Link
-                          key={item.href}
-                          href={item.href}
-                          onClick={() => setMobileOpen(false)}
-                          className="flex items-center justify-between gap-2 text-on-surface-variant font-semibold text-base px-3 py-2.5 rounded-xl hover:bg-surface-container-low hover:text-primary transition-colors no-underline"
-                        >
-                          {t(item.label)}
-                          {item.soon && (
-                            <span
-                              className="text-[0.6rem] font-bold uppercase tracking-widest px-1.5 py-0.5 rounded-full shrink-0"
-                              style={{ background: '#fcecdd', color: '#a24000' }}
-                            >
-                              {t('badge_soon')}
-                            </span>
-                          )}
-                        </Link>
-                      )
-                    ))}
-                  </div>
-                ))}
-              </div>
-            ))}
-
-            {/* Oefenexamens, mirroring the desktop dropdown: the four onderdelen, then access. */}
-            <div className="border-b border-outline-variant/20 pb-2 mb-1">
-              <p className="text-xs font-bold uppercase tracking-widest text-primary px-3 pt-2 pb-1">
-                {t('oefenexamens')}
-              </p>
-              <p className="text-[0.65rem] font-bold uppercase tracking-widest text-on-surface-variant/50 px-3 pt-1.5 pb-0.5">
-                {t('group_onderdeel')}
-              </p>
-              {SKILLS.map(skill => (
-                <a
-                  key={skill.slug}
-                  href={`/${locale}/oefenexamen/${DEFAULT_LEVEL}/${skill.slug}`}
-                  onClick={() => setMobileOpen(false)}
-                  className="flex items-center gap-3 text-on-surface-variant font-semibold text-base px-3 py-2.5 rounded-xl hover:bg-surface-container-low hover:text-primary transition-colors no-underline"
-                >
-                  <SkillIcon skill={skill.slug} size="sm" />
-                  {tSkills(`${skill.key}.name`)}
-                </a>
-              ))}
-              <p className="text-[0.65rem] font-bold uppercase tracking-widest text-on-surface-variant/50 px-3 pt-1.5 pb-0.5">
-                {t('group_toegang')}
-              </p>
-              <Link
-                href="/premium"
-                onClick={() => setMobileOpen(false)}
-                className="block text-on-surface-variant font-semibold text-base px-3 py-2.5 rounded-xl hover:bg-surface-container-low hover:text-primary transition-colors no-underline"
-              >
-                {t('premium')}
-              </Link>
-            </div>
-
-            {/* Blog is listed once, under the Inburgering group above — not again here. */}
-            <Link
-              href="/docent"
+            <a
+              href={`/${locale}/oefenen`}
               onClick={() => setMobileOpen(false)}
-              className="text-on-surface-variant font-semibold text-base px-3 py-2.5 rounded-xl hover:bg-surface-container-low hover:text-primary transition-colors no-underline"
+              className="mt-3 mb-1 block text-center bg-secondary-container px-4 py-3 rounded-xl font-bold text-sm button-inner-glow no-underline"
+              style={{ color: '#ffffff' }}
             >
-              {t('docent')}
-            </Link>
+              {t('startDesktop')}
+            </a>
 
-            <div className="pt-2 mt-1 border-t border-outline-variant/20">
+            <div className="pt-2 pb-3">
               <select
                 aria-label={t('langLabel')}
                 value={locale}
@@ -453,4 +530,67 @@ export default function Nav() {
       )}
     </header>
   );
+
+  /** A single-column dropdown: Inburgeren, KNM, Over de docent. */
+  function SingleColumnMenu({ section }: { section: NavSection }) {
+    const open = openMenu === section.id;
+    return (
+      <div
+        className="relative"
+        onMouseEnter={() => setOpenMenu(section.id)}
+        onMouseLeave={() => setOpenMenu(null)}
+      >
+        <button
+          type="button"
+          className="flex items-center gap-1.5 text-on-surface-variant hover:text-primary transition-colors whitespace-nowrap"
+          aria-expanded={open}
+          aria-haspopup="true"
+          onClick={() => setOpenMenu(o => (o === section.id ? null : section.id))}
+        >
+          {t(`sec_${section.id}`)}
+          <Caret open={open} />
+        </button>
+
+        {open && (
+          <div className="absolute left-0 top-full pt-3 w-80">
+            <div
+              className="flex flex-col p-2 rounded-xl bg-surface-container-lowest border border-outline-variant/40"
+              style={{ boxShadow: '0 12px 32px rgba(0,43,109,0.14)' }}
+            >
+              {section.items.map(item => (
+                (item.flag ?? true) && <DropLink key={item.label} item={item} />
+              ))}
+              {section.note && (
+                <p
+                  className="mx-1 mt-1 mb-0.5 px-3 py-2 rounded-lg text-xs font-medium leading-snug"
+                  style={{ background: '#f2f8f5', color: '#2e7d5b' }}
+                >
+                  {t(`note_${section.id}`)}
+                </p>
+              )}
+            </div>
+          </div>
+        )}
+      </div>
+    );
+  }
+
+  /** One accordion row in the drawer. */
+  function MobileRow({ id, label, children }: { id: string; label: string; children: React.ReactNode }) {
+    const open = mobileSection === id;
+    return (
+      <div className="border-b border-outline-variant/20">
+        <button
+          type="button"
+          onClick={() => setMobileSection(o => (o === id ? null : id))}
+          aria-expanded={open}
+          className={`w-full flex items-center justify-between px-3 py-3.5 text-base font-semibold transition-colors ${open ? 'text-primary' : 'text-on-surface'}`}
+        >
+          {label}
+          <Caret open={open} />
+        </button>
+        {open && <div className="pb-2">{children}</div>}
+      </div>
+    );
+  }
 }

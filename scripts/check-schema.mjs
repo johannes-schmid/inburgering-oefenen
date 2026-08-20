@@ -53,6 +53,12 @@ const PAGES = [
   // a kennisgids is a maintained reference page) plus its breadcrumbs and FAQ. Any *draft* guide
   // must carry no structured data at all: rich data on a noindex page contradicts the meta tag.
   { path: '/nl/inburgering/inburgering-stappenplan', expect: ['Article', 'BreadcrumbList', 'FAQPage'] },
+  // The three M2 spokes, published 2026-08-20. Listed individually rather than trusted to the
+  // pillar's row: they are the four menu entries, so a spoke that silently loses its Article node
+  // is a header link into a page with no structured data at all.
+  { path: '/nl/inburgering/moet-ik-inburgeren',       expect: ['Article', 'BreadcrumbList', 'FAQPage'] },
+  { path: '/nl/inburgering/welke-wet-en-welke-route', expect: ['Article', 'BreadcrumbList', 'FAQPage'] },
+  { path: '/nl/inburgering/wat-kost-inburgeren',      expect: ['Article', 'BreadcrumbList', 'FAQPage'] },
   // B1 is noindex — forty empty slots. Rich data there would contradict the meta tag.
   { path: '/nl/oefenexamen/b1/lezen',   expect: [], forbid: ['Course'] },
   { path: '/en/premium',                expect: ['Product'] },

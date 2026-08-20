@@ -9,9 +9,15 @@
  */
 import type { Guide } from './types';
 import inburgeringStappenplan from './inburgering-stappenplan';
+import moetIkInburgeren from './moet-ik-inburgeren';
+import welkeWetEnWelkeRoute from './welke-wet-en-welke-route';
+import watKostInburgeren from './wat-kost-inburgeren';
 
 export const GUIDES: Guide[] = [
   inburgeringStappenplan,
+  moetIkInburgeren,
+  welkeWetEnWelkeRoute,
+  watKostInburgeren,
 ];
 
 export type { Guide, GuideSection, GuideFaq, GuideLocale, ResolvedGuide } from './types';

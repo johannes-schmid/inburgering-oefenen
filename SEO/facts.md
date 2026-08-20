@@ -333,3 +333,57 @@ where flagged (semi-official).
   (IND-uitvoeringstoets feb 2026). Niet als geldend recht publiceren.
   https://ind.nl/nl/met-een-verblijfsvergunning-wonen-in-nederland/inburgering-bij-sterkere-verblijfsvergunning-en-naturalisatie
 - Turkse nationaliteit: sinds 1-1-2022 niet meer uitgezonderd (rijksoverheid).
+
+---
+
+## 11. Kosten, lenen en boetes — VERIFIED 2026-08-20
+
+Verified for the Inburgering spokes (`data/guides/moet-ik-inburgeren.ts`,
+`welke-wet-en-welke-route.ts`, `wat-kost-inburgeren.ts`). §4's volatility rule applies to every
+euro figure here: write "op dit moment" with the DUO link beside it.
+
+### Afzeggen en herkansen
+- Verzetten of afzeggen kan **tot 7 dagen** voor het examen; dan geld terug en een gratis poging
+  blijft staan. Later afmelden of niet komen opdagen → geen restitutie (Examenreglement art. 11
+  lid 11; ook §5 hierboven). De manuscript-formulering *"tot 1 week voor het examen"* zegt
+  hetzelfde en is toegestaan, maar 7 dagen is de bron.
+
+### Lenen bij DUO — https://www.inburgeren.nl/inburgeren-betalen/lenen-bij-duo.jsp
+- **Asielstatushouders kunnen niet lenen** — de gemeente betaalt hun cursus.
+- Wel te betalen uit de lening: cursus A2/B1/B2, alfabetiseringscursus, examens bij een erkende
+  instelling. Aanvragen via Mijn Inburgering; school moet op zoekinburgerschool.nl staan.
+- *"Geld lenen betekent dat DUO uw cursus of examen betaalt. U krijgt het geld niet op uw
+  rekening."*
+- Terugbetalen met rente; het rentepercentage wisselt per jaar. ❌ **DUO publiceert op die pagina
+  geen maximumbedrag** — niet verzinnen, en het rentepercentage niet in een gids zetten (het
+  verandert jaarlijks en veroudert stil).
+
+### Boete — https://www.inburgeren.nl/u-gaat-inburgeren/boete.jsp
+- **"Asielstatushouders krijgen nooit een boete."** DUO mag hun ook **geen lening terugvorderen**.
+  Dit is de belangrijkste zin op de pagina en hoort bovenaan, niet onder de bedragen.
+- Grondslag: **Raad van State, 9 juli 2025**, in lijn met het HvJ-EU-arrest van 4 februari 2025.
+  DUO pauzeerde boetes en terugvorderingen voor asielstatushouders al in februari 2025.
+  https://www.rijksoverheid.nl/actueel/nieuws/2025/07/09/uitspraak-raad-van-state-in-zaak-boetes-en-leningen-inburgering
+- Maximumbedragen voor **overige** inburgeraars — Wet 2021: leerroute **max. €1.000**, PVT **€340**,
+  MAP **€340**. Wet 2013: inburgeringsdiploma **max. €1.250**, PVT **€340**.
+- Na een boete volgt **extra tijd** om alsnog in te burgeren (6 maanden tot 2 jaar, afhankelijk van
+  behaalde examens of gevolgde lesuren). Publiceer die spreiding alleen met die voorwaarde erbij.
+
+### Extra tijd (verlenging) — https://www.inburgeren.nl/extra-tijd/
+- Situaties die extra tijd kunnen geven: eerst leren lezen en schrijven, een opleiding volgen,
+  ziekte, overlijden in de familie, een bevalling, dakloosheid, verblijf in een instelling.
+- *"U kunt in een periode maar 1 keer extra tijd krijgen"*, ook als meerdere situaties tegelijk
+  gelden.
+- ❌ **DUO noemt op die pagina geen vaste verlengingsduur.** De "max. 2 jaar" op het aangeleverde
+  bronbeeld is niet te bronnen en staat niet in de gidsen. §9's regel blijft: schrijf de
+  afwezigheid, verzin geen getal.
+
+### Correcties op de aangeleverde manuscripten (20-08-2026)
+1. **"praktijkonderwijs" geeft geen vrijstelling** — zie §10; ook mbo-1/entree niet.
+2. **"minder dan acht jaar Nederlands onderwijs"** stond omgekeerd in manuscript 1: 8 jaar of méér
+   tijdens de leerplicht is juist de *vrijstelling*.
+3. **Pensioengerechtigde leeftijd** ontbrak in de "hoeft niet"-lijst.
+4. **Z-route 800 + 800 geldt alleen voor asielstatushouders** (§10, Besluit art. 3.14).
+5. **"Onderwijsroute duurt ongeveer 1,5 jaar"** — niet te bronnen, geschrapt.
+6. **Wet 2013 "3 jaar"** — niet geverifieerd voor die cohorten; de gidsen verwijzen naar de brief.
+7. **MAP zit niet in de onderwijsroute** (§10, Wet art. 8 lid 3).

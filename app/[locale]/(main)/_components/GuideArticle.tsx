@@ -79,7 +79,7 @@ export default async function GuideArticle({
       breadcrumbs(
         locale,
         tB('home'),
-        [{ name: tB(guide.section), path: guide.section }, { name: guide.breadcrumb }],
+        [{ name: tB(guide.section), path: guide.section }, { name: lg.breadcrumb }],
         selfUrl,
       ),
       ...(lg.faq.length
@@ -104,7 +104,7 @@ export default async function GuideArticle({
         items={[
           { label: tB('home'), href: '/' },
           { label: tB(guide.section), href: hub },
-          { label: guide.breadcrumb },
+          { label: lg.breadcrumb },
         ]}
       />
 
@@ -152,7 +152,7 @@ export default async function GuideArticle({
                   </Link>
                 </p>
                 <p className="text-xs" style={{ color: 'rgba(255,255,255,0.5)' }}>
-                  NT2-docent · {guide.dateLabel} · {t('reading_time', { minutes: guide.readingMinutes })}
+                  {t('author_role')} · {lg.dateLabel} · {t('reading_time', { minutes: guide.readingMinutes })}
                 </p>
               </div>
             </div>
