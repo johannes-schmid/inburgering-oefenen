@@ -17,7 +17,7 @@ import { createAdminClient } from './supabase/admin';
 import type { Plan } from './entitlements';
 
 /** Free graded exercises per rubric skill, before the paywall. */
-export const FREE_GRADED_PER_SKILL = 2;
+export const FREE_GRADED_PER_SKILL = 10;
 
 /**
  * Sliding-window ceilings. Generous against real use — a candidate working through a 16-task

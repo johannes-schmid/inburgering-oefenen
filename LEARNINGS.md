@@ -1520,3 +1520,18 @@ instead of two), check-schema OK.
 the offender is often not the thing that looks countable. And prefer a named custom breakpoint with
 the measurement written down over the nearest stock one: the stock value is a guess about someone
 else's layout.
+
+## 2026-08-20 — grading 500'd for every real (non-admin) user
+**Changed:** `app/api/grade-open/route.ts` — the per-criterion upsert into `open_criterion_scores`
+now uses `createAdminClient()` instead of the cookie client.
+**Outcome:** SUCCESS (tsc clean, next build clean, 129 unit tests green)
+**What went wrong:** `open_criterion_scores` carries exactly two policies — owner SELECT and admin
+FOR ALL. `lib/supabase/server` is built with the service key but `@supabase/ssr` sends the user's
+JWT, so on an authenticated request PostgREST runs as `authenticated` and RLS applies. The write
+therefore only ever succeeded for an admin, which is the only account it was tested with. A real
+customer saw "Voorbeoordeling mislukt: Cijfers opslaan mislukt: new row violates row-level security
+policy". A user-writable policy would have been the wrong fix: a candidate must not be able to
+write their own marks from the browser.
+**Lesson:** a server route that runs under the caller's JWT is subject to RLS. Any table with no
+owner-INSERT policy must be written with the service key — and testing a write path while signed in
+as an admin proves nothing, because the admin FOR ALL policy covers every table here.

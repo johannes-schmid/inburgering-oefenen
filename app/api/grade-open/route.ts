@@ -307,7 +307,12 @@ export async function POST(request: Request) {
       source: 'ai' as const,
     }));
 
-    const { error: scoreErr } = await supabase
+    // Service key, deliberately. `open_criterion_scores` has a SELECT policy for the owner and a
+    // FOR ALL policy for admins, and nothing else — a candidate must never be able to write their
+    // own marks from the browser. Since `lib/supabase/server` runs as `authenticated` whenever a
+    // session cookie is present, this upsert was RLS-denied for every non-admin user and surfaced
+    // as "Voorbeoordeling mislukt" on production. Ownership was already checked above.
+    const { error: scoreErr } = await createAdminClient()
       .from('open_criterion_scores')
       .upsert(rows, { onConflict: 'submission_id,criterion_key,source' });
 
