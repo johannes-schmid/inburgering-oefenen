@@ -14,7 +14,19 @@ Het inburgeringsexamen op A2-niveau bestaat uit vier taalonderdelen. Lezen en Lu
 - [Spreken oefenen](https://inburgeringoefenen.nl/nl/oefenexamen/a2/spreken): 10 oefenexamens Spreken A2, neem je antwoord op en krijg feedback
 - [Prijzen](https://inburgeringoefenen.nl/nl/premium): €9,95 per maand per onderdeel, of €29,95 per maand voor alle vier. Het eerste oefenexamen van elk onderdeel is gratis met een account.
 - [Over de docent](https://inburgeringoefenen.nl/nl/docent): Wie de examens schrijft en controleert
+- [Inburgeren in Nederland](https://inburgeringoefenen.nl/nl/inburgering): Uitleg over het inburgeringstraject — de stappen, de examens, de kosten en welke wet voor je geldt
+- [Inburgering: het complete stappenplan](https://inburgeringoefenen.nl/nl/inburgering/inburgering-stappenplan): Het hele traject in 7 stappen, van de brief van DUO tot het diploma — elk cijfer met officiële bron
+- [KNM uitgelegd](https://inburgeringoefenen.nl/nl/knm): Wat Kennis van de Nederlandse Maatschappij is en waar de vragen over gaan
+- [Taalexamens A2/B1](https://inburgeringoefenen.nl/nl/taalexamens): De vier taalonderdelen per niveau — wat je moet kunnen en hoe het examen eruitziet
 
 ## Over de content
 
-Alle oefenexamens zijn geschreven of gecontroleerd door een gecertificeerde NT2-docent die wekelijks inburgeringsstudenten lesgeeft. Feedback op Schrijven en Spreken wordt gegeven op basis van een door de docent opgestelde beoordelingsrubric; de docent controleert de beoordelingen en stuurt de rubric bij.
+De **oefenexamens** zijn geschreven of gecontroleerd door een gecertificeerde NT2-docent die wekelijks inburgeringsstudenten lesgeeft. Feedback op Schrijven en Spreken wordt gegeven op basis van een door de docent opgestelde beoordelingsrubric; de docent controleert de beoordelingen en stuurt de rubric bij.
+
+De informatieve **kennisgidsen** onder /inburgering, /knm en /taalexamens worden pas gepubliceerd
+nadat de docent ze heeft gecontroleerd; elk getal daarin heeft een bronvermelding met datum. De
+claim "geen AI" geldt de examencontent — die is niet AI-gegenereerd.
+
+Sommige pagina's zijn aangekondigd maar nog niet gebouwd (de tijdlijn-maker, de woordenlijsten en
+de grammaticapagina's). Die zijn met opzet `noindex` en staan niet in de sitemap zolang ze geen
+inhoud hebben.

@@ -28,6 +28,29 @@ export function courseId(locale: string, level: Level, skill: SkillSlug): string
   return `${absUrl(locale, `oefenexamen/${level}/${skill}`)}#course`;
 }
 
+/**
+ * `alternates` for a route whose slug is **not** translated — canonical plus one hreflang per
+ * locale plus `x-default`.
+ *
+ * Fourteen `(main)` pages hand-roll this block today and no helper existed; new routes use this
+ * one. It deliberately does not cover the translated-slug pages (`/premium`, `/docent`,
+ * `/contact`), whose per-locale paths cannot be derived by interpolating a locale — those keep
+ * their literal maps.
+ *
+ * `path` carries no leading slash: `alternatesFor('nl', 'inburgering')`.
+ */
+export function alternatesFor(locale: string, path: string) {
+  return {
+    canonical: absUrl(locale, path),
+    languages: {
+      nl: absUrl('nl', path),
+      en: absUrl('en', path),
+      ar: absUrl('ar', path),
+      'x-default': absUrl('nl', path),
+    },
+  };
+}
+
 export type Crumb = {
   name: string;
   /** Locale-prefixed path without the leading slash. Omit for the current (last) page. */

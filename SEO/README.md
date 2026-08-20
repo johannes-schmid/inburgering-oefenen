@@ -87,6 +87,25 @@ post written at native journalistic level fails its audience regardless of how w
 - A locale without a translated body is `noindex`ed automatically via `hasTranslation()` — leave
   it untranslated rather than shipping a thin duplicate.
 
+### 7. Where a *kennisgids* lives — not the blog
+
+A guide is not a post. `/inburgering/[slug]` and `/knm/[thema]` are the TOFU/MOFU pillar-cluster
+surfaces; the blog stays for standalone explainers.
+
+- Content is **data**: one file in `data/guides/`, one import line in `data/guides/index.ts`. Never
+  a new route file. `data/guides/inburgering-stappenplan.ts` is the worked example.
+- **It publishes only when `status: 'reviewed'`,** with `reviewedBy` and `reviewedOn` filled in.
+  Until then it is `noindex`, unlisted on its hub, out of the sitemap and carries no structured
+  data — reachable by URL so the docent can read it, and nothing more. AI-drafted is allowed
+  (owner's decision, 2026-08-19); publishing before the review is not.
+- The whole on-page checklist below applies unchanged, plus: `title` ≤60 characters and
+  `description` 140–160 in **every locale the guide declares** — `tests-unit/guides.test.ts` fails
+  the build otherwise, and also fails on a §9 claim, an unsourced fact box, or a `related` slug
+  that resolves to nothing.
+- **Slugs are identical across locales.** A per-locale guide slug 404s on language switch.
+- Before writing a spoke, check the blog does not already own the query.
+  `taalniveaus-a1-a2-b1-nederlands` owns "A2 of B1 / taalniveaus"; link it, do not rewrite it.
+
 ---
 
 ## On-page checklist — verify every item before declaring a post done

@@ -49,6 +49,30 @@ export const routing = defineRouting({
       en: '/premium',
       ar: '/الباقة-المميزة',
     },
+    /* Kennisgidsen — the two guide sections (M1, 2026-08-19).
+     *
+     * Slugs are NOT translated, deliberately. The locale switcher in `components/Nav.tsx` calls
+     * `router.replace(pathname, { locale })` with the concrete path, so a per-locale slug
+     * type-checks here and then 404s the moment a reader switches language. The blog already
+     * obeys that; guides do too. */
+    '/inburgering': '/inburgering',
+    '/inburgering/[slug]': '/inburgering/[slug]',
+    '/knm': '/knm',
+    '/knm/[thema]': '/knm/[thema]',
+    '/taalexamens': '/taalexamens',
+    '/taalexamens/[slug]': '/taalexamens/[slug]',
+    /* Tools and free-practice surfaces (2026-08-20).
+     *
+     * `/inburgering/tools/…` is its own segment so a tool can never collide with a guide slug.
+     * The three below *are* static children of a `[slug]`/`[thema]` route and win over it, which
+     * is well-defined App Router behaviour but implicit — `tests-unit/guides.test.ts` holds the
+     * reserved-slug invariant that stops a guide being authored at one of these paths.
+     *
+     * All of these render a placeholder and are `noindex` until they do something. */
+    '/inburgering/tools/tijdlijn': '/inburgering/tools/tijdlijn',
+    '/knm/woordenlijst': '/knm/woordenlijst',
+    '/taalexamens/woordenlijst': '/taalexamens/woordenlijst',
+    '/taalexamens/grammatica': '/taalexamens/grammatica',
     '/oefenen': '/oefenen',
     '/oefenen/[skill]': '/oefenen/[skill]',
     // The level is part of the path at both levels, including A2 — see the redirects in

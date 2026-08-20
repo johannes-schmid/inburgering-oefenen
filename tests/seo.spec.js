@@ -18,6 +18,9 @@ const PAGES = [
   '/nl/oefenexamen/a2/spreken',
   '/nl/premium',
   '/nl/docent',
+  '/nl/inburgering',
+  '/nl/knm',
+  '/nl/taalexamens',
 ];
 
 test.describe('metadata', () => {

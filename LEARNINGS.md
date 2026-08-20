@@ -1387,3 +1387,136 @@ catch those — it is **one `@id` with two definitions across pages**, which is 
 still wrong. Give every node a single owning page and reference it elsewhere, and assert it in a
 script. And a sitemap is only "complete" once every URL in it has been fetched: an entry pointing at
 a 404 looks identical to a correct one in the file.
+
+## 2026-08-19 — M1: kennisgids-architectuur, en een taalwissel die nooit werkte
+**Changed:** new guide pipeline (`data/guides/{types,helpers,index}.ts` + one file per guide),
+four routes (`(main)/inburgering{,/[slug]}`, `(main)/knm{,/[thema]}`) over two shared components
+(`(main)/_components/{GuideHub,GuideArticle}.tsx`), nav + footer + homepage hero repositioned,
+`alternatesFor()` in `lib/schema.ts`, sitemap and `scripts/check-schema.mjs` extended,
+`tests-unit/guides.test.ts` (16 cases) and five new Playwright cases.
+**Outcome:** SUCCESS
+**What worked / went wrong:**
+- Copying the blog's *shape* (content as data, generic route, `hasTranslation` → noindex) meant the
+  guide pipeline needed no new ideas. Diverging on storage (one file per guide) was the only real
+  decision, and it was about review diffs, not code.
+- Expressing the docent-review gate as `status` + a unit test that refuses a `reviewed` guide with
+  no named reviewer is what makes the owner's "AI-concept → docentreview → publicatie" decision
+  hold. The same rule written only in a comment is the rule that gets skipped.
+- **`localhost:3001` was the knm-website dev server again**, exactly as in M0. Its `<title>` gave
+  it away on the first curl. Used 3011 and left their process alone.
+- **Verifying the language switcher in a real browser found a bug nothing else could see.** It had
+  never worked on any dynamic route — blog posts, tasters, exam overviews — because
+  `usePathname()` returns the route *template* and `router.replace` was called without `params`.
+  The select changed, the URL did not, no error anywhere. The code comment asserted the opposite
+  and called the cast safe.
+- Fetching every new URL also surfaced a soft 404: `notFound()` in a `[locale]/…/[slug]` route
+  returns HTTP 200 with the not-found body, on production too. Reported, not fixed — project-wide.
+- **The menu was restructured after the fact, on evidence.** The first build gave each content
+  section its own top-level item; looking at how comparable products actually do it (theorie.nl,
+  leernederlands.online, IELTS) showed the category convention is one content dropdown with group
+  headings, and that "Resources" is a footer label there — including in the example that prompted
+  the question. Cheap to change because the routes never moved: only labels and nesting did.
+- **The mobile menu then listed Blog twice**, because the duplicate top-level link was removed on
+  desktop and not in the mobile block, where every label exists a second time. Only the screenshot
+  showed it.
+**Lesson:** a comment that explains why something is safe is a claim, not evidence. When a comment
+says "the cast is safe because at runtime X", go and observe X — here one browser interaction
+disproved a comment that had been protecting a broken feature on seven live pages. And when a
+verification step reads "switch language / fetch every URL", it earns its place precisely because it
+exercises what unit tests and `tsc` cannot see.
+
+## 2026-08-19 — M2 pillar: het complete stappenplan, from manuscript to published guide
+**Changed:** `data/guides/inburgering-stappenplan.ts` (owner's manuscript → full visual pillar,
+`status: 'reviewed'`), `SEO/facts.md` §10 (the entire Wi2021 traject, verified against
+wetten.overheid.nl/inburgeren.nl/duo.nl/rijksoverheid), `app/globals.css` (kennisgids visual
+vocabulary: `.docent-note`, `.guide-steps`, `.guide-cards`, `.yesno-grid`, `.guide-cta-inline`),
+`scripts/check-schema.mjs` + `tests/public.spec.js` (draft-gate assertions flipped to their
+published forms), `GuideArticle.tsx` (locale-formatted review date), `docs/MILESTONES.html`,
+`llms.txt`, `CLAUDE.md`.
+**Outcome:** SUCCESS — tsc clean, build green, 126 unit tests, 62 e2e passed (the one failure is
+the documented pre-existing portal fixture), check-schema OK on 16 routes with Article+FAQPage on
+the guide, sitemap carries the NL URL only.
+**What worked / went wrong:**
+- **A hand-written manuscript needed seven factual corrections**, found only because every number
+  was verified before publication: KNM has 8 thema's (the manuscript said 7 in the FAQ and listed
+  8 in the body — internally inconsistent), "praktijkonderwijs" is on no official
+  vrijstellingslijst, the "12 weken" PIP extension does not exist (Besluit 5.3: only pending
+  third-party information, then 2 weeks after receipt), the Z-route's 800+800 holds for
+  asielstatushouders only, the termijn starts the day *after* the PIP's dagtekening, and
+  naturalisatie does not require B1 (pending wetsvoorstel). The one claim that looked most likely
+  wrong — "uitslag tot 16 weken", contradicting facts.md's sourced "binnen 8 weken" — turned out
+  to be *right*: an official DUO nieuwsbericht of 31-07-2026, scoped to Schrijven/Spreken A2.
+- The three research agents returned verbatim quotes with URLs, which made facts.md §10 writable
+  in one pass. The Besluit inburgering 2021 is BWBR0045555 — the first guessed ID 404'd.
+- The 390px screenshot showed the docent-note squeezed to a few words per line inside the
+  indented step timeline; fixed with a floated avatar and a tighter step gutter under 640px.
+**Lesson:** "handgeschreven" is a provenance, not a verification. The docent's own text held the
+same class of unsourced numbers an AI draft would have — and one number everyone would have
+"corrected" back to the official 8 weeks was the manuscript's most valuable, most current fact.
+Verify in both directions: against the claim *and* against your own fact sheet going stale.
+
+## 2026-08-20 — the menu implements §3; first tool and free-practice placeholders
+**Changed:** `components/Nav.tsx` (six top-level items from one `CONTENT_SECTIONS` definition,
+`md:`→`xl:`, `gap-5`), `data/guides/{types,helpers}.ts` (`GuideSection` gains `taalexamens`; new
+`guideHref`/`hubHref`), `_components/{GuideHub,GuideArticle}.tsx`, new
+`data/planned-surfaces.ts` + `_components/PlannedSurface.tsx`, six new routes
+(`/taalexamens`, `/taalexamens/[slug]`, four placeholders), `i18n/routing.ts`, `app/sitemap.ts`,
+`components/Footer.tsx`, `scripts/check-schema.mjs`, `tests/{public,seo}.spec.js`,
+`tests-unit/guides.test.ts`, `messages/{nl,en,ar}.json`, docs.
+**Outcome:** SUCCESS — tsc clean, build green, 129 unit tests, 64 e2e passed (was 62; the one
+failure is the documented pre-existing portal fixture), check-schema OK on 22 routes, sitemap holds
+three hubs × three locales and zero placeholders.
+**What worked / went wrong:**
+- **Measuring the header before designing it changed the design.** Six nav items need ~680px; the
+  bar had ~612px at its widest and ~344px at the `md` breakpoint where the desktop nav lived. Four
+  items were *already* squeezing "Over de docent" from 99px to 46px — a pre-existing squeeze nobody
+  had noticed. Moving to `xl:`, `gap-5` and a shorter label fixed it; verified at six viewports.
+  An estimate would have shipped an overflowing header.
+- **Adding a third enum value exposed four latent wrong-URL branches.** `section === 'inburgering'
+  ? … : '/knm'` appeared four times and every one type-checks against a third section while routing
+  it to the wrong page. Replaced with one `switch` with a `never` default. The first attempt used a
+  lookup table and `tsc` rejected it — correctly: `next-intl`'s typed `Link` correlates `pathname`
+  with `params`, so the return type must stay a discriminated union, and the table had widened it.
+  **The type error was the design review.**
+- **A static child route silently shadows its dynamic sibling.** `/knm/woordenlijst` wins over
+  `/knm/[thema]`, so a guide authored at that slug would pass every test and serve the placeholder.
+  Pinned by deriving the reserved set from the placeholder registry, so it cannot drift.
+- **Found while exploring: `data/woordkaarten.ts` already holds 366 KNM words across 7 themes with
+  EN/AR/TR translations.** The KNM vocabulary page is a surfacing job, not an authoring one. Also
+  found: `lezen-examen-inburgering-a2` and `luisteren-examen-inburgering-a2` already exist, so two
+  of M4's four planned per-onderdeel guides are written — the hub links them instead.
+- Three subagents died on API 529s in a row; did the exploration and the design directly instead.
+  Cheaper than retrying a flaky dependency.
+**Lesson:** when a decision reverses an earlier one, rewrite the comment that argued for the old
+one in the same commit — a stale rationale sitting next to contradicting code is worse than no
+comment, because the next reader trusts it. And widening a union is not a small change: grep for
+every branch on it first, because the branches that are *wrong* rather than *incomplete* compile
+silently.
+
+## 2026-08-20 — the header, compacted (same day, second pass)
+**Changed:** `components/Nav.tsx` (Modules folded into the Oefenexamens dropdown; flag emoji
+dropped from the language switcher; right cluster lightened; `xl:` replaced by a measured
+`menu:` breakpoint), `app/globals.css` (`--breakpoint-menu: 72rem`), `messages/{nl,en,ar}.json`
+(`group_onderdeel`, `group_toegang`), `tests/public.spec.js` (nav count 6→5, premium asserted
+inside the dropdown, the emoji `test.fixme` promoted to a live test), CLAUDE.md,
+docs/MILESTONES.html.
+**Outcome:** SUCCESS — tsc clean, build green, 129 unit, 68 e2e passed (was 67; one skip left
+instead of two), check-schema OK.
+**What worked / went wrong:**
+- **The crowding was in the right-hand cluster, not the nav links.** It measured 386px — a bordered
+  select with a flag, a text link and a long filled button, three competing visual weights next to
+  each other. Making the select borderless and Inloggen an outlined button paired with the CTA did
+  more for perceived density than removing a nav item did. Measuring told me where to look; the
+  reference screenshot the owner supplied told me what "uncrowded" looked like (one pair, not three
+  weights).
+- **Two goals turned out to be the same change.** The flag emoji in the language switcher was a
+  documented `test.fixme` (the one place breaking the no-emoji rule) *and* dead weight in the
+  tightest part of the header. Removing it satisfied both and let a skipped test go live.
+- **A measured breakpoint beat a Tailwind default.** Five items need 486px; `lg` (1024px) gives 380
+  and overflows, `xl` (1280px) fits but puts 1152–1279px laptops on the hamburger for no reason.
+  `--breakpoint-menu: 72rem` is the actual number, named and commented with the arithmetic so the
+  next person can re-derive it. Verified it switches at exactly 1151→1152.
+**Lesson:** when someone says a UI feels crowded, measure the parts before removing any of them —
+the offender is often not the thing that looks countable. And prefer a named custom breakpoint with
+the measurement written down over the nearest stock one: the stock value is a guess about someone
+else's layout.

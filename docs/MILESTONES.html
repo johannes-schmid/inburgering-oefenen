@@ -185,6 +185,15 @@
   </table>
   </div>
   <div class="card" style="margin-top:18px">
+    <h3 style="margin-top:0">Deze tabel staat sinds 20-08-2026 in het menu</h3>
+    <p>Het header-menu implementeert nu deze vier secties: <strong>Inburgering ▾ · KNM ▾ · Taalexamens ▾ · Oefenexamens ▾</strong>, plus Docent — <strong>vijf items</strong>. Elke contentsectie is intern gesplitst in <strong>Gidsen</strong> (lezen) en <strong>Tools</strong> of <strong>Gratis oefenen</strong> (doen), zodat een afgeronde gids en een nog te bouwen tool nooit in één platte lijst staan.</p>
+    <p><strong>Modules zit in de Oefenexamens-dropdown</strong>, niet als eigen menu-item (eigenaarsbesluit 20-08-2026, toen zes items te vol bleken): die dropdown is nu <em>Per onderdeel</em> (de vier vaardigheden) + <em>Toegang</em> (Modules). Toegang kopen en oefenen liggen één stap van elkaar. Gevolg om in de gaten te houden: <strong>de betaalpagina heeft nu alleen nog een menu-ingang één niveau diep.</strong></p>
+    <p><strong>Dit vervangt het besluit van M1</strong> om alle content onder één "Inburgering"-dropdown te hangen. Die keuze was goed toen KNM en Taalexamens nog leeg waren — een top-level item per lege sectie is twee keer dunne content. Dat argument is vervallen: de M2-pillar staat live, de Taalexamens-hub draagt de twee onderdeelposts die al bestaan, en elke sectie heeft nu eigen tools of gratis materiaal. De onderbouwing uit M1 (theorie.nl, leernederlands.online, IELTS doen het met één dropdown) is nog steeds waar en verliest simpelweg van een sterker argument: §3 is de eigen gepubliceerde architectuur van deze site.</p>
+    <p class="src">Gemeten en niet geschat: de desktopbalk verscheen op <code>md</code> (768px), waar de links maar ~344px hadden — "Over de docent" werd daar al van 99px naar 46px geknepen bij <em>vier</em> items. Hij staat nu op een eigen breakpoint <code>menu:</code> (1152px, in <code>globals.css</code>): logo 234px + rechtercluster 362px laten 508px over en de vijf items hebben 486px nodig. <code>lg</code> (1024px) loopt over; <code>xl</code> (1280px) zet laptops van 1152–1279px onnodig op het hamburgermenu. Verder <code>gap-5</code> en het kortere label "Docent". Onder <code>menu:</code> is het uitklapmenu het volledige menu. Het rechtercluster is verlicht: randloze taalkeuze en Inloggen als omlijnde knop naast de gevulde CTA — één visueel paar in plaats van drie gewichten. <strong>Opnieuw meten bij een zesde item of een langere CTA.</strong></p>
+    <p class="src">Onderweg opgelost: de taalkeuze had vlaggen-emoji, de enige plek in de UI die de geen-emoji-regel brak (stond als <code>test.fixme</code> te wachten op een besluit). Weggehaald — dat leverde ruimte op én maakte de test live. Vlaggen voor talen zijn ook inhoudelijk fout: een Union Jack is voor de meeste lezers van deze site niet "Engels".</p>
+  </div>
+
+  <div class="card" style="margin-top:18px">
     <h3 style="margin-top:0">Domeinbesluit (genomen, 19-08-2026)</h3>
     <p><strong>inburgeringoefenen.nl wordt het ene merk.</strong> KNM wordt een vijfde onderdeel binnen dit platform (content op /knm/, oefenexamens in het bestaande systeem). knmoefenen.nl blijft live tot de KNM-content en -rankings hier staan en 301't daarna gefaseerd — nooit eerder, want dat domein rankt nu goed en is tot die tijd een cross-sell-asset.</p>
   </div>
@@ -208,31 +217,36 @@
     <div class="guard" style="margin-top:12px;margin-bottom:0"><b>Onderweg gevonden en gerepareerd:</b> de Arabische contactpagina was onbereikbaar (301 naar een slug die in <code>i18n/routing.ts</code> niet bestond — 404 vanaf elke footerlink én in de sitemap), <code>#organization</code> en <code>#teacher</code> waren op twee pagina's verschillend gedefinieerd, en het privacybeleid ontkende analytische cookies terwijl GA4, Clarity en de Meta-pixel laden.</div>
   </div>
 
-  <div class="ms">
-    <div class="mshead"><h3>M1 — Architectuur &amp; herpositionering</h3><div class="when">week 2–4 · advies fase 1</div></div>
+  <div class="ms done">
+    <div class="mshead"><h3>M1 — Architectuur &amp; herpositionering <span class="status">Afgerond 19-08-2026</span></h3><div class="when">week 2–4 · advies fase 1</div></div>
     <p class="goal">De site zegt en structureert wat hij wil worden, vóórdat de content er is.</p>
     <ul>
-      <li>Nieuwe navigatie: Inburgering · KNM Kennisgidsen · Taalexamens A2/B1 · Oefenexamens (+ bestaande Modules/Docent).</li>
+      <li>Nieuwe navigatie: <b>één contentdropdown</b> — Inburgering ▾ (met kopjes Inburgeren · KNM · Meer) · Oefenexamens ▾ · Modules · Over de docent. Vier items in plaats van zes, naar het patroon van theorie.nl ("Examentips"), leernederlands.online ("DUO inburgeringsexamen") en IELTS ("Preparation resources" als kopje <em>binnen</em> een dropdown). "Resources" is in deze categorie een footerconventie, geen menu-item. Taalexamens A2/B1 wordt een vierde kopje zodra M4 die gidsen levert.</li>
       <li>Gids-routes als eersteklas pagina's, niet als blogposts: <code>/inburgering/[slug]</code> en <code>/knm/[thema]</code> met eigen hub-pagina's. Blog blijft voor losse explainer-artikelen.</li>
       <li>Homepage-hero herpositioneren: van "A2 oefenen" naar "alles voor je inburgering — oefenexamens, kennisgidsen en uitleg, gecontroleerd door een NT2-docent". A2-conversiepad blijft prominent.</li>
       <li>i18n-pathnames, redirects en sitemap voor de nieuwe structuur; e2e-navigatiespecs bijwerken.</li>
     </ul>
-    <div class="dod"><b>Klaar wanneer:</b> nieuwe IA live, oude URL's 301'en, build en testsuite groen.</div>
-    <div class="kpi"><b>KPI:</b> hub-pagina's geïndexeerd; bounce op homepage niet verslechterd.</div>
+    <div class="dod"><b>Afgerond:</b> <code>/inburgering</code> en <code>/knm</code> live met eigen hub-pagina's, gidsroutes (<code>/inburgering/[slug]</code>, <code>/knm/[thema]</code>) over één gedeelde renderer; navigatie en footer herzien met de blog onder Inburgering; homepage-hero herpositioneerd; i18n-pathnames, sitemap (62 URL's) en <code>scripts/check-schema.mjs</code> (16 routes) bijgewerkt; 16 unit- en 9 e2e-tests erbij. Er was <b>niets te 301'en</b> — op deze paden stond nooit iets.</div>
+    <div class="kpi"><b>KPI:</b> hub-pagina's geïndexeerd; bounce op homepage niet verslechterd — te meten tegen <code>docs/BASELINE.md</code>. <b>Bewust uitgesteld:</b> een eigen "Taalexamens A2/B1"-menusectie (de inhoud daarvan is M4; de bestaande Oefenexamens-dropdown dekt de intentie).</div>
+    <div class="guard" style="margin-top:12px;margin-bottom:0"><b>Onderweg gevonden:</b> de <b>taalwissel werkte op geen enkele dynamische route</b> — <code>usePathname()</code> geeft het route-sjabloon (<code>/blog/[slug]</code>) en <code>router.replace</code> werd zonder <code>params</code> aangeroepen, dus op alle vijf blogposts, beide tasters en elk examenoverzicht veranderde de select wél en de URL niet. Gerepareerd en vastgelegd in <code>tests/public.spec.js</code>. Daarnaast: de footer-links naar de onderdelen misten het locale-voorvoegsel, en <code>notFound()</code> in een <code>[slug]</code>-route geeft HTTP 200 met een 404-body (soft 404, ook op productie, ook op de blog) — gerapporteerd, niet gerepareerd.</div>
+    <div class="guard" style="margin-top:12px;margin-bottom:0"><b>De publicatiepoort staat in code, niet in een afspraak:</b> een gids publiceert alleen met <code>status: 'reviewed'</code> plus <code>reviewedBy</code> en <code>reviewedOn</code>. Een concept is noindex, staat niet in de hub, niet in de sitemap en heeft geen structured data — maar is wél op URL bereikbaar, want anders kan de docent het niet nakijken. De pillar van M2 staat al in de repo als concept: <code>data/guides/inburgering-stappenplan.ts</code>.</div>
   </div>
 
   <div class="ms">
-    <div class="mshead"><h3>M2 — TOFU: Inburgering-gidsen</h3><div class="when">week 4–8 · advies fase 2</div></div>
+    <div class="mshead"><h3>M2 — TOFU: Inburgering-gidsen</h3><div class="when">week 4–8 · advies fase 2</div><div class="status">Pillar live 19-08-2026</div></div>
     <p class="goal">De oriëntatiefase vangen met de gidsen waar het volume zit.</p>
     <ul>
-      <li>Pillar: <strong>"Inburgeren in Nederland: het complete stappenplan"</strong>.</li>
+      <li><s>Pillar: <strong>"Inburgering in Nederland: het complete stappenplan"</strong></s> — <span class="status">Live 19-08-2026</span> op <code>/inburgering/inburgering-stappenplan</code>: handgeschreven manuscript van de eigenaar, elk cijfer geverifieerd tegen wetten.overheid.nl/inburgeren.nl/duo.nl/rijksoverheid (zie <code>SEO/facts.md</code> §10), 9 fact-boxes, 4 docent-blokken, tijdlijn van 7 stappen. Twee docent-blokken (PIP-fouten, B1-of-A2-gesprek) wachten op antwoord van Marieke en kunnen later worden toegevoegd.</li>
       <li>Spokes (volgorde = winbaarheid): Wet inburgering 2021 uitgelegd · A2 of B1 + afschalen · kosten &amp; DUO-lening · boete &amp; inburgeringstermijn · vrijstelling (kandidaat voor interactieve checker) · "Mijn Inburgering uitgelegd" (vangt de long-tail van 135k/mnd navigatiezoekvolume) · MAP &amp; PVT (nagenoeg nul concurrentie).</li>
-      <li>Eerst <code>SEO/facts.md</code> uitbreiden met gebronde feiten (€50/onderdeel, leningsregels, termijnen, boetes) — geen cijfer zonder bron, bestaande discipline.</li>
+      <li>Eerst <code>SEO/facts.md</code> uitbreiden met gebronde feiten — <em>deels gedaan 19-08</em>: §10 dekt nu het hele Wi2021-traject (plicht, vrijstelling/ontheffing, brede intake, LBT, PIP-termijnen, leerroutes incl. 600-uur-afschaling en Z-route-uren, KNM/PVT/MAP, examenlocaties, uitslagtermijnen incl. het actuele 16-weken-bericht). Nog open: leningsregels en boetes (voor de kosten- en termijn-spokes).</li>
       <li>Werkwijze: AI-concept → docentreview → publicatie (eigenaarsbesluit 19-08). Elke gids krijgt een conversieblok naar het gratis proefexamen.</li>
       <li>Top-3 gidsen ook in het Engels (gezinsmigranten zoeken in het Engels).</li>
+      <li><b>Tool: de tijdlijn-maker</b> (<code>/inburgering/tools/tijdlijn</code>) — de kandidaat vult de datum van zijn PIP in en ziet wanneer zijn termijn begint en wanneer de drie jaar om zijn. <span class="pill mofu">placeholder live 20-08-2026</span> De rekenregel staat al gebronde in <code>SEO/facts.md</code> §10 (Wet inburgering 2021, art. 11: de dag ná de dagtekening). Te bouwen als <code>lib/inburgering-timeline.ts</code>, pure functies met unittests zoals <code>lib/pricing.ts</code>.</li>
+      <li>Tweede toolkandidaat: de <b>vrijstellingschecker</b> — §5 van dit document noemt dat al ("interactieve checker verslaat elk artikel"). De <code>tools/</code>-namespace is er nu voor.</li>
     </ul>
-    <div class="dod"><b>Klaar wanneer:</b> pillar + minimaal 6 spokes live in NL, top-3 in EN, alle feiten gebrond.</div>
+    <div class="dod"><b>Klaar wanneer:</b> pillar + minimaal 6 spokes live in NL, top-3 in EN, alle feiten gebrond, tijdlijn-maker werkend.</div>
     <div class="kpi"><b>KPI:</b> eerste top-20 posities op informatieve keywords; organische sessies op gidsen &gt; 0-meting.</div>
+    <div class="guard" style="margin-top:12px;margin-bottom:0"><b>Correcties die de factcheck op het manuscript vond (19-08):</b> KNM heeft <b>8</b> thema's, niet 7 (Stcrt. 2024, 15802) · "praktijkonderwijs" staat op geen enkele officiële vrijstellingslijst en is geschrapt · de PIP-verlenging is geen "12 weken" (Besluit 5.3: alleen bij informatie van derden, dan 2 weken na ontvangst) · de Z-route-uren 800+800 gelden alleen voor asielstatushouders (gezinsmigranten: 800 + eindgesprek) · de termijn start de dag <em>ná</em> de dagtekening van het PIP · naturalisatie vereist nu géén B1 (dat is een wetsvoorstel) · het 16-weken-bericht is officieel (nieuwsbericht 31-07-2026) maar alleen voor Schrijven/Spreken A2, met automatisch 6 maanden verlenging.</div>
   </div>
 
   <div class="ms">
@@ -243,6 +257,7 @@
       <li>Gevalideerde KNM-content (450+ vragen, lessen, woordkaarten) migreren uit het knm-website-project.</li>
       <li><code>oefenvragen</code>-flag aan: de bestaande quizpagina's worden gratis KNM-themaquizzen (MOFU + gratis funnel-instap).</li>
       <li>8 KNM-themagidsen (pillar-cluster) met interne links naar de quizzen en oefenexamens.</li>
+      <li><b>Gratis woordenlijst KNM</b> (<code>/knm/woordenlijst</code>) — <span class="pill mofu">placeholder live 20-08-2026</span> Dit is <em>ontsluiten</em>, geen schrijfwerk: <code>data/woordkaarten.ts</code> bevat al <b>366 woorden over 7 KNM-thema's</b> met lidwoord, meervoud, uitleg, voorbeeldzin en vertalingen naar EN/AR/TR. Ze zijn meegekomen uit knm-website en staan achter <code>FEATURES.woordkaarten</code>. Let op: het zijn 7 van de 8 officiële thema's — "Omgangsvormen, waarden en normen" ontbreekt. Docentreview vóór publicatie, zoals bij de gidsen.</li>
       <li>KNM-module verkoopbaar voor €9,95/mnd; bundelprijs herzien (5 modules — besluit eigenaar).</li>
       <li>knmoefenen.nl: gefaseerd 301-plan, pas uitvoeren als de KNM-pagina's hier ranken.</li>
     </ul>
@@ -257,6 +272,9 @@
       <li>Gidsen per onderdeel (Lezen, Luisteren, Schrijven, Spreken) per niveau — concurrentie is dun op B1.</li>
       <li>B1-content vullen: de 40 bestaande lege examenslots, gepubliceerd per onderdeel zodra de docent heeft gevalideerd. Upsell-pad: "geslaagd voor A2? Door naar B1."</li>
       <li>Engelstalige landing + funnel voor gezinsmigranten/expats ("dutch integration exam practice").</li>
+      <li><b>Er is geen plumbing meer nodig:</b> <code>/taalexamens</code> staat live met eigen hub (20-08-2026) en <code>/taalexamens/[slug]</code> bestaat en is leeg. Een gids toevoegen is één bestand in <code>data/guides/</code> met <code>section: 'taalexamens'</code> — geen route, geen sitemapregel, geen component.</li>
+      <li><b>Let op de overlap die er al is:</b> <code>lezen-examen-inburgering-a2</code> en <code>luisteren-examen-inburgering-a2</code> bestaan al als blogposts. Dat zijn twee van de vier onderdeelgidsen. De hub linkt ze (<code>HUB_POSTS.taalexamens</code>); schrijf er geen concurrerende pagina naast — één zoekvraag, één eigenaar.</li>
+      <li><b>Gratis woordenlijst en grammatica</b> (<code>/taalexamens/woordenlijst</code>, <code>/taalexamens/grammatica</code>) — <span class="pill mofu">placeholders live 20-08-2026</span> De woordenlijst komt uit de oefenexamens op deze site; de grammatica-onderwerpen uit de fouten die de docent in haar beoordelingen ziet.</li>
     </ul>
     <div class="dod"><b>Klaar wanneer:</b> 4 skill-gidsen live; B1 per onderdeel gepubliceerd zodra gevalideerd.</div>
     <div class="kpi"><b>KPI:</b> eerste B1-module-abonnees; EN-landing converteert naar registraties.</div>
@@ -317,6 +335,7 @@
   <div class="guard"><b>Schrijfniveau A2:</b> zinnen ≤ 15 woorden gemiddeld, "je" niet "u", elk begrip uitgelegd bij eerste gebruik (SEO/voice.md).</div>
   <div class="guard"><b>knmoefenen.nl gaat pas om als de rankings hier staan.</b> Tot die tijd is het een asset, geen achterstallig onderhoud.</div>
   <div class="guard"><b>Meten voor veranderen:</b> M0-baseline eerst; elke milestone rapporteert tegen die nulmeting.</div>
+  <div class="guard"><b>Een placeholder is noindex en staat niet in de sitemap totdat hij iets doet.</b> Aangekondigde-maar-ongebouwde pagina's staan in <code>data/planned-surfaces.ts</code> en renderen via één component. Ze zijn bereikbaar op URL en zichtbaar in het menu (met een "binnenkort"-chip), maar dragen <em>geen</em> structured data en <em>geen</em> sitemapregel — precies dezelfde poort als een conceptgids en als de lege B1-examens. Een pagina zonder inhoud mag niet meedingen namens het domein. Ze linken altijd door naar wat wél bestaat: een placeholder mag nooit een doodlopende weg zijn.</div>
 </section>
 
 <p class="footnote">Intern werkdocument · docs/MILESTONES.html · gegenereerd 19 augustus 2026 op basis van het externe contentadvies, site-audit en marktonderzoek. Marktcijfers: CBS Statistiek Wet inburgering 2024, Divosa benchmark 2024, inburgeren.nl. Niet-geverifieerde cijfers zijn als zodanig gemarkeerd in de brontekst.</p>

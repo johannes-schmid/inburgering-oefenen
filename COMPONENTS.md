@@ -35,6 +35,22 @@ Import via `@/components/site` barrel export.
 | `TeacherCard` | Teacher profile card (Marieke Schipper). Use on homepage and `/docent`. |
 | `EyebrowBadge` | Small label above headings (e.g. "Gecertificeerd"). Use to add credibility signals. |
 | `Breadcrumb` | Breadcrumb navigation. Use on blog posts and guide pages. |
+| `SkillCard` | Per-onderdeel card (icon, counts, CTA). Use wherever the four onderdelen are listed. |
+| `LogoMark` | The site logo mark. `surface="dark"` on the footer's primary background. |
+
+---
+
+## Kennisgidsen (`app/[locale]/(main)/_components/`)
+
+Route-local, because only the guide and placeholder routes render them. All three take their
+subject as a prop — `/inburgering`, `/knm` and `/taalexamens` are the same page with different
+content, and must stay that way.
+
+| Component | When to use |
+|---|---|
+| `GuideHub` | A guide section's hub. Renders the guide list, the section's own orientation (which is what a hub with no reviewed guides shows), related blog posts and the funnel. Per-section differences live in `SECTION_CARDS` and `HUB_POSTS`, never in a branch. |
+| `GuideArticle` | One guide: hero, `ArticleContent` body, FAQ, the draft notice, the reviewed-by line, sidebar and CTA. Emits `Article` + `BreadcrumbList` + `FAQPage` JSON-LD — and nothing at all for a draft. Every URL it renders comes from `guideHref()`. |
+| `PlannedSurface` | A page announced in the nav but not built yet (`data/planned-surfaces.ts`): the tijdlijn-maker, the woordenlijsten, grammatica. States what it will do, what it will be built from, and links to what already exists. **Emits no JSON-LD**, and its route is `noindex` and absent from the sitemap. Use this rather than writing another "binnenkort" page. |
 
 ---
 

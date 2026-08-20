@@ -9,6 +9,14 @@
 
 /* ── KNM Brand Tokens (ported 1:1 from tailwind.config.js) ── */
 @theme {
+  /* ── Breakpoints ──
+     `menu:` is where the desktop header replaces the hamburger. It is a *measured* value, not a
+     round number: the logo (234px) and the right-hand cluster (362px) leave the nav links 508px at
+     1152px wide, and the five items need 486px. Below that the drawer is the full menu.
+     Tailwind's own `lg` (1024px) is too narrow — the bar overflows — and `xl` (1280px) needlessly
+     puts 1152–1279px laptops on the hamburger. Re-measure before changing the header's contents. */
+  --breakpoint-menu:                  72rem;   /* 1152px */
+
   /* Colours */
   --color-primary:                    #002b6d;
   --color-primary-container:          #1d428a;
@@ -379,6 +387,113 @@
   display: flex; align-items: center; justify-content: center;
   flex-shrink: 0; font-family: var(--font-headline);
 }
+
+/* ── Kennisgids visual elements ──
+   Used only inside guide `articleHtml` (data/guides/). The vocabulary exists so a long guide
+   is scannable rather than a wall of text: a docent note (the E-E-A-T voice, with the photo the
+   hero already uses), a numbered step timeline, icon cards, wel/niet lists and an inline CTA.
+   Icons are inline lucide SVG paths in the markup — no emoji (project rule). */
+.docent-note {
+  display: flex; gap: 14px; align-items: flex-start;
+  background: #fcecdd; border-radius: 14px;
+  padding: 18px 20px; margin: 24px 0;
+}
+.docent-note-avatar {
+  width: 44px; height: 44px; border-radius: 12px; object-fit: cover; object-position: center top;
+  flex-shrink: 0; border: 2px solid rgba(162,64,0,0.15);
+}
+.docent-note-name {
+  font-family: var(--font-headline);
+  font-size: 0.78rem !important; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em;
+  color: #a24000 !important; margin-bottom: 6px !important;
+}
+.docent-note p:last-child { margin-bottom: 0 !important; }
+.docent-note p { font-size: 0.93rem !important; }
+/* On a phone the note often sits inside an already-indented step; a fixed side column would
+   leave a strip of text a few words wide. Float the avatar instead so the text uses the width. */
+@media (max-width: 640px) {
+  .docent-note { display: block; }
+  .docent-note-avatar { float: left; margin: 0 12px 6px 0; }
+}
+
+.guide-steps { margin: 24px 0 8px; }
+.guide-step { display: flex; gap: 18px; position: relative; padding-bottom: 30px; }
+.guide-step::before {
+  content: ''; position: absolute; left: 17px; top: 42px; bottom: 6px; width: 2px;
+  background: #e3e8f0; border-radius: 2px;
+}
+.guide-step:last-child { padding-bottom: 0; }
+.guide-step:last-child::before { content: none; }
+.guide-step-num {
+  width: 36px; height: 36px; border-radius: 11px;
+  background: linear-gradient(135deg, #002b6d 0%, #1d428a 100%);
+  color: #fff; font-weight: 800; font-size: 0.9rem;
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0; font-family: var(--font-headline);
+  box-shadow: 0 2px 8px rgba(0,43,109,0.25);
+}
+.guide-step-body { flex: 1; min-width: 0; }
+.article-body .guide-step-body h3 { margin-top: 5px; margin-bottom: 10px; font-size: 1.05rem; }
+.guide-step-body[id] { scroll-margin-top: 96px; }
+/* Reclaim width on a phone: a smaller marker and a tighter gutter. */
+@media (max-width: 640px) {
+  .guide-step { gap: 12px; }
+  .guide-step-num { width: 28px; height: 28px; border-radius: 8px; font-size: 0.8rem; }
+  .guide-step::before { left: 13px; top: 34px; }
+  .article-body .guide-step-body h3 { margin-top: 2px; }
+}
+
+.guide-cards { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin: 20px 0; }
+@media (max-width: 640px) { .guide-cards { grid-template-columns: 1fr; } }
+.guide-card {
+  background: #f8f9fb; border: 1px solid rgba(196,198,210,0.3);
+  border-radius: 14px; padding: 20px;
+}
+.guide-card-icon {
+  width: 40px; height: 40px; border-radius: 10px;
+  background: rgba(0,43,109,0.07); color: #002b6d;
+  display: flex; align-items: center; justify-content: center; margin-bottom: 12px;
+}
+.guide-card-icon svg { width: 20px; height: 20px; }
+.article-body .guide-card h3 { margin: 0 0 6px; font-size: 0.97rem; }
+.guide-card p { margin-bottom: 0 !important; font-size: 0.92rem !important; }
+
+.yesno-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin: 20px 0; }
+@media (max-width: 640px) { .yesno-grid { grid-template-columns: 1fr; } }
+.yesno-col { border-radius: 14px; padding: 20px; }
+.yesno-col.yes { background: rgba(44,130,83,0.06); border: 1px solid rgba(44,130,83,0.15); }
+.yesno-col.no { background: #f8f9fb; border: 1px solid rgba(196,198,210,0.3); }
+.yesno-title {
+  font-family: var(--font-headline);
+  font-size: 0.78rem !important; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em;
+  margin-bottom: 12px !important;
+}
+.yesno-col.yes .yesno-title { color: #2d7a52 !important; }
+.yesno-col.no .yesno-title { color: #5b5e6b !important; }
+.article-body .yesno-col ul { margin-bottom: 0; }
+.article-body .yesno-col ul li::before { content: none; }
+.yesno-col ul li svg { flex-shrink: 0; margin-top: 4px; width: 15px; height: 15px; }
+.yesno-col.yes ul li svg { color: #2d7a52; }
+.yesno-col.no ul li svg { color: #ba1a1a; }
+
+.guide-cta-inline {
+  display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 16px;
+  background: linear-gradient(135deg, #002b6d 0%, #1d428a 100%);
+  border-radius: 16px; padding: 22px 24px; margin: 26px 0;
+}
+.guide-cta-inline p { color: rgba(255,255,255,0.75) !important; margin-bottom: 0 !important; font-size: 0.92rem !important; }
+.guide-cta-inline p strong { color: #fff; display: block; font-size: 1.02rem; margin-bottom: 2px; }
+.article-body a.guide-cta-btn {
+  display: inline-flex; align-items: center; gap: 8px;
+  background: #fe762c; color: #fff; text-decoration: none;
+  font-weight: 700; font-size: 0.9rem;
+  padding: 11px 20px; border-radius: 12px; flex-shrink: 0;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.15);
+  transition: opacity 0.15s ease, transform 0.15s ease;
+}
+.article-body a.guide-cta-btn:hover { opacity: 0.92; }
+.article-body a.guide-cta-btn:active { transform: scale(0.98); }
+.article-body a.guide-cta-btn svg { width: 14px; height: 14px; }
 
 /* ── Blog inline quiz cards ── */
 .blog-quiz-card {

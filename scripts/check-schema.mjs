@@ -34,6 +34,25 @@ const PAGES = [
   { path: '/nl/oefenexamen/a2/lezen',   expect: ['Course', 'BreadcrumbList'] },
   { path: '/nl/oefenexamen/a2/spreken', expect: ['Course', 'BreadcrumbList'] },
   { path: '/nl/docent',                 expect: ['ProfilePage', 'Person'] },
+  // The blog is live and was never covered by this guard.
+  { path: '/nl/blog',                   expect: ['Blog', 'ItemList'] },
+  { path: '/nl/blog/inburgeringsexamen-a2-uitleg', expect: ['BlogPosting', 'BreadcrumbList'] },
+  // The kennisgids hubs (M1). Their ItemList appears only once a guide has been reviewed, so it
+  // is deliberately not expected here — an empty section must still validate.
+  { path: '/nl/inburgering',            expect: ['CollectionPage', 'BreadcrumbList'] },
+  { path: '/nl/knm',                    expect: ['CollectionPage', 'BreadcrumbList'] },
+  { path: '/nl/taalexamens',            expect: ['CollectionPage', 'BreadcrumbList'] },
+  /* Planned surfaces (`data/planned-surfaces.ts`) carry NO structured data at all — they are
+   * noindex until they do something, and rich data on a noindex page contradicts the page's own
+   * meta tag. Same rule as the empty B1 overviews and a draft guide. */
+  { path: '/nl/inburgering/tools/tijdlijn', expect: [], forbid: ['Article', 'CollectionPage', 'WebPage'] },
+  { path: '/nl/knm/woordenlijst',       expect: [], forbid: ['Article', 'CollectionPage'] },
+  { path: '/nl/taalexamens/woordenlijst', expect: [], forbid: ['Article', 'CollectionPage'] },
+  { path: '/nl/taalexamens/grammatica', expect: [], forbid: ['Article', 'CollectionPage'] },
+  // The M2 pillar, published 2026-08-19. A reviewed guide carries Article (never BlogPosting —
+  // a kennisgids is a maintained reference page) plus its breadcrumbs and FAQ. Any *draft* guide
+  // must carry no structured data at all: rich data on a noindex page contradicts the meta tag.
+  { path: '/nl/inburgering/inburgering-stappenplan', expect: ['Article', 'BreadcrumbList', 'FAQPage'] },
   // B1 is noindex — forty empty slots. Rich data there would contradict the meta tag.
   { path: '/nl/oefenexamen/b1/lezen',   expect: [], forbid: ['Course'] },
   { path: '/en/premium',                expect: ['Product'] },

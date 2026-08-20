@@ -10,7 +10,7 @@ export default function Footer() {
 
   return (
     <footer className="bg-primary text-white/75">
-      <div className="max-w-7xl mx-auto px-6 py-16 grid grid-cols-1 md:grid-cols-3 gap-12">
+      <div className="max-w-7xl mx-auto px-6 py-16 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-12">
         {/* Brand */}
         <div className="space-y-4">
           <div className="flex items-center gap-2">
@@ -24,13 +24,29 @@ export default function Footer() {
         <div className="space-y-4">
           <h5 className="text-xs font-bold uppercase tracking-widest text-white/35">{t('platform')}</h5>
           <nav className="flex flex-col gap-3 text-sm" aria-label="Footer navigatie">
+            {/* Typed `Link`, not a bare `<a>`: the anchor here had no locale prefix, so every
+                skill link in the footer sent an EN or AR visitor to the Dutch page. */}
             {SKILLS.map(skill => (
-              <a key={skill.slug} href={`/oefenexamen/${DEFAULT_LEVEL}/${skill.slug}`} className="hover:text-white transition-colors no-underline">
+              <Link
+                key={skill.slug}
+                href={{ pathname: '/oefenexamen/[level]/[skill]', params: { level: DEFAULT_LEVEL, skill: skill.slug } }}
+                className="hover:text-white transition-colors no-underline"
+              >
                 {tSkills(`${skill.key}.name`)}
-              </a>
+              </Link>
             ))}
             <Link href="/premium" className="hover:text-white transition-colors no-underline">{t('premium')}</Link>
             <Link href="/docent" className="hover:text-white transition-colors no-underline">{t('aboutTeacher')}</Link>
+          </nav>
+        </div>
+
+        {/* Kennisgidsen */}
+        <div className="space-y-4">
+          <h5 className="text-xs font-bold uppercase tracking-widest text-white/35">{t('guides')}</h5>
+          <nav className="flex flex-col gap-3 text-sm" aria-label="Kennisgidsen">
+            <Link href="/inburgering" className="hover:text-white transition-colors no-underline">{t('inburgering')}</Link>
+            <Link href="/knm" className="hover:text-white transition-colors no-underline">{t('knm')}</Link>
+            <Link href="/taalexamens" className="hover:text-white transition-colors no-underline">{t('taalexamens')}</Link>
             {FEATURES.blog && (
               <Link href="/blog" className="hover:text-white transition-colors no-underline">{t('blog')}</Link>
             )}

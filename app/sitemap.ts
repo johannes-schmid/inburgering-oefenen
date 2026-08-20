@@ -3,6 +3,7 @@ import { DEFAULT_LEVEL, SKILLS } from '@/data/skills';
 import { hasFreePractice } from '@/data/free-practice';
 import { FEATURES } from '@/lib/features';
 import { getSortedPosts, getPostSlug, hasTranslation } from '@/data/blog-posts';
+import { publishedGuides, hasTranslation as guideHasTranslation } from '@/data/guides/helpers';
 
 const BASE = 'https://inburgeringoefenen.nl';
 const LOCALES = ['nl', 'en', 'ar'] as const;
@@ -99,8 +100,46 @@ export default function sitemap(): MetadataRoute.Sitemap {
     }
   }
 
+  /* Kennisgidsen: the two hubs, and the guides inside them.
+   *
+   * The hubs are listed unconditionally — they carry their own orienting content whether or not a
+   * guide has been reviewed yet, so they are never an empty page (see `_components/GuideHub.tsx`).
+   *
+   * The guides are gated twice, and both gates mean "this URL is noindex, so do not advertise it":
+   * `publishedGuides()` drops anything the docent has not reviewed, and `guideHasTranslation()`
+   * drops a locale with no body of its own. Same rule as the blog block above.
+   */
+  for (const section of ['inburgering', 'knm', 'taalexamens'] as const) {
+    for (const locale of LOCALES) {
+      entries.push({
+        url: `${BASE}/${locale}/${section}`,
+        changeFrequency: 'weekly',
+        priority: 0.9,
+        lastModified: TODAY,
+      });
+    }
+  }
+
+  for (const guide of publishedGuides()) {
+    for (const locale of LOCALES) {
+      if (!guideHasTranslation(guide, locale)) continue;
+      entries.push({
+        url: `${BASE}/${locale}/${guide.section}/${guide.slug}`,
+        changeFrequency: 'monthly',
+        priority: 0.8,
+        lastModified: guide.dateModified,
+      });
+    }
+  }
+
   // Topic quizzes stay out of the sitemap until their A2 content exists.
   void FEATURES.oefenvragen;
+
+  /* `data/planned-surfaces.ts` — the tijdlijn-maker and the woordenlijst/grammatica pages — is
+   * deliberately **not** iterated here. Those routes are `noindex` until they do something, and a
+   * sitemap entry for a noindex URL is a contradiction we tell Google to resolve for us. They are
+   * absent by never being added, which is stronger than being filtered out: there is no condition
+   * here to get inverted later. `tests/public.spec.js` asserts their absence. */
 
   return entries;
 }

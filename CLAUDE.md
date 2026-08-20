@@ -522,6 +522,196 @@ Structured data, sitemap, KNM cleanup and the nulmeting. What a later session ne
   10 proefexamens", neither of which the per-module pricing sells. The `oefenvragen` namespace keeps
   its KNM copy on purpose — M3 repurposes that surface.
 
+### M1 — architectuur & herpositionering — DONE (2026-08-19)
+
+The IA, the guide pipeline and the repositioning, shipped **before** the guides themselves (M2/M3).
+
+- **`data/guides/` is one file per guide**, unlike `data/blog-posts.ts` which holds all five posts
+  in one 2,288-line module. A guide is about as long as a post and there will be ~15; a single
+  module would pass 7,000 lines and every docent review would be a diff against everything.
+  `types.ts` + `helpers.ts` + `index.ts` (the registry) + one file per guide.
+- **`status: 'reviewed'` is the only state that publishes**, and it is the owner's 19-08 decision
+  expressed as a constraint rather than a comment. A `draft` guide is `noindex`, absent from its
+  hub, absent from the sitemap, absent from every `related` list and carries **no JSON-LD at all** —
+  but is reachable by URL, which is what makes it reviewable. `tests-unit/guides.test.ts` refuses
+  a `reviewed` guide with no `reviewedBy`/`reviewedOn`.
+- **Guide slugs are identical across locales, and must stay that way.** See the switcher bug below.
+- **`getGuideBySlug` is section-scoped**, so `/knm/<an-inburgering-slug>` 404s instead of serving
+  one guide under two URLs — a duplicate of our own making.
+- **The hubs are one component.** `_components/GuideHub.tsx` renders both `/inburgering` and
+  `/knm`; `GuideArticle.tsx` renders both detail routes. Two hubs that drift apart is the
+  `sections`-versus-`task_type` mistake again.
+- **The zero-guide hub is content, not a placeholder.** The owner chose visible nav over
+  content-gated nav (2026-08-19); the thin-content risk that creates is answered by giving each hub
+  its own orientation — what the section is, five phase cards — plus the blog posts that already
+  cover part of the ground and the four onderdelen. `tests/public.spec.js` asserts the phase cards
+  are there, so a future edit cannot quietly turn the hub back into a stub.
+- **The hub links `taalniveaus-a1-a2-b1-nederlands` rather than M2 writing a second page.** That
+  post already owns the "A2 of B1 / taalniveaus" ground and GSC shows it at positions 56–90. One
+  query, one owning page — applied before the duplicate exists.
+- **All content sat under one "Inburgering" dropdown** (owner's decision, 2026-08-19).
+  **SUPERSEDED 2026-08-20 — see "M2b" below.** The header is now six items implementing
+  MILESTONES §3. The research below still stands and simply lost to a stronger argument; it is
+  kept because the *reasons* still constrain the labels.
+  - The comparable products all do this: theorie.nl has one **Examentips** dropdown,
+    leernederlands.online one **DUO inburgeringsexamen** item, and IELTS puts "Preparation
+    resources" as a *heading inside* a dropdown. **"Resources" is a footer convention in this
+    category, not a nav one** — including in the Zutobi example that prompted the question, where it
+    is a footer column.
+  - The parent is named **"Inburgering", not "Kennisbank" or "Resources"**: a nav label is site-wide
+    anchor text and `inburgering` is the head term (~284k/mo), while a generic label is a word
+    nobody searches for and, at A2, may not be understood.
+  - **It enforces the split that was previously muddled: tools under Oefenexamens, content under
+    Inburgering.** When KNM becomes the fifth onderdeel (M3) its oefenexamens join the Oefenexamens
+    dropdown while its kennisgidsen stay in this one — so "KNM" never names two different things in
+    two places. `tests/public.spec.js` pins the four top-level entries, because a top-level item per
+    section is what a later edit drifts back towards and it grows the header every milestone.
+  - **`Nav` must not import the guide registry.** It is a client component, so enumerating published
+    guides in the dropdown would ship every `articleHtml` string into the browser bundle. The
+    dropdown links hubs; the hub lists the guides.
+- **"Taalexamens A2/B1" is deliberately not a menu section.** The milestone card lists it, but its
+  content is M4's per-skill guides and the existing **Oefenexamens** dropdown already covers the
+  intent. Adding a third empty section is the same bet twice. When those guides exist they become a
+  fourth group inside the Inburgering dropdown, not a fifth top-level item.
+- **Nothing 301s.** Nothing was ever served at `/inburgering` or `/knm`, so M1's "oude URL's
+  301'en" had no work in it. Saying so beats inventing redirects.
+- **`alternatesFor(locale, path)` in `lib/schema.ts`** is the first shared alternates helper. The
+  fourteen `(main)` pages that hand-roll the block were **not** refactored — that touches every
+  canonical on the site and belongs in its own change. It only covers untranslated slugs;
+  `/premium`, `/docent` and `/contact` keep their literal maps because their per-locale paths
+  cannot be derived by interpolating a locale.
+- Guides emit **`Article`, not `BlogPosting`** — a kennisgids is a maintained reference page, and
+  the type is the honest one. `scripts/check-schema.mjs` grew rows for both hubs, for the draft
+  guide (`forbid: ['Article']`) **and for `/nl/blog`, which the M0 guard never covered**.
+
+**The language switcher was broken on every dynamic route, and had been for as long as those routes
+existed.** `usePathname()` returns the *template* (`/blog/[slug]`), not the concrete path, and
+`Nav.tsx` called `router.replace(pathname)` with no `params` — which resolves to nothing. Changing
+the select did nothing at all on all five blog posts, both free tasters and every exam overview. The
+comment in that function asserted the opposite and called the cast safe. It is fixed with
+`useParams()`, and `tests/public.spec.js` now pins it across four route shapes, including a
+translated slug. **This is why guide slugs are not localised**: with a per-locale slug, `params`
+from the current locale would be substituted into another locale's route and 404.
+
+**Still open, found while verifying and deliberately not fixed:** `notFound()` inside a
+`[locale]/…/[slug]` route returns **HTTP 200** with the not-found body — a soft 404. It reproduces
+on production for `/nl/blog/does-not-exist` and is not specific to guides (the `[...rest]` catch-all
+does return a real 404). Project-wide and pre-existing; worth its own change.
+
+### M2 — the pillar is live (2026-08-19); six spokes and the EN top-3 remain
+
+`data/guides/inburgering-stappenplan.ts` is `status: 'reviewed'` — the owner's hand-written
+manuscript, fact-checked line by line the same day. What a later session must know:
+
+- **`SEO/facts.md` §10 is the traject fact sheet** (plicht, vrijstelling/ontheffing, brede intake,
+  leerbaarheidstoets, PIP, termijn, leerroutes, KNM/PVT/MAP, examens, uitslag, diploma), verified
+  2026-08-19 against wetten.overheid.nl, inburgeren.nl, duo.nl, rijksoverheid.nl. The **Besluit
+  inburgering 2021 is BWBR0045555**. Every spoke starts from §10, not from a competitor's page.
+- **The manuscript needed seven factual corrections**, all recorded in §10 and in the M2 card in
+  `docs/MILESTONES.html` — chiefly: KNM has **8** thema's (not 7), "praktijkonderwijs" is on no
+  official vrijstellingslijst, the PIP extension is not "12 weken", the Z-route's 800+800 holds
+  for asielstatushouders only, and naturalisatie does **not** currently require B1 (that is a
+  pending wetsvoorstel). A hand-written manuscript gets the same factcheck as an AI draft.
+- **The "16 weken" uitslag claim is real but scoped and dated**: a DUO nieuwsbericht of 31-07-2026,
+  Schrijven A2 en Spreken A2 only, with an automatic 6-month verlenging. It will go stale — DUO
+  announces changes via nieuwsbericht, so re-check it whenever this guide is touched.
+- **Guide visuals are CSS classes in `app/globals.css`** ("Kennisgids visual elements"):
+  `.docent-note` (the docent's voice, with the hero's photo), `.guide-steps` (numbered timeline),
+  `.guide-cards`, `.yesno-grid`, `.guide-cta-inline`. Icons are inline lucide SVG paths in the
+  HTML string — no emoji, and no new React components for article bodies.
+- **Two docent-notes are deliberately missing** (manuscript MARIEKE-BLOK 3 and 4: PIP-fouten and
+  the B1-of-A2 conversation) — they were authoring questions to Marieke, not content. Add them as
+  `.docent-note` blocks in stap 3 and stap 4 once she answers.
+- **The draft-gate e2e tests flipped to their positive forms** in `tests/public.spec.js` when this
+  slug published. The draft side of the gate is still pinned by `tests-unit/guides.test.ts`; give
+  it back an e2e case with M2's first draft spoke.
+- The pillar links the leerbaarheidstoets-oefenomgeving at
+  `minerva.optimumassessment.com` — that URL comes from duo.nl (zakelijk) and may move; it is in
+  facts.md §10 with its provenance.
+
+
+### M2b — the menu implements §3, and the first tools appear (2026-08-20)
+
+The header now carries **five top-level items** — `Inburgering ▾ · KNM ▾ · Taalexamens ▾ ·
+Oefenexamens ▾ · Docent` — implementing `docs/MILESTONES.html` §3 and **reversing M1's
+single-dropdown decision**. Each content section splits into **Gidsen** (read) and **Tools** or
+**Gratis oefenen** (do).
+
+**Modules is inside the Oefenexamens dropdown, not top-level** (owner's decision, 2026-08-20, when
+six items read as crowded). That dropdown is now `PER ONDERDEEL` (the four skills) + `TOEGANG`
+(Modules). Buying access and practising are one intent a step apart, so they belong together — but
+note the consequence: **the money page's only header entry is now one level deep.** If premium
+conversion from the nav matters, that is the thing to watch.
+
+- **M1's reasoning expired rather than being wrong.** It refused a top-level item per section
+  because KNM and Taalexamens were empty, and an empty section is thin content twice over. Now the
+  M2 pillar is live, Taalexamens carries the two per-onderdeel blog posts that already exist, and
+  each section has tools or free material. The category research (theorie.nl, IELTS) is still
+  true; §3 is the site's own published architecture and outranks it. **The labels still follow that
+  research**: sections are named for head terms ("Inburgering", ~284k/mo), never "Kennisbank".
+- **The desktop nav has its own measured breakpoint, `menu:` (1152px), defined in `globals.css`.**
+  Not cosmetic and not a round number. The bar used to appear at `md` (768px) where the links had
+  ~344px — "Over de docent" was already squeezed from 99px to 46px with *four* items, unnoticed.
+  With the logo at 234px and the right cluster at 362px the links get 508px at 1152px, and the five
+  items need 486px. `lg` (1024px) overflows; `xl` (1280px) needlessly puts 1152–1279px laptops on
+  the hamburger. Verified switching exactly at 1151/1152 and clean at 1200/1280/1440/1600.
+  **Below `menu:` the drawer is the whole menu** — it already contained every item, which is what
+  made raising the breakpoint safe. Also `gap-5` not `gap-7`, and `nav.docent` shortened to
+  "Docent" (the footer keeps `footer.aboutTeacher`).
+  **Re-measure before adding a sixth item or lengthening the CTA.**
+- **The right-hand cluster was most of the crowding, not the links.** It was 386px of bordered
+  select + text link + long filled button, three competing weights. Now: borderless select (it
+  reads as a control on hover/focus, enough for a three-item choice) and Inloggen as an *outlined*
+  button paired with the filled CTA — one visual pair. 362px, and it reads much quieter.
+- **The language switcher lost its flag emoji, which closed a documented violation.** It was the
+  one place in the UI breaking the no-emoji rule and carried a `test.fixme` in
+  `tests/public.spec.js` awaiting a decision. Dropping the flags bought header width *and* fixed
+  it, so `no emoji in the site chrome either` is now a **live test**. Flags-for-languages was its
+  own bug anyway: a Union Jack is not "English" for most of this site's readers.
+- **`CONTENT_SECTIONS` in `Nav.tsx` is one definition rendered by both the desktop panel and the
+  mobile drawer.** With one dropdown the duplication was survivable; M1 still shipped the Blog link
+  twice on mobile because it was removed on desktop only, caught by a screenshot. With three
+  sections it is not survivable, so there is exactly one list.
+- **The blog stays in the header**, under Inburgering → Gidsen. §3 does not mention it, but it is a
+  live indexed surface and a header link is a site-wide internal link on every page — dropping it
+  for a tidier menu is a self-inflicted ranking cost. `footer.blog` is a different key, so the
+  footer is not a substitute.
+- **`/taalexamens` extends `GuideSection` instead of being a third hub.** `GuideHub`'s own comment
+  says hubs that drift apart is a mistake this repo already made (`sections` vs `task_type`); a
+  bespoke hub would be that mistake. So one union gained a value and the hub, the article renderer,
+  the sitemap and the copy convention are all reused — which also pre-builds M4's guide route.
+  Per-section facts that cannot come from a message are two `Record<GuideSection, …>` maps
+  (`SECTION_CARDS`, `HUB_POSTS`); Taalexamens renders **four** cards, one per onderdeel.
+- **`guideHref()` / `hubHref()` in `data/guides/helpers.ts` are new, and they closed a live trap.**
+  Four separate `section === 'inburgering' ? … : '/knm'` ternaries decided guide URLs — one in
+  `GuideHub`, three in `GuideArticle`. Every one type-checks against a third section and routes it
+  to `/knm/[thema]`: a wrong page, not a build error. `guideHref` is a `switch` with a `never`
+  default, so a fourth section is now a compile error. It must stay a **discriminated** union —
+  `next-intl`'s typed `Link` correlates `pathname` with `params`, and a lookup table that widens
+  `pathname` is rejected (correctly: it would allow `/knm/[thema]` with a `slug` param).
+- **`data/planned-surfaces.ts` + `_components/PlannedSurface.tsx` are the placeholder mechanism.**
+  Four announced-but-unbuilt pages: `/inburgering/tools/tijdlijn`, `/knm/woordenlijst`,
+  `/taalexamens/woordenlijst`, `/taalexamens/grammatica`. All `noindex, follow`, all **absent from
+  `app/sitemap.ts` by never being added** rather than by being filtered — there is no condition to
+  get inverted later. They emit **no JSON-LD at all**, and `related` is required and asserted
+  non-empty, because a placeholder that is a dead end is the one thing it must not be.
+  **No feature flag** — the registry is the gate, and a flag would be a second switch for the same
+  thing.
+- **A static child route shadows its dynamic sibling, so slugs are reserved by a test.**
+  `/knm/woordenlijst` wins over `/knm/[thema]`. A guide authored at that slug would pass every
+  other check, appear on its hub and in the sitemap, and serve the placeholder.
+  `tests-unit/guides.test.ts` derives the reserved set from `planned-surfaces.ts`, so registering a
+  placeholder reserves its slug automatically.
+- **The KNM woordenlijst is `ontsluiten`, not authoring.** `data/woordkaarten.ts` already holds
+  **366 words across 7 KNM themes** with article, plural, description, example and EN/AR/TR
+  translations. It is 7 of the 8 official thema's — "Omgangsvormen, waarden en normen" is missing.
+  The owner chose (2026-08-20) to ship the placeholder now and surface the data later, after
+  docent review.
+- **`/taalexamens` overlaps two existing blog posts on purpose.**
+  `lezen-examen-inburgering-a2` and `luisteren-examen-inburgering-a2` are two of the four
+  per-onderdeel guides M4 plans. `HUB_POSTS.taalexamens` links them; M4 must not write competing
+  pages. One query, one owning page — the same call M1 made for `taalniveaus-a1-a2-b1-nederlands`.
+
 ---
 
 ## The four surfaces — never mix their layouts
@@ -1223,8 +1413,11 @@ Log failed attempts separately — a fix that took three tries is three entries.
 ## Outstanding work (see `~/.claude/plans/` for the full plan)
 
 **The current roadmap is the milestone plan in `docs/MILESTONES.html` (M0–M6, 2026-08-19)** —
-**M0 is done (2026-08-19) — see "M0 — technisch fundament" under Strategy 2026.** M1
-(architectuur & herpositionering) is the next thing to build.
+**M0 and M1 are done (2026-08-19).** M2 is underway: the pillar
+(`data/guides/inburgering-stappenplan.ts`) published 2026-08-19, and the menu now implements
+MILESTONES §3 with the first tool and free-practice placeholders (2026-08-20) — see "M2 — the
+pillar is live" and "M2b — the menu implements §3". Next: the six spokes (start each from
+`SEO/facts.md` §10), the EN top-3, and building the tijdlijn-maker for real.
 The phases below are the original build-out, kept for their still-open items.
 
 - ~~**Phase 2 — data model.**~~ **DONE** — `supabase/migrations/20260729000000_a2_baseline.sql`

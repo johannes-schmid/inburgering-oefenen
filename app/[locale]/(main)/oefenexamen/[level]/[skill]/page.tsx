@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import { getTranslations } from 'next-intl/server';
 import { routing } from '@/i18n/routing';
+import { Link } from '@/i18n/navigation';
 import { SectionHeader, SkillIcon } from '@/components/site';
 import {
   LEVELS,
@@ -294,6 +295,14 @@ export default async function SkillOverviewPage({ params }: Props) {
               </a>
             ))}
           </div>
+
+          {/* Into the TOFU section. The overviews are the site's strongest pages; the kennisgidsen
+              need the link far more than these pages need the outbound one. */}
+          <p className="mt-8 text-sm">
+            <Link href="/inburgering" className="font-semibold" style={{ color: '#a24000' }}>
+              {t('guide_link')} →
+            </Link>
+          </p>
         </div>
       </section>
 

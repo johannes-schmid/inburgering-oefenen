@@ -233,3 +233,103 @@ practice exam **does not work in Safari**.
 - https://www.inburgeren.nl/minder-of-geen-examens/
 - https://www.rijksoverheid.nl/themas/migratie-en-reizen/inburgeren-in-nederland/nieuwe-wet-inburgering
 - https://wetten.overheid.nl/BWBR0044770/2025-10-21/
+
+---
+
+## 10. Het inburgeringstraject onder de Wet inburgering 2021 — VERIFIED 2026-08-19
+
+Verified for the pillar guide `data/guides/inburgering-stappenplan.ts`. Sources: wetten.overheid.nl
+(Wet inburgering 2021 = BWBR0044770; **Besluit inburgering 2021 = BWBR0045555** — not BWBR0045045,
+which 404s), inburgeren.nl, duo.nl, rijksoverheid.nl, officielebekendmakingen.nl. Divosa/VNG only
+where flagged (semi-official).
+
+### Wie moet inburgeren
+- Inburgeringsplichtig (Wet art. 3): rechtmatig verblijf (art. 8 a/c Vw2000, = regulier én asiel),
+  *"anders dan voor een tijdelijk doel"*, of geestelijke bedienaar. The consumer grouping
+  asielstatushouder / gezinsmigrant / overige niet-EU is accurate **synthesis**, not a quotable list.
+  https://wetten.overheid.nl/jci1.3:c:BWBR0044770&artikel=3
+- Exempt (rijksoverheid): jonger dan 18; ouder dan de pensioengerechtigde leeftijd; EU/EER
+  (Noorwegen, IJsland, Liechtenstein)/Zwitserland; tijdelijk hier voor studie of werk;
+  *"8 jaar of langer in Nederland woonde toen u leerplichtig was"*; bepaalde NL diploma's.
+  https://www.rijksoverheid.nl/onderwerpen/immigratie-naar-nederland/vraag-en-antwoord/moet-ik-als-nieuwkomer-inburgeren
+- **Diploma-vrijstelling, official list** (https://www.inburgeren.nl/minder-of-geen-examens/diploma-gehaald.jsp):
+  vmbo, havo, vwo, mbo niveau 2 of hoger, hbo/wo **mits in het Nederlands** (plus NL-talige diploma's
+  België/Suriname). ❌ **"praktijkonderwijs" staat op geen enkele officiële vrijstellingslijst — niet
+  publiceren.** mbo-1/entree geeft géén volledige vrijstelling.
+- DUO bepaalt de plicht en stuurt een brief zodra je BSN + verblijfsvergunning + gemeente-inschrijving
+  hebt: *"U krijgt een brief van DUO."* https://www.inburgeren.nl/u-gaat-inburgeren/
+- Vrijstelling = o.a. diploma / al voldoende ingeburgerd (Wet art. 4). Ontheffing = *"psychische of
+  lichamelijke belemmering, of een verstandelijke beperking, blijvend niet in staat"* of bijzondere
+  omstandigheden (Wet art. 5); aanvragen bij DUO. Medische ontheffing kost **€225** vooraf, terugbetaald
+  bij toekenning. https://www.inburgeren.nl/minder-of-geen-examens/ziekte-of-handicap.jsp
+- Ontheffing BIO is **niet voldoende om te naturaliseren** (andere-reden.jsp).
+
+### Brede intake, leerbaarheidstoets, PIP, termijn
+- Brede intake = gesprek **én** leerbaarheidstoets (Wet art. 14 lid 3: onderwijs, werkervaring,
+  persoonlijke omstandigheden incl. gezondheid). https://wetten.overheid.nl/jci1.3:c:BWBR0044770&artikel=14
+- Leerbaarheidstoets: meet het **haalbare** taalniveau, afgenomen op de computer (systeem Optimum).
+  *"Je kunt er niet voor zakken"* staat **nergens officieel** — Divosa (semi-officieel): ja/nee-uitspraak
+  over haalbaarheid B1, *"vergt geen kennis van de Nederlandse taal"*. Schrijf "geen examen waarvoor je
+  kunt slagen of zakken", niet een DUO-quote. Officiële **oefenomgeving** (link op duo.nl zakelijk):
+  https://minerva.optimumassessment.com/spa/assessment-login/#/SXD9
+  https://duo.nl/zakelijk/inburgering-ketenpartners/wet-inburgering-2021/leerbaarheidstoets-en-leerroutes/leerbaarheidstoets.jsp
+- **PIP binnen 10 weken** na de dag van DUO's kennisgeving; nog niet ingeschreven in de BRP → 10 weken
+  vanaf inschrijving. Verlenging: **geen "12 weken"** — alleen bij informatie van derden, dan uiterlijk
+  **2 weken na ontvangst** daarvan (Besluit art. 5.3).
+  https://wetten.overheid.nl/jci1.3:c:BWBR0045555&artikel=5.3
+- PIP-inhoud (Wet art. 15): leerroute, ondersteuning/begeleiding, **intensiteit** van PVT en MAP
+  (niet letterlijk "uren per week"). Bezwaar tegen het PIP: alleen via Divosa te bronnen
+  (semi-officieel; het PIP is een beschikking).
+- **Termijn: 3 jaar, vanaf de dag ná de dagtekening van het PIP** (Wet art. 11 lid 1–2). Herziening
+  van het PIP verschuift de start niet. https://wetten.overheid.nl/jci1.3:c:BWBR0044770&artikel=11
+
+### Leerroutes
+- Drie routes (inburgeren.nl/u-gaat-inburgeren): B1-route (*"U doet binnen 3 jaar de taalexamens op
+  niveau B1"*), Onderwijsroute (*"vooral voor jongeren … mbo, hbo of universiteit … B1 of B2"*),
+  Z-route (*"U leert Nederlands op taalniveau A1"* · *"U mag taalexamens doen op niveau A2, maar het
+  hoeft niet"* · *"U sluit de Z-route af met een gesprek bij de gemeente"*). Gemeente kiest de route
+  op basis van de brede intake (Wet art. 15).
+- **Afschalen B1→A2** (alléén B1-route): **600 cursusuren NT2** bij een instelling met keurmerk
+  (Wet art. 32) **én** aantoonbaar voldoende inspanning (Besluit art. 5.5). De wettekst noemt "Blik
+  op Werk" niet — dat is de praktijk. DUO zakelijk: *"ten minste 600 uur taalles gevolgd hebben bij
+  een taalschool met een Blik op Werk Keurmerk. De gemeente controleert dit."*
+  https://wetten.overheid.nl/jci1.3:c:BWBR0045555&artikel=5.5
+- **Z-route-uren gelden per doelgroep** (Besluit art. 3.14): asielstatushouders **800 cursusuren
+  (NT2 + KNM samen) + 800 uur participatie + eindgesprek**; gezins- en overige migranten **800
+  cursusuren + eindgesprek**, zonder de 800 participatie-uren. Niet als universeel 800+800 opschrijven.
+  https://wetten.overheid.nl/jci1.3:c:BWBR0045555&artikel=3.14
+
+### KNM, PVT, MAP
+- KNM zit in **alle** leerroutes (rijksoverheid). B1-/onderwijsroute: KNM-examen; Z-route: KNM-cursusuren.
+- **KNM heeft 8 thema's** (herziene eindtermen, Regeling inburgering 2021, Stcrt. 2024, 15802):
+  *"Werk en inkomen; Omgangsvormen, waarden en normen; Wonen; Gezondheid en gezondheidszorg;
+  Geschiedenis en geografie; Instanties; Staatsinrichting en rechtsstaat; Onderwijs en opvoeding."*
+  ❌ Niet "7 onderwerpen". https://zoek.officielebekendmakingen.nl/stcrt-2024-15802.html
+- PVT: inleiding op de kernwaarden (vrijheid, gelijkwaardigheid, solidariteit, participatie) +
+  ondertekening; **ten minste 12 uren** (Besluit art. 3.1). Verklaring-tekst: Stcrt. 2017, 38120.
+- **MAP: B1-route en Z-route; de onderwijsroute (taalschakeltraject) is uitgezonderd** (Wet art. 8
+  lid 3). PVT blijft óók in de onderwijsroute verplicht.
+  https://wetten.overheid.nl/jci1.3:c:BWBR0044770&artikel=8
+
+### Examens, locaties, uitslag, diploma
+- B1-route examens (duo.nl zakelijk): Lezen, Luisteren, Schrijven, Spreken (B1 of B2) + KNM.
+  Aanmelden via **Mijn Inburgering** (https://www.inburgeren.nl/examen-doen/aanmelden-examen.jsp).
+- **Zes examenlocaties** voor kennisexamens + taalexamens A2: Amsterdam, Eindhoven, Rijswijk,
+  Rotterdam, Utrecht, Zwolle. B1/B2 = staatsexamen NT2, eigen DUO-locaties. Let op: Zwolle verhuist
+  per 1-10-2026 (geen examens 18–30 sept 2026; nieuwsbericht 17-08-2026).
+  https://www.inburgeren.nl/examen-doen/examenplaatsen.jsp
+- Uitslag A2-taalexamens + kennisexamens: **binnen 8 weken** (uitslag.jsp, ook in facts §3).
+  **Actueel (nieuwsbericht 31-07-2026): nakijken Spreken A2 en Schrijven A2 duurt nu maximaal
+  16 weken**; wie daardoor in de knel komt krijgt **automatisch 6 maanden verlenging**. Alleen die
+  twee onderdelen; datum-stempel dit in elke publicatie.
+  https://www.inburgeren.nl/nieuwsberichten/artikel.jsp?cid=tcm:94-243309-16
+- "Alleen het gezakte onderdeel opnieuw; behaalde onderdelen blijven staan" staat **nergens als
+  letterlijke zin** — het systeem is per examen (aanmelden, €50, uitslag, 2 gratis pogingen).
+  Beschrijf het per examen, citeer het niet als DUO-uitspraak.
+- Diploma: downloadbaar in Mijn Diploma's, gratis, vermeldt het niveau (A2/B1/B2)
+  (https://www.inburgeren.nl/examen-doen/diploma.jsp). IND: inburgeringsdiploma nodig voor
+  verblijfsvergunning onbepaalde tijd en voor naturalisatie.
+  ❌ **Naturalisatie vereist nu GEEN B1** — minimaal A2; de verhoging naar B1 is een wetsvoorstel
+  (IND-uitvoeringstoets feb 2026). Niet als geldend recht publiceren.
+  https://ind.nl/nl/met-een-verblijfsvergunning-wonen-in-nederland/inburgering-bij-sterkere-verblijfsvergunning-en-naturalisatie
+- Turkse nationaliteit: sinds 1-1-2022 niet meer uitgezonderd (rijksoverheid).
