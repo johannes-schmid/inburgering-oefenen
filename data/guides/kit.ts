@@ -65,9 +65,9 @@ export const inlineCta = (title: string, desc: string, href: string, label: stri
 
 type BodyLocale = 'en' | 'ar';
 
-const FACT_CHROME: Record<BodyLocale, { source: string; checked: string }> = {
-  en: { source: 'Source', checked: 'accessed' },
-  ar: { source: 'المصدر', checked: 'تم الاطلاع عليه في' },
+const FACT_CHROME: Record<BodyLocale, { source: string; sources: string; checked: string }> = {
+  en: { source: 'Source', sources: 'Sources', checked: 'accessed' },
+  ar: { source: 'المصدر', sources: 'المصادر', checked: 'تم الاطلاع عليه في' },
 };
 
 /** The fact box, with its chrome in the body's own language. */
@@ -118,6 +118,21 @@ export const factTwo = (
     .join(' · ');
   return `<div class="fact-box"><p class="fact-box-claim">${claim}</p>` +
     `<p class="fact-box-source">Bronnen: ${links} — geraadpleegd ${checked}</p></div>`;
+};
+
+/** {@link factTwo}, with its chrome in the body's own language. See {@link factIn}. */
+export const factTwoIn = (
+  locale: BodyLocale,
+  claim: string,
+  sources: [label: string, url: string][],
+  checked: string,
+): string => {
+  const c = FACT_CHROME[locale];
+  const links = sources
+    .map(([label, url]) => `<a href="${url}" target="_blank" rel="noopener">${label}</a>`)
+    .join(' \u00b7 ');
+  return `<div class="fact-box"><p class="fact-box-claim">${claim}</p>` +
+    `<p class="fact-box-source">${c.sources}: ${links} \u2014 ${c.checked} ${checked}</p></div>`;
 };
 
 /* ── Explainer figures ───────────────────────────────────────────────────────────────────────

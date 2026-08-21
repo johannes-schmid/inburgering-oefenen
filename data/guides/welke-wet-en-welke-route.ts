@@ -23,7 +23,7 @@ import type { Guide } from './types';
 import { fact } from './types';
 import {
   I_CHECK, I_X, I_MAIL, I_ROUTE, I_CAP, I_HOME, I_CLOCK,
-  docent, docentIn, note, inlineCta, factIn, factTwo, figure, figureSplit,
+  docent, docentIn, note, inlineCta, factIn, factTwo, factTwoIn, figure, figureSplit,
 } from './kit';
 
 const SRC_NIEUWE_WET = 'https://www.rijksoverheid.nl/themas/migratie-en-reizen/inburgeren-in-nederland/nieuwe-wet-inburgering';
@@ -308,13 +308,23 @@ ${fact('De inburgeringstermijn is 3 jaar en begint op de dag na de dagtekening v
   <p>Did your integration duty start <strong>before 1 January 2022</strong>? Then the Wet
   inburgering 2013 applies. Did it start <strong>on or after</strong> that day? Then it is the Wet
   inburgering 2021. That start date is in your letter from DUO.</p>
+  <p>Note the trap: the act is called 2021 but only took effect on <strong>1 January 2022</strong>.
+  A lot of websites confuse the two. So go by the date in your letter, not by the name of the
+  act.</p>
 </div>
 
-${note('The act is called 2021 but only took effect on <strong>1 January 2022</strong>. A lot of websites confuse the two. So go by the date in your letter, not by the name of the act.')}
-
-${docentIn('en', 'Lost the letter? Log in to Mijn Inburgering with your DigiD. One screen shows you which act, which route and which exams apply to you. I start every intake conversation with that screen — it saves half an hour of guessing.')}
-
 <h2 id="twee-wetten">The two acts side by side</h2>
+
+${figure(
+  'explainer-twee-wetten', 1400, 616,
+  'A timeline with one line through it on 1 January 2022: anyone whose duty started before it falls under the old act, anyone after it under the new one.',
+  'One date decides which act applies to you. Not the day you arrived, and not the day you started a course: the day your integration duty began. That day is in your letter from DUO.',
+  figureSplit(
+    ['Wet inburgering 2013', 'Your integration duty started before 1 January 2022.'],
+    ['Wet inburgering 2021', 'Your duty started on or after 1 January 2022. This applies to almost everyone starting now.'],
+    'right',
+  ),
+)}
 
 <div class="compare-2">
   <div class="compare-card is-primary">
@@ -347,6 +357,8 @@ ${docentIn('en', 'Lost the letter? Log in to Mijn Inburgering with your DigiD. O
 
 ${factIn('en', 'The Wet inburgering 2021 took effect on 1 January 2022. Anyone whose integration duty started before that date remains under the Wet inburgering 2013.', 'Rijksoverheid — Nieuwe Wet inburgering', SRC_NIEUWE_WET, CHECKED)}
 
+${docentIn('en', 'Lost the letter? Log in to Mijn Inburgering with your DigiD. One screen shows you which act, which route and which exams apply to you. I start every intake conversation with that screen — it saves half an hour of guessing.')}
+
 <p>The rest of this page is about the <strong>Wet inburgering 2021</strong>. That is the one that
 applies to almost everyone starting now.</p>
 
@@ -355,6 +367,12 @@ applies to almost everyone starting now.</p>
 <p>Under the 2021 act you follow one of three routes. You do not pick it yourself: the
 municipality decides which route suits you, based on the brede intake (the intake interview) and
 the leerbaarheidstoets (the learnability test). Your PIP says which one it became.</p>
+
+${figure(
+  'explainer-drie-routes', 1244, 606,
+  'One starting point splits into three separate paths, each ending somewhere different: a language level, a school diploma, or taking part in society.',
+  'The three routes are not levels of one track but three separate roads with three different end points. From top to bottom: the B1 route, the education route and the Z-route. The B1 route is orange: that is the standard route, where most people who integrate end up.',
+)}
 
 <div class="route-grid">
   <div class="route-card">
@@ -389,14 +407,18 @@ the leerbaarheidstoets (the learnability test). Your PIP says which one it becam
   </div>
 </div>
 
-${factIn('en', 'In the Z-route, asylum status holders do 800 course hours (Dutch and KNM together) plus 800 hours of participation and a closing interview. Family migrants and other migrants do the 800 course hours and the closing interview, without the 800 participation hours.', 'Besluit inburgering 2021, artikel 3.14', SRC_ZROUTE, CHECKED)}
-
-${factIn('en', 'MAP belongs to the B1 route and the Z-route. The education route is exempt from it. PVT is compulsory in all three routes.', 'Wet inburgering 2021, artikel 8', SRC_MAP, CHECKED)}
+${factTwoIn('en', 'In the Z-route, asylum status holders do 800 course hours (Dutch and KNM together) plus 800 hours of participation and a closing interview; family migrants and other migrants do the 800 course hours and the closing interview, without the 800 participation hours. MAP belongs to the B1 route and the Z-route, the education route is exempt from it, and PVT is compulsory in all three routes.', [['Besluit inburgering 2021, artikel 3.14', SRC_ZROUTE], ['Wet inburgering 2021, artikel 8', SRC_MAP]], CHECKED)}
 
 <h2 id="afschalen">Afschalen: dropping from B1 to A2</h2>
 
 <p>Is B1 genuinely out of reach? Then in the <strong>B1 route</strong> you may sit your language
 exams at A2. In the education route you cannot.</p>
+
+${figure(
+  'explainer-afschalen', 1124, 712,
+  'One arrow down from B1 to A2 with a padlock on it: the step goes one way only, and only if you meet the conditions.',
+  'Dropping down goes one way. You can move from B1 to A2, but not back up to B1 — and only if you meet both conditions below.',
+)}
 
 <div class="yesno-grid">
   <div class="yesno-col yes">
@@ -442,8 +464,6 @@ letter and not with your first lesson, but on the day after the date printed on 
 </div>
 
 ${factIn('en', 'The integration period is 3 years and starts on the day after the date of the PIP. If your PIP is revised later, that start date does not move.', 'Wet inburgering 2021, artikel 11', SRC_TERMIJN, CHECKED)}
-
-${docentIn('en', 'Put your end date in your calendar straight away, and set a reminder six months before it. Results for Writing and Speaking can take a long time, and that is not the moment to discover you still have one exam left.')}
 
 <h2 id="en-nu">What next?</h2>
 
@@ -513,13 +533,22 @@ ${docentIn('en', 'Put your end date in your calendar straight away, and set a re
   <p>هل بدأ التزامك بالاندماج <strong>قبل ١ يناير ٢٠٢٢</strong>؟ إذن ينطبق عليك قانون
   Wet inburgering 2013. وهل بدأ <strong>في ذلك اليوم أو بعده</strong>؟ إذن ينطبق عليك
   Wet inburgering 2021. تاريخ البدء هذا مذكور في رسالتك من DUO.</p>
+  <p>وانتبه إلى المطبّ: اسم القانون ٢٠٢١ لكنه دخل حيّز التنفيذ في <strong>١ يناير ٢٠٢٢</strong>،
+  وكثير من المواقع تخلط بين الأمرين. اعتمد إذن على التاريخ في رسالتك، لا على اسم القانون.</p>
 </div>
 
-${note('اسم القانون ٢٠٢١ لكنه دخل حيّز التنفيذ في <strong>١ يناير ٢٠٢٢</strong>. كثير من المواقع تخلط بين الأمرين. اعتمد إذن على التاريخ في رسالتك، لا على اسم القانون.')}
-
-${docentIn('ar', 'فقدت الرسالة؟ سجّل الدخول إلى Mijn Inburgering باستخدام DigiD. ستجد في شاشة واحدة أي قانون وأي مسار وأي امتحانات تنطبق عليك. أنا أبدأ كل مقابلة تعريفية بهذه الشاشة — فهي توفّر نصف ساعة من التخمين.')}
-
 <h2 id="twee-wetten">القانونان جنبًا إلى جنب</h2>
+
+${figure(
+  'explainer-twee-wetten', 1400, 616,
+  'خط زمني يقطعه خط واحد عند ١ يناير ٢٠٢٢: من بدأ التزامه قبله يخضع للقانون القديم، ومن بدأ بعده يخضع للجديد.',
+  'تاريخ واحد يحدّد أي قانون ينطبق عليك. لا يوم وصولك، ولا يوم بدئك دورةً: بل اليوم الذي بدأ فيه التزامك بالاندماج. وهذا اليوم مذكور في رسالتك من DUO.',
+  figureSplit(
+    ['Wet inburgering 2013', 'بدأ التزامك بالاندماج قبل ١ يناير ٢٠٢٢.'],
+    ['Wet inburgering 2021', 'بدأ التزامك في ١ يناير ٢٠٢٢ أو بعده. وهذا ينطبق على جميع من يبدأون الآن تقريبًا.'],
+    'right',
+  ),
+)}
 
 <div class="compare-2">
   <div class="compare-card is-primary">
@@ -552,6 +581,8 @@ ${docentIn('ar', 'فقدت الرسالة؟ سجّل الدخول إلى Mijn In
 
 ${factIn('ar', 'دخل قانون Wet inburgering 2021 حيّز التنفيذ في ١ يناير ٢٠٢٢. ومن بدأ التزامه بالاندماج قبل ذلك التاريخ يبقى خاضعًا لقانون Wet inburgering 2013.', 'Rijksoverheid — Nieuwe Wet inburgering', SRC_NIEUWE_WET, CHECKED)}
 
+${docentIn('ar', 'فقدت الرسالة؟ سجّل الدخول إلى Mijn Inburgering باستخدام DigiD. ستجد في شاشة واحدة أي قانون وأي مسار وأي امتحانات تنطبق عليك. أنا أبدأ كل مقابلة تعريفية بهذه الشاشة — فهي توفّر نصف ساعة من التخمين.')}
+
 <p>بقية هذه الصفحة تتناول <strong>Wet inburgering 2021</strong>، وهو القانون الذي ينطبق على
 جميع من يبدأون الآن تقريبًا.</p>
 
@@ -560,6 +591,12 @@ ${factIn('ar', 'دخل قانون Wet inburgering 2021 حيّز التنفيذ �
 <p>في ظل قانون ٢٠٢١ تسلك أحد ثلاثة مسارات. ولا تختاره بنفسك: البلدية تحدّد المسار المناسب لك
 بناءً على المقابلة الشاملة (brede intake) واختبار القابلية للتعلّم (leerbaarheidstoets).
 والـPIP يوضّح أي مسار استقرّ عليه الأمر.</p>
+
+${figure(
+  'explainer-drie-routes', 1244, 606,
+  'نقطة بداية واحدة تتفرّع إلى ثلاثة مسارات منفصلة، ينتهي كل منها إلى غاية مختلفة: مستوى لغوي، أو شهادة دراسية، أو المشاركة في المجتمع.',
+  'المسارات الثلاثة ليست مستويات لمسار واحد، بل ثلاث طرق منفصلة لها ثلاث نهايات مختلفة. من الأعلى إلى الأسفل: مسار B1، ومسار التعليم، ومسار Z. ومسار B1 باللون البرتقالي: فهو المسار القياسي الذي ينتهي إليه معظم المندمجين.',
+)}
 
 <div class="route-grid">
   <div class="route-card">
@@ -594,14 +631,18 @@ ${factIn('ar', 'دخل قانون Wet inburgering 2021 حيّز التنفيذ �
   </div>
 </div>
 
-${factIn('ar', 'في مسار Z يؤدي الحاصلون على حق اللجوء ٨٠٠ ساعة دراسية (الهولندية وKNM معًا) بالإضافة إلى ٨٠٠ ساعة مشاركة ومقابلة ختامية. أما مهاجرو لَمّ الشمل وسائر المهاجرين فيؤدون ٨٠٠ ساعة دراسية والمقابلة الختامية، دون ساعات المشاركة الـ٨٠٠.', 'Besluit inburgering 2021, artikel 3.14', SRC_ZROUTE, CHECKED)}
-
-${factIn('ar', 'يخصّ MAP مسار B1 ومسار Z. أما مسار التعليم فهو مُستثنى منه. والـPVT إلزامي في المسارات الثلاثة جميعها.', 'Wet inburgering 2021, artikel 8', SRC_MAP, CHECKED)}
+${factTwoIn('ar', 'في مسار Z يؤدي الحاصلون على حق اللجوء ٨٠٠ ساعة دراسية (الهولندية وKNM معًا) بالإضافة إلى ٨٠٠ ساعة مشاركة ومقابلة ختامية، أما مهاجرو لَمّ الشمل وسائر المهاجرين فيؤدون ٨٠٠ ساعة دراسية والمقابلة الختامية دون ساعات المشاركة الـ٨٠٠. ويخصّ MAP مسار B1 ومسار Z، ومسار التعليم مُستثنى منه، والـPVT إلزامي في المسارات الثلاثة جميعها.', [['Besluit inburgering 2021, artikel 3.14', SRC_ZROUTE], ['Wet inburgering 2021, artikel 8', SRC_MAP]], CHECKED)}
 
 <h2 id="afschalen">‏Afschalen: النزول من B1 إلى A2</h2>
 
 <p>هل مستوى B1 بعيد المنال فعلًا؟ عندها يمكنك في <strong>مسار B1</strong> أداء امتحاناتك اللغوية
 على مستوى A2. أما في مسار التعليم فلا.</p>
+
+${figure(
+  'explainer-afschalen', 1124, 712,
+  'سهم واحد ينزل من B1 إلى A2 وعليه قفل: الخطوة تسير في اتجاه واحد فقط، وفقط إذا استوفيت الشرطين.',
+  'النزول يسير في اتجاه واحد. يمكنك الانتقال من B1 إلى A2، لكن لا يمكنك العودة إلى B1 — وفقط إذا استوفيت الشرطين أدناه.',
+)}
 
 <div class="yesno-grid">
   <div class="yesno-col yes">
@@ -647,8 +688,6 @@ ${inlineCta('متردّد بين B1 وA2؟', 'قم بامتحان تجريبي �
 </div>
 
 ${factIn('ar', 'مدة الاندماج ٣ سنوات وتبدأ في اليوم التالي لتاريخ الـPIP. وإذا جرت مراجعة الـPIP لاحقًا، فإن تاريخ البدء لا يتغيّر.', 'Wet inburgering 2021, artikel 11', SRC_TERMIJN, CHECKED)}
-
-${docentIn('ar', 'دوّن تاريخ انتهاء مدتك في تقويمك فورًا، وضع تذكيرًا قبله بستة أشهر. نتائج الكتابة والمحادثة قد تتأخّر طويلًا، ولا تريد أن تكتشف حينها أنه بقي عليك امتحان واحد.')}
 
 <h2 id="en-nu">وماذا بعد؟</h2>
 

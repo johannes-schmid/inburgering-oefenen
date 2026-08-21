@@ -424,9 +424,20 @@
 }
 /* The two-sided variant. A grid, not two floats, so both labels keep the same width and sit
    under the half of the drawing they describe. */
+/* The label strip under a split diagram.
+
+   **`direction: ltr` is load-bearing, not cosmetic.** A CSS grid lays its columns out along the
+   inline direction, so under `[dir="rtl"]` the two halves swap places — while the diagram above
+   them is a raster and cannot flip. On the Arabic pages that put "Wet inburgering 2021" under the
+   grey pre-2022 side of the timeline and "2013" under the navy one: the labels contradicted the
+   picture they describe, and told the reader the old act was the new one. Pinning the container to
+   LTR keeps label order matched to the image in every locale; each side then re-establishes RTL so
+   the Arabic text inside it still reads and aligns correctly. */
 .guide-figure-split {
   display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-top: 0.9rem;
+  direction: ltr;
 }
+[dir="rtl"] .guide-figure-side { direction: rtl; }
 .guide-figure-side { border-top: 3px solid var(--color-outline-variant); padding-top: 0.6rem; }
 .guide-figure-side.is-now { border-top-color: var(--color-primary); }
 .guide-figure-side > p:first-child {

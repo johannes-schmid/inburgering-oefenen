@@ -1839,3 +1839,29 @@ geen seed, dus een herhaling is nieuw werk dat je opnieuw moet bekijken.
 **Lesson:** kijk naar wat het model teruggeeft en vraag niet of het mooi is maar of het iets
 *beweert*. Stijlfouten zie je meteen; een verkeerd gekleurde lijn die suggereert dat de
 onderwijsroute de standaard is, is plausibel, onopvallend en fout.
+
+## 2026-08-21 — de EN/AR-bodies bijgetrokken, en een RTL-bug in de labelstrip
+**Changed:** de en- en ar-bodies van alle vier de gidsen gelijkgetrokken met het Nederlands
+(callouts gevouwen, factboxen samengevoegd, zes figuren toegevoegd); `factTwoIn` in
+`data/guides/kit.ts`; `direction: ltr` op `.guide-figure-split` in `app/globals.css`.
+**Outcome:** SUCCESS
+**What worked / went wrong:**
+- **Een structuurvergelijker was de hele klus waard.** Een scriptje dat per body de reeks
+  blokken (h2's, figuren, factboxen, grids) in documentvolgorde uitleest en nl/en/ar naast elkaar
+  zet, maakte in één oogopslag zichtbaar wat er per locale miste. `fact`/`factIn`/`factTwo` en
+  `docent`/`docentIn` moesten daarin tot één familie genormaliseerd worden, anders leest élke
+  vertaalde body als een verschil en verdwijnt de echte drift in de ruis.
+- **`factTwo` had geen locale-variant en dat was niet zichtbaar in de types.** Hij zet "Bronnen:"
+  en "geraadpleegd" hard in de HTML, dus een samengevoegde box in een Engelse of Arabische body
+  printte Nederlandse chrome. Dezelfde bug die `factIn`/`docentIn` eerder oplosten, terug voor het
+  samengevoegde geval. Nu `factTwoIn`.
+- **De RTL-labelbug is de belangrijkste vondst.** Zie het nieuwe CLAUDE.md-kopje. Een grid keert
+  zijn kolommen om onder `[dir="rtl"]`, een raster niet — dus stond op de Arabische pagina's het
+  label "2021" onder de grijze vóór-2022-helft. Geen test, geen typecheck en geen build ziet dat.
+- De sourcing-test kijkt alléén naar `guide.articleHtml`, de Nederlandse body. Pariteit van
+  factbox en bron in en/ar is dus niet afgedwongen; hier met de hand geteld op de gerenderde
+  pagina (claims == sources in alle twaalf combinaties).
+**Lesson:** tekst uit een afbeelding halen zodat hij vertaalbaar wordt, verplaatst het
+richtingsprobleem naar de layout. Controleer een tweetalige tekening altijd in de RTL-locale met
+je ogen; alles wat een vaste afbeelding annoteert moet aan de afbeelding vastgepind worden, niet
+aan de leesrichting.

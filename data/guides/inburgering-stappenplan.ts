@@ -17,7 +17,7 @@
  */
 import type { Guide } from './types';
 import { fact } from './types';
-import { docentIn, factIn, factTwo, figure } from './kit';
+import { docentIn, factIn, factTwo, factTwoIn, figure } from './kit';
 
 const SRC_WET = 'https://www.rijksoverheid.nl/themas/migratie-en-reizen/inburgeren-in-nederland/nieuwe-wet-inburgering';
 const SRC_DIPLOMA_VRIJ = 'https://www.inburgeren.nl/minder-of-geen-examens/diploma-gehaald.jsp';
@@ -584,6 +584,12 @@ everyone starting now.</p>
 
 <h2 id="stappenplan">The process in 7 steps</h2>
 
+${figure(
+  'explainer-intake-naar-pip', 1400, 891,
+  'Three things — an interview, a test and your personal situation — come together in one document: your PIP.',
+  'The first steps all turn on one thing: the municipality gathers three kinds of information and turns them into a single plan. That plan is your PIP, and it states which route and which exams apply to you.',
+)}
+
 <div class="guide-steps">
 
 <div class="guide-step">
@@ -658,8 +664,7 @@ everyone starting now.</p>
       <p>The target is language level A1. You finish with a closing interview at the municipality
       rather than a central exam. Reach A2 anyway? Then you may still sit the exams.</p>
     </div>
-    ${factIn('en', 'Switching from B1 to A2 is only possible in the B1 route. You must have had at least 600 hours of language tuition at a school with a quality mark, and be able to show that you made the effort.', 'Besluit inburgering 2021, artikel 5.5', SRC_AFSCHALEN, CHECKED)}
-    ${factIn('en', 'Are you an asylum status holder? Then the Z-route consists of 800 hours of tuition (language and KNM), 800 hours of participation and activation, and a closing interview. Are you a family migrant? Then it is 800 hours of tuition and a closing interview.', 'Besluit inburgering 2021, artikel 3.14', SRC_ZROUTE, CHECKED)}
+    ${factTwoIn('en', 'Switching from B1 to A2 is only possible in the B1 route. You must have had at least 600 hours of language tuition at a school with a quality mark, and be able to show that you made the effort. Are you an asylum status holder? Then the Z-route consists of 800 hours of tuition (language and KNM), 800 hours of participation and activation, and a closing interview. Are you a family migrant? Then it is 800 hours of tuition and a closing interview.', [['Besluit inburgering 2021, artikel 5.5', SRC_AFSCHALEN], ['Besluit inburgering 2021, artikel 3.14', SRC_ZROUTE]], CHECKED)}
   </div>
 </div>
 
@@ -740,6 +745,12 @@ everyone starting now.</p>
 </div>
 
 </div>
+
+${figure(
+  'explainer-wat-moet-je-halen', 1400, 590,
+  'Six separate parts come together into one diploma with a seal.',
+  'Your diploma is not one big exam but a collection of separate parts. What you have passed stays passed — fail one part and you only resit that part.',
+)}
 
 <h2 id="begin-met-oefenen">Start practising today</h2>
 
@@ -923,6 +934,12 @@ ${factIn('ar', 'اسم قانون Wet inburgering 2021 يحمل سنة ٢٠٢١�
 
 <h2 id="stappenplan">المسار في ٧ خطوات</h2>
 
+${figure(
+  'explainer-intake-naar-pip', 1400, 891,
+  'ثلاثة أمور — مقابلة واختبار ووضعك الشخصي — تتلاقى في وثيقة واحدة: الـPIP الخاص بك.',
+  'الخطوات الأولى تدور كلها حول أمر واحد: البلدية تجمع ثلاثة أنواع من المعلومات وتحوّلها إلى خطة واحدة. وهذه الخطة هي الـPIP الخاص بك، وفيها أي مسار وأي امتحانات تنطبق عليك.',
+)}
+
 <div class="guide-steps">
 
 <div class="guide-step">
@@ -992,8 +1009,7 @@ ${factIn('ar', 'اسم قانون Wet inburgering 2021 يحمل سنة ٢٠٢١�
       <p>الهدف هو المستوى A1. وتُنهيه بمقابلة ختامية في البلدية، لا بامتحان مركزي. وإن بلغت A2
       رغم ذلك، فيمكنك أداء الامتحانات.</p>
     </div>
-    ${factIn('ar', 'الانتقال من B1 إلى A2 ممكن في مسار B1 وحده. وعليك عندها أن تكون قد حضرت ٦٠٠ ساعة دراسية على الأقل في مدرسة حاصلة على علامة جودة، وأن تُظهر أنك بذلت جهدك.', 'Besluit inburgering 2021, artikel 5.5', SRC_AFSCHALEN, CHECKED)}
-    ${factIn('ar', 'هل أنت حاصل على حق اللجوء؟ عندها يتكوّن مسار Z من ٨٠٠ ساعة دراسية (اللغة وKNM)، و٨٠٠ ساعة مشاركة وتفعيل، ومقابلة ختامية. وهل أنت مهاجر لَمّ شمل؟ عندها هي ٨٠٠ ساعة دراسية ومقابلة ختامية.', 'Besluit inburgering 2021, artikel 3.14', SRC_ZROUTE, CHECKED)}
+    ${factTwoIn('ar', 'الانتقال من B1 إلى A2 ممكن في مسار B1 وحده، وعليك عندها أن تكون قد حضرت ٦٠٠ ساعة دراسية على الأقل في مدرسة حاصلة على علامة جودة، وأن تُظهر أنك بذلت جهدك. وهل أنت حاصل على حق اللجوء؟ عندها يتكوّن مسار Z من ٨٠٠ ساعة دراسية (اللغة وKNM)، و٨٠٠ ساعة مشاركة وتفعيل، ومقابلة ختامية. وهل أنت مهاجر لَمّ شمل؟ عندها هي ٨٠٠ ساعة دراسية ومقابلة ختامية.', [['Besluit inburgering 2021, artikel 5.5', SRC_AFSCHALEN], ['Besluit inburgering 2021, artikel 3.14', SRC_ZROUTE]], CHECKED)}
   </div>
 </div>
 
@@ -1072,6 +1088,12 @@ ${factIn('ar', 'اسم قانون Wet inburgering 2021 يحمل سنة ٢٠٢١�
 </div>
 
 </div>
+
+${figure(
+  'explainer-wat-moet-je-halen', 1400, 590,
+  'ستة أجزاء منفصلة تتلاقى في شهادة واحدة تحمل خاتمًا.',
+  'شهادتك ليست امتحانًا واحدًا كبيرًا، بل مجموعة من أجزاء منفصلة. وما اجتزته يبقى مُجتازًا — وإذا رسبت في جزء واحد فإنك تعيد ذلك الجزء وحده.',
+)}
 
 <h2 id="begin-met-oefenen">ابدأ التدريب اليوم</h2>
 

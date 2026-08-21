@@ -1212,6 +1212,30 @@ the spacer and so hid it. Change the nav's padding and the token together. Note 
 `h-[calc(var(--nav-h)-1px)]` emits nothing (invalid CSS, silently dropped) — the spaces around the
 minus must be written as underscores, `_-_1px`.
 
+### A raster cannot flip, so anything labelling one must not flip either
+
+The kennisgids explainer diagrams are generated **text-free** because a guide ships in nl/en/ar and
+the Arabic renders RTL: text baked into a raster cannot be translated, cannot mirror, is invisible
+to a screen reader and cannot be selected. The labels therefore live in HTML — `figure()` and
+`figureSplit()` in `data/guides/kit.ts`.
+
+**That moved the bug rather than removing it, and it took a screenshot to see.** `.guide-figure-split`
+is a CSS grid, and a grid lays its columns out along the inline direction — so under `[dir="rtl"]`
+the two halves swapped while the drawing above them did not. On the Arabic pages "Wet inburgering
+2021" sat under the grey *pre*-2022 half of the timeline and "2013" under the navy one, with the
+accent rule on the wrong side too: the labels contradicted the picture and told the reader the old
+act was the new one. Nothing in the stack can notice that — the page is valid, the strings are
+correctly translated, and both tests and `tsc` pass.
+
+So `.guide-figure-split` is pinned `direction: ltr` and each side re-establishes `rtl` for its own
+text under `[dir="rtl"]`. **Any future element that annotates a fixed image needs the same
+treatment**: pin the placement to the image, and let only the text follow the locale.
+
+Worth knowing for the next diagram: a left-to-right timeline still *reads* forwards to an RTL
+reader only because the caption says so in words. Do not "fix" that with `transform: scaleX(-1)` on
+RTL — it would mirror `explainer-twee-wetten` too, whose labels are now deliberately pinned, and
+put them back out of step with the drawing.
+
 ### Anti-generic guardrails
 - **Colours:** only brand tokens from `app/globals.css`. Never default Tailwind
   indigo/blue-600. Primary `#002b6d`, accent `#fe762c`, orange text `#a24000`.

@@ -25,7 +25,7 @@ import { fact } from './types';
 import { MODULE_PRICE_CENTS, euro } from '@/lib/pricing';
 import {
   I_CHECK, I_X, I_BOOK, I_HEADPHONES, I_PEN, I_MIC, I_LANDMARK, I_CLIPBOARD,
-  I_EURO, I_CLOCK, docent, docentIn, note, inlineCta, factIn, factTwo, figure,
+  I_EURO, I_CLOCK, docent, docentIn, note, inlineCta, factIn, factTwo, factTwoIn, figure,
 } from './kit';
 
 const SRC_KOSTEN = 'https://www.inburgeren.nl/inburgeren-betalen/index.jsp';
@@ -327,19 +327,23 @@ ${factIn('en', 'The first 2 attempts at each exam are free for asylum status hol
 </div>
 
 <p>Do you fall under the <strong>Wet inburgering 2013</strong>? Then ONA is added, at the time of
-writing €40. That makes €290.</p>
+writing €40. That makes €290. You do not always have to sit every part, by the way: which exams
+you have to take depends on your learning route and on the act that applies to you. <strong>Mijn
+Inburgering</strong> holds your own list.</p>
 
 ${factIn('en', 'At the time of writing each exam part costs €50 (Reading, Listening, Writing, Speaking and KNM), €250 together. ONA costs €40 and applies only under the 2013 act. These amounts are index-linked — check the current price with DUO.', 'inburgeren.nl — Inburgeren betalen', SRC_KOSTEN, CHECKED)}
 
-${note('You do not always have to sit every part. Which exams you have to take depends on your learning route and on the act that applies to you. <strong>Mijn Inburgering</strong> holds your own list.')}
-
 <h2 id="afzeggen">Cannot make it? Cancel in time</h2>
 
-<div class="verdict warn">
-  <p class="verdict-answer">At least 7 days in advance</p>
-  <p>Move or cancel your exam in Mijn Inburgering. Do it in time and you get your money back — and
-  if it was a free attempt, that free attempt stays. Simply not turning up means paying again.</p>
-</div>
+<p>Move or cancel your exam in Mijn Inburgering, <strong>at least 7 days in advance</strong>. Do it
+in time and you get your money back — and if it was a free attempt, that free attempt stays. Simply
+not turning up means paying again.</p>
+
+${figure(
+  'explainer-afzeggen-week', 1400, 616,
+  'A timeline running to exam day, with a line one week before it: up to that line you can still cancel, after it you cannot.',
+  'There is a line one week before your exam. Cancel before that line and you get your money back. After it you do not, not even if you are ill.',
+)}
 
 ${factIn('en', 'You can move or cancel an exam up to 7 days in advance. Anyone who cancels later or does not turn up does not get the exam fee back.', 'DUO — Examenreglement inburgering', SRC_REGLEMENT, CHECKED)}
 
@@ -369,7 +373,8 @@ through Mijn Inburgering.</p>
   </div>
 </div>
 
-${note('The money <strong>does not reach your account</strong>. DUO pays your school or your exam directly. And you repay the loan later, with interest — asylum status holders excepted.')}
+<p>The money <strong>does not reach your account</strong>: DUO pays your school or your exam
+directly. And you repay the loan later, with interest.</p>
 
 ${factIn('en', 'Asylum status holders cannot borrow from DUO, because their municipality pays for their course. Others borrow for a course and exams at a recognised institution; DUO pays the school directly.', 'inburgeren.nl — Lenen bij DUO', SRC_LENEN, CHECKED)}
 
@@ -384,11 +389,10 @@ ${factIn('en', 'Asylum status holders cannot borrow from DUO, because their muni
   reclaim a loan either. You do not have to do anything about it yourself.</p>
 </div>
 
-${factIn('en', 'On 9 July 2025 the Raad van State ruled that the ministry may not impose a fine on an asylum status holder, nor require repayment of their loan. DUO had already paused fines and loan recovery for asylum status holders in February 2025.', 'Rijksoverheid — Uitspraak Raad van State', SRC_RVS, CHECKED)}
-
 <p>Are you <strong>not</strong> an asylum status holder — because you came to the Netherlands for
 your partner or family, for instance? Then you can still be fined if you do not finish in time and
-have no right to extra time. These are the maximum amounts:</p>
+have no right to extra time. A fine is not the end of the road: DUO also gives you <strong>extra
+time</strong> to finish your integration. These are the maximum amounts:</p>
 
 <div class="price-list">
   ${price(I_CLIPBOARD, 'Learning route not completed', 'Wet inburgering 2021', 'max. €1,000')}
@@ -398,9 +402,7 @@ have no right to extra time. These are the maximum amounts:</p>
   ${price(I_CLIPBOARD, 'PVT not completed', 'Wet inburgering 2013', '€340')}
 </div>
 
-${factIn('en', 'Asylum status holders are never fined. For other integrators the 2021 act sets a maximum of €1,000 for the learning route and €340 each for PVT and MAP; the 2013 act sets a maximum of €1,250 for the diploma and €340 for PVT. After a fine you are given extra time to integrate after all.', 'inburgeren.nl — Boete', SRC_BOETE, CHECKED)}
-
-${note('A fine is not the end of the road. If you get one, DUO also gives you <strong>extra time</strong> to finish your integration — how much depends on what you have already passed.')}
+${factTwoIn('en', 'On 9 July 2025 the Raad van State ruled that the ministry may not impose a fine on an asylum status holder, nor require repayment of their loan; DUO had already paused that in February 2025. For other integrators the 2021 act sets a maximum of €1,000 for the learning route and €340 each for PVT and MAP, and the 2013 act a maximum of €1,250 for the diploma and €340 for PVT. After a fine you are given extra time to integrate after all.', [['Rijksoverheid — Uitspraak Raad van State', SRC_RVS], ['inburgeren.nl — Boete', SRC_BOETE]], CHECKED)}
 
 <h2 id="oefenen">Practising is cheaper than resitting</h2>
 
@@ -510,19 +512,23 @@ ${factIn('ar', 'أول محاولتين لكل امتحان مجانيتان ل�
 </div>
 
 <p>هل تخضع لقانون <strong>Wet inburgering 2013</strong>؟ عندها يُضاف امتحان ONA، وتكلفته
-‏€40 في وقت كتابة هذا النص. أي ‏€290 في المجموع.</p>
+‏€40 في وقت كتابة هذا النص. أي ‏€290 في المجموع. ولست مضطرًا دائمًا لأداء جميع الأجزاء: فالامتحانات
+المطلوبة منك تعتمد على مسارك التعليمي وعلى القانون الذي ينطبق عليك، وقائمتك الخاصة موجودة في
+<strong>Mijn Inburgering</strong>.</p>
 
 ${factIn('ar', 'في وقت كتابة هذا النص يكلّف كل جزء من الامتحان ‏€50 (القراءة والاستماع والكتابة والمحادثة وKNM)، أي ‏€250 معًا. ويكلّف ONA ‏€40 وينطبق في ظل قانون ٢٠١٣ فقط. وهذه المبالغ مرتبطة بمؤشر الأسعار — تحقّق من السعر الحالي لدى DUO.', 'inburgeren.nl — Inburgeren betalen', SRC_KOSTEN, CHECKED)}
 
-${note('لست مضطرًا دائمًا لأداء جميع الأجزاء. فالامتحانات المطلوبة منك تعتمد على مسارك التعليمي وعلى القانون الذي ينطبق عليك. وقائمتك الخاصة موجودة في <strong>Mijn Inburgering</strong>.')}
-
 <h2 id="afzeggen">لا تستطيع الحضور؟ ألغِ الموعد في الوقت المناسب</h2>
 
-<div class="verdict warn">
-  <p class="verdict-answer">قبل ٧ أيام على الأقل</p>
-  <p>غيّر موعد امتحانك أو ألغِه عبر Mijn Inburgering. إذا فعلت ذلك في الوقت المناسب تسترد أموالك
-  — وإن كانت محاولة مجانية، فإنها تبقى لك. أما عدم الحضور ببساطة فيعني الدفع من جديد.</p>
-</div>
+<p>غيّر موعد امتحانك أو ألغِه عبر Mijn Inburgering، <strong>قبل ٧ أيام على الأقل</strong>. إذا فعلت
+ذلك في الوقت المناسب تسترد أموالك — وإن كانت محاولة مجانية، فإنها تبقى لك. أما عدم الحضور ببساطة
+فيعني الدفع من جديد.</p>
+
+${figure(
+  'explainer-afzeggen-week', 1400, 616,
+  'خط زمني يمتد إلى يوم الامتحان، وفيه خط قبله بأسبوع: حتى ذلك الخط يمكنك الإلغاء، وبعده لا يمكنك.',
+  'هناك خط قبل امتحانك بأسبوع. إذا ألغيت قبل ذلك الخط تسترد أموالك، وبعده لا تستردها، ولا حتى إذا كنت مريضًا.',
+)}
 
 ${factIn('ar', 'يمكنك تغيير موعد الامتحان أو إلغاؤه حتى ٧ أيام قبله. ومن يلغي بعد ذلك أو لا يحضر لا يسترد رسوم الامتحان.', 'DUO — Examenreglement inburgering', SRC_REGLEMENT, CHECKED)}
 
@@ -552,7 +558,8 @@ Mijn Inburgering.</p>
   </div>
 </div>
 
-${note('المبلغ <strong>لا يصل إلى حسابك</strong>. فـDUO تدفع لمدرستك أو لامتحانك مباشرةً. وتسدّد القرض لاحقًا مع فوائد — باستثناء الحاصلين على حق اللجوء.')}
+<p>المبلغ <strong>لا يصل إلى حسابك</strong>: فـDUO تدفع لمدرستك أو لامتحانك مباشرةً. وتسدّد القرض
+لاحقًا مع فوائد.</p>
 
 ${factIn('ar', 'لا يمكن للحاصلين على حق اللجوء الاقتراض من DUO، لأن البلدية تدفع تكلفة دورتهم. أما غيرهم فيقترضون لدورة وامتحانات لدى مؤسسة معتمدة، وتدفع DUO للمدرسة مباشرةً.', 'inburgeren.nl — Lenen bij DUO', SRC_LENEN, CHECKED)}
 
@@ -567,10 +574,9 @@ ${factIn('ar', 'لا يمكن للحاصلين على حق اللجوء الاق
   ولست مضطرًا لفعل أي شيء بنفسك بهذا الشأن.</p>
 </div>
 
-${factIn('ar', 'قضى مجلس الدولة في ٩ يوليو ٢٠٢٥ بأنه لا يجوز للوزارة فرض غرامة على حاصل على حق اللجوء ولا مطالبته بسداد قرضه. وكانت DUO قد أوقفت بالفعل فرض الغرامات واسترداد القروض بحق الحاصلين على حق اللجوء في فبراير ٢٠٢٥.', 'Rijksoverheid — Uitspraak Raad van State', SRC_RVS, CHECKED)}
-
 <p>وهل أنت <strong>لست</strong> حاصلًا على حق اللجوء — لأنك قدمت إلى هولندا من أجل شريكك أو
 عائلتك مثلًا؟ عندها قد تُغرَّم إن لم تُنهِ اندماجك في الوقت المحدّد ولم يكن لك حق في وقت إضافي.
+والغرامة ليست نهاية المطاف: فـDUO تمنحك معها <strong>وقتًا إضافيًا</strong> لإكمال اندماجك.
 وهذه هي المبالغ القصوى:</p>
 
 <div class="price-list">
@@ -581,9 +587,7 @@ ${factIn('ar', 'قضى مجلس الدولة في ٩ يوليو ٢٠٢٥ بأن�
   ${price(I_CLIPBOARD, 'عدم إكمال PVT', 'Wet inburgering 2013', '€340')}
 </div>
 
-${factIn('ar', 'الحاصلون على حق اللجوء لا يُغرَّمون أبدًا. أما سائر المندمجين فيحدّد قانون ٢٠٢١ سقفًا قدره ‏€1.000 للمسار التعليمي و‏€340 لكل من PVT وMAP؛ ويحدّد قانون ٢٠١٣ سقفًا قدره ‏€1.250 للشهادة و‏€340 لـPVT. وبعد الغرامة يُمنح المعني وقتًا إضافيًا لإتمام اندماجه.', 'inburgeren.nl — Boete', SRC_BOETE, CHECKED)}
-
-${note('الغرامة ليست نهاية المطاف. فإذا فُرضت عليك، تمنحك DUO أيضًا <strong>وقتًا إضافيًا</strong> لإكمال اندماجك — ويعتمد مقداره على ما اجتزته بالفعل.')}
+${factTwoIn('ar', 'قضى مجلس الدولة في ٩ يوليو ٢٠٢٥ بأنه لا يجوز للوزارة فرض غرامة على حاصل على حق اللجوء ولا مطالبته بسداد قرضه، وكانت DUO قد أوقفت ذلك بالفعل في فبراير ٢٠٢٥. أما سائر المندمجين فيحدّد قانون ٢٠٢١ سقفًا قدره ‏€1.000 للمسار التعليمي و‏€340 لكل من PVT وMAP، ويحدّد قانون ٢٠١٣ سقفًا قدره ‏€1.250 للشهادة و‏€340 لـPVT. وبعد الغرامة يُمنح المعني وقتًا إضافيًا لإتمام اندماجه.', [['Rijksoverheid — Uitspraak Raad van State', SRC_RVS], ['inburgeren.nl — Boete', SRC_BOETE]], CHECKED)}
 
 <h2 id="oefenen">التدريب أرخص من إعادة الامتحان</h2>
 

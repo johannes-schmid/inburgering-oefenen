@@ -44,7 +44,7 @@ import type { Guide } from './types';
 import { fact } from './types';
 import {
   I_BOOK, I_CHECK, I_LANDMARK, I_X,
-  docent, docentIn, note, inlineCta, factIn, factTwo, figure, figureSplit,
+  docent, docentIn, note, inlineCta, factIn, factTwo, factTwoIn, figure, figureSplit,
 } from './kit';
 
 const SRC_PLICHT = 'https://www.rijksoverheid.nl/onderwerpen/immigratie-naar-nederland/vraag-en-antwoord/moet-ik-als-nieuwkomer-inburgeren';
@@ -345,12 +345,14 @@ government expects two things of you above all.</p>
 
 <p>Once you have completed the integration programme you receive an
 <strong>inburgeringsdiploma</strong>. You often need that diploma later, if you want to apply for
-permanent residence or become a Dutch citizen.</p>
+permanent residence or become a Dutch citizen. So inburgering is not about how clever you are. It
+is about learning the language and being able to manage on your own in the Netherlands.</p>
 
-<div class="verdict ok">
-  <p class="verdict-answer">Inburgering is not about how clever you are</p>
-  <p>It is about learning the language and being able to manage on your own in the Netherlands.</p>
-</div>
+${figure(
+  'explainer-wat-is-inburgeren', 1484, 932,
+  'Two parts — the language, and knowing how the Netherlands works — come together in one diploma, and that diploma opens the door to permanent residence or naturalisation.',
+  'Inburgering consists of two things that come together in one diploma. With that diploma you can apply for permanent residence, or become a Dutch citizen.',
+)}
 
 <h2 id="wie-moet-inburgeren">Who has to integrate?</h2>
 
@@ -379,19 +381,50 @@ nationality, and why you came here.</p>
   </div>
 </div>
 
-${factIn('en', 'Exempt groups include: people under 18, people above state pension age, people from the EU/EEA and Switzerland, people here temporarily to study or work, and anyone who lived in the Netherlands for 8 years or more while of compulsory school age.', 'Rijksoverheid — Moet ik als nieuwkomer inburgeren?', SRC_PLICHT, CHECKED)}
+${factTwoIn(
+  'en',
+  "Exempt groups include: people under 18, people above state pension age, people from the EU/EEA and Switzerland, and anyone here temporarily to study or work. Diplomas that grant exemption: vmbo, havo, vwo, mbo level 2 or higher, and hbo or university degrees provided they were taught in Dutch.",
+  [['Rijksoverheid — Moet ik als nieuwkomer inburgeren?', SRC_PLICHT], ['inburgeren.nl — Diploma gehaald', SRC_DIPLOMA]],
+  CHECKED,
+)}
 
-${note('<strong>Are you under 18?</strong> The integration duty usually starts at 18. If you are 16 or 17 you normally do not have to integrate, because you are still of compulsory school age or under the qualification requirement. In some situations you can be required to integrate at that age after all.')}
+<h2 id="hoe-weet-ik-het">How do I know whether it applies to me?</h2>
 
-${factIn('en', 'Diplomas that grant exemption: vmbo, havo, vwo, mbo level 2 or higher, and hbo or university degrees provided they were taught in Dutch.', 'inburgeren.nl — Diploma gehaald', SRC_DIPLOMA, CHECKED)}
+<p>You do not have to work this out yourself. DUO checks it for you, in three steps.</p>
 
-<div class="verdict ok">
-  <p class="verdict-answer">Not sure? You do not have to work anything out</p>
-  <p>DUO checks it for you. If you have to integrate, DUO is informed and sends you a letter
-  saying from which date you are <em>inburgeringsplichtig</em> — required to integrate — and how
-  much time you have. Think you missed that letter? Log in to <strong>Mijn Inburgering</strong>
-  with your DigiD.</p>
+${figure(
+  'explainer-duo-stuurt-brief', 1484, 552,
+  'Your registration with the municipality goes to DUO, DUO checks whether you are required to integrate, and sends you a letter about it.',
+  'You do not have to apply for anything. Your registration with the municipality goes to DUO, DUO checks it, and the letter comes to you.',
+)}
+
+<div class="guide-steps">
+  <div class="guide-step">
+    <div class="guide-step-num">1</div>
+    <div class="guide-step-body">
+      <h3>You register with your municipality</h3>
+      <p>You get a BSN. Together with your residence permit, that is all DUO needs.</p>
+    </div>
+  </div>
+  <div class="guide-step">
+    <div class="guide-step-num">2</div>
+    <div class="guide-step-body">
+      <h3>DUO checks whether you are required to integrate</h3>
+      <p>If you are, DUO is informed automatically. You do not have to apply for anything.</p>
+    </div>
+  </div>
+  <div class="guide-step">
+    <div class="guide-step-num">3</div>
+    <div class="guide-step-body">
+      <h3>You get a letter</h3>
+      <p>It says from which date you are <em>inburgeringsplichtig</em> — required to integrate —
+      and how much time you have. Keep that letter: the date in it decides everything later. No
+      letter? Then check <strong>Mijn Inburgering</strong> with your DigiD.</p>
+    </div>
+  </div>
 </div>
+
+${docentIn('en', 'What I see most often: people who wait months because they think they have to apply for something themselves. You do not. DUO sends you a letter. Keep that letter safe — the date in it decides everything later, from your deadline to which act applies to you.')}
 
 ${factIn('en', 'DUO decides whether you have to integrate and sends you a letter about it, once you have a BSN and a residence permit and are registered with your municipality.', 'inburgeren.nl — U gaat inburgeren', SRC_BRIEF, CHECKED)}
 
@@ -399,6 +432,17 @@ ${factIn('en', 'DUO decides whether you have to integrate and sends you a letter
 
 <p>This matters, because two acts exist side by side. They have different rules, different costs
 and different exams. So check your letter from DUO first to see which one applies to you.</p>
+
+${figure(
+  'explainer-twee-wetten', 1400, 616,
+  'A timeline with one line through it on 1 January 2022: anyone whose duty started before it falls under the old act, anyone after it under the new one.',
+  'One date decides which act applies to you. Check your letter from DUO for the day you became required to integrate, and find that day here.',
+  figureSplit(
+    ['Wet inburgering 2013', 'You became required to integrate before 1 January 2022.'],
+    ['Wet inburgering 2021', 'You became required to integrate on or after 1 January 2022. This applies to almost everyone starting now.'],
+    'right',
+  ),
+)}
 
 <div class="compare-2">
   <div class="compare-card">
@@ -453,7 +497,8 @@ and different exams. So check your letter from DUO first to see which one applie
 
 ${factIn('en', 'The Wet inburgering 2021 applies to everyone who became required to integrate on or after 1 January 2022; anyone already required to integrate before that date falls under the Wet inburgering 2013.', 'Rijksoverheid — Nieuwe wet inburgering', SRC_NIEUWE_WET, CHECKED)}
 
-${docentIn('en', 'What I see most often: people who wait months because they think they have to apply for something themselves. You do not. DUO sends you a letter. Keep that letter safe — the date in it decides everything later, from your deadline to which law applies to you.')}
+<p>So you now know whether you have to integrate. The next question is which language level you
+already reach. You can find that out today, without arranging anything.</p>
 
 ${inlineCta('See where you stand right now', 'Ten questions per skill, with an explanation after every answer. No account needed.', '/oefenen', 'Free practice exam')}
 `,
@@ -522,12 +567,15 @@ ${inlineCta('See where you stand right now', 'Ten questions per skill, with an e
 </div>
 
 <p>وعند إتمام مسار الاندماج تحصل على <strong>شهادة الاندماج</strong> (inburgeringsdiploma). وغالبًا
-ما تحتاج هذه الشهادة لاحقًا إذا أردت التقدّم بطلب إقامة دائمة أو الحصول على الجنسية الهولندية.</p>
+ما تحتاج هذه الشهادة لاحقًا إذا أردت التقدّم بطلب إقامة دائمة أو الحصول على الجنسية الهولندية.
+فالاندماج إذن ليس مقياسًا لذكائك، بل المهم أن تتعلّم اللغة وأن تكون قادرًا على تدبّر أمورك في
+هولندا.</p>
 
-<div class="verdict ok">
-  <p class="verdict-answer">الاندماج ليس مقياسًا لذكائك</p>
-  <p>المهم أن تتعلّم اللغة وأن تكون قادرًا على تدبّر أمورك في هولندا.</p>
-</div>
+${figure(
+  'explainer-wat-is-inburgeren', 1484, 932,
+  'جزءان — اللغة، ومعرفة كيف تعمل هولندا — يتلاقيان في شهادة واحدة، وهذه الشهادة تفتح الباب إلى إقامة دائمة أو إلى التجنّس.',
+  'الاندماج يتكوّن من أمرين يتلاقيان في شهادة واحدة. وبهذه الشهادة يمكنك التقدّم بطلب إقامة دائمة، أو الحصول على الجنسية الهولندية.',
+)}
 
 <h2 id="wie-moet-inburgeren">من عليه الاندماج؟</h2>
 
@@ -556,18 +604,50 @@ ${inlineCta('See where you stand right now', 'Ten questions per skill, with an e
   </div>
 </div>
 
-${factIn('ar', 'من بين المُعفَين: من هم دون ١٨ عامًا، ومن تجاوزوا سنّ التقاعد، ومواطنو الاتحاد الأوروبي والمنطقة الاقتصادية الأوروبية وسويسرا، ومن يقيمون مؤقتًا للدراسة أو العمل، ومن عاش في هولندا ٨ سنوات أو أكثر خلال سنّ التعليم الإلزامي.', 'Rijksoverheid — Moet ik als nieuwkomer inburgeren?', SRC_PLICHT, CHECKED)}
+${factTwoIn(
+  'ar',
+  'من بين المُعفَين: من هم دون ١٨ عامًا، ومن تجاوزوا سنّ التقاعد، ومواطنو الاتحاد الأوروبي والمنطقة الاقتصادية الأوروبية وسويسرا، ومن يقيمون مؤقتًا للدراسة أو العمل. والشهادات التي تمنح إعفاءً: vmbo وhavo وvwo وmbo من المستوى ٢ فما فوق، وشهادات hbo والجامعة بشرط أن تكون الدراسة بالهولندية.',
+  [['Rijksoverheid — Moet ik als nieuwkomer inburgeren?', SRC_PLICHT], ['inburgeren.nl — Diploma gehaald', SRC_DIPLOMA]],
+  CHECKED,
+)}
 
-${note('<strong>هل عمرك أقل من ١٨ عامًا؟</strong> يبدأ التزام الاندماج عادةً من سنّ ١٨. وإذا كان عمرك ١٦ أو ١٧ فلا يجب عليك الاندماج في الغالب، لأنك ما زلت في سنّ التعليم الإلزامي أو تخضع لالتزام الحصول على مؤهل. وفي بعض الحالات قد تكون ملزَمًا بالاندماج في هذا السنّ مع ذلك.')}
+<h2 id="hoe-weet-ik-het">كيف أعرف إن كان هذا ينطبق عليّ؟</h2>
 
-${factIn('ar', 'الشهادات التي تمنح إعفاءً: vmbo وhavo وvwo وmbo من المستوى ٢ فما فوق، وشهادات hbo والجامعة بشرط أن تكون الدراسة بالهولندية.', 'inburgeren.nl — Diploma gehaald', SRC_DIPLOMA, CHECKED)}
+<p>لست مضطرًا لمعرفة ذلك بنفسك. فمؤسسة DUO تتحقّق من الأمر نيابةً عنك، في ثلاث خطوات.</p>
 
-<div class="verdict ok">
-  <p class="verdict-answer">غير متأكد؟ لست مضطرًا لمعرفة ذلك بنفسك</p>
-  <p>مؤسسة DUO تتحقّق من ذلك نيابةً عنك. فإذا كان عليك الاندماج، تُبلَّغ DUO بذلك وترسل إليك رسالة
-  توضّح تاريخ بدء التزامك بالاندماج (inburgeringsplicht) والمدة المتاحة لك. وإذا كنت تظن أنك لم
-  تستلم تلك الرسالة، فسجّل الدخول إلى <strong>Mijn Inburgering</strong> باستخدام DigiD.</p>
+${figure(
+  'explainer-duo-stuurt-brief', 1484, 552,
+  'تسجيلك لدى البلدية يُرسَل إلى DUO، وDUO تتحقّق مما إذا كنت ملزَمًا بالاندماج، وترسل إليك رسالة بذلك.',
+  'لست مضطرًا للتقدّم بأي طلب. تسجيلك لدى البلدية يُرسَل إلى DUO، وDUO تتحقّق منه، والرسالة تأتي إليك.',
+)}
+
+<div class="guide-steps">
+  <div class="guide-step">
+    <div class="guide-step-num">١</div>
+    <div class="guide-step-body">
+      <h3>تسجّل نفسك لدى البلدية</h3>
+      <p>تحصل على رقم BSN. وهو مع تصريح إقامتك كل ما تحتاجه DUO.</p>
+    </div>
+  </div>
+  <div class="guide-step">
+    <div class="guide-step-num">٢</div>
+    <div class="guide-step-body">
+      <h3>‏DUO تتحقّق مما إذا كنت ملزَمًا بالاندماج</h3>
+      <p>إذا كان عليك الاندماج، تُبلَّغ DUO بذلك تلقائيًا. ولست مضطرًا للتقدّم بأي طلب.</p>
+    </div>
+  </div>
+  <div class="guide-step">
+    <div class="guide-step-num">٣</div>
+    <div class="guide-step-body">
+      <h3>تستلم رسالة</h3>
+      <p>وفيها تاريخ بدء التزامك بالاندماج (inburgeringsplicht) والمدة المتاحة لك. احتفظ بهذه
+      الرسالة: فالتاريخ المذكور فيها يحدّد كل شيء لاحقًا. لم تستلم رسالة؟ إذن راجع
+      <strong>Mijn Inburgering</strong> باستخدام DigiD.</p>
+    </div>
+  </div>
 </div>
+
+${docentIn('ar', 'أكثر ما أراه: أشخاص ينتظرون شهورًا لأنهم يظنون أن عليهم التقدّم بطلب ما بأنفسهم. ليس عليكم ذلك. DUO ترسل إليكم رسالة. احتفظوا بها جيدًا — فالتاريخ المذكور فيها يحدّد كل شيء لاحقًا، من مدّتكم الزمنية إلى القانون الذي ينطبق عليكم.')}
 
 ${factIn('ar', 'تقرّر DUO ما إذا كان عليك الاندماج وترسل إليك رسالة بذلك، بمجرد حصولك على رقم BSN وتصريح إقامة وتسجيلك لدى البلدية.', 'inburgeren.nl — U gaat inburgeren', SRC_BRIEF, CHECKED)}
 
@@ -575,6 +655,17 @@ ${factIn('ar', 'تقرّر DUO ما إذا كان عليك الاندماج وت
 
 <p>هذا مهم، لأن هناك قانونين قائمين جنبًا إلى جنب. لهما قواعد مختلفة وتكاليف مختلفة وامتحانات
 مختلفة. لذلك انظر أولًا في رسالة DUO لمعرفة أي قانون ينطبق عليك.</p>
+
+${figure(
+  'explainer-twee-wetten', 1400, 616,
+  'خط زمني يقطعه خط واحد عند ١ يناير ٢٠٢٢: من أصبح ملزَمًا بالاندماج قبله يخضع للقانون القديم، ومن أصبح ملزَمًا بعده يخضع للجديد.',
+  'تاريخ واحد يحدّد أي قانون ينطبق عليك. انظر في رسالتك من DUO لمعرفة اليوم الذي أصبحت فيه ملزَمًا بالاندماج، وابحث عن ذلك اليوم هنا.',
+  figureSplit(
+    ['Wet inburgering 2013', 'أصبحت ملزَمًا بالاندماج قبل ١ يناير ٢٠٢٢.'],
+    ['Wet inburgering 2021', 'أصبحت ملزَمًا بالاندماج في ١ يناير ٢٠٢٢ أو بعده. وهذا ينطبق على جميع من يبدأون الآن تقريبًا.'],
+    'right',
+  ),
+)}
 
 <div class="compare-2">
   <div class="compare-card">
@@ -629,7 +720,8 @@ ${factIn('ar', 'تقرّر DUO ما إذا كان عليك الاندماج وت
 
 ${factIn('ar', 'ينطبق قانون Wet inburgering 2021 على كل من أصبح ملزَمًا بالاندماج في ١ يناير ٢٠٢٢ أو بعده؛ ومن كان ملزَمًا قبل ذلك التاريخ يخضع لقانون Wet inburgering 2013.', 'Rijksoverheid — Nieuwe wet inburgering', SRC_NIEUWE_WET, CHECKED)}
 
-${docentIn('ar', 'أكثر ما أراه: أشخاص ينتظرون شهورًا لأنهم يظنون أن عليهم التقدّم بطلب ما بأنفسهم. ليس عليكم ذلك. DUO ترسل إليكم رسالة. احتفظوا بها جيدًا — فالتاريخ المذكور فيها يحدّد كل شيء لاحقًا، من مدّتكم الزمنية إلى القانون الذي ينطبق عليكم.')}
+<p>هل عرفت الآن أن عليك الاندماج؟ إذن السؤال التالي هو أي مستوى لغوي تبلغه بالفعل. ويمكنك معرفة
+ذلك اليوم، دون أن ترتّب أي شيء.</p>
 
 ${inlineCta('اعرف أين أنت الآن', 'عشرة أسئلة لكل مهارة، مع شرح بعد كل إجابة. بدون حساب.', '/oefenen', 'امتحان تجريبي مجاني')}
 `,
