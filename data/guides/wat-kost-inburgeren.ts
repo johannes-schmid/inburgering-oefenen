@@ -25,7 +25,7 @@ import { fact } from './types';
 import { MODULE_PRICE_CENTS, euro } from '@/lib/pricing';
 import {
   I_CHECK, I_X, I_BOOK, I_HEADPHONES, I_PEN, I_MIC, I_LANDMARK, I_CLIPBOARD,
-  I_EURO, I_CLOCK, docent, docentIn, note, inlineCta, factIn,
+  I_EURO, I_CLOCK, docent, docentIn, note, inlineCta, factIn, factTwo, figure,
 } from './kit';
 
 const SRC_KOSTEN = 'https://www.inburgeren.nl/inburgeren-betalen/index.jsp';
@@ -67,6 +67,13 @@ const guide: Guide = {
   heroTitle: 'Wat kost inburgeren?',
   heroSubtitle:
     'Dat hangt af van je situatie. Voor de een betaalt de gemeente bijna alles, de ander betaalt cursus en examens zelf. Hier staat wat je waar aan kwijt bent.',
+  heroImage: {
+    base: 'wat-kost-inburgeren',
+    hasWebp: true,
+    alt: 'Eurobiljetten en munten naast een rekenmachine',
+    position: 'center 50%',
+    credit: 'Jakub Zerdzicki (Pexels)',
+  },
   readingMinutes: 5,
 
   articleHtml: `
@@ -121,20 +128,23 @@ ${fact('De eerste 2 pogingen van elk examen zijn gratis voor asielstatushouders 
 </div>
 
 <p>Val je onder de <strong>Wet inburgering 2013</strong>? Dan komt daar ONA bij, op dit moment
-€40. Samen €290.</p>
+€40. Samen €290. Je hoeft trouwens niet altijd alle onderdelen te doen: welke examens jij moet
+maken hangt af van je leerroute en van de wet die voor jou geldt. In <strong>Mijn
+Inburgering</strong> staat jouw lijst.</p>
 
 ${fact('Op het moment van schrijven kost elk examenonderdeel €50 (Lezen, Luisteren, Schrijven, Spreken en KNM), samen €250. ONA kost €40 en geldt alleen onder de Wet 2013. Deze bedragen worden geïndexeerd — controleer de actuele prijs bij DUO.', 'inburgeren.nl — Inburgeren betalen', SRC_KOSTEN, CHECKED)}
 
-${note('Je hoeft niet altijd alle onderdelen te doen. Welke examens jij moet maken, hangt af van je leerroute en van de wet die voor jou geldt. In <strong>Mijn Inburgering</strong> staat jouw lijst.')}
-
 <h2 id="afzeggen">Kun je niet komen? Zeg op tijd af</h2>
 
-<div class="verdict warn">
-  <p class="verdict-answer">Uiterlijk 7 dagen van tevoren</p>
-  <p>Verzet je examen of zeg het af in Mijn Inburgering. Doe je dat op tijd, dan krijg je je geld
-  terug — en als het een gratis poging was, blijft die gratis poging staan. Kom je gewoon niet
-  opdagen, dan betaal je opnieuw.</p>
-</div>
+<p>Verzet je examen of zeg het af in Mijn Inburgering, <strong>uiterlijk 7 dagen van tevoren</strong>.
+Doe je dat op tijd, dan krijg je je geld terug — en als het een gratis poging was, blijft die gratis
+poging staan. Kom je gewoon niet opdagen, dan betaal je opnieuw.</p>
+
+${figure(
+  'explainer-afzeggen-week', 1400, 616,
+  'Een tijdlijn naar de examendag, met een streep een week ervoor: tot die streep kun je nog afzeggen, daarna niet meer.',
+  'Er zit een streep een week voor je examen. Zeg je af vóór die streep, dan krijg je je geld terug. Daarna niet meer, ook niet als je ziek bent.',
+)}
 
 ${fact('Je kunt een examen tot 7 dagen van tevoren verzetten of afzeggen. Wie zich later afmeldt of niet komt opdagen, krijgt het examengeld niet terug.', 'DUO — Examenreglement inburgering', SRC_REGLEMENT, CHECKED)}
 
@@ -164,7 +174,8 @@ lening aan via Mijn Inburgering.</p>
   </div>
 </div>
 
-${note('Je krijgt het geleende bedrag <strong>niet op je rekening</strong>. DUO betaalt je school of je examen rechtstreeks. En je betaalt de lening later terug, met rente — asielstatushouders uitgezonderd.')}
+<p>Je krijgt het geleende bedrag <strong>niet op je rekening</strong>: DUO betaalt je school of je
+examen rechtstreeks. En je betaalt de lening later terug, met rente.</p>
 
 ${fact('Asielstatushouders kunnen niet lenen bij DUO, omdat de gemeente hun cursus betaalt. Anderen lenen voor cursus en examens bij een erkende instelling; DUO betaalt de school rechtstreeks.', 'inburgeren.nl — Lenen bij DUO', SRC_LENEN, CHECKED)}
 
@@ -179,11 +190,11 @@ ${fact('Asielstatushouders kunnen niet lenen bij DUO, omdat de gemeente hun curs
   terugvorderen. Je hoeft daar zelf niets voor te doen.</p>
 </div>
 
-${fact('De Raad van State oordeelde op 9 juli 2025 dat het ministerie een asielstatushouder geen boete mag opleggen en zijn lening niet mag laten terugbetalen. DUO had het opleggen van boetes en het terugvorderen van leningen voor asielstatushouders al in februari 2025 gepauzeerd.', 'Rijksoverheid — Uitspraak Raad van State', SRC_RVS, CHECKED)}
-
 <p>Ben je <strong>geen</strong> asielstatushouder — bijvoorbeeld omdat je voor je partner of je
 gezin naar Nederland kwam? Dan kun je nog wel een boete krijgen als je niet op tijd klaar bent en
-je geen recht hebt op extra tijd. Dit zijn de maximumbedragen:</p>
+je geen recht hebt op extra tijd. Een boete is dan geen eindpunt: DUO geeft je er ook
+<strong>extra tijd</strong> bij om je inburgering alsnog af te maken. Dit zijn de
+maximumbedragen:</p>
 
 <div class="price-list">
   ${price(I_CLIPBOARD, 'Leerroute niet afgerond', 'Wet inburgering 2021', 'max. €1.000')}
@@ -193,9 +204,7 @@ je geen recht hebt op extra tijd. Dit zijn de maximumbedragen:</p>
   ${price(I_CLIPBOARD, 'PVT niet afgerond', 'Wet inburgering 2013', '€340')}
 </div>
 
-${fact('Asielstatushouders krijgen nooit een boete. Voor andere inburgeraars gelden onder de Wet 2021 maximaal €1.000 voor de leerroute en €340 voor PVT en voor MAP; onder de Wet 2013 maximaal €1.250 voor het diploma en €340 voor PVT. Na een boete krijg je extra tijd om alsnog in te burgeren.', 'inburgeren.nl — Boete', SRC_BOETE, CHECKED)}
-
-${note('Een boete is geen eindpunt. Krijg je er een, dan geeft DUO je ook <strong>extra tijd</strong> om je inburgering alsnog af te maken — hoeveel, hangt af van wat je al hebt gehaald.')}
+${factTwo('De Raad van State oordeelde op 9 juli 2025 dat het ministerie een asielstatushouder geen boete mag opleggen en zijn lening niet mag laten terugbetalen; DUO had dat in februari 2025 al gepauzeerd. Voor andere inburgeraars gelden onder de Wet 2021 maximaal €1.000 voor de leerroute en €340 voor PVT en voor MAP, en onder de Wet 2013 maximaal €1.250 voor het diploma en €340 voor PVT. Na een boete krijg je extra tijd om alsnog in te burgeren.', [['Rijksoverheid — Uitspraak Raad van State', SRC_RVS], ['inburgeren.nl — Boete', SRC_BOETE]], CHECKED)}
 
 <h2 id="oefenen">Oefenen is goedkoper dan herkansen</h2>
 

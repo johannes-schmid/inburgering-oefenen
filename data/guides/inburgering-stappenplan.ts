@@ -17,7 +17,7 @@
  */
 import type { Guide } from './types';
 import { fact } from './types';
-import { docentIn, factIn } from './kit';
+import { docentIn, factIn, factTwo, figure } from './kit';
 
 const SRC_WET = 'https://www.rijksoverheid.nl/themas/migratie-en-reizen/inburgeren-in-nederland/nieuwe-wet-inburgering';
 const SRC_DIPLOMA_VRIJ = 'https://www.inburgeren.nl/minder-of-geen-examens/diploma-gehaald.jsp';
@@ -71,6 +71,13 @@ const guide: Guide = {
   heroTitle: 'Inburgering in Nederland: het complete stappenplan',
   heroSubtitle:
     'Wat moet je precies doen, en waar begint het? Het hele traject in 7 stappen, van de eerste brief van DUO tot je diploma. In simpel Nederlands.',
+  heroImage: {
+    base: 'inburgering-stappenplan',
+    hasWebp: false,
+    alt: 'Een Amsterdamse gracht met woonboten en grachtenpanden',
+    position: 'center 55%',
+    credit: 'Wagner Rech (Pexels)',
+  },
   readingMinutes: 9,
 
   articleHtml: `
@@ -200,6 +207,12 @@ de <strong>Wet inburgering 2021</strong>, want die geldt voor bijna iedereen die
 
 <h2 id="stappenplan">Het stappenplan in 7 stappen</h2>
 
+${figure(
+  'explainer-intake-naar-pip', 1400, 891,
+  'Drie dingen — een gesprek, een toets en je persoonlijke situatie — komen samen in één document: je PIP.',
+  'De eerste stappen draaien om één ding: de gemeente verzamelt drie soorten informatie en maakt daar één plan van. Dat plan is je PIP, en daarin staat welke route en welke examens voor jou gelden.',
+)}
+
 <div class="guide-steps">
 
 <div class="guide-step">
@@ -273,8 +286,7 @@ de <strong>Wet inburgering 2021</strong>, want die geldt voor bijna iedereen die
       <p>Het doel is taalniveau A1. Je sluit af met een eindgesprek bij de gemeente, niet met een
       centraal examen. Haal je toch A2? Dan mag je alsnog examen doen.</p>
     </div>
-    ${fact('Overstappen van B1 naar A2 kan alleen in de B1-route. Je moet dan minstens 600 uur taalles hebben gevolgd bij een school met een keurmerk, en laten zien dat je je best hebt gedaan.', 'Besluit inburgering 2021, artikel 5.5', SRC_AFSCHALEN, CHECKED)}
-    ${fact('Ben je asielstatushouder? Dan bestaat de Z-route uit 800 uur les (taal en KNM), 800 uur meedoen en activering, en een eindgesprek. Ben je gezinsmigrant? Dan zijn het 800 uur les en een eindgesprek.', 'Besluit inburgering 2021, artikel 3.14', SRC_ZROUTE, CHECKED)}
+    ${factTwo('Overstappen van B1 naar A2 kan alleen in de B1-route. Je moet dan minstens 600 uur taalles hebben gevolgd bij een school met een keurmerk, en laten zien dat je je best hebt gedaan. Ben je asielstatushouder? Dan bestaat de Z-route uit 800 uur les (taal en KNM), 800 uur meedoen en activering, en een eindgesprek. Ben je gezinsmigrant? Dan zijn het 800 uur les en een eindgesprek.', [['Besluit inburgering 2021, artikel 5.5', SRC_AFSCHALEN], ['Besluit inburgering 2021, artikel 3.14', SRC_ZROUTE]], CHECKED)}
   </div>
 </div>
 
@@ -355,6 +367,12 @@ de <strong>Wet inburgering 2021</strong>, want die geldt voor bijna iedereen die
 </div>
 
 </div>
+
+${figure(
+  'explainer-wat-moet-je-halen', 1400, 590,
+  'Zes losse onderdelen komen samen in één diploma met een zegel.',
+  'Je diploma is geen groot examen, maar een verzameling losse onderdelen. Wat je gehaald hebt, blijft staan — zak je voor één onderdeel, dan doe je alleen dát onderdeel opnieuw.',
+)}
 
 <h2 id="begin-met-oefenen">Begin vandaag met oefenen</h2>
 

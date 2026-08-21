@@ -67,12 +67,43 @@ export type GuideLocale = {
   /** Human publication date for the byline, written out in this locale's own convention. */
   dateLabel?: string;
   heroSubtitle?: string;
+  /** Alt text for the hero photo in this locale. The photo itself never changes. */
+  heroImageAlt?: string;
   articleHtml?: string;
   sidebarHtml?: string;
   ctaTitle?: string;
   ctaDesc?: string;
   ctaLabel?: string;
   faq?: GuideFaq[];
+};
+
+/**
+ * The full-bleed hero photo behind the H1.
+ *
+ * Optional, and a guide without one keeps the flat `--gradient-brand` hero. `GuideArticle` lays a
+ * left-to-right navy scrim over it, the same one the homepage uses, so **the subject has to survive
+ * having its left 55% covered** — a centred close-up reads as a smudge behind the title.
+ *
+ * `credit` is the photographer's name, kept beside the file it belongs to rather than only in
+ * `resources/images/CREDITS.md`: Pexels' licence needs no on-page attribution, but a photo whose
+ * provenance lives in one file gets re-used with no provenance at all. `scripts/fetch-guide-images.mjs`
+ * writes both.
+ */
+export type GuideHeroImage = {
+  /** Path under `public/images/guides/`, without extension. A `.jpg` always exists. */
+  base: string;
+  /**
+   * Whether a `.webp` exists beside the `.jpg`. `scripts/fetch-guide-images.mjs` deletes the WebP
+   * when it encodes *larger* than the mozjpeg — which happens on foliage-dense photos — so this is
+   * not a formality: a `<source>` pointing at a deleted file costs a 404 per view, and one pointing
+   * at a heavier file costs the reader bandwidth for the same picture.
+   */
+  hasWebp: boolean;
+  /** Dutch alt text. Describes the photo, never the article; a locale may override it. */
+  alt: string;
+  /** CSS `object-position`. Default `center 45%`; set it when the subject sits off-centre. */
+  position?: string;
+  credit: string;
 };
 
 export type Guide = {
@@ -108,6 +139,8 @@ export type Guide = {
 
   heroTitle: string;
   heroSubtitle: string;
+  /** The hero photo. Without one the hero is the flat brand gradient. */
+  heroImage?: GuideHeroImage;
   readingMinutes: number;
 
   articleHtml: string;
@@ -138,6 +171,7 @@ export type ResolvedGuide = {
   breadcrumb: string;
   dateLabel: string;
   heroSubtitle: string;
+  heroImageAlt: string;
   articleHtml: string;
   sidebarHtml: string;
   ctaTitle: string;

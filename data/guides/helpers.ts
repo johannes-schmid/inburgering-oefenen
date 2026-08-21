@@ -19,6 +19,7 @@ export function getGuideLocale(guide: Guide, locale: string): ResolvedGuide {
     breadcrumb: t?.breadcrumb ?? guide.breadcrumb,
     dateLabel: t?.dateLabel ?? guide.dateLabel,
     heroSubtitle: t?.heroSubtitle ?? guide.heroSubtitle,
+    heroImageAlt: t?.heroImageAlt ?? guide.heroImage?.alt ?? '',
     articleHtml: t?.articleHtml ?? guide.articleHtml,
     sidebarHtml: t?.sidebarHtml ?? guide.sidebarHtml,
     ctaTitle: t?.ctaTitle ?? guide.ctaTitle,

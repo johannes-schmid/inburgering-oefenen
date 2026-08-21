@@ -134,8 +134,8 @@ export default async function HomePage({ params }: Props) {
       {/* ── HERO ── */}
       <section
         id="hero"
-        className="relative overflow-hidden -mt-20"
-        style={{ minHeight: '680px', paddingTop: 'calc(5rem + 2rem)', paddingBottom: '5rem' }}
+        className="relative overflow-hidden -mt-[var(--nav-h)]"
+        style={{ minHeight: '680px', paddingTop: 'calc(var(--nav-h) + 2rem)', paddingBottom: '5rem' }}
       >
         {/* Full-bleed background photo.
             Built from resources/images/hero-source.png by scripts/build-hero-image.mjs */}

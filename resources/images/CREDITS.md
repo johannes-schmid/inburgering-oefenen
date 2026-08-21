@@ -160,3 +160,41 @@ message.
 - `spr-10-4-4-1` (heavy rain window street) — photo by [Sebastiaan Stam](https://www.pexels.com/@sebastiaan9977) on Pexels (#1545732)
 - `spr-10-4-4-2` (children playing indoors living room) — photo by [Ksenia Chernaya](https://www.pexels.com/@kseniachernaya) on Pexels (#6616209)
 - `spr-10-4-4-3` (sunshine after rain street rainbow) — photo by [Egor Kunovsky](https://www.pexels.com/@egor-kunovsky-1199972) on Pexels (#5215406)
+- `public/images/guides/inburgering-stappenplan.jpg` — Photo by Wagner Rech on Pexels (https://www.pexels.com/photo/canal-in-amsterdam-6152717/)
+- `public/images/guides/moet-ik-inburgeren.{jpg,webp}` — Photo by Angela Roma on Pexels (https://www.pexels.com/photo/close-up-of-woman-taking-out-a-blank-piece-of-paper-form-an-envelope-7318931/)
+- `public/images/guides/welke-wet-en-welke-route.jpg` — Photo by James Wheeler on Pexels (https://www.pexels.com/photo/photo-of-pathway-surrounded-by-fir-trees-1578750/)
+- `public/images/guides/wat-kost-inburgeren.{jpg,webp}` — Photo by Jakub Zerdzicki on Pexels (https://www.pexels.com/photo/euro-banknotes-and-keys-on-wooden-surface-30139520/)
+
+## Kennisgids explainer diagrams — generated, not licensed
+
+Made with OpenAI `gpt-image-2` via `scripts/generate-guide-explainers.mjs`, which holds the exact
+prompt for each one. No third-party licence applies and no attribution is owed; the script is the
+provenance, because a generated image has no id or URL to trace back to. `gpt-image-2` takes no
+seed, so a re-run yields different artwork from the same prompt — regeneration is new art to review,
+not a rebuild.
+
+- `public/images/guides/explainer-wat-is-inburgeren.{webp,png}` — two inputs → diploma → open door
+- `public/images/guides/explainer-duo-stuurt-brief.{webp,png}` — gemeente → DUO → brief arrives
+- `public/images/guides/explainer-twee-wetten.{webp,png}` — the 1 January 2022 dividing line
+- `public/images/guides/explainer-drie-routes.{webp,png}` — one start, three routes, three endpoints
+- `public/images/guides/explainer-afschalen.{webp,png}` — the one-way step down from B1 to A2
+- `public/images/guides/explainer-intake-naar-pip.{webp,png}` — three inputs converging into one PIP
+- `public/images/guides/explainer-wat-moet-je-halen.{webp,png}` — six parts collecting into one diploma
+- `public/images/guides/explainer-afzeggen-week.{webp,png}` — the cancellation deadline before exam day
+
+`explainer-twee-wetten` is used by **two** guides (`moet-ik-inburgeren` and
+`welke-wet-en-welke-route`). Both sections turn on the same date, so they share the asset rather
+than each getting its own drawing of the same idea — two near-identical diagrams drifting apart is
+the `sections`-versus-`task_type` mistake in picture form.
+
+Two findings from the second batch, both caught only by looking at the output:
+- **The highlight colour makes a factual claim.** The first `drie-routes` render put the orange
+  accent on the middle track, the onderwijsroute, which reads as "this is the default route". It is
+  not; the gemeente assigns the route and the B1-route is the one the rest of that guide is about.
+  Regenerated with the accent on the top track. A colour choice in a diagram about law is not
+  decoration.
+- **`crop: 'band'` is only for a figure whose divider runs edge to edge.** `afschalen` was flagged
+  band by analogy and the crop took the standing figure's head off. Anything else trims to its real
+  bounding box, then gets padded back — and the pad colour is **sampled from the corner pixel**,
+  not hardcoded to `#f8f9fb`: the model's background is close to but not exactly the requested
+  colour, and a hardcoded pad shows as a faint box seam.

@@ -56,6 +56,15 @@
 
 /* ── Shared design tokens (gradient, shadow) not expressible in @theme ── */
 :root {
+  /* Height of the fixed public header, including its 1px bottom border.
+     **This is the single definition and every consumer reads it**: `Nav` sizes its row to
+     `calc(var(--nav-h) - 1px)`, the `(main)` layout reserves exactly this much, and the homepage
+     hero cancels exactly this much to slide under the bar. Before 2026-08-21 those were three
+     independent numbers — the layout reserved `pt-20` (80px) for a 73px header, so 7px of page
+     background showed as a stripe between the white nav and the hero on every page except the
+     homepage, which happened to cancel the spacer and so hid the bug for a month. Change the
+     nav's padding and this value together, or the stripe comes back. */
+  --nav-h: 73px;
   --gradient-brand: linear-gradient(135deg, #002b6d 0%, #1d428a 100%);
   --gradient-btn-orange: linear-gradient(135deg, #fe762c 0%, #d94f00 100%);
   --shadow-card: 0 1px 4px rgba(0, 0, 0, 0.06);
@@ -393,6 +402,44 @@
    is scannable rather than a wall of text: a docent note (the E-E-A-T voice, with the photo the
    hero already uses), a numbered step timeline, icon cards, wel/niet lists and an inline CTA.
    Icons are inline lucide SVG paths in the markup — no emoji (project rule). */
+
+/* An explainer figure: a generated line-art diagram plus its labels, where the labels are
+   **HTML and never drawn into the image**. A guide ships in nl/en/ar and the Arabic one is RTL,
+   so text baked into a raster file cannot be translated, cannot mirror, is invisible to a screen
+   reader and cannot be selected or zoomed as text. Every diagram is therefore generated
+   deliberately text-free and every word lives here. The graphics are WebP with a PNG fallback,
+   not JPEG: these are flat drawings with hard edges, where JPEG puts visible ringing along every
+   stroke, and where WebP happens to land ~13x smaller than the PNG rather than larger. */
+.guide-figure { margin: 2.5rem 0; }
+.guide-figure picture, .guide-figure img { display: block; }
+.guide-figure img {
+  width: 100%; height: auto;
+  border: 1px solid var(--color-outline-variant);
+  border-radius: 14px;
+  background: var(--color-surface);
+}
+.guide-figure figcaption {
+  margin-top: 0.8rem; font-size: 0.875rem; line-height: 1.65;
+  color: var(--color-on-surface-variant);
+}
+/* The two-sided variant. A grid, not two floats, so both labels keep the same width and sit
+   under the half of the drawing they describe. */
+.guide-figure-split {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-top: 0.9rem;
+}
+.guide-figure-side { border-top: 3px solid var(--color-outline-variant); padding-top: 0.6rem; }
+.guide-figure-side.is-now { border-top-color: var(--color-primary); }
+.guide-figure-side > p:first-child {
+  margin: 0 0 0.15rem; font-family: var(--font-headline); font-weight: 700;
+  font-size: 0.9375rem; color: var(--color-on-surface);
+}
+.guide-figure-side > p:last-child {
+  margin: 0; font-size: 0.8125rem; line-height: 1.55; color: var(--color-on-surface-variant);
+}
+@media (max-width: 560px) {
+  .guide-figure-split { grid-template-columns: 1fr; gap: 0.7rem; }
+}
+
 .docent-note {
   display: flex; gap: 14px; align-items: flex-start;
   background: #fcecdd; border-radius: 14px;
@@ -967,4 +1014,128 @@
   --warning-foreground:                    var(--color-yellow-600);
   --invert:                    var(--color-zinc-700);
   --invert-foreground:                    var(--color-zinc-50);
+}
+/* ── Tijdlijn Builder ─────────────────────────────────────────────────────────
+   The exam-planning tool at /inburgering/tools/tijdlijn. Everything here serves one
+   picture: each exam is a bar whose *solid* part is the studying you control and whose
+   *hatched* parts are DUO's queues — six weeks to get a slot, eight to sixteen for the
+   result — running at a hard vertical wall, the legal deadline. When the hatching crosses
+   the wall the bar turns red and the wall takes a notch. That shape is the whole product,
+   and it is understandable without reading a word, which matters a great deal for an
+   audience reading in a language they are still learning.
+
+   Two new tokens, and only two. The existing palette has no vocabulary for risk, and the
+   brand orange is the CTA — using it for "you are late" would make the warning look like a
+   button. Both risk colours are deliberately muted: these readers are already frightened,
+   and an alarm-red interface adds nothing a factual one does not.
+
+   `--risk-amber` is darker than `--color-secondary-container` on purpose, so amber never
+   reads as an action; `--risk-red` is not `--color-error`, which is the form-validation red.
+   Status is never colour alone — every state also carries a label and an icon shape. */
+:root {
+  --risk-amber: #c97a12;
+  --risk-red: #a32d2d;
+  --risk-red-tint: #fbecec;
+  --risk-amber-tint: #fdf4e6;
+  /* The queue hatching. One definition, reused at three tints, so "wachten" looks identical
+     wherever it appears — including in the legend, which is what makes the legend work. */
+  --tl-hatch-navy: repeating-linear-gradient(135deg, #b9c6dc 0 3px, #dde5f0 3px 7px);
+  --tl-hatch-amber: repeating-linear-gradient(135deg, #e2bd7f 0 3px, #f6e8cd 3px 7px);
+  --tl-hatch-red: repeating-linear-gradient(135deg, #d9a3a3 0 3px, #f3dcdc 3px 7px);
+
+  /* Explicit navy tints, because `bg-primary/[0.04]` does not resolve against the `@theme` token
+     here — it lands at full strength, which turned a *selected* option card solid navy with navy
+     text on it. Unreadable, and the kind of failure that only shows up in a screenshot. Concrete
+     rgba values are also easier to keep in step across the wizard, the badges and the buttons. */
+  --tl-tint-1: rgba(0, 43, 109, 0.045);
+  --tl-tint-2: rgba(0, 43, 109, 0.075);
+  --tl-tint-3: rgba(0, 43, 109, 0.12);
+}
+
+/* The bar. `--tl-h` keeps the three segments, the dot and the exam marker on one scale. */
+.tl-bar {
+  --tl-h: 12px;
+  display: flex;
+  align-items: center;
+  min-height: var(--tl-h);
+  border-radius: 999px;
+  overflow: hidden;
+}
+/* Every segment carries the bar's height and **must not shrink**: its width is expressed as a
+   percentage `flex-basis`, and the default `flex-shrink: 1` collapses all three to their content
+   width, which for an empty span is zero. That failure is silent — the bar renders, empty. */
+.tl-bar > span {
+  height: var(--tl-h);
+  flex-shrink: 0;
+  min-width: 0;
+}
+.tl-seg-study { background: var(--color-primary); }
+.tl-seg-wait-reg,
+.tl-seg-wait-result { background: var(--tl-hatch-navy); }
+.tl-risk-amber .tl-seg-study { background: var(--risk-amber); }
+.tl-risk-amber .tl-seg-wait-reg,
+.tl-risk-amber .tl-seg-wait-result { background: var(--tl-hatch-amber); }
+.tl-risk-red .tl-seg-study { background: var(--risk-red); }
+.tl-risk-red .tl-seg-wait-reg,
+.tl-risk-red .tl-seg-wait-result { background: var(--tl-hatch-red); }
+
+/* The exam itself: a single beat between the two queues, so "aanmelden" and "uitslag" read as
+   two different waits rather than one long one. */
+.tl-exam-marker {
+  width: 6px;
+  min-width: 6px;
+  height: var(--tl-h);
+  background: var(--color-primary);
+}
+.tl-risk-red .tl-exam-marker { background: var(--risk-red); }
+.tl-risk-amber .tl-exam-marker { background: var(--risk-amber); }
+
+/* The wall. The only element in the layout with no radius and no softness — that is what makes
+   it read as a wall and not as another card. `inset-inline-start` rather than `left`: the Arabic
+   timeline mirrors, and today is on the right there. */
+.tl-wall {
+  position: absolute;
+  inset-block: 0;
+  width: 3px;
+  background: var(--color-primary);
+  border-radius: 0;
+}
+.tl-wall-dashed {
+  background: repeating-linear-gradient(to bottom, var(--color-primary) 0 5px, transparent 5px 10px);
+}
+.tl-wall-notch {
+  position: absolute;
+  width: 14px;
+  height: 14px;
+  background: var(--risk-red);
+  transform: translate(-50%, -50%);
+}
+
+/* Motion: four moments only, per the design brief. This is moment 3 — a bar moving after the
+   diagnostic or the study slider changes. Transform and opacity only, spring easing, and a
+   `prefers-reduced-motion` escape that cross-fades instead of sliding. */
+@media (prefers-reduced-motion: no-preference) {
+  .tl-animate-width {
+    transition: flex-basis 600ms cubic-bezier(0.22, 1, 0.36, 1);
+  }
+  .tl-grow-in {
+    animation: tl-grow 900ms cubic-bezier(0.22, 1, 0.36, 1) both;
+  }
+}
+@keyframes tl-grow {
+  from { transform: scaleX(0); }
+  to { transform: scaleX(1); }
+}
+
+/* Print: one A4 page a klantmanager can hand over, black-and-white safe. Status survives as
+   pattern and label — the hatching prints, the colours do not have to. */
+@media print {
+  .tl-no-print { display: none !important; }
+  .tl-print-only { display: block !important; }
+  .tl-page { box-shadow: none !important; border-color: #999 !important; }
+  .tl-bar { --tl-h: 10px; }
+  .tl-seg-study { background: #000 !important; }
+  .tl-exam-marker { background: #000 !important; }
+  .tl-wall { background: #000 !important; }
+  @page { size: A4 portrait; margin: 14mm; }
 }

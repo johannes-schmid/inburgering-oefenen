@@ -712,6 +712,98 @@ conversion from the nav matters, that is the thing to watch.
   per-onderdeel guides M4 plans. `HUB_POSTS.taalexamens` links them; M4 must not write competing
   pages. One query, one owning page — the same call M1 made for `taalniveaus-a1-a2-b1-nederlands`.
 
+### M2c — de Tijdlijn Builder is echt (2026-08-20)
+
+`/inburgering/tools/tijdlijn` is geen placeholder meer. Het is een **volledig client-side
+rekentool**: zes tot acht vragen in, een gedateerd persoonlijk plan uit. De vijf brondocumenten
+(PRD, rekenregels, ontwerpbrief, technische spec, seed-rules) staan in `docs/tijdlijn/`; lees
+`02-RULES-AND-DATA.md` §0 vóór je iets in de engine aanraakt.
+
+- **Het inzicht dat de tool verkoopt: de deadline is de beperking niet, de wachtrij ervóór is dat.**
+  Aanmelden duurt >6 weken, een uitslag 8 (16 voor Spreken/Schrijven A2 zolang de DUO-melding
+  staat), ONA 6+6+8. De kop is daarom **niet** de deadline maar *"meld je uiterlijk aan op …"*, en
+  die datum ligt vijf tot zes maanden eerder. `termijnEnd − uitslagwachttijd − 7 weken`.
+- **`LegalDate` en `EstimatedDate` zijn verschillende types en niet aan elkaar toewijsbaar.** Een
+  wettelijke datum draagt `sourceId` + `checkedOn` en mag het badge "volgens DUO"; een schatting is
+  altijd een *reeks*, draagt "ongeveer" en mag dat badge nooit. Dat onderscheid is de hele
+  betrouwbaarheid van de tool en het is op typeniveau afgedwongen, niet alleen visueel.
+- **`data/tijdlijn/inburgering-rules.v1.json` is de wet, `lib/tijdlijn/rules.ts` parseert hem bij
+  import.** Een tarief wijzigen is een data-edit. Alles onder `legal` heeft een bron en een
+  controledatum; alles onder `planning` is van ons (urenbanden, diagnose-multipliers,
+  `examSpacingWeeks`, `componentBaseWeeks`) en mag nooit als DUO-regel renderen. Een parsefout
+  faalt de build, niet de request.
+- **De engine is een pure functie**: `computeTimeline(input, rules, today)`. Geen I/O, geen React,
+  geen `Date.now()` erin. `today` wordt geïnjecteerd. `PlainDate` (`{y,m,d}`) — **nooit** een JS
+  `Date`; `addYears`/`addMonths` klemmen (29 feb + 3 jaar = 28 feb) en `diffWeeks` kapt naar nul.
+- **Twee van de vier worked examples in het brondocument zijn fout en de engine wijkt bewust af.**
+  Voorbeeld 2 vinkt de 2,5-jaarvoorwaarde af bij 26 maanden; voorbeeld 1 claimt "on track" terwijl
+  de eigen urenbanden dat uitsluiten. `tests-unit/tijdlijn-engine.test.ts` pint de datums (die
+  kloppen wél exact) en documenteert het verschil in de header. **Reken een voorbeeld na vóór je het
+  tot golden test maakt.**
+- **Een beoordeelde verlenging verlengt de termijn nooit.** Alleen `grantedExtensionMonths` — de
+  gebruiker die meldt dat DUO al besloot — schuift `termijnEnd`. Een plan op een afgewezen
+  verlenging is de enige faalwijze die iemand echt schaadt.
+- **Asielstatushouders krijgen nooit een boete** (Raad van State) en kunnen onder Wi2021 **niet**
+  lenen bij DUO. Dat laatste wordt op het hele Nederlandse internet fout verteld; het staat er
+  daarom expliciet.
+- **De gantt staat vanaf vraag één in beeld en beweegt mee** (beslissing eigenaar, 2026-08-20).
+  `components/tijdlijn/TimelineChart.tsx` is er één van, gebruikt door de landing, de wizard *en*
+  het resultaat. Eén gedeelde tijdas met een vaste labelgoot; muren zijn één laag over het
+  plotgebied. Per rij schalen zet de muur op elke regel op een andere x — dan lijkt een balk die
+  door de deadline schuift op een balk die past. `lib/tijdlijn/milestones.ts` leidt de mijlpalen af
+  (aankomst, brief, PIP, termijn, PVT-jaar, boete-horizon, paspoort); een geschatte mijlpaal in het
+  verleden wordt weggelaten — een voorspelling van iets dat al gebeurd is kost je het vertrouwen in
+  elke andere datum.
+- **Vraag 2 is "sinds wanneer woon je in Nederland?"**, aan iedereen. Het is de enige datum die
+  bijna elke lezer zonder opzoeken weet, en hij vult de tijdas, de geschatte brief/PIP-mijlpalen en
+  de naturalisatieklok. De ankerdatum (PIP of DUO-brief) komt daarna en vraagt éérst *welk papier*
+  je in handen hebt: de drie papieren dragen drie verschillende datums en de termijn begint de dag
+  **ná** de dagtekening van de eerste PIP.
+- **"Ik weet het niet" staat op elke vraag, in normale opmaak.** `unknown` is een eersteklas waarde
+  tot in de engine; de tool moet met alles onbekend nog een bruikbare pagina opleveren.
+- **De URL is de state** (`?t=…`, versie-geprefixt) en er gaat geen antwoord over de lijn. De
+  privacyregel op de landing ("geen DigiD, geen BSN") is een architectuurbelofte: voeg hier geen
+  server-round-trip voor "personalisatie" toe. Een onbekende versie geeft `null` en opent de wizard
+  — een stilzwijgend verkeerd geparseerde string zou een verkeerde deadline opleveren.
+- **Alleen de mail vraagt een e-mailadres; het resultaat is nooit gated.** `/api/tijdlijn-email`
+  herrekent de tijdlijn server-side uit de state (nooit de datums uit de body — een mail is het enige
+  artefact dat je niet kunt corrigeren) en zet de herinnering acht weken vóór de laatste
+  aanmelddatum in `email_campaign_queue` als `tijdlijn_reminder`. `tijdlijn_plans` bewaart alleen
+  e-mail + state-string, RLS aan zonder policy (deny-all; de route gebruikt de service key).
+  De cron slaat betalende klanten over voor de *campagne*mails, niet voor deze herinnering.
+- **Nog open, uit `02-RULES-AND-DATA.md` §12:** de NT2 B1/B2-uitslagtermijn is nooit vastgelegd (de
+  engine valt terug op 8 weken **met waarschuwing**), de 2-jaars verlengingsgrens en de
+  basisexamen-buitenland-tarieven wachten op een primaire bron, en of DUO op examendatum of
+  uitslagdatum toetst is niet bevestigd — tot dan rekenen we naar de uitslag en zeggen dat.
+- **De drie datums waar een kandidaat op handelt staan op `ComponentPlan`:** `startStudyingBy`
+  (achteruit gerekend vanaf `registerBy` min de studieweken — dít is de datum waar mensen naar
+  handelen), `examWindow` en `resultWindow`, plus `studyWeeks` en `level`. `startStudyingBy` is
+  bewust een **`EstimatedDate`**, ook al rekent hij terug vanaf een wettelijke datum: de aftrekking
+  loopt door ons studiemodel. Let op de richting van de reeks — méér studieweken betekent *eerder*
+  beginnen, dus `hi` levert `earliest`. Omgedraaid vertelt de tool mensen dat ze later kunnen
+  beginnen dan veilig is, precies de fout waarvoor hij bestaat.
+- **`lib/tijdlijn/agenda.ts` is het plan als instructies**: één gedateerde lijst, samengevoegd over
+  alle onderdelen en chronologisch gesorteerd, want de onderdelen lopen door elkaar en niemand
+  reconstrueert dat uit vier losse rijen. `actor` scheidt "dit doe jij" van "dit gebeurt dan" — een
+  lijst die die twee mengt leest als twee keer zoveel werk. Een verstreken datum blijft staan
+  (`overdue`) en wordt nooit verwijten; weghalen zou het plan haalbaar laten lijken door precies het
+  deel te schrappen dat het niet is.
+- **`AT_THE_GEMEENTE` (`pvt`, `map`, `z_eindgesprek`) is op identiteit gekeyed, niet op "heeft geen
+  wachttijd".** PVT *heeft* een DUO-doorlooptijd van ~3 weken, en daarop testen gaf PVT een
+  leren/aanmelden/examen/uitslag-keten: vier instructies voor één afspraak. Zowel de agenda, de
+  gantt als de detailkaart importeren die lijst — niet opnieuw afleiden.
+- **De gantt is chronologisch en de balken beginnen wanneer het *leren* begint**, niet vandaag
+  (`readyBy.latest − studyWeeks.hi`, dus vandaag + de stagger). Dat levert de trap uit de mockup op
+  en het is een echt feit over het plan. De paspoortrij (5 jaar wonen) is één gestreepte balk: het
+  is wachttijd die je niet kunt versnellen, dezelfde betekenis als DUO's wachtrijen. Een mijlpaal
+  buiten het venster wordt **niet** gepind — `x()` klemt op [0,100] en zou hem op de rand tekenen
+  alsof hij daar plaatsvond; de lijst eronder houdt de echte datum.
+- **De urenschuif staat bij de tekening**, niet in een instellingenpaneel: slepen en zien dat elke
+  datum meebeweegt is de snelste uitleg van waarom lesuren uitmaken. Range + getalveld samen, want
+  een slider alleen is vijandig op een kleine telefoon.
+- De diagnose-quiz per onderdeel (`readinessFor` leest `diagnosticScore` al) en de `.ics`-export
+  staan nog niet in de UI. De rest van het PRD is er.
+
 ---
 
 ## The four surfaces — never mix their layouts
@@ -1110,6 +1202,16 @@ its icon (BookOpen / Headphones / PenLine / Mic) and renders it in the brand-tin
 use it rather than re-picking icons. `FeatureCard` takes a `LucideIcon`, not a string.
 Checkmarks, crosses and arrows in UI are lucide `Check` / `X` / `ArrowRight`, not glyphs.
 
+### The header's height is a token, not a number in three places
+`--nav-h` in `app/globals.css` is the height of the fixed public header, border included. `Nav`
+sizes its row to `calc(var(--nav-h) - 1px)`, the `(main)` layout reserves `pt-[var(--nav-h)]`, and
+the homepage hero cancels exactly that much to slide under the bar. Those were three independent
+numbers until 2026-08-21: the layout reserved 80px for a 73px header, so **7px of page background
+showed as a stripe under the nav on every `(main)` page** — invisible on the homepage, which cancels
+the spacer and so hid it. Change the nav's padding and the token together. Note the Tailwind trap:
+`h-[calc(var(--nav-h)-1px)]` emits nothing (invalid CSS, silently dropped) — the spaces around the
+minus must be written as underscores, `_-_1px`.
+
 ### Anti-generic guardrails
 - **Colours:** only brand tokens from `app/globals.css`. Never default Tailwind
   indigo/blue-600. Primary `#002b6d`, accent `#fe762c`, orange text `#a24000`.
@@ -1416,8 +1518,8 @@ Log failed attempts separately — a fix that took three tries is three entries.
 **M0 and M1 are done (2026-08-19).** M2 is underway: the pillar
 (`data/guides/inburgering-stappenplan.ts`) published 2026-08-19, and the menu now implements
 MILESTONES §3 with the first tool and free-practice placeholders (2026-08-20) — see "M2 — the
-pillar is live" and "M2b — the menu implements §3". Next: the six spokes (start each from
-`SEO/facts.md` §10), the EN top-3, and building the tijdlijn-maker for real.
+pillar is live" and "M2b — the menu implements §3". **The tijdlijn-maker is built (2026-08-20) — see "M2c" above.** Next: the six spokes (start each
+from `SEO/facts.md` §10), the EN top-3, and the inline diagnostic quiz inside the tijdlijn nodes.
 The phases below are the original build-out, kept for their still-open items.
 
 - ~~**Phase 2 — data model.**~~ **DONE** — `supabase/migrations/20260729000000_a2_baseline.sql`

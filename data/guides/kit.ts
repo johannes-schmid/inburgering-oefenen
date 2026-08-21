@@ -94,3 +94,65 @@ const DOCENT_ROLE: Record<BodyLocale, string> = {
 export const docentIn = (locale: BodyLocale, text: string) =>
   `<div class="docent-note"><img src="/images/marieke-schipper.jpg" alt="" width="44" height="44" class="docent-note-avatar" loading="lazy" />` +
   `<div><p class="docent-note-name">${DOCENT_ROLE[locale]}</p><p>${text}</p></div></div>`;
+
+/**
+ * One fact box carrying **two** sources.
+ *
+ * Added 21-08-2026, when the "Moet ik inburgeren?" spoke was shortened. Two claims that belong to
+ * one visual — the vrijstellingsgroepen and the diploma list, both stated by the yes/no grid above
+ * it — had two stacked fact boxes, and a column of framed grey boxes reads as chrome rather than
+ * as sourcing. Merging the box keeps every claim sourced while the page stays readable.
+ *
+ * `Bronnen` is plural and each link is separate, so the reader can still tell which page carries
+ * which half. `tests-unit/guides.test.ts` requires exactly one `fact-box-source` paragraph per box
+ * with one consulted-on date and at least one https href — this satisfies all three. Do not stretch
+ * it to three sources: at that point the box is a bibliography and the claim needs splitting up.
+ */
+export const factTwo = (
+  claim: string,
+  sources: [label: string, url: string][],
+  checked: string,
+): string => {
+  const links = sources
+    .map(([label, url]) => `<a href="${url}" target="_blank" rel="noopener">${label}</a>`)
+    .join(' · ');
+  return `<div class="fact-box"><p class="fact-box-claim">${claim}</p>` +
+    `<p class="fact-box-source">Bronnen: ${links} — geraadpleegd ${checked}</p></div>`;
+};
+
+/* ── Explainer figures ───────────────────────────────────────────────────────────────────────
+   A line-art diagram with its labels in HTML. The graphics are generated deliberately
+   **text-free**, and that is a hard rule rather than a stylistic one: a guide ships in nl/en/ar,
+   the Arabic one renders RTL, and any word drawn into the raster cannot be translated, cannot
+   mirror, is invisible to a screen reader and cannot be selected. So the picture carries the
+   structure and the words stay here.
+
+   WebP first with a PNG fallback — not JPEG. These are flat drawings with hard edges, where JPEG
+   rings visibly along every stroke; and on this kind of image WebP lands several times *smaller*
+   than the PNG, the reverse of what the photo heroes do (see `GuideHeroImage.hasWebp`).
+
+   `alt` must carry what the drawing says, not what it depicts: a reader who cannot see it needs
+   the point, not an inventory of shapes. */
+export const figure = (
+  base: string,
+  w: number,
+  h: number,
+  alt: string,
+  caption: string,
+  labels = '',
+) =>
+  `<figure class="guide-figure"><picture>` +
+  `<source srcset="/images/guides/${base}.webp" type="image/webp" />` +
+  `<img src="/images/guides/${base}.png" alt="${alt}" width="${w}" height="${h}" loading="lazy" decoding="async" />` +
+  `</picture>${labels}<figcaption>${caption}</figcaption></figure>`;
+
+/** The two-sided label strip under a split diagram. `nowIndex` marks the side that applies today. */
+export const figureSplit = (
+  left: [title: string, desc: string],
+  right: [title: string, desc: string],
+  nowSide: 'left' | 'right',
+) =>
+  `<div class="guide-figure-split">` +
+  `<div class="guide-figure-side${nowSide === 'left' ? ' is-now' : ''}"><p>${left[0]}</p><p>${left[1]}</p></div>` +
+  `<div class="guide-figure-side${nowSide === 'right' ? ' is-now' : ''}"><p>${right[0]}</p><p>${right[1]}</p></div>` +
+  `</div>`;

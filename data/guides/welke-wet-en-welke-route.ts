@@ -23,7 +23,7 @@ import type { Guide } from './types';
 import { fact } from './types';
 import {
   I_CHECK, I_X, I_MAIL, I_ROUTE, I_CAP, I_HOME, I_CLOCK,
-  docent, docentIn, note, inlineCta, factIn,
+  docent, docentIn, note, inlineCta, factIn, factTwo, figure, figureSplit,
 } from './kit';
 
 const SRC_NIEUWE_WET = 'https://www.rijksoverheid.nl/themas/migratie-en-reizen/inburgeren-in-nederland/nieuwe-wet-inburgering';
@@ -59,6 +59,13 @@ const guide: Guide = {
   heroTitle: 'Welke wet en welke route?',
   heroSubtitle:
     'Nederland heeft twee inburgeringswetten naast elkaar. Welke voor jou geldt, bepaalt wie je helpt, welke route je volgt en welk taalniveau je moet halen.',
+  heroImage: {
+    base: 'welke-wet-en-welke-route',
+    hasWebp: false,
+    alt: 'Een bospad dat zich in twee richtingen splitst',
+    position: 'center 50%',
+    credit: 'James Wheeler (Pexels)',
+  },
   readingMinutes: 5,
 
   articleHtml: `
@@ -67,13 +74,22 @@ const guide: Guide = {
   <p>Werd je <strong>vóór 1 januari 2022</strong> inburgeringsplichtig? Dan geldt de Wet
   inburgering 2013. Werd je het <strong>op of na</strong> die dag? Dan de Wet inburgering 2021.
   Die startdatum staat in je brief van DUO.</p>
+  <p>Let op: de wet <em>heet</em> 2021, maar ging pas in op <strong>1 januari 2022</strong>. Veel
+  websites halen dat door elkaar. Kijk dus naar de datum in je brief, niet naar de naam van de wet.</p>
 </div>
 
-${note('De wet heet 2021, maar ging pas in op <strong>1 januari 2022</strong>. Veel websites halen dat door elkaar. Kijk dus naar de datum in je brief, niet naar de naam van de wet.')}
-
-${docent('Brief kwijt? Log in op Mijn Inburgering met je DigiD. Daar zie je in één scherm welke wet, welke route en welke examens voor jou gelden. Ik begin elk intakegesprek met dat scherm — het scheelt een half uur raden.')}
-
 <h2 id="twee-wetten">De twee wetten naast elkaar</h2>
+
+${figure(
+  'explainer-twee-wetten', 1400, 616,
+  'Een tijdlijn met één streep erdoor op 1 januari 2022: wie daarvoor inburgeringsplichtig werd valt onder de oude wet, wie daarna onder de nieuwe.',
+  'Eén datum bepaalt onder welke wet je valt. Niet de dag dat je aankwam, en niet de dag dat je begon met een cursus: de dag waarop je inburgeringsplichtig werd. Die staat in je brief van DUO.',
+  figureSplit(
+    ['Wet inburgering 2013', 'Je werd vóór 1 januari 2022 inburgeringsplichtig.'],
+    ['Wet inburgering 2021', 'Je werd op of na 1 januari 2022 inburgeringsplichtig. Dit geldt voor bijna iedereen die nu begint.'],
+    'right',
+  ),
+)}
 
 <div class="compare-2">
   <div class="compare-card is-primary">
@@ -109,11 +125,19 @@ ${fact('De Wet inburgering 2021 is in werking getreden op 1 januari 2022. Wie da
 <p>De rest van deze pagina gaat over de <strong>Wet inburgering 2021</strong>. Die geldt voor
 bijna iedereen die nu begint.</p>
 
+${docent('Brief kwijt? Log in op Mijn Inburgering met je DigiD. Daar zie je in één scherm welke wet, welke route en welke examens voor jou gelden. Ik begin elk intakegesprek met dat scherm — het scheelt een half uur raden.')}
+
 <h2 id="drie-routes">De drie leerroutes</h2>
 
 <p>Onder de Wet 2021 volg je één van drie routes. Je kiest hem niet zelf: de gemeente bepaalt
 welke route bij je past, op basis van de brede intake en de leerbaarheidstoets. In je PIP staat
 welke het is geworden.</p>
+
+${figure(
+  'explainer-drie-routes', 1244, 606,
+  'Eén startpunt splitst zich in drie aparte paden, die elk op een andere bestemming uitkomen: een taalniveau, een schooldiploma, of meedoen in de samenleving.',
+  'De drie routes zijn geen niveaus van hetzelfde traject, maar drie aparte wegen met drie verschillende eindpunten. Van boven naar beneden: de B1-route, de onderwijsroute en de Z-route. De B1-route is oranje: dat is de standaardroute, waar de meeste inburgeraars in terechtkomen.',
+)}
 
 <div class="route-grid">
   <div class="route-card">
@@ -148,14 +172,18 @@ welke het is geworden.</p>
   </div>
 </div>
 
-${fact('In de Z-route gelden voor asielstatushouders 800 cursusuren (Nederlands en KNM samen) plus 800 uur participatie en een eindgesprek. Voor gezinsmigranten en overige migranten gelden de 800 cursusuren en het eindgesprek, zonder de 800 participatie-uren.', 'Besluit inburgering 2021, artikel 3.14', SRC_ZROUTE, CHECKED)}
-
-${fact('MAP hoort bij de B1-route en de Z-route. De onderwijsroute is ervan uitgezonderd. PVT is in alle drie de routes verplicht.', 'Wet inburgering 2021, artikel 8', SRC_MAP, CHECKED)}
+${factTwo('In de Z-route gelden voor asielstatushouders 800 cursusuren (Nederlands en KNM samen) plus 800 uur participatie en een eindgesprek; voor gezinsmigranten en overige migranten gelden de 800 cursusuren en het eindgesprek, zonder de 800 participatie-uren. MAP hoort bij de B1-route en de Z-route, de onderwijsroute is ervan uitgezonderd; PVT is in alle drie de routes verplicht.', [['Besluit inburgering 2021, artikel 3.14', SRC_ZROUTE], ['Wet inburgering 2021, artikel 8', SRC_MAP]], CHECKED)}
 
 <h2 id="afschalen">Afschalen van B1 naar A2</h2>
 
 <p>Lukt B1 echt niet? Dan mag je in de <strong>B1-route</strong> je taalexamens op A2 doen. In de
 onderwijsroute kan dat niet.</p>
+
+${figure(
+  'explainer-afschalen', 1124, 712,
+  'Eén pijl omlaag van B1 naar A2, met een slot erop: de stap gaat maar één kant op en alleen als je aan de voorwaarden voldoet.',
+  'Afschalen gaat één kant op. Je kunt van B1 naar A2, maar niet terug naar B1 — en alleen als je aan beide voorwaarden hieronder voldoet.',
+)}
 
 <div class="yesno-grid">
   <div class="yesno-col yes">
@@ -201,8 +229,6 @@ bij je eerste les, maar op de dag ná de datum die op je PIP staat.</p>
 </div>
 
 ${fact('De inburgeringstermijn is 3 jaar en begint op de dag na de dagtekening van het PIP. Wordt je PIP later herzien, dan verschuift die startdatum niet.', 'Wet inburgering 2021, artikel 11', SRC_TERMIJN, CHECKED)}
-
-${docent('Zet je einddatum meteen in je agenda, en zet er een herinnering een half jaar eerder bij. De uitslag van Schrijven en Spreken kan lang op zich laten wachten, en dan wil je niet ontdekken dat je nog één examen moet doen.')}
 
 <h2 id="en-nu">En nu?</h2>
 

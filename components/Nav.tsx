@@ -289,7 +289,7 @@ export default function Nav() {
       style={{ background: '#ffffff', boxShadow: '0 1px 0 rgba(0,43,109,0.08)' }}
       aria-label={t('ariaMain')}
     >
-      <div className="flex justify-between items-center max-w-7xl mx-auto px-6 py-4">
+      <div className="flex justify-between items-center max-w-7xl mx-auto px-6 h-[calc(var(--nav-h)_-_1px)]">
         {/* Logo */}
         <Link href="/" className="flex items-center gap-2 no-underline shrink-0">
           <LogoMark size={32} className="w-6 h-6 sm:w-8 sm:h-8" />

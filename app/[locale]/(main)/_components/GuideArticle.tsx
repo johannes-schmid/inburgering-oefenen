@@ -100,17 +100,84 @@ export default async function GuideArticle({
     <>
       {jsonLd && <JsonLd data={jsonLd} />}
 
-      <Breadcrumb
-        items={[
-          { label: tB('home'), href: '/' },
-          { label: tB(guide.section), href: hub },
-          { label: lg.breadcrumb },
-        ]}
-      />
+      {/* Without a hero photo the trail is the usual grey band above the hero. With one it moves
+          *inside* the hero, over the photograph: the band between a white nav and a full-bleed
+          photo reads as a gap in the page rather than as navigation. Same items either way, so
+          the BreadcrumbList JSON-LD and the visible trail cannot drift apart. */}
+      {!guide.heroImage && (
+        <Breadcrumb
+          items={[
+            { label: tB('home'), href: '/' },
+            { label: tB(guide.section), href: hub },
+            { label: lg.breadcrumb },
+          ]}
+        />
+      )}
 
-      {/* Hero */}
-      <div style={{ background: 'var(--gradient-brand)' }} className="pt-12 pb-12">
-        <div className="max-w-7xl mx-auto px-6">
+      {/* Hero.
+          With a `heroImage` the photo runs full-bleed and a navy scrim fades left-to-right over
+          it — the same treatment as the homepage hero, and for the same reason: the copy needs
+          an opaque ground while the photograph stays a photograph on the right. Without one the
+          hero is the flat brand gradient, so a guide with no picked photo still looks finished.
+
+          The photo is decorative-adjacent but not decorative: it is the page's largest element,
+          so it carries real alt text (`heroImageAlt`, localisable) rather than `alt=""`. It is
+          also the LCP element, hence the preload and `fetchPriority`. */}
+      {guide.heroImage && (
+        <link
+          rel="preload"
+          as="image"
+          href={`/images/guides/${guide.heroImage.base}.${guide.heroImage.hasWebp ? 'webp' : 'jpg'}`}
+          type={guide.heroImage.hasWebp ? 'image/webp' : 'image/jpeg'}
+          fetchPriority="high"
+        />
+      )}
+      <div
+        style={guide.heroImage ? undefined : { background: 'var(--gradient-brand)' }}
+        className={`pt-12 pb-12 ${guide.heroImage ? 'relative overflow-hidden' : ''}`}
+      >
+        {guide.heroImage && (
+          <>
+            <picture>
+              {guide.heroImage.hasWebp && (
+                <source srcSet={`/images/guides/${guide.heroImage.base}.webp`} type="image/webp" />
+              )}
+              <img
+                src={`/images/guides/${guide.heroImage.base}.jpg`}
+                alt={lg.heroImageAlt}
+                width={1800}
+                height={760}
+                className="absolute inset-0 w-full h-full object-cover"
+                style={{ objectPosition: guide.heroImage.position ?? 'center 45%' }}
+                fetchPriority="high"
+                decoding="async"
+              />
+            </picture>
+            {/* Opaque behind the copy, clearing to the right. Mirrors the homepage's 100deg ramp. */}
+            <div
+              className="absolute inset-0 pointer-events-none"
+              style={{ background: 'linear-gradient(100deg, #002B6D 0%, #002B6D 32%, rgba(0,43,109,0.92) 45%, rgba(0,43,109,0.68) 58%, rgba(0,43,109,0.34) 74%, rgba(0,43,109,0.12) 90%, rgba(0,43,109,0.06) 100%)' }}
+            />
+            {/* Below `lg` the copy sits over the whole photo, so darken it further — the same
+                mobile fallback the homepage needs, not a separate design. */}
+            <div
+              className="absolute inset-0 lg:hidden pointer-events-none"
+              style={{ background: 'rgba(0,43,109,0.55)' }}
+            />
+          </>
+        )}
+        <div className={`max-w-7xl mx-auto px-6 ${guide.heroImage ? 'relative z-10' : ''}`}>
+          {guide.heroImage && (
+            <Breadcrumb
+              tone="onDark"
+              className="-mx-6 -mt-4 mb-4"
+              items={[
+                { label: tB('home'), href: '/' },
+                { label: tB(guide.section), href: hub },
+                { label: lg.breadcrumb },
+              ]}
+            />
+          )}
           <div className="max-w-3xl">
             <div
               className="inline-flex items-center gap-2 mb-5"

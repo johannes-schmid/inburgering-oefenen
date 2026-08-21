@@ -9,7 +9,7 @@ export default function MainLayout({ children }: { children: React.ReactNode }) 
     <>
       <AnalyticsProviders />
       <Nav />
-      <div className="pt-20">
+      <div className="pt-[var(--nav-h)]">
         <Suspense fallback={<BrandLoader fullPage={false} />}>
           {children}
         </Suspense>

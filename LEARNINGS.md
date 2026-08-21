@@ -1618,3 +1618,224 @@ check-schema OK, twaalf URL's (4 gidsen × 3 talen) 200 en indexeerbaar, RTL vis
 **Lesson:** Een i18n-bug is pas zichtbaar zodra de tweede taal bestaat. Ga bij het toevoegen van
 een vertaling eerst langs *elk* veld dat de route rendert — niet alleen het veld dat je vertaalt —
 en langs elke hardcoded link in de body.
+
+## 2026-08-20 — Tijdlijn Builder: engine, rekenregels en de gantt die meebeweegt
+**Changed:** de tool op `/inburgering/tools/tijdlijn` is echt en indexeerbaar.
+`lib/tijdlijn/` (engine: `dates.ts` `types.ts` `estimate.ts` `cost.ts` `extensions.ts`
+`naturalisation.ts` `mode.ts` `compute.ts` `input.ts`; `rules.ts` + zod-schema;
+`state/encode.ts` `state/storage.ts`; `format.ts` `milestones.ts` `email-payload.ts`),
+`data/tijdlijn/inburgering-rules.v1.json`, `components/tijdlijn/` (`TijdlijnApp` `Landing`
+`Wizard` `TimelineChart` `Result` `ui`), `app/api/tijdlijn-email/route.ts`,
+`lib/email/templates/timeline.ts`, `supabase/migrations/20260820120000_tijdlijn_reminder.sql`,
+`tests-unit/tijdlijn-{dates,engine,state}.test.ts`, plus de tijdlijn-blokken in `app/globals.css`
+en de `tijdlijn`-namespace in nl/en/ar. `docs/tijdlijn/` bevat de vijf brondocumenten.
+**Outcome:** SUCCESS — tsc schoon, eslint schoon, build schoon, unit 197/197,
+e2e `public.spec.js` 39 passed / 1 skipped, `check-schema.mjs` OK, migratie lokaal toegepast en
+gecontroleerd, de hele wizard doorgeklikt met Puppeteer op 390 en 1440.
+**What worked / went wrong:**
+- **Twee van de vier worked examples in het brondocument zijn zelf fout, en de engine ving ze.**
+  Voorbeeld 2 zegt dat alle zeven voorwaarden voor de automatische +6 maanden zijn gehaald bij 26
+  maanden; één voorwaarde ís "termijn ≥ 2,5 jaar geleden begonnen", dus dat kan niet. Voorbeeld 1
+  claimt `mode B` terwijl de eigen urenbanden van het document A0→B1 op 87–147 weken zetten tegen
+  67 weken beschikbaar. **Golden tests overnemen zonder narekenen zou beide fouten in de
+  rekenkern hebben vastgezet.** Wat gepind is, is nu het deel dat niet ter discussie staat: de
+  datums. Het verschil staat in de test-header, niet in een commitbericht.
+- **`bg-primary/[0.04]` lost niet op tegen een `@theme`-token**: de vulling landt op volle sterkte,
+  dus een *geselecteerde* optiekaart werd donkerblauw met donkerblauwe tekst erop. Onleesbaar, en
+  alleen zichtbaar op een screenshot. Nu drie expliciete `--tl-tint-*` rgba-tokens.
+- **Een gantt heeft een goot nodig.** Labels boven elke balk op de eigen startoffset vielen buiten
+  het beeld zodra "vandaag" laat in het venster ligt — het normale geval voor iemand die al twee
+  jaar bezig is. Vaste labelkolom + één plotgebied, en de muren als één laag over dat gebied.
+- **Per rij schalen liegt.** Toen elke balk zijn eigen horizon had, stond de deadline-muur op elke
+  regel op een andere x en zag een balk die er dwars door schuift eruit als een balk die past. Eén
+  gedeelde schaal is niet cosmetisch, het is het hele punt van de tekening.
+- **Segmenten met alleen een achtergrond en geen hoogte zijn onzichtbaar**, en `flex-shrink: 1`
+  laat een percentage `flex-basis` naar de contentbreedte (nul) krimpen. De balk rendert dan leeg,
+  zonder fout.
+- **`getAttribute` op een ontbrekende meta-tag hangt tot de testtimeout.** Een indexeerbare pagina
+  heeft géén robots-tag; "niet noindex" test je met `count()`, niet door op het element te wachten.
+- De boete-onderdrukking in de cron gold voor iedereen met een betaling. Voor een tijdlijn-
+  herinnering is dat verkeerd: dat is geen upsell maar precies waar de lezer om vroeg, dus de
+  overslaan-regel is nu tot de campagnemails beperkt.
+**Lesson:** Reken elk voorbeeld in een specificatie na vóór je het tot golden test maakt — een
+brondocument is intentie, geen feit, en een fout voorbeeld dat je vastpint wordt de standaard.
+En: een tekening is pas gecontroleerd als je hem hebt bekeken; drie van de vijf bugs hier
+(lege balken, weggevallen labels, onleesbare kaart) gaven geen enkele fout af.
+
+## 2026-08-20 — Tijdlijn: de datums waar je op handelt, en de gantt uit de mockup
+**Changed:** `startStudyingBy` / `examWindow` / `resultWindow` / `studyWeeks` / `level` op
+`ComponentPlan` (+ `studyWeeksFor` uit `estimate.ts` gesplitst), `lib/tijdlijn/agenda.ts` +
+`components/tijdlijn/Agenda.tsx` (de gedateerde actielijst en de "wat nu"-blok in de verdictkaart),
+`TimelineChart` herschreven naar chronologische lanes met een paspoortrij van 5 jaar, aankomst- en
+vandaag-pinnen op de as en een urenschuif; niveau (A2/B1) in elk label; nl/en/ar bijgewerkt.
+**Outcome:** SUCCESS — tsc/eslint/build schoon, unit 213/213, e2e 39 passed / 1 skipped,
+check-schema OK, hele flow doorgeklikt op 390 en 1440.
+**What worked / went wrong:**
+- **De richting van een achteruit gerekende reeks is een echte bug-kans.** Méér studieweken =
+  *eerder* beginnen, dus `hi` hoort bij `earliest`. Omgekeerd zou de tool zeggen dat je later kunt
+  beginnen dan veilig is — de enige fout die deze tool niet mag maken. Er staat nu een test op.
+- **PVT kreeg een examen en een uitslag** omdat de code op "heeft geen wachttijd" testte en PVT een
+  DUO-doorlooptijd van 3 weken heeft. Vier instructies voor één afspraak bij de gemeente. De regel
+  moet op *wat iets is* keyen (`AT_THE_GEMEENTE`), niet op een numerieke bijwerking daarvan — en die
+  lijst hoort geïmporteerd te worden, niet op drie plekken heruitgevonden.
+- **Twee van de vier brondocument-voorbeelden bleken fout** (zie de vorige entry) en de nieuwe velden
+  brachten een derde inconsistentie aan het licht: de agenda's laatste item is *niet* de deadline
+  wanneer een uitslagwachttijd erdoorheen schuift. Dat is de bevinding, niet de bug — de test
+  controleert nu dat alles ná de deadline iets is waarop je *wacht*.
+- **Een gantt met per rij zijn eigen schaal, labels boven elke balk, en gepinde mijlpalen buiten het
+  venster** waren drie aparte manieren om hetzelfde te liegen: de muur op elke regel op een andere x,
+  labels buiten beeld, en een aankomstdatum van 2022 die op de rand van een as die in 2024 begint
+  wordt getekend alsof hij daar plaatsvond. Alle drie alleen zichtbaar op een screenshot.
+- Balken laten beginnen wanneer het leren begint (in plaats van bij vandaag) levert de trapvorm uit
+  de mockup *gratis* op, omdat `examSpacingWeeks` al in `readyBy` zat. De tekening werd beter door
+  een feit beter te modelleren, niet door hem te stileren.
+**Lesson:** Als een tekening en een lijst dezelfde feiten tonen, moet één van de twee de bron zijn en
+de ander een weergave. Elke keer dat ik de regel opnieuw afleidde ("heeft geen wachttijd", "eigen
+horizon per rij") kreeg ik een variant die er plausibel uitzag en iets anders zei.
+
+## 2026-08-21 — "Moet ik inburgeren?" ingekort tot drie visuele blokken
+**Changed:** `data/guides/moet-ik-inburgeren.ts` herschreven in alle drie de talen: nieuwe sectie
+"Wat is inburgeren?" (twee guide-cards), de yes/no-grid blijft, en een compacte twee-koloms
+vergelijking van de Wet 2013 en de Wet 2021. De zes `<details>`-panelen en de
+vrijstelling-vs-ontheffing-vergelijking zijn eruit; de FAQ is ongewijzigd.
+**Outcome:** SUCCESS — `tsc` schoon, 213 unit tests groen, nl/en/ar alle drie 200 en gefotografeerd.
+**What worked / went wrong:** De picker herhaalde letterlijk wat de grid erboven al zei — schrappen
+kostte geen informatie. Twee dingen kwamen alleen uit de screenshots: de meta description liep op
+163 tekens (unit test ving dat), en na het schrappen stonden er vijf fact/note-blokken op een rij
+zonder body-tekst ertussen, wat als een muur van bronvermeldingen leest. De diploma-factbox één
+blok naar beneden verplaatsen loste dat op.
+**Lesson:** Bij het inkorten van een gids verdwijnt de prozatekst sneller dan de chrome, en dan
+raken de fact boxes elkaar. Laat na elke schrapronde geen twee gekaderde blokken aan elkaar
+grenzen — en link nooit vanuit een `articleHtml` naar een andere gids: die string heeft geen
+locale, dus `related` is de enige juiste plek.
+
+## 2026-08-21 — minder kaders in "Moet ik inburgeren?", en één factbox met twee bronnen
+**Changed:** de Nederlandse `articleHtml` van `data/guides/moet-ik-inburgeren.ts` opnieuw
+ingedeeld — de DUO-controle is nu een genummerde `guide-steps`-tijdlijn in plaats van een
+verdict-paneel plus note-strip — en `factTwo()` toegevoegd aan `data/guides/kit.ts`.
+**Outcome:** SUCCESS — `tsc` schoon, 213 tests groen, nl desktop + mobile opnieuw gefotografeerd.
+**What worked / went wrong:** Vijf gekaderde blokken op een rij las als chrome, niet als inhoud.
+Twee bronnen samenvoegen in één factbox (`Bronnen: a · b`) haalt de unit test nog steeds: die eist
+één `fact-box-source`-alinea per box met één datum en minstens één https-link, niet één link.
+De echte winst zat niet in schrappen maar in *omzetten*: dezelfde informatie als tijdlijn is
+zowel korter als visueler dan als paneel.
+**Lesson:** Guide-bodies zijn ruwe HTML-strings, dus shadcn/React-componenten kunnen er niet in —
+de visuele taal is de CSS in `app/globals.css` ("Kennisgids visual elements"). Vraag bij "maak het
+visueler" dus eerst welke bestaande klasse de inhoud kan dragen (`guide-steps`, `compare-2`,
+`yesno-grid`, `guide-cards`) voordat je een nieuw kader toevoegt.
+
+## 2026-08-21 — een Pexels-hero per kennisgids, met de fade van de homepage
+**Changed:** `GuideHeroImage` in `data/guides/types.ts` (+ `heroImageAlt` per locale in
+`helpers.ts`), de hero in `app/[locale]/(main)/_components/GuideArticle.tsx`, een `tone="onDark"`
+op `components/site/Breadcrumb.tsx`, `scripts/fetch-guide-images.mjs` en vier foto's in
+`public/images/guides/`. Alle vier de gidsen zijn aangesloten.
+**Outcome:** SUCCESS — `tsc` schoon, 213 tests groen, alle vier hero's op 1440 en 390 bekeken.
+**What worked / went wrong:** Vier dingen kwamen alleen uit het kijken: (1) **WebP is niet altijd
+kleiner** — op bladerrijke foto's kwam hij 30–50% *groter* terug dan mozjpeg, dus het script gooit
+hem weg en de gids zet `hasWebp: false`; (2) elke `signpost`-treffer had **leesbare tekst** op het
+bord ("TOILET / AFHAAL"), wat als een fout leest, dus werd het een splitsend bospad; (3)
+resultaat 0 is vaak een macro-opname en een hero is een uitsnede van een uitsnede — de
+calculatorfoto toonde vier toetsen; (4) de grijze breadcrumb-balk tussen witte nav en volle-breedte
+foto las als een gat in de pagina, en hoort dus *in* de hero.
+De sleutel in `.env.local` was stuk (een spatie middenin) en Pexels gaf 401 — maar op
+`query=test` gaf datzelfde verzoek 200, dus één succesvolle call bewijst niets over de sleutel.
+**Lesson:** Leg bij een gefetchte afbeelding vast **welke** treffer je koos (`PICK` met index),
+niet alleen de zoekterm: de resultaten van Pexels verschuiven, en zonder die index wisselt de foto
+onder een pagina die de docent al goedgekeurd heeft. En schrijf een creditregel per bestand
+*overschrijvend* weg — append-only levert na drie pogingen drie fotografen voor één foto op.
+
+## 2026-08-21 — de 7px streep tussen de nav en elke hero, en één token die hem sluit
+**Changed:** `--nav-h: 73px` toegevoegd in `app/globals.css`; `components/Nav.tsx` maakt zijn rij
+`h-[calc(var(--nav-h)_-_1px)]` in plaats van `py-4`; `app/[locale]/(main)/layout.tsx` reserveert
+`pt-[var(--nav-h)]` in plaats van `pt-20`; `app/[locale]/(main)/page.tsx` heft precies datzelfde op
+(`-mt-[var(--nav-h)]`, `paddingTop: calc(var(--nav-h) + 2rem)`).
+**Outcome:** SUCCESS
+**What worked / went wrong:** De vaste header was **73px** en de layout reserveerde **80px**
+(`pt-20`), dus op élke `(main)`-pagina stond 7px paginakleur als streep tussen de witte balk en de
+hero. Het stond er al lang en niemand zag het, om één reden: de homepage-hero doet `-mt-20` en
+schuift onder de balk, dus juist de pagina die je het vaakst bekijkt liet de bug niet zien. Twee
+missers onderweg: `h-[calc(var(--nav-h)-1px)]` genereert **geen** CSS — in een Tailwind arbitrary
+value moeten de spaties rond de min als `_` (`_-_1px`), en zonder die spaties is het ongeldige CSS
+die stil wordt weggegooid; de nav klapte daardoor naar 41px en dat zag ik alleen doordat ik na de
+wijziging opnieuw mat. En mijn numerieke gap-probe gaf `-73` op zes pagina's omdat hij de
+absoluut-gepositioneerde hero-`<img>` mat, niet de content — de screenshot was wat het bewees.
+**Lesson:** Als drie plekken hetzelfde getal moeten weten, geef het één naam en laat de bron ervan
+de maat *bepalen* in plaats van beschrijven — de nav-rij is nu 73px omdat het token dat zegt, dus de
+reservering kan niet meer misstaan. En: een layoutbug die op de drukste pagina toevallig gemaskeerd
+wordt, blijft maanden staan; meet op een gewone pagina, niet op de homepage.
+
+## 2026-08-21 — kaderdichtheid in de vier kennisgidsen, met een echte meetlat
+**Changed:** Dutch bodies van `data/guides/welke-wet-en-welke-route.ts` (10 → 7 kaders),
+`wat-kost-inburgeren.ts` (13 → 8), `inburgering-stappenplan.ts` (twee fact-boxen samengevoegd) en
+`moet-ik-inburgeren.ts` (de slotstapel fact→docent→cta opgebroken); `factTwo` erbij geïmporteerd.
+**Outcome:** SUCCESS
+**What worked / went wrong:** "Te veel kaders" was niet te repareren op gevoel, dus eerst geteld:
+welke-wet 10, wat-kost 13, pillar 14, moet-ik 5. Daarna een expliciete lat — **nooit drie kaders op
+een rij, en nooit twee van dezelfde soort** — want een grijze bronbox naast een docentkaart leest
+als twee dingen, en twee grijze boxen als chrome. Mijn eerste adjacency-meting was waardeloos: ik
+telde opeenvolging in de *grep-output* in plaats van in het document, dus elk paar kaders met drie
+alinea's ertussen kwam als "gestapeld" terug. Met een echte document-scan bleven precies twee echte
+problemen over. De automatische merge van twee `fact()`-calls ging kapot omdat het bronlabel zelf
+een komma bevat (`'Besluit inburgering 2021, artikel 5.5'`) en mijn `rsplit(',', 3)` middenin het
+label sneed — zichtbaar geworden doordat ik de weggeschreven regel terugleesde, en gerepareerd door
+de originelen uit `git diff` te halen in plaats van ze opnieuw te typen.
+**Lesson:** Reduceren doe je door te *converteren*, niet alleen te schrappen: een waarschuwing wordt
+de eerste zin van zijn paragraaf, twee bronboxen worden één `factTwo`, en een docentnotitie
+verhuist naar de sectie waar hij commentaar op geeft. Elke claim bleef gesourced. En: parse nooit
+gestructureerde argumenten met een string-split als een van de velden het scheidingsteken mag
+bevatten — lees terug wat je hebt geschreven.
+
+## 2026-08-21 — drie explainer-diagrammen voor gids 1, met gpt-image-2
+**Changed:** `scripts/generate-guide-explainers.mjs` (nieuw, met de prompts erin), `figure()` en
+`figureSplit()` in `data/guides/kit.ts`, een `.guide-figure`-blok in `app/globals.css`, drie
+`explainer-*.{webp,png}` in `public/images/guides/`, en drie figuren in de Nederlandse body van
+`data/guides/moet-ik-inburgeren.ts`.
+**Outcome:** SUCCESS
+**What worked / went wrong:** De harde regel is dat elk diagram **tekstvrij** wordt gegenereerd en
+de labels HTML blijven. Dat is geen stijlkeuze: de gids verschijnt in nl/en/ar, de Arabische leest
+RTL, en tekst die in een raster zit kan niet vertaald worden, niet spiegelen, is onzichtbaar voor
+een screenreader en is niet selecteerbaar. Het model zet er ongevraagd bordjes en opschriften in, dus
+het verbod moet expliciet in de prompt. Vier dingen die alleen uit kijken kwamen: (1) de eerste
+"brief"-poging kwam terug met dichte vlakken, 3D-sokkels en schaduwen — op zichzelf prima, naast de
+andere twee duidelijk een ander product; pas een expliciete `FORBIDDEN`-lijst repareerde het in één
+retry. (2) **WebP is hier 3–13× kleiner dan PNG**, precies omgekeerd aan de fotohero's — vlakke
+lijnkunst is waar WebP goed in is; JPEG is uitgesloten want dat ringt langs elke lijn. (3) De
+tijdlijn hield na `trim` een 4:3-kader over omdat de oranje streep bewust van boven naar onder
+loopt: er staat dus inkt tegen de rand en er valt niets weg te snijden. Uitsnede naar een
+horizontale band loste dat op, en de streep bloedt nu van de rand af, wat "deze lijn gaat door"
+zegt. (4) `sharp` past `extend` ná `resize` toe, ongeacht de aanroeporde — vandaar 1486px in plaats
+van de gevraagde 1400.
+**Lesson:** Bij gegenereerde beelden is de prompt de herkomst en hoort hij in git: een Pexels-foto
+heeft een id en een URL, een gegenereerde heeft alleen de woorden die hem maakten. En noem in een
+prompt niet alleen wat je wil maar ook wat verboden is — "flat vector" alleen levert bij het derde
+plaatje net zo goed schaduwen en perspectief op, en dan valt de set uit elkaar. `gpt-image-2` kent
+geen seed, dus een herhaling is nieuw werk dat je opnieuw moet bekijken.
+
+## 2026-08-21 — zes explainer-diagrammen voor de gidsen 2, 3 en 4
+**Changed:** vijf nieuwe prompts in `scripts/generate-guide-explainers.mjs`; zes figuren gewired in
+`data/guides/welke-wet-en-welke-route.ts` (twee-wetten hergebruikt, drie-routes, afschalen),
+`inburgering-stappenplan.ts` (intake-naar-pip, wat-moet-je-halen) en `wat-kost-inburgeren.ts`
+(afzeggen-week); vijf asset-paren in `public/images/guides/`; `resources/images/CREDITS.md`.
+**Outcome:** SUCCESS
+**What worked / went wrong:**
+- **De accentkleur doet een feitelijke bewering.** De eerste `drie-routes` zette het oranje op de
+  middelste baan, de onderwijsroute — dat leest als "dit is de standaardroute". Dat is hij niet: de
+  gemeente wijst de route toe en de B1-route is waar de rest van die gids over gaat. Opnieuw
+  gegenereerd met het accent op de bovenste baan. Een kleurkeuze in een diagram over wetgeving is
+  geen opmaak.
+- **`crop: 'band'` geldt alleen als de scheidslijn van rand tot rand loopt.** `afschalen` kreeg dat
+  vlaggetje per analogie en de band sneed het hoofd van de staande figuur eraf. Alles zonder
+  full-height ink trimt naar zijn echte bounding box.
+- **Padvulling moet je uit de hoekpixel samplen, niet hardcoden.** `#f8f9fb` is wat we vragen, niet
+  precies wat het model levert; een hardgecodeerde pad geeft een zichtbare doosnaad.
+- **De gids voor kosten kreeg bewust één diagram, niet vier.** Een tekstvrije tekening kan geen
+  bedrag tonen, dus elke prijsclaim hoort in de `price-list` waar hij vertaalbaar en selecteerbaar
+  blijft. Wat wél een vorm is, is de *deadline* — en die is getekend.
+- **`explainer-twee-wetten` wordt door twee gidsen gebruikt.** Beide secties draaien om dezelfde
+  datum, dus ze delen het asset in plaats van elk een eigen tekening van hetzelfde idee te krijgen.
+- Puppeteer's `networkidle2` hangt op de stappenplan-pagina (lang, veel afbeeldingen);
+  `domcontentloaded` plus expliciet scrollen en op `document.images` wachten werkt wel. Zonder dat
+  scrollen fotografeer je lege vakken, want elke figuur is `loading="lazy"`.
+**Lesson:** kijk naar wat het model teruggeeft en vraag niet of het mooi is maar of het iets
+*beweert*. Stijlfouten zie je meteen; een verkeerd gekleurde lijn die suggereert dat de
+onderwijsroute de standaard is, is plausibel, onopvallend en fout.
