@@ -179,58 +179,71 @@ test.describe('the kennisgids sections', () => {
     await expect(page.locator('footer a[href="/nl/knm"]')).toHaveCount(1);
   });
 
-  test('the header carries five items and every section keeps its links', async ({ page }) => {
-    /* The owner's menu mockup (2026-08-21): Inburgeren · Examens · KNM · Over de docent · Blog.
-     * Pinned because the shape is a decision, not an accident — the level is a column head inside
-     * Examens rather than a top-level split, and there is no separate "Oefenen" item because the
-     * uitleg and the oefenexamens share a page. */
-    // The desktop bar only exists at `menu:` (1152px) — five items do not fit at `md`.
+  test('the header carries four items and every panel keeps its links', async ({ page }) => {
+    /* The bar restructured 2026-08-22: **Platform · Gidsen · Prijzen · Over ons** (owner's
+     * instruction, Headspace as the reference). Pinned because the shape is a decision: the two
+     * panels are doen versus weten, Prijzen is top-level rather than buried in a dropdown foot,
+     * and the material Nina's deck names as four menu items is four *columns* inside those two
+     * panels. A regression here drops a whole section silently. */
+    // The desktop bar only exists at `menu:` (1152px).
     await page.setViewportSize({ width: 1440, height: 900 });
     await page.goto('/nl');
     const nav = page.locator('nav[aria-label="Hoofdmenu"]');
 
-    // Four dropdowns plus the Blog link.
-    expect(await nav.locator(':scope > *').count()).toBe(5);
+    // Two panels plus the two plain links.
+    expect(await nav.locator(':scope > *').count()).toBe(4);
 
-    // Each section opens on hover — not click, which toggles it shut again. Asserted per section
-    // because the desktop panels and the mobile accordion render from one definition, and a
-    // regression would drop a whole section silently.
-    const sections = [
-      // Inburgeren: the four published guides in reading order, then the hub, then the tool.
-      // Named individually because this is the one section that lists guides rather than only a
-      // hub, and a guide dropped from here is a guide most readers never reach.
+    const panels = [
+      // Platform: the four onderdelen at the live level, the taster, the catalogue and the tools.
       {
         i: 0,
         links: [
-          '/nl/inburgering/moet-ik-inburgeren', '/nl/inburgering/welke-wet-en-welke-route',
-          '/nl/inburgering/inburgering-stappenplan', '/nl/inburgering/wat-kost-inburgeren',
-          '/nl/inburgering', '/nl/inburgering/tools/tijdlijn',
+          '/nl/oefenexamen/a2/lezen', '/nl/oefenexamen/a2/luisteren',
+          '/nl/oefenexamen/a2/schrijven', '/nl/oefenexamen/a2/spreken',
+          '/nl/taalexamens',
+          '/nl/inburgering/tools/tijdlijn', '/nl/taalexamens/woordenlijst',
+          '/nl/taalexamens/grammatica', '/nl/premium',
         ],
+        /* The taster is deliberately in the panel twice — once as a row, once as the promo card
+           at the right. Everything else must appear exactly once; that count is what caught the
+           Blog link shipping twice in M1. */
+        twice: ['/nl/oefenen'],
       },
-      // Examens: both levels side by side, the material below them, and the two foot links.
-      // Premium is reachable from the header only through here, so if it goes the money page
-      // loses its nav entry.
+      // Gidsen: the four published guides in reading order, the two hubs, and the blog. Named
+      // individually because a guide dropped from here is a guide most readers never reach.
       {
         i: 1,
         links: [
-          '/nl/oefenexamen/a2/lezen', '/nl/oefenexamen/a2/spreken',
-          '/nl/oefenexamen/b1/lezen', '/nl/oefenexamen/b1/spreken',
-          '/nl/taalexamens', '/nl/taalexamens/woordenlijst', '/nl/taalexamens/grammatica',
-          '/nl/oefenen', '/nl/premium',
+          '/nl/inburgering/moet-ik-inburgeren', '/nl/inburgering/welke-wet-en-welke-route',
+          '/nl/inburgering/inburgering-stappenplan', '/nl/inburgering/wat-kost-inburgeren',
+          '/nl/inburgering', '/nl/taalexamens', '/nl/knm', '/nl/knm/woordenlijst',
+          '/nl/blog', '/nl/docent', '/nl/contact',
         ],
       },
-      { i: 2, links: ['/nl/knm', '/nl/knm/woordenlijst'] },
-      { i: 3, links: ['/nl/docent', '/nl/contact'] },
     ];
-    for (const { i, links } of sections) {
+    for (const { i, links, twice = [] } of panels) {
       await nav.getByRole('button').nth(i).hover();
+      // Scoped to the panel: the bar's own Prijzen and Over ons links live in the same `nav`, and
+      // an unscoped count cannot tell them from a duplicate row inside the panel.
+      const panel = nav.locator('[data-menu]');
       for (const href of links) {
-        await expect(nav.locator(`a[href="${href}"]`), href).toHaveCount(1);
+        await expect(panel.locator(`a[href="${href}"]`), href).toHaveCount(1);
+      }
+      for (const href of twice) {
+        await expect(panel.locator(`a[href="${href}"]`), href).toHaveCount(2);
       }
     }
 
-    // The blog keeps its own top-level entry, and appears nowhere else in the bar.
-    await expect(nav.locator('a[href="/nl/blog"]')).toHaveCount(1);
+    // The two plain links in the bar itself.
+    await expect(nav.locator('a[href="/nl/premium"]').first()).toBeVisible();
+    await expect(nav.locator('a[href="/nl/docent"]').first()).toBeVisible();
+
+    /* B1, the KNM-oefenexamens and ONA are announced in the Platform panel and are **not links** —
+     * B1 is behind the docent's review gate and `noindex`, the other two are not built. A link
+     * here would either 404 or hand a crawler a page we tell it to ignore. */
+    await nav.getByRole('button').nth(0).hover();
+    await expect(nav.locator('a[href*="/oefenexamen/b1/"]')).toHaveCount(0);
+    await expect(nav.getByText('Taalexamens B1')).toBeVisible();
   });
 
   test('the mobile drawer holds every section, each link once', async ({ page }) => {
@@ -244,26 +257,32 @@ test.describe('the kennisgids sections', () => {
 
     const drawer = page.locator('nav[aria-label="Mobiel menu"], header nav').last();
     const rows = [
-      { name: 'Inburgeren', links: ['/nl/inburgering/inburgering-stappenplan', '/nl/inburgering', '/nl/inburgering/tools/tijdlijn'] },
       {
-        name: 'Examens',
+        name: 'Platform',
         links: [
-          '/nl/oefenexamen/a2/lezen', '/nl/oefenexamen/b1/spreken',
-          '/nl/taalexamens', '/nl/taalexamens/woordenlijst', '/nl/taalexamens/grammatica',
-          '/nl/premium',
+          '/nl/oefenexamen/a2/lezen', '/nl/oefenexamen/a2/spreken', '/nl/oefenen',
+          '/nl/taalexamens', '/nl/inburgering/tools/tijdlijn', '/nl/premium',
         ],
       },
-      { name: 'KNM', links: ['/nl/knm', '/nl/knm/woordenlijst'] },
-      { name: 'Over de docent', links: ['/nl/docent', '/nl/contact'] },
+      {
+        name: 'Gidsen',
+        links: [
+          '/nl/inburgering/inburgering-stappenplan', '/nl/inburgering',
+          '/nl/knm', '/nl/knm/woordenlijst', '/nl/blog', '/nl/contact',
+        ],
+      },
     ];
     for (const { name, links } of rows) {
       await drawer.getByRole('button', { name, exact: true }).click();
+      // Scoped to the opened row, for the same reason as the desktop panel: the drawer's own
+      // Prijzen, Over ons and CTA links sit outside the accordion.
+      const row = drawer.locator('[data-menu]');
       for (const href of links) {
-        await expect(drawer.locator(`a[href="${href}"]`), `${name} → ${href}`).toHaveCount(1);
+        await expect(row.locator(`a[href="${href}"]`), `${name} → ${href}`).toHaveCount(1);
       }
     }
-    // Outside the accordion: the blog, and the CTA at the bottom where the thumb is.
-    await expect(drawer.locator('a[href="/nl/blog"]')).toHaveCount(1);
+    // Outside the accordion: the two plain links, and the CTA at the bottom where the thumb is.
+    await expect(drawer.locator('a[href="/nl/docent"]').last()).toBeVisible();
     await expect(drawer.locator('a[href="/nl/oefenen"]').last()).toBeVisible();
   });
 

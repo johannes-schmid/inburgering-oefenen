@@ -2287,3 +2287,21 @@ binnen hetzelfde gemeten `menu:`-breekpunt van 1152px.
 **Lesson:** Bij "te druk" is de eerste vraag hoeveel *gevulde* vlakken en hoeveel affordances er in
 één rij staan, niet welk lettertype het is. En een besparing (carets) is de begroting voor een
 uitgave (gap, tekstgrootte) — dan hoeft een gemeten breekpunt niet opnieuw gemeten te worden.
+
+## 2026-08-22 — het menu is Platform · Gidsen · Prijzen · Over ons
+**Changed:** `components/Nav.tsx` herbouwd tot twee mega-panelen plus twee platte links, nav-keys in
+`messages/{nl,en,ar}.json` vervangen, `tests/public.spec.js` opnieuw gepind, CLAUDE.md-sectie
+vervangen.
+**Outcome:** SUCCESS
+**What worked / went wrong:** Nina's advies noemt vier menu-items op funnelfase (Inburgering / KNM
+Kennisgidsen / Taalexamens / Oefenexamens). Als *contentplan* klopt dat, als *menu* niet: drie van de
+vier labels zijn hetzelfde soort ding, dus het item dat verkoopt staat vierde, en een bezoeker weet
+niet in welke fase hij zit. Het advies is daarom één niveau lager uitgevoerd — die vier groepen zijn
+de kolommen ín de twee panelen. Twee dingen kostten tijd: een paneel dat op zijn eigen trigger
+gecentreerd stond liep bij "Gidsen" half buiten beeld (nu tegen de headerrij gepositioneerd), en de
+e2e-tellingen sloegen op de hele `nav`, waardoor de balk-eigen Prijzen-link niet te onderscheiden was
+van een dubbele rij in het paneel — opgelost met `data-menu` op elk paneel.
+**Lesson:** Een SEO-contentplan is geen navigatie. Zet de geadviseerde groepen in de kolommen en
+laat de balk zeggen wat het product ís. En scope een "komt precies één keer voor"-assertie op de
+container die je bedoelt, anders is elke legitieme herhaling elders een valse fail — en verzwak je
+de assertie tot hij niets meer vangt.

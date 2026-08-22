@@ -733,7 +733,40 @@ manuscript, fact-checked line by line the same day. What a later session must kn
   facts.md §10 with its provenance.
 
 
-### M2b — the menu implements §3, and the first tools appear (2026-08-20)
+### The header is Platform · Gidsen · Prijzen · Over ons (2026-08-22)
+
+**This supersedes both the M2b arrangement below and the 2026-08-21 five-item mockup.** The bar is
+two mega-panels and two plain links, built to the owner's Headspace reference.
+
+- **The split is doen versus weten.** *Platform* is everything the site does — the four onderdelen
+  at the live level, the gratis proefexamen, the catalogue (A2 live; B1, KNM-oefenexamens and ONA
+  as **non-links** with a "binnenkort" chip), the tijdlijn-maker, the woordenlijst/grammatica
+  placeholders and Modules. *Gidsen* is everything it explains — the four published
+  Inburgering-gidsen, the twee hubs, de blog en de docent.
+- **Nina's deck is implemented one level down, deliberately.** `Strategisch Contentadvies`
+  §"Nieuwe Menu-items" proposes Inburgering / KNM Kennisgidsen / Taalexamens A2-B1 / Oefenexamens as
+  the *bar*. That is a correct content plan and a poor menu: three of the four labels are the same
+  kind of thing, so the one that sells sits fourth, and a visitor does not know which funnel stage
+  they are in. Those four groups are now the **columns** inside the two panels, where they organise
+  the material rather than the bar.
+- **A row with no `href` is not a link, it is a `div`.** An announced-but-unbuilt surface has
+  nowhere to go, and a greyed anchor still takes focus and still promises a destination. B1 is the
+  one that matters: it *has* pages, they are `noindex` behind the docent's review gate, and a nav
+  link would hand a crawler exactly the page we tell it to ignore.
+- **Prijzen is top-level again.** Under M2b the money page's only header entry was one level deep
+  in a dropdown foot. "Over ons" is a plain link to `/docent` rather than a two-row dropdown — a
+  panel holding two rows charges a click for nothing.
+- **A wide panel is positioned against the header row, not against its trigger.** Centring it on
+  the trigger put the promo card half off the right edge at 1440px when opened from "Gidsen". The
+  row carries `relative`; the wide panel is `absolute left-6 right-6`; only the narrow ones anchor
+  to their own trigger.
+- **Each panel carries `data-menu`, and so does each open mobile accordion row.** `tests/public.spec.js`
+  counts links per panel; unscoped, the bar's own Prijzen and Over ons links are indistinguishable
+  from a duplicate row inside a panel — which is the M1 bug the count exists to catch.
+- **Two duplicates are deliberate and pinned as `toHaveCount(2)`:** the taster is a row *and* the
+  Platform promo card, and Modules is a row *and* the bar's Prijzen.
+
+### M2b — the menu implements §3, and the first tools appear (2026-08-20) — SUPERSEDED, see above
 
 The header now carries **five top-level items** — `Inburgering ▾ · KNM ▾ · Taalexamens ▾ ·
 Oefenexamens ▾ · Docent` — implementing `docs/MILESTONES.html` §3 and **reversing M1's
