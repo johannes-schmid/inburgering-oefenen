@@ -285,7 +285,17 @@ export default function Nav() {
 
   return (
     <header
-      /* **Navy, not glass** (owner's decision, 2026-08-22). It used to be `surface` at 80% with a
+      /* **Light again (owner's decision, 2026-08-22, over the navy bar of the same day).** The navy
+         bar existed because nearly every page header was a navy Horizon banner, so a white bar sat
+         on a navy panel and read as two headers stacked. The homepage hero is now light with the
+         page-wide dot grid, and there the navy bar was the stack — reversed. On `surface` with a
+         ghost border the bar and the grid are one field.
+
+         The consequence is on the *other* pages: `/blog`, `/docent`, both guide hubs and the
+         planned surfaces still open with a navy `GradientHero`, so the seam this bar used to hide
+         is back there. If that reads badly, the fix is those headers, not a per-route bar.
+
+         The previous note, kept because it still explains the parts: it used to be `surface` at 80% with a
          20px backdrop-blur, so the header floated over the page — correct per §2 for a floating
          element, and it went wrong in practice: nearly every page header on this site is a navy
          Horizon banner, so a white bar sat on top of a navy panel and read as two headers stacked.
@@ -295,28 +305,33 @@ export default function Nav() {
          the bar on every `(main)` page, which is exactly the bug that token exists to prevent. It
          is now drawn in white at 10% rather than as a ghost border, because a dark line on a dark
          bar is invisible where the page below is also dark. */
-      className="fixed top-0 w-full z-50 bg-primary"
-      style={{ borderBottom: '1px solid rgba(255,255,255,0.10)', boxShadow: '0 1px 24px rgba(0,20,52,0.28)' }}
+      className="fixed top-0 w-full z-50"
+      style={{
+        background: 'var(--color-surface)',
+        borderBottom: '1px solid var(--ghost-border)',
+      }}
       aria-label={t('ariaMain')}
     >
       <div className="flex justify-between items-center max-w-7xl mx-auto px-6 h-[calc(var(--nav-h)_-_1px)]">
         {/* Logo */}
         <Link href="/" className="flex items-center gap-2 no-underline shrink-0">
-          <LogoMark size={32} surface="dark" className="w-6 h-6 sm:w-8 sm:h-8" />
-          <span className="text-sm sm:text-xl font-extrabold tracking-tight text-white font-headline whitespace-nowrap">
+          <LogoMark size={32} surface="light" className="w-6 h-6 sm:w-8 sm:h-8" />
+          <span className="text-sm sm:text-xl font-extrabold tracking-tight text-primary font-headline whitespace-nowrap">
             Inburgering Oefenen
           </span>
         </Link>
 
         {/* Desktop nav links */}
-        {/* `menu:` (1152px, defined in globals.css) not `md:`, and `gap-5` not `gap-7` — measured,
-            not guessed. The logo is 234px and the right-hand cluster 362px, so at 1152px the links
+        {/* `menu:` (1152px, defined in globals.css) not `md:`, and `gap-7` — measured, not
+            guessed. The top-level items carry **no caret** (owner's request, 2026-08-22, from the
+            Headspace reference): four carets read as four competing controls, and dropping them
+            paid for the wider gap and the full-strength ink at the same width. The logo is 234px and the right-hand cluster 362px, so at 1152px the links
             get 508px; the five items here ("Inburgeren · Examens · KNM · Over de docent · Blog")
             need ~470px. At `md` (768px) there was ~344px, where "Over de docent" was squeezed from
             99px to 46px. Below `menu:` the drawer is the full menu — it carries every item
             including Modules, login and the language select, which is what makes this safe.
             **Re-measure if you add an item or lengthen the CTA.** */}
-        <nav className="hidden menu:flex items-center gap-5 text-sm font-semibold" aria-label={t('ariaDesktop')}>
+        <nav className="hidden menu:flex items-center gap-7 text-[0.9375rem] font-medium" aria-label={t('ariaDesktop')}>
           {/* Inburgeren — the TOFU section, first because it is where the funnel starts. */}
           {CONTENT_SECTIONS.filter(s => s.id === 'inburgeren').map(section => (
             <SingleColumnMenu key={section.id} section={section} />
@@ -330,13 +345,12 @@ export default function Nav() {
           >
             <button
               type="button"
-              className="flex items-center gap-1.5 text-white/80 hover:text-white transition-colors whitespace-nowrap"
+              className="text-on-surface hover:text-primary transition-colors whitespace-nowrap"
               aria-expanded={openMenu === 'examens'}
               aria-haspopup="true"
               onClick={() => setOpenMenu(o => (o === 'examens' ? null : 'examens'))}
             >
               {t('sec_examens')}
-              <Caret open={openMenu === 'examens'} />
             </button>
 
             {openMenu === 'examens' && (
@@ -391,7 +405,7 @@ export default function Nav() {
           ))}
 
           {FEATURES.blog && (
-            <Link href="/blog" className="text-white/80 hover:text-white transition-colors no-underline whitespace-nowrap">
+            <Link href="/blog" className="text-on-surface hover:text-primary transition-colors no-underline whitespace-nowrap">
               {t('blog')}
             </Link>
           )}
@@ -403,12 +417,12 @@ export default function Nav() {
             select is borderless (it reads as a control on hover and focus, which is enough for a
             three-item choice) and Inloggen is an outlined button paired with the filled CTA — one
             visual pair instead of three separate weights. */}
-        <div className="flex items-center gap-1.5 shrink-0">
+        <div className="flex items-center gap-3 shrink-0">
           <select
             aria-label={t('langLabel')}
             value={locale}
             onChange={(e) => handleLangChange(e.target.value)}
-            className="hidden menu:block text-xs font-semibold text-white/75 bg-transparent border-0 rounded-lg pl-2 pr-1 py-1.5 cursor-pointer hover:text-white hover:bg-white/10 transition-colors focus:outline-none focus:ring-2 focus:ring-white/40"
+            className="hidden menu:block text-[0.8125rem] font-medium text-on-surface-variant bg-transparent border-0 rounded-lg pl-2 pr-1 py-1.5 cursor-pointer hover:text-primary hover:bg-surface-container transition-colors focus:outline-none focus:ring-2 focus:ring-primary/30"
           >
             {LOCALES.map((l) => (
               /* The popup itself is drawn by the OS and does not inherit the bar's navy, so the
@@ -419,14 +433,14 @@ export default function Nav() {
 
           <Link
             href="/login"
-            className="hidden menu:block text-white font-semibold text-sm px-4 py-2 rounded-xl transition-colors no-underline whitespace-nowrap bg-white/12 hover:bg-white/20"
+            className="hidden menu:block text-on-surface hover:text-primary font-medium text-[0.9375rem] transition-colors no-underline whitespace-nowrap"
           >
             {t('login')}
           </Link>
 
           <a
             href={`/${locale}/oefenen`}
-            className="inline-flex items-center gap-1.5 bg-secondary-container px-3 py-2 sm:px-5 sm:py-2.5 rounded-xl font-bold text-sm button-inner-glow hover:-translate-y-px transition-transform active:scale-95 no-underline whitespace-nowrap"
+            className="inline-flex items-center gap-1.5 bg-secondary-container px-3.5 py-2 sm:px-6 sm:py-2.5 rounded-full font-bold text-sm button-inner-glow hover:-translate-y-px transition-transform active:scale-95 no-underline whitespace-nowrap"
             style={{ color: '#ffffff' }}
           >
             <span className="sm:hidden">{t('startMobile')}</span>
@@ -435,13 +449,13 @@ export default function Nav() {
 
           <button
             onClick={() => setMobileOpen((o) => !o)}
-            className="menu:hidden flex flex-col justify-center items-center w-10 h-10 -mr-1 rounded-xl hover:bg-white/10 transition-colors"
+            className="menu:hidden flex flex-col justify-center items-center w-10 h-10 -mr-1 rounded-xl hover:bg-surface-container transition-colors"
             aria-label={mobileOpen ? t('menuClose') : t('menuOpen')}
             aria-expanded={mobileOpen}
           >
-            <span className="w-5 h-[2px] bg-white rounded-full block" />
-            <span className="w-5 h-[2px] bg-white rounded-full block my-[5px]" />
-            <span className="w-5 h-[2px] bg-white rounded-full block" />
+            <span className="w-5 h-[2px] bg-primary rounded-full block" />
+            <span className="w-5 h-[2px] bg-primary rounded-full block my-[5px]" />
+            <span className="w-5 h-[2px] bg-primary rounded-full block" />
           </button>
         </div>
       </div>
@@ -451,7 +465,7 @@ export default function Nav() {
           the bottom where the thumb is. */}
       {mobileOpen && (
         <div
-          className="menu:hidden border-t border-white/10 max-h-[calc(100dvh-4.5rem)] overflow-y-auto"
+          className="menu:hidden border-t border-outline-variant/25 max-h-[calc(100dvh-4.5rem)] overflow-y-auto"
           style={{ background: '#f8f9fb' }}
           aria-label={t('ariaMobile')}
         >
@@ -554,13 +568,12 @@ export default function Nav() {
       >
         <button
           type="button"
-          className="flex items-center gap-1.5 text-white/80 hover:text-white transition-colors whitespace-nowrap"
+          className="text-on-surface hover:text-primary transition-colors whitespace-nowrap"
           aria-expanded={open}
           aria-haspopup="true"
           onClick={() => setOpenMenu(o => (o === section.id ? null : section.id))}
         >
           {t(`sec_${section.id}`)}
-          <Caret open={open} />
         </button>
 
         {open && (

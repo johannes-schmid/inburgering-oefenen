@@ -2258,3 +2258,32 @@ het einde van de pagina in plaats van een tweede hero.
 per sectie — een per-sectie primitief herstart zijn eigen raster en maakt een naad van elke
 sectiegrens. En centreer een absolute cirkel met `inset-x-0 mx-auto`, niet met
 `left-1/2 -translate-x-1/2`: hier stond hij zichtbaar rechts van het midden.
+
+## 2026-08-22 — de header is weer licht
+**Changed:** `components/Nav.tsx` — balk op `--color-surface` met een ghost border, `LogoMark
+surface="light"`, alle chrome-tekst naar `on-surface-variant`/`primary`, Inloggen op
+`surface-container`, hamburgerstreepjes navy.
+**Outcome:** SUCCESS
+**What worked / went wrong:** De navy balk bestond omdat vrijwel elke paginakop een navy
+Horizon-banner is; een witte balk lag dan op een navy paneel en las als twee headers op elkaar. Met
+de nieuwe lichte homepage-hero mét paginaraster was de navy balk juist zelf die stapel — precies
+omgekeerd. Twee dropdown-triggers hadden dezelfde `text-white/80`-string op twee plekken; één was
+buiten beeld gebleven, dus "Inburgeren", "KNM" en "Over de docent" stonden wit op wit. Alleen een
+screenshot ving dat: `tsc` en de build zijn er blind voor.
+**Lesson:** Zoek na een kleurwissel op de *oude* klasse tot `grep -c` nul teruggeeft; één
+overgeslagen kopie is onzichtbare tekst, geen fout. En de keuze navy-of-licht voor de balk is een
+functie van de dominante paginakop — verandert de hero, dan verandert het antwoord.
+
+## 2026-08-22 — de header is rustiger, naar het Headspace-voorbeeld
+**Changed:** `components/Nav.tsx` — menu-items naar `text-on-surface`/`font-medium` (15px), de vier
+carets op de top-level triggers weg, `gap-5` → `gap-7`, Inloggen van gevulde tegel naar platte
+tekstlink, taalselect kleiner, CTA `rounded-full`, de ambient shadow onder de balk weg.
+**Outcome:** SUCCESS
+**What worked / went wrong:** De klacht was leesbaarheid, maar de oorzaak was drukte: menu-items
+stonden in `on-surface-variant` (grijs) terwijl er drie gevulde vlakken rechts om aandacht vochten.
+Ink maken lost de leesbaarheid op; de carets weghalen betaalt de ruimte ervoor — vier chevrons lezen
+als vier concurrerende bedieningen, en ze leverden ~64px op, precies genoeg voor de bredere gap
+binnen hetzelfde gemeten `menu:`-breekpunt van 1152px.
+**Lesson:** Bij "te druk" is de eerste vraag hoeveel *gevulde* vlakken en hoeveel affordances er in
+één rij staan, niet welk lettertype het is. En een besparing (carets) is de begroting voor een
+uitgave (gap, tekstgrootte) — dan hoeft een gemeten breekpunt niet opnieuw gemeten te worden.
