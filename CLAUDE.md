@@ -733,38 +733,39 @@ manuscript, fact-checked line by line the same day. What a later session must kn
   facts.md §10 with its provenance.
 
 
-### The header is Platform · Gidsen · Prijzen · Over ons (2026-08-22)
+### The header is four plain links, and `/platform` + `/gidsen` carry the rest (2026-08-22)
 
-**This supersedes both the M2b arrangement below and the 2026-08-21 five-item mockup.** The bar is
-two mega-panels and two plain links, built to the owner's Headspace reference.
+**Platform · Gidsen · Prijzen · Over ons.** No dropdowns. This supersedes, in one day, the
+two-mega-panel bar, the 2026-08-21 five-item mockup and M2b below.
 
-- **The split is doen versus weten.** *Platform* is everything the site does — the four onderdelen
-  at the live level, the gratis proefexamen, the catalogue (A2 live; B1, KNM-oefenexamens and ONA
-  as **non-links** with a "binnenkort" chip), the tijdlijn-maker, the woordenlijst/grammatica
-  placeholders and Modules. *Gidsen* is everything it explains — the four published
-  Inburgering-gidsen, the twee hubs, de blog en de docent.
-- **Nina's deck is implemented one level down, deliberately.** `Strategisch Contentadvies`
-  §"Nieuwe Menu-items" proposes Inburgering / KNM Kennisgidsen / Taalexamens A2-B1 / Oefenexamens as
-  the *bar*. That is a correct content plan and a poor menu: three of the four labels are the same
-  kind of thing, so the one that sells sits fourth, and a visitor does not know which funnel stage
-  they are in. Those four groups are now the **columns** inside the two panels, where they organise
-  the material rather than the bar.
-- **A row with no `href` is not a link, it is a `div`.** An announced-but-unbuilt surface has
-  nowhere to go, and a greyed anchor still takes focus and still promises a destination. B1 is the
-  one that matters: it *has* pages, they are `noindex` behind the docent's review gate, and a nav
-  link would hand a crawler exactly the page we tell it to ignore.
-- **Prijzen is top-level again.** Under M2b the money page's only header entry was one level deep
-  in a dropdown foot. "Over ons" is a plain link to `/docent` rather than a two-row dropdown — a
-  panel holding two rows charges a click for nothing.
-- **A wide panel is positioned against the header row, not against its trigger.** Centring it on
-  the trigger put the promo card half off the right edge at 1440px when opened from "Gidsen". The
-  row carries `relative`; the wide panel is `absolute left-6 right-6`; only the narrow ones anchor
-  to their own trigger.
-- **Each panel carries `data-menu`, and so does each open mobile accordion row.** `tests/public.spec.js`
-  counts links per panel; unscoped, the bar's own Prijzen and Over ons links are indistinguishable
-  from a duplicate row inside a panel — which is the M1 bug the count exists to catch.
-- **Two duplicates are deliberate and pinned as `toHaveCount(2)`:** the taster is a row *and* the
-  Platform promo card, and Modules is a row *and* the bar's Prijzen.
+- **A dropdown is a landing page you refused to build.** The panels held ~20 destinations and
+  duplicated, in a hover state on every page, work that two real pages do better — with room for
+  copy, benefits and the roadmap that a dropdown row cannot carry.
+- **The cost is real and is paid on those two pages.** A header dropdown is a *site-wide internal
+  link* to everything inside it; four links are not. So **`/platform` must list the four
+  onderdelen, the taster, the tools and the money page, and `/gidsen` must list every published
+  guide plus the three hubs.** Anything added to the platform that appears in neither has no route
+  in from the chrome at all. The footer carries both pages as the second site-wide route.
+- **`/gidsen` is an index, not a fourth hub.** `/inburgering`, `/taalexamens` and `/knm` keep their
+  own orientation (the three-fase route, the four onderdelen, the eight thema's) and are linked
+  from it. Hubs that drift apart is a mistake this repo has already made once.
+- **A section with nothing reviewed still points somewhere real.** `SECTION_POSTS` surfaces the
+  blog posts that already own that ground (Taalexamens has two), and a genuinely empty section
+  renders its hub as a card — with the trailing hub link suppressed, because the same destination
+  twice reads as a rendering bug.
+- **`/platform` states the catalogue and the roadmap in one list, and the unbuilt three are
+  `<div>`s, not greyed links.** B1 is the one that matters: its pages exist, are `noindex` behind
+  the docent's review gate, and a nav link would hand a crawler exactly the page we tell it to
+  ignore. Keep it in step with `TRACKS` on the homepage.
+- **No prices on either page.** `/premium` is the only page with `Offer` nodes;
+  `scripts/check-schema.mjs` now `forbid`s `Offer`/`Product` on both.
+- **`SkillCard` gained an `href` prop, and new callers must pass the locale-prefixed path.** Its
+  default is locale-less and survives only because the i18n middleware redirects it — a redirect
+  hop per card, and invisible to any test asserting on the rendered href.
+- **Nina's deck (`Strategisch Contentadvies` §Nieuwe Menu-items) is implemented as page structure,
+  not as the bar.** Her four items — Inburgering / KNM Kennisgidsen / Taalexamens / Oefenexamens —
+  are the sections of `/gidsen` and `/platform`. As a bar they put the item that sells fourth and
+  ask the visitor to know which funnel stage they are in.
 
 ### M2b — the menu implements §3, and the first tools appear (2026-08-20) — SUPERSEDED, see above
 

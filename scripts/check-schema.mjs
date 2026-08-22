@@ -28,6 +28,11 @@ const GLOBAL_ID = /#(organization|teacher|website|course)$/;
 const PAGES = [
   { path: '/nl',                        expect: ['WebSite', 'EducationalOrganization', 'ItemList', 'FAQPage'] },
   { path: '/nl/premium',                expect: ['Product', 'BreadcrumbList'] },
+  /* The two pages the header's four links point at. Both are a `CollectionPage` over an
+     `ItemList` — and neither may carry an `Offer`: `/premium` is the only page that states a
+     price, so a figure here would be a second, silently stale claim in the SERP. */
+  { path: '/nl/platform',               expect: ['CollectionPage', 'ItemList', 'BreadcrumbList'], forbid: ['Offer', 'Product'] },
+  { path: '/nl/gidsen',                 expect: ['CollectionPage', 'ItemList', 'BreadcrumbList'], forbid: ['Offer', 'Product'] },
   { path: '/nl/oefenen',                expect: ['CollectionPage', 'BreadcrumbList'] },
   { path: '/nl/oefenen/lezen',          expect: ['Quiz', 'BreadcrumbList'] },
   { path: '/nl/oefenen/luisteren',      expect: ['Quiz', 'BreadcrumbList'] },

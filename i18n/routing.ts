@@ -55,6 +55,11 @@ export const routing = defineRouting({
      * `router.replace(pathname, { locale })` with the concrete path, so a per-locale slug
      * type-checks here and then 404s the moment a reader switches language. The blog already
      * obeys that; guides do too. */
+    /* The two pages the header's four links point at (2026-08-22). Slugs are not translated,
+       for the same reason the guides' are not: the locale switcher replaces the *current* path,
+       and a per-locale slug 404s the moment a reader switches language. */
+    '/platform': '/platform',
+    '/gidsen': '/gidsen',
     '/inburgering': '/inburgering',
     '/inburgering/[slug]': '/inburgering/[slug]',
     '/knm': '/knm',

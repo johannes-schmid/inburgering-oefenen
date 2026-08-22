@@ -2305,3 +2305,20 @@ van een dubbele rij in het paneel — opgelost met `data-menu` op elk paneel.
 laat de balk zeggen wat het product ís. En scope een "komt precies één keer voor"-assertie op de
 container die je bedoelt, anders is elke legitieme herhaling elders een valse fail — en verzwak je
 de assertie tot hij niets meer vangt.
+
+## 2026-08-22 — de dropdowns eruit, /platform en /gidsen erin
+**Changed:** `components/Nav.tsx` teruggebracht tot vier platte links; nieuwe pagina's
+`app/[locale]/(main)/platform/page.tsx` en `.../gidsen/page.tsx`; `i18n/routing.ts`, `app/sitemap.ts`,
+`components/Footer.tsx`, `scripts/check-schema.mjs`, `components/site/SkillCard.tsx` (nieuwe `href`),
+nieuwe namespaces `platform` en `gidsen` in alle drie de talen, `tests/public.spec.js`.
+**Outcome:** SUCCESS
+**What worked / went wrong:** Een megamenu is een landingspagina die je niet hebt gebouwd: de twee
+panelen droegen twintig bestemmingen in een hover-state op elke pagina, terwijl twee echte pagina's
+dat beter doen én ruimte hebben voor de argumenten. Wat je wél verliest is de *site-wide interne
+link* die een dropdown is — dus de twee nieuwe pagina's moeten precies dragen wat het paneel droeg,
+en dat staat nu als regel in beide bestandskoppen en in CLAUDE.md. Eén echte bug gevonden onderweg:
+`SkillCard` linkte naar `/oefenexamen/a2/lezen` **zonder locale**; dat werkte alleen doordat de
+i18n-middleware redirect, en de e2e-assertie op de gerenderde href zag de link daarom niet.
+**Lesson:** Voordat je navigatie weghaalt, tel wat die navigatie aan interne links opleverde en wijs
+aan waar die terugkomen. En een link die "werkt" via een redirect is geen werkende link: hij kost een
+hop en is onzichtbaar voor elke test die op de href kijkt.

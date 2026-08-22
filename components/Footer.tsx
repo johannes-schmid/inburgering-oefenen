@@ -41,6 +41,9 @@ export default function Footer() {
                 {tSkills(`${skill.key}.name`)}
               </Link>
             ))}
+            {/* The two pages the header links to. The bar is four plain links now, so the footer
+                is the only other site-wide route to them. */}
+            <Link href="/platform" className="hover:text-white transition-colors no-underline">{t('platformOverview')}</Link>
             <Link href="/premium" className="hover:text-white transition-colors no-underline">{t('premium')}</Link>
             <Link href="/docent" className="hover:text-white transition-colors no-underline">{t('aboutTeacher')}</Link>
           </nav>
@@ -50,6 +53,7 @@ export default function Footer() {
         <div className="space-y-4">
           <h5 className="text-xs font-bold uppercase tracking-widest text-white/35">{t('guides')}</h5>
           <nav className="flex flex-col gap-3 text-sm" aria-label="Kennisgidsen">
+            <Link href="/gidsen" className="hover:text-white transition-colors no-underline">{t('allGuides')}</Link>
             <Link href="/inburgering" className="hover:text-white transition-colors no-underline">{t('inburgering')}</Link>
             <Link href="/knm" className="hover:text-white transition-colors no-underline">{t('knm')}</Link>
             <Link href="/taalexamens" className="hover:text-white transition-colors no-underline">{t('taalexamens')}</Link>

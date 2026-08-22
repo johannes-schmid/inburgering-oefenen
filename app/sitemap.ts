@@ -18,9 +18,9 @@ const LOCALES = ['nl', 'en', 'ar'] as const;
  * missing route — do not "fix" it by listing the Dutch path instead.
  */
 const STATIC_PATHS: Record<typeof LOCALES[number], string[]> = {
-  nl: ['', 'premium', 'docent', 'contact', 'privacybeleid', 'gebruiksvoorwaarden', 'terugbetalingsbeleid'],
-  en: ['', 'premium', 'teacher', 'contact', 'privacybeleid', 'gebruiksvoorwaarden', 'terugbetalingsbeleid'],
-  ar: ['', 'الباقة-المميزة', 'المعلمة', 'تواصل-معنا', 'privacybeleid', 'gebruiksvoorwaarden', 'terugbetalingsbeleid'],
+  nl: ['', 'platform', 'gidsen', 'premium', 'docent', 'contact', 'privacybeleid', 'gebruiksvoorwaarden', 'terugbetalingsbeleid'],
+  en: ['', 'platform', 'gidsen', 'premium', 'teacher', 'contact', 'privacybeleid', 'gebruiksvoorwaarden', 'terugbetalingsbeleid'],
+  ar: ['', 'platform', 'gidsen', 'الباقة-المميزة', 'المعلمة', 'تواصل-معنا', 'privacybeleid', 'gebruiksvoorwaarden', 'terugbetalingsbeleid'],
 };
 
 const TODAY = new Date().toISOString().split('T')[0];

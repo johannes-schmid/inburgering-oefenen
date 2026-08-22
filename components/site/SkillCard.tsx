@@ -16,6 +16,14 @@ type Props = {
   cta: string;
   /** Position in the grid. Rotates the skyline so no two cards are the same street (§7.5). */
   index?: number;
+  /**
+   * Where the card goes. **Pass the locale-prefixed path.**
+   *
+   * The default is locale-less and survives only because the i18n middleware redirects it — which
+   * costs every card on the page a redirect hop, and `tests/public.spec.js` cannot see the link at
+   * all when it asserts against the rendered href. New callers pass `/${locale}/oefenexamen/…`.
+   */
+  href?: string;
 };
 
 /**
@@ -32,13 +40,13 @@ type Props = {
  * marketing component and the homepage that renders it sells A2.
  */
 export default function SkillCard({
-  skill, name, tagline, examsLabel, itemsLabel, durationLabel, freeNote, cta, index = 0,
+  skill, name, tagline, examsLabel, itemsLabel, durationLabel, freeNote, cta, index = 0, href,
 }: Props) {
   const tint = (['gradient', 'reverse', 'primary', 'container'] as const)[index % 4];
 
   return (
     <a
-      href={`/oefenexamen/${DEFAULT_LEVEL}/${skill.slug}`}
+      href={href ?? `/oefenexamen/${DEFAULT_LEVEL}/${skill.slug}`}
       className="skill-card group flex flex-col rounded-2xl bg-surface-container-lowest overflow-hidden no-underline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-secondary-container"
       style={{ boxShadow: 'var(--shadow-ambient)' }}
     >

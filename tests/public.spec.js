@@ -179,110 +179,61 @@ test.describe('the kennisgids sections', () => {
     await expect(page.locator('footer a[href="/nl/knm"]')).toHaveCount(1);
   });
 
-  test('the header carries four items and every panel keeps its links', async ({ page }) => {
-    /* The bar restructured 2026-08-22: **Platform · Gidsen · Prijzen · Over ons** (owner's
-     * instruction, Headspace as the reference). Pinned because the shape is a decision: the two
-     * panels are doen versus weten, Prijzen is top-level rather than buried in a dropdown foot,
-     * and the material Nina's deck names as four menu items is four *columns* inside those two
-     * panels. A regression here drops a whole section silently. */
-    // The desktop bar only exists at `menu:` (1152px).
-    await page.setViewportSize({ width: 1440, height: 900 });
-    await page.goto('/nl');
-    const nav = page.locator('nav[aria-label="Hoofdmenu"]');
-
-    // Two panels plus the two plain links.
-    expect(await nav.locator(':scope > *').count()).toBe(4);
-
-    const panels = [
-      // Platform: the four onderdelen at the live level, the taster, the catalogue and the tools.
-      {
-        i: 0,
-        links: [
-          '/nl/oefenexamen/a2/lezen', '/nl/oefenexamen/a2/luisteren',
-          '/nl/oefenexamen/a2/schrijven', '/nl/oefenexamen/a2/spreken',
-          '/nl/taalexamens',
-          '/nl/inburgering/tools/tijdlijn', '/nl/taalexamens/woordenlijst',
-          '/nl/taalexamens/grammatica', '/nl/premium',
-        ],
-        /* The taster is deliberately in the panel twice — once as a row, once as the promo card
-           at the right. Everything else must appear exactly once; that count is what caught the
-           Blog link shipping twice in M1. */
-        twice: ['/nl/oefenen'],
-      },
-      // Gidsen: the four published guides in reading order, the two hubs, and the blog. Named
-      // individually because a guide dropped from here is a guide most readers never reach.
-      {
-        i: 1,
-        links: [
-          '/nl/inburgering/moet-ik-inburgeren', '/nl/inburgering/welke-wet-en-welke-route',
-          '/nl/inburgering/inburgering-stappenplan', '/nl/inburgering/wat-kost-inburgeren',
-          '/nl/inburgering', '/nl/taalexamens', '/nl/knm', '/nl/knm/woordenlijst',
-          '/nl/blog', '/nl/docent', '/nl/contact',
-        ],
-      },
-    ];
-    for (const { i, links, twice = [] } of panels) {
-      await nav.getByRole('button').nth(i).hover();
-      // Scoped to the panel: the bar's own Prijzen and Over ons links live in the same `nav`, and
-      // an unscoped count cannot tell them from a duplicate row inside the panel.
-      const panel = nav.locator('[data-menu]');
-      for (const href of links) {
-        await expect(panel.locator(`a[href="${href}"]`), href).toHaveCount(1);
+  test('the header is four plain links, and both landing pages carry what it dropped',
+    async ({ page }) => {
+      /* The bar became four plain links on 2026-08-22 (owner's decision): Platform · Gidsen ·
+       * Prijzen · Over ons, no dropdowns. The panels that went away were a site-wide internal
+       * link to ~20 destinations, so this test is really two: the bar is four links, **and** the
+       * two pages behind them carry what the panels used to. A regression on the second half is
+       * invisible — every page still renders, the links are simply gone from the site. */
+      await page.setViewportSize({ width: 1440, height: 900 });
+      await page.goto('/nl');
+      const nav = page.locator('nav[aria-label="Hoofdmenu"]');
+      expect(await nav.locator(':scope > *').count()).toBe(4);
+      for (const href of ['/nl/platform', '/nl/gidsen', '/nl/premium', '/nl/docent']) {
+        await expect(nav.locator(`a[href="${href}"]`), href).toHaveCount(1);
       }
-      for (const href of twice) {
-        await expect(panel.locator(`a[href="${href}"]`), href).toHaveCount(2);
+      // No dropdown left in the bar.
+      await expect(nav.getByRole('button')).toHaveCount(0);
+
+      // Platform: the four onderdelen, the taster, the tool and the money page.
+      await page.goto('/nl/platform');
+      for (const href of [
+        '/nl/oefenexamen/a2/lezen', '/nl/oefenexamen/a2/luisteren',
+        '/nl/oefenexamen/a2/schrijven', '/nl/oefenexamen/a2/spreken',
+        '/nl/oefenen', '/nl/taalexamens', '/nl/inburgering/tools/tijdlijn', '/nl/premium',
+      ]) {
+        await expect(page.locator(`main a[href="${href}"]`).first(), href).toBeVisible();
       }
-    }
+      /* B1 is announced and is **not** a link: its pages exist and are `noindex` behind the
+         docent's review gate, so linking them would hand a crawler the page we tell it to
+         ignore. Same for the two unbuilt tracks. */
+      await expect(page.locator('main a[href*="/oefenexamen/b1/"]')).toHaveCount(0);
+      await expect(page.getByText('Taalexamens B1')).toBeVisible();
 
-    // The two plain links in the bar itself.
-    await expect(nav.locator('a[href="/nl/premium"]').first()).toBeVisible();
-    await expect(nav.locator('a[href="/nl/docent"]').first()).toBeVisible();
+      // Gidsen: every published guide, the three hubs and the blog.
+      await page.goto('/nl/gidsen');
+      for (const href of [
+        '/nl/inburgering/moet-ik-inburgeren', '/nl/inburgering/welke-wet-en-welke-route',
+        '/nl/inburgering/inburgering-stappenplan', '/nl/inburgering/wat-kost-inburgeren',
+        '/nl/inburgering', '/nl/taalexamens', '/nl/knm', '/nl/blog',
+      ]) {
+        await expect(page.locator(`main a[href="${href}"]`).first(), href).toBeVisible();
+      }
+    });
 
-    /* B1, the KNM-oefenexamens and ONA are announced in the Platform panel and are **not links** —
-     * B1 is behind the docent's review gate and `noindex`, the other two are not built. A link
-     * here would either 404 or hand a crawler a page we tell it to ignore. */
-    await nav.getByRole('button').nth(0).hover();
-    await expect(nav.locator('a[href*="/oefenexamen/b1/"]')).toHaveCount(0);
-    await expect(nav.getByText('Taalexamens B1')).toBeVisible();
-  });
-
-  test('the mobile drawer holds every section, each link once', async ({ page }) => {
-    /* The drawer is the whole menu below `menu:`, so it must be complete — and it renders every
-     * label a second time from the same definition. In M1 that duplication shipped the Blog link
-     * twice on mobile after it was removed once on desktop, caught only by reading a screenshot.
-     * It is an accordion, so each row has to be opened before its links exist in the DOM. */
+  test('the mobile drawer is the same four links plus the CTA', async ({ page }) => {
+    /* The drawer is the whole menu below `menu:`. It renders from the same array as the bar, which
+     * is what stops the M1 bug where a link was removed on desktop and shipped twice on mobile. */
     await page.setViewportSize({ width: 390, height: 844 });
     await page.goto('/nl');
     await page.getByRole('button', { name: /menu openen/i }).click();
 
     const drawer = page.locator('nav[aria-label="Mobiel menu"], header nav').last();
-    const rows = [
-      {
-        name: 'Platform',
-        links: [
-          '/nl/oefenexamen/a2/lezen', '/nl/oefenexamen/a2/spreken', '/nl/oefenen',
-          '/nl/taalexamens', '/nl/inburgering/tools/tijdlijn', '/nl/premium',
-        ],
-      },
-      {
-        name: 'Gidsen',
-        links: [
-          '/nl/inburgering/inburgering-stappenplan', '/nl/inburgering',
-          '/nl/knm', '/nl/knm/woordenlijst', '/nl/blog', '/nl/contact',
-        ],
-      },
-    ];
-    for (const { name, links } of rows) {
-      await drawer.getByRole('button', { name, exact: true }).click();
-      // Scoped to the opened row, for the same reason as the desktop panel: the drawer's own
-      // Prijzen, Over ons and CTA links sit outside the accordion.
-      const row = drawer.locator('[data-menu]');
-      for (const href of links) {
-        await expect(row.locator(`a[href="${href}"]`), `${name} → ${href}`).toHaveCount(1);
-      }
+    for (const href of ['/nl/platform', '/nl/gidsen', '/nl/premium', '/nl/docent', '/nl/login']) {
+      await expect(drawer.locator(`a[href="${href}"]`), href).toHaveCount(1);
     }
-    // Outside the accordion: the two plain links, and the CTA at the bottom where the thumb is.
-    await expect(drawer.locator('a[href="/nl/docent"]').last()).toBeVisible();
+    // The CTA at the bottom, where the thumb is.
     await expect(drawer.locator('a[href="/nl/oefenen"]').last()).toBeVisible();
   });
 
