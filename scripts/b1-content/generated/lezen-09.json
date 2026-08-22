@@ -1,0 +1,413 @@
+[
+  {
+    "section": "website",
+    "title": "Opleiding Kraamverzorgende: leren, werken en groeien",
+    "intro": "Deze tekst komt van de website van een regionaal opleidingsinstituut. De tekst gaat over de opleiding tot kraamverzorgende, de stage en het werk na het diploma.",
+    "body_html": "<p><strong>I</strong> Een kraamverzorgende komt in de eerste dagen na een bevalling bij een gezin thuis. Zij controleert de gezondheid van moeder en kind, helpt bij de voeding en let op signalen die niet normaal zijn. Ook geeft zij uitleg over de verzorging van de baby en doet zij lichte huishoudelijke taken, zodat het gezin rust krijgt. Bij Opleidingscentrum De Nieuwe Zorgweg in Deventer kunt u de tweejarige opleiding Kraamverzorgende volgen op niveau 3. U werkt vanaf de tweede maand al in de praktijk, omdat dit beroep vooral op de werkvloer wordt geleerd.</p><p><strong>II</strong> De opleiding bestaat uit twee dagen les per week en drie dagen stage. In de lessen komen onder andere de volgende onderwerpen aan de orde:</p><ul><li>anatomie, zwangerschap en de gewone gang van een bevalling;</li><li>voeding van de baby, waaronder hulp bij het geven van de borst;</li><li>hygiëne en het voorkomen van infecties;</li><li>gespreksvaardigheden, vooral bij gezinnen met zorgen of schulden;</li><li>rapporteren in het digitale dossier van de kraamzorgorganisatie.</li></ul><p><strong>III</strong> Voor de opleiding hebt u een diploma vmbo (kaderberoepsgerichte of theoretische leerweg) nodig, of een afgeronde opleiding op niveau 2. Wie geen Nederlands diploma heeft, doet een toelatingstoets taal en rekenen. Voor deze toets is niveau B1 het minimum, omdat u in het dossier van het gezin moet kunnen schrijven en met de verloskundige moet kunnen overleggen. Verder vragen wij een verklaring omtrent het gedrag en een rijbewijs. Dat laatste is geen formele eis van de wet, maar in de praktijk werkt bijna niemand zonder auto, doordat gezinnen vaak ver van elkaar wonen.</p><p><strong>Stage en begeleiding</strong></p><p><strong>IV</strong> De stage vindt plaats bij een kraamzorgorganisatie in de regio. In de eerste periode loopt u altijd mee met een ervaren collega. Pas na ongeveer zeven maanden gaat u zelfstandig naar een gezin, en dan nog met een achterwacht die u telefonisch kunt bereiken. Iedere student krijgt een werkbegeleider op de stageplaats en een docent die de voortgang op school volgt. Twee keer per jaar is er een gesprek met alle drie. Wanneer een student te weinig uren maakt of onvoldoende groeit in zelfstandigheid, wordt de stage met maximaal vier maanden verlengd. Dat gebeurt bij ongeveer één op de tien studenten en betekent niet dat iemand niet geschikt is.</p><p><strong>V</strong> Studenten schrikken soms van de werktijden. U werkt in wisselende diensten, ook in het weekend, en u hebt bereikbaarheidsdiensten. Een bevalling houdt zich immers niet aan een rooster. Tijdens de opleiding krijgt u een stagevergoeding van 375 euro bruto per maand bij een volledige week. Het lesgeld bedraagt 1.290 euro per jaar; voor de boeken en de verplichte werkkleding rekent u ongeveer 260 euro extra. Studenten van 18 jaar en ouder kunnen studiefinanciering aanvragen. Wie al bij een kraamzorgorganisatie in dienst is, betaalt vaak niets, omdat de werkgever de kosten dan overneemt.</p><p><strong>VI</strong> Na het diploma is de kans op werk groot: van onze studenten had vorig jaar 92 procent binnen drie maanden een contract. De meeste kraamverzorgenden werken in deeltijd, tussen de 20 en 28 uur per week, omdat het werk lichamelijk en emotioneel zwaar is. Uw salaris valt onder de cao Kraamzorg. Wie later iets anders wil, kan doorstromen naar de opleiding verpleegkunde op niveau 4 of zich specialiseren in de zorg voor te vroeg geboren baby's. Ook zijn er kraamverzorgenden die na enkele jaren planner of werkbegeleider worden.</p><p>Wilt u meer weten? Vraag de digitale brochure aan of kom naar een voorlichtingsavond.<br>Opleidingscentrum De Nieuwe Zorgweg<br>Postbus 4418<br>7400 AB Deventer<br>Telefoon: 0570 - 22 41 90</p>",
+    "questions": [
+      {
+        "prompt": "Wat staat er in alinea I over het werk van een kraamverzorgende?",
+        "options": [
+          "Zij neemt het huishouden van het gezin een aantal dagen volledig over.",
+          "Zij let op de gezondheid van moeder en kind en legt de verzorging uit.",
+          "Zij bezoekt het gezin vooral in de laatste weken van de zwangerschap."
+        ],
+        "correct": 1,
+        "explanation": "In alinea I staat dat zij de gezondheid controleert, helpt bij de voeding en uitleg geeft over de verzorging. Het huishouden komt wel voor, maar het gaat om lichte taken, niet om het hele huishouden overnemen."
+      },
+      {
+        "prompt": "Iemand heeft geen Nederlands diploma en wil zich aanmelden. Wat moet deze persoon doen?",
+        "options": [
+          "Eerst een opleiding op niveau 2 afronden bij hetzelfde opleidingscentrum.",
+          "Een toelatingstoets taal en rekenen doen op minimaal niveau B1.",
+          "Een verklaring van de verloskundige over de taalvaardigheid meesturen.",
+          "Aantonen dat de werkgever de kosten van de opleiding betaalt."
+        ],
+        "correct": 1,
+        "explanation": "Alinea III zegt dat wie geen Nederlands diploma heeft een toelatingstoets doet, met B1 als minimum. Een opleiding op niveau 2 is een alternatieve route voor wie zo'n diploma wél heeft, geen verplichting."
+      },
+      {
+        "prompt": "Wat wil de schrijver duidelijk maken met de opmerking dat een bevalling zich niet aan een rooster houdt?",
+        "options": [
+          "Dat de werktijden onregelmatig zijn en dat daarbij bereikbaarheid hoort.",
+          "Dat kraamverzorgenden daarom bijna altijd in deeltijd gaan werken.",
+          "Dat studenten hun stage-uren zelf mogen indelen naar eigen wens."
+        ],
+        "correct": 0,
+        "explanation": "De opmerking in alinea V verklaart waarom er wisselende diensten en bereikbaarheidsdiensten zijn. Het deeltijdwerk wordt in alinea VI genoemd, maar met een andere reden: de zwaarte van het werk."
+      },
+      {
+        "prompt": "In welke alinea vindt iemand het antwoord op de vraag wie de student tijdens de stage begeleidt?",
+        "options": [
+          "In alinea II",
+          "In alinea III",
+          "In alinea IV",
+          "In alinea VI"
+        ],
+        "correct": 2,
+        "explanation": "Alinea IV beschrijft de ervaren collega, de achterwacht, de werkbegeleider en de docent. Alinea II gaat alleen over de inhoud van de lessen."
+      },
+      {
+        "prompt": "Wat is het belangrijkste doel van deze tekst?",
+        "options": [
+          "Kraamzorgorganisaties oproepen meer stageplaatsen aan te bieden.",
+          "Belangstellenden informeren over de opleiding en het werk daarna.",
+          "Uitleggen hoe de cao Kraamzorg het salaris van beginners regelt."
+        ],
+        "correct": 1,
+        "explanation": "De tekst beschrijft achtereenvolgens het beroep, de lessen, de toelating, de stage, de kosten en het werk na het diploma; dat is voorlichting voor belangstellenden. De cao wordt in alinea VI slechts kort genoemd."
+      }
+    ]
+  },
+  {
+    "section": "studieboek",
+    "title": "Meepraten over je school: de medezeggenschapsraad",
+    "intro": "Deze tekst komt uit een cursusmap voor nieuwe leden van een medezeggenschapsraad. De tekst legt uit wat medezeggenschap op een school betekent voor ouders en personeel.",
+    "body_html": "<p><strong>I</strong> Iedere school in Nederland heeft een medezeggenschapsraad, kortweg MR. Dat is wettelijk verplicht, ook als een school klein is. In de MR zitten vertegenwoordigers van twee groepen, die in de wet 'geledingen' worden genoemd: de ouders en het personeel. In het voortgezet onderwijs vormen de leerlingen een derde geleding, die dan een eigen aantal plaatsen krijgt. Hoeveel leden een raad heeft, hangt af van de grootte van de school. Bij minder dan 250 leerlingen bestaat de raad uit minstens vier leden, bij 250 tot 1000 leerlingen uit minstens zes leden, en bij nog grotere scholen uit acht of meer. De plaatsen worden altijd gelijk verdeeld, zodat ouders en personeel evenveel stemmen hebben.</p><p><strong>Instemming of advies</strong></p><p><strong>II</strong> De MR heeft twee soorten rechten. Bij instemmingsrecht mag het schoolbestuur een plan alleen uitvoeren als de raad er ja tegen zegt. Dat geldt bijvoorbeeld voor het schoolplan, voor het beleid over veiligheid in en om het gebouw en voor de hoogte van de vrijwillige ouderbijdrage. Bij adviesrecht mag het bestuur het advies van de raad naast zich neerleggen, hoewel het dan schriftelijk moet uitleggen waarom het dat doet. Adviesrecht geldt onder andere voor een verbouwing, voor de begroting en voor de benoeming van een nieuwe directeur. De raad ontvangt de stukken minstens tien dagen voor de vergadering en moet binnen zes weken antwoord geven. Bij ingewikkelde onderwerpen kan die termijn in overleg worden verlengd.</p><p><strong>III</strong> Wie in de raad wil, moet gekozen worden. Elke ouder van een leerling mag zich kandidaat stellen voor de oudergeleding; elk personeelslid met een aanstelling op de school mag zich kandidaat stellen voor de personeelsgeleding. Zijn er meer kandidaten dan vrije plaatsen, dan volgt een schriftelijke en geheime stemming. Is er precies één kandidaat per plaats, dan wordt die zonder stemming benoemd. Een MR-lid blijft drie jaar in de raad en kan daarna nog twee keer opnieuw worden gekozen. Wie tussentijds stopt, wordt vervangen door de kandidaat met de meeste stemmen die nog niet aan de beurt was.</p><p><strong>Tijd, geld en cursussen</strong></p><p><strong>IV</strong> Veel ouders schrikken van het woord medezeggenschap, omdat zij denken dat het werk erg veel tijd kost. In de praktijk vergadert een MR zes tot acht keer per jaar, meestal twee uur per keer, en daar komt leeswerk bij. Personeelsleden krijgen voor dit werk 60 klokuren per schooljaar vrij van hun gewone taken. Ouders doen het werk onbetaald, maar de school vergoedt hun reiskosten en betaalt de cursus medezeggenschap, die ongeveer 200 euro per persoon kost. Nieuwe leden wordt aangeraden die cursus in het eerste jaar te volgen, omdat zij dan sneller begrijpen welke stukken belangrijk zijn.</p><p><strong>V</strong> De medezeggenschap kent ook grenzen. Bij een bestuur met meerdere scholen bestaat naast de MR een gemeenschappelijke medezeggenschapsraad, de GMR, die zich bezighouden met zaken die voor alle scholen samen gelden. Belangrijk is verder dat de MR over algemeen beleid gaat en niet over losse gevallen. Wie het niet eens is met het gedrag van één leraar of met het rapport van één kind, moet naar de directeur gaan of een klacht indienen bij de klachtencommissie. Komen bestuur en raad er samen niet uit over een onderwerp waarvoor instemming nodig is, dan kan de zaak worden voorgelegd aan de landelijke geschillencommissie. Die doet in de regel binnen tien weken uitspraak, en beide partijen moeten zich daaraan houden.</p>",
+    "questions": [
+      {
+        "prompt": "Een basisschool heeft 180 leerlingen. Uit hoeveel leden bestaat de medezeggenschapsraad daar minimaal?",
+        "options": [
+          "Twee leden.",
+          "Vier leden.",
+          "Zes leden.",
+          "Acht leden."
+        ],
+        "correct": 1,
+        "explanation": "In alinea I staat dat een school met minder dan 250 leerlingen minstens vier leden heeft. Zes leden geldt pas vanaf 250 leerlingen."
+      },
+      {
+        "prompt": "Wat staat er in alinea II over het adviesrecht?",
+        "options": [
+          "Het bestuur mag een ander besluit nemen, maar moet dat op papier toelichten.",
+          "Het bestuur mag een plan pas uitvoeren als de raad het goedkeurt.",
+          "De raad mag de begroting van de school zelf aanpassen."
+        ],
+        "correct": 0,
+        "explanation": "Volgens alinea II mag het bestuur het advies naast zich neerleggen, maar het moet dan schriftelijk uitleggen waarom. Goedkeuring vooraf hoort bij het instemmingsrecht, niet bij het adviesrecht."
+      },
+      {
+        "prompt": "Wat wordt in alinea I bedoeld met 'geledingen'?",
+        "options": [
+          "De vaste vergaderingen die de raad per jaar houdt.",
+          "De scholen die onder hetzelfde bestuur vallen.",
+          "De groepen die in de raad een eigen aantal plaatsen hebben."
+        ],
+        "correct": 2,
+        "explanation": "Alinea I legt uit dat ouders, personeel en in het voortgezet onderwijs de leerlingen de geledingen zijn. De scholen onder één bestuur horen bij de GMR in alinea V."
+      },
+      {
+        "prompt": "Een moeder in de raad wil weten of zij de cursus medezeggenschap zelf moet betalen. In welke alinea vindt zij het antwoord?",
+        "options": [
+          "In alinea II.",
+          "In alinea III.",
+          "In alinea IV.",
+          "In alinea V."
+        ],
+        "correct": 2,
+        "explanation": "Alinea IV gaat over tijd, vergoedingen en de cursus van ongeveer 200 euro, die de school betaalt. Alinea III gaat alleen over de verkiezing van leden."
+      },
+      {
+        "prompt": "Een vader vindt dat de juf zijn dochter onterecht heeft gestraft. Wat kan hij volgens alinea V doen?",
+        "options": [
+          "Hij kan de landelijke geschillencommissie om een uitspraak vragen.",
+          "Hij kan de raad vragen binnen zes weken te reageren.",
+          "Hij kan de oudergeleding om instemming vragen.",
+          "Hij kan naar de directeur gaan of een klacht indienen."
+        ],
+        "correct": 3,
+        "explanation": "In alinea V staat dat de raad over algemeen beleid gaat en dat losse gevallen bij de directeur of de klachtencommissie horen. De geschillencommissie is er alleen voor conflicten tussen bestuur en raad."
+      },
+      {
+        "prompt": "Wat is het belangrijkste doel van deze tekst?",
+        "options": [
+          "Ouders overhalen zich dit jaar kandidaat te stellen voor de raad.",
+          "Uitleggen hoe de medezeggenschap op een school is geregeld.",
+          "Beschrijven welke klachten bij de klachtencommissie horen."
+        ],
+        "correct": 1,
+        "explanation": "De tekst behandelt in alle alinea's de samenstelling, de rechten, de verkiezing en de grenzen van de raad; het is dus uitleg. Kandidaten werven en klachten regelen komen slechts kort aan de orde."
+      }
+    ]
+  },
+  {
+    "section": "folder",
+    "title": "Uw huis isoleren met hulp van het Nationaal Warmtefonds",
+    "intro": "Deze tekst komt uit een folder van het Nationaal Warmtefonds over lenen voor het isoleren van een woning.",
+    "body_html": "<p><strong>I</strong> Veel bewoners in Nederland willen hun huis beter isoleren, omdat een goed geïsoleerde woning minder gas verbruikt en warmer aanvoelt. Toch stellen mensen zo'n verbouwing vaak uit, doordat het geld voor dakisolatie, vloerisolatie of nieuwe ramen niet zomaar op de bankrekening staat. Het Nationaal Warmtefonds is opgericht om die drempel te verlagen. Het fonds is geen bank die winst wil maken, maar een organisatie die met steun van de overheid geld uitleent tegen een lage rente. In deze folder leest u wie kan lenen, welke maatregelen meetellen en hoe u een aanvraag doet.</p><p><strong>Voor wie is de lening bedoeld?</strong></p><p><strong>II</strong> U kunt een lening aanvragen als u eigenaar bent van de woning waarin u zelf woont. Ook een vereniging van eigenaars, bijvoorbeeld van een flatgebouw met acht appartementen, kan geld lenen voor het isoleren van het dak of de gemeenschappelijke muren. Huurders komen niet in aanmerking, omdat de verhuurder verantwoordelijk is voor het onderhoud van het gebouw. Wel kan een huurder de verhuurder vragen om maatregelen te nemen. U mag maximaal 71.000 euro lenen, maar het bedrag is nooit hoger dan de kosten van de werkzaamheden die u laat uitvoeren.</p><p><strong>III</strong> De hoogte van de rente hangt af van uw inkomen. Wie samen met een eventuele partner minder dan 60.000 euro per jaar verdient, betaalt geen rente over de lening. U betaalt dan alleen het geleende bedrag terug, verdeeld over maandelijkse termijnen. Bij een hoger inkomen geldt een rente die meestal lager is dan bij een gewone bank. Een voorbeeld: bij een lening van 12.000 euro met een looptijd van tien jaar betaalt een huishouden zonder rente honderd euro per maand. Wie eerder wil aflossen, mag dat op elk moment doen zonder extra kosten.</p><p><strong>IV</strong> Het geld is bedoeld voor maatregelen die het huis energiezuiniger maken. Denk hierbij aan:</p><ul><li>isolatie van het dak, de vloer, de muren of de kruipruimte;</li><li>glas met twee of drie lagen, inclusief nieuwe kozijnen;</li><li>een warmtepomp of een aansluiting op een warmtenet;</li><li>zonnepanelen, maar alleen in combinatie met een isolatiemaatregel.</li></ul><p><strong>V</strong> Een nieuwe keuken of een dakkapel valt buiten de regeling, hoewel zulke verbouwingen soms tegelijk worden uitgevoerd. Let op: het werk moet worden gedaan door een erkend bedrijf. Klust u zelf, dan vergoedt het fonds wel het materiaal, maar niet uw eigen uren. Bewaar daarom alle rekeningen en offertes, want wij vragen deze op voordat het geld wordt overgemaakt.</p><p><strong>VI</strong> Een aanvraag doet u via onze internetsite. U vult een formulier in en stuurt een offerte van het bedrijf mee. Binnen vier weken ontvangt u bericht over uw aanvraag; bij een aanvraag van een vereniging van eigenaars duurt dit langer, omdat de leden eerst formeel moeten instemmen. Wordt uw aanvraag goedgekeurd, dan heeft u achttien maanden om het werk te laten uitvoeren. Twijfelt u welke maatregel voor uw woning het meeste oplevert, dan kunt u eerst een energieadviseur laten komen. Deze kosten mag u meenemen in de lening. Ook uw gemeente heeft vaak een loket waar u gratis advies krijgt over subsidies, die u soms naast de lening kunt gebruiken.</p>",
+    "questions": [
+      {
+        "prompt": "Wat staat er in alinea I over het Nationaal Warmtefonds?",
+        "options": [
+          "Het leent geld uit zonder winst te willen maken.",
+          "Het betaalt de isolatie van woningen volledig.",
+          "Het geeft advies over gasverbruik in oude huizen."
+        ],
+        "correct": 0,
+        "explanation": "In alinea I staat dat het fonds geen bank is die winst wil maken, maar met steun van de overheid leent tegen lage rente. Het fonds betaalt de verbouwing niet zelf; het geld moet worden terugbetaald."
+      },
+      {
+        "prompt": "Mevrouw Yildiz huurt een appartement en wil de vloer laten isoleren. Wat leest zij in de folder?",
+        "options": [
+          "Zij kan lenen als de verhuurder daarmee instemt.",
+          "Zij kan geen lening krijgen, maar wel haar verhuurder vragen iets te doen.",
+          "Zij moet de aanvraag samen met de vereniging van eigenaars doen."
+        ],
+        "correct": 1,
+        "explanation": "Alinea II zegt dat huurders niet in aanmerking komen, omdat de verhuurder het onderhoud doet; een huurder mag de verhuurder wel om maatregelen vragen. Instemming van de verhuurder verandert daar niets aan."
+      },
+      {
+        "prompt": "Waarom noemt de schrijver in alinea III een lening van 12.000 euro?",
+        "options": [
+          "Om te laten zien dat de looptijd van tien jaar het voordeligst is.",
+          "Om aan te geven welk bedrag de meeste huishoudens nodig hebben.",
+          "Om duidelijk te maken wat een lening zonder rente per maand kost.",
+          "Om uit te leggen waarom eerder aflossen geld oplevert."
+        ],
+        "correct": 2,
+        "explanation": "Het voorbeeld in alinea III maakt concreet dat een huishouden zonder rente honderd euro per maand betaalt. Over de voordeligste looptijd of over gemiddelde bedragen zegt de tekst niets."
+      },
+      {
+        "prompt": "Meneer De Bruin wil zonnepanelen op zijn dak. Wat geldt volgens de folder voor hem?",
+        "options": [
+          "Hij moet de panelen door een energieadviseur laten kiezen.",
+          "Hij kan alleen lenen als hij ook een isolatiemaatregel neemt.",
+          "Hij kan hiervoor maximaal de helft van het bedrag lenen."
+        ],
+        "correct": 1,
+        "explanation": "In de opsomming in alinea IV staat dat zonnepanelen alleen meetellen in combinatie met een isolatiemaatregel. Een maximum van de helft van het bedrag wordt nergens genoemd."
+      },
+      {
+        "prompt": "Wat betekent 'Klust u zelf' in alinea V?",
+        "options": [
+          "Als u het werk zelf uitvoert",
+          "Als u een bekende inschakelt",
+          "Als u de rekening zelf betaalt"
+        ],
+        "correct": 0,
+        "explanation": "Uit alinea V blijkt dat het gaat om werk dat u niet door een erkend bedrijf laat doen: het materiaal wordt vergoed, uw eigen uren niet. Wie betaalt, staat er niet ter discussie."
+      },
+      {
+        "prompt": "In welke alinea vindt u het antwoord op de vraag hoe lang u na goedkeuring over de verbouwing mag doen?",
+        "options": [
+          "In alinea III",
+          "In alinea IV",
+          "In alinea V",
+          "In alinea VI"
+        ],
+        "correct": 3,
+        "explanation": "Alinea VI noemt de termijn van achttien maanden na goedkeuring. Alinea III gaat over de looptijd van de lening, en dat is iets anders dan de tijd voor de werkzaamheden."
+      }
+    ]
+  },
+  {
+    "section": "artikel",
+    "title": "Meester gezocht: waarom staan er zo weinig mannen voor de klas?",
+    "intro": "Deze tekst komt uit een vakblad voor mensen die in het onderwijs werken. De tekst gaat over het kleine aantal mannen dat op een basisschool werkt.",
+    "body_html": "<p><strong>I</strong> Op de meeste basisscholen in Nederland is de meester een uitzondering geworden. Van alle leraren in het basisonderwijs is nog ongeveer 18 procent man, terwijl dat dertig jaar geleden bijna 40 procent was. Bij de jongste groepen is het verschil het grootst: in de kleuterklassen werkt landelijk minder dan 3 procent mannen. Ook op de opleiding is de verhouding scheef. Van de studenten die aan de pabo beginnen, de opleiding tot leraar basisonderwijs, is gemiddeld een op de vijf een man. Bovendien stoppen mannelijke studenten iets vaker in het eerste jaar dan vrouwelijke studenten, waardoor het aandeel bij de diploma-uitreiking nog kleiner is.</p><p><strong>II</strong> Waarom kiezen zo weinig jonge mannen voor dit beroep? Onderzoekers van een hogeschool in Zwolle vroegen het aan 900 scholieren van 16 en 17 jaar. De jongens noemden drie redenen het vaakst:</p><ul><li>het salaris, dat volgens hen lager is dan in de techniek of de zakelijke dienstverlening;</li><li>het idee dat werken met jonge kinderen &lsquo;vrouwenwerk&rsquo; is en dat vrienden daar grappen over maken;</li><li>het gevoel dat er in het onderwijs weinig mogelijkheden zijn om te groeien of iets anders te gaan doen.</li></ul><p><strong>III</strong> Vooral dat eerste punt verdient een nuancering. Een beginnende leraar in het basisonderwijs verdient volgens de cao ongeveer 3.000 euro bruto per maand, en na tien jaar loopt dat op tot ruim 4.400 euro. Dat is geen laag salaris, maar het stijgt daarna nauwelijks nog. Wie meer wil verdienen, moet directeur worden of een specialistische taak aannemen, bijvoorbeeld als taalspecialist of als begeleider van nieuwe collega&rsquo;s. Onderzoeker Bram Veenhuizen ziet daarin een verklaring: &ldquo;Jongens van zeventien kijken niet naar het startsalaris, maar naar het plafond. Als je hun vertelt dat je na vijftien jaar op hetzelfde bedrag zit, haken ze af.&rdquo;</p><p><strong>Stage als keerpunt</strong></p><p><strong>IV</strong> Toch is de sfeer op de opleiding minstens zo belangrijk. Mannelijke studenten vertellen dat ze in een groep van dertig studenten soms de enige man zijn, en dat ze bij groepsopdrachten automatisch de rol van &lsquo;de handige&rsquo; krijgen. Wie tijdens de stage een fijne mannelijke collega heeft, houdt het gemiddeld langer vol. Basisschool De Zandloper in Apeldoorn plaatst daarom sinds 2021 nooit meer één mannelijke stagiair alleen, maar altijd twee tegelijk. Sindsdien maakte elke stagiair zijn stage af, terwijl daarvoor ongeveer de helft halverwege afhaakte. Directeur Ilse Grootveld waarschuwt wel voor te veel verwachtingen: &ldquo;Een man is geen medicijn. Wij zoeken een goede leraar; dat hij een man is, is prettig maar niet het doel.&rdquo;</p><p><strong>V</strong> Waarom zou het eigenlijk moeten veranderen? Onderzoek naar leerprestaties laat niet zien dat kinderen beter leren rekenen van een meester. Wel blijkt uit gesprekken met leerlingen dat kinderen die thuis geen vader of oom in de buurt hebben, het waarderen als een man op school naar hun verhaal luistert. Daarnaast krijgen scholen met alleen vrouwen soms praktische problemen, bijvoorbeeld bij het begeleiden van jongens die op het schoolplot ruzie maken of bij het toezicht in de kleedkamer tijdens het zwemmen. Volgens de vereniging van schoolbesturen is een gemengd team vooral belangrijk omdat kinderen dan zien dat zorgen voor anderen bij iedereen hoort.</p><p><strong>VI</strong> Er zijn kleine stappen zichtbaar. Vier hogescholen bieden sinds vorig jaar een verkort programma van twee jaar voor zij-instromers met werkervaring, en daarvan is bijna 40 procent man. Wie zich wil aanmelden, moet minstein 21 jaar zijn en al twee jaar in een ander vak hebben gewerkt. Deze groep is klein: in totaal gaat het om ongeveer 350 mensen per jaar. Om het aandeel mannen in het basisonderwijs weer op 30 procent te krijgen, zou het onderwijs volgens Veenhuizen vijftien jaar lang elk jaar duizend extra mannen moeten aannemen.</p>",
+    "questions": [
+      {
+        "prompt": "Wat staat er in alinea I over mannen op de pabo?",
+        "options": [
+          "Ongeveer een vijfde van de nieuwe studenten is man.",
+          "Het aantal mannelijke studenten is de laatste dertig jaar gehalveerd.",
+          "Mannelijke studenten halen bijna nooit hun diploma."
+        ],
+        "correct": 0,
+        "explanation": "In alinea I staat dat van de beginnende pabostudenten gemiddeld een op de vijf een man is. Dat de helft van de mannen wegvalt, staat er niet: er stoppen alleen iets meer mannen dan vrouwen in het eerste jaar."
+      },
+      {
+        "prompt": "Welke reden om niet voor het beroep te kiezen noemen de scholieren in alinea II?",
+        "options": [
+          "Ze denken dat de opleiding te moeilijk is.",
+          "Ze verwachten weinig kans om zich te ontwikkelen.",
+          "Ze vinden jonge kinderen vervelend."
+        ],
+        "correct": 1,
+        "explanation": "Alinea II noemt als derde reden dat jongens denken dat er weinig mogelijkheden zijn om te groeien of iets anders te gaan doen. Over de moeilijkheid van de opleiding zegt de tekst niets."
+      },
+      {
+        "prompt": "Wat wil de schrijver duidelijk maken met de bedragen in alinea III?",
+        "options": [
+          "Dat leraren in het basisonderwijs te weinig verdienen.",
+          "Dat de cao voor beginnende leraren verbeterd moet worden.",
+          "Dat niet het startsalaris het probleem is, maar de grens die daarna komt."
+        ],
+        "correct": 2,
+        "explanation": "De bedragen in alinea III laten zien dat het beginsalaris redelijk is, maar dat het loon later nauwelijks nog stijgt. De tekst zegt juist dat het geen laag salaris is."
+      },
+      {
+        "prompt": "Wat betekent \"haken ze af\" in alinea III?",
+        "options": [
+          "dan kiezen ze iets anders",
+          "dan gaan ze onderhandelen",
+          "dan vragen ze om uitleg",
+          "dan worden ze directeur"
+        ],
+        "correct": 0,
+        "explanation": "In alinea III bedoelt Veenhuizen dat jongens het beroep laten schieten als ze het loonplafond zien. Onderhandelen past niet bij scholieren die nog moeten kiezen."
+      },
+      {
+        "prompt": "Wat is het effect van de aanpak van basisschool De Zandloper, volgens alinea IV?",
+        "options": [
+          "De school heeft nu evenveel meesters als juffen.",
+          "De leerprestaties van de jongens zijn verbeterd.",
+          "Alle mannelijke stagiairs maken hun stage nu af."
+        ],
+        "correct": 2,
+        "explanation": "In alinea IV staat dat sinds 2021 elke mannelijke stagiair de stage afmaakte, terwijl eerder ongeveer de helft stopte. Over leerprestaties gaat het pas in alinea V, en daar staat juist dat er geen verband is aangetoond."
+      },
+      {
+        "prompt": "Kars werkt sinds drie jaar als installateur en is 24. Hij wil weten of hij via een korte route leraar kan worden. In welke alinea vindt hij het antwoord?",
+        "options": [
+          "in alinea III",
+          "in alinea IV",
+          "in alinea V",
+          "in alinea VI"
+        ],
+        "correct": 3,
+        "explanation": "Alinea VI beschrijft het verkorte programma van twee jaar voor zij-instromers en de voorwaarden: minstens 21 jaar en twee jaar werkervaring. Alinea IV gaat over stages van gewone studenten, niet over zij-instroom."
+      },
+      {
+        "prompt": "Welk argument kan een directeur uit deze tekst gebruiken om een gemengd team te verdedigen?",
+        "options": [
+          "Kinderen zien zo dat zorgen voor anderen niet alleen vrouwenwerk is.",
+          "Kinderen leren aantoonbaar beter rekenen van een mannelijke leraar.",
+          "Mannen kunnen problemen op het schoolplein sneller oplossen dan vrouwen."
+        ],
+        "correct": 0,
+        "explanation": "Alinea V noemt als belangrijkste argument van de schoolbesturen dat kinderen bij een gemengd team merken dat zorgen voor anderen bij iedereen hoort. Over betere leerprestaties zegt dezelfde alinea juist dat die niet zijn aangetoond."
+      }
+    ]
+  },
+  {
+    "section": "regels",
+    "title": "Werkinstructie beschermende kleding laboratorium Vondelmeer Diagnostiek",
+    "intro": "Deze tekst is een werkinstructie voor medewerkers en stagiairs van een laboratorium. In de tekst staat welke beschermende kleding u moet dragen en hoe u die gebruikt.",
+    "body_html": "<p><strong>Werkinstructie WI-14: beschermende kleding</strong></p><p><strong>I</strong> Deze instructie geldt voor alle medewerkers, stagiairs en bezoekers die de laboratoriumruimten van Vondelmeer Diagnostiek betreden. Beschermende kleding heeft twee doelen. In de eerste plaats beschermt de kleding u tegen stoffen en monsters waarmee u werkt. In de tweede plaats voorkomt de kleding dat u besmetting meeneemt naar buiten, bijvoorbeeld naar de kantine of naar uw huis. Omdat het tweede doel vaak wordt vergeten, is de regel streng: u trekt de laboratoriumjas altijd uit voordat u de gang verlaat. Wie zich niet aan deze instructie houdt, krijgt eerst een waarschuwing van de teamleider. Bij een tweede overtreding volgt een gesprek met de manager en wordt de toegang tijdelijk ingetrokken.</p><p><strong>II</strong> De basisuitrusting bestaat uit vier onderdelen. U vindt deze in de kleedruimte naast de ingang op de eerste verdieping.</p><ul><li>een dichtgeknoopte laboratoriumjas met lange mouwen;</li><li>een veiligheidsbril, ook wanneer u zelf een gewone bril draagt;</li><li>handschoenen van nitril, in de maten S tot XL;</li><li>dichte schoenen met een gesloten hiel en een stevige zool.</li></ul><p>Sandalen, korte broeken en losse sjaals zijn in de laboratoriumruimten niet toegestaan. Lang haar draagt u vast, zodat het niet in apparatuur of vloeistof kan komen. Draagt u een hoofddoek, dan stopt u de uiteinden in de jas of gebruikt u een strakke variant uit de kleedruimte.</p><p><strong>III</strong> Voor werk met vluchtige of bijtende stoffen geldt aanvullende bescherming. U werkt dan in de zuurkast en draagt daarbij een gezichtsscherm en handschoenen van dikker materiaal. Deze handschoenen liggen in de rode kast bij de nooddouche. Werkt u met stoffen die door de huid worden opgenomen, dan trekt u twee paar handschoenen over elkaar aan. Nitrilhandschoenen zijn niet bedoeld voor langdurig gebruik: u vervangt ze na maximaal twee uur, en onmiddellijk wanneer u een scheurtje ziet of wanneer er iets op is gemorst. Gebruikte handschoenen gaan in de gele afvalbak, niet in de gewone papierbak.</p><p><strong>IV</strong> Laboratoriumjassen worden door het bedrijf gewassen. U levert uw jas minstens één keer per twee weken in bij het luik in de kleedruimte; na direct contact met een monster levert u de jas dezelfde dag in. Het is uitdrukkelijk verboden een laboratoriumjas thuis te wassen, omdat een gewone wasmachine de temperatuur van 60 graden niet betrouwbaar haalt. Iedere medewerker krijgt twee jassen, zodat er altijd een schone jas beschikbaar is. Raakt een jas beschadigd of zit er een vlek in die niet weggaat, dan meldt u dit bij de logistiek medewerker. U ontvangt binnen drie werkdagen een vervangende jas. Stagiairs krijgen bij de start één jas in bruikleen en leveren die aan het einde van de stage weer in.</p><p><strong>V</strong> Gaat er ondanks alle voorzorg iets mis, dan handelt u in vaste stappen. Komt er een chemische stof op uw kleding, dan trekt u het besmette kledingstuk direct uit en spoelt u de huid minstens vijftien minuten met water. Daarna waarschuwt u een collega en meldt u het voorval bij de bedrijfshulpverlener. Elk voorval, ook een klein voorval zonder gevolgen, legt u binnen vierentwintig uur vast in het digitale meldingssysteem. Sommige medewerkers vinden dat overdreven bij een druppel op de mouw. Toch is die melding nuttig, want uit de meldingen blijkt welke werkplekken vaak problemen geven. Op grond van die gegevens zijn vorig jaar drie zuurkasten vervangen.</p><p><strong>VI</strong> Vragen over deze instructie stelt u aan uw teamleider of aan de veiligheidscoördinator. De instructie wordt elk jaar in april opnieuw bekeken. Nieuwe medewerkers volgen in de eerste week een korte praktijkles van een uur. Zonder deze praktijkles mag u niet zelfstandig in de laboratoriumruimten werken.</p>",
+    "questions": [
+      {
+        "prompt": "Wat staat er in alinea I over beschermende kleding?",
+        "options": [
+          "De kleding beschermt niet alleen de medewerker zelf, maar ook de omgeving buiten het laboratorium.",
+          "De kleding is vooral bedoeld om de monsters in het laboratorium schoon te houden.",
+          "De kleding is verplicht voor medewerkers, maar bezoekers mogen zelf kiezen."
+        ],
+        "correct": 0,
+        "explanation": "In alinea I staan twee doelen: bescherming van de medewerker en het voorkomen dat besmetting naar buiten wordt meegenomen. Optie C is fout, want de instructie geldt in alinea I uitdrukkelijk ook voor bezoekers."
+      },
+      {
+        "prompt": "Hoe lang mag u volgens de tekst maximaal met hetzelfde paar nitrilhandschoenen doorwerken?",
+        "options": [
+          "Vijftien minuten.",
+          "Één uur.",
+          "Twee uur.",
+          "Drie werkdagen."
+        ],
+        "correct": 2,
+        "explanation": "In alinea III staat dat nitrilhandschoenen na maximaal twee uur worden vervangen. Vijftien minuten hoort bij het spoelen van de huid in alinea V."
+      },
+      {
+        "prompt": "Een medewerkster heeft een vlek in haar laboratoriumjas die er niet uit gaat. In welke alinea vindt zij wat zij moet doen?",
+        "options": [
+          "In alinea II.",
+          "In alinea III.",
+          "In alinea IV.",
+          "In alinea V."
+        ],
+        "correct": 2,
+        "explanation": "Alinea IV gaat over het wassen, inleveren en vervangen van jassen, ook bij een vlek die niet weggaat. Alinea V gaat alleen over het handelen direct na een ongeval."
+      },
+      {
+        "prompt": "Waarom mag u uw laboratoriumjas niet thuis wassen?",
+        "options": [
+          "Omdat een jas thuis vaak beschadigd raakt.",
+          "Omdat een gewone wasmachine niet zeker warm genoeg wordt.",
+          "Omdat iedere medewerker maar één jas in bruikleen heeft."
+        ],
+        "correct": 1,
+        "explanation": "Alinea IV noemt als reden dat een gewone wasmachine de 60 graden niet betrouwbaar haalt. Volgens dezelfde alinea krijgen medewerkers juist twee jassen; één jas geldt alleen voor stagiairs."
+      },
+      {
+        "prompt": "Wat wil de schrijver duidelijk maken met het voorbeeld van de drie vervangen zuurkasten?",
+        "options": [
+          "Dat de apparatuur in het laboratorium snel verouderd is.",
+          "Dat een klein voorval zelden gevolgen heeft voor de medewerker.",
+          "Dat melden ook zin heeft als er niets ernstigs is gebeurd."
+        ],
+        "correct": 2,
+        "explanation": "In alinea V gebruikt de schrijver dit voorbeeld als tegenwicht tegen medewerkers die melden overdreven vinden: uit meldingen komen verbeteringen. Optie A is niet het punt van het voorbeeld."
+      },
+      {
+        "prompt": "Een nieuwe stagiair wil op zijn tweede dag alleen in het laboratorium werken. Welk argument uit de tekst kan zijn teamleider gebruiken om dat te weigeren?",
+        "options": [
+          "Dat hij eerst de praktijkles van een uur moet hebben gevolgd.",
+          "Dat stagiairs alleen onder begeleiding een jas in bruikleen krijgen.",
+          "Dat de instructie elk jaar in april opnieuw wordt bekeken."
+        ],
+        "correct": 0,
+        "explanation": "Alinea VI zegt dat zelfstandig werken zonder de korte praktijkles niet is toegestaan. De bruikleen van een jas in alinea IV stelt geen voorwaarde over begeleiding."
+      }
+    ]
+  },
+  {
+    "section": "brief",
+    "title": "Uw jaarafrekening en uw nieuwe termijnbedrag",
+    "intro": "Deze tekst is een brief van een energieleverancier aan een klant. De brief gaat over de jaarafrekening en het termijnbedrag voor het komende jaar.",
+    "body_html": "<p>Energiebedrijf Waalstroom<br>Postbus 3820<br>6802 GD Arnhem<br>Klantnummer: 884 512 07</p><p>Mevrouw J. Bakkenes<br>Vlierstraat 118<br>6535 TR Nijmegen</p><p>Nijmegen, 14 maart 2025<br>Betreft: jaarafrekening periode 1 maart 2024 tot 1 maart 2025</p><p>Geachte mevrouw Bakkenes,</p><p><strong>I</strong> Eén keer per jaar maken wij de balans op van uw verbruik. In het afgelopen jaar heeft u 1.980 kilowattuur stroom en 780 kubieke meter gas gebruikt. U betaalde elke maand een vast bedrag van 142 euro, terwijl uw werkelijke kosten uitkwamen op 1.516 euro. Omdat u samen 1.704 euro heeft betaald, krijgt u 188 euro terug. Dit bedrag wordt binnen tien werkdagen overgemaakt op het rekeningnummer dat bij ons bekend is. U hoeft daarvoor niets te doen. Een volledig overzicht van de meterstanden en de tarieven vindt u op de bijlage achter deze brief.</p><p><strong>Uw nieuwe termijnbedrag</strong></p><p><strong>II</strong> Het maandelijkse bedrag dat u vooruitbetaalt, noemen wij het termijnbedrag. Wij berekenen dat bedrag opnieuw op basis van uw verbruik van het afgelopen jaar en de tarieven die wij voor het komende jaar verwachten. Hoewel u geld terugkrijgt, gaat uw termijnbedrag niet omlaag maar juist licht omhoog: van 142 euro naar 149 euro per maand. Dat komt doordat de belasting op gas per 1 juli stijgt, waardoor uw kosten volgend jaar hoger uitvallen dan dit jaar. Het nieuwe bedrag wordt voor het eerst afgeschreven op 28 april 2025.</p><p><strong>III</strong> Misschien vindt u het nieuwe termijnbedrag te hoog of te laag. U mag het zelf aanpassen in uw persoonlijke omgeving op onze website, of telefonisch via 026 - 442 18 90. Wij hanteren daarbij één voorwaarde: het bedrag mag niet lager zijn dan 105 euro per maand, omdat u anders vrijwel zeker een grote rekening krijgt bij de volgende jaarafrekening. Wie een lager bedrag wil, kan dat schriftelijk aanvragen. Wij nemen zo'n verzoek alleen in behandeling als u kunt aantonen dat uw situatie is veranderd, bijvoorbeeld omdat u zonnepanelen heeft laten plaatsen of omdat er minder mensen in de woning wonen.</p><p><strong>IV</strong> Veel klanten schrikken van een jaarafrekening, ook als die gunstig uitvalt. Wij begrijpen dat, want energie is een grote post in het huishoudboekje. Denk daarom aan het volgende:</p><ul><li>Geef uw meterstanden vier keer per jaar door, zodat uw termijnbedrag dicht bij uw echte verbruik blijft.</li><li>Meld een verhuizing minstens twee weken vooraf, anders betaalt u langer voor een woning die u al verlaten heeft.</li><li>Vraag een gratis verbruiksrapport aan als u wilt weten welke apparaten het meeste stroom kosten.</li></ul><p><strong>V</strong> Bent u het niet eens met de jaarafrekening, dan kunt u binnen zes weken na de datum van deze brief bezwaar maken. Stuur uw bezwaar per e-mail naar bezwaar@waalstroom.nl of per post naar het adres bovenaan deze brief. Vermeld altijd uw klantnummer en, als het om de meterstanden gaat, een foto van uw meter. Wij reageren binnen vijftien werkdagen. Komen wij samen niet tot een oplossing, dan kunt u de zaak voorleggen aan de onafhankelijke Geschillencommissie Energie. Daaraan zijn voor u geen kosten verbonden, mits u eerst bij ons bezwaar heeft gemaakt.</p><p><strong>VI</strong> Wij verwachten dat deze brief u voldoende informatie geeft. Heeft u toch nog vragen over de berekening, dan kunt u ons op werkdagen tussen 8.00 en 18.00 uur bellen. Houd uw klantnummer bij de hand, zodat onze medewerkers uw gegevens snel kunnen opzoeken.</p><p>Met vriendelijke groet,<br>R. Doornbos<br>Manager Klantenservice<br>Energiebedrijf Waalstroom</p>",
+    "questions": [
+      {
+        "prompt": "Hoeveel geld krijgt mevrouw Bakkenes terug van de energieleverancier?",
+        "options": [
+          "142 euro",
+          "188 euro",
+          "1.516 euro",
+          "1.704 euro"
+        ],
+        "correct": 1,
+        "explanation": "In alinea I staat dat zij 188 euro terugkrijgt. Het bedrag van 1.516 euro zijn haar werkelijke kosten, niet het bedrag dat zij terugkrijgt."
+      },
+      {
+        "prompt": "Wat staat er in alinea II over het nieuwe termijnbedrag?",
+        "options": [
+          "Het gaat omhoog, omdat de belasting op gas stijgt.",
+          "Het gaat omlaag, omdat zij geld terugkrijgt.",
+          "Het blijft gelijk, omdat haar verbruik niet is veranderd."
+        ],
+        "correct": 0,
+        "explanation": "In alinea II staat dat het bedrag van 142 naar 149 euro gaat doordat de gasbelasting per 1 juli stijgt. Dat zij geld terugkrijgt, verandert daar niets aan."
+      },
+      {
+        "prompt": "Mevrouw Bakkenes wil 90 euro per maand gaan betalen. Welk argument moet zij volgens de brief gebruiken?",
+        "options": [
+          "Dat zij vorig jaar te veel heeft betaald aan haar leverancier.",
+          "Dat zij het bedrag zelf op de website heeft aangepast.",
+          "Dat haar situatie is veranderd, bijvoorbeeld door zonnepanelen."
+        ],
+        "correct": 2,
+        "explanation": "In alinea III staat dat een bedrag onder 105 euro alleen schriftelijk kan worden aangevraagd en alleen wordt behandeld bij een aantoonbaar veranderde situatie. Zelf aanpassen op de website kan juist niet onder de 105 euro."
+      },
+      {
+        "prompt": "Wat wil de schrijver duidelijk maken met de tips in alinea IV?",
+        "options": [
+          "Dat klanten hun energieverbruik beter niet zelf controleren.",
+          "Dat de klant zelf kan zorgen voor minder verrassingen.",
+          "Dat een verhuizing altijd extra kosten met zich meebrengt."
+        ],
+        "correct": 1,
+        "explanation": "De tips in alinea IV laten zien wat de klant zelf kan doen, zoals meterstanden doorgeven, zodat het termijnbedrag klopt. Over verhuizen gaat maar één tip; dat is niet de hoofdgedachte."
+      },
+      {
+        "prompt": "In welke alinea vindt mevrouw Bakkenes informatie als zij de meterstanden op de bijlage onjuist vindt?",
+        "options": [
+          "Alinea I",
+          "Alinea III",
+          "Alinea V",
+          "Alinea VI"
+        ],
+        "correct": 2,
+        "explanation": "Alinea V beschrijft hoe en binnen welke termijn zij bezwaar kan maken, met een foto van de meter. Alinea VI gaat alleen over telefonische vragen over de berekening."
+      }
+    ]
+  }
+]

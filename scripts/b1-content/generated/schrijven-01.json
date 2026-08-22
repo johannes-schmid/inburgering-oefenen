@@ -1,0 +1,230 @@
+[
+  {
+    "task_type": "sentence_completion",
+    "title": "Groter beeldscherm",
+    "prompt_html": "<p>U werkt als administratief medewerker bij verzekeringskantoor Van Riel in Zwolle. U zit de hele dag achter de computer en werkt vaak in twee documenten naast elkaar. U stuurt een mail naar de ICT-afdeling van uw werkgever.</p>",
+    "email_to": "ict@vanriel-verzekeringen.nl",
+    "email_subject": "Verzoek beeldscherm werkplek 2.14",
+    "greeting": "Geachte heer, mevrouw,\n\nIk werk sinds januari op de afdeling administratie, op werkplek 2.14. Ik zou graag een groter beeldscherm willen aanvragen, omdat …",
+    "closing": "Kunt u mij laten weten of dit mogelijk is?\n\nMet vriendelijke groet,\nNadia Haddad",
+    "model_answer": "ik elke dag facturen vergelijk met de gegevens in ons klantsysteem. Op mijn huidige scherm kan ik maar één document goed zien, waardoor ik steeds moet wisselen en fouten maak. Met een groter beeldscherm kan ik sneller werken en krijg ik minder last van mijn ogen en mijn nek."
+  },
+  {
+    "task_type": "sentence_completion",
+    "title": "Inrichting nieuwe kantine",
+    "prompt_html": "<p>U werkt bij een productiebedrijf en zit in de personeelscommissie. Het bedrijf krijgt een nieuwe kantine en de commissie mag advies geven over de inrichting. U stuurt een mail naar uw collega Samira, die de pauzes altijd goed in de gaten houdt.</p>",
+    "email_to": "s.bouzid@techniekgroep-noord.nl",
+    "email_subject": "Meedenken over de nieuwe kantine",
+    "greeting": "Hoi Samira,\n\nZoals je weet wordt de kantine in de zomer helemaal verbouwd. De personeelscommissie mag advies geven over de inrichting, en ik zou het fijn vinden als jij meedenkt, omdat …",
+    "closing": "Laat je even weten of je erbij wilt zijn?\n\nGroetjes,\nErik",
+    "model_answer": "jij precies weet hoe druk het is tussen twaalf en één en waar de rijen bij de koffieautomaat ontstaan. Wij twijfelen nog over het aantal tafels en over een aparte hoek waar mensen rustig kunnen zitten. Volgende week donderdag om vier uur komen we een uur bij elkaar in vergaderruimte B."
+  },
+  {
+    "task_type": "sentence_completion",
+    "title": "Groepsindeling project",
+    "prompt_html": "<p>U volgt de opleiding Sociaal Werk aan een regionaal opleidingscentrum. U bent klassenvertegenwoordiger en heeft met de docent afgesproken hoe de groepen voor het projectblok worden gemaakt. U stuurt een mail naar uw medestudenten.</p>",
+    "email_to": "klas-sw2b@lijsterhof-opleidingen.nl",
+    "email_subject": "Zo regelen we de groepsindeling",
+    "greeting": "Beste medestudenten,\n\nVandaag heb ik met mevrouw Dekkers overlegd over het projectblok dat na de vakantie begint. De groepsindeling wordt als volgt geregeld: …",
+    "closing": "Als iets niet duidelijk is, kun je mij aanspreken in de pauze.\n\nMet vriendelijke groet,\nJoana Pereira",
+    "model_answer": "je mag zelf een groepje van vier vormen en dat vóór vrijdag 14 maart doorgeven via de mail. Groepjes die niet compleet zijn, worden door de docent aangevuld, zodat niemand alleen komt te staan. Wie stage loopt op dinsdag, moet dat erbij zetten, want daar wordt bij de indeling rekening mee gehouden."
+  },
+  {
+    "task_type": "sentence_completion",
+    "title": "Bestelling in twee delen",
+    "prompt_html": "<p>U werkt bij een groothandel in keukenspullen en behandelt de bestellingen van bedrijven. Een klant heeft acht stoelen en vier tafels besteld, maar de tafels zijn nog niet op voorraad. U stuurt een mail naar deze klant.</p>",
+    "email_to": "beheer@lunchroom-develhoek.nl",
+    "email_subject": "Uw bestelling 40823 wordt in twee delen bezorgd",
+    "greeting": "Geachte mevrouw Wolters,\n\nHartelijk dank voor uw bestelling van 3 april. Uw bestelling wordt in twee delen bezorgd, omdat …",
+    "closing": "Ik hoop dat u hiermee uit de voeten kunt.\n\nMet vriendelijke groet,\nKarim Yildiz\nAfdeling verkoop",
+    "model_answer": "de acht stoelen wel op voorraad liggen, terwijl de vier tafels pas over drie weken bij onze leverancier binnenkomen. Wij sturen de stoelen daarom deze week al, zodat u de zaak alvast kunt inrichten. De tafels volgen uiterlijk 2 mei en u betaalt voor de tweede levering geen extra verzendkosten."
+  },
+  {
+    "task_type": "sentence_completion",
+    "title": "Model voor schoolopdracht",
+    "prompt_html": "<p>U volgt een opleiding fotografie en moet voor een opdracht foto's maken van een groep mensen buiten. U wilt geen betaalde modellen inhuren en denkt daarom aan uw vriendengroep. U stuurt een mail naar drie vrienden.</p>",
+    "email_to": "vriendengroep@post-anders.nl",
+    "email_subject": "Wie wil model staan?",
+    "greeting": "Hoi allemaal,\n\nVoor mijn opleiding fotografie moet ik een serie van tien foto's inleveren met mensen in de buitenlucht. Ik wilde jullie vragen of jullie model willen staan, want …",
+    "closing": "Laat me weten of het jullie lukt!\n\nGroet,\nTessa",
+    "model_answer": "ik geen onbekende modellen wil, maar mensen die zich op de foto op hun gemak voelen. Het kost ongeveer twee uur en ik zou het graag doen op zaterdag 18 mei in het Vondelpark achter het station. Jullie hoeven niets speciaals aan te trekken en ik zorg voor koffie en iets te eten."
+  },
+  {
+    "task_type": "sentence_completion",
+    "title": "Nieuwe baanindeling",
+    "prompt_html": "<p>U werkt als beheerder van zwembad De Waterval. Vanaf volgende maand wordt het banenzwemmen anders verdeeld, omdat er steeds meer klachten kwamen over te volle banen. U schrijft een bericht voor de website van het zwembad.</p>",
+    "greeting": "Nieuwe indeling van de banen\n\nVeel bezoekers hebben ons laten weten dat het tijdens het banenzwemmen te druk was en dat snelle en langzame zwemmers elkaar hinderden. Vanaf 1 juni verdelen wij de banen daarom anders: …",
+    "closing": "Wij hopen dat iedereen hierdoor rustiger kan zwemmen.\n\nHet team van zwembad De Waterval",
+    "model_answer": "baan 1 en 2 zijn er voor rustige zwemmers, baan 3 voor wie een gemiddeld tempo heeft en baan 4 voor snelle zwemmers die veel banen achter elkaar doen. Bij elke baan hangt een bordje met het tempo, zodat u meteen ziet waar u moet zijn. De badmeester kan u vragen van baan te wisselen als u het tempo van de groep niet kunt volgen."
+  },
+  {
+    "task_type": "sentence_completion",
+    "title": "Tips voor nieuw gezin",
+    "prompt_html": "<p>U woont in de wijk Molenbeek en bent actief op de website van de buurtvereniging. Uw nichtje komt met haar man en twee jonge kinderen in uw straat wonen en kent de buurt nog niet. U plaatst een bericht op de buurtsite.</p>",
+    "greeting": "Tips gevraagd voor een nieuw gezin in de Lindestraat\n\nBinnenkort komt mijn nichtje met haar man en hun twee kinderen van drie en zes jaar in de Lindestraat wonen. Zij kennen de buurt nog helemaal niet, en daarom vraag ik jullie om tips over …",
+    "closing": "Alle reacties zijn welkom, ook kleine tips.\n\nMet vriendelijke groet,\nHenk Bosma",
+    "model_answer": "een basisschool met een goede naschoolse opvang en een huisarts die nog nieuwe patiënten aanneemt. Ook horen zij graag waar je in de buurt zwemles kunt nemen en of er een speeltuin is waar veel kinderen van die leeftijd komen. Wie ervaring heeft met de opvang aan de Kerkweg, mag daar zeker iets over schrijven."
+  },
+  {
+    "task_type": "sentence_completion",
+    "title": "Meedoen aan opruimdag",
+    "prompt_html": "<p>U werkt op de afdeling logistiek van een distributiebedrijf. Het bedrijf houdt een opruimdag om de gangen en de opslagruimte veiliger te maken, maar tot nu toe hebben zich weinig mensen aangemeld. U stuurt een mail naar uw collega's.</p>",
+    "email_to": "logistiek-allen@dewitte-distributie.nl",
+    "email_subject": "Doe mee met de opruimdag op 22 november",
+    "greeting": "Beste collega's,\n\nOp vrijdag 22 november houden wij een opruimdag in de gangen en de opslagruimte. Tot nu toe hebben maar vijf mensen zich aangemeld, en ik hoop dat jullie ook meedoen, omdat …",
+    "closing": "Aanmelden kan tot woensdag bij mij of bij je teamleider.\n\nMet vriendelijke groet,\nMarloes Kuipers",
+    "model_answer": "de volle gangen elke dag gevaarlijke situaties opleveren en wij vorige maand al twee bijna-ongelukken hebben gehad. Als we met twintig mensen zijn, zijn we in één ochtend klaar en hoeft niemand het er later alleen bij te doen. Je werkt gewoon in werktijd, het bedrijf zorgt voor lunch en om één uur is iedereen weer op zijn eigen plek."
+  },
+  {
+    "task_type": "email",
+    "title": "Tentamen verplaatsen",
+    "prompt_html": "<p>U volgt de opleiding Verzorgende IG bij het Regionaal Beroepscollege Maasdal. In de week van 13 januari staat het tentamen Communicatie en Zorgplan gepland.</p><p>U kunt in die week niet aanwezig zijn. Op uw stageafdeling is namelijk een collega langdurig ziek geworden, waardoor u die week extra diensten moet werken. Uw stagebegeleider heeft dat met u afgesproken. U wilt daarom vragen of u het tentamen een week later mag maken, samen met de groep van de avondopleiding.</p><p>U schrijft een e-mail aan mevrouw De Kruif. Zij is uw docent van het vak Communicatie en Zorgplan en zij gaat over de planning van de tentamens. U mag de informatie zelf verzinnen.</p><p><strong>Opdracht</strong></p><p>Schrijf een e-mail aan uw docent. Leg uit wat het probleem is en vraag om een oplossing.</p><p>Het doel van de tekst is uw docent zo goed te informeren over uw situatie, dat zij begrijpt waarom u het tentamen niet in de geplande week kunt maken en dat zij u toestemming kan geven om het in een andere week te doen.</p>",
+    "bullet_points": [
+      "U schrijft waarom u de e-mail stuurt en om welk tentamen het gaat.",
+      "U legt uit waarom u in de week van 13 januari niet aanwezig kunt zijn.",
+      "U vertelt wat u met uw stagebegeleider hebt afgesproken.",
+      "U vraagt of u het tentamen in een andere week mag maken en u noemt zelf een datum.",
+      "U schrijft dat u zich goed hebt voorbereid en hoe u dat blijft doen.",
+      "U vraagt om een reactie en u vertelt hoe mevrouw De Kruif u kan bereiken."
+    ],
+    "email_to": "m.dekruif@rbcmaasdal.nl",
+    "email_subject": "Verzoek om tentamen Communicatie en Zorgplan later te maken",
+    "greeting": "Geachte mevrouw De Kruif,",
+    "closing": "Met vriendelijke groet,",
+    "model_answer": "Ik ben Amina Yildiz en ik zit in het tweede jaar van de opleiding Verzorgende IG, in groep VZ2B. Ik schrijf u omdat ik een probleem heb met het tentamen Communicatie en Zorgplan. Dat tentamen staat gepland in de week van 13 januari, maar ik kan er dan helaas niet bij zijn.\n\nOp mijn stageafdeling is een collega al drie weken ziek en zij komt voorlopig niet terug. Daardoor is er te weinig personeel op de afdeling. Mijn stagebegeleider, meneer Verstappen, heeft mij gevraagd of ik in de week van 13 januari extra diensten wil werken. Ik heb ja gezegd, omdat de bewoners anders geen goede zorg krijgen. Ik werk die week vier avonddiensten en één dagdienst, waardoor ik op de tentamendag niet op school kan zijn.\n\nMijn vraag is of ik het tentamen een week later mag maken. Ik heb gezien dat de groep van de avondopleiding het tentamen op donderdag 23 januari doet. Als het mag, sluit ik graag bij die groep aan. Ik kan die dag de hele avond aanwezig zijn.\n\nIk wil u ook laten weten dat ik mij goed voorbereid. Ik heb de hoofdstukken over gespreksvoering al twee keer gelezen en ik oefen elke week met een medestudent. In de extra week bestudeer ik vooral het schrijven van een zorgplan, zodat ik goed voorbereid aan het tentamen begin.\n\nWilt u mij laten weten of dit mogelijk is? U kunt mij bereiken via deze e-mail of telefonisch op 06 12 34 56 78. Ik ben op maandag en woensdag na 17.00 uur goed te bellen. Als u liever een gesprek wilt, kom ik graag langs op school.\n\nAlvast hartelijk dank voor uw hulp en uw begrip."
+  },
+  {
+    "task_type": "form",
+    "title": "Vragenlijst van de bakker",
+    "prompt_html": "<p>U woont in de Waalstraat in Zutphen. In uw straat zit Bakkerij De Korenbloem. De bakker wil weten wat de klanten uit de buurt van zijn assortiment vinden, omdat hij volgend jaar nieuwe producten wil verkopen.</p><p>Bij uw brood krijgt u een vragenlijst mee. De bakker vraagt of u de vragen wilt invullen en de lijst daarna in de doos bij de kassa wilt doen. Uw naam, uw e-mailadres en de datum zijn al ingevuld.</p><p><strong>Opdracht</strong></p><p>Vul de vragenlijst in. U kruist eerst aan hoe vaak u in de winkel komt. Daarna geeft u bij elke vraag een antwoord van twee of drie zinnen. U legt bij elke vraag ook uit waarom u dat vindt. U mag de informatie zelf verzinnen.</p><p>Het doel van de tekst is dat de bakker begrijpt wat u van zijn assortiment vindt en welke veranderingen u belangrijk vindt, zodat hij zijn winkel kan aanpassen aan de wensen van de klanten uit de buurt.</p>",
+    "email_to": "",
+    "email_subject": "",
+    "greeting": "",
+    "closing": "",
+    "model_answer": "Hoe vaak koopt u iets bij Bakkerij De Korenbloem? Twee of drie keer per week\n\n1. Ik koop bijna altijd een volkorenbrood en op zaterdag een paar broodjes. Volkorenbrood kies ik omdat het lang lekker blijft en omdat mijn kinderen het mee naar school nemen. De broodjes koop ik in het weekend, want dan ontbijten wij samen en nemen we meer tijd.\n\n2. Ik ben redelijk tevreden over de openingstijden, hoewel de ochtend voor mij moeilijk is. Ik begin om zeven uur met werken, waardoor ik de winkel dan nog gesloten vind. Als u één keer per week om half zeven zou openen, zou ik vaker vers brood kunnen kopen.\n\n3. Ik mis brood zonder gist en ook kleine broden van ongeveer een half brood. Wij zijn thuis maar met twee personen, waardoor een heel brood soms droog wordt. Een klein brood zou ik zeker kopen, omdat ik dan niets hoef weg te gooien.\n\n4. De prijzen vind ik normaal voor een echte bakker, maar de gebakjes zijn voor mij te duur. Voor een brood betaal ik graag iets meer, omdat de kwaliteit veel beter is dan in de supermarkt. Een gebakje van bijna vier euro koop ik alleen als er iets te vieren is.\n\n5. Ik vind het een goed plan om brood met minder zout te verkopen, want veel mensen in de buurt letten op hun gezondheid. Mijn vader mag van de dokter weinig zout eten, terwijl hij toch graag brood eet. Het is wel belangrijk dat u duidelijk op het bordje zet welk brood minder zout heeft.\n\n6. U kunt de winkel prettiger maken door een paar stoelen en een klein tafeltje neer te zetten. Op zaterdag staat er een lange rij, waardoor oudere klanten lang moeten wachten. Ook zou een tweede kassa helpen, zodat het wachten korter wordt en de mensen met een goed gevoel naar buiten gaan.",
+    "form_schema": {
+      "sections": [
+        {
+          "heading": "Uw gegevens",
+          "rows": [
+            {
+              "kind": "static",
+              "label": "Naam",
+              "value": "Farida el Amrani"
+            },
+            {
+              "kind": "static",
+              "label": "E-mailadres",
+              "value": "f.elamrani@mailwijzer.nl"
+            },
+            {
+              "kind": "static",
+              "label": "Datum",
+              "value": "14 maart 2025"
+            },
+            {
+              "kind": "choice",
+              "label": "Hoe vaak koopt u iets bij Bakkerij De Korenbloem?",
+              "options": [
+                "Bijna elke dag",
+                "Twee of drie keer per week",
+                "Ongeveer één keer per week",
+                "Minder dan één keer per week"
+              ],
+              "multiple": false
+            }
+          ]
+        },
+        {
+          "heading": "Uw mening over het assortiment",
+          "rows": [
+            {
+              "kind": "text",
+              "label": "1. Welke producten koopt u het vaakst in onze winkel? Leg ook uit waarom u juist die producten kiest.",
+              "placeholder": "Schrijf twee of drie zinnen."
+            },
+            {
+              "kind": "text",
+              "label": "2. Bent u tevreden over onze openingstijden? Leg ook uit waarom wel of waarom niet.",
+              "placeholder": "Schrijf twee of drie zinnen."
+            },
+            {
+              "kind": "text",
+              "label": "3. Welk product mist u in ons assortiment? Leg ook uit waarom u dat product graag wilt kopen.",
+              "placeholder": "Schrijf twee of drie zinnen."
+            },
+            {
+              "kind": "text",
+              "label": "4. Wat vindt u van onze prijzen? Leg ook uit waarom u dat vindt.",
+              "placeholder": "Schrijf twee of drie zinnen."
+            },
+            {
+              "kind": "text",
+              "label": "5. Wij willen brood met minder zout gaan bakken. Wat vindt u van dat plan? Leg ook uit waarom.",
+              "placeholder": "Schrijf twee of drie zinnen."
+            },
+            {
+              "kind": "text",
+              "label": "6. Wat kunnen wij doen om het bezoek aan de winkel prettiger te maken? Leg ook uit waarom dat volgens u helpt.",
+              "placeholder": "Schrijf twee of drie zinnen."
+            }
+          ]
+        }
+      ]
+    }
+  },
+  {
+    "task_type": "picture_report",
+    "title": "Verslag eerste werkdag",
+    "prompt_html": "<p>U volgt de opleiding fietstechniek aan een vakschool. Bij die opleiding hoort een stage van vier maanden. Sinds deze week loopt u stage bij fietsenmakerij De Ronde Wiel in Zutphen. Uw eerste werkdag zit erop.</p><p>Uw praktijkbegeleider op school, mevrouw De Kok, vraagt van elke student een kort verslag van de eerste werkdag. Zij wil weten wat u gedaan hebt en hoe het gegaan is.</p><p><strong>Opdracht</strong></p><p>Schrijf een verslag over uw eerste werkdag in de fietsenmakerij. Gebruik alle drie de plaatjes en houd de volgorde van de plaatjes aan. De plaatjes worden niet bij uw verslag gevoegd, dus uw lezer ziet ze niet. Beschrijf daarom zo duidelijk dat de tekst ook zonder de plaatjes te begrijpen is. U mag de informatie zelf verzinnen.</p><p>Het doel van de tekst is uw praktijkbegeleider verslag doen van uw eerste werkdag, zodat zij weet welke werkzaamheden u gedaan hebt en hoe u die ervaren hebt.</p>",
+    "bullet_points": [
+      "U schrijft wanneer uw eerste werkdag was en hoe u die dag begon in de werkplaats.",
+      "U beschrijft wat de monteur u uitlegde over het gereedschap en de werkplaats.",
+      "U vertelt welke reparatie u zelf gedaan hebt en hoe dat ging.",
+      "U beschrijft hoe het contact met de klant aan de balie verliep aan het einde van de dag.",
+      "U noemt minimaal twee dingen die u die dag geleerd hebt en één ding dat u nog moeilijk vindt.",
+      "U schrijft welke afspraak u met de fietsenmakerij wilt maken voor de komende weken."
+    ],
+    "email_to": "l.dekok@vakschoolmiddenijssel.nl",
+    "email_subject": "Verslag eerste werkdag stage",
+    "greeting": "Geachte mevrouw De Kok,",
+    "closing": "Met vriendelijke groet,\nSamira el Amrani",
+    "model_answer": "Geachte mevrouw De Kok,\n\nZoals afgesproken stuur ik u een verslag van mijn eerste werkdag bij fietsenmakerij De Ronde Wiel in Zutphen. Die dag was maandag 8 april. Ik was er om kwart voor acht, omdat ik de eerste dag graag rustig wilde beginnen.\n\nDe eigenaar stelde mij voor aan de monteur, meneer Bosman. Hij nam mij eerst mee door de werkplaats en legde uit waar het gereedschap ligt. Hij liet mij de verschillende sleutels en tangen zien en vertelde welk gereedschap bij welke reparatie hoort. Ook zei hij dat ieder stuk gereedschap na het werk teruggelegd moet worden, zodat een collega het meteen kan vinden.\n\nDaarna mocht ik zelf aan het werk. Ik heb bij een damesfiets de binnenband van het achterwiel vervangen, terwijl meneer Bosman naast mij stond. Het wiel eraf halen ging goed, maar het terugzetten van de ketting kostte mij veel tijd. Hoewel ik langer bezig was dan een monteur, was de reparatie aan het eind netjes in orde.\n\nAan het eind van de middag kwam de klant haar fiets ophalen. Ik heb haar bij de balie uitgelegd wat ik gedaan had en wat de reparatie kostte. Zij was tevreden en dat vond ik een goed gevoel.\n\nIk heb die dag geleerd hoe ik een binnenband vervang en hoe ik het gereedschap moet gebruiken. Het contact met klanten vind ik nog moeilijk, omdat ik dan snel naar de juiste woorden zoek. Daarom wil ik graag afspreken dat ik de komende weken elke dag één klant zelf mag helpen.\n\nMet vriendelijke groet,\nSamira el Amrani",
+    "images": [
+      {
+        "slot": "schrijven-1-o11-p1",
+        "query": "bicycle shop mechanic explaining hand tools to young trainee in workshop",
+        "caption": "Uitleg over het gereedschap",
+        "variant": 0
+      },
+      {
+        "slot": "schrijven-1-o11-p2",
+        "query": "mechanic repairing bicycle inner tube rear wheel in repair workshop",
+        "caption": "Binnenband vervangen",
+        "variant": 1
+      },
+      {
+        "slot": "schrijven-1-o11-p3",
+        "query": "customer collecting repaired bicycle at bike shop counter",
+        "caption": "Klant haalt fiets op",
+        "variant": 2
+      }
+    ]
+  },
+  {
+    "task_type": "letter",
+    "title": "Sollicitatie buschauffeur",
+    "prompt_html": "<p>U woont in Zwolle en u werkt nu als bezorger bij een pakketdienst. U wilt graag ander werk, omdat u liever met mensen werkt en vaste diensten wilt. U heeft uw rijbewijs D en uw buspas gehaald bij een opleiding voor beroepschauffeurs.</p><p>In het regioblad staat een advertentie van vervoersbedrijf Vechtstreek Bus. Het bedrijf zoekt buschauffeurs voor het stads- en streekvervoer in de regio Zwolle. Nieuwe medewerkers krijgen eerst een inwerkperiode van zes weken. U wilt op deze vacature reageren met een sollicitatiebrief.</p><p>U stuurt uw brief naar:</p><p>Vechtstreek Bus<br>Afdeling Personeelszaken<br>Mevrouw H. Doornbos<br>Havenweg 24<br>8021 LK Zwolle</p><p><strong>Opdracht</strong></p><p>Schrijf een sollicitatiebrief aan mevrouw Doornbos. Schrijf ongeveer 150 tot 200 woorden. Gebruik de u-vorm. U mag de informatie over uzelf, uw werk en uw opleiding zelf verzinnen.</p><p>Het doel van de tekst is dat mevrouw Doornbos u uitnodigt voor een gesprek, omdat zij begrijpt waarom u solliciteert en waarom u geschikt bent voor de functie van buschauffeur.</p>",
+    "bullet_points": [
+      "U schrijft waarom u de brief stuurt en op welke vacature u reageert.",
+      "U legt uit waarom u wilt werken als buschauffeur en u noemt minimaal twee redenen.",
+      "U vertelt welk werk u nu doet en welke opleiding of diploma's u heeft.",
+      "U beschrijft twee eigenschappen van uzelf die belangrijk zijn voor dit werk.",
+      "U geeft aan wanneer u kunt beginnen en op welke dagen u beschikbaar bent.",
+      "U vraagt om een gesprek en u schrijft hoe het bedrijf u kan bereiken."
+    ],
+    "greeting": "Geachte mevrouw Doornbos,",
+    "closing": "Met vriendelijke groet,\n\nSamira El Haddad\nBloemendalstraat 17\n8011 PJ Zwolle\nTelefoon: 06 - 24 55 89 03",
+    "model_answer": "Geachte mevrouw Doornbos,\n\nIn het regioblad van deze week las ik uw advertentie voor de functie van buschauffeur in de regio Zwolle. Graag reageer ik op deze vacature, omdat het werk goed bij mij past.\n\nOp dit moment werk ik als bezorger bij een pakketdienst. Ik rijd elke dag door de stad en de dorpen in de omgeving, dus ik ken de wegen hier goed. Toch wil ik graag ander werk. Ik wil namelijk liever met mensen werken en niet alleen met pakketten. Bovendien vind ik vaste diensten belangrijk, zodat ik mijn werk en mijn gezin beter kan combineren.\n\nVorig jaar heb ik mijn rijbewijs D gehaald bij een opleiding voor beroepschauffeurs. Ook heb ik mijn buspas. Ik heb dus alle papieren die nodig zijn voor deze functie.\n\nIk ben een rustige en vriendelijke medewerker. Reizigers stellen vaak vragen over de route of de tijd, en ik neem altijd de tijd om hen te helpen. Daarnaast ben ik erg punctueel, waardoor ik nooit te laat kom.\n\nIk kan per 1 maart beginnen. Ik ben beschikbaar op alle dagen van de week en ik wil ook in het weekend werken.\n\nGraag vertel ik u meer over mijzelf in een gesprek. U kunt mij bellen op het nummer onderaan deze brief.\n\nMet vriendelijke groet,\n\nSamira El Haddad\nBloemendalstraat 17\n8011 PJ Zwolle\nTelefoon: 06 - 24 55 89 03"
+  }
+]

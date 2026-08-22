@@ -56,7 +56,7 @@ export default async function GebruiksvoorwaardenPage({ params }: Props) {
         <p>Door gebruik te maken van de website <strong>inburgeringoefenen.nl</strong> ga je akkoord met de onderstaande gebruiksvoorwaarden. Lees deze zorgvuldig door voordat je het platform gebruikt.</p>
 
         <h2>1. Over Inburgering Oefenen</h2>
-        <p>Inburgering Oefenen is een online oefenplatform voor de <strong>vier taalonderdelen van het inburgeringsexamen op niveau A2</strong>: Lezen, Luisteren, Schrijven en Spreken. Het platform biedt een gratis gedeelte — een korte oefenset per onderdeel en het eerste oefenexamen van elk onderdeel met een account — en <strong>betaalde maandabonnementen per onderdeel</strong> voor de overige oefenexamens. De inhoud wordt samengesteld en gecontroleerd door een gecertificeerde NT2-docent.</p>
+        <p>Inburgering Oefenen is een online platform voor de <strong>inburgering in Nederland</strong>. Het biedt oefenexamens voor de vier taalonderdelen — Lezen, Luisteren, Schrijven en Spreken — en kennisgidsen en hulpmiddelen over het hele traject, waaronder KNM en ONA. De oefenexamens zijn op dit moment beschikbaar op niveau A2. Het platform biedt een gratis gedeelte — een korte oefenset per onderdeel en het eerste oefenexamen van elk onderdeel met een account — en <strong>betaalde maandabonnementen per onderdeel</strong> voor de overige oefenexamens. De inhoud wordt samengesteld en gecontroleerd door een gecertificeerde NT2-docent.</p>
 
         <h2>2. Gebruik van het platform</h2>
         <p>Het platform is bestemd voor persoonlijk en niet-commercieel gebruik. Je mag het platform gebruiken om te oefenen voor het inburgeringsexamen. Het is niet toegestaan om:</p>

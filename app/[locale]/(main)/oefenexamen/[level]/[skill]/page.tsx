@@ -4,6 +4,7 @@ import { getTranslations } from 'next-intl/server';
 import { routing } from '@/i18n/routing';
 import { Link } from '@/i18n/navigation';
 import { SectionHeader, SkillIcon } from '@/components/site';
+import { DotField, HorizonBand, HorizonHero, ValidationChip } from '@/components/horizon';
 import {
   LEVELS,
   SKILLS,
@@ -45,9 +46,22 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   return {
     title: t('meta_title', vars),
     description: t('meta_description', vars),
-    // B1 has no content yet. Letting Google index forty empty "Binnenkort" grids would
-    // spend crawl budget on pages that answer nothing and invite a thin-content read of
-    // the whole section; they go back in the index when the docent publishes.
+    /*
+     * B1 stays out of the index — but the reason changed on 2026-08-21 and is worth stating,
+     * because the old one ("B1 has no content yet") is no longer true.
+     *
+     * B1 Lezen, Schrijven and Spreken now have ten published oefenexamens each. That content is
+     * machine-authored and awaiting the docent's review in /admin — the same model the A2
+     * dataset shipped under. Asking Google to index it before she has been through it would put
+     * unreviewed material in front of search traffic and stake the "echt door een docent
+     * gevalideerd" claim on it. So this is now a *review* gate, not an emptiness gate.
+     *
+     * B1 Luisteren has no content at all (no DUO reference material — see `data/skills.ts`),
+     * so it is doubly excluded.
+     *
+     * When the docent signs B1 off, this becomes the place to change, together with
+     * `app/sitemap.ts` (which lists `DEFAULT_LEVEL` only) and the `Course` node below.
+     */
     robots: { index: level === 'a2', follow: true },
     alternates: {
       canonical: `${BASE}/${locale}/${path}`,
@@ -82,6 +96,9 @@ export default async function SkillOverviewPage({ params }: Props) {
   const vars = { skill: name, skill_lower: name.toLowerCase(), level: levelLabel(level) };
 
   const tB = await getTranslations({ locale, namespace: 'breadcrumbs' });
+  // Reuses the homepage's own wording for the validation claim rather than adding a fourth
+  // translation of the same sentence — three copies of a claim is three places it can drift.
+  const tHome = await getTranslations({ locale, namespace: 'home' });
 
   const exams = await fetchExamsForSkill(level, skill.slug);
   const publishedByNumber = new Map(exams.map(e => [e.number, e]));
@@ -94,14 +111,15 @@ export default async function SkillOverviewPage({ params }: Props) {
    * full `Course` nodes for one `url` with different descriptions is a contradiction that no
    * validator reports and a search engine settles by picking one.
    *
-   * Emitted for A2 only. `generateMetadata` returns `robots: { index: false }` for B1 — forty
-   * empty "Binnenkort" slots — and shipping rich data for a page we ask Google to ignore says
-   * the opposite of the meta tag on the same page.
+   * Emitted for A2 only. `generateMetadata` returns `robots: { index: false }` for B1 while its
+   * content waits on the docent's review, and shipping rich data for a page we ask Google to
+   * ignore says the opposite of the meta tag on the same page.
    *
-   * `omitEmpty` matters here: B1's `itemCount` and `durationMinutes` are `null` (unverified,
-   * see `data/skills.ts`), and in JSON-LD an absent property means "not stated" while `0` is a
-   * claim. Applied even though only A2 renders today, so filling B1 in cannot silently publish
-   * a zero.
+   * `omitEmpty` matters here: B1 Luisteren's `itemCount` and `durationMinutes` are still `null`
+   * (no DUO reference material — see `data/skills.ts`), and in JSON-LD an absent property means
+   * "not stated" while `0` is a claim. Lezen, Schrijven and Spreken were filled in on
+   * 2026-08-21, so this now guards one onderdeel rather than a whole level — which is exactly
+   * when a guard like this is easiest to drop by accident.
    */
   const path = `oefenexamen/${level}/${skill.slug}`;
   const url = absUrl(locale, path);
@@ -149,8 +167,10 @@ export default async function SkillOverviewPage({ params }: Props) {
     <>
       {jsonLd && <JsonLd data={jsonLd} />}
       {/* ── HEADER ── */}
-      <section className="px-6 pt-16 pb-12" style={{ background: 'var(--gradient-brand)' }}>
-        <div className="max-w-5xl mx-auto">
+      {/* The exam-set header. `HorizonHero` in children mode rather than the structured form,
+          because this one carries its own stats list under the lede. */}
+      <HorizonHero houses={14} skylineHeight={84} containerClass="max-w-5xl pt-16 pb-16">
+        <div>
           <span className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-bold uppercase tracking-widest text-white/85 mb-5" style={{ background: 'rgba(255,255,255,0.15)' }}>
             <SkillIcon skill={skill.slug} size="sm" variant="bare" onDark />
             {tSkills('exams_count', { count: skill.examCount })}
@@ -186,11 +206,17 @@ export default async function SkillOverviewPage({ params }: Props) {
             </dl>
           )}
         </div>
-      </section>
+      </HorizonHero>
 
       {/* ── EXAM GRID ── */}
       <section className="py-16 px-6 bg-surface">
         <div className="max-w-5xl mx-auto">
+          {/* §7.4: the validation chip sits on every exam-set header. This is the page where the
+              claim is load-bearing — it is what the visitor is being asked to trust before paying. */}
+          <div className="mb-8">
+            <ValidationChip>{tHome('hero_badge')}</ValidationChip>
+          </div>
+
           {!anyPublished && (
             <div className="rounded-2xl p-7 mb-8 bg-surface-container-lowest" style={{ boxShadow: 'var(--shadow-card-md)', borderLeft: '3px solid var(--color-secondary-container)' }}>
               <h2 className="font-headline font-bold text-on-surface text-base mb-1.5">{t('not_ready_title')}</h2>
@@ -209,8 +235,8 @@ export default async function SkillOverviewPage({ params }: Props) {
                   {available ? (
                     <a
                       href={`/${locale}/oefenexamen/${level}/${skill.slug}/${number}`}
-                      className={`exam-card${free ? '' : ' locked'} flex flex-col gap-3 p-6 rounded-2xl bg-surface-container-lowest no-underline`}
-                      style={{ boxShadow: 'var(--shadow-card-md)' }}
+                      className={`exam-card${free ? '' : ' locked'} relative flex flex-col gap-3 p-6 pb-7 rounded-2xl bg-surface-container-lowest overflow-hidden no-underline`}
+                      style={{ boxShadow: 'var(--shadow-ambient)' }}
                     >
                       <div className="flex items-center justify-between gap-2">
                         <span className="text-xs font-bold uppercase tracking-widest text-on-surface-variant/70">
@@ -219,7 +245,7 @@ export default async function SkillOverviewPage({ params }: Props) {
                         <span
                           className="text-[0.68rem] font-bold uppercase tracking-widest px-2.5 py-1 rounded-full"
                           style={free
-                            ? { background: '#f0fdf4', color: '#15803d' }
+                            ? { background: 'rgba(254,118,44,0.16)', color: 'var(--color-secondary)' }
                             : { background: 'var(--color-surface-container)', color: 'var(--color-on-surface-variant)' }}
                         >
                           {free ? t('free') : t('locked')}
@@ -231,18 +257,25 @@ export default async function SkillOverviewPage({ params }: Props) {
                       <span className="text-sm font-semibold mt-auto" style={{ color: '#a24000' }}>
                         {free ? `${t('start')} →` : `${t('unlock')} →`}
                       </span>
+                      {/* The band marks the one slot that is open to everyone. Three
+                          not-openable reasons have to stay visually distinct (unpublished /
+                          paid-only / free-and-open), so the distinction is carried by the band and
+                          the chip together, never by one signal doing both jobs. */}
+                      {free && <HorizonBand height={3} className="absolute left-0 right-0 bottom-0" />}
                     </a>
                   ) : (
-                    <div
-                      className="flex flex-col gap-3 p-6 rounded-2xl bg-surface-container-low opacity-60"
-                      style={{ boxShadow: 'var(--shadow-card)' }}
-                    >
+                    /* §7.2b: never grey a not-yet-shipped surface out with `opacity` — it makes
+                       the text fail contrast and reads as broken rather than as forthcoming. The
+                       whole tile drops to the neutral ramp instead, and the dot field says
+                       "nothing here yet" the way it does in every other empty state. */
+                    <div className="relative flex flex-col gap-3 p-6 rounded-2xl bg-surface-container-low overflow-hidden">
+                      <DotField on="dark" size={14} />
                       <div className="flex items-center justify-between gap-2">
                         <span className="text-xs font-bold uppercase tracking-widest text-on-surface-variant/60">
                           {t('exam_label', { number })}
                         </span>
                       </div>
-                      <p className="font-headline font-bold text-on-surface-variant text-base leading-snug">
+                      <p className="relative font-headline font-bold text-on-surface-variant text-base leading-snug">
                         {tSkills('coming_soon')}
                       </p>
                     </div>

@@ -10,13 +10,25 @@ import { routing } from '@/i18n/routing';
 import { absUrl, alternatesFor } from '@/lib/schema';
 import GuideHub from '../_components/GuideHub';
 
-type Props = { params: Promise<{ locale: string }> };
+/**
+ * `searchParams` is here only for `?fase=` — which of the three fasen the route opens on. It is a
+ * deep-link convenience (the strip on a guide page links back with it), never state the page writes
+ * back: switching fase on the hub is a `tablist`, not a navigation. See `RouteExplorer`.
+ *
+ * Reading `searchParams` normally opts a route out of static generation. It costs nothing here:
+ * every `[locale]` route in this app already builds as dynamic (`ƒ`), so the hub was never
+ * prerendered to begin with. `generateStaticParams` stays for the locale enumeration.
+ */
+type Props = {
+  params: Promise<{ locale: string }>;
+  searchParams: Promise<{ fase?: string }>;
+};
 
 export async function generateStaticParams() {
   return routing.locales.map(locale => ({ locale }));
 }
 
-export async function generateMetadata({ params }: Props): Promise<Metadata> {
+export async function generateMetadata({ params }: Pick<Props, 'params'>): Promise<Metadata> {
   const { locale } = await params;
   const t = await getTranslations({ locale, namespace: 'guides.inburgering' });
   return {
@@ -33,8 +45,9 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   };
 }
 
-export default async function InburgeringHubPage({ params }: Props) {
+export default async function InburgeringHubPage({ params, searchParams }: Props) {
   const { locale } = await params;
+  const { fase } = await searchParams;
   setRequestLocale(locale);
-  return <GuideHub section="inburgering" locale={locale} />;
+  return <GuideHub section="inburgering" locale={locale} fase={fase} />;
 }

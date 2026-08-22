@@ -12,9 +12,16 @@ import { available, skipReason, mintSession, applySession, setExamFree } from '.
  * ## The fixtures, and why they are B1
  * A gate can only be tested on an exam that has items in it: without content the player calls
  * `notFound()` before it ever reaches the entitlement check, and the test would pass for the wrong
- * reason. On a seeded database the exams that have content are B1 exam 1 of each onderdeel, which
- * ship **published and not free** — so those are the paid fixtures, and one of them is borrowed as
- * the free fixture for the length of the run. `setExamFree` restores it afterwards.
+ * reason. The exams that have content are B1's, which ship **published and not free** — so those
+ * are the paid fixtures, and one of them is borrowed as the free fixture for the length of the run.
+ * `setExamFree` restores it afterwards.
+ *
+ * **The free fixture was B1 Luisteren until 2026-08-21, and that was the wrong-reason trap this
+ * comment warns about.** `seed.sql` seeds no exam items at all, so B1 Luisteren exam 1 was empty
+ * and 404'd before any gate was reached. It is *still* empty — B1 Luisteren has no DUO reference
+ * material and is deliberately unauthored (see `data/skills.ts`). The three onderdelen that were
+ * authored on 2026-08-21 — Lezen, Schrijven and Spreken — are the ones with content, so all three
+ * fixtures now point at those, and Schrijven is the one borrowed as free.
  *
  * Pure entitlement arithmetic (a bare `lezen` meaning A2, expiry maths, the bundle) is unit-tested
  * in `tests-unit/entitlements.test.ts`, where it needs no fixture at all. Only the wiring is here.
@@ -22,7 +29,7 @@ import { available, skipReason, mintSession, applySession, setExamFree } from '.
 
 test.skip(!available(), skipReason());
 
-const FREE = '/nl/oefenexamen/b1/luisteren/1';
+const FREE = '/nl/oefenexamen/b1/schrijven/1';
 const PAID = '/nl/oefenexamen/b1/lezen/1';
 const OTHER_PAID = '/nl/oefenexamen/b1/spreken/1';
 
@@ -31,7 +38,7 @@ let restoreFree = null;
 
 test.beforeAll(async () => {
   if (!available()) return;
-  restoreFree = await setExamFree('b1', 'luisteren', 1, true);
+  restoreFree = await setExamFree('b1', 'schrijven', 1, true);
 });
 
 test.afterAll(async () => {
@@ -114,7 +121,11 @@ test.describe('a module purchase', () => {
     // The two screens disagreed before: the per-skill page gated on "has any paid plan" while the
     // overview gated on module ownership, so an owned module's slots all rendered locked.
     await page.goto('/nl/dashboard/b1/lezen');
-    await expect(page.locator('a[href*="/oefenexamen/b1/lezen/1"]')).toBeVisible();
+    // `href$=` and not `href*=`: with all ten B1 slots published and owned, every one of them is
+    // a link, and a substring match on ".../lezen/1" also matches ".../lezen/10" — two elements,
+    // which strict mode rejects. The loose selector only ever worked because the other nine slots
+    // were unpublished and therefore not links.
+    await expect(page.locator('a[href$="/oefenexamen/b1/lezen/1"]')).toBeVisible();
   });
 
   test('access lapses by date after a cancellation', async ({ page, context }) => {

@@ -1,0 +1,411 @@
+[
+  {
+    "section": "website",
+    "title": "Thuis studeren, samen leren: zo werkt een opleiding bij Studiecentrum Nieuwveld",
+    "intro": "Deze tekst komt van de website van een opleider. De tekst gaat over opleidingen waarbij studenten thuis studeren en één keer per twee weken een avondles volgen.",
+    "body_html": "<p><strong>I</strong> Studiecentrum Nieuwveld verzorgt sinds 2009 opleidingen voor mensen die willen leren terwijl zij blijven werken. Het grootste deel van de lesstof studeert u thuis, op de momenten die u zelf uitkiest. Daarnaast komt u één keer per twee weken naar een avondles op een van onze vier locaties: Zwolle, Amersfoort, Breda en Groningen. Wie uitsluitend achter de computer studeert, mist meestal het contact met docenten en medestudenten. Uit onze eigen cijfers blijkt dat juist die studenten vaker stoppen. Daarom hebben wij thuisstudie en avondlessen aan elkaar gekoppeld.</p><p><strong>II</strong> Zodra u bent ingeschreven, krijgt u toegang tot de digitale leeromgeving. Daar vindt u per week een planning, kennisclips van ongeveer tien minuten en opdrachten die u zelf inlevert. Reken op een studiebelasting van gemiddeld twaalf uur per week: dat is het aantal uren dat u naast de lessen aan lezen, opdrachten en voorbereiding besteedt. Uw docent kijkt ingeleverd werk binnen vijf werkdagen na en geeft daar schriftelijk commentaar bij. Hebt u tussendoor een vraag over de lesstof, dan kunt u die stellen in het vragenforum van uw eigen groep.</p><p><strong>III</strong> De avondlessen zijn op dinsdag of donderdag van 18.30 tot 21.30 uur. In de les gaat het niet om uitleg die u ook in een kennisclip kunt terugkijken, maar om oefenen, discussiëren en samenwerken. Bij de theorielessen is aanwezigheid niet verplicht, hoewel wij die sterk aanraden. Van elke theorieles maken wij een opname, die vier weken beschikbaar blijft. Voor de praktijklessen van de opleidingen in de zorg geldt een uitzondering: daar moet u bij minimaal 80 procent van de bijeenkomsten aanwezig zijn, omdat u vaardigheden samen met medestudenten oefent.</p><p><strong>Kosten</strong></p><p><strong>IV</strong> Voor het eerste studiejaar houdt u rekening met de volgende bedragen:</p><table><tr><th>Onderdeel</th><th>Bedrag</th></tr><tr><td>Lesgeld per studiejaar</td><td>€ 2.150</td></tr><tr><td>Examengeld (eenmalig)</td><td>€ 180</td></tr><tr><td>Studieboeken (schatting)</td><td>€ 240</td></tr></table><p>Het lesgeld kunt u in één keer betalen of in tien maandelijkse termijnen van € 215; wij rekenen daarvoor geen extra kosten. Betaalt uw werkgever mee, dan sturen wij de rekening rechtstreeks naar het bedrijf. Studenten die de opleiding helemaal zelf betalen, kunnen bij de overheid informeren naar een lening voor lesgeld.</p><p><strong>V</strong> Aanmelden kan het hele jaar door. Na uw aanmelding volgt altijd een intakegesprek van ongeveer een half uur, telefonisch of op locatie, waarin wij samen kijken of uw vooropleiding en werkervaring bij de opleiding passen. Daarna begint een proefperiode van dertig dagen: zegt u binnen die periode op, dan betaalt u niets. Stopt u later, dan geldt een opzegtermijn van twee maanden. Veel mensen denken dat thuisstudie eenzaam is. Wij nemen die zorg serieus. Iedere student komt daarom in een vaste studiegroep van maximaal acht personen en heeft een mentor, die twee keer per blok belt om te vragen hoe het gaat.</p><p><strong>VI</strong> Hebt u vragen over de inhoud van een opleiding, dan neemt u contact op met de afdeling Studentenzaken. Werkt de digitale leeromgeving niet, dan belt u de technische helpdesk, die op werkdagen bereikbaar is van 8.30 tot 21.00 uur.</p><p>Studiecentrum Nieuwveld<br>Afdeling Studentenzaken<br>Postbus 4180<br>8000 AC Zwolle<br>Telefoon: 088 - 421 30 00<br>Technische helpdesk: 088 - 421 30 99<br>studentenzaken@nieuwveld-opleidingen.nl</p>",
+    "questions": [
+      {
+        "prompt": "Wat wil de schrijver duidelijk maken met de opmerking over studenten die alleen achter de computer studeren (alinea I)?",
+        "options": [
+          "Dat de avondlessen belangrijker zijn dan het werk dat studenten thuis doen.",
+          "Waarom de opleiding thuisstudie en avondlessen met elkaar verbindt.",
+          "Dat studenten in vier verschillende steden les kunnen volgen."
+        ],
+        "correct": 1,
+        "explanation": "In alinea I staat dat studenten die alleen online werken vaker stoppen; daarom zijn thuisstudie en avondlessen gekoppeld. Dat de opleiding vier locaties heeft, staat er wel, maar dat is niet de reden voor de combinatie."
+      },
+      {
+        "prompt": "Wat betekent het woord 'opzegtermijn' in alinea V?",
+        "options": [
+          "De periode waarin u nog kosteloos kunt stoppen met de opleiding.",
+          "Het moment waarop u het examengeld moet hebben betaald.",
+          "De tijd die nog doorloopt voordat uw inschrijving werkelijk eindigt."
+        ],
+        "correct": 2,
+        "explanation": "In alinea V staat dat u na de proefperiode van dertig dagen nog twee maanden aan de opleiding vastzit; dat is de opzegtermijn. De periode waarin stoppen gratis is, is juist de proefperiode."
+      },
+      {
+        "prompt": "Wat staat er in alinea III over aanwezigheid bij de lessen?",
+        "options": [
+          "Alle lessen moet u volgen, behalve als u de opname bekijkt.",
+          "Wie een les mist, kan de opname het hele jaar terugkijken.",
+          "Bij alle lessen moet u minimaal 80 procent van de tijd aanwezig zijn.",
+          "Bij theorielessen is aanwezigheid vrijwillig; bij praktijklessen in de zorg niet."
+        ],
+        "correct": 3,
+        "explanation": "Alinea III maakt onderscheid: theorielessen zijn niet verplicht, maar bij praktijklessen in de zorg geldt een minimum van 80 procent. De opnames blijven vier weken beschikbaar, niet een heel jaar."
+      },
+      {
+        "prompt": "Meneer Bakker kan het lesgeld niet in één keer betalen. Wat kan hij volgens alinea IV doen?",
+        "options": [
+          "Hij kan het lesgeld in tien termijnen van € 215 betalen, zonder dat het duurder wordt.",
+          "Hij kan de eerste twee maanden wachten met betalen en daarna alles overmaken.",
+          "Hij kan het examengeld en de boeken later betalen dan het lesgeld zelf."
+        ],
+        "correct": 0,
+        "explanation": "Alinea IV noemt tien maandelijkse termijnen van € 215 zonder extra kosten. Over uitstel van examengeld of boeken zegt de tekst niets."
+      },
+      {
+        "prompt": "Mevrouw Yildiz twijfelt: zij vindt thuis studeren te eenzaam. Welk argument uit de tekst kan zij gebruiken om toch te beginnen?",
+        "options": [
+          "In de digitale leeromgeving kan zij haar docent vragen stellen over de lesstof.",
+          "Zij komt in een vaste groep van maximaal acht mensen en wordt gebeld door een mentor.",
+          "De theorielessen worden opgenomen, zodat zij nooit iets van de uitleg mist."
+        ],
+        "correct": 1,
+        "explanation": "In alinea V reageert de opleider op precies die zorg: een vaste studiegroep en een mentor die regelmatig belt. Het vragenforum (alinea II) gaat over de lesstof, niet over het contact met medestudenten."
+      },
+      {
+        "prompt": "In welke alinea vindt iemand het antwoord op de vraag: wie kan ik bellen als de digitale leeromgeving niet werkt?",
+        "options": [
+          "In alinea II.",
+          "In alinea IV.",
+          "In alinea VI."
+        ],
+        "correct": 2,
+        "explanation": "Alinea VI noemt de technische helpdesk en de openingstijden daarvan. Alinea II gaat wel over de leeromgeving, maar niet over storingen."
+      },
+      {
+        "prompt": "Wat is het belangrijkste doel van deze tekst?",
+        "options": [
+          "Uitleggen hoe de opleidingen zijn opgezet en wat studenten kunnen verwachten.",
+          "Studenten overhalen om te kiezen voor een opleiding in de zorg.",
+          "Waarschuwen dat een opleiding naast een baan erg veel tijd kost."
+        ],
+        "correct": 0,
+        "explanation": "De tekst beschrijft achtereenvolgens de opzet, de lessen, de kosten en de aanmelding, dus hij informeert. De zorgopleidingen komen alleen als uitzondering in alinea III voorbij."
+      }
+    ]
+  },
+  {
+    "section": "studieboek",
+    "title": "Het functioneringsgesprek: samen terugkijken en vooruitkijken",
+    "intro": "Deze tekst komt uit een cursusmap voor werknemers die een training over loopbaan en werkoverleg volgen. De tekst gaat over het functioneringsgesprek en over de manier waarop u zich daarop voorbereidt.",
+    "body_html": "<p><strong>I</strong> Bijna iedere werknemer in Nederland heeft één keer per jaar een functioneringsgesprek met zijn leidinggevende. In zo'n gesprek kijkt u samen terug op het afgelopen jaar en maakt u afspraken over de periode die komt. Het gesprek gaat over uw taken, over de samenwerking met collega's en over de dingen die u nog wilt leren. Belangrijk is dat een functioneringsgesprek twee kanten heeft: niet alleen uw chef geeft zijn mening, ook u mag zeggen wat u van het werk en van de leiding vindt. Daarom noemen we het een gesprek en geen beoordeling.</p><p><strong>Verschil met een beoordelingsgesprek</strong></p><p><strong>II</strong> Veel werknemers halen het functioneringsgesprek en het beoordelingsgesprek door elkaar, hoewel er een duidelijk verschil is. Bij een beoordelingsgesprek geeft de werkgever een oordeel over uw prestaties, en dat oordeel kan gevolgen hebben voor uw salaris of voor de verlenging van uw contract. Een functioneringsgesprek is bedoeld om samen te bespreken hoe het werk beter kan gaan, waardoor de sfeer meestal opener is. Toch maakt de werkgever ook van dit gesprek een verslag. Dat verslag komt in uw personeelsdossier, zodat u er later naar kunt verwijzen als een afspraak niet wordt nagekomen.</p><p><strong>III</strong> Een goede voorbereiding kost tijd, maar levert veel op. Werknemers die niets voorbereiden, beginnen vaak te praten over de laatste twee weken, terwijl het gesprek over een heel jaar gaat. Neem daarom ongeveer een uur om de volgende punten op papier te zetten:</p><ul><li>welke taken goed gingen en welke u zwaar vond;</li><li>welke afspraken van vorig jaar wel of niet zijn gelukt;</li><li>welke cursus of opleiding u zou willen volgen;</li><li>welke steun u van uw leidinggevende nodig hebt.</li></ul><p><strong>IV</strong> Wie iets wil aankaarten, doet dat het beste met een concreet voorbeeld. Stel dat u vindt dat u te weinig uitleg krijgt bij nieuwe opdrachten. Zeg dan niet \"u legt nooit iets uit\", maar noem een situatie: \"Op 14 maart kreeg ik een nieuw computerprogramma en toen heb ik drie dagen zelf uitgezocht hoe het werkte.\" Zo'n voorbeeld is moeilijk tegen te spreken, terwijl een algemene klacht bijna altijd tot discussie leidt. Bovendien ziet uw leidinggevende dan meteen waar de oplossing zit: een korte instructie bij nieuwe programma's.</p><p><strong>V</strong> In de wet staat niet dat een werkgever een functioneringsgesprek moet houden. In veel cao's is het wel geregeld, soms zelfs met de verplichting om het verslag binnen twee weken aan de werknemer te geven. Krijgt u al twee jaar geen gesprek, dan mag u er zelf om vragen; dat is geen brutaliteit, maar een normaal verzoek. Werkt u in een bedrijf met een ondernemingsraad, dan kunt u dit onderwerp ook via de medezeggenschap laten bespreken. Voor uitzendkrachten geldt vaak een andere regeling, omdat het uitzendbureau en niet de opdrachtgever de formele werkgever is.</p><p><strong>VI</strong> Na het gesprek controleert u het verslag. Bent u het ergens niet mee eens, dan kunt u schriftelijk reageren; die reactie wordt aan het verslag toegevoegd. Zet in uw agenda wanneer u de afspraken opnieuw wilt bekijken, bijvoorbeeld na een half jaar. Zo blijft het gesprek niet één losse middag in het jaar, maar wordt het een middel om te groeien in uw werk.</p>",
+    "questions": [
+      {
+        "prompt": "Waarom heet het gesprek volgens alinea I een 'gesprek' en geen 'beoordeling'?",
+        "options": [
+          "Omdat de leidinggevende alleen over de taken van het afgelopen jaar praat.",
+          "Omdat ook de werknemer zijn mening over het werk en de leiding kan geven.",
+          "Omdat er geen verslag van wordt gemaakt voor het personeelsdossier."
+        ],
+        "correct": 1,
+        "explanation": "In alinea I staat dat het gesprek twee kanten heeft: ook de werknemer mag zeggen wat hij vindt. Dat er geen verslag wordt gemaakt, is onjuist; alinea II zegt juist dat er wél een verslag komt."
+      },
+      {
+        "prompt": "Wat staat er in alinea II over het beoordelingsgesprek?",
+        "options": [
+          "Het wordt gehouden als het functioneringsgesprek is mislukt.",
+          "De uitkomst kan invloed hebben op het loon of het contract.",
+          "Het verslag ervan komt niet in het personeelsdossier.",
+          "Het is voor werknemers met een tijdelijk contract verplicht."
+        ],
+        "correct": 1,
+        "explanation": "Alinea II noemt dat het oordeel gevolgen kan hebben voor salaris of contractverlenging. Het dossier wordt in dezelfde alinea genoemd, maar dat geldt juist ook voor het verslag van het functioneringsgesprek."
+      },
+      {
+        "prompt": "Wat wil de schrijver duidelijk maken met het voorbeeld over het nieuwe computerprogramma in alinea IV?",
+        "options": [
+          "Dat werknemers nieuwe programma's beter zelf leren gebruiken.",
+          "Dat een klacht over uitleg meestal tot discussie moet leiden.",
+          "Dat een concrete situatie sterker werkt dan een algemeen verwijt."
+        ],
+        "correct": 2,
+        "explanation": "Alinea IV gebruikt het voorbeeld om te laten zien dat een concreet geval moeilijk tegen te spreken is, terwijl een algemene klacht discussie oplevert. Dat werknemers het beter zelf uitzoeken, is niet het punt van de schrijver."
+      },
+      {
+        "prompt": "Mevrouw Bakker vraagt zich af of haar werkgever verplicht is een functioneringsgesprek te houden. In welke alinea vindt zij het antwoord?",
+        "options": [
+          "In alinea II",
+          "In alinea III",
+          "In alinea V",
+          "In alinea VI"
+        ],
+        "correct": 2,
+        "explanation": "Alinea V legt uit dat de wet dit niet verplicht, maar dat het in veel cao's wel is geregeld. Alinea II gaat over het verschil tussen de twee soorten gesprekken, niet over verplichtingen."
+      },
+      {
+        "prompt": "Binnen welke termijn moet de werknemer volgens sommige cao's het verslag ontvangen?",
+        "options": [
+          "Binnen twee weken",
+          "Binnen een maand",
+          "Binnen een half jaar"
+        ],
+        "correct": 0,
+        "explanation": "In alinea V staat dat cao's soms voorschrijven dat het verslag binnen twee weken aan de werknemer wordt gegeven. Het half jaar in alinea VI gaat over het opnieuw bekijken van de afspraken."
+      }
+    ]
+  },
+  {
+    "section": "folder",
+    "title": "Hulp bij schulden: u staat er niet alleen voor",
+    "intro": "Deze tekst komt uit een folder van de gemeente Ravenstede over schuldhulpverlening. In de folder leest u wat de gemeente kan doen voor inwoners met geldproblemen.",
+    "body_html": "<p><strong>I</strong> Bijna iedereen krijgt weleens een rekening die net op het verkeerde moment komt. Meestal lost dat zichzelf op, maar soms groeit een klein bedrag uit tot een probleem dat u niet meer alleen kunt oplossen. In de gemeente Ravenstede hebben ongeveer 2.400 huishoudens een schuld die hoger is dan hun maandinkomen. Vaak wachten deze mensen lang voordat ze om hulp vragen, omdat ze zich schamen of denken dat hulp geld kost. Dat is jammer, want hoe eerder u aanklopt, hoe meer mogelijkheden er zijn. Schuldhulpverlening van de gemeente is gratis voor iedereen die in Ravenstede woont, ook als u werkt of een eigen bedrijf heeft.</p><p><strong>Wat gebeurt er als u zich meldt?</strong></p><p><strong>II</strong> Na uw aanmelding krijgt u binnen tien werkdagen een uitnodiging voor een eerste gesprek met een geldcoach. In dat gesprek maakt u samen een overzicht van uw inkomsten, uw vaste lasten en al uw schulden. Neem daarom uw loonstrook of uitkeringsspecificatie mee, de post van schuldeisers en een recent bankafschrift. Veel mensen vinden dit gesprek spannend, terwijl het juist rust geeft: pas als alles op papier staat, weet u waar u aan toe bent. De geldcoach beoordeelt daarna welke vorm van hulp bij uw situatie past. Soms is een paar keer advies over uw administratie al voldoende, waardoor een langer traject niet nodig is.</p><p><strong>III</strong> Is uw schuld te groot om zelf af te lossen, dan kan de gemeente een schuldregeling voorstellen. Onze medewerkers onderhandelen dan met al uw schuldeisers over een bedrag dat u wel kunt betalen. U lost drie jaar lang een vast bedrag af, dat past bij uw inkomen. Wat daarna nog openstaat, wordt door de schuldeisers kwijtgescheiden. Daar staat wel iets tegenover: tijdens die drie jaar mag u geen nieuwe schulden maken en moet u elke verandering in uw inkomen direct doorgeven. Ook moet u meewerken aan het vinden van werk als u kunt werken. Houdt u zich niet aan deze afspraken, dan stopt de regeling en herleven de oude schulden.</p><p><strong>IV</strong> Niet iedereen komt meteen in een schuldregeling. Wie een boete van het Openbaar Ministerie of een schuld door fraude heeft, kan die schuld niet laten kwijtschelden. Ook bij een lopende scheiding of een bedrijf dat nog niet is beëindigd, is een regeling vaak nog niet mogelijk. Wij laten u in zo'n geval niet los. U krijgt dan begeleiding om uw situatie eerst stabiel te maken, bijvoorbeeld door dwangbevelen te stoppen en betaalafspraken te maken. Zodra de blokkade is opgelost, bekijken we opnieuw of een regeling kan starten.</p><p><strong>V</strong> Dreigt er iets acuut, dan hoeft u niet te wachten op een gewone afspraak. Bij een aangekondigde huisuitzetting of het afsluiten van gas, water of licht belt u ons meteen. Wij nemen dan binnen drie werkdagen contact op met de verhuurder of het energiebedrijf. In 2023 konden wij op deze manier 87 van de 94 aangemelde huisuitzettingen voorkomen. Vraag ook altijd na of u recht heeft op toeslagen of op de energietoeslag van de gemeente; ongeveer een op de vijf inwoners laat geld liggen waar hij recht op heeft.</p><p><strong>VI</strong> U kunt zich aanmelden via het formulier op onze website of langskomen bij het Geldpunt aan de Kerkstraat 12, elke werkdag tussen 9.00 en 13.00 uur. Wilt u eerst anoniem uw vragen stellen? Bel dan het informatienummer 0800 - 22 44 66. Twijfelt u of uw probleem groot genoeg is? Meld u toch aan. Een gesprek verplicht u tot niets.</p><p>Gemeente Ravenstede<br>Afdeling Werk en Inkomen<br>Postbus 3180<br>4820 AB Ravenstede</p>",
+    "questions": [
+      {
+        "prompt": "Wat wil de schrijver in alinea I duidelijk maken met de opmerking dat mensen zich schamen of denken dat hulp geld kost?",
+        "options": [
+          "Dat veel inwoners onnodig lang wachten met hulp vragen.",
+          "Dat de gemeente te weinig bekendheid geeft aan haar hulp.",
+          "Dat mensen met werk vaak buiten de regeling vallen.",
+          "Dat schulden in Ravenstede sneller groeien dan elders."
+        ],
+        "correct": 0,
+        "explanation": "In alinea I staat dat mensen om deze redenen lang wachten, terwijl er bij een snelle melding meer mogelijk is. Dat de hulp gratis is, wordt genoemd om dat misverstand weg te nemen, niet om te zeggen dat werkenden erbuiten vallen."
+      },
+      {
+        "prompt": "Wat moet u volgens alinea II meenemen naar het eerste gesprek?",
+        "options": [
+          "Een overzicht dat u zelf al van uw schulden heeft gemaakt.",
+          "Bewijs van uw inkomen, brieven van schuldeisers en een bankafschrift.",
+          "Een verklaring van uw werkgever over uw loon en uw contract."
+        ],
+        "correct": 1,
+        "explanation": "Alinea II noemt de loonstrook of uitkeringsspecificatie, de post van schuldeisers en een recent bankafschrift. Het overzicht van inkomsten en schulden maakt u juist samen met de geldcoach tijdens dat gesprek."
+      },
+      {
+        "prompt": "Hoe lang duurt het aflossen bij een schuldregeling en wat gebeurt er met de rest van de schuld?",
+        "options": [
+          "Tien werkdagen aflossen, daarna beslissen de schuldeisers opnieuw.",
+          "Drie jaar aflossen, daarna wordt het resterende bedrag kwijtgescheiden.",
+          "Drie jaar aflossen, daarna betaalt u de rest in kleine termijnen."
+        ],
+        "correct": 1,
+        "explanation": "In alinea III staat dat u drie jaar een vast bedrag aflost en dat de schuldeisers het restant kwijtschelden. De tien werkdagen uit alinea II gaan over de uitnodiging voor het eerste gesprek."
+      },
+      {
+        "prompt": "Meneer Bekkers heeft nog een eigen bedrijf dat niet is opgeheven. In welke alinea vindt hij het antwoord op de vraag wat de gemeente dan voor hem kan doen?",
+        "options": [
+          "In alinea II",
+          "In alinea III",
+          "In alinea IV",
+          "In alinea V"
+        ],
+        "correct": 2,
+        "explanation": "Alinea IV gaat over situaties waarin een regeling nog niet kan starten, zoals een bedrijf dat nog niet beëindigd is, en over de begeleiding die dan wel wordt gegeven. Alinea III beschrijft alleen de regeling zelf."
+      },
+      {
+        "prompt": "Wat betekent 'herleven de oude schulden' in alinea III?",
+        "options": [
+          "De schuldeisers krijgen hun oude vorderingen weer helemaal terug.",
+          "De schulden worden opnieuw berekend met een lager maandbedrag.",
+          "De gemeente neemt de betaling van de oude schulden over."
+        ],
+        "correct": 0,
+        "explanation": "Alinea III zegt dat de regeling stopt als u de afspraken niet nakomt; de oude schulden gelden dan weer volledig. Van een nieuwe, lagere berekening is geen sprake."
+      },
+      {
+        "prompt": "Mevrouw Talib heeft een brief gekregen dat haar stroom volgende week wordt afgesloten. Welk argument uit de tekst kan zij gebruiken om nú te bellen?",
+        "options": [
+          "Zij hoeft dan geen bewijs van haar inkomen te verzamelen.",
+          "De gemeente kan bij zo'n dreiging binnen drie werkdagen ingrijpen.",
+          "Zij krijgt bij een afsluiting automatisch de energietoeslag."
+        ],
+        "correct": 1,
+        "explanation": "Volgens alinea V neemt de gemeente bij een dreigende afsluiting of huisuitzetting binnen drie werkdagen contact op met het energiebedrijf of de verhuurder. De energietoeslag moet u volgens diezelfde alinea zelf navragen; die komt niet automatisch."
+      }
+    ]
+  },
+  {
+    "section": "artikel",
+    "title": "De kinderboerderij draait op vrijwilligers",
+    "intro": "Deze tekst komt uit een wijkkrant. De tekst gaat over kinderboerderij De Hooiberg, die vrijwel volledig door vrijwilligers wordt gerund.",
+    "body_html": "<p><strong>I</strong> Kinderboerderij De Hooiberg in de wijk Meerhoven bestaat dit jaar vijfentwintig jaar. Elke dag komen er kinderen kijken naar de geiten, de konijnen en de twee ezels. Wat veel bezoekers niet weten, is dat er maar één betaalde medewerker in dienst is: bedrijfsleider Karima Yildiz. Zij werkt vierentwintig uur per week en regelt de administratie, de dierenarts en het onderhoud van de gebouwen. Al het andere werk wordt gedaan door zeventig vrijwilligers. \"Zonder hen zouden we binnen een week moeten sluiten\", zegt Yildiz. \"De gemeente betaalt ongeveer de helft van onze kosten. De rest halen we uit donaties, de verkoop van eieren en de opbrengst van het theehuis.\"</p><p><strong>II</strong> De vrijwilligers worden ingedeeld in vier groepen, die elk hun eigen taken hebben. De dierverzorgers voeren de dieren en maken de hokken schoon; zij komen vaak al om half acht 's ochtends. De klusgroep repareert hekken, dakgoten en schuurdeuren. In het theehuis staan gastvrouwen en gastheren die koffie en limonade verkopen. Ten slotte is er een groep die schoolklassen ontvangt en uitleg geeft over de dieren. Wie zich aanmeldt, hoeft geen ervaring te hebben, maar moet wel minstens één vaste ochtend of middag per week beschikbaar zijn. Yildiz legt uit waarom die eis er is: \"Dieren hebben rust en regelmaat nodig. Als het elke dag een ander gezicht is, worden ze onrustig en gaat er sneller iets mis.\"</p><p><strong>III</strong> Nieuwe vrijwilligers beginnen met een proefperiode van zes weken. In die weken lopen ze mee met een ervaren collega, de zogenoemde begeleider. Na zes weken volgt een gesprek waarin allebei de partijen mogen zeggen of ze doorgaan. Ongeveer één op de vijf aanmeldingen stopt in die eerste periode, meestal omdat het werk zwaarder is dan verwacht. \"Mensen denken soms dat vrijwilligerswerk met dieren vooral knuffelen is\", zegt begeleider Ton Verheul lachend. \"Maar je staat in de regen met een kruiwagen mest, en dat is niet voor iedereen.\" Wie blijft, krijgt een verklaring omtrent het gedrag vergoed en volgt een korte cursus over veilig omgaan met dieren en kinderen.</p><p><strong>Wat krijg je ervoor terug?</strong></p><p><strong>IV</strong> Een vrijwilliger bij De Hooiberg ontvangt geen loon. Wel is er een vergoeding voor gemaakte kosten: wie met de auto of het openbaar vervoer komt, krijgt de reiskosten terug tot een bedrag van vijftien euro per week. Verder zijn alle vrijwilligers verzekerd via de gemeente, ook tijdens het werk met de dieren. Twee keer per jaar is er een uitje, en in december krijgt iedereen een kleine attentie. Toch noemen de vrijwilligers zelf iets anders als belangrijkste beloning. Uit een korte enquête onder de zeventig vrijwilligers bleek dat drieënvijftig van hen \"contact met andere mensen\" als eerste reden noemden om te komen. Het verzorgen van de dieren stond op de tweede plaats.</p><p><strong>V</strong> Hoewel het bestuur tevreden is, ziet het ook een probleem. De gemiddelde leeftijd van de vrijwilligers is achtenzestig jaar, en de aanwas van jongere mensen blijft achter. Daarom werkt De Hooiberg sinds vorig jaar samen met een school voor beroepsonderwijs uit de buurt. Leerlingen die een opleiding in de dierverzorging doen, kunnen hier stage lopen en helpen tegelijk bij de zaterdagdrukte. Ook bedrijven melden zich: zij sturen personeel voor een dag om de weilanden te schoffelen of de dierenverblijven te schilderen. \"Zo'n dag levert veel werk op\", zegt Yildiz, \"maar het is geen oplossing voor de lange termijn. Wij hebben mensen nodig die volgend jaar nog komen.\"</p><p><strong>VI</strong> Wie belangstelling heeft, kan op maandag tussen tien en twaalf uur binnenlopen voor een kennismakingsgesprek. Aanmelden per e-mail is ook mogelijk. Yildiz vraagt daarbij één ding: \"Wees eerlijk over de tijd die u echt heeft. Liever iemand die één ochtend komt en die ochtend altijd komt, dan iemand die drie dagen belooft en na een maand afzegt.\"</p>",
+    "questions": [
+      {
+        "prompt": "Wat staat er in alinea I over het geld van de kinderboerderij?",
+        "options": [
+          "De gemeente betaalt ongeveer de helft van de kosten.",
+          "De boerderij leeft vooral van de verkoop van eieren.",
+          "De vrijwilligers zamelen zelf het grootste deel in."
+        ],
+        "correct": 0,
+        "explanation": "In alinea I zegt Yildiz dat de gemeente ongeveer de helft van de kosten betaalt. De verkoop van eieren wordt wel genoemd, maar hoort bij de andere helft en is dus niet de belangrijkste bron."
+      },
+      {
+        "prompt": "Waarom moeten vrijwilligers volgens alinea II op een vaste dag komen?",
+        "options": [
+          "Omdat er anders te weinig mensen in het theehuis staan.",
+          "Omdat de dieren rust en een vast ritme nodig hebben.",
+          "Omdat schoolklassen altijd op vaste dagen langskomen.",
+          "Omdat de bedrijfsleider maar vierentwintig uur werkt."
+        ],
+        "correct": 1,
+        "explanation": "Yildiz legt in alinea II uit dat dieren rust en regelmaat nodig hebben en onrustig worden bij steeds wisselende gezichten. Het werk in het theehuis en met schoolklassen wordt genoemd als taak, niet als reden voor de vaste dag."
+      },
+      {
+        "prompt": "Wat wil de schrijver duidelijk maken met het voorbeeld van de kruiwagen met mest in de regen (alinea III)?",
+        "options": [
+          "Dat begeleiders het zware werk vaak alleen moeten doen.",
+          "Dat de boerderij te weinig geld heeft voor goed materiaal.",
+          "Dat het werk minder aangenaam is dan nieuwe mensen denken."
+        ],
+        "correct": 2,
+        "explanation": "In alinea III staat dat ongeveer één op de vijf stopt omdat het werk zwaarder is dan verwacht; het voorbeeld maakt dat concreet. Over materiaal of geld zegt deze alinea niets."
+      },
+      {
+        "prompt": "Mustafa wil weten of hij zijn buskaartje vergoed krijgt. In welke alinea vindt hij het antwoord?",
+        "options": [
+          "In alinea III.",
+          "In alinea IV.",
+          "In alinea V.",
+          "In alinea VI."
+        ],
+        "correct": 1,
+        "explanation": "Alinea IV noemt de vergoeding van reiskosten tot vijftien euro per week. Alinea III gaat over de proefperiode en de vergoeding van de verklaring omtrent het gedrag, niet over reizen."
+      },
+      {
+        "prompt": "Wat is het belangrijkste zorgpunt van het bestuur, volgens alinea V?",
+        "options": [
+          "Bedrijven sturen te weinig personeel naar de boerderij.",
+          "Stagiairs blijven na hun opleiding zelden op de boerderij.",
+          "De vrijwilligers zijn gemiddeld oud en jongeren komen weinig."
+        ],
+        "correct": 2,
+        "explanation": "In alinea V staat dat de gemiddelde leeftijd achtenzestig jaar is en dat er te weinig jongere mensen bij komen. Dat bedrijven personeel sturen wordt juist als positief genoemd, al is het geen oplossing voor de lange termijn."
+      }
+    ]
+  },
+  {
+    "section": "regels",
+    "title": "Werkinstructie actieve tillift Zorgcentrum De Wilgenhof",
+    "intro": "Deze tekst komt uit het handboek voor zorgmedewerkers van een verpleeghuis. De tekst legt uit hoe u de actieve tillift veilig gebruikt.",
+    "body_html": "<p><strong>I</strong> In Zorgcentrum De Wilgenhof staan op iedere afdeling twee actieve tilliften. Een actieve tillift is een hulpmiddel waarmee u een bewoner die zelf nog een beetje kracht in de benen heeft, van de stoel naar het toilet of naar het bed brengt. De bewoner staat tijdens het tillen half rechtop en houdt zich vast aan een beugel. Werkt u met een bewoner die helemaal niet meer kan staan, dan mag u deze tillift niet gebruiken. Voor die bewoners is er de passieve tillift met een tildoek, die op de gang bij de linnenkamer staat. In het zorgdossier van iedere bewoner staat welk hulpmiddel is afgesproken. Wijkt u daarvan af, dan meldt u dat dezelfde dag bij de teamleider.</p><p><strong>Voor u begint</strong></p><p><strong>II</strong> Controleer eerst de accu. Op het scherm van de tillift staat een cijfer tussen 0 en 100. Is dat cijfer lager dan 30, dan zet u de lift meteen aan de lader en pakt u de tweede lift van de afdeling. Kijk daarna of de tilband geen scheuren of losse naden heeft. Een beschadigde tilband kan scheuren op het moment dat de bewoner al hangt, waardoor er een ernstige val ontstaat. Twijfelt u over de band, dan gebruikt u hem niet, ook niet voor een korte transfer. U legt de band dan in de rode bak bij de werkkast en schrijft de datum op het label.</p><p><strong>III</strong> Vertel de bewoner altijd wat u gaat doen, ook als u denkt dat hij u niet begrijpt. Zet vervolgens de rolstoel of de stoel op de rem en haal losse voorwerpen zoals een deken of een urinaal weg. Plaats de voetplaat van de lift zo dicht bij de voeten van de bewoner dat zijn knieën tegen het kussen rusten. De bewoner pakt de beugel met twee handen. Zelf houdt u één hand bij de rug van de bewoner en drukt u met de andere hand op de knop. U tilt langzaam, in korte stappen, zodat de bewoner kan wennen aan de beweging en niet schrikt.</p><p><strong>IV</strong> De tillift van De Wilgenhof is gemaakt voor een gewicht van maximaal 150 kilo. Bij bewoners die zwaarder zijn, komt er een speciale lift van de leverancier; de teamleider vraagt die aan. Verder geldt dat u een transfer met deze lift in principe alleen doet. Er is één uitzondering: bij bewoners die tijdens het tillen onrustig worden of hun handen loslaten, werkt u met twee medewerkers. Welke bewoners dat zijn, leest u op de gele kaart aan de binnenkant van de deur van de werkkast. Die kaart wordt elke maandag bijgewerkt.</p><p><strong>V</strong> Gaat er tijdens het tillen iets mis, dan drukt u op de rode noodknop boven de accu. De lift stopt dan direct, maar zakt niet. Om de bewoner rustig te laten zakken, trekt u aan de grijze hendel aan de zijkant van de mast. Doe dit alleen als de bewoner met beide voeten boven de voetplaat hangt. Meld ieder incident nog dezelfde dienst in het digitale meldsysteem, ook wanneer de bewoner niets heeft gemerkt en er geen schade is. Die meldingen worden per kwartaal besproken in het werkoverleg, zodat problemen met de apparatuur op tijd worden opgelost.</p><p><strong>VI</strong> Nieuwe medewerkers en stagiairs mogen pas zelfstandig met de tillift werken nadat zij de instructie van drie uur hebben gevolgd en één keer onder begeleiding een transfer hebben gedaan. De instructie wordt elke eerste dinsdag van de maand gegeven in de fysioruimte. Aanmelden gaat via de teamleider. Iedere medewerker herhaalt de instructie één keer per twee jaar. Wie dat niet doet, wordt tijdelijk niet ingezet bij transfers met een tillift.</p>",
+    "questions": [
+      {
+        "prompt": "Wat staat er in alinea I over de keuze van het hulpmiddel?",
+        "options": [
+          "Een bewoner die niet zelf kan staan, wordt met een ander soort lift getild.",
+          "De medewerker kiest per keer zelf welke lift bij de bewoner past.",
+          "Elke bewoner van de afdeling wordt met de actieve tillift geholpen."
+        ],
+        "correct": 0,
+        "explanation": "In alinea I staat dat de actieve tillift niet mag bij bewoners die helemaal niet meer kunnen staan; voor hen is er de passieve tillift. Optie B is fout, want het afgesproken hulpmiddel staat in het zorgdossier."
+      },
+      {
+        "prompt": "U ziet dat het cijfer op het scherm van de tillift 25 is. Wat doet u volgens de tekst?",
+        "options": [
+          "U gebruikt de lift, maar alleen voor korte transfers.",
+          "U legt de lift in de rode bak bij de werkkast.",
+          "U meldt de lift dezelfde dag bij de teamleider.",
+          "U sluit de lift aan en gebruikt de andere lift van de afdeling."
+        ],
+        "correct": 3,
+        "explanation": "Alinea II: bij een cijfer onder 30 gaat de lift aan de lader en pakt u de tweede lift. De rode bak (optie B) is bedoeld voor een beschadigde tilband, niet voor een lege accu."
+      },
+      {
+        "prompt": "Waarom moet u volgens alinea III langzaam en in korte stappen tillen?",
+        "options": [
+          "Omdat de motor van de lift anders te warm wordt.",
+          "Omdat de bewoner dan aan de beweging kan wennen.",
+          "Omdat de tilband anders sneller kapot gaat."
+        ],
+        "correct": 1,
+        "explanation": "In alinea III staat dat langzaam tillen ervoor zorgt dat de bewoner kan wennen en niet schrikt. Schade aan de tilband komt in alinea II aan de orde, maar niet als reden voor langzaam tillen."
+      },
+      {
+        "prompt": "In welke alinea leest u wanneer u een transfer met een tweede medewerker uitvoert?",
+        "options": [
+          "In alinea III.",
+          "In alinea IV.",
+          "In alinea V.",
+          "In alinea VI."
+        ],
+        "correct": 1,
+        "explanation": "Alinea IV noemt de uitzondering: bij bewoners die onrustig worden of loslaten, werkt u met twee medewerkers. Alinea III gaat wel over de handelingen bij het tillen, maar niet over het aantal medewerkers."
+      },
+      {
+        "prompt": "Wat zegt de tekst over het melden van incidenten?",
+        "options": [
+          "Alleen incidenten met schade aan de lift moeten worden gemeld.",
+          "Een incident wordt binnen een kwartaal in het werkoverleg gemeld.",
+          "Ook een incident zonder gevolgen wordt nog dezelfde dienst gemeld."
+        ],
+        "correct": 2,
+        "explanation": "Volgens alinea V meldt u elk incident dezelfde dienst, ook als de bewoner niets merkte en er geen schade is. Het kwartaal (optie B) gaat over het bespreken van de meldingen, niet over het melden zelf."
+      },
+      {
+        "prompt": "Wat is het belangrijkste doel van deze tekst?",
+        "options": [
+          "Zorgmedewerkers laten weten hoe zij de tillift veilig moeten gebruiken.",
+          "Uitleggen waarom het zorgcentrum twee soorten tilliften heeft aangeschaft.",
+          "Nieuwe medewerkers en stagiairs uitnodigen voor de maandelijkse instructie."
+        ],
+        "correct": 0,
+        "explanation": "De hele tekst bestaat uit voorschriften voor controle, uitvoering en melding, dus veilig gebruik. De instructie voor nieuwe medewerkers (optie C) is maar één onderdeel, in alinea VI."
+      }
+    ]
+  },
+  {
+    "section": "brief",
+    "title": "Nieuwe schooltijden vanaf 1 februari",
+    "intro": "Deze tekst is een brief van een basisschool aan de ouders en verzorgers van de leerlingen. De brief gaat over een verandering in de schooltijden.",
+    "body_html": "<p>Basisschool De Waterlelie<br>Kastanjelaan 18<br>3812 GH Amersfoort<br>Telefoon: 033 - 456 78 90</p><p>Aan de ouders en verzorgers van de leerlingen van groep 1 tot en met groep 8</p><p>Amersfoort, 14 december 2024<br>Betreft: invoering van het nieuwe dagrooster</p><p>Geachte ouder of verzorger,</p><p><strong>I</strong> Met deze brief informeren wij u over een belangrijke verandering. Vanaf maandag 1 februari werkt onze school met een nieuw dagrooster. De lessen beginnen dan om 8.30 uur en eindigen om 14.15 uur, en dat geldt van maandag tot en met vrijdag. De vrije vrijdagmiddag voor de groepen 1 tot en met 4 verdwijnt daardoor. Wij begrijpen dat deze wijziging gevolgen heeft voor uw dagindeling, en daarom leggen wij hieronder uit waarom het team en de medezeggenschapsraad tot dit besluit zijn gekomen.</p><p><strong>II</strong> De reden voor de verandering is vooral de lange middagpauze. In het oude rooster gingen veel kinderen tussen 12.00 uur en 13.15 uur naar huis om te eten, waardoor er twee keer per dag een drukke oversteek bij de Kastanjelaan was. Bovendien kostten het weggaan en het terugkomen elke dag ongeveer een half uur lestijd. Uit onze eigen metingen bleek dat leerlingen in de eerste twintig minuten na de lange pauze moeilijk tot concentratie kwamen. In het nieuwe rooster eten alle kinderen samen in de klas, onder begeleiding van de eigen leraar. De pauze duurt daarna nog dertig minuten, waarvan de kinderen twintig minuten buiten spelen.</p><p><strong>III</strong> Hoewel de meeste ouders in onze enquête positief reageerden, kregen wij ook kritische opmerkingen. Sommige ouders vreesden dat hun kind te weinig rust krijgt als de dag zonder onderbreking doorloopt. Wij nemen die zorg serieus. Daarom houden de leraren van de groepen 1 en 2 elke dag een extra rustmoment van een kwartier na het eten, met een verhaal of een spel. Ook is er in de gang bij lokaal 4 een stille hoek ingericht voor kinderen die even alleen willen zitten. Merkt u thuis dat uw kind na een paar weken erg moe blijft, neem dan contact op met de leraar. Wij kijken dan samen naar een oplossing.</p><p><strong>Kosten en overblijven</strong></p><p><strong>IV</strong> Doordat de kinderen op school eten, is er geen betaalde overblijfregeling meer nodig. De bijdrage van 1,60 euro per keer komt dus te vervallen. Ouders die vooruit hebben betaald, krijgen het resterende bedrag vóór 1 maart terug op hun rekening. Wel vragen wij u om uw kind elke dag zelf een lunch en een beker mee te geven. Snoep en energiedrank zijn niet toegestaan. Voor gezinnen die de kosten van een dagelijkse lunch moeilijk kunnen dragen, bestaat er een stille regeling via de schoolmaatschappelijk werker, mevrouw Bekkers. U kunt haar op woensdag bereiken via het algemene telefoonnummer.</p><p><strong>V</strong> Wij realiseren ons dat u misschien afspraken moet aanpassen met uw werkgever of met de buitenschoolse opvang. De opvangorganisatie in ons gebouw start vanaf 1 februari al om 14.15 uur en heeft daarvoor extra medewerkers aangenomen. Wilt u het contract met de opvang veranderen, dan doet u dat rechtstreeks bij hen; de school kan dat niet voor u regelen. Voor werkgevers hebben wij een korte verklaring opgesteld waarin de nieuwe eindtijd staat. U kunt dat papier bij de administratie ophalen.</p><p><strong>VI</strong> Op dinsdag 14 januari om 19.30 uur is er een informatieavond in de aula. Daar lopen wij het rooster stap voor stap door en kunt u al uw vragen stellen. Aanmelden is niet nodig, maar wij stellen het op prijs als u vóór 10 januari laat weten of u komt, zodat wij genoeg stoelen klaarzetten. Kunt u die avond niet, dan vindt u een samenvatting later in de nieuwsbrief.</p><p>Met vriendelijke groet,<br>J. Verhoeven<br>directeur Basisschool De Waterlelie</p>",
+    "questions": [
+      {
+        "prompt": "Wat verandert er volgens alinea I op 1 februari?",
+        "options": [
+          "Alle leerlingen krijgen op vijf dagen les tot dezelfde tijd.",
+          "De jongste leerlingen krijgen een extra vrije middag.",
+          "De school begint een kwartier later dan voorheen."
+        ],
+        "correct": 0,
+        "explanation": "In alinea I staat dat de lessen van maandag tot en met vrijdag om 14.15 uur eindigen en dat de vrije vrijdagmiddag van de groepen 1 tot en met 4 verdwijnt. Er komt dus geen extra vrije middag bij, maar er gaat juist één af."
+      },
+      {
+        "prompt": "Waarom noemt de school in alinea II de eerste twintig minuten na de lange pauze?",
+        "options": [
+          "Om te laten zien dat leraren in die tijd te weinig hulp kregen.",
+          "Om duidelijk te maken dat de oude pauze slecht was voor het leren.",
+          "Om uit te leggen waarom kinderen niet meer naar huis mogen lopen."
+        ],
+        "correct": 1,
+        "explanation": "Alinea II gebruikt dit voorbeeld om te laten zien dat leerlingen na de lange pauze moeilijk tot concentratie kwamen, dus dat de oude regeling ten koste ging van het onderwijs. De drukke oversteek is een aparte reden en gaat over veiligheid, niet over het leren."
+      },
+      {
+        "prompt": "Wat doet de school volgens alinea III met de kritiek van ouders?",
+        "options": [
+          "De school stelt de invoering voor de jongste groepen uit.",
+          "De school vraagt de ouders om een nieuwe enquête in te vullen.",
+          "De school neemt maatregelen voor extra rust op school."
+        ],
+        "correct": 2,
+        "explanation": "In alinea III staat dat de groepen 1 en 2 een extra rustmoment krijgen en dat er een stille hoek is ingericht. Van uitstel is geen sprake; de enquête was juist al gehouden."
+      },
+      {
+        "prompt": "Hoeveel kostte het overblijven per keer in de oude situatie?",
+        "options": [
+          "1,60 euro",
+          "14,15 euro",
+          "19,30 euro",
+          "Dat staat niet in de brief."
+        ],
+        "correct": 0,
+        "explanation": "In alinea IV staat dat de bijdrage van 1,60 euro per keer komt te vervallen. De andere bedragen lijken op tijden die elders in de brief worden genoemd."
+      },
+      {
+        "prompt": "Meneer Aydin wil zijn contract met de buitenschoolse opvang aanpassen. In welke alinea vindt hij wat hij moet doen?",
+        "options": [
+          "In alinea III",
+          "In alinea IV",
+          "In alinea V",
+          "In alinea VI"
+        ],
+        "correct": 2,
+        "explanation": "Alinea V zegt dat ouders zo'n wijziging rechtstreeks bij de opvangorganisatie regelen en dat de school dat niet doet. Alinea VI gaat alleen over de informatieavond."
+      },
+      {
+        "prompt": "Wat wordt in alinea IV bedoeld met een 'stille regeling'?",
+        "options": [
+          "Een afspraak die zonder ruchtbaarheid wordt gemaakt.",
+          "Een regel over rust en stilte tijdens het eten.",
+          "Een betaling die pas aan het eind van het jaar plaatsvindt."
+        ],
+        "correct": 0,
+        "explanation": "Uit alinea IV blijkt dat gezinnen met geldzorgen via de schoolmaatschappelijk werker hulp kunnen krijgen; 'stil' betekent hier dat dit discreet gebeurt. De stille hoek in alinea III gaat wél over rust, maar dat is een andere regeling."
+      }
+    ]
+  }
+]

@@ -371,18 +371,117 @@ node scripts/seed-a2-content.mjs lezen --production   # the hosted project
 - **`scripts/a2-content/lib.mjs` is shared with `seed-test-exams.mjs`** — env resolution, PostgREST,
   Storage, ElevenLabs, loudnorm and an mp3-duration counter that mirrors `lib/mp3-duration.ts`.
 
+
+### B1 is three onderdelen, and its shape is not A2's — `scripts/b1-content/`
+
+**Thirty B1 oefenexamens (Lezen, Schrijven, Spreken) were authored and published on 2026-08-21.**
+B1 Luisteren is deliberately still empty. The pipeline mirrors A2's but is split in two, because
+authoring costs model tokens and seeding costs storage and TTS, and a re-run of one must never
+re-pay for the other:
+
+```bash
+node scripts/generate-b1-content.mjs plan          # what would be written, no calls
+node scripts/generate-b1-content.mjs all           # author into scripts/b1-content/generated/
+node scripts/generate-b1-content.mjs all --check   # validate what is on disk
+node scripts/seed-b1-content.mjs all --dry-run     # validate, touch nothing
+node scripts/seed-b1-content.mjs all               # local stack
+node scripts/seed-b1-content.mjs all --production  # the hosted project
+```
+
+- **B1's shape was counted off DUO's Openbaar examen booklets** (Lezen I / Schrijven I 2022 +
+  2023, Spreken I 2022–2025) and lives in `20260821090000_b1_exam_structure.sql`: Lezen 6 teksten
+  / 35 vragen / 4–7 per tekst / 110 min; Schrijven 12 opdrachten / 100 min; Spreken **2** delen of
+  **8** / 30 min. Attribute these to DUO's *practice exams*, never to an official DUO norm — the
+  same rule `SEO/facts.md` §1 set for A2. Four mirrors must move together: that migration,
+  `RULES`/`TASK_RULES` in `data/skills.ts`, `rules.mjs` in `scripts/b1-content/`, and
+  `tests-unit/skills.test.ts`.
+- **B1 Luisteren stays all-NULL and unpublished, and that is not an oversight.** There is no B1
+  Luisteren reference material. `tests-unit/skills.test.ts` pins the gap explicitly, so "fill in
+  B1 for symmetry" cannot quietly invent the standard the docent is measured against.
+- **Schrijven B1 needed four new `task_categories`**: `sentence_completion` (opdracht 1–8 — a
+  part-written e-mail or bericht whose sentence is left open), `letter`, `picture_report` and
+  `data_text`. They are separate categories because **the category selects the rubric**: grading a
+  two-line completion against a sollicitatiebrief's anchors returns a confident, plausible, wrong
+  mark. `open_tasks.task_type`'s CHECK was widened, not replaced.
+- **`sentence_completion` needed no new renderer.** The given text either side of the gap goes in
+  `greeting` and `closing`, which `WritingTask` already draws around the textarea. What did change
+  is that the mail header now renders on `isMail` (are the header fields present?) rather than on
+  `task_type === 'email'` — at B1 a completion is a mail about half the time and a `letter` never
+  is, and a task_type allowlist would need extending for every shape DUO adds.
+- **All eleven B1 rubrics are DRAFTS** (`scripts/b1-content/rubrics.mjs`, marked in
+  `system_prompt`). None existed, and `rubric_id IS NULL` is a blocking publish error, so the
+  seeder mints them rather than failing the level. **Rewrite them in `/admin/rubrics` before a
+  grade counts.** Their anchors describe B1 behaviour and are deliberately *not* A2's with the
+  numbers moved: a rubric's anchors define what a 2 *means*.
+- **`scripts/b1-content/plan.mjs` is the reason thirty exams are not one exam thirty times.** The
+  tekstsoort, subject and communicative purpose of all 630 items are fixed there, in git. Ask a
+  model for "a B1 tekst with vragen" sixty times and you get sixty texts about a fictional
+  company's coffee policy — each fine on its own, the *set* worthless. Read its header before
+  touching the generator.
+- **The dataset is JSON, one file per (onderdeel, examen), under `generated/`.** Unlike A2's `.mjs`
+  literals: it is produced by a long, resumable, paid-for run, and a per-exam file is the review
+  unit. Individual units are cached in `.unit-cache/` (gitignored) so an interruption resumes
+  instead of re-paying; a *committed* exam is only written once all its units validate.
+- **Authoring runs through the Vercel AI Gateway when `AI_GATEWAY_API_KEY` is set**, on
+  `anthropic/claude-opus-5` — the gateway speaks Anthropic's native `/v1/messages` including
+  `output_config.format`, so this is a base-URL change and not a rewrite. It exists because the
+  direct Anthropic key ran out of credit one exam into a thirty-exam run; switching route kept the
+  **same model**, so one dataset is not half-authored by a different one. `--direct` forces the
+  Anthropic API.
+- **One call per unit, and the unit has to be small enough to retry.** Lezen is one call per tekst
+  (six per exam); Schrijven's four long opdrachten are **one call each**. Asking for all four
+  together never converged — each category has its own shape rule and a retry that fixed one
+  reliably broke another. A retry is handed the *rule that was broken*, not "try again".
+- **Two authoring bugs worth remembering.** (1) The run-together-lines detector stripped tags to
+  *nothing*, which made a correct `x<br>Y` look identical to a glued `xY` — so the check fired on
+  the very fix it was demanding and no retry could pass. Strip tags to a **space**. (2) The
+  generator was right and the rule was wrong: DUO's B1 opgaven regularly speak to the candidate on
+  a `cover_all` or `choose` opgave ("U hoort eerst uw buurvrouw"), so `prompt_spoken` is not
+  `react`-only. The seeder now generates a clip for **any** opgave carrying a spoken line.
+- **Structured outputs reject `minItems > 1`, `maximum` and `minimum`.** Counts and bounds are
+  enforced in each unit's `validate()`, not in the JSON schema.
+- **B1 stays `noindex`, and the reason changed.** It is no longer "B1 has no content" but "this
+  content has not been through the docent yet" — a review gate. When she signs it off, the places
+  to change are `oefenexamen/[level]/[skill]/page.tsx` (robots *and* the `Course` node) and
+  `app/sitemap.ts`, which lists `DEFAULT_LEVEL` only.
+- **Pictures live under `b1/` in the same bucket, with their own lock file.**
+  `createImages({ level })` parameterises the object prefix, the lock path and the credits
+  heading; A2's defaults are unchanged and its 399-entry lock is untouched.
+
 ---
 
 ## Project Overview
 
-**Target positioning (decided 2026-08-19): the all-in-one platform for the whole Dutch
-inburgering** — language exams (A2 shipped, B1 slots empty), KNM as a planned fifth onderdeel
-(consolidated in from `knm-website`), and orientation/knowledge content across the funnel.
-See "Strategy 2026" below and `docs/MILESTONES.html` for the milestone plan. Today's shipped
-product is still the **four language components at A2 level**; forked from the KNM platform
-(`knm-website`) in July 2026 and rebuilt around a new content domain; the whole machine —
-exam engine, admin CRUD, ElevenLabs TTS, Mollie, Resend, Supabase auth/entitlements,
-dashboard — is reused.
+**The product is the all-in-one platform for the whole Dutch inburgering** — the four
+taalonderdelen at **A2 and B1**, **KNM** and **ONA**. That is the brand, the positioning and
+the promise every public page now makes (owner's instruction, 2026-08-22, extending the
+2026-08-19 decision from a target to the shipped identity). Forked from the KNM platform
+(`knm-website`) in July 2026; the whole machine — exam engine, admin CRUD, ElevenLabs TTS,
+Mollie, Resend, Supabase auth/entitlements, dashboard — is reused. See "Strategy 2026" below
+and `docs/MILESTONES.html` for the milestone plan.
+
+**The brand is the whole traject; the *catalogue* is what is built, and the two are stated
+separately on every surface.** This is the one rule the rebrand must not break, because the
+site's only claim is that a docent stands behind what is on it — advertising a level or an
+onderdeel that has no reviewed content spends exactly that credibility.
+
+| Track | Status | What a page may say |
+|---|---|---|
+| **Taal A2** | live — 40 exams published | available, by name |
+| **Taal B1** | 30 exams authored, `noindex` behind the docent's review gate | *binnenkort*, never as available |
+| **KNM** | the documented fifth onderdeel; kennisgidsen live, oefenexamens not built | gidsen by name; exams *binnenkort* |
+| **ONA** | announced only; covered by the tijdlijn tool and the gidsen | *binnenkort* |
+
+`TRACKS` in `app/[locale]/(main)/page.tsx` is that table as code (`live: false` renders the
+"binnenkort" chip) and is the single place the roadmap is stated on the homepage. **When a
+track goes live, `TRACKS`, `data/skills.ts` and the copy below move in one commit** — and B1
+additionally needs the `robots`/sitemap change recorded under "B1 stays `noindex`".
+
+**A1 and B2 are deliberately not part of this.** `Level` is `'a2' | 'b1'` and stays that way
+(owner's decision, 2026-08-22). DUO examines the taalonderdelen at A2, B1 and B2, so the
+temptation to "complete the ladder" recurs; widening the union means a migration, 40 empty exam
+slots per level, new routes, dashboard sections and pricing modules, for a level nobody has
+authored a single item at. Do not add one speculatively.
 
 | Skill | Items/exam | Duration | Item shape | Scoring |
 |---|---|---|---|---|
@@ -391,9 +490,10 @@ dashboard — is reused.
 | **Schrijven** (writing) | 4 | 40 min | open task: e-mail / short text / form | rubric |
 | **Spreken** (speaking) | 16 | 35 min | audio prompt + image(s) → 60s recording | rubric |
 
-**10 practice exams per (level, skill) = 40 exams per level.** All four onderdelen must stay
-visible on the landing page. A2 is the shipped product; B1's 40 slots exist and are empty.
-The taxonomy lives in `data/skills.ts` — the single source of truth for counts and durations.
+The table above is **A2**; B1's shape differs and lives in `data/skills.ts` (see "B1 is three
+onderdelen" above). **10 practice exams per (level, skill) = 40 exams per level.** All four
+taalonderdelen must stay visible on the landing page, alongside KNM and ONA. The taxonomy lives
+in `data/skills.ts` — the single source of truth for counts and durations.
 
 ### The USP, and what it constrains
 **"Echt door een docent gevalideerd, geen AI."** Competitors generate exercises with AI;
@@ -401,7 +501,10 @@ at least one disclaims accuracy in its own terms. That is the wedge.
 
 This is a **hard constraint on the code, not just the copy**:
 - No AI-generated exam content. Every item is written or reviewed by a certified NT2 docent.
-- **Scope of the claim (clarified 2026-08-19): it covers exam content and grading framing.**
+- **Scope of the claim (clarified 2026-08-19, restated for the whole traject 2026-08-22): it
+  covers exam content and grading framing, at every level and in every onderdeel.** The claim
+  widened with the brand — it did not weaken. B1's thirty machine-authored exams and the eleven
+  draft rubrics are `noindex` precisely because this claim would otherwise be false of them.
   Informational *guides* (Inburgering/KNM kennisgidsen, blog) may be machine-drafted, but
   publish only after the docent has reviewed them — same model as the A2 dataset. Never
   extend the "geen AI" copy to claim guides were hand-written if they were not.
@@ -804,6 +907,76 @@ rekentool**: zes tot acht vragen in, een gedateerd persoonlijk plan uit. De vijf
 - De diagnose-quiz per onderdeel (`readinessFor` leest `diagnosticScore` al) en de `.ics`-export
   staan nog niet in de UI. De rest van het PRD is er.
 
+### M2d — /inburgering is een route, en de gids houdt bij wat je las (2026-08-22)
+
+De hub is geen grid van vier gelijke kaarten meer. Het is **één route in drie fasen** met de
+stappenlijst van de open fase eronder, een hulpmiddel ernaast, en per gids een inhoudsopgave in de
+zijbalk die bijhoudt wat je gelezen hebt. **Geen artikel is aangeraakt** — opdracht van de eigenaar:
+elke gids blijft compleet, de secties komen aan de zijkant te staan.
+
+- **De stappen zijn de `<h2 id>`'s van de gidsen zelf** (`lib/guides/sections.ts`), nooit een
+  handgeschreven outline. Die ids bestonden al en zijn **identiek in nl/en/ar** — alleen de tekst is
+  vertaald — dus een sectie-id is meteen een leesvoortgang-sleutel die over de talen heen werkt, en
+  een docent die een kop herschrijft verzet de stap in dezelfde edit. Een `<h2>` **zonder** id wordt
+  overgeslagen: een uit de kop afgeleide slug zou per taal verschillen en de voortgang van één
+  sectie in drieën splitsen.
+- **De extractie gebeurt op de server.** De steptitels komen uit `articleHtml` — ~90 kB proza dat de
+  hub niet rendert. `GuideHub` stuurt alleen `{ id, title, minutes }` naar de client.
+- **Een fase bevat één of meer gidsen** (`data/guides/phases.ts`). "Wat kost inburgeren?" zit in
+  fase 1 naast "Moet ik inburgeren?" (beslissing eigenaar, 2026-08-22); een vierde kaart ervoor zou
+  de vierde concurrerende navigatie van de site zijn geworden. Elke gepubliceerde
+  `inburgering`-gids moet in **precies één** fase staan — in geen enkele fase is hij onvindbaar
+  vanaf zijn eigen hub, in twee fasen dubbeltelt hij zijn secties en liegen de balkjes.
+  `tests-unit/inburgering-route.test.ts` pint dat.
+- **Alle drie de panelen worden gerenderd; de dichte krijgen `hidden`.** Met alleen het open paneel
+  in de DOM hadden de gidsen van fase 2 en 3 **geen enkele interne link vanaf hun eigen hub** — op
+  de belangrijkste TOFU-pagina, die juist bestaat om autoriteit naar zijn cluster door te geven.
+  `tsc`, de build en elke screenshot waren schoon; twee e2e-asserties vonden het. Daarom staat er ook
+  onder elke stappenlijst een **hash-vrije** "Lees de hele gids"-link: een URL met een fragment is
+  voor een crawler dezelfde pagina, maar de hub moet de pagína benoemen.
+- **Wisselen van fase verandert geen URL.** Het is een `tablist`. Drie routes zouden drie bijna
+  identieke dunne pagina's op indexeerbare URL's zetten, vóór de gidsen waar ze naartoe linken.
+  `?fase=` wordt alleen *gelezen*, voor een deeplink vanaf de strip op een gidspagina.
+- **De "huidige" stap wordt over de hele fase berekend, niet per gids.** Een `findIndex` per
+  stappenlijst gaf fase 1 twee oranje huidige stappen. Twee is erger dan geen: de markering bestaat
+  om te zeggen waar je verdergaat, en er is één plek.
+- **Voortgang is localStorage, geen cookie** (beslissing eigenaar). Functionele state die de browser
+  nooit verlaat, dus geen consent-banner en niets extra op elk request — dezelfde belofte als de
+  tijdlijn-tool. `lib/guides/progress.ts` hydrateert in een effect (lezen tijdens render kost een
+  hydration error op elke gidspagina) en faalt overal stil: een leesvinkje mag de pagina die het
+  versiert nooit kunnen breken.
+- **Een sectie geldt als gelezen als je er *voorbij* scrolt, niet als hij in beeld komt.** Sectie *i*
+  wordt gemarkeerd als *i+1* de sectie op het scherm wordt. Een balk die vollooopt omdat iemand snel
+  naar beneden veegde is erger dan geen balk. **Het einde van het artikel markeert álle secties** —
+  de laatste kan nooit "achtergelaten" worden, en bij een korte staart delen de laatste twee koppen
+  het slotvenster, dus de observer kiest er één en de ander wordt nooit de sectie op het scherm. Zo
+  bleven er van vier secties twee ongemarkeerd na het hele artikel te hebben doorgescrold.
+- **`lib/guides/situation.ts` is de "Check jouw situatie"-tool, en elke regel erin is een herhaling
+  van `moet-ik-inburgeren.ts` §wie-moet-inburgeren** — door de docent nagekeken, met bron in
+  `SEO/facts.md` §10. Niets hier is een nieuwe claim en niets mag er een worden. De vrijstellingen
+  worden **vóór** de plicht getoetst (nationaliteit en leeftijd eerst): een EU-burger met een
+  gezinsvergunning is niet inburgeringsplichtig, en op reden-eerst toetsen gaf die lezer `likely`.
+  De copy hedged in alle drie de talen — DUO beslist en stuurt een brief; een tool die "je hoeft niet
+  in te burgeren" zegt doet een juridische uitspraak die hij niet kan doen, en zit fout in de richting
+  die iemand een boete kost. "Ik weet het niet" staat op elke vraag in normale opmaak en is een
+  eersteklas waarde tot in de tabel, waar hij `unclear` oplevert plus de sectie die het oplost.
+- **De fase-illustraties zijn drie doelgetekende SVG's** (`PhaseIcon.tsx`), op één 32×32-grid en één
+  streekdikte, met `currentColor` voor de structuur en `--color-secondary-container` voor één accent
+  per tekening — daardoor werkt hetzelfde bestand op een navy en op een witte kaart. Geen emoji
+  (harde regel) en geen lucide: een fase is een *begrip*, en drie willekeurige glyphs zouden
+  decoratie zijn die zich voordoet als betekenis.
+- **`.article-body h2` heeft nu `scroll-margin-top: calc(var(--nav-h) + 24px)`.** Zonder dat landt
+  elke sprong naar een sectie *achter* de vaste header. Gelezen uit de token, niet getypt.
+- **Elke voorwaartse pijl draagt `.rtl-flip`.** De layout spiegelde zich in het Arabisch en de pijlen
+  niet, dus die wezen tegen de leesrichting in. Let bij `.step-row-arrow` op de functievolgorde:
+  `translateX(-3px) scaleX(-1)` — omgekeerd geschreven beweegt de nudge achteruit.
+- **Turbopack serveerde één CSS-edit lang een verouderde chunk**, dus een fix stond op schijf en niet
+  op de pagina. `curl` de gecompileerde chunk en grep de regel vóór je concludeert dat de CSS fout is;
+  een newline aan `globals.css` toevoegen forceert de hercompilatie.
+
+De diagnostische quiz per onderdeel en de `.ics`-export van de tijdlijn staan nog open (zie M2c); de
+vijf overige M2-spokes ook.
+
 ---
 
 ## The four surfaces — never mix their layouts
@@ -1195,12 +1368,384 @@ secret: counting items is fine, reproducing a question is not.
 
 ## Design rules
 
+### Always build from the official elements and icons
+
+**This is not a preference. A new page reaches for the existing vocabulary first, every time.**
+
+| Need | Use | Never |
+|---|---|---|
+| Page header / hero | `HorizonHero`, `GradientHero`, or `HorizonBanner` inside your own section | a hand-rolled gradient block |
+| Section heading | `SectionHeader` (it carries the horizon rule) | an `<h2>` with a 1px divider |
+| A boundary between blocks | a background tier shift (`surface` → `surface-container-low`) | `border-top`, `<hr>` |
+| Selection / focus | the inset `--ring-selected` | a border |
+| Depth | `--shadow-ambient` + the four surface tiers | `shadow-md`, `--shadow-card*` on anything new |
+| Progress, a surface edge, a card foot | `HorizonBand` | a custom bar |
+| Naming an onderdeel, KNM or the gidsen | `CategoryMark` | a lucide glyph, an emoji, a new drawing |
+| A control, an arrow, a close button | **lucide-react** | a `CategoryMark`, an emoji, an SVG of your own |
+| The validation claim | `ValidationChip` / `DocentSeal`, once per page | a second trust mark in the same view |
+| Decorative imagery | `Skyline`, `SunDisc`, `DotField`, `LensRing`, `GlassChip` | an illustration, a mascot, line art, a stock image |
+| A skill/module card | `SkillCard`, `SkylineTopper` | a bespoke card |
+
+Four things that follow from it and are easy to get wrong:
+
+- **One sun disc per composition** (§7.3). Two orange discs in one view is the fastest way to make
+  this palette look cheap. A 6px dot inside a badge is a bullet, not the composition's sun.
+- **Scale a skyline by dropping houses, never by shrinking every part** (§7.1) — and a house stays
+  roughly as wide as it is tall. Every header therefore needs **two counts behind one breakpoint**;
+  `HorizonBanner` already owns that pair, which is the reason to reach for it rather than compose
+  the four layers by hand.
+- **No new hue for a status.** Correct/passed is clay (`secondary` / `secondary_container`), wrong is
+  `--color-error`, and an icon carries the meaning for anyone who cannot separate the two. The
+  greens (`#15803d` and family) were removed from every live surface once already; `/admin`'s answer
+  key is the one documented exception, because it is internal.
+- **A component that hard-codes `display` in its base class cannot be toggled by a responsive class
+  from the caller** — wrap it in a plain `div`. `Skyline` sets `flex`, so `className="hidden sm:flex"`
+  rendered *both* streets at 390px.
+
+If the vocabulary genuinely cannot say what a page needs, **add to `components/horizon/` and write
+down the rule**, so the next surface inherits it. Do not solve it locally: a one-off shape in one
+page is how a design system turns back into a page-by-page accumulation.
+
+### The design system is a document, and it lives in `docs/design/`
+
+`docs/design/DESIGN_SYSTEM.md` is the **specification** — "The Civic Authority", imported
+2026-08-22 from the Claude Design project *Horizon Element Library*.
+`docs/design/horizon-element-library.html` is its reference implementation: open it in a browser
+before designing a new surface, because no prose describes a skyline as well as a skyline does.
+**When the spec and the code disagree, the spec wins and the code is the bug.**
+
+The palette was already token-identical (`@theme` in `app/globals.css` and §2 of the spec are the
+same eleven colours), so importing it added no colour and changed no brand. What it added is the
+part the site did not have: a **graphic language**, a typographic register, and the rules that make
+those two read as one system rather than as a page-by-page accumulation.
+
+Four rules from the spec that constrain code, not taste:
+
+- **The no-line rule (§2).** A 1px solid border may not be used for sectioning. Boundaries come from
+  a background colour shift — a `surface-container-low` block on `surface`. Selection and focus are
+  an **inset** `box-shadow` (`--ring-selected`), never a border. Where accessibility genuinely needs
+  a border on a high-stakes input it is the ghost border (`--ghost-border`, `outline_variant` at
+  20%), never 100% opacity.
+- **Tonal layering, not drop shadows (§4).** Depth is four surface tiers: base → section → card →
+  pop-over. A floating card gets `--shadow-ambient` (32px blur, no offset, 6%) — a glow of light,
+  not a weight. The pre-existing `--shadow-card*` tokens are the older, heavier family; prefer the
+  ambient one on anything new.
+- **One sun disc per composition (§7.3).** The orange is a pointer. Two orange discs in one view is
+  the fastest way to make this palette look cheap.
+- **No illustrations, mascots or line-art imagery (§7.3).** All decorative imagery is built from the
+  four CSS primitives. Functional UI icons remain lucide-react — the ban is on *drawn imagery*, not
+  on affordances.
+
+### `components/horizon/` is the graphic language, and it is reusable everywhere
+
+The Dutch Horizon vocabulary is four primitives — **the gable house, the sun disc, the horizon band
+and the dot field** — plus two derived forms, the **skyline row** and the **lens ring**. Everything
+decorative in the system is a recombination of those six things, in CSS, with no image asset and no
+licence.
+
+| Export | What it is |
+|---|---|
+| `Skyline` | the canal-house row: full width, bottom-anchored, gable type cycled by index |
+| `HorizonHero` | the structured page header — eyebrow / display title / lede / actions in the graphic frame |
+| `HorizonBanner` | **the graphic layer alone** — dot field + responsive skyline + sun + band, to drop into any `relative overflow-hidden` section that already has its own copy |
+| `SkylineTopper` | the card header (5–7 houses), with the neutral-ramp `locked` state |
+| `SectionTransition` | the silhouette handover — **once per page maximum** |
+| `SunDisc` `HorizonBand` `DotField` `LensRing` `GlassChip` | the primitives |
+| `DocentSeal` `ValidationChip` | the trust layer (§7.4) |
+
+- **Nothing in this folder uses `Math.random()`, and that is load-bearing.** A house's gable, height
+  and tint are a function of its index (`tokens.ts`), because these are server components: a random
+  skyline would render one street on the server and a different one in the browser — a hydration
+  mismatch on every page that has a header.
+- **Scale a skyline by dropping houses, never by shrinking every part** (§7.1) — *and* keep a house
+  roughly as wide as it is tall. Those two rules pull against each other on a wide viewport: seven
+  houses across 1440px are 200px wide against 56px of height and read as a bar chart, not as canal
+  houses. `GradientHero` therefore renders **two counts behind one breakpoint** — 6 houses on a
+  phone, 16 above `sm`. Copy that pattern rather than picking one count and living with it at the
+  other end.
+- **The skyline is clipped, not contained.** It needs a parent with
+  `position: relative; overflow: hidden`, and it stays in the lower third with the copy in the upper
+  two thirds. A graphic running behind a headline is explicitly forbidden (§7.3) — which is also why
+  `GradientHero`'s sun disc is `hidden sm:block`: at 390px the copy fills the full width, and a
+  composition with no sun is fine where an overlapped headline is not.
+- **`GradientHero` kept its exact API when it became a Horizon banner**, so all six page headers
+  using it — blog, docent, both guide hubs, oefenvragen, planned surfaces — picked up the gradient,
+  dot field, skyline, sun disc and horizon band in one edit with no caller changed. Use
+  `HorizonHero` for a *new* header that wants the structured eyebrow/title/lede stack.
+- **`SectionHeader` now carries a horizon rule** — a 48px slice of the band that closes every hero —
+  under the title. It is what a section heading gets *instead* of the 1px divider the no-line rule
+  forbids, and it is the cheapest way a page reads as part of the system.
+### The homepage's vertical rhythm was cut by ~16% on 2026-08-22
+
+The page was 5,275px at 1440 and 8,301px at 390. It is 4,444 / 7,182 now. Nothing was removed — the
+air between things was. Where the numbers came from, so a future section does not put them back:
+
+- **`py-24` → `py-14 sm:py-16` on all four content bands.** 96px above *and* below every section is
+  where a third of the length was.
+- **`SectionHeader`'s defaults changed and that is site-wide**: `mb-14` → `mb-9`, the title
+  `md:text-[2.5rem]` → `md:text-[2.25rem]`, and the three internal `mb-4`s → `mb-3`. Four headers on
+  this page, six more elsewhere; consistently tighter is the point.
+- **`SkillCard` lost 20px of topper (84 → 64) and a padding step (`p-7` → `p-6`).** Four of them
+  stacked is most of the mobile page.
+- `TeacherCard`'s full variant `p-8` → `p-6`, `FeatureCard` `p-7` → `p-5`, `FaqAccordion` rows
+  `px-6 py-5` → `px-5 py-4`, grid gaps `gap-5`/`gap-8` → `gap-4`/`gap-6`.
+- **The hero's own collage went 560 → 424px** and the phone from 248 to 228 wide. The mobile hero now
+  fits in one 844px viewport, which it did not before.
+
+**Compacting the collage broke it twice, both times by clipping text rather than by clipping a card
+edge.** Overlap between two cards reads as a stack; overlap that cuts a sentence in half reads as a
+bug. The KNM card's caption was the casualty and was dropped — the three thema marks and "8 thema's"
+already said it. Check the collage at 1440 *and* at the `lg` breakpoint after moving any card.
+
+### The homepage hero is centred, and the track chips are what license the word "alles"
+
+Rebuilt to the owner's mockup on 2026-08-22, over the split navy hero, which was itself over the
+photograph. The reason is positioning, not taste: a two-column hero holds one product card and says
+"here is one thing", and the claim this page now has to make is that **the whole traject is here**.
+A centred headline over a collage of six surfaces says that in one glance.
+
+- **Light, not navy — and that is what the collage buys.** Six white cards need a surface to sit on;
+  over `primary` they become the whole composition and the graphic language vanishes underneath
+  them. The dot field, the light-ramp street and the closing band still carry it. There is
+  deliberately **no sun disc**: a centred layout has no flank for an accent that is not either
+  behind the copy or on top of a card.
+- **`TRACKS` in `page.tsx` is the roadmap, stated once, and it is what makes the headline honest.**
+  A2 · B1 · KNM · ONA as a bare list would advertise four things and deliver one: B1's thirty exams
+  exist but are `noindex` behind the docent's review gate, KNM is the documented fifth onderdeel and
+  is not built, ONA is announced and not built. `live: false` renders the "binnenkort" chip. **When a
+  part goes live, this row and `data/skills.ts` change together** — and B1 in particular needs the
+  `robots`/sitemap change recorded under "B1 stays `noindex`" as well, or the chip would promise a
+  page search engines are told to ignore.
+- **The satellites are positioned from the *centre*, not from the container's edges.** `left`/`right`
+  percentages pinned them to the box, so on a wide viewport the box grew and the cards drifted away
+  from the phone — six things scattered across 1024px rather than one cluster. `left: 50%` plus a
+  pixel `marginLeft` keeps every card the same distance from the phone at every width.
+- **The cards run 38px under the phone (`OVERLAP`), and the phone is on top (`z-20` over `z-10`).**
+  That inversion of the DOM order is what makes overlap safe: whatever a card covers, it can never
+  be the phone's own content. An earlier pass had the satellites on top and they covered the
+  "3 / 12" progress chip — part of what the shot exists to show.
+- **`under` pads a card's content back off the covered edge.** The card's *shape* overlaps; its text
+  does not, or sentences get cut mid-word, which reads as a bug rather than as depth. The offsets
+  are arithmetic, not taste: the phone is 300 wide at `lg`, so its edges are at ±150, a covered edge
+  sits at ∓112, and a left-hand card's `x` is `-112 − width`. Getting that wrong by 84px put every
+  left card's text under the phone — and it looked deliberate, so **check the words, not the
+  shapes**, after moving anything.
+- **The phone is rounded at the top only and runs off the bottom of the section.** A fully rounded
+  panel floating clear of the edge reads as a pill; cropped, with corners only at the top, it reads
+  as a screen continuing past the fold. The bottom padding (`pb-14 lg:pb-16`) exists so the crop
+  lands in empty navy rather than through the last answer option — and it must stay larger than the
+  negative `bottom`, which is why the two are set per breakpoint.
+- **It is 300px wide at `lg` and 228 below, and that is positioning, not layout.** Most candidates
+  sit this exam at a desktop, so the shot should not insist the product is a phone app; it keeps
+  phone proportions on a phone, where 300px would not fit.
+- **`_components/HeroShowcase.tsx` is `aria-hidden` in its entirety.** It is a picture of the
+  product: the phone is an unanswerable multiple-choice question, the play button plays nothing, and
+  the five satellites are fragments of state belonging to nobody. Anything a visitor needs to *know*
+  belongs in the copy above it.
+- **Every figure in it is illustrative UI state, and the test is whether it would still be true
+  printed as prose on this page.** That is why the mockup's "58" badge and "240 vragen" on the KNM
+  card are not here — they read as a catalogue size, and KNM is not built. "8 thema's" stayed,
+  because it is a fact about the exam.
+- **Below `lg` only the phone renders.** Six overlapping cards need ~1000px to overlap *legibly*;
+  scaling the collage down instead makes the type illegible.
+- **The phone is centred with `inset-x-0 mx-auto`, never `left-1/2 -translate-x-1/2`.** The
+  satellites set `transform: rotate()` inline; mixing that with a Tailwind translate dropped the
+  translate and left the phone at `left: 50%`, overflowing the viewport at 390px. Auto margins need
+  no transform at all.
+- **The collage has no negative bottom margin.** A 40px overhang cropped the phone through the
+  middle of its third answer option, which reads as a rendering bug rather than as a composition.
+  The section's own edge is the crop.
+- **The positioning copy moved with it**: `home.meta_title`, `meta_description`, `hero_line1`,
+  `hero_subheading`, `cta_primary` ("Begin gratis") and `footer.tagline` now describe the whole
+  traject rather than "de vier onderdelen van het inburgeringsexamen A2". `hero_line2`, `cta_secondary`
+  and the three `stat_*` pairs are gone. **Still A2-only in their wording and needing the owner's
+  copy, not a search-and-replace:** `home.skills_subheading`, `home.faq_a1` (which is *correct* and
+  says the platform covers the four taalonderdelen — resolve the tension in the copy, not by
+  deleting the true sentence), the `/docent` and `/premium` headers, and the five blog posts.
+
+### The homepage's second block is the shelf — one compact row
+
+`app/[locale]/(main)/page.tsx`, directly under the hero, to the owner's mockup (2026-08-22). It
+briefly was a two-row block of six *package* cards, each listing what was inside it (uitleg per
+antwoord, beoordeling per criterium, nagekeken door de docent). That block said more and was worse
+in this position: the question this strip answers is "what is on this site?", the onderdelen grid
+below already sells them one at a time, and an answer at a glance beats an answer with a bill of
+materials.
+
+- **The rule under each name is a solid `HorizonBand`, not a part-filled meter.** The mockup draws
+  it two-tone — an orange run and a grey remainder — which is a progress bar, and on an anonymous
+  first visit there is no progress to report. It is also the detail a returning visitor would notice
+  never moves. Solid, it reads as the surface edge every card on the site closes with.
+- **ONA is announced as "binnenkort" and nothing is built** (owner's mockup, 2026-08-22).
+  `data/skills.ts` has four onderdelen and KNM is the documented fifth; ONA is on no roadmap in this
+  repo. If that changes, or if it should not be advertised, the tile's label is the only thing to
+  touch.
+- **The ONA tile is not a link and is drawn on the neutral ramp with a hollow ring.** An unbuilt
+  onderdeel that looked identical to the five live ones would leave the "binnenkort" chip doing all
+  the work, and a chip is easy to miss.
+- **The section sits on `surface`, not `surface-container-low`.** The disabled tile *is*
+  `surface-container-low`, so with the section on the same token the tile vanished into it — the one
+  card that must read as different became the one card that read as absent.
+- **No prices here.** `/premium` is the only page with `Offer` nodes and the only place a figure is
+  read from `lib/pricing.ts`. A stale price keeps showing in the SERP after the page itself is
+  corrected.
+- **The two product cards in the hero are `aria-hidden`.** A Lezen item and a Luisteren player in a
+  hero are a picture of the product, not the product: to a screen reader the first is three
+  unlabelled options and a stray checkmark, and the second is a play button that plays nothing. The
+  real exam is one link away.
+
+### The official category marks are the icon layer — `components/horizon/CategoryMark.tsx`
+
+Imported from the Claude Design project *Dutch Icon Studio* (§04 "Category marks v3") on
+2026-08-22. Six marks: `lezen` `luisteren` `schrijven` `spreken` `knm` `gidsen`.
+
+- **This is not a second icon set competing with lucide; the split is by job.** A category mark
+  names *a thing the product sells* — an onderdeel, the KNM section, the gidsen — and it is brand
+  imagery drawn from the same blocks and discs as the skyline. **lucide-react keeps every
+  functional affordance**: chevrons, close buttons, nav items, the arrow inside a CTA. Confusing
+  the two is how a system ends up with two visual voices, so a mark never stands in for a control
+  and a lucide glyph never names a category on a marketing surface.
+- **§7.3's ban on illustrations is not broken.** There is no line art and no drawing tool: every
+  mark is composed of rectangles, discs and the one permitted triangle, in CSS, exactly like the
+  houses. Which is also why they are here and not in `components/site/`.
+- **All six are drawn on the studio's 72×72 grid and scaled by transform.** Pass `size`; never
+  re-draw a mark at another size, or the 36px shelf tile and the 48px card tile become two sets of
+  numbers to keep in step.
+- **The `cut` colour is the tile showing through the ink** — the pages of the document, the gaps
+  between the colonnade's columns. It must equal the tile behind it, which is why `tone` switches
+  both together and why a mark cannot be dropped onto an arbitrary background.
+- **KNM is the studio's "Instanties" colonnade and Gidsen is its "Brug".** KNM is the onderdeel
+  about how the Dutch state works, which all eight thema's run into; the gidsen are the crossing.
+  A book for the gidsen would have collided with Lezen, which is the document.
+- **`SkillCard`'s tile *is* the mark.** It used to be a white 48px tile with a bare lucide glyph
+  inside; `CategoryMark` draws its own `surface_container_high` square, so keeping the wrapper gave
+  a tile inside a tile. `SkillIcon` still exists and is still right in the nav, the admin and the
+  portal — those are affordances, not offers.
+
+- **`tokens.ts` duplicates the palette as hex literals on purpose.** Those values go into inline
+  `style` gradients, which cannot read a Tailwind colour utility. It is the one sanctioned copy of
+  `@theme`; keep the two in step.
+
+### `HorizonBanner` is the one to reach for, and why it exists
+
+Six surfaces needed the same four layers over their own copy, so the composition is a component
+rather than a recipe: `<HorizonBanner />` inside any `relative overflow-hidden` section, copy after
+it with `position: relative`.
+
+**It carries the responsive pair of house counts, and that is the point.** §7.1 says to scale a
+skyline by dropping houses rather than shrinking every part — but a house also has to stay roughly
+as wide as it is tall or it stops reading as a canal house. Fourteen houses look right at 1440px and
+read as a **picket fence** at 390px; six look right on a phone and as a **bar chart** on a desktop.
+Every header needs both counts, and no header should have to remember that. It also owns the
+`hidden sm:block` on the sun disc, for the same reason: at 390px the copy fills the full width and
+there is no empty flank for an accent to occupy without landing on a headline.
+
+`sun={false}` for a **centred** header — there is no flank at any width.
+
+### What was converted, and what was deliberately left (2026-08-22)
+
+Converted: the shared chrome (`GradientHero` → all six page headers, `SectionHeader`'s horizon
+rule, the glass `Nav`, the silhouette handover in `Footer` — which is why no page needs its own),
+the homepage (hero band, the §7.4 comparison band, `SkillCard` → `SkylineTopper`), `/oefenen`,
+`/premium` (hero, module toppers, and its many off-system values), `/oefenexamen/[level]/[skill]`
+(exam-set header, `ValidationChip`, the three not-openable states), the free taster
+(`ExamIntro` + `FreePracticeEngine`), the exam player (`ExamShell`'s start card and result
+surfaces, `McqQuestion`'s quiz surfaces, `AudioPlayer` → the §7.2b audio surface,
+`RubricFeedback`), and the live portal (`dashboard/page.tsx`, `betaling-gelukt`).
+
+**The greens are gone from every live surface.** `#15803d` / `#16a34a` / `#22c55e` / `#4ade80` /
+`#f0fdf4` / `#dcfce7` were carrying "correct", "passed" and "included" in eleven files, and none of
+them is in a token file — §7.3 forbids a new hue for a status. Correct/passed is now clay
+(`secondary`/`secondary_container`), wrong is `--color-error`, and the Check/X icon is what actually
+carries the meaning for anyone who cannot separate the two hues. `#eef2ff` and `#eff6ff` (Tailwind
+indigo-50 / blue-50) went the same way — those are the "standard blue" §6 names explicitly.
+
+Deliberately **not** converted, and each for a reason:
+
+- **`/admin`'s green answer key.** `#15803d` marks the correct option in `QuestionCard` and
+  `ContentSheet`. It is internal, it is documented above as the intended affordance, and
+  green-for-correct is right in a data-entry tool where the docent is scanning for the one ticked
+  row. Public surfaces are where the palette has to hold.
+- **`components/leren/`.** `FEATURES.leren` is off and nothing routes there. It still has emoji,
+  `material-symbols` and the full green/red palette. Restyling code that will be rewritten when the
+  feature is switched on is work thrown away twice.
+- **`dashboard/components/*View.tsx`, `dashboard/analyse`, `dashboard/fouten`.** Documented above as
+  unrouted KNM-shaped leftovers. Same argument.
+- ~~**The homepage photo hero.**~~ **REVERSED 2026-08-22 — the hero is the constructed blue
+  panel now.** The old argument (a real trapgevel beats a drawn one; §7.3's one-gradient rule means
+  a drawn street would fight the scrim) was true and lost anyway: the photo made the homepage the
+  one page on the site that did not speak the graphic language, so the hero read as a different
+  product's. It is now two panels — solid `primary` under the copy, `--gradient-brand` under the
+  graphic — carrying the dot field, **the** sun disc, the docent card and a 13-house street with a
+  molen standing in it. `public/images/hero.webp` and `scripts/build-hero-image.mjs` stay on disk;
+  this is a taste call and taste calls get re-made.
+- **The `--shadow-card*` family.** Still used by ~40 callers. `--shadow-ambient` is the system's
+  elevation and the one to use on anything new; a blanket swap is its own change.
+
+### No emoji anywhere in the UI
 ### No emoji anywhere in the UI
 Use **lucide-react** icons (what shadcn ships). Emoji render differently per platform and
 cannot be colour-matched to the brand. `components/site/SkillIcon.tsx` maps each skill to
 its icon (BookOpen / Headphones / PenLine / Mic) and renders it in the brand-tinted tile —
 use it rather than re-picking icons. `FeatureCard` takes a `LucideIcon`, not a string.
 Checkmarks, crosses and arrows in UI are lucide `Check` / `X` / `ArrowRight`, not glyphs.
+
+### The mark has two definitions and a generator — never a third
+
+The logo is **`components/site/LogoMark.tsx`** for anything React renders, and **`MARK` in
+`scripts/build-icons.mjs`** for every file a browser or a mail client fetches as an image. Those two
+are the only copies. Change them in the same commit and re-run the generator:
+
+```bash
+npm run build:icons        # favicon.svg, favicon-32x32, icon-512, apple-touch-icon,
+                           # app/favicon.ico (16+32+48) and images/logo-email.png
+```
+
+- **The generator exists because the mark used to live in seven places** — the component, the SVG,
+  three PNGs, the ICO and `BrandLoader` — so "update the logo" meant finding all seven and
+  hand-editing rasters. The one on 2026-08-22 missed the favicons and the loader until asked.
+- **Rasterising goes through Puppeteer**, the one `check-ui.mjs` already needs. There is no librsvg
+  or ImageMagick on this machine, and a native image dependency for five files that change once a
+  year is the worse trade.
+- **`apple-touch-icon.png` is a full square with no corner radius.** iOS applies its own mask; a
+  pre-rounded icon gets rounded twice and shows a ring of the page behind it inside the squircle.
+  Everything else keeps the 23/100 radius.
+- **`images/logo-email.png` is the *dark* variant**, because the mail header is navy — and it is the
+  inverted tile, not a translucent one: an emailed PNG has no backdrop to be translucent against,
+  and 12% white renders as a grey smudge in every client. It is rendered at 160 for a 34px slot
+  because there is no `srcset` in email.
+- **`app/favicon.ico` is PNG-encoded** (6-byte header, one 16-byte directory entry per image, then
+  the PNG bytes). Every browser that matters has read PNG-in-ICO since IE11.
+- **`BrandLoader`'s spinner arc orbits *outside* the tile, at r=80.** The old one span the logo's own
+  outlined ring, which the mark no longer has. A replacement ring around the sun disc lands on the
+  bar at any useful radius — the disc is at cx=65 and the bar starts at x=26 — and a ring inside the
+  tile would show a retired logo on the one surface a user stares at. Its `strokeDasharray` sums to
+  the exact circumference (2π·80 = 502.65); any other total repeats the pattern and draws a second
+  stub arc opposite the first.
+
+### The header is navy, and the logo tile inverts on it
+
+Changed 2026-08-22 (owner's decision). It used to be glass — `surface` at 80% with a 20px
+backdrop-blur, which §2 asks for on a floating element. Correct in the abstract and wrong here:
+nearly every page header on this site is a navy Horizon banner, so a white bar sat on top of a navy
+panel and read as **two headers stacked**. On `primary` the bar and the banner beneath it are one
+surface, and the homepage hero needs no darkening gradient under the nav any more — there is no
+seam to hide.
+
+- **`LogoMark surface="dark"` is what the bar uses**, and the tile *inverts* (white tile, navy bar,
+  orange disc) rather than going translucent. A 12%-white tile made the mark read as a disabled
+  control.
+- **The 1px bottom edge stays 1px**, because `--nav-h` includes it and the row is sized
+  `calc(var(--nav-h) - 1px)`. It is now white at 10%: a ghost border is invisible on a dark bar.
+- **The `<option>` elements need their colour set back explicitly.** The language `<select>` is
+  white-on-navy in the bar, but its popup is drawn by the OS and does not inherit the bar's
+  background — without `color: #191c1e` on each option the list is white on white. This is the kind
+  of thing no screenshot of the closed bar can show.
+- **The dropdown panels and the mobile drawer stayed light.** They are pop-overs (§4's fourth
+  surface tier), not part of the bar; making them navy too would have removed the only tonal step
+  that says a panel is floating above the page.
+- `.glass-nav` is still in `globals.css` and still used by nothing on the public header. Leave it
+  or remove it in its own change — it is not this section's business.
 
 ### The header's height is a token, not a number in three places
 `--nav-h` in `app/globals.css` is the height of the fixed public header, border included. `Nav`
@@ -1251,6 +1796,11 @@ put them back out of step with the drawing.
 ---
 
 ## Hard rules
+- **Build every new page out of the official elements and icons.** `components/horizon/` is the
+  graphic language and `components/horizon/CategoryMark.tsx` is the icon layer; `components/site/`
+  is the marketing kit. A new surface starts by picking from those, not by drawing a header, a
+  divider, a status dot or a category glyph of its own. See "Design rules" below for what each one
+  is and the four spec rules that constrain code.
 - Check `COMPONENTS.md` before creating a component — reuse beats new.
 - No `transition-all`. No default Tailwind blue/indigo as primary. No emoji.
 - **i18n on every feature:** a new user-facing string goes into `messages/nl.json`,
@@ -1542,7 +2092,9 @@ Log failed attempts separately — a fix that took three tries is three entries.
 **M0 and M1 are done (2026-08-19).** M2 is underway: the pillar
 (`data/guides/inburgering-stappenplan.ts`) published 2026-08-19, and the menu now implements
 MILESTONES §3 with the first tool and free-practice placeholders (2026-08-20) — see "M2 — the
-pillar is live" and "M2b — the menu implements §3". **The tijdlijn-maker is built (2026-08-20) — see "M2c" above.** Next: the six spokes (start each
+pillar is live" and "M2b — the menu implements §3". **The tijdlijn-maker is built (2026-08-20) — see "M2c" above, and
+the hub became a three-fase route with per-section reading progress on 2026-08-22 — see "M2d".**
+Next: the six spokes (start each
 from `SEO/facts.md` §10), the EN top-3, and the inline diagnostic quiz inside the tijdlijn nodes.
 The phases below are the original build-out, kept for their still-open items.
 

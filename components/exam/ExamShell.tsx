@@ -2,6 +2,7 @@
 
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { ArrowLeft, ArrowRight, Check, Clock, FileCheck2, X } from 'lucide-react';
+import { HorizonBanner } from '@/components/horizon';
 import { Link } from '@/i18n/navigation';
 import { createClient } from '@/lib/supabase/client';
 import { completeExamAttempt, startExamAttempt } from '@/lib/attempts';
@@ -703,7 +704,10 @@ export default function ExamShell({ content, canSeeExplanations }: Props) {
           style={{
             background:
               open.passed === true
-                ? 'linear-gradient(135deg,#064e3b 0%,#065f46 55%,#10b981 100%)'
+                // §7.2 scene states: a pass is the *primary* surface with the sun high, not a
+                // green one. Green is in no token file, and "passed" in this system reads as
+                // "official", which is what the navy says.
+                ? 'var(--gradient-brand)'
                 : open.pct == null
                   ? 'var(--gradient-brand)'
                   : 'linear-gradient(135deg,#5f2200 0%,#a24000 55%,#fe762c 100%)',
@@ -794,7 +798,7 @@ export default function ExamShell({ content, canSeeExplanations }: Props) {
         className="rounded-3xl flex items-center justify-between gap-6 flex-wrap"
         style={{
           background: passed
-            ? 'linear-gradient(135deg,#064e3b 0%,#065f46 55%,#10b981 100%)'
+            ? 'var(--gradient-brand)'
             : 'linear-gradient(135deg,#5f2200 0%,#a24000 55%,#fe762c 100%)',
           padding: '2rem 1.875rem',
         }}
@@ -824,7 +828,7 @@ export default function ExamShell({ content, canSeeExplanations }: Props) {
       {Object.keys(catScores).length > 0 && (
         <div
           className="rounded-2xl bg-surface-container-lowest"
-          style={{ padding: '1.375rem 1.5rem', boxShadow: 'var(--shadow-card-md)' }}
+          style={{ padding: '1.375rem 1.5rem', boxShadow: 'var(--shadow-ambient)' }}
         >
           <p className="text-[0.65rem] font-bold uppercase tracking-widest text-on-surface-variant/70 m-0 mb-3">
             Resultaat per tekstsoort
@@ -832,7 +836,10 @@ export default function ExamShell({ content, canSeeExplanations }: Props) {
           <div className="flex flex-col gap-2">
             {Object.entries(catScores).map(([name, cs]) => {
               const cp = cs.total ? Math.round((cs.correct / cs.total) * 100) : 0;
-              const col = cp >= 70 ? '#15803d' : cp >= 40 ? '#a24000' : '#b91c1c';
+              // Three bands, all from the palette. The greens are gone: the system's only
+              // "attention" colour is clay and its only "wrong" colour is the `error` token
+              // (§7.3 — never introduce a new hue to carry a status).
+              const col = cp >= 70 ? '#002b6d' : cp >= 40 ? '#a24000' : '#ba1a1a';
               return (
                 <div
                   key={name}
@@ -855,7 +862,7 @@ export default function ExamShell({ content, canSeeExplanations }: Props) {
 
       <div
         className="rounded-2xl bg-surface-container-lowest"
-        style={{ padding: '1.375rem 1.5rem', boxShadow: 'var(--shadow-card-md)' }}
+        style={{ padding: '1.375rem 1.5rem', boxShadow: 'var(--shadow-ambient)' }}
       >
         <p className="text-[0.65rem] font-bold uppercase tracking-widest text-on-surface-variant/70 m-0 mb-3">
           Jouw antwoorden
@@ -872,8 +879,8 @@ export default function ExamShell({ content, canSeeExplanations }: Props) {
                   className="inline-flex items-center justify-center rounded-lg flex-shrink-0"
                   style={{
                     width: 26, height: 26, marginTop: 1,
-                    background: right ? 'rgba(22,163,74,0.14)' : 'rgba(220,38,38,0.12)',
-                    color: right ? '#15803d' : '#b91c1c',
+                    background: right ? 'rgba(254,118,44,0.16)' : 'rgba(186,26,26,0.10)',
+                    color: right ? '#a24000' : '#ba1a1a',
                   }}
                 >
                   {right
@@ -969,20 +976,26 @@ function ExamIntroScreen({
 
   return (
     <div className="max-w-2xl mx-auto flex flex-col gap-5">
+      {/* The exam-set header is the same Dutch Horizon banner as every page header on the public
+          site, so a candidate arriving from `/oefenexamen/...` lands on a surface that looks like
+          the one they clicked from. No sun disc: the card is only ~200px tall and the stats run to
+          the right edge, so there is no empty flank the accent could occupy without landing on
+          copy (§7.3). */}
       <div
-        className="rounded-3xl"
-        style={{ background: 'var(--gradient-brand)', padding: '2rem 1.875rem' }}
+        className="rounded-3xl relative overflow-hidden"
+        style={{ background: 'var(--gradient-brand)', padding: '2rem 1.875rem 2.25rem' }}
       >
-        <p className="text-[0.65rem] font-bold uppercase tracking-widest m-0 mb-2" style={{ color: 'rgba(255,255,255,0.65)' }}>
+        <HorizonBanner desktopHouses={11} desktopHeight={56} mobileHouses={5} mobileHeight={40} seed={7} sun={false} />
+        <p className="relative text-[0.65rem] font-bold uppercase tracking-widest m-0 mb-2" style={{ color: 'rgba(255,255,255,0.65)' }}>
           Oefenexamen {exam.number}
         </p>
         <h1
-          className="font-headline font-extrabold text-white m-0 mb-4"
-          style={{ fontSize: '1.7rem', letterSpacing: '-0.03em', textWrap: 'balance' }}
+          className="relative font-headline font-extrabold text-white m-0 mb-4"
+          style={{ fontSize: '1.7rem', letterSpacing: '-0.02em', textWrap: 'balance' }}
         >
           {exam.title || `Oefenexamen ${exam.skill} ${exam.number}`}
         </h1>
-        <dl className="flex flex-wrap gap-7 m-0">
+        <dl className="relative flex flex-wrap gap-7 m-0">
           <Stat value={String(totalItems)} label={exam.skill === 'spreken' || exam.skill === 'schrijven' ? 'opdrachten' : 'vragen'} />
           <Stat value={String(Math.round(exam.duration_seconds / 60))} label="minuten" />
           <Stat value={`${exam.pass_threshold_pct}%`} label="oefengrens" />
@@ -991,7 +1004,7 @@ function ExamIntroScreen({
 
       <div
         className="rounded-2xl bg-surface-container-lowest"
-        style={{ padding: '1.375rem 1.5rem', boxShadow: 'var(--shadow-card-md)' }}
+        style={{ padding: '1.375rem 1.5rem', boxShadow: 'var(--shadow-ambient)' }}
       >
         <p className="text-sm leading-relaxed text-on-surface-variant m-0">
           De klok loopt zodra je begint. Je kunt heen en terug tussen de vragen en je antwoord
@@ -1001,7 +1014,7 @@ function ExamIntroScreen({
       </div>
 
       {isOpenSkill && !empty && (
-        <fieldset className="rounded-2xl bg-surface-container-lowest border-0 m-0" style={{ padding: '1.375rem 1.5rem', boxShadow: 'var(--shadow-card-md)' }}>
+        <fieldset className="rounded-2xl bg-surface-container-lowest border-0 m-0" style={{ padding: '1.375rem 1.5rem', boxShadow: 'var(--shadow-ambient)' }}>
           <legend className="text-[0.65rem] font-bold uppercase tracking-widest text-on-surface-variant/70 p-0 mb-3">
             Hoe wil je oefenen?
           </legend>
@@ -1218,7 +1231,7 @@ function TimerBar({
           className="h-full rounded-full"
           style={{
             width: `${pct}%`,
-            background: warn ? '#dc2626' : 'linear-gradient(to right,#a24000,#fe762c)',
+            background: warn ? 'var(--color-error)' : 'linear-gradient(to right,#a24000,#fe762c)',
             transition: 'width 1s linear',
           }}
         />
@@ -1228,7 +1241,7 @@ function TimerBar({
       </span>
       <span
         className="inline-flex items-center gap-1.5 font-headline font-bold text-sm whitespace-nowrap"
-        style={{ color: warn ? '#dc2626' : '#a24000', fontVariantNumeric: 'tabular-nums' }}
+        style={{ color: warn ? 'var(--color-error)' : '#a24000', fontVariantNumeric: 'tabular-nums' }}
       >
         <Clock size={14} strokeWidth={2.5} aria-hidden />
         {m}:{s < 10 ? '0' : ''}{s}

@@ -1,0 +1,258 @@
+[
+  {
+    "task_type": "sentence_completion",
+    "title": "Certificaat cursus",
+    "prompt_html": "<p>U werkt als medewerker in een woonzorgcentrum. Via uw werkgever hebt u een cursus van vier dagen gevolgd bij opleidingsbureau De Brugstroom. U hebt de cursus helemaal afgemaakt, maar u hebt daarna niets meer gehoord van het bureau.</p><p>U schrijft een mail aan het opleidingsbureau.</p>",
+    "email_to": "cursussen@debrugstroom-opleidingen.nl",
+    "email_subject": "Certificaat cursus tillen en verplaatsen",
+    "greeting": "Geachte heer, mevrouw,\n\nIn maart heb ik bij u de cursus 'Tillen en verplaatsen' gevolgd. Ik was alle vier de dagen aanwezig en heb ook de eindopdracht gemaakt. Ik zou graag willen weten of …",
+    "closing": "Ik hoor graag van u.\n\nMet vriendelijke groet,\nAmina Yildiz",
+    "model_answer": "ik voor deze cursus een certificaat kan krijgen, omdat mijn werkgever daar in mijn dossier om vraagt. Als het certificaat al verstuurd is, dan is het misschien naar een oud adres gegaan. Wilt u mij laten weten wat ik moet doen om het alsnog te ontvangen?"
+  },
+  {
+    "task_type": "sentence_completion",
+    "title": "Storing wasmachine",
+    "prompt_html": "<p>U werkt bij een winkel die wasmachines verkoopt en repareert. Een klant heeft gemaild dat zijn wasmachine niet meer start. De eerstvolgende monteur kan pas over vijf dagen komen, en een bezoek kost 45 euro.</p><p>U schrijft de klant een mail terug.</p>",
+    "email_to": "j.brouwers@zichtmail.nl",
+    "email_subject": "Uw melding over de wasmachine",
+    "greeting": "Geachte heer Brouwers,\n\nBedankt voor uw bericht over uw wasmachine. Onze monteur kan helaas pas maandag 14 juli bij u langskomen. Voordat hij komt, kunt u zelf het volgende proberen: …",
+    "closing": "Als de machine daarna nog niet start, houden we de afspraak van maandag staan.\n\nMet vriendelijke groet,\nRick Vermeulen\nWitgoed Nooteboom",
+    "model_answer": "controleer eerst of de stekker goed in het stopcontact zit en of de deur helemaal dicht is, want de machine start niet als het slot niet klikt. Kijk daarna of het filter onderaan schoon is en of de kraan van de watertoevoer open staat. Vaak is dit al voldoende, waardoor een bezoek van de monteur niet nodig is."
+  },
+  {
+    "task_type": "sentence_completion",
+    "title": "Zomeractiviteiten kinderopvang",
+    "prompt_html": "<p>U werkt bij kinderopvang De Klimtoren. In de zomervakantie organiseert de opvang elke week een extra activiteit voor de kinderen. U mag hierover een bericht op de website zetten voor de ouders.</p>",
+    "greeting": "Zomer bij De Klimtoren\n\nOok in de zomervakantie is De Klimtoren gewoon open. We hebben voor de kinderen een leuk programma gemaakt. In de weken van 14 juli tot 15 augustus doen we het volgende: …",
+    "closing": "Wilt u uw kind opgeven? Stuur dan voor 7 juli een bericht aan de leiding van de groep.\n\nMet vriendelijke groet,\nHet team van De Klimtoren",
+    "model_answer": "elke maandag gaan we met de kinderen naar het waterspeelveld in het park, en op woensdag komt er een kok die samen met de kinderen brood bakt. Op vrijdag is er een sportmiddag op het veld achter de opvang. Kinderen die meegaan naar buiten, hebben oude kleren en een pet nodig, omdat het buiten warm en vies kan worden."
+  },
+  {
+    "task_type": "sentence_completion",
+    "title": "Andere werktijden",
+    "prompt_html": "<p>U werkt vier dagen per week als administratief medewerker bij een installatiebedrijf. Uw dochter begint in september op een nieuwe school, verder van huis. U wilt daarom later beginnen en later stoppen.</p><p>U schrijft een mail aan uw leidinggevende.</p>",
+    "email_to": "m.doornbos@installatie-vaneijk.nl",
+    "email_subject": "Verzoek om aanpassing werktijden",
+    "greeting": "Beste meneer Doornbos,\n\nIk werk nu van maandag tot donderdag van 8.00 tot 16.30 uur. Vanaf september gaat mijn dochter naar een school in Almelo, waardoor ik haar 's ochtends verder moet wegbrengen. Ik zou u daarom willen vragen of …",
+    "closing": "Ik hoor graag of we hierover een afspraak kunnen maken.\n\nMet vriendelijke groet,\nPaulo Ferreira",
+    "model_answer": "ik vanaf 1 september van 9.00 tot 17.30 uur mag werken. Ik werk dan nog steeds hetzelfde aantal uren, dus voor de planning verandert er weinig. Als het nodig is, kan ik op woensdag wel eerder beginnen, zodat ik bij het teamoverleg aanwezig ben."
+  },
+  {
+    "task_type": "sentence_completion",
+    "title": "Bedankt voor dienst",
+    "prompt_html": "<p>U werkt in de keuken van een restaurant. Vorige week was u ziek en een collega heeft toen uw avonddienst overgenomen. Vandaag bent u weer aan het werk.</p><p>U schrijft uw collega een mail.</p>",
+    "email_to": "s.abdi@restaurantdelinde.nl",
+    "email_subject": "Bedankt voor zaterdag",
+    "greeting": "Hoi Samira,\n\nIk was zaterdag flink verkouden en kon echt niet komen werken. Gelukkig heb jij mijn dienst overgenomen, terwijl je eigenlijk vrij was. Ik wil je daar graag voor bedanken, want …",
+    "closing": "Laat maar weten wanneer het jou uitkomt.\n\nGroetjes,\nKarim",
+    "model_answer": "het was een drukke zaterdag en zonder jou hadden ze in de keuken echt een probleem gehad. Ik vind het heel fijn dat je zo snel wilde inspringen. Als jij een keer een dienst wilt ruilen of vrij nodig hebt, neem ik die van jou graag over."
+  },
+  {
+    "task_type": "sentence_completion",
+    "title": "Kapotte lantaarnpaal",
+    "prompt_html": "<p>U woont in een rustige straat in Zwolle. Al twee weken brandt de lantaarnpaal voor uw huis niet meer. In de avond is het daardoor erg donker op de stoep.</p><p>U schrijft een mail aan de gemeente.</p>",
+    "email_to": "meldingen@gemeente-zwolle-fictief.nl",
+    "email_subject": "Melding kapotte lantaarnpaal Wilgenhof",
+    "greeting": "Geachte heer, mevrouw,\n\nIk woon op de Wilgenhof 24 in Zwolle. Ik wil een probleem in mijn straat bij u melden: …",
+    "closing": "Kunt u mij laten weten wanneer de lamp gerepareerd wordt?\n\nMet vriendelijke groet,\nGrace Owusu",
+    "model_answer": "de lantaarnpaal tegenover huisnummer 24 doet het al ongeveer twee weken niet meer. Op de paal staat het nummer 1187. Omdat er in deze straat geen andere lampen staan, is het 's avonds heel donker, waardoor kinderen en ouderen makkelijk kunnen vallen."
+  },
+  {
+    "task_type": "sentence_completion",
+    "title": "Werk en studie",
+    "prompt_html": "<p>U werkt 32 uur per week in een tuincentrum en u begint in september met een beroepsopleiding. U merkt dat u het moeilijk vindt om alles te plannen. Op een forum voor deeltijdstudenten schrijft u een bericht.</p>",
+    "greeting": "Werk en opleiding samen: hoe doen jullie dat?\n\nIn september begin ik met de opleiding logistiek, terwijl ik 32 uur per week in een tuincentrum blijf werken. Ik zie er erg naar uit, maar ik ben ook een beetje bang dat het te veel wordt. Daarom wil ik jullie vragen …",
+    "closing": "Alle tips zijn welkom. Bedankt alvast!\n\nGroet,\nDaniël",
+    "model_answer": "hoe jullie werk en studie precies combineren. Studeren jullie vooral in het weekend, of maakt jullie werkgever ruimte in het rooster voor een studiedag? Ik ben ook nieuwsgierig hoeveel uur per week jullie aan huiswerk kwijt zijn, zodat ik weet waar ik rekening mee moet houden."
+  },
+  {
+    "task_type": "sentence_completion",
+    "title": "Enquête opleiding",
+    "prompt_html": "<p>U zit in de medezeggenschapsraad van uw opleiding, de raad die meepraat over het onderwijs. De raad wil weten wat studenten van de nieuwe lesroosters vinden en heeft daarom een enquête gemaakt. U stuurt een mail naar alle studenten van uw jaar.</p>",
+    "email_to": "studenten-jaar2@vakschoolmeerzicht.nl",
+    "email_subject": "Vul de enquête over de lesroosters in",
+    "greeting": "Beste medestudenten,\n\nSinds januari hebben we nieuwe lesroosters, met lange dagen op maandag en woensdag. De medezeggenschapsraad wil weten wat jullie daarvan vinden en heeft een korte enquête gemaakt. Ik wil jullie vragen om …",
+    "closing": "Bedankt voor jullie hulp!\n\nMet vriendelijke groet,\nNadia el Hamdi\nMedezeggenschapsraad",
+    "model_answer": "de enquête voor vrijdag 21 november in te vullen. Het duurt ongeveer vijf minuten en je antwoorden blijven anoniem. Hoe meer studenten reageren, hoe sterker we bij de directie kunnen laten zien wat er echt moet veranderen."
+  },
+  {
+    "task_type": "email",
+    "title": "Andere werktijden aanvragen",
+    "prompt_html": "<p>U werkt sinds twee jaar bij zorgorganisatie De Waterlelie in Zwolle. U werkt vier dagen per week van 9.00 tot 17.00 uur. Vanaf 1 februari gaat uw zoontje naar de basisschool. De school begint om 8.30 uur en stopt om 14.15 uur. De buitenschoolse opvang in uw wijk heeft een lange wachtlijst, waardoor u uw kind zelf moet ophalen.</p><p>U wilt daarom andere werktijden. U wilt op maandag, dinsdag, donderdag en vrijdag van 8.00 tot 14.00 uur werken en de rest van uw uren thuis afmaken in de avond. U schrijft een e-mail aan uw leidinggevende, mevrouw Bakker, om dit voorstel uit te leggen.</p><p><strong>Opdracht</strong></p><p>Schrijf een e-mail aan uw leidinggevende. Behandel alle punten hieronder. U mag de informatie zelf verzinnen.</p><p>Het doel van de tekst is uw leidinggevende overtuigen dat zij uw voorstel voor andere werktijden goedkeurt.</p>",
+    "bullet_points": [
+      "U legt uit waarom u deze e-mail schrijft en vanaf welke datum de verandering nodig is.",
+      "U beschrijft uw persoonlijke situatie en noemt minimaal twee redenen waarom uw huidige werktijden niet meer passen.",
+      "U legt uw voorstel voor nieuwe werktijden precies uit, met dagen en tijden.",
+      "U legt uit hoe uw werk gewoon goed blijft doorgaan, zodat uw collega's geen problemen krijgen.",
+      "U vraagt om een gesprek en noemt een moment waarop u kunt.",
+      "U bedankt uw leidinggevende en vraagt om een reactie."
+    ],
+    "email_to": "m.bakker@dewaterlelie-zwolle.nl",
+    "email_subject": "Voorstel voor andere werktijden vanaf 1 februari",
+    "greeting": "Geachte mevrouw Bakker,",
+    "closing": "Met vriendelijke groet,",
+    "model_answer": "Geachte mevrouw Bakker,\n\nIk schrijf u omdat ik een voorstel wil doen voor andere werktijden. Mijn zoontje gaat vanaf 1 februari naar de basisschool. Daarom hoop ik dat mijn nieuwe werktijden vanaf die datum kunnen ingaan.\n\nOp dit moment werk ik vier dagen per week van 9.00 tot 17.00 uur. Deze tijden passen helaas niet meer bij mijn situatie. De school van mijn zoon begint om 8.30 uur en stopt al om 14.15 uur, terwijl ik dan nog aan het werk ben. Bovendien is er een lange wachtlijst bij de buitenschoolse opvang in mijn wijk, waardoor ik mijn kind zelf moet ophalen. Mijn man werkt in de middag en kan dat dus niet doen.\n\nMijn voorstel is het volgende. Ik zou graag op maandag, dinsdag, donderdag en vrijdag van 8.00 tot 14.00 uur werken. De uren die ik dan nog mis, wil ik in de avond thuis afmaken, bijvoorbeeld tussen 20.00 en 21.30 uur. Zo blijft het aantal uren per week precies hetzelfde als nu.\n\nIk denk dat mijn werk gewoon goed door kan gaan. Ik ben in de ochtend al vroeg aanwezig, zodat ik het overleg van 8.30 uur nooit mis. Rapporten en administratie kan ik in de avond rustig afmaken. Mijn collega Karin heeft al gezegd dat zij de late telefoontjes van mij wil overnemen. Op die manier krijgen mijn collega's geen extra werk.\n\nWilt u dit voorstel met mij bespreken? Ik kan bijvoorbeeld op donderdag 16 januari na de lunch, maar een ander moment is ook goed.\n\nHartelijk dank dat u mijn verzoek wilt bekijken. Ik hoor graag van u wat u van mijn voorstel vindt.\n\nMet vriendelijke groet,\n\nAmina Yildiz"
+  },
+  {
+    "task_type": "form",
+    "title": "Inschrijfformulier vrijwilligerswerk",
+    "prompt_html": "<p>U woont in Zwolle en u werkt drie dagen per week als medewerker in een woonzorgcentrum. In uw brievenbus vond u een folder van Stichting Buurtkracht, een organisatie die vrijwilligers zoekt voor activiteiten in de wijk, zoals een taalcaf\ru00e9, een klussendienst en het bezorgen van maaltijden. U wilt zich aanmelden, omdat u graag meer contact met buurtbewoners hebt en omdat u uw Nederlands wilt oefenen.</p>\n<p>Op de website van de stichting staat een inschrijfformulier met open vragen. De co\ru00f6rdinator, mevrouw Van Elderen, leest de formulieren en zoekt daarna een passende plek voor iedere nieuwe vrijwilliger. Uw naam en uw e-mailadres zijn al ingevuld. Hoeveel uur per week u beschikbaar bent, kruist u zelf aan.</p>\n<p><strong>Opdracht</strong></p>\n<p>Vul het formulier in. Geef antwoord op alle zes de vragen en schrijf bij elke vraag minstens twee of drie hele zinnen. Leg bij iedere vraag ook uit waarom u dat antwoord geeft, zodat mevrouw Van Elderen uw keuze begrijpt. U mag de informatie zelf verzinnen.</p>\n<p>Het doel van de tekst is de co\ru00f6rdinator van Stichting Buurtkracht duidelijk te laten zien wie u bent, welk vrijwilligerswerk u wilt doen en waarom u daarvoor geschikt bent, zodat zij een passende plek in de wijk voor u kan kiezen.</p>",
+    "email_to": "",
+    "email_subject": "",
+    "greeting": "",
+    "closing": "",
+    "model_answer": "Beschikbaarheid: 4 tot 6 uur per week\n\n1. Ik wil vrijwilligerswerk doen omdat ik sinds twee jaar in Zwolle woon en mijn buurt nog niet goed ken. Op mijn werk spreek ik vooral met bewoners van het woonzorgcentrum, maar daarbuiten heb ik weinig contact. De belangrijkste reden is dat ik nuttig wil zijn voor andere mensen en tegelijk mijn Nederlands beter wil leren spreken.\n\n2. Ik werk al vier jaar in de zorg, waardoor ik gewend ben om rustig met mensen te praten en goed te luisteren. Ook ben ik geduldig, want veel bewoners hebben tijd nodig om iets uit te leggen. Verder spreek ik Arabisch en Frans, dus ik kan soms helpen bij mensen die nog weinig Nederlands begrijpen.\n\n3. Ik kies voor het taalcaf\ru00e9, omdat ik zelf weet hoe moeilijk het is om een nieuwe taal te leren. In het begin durfde ik bijna niets te zeggen, terwijl ik thuis wel veel woorden had geleerd. Ik wil andere mensen laten merken dat fouten maken niet erg is, zodat zij meer zelfvertrouwen krijgen.\n\n4. Ik werk het liefst met ouderen en met vrouwen die net in Nederland zijn. Met ouderen heb ik door mijn baan veel ervaring, dus ik voel me daar zeker bij. Vrouwen die net zijn aangekomen, begrijp ik goed, omdat ik zelf dezelfde stappen heb gezet.\n\n5. Ik wil graag een korte cursus over het begeleiden van een gespreksgroep, want ik heb dat nog nooit gedaan. Ook zou ik het fijn vinden om de eerste maand met een ervaren vrijwilliger samen te werken. Zo kan ik vragen stellen en zie ik hoe een bijeenkomst normaal verloopt.\n\n6. Mijn werk kan het soms moeilijk maken, omdat ik onregelmatige diensten heb. Meestal weet ik mijn rooster drie weken vooruit, dus ik kan wel op tijd doorgeven wanneer ik niet kan. Woensdagavond en zaterdagmiddag komen bijna altijd goed uit, hoewel ik \ru00e9\ru00e9n keer per maand op zaterdag moet werken. Als u met die avond rekening houdt, kan ik heel regelmatig komen.",
+    "form_schema": {
+      "sections": [
+        {
+          "heading": "Uw gegevens",
+          "rows": [
+            {
+              "kind": "static",
+              "label": "Naam",
+              "value": "Amina Haddadi"
+            },
+            {
+              "kind": "static",
+              "label": "E-mailadres",
+              "value": "a.haddadi@postmail.nl"
+            },
+            {
+              "kind": "choice",
+              "label": "Hoeveel uur per week bent u beschikbaar?",
+              "options": [
+                "1 tot 3 uur per week",
+                "4 tot 6 uur per week",
+                "meer dan 6 uur per week"
+              ]
+            }
+          ]
+        },
+        {
+          "heading": "Uw motivatie en wensen",
+          "rows": [
+            {
+              "kind": "text",
+              "label": "1. Waarom wilt u vrijwilligerswerk doen bij Stichting Buurtkracht? Leg ook uit welke reden voor u het belangrijkst is.",
+              "placeholder": "Schrijf hier uw antwoord."
+            },
+            {
+              "kind": "text",
+              "label": "2. Welke ervaring en eigenschappen neemt u mee? Leg ook uit waarom die van pas komen in de wijk.",
+              "placeholder": "Schrijf hier uw antwoord."
+            },
+            {
+              "kind": "text",
+              "label": "3. Voor welke activiteit kiest u: het taalcaf\ru00e9, de klussendienst of het bezorgen van maaltijden? Leg ook uit waarom u die keuze maakt.",
+              "placeholder": "Schrijf hier uw antwoord."
+            },
+            {
+              "kind": "text",
+              "label": "4. Met welke groep buurtbewoners werkt u het liefst? Leg ook uit waarom u zich bij die groep goed voelt.",
+              "placeholder": "Schrijf hier uw antwoord."
+            },
+            {
+              "kind": "text",
+              "label": "5. Welke begeleiding of cursus wilt u van ons krijgen? Leg ook uit waarom u dat nodig hebt.",
+              "placeholder": "Schrijf hier uw antwoord."
+            },
+            {
+              "kind": "text",
+              "label": "6. Wat kan uw vrijwilligerswerk moeilijk maken, bijvoorbeeld werk, opleiding of gezondheid? Leg ook uit hoe wij daar rekening mee kunnen houden.",
+              "placeholder": "Schrijf hier uw antwoord."
+            }
+          ]
+        }
+      ]
+    }
+  },
+  {
+    "task_type": "picture_report",
+    "title": "Verslag stagedag fietsenwinkel",
+    "prompt_html": "<p>U volgt een beroepsopleiding tot fietstechnicus bij het Regionaal Vakcollege De Waterlinie in Zutphen. Op woensdag 12 maart hebt u een meeloopdag gehad bij fietsenwinkel Het Snelle Wiel. U hebt die dag meegelopen met een monteur en ook in de winkel geholpen.</p><p>Uw stagebegeleider, mevrouw Verhoeven, heeft u gevraagd een verslag van die dag te schrijven. Zij bewaart het verslag in uw stagedossier en bespreekt het in het volgende gesprek met u.</p><p>Hieronder staan drie foto's. Samen laten die foto's zien hoe uw dag verliep, van het begin tot het einde. U gebruikt alle drie de foto's in uw verslag, in de juiste volgorde.</p><p><strong>Opdracht</strong></p><p>Schrijf een verslag van ongeveer 200 woorden over uw stagedag. Behandel alle inhoudspunten. De foto's gaan niet mee naar mevrouw Verhoeven, dus uw tekst moet ook zonder de foto's goed te begrijpen zijn. U mag de informatie zelf verzinnen. U schrijft in de u-vorm.</p><p>Het doel van de tekst is uw stagebegeleider duidelijk en volledig informeren over wat u tijdens de meeloopdag hebt gedaan en geleerd.</p>",
+    "bullet_points": [
+      "U vertelt wanneer en waar de meeloopdag was en hoe de dag begon.",
+      "U beschrijft welke werkzaamheden u in de werkplaats hebt gedaan en wie u daarbij hielp.",
+      "U legt uit wat u in de winkel zelf hebt gedaan, bijvoorbeeld bij het helpen van klanten.",
+      "U noemt minimaal twee dingen die u die dag hebt geleerd.",
+      "U schrijft wat u moeilijk vond en waarom dat zo was.",
+      "U geeft aan of u hier stage zou willen lopen en u legt uit waarom."
+    ],
+    "email_to": "Mevrouw M. Verhoeven, stagebegeleider Regionaal Vakcollege De Waterlinie",
+    "email_subject": "Verslag meeloopdag fietsenwinkel Het Snelle Wiel",
+    "greeting": "Geachte mevrouw Verhoeven,",
+    "closing": "Met vriendelijke groet,\nSamira Aydin\nStudent fietstechniek, jaar 1",
+    "model_answer": "Geachte mevrouw Verhoeven,\n\nHierbij stuur ik u het verslag van mijn meeloopdag. Die dag was op woensdag 12 maart bij fietsenwinkel Het Snelle Wiel in Zutphen. Ik was om acht uur aanwezig, omdat de winkel om half negen opengaat. De eigenaar, meneer Bosman, gaf mij een werkjas en liet mij eerst de werkplaats zien.\n\nIn de werkplaats werkte ik samen met de monteur Dennis. Hij liet mij zien hoe je een ketting schoonmaakt en hoe je remblokken vervangt. Daarna mocht ik zelf twee fietsen nakijken, terwijl hij naast mij stond en meekeek. Ik heb ook een lekke band geplakt en de banden op de juiste spanning gebracht.\n\nNa de pauze hielp ik in de winkel. Ik heb klanten begroet en fietssloten en lampjes verkocht. Een mevrouw wilde weten wanneer haar fiets klaar was, dus ik heb dat voor haar opgezocht in de computer.\n\nIk heb twee belangrijke dingen geleerd. Ten eerste moet je bij elke reparatie eerst goed controleren wat er echt kapot is. Ten tweede is het belangrijk om rustig uit te leggen wat je doet, zodat de klant het begrijpt. Het afstellen van de versnellingen vond ik moeilijk, doordat ik daar nog weinig ervaring mee heb.\n\nIk wil hier graag stage lopen, omdat ik veel mag meewerken en de monteur goed uitlegt.\n\nMet vriendelijke groet,\nSamira Aydin",
+    "form_schema": {
+      "sections": [
+        {
+          "heading": "Verslag stagedag",
+          "rows": [
+            {
+              "kind": "static",
+              "label": "Aan",
+              "value": "Mevrouw M. Verhoeven, stagebegeleider"
+            },
+            {
+              "kind": "text",
+              "label": "Onderwerp",
+              "placeholder": "Vul het onderwerp van uw verslag in"
+            },
+            {
+              "kind": "text",
+              "label": "Datum meeloopdag",
+              "prefill": "12 maart"
+            },
+            {
+              "kind": "choice",
+              "label": "Ik zou hier graag stage lopen",
+              "options": [
+                "ja",
+                "nee",
+                "misschien"
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    "images": [
+      {
+        "slot": "schrijven-7-o11-p1",
+        "query": "bicycle shop owner welcoming intern morning opening",
+        "caption": "Aankomst in de winkel",
+        "variant": 0
+      },
+      {
+        "slot": "schrijven-7-o11-p2",
+        "query": "bicycle repair workshop mechanic teaching apprentice wheel",
+        "caption": "Werken in de werkplaats",
+        "variant": 1
+      },
+      {
+        "slot": "schrijven-7-o11-p3",
+        "query": "bike shop assistant helping customer at counter",
+        "caption": "Klanten helpen",
+        "variant": 2
+      }
+    ]
+  },
+  {
+    "task_type": "letter",
+    "title": "Sollicitatiebrief receptionist",
+    "prompt_html": "<p>U woont in Zwolle en u zoekt een nieuwe baan. In het weekblad <em>Zwolse Berichten</em> van 14 maart staat een advertentie van gezondheidscentrum De Vijverhof. Het centrum zoekt een receptionist voor 28 uur per week. In de advertentie staat dat de nieuwe medewerker klanten ontvangt, de telefoon aanneemt en afspraken in de agenda zet. Er wordt gevraagd om iemand die goed met mensen kan omgaan en rustig blijft als het druk is.</p><p>U heeft ervaring met dit soort werk, want u heeft eerder aan een balie gewerkt. Daarnaast volgt u nu een cursus zodat u uw Nederlands verder verbetert. U besluit een sollicitatiebrief te schrijven.</p><p>U stuurt uw brief naar:<br>Gezondheidscentrum De Vijverhof<br>Mevrouw A. Bosveld, afdeling Personeelszaken<br>Kastanjelaan 42<br>8021 GH Zwolle</p><p><strong>Opdracht</strong></p><p>Schrijf een sollicitatiebrief aan mevrouw Bosveld. Behandel alle punten hieronder. U mag de informatie over uzelf, uw opleiding en uw werkervaring zelf verzinnen. Gebruik in uw brief de u-vorm.</p><p>Het doel van de tekst is de werkgever ervan overtuigen dat u geschikt bent voor de functie van receptionist, zodat u wordt uitgenodigd voor een gesprek.</p>",
+    "bullet_points": [
+      "U schrijft waarom u de brief stuurt en waar u de advertentie heeft gelezen.",
+      "U stelt zichzelf kort voor en vertelt welke opleiding u heeft gedaan.",
+      "U legt uit waarom u solliciteert op deze functie en u noemt minimaal twee redenen.",
+      "U beschrijft welke werkervaring u heeft en wat u daar geleerd heeft.",
+      "U legt uit waarom u goed met mensen kunt omgaan en geeft daar een voorbeeld van.",
+      "U vraagt om een gesprek en u vertelt wanneer u bereikbaar bent."
+    ],
+    "email_to": "",
+    "email_subject": "",
+    "greeting": "Geachte mevrouw Bosveld,",
+    "closing": "Met vriendelijke groet,\n\nSamira El Amrani\nBloemstraat 17\n8011 CR Zwolle",
+    "model_answer": "Geachte mevrouw Bosveld,\n\nIn het weekblad Zwolse Berichten van 14 maart las ik uw advertentie voor de functie van receptionist. Graag solliciteer ik op deze baan, omdat het werk goed bij mij past.\n\nMijn naam is Samira El Amrani en ik ben 34 jaar. Ik woon sinds vijf jaar met mijn man en mijn dochter in Zwolle. In mijn eigen land heb ik een opleiding administratie afgerond. In Nederland volg ik nu een cursus Nederlands op niveau B1, zodat ik mij nog beter kan uitdrukken aan de telefoon en aan de balie.\n\nIk solliciteer op deze functie om twee redenen. In de eerste plaats vind ik het prettig om met verschillende mensen te werken en hen verder te helpen. In de tweede plaats wil ik graag in de zorg werken, hoewel ik zelf geen medische opleiding heb. Een baan aan de receptie van een gezondheidscentrum is daarom precies wat ik zoek.\n\nDe afgelopen drie jaar heb ik gewerkt bij sportcentrum De Zwaluw. Daar ontving ik de leden, nam ik de telefoon aan en maakte ik afspraken voor de trainers. Ik heb geleerd om rustig te blijven wanneer er veel mensen tegelijk aan de balie staan. Ook heb ik leren werken met een digitaal agendasysteem.\n\nIk kan goed met mensen omgaan, doordat ik altijd eerst goed luister. Als iemand bijvoorbeeld boos was omdat een les niet doorging, bleef ik vriendelijk en zocht ik samen met die persoon naar een andere oplossing. Meestal ging de klant daarna tevreden weg.\n\nGraag vertel ik u in een gesprek meer over mijzelf. U kunt mij op werkdagen na 15.00 uur bellen op 06 12 34 56 78. In de bijlage vindt u mijn curriculum vitae.\n\nMet vriendelijke groet,\n\nSamira El Amrani\nBloemstraat 17\n8011 CR Zwolle"
+  }
+]

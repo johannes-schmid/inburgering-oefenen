@@ -1865,3 +1865,396 @@ onderwijsroute de standaard is, is plausibel, onopvallend en fout.
 richtingsprobleem naar de layout. Controleer een tweetalige tekening altijd in de RTL-locale met
 je ogen; alles wat een vaste afbeelding annoteert moet aan de afbeelding vastgepind worden, niet
 aan de leesrichting.
+
+## 2026-08-21 — B1: dertig oefenexamens, en de bugs die geen test ziet
+**Changed:** `supabase/migrations/20260821090000_b1_exam_structure.sql` (B1's shape off DUO's
+booklets, four new Schrijven `task_categories`, widened `open_tasks.task_type` CHECK, two `sections`);
+mirrors in `data/skills.ts`, `lib/rubrics.ts`, `tests-unit/skills.test.ts`; the whole
+`scripts/b1-content/` pipeline (`plan.mjs`, `author.mjs`, `rules.mjs`, `index.mjs`, `rubrics.mjs`,
+`dataset.mjs`) plus `scripts/generate-b1-content.mjs` and `scripts/seed-b1-content.mjs`;
+`createImages({ level })` in `scripts/a2-content/images.mjs`; rendering fixes in
+`components/exam/WritingTask.tsx`; `sidebar_subtitle` in all three locale files; fixture and
+selector fixes in `tests/portal.spec.js`.
+**Outcome:** SUCCESS for Lezen (10/10) and Schrijven (10/10) locally — 60 teksten, 350 vragen, 120
+opdrachten, published clean, build clean, 71 e2e passing. BLOCKED on Spreken 4–10 (both AI providers
+out of credit) and on the production push (needs permission).
+
+**What worked:**
+- **Fixing the plan in git, not in the prompt.** `plan.mjs` pins the tekstsoort, subject and purpose
+  of all 630 items. The generator only writes the Dutch. Without it, sixty B1 texts converge on the
+  same three topics and the same rhetorical move — each fine alone, the set worthless.
+- **Small units.** One call per tekst, and one per long Schrijven opdracht. Asking for all four long
+  opdrachten together never converged: each category has its own shape rule and a retry that fixed
+  one broke another. Splitting made every retry targeted.
+- **Handing the retry the rule that was broken**, not "try again".
+- **Screenshotting the real player.** Three of the four defects below were invisible in the JSON,
+  in `tsc`, in the unit tests and in the e2e suite. They were visible in a screenshot.
+
+**What went wrong:**
+- **My own validator made its fix unsatisfiable.** The run-together-lines check stripped tags to
+  *nothing*, so a correct `x<br>Y` looked identical to a glued `xY`. It fired on exactly the fix it
+  was demanding; three retries could never pass. Strip tags to a **space**.
+- **The generator was right and my rule was wrong.** I forbade `prompt_spoken` outside `react`;
+  DUO's B1 speaks to the candidate on `cover_all` and `choose` opgaven too. I had encoded an
+  assumption as a constraint and it rejected correct content.
+- **Double-escaped Unicode, 152 occurrences.** The model emitted `"\\u00f6"` for `ö`, so `JSON.parse`
+  yielded the six literal characters and a candidate would read `teamcoördinator` mid-exam. It
+  hit €, é, ó, ö, ë, ï, ê. Valid JSON, matching schema, correct counts — and only findable by eye.
+- **Newlines are not line breaks, three times over.** In `body_html` (needed `<br>`), in `greeting`
+  and `closing` (needed `white-space: pre-line`), and it would have hit a third surface if the
+  tables had not needed CSS anyway. At A2 every greeting was one line, so nothing showed.
+- **Tailwind preflight strips table borders and list markers.** `.exam-stimulus-body` already
+  documented this fix; `.wr-prompt` never needed it until B1's `data_text` put a tabel in an
+  opdracht. A documented past fix in a sibling stylesheet is a checklist item, not a solved problem.
+- **A loose test selector only passed because the data was empty.** `href*=".../lezen/1"` also
+  matches `/lezen/10`; it worked only while the other nine slots were unpublished and not links.
+- **Both AI providers ran out of credit mid-run** — Anthropic one exam in, the Vercel Gateway 23
+  exams in. The per-unit cache is what made both survivable: each restart resumed instead of
+  re-paying.
+
+**Lesson:** A validator is code and can be wrong in the same way content can — when a retry loop
+never converges, suspect the check before the generator. And when a level's content changes shape
+rather than just volume, the defects land in *rendering*, not in data: newlines, escapes, preflight.
+None of those show up in a schema, a type check or a test that asserts counts. Look at the screen.
+
+## 2026-08-22 — /inburgering is a route in three fasen, with a per-section reading tick
+
+**Changed:** the Inburgering hub is now three fase cards over a step list plus a "Check jouw
+situatie" tool, and each guide gained a sidebar outline that records what has been read.
+New: `data/guides/phases.ts`, `lib/guides/sections.ts`, `lib/guides/situation.ts`,
+`lib/guides/progress.ts`, `components/inburgering/{RouteExplorer,SituationCheck,GuideSectionNav,PhaseStrip,PhaseIcon}.tsx`,
+`tests-unit/inburgering-route.test.ts`. Edited: `_components/GuideHub.tsx`,
+`_components/GuideArticle.tsx`, `inburgering/page.tsx`, `app/globals.css`, all three message files,
+`tests/public.spec.js`. **No article body was touched** — the owner's instruction was to keep every
+guide complete and surface its sections on the side.
+
+**Outcome:** SUCCESS. `tsc` clean, `next build` clean, 235 unit tests, 53 e2e (41 in `public.spec.js`
+including three new), `check-schema.mjs` OK.
+
+**What worked:**
+- **Deriving the step lists from the guides' own `<h2 id>`s** instead of writing an outline in
+  `phases.ts`. The ids already existed and are identical across nl/en/ar, so a section id is a
+  portable progress key for free, and a docent renaming a heading renames the step in the same edit.
+  There was no second source of truth to let drift.
+- **Extracting the sections on the server.** The step titles come from `articleHtml`, which is ~90 kB
+  of prose the hub does not render; shipping `{ id, title, minutes }` kept it out of the bundle.
+- **Splitting the verdict table out of the tool's card** (`lib/guides/situation.ts`). It is a set of
+  claims about Dutch law restated from a docent-reviewed guide, so it is the part worth pinning: a
+  unit test now walks all 48 answer combinations and asserts every one names a section that exists.
+- **Driving the finished thing with Puppeteer rather than only photographing it.** Scroll the
+  article, read `localStorage`, load the hub, tap through the tool. Three of the five defects below
+  were only visible that way.
+
+**What went wrong:**
+- **Rendering only the open fase's panel cost two guides their only internal link from their own
+  hub** — on the site's main TOFU page, whose job is to pass authority to its cluster. `tsc`, the
+  build and every screenshot were clean; two existing e2e assertions caught it. All three panels are
+  now rendered with `hidden` on the closed ones.
+- **A per-guide `findIndex` gave fase 1 two "current" steps**, one per guide, because a fase can hold
+  more than one guide. Two current markers is worse than none — the marker exists to say where to
+  resume, and there is one place to resume.
+- **Marking the last section needed "reader reached the bottom", and marking *only* the last section
+  was still wrong.** On a short tail two headings share the closing viewport, so the observer picks
+  one and the other is never the one on screen: scrolling a whole four-section guide left two
+  unmarked. Reaching the end now marks all of them.
+- **RTL: the layout mirrored itself and the arrows did not.** Every forward arrow still pointed
+  right on the Arabic pages, against the reading direction. Also worth remembering that in
+  `transform: translateX(-3px) scaleX(-1)` the order matters — written the other way the hover nudge
+  travels backwards.
+- **Turbopack served a stale CSS chunk for one edit**, so a fix I had made was absent from the page
+  and present on disk. `curl` the compiled chunk and grep for the rule before concluding the CSS is
+  wrong; appending a newline to `globals.css` forced the recompile.
+
+**Lesson:** when a page becomes progressive disclosure — tabs, accordions, steps — the thing that
+silently breaks is not the interaction, it is **what is no longer in the document**. Visibility and
+presence stop being the same assertion, and a crawler only ever sees presence. Decide which one each
+test means. And a state that is "the current one" must be computed over the whole set it belongs to,
+never per sub-list, or it stops being singular exactly when the set grows.
+
+## 2026-08-22 — Dutch Horizon: the design system is imported and the graphic language is code
+**Changed:** imported the Claude Design project *Horizon Element Library* into
+`docs/design/DESIGN_SYSTEM.md` + `docs/design/horizon-element-library.html`; built
+`components/horizon/` (Skyline, HorizonHero, SkylineTopper, SectionTransition, SunDisc,
+HorizonBand, DotField, LensRing, GlassChip, DocentSeal, ValidationChip, tokens); added the spec's
+§2/§4/§5 tokens to `app/globals.css` (`--shadow-ambient`, `--ghost-border`, `--ring-selected`,
+`--inner-glow`, `--glass-surface`); rewrote `components/site/GradientHero.tsx` as a Horizon banner
+and gave `SectionHeader` the horizon rule; documented all of it in CLAUDE.md.
+**Outcome:** SUCCESS — `tsc` clean, `next build` clean, 235 unit tests green, verified by screenshot
+at 1440 and 390.
+**What worked / went wrong:** the palette was already token-identical to the spec, so the import
+added no colour and no brand risk — the whole cost was the graphic language. Keeping
+`GradientHero`'s exact API meant six page headers upgraded in one edit with no caller touched; that
+is the reason to convert a *shared* component before any page. Two things only a screenshot caught:
+the sun disc sat on top of the H1 at 390px, and seven houses across 1440px read as a bar chart
+rather than as canal houses because a house was 200px wide against 56px of height.
+**Lesson:** "scale by dropping houses, never by shrinking every part" is only half a rule — a house
+must also stay roughly as wide as it is tall, so a responsive skyline needs **two counts behind a
+breakpoint**, not one count that is wrong at one end. And a decorative layer is never done until it
+has been photographed at the narrowest viewport: at 390px there is no empty right-hand side for an
+accent to live in.
+
+## 2026-08-22 — Dutch Horizon rolled out across the site
+**Changed:** added `components/horizon/HorizonBanner.tsx` (the graphic layer as one drop-in) and
+applied the system to the shared chrome (`GradientHero`, `SectionHeader`, `Nav` → glass, `Footer` →
+the silhouette handover), the homepage (hero band, §7.4 comparison band, `SkillCard` →
+`SkylineTopper`), `/oefenen`, `/premium`, `/oefenexamen/[level]/[skill]`, the free taster
+(`ExamIntro`, `FreePracticeEngine`), the exam player (`ExamShell`, `McqQuestion`, `AudioPlayer`,
+`RubricFeedback`) and the live portal.
+**Outcome:** SUCCESS — `tsc` clean, `next build` clean, 235 unit tests, 53 public/free-practice/seo
+e2e and 20 portal/admin e2e green, verified by screenshot at 1440 and 390 including the auth-gated
+player.
+**What worked / went wrong:** the off-palette greens turned out to be a *system* problem, not a
+styling one: `#15803d`/`#16a34a`/`#22c55e`/`#4ade80`/`#f0fdf4` were carrying "correct", "passed" and
+"included" across eleven files, and `#eef2ff`/`#eff6ff` were carrying "informational". Grepping for
+hex literals found in ten minutes what reading components would not have. Two real breakages:
+a backtick inside a `<style>{\`…\`}</style>` CSS comment closes the template literal (tsc reports it
+as a stray `}` several lines later), and a `/* */` comment between JSX attributes is a parse error —
+both from writing prose into places that only take code.
+**Lesson:** when a design system lands, the audit that matters is `grep -o '#[0-9a-f]\{6\}'` over
+the whole app and a frequency count. A hue used three times is a decision; a hue used forty times is
+a second palette nobody declared. And a decorative layer is only reusable once the thing that is
+hard to get right — here the responsive pair of house counts — lives inside it rather than in each
+caller.
+
+## 2026-08-22 — hero direction 1c: new logo mark, credential block, capability shelf
+**Changed:** `components/site/LogoMark.tsx` (ring → solid sun disc, tile inverts on navy),
+`app/[locale]/(main)/page.tsx` (hero eyebrow glyph → sun disc, headline accent `#ffb695`,
+three stat columns → one docent credential block + two fact chips, new "shelf" section under the
+hero), `messages/{nl,en,ar}.json` (7 keys).
+**Outcome:** SUCCESS — tsc clean, 235 unit tests green, next build passes, screenshots at 390/1440.
+**What worked / went wrong:** The imported design paired the credential block with a Trustpilot
+score (4,7/5, 312 reviews) and a docent named "Marijke de Vries". Both are fabrications — the
+product has no customers and the real docent is Marieke Schipper — so the rating was dropped and
+the name corrected before any code was written. `truncate` on the shelf tiles clipped every note
+at 390px and one title at 1440px; wrapping with `leading-tight` is right for a two-line tile.
+**Lesson:** An imported design comp is a *layout* proposal, not a content one. Every number and
+every name in it has to be re-sourced against the repo's own facts before it ships, because a
+plausible-looking figure in a hero is the hardest kind of false claim to notice later.
+
+## 2026-08-22 — the blue hero and the official category marks
+**Changed:** `components/horizon/CategoryMark.tsx` (new — six official marks from the design
+project's *Dutch Icon Studio*), `components/horizon/index.ts`, `components/site/SkillCard.tsx`
+(lucide glyph → category mark, tile removed), `app/[locale]/(main)/page.tsx` (photo hero →
+constructed two-panel blue hero: dot field, one sun disc, docent card, 13-house street + molen;
+shelf marks), `messages/{nl,en,ar}.json`, `CLAUDE.md`.
+**Outcome:** SUCCESS — tsc clean, 235 unit tests green, `next build` passes, `check-schema.mjs` OK,
+screenshots at 390/1440.
+**What worked / went wrong:** Passing `className="hidden sm:flex"` to `Skyline` did nothing useful:
+its own base class already sets `flex`, so two display utilities of equal specificity landed in one
+class list and **both** streets rendered at 390px. A wrapper div with no display class of its own is
+the unambiguous fix. Separately, drawing the marks once on the studio's 72-grid and scaling by
+transform meant the 36px shelf tile and the 48px card tile needed no second set of coordinates.
+**Lesson:** A component that hard-codes a `display` in its own base class cannot be toggled by a
+responsive class from the caller — wrap it. And when importing an icon set, decide the *job split*
+against the existing set (brand imagery names offers, lucide drives affordances) before the first
+swap, or the two sets spread into each other's territory one file at a time.
+
+## 2026-08-22 — navy header, the hero's product cards, and the packages block
+**Changed:** `components/Nav.tsx` (glass → `bg-primary`, light logo, white links, translucent
+Inloggen, white hamburger), `app/[locale]/(main)/page.tsx` (hero right panel now a flow column of
+three cards — docent credential, a real Lezen item, a Luisteren audio surface; the shelf became six
+`PackageCard`s), `messages/{nl,en,ar}.json` (10 keys), `CLAUDE.md`.
+**Outcome:** SUCCESS — tsc clean, 235 unit tests green, `next build` passes, `check-schema.mjs` OK,
+`tests/public.spec.js` 41 passed / 1 skipped, screenshots at 390/1440.
+**What worked / went wrong:** The right panel's cards were absolutely positioned over a fixed
+`min-height` at first. That only holds at the width it was measured at — the quote reflows in en/ar
+and the panel then clips the last card. Putting them in normal flow and letting the column size the
+panel (`pb-24 sm:pb-32` to keep the street visible) removed the whole class of problem. The
+`<select>` in a navy bar also needed `color` set on each `<option>`: the popup is OS-drawn and does
+not inherit, so it was white on white — invisible in any screenshot of the closed bar.
+**Lesson:** When a dark surface swallows a native form control, check the control's *popup* as well
+as its closed state — the browser draws that part and it does not inherit your palette. And prefer
+flow over absolute positioning for anything holding translated copy: a fixed height is a bet on one
+language's line count.
+
+## 2026-08-22 — the shelf is one compact row again
+**Changed:** `app/[locale]/(main)/page.tsx` (six `PackageCard`s → one row of six shelf tiles, ONA
+added as a non-linking "binnenkort" tile, `PackageCard` deleted), `messages/{nl,en,ar}.json`
+(2 keys updated, 10 removed), `CLAUDE.md`.
+**Outcome:** SUCCESS — tsc clean, 235 unit tests, `next build` clean, `check-schema.mjs` OK,
+`public.spec.js` 41 passed / 1 skipped, shots at 390/1440.
+**What worked / went wrong:** First render put the disabled ONA tile on `surface-container-low`
+inside a section that was also `surface-container-low` — the one card that had to read as different
+read as absent instead. Moving the section to `surface` fixed it. Two deliberate departures from the
+mockup: the per-tile rule is a solid `HorizonBand` rather than the mockup's part-filled meter (no
+progress exists for an anonymous visitor), and ONA is flagged in `CLAUDE.md` as a roadmap claim this
+repo does not otherwise make.
+**Lesson:** A "disabled" or "empty" variant needs a tonal step from *its own container*, not just
+from its live siblings — check the two tokens against each other, because the variant looks correct
+in isolation and disappears in place. And when a comp asks for state the product cannot know
+(progress, ratings, counts), deliver the shape and drop the state rather than inventing a number.
+
+## 2026-08-22 — the new mark everywhere: favicons, the ICO, the mail logo and the loader
+**Changed:** `scripts/build-icons.mjs` (new — one `MARK` definition renders every icon asset via
+Puppeteer, including a hand-packed PNG-encoded ICO), `package.json` (`build:icons`),
+`public/favicon.svg`, `public/favicon-32x32.png`, `public/icon-512.png`,
+`public/apple-touch-icon.png`, `public/images/logo-email.png`, `app/favicon.ico`,
+`components/BrandLoader.tsx` (spinner rebuilt), `CLAUDE.md` (+ a hard rule: always build new pages
+from the official elements and icons).
+**Outcome:** SUCCESS — tsc clean, 235 unit tests, `next build` passes, every asset re-rendered and
+eyeballed.
+**What worked / went wrong:** The mark existed in **seven** places, so the logo change two commits
+ago silently left the favicons, the ICO, the mail logo and the loader on the old ring — the site
+looked updated and the browser tab did not. The loader was the interesting one: its whole animation
+was the logo's outlined ring, which the new mark does not have. First attempt put a spinner ring
+back around the sun disc; at any useful radius it reaches x=40 and collides with the bar at x=26, so
+it rendered as a smudge across the mark. Moving the arc *outside* the tile (r=80, clear of the
+corners at 70.7) fixed it. Also: `strokeDasharray` must sum to the exact circumference or the
+pattern repeats and a phantom second arc appears opposite the first.
+**Lesson:** Before changing a brand asset, `grep` its *geometry* (a coordinate, a radius) rather
+than its name — the copies that matter are the ones that do not import anything. And when an
+animation is built on a shape, changing the shape is changing the animation: check what the motion
+was actually attached to.
+
+## 2026-08-22 — centred all-in-one hero, the product collage, and the track chips
+**Changed:** `app/[locale]/(main)/_components/HeroShowcase.tsx` (new — phone + five satellite
+cards), `app/[locale]/(main)/page.tsx` (split navy hero → centred light hero with `TRACKS` chips),
+`components/horizon/CategoryMark.tsx` (+ `wonen`, `gezondheid`, `werk` from the icon studio),
+`messages/{nl,en,ar}.json` (positioning copy; 8 keys removed), `CLAUDE.md`.
+**Outcome:** SUCCESS — tsc clean, 235 unit tests, `next build` passes, `check-schema.mjs` OK,
+`public.spec.js` + `seo.spec.js` 48 passed / 1 skipped, shots at 390/1440.
+**What worked / went wrong:** Two positioning bugs. (1) The phone used
+`left-1/2 -translate-x-1/2` while its sibling satellites set `transform: rotate()` inline; the
+translate was dropped and the phone rendered at `left: 50%`, half off-screen at 390px — invisible at
+1440px, which is where it was being checked. `inset-x-0 mx-auto` needs no transform. (2) A `-mb-10`
+on the collage cropped the phone through the middle of its third answer option; the section's own
+edge is the honest crop. Separately, the English meta description came out at 164 chars and
+`seo.spec.js` caught it — the 140–160 rule is a live test, not a guideline.
+**Lesson:** Check a centred absolute element at the *narrowest* breakpoint first — a centring bug is
+invisible at desktop width and total at 390px. And when a hero has to claim more than the product
+ships, put the roadmap in one typed table that renders its own status: the alternative is a headline
+that is true only if you already know which parts exist.
+
+## 2026-08-22 — compacting the homepage, and clustering the hero collage
+**Changed:** `app/[locale]/(main)/page.tsx` (section rhythm `py-24` → `py-14 sm:py-16`, tighter hero
+stack), `app/[locale]/(main)/_components/HeroShowcase.tsx` (collage 560 → 424px, phone 248 → 228,
+satellites repositioned from the centre), `components/site/SectionHeader.tsx`, `SkillCard.tsx`,
+`TeacherCard.tsx`, `FeatureCard.tsx`, `components/FaqAccordion.tsx`, `messages/*` (shorter lede),
+`CLAUDE.md`.
+**Outcome:** SUCCESS — 5,275 → 4,444px at 1440 and 8,301 → 7,182px at 390. tsc clean, 235 unit
+tests, `next build` passes, `check-schema.mjs` OK, public/seo/free-practice specs 53 passed / 1
+skipped.
+**What worked / went wrong:** Measuring first was the whole difference — a small script printing
+`document.body.scrollHeight` plus a per-section height told me the four `py-24` bands and the
+collage were the cost, and that the sections I *assumed* were bloated (the FAQ) were not.
+Compacting the collage then clipped the KNM card's caption mid-sentence twice, because the cards
+were positioned against the container's edges: pulling them toward the phone meant retuning five
+independent percentages. Anchoring them to `left: 50%` with a pixel offset made "closer to the
+phone" a one-number change per card.
+**Lesson:** Compact by measuring, not by eye — print the section heights before and after, or you
+trim the cheap places and miss the expensive ones. And position a cluster from the thing it
+clusters around: percentages against the container mean every card drifts when the container grows.
+
+## 2026-08-22 — the hero collage overlaps, and the phone crops
+**Changed:** `app/[locale]/(main)/_components/HeroShowcase.tsx` — phone widened to 300px at `lg`,
+rounded top only, cropped by the section edge, raised to `z-20` above the satellites; `FloatCard`
+gained `under` so a card's shape overlaps by 38px while its content stays clear. `CLAUDE.md`.
+**Outcome:** SUCCESS — tsc clean, 235 unit tests, `next build` passes, `check-schema.mjs` OK,
+public + seo specs 48 passed / 1 skipped; checked at 390, 1024 and 1440.
+**What worked / went wrong:** Raising the phone above the satellites is what made overlap safe at
+all — with the satellites on top (the natural DOM order) they covered the phone's own progress chip,
+which is the part of the shot that shows the product working. Then I got the offset arithmetic wrong
+by 84px and every left-hand card's text ran under the phone, cut mid-word. It looked deliberate in a
+thumbnail; only reading the actual words in the screenshot caught it. The bottom crop needed the
+same care: the negative `bottom` has to stay smaller than the phone's bottom padding, or the crop
+slices through the last answer option instead of through empty navy — and those two numbers differ
+per breakpoint, so the mobile version broke after the desktop one was right.
+**Lesson:** When elements overlap on purpose, decide the stacking order from *what must never be
+covered*, then derive the offsets arithmetically from the covered element's edges. And verify an
+overlap by reading the text in the screenshot, not by glancing at the shapes — clipped type at
+thumbnail size looks exactly like a card edge.
+
+## 2026-08-22 — Schrijven en KNM category marks teruggebracht naar de studio-versie
+**Changed:** `components/horizon/CategoryMark.tsx` — `schrijven` en `knm` hertekend naar §04 van `docs/design/horizon-element-library.html`.
+**Outcome:** SUCCESS
+**What worked / went wrong:** De pen stond op 34° met een oranje blokje als punt en een volle navy lijn; de studio tekent hem op 30° met een *uitgesneden* greepband in de schacht en de eerste 15px van de lijn in het accent. KNM was vier kolommen tussen twee rails zonder fronton — dat leest als een staafdiagram; de studio's "Instanties" heeft het fronton (de ene toegestane driehoek) en drie kolommen. Beide waren bij de import afgeweken zonder reden.
+**Lesson:** Als de spec en de code verschillen, is de code de bug. Diff een geïmporteerde tekening tegen `horizon-element-library.html` in plaats van hem uit het geheugen over te typen.
+
+## 2026-08-22 — de rebrand naar het hele inburgeringstraject, in de copy en in CLAUDE.md
+**Changed:** `CLAUDE.md` (Project Overview herschreven met een track-statustabel en een expliciete
+A1/B2-uitsluiting; USP-scope verbreed), `messages/{nl,en,ar}.json` (home meta/skills/faq, blog,
+docent), `app/[locale]/(main)/page.tsx` (keywords, `EducationalOrganization` description/teaches/
+`educationalLevel`, ItemList-naam), `docent/page.tsx` (`knowsAbout`, chip, loopbaanlijn, kop),
+`gebruiksvoorwaarden/page.tsx` (§productomschrijving).
+**Outcome:** SUCCESS — `tsc` schoon, `next build` schoon, 235 unit tests, 48 e2e (seo + public),
+`check-schema.mjs` OK.
+**What worked:** eerst de eigenaar laten kiezen tussen "A1–B2 echt toevoegen" en "alleen de
+positionering". Het antwoord was A2+B1+KNM+ONA, wat een migratie, 80 lege examensloten en nieuwe
+routes scheelde. De JSON-locales bewerken via een Python-script met een assert per sleutel: een
+typefout in een pad faalt hard in plaats van stil een sleutel toe te voegen die nergens gelezen
+wordt. `json.dumps(..., ensure_ascii=False, indent=2)` is byte-identiek aan de bestaande opmaak —
+eerst een round-trip-test gedaan, anders was de diff het hele bestand geweest.
+**What went wrong:** de meta-descriptions vielen na het herschrijven buiten de 140–160 tekens die
+`seo.spec.js` eist (nl 139, drie Arabische veel korter). Het script kreeg daarom een lengterapport
+achteraan; dat had er meteen in gemoeten.
+**Lesson:** een rebrand van de copy is een claimwijziging, geen tekstwijziging. De bruikbare vorm
+is een statustabel — merk versus catalogus — want elke zin die een niveau of onderdeel noemt moet
+kunnen zeggen of dat *beschikbaar* is of *binnenkort*. Zonder die tabel drijft "alles in één
+platform" vanzelf af naar het adverteren van B1-content die nog achter de docentreview zit, en dat
+is precies de claim waar het product op drijft.
+
+## 2026-08-22 — de blokkenrij vervangt de shelf op de homepage
+**Changed:** `app/[locale]/(main)/page.tsx` (de "shelf"-sectie werd een vier-blokken-ramp: Taal A2 · KNM · Taal B1 · ONA, ongelijke hoogtes, bodems uitgelijnd), plus 16 nieuwe `home.blocks_*`-sleutels in `messages/{nl,en,ar}.json` en `.block-cta` / `.block-notify` in plaats van `.shelf-tile`.
+**Outcome:** SUCCESS — `tsc` schoon, 235 unit tests groen, mobiel + desktop gescreenshot.
+**What worked:** De staat van een track is *getekend*, niet alleen gelabeld: A2 navy met de ene zonneschijf en een knop, KNM klei met "nu op knmoefenen.nl" (externe link, want de migratie moet nog), B1/ONA op de neutrale ramp met een holle ring en alleen `/contact`. De chips op de A2-tegel komen uit `SKILLS`, dus een hernoemd onderdeel kan geen stale string achterlaten.
+**Lesson:** Een `CategoryMark` kan niet op een willekeurige tegel: zijn `cut` is de tegelkleur die door de inkt heen komt en er is geen tone voor klei. Een track is ook geen onderdeel — A2 *bevat* de vier marks. Op zo'n tegel is een schijf de juiste vorm, geen mark.
+
+## 2026-08-22 — de blokkenrij werd een trap, in DUO's eigen volgorde
+**Changed:** `app/[locale]/(main)/page.tsx` — volgorde A2 → B1 → KNM → ONA, oplopende hoogtes (17 / 18,5 / 20 / 21,5rem, bodems uitgelijnd), alle vier tegels in volle kleur (twee blauwen voor taal, twee kleikleuren voor KNM/ONA), en `SoonBlock` als één definitie voor B1 en ONA.
+**Outcome:** SUCCESS — `tsc` schoon, 235 unit tests groen, desktop + mobiel gescreenshot.
+**What went wrong first:** de gevraagde volgorde was A2 → KNM → B1 → ONA. Dat mengt twee assen: A2 en B1 zijn geen opeenvolgende stappen maar twee *niveaus* van dezelfde vier taalonderdelen, en de gemeente bepaalt via de leerroute welk niveau je doet. DUO's eigen componentenlijst (`SEO/facts.md` §7) is Lezen/Luisteren/Schrijven/Spreken → KNM → ONA.
+**Lesson:** Vóór je een rij "in de gebruikelijke volgorde" zet, check of het überhaupt een reeks is. En als hoogte iets codeert, schrijf op wát: hier is het de plek in het traject, niet hoe klaar of hoe verkoopbaar iets is — anders begint de trap te liegen zodra iemand de hoogste tegel de bestverkopende maakt.
+
+## 2026-08-22 — social-proof sectie als plaatshouder; avatars niet gegenereerd
+**Changed:** `app/[locale]/(main)/page.tsx` (nieuwe `#cursisten`-sectie tussen docent en FAQ: vier zwevende schijven náást de kop, drie quotekaarten), `messages/{nl,en,ar}.json` (`home.reviews_*`), nieuw `scripts/generate-review-avatars.mjs`.
+**Outcome:** SUCCESS voor de sectie, **FAILURE** voor de avatars — `openai/gpt-image-2` via de AI Gateway gaf `402 insufficient_funds`, en er is geen `OPENAI_API_KEY` in het project. Er staat geen enkele afbeelding in `public/images/reviews/`.
+**What worked:** De sectie leest de map op de server (`existsSync`) en tekent een holle ring zolang er geen portret ligt, dus zodra het script draait verschijnen de avatars zonder codewijziging. Geen `Review`- of `AggregateRating`-node — `scripts/check-schema.mjs` zou daarop falen, en de quotes benoemen zichzelf als plaatshouder.
+**Lesson:** Een placeholder mag niet flatteren. Een gezicht van niemand naast een quote van niemand is precies de verzonnen social proof die uit de fork is verwijderd; de holle ring zegt "hier komt een persoon" en de tekst zegt "vervang mij", en dat is wat het veilig maakt om dit nu al live te hebben staan. Quote én portret moeten in dezelfde commit echt worden.
+
+## 2026-08-22 — docent + vergelijking samengevoegd in één sectie
+**Changed:** `app/[locale]/(main)/page.tsx` — de oude `#geen-ai`-band en de mentorsectie (`TeacherCard` + drie `FeatureCard`s) zijn weg; er staat één `#docent`-sectie: een warm citaatvlak met Mariekes foto in een ring, drie chips en "Zo werken wij", daaronder de twee kolommen met elk vier punten. Nieuwe `home.docent_*`, `teacher_name`, `ai_us_4`, `ai_them_4` in drie talen.
+**Outcome:** SUCCESS — `tsc` schoon, 235 unit tests groen, sectie gescreenshot op 1440 en 390.
+**What worked:** Twee secties die hetzelfde argument maakten werden er één, ~1.100px korter. De mockup schreef een nieuw citaat in Mariekes stem over het nakijken van beoordelingen; dat is niet overgenomen — de bestaande, echte quote staat er en de inhoud van de mockupregel is als *proza* in de chips en de "Bij ons"-kolom gezet.
+**Lesson:** Een citaat in de mockup is nog geen citaat van de persoon. Zet de bewering om in proza van de site zelf; binnen aanhalingstekens mag alleen wat zij echt gezegd heeft. En er is geen perzik in `@theme`: tint een token (`secondary_container` op 22%) in plaats van een twaalfde kleur uit te vinden die alleen dit vlak kent.
+
+## 2026-08-22 — onderdelen-grid weg, reviews naar boven
+**Changed:** `app/[locale]/(main)/page.tsx` — de sectie "Oefen elk onderdeel van je inburgering" (vier `SkillCard`s) is verwijderd, `#cursisten` staat nu direct onder de blokkenrij, en de vier chips op de A2-tegel zijn links naar `/oefenexamen/a2/<skill>` geworden. `SkillCard`/`formatCount`/`skillsAtLevel` uit de imports.
+**Outcome:** SUCCESS — `tsc` schoon, eslint zonder errors, 235 unit tests groen, en in de browser gecontroleerd dat alle vier de skill-links op de homepage staan.
+**What went wrong:** twee dingen. (1) Het grid weghalen zou de harde regel uit `CLAUDE.md` breken — alle vier taalonderdelen moeten op de landingspagina staan — en `tests/public.spec.js` eist een `/oefenexamen/a2/<skill>`-link per onderdeel. Opgelost door de chips linkjes te maken; dat is nu de énige link naar de onderdelen vanaf deze pagina en dat staat er in commentaar bij. (2) `SoonBlock` was een closure ín de pagecomponent: `npx tsc` vindt dat prima, `npx eslint` gaf `react-hooks/static-components` als **error**. Hij staat nu op moduleniveau met strings als props.
+**Lesson:** Run `npx eslint` op een aangeraakt bestand, niet alleen `tsc` — een component dat tijdens render wordt aangemaakt is een eslint-error en geen typefout. En verwijder nooit een sectie zonder te checken welke *harde* belofte eraan hing: het grid was de drager van een regel die drie lagen hoger staat opgeschreven.
+
+## 2026-08-22 — kennisbank-rij op de homepage
+**Changed:** nieuw `app/[locale]/(main)/_components/KennisbankCards.tsx` (kleurkaarten + filterpillen, client) en een `#kennisbank`-sectie in `page.tsx` direct na het docentcitaat; `home.kb_*` in drie talen.
+**Outcome:** SUCCESS — `tsc` schoon, eslint zonder errors, 235 unit tests groen, `next build` gelukt, sectie gescreenshot.
+**What worked:** De kaartenlijst wordt op de server samengesteld (`publishedGuides()` + drie blogposts + de KNM-hub) en als `{group,title,desc,href}` doorgegeven; de client component importeert het gidsenregister nooit, anders staat er ~90 kB `articleHtml` per gids in de browserbundle — dezelfde regel die op `Nav.tsx` staat. De pillen worden uit de kaarten afgeleid, dus een pil kan niet leeg zijn en de KNM-pil begint automatisch te werken zodra er een KNM-gids is.
+**Lesson:** Wit op `#fe762c` is ~2,2:1 — dat haalt zelfs de 3:1-ondergrens voor grote tekst niet. De mockup tekende het zo; `on_secondary_container` op dezelfde oranje is ~5:1 en is precies waarvoor die tokennaam bestaat. Een mockup is een compositie, geen contrastmeting.
+
+## 2026-08-22 — één stippenraster achter de hele landingspagina, plus de slot-CTA
+**Changed:** `.dot-page` in `app/globals.css` (radial-gradient-raster van 26px), toegepast op de
+wrapper van `app/[locale]/(main)/page.tsx`; alle zes secties transparant gemaakt
+(`bg-surface` / `bg-surface-container-low` weg) en de twee paginabrede `DotField`'s (hero en
+`#cursisten`) verwijderd. Nieuwe navy slot-CTA **onderaan, na de FAQ**, die de silhouet-overgang van `Footer` overneemt
+(`SectionTransition` staat nu bovenin de CTA; de footer-versie krijgt `.footer-transition` en wordt
+op deze pagina verborgen) — de huizen komen één keer uit het raster en alles onder de straatlijn is
+één navy vlak;
+`home.closing_{eyebrow,heading,sub}` in nl/en/ar, hergebruik van `cta_primary`.
+**Outcome:** SUCCESS
+**What worked / went wrong:** `DotField` is absoluut gepositioneerd *binnen* zijn sectie, dus zes
+secties gaven zes rasters die op elke grens uit fase liepen — precies een naad op de plek waar §2
+geen lijn wil. Als achtergrond op de wrapper loopt het raster door en komt de scheiding van wat er
+*op* ligt. De tonale trapjes (`surface` vs `surface-container-low`) vervallen daarmee bewust: de
+kaarten dekken het raster af en dát scheidt nu een kaart van de pagina. De CTA is navy in plaats
+van het oranje uit de mockup (opdracht eigenaar) — oranje was het luidste vlak op een pagina van
+lichte kaarten en las als een tweede hero. En weer: **Turbopack serveerde een verouderde CSS-chunk**,
+dus `.dot-page` stond op schijf en niet in de chunk; een newline aan `globals.css` forceerde de
+hercompilatie.
+De handover-band zelf is `surface-container-lowest` (puur wit) en las als een lichtere streep
+precies op de naad; hij krijgt op deze pagina het paginaraster en zijn eigen 18px-stippenveld wordt
+verborgen, anders moiréen twee rasters tegen elkaar. En: **een backtick in een CSS-commentaar binnen
+`<style>{\`…\`}` sluit de template literal** — dat gaf 20+ syntaxfouten en een blanco pagina.
+De CTA stond eerst als afgeronde kaart bóven de FAQ; onderaan, met de huizen als bovenrand, is het
+het einde van de pagina in plaats van een tweede hero.
+**Lesson:** Een decoratieve laag die de hele pagina moet dekken hoort op de paginawrapper, niet
+per sectie — een per-sectie primitief herstart zijn eigen raster en maakt een naad van elke
+sectiegrens. En centreer een absolute cirkel met `inset-x-0 mx-auto`, niet met
+`left-1/2 -translate-x-1/2`: hier stond hij zichtbaar rechts van het midden.

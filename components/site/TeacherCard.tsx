@@ -69,8 +69,8 @@ export default function TeacherCard({
 
   // full variant (homepage social proof card)
   return (
-    <div className={cn('bg-surface-container-lowest rounded-2xl p-8', className)} style={{ boxShadow: 'var(--shadow-card)' }}>
-      <div className="flex gap-5 items-center mb-6">
+    <div className={cn('bg-surface-container-lowest rounded-2xl p-6', className)} style={{ boxShadow: 'var(--shadow-card)' }}>
+      <div className="flex gap-4 items-center mb-5">
         <div className="w-20 h-20 min-w-20 rounded-xl overflow-hidden flex-shrink-0" style={{ border: '2px solid rgba(196,198,210,0.30)' }}>
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img src="/images/marieke-schipper.jpg" alt={`${name} — gecertificeerde NT2-docent`} width={80} height={80} className="w-full h-full object-cover object-center" />
@@ -87,7 +87,7 @@ export default function TeacherCard({
         </blockquote>
       )}
       {credentials && credentials.length > 0 && (
-        <div className="flex flex-wrap gap-2 mb-5">
+        <div className="flex flex-wrap gap-2 mb-4">
           {credentials.map((c) => (
             <span key={c} className="inline-flex items-center gap-1.5 px-3 py-1 text-primary text-xs font-semibold rounded-full" style={{ background: 'rgba(0,43,109,0.05)' }}>
               <BadgeCheck size={13} strokeWidth={2.2} aria-hidden="true" />

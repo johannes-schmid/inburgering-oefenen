@@ -132,10 +132,22 @@ export default function sitemap(): MetadataRoute.Sitemap {
     }
   }
 
+  /* The tijdlijn tool. Listed at the same priority as a hub: it is a real, indexable page that
+   * answers a large informational intent nobody else answers interactively — DUO's own step-by-step
+   * wizard is `noindex`. `weekly` because the rules file changes under it, not the copy. */
+  for (const locale of LOCALES) {
+    entries.push({
+      url: `${BASE}/${locale}/inburgering/tools/tijdlijn`,
+      changeFrequency: 'weekly',
+      priority: 0.9,
+      lastModified: TODAY,
+    });
+  }
+
   // Topic quizzes stay out of the sitemap until their A2 content exists.
   void FEATURES.oefenvragen;
 
-  /* `data/planned-surfaces.ts` — the tijdlijn-maker and the woordenlijst/grammatica pages — is
+  /* `data/planned-surfaces.ts` — the woordenlijst and grammatica pages — is
    * deliberately **not** iterated here. Those routes are `noindex` until they do something, and a
    * sitemap entry for a noindex URL is a contradiction we tell Google to resolve for us. They are
    * absent by never being added, which is stronger than being filtered out: there is no condition

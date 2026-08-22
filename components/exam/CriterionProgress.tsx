@@ -92,8 +92,8 @@ export default function CriterionProgress({
         .cp-bar-fill { display:block; height:100%; border-radius:999px; background:linear-gradient(to right,#a24000,#fe762c); }
         .cp-meta { display:flex; flex-wrap:wrap; align-items:center; justify-content:space-between; gap:8px; margin:6px 0 0; font-size:0.73rem; }
         .cp-meta span { display:inline-flex; align-items:center; gap:4px; }
-        .cp-up { color:#15803d; font-weight:700; }
-        .cp-down { color:var(--color-error,#b3261e); font-weight:700; }
+        .cp-up { color:var(--color-secondary); font-weight:700; }
+        .cp-down { color:var(--color-error); font-weight:700; }
         .cp-flat { color:var(--color-outline); }
         .cp-n { color:var(--color-outline); font-variant-numeric:tabular-nums; }
       `}</style>

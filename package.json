@@ -12,7 +12,8 @@
     "test:open": "PATH=\"/opt/homebrew/bin:$PATH\" playwright show-report",
     "check:audio-model": "node scripts/check-audio-model.mjs",
     "test:unit": "vitest run",
-    "test:unit:watch": "vitest"
+    "test:unit:watch": "vitest",
+    "build:icons": "node scripts/build-icons.mjs"
   },
   "dependencies": {
     "@base-ui/react": "^1.5.0",
@@ -49,6 +50,7 @@
     "zod": "^4.4.3"
   },
   "devDependencies": {
+    "@anthropic-ai/sdk": "^0.120.0",
     "@playwright/test": "^1.60.0",
     "@tailwindcss/postcss": "^4",
     "@types/node": "^20",

@@ -1,0 +1,266 @@
+[
+  {
+    "title": "Deel 1",
+    "instruction_html": "<p>In dit deel krijgt u acht korte opgaven. U leest bij elke opgave een situatie. Soms hoort u daarna iemand die iets tegen u zegt.</p><ul><li>U geeft een kort antwoord: een paar woorden tot twee zinnen is genoeg.</li><li>U heeft per opgave twintig seconden spreektijd.</li><li>Bij sommige opgaven staat een plaatje. Kijk goed naar dat plaatje, want u heeft die informatie nodig voor uw antwoord.</li><li>Spreek duidelijk en rustig, zodat de ander u goed kan begrijpen.</li></ul><p>Let er steeds op tegen wie u spreekt. Tegen een klant of een leidinggevende gebruikt u 'u', tegen een medestudent of een collega mag u 'je' gebruiken.</p>",
+    "tasks": [
+      {
+        "image_usage": "react",
+        "title": "Boze klant",
+        "prompt": "U werkt in een drukke telefoonwinkel.\nEr staan veel mensen in de rij.\nEen klant wacht al bijna een half uur.\nHij spreekt u aan.\n\nReageer op de klant en zeg wat u voor hem gaat doen.",
+        "prompt_spoken": "Ik sta hier nu al bijna een half uur te wachten, hoor! Kan dat niet een beetje sneller?",
+        "voice": "man_older",
+        "model_answer": "Wat vervelend dat u zo lang moet wachten, meneer. Het is vandaag erg druk, maar ik help u meteen na deze klant. Wilt u misschien even gaan zitten?",
+        "images": [
+          {
+            "slot": "spreken-4-d1-o1-a",
+            "query": "annoyed customer waiting in line at phone shop counter",
+            "caption": "Wachtende klant in winkel",
+            "variant": 0
+          }
+        ]
+      },
+      {
+        "image_usage": "none",
+        "title": "Cursus kiezen",
+        "prompt": "U wilt een cursus Nederlands gaan doen.\nEr zijn twee mogelijkheden.\nDe cursus is op zaterdagochtend, of op twee avonden per week.\nEen vriend vraagt welke cursus u kiest.\n\nVertel welke cursus u kiest en waarom.",
+        "model_answer": "Ik kies de zaterdagochtend, denk ik. Ik werk in de week tot zes uur en dan ben ik echt te moe om nog te leren. Op zaterdag heb ik meer rust in mijn hoofd.",
+        "images": []
+      },
+      {
+        "image_usage": "react",
+        "title": "Aantekeningen",
+        "prompt": "U volgt een opleiding tot verzorgende.\nEen medestudente was vorige week ziek.\nZij komt naar u toe in de pauze.\n\nReageer op uw medestudente.",
+        "prompt_spoken": "Hé, ik was vorige week ziek en ik heb dus niks van die les. Mag ik jouw aantekeningen even kopiëren?",
+        "voice": "woman_young",
+        "model_answer": "Ja hoor, dat is geen probleem. Ik heb ze in mijn map zitten, maar mijn schrift is wel een beetje rommelig. Ik loop straks met je mee naar de kopieermachine.",
+        "images": [
+          {
+            "slot": "spreken-4-d1-o3-a",
+            "query": "female student showing notebook to classmate in school hallway",
+            "caption": "Studente met aantekeningen",
+            "variant": 0
+          }
+        ]
+      },
+      {
+        "image_usage": "describe",
+        "title": "Prijslijst kantine",
+        "prompt": "U werkt bij een groot verhuisbedrijf.\nEen nieuwe collega staat met u bij de kantine.\nHij begrijpt de prijslijst nog niet goed.\n\nKijk naar het plaatje.\nLeg uw collega uit wat er op de prijslijst staat.",
+        "model_answer": "Kijk, hier staan de prijzen. Een broodje kaas kost twee euro vijftig en soep is twee euro. Koffie en thee zijn het goedkoopst, maar je moet wel met je pas betalen.",
+        "images": [
+          {
+            "slot": "spreken-4-d1-o4-a",
+            "query": "canteen price list menu board with prices for coffee soup sandwich",
+            "caption": "Prijslijst van de kantine",
+            "variant": 0
+          }
+        ]
+      },
+      {
+        "image_usage": "none",
+        "title": "Kort overleg",
+        "prompt": "U werkt bij een thuiszorgorganisatie.\nHet werkoverleg duurt nu een uur.\nUw leidinggevende wil er een half uur van maken, zodat er meer tijd is voor de cliënten.\n\nVertel wat u van dit plan vindt en waarom.",
+        "model_answer": "Ik snap het wel, want tijd voor de cliënten is belangrijk. Maar een half uur is echt kort. Dan kunnen we bijna geen problemen bespreken en dat vind ik jammer.",
+        "images": []
+      },
+      {
+        "image_usage": "react",
+        "title": "Stage",
+        "prompt": "U loopt stage bij een kinderdagverblijf.\nU bent nu drie weken bezig.\nUw leidinggevende komt even bij u zitten.\n\nReageer op uw leidinggevende.",
+        "prompt_spoken": "Zo, je bent nu een paar weken bij ons. Vertel eens, hoe gaat je stage tot nu toe?",
+        "voice": "woman_older",
+        "model_answer": "Het gaat eigenlijk heel goed, dank u. De kinderen kennen mij nu en mijn collega's helpen mij veel. Alleen de administratie vind ik nog wel moeilijk.",
+        "images": [
+          {
+            "slot": "spreken-4-d1-o6-a",
+            "query": "manager talking with young intern at daycare center table",
+            "caption": "Gesprek met leidinggevende",
+            "variant": 0
+          }
+        ]
+      },
+      {
+        "image_usage": "none",
+        "title": "Dichtbij of meer",
+        "prompt": "U kunt kiezen tussen twee banen.\nDe eerste baan is tien minuten fietsen van uw huis.\nDe tweede baan betaalt tweehonderd euro per maand meer, maar u bent elke dag anderhalf uur onderweg.\n\nVertel welke baan u kiest en waarom.",
+        "model_answer": "Ik zou de baan dichtbij kiezen. Dat geld is natuurlijk mooi, maar drie uur reizen per dag is veel te veel. Ik wil ook tijd hebben voor mijn gezin.",
+        "images": []
+      },
+      {
+        "image_usage": "describe",
+        "title": "Weg kwijt",
+        "prompt": "U bent in een ziekenhuis voor een controle.\nBij de hoofdingang staat een oudere man.\nHij zoekt de afdeling Radiologie en weet niet welke kant hij op moet.\n\nKijk naar het plaatje.\nVertel de man precies hoe hij moet lopen.",
+        "model_answer": "U moet deze gang rechtdoor lopen, meneer. Bij het bordje gaat u rechts, want Radiologie zit op route dertig. Het is de tweede verdieping, dus u kunt de lift nemen.",
+        "images": [
+          {
+            "slot": "spreken-4-d1-o8-a",
+            "query": "hospital corridor with directional signs to departments and elevator",
+            "caption": "Wegwijzers in het ziekenhuis",
+            "variant": 0
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "title": "Deel 2",
+    "instruction_html": "<p>U gaat nu verder met deel 2 van het onderdeel Spreken. In dit deel geeft u langere antwoorden dan in deel 1. U vertelt, legt uit of geeft uw mening, en u onderbouwt wat u zegt met redenen of voorbeelden.</p><ul><li>U leest bij elke opgave een korte situatie. Soms hoort u daarbij iemand die u iets vraagt.</li><li>Na de opgave heeft u vijftien seconden om na te denken over uw antwoord.</li><li>Daarna heeft u dertig seconden spreektijd. Probeer die tijd goed te gebruiken.</li><li>Geef een samenhangend antwoord van ongeveer vier tot zeven zinnen. Losse woorden zijn niet genoeg.</li><li>Bij sommige opgaven staan plaatjes. U moet die plaatjes gebruiken in uw antwoord. Staat er dat u alle plaatjes moet gebruiken, dan noemt u ze alle drie.</li><li>Bij een keuze tussen twee plaatjes zegt u welke u kiest en geeft u minimaal twee redenen.</li></ul><p>Spreek rustig en duidelijk, zodat de luisteraar u goed kan volgen.</p>",
+    "tasks": [
+      {
+        "image_usage": "cover_all",
+        "title": "Bezoeker ontvangen",
+        "prompt": "U werkt bij een groot bedrijf in Zwolle.\nEen leverancier komt morgen voor het eerst langs.\nHij weet niet wat hij bij aankomst moet doen.\nKijk naar de plaatjes.\n\nLeg hem uit welke stappen hij bij aankomst moet zetten.\nU moet daarbij alle plaatjes gebruiken.\nU hoort eerst de leverancier.",
+        "prompt_spoken": "Ik kom morgen voor het eerst bij jullie langs. Wat moet ik doen als ik binnenkom?",
+        "voice": "man_older",
+        "model_answer": "Als u binnenkomt, meldt u zich eerst bij de balie in de hal. De receptioniste vraagt uw naam en de naam van de persoon met wie u een afspraak heeft. Daarna krijgt u een bezoekerspas, die u de hele dag zichtbaar moet dragen, want anders komt u niet door de deuren. Met die pas loopt u naar de wachtruimte en gaat u even zitten. De collega die u verwacht, komt u daar ophalen. Het is handig als u tien minuten eerder bent, zodat u rustig kunt aanmelden.",
+        "images": [
+          {
+            "slot": "spreken-4-d2-o1-a",
+            "query": "visitor signing in at office reception desk",
+            "caption": "Melden bij de balie",
+            "variant": 0
+          },
+          {
+            "slot": "spreken-4-d2-o1-b",
+            "query": "visitor badge pass on lanyard office",
+            "caption": "Bezoekerspas dragen",
+            "variant": 1
+          },
+          {
+            "slot": "spreken-4-d2-o1-c",
+            "query": "person waiting in office waiting area chairs",
+            "caption": "Wachten in de wachtruimte",
+            "variant": 2
+          }
+        ]
+      },
+      {
+        "image_usage": "none",
+        "title": "Stad aanraden",
+        "prompt": "Een kennis uit uw taalcursus heeft een vrije dag.\nZij wil graag een dagje naar een andere stad in Nederland.\nZij vraagt u om een tip.\n\nVertel welke stad u haar aanraadt.\nVertel ook waarom u die stad kiest en wat zij daar kan doen.",
+        "prompt_spoken": "Ik heb volgende week een vrije dag. Welke stad moet ik volgens jou echt een keer bezoeken?",
+        "voice": "woman_young",
+        "model_answer": "Ik zou zeker naar Utrecht gaan, want die stad vind ik heel prettig voor één dag. Het station ligt midden in het centrum, dus je hoeft niet ver te lopen en je bent snel bij de winkels. Langs de grachten zitten leuke terrasjes onder de bomen, en daar kun je goedkoop koffie drinken. Verder is de Dom mooi en kun je het museum bezoeken als het regent. Utrecht is kleiner dan Amsterdam, waardoor het minder druk is. Neem wel de trein, omdat parkeren in het centrum echt duur is.",
+        "images": []
+      },
+      {
+        "image_usage": "cover_all",
+        "title": "Koffiemachine uitleggen",
+        "prompt": "U werkt op een kantoor in Breda.\nEr is vandaag een nieuwe medewerker begonnen.\nHij wil koffie halen, maar hij snapt de machine niet.\nKijk naar de plaatjes.\n\nLeg hem uit hoe de koffiemachine werkt.\nU moet daarbij alle plaatjes gebruiken.\nU hoort eerst de nieuwe medewerker.",
+        "prompt_spoken": "Ik wil graag een kopje koffie, maar ik weet niet hoe dit apparaat werkt. Kun je het even uitleggen?",
+        "voice": "man_young",
+        "model_answer": "Dat is niet moeilijk, ik leg het even uit. Je pakt eerst een beker uit de houder naast de machine en zet die onder de tuit. Daarna kies je op het scherm wat je wilt drinken, bijvoorbeeld koffie, cappuccino of thee. Je kunt ook nog aangeven of je suiker en melk wilt. Dan druk je op de knop en wacht je tot de machine klaar is, want anders knoeit hij. De koffie is gratis, maar we ruimen de gebruikte bekers zelf op.",
+        "images": [
+          {
+            "slot": "spreken-4-d2-o3-a",
+            "query": "hand taking paper cup from cup holder coffee machine",
+            "caption": "Beker onder de tuit",
+            "variant": 0
+          },
+          {
+            "slot": "spreken-4-d2-o3-b",
+            "query": "finger pressing coffee machine touch screen menu",
+            "caption": "Drankje kiezen op scherm",
+            "variant": 1
+          },
+          {
+            "slot": "spreken-4-d2-o3-c",
+            "query": "coffee pouring into cup from office coffee machine",
+            "caption": "Wachten tot de beker vol is",
+            "variant": 2
+          }
+        ]
+      },
+      {
+        "image_usage": "choose",
+        "title": "Cadeau kiezen",
+        "prompt": "Uw collega Miriam gaat na twaalf jaar met pensioen.\nDe afdeling heeft geld ingezameld voor een cadeau.\nEen collega twijfelt tussen twee mogelijkheden.\nKijk naar de twee plaatjes.\n\nZeg welk cadeau u kiest en geef minimaal twee redenen.",
+        "prompt_spoken": "Ik twijfel echt. Zullen we een boeket met een cadeaubon geven of toch een dagje weg met een overnachting?",
+        "voice": "woman_older",
+        "model_answer": "Ik zou voor het dagje weg met een overnachting kiezen. Miriam heeft twaalf jaar bij ons gewerkt, dus ze verdient iets bijzonders dat ze niet snel vergeet. Bloemen zijn natuurlijk mooi, maar na een week liggen ze in de container en dan is er niets meer van over. Van een weekend weg heeft ze samen met haar man plezier, en later kan ze er nog over vertellen. Bovendien hebben we genoeg geld ingezameld, waardoor het goed te betalen is. We kunnen er wel een kaart met handtekeningen bij doen.",
+        "images": [
+          {
+            "slot": "spreken-4-d2-o4-a",
+            "query": "large bouquet of flowers with gift voucher card",
+            "caption": "Boeket met cadeaubon",
+            "variant": 0
+          },
+          {
+            "slot": "spreken-4-d2-o4-b",
+            "query": "gift box with hotel weekend break voucher",
+            "caption": "Dagje weg met overnachting",
+            "variant": 1
+          }
+        ]
+      },
+      {
+        "image_usage": "cover_all",
+        "title": "Verhuizing regelen",
+        "prompt": "Uw buurvrouw gaat over twee maanden verhuizen naar Deventer.\nZij heeft nog nooit eerder verhuisd.\nZij vraagt u wat zij allemaal moet regelen.\nKijk naar de plaatjes.\n\nLeg haar uit wat zij op tijd moet doen.\nU moet daarbij alle plaatjes gebruiken.\nU hoort eerst uw buurvrouw.",
+        "prompt_spoken": "Ik verhuis over twee maanden, maar ik zie er tegenop. Wat moet ik allemaal regelen?",
+        "voice": "woman_older",
+        "model_answer": "Ik zou eerst een verhuiswagen of een verhuisbedrijf boeken, want in het weekend zijn ze snel volgeboekt. Begin daarna op tijd met inpakken en schrijf op elke doos welke kamer het is, zodat u later niet alles hoeft te zoeken. Vraag ook een paar vrienden om te helpen met tillen. Verder moet u uw nieuwe adres doorgeven aan de gemeente, en dat kan meestal online. Vergeet niet de energie, het internet en de verzekering te wijzigen. Als u een lijstje maakt, houdt u goed overzicht.",
+        "images": [
+          {
+            "slot": "spreken-4-d2-o5-a",
+            "query": "moving truck van parked in front of house",
+            "caption": "Verhuiswagen regelen",
+            "variant": 0
+          },
+          {
+            "slot": "spreken-4-d2-o5-b",
+            "query": "packing cardboard boxes labeling with marker",
+            "caption": "Dozen inpakken en labelen",
+            "variant": 1
+          },
+          {
+            "slot": "spreken-4-d2-o5-c",
+            "query": "person filling in change of address form on laptop",
+            "caption": "Adreswijziging doorgeven",
+            "variant": 2
+          }
+        ]
+      },
+      {
+        "image_usage": "none",
+        "title": "Koopzondag",
+        "prompt": "U zit in de kantine van uw opleiding.\nEen medestudent leest een bericht over winkels die op zondag open zijn.\nIn steeds meer plaatsen zijn dat er meer.\n\nVertel wat u van koopzondagen vindt.\nGeef ook redenen en een voorbeeld.",
+        "prompt_spoken": "Bij ons in het dorp gaan de winkels nu ook op zondag open. Wat vind jij daar eigenlijk van?",
+        "voice": "man_young",
+        "model_answer": "Ik vind het eigenlijk wel handig dat winkels op zondag open zijn. Ik werk doordeweeks tot zes uur, waardoor ik bijna nooit rustig boodschappen kan doen. Op zondag heb ik de tijd en is het vaak minder druk in de winkel. Aan de andere kant snap ik de mensen in de winkel ook goed, want zij hebben dan minder vrije dagen met hun gezin. Daarom vind ik het beter als winkels alleen 's middags open zijn en niemand verplicht wordt om te werken. Zo houden allebei de partijen er iets aan over.",
+        "images": []
+      },
+      {
+        "image_usage": "choose",
+        "title": "Welke fiets",
+        "prompt": "Uw zwager gaat volgende maand in Amersfoort werken.\nHij fietst dan elke dag twaalf kilometer heen en weer.\nHij wil een nieuwe fiets kopen.\nKijk naar de twee plaatjes.\n\nZeg welke fiets u hem aanraadt en geef minimaal twee redenen.",
+        "prompt_spoken": "Ik ga elke dag twaalf kilometer naar mijn werk fietsen. Welke fiets kan ik volgens jou het beste nemen?",
+        "voice": "man_older",
+        "model_answer": "Ik zou de elektrische fiets nemen, ook al is die een stuk duurder. Twaalf kilometer heen en twaalf kilometer terug is best ver, en met tegenwind kom je met een gewone fiets bezweet op je werk aan. Met trapondersteuning fiets je makkelijker, waardoor je het langer volhoudt en niet snel de auto pakt. Bovendien bieden veel werkgevers een fietsplan aan, zodat je een deel van de kosten terugkrijgt. Zet hem wel altijd op slot in een bewaakte stalling. De gewone stadsfiets zou ik alleen kiezen voor korte ritjes.",
+        "images": [
+          {
+            "slot": "spreken-4-d2-o7-a",
+            "query": "electric bicycle with battery commuting",
+            "caption": "Elektrische fiets",
+            "variant": 0
+          },
+          {
+            "slot": "spreken-4-d2-o7-b",
+            "query": "regular dutch city bicycle standing on street",
+            "caption": "Gewone stadsfiets",
+            "variant": 1
+          }
+        ]
+      },
+      {
+        "image_usage": "none",
+        "title": "Goede stageplek",
+        "prompt": "U volgt een beroepsopleiding.\nEen medestudent moet binnenkort een stageplek zoeken.\nZij weet niet waar zij op moet letten.\n\nVertel wat volgens u een goede stageplek maakt.\nGeef ook redenen en een voorbeeld.",
+        "prompt_spoken": "Ik moet volgende periode stage lopen, maar ik weet niet waar ik op moet letten. Wat maakt een stageplek goed?",
+        "voice": "woman_young",
+        "model_answer": "Ik vind een goede begeleider het allerbelangrijkste. Je komt binnen om te leren, dus je hebt iemand nodig die tijd voor je heeft en rustig uitlegt hoe iets moet. Verder moet je echt meedoen met het werk, want als je de hele dag alleen maar kopieert, leer je je vak niet. Een vaste dag om je vragen te bespreken helpt ook, zodat je weet wat er beter kan. Ik zou daarnaast op de reistijd letten, omdat een uur in de trein je veel energie kost. Vraag bij een gesprek gerust wat je precies gaat doen.",
+        "images": []
+      }
+    ]
+  }
+]

@@ -5,6 +5,9 @@ import { day2Email, day2Subject } from '@/lib/email/templates/day2';
 import { day2NoScoreEmail, day2NoScoreSubject } from '@/lib/email/templates/day2NoScore';
 import { day7Email, day7Subject } from '@/lib/email/templates/day7';
 import { abandonEmail, abandonSubject } from '@/lib/email/templates/abandon';
+import { timelineReminderEmail, timelineReminderSubject } from '@/lib/email/templates/timeline';
+import { buildTimelineEmailPayload } from '@/lib/tijdlijn/email-payload';
+import { pd } from '@/lib/tijdlijn/engine/dates';
 import { type EmailLocale } from '@/lib/email/i18n';
 
 const resend = new Resend(process.env.RESEND_API_KEY);
@@ -35,12 +38,16 @@ export async function GET(request: Request): Promise<Response> {
 
   for (const row of due ?? []) {
     try {
-      const { data: paidPayment } = await supabase
+      /* The paid-customer skip applies to the **upsell** campaigns only. A tijdlijn reminder is not
+       * an upsell — it is the thing the reader explicitly asked for — and suppressing it because
+       * they bought a module would drop the one mail they consented to separately. */
+      const isUpsell = row.campaign_type !== 'tijdlijn_reminder';
+      const { data: paidPayment } = isUpsell ? await supabase
         .from(TABLE.PAYMENTS)
         .select('id')
         .eq('email', row.email)
         .eq('status', 'paid')
-        .maybeSingle();
+        .maybeSingle() : { data: null };
       if (paidPayment) {
         await supabase
           .from(TABLE.EMAIL_CAMPAIGN_QUEUE)
@@ -71,6 +78,25 @@ export async function GET(request: Request): Promise<Response> {
       } else if (row.campaign_type === 'abandon') {
         html = abandonEmail(firstName, locale, unsubscribeUrl);
         subject = abandonSubject(locale);
+      } else if (row.campaign_type === 'tijdlijn_reminder') {
+        /* Recomputed from the stored state against **today's** rules file, not from dates frozen when
+         * the row was queued eight months ago. If the plan can no longer be read — a future encoding,
+         * a corrupted row — the mail is skipped rather than sent with blanks in it. */
+        const nowUtc = new Date();
+        const built = buildTimelineEmailPayload(
+          String(row.payload?.state ?? ''),
+          locale,
+          pd(nowUtc.getUTCFullYear(), nowUtc.getUTCMonth() + 1, nowUtc.getUTCDate()),
+        );
+        if (!built) {
+          await supabase
+            .from(TABLE.EMAIL_CAMPAIGN_QUEUE)
+            .update({ status: 'failed', error_message: 'unreadable tijdlijn state' })
+            .eq('id', row.id);
+          continue;
+        }
+        html = timelineReminderEmail(built.payload, locale, unsubscribeUrl);
+        subject = timelineReminderSubject(built.payload, locale);
       } else {
         continue;
       }

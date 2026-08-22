@@ -29,6 +29,11 @@ import { Breadcrumb } from '@/components/site';
 import { FEATURES } from '@/lib/features';
 import { getPostBySlug, getPostLocale, getPostSlug } from '@/data/blog-posts';
 import { getGuideLocale, hasTranslation, relatedGuides, guideHref, hubHref } from '@/data/guides/helpers';
+import { phaseOfGuide } from '@/data/guides/phases';
+import { guideSections } from '@/lib/guides/sections';
+import PhaseStrip from '@/components/inburgering/PhaseStrip';
+import GuideSectionNav from '@/components/inburgering/GuideSectionNav';
+import SituationCheck from '@/components/inburgering/SituationCheck';
 import type { Guide } from '@/data/guides/types';
 
 export default async function GuideArticle({
@@ -49,6 +54,19 @@ export default async function GuideArticle({
     : [];
 
   const hub = hubHref(guide.section);
+
+  /* The fase this guide sits in, and its own `<h2>` outline.
+   *
+   * Both are `undefined`/empty outside the Inburgering route, and every consumer below is gated on
+   * that rather than on `section === 'inburgering'` — a KNM or Taalexamens guide gets the plain
+   * article it has today, and a *new* Inburgering guide that nobody added to `phases.ts` gets the
+   * plain article too rather than a strip claiming it is in fase 1. `phaseOfGuide` returning
+   * nothing is the honest state, not a bug to paper over with a default.
+   *
+   * The outline is extracted from the resolved locale's body, so the visible titles are translated
+   * while the ids — and therefore the recorded progress — are shared across nl/en/ar. */
+  const phase = phaseOfGuide(guide.slug);
+  const sections = phase ? guideSections(lg.articleHtml) : [];
 
   /* `Article`, deliberately not `BlogPosting`: a kennisgids is a maintained reference page, not a
    * dated post, and the type is the honest one. `author` and `publisher` are references to the
@@ -227,6 +245,10 @@ export default async function GuideArticle({
         </div>
       </div>
 
+      {/* Where this page sits in the route, compressed to one line. Below the hero and above the
+          body, because it orients rather than navigates — see `PhaseStrip`. */}
+      {phase && <PhaseStrip current={phase.id} locale={locale} />}
+
       <main className="bg-surface">
         <div className="article-layout">
           <div
@@ -325,6 +347,21 @@ export default async function GuideArticle({
           </div>
 
           <aside className="sidebar">
+            {/* The outline comes first in the sidebar, above every CTA. It is the only item here
+                that helps with the page the reader is actually on; a promotion above it would be
+                the site asking for something before giving anything. It also owns the progress
+                recording that the hub's fasen display — see `GuideSectionNav`. */}
+            {phase && sections.length > 1 && (
+              <GuideSectionNav
+                slug={guide.slug}
+                guideTitle={lg.heroTitle}
+                sections={sections}
+                phase={phase.id}
+              />
+            )}
+
+            {phase && <SituationCheck variant="compact" />}
+
             <div className="rounded-2xl p-6 text-center" style={{ background: 'var(--gradient-brand)' }}>
               <div className="flex justify-center mb-3">
                 <PenLine className="w-7 h-7" style={{ color: 'rgba(255,255,255,0.85)' }} aria-hidden="true" />

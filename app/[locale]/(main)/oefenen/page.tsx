@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import { getTranslations } from 'next-intl/server';
+import { HorizonBanner } from '@/components/horizon';
 import { routing } from '@/i18n/routing';
 import { SKILLS } from '@/data/skills';
 import { DEFAULT_LEVEL } from '@/data/skills';
@@ -98,8 +99,11 @@ export default async function OefenenPickerPage({ params }: Props) {
     <main className="bg-surface min-h-screen">
       <JsonLd data={jsonLd} />
       {/* Header */}
-      <section className="px-6 pt-14 pb-12" style={{ background: 'var(--gradient-brand)' }}>
-        <div className="max-w-4xl mx-auto text-center">
+      <section className="relative overflow-hidden px-6 pt-14 pb-16" style={{ background: 'var(--gradient-brand)' }}>
+        {/* No sun: the header is centred, so there is no empty flank for the accent to live in
+            and it would land on the copy. */}
+        <HorizonBanner seed={6} sun={false} />
+        <div className="relative max-w-4xl mx-auto text-center">
           <span
             className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-bold uppercase tracking-widest mb-5"
             style={{ background: 'rgba(255,255,255,0.15)', color: 'rgba(255,255,255,0.9)' }}
@@ -107,8 +111,8 @@ export default async function OefenenPickerPage({ params }: Props) {
             {t('pick_eyebrow')}
           </span>
           <h1
-            className="font-headline font-extrabold text-white tracking-tight mb-4"
-            style={{ fontSize: 'clamp(1.9rem, 4vw, 2.8rem)', letterSpacing: '-0.03em' }}
+            className="font-headline font-extrabold text-white mb-4"
+            style={{ fontSize: 'clamp(1.9rem, 4vw, 2.8rem)', letterSpacing: '-0.02em', lineHeight: 1.06, textWrap: 'balance' }}
           >
             {t('pick_heading')}
           </h1>
@@ -209,7 +213,7 @@ export default async function OefenenPickerPage({ params }: Props) {
                       <SkillIcon skill={skill.slug} size="lg" />
                       <span
                         className="text-[0.68rem] font-bold uppercase tracking-widest px-2.5 py-1 rounded-full"
-                        style={{ background: '#f0fdf4', color: '#15803d' }}
+                        style={{ background: 'rgba(254,118,44,0.14)', color: '#a24000' }}
                       >
                         {tSkills('free_badge')}
                       </span>

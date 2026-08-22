@@ -74,7 +74,7 @@ export default function UitschrijvenPage() {
               {state === 'done' && (
                 <>
                   <div className="w-16 h-16 rounded-2xl flex items-center justify-center mx-auto mb-6" style={{ background: '#ecfdf5' }}>
-                    <svg width="32" height="32" fill="none" stroke="#16a34a" strokeWidth="2" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7"/></svg>
+                    <svg width="32" height="32" fill="none" stroke="#a24000" strokeWidth="2" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7"/></svg>
                   </div>
                   <h2 className="font-headline font-extrabold text-2xl mb-3" style={{ color: '#002b6d' }}>Je bent uitgeschreven</h2>
                   <p className="text-sm mb-8 leading-relaxed" style={{ color: '#6b7280' }}>Je ontvangt geen follow-up e-mails meer van Inburgering Oefenen. Je kunt deze pagina sluiten.</p>
@@ -88,7 +88,7 @@ export default function UitschrijvenPage() {
               {state === 'error' && (
                 <>
                   <div className="w-16 h-16 rounded-2xl flex items-center justify-center mx-auto mb-6" style={{ background: '#fef2f2' }}>
-                    <svg width="32" height="32" fill="none" stroke="#dc2626" strokeWidth="2" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M12 9v2m0 4h.01M12 3a9 9 0 100 18A9 9 0 0012 3z"/></svg>
+                    <svg width="32" height="32" fill="none" stroke="var(--color-error)" strokeWidth="2" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M12 9v2m0 4h.01M12 3a9 9 0 100 18A9 9 0 0012 3z"/></svg>
                   </div>
                   <h2 className="font-headline font-extrabold text-2xl mb-3" style={{ color: '#002b6d' }}>Er is iets misgegaan</h2>
                   <p className="text-sm mb-8 leading-relaxed" style={{ color: '#6b7280' }}>

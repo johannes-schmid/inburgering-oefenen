@@ -270,17 +270,47 @@ test.describe('the kennisgids sections', () => {
   test('a planned surface is reachable, noindex, and never a dead end', async ({ page }) => {
     /* The placeholder gate. These pages are announced in the nav before they work, so they must be
      * readable (the reader followed a menu item) and must not compete in search. */
-    const res = await page.goto('/nl/inburgering/tools/tijdlijn');
+    const res = await page.goto('/nl/knm/woordenlijst');
     expect(res?.status()).toBe(200);
     const robots = await page.locator('meta[name="robots"]').getAttribute('content');
     expect(robots).toMatch(/noindex/);
     await expect(page.locator('h1')).toBeVisible();
-    // It must offer somewhere real to go — the pillar, in this case.
-    await expect(
-      page.locator('a[href="/nl/inburgering/inburgering-stappenplan"]').first(),
-    ).toBeVisible();
+    // It must offer somewhere real to go.
+    await expect(page.locator('a[href="/nl/oefenen"]').first()).toBeVisible();
     // And carry no structured data, which would contradict its own robots tag.
     expect(await page.locator('script[type="application/ld+json"]').count()).toBe(0);
+  });
+
+  test('the tijdlijn tool is indexable, static-first, and asks nothing before it explains itself', async ({ page }) => {
+    /* This one replaced its own placeholder. It is the opposite case: a real page that must be
+     * indexable, because the whole SEO play is that DUO's equivalent wizard is noindex. */
+    const res = await page.goto('/nl/inburgering/tools/tijdlijn');
+    expect(res?.status()).toBe(200);
+    /* An indexable page emits **no** robots tag at all, so this asserts absence and only reads the
+     * content when a tag exists. Waiting for the element instead just times out — which is what the
+     * first version of this test did, and it is a good reminder that "not noindex" and "has a robots
+     * tag saying index" are different assertions. */
+    const robotsCount = await page.locator('meta[name="robots"]').count();
+    if (robotsCount > 0) {
+      const robots = await page.locator('meta[name="robots"]').first().getAttribute('content');
+      expect(robots ?? '').not.toMatch(/noindex/);
+    }
+
+    // The landmark is in the server HTML, not conditional on hydration.
+    await expect(page.locator('main')).toBeVisible();
+    await expect(page.locator('h1')).toBeVisible();
+
+    // The privacy promise is on the page, not in a footer: it is the reason people trust it.
+    await expect(page.getByText(/DigiD/i).first()).toBeVisible();
+
+    // It owns a WebApplication node and never grows a rating — the tool has no reviews.
+    const blocks = await page.locator('script[type="application/ld+json"]').allTextContents();
+    expect(blocks.join(' ')).toContain('WebApplication');
+    expect(blocks.join(' ')).not.toContain('aggregateRating');
+
+    // The wizard opens on the reader's own action, and the first question is answerable.
+    await page.getByRole('button', { name: /Maak mijn tijdlijn/i }).click();
+    await expect(page.getByText(/Vraag 1 van/)).toBeVisible();
   });
 
   test('the published pillar is indexable and listed on its hub', async ({ page }) => {
@@ -291,11 +321,22 @@ test.describe('the kennisgids sections', () => {
      * regain an e2e case with M2's first draft spoke. */
     const res = await page.goto('/nl/inburgering/inburgering-stappenplan');
     expect(res?.status()).toBe(200);
-    const robots = await page.locator('meta[name="robots"]').getAttribute('content');
-    expect(robots ?? '').not.toMatch(/noindex/);
+    /* An indexable page emits **no** robots tag at all, so this asserts absence and only reads the
+     * content when a tag exists. Waiting for the element instead just times out — which is what the
+     * first version of this test did, and it is a good reminder that "not noindex" and "has a robots
+     * tag saying index" are different assertions. */
+    const robotsCount = await page.locator('meta[name="robots"]').count();
+    if (robotsCount > 0) {
+      const robots = await page.locator('meta[name="robots"]').first().getAttribute('content');
+      expect(robots ?? '').not.toMatch(/noindex/);
+    }
     await expect(page.locator('h1')).toBeVisible();
     await page.goto('/nl/inburgering');
-    await expect(page.locator('a[href="/nl/inburgering/inburgering-stappenplan"]').first()).toBeVisible();
+    /* Attached, not visible: since 2026-08-22 the hub is a three-fase `tablist` and the pillar sits
+     * in the closed fase 3, so only one fase's links are on screen at a time. The link must still be
+     * in the document — that is what a pillar-cluster hub is *for* — and the fase-switching test
+     * below owns the reader-facing half. */
+    await expect(page.locator('a[href="/nl/inburgering/inburgering-stappenplan"]').first()).toBeAttached();
   });
 
   test('the four Inburgering guides are published and listed on their hub', async ({ page }) => {
@@ -322,10 +363,57 @@ test.describe('the kennisgids sections', () => {
 
     await page.goto('/nl/inburgering');
     for (const slug of SPOKES) {
+      /* Every guide keeps a plain, hash-free link from its hub even while its fase is closed. This
+       * is the assertion that caught the redesign rendering only the open fase's panel, which had
+       * left two of the four guides with no internal link from the page that exists to link them. */
       await expect(
         page.locator(`a[href="/nl/inburgering/${slug}"]`).first(),
         `${slug} on the hub`,
-      ).toBeVisible();
+      ).toBeAttached();
+    }
+  });
+
+  test('the hub is a route in three fasen, and switching one shows its steps', async ({ page }) => {
+    /* The reader-facing half of the hub. Three things, all of them things a later redesign could
+     * quietly drop: the three fasen exist as real tabs, exactly one is open at a time, and opening
+     * a fase reveals *its* guides rather than leaving the previous fase's on screen. Asserted on
+     * structure and hrefs, never on the fase labels, which are copy. */
+    await page.goto('/nl/inburgering');
+
+    const tabs = page.locator('[role="tab"]');
+    await expect(tabs).toHaveCount(3);
+    await expect(page.locator('[role="tab"][aria-selected="true"]')).toHaveCount(1);
+
+    // Fase 1's guides are the visible ones; fase 3's pillar is present but not on screen.
+    const pillar = page.locator('a[href="/nl/inburgering/inburgering-stappenplan"]').first();
+    await expect(page.locator('a[href="/nl/inburgering/moet-ik-inburgeren"]').first()).toBeVisible();
+    await expect(pillar).toBeHidden();
+
+    // Open the third fase; its guide becomes visible and fase 1's steps go away.
+    await tabs.nth(2).click();
+    await expect(pillar).toBeVisible();
+    await expect(page.locator('a[href="/nl/inburgering/moet-ik-inburgeren"]').first()).toBeHidden();
+    await expect(page.locator('[role="tab"][aria-selected="true"]')).toHaveCount(1);
+  });
+
+  test('a guide shows its own sections and its place in the route', async ({ page }) => {
+    /* The article side of the redesign. The outline in the sidebar is derived from the guide's own
+     * `<h2 id>`s, so this pins that the derivation actually produced links and that each one points
+     * at a heading that exists — a jump to a missing anchor is silent in the browser. */
+    await page.goto('/nl/inburgering/moet-ik-inburgeren');
+
+    // The compact fase strip marks exactly one fase as the current step.
+    await expect(page.locator('[aria-current="step"]')).toHaveCount(1);
+
+    const nav = page.locator('nav[aria-label="De stappen in deze gids"]');
+    await expect(nav).toBeVisible();
+    const links = nav.locator('a[href^="#"]');
+    const count = await links.count();
+    expect(count).toBeGreaterThanOrEqual(2);
+
+    for (let i = 0; i < count; i++) {
+      const hash = await links.nth(i).getAttribute('href');
+      await expect(page.locator(`h2${hash}`), `heading for ${hash}`).toHaveCount(1);
     }
   });
 
@@ -347,8 +435,12 @@ test.describe('the kennisgids sections', () => {
         expect(xml, `${locale}/${slug}`).toContain(`/${locale}/inburgering/${slug}`);
       }
     }
-    // Planned surfaces are noindex, so advertising them would contradict their own meta tag.
-    for (const slug of ['tijdlijn', 'woordenlijst', 'grammatica']) {
+    // The tijdlijn tool is a real, indexable page and must be advertised.
+    for (const locale of ['nl', 'en', 'ar']) {
+      expect(xml, `${locale} tijdlijn`).toContain(`/${locale}/inburgering/tools/tijdlijn`);
+    }
+    // The remaining planned surfaces are noindex, so listing them would contradict their meta tag.
+    for (const slug of ['woordenlijst', 'grammatica']) {
       expect(xml, `${slug} must not be in the sitemap`).not.toContain(slug);
     }
   });

@@ -20,21 +20,35 @@ export default function BrandLoader({ fullPage = true, label }: BrandLoaderProps
     >
       <div className="flex flex-col items-center gap-5">
         <div className="io-loading-mark">
-          <svg width="72" height="72" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" aria-hidden>
-            <rect width="100" height="100" rx="23" fill="#002b6d" />
-            <rect className="io-loading-bar" x="28" y="29" width="13" height="43" rx="6.5" fill="#fe762c" />
-            <circle cx="61" cy="50.5" r="16" fill="none" stroke="rgba(255,255,255,0.22)" strokeWidth="11" />
+          {/* The mark, with one arc **orbiting outside the tile**.
+
+              The old loader spun the logo's own outlined ring, which the mark no longer has — it is
+              a solid sun disc now (2026-08-22). Putting a spinner ring back *inside* the tile
+              undoes that change here and shows a logo the rest of the site retired; it also lands
+              on the bar, because a ring around the disc at any useful radius reaches x=40 and the
+              bar starts at x=26. So the arc sits outside the tile at r=80, clear of the corners
+              (which are 70.7 from the centre) — the lens ring of §7.1, on the one surface where
+              motion is the point.
+
+              `strokeDasharray` sums to the full circumference (2π·80 = 502.65) on purpose: any
+              other total makes the dash pattern repeat and a second stub arc appears opposite the
+              first. */}
+          <svg width="112" height="112" viewBox="-36 -36 172 172" xmlns="http://www.w3.org/2000/svg" aria-hidden>
+            <circle cx="50" cy="50" r="80" fill="none" stroke="rgba(0,43,109,0.12)" strokeWidth="5" />
             <circle
               className="io-loading-ring"
-              cx="61"
-              cy="50.5"
-              r="16"
+              cx="50"
+              cy="50"
+              r="80"
               fill="none"
-              stroke="#ffffff"
-              strokeWidth="11"
+              stroke="#002b6d"
+              strokeWidth="5"
               strokeLinecap="round"
-              strokeDasharray="30 70.5"
+              strokeDasharray="125 377.65"
             />
+            <rect width="100" height="100" rx="23" fill="#002b6d" />
+            <rect className="io-loading-bar" x="26" y="27" width="17" height="46" rx="8.5" fill="#ffffff" />
+            <circle cx="65" cy="50" r="17" fill="#fe762c" />
           </svg>
         </div>
 
@@ -54,11 +68,11 @@ export default function BrandLoader({ fullPage = true, label }: BrandLoaderProps
           animation: io-loading-breathe 2.4s cubic-bezier(0.22, 1, 0.36, 1) infinite;
         }
         .io-loading-ring {
-          transform-origin: 61px 50.5px;
+          transform-origin: 50px 50px;
           animation: io-loading-spin 1.1s cubic-bezier(0.22, 1, 0.36, 1) infinite;
         }
         .io-loading-bar {
-          transform-origin: 34.5px 50.5px;
+          transform-origin: 34.5px 50px;
           animation: io-loading-pulse 1.6s cubic-bezier(0.22, 1, 0.36, 1) infinite;
         }
         @keyframes io-loading-spin { to { transform: rotate(360deg); } }

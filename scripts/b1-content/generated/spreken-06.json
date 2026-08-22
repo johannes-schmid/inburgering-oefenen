@@ -1,0 +1,266 @@
+[
+  {
+    "title": "Deel 1",
+    "instruction_html": "<p>In dit deel geeft u korte antwoorden. U leest steeds een korte situatie. Soms hoort u ook iemand die iets tegen u zegt.</p><ul><li>U antwoordt kort: een paar woorden tot twee zinnen zijn genoeg.</li><li>U heeft per opgave 20 seconden spreektijd.</li><li>Bij sommige opgaven staat een plaatje. Kijk dan goed naar het plaatje en gebruik de informatie die u daar ziet in uw antwoord.</li><li>Spreek duidelijk en in hele zinnen, zodat de ander u goed begrijpt.</li></ul><p>Succes met dit onderdeel.</p>",
+    "tasks": [
+      {
+        "image_usage": "react",
+        "title": "Abonnement opzeggen",
+        "prompt": "U werkt bij een sportschool aan de balie.\nEen klant komt naar u toe.\nHij wil zijn abonnement stoppen.\n\nLuister naar de klant en reageer.\nVertel hem wat hij moet doen om op te zeggen.",
+        "prompt_spoken": "Goedemiddag, ik kom hier al twee jaar, maar ik wil mijn abonnement opzeggen. Kan dat gewoon vandaag?",
+        "voice": "man_older",
+        "model_answer": "Dat kan zeker, meneer. U moet het wel schriftelijk doen, dus met een formulier of een mailtje. Daarna stopt uw abonnement na één maand.",
+        "images": [
+          {
+            "slot": "spreken-6-d1-o1-a",
+            "query": "man at gym reception desk talking to staff member",
+            "caption": "Klant bij de balie",
+            "variant": 0
+          }
+        ]
+      },
+      {
+        "image_usage": "none",
+        "title": "Fiets of bus",
+        "prompt": "U begint volgende maand met een nieuwe baan.\nHet werk is zes kilometer van uw huis.\nU kunt met de fiets gaan of met de bus.\n\nVertel welke keuze u maakt.\nVertel ook waarom u dat kiest.",
+        "model_answer": "Ik ga liever met de fiets, want zes kilometer is goed te doen. Zo krijg ik elke dag wat beweging en ik hoef niet te wachten op de bus. Alleen als het heel hard regent, neem ik de bus.",
+        "images": []
+      },
+      {
+        "image_usage": "react",
+        "title": "Even meekijken",
+        "prompt": "U werkt op een kantoor van een verhuisbedrijf.\nEen collega zit achter de computer.\nZij vraagt u om hulp.\n\nLuister naar uw collega en reageer.\nZeg of u kunt helpen en wanneer.",
+        "prompt_spoken": "Heb je heel even tijd om mee te kijken? Ik krijg dit bestand maar niet open en de klant wacht al.",
+        "voice": "woman_young",
+        "model_answer": "Ja hoor, ik kom er zo aan. Ik maak dit telefoontje even af en dan kijk ik met je mee, over vijf minuten.",
+        "images": [
+          {
+            "slot": "spreken-6-d1-o3-a",
+            "query": "woman at office computer asking colleague for help with screen",
+            "caption": "Collega achter de computer",
+            "variant": 0
+          }
+        ]
+      },
+      {
+        "image_usage": "describe",
+        "title": "Rooster sportzaal",
+        "prompt": "U werkt als vrijwilliger in een buurthuis.\nIn de gang hangt het rooster van de sportzaal.\nEen bezoeker vraagt wat er op het rooster staat.\n\nKijk naar het plaatje.\nVertel wat er deze week in de sportzaal te doen is.",
+        "model_answer": "Op het rooster staat dat er op maandagavond volleybal is en op woensdag gymles voor kinderen. Vrijdagochtend is er een uur voor ouderen, van tien tot elf.",
+        "images": [
+          {
+            "slot": "spreken-6-d1-o4-a",
+            "query": "weekly schedule timetable on wall of sports hall gym",
+            "caption": "Rooster van de sportzaal",
+            "variant": 0
+          }
+        ]
+      },
+      {
+        "image_usage": "none",
+        "title": "Later beginnen",
+        "prompt": "U volgt een opleiding tot verzorgende.\nDe school wil de lessen later laten beginnen.\nDe eerste les start dan om half tien in plaats van half negen.\n\nVertel wat u van dit plan vindt.\nVertel ook waarom u dat vindt.",
+        "model_answer": "Ik vind het een goed plan, want veel studenten zijn 's ochtends nog moe. Als we later beginnen, kan ik mijn kinderen rustig naar school brengen. Het nadeel is wel dat we 's middags langer doorgaan.",
+        "images": []
+      },
+      {
+        "image_usage": "react",
+        "title": "Plantjes water geven",
+        "prompt": "U woont in een flat in Zwolle.\nUw buurvrouw gaat twee weken op vakantie.\nZij belt bij u aan.\n\nLuister naar uw buurvrouw en reageer.\nZeg of u het doet en maak een afspraak.",
+        "prompt_spoken": "Ik ga zondag twee weken weg. Zou jij misschien op mijn plantjes willen letten?",
+        "voice": "woman_older",
+        "model_answer": "Dat wil ik wel doen, hoor. Geeft u de sleutel zaterdag maar even af, dan geef ik ze twee keer per week water.",
+        "images": [
+          {
+            "slot": "spreken-6-d1-o6-a",
+            "query": "older woman neighbour at apartment door holding house plant",
+            "caption": "Buurvrouw aan de deur",
+            "variant": 0
+          }
+        ]
+      },
+      {
+        "image_usage": "none",
+        "title": "Stage kiezen",
+        "prompt": "U doet een opleiding techniek.\nU kunt stage lopen bij een bedrijf in uw eigen dorp.\nU kunt ook stage lopen in Rotterdam, waar u meer leert, maar de reis duurt anderhalf uur.\n\nVertel welke stage u kiest.\nVertel ook waarom u die keuze maakt.",
+        "model_answer": "Ik kies toch voor de stage in Rotterdam, hoewel het ver reizen is. Ik leer daar meer en dat helpt me later bij het vinden van werk. Die reistijd houd ik een paar maanden wel vol.",
+        "images": []
+      },
+      {
+        "image_usage": "describe",
+        "title": "Kind kwijt",
+        "prompt": "U doet boodschappen in de supermarkt.\nBij de kassa staat een klein kind te huilen.\nHet kind kan zijn moeder niet vinden.\n\nKijk naar het plaatje.\nVertel de medewerker van de supermarkt wat er aan de hand is en hoe het kind eruitziet.",
+        "model_answer": "Dit jongetje is zijn moeder kwijt, hij stond alleen bij de kassa te huilen. Hij heeft een rode jas aan en blond haar. Kunt u misschien iets omroepen?",
+        "images": [
+          {
+            "slot": "spreken-6-d1-o8-a",
+            "query": "lost crying young child alone in supermarket aisle",
+            "caption": "Huilend kind in supermarkt",
+            "variant": 0
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "title": "Deel 2",
+    "instruction_html": "<p>In dit deel geeft u langere antwoorden. U vertelt, legt uit of geeft advies. Uw antwoord bestaat uit meerdere zinnen die goed bij elkaar passen.</p><ul><li>U leest steeds een korte situatie. Daarna volgt de opdracht.</li><li>Bij sommige opgaven hoort iemand die iets tegen u zegt of u iets vraagt.</li><li>Bij sommige opgaven staan plaatjes. U moet die plaatjes gebruiken in uw antwoord.</li><li>U krijgt vijftien seconden voorbereidingstijd.</li><li>Daarna heeft u dertig seconden spreektijd. Probeer die tijd goed te gebruiken.</li><li>Geef niet alleen een kort antwoord, maar leg ook uit waarom u dat vindt of hoe iets werkt.</li></ul><p>Spreek rustig en duidelijk, zodat de ander u goed kan begrijpen.</p>",
+    "tasks": [
+      {
+        "image_usage": "cover_all",
+        "title": "Personeelsfeest",
+        "prompt": "U werkt bij een installatiebedrijf in Zwolle.\nU zit in de commissie die het personeelsfeest organiseert.\nEen nieuwe collega wil helpen en vraagt wat er nog moet gebeuren.\n\nKijk naar de plaatjes.\nLeg uit wat er allemaal moet gebeuren voor het feest.\nU moet daarbij alle plaatjes gebruiken.\nU hoort eerst uw collega.",
+        "prompt_spoken": "Ik wil graag meehelpen met het personeelsfeest, maar ik weet nog niet wat er precies geregeld moet worden. Kun je me uitleggen wat we allemaal moeten doen?",
+        "voice": "woman_young",
+        "model_answer": "Ja hoor, ik leg het even uit. We moeten eerst een zaal zoeken en die op tijd reserveren, want in december zijn de meeste zalen al bezet. Daarna maken we de uitnodigingen en sturen we die naar alle collega's, zodat iedereen weet hoe laat het begint. Het is handig als je vraagt wie er komt, want dan weten we het aantal personen. En als laatste moeten we het eten en drinken regelen bij een cateraar. Wil jij misschien de uitnodigingen doen?",
+        "images": [
+          {
+            "slot": "spreken-6-d2-o1-a",
+            "query": "empty event hall being reserved for a party, tables and chairs",
+            "caption": "Zaal reserveren",
+            "variant": 0
+          },
+          {
+            "slot": "spreken-6-d2-o1-b",
+            "query": "printed party invitation cards on a desk",
+            "caption": "Uitnodigingen versturen",
+            "variant": 1
+          },
+          {
+            "slot": "spreken-6-d2-o1-c",
+            "query": "catering buffet with food and drinks at a company party",
+            "caption": "Eten en drinken regelen",
+            "variant": 2
+          }
+        ]
+      },
+      {
+        "image_usage": "none",
+        "title": "Cursus aanraden",
+        "prompt": "U werkt bij een thuiszorgorganisatie.\nUw werkgever betaalt elk jaar een cursus voor het personeel.\nUw leidinggevende vraagt wat de collega's het beste kunnen volgen.\n\nVertel welke cursus u uw collega's zou aanraden.\nVertel ook waarom u die cursus een goed idee vindt.",
+        "prompt_spoken": "We hebben dit jaar weer geld voor een cursus voor het hele team. Welke cursus zou jij de collega's aanraden, en waarom eigenlijk?",
+        "voice": "man_older",
+        "model_answer": "Ik zou een cursus omgaan met agressie aanraden. Sommige cliënten worden soms boos of verward, en dan weten collega's niet altijd hoe ze moeten reageren. In zo'n cursus leer je rustig blijven en duidelijk praten, waardoor een ruzie vaak niet groter wordt. Ik denk ook dat mensen zich veiliger voelen in hun werk, en dan blijven ze langer bij ons. Een cursus over de computer is ook nuttig, maar dit vind ik echt belangrijker.",
+        "images": []
+      },
+      {
+        "image_usage": "cover_all",
+        "title": "De printer",
+        "prompt": "U werkt op het kantoor van een woningcorporatie.\nEr is een nieuwe printer gekomen.\nEen stagiair weet niet hoe het apparaat werkt.\n\nKijk naar de plaatjes.\nLeg de stagiair uit hoe hij de printer moet gebruiken.\nU moet daarbij alle plaatjes gebruiken.\nU hoort eerst de stagiair.",
+        "prompt_spoken": "Ik moet dit rapport uitprinten, maar ik snap deze printer echt niet. Kun jij me even uitleggen hoe het werkt?",
+        "voice": "man_young",
+        "model_answer": "Natuurlijk, het is niet moeilijk. Je houdt eerst je personeelspas voor het kleine kastje aan de zijkant, want anders doet de printer niets. Daarna kies je op het scherm wat je wilt: printen, kopiëren of scannen. Voor jouw rapport druk je op printen en dan zie je jouw bestand staan. Kijk voordat je begint even of er genoeg papier in de la zit, want die is vaak leeg. Als er iets vastloopt, roep je mij maar even.",
+        "images": [
+          {
+            "slot": "spreken-6-d2-o3-a",
+            "query": "employee holding access badge to office printer card reader",
+            "caption": "Pas voorhouden",
+            "variant": 0
+          },
+          {
+            "slot": "spreken-6-d2-o3-b",
+            "query": "finger touching touchscreen menu of office copier",
+            "caption": "Kiezen op het scherm",
+            "variant": 1
+          },
+          {
+            "slot": "spreken-6-d2-o3-c",
+            "query": "person filling paper tray of office printer",
+            "caption": "Papier bijvullen",
+            "variant": 2
+          }
+        ]
+      },
+      {
+        "image_usage": "choose",
+        "title": "Bedrijfsauto",
+        "prompt": "Uw buurman heeft een klein schildersbedrijf met drie werknemers.\nHij wil een andere bedrijfsauto kopen.\nHij twijfelt tussen twee auto's.\n\nKijk naar de twee plaatjes.\nAdviseer uw buurman welke auto beter bij zijn bedrijf past.\nNoem minimaal twee redenen voor uw keuze.",
+        "prompt_spoken": "Ik moet een nieuwe auto voor de zaak kopen, maar ik kom er niet uit. Welke zou jij nemen en waarom?",
+        "voice": "man_older",
+        "model_answer": "Ik zou de grote bestelbus nemen. Jullie nemen elke dag ladders, verf en emmers mee, en dat past gewoon niet in een kleine auto. In de bus kun je ook planken en gereedschap netjes achterin leggen, zodat er niets kapotgaat. Bovendien kunnen er drie mensen voorin zitten, waardoor jullie samen naar de klant kunnen rijden. Zo'n bus rijdt wel iets duurder, maar ik denk dat je daarmee uiteindelijk tijd bespaart.",
+        "images": [
+          {
+            "slot": "spreken-6-d2-o4-a",
+            "query": "large white delivery van parked on street",
+            "caption": "Grote bestelbus",
+            "variant": 0
+          },
+          {
+            "slot": "spreken-6-d2-o4-b",
+            "query": "small compact commercial car van parked on street",
+            "caption": "Kleine bedrijfsauto",
+            "variant": 1
+          }
+        ]
+      },
+      {
+        "image_usage": "cover_all",
+        "title": "Nieuw in de wijk",
+        "prompt": "U woont al tien jaar in een wijk in Apeldoorn.\nEr is een nieuwe bewoner in de straat komen wonen.\nZij kent nog niemand en vraagt u om tips.\n\nKijk naar de plaatjes.\nVertel wat de nieuwe bewoner allemaal kan doen in de wijk.\nU moet daarbij alle plaatjes gebruiken.\nU hoort eerst de nieuwe bewoner.",
+        "prompt_spoken": "Ik woon hier pas twee weken en ik ken nog helemaal niemand. Wat kan ik hier in de buurt eigenlijk allemaal doen?",
+        "voice": "woman_older",
+        "model_answer": "Leuk dat je er bent! In het buurthuis is elke woensdagochtend een koffieochtend, en daar komen veel mensen uit de straat. Je kunt ook meedoen in de buurtmoestuin achter de school, want daar zoeken ze altijd hulp bij het planten en wieden. En elk jaar in juni is er een straatfeest met muziek en eten voor iedereen. Ik zou gewoon een keer meegaan naar de koffieochtend, dan ken je zo tien mensen.",
+        "images": [
+          {
+            "slot": "spreken-6-d2-o5-a",
+            "query": "neighbours drinking coffee together in community centre",
+            "caption": "Koffieochtend in het buurthuis",
+            "variant": 0
+          },
+          {
+            "slot": "spreken-6-d2-o5-b",
+            "query": "people working together in a community vegetable garden",
+            "caption": "Werken in de buurtmoestuin",
+            "variant": 1
+          },
+          {
+            "slot": "spreken-6-d2-o5-c",
+            "query": "neighbourhood street party with tables and residents",
+            "caption": "Straatfeest in juni",
+            "variant": 2
+          }
+        ]
+      },
+      {
+        "image_usage": "none",
+        "title": "Tweedehands kopen",
+        "prompt": "Steeds meer mensen kopen tweedehands spullen.\nZe kopen kleding, meubels en telefoons via internet of in een kringloopwinkel.\nOp een verjaardag praat een vriendin daarover met u.\n\nVertel wat u van tweedehands kopen vindt.\nLeg ook uit waarom u dat vindt.",
+        "prompt_spoken": "Ik koop tegenwoordig bijna alles tweedehands. Wat vind jij daar eigenlijk van?",
+        "voice": "woman_young",
+        "model_answer": "Ik vind dat eigenlijk heel verstandig. Spullen zijn de laatste jaren flink duurder geworden, en tweedehands scheelt vaak de helft van de prijs. Het is ook beter voor het milieu, omdat er dan minder nieuwe dingen gemaakt hoeven te worden. Mijn eettafel komt uit de kringloopwinkel en die staat er na vijf jaar nog prima bij. Alleen bij een wasmachine of een laptop zou ik voorzichtig zijn, want je hebt dan meestal geen garantie.",
+        "images": []
+      },
+      {
+        "image_usage": "choose",
+        "title": "Andere opleiding",
+        "prompt": "Een kennis van u werkt al vijftien jaar in de horeca.\nHij wil ander werk gaan doen, want het werk is zwaar.\nHij twijfelt tussen twee opleidingen.\n\nKijk naar de twee plaatjes.\nAdviseer uw kennis welke opleiding beter is voor hem.\nNoem minimaal twee redenen voor uw keuze.",
+        "prompt_spoken": "Ik wil echt iets anders gaan doen, maar ik weet niet welke opleiding ik moet kiezen. Wat zou jij doen in mijn geval?",
+        "voice": "man_young",
+        "model_answer": "Ik zou voor de opleiding tot verzorgende in de zorg gaan. Jij kunt goed met mensen omgaan, en dat heb je in de horeca elke dag laten zien. In de zorg is bovendien veel werk, waardoor je bijna zeker snel een vaste baan vindt. Je kunt de opleiding ook in deeltijd doen en tegelijk werken, zodat je gewoon inkomen houdt. De opleiding techniek is ook prima, maar dan zit je vaker alleen en dat past minder bij jou.",
+        "images": [
+          {
+            "slot": "spreken-6-d2-o7-a",
+            "query": "adult student in healthcare training class with instructor",
+            "caption": "Opleiding tot verzorgende",
+            "variant": 0
+          },
+          {
+            "slot": "spreken-6-d2-o7-b",
+            "query": "adult student in technical training workshop with tools",
+            "caption": "Technische opleiding",
+            "variant": 1
+          }
+        ]
+      },
+      {
+        "image_usage": "none",
+        "title": "Motivatie",
+        "prompt": "U heeft een gesprek met uw leidinggevende over uw werk.\nZij wil weten hoe u het werk ervaart.\nZij vraagt wat u er elke dag voor motiveert.\n\nVertel wat u motiveert in uw werk.\nLeg ook uit waarom dat voor u belangrijk is.",
+        "prompt_spoken": "Ik ben benieuwd hoe jij erin staat. Wat motiveert jou eigenlijk het meest in je werk?",
+        "voice": "woman_older",
+        "model_answer": "Wat mij het meest motiveert, is dat ik iets afmaak en het resultaat kan zien. Als een klant tevreden weggaat, ga ik met een goed gevoel naar huis. Ik vind het ook belangrijk dat ik nieuwe dingen mag leren, want dan blijft het werk interessant. Verder werk ik graag in een team waarin collega's elkaar helpen als het druk is. Waardering helpt trouwens ook, hoewel dat niet elke dag hoeft.",
+        "images": []
+      }
+    ]
+  }
+]

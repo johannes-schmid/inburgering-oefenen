@@ -577,7 +577,7 @@ const CSS = `
     display: flex; align-items: center; justify-content: center; gap: 8px;
     font-size: 0.85rem; font-weight: 700; color: var(--color-on-surface-variant);
   }
-  .sp-stage[data-state='recording'] .sp-stage-status { color: #b91c1c; }
+  .sp-stage[data-state='recording'] .sp-stage-status { color: var(--color-error); }
   .sp-stage[data-state='done'] .sp-stage-status { color: var(--color-primary); }
   .sp-count { font-variant-numeric: tabular-nums; }
   .sp-dot {
@@ -608,11 +608,11 @@ const CSS = `
   .sp-btn:active { transform: translateY(0) scale(0.98); }
   .sp-btn:focus-visible { outline: 3px solid var(--color-secondary); outline-offset: 2px; }
   .sp-btn-rec { background: #a24000; }
-  .sp-btn-stop { background: #dc2626; }
+  .sp-btn-stop { background: var(--color-error); }
 
   .sp-error {
     display: flex; align-items: flex-start; gap: 7px; margin: 0;
-    font-size: 0.82rem; line-height: 1.55; color: #b91c1c;
+    font-size: 0.82rem; line-height: 1.55; color: var(--color-error);
   }
   .sp-error svg { flex-shrink: 0; margin-top: 2px; }
 
@@ -632,7 +632,7 @@ const CSS = `
     font-size: 0.68rem; font-weight: 800; letter-spacing: 0.06em; text-transform: uppercase;
     color: var(--color-outline);
   }
-  .sp-tx-live { color: #b91c1c; }
+  .sp-tx-live { color: var(--color-error); }
   .sp-tx-live .sp-dot { width: 7px; height: 7px; }
   .sp-spin { animation: sp-rotate 900ms linear infinite; }
   @keyframes sp-rotate { to { transform: rotate(360deg); } }

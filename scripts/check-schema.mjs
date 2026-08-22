@@ -45,7 +45,10 @@ const PAGES = [
   /* Planned surfaces (`data/planned-surfaces.ts`) carry NO structured data at all — they are
    * noindex until they do something, and rich data on a noindex page contradicts the page's own
    * meta tag. Same rule as the empty B1 overviews and a draft guide. */
-  { path: '/nl/inburgering/tools/tijdlijn', expect: [], forbid: ['Article', 'CollectionPage', 'WebPage'] },
+  /* The tijdlijn tool. It owns a `WebApplication` node and references `#organization` and
+     `#website` by @id; `Article` is forbidden because a tool is not a document, and a stray
+     `CollectionPage` would mean the hub's schema was copied onto it. */
+  { path: '/nl/inburgering/tools/tijdlijn', expect: ['WebApplication', 'BreadcrumbList'], forbid: ['Article', 'CollectionPage'] },
   { path: '/nl/knm/woordenlijst',       expect: [], forbid: ['Article', 'CollectionPage'] },
   { path: '/nl/taalexamens/woordenlijst', expect: [], forbid: ['Article', 'CollectionPage'] },
   { path: '/nl/taalexamens/grammatica', expect: [], forbid: ['Article', 'CollectionPage'] },

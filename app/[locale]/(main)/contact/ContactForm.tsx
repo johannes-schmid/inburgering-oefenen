@@ -49,7 +49,7 @@ export default function ContactForm() {
     return (
       <div className="text-center py-4">
         <div className="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-green-50 mb-6">
-          <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#16a34a" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+          <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#a24000" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
             <path d="M5 13l4 4L19 7"/>
           </svg>
         </div>

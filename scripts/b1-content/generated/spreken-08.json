@@ -1,0 +1,266 @@
+[
+  {
+    "title": "Deel 1",
+    "instruction_html": "<p>In dit deel geeft u korte antwoorden. U hoort en leest acht opgaven. Bij elke opgave krijgt u eerst een korte situatie te zien. Daarna leest u wat u moet zeggen.</p><ul><li>U antwoordt kort: een paar woorden tot twee zinnen zijn genoeg.</li><li>U heeft per opgave twintig seconden spreektijd.</li><li>Bij sommige opgaven staat een plaatje. Kijk goed naar dat plaatje en gebruik de informatie die u daar ziet in uw antwoord.</li><li>Bij sommige opgaven spreekt iemand u aan. Luister goed en reageer op wat die persoon zegt.</li><li>Spreek duidelijk en gebruik hele zinnen waar dat kan.</li></ul><p>Succes met dit deel.</p>",
+    "tasks": [
+      {
+        "image_usage": "react",
+        "title": "Korting gevraagd",
+        "prompt": "U werkt in een fietsenwinkel in Zwolle.\nEen vaste klant laat zijn fiets nakijken.\nHij vraagt om korting, omdat hij vaak in de winkel komt.\nU mag zelf geen korting geven.\n\nLuister naar de klant en reageer.\nLeg uit wat u wel voor hem kunt doen.",
+        "prompt_spoken": "Zeg, ik kom hier echt elke maand met mijn fiets. Kan er dan niet een beetje korting af?",
+        "voice": "man_older",
+        "model_answer": "Wat fijn dat u zo vaak langskomt, maar ik mag zelf helaas geen korting geven. Ik kan wel even met mijn leidinggevende overleggen, of ik zet u op de klantenkaart, zodat u bij de volgende beurt voordeel heeft.",
+        "images": [
+          {
+            "slot": "spreken-8-d1-o1-a",
+            "query": "customer talking to bicycle repair shop employee at counter",
+            "caption": "Klant in de fietsenwinkel",
+            "variant": 0
+          }
+        ]
+      },
+      {
+        "image_usage": "none",
+        "title": "Vast of tijdelijk",
+        "prompt": "U kunt kiezen tussen twee banen.\nDe eerste baan is een vast contract met een lager salaris.\nDe tweede baan is tijdelijk werk, maar u verdient daar meer.\n\nVertel welke baan u zou kiezen.\nVertel ook waarom u die keuze maakt.",
+        "model_answer": "Ik zou voor het vaste contract kiezen, ook al verdien ik dan wat minder. Met vast werk kan ik makkelijker een huis huren en plannen maken. Zekerheid vind ik belangrijker dan een paar honderd euro extra per maand.",
+        "images": []
+      },
+      {
+        "image_usage": "react",
+        "title": "Rommel op de werkplek",
+        "prompt": "U werkt in de keuken van een zorginstelling.\nEen collega laat steeds zijn spullen en vuile bakken staan.\nDaardoor moet u telkens zijn werkplek opruimen.\nVandaag spreekt u hem erop aan.\n\nLuister naar uw collega en reageer.\nZeg wat u van hem verwacht.",
+        "prompt_spoken": "Sorry hoor, ik had haast. Jij ruimt het toch altijd wel even op?",
+        "voice": "man_young",
+        "model_answer": "Ik snap dat je haast had, maar ik wil dit niet elke dag doen. Ruim je je eigen spullen voortaan zelf op, ook als het druk is? Dan blijft de keuken voor iedereen werkbaar.",
+        "images": [
+          {
+            "slot": "spreken-8-d1-o3-a",
+            "query": "messy commercial kitchen workstation with dirty containers left behind",
+            "caption": "Rommelige werkplek in de keuken",
+            "variant": 0
+          }
+        ]
+      },
+      {
+        "image_usage": "describe",
+        "title": "De plattegrond",
+        "prompt": "U werkt bij de balie van een buurtcentrum.\nBij de ingang hangt een plattegrond van het gebouw.\nEen nieuwe bezoeker begrijpt de plattegrond niet.\n\nKijk naar het plaatje.\nLeg uit wat er op de plattegrond staat en waar de bezoeker de belangrijkste ruimtes kan vinden.",
+        "model_answer": "Op de plattegrond ziet u het hele gebouw van boven. Hier bij de ingang is de balie, en links van de gang zitten de leslokalen. Achterin vindt u de toiletten en de grote zaal, en de rode pijlen wijzen naar de nooduitgang.",
+        "images": [
+          {
+            "slot": "spreken-8-d1-o4-a",
+            "query": "building floor plan map sign at entrance hall with rooms marked",
+            "caption": "Plattegrond bij de ingang",
+            "variant": 0
+          }
+        ]
+      },
+      {
+        "image_usage": "none",
+        "title": "Straat autovrij",
+        "prompt": "De gemeente wil uw straat autovrij maken.\nEr komen dan meer bomen, banken en fietsenrekken.\nBewoners moeten hun auto verderop parkeren, in een parkeergarage.\nOp een bewonersavond mag u uw mening geven.\n\nVertel wat u van dit plan vindt.\nGeef ook een reden waarom u dat vindt.",
+        "model_answer": "Ik vind het een goed plan, want zonder auto's is het veiliger voor kinderen die buiten spelen. Wel hoop ik dat de parkeergarage niet te duur wordt, omdat veel bewoners hun auto nodig hebben voor hun werk.",
+        "images": []
+      },
+      {
+        "image_usage": "react",
+        "title": "Samen leren",
+        "prompt": "U volgt een beroepsopleiding tot verzorgende.\nVolgende week is er een belangrijke toets.\nEen medestudent spreekt u aan in de kantine.\n\nLuister naar uw medestudent en reageer.\nZeg wat u wilt afspreken.",
+        "prompt_spoken": "Hé, zullen wij samen leren voor die toets van volgende week? Ik zie er best tegenop, eerlijk gezegd.",
+        "voice": "woman_young",
+        "model_answer": "Ja, leuk, dat lijkt me handig. Zullen we donderdag na de les afspreken in de bibliotheek? Dan neem ik mijn aantekeningen mee en overhoren we elkaar.",
+        "images": [
+          {
+            "slot": "spreken-8-d1-o6-a",
+            "query": "two adult students talking in college canteen with books",
+            "caption": "Medestudent in de kantine",
+            "variant": 0
+          }
+        ]
+      },
+      {
+        "image_usage": "none",
+        "title": "Welke cursus",
+        "prompt": "Uw werkgever betaalt één cursus voor u.\nU kunt kiezen tussen een cursus Nederlands\nof een vakcursus over nieuwe machines.\nU moet uw keuze uitleggen aan uw leidinggevende.\n\nVertel welke cursus u kiest.\nVertel ook waarom die cursus voor u het beste is.",
+        "model_answer": "Ik kies de cursus Nederlands, omdat ik dan beter met klanten en collega's kan praten. Als mijn Nederlands sterker is, begrijp ik de instructies ook sneller. De vakcursus wil ik graag volgend jaar doen.",
+        "images": []
+      },
+      {
+        "image_usage": "describe",
+        "title": "Waar melden",
+        "prompt": "U werkt als gastvrouw of gastheer bij een gemeentekantoor.\nEen bezoeker heeft een afspraak, maar hij weet niet waar hij zich moet melden.\nBij de ingang staan een aanmeldzuil en een balie.\n\nKijk naar het plaatje.\nLeg de bezoeker uit wat hij ziet en wat hij precies moet doen.",
+        "model_answer": "U ziet daar de aanmeldzuil met dat schermpje. Daar scant u de code uit uw afspraakbrief en dan krijgt u een nummer. Daarna gaat u zitten in de wachtruimte, totdat uw nummer op het scherm verschijnt.",
+        "images": [
+          {
+            "slot": "spreken-8-d1-o8-a",
+            "query": "self service check-in kiosk and reception desk in public office lobby",
+            "caption": "Aanmeldzuil bij de ingang",
+            "variant": 0
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "title": "Deel 2",
+    "instruction_html": "<p>In dit deel geeft u langere antwoorden. U leest en hoort steeds een korte situatie. Daarna krijgt u een opdracht.</p><ul><li>U hebt vijftien seconden om na te denken over uw antwoord.</li><li>Daarna hebt u dertig seconden om te spreken.</li><li>Geef een samenhangend antwoord van ongeveer vier tot zeven zinnen.</li><li>Bij sommige opgaven staan plaatjes. U moet die plaatjes dan in uw antwoord gebruiken.</li><li>Vertel niet alleen wat u doet of vindt, maar leg ook uit waarom.</li><li>Spreek rustig en duidelijk, zodat de ander u goed kan begrijpen.</li></ul>",
+    "tasks": [
+      {
+        "image_usage": "cover_all",
+        "title": "Pakket versturen",
+        "prompt": "U werkt in een webwinkel voor huishoudartikelen.\nEr is een nieuwe medewerker begonnen.\nHij moet een pakket klaarmaken voor de post.\nKijk naar de plaatjes.\n\nLeg hem uit hoe hij een pakket verzendklaar maakt.\nU moet daarbij alle plaatjes gebruiken.\nU hoort eerst de vraag van uw collega.",
+        "prompt_spoken": "Ik moet dit pakket vandaag nog versturen, maar ik heb dat nog nooit gedaan. Kun je me uitleggen hoe ik dat aanpak?",
+        "voice": "man_young",
+        "model_answer": "Kijk, je begint met de spullen inpakken. Je legt het product in de doos en je doet er noppenfolie omheen, zodat er niks kapotgaat. Daarna plak je de doos goed dicht met tape, ook aan de onderkant. Dan print je het verzendlabel uit en plak je dat recht op de bovenkant. Let op dat de streepjescode goed leesbaar blijft. Als het klaar is, zet je het pakket bij de andere pakketten voor de koerier.",
+        "images": [
+          {
+            "slot": "spreken-8-d2-o1-a",
+            "query": "person packing product with bubble wrap into cardboard box",
+            "caption": "Product inpakken in doos",
+            "variant": 0
+          },
+          {
+            "slot": "spreken-8-d2-o1-b",
+            "query": "hands sealing cardboard box with packing tape",
+            "caption": "Doos dichtplakken met tape",
+            "variant": 1
+          },
+          {
+            "slot": "spreken-8-d2-o1-c",
+            "query": "person sticking shipping label on parcel",
+            "caption": "Verzendlabel erop plakken",
+            "variant": 2
+          }
+        ]
+      },
+      {
+        "image_usage": "none",
+        "title": "Nieuw vak leren",
+        "prompt": "U praat met een vriendin over cursussen.\nZij wil in september iets nieuws gaan leren.\nZij vraagt wat u zelf zou kiezen.\n\nVertel welk vak of welke cursus u het liefst zou volgen.\nVertel ook waarom u daarvoor kiest.",
+        "prompt_spoken": "Ik ga in september een cursus doen. En jij, welk vak zou jij het liefst leren?",
+        "voice": "woman_young",
+        "model_answer": "Ik zou het liefst een cursus boekhouden volgen. Ik werk nu in de zorg, maar ik vind cijfers en administratie eigenlijk heel leuk. Op mijn werk help ik soms met de planning en de bonnetjes, en dat gaat me goed af. Als ik meer van boekhouden weet, kan ik later misschien op kantoor werken. Bovendien kun je die cursus in de avond doen, zodat ik gewoon kan blijven werken. Ik denk dus dat ik daar het meeste aan heb.",
+        "images": []
+      },
+      {
+        "image_usage": "cover_all",
+        "title": "Eerste opleidingsdag",
+        "prompt": "U volgt een beroepsopleiding voor kapper.\nEen kennis begint volgende maand met dezelfde opleiding.\nZij is benieuwd naar de eerste dag.\nKijk naar de plaatjes.\n\nVertel haar wat er op de eerste dag gebeurt.\nU moet daarbij alle plaatjes gebruiken.\nU hoort eerst de vraag van uw kennis.",
+        "prompt_spoken": "Volgende maand begin ik met de opleiding. Ik ben best zenuwachtig. Wat gebeurt er eigenlijk op die eerste dag?",
+        "voice": "woman_older",
+        "model_answer": "Je hoeft niet zenuwachtig te zijn, hoor. 's Ochtends is er eerst een bijeenkomst in de grote zaal. De directeur vertelt daar hoe de opleiding in elkaar zit. Daarna ga je met je eigen groep naar een lokaal en stelt iedereen zich even voor. Je mentor legt dan uit welke vakken je krijgt en wanneer je stage loopt. Na de pauze krijg je een rondleiding door het gebouw, zodat je de praktijklokalen en de kantine kunt vinden. Om ongeveer drie uur ben je klaar.",
+        "images": [
+          {
+            "slot": "spreken-8-d2-o3-a",
+            "query": "students listening to presentation in college auditorium",
+            "caption": "Welkom in de aula",
+            "variant": 0
+          },
+          {
+            "slot": "spreken-8-d2-o3-b",
+            "query": "teacher talking to small group of adult students in classroom",
+            "caption": "Kennismaken met de groep",
+            "variant": 1
+          },
+          {
+            "slot": "spreken-8-d2-o3-c",
+            "query": "group of students walking tour through school building corridor",
+            "caption": "Rondleiding door het gebouw",
+            "variant": 2
+          }
+        ]
+      },
+      {
+        "image_usage": "choose",
+        "title": "Plant voor de kantine",
+        "prompt": "U zit in de personeelsvereniging van een bedrijf.\nDe kantine is pas geverfd en er moet een plant komen.\nEr zijn twee planten uitgezocht.\nKijk naar de twee plaatjes.\n\nAdviseer welke plant het beste in de kantine past.\nGeef minstens twee redenen voor uw keuze.",
+        "prompt_spoken": "We kunnen kiezen uit deze twee planten voor de kantine. Welke zou jij nemen, en waarom?",
+        "voice": "man_older",
+        "model_answer": "Ik zou de grote plant in de pot op de vloer nemen. In de eerste plaats staat hij mooi in een grote ruimte, terwijl zo'n klein plantje op tafel bijna niet opvalt. Daarnaast staan onze tafels vaak vol met bekers en borden, dus een plant op tafel is alleen maar in de weg. Ook hoeven we er maar één te kopen, en dat is voordeliger dan tien kleine potjes. Het enige nadeel is dat iemand hem water moet geven. Maar dat kunnen we op het rooster zetten.",
+        "images": [
+          {
+            "slot": "spreken-8-d2-o4-a",
+            "query": "large potted floor plant in office canteen corner",
+            "caption": "Grote plant op de vloer",
+            "variant": 0
+          },
+          {
+            "slot": "spreken-8-d2-o4-b",
+            "query": "small potted plant on cafeteria table",
+            "caption": "Klein plantje op tafel",
+            "variant": 1
+          }
+        ]
+      },
+      {
+        "image_usage": "cover_all",
+        "title": "Voorraad bijhouden",
+        "prompt": "U werkt in het magazijn van een tuincentrum.\nEr komt een nieuwe collega bij het team.\nHij moet leren hoe de voorraad wordt bijgehouden.\nKijk naar de plaatjes.\n\nLeg uit hoe het bijhouden van de voorraad gaat.\nU moet daarbij alle plaatjes gebruiken.\nU hoort eerst de vraag van uw collega.",
+        "prompt_spoken": "Volgende week doe ik de voorraad voor het eerst alleen. Hoe werkt dat hier precies?",
+        "voice": "man_young",
+        "model_answer": "Het is niet zo moeilijk. Je begint bij de stellingen en je telt wat er nog staat. Daarna scan je elk product met de handscanner, zodat het aantal meteen in het systeem komt. Vergeet niet ook de dozen achterin te scannen. Vervolgens zet je alles op de computer en kijk je welke artikelen bijna op zijn. Van die artikelen maak je een bestelling voor de leverancier. Op vrijdag stuur je die bestelling door naar de inkoop.",
+        "images": [
+          {
+            "slot": "spreken-8-d2-o5-a",
+            "query": "warehouse worker counting products on shelves",
+            "caption": "Producten tellen in het magazijn",
+            "variant": 0
+          },
+          {
+            "slot": "spreken-8-d2-o5-b",
+            "query": "worker scanning barcode with handheld scanner in warehouse",
+            "caption": "Artikelen scannen",
+            "variant": 1
+          },
+          {
+            "slot": "spreken-8-d2-o5-c",
+            "query": "employee entering stock order on computer in warehouse office",
+            "caption": "Bestelling invoeren op de computer",
+            "variant": 2
+          }
+        ]
+      },
+      {
+        "image_usage": "none",
+        "title": "Eten weggooien",
+        "prompt": "U hoort een gesprek in de wachtkamer van de tandarts.\nHet gaat over supermarkten die veel eten weggooien.\nIemand naast u vraagt naar uw mening.\n\nVertel wat u ervan vindt dat er zoveel eten wordt weggegooid.\nLeg ook uit waarom u dat vindt en wat er volgens u zou moeten gebeuren.",
+        "prompt_spoken": "Ik las dat supermarkten elke dag bakken vol goed eten weggooien. Wat vind jij daarvan?",
+        "voice": "woman_older",
+        "model_answer": "Ik vind dat echt zonde. Het is voedsel waar mensen hard voor gewerkt hebben, en dan gaat het zomaar de container in. Tegelijk zijn er gezinnen die moeite hebben om de boodschappen te betalen, terwijl dat eten nog prima is. Ik denk dat supermarkten die producten beter kunnen weggeven aan de voedselbank of goedkoper kunnen verkopen aan het einde van de dag. Zelf koop ik ook vaak spullen met korting, omdat de datum bijna verloopt. Dat scheelt geld en er wordt minder weggegooid.",
+        "images": []
+      },
+      {
+        "image_usage": "choose",
+        "title": "Fietsroute kiezen",
+        "prompt": "U logeert bij een vriend in Zwolle.\nHij wil morgen met u naar het strandje bij de rivier fietsen.\nEr zijn twee routes mogelijk.\nKijk naar de twee plaatjes.\n\nAdviseer welke route u samen zou nemen.\nGeef minstens twee redenen voor uw keuze.",
+        "prompt_spoken": "We kunnen morgen twee kanten op fietsen. Welke route zou jij nemen, denk je?",
+        "voice": "man_young",
+        "model_answer": "Ik zou de route langs het water door het bos nemen. Ten eerste is dat veel rustiger, want er rijden bijna geen auto's en dat fietst een stuk veiliger. Ten tweede is het gewoon mooier, met al die bomen en het uitzicht op de rivier. Die andere weg gaat langs een drukke straat, en dan sta je steeds voor een stoplicht. Het duurt misschien een kwartier langer, maar we hebben morgen alle tijd. Bovendien kunnen we onderweg even stoppen om iets te drinken.",
+        "images": [
+          {
+            "slot": "spreken-8-d2-o7-a",
+            "query": "quiet cycling path through forest along river",
+            "caption": "Rustig fietspad door het bos",
+            "variant": 0
+          },
+          {
+            "slot": "spreken-8-d2-o7-b",
+            "query": "cycle lane along busy city road with traffic",
+            "caption": "Fietspad langs drukke weg",
+            "variant": 1
+          }
+        ]
+      },
+      {
+        "image_usage": "none",
+        "title": "Drukte op het werk",
+        "prompt": "U hebt een gesprek met uw leidinggevende.\nHet is een drukke periode op de afdeling.\nZij wil weten hoe u daarmee omgaat.\n\nVertel hoe u met drukte op uw werk omgaat.\nGeef ook een voorbeeld uit uw eigen ervaring.",
+        "prompt_spoken": "Het is de laatste weken erg druk bij ons. Hoe ga jij daar eigenlijk mee om?",
+        "voice": "woman_young",
+        "model_answer": "Als het druk is, maak ik eerst een lijstje. Ik zet bovenaan wat echt vandaag af moet, zodat ik niet van alles tegelijk doe. Verder probeer ik op tijd hulp te vragen, want in mijn eentje red ik het soms niet. Vorige maand had ik bijvoorbeeld drie bestellingen op dezelfde dag, en toen heb ik een collega gevraagd om er één over te nemen. Dat werkte goed en het werd op tijd klaar. En ik neem mijn pauze gewoon, want anders maak ik juist meer fouten.",
+        "images": []
+      }
+    ]
+  }
+]

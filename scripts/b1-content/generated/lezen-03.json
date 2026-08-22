@@ -1,0 +1,412 @@
+[
+  {
+    "section": "website",
+    "title": "Taalcoach worden bij Stichting Woordbrug",
+    "intro": "Deze tekst komt van de website van Stichting Woordbrug, een vrijwilligersorganisatie in Almelo. De tekst gaat over het werk van taalcoaches en over de voorwaarden om er een te worden.",
+    "body_html": "<p><strong>I</strong> Stichting Woordbrug brengt sinds 2011 vrijwilligers en nieuwkomers bij elkaar. Een taalcoach spreekt ongeveer twee uur per week af met iemand die pas in Nederland woont en die Nederlands leert. Tijdens die afspraak wordt geen les gegeven, want dat is het werk van de docent op de taalschool. De taalcoach oefent vooral het praten in gewone situaties: samen boodschappen doen, een brief van de gemeente doornemen of een telefoongesprek met de huisarts voorbereiden. Doordat de deelnemer buiten de les met een Nederlander praat, gaat het spreken vaak sneller vooruit dan in het klaslokaal. Op dit moment zijn er in de regio 340 koppels actief en staan er nog 90 nieuwkomers op de wachtlijst.</p><p><strong>II</strong> Veel vrijwilligers denken dat zij een opleiding tot leraar nodig hebben. Dat is niet zo. Wij vragen wel dat u geduld heeft, dat u rustig en duidelijk spreekt en dat u minstens een jaar beschikbaar bent. Die termijn van een jaar is belangrijk, omdat een deelnemer pas vertrouwen krijgt wanneer hij dezelfde persoon steeds terugziet. Verder moet u achttien jaar of ouder zijn en een Verklaring Omtrent het Gedrag aanvragen. De kosten daarvan, 33 euro, betaalt de stichting terug zodra u uw eerste afspraak heeft gehad. Hoewel wij geen diploma vragen, is een goede beheersing van het Nederlands wel noodzakelijk; ook mensen die zelf ooit als nieuwkomer begonnen zijn, worden regelmatig taalcoach.</p><p><strong>Van aanmelding tot eerste afspraak</strong></p><p><strong>III</strong> Wie zich aanmeldt, doorloopt vier stappen:</p><ul><li>U vult het formulier op deze website in en vertelt kort waarom u dit werk wilt doen.</li><li>Binnen tien werkdagen belt een coördinator u voor een gesprek van ongeveer een half uur.</li><li>U volgt een basiscursus van twee avonden, waarin u leert hoe u een gesprek opbouwt en hoe u met verschil in tempo omgaat.</li><li>De coördinator zoekt een deelnemer die bij u past en is aanwezig bij de eerste ontmoeting.</li></ul><p><strong>IV</strong> Bij het koppelen kijken wij niet alleen naar woonplaats en beschikbare tijd, maar ook naar interesses en werkervaring. Een deelnemer die verpleegkundige was in zijn eigen land, heeft meer aan een coach die de zorg kent, terwijl iemand die een eigen zaak wil openen liever iets over ondernemen hoort. Toch waarschuwen wij vrijwilligers voor te hoge verwachtingen: het gaat om taal en om meedoen, niet om het regelen van werk of woonruimte. Wanneer een deelnemer een probleem heeft met schulden, papieren of gezondheid, verwijst u hem naar de coördinator. Die kent de hulporganisaties in de gemeente en neemt de zaak over.</p><p><strong>V</strong> Een enkele keer past een koppel niet bij elkaar. Misschien komt de deelnemer vaak te laat, of blijkt het onderwerp waarover u praat te ver van zijn dagelijks leven af te staan. U hoeft dat niet zelf op te lossen. Na drie maanden vindt altijd een evaluatie plaats, maar u kunt ook eerder aan de bel trekken. In ongeveer één op de tien gevallen wordt een koppel opnieuw gemaakt, zonder dat iemand daarop wordt aangekeken.</p><p><strong>VI</strong> Taalcoaches krijgen geen salaris, maar wel een reiskostenvergoeding van 0,23 euro per kilometer en toegang tot vier themabijeenkomsten per jaar. Wie meer wil weten, kan op de eerste dinsdag van de maand langskomen tijdens het open uur.<br>Stichting Woordbrug<br>Kerkstraat 18<br>7601 AB Almelo<br>telefoon 0546 - 44 12 90</p>",
+    "questions": [
+      {
+        "prompt": "Wat maakt de schrijver in alinea I duidelijk met het voorbeeld van het telefoongesprek met de huisarts?",
+        "options": [
+          "Dat een taalcoach de deelnemer helpt bij het maken van huiswerk voor de taalschool.",
+          "Dat een taalcoach met de deelnemer oefent wat hij in het gewone leven nodig heeft.",
+          "Dat een taalcoach de plaats van de docent op de taalschool kan overnemen."
+        ],
+        "correct": 1,
+        "explanation": "In alinea I staat dat de coach geen les geeft, maar het praten in gewone situaties oefent; het telefoongesprek is daarvan een voorbeeld. Optie C is juist wat de tekst uitsluit: lesgeven blijft het werk van de docent."
+      },
+      {
+        "prompt": "Wat staat er in alinea II over de voorwaarden om taalcoach te worden?",
+        "options": [
+          "Er is geen diploma nodig, maar wel goed Nederlands en een jaar beschikbaarheid.",
+          "Er is een korte opleiding tot leraar nodig, tenzij u zelf nieuwkomer was.",
+          "Er is geen ervaring nodig, zolang u minstens twee uur per week vrij kunt maken.",
+          "Er is een diploma nodig, omdat de deelnemer vertrouwen moet kunnen hebben."
+        ],
+        "correct": 0,
+        "explanation": "Alinea II zegt dat er geen opleiding of diploma nodig is, maar wel goede beheersing van het Nederlands en minstens een jaar beschikbaarheid. Optie C noemt alleen de tijd en laat de eis over het Nederlands weg."
+      },
+      {
+        "prompt": "Hoeveel geld krijgt een nieuwe taalcoach terug voor de Verklaring Omtrent het Gedrag, en wanneer?",
+        "options": [
+          "33 euro, direct na de aanmelding op de website.",
+          "23 euro, na de basiscursus van twee avonden.",
+          "33 euro, na de eerste afspraak met de deelnemer."
+        ],
+        "correct": 2,
+        "explanation": "In alinea II staat dat de stichting de 33 euro terugbetaalt zodra de eerste afspraak heeft plaatsgevonden. De 23 in optie B hoort bij de reiskostenvergoeding per kilometer in alinea VI."
+      },
+      {
+        "prompt": "Een taalcoach merkt dat zijn deelnemer grote schulden heeft en om hulp vraagt. In welke alinea vindt hij wat hij moet doen?",
+        "options": [
+          "In alinea III.",
+          "In alinea IV.",
+          "In alinea V.",
+          "In alinea VI."
+        ],
+        "correct": 1,
+        "explanation": "Alinea IV zegt dat de coach bij problemen met schulden, papieren of gezondheid doorverwijst naar de coördinator. Alinea V gaat over iets anders: een koppel dat niet bij elkaar past."
+      },
+      {
+        "prompt": "Wat betekent \"aan de bel trekken\" in alinea V?",
+        "options": [
+          "De afspraken met de deelnemer korter maken.",
+          "Zelf een oplossing zoeken met de deelnemer.",
+          "Bij de organisatie melden dat er iets niet goed gaat."
+        ],
+        "correct": 2,
+        "explanation": "In alinea V staat dat de coach het niet zelf hoeft op te lossen en ook vóór de evaluatie na drie maanden kan melden dat het koppel niet past. Optie B is juist het tegenovergestelde van wat er staat."
+      }
+    ]
+  },
+  {
+    "section": "studieboek",
+    "title": "Hoe een cao tot stand komt",
+    "intro": "Deze tekst komt uit een cursusmap over arbeidsrecht voor cursisten van een beroepsopleiding. De tekst gaat over de manier waarop een collectieve arbeidsovereenkomst wordt gemaakt en voor wie die geldt.",
+    "body_html": "<p><strong>I</strong> In een arbeidsovereenkomst spreken een werkgever en een werknemer samen af wat het loon is en hoeveel uren er gewerkt wordt. Toch worden veel afspraken niet aan de keukentafel gemaakt, maar aan een grote vergadertafel. Zulke afspraken staan in een collectieve arbeidsovereenkomst, meestal afgekort tot cao. Het woord <em>collectief</em> betekent dat de afspraken niet voor één persoon gelden, maar voor een hele groep werknemers. Een cao kan gelden voor alle medewerkers van één groot bedrijf, maar ook voor iedereen die in een bepaalde bedrijfstak werkt, bijvoorbeeld in de schoonmaak of in de metaal.</p><p><strong>II</strong> Aan een cao werken twee partijen. Aan de ene kant zitten de vakbonden, die de werknemers vertegenwoordigen. Aan de andere kant zit de werkgever zelf of een vereniging van werkgevers uit dezelfde bedrijfstak. Voordat de gesprekken beginnen, maakt elke partij een lijst met wensen. De vakbonden vragen hun leden vaak per brief of via een bijeenkomst wat zij het belangrijkst vinden. Daarna volgen de onderhandelingen, die soms een paar weken duren en soms meer dan een jaar. Omdat de twee partijen verschillende belangen hebben, komt er niet altijd snel een resultaat. Loopt het overleg vast, dan kunnen de bonden hun leden oproepen om te staken, zodat de druk op de werkgever groter wordt.</p><p><strong>III</strong> Als de partijen het eens zijn, ligt er eerst een voorlopig akkoord. De vakbonden leggen dat akkoord voor aan hun leden. Alleen als een meerderheid van de leden vóór stemt, wordt het akkoord een echte cao. Vervolgens sturen de partijen de tekst naar het ministerie van Sociale Zaken en Werkgelegenheid. Dat ministerie kijkt niet of de afspraken verstandig zijn, maar controleert of ze niet in strijd zijn met de wet. Een cao mag namelijk wel béter zijn voor de werknemer dan de wet, maar nooit slechter. Een cao heeft altijd een einddatum: de looptijd is meestal één of twee jaar. Daarna beginnen de gesprekken opnieuw.</p><p><strong>Voor wie geldt de cao?</strong></p><p><strong>IV</strong> Veel mensen denken dat een cao alleen geldt voor werknemers die lid zijn van een vakbond. Dat is niet zo. Werkt u bij een bedrijf dat de cao heeft ondertekend, dan geldt hij ook voor u, ook als u geen lid bent. Bovendien kan de minister een bedrijfstakcao <em>algemeen verbindend</em> verklaren. Dat betekent dat alle bedrijven in die bedrijfstak zich aan de cao moeten houden, ook de bedrijven die niet hebben meegepraat. Zo wordt voorkomen dat een werkgever zijn personeel minder betaalt dan de concurrent om zo goedkoper te kunnen werken. Op dit moment vallen ongeveer driekwart van alle werknemers in Nederland onder een cao.</p><p><strong>V</strong> In een cao staan afspraken over onderwerpen die de wet niet of maar deels regelt. Denk aan:</p><ul><li>de loonstijging per jaar, bijvoorbeeld 3,5 procent per 1 januari;</li><li>een vergoeding voor reiskosten, zoals 0,21 euro per kilometer;</li><li>extra vrije dagen boven het wettelijke minimum;</li><li>toeslagen voor werken in de avond, de nacht of het weekend;</li><li>geld voor cursussen en bijscholing.</li></ul><p>Er zijn ook uitzonderingen. Stagiairs en uitzendkrachten vallen soms onder een andere regeling, en voor jongeren tot 21 jaar gelden vaak lagere loonbedragen. Wie twijfelt, kan de cao-tekst opvragen bij de personeelsafdeling of bij een vakbond.</p><p><strong>VI</strong> Er is ook kritiek op dit systeem. Sommige werkgevers vinden dat een cao te weinig ruimte laat voor eigen keuzes, omdat een klein bedrijf andere mogelijkheden heeft dan een groot bedrijf. Vakbonden brengen daar tegenin dat individuele werknemers alleen zwak staan tegenover hun werkgever. Samen kunnen zij wel iets bereiken. Zonder collectieve afspraken zou volgens hen vooral het loon van de laagste groepen onder druk komen te staan.</p>",
+    "questions": [
+      {
+        "prompt": "Wat staat er in alinea I over het woord 'collectief'?",
+        "options": [
+          "Dat de afspraken voor een groep werknemers samen gelden.",
+          "Dat de afspraken door de werknemers zelf zijn opgeschreven.",
+          "Dat de afspraken alleen in grote bedrijven worden gebruikt."
+        ],
+        "correct": 0,
+        "explanation": "In alinea I staat dat 'collectief' betekent dat de afspraken niet voor één persoon, maar voor een hele groep gelden. Optie C is te beperkt: een cao kan ook voor een hele bedrijfstak gelden, met grote én kleine bedrijven."
+      },
+      {
+        "prompt": "Wat gebeurt er volgens alinea II als de onderhandelingen niet opschieten?",
+        "options": [
+          "Het ministerie neemt het overleg over van de partijen.",
+          "De vakbonden kunnen hun leden vragen het werk neer te leggen.",
+          "De werkgevers maken dan een nieuwe lijst met wensen."
+        ],
+        "correct": 1,
+        "explanation": "Alinea II zegt dat de bonden bij een vastgelopen overleg hun leden kunnen oproepen om te staken. De lijst met wensen (optie C) wordt juist vóór de gesprekken gemaakt."
+      },
+      {
+        "prompt": "Wat controleert het ministerie volgens alinea III?",
+        "options": [
+          "Of de gemaakte afspraken goed zijn voor de bedrijfstak.",
+          "Of een meerderheid van de leden vóór het akkoord is.",
+          "Of de afspraken niet tegen de wet ingaan."
+        ],
+        "correct": 2,
+        "explanation": "In alinea III staat dat het ministerie niet kijkt of de afspraken verstandig zijn, maar of ze in strijd zijn met de wet. Het stemmen onder de leden (optie B) doen de vakbonden zelf, eerder in de procedure."
+      },
+      {
+        "prompt": "Mevrouw Yildiz werkt bij een schoonmaakbedrijf en is geen lid van een vakbond. In welke alinea vindt zij het antwoord op de vraag of de cao ook voor haar geldt?",
+        "options": [
+          "In alinea II.",
+          "In alinea III.",
+          "In alinea IV.",
+          "In alinea V."
+        ],
+        "correct": 2,
+        "explanation": "Alinea IV legt uit dat de cao ook geldt voor werknemers die geen vakbondslid zijn. Alinea V gaat over de inhoud van de cao, niet over de vraag voor wie hij geldt."
+      },
+      {
+        "prompt": "Wat is volgens alinea IV een gevolg van het algemeen verbindend verklaren van een cao?",
+        "options": [
+          "Bedrijven kunnen niet met lagere lonen goedkoper werken dan anderen.",
+          "Werknemers moeten zich aanmelden als lid van een vakbond.",
+          "Bedrijven mogen zelf kiezen welke afspraken zij overnemen."
+        ],
+        "correct": 0,
+        "explanation": "Alinea IV noemt als reden dat wordt voorkomen dat een werkgever minder betaalt dan de concurrent. Optie C is juist het tegenovergestelde: ook bedrijven die niet meepraatten, moeten zich aan de cao houden."
+      },
+      {
+        "prompt": "Wat wil de schrijver in alinea VI vooral duidelijk maken?",
+        "options": [
+          "Dat kleine bedrijven beter geen cao moeten afsluiten.",
+          "Dat er over het nut van cao's verschillend wordt gedacht.",
+          "Dat de lonen van laagbetaalde groepen te laag zijn."
+        ],
+        "correct": 1,
+        "explanation": "In alinea VI komen zowel de kritiek van werkgevers als het tegenargument van de vakbonden aan bod; de schrijver laat dus twee visies zien. Optie C is één argument uit die alinea en niet de hoofdgedachte."
+      }
+    ]
+  },
+  {
+    "section": "folder",
+    "title": "Bibliotheek De Vijverhof: meer dan boeken alleen",
+    "intro": "Deze tekst is een folder van een openbare bibliotheek. De folder gaat over het lidmaatschap, de cursussen en het taalcafé.",
+    "body_html": "<p><strong>I</strong> Bibliotheek De Vijverhof staat midden in de wijk Noordveld en is veel meer dan een plek met boekenkasten. U kunt bij ons boeken, tijdschriften en luisterboeken lenen, maar u kunt er ook rustig studeren, een computer gebruiken of andere buurtbewoners ontmoeten. Omdat steeds meer mensen thuis geen goede werkplek hebben, zijn onze leestafels bijna elke middag bezet. Wie zeker wil zijn van een plek, kan een studieplek online reserveren. De bibliotheek is van maandag tot vrijdag open van 10.00 tot 20.00 uur en op zaterdag van 10.00 tot 16.00 uur. Op zondag zijn wij gesloten, hoewel we in de wintermaanden soms een extra zondagopening organiseren.</p><p><strong>Lidmaatschap</strong></p><p><strong>II</strong> Een lidmaatschap voor volwassenen kost \bwie jonger is dan achttien jaar, betaalt niets. Voor volwassenen geldt een tarief van 52 euro per jaar. Betaalt u liever in delen, dan kunt u kiezen voor vier termijnen van 14 euro; die keuze is iets duurder, doordat wij administratiekosten in rekening brengen. Studenten en mensen met een inkomen op bijstandsniveau betalen 26 euro, mits zij een geldig bewijs meenemen. U kunt zich inschrijven bij de balie of via onze website, maar de pas haalt u altijd zelf op, omdat wij uw identiteitsbewijs moeten zien. Het lidmaatschap wordt elk jaar automatisch verlengd. Wilt u stoppen, dan zegt u minimaal een maand voor de einddatum schriftelijk op.</p><p><strong>III</strong> Met uw pas leent u maximaal tien boeken voor drie weken. Verlengen kan twee keer, tenzij een andere lener het boek heeft besproken. Wie te laat is, betaalt 15 cent per dag per boek. Veel leden schrikken van zo'n rekening, terwijl die eenvoudig te voorkomen is: zet in uw telefoon een herinnering, of vraag bij de balie om een gratis waarschuwing per e-mail. Die e-mail komt drie dagen voor de inleverdatum.</p><p><strong>Cursussen</strong></p><p><strong>IV</strong> In het cursuslokaal op de eerste verdieping geven wij het hele jaar door lessen. Het aanbod bestaat uit:</p><ul><li>Werken met de computer: zes bijeenkomsten voor beginners, met aandacht voor e-mail en internetbankieren.</li><li>Digitaal contact met de overheid: drie bijeenkomsten over DigiD en het aanvragen van toeslagen.</li><li>Nederlands leren lezen en schrijven: tien bijeenkomsten in kleine groepen van maximaal acht deelnemers.</li></ul><p>Leden betalen 10 euro per cursus, niet-leden 25 euro. De cursussen worden gegeven door vrijwilligers die daarvoor een opleiding hebben gekregen, waardoor zij weten hoe ze uitleg geven zonder moeilijke woorden. Aanmelden gaat telefonisch of aan de balie; online aanmelden is voor cursussen niet mogelijk.</p><p><strong>Taalca\bf\be</strong></p><p><strong>V</strong> Elke woensdag van 14.00 tot 15.30 uur is er het taalcafé. Iedereen die Nederlands leert, kan binnenlopen om te oefenen met spreken. U hoeft zich niet aan te melden en u hoeft geen lid te zijn; deelname is gratis. Aan elke tafel zit een vrijwilliger die het gesprek op gang brengt met een onderwerp, bijvoorbeeld solliciteren, de huisarts of het openbaar vervoer. Er wordt niet uit een boek gewerkt en er zijn geen toetsen, omdat de nadruk ligt op durven praten. Een deelnemer vertelde ons dat zij na drie maanden taalcafé eindelijk zelf haar afspraken bij de tandarts durfde te maken. Zulke stappen zijn precies waar het ons om gaat.</p><p><strong>VI</strong> Heeft u vragen, of wilt u zelf vrijwilliger worden? Loop dan langs bij de informatiebalie of neem contact op:<br>Bibliotheek De Vijverhof<br>Noordveldplein 8<br>3512 KL Middelveen<br>Telefoon: 0570 - 44 12 90<br>E-mail: informatie@vijverhofbibliotheek.nl</p>",
+    "questions": [
+      {
+        "prompt": "Wat is volgens alinea II een gevolg van betalen in vier termijnen?",
+        "options": [
+          "U betaalt in totaal een hoger bedrag.",
+          "U moet uw pas eerder komen ophalen.",
+          "U kunt niet meer online inschrijven.",
+          "U krijgt korting op het jaartarief."
+        ],
+        "correct": 0,
+        "explanation": "In alinea II staat dat betalen in termijnen iets duurder is vanwege administratiekosten. Dat de pas zelf opgehaald moet worden, geldt voor alle leden en is geen gevolg van de termijnbetaling."
+      },
+      {
+        "prompt": "Hoeveel betaalt een lid van de bibliotheek voor een cursus?",
+        "options": [
+          "10 euro",
+          "15 euro",
+          "25 euro",
+          "26 euro"
+        ],
+        "correct": 0,
+        "explanation": "In alinea IV staat dat leden 10 euro per cursus betalen en niet-leden 25 euro. Het bedrag van 26 euro hoort bij het lidmaatschap voor studenten (alinea II)."
+      },
+      {
+        "prompt": "Meneer Aydin wil weten wat hij kan doen om geen extra kosten te maken als hij een boek langer thuis houdt. In welke alinea vindt hij het antwoord?",
+        "options": [
+          "In alinea I",
+          "In alinea II",
+          "In alinea III"
+        ],
+        "correct": 2,
+        "explanation": "Alinea III gaat over de leentermijn, de kosten bij te laat inleveren en de gratis waarschuwing per e-mail. Alinea II gaat alleen over de kosten van het lidmaatschap."
+      },
+      {
+        "prompt": "Waarom noemt de schrijver in alinea V het verhaal van een deelneemster die haar tandartsafspraken maakt?",
+        "options": [
+          "Om te laten zien dat het taalcafé mensen zekerder maakt in het dagelijks leven.",
+          "Om duidelijk te maken dat deelnemers na drie maanden een toets kunnen doen.",
+          "Om aan te geven dat vrijwilligers medische onderwerpen goed kunnen uitleggen."
+        ],
+        "correct": 0,
+        "explanation": "Het voorbeeld in alinea V ondersteunt het doel van het taalcafé: durven praten in gewone situaties. Toetsen zijn er juist niet, zoals in dezelfde alinea staat."
+      },
+      {
+        "prompt": "Wat geldt volgens de tekst voor het taalcafé?",
+        "options": [
+          "U moet zich vooraf telefonisch aanmelden.",
+          "U kunt komen zonder lid te zijn.",
+          "U betaalt een kleine bijdrage per keer."
+        ],
+        "correct": 1,
+        "explanation": "In alinea V staat dat deelname gratis is en dat aanmelden en lidmaatschap niet nodig zijn. Telefonisch aanmelden hoort bij de cursussen in alinea IV."
+      }
+    ]
+  },
+  {
+    "section": "artikel",
+    "title": "Vier dagen werken, vijf dagen betaald: een proef die steeds vaker slaagt",
+    "intro": "Deze tekst komt uit een personeelsblad voor werkgevers en werknemers. Het artikel gaat over bedrijven die experimenteren met een vierdaagse werkweek.",
+    "body_html": "<p><strong>I</strong> Steeds meer Nederlandse bedrijven doen een proef met een kortere werkweek. Medewerkers werken dan vier dagen in plaats van vijf, terwijl hun salaris hetzelfde blijft. Bij een echte vierdaagse werkweek gaan de uren dus omlaag, van bijvoorbeeld veertig naar tweeëndertig uur per week. Dat is iets anders dan de afspraak die in Nederland al lang bestaat, waarbij iemand veertig uur in vier lange dagen perst. Onderzoeksbureau Vandermeer &amp; Partners ondervroeg vorig jaar 480 werkgevers. Van hen zei achttien procent dat er ergens in het bedrijf al met een kortere week wordt gewerkt, terwijl nog eens een kwart erover nadenkt.</p><p><strong>Waarom nu?</strong></p><p><strong>II</strong> De belangrijkste reden is het tekort aan personeel. Wie moeilijk mensen kan vinden, zoekt naar iets waarmee hij zich onderscheidt van andere werkgevers. Salaris is daarvoor niet altijd geschikt, omdat de lonen in veel sectoren vastliggen in de cao. Vrije tijd is dan een alternatief. Directeur Farida Alkema van een technisch installatiebedrijf in Zwolle merkte dat direct: op haar vacature voor monteur kwamen na de invoering van de vrije vrijdag elf reacties, terwijl er een jaar eerder maar twee waren. \"Wij hadden geen euro extra te bieden\", zegt zij. \"Een dag zonder werk wel.\"</p><p><strong>III</strong> Toch is personeel vinden niet het enige motief. Bedrijven hopen ook dat medewerkers minder vaak ziek worden. Bij een uitgeverij in Utrecht daalde het ziekteverzuim in het eerste proefjaar van 5,4 naar 3,9 procent. De leiding houdt daarbij een voorzichtige toon aan, doordat één jaar en zeventig medewerkers te weinig zijn om harde conclusies te trekken. Wel valt op dat mensen hun eigen afspraken bij de tandarts, de garage of de gemeente nu op de vrije dag plannen. Daardoor verdwijnen veel korte onderbrekingen uit de werkweek.</p><p><strong>IV</strong> Een kortere week lukt echter niet zonder ingrepen in het werk zelf. Bijna alle bedrijven die het proberen, schrappen eerst vergaderingen of maken die korter. Verder gelden vaak deze regels:</p><ul><li>overleg duurt maximaal dertig minuten en heeft altijd een agenda;</li><li>wie niets hoeft te beslissen, hoeft er niet bij te zitten;</li><li>de eerste twee uur van de dag zijn bedoeld voor werk dat aandacht vraagt, zonder telefoon of chat;</li><li>klanten krijgen op vier dagen antwoord, met een duidelijke melding over de vijfde.</li></ul><p><strong>V</strong> Niet elke sector kan mee. In de zorg, in het onderwijs en in de horeca moet er iemand aanwezig zijn, en die uren verdwijnen niet doordat het rooster verandert. Een verpleeghuis in Breda stopte na zeven maanden met de proef, omdat de vrije dagen alleen konden worden opgevuld met duur personeel van buiten. Hoogleraar arbeidsverhoudingen Joost Renkema waarschuwt daarom voor te veel enthousiasme. \"Waar de werkdruk hoog blijft, betekent een dag minder simpelweg hetzelfde werk in kortere tijd. Dan is de vrije dag geen winst maar een rekening die later komt.\" Hij adviseert werkgevers om vooraf te meten hoeveel werk er echt ligt, en pas daarna over het rooster te praten.</p><p><strong>VI</strong> Wie zelf zo'n proef wil starten, kan volgens Renkema het beste klein beginnen. Kies één afdeling, spreek een periode van zes maanden af en leg vast dat iedereen terug kan naar de oude situatie als het niet werkt. Belangrijk is ook dat de ondernemingsraad meepraat, want een verandering van werktijden valt onder de medezeggenschap. Werknemers hebben overigens geen wettelijk recht op een vierdaagse werkweek met behoud van loon. Wel kan iedereen die langer dan een half jaar in dienst is, op grond van de wet vragen om minder uren te werken; de werkgever mag dat verzoek alleen weigeren als het bedrijf daardoor in de problemen komt.</p>",
+    "questions": [
+      {
+        "prompt": "Wat maakt de schrijver in alinea I duidelijk met het verschil tussen tweeëndertig en veertig uur?",
+        "options": [
+          "Dat een echte vierdaagse werkweek betekent dat het aantal uren daalt.",
+          "Dat werknemers bij een kortere week een lager salaris krijgen.",
+          "Dat vier lange dagen werken in Nederland nog maar weinig voorkomt."
+        ],
+        "correct": 0,
+        "explanation": "In alinea I legt de schrijver uit dat bij een echte vierdaagse week de uren omlaaggaan, en dat dit iets anders is dan veertig uur in vier lange dagen. Optie B is fout, want het salaris blijft juist gelijk."
+      },
+      {
+        "prompt": "Waarom kiezen werkgevers volgens alinea II eerder voor vrije tijd dan voor meer loon?",
+        "options": [
+          "Omdat werknemers vrije tijd belangrijker vinden dan een hoger salaris.",
+          "Omdat de hoogte van de lonen in veel sectoren al is vastgelegd.",
+          "Omdat een vrije dag het bedrijf minder geld kost dan een loonsverhoging."
+        ],
+        "correct": 1,
+        "explanation": "Alinea II noemt als reden dat salaris niet altijd geschikt is doordat de lonen in de cao vastliggen. Dat vrije tijd goedkoper zou zijn, staat er niet; het bedrijf in Zwolle had eenvoudig geen geld."
+      },
+      {
+        "prompt": "Wat staat er in alinea III over het ziekteverzuim bij de uitgeverij in Utrecht?",
+        "options": [
+          "Het verzuim daalde, maar de leiding vindt de proef nog te klein voor zekere uitspraken.",
+          "Het verzuim daalde doordat medewerkers hun bezoek aan de tandarts uitstelden.",
+          "Het verzuim bleef gelijk, hoewel er minder onderbrekingen in de week waren."
+        ],
+        "correct": 0,
+        "explanation": "In alinea III daalt het verzuim van 5,4 naar 3,9 procent, maar de leiding is voorzichtig omdat één jaar en zeventig medewerkers te weinig zijn. De afspraken worden niet uitgesteld, maar op de vrije dag gepland."
+      },
+      {
+        "prompt": "Hoe lang duurde de proef in het verpleeghuis in Breda?",
+        "options": [
+          "Zes maanden.",
+          "Zeven maanden.",
+          "Een jaar.",
+          "Twee jaar."
+        ],
+        "correct": 1,
+        "explanation": "In alinea V staat dat het verpleeghuis na zeven maanden stopte. Zes maanden is de periode die Renkema in alinea VI aanraadt voor een proef."
+      },
+      {
+        "prompt": "Wat bedoelt hoogleraar Renkema in alinea V met \"een rekening die later komt\"?",
+        "options": [
+          "Dat de kosten van extern personeel pas na een jaar zichtbaar worden.",
+          "Dat werknemers de gemiste uren later alsnog moeten inhalen.",
+          "Dat de klachten van te hoge werkdruk zich later alsnog laten voelen."
+        ],
+        "correct": 2,
+        "explanation": "In alinea V waarschuwt Renkema dat bij hoge werkdruk hetzelfde werk in minder tijd moet; de vrije dag levert dan later problemen op. Over het inhalen van uren zegt hij niets."
+      },
+      {
+        "prompt": "Een werknemer werkt acht maanden bij een bedrijf en wil minder uren gaan werken. In welke alinea vindt hij informatie over zijn rechten?",
+        "options": [
+          "Alinea III.",
+          "Alinea IV.",
+          "Alinea V.",
+          "Alinea VI."
+        ],
+        "correct": 3,
+        "explanation": "Alinea VI vertelt dat wie langer dan een half jaar in dienst is, wettelijk om minder uren mag vragen. Alinea IV gaat alleen over afspraken in het werk zelf."
+      },
+      {
+        "prompt": "Welk argument kan een teamleider gebruiken die zijn directeur wil overtuigen om voorzichtig met een proef te beginnen?",
+        "options": [
+          "Dat een proef op één afdeling met een vaste einddatum terugdraaien mogelijk maakt.",
+          "Dat werknemers volgens de wet recht hebben op een kortere week met hetzelfde loon.",
+          "Dat vergaderingen zonder agenda in vier dagen niet meer te plannen zijn."
+        ],
+        "correct": 0,
+        "explanation": "Alinea VI adviseert klein te beginnen: één afdeling, zes maanden en de afspraak dat terugkeer mogelijk is. Optie B is onjuist, want zo'n wettelijk recht bestaat volgens dezelfde alinea niet."
+      }
+    ]
+  },
+  {
+    "section": "regels",
+    "title": "Werkinstructie: keuken schoonmaken en afsluiten",
+    "intro": "Deze tekst is een werkinstructie voor de medewerkers van het bedrijfsrestaurant van zorgcentrum De Wilgenhof. De instructie beschrijft hoe de keuken aan het einde van de dag wordt schoongemaakt en afgesloten.",
+    "body_html": "<p><strong>I</strong> Iedere medewerker die in de keuken van De Wilgenhof werkt, is verantwoordelijk voor het schoonmaken en afsluiten van zijn eigen werkplek. Wij werken met verse producten voor bewoners die vaak een zwakke gezondheid hebben, waardoor hygiëne bij ons zwaarder weegt dan in een gewoon restaurant. De laatste ploeg begint uiterlijk om 19.15 uur met het schoonmaakwerk, zodat de keuken om 20.30 uur helemaal leeg en gesloten is. Wie later begint, komt in tijdnood en slaat vaak stappen over. Neem de instructie daarom door voordat u aan uw eerste avonddienst begint, en vraag bij twijfel de dienstleider om uitleg. De instructie hangt ook naast de deur van de koelcel.</p><p><strong>Stap 1: opruimen en wegzetten</strong></p><p><strong>II</strong> Begin altijd met de producten, en niet met de vloer. Alle geopende verpakkingen gaan in een gesloten bak met een datumsticker erop. Op die sticker schrijft u de datum waarop het product is geopend, en niet de datum van vandaag als u het pas later hebt aangebroken. Producten met een sticker van vier dagen oud of ouder gooit u weg, ook als ze nog goed lijken te ruiken. Verse vis en gesneden vlees vormen een uitzondering: die bewaren wij hoogstens 24 uur. Restanten van de warme maaltijd mogen nooit worden afgekoeld en opnieuw gebruikt, hoewel dat vroeger wel gebeurde.</p><p><strong>Stap 2: schoonmaken</strong></p><p><strong>III</strong> Werk van boven naar beneden en van schoon naar vies. Dat betekent: eerst de werkbladen en de snijplanken, daarna de fornuizen en de ovens, en pas als laatste de vloer en de afvoerputjes. Gebruik voor de werkbladen het blauwe doekje met het ontvettingsmiddel uit de gele fles. Voor de vloer gebruikt u de rode mop. Blauw en rood mogen nooit worden verwisseld, omdat u dan bacteriën van de vloer naar het eten brengt. De vaatwasser draait aan het einde een reinigingsprogramma van 45 minuten; start dat programma dus ruim voor 20.00 uur, anders staat u te wachten.</p><p><strong>IV</strong> Twee dingen worden regelmatig vergeten. Het eerste is het filter van de afzuigkap boven het fornuis: dat gaat één keer per week in de vaatwasser, en wel op maandagavond. Het tweede is de temperatuurlijst van de koelingen. U meet de temperatuur van beide koelcellen en van de vrieskist, en u schrijft de waarden op de lijst aan de binnenkant van het keukenkastje. Ligt de temperatuur van een koelcel boven 7 graden, dan meldt u dat diezelfde avond telefonisch bij de dienstleider. Een melding per briefje is niet genoeg, want zo'n briefje wordt pas de volgende ochtend gelezen.</p><p><strong>Stap 3: afsluiten</strong></p><p><strong>V</strong> Controleer voor het afsluiten met de checklist bij de deur of alle apparaten uit staan. Let vooral op de kleine apparaten, zoals de soepketel en de waterkoker, want die hebben geen duidelijk lampje. Draai daarna de gaskraan dicht, doe het licht uit en sluit de buitendeur met de sleutel af. De sleutel gaat in het kastje bij de receptie en mag niet mee naar huis, ook niet als u de volgende ochtend weer de eerste dienst hebt. Zet ten slotte uw naam en het tijdstip op de checklist. Zo kan de leiding bij een probleem nagaan wie er als laatste in de keuken was.</p><p><strong>VI</strong> Bent u iets vergeten of is er iets stukgegaan, meld dat dan gewoon. Wie een fout meldt, krijgt daarvoor geen waarschuwing; wie een fout verzwijgt en daarmee de veiligheid van de bewoners in gevaar brengt, wel. De dienstleider is tot 22.00 uur bereikbaar op 06 - 24 51 88 09.</p>",
+    "questions": [
+      {
+        "prompt": "Waarom moet de laatste ploeg volgens alinea I uiterlijk om 19.15 uur met schoonmaken beginnen?",
+        "options": [
+          "Omdat de dienstleider daarna niet meer bereikbaar is voor vragen",
+          "Omdat medewerkers bij een latere start onderdelen van het werk overslaan",
+          "Omdat de bewoners van De Wilgenhof dan hun laatste maaltijd hebben gehad"
+        ],
+        "correct": 1,
+        "explanation": "In alinea I staat dat wie later begint in tijdnood komt en stappen overslaat. Dat de dienstleider bereikbaar is, staat wel in de tekst (alinea VI), maar dat is geen reden voor het beginuur."
+      },
+      {
+        "prompt": "Wat staat er in alinea II over de datumsticker?",
+        "options": [
+          "Op de sticker komt de dag waarop de verpakking is opengemaakt",
+          "Op de sticker komt de dag waarop het product is geleverd",
+          "Op de sticker komt de dag waarop het product moet worden weggegooid"
+        ],
+        "correct": 0,
+        "explanation": "Alinea II zegt dat u de datum van openen opschrijft, en niet de datum van vandaag. Een uiterste datum wordt niet op de sticker gezet; er wordt alleen een bewaartermijn van vier dagen genoemd."
+      },
+      {
+        "prompt": "Een medewerker vindt een bak met gesneden vlees. De sticker is van gisteren. Wat moet zij doen?",
+        "options": [
+          "Het vlees mag nog worden gebruikt, want het is jonger dan vier dagen",
+          "Het vlees moet weg, want voor gesneden vlees geldt een termijn van 24 uur",
+          "Het vlees mag alleen nog in een warme maaltijd worden verwerkt"
+        ],
+        "correct": 1,
+        "explanation": "Volgens alinea II geldt voor verse vis en gesneden vlees een uitzondering van maximaal 24 uur. De termijn van vier dagen is de algemene regel en geldt hier dus niet."
+      },
+      {
+        "prompt": "Waarom mogen het blauwe doekje en de rode mop niet worden verwisseld (alinea III)?",
+        "options": [
+          "Anders werkt het ontvettingsmiddel uit de gele fles niet goed",
+          "Anders duurt het reinigingsprogramma van de vaatwasser langer",
+          "Anders komen er bacteriën van de vloer op de plek waar het eten ligt"
+        ],
+        "correct": 2,
+        "explanation": "Alinea III noemt expliciet het overbrengen van bacteriën van de vloer naar het eten. Het ontvettingsmiddel hoort wel bij het blauwe doekje, maar daar gaat de waarschuwing niet over."
+      },
+      {
+        "prompt": "In welke alinea vindt een medewerker het antwoord op de vraag wat hij moet doen als de koelcel 9 graden is?",
+        "options": [
+          "Alinea II",
+          "Alinea III",
+          "Alinea IV",
+          "Alinea V"
+        ],
+        "correct": 2,
+        "explanation": "In alinea IV staat dat een temperatuur boven 7 graden diezelfde avond telefonisch bij de dienstleider gemeld moet worden. Alinea II gaat over bewaartermijnen van producten, niet over de temperatuur van de koeling."
+      },
+      {
+        "prompt": "Wat wil de schrijver duidelijk maken met alinea VI?",
+        "options": [
+          "Dat de dienstleider ook 's avonds laat nog in de keuken aanwezig is",
+          "Dat medewerkers een fout beter meteen doorgeven dan verbergen",
+          "Dat kapotte apparaten door de medewerker zelf worden vervangen",
+          "Dat waarschuwingen alleen bij herhaalde fouten worden gegeven"
+        ],
+        "correct": 1,
+        "explanation": "Alinea VI stelt melden tegenover verzwijgen: melden levert geen waarschuwing op, verzwijgen wel. Over herhaling van fouten zegt de tekst niets; er wordt alleen onderscheid gemaakt tussen melden en zwijgen."
+      }
+    ]
+  },
+  {
+    "section": "brief",
+    "title": "Uw eigen risico en eigen bijdrage in 2025",
+    "intro": "Deze tekst is een brief van een zorgverzekeraar aan een verzekerde. De brief gaat over het eigen risico, de eigen bijdrage en de mogelijkheid om in termijnen te betalen.",
+    "body_html": "<p>Zorgverzekeraar Meerzicht<br>Postbus 4180<br>3502 GK Utrecht<br>Afdeling Verzekerdenzaken</p><p>Mevrouw K. Abdi<br>Zonnebloemstraat 27<br>7415 BD Deventer</p><p>Datum: 14 februari 2025<br>Kenmerk: EV-2025-338914<br>Betreft: kosten van uw zorg in 2024 en 2025</p><p>Geachte mevrouw Abdi,</p><p><strong>I</strong> U hebt in het najaar van 2024 gebruikgemaakt van zorg die onder de basisverzekering valt. Wij hebben de rekeningen van het ziekenhuis en van uw fysiotherapeut ontvangen en verwerkt. Een deel van deze kosten betaalt u zelf, omdat iedere verzekerde in Nederland een eigen risico heeft. Met deze brief leggen wij uit welk bedrag u nog moet betalen, waarom dat bedrag niet lager kan zijn en hoe u de betaling kunt spreiden als dat voor u beter uitkomt.</p><p><strong>Eigen risico en eigen bijdrage</strong></p><p><strong>II</strong> Het eigen risico is het bedrag dat u eerst zelf betaalt voordat wij de rekening overnemen. In 2024 was dat wettelijk 385 euro per jaar. Uw ziekenhuisbezoek kostte 512 euro. Daarvan hebt u dus 385 euro zelf betaald; de resterende 127 euro hebben wij vergoed. Uw eigen risico voor 2024 is daarmee volledig gebruikt. Alle andere zorg uit de basisverzekering die u in 2024 nog hebt gehad, betalen wij dan ook volledig. Voor 2025 begint het eigen risico weer opnieuw, want het geldt steeds per kalenderjaar. Wij wijzen u erop dat sommige zorg buiten het eigen risico valt, zoals een bezoek aan de huisarts, verloskundige hulp en zorg voor kinderen tot achttien jaar.</p><p><strong>III</strong> Naast het eigen risico staat op uw overzicht een eigen bijdrage van 46 euro. Dat is iets anders. Een eigen bijdrage betaalt u wanneer de wet bepaalt dat een deel van de kosten altijd voor uw rekening is, ook als uw eigen risico al op is. Dit geldt bijvoorbeeld bij bepaalde medicijnen en bij hulpmiddelen zoals steunzolen. In uw geval gaat het om een hulpmiddel dat u in december hebt aangeschaft. Omdat het hier om een wettelijke regel gaat, kunnen wij dit bedrag niet kwijtschelden, hoe graag wij u ook zouden helpen.</p><p><strong>Wat u moet betalen</strong></p><p><strong>IV</strong> Op basis van het bovenstaande komen wij tot het volgende bedrag:</p><ul><li>eigen risico 2024: 385 euro</li><li>eigen bijdrage hulpmiddel: 46 euro</li><li>al door u betaald op 6 januari 2025: 100 euro</li><li>nog te betalen: 331 euro</li></ul><p><strong>V</strong> Wij verzoeken u dit bedrag binnen dertig dagen na de datum van deze brief over te maken, onder vermelding van het kenmerk bovenaan. Kunt u het bedrag niet in één keer missen? Dan kunt u een betalingsregeling aanvragen. U betaalt dan drie maanden achter elkaar ongeveer 110 euro. Wij brengen daarvoor geen extra kosten in rekening, mits u de afgesproken termijnen op tijd betaalt. Vraag de regeling wel aan vóór het einde van de betaaltermijn, want daarna moeten wij de vordering overdragen aan een incassobureau en lopen de kosten voor u op.</p><p><strong>VI</strong> Bent u het niet eens met dit bedrag? Stuur dan binnen zes weken een schriftelijke reactie naar onze afdeling Bezwaren, met een kopie van de rekening waar het volgens u om gaat. U ontvangt binnen vier weken antwoord. Hebt u alleen een vraag over de opbouw van het bedrag, dan kunt u ons bellen op werkdagen tussen 8.30 en 17.00 uur. Houd uw kenmerk bij de hand, zodat onze medewerker uw gegevens meteen kan opzoeken.</p><p>Met vriendelijke groet,</p><p>H. Verlinden<br>Manager Verzekerdenzaken<br>Zorgverzekeraar Meerzicht</p>",
+    "questions": [
+      {
+        "prompt": "Wat is het doel van alinea I?",
+        "options": [
+          "De verzekeraar laat weten waarover de brief gaat en wat erin wordt uitgelegd.",
+          "De verzekeraar meldt dat mevrouw Abdi te veel zorg heeft gebruikt.",
+          "De verzekeraar vraagt mevrouw Abdi om nieuwe rekeningen op te sturen."
+        ],
+        "correct": 0,
+        "explanation": "In alinea I kondigt de verzekeraar aan welk bedrag nog open staat, waarom dat zo is en hoe de betaling gespreid kan worden. Dat de rekeningen al ontvangen zijn, betekent juist dat er niets meer opgestuurd hoeft te worden."
+      },
+      {
+        "prompt": "Wat staat er in alinea II over het eigen risico?",
+        "options": [
+          "Het eigen risico geldt voor alle zorg uit de basisverzekering.",
+          "Het eigen risico wordt elk kalenderjaar opnieuw opgebouwd.",
+          "Het eigen risico van 2024 mag worden meegenomen naar 2025.",
+          "Het eigen risico is hoger als iemand vaak naar het ziekenhuis gaat."
+        ],
+        "correct": 1,
+        "explanation": "In alinea II staat dat het eigen risico per kalenderjaar geldt en in 2025 dus weer opnieuw begint. Niet alle zorg valt eronder: huisarts en zorg voor kinderen worden juist als uitzondering genoemd."
+      },
+      {
+        "prompt": "Waarom noemt de verzekeraar in alinea III de steunzolen?",
+        "options": [
+          "Om te laten zien dat hulpmiddelen zelden worden vergoed.",
+          "Om duidelijk te maken wanneer je een eigen bijdrage betaalt.",
+          "Om uit te leggen dat het eigen risico van 2024 op is."
+        ],
+        "correct": 1,
+        "explanation": "De steunzolen zijn in alinea III een voorbeeld van een hulpmiddel waarbij de wet een eigen bijdrage voorschrijft. Dat het eigen risico op is, staat in alinea II en is niet de reden voor dit voorbeeld."
+      },
+      {
+        "prompt": "Hoeveel moet mevrouw Abdi volgens de brief nog betalen?",
+        "options": [
+          "46 euro",
+          "100 euro",
+          "331 euro",
+          "385 euro"
+        ],
+        "correct": 2,
+        "explanation": "In het overzicht in alinea IV staat dat er na de betaling van 100 euro nog 331 euro open staat. De bedragen 385 en 46 euro zijn onderdelen van de totale kosten, niet het resterende bedrag."
+      },
+      {
+        "prompt": "Wat betekent 'mits u de afgesproken termijnen op tijd betaalt' in alinea V?",
+        "options": [
+          "Alleen als u iedere maand op tijd betaalt.",
+          "Ook wanneer u een maand later betaalt.",
+          "Behalve als u het hele bedrag in één keer betaalt."
+        ],
+        "correct": 0,
+        "explanation": "In alinea V staat dat de regeling gratis is op voorwaarde dat elke termijn op tijd wordt betaald; 'mits' betekent hier 'alleen als'. Te laat betalen is dus juist niet toegestaan."
+      },
+      {
+        "prompt": "Mevrouw Abdi denkt dat de rekening van de fysiotherapeut dubbel is meegeteld. In welke alinea leest zij wat zij dan moet doen?",
+        "options": [
+          "In alinea III",
+          "In alinea IV",
+          "In alinea V",
+          "In alinea VI"
+        ],
+        "correct": 3,
+        "explanation": "Alinea VI legt uit dat je bij een meningsverschil binnen zes weken schriftelijk bezwaar maakt en een kopie van de rekening meestuurt. Alinea V gaat alleen over het betalen van het bedrag, niet over bezwaar."
+      }
+    ]
+  }
+]

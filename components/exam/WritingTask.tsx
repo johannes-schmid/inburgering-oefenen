@@ -58,11 +58,21 @@ export default function WritingTask({
   const fields = useMemo(() => flattenFields(task), [task]);
   const words = answer.text.trim() ? answer.text.trim().split(/\s+/).length : 0;
   const isForm = task.task_type === 'form';
+  /**
+   * Is this a mail? Keyed on the presence of the header fields, not on `task_type`.
+   *
+   * At A2 every `email` task carries `email_to`, so the two are equivalent there. At B1 they
+   * are not: a `sentence_completion` opdracht is a part-written *e-mail* about half the time
+   * and a website- or nieuwsbericht the rest, and `letter` is a brief with a postal address
+   * and no Aan/Onderwerp at all. Reading the fields renders each of those correctly, where
+   * a task_type allowlist would have to be extended for every shape DUO adds.
+   */
+  const isMail = Boolean(task.email_to || task.email_cc || task.email_subject);
   const grading = review?.state === 'grading';
   const graded = review?.state === 'graded';
   const gradedText = graded ? review?.answerText?.trim() || '' : '';
 
-  const paneLabel = task.task_type === 'email' ? 'Jouw e-mail' : isForm ? 'Het formulier' : 'Jouw tekst';
+  const paneLabel = isForm ? 'Het formulier' : isMail ? 'Jouw e-mail' : 'Jouw tekst';
 
   return (
     <div className="wr-split">
@@ -78,7 +88,7 @@ export default function WritingTask({
         {task.title && <h2 className="wr-title">{task.title}</h2>}
 
         {task.prompt_html && (
-          <div className="wr-prompt" dangerouslySetInnerHTML={{ __html: task.prompt_html }} />
+          <div className="wr-prompt wr-table-wrap" dangerouslySetInnerHTML={{ __html: task.prompt_html }} />
         )}
 
         {/* Numbered rather than bulleted: these are the points the rubric checks off one by one,
@@ -140,7 +150,7 @@ export default function WritingTask({
           />
         ) : (
           <div className="wr-letter">
-            {task.task_type === 'email' && (
+            {isMail && (
               <dl className="wr-mail">
                 {task.email_to && <MailRow label="Aan" value={task.email_to} />}
                 {task.email_cc && <MailRow label="Cc" value={task.email_cc} />}
@@ -159,7 +169,7 @@ export default function WritingTask({
                   <textarea
                     value={answer.text}
                     onChange={e => onChange({ ...answer, text: e.target.value })}
-                    rows={task.task_type === 'email' ? 8 : 7}
+                    rows={isMail ? 8 : 7}
                     placeholder="Schrijf hier je antwoord…"
                     className={`wr-textarea${grading ? ' wr-reading' : ''}`}
                     readOnly={grading}
@@ -276,6 +286,30 @@ const CSS = `
   .wr-prompt { font-size: 0.95rem; line-height: 1.7; color: var(--color-on-surface-variant); }
   .wr-prompt > * + * { margin-top: 0.7rem; }
   .wr-prompt p { margin: 0; }
+  /* list-style restated because Tailwind's preflight strips markers from every ul/ol — the same
+     fix .exam-stimulus-body needed, and for the same reason: an opsomming in an opdracht
+     otherwise renders as unindented plain lines. */
+  .wr-prompt ul { padding-left: 1.35rem; margin: 0; list-style: disc; }
+  .wr-prompt ol { padding-left: 1.35rem; margin: 0; list-style: decimal; }
+  .wr-prompt li + li { margin-top: 0.3rem; }
+  /*
+   * B1's data_text opdracht hands the candidate a tabel or grafiek and asks for a text that
+   * fits the numbers, so the table *is* the opdracht. Preflight leaves it borderless and
+   * uncollapsed, which renders the figures as one run of text — unreadable exactly where reading
+   * them is the task. The wrapper scrolls rather than the page: a six-column table must not make
+   * the whole exam pane scroll sideways on a phone.
+   */
+  .wr-table-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+  .wr-prompt table {
+    border-collapse: collapse; width: 100%; min-width: 340px;
+    font-size: 0.88rem; font-variant-numeric: tabular-nums;
+    background: var(--color-surface-container-lowest); border-radius: 10px; overflow: hidden;
+  }
+  .wr-prompt th, .wr-prompt td {
+    border: 1px solid rgba(0, 43, 109, 0.12); padding: 7px 10px; text-align: left;
+  }
+  .wr-prompt th { background: rgba(0, 43, 109, 0.05); font-weight: 700; color: var(--color-on-surface); }
+  .wr-prompt td { color: var(--color-on-surface); }
 
   .wr-points { list-style: none; margin: 16px 0 0; padding: 0; display: flex; flex-direction: column; gap: 10px; }
   .wr-points li { display: flex; align-items: flex-start; gap: 10px; font-size: 0.92rem; line-height: 1.55; color: var(--color-on-surface); }
@@ -314,7 +348,18 @@ const CSS = `
   }
   .wr-mail dt, .wr-mail dd { border-bottom: 1px solid var(--color-outline-variant); }
   .wr-body { padding: 16px; }
-  .wr-fixed { margin: 0 0 12px; font-size: 0.95rem; color: var(--color-on-surface); }
+  /*
+   * white-space: pre-line, because greeting and closing are authored plain text and carry real
+   * newlines. At A2 each was a single line ("Beste meneer Jansen,") so nothing showed. B1's
+   * sentence_completion puts the whole given half of the bericht in them — an aanhef, a blank
+   * line, one or two sentences, then the unfinished sentence — and without this the browser
+   * collapses all of it into one paragraph: "Geachte heer, mevrouw, Ik ben Amina Yildiz en …".
+   * pre-line collapses runs of spaces but honours newlines, which is exactly the authored shape.
+   */
+  .wr-fixed {
+    margin: 0 0 12px; font-size: 0.95rem; color: var(--color-on-surface);
+    white-space: pre-line;
+  }
   .wr-fixed-end { margin: 12px 0 0; }
 
   .wr-textarea {

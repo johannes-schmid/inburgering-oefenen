@@ -229,13 +229,15 @@ export default async function DashboardPage({ params }: { params: Promise<{ loca
       </div>
 
       <style>{`
-        .skill-card { background:#fff; border:1.5px solid var(--color-surface-container-high); border-radius:18px; padding:20px; box-shadow:var(--shadow-card-md); transition:transform .22s cubic-bezier(0.22,1,0.36,1), box-shadow .22s ease, border-color .22s ease; }
-        .skill-card:hover { transform:translateY(-3px); box-shadow:0 10px 30px rgba(0,43,109,0.13),0 2px 6px rgba(0,43,109,0.07); border-color:#b8cef5; }
+        /* No 1.5px border (§2, the no-line rule): the card is white on a tonal page background, which
+           is what makes it read as elevated, plus the ambient shadow of §4. */
+        .skill-card { background:var(--color-surface-container-lowest); border-radius:18px; padding:20px; box-shadow:var(--shadow-ambient); transition:transform .22s cubic-bezier(0.22,1,0.36,1), box-shadow .22s ease; }
+        .skill-card:hover { transform:translateY(-3px); box-shadow:0 10px 30px rgba(0,43,109,0.13),0 2px 6px rgba(0,43,109,0.07); }
         .skill-card:focus-visible { outline:2px solid var(--color-secondary-container); outline-offset:3px; }
         .skill-card:active { transform:translateY(-1px); }
         .skill-card-arrow { display:flex; align-items:center; justify-content:center; width:28px; height:28px; border-radius:9px; flex-shrink:0; background:rgba(0,43,109,0.06); color:var(--color-primary); transition:background .2s ease, color .2s ease; }
         .skill-card:hover .skill-card-arrow { background:var(--color-secondary-container); color:#fff; }
-        .upsell { display:flex; flex-wrap:wrap; align-items:center; justify-content:space-between; gap:16px; padding:20px 22px; border-radius:18px; background:linear-gradient(135deg,#001d4e 0%,#002b6d 55%,#003580 100%); box-shadow:0 10px 30px rgba(0,27,78,0.22); }
+        .upsell { display:flex; flex-wrap:wrap; align-items:center; justify-content:space-between; gap:16px; padding:20px 22px; border-radius:18px; background:var(--gradient-brand); box-shadow:0 10px 30px rgba(0,27,78,0.22); }
         .upsell-cta { display:inline-flex; align-items:center; gap:8px; padding:11px 18px; border-radius:12px; font-size:0.85rem; font-weight:800; color:#fff; background:var(--gradient-btn-orange); box-shadow:var(--shadow-btn-orange); transition:transform .2s cubic-bezier(0.22,1,0.36,1), box-shadow .2s ease; }
         .upsell-cta:hover { transform:translateY(-2px); box-shadow:var(--shadow-btn-orange-hover); }
         .upsell-cta:focus-visible { outline:2px solid #fff; outline-offset:2px; }

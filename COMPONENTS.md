@@ -154,3 +154,22 @@ Audio-synced interactive lessons rendered via `<!-- WIDGET:name -->` markers in 
 | `Meterkast` | 2 | Clickable meters (gas/stroom/water) + vast/variabel tarief + bespaarchallenge |
 | `Sorteerspel` | 2 | Afval sorting game (10 items → 7 bins) + audio-synced bin highlight + statiegeld |
 | `NetherlandsMap`, `OVReisSimulator`, `WaterDefense`, `TradeRoutesMap`, `ColoniesMap`, `WW2Timeline`, `NieuweNederlanders` | 1 | Thema 1 interactive widgets |
+
+## `components/horizon/` — Dutch Horizon graphic language
+
+Reusable, server-safe, image-free. **Check here before drawing anything decorative.** Spec:
+`docs/design/DESIGN_SYSTEM.md` §7; reference: `docs/design/horizon-element-library.html`.
+
+| Component | Use it for |
+|---|---|
+| `Skyline` | the canal-house row along the bottom edge of any surface |
+| `HorizonHero` | a structured page header (eyebrow / display title / lede / actions) |
+| `HorizonBanner` | the graphic layer alone, over a section's own copy — **the usual one** |
+| `SkylineTopper` | a card header, incl. the neutral-ramp `locked` / roadmap state |
+| `SectionTransition` | the silhouette handover between a light and a dark section (once per page) |
+| `SunDisc` | the single accent of a composition |
+| `HorizonBand` | section edges, and the Dutch Horizon progress bar (`progress`) |
+| `DotField` | texture on heroes, empty states and skeletons |
+| `LensRing` | circular progress, level medals, avatar marks |
+| `GlassChip` | a control floating over a `primary` surface |
+| `DocentSeal` / `ValidationChip` | the NT2-docent validation claim, and nothing else |

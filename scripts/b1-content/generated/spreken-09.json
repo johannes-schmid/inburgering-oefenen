@@ -1,0 +1,266 @@
+[
+  {
+    "title": "Deel 1",
+    "instruction_html": "<p>In dit deel geeft u korte antwoorden. U hoeft geen lang verhaal te vertellen: een paar woorden tot twee zinnen zijn genoeg.</p><ul><li>U leest bij elke opgave eerst een korte situatie. Daarna staat er wat u moet zeggen.</li><li>Bij sommige opgaven hoort u iemand die iets tegen u zegt. U reageert dan op die persoon.</li><li>Bij sommige opgaven staat een plaatje. Gebruik de informatie van het plaatje in uw antwoord.</li><li>U heeft per opgave twintig seconden spreektijd.</li><li>Spreek duidelijk en begin meteen als u aan de beurt bent.</li></ul><p>Let op: u spreekt een klant, een docent of een begeleider aan met <em>u</em>. Tegen een collega of een medestudent zegt u <em>je</em>.</p>",
+    "tasks": [
+      {
+        "image_usage": "react",
+        "title": "Klacht van een klant",
+        "prompt": "U werkt bij de klantenservice van een meubelwinkel.\nEen klant komt boos naar de balie.\nZij is niet tevreden over een medewerker van de bezorgdienst.\n\nLuister naar de klant en reageer.\nZeg wat u met haar klacht gaat doen.",
+        "prompt_spoken": "Die man die mijn kast kwam bezorgen, was echt onbeschoft tegen mij. Ik wil dat iemand daar iets mee doet, want zo ga je niet met klanten om.",
+        "voice": "woman_older",
+        "model_answer": "Wat vervelend dat u dat zo heeft meegemaakt, mevrouw. Ik noteer uw klacht en geef die door aan de chef van de bezorgdienst. U krijgt binnen een week bericht van ons.",
+        "images": [
+          {
+            "slot": "spreken-9-d1-o1-a",
+            "query": "angry female customer complaining at furniture store service desk",
+            "caption": "Boze klant bij de balie",
+            "variant": 0
+          }
+        ]
+      },
+      {
+        "image_usage": "none",
+        "title": "Reizen of dichtbij",
+        "prompt": "U kunt kiezen tussen twee banen.\nBij de eerste baan reist u elke week door het hele land.\nBij de tweede baan werkt u altijd op één plek, tien minuten van uw huis.\n\nVertel welke baan u zou kiezen.\nVertel ook waarom u dat kiest.",
+        "model_answer": "Ik zou de baan dichtbij kiezen, omdat ik dan meer tijd heb voor mijn gezin. Elke week reizen kost veel energie en geld. Ik vind rust thuis belangrijker dan afwisseling.",
+        "images": []
+      },
+      {
+        "image_usage": "react",
+        "title": "Presentatie overnemen",
+        "prompt": "U volgt een opleiding tot administratief medewerker.\nMorgen houdt uw groepje een presentatie.\nEen medestudent belt u op.\n\nLuister naar uw medestudent en reageer.\nZeg of u het doet en waarom.",
+        "prompt_spoken": "Ik ben behoorlijk ziek geworden, dus ik red het morgen niet. Zou jij mijn deel van de presentatie willen doen?",
+        "voice": "man_young",
+        "model_answer": "Wat vervelend dat je ziek bent. Ik wil het wel doen, maar dan moet je me vandaag nog je aantekeningen sturen. Anders heb ik te weinig tijd om me voor te bereiden.",
+        "images": [
+          {
+            "slot": "spreken-9-d1-o3-a",
+            "query": "young male student sick at home calling on phone with laptop",
+            "caption": "Zieke student belt",
+            "variant": 0
+          }
+        ]
+      },
+      {
+        "image_usage": "describe",
+        "title": "De menukaart",
+        "prompt": "U eet met een vriendin in een restaurant.\nUw vriendin is haar bril vergeten en kan de kaart niet lezen.\nZij vraagt u om hulp.\n\nKijk naar het plaatje.\nVertel uw vriendin wat er op de menukaart staat.",
+        "model_answer": "Er staan drie soorten soep op de kaart, en ook een salade met geitenkaas. Bij de hoofdgerechten zie ik vis, kip en een vegetarische schotel. De prijzen liggen tussen de twaalf en negentien euro.",
+        "images": [
+          {
+            "slot": "spreken-9-d1-o4-a",
+            "query": "restaurant menu card with soups main courses and prices on table",
+            "caption": "Menukaart met gerechten",
+            "variant": 0
+          }
+        ]
+      },
+      {
+        "image_usage": "none",
+        "title": "Telefoons op school",
+        "prompt": "Op uw opleiding komt een nieuwe regel.\nStudenten mogen hun telefoon niet meer meenemen in de les.\nDe telefoons gaan in een kastje bij de deur.\n\nVertel wat u van deze regel vindt.\nVertel ook waarom u dat vindt.",
+        "model_answer": "Ik vind het een goede regel, want veel studenten kijken de hele les op hun scherm. Zonder telefoon kun je je beter concentreren. Alleen bij een noodgeval moet je wel bereikbaar kunnen zijn.",
+        "images": []
+      },
+      {
+        "image_usage": "react",
+        "title": "Stagegesprek",
+        "prompt": "U loopt stage bij een kinderdagverblijf.\nVandaag heeft u een gesprek met uw stagebegeleidster.\nZij wil weten hoe het met u gaat.\n\nLuister naar uw stagebegeleidster en reageer.\nVertel wat u nog wilt leren en waarom.",
+        "prompt_spoken": "Je bent nu twee maanden bij ons en het gaat prima met de kinderen. Wat zou je in de rest van je stage nog graag willen leren?",
+        "voice": "woman_older",
+        "model_answer": "Ik zou graag leren hoe ik een gesprek met ouders voer, want dat vind ik nog spannend. Ook wil ik zelf een activiteit voorbereiden, zodat ik meer zelfvertrouwen krijg.",
+        "images": [
+          {
+            "slot": "spreken-9-d1-o6-a",
+            "query": "internship supervisor talking with young trainee at childcare center",
+            "caption": "Gesprek met stagebegeleidster",
+            "variant": 0
+          }
+        ]
+      },
+      {
+        "image_usage": "none",
+        "title": "Grote of kleine groep",
+        "prompt": "U gaat een cursus Nederlands volgen.\nU mag kiezen tussen een groep van twintig cursisten of een groep van zes cursisten.\nDe kleine groep is iets duurder.\n\nVertel welke groep u kiest.\nVertel ook waarom u die groep kiest.",
+        "model_answer": "Ik kies de kleine groep, ook al kost die meer geld. In een groep van zes kun je veel vaker zelf praten. De docent heeft dan ook meer tijd om je fouten te verbeteren.",
+        "images": []
+      },
+      {
+        "image_usage": "describe",
+        "title": "Naar buiten",
+        "prompt": "U werkt als vrijwilliger in een verzorgingshuis.\nMeneer De Waal wil graag even naar buiten.\nU gaat samen met hem de tuin in.\n\nKijk naar het plaatje.\nVertel meneer De Waal wat hij buiten kan zien en doen.",
+        "model_answer": "Meneer De Waal, kijk, de zon schijnt en de bloemen staan mooi in bloei. We kunnen even bij de vijver gaan zitten op dat bankje. Zal ik uw jas nog even pakken?",
+        "images": [
+          {
+            "slot": "spreken-9-d1-o8-a",
+            "query": "elderly man in wheelchair in sunny care home garden with flowers and bench",
+            "caption": "Oudere man in de tuin",
+            "variant": 0
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "title": "Deel 2",
+    "instruction_html": "<p>In dit deel geeft u langere antwoorden. U vertelt, legt uit of geeft uw mening over een situatie. Zorg dat uw antwoord uit meerdere zinnen bestaat en dat de zinnen goed op elkaar aansluiten.</p><ul><li>U leest de situatie en de opdracht. Soms hoort u ook iemand die iets tegen u zegt of u iets vraagt.</li><li>Bij sommige opgaven staan er plaatjes. U moet die plaatjes gebruiken in uw antwoord.</li><li>Na de opgave heeft u vijftien seconden om na te denken over wat u gaat zeggen.</li><li>Daarna heeft u dertig seconden spreektijd. Probeer die tijd zo goed mogelijk te gebruiken.</li><li>Geef niet alleen een kort antwoord, maar leg ook uit waarom u iets vindt of adviseert.</li></ul><p>Spreek rustig en duidelijk, zodat de ander u goed kan begrijpen.</p>",
+    "tasks": [
+      {
+        "image_usage": "cover_all",
+        "title": "Fiets repareren",
+        "prompt": "U werkt als vrijwilliger in een fietswerkplaats in de buurt.\nEen buurvrouw komt langs met een lekke band.\nZij wil de band graag zelf leren plakken.\nKijk naar de plaatjes.\n\nLeg haar stap voor stap uit wat zij moet doen.\nU moet daarbij alle plaatjes gebruiken.\n\nU hoort eerst wat de buurvrouw zegt.",
+        "prompt_spoken": "Mijn band is lek, maar ik wil hem graag zelf leren plakken. Kunt u mij uitleggen hoe ik dat het beste doe?",
+        "voice": "woman_older",
+        "model_answer": "Ja, dat is niet zo moeilijk. Je begint met de band van het wiel af te halen, met twee bandenlichters. Daarna haal je de binnenband eruit en pomp je hem een beetje op, zodat je het gaatje kunt vinden. Als je het gaatje hebt, maak je de band schoon en plak je er een stukje plakrubber op. Druk dat goed aan en wacht een paar minuten. Daarna leg je de binnenband terug, zet je de buitenband erop en pomp je het wiel weer hard op.",
+        "images": [
+          {
+            "slot": "spreken-9-d2-o1-a",
+            "query": "hands removing bicycle tire with tire levers close up",
+            "caption": "Band eraf halen",
+            "variant": 0
+          },
+          {
+            "slot": "spreken-9-d2-o1-b",
+            "query": "finding hole in bicycle inner tube with water bucket",
+            "caption": "Het gaatje zoeken",
+            "variant": 1
+          },
+          {
+            "slot": "spreken-9-d2-o1-c",
+            "query": "person inflating repaired bicycle tire with hand pump",
+            "caption": "Wiel weer oppompen",
+            "variant": 2
+          }
+        ]
+      },
+      {
+        "image_usage": "none",
+        "title": "Activiteit voor de buurt",
+        "prompt": "U woont in een wijk met veel nieuwe bewoners.\nDe gemeente heeft geld voor één activiteit in uw straat.\nEen medewerker van de gemeente belt u op.\n\nVertel welke activiteit u zou organiseren.\nVertel ook waarom u denkt dat die activiteit goed is voor de buurt.",
+        "prompt_spoken": "Wij hebben nog geld over voor een activiteit in uw straat. Wat zou u organiseren, en waarom denkt u dat dat goed werkt?",
+        "voice": "man_young",
+        "model_answer": "Ik zou een buurtmaaltijd organiseren, bijvoorbeeld één keer per maand op zaterdag. Iedereen maakt dan een gerecht uit zijn eigen land en neemt dat mee. Dat is niet duur, en je hebt er geen grote zaal voor nodig. Ik denk dat het goed werkt, omdat mensen makkelijk praten als ze samen eten. Veel bewoners zijn hier nieuw en kennen hun buren nog niet. Als je elkaar kent, help je elkaar ook sneller, bijvoorbeeld met de post of met de kinderen.",
+        "images": []
+      },
+      {
+        "image_usage": "cover_all",
+        "title": "Bedrijfsuitje",
+        "prompt": "U werkt bij een schoonmaakbedrijf.\nVolgende maand is er een bedrijfsuitje voor alle medewerkers.\nEen nieuwe collega weet nog niet wat er die dag gebeurt.\nKijk naar de plaatjes.\n\nVertel uw collega wat er tijdens die dag gebeurt.\nU moet daarbij alle plaatjes gebruiken.\n\nU hoort eerst wat uw collega vraagt.",
+        "prompt_spoken": "Ik ga voor het eerst mee met het bedrijfsuitje. Wat gaan we die dag eigenlijk allemaal doen?",
+        "voice": "woman_young",
+        "model_answer": "We beginnen 's ochtends met koffie en gebak in de kantine. De directeur vertelt dan kort hoe het met het bedrijf gaat. Daarna gaan we met de bus naar het bos en doen we samen een spel in groepjes. Dat is echt leuk, want je werkt dan met collega's van een andere locatie. Aan het eind van de middag is er een barbecue buiten. Je hoeft niks mee te nemen, alles wordt betaald door het bedrijf.",
+        "images": [
+          {
+            "slot": "spreken-9-d2-o3-a",
+            "query": "colleagues drinking coffee together in office canteen morning",
+            "caption": "Koffie in de kantine",
+            "variant": 0
+          },
+          {
+            "slot": "spreken-9-d2-o3-b",
+            "query": "team building outdoor game group in forest",
+            "caption": "Spel in het bos",
+            "variant": 1
+          },
+          {
+            "slot": "spreken-9-d2-o3-c",
+            "query": "company barbecue outdoors colleagues eating",
+            "caption": "Barbecue aan het eind",
+            "variant": 2
+          }
+        ]
+      },
+      {
+        "image_usage": "choose",
+        "title": "Welke cursus",
+        "prompt": "Uw zwager werkt in de bouw en wil graag doorgroeien naar leidinggevende.\nHij kan een cursus volgen die zijn werkgever betaalt.\nEr zijn twee cursussen mogelijk.\nKijk naar de twee plaatjes.\n\nAdviseer hem welke cursus hij moet kiezen.\nNoem minimaal twee redenen voor uw keuze.",
+        "prompt_spoken": "Ik twijfel echt tussen deze twee cursussen. Welke zou jij nemen als je wilt doorgroeien?",
+        "voice": "man_older",
+        "model_answer": "Ik zou de cursus leidinggeven kiezen, die avondcursus in de klas. De eerste reden is dat je daar leert hoe je een team aanstuurt en hoe je een moeilijk gesprek voert. Dat heb je echt nodig als je later voorman wilt worden. De tweede reden is dat je in de klas andere mensen ontmoet die hetzelfde werk doen. Van hen leer je ook veel. Een cursus op de computer is goedkoper en flexibeler, maar je stelt er minder makkelijk vragen. Ik denk dus dat de avondcursus beter bij jou past.",
+        "images": [
+          {
+            "slot": "spreken-9-d2-o4-a",
+            "query": "evening classroom training group adults leadership course teacher",
+            "caption": "Avondcursus leidinggeven in de klas",
+            "variant": 0
+          },
+          {
+            "slot": "spreken-9-d2-o4-b",
+            "query": "man studying online course laptop at home headphones",
+            "caption": "Online cursus op de computer",
+            "variant": 1
+          }
+        ]
+      },
+      {
+        "image_usage": "cover_all",
+        "title": "Kamer klaarmaken",
+        "prompt": "U werkt in een studentenhuis als beheerder.\nEr komt volgende week een nieuwe bewoner.\nEen stagiair moet de kamer klaarmaken en vraagt hoe dat moet.\nKijk naar de plaatjes.\n\nLeg de stagiair uit wat hij achter elkaar moet doen.\nU moet daarbij alle plaatjes gebruiken.\n\nU hoort eerst wat de stagiair vraagt.",
+        "prompt_spoken": "Ik moet die kamer op de eerste verdieping klaarmaken. Kunt u even uitleggen wat ik precies moet doen?",
+        "voice": "man_young",
+        "model_answer": "Je begint met de kamer helemaal leeghalen. Alle spullen van de vorige bewoner gaan eruit, en de kasten maak je leeg. Daarna maak je de kamer goed schoon: eerst de ramen en de kasten, en op het laatst de vloer. Vergeet de koelkast niet, want die is vaak vies. Als alles droog is, zet je het bed en het bureau terug op hun plaats. Leg dan een schoon matras op het bed en controleer of de lamp het doet. Meld het bij mij als er iets kapot is.",
+        "images": [
+          {
+            "slot": "spreken-9-d2-o5-a",
+            "query": "empty student room being cleared of furniture boxes",
+            "caption": "Kamer leeghalen",
+            "variant": 0
+          },
+          {
+            "slot": "spreken-9-d2-o5-b",
+            "query": "person cleaning floor and windows of empty room",
+            "caption": "Kamer schoonmaken",
+            "variant": 1
+          },
+          {
+            "slot": "spreken-9-d2-o5-c",
+            "query": "tidy furnished student room with bed and desk ready",
+            "caption": "Meubels terugzetten",
+            "variant": 2
+          }
+        ]
+      },
+      {
+        "image_usage": "none",
+        "title": "Later beginnen",
+        "prompt": "In een tijdschrift staat dat jongeren steeds later beginnen met werken.\nZij studeren langer en gaan vaak eerst reizen.\nTijdens de koffiepauze op uw opleiding vraagt een medestudent wat u ervan vindt.\n\nVertel wat u van deze ontwikkeling vindt.\nLeg ook uit waarom u dat vindt.",
+        "prompt_spoken": "Ik las dat jongeren tegenwoordig pas rond hun vijfentwintigste echt gaan werken. Wat vind jij daarvan?",
+        "voice": "woman_young",
+        "model_answer": "Ik vind het niet erg, maar het heeft twee kanten. Aan de ene kant is het goed dat jongeren langer leren, want met een diploma vind je makkelijker een vaste baan. Ook leer je veel van reizen, bijvoorbeeld talen en zelfstandig zijn. Aan de andere kant hebben ze dan lang geen eigen inkomen, en soms een grote studieschuld. Zelf ben ik op mijn achttiende begonnen met werken, en ik heb daar veel van geleerd. Ik denk dat een combinatie het beste is: studeren en er een paar uur per week naast werken.",
+        "images": []
+      },
+      {
+        "image_usage": "choose",
+        "title": "Welke kantoorindeling",
+        "prompt": "U werkt bij een klein administratiekantoor.\nHet kantoor wordt verbouwd en de directeur twijfelt over de indeling.\nEr zijn twee mogelijkheden.\nKijk naar de twee plaatjes.\n\nAdviseer de directeur welke indeling beter werkt.\nNoem minimaal twee redenen voor uw keuze.",
+        "prompt_spoken": "We kunnen kiezen tussen deze twee indelingen. Welke werkt volgens u beter voor ons team?",
+        "voice": "woman_older",
+        "model_answer": "Ik zou kiezen voor de indeling met de kleine kamers. De eerste reden is dat wij vaak met klanten bellen over hun geld en hun belasting. Dat is privé, en in een grote ruimte hoort iedereen mee. De tweede reden is de rust: in een open kantoor is er veel geluid, waardoor je fouten maakt bij het rekenen. Ik snap dat een open ruimte gezelliger is en dat je elkaar sneller iets kunt vragen. Maar dan zou ik in elk geval één stille kamer maken voor telefoongesprekken.",
+        "images": [
+          {
+            "slot": "spreken-9-d2-o7-a",
+            "query": "open plan office long desks several employees working together",
+            "caption": "Open kantoortuin",
+            "variant": 0
+          },
+          {
+            "slot": "spreken-9-d2-o7-b",
+            "query": "small private office room with two desks door",
+            "caption": "Kleine aparte kamers",
+            "variant": 1
+          }
+        ]
+      },
+      {
+        "image_usage": "none",
+        "title": "Goed kunnen leren",
+        "prompt": "U volgt een opleiding naast uw werk.\nDe school onderzoekt hoe studenten beter kunnen leren.\nEen medewerker van de school interviewt u daarover.\n\nVertel wat u nodig heeft om goed te kunnen leren.\nLeg ook uit waarom dat voor u belangrijk is.",
+        "prompt_spoken": "We willen studenten beter helpen. Wat heeft u zelf nodig om goed te kunnen leren?",
+        "voice": "man_older",
+        "model_answer": "Ik heb vooral rust en een vaste plek nodig. Thuis is het druk met de kinderen, dus ik leer het liefst in de bibliotheek of in een stil lokaal op school. Verder heb ik een duidelijke planning nodig, zodat ik weet wanneer ik welk hoofdstuk moet doen. Anders stel ik het steeds uit. Wat ook helpt, is samen met een medestudent oefenen, want dan kun je dingen aan elkaar uitleggen. En ik vind het belangrijk dat de docent snel reageert op vragen, omdat ik meestal 's avonds laat studeer.",
+        "images": []
+      }
+    ]
+  }
+]

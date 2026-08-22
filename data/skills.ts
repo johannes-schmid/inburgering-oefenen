@@ -29,11 +29,15 @@
  * `SEO/facts.md` §1 for the method and the exact wording that is defensible in copy.
  * Do not restate these as an official DUO norm; attribute them to the practice exams.
  *
- * **B1 is unverified and its counts are `null` on purpose.** Nobody has done for B1 what was
- * done for A2, and `SEO/facts.md` forbids publishing an unsourced number. `null` means "we do
- * not know", renders as an em dash, and makes `exam_publish_issues()` skip its count check
- * rather than blocking the docent on a guess. Fill these in only by counting them off DUO's
- * B1 practice exams — and update `exam_formats` in the database in the same commit.
+ * **B1's Lezen, Schrijven and Spreken counts were read off DUO's B1 Openbaar examen booklets
+ * on 2026-08-21** (Lezen I and Schrijven I 2022 + 2023, Spreken I 2022–2025). Attribute them
+ * to DUO's published practice exams, exactly as for A2 — never to an official DUO norm.
+ *
+ * **B1 Luisteren is still `null`, and that is not an oversight.** There is no B1 Luisteren
+ * reference material, so its shape is genuinely unknown. `null` means "we do not know",
+ * renders as an em dash, and makes `exam_publish_issues()` skip its count check rather than
+ * blocking the docent on a guess. Fill it in only by counting it off DUO's own material — and
+ * update `exam_formats` in the database in the same commit.
  */
 
 /**
@@ -193,12 +197,18 @@ const FORMATS: Record<Level, Record<SkillSlug, SkillFormat>> = {
     schrijven: { itemCount: 4,  durationMinutes: 40, examCount: 10 },
     spreken:   { itemCount: 16, durationMinutes: 35, examCount: 10 },
   },
-  // UNVERIFIED — see the header. Do not fill these in from memory or from a competitor.
+  // Counted off the CvTE/DUO *Openbaar examen* booklets for Lezen I, Schrijven I and
+  // Spreken I (2022 + 2023, plus the 2024/2025 Spreken booklets), 2026-08-21 — the same
+  // method `SEO/facts.md` §1 records for A2, and attributable the same way: to DUO's
+  // published practice exams, never to an official DUO norm.
+  //
+  // **Luisteren stays null.** There is no B1 Luisteren reference material, so its shape is
+  // genuinely unknown. Filling it in for symmetry would invent a standard.
   b1: {
-    lezen:     { itemCount: null, durationMinutes: null, examCount: 10 },
+    lezen:     { itemCount: 35,   durationMinutes: 110,  examCount: 10 },
     luisteren: { itemCount: null, durationMinutes: null, examCount: 10 },
-    schrijven: { itemCount: null, durationMinutes: null, examCount: 10 },
-    spreken:   { itemCount: null, durationMinutes: null, examCount: 10 },
+    schrijven: { itemCount: 12,   durationMinutes: 100,  examCount: 10 },
+    spreken:   { itemCount: 16,   durationMinutes: 30,   examCount: 10 },
   },
 };
 
@@ -232,7 +242,16 @@ const RULES: Record<Level, Record<SkillSlug, SkillRules>> = {
     schrijven: NO_RULES,
     spreken:   { ...NO_RULES, partCount: 4, itemsPerPart: 4 },
   },
-  b1: { lezen: NO_RULES, luisteren: NO_RULES, schrijven: NO_RULES, spreken: NO_RULES },
+  // Mirrors `exam_formats` for b1 after `20260821090000_b1_exam_structure.sql`.
+  // Lezen: 6 teksten, 35 vragen, 4–7 per tekst (2022: 4,6,6,5,7,7 · 2023: 6,5,6,6,7,5),
+  // a/b/c with an occasional four-option vraag. Spreken: two delen of eight, not four of
+  // four — the delen differ in spreektijd (20 s vs 30 s), which is why the split matters.
+  b1: {
+    lezen:     { ...NO_RULES, stimulusCount: 6, questionsPerStimulus: [4, 7], options: [3, 4] },
+    luisteren: NO_RULES,
+    schrijven: NO_RULES,
+    spreken:   { ...NO_RULES, partCount: 2, itemsPerPart: 8 },
+  },
 };
 
 const NO_TASK_RULES: TaskRule[] = [];
@@ -266,9 +285,33 @@ const TASK_RULES: Record<Level, Record<SkillSlug, TaskRule[]>> = {
       { category: 'speaking_cover_all', perExam: [4, 4], imageCount: 3, minSentences: null, bullets: null, recordSeconds: 60 },
     ],
   },
+  // Mirrors `exam_task_rules` for b1. Quotas, not a blueprint — DUO orders the four long
+  // opdrachten differently every year and draws them from a wider pool than any one exam
+  // uses, so the maxima deliberately overlap and `itemCount` is what pins the total to 12.
+  //
+  // `sentence_completion` is B1's own shape and has no A2 equivalent: a part-written e-mail
+  // or bericht whose sentence is left open, finished in two or three lines. It is its own
+  // category because the category selects the rubric, and grading a two-line completion
+  // against a sollicitatiebrief's anchors returns a confident wrong mark.
   b1: {
     lezen: NO_TASK_RULES, luisteren: NO_TASK_RULES,
-    schrijven: NO_TASK_RULES, spreken: NO_TASK_RULES,
+    schrijven: [
+      { category: 'sentence_completion', perExam: [8, 8], imageCount: null, minSentences: null, bullets: null,   recordSeconds: null },
+      { category: 'form',                perExam: [1, 1], imageCount: null, minSentences: null, bullets: null,   recordSeconds: null },
+      { category: 'email',               perExam: [0, 2], imageCount: null, minSentences: null, bullets: [4, 6], recordSeconds: null },
+      { category: 'letter',              perExam: [0, 2], imageCount: null, minSentences: null, bullets: [4, 6], recordSeconds: null },
+      { category: 'picture_report',      perExam: [0, 1], imageCount: 3,    minSentences: null, bullets: [4, 6], recordSeconds: null },
+      { category: 'data_text',           perExam: [0, 1], imageCount: null, minSentences: null, bullets: [3, 5], recordSeconds: null },
+    ],
+    // The recording cap stays 60 s. DUO's 20 s / 30 s spreektijd is the *target* length;
+    // cutting a B1 candidate off at 20 s would fail them on our stopwatch, not their Dutch.
+    spreken: [
+      { category: 'speaking_none',      perExam: [4, 7], imageCount: 0, minSentences: null, bullets: null, recordSeconds: 60 },
+      { category: 'speaking_react',     perExam: [2, 4], imageCount: 1, minSentences: null, bullets: null, recordSeconds: 60 },
+      { category: 'speaking_describe',  perExam: [1, 3], imageCount: 1, minSentences: null, bullets: null, recordSeconds: 60 },
+      { category: 'speaking_choose',    perExam: [1, 3], imageCount: 2, minSentences: null, bullets: null, recordSeconds: 60 },
+      { category: 'speaking_cover_all', perExam: [2, 4], imageCount: 3, minSentences: null, bullets: null, recordSeconds: 60 },
+    ],
   },
 };
 

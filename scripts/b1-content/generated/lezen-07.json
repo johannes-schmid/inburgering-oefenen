@@ -1,0 +1,410 @@
+[
+  {
+    "section": "website",
+    "title": "Weer aan het werk met Stap Vooruit",
+    "intro": "Deze tekst komt van de website van Stap Vooruit, een organisatie die mensen helpt bij het zoeken naar werk na een lange periode zonder baan. De tekst legt uit hoe de begeleiding werkt en wat de voorwaarden zijn.",
+    "body_html": "<p><strong>I</strong> Wie langere tijd niet heeft gewerkt, merkt vaak dat solliciteren moeilijker wordt. Er ontstaat een gat in het arbeidsverleden, en werkgevers stellen daar vragen over. Bovendien verandert het werk zelf: taken worden anders ingedeeld en er wordt met andere computerprogramma's gewerkt. Stap Vooruit begeleidt sinds 2011 mensen die tussen de twee en vijftien jaar thuis hebben gezeten, bijvoorbeeld door ziekte, door de zorg voor kinderen of voor een ziek familielid. Vorig jaar hebben wij 640 deelnemers begeleid. Van hen had ongeveer 68 procent na negen maanden betaald werk gevonden, meestal voor drie of vier dagen per week.</p><p><strong>II</strong> Onze begeleiding bestaat uit vier onderdelen. Deelnemers doorlopen die niet allemaal in dezelfde volgorde, omdat wij per persoon bekijken wat het meest nodig is:</p><ul><li>een gesprek van anderhalf uur waarin wij uw werkervaring, uw opleiding en uw wensen in kaart brengen;</li><li>een cursus van zes bijeenkomsten over sollicitatiebrieven, gesprekken en digitale vaardigheden;</li><li>een werkervaringsplek van twee of drie maanden bij een bedrijf in de regio;</li><li>nazorg: gedurende het eerste halfjaar in uw nieuwe baan belt uw begeleider u elke maand.</li></ul><p><strong>III</strong> Veel deelnemers vinden vooral die werkervaringsplek nuttig, hoewel ze er in het begin tegenop zien. Neem mevrouw Ashrafi, die elf jaar voor haar drie kinderen zorgde en daarna dacht dat ze niets meer kon. Ze werkte drie maanden mee op de administratie van een installatiebedrijf. Na twee weken bleek dat ze het rekenwerk sneller deed dan ze zelf had verwacht; haar onzekerheid ging over toen collega's haar om hulp vroegen. Zij is inmiddels in dienst bij hetzelfde bedrijf. Zo'n plek levert dus niet alleen een regel op uw cv op, maar ook het bewijs voor uzelf dat u het werk aankunt.</p><p><strong>Voorwaarden en kosten</strong></p><p><strong>IV</strong> U kunt zich aanmelden als u ouder bent dan 23 jaar, minstens twee jaar geen betaald werk heeft gehad en in de provincie Gelderland woont. Een diploma is niet verplicht. Wel vragen wij dat u de Nederlandse taal voldoende beheerst om een gesprek te volgen. Ontvangt u een uitkering van de gemeente, dan betaalt de gemeente de begeleiding en kost het u niets. Heeft u geen uitkering, bijvoorbeeld omdat uw partner voldoende inkomen heeft, dan betaalt u een eigen bijdrage van 185 euro. Dat bedrag mag in vier termijnen worden betaald. Bij een inkomen onder de 1.700 euro netto per maand kunt u vrijstelling aanvragen; u stuurt dan een kopie van een recent loonstrookje mee.</p><p><strong>V</strong> Sommige mensen twijfelen of ze zich moeten aanmelden, omdat ze denken dat begeleiding betekent dat er over hen wordt beslist. Dat is niet zo. Uw begeleider stuurt geen sollicitaties zonder uw toestemming en meldt u niet aan bij bedrijven waar u niet wilt werken. Wij verwachten wel dat u de zes bijeenkomsten bijwoont en dat u afspraken op tijd afzegt. Wie zonder bericht twee keer wegblijft, wordt uitgeschreven en kan zich pas na zes maanden opnieuw aanmelden. Die regel klinkt streng, maar zij is nodig doordat wij per groep maar twaalf plaatsen hebben en er altijd mensen op de wachtlijst staan.</p><p><strong>VI</strong> Aanmelden gaat via het formulier op deze website of per post. Binnen tien werkdagen krijgt u een uitnodiging voor het eerste gesprek. Loopt de wachtlijst op, dan hoort u dat direct, zodat u niet onnodig wacht.<br>Stap Vooruit<br>Postbus 4412<br>6802 EB Arnhem<br>Telefoon: 026 - 415 22 90</p>",
+    "questions": [
+      {
+        "prompt": "Wat staat er in alinea I over de deelnemers van vorig jaar?",
+        "options": [
+          "Ruim tweederde van hen had binnen negen maanden werk.",
+          "Bijna alle deelnemers vonden een baan van vier dagen.",
+          "Het merendeel had langer dan vijftien jaar niet gewerkt."
+        ],
+        "correct": 0,
+        "explanation": "In alinea I staat dat ongeveer 68 procent na negen maanden betaald werk had, en dat is ruim tweederde. Optie B is te sterk: drie of vier dagen per week wordt genoemd, maar niet voor bijna alle deelnemers."
+      },
+      {
+        "prompt": "Iemand wil weten in welke volgorde de vier onderdelen worden gedaan. Wat staat daarover in de tekst?",
+        "options": [
+          "Elke deelnemer begint met de cursus van zes bijeenkomsten.",
+          "De volgorde hangt af van wat de deelnemer nodig heeft.",
+          "De werkervaringsplek komt altijd na de nazorg."
+        ],
+        "correct": 1,
+        "explanation": "In alinea II staat dat deelnemers de onderdelen niet in dezelfde volgorde doorlopen, omdat per persoon wordt bekeken wat nodig is. De cursus wordt wel genoemd, maar niet als verplicht beginpunt."
+      },
+      {
+        "prompt": "Wat wil de schrijver met het voorbeeld van mevrouw Ashrafi duidelijk maken?",
+        "options": [
+          "Dat een administratieve baan het makkelijkst te vinden is.",
+          "Dat elf jaar thuis zitten meestal te lang is om terug te keren.",
+          "Dat werkgevers graag mensen met kinderen aannemen.",
+          "Dat een werkervaringsplek iemand weer vertrouwen in zichzelf geeft."
+        ],
+        "correct": 3,
+        "explanation": "Alinea III eindigt met de conclusie dat zo'n plek het bewijs levert dat u het werk aankunt; het voorbeeld illustreert dat. Dat zij bij hetzelfde bedrijf in dienst kwam, is een detail en niet de reden voor het voorbeeld."
+      },
+      {
+        "prompt": "Mevrouw Bakker heeft geen uitkering en verdient met haar partner samen genoeg. Zij verdient zelf 1.400 euro netto per maand. Wat geldt voor haar?",
+        "options": [
+          "Zij hoeft niets te betalen, omdat haar partner inkomen heeft.",
+          "Zij betaalt 185 euro, verdeeld over zes termijnen.",
+          "Zij kan vrijstelling aanvragen met een loonstrookje erbij."
+        ],
+        "correct": 2,
+        "explanation": "In alinea IV staat dat bij een inkomen onder 1.700 euro netto vrijstelling kan worden aangevraagd, met een kopie van een recent loonstrookje. Betalen in termijnen bestaat wel, maar in vier termijnen, niet in zes."
+      },
+      {
+        "prompt": "Wat is in alinea V het argument voor de strenge regel over wegblijven?",
+        "options": [
+          "Er zijn maar twaalf plaatsen per groep en er is een wachtlijst.",
+          "Deelnemers moeten leren dat werkgevers ook streng zijn.",
+          "De gemeente betaalt alleen als iedereen aanwezig is."
+        ],
+        "correct": 0,
+        "explanation": "Alinea V zegt dat de regel nodig is doordat er per groep twaalf plaatsen zijn en er mensen op de wachtlijst staan. Over de betaling door de gemeente staat in alinea IV iets anders: die geldt voor mensen met een uitkering."
+      },
+      {
+        "prompt": "Wat is het belangrijkste doel van deze tekst?",
+        "options": [
+          "Werkgevers overtuigen om werkervaringsplekken aan te bieden.",
+          "Mensen die lang thuis zaten informeren over de begeleiding en de voorwaarden.",
+          "Uitleggen waarom er in Gelderland te weinig personeel is."
+        ],
+        "correct": 1,
+        "explanation": "De tekst beschrijft in alle alinea's wie zich kan aanmelden, hoe de begeleiding werkt en wat het kost; de lezer is de mogelijke deelnemer. Werkgevers komen alleen ter sprake als plek voor werkervaring."
+      }
+    ]
+  },
+  {
+    "section": "studieboek",
+    "title": "Een arbeidsconflict: wat het is en wat u kunt doen",
+    "intro": "Deze tekst komt uit de cursusmap van een opleiding tot administratief medewerker. De tekst gaat over arbeidsconflicten en over de stappen die een werknemer kan zetten.",
+    "body_html": "<p><strong>I</strong> Van een arbeidsconflict is sprake wanneer een werknemer en een werkgever een verschil van mening hebben dat het werk zelf raakt en dat niet in een gewoon gesprek wordt opgelost. Het gaat dus om meer dan irritatie tussen twee collega's. Voorbeelden zijn een leidinggevende die weigert overuren uit te betalen, een werknemer die na een reorganisatie ander werk krijgt zonder dat hij daarmee heeft ingestemd, of een aanvraag voor onbetaald verlof die zonder uitleg wordt afgewezen. Kenmerkend is dat één van de twee partijen vindt dat een afspraak of een regel wordt geschonden, terwijl de ander die uitleg niet deelt.</p><p><strong>II</strong> Veel conflicten ontstaan doordat afspraken alleen mondeling zijn gemaakt. Wie na een jaar wil aantonen dat hij structureel op zaterdag zou werken tegen een hoger tarief, staat met lege handen als daarover niets op papier staat. Zet daarom belangrijke afspraken altijd in een korte e-mail aan uw leidinggevende, met de datum erbij. Zo'n bericht is geen teken van wantrouwen, maar gewoon een manier om later misverstanden te voorkomen. Bewaar ook uw loonstroken, uw contract en de cao die voor uw bedrijf geldt, want in de cao staan de afspraken die de werkgevers en de vakbonden in uw branche hebben gemaakt.</p><p><strong>Stap voor stap</strong></p><p><strong>III</strong> De eerste stap is bijna altijd een gesprek met de persoon om wie het gaat. Vraag om een half uur op een rustig moment en schrijf van tevoren op wat u wilt bereiken. Levert dat niets op, dan gaat u naar de laag daarboven of naar de afdeling personeelszaken. Werkt u in een organisatie met meer dan vijftig medewerkers, dan is er een ondernemingsraad; die raad gaat niet over uw persoonlijke zaak, maar kan wel aangeven of het beleid van het bedrijf goed wordt toegepast. Blijft de situatie vastzitten, dan kunt u een mediator vragen. Dat is een onafhankelijke gespreksleider die geen partij kiest en geen uitspraak doet, maar de twee partijen helpt om zelf tot een oplossing te komen.</p><p><strong>IV</strong> Pas als deze wegen zijn geprobeerd, is de rechter aan de beurt. Denk daarbij aan de volgende punten:</p><ul><li>Bent u lid van een vakbond, dan krijgt u vaak juridische hulp zonder extra kosten, maar meestal geldt een wachttijd van zes maanden na uw aanmelding.</li><li>Bent u geen lid, dan kunt u terecht bij het Juridisch Loket, dat gratis advies geeft.</li><li>Voor een advocaat betaalt u zelf, tenzij u een rechtsbijstandverzekering hebt of in aanmerking komt voor een lagere eigen bijdrage.</li><li>Bent u ontslagen en wilt u dat aanvechten, dan moet u binnen twee maanden naar de rechter stappen. Die termijn is hard: daarna vervalt uw recht.</li></ul><p><strong>V</strong> Een arbeidsconflict gaat vaak samen met slaapproblemen en spanning. Toch is ziekmelden geen goede oplossing als u niet echt ziek bent, want de bedrijfsarts kijkt alleen naar uw gezondheid en niet naar het conflict. Wel mag u de bedrijfsarts vertellen dat de klachten met het werk te maken hebben; hij kan dan adviseren om het gesprek zo snel mogelijk te laten plaatsvinden. Meld u ziek als u ziek bent, en houd het conflict daarnaast in beweging.</p><p><strong>VI</strong> Ten slotte een waarschuwing. Hoewel u het gevoel kunt hebben dat u in uw recht staat, is het onverstandig om zelf het werk neer te leggen of weg te blijven. De werkgever mag het loon dan stopzetten, en bij de rechter weegt zwaar of u zich als een redelijke werknemer hebt gedragen. Blijf dus komen, blijf rustig, en zorg dat u van elk gesprek een korte samenvatting op papier hebt.</p>",
+    "questions": [
+      {
+        "prompt": "Wat maakt de schrijver in alinea I duidelijk met de voorbeelden van de overuren en het verlof?",
+        "options": [
+          "Dat een werkgever bijna altijd fout zit bij een reorganisatie.",
+          "Dat conflicten vooral ontstaan door irritatie tussen collega's.",
+          "Dat het bij een arbeidsconflict om het werk en om afspraken gaat."
+        ],
+        "correct": 2,
+        "explanation": "In alinea I dienen de voorbeelden om te laten zien dat een arbeidsconflict over het werk en over afspraken of regels gaat. Optie B is juist wat de schrijver uitsluit: irritatie tussen collega's is volgens de tekst iets anders."
+      },
+      {
+        "prompt": "Wat staat er in alinea III over de mediator?",
+        "options": [
+          "Hij beslist wie van de twee partijen gelijk heeft.",
+          "Hij begeleidt het gesprek zonder een partij te kiezen.",
+          "Hij controleert of het bedrijf zijn beleid goed uitvoert.",
+          "Hij neemt het gesprek over van de afdeling personeelszaken."
+        ],
+        "correct": 1,
+        "explanation": "Volgens alinea III kiest de mediator geen partij en doet hij geen uitspraak; hij helpt de partijen zelf een oplossing te vinden. Het controleren van het beleid (optie C) is in die alinea de taak van de ondernemingsraad."
+      },
+      {
+        "prompt": "Iemand is ontslagen en wil dat via de rechter aanvechten. Binnen welke termijn moet dat gebeuren?",
+        "options": [
+          "Binnen twee maanden.",
+          "Binnen zes maanden.",
+          "Binnen een jaar."
+        ],
+        "correct": 0,
+        "explanation": "In de opsomming in alinea IV staat dat u binnen twee maanden naar de rechter moet stappen. De zes maanden uit optie B horen bij de wachttijd na aanmelding bij een vakbond."
+      },
+      {
+        "prompt": "Een werknemer met een conflict wil thuisblijven tot de werkgever toegeeft. Welk argument uit de tekst kan een collega hem geven om dat niet te doen?",
+        "options": [
+          "De bedrijfsarts kan hem dan geen advies meer geven over zijn klachten.",
+          "De ondernemingsraad neemt dan zijn persoonlijke zaak niet meer in behandeling.",
+          "De rechter kijkt of iemand zich redelijk heeft opgesteld, en het loon kan stoppen."
+        ],
+        "correct": 2,
+        "explanation": "Alinea VI noemt precies deze twee gevolgen: stopzetting van het loon en het gedrag van de werknemer dat bij de rechter meeweegt. Optie A gaat over alinea V, waar staat dat ziekmelden zonder ziekte geen oplossing is, niet over wegblijven."
+      }
+    ]
+  },
+  {
+    "section": "folder",
+    "title": "Kinderopvang De Zonnekant: informatie voor ouders",
+    "intro": "Deze tekst komt uit een folder van kinderopvangorganisatie De Zonnekant in Zwolle. De folder gaat over de dagindeling, de kosten en de wachtlijst van de opvang.",
+    "body_html": "<p><strong>I</strong> Kinderopvang De Zonnekant vangt elke werkdag kinderen op van nul tot vier jaar. Wij hebben drie groepen: twee babygroepen en één groep voor kinderen vanaf twee jaar. Onze locatie aan de Meidoornsingel is open van 7.15 uur tot 18.30 uur, ook in de schoolvakanties. Alleen op officiële feestdagen zijn wij gesloten. Veel ouders kiezen voor ons omdat wij met vaste pedagogisch medewerkers werken. Dat betekent dat uw kind elke dag dezelfde gezichten ziet, waardoor het zich sneller veilig voelt in de groep. Wilt u een indruk krijgen van de sfeer? U kunt een gratis kijkochtend aanvragen via onze website.</p><p><strong>Een dag bij ons</strong></p><p><strong>II</strong> De dag heeft een vaste opbouw, hoewel wij altijd rekening houden met het ritme van jonge kinderen. Tussen 7.15 en 9.00 uur worden de kinderen gebracht. Daarna eten we samen fruit en zingen we liedjes. Rond 10.00 uur gaan we naar buiten, of we doen binnen een activiteit met verf, klei of muziek. Om 11.45 uur is de lunch, met brood dat wij zelf verzorgen. Kinderen die nog slapen, gaan daarna naar bed. In de middag is er tijd voor vrij spel en voor een korte activiteit in kleine groepjes. Vanaf 16.30 uur komen de ouders hun kind ophalen. Wie zijn kind later dan 18.30 uur ophaalt, betaalt een bedrag van 12,50 euro per begonnen kwartier, omdat onze medewerkers dan langer moeten blijven.</p><p><strong>III</strong> Ouders vragen ons vaak of hun kind wel genoeg leert. In onze groepen staat spelen op de eerste plaats, maar spelen en leren gaan samen. Als een kind met water en bekers speelt, ontdekt het dat een grote beker meer inhoudt dan een kleine. Zo werken wij aan taal en aan rekenen zonder dat het op school lijkt. Twee keer per jaar bespreken wij met u hoe uw kind zich ontwikkelt. Maakt u zich zorgen, dan kunt u ook tussendoor een gesprek aanvragen bij de leidinggevende van de groep.</p><p><strong>Kosten</strong></p><p><strong>IV</strong> Het uurtarief is in 2025 vastgesteld op 10,25 euro. U betaalt per maand een vast bedrag, dat wij berekenen over 48 weken per jaar. Een dag bestaat bij ons uit tien uur opvang; halve dagen bieden wij niet aan, omdat dat te veel wisselingen in de groep geeft. De meeste ouders krijgen een deel van de kosten terug via de kinderopvangtoeslag van de Belastingdienst. Hoe hoog die toeslag is, hangt af van uw inkomen en van het aantal uren dat u opvang gebruikt. Wij kunnen de toeslag niet voor u aanvragen, maar onze administratie stuurt u wel een jaaroverzicht met alle gegevens die u daarvoor nodig hebt.</p><p><strong>V</strong> Een plek bij ons is niet altijd direct vrij. Op dit moment is de wachttijd voor de babygroepen ongeveer zeven maanden; voor de oudste groep is dat drie maanden. Wij raden u daarom aan uw kind al tijdens de zwangerschap in te schrijven. Inschrijven kost eenmalig 25 euro. Voorrang geldt in twee gevallen: als er al een broer of zus bij ons wordt opgevangen, en als u werkt in de zorg of in het onderwijs. Krijgt u een plek aangeboden, dan hebt u tien dagen om te reageren. Reageert u niet, dan gaat het aanbod naar de volgende ouder op de lijst en blijft uw inschrijving wel geldig.</p><p><strong>VI</strong> Hebt u vragen over de dagindeling, de kosten of de wachtlijst? Neem dan contact met ons op:<br>Kinderopvang De Zonnekant<br>Meidoornsingel 84<br>8021 KP Zwolle<br>Telefoon: 038 - 555 21 40<br>Bereikbaar op werkdagen tussen 9.00 en 16.00 uur</p>",
+    "questions": [
+      {
+        "prompt": "Wat staat er in alinea I over de openingstijden van De Zonnekant?",
+        "options": [
+          "De opvang is ook in de vakanties open, behalve op feestdagen.",
+          "De opvang sluit in de zomervakantie enkele weken haar deuren.",
+          "De opvang is alleen open als ouders dat vooraf hebben aangevraagd."
+        ],
+        "correct": 0,
+        "explanation": "In alinea I staat dat de locatie elke werkdag open is, ook in de schoolvakanties, en alleen op officiële feestdagen gesloten is. De vakantiesluiting van optie B staat niet in de tekst."
+      },
+      {
+        "prompt": "Een ouder haalt haar kind om 18.45 uur op. Wat gebeurt er dan volgens alinea II?",
+        "options": [
+          "Zij krijgt een waarschuwing van de leidinggevende van de groep.",
+          "Zij betaalt 12,50 euro voor het extra kwartier opvang.",
+          "Zij mag haar kind de volgende dag pas later brengen."
+        ],
+        "correct": 1,
+        "explanation": "Alinea II noemt een bedrag van 12,50 euro per begonnen kwartier na 18.30 uur. Een waarschuwing wordt in de tekst niet genoemd; het gesprek met de leidinggevende gaat over de ontwikkeling van het kind (alinea III)."
+      },
+      {
+        "prompt": "Waarom noemt de schrijver in alinea III het spelen met water en bekers?",
+        "options": [
+          "Om te laten zien dat kinderen bij spelen weinig hulp nodig hebben.",
+          "Om duidelijk te maken dat kinderen tijdens het spelen ook dingen leren.",
+          "Om uit te leggen waarom de groepen elke dag naar buiten gaan.",
+          "Om aan te geven dat de opvang op een school begint te lijken."
+        ],
+        "correct": 1,
+        "explanation": "Het voorbeeld in alinea III dient om te laten zien dat spelen en leren samengaan: bij het spelen ontdekt het kind taal en rekenen. De tekst zegt juist dat het níet op school lijkt, dus optie D is fout."
+      },
+      {
+        "prompt": "Wat is volgens alinea IV de reden dat De Zonnekant geen halve dagen aanbiedt?",
+        "options": [
+          "De medewerkers werken zelf allemaal hele dagen.",
+          "De kinderopvangtoeslag geldt alleen voor hele dagen.",
+          "Er komen dan te veel wisselingen in de groep."
+        ],
+        "correct": 2,
+        "explanation": "Alinea IV geeft als reden dat halve dagen te veel wisselingen in de groep geven. Over de toeslag staat alleen dat de hoogte van het inkomen en het aantal uren afhangt, niet dat halve dagen zijn uitgesloten."
+      },
+      {
+        "prompt": "Wat betekent 'Voorrang geldt in twee gevallen' in alinea V?",
+        "options": [
+          "In twee situaties komt een kind eerder aan de beurt voor een plek.",
+          "In twee situaties hoeven ouders geen inschrijfgeld te betalen.",
+          "In twee situaties mag een kind langer dan tien uur blijven."
+        ],
+        "correct": 0,
+        "explanation": "In alinea V gaat het over de wachtlijst: bij een broer of zus op de opvang en bij werk in de zorg of het onderwijs krijgt een kind eerder een plek. Het inschrijfgeld van 25 euro geldt voor iedereen."
+      },
+      {
+        "prompt": "Een vader wil weten hoe lang hij op een plek moet wachten en wat hij per uur betaalt. In welke alinea's vindt hij het antwoord?",
+        "options": [
+          "In alinea II en III",
+          "In alinea III en V",
+          "In alinea IV en V",
+          "In alinea I en IV"
+        ],
+        "correct": 2,
+        "explanation": "Het uurtarief van 10,25 euro staat in alinea IV en de wachttijden staan in alinea V. Alinea III gaat over de ontwikkeling van het kind, niet over kosten of wachttijd."
+      },
+      {
+        "prompt": "Wat is het belangrijkste doel van deze folder?",
+        "options": [
+          "Ouders overtuigen om vaker een kijkochtend te bezoeken.",
+          "Ouders informeren over de werkwijze, de kosten en het inschrijven.",
+          "Ouders uitleggen hoe zij kinderopvangtoeslag moeten aanvragen."
+        ],
+        "correct": 1,
+        "explanation": "De folder geeft van alinea I tot V informatie over de dagindeling, de tarieven en de wachtlijst. De toeslag komt kort aan de orde in alinea IV, maar de folder zegt juist dat de opvang die niet voor ouders aanvraagt."
+      }
+    ]
+  },
+  {
+    "section": "artikel",
+    "title": "Werkdruk staat hoog op de agenda",
+    "intro": "Deze tekst komt uit een personeelsblad voor werkgevers en leidinggevenden. De tekst gaat over de vraag waarom bedrijven steeds meer aandacht besteden aan werkdruk.",
+    "body_html": "<p><strong>I</strong> Werkdruk is in veel bedrijven geen bijzaak meer. Uit een enquête van onderzoeksbureau Kernpunt onder 1.200 Nederlandse werkgevers blijkt dat 62 procent van hen werkdruk het belangrijkste risico op de werkvloer vindt, dus nog belangrijker dan onveilige machines of zwaar tillen. Vijf jaar eerder was dat nog 41 procent. Bedrijven zien de gevolgen ook terug in hun kosten, want een werknemer die door psychische klachten thuiszit, kost gemiddeld 320 euro per dag. Zulk verzuim duurt bovendien lang: gemiddeld ruim tweehonderd dagen, terwijl verzuim door griep of een gebroken arm meestal na enkele weken voorbij is.</p><p><strong>Wat de wet vraagt</strong></p><p><strong>II</strong> De toegenomen aandacht komt niet alleen uit de portemonnee, maar ook uit de wet. De Arbowet verplicht iedere werkgever om de risico's op de werkvloer op papier te zetten in een risico-inventarisatie en -evaluatie, kortweg RI&amp;E, en om daarbij een plan van aanpak te maken. Werkdruk hoort uitdrukkelijk bij die risico's. Bedrijven met meer dan 25 werknemers moeten hun RI&amp;E laten toetsen door een gecertificeerde deskundige. Kleinere bedrijven zijn van die toets vrijgesteld, op voorwaarde dat zij een door hun branche erkend instrument gebruiken. Ontbreekt de RI&amp;E helemaal, dan kan de inspectie een boete opleggen die kan oplopen tot 4.500 euro.</p><p><strong>III</strong> Dat maatregelen ook zonder boete lonen, merkte installatiebedrijf Brandsma in Zutphen. Het bedrijf heeft tachtig monteurs en zag het verzuim oplopen tot 7 procent. De directie besloot elke maandag een halfuur planningsoverleg in te voeren, nam twee extra monteurs aan en sprak af dat monteurs na 18.00 uur niet meer gebeld worden voor storingen. Na anderhalf jaar was het verzuim gedaald naar 3,5 procent. \"Die extra monteurs kosten geld\", zegt directeur Rachida Bouzid, \"maar minder verzuim en minder fouten in het werk leveren ons uiteindelijk meer op.\"</p><p><strong>IV</strong> Toch is niet iedereen enthousiast over de manier waarop bedrijven het onderwerp aanpakken. Onderzoeker Nadia Beckers ziet dat werkgevers vooral cursussen mindfulness, sportabonnementen en fruitmanden aanbieden. \"Dat is pleisters plakken\", zegt zij. Volgens haar voelen werknemers zich daardoor even wat beter, terwijl de echte oorzaak blijft bestaan: te weinig mensen voor te veel werk, onduidelijke taken en leidinggevenden die zelf geen tijd hebben. Beckers vindt dat bedrijven pas iets bereiken als zij de planning, de bezetting en de bevoegdheden veranderen, hoewel dat lastiger en duurder is dan een cursus inkopen.</p><p><strong>V</strong> Een derde reden voor de aandacht is de arbeidsmarkt. Doordat veel bedrijven moeilijk personeel vinden, willen zij de mensen die zij hebben graag houden. In hetzelfde onderzoek van Kernpunt noemde ruim een derde van de werknemers onder 35 jaar die binnen twee jaar weer vertrokken, de werkdruk als belangrijkste reden. Ook de medezeggenschap speelt een rol: een ondernemingsraad kan werkdruk zelf op de agenda zetten en heeft instemmingsrecht bij regelingen over arbeidsomstandigheden. Een werkgever kan zo'n regeling dus niet invoeren zonder de raad te vragen.</p><p><strong>VI</strong> Wat kan een werknemer zelf doen? Deskundigen raden aan om eerst met de leidinggevende te praten en daarbij concrete voorbeelden te noemen, zoals het aantal klussen per dag of het aantal keren overwerk per maand. Levert dat niets op, dan kan de werknemer terecht bij de ondernemingsraad of bij de vertrouwenspersoon. Verder heeft iedere werknemer het recht om zelf een gesprek met de bedrijfsarts aan te vragen, ook zonder ziekmelding en zonder toestemming van de werkgever. De bedrijfsarts moet dat gesprek in de regel binnen twee weken aanbieden.</p>",
+    "questions": [
+      {
+        "prompt": "Wat staat er in alinea I over de uitkomsten van de enquête?",
+        "options": [
+          "Werkgevers noemen werkdruk nu veel vaker het grootste risico dan vijf jaar eerder.",
+          "Werkgevers vinden onveilige machines nog altijd het grootste risico op de werkvloer.",
+          "Het aantal werknemers met psychische klachten is met 62 procent toegenomen."
+        ],
+        "correct": 0,
+        "explanation": "In alinea I staat dat 62 procent werkdruk het belangrijkste risico vindt, tegen 41 procent vijf jaar eerder. Optie B is fout: machines en tillen worden juist minder vaak genoemd dan werkdruk."
+      },
+      {
+        "prompt": "In welk geval hoeft een bedrijf zijn RI&E niet te laten toetsen door een gecertificeerde deskundige?",
+        "options": [
+          "Als de inspectie in de afgelopen vijf jaar geen boete heeft opgelegd.",
+          "Als er al een plan van aanpak voor de werkdruk klaarligt.",
+          "Als het bedrijf klein is en een erkend instrument van de branche gebruikt.",
+          "Als het bedrijf zelf een gecertificeerde deskundige in dienst heeft."
+        ],
+        "correct": 2,
+        "explanation": "Alinea II noemt twee voorwaarden samen: niet meer dan 25 werknemers én een door de branche erkend instrument. Een plan van aanpak (B) is verplicht voor iedereen en geeft geen vrijstelling."
+      },
+      {
+        "prompt": "Wat wil de schrijver duidelijk maken met het voorbeeld van installatiebedrijf Brandsma?",
+        "options": [
+          "Dat maatregelen tegen werkdruk een bedrijf uiteindelijk geld kunnen opleveren.",
+          "Dat monteurs zich vaker ziek melden dan andere groepen werknemers.",
+          "Dat bedrijven pas iets veranderen wanneer de inspectie langskomt.",
+          "Dat extra personeel aannemen voor kleine bedrijven te duur is."
+        ],
+        "correct": 0,
+        "explanation": "In alinea III daalt het verzuim van 7 naar 3,5 procent en zegt de directeur dat de kosten zich terugbetalen. Optie C is fout: bij Brandsma kwam er geen inspectie aan te pas."
+      },
+      {
+        "prompt": "Wat bedoelt onderzoeker Nadia Beckers in alinea IV met 'pleisters plakken'?",
+        "options": [
+          "Werknemers laten kiezen tussen meer rust of meer loon.",
+          "De klachten even verzachten zonder de oorzaak weg te nemen.",
+          "De kosten van verzuim over meerdere jaren verdelen."
+        ],
+        "correct": 1,
+        "explanation": "Alinea IV legt de uitdrukking zelf uit: werknemers voelen zich even beter, maar te weinig mensen en onduidelijke taken blijven bestaan. Over loon (A) zegt Beckers niets."
+      },
+      {
+        "prompt": "Een werknemer wil weten wat hij kan doen als het gesprek met zijn leidinggevende niets oplevert. In welke alinea vindt hij het antwoord?",
+        "options": [
+          "In alinea IV.",
+          "In alinea V.",
+          "In alinea VI."
+        ],
+        "correct": 2,
+        "explanation": "Alinea VI noemt de vervolgstappen: de ondernemingsraad, de vertrouwenspersoon en een gesprek met de bedrijfsarts. Alinea V gaat over de arbeidsmarkt en de rechten van de ondernemingsraad, niet over stappen van een werknemer."
+      },
+      {
+        "prompt": "Wat is het belangrijkste doel van deze tekst?",
+        "options": [
+          "Werknemers waarschuwen dat verzuim door werkdruk erg lang duurt.",
+          "Uitleggen waarom bedrijven zich steeds meer met werkdruk bezighouden.",
+          "Aantonen dat de Arbowet strenger gecontroleerd moet worden."
+        ],
+        "correct": 1,
+        "explanation": "De tekst noemt achter elkaar de kosten, de wet en de arbeidsmarkt als redenen voor die groeiende aandacht. De lange verzuimduur (A) is slechts één detail uit alinea I."
+      }
+    ]
+  },
+  {
+    "section": "regels",
+    "title": "Werken met het kassasysteem Kassa-Net",
+    "intro": "Deze tekst komt uit de handleiding voor het kassasysteem van supermarkt De Korenschoof. In de tekst staat hoe medewerkers aan de kassa moeten werken en welke regels daarbij gelden.",
+    "body_html": "<p><strong>I</strong> Deze handleiding hoort bij Kassa-Net, het kassasysteem van supermarkt De Korenschoof. Iedere medewerker die aan de kassa werkt, meldt zich eerst aan met de eigen personeelspas en een pincode van vier cijfers. Houd de pas voor de lezer rechts onder het scherm en typ daarna de code in. Na drie foute pogingen blokkeert het systeem de pas, zodat niemand anders onder uw naam kan afrekenen. Alleen de teamleider kan een geblokkeerde pas weer vrijgeven. Gebruikt u de kassa vijf minuten niet, dan meldt het systeem u automatisch af. De bon waar u mee bezig was, blijft wel bewaard.</p><p><strong>II</strong> Bijna alle artikelen scant u met de streepjescode. Groente, fruit en vlees van de versafdeling hebben soms geen code; die artikelen voert u in met het viercijferige nummer op het weegbriefje. Staat er op het scherm &lsquo;artikel onbekend&rsquo;, dan mag u de prijs nooit zelf invoeren. Leg het artikel apart, druk op de toets &lsquo;hulp&rsquo; en ga verder met de volgende klant. Doordat alle prijzen centraal worden ingevoerd, ontstaan er anders verschillen tussen de kassa en de administratie.</p><p><strong>III</strong> Soms zegt een klant dat de prijs op het schapkaartje lager is dan de prijs op uw scherm. U past het bedrag in dat geval niet zelf aan, maar roept de teamleider. Die controleert het kaartje in het schap. Blijkt het verschil te kloppen, dan rekent de winkel de lage prijs, ook als het artikel al gescand is. Hoewel deze controle een paar minuten kost, is het belangrijk dat de klant niet te veel betaalt. Bij een verschil van meer dan tien euro vult de teamleider een meldformulier in voor het hoofdkantoor.</p><p><strong>Betalen en leeftijdscontrole</strong></p><p><strong>IV</strong> Wij vragen klanten om zo veel mogelijk met de pinpas te betalen. Contant geld mag, maar biljetten van 200 en 500 euro nemen wij niet aan; leg de klant vriendelijk uit dat er niet genoeg wisselgeld voor is. Een biljet van 50 of 100 euro controleert u altijd met de controlepen naast de lade. Zit er meer dan 500 euro in de kassalade, dan meldt het scherm dat u geld moet afstorten in de kluis. Betaalt iemand met een cadeaubon die hoger is dan het bedrag van de boodschappen, dan blijft het restbedrag op de bon staan; u geeft dat verschil dus niet contant terug.</p><p><strong>V</strong> Voor alcohol en tabak geldt een leeftijdsgrens van 18 jaar. Het systeem vraagt bij deze artikelen om de geboortedatum van de klant. Vul die alleen in nadat u een geldig legitimatiebewijs hebt gezien; op de knop &lsquo;ja&rsquo; drukken zonder controle is niet toegestaan. Is de klant jonger of laat hij geen bewijs zien, dan verkoopt u het artikel niet, ook niet als hij blijft aandringen. De winkel riskeert namelijk een hoge boete. Twijfelt u over een legitimatiebewijs, dan haalt u altijd de teamleider.</p><p><strong>VI</strong> Loopt het scherm vast, dan start u de kassa opnieuw op met de groene knop aan de zijkant; dat duurt ongeveer twee minuten. Een lege bonrol vervangt u zelf, want extra rollen liggen in de lade onder de band. Aan het eind van uw dienst sluit u de kassa in drie stappen af:</p><ul><li>druk op &lsquo;afsluiten&rsquo; en tel het contante geld in de lade;</li><li>typ het getelde bedrag in en vergelijk het met het bedrag op het scherm;</li><li>lever de sleutel van de lade in bij de teamleider.</li></ul><p>Klopt de kas niet, dus verschilt het getelde geld van het bedrag in het systeem, dan meldt u dat direct. Bij een verschil van meer dan vijf euro vult u samen met de teamleider een kort formulier in.</p>",
+    "questions": [
+      {
+        "prompt": "Wat gebeurt er volgens alinea I als een medewerker drie keer een verkeerde pincode intypt?",
+        "options": [
+          "De pas wordt geblokkeerd en moet door de teamleider worden vrijgegeven.",
+          "De medewerker wordt automatisch afgemeld en kan meteen opnieuw inloggen.",
+          "De medewerker moet bij het hoofdkantoor een nieuwe personeelspas aanvragen."
+        ],
+        "correct": 0,
+        "explanation": "In alinea I staat dat het systeem de pas na drie foute pogingen blokkeert en dat alleen de teamleider hem weer vrijgeeft. Het automatisch afmelden (optie B) gebeurt na vijf minuten zonder gebruik, niet na foute codes."
+      },
+      {
+        "prompt": "Wat staat er in alinea II over een artikel dat de kassa niet herkent?",
+        "options": [
+          "De medewerker vraagt de klant welke prijs bij het artikel hoort.",
+          "De medewerker legt het artikel apart en vraagt om hulp.",
+          "De medewerker typt de prijs van het schapkaartje zelf in."
+        ],
+        "correct": 1,
+        "explanation": "Alinea II zegt dat u het artikel apart legt en op de toets 'hulp' drukt. De prijs zelf invoeren (optie C) is juist verboden, omdat prijzen centraal worden ingevoerd."
+      },
+      {
+        "prompt": "Wat betekent 'de kas klopt niet' in alinea VI?",
+        "options": [
+          "Er zit te weinig wisselgeld in de kassalade.",
+          "De kassalade gaat na het afsluiten niet meer open.",
+          "Het getelde geld en het bedrag in het systeem zijn niet gelijk."
+        ],
+        "correct": 2,
+        "explanation": "In alinea VI wordt de uitdrukking zelf uitgelegd: het getelde geld verschilt van het bedrag in het systeem. Te weinig wisselgeld (optie A) hoort bij het weigeren van grote biljetten in alinea IV."
+      },
+      {
+        "prompt": "Een medewerker vraagt zich af of hij een biljet van 200 euro mag aannemen. In welke alinea vindt hij het antwoord?",
+        "options": [
+          "In alinea II.",
+          "In alinea III.",
+          "In alinea IV.",
+          "In alinea VI."
+        ],
+        "correct": 2,
+        "explanation": "Alinea IV gaat over betalen en zegt dat biljetten van 200 en 500 euro niet worden aangenomen. Alinea III gaat wel over geld, maar alleen over een verschil tussen schapprijs en kassaprijs."
+      },
+      {
+        "prompt": "Een klant ziet dat de prijs op het schapkaartje lager is dan de prijs op het scherm. Welk argument kan zij volgens de tekst gebruiken?",
+        "options": [
+          "De medewerker aan de kassa mag het bedrag direct zelf aanpassen.",
+          "Bij een verschil van meer dan tien euro krijgt zij het artikel gratis.",
+          "Zij hoeft niets te betalen zolang de teamleider er niet is.",
+          "Als het verschil klopt, rekent de winkel de lage prijs van het schap."
+        ],
+        "correct": 3,
+        "explanation": "In alinea III staat dat de winkel de lage prijs rekent als de teamleider het verschil heeft vastgesteld. Het bedrag van tien euro (optie B) gaat alleen over een meldformulier voor het hoofdkantoor."
+      },
+      {
+        "prompt": "Wat is het belangrijkste doel van deze tekst?",
+        "options": [
+          "Klanten informeren over de betaalmogelijkheden aan de kassa.",
+          "Medewerkers uitleggen hoe zij met het kassasysteem en de regels omgaan.",
+          "Teamleiders uitleggen hoe zij een geblokkeerde personeelspas vrijgeven."
+        ],
+        "correct": 1,
+        "explanation": "De tekst is een handleiding voor medewerkers aan de kassa: inloggen, scannen, betalen, leeftijdscontrole en afsluiten. De betaalmogelijkheden (optie A) zijn maar één onderdeel, in alinea IV, en de tekst is niet aan klanten gericht."
+      }
+    ]
+  },
+  {
+    "section": "brief",
+    "title": "Voorlopige aanslag inkomstenbelasting 2025",
+    "intro": "Deze tekst is een brief van de Belastingdienst aan mevrouw El Amrani, die naast haar baan een eigen onderneming heeft. De brief gaat over de voorlopige aanslag inkomstenbelasting voor het jaar 2025.",
+    "body_html": "<p>Belastingdienst<br>Kantoor Meerhoven<br>Postbus 3820<br>5620 AB Meerhoven</p><p>Mevrouw N. el Amrani<br>Lindelaan 47<br>5622 KD Meerhoven</p><p>Datum: 14 februari 2025<br>Betreft: voorlopige aanslag inkomstenbelasting en premie volksverzekeringen 2025<br>Burgerservicenummer: 1234.56.789</p><p><strong>I</strong> Geachte mevrouw El Amrani,<br>U ontvangt deze brief omdat wij voor het jaar 2025 een voorlopige aanslag hebben vastgesteld. Een voorlopige aanslag is een schatting: u betaalt de belasting al tijdens het jaar, en pas na uw aangifte rekenen wij precies af. Wij hebben deze aanslag opgelegd doordat u sinds vorig jaar naast uw baan in loondienst een eigen onderneming hebt. Uw werkgever houdt elke maand loonheffing in op uw salaris, maar over de winst van uw onderneming is nog geen belasting betaald. Zonder voorlopige aanslag zou u dat hele bedrag in één keer moeten betalen nadat u aangifte hebt gedaan.</p><p><strong>II</strong> Voor de berekening hebben wij gebruikgemaakt van de gegevens uit uw aangifte over 2024 en van de wijziging die u in januari hebt doorgegeven. Wij komen daarmee op het volgende overzicht.</p><table><tr><th>Onderdeel</th><th>Bedrag</th></tr><tr><td>Geschat loon uit dienstverband</td><td>€ 28.000</td></tr><tr><td>Geschatte winst uit onderneming</td><td>€ 13.500</td></tr><tr><td>Belasting en premies over het totaal</td><td>€ 12.348</td></tr><tr><td>Al ingehouden loonheffing</td><td>€ 10.500</td></tr><tr><td>Nog te betalen</td><td>€ 1.848</td></tr></table><p><strong>III</strong> U hoeft dit bedrag niet in één keer over te maken. U mag betalen in elf gelijke termijnen van € 168. De eerste termijn moet uiterlijk op 28 februari 2025 op onze rekening staan; daarna volgt elke maand een termijn, telkens op de laatste werkdag van de maand. Wij raden u aan een automatische incasso aan te vragen via Mijn Belastingdienst, zodat u geen betaling vergeet. Kiest u ervoor om zelf over te maken, vermeld dan altijd het betalingskenmerk dat op de acceptgirokaart staat, want anders kunnen wij uw betaling niet aan uw aanslag koppelen.</p><p><strong>Als uw inkomen verandert</strong></p><p><strong>IV</strong> Een schatting klopt zelden precies. Verwacht u dat uw winst hoger of lager wordt, geef die verandering dan zo snel mogelijk door via Mijn Belastingdienst. Een ondernemer die door ziekte enkele maanden veel minder opdrachten kan aannemen, geeft bijvoorbeeld een lagere winst door. Wij passen de aanslag dan aan, waardoor de resterende maandtermijnen lager worden. Ook het omgekeerde is mogelijk: valt uw winst hoger uit, dan verhogen wij de termijnen. Dat is in uw eigen belang, want als u uw inkomen te laag inschat, moet u na uw aangifte bijbetalen. Over dat bedrag brengen wij vanaf 1 juli 2026 belastingrente in rekening. Die rente bedraagt op dit moment 6 procent per jaar.</p><p><strong>V</strong> Bent u het niet eens met deze aanslag, dan kunt u bezwaar maken. Uw bezwaarschrift moet binnen zes weken na de datum van deze brief bij ons binnen zijn. Vermeld daarin duidelijk waarom u het niet eens bent met het vastgestelde bedrag. Let op: een bezwaar schorst de betalingsverplichting niet. U moet de termijnen dus gewoon blijven betalen terwijl wij uw bezwaar behandelen. Alleen als u schriftelijk uitstel van betaling vraagt én wij dat uitstel toekennen, mag u het betwiste deel van het bedrag tijdelijk laten staan.</p><p><strong>VI</strong> Hebt u nog vragen over deze brief, dan kunt u ons bellen op 0800 – 24 24 100. Wij zijn op werkdagen bereikbaar van 08.00 tot 17.00 uur. Houd uw burgerservicenummer bij de hand, zodat onze medewerker uw gegevens direct kan opzoeken. Voor het wijzigen van uw geschatte inkomen hoeft u niet te bellen; dat regelt u zelf online.</p><p>Met vriendelijke groet,<br><br>J. Verhoeven<br>Teamleider Particulieren en ondernemers<br>Belastingdienst, kantoor Meerhoven</p>",
+    "questions": [
+      {
+        "prompt": "Waarom heeft de Belastingdienst voor mevrouw El Amrani een voorlopige aanslag vastgesteld?",
+        "options": [
+          "Omdat haar werkgever te weinig loonheffing op haar salaris heeft ingehouden.",
+          "Omdat over de winst van haar onderneming nog geen belasting is betaald.",
+          "Omdat zij zelf heeft gevraagd om haar aanslag eerder te ontvangen.",
+          "Omdat zij haar aangifte over het jaar 2024 nog niet heeft ingediend."
+        ],
+        "correct": 1,
+        "explanation": "In alinea I staat dat de werkgever wel loonheffing inhoudt, maar dat over de winst van de onderneming nog niets is betaald. Optie A is aantrekkelijk, maar de brief zegt niet dat de werkgever een fout heeft gemaakt."
+      },
+      {
+        "prompt": "Hoe kan mevrouw El Amrani het bedrag van € 1.848 volgens de brief betalen?",
+        "options": [
+          "In elf maandelijkse termijnen van € 168.",
+          "In twaalf maandelijkse termijnen van € 154.",
+          "In één keer, uiterlijk op 28 februari 2025."
+        ],
+        "correct": 0,
+        "explanation": "Alinea III noemt elf gelijke termijnen van € 168. De datum 28 februari geldt alleen voor de eerste termijn, niet voor het hele bedrag."
+      },
+      {
+        "prompt": "Wat wil de Belastingdienst duidelijk maken met het voorbeeld van de ondernemer die door ziekte minder opdrachten heeft?",
+        "options": [
+          "Dat ziekte een goede reden is om uitstel van betaling te vragen.",
+          "Dat een schatting van de winst bijna altijd te hoog uitvalt.",
+          "Dat een wijziging doorgeven kan zorgen voor lagere maandtermijnen."
+        ],
+        "correct": 2,
+        "explanation": "Het voorbeeld in alinea IV laat zien dat de aanslag wordt aangepast, waardoor de resterende termijnen lager worden. Uitstel van betaling hoort bij een bezwaar (alinea V) en staat los van dit voorbeeld."
+      },
+      {
+        "prompt": "In alinea V staat: 'een bezwaar schorst de betalingsverplichting niet'. Wat betekent dat?",
+        "options": [
+          "Het bezwaar wordt pas behandeld als alle termijnen betaald zijn.",
+          "U mag geen bezwaar maken zolang u nog niet hebt betaald.",
+          "U betaalt tijdens de behandeling van het bezwaar de helft van het bedrag.",
+          "U moet blijven betalen, ook al hebt u bezwaar gemaakt."
+        ],
+        "correct": 3,
+        "explanation": "Alinea V legt uit dat de termijnen gewoon doorlopen terwijl het bezwaar wordt behandeld. Alleen bij toegekend uitstel mag het betwiste deel blijven staan; van de helft van het bedrag is nergens sprake."
+      },
+      {
+        "prompt": "Mevrouw El Amrani verwacht dat haar winst dit jaar veel hoger wordt dan geschat. In welke alinea leest zij wat zij dan het beste doet?",
+        "options": [
+          "In alinea II.",
+          "In alinea IV.",
+          "In alinea V."
+        ],
+        "correct": 1,
+        "explanation": "Alinea IV gaat over het doorgeven van een hogere of lagere winst en over de belastingrente bij een te lage schatting. Alinea II geeft alleen de berekening van het huidige bedrag."
+      },
+      {
+        "prompt": "Wat is het belangrijkste doel van deze brief?",
+        "options": [
+          "Mevrouw El Amrani waarschuwen dat zij te weinig belasting betaalt.",
+          "Mevrouw El Amrani uitleggen hoe zij bezwaar kan maken tegen een aanslag.",
+          "Mevrouw El Amrani informeren over een bedrag dat zij vooraf moet betalen."
+        ],
+        "correct": 2,
+        "explanation": "De brief meldt de voorlopige aanslag en legt uit hoe en wanneer het bedrag betaald wordt (alinea's I tot III). De uitleg over bezwaar in alinea V is aanvullende informatie, niet het hoofddoel."
+      }
+    ]
+  }
+]

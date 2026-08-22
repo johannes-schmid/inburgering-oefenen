@@ -37,16 +37,20 @@ export default function AudioPlayer({
 
   const pct = duration > 0 ? (current / duration) * 100 : 0;
 
+  // §7.2b: the audio surface is **always a `primary` card**, so a listening item is recognisable
+  // before a word of it is read. Everything on it takes `on_primary`; the transport disc is the one
+  // `secondary_container` element, and it carries the pressed-coin inner glow of §5.
   return (
     <div
-      className="rounded-2xl bg-surface-container-lowest"
+      className="rounded-2xl relative overflow-hidden"
       style={{
         padding: compact ? '0.75rem 1rem' : '1.125rem 1.25rem',
-        boxShadow: 'var(--shadow-card)',
+        background: 'var(--gradient-brand)',
+        boxShadow: 'var(--shadow-ambient)',
       }}
     >
       {label && (
-        <p className="text-[0.65rem] font-bold uppercase tracking-widest text-on-surface-variant/70 mb-2.5">
+        <p className="text-[0.65rem] font-bold uppercase tracking-widest mb-2.5" style={{ color: 'rgba(255,255,255,0.62)', letterSpacing: '0.12em' }}>
           {label}
         </p>
       )}
@@ -76,16 +80,16 @@ export default function AudioPlayer({
           aria-label={playing ? 'Pauzeer' : 'Speel af'}
           className="exam-audio-play inline-flex items-center justify-center rounded-full border-0 cursor-pointer flex-shrink-0"
           style={{
-            width: 44,
-            height: 44,
-            background: 'var(--gradient-brand)',
-            color: '#fff',
-            boxShadow: 'var(--shadow-card-md)',
+            width: compact ? 44 : 56,
+            height: compact ? 44 : 56,
+            background: 'var(--color-secondary-container)',
+            color: 'var(--color-on-secondary-container)',
+            boxShadow: 'var(--inner-glow), 0 4px 16px rgba(0,0,0,0.20)',
           }}
         >
           {playing
-            ? <Pause size={19} strokeWidth={2.4} aria-hidden />
-            : <Play size={19} strokeWidth={2.4} style={{ marginLeft: 2 }} aria-hidden />}
+            ? <Pause size={compact ? 19 : 22} strokeWidth={2.4} aria-hidden />
+            : <Play size={compact ? 19 : 22} strokeWidth={2.4} style={{ marginLeft: 2 }} aria-hidden />}
         </button>
 
         <IconBtn onClick={() => skip(10)} title="10 seconden vooruit">
@@ -109,8 +113,8 @@ export default function AudioPlayer({
             style={{ '--played': `${pct}%` } as React.CSSProperties}
           />
           <span
-            className="text-xs font-semibold text-on-surface-variant whitespace-nowrap"
-            style={{ fontVariantNumeric: 'tabular-nums' }}
+            className="text-xs font-semibold whitespace-nowrap"
+            style={{ fontVariantNumeric: 'tabular-nums', color: 'rgba(255,255,255,0.75)' }}
           >
             {fmt(current)} / {fmt(duration)}
           </span>
@@ -128,9 +132,12 @@ export default function AudioPlayer({
           appearance: none;
           height: 6px;
           border-radius: 999px;
+          /* On a navy card the unplayed track is on_primary at 28%, not a light neutral: a
+             #e0e3e5 rail on navy reads as a white line drawn across the card. */
           background: linear-gradient(
             to right,
-            #a24000 0%, #fe762c var(--played), #e0e3e5 var(--played), #e0e3e5 100%
+            #a24000 0%, #fe762c var(--played),
+            rgba(255,255,255,0.28) var(--played), rgba(255,255,255,0.28) 100%
           );
           cursor: pointer;
         }
@@ -139,14 +146,14 @@ export default function AudioPlayer({
           width: 15px; height: 15px;
           border-radius: 50%;
           background: #fff;
-          border: 2.5px solid #a24000;
+          box-shadow: 0 0 0 2.5px #fe762c;
           cursor: pointer;
         }
         .exam-audio-range::-moz-range-thumb {
           width: 15px; height: 15px;
           border-radius: 50%;
           background: #fff;
-          border: 2.5px solid #a24000;
+          box-shadow: 0 0 0 2.5px #fe762c;
           cursor: pointer;
         }
         .exam-audio-range:focus-visible { outline: 2px solid var(--color-secondary); outline-offset: 3px; }
@@ -167,19 +174,30 @@ function IconBtn({
   title: string;
   children: React.ReactNode;
 }) {
+  // Glass, not an outlined pill: §2's glass rule, and it drops a 1.5px border the no-line rule
+  // forbids. The visible disc stays 34px and the hit area is padded out with a transparent
+  // outline rather than by growing the disc.
   return (
     <button
       type="button"
       onClick={onClick}
       title={title}
       aria-label={title}
-      className="exam-audio-skip inline-flex items-center justify-center rounded-full cursor-pointer flex-shrink-0 bg-surface-container text-on-surface-variant"
-      style={{ width: 34, height: 34, border: '1.5px solid var(--color-outline-variant)' }}
+      className="exam-audio-skip inline-flex items-center justify-center rounded-full cursor-pointer flex-shrink-0"
+      style={{
+        width: 34, height: 34,
+        background: 'rgba(248,249,251,0.16)',
+        backdropFilter: 'blur(20px)',
+        WebkitBackdropFilter: 'blur(20px)',
+        color: '#fff',
+        outline: '5px solid transparent',
+        outlineOffset: 0,
+      }}
     >
       {children}
       <style>{`
         .exam-audio-skip { transition: transform .16s ease, background-color .16s ease; }
-        .exam-audio-skip:hover { transform: translateY(-1px); }
+        .exam-audio-skip:hover { transform: translateY(-1px); background: rgba(248,249,251,0.26) !important; }
         .exam-audio-skip:active { transform: translateY(0) scale(0.94); }
         .exam-audio-skip:focus-visible { outline: 2px solid var(--color-secondary); outline-offset: 2px; }
         @media (prefers-reduced-motion: reduce) { .exam-audio-skip { transition: none; } }

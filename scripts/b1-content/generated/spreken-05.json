@@ -1,0 +1,266 @@
+[
+  {
+    "title": "Deel 1",
+    "instruction_html": "<p>In dit deel van het examen geeft u korte antwoorden. U leest steeds een korte situatie. Soms hoort u ook iemand die iets tegen u zegt.</p><ul><li>U geeft antwoord in een paar woorden tot twee zinnen. Een lang verhaal is niet nodig.</li><li>U heeft per opgave 20 seconden spreektijd.</li><li>Bij sommige opgaven staat een plaatje. Kijk goed naar dat plaatje en gebruik de informatie die u daarop ziet in uw antwoord.</li><li>Spreek rustig en duidelijk, zodat de ander u goed kan verstaan.</li><li>Let op of u iemand met 'u' of met 'je' moet aanspreken. Dat hangt af van de situatie.</li></ul><p>Veel succes.</p>",
+    "tasks": [
+      {
+        "image_usage": "react",
+        "title": "Vakantieweek ruilen",
+        "prompt": "U werkt bij een schoonmaakbedrijf.\nU heeft in juli een week vakantie aangevraagd.\nEen collega komt naar u toe in de kantine.\n\nLuister naar uw collega en reageer.\nZeg of u wilt ruilen en waarom wel of niet.",
+        "prompt_spoken": "Zeg, jij hebt toch die week in juli vrij? Zou je met mij willen ruilen, want mijn zus gaat dan trouwen.",
+        "voice": "woman_young",
+        "model_answer": "Wat vervelend, dat begrijp ik. Ik wil best ruilen, maar dan moet ik het eerst even met mijn gezin overleggen. Morgen zeg ik het je.",
+        "images": [
+          {
+            "slot": "spreken-5-d1-o1-a",
+            "query": "two cleaning company colleagues talking in staff canteen",
+            "caption": "Collega in de kantine",
+            "variant": 0
+          }
+        ]
+      },
+      {
+        "image_usage": "none",
+        "title": "Grote of kleine werkgever",
+        "prompt": "U zoekt een nieuwe baan.\nU kunt kiezen tussen een groot bedrijf met veel afdelingen\nen een klein bedrijf met acht medewerkers.\n\nVertel welk bedrijf u zou kiezen.\nVertel ook waarom u dat kiest.",
+        "model_answer": "Ik zou voor het kleine bedrijf kiezen. Je kent daar iedereen en je kunt sneller iets vragen. Bij een groot bedrijf voel ik me al gauw een nummer.",
+        "images": []
+      },
+      {
+        "image_usage": "react",
+        "title": "Bezorgen?",
+        "prompt": "U werkt in een winkel in huishoudelijke spullen.\nEen klant heeft een grote wasmand gekocht.\nZij komt bij de kassa staan.\n\nLuister naar de klant en reageer.\nZeg wat er wel of niet mogelijk is.",
+        "prompt_spoken": "Ik krijg dit echt niet op mijn fiets. Kunt u het misschien bij mij thuis bezorgen?",
+        "voice": "woman_older",
+        "model_answer": "Dat kan zeker, mevrouw. Wij bezorgen op dinsdag en donderdag, en dat kost zeven euro vijftig. Zal ik uw adres even noteren?",
+        "images": [
+          {
+            "slot": "spreken-5-d1-o3-a",
+            "query": "customer at shop counter with large laundry basket household store",
+            "caption": "Klant bij de kassa",
+            "variant": 0
+          }
+        ]
+      },
+      {
+        "image_usage": "describe",
+        "title": "Formulier aan de balie",
+        "prompt": "U helpt een vriend bij de balie van de gemeente.\nHij moet een formulier invullen, maar hij leest nog niet goed Nederlands.\n\nKijk naar het plaatje.\nLeg aan uw vriend uit welke gegevens hij op het formulier moet invullen.",
+        "model_answer": "Kijk, hier moet je je voornaam en je achternaam invullen. Daaronder je geboortedatum en je adres. En helemaal onderaan zet je nog een handtekening met de datum.",
+        "images": [
+          {
+            "slot": "spreken-5-d1-o4-a",
+            "query": "blank municipal application form with name address date of birth signature fields",
+            "caption": "Formulier aan de balie",
+            "variant": 0
+          }
+        ]
+      },
+      {
+        "image_usage": "none",
+        "title": "Werkkleding wassen",
+        "prompt": "U werkt in een fabriek.\nU moest uw werkkleding tot nu toe zelf thuis wassen.\nVanaf volgende maand laat het bedrijf de kleding wassen door een wasserij.\n\nVertel wat u van deze verandering vindt.\nVertel ook waarom u dat vindt.",
+        "model_answer": "Ik vind dat een goede verandering. Die kleding is vaak echt vies, en in mijn eigen wasmachine wilde ik dat liever niet. Nu scheelt het mij tijd en waspoeder.",
+        "images": []
+      },
+      {
+        "image_usage": "react",
+        "title": "Gezakt voor de toets",
+        "prompt": "U volgt een beroepsopleiding.\nEen medestudent heeft net zijn cijfer gekregen.\nHij is gezakt en zegt bijna niets meer.\n\nLuister naar uw medestudent en reageer.",
+        "prompt_spoken": "Een vier... En ik had er zo hard voor geleerd. Ik weet niet of ik dit nog wel wil.",
+        "voice": "man_young",
+        "model_answer": "Wat balen, zeg. Ik snap dat je er even helemaal klaar mee bent. Je mag de toets nog een keer doen, en als je wilt, leren we samen.",
+        "images": [
+          {
+            "slot": "spreken-5-d1-o6-a",
+            "query": "disappointed young male student looking at exam result in classroom",
+            "caption": "Medestudent met toetsuitslag",
+            "variant": 0
+          }
+        ]
+      },
+      {
+        "image_usage": "none",
+        "title": "Salaris of vrije dagen",
+        "prompt": "U werkt al drie jaar bij hetzelfde bedrijf.\nUw leidinggevende geeft u een keuze.\nU krijgt vijftig euro netto per maand extra, of vijf extra vrije dagen per jaar.\n\nVertel wat u kiest.\nVertel ook waarom u dat kiest.",
+        "model_answer": "Ik kies voor de vijf vrije dagen. Geld is fijn, maar tijd voor mijn kinderen vind ik belangrijker. Bovendien ben ik zo minder moe aan het eind van het jaar.",
+        "images": []
+      },
+      {
+        "image_usage": "describe",
+        "title": "Boodschappen dragen",
+        "prompt": "U komt bij de supermarkt een oudere mevrouw tegen.\nZij kan haar boodschappen bijna niet dragen.\n\nKijk naar het plaatje.\nBied de mevrouw uw hulp aan en zeg wat u precies voor haar kunt doen.",
+        "model_answer": "Mevrouw, zal ik u even helpen? Die twee tassen zien er zwaar uit. Ik loop wel met u mee naar huis, of ik zet ze in uw fietstas.",
+        "images": [
+          {
+            "slot": "spreken-5-d1-o8-a",
+            "query": "elderly woman struggling with heavy grocery bags outside supermarket",
+            "caption": "Mevrouw met boodschappentassen",
+            "variant": 0
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "title": "Deel 2",
+    "instruction_html": "<p>U gaat nu verder met het tweede deel van het onderdeel Spreken. In dit deel geeft u langere antwoorden dan in het eerste deel. U bouwt een samenhangend verhaal op, waarin u uitlegt, vertelt of adviseert.</p><ul><li>U leest bij elke opgave eerst een korte situatie. Daarna staat er wat u moet doen.</li><li>Bij sommige opgaven hoort u iemand die u een vraag stelt.</li><li>Bij sommige opgaven staan er plaatjes. U moet die plaatjes dan gebruiken in uw antwoord.</li><li>U krijgt vijftien seconden om na te denken over uw antwoord.</li><li>Daarna heeft u dertig seconden om te spreken.</li><li>Geef een volledig antwoord van ongeveer vier tot zeven zinnen en leg steeds uit waarom u iets vindt of doet.</li></ul><p>Spreek rustig en duidelijk, zodat de luisteraar u goed kan volgen.</p>",
+    "tasks": [
+      {
+        "image_usage": "cover_all",
+        "title": "Afspraak huisarts",
+        "prompt": "U werkt bij een taalschool.\nEen cursist is net in Nederland komen wonen.\nHij weet niet hoe hij een afspraak bij de huisarts maakt.\n\nKijk naar de plaatjes.\nLeg hem uit hoe hij een afspraak maakt.\nU moet daarbij alle plaatjes gebruiken.\nU hoort eerst wat de cursist vraagt.",
+        "prompt_spoken": "Ik heb al een week last van mijn keel, maar ik weet niet hoe het hier werkt. Hoe maak ik een afspraak bij de huisarts?",
+        "voice": "man_young",
+        "model_answer": "Kijk, het is niet zo moeilijk. Je zoekt eerst een huisarts bij jou in de buurt en dan schrijf je je daar in. Daarna bel je 's ochtends de praktijk, het liefst tussen acht en tien uur. De assistente vraagt dan wat je klachten zijn en hoelang je die al hebt. Zeg gewoon eerlijk dat je keelpijn hebt, want dan kan zij bepalen hoe snel je moet komen. Je krijgt meestal dezelfde dag nog een tijd, en dan ga je op dat tijdstip naar het spreekuur van de dokter. Vergeet je identiteitsbewijs en je verzekeringspas niet.",
+        "images": [
+          {
+            "slot": "spreken-5-d2-o1-a",
+            "query": "person searching for local doctor practice on laptop website",
+            "caption": "Huisarts in de buurt zoeken",
+            "variant": 0
+          },
+          {
+            "slot": "spreken-5-d2-o1-b",
+            "query": "woman calling on phone with notepad at home morning",
+            "caption": "Bellen met de praktijk",
+            "variant": 1
+          },
+          {
+            "slot": "spreken-5-d2-o1-c",
+            "query": "patient talking with general practitioner in consultation room",
+            "caption": "Op het spreekuur",
+            "variant": 2
+          }
+        ]
+      },
+      {
+        "image_usage": "none",
+        "title": "Droomberoep",
+        "prompt": "U praat met een vriendin over werk.\nZij zegt dat veel mensen hun baan alleen doen voor het geld.\nZij is benieuwd wat u zou doen als geld geen rol speelde.\n\nVertel welk beroep u dan zou kiezen.\nVertel ook waarom u juist dat beroep zou kiezen.",
+        "prompt_spoken": "Stel je voor dat je genoeg geld hebt en niet meer hoeft te werken voor je inkomen. Welk beroep zou jij dan kiezen?",
+        "voice": "woman_young",
+        "model_answer": "Als geld niet belangrijk was, zou ik denk ik meester worden op een basisschool. Ik vind het leuk om iets uit te leggen en om kinderen te zien groeien. In mijn huidige baan zit ik vooral achter de computer, terwijl ik eigenlijk veel liever met mensen werk. Het salaris van een leerkracht is niet heel hoog, dus nu durf ik die stap niet te zetten. Maar ik zou het echt zinvol werk vinden, omdat je kinderen iets meegeeft voor later. Misschien ga ik het over een paar jaar toch nog proberen.",
+        "images": []
+      },
+      {
+        "image_usage": "cover_all",
+        "title": "Verhuisdag kantoor",
+        "prompt": "U werkt op een klein kantoor van een verzekeringsbedrijf.\nVolgende week verhuist het kantoor naar een ander gebouw.\nEen nieuwe collega was op de informatiebijeenkomst niet aanwezig.\n\nKijk naar de plaatjes.\nVertel haar wat er op de dag van de verhuizing gebeurt.\nU moet daarbij alle plaatjes gebruiken.\nU hoort eerst wat uw collega vraagt.",
+        "prompt_spoken": "Ik was er dinsdag niet bij. Wat gebeurt er eigenlijk allemaal op de dag van de verhuizing?",
+        "voice": "woman_older",
+        "model_answer": "Het gaat zo: 's ochtends pakt iedereen eerst zijn eigen bureau in. Je krijgt een doos en daar plak je een sticker op met je naam en je nieuwe kamernummer. Rond tien uur komen de verhuizers en die laden alle dozen en de kasten in de vrachtwagen. Wij hoeven dan zelf niets zwaars te tillen, want dat doen zij. In het nieuwe pand krijgen we een rondleiding, zodat je weet waar de kantine en de fietsenstalling zijn. Daarna zoek je je eigen doos op en ruim je je nieuwe werkplek in.",
+        "images": [
+          {
+            "slot": "spreken-5-d2-o3-a",
+            "query": "office worker packing cardboard box with labels at desk",
+            "caption": "Dozen inpakken en labelen",
+            "variant": 0
+          },
+          {
+            "slot": "spreken-5-d2-o3-b",
+            "query": "movers loading boxes into moving truck outside office building",
+            "caption": "Verhuizers laden de wagen",
+            "variant": 1
+          },
+          {
+            "slot": "spreken-5-d2-o3-c",
+            "query": "group of employees getting tour in new empty office",
+            "caption": "Rondleiding nieuw pand",
+            "variant": 2
+          }
+        ]
+      },
+      {
+        "image_usage": "choose",
+        "title": "Sportabonnement",
+        "prompt": "Uw buurvrouw wil met haar man en twee kinderen gaan sporten.\nZij twijfelt tussen twee abonnementen in de buurt.\nZij vraagt u om advies.\n\nKijk naar de twee plaatjes.\nAdviseer haar welk abonnement zij moet kiezen.\nNoem minstens twee redenen voor uw keuze.",
+        "prompt_spoken": "We willen als gezin meer bewegen, maar ik weet niet wat handiger is. Wat zou jij ons aanraden?",
+        "voice": "woman_older",
+        "model_answer": "Ik zou als ik jou was voor het zwembad kiezen. Het grootste voordeel is dat jullie er samen naartoe kunnen, want er is een apart bad voor de kinderen. Zij leren er goed zwemmen en jij kunt tegelijk banen trekken. Bij de sportschool moeten kinderen vaak twaalf jaar of ouder zijn, dus dan sta jij met twee kinderen buiten. Bovendien is een gezinsabonnement voor het zwembad meestal goedkoper dan vier losse abonnementen. En zwemmen kun je het hele jaar door doen, ook als het regent.",
+        "images": [
+          {
+            "slot": "spreken-5-d2-o4-a",
+            "query": "family swimming pool with children and parents indoor",
+            "caption": "Gezinsabonnement zwembad",
+            "variant": 0
+          },
+          {
+            "slot": "spreken-5-d2-o4-b",
+            "query": "modern gym fitness centre with cardio machines",
+            "caption": "Abonnement sportschool",
+            "variant": 1
+          }
+        ]
+      },
+      {
+        "image_usage": "cover_all",
+        "title": "Levering controleren",
+        "prompt": "U werkt in het magazijn van een groothandel in kantoorartikelen.\nEen nieuwe collega neemt vandaag voor het eerst een levering aan.\nHij weet niet precies wat hij moet controleren.\n\nKijk naar de plaatjes.\nLeg hem uit hoe hij een levering moet controleren.\nU moet daarbij alle plaatjes gebruiken.\nU hoort eerst wat uw collega vraagt.",
+        "prompt_spoken": "Straks komt die vrachtwagen en dan sta ik er alleen voor. Wat moet ik precies doen als de spullen binnenkomen?",
+        "voice": "man_young",
+        "model_answer": "Doe het rustig, stap voor stap. Je pakt eerst de pakbon en dan tel je de dozen en kijk je of het aantal klopt met wat erop staat. Daarna maak je een paar dozen open en controleer je of de artikelnummers goed zijn en of er niets beschadigd is. Zie je een deuk of een gebroken doos, maak dan meteen een foto. Klopt alles, dan zet je je handtekening op de pakbon en geef je de chauffeur zijn exemplaar terug. Klopt er iets niet, dan schrijf je dat erbij en meld je het bij mij of bij de teamleider.",
+        "images": [
+          {
+            "slot": "spreken-5-d2-o5-a",
+            "query": "warehouse worker counting boxes with delivery note clipboard",
+            "caption": "Dozen tellen met pakbon",
+            "variant": 0
+          },
+          {
+            "slot": "spreken-5-d2-o5-b",
+            "query": "worker opening cardboard box inspecting damaged goods warehouse",
+            "caption": "Inhoud en schade controleren",
+            "variant": 1
+          },
+          {
+            "slot": "spreken-5-d2-o5-c",
+            "query": "man signing delivery document for truck driver at loading dock",
+            "caption": "Pakbon ondertekenen",
+            "variant": 2
+          }
+        ]
+      },
+      {
+        "image_usage": "none",
+        "title": "Telefoon voor kinderen",
+        "prompt": "Op de ouderavond van een basisschool gaat het over mobiele telefoons.\nSteeds meer kinderen krijgen al op jonge leeftijd een eigen telefoon.\nEen andere ouder wil weten hoe u daarover denkt.\n\nVertel wat u ervan vindt.\nLeg ook uit waarom u dat vindt.",
+        "prompt_spoken": "Mijn dochter van acht vraagt elke dag om een telefoon. Wat vind jij daar nou van?",
+        "voice": "man_older",
+        "model_answer": "Ik vind acht jaar echt te jong, eerlijk gezegd. Zo'n kind kan nog niet goed inschatten wat het allemaal ziet op internet, en daar maak ik me zorgen over. Ook merk ik dat kinderen met een telefoon minder buiten spelen en slechter slapen. Aan de andere kant snap ik ouders wel die hun kind bereikbaar willen hebben als het alleen naar school fietst. Daarom zou ik zelf wachten tot groep acht en dan duidelijke afspraken maken. Bijvoorbeeld geen telefoon aan tafel en 's avonds de telefoon beneden laten liggen.",
+        "images": []
+      },
+      {
+        "image_usage": "choose",
+        "title": "Vakantie met vrienden",
+        "prompt": "U gaat volgend jaar met een groep van acht vrienden op vakantie.\nDe groep bestaat uit stellen met kinderen en twee mensen die alleen komen.\nDe organisator twijfelt tussen twee bestemmingen.\n\nKijk naar de twee plaatjes.\nAdviseer welke bestemming beter is voor de groep.\nNoem minstens twee redenen voor uw keuze.",
+        "prompt_spoken": "Ik moet volgende week boeken, anders is alles vol. Welke van de twee lijkt jou beter voor onze groep?",
+        "voice": "woman_young",
+        "model_answer": "Ik zou voor het huis aan zee kiezen en niet voor de wandelvakantie in de bergen. Aan het strand kan iedereen zijn eigen ding doen, terwijl je 's avonds toch samen eet. De kinderen kunnen de hele dag in het zand en in het water spelen, dus die vervelen zich niet. In de bergen moet je elke dag stevig lopen, en dat is voor de kleintjes echt te zwaar. Bovendien is een huis aan zee vaak goedkoper als je het met acht personen deelt. En als het regent, kunnen we altijd nog een dagje naar de stad.",
+        "images": [
+          {
+            "slot": "spreken-5-d2-o7-a",
+            "query": "large holiday house by the sea with beach and dunes",
+            "caption": "Vakantiehuis aan zee",
+            "variant": 0
+          },
+          {
+            "slot": "spreken-5-d2-o7-b",
+            "query": "group hiking in mountains with backpacks alpine trail",
+            "caption": "Wandelvakantie in de bergen",
+            "variant": 1
+          }
+        ]
+      },
+      {
+        "image_usage": "none",
+        "title": "Nederlands leren",
+        "prompt": "U volgt een cursus Nederlands.\nEen medecursist vindt het lastig om de taal buiten de les te oefenen.\nHij vraagt hoe u dat aanpakt.\n\nVertel hoe u zelf het beste Nederlands leert.\nLeg ook uit waarom die manier voor u goed werkt.",
+        "prompt_spoken": "In de les gaat het wel, maar daarna doe ik eigenlijk niets meer met de taal. Hoe leer jij het beste Nederlands?",
+        "voice": "man_young",
+        "model_answer": "Voor mij werkt praten het allerbeste, ook al maak ik nog veel fouten. Ik probeer elke dag een kort gesprekje te voeren, bijvoorbeeld met de buurvrouw of bij de bakker. Verder kijk ik 's avonds het jeugdjournaal, omdat ze daar rustig en duidelijk spreken. Nieuwe woorden schrijf ik op in een klein boekje en die herhaal ik in de bus naar mijn werk. Alleen grammatica leren uit een boek helpt mij niet zo, want dan vergeet ik het snel weer. Je moet gewoon durven, denk ik, want daar leer je het meest van.",
+        "images": []
+      }
+    ]
+  }
+]

@@ -1,0 +1,224 @@
+[
+  {
+    "task_type": "sentence_completion",
+    "title": "Grofvuil laten ophalen",
+    "prompt_html": "<p>U woont sinds kort in een appartement in Zwolle. U hebt een oude bank en een kapotte kast die u kwijt wilt, maar u weet niet hoe het ophalen van grofvuil in uw gemeente werkt. U stuurt een mail naar de afdeling Afval en Reiniging van de gemeente.</p>",
+    "email_to": "afval@gemeente-zwolle-info.nl",
+    "email_subject": "Ophalen van grofvuil",
+    "greeting": "Geachte heer, mevrouw,\n\nIk woon sinds 1 maart aan de Bergstraat 42 in Zwolle. In mijn woning staan nog een oude bank en een kapotte kast die ik niet zelf kan wegbrengen, omdat ik geen auto heb. Ik wil graag weten …",
+    "closing": "Ik hoor graag van u.\n\nMet vriendelijke groet,\nAnisa Berrada",
+    "model_answer": "wat ik moet doen om deze grote spullen te laten ophalen. Kan ik een afspraak maken voor een vaste dag, en moet ik daarvoor betalen? Ook hoor ik graag of ik de bank en de kast op de stoep mag zetten of dat ze binnen moeten blijven staan."
+  },
+  {
+    "task_type": "sentence_completion",
+    "title": "Dienst overnemen",
+    "prompt_html": "<p>U werkt als verzorgende in woonzorgcentrum De Lindehof. Volgende week donderdag hebt u avonddienst, maar u moet die dag met uw zoon naar het ziekenhuis. U mailt uw collega Samira, die vaak diensten ruilt.</p>",
+    "email_to": "s.elhaddad@lindehof-zorg.nl",
+    "email_subject": "Vraag over donderdag 14 mei",
+    "greeting": "Hoi Samira,\n\nIk sta donderdag 14 mei ingepland voor de avonddienst op afdeling twee. Nu blijkt dat mijn zoon die middag in het ziekenhuis moet zijn en ik kan hem niet alleen laten gaan. Daarom wil ik je vragen …",
+    "closing": "Laat je even weten of het lukt?\n\nGroetjes,\nMartina",
+    "model_answer": "of jij mijn dienst die avond kunt overnemen. Ik weet dat je die week vrij bent op donderdag, maar misschien kun je toch ruilen. Ik neem graag jouw zaterdagdienst van 23 mei over, zodat je er niets bij inschiet."
+  },
+  {
+    "task_type": "sentence_completion",
+    "title": "Nieuwe cursus fietsen",
+    "prompt_html": "<p>U bent vrijwilliger bij wijkcentrum De Molenhoek. Vanaf september start er een nieuwe cursus fietsen voor beginners, vooral bedoeld voor buurtbewoners die nooit hebben leren fietsen. U schrijft een bericht voor de website van het wijkcentrum.</p>",
+    "greeting": "Nieuw in De Molenhoek: cursus fietsen voor beginners\n\nVeel mensen in onze wijk gebruiken de bus of lopen, omdat ze nooit hebben leren fietsen. Daarom starten wij in september met iets nieuws …",
+    "closing": "Wil je meedoen? Meld je dan voor 25 augustus aan bij de balie van het wijkcentrum.\n\nHartelijke groet,\nhet team van De Molenhoek",
+    "model_answer": "namelijk een cursus fietsen voor beginners. De lessen zijn elke woensdagmiddag van 14.00 tot 15.30 uur op het plein achter het wijkcentrum, en je kunt gratis een fiets van ons lenen. De cursus duurt tien weken en kost 20 euro, inclusief koffie en thee na de les."
+  },
+  {
+    "task_type": "sentence_completion",
+    "title": "Product weer leverbaar",
+    "prompt_html": "<p>U werkt bij de klantenservice van webwinkel Meubelhuis Koster. Een klant, mevrouw Van Dijk, heeft twee weken geleden gevraagd wanneer de eetkamerstoel Nova weer te koop is. De stoel is nu weer op voorraad en u mailt haar.</p>",
+    "email_to": "j.vandijk@postnetmail.nl",
+    "email_subject": "Eetkamerstoel Nova weer op voorraad",
+    "greeting": "Beste mevrouw Van Dijk,\n\nTwee weken geleden vroeg u wanneer onze eetkamerstoel Nova weer leverbaar zou zijn. Ik heb goed nieuws voor u …",
+    "closing": "Hebt u nog vragen, dan kunt u mij altijd bellen.\n\nMet vriendelijke groet,\nRoy Wielinga\nKlantenservice Meubelhuis Koster",
+    "model_answer": "De stoel is sinds gisteren weer op voorraad, in de kleuren grijs en donkerblauw. De prijs is nog steeds 89 euro per stuk en wij bezorgen binnen vijf werkdagen bij u thuis. Omdat u zo lang hebt gewacht, betaalt u geen verzendkosten als u deze maand besteldeert."
+  },
+  {
+    "task_type": "sentence_completion",
+    "title": "Uitleg over opdracht",
+    "prompt_html": "<p>U volgt de opleiding Administratief Medewerker aan het Regiocollege Oostvaart. Voor het vak Bedrijfsadministratie moet u een opdracht over facturen inleveren, maar u begrijpt niet goed wat er precies van u gevraagd wordt. U mailt uw docent, meneer Peters.</p>",
+    "email_to": "h.peters@regiocollege-oostvaart.nl",
+    "email_subject": "Vraag over opdracht 4, facturen",
+    "greeting": "Beste meneer Peters,\n\nIk zit in klas AM2 en ik werk deze week aan opdracht 4 over het controleren van facturen. Ik heb de opdracht al twee keer gelezen, maar toch is een aantal dingen mij niet duidelijk …",
+    "closing": "Zou u mij hierover meer kunnen vertellen?\n\nMet vriendelijke groet,\nOleksandr Kovalenko",
+    "model_answer": "In de opdracht staat dat wij vijf facturen moeten beoordelen, maar er wordt niet uitgelegd of wij daar een verslag bij moeten schrijven. Ook weet ik niet of wij het rekenschema uit hoofdstuk 3 moeten gebruiken of het schema van uw presentatie. Verder hoor ik graag of ik de opdracht alleen moet maken of samen met een medestudent."
+  },
+  {
+    "task_type": "sentence_completion",
+    "title": "Kapotte geiser melden",
+    "prompt_html": "<p>U huurt een woning van verhuurbedrijf Woonbeheer Sterrenveld. Sinds gisteren komt er in de badkamer geen warm water meer uit de kraan. U stuurt een mail naar de afdeling onderhoud.</p>",
+    "email_to": "onderhoud@woonbeheer-sterrenveld.nl",
+    "email_subject": "Storing warm water, Kastanjelaan 17B",
+    "greeting": "Geachte heer, mevrouw,\n\nIk huur van u de woning aan de Kastanjelaan 17B in Apeldoorn. Ik wil graag een storing bij u melden …",
+    "closing": "Kunt u mij laten weten wanneer er een monteur kan komen?\n\nMet vriendelijke groet,\nFatima Ouali",
+    "model_answer": "Sinds gisterenmiddag komt er in de badkamer en in de keuken geen warm water meer uit de kraan, terwijl het koude water gewoon werkt. De geiser maakt bovendien een hard tikkend geluid als ik hem aanzet. Omdat ik twee jonge kinderen heb, is dit een groot probleem en ik hoop dat het snel gemaakt kan worden."
+  },
+  {
+    "task_type": "sentence_completion",
+    "title": "Ervaringen avondopleiding",
+    "prompt_html": "<p>U werkt als monteur en wilt zich graag omscholen. U denkt aan de avondopleiding Elektrotechniek bij een opleidingscentrum in uw regio, maar u twijfelt of u dat kunt combineren met uw baan. U plaatst een bericht op een forum voor werkende studenten.</p>",
+    "greeting": "Wie volgt de avondopleiding Elektrotechniek?\n\nIk werk vier dagen per week als monteur en ik wil volgend jaar beginnen aan de avondopleiding Elektrotechniek. Toch twijfel ik nog, en daarom zoek ik mensen die deze opleiding al doen …",
+    "closing": "Alle tips zijn welkom, alvast bedankt!\n\nGroet,\nDennis",
+    "model_answer": "Ik zou graag willen weten hoeveel uur je per week thuis moet studeren naast de lessen. Ook ben ik nieuwsgierig of het lukt om de opleiding af te maken als je een gezin hebt en soms in de avond moet overwerken. En weet iemand of je werkgever mee moet betalen aan het lesgeld of dat je dat zelf regelt?"
+  },
+  {
+    "task_type": "sentence_completion",
+    "title": "Ideeën voor teamdag",
+    "prompt_html": "<p>U werkt op de afdeling Planning bij transportbedrijf Van Elzen en u zit in de commissie voor de jaarlijkse teamdag. De teamdag is op vrijdag 12 oktober en de commissie heeft nog geen programma. U stuurt een mail aan alle collega's van de afdeling.</p>",
+    "email_to": "planning@vanelzen-transport.nl",
+    "email_subject": "Teamdag 12 oktober: stuur je ideeën",
+    "greeting": "Beste collega's,\n\nOp vrijdag 12 oktober hebben wij onze jaarlijkse teamdag. De commissie heeft de locatie al geregeld, maar het programma is nog helemaal leeg. Daarom vragen wij jullie …",
+    "closing": "Wij maken van de beste voorstellen een programma en laten dat in september weten.\n\nMet vriendelijke groet,\nde teamdagcommissie",
+    "model_answer": "om ideeën voor de dag naar ons te sturen. Denk aan een activiteit in de buitenlucht, een workshop of een spel waarbij we elkaar beter leren kennen. Wij horen graag voor 1 september van jullie, zodat wij nog genoeg tijd hebben om alles te boeken."
+  },
+  {
+    "task_type": "email",
+    "title": "Achterstallig onderhoud",
+    "prompt_html": "<p>U woont sinds twee jaar in een huurwoning aan de Meidoornstraat 48 in Zwolle. U huurt de woning van verhuurbedrijf Woonzorg Vechtdal. In de woning zijn een paar problemen die niet opgelost worden. De kraan in de keuken lekt al drie maanden en in de badkamer zit een vochtplek op het plafond. U heeft twee keer gebeld met de afdeling onderhoud, maar er is nog niemand langs geweest.</p><p>U schrijft een e-mail aan mevrouw De Bruin, de medewerker onderhoud van Woonzorg Vechtdal. U mag de informatie zelf verzinnen.</p><p><strong>Opdracht</strong></p><p>Schrijf een e-mail aan uw verhuurder. Behandel alle punten die hieronder staan. Schrijf ongeveer 150 tot 200 woorden.</p><p>Het doel van de tekst is uw verhuurder overtuigen dat het onderhoud snel uitgevoerd moet worden en een concrete afspraak krijgen over de reparatie.</p>",
+    "bullet_points": [
+      "U schrijft waarom u deze e-mail stuurt en noemt uw adres.",
+      "U beschrijft welke twee problemen er in de woning zijn.",
+      "U legt uit wat u al gedaan heeft om de problemen te melden.",
+      "U legt uit waarom de reparatie voor u belangrijk is en noemt minimaal twee redenen.",
+      "U vraagt om een concrete afspraak en noemt wanneer u thuis kunt zijn.",
+      "U schrijft wat u gaat doen als u geen reactie krijgt."
+    ],
+    "email_to": "onderhoud@woonzorgvechtdal.nl",
+    "email_subject": "Onderhoud Meidoornstraat 48, Zwolle",
+    "greeting": "Geachte mevrouw De Bruin,",
+    "closing": "Met vriendelijke groet,",
+    "model_answer": "Ik schrijf u omdat er in mijn huurwoning aan de Meidoornstraat 48 in Zwolle twee problemen zijn die nog niet opgelost zijn. Ik huur deze woning sinds twee jaar van uw bedrijf.\n\nHet eerste probleem is de kraan in de keuken. Die lekt al drie maanden, waardoor er steeds water op de vloer staat. Het tweede probleem is een grote vochtplek op het plafond van de badkamer. De plek wordt elke maand groter en het ruikt er vochtig.\n\nIk heb de problemen op 3 februari en op 24 februari telefonisch gemeld bij uw afdeling onderhoud. Beide keren kreeg ik te horen dat een monteur contact met mij zou opnemen, maar er is nog niemand langs geweest.\n\nDe reparatie is belangrijk voor mij, omdat mijn waterrekening steeds hoger wordt door de lekkende kraan. Daarnaast heeft mijn dochter van vier astma en vocht in huis is slecht voor haar gezondheid.\n\nWilt u mij daarom een afspraak sturen voor een bezoek van de monteur? Ik ben op maandag en woensdag de hele dag thuis, en verder na 17.00 uur. Als ik binnen twee weken geen reactie krijg, neem ik contact op met de Huurcommissie."
+  },
+  {
+    "task_type": "form",
+    "title": "Aanmelding cursus",
+    "prompt_html": "<p>U werkt sinds twee jaar bij een thuiszorgorganisatie in Apeldoorn. Uw werkgever biedt de cursus <em>Communiceren met cliënten</em> aan. De cursus duurt tien avonden en wordt gegeven door opleidingsinstituut De Kleine Beek. Er zijn twintig plaatsen, maar er zijn meer aanmeldingen dan plaatsen. Daarom kijkt de cursusleiding naar de motivatie van de deelnemers.</p><p>U vult het digitale aanmeldformulier in. Uw naam en uw e-mailadres zijn al ingevuld. Bij de andere vragen schrijft u zelf een antwoord van enkele zinnen. U legt bij iedere vraag ook uit waarom.</p><p><strong>Opdracht</strong></p><p>Vul het aanmeldformulier hieronder in. Beantwoord alle open vragen met hele zinnen en geef bij elk antwoord een uitleg of een voorbeeld. Maak ook de keuze over de cursusdagen. U mag de informatie zelf verzinnen.</p><p>Het doel van de tekst is de cursusleiding zo goed te informeren over uw motivatie en uw situatie, dat zij kan besluiten u een plaats in de cursus te geven.</p>",
+    "email_to": "",
+    "email_subject": "",
+    "greeting": "",
+    "closing": "",
+    "model_answer": "1. Ik werk als verzorgende bij een thuiszorgorganisatie. Ik kom elke dag bij ongeveer zes cliënten thuis. Ik help hen met wassen, aankleden en medicijnen, maar ik praat ook veel met hen. Daarom is goed communiceren voor mij belangrijk.\n\n2. Ik wil deze cursus volgen, omdat ik soms moeite heb met moeilijke gesprekken. Een cliënt was vorige maand boos, omdat ik later kwam dan afgesproken. Ik wist toen niet goed wat ik moest zeggen. Ik wil leren hoe ik rustig blijf en hoe ik zo'n gesprek beter voer. Een tweede reden is dat ik meer wil samenwerken met de familie van cliënten, want die stelt vaak veel vragen.\n\n3. Ik ben goed in luisteren en ik heb geduld. Mijn collega's vragen mij vaak om mee te gaan naar een nieuwe cliënt, omdat ik snel contact maak. Wat ik nog moet leren, is duidelijk 'nee' zeggen. Ik neem soms te veel taken over, waardoor ik zelf te weinig tijd heb.\n\n4. Ik wil na de cursus rustiger reageren als iemand ontevreden is. Ook wil ik beter uitleggen wat ik wel en niet kan doen binnen mijn werktijd. Ik denk dat mijn cliënten zich dan veiliger voelen, terwijl ik zelf minder stress heb.\n\n5. Ik kan de cursus goed combineren met mijn werk, hoewel ik onregelmatige diensten heb. Ik werk drie dagen per week en ik heb met mijn teamleider afgesproken dat ik op cursusavonden geen late dienst krijg. Mijn buurvrouw kan op mijn dochter passen, zodat ik altijd op tijd aanwezig kan zijn.\n\n6. Ik wil na de cursus mijn kennis delen in het teamoverleg. Wij hebben elke maand een vergadering en daar kan ik vertellen wat ik geleerd heb. Ik zou ook graag een korte lijst met tips maken voor nieuwe collega's, omdat zij vaak onzeker zijn in het eerste gesprek met een cliënt.",
+    "form_schema": {
+      "sections": [
+        {
+          "heading": "Gegevens deelnemer",
+          "rows": [
+            {
+              "kind": "static",
+              "label": "Naam",
+              "value": "Amina Yıldız"
+            },
+            {
+              "kind": "static",
+              "label": "E-mailadres",
+              "value": "a.yildiz@thuiszorgdevoorde.nl"
+            },
+            {
+              "kind": "choice",
+              "label": "Op welke avonden kunt u aanwezig zijn?",
+              "options": [
+                "maandagavond",
+                "woensdagavond",
+                "donderdagavond"
+              ],
+              "multiple": true
+            }
+          ]
+        },
+        {
+          "heading": "Open vragen over uw motivatie",
+          "rows": [
+            {
+              "kind": "text",
+              "label": "1. Wat is uw huidige werk of opleiding? Leg ook uit welke rol communicatie daarin heeft.",
+              "placeholder": "Schrijf enkele zinnen."
+            },
+            {
+              "kind": "text",
+              "label": "2. Waarom wilt u deze cursus volgen? Noem minimaal twee redenen en leg ze uit met een voorbeeld.",
+              "placeholder": "Schrijf enkele zinnen."
+            },
+            {
+              "kind": "text",
+              "label": "3. Waar bent u al goed in en wat wilt u nog leren? Leg ook uit waarom u dat vindt.",
+              "placeholder": "Schrijf enkele zinnen."
+            },
+            {
+              "kind": "text",
+              "label": "4. Wat wilt u na de cursus anders doen in uw werk? Leg ook uit wat dat oplevert voor uw cliënten.",
+              "placeholder": "Schrijf enkele zinnen."
+            },
+            {
+              "kind": "text",
+              "label": "5. Hoe combineert u de cursus met uw werk en uw privéleven? Leg ook uit welke afspraken u gemaakt hebt.",
+              "placeholder": "Schrijf enkele zinnen."
+            },
+            {
+              "kind": "text",
+              "label": "6. Hoe deelt u uw kennis later met uw collega's? Leg ook uit waarom dat nuttig is.",
+              "placeholder": "Schrijf enkele zinnen."
+            }
+          ]
+        }
+      ]
+    }
+  },
+  {
+    "task_type": "picture_report",
+    "title": "Verslag meeloopdag tuincentrum",
+    "prompt_html": "<p>U volgt een opleiding tot medewerker groen en verkoop bij het Regionaal Opleidingscentrum De Waterlinie. Op woensdag 12 maart heeft u een dag meegelopen bij tuincentrum Groenveld in Zwolle, omdat u wilt weten of dit werk bij u past.</p><p>Uw docent, mevrouw Verhoeven, vraagt alle studenten om na de meeloopdag een verslag te schrijven. Zij bewaart de verslagen in uw opleidingsdossier en bespreekt ze in de les.</p><p>Bij deze opdracht staan drie foto's. De foto's laten zien hoe uw dag verlopen is. U gebruikt alle drie de foto's in uw verslag en houdt de goede volgorde aan. De foto's worden niet bij uw verslag gevoegd, waardoor mevrouw Verhoeven alleen uw tekst leest. Uw verslag moet dus ook zonder de foto's helemaal te begrijpen zijn.</p><p><strong>Opdracht</strong></p><p>Schrijf een verslag van ongeveer 200 woorden over uw meeloopdag bij het tuincentrum. U schrijft in de u-vorm aan uw docent. U mag de informatie zelf verzinnen.</p><p>Het doel van de tekst is uw docent duidelijk en volledig informeren over het verloop van uw meeloopdag en over wat u daarvan geleerd heeft.</p>",
+    "bullet_points": [
+      "U vertelt wanneer en waar u heeft meegelopen en met welke reden u dat gedaan heeft.",
+      "U beschrijft wat u aan het begin van de dag gedaan heeft, bijvoorbeeld bij de plantenafdeling.",
+      "U beschrijft wat u daarna gedaan heeft, toen u een medewerker bij het werk met klanten mocht helpen.",
+      "U beschrijft wat u aan het einde van de dag gedaan heeft, bij de kassa of in de winkel.",
+      "U legt uit wat u die dag geleerd heeft en welk onderdeel u moeilijk vond.",
+      "U schrijft of u later in een tuincentrum wilt werken en u geeft daar minimaal twee redenen voor."
+    ],
+    "email_to": "mevrouw Verhoeven, docent opleiding groen en verkoop",
+    "email_subject": "Verslag meeloopdag tuincentrum Groenveld",
+    "greeting": "Geachte mevrouw Verhoeven,",
+    "closing": "Met vriendelijke groet,\nSamira El Amrani",
+    "model_answer": "Geachte mevrouw Verhoeven,\n\nHierbij stuur ik u het verslag van mijn meeloopdag. Ik heb op woensdag 12 maart een hele dag meegelopen bij tuincentrum Groenveld in Zwolle. Ik heb dit gedaan omdat ik wil weten of het werk in een tuincentrum bij mij past.\n\nOm acht uur begon ik op de plantenafdeling. Samen met een medewerker heb ik nieuwe planten uitgeladen en op de tafels gezet. Ook heb ik alle planten water gegeven en de dode bladeren weggehaald. Ik moest goed opletten, want sommige planten mogen weinig water hebben.\n\nRond elf uur mocht ik meelopen met Bram, een vaste verkoper. Hij hielp klanten die vragen hadden over hun tuin. Ik heb naar zijn uitleg geluisterd en later zelf een mevrouw geholpen die een plant voor de schaduw zocht.\n\nAan het einde van de middag stond ik bij de kassa. Ik heb geleerd hoe ik artikelen scan en hoe ik de klant vriendelijk groet. Het rekenen ging goed, hoewel ik het moeilijk vond als er veel mensen in de rij stonden.\n\nIk heb veel geleerd over planten en over klantcontact. Ik wil later graag in een tuincentrum werken, omdat ik het fijn vind om met mijn handen te werken. Bovendien vind ik het leuk om klanten advies te geven.\n\nMet vriendelijke groet,\nSamira El Amrani",
+    "images": [
+      {
+        "slot": "schrijven-3-o11-p1",
+        "query": "garden center worker watering plants on display tables morning",
+        "caption": "Planten water geven",
+        "variant": 0
+      },
+      {
+        "slot": "schrijven-3-o11-p2",
+        "query": "garden center employee advising customer about plants indoors",
+        "caption": "Klant helpen",
+        "variant": 1
+      },
+      {
+        "slot": "schrijven-3-o11-p3",
+        "query": "garden center cash register employee scanning products",
+        "caption": "Werken bij de kassa",
+        "variant": 2
+      }
+    ]
+  },
+  {
+    "task_type": "letter",
+    "title": "Sollicitatiebrief winkelmedewerker",
+    "prompt_html": "<p>U woont in Zwolle en u zoekt werk. In een plaatselijke krant staat een advertentie van modewinkel De Blauwe Roos. De winkel zoekt een winkelmedewerker voor 20 uur per week. In de advertentie staat dat u ervaring met klanten moet hebben en dat u ook op zaterdag kunt werken. Sollicitaties gaan per brief naar de bedrijfsleider, mevrouw De Wit.</p><p>U wilt graag op deze baan solliciteren, omdat u nu maar acht uur per week werkt en meer uren nodig heeft.</p><p><strong>Gegevens van de winkel</strong><br>Modewinkel De Blauwe Roos<br>Mevrouw K. de Wit, bedrijfsleider<br>Steenstraat 42<br>8011 KP Zwolle</p><p><strong>Opdracht</strong></p><p>Schrijf een sollicitatiebrief aan mevrouw De Wit. Gebruik de u-vorm en behandel alle punten hieronder. U mag de informatie over uzelf, uw opleiding en uw werkervaring zelf verzinnen. Schrijf ongeveer 150 tot 200 woorden.</p><p>Het doel van de tekst is mevrouw De Wit ervan overtuigen dat u geschikt bent voor de baan van winkelmedewerker, zodat zij u uitnodigt voor een gesprek.</p>",
+    "bullet_points": [
+      "U vertelt in de eerste alinea waarom u schrijft en waar u de advertentie gevonden heeft.",
+      "U stelt uzelf kort voor en u noemt uw opleiding en uw huidige situatie.",
+      "U legt uit waarom u wilt solliciteren en u noemt daarbij minimaal twee redenen.",
+      "U beschrijft welke ervaring en welke eigenschappen u geschikt maken voor het werk in de winkel.",
+      "U schrijft duidelijk op welke dagen en hoeveel uren u kunt werken.",
+      "U vraagt om een gesprek en u laat weten hoe mevrouw De Wit u kan bereiken."
+    ],
+    "greeting": "Geachte mevrouw De Wit,",
+    "closing": "Met vriendelijke groet,\n\nAmira Hassan\nVechtstraat 15\n8021 AB Zwolle\nTelefoon: 06 - 12 34 56 78",
+    "model_answer": "Geachte mevrouw De Wit,\n\nIn de krant De Zwolse Week van 14 maart las ik uw advertentie voor een winkelmedewerker voor 20 uur per week. Deze baan past goed bij mij, daarom stuur ik u deze brief.\n\nMijn naam is Amira Hassan en ik ben 29 jaar. Ik woon sinds vier jaar in Zwolle. In mijn eigen land heb ik een opleiding voor administratief medewerker gedaan. In Nederland heb ik Nederlandse les gevolgd en nu doe ik het staatsexamen. Op dit moment werk ik acht uur per week in een bakkerij.\n\nIk wil graag bij u solliciteren, omdat ik meer uren wil werken. Bovendien vind ik het leuk om klanten te helpen en om mensen advies te geven over kleding.\n\nIn de bakkerij sta ik elke dag achter de kassa, waardoor ik veel ervaring heb met klanten en met geld. Mijn leidinggevende zegt dat ik vriendelijk en netjes ben. Ook werk ik graag in een team.\n\nIk kan op maandag, woensdag, donderdag en zaterdag werken, in totaal ongeveer twintig uur per week.\n\nGraag vertel ik u in een gesprek meer over mijzelf. U kunt mij bellen op 06 - 12 34 56 78.\n\nMet vriendelijke groet,\n\nAmira Hassan\nVechtstraat 15\n8021 AB Zwolle"
+  }
+]

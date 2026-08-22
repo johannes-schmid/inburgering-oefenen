@@ -1,0 +1,411 @@
+[
+  {
+    "section": "website",
+    "title": "Leerwerkbedrijf De Werkbrug: een vak leren zonder diploma",
+    "intro": "Deze tekst komt van de website van leerwerkbedrijf De Werkbrug. De tekst gaat over de manier waarop mensen zonder diploma bij dit bedrijf een vak kunnen leren.",
+    "body_html": "<p><strong>I</strong> De Werkbrug is een leerwerkbedrijf in Almelo. Wij bieden werk en opleiding aan mensen die geen startkwalificatie hebben, dus geen diploma van het middelbaar beroepsonderwijs of van de havo. Wie zonder diploma solliciteert, krijgt vaak te horen dat er geen plaats is, terwijl werkgevers in de techniek, de logistiek en de zorg juist mensen tekortkomen. Die tegenstelling proberen wij op te lossen. Bij ons leert u een vak op de werkvloer, en niet in een klaslokaal. U werkt vier dagen per week mee in een van onze werkplaatsen en u volgt één dag per week les over veiligheid, rekenen en Nederlands op het werk.</p><p><strong>II</strong> Op dit moment werken bij De Werkbrug 180 deelnemers. Zij zijn tussen de 18 en 58 jaar oud, waardoor de groepen gemengd zijn. Sommige deelnemers zijn vroeger gestopt met school, anderen hebben in het buitenland gewerkt zonder dat hun ervaring hier op papier staat. Wij kijken niet naar uw verleden, maar naar wat u nu kunt en wilt leren. Wel vragen wij dat u het Nederlands voldoende beheerst om instructies te begrijpen, omdat u met machines en met klanten werkt. Is uw Nederlands nog niet sterk genoeg, dan kunt u eerst een taaltraject van vijf maanden volgen bij onze partner in de wijk.</p><p><strong>Wat u verdient</strong></p><p><strong>III</strong> Deelnemers krijgen bij ons een echt arbeidscontract, geen stagevergoeding. Het loon is gebaseerd op de cao voor het metaal- en technisch bedrijf. In het eerste halfjaar geldt een leerloon van 80 procent van het normale uurloon, omdat u dan veel begeleiding nodig heeft. Daarna gaat u naar 100 procent. Uw contract begint met een proeftijd van één maand; in die maand kunnen u en wij zonder opgaaf van redenen stoppen. Werkt u nog niet en heeft u een uitkering, dan neemt onze medewerker contact op met de gemeente, zodat u niet plotseling zonder inkomen zit tijdens de overstap.</p><p><strong>IV</strong> De opleiding duurt twee jaar. Aan het einde legt u een examen af bij een erkende examenorganisatie, en bij een positieve uitslag ontvangt u een diploma op niveau 2. Dat diploma is een landelijke startkwalificatie en geldt dus ook buiten Almelo. Van de deelnemers die in 2023 begonnen, heeft 71 procent het diploma binnen twee jaar gehaald. Nog eens 12 procent had een halfjaar langer nodig, meestal door ziekte of door zorg voor familie. Wij vinden het belangrijk dit eerlijk te melden: het traject is zwaar, en wie halverwege stopt, staat weer met lege handen.</p><p><strong>V</strong> Iedere deelnemer krijgt een praktijkbegeleider die ook zelf in de werkplaats staat. Elke drie weken bespreekt u met hem of haar hoe het gaat, wat beter kan en of u extra les nodig heeft. Loopt het thuis niet goed, bijvoorbeeld door schulden of woningproblemen, dan kunt u een gesprek aanvragen met onze sociaal werker. Wij lossen die problemen niet zelf op, maar wij verwijzen u naar de juiste instantie, omdat ervaring leert dat mensen met zorgen thuis moeilijk kunnen leren.</p><p><strong>VI</strong> Wilt u meedoen? Kom dan naar een informatiebijeenkomst. Die is elke eerste dinsdag van de maand om 15.00 uur, zonder aanmelding. Neem een geldig identiteitsbewijs mee. Na de bijeenkomst volgt een gesprek en een proefdag in de werkplaats van uw keuze.</p><p>De Werkbrug<br>Kanaalweg 34<br>7601 PT Almelo<br>Telefoon: 0546 - 22 41 90</p>",
+    "questions": [
+      {
+        "prompt": "Wat maakt de schrijver in alinea I duidelijk met de opmerking over werkgevers in de techniek, de logistiek en de zorg?",
+        "options": [
+          "Dat er werk is, terwijl mensen zonder diploma toch worden afgewezen.",
+          "Dat deze drie sectoren de enige zijn waarin De Werkbrug opleidt.",
+          "Dat werkgevers liever iemand met een diploma van de havo aannemen."
+        ],
+        "correct": 0,
+        "explanation": "In alinea I staat dat sollicitanten zonder diploma vaak worden afgewezen, terwijl werkgevers in die sectoren juist mensen tekortkomen; die tegenstelling wil De Werkbrug oplossen. Optie B is te sterk: de sectoren worden genoemd als voorbeeld van personeelstekort, niet als volledig aanbod."
+      },
+      {
+        "prompt": "Wat staat er in alinea II over de eisen die De Werkbrug stelt?",
+        "options": [
+          "Deelnemers moeten aantonen dat ze eerder ergens hebben gewerkt.",
+          "Deelnemers moeten hun Nederlands eerst vijf maanden verbeteren.",
+          "Deelnemers moeten instructies in het Nederlands kunnen begrijpen."
+        ],
+        "correct": 2,
+        "explanation": "Alinea II noemt als voorwaarde dat u het Nederlands voldoende beheerst om instructies te begrijpen. Het taaltraject van vijf maanden is geen algemene eis, maar alleen bedoeld voor wie die taalvaardigheid nog niet heeft."
+      },
+      {
+        "prompt": "Hoeveel verdient een deelnemer in de eerste zes maanden?",
+        "options": [
+          "Een vergoeding die de gemeente bij de uitkering optelt.",
+          "Tachtig procent van het uurloon volgens de cao.",
+          "Het volledige uurloon, met een proeftijd van één maand.",
+          "Een stagevergoeding die na een halfjaar loon wordt."
+        ],
+        "correct": 1,
+        "explanation": "Volgens alinea III geldt in het eerste halfjaar een leerloon van 80 procent van het normale uurloon; daarna volgt 100 procent. De proeftijd van één maand staat er wel, maar zegt niets over de hoogte van het loon."
+      },
+      {
+        "prompt": "Een deelnemer heeft grote schulden en weet niet wie hij daarover kan spreken. In welke alinea vindt hij het antwoord?",
+        "options": [
+          "In alinea III.",
+          "In alinea IV.",
+          "In alinea V.",
+          "In alinea VI."
+        ],
+        "correct": 2,
+        "explanation": "Alinea V vertelt dat u bij problemen zoals schulden een gesprek kunt aanvragen met de sociaal werker, die u doorverwijst. Alinea III gaat over de gemeente, maar dan alleen over de uitkering tijdens de overstap naar werk."
+      },
+      {
+        "prompt": "Wat bedoelt de schrijver in alinea IV met \"staat weer met lege handen\"?",
+        "options": [
+          "Heeft geen begeleider meer die hem helpt.",
+          "Heeft geen recht meer op een uitkering.",
+          "Heeft nog steeds geen diploma in handen."
+        ],
+        "correct": 2,
+        "explanation": "In alinea IV gaat het over het diploma: wie halverwege stopt, heeft aan het eind niets bereikt, dus geen startkwalificatie. Over het verlies van een uitkering zegt de tekst op die plaats niets."
+      }
+    ]
+  },
+  {
+    "section": "studieboek",
+    "title": "Pensioen opbouwen en van baan wisselen",
+    "intro": "Deze tekst komt uit een cursusmap van een opleiding tot administratief medewerker. De tekst legt uit hoe pensioen wordt opgebouwd en wat er met dat pensioen gebeurt als u van werkgever verandert.",
+    "body_html": "<p><strong>I</strong> Bijna iedereen die in Nederland woont of werkt, bouwt pensioen op. Dat gebeurt meestal op drie manieren tegelijk. De eerste is de AOW, het pensioen van de overheid. Van die AOW bouwt u ongeveer twee procent op voor elk jaar dat u in Nederland woont, tot een maximum van vijftig jaar. Wie tien jaar in het buitenland heeft gewoond, krijgt later dus een lagere AOW dan iemand die altijd hier is gebleven. De tweede manier is het pensioen dat u via uw werkgever opbouwt. De derde manier is zelf sparen of beleggen voor later, bijvoorbeeld met een lijfrente bij een bank of verzekeraar.</p><p><strong>II</strong> Bouwt u pensioen op via uw werkgever, dan wordt daarvoor elke maand premie betaald. Vaak betaalt de werkgever ongeveer twee derde en de werknemer een derde; dat laatste deel ziet u op uw loonstrook staan. U bouwt geen pensioen op over uw hele salaris, omdat u later ook AOW krijgt. Over het eerste deel van het loon, de franchise, gaat de opbouw niet. Een voorbeeld: Karima verdient 32.000 euro per jaar en de franchise in haar regeling is 17.400 euro. Er blijft dan 14.600 euro over. Bij een opbouwpercentage van 1,875 procent bouwt zij in dat jaar 273,75 euro pensioen op. Na twintig jaar met hetzelfde loon is dat bijna 5.500 euro bruto per jaar.</p><p><strong>III</strong> De opbouw begint niet altijd op de eerste werkdag. In veel regelingen doet u pas mee vanaf 21 jaar, en in de uitzendbranche begint de opbouw pas nadat u 26 weken hebt gewerkt. Gaat u uit dienst, dan wordt er geen premie meer betaald. Uw pensioen verdwijnt echter niet: het bedrag dat u al hebt opgebouwd, blijft bij de oude uitvoerder staan. In de praktijk wordt zo'n stilstaand pensioen een slaper genoemd. Het groeit soms nog mee met de prijzen, maar er komt geen nieuwe opbouw bij.</p><p><strong>Van baan wisselen</strong></p><p><strong>IV</strong> Wie een nieuwe baan krijgt, heeft twee mogelijkheden. U kunt uw pensioen laten staan bij de oude uitvoerder, of u kunt het meenemen naar de nieuwe uitvoerder. Dat meenemen heet waardeoverdracht: het opgebouwde geld verhuist mee en gaat verder in de nieuwe regeling. U vraagt dat aan bij de uitvoerder van uw nieuwe werkgever. Een voordeel is dat u minder losse potjes hebt en dus meer overzicht. Toch is meenemen niet altijd verstandig, want de nieuwe regeling kan minder gunstig zijn, bijvoorbeeld doordat de pensioenen daar minder vaak worden verhoogd. Er geldt bovendien een voorwaarde: als een van de twee uitvoerders er financieel slecht voor staat, mag de overdracht worden uitgesteld. Voor kleine pensioenen hoeft u niets te doen. Blijft de opbouw onder 640 euro bruto per jaar, dan draagt de oude uitvoerder het bedrag automatisch over. Een wettelijke termijn voor een aanvraag bestaat niet meer, maar wij raden u aan de keuze binnen een jaar te maken, zodat u de papieren nog goed kunt terugvinden.</p><p><strong>V</strong> Controleer daarom regelmatig uw gegevens. In het landelijke pensioenregister ziet u met uw inlogcode welke bedragen u bij welke uitvoerders hebt staan. Werkt u als zelfstandige, dan is er geen werkgever die premie voor u betaalt. U moet dan zelf sparen, en de belastingdienst geeft u daarvoor een bepaalde ruimte per jaar, de jaarruimte. Binnen dat bedrag mag u de inleg aftrekken van uw inkomen. Verhuist u naar een ander land, geef dat dan door, want anders bereikt de post over uw pensioen u niet.</p>",
+    "questions": [
+      {
+        "prompt": "Wat staat er in alinea I over de AOW?",
+        "options": [
+          "De AOW wordt betaald uit de premie die de werkgever afdraagt.",
+          "De AOW is voor iedereen die in Nederland werkt even hoog.",
+          "De hoogte van de AOW hangt af van het aantal woonjaren in Nederland."
+        ],
+        "correct": 2,
+        "explanation": "In alinea I staat dat u per jaar dat u in Nederland woont ongeveer twee procent opbouwt, dus bepalen de woonjaren de hoogte. Optie B is te algemeen: juist iemand met jaren in het buitenland krijgt minder."
+      },
+      {
+        "prompt": "Waarom noemt de schrijver in alinea II het voorbeeld van Karima?",
+        "options": [
+          "Om te laten zien dat de werkgever het grootste deel van de premie betaalt.",
+          "Om stap voor stap te laten zien hoe de jaarlijkse opbouw wordt berekend.",
+          "Om te laten zien dat een laag salaris nooit genoeg pensioen oplevert."
+        ],
+        "correct": 1,
+        "explanation": "Het voorbeeld rekent in alinea II voor: salaris min franchise, en daarvan een percentage. Dat de werkgever twee derde betaalt (optie A) staat er wel, maar daar gaat het rekenvoorbeeld niet over."
+      },
+      {
+        "prompt": "Tot welk bedrag per jaar wordt een opgebouwd pensioen automatisch overgedragen naar de nieuwe uitvoerder?",
+        "options": [
+          "273,75 euro",
+          "1.875 euro",
+          "17.400 euro",
+          "640 euro"
+        ],
+        "correct": 3,
+        "explanation": "In alinea IV staat dat een opbouw onder 640 euro bruto per jaar automatisch door de oude uitvoerder wordt overgedragen. De andere bedragen komen uit het rekenvoorbeeld in alinea II."
+      },
+      {
+        "prompt": "Een uitzendkracht wil weten wanneer zijn pensioenopbouw begint. Wat staat daarover in alinea III?",
+        "options": [
+          "Pas nadat hij een bepaald aantal weken heeft gewerkt.",
+          "Meteen vanaf zijn eerste werkdag bij het uitzendbureau.",
+          "Pas zodra hij een vast contract bij de opdrachtgever krijgt."
+        ],
+        "correct": 0,
+        "explanation": "Alinea III zegt dat de opbouw in de uitzendbranche pas na 26 weken werken begint. Over een vast contract als voorwaarde (optie C) staat er niets."
+      },
+      {
+        "prompt": "Wat wordt in alinea IV bedoeld met 'waardeoverdracht'?",
+        "options": [
+          "Uw pensioen laten uitbetalen op het moment dat u uit dienst gaat.",
+          "Een deel van uw loon inleveren om extra pensioen te kunnen kopen.",
+          "Uw opgebouwde pensioen meenemen naar de nieuwe uitvoerder."
+        ],
+        "correct": 2,
+        "explanation": "In alinea IV wordt uitgelegd dat het geld meeverhuist en verder gaat in de nieuwe regeling. Uitbetalen bij ontslag (optie A) gebeurt juist niet: het bedrag blijft staan als slaper."
+      },
+      {
+        "prompt": "Ellen werkt als zelfstandige en vraagt zich af hoe zij toch pensioen kan opbouwen. In welke alinea('s) vindt zij het antwoord?",
+        "options": [
+          "II en III",
+          "I en V",
+          "alleen IV",
+          "III en IV"
+        ],
+        "correct": 1,
+        "explanation": "Alinea I noemt zelf sparen met een lijfrente en alinea V legt de jaarruimte voor zelfstandigen uit. Alinea II en III gaan over pensioen via een werkgever, en dat heeft Ellen niet."
+      },
+      {
+        "prompt": "Wat is het belangrijkste doel van deze tekst?",
+        "options": [
+          "Uitleggen hoe pensioen groeit en wat een nieuwe baan daarmee doet.",
+          "Waarschuwen dat werknemers in Nederland te weinig pensioen opbouwen.",
+          "Uitleggen hoe u zelf een pensioenuitvoerder kiest die bij u past."
+        ],
+        "correct": 0,
+        "explanation": "De tekst beschrijft eerst de opbouw (alinea I tot III) en daarna de keuzes bij een baanwisseling (alinea IV en V). Van een waarschuwing over te laag pensioen (optie B) is geen sprake; de tekst geeft alleen informatie."
+      }
+    ]
+  },
+  {
+    "section": "folder",
+    "title": "Gezondheidscentrum De Waterlelie: alle zorg onder één dak",
+    "intro": "Deze tekst is een folder van een gezondheidscentrum in de wijk Noorderveld. De folder gaat over de huisartsenpraktijk, de fysiotherapeut en de diëtist die in het centrum werken.",
+    "body_html": "<p><strong>I</strong> In Gezondheidscentrum De Waterlelie werken een huisartsenpraktijk, twee fysiotherapeuten en een diëtist samen in hetzelfde gebouw. Het voordeel daarvan is dat de hulpverleners elkaar snel kunnen overleggen, zodat u niet steeds hetzelfde verhaal hoeft te vertellen. Wij vragen u wel altijd om toestemming voordat wij gegevens over u met een collega delen. Het centrum is geopend van maandag tot en met vrijdag van 08.00 tot 17.30 uur. Op woensdagavond is er tot 20.00 uur een extra spreekuur voor mensen die door hun werk moeilijk vrij kunnen nemen.</p><p><strong>Aanmelden bij de huisarts</strong></p><p><strong>II</strong> Wilt u zich bij onze huisartsenpraktijk inschrijven, dan vult u het aanmeldformulier in op onze website of aan de balie. U kunt zich alleen inschrijven als u in de wijk Noorderveld of in de aangrenzende wijk Zuiderhof woont, omdat wij bij spoedgevallen binnen vijftien minuten bij u moeten kunnen zijn. Verhuist u later naar een andere gemeente, dan draagt onze assistente uw dossier over aan uw nieuwe huisarts. Nieuwe patiënten krijgen binnen drie weken een kennismakingsgesprek van twintig minuten. Neem naar dat gesprek uw identiteitsbewijs mee en, als u die gebruikt, een overzicht van uw medicijnen.</p><p><strong>III</strong> Voor een gewone afspraak belt u tussen 08.00 en 10.00 uur. De assistente vraagt dan waarover uw klacht gaat. Sommige patiënten vinden dat vervelend, maar die vraag is nodig: de assistente bepaalt daarmee hoeveel tijd de arts voor u vrijhoudt en of u misschien nog dezelfde dag terecht moet komen. Wie meerdere klachten wil bespreken, kan een dubbele afspraak vragen. Kunt u niet komen, meld dat dan minstens 24 uur vooraf af. Bij afspraken die niet worden afgezegd, brengen wij 15 euro in rekening. Buiten de openingstijden belt u de huisartsenpost in het ziekenhuis; het nummer staat op onze voicemail.</p><p><strong>Fysiotherapie en beweging</strong></p><p><strong>IV</strong> Voor de fysiotherapeut hebt u geen verwijzing van de huisarts nodig. U kunt zelf bellen voor een eerste onderzoek, waarin de fysiotherapeut bekijkt of behandeling zin heeft. Let wel op uw verzekering: fysiotherapie wordt voor volwassenen meestal niet uit de basisverzekering betaald, maar uit een aanvullende verzekering. Hebt u die niet, dan betaalt u zelf 38 euro per behandeling. Voor mensen met een chronische aandoening gelden andere regels; onze administratie zoekt dat op verzoek voor u uit. Naast de gewone behandelingen geven wij groepslessen rugtraining en valpreventie voor ouderen. Een reeks van acht lessen kost 60 euro, inclusief het gebruik van de oefenzaal.</p><p><strong>V</strong> Onze diëtist houdt op dinsdag en donderdag spreekuur. Zij begeleidt mensen met overgewicht, maar ook patiënten met diabetes, een hoge bloeddruk of problemen met de darmen. Uit de basisverzekering worden drie uur behandeling per jaar vergoed. Wel gaat die vergoeding eerst van uw eigen risico af, het bedrag dat u jaarlijks zelf betaalt voordat de verzekering meebetaalt. Voor kinderen tot achttien jaar geldt dat eigen risico niet. De diëtist maakt geen kant-en-klaar dieet voor u, maar zoekt samen met u naar veranderingen die bij uw werk en uw gezin passen, want een plan dat niemand volhoudt, helpt niemand.</p><p><strong>VI</strong> Bent u niet tevreden over de zorg of over de manier waarop u bent behandeld, bespreek dat dan eerst met de betrokken hulpverlener zelf. Lukt dat niet, dan kunt u een formulier bij de balie vragen en uw klacht schriftelijk indienen bij de klachtenfunctionaris. U ontvangt dan binnen tien werkdagen een reactie. Ideeën voor verbetering zijn ook welkom bij onze patiëntenraad, die vier keer per jaar met de leiding van het centrum vergadert.</p>",
+    "questions": [
+      {
+        "prompt": "Mevrouw Brouwers wil weten of zij bij de fysiotherapeut een rekening kan verwachten. In welke alinea vindt zij het antwoord?",
+        "options": [
+          "Alinea III",
+          "Alinea IV",
+          "Alinea V"
+        ],
+        "correct": 1,
+        "explanation": "In alinea IV staat wat fysiotherapie kost als u geen aanvullende verzekering hebt (38 euro per behandeling). Alinea III gaat wel over kosten, maar alleen over de 15 euro voor een afspraak die niet is afgezegd bij de huisarts."
+      },
+      {
+        "prompt": "Wat staat er in alinea III over de vraag van de assistente naar uw klacht?",
+        "options": [
+          "Die vraag stelt zij alleen bij spoedgevallen.",
+          "Die vraag helpt haar om de juiste tijd te plannen.",
+          "Die vraag mag u weigeren te beantwoorden.",
+          "Die vraag bepaalt of u een dubbele afspraak krijgt."
+        ],
+        "correct": 1,
+        "explanation": "In alinea III staat dat de assistente met die vraag bepaalt hoeveel tijd de arts vrijhoudt en of u dezelfde dag moet komen. Een dubbele afspraak vraagt de patiënt zelf aan; dat is niet de reden voor de vraag."
+      },
+      {
+        "prompt": "Wat is een voorwaarde om u bij de huisartsenpraktijk in te schrijven?",
+        "options": [
+          "U hebt een aanvullende verzekering.",
+          "U woont in Noorderveld of Zuiderhof.",
+          "U meldt zich binnen drie weken aan."
+        ],
+        "correct": 1,
+        "explanation": "Alinea II noemt als voorwaarde dat u in de wijk Noorderveld of Zuiderhof woont, vanwege de reistijd bij spoed. De drie weken gaan over het kennismakingsgesprek, niet over de aanmelding."
+      },
+      {
+        "prompt": "Wat wil de schrijver duidelijk maken met de opmerking dat een plan dat niemand volhoudt, niemand helpt?",
+        "options": [
+          "Dat de diëtist het advies aanpast aan het leven van de patiënt.",
+          "Dat patiënten vaak te snel stoppen met hun dieet.",
+          "Dat drie uur begeleiding per jaar eigenlijk te kort is."
+        ],
+        "correct": 0,
+        "explanation": "In alinea V legt de schrijver met die opmerking uit waarom de diëtist geen standaarddieet geeft, maar samen met de patiënt zoekt naar veranderingen die bij werk en gezin passen. Over te snel stoppen door patiënten zegt de tekst niets."
+      },
+      {
+        "prompt": "Meneer Yildiz vindt dat de fysiotherapeut hem onvriendelijk heeft behandeld. Welk advies geeft de folder hem?",
+        "options": [
+          "Hij vraagt de patiëntenraad om zijn zaak te bespreken.",
+          "Hij dient meteen schriftelijk een klacht in bij de balie.",
+          "Hij praat er eerst zelf met de fysiotherapeut over."
+        ],
+        "correct": 2,
+        "explanation": "Alinea VI adviseert om een klacht eerst met de hulpverlener zelf te bespreken. Pas als dat niet lukt, volgt de schriftelijke klacht bij de klachtenfunctionaris; de patiëntenraad is voor verbeterideeën."
+      }
+    ]
+  },
+  {
+    "section": "artikel",
+    "title": "Steeds meer deelauto's in de wijk",
+    "intro": "Deze tekst komt uit een blad van een gemeente over wonen en vervoer. De tekst gaat over de groei van deelauto's in stadswijken.",
+    "body_html": "<p><strong>I</strong> In veel stadswijken staan sinds kort auto's met een sticker op de zijkant, die van niemand persoonlijk zijn. Het zijn deelauto's: wagens die door tientallen buurtbewoners samen worden gebruikt. Wie zo'n auto nodig heeft, reserveert hem met een programma op de telefoon en opent hem daarna met een pasje of een code. Volgens een onderzoek van het landelijke Kennispunt Stedelijk Vervoer stonden er in 2019 ongeveer 41.000 deelauto's in Nederland; vijf jaar later waren dat er bijna 90.000. De groei is het sterkst in wijken die vóór 1940 zijn gebouwd, omdat daar weinig ruimte is om te parkeren en de bewoners vaak dicht bij hun werk wonen.</p><p><strong>II</strong> Er bestaan drie vormen van autodelen, en het verschil is voor de gebruiker belangrijk. Bij de eerste vorm huurt u een auto van een bedrijf dat de wagens bezit, verzekert en onderhoudt. Bij de tweede vorm leent u de auto van een particuliere eigenaar in de straat, die zijn wagen niet elke dag gebruikt. De derde vorm is de buurtauto: bewoners richten samen een vereniging op en kopen of huren één auto voor de hele groep. Die laatste vorm vraagt het meeste werk, want de leden moeten zelf afspraken maken over schoonmaak, tanken en schade.</p><p><strong>Wat kost het?</strong></p><p><strong>III</strong> De kosten hangen sterk af van het aantal kilometers dat iemand rijdt. Bij de meeste aanbieders betaalt u een bedrag per uur en daarnaast een bedrag per kilometer. Een veelgebruikt tarief is € 4,50 per uur plus € 0,29 per kilometer, waarbij brandstof en verzekering al in de prijs zitten. Wie een eigen auto heeft, betaalt daarentegen elke maand voor wegenbelasting, verzekering en onderhoud, ook in de weken dat de auto stilstaat. Het Kennispunt rekende uit dat autodelen tot ongeveer 9.000 kilometer per jaar goedkoper is dan een eigen kleine auto. Rijdt iemand meer, bijvoorbeeld voor het werk, dan valt de rekening al snel hoger uit.</p><p><strong>IV</strong> Gemeenten stimuleren het autodelen, maar niet alleen om bewoners geld te laten besparen. Elke deelauto vervangt volgens de onderzoekers gemiddeld vier tot acht particuliere auto's, waardoor er parkeerplaatsen vrijkomen. Die ruimte wordt in sommige wijken gebruikt voor bomen, fietsenstallingen of speeltoestellen. In de Bloemhofbuurt in Wageningen zijn op die manier veertien plekken verdwenen, terwijl de bewoners daar volgens een enquête juist tevredener zijn geworden over hun straat. De gemeente vraagt aanbieders wel om minstens één deelauto per wijk geschikt te maken voor mensen met een rolstoel.</p><p><strong>V</strong> Toch is niet iedereen enthousiast. Bewoners met wisselende werktijden klagen dat er 's ochtends vroeg soms geen auto vrij is, doordat anderen op hetzelfde moment naar hun werk moeten. Ook mensen met kleine kinderen vinden het lastig dat zij bij elke rit een kinderzitje moeten meenemen. Verder is een rijbewijs dat buiten Europa is afgegeven bij veel aanbieders niet genoeg; die verlangen een Nederlands rijbewijs of een rijbewijs uit een land waarmee afspraken zijn gemaakt. Wie hierover twijfelt, kan dat het beste vóór de aanmelding navragen, want een afgewezen aanmelding kost tijd en soms ook inschrijfgeld.</p><p><strong>VI</strong> Wie wil beginnen, doet er verstandig aan eerst een maand bij te houden hoe vaak en hoe ver hij werkelijk rijdt. Blijkt dat drie ritten per week naar de bouwmarkt en het zwembad, dan is een deelauto vaak voordelig. Rijdt iemand elke dag naar een bedrijventerrein zonder busverbinding, dan is een eigen auto meestal praktischer. De gemeente organiseert daarom elke tweede dinsdag van de maand een gratis informatieavond in wijkcentrum De Tuinpoort, waar bewoners hun eigen situatie kunnen doorrekenen met een medewerker.</p>",
+    "questions": [
+      {
+        "prompt": "Wat staat er in alinea I over de groei van het aantal deelauto's?",
+        "options": [
+          "Het aantal deelauto's is vooral in oudere wijken sterk toegenomen.",
+          "Het aantal deelauto's is in vijf jaar meer dan verdubbeld tot 41.000.",
+          "Het aantal deelauto's groeit het snelst in wijken met veel parkeerruimte."
+        ],
+        "correct": 0,
+        "explanation": "In alinea I staat dat de groei het sterkst is in wijken van vóór 1940, waar weinig parkeerruimte is. Optie B verwisselt de getallen: 41.000 was het aantal in 2019, niet het eindpunt."
+      },
+      {
+        "prompt": "Wat is volgens alinea II typisch voor de buurtauto?",
+        "options": [
+          "De auto is eigendom van één bewoner die hem uitleent.",
+          "Een bedrijf verzorgt de verzekering en het onderhoud.",
+          "De bewoners regelen zelf de praktische zaken samen.",
+          "De auto mag alleen door leden met een pasje worden geopend."
+        ],
+        "correct": 2,
+        "explanation": "Alinea II zegt dat de leden van de vereniging zelf afspraken maken over schoonmaak, tanken en schade. Optie A hoort bij de tweede vorm: de auto van een particuliere eigenaar."
+      },
+      {
+        "prompt": "Meneer Yildiz rijdt ongeveer 6.000 kilometer per jaar. Welk argument kan hij volgens de tekst gebruiken om voor een deelauto te kiezen?",
+        "options": [
+          "Bij een deelauto betaalt hij niets voor brandstof en verzekering.",
+          "Onder ongeveer 9.000 kilometer per jaar is autodelen goedkoper.",
+          "Een deelauto kost hem € 4,50 per maand in plaats van per uur."
+        ],
+        "correct": 1,
+        "explanation": "In alinea III staat de rekensom van het Kennispunt: tot ongeveer 9.000 kilometer per jaar is autodelen goedkoper dan een eigen kleine auto. Brandstof en verzekering zitten wel in de prijs, maar hij betaalt die dus mee (optie A)."
+      },
+      {
+        "prompt": "Waarom noemt de schrijver in alinea IV de Bloemhofbuurt in Wageningen?",
+        "options": [
+          "Om te laten zien dat bewoners zich vaak verzetten tegen minder parkeerplaatsen.",
+          "Om aan te tonen dat gemeenten deelauto's voor rolstoelgebruikers eisen.",
+          "Om duidelijk te maken dat het verdwijnen van parkeerplekken goed kan uitpakken."
+        ],
+        "correct": 2,
+        "explanation": "Het voorbeeld in alinea IV toont dat er veertien plekken verdwenen, terwijl de bewoners juist tevredener werden over hun straat. De eis over rolstoelen staat er wel, maar daarvoor dient het voorbeeld niet."
+      },
+      {
+        "prompt": "Mevrouw Osei heeft een rijbewijs uit een land buiten Europa en wil weten of zij zich kan aanmelden. In welke alinea vindt zij het antwoord?",
+        "options": [
+          "In alinea II.",
+          "In alinea III.",
+          "In alinea IV.",
+          "In alinea V."
+        ],
+        "correct": 3,
+        "explanation": "Alinea V legt uit dat veel aanbieders een Nederlands rijbewijs verlangen of een rijbewijs uit een land waarmee afspraken bestaan. Alinea II gaat alleen over de drie vormen van autodelen."
+      },
+      {
+        "prompt": "Wat adviseert de schrijver in alinea VI aan mensen die willen beginnen met autodelen?",
+        "options": [
+          "Eerst een maand hun eigen rijgedrag bijhouden.",
+          "Meteen hun eigen auto verkopen en zich aanmelden.",
+          "Elke dinsdag naar het wijkcentrum gaan voor advies."
+        ],
+        "correct": 0,
+        "explanation": "Alinea VI raadt aan een maand bij te houden hoe vaak en hoe ver iemand werkelijk rijdt. De informatieavond is er wel, maar alleen elke tweede dinsdag van de maand, niet elke dinsdag."
+      }
+    ]
+  },
+  {
+    "section": "regels",
+    "title": "Brandinstructie en vluchtplan verzorgingshuis De Wilgenhof",
+    "intro": "Deze tekst is een instructie voor medewerkers van verzorgingshuis De Wilgenhof. De tekst legt uit wat u moet doen bij brand en hoe de bewoners het gebouw verlaten.",
+    "body_html": "<p><strong>I</strong> Iedere medewerker van De Wilgenhof krijgt bij indiensttreding deze brandinstructie. U wordt verzocht de instructie binnen twee weken te lezen en daarna het formulier op de laatste bladzijde te ondertekenen. Met uw ondertekening verklaart u dat u weet waar de brandmelders, de blusmiddelen en de nooduitgangen op uw eigen afdeling hangen. Wie langer dan drie maanden afwezig is geweest, bijvoorbeeld door ziekte of ouderschapsverlof, leest de instructie bij terugkomst opnieuw. Dat is geen formaliteit: er verandert regelmatig iets in de indeling van het gebouw, waardoor oude kennis niet meer klopt. Twee keer per jaar houden wij een oefening. Bij één van die twee oefeningen worden ook de bewoners betrokken, hoewel wij hen dan nooit verder dan de gang laten lopen.</p><p><strong>II</strong> Ontdekt u brand of ruikt u sterke rookgeur, dan volgt u altijd dezelfde vier stappen, en wel in deze volgorde:</p><ul><li>Sla de dichtstbijzijnde brandmelder in en waarschuw daarmee de meldkamer.</li><li>Breng bewoners die zich in de ruimte van de brand bevinden naar de gang en sluit de deur.</li><li>Bel het interne alarmnummer 2000 en geef de afdeling, de verdieping en het kamernummer door.</li><li>Blus alleen als het vuur kleiner is dan een prullenbak en u de uitgang in de rug hebt.</li></ul><p>Een blussende medewerker die alleen op de afdeling staat, wijkt van stap vier af en wacht op de bedrijfshulpverlening. Uw eigen veiligheid gaat vóór het behoud van meubilair.</p><p><strong>III</strong> De Wilgenhof werkt niet met een algehele ontruiming van het hele gebouw, maar met horizontale ontruiming. Dat betekent dat wij bewoners eerst naar de andere kant van dezelfde verdieping brengen, achter de brandwerende deuren in de middengang. Die deuren houden vuur en rook minstens dertig minuten tegen, zodat er tijd is om rustig te werken. Pas als de brandweer het bevel geeft, gaan bewoners met de speciale evacuatiestoelen naar buiten. De lift wordt bij een melding automatisch geblokkeerd op de begane grond en mag ook door medewerkers niet meer worden gebruikt. Bewoners die aan bed gebonden zijn, worden op de matras van het bed getrokken en zo over de vloer verplaatst; de aanwezige tilliften blijven staan waar ze staan.</p><p><strong>IV</strong> Op iedere verdieping hangt naast de dienstpost een ontruimingslijst. Op die lijst staat per kamer of de bewoner zelfstandig kan lopen, hulp van één persoon nodig heeft of volledig geholpen moet worden. De nachtdienst neemt de lijst bij aanvang van de dienst mee in de zak van het uniform, omdat er 's nachts maar twee medewerkers per verdieping aanwezig zijn. Klopt de lijst niet meer, bijvoorbeeld doordat een bewoner sinds kort een rollator gebruikt, dan geeft u dat direct door aan de teamleider en niet pas bij de maandelijkse controle.</p><p><strong>V</strong> Na de ontruiming meldt iedere medewerker zich bij de verzamelplaats op het grasveld achter de personeelsingang. Daar wordt geteld. U verlaat de verzamelplaats niet zonder toestemming van de coördinator, ook niet om nog iets uit uw kluisje te halen. Bezoekers en leveranciers die op dat moment in het gebouw waren, gaan mee naar dezelfde verzamelplaats; zij vallen tijdens hun bezoek onder onze verantwoordelijkheid. Terugkeren in het gebouw gebeurt uitsluitend nadat de brandweer het pand heeft vrijgegeven.</p><p><strong>Vragen</strong></p><p>Met vragen over deze instructie kunt u terecht bij de hoofd bedrijfshulpverlening.<br>Mevrouw R. Doornbos<br>Kamer 0.14, personeelsvleugel<br>Telefoon intern: 2144</p>",
+    "questions": [
+      {
+        "prompt": "Wat staat er in alinea I over medewerkers die lange tijd niet gewerkt hebben?",
+        "options": [
+          "Zij moeten de instructie na drie maanden afwezigheid opnieuw doornemen.",
+          "Zij hoeven het formulier niet nog een keer te ondertekenen.",
+          "Zij krijgen bij terugkomst eerst een extra oefening met bewoners."
+        ],
+        "correct": 0,
+        "explanation": "In alinea I staat dat wie langer dan drie maanden weg was, de instructie bij terugkomst opnieuw leest, omdat het gebouw verandert. Over een extra oefening bij terugkomst staat niets; de twee oefeningen per jaar gelden voor iedereen."
+      },
+      {
+        "prompt": "Een medewerker staat 's avonds alleen op de afdeling en ziet een klein vuurtje in een prullenbak. Welk argument uit de tekst kan hij gebruiken om niet zelf te blussen?",
+        "options": [
+          "De brandwerende deuren houden vuur toch al dertig minuten tegen.",
+          "Blussen mag alleen als het vuur kleiner is dan een prullenbak.",
+          "Wie alleen is, wacht op de bedrijfshulpverlening en blust niet."
+        ],
+        "correct": 2,
+        "explanation": "Aan het eind van alinea II staat dat een medewerker die alleen op de afdeling is, van stap vier afwijkt en op de bedrijfshulpverlening wacht. De grens 'kleiner dan een prullenbak' gaat over de grootte van het vuur, niet over alleen zijn."
+      },
+      {
+        "prompt": "Wat wordt in de tekst bedoeld met 'horizontale ontruiming'?",
+        "options": [
+          "Bewoners worden naar de andere kant van dezelfde verdieping gebracht.",
+          "Bewoners gaan met de lift naar de begane grond en dan naar buiten.",
+          "Bewoners blijven liggend in hun eigen kamer wachten op de brandweer.",
+          "Bewoners van alle verdiepingen verlaten tegelijk het hele gebouw."
+        ],
+        "correct": 0,
+        "explanation": "Alinea III legt uit dat horizontale ontruiming betekent: eerst naar de andere kant van dezelfde verdieping, achter de brandwerende deuren. Naar buiten gaan gebeurt pas op bevel van de brandweer, en de lift is geblokkeerd."
+      },
+      {
+        "prompt": "Een medewerker wil weten hoeveel hulp een bewoner nodig heeft bij een ontruiming. In welke alinea vindt zij het antwoord?",
+        "options": [
+          "In alinea II.",
+          "In alinea III.",
+          "In alinea IV.",
+          "In alinea V."
+        ],
+        "correct": 2,
+        "explanation": "Alinea IV beschrijft de ontruimingslijst, waarop per kamer staat of een bewoner zelfstandig kan lopen of hulp nodig heeft. Alinea III gaat over de manier van ontruimen, niet over de gegevens per bewoner."
+      },
+      {
+        "prompt": "Wat staat er in alinea V over bezoekers die tijdens de brand in het gebouw zijn?",
+        "options": [
+          "Zij mogen na de telling zonder toestemming naar huis gaan.",
+          "Zij gaan naar dezelfde verzamelplaats als de medewerkers.",
+          "Zij worden door de brandweer apart uit het gebouw gehaald."
+        ],
+        "correct": 1,
+        "explanation": "In alinea V staat dat bezoekers en leveranciers meegaan naar dezelfde verzamelplaats, omdat zij onder de verantwoordelijkheid van het huis vallen. Over apart weggaan of ophalen door de brandweer staat niets."
+      },
+      {
+        "prompt": "Wat is het belangrijkste doel van deze tekst?",
+        "options": [
+          "Uitleggen waarom er twee keer per jaar een oefening wordt gehouden.",
+          "Waarschuwen dat medewerkers de lift bij brand niet mogen gebruiken.",
+          "Duidelijk maken welke handelingen medewerkers bij brand moeten uitvoeren."
+        ],
+        "correct": 2,
+        "explanation": "De hele instructie, van de stappen in alinea II tot de verzamelplaats in alinea V, beschrijft wat medewerkers bij brand moeten doen. De oefeningen en het liftverbod zijn onderdelen daarvan en niet het hoofddoel."
+      }
+    ]
+  },
+  {
+    "section": "brief",
+    "title": "Uitnodiging voor een sollicitatiegesprek",
+    "intro": "Deze tekst is een brief van Taxicentrale Rivierland aan mevrouw Yildirim. Zij heeft gesolliciteerd op de functie van chauffeur zorgvervoer en wordt uitgenodigd voor een gesprek.",
+    "body_html": "<p>Taxicentrale Rivierland<br>Afdeling Personeelszaken<br>Postbus 1184<br>4001 AB Beekwijk</p><p>Mevrouw S. Yildirim<br>Kanaalstraat 27<br>4003 CD Beekwijk</p><p>Datum: 14 maart 2025<br>Betreft: uitnodiging sollicitatiegesprek chauffeur zorgvervoer<br>Kenmerk: PZ-2025-118</p><p>Geachte mevrouw Yildirim,</p><p><strong>I</strong> Op 3 maart hebben wij uw sollicitatie voor de functie van chauffeur zorgvervoer ontvangen. In totaal kwamen er 34 brieven binnen, waaruit wij zes kandidaten hebben uitgekozen voor een eerste gesprek. Wij nodigen u daarvoor graag uit, omdat uw ervaring met het vervoer van oudere reizigers goed past bij het werk dat onze chauffeurs dagelijks doen.</p><p><strong>II</strong> Het gesprek vindt plaats op dinsdag 25 maart om 14.00 uur op ons kantoor aan de Havendijk 6 in Beekwijk. U wordt ontvangen door onze planner, mevrouw De Bie, en door mijzelf. Wij vragen u om zich tien minuten voor de afspraak bij de receptie te melden, zodat u nog rustig een bezoekerspas kunt ophalen. Houd er rekening mee dat uw bezoek in totaal ongeveer anderhalf uur duurt.</p><p><strong>Wat u meeneemt en wat u doet</strong></p><p><strong>III</strong> Neem een geldig identiteitsbewijs mee, uw rijbewijs en, als u die al heeft, uw chauffeurskaart. Na het gesprek maakt u een praktijkrit van ongeveer twintig minuten in een van onze rolstoelbussen. Een instructeur zit naast u en kijkt vooral naar rustig rijden en naar het goed vastzetten van een rolstoel. De rit is geen examen; wie dit type bus nog niet kent, krijgt eerst uitleg. Ook kandidaten die nog geen chauffeurskaart hebben, mogen de rit maken, want die kaart kunt u later aanvragen.</p><p><strong>IV</strong> Kunt u op 25 maart niet komen, dan verzoeken wij u minimaal twee werkdagen vooraf te bellen. Wij plannen in dat geval eenmalig een nieuwe datum, meestal in dezelfde week. Wordt u op de dag zelf ziek, dan geldt die termijn natuurlijk niet, maar wij verwachten wel dat u ons voor 9.00 uur belt. Hoort u niets van u en komt u ook niet opdagen, dan vervalt uw sollicitatie.</p><p><strong>V</strong> Uw reiskosten vergoeden wij. Wij hanteren daarbij de volgende regels:</p><ul><li>met de eigen auto: € 0,23 per kilometer, met een maximum van € 30 per bezoek;</li><li>met het openbaar vervoer: de werkelijke kosten van een reis in de tweede klas, op basis van uw vervoersbewijs;</li><li>parkeerkosten worden niet vergoed, omdat er achter het gebouw gratis parkeerplaatsen zijn.</li></ul><p>Het declaratieformulier krijgt u bij de receptie. Lever dit binnen veertien dagen bij ons in, samen met uw rekeningnummer. Wij betalen het bedrag binnen een maand uit.</p><p><strong>VI</strong> Binnen vijf werkdagen na het gesprek laten wij u per e-mail weten of wij verder met u willen praten. Bij een positieve uitslag volgt een tweede gesprek over de arbeidsvoorwaarden, zoals het loon en de toeslag voor onregelmatige uren uit de cao voor het zorgvervoer. Voordat u bij ons kunt beginnen, heeft u ook een verklaring omtrent het gedrag nodig: een bewijs dat er in uw verleden niets staat wat dit werk in de weg staat. De aanvraag kost € 41,50. Dat bedrag krijgt u van ons terug zodra u bij ons in dienst treedt. Heeft u nog vragen, dan kunt u ons op werkdagen tussen 9.00 en 16.00 uur bellen op 0180 - 449 220.</p><p>Met vriendelijke groet,<br>H. Grootveld<br>hoofd Personeelszaken<br>Taxicentrale Rivierland</p>",
+    "questions": [
+      {
+        "prompt": "Wat staat er in alinea I over mevrouw Yildirim?",
+        "options": [
+          "Zij heeft als een van de eersten van de 34 mensen gereageerd.",
+          "Zij is de enige kandidaat met ervaring in het zorgvervoer.",
+          "Zij hoort bij de zes mensen die zijn uitgekozen."
+        ],
+        "correct": 2,
+        "explanation": "In alinea I staat dat uit 34 brieven zes kandidaten zijn gekozen en dat zij daarbij hoort. Dat haar ervaring goed past, betekent niet dat zij de enige is met die ervaring."
+      },
+      {
+        "prompt": "Wat staat er in alinea III over de praktijkrit?",
+        "options": [
+          "Kandidaten moeten de rolstoelbus al kennen.",
+          "Ook zonder chauffeurskaart mag iemand de rit maken.",
+          "De instructeur let vooral op de snelheid van de rit.",
+          "De rit duurt langer dan het gesprek zelf."
+        ],
+        "correct": 1,
+        "explanation": "Alinea III zegt dat kandidaten zonder chauffeurskaart de rit ook mogen maken. De instructeur kijkt naar rustig rijden en naar de rolstoel, niet naar snelheid."
+      },
+      {
+        "prompt": "In alinea IV staat: \"dan vervalt uw sollicitatie\". Wat betekent dat?",
+        "options": [
+          "Het bedrijf behandelt haar brief dan niet verder.",
+          "Zij krijgt dan eenmalig een nieuwe datum.",
+          "Zij moet dan opnieuw een brief sturen."
+        ],
+        "correct": 0,
+        "explanation": "In alinea IV betekent 'vervalt' dat het bedrijf niet verdergaat met haar sollicitatie. Een nieuwe datum is er alleen als zij tijdig afbelt."
+      },
+      {
+        "prompt": "Wat geldt volgens de brief voor de vergoeding van de reiskosten?",
+        "options": [
+          "Het declaratieformulier moet binnen een maand terug zijn.",
+          "Ook het parkeergeld bij het gebouw wordt betaald.",
+          "Per bezoek wordt met de auto niet meer dan € 30 vergoed."
+        ],
+        "correct": 2,
+        "explanation": "In alinea V staat € 0,23 per kilometer met een maximum van € 30 per bezoek. Het formulier moet binnen veertien dagen terug zijn; binnen een maand volgt de betaling."
+      },
+      {
+        "prompt": "Mevrouw Yildirim wil weten of zij de kosten van de verklaring omtrent het gedrag zelf moet betalen. In welke alinea vindt zij het antwoord?",
+        "options": [
+          "In alinea III.",
+          "In alinea IV.",
+          "In alinea V.",
+          "In alinea VI."
+        ],
+        "correct": 3,
+        "explanation": "Alinea VI noemt de kosten van € 41,50 en zegt dat het bedrijf dat bedrag terugbetaalt bij indiensttreding. Alinea V gaat alleen over reiskosten."
+      },
+      {
+        "prompt": "Wat is het belangrijkste doel van deze brief?",
+        "options": [
+          "Uitleggen welke afspraken in de cao voor het zorgvervoer gelden.",
+          "Mevrouw Yildirim uitnodigen en vertellen hoe het bezoek verloopt.",
+          "Mevrouw Yildirim vragen om snel een chauffeurskaart aan te vragen."
+        ],
+        "correct": 1,
+        "explanation": "De brief geeft een uitnodiging met datum, plaats, praktijkrit, afmelden, reiskosten en vervolg (alinea's I tot VI). De cao en de chauffeurskaart worden alleen kort genoemd."
+      }
+    ]
+  }
+]

@@ -1,0 +1,411 @@
+[
+  {
+    "section": "website",
+    "title": "Avondopleidingen bij ROC Waterlinie",
+    "intro": "Deze tekst staat op de website van een regionaal opleidingscentrum. U leest hoe dit centrum zijn avondopleidingen heeft ingericht.",
+    "body_html": "<p><strong>I</strong> ROC Waterlinie biedt in Gorinchem en Culemborg ruim twintig avondopleidingen aan op mbo-niveau 2, 3 en 4. Deze opleidingen zijn bedoeld voor volwassenen die overdag werken of voor hun kinderen zorgen en daarom geen dagopleiding kunnen volgen. Ongeveer zeven van de tien avondstudenten zijn ouder dan dertig jaar. Een deel van hen wil doorgroeien naar een hogere functie bij de eigen werkgever, terwijl anderen juist willen overstappen naar een andere sector, bijvoorbeeld van de horeca naar de zorg.</p><p><strong>II</strong> Een avondopleiding duurt meestal twee jaar. U komt twee avonden per week naar school, van 18.30 tot 21.45 uur, verdeeld over 34 lesweken. In de schoolvakanties zijn er geen lessen. E&eacute;n keer per maand wordt een van de twee avonden online gegeven, zodat u die avond niet hoeft te reizen. Naast de lessen bent u gemiddeld zes uur per week bezig met huiswerk en praktijkopdrachten. Wie al een baan heeft die past bij de opleiding, mag die baan als stageplaats gebruiken. Studenten zonder passend werk krijgen hulp bij het zoeken naar een stage, hoewel zij de stage-uren wel zelf moeten inplannen.</p><p><strong>Kosten</strong></p><p><strong>III</strong> Voor studenten van 18 jaar en ouder gelden vaste bedragen. In het schooljaar 2025-2026 betaalt u voor niveau 3 en 4 &euro; 1.400 lesgeld per jaar. Voor niveau 2 gaat het om cursusgeld: &euro; 620 per jaar. Daar komen de kosten voor boeken en werkkleding bij, gemiddeld &euro; 340. U mag het bedrag in tien termijnen betalen, mits u dat v&oacute;&oacute;r 1 september aanvraagt bij de financi&euml;le administratie. Veel werkgevers vergoeden de opleiding helemaal of voor een deel. Betaalt uw werkgever niet mee, dan kunt u bij de overheid een studielening voor volwassenen aanvragen. U leent dan het lesgeld en betaalt het na uw opleiding terug.</p><p><strong>IV</strong> Aanmelden kan het hele jaar door, maar wie in september wil beginnen, meldt zich uiterlijk 1 augustus aan. Daarna volgt een intakegesprek van ongeveer drie kwartier, waarin we samen bekijken of het niveau en de belasting bij u passen. Hebt u eerder in het vakgebied gewerkt of een deel van een opleiding afgerond, dan kunt u vrijstelling krijgen voor een of meer onderdelen. U levert daarvoor bewijsstukken in, bijvoorbeeld diploma's of een verklaring van uw werkgever. De examencommissie neemt binnen zes weken een besluit.</p><p><strong>V</strong> Sommige mensen denken dat een diploma van een avondopleiding minder waard is dan een diploma van een dagopleiding. Dat klopt niet: de examens, de eisen en het diploma zijn volledig gelijk. Wel is de studiedruk hoger, doordat u alles moet combineren met werk en gezin. Daarom krijgt iedere avondstudent een vaste studieloopbaanbegeleider, die drie keer per jaar een gesprek met u voert. Kunt u een tijd niet naar de les komen, meld dat dan meteen. In overleg mag u soms een half jaar pauzeren, zonder dat u daarna opnieuw lesgeld betaalt.</p><p><strong>VI</strong> Wilt u eerst de sfeer proeven? Elke tweede dinsdag van de maand is er van 19.00 tot 21.00 uur een informatieavond op onze locatie aan de Lingedijk. U hoeft zich daarvoor niet aan te melden. Hebt u liever een persoonlijk gesprek, bel dan met het opleidingsbureau of vul het contactformulier op deze website in. Wij nemen binnen vijf werkdagen contact met u op.</p>",
+    "questions": [
+      {
+        "prompt": "Wat maakt de schrijver in alinea I duidelijk over de avondstudenten?",
+        "options": [
+          "Bijna alle avondstudenten zijn jonger dan dertig jaar.",
+          "De meesten willen promotie maken bij hun eigen werkgever.",
+          "Het is een groep volwassenen met verschillende plannen."
+        ],
+        "correct": 2,
+        "explanation": "In alinea I staat dat een deel wil doorgroeien bij de eigen werkgever en dat anderen van sector willen wisselen. Optie B noemt maar &eacute;&eacute;n van die twee groepen en is daarom te beperkt."
+      },
+      {
+        "prompt": "Meneer Yilmaz werkt in een verpleeghuis en gaat de avondopleiding verzorgende volgen. Wat geldt volgens alinea II voor hem?",
+        "options": [
+          "Hij mag zijn eigen werkplek als stageplaats gebruiken.",
+          "Hij krijgt van de school hulp bij het zoeken van een stage.",
+          "Hij hoeft geen praktijkopdrachten voor school te maken."
+        ],
+        "correct": 0,
+        "explanation": "Alinea II zegt dat wie een baan heeft die bij de opleiding past, die baan als stageplaats mag gebruiken. De hulp bij het zoeken (optie B) is juist bedoeld voor studenten zonder passend werk."
+      },
+      {
+        "prompt": "Mevrouw De Wit (45) begint aan een opleiding op niveau 2. Hoeveel betaalt zij per jaar aan cursusgeld?",
+        "options": [
+          "&euro; 340",
+          "&euro; 620",
+          "&euro; 960",
+          "&euro; 1.400"
+        ],
+        "correct": 1,
+        "explanation": "In alinea III staat dat het cursusgeld voor niveau 2 &euro; 620 per jaar is. Het bedrag van &euro; 1.400 hoort bij niveau 3 en 4, en &euro; 340 zijn de kosten voor boeken en werkkleding."
+      },
+      {
+        "prompt": "Iemand heeft vroeger al een jaar van dezelfde opleiding gedaan en wil weten of hij een deel niet hoeft over te doen. In welke alinea vindt hij het antwoord?",
+        "options": [
+          "In alinea II.",
+          "In alinea III.",
+          "In alinea V.",
+          "In alinea IV."
+        ],
+        "correct": 3,
+        "explanation": "Alinea IV gaat over de aanmelding, het intakegesprek en de vrijstelling op grond van bewijsstukken. Alinea V gaat wel over de waarde van het diploma, maar niet over vrijstellingen."
+      },
+      {
+        "prompt": "De werkgever van meneer Bakker twijfelt: hij vindt een avonddiploma minder sterk dan een dagdiploma. Welk argument uit alinea V kan meneer Bakker gebruiken?",
+        "options": [
+          "De eisen en de examens zijn hetzelfde als bij de dagopleiding.",
+          "Avondstudenten spreken drie keer per jaar met hun begeleider.",
+          "De studiedruk is bij een avondopleiding duidelijk hoger."
+        ],
+        "correct": 0,
+        "explanation": "In alinea V staat dat examens, eisen en diploma volledig gelijk zijn. De hogere studiedruk (optie C) zegt niets over de waarde van het diploma."
+      },
+      {
+        "prompt": "Wat is het belangrijkste doel van deze tekst?",
+        "options": [
+          "Werkgevers overtuigen dat zij de opleiding van hun personeel betalen.",
+          "Studenten waarschuwen dat een avondopleiding zwaar en duur is.",
+          "Belangstellenden uitleggen hoe de avondopleidingen geregeld zijn.",
+          "Oud-studenten uitnodigen voor de maandelijkse informatieavond."
+        ],
+        "correct": 2,
+        "explanation": "De tekst beschrijft achtereenvolgens de lestijden, de kosten, de aanmelding en de begeleiding, dus hij informeert belangstellenden. De informatieavond (optie D) is maar een klein onderdeel aan het eind."
+      }
+    ]
+  },
+  {
+    "section": "studieboek",
+    "title": "De ondernemingsraad: medezeggenschap op de werkvloer",
+    "intro": "Deze tekst komt uit een cursusmap voor een opleiding tot personeelsmedewerker. De tekst gaat over de taken van de ondernemingsraad en de rechten van het personeel.",
+    "body_html": "<p><strong>I</strong> In veel bedrijven en instellingen praat het personeel mee over belangrijke besluiten. Dat gebeurt meestal via de ondernemingsraad, kortweg de OR. De OR is een groep werknemers die door de collega's is gekozen en die namens hen overlegt met de directie. Volgens de Wet op de ondernemingsraden is een organisatie met vijftig of meer werknemers verplicht een OR in te stellen. Heeft een bedrijf tussen de tien en vijftig werknemers, dan kan het personeel vragen om een personeelsvertegenwoordiging, een kleinere variant met minder bevoegdheden. Bij nog kleinere bedrijven blijft alleen de personeelsvergadering over, waarin de werkgever twee keer per jaar met iedereen spreekt.</p><p><strong>II</strong> De leden van de OR worden om de drie of vier jaar gekozen, afhankelijk van wat in het reglement staat. Iedereen die minimaal drie maanden in dienst is, mag stemmen. Wie zich verkiesbaar wil stellen, moet meestal een jaar in dienst zijn. Ook uitzendkrachten tellen mee, zodra zij vijftien maanden voor het bedrijf hebben gewerkt. Het aantal zetels hangt af van de grootte van de organisatie: een bedrijf met zeventig werknemers heeft vijf OR-leden, terwijl een grote instelling er wel vijftien of meer kan hebben. OR-leden krijgen betaalde tijd om vergaderingen voor te bereiden en om cursussen te volgen, zodat zij hun taak serieus kunnen uitvoeren.</p><p><strong>Twee soorten rechten</strong></p><p><strong>III</strong> De belangrijkste bevoegdheden van de OR zijn het adviesrecht en het instemmingsrecht. Het verschil tussen die twee wordt vaak verward, hoewel het groot is. Bij adviesrecht mag de OR zijn mening geven over een plan, bijvoorbeeld bij een verhuizing, een reorganisatie of een grote investering. De directie moet dat advies serieus wegen, maar mag het uiteindelijk naast zich neerleggen. Wel moet zij dan uitleggen waarom, en moet zij vervolgens een maand wachten met de uitvoering. In die maand kan de OR naar de rechter stappen. Bij instemmingsrecht ligt de macht anders: zonder een akkoord van de OR mag de werkgever de regeling helemaal niet invoeren.</p><p><strong>IV</strong> Instemmingsrecht geldt vooral voor regelingen die het personeel direct raken. Denk aan:</p><ul><li>een nieuw rooster of een andere verdeling van werktijden;</li><li>afspraken over ziekteverzuim en veiligheid;</li><li>een beoordelingssysteem of een regeling voor scholing;</li><li>het gebruik van camera's of andere controlemiddelen op de werkvloer.</li></ul><p><strong>V</strong> Een voorbeeld maakt het verschil duidelijk. Bij een schoonmaakbedrijf wilde de directie de ploegendienst veranderen, waardoor veertig medewerkers voortaan om vijf uur 's ochtends zouden beginnen. De directie noemde dit een organisatorisch besluit en vroeg de OR alleen om advies. De OR wees erop dat een wijziging van werktijden onder het instemmingsrecht valt en dus niet zonder akkoord kon worden doorgevoerd. Na drie maanden overleg kwam er een compromis: de vroege dienst begint om half zes en wie voor zeven uur werkt, krijgt een toeslag van 15 procent. Zonder instemmingsrecht had het personeel dit resultaat waarschijnlijk niet bereikt.</p><p><strong>VI</strong> Sommige werknemers vinden de OR overbodig, omdat er ook vakbonden zijn. Toch is er een duidelijk verschil. Een vakbond onderhandelt over de cao voor een hele branche, terwijl de OR zich bezighoudt met de dagelijkse gang van zaken in één organisatie. Bovendien beschermt de wet OR-leden: zij mogen niet worden ontslagen vanwege hun werk in de raad. Wie ideeën heeft over het werk maar zelf geen zetel wil, kan een OR-lid aanspreken of een vergadering bijwonen. De vergaderingen zijn in principe openbaar voor het personeel, en de verslagen moeten voor iedereen beschikbaar zijn.</p>",
+    "questions": [
+      {
+        "prompt": "Wat staat er in alinea I over kleine bedrijven?",
+        "options": [
+          "Een bedrijf met dertig werknemers hoeft geen ondernemingsraad in te stellen.",
+          "Een bedrijf met dertig werknemers moet twee keer per jaar een OR kiezen.",
+          "Een bedrijf met minder dan tien werknemers moet een personeelsvertegenwoordiging hebben."
+        ],
+        "correct": 0,
+        "explanation": "In alinea I staat dat de plicht pas geldt vanaf vijftig werknemers; bij tien tot vijftig kan het personeel om een personeelsvertegenwoordiging vragen. Optie C is fout, omdat bij de kleinste bedrijven alleen de personeelsvergadering overblijft."
+      },
+      {
+        "prompt": "Een uitzendkracht werkt tien maanden bij een bedrijf en wil weten of zij mag stemmen bij de OR-verkiezingen. In welke alinea vindt zij het antwoord?",
+        "options": [
+          "Alinea I",
+          "Alinea II",
+          "Alinea III",
+          "Alinea IV"
+        ],
+        "correct": 1,
+        "explanation": "Alinea II gaat over verkiezingen en noemt de termijn van vijftien maanden voor uitzendkrachten. Alinea I gaat wel over de grootte van bedrijven, maar niet over wie mag stemmen."
+      },
+      {
+        "prompt": "Wat wil de schrijver duidelijk maken met het voorbeeld van het schoonmaakbedrijf in alinea V?",
+        "options": [
+          "Dat overleg tussen directie en OR meestal veel te lang duurt.",
+          "Dat werknemers in ploegendienst recht hebben op een toeslag.",
+          "Dat het van belang is te weten welk recht bij een besluit hoort."
+        ],
+        "correct": 2,
+        "explanation": "Het voorbeeld in alinea V laat zien dat de OR resultaat boekte door aan te tonen dat het om instemmingsrecht ging en niet om adviesrecht. De toeslag was het gevolg van het compromis, niet een algemeen recht."
+      },
+      {
+        "prompt": "Wat moet de directie doen als zij een advies van de OR niet overneemt?",
+        "options": [
+          "Zij moet het besluit een maand uitstellen en haar keuze toelichten.",
+          "Zij moet het plan eerst aan de rechter voorleggen ter goedkeuring.",
+          "Zij moet binnen een maand een nieuw advies aan de OR vragen."
+        ],
+        "correct": 0,
+        "explanation": "In alinea III staat dat de directie moet uitleggen waarom zij het advies niet volgt en daarna een maand moet wachten. Niet de directie maar de OR kan in die maand naar de rechter gaan."
+      },
+      {
+        "prompt": "Welk argument kan een OR-lid gebruiken tegen een collega die zegt dat de OR overbodig is naast de vakbond?",
+        "options": [
+          "De OR bepaalt de afspraken in de cao voor de hele branche.",
+          "De OR gaat over zaken binnen het eigen bedrijf, de vakbond niet.",
+          "De OR kan leden van de vakbond beschermen tegen ontslag."
+        ],
+        "correct": 1,
+        "explanation": "Alinea VI legt uit dat de vakbond over de cao van een branche onderhandelt, terwijl de OR de dagelijkse gang van zaken in één organisatie behandelt. De ontslagbescherming geldt voor OR-leden, niet voor vakbondsleden in het algemeen."
+      }
+    ]
+  },
+  {
+    "section": "folder",
+    "title": "Thuiszorg aanvragen in de gemeente Waldenveen",
+    "intro": "Deze tekst komt uit een brochure van het Zorgloket van de gemeente Waldenveen. De brochure legt uit hoe u thuiszorg aanvraagt, wat u zelf betaalt en hoe lang de procedure duurt.",
+    "body_html": "<p><strong>I</strong> Steeds meer mensen blijven lang in hun eigen huis wonen, ook als hun gezondheid achteruitgaat. Vaak is er dan hulp nodig, bijvoorbeeld bij het douchen, bij het aantrekken van steunkousen of bij het schoonhouden van de woning. Die hulp heet thuiszorg. Veel inwoners denken dat zij thuiszorg zelf bij een zorgorganisatie moeten regelen, maar dat klopt maar gedeeltelijk. Welke instantie uw aanvraag behandelt, hangt af van het soort hulp dat u nodig heeft. In deze brochure leest u wie waarover gaat, welke kosten u kunt verwachten en hoeveel tijd de aanvraag in beslag neemt.</p><p><strong>Twee soorten hulp, twee loketten</strong></p><p><strong>II</strong> Hulp bij het huishouden, dagbesteding en begeleiding vallen onder de Wet maatschappelijke ondersteuning, meestal afgekort tot Wmo. Deze hulp regelt de gemeente. U meldt zich daarvoor bij het Zorgloket van Waldenveen. Verpleging en verzorging aan huis, zoals wondverzorging of hulp bij het wassen, vallen daarentegen onder uw zorgverzekering. Voor die hulp neemt u contact op met een wijkverpleegkundige, die zelf mag bepalen hoeveel uur zorg u nodig heeft. U hoeft daar geen toestemming van de gemeente voor te vragen. Weet u niet zeker onder welke regeling uw situatie valt, dan mag u ons gewoon bellen; wij verwijzen u dan door naar de juiste instantie.</p><p><strong>III</strong> Een aanvraag bij het Zorgloket begint met een melding. Dat kan telefonisch, via het digitale formulier op onze website of aan de balie in het gemeentehuis. Na uw melding neemt een consulent binnen tien werkdagen contact met u op voor een gesprek bij u thuis. Tijdens dat gesprek bespreken wij wat u zelf nog kunt, wat huisgenoten of familieleden kunnen overnemen en welke hulp de gemeente kan bieden. U mag bij dit gesprek altijd iemand meenemen die uw belangen behartigt. Wie liever een onafhankelijke ondersteuner wil, kan gratis gebruikmaken van een cliëntondersteuner. Vraag daar bij de melding om, want achteraf regelen kost extra tijd.</p><p><strong>IV</strong> Na het gesprek ontvangt u een verslag. Bent u het eens met de inhoud, dan ondertekent u het verslag en geldt het als officiële aanvraag. De gemeente moet daarna binnen twee weken een besluit nemen. In totaal duurt de procedure dus ongeveer acht weken, hoewel het in drukke periodes iets langer kan duren. Is uw situatie zo urgent dat u niet kunt wachten, bijvoorbeeld na een plotselinge ziekenhuisopname, dan kan de consulent tijdelijke spoedzorg inzetten. Die spoedzorg loopt maximaal zes weken en stopt zodra het definitieve besluit er is.</p><p><strong>V</strong> Voor Wmo-hulp betaalt u een eigen bijdrage. Die bijdrage bedraagt in 2025 hoogstens 21 euro per maand, ongeacht hoeveel uur hulp u krijgt en ongeacht de hoogte van uw inkomen. Woont u samen met een partner en is minstens één van u nog geen 67 jaar, dan hoeft u helemaal geen eigen bijdrage te betalen. De rekening komt niet van de gemeente zelf, maar van het landelijke incassobureau dat de eigen bijdragen int. Voor verpleging en verzorging via de zorgverzekering geldt iets anders: die zorg wordt volledig vergoed en gaat niet ten koste van uw eigen risico.</p><p><strong>VI</strong> Bent u het niet eens met het besluit, dan kunt u binnen zes weken bezwaar maken. Zet in uw brief duidelijk waarom u het oneens bent en stuur het besluit mee. Wij nodigen u daarna uit voor een hoorzitting.<br>Zorgloket gemeente Waldenveen<br>Postbus 418<br>3860 AK Waldenveen<br>Telefoon: 0800 - 22 44 660</p>",
+    "questions": [
+      {
+        "prompt": "Wat wil de schrijver in alinea I duidelijk maken?",
+        "options": [
+          "Dat inwoners van Waldenveen te weinig weten over gezond ouder worden.",
+          "Dat niet alle thuiszorg via dezelfde instantie geregeld wordt.",
+          "Dat mensen tegenwoordig langer thuis blijven wonen dan vroeger.",
+          "Dat zorgorganisaties aanvragen voor thuiszorg vaak te traag behandelen."
+        ],
+        "correct": 1,
+        "explanation": "In alinea I staat dat het idee dat je alles zelf bij een zorgorganisatie regelt maar deels klopt, en dat het per soort hulp verschilt wie de aanvraag behandelt. Dat mensen langer thuis wonen is wel genoemd, maar dat is alleen de aanleiding, niet de boodschap van de alinea."
+      },
+      {
+        "prompt": "Mevrouw De Bruin heeft na een operatie hulp nodig bij het verzorgen van een wond. Wat moet zij volgens de tekst doen?",
+        "options": [
+          "Een melding doen bij het Zorgloket van de gemeente.",
+          "Contact opnemen met een wijkverpleegkundige.",
+          "Eerst toestemming vragen aan de gemeente Waldenveen."
+        ],
+        "correct": 1,
+        "explanation": "Alinea II noemt wondverzorging als zorg die onder de zorgverzekering valt; daarvoor benadert u een wijkverpleegkundige. Het Zorgloket gaat alleen over Wmo-hulp zoals huishoudelijke hulp en begeleiding."
+      },
+      {
+        "prompt": "Wat staat er in alinea III over de cliëntondersteuner?",
+        "options": [
+          "Hij komt alleen langs als er geen familie bij het gesprek aanwezig is.",
+          "U betaalt hem pas als de gemeente uw aanvraag heeft goedgekeurd.",
+          "U kunt hem het beste meteen bij de melding aanvragen."
+        ],
+        "correct": 2,
+        "explanation": "In alinea III staat dat u er bij de melding om moet vragen, omdat het achteraf regelen extra tijd kost. De ondersteuner is gratis, dus de optie over betalen klopt niet."
+      },
+      {
+        "prompt": "Hoe lang duurt de tijdelijke spoedzorg maximaal?",
+        "options": [
+          "Twee weken.",
+          "Zes weken.",
+          "Acht weken.",
+          "Tien werkdagen."
+        ],
+        "correct": 1,
+        "explanation": "In alinea IV staat dat spoedzorg maximaal zes weken loopt. Acht weken is de duur van de hele procedure en twee weken is de termijn voor het besluit."
+      },
+      {
+        "prompt": "Meneer Aydin (64) woont samen met zijn vrouw (69). Hij krijgt hulp bij het huishouden via de Wmo. Welk argument kan hij gebruiken als hij een rekening voor de eigen bijdrage krijgt?",
+        "options": [
+          "Dat hij samenwoont en dat een van beiden jonger is dan 67 jaar.",
+          "Dat zijn inkomen te laag is voor een bijdrage van 21 euro per maand.",
+          "Dat de gemeente zelf geen rekeningen voor de eigen bijdrage stuurt."
+        ],
+        "correct": 0,
+        "explanation": "Alinea V zegt dat er geen eigen bijdrage geldt voor samenwonenden van wie er minstens één nog geen 67 is. De hoogte van het inkomen speelt volgens diezelfde alinea juist geen rol."
+      },
+      {
+        "prompt": "Wat wordt in alinea VI bedoeld met bezwaar maken?",
+        "options": [
+          "Schriftelijk laten weten dat u het met het besluit oneens bent.",
+          "Vragen om een nieuw gesprek met de consulent thuis.",
+          "Het verslag van het keukentafelgesprek niet ondertekenen."
+        ],
+        "correct": 0,
+        "explanation": "Uit alinea VI blijkt dat u een brief stuurt waarin u uitlegt waarom u het oneens bent met het besluit. Het verslag niet ondertekenen hoort bij een eerdere stap in alinea IV en is dus geen bezwaar."
+      }
+    ]
+  },
+  {
+    "section": "artikel",
+    "title": "Bedrijven leiden hun eigen vakmensen op",
+    "intro": "Deze tekst komt uit een vakblad voor personeelszaken. De tekst gaat over werkgevers die zelf opleidingen organiseren voor hun personeel.",
+    "body_html": "<p><strong>I</strong> Een installatiebedrijf in Zwolle zocht vorig jaar acht monteurs. Het bedrijf plaatste advertenties, betaalde een wervingsbureau en wachtte af. Na vier maanden waren er twee monteurs aangenomen. Toen besloot directeur Marleen Poortvliet het anders aan te pakken. Ze nam tien mensen aan zonder technische achtergrond en zette een eigen opleiding op, met een leslokaal in het magazijn. \"We hebben lang gedacht dat een school onze mensen moest klaarstomen\", zegt Poortvliet. \"Maar als niemand komt solliciteren, moet je zelf aan de slag.\" Haar bedrijf is geen uitzondering. Volgens een onderzoek van een adviesbureau onder 1.200 werkgevers had in 2019 nog 28 procent van de bedrijven een eigen opleidingsprogramma. Vorig jaar was dat gestegen naar 46 procent.</p><p><strong>II</strong> De belangrijkste reden is het tekort aan vakmensen. In de techniek, de zorg en de bouw staan vacatures soms een jaar open, waardoor bedrijven opdrachten moeten weigeren. Tegelijk verandert het werk snel: apparatuur wordt vervangen door nieuwe modellen en regels worden aangescherpt. Een opleiding die vier jaar duurt, sluit dan niet altijd meer aan bij wat een werkgever morgen nodig heeft. Doordat bedrijven zelf lesgeven, kunnen ze de inhoud aanpassen zodra er iets verandert. Ook zien werkgevers dat mensen die intern zijn opgeleid langer blijven. Uit hetzelfde onderzoek blijkt dat van de werknemers met een interne opleiding na drie jaar nog 71 procent bij hetzelfde bedrijf werkt. Bij collega's die van buiten kwamen, is dat 54 procent.</p><p><strong>Wat het kost</strong></p><p><strong>III</strong> Zelf opleiden is niet goedkoop. Een bedrijf betaalt het loon van de werknemer die leert, en daarnaast het loon van de ervaren collega die lesgeeft. Voor een opleiding van een jaar rekenen werkgevers gemiddeld op 15.000 euro per deelnemer. Daar staan subsidies tegenover. Wie een leerwerkplek aanbiedt die door de overheid is erkend, kan een tegemoetkoming van maximaal 2.700 euro per jaar krijgen. Die regeling geldt alleen als de opleiding meetelt voor een officieel diploma en als de leerling minimaal veertig weken per jaar in het bedrijf werkt. Kleine bedrijven met minder dan vijftig werknemers kunnen bovendien een bijdrage aanvragen voor het opleiden van de begeleiders zelf.</p><p><strong>IV</strong> Toch zijn er ook kritische geluiden. Vakbondsbestuurder Rachid el Amrani wijst erop dat een intern certificaat vaak alleen binnen het eigen bedrijf iets waard is. \"Wie na zes jaar wil overstappen, staat soms met lege handen, hoewel hij prima werk levert.\" Hij pleit ervoor dat bedrijven samenwerken met een school, zodat de opleiding uitkomt op een erkend diploma. Ook waarschuwt hij voor contracten waarin staat dat een werknemer de opleidingskosten moet terugbetalen als hij binnen twee jaar vertrekt. Sinds 2022 is zo'n terugbetalingsregeling verboden voor opleidingen die verplicht zijn voor het werk. Voor andere cursussen mag het nog wel, maar dan moet het bedrag lager worden naarmate de werknemer langer blijft.</p><p><strong>V</strong> Wie als werkgever wil beginnen, doet er verstandig aan klein te starten. Adviseurs raden de volgende stappen aan:</p><ul><li>Bepaal welke taken over drie jaar niet meer door genoeg mensen kunnen worden gedaan.</li><li>Kies twee of drie ervaren collega's die het leuk vinden om les te geven, en geef hun daar uren voor.</li><li>Leg vast wat een deelnemer aan het eind moet kunnen, en laat dat door een buitenstaander toetsen.</li><li>Zoek een school of brancheorganisatie die het certificaat wil erkennen.</li></ul><p><strong>VI</strong> In Zwolle werken inmiddels negen van de tien nieuwe monteurs zelfstandig bij klanten. Eén deelnemer stopte na drie maanden. Poortvliet noemt dat geen mislukking. \"We hebben zes maanden geïnvesteerd en er negen vakmensen voor teruggekregen. Via advertenties had ik ze in geen twee jaar gevonden.\"</p>",
+    "questions": [
+      {
+        "prompt": "Waarom begint de schrijver in alinea I met het verhaal van het installatiebedrijf in Zwolle?",
+        "options": [
+          "Om te laten zien dat wervingsbureaus te duur zijn geworden voor kleine bedrijven.",
+          "Om een voorbeeld te geven van een ontwikkeling die bij veel bedrijven speelt.",
+          "Om duidelijk te maken dat technische scholen te weinig leerlingen opleiden."
+        ],
+        "correct": 1,
+        "explanation": "In alinea I staat na het verhaal dat het bedrijf geen uitzondering is, met cijfers over 28 en 46 procent. Dat wervingsbureaus duur zijn wordt wel genoemd, maar is niet de reden voor het voorbeeld."
+      },
+      {
+        "prompt": "Wat staat er in alinea II over het zelf opleiden van personeel?",
+        "options": [
+          "Bedrijven kunnen de inhoud van de lessen snel aanpassen als het werk verandert.",
+          "Werknemers die intern zijn opgeleid, verdienen na drie jaar meer dan hun collega's.",
+          "Opleidingen van vier jaar worden door bedrijven steeds vaker zelf aangeboden.",
+          "Vacatures in de zorg worden sneller vervuld dan vacatures in de bouw."
+        ],
+        "correct": 0,
+        "explanation": "Alinea II noemt als voordeel dat bedrijven de inhoud kunnen aanpassen zodra er iets verandert. Over loon wordt niets gezegd; de percentages 71 en 54 gaan over hoeveel mensen blijven werken."
+      },
+      {
+        "prompt": "Aan welke voorwaarde moet een bedrijf voldoen om de tegemoetkoming van maximaal 2.700 euro te krijgen?",
+        "options": [
+          "Het bedrijf mag niet meer dan vijftig werknemers in dienst hebben.",
+          "Het bedrijf moet per deelnemer minstens 15.000 euro investeren.",
+          "De leerling moet minstens veertig weken per jaar in het bedrijf werken."
+        ],
+        "correct": 2,
+        "explanation": "Alinea III noemt twee voorwaarden: de opleiding telt mee voor een officieel diploma en de leerling werkt minimaal veertig weken per jaar in het bedrijf. De grens van vijftig werknemers geldt voor een andere bijdrage."
+      },
+      {
+        "prompt": "Een werknemer heeft een verplichte cursus gevolgd van zijn werkgever. Nu wil hij na anderhalf jaar weg en moet hij volgens zijn contract de kosten terugbetalen. In welke alinea vindt hij een argument tegen die eis?",
+        "options": [
+          "In alinea II",
+          "In alinea III",
+          "In alinea IV",
+          "In alinea V"
+        ],
+        "correct": 2,
+        "explanation": "In alinea IV staat dat terugbetalingsregelingen sinds 2022 verboden zijn voor opleidingen die verplicht zijn voor het werk. Alinea III gaat over kosten en subsidies voor de werkgever, niet over terugbetalen."
+      },
+      {
+        "prompt": "Wat bedoelt Rachid el Amrani in alinea IV met \"staat soms met lege handen\"?",
+        "options": [
+          "Dat iemand geen papier heeft waar een andere werkgever waarde aan hecht.",
+          "Dat iemand na zes jaar geen recht meer heeft op een nieuwe opleiding.",
+          "Dat iemand zijn opleidingskosten volledig zelf moet betalen bij vertrek."
+        ],
+        "correct": 0,
+        "explanation": "In alinea IV legt hij uit dat een intern certificaat vaak alleen binnen het eigen bedrijf iets waard is. De terugbetaling wordt pas daarna genoemd en hoort bij een andere waarschuwing."
+      },
+      {
+        "prompt": "Wat is het belangrijkste doel van deze tekst?",
+        "options": [
+          "Werkgevers overhalen om hun samenwerking met scholen te beëindigen.",
+          "Uitleggen waarom bedrijven zelf opleiden en waar zij op moeten letten.",
+          "Waarschuwen voor de hoge kosten die interne opleidingen met zich meebrengen."
+        ],
+        "correct": 1,
+        "explanation": "De tekst noemt de redenen (alinea II), de kosten en subsidies (alinea III), de kritiek (alinea IV) en praktische stappen (alinea V). De kosten zijn dus maar één onderdeel van het geheel."
+      }
+    ]
+  },
+  {
+    "section": "regels",
+    "title": "Huisregels van bedrijfsrestaurant De Werkplaats",
+    "intro": "Deze tekst komt van het intranet van installatiebedrijf Vermeer & Bosch. De tekst gaat over de regels in het bedrijfsrestaurant en over de afspraken die daar gelden voor afval.",
+    "body_html": "<p><strong>I</strong> Bedrijfsrestaurant De Werkplaats bevindt zich op de tweede verdieping en is bedoeld voor alle 220 medewerkers van Vermeer &amp; Bosch. Het restaurant is open van 11.30 tot 13.30 uur; een warme maaltijd kunt u bestellen tot uiterlijk 13.15 uur. De koffiehoek bij de ingang is de hele dag open, van 7.00 tot 17.00 uur. Omdat iedereen maar dertig minuten pauze heeft, eten de afdelingen op vaste tijden: de montage van 11.30 tot 12.00 uur en de kantoorafdelingen van 12.15 tot 12.45 uur. Op die manier blijven de rijen bij de kassa kort. Tussen 12.00 en 13.00 uur mag u het restaurant niet gebruiken voor werkoverleg, omdat op dat moment alle tafels nodig zijn voor collega's die eten. Buiten die tijden mag u wel overleggen aan de lange tafel bij het raam.</p><p><strong>II</strong> In het restaurant wordt niet met contant geld betaald. U rekent af met uw personeelspas, die u opwaardeert bij de gele automaat naast de ingang. U kunt telkens minimaal 10 euro en maximaal 150 euro op de pas zetten. Bent u uw pas kwijt, meld dat dan binnen 24 uur bij de receptie, zodat de pas geblokkeerd kan worden. Een nieuwe pas kost 7,50 euro, maar het saldo dat nog op de oude pas stond, blijft gewoon behouden.</p><p><strong>Bezoek van buiten</strong></p><p><strong>III</strong> Neemt u een klant of een leverancier mee naar het restaurant, dan meldt u deze gast uiterlijk één werkdag van tevoren voor 15.00 uur bij de receptie. Voor een gast betaalt u 2,50 euro extra, en dat bedrag wordt op het budget van uw afdeling geboekt. Er is één uitzondering: als een monteur van buiten onverwacht bij een storing helpt, mag uw leidinggevende ter plekke toestemming geven voor een maaltijd.</p><p><strong>IV</strong> Wie zelf brood meeneemt, is van harte welkom. Zet uw broodtrommel in de koelkast en plak er een sticker op met uw naam en de datum. Er staan drie magnetrons, die u maximaal twee minuten achter elkaar gebruikt, zodat wachtende collega's ook aan de beurt komen. Elke vrijdag om 16.00 uur wordt de koelkast helemaal leeggemaakt. Alles wat er dan nog in staat, wordt weggegooid, ook als er een naam op zit.</p><p><strong>V</strong> Naast de uitgifte staan vier bakken: een groene voor etensresten, een oranje voor plastic en blik, een blauwe voor papier en een grijze voor restafval. Flessen met statiegeld gaan in de blauwe krat ernaast; de opbrengst daarvan gaat naar de personeelsvereniging, die er vorig jaar 480 euro mee ophaalde. Soep en koffie giet u in de zwarte emmer en dus nooit in de gootsteen, want daardoor raken de leidingen verstopt en moet de loodgieter komen. Sommige collega's vinden het schrapen van hun bord onprettig. Toch vragen wij u het te doen: sinds wij het afval scheiden, betalen wij per jaar 1.400 euro minder voor het restafval, en van dat geld kopen wij beter broodbeleg en dagelijks vers fruit.</p><p><strong>VI</strong> Het afruimen van de tafels gebeurt bij toerbeurt. Elke afdeling is één week per kwartaal verantwoordelijk voor het afnemen van de tafels om 13.30 uur; het rooster hangt bij de kassa. Boetes kennen wij niet, maar wie zich herhaaldelijk niet aan de afspraken houdt, krijgt een gesprek met zijn leidinggevende. Hebt u een klacht of een goed idee? De kantinecommissie vergadert elke eerste dinsdag van de maand en is bereikbaar via de brievenbus bij de ingang.</p>",
+    "questions": [
+      {
+        "prompt": "Wat staat er in alinea II over het opwaarderen van de personeelspas?",
+        "options": [
+          "Er moet steeds minstens tien euro op de pas worden gezet.",
+          "Het opwaarderen gebeurt bij de receptie naast de ingang.",
+          "Bij een nieuwe pas gaat het oude saldo verloren."
+        ],
+        "correct": 0,
+        "explanation": "In alinea II staat dat u per keer minimaal 10 euro en maximaal 150 euro kunt opwaarderen. Opwaarderen gebeurt bij de automaat, niet bij de receptie; daar meldt u alleen een vermiste pas."
+      },
+      {
+        "prompt": "Een medewerker wil volgende week een klant meenemen naar het restaurant. Wat moet hij volgens de tekst doen?",
+        "options": [
+          "Op de dag zelf toestemming vragen aan zijn leidinggevende.",
+          "De gast een werkdag van tevoren melden bij de receptie.",
+          "Voor de gast 2,50 euro extra op zijn personeelspas zetten."
+        ],
+        "correct": 1,
+        "explanation": "Volgens alinea III meldt u een gast uiterlijk één werkdag van tevoren voor 15.00 uur bij de receptie. Toestemming van de leidinggevende geldt alleen voor een onverwachte monteur bij een storing."
+      },
+      {
+        "prompt": "Een collega wil weten wat er gebeurt met zijn broodtrommel als die op vrijdagmiddag in de koelkast blijft staan. In welke alinea vindt hij het antwoord?",
+        "options": [
+          "In alinea II.",
+          "In alinea III.",
+          "In alinea IV.",
+          "In alinea V."
+        ],
+        "correct": 2,
+        "explanation": "Alinea IV gaat over zelf meegebracht eten en meldt dat de koelkast vrijdag om 16.00 uur wordt leeggemaakt. Alinea V gaat over de afvalbakken, niet over de koelkast."
+      },
+      {
+        "prompt": "Wat betekent 'bij toerbeurt' in alinea VI?",
+        "options": [
+          "Om de beurt.",
+          "Allemaal tegelijk.",
+          "Wanneer het uitkomt."
+        ],
+        "correct": 0,
+        "explanation": "Uit alinea VI blijkt dat elke afdeling één week per kwartaal aan de beurt is; de afdelingen wisselen elkaar dus af. 'Allemaal tegelijk' klopt niet, want er hangt juist een rooster."
+      },
+      {
+        "prompt": "Waarom noemt de schrijver in alinea V het bedrag van 1.400 euro?",
+        "options": [
+          "Om te laten zien hoe vaak de loodgieter moet komen.",
+          "Om te waarschuwen dat restafval steeds duurder wordt.",
+          "Om te laten zien dat afval scheiden beter eten oplevert."
+        ],
+        "correct": 2,
+        "explanation": "In alinea V wordt het bedrag genoemd als besparing waarmee beter broodbeleg en vers fruit worden gekocht. Over verstopte leidingen gaat een andere zin, die niets met dit bedrag te maken heeft."
+      },
+      {
+        "prompt": "Ramzi wil om 12.30 uur met twee collega's aan de lange tafel vergaderen. Welk argument kan een collega gebruiken om te zeggen dat dit niet mag?",
+        "options": [
+          "Voor overleg in het restaurant is toestemming van de leidinggevende nodig.",
+          "De lange tafel bij het raam is gereserveerd voor gasten van buiten.",
+          "Tussen twaalf en één zijn alle tafels nodig voor collega's die eten."
+        ],
+        "correct": 2,
+        "explanation": "Alinea I zegt dat werkoverleg tussen 12.00 en 13.00 uur niet mag, omdat alle tafels dan nodig zijn. De lange tafel is niet voor gasten bedoeld, maar juist voor overleg buiten dat uur."
+      },
+      {
+        "prompt": "Wat is het belangrijkste doel van deze tekst?",
+        "options": [
+          "Medewerkers uitnodigen mee te denken over het aanbod in het restaurant.",
+          "Medewerkers informeren over de regels die in het restaurant gelden.",
+          "Medewerkers waarschuwen voor de kosten van verkeerd gescheiden afval."
+        ],
+        "correct": 1,
+        "explanation": "De hele tekst geeft afspraken over openingstijden, betalen, gasten, eigen eten en afval. De kantinecommissie en de besparing worden wel genoemd, maar zijn slechts onderdelen van het geheel."
+      }
+    ]
+  },
+  {
+    "section": "brief",
+    "title": "Beslissing op uw aanvraag bijzondere bijstand",
+    "intro": "Deze tekst is een brief van de gemeente Waldervoort aan mevrouw Aydin over haar aanvraag voor bijzondere bijstand.",
+    "body_html": "<p>Gemeente Waldervoort<br>Afdeling Werk en Inkomen<br>Postbus 2140<br>4820 CB Waldervoort</p><p>Mevrouw N. Aydin<br>Lisdoddestraat 87<br>4823 KP Waldervoort</p><p>Datum: 14 maart 2025<br>Onderwerp: beslissing aanvraag bijzondere bijstand<br>Zaaknummer: BB-2025-08174</p><p>Geachte mevrouw Aydin,</p><p><strong>I</strong> Op 3 februari 2025 heeft u bij onze gemeente bijzondere bijstand aangevraagd. U vroeg om een vergoeding van 620 euro voor de aanschaf van een wasmachine en een koelkast, omdat uw oude apparaten na de verhuizing niet meer werkten. Bijzondere bijstand is bedoeld voor kosten die u door bijzondere omstandigheden moet maken en die u niet zelf kunt betalen. In deze brief leest u welk besluit wij hebben genomen en wat u kunt doen als u het niet eens bent met dat besluit.</p><p><strong>Ons besluit</strong></p><p><strong>II</strong> Wij hebben uw aanvraag gedeeltelijk toegekend. U ontvangt 400 euro als gift voor de wasmachine. Voor de koelkast kennen wij geen gift toe, maar bieden wij u een renteloze lening van 220 euro aan. Wij maken dit onderscheid omdat uit uw bankafschriften blijkt dat u in de afgelopen twaalf maanden 180 euro heeft kunnen sparen. Van dat bedrag mag u volgens onze richtlijnen een deel van de kosten zelf dragen. Het toegekende bedrag van 400 euro staat binnen tien werkdagen na de datum van deze brief op uw rekening. De lening lost u af in maandelijkse termijnen van 20 euro, waarbij de eerste termijn vervalt op 1 juni 2025.</p><p><strong>III</strong> Bij de beoordeling kijken wij niet alleen naar uw inkomen, maar ook naar uw vermogen en naar andere regelingen. Uw inkomen ligt onder de grens van 120 procent van de bijstandsnorm, waardoor u in principe recht heeft op ondersteuning. Wel is gebleken dat u een inboedelverzekering heeft. Wanneer schade aan apparaten door zo'n verzekering wordt gedekt, gaat die vergoeding altijd vóór bijzondere bijstand. In uw geval waren de apparaten door ouderdom kapot en niet door schade, zodat de verzekering hier niet van toepassing is.</p><p><strong>Wat u nog moet doen</strong></p><p><strong>IV</strong> Voor de lening moeten wij een overeenkomst met u sluiten. Wij vragen u daarom binnen drie weken de volgende stappen te zetten:</p><ul><li>onderteken de bijgevoegde leningsovereenkomst op beide bladzijden;</li><li>stuur een kopie mee van de aankoopbon van de koelkast;</li><li>geef door op welke datum de maandelijkse afschrijving u het beste uitkomt.</li></ul><p><strong>V</strong> Ontvangen wij deze gegevens niet op tijd, dan vervalt het aanbod voor de lening. Het bedrag van de gift wordt in dat geval gewoon uitbetaald. Verandert er iets in uw situatie, bijvoorbeeld doordat u werk vindt of doordat er iemand bij u komt wonen, dan bent u verplicht dit binnen vier weken aan ons te melden. Doet u dat niet, dan kunnen wij het uitgekeerde bedrag terugvorderen.</p><p><strong>VI</strong> Bent u het niet eens met dit besluit? Dan kunt u binnen zes weken na de datum van deze brief bezwaar maken. Uw bezwaarschrift stuurt u naar Postbus 2140 in Waldervoort. Vermeld daarbij uw naam, het zaaknummer en de reden waarom u het niet eens bent met de beslissing. Een bezwaar per e-mail nemen wij niet in behandeling. Wilt u eerst een toelichting, dan kunt u op werkdagen tussen 9.00 en 12.00 uur bellen met uw contactpersoon, de heer J. Verbeek, via telefoonnummer 0180 - 44 55 60. Hij kan uw bezwaar niet beoordelen, maar wel uitleggen hoe wij tot dit besluit zijn gekomen.</p><p>Met vriendelijke groet,<br>namens het college van burgemeester en wethouders,<br>mevrouw drs. H. Poelman<br>teamleider Werk en Inkomen</p>",
+    "questions": [
+      {
+        "prompt": "Wat staat er in alinea II over het besluit van de gemeente?",
+        "options": [
+          "Mevrouw Aydin krijgt het hele bedrag van 620 euro als gift uitbetaald.",
+          "Mevrouw Aydin krijgt een deel als gift en een deel als lening.",
+          "Mevrouw Aydin moet eerst haar spaargeld opmaken voordat zij geld krijgt.",
+          "Mevrouw Aydin krijgt alleen een lening, omdat zij heeft kunnen sparen."
+        ],
+        "correct": 1,
+        "explanation": "In alinea II staat dat 400 euro als gift wordt toegekend en 220 euro als renteloze lening. Optie D is te sterk: het spaargeld is wel een reden voor het onderscheid, maar de gift blijft bestaan."
+      },
+      {
+        "prompt": "Waarom noemt de gemeente in alinea III de inboedelverzekering van mevrouw Aydin?",
+        "options": [
+          "Om uit te leggen dat zij die verzekering beter kan opzeggen.",
+          "Om duidelijk te maken dat haar inkomen te hoog is voor bijstand.",
+          "Om aan te geven dat de verzekering in dit geval niets vergoedt."
+        ],
+        "correct": 2,
+        "explanation": "Alinea III legt uit dat een verzekering vóór bijzondere bijstand gaat, maar dat de apparaten door ouderdom kapot zijn, zodat de verzekering hier niet geldt. Over het inkomen staat juist dat het onder de grens ligt."
+      },
+      {
+        "prompt": "Mevrouw Aydin wil weten wat er gebeurt als zij de papieren voor de lening te laat opstuurt. In welke alinea vindt zij het antwoord?",
+        "options": [
+          "In alinea III.",
+          "In alinea IV.",
+          "In alinea V.",
+          "In alinea VI."
+        ],
+        "correct": 2,
+        "explanation": "Alinea V zegt dat het aanbod voor de lening vervalt bij te late inzending, terwijl de gift wel wordt uitbetaald. Alinea IV noemt alleen welke stappen zij moet zetten."
+      },
+      {
+        "prompt": "Wat moet mevrouw Aydin doen als zij bezwaar wil maken tegen het besluit?",
+        "options": [
+          "Binnen zes weken een brief naar de postbus van de gemeente sturen.",
+          "Binnen drie weken een e-mail aan de heer Verbeek sturen.",
+          "Binnen vier weken haar contactpersoon telefonisch op de hoogte stellen."
+        ],
+        "correct": 0,
+        "explanation": "In alinea VI staat dat het bezwaarschrift binnen zes weken per post naar Postbus 2140 moet. Bellen kan wel, maar dat is alleen voor uitleg en geldt niet als bezwaar."
+      },
+      {
+        "prompt": "Wat wil de gemeente met deze brief vooral bereiken?",
+        "options": [
+          "Mevrouw Aydin waarschuwen dat zij geld moet terugbetalen.",
+          "Mevrouw Aydin uitnodigen voor een gesprek over haar situatie.",
+          "Mevrouw Aydin informeren over het besluit en de vervolgstappen."
+        ],
+        "correct": 2,
+        "explanation": "De brief kondigt in alinea I aan dat het besluit wordt toegelicht en beschrijft daarna de betaling, de voorwaarden en de bezwaarmogelijkheid. Terugvordering (alinea V) is maar één onderdeel en niet het hoofddoel."
+      }
+    ]
+  }
+]

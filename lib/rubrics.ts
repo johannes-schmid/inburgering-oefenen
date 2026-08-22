@@ -31,7 +31,25 @@ import type { Level, SkillSlug } from '@/data/skills';
 export type RubricSkill = 'schrijven' | 'spreken';
 export type ImageUsage = 'none' | 'react' | 'describe' | 'choose' | 'cover_all';
 
-export type WritingCategory = 'email' | 'short_text' | 'form' | 'picture_note';
+/**
+ * Schrijven's categories, across both levels.
+ *
+ * A2 uses `email`, `short_text`, `form` and `picture_note`. B1 keeps `email` and `form` and
+ * adds four of its own — see `20260821090000_b1_exam_structure.sql`. The union is
+ * level-independent on purpose, exactly as `task_categories` is: a category is a *kind of
+ * opgave*, and it exists whether or not a rubric has been authored for it at a given level.
+ * `/admin/rubrics` therefore lists B1's four as uncovered at A2, which is the truth.
+ */
+export type WritingCategory =
+  | 'email'
+  | 'short_text'
+  | 'form'
+  | 'picture_note'
+  // B1 only
+  | 'sentence_completion'
+  | 'letter'
+  | 'picture_report'
+  | 'data_text';
 export type SpeakingCategory =
   | 'speaking_none'
   | 'speaking_react'
@@ -70,10 +88,14 @@ export type CriterionScore = {
 export const MAX_CRITERION_SCORE = 3;
 
 export const WRITING_CATEGORIES: WritingCategory[] = [
+  'sentence_completion',
   'email',
   'short_text',
   'form',
   'picture_note',
+  'letter',
+  'picture_report',
+  'data_text',
 ];
 export const SPEAKING_CATEGORIES: SpeakingCategory[] = [
   'speaking_none',
@@ -109,6 +131,10 @@ export const CATEGORY_LABELS: Record<RubricCategory, string> = {
   short_text: 'Korte tekst schrijven',
   form: 'Formulier invullen',
   picture_note: 'Bericht bij plaatjes',
+  sentence_completion: 'Zin afmaken in een bericht',
+  letter: 'Brief of briefje schrijven',
+  picture_report: 'Verslag bij plaatjes',
+  data_text: 'Tekst bij een tabel of grafiek',
   speaking_none: 'Spreken — vragen zonder plaatje',
   speaking_react: 'Spreken — reageren op een situatie',
   speaking_describe: 'Spreken — gebruik steeds het plaatje',

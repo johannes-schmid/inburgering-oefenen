@@ -1,0 +1,1531 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<meta name="design_doc_mode" content="canvas">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Public+Sans:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+<style>
+  body { margin: 0; background: #eceef0; color: #191c1e; font-family: 'Public Sans', system-ui, sans-serif; -webkit-font-smoothing: antialiased; }
+  a { color: #a24000; text-decoration: none; border-bottom: 1px solid rgba(162,64,0,0.25); }
+  a:hover { color: #002b6d; border-bottom-color: rgba(0,43,109,0.35); }
+  @keyframes shimmer { 0% { opacity: .55 } 50% { opacity: 1 } 100% { opacity: .55 } }
+</style>
+</helmet>
+
+<section style="padding: 64px 64px 120px; display: flex; flex-direction: column; gap: 56px; max-width: 1400px;">
+
+  <div style="display: flex; flex-direction: column; gap: 16px; max-width: 820px;">
+    <div style="font-size: 0.75rem; letter-spacing: 0.14em; text-transform: uppercase; color: #434651;">inburgeringoefenen.nl · graphic language v2</div>
+    <h1 style="margin: 0; font-family: 'Manrope', sans-serif; font-size: 3.5rem; line-height: 1.02; letter-spacing: -0.02em; font-weight: 800; color: #002b6d;">Dutch Horizon element library</h1>
+    <p style="margin: 0; font-size: 1rem; line-height: 1.6; color: #434651; max-width: 64ch; text-wrap: pretty;">Every element below is built from four primitives — <strong>the gable house</strong>, <strong>the disc</strong>, <strong>the band</strong> and <strong>the dot field</strong> — recoloured from the Civic palette. Houses always run left to right along the bottom edge as a continuous canal-house skyline. No borders, no drop shadows, no drawn illustration. Depth comes from tonal layering alone.</p>
+    <p style="margin: 0; font-size: 1rem; line-height: 1.6; color: #434651; max-width: 64ch; text-wrap: pretty;">Sections 14–18 are the icon layer: construction rules, the five real Amsterdam gable types, the canal-house row at every size, and a set of unmistakably Dutch objects. Sections 01–08 are the base kit. Sections 09–13 cover the all-in-one scope: the A2 language exam (Lezen, Luisteren, Schrijven, with Spreken to come), KNM, ONA on the roadmap, and the NT2-teacher trust layer that separates us from AI-generated competitors.</p>
+  </div>
+
+  <div style="display: flex; flex-direction: column; gap: 20px;">
+    <div style="display: flex; align-items: baseline; gap: 14px;">
+      <div style="font-family: 'Manrope', sans-serif; font-weight: 800; font-size: 0.875rem; color: #a24000;">01</div>
+      <h2 style="margin: 0; font-family: 'Manrope', sans-serif; font-size: 1.75rem; letter-spacing: -0.015em; color: #002b6d;">Primitives</h2>
+      <div style="font-size: 0.875rem; color: #434651;">the whole vocabulary — everything else is a recombination</div>
+    </div>
+    <div style="background: #f8f9fb; border-radius: 20px; padding: 28px; display: grid; grid-template-columns: repeat(6, 1fr); gap: 20px;">
+      <div style="display: flex; flex-direction: column; gap: 12px;">
+        <div style="height: 96px; background: #f2f4f6; border-radius: 12px; overflow: hidden; position: relative;">
+          <div style="position: absolute; left: 50%; transform: translateX(-50%); bottom: 0; display: flex; flex-direction: column; align-items: center; width: 54px;">
+            <div style="width: 68%; height: 20px; border-radius: 999px 999px 0 0; background: #002b6d;"></div>
+            <div style="width: 100%; height: 46px; background: #002b6d;"></div>
+          </div>
+        </div>
+        <div style="font-family: 'Manrope', sans-serif; font-weight: 600; font-size: 0.875rem;">Gable house</div>
+        <div style="font-size: 0.75rem; line-height: 1.5; color: #434651;">Dome, bell or stepped top on a plain body.</div>
+      </div>
+      <div style="display: flex; flex-direction: column; gap: 12px;">
+        <div style="height: 96px; background: #f2f4f6; border-radius: 12px; overflow: hidden; position: relative;">
+          <div style="position: absolute; left: 50%; top: 50%; transform: translate(-50%,-50%); width: 56px; height: 56px; border-radius: 50%; background: linear-gradient(180deg,#fe762c,#a24000);"></div>
+        </div>
+        <div style="font-family: 'Manrope', sans-serif; font-weight: 600; font-size: 0.875rem;">Sun disc</div>
+        <div style="font-size: 0.75rem; line-height: 1.5; color: #434651;">The single accent. One per composition.</div>
+      </div>
+      <div style="display: flex; flex-direction: column; gap: 12px;">
+        <div style="height: 96px; background: #f2f4f6; border-radius: 12px; overflow: hidden; position: relative;">
+          <div style="position: absolute; left: 0; right: 0; bottom: 26px; height: 10px; background: linear-gradient(90deg,#a24000,#fe762c);"></div>
+          <div style="position: absolute; left: 0; right: 0; bottom: 12px; height: 6px; background: #c4c6d2;"></div>
+        </div>
+        <div style="font-family: 'Manrope', sans-serif; font-weight: 600; font-size: 0.875rem;">Horizon band</div>
+        <div style="font-size: 0.75rem; line-height: 1.5; color: #434651;">Progress, footers, section edges.</div>
+      </div>
+      <div style="display: flex; flex-direction: column; gap: 12px;">
+        <div style="height: 96px; background: #f2f4f6; border-radius: 12px; background-image: radial-gradient(circle, #c4c6d2 1.5px, transparent 1.6px); background-size: 12px 12px;"></div>
+        <div style="font-family: 'Manrope', sans-serif; font-weight: 600; font-size: 0.875rem;">Dot field</div>
+        <div style="font-size: 0.75rem; line-height: 1.5; color: #434651;">Texture for empty areas and skeletons.</div>
+      </div>
+      <div style="display: flex; flex-direction: column; gap: 12px;">
+        <div style="height: 96px; background: #f2f4f6; border-radius: 12px; overflow: hidden; position: relative;">
+<div style="position: absolute; left: 0; right: 0; bottom: 0; display: flex; align-items: flex-end; gap: 3px;"><div style="flex: 1; display: flex; flex-direction: column; align-items: center;"><div style="width: 100%; height: 10px; border-radius: 5px 5px 0 0; background: #c4c6d2;"></div><div style="width: 100%; height: 34px; background: #c4c6d2;"></div></div><div style="flex: 1; display: flex; flex-direction: column; align-items: center;"><div style="width: 34%; height: 7px; background: #dfe2e6;"></div><div style="width: 68%; height: 7px; background: #dfe2e6;"></div><div style="width: 100%; height: 44px; background: #dfe2e6;"></div></div><div style="flex: 1; display: flex; flex-direction: column; align-items: center;"><div style="width: 66%; height: 16px; border-radius: 999px 999px 0 0; background: #1d428a;"></div><div style="width: 100%; height: 52px; background: #1d428a;"></div></div><div style="flex: 1; display: flex; flex-direction: column; align-items: center;"><div style="width: 100%; height: 12px; border-radius: 5px 5px 0 0; background: #002b6d;"></div><div style="width: 100%; height: 38px; background: #002b6d;"></div></div><div style="flex: 1; display: flex; flex-direction: column; align-items: center;"><div style="width: 66%; height: 11px; border-radius: 999px 999px 0 0; background: #c4c6d2;"></div><div style="width: 100%; height: 30px; background: #c4c6d2;"></div></div></div>
+        </div>
+        <div style="font-family: 'Manrope', sans-serif; font-weight: 600; font-size: 0.875rem;">Skyline row</div>
+        <div style="font-size: 0.75rem; line-height: 1.5; color: #434651;">Houses left to right, tints for depth.</div>
+      </div>
+      <div style="display: flex; flex-direction: column; gap: 12px;">
+        <div style="height: 96px; background: #f2f4f6; border-radius: 12px; overflow: hidden; position: relative;">
+          <div style="position: absolute; left: 50%; top: 50%; transform: translate(-50%,-50%); width: 58px; height: 58px; border-radius: 50%; background: #f2f4f6; box-shadow: 0 0 0 10px #002b6d, 0 0 0 18px #e6e8ea;"></div>
+        </div>
+        <div style="font-family: 'Manrope', sans-serif; font-weight: 600; font-size: 0.875rem;">Lens ring</div>
+        <div style="font-size: 0.75rem; line-height: 1.5; color: #434651;">Circular progress, level medals.</div>
+      </div>
+    </div>
+  </div>
+
+  <div style="display: flex; flex-direction: column; gap: 20px;">
+    <div style="display: flex; align-items: baseline; gap: 14px;">
+      <div style="font-family: 'Manrope', sans-serif; font-weight: 800; font-size: 0.875rem; color: #a24000;">02</div>
+      <h2 style="margin: 0; font-family: 'Manrope', sans-serif; font-size: 1.75rem; letter-spacing: -0.015em; color: #002b6d;">Heroes & banners</h2>
+    </div>
+    <div style="display: flex; flex-direction: column; gap: 20px;">
+      <div style="position: relative; height: 300px; border-radius: 20px; overflow: hidden; background: linear-gradient(135deg,#002b6d 0%,#1d428a 100%);">
+        <div style="position: absolute; inset: 0; background-image: radial-gradient(circle, rgba(255,255,255,0.07) 1.5px, transparent 1.6px); background-size: 22px 22px;"></div>
+<div style="position: absolute; left: 0; right: 0; bottom: 0; display: flex; align-items: flex-end; gap: 7px; padding: 0 0 8px;"><div style="flex: 1; display: flex; flex-direction: column; align-items: center;"><div style="width: 100%; height: 16px; border-radius: 8px 8px 0 0; background: rgba(255,255,255,0.06);"></div><div style="width: 100%; height: 56px; background: rgba(255,255,255,0.06);"></div></div><div style="flex: 1; display: flex; flex-direction: column; align-items: center;"><div style="width: 66%; height: 22px; border-radius: 999px 999px 0 0; background: rgba(255,255,255,0.09);"></div><div style="width: 100%; height: 72px; background: rgba(255,255,255,0.09);"><div style="display: flex; flex-wrap: wrap; justify-content: center; gap: 5px; padding: 6px 0 0;"><div style="width: 5px; height: 5px; border-radius: 1px; background: rgba(255,255,255,0.1);"></div><div style="width: 5px; height: 5px; border-radius: 1px; background: rgba(255,255,255,0.1);"></div><div style="width: 5px; height: 5px; border-radius: 1px; background: rgba(255,255,255,0.1);"></div><div style="width: 5px; height: 5px; border-radius: 1px; background: rgba(255,255,255,0.1);"></div></div></div></div><div style="flex: 0.75; display: flex; flex-direction: column; align-items: center;">
+  <div style="width: 34%; height: 30px; background: rgba(255,255,255,0.1); clip-path: polygon(50% 0, 100% 100%, 0 100%);"></div>
+  <div style="width: 62%; height: 86px; background: rgba(255,255,255,0.1); display: flex; justify-content: center; padding-top: 12px; box-sizing: border-box;">
+    <div style="width: 10px; height: 10px; border-radius: 50%; background: rgba(255,255,255,0.14);"></div>
+  </div>
+</div><div style="flex: 1; display: flex; flex-direction: column; align-items: center;"><div style="width: 66%; height: 26px; border-radius: 999px 999px 0 0; background: rgba(255,255,255,0.13);"></div><div style="width: 100%; height: 92px; background: rgba(255,255,255,0.13);"><div style="display: flex; flex-wrap: wrap; justify-content: center; gap: 5px; padding: 6px 0 0;"><div style="width: 5px; height: 5px; border-radius: 1px; background: rgba(255,255,255,0.1);"></div><div style="width: 5px; height: 5px; border-radius: 1px; background: rgba(255,255,255,0.1);"></div><div style="width: 5px; height: 5px; border-radius: 1px; background: rgba(255,255,255,0.1);"></div><div style="width: 5px; height: 5px; border-radius: 1px; background: rgba(255,255,255,0.1);"></div><div style="width: 5px; height: 5px; border-radius: 1px; background: rgba(255,255,255,0.1);"></div><div style="width: 5px; height: 5px; border-radius: 1px; background: rgba(255,255,255,0.1);"></div></div></div></div><div style="flex: 1; display: flex; flex-direction: column; align-items: center;"><div style="width: 100%; height: 18px; border-radius: 8px 8px 0 0; background: rgba(255,255,255,0.08);"></div><div style="width: 100%; height: 66px; background: rgba(255,255,255,0.08);"></div></div><div style="flex: 1.6; position: relative; display: flex; justify-content: center; align-items: flex-end; height: 124px;">
+  <div style="width: 58%; height: 64px; background: rgba(255,255,255,0.13); clip-path: polygon(24% 0, 76% 0, 100% 100%, 0 100%);"></div>
+  <div style="position: absolute; left: 50%; bottom: 64px; transform: translate(-50%,50%) rotate(28deg); width: 60px; height: 10px; border-radius: 5px; background: rgba(255,255,255,0.13);"></div>
+  <div style="position: absolute; left: 50%; bottom: 64px; transform: translate(-50%,50%) rotate(-62deg); width: 60px; height: 10px; border-radius: 5px; background: rgba(255,255,255,0.13);"></div>
+  <div style="position: absolute; left: 50%; bottom: 64px; transform: translate(-50%,50%); width: 14px; height: 14px; border-radius: 50%; background: rgba(255,255,255,0.2);"></div>
+</div><div style="flex: 1; display: flex; flex-direction: column; align-items: center;"><div style="width: 66%; height: 20px; border-radius: 999px 999px 0 0; background: rgba(255,255,255,0.07);"></div><div style="width: 100%; height: 62px; background: rgba(255,255,255,0.07);"></div></div><div style="flex: 1; display: flex; flex-direction: column; align-items: center;"><div style="width: 100%; height: 28px; border-radius: 9px 9px 0 0; background: rgba(255,255,255,0.15);"></div><div style="width: 100%; height: 100px; background: rgba(255,255,255,0.15);"><div style="display: flex; flex-wrap: wrap; justify-content: center; gap: 5px; padding: 6px 0 0;"><div style="width: 5px; height: 5px; border-radius: 1px; background: rgba(255,255,255,0.1);"></div><div style="width: 5px; height: 5px; border-radius: 1px; background: rgba(255,255,255,0.1);"></div><div style="width: 5px; height: 5px; border-radius: 1px; background: rgba(255,255,255,0.1);"></div><div style="width: 5px; height: 5px; border-radius: 1px; background: rgba(255,255,255,0.1);"></div><div style="width: 5px; height: 5px; border-radius: 1px; background: rgba(255,255,255,0.1);"></div><div style="width: 5px; height: 5px; border-radius: 1px; background: rgba(255,255,255,0.1);"></div></div></div></div><div style="flex: 1; display: flex; flex-direction: column; align-items: center;"><div style="width: 34%; height: 9px; background: rgba(255,255,255,0.08);"></div><div style="width: 68%; height: 9px; background: rgba(255,255,255,0.08);"></div><div style="width: 100%; height: 54px; background: rgba(255,255,255,0.08);"></div></div><div style="flex: 1; display: flex; flex-direction: column; align-items: center;"><div style="width: 66%; height: 24px; border-radius: 999px 999px 0 0; background: rgba(255,255,255,0.11);"></div><div style="width: 100%; height: 76px; background: rgba(255,255,255,0.11);"><div style="display: flex; flex-wrap: wrap; justify-content: center; gap: 5px; padding: 6px 0 0;"><div style="width: 5px; height: 5px; border-radius: 1px; background: rgba(255,255,255,0.09);"></div><div style="width: 5px; height: 5px; border-radius: 1px; background: rgba(255,255,255,0.09);"></div><div style="width: 5px; height: 5px; border-radius: 1px; background: rgba(255,255,255,0.09);"></div><div style="width: 5px; height: 5px; border-radius: 1px; background: rgba(255,255,255,0.09);"></div></div></div></div><div style="flex: 1; display: flex; flex-direction: column; align-items: center;"><div style="width: 100%; height: 14px; border-radius: 7px 7px 0 0; background: rgba(255,255,255,0.06);"></div><div style="width: 100%; height: 46px; background: rgba(255,255,255,0.06);"></div></div></div>
+        <div style="position: absolute; right: 90px; top: 56px; width: 120px; height: 120px; border-radius: 50%; background: linear-gradient(180deg,#fe762c,#a24000);"></div>
+        <div style="position: absolute; left: 48px; top: 48px; display: flex; flex-direction: column; gap: 14px; max-width: 620px;">
+          <div style="display: inline-flex; align-self: flex-start; align-items: center; gap: 9px; background: rgba(248,249,251,0.16); backdrop-filter: blur(20px); border-radius: 999px; padding: 8px 15px;">
+            <div style="width: 8px; height: 8px; border-radius: 50%; background: #fe762c;"></div>
+            <span style="font-size: 0.75rem; letter-spacing: 0.12em; text-transform: uppercase; color: #fff;">Oefenexamen KNM</span>
+          </div>
+          <div style="font-family: 'Manrope', sans-serif; font-size: 3.5rem; line-height: 1.02; letter-spacing: -0.02em; font-weight: 800; color: #fff;">Ken je nieuwe land</div>
+          <div style="font-size: 1rem; line-height: 1.6; color: rgba(255,255,255,0.82); max-width: 46ch;">Vijf modules, 400 vragen, uitleg in eenvoudig Nederlands.</div>
+        </div>
+        <div style="position: absolute; left: 48px; bottom: 44px; display: flex; gap: 12px;">
+          <div style="background: #fe762c; color: #5f2200; font-family: 'Manrope', sans-serif; font-weight: 700; font-size: 0.9375rem; padding: 14px 24px; border-radius: 12px; white-space: nowrap; box-shadow: inset 0 2px 0 rgba(255,255,255,0.28);">Start module 1</div>
+          <div style="background: rgba(248,249,251,0.14); backdrop-filter: blur(20px); color: #fff; font-family: 'Manrope', sans-serif; font-weight: 600; font-size: 0.9375rem; padding: 14px 24px; border-radius: 12px; white-space: nowrap;">Bekijk voorbeeld</div>
+        </div>
+        <div style="position: absolute; left: 0; right: 0; bottom: 0; height: 8px; background: linear-gradient(90deg,#a24000 0%,#fe762c 44%,rgba(254,118,44,0.14) 44%,rgba(254,118,44,0.14) 100%);"></div>
+      </div>
+
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+        <div style="position: relative; height: 150px; border-radius: 16px; overflow: hidden; background: #f2f4f6;">
+<div style="position: absolute; left: 0; right: 0; bottom: 0; display: flex; align-items: flex-end; gap: 5px;"><div style="flex: 1; display: flex; flex-direction: column; align-items: center;"><div style="width: 66%; height: 9px; border-radius: 999px 999px 0 0; background: #e6e8ea;"></div><div style="width: 100%; height: 26px; background: #e6e8ea;"></div></div><div style="flex: 1; display: flex; flex-direction: column; align-items: center;"><div style="width: 100%; height: 12px; border-radius: 6px 6px 0 0; background: #dfe2e6;"></div><div style="width: 100%; height: 34px; background: #dfe2e6;"></div></div><div style="flex: 1; display: flex; align-items: flex-end; justify-content: center; padding-bottom: 2px;">
+  <div style="position: relative; width: 48px; height: 24px;">
+    <div style="position: absolute; left: 0; bottom: 0; width: 20px; height: 20px; border-radius: 50%; box-sizing: border-box; border: 4px solid #c4c6d2;"></div>
+    <div style="position: absolute; right: 0; bottom: 0; width: 20px; height: 20px; border-radius: 50%; box-sizing: border-box; border: 4px solid #c4c6d2;"></div>
+    <div style="position: absolute; left: 10px; bottom: 14px; width: 28px; height: 4px; border-radius: 2px; background: #c4c6d2; transform: rotate(-10deg);"></div>
+    <div style="position: absolute; left: 18px; bottom: 10px; width: 4px; height: 12px; border-radius: 2px; background: #c4c6d2;"></div>
+  </div>
+</div><div style="flex: 1; display: flex; flex-direction: column; align-items: center;"><div style="width: 66%; height: 14px; border-radius: 999px 999px 0 0; background: #c4c6d2;"></div><div style="width: 100%; height: 44px; background: #c4c6d2;"></div></div><div style="flex: 1; display: flex; flex-direction: column; align-items: center;"><div style="width: 100%; height: 8px; border-radius: 5px 5px 0 0; background: #dfe2e6;"></div><div style="width: 100%; height: 28px; background: #dfe2e6;"></div></div><div style="flex: 1; display: flex; flex-direction: column; align-items: center;"><div style="width: 66%; height: 11px; border-radius: 999px 999px 0 0; background: #e6e8ea;"></div><div style="width: 100%; height: 36px; background: #e6e8ea;"></div></div><div style="flex: 1; display: flex; flex-direction: column; align-items: center;"><div style="width: 34%; height: 5px; background: #dfe2e6;"></div><div style="width: 68%; height: 5px; background: #dfe2e6;"></div><div style="width: 100%; height: 20px; background: #dfe2e6;"></div></div></div>
+          <div style="position: absolute; right: 34px; top: 24px; width: 40px; height: 40px; border-radius: 50%; background: #fe762c;"></div>
+          <div style="position: absolute; left: 28px; top: 28px; display: flex; flex-direction: column; gap: 8px;">
+            <div style="font-size: 0.75rem; letter-spacing: 0.14em; text-transform: uppercase; color: #434651;">Light banner</div>
+            <div style="font-family: 'Manrope', sans-serif; font-size: 1.75rem; letter-spacing: -0.015em; font-weight: 700; color: #002b6d; max-width: 18ch;">Werk & inkomen</div>
+          </div>
+        </div>
+        <div style="position: relative; height: 150px; border-radius: 16px; overflow: hidden; background: #002b6d; display: flex; align-items: center; padding: 0 28px;">
+<div style="position: absolute; left: 0; right: 0; bottom: 0; display: flex; align-items: flex-end; gap: 5px;"><div style="flex: 1; display: flex; flex-direction: column; align-items: center;"><div style="width: 100%; height: 8px; border-radius: 5px 5px 0 0; background: rgba(255,255,255,0.07);"></div><div style="width: 100%; height: 20px; background: rgba(255,255,255,0.07);"></div></div><div style="flex: 1; display: flex; flex-direction: column; align-items: center;"><div style="width: 66%; height: 12px; border-radius: 999px 999px 0 0; background: rgba(255,255,255,0.1);"></div><div style="width: 100%; height: 30px; background: rgba(255,255,255,0.1);"></div></div><div style="flex: 1.4; display: flex; align-items: flex-end; justify-content: center;">
+  <div style="width: 84%; height: 30px; border-radius: 999px 999px 0 0; box-sizing: border-box; border: 6px solid rgba(255,255,255,0.13); border-bottom: none;"></div>
+</div><div style="flex: 1; display: flex; flex-direction: column; align-items: center;"><div style="width: 66%; height: 14px; border-radius: 999px 999px 0 0; background: rgba(255,255,255,0.13);"></div><div style="width: 100%; height: 38px; background: rgba(255,255,255,0.13);"></div></div><div style="flex: 1; display: flex; flex-direction: column; align-items: center;"><div style="width: 100%; height: 8px; border-radius: 5px 5px 0 0; background: rgba(255,255,255,0.08);"></div><div style="width: 100%; height: 24px; background: rgba(255,255,255,0.08);"></div></div><div style="flex: 1; display: flex; flex-direction: column; align-items: center;"><div style="width: 34%; height: 6px; background: rgba(255,255,255,0.1);"></div><div style="width: 68%; height: 6px; background: rgba(255,255,255,0.1);"></div><div style="width: 100%; height: 28px; background: rgba(255,255,255,0.1);"></div></div><div style="flex: 1; display: flex; flex-direction: column; align-items: center;"><div style="width: 66%; height: 9px; border-radius: 999px 999px 0 0; background: rgba(255,255,255,0.06);"></div><div style="width: 100%; height: 16px; background: rgba(255,255,255,0.06);"></div></div></div>
+          <div style="position: relative; display: flex; flex-direction: column; gap: 8px;">
+            <div style="font-size: 0.75rem; letter-spacing: 0.14em; text-transform: uppercase; color: rgba(255,255,255,0.65);">Inverted banner</div>
+            <div style="font-family: 'Manrope', sans-serif; font-size: 1.75rem; letter-spacing: -0.015em; font-weight: 700; color: #fff;">Examen over 12 dagen</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div style="display: flex; flex-direction: column; gap: 20px;">
+    <div style="display: flex; align-items: baseline; gap: 14px;">
+      <div style="font-family: 'Manrope', sans-serif; font-weight: 800; font-size: 0.875rem; color: #a24000;">03</div>
+      <h2 style="margin: 0; font-family: 'Manrope', sans-serif; font-size: 1.75rem; letter-spacing: -0.015em; color: #002b6d;">Module cards & category marks</h2>
+    </div>
+    <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px;">
+      <div style="background: #fff; border-radius: 12px; overflow: hidden; display: flex; flex-direction: column;">
+        <div style="height: 92px; background: #002b6d; position: relative; overflow: hidden;">
+<div style="position: absolute; left: 0; right: 0; bottom: 0; display: flex; align-items: flex-end; gap: 5px;"><div style="flex: 1; display: flex; flex-direction: column; align-items: center;"><div style="width: 66%; height: 10px; border-radius: 999px 999px 0 0; background: rgba(255,255,255,0.1);"></div><div style="width: 100%; height: 28px; background: rgba(255,255,255,0.1);"></div></div><div style="flex: 1; display: flex; flex-direction: column; align-items: center;"><div style="width: 100%; height: 13px; border-radius: 6px 6px 0 0; background: rgba(255,255,255,0.14);"></div><div style="width: 100%; height: 38px; background: rgba(255,255,255,0.14);"></div></div><div style="flex: 1; display: flex; flex-direction: column; align-items: center;"><div style="width: 34%; height: 5px; background: rgba(255,255,255,0.09);"></div><div style="width: 68%; height: 5px; background: rgba(255,255,255,0.09);"></div><div style="width: 100%; height: 24px; background: rgba(255,255,255,0.09);"></div></div><div style="flex: 1; display: flex; flex-direction: column; align-items: center;"><div style="width: 66%; height: 15px; border-radius: 999px 999px 0 0; background: rgba(255,255,255,0.16);"></div><div style="width: 100%; height: 44px; background: rgba(255,255,255,0.16);"></div></div><div style="flex: 1; display: flex; flex-direction: column; align-items: center;"><div style="width: 100%; height: 9px; border-radius: 5px 5px 0 0; background: rgba(255,255,255,0.1);"></div><div style="width: 100%; height: 20px; background: rgba(255,255,255,0.1);"></div></div></div>
+          <div style="position: absolute; right: 18px; top: 18px; width: 24px; height: 24px; border-radius: 50%; background: #fe762c;"></div>
+        </div>
+        <div style="padding: 20px; display: flex; flex-direction: column; gap: 10px;">
+          <div style="font-size: 0.75rem; letter-spacing: 0.12em; text-transform: uppercase; color: #434651;">Module 01</div>
+          <div style="font-family: 'Manrope', sans-serif; font-weight: 700; font-size: 1.125rem; color: #191c1e;">Wonen</div>
+          <div style="font-size: 0.8125rem; line-height: 1.6; color: #434651;">48 vragen · 20 min</div>
+          <div style="height: 8px; border-radius: 999px; background: #e6e8ea; overflow: hidden; margin-top: 4px;"><div style="width: 72%; height: 100%; background: linear-gradient(90deg,#a24000,#fe762c);"></div></div>
+        </div>
+      </div>
+      <div style="background: #fff; border-radius: 12px; overflow: hidden; display: flex; flex-direction: column;">
+        <div style="height: 92px; background: #1d428a; position: relative; overflow: hidden;">
+<div style="position: absolute; left: 0; right: 0; bottom: 0; display: flex; align-items: flex-end; gap: 5px;"><div style="flex: 1; display: flex; flex-direction: column; align-items: center;"><div style="width: 34%; height: 5px; background: rgba(255,255,255,0.09);"></div><div style="width: 68%; height: 5px; background: rgba(255,255,255,0.09);"></div><div style="width: 100%; height: 22px; background: rgba(255,255,255,0.09);"></div></div><div style="flex: 1; display: flex; flex-direction: column; align-items: center;"><div style="width: 66%; height: 14px; border-radius: 999px 999px 0 0; background: rgba(255,255,255,0.14);"></div><div style="width: 100%; height: 40px; background: rgba(255,255,255,0.14);"></div></div><div style="flex: 1; display: flex; flex-direction: column; align-items: center;"><div style="width: 100%; height: 11px; border-radius: 6px 6px 0 0; background: rgba(255,255,255,0.1);"></div><div style="width: 100%; height: 30px; background: rgba(255,255,255,0.1);"></div></div><div style="flex: 1; display: flex; flex-direction: column; align-items: center;"><div style="width: 66%; height: 9px; border-radius: 999px 999px 0 0; background: rgba(255,255,255,0.08);"></div><div style="width: 100%; height: 18px; background: rgba(255,255,255,0.08);"></div></div><div style="flex: 1; display: flex; flex-direction: column; align-items: center;"><div style="width: 100%; height: 13px; border-radius: 6px 6px 0 0; background: rgba(255,255,255,0.13);"></div><div style="width: 100%; height: 34px; background: rgba(255,255,255,0.13);"></div></div></div>
+          <div style="position: absolute; right: 18px; top: 18px; width: 24px; height: 24px; border-radius: 50%; background: #ffb695;"></div>
+        </div>
+        <div style="padding: 20px; display: flex; flex-direction: column; gap: 10px;">
+          <div style="font-size: 0.75rem; letter-spacing: 0.12em; text-transform: uppercase; color: #434651;">Module 02</div>
+          <div style="font-family: 'Manrope', sans-serif; font-weight: 700; font-size: 1.125rem; color: #191c1e;">Gezondheid</div>
+          <div style="font-size: 0.8125rem; line-height: 1.6; color: #434651;">36 vragen · 15 min</div>
+          <div style="height: 8px; border-radius: 999px; background: #e6e8ea; overflow: hidden; margin-top: 4px;"><div style="width: 30%; height: 100%; background: linear-gradient(90deg,#a24000,#fe762c);"></div></div>
+        </div>
+      </div>
+      <div style="background: #fff; border-radius: 12px; overflow: hidden; display: flex; flex-direction: column;">
+        <div style="height: 92px; background: #a24000; position: relative; overflow: hidden;">
+<div style="position: absolute; left: 0; right: 0; bottom: 0; display: flex; align-items: flex-end; gap: 5px;"><div style="flex: 1; display: flex; flex-direction: column; align-items: center;"><div style="width: 100%; height: 10px; border-radius: 6px 6px 0 0; background: rgba(255,255,255,0.12);"></div><div style="width: 100%; height: 24px; background: rgba(255,255,255,0.12);"></div></div><div style="flex: 1; display: flex; flex-direction: column; align-items: center;"><div style="width: 66%; height: 13px; border-radius: 999px 999px 0 0; background: rgba(255,255,255,0.16);"></div><div style="width: 100%; height: 36px; background: rgba(255,255,255,0.16);"></div></div><div style="flex: 1; display: flex; flex-direction: column; align-items: center;"><div style="width: 34%; height: 5px; background: rgba(255,255,255,0.11);"></div><div style="width: 68%; height: 5px; background: rgba(255,255,255,0.11);"></div><div style="width: 100%; height: 26px; background: rgba(255,255,255,0.11);"></div></div><div style="flex: 1; display: flex; flex-direction: column; align-items: center;"><div style="width: 66%; height: 15px; border-radius: 999px 999px 0 0; background: rgba(255,255,255,0.18);"></div><div style="width: 100%; height: 42px; background: rgba(255,255,255,0.18);"></div></div><div style="flex: 1; display: flex; flex-direction: column; align-items: center;"><div style="width: 100%; height: 8px; border-radius: 5px 5px 0 0; background: rgba(255,255,255,0.12);"></div><div style="width: 100%; height: 18px; background: rgba(255,255,255,0.12);"></div></div></div>
+          <div style="position: absolute; left: 18px; top: 18px; width: 24px; height: 24px; border-radius: 50%; background: #ffb695;"></div>
+        </div>
+        <div style="padding: 20px; display: flex; flex-direction: column; gap: 10px;">
+          <div style="font-size: 0.75rem; letter-spacing: 0.12em; text-transform: uppercase; color: #434651;">Module 03</div>
+          <div style="font-family: 'Manrope', sans-serif; font-weight: 700; font-size: 1.125rem; color: #191c1e;">Werk</div>
+          <div style="font-size: 0.8125rem; line-height: 1.6; color: #434651;">52 vragen · 22 min</div>
+          <div style="height: 8px; border-radius: 999px; background: #e6e8ea; overflow: hidden; margin-top: 4px;"><div style="width: 8%; height: 100%; background: linear-gradient(90deg,#a24000,#fe762c);"></div></div>
+        </div>
+      </div>
+      <div style="background: #f2f4f6; border-radius: 12px; overflow: hidden; display: flex; flex-direction: column;">
+        <div style="height: 92px; background: #e6e8ea; position: relative; overflow: hidden;">
+<div style="position: absolute; left: 0; right: 0; bottom: 0; display: flex; align-items: flex-end; gap: 5px;"><div style="flex: 1; display: flex; flex-direction: column; align-items: center;"><div style="width: 66%; height: 10px; border-radius: 999px 999px 0 0; background: #dfe2e6;"></div><div style="width: 100%; height: 26px; background: #dfe2e6;"></div></div><div style="flex: 1; display: flex; flex-direction: column; align-items: center;"><div style="width: 100%; height: 13px; border-radius: 6px 6px 0 0; background: #d7dade;"></div><div style="width: 100%; height: 36px; background: #d7dade;"></div></div><div style="flex: 1; display: flex; flex-direction: column; align-items: center;"><div style="width: 34%; height: 5px; background: #dfe2e6;"></div><div style="width: 68%; height: 5px; background: #dfe2e6;"></div><div style="width: 100%; height: 22px; background: #dfe2e6;"></div></div><div style="flex: 1; display: flex; flex-direction: column; align-items: center;"><div style="width: 66%; height: 14px; border-radius: 999px 999px 0 0; background: #d2d5da;"></div><div style="width: 100%; height: 40px; background: #d2d5da;"></div></div><div style="flex: 1; display: flex; flex-direction: column; align-items: center;"><div style="width: 100%; height: 8px; border-radius: 5px 5px 0 0; background: #dfe2e6;"></div><div style="width: 100%; height: 18px; background: #dfe2e6;"></div></div></div>
+          <div style="position: absolute; right: 18px; top: 18px; width: 24px; height: 24px; border-radius: 50%; background: #c4c6d2;"></div>
+        </div>
+        <div style="padding: 20px; display: flex; flex-direction: column; gap: 10px;">
+          <div style="font-size: 0.75rem; letter-spacing: 0.12em; text-transform: uppercase; color: #434651;">Module 04</div>
+          <div style="font-family: 'Manrope', sans-serif; font-weight: 700; font-size: 1.125rem; color: #434651;">Onderwijs</div>
+          <div style="font-size: 0.8125rem; line-height: 1.6; color: #434651;">Vergrendeld · rond module 3 af</div>
+          <div style="height: 8px; border-radius: 999px; background: #dfe2e6; margin-top: 4px;"></div>
+        </div>
+      </div>
+    </div>
+
+    <div style="background: #f8f9fb; border-radius: 20px; padding: 28px; display: flex; flex-direction: column; gap: 18px;">
+      <div style="display: flex; flex-direction: column; gap: 6px;"><div style="font-family: 'Manrope', sans-serif; font-weight: 700; font-size: 1.125rem; color: #002b6d;">Category marks v3 — one geometry per topic</div><div style="font-size: 0.875rem; line-height: 1.6; color: #434651; max-width: 74ch;">Drawn on the icon construction of §14: a 72px tile, a 10px keepline, 8/6/4px weights and detail cut in the tile colour. Wonen is now a proper canal row — three narrow houses shoulder to shoulder with their own gables, window pairs and an arched door — not a single generic gable. One orange accent per mark, maximum.</div></div>
+      <div style="display: grid; grid-template-columns: repeat(5, 1fr); gap: 24px;">
+
+        <div style="display: flex; flex-direction: column; gap: 10px; align-items: center;">
+          <div style="width: 72px; height: 72px; border-radius: 18px; background: #e6e8ea; position: relative; overflow: hidden;">
+          <div style="position: absolute; left: 10px; right: 10px; bottom: 10px; display: flex; align-items: flex-end; gap: 2px;">
+            <div style="flex: 1; display: flex; flex-direction: column; align-items: center;">
+              <div style="width: 44%; height: 5px; background: #002b6d;"></div>
+              <div style="width: 74%; height: 5px; background: #002b6d;"></div>
+              <div style="width: 100%; height: 26px; background: #002b6d; display: flex; flex-direction: column; align-items: center; gap: 4px; padding-top: 4px; box-sizing: border-box;">
+                <div style="width: 8px; height: 6px; background: #e6e8ea;"></div>
+                <div style="width: 8px; height: 6px; background: #e6e8ea;"></div>
+              </div>
+            </div>
+            <div style="flex: 1.15; display: flex; flex-direction: column; align-items: center;">
+              <div style="width: 58%; height: 10px; border-radius: 999px 999px 0 0; background: #002b6d;"></div>
+              <div style="width: 100%; height: 36px; background: #002b6d; display: flex; flex-direction: column; align-items: center; gap: 4px; padding-top: 4px; box-sizing: border-box;">
+                <div style="display: flex; gap: 4px;"><div style="width: 6px; height: 6px; background: #e6e8ea;"></div><div style="width: 6px; height: 6px; background: #e6e8ea;"></div></div>
+                <div style="width: 8px; height: 11px; border-radius: 4px 4px 0 0; background: #e6e8ea; margin-top: auto;"></div>
+              </div>
+            </div>
+            <div style="flex: 0.9; display: flex; flex-direction: column; align-items: center;">
+              <div style="width: 40%; height: 5px; background: #002b6d;"></div>
+              <div style="width: 76%; height: 5px; border-radius: 2px 2px 0 0; background: #002b6d;"></div>
+              <div style="width: 100%; height: 22px; background: #002b6d; display: flex; justify-content: center; padding-top: 5px; box-sizing: border-box;">
+                <div style="width: 8px; height: 6px; background: #e6e8ea;"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+          <div style="font-size: 0.75rem; color: #434651;">Wonen</div>
+        </div>
+
+        <div style="display: flex; flex-direction: column; gap: 10px; align-items: center;">
+          <div style="width: 72px; height: 72px; border-radius: 18px; background: #e6e8ea; position: relative; overflow: hidden;">
+            <div style="position: absolute; left: 12px; top: 12px; width: 48px; height: 48px; border-radius: 14px; background: #002b6d;"></div>
+            <div style="position: absolute; left: 22px; top: 33px; width: 28px; height: 6px; border-radius: 3px; background: #e6e8ea;"></div>
+            <div style="position: absolute; left: 33px; top: 22px; width: 6px; height: 28px; border-radius: 3px; background: #e6e8ea;"></div>
+          </div>
+          <div style="font-size: 0.75rem; color: #434651;">Gezondheid</div>
+        </div>
+
+        <div style="display: flex; flex-direction: column; gap: 10px; align-items: center;">
+          <div style="width: 72px; height: 72px; border-radius: 18px; background: #e6e8ea; position: relative; overflow: hidden;">
+            <div style="position: absolute; left: 26px; top: 14px; width: 20px; height: 12px; border-radius: 6px 6px 0 0; box-sizing: border-box; border-top: 6px solid #002b6d; border-left: 6px solid #002b6d; border-right: 6px solid #002b6d;"></div>
+            <div style="position: absolute; left: 10px; top: 26px; width: 52px; height: 32px; border-radius: 5px; background: #002b6d;"></div>
+            <div style="position: absolute; left: 10px; top: 38px; width: 52px; height: 5px; background: #e6e8ea;"></div>
+            <div style="position: absolute; left: 30px; top: 34px; width: 12px; height: 12px; border-radius: 2px; background: #fe762c;"></div>
+          </div>
+          <div style="font-size: 0.75rem; color: #434651;">Werk</div>
+        </div>
+
+        <div style="display: flex; flex-direction: column; gap: 10px; align-items: center;">
+          <div style="width: 72px; height: 72px; border-radius: 18px; background: #e6e8ea; position: relative; overflow: hidden;">
+            <div style="position: absolute; left: 11px; top: 16px; width: 50px; height: 40px; border-radius: 4px; background: #002b6d;"></div>
+            <div style="position: absolute; left: 34px; top: 16px; width: 4px; height: 40px; background: #e6e8ea;"></div>
+            <div style="position: absolute; left: 17px; top: 26px; width: 12px; height: 4px; border-radius: 2px; background: #e6e8ea;"></div>
+            <div style="position: absolute; left: 43px; top: 26px; width: 12px; height: 4px; border-radius: 2px; background: #e6e8ea;"></div>
+            <div style="position: absolute; left: 11px; top: 10px; width: 50px; height: 8px; border-radius: 4px 4px 0 0; background: #1d428a;"></div>
+          </div>
+          <div style="font-size: 0.75rem; color: #434651;">Onderwijs</div>
+        </div>
+
+        <div style="display: flex; flex-direction: column; gap: 10px; align-items: center;">
+          <div style="width: 72px; height: 72px; border-radius: 18px; background: #e6e8ea; position: relative; overflow: hidden;">
+            <div style="position: absolute; left: 12px; top: 11px; width: 48px; height: 15px; background: #002b6d; clip-path: polygon(50% 0, 100% 100%, 0 100%);"></div>
+            <div style="position: absolute; left: 10px; top: 26px; width: 52px; height: 6px; border-radius: 2px; background: #002b6d;"></div>
+            <div style="position: absolute; left: 16px; top: 34px; display: flex; gap: 10px;">
+              <div style="width: 8px; height: 20px; background: #002b6d;"></div>
+              <div style="width: 8px; height: 20px; background: #002b6d;"></div>
+              <div style="width: 8px; height: 20px; background: #002b6d;"></div>
+            </div>
+            <div style="position: absolute; left: 10px; bottom: 12px; width: 52px; height: 6px; border-radius: 0 0 2px 2px; background: #002b6d;"></div>
+          </div>
+          <div style="font-size: 0.75rem; color: #434651;">Instanties</div>
+        </div>
+
+        <div style="display: flex; flex-direction: column; gap: 10px; align-items: center;">
+          <div style="width: 72px; height: 72px; border-radius: 18px; background: #e6e8ea; position: relative; overflow: hidden;">
+            <div style="position: absolute; left: 14px; bottom: 12px; width: 44px; height: 30px; border-radius: 4px; background: #002b6d;"></div>
+            <div style="position: absolute; left: 26px; bottom: 34px; width: 20px; height: 5px; border-radius: 3px; background: #e6e8ea;"></div>
+            <div style="position: absolute; left: 30px; top: 12px; width: 14px; height: 18px; border-radius: 2px; background: #fe762c; transform: rotate(-14deg);"></div>
+          </div>
+          <div style="font-size: 0.75rem; color: #434651;">Waarden</div>
+        </div>
+
+        <div style="display: flex; flex-direction: column; gap: 10px; align-items: center;">
+          <div style="width: 72px; height: 72px; border-radius: 18px; background: #e6e8ea; position: relative; overflow: hidden;">
+            <div style="position: absolute; left: 18px; top: 11px; width: 36px; height: 50px; border-radius: 3px; background: #002b6d;"></div>
+            <div style="position: absolute; left: 25px; top: 22px; display: flex; flex-direction: column; gap: 5px; width: 22px;">
+              <div style="height: 4px; border-radius: 2px; background: #e6e8ea;"></div>
+              <div style="height: 4px; border-radius: 2px; background: #e6e8ea;"></div>
+              <div style="height: 4px; border-radius: 2px; background: #e6e8ea;"></div>
+              <div style="height: 4px; width: 60%; border-radius: 2px; background: #fe762c;"></div>
+            </div>
+          </div>
+          <div style="font-size: 0.75rem; color: #434651;">Lezen</div>
+        </div>
+
+        <div style="display: flex; flex-direction: column; gap: 10px; align-items: center;">
+          <div style="width: 72px; height: 72px; border-radius: 18px; background: #e6e8ea; position: relative; overflow: hidden;">
+            <div style="position: absolute; left: 50%; top: 50%; transform: translate(-50%,-50%); display: flex; align-items: center; gap: 5px; height: 46px;">
+              <div style="width: 6px; height: 12px; border-radius: 3px; background: #002b6d;"></div>
+              <div style="width: 6px; height: 26px; border-radius: 3px; background: #002b6d;"></div>
+              <div style="width: 6px; height: 46px; border-radius: 3px; background: #fe762c;"></div>
+              <div style="width: 6px; height: 30px; border-radius: 3px; background: #002b6d;"></div>
+              <div style="width: 6px; height: 16px; border-radius: 3px; background: #002b6d;"></div>
+            </div>
+          </div>
+          <div style="font-size: 0.75rem; color: #434651;">Luisteren</div>
+        </div>
+
+        <div style="display: flex; flex-direction: column; gap: 10px; align-items: center;">
+          <div style="width: 72px; height: 72px; border-radius: 18px; background: #e6e8ea; position: relative; overflow: hidden;">
+            <div style="position: absolute; left: 10px; top: 14px; width: 40px; height: 28px; border-radius: 8px; background: #002b6d;"></div>
+            <div style="position: absolute; left: 14px; top: 40px; width: 12px; height: 10px; border-radius: 0 0 6px 6px; background: #002b6d;"></div>
+            <div style="position: absolute; right: 10px; bottom: 12px; width: 30px; height: 22px; border-radius: 7px; background: #fe762c;"></div>
+          </div>
+          <div style="font-size: 0.75rem; color: #434651;">Spreken</div>
+        </div>
+
+        <div style="display: flex; flex-direction: column; gap: 10px; align-items: center;">
+          <div style="width: 72px; height: 72px; border-radius: 18px; background: #e6e8ea; position: relative; overflow: hidden;">
+            <div style="position: absolute; left: 30px; top: 10px; width: 12px; height: 36px; border-radius: 6px 6px 1px 1px; background: #002b6d; transform: rotate(30deg); transform-origin: 50% 100%;">
+              <div style="position: absolute; left: 0; right: 0; top: 25px; height: 3px; background: #e6e8ea;"></div>
+            </div>
+            <div style="position: absolute; left: 14px; bottom: 14px; width: 44px; height: 5px; border-radius: 3px; background: #002b6d;"></div>
+            <div style="position: absolute; left: 14px; bottom: 14px; width: 15px; height: 5px; border-radius: 3px; background: #fe762c;"></div>
+          </div>
+          <div style="font-size: 0.75rem; color: #434651;">Schrijven</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div style="display: flex; flex-direction: column; gap: 20px;">
+    <div style="display: flex; align-items: baseline; gap: 14px;">
+      <div style="font-family: 'Manrope', sans-serif; font-weight: 800; font-size: 0.875rem; color: #a24000;">04</div>
+      <h2 style="margin: 0; font-family: 'Manrope', sans-serif; font-size: 1.75rem; letter-spacing: -0.015em; color: #002b6d;">Progress family</h2>
+    </div>
+    <div style="background: #f8f9fb; border-radius: 20px; padding: 28px; display: flex; flex-direction: column; gap: 28px;">
+      <div style="display: flex; flex-direction: column; gap: 10px;">
+        <div style="font-family: 'Manrope', sans-serif; font-weight: 600; font-size: 0.9375rem;">Dutch Horizon bar — 8px, gradient fill</div>
+        <div style="height: 8px; border-radius: 999px; background: #dfe2e6; overflow: hidden;"><div style="width: 62%; height: 100%; border-radius: 999px; background: linear-gradient(90deg,#a24000,#fe762c);"></div></div>
+      </div>
+      <div style="display: flex; flex-direction: column; gap: 10px;">
+        <div style="font-family: 'Manrope', sans-serif; font-weight: 600; font-size: 0.9375rem;">Step segments — one per question</div>
+        <div style="display: flex; gap: 4px;">
+          <div style="flex: 1; height: 8px; border-radius: 999px; background: #a24000;"></div>
+          <div style="flex: 1; height: 8px; border-radius: 999px; background: #c85200;"></div>
+          <div style="flex: 1; height: 8px; border-radius: 999px; background: #fe762c;"></div>
+          <div style="flex: 1; height: 8px; border-radius: 999px; background: #dfe2e6;"></div>
+          <div style="flex: 1; height: 8px; border-radius: 999px; background: #dfe2e6;"></div>
+          <div style="flex: 1; height: 8px; border-radius: 999px; background: #dfe2e6;"></div>
+          <div style="flex: 1; height: 8px; border-radius: 999px; background: #dfe2e6;"></div>
+          <div style="flex: 1; height: 8px; border-radius: 999px; background: #dfe2e6;"></div>
+        </div>
+      </div>
+      <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 24px; align-items: end;">
+        <div style="display: flex; flex-direction: column; gap: 12px; align-items: center;">
+          <div style="width: 104px; height: 104px; border-radius: 50%; background: conic-gradient(#fe762c 0turn 0.68turn, #dfe2e6 0.68turn 1turn); display: flex; align-items: center; justify-content: center;">
+            <div style="width: 78px; height: 78px; border-radius: 50%; background: #f8f9fb; display: flex; align-items: center; justify-content: center; font-family: 'Manrope', sans-serif; font-weight: 800; font-size: 1.375rem; color: #002b6d;">68%</div>
+          </div>
+          <div style="font-size: 0.8125rem; color: #434651;">Lens ring</div>
+        </div>
+        <div style="display: flex; flex-direction: column; gap: 12px; align-items: center;">
+          <div style="display: flex; gap: 6px; align-items: flex-end; height: 104px;">
+            <div style="width: 14px; height: 34px; border-radius: 6px; background: #c4c6d2;"></div>
+            <div style="width: 14px; height: 56px; border-radius: 6px; background: #ffb695;"></div>
+            <div style="width: 14px; height: 78px; border-radius: 6px; background: #fe762c;"></div>
+            <div style="width: 14px; height: 104px; border-radius: 6px; background: #a24000;"></div>
+            <div style="width: 14px; height: 48px; border-radius: 6px; background: #c4c6d2;"></div>
+          </div>
+          <div style="font-size: 0.8125rem; color: #434651;">Polder bars (streak)</div>
+        </div>
+        <div style="display: flex; flex-direction: column; gap: 12px; align-items: center;">
+          <div style="width: 104px; height: 104px; border-radius: 50%; background: #e6e8ea; position: relative; overflow: hidden;">
+<div style="position: absolute; left: 0; right: 0; bottom: 0; display: flex; align-items: flex-end; gap: 3px;"><div style="flex: 1; display: flex; flex-direction: column; align-items: center;"><div style="width: 66%; height: 7px; border-radius: 999px 999px 0 0; background: #1d428a;"></div><div style="width: 100%; height: 14px; background: #1d428a;"></div></div><div style="flex: 1; display: flex; flex-direction: column; align-items: center;"><div style="width: 100%; height: 9px; border-radius: 4px 4px 0 0; background: #002b6d;"></div><div style="width: 100%; height: 22px; background: #002b6d;"></div></div><div style="flex: 1; display: flex; flex-direction: column; align-items: center;"><div style="width: 34%; height: 4px; background: #1d428a;"></div><div style="width: 68%; height: 4px; background: #1d428a;"></div><div style="width: 100%; height: 12px; background: #1d428a;"></div></div><div style="flex: 1; display: flex; flex-direction: column; align-items: center;"><div style="width: 66%; height: 10px; border-radius: 999px 999px 0 0; background: #002b6d;"></div><div style="width: 100%; height: 26px; background: #002b6d;"></div></div></div>
+            <div style="position: absolute; left: 50%; transform: translateX(-50%); top: 16px; width: 24px; height: 24px; border-radius: 50%; background: #fe762c;"></div>
+          </div>
+          <div style="font-size: 0.8125rem; color: #434651;">Sun-height meter</div>
+        </div>
+        <div style="display: flex; flex-direction: column; gap: 12px; align-items: center;">
+          <div style="display: flex; flex-direction: column; gap: 6px; width: 100%;">
+            <div style="display: flex; align-items: center; gap: 10px;"><div style="width: 20px; height: 20px; border-radius: 50%; background: #fe762c;"></div><div style="flex: 1; height: 6px; border-radius: 999px; background: #fe762c;"></div></div>
+            <div style="display: flex; align-items: center; gap: 10px;"><div style="width: 20px; height: 20px; border-radius: 50%; background: #fe762c;"></div><div style="flex: 1; height: 6px; border-radius: 999px; background: #dfe2e6;"></div></div>
+            <div style="display: flex; align-items: center; gap: 10px;"><div style="width: 20px; height: 20px; border-radius: 50%; background: #dfe2e6;"></div><div style="flex: 1; height: 6px; border-radius: 999px; background: #dfe2e6;"></div></div>
+          </div>
+          <div style="font-size: 0.8125rem; color: #434651;">Journey checkpoints</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div style="display: flex; flex-direction: column; gap: 20px;">
+    <div style="display: flex; align-items: baseline; gap: 14px;">
+      <div style="font-family: 'Manrope', sans-serif; font-weight: 800; font-size: 0.875rem; color: #a24000;">05</div>
+      <h2 style="margin: 0; font-family: 'Manrope', sans-serif; font-size: 1.75rem; letter-spacing: -0.015em; color: #002b6d;">Quiz surfaces</h2>
+    </div>
+    <div style="display: grid; grid-template-columns: 1.3fr 1fr; gap: 20px; align-items: start;">
+      <div style="background: #eceef0; border-radius: 20px; padding: 24px;">
+        <div style="background: #fff; border-radius: 12px; overflow: hidden; box-shadow: 0 0 32px rgba(25,28,30,0.06);">
+          <div style="height: 8px; background: #dfe2e6;"><div style="width: 45%; height: 100%; background: linear-gradient(90deg,#a24000,#fe762c);"></div></div>
+          <div style="padding: 28px; display: flex; flex-direction: column; gap: 24px;">
+            <div style="display: flex; align-items: center; gap: 14px;">
+              <div style="width: 40px; height: 40px; border-radius: 10px; background: #f2f4f6; position: relative; overflow: hidden;">
+                <div style="position: absolute; left: 6px; right: 6px; bottom: 6px; display: flex; align-items: flex-end; gap: 1px;">
+                  <div style="flex: 1; display: flex; flex-direction: column; align-items: center;"><div style="width: 70%; height: 3px; background: #002b6d;"></div><div style="width: 100%; height: 13px; background: #002b6d;"></div></div>
+                  <div style="flex: 1.15; display: flex; flex-direction: column; align-items: center;"><div style="width: 60%; height: 6px; border-radius: 999px 999px 0 0; background: #002b6d;"></div><div style="width: 100%; height: 19px; background: #002b6d;"></div></div>
+                  <div style="flex: 0.9; display: flex; flex-direction: column; align-items: center;"><div style="width: 55%; height: 3px; border-radius: 2px 2px 0 0; background: #002b6d;"></div><div style="width: 100%; height: 11px; background: #002b6d;"></div></div>
+                </div>
+              </div>
+              <div style="font-size: 0.75rem; letter-spacing: 0.12em; text-transform: uppercase; color: #434651;">Wonen · vraag 9 van 20</div>
+            </div>
+            <div style="font-family: 'Manrope', sans-serif; font-size: 1.75rem; line-height: 1.25; letter-spacing: -0.015em; color: #191c1e;">Wie moet je informeren als je gaat verhuizen?</div>
+            <div style="display: flex; flex-direction: column; gap: 12px;">
+              <div style="background: #f2f4f6; border-radius: 12px; padding: 18px 20px; display: flex; align-items: center; gap: 14px;"><div style="width: 22px; height: 22px; border-radius: 50%; background: #e6e8ea;"></div><span style="font-size: 1rem; line-height: 1.6;">De verhuurder van je oude woning</span></div>
+              <div style="background: #fff; border-radius: 12px; padding: 18px 20px; display: flex; align-items: center; gap: 14px; box-shadow: inset 0 0 0 2px rgba(0,43,109,0.4);"><div style="width: 22px; height: 22px; border-radius: 50%; background: #002b6d; box-shadow: inset 0 0 0 5px #fff;"></div><span style="font-size: 1rem; line-height: 1.6; font-weight: 600;">De gemeente waar je gaat wonen</span></div>
+              <div style="background: #f2f4f6; border-radius: 12px; padding: 18px 20px; display: flex; align-items: center; gap: 14px;"><div style="width: 22px; height: 22px; border-radius: 50%; background: #e6e8ea;"></div><span style="font-size: 1rem; line-height: 1.6;">Niemand, dat gebeurt automatisch</span></div>
+            </div>
+            <div style="display: flex; gap: 12px; align-items: center; justify-content: space-between;">
+              <span style="font-size: 0.75rem; color: #434651;">Uitleg volgt na je antwoord</span>
+              <div style="background: #fe762c; color: #5f2200; font-family: 'Manrope', sans-serif; font-weight: 700; font-size: 0.9375rem; padding: 13px 26px; border-radius: 12px; box-shadow: inset 0 2px 0 rgba(255,255,255,0.28);">Volgende vraag</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div style="display: flex; flex-direction: column; gap: 20px;">
+        <div style="background: #fff; border-radius: 12px; padding: 22px; display: flex; gap: 16px; align-items: flex-start; overflow: hidden; position: relative;">
+<div style="position: absolute; left: 0; right: 0; bottom: 0; display: flex; align-items: flex-end; gap: 5px;"><div style="flex: 1; display: flex; flex-direction: column; align-items: center;"><div style="width: 66%; height: 9px; border-radius: 999px 999px 0 0; background: rgba(254,118,44,0.10);"></div><div style="width: 100%; height: 20px; background: rgba(254,118,44,0.10);"></div></div><div style="flex: 1; display: flex; flex-direction: column; align-items: center;"><div style="width: 100%; height: 12px; border-radius: 5px 5px 0 0; background: rgba(254,118,44,0.14);"></div><div style="width: 100%; height: 30px; background: rgba(254,118,44,0.14);"></div></div><div style="flex: 1; display: flex; flex-direction: column; align-items: center;"><div style="width: 34%; height: 5px; background: rgba(254,118,44,0.10);"></div><div style="width: 68%; height: 5px; background: rgba(254,118,44,0.10);"></div><div style="width: 100%; height: 16px; background: rgba(254,118,44,0.10);"></div></div><div style="flex: 1; display: flex; flex-direction: column; align-items: center;"><div style="width: 66%; height: 13px; border-radius: 999px 999px 0 0; background: rgba(254,118,44,0.16);"></div><div style="width: 100%; height: 34px; background: rgba(254,118,44,0.16);"></div></div><div style="flex: 1; display: flex; flex-direction: column; align-items: center;"><div style="width: 100%; height: 8px; border-radius: 4px 4px 0 0; background: rgba(254,118,44,0.10);"></div><div style="width: 100%; height: 14px; background: rgba(254,118,44,0.10);"></div></div></div>
+          <div style="flex: none; width: 40px; height: 40px; border-radius: 50%; background: #fe762c; display: flex; align-items: center; justify-content: center;"><div style="width: 14px; height: 14px; border-radius: 50%; background: #5f2200;"></div></div>
+          <div style="display: flex; flex-direction: column; gap: 6px; position: relative;">
+            <div style="font-family: 'Manrope', sans-serif; font-weight: 700; font-size: 1.125rem; color: #002b6d;">Goed!</div>
+            <div style="font-size: 0.9375rem; line-height: 1.6; color: #434651;">Je meldt een verhuizing bij de nieuwe gemeente, uiterlijk vijf dagen na je verhuisdatum.</div>
+          </div>
+        </div>
+        <div style="background: #fff; border-radius: 12px; padding: 22px; display: flex; gap: 16px; align-items: flex-start;">
+          <div style="flex: none; width: 40px; height: 40px; border-radius: 50%; background: #e6e8ea; display: flex; align-items: center; justify-content: center;"><div style="width: 14px; height: 14px; border-radius: 50%; background: #002b6d;"></div></div>
+          <div style="display: flex; flex-direction: column; gap: 6px;">
+            <div style="font-family: 'Manrope', sans-serif; font-weight: 700; font-size: 1.125rem; color: #002b6d;">Bijna — nog eens lezen</div>
+            <div style="font-size: 0.9375rem; line-height: 1.6; color: #434651;">Deze vraag komt straks terug in je herhaalronde.</div>
+          </div>
+        </div>
+        <div style="background: #f2f4f6; border-radius: 12px; padding: 22px; display: flex; flex-direction: column; gap: 14px;">
+          <div style="font-family: 'Manrope', sans-serif; font-weight: 600; font-size: 0.9375rem; color: #191c1e;">Input fields</div>
+          <div style="background: #e6e8ea; border-radius: 12px; padding: 15px 18px; font-size: 1rem; color: #434651;">Je antwoord…</div>
+          <div style="background: #fff; border-radius: 12px; padding: 15px 18px; font-size: 1rem; color: #191c1e; box-shadow: inset 0 0 0 2px rgba(0,43,109,0.4);">De gemeente<span style="opacity:.5">|</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div style="display: flex; flex-direction: column; gap: 20px;">
+    <div style="display: flex; align-items: baseline; gap: 14px;">
+      <div style="font-family: 'Manrope', sans-serif; font-weight: 800; font-size: 0.875rem; color: #a24000;">06</div>
+      <h2 style="margin: 0; font-family: 'Manrope', sans-serif; font-size: 1.75rem; letter-spacing: -0.015em; color: #002b6d;">Scene states</h2>
+      <div style="font-size: 0.875rem; color: #434651;">one circle crop, restaged by sun height</div>
+    </div>
+    <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px;">
+      <div style="background: #fff; border-radius: 16px; padding: 26px; display: flex; flex-direction: column; gap: 16px; align-items: center; text-align: center;">
+        <div style="width: 120px; height: 120px; border-radius: 50%; background: #f2f4f6; position: relative; overflow: hidden;">
+<div style="position: absolute; left: 0; right: 0; bottom: 0; display: flex; align-items: flex-end; gap: 3px;"><div style="flex: 1; display: flex; flex-direction: column; align-items: center;"><div style="width: 66%; height: 8px; border-radius: 999px 999px 0 0; background: #1d428a;"></div><div style="width: 100%; height: 18px; background: #1d428a;"></div></div><div style="flex: 1; display: flex; flex-direction: column; align-items: center;"><div style="width: 100%; height: 10px; border-radius: 4px 4px 0 0; background: #002b6d;"></div><div style="width: 100%; height: 26px; background: #002b6d;"></div></div><div style="flex: 1; display: flex; flex-direction: column; align-items: center;"><div style="width: 34%; height: 4px; background: #1d428a;"></div><div style="width: 68%; height: 4px; background: #1d428a;"></div><div style="width: 100%; height: 16px; background: #1d428a;"></div></div><div style="flex: 1; display: flex; flex-direction: column; align-items: center;"><div style="width: 66%; height: 11px; border-radius: 999px 999px 0 0; background: #002b6d;"></div><div style="width: 100%; height: 30px; background: #002b6d;"></div></div></div>
+          <div style="position: absolute; left: 50%; transform: translateX(-50%); top: 14px; width: 34px; height: 34px; border-radius: 50%; background: linear-gradient(180deg,#fe762c,#a24000);"></div>
+        </div>
+        <div style="font-family: 'Manrope', sans-serif; font-weight: 700; font-size: 1.125rem; color: #002b6d;">Geslaagd</div>
+        <div style="font-size: 0.875rem; line-height: 1.6; color: #434651;">Sun high. Passing scores, completed modules.</div>
+      </div>
+      <div style="background: #fff; border-radius: 16px; padding: 26px; display: flex; flex-direction: column; gap: 16px; align-items: center; text-align: center;">
+        <div style="width: 120px; height: 120px; border-radius: 50%; background: #e6e8ea; position: relative; overflow: hidden;">
+<div style="position: absolute; left: 0; right: 0; bottom: 0; display: flex; align-items: flex-end; gap: 3px;"><div style="flex: 1; display: flex; flex-direction: column; align-items: center;"><div style="width: 100%; height: 9px; border-radius: 4px 4px 0 0; background: #002b6d;"></div><div style="width: 100%; height: 30px; background: #002b6d;"></div></div><div style="flex: 1; display: flex; flex-direction: column; align-items: center;"><div style="width: 66%; height: 12px; border-radius: 999px 999px 0 0; background: #002b6d;"></div><div style="width: 100%; height: 38px; background: #002b6d;"></div></div><div style="flex: 1; display: flex; flex-direction: column; align-items: center;"><div style="width: 34%; height: 5px; background: #002b6d;"></div><div style="width: 68%; height: 5px; background: #002b6d;"></div><div style="width: 100%; height: 26px; background: #002b6d;"></div></div><div style="flex: 1; display: flex; flex-direction: column; align-items: center;"><div style="width: 66%; height: 13px; border-radius: 999px 999px 0 0; background: #002b6d;"></div><div style="width: 100%; height: 42px; background: #002b6d;"></div></div></div>
+          <div style="position: absolute; left: 50%; transform: translateX(-50%); top: 22px; width: 26px; height: 26px; border-radius: 50%; background: #ffb695;"></div>
+        </div>
+        <div style="font-family: 'Manrope', sans-serif; font-weight: 700; font-size: 1.125rem; color: #002b6d;">Tot morgen</div>
+        <div style="font-size: 0.875rem; line-height: 1.6; color: #434651;">Sun low. Daily goal reached, come back later.</div>
+      </div>
+      <div style="background: #fff; border-radius: 16px; padding: 26px; display: flex; flex-direction: column; gap: 16px; align-items: center; text-align: center;">
+        <div style="width: 120px; height: 120px; border-radius: 50%; background: #f2f4f6; position: relative; overflow: hidden; background-image: radial-gradient(circle, #dfe2e6 1.5px, transparent 1.6px); background-size: 12px 12px;">
+<div style="position: absolute; left: 0; right: 0; bottom: 0; display: flex; align-items: flex-end; gap: 3px;"><div style="flex: 1; display: flex; flex-direction: column; align-items: center;"><div style="width: 66%; height: 8px; border-radius: 999px 999px 0 0; background: #e6e8ea;"></div><div style="width: 100%; height: 16px; background: #e6e8ea;"></div></div><div style="flex: 1; display: flex; flex-direction: column; align-items: center;"><div style="width: 100%; height: 10px; border-radius: 4px 4px 0 0; background: #dfe2e6;"></div><div style="width: 100%; height: 22px; background: #dfe2e6;"></div></div><div style="flex: 1; display: flex; flex-direction: column; align-items: center;"><div style="width: 34%; height: 4px; background: #e6e8ea;"></div><div style="width: 68%; height: 4px; background: #e6e8ea;"></div><div style="width: 100%; height: 14px; background: #e6e8ea;"></div></div><div style="flex: 1; display: flex; flex-direction: column; align-items: center;"><div style="width: 66%; height: 11px; border-radius: 999px 999px 0 0; background: #dfe2e6;"></div><div style="width: 100%; height: 26px; background: #dfe2e6;"></div></div></div>
+        </div>
+        <div style="font-family: 'Manrope', sans-serif; font-weight: 700; font-size: 1.125rem; color: #002b6d;">Nog niets hier</div>
+        <div style="font-size: 0.875rem; line-height: 1.6; color: #434651;">Empty lists, no results, no history yet.</div>
+      </div>
+      <div style="background: #fff; border-radius: 16px; padding: 26px; display: flex; flex-direction: column; gap: 16px; align-items: center; text-align: center;">
+        <div style="width: 120px; height: 120px; border-radius: 50%; background: #f2f4f6; position: relative; overflow: hidden;">
+<div style="position: absolute; left: 0; right: 0; bottom: 0; display: flex; align-items: flex-end; gap: 3px;"><div style="flex: 1; display: flex; flex-direction: column; align-items: center;"><div style="width: 100%; height: 9px; border-radius: 4px 4px 0 0; background: #a24000;"></div><div style="width: 100%; height: 22px; background: #a24000;"></div></div><div style="flex: 1; display: flex; flex-direction: column; align-items: center;"><div style="width: 66%; height: 12px; border-radius: 999px 999px 0 0; background: #a24000;"></div><div style="width: 100%; height: 32px; background: #a24000;"></div></div><div style="flex: 1; display: flex; flex-direction: column; align-items: center;"><div style="width: 34%; height: 5px; background: #a24000;"></div><div style="width: 68%; height: 5px; background: #a24000;"></div><div style="width: 100%; height: 18px; background: #a24000;"></div></div><div style="flex: 1; display: flex; flex-direction: column; align-items: center;"><div style="width: 66%; height: 11px; border-radius: 999px 999px 0 0; background: #a24000;"></div><div style="width: 100%; height: 28px; background: #a24000;"></div></div></div>
+          <div style="position: absolute; right: 20px; top: 20px; width: 26px; height: 26px; border-radius: 50%; background: #e6e8ea;"></div>
+        </div>
+        <div style="font-family: 'Manrope', sans-serif; font-weight: 700; font-size: 1.125rem; color: #002b6d;">Er ging iets mis</div>
+        <div style="font-size: 0.875rem; line-height: 1.6; color: #434651;">Clay ground, cold disc. Errors and outages.</div>
+      </div>
+    </div>
+  </div>
+
+  <div style="display: flex; flex-direction: column; gap: 20px;">
+    <div style="display: flex; align-items: baseline; gap: 14px;">
+      <div style="font-family: 'Manrope', sans-serif; font-weight: 800; font-size: 0.875rem; color: #a24000;">07</div>
+      <h2 style="margin: 0; font-family: 'Manrope', sans-serif; font-size: 1.75rem; letter-spacing: -0.015em; color: #002b6d;">Small parts</h2>
+    </div>
+    <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px;">
+      <div style="background: #f8f9fb; border-radius: 16px; padding: 24px; display: flex; flex-direction: column; gap: 16px;">
+        <div style="font-family: 'Manrope', sans-serif; font-weight: 600; font-size: 0.9375rem;">Buttons</div>
+        <div style="display: flex; flex-wrap: wrap; gap: 10px;">
+          <div style="background: #002b6d; color: #fff; font-family: 'Manrope', sans-serif; font-weight: 700; font-size: 0.9375rem; padding: 13px 22px; border-radius: 12px; box-shadow: inset 0 2px 0 rgba(255,255,255,0.1);">Primair</div>
+          <div style="background: #fe762c; color: #5f2200; font-family: 'Manrope', sans-serif; font-weight: 700; font-size: 0.9375rem; padding: 13px 22px; border-radius: 12px; box-shadow: inset 0 2px 0 rgba(255,255,255,0.28);">Volgende</div>
+          <div style="background: #e6e8ea; color: #002b6d; font-family: 'Manrope', sans-serif; font-weight: 600; font-size: 0.9375rem; padding: 13px 22px; border-radius: 12px;">Overslaan</div>
+        </div>
+        <div style="display: flex; gap: 10px; align-items: center;">
+          <div style="width: 44px; height: 44px; border-radius: 12px; background: #002b6d; display: flex; align-items: center; justify-content: center;"><div style="width: 12px; height: 12px; border-radius: 50%; background: #fff;"></div></div>
+          <div style="width: 44px; height: 44px; border-radius: 12px; background: #e6e8ea; display: flex; align-items: center; justify-content: center;"><div style="width: 16px; height: 4px; border-radius: 2px; background: #002b6d;"></div></div>
+          <div style="width: 44px; height: 44px; border-radius: 50%; background: #ffb695; display: flex; align-items: center; justify-content: center;"><div style="width: 14px; height: 14px; border-radius: 50%; background: #5f2200;"></div></div>
+        </div>
+      </div>
+      <div style="background: #f8f9fb; border-radius: 16px; padding: 24px; display: flex; flex-direction: column; gap: 16px;">
+        <div style="font-family: 'Manrope', sans-serif; font-weight: 600; font-size: 0.9375rem;">Chips & tabs</div>
+        <div style="display: flex; flex-wrap: wrap; gap: 8px;">
+          <div style="background: #002b6d; color: #fff; border-radius: 999px; padding: 8px 15px; font-size: 0.8125rem; font-weight: 600;">Alle</div>
+          <div style="background: #e6e8ea; color: #191c1e; border-radius: 999px; padding: 8px 15px; font-size: 0.8125rem;">Wonen</div>
+          <div style="background: #e6e8ea; color: #191c1e; border-radius: 999px; padding: 8px 15px; font-size: 0.8125rem;">Werk</div>
+          <div style="background: #e6e8ea; color: #191c1e; border-radius: 999px; padding: 8px 15px; font-size: 0.8125rem;">Fout gemaakt</div>
+        </div>
+        <div style="background: #f2f4f6; border-radius: 12px; padding: 5px; display: flex; gap: 4px;">
+          <div style="flex: 1; background: #fff; border-radius: 9px; padding: 10px; text-align: center; font-family: 'Manrope', sans-serif; font-weight: 600; font-size: 0.875rem; color: #002b6d;">Oefenen</div>
+          <div style="flex: 1; padding: 10px; text-align: center; font-size: 0.875rem; color: #434651;">Examen</div>
+          <div style="flex: 1; padding: 10px; text-align: center; font-size: 0.875rem; color: #434651;">Voortgang</div>
+        </div>
+      </div>
+      <div style="background: #f8f9fb; border-radius: 16px; padding: 24px; display: flex; flex-direction: column; gap: 16px;">
+        <div style="font-family: 'Manrope', sans-serif; font-weight: 600; font-size: 0.9375rem;">Level medals & stats</div>
+        <div style="display: flex; gap: 14px; align-items: center;">
+          <div style="width: 58px; height: 58px; border-radius: 50%; background: #f8f9fb; box-shadow: 0 0 0 8px #002b6d, 0 0 0 14px #e6e8ea; display: flex; align-items: center; justify-content: center; font-family: 'Manrope', sans-serif; font-weight: 800; font-size: 1rem; color: #002b6d;">A2</div>
+          <div style="width: 58px; height: 58px; border-radius: 50%; background: #f8f9fb; box-shadow: 0 0 0 8px #fe762c, 0 0 0 14px #e6e8ea; display: flex; align-items: center; justify-content: center; font-family: 'Manrope', sans-serif; font-weight: 800; font-size: 1rem; color: #a24000;">B1</div>
+          <div style="width: 58px; height: 58px; border-radius: 50%; background: #f8f9fb; box-shadow: 0 0 0 8px #dfe2e6; display: flex; align-items: center; justify-content: center; font-family: 'Manrope', sans-serif; font-weight: 800; font-size: 1rem; color: #c4c6d2;">B2</div>
+        </div>
+        <div style="display: flex; gap: 10px;">
+          <div style="flex: 1; background: #fff; border-radius: 12px; padding: 16px; display: flex; flex-direction: column; gap: 4px;">
+            <div style="font-family: 'Manrope', sans-serif; font-weight: 800; font-size: 1.75rem; letter-spacing: -0.02em; color: #002b6d;">318</div>
+            <div style="font-size: 0.75rem; letter-spacing: 0.08em; text-transform: uppercase; color: #434651;">Vragen</div>
+          </div>
+          <div style="flex: 1; background: #fff; border-radius: 12px; padding: 16px; display: flex; flex-direction: column; gap: 4px;">
+            <div style="font-family: 'Manrope', sans-serif; font-weight: 800; font-size: 1.75rem; letter-spacing: -0.02em; color: #a24000;">84%</div>
+            <div style="font-size: 0.75rem; letter-spacing: 0.08em; text-transform: uppercase; color: #434651;">Score</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+      <div style="background: #002b6d; border-radius: 16px; padding: 20px; display: flex; flex-direction: column; gap: 14px;">
+        <div style="font-size: 0.75rem; letter-spacing: 0.12em; text-transform: uppercase; color: rgba(255,255,255,0.6);">Glass navigation — on the gradient hero</div>
+        <div style="background: rgba(248,249,251,0.16); backdrop-filter: blur(20px); border-radius: 16px; padding: 14px 20px; display: flex; align-items: center; justify-content: space-between; gap: 20px; flex-wrap: wrap;">
+          <div style="display: flex; align-items: center; gap: 12px;">
+            <div style="width: 30px; height: 30px; border-radius: 9px; background: #fff; position: relative; overflow: hidden;">
+              <div style="position: absolute; left: 50%; transform: translateX(-50%); bottom: 5px; display: flex; flex-direction: column; align-items: center; width: 16px;">
+                <div style="width: 70%; height: 6px; border-radius: 999px 999px 0 0; background: #002b6d;"></div>
+                <div style="width: 100%; height: 12px; background: #002b6d;"></div>
+              </div>
+            </div>
+            <div style="font-family: 'Manrope', sans-serif; font-weight: 700; font-size: 0.9375rem; color: #fff;">Civic</div>
+          </div>
+          <div style="display: flex; gap: 18px; align-items: center;">
+            <span style="font-size: 0.875rem; color: rgba(255,255,255,0.8);">Modules</span>
+            <span style="font-size: 0.875rem; color: rgba(255,255,255,0.8);">Examen</span>
+            <div style="background: #fe762c; color: #5f2200; font-family: 'Manrope', sans-serif; font-weight: 700; font-size: 0.8125rem; padding: 9px 16px; border-radius: 10px;">Inloggen</div>
+          </div>
+        </div>
+      </div>
+      <div style="background: #f8f9fb; border-radius: 16px; padding: 24px; display: flex; flex-direction: column; gap: 16px;">
+        <div style="font-family: 'Manrope', sans-serif; font-weight: 600; font-size: 0.9375rem;">Loading skeleton — arcs, not grey boxes</div>
+        <div style="display: flex; gap: 16px; align-items: center;">
+          <div style="width: 56px; height: 56px; border-radius: 16px; background: #e6e8ea; position: relative; overflow: hidden; animation: shimmer 1.8s ease-in-out infinite;">
+<div style="position: absolute; left: 0; right: 0; bottom: 0; display: flex; align-items: flex-end; gap: 3px;"><div style="flex: 1; display: flex; flex-direction: column; align-items: center;"><div style="width: 66%; height: 7px; border-radius: 999px 999px 0 0; background: #dfe2e6;"></div><div style="width: 100%; height: 14px; background: #dfe2e6;"></div></div><div style="flex: 1; display: flex; flex-direction: column; align-items: center;"><div style="width: 100%; height: 9px; border-radius: 4px 4px 0 0; background: #dfe2e6;"></div><div style="width: 100%; height: 20px; background: #dfe2e6;"></div></div><div style="flex: 1; display: flex; flex-direction: column; align-items: center;"><div style="width: 66%; height: 6px; border-radius: 999px 999px 0 0; background: #dfe2e6;"></div><div style="width: 100%; height: 11px; background: #dfe2e6;"></div></div></div>
+          </div>
+          <div style="flex: 1; display: flex; flex-direction: column; gap: 9px;">
+            <div style="height: 12px; width: 60%; border-radius: 999px; background: #e6e8ea; animation: shimmer 1.8s ease-in-out infinite;"></div>
+            <div style="height: 12px; width: 85%; border-radius: 999px; background: #e6e8ea; animation: shimmer 1.8s ease-in-out .2s infinite;"></div>
+            <div style="height: 12px; width: 40%; border-radius: 999px; background: #e6e8ea; animation: shimmer 1.8s ease-in-out .4s infinite;"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div style="display: flex; flex-direction: column; gap: 20px;">
+    <div style="display: flex; align-items: baseline; gap: 14px;">
+      <div style="font-family: 'Manrope', sans-serif; font-weight: 800; font-size: 0.875rem; color: #a24000;">08</div>
+      <h2 style="margin: 0; font-family: 'Manrope', sans-serif; font-size: 1.75rem; letter-spacing: -0.015em; color: #002b6d;">Section transitions</h2>
+      <div style="font-size: 0.875rem; color: #434651;">how one surface hands over to the next — never a line</div>
+    </div>
+    <div style="border-radius: 20px; overflow: hidden;">
+      <div style="background: #f8f9fb; padding: 36px 40px; position: relative;">
+        <div style="font-family: 'Manrope', sans-serif; font-weight: 700; font-size: 1.125rem; color: #002b6d;">Surface</div>
+        <div style="font-size: 0.9375rem; line-height: 1.6; color: #434651; max-width: 60ch;">Base level. The tonal step down to the next block is the only boundary needed.</div>
+      </div>
+      <div style="background: #f2f4f6; padding: 36px 40px;">
+        <div style="font-family: 'Manrope', sans-serif; font-weight: 700; font-size: 1.125rem; color: #002b6d;">Surface container low</div>
+        <div style="font-size: 0.9375rem; line-height: 1.6; color: #434651; max-width: 60ch;">A 2% shift reads clearly at any screen size.</div>
+      </div>
+      <div style="height: 132px; background: #fff; position: relative; overflow: hidden;">
+        <div style="position: absolute; inset: 0; background-image: radial-gradient(circle, rgba(0,43,109,0.07) 1.5px, transparent 1.6px); background-size: 22px 22px;"></div>
+        <div style="position: absolute; left: 0; right: 0; bottom: 0; display: flex; align-items: flex-end; gap: 7px;">
+          <div style="flex: 1; display: flex; flex-direction: column; align-items: center;"><div style="width: 62%; height: 14px; border-radius: 999px 999px 0 0; background: #002b6d;"></div><div style="width: 100%; height: 44px; background: #002b6d;"></div></div>
+          <div style="flex: 0.9; display: flex; flex-direction: column; align-items: center;"><div style="width: 34%; height: 7px; background: #1d428a;"></div><div style="width: 70%; height: 7px; background: #1d428a;"></div><div style="width: 100%; height: 32px; background: #1d428a;"></div></div>
+          <div style="flex: 1.2; display: flex; flex-direction: column; align-items: center;"><div style="width: 46%; height: 20px; background: #002b6d; clip-path: polygon(50% 0, 100% 100%, 0 100%);"></div><div style="width: 100%; height: 58px; background: #002b6d;"></div></div>
+          <div style="flex: 0.95; display: flex; flex-direction: column; align-items: center;"><div style="width: 44%; height: 13px; border-radius: 5px 5px 0 0; background: #1d428a;"></div><div style="width: 100%; height: 38px; background: #1d428a;"></div></div>
+          <div style="flex: 1.1; display: flex; flex-direction: column; align-items: center;"><div style="width: 56%; height: 17px; border-radius: 999px 999px 0 0; background: #002b6d;"></div><div style="width: 100%; height: 50px; background: #002b6d;"></div></div>
+          <div style="flex: 0.85; display: flex; flex-direction: column; align-items: center;"><div style="width: 30%; height: 7px; background: #1d428a;"></div><div style="width: 64%; height: 7px; background: #1d428a;"></div><div style="width: 100%; height: 26px; background: #1d428a;"></div></div>
+          <div style="flex: 1.05; display: flex; flex-direction: column; align-items: center;"><div style="width: 50%; height: 19px; border-radius: 999px 999px 0 0; background: #1d428a;"></div><div style="width: 100%; height: 46px; background: #1d428a;"></div></div>
+        </div>
+      </div>
+      <div style="background: #002b6d; padding: 40px; display: flex; align-items: center; justify-content: space-between; gap: 24px;">
+        <div style="display: flex; flex-direction: column; gap: 8px;">
+          <div style="font-family: 'Manrope', sans-serif; font-weight: 700; font-size: 1.75rem; letter-spacing: -0.015em; color: #fff;">Header handover into a dark band</div>
+          <div style="font-size: 0.9375rem; line-height: 1.6; color: rgba(255,255,255,0.75);">The houses stand in navy on a white surface and the dark band starts right at the street line — the skyline reads as a silhouette instead of a wash. Once per page, maximum.</div>
+        </div>
+        <div style="flex: none; background: #fe762c; color: #5f2200; font-family: 'Manrope', sans-serif; font-weight: 700; font-size: 0.9375rem; padding: 14px 24px; border-radius: 12px; box-shadow: inset 0 2px 0 rgba(255,255,255,0.28);">Begin nu</div>
+      </div>
+    </div>
+  </div>
+
+  <div style="display: flex; flex-direction: column; gap: 20px;">
+    <div style="display: flex; align-items: baseline; gap: 14px;">
+      <div style="font-family: 'Manrope', sans-serif; font-weight: 800; font-size: 0.875rem; color: #a24000;">09</div>
+      <h2 style="margin: 0; font-family: 'Manrope', sans-serif; font-size: 1.75rem; letter-spacing: -0.015em; color: #002b6d;">Exam component hub</h2>
+      <div style="font-size: 0.875rem; color: #434651;">all-in-one: one shelf, one level switch, honest roadmap states</div>
+    </div>
+    <div style="background: #f8f9fb; border-radius: 20px; padding: 28px; display: flex; flex-direction: column; gap: 24px;">
+      <div style="display: flex; align-items: center; justify-content: space-between; gap: 20px; flex-wrap: wrap;">
+        <div style="background: #f2f4f6; border-radius: 12px; padding: 5px; display: flex; gap: 4px;">
+          <div style="background: #fff; border-radius: 9px; padding: 10px 22px; font-family: 'Manrope', sans-serif; font-weight: 700; font-size: 0.875rem; color: #002b6d;">A2</div>
+          <div style="padding: 10px 22px; font-size: 0.875rem; color: #434651;">B1</div>
+          <div style="padding: 10px 22px; font-size: 0.875rem; color: #c4c6d2;">B2 · later</div>
+        </div>
+        <div style="display: inline-flex; align-items: center; gap: 10px; background: #e6e8ea; border-radius: 999px; padding: 8px 16px 8px 10px;">
+          <div style="width: 22px; height: 22px; border-radius: 50%; background: #002b6d; display: flex; align-items: center; justify-content: center;"><div style="width: 7px; height: 7px; border-radius: 50%; background: #fe762c;"></div></div>
+          <span style="font-size: 0.8125rem; font-weight: 600; color: #191c1e;">Gecontroleerd door een NT2-docent</span>
+        </div>
+      </div>
+      <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px;">
+        <div style="background: #fff; border-radius: 12px; overflow: hidden;">
+          <div style="height: 84px; background: #002b6d; position: relative; overflow: hidden;">
+            <div style="position: absolute; left: 20px; bottom: 14px; display: flex; flex-direction: column; gap: 6px; width: 96px;">
+              <div style="height: 5px; border-radius: 3px; background: rgba(255,255,255,0.5);"></div>
+              <div style="height: 5px; border-radius: 3px; background: rgba(255,255,255,0.32);"></div>
+              <div style="width: 54%; height: 5px; border-radius: 3px; background: #fe762c;"></div>
+            </div>
+            <div style="position: absolute; right: 18px; bottom: 14px; width: 26px; height: 34px; border-radius: 3px; background: rgba(255,255,255,0.14);"></div>
+            <div style="position: absolute; left: 20px; top: 18px; font-size: 0.6875rem; letter-spacing: 0.14em; text-transform: uppercase; color: rgba(255,255,255,0.7);">A2 · Taal</div>
+          </div>
+          <div style="padding: 20px; display: flex; flex-direction: column; gap: 10px;">
+            <div style="font-family: 'Manrope', sans-serif; font-weight: 700; font-size: 1.125rem;">Lezen</div>
+            <div style="font-size: 0.8125rem; line-height: 1.6; color: #434651;">14 oefensets · 6 examenvormen</div>
+            <div style="height: 8px; border-radius: 999px; background: #e6e8ea; overflow: hidden; margin-top: 4px;"><div style="width: 58%; height: 100%; background: linear-gradient(90deg,#a24000,#fe762c);"></div></div>
+          </div>
+        </div>
+        <div style="background: #fff; border-radius: 12px; overflow: hidden;">
+          <div style="height: 84px; background: #1d428a; position: relative; overflow: hidden; display: flex; align-items: flex-end; justify-content: center; gap: 4px; padding-bottom: 16px;">
+            <div style="width: 6px; height: 14px; border-radius: 3px; background: rgba(255,255,255,0.35);"></div>
+            <div style="width: 6px; height: 30px; border-radius: 3px; background: rgba(255,255,255,0.55);"></div>
+            <div style="width: 6px; height: 44px; border-radius: 3px; background: #ffb695;"></div>
+            <div style="width: 6px; height: 24px; border-radius: 3px; background: rgba(255,255,255,0.55);"></div>
+            <div style="width: 6px; height: 36px; border-radius: 3px; background: rgba(255,255,255,0.35);"></div>
+            <div style="width: 6px; height: 12px; border-radius: 3px; background: rgba(255,255,255,0.3);"></div>
+            <div style="position: absolute; left: 20px; top: 18px; font-size: 0.6875rem; letter-spacing: 0.14em; text-transform: uppercase; color: rgba(255,255,255,0.7);">A2 · Taal</div>
+          </div>
+          <div style="padding: 20px; display: flex; flex-direction: column; gap: 10px;">
+            <div style="font-family: 'Manrope', sans-serif; font-weight: 700; font-size: 1.125rem;">Luisteren</div>
+            <div style="font-size: 0.8125rem; line-height: 1.6; color: #434651;">42 opnames · echte stemacteurs</div>
+            <div style="height: 8px; border-radius: 999px; background: #e6e8ea; overflow: hidden; margin-top: 4px;"><div style="width: 34%; height: 100%; background: linear-gradient(90deg,#a24000,#fe762c);"></div></div>
+          </div>
+        </div>
+        <div style="background: #fff; border-radius: 12px; overflow: hidden;">
+          <div style="height: 84px; background: #a24000; position: relative; overflow: hidden;">
+<div style="position: absolute; left: 0; right: 0; bottom: 0; display: flex; align-items: flex-end; gap: 5px;"><div style="flex: 1; display: flex; flex-direction: column; align-items: center;"><div style="width: 66%; height: 8px; border-radius: 999px 999px 0 0; background: rgba(255,255,255,0.1);"></div><div style="width: 100%; height: 14px; background: rgba(255,255,255,0.1);"></div></div><div style="flex: 1; display: flex; flex-direction: column; align-items: center;"><div style="width: 100%; height: 10px; border-radius: 5px 5px 0 0; background: rgba(255,255,255,0.14);"></div><div style="width: 100%; height: 22px; background: rgba(255,255,255,0.14);"></div></div><div style="flex: 1; display: flex; flex-direction: column; align-items: center;"><div style="width: 34%; height: 4px; background: rgba(255,255,255,0.1);"></div><div style="width: 68%; height: 4px; background: rgba(255,255,255,0.1);"></div><div style="width: 100%; height: 12px; background: rgba(255,255,255,0.1);"></div></div><div style="flex: 1; display: flex; flex-direction: column; align-items: center;"><div style="width: 66%; height: 11px; border-radius: 999px 999px 0 0; background: rgba(255,255,255,0.16);"></div><div style="width: 100%; height: 26px; background: rgba(255,255,255,0.16);"></div></div></div>
+            <div style="position: absolute; left: 20px; bottom: 18px; width: 56px; height: 5px; border-radius: 3px; background: #ffb695;"></div>
+            <div style="position: absolute; left: 20px; bottom: 30px; width: 34px; height: 5px; border-radius: 3px; background: rgba(255,255,255,0.5);"></div>
+            <div style="position: absolute; left: 20px; top: 18px; font-size: 0.6875rem; letter-spacing: 0.14em; text-transform: uppercase; color: rgba(255,255,255,0.75);">A2 · Taal</div>
+          </div>
+          <div style="padding: 20px; display: flex; flex-direction: column; gap: 10px;">
+            <div style="font-family: 'Manrope', sans-serif; font-weight: 700; font-size: 1.125rem;">Schrijven</div>
+            <div style="font-size: 0.8125rem; line-height: 1.6; color: #434651;">18 opdrachten · modelantwoorden</div>
+            <div style="height: 8px; border-radius: 999px; background: #e6e8ea; overflow: hidden; margin-top: 4px;"><div style="width: 12%; height: 100%; background: linear-gradient(90deg,#a24000,#fe762c);"></div></div>
+          </div>
+        </div>
+      </div>
+      <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px;">
+        <div style="background: #f2f4f6; border-radius: 12px; padding: 20px; display: flex; gap: 16px; align-items: center;">
+          <div style="flex: none; width: 52px; height: 52px; border-radius: 14px; background: #e6e8ea; position: relative; overflow: hidden;">
+            <div style="position: absolute; left: 50%; transform: translateX(-50%); top: 12px; width: 34px; height: 5px; border-radius: 3px; background: #002b6d;"></div>
+            <div style="position: absolute; left: 50%; transform: translateX(-50%); bottom: 12px; display: flex; gap: 5px;">
+              <div style="width: 5px; height: 18px; border-radius: 2px; background: #002b6d;"></div>
+              <div style="width: 5px; height: 18px; border-radius: 2px; background: #002b6d;"></div>
+              <div style="width: 5px; height: 18px; border-radius: 2px; background: #002b6d;"></div>
+            </div>
+            <div style="position: absolute; left: 50%; transform: translateX(-50%); bottom: 8px; width: 34px; height: 4px; border-radius: 2px; background: #002b6d;"></div>
+          </div>
+          <div style="display: flex; flex-direction: column; gap: 4px;">
+            <div style="font-family: 'Manrope', sans-serif; font-weight: 700; font-size: 1.0625rem;">KNM</div>
+            <div style="font-size: 0.8125rem; line-height: 1.6; color: #434651;">5 modules · 400 vragen</div>
+          </div>
+        </div>
+        <div style="background: #f2f4f6; border-radius: 12px; padding: 20px; display: flex; gap: 16px; align-items: center;">
+          <div style="flex: none; width: 52px; height: 52px; border-radius: 14px; background: #e6e8ea; position: relative; overflow: hidden;">
+            <div style="position: absolute; left: 9px; top: 13px; width: 16px; height: 6px; border-radius: 3px 3px 0 0; background: #002b6d;"></div>
+            <div style="position: absolute; left: 9px; top: 18px; width: 34px; height: 22px; border-radius: 3px; background: #002b6d;"></div>
+            <div style="position: absolute; left: 20px; top: 26px; width: 12px; height: 5px; border-radius: 3px; background: #e6e8ea;"></div>
+          </div>
+          <div style="display: flex; flex-direction: column; gap: 4px;">
+            <div style="display: flex; align-items: center; gap: 8px;"><span style="font-family: 'Manrope', sans-serif; font-weight: 700; font-size: 1.0625rem;">ONA</span><span style="background: #e6e8ea; color: #434651; border-radius: 999px; padding: 3px 9px; font-size: 0.6875rem; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase;">Op de roadmap</span></div>
+            <div style="font-size: 0.8125rem; line-height: 1.6; color: #434651;">Portfolio · oriëntatie op werk</div>
+          </div>
+        </div>
+        <div style="background: #f2f4f6; border-radius: 12px; padding: 20px; display: flex; gap: 16px; align-items: center;">
+          <div style="flex: none; width: 52px; height: 52px; border-radius: 14px; background: #e6e8ea; position: relative; overflow: hidden; display: flex; align-items: center; justify-content: center;">
+            <div style="width: 24px; height: 24px; border-radius: 50%; background: #e6e8ea; box-shadow: 0 0 0 5px #c4c6d2;"></div>
+          </div>
+          <div style="display: flex; flex-direction: column; gap: 4px;">
+            <div style="display: flex; align-items: center; gap: 8px;"><span style="font-family: 'Manrope', sans-serif; font-weight: 700; font-size: 1.0625rem; color: #434651;">Spreken</span><span style="background: #e6e8ea; color: #434651; border-radius: 999px; padding: 3px 9px; font-size: 0.6875rem; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase;">Binnenkort</span></div>
+            <div style="font-size: 0.8125rem; line-height: 1.6; color: #434651;">Houd me op de hoogte</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div style="display: flex; flex-direction: column; gap: 20px;">
+    <div style="display: flex; align-items: baseline; gap: 14px;">
+      <div style="font-family: 'Manrope', sans-serif; font-weight: 800; font-size: 0.875rem; color: #a24000;">10</div>
+      <h2 style="margin: 0; font-family: 'Manrope', sans-serif; font-size: 1.75rem; letter-spacing: -0.015em; color: #002b6d;">Luisteren — audio elements</h2>
+      <div style="font-size: 0.875rem; color: #434651;">the polder bars become a waveform</div>
+    </div>
+    <div style="display: grid; grid-template-columns: 1.15fr 1fr; gap: 20px; align-items: start;">
+      <div style="background: #002b6d; border-radius: 16px; padding: 26px; display: flex; flex-direction: column; gap: 22px; position: relative; overflow: hidden;">
+<div style="position: absolute; left: 0; right: 0; bottom: 0; display: flex; align-items: flex-end; gap: 6px;"><div style="flex: 1; display: flex; flex-direction: column; align-items: center;"><div style="width: 66%; height: 9px; border-radius: 999px 999px 0 0; background: rgba(255,255,255,0.05);"></div><div style="width: 100%; height: 18px; background: rgba(255,255,255,0.05);"></div></div><div style="flex: 1; display: flex; flex-direction: column; align-items: center;"><div style="width: 100%; height: 12px; border-radius: 5px 5px 0 0; background: rgba(255,255,255,0.07);"></div><div style="width: 100%; height: 28px; background: rgba(255,255,255,0.07);"></div></div><div style="flex: 1; display: flex; flex-direction: column; align-items: center;"><div style="width: 34%; height: 5px; background: rgba(255,255,255,0.05);"></div><div style="width: 68%; height: 5px; background: rgba(255,255,255,0.05);"></div><div style="width: 100%; height: 14px; background: rgba(255,255,255,0.05);"></div></div><div style="flex: 1; display: flex; flex-direction: column; align-items: center;"><div style="width: 66%; height: 13px; border-radius: 999px 999px 0 0; background: rgba(255,255,255,0.08);"></div><div style="width: 100%; height: 32px; background: rgba(255,255,255,0.08);"></div></div><div style="flex: 1; display: flex; flex-direction: column; align-items: center;"><div style="width: 100%; height: 8px; border-radius: 4px 4px 0 0; background: rgba(255,255,255,0.05);"></div><div style="width: 100%; height: 12px; background: rgba(255,255,255,0.05);"></div></div><div style="flex: 1; display: flex; flex-direction: column; align-items: center;"><div style="width: 66%; height: 11px; border-radius: 999px 999px 0 0; background: rgba(255,255,255,0.07);"></div><div style="width: 100%; height: 24px; background: rgba(255,255,255,0.07);"></div></div></div>
+        <div style="display: flex; align-items: center; justify-content: space-between; gap: 16px; position: relative;">
+          <div style="display: flex; flex-direction: column; gap: 6px;">
+            <div style="font-size: 0.6875rem; letter-spacing: 0.14em; text-transform: uppercase; color: rgba(255,255,255,0.65);">Opname 12 · monoloog</div>
+            <div style="font-family: 'Manrope', sans-serif; font-weight: 700; font-size: 1.25rem; color: #fff;">Bij de huisarts</div>
+          </div>
+          <div style="display: flex; gap: 8px;">
+            <div style="background: rgba(248,249,251,0.16); backdrop-filter: blur(20px); color: #fff; border-radius: 10px; padding: 8px 13px; font-size: 0.75rem; font-weight: 600;">0,75×</div>
+            <div style="background: rgba(248,249,251,0.16); backdrop-filter: blur(20px); color: #fff; border-radius: 10px; padding: 8px 13px; font-size: 0.75rem; font-weight: 600;">1×</div>
+          </div>
+        </div>
+        <div style="display: flex; align-items: center; gap: 18px; position: relative;">
+          <div style="flex: none; width: 56px; height: 56px; border-radius: 50%; background: #fe762c; display: flex; align-items: center; justify-content: center; box-shadow: inset 0 2px 0 rgba(255,255,255,0.28);">
+            <div style="width: 16px; height: 16px; border-radius: 3px; background: #5f2200;"></div>
+          </div>
+          <div style="flex: 1; display: flex; align-items: center; gap: 3px; height: 48px;">
+            <div style="flex:1; height: 22%; border-radius: 2px; background: #fe762c;"></div>
+            <div style="flex:1; height: 48%; border-radius: 2px; background: #fe762c;"></div>
+            <div style="flex:1; height: 74%; border-radius: 2px; background: #fe762c;"></div>
+            <div style="flex:1; height: 36%; border-radius: 2px; background: #fe762c;"></div>
+            <div style="flex:1; height: 92%; border-radius: 2px; background: #fe762c;"></div>
+            <div style="flex:1; height: 60%; border-radius: 2px; background: #fe762c;"></div>
+            <div style="flex:1; height: 30%; border-radius: 2px; background: rgba(255,255,255,0.28);"></div>
+            <div style="flex:1; height: 68%; border-radius: 2px; background: rgba(255,255,255,0.28);"></div>
+            <div style="flex:1; height: 44%; border-radius: 2px; background: rgba(255,255,255,0.28);"></div>
+            <div style="flex:1; height: 84%; border-radius: 2px; background: rgba(255,255,255,0.28);"></div>
+            <div style="flex:1; height: 26%; border-radius: 2px; background: rgba(255,255,255,0.28);"></div>
+            <div style="flex:1; height: 56%; border-radius: 2px; background: rgba(255,255,255,0.28);"></div>
+            <div style="flex:1; height: 38%; border-radius: 2px; background: rgba(255,255,255,0.28);"></div>
+            <div style="flex:1; height: 70%; border-radius: 2px; background: rgba(255,255,255,0.28);"></div>
+            <div style="flex:1; height: 20%; border-radius: 2px; background: rgba(255,255,255,0.28);"></div>
+          </div>
+          <div style="flex: none; font-family: ui-monospace, Menlo, monospace; font-size: 0.8125rem; color: rgba(255,255,255,0.8);">0:24 / 1:08</div>
+        </div>
+        <div style="display: flex; gap: 10px; flex-wrap: wrap; position: relative;">
+          <div style="background: rgba(248,249,251,0.16); backdrop-filter: blur(20px); color: #fff; border-radius: 10px; padding: 10px 15px; font-size: 0.8125rem; font-weight: 600;">Nog een keer (2 over)</div>
+          <div style="background: rgba(248,249,251,0.16); backdrop-filter: blur(20px); color: #fff; border-radius: 10px; padding: 10px 15px; font-size: 0.8125rem; font-weight: 600;">Transcript</div>
+        </div>
+      </div>
+      <div style="display: flex; flex-direction: column; gap: 20px;">
+        <div style="background: #fff; border-radius: 16px; padding: 24px; display: flex; flex-direction: column; gap: 18px;">
+          <div style="font-family: 'Manrope', sans-serif; font-weight: 600; font-size: 0.9375rem;">Rollenspel — twee stemmen</div>
+          <div style="display: flex; gap: 14px; align-items: flex-start;">
+            <div style="flex: none; width: 36px; height: 36px; border-radius: 50%; background: #002b6d; display: flex; align-items: center; justify-content: center; font-family: 'Manrope', sans-serif; font-weight: 700; font-size: 0.8125rem; color: #fff;">A</div>
+            <div style="background: #f2f4f6; border-radius: 12px 12px 12px 4px; padding: 14px 16px; font-size: 0.9375rem; line-height: 1.6;">Goedemiddag, waarmee kan ik u helpen?</div>
+          </div>
+          <div style="display: flex; gap: 14px; align-items: flex-start; flex-direction: row-reverse;">
+            <div style="flex: none; width: 36px; height: 36px; border-radius: 50%; background: #fe762c; display: flex; align-items: center; justify-content: center; font-family: 'Manrope', sans-serif; font-weight: 700; font-size: 0.8125rem; color: #5f2200;">B</div>
+            <div style="background: #e6e8ea; border-radius: 12px 12px 4px 12px; padding: 14px 16px; font-size: 0.9375rem; line-height: 1.6;">Ik wil een afspraak maken voor volgende week.</div>
+          </div>
+          <div style="font-size: 0.75rem; letter-spacing: 0.08em; text-transform: uppercase; color: #434651;">Transcript verschijnt pas na je antwoord</div>
+        </div>
+        <div style="background: #f2f4f6; border-radius: 16px; padding: 22px; display: flex; gap: 16px; align-items: center;">
+          <div style="flex: none; display: flex; align-items: flex-end; gap: 3px; height: 40px;">
+            <div style="width: 6px; height: 16px; border-radius: 3px; background: #c4c6d2;"></div>
+            <div style="width: 6px; height: 32px; border-radius: 3px; background: #002b6d;"></div>
+            <div style="width: 6px; height: 24px; border-radius: 3px; background: #c4c6d2;"></div>
+          </div>
+          <div style="font-size: 0.875rem; line-height: 1.6; color: #434651;"><strong style="font-family: 'Manrope', sans-serif; color: #191c1e;">Audio-badge.</strong> Marks any item with a recording, in lists and result reports.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div style="display: flex; flex-direction: column; gap: 20px;">
+    <div style="display: flex; align-items: baseline; gap: 14px;">
+      <div style="font-family: 'Manrope', sans-serif; font-weight: 800; font-size: 0.875rem; color: #a24000;">11</div>
+      <h2 style="margin: 0; font-family: 'Manrope', sans-serif; font-size: 1.75rem; letter-spacing: -0.015em; color: #002b6d;">Lezen — text surfaces</h2>
+    </div>
+    <div style="display: grid; grid-template-columns: 1.25fr 1fr; gap: 20px; align-items: start;">
+      <div style="background: #fff; border-radius: 16px; padding: 28px; display: flex; flex-direction: column; gap: 18px;">
+        <div style="display: flex; align-items: center; gap: 12px;">
+          <div style="width: 36px; height: 36px; border-radius: 11px; background: #f2f4f6; position: relative; overflow: hidden;">
+            <div style="position: absolute; left: 50%; transform: translateX(-50%); top: 7px; width: 19px; height: 23px; border-radius: 2px; background: #002b6d;"></div>
+            <div style="position: absolute; left: 50%; transform: translateX(-50%); top: 12px; display: flex; flex-direction: column; gap: 3px; width: 11px;">
+              <div style="height: 2px; border-radius: 1px; background: #f2f4f6;"></div>
+              <div style="height: 2px; border-radius: 1px; background: #f2f4f6;"></div>
+              <div style="width: 60%; height: 2px; border-radius: 1px; background: #ffb695;"></div>
+            </div>
+          </div>
+          <div style="font-size: 0.75rem; letter-spacing: 0.12em; text-transform: uppercase; color: #434651;">Lezen A2 · brief van de gemeente</div>
+        </div>
+        <div style="font-family: 'Manrope', sans-serif; font-size: 1.375rem; line-height: 1.3; letter-spacing: -0.01em; color: #191c1e;">Uitnodiging voor een gesprek</div>
+        <div style="font-size: 1rem; line-height: 1.7; color: #191c1e; text-wrap: pretty;">Geachte heer De Vries,<br><br>Wij willen graag met u praten over uw <span style="background: rgba(254,118,44,0.22); border-radius: 4px; padding: 1px 4px;">inburgeringstraject</span>. U bent welkom op dinsdag 14 mei om 10:00 uur. Neem uw brief en een geldig <span style="background: #e6e8ea; border-radius: 4px; padding: 1px 4px;">identiteitsbewijs</span> mee.</div>
+        <div style="background: #f2f4f6; border-radius: 12px; padding: 16px 18px; display: flex; flex-direction: column; gap: 6px;">
+          <div style="font-family: 'Manrope', sans-serif; font-weight: 700; font-size: 0.9375rem; color: #002b6d;">inburgeringstraject</div>
+          <div style="font-size: 0.875rem; line-height: 1.6; color: #434651;">het hele programma van lessen en examens dat je doet om in te burgeren</div>
+        </div>
+      </div>
+      <div style="display: flex; flex-direction: column; gap: 20px;">
+        <div style="background: #f8f9fb; border-radius: 16px; padding: 24px; display: flex; flex-direction: column; gap: 14px;">
+          <div style="font-family: 'Manrope', sans-serif; font-weight: 600; font-size: 0.9375rem;">Gatentekst</div>
+          <div style="font-size: 1rem; line-height: 2; color: #191c1e;">U bent <span style="background: #fff; border-radius: 8px; padding: 6px 26px; box-shadow: inset 0 0 0 2px rgba(0,43,109,0.4);"> </span> op dinsdag om 10:00 uur.</div>
+          <div style="display: flex; flex-wrap: wrap; gap: 8px;">
+            <div style="background: #e6e8ea; border-radius: 999px; padding: 8px 15px; font-size: 0.875rem;">welkom</div>
+            <div style="background: #e6e8ea; border-radius: 999px; padding: 8px 15px; font-size: 0.875rem;">gesloten</div>
+            <div style="background: #e6e8ea; border-radius: 999px; padding: 8px 15px; font-size: 0.875rem;">verplicht</div>
+          </div>
+        </div>
+        <div style="background: #f8f9fb; border-radius: 16px; padding: 24px; display: flex; flex-direction: column; gap: 14px;">
+          <div style="font-family: 'Manrope', sans-serif; font-weight: 600; font-size: 0.9375rem;">Combineren</div>
+          <div style="display: flex; flex-direction: column; gap: 10px;">
+            <div style="display: flex; align-items: center; gap: 12px;">
+              <div style="flex: 1; background: #fff; border-radius: 10px; padding: 12px 14px; font-size: 0.9375rem;">Wanneer?</div>
+              <div style="flex: none; width: 26px; height: 4px; border-radius: 2px; background: #fe762c;"></div>
+              <div style="flex: 1; background: #fff; border-radius: 10px; padding: 12px 14px; font-size: 0.9375rem;">14 mei</div>
+            </div>
+            <div style="display: flex; align-items: center; gap: 12px;">
+              <div style="flex: 1; background: #fff; border-radius: 10px; padding: 12px 14px; font-size: 0.9375rem;">Meenemen?</div>
+              <div style="flex: none; width: 26px; height: 4px; border-radius: 2px; background: #c4c6d2;"></div>
+              <div style="flex: 1; background: #fff; border-radius: 10px; padding: 12px 14px; font-size: 0.9375rem; color: #434651;">ID-bewijs</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div style="display: flex; flex-direction: column; gap: 20px;">
+    <div style="display: flex; align-items: baseline; gap: 14px;">
+      <div style="font-family: 'Manrope', sans-serif; font-weight: 800; font-size: 0.875rem; color: #a24000;">12</div>
+      <h2 style="margin: 0; font-family: 'Manrope', sans-serif; font-size: 1.75rem; letter-spacing: -0.015em; color: #002b6d;">Schrijven — task & feedback</h2>
+    </div>
+    <div style="display: grid; grid-template-columns: 1.15fr 1fr; gap: 20px; align-items: start;">
+      <div style="background: #fff; border-radius: 16px; padding: 28px; display: flex; flex-direction: column; gap: 20px;">
+        <div style="display: flex; align-items: center; justify-content: space-between; gap: 16px; flex-wrap: wrap;">
+          <div style="font-size: 0.75rem; letter-spacing: 0.12em; text-transform: uppercase; color: #434651;">Schrijven A2 · opdracht 4</div>
+          <div style="display: flex; align-items: center; gap: 9px; background: #f2f4f6; border-radius: 999px; padding: 7px 14px;">
+            <div style="width: 8px; height: 8px; border-radius: 50%; background: #fe762c;"></div>
+            <span style="font-family: ui-monospace, Menlo, monospace; font-size: 0.8125rem; color: #191c1e;">18:42</span>
+          </div>
+        </div>
+        <div style="font-family: 'Manrope', sans-serif; font-size: 1.375rem; line-height: 1.35; color: #191c1e;">Schrijf een e-mail aan de gemeente om je afspraak te verzetten.</div>
+        <div style="background: #f2f4f6; border-radius: 12px; padding: 18px; min-height: 130px; font-size: 1rem; line-height: 1.7; color: #191c1e;">Beste medewerker,<br><br>Ik kan niet op dinsdag komen omdat ik moet werken.<span style="opacity:.5">|</span></div>
+        <div style="display: flex; align-items: center; justify-content: space-between; gap: 16px; flex-wrap: wrap;">
+          <div style="display: flex; gap: 20px; align-items: center;">
+            <div style="font-size: 0.8125rem; color: #434651;">18 / 40 woorden</div>
+            <div style="width: 90px; height: 8px; border-radius: 999px; background: #e6e8ea; overflow: hidden;"><div style="width: 45%; height: 100%; background: linear-gradient(90deg,#a24000,#fe762c);"></div></div>
+          </div>
+          <div style="background: #fe762c; color: #5f2200; font-family: 'Manrope', sans-serif; font-weight: 700; font-size: 0.9375rem; padding: 13px 24px; border-radius: 12px; white-space: nowrap; box-shadow: inset 0 2px 0 rgba(255,255,255,0.28);">Inleveren</div>
+        </div>
+      </div>
+      <div style="display: flex; flex-direction: column; gap: 20px;">
+        <div style="background: #fff; border-radius: 16px; padding: 24px; display: flex; flex-direction: column; gap: 16px; position: relative; overflow: hidden;">
+<div style="position: absolute; left: 0; right: 0; bottom: 0; display: flex; align-items: flex-end; gap: 5px;"><div style="flex: 1; display: flex; flex-direction: column; align-items: center;"><div style="width: 66%; height: 9px; border-radius: 999px 999px 0 0; background: rgba(0,43,109,0.05);"></div><div style="width: 100%; height: 18px; background: rgba(0,43,109,0.05);"></div></div><div style="flex: 1; display: flex; flex-direction: column; align-items: center;"><div style="width: 100%; height: 12px; border-radius: 5px 5px 0 0; background: rgba(0,43,109,0.07);"></div><div style="width: 100%; height: 28px; background: rgba(0,43,109,0.07);"></div></div><div style="flex: 1; display: flex; flex-direction: column; align-items: center;"><div style="width: 34%; height: 5px; background: rgba(0,43,109,0.05);"></div><div style="width: 68%; height: 5px; background: rgba(0,43,109,0.05);"></div><div style="width: 100%; height: 14px; background: rgba(0,43,109,0.05);"></div></div><div style="flex: 1; display: flex; flex-direction: column; align-items: center;"><div style="width: 66%; height: 13px; border-radius: 999px 999px 0 0; background: rgba(0,43,109,0.08);"></div><div style="width: 100%; height: 32px; background: rgba(0,43,109,0.08);"></div></div><div style="flex: 1; display: flex; flex-direction: column; align-items: center;"><div style="width: 100%; height: 8px; border-radius: 4px 4px 0 0; background: rgba(0,43,109,0.05);"></div><div style="width: 100%; height: 12px; background: rgba(0,43,109,0.05);"></div></div></div>
+          <div style="display: flex; align-items: center; gap: 14px; position: relative;">
+            <div style="width: 44px; height: 44px; border-radius: 50%; background: #f2f4f6; box-shadow: 0 0 0 4px #fff, 0 0 0 6px rgba(0,43,109,0.12); display: flex; align-items: center; justify-content: center;"><div style="width: 14px; height: 14px; border-radius: 50%; background: #002b6d;"></div></div>
+            <div style="display: flex; flex-direction: column; gap: 3px;">
+              <div style="font-family: 'Manrope', sans-serif; font-weight: 700; font-size: 0.9375rem; color: #002b6d;">Feedback van je NT2-docent</div>
+              <div style="font-size: 0.75rem; color: #434651;">Modelantwoord + drie aandachtspunten</div>
+            </div>
+          </div>
+          <div style="display: flex; flex-direction: column; gap: 10px; position: relative;">
+            <div style="background: #f2f4f6; border-radius: 10px; padding: 13px 15px; font-size: 0.875rem; line-height: 1.6;"><strong style="font-family: 'Manrope', sans-serif;">Aanhef</strong> — "Beste medewerker" kan formeler: "Geachte heer/mevrouw".</div>
+            <div style="background: #f2f4f6; border-radius: 10px; padding: 13px 15px; font-size: 0.875rem; line-height: 1.6;"><strong style="font-family: 'Manrope', sans-serif;">Reden</strong> — goed gebruik van "omdat".</div>
+            <div style="background: #f2f4f6; border-radius: 10px; padding: 13px 15px; font-size: 0.875rem; line-height: 1.6;"><strong style="font-family: 'Manrope', sans-serif;">Afsluiting</strong> — vraag om een nieuwe datum.</div>
+          </div>
+        </div>
+        <div style="background: #f8f9fb; border-radius: 16px; padding: 24px; display: flex; flex-direction: column; gap: 14px;">
+          <div style="font-family: 'Manrope', sans-serif; font-weight: 600; font-size: 0.9375rem;">Rubriek — voortgang per criterium</div>
+          <div style="display: flex; flex-direction: column; gap: 12px;">
+            <div style="display: flex; align-items: center; gap: 12px;"><span style="flex: 1; font-size: 0.875rem;">Inhoud</span><div style="flex: none; width: 120px; height: 8px; border-radius: 999px; background: #e6e8ea; overflow: hidden;"><div style="width: 90%; height: 100%; background: linear-gradient(90deg,#a24000,#fe762c);"></div></div></div>
+            <div style="display: flex; align-items: center; gap: 12px;"><span style="flex: 1; font-size: 0.875rem;">Woordgebruik</span><div style="flex: none; width: 120px; height: 8px; border-radius: 999px; background: #e6e8ea; overflow: hidden;"><div style="width: 62%; height: 100%; background: linear-gradient(90deg,#a24000,#fe762c);"></div></div></div>
+            <div style="display: flex; align-items: center; gap: 12px;"><span style="flex: 1; font-size: 0.875rem;">Grammatica</span><div style="flex: none; width: 120px; height: 8px; border-radius: 999px; background: #e6e8ea; overflow: hidden;"><div style="width: 40%; height: 100%; background: linear-gradient(90deg,#a24000,#fe762c);"></div></div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div style="display: flex; flex-direction: column; gap: 20px;">
+    <div style="display: flex; align-items: baseline; gap: 14px;">
+      <div style="font-family: 'Manrope', sans-serif; font-weight: 800; font-size: 0.875rem; color: #a24000;">13</div>
+      <h2 style="margin: 0; font-family: 'Manrope', sans-serif; font-size: 1.75rem; letter-spacing: -0.015em; color: #002b6d;">Trust & results</h2>
+      <div style="font-size: 0.875rem; color: #434651;">the NT2-teacher differentiator, made visible</div>
+    </div>
+    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+      <div style="background: #002b6d; border-radius: 16px; padding: 28px; display: flex; gap: 22px; align-items: center; position: relative; overflow: hidden;">
+<div style="position: absolute; left: 0; right: 0; bottom: 0; display: flex; align-items: flex-end; gap: 6px;"><div style="flex: 1; display: flex; flex-direction: column; align-items: center;"><div style="width: 100%; height: 9px; border-radius: 4px 4px 0 0; background: rgba(255,255,255,0.05);"></div><div style="width: 100%; height: 16px; background: rgba(255,255,255,0.05);"></div></div><div style="flex: 1; display: flex; flex-direction: column; align-items: center;"><div style="width: 66%; height: 12px; border-radius: 999px 999px 0 0; background: rgba(255,255,255,0.07);"></div><div style="width: 100%; height: 28px; background: rgba(255,255,255,0.07);"></div></div><div style="flex: 1; display: flex; flex-direction: column; align-items: center;"><div style="width: 34%; height: 5px; background: rgba(255,255,255,0.05);"></div><div style="width: 68%; height: 5px; background: rgba(255,255,255,0.05);"></div><div style="width: 100%; height: 14px; background: rgba(255,255,255,0.05);"></div></div><div style="flex: 1; display: flex; flex-direction: column; align-items: center;"><div style="width: 66%; height: 13px; border-radius: 999px 999px 0 0; background: rgba(255,255,255,0.08);"></div><div style="width: 100%; height: 34px; background: rgba(255,255,255,0.08);"></div></div><div style="flex: 1; display: flex; flex-direction: column; align-items: center;"><div style="width: 100%; height: 8px; border-radius: 4px 4px 0 0; background: rgba(255,255,255,0.05);"></div><div style="width: 100%; height: 12px; background: rgba(255,255,255,0.05);"></div></div><div style="flex: 1; display: flex; flex-direction: column; align-items: center;"><div style="width: 66%; height: 11px; border-radius: 999px 999px 0 0; background: rgba(255,255,255,0.07);"></div><div style="width: 100%; height: 22px; background: rgba(255,255,255,0.07);"></div></div></div>
+        <div style="flex: none; width: 76px; height: 76px; border-radius: 50%; background: #002b6d; box-shadow: 0 0 0 8px #fe762c, 0 0 0 15px rgba(255,255,255,0.12); display: flex; align-items: center; justify-content: center; position: relative;">
+          <div style="width: 24px; height: 24px; border-radius: 50%; background: #fe762c;"></div>
+        </div>
+        <div style="display: flex; flex-direction: column; gap: 8px; position: relative;">
+          <div style="font-family: 'Manrope', sans-serif; font-weight: 700; font-size: 1.375rem; color: #fff;">Door een docent gemaakt</div>
+          <div style="font-size: 0.9375rem; line-height: 1.6; color: rgba(255,255,255,0.8); max-width: 34ch;">Elke vraag en elke opname is geschreven en nagekeken door een praktiserende NT2-docent. Geen AI-teksten.</div>
+        </div>
+      </div>
+      <div style="background: #fff; border-radius: 16px; padding: 26px; display: flex; flex-direction: column; gap: 18px;">
+        <div style="font-family: 'Manrope', sans-serif; font-weight: 700; font-size: 1.125rem; color: #002b6d;">Vergelijkingsband</div>
+        <div style="display: flex; flex-direction: column; gap: 10px;">
+          <div style="display: flex; align-items: center; gap: 14px; background: #f2f4f6; border-radius: 12px; padding: 15px 18px;">
+            <div style="flex: none; width: 26px; height: 26px; border-radius: 50%; background: #fe762c;"></div>
+            <span style="font-size: 0.9375rem; line-height: 1.6;">Inburgeringoefenen · NT2-docent, echte stemacteurs</span>
+          </div>
+          <div style="display: flex; align-items: center; gap: 14px; background: #f8f9fb; border-radius: 12px; padding: 15px 18px;">
+            <div style="flex: none; width: 26px; height: 26px; border-radius: 50%; background: #dfe2e6;"></div>
+            <span style="font-size: 0.9375rem; line-height: 1.6; color: #434651;">Andere platforms · AI-gegenereerde vragen</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div style="background: #f8f9fb; border-radius: 20px; padding: 28px; display: grid; grid-template-columns: auto 1fr auto; gap: 28px; align-items: center;">
+      <div style="display: flex; gap: 16px;">
+        <div style="display: flex; flex-direction: column; gap: 8px; align-items: center;">
+          <div style="width: 88px; height: 88px; border-radius: 50%; background: conic-gradient(#fe762c 0turn 0.81turn, #dfe2e6 0.81turn 1turn); display: flex; align-items: center; justify-content: center;">
+            <div style="width: 66px; height: 66px; border-radius: 50%; background: #f8f9fb; display: flex; align-items: center; justify-content: center; font-family: 'Manrope', sans-serif; font-weight: 800; font-size: 1.125rem; color: #002b6d;">81%</div>
+          </div>
+          <div style="font-size: 0.75rem; color: #434651;">Lezen</div>
+        </div>
+        <div style="display: flex; flex-direction: column; gap: 8px; align-items: center;">
+          <div style="width: 88px; height: 88px; border-radius: 50%; background: conic-gradient(#fe762c 0turn 0.64turn, #dfe2e6 0.64turn 1turn); display: flex; align-items: center; justify-content: center;">
+            <div style="width: 66px; height: 66px; border-radius: 50%; background: #f8f9fb; display: flex; align-items: center; justify-content: center; font-family: 'Manrope', sans-serif; font-weight: 800; font-size: 1.125rem; color: #002b6d;">64%</div>
+          </div>
+          <div style="font-size: 0.75rem; color: #434651;">Luisteren</div>
+        </div>
+        <div style="display: flex; flex-direction: column; gap: 8px; align-items: center;">
+          <div style="width: 88px; height: 88px; border-radius: 50%; background: conic-gradient(#fe762c 0turn 0.42turn, #dfe2e6 0.42turn 1turn); display: flex; align-items: center; justify-content: center;">
+            <div style="width: 66px; height: 66px; border-radius: 50%; background: #f8f9fb; display: flex; align-items: center; justify-content: center; font-family: 'Manrope', sans-serif; font-weight: 800; font-size: 1.125rem; color: #002b6d;">42%</div>
+          </div>
+          <div style="font-size: 0.75rem; color: #434651;">Schrijven</div>
+        </div>
+        <div style="display: flex; flex-direction: column; gap: 8px; align-items: center;">
+          <div style="width: 88px; height: 88px; border-radius: 50%; background: conic-gradient(#fe762c 0turn 0.73turn, #dfe2e6 0.73turn 1turn); display: flex; align-items: center; justify-content: center;">
+            <div style="width: 66px; height: 66px; border-radius: 50%; background: #f8f9fb; display: flex; align-items: center; justify-content: center; font-family: 'Manrope', sans-serif; font-weight: 800; font-size: 1.125rem; color: #002b6d;">73%</div>
+          </div>
+          <div style="font-size: 0.75rem; color: #434651;">KNM</div>
+        </div>
+      </div>
+      <div style="display: flex; flex-direction: column; gap: 8px;">
+        <div style="font-family: 'Manrope', sans-serif; font-weight: 700; font-size: 1.125rem; color: #002b6d;">Examenklaar-strip</div>
+        <div style="font-size: 0.9375rem; line-height: 1.6; color: #434651; max-width: 42ch;">One ring per exam component, always in the same order. The lowest ring is the platform's next recommendation.</div>
+      </div>
+      <div style="background: #002b6d; color: #fff; font-family: 'Manrope', sans-serif; font-weight: 700; font-size: 0.9375rem; padding: 14px 24px; border-radius: 12px; white-space: nowrap; box-shadow: inset 0 2px 0 rgba(255,255,255,0.1);">Oefen Schrijven</div>
+    </div>
+  </div>
+
+
+  <div style="display: flex; flex-direction: column; gap: 20px;">
+    <div style="display: flex; align-items: baseline; gap: 14px;">
+      <div style="font-family: 'Manrope', sans-serif; font-weight: 800; font-size: 0.875rem; color: #a24000;">14</div>
+      <h2 style="margin: 0; font-family: 'Manrope', sans-serif; font-size: 1.75rem; letter-spacing: -0.015em; color: #002b6d;">Icon construction</h2>
+      <div style="font-size: 0.875rem; color: #434651;">72px tile · 10px keepline · 4px unit grid · one orange accent maximum</div>
+    </div>
+    <div style="background: #f8f9fb; border-radius: 20px; padding: 28px; display: grid; grid-template-columns: repeat(4, 1fr); gap: 24px;">
+      <div style="display: flex; flex-direction: column; gap: 12px;">
+        <div style="width: 72px; height: 72px; border-radius: 18px; background: #e6e8ea; position: relative; overflow: hidden; background-image: linear-gradient(90deg, rgba(0,43,109,0.10) 1px, transparent 1px), linear-gradient(180deg, rgba(0,43,109,0.10) 1px, transparent 1px); background-size: 4px 4px;">
+          <div style="position: absolute; inset: 10px; border-radius: 8px; background: rgba(254,118,44,0.12);"></div>
+        </div>
+        <div style="font-family: 'Manrope', sans-serif; font-weight: 600; font-size: 0.875rem;">Tile & keepline</div>
+        <div style="font-size: 0.75rem; line-height: 1.5; color: #434651;">Geometry lives inside the 52px core. Only the skyline base may touch the bottom edge.</div>
+      </div>
+      <div style="display: flex; flex-direction: column; gap: 12px;">
+        <div style="width: 72px; height: 72px; border-radius: 18px; background: #e6e8ea; position: relative; overflow: hidden;">
+          <div style="position: absolute; left: 10px; bottom: 10px; width: 52px; height: 8px; border-radius: 4px; background: #002b6d;"></div>
+          <div style="position: absolute; left: 10px; bottom: 24px; width: 52px; height: 6px; border-radius: 3px; background: #1d428a;"></div>
+          <div style="position: absolute; left: 10px; bottom: 36px; width: 52px; height: 4px; border-radius: 2px; background: #c4c6d2;"></div>
+        </div>
+        <div style="font-family: 'Manrope', sans-serif; font-weight: 600; font-size: 0.875rem;">Weights</div>
+        <div style="font-size: 0.75rem; line-height: 1.5; color: #434651;">At 72px: structure 8, detail 6, hairline 4. Below that, scale the whole ramp proportionally — 3px at 48, 2px at 24 — never mix scales in one icon.</div>
+      </div>
+      <div style="display: flex; flex-direction: column; gap: 12px;">
+        <div style="width: 72px; height: 72px; border-radius: 18px; background: #e6e8ea; position: relative; overflow: hidden;">
+          <div style="position: absolute; left: 12px; top: 14px; width: 22px; height: 22px; border-radius: 3px; background: #002b6d;"></div>
+          <div style="position: absolute; right: 12px; top: 14px; width: 22px; height: 22px; border-radius: 11px 11px 3px 3px; background: #002b6d;"></div>
+          <div style="position: absolute; left: 12px; bottom: 14px; width: 22px; height: 22px; border-radius: 50%; background: #002b6d;"></div>
+          <div style="position: absolute; right: 12px; bottom: 14px; width: 22px; height: 22px; border-radius: 3px; background: #fe762c;"></div>
+        </div>
+        <div style="font-family: 'Manrope', sans-serif; font-weight: 600; font-size: 0.875rem;">Corners</div>
+        <div style="font-size: 0.75rem; line-height: 1.5; color: #434651;">3px on masonry, full round on roofs, discs and wheels. Never mix within one form.</div>
+      </div>
+      <div style="display: flex; flex-direction: column; gap: 12px;">
+        <div style="width: 72px; height: 72px; border-radius: 18px; background: #e6e8ea; position: relative; overflow: hidden;">
+          <div style="position: absolute; left: 14px; bottom: 12px; width: 44px; height: 40px; border-radius: 3px; background: #002b6d;"></div>
+          <div style="position: absolute; left: 22px; bottom: 32px; width: 10px; height: 12px; border-radius: 2px; background: #e6e8ea;"></div>
+          <div style="position: absolute; left: 40px; bottom: 32px; width: 10px; height: 12px; border-radius: 2px; background: #e6e8ea;"></div>
+          <div style="position: absolute; left: 31px; bottom: 12px; width: 10px; height: 14px; border-radius: 5px 5px 0 0; background: #e6e8ea;"></div>
+        </div>
+        <div style="font-family: 'Manrope', sans-serif; font-weight: 600; font-size: 0.875rem;">Negative space</div>
+        <div style="font-size: 0.75rem; line-height: 1.5; color: #434651;">Windows and doors are cut in the tile colour, never drawn in a lighter blue.</div>
+      </div>
+    </div>
+  </div>
+
+  <div style="display: flex; flex-direction: column; gap: 20px;">
+    <div style="display: flex; align-items: baseline; gap: 14px;">
+      <div style="font-family: 'Manrope', sans-serif; font-weight: 800; font-size: 0.875rem; color: #a24000;">15</div>
+      <h2 style="margin: 0; font-family: 'Manrope', sans-serif; font-size: 1.75rem; letter-spacing: -0.015em; color: #002b6d;">Gable typology</h2>
+      <div style="font-size: 0.875rem; color: #434651;">five real Amsterdam gable tops — the alphabet of the house</div>
+    </div>
+    <div style="background: #f8f9fb; border-radius: 20px; padding: 28px; display: grid; grid-template-columns: repeat(5, 1fr); gap: 20px;">
+
+      <div style="display: flex; flex-direction: column; gap: 12px; align-items: flex-start;">
+        <div style="width: 120px; height: 120px; border-radius: 22px; background: #e6e8ea; position: relative; overflow: hidden;">
+          <div style="position: absolute; left: 50%; transform: translateX(-50%); bottom: 0; display: flex; flex-direction: column; align-items: center;">
+            <div style="width: 14px; height: 8px; border-radius: 2px 2px 0 0; background: #002b6d;"></div>
+            <div style="width: 30px; height: 8px; background: #002b6d;"></div>
+            <div style="width: 46px; height: 8px; background: #002b6d;"></div>
+            <div style="width: 58px; height: 62px; background: #002b6d;"></div>
+          </div>
+          <div style="position: absolute; left: 50%; transform: translateX(-50%); bottom: 44px; display: flex; gap: 10px;">
+            <div style="width: 12px; height: 16px; border-radius: 2px; background: #e6e8ea;"></div>
+            <div style="width: 12px; height: 16px; border-radius: 2px; background: #e6e8ea;"></div>
+          </div>
+          <div style="position: absolute; left: 50%; transform: translateX(-50%); bottom: 0; width: 16px; height: 26px; border-radius: 8px 8px 0 0; background: #e6e8ea;"></div>
+        </div>
+        <div style="font-family: 'Manrope', sans-serif; font-weight: 700; font-size: 0.9375rem; color: #002b6d;">Trapgevel</div>
+        <div style="font-size: 0.75rem; line-height: 1.5; color: #434651;">Step gable, 16th c. Three 8px steps, always odd-numbered.</div>
+      </div>
+
+      <div style="display: flex; flex-direction: column; gap: 12px; align-items: flex-start;">
+        <div style="width: 120px; height: 120px; border-radius: 22px; background: #e6e8ea; position: relative; overflow: hidden;">
+          <div style="position: absolute; left: 50%; transform: translateX(-50%); bottom: 0; display: flex; flex-direction: column; align-items: center;">
+            <div style="width: 34px; height: 22px; border-radius: 17px 17px 0 0; background: #002b6d;"></div>
+            <div style="width: 58px; height: 20px; border-radius: 14px 14px 0 0; background: #002b6d;"></div>
+            <div style="width: 58px; height: 44px; background: #002b6d;"></div>
+          </div>
+          <div style="position: absolute; left: 50%; transform: translateX(-50%); bottom: 44px; display: flex; gap: 10px;">
+            <div style="width: 12px; height: 16px; border-radius: 2px; background: #e6e8ea;"></div>
+            <div style="width: 12px; height: 16px; border-radius: 2px; background: #e6e8ea;"></div>
+          </div>
+          <div style="position: absolute; left: 50%; transform: translateX(-50%); bottom: 0; width: 16px; height: 26px; border-radius: 8px 8px 0 0; background: #e6e8ea;"></div>
+        </div>
+        <div style="font-family: 'Manrope', sans-serif; font-weight: 700; font-size: 0.9375rem; color: #002b6d;">Klokgevel</div>
+        <div style="font-size: 0.75rem; line-height: 1.5; color: #434651;">Bell gable. A round crown on flared shoulders.</div>
+      </div>
+
+      <div style="display: flex; flex-direction: column; gap: 12px; align-items: flex-start;">
+        <div style="width: 120px; height: 120px; border-radius: 22px; background: #e6e8ea; position: relative; overflow: hidden;">
+          <div style="position: absolute; left: 50%; transform: translateX(-50%); bottom: 0; display: flex; flex-direction: column; align-items: center;">
+            <div style="width: 24px; height: 26px; border-radius: 4px 4px 0 0; background: #002b6d;"></div>
+            <div style="width: 58px; height: 62px; background: #002b6d;"></div>
+          </div>
+          <div style="position: absolute; left: 50%; transform: translateX(-50%); bottom: 62px; display: flex; align-items: flex-end; gap: 24px;">
+            <div style="width: 8px; height: 8px; border-radius: 0 0 8px 0; background: #002b6d;"></div>
+            <div style="width: 8px; height: 8px; border-radius: 0 0 0 8px; background: #002b6d;"></div>
+          </div>
+          <div style="position: absolute; left: 50%; transform: translateX(-50%); bottom: 74px; width: 8px; height: 12px; border-radius: 4px; background: #fe762c;"></div>
+          <div style="position: absolute; left: 50%; transform: translateX(-50%); bottom: 44px; display: flex; gap: 10px;">
+            <div style="width: 12px; height: 16px; border-radius: 2px; background: #e6e8ea;"></div>
+            <div style="width: 12px; height: 16px; border-radius: 2px; background: #e6e8ea;"></div>
+          </div>
+          <div style="position: absolute; left: 50%; transform: translateX(-50%); bottom: 0; width: 16px; height: 26px; border-radius: 8px 8px 0 0; background: #e6e8ea;"></div>
+        </div>
+        <div style="font-family: 'Manrope', sans-serif; font-weight: 700; font-size: 0.9375rem; color: #002b6d;">Halsgevel</div>
+        <div style="font-size: 0.75rem; line-height: 1.5; color: #434651;">Neck gable with shoulder scrolls and the hoisting beam in orange.</div>
+      </div>
+
+      <div style="display: flex; flex-direction: column; gap: 12px; align-items: flex-start;">
+        <div style="width: 120px; height: 120px; border-radius: 22px; background: #e6e8ea; position: relative; overflow: hidden;">
+          <div style="position: absolute; left: 50%; transform: translateX(-50%); bottom: 0; width: 58px; height: 62px; background: #002b6d;"></div>
+          <div style="position: absolute; left: 50%; transform: translateX(-50%); bottom: 62px; width: 42px; height: 42px; background: #002b6d; clip-path: polygon(50% 0, 100% 100%, 0 100%);"></div>
+          <div style="position: absolute; left: 50%; transform: translateX(-50%); bottom: 44px; display: flex; gap: 10px;">
+            <div style="width: 12px; height: 16px; border-radius: 2px; background: #e6e8ea;"></div>
+            <div style="width: 12px; height: 16px; border-radius: 2px; background: #e6e8ea;"></div>
+          </div>
+          <div style="position: absolute; left: 50%; transform: translateX(-50%); bottom: 0; width: 16px; height: 26px; border-radius: 8px 8px 0 0; background: #e6e8ea;"></div>
+        </div>
+        <div style="font-family: 'Manrope', sans-serif; font-weight: 700; font-size: 0.9375rem; color: #002b6d;">Puntgevel</div>
+        <div style="font-size: 0.75rem; line-height: 1.5; color: #434651;">Pointed gable — the only place a triangle is allowed in the system.</div>
+      </div>
+
+      <div style="display: flex; flex-direction: column; gap: 12px; align-items: flex-start;">
+        <div style="width: 120px; height: 120px; border-radius: 22px; background: #e6e8ea; position: relative; overflow: hidden;">
+          <div style="position: absolute; left: 50%; transform: translateX(-50%); bottom: 0; display: flex; flex-direction: column; align-items: center;">
+            <div style="width: 20px; height: 10px; border-radius: 3px 3px 0 0; background: #002b6d;"></div>
+            <div style="width: 44px; height: 16px; background: #002b6d; clip-path: polygon(27% 0, 73% 0, 100% 100%, 0 100%);"></div>
+            <div style="width: 58px; height: 56px; background: #002b6d;"></div>
+          </div>
+          <div style="position: absolute; left: 50%; transform: translateX(-50%); bottom: 44px; display: flex; gap: 10px;">
+            <div style="width: 12px; height: 16px; border-radius: 2px; background: #e6e8ea;"></div>
+            <div style="width: 12px; height: 16px; border-radius: 2px; background: #e6e8ea;"></div>
+          </div>
+          <div style="position: absolute; left: 50%; transform: translateX(-50%); bottom: 0; width: 16px; height: 26px; border-radius: 8px 8px 0 0; background: #e6e8ea;"></div>
+        </div>
+        <div style="font-family: 'Manrope', sans-serif; font-weight: 700; font-size: 0.9375rem; color: #002b6d;">Tuitgevel</div>
+        <div style="font-size: 0.75rem; line-height: 1.5; color: #434651;">Spout gable. The workhorse — use it for filler houses in long rows.</div>
+      </div>
+    </div>
+  </div>
+
+  <div style="display: flex; flex-direction: column; gap: 20px;">
+    <div style="display: flex; align-items: baseline; gap: 14px;">
+      <div style="font-family: 'Manrope', sans-serif; font-weight: 800; font-size: 0.875rem; color: #a24000;">16</div>
+      <h2 style="margin: 0; font-family: 'Manrope', sans-serif; font-size: 1.75rem; letter-spacing: -0.015em; color: #002b6d;">The row</h2>
+      <div style="font-size: 0.875rem; color: #434651;">houses are never alone — narrow, touching, uneven at the top, level at the street</div>
+    </div>
+    <div style="background: #f8f9fb; border-radius: 20px; padding: 28px; display: flex; flex-direction: column; gap: 28px;">
+      <div style="display: flex; gap: 24px; align-items: flex-start; flex-wrap: wrap;">
+        <div style="display: flex; flex-direction: column; gap: 12px;">
+          <div style="width: 72px; height: 72px; border-radius: 18px; background: #e6e8ea; position: relative; overflow: hidden;">
+          <div style="position: absolute; left: 10px; right: 10px; bottom: 10px; display: flex; align-items: flex-end; gap: 2px;">
+            <div style="flex: 1; display: flex; flex-direction: column; align-items: center;">
+              <div style="width: 44%; height: 5px; background: #002b6d;"></div>
+              <div style="width: 74%; height: 5px; background: #002b6d;"></div>
+              <div style="width: 100%; height: 26px; background: #002b6d; display: flex; flex-direction: column; align-items: center; gap: 4px; padding-top: 4px; box-sizing: border-box;">
+                <div style="width: 8px; height: 6px; background: #e6e8ea;"></div>
+                <div style="width: 8px; height: 6px; background: #e6e8ea;"></div>
+              </div>
+            </div>
+            <div style="flex: 1.15; display: flex; flex-direction: column; align-items: center;">
+              <div style="width: 58%; height: 10px; border-radius: 999px 999px 0 0; background: #1d428a;"></div>
+              <div style="width: 100%; height: 36px; background: #1d428a; display: flex; flex-direction: column; align-items: center; gap: 4px; padding-top: 4px; box-sizing: border-box;">
+                <div style="display: flex; gap: 4px;"><div style="width: 6px; height: 6px; background: #e6e8ea;"></div><div style="width: 6px; height: 6px; background: #e6e8ea;"></div></div>
+                <div style="width: 8px; height: 11px; border-radius: 4px 4px 0 0; background: #e6e8ea; margin-top: auto;"></div>
+              </div>
+            </div>
+            <div style="flex: 0.9; display: flex; flex-direction: column; align-items: center;">
+              <div style="width: 40%; height: 5px; background: #002b6d;"></div>
+              <div style="width: 76%; height: 5px; border-radius: 2px 2px 0 0; background: #002b6d;"></div>
+              <div style="width: 100%; height: 22px; background: #002b6d; display: flex; justify-content: center; padding-top: 5px; box-sizing: border-box;">
+                <div style="width: 8px; height: 6px; background: #e6e8ea;"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+          <div style="font-size: 0.75rem; color: #434651;">72px icon · 3 houses</div>
+        </div>
+        <div style="display: flex; flex-direction: column; gap: 12px;">
+          <div style="width: 260px; height: 120px; border-radius: 22px; background: #e6e8ea; position: relative; overflow: hidden;">
+            <div style="position: absolute; left: 0; right: 0; bottom: 0; display: flex; align-items: flex-end; gap: 3px;">
+              <div style="flex: 1; display: flex; flex-direction: column; align-items: center;"><div style="width: 34%; height: 5px; background: #1d428a;"></div><div style="width: 68%; height: 5px; background: #1d428a;"></div><div style="width: 100%; height: 46px; background: #1d428a;"></div></div>
+              <div style="flex: 1.15; display: flex; flex-direction: column; align-items: center;"><div style="width: 58%; height: 14px; border-radius: 999px 999px 0 0; background: #002b6d;"></div><div style="width: 100%; height: 62px; background: #002b6d;"></div></div>
+              <div style="flex: 0.85; display: flex; flex-direction: column; align-items: center;"><div style="width: 40%; height: 16px; border-radius: 4px 4px 0 0; background: #1d428a;"></div><div style="width: 100%; height: 40px; background: #1d428a;"></div></div>
+              <div style="flex: 1.05; display: flex; flex-direction: column; align-items: center;"><div style="width: 46%; height: 20px; background: #002b6d; clip-path: polygon(50% 0, 100% 100%, 0 100%);"></div><div style="width: 100%; height: 54px; background: #002b6d;"></div></div>
+              <div style="flex: 0.95; display: flex; flex-direction: column; align-items: center;"><div style="width: 30%; height: 6px; background: #1d428a;"></div><div style="width: 62%; height: 6px; background: #1d428a;"></div><div style="width: 100%; height: 36px; background: #1d428a;"></div></div>
+              <div style="flex: 1.1; display: flex; flex-direction: column; align-items: center;"><div style="width: 54%; height: 12px; border-radius: 999px 999px 0 0; background: #002b6d;"></div><div style="width: 100%; height: 50px; background: #002b6d;"></div></div>
+            </div>
+            <div style="position: absolute; right: 26px; top: 20px; width: 26px; height: 26px; border-radius: 50%; background: #fe762c;"></div>
+          </div>
+          <div style="font-size: 0.75rem; color: #434651;">Card header strip · 6 houses, mixed gables, one sun</div>
+        </div>
+        <div style="display: flex; flex-direction: column; gap: 12px; flex: 1; min-width: 320px;">
+          <div style="height: 120px; border-radius: 22px; background: #002b6d; position: relative; overflow: hidden;">
+            <div style="position: absolute; inset: 0; background-image: radial-gradient(circle, rgba(255,255,255,0.06) 1.5px, transparent 1.6px); background-size: 20px 20px;"></div>
+            <div style="position: absolute; left: 0; right: 0; bottom: 0; display: flex; align-items: flex-end; gap: 3px;">
+              <div style="flex: 1; display: flex; flex-direction: column; align-items: center;"><div style="width: 52%; height: 12px; border-radius: 999px 999px 0 0; background: rgba(255,255,255,0.10);"></div><div style="width: 100%; height: 44px; background: rgba(255,255,255,0.10);"></div></div>
+              <div style="flex: 0.9; display: flex; flex-direction: column; align-items: center;"><div style="width: 34%; height: 5px; background: rgba(255,255,255,0.07);"></div><div style="width: 70%; height: 5px; background: rgba(255,255,255,0.07);"></div><div style="width: 100%; height: 34px; background: rgba(255,255,255,0.07);"></div></div>
+              <div style="flex: 1.2; display: flex; flex-direction: column; align-items: center;"><div style="width: 44%; height: 18px; background: rgba(255,255,255,0.14); clip-path: polygon(50% 0, 100% 100%, 0 100%);"></div><div style="width: 100%; height: 58px; background: rgba(255,255,255,0.14);"></div></div>
+              <div style="flex: 0.95; display: flex; flex-direction: column; align-items: center;"><div style="width: 40%; height: 14px; border-radius: 4px 4px 0 0; background: rgba(255,255,255,0.09);"></div><div style="width: 100%; height: 40px; background: rgba(255,255,255,0.09);"></div></div>
+              <div style="flex: 1.1; display: flex; flex-direction: column; align-items: center;"><div style="width: 56%; height: 11px; border-radius: 999px 999px 0 0; background: rgba(255,255,255,0.12);"></div><div style="width: 100%; height: 50px; background: rgba(255,255,255,0.12);"></div></div>
+              <div style="flex: 0.85; display: flex; flex-direction: column; align-items: center;"><div style="width: 30%; height: 6px; background: rgba(255,255,255,0.08);"></div><div style="width: 62%; height: 6px; background: rgba(255,255,255,0.08);"></div><div style="width: 100%; height: 30px; background: rgba(255,255,255,0.08);"></div></div>
+              <div style="flex: 1.05; display: flex; flex-direction: column; align-items: center;"><div style="width: 48%; height: 16px; border-radius: 999px 999px 0 0; background: rgba(255,255,255,0.11);"></div><div style="width: 100%; height: 46px; background: rgba(255,255,255,0.11);"></div></div>
+            </div>
+            <div style="position: absolute; left: 0; right: 0; bottom: 0; height: 8px; background: rgba(254,118,44,0.85);"></div>
+          </div>
+          <div style="font-size: 0.75rem; color: #434651;">On navy · houses become tonal wash, the quay line stays orange</div>
+        </div>
+      </div>
+      <div style="display: flex; gap: 24px; align-items: flex-end; flex-wrap: wrap;">
+        <div style="display: flex; flex-direction: column; gap: 10px; align-items: center;">
+          <div style="width: 24px; height: 24px; border-radius: 6px; background: #e6e8ea; position: relative; overflow: hidden;">
+            <div style="position: absolute; left: 3px; right: 3px; bottom: 3px; display: flex; align-items: flex-end; gap: 1px;">
+              <div style="flex: 1; height: 11px; background: #002b6d;"></div>
+              <div style="flex: 1; display: flex; flex-direction: column; align-items: center;"><div style="width: 60%; height: 4px; border-radius: 999px 999px 0 0; background: #002b6d;"></div><div style="width: 100%; height: 13px; background: #002b6d;"></div></div>
+              <div style="flex: 1; height: 9px; background: #002b6d;"></div>
+            </div>
+          </div>
+          <div style="font-size: 0.6875rem; color: #434651;">24</div>
+        </div>
+        <div style="display: flex; flex-direction: column; gap: 10px; align-items: center;">
+          <div style="width: 32px; height: 32px; border-radius: 8px; background: #e6e8ea; position: relative; overflow: hidden;">
+            <div style="position: absolute; left: 4px; right: 4px; bottom: 4px; display: flex; align-items: flex-end; gap: 1px;">
+              <div style="flex: 1; height: 14px; background: #002b6d;"></div>
+              <div style="flex: 1; display: flex; flex-direction: column; align-items: center;"><div style="width: 60%; height: 5px; border-radius: 999px 999px 0 0; background: #002b6d;"></div><div style="width: 100%; height: 17px; background: #002b6d;"></div></div>
+              <div style="flex: 1; height: 11px; background: #002b6d;"></div>
+            </div>
+          </div>
+          <div style="font-size: 0.6875rem; color: #434651;">32</div>
+        </div>
+        <div style="display: flex; flex-direction: column; gap: 10px; align-items: center;">
+          <div style="width: 48px; height: 48px; border-radius: 12px; background: #e6e8ea; position: relative; overflow: hidden;">
+            <div style="position: absolute; left: 6px; right: 6px; bottom: 6px; display: flex; align-items: flex-end; gap: 2px;">
+              <div style="flex: 1; display: flex; flex-direction: column; align-items: center;"><div style="width: 70%; height: 4px; background: #002b6d;"></div><div style="width: 100%; height: 17px; background: #002b6d; display: flex; justify-content: center; padding-top: 3px; box-sizing: border-box;"><div style="width: 5px; height: 5px; background: #e6e8ea;"></div></div></div>
+              <div style="flex: 1.1; display: flex; flex-direction: column; align-items: center;"><div style="width: 60%; height: 7px; border-radius: 999px 999px 0 0; background: #002b6d;"></div><div style="width: 100%; height: 24px; background: #002b6d; display: flex; flex-direction: column; align-items: center; gap: 3px; padding-top: 3px; box-sizing: border-box;"><div style="display: flex; gap: 3px;"><div style="width: 4px; height: 4px; background: #e6e8ea;"></div><div style="width: 4px; height: 4px; background: #e6e8ea;"></div></div><div style="width: 5px; height: 8px; border-radius: 3px 3px 0 0; background: #e6e8ea; margin-top: auto;"></div></div></div>
+              <div style="flex: 0.9; display: flex; flex-direction: column; align-items: center;"><div style="width: 55%; height: 4px; border-radius: 2px 2px 0 0; background: #002b6d;"></div><div style="width: 100%; height: 14px; background: #002b6d;"></div></div>
+            </div>
+          </div>
+          <div style="font-size: 0.6875rem; color: #434651;">48</div>
+        </div>
+        <div style="font-size: 0.8125rem; line-height: 1.6; color: #434651; max-width: 46ch; padding-bottom: 8px;">At 48px the row keeps its windows and door but drops one gable step. At 24 and 32 the detail goes entirely: three houses, one curved top, nothing cut inside.</div>
+      </div>
+    </div>
+  </div>
+
+  <div style="display: flex; flex-direction: column; gap: 20px;">
+    <div style="display: flex; align-items: baseline; gap: 14px;">
+      <div style="font-family: 'Manrope', sans-serif; font-weight: 800; font-size: 0.875rem; color: #a24000;">17</div>
+      <h2 style="margin: 0; font-family: 'Manrope', sans-serif; font-size: 1.75rem; letter-spacing: -0.015em; color: #002b6d;">Dutch object set</h2>
+      <div style="font-size: 0.875rem; color: #434651;">for empty states, lesson chips, reward moments — one silhouette, one accent</div>
+    </div>
+    <div style="background: #f8f9fb; border-radius: 20px; padding: 28px; display: grid; grid-template-columns: repeat(6, 1fr); gap: 24px;">
+
+      <div style="display: flex; flex-direction: column; gap: 10px; align-items: center;">
+        <div style="width: 72px; height: 72px; border-radius: 18px; background: #e6e8ea; position: relative; overflow: hidden;">
+          <div style="position: absolute; left: 26px; bottom: 10px; width: 20px; height: 30px; background: #002b6d; clip-path: polygon(22% 0, 78% 0, 100% 100%, 0 100%);"></div>
+          <div style="position: absolute; left: 50%; top: 26px; transform: translate(-50%,-50%) rotate(28deg); width: 50px; height: 7px; border-radius: 4px; background: #002b6d;"></div>
+          <div style="position: absolute; left: 50%; top: 26px; transform: translate(-50%,-50%) rotate(-62deg); width: 50px; height: 7px; border-radius: 4px; background: #002b6d;"></div>
+          <div style="position: absolute; left: 50%; top: 26px; transform: translate(-50%,-50%); width: 12px; height: 12px; border-radius: 50%; background: #fe762c;"></div>
+        </div>
+        <div style="font-size: 0.75rem; color: #434651;">Molen</div>
+      </div>
+
+      <div style="display: flex; flex-direction: column; gap: 10px; align-items: center;">
+        <div style="width: 72px; height: 72px; border-radius: 18px; background: #e6e8ea; position: relative; overflow: hidden;">
+          <div style="position: absolute; left: 9px; bottom: 14px; width: 22px; height: 22px; border-radius: 50%; box-sizing: border-box; border: 5px solid #002b6d;"></div>
+          <div style="position: absolute; right: 9px; bottom: 14px; width: 22px; height: 22px; border-radius: 50%; box-sizing: border-box; border: 5px solid #002b6d;"></div>
+          <div style="position: absolute; left: 20px; bottom: 30px; width: 32px; height: 5px; border-radius: 3px; background: #fe762c; transform: rotate(-12deg);"></div>
+          <div style="position: absolute; left: 30px; bottom: 24px; width: 5px; height: 16px; border-radius: 3px; background: #002b6d; transform: rotate(16deg);"></div>
+          <div style="position: absolute; right: 14px; bottom: 32px; width: 5px; height: 14px; border-radius: 3px; background: #002b6d; transform: rotate(-20deg);"></div>
+        </div>
+        <div style="font-size: 0.75rem; color: #434651;">Fiets</div>
+      </div>
+
+      <div style="display: flex; flex-direction: column; gap: 10px; align-items: center;">
+        <div style="width: 72px; height: 72px; border-radius: 18px; background: #e6e8ea; position: relative; overflow: hidden;">
+          <div style="position: absolute; left: 34px; bottom: 10px; width: 5px; height: 30px; border-radius: 3px; background: #002b6d;"></div>
+          <div style="position: absolute; left: 39px; bottom: 20px; width: 16px; height: 6px; border-radius: 0 999px 999px 0; background: #1d428a;"></div>
+          <div style="position: absolute; left: 26px; top: 16px; width: 20px; height: 24px; border-radius: 10px 10px 4px 4px; background: #fe762c;"></div>
+          <div style="position: absolute; left: 20px; top: 22px; width: 12px; height: 18px; border-radius: 8px 2px 4px 8px; background: #a24000;"></div>
+          <div style="position: absolute; right: 20px; top: 22px; width: 12px; height: 18px; border-radius: 2px 8px 8px 4px; background: #a24000;"></div>
+        </div>
+        <div style="font-size: 0.75rem; color: #434651;">Tulp</div>
+      </div>
+
+      <div style="display: flex; flex-direction: column; gap: 10px; align-items: center;">
+        <div style="width: 72px; height: 72px; border-radius: 18px; background: #e6e8ea; position: relative; overflow: hidden;">
+          <div style="position: absolute; left: 12px; top: 18px; width: 48px; height: 24px; border-radius: 24px 24px 0 0; box-sizing: border-box; border: 6px solid #002b6d; border-bottom: none;"></div>
+          <div style="position: absolute; left: 8px; top: 40px; right: 8px; height: 6px; border-radius: 3px; background: #002b6d;"></div>
+          <div style="position: absolute; left: 14px; bottom: 18px; width: 22px; height: 5px; border-radius: 3px; background: #1d428a;"></div>
+          <div style="position: absolute; right: 14px; bottom: 10px; width: 30px; height: 5px; border-radius: 3px; background: #1d428a;"></div>
+        </div>
+        <div style="font-size: 0.75rem; color: #434651;">Brug</div>
+      </div>
+
+      <div style="display: flex; flex-direction: column; gap: 10px; align-items: center;">
+        <div style="width: 72px; height: 72px; border-radius: 18px; background: #e6e8ea; position: relative; overflow: hidden;">
+          <div style="position: absolute; left: 10px; top: 26px; width: 52px; height: 20px; border-radius: 3px 3px 16px 16px; background: #002b6d;"></div>
+          <div style="position: absolute; left: 22px; top: 14px; width: 22px; height: 12px; border-radius: 3px; background: #1d428a;"></div>
+          <div style="position: absolute; left: 47px; top: 18px; width: 5px; height: 8px; border-radius: 3px; background: #fe762c;"></div>
+          <div style="position: absolute; left: 14px; bottom: 14px; width: 20px; height: 4px; border-radius: 2px; background: #c4c6d2;"></div>
+          <div style="position: absolute; right: 14px; bottom: 14px; width: 14px; height: 4px; border-radius: 2px; background: #c4c6d2;"></div>
+        </div>
+        <div style="font-size: 0.75rem; color: #434651;">Grachtenboot</div>
+      </div>
+
+      <div style="display: flex; flex-direction: column; gap: 10px; align-items: center;">
+        <div style="width: 72px; height: 72px; border-radius: 18px; background: #e6e8ea; position: relative; overflow: hidden;">
+          <div style="position: absolute; left: 12px; top: 14px; width: 48px; height: 44px; border-radius: 3px; background: #fe762c; clip-path: polygon(0 0, 100% 100%, 0 100%);"></div>
+          <div style="position: absolute; left: 18px; top: 42px; width: 8px; height: 8px; border-radius: 50%; background: #e6e8ea;"></div>
+          <div style="position: absolute; left: 30px; top: 46px; width: 6px; height: 6px; border-radius: 50%; background: #e6e8ea;"></div>
+          <div style="position: absolute; left: 20px; top: 30px; width: 5px; height: 5px; border-radius: 50%; background: #e6e8ea;"></div>
+        </div>
+        <div style="font-size: 0.75rem; color: #434651;">Kaas</div>
+      </div>
+
+      <div style="display: flex; flex-direction: column; gap: 10px; align-items: center;">
+        <div style="width: 72px; height: 72px; border-radius: 18px; background: #e6e8ea; position: relative; overflow: hidden;">
+          <div style="position: absolute; left: 50%; top: 50%; transform: translate(-50%,-50%); width: 46px; height: 46px; border-radius: 50%; background: #a24000; background-image: linear-gradient(90deg, rgba(254,118,44,0.9) 2px, transparent 2px), linear-gradient(180deg, rgba(254,118,44,0.9) 2px, transparent 2px); background-size: 8px 8px;"></div>
+        </div>
+        <div style="font-size: 0.75rem; color: #434651;">Stroopwafel</div>
+      </div>
+
+      <div style="display: flex; flex-direction: column; gap: 10px; align-items: center;">
+        <div style="width: 72px; height: 72px; border-radius: 18px; background: #e6e8ea; position: relative; overflow: hidden;">
+          <div style="position: absolute; left: 10px; bottom: 22px; width: 44px; height: 16px; border-radius: 4px 22px 4px 4px; background: #fe762c;"></div>
+          <div style="position: absolute; left: 44px; bottom: 30px; width: 14px; height: 18px; border-radius: 8px 8px 0 0; background: #fe762c;"></div>
+          <div style="position: absolute; left: 10px; bottom: 14px; width: 52px; height: 5px; border-radius: 3px; background: #002b6d;"></div>
+        </div>
+        <div style="font-size: 0.75rem; color: #434651;">Klomp</div>
+      </div>
+
+      <div style="display: flex; flex-direction: column; gap: 10px; align-items: center;">
+        <div style="width: 72px; height: 72px; border-radius: 18px; background: #e6e8ea; position: relative; overflow: hidden;">
+          <div style="position: absolute; left: 10px; top: 14px; width: 52px; height: 38px; border-radius: 3px; background: #fff; display: flex; flex-direction: column; overflow: hidden;">
+            <div style="height: 13px; background: #a24000;"></div>
+            <div style="flex: 1;"></div>
+            <div style="height: 13px; background: #002b6d;"></div>
+          </div>
+          <div style="position: absolute; left: 10px; bottom: 10px; width: 24px; height: 5px; border-radius: 3px; background: #fe762c;"></div>
+        </div>
+        <div style="font-size: 0.75rem; color: #434651;">Vlag & wimpel</div>
+      </div>
+
+      <div style="display: flex; flex-direction: column; gap: 10px; align-items: center;">
+        <div style="width: 72px; height: 72px; border-radius: 18px; background: #e6e8ea; position: relative; overflow: hidden;">
+          <div style="position: absolute; left: 10px; top: 20px; width: 52px; height: 26px; border-radius: 26px 26px 0 0; background: #002b6d;"></div>
+          <div style="position: absolute; left: 34px; top: 44px; width: 5px; height: 18px; border-radius: 3px; background: #002b6d;"></div>
+          <div style="position: absolute; left: 30px; bottom: 8px; width: 12px; height: 5px; border-radius: 0 0 6px 6px; background: #fe762c;"></div>
+        </div>
+        <div style="font-size: 0.75rem; color: #434651;">Paraplu (weer)</div>
+      </div>
+
+      <div style="display: flex; flex-direction: column; gap: 10px; align-items: center;">
+        <div style="width: 72px; height: 72px; border-radius: 18px; background: #e6e8ea; position: relative; overflow: hidden;">
+          <div style="position: absolute; left: 12px; top: 12px; width: 48px; height: 34px; border-radius: 10px 10px 4px 4px; background: #002b6d;"></div>
+          <div style="position: absolute; left: 18px; top: 20px; width: 36px; height: 12px; border-radius: 3px; background: #e6e8ea;"></div>
+          <div style="position: absolute; left: 18px; bottom: 12px; width: 12px; height: 12px; border-radius: 50%; background: #1d428a;"></div>
+          <div style="position: absolute; right: 18px; bottom: 12px; width: 12px; height: 12px; border-radius: 50%; background: #1d428a;"></div>
+        </div>
+        <div style="font-size: 0.75rem; color: #434651;">Tram / OV</div>
+      </div>
+
+      <div style="display: flex; flex-direction: column; gap: 10px; align-items: center;">
+        <div style="width: 72px; height: 72px; border-radius: 18px; background: #e6e8ea; position: relative; overflow: hidden;">
+          <div style="position: absolute; left: 10px; top: 18px; right: 10px; display: flex; flex-direction: column; gap: 7px;">
+            <div style="height: 6px; border-radius: 3px; background: #fe762c;"></div>
+            <div style="height: 6px; border-radius: 3px; background: #a24000;"></div>
+            <div style="height: 6px; border-radius: 3px; background: #ffb695;"></div>
+            <div style="height: 6px; border-radius: 3px; background: #1d428a;"></div>
+          </div>
+          <div style="position: absolute; left: 10px; bottom: 10px; right: 10px; height: 5px; border-radius: 3px; background: #002b6d;"></div>
+        </div>
+        <div style="font-size: 0.75rem; color: #434651;">Bollenveld</div>
+      </div>
+    </div>
+  </div>
+
+  <div style="display: flex; flex-direction: column; gap: 20px;">
+    <div style="display: flex; align-items: baseline; gap: 14px;">
+      <div style="font-family: 'Manrope', sans-serif; font-weight: 800; font-size: 0.875rem; color: #a24000;">18</div>
+      <h2 style="margin: 0; font-family: 'Manrope', sans-serif; font-size: 1.75rem; letter-spacing: -0.015em; color: #002b6d;">Icon tiles & states</h2>
+      <div style="font-size: 0.875rem; color: #434651;">tile radius is always a quarter of the tile — reward orange only on completion</div>
+    </div>
+    <div style="background: #f8f9fb; border-radius: 20px; padding: 28px; display: flex; gap: 32px; flex-wrap: wrap; align-items: flex-start;">
+      <div style="display: flex; flex-direction: column; gap: 10px; align-items: center;">
+        <div style="width: 72px; height: 72px; border-radius: 18px; background: #e6e8ea; position: relative; overflow: hidden;">
+          <div style="position: absolute; left: 10px; right: 10px; bottom: 10px; display: flex; align-items: flex-end; gap: 2px;">
+            <div style="flex: 1; display: flex; flex-direction: column; align-items: center;">
+              <div style="width: 44%; height: 5px; background: #002b6d;"></div>
+              <div style="width: 74%; height: 5px; background: #002b6d;"></div>
+              <div style="width: 100%; height: 26px; background: #002b6d; display: flex; flex-direction: column; align-items: center; gap: 4px; padding-top: 4px; box-sizing: border-box;">
+                <div style="width: 8px; height: 6px; background: #e6e8ea;"></div>
+                <div style="width: 8px; height: 6px; background: #e6e8ea;"></div>
+              </div>
+            </div>
+            <div style="flex: 1.15; display: flex; flex-direction: column; align-items: center;">
+              <div style="width: 58%; height: 10px; border-radius: 999px 999px 0 0; background: #002b6d;"></div>
+              <div style="width: 100%; height: 36px; background: #002b6d; display: flex; flex-direction: column; align-items: center; gap: 4px; padding-top: 4px; box-sizing: border-box;">
+                <div style="display: flex; gap: 4px;"><div style="width: 6px; height: 6px; background: #e6e8ea;"></div><div style="width: 6px; height: 6px; background: #e6e8ea;"></div></div>
+                <div style="width: 8px; height: 11px; border-radius: 4px 4px 0 0; background: #e6e8ea; margin-top: auto;"></div>
+              </div>
+            </div>
+            <div style="flex: 0.9; display: flex; flex-direction: column; align-items: center;">
+              <div style="width: 40%; height: 5px; background: #002b6d;"></div>
+              <div style="width: 76%; height: 5px; border-radius: 2px 2px 0 0; background: #002b6d;"></div>
+              <div style="width: 100%; height: 22px; background: #002b6d; display: flex; justify-content: center; padding-top: 5px; box-sizing: border-box;">
+                <div style="width: 8px; height: 6px; background: #e6e8ea;"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div style="font-size: 0.75rem; color: #434651;">Rest</div>
+      </div>
+      <div style="display: flex; flex-direction: column; gap: 10px; align-items: center;">
+        <div style="width: 72px; height: 72px; border-radius: 18px; background: #002b6d; position: relative; overflow: hidden;">
+          <div style="position: absolute; left: 10px; right: 10px; bottom: 10px; display: flex; align-items: flex-end; gap: 2px;">
+            <div style="flex: 1; display: flex; flex-direction: column; align-items: center;">
+              <div style="width: 44%; height: 5px; background: #fff;"></div>
+              <div style="width: 74%; height: 5px; background: #fff;"></div>
+              <div style="width: 100%; height: 26px; background: #fff; display: flex; flex-direction: column; align-items: center; gap: 4px; padding-top: 4px; box-sizing: border-box;">
+                <div style="width: 8px; height: 6px; background: #002b6d;"></div>
+                <div style="width: 8px; height: 6px; background: #002b6d;"></div>
+              </div>
+            </div>
+            <div style="flex: 1.15; display: flex; flex-direction: column; align-items: center;">
+              <div style="width: 58%; height: 10px; border-radius: 999px 999px 0 0; background: #fff;"></div>
+              <div style="width: 100%; height: 36px; background: #fff; display: flex; flex-direction: column; align-items: center; gap: 4px; padding-top: 4px; box-sizing: border-box;">
+                <div style="display: flex; gap: 4px;"><div style="width: 6px; height: 6px; background: #002b6d;"></div><div style="width: 6px; height: 6px; background: #002b6d;"></div></div>
+                <div style="width: 8px; height: 11px; border-radius: 4px 4px 0 0; background: #002b6d; margin-top: auto;"></div>
+              </div>
+            </div>
+            <div style="flex: 0.9; display: flex; flex-direction: column; align-items: center;">
+              <div style="width: 40%; height: 5px; background: #fff;"></div>
+              <div style="width: 76%; height: 5px; border-radius: 2px 2px 0 0; background: #fff;"></div>
+              <div style="width: 100%; height: 22px; background: #fff; display: flex; justify-content: center; padding-top: 5px; box-sizing: border-box;">
+                <div style="width: 8px; height: 6px; background: #002b6d;"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div style="font-size: 0.75rem; color: #434651;">Active</div>
+      </div>
+      <div style="display: flex; flex-direction: column; gap: 10px; align-items: center;">
+        <div style="width: 72px; height: 72px; border-radius: 18px; background: #fe762c; position: relative; overflow: hidden;">
+          <div style="position: absolute; left: 10px; right: 10px; bottom: 10px; display: flex; align-items: flex-end; gap: 2px;">
+            <div style="flex: 1; display: flex; flex-direction: column; align-items: center;">
+              <div style="width: 44%; height: 5px; background: #5f2200;"></div>
+              <div style="width: 74%; height: 5px; background: #5f2200;"></div>
+              <div style="width: 100%; height: 26px; background: #5f2200; display: flex; flex-direction: column; align-items: center; gap: 4px; padding-top: 4px; box-sizing: border-box;">
+                <div style="width: 8px; height: 6px; background: #fe762c;"></div>
+                <div style="width: 8px; height: 6px; background: #fe762c;"></div>
+              </div>
+            </div>
+            <div style="flex: 1.15; display: flex; flex-direction: column; align-items: center;">
+              <div style="width: 58%; height: 10px; border-radius: 999px 999px 0 0; background: #5f2200;"></div>
+              <div style="width: 100%; height: 36px; background: #5f2200; display: flex; flex-direction: column; align-items: center; gap: 4px; padding-top: 4px; box-sizing: border-box;">
+                <div style="display: flex; gap: 4px;"><div style="width: 6px; height: 6px; background: #fe762c;"></div><div style="width: 6px; height: 6px; background: #fe762c;"></div></div>
+                <div style="width: 8px; height: 11px; border-radius: 4px 4px 0 0; background: #fe762c; margin-top: auto;"></div>
+              </div>
+            </div>
+            <div style="flex: 0.9; display: flex; flex-direction: column; align-items: center;">
+              <div style="width: 40%; height: 5px; background: #5f2200;"></div>
+              <div style="width: 76%; height: 5px; border-radius: 2px 2px 0 0; background: #5f2200;"></div>
+              <div style="width: 100%; height: 22px; background: #5f2200; display: flex; justify-content: center; padding-top: 5px; box-sizing: border-box;">
+                <div style="width: 8px; height: 6px; background: #fe762c;"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div style="font-size: 0.75rem; color: #434651;">Reward</div>
+      </div>
+      <div style="display: flex; flex-direction: column; gap: 10px; align-items: center;">
+        <div style="width: 72px; height: 72px; border-radius: 18px; background: #eceef0; position: relative; overflow: hidden;">
+          <div style="position: absolute; left: 10px; right: 10px; bottom: 10px; display: flex; align-items: flex-end; gap: 2px;">
+            <div style="flex: 1; display: flex; flex-direction: column; align-items: center;">
+              <div style="width: 44%; height: 5px; background: #c4c6d2;"></div>
+              <div style="width: 74%; height: 5px; background: #c4c6d2;"></div>
+              <div style="width: 100%; height: 26px; background: #c4c6d2; display: flex; flex-direction: column; align-items: center; gap: 4px; padding-top: 4px; box-sizing: border-box;">
+                <div style="width: 8px; height: 6px; background: #eceef0;"></div>
+                <div style="width: 8px; height: 6px; background: #eceef0;"></div>
+              </div>
+            </div>
+            <div style="flex: 1.15; display: flex; flex-direction: column; align-items: center;">
+              <div style="width: 58%; height: 10px; border-radius: 999px 999px 0 0; background: #c4c6d2;"></div>
+              <div style="width: 100%; height: 36px; background: #c4c6d2; display: flex; flex-direction: column; align-items: center; gap: 4px; padding-top: 4px; box-sizing: border-box;">
+                <div style="display: flex; gap: 4px;"><div style="width: 6px; height: 6px; background: #eceef0;"></div><div style="width: 6px; height: 6px; background: #eceef0;"></div></div>
+                <div style="width: 8px; height: 11px; border-radius: 4px 4px 0 0; background: #eceef0; margin-top: auto;"></div>
+              </div>
+            </div>
+            <div style="flex: 0.9; display: flex; flex-direction: column; align-items: center;">
+              <div style="width: 40%; height: 5px; background: #c4c6d2;"></div>
+              <div style="width: 76%; height: 5px; border-radius: 2px 2px 0 0; background: #c4c6d2;"></div>
+              <div style="width: 100%; height: 22px; background: #c4c6d2; display: flex; justify-content: center; padding-top: 5px; box-sizing: border-box;">
+                <div style="width: 8px; height: 6px; background: #eceef0;"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div style="font-size: 0.75rem; color: #434651;">Locked</div>
+      </div>
+      <div style="display: flex; flex-direction: column; gap: 10px; align-items: center;">
+        <div style="width: 72px; height: 72px; border-radius: 50%; background: #e6e8ea; position: relative; overflow: hidden;">
+          <div style="position: absolute; left: 10px; right: 10px; bottom: 10px; display: flex; align-items: flex-end; gap: 2px;">
+            <div style="flex: 1; display: flex; flex-direction: column; align-items: center;">
+              <div style="width: 44%; height: 5px; background: #002b6d;"></div>
+              <div style="width: 74%; height: 5px; background: #002b6d;"></div>
+              <div style="width: 100%; height: 26px; background: #002b6d; display: flex; flex-direction: column; align-items: center; gap: 4px; padding-top: 4px; box-sizing: border-box;">
+                <div style="width: 8px; height: 6px; background: #e6e8ea;"></div>
+                <div style="width: 8px; height: 6px; background: #e6e8ea;"></div>
+              </div>
+            </div>
+            <div style="flex: 1.15; display: flex; flex-direction: column; align-items: center;">
+              <div style="width: 58%; height: 10px; border-radius: 999px 999px 0 0; background: #002b6d;"></div>
+              <div style="width: 100%; height: 36px; background: #002b6d; display: flex; flex-direction: column; align-items: center; gap: 4px; padding-top: 4px; box-sizing: border-box;">
+                <div style="display: flex; gap: 4px;"><div style="width: 6px; height: 6px; background: #e6e8ea;"></div><div style="width: 6px; height: 6px; background: #e6e8ea;"></div></div>
+                <div style="width: 8px; height: 11px; border-radius: 4px 4px 0 0; background: #e6e8ea; margin-top: auto;"></div>
+              </div>
+            </div>
+            <div style="flex: 0.9; display: flex; flex-direction: column; align-items: center;">
+              <div style="width: 40%; height: 5px; background: #002b6d;"></div>
+              <div style="width: 76%; height: 5px; border-radius: 2px 2px 0 0; background: #002b6d;"></div>
+              <div style="width: 100%; height: 22px; background: #002b6d; display: flex; justify-content: center; padding-top: 5px; box-sizing: border-box;">
+                <div style="width: 8px; height: 6px; background: #e6e8ea;"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div style="font-size: 0.75rem; color: #434651;">Round tile</div>
+      </div>
+      <div style="flex: 1; min-width: 260px; font-size: 0.8125rem; line-height: 1.7; color: #434651;">18px at 72, 12 at 48, 8 at 32, 6 at 24. Round tiles only for avatars, level medals and map pins. On navy and on orange the houses invert: the silhouette takes the on-colour and the cut detail takes the tile colour, so the row still reads at a glance.</div>
+    </div>
+  </div>
+
+  <div style="background: #fff; border-radius: 20px; padding: 32px; display: flex; flex-wrap: wrap; gap: 36px;">
+    <div style="flex: 1 1 320px; display: flex; flex-direction: column; gap: 10px;">
+      <div style="font-family: 'Manrope', sans-serif; font-weight: 700; font-size: 1.125rem; color: #002b6d;">Rules for the kit</div>
+      <ul style="margin: 0; padding-left: 20px; font-size: 0.9375rem; line-height: 1.7; color: #434651;">
+        <li>One accent disc per composition — the orange is a pointer, not a texture.</li>
+        <li>The skyline always spans the full width, left to right, anchored to the bottom edge and clipped by <code style="font-family: ui-monospace, Menlo, monospace; font-size: 0.8125rem;">overflow: hidden</code> — never a lone house floating in space.</li>
+        <li>Three gable types only: dome (<code style="font-family: ui-monospace, Menlo, monospace; font-size: 0.8125rem;">999px 999px 0 0</code>, 66% width), bell (full width, 5–9px radius) and stepped (two stacked bands). Alternate them; never repeat the same gable three times in a row.</li>
+        <li>Heights and tints vary per house (5–18% white on <code style="font-family: ui-monospace, Menlo, monospace; font-size: 0.8125rem;">primary</code>); the tallest house sits off-centre.</li>
+        <li>Boundaries by tonal shift only. Selected/focus states use inset box-shadow, never a border.</li>
+      </ul>
+    </div>
+    <div style="flex: 1 1 280px; display: flex; flex-direction: column; gap: 10px;">
+      <div style="font-family: 'Manrope', sans-serif; font-weight: 700; font-size: 1.125rem; color: #002b6d;">Written to the spec</div>
+      <p style="margin: 0; font-size: 0.9375rem; line-height: 1.7; color: #434651;">The design system markdown now carries this as <strong>§7 Graphic Language: Dutch Horizon</strong> — primitives, the element inventory, and the do/don't rules — so it travels with the rest of the system.</p>
+    </div>
+  </div>
+</section>
+</x-dc>
+</body>
+</html>

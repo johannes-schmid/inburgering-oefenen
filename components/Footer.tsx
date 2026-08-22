@@ -3,6 +3,7 @@ import { Link } from '@/i18n/navigation';
 import { DEFAULT_LEVEL, SKILLS } from '@/data/skills';
 import { FEATURES } from '@/lib/features';
 import LogoMark from '@/components/site/LogoMark';
+import { SectionTransition } from '@/components/horizon';
 
 export default function Footer() {
   const t = useTranslations('footer');
@@ -10,6 +11,11 @@ export default function Footer() {
 
   return (
     <footer className="bg-primary text-white/75">
+      {/* The silhouette handover (§7.2): a white band carrying the dot field, with the skyline in
+          solid navy tints cut off at the street line by the footer itself — so the houses read as
+          silhouettes rather than as a wash. This is the **one** place it appears, which is what
+          keeps to the once-per-page rule: every page ends on the footer, so no page needs another. */}
+      <SectionTransition className="footer-transition" />
       <div className="max-w-7xl mx-auto px-6 py-16 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-12">
         {/* Brand */}
         <div className="space-y-4">

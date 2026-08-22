@@ -1,0 +1,206 @@
+[
+  {
+    "task_type": "sentence_completion",
+    "title": "Wisselen van groep",
+    "prompt_html": "<p>U volgt de opleiding Verzorgende bij Regiocollege Nieuwveen. U bent ingedeeld in de avondgroep, maar door uw nieuwe werkrooster past die avond u niet meer. U schrijft een mail naar de studieadministratie.</p>",
+    "email_to": "studieadministratie@regiocollege-nieuwveen.nl",
+    "email_subject": "Verzoek om overplaatsing naar andere groep",
+    "greeting": "Geachte heer, mevrouw,\n\nIk ben Amina Yildiz en ik volg sinds september de opleiding Verzorgende. Ik sta nu in de avondgroep op dinsdag, maar ik wil graag met een andere groep meedoen, omdat …",
+    "closing": "Ik hoor graag of dit mogelijk is.\n\nMet vriendelijke groet,\nAmina Yildiz",
+    "model_answer": "ik sinds deze maand een nieuw rooster heb en op dinsdagavond moet werken. Mijn werkgever kan die dienst niet veranderen, waardoor ik de lessen steeds zou missen. Ik zou daarom liever meedoen met de groep van donderdagmiddag."
+  },
+  {
+    "task_type": "sentence_completion",
+    "title": "Klacht doorgeven",
+    "prompt_html": "<p>U werkt bij een webwinkel voor keukenspullen. Een klant heeft gemaild dat zijn pannenset beschadigd is aangekomen en hij vraagt hoe hij dit officieel kan melden. U antwoordt hem.</p>",
+    "email_to": "p.brandsma@zeepost.nl",
+    "email_subject": "Uw melding over de beschadigde pannenset",
+    "greeting": "Geachte heer Brandsma,\n\nHartelijk dank voor uw bericht over de beschadigde pannenset. Het spijt ons dat uw pakket niet in goede staat is aangekomen. U kunt uw klacht op de volgende manier doorgeven: …",
+    "closing": "Wij nemen daarna binnen vijf werkdagen contact met u op.\n\nMet vriendelijke groet,\nTeam Klantenservice",
+    "model_answer": "u vult op onze website het klachtenformulier in en vermeldt daarbij uw ordernummer. Wilt u ook twee foto's van de schade meesturen, zodat wij de klacht snel kunnen behandelen? Als het invullen niet lukt, kunt u ons ook bellen op 088 - 445 20 30."
+  },
+  {
+    "task_type": "sentence_completion",
+    "title": "Kantine tijdelijk gesloten",
+    "prompt_html": "<p>U werkt op de afdeling facilitair beheer van een groot kantoor. De kantine wordt verbouwd en gaat daarom een paar weken dicht. U plaatst een bericht op het intranet voor alle medewerkers.</p>",
+    "greeting": "Beste collega's,\n\nVanaf maandag 6 oktober wordt de kantine op de tweede verdieping verbouwd. Dat betekent dat de kantine tijdelijk dicht is, en daarom …",
+    "closing": "Bij vragen kun je terecht bij de receptie.\n\nMet vriendelijke groet,\nFacilitair beheer",
+    "model_answer": "kun je in die periode geen warme maaltijd of belegd broodje kopen in ons gebouw. We zetten in de hal wel een koffieautomaat en een koelkast met drankjes neer. Neem je eigen lunch dus zelf mee, want de winkels in de buurt zijn tussen twaalf en één erg vol."
+  },
+  {
+    "task_type": "sentence_completion",
+    "title": "Goedkoper alternatief",
+    "prompt_html": "<p>U bent inkoper bij kinderdagverblijf De Vlieger. Uw leverancier heeft de prijzen van het knutselpapier verhoogd en dat past niet meer in uw budget. U mailt de leverancier.</p>",
+    "email_to": "verkoop@hobbygroothandel-veenstra.nl",
+    "email_subject": "Vraag over goedkoper knutselpapier",
+    "greeting": "Geachte mevrouw Doornbos,\n\nWij kopen al vier jaar knutselpapier bij u en zijn tevreden over de kwaliteit. In uw nieuwe prijslijst is het papier echter duurder geworden, en daarom …",
+    "closing": "Ik ontvang graag een voorstel van u.\n\nMet vriendelijke groet,\nRadmila Novak\nInkoop kinderdagverblijf De Vlieger",
+    "model_answer": "wil ik u vragen of u een goedkoper alternatief kunt aanbieden. Wij gebruiken het papier alleen voor knutselwerk, dus een iets eenvoudigere soort is voor ons geen probleem. Kunt u mij laten weten wat een pak van vijfhonderd vellen dan zou kosten?"
+  },
+  {
+    "task_type": "sentence_completion",
+    "title": "Cursus volgen",
+    "prompt_html": "<p>U werkt als administratief medewerker bij een installatiebedrijf. U hebt een cursus gevonden over het boekhoudprogramma dat uw afdeling gebruikt. U mailt uw leidinggevende om toestemming te vragen.</p>",
+    "email_to": "h.veldkamp@installatiebedrijf-marsdijk.nl",
+    "email_subject": "Verzoek: cursus boekhoudprogramma",
+    "greeting": "Beste meneer Veldkamp,\n\nTijdens ons gesprek in januari hebben we gesproken over mijn ontwikkeling. Ik heb nu een cursus van vier avonden gevonden over ons boekhoudprogramma, en ik zou die graag willen volgen, omdat …",
+    "closing": "Wilt u mij laten weten of u hiermee akkoord gaat?\n\nMet vriendelijke groet,\nJoseph Mensah",
+    "model_answer": "ik de facturen nu nog te langzaam verwerk en veel vragen aan collega's moet stellen. Met deze cursus kan ik zelfstandiger werken en ook de maandoverzichten maken. De cursus kost 340 euro en de lessen zijn 's avonds, dus ik hoef er geen werktijd voor te gebruiken."
+  },
+  {
+    "task_type": "sentence_completion",
+    "title": "Uitnodiging bijeenkomst",
+    "prompt_html": "<p>U bent lid van de bewonerscommissie in uw straat. Er komt een bijeenkomst over het parkeren en het groen in de wijk. U mailt een buurtbewoner die u eerder hebt gesproken.</p>",
+    "email_to": "familie.okkerse@postnetwerk.nl",
+    "email_subject": "Bijeenkomst over parkeren en groen in de wijk",
+    "greeting": "Beste mevrouw Okkerse,\n\nVorige maand vertelde u mij dat u zich zorgen maakt over het drukke parkeren in onze straat. De bewonerscommissie organiseert nu een bijeenkomst hierover, en daarom …",
+    "closing": "Ik hoop dat u erbij kunt zijn.\n\nMet vriendelijke groet,\nTheo Rambaldo\nBewonerscommissie Kastanjebuurt",
+    "model_answer": "wil ik u graag uitnodigen. De bijeenkomst is op woensdag 12 november om 19.30 uur in wijkcentrum De Bron aan de Lijsterlaan 8. Een medewerker van de gemeente vertelt over de plannen, en daarna kunnen bewoners hun ideeën en klachten inbrengen."
+  },
+  {
+    "task_type": "sentence_completion",
+    "title": "Hulp bij verhuizen kast",
+    "prompt_html": "<p>U hebt via een website tweedehands een grote kast gekocht. De kast staat in een dorp op twintig kilometer afstand en u hebt geen auto. U plaatst een bericht in de hulpvraagrubriek van dezelfde website.</p>",
+    "greeting": "Hoi allemaal,\n\nIk heb een tweedehands boekenkast gekocht in Loosdorp, maar ik woon in Ravensteijn en heb zelf geen auto. Daarom zoek ik iemand die mij wil helpen, want …",
+    "closing": "Wil je reageren? Stuur me dan een bericht via dit prikbord.\n\nAlvast bedankt!\nSanne",
+    "model_answer": "ik de kast niet met de bus of de trein kan vervoeren. Ik zoek dus iemand met een bus of een aanhanger die zaterdag 8 maart een uurtje tijd heeft. Ik betaal natuurlijk de benzine en help zelf met tillen, want de kast is zwaar maar niet te groot."
+  },
+  {
+    "task_type": "sentence_completion",
+    "title": "Verdeling groepsopdracht",
+    "prompt_html": "<p>U volgt een beroepsopleiding en werkt met drie medestudenten aan een groepsopdracht over veilig werken. U hebt afgesproken dat u de taken zou verdelen. U mailt de anderen.</p>",
+    "email_to": "projectgroep4@cursistenmail-hoornstede.nl",
+    "email_subject": "Verdeling van de groepsopdracht",
+    "greeting": "Beste medestudenten,\n\nZoals afgesproken heb ik nagedacht over de verdeling van onze opdracht over veilig werken. We moeten op 20 mei een verslag en een presentatie inleveren, dus ik stel de volgende verdeling voor: …",
+    "closing": "Laat me even weten wat jullie ervan vinden.\n\nGroet,\nDaniël",
+    "model_answer": "Fatima en ik schrijven het theoriedeel over de regels en de risico's, terwijl Kevin de vragenlijst maakt en vijf medewerkers interviewt. Lisa zet daarna alle stukken bij elkaar en maakt de dia's voor de presentatie. Ik stel voor dat we ons deel uiterlijk 10 mei in de gedeelde map zetten, zodat we genoeg tijd hebben om alles samen te controleren."
+  },
+  {
+    "task_type": "data_text",
+    "title": "Verslag ziekteverzuim",
+    "prompt_html": "<p>U werkt als teamcoördinator op de afdeling Klantenservice bij verzekeringsbedrijf Verhoef &amp; Dekkers in Zwolle. Uw afdeling heeft achttien medewerkers. Het afgelopen halfjaar waren er veel medewerkers ziek, waardoor collega's regelmatig extra diensten moesten overnemen.</p><p>Uw manager, mevrouw De Bruijn, heeft de cijfers over het ziekteverzuim in een tabel gezet. Zij vraagt u om een kort verslag te schrijven bij deze tabel. Het verslag wordt besproken in het overleg met de andere teamcoördinatoren.</p><table><tr><th>Maand</th><th>Ziekteverzuim afdeling Klantenservice</th><th>Gemiddelde hele bedrijf</th></tr><tr><td>januari</td><td>7,2%</td><td>5,1%</td></tr><tr><td>februari</td><td>8,4%</td><td>5,3%</td></tr><tr><td>maart</td><td>6,1%</td><td>4,8%</td></tr><tr><td>april</td><td>4,5%</td><td>4,4%</td></tr><tr><td>mei</td><td>3,8%</td><td>4,2%</td></tr><tr><td>juni</td><td>3,5%</td><td>4,0%</td></tr></table><p><strong>Opdracht</strong></p><p>Schrijf een verslag voor mevrouw De Bruijn. De tabel komt bij uw tekst te staan, dus uw tekst moet goed bij de cijfers passen. Gebruik de gegevens uit de tabel en leg uit wat er te zien is. U mag de informatie over de oorzaken en de maatregelen zelf verzinnen. Schrijf ongeveer 150 tot 200 woorden en gebruik de u-vorm.</p><p>Het doel van de tekst is uw manager informeren over het ziekteverzuim op uw afdeling en haar overtuigen van de maatregelen die u voorstelt.</p>",
+    "bullet_points": [
+      "U beschrijft wat de belangrijkste ontwikkeling in de tabel is en u noemt daarbij minimaal drie cijfers.",
+      "U vergelijkt het verzuim op uw afdeling met het gemiddelde van het hele bedrijf.",
+      "U legt uit wat volgens u de oorzaken van het hoge verzuim in de eerste maanden waren.",
+      "U stelt minimaal twee maatregelen voor en u legt uit waarom die maatregelen helpen.",
+      "U vraagt mevrouw De Bruijn om een reactie op uw voorstel."
+    ],
+    "email_to": "",
+    "email_subject": "",
+    "greeting": "Geachte mevrouw De Bruijn,",
+    "closing": "Met vriendelijke groet,\n\nSamira El Amrani\nteamcoördinator Klantenservice",
+    "model_answer": "Geachte mevrouw De Bruijn,\n\nHierbij stuur ik u mijn verslag over het ziekteverzuim op de afdeling Klantenservice in de eerste zes maanden van dit jaar.\n\nIn de tabel is te zien dat het verzuim in het begin van het jaar hoog was. In januari was 7,2 procent van de medewerkers ziek en in februari zelfs 8,4 procent. Dat was het hoogste percentage van het halfjaar. Daarna daalde het verzuim elke maand, tot 3,5 procent in juni.\n\nAls ik de cijfers vergelijk met het gemiddelde van het hele bedrijf, valt op dat mijn afdeling in januari, februari en maart duidelijk boven dat gemiddelde zat. In mei en juni lag het verzuim juist iets lager dan in de rest van het bedrijf.\n\nVolgens mij zijn er twee oorzaken. In de winter ging er een griepvirus door het team, waardoor soms vier mensen tegelijk thuis waren. Bovendien was de werkdruk hoog, omdat wij twee vacatures niet konden vullen. Daardoor raakten enkele collega's overbelast.\n\nIk stel daarom voor om de twee vacatures snel op te vullen en om elke maand een kort gesprek met elke medewerker te houden. Zo wordt de werkdruk lager en merken wij problemen eerder op.\n\nWilt u mij laten weten wat u van dit voorstel vindt?\n\nMet vriendelijke groet,\n\nSamira El Amrani\nteamcoördinator Klantenservice"
+  },
+  {
+    "task_type": "form",
+    "title": "Klachtenformulier webwinkel",
+    "prompt_html": "<p>U heeft bij de webwinkel Huisgemak.nl een wasmachine gekocht voor 429 euro. De wasmachine is op 12 maart bezorgd, maar de bezorging ging niet goed. De bezorgers hebben het apparaat in de gang laten staan, hoewel u had betaald voor plaatsing in de badkamer. Bovendien zit er een diepe kras in de zijkant van de wasmachine. U heeft twee keer gebeld met de klantenservice, maar u kreeg geen duidelijk antwoord.</p><p>Op de website van Huisgemak.nl staat een klachtenformulier. De webwinkel belooft dat u binnen vijf werkdagen een reactie krijgt. U besluit het formulier in te vullen.</p><p><strong>Opdracht</strong></p><p>Vul het klachtenformulier hieronder in. Beantwoord alle vragen met volledige zinnen en leg bij elke vraag uit waarom. Geef genoeg informatie, zodat de medewerker van de klantenservice uw klacht goed kan begrijpen. U mag de informatie zelf verzinnen.</p><p>Het doel van de tekst is de webwinkel duidelijk te maken wat er is misgegaan en welke oplossing u verwacht, zodat uw klacht wordt behandeld.</p>",
+    "email_to": "",
+    "email_subject": "",
+    "greeting": "",
+    "closing": "",
+    "model_answer": "1. Op 12 maart is de wasmachine bij mij thuis bezorgd. Ik heb het apparaat op 5 maart besteld in de webwinkel. Mijn bestelnummer is 884-2031.\n\n2. Er zijn twee dingen misgegaan. De bezorgers hebben de wasmachine in de gang gezet, terwijl ik had betaald voor plaatsing in de badkamer. Zij zeiden dat zij daar geen tijd voor hadden. Daarnaast zit er een diepe kras in de zijkant van het apparaat. Die kras zat er al toen de doos werd opengemaakt, dus hij is niet door mij gemaakt.\n\n3. Ik heb al twee keer met de klantenservice gebeld, op 13 maart en op 16 maart. De eerste medewerker zei dat een collega mij zou terugbellen, maar dat is niet gebeurd. De tweede medewerker vertelde mij dat ik een e-mail moest sturen. Ik vind dat jammer, omdat ik daardoor steeds opnieuw mijn verhaal moet vertellen.\n\n4. De klacht is voor mij belangrijk, omdat ik de wasmachine niet kan gebruiken. Het apparaat staat nog in de gang en het is te zwaar om alleen te verplaatsen. Ik moet nu elke week naar de wasserette, waardoor ik extra geld kwijt ben. Ook heb ik voor de plaatsing 35 euro betaald, terwijl dat werk niet is gedaan.\n\n5. Ik wil graag twee dingen. Ten eerste vraag ik u om een monteur te sturen die de wasmachine in de badkamer plaatst en aansluit. Ten tweede wil ik een korting van 50 euro op de prijs, omdat de kras niet meer weggaat. Als u de kras niet met korting wilt oplossen, wil ik een nieuw apparaat zonder schade.\n\n6. Ik verwacht binnen vijf werkdagen een reactie, want dat belooft u op uw website. U kunt mij het beste bellen tussen 17.00 en 19.00 uur, omdat ik daarvoor aan het werk ben. Mijn telefoonnummer is 06 12 34 56 78. Als bellen niet lukt, mag u mij ook een e-mail sturen.",
+    "form_schema": {
+      "sections": [
+        {
+          "heading": "Uw gegevens",
+          "rows": [
+            {
+              "kind": "static",
+              "label": "Naam",
+              "value": "Amina Yildiz"
+            },
+            {
+              "kind": "static",
+              "label": "E-mailadres",
+              "value": "a.yildiz@mijnmail.nl"
+            },
+            {
+              "kind": "choice",
+              "label": "Mijn klacht gaat over",
+              "options": [
+                "de bezorging",
+                "het product",
+                "de klantenservice",
+                "de betaling"
+              ],
+              "multiple": true
+            }
+          ]
+        },
+        {
+          "heading": "Uw klacht",
+          "rows": [
+            {
+              "kind": "text",
+              "label": "1. Wanneer heeft u de bestelling gedaan en wanneer is het product bezorgd? Noem ook uw bestelnummer.",
+              "placeholder": "Schrijf hier uw antwoord."
+            },
+            {
+              "kind": "text",
+              "label": "2. Wat is er precies misgegaan? Leg uit waarom u niet tevreden bent.",
+              "placeholder": "Schrijf hier uw antwoord."
+            },
+            {
+              "kind": "text",
+              "label": "3. Heeft u al eerder contact met ons gehad? Leg uit wat er toen is afgesproken.",
+              "placeholder": "Schrijf hier uw antwoord."
+            },
+            {
+              "kind": "text",
+              "label": "4. Waarom is deze klacht belangrijk voor u? Leg uit welke gevolgen het probleem voor u heeft.",
+              "placeholder": "Schrijf hier uw antwoord."
+            },
+            {
+              "kind": "text",
+              "label": "5. Welke oplossing wilt u? Leg uit waarom u die oplossing kiest.",
+              "placeholder": "Schrijf hier uw antwoord."
+            },
+            {
+              "kind": "text",
+              "label": "6. Wanneer en hoe wilt u een reactie ontvangen? Leg uit waarom.",
+              "placeholder": "Schrijf hier uw antwoord."
+            }
+          ]
+        }
+      ]
+    }
+  },
+  {
+    "task_type": "email",
+    "title": "Te weinig speelplekken",
+    "prompt_html": "<p>U woont in de wijk Molenveld in de gemeente Nieuwdorp. In uw straat wonen veel gezinnen met jonge kinderen, maar er is bijna geen plek om buiten te spelen. Het kleine speelveldje aan de Beukenlaan is vorig jaar weggehaald, omdat daar nieuwe woningen zijn gebouwd. De kinderen spelen nu vaak op de stoep of op de parkeerplaats, waardoor gevaarlijke situaties ontstaan.</p><p>U heeft met andere bewoners gesproken en zij vinden hetzelfde. Daarom besluit u een e-mail te sturen aan de afdeling Wijkzaken van de gemeente Nieuwdorp.</p><p><strong>Opdracht</strong></p><p>Schrijf een e-mail aan de gemeente over het tekort aan speelplekken in uw wijk. Behandel alle punten die hieronder staan. U mag de informatie zelf verzinnen.</p><p>Het doel van de tekst is de gemeente overtuigen dat er meer speelplekken in de wijk nodig zijn en vragen om een concrete oplossing.</p>",
+    "bullet_points": [
+      "U stelt zich kort voor en u schrijft in welke wijk u woont.",
+      "U legt uit wat het probleem is en sinds wanneer dit probleem er is.",
+      "U geeft minimaal twee redenen waarom de situatie voor kinderen en ouders niet goed is.",
+      "U schrijft dat ook andere bewoners uit de wijk het probleem belangrijk vinden.",
+      "U doet zelf een voorstel voor een oplossing.",
+      "U vraagt om een reactie en u schrijft hoe de gemeente u kan bereiken."
+    ],
+    "email_to": "wijkzaken@nieuwdorp.nl",
+    "email_subject": "Te weinig speelplekken in de wijk Molenveld",
+    "greeting": "Geachte heer, mevrouw,",
+    "closing": "Met vriendelijke groet,",
+    "model_answer": "Mijn naam is Amina Yildiz en ik woon sinds vier jaar in de wijk Molenveld, aan de Beukenlaan 32. Ik schrijf u omdat er in onze wijk bijna geen speelplekken meer zijn voor kinderen.\n\nVorig jaar is het speelveldje aan de Beukenlaan weggehaald, omdat daar nieuwe woningen zijn gebouwd. Sinds die tijd hebben de kinderen geen veilige plek meer om buiten te spelen. Ze spelen nu op de stoep en soms zelfs op de parkeerplaats.\n\nIk vind deze situatie om twee redenen niet goed. In de eerste plaats is het gevaarlijk, want er rijden veel auto's door onze straat. Vorige week is een jongen van zeven bijna aangereden, waardoor veel ouders erg ongerust zijn. In de tweede plaats bewegen de kinderen te weinig. Veel ouders durven hun kind niet buiten te laten spelen, zodat de kinderen de hele dag binnen blijven zitten.\n\nIk heb met ongeveer vijftien bewoners uit de wijk gesproken en zij vinden dit probleem ook belangrijk. Wij willen graag samen met de gemeente naar een oplossing zoeken.\n\nMijn voorstel is om op het grasveld naast de Lindestraat een kleine speelplek te maken. Dat veld wordt nu niet gebruikt en het ligt niet aan een drukke weg. Een paar toestellen en een bankje voor de ouders zouden al genoeg zijn. Wij willen ook helpen met het schoonhouden van de plek.\n\nWilt u mij laten weten wat u van dit voorstel vindt? U kunt mij bereiken via dit e-mailadres of op telefoonnummer 06 12 34 56 78. Als u dat wilt, kom ik graag een keer langs om de situatie te bespreken.\n\nIk hoop op een positieve reactie."
+  },
+  {
+    "task_type": "letter",
+    "title": "Brief over overblijven",
+    "prompt_html": "<p>U heeft een dochter van zeven jaar. Zij zit in groep 3 van basisschool De Waterlelie in Zwolle. Op deze school kunnen kinderen tussen de middag overblijven. Zij eten dan hun brood op school en spelen daarna buiten. Het overblijven kost 3 euro per keer.</p><p>Uw dochter blijft sinds september twee keer per week over, op maandag en op donderdag. De laatste weken vertelt zij dat zij het overblijven niet leuk vindt. Er zijn volgens haar te veel kinderen in één lokaal en het is er erg druk. Ook is er weinig hulp bij het eten. U heeft daarnaast gemerkt dat de rekening voor het overblijven hoger is dan u had verwacht.</p><p>Uw werktijden veranderen per 1 februari. Daardoor wilt u uw dochter op donderdag zelf ophalen. Op maandag blijft het overblijven nodig.</p><p>U schrijft een brief aan de directeur van de school, mevrouw Kuiper. U legt uw situatie uit en u vraagt om een reactie. U mag de informatie zelf verzinnen.</p><p>Adres:<br>Basisschool De Waterlelie<br>T.a.v. mevrouw A. Kuiper, directeur<br>Beukenlaan 14<br>8021 CD Zwolle</p><p><strong>Opdracht</strong></p><p>Schrijf een brief van ongeveer 150 tot 200 woorden. Gebruik de aanhef en de afsluiting die gegeven zijn. Behandel alle punten hieronder.</p><p>Het doel van de tekst is de directeur informeren over uw ervaring met het overblijven, een wijziging in de dagen doorgeven en vragen om een oplossing en een reactie.</p>",
+    "bullet_points": [
+      "U stelt zich voor en u vertelt in welke groep uw dochter zit en op welke dagen zij overblijft.",
+      "U legt uit waarom uw dochter het overblijven niet fijn vindt en u noemt minimaal twee redenen.",
+      "U vertelt dat uw werktijden per 1 februari veranderen en dat uw dochter daarom vanaf die datum niet meer op donderdag overblijft.",
+      "U vraagt om uitleg over de kosten, omdat de rekening hoger is dan u had verwacht.",
+      "U doet een voorstel om het overblijven rustiger te laten verlopen.",
+      "U vraagt om een schriftelijke reactie en u noemt hoe de school u kan bereiken."
+    ],
+    "email_to": "",
+    "email_subject": "",
+    "greeting": "Geachte mevrouw Kuiper,",
+    "closing": "Met vriendelijke groet,\n\nSamira el Amrani\nBeukenlaan 3\n8021 CB Zwolle",
+    "model_answer": "Geachte mevrouw Kuiper,\n\nIk ben de moeder van Nora el Amrani. Zij zit dit schooljaar in groep 3 bij meester Van Dijk. Sinds september blijft zij twee keer per week over, op maandag en op donderdag. Ik schrijf u omdat ik enkele vragen heb over het overblijven.\n\nNora vertelt de laatste weken dat zij het overblijven niet leuk vindt. Zij zegt dat er heel veel kinderen in één lokaal eten, waardoor het erg druk en lawaaiig is. Daarnaast is er volgens haar bijna geen hulp bij het eten, terwijl de jongste kinderen dat wel nodig hebben. Ik vind dat jammer, want ik wil graag dat zij rustig kan eten.\n\nVerder wil ik u laten weten dat mijn werktijden per 1 februari veranderen. Vanaf die datum kan ik mijn dochter op donderdag zelf ophalen. Zij blijft dan alleen nog op maandag over. Wilt u dit doorgeven aan de leraar en aan de administratie?\n\nIk heb ook een vraag over de kosten. De rekening was hoger dan ik had verwacht, hoewel Nora niet extra is overgebleven. Kunt u mij uitleggen hoe het bedrag is opgebouwd?\n\nTot slot heb ik een voorstel. Misschien kunt u de kinderen in twee groepen laten eten, zodat het lokaal minder vol is. Een extra medewerker per groep zou ook helpen.\n\nIk hoor graag schriftelijk van u. U kunt mij bereiken op bovenstaand adres of telefonisch op 06 12 34 56 78.\n\nMet vriendelijke groet,\n\nSamira el Amrani\nBeukenlaan 3\n8021 CB Zwolle"
+  }
+]

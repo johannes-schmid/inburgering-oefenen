@@ -455,10 +455,13 @@ const CSS = `
   .rf-col ul { list-style:none; margin:0; padding:0; display:flex; flex-direction:column; gap:6px; }
   .rf-col li { position:relative; padding-left:15px; font-size:0.8rem; line-height:1.55; color:var(--color-on-surface-variant); }
   .rf-col li::before { position:absolute; left:0; top:0; font-weight:800; }
-  /* #4caf7a is already the codebase's green (globals.css .info-box-green) — not a new hue. */
-  .rf-col-good { background:rgba(76,175,122,0.08); }
-  .rf-col-good h4 { color:#2f7d55; }
-  .rf-col-good li::before { content:'✓'; color:#4caf7a; }
+  /* §7.2b: teacher feedback is **never** colour-coded red/green — hierarchy comes from order and
+     weight. So "goed" and "beter" are the same tonal surface family and are told apart by their
+     position, their heading and their marker, not by a hue that says pass/fail. The ✓/→ glyphs are
+     gone too: a disc and an arrow are the system's own marks. */
+  .rf-col-good { background:var(--color-surface-container-low); }
+  .rf-col-good h4 { color:var(--color-primary); }
+  .rf-col-good li::before { content:'•'; color:var(--color-primary); }
   .rf-col-better { background:rgba(254,118,44,0.09); }
   .rf-col-better h4 { color:var(--color-secondary); }
   .rf-col-better li::before { content:'→'; color:var(--color-secondary-container); }

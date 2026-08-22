@@ -1,0 +1,211 @@
+[
+  {
+    "task_type": "sentence_completion",
+    "title": "Toets later maken",
+    "prompt_html": "<p>U volgt de opleiding Verzorgende IG bij het Regiocollege Nieuwveen. Op 14 maart is er een toets, maar u moet die dag met uw moeder naar het ziekenhuis. U schrijft een mail naar de studieloopbaanbegeleider, mevrouw Aalbers.</p>",
+    "email_to": "studiebegeleiding@regiocollege-nieuwveen.nl",
+    "email_subject": "Toets van 14 maart",
+    "greeting": "Geachte mevrouw Aalbers,\n\nIk zit in groep VZ2 van de opleiding Verzorgende IG. Op 14 maart staat de toets Anatomie gepland, maar ik kan er die dag niet bij zijn, omdat …",
+    "closing": "Ik hoor graag of dit mogelijk is.\n\nMet vriendelijke groet,\nSamira Boukhari",
+    "model_answer": "ik mijn moeder die ochtend naar het ziekenhuis moet brengen voor een operatie. Zij spreekt weinig Nederlands, waardoor ik als enige mee kan gaan om te tolken. Daarom wil ik u vragen of ik de toets een week later mag maken."
+  },
+  {
+    "task_type": "sentence_completion",
+    "title": "Levering bestelling",
+    "prompt_html": "<p>U werkt als assistent op de administratie van tandartspraktijk De Lindehof. Twee weken geleden heeft de praktijk handschoenen en mondkapjes besteld, maar de doos is nog niet gekomen. U mailt de leverancier.</p>",
+    "email_to": "verkoop@medivast-groothandel.nl",
+    "email_subject": "Bestelling 20984",
+    "greeting": "Geachte heer, mevrouw,\n\nOp 3 februari heeft onze praktijk bestelling 20984 bij u geplaatst. Volgens de bevestiging zou de levering binnen vijf werkdagen komen, maar …",
+    "closing": "Alvast bedankt voor uw reactie.\n\nMet vriendelijke groet,\nJoana Ferreira\nTandartspraktijk De Lindehof",
+    "model_answer": "wij de doos tot vandaag niet hebben ontvangen. Onze voorraad handschoenen is bijna op, waardoor wij volgende week mogelijk geen behandelingen kunnen doen. Kunt u mij daarom laten weten op welke dag de bestelling precies wordt bezorgd?"
+  },
+  {
+    "task_type": "sentence_completion",
+    "title": "Werk in de straat",
+    "prompt_html": "<p>U bent lid van de bewonerscommissie van de Kastanjestraat in Doetinchem. De gemeente gaat vanaf 8 april het riool vervangen en de straat opnieuw bestraten. U stuurt een mail naar alle bewoners die op de mailinglijst staan.</p>",
+    "email_to": "bewoners@kastanjestraat-doetinchem.nl",
+    "email_subject": "Werkzaamheden vanaf 8 april",
+    "greeting": "Beste buren,\n\nDe gemeente heeft ons laten weten dat er binnenkort in onze straat gewerkt wordt. Vanaf maandag 8 april …",
+    "closing": "Bij vragen kunt u mij altijd bellen of aanspreken.\n\nMet vriendelijke groet,\nHenk Vermeulen, bewonerscommissie",
+    "model_answer": "wordt het oude riool vervangen en daarna komt er nieuwe bestrating. Het werk duurt ongeveer drie weken, waardoor de straat in die periode niet met de auto te bereiken is. U kunt uw auto tijdelijk parkeren op het terrein achter de sporthal."
+  },
+  {
+    "task_type": "sentence_completion",
+    "title": "Bedrijfsloop",
+    "prompt_html": "<p>U werkt bij verzekeringskantoor Brandsma &amp; Zonen. Op zaterdag 17 mei is er een hardloopwedstrijd voor bedrijven in de stad en u wilt met een team van het kantoor meedoen. U plaatst een bericht op het intranet.</p>",
+    "greeting": "Beste collega's,\n\nOp zaterdag 17 mei is er weer de bedrijfsloop van vijf kilometer door het centrum. Ik wil graag een team van ons kantoor inschrijven, dus …",
+    "closing": "Ik hoop dat we een leuk team bij elkaar krijgen!\n\nGroetjes,\nDennis van de administratie",
+    "model_answer": "ik ben op zoek naar minstens vier collega's die willen meelopen. Je hoeft geen ervaren hardloper te zijn, want het gaat vooral om de gezelligheid. Wil je meedoen? Stuur me dan voor 1 mei een berichtje, zodat ik ons op tijd kan aanmelden."
+  },
+  {
+    "task_type": "sentence_completion",
+    "title": "Bedankt voor uw opdracht",
+    "prompt_html": "<p>U werkt bij installatiebedrijf Warmtewerk Zuid. Een klant, meneer Doornbos, heeft opdracht gegeven voor het plaatsen van een nieuwe cv-ketel. U mailt hem om hem te bedanken en het vervolg te beschrijven.</p>",
+    "email_to": "a.doornbos@kpnpost.nl",
+    "email_subject": "Uw opdracht: nieuwe cv-ketel",
+    "greeting": "Geachte heer Doornbos,\n\nHartelijk dank voor het vertrouwen in ons bedrijf en voor uw ondertekende opdracht. Wat er nu verder gebeurt, is het volgende: …",
+    "closing": "Als er iets niet duidelijk is, kunt u mij bellen op 0313 - 44 21 90.\n\nMet vriendelijke groet,\nRachid el Amrani\nWarmtewerk Zuid",
+    "model_answer": "onze planner neemt binnen vijf werkdagen contact met u op om een datum af te spreken. De monteur heeft ongeveer een halve dag nodig, waardoor u die dag een paar uur geen warm water heeft. De rekening ontvangt u pas na de installatie, samen met het garantiebewijs."
+  },
+  {
+    "task_type": "sentence_completion",
+    "title": "Gesprek over stage",
+    "prompt_html": "<p>U loopt stage als logistiek medewerker bij distributiecentrum Van Rooij. U merkt dat u steeds hetzelfde werk doet en weinig nieuwe taken leert. U mailt uw stagebegeleider, meneer Koopmans.</p>",
+    "email_to": "p.koopmans@vanrooij-logistiek.nl",
+    "email_subject": "Verzoek om een gesprek",
+    "greeting": "Beste meneer Koopmans,\n\nIk ben nu twee maanden bezig met mijn stage op de afdeling Inpak. Ik zou graag een keer met u willen praten, omdat …",
+    "closing": "Kunt u mij laten weten wanneer het u schikt?\n\nMet vriendelijke groet,\nTomasz Kowalczyk",
+    "model_answer": "ik elke dag dezelfde inpaktaken uitvoer en daardoor weinig nieuwe dingen leer. Voor mijn opleiding moet ik ook opdrachten maken over voorraadbeheer, terwijl ik daar nu niet aan toekom. Ik wil graag samen kijken of ik een deel van de week op een andere afdeling kan meelopen."
+  },
+  {
+    "task_type": "sentence_completion",
+    "title": "Bureau te koop",
+    "prompt_html": "<p>U bent verhuisd naar een kleinere woning in Alkmaar en uw bureau past niet meer in de werkkamer. U wilt het verkopen op een website voor tweedehands spullen. U plaatst een bericht bij de aanbiedingen.</p>",
+    "greeting": "Bureau van massief eiken te koop\n\nWegens verhuizing verkoop ik mijn bureau, want het past niet meer in mijn nieuwe werkkamer. Het gaat om …",
+    "closing": "Ophalen kan in Alkmaar, na 18.00 uur of in het weekend.\n\nStuur een bericht als je belangstelling hebt.",
+    "model_answer": "een stevig bureau van massief eiken, 140 bij 70 centimeter, met twee lades aan de rechterkant. Ik heb het vier jaar gebruikt, dus er zitten een paar kleine krassen op het blad, maar verder is het in goede staat. De vraagprijs is 75 euro en onderhandelen mag."
+  },
+  {
+    "task_type": "sentence_completion",
+    "title": "Les gaat niet door",
+    "prompt_html": "<p>U bent coördinator bij taalschool Het Woordhuis. De docent van de conversatieles op woensdagavond is ziek geworden en er is geen vervanger. U mailt een cursist, mevrouw Nazari.</p>",
+    "email_to": "f.nazari@mailpunt.nl",
+    "email_subject": "Les van woensdag 12 november",
+    "greeting": "Beste mevrouw Nazari,\n\nIk moet u helaas iets vervelends melden over uw conversatieles. De les van woensdag 12 november gaat niet door, omdat …",
+    "closing": "Ik hoop op uw begrip en zie u graag de week erna weer.\n\nMet vriendelijke groet,\nEls Wagenaar\nTaalschool Het Woordhuis",
+    "model_answer": "uw docent Maria ziek is geworden en wij op zo'n korte termijn geen vervanger konden vinden. De les wordt ingehaald op woensdag 3 december, op de gewone tijd en in hetzelfde lokaal. U hoeft dus niets extra te betalen en u mist geen onderdeel van de cursus."
+  },
+  {
+    "task_type": "letter",
+    "title": "Briefje voor de buurt",
+    "prompt_html": "<p>U bent sinds kort gestart als hondenuitlater in uw eigen wijk. U heeft een cursus gevolgd en u bent bij de Kamer van Koophandel ingeschreven, maar u heeft nog te weinig klanten. Daarom besluit u een briefje te schrijven dat u in de brievenbussen van uw straat en de straten daarnaast bezorgt.</p><p>U schrijft het briefje aan de bewoners van uw buurt. U kent deze mensen niet persoonlijk, dus u schrijft in de u-vorm.</p><p>U bezorgt het briefje hier:</p><p>Aan de bewoners van de Meidoornstraat<br>en de Lijsterbeslaan<br>3812 KP Amersfoort</p><p><strong>Opdracht</strong></p><p>Schrijf een briefje voor de buurt waarin u uw werk als hondenuitlater aanbiedt. U vertelt wie u bent en wat u doet, u legt uit wat de bewoners van u kunnen verwachten en u vraagt hen om contact op te nemen. U mag de informatie over uzelf, uw prijzen en uw werktijden zelf verzinnen. Schrijf ongeveer 150 tot 200 woorden.</p><p>Het doel van de tekst is nieuwe klanten uit de buurt te winnen voor uw werk als hondenuitlater.</p>",
+    "bullet_points": [
+      "U stelt zich voor en u vertelt dat u in de buurt woont en als hondenuitlater werkt.",
+      "U legt uit waarom u dit werk doet en waarom u er geschikt voor bent, met minimaal twee redenen.",
+      "U beschrijft wat u precies aanbiedt, bijvoorbeeld hoe lang u de hond uitlaat en op welke dagen.",
+      "U noemt uw prijs en u vertelt wat er bij die prijs is inbegrepen.",
+      "U vraagt de bewoners om contact met u op te nemen en u legt uit hoe zij dat kunnen doen."
+    ],
+    "email_to": "",
+    "email_subject": "",
+    "greeting": "Beste buurtbewoner,",
+    "closing": "Met vriendelijke groet,\n\nSamira el Haddaoui\nMeidoornstraat 42\nTelefoon: 06 41 82 55 07",
+    "model_answer": "Beste buurtbewoner,\n\nMijn naam is Samira el Haddaoui en ik woon met mijn gezin op de Meidoornstraat 42. Sinds twee maanden werk ik als hondenuitlater in deze wijk. Misschien heeft u mij al eens met een paar honden in het park gezien.\n\nIk doe dit werk graag, omdat ik zelf jarenlang een hond heb gehad en veel van dieren houd. Daarnaast heb ik vorig jaar een cursus hondengedrag gevolgd, zodat ik weet hoe ik rustig en veilig met verschillende honden moet omgaan. Ik ben ook ingeschreven bij de Kamer van Koophandel, dus u krijgt van mij altijd een nette rekening.\n\nIk laat de honden van maandag tot en met vrijdag uit, tussen tien uur en drie uur. Een wandeling duurt een uur en gaat meestal naar het bos achter de sportvelden. Ik neem nooit meer dan drie honden mee, waardoor er genoeg aandacht voor uw hond is. Eén wandeling kost negen euro. Bij die prijs horen het ophalen en terugbrengen bij u thuis, water onderweg en een korte boodschap over hoe het gegaan is.\n\nHeeft u belangstelling? Belt u dan naar 06 41 82 55 07 of doet u een briefje in mijn brievenbus. De eerste wandeling is gratis, hoewel u daarna niets hoeft af te nemen.\n\nMet vriendelijke groet,\n\nSamira el Haddaoui\nMeidoornstraat 42"
+  },
+  {
+    "task_type": "form",
+    "title": "Melding van overlast",
+    "prompt_html": "<p>U woont sinds twee jaar in de Vlierstraat in Almere. In uw straat is al enkele maanden veel overlast. Er staan 's avonds groepen jongeren bij de garageboxen, er wordt harde muziek gespeeld en er ligt regelmatig afval op de stoep. Omdat u er zelf niets aan kunt doen, wilt u het bij de gemeente melden.</p><p>De gemeente Almere heeft op de website het formulier 'Melding overlast in de buurt'. U vult dit formulier in. Uw naam en e-mailadres zijn al ingevuld. Bij vraag 1 kiest u wat voor soort overlast het is.</p><p><strong>Opdracht</strong></p><p>Vul het formulier in. Geef bij elke vraag een volledig antwoord in hele zinnen en leg steeds uit waarom u dat antwoord geeft. Schrijf per vraag ongeveer drie tot vijf zinnen. U mag de informatie zelf verzinnen.</p><p>Het doel van de tekst is de gemeente zo duidelijk informeren over de overlast in uw straat, dat de gemeente begrijpt wat er gebeurt, waarom het een probleem voor u is en welke maatregel u van de gemeente verwacht.</p>",
+    "email_to": "",
+    "email_subject": "",
+    "greeting": "",
+    "closing": "",
+    "model_answer": "1. Soort overlast: Geluidsoverlast en Vuil en afval op straat\n\n2. In mijn straat staan bijna elke avond ongeveer acht tot tien jongeren bij de garageboxen achter de flat. Zij zetten muziek aan in een auto en praten en roepen heel hard. Dat gebeurt meestal tussen tien uur 's avonds en twee uur 's nachts. Daarnaast laten zij blikjes, flessen en zakken van de snackbar op de stoep liggen. De volgende morgen ligt het afval verspreid over het trottoir, omdat de wind alles wegblaast.\n\n3. De overlast is begonnen in maart van dit jaar, toen het weer warmer werd. In het begin was het één of twee keer per week, maar nu is het bijna elke avond. In het weekend duurt het het langst, doordat er dan meer jongeren komen. Ik noem dit erbij, zodat u kunt zien dat het probleem niet één keer is gebeurd, maar steeds erger wordt.\n\n4. Ik heb hier veel last van, omdat mijn slaapkamer aan de achterkant van de flat ligt, precies boven de garageboxen. Door de harde muziek word ik vaak wakker en daarna kan ik moeilijk weer in slaap komen. Ik werk in de thuiszorg en begin om half zeven 's morgens, waardoor ik echt genoeg nachtrust nodig heb. Mijn dochter van negen jaar wordt ook wakker en is de volgende dag moe op school.\n\n5. Ik heb twee keer zelf met de jongeren gesproken en gevraagd of zij de muziek zachter wilden zetten. De eerste keer deden zij dat, maar een half uur later stond het geluid weer even hard. De tweede keer reageerden zij onaardig, waardoor ik nu niet meer naar beneden durf te gaan. Ook mijn buurvrouw van nummer 24 heeft het gevraagd, maar zonder resultaat. Daarom meld ik het nu bij de gemeente, omdat wij het als bewoners niet alleen kunnen oplossen.\n\n6. Ik zou graag willen dat de gemeente met de jongeren gaat praten, bijvoorbeeld samen met een jongerenwerker. Misschien is er een andere plek in de wijk waar zij 's avonds kunnen zitten zonder dat bewoners er last van hebben. Verder vraag ik u om een extra afvalbak bij de garageboxen te plaatsen, zodat het afval niet meer op de stoep belandt. Ook zou het helpen als de handhaving in het weekend een keer langskomt tussen elf uur en één uur. Ik denk dat de rust dan snel terugkomt, hoewel het misschien een paar weken duurt.\n\n7. U mag mij bellen of mailen als u meer informatie nodig heeft. Ik ben op maandag en woensdag na vier uur 's middags thuis, omdat ik dan geen late dienst heb. Ik wil ook graag horen wat de gemeente met mijn melding doet. Ik wil hier namelijk niet anoniem blijven, want ik ben bereid om samen met andere bewoners mee te denken over een oplossing.",
+    "form_schema": {
+      "sections": [
+        {
+          "heading": "Gegevens van de melder",
+          "rows": [
+            {
+              "kind": "static",
+              "label": "Naam",
+              "value": "Mevrouw S. Bruinsma"
+            },
+            {
+              "kind": "static",
+              "label": "Adres",
+              "value": "Vlierstraat 26, 1315 KP Almere"
+            },
+            {
+              "kind": "static",
+              "label": "E-mailadres",
+              "value": "s.bruinsma@mijnpostnl.nl"
+            },
+            {
+              "kind": "choice",
+              "label": "1. Wat voor soort overlast meldt u? (u mag meer dan één antwoord kiezen)",
+              "options": [
+                "Geluidsoverlast",
+                "Vuil en afval op straat",
+                "Overlast door verkeer of parkeren",
+                "Overlast door dieren",
+                "Anders"
+              ],
+              "multiple": true
+            }
+          ]
+        },
+        {
+          "heading": "Uw melding",
+          "rows": [
+            {
+              "kind": "text",
+              "label": "2. Beschrijf de overlast. Wat gebeurt er precies, waar en op welk tijdstip? Leg ook uit waarom u dit als overlast ervaart.",
+              "placeholder": "Schrijf hier uw antwoord."
+            },
+            {
+              "kind": "text",
+              "label": "3. Sinds wanneer is er overlast en hoe vaak komt het voor? Leg ook uit waarom u dit erbij vermeldt.",
+              "placeholder": "Schrijf hier uw antwoord."
+            },
+            {
+              "kind": "text",
+              "label": "4. Welke gevolgen heeft de overlast voor u of voor uw gezin? Leg ook uit waarom deze gevolgen voor u belangrijk zijn.",
+              "placeholder": "Schrijf hier uw antwoord."
+            },
+            {
+              "kind": "text",
+              "label": "5. Heeft u zelf al iets gedaan om het probleem op te lossen? Leg ook uit waarom dat wel of niet gelukt is.",
+              "placeholder": "Schrijf hier uw antwoord."
+            },
+            {
+              "kind": "text",
+              "label": "6. Wat verwacht u van de gemeente? Leg ook uit waarom u denkt dat deze maatregel helpt.",
+              "placeholder": "Schrijf hier uw antwoord."
+            },
+            {
+              "kind": "text",
+              "label": "7. Mogen wij contact met u opnemen over deze melding? Leg ook uit wanneer u bereikbaar bent en waarom.",
+              "placeholder": "Schrijf hier uw antwoord."
+            }
+          ]
+        }
+      ]
+    }
+  },
+  {
+    "task_type": "email",
+    "title": "E-mail over studieplekken",
+    "prompt_html": "<p>U volgt een beroepsopleiding bij het Regiocollege Noordveen in Almelo. U bent lid van de studentenraad. Dat is de groep studenten die namens alle studenten met de directie praat.</p><p>De laatste maanden klagen veel studenten over de studieplekken in het gebouw. Er zijn te weinig tafels, het is er vaak lawaaiig en de wifi werkt niet altijd goed. In de studentenraad heeft u afgesproken dat u hierover een e-mail schrijft aan mevrouw Van Dijkhuizen, de directeur van de opleiding.</p><p><strong>Opdracht</strong></p><p>Schrijf een e-mail namens de studentenraad aan de directie over de studieplekken. Behandel alle punten die hieronder staan. U mag de informatie zelf verzinnen.</p><p>Het doel van de tekst is de directie overtuigen dat er iets moet veranderen aan de studieplekken en een afspraak maken over een gesprek.</p>",
+    "bullet_points": [
+      "U legt uit wie u bent en namens wie u deze e-mail schrijft.",
+      "U beschrijft welke problemen de studenten met de studieplekken hebben en noemt minimaal twee problemen.",
+      "U legt uit waarom deze problemen gevolgen hebben voor het studeren van de studenten.",
+      "U doet minimaal twee concrete voorstellen om de situatie te verbeteren.",
+      "U vraagt om een gesprek met de directie en noemt wanneer u kunt.",
+      "U vraagt om een reactie binnen een bepaalde tijd."
+    ],
+    "email_to": "directie@regiocollegenoordveen.nl",
+    "email_subject": "Voorstellen van de studentenraad over de studieplekken",
+    "greeting": "Geachte mevrouw Van Dijkhuizen,",
+    "closing": "Met vriendelijke groet,",
+    "model_answer": "Mijn naam is Amina Yildiz en ik ben tweedejaarsstudent bij de opleiding Administratie. Ik ben lid van de studentenraad en ik schrijf deze e-mail namens alle studenten van onze school. Wij hebben in de vergadering van 4 maart besloten om u te informeren over de studieplekken in het gebouw.\n\nDe afgelopen maanden hebben veel studenten bij ons geklaagd. Het eerste probleem is dat er te weinig tafels en stoelen zijn. In de pauze zijn alle plekken bezet, waardoor studenten op de gang op de grond gaan zitten. Het tweede probleem is het lawaai. De studieruimte ligt naast de kantine, zodat je bijna altijd stemmen en muziek hoort. Ook werkt de wifi op de eerste verdieping vaak niet goed.\n\nDeze problemen hebben grote gevolgen voor ons studeren. Veel studenten hebben tussen de lessen twee of drie uur vrij en willen die tijd gebruiken voor hun opdrachten. Omdat er geen rustige plek is, gaan ze naar huis of naar de bibliotheek in het centrum. Daardoor maken zij hun werk later of helemaal niet, hoewel ze het wel willen doen. Studenten die thuis kleine kinderen hebben, kunnen bijna nergens rustig werken.\n\nWij hebben twee voorstellen. Ons eerste voorstel is om lokaal B12 open te stellen als stille studieruimte. Dit lokaal wordt in de middag niet gebruikt en er staan al twintig tafels. Ons tweede voorstel is om de wifi op de eerste verdieping te laten controleren en te verbeteren. Daarnaast zou een aantal stopcontacten bij de tafels erg helpen, omdat bijna iedereen met een laptop werkt.\n\nGraag willen wij onze voorstellen met u bespreken in een gesprek. Wij kunnen op dinsdag 18 maart en op donderdag 20 maart tussen 13.00 en 15.00 uur. Wilt u ons voor 12 maart laten weten of een van deze data u past? Als deze dagen niet mogelijk zijn, horen wij graag welke dag u wel schikt.\n\nAlvast hartelijk dank voor uw reactie."
+  },
+  {
+    "task_type": "data_text",
+    "title": "Advies bedrijfskleding",
+    "prompt_html": "<p>U werkt als teamleider bij verpakkingsbedrijf Nordveld in Apeldoorn. U zit ook in de personeelsvertegenwoordiging van het bedrijf. Veel collega's klagen al maanden over de bedrijfskleding: de broeken en jassen zitten niet goed en er is te weinig schone kleding.</p><p>Daarom heeft u in november een korte enquête gehouden onder de zestig medewerkers van uw afdeling. In totaal hebben 48 mensen de vragenlijst ingevuld. U stuurt de uitkomsten naar mevrouw Doornbos, hoofd bedrijfsvoering, met een advies erbij.</p><p>Dit zijn de resultaten van de enquête:</p><table><tr><th>Onderdeel van de bedrijfskleding</th><th>Tevreden</th><th>Ontevreden</th></tr><tr><td>Aantal sets kleding per medewerker</td><td>25%</td><td>75%</td></tr><tr><td>Pasvorm van broek en jas</td><td>35%</td><td>65%</td></tr><tr><td>Warmte in de winter</td><td>40%</td><td>60%</td></tr><tr><td>Wassen van de kleding op het werk</td><td>55%</td><td>45%</td></tr><tr><td>Kleur en uitstraling</td><td>70%</td><td>30%</td></tr></table><p><strong>Opdracht</strong></p><p>Schrijf een e-mail aan mevrouw Doornbos. De tabel wordt bij uw tekst gevoegd, dus uw tekst moet goed bij de cijfers passen. Gebruik in uw tekst percentages uit de tabel. U mag informatie over uw afdeling en over de kleding zelf verzinnen. Schrijf ongeveer 200 tot 250 woorden en gebruik de u-vorm.</p><p>Het doel van de tekst is dat uw leidinggevende door de uitkomsten van de enquête begrijpt wat er aan de bedrijfskleding moet veranderen en uw adviezen kan overnemen.</p>",
+    "bullet_points": [
+      "U legt uit waarom u de enquête heeft gehouden en hoeveel medewerkers de vragenlijst hebben ingevuld.",
+      "U beschrijft de belangrijkste uitkomsten uit de tabel en u noemt daarbij minimaal drie percentages.",
+      "U legt uit welke gevolgen de klachten over de kleding hebben voor het werk op uw afdeling.",
+      "U geeft minimaal twee adviezen aan uw leidinggevende en u legt uit waarom die adviezen goed zijn.",
+      "U schrijft wat u zelf kunt doen om de verandering mogelijk te maken."
+    ],
+    "email_to": "a.doornbos@nordveld-verpakkingen.nl",
+    "email_subject": "Uitkomsten enquête bedrijfskleding en advies",
+    "greeting": "Geachte mevrouw Doornbos,",
+    "closing": "Met vriendelijke groet,\n[uw naam]\nTeamleider en lid van de personeelsvertegenwoordiging",
+    "model_answer": "Geachte mevrouw Doornbos,\n\nIn november heb ik namens de personeelsvertegenwoordiging een korte enquête gehouden over de bedrijfskleding. In totaal hebben 48 van de zestig medewerkers de vragenlijst ingevuld, dus de uitkomsten geven een goed beeld van onze afdeling. Hieronder leest u de belangrijkste resultaten en mijn advies.\n\nTwee punten vallen sterk op. De medewerkers zijn het meest ontevreden over het aantal sets kleding: 75 procent vindt twee sets te weinig. Ook de pasvorm is een probleem, want 65 procent zegt dat de broek of de jas niet goed zit. Daarnaast klaagt 60 procent over de kou in de winter. Over de kleur en de uitstraling van de kleding is bijna niemand negatief, omdat 70 procent daarover tevreden is.\n\nDeze klachten hebben gevolgen voor het werk. Doordat iedereen maar twee sets heeft, werken sommige collega's op vrijdag in kleding die niet meer schoon is. Dat staat niet netjes, zeker niet wanneer wij bezoek van klanten krijgen. Bovendien werken medewerkers langzamer als de jas te krap of te ruim zit, waardoor het inpakken meer tijd kost.\n\nIk heb daarom twee adviezen. Ten eerste stel ik voor om iedere medewerker een derde set kleding te geven, zodat er altijd schone kleding klaarligt. Ten tweede adviseer ik om bij de nieuwe bestelling meer maten en ook damesmodellen te vragen, hoewel dat iets duurder is. Tevreden medewerkers melden zich minder vaak ziek en dat levert het bedrijf uiteindelijk geld op.\n\nZelf wil ik graag meehelpen. Ik kan de maten van alle medewerkers verzamelen en samen met de leverancier een pasmoment organiseren.\n\nWilt u mij laten weten wanneer wij hierover kunnen praten?\n\nMet vriendelijke groet,\nMalika Yildiz\nTeamleider en lid van de personeelsvertegenwoordiging"
+  }
+]

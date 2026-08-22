@@ -16,7 +16,7 @@ export default function FeatureCard({
   iconColor?: string;
 }) {
   return (
-    <Card shadow="md" padding="p-7">
+    <Card shadow="md" padding="p-5">
       <div
         className="flex items-center justify-center mb-4 flex-shrink-0"
         style={{ width: 44, height: 44, background: iconBg, borderRadius: 12, color: iconColor }}

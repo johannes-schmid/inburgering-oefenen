@@ -38,7 +38,9 @@ export default function McqQuestion({
   return (
     <div
       className="rounded-2xl bg-surface-container-lowest"
-      style={{ padding: '1.25rem 1.375rem', boxShadow: 'var(--shadow-card-md)' }}
+      /* §7.2: the floating quiz card — the ambient shadow (32px blur, no offset, 6%), not the
+         heavier legacy card shadow. It should read as a soft glow of light, not as weight. */
+      style={{ padding: '1.375rem 1.5rem', boxShadow: 'var(--shadow-ambient)' }}
     >
       <div className="flex items-center justify-between gap-3 mb-3.5 flex-wrap">
         <span className="text-[0.65rem] font-bold uppercase tracking-widest text-on-surface-variant/70">
@@ -99,17 +101,21 @@ export default function McqQuestion({
       {answered && showFeedback && (
         <div
           className="mt-3.5 flex gap-2.5 px-4 py-3 rounded-xl text-sm leading-relaxed"
+          /* No 1px borders and no green (§2, §7.3). "Right" is the clay accent — the same colour
+             that means "this is the thing to look at" everywhere else — and "wrong" is the
+             `error` token, which is the one red the system has. The Check/X icon carries the
+             meaning for anyone who cannot separate the two hues. */
           style={
             gotItRight
-              ? { background: 'rgba(22,163,74,0.07)', border: '1px solid rgba(22,163,74,0.22)' }
-              : { background: 'rgba(220,38,38,0.06)', border: '1px solid rgba(220,38,38,0.2)' }
+              ? { background: 'rgba(254,118,44,0.12)' }
+              : { background: 'rgba(186,26,26,0.07)' }
           }
         >
-          <span className="flex-shrink-0" style={{ marginTop: 2, color: gotItRight ? '#16a34a' : '#dc2626' }}>
+          <span className="flex-shrink-0" style={{ marginTop: 2, color: gotItRight ? '#a24000' : '#ba1a1a' }}>
             {gotItRight ? <Check size={16} strokeWidth={3} aria-hidden /> : <X size={16} strokeWidth={3} aria-hidden />}
           </span>
           <span className="text-on-surface-variant">
-            <strong style={{ color: gotItRight ? '#15803d' : '#b91c1c' }}>
+            <strong style={{ color: gotItRight ? '#a24000' : '#ba1a1a' }}>
               {gotItRight ? 'Goed. ' : `Niet goed — het juiste antwoord is ${correct?.label ?? '—'}. `}
             </strong>
             {q.explanation}
@@ -137,22 +143,26 @@ function OptionButton({
   reveal: boolean;
   onSelect: () => void;
 }) {
-  let surface: React.CSSProperties = {
-    background: 'var(--color-surface-container)',
-    border: '2px solid transparent',
-  };
-  let badge: React.CSSProperties = { background: '#e3e6ea', color: '#434651' };
+  /**
+   * §7.2 / §5: an answer option is a `surface-container-low` **fill**, and every state is
+   * expressed as an *inset* box-shadow rather than a border — that is the no-line rule applied
+   * where it matters most, because a 2px border on a selected option also reflows the text inside
+   * it by 2px on every click. The greens are gone: "correct" is the clay accent and "wrong" is the
+   * one `error` token the system has, and the Check/X icon is what actually carries the meaning.
+   */
+  let surface: React.CSSProperties = { background: 'var(--color-surface-container-low)' };
+  let badge: React.CSSProperties = { background: 'var(--color-surface-container-high)', color: '#434651' };
 
   if (chosen && !reveal) {
-    surface = { background: '#fff6ec', border: '2px solid #fe762c' };
-    badge = { background: '#a24000', color: '#fff' };
+    surface = { background: 'rgba(0,43,109,0.05)', boxShadow: 'var(--ring-selected)' };
+    badge = { background: '#002b6d', color: '#fff' };
   }
   if (reveal && isCorrect) {
-    surface = { background: 'rgba(22,163,74,0.08)', border: '2px solid rgba(22,163,74,0.45)' };
-    badge = { background: 'rgba(22,163,74,0.16)', color: '#15803d' };
+    surface = { background: 'rgba(254,118,44,0.12)', boxShadow: 'inset 0 0 0 2px rgba(254,118,44,0.55)' };
+    badge = { background: '#fe762c', color: '#5f2200' };
   } else if (reveal && chosen) {
-    surface = { background: 'rgba(220,38,38,0.06)', border: '2px solid rgba(220,38,38,0.38)' };
-    badge = { background: 'rgba(220,38,38,0.14)', color: '#b91c1c' };
+    surface = { background: 'rgba(186,26,26,0.07)', boxShadow: 'inset 0 0 0 2px rgba(186,26,26,0.35)' };
+    badge = { background: 'rgba(186,26,26,0.14)', color: '#ba1a1a' };
   }
 
   const hasImages = o.image_urls.length > 0;
@@ -206,7 +216,7 @@ function OptionButton({
       <style>{`
         .exam-option {
           transition: transform .18s cubic-bezier(0.22,1,0.36,1),
-                      background-color .18s ease, border-color .18s ease;
+                      background-color .18s ease, box-shadow .18s ease;
         }
         .exam-option:not(:disabled):hover { transform: translateY(-2px); }
         .exam-option:not(:disabled):active { transform: translateY(0) scale(0.99); }

@@ -145,7 +145,7 @@ export default function HuisVinden({ audioUrl, audioCues }: { audioUrl?: string;
           })}
         </ol>
 
-        <div className="rounded-xl p-3 flex gap-2 mt-4" style={{ background: '#eff6ff', border: '1px solid #bfdbfe' }}>
+        <div className="rounded-xl p-3 flex gap-2 mt-4" style={{ background: 'var(--color-surface-container-high)' }}>
           <span className="material-symbols-outlined shrink-0 mt-0.5" style={{ color: '#2563eb', fontSize: 16 }}>school</span>
           <p className="text-[11px] leading-relaxed" style={{ color: '#1e3a8a' }}>
             <strong>Examentip:</strong> geef je nieuwe adres altijd <strong>binnen 5 dagen</strong> door aan de gemeente — bij huren én kopen, en ook als je gaat samenwonen. Je adres komt in de <strong>BRP</strong>.

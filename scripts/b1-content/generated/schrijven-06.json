@@ -1,0 +1,216 @@
+[
+  {
+    "task_type": "sentence_completion",
+    "title": "Gehandicaptenparkeerkaart aanvragen",
+    "prompt_html": "<p>U woont in de gemeente Havelo. Uw moeder woont bij u in huis en kan sinds haar operatie maar heel kort lopen. U wilt daarom een gehandicaptenparkeerkaart voor haar aanvragen, maar u weet niet hoe dat gaat.</p><p>U schrijft een mail naar de afdeling Burgerzaken van de gemeente.</p>",
+    "email_to": "burgerzaken@gemeentehavelo.nl",
+    "email_subject": "Vraag over gehandicaptenparkeerkaart",
+    "greeting": "Geachte heer, mevrouw,\n\nMijn moeder woont sinds januari bij mij in huis. Zij kan door haar gezondheid nog maar een paar meter lopen, waardoor …",
+    "closing": "Ik hoor graag van u welke stappen ik moet zetten.\n\nMet vriendelijke groet,\nAnita Boersma",
+    "model_answer": "zij niet meer zelfstandig naar de auto kan komen. Daarom wil ik voor haar een gehandicaptenparkeerkaart aanvragen. Kunt u mij uitleggen welke formulieren ik nodig heb, of ik eerst een medisch onderzoek moet regelen en hoeveel de aanvraag kost?"
+  },
+  {
+    "task_type": "sentence_completion",
+    "title": "Verlenging van uw abonnement",
+    "prompt_html": "<p>U werkt bij een bedrijf dat werkkleding verhuurt en wast. Klanten hebben een abonnement van één jaar. Het abonnement van meneer Talsma loopt bijna af en wordt automatisch met een jaar verlengd.</p><p>U stuurt hem hierover een mail.</p>",
+    "email_to": "j.talsma@bouwtalsma.nl",
+    "email_subject": "Verlenging van uw abonnement",
+    "greeting": "Beste meneer Talsma,\n\nUw abonnement voor werkkleding loopt op 31 maart af. Ik wil u laten weten dat …",
+    "closing": "Als u vragen heeft, kunt u mij altijd bellen.\n\nMet vriendelijke groet,\nRachid Amrani\nKlantenservice",
+    "model_answer": "uw abonnement daarna automatisch met een jaar wordt verlengd, tegen dezelfde voorwaarden. Het maandbedrag blijft 48 euro, omdat wij de prijzen dit jaar niet verhogen. Wilt u niet verlengen, dan kunt u tot 1 maart schriftelijk opzeggen."
+  },
+  {
+    "task_type": "sentence_completion",
+    "title": "Spullen voor kledingactie",
+    "prompt_html": "<p>U werkt bij een zorginstelling. Samen met een paar collega's organiseert u een actie voor mensen met weinig geld: iedereen kan warme kleding en dekens inleveren.</p><p>U plaatst een bericht op het intranet van uw werk.</p>",
+    "greeting": "Beste collega's,\n\nVolgende maand houden wij weer onze winteractie voor gezinnen met een klein inkomen. Wij zoeken hiervoor …",
+    "closing": "Alvast heel veel dank voor jullie hulp!\n\nHartelijke groet,\nMarleen en Joost",
+    "model_answer": "warme kleding, dekens, sjaals en handschoenen die je zelf niet meer gebruikt. De spullen moeten heel en schoon zijn, zodat we ze meteen kunnen uitdelen. Je kunt alles tot en met 20 november inleveren in de blauwe dozen bij de receptie."
+  },
+  {
+    "task_type": "sentence_completion",
+    "title": "Presentatie samen doen",
+    "prompt_html": "<p>U volgt de opleiding Verzorgende IG bij een regionaal opleidingscentrum. Voor het vak Communicatie moet iedereen een presentatie geven over een beroepssituatie. U wilt de presentatie graag samen met een medestudent doen.</p><p>U schrijft een mail aan uw docent, mevrouw Verhagen.</p>",
+    "email_to": "h.verhagen@rocdewaterlinie.nl",
+    "email_subject": "Presentatie Communicatie",
+    "greeting": "Beste mevrouw Verhagen,\n\nIn de les vertelde u dat wij in maart een presentatie moeten geven. Ik wil u vragen of ik …",
+    "closing": "Ik hoor graag of dit mag.\n\nMet vriendelijke groet,\nZeynep Aydin",
+    "model_answer": "de presentatie samen met mijn medestudent Daniël Kroon mag doen. Wij werken op dezelfde afdeling en willen samen een gesprek met een bewoner laten zien. Daardoor kunnen we het onderwerp beter uitleggen dan wanneer ieder alleen praat."
+  },
+  {
+    "task_type": "sentence_completion",
+    "title": "Factuur opnieuw ontvangen",
+    "prompt_html": "<p>U doet de administratie van een klein installatiebedrijf. Van een leverancier heeft u een aanmaning gekregen voor een factuur die u nooit heeft ontvangen. U kunt de rekening zonder factuur niet betalen.</p><p>U mailt de administratie van de leverancier.</p>",
+    "email_to": "administratie@vandeursen-techniek.nl",
+    "email_subject": "Factuur 2024-8871 niet ontvangen",
+    "greeting": "Geachte heer, mevrouw,\n\nVandaag ontving ik een aanmaning voor factuur 2024-8871. Ik heb onze administratie goed nagekeken, maar …",
+    "closing": "Zodra wij de factuur hebben, betalen wij het bedrag direct.\n\nMet vriendelijke groet,\nPeter Wolthuis\nAdministratie Installatiebedrijf Meijer",
+    "model_answer": "deze factuur is bij ons nooit binnengekomen, ook niet in de map met ongelezen berichten. Wilt u de factuur daarom opnieuw sturen naar dit mailadres? Ik verzoek u ook de kosten van de aanmaning te laten vallen, omdat de vertraging niet door ons is ontstaan."
+  },
+  {
+    "task_type": "sentence_completion",
+    "title": "Tuin veranderen",
+    "prompt_html": "<p>U huurt een eengezinswoning van woningcorporatie Het Nieuwe Erf. In uw achtertuin liggen oude tegels die scheef staan. U wilt een deel van de tegels weghalen en er borders met planten van maken.</p><p>U mailt uw verhuurder om toestemming.</p>",
+    "email_to": "verhuur@hetnieuweerf.nl",
+    "email_subject": "Vraag over veranderingen in de tuin",
+    "greeting": "Geachte heer, mevrouw,\n\nIk huur sinds 2021 de woning aan de Lijsterstraat 14 in Havelo. Ik zou graag mijn achtertuin veranderen, omdat …",
+    "closing": "Kunt u mij laten weten of ik hiervoor uw toestemming krijg?\n\nMet vriendelijke groet,\nSaïd Bouzid",
+    "model_answer": "de oude tegels scheef liggen en het water bij regen blijft staan. Ik wil ongeveer de helft van de tegels weghalen en daar borders met planten en een klein grasveld aanleggen. De schutting en de bestrating bij de achterdeur blijven gewoon staan."
+  },
+  {
+    "task_type": "sentence_completion",
+    "title": "Gebruikte fiets te koop",
+    "prompt_html": "<p>U heeft een elektrische fiets gekocht en gebruikt uw oude stadsfiets niet meer. U wilt de fiets verkopen voor 95 euro.</p><p>U plaatst een bericht op een website waar mensen tweedehands spullen aanbieden.</p>",
+    "greeting": "Te koop: stevige damesfiets\n\nOmdat ik een nieuwe fiets heb gekocht, bied ik mijn oude stadsfiets aan. Het gaat om …",
+    "closing": "Wil je de fiets bekijken? Stuur dan een bericht, dan maken we een afspraak.\n\nVriendelijke groet,\nEls Dekkers, Havelo",
+    "model_answer": "een zwarte damesfiets met drie versnellingen, een lage instap en twee sloten. De fiets is zeven jaar oud en heeft gebruiksschade aan het spatbord, maar hij rijdt uitstekend en is vorige maand nagekeken. De prijs is 95 euro, alleen ophalen in Havelo-Noord."
+  },
+  {
+    "task_type": "sentence_completion",
+    "title": "Nieuwe manier van roosteren",
+    "prompt_html": "<p>U bent teamleider bij een groot tuincentrum. Vanaf volgende maand maakt uw bedrijf de roosters op een nieuwe manier: medewerkers geven eerst zelf hun voorkeuren door in een programma.</p><p>U informeert uw team hierover per mail.</p>",
+    "email_to": "team-kassa@tuincentrumgroenoord.nl",
+    "email_subject": "Nieuwe manier van roosteren vanaf 1 mei",
+    "greeting": "Beste collega's,\n\nVanaf 1 mei gaan wij de roosters anders maken. Dit betekent voor jullie dat …",
+    "closing": "Op donderdag 18 april leg ik alles uit tijdens het teamoverleg.\n\nHartelijke groet,\nIngrid Sassen\nTeamleider kassa",
+    "model_answer": "jullie zelf je voorkeuren voor werkdagen invullen in het nieuwe programma, en wel vóór de tiende van de maand. Ik maak daarna het rooster, waarbij ik zo veel mogelijk rekening houd met die wensen. Wie geen voorkeur doorgeeft, krijgt de diensten die dan nog over zijn."
+  },
+  {
+    "task_type": "data_text",
+    "title": "Advies over de kantine",
+    "prompt_html": "<p>U werkt bij logistiek bedrijf Vaandrecht in Zwolle. Het bedrijf heeft een eigen kantine, waar medewerkers tussen 12.00 en 13.30 uur warm en koud eten kunnen kopen. De directie vindt de kantine duur, omdat er volgens haar te weinig mensen komen. Daarom onderzoekt de ondernemingsraad hoeveel medewerkers de kantine echt gebruiken.</p><p>U bent lid van de ondernemingsraad. U hebt vier weken lang geteld hoeveel medewerkers per dag in de kantine kwamen. De cijfers staan in de tabel hieronder. Het bedrijf heeft in totaal 180 medewerkers.</p><table><tr><th>Dag</th><th>Gemiddeld aantal bezoekers per dag</th><th>Deel van alle medewerkers</th></tr><tr><td>maandag</td><td>96</td><td>53%</td></tr><tr><td>dinsdag</td><td>108</td><td>60%</td></tr><tr><td>woensdag</td><td>74</td><td>41%</td></tr><tr><td>donderdag</td><td>102</td><td>57%</td></tr><tr><td>vrijdag</td><td>39</td><td>22%</td></tr></table><p>U schrijft een advies aan mevrouw R. Doornbos, de directeur van Vaandrecht. De tabel wordt bij uw tekst gevoegd, dus uw tekst moet goed bij de cijfers passen.</p><p><strong>Opdracht</strong></p><p>Schrijf een advies van ongeveer 200 woorden aan de directeur. Gebruik de cijfers uit de tabel en behandel alle inhoudspunten. U mag de informatie zelf verzinnen.</p><p>Het doel van de tekst is de directeur met behulp van de cijfers overtuigen dat de kantine open moet blijven, en haar een concreet voorstel doen voor de vrijdag.</p>",
+    "bullet_points": [
+      "U legt uit waarom u dit advies schrijft en hoe u de cijfers hebt verzameld.",
+      "U beschrijft wat de tabel laat zien over de bezoekcijfers van maandag tot en met vrijdag.",
+      "U legt uit waarom de vrijdag volgens u een uitzondering is en noemt daarvoor minimaal één oorzaak.",
+      "U doet een concreet voorstel om de kantine goedkoper te maken zonder haar te sluiten.",
+      "U vraagt de directeur om een reactie en biedt aan uw advies mondeling toe te lichten."
+    ],
+    "email_to": "r.doornbos@vaandrecht.nl",
+    "email_subject": "Advies ondernemingsraad over de kantine",
+    "greeting": "Geachte mevrouw Doornbos,",
+    "closing": "Met vriendelijke groet,\n\nSamira El Amrani\nlid van de ondernemingsraad",
+    "model_answer": "Geachte mevrouw Doornbos,\n\nIn de vergadering van maart hebt u gezegd dat de kantine te duur is, omdat er volgens u te weinig medewerkers komen eten. De ondernemingsraad wilde daarom eerst zeker weten hoeveel mensen de kantine echt gebruiken. Ik heb vier weken lang elke dag de bezoekers geteld. Hieronder leg ik uit wat de cijfers betekenen.\n\nUit de tabel blijkt dat de kantine op vier van de vijf dagen goed bezocht wordt. Op dinsdag komen gemiddeld 108 medewerkers, dat is 60 procent van het personeel. Op donderdag zijn dat 102 bezoekers en op maandag 96. Alleen op woensdag en vrijdag zijn de cijfers lager, waarbij de vrijdag met 39 bezoekers duidelijk het slechtst is.\n\nDe vrijdag is volgens mij een uitzondering, doordat veel collega's op die dag thuiswerken of vrij zijn. Bovendien werken de chauffeurs op vrijdag vaak korter, zodat zij eerder naar huis gaan.\n\nDaarom stel ik voor de kantine op vrijdag te sluiten en het warme eten die dag te vervangen door belegde broodjes uit de koeling. Zo bespaart het bedrijf personeelskosten, terwijl de kantine op de drukke dagen open blijft.\n\nWilt u mij laten weten wat u van dit voorstel vindt? Ik wil het graag mondeling toelichten in de volgende vergadering.\n\nMet vriendelijke groet,\n\nSamira El Amrani\nlid van de ondernemingsraad"
+  },
+  {
+    "task_type": "form",
+    "title": "Subsidie voor de buurt",
+    "prompt_html": "<p>U woont in de wijk Weidebroek. In uw straat wonen veel mensen die elkaar niet kennen, hoewel ze al jaren buren zijn. Samen met een paar buren wilt u daarom een activiteit organiseren. De gemeente heeft een potje geld voor bewoners met een goed plan: het Buurtbudget. Wie een activiteit wil organiseren, kan maximaal 750 euro aanvragen.</p><p>Op de website van de gemeente staat een formulier. De medewerkers van het Buurtbudget lezen de aanvragen en bepalen daarna welke plannen geld krijgen. Zij letten vooral op de uitleg bij elke vraag, omdat ze willen weten waarom de activiteit belangrijk is voor de buurt.</p><p><strong>Opdracht</strong></p><p>Vul het formulier hieronder in. Uw naam, uw adres en de datum zijn al ingevuld. Kies bij de twee keuzevragen het antwoord dat bij uw plan past. Beantwoord daarna alle open vragen met minimaal twee of drie volledige zinnen. Geef bij iedere vraag ook een uitleg, want de gemeente wil weten waarom u iets doet of nodig hebt. U mag de informatie zelf verzinnen. U schrijft in de u-vorm, omdat het formulier naar de gemeente gaat.</p><p>Het doel van de tekst is de gemeente ervan te overtuigen dat uw buurtactiviteit nuttig is voor de wijk, zodat uw aanvraag voor het Buurtbudget wordt toegekend.</p>",
+    "email_to": "",
+    "email_subject": "",
+    "greeting": "",
+    "closing": "",
+    "model_answer": "Ik vraag subsidie aan als: een groep bewoners\nGevraagd bedrag: tussen 500 en 750 euro\n\n1. Ik wil een buurtmaaltijd organiseren in wijkcentrum De Meerpaal. We koken samen en eten daarna met ongeveer zestig bewoners aan lange tafels. Ik kies juist een maaltijd, omdat eten mensen makkelijk bij elkaar brengt. Bij een tafel praat je met iemand, ook al ken je die persoon nog niet.\n\n2. De activiteit is bedoeld voor alle bewoners van de Lijsterlaan en de Spechtstraat. Ik wil vooral ouderen en nieuwe bewoners bereiken. Veel ouderen komen weinig buiten, terwijl nieuwe bewoners nog niemand kennen in de wijk. Als deze twee groepen elkaar ontmoeten, wordt de buurt vriendelijker.\n\n3. Ik besteed het geld aan boodschappen voor de maaltijd en aan de huur van het wijkcentrum. De boodschappen kosten ongeveer 350 euro, omdat we voor zestig personen koken. De huur van de zaal is 150 euro per avond. Verder wil ik 100 euro gebruiken voor borden, bekers en schoonmaakmiddelen.\n\n4. Ik werk samen met mijn buren Karin de Wit en Youssef Bakker. Zij hebben vorig jaar al een opruimdag georganiseerd, waardoor ze veel bewoners kennen. Ik doe dit niet alleen, omdat een groep meer mensen kan uitnodigen en het werk beter kan verdelen.\n\n5. Ik maak de activiteit bekend met een brief in alle brievenbussen en met een bericht in de buurtgroep op internet. Daarnaast bel ik bij ouderen aan om hen persoonlijk uit te nodigen. Ik kies deze manier, omdat niet iedereen internet gebruikt.\n\n6. De activiteit levert nieuwe contacten op tussen bewoners die elkaar nu niet groeten. Dat is belangrijk, omdat mensen elkaar sneller helpen als ze elkaar kennen. Ik hoop dat we daarna vaker iets samen doen, zodat de buurt op de lange termijn sterker wordt.",
+    "form_schema": {
+      "sections": [
+        {
+          "heading": "Aanvraagformulier Buurtbudget gemeente Weidebroek",
+          "rows": [
+            {
+              "kind": "static",
+              "label": "Naam aanvrager",
+              "value": "Samira Bouali"
+            },
+            {
+              "kind": "static",
+              "label": "Adres",
+              "value": "Lijsterlaan 42, 3216 CV Weidebroek"
+            },
+            {
+              "kind": "static",
+              "label": "Datum van de aanvraag",
+              "value": "14 maart 2025"
+            },
+            {
+              "kind": "choice",
+              "label": "Ik vraag de subsidie aan als",
+              "options": [
+                "één bewoner",
+                "een groep bewoners",
+                "een vereniging of stichting"
+              ]
+            },
+            {
+              "kind": "choice",
+              "label": "Gevraagd bedrag",
+              "options": [
+                "minder dan 250 euro",
+                "tussen 250 en 500 euro",
+                "tussen 500 en 750 euro"
+              ]
+            }
+          ]
+        },
+        {
+          "heading": "Vragen over uw plan",
+          "rows": [
+            {
+              "kind": "text",
+              "label": "1. Welke activiteit wilt u organiseren? Beschrijf de activiteit en leg uit waarom u juist deze activiteit kiest.",
+              "placeholder": "Schrijf hier minimaal drie zinnen."
+            },
+            {
+              "kind": "text",
+              "label": "2. Voor welke bewoners is de activiteit bedoeld? Leg uit waarom u deze groep wilt bereiken.",
+              "placeholder": "Schrijf hier minimaal drie zinnen."
+            },
+            {
+              "kind": "text",
+              "label": "3. Waaraan besteedt u het geld? Noem minimaal twee kosten en leg uit waarom die kosten nodig zijn.",
+              "placeholder": "Schrijf hier minimaal drie zinnen."
+            },
+            {
+              "kind": "text",
+              "label": "4. Wie helpt u bij de organisatie? Leg uit waarom u met deze mensen samenwerkt.",
+              "placeholder": "Schrijf hier minimaal twee zinnen."
+            },
+            {
+              "kind": "text",
+              "label": "5. Hoe maakt u de activiteit bekend in de buurt? Leg uit waarom u voor deze manier kiest.",
+              "placeholder": "Schrijf hier minimaal twee zinnen."
+            },
+            {
+              "kind": "text",
+              "label": "6. Wat levert de activiteit op voor de buurt? Leg uit waarom dat belangrijk is.",
+              "placeholder": "Schrijf hier minimaal drie zinnen."
+            }
+          ]
+        }
+      ]
+    }
+  },
+  {
+    "task_type": "email",
+    "title": "Verkeerde levering",
+    "prompt_html": "<p>U werkt als medewerker inkoop bij Zorgcentrum De Waterlelie in Zwolle. Vorige week heeft u bij groothandel Van Dijssel Bedrijfsartikelen 200 pakken papieren handdoeken en 40 flessen handzeep besteld. De levering is gisteren gekomen, maar er is iets misgegaan. In de dozen zaten geen papieren handdoeken, maar 200 pakken keukenrollen. De handzeep is helemaal niet geleverd, hoewel op de pakbon staat dat alles verzonden is.</p><p>De verzorgenden op de afdelingen hebben de handdoeken en de zeep dringend nodig, omdat zij zonder deze spullen niet volgens de hygiëneregels kunnen werken. U schrijft daarom een e-mail aan mevrouw Bosveld van de klantenservice van Van Dijssel Bedrijfsartikelen.</p><p><strong>Opdracht</strong></p><p>Schrijf een e-mail aan de klantenservice. Gebruik de u-vorm. U mag de informatie zelf verzinnen, bijvoorbeeld het ordernummer en de datum van de bestelling.</p><p>Het doel van de tekst is de leverancier duidelijk maken wat er fout is gegaan bij de levering en hem vragen dit snel op te lossen.</p>",
+    "bullet_points": [
+      "U legt uit wie u bent en voor welke organisatie u schrijft.",
+      "U beschrijft wat u besteld hebt en wanneer u de bestelling geplaatst hebt.",
+      "U legt uit wat er precies fout is gegaan bij de levering.",
+      "U vertelt waarom dit een probleem is voor uw organisatie.",
+      "U vraagt de leverancier om een oplossing en noemt daarbij een termijn.",
+      "U schrijft hoe de leverancier u kan bereiken."
+    ],
+    "email_to": "klantenservice@vandijssel-bedrijfsartikelen.nl",
+    "email_subject": "Verkeerde levering order 20-11",
+    "greeting": "Geachte mevrouw Bosveld,",
+    "closing": "Met vriendelijke groet,",
+    "model_answer": "Geachte mevrouw Bosveld,\n\nMijn naam is Amina Haddad en ik werk als medewerker inkoop bij Zorgcentrum De Waterlelie in Zwolle. Ik schrijf u omdat er een probleem is met onze laatste bestelling.\n\nOp 12 november heb ik bij uw bedrijf 200 pakken papieren handdoeken en 40 flessen handzeep besteld. Het ordernummer is 20-11-4587. De levering is gisteren, 19 november, bij ons bezorgd.\n\nToen wij de dozen openden, bleek dat er geen papieren handdoeken in zaten, maar 200 pakken keukenrollen. De handzeep hebben wij helemaal niet ontvangen, hoewel op de pakbon staat dat de volledige bestelling verzonden is. Er is dus twee keer iets fout gegaan.\n\nDit is voor ons een groot probleem, omdat de verzorgenden de handdoeken en de zeep elke dag nodig hebben. Zonder deze spullen kunnen zij niet volgens de hygiëneregels werken, waardoor het risico op infecties groter wordt. Onze voorraad is nog maar genoeg voor twee dagen.\n\nIk wil u daarom vragen om de juiste producten uiterlijk vrijdag 22 november te leveren. Kunt u mij ook laten weten wat wij met de keukenrollen moeten doen? Wij kunnen ze klaarzetten, zodat uw chauffeur ze bij de volgende rit kan meenemen.\n\nU kunt mij bereiken op telefoonnummer 038 555 21 40 of via dit e-mailadres. Ik ben op maandag tot en met donderdag aanwezig tussen 9.00 en 16.00 uur.\n\nIk hoor graag snel van u.\n\nMet vriendelijke groet,\n\nAmina Haddad\nMedewerker inkoop\nZorgcentrum De Waterlelie"
+  },
+  {
+    "task_type": "letter",
+    "title": "Briefje over de verbouwing",
+    "prompt_html": "<p>U woont sinds twee jaar in een appartement aan de Molenkade in Zwolle. Uw woning wordt binnenkort verbouwd, omdat de keuken en de badkamer oud zijn. De werkzaamheden duren ongeveer drie weken. De aannemer heeft u verteld dat er veel geluid zal zijn, vooral in de eerste week, doordat er muren worden weggehaald.</p><p>U wilt de buren op tijd informeren, zodat zij niet voor verrassingen komen te staan. U schrijft een briefje en doet dat bij vier buren in de brievenbus.</p><p><strong>Opdracht</strong></p><p>Schrijf een briefje aan uw buren over de verbouwing in uw woning. Behandel alle punten hieronder. U mag de informatie zelf verzinnen.</p><p>Het doel van de tekst is uw buren informeren over de verbouwing en over de overlast, en hen uitnodigen om contact met u op te nemen bij vragen of problemen.</p>",
+    "bullet_points": [
+      "U stelt zich kort voor en u vertelt in welke woning u woont.",
+      "U legt uit wat er in uw woning verbouwd wordt en waarom dat nodig is.",
+      "U vertelt wanneer de verbouwing begint en hoelang de werkzaamheden duren.",
+      "U schrijft welke overlast de buren kunnen verwachten en op welke tijden er gewerkt wordt.",
+      "U legt uit wat u doet om de overlast zo klein mogelijk te houden.",
+      "U vraagt de buren om contact met u op te nemen bij vragen of klachten en u noemt hoe zij u kunnen bereiken."
+    ],
+    "greeting": "Beste buren,",
+    "closing": "Met vriendelijke groet,\n\nSamira el Haddad\nMolenkade 24 B, Zwolle",
+    "model_answer": "Beste buren,\n\nMijn naam is Samira el Haddad en ik woon sinds twee jaar op nummer 24 B, op de tweede verdieping. Met dit briefje wil ik u informeren over een verbouwing in mijn woning.\n\nIn mijn appartement worden de keuken en de badkamer vernieuwd. Dat is nodig, omdat de leidingen oud zijn en er regelmatig water lekt. De aannemer haalt ook een muur weg, zodat de keuken groter wordt.\n\nDe werkzaamheden beginnen op maandag 14 april en duren ongeveer drie weken. De werklui zijn er van maandag tot en met vrijdag, tussen 8.00 uur en 16.30 uur. In het weekend wordt er niet gewerkt. In de eerste week zult u het meeste geluid horen, doordat de oude tegels en de muur eruit gaan. Er komt dan ook stof in het trappenhuis en er staat af en toe een container voor de deur.\n\nIk begrijp dat dit hinderlijk is en ik probeer de overlast zo klein mogelijk te houden. Ik heb met de aannemer afgesproken dat hij niet voor 8.00 uur begint en dat het trappenhuis elke dag wordt schoongemaakt. Als u thuis moet werken of studeren, laat het mij dan weten. Misschien kunnen we samen een oplossing vinden.\n\nHebt u vragen of klachten? Dan kunt u mij altijd bellen op 06 12 34 56 78 of bij mij aanbellen. U mag ook een briefje in mijn brievenbus doen.\n\nAlvast bedankt voor uw begrip en uw geduld.\n\nMet vriendelijke groet,\n\nSamira el Haddad\nMolenkade 24 B, Zwolle"
+  }
+]

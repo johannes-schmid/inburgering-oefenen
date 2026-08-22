@@ -18,7 +18,7 @@ export default function FaqAccordion({ items }: { items: FaqItem[] }) {
         return (
           <div key={i}>
             {i > 0 && <div className="h-px bg-surface-container-low" />}
-            <div className="px-6 py-5" style={{ transition: 'background 0.15s ease' }}>
+            <div className="px-5 py-4" style={{ transition: 'background 0.15s ease' }}>
               <button
                 className="w-full text-left flex justify-between items-center gap-4 bg-transparent border-0 cursor-pointer p-0"
                 onClick={() => setOpen(isOpen ? null : i)}

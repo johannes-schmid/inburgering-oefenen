@@ -1,0 +1,266 @@
+[
+  {
+    "title": "Deel 1",
+    "instruction_html": "<p>In dit deel geeft u korte antwoorden. Een paar woorden tot twee zinnen is genoeg. U hoeft dus geen lang verhaal te vertellen.</p><p>Werkwijze:</p><ul><li>U leest bij elke opgave een korte situatie. Soms spreekt er iemand tegen u.</li><li>Bij sommige opgaven staat een plaatje. Kijk goed naar dat plaatje, want u moet de informatie uit het plaatje in uw antwoord gebruiken.</li><li>U hebt per opgave 20 seconden spreektijd. Spreek rustig en duidelijk.</li><li>Gebruik in een formele situatie 'u' en in een gesprek met een collega, buurtgenoot of medestudent 'je'.</li></ul><p>Er zijn acht opgaven in dit deel.</p>",
+    "tasks": [
+      {
+        "image_usage": "react",
+        "title": "Klagende buurman",
+        "prompt": "U woont in een appartement.\nGisteravond had u bezoek van vrienden.\nUw buurman komt bij u aan de deur.\n\nLuister naar de buurman en reageer.\nZeg ook wat u de volgende keer gaat doen.",
+        "prompt_spoken": "Zeg, ik heb vannacht bijna niet geslapen door al dat lawaai bij jullie. Kan dat niet wat rustiger?",
+        "voice": "man_older",
+        "model_answer": "Sorry, dat wist ik niet. We hadden bezoek en het werd later dan gepland. De volgende keer zet ik de muziek zachter en waarschuw ik je even vooraf.",
+        "images": [
+          {
+            "slot": "spreken-3-d1-o1-a",
+            "query": "annoyed older man talking to neighbour at apartment front door",
+            "caption": "De buurman aan de deur",
+            "variant": 0
+          }
+        ]
+      },
+      {
+        "image_usage": "none",
+        "title": "Vaste plek of flexplek",
+        "prompt": "U werkt op een kantoor van een verzekeringsbedrijf.\nHet kantoor wordt verbouwd.\nU mag kiezen: een vaste werkplek of een flexplek.\n\nVertel welke werkplek u kiest.\nVertel ook waarom u dat kiest.",
+        "model_answer": "Ik kies voor een vaste werkplek, omdat ik dan al mijn spullen kan laten liggen. Een flexplek kost me elke ochtend tijd, want dan moet ik eerst een plek zoeken.",
+        "images": []
+      },
+      {
+        "image_usage": "react",
+        "title": "Ruilen zonder bon",
+        "prompt": "U werkt in een winkel voor huishoudelijke artikelen.\nEen klant komt bij de kassa staan.\nZij heeft geen kassabon bij zich.\n\nLuister naar de klant en reageer.\nLeg uit wat er wel mogelijk is.",
+        "prompt_spoken": "Ik wil deze pan graag ruilen, maar ik heb de bon weggegooid. Dat is toch geen probleem?",
+        "voice": "woman_older",
+        "model_answer": "Zonder bon kan ik het geld helaas niet terugbetalen. Als u met pin hebt betaald, kunnen we de betaling opzoeken. Anders krijgt u een tegoedbon van de winkel.",
+        "images": [
+          {
+            "slot": "spreken-3-d1-o3-a",
+            "query": "woman at store counter returning a cooking pan to shop assistant",
+            "caption": "Klant bij de kassa",
+            "variant": 0
+          }
+        ]
+      },
+      {
+        "image_usage": "describe",
+        "title": "Bord bij de ingang",
+        "prompt": "U loopt met een kennis naar het gezondheidscentrum in de wijk.\nBij de ingang hangt een bord.\nUw kennis kan het bord niet goed lezen.\n\nKijk naar het plaatje.\nLeg uit wat er op het bord staat.",
+        "model_answer": "Op het bord staat wanneer het centrum open is en wanneer je kunt bellen. Er staat ook dat je eerst een afspraak moet maken bij de balie.",
+        "images": [
+          {
+            "slot": "spreken-3-d1-o4-a",
+            "query": "information sign at entrance of health centre with opening hours",
+            "caption": "Bord bij de ingang",
+            "variant": 0
+          }
+        ]
+      },
+      {
+        "image_usage": "none",
+        "title": "Cursus Nederlands",
+        "prompt": "U werkt in de keuken van een groot verzorgingshuis.\nDe leidinggevende wil een cursus Nederlands aanbieden.\nDe cursus is één keer per week na het werk.\n\nVertel wat u van dit plan vindt.\nGeef ook een reden.",
+        "model_answer": "Ik vind het een goed plan, want ik wil beter met de bewoners kunnen praten. Alleen na het werk is het voor mij lastig, dus ik hoop dat het in werktijd kan.",
+        "images": []
+      },
+      {
+        "image_usage": "react",
+        "title": "Te laat",
+        "prompt": "U werkt bij een pakketbezorger.\nDe trein had vandaag vertraging.\nU komt een half uur te laat binnen.\n\nLuister naar uw collega en reageer.\nLeg uit hoe u het werk gaat inhalen.",
+        "prompt_spoken": "Hé, waar bleef je nou? We staan hier al een half uur met te weinig mensen.",
+        "voice": "man_young",
+        "model_answer": "Sorry, mijn trein stond stil door een storing. Ik heb je nog een bericht gestuurd. Ik werk vanavond een half uur langer door, zodat we het inhalen.",
+        "images": [
+          {
+            "slot": "spreken-3-d1-o6-a",
+            "query": "young male warehouse worker looking at watch talking to colleague",
+            "caption": "Collega in het depot",
+            "variant": 0
+          }
+        ]
+      },
+      {
+        "image_usage": "none",
+        "title": "Extra dag",
+        "prompt": "U werkt vier dagen per week bij een schoonmaakbedrijf.\nUw werkgever heeft het druk.\nU mag kiezen: een dag extra werken met extra loon, of een dag extra vrij.\n\nVertel wat u kiest.\nVertel ook waarom u dat kiest.",
+        "model_answer": "Ik kies voor een dag extra werken, omdat ik het geld goed kan gebruiken voor mijn opleiding. Vrije tijd is fijn, maar dat kan later ook nog.",
+        "images": []
+      },
+      {
+        "image_usage": "describe",
+        "title": "Nieuwe bewoner",
+        "prompt": "Er is een nieuwe bewoner in uw straat komen wonen.\nHij kent nog niemand in de buurt.\nU komt hem tegen op de stoep.\n\nKijk naar het plaatje.\nVertel hem wat hij in de buurt kan doen om mensen te leren kennen.",
+        "model_answer": "Welkom in de straat! Hier om de hoek is een buurthuis. Daar is elke woensdag een koffieochtend en je kunt er ook meedoen met de tuingroep. Ik ga zelf ook vaak.",
+        "images": [
+          {
+            "slot": "spreken-3-d1-o8-a",
+            "query": "community centre entrance with notice board announcing neighbourhood activities",
+            "caption": "Het buurthuis in de wijk",
+            "variant": 0
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "title": "Deel 2",
+    "instruction_html": "<p>In dit deel van het onderdeel Spreken geeft u langere antwoorden. U leest bij elke opgave een korte situatie. Soms hoort u daarbij ook iemand die u een vraag stelt of om advies vraagt.</p><p>Bij sommige opgaven staan er plaatjes. Die plaatjes horen bij de opdracht en u moet de informatie op de plaatjes in uw antwoord gebruiken.</p><ul><li>U krijgt bij elke opgave vijftien seconden voorbereidingstijd. In die tijd bedenkt u wat u wilt zeggen.</li><li>Daarna heeft u dertig seconden spreektijd.</li><li>Geef een samenhangend antwoord van meerdere zinnen, dus geen los woord en geen enkele korte zin.</li><li>Gebruik verbindingswoorden zoals eerst, daarna, omdat en waardoor, zodat uw antwoord goed te volgen is.</li><li>Let erop dat u alle onderdelen van de opdracht behandelt.</li></ul><p>Spreek rustig en duidelijk. U hoeft de situatie niet voor te lezen; begin gewoon met uw antwoord.</p>",
+    "tasks": [
+      {
+        "image_usage": "cover_all",
+        "title": "Winkel afsluiten",
+        "prompt": "U werkt in een kledingwinkel in Zwolle.\nEen nieuwe collega, Bram, sluit vanavond voor het eerst alleen af.\nHij weet niet in welke volgorde hij de taken moet doen.\n\nKijk naar de plaatjes.\nLeg Bram uit hoe hij de winkel moet afsluiten. U moet daarbij alle plaatjes gebruiken.\nU hoort eerst wat Bram zegt.",
+        "prompt_spoken": "Ik moet vanavond voor het eerst alleen afsluiten, maar ik weet niet goed waar ik moet beginnen. Kun je me even uitleggen wat ik precies moet doen?",
+        "voice": "man_young",
+        "model_answer": "Ja, dat is niet moeilijk. Je begint met de kassa: je haalt het geld eruit en je legt het in de kluis achter. Daarna maak je de winkel netjes, dus je hangt de kleding terug en je veegt de vloer even. Als dat klaar is, doe je overal het licht uit en zet je de computer uit. Helemaal aan het eind doe je de deur op slot en zet je het alarm aan. Vergeet het alarm niet, want anders krijgen we een telefoontje van de eigenaar.",
+        "images": [
+          {
+            "slot": "spreken-3-d2-o1-a",
+            "query": "shop assistant counting money at cash register closing time",
+            "caption": "Kassa leegmaken",
+            "variant": 0
+          },
+          {
+            "slot": "spreken-3-d2-o1-b",
+            "query": "employee tidying clothing racks and sweeping floor in clothing store",
+            "caption": "Winkel opruimen",
+            "variant": 1
+          },
+          {
+            "slot": "spreken-3-d2-o1-c",
+            "query": "person locking shop door with key and alarm keypad",
+            "caption": "Deur op slot",
+            "variant": 2
+          }
+        ]
+      },
+      {
+        "image_usage": "none",
+        "title": "Opnieuw beginnen",
+        "prompt": "U praat met een vriend over school en werk.\nHij vertelt dat hij spijt heeft van zijn studiekeuze.\nHij vraagt hoe u daarover denkt.\n\nVertel welke opleiding u zou kiezen als u opnieuw kon beginnen.\nVertel ook waarom u die opleiding zou kiezen.",
+        "prompt_spoken": "Als ik opnieuw kon beginnen, zou ik iets heel anders gaan doen. En jij, welke opleiding zou jij dan kiezen?",
+        "voice": "man_older",
+        "model_answer": "Als ik opnieuw kon beginnen, zou ik denk ik verpleegkunde gaan doen. Ik vind het fijn om met mensen te werken en om echt iets voor iemand te betekenen. Bovendien is er veel werk in de zorg, dus je vindt bijna altijd snel een baan. Vroeger heb ik voor een administratieve opleiding gekozen, omdat mijn ouders dat een veilige keuze vonden. Maar ik zit liever niet de hele dag achter een computer. Misschien ga ik later toch nog een cursus in de zorg doen, want het is nooit te laat.",
+        "images": []
+      },
+      {
+        "image_usage": "cover_all",
+        "title": "Buurtdag",
+        "prompt": "In uw wijk in Apeldoorn wordt zaterdag een buurtdag georganiseerd.\nU zit in de organisatie en kent het programma.\nEen buurvrouw heeft de brief niet goed gelezen.\n\nKijk naar de plaatjes.\nVertel haar wat het programma van de buurtdag is. U moet daarbij alle plaatjes gebruiken.\nU hoort eerst wat de buurvrouw zegt.",
+        "prompt_spoken": "Ik heb die brief over de buurtdag ergens weggelegd en nu kan ik hem niet vinden. Wat gaan we zaterdag eigenlijk allemaal doen?",
+        "voice": "woman_older",
+        "model_answer": "We beginnen zaterdagochtend om tien uur met samen schoonmaken in de straat. Er staan bakken klaar, dus we ruimen het zwerfafval op en we halen het onkruid weg. Rond twaalf uur is er een gezamenlijke lunch op het pleintje, waar iedereen iets lekkers voor kan meenemen. 's Middags is er muziek van een bandje uit de wijk en kunnen de kinderen dansen. Je hoeft je niet aan te melden, je komt gewoon langs. Neem wel een stoel mee, want er zijn niet genoeg banken.",
+        "images": [
+          {
+            "slot": "spreken-3-d2-o3-a",
+            "query": "neighbours cleaning up litter in street with garbage bags",
+            "caption": "Samen de straat schoonmaken",
+            "variant": 0
+          },
+          {
+            "slot": "spreken-3-d2-o3-b",
+            "query": "neighbourhood street lunch with long table and food",
+            "caption": "Lunch op het plein",
+            "variant": 1
+          },
+          {
+            "slot": "spreken-3-d2-o3-c",
+            "query": "small band playing live music at outdoor neighbourhood party",
+            "caption": "Muziek in de middag",
+            "variant": 2
+          }
+        ]
+      },
+      {
+        "image_usage": "choose",
+        "title": "Welke woning?",
+        "prompt": "Uw zus zoekt met haar man en twee kinderen een andere woning.\nZe twijfelt tussen twee huizen die ze heeft gezien.\nZe wil graag uw advies.\n\nKijk naar de twee plaatjes.\nAdviseer haar welke woning beter bij haar gezin past en geef minimaal twee redenen.",
+        "prompt_spoken": "We kunnen kiezen tussen deze twee woningen, maar we komen er samen niet uit. Welke zou jij nemen voor ons gezin?",
+        "voice": "woman_young",
+        "model_answer": "Ik zou als ik jullie was voor het rijtjeshuis met de tuin kiezen. Jullie hebben twee jonge kinderen en die willen buiten spelen, en dan is een eigen tuin echt handig. Bovendien heeft zo'n huis meestal drie slaapkamers, zodat de kinderen later een eigen kamer kunnen krijgen. In het appartement heb je alleen een klein balkon en moet je altijd met de lift naar beneden. Ik snap dat het appartement dichter bij het centrum ligt, maar met kinderen vind ik rust en ruimte belangrijker.",
+        "images": [
+          {
+            "slot": "spreken-3-d2-o4-a",
+            "query": "dutch terraced family house with garden and children playing",
+            "caption": "Rijtjeshuis met tuin",
+            "variant": 0
+          },
+          {
+            "slot": "spreken-3-d2-o4-b",
+            "query": "modern apartment building with balcony in dutch city centre",
+            "caption": "Appartement in het centrum",
+            "variant": 1
+          }
+        ]
+      },
+      {
+        "image_usage": "cover_all",
+        "title": "Aanmelden bibliotheek",
+        "prompt": "U komt vaak in de bibliotheek van uw gemeente.\nEen kennis wil ook lid worden, maar weet niet hoe dat gaat.\nU legt het hem uit.\n\nKijk naar de plaatjes.\nLeg uit hoe hij zich moet aanmelden voor de bibliotheek. U moet daarbij alle plaatjes gebruiken.\nU hoort eerst wat uw kennis vraagt.",
+        "prompt_spoken": "Ik wil graag boeken lenen voor mijn dochter, maar ik heb geen idee hoe je lid wordt. Hoe moet ik dat aanpakken?",
+        "voice": "man_young",
+        "model_answer": "Dat is heel eenvoudig. Je gaat eerst naar de balie in de bibliotheek en je vult daar een formulier in met je naam en adres. Je moet ook je identiteitskaart of paspoort meenemen, want ze willen zien wie je bent. Daarna betaal je het abonnement, en voor kinderen is dat vaak gratis. Ten slotte krijg je meteen je bibliotheekpas mee. Met die pas kun je bij de automaat zelf boeken lenen en weer inleveren.",
+        "images": [
+          {
+            "slot": "spreken-3-d2-o5-a",
+            "query": "person filling in registration form at library desk",
+            "caption": "Formulier bij de balie",
+            "variant": 0
+          },
+          {
+            "slot": "spreken-3-d2-o5-b",
+            "query": "hand showing identity card and paying at counter",
+            "caption": "Legitimatie en betalen",
+            "variant": 1
+          },
+          {
+            "slot": "spreken-3-d2-o5-c",
+            "query": "person using library card at self service borrowing machine",
+            "caption": "Bibliotheekpas gebruiken",
+            "variant": 2
+          }
+        ]
+      },
+      {
+        "image_usage": "none",
+        "title": "Vrijwilligerswerk",
+        "prompt": "U zit met een groepje in de wachtkamer van het buurthuis.\nIemand vertelt dat zij drie ochtenden per week vrijwilligerswerk doet.\nZe vraagt wat u van vrijwilligerswerk vindt.\n\nVertel wat u van vrijwilligerswerk vindt.\nVertel ook waarom u dat vindt.",
+        "prompt_spoken": "Ik doe al jaren vrijwilligerswerk en ik zou het iedereen aanraden. Wat vindt u daar eigenlijk van?",
+        "voice": "woman_older",
+        "model_answer": "Ik vind vrijwilligerswerk heel waardevol, want zonder vrijwilligers zouden veel clubs en buurthuizen moeten sluiten. Het is ook goed voor jezelf, omdat je nieuwe mensen leert kennen en je Nederlands vanzelf beter wordt. Zelf help ik af en toe bij de voetbalclub van mijn zoon met de kantine. Toch vind ik dat het vrijwillig moet blijven, dus niet verplicht. Veel mensen werken al veel uren en hebben gewoon geen tijd meer over. Als iedereen een klein beetje doet, is dat al genoeg.",
+        "images": []
+      },
+      {
+        "image_usage": "choose",
+        "title": "Welke cursus?",
+        "prompt": "Uw vriendin Sanne wil naast haar werk een cursus gaan volgen.\nZe heeft twee mogelijkheden gevonden en kan er maar één betalen.\nZe vraagt u om advies.\n\nKijk naar de twee plaatjes.\nAdviseer haar welke cursus ze het beste kan volgen en geef minimaal twee redenen.",
+        "prompt_spoken": "Ik kan maar één cursus doen, want de rest kan ik niet betalen. Welke zou jij mij aanraden?",
+        "voice": "woman_young",
+        "model_answer": "Ik zou de computercursus kiezen als ik jou was. Je vertelde dat je op je werk steeds met nieuwe programma's moet werken, en daar leer je precies mee omgaan. Bovendien heb je die kennis bij bijna elke baan nodig, dus je hebt er later ook profijt van. De cursus koken is natuurlijk gezellig, maar dat kun je ook thuis leren van een boek of van internet. Ik zou dus eerst iets doen waar je op je werk verder mee komt. Koken kun je altijd nog.",
+        "images": [
+          {
+            "slot": "spreken-3-d2-o7-a",
+            "query": "adults in computer course classroom with laptops teacher",
+            "caption": "Cursus computervaardigheden",
+            "variant": 0
+          },
+          {
+            "slot": "spreken-3-d2-o7-b",
+            "query": "adult cooking class group preparing food in kitchen",
+            "caption": "Cursus koken",
+            "variant": 1
+          }
+        ]
+      },
+      {
+        "image_usage": "none",
+        "title": "Werk en gezin",
+        "prompt": "U staat na de les te praten met een medestudent.\nHij vertelt dat hij het druk heeft met zijn werk en zijn kinderen.\nHij is nieuwsgierig hoe u dat doet.\n\nVertel hoe u uw werk en uw gezin combineert.\nVertel ook wat u daarbij moeilijk of makkelijk vindt.",
+        "prompt_spoken": "Ik krijg mijn werk en de kinderen bijna niet meer bij elkaar. Hoe regel jij dat allemaal?",
+        "voice": "man_young",
+        "model_answer": "Bij ons thuis lukt het alleen met een goede planning. Ik werk vier dagen en op woensdag ben ik vrij, zodat ik de kinderen zelf naar school kan brengen. Mijn man werkt 's middags, waardoor er bijna altijd iemand thuis is. In het weekend koken we samen en doen we de boodschappen voor de hele week. Moeilijk vind ik het als een kind ziek wordt, want dan moet er meteen iemand vrij nemen. Maar mijn buurvrouw helpt gelukkig af en toe, en dat maakt veel verschil.",
+        "images": []
+      }
+    ]
+  }
+]

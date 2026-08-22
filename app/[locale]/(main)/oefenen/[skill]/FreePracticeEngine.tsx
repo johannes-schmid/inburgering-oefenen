@@ -113,7 +113,7 @@ export default function FreePracticeEngine({ skill, skillName, items, locale }: 
   if (phase === 'intro') {
     const genres = Array.from(new Set(items.map(i => i.subSkill)));
     return (
-      <div className="rounded-3xl overflow-hidden bg-surface-container-lowest" style={{ border: '1px solid #e6e8ea', boxShadow: '0 10px 40px -12px rgba(0,43,109,0.18)' }}>
+      <div className="rounded-3xl overflow-hidden bg-surface-container-lowest" style={{ boxShadow: 'var(--shadow-ambient)' }}>
         <div className="relative px-6 sm:px-8 pt-7 pb-8" style={{ background: 'linear-gradient(135deg,#001a44 0%,#002b6d 55%,#143d8a 100%)' }}>
           <div aria-hidden className="absolute inset-0 pointer-events-none" style={{ background: 'radial-gradient(120% 90% at 100% 0%, rgba(254,118,44,0.22), transparent 55%)' }} />
           <div className="relative">
@@ -130,12 +130,12 @@ export default function FreePracticeEngine({ skill, skillName, items, locale }: 
                 { node: <Star size={15} strokeWidth={2.2} className="text-white" aria-hidden="true" />, label: t('stat_free') },
                 { node: <UserRoundCheck size={15} strokeWidth={2.2} className="text-white" aria-hidden="true" />, label: t('stat_no_account') },
               ].map(({ node, label }) => (
-                <div key={label} className="flex items-center gap-2 rounded-full px-3.5 py-2" style={{ background: 'rgba(255,255,255,0.10)', border: '1px solid rgba(255,255,255,0.14)' }}>
+                <div key={label} className="flex items-center gap-2 rounded-full px-3.5 py-2" style={{ background: 'rgba(255,255,255,0.10)' }}>
                   {node}
                   <span className="font-semibold uppercase" style={{ color: 'rgba(255,255,255,0.6)', fontSize: '0.58rem', letterSpacing: '0.06em' }}>{label}</span>
                 </div>
               ))}
-              <div className="flex items-center gap-1.5 rounded-full px-3 py-2" style={{ background: 'rgba(254,118,44,0.16)', border: '1px solid rgba(254,118,44,0.32)' }}>
+              <div className="flex items-center gap-1.5 rounded-full px-3 py-2" style={{ background: 'rgba(254,118,44,0.16)' }}>
                 <Check size={13} strokeWidth={2.6} style={{ color: '#ffb27a' }} aria-hidden="true" />
                 <span className="font-semibold" style={{ color: '#ffd1ab', fontSize: '0.68rem' }}>{t('feedback_tag')}</span>
               </div>
@@ -149,20 +149,20 @@ export default function FreePracticeEngine({ skill, skillName, items, locale }: 
           </p>
           <div className="flex flex-wrap gap-1.5 mb-6">
             {genres.map(g => (
-              <span key={g} className="text-xs font-medium rounded-full px-2.5 py-1" style={{ background: '#f2f4f6', border: '1px solid #eaeef0', color: '#434651' }}>
+              <span key={g} className="text-xs font-medium rounded-full px-2.5 py-1" style={{ background: 'var(--color-surface-container-high)', color: '#434651' }}>
                 {g}
               </span>
             ))}
           </div>
 
           {isListening && (
-            <div className="flex items-start gap-3 mb-6 rounded-2xl p-3.5" style={{ background: '#fff7ed', border: '1px solid #fed7aa' }}>
+            <div className="flex items-start gap-3 mb-6 rounded-2xl p-3.5" style={{ background: 'rgba(254,118,44,0.10)' }}>
               <Headphones size={18} strokeWidth={2} style={{ color: '#a24000' }} className="flex-shrink-0 mt-0.5" aria-hidden="true" />
               <p className="text-sm leading-relaxed" style={{ color: '#7c2d12' }}>{t('audio_hint')}</p>
             </div>
           )}
 
-          <div className="flex items-center gap-3 mb-6 rounded-2xl p-3" style={{ background: '#f8f9fb', border: '1px solid #eef0f2' }}>
+          <div className="flex items-center gap-3 mb-6 rounded-2xl p-3" style={{ background: 'var(--color-surface-container-low)' }}>
             <div className="w-11 h-11 rounded-xl overflow-hidden border border-outline-variant/30 flex-shrink-0">
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img src="/images/marieke-schipper.jpg" alt="Marieke Schipper" width={44} height={44} className="w-full h-full object-cover object-top" />
@@ -206,7 +206,9 @@ export default function FreePracticeEngine({ skill, skillName, items, locale }: 
             </span>
             <span style={{ fontSize: '.72rem', fontWeight: 600, color: '#a0a3ad' }}>{t('q_done', { pct: Math.round(done) })}</span>
           </div>
-          <div className="rounded-full overflow-hidden" style={{ height: '.5rem', background: '#e0e3e5' }}>
+          {/* The Dutch Horizon bar (§7.1): the track is the same orange at 14% rather than a grey
+              neutral, so the bar reads as one object at any fill instead of as two. */}
+          <div className="rounded-full overflow-hidden" style={{ height: '.5rem', background: 'rgba(254,118,44,0.14)' }}>
             <div className="h-full rounded-full" style={{ width: `${done}%`, background: 'linear-gradient(to right,#a24000,#fe762c)', transition: 'width .4s cubic-bezier(.4,0,.2,1)' }} />
           </div>
         </div>
@@ -336,7 +338,7 @@ export default function FreePracticeEngine({ skill, skillName, items, locale }: 
           </span>
         </div>
         <div className="rounded-full overflow-hidden mb-4" style={{ height: '.6rem', background: 'rgba(255,255,255,0.18)' }}>
-          <div className="h-full rounded-full" style={{ width: `${pct}%`, background: passed ? 'linear-gradient(to right,#4ade80,#22c55e)' : 'linear-gradient(to right,#a24000,#fe762c)' }} />
+          <div className="h-full rounded-full" style={{ width: `${pct}%`, background: passed ? 'linear-gradient(to right,#a24000,#fe762c)' : 'linear-gradient(to right,#a24000,#fe762c)' }} />
         </div>
         <h2 className="font-headline font-extrabold text-white mb-1.5" style={{ fontSize: '1.35rem', letterSpacing: '-.01em' }}>
           {passed ? t('verdict_pass_title') : t('verdict_fail_title')}
@@ -362,7 +364,7 @@ export default function FreePracticeEngine({ skill, skillName, items, locale }: 
                   <span className="text-xs text-on-surface-variant tabular-nums">{row.correct}/{row.total}</span>
                 </div>
                 <div className="rounded-full overflow-hidden" style={{ height: '.4rem', background: 'var(--color-surface-container)' }}>
-                  <div className="h-full rounded-full" style={{ width: `${rowPct}%`, background: rowPct >= 70 ? '#22c55e' : '#fe762c' }} />
+                  <div className="h-full rounded-full" style={{ width: `${rowPct}%`, background: rowPct >= 70 ? '#a24000' : '#fe762c' }} />
                 </div>
               </li>
             );
@@ -376,12 +378,12 @@ export default function FreePracticeEngine({ skill, skillName, items, locale }: 
           <h3 className="font-headline font-bold text-on-surface text-base mb-4">{t('review_heading')}</h3>
           <ul className="flex flex-col gap-5 list-none p-0 m-0">
             {wrong.map(({ item, chosen }) => (
-              <li key={item.id} className="pb-5 border-b border-outline-variant/40 last:border-0 last:pb-0">
+              <li key={item.id} className="pb-5 mb-1 last:pb-0">
                 <p className="text-sm font-semibold text-on-surface mb-2 whitespace-pre-line">{item.question}</p>
-                <p className="text-sm mb-1" style={{ color: '#b91c1c' }}>
+                <p className="text-sm mb-1" style={{ color: 'var(--color-error)' }}>
                   <span className="font-semibold">{t('review_your_answer')}:</span> {optionText(item, chosen)}
                 </p>
-                <p className="text-sm mb-2" style={{ color: '#15803d' }}>
+                <p className="text-sm mb-2" style={{ color: '#a24000' }}>
                   <span className="font-semibold">{t('review_correct_answer')}:</span> {optionText(item, item.correct)}
                 </p>
                 <p className="text-sm text-on-surface-variant leading-relaxed">{item.explanation}</p>
@@ -428,7 +430,7 @@ function optionText(item: FreePracticeItem, key: 'A' | 'B' | 'C') {
 function StimulusPane({ item, isListening }: { item: FreePracticeItem; isListening: boolean }) {
   return (
     <div className="rounded-2xl p-5 sm:p-6 bg-surface-container-lowest" style={{ boxShadow: 'var(--shadow-card-md)' }}>
-      <p className="text-sm text-on-surface-variant whitespace-pre-line leading-relaxed mb-4 pb-4 border-b border-outline-variant/40">
+      <p className="text-sm text-on-surface-variant whitespace-pre-line leading-relaxed mb-5 pb-5">
         {item.stimulusIntro}
       </p>
       {isListening && item.audioSrc ? (
@@ -577,7 +579,7 @@ function QuestionPane({
           const answered = selected !== null;
 
           let style: React.CSSProperties = { background: '#f8f9fb', border: '1.5px solid #e6e8ea' };
-          if (answered && isRight) style = { background: '#f0fdf4', border: '1.5px solid #86efac' };
+          if (answered && isRight) style = { background: 'rgba(254,118,44,0.10)', boxShadow: 'inset 0 0 0 2px rgba(254,118,44,0.40)' };
           else if (answered && isChosen) style = { background: '#fef2f2', border: '1.5px solid #fca5a5' };
           else if (answered) style = { background: '#f8f9fb', border: '1.5px solid #e6e8ea', opacity: 0.55 };
 
@@ -594,19 +596,19 @@ function QuestionPane({
               <span
                 className="w-7 h-7 min-w-7 rounded-lg flex items-center justify-center text-xs font-bold flex-shrink-0"
                 style={answered && isRight
-                  ? { background: '#dcfce7', color: '#15803d' }
+                  ? { background: 'rgba(254,118,44,0.20)', color: '#a24000' }
                   : answered && isChosen
-                    ? { background: '#fee2e2', color: '#b91c1c' }
+                    ? { background: 'rgba(186,26,26,0.10)', color: '#ba1a1a' }
                     : { background: '#eceef0', color: '#434651' }}
               >
                 {key}
               </span>
               <span className="text-sm text-on-surface flex-1">{text}</span>
               {answered && isRight && (
-                <span className="text-xs font-bold flex-shrink-0" style={{ color: '#15803d' }}>{correctLabel}</span>
+                <span className="text-xs font-bold flex-shrink-0" style={{ color: '#a24000' }}>{correctLabel}</span>
               )}
               {answered && isChosen && !isRight && (
-                <span className="text-xs font-bold flex-shrink-0" style={{ color: '#b91c1c' }}>{wrongLabel}</span>
+                <span className="text-xs font-bold flex-shrink-0" style={{ color: 'var(--color-error)' }}>{wrongLabel}</span>
               )}
             </button>
           );
@@ -614,7 +616,7 @@ function QuestionPane({
       </div>
 
       {selected && (
-        <div className="mt-4 rounded-xl p-4" style={{ background: '#eff6ff', border: '1px solid rgba(59,130,246,0.15)' }}>
+        <div className="mt-4 rounded-xl p-4" style={{ background: 'var(--color-surface-container-high)' }}>
           <p className="text-xs font-bold uppercase tracking-wider mb-1.5" style={{ color: '#002b6d', letterSpacing: '0.06em' }}>
             {explanationLabel}
           </p>

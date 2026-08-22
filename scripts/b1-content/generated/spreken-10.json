@@ -1,0 +1,266 @@
+[
+  {
+    "title": "Deel 1",
+    "instruction_html": "<p>In dit deel geeft u korte antwoorden. U hoort of leest steeds een situatie. Daarna spreekt u.</p><ul><li>Een antwoord van een paar woorden tot twee zinnen is genoeg.</li><li>U hebt per opgave 20 seconden spreektijd.</li><li>Bij sommige opgaven staat een plaatje. Kijk daar goed naar en gebruik de informatie van het plaatje in uw antwoord.</li><li>Spreek duidelijk en in hele zinnen, zodat de ander u goed begrijpt.</li></ul><p>Let op: u reageert steeds op de situatie die beschreven wordt. Geef ook een reden of een uitleg als daarom gevraagd wordt.</p>",
+    "tasks": [
+      {
+        "image_usage": "react",
+        "title": "Afspraak maken",
+        "prompt": "U werkt bij een fietsenwerkplaats in Zwolle.\nU maakt afspraken voor reparaties.\nOp donderdag is de werkplaats gesloten.\nEen klant wil juist dan komen.\n\nLuister naar de klant en reageer.\nStel een andere dag voor en leg uit waarom donderdag niet kan.",
+        "prompt_spoken": "Goedemiddag, ik wil mijn fiets laten maken. Kan dat donderdagochtend om tien uur?",
+        "voice": "man_older",
+        "model_answer": "Sorry meneer, op donderdag zijn we dicht, want dan werkt onze monteur niet. Kunt u woensdag om tien uur komen? Dan hebben we nog plek.",
+        "images": [
+          {
+            "slot": "spreken-10-d1-o1-a",
+            "query": "bicycle repair shop counter with customer and mechanic",
+            "caption": "Klant in de fietsenwerkplaats",
+            "variant": 0
+          }
+        ]
+      },
+      {
+        "image_usage": "none",
+        "title": "Techniek of zorg",
+        "prompt": "U wilt een beroepsopleiding gaan doen.\nU kunt kiezen: een opleiding in de techniek of een opleiding in de zorg.\nEen vriend vraagt wat u gaat doen.\n\nVertel welke opleiding u kiest.\nVertel ook waarom u die keuze maakt.",
+        "model_answer": "Ik kies voor de zorg, want ik werk graag met mensen. In de techniek moet je vooral met machines bezig zijn, en dat vind ik minder leuk. Bovendien is er veel werk in de zorg.",
+        "images": []
+      },
+      {
+        "image_usage": "react",
+        "title": "Te veel praten",
+        "prompt": "U werkt in een groot magazijn.\nU praat vaak met de mensen om u heen.\nEen collega vindt dat u daardoor te langzaam werkt.\nHij zegt er iets van.\n\nLuister naar uw collega en reageer.\nZeg wat u ervan vindt.",
+        "prompt_spoken": "Zeg, jij staat de hele ochtend te kletsen. Ik moet daardoor steeds jouw dozen ook nog doen.",
+        "voice": "man_young",
+        "model_answer": "Dat wist ik niet, sorry. Ik praat graag, maar ik wil je niet extra werk geven. Ik zal beter opletten en pas in de pauze verder praten.",
+        "images": [
+          {
+            "slot": "spreken-10-d1-o3-a",
+            "query": "two warehouse workers talking between shelves with boxes",
+            "caption": "Collega's in het magazijn",
+            "variant": 0
+          }
+        ]
+      },
+      {
+        "image_usage": "describe",
+        "title": "Openingstijden",
+        "prompt": "U staat met een vriendin voor een gezondheidscentrum.\nZij kan het bord met de openingstijden niet lezen.\n\nKijk naar het plaatje.\nLeg uit wat er op het bord staat over de openingstijden.",
+        "model_answer": "Op het bord staat wanneer ze open zijn. Op werkdagen kun je 's ochtends en 's middags terecht, maar tussen de middag is het dicht. In het weekend zijn ze helemaal gesloten.",
+        "images": [
+          {
+            "slot": "spreken-10-d1-o4-a",
+            "query": "opening hours sign on glass door of medical centre",
+            "caption": "Bord met openingstijden",
+            "variant": 0
+          }
+        ]
+      },
+      {
+        "image_usage": "none",
+        "title": "Bibliotheek dicht",
+        "prompt": "De bibliotheek in uw wijk is nu zes dagen per week open.\nDe gemeente wil dat de bibliotheek een dag minder opengaat, omdat er te weinig geld is.\nEen medewerker van de gemeente vraagt naar uw mening.\n\nVertel wat u van dit plan vindt.\nGeef ook een reden.",
+        "model_answer": "Ik vind dat geen goed plan. Veel mensen komen daar studeren of de krant lezen, en kinderen halen er hun boeken. Ze kunnen beter op iets anders bezuinigen.",
+        "images": []
+      },
+      {
+        "image_usage": "react",
+        "title": "Hulp bij Nederlands",
+        "prompt": "U volgt een opleiding tot verzorgende.\nEen medestudent uit uw klas heeft moeite met Nederlands.\nHij spreekt u aan na de les.\n\nLuister naar uw medestudent en reageer.\nZeg of u hem wilt helpen en hoe.",
+        "prompt_spoken": "Hé, mag ik je wat vragen? Ik snap die opdrachten Nederlands echt niet. Zou jij me een keer willen helpen?",
+        "voice": "man_young",
+        "model_answer": "Ja hoor, dat wil ik wel doen. Zullen we donderdag na de les een uurtje samen zitten? Dan nemen we de opdrachten rustig door.",
+        "images": [
+          {
+            "slot": "spreken-10-d1-o6-a",
+            "query": "two adult students talking in college classroom after class",
+            "caption": "Medestudenten na de les",
+            "variant": 0
+          }
+        ]
+      },
+      {
+        "image_usage": "none",
+        "title": "Stage kiezen",
+        "prompt": "U moet stage gaan lopen voor uw opleiding.\nU mag kiezen tussen een groot bedrijf met driehonderd medewerkers en een klein bedrijf met acht medewerkers.\nUw stagebegeleider wil weten wat u wilt.\n\nVertel welk bedrijf u kiest.\nLeg uit waarom u dat bedrijf beter vindt.",
+        "model_answer": "Ik kies liever een klein bedrijf. Je leert daar alle taken kennen, terwijl je in een groot bedrijf vaak maar één ding doet. Ook krijg je meer aandacht van je begeleider.",
+        "images": []
+      },
+      {
+        "image_usage": "describe",
+        "title": "Deur te smal",
+        "prompt": "U werkt in een buurthuis bij de balie.\nEen klant met een kinderwagen komt niet naar binnen.\nU wilt uw leidinggevende uitleggen wat het probleem is.\n\nKijk naar het plaatje.\nLeg uit wat u ziet en wat er moet gebeuren.",
+        "model_answer": "Er staat een moeder met een kinderwagen voor de deur, maar de opening is te smal. Ze kan er niet doorheen, ook niet als ze duwt. Volgens mij moeten we de tweede deur openzetten of een drempelplank neerleggen.",
+        "images": [
+          {
+            "slot": "spreken-10-d1-o8-a",
+            "query": "woman with stroller stuck in narrow doorway entrance building",
+            "caption": "Kinderwagen in smalle deur",
+            "variant": 0
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "title": "Deel 2",
+    "instruction_html": "<p>In dit deel geeft u langere antwoorden. U krijgt acht opgaven. Bij elke opgave leest u eerst een korte situatie. Daarna hoort of leest u wat u moet doen.</p><ul><li>U hebt vijftien seconden om na te denken over uw antwoord.</li><li>Daarna hebt u dertig seconden spreektijd.</li><li>Geef een samenhangend antwoord van ongeveer vier tot zeven zinnen.</li><li>Vertel niet alleen wát u vindt, maar ook waarom u dat vindt.</li><li>Bij sommige opgaven staan plaatjes. U moet die plaatjes in uw antwoord gebruiken.</li><li>Spreek rustig en duidelijk, zodat de ander u goed kan volgen.</li></ul><p>Gebruik in formele situaties 'u' en tegen collega's of medestudenten 'je'.</p>",
+    "tasks": [
+      {
+        "image_usage": "cover_all",
+        "title": "Foto-opdracht",
+        "prompt": "U volgt een opleiding mediavormgeving.\nU hebt een foto-opdracht gemaakt over uw eigen wijk.\nEen medestudent begint pas volgende week en vraagt hoe u dat hebt aangepakt.\n\nKijk naar de plaatjes.\nLeg uit hoe u de opdracht hebt aangepakt.\nU moet daarbij alle plaatjes gebruiken.\nU hoort eerst wat uw medestudent vraagt.",
+        "prompt_spoken": "Ik moet volgende week ook zo'n foto-opdracht doen, maar ik weet niet waar ik moet beginnen. Hoe heb jij dat aangepakt?",
+        "voice": "woman_young",
+        "model_answer": "Ik ben eerst thuis gaan zitten met papier en pen. Ik heb opgeschreven welke plekken in de wijk ik interessant vond, zodat ik niet zomaar wat ging fotograferen. Daarna ben ik met mijn camera de straat op gegaan en heb ik heel veel foto's gemaakt, ook van dingen die ik eerst niet had bedacht. Thuis heb ik alles op de computer gezet en de beste foto's uitgezocht. Die heb ik nog een beetje bijgewerkt en toen heb ik ze ingeleverd. Mijn tip is: maak veel meer foto's dan je nodig hebt.",
+        "images": [
+          {
+            "slot": "spreken-10-d2-o1-a",
+            "query": "person writing plan with pen and notebook at table",
+            "caption": "Een plan maken",
+            "variant": 0
+          },
+          {
+            "slot": "spreken-10-d2-o1-b",
+            "query": "young person photographing street in neighbourhood with camera",
+            "caption": "Foto's maken buiten",
+            "variant": 1
+          },
+          {
+            "slot": "spreken-10-d2-o1-c",
+            "query": "person editing photos on laptop computer",
+            "caption": "Foto's uitzoeken",
+            "variant": 2
+          }
+        ]
+      },
+      {
+        "image_usage": "none",
+        "title": "Boek of film",
+        "prompt": "U zit in een leesclub van de bibliotheek.\nEen ander lid wil iets lezen of kijken in de vakantie.\nZij vraagt u om een tip.\n\nVertel welk boek of welke film u haar aanraadt.\nVertel ook waarom u dat een goede tip vindt.",
+        "prompt_spoken": "Ik heb straks twee weken vrij en ik weet nog niks. Welk boek of welke film zou jij mij aanraden?",
+        "voice": "woman_older",
+        "model_answer": "Ik zou je een film aanraden over een familie die naar een ander land verhuist. Ik vond die film heel mooi, omdat je goed ziet hoe moeilijk zo'n nieuw begin is. De verhaallijn is niet ingewikkeld, dus je kunt makkelijk blijven kijken. Er zitten ook grappige stukken in, waardoor het niet te zwaar wordt. En na afloop heb je echt iets om over te praten. Ik denk dat jij hem goed zult vinden, want je houdt van echte verhalen.",
+        "images": []
+      },
+      {
+        "image_usage": "cover_all",
+        "title": "De excursie",
+        "prompt": "U werkt bij een buurtcentrum.\nU organiseert een excursie naar een museum in Utrecht.\nEen vrijwilliger wil weten hoe de dag eruitziet.\n\nKijk naar de plaatjes.\nVertel wat er allemaal geregeld is voor de excursie.\nU moet daarbij alle plaatjes gebruiken.\nU hoort eerst wat de vrijwilliger vraagt.",
+        "prompt_spoken": "Ik ga zaterdag mee als begeleider. Wat is er eigenlijk allemaal geregeld voor die dag?",
+        "voice": "man_older",
+        "model_answer": "We vertrekken om negen uur met een gehuurde bus vanaf het buurtcentrum. Ik heb de kaartjes voor het museum al online besteld, zodat we niet in de rij hoeven te staan. Rond twaalf uur is er een gezamenlijke lunch in het café bij het museum, en die is bij de prijs inbegrepen. 's Middags is er een rondleiding van een uur met een gids. Om vier uur rijden we weer terug. Zou jij bij het instappen willen tellen of iedereen er is?",
+        "images": [
+          {
+            "slot": "spreken-10-d2-o3-a",
+            "query": "group of people boarding a coach bus",
+            "caption": "Met de bus",
+            "variant": 0
+          },
+          {
+            "slot": "spreken-10-d2-o3-b",
+            "query": "museum entrance tickets counter visitors",
+            "caption": "Kaartjes voor het museum",
+            "variant": 1
+          },
+          {
+            "slot": "spreken-10-d2-o3-c",
+            "query": "group having lunch together in a cafe",
+            "caption": "Samen lunchen",
+            "variant": 2
+          }
+        ]
+      },
+      {
+        "image_usage": "choose",
+        "title": "Werktelefoon",
+        "prompt": "U werkt bij een installatiebedrijf.\nUw leidinggevende koopt nieuwe telefoons voor de monteurs.\nDe monteurs werken veel buiten en gebruiken de telefoon voor foto's en formulieren.\n\nKijk naar de twee plaatjes.\nZeg welke telefoon u beter vindt voor het werk.\nGeef minimaal twee redenen voor uw keuze.",
+        "prompt_spoken": "Ik twijfel tussen deze twee toestellen. Welke lijkt jou beter voor de monteurs?",
+        "voice": "man_young",
+        "model_answer": "Ik zou de stevige telefoon met de beschermhoes kiezen. De monteurs werken buiten en laten hun telefoon geregeld vallen, waardoor een dun toestel snel kapotgaat. Deze kan ook tegen regen en stof, dus dat scheelt reparatiekosten. De andere telefoon is mooier en heeft een groter scherm, maar dat is voor dit werk minder belangrijk. Bovendien kun je hem met werkhandschoenen slechter bedienen. Ik denk dus dat de stevige telefoon op de lange termijn goedkoper is.",
+        "images": [
+          {
+            "slot": "spreken-10-d2-o4-a",
+            "query": "rugged smartphone with protective case on construction site",
+            "caption": "Stevige telefoon met hoes",
+            "variant": 0
+          },
+          {
+            "slot": "spreken-10-d2-o4-b",
+            "query": "slim modern smartphone large screen on desk",
+            "caption": "Dunne telefoon, groot scherm",
+            "variant": 1
+          }
+        ]
+      },
+      {
+        "image_usage": "cover_all",
+        "title": "De tuin",
+        "prompt": "U werkt bij een hoveniersbedrijf.\nEen nieuwe collega gaat morgen alleen naar een klant in Zwolle.\nDe tuin is lang niet bijgehouden.\n\nKijk naar de plaatjes.\nLeg uw collega uit hoe hij de tuin moet aanpakken.\nU moet daarbij alle plaatjes gebruiken.\nU hoort eerst wat uw collega vraagt.",
+        "prompt_spoken": "Ik ga morgen voor het eerst alleen naar die klant. In welke volgorde pak ik die tuin het beste aan?",
+        "voice": "man_young",
+        "model_answer": "Begin met het onkruid, want dat staat overal tussen de tegels en in de borders. Trek het er met wortel en al uit, anders komt het binnen twee weken weer terug. Daarna knip je de heg en de struiken bij, zodat de tuin er meteen veel ruimer uitziet. Doe dat pas ná het wieden, want er valt veel takafval naar beneden. Als laatste maai je het gras en veeg je het pad netjes aan. Gooi al het afval in de aanhanger en laat de tuin schoon achter.",
+        "images": [
+          {
+            "slot": "spreken-10-d2-o5-a",
+            "query": "gardener removing weeds from garden border by hand",
+            "caption": "Eerst onkruid weghalen",
+            "variant": 0
+          },
+          {
+            "slot": "spreken-10-d2-o5-b",
+            "query": "gardener trimming hedge with hedge trimmer",
+            "caption": "Daarna de heg knippen",
+            "variant": 1
+          },
+          {
+            "slot": "spreken-10-d2-o5-c",
+            "query": "man mowing lawn with lawnmower in garden",
+            "caption": "Tot slot gras maaien",
+            "variant": 2
+          }
+        ]
+      },
+      {
+        "image_usage": "none",
+        "title": "Te weinig bewegen",
+        "prompt": "U volgt een cursus over gezond leven.\nDe docent vertelt dat veel volwassenen te weinig bewegen.\nZij vraagt de cursisten om ideeën.\n\nVertel wat er volgens u aan dat probleem gedaan kan worden.\nVertel ook waarom u denkt dat dat helpt.",
+        "prompt_spoken": "Veel mensen zitten de hele dag stil, op het werk en daarna thuis. Wat zou daaraan gedaan kunnen worden, denkt u?",
+        "voice": "woman_older",
+        "model_answer": "Ik denk dat het vooral makkelijk moet worden gemaakt. Veel mensen willen wel bewegen, maar na een lange werkdag hebben ze geen energie meer. Werkgevers zouden bijvoorbeeld een korte wandelpauze kunnen invoeren, zodat iedereen even naar buiten gaat. Ook helpt het als sporten goedkoper is, want een abonnement is voor een gezin al snel te duur. Zelf ga ik met de fiets naar mijn werk en dat kost me geen extra tijd. Als beweging bij je dagelijkse leven hoort, hou je het veel langer vol.",
+        "images": []
+      },
+      {
+        "image_usage": "choose",
+        "title": "Gezonde kantine",
+        "prompt": "U zit in de ouderraad van een school.\nDe school wil de kantine veranderen.\nEr liggen twee voorstellen op tafel.\n\nKijk naar de twee plaatjes.\nZeg welke kantine volgens u gezonder eten aanbiedt.\nGeef minimaal twee redenen voor uw keuze.",
+        "prompt_spoken": "We moeten vanavond kiezen tussen deze twee opzetten voor de kantine. Welke vindt u gezonder?",
+        "voice": "woman_young",
+        "model_answer": "Ik kies duidelijk voor de kantine met de verse salades en het fruit. Daar staan groente, fruit en volkorenbrood vooraan, waardoor leerlingen die bijna vanzelf pakken. In de andere kantine liggen vooral gefrituurde snacks en snoep, en dat eten jongeren toch al te veel. Verse producten geven ook langer energie, zodat leerlingen 's middags beter opletten. Het is misschien iets duurder, maar ik vind de gezondheid van de kinderen belangrijker. Wel zou ik één warme snack per week houden, anders wordt het te streng.",
+        "images": [
+          {
+            "slot": "spreken-10-d2-o7-a",
+            "query": "school canteen counter with fresh salads fruit and sandwiches",
+            "caption": "Verse salades en fruit",
+            "variant": 0
+          },
+          {
+            "slot": "spreken-10-d2-o7-b",
+            "query": "canteen counter with fried snacks and candy vending machine",
+            "caption": "Snacks en snoep",
+            "variant": 1
+          }
+        ]
+      },
+      {
+        "image_usage": "none",
+        "title": "Over vijf jaar",
+        "prompt": "U hebt een gesprek met uw loopbaanadviseur van de gemeente.\nZij wil weten wat uw plannen zijn.\nZij vraagt u naar de toekomst.\n\nVertel wat u over vijf jaar wilt doen.\nVertel ook waarom u dat wilt en wat u ervoor gaat doen.",
+        "prompt_spoken": "Als u vooruitkijkt: wat wilt u over vijf jaar doen, denkt u?",
+        "voice": "woman_older",
+        "model_answer": "Over vijf jaar wil ik graag als verzorgende in een verpleeghuis werken. Ik werk nu al in de zorg, maar dan als schoonmaker, en ik merk dat ik het contact met bewoners het leukste vind. Daarom begin ik in september met een opleiding, terwijl ik twee dagen blijf werken. Dat wordt druk, maar mijn werkgever wil de opleiding gedeeltelijk betalen. Ik hoop dat ik daarna een vast contract krijg. En ik wil mijn Nederlands nog verder verbeteren, omdat je in dit werk veel moet praten met familie en collega's.",
+        "images": []
+      }
+    ]
+  }
+]

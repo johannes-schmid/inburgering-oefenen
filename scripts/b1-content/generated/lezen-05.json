@@ -1,0 +1,412 @@
+[
+  {
+    "section": "website",
+    "title": "Het stagebureau van Hogeschool De Waterlinie",
+    "intro": "Deze tekst komt van de website van Hogeschool De Waterlinie. De tekst gaat over het stagebureau en over de afspraken die studenten met dit bureau maken.",
+    "body_html": "<p><strong>I</strong> Iedere student van Hogeschool De Waterlinie loopt tijdens de opleiding minstens één keer stage. Het stagebureau helpt u daarbij, maar het bureau zoekt geen stageplaats voor u. Dat verbaast sommige studenten, omdat zij denken dat de hogeschool een plek regelt. Wij hebben bewust voor een andere aanpak gekozen. Wie zelf een organisatie zoekt, zelf belt en zelf een gesprek voert, leert vaardigheden die later bij het zoeken naar werk nodig zijn. Het stagebureau begeleidt u dus bij dat proces: wij controleren of een bedrijf geschikt is, wij keuren het stageplan goed en wij bewaken de afspraken tussen u, de hogeschool en de stageorganisatie.</p><p><strong>Wat wij doen</strong></p><p><strong>II</strong> Op onze pagina staat een bestand met ruim 600 organisaties die eerder studenten van onze hogeschool hebben begeleid. U kunt daarin zoeken op vakgebied, op plaats en op de grootte van het bedrijf. Verder houden wij twee keer per jaar een stagemarkt in het gebouw aan de Kanaalweg, waar ongeveer veertig werkgevers aanwezig zijn. Wie liever persoonlijk advies krijgt, kan een gesprek van twintig minuten aanvragen met een stagecoördinator. In zo'n gesprek kijken wij samen naar uw brief, uw cv en de vraag welk soort organisatie bij uw leerdoelen past. Voor die gesprekken geldt wel dat u ze uiterlijk drie werkdagen vooraf aanvraagt via het studentenportaal.</p><p><strong>III</strong> Een stageplaats is pas officieel als het stagebureau de aanvraag heeft goedgekeurd. Die goedkeuring vraagt u aan met het digitale formulier, en daarbij horen drie bijlagen:</p><ul><li>een beschrijving van de organisatie en van de afdeling waar u komt te werken;</li><li>een stageplan met minimaal vier leerdoelen en de taken die daarbij horen;</li><li>een verklaring van de begeleider ter plaatse, met zijn functie en werkervaring.</li></ul><p><strong>IV</strong> Wij beoordelen de aanvraag binnen tien werkdagen. Let op de termijn: de complete aanvraag moet uiterlijk zes weken voor de eerste stagedag binnen zijn. Studenten die deze termijn missen, kunnen niet in de gewenste periode beginnen, ook al is de stageplaats zelf uitstekend. Een aanvraag wordt afgewezen als de begeleider onvoldoende ervaring in het vakgebied heeft, of als de taken te eenvoudig zijn voor het niveau van de opleiding. In dat laatste geval nemen wij contact op met de organisatie om te vragen of de taken kunnen worden aangepast. Pas wanneer dat niet lukt, moet u verder zoeken.</p><p><strong>V</strong> Tijdens de stage verwachten wij dat u iedere twee weken een korte verslaglegging bijhoudt en die met uw docentbegeleider bespreekt. Loopt er iets mis, bijvoorbeeld doordat u ander werk doet dan is afgesproken of doordat er te weinig begeleiding is, dan meldt u dat direct. Wachten tot het eindgesprek is onverstandig, want dan kunnen wij niets meer repareren. Het stagebureau kan met de organisatie in gesprek gaan en in uitzonderlijke gevallen de stage beëindigen. Uw gewerkte weken gaan daarbij niet verloren; ze tellen mee voor de nieuwe stage, mits uw verslagen op orde zijn.</p><p><strong>VI</strong> Ten slotte iets over de vergoeding. De hogeschool schrijft geen bedrag voor, maar wij adviseren organisaties een vergoeding van ten minste 350 euro per maand bij een volledige werkweek. Een reiskostenvergoeding komt daar meestal bij. Een onbetaalde stage mag, hoewel wij dat afraden bij stages van langer dan drie maanden. Maakt u hoge reiskosten en krijgt u geen vergoeding, dan kunt u een aanvraag doen bij het noodfonds van de hogeschool. Het stagebureau is open op werkdagen van 9.00 tot 16.00 uur; op donderdag zijn wij bereikbaar tot 19.00 uur.</p>",
+    "questions": [
+      {
+        "prompt": "Wat wil de schrijver in alinea I duidelijk maken?",
+        "options": [
+          "Waarom studenten hun stageplaats zelf moeten zoeken.",
+          "Waarom een stage bij een groot bedrijf beter is.",
+          "Waarom veel studenten te laat aan hun stage beginnen."
+        ],
+        "correct": 0,
+        "explanation": "In alinea I legt de hogeschool uit dat studenten zelf zoeken, omdat zij daarmee vaardigheden leren die later bij het zoeken naar werk nodig zijn. Over de grootte van het bedrijf gaat het pas in alinea II, en dan alleen als zoekmogelijkheid."
+      },
+      {
+        "prompt": "Wat staat er in alinea II over het gesprek met een stagecoördinator?",
+        "options": [
+          "Het gesprek is verplicht voor iedere student.",
+          "Het gesprek moet u op tijd vooraf aanvragen.",
+          "Het gesprek vindt plaats tijdens de stagemarkt."
+        ],
+        "correct": 1,
+        "explanation": "Alinea II zegt dat u het gesprek uiterlijk drie werkdagen vooraf aanvraagt via het studentenportaal. Dat het gesprek verplicht is, staat er niet; het is een keuze voor wie persoonlijk advies wil."
+      },
+      {
+        "prompt": "Hoe lang voor de eerste stagedag moet de volledige aanvraag binnen zijn?",
+        "options": [
+          "Tien werkdagen.",
+          "Drie weken.",
+          "Zes weken.",
+          "Drie maanden."
+        ],
+        "correct": 2,
+        "explanation": "In alinea IV staat dat de complete aanvraag uiterlijk zes weken voor de eerste stagedag binnen moet zijn. De tien werkdagen zijn de tijd die het bureau nodig heeft om te beoordelen."
+      },
+      {
+        "prompt": "Een student merkt na drie weken dat hij alleen kopieerwerk doet en bijna geen begeleiding krijgt. In welke alinea vindt hij wat hij nu moet doen?",
+        "options": [
+          "In alinea II.",
+          "In alinea III.",
+          "In alinea IV.",
+          "In alinea V."
+        ],
+        "correct": 3,
+        "explanation": "Alinea V gaat over problemen tijdens de stage en zegt dat u zo'n situatie direct moet melden. Alinea IV gaat over te eenvoudige taken vóór de goedkeuring, dus vóór de stage begint."
+      },
+      {
+        "prompt": "Wat betekent de uitdrukking \"Uw gewerkte weken gaan daarbij niet verloren\" in alinea V?",
+        "options": [
+          "De student houdt recht op zijn vergoeding over die weken.",
+          "De student mag die weken meenemen naar een volgende stage.",
+          "De student hoeft die weken geen verslagen meer te maken."
+        ],
+        "correct": 1,
+        "explanation": "In alinea V staat dat de gewerkte weken meetellen voor de nieuwe stage, mits de verslagen op orde zijn. Juist die verslagen blijven dus wel nodig, en over geld gaat het pas in alinea VI."
+      },
+      {
+        "prompt": "Een student krijgt van een organisatie een stage van vijf maanden aangeboden zonder vergoeding. Welk argument uit de tekst kan hij in het gesprek gebruiken?",
+        "options": [
+          "De hogeschool verbiedt stages zonder vergoeding.",
+          "De hogeschool raadt dit bij lange stages af en adviseert een bedrag.",
+          "De hogeschool keurt aanvragen zonder vergoeding niet goed."
+        ],
+        "correct": 1,
+        "explanation": "Alinea VI zegt dat een onbetaalde stage mag, maar wordt afgeraden bij stages van langer dan drie maanden, met het advies van minimaal 350 euro per maand. Een verbod of een afwijzing noemt de tekst niet."
+      }
+    ]
+  },
+  {
+    "section": "studieboek",
+    "title": "De bedrijfsarts: taken, grenzen en samenwerking",
+    "intro": "Deze tekst komt uit een cursusmap voor een opleiding tot personeelsmedewerker. De tekst gaat over de rol van de bedrijfsarts als een werknemer ziek is en weer aan het werk moet.",
+    "body_html": "<p><strong>I</strong> Wie in Nederland in dienst is en ziek wordt, blijft in de meeste gevallen loon ontvangen. De werkgever betaalt maximaal twee jaar door, meestal zeventig procent van het loon, en in het eerste ziektejaar vaak meer omdat de cao dat voorschrijft. Tegenover dat recht staat een plicht: werkgever en werknemer moeten samen werken aan herstel en aan terugkeer op het werk. Dat proces heet re-integratie. Omdat een werkgever geen medische gegevens mag opvragen of beoordelen, is er iemand nodig die dat wel mag. Die rol heeft de bedrijfsarts, een arts die gespecialiseerd is in de verhouding tussen gezondheid en werk.</p><p><strong>II</strong> De bedrijfsarts is geen huisarts en geen behandelaar. Hij schrijft geen medicijnen voor en start geen behandeling, hoewel hij wel kan adviseren om naar een specialist te gaan. Zijn kerntaak is beoordelen wat iemand ondanks de klachten nog wél kan. In het gesprek, dat een consult wordt genoemd, kijkt hij naar de belasting van het werk en naar de belastbaarheid van de werknemer. Vervolgens schrijft hij een advies over aangepaste taken, werktijden of hulpmiddelen. Dat advies gaat naar de werkgever, maar zonder de diagnose. De werkgever hoort dus wél dat iemand vier uur per dag licht werk kan doen, en niet waaróm.</p><p><strong>Termijnen in het eerste jaar</strong></p><p><strong>III</strong> De wet legt een aantal stappen vast. Binnen zes weken na de eerste ziektedag maakt de bedrijfsarts een probleemanalyse, waarin staat wat het herstel in de weg staat en welke mogelijkheden er zijn. Uiterlijk in week acht stellen werkgever en werknemer op basis daarvan een plan van aanpak op, met concrete afspraken en een vaste contactpersoon. Dat plan wordt minstens elke zes weken besproken en waar nodig bijgesteld. Rond week tweeënvijftig volgt een eerstejaarsevaluatie. Blijkt na ongeveer anderhalf jaar dat terugkeer bij de eigen werkgever niet lukt, dan moet ook buiten het bedrijf naar passend werk worden gezocht. Dit heet het tweede spoor.</p><p><strong>IV</strong> Werknemers denken soms dat de bedrijfsarts beslist of iemand ziek is. Dat is niet zo: hij adviseert, en de werkgever neemt het besluit over loon en werkzaamheden. Toch weegt het advies zwaar, doordat de uitkeringsinstantie later controleert of de werkgever dat advies heeft gevolgd. Is er te weinig gedaan, dan kan de werkgever verplicht worden om het loon langer door te betalen. Werkt de werknemer niet mee, bijvoorbeeld door zonder goede reden niet op het consult te komen, dan mag de werkgever het loon opschorten of stopzetten.</p><p><strong>V</strong> Wie zich niet kan vinden in het advies, staat niet met lege handen. Allereerst kan de werknemer een tweede mening vragen bij een andere bedrijfsarts; de werkgever betaalt die kosten. Daarnaast kunnen zowel werkgever als werknemer bij de uitkeringsinstantie een deskundigenoordeel aanvragen over de vraag of de re-integratie goed loopt. Voor een werknemer kost dat honderd euro, voor een werkgever een paar honderd euro meer. Zo'n oordeel is niet bindend, maar rechters kijken er in een conflict wel naar.</p><p><strong>VI</strong> Ten slotte is de bedrijfsarts ook zonder ziekmelding bereikbaar. Iedere werknemer heeft recht op een open consult: een gesprek over klachten die met het werk te maken hebben, nog voordat uitval nodig is. De werkgever hoeft daarvan niets te weten en mag niet vragen wat er besproken is. Juist die vertrouwelijkheid maakt het mogelijk om vroeg te praten over werkdruk, slecht slapen of pijn in de schouders, waardoor langdurig verzuim soms wordt voorkomen.</p>",
+    "questions": [
+      {
+        "prompt": "Wat wil de schrijver in alinea I duidelijk maken?",
+        "options": [
+          "Dat de meeste zieke werknemers hun volledige loon houden.",
+          "Dat een werkgever een onafhankelijke arts nodig heeft, omdat hij zelf niet over medische gegevens mag beschikken.",
+          "Dat re-integratie vooral de verantwoordelijkheid van de werknemer is."
+        ],
+        "correct": 1,
+        "explanation": "In alinea I staat dat de werkgever geen medische gegevens mag opvragen of beoordelen en dat de bedrijfsarts daarom nodig is. Optie A is te sterk: er staat dat de werkgever meestal zeventig procent betaalt."
+      },
+      {
+        "prompt": "Wat staat er in alinea II over de bedrijfsarts?",
+        "options": [
+          "Hij mag alleen aangepaste werktijden voorstellen, geen andere maatregelen.",
+          "Hij deelt zijn conclusie met de werkgever, maar niet de medische oorzaak.",
+          "Hij neemt de behandeling over van de huisarts als het herstel lang duurt.",
+          "Hij bepaalt hoeveel loon de werknemer tijdens de ziekte krijgt."
+        ],
+        "correct": 1,
+        "explanation": "Alinea II zegt dat het advies naar de werkgever gaat zonder de diagnose. Optie C is fout: de bedrijfsarts is juist geen behandelaar en kan alleen adviseren naar een specialist te gaan."
+      },
+      {
+        "prompt": "Rachida is op 1 maart ziek geworden. Wanneer moet er uiterlijk een plan van aanpak zijn?",
+        "options": [
+          "Na zes weken.",
+          "Na acht weken.",
+          "Na twaalf weken."
+        ],
+        "correct": 1,
+        "explanation": "Volgens alinea III komt de probleemanalyse binnen zes weken en het plan van aanpak uiterlijk in week acht. Zes weken hoort dus bij de probleemanalyse."
+      },
+      {
+        "prompt": "Wat betekent 'het tweede spoor' in alinea III?",
+        "options": [
+          "Zoeken naar geschikt werk bij een andere werkgever.",
+          "Een tweede gesprek met de bedrijfsarts aanvragen.",
+          "Het plan van aanpak elke zes weken bijstellen."
+        ],
+        "correct": 0,
+        "explanation": "In alinea III wordt uitgelegd dat na ongeveer anderhalf jaar ook buiten het bedrijf naar passend werk wordt gezocht; dat heet het tweede spoor. Een tweede gesprek is de tweede mening uit alinea V."
+      },
+      {
+        "prompt": "Meneer De Ruiter is het niet eens met het advies van de bedrijfsarts en wil dat laten toetsen zonder dat het hem geld kost. In welke alinea vindt hij het antwoord?",
+        "options": [
+          "In alinea III.",
+          "In alinea IV.",
+          "In alinea V.",
+          "In alinea VI."
+        ],
+        "correct": 2,
+        "explanation": "Alinea V beschrijft de tweede mening, die de werkgever betaalt, en het deskundigenoordeel van honderd euro. Alinea IV gaat over wie beslist en over gevolgen van niet meewerken, niet over toetsing van het advies."
+      },
+      {
+        "prompt": "Welk argument kan een werkgever gebruiken die het advies van de bedrijfsarts liever negeert?",
+        "options": [
+          "Er is geen goed argument: bij te weinig inzet kan hij het loon langer moeten doorbetalen.",
+          "Hij mag het advies negeren, omdat een deskundigenoordeel niet bindend is.",
+          "Hij hoeft het advies niet te volgen, omdat hij zelf over het werk beslist."
+        ],
+        "correct": 0,
+        "explanation": "Alinea IV zegt dat de uitkeringsinstantie controleert of het advies is gevolgd en dat de werkgever anders langer loon moet betalen. Dat de werkgever beslist, betekent volgens die alinea niet dat hij het advies kan negeren."
+      }
+    ]
+  },
+  {
+    "section": "folder",
+    "title": "Sportcentrum De Molenbeek: sporten voor het hele gezin",
+    "intro": "Deze tekst komt uit een folder van Sportcentrum De Molenbeek in Vaartdijk. De folder gaat over de abonnementen en over de kortingsregelingen voor gezinnen.",
+    "body_html": "<p><strong>I</strong> Sportcentrum De Molenbeek bestaat sinds 1998 en staat aan de rand van de wijk Zuiderveld in Vaartdijk. In het gebouw vindt u een zwembad van 25 meter, twee sporthallen, een fitnesszaal en drie ruimtes voor groepslessen. Wij zijn van maandag tot en met vrijdag open van 7.00 tot 22.30 uur en in het weekend van 8.00 tot 18.00 uur. Het bestuur vindt dat sporten geen kwestie van geld mag zijn. Daarom werken wij met een aantal kortingsregelingen, zodat ook gezinnen met een klein budget bij ons kunnen bewegen.</p><p><strong>Wat kost een abonnement?</strong></p><p><strong>II</strong> Een abonnement geeft onbeperkt toegang tot het zwembad, de fitnesszaal en alle groepslessen. In de tabel ziet u de bedragen per maand.</p><table><tr><th>Soort abonnement</th><th>Prijs per maand</th></tr><tr><td>Volwassenen (18 tot en met 64 jaar)</td><td>&euro; 32,50</td></tr><tr><td>Jeugd (tot en met 17 jaar)</td><td>&euro; 19,00</td></tr><tr><td>65 jaar en ouder</td><td>&euro; 26,00</td></tr><tr><td>Gezinsabonnement</td><td>&euro; 72,50</td></tr></table><p>Wie geen abonnement wil, betaalt &euro; 6,75 voor een los bezoek aan het zwembad. Niewe leden betalen eenmalig &euro; 15,00 inschrijfgeld. Dit bedrag vervalt voor iedereen die zich v&oacute;&oacute;r 1 maart inschrijft.</p><p><strong>III</strong> Het gezinsabonnement is bedoeld voor twee volwassenen en maximaal drie kinderen onder de 18 jaar. Voor een vierde of vijfde kind betaalt u &euro; 8,00 per kind extra. Een gezin met &eacute;&eacute;n volwassene en minstens &eacute;&eacute;n kind betaalt &euro; 54,00 per maand. Alle gezinsleden moeten wel op hetzelfde woonadres staan ingeschreven. Daarom vragen wij bij de aanmelding een uittreksel van de gemeente dat niet ouder is dan drie maanden. Wordt een kind 18 jaar, dan mag het nog tot het einde van het kalenderjaar meesporten binnen het gezinsabonnement.</p><p><strong>IV</strong> Gezinnen met een laag inkomen kunnen daarnaast gebruikmaken van de Meedoenpas. Met die pas betaalt u de helft van de prijs van het abonnement. U vraagt de pas aan bij de afdeling Werk en Inkomen van de gemeente Vaartdijk en dus niet bij ons. Zodra u de beslissing van de gemeente op papier hebt, laat u die bij de receptie zien; wij passen het bedrag dan binnen twee weken aan. De pas geldt voor &eacute;&eacute;n jaar, waardoor u elk jaar opnieuw een aanvraag moet doen. Voor kinderen tot 12 jaar vergoedt de gemeente bovendien de zwemles tot maximaal &euro; 160,00 per kind per jaar.</p><p><strong>V</strong> Voor cursussen geldt een aparte regeling, want de kosten daarvan zitten niet in het abonnement. Een losse zwemles kost &eacute;&eacute;n uur en &euro; 13,50; leden met een gezinsabonnement betalen &euro; 11,00 per les. De eerste proefles is voor iedereen gratis. Omdat er veel belangstelling is, moet u rekenen op een wachttijd van ongeveer drie maanden. Die wachttijd geldt voor alle kinderen, ook als hun ouders al jaren lid zijn. Aanmelden kan alleen via het formulier op onze website.</p><p><strong>VI</strong> Ieder abonnement loopt minimaal drie maanden. Daarna kunt u maandelijks opzeggen, met een opzegtermijn van &eacute;&eacute;n volledige kalendermaand. Kunt u door een blessure of een zwangerschap tijdelijk niet sporten? Dan mag u het abonnement maximaal drie maanden stilzetten, hoewel wij daarvoor een verklaring van een huisarts of fysiotherapeut nodig hebben. Hebt u nog vragen? Loop dan binnen bij de receptie of neem contact op:<br>Sportcentrum De Molenbeek<br>Zuiderveldlaan 44<br>3812 KP Vaartdijk<br>Telefoon: 0342 &ndash; 55 21 90</p>",
+    "questions": [
+      {
+        "prompt": "Wat wil de schrijver duidelijk maken met de opmerking dat sporten geen kwestie van geld mag zijn?",
+        "options": [
+          "Dat het sportcentrum al sinds 1998 winst maakt.",
+          "Dat mensen met weinig geld ook moeten kunnen sporten.",
+          "Dat de abonnementen dit jaar niet duurder worden."
+        ],
+        "correct": 1,
+        "explanation": "In alinea I volgt na die opmerking dat het centrum daarom kortingsregelingen heeft voor gezinnen met een klein budget. Over de prijsontwikkeling zegt alinea I niets, dus de laatste optie klopt niet."
+      },
+      {
+        "prompt": "Wanneer hoeft een nieuw lid geen inschrijfgeld te betalen?",
+        "options": [
+          "Als hij jonger is dan achttien jaar.",
+          "Als hij zich in het weekend aanmeldt.",
+          "Als hij zich voor 1 maart aanmeldt."
+        ],
+        "correct": 2,
+        "explanation": "In alinea II staat dat het bedrag van € 15,00 vervalt bij aanmelding v\ntoor 1 maart. De leeftijd bepaalt wel de prijs van het abonnement, maar niet het inschrijfgeld."
+      },
+      {
+        "prompt": "Wat staat er in alinea III over het gezinsabonnement?",
+        "options": [
+          "Kinderen van 18 jaar en ouder sporten gratis mee.",
+          "Alle gezinsleden moeten op hetzelfde adres wonen.",
+          "Het bedrag geldt voor maximaal twee kinderen.",
+          "Gezinnen betalen het eerste jaar geen contributie."
+        ],
+        "correct": 1,
+        "explanation": "Alinea III noemt als voorwaarde dat iedereen op hetzelfde woonadres staat ingeschreven; daarom is een uittreksel nodig. Er is plaats voor maximaal drie kinderen, niet voor twee."
+      },
+      {
+        "prompt": "Waar moet een gezin met een laag inkomen de Meedoenpas aanvragen?",
+        "options": [
+          "Bij de afdeling Werk en Inkomen van de gemeente.",
+          "Bij de receptie van Sportcentrum De Molenbeek.",
+          "Bij het loket van de zwemschool in de wijk."
+        ],
+        "correct": 0,
+        "explanation": "In alinea IV staat dat de aanvraag bij de gemeente loopt en uitdrukkelijk niet bij het sportcentrum. Bij de receptie laat u alleen de beslissing van de gemeente zien."
+      },
+      {
+        "prompt": "Wat staat er in alinea V over de zwemlessen?",
+        "options": [
+          "Ze zijn gratis voor kinderen met een Meedoenpas.",
+          "Leden met een gezinsabonnement hoeven niet te wachten.",
+          "De kosten ervan zitten niet in het abonnement."
+        ],
+        "correct": 2,
+        "explanation": "Alinea V begint met de mededeling dat cursussen apart betaald moeten worden. De wachttijd van drie maanden geldt juist voor alle kinderen, ook voor leden."
+      },
+      {
+        "prompt": "Mevrouw Bergsma heeft een gezinsabonnement, maar mag van haar fysiotherapeut drie maanden niet sporten. In welke alinea leest zij wat zij kan doen?",
+        "options": [
+          "In alinea III.",
+          "In alinea IV.",
+          "In alinea V.",
+          "In alinea VI."
+        ],
+        "correct": 3,
+        "explanation": "Alinea VI legt uit dat een abonnement bij een blessure maximaal drie maanden stilgezet kan worden met een verklaring van een arts of fysiotherapeut. Alinea V gaat over cursussen en niet over stilzetten."
+      },
+      {
+        "prompt": "Wat is het belangrijkste doel van deze folder?",
+        "options": [
+          "Gezinnen informeren over het aanbod en de kortingen.",
+          "Ouders uitleggen hoe de zwemlessen zijn opgebouwd.",
+          "Leden waarschuwen voor de nieuwe opzegtermijn."
+        ],
+        "correct": 0,
+        "explanation": "De folder beschrijft de voorzieningen, de prijzen en de regelingen voor gezinnen, zoals in alinea I al wordt aangekondigd. De zwemles en de opzegtermijn zijn maar twee onderdelen van dat geheel."
+      }
+    ]
+  },
+  {
+    "section": "artikel",
+    "title": "Samen sterker in de straat",
+    "intro": "Deze tekst komt uit een vakblad voor zelfstandige ondernemers in de detailhandel. De tekst gaat over de redenen waarom kleine winkeliers een winkeliersvereniging oprichten.",
+    "body_html": "<p><strong>I</strong> In de Molenstraat in Bergwijk zaten tot vorig jaar veertien zelfstandige winkels naast elkaar, zonder dat de eigenaren elkaar goed kenden. Dat veranderde toen de gemeente aankondigde dat de straat acht weken open zou liggen voor nieuwe rioolbuizen. Bakker Nico Verhulst schrok van dat bericht, omdat hij zijn omzet in die periode zag halveren. Hij belde een paar buren en merkte dat iedereen dezelfde zorgen had, maar dat niemand wist bij welke ambtenaar hij moest zijn. Binnen een maand richtten elf winkeliers samen een winkeliersvereniging op. Inmiddels zijn er landelijk honderden van deze verenigingen, en volgens brancheorganisaties komen er elk jaar tientallen bij.</p><p><strong>Eén gesprekspartner voor de gemeente</strong></p><p><strong>II</strong> De belangrijkste reden om zich te verenigen is bijna altijd hetzelfde: een gemeente praat liever met één partij dan met veertien afzonderlijke ondernemers. Wie alleen een brief stuurt over parkeerplaatsen, laadtijden of een marktkraam voor zijn etalage, krijgt vaak een standaardantwoord terug. Een vereniging die namens tien of meer bedrijven schrijft, wordt uitgenodigd voor overleg. In Bergwijk leidde dat overleg ertoe dat de werkzaamheden in twee delen werden uitgevoerd, zodat de helft van de straat altijd bereikbaar bleef. Ook kwamen er tijdelijke borden bij de doorgaande weg met de tekst dat de winkels open waren. Verhulst schat dat hij daardoor ongeveer een derde minder omzet verloor dan hij had gevreesd.</p><p><strong>III</strong> Naast invloed levert samenwerking ook direct geld op. Een vereniging kan als groep afspraken maken over kosten die iedere winkelier anders alleen draagt. In Bergwijk gaat het om:</p><ul><li>een gezamenlijk contract voor het ophalen van afval, waardoor de kosten per winkel van 48 naar 31 euro per maand daalden;</li><li>één schoonmaakbedrijf dat twee keer per week de hele straat veegt;</li><li>een collectieve verzekering tegen schade aan etalageruiten;</li><li>gezamenlijke reclame, zoals een advertentie in het huis-aan-huisblad die vier winkels samen betalen.</li></ul><p><strong>IV</strong> Toch is een vereniging geen wondermiddel, en de start kost tijd. De leden moeten naar de notaris voor statuten, een bestuur kiezen en een contributie afspreken. In Bergwijk betaalt elk lid 25 euro per maand, met een korting van vijf euro voor winkels met minder dan 40 vierkante meter vloeroppervlak. Wie later lid wordt, betaalt eenmalig 50 euro inschrijfgeld. Bovendien komt het bestuurswerk bovenop een werkweek die voor veel zelfstandigen al zestig uur duurt. Twee winkeliers in de Molenstraat werden daarom geen lid: zij vonden dat zij vooral betalen voor activiteiten waar de horeca in de straat van profiteert. Het bestuur bespreekt dat bezwaar elk jaar in de ledenvergadering.</p><p><strong>V</strong> Wie zelf een vereniging wil beginnen, kan volgens adviseur Ingrid Kappelhof het beste klein starten. Zij raadt aan om eerst met vijf ondernemers één concreet probleem aan te pakken, bijvoorbeeld het vuil bij de containers of de openingstijden rond de feestdagen. Pas als dat lukt, is het zinvol om statuten op te stellen en subsidie aan te vragen. Veel gemeenten hebben namelijk een potje voor straatverlichting of feestdecoratie, maar dat geld wordt alleen aan een officiële vereniging uitgekeerd. In Bergwijk was die bijdrage 3.000 euro, genoeg voor lampen in alle bomen. \"Een vereniging is geen doel op zich\", zegt Kappelhof. \"Het is het gereedschap waarmee ondernemers dingen regelen die ze alleen niet voor elkaar krijgen.\"</p><p><strong>VI</strong> De winkeliers in de Molenstraat merken vooral dat de drempel om elkaar te bellen lager is geworden. Als een medewerker ziek is, vraagt de een de ander om mee te kijken bij de kassa. Bij een inbraakpoging waarschuwt iedereen elkaar via een groepsbericht. Dat soort hulp staat in geen enkel contract, maar het scheelt volgens Verhulst meer dan de korting op de afvalcontracten.</p>",
+    "questions": [
+      {
+        "prompt": "Waarom noemt de schrijver in alinea I het werk aan het riool?",
+        "options": [
+          "Om te laten zien dat de gemeente de winkeliers te laat had ingelicht.",
+          "Om duidelijk te maken welke aanleiding de winkeliers hadden om samen te gaan werken.",
+          "Om aan te geven dat werkzaamheden in een winkelstraat altijd omzetverlies opleveren."
+        ],
+        "correct": 1,
+        "explanation": "In alinea I is het bericht over de acht weken werk de directe reden dat de winkeliers elkaar opzochten en een vereniging oprichtten. Dat de winkeliers omzet zouden verliezen staat er wel, maar de schrijver gebruikt het voorbeeld om de aanleiding tot samenwerking te tonen."
+      },
+      {
+        "prompt": "Wat staat er in alinea II over de gemeente?",
+        "options": [
+          "Een gemeente reageert sneller op een brief van een groep dan op een brief van één winkelier.",
+          "Een gemeente is verplicht om winkeliers voor overleg uit te nodigen.",
+          "Een gemeente stuurt vooral standaardantwoorden over parkeren en laden.",
+          "Een gemeente betaalt de borden langs de doorgaande weg voor iedere winkel."
+        ],
+        "correct": 0,
+        "explanation": "Volgens alinea II krijgt een enkele ondernemer meestal een standaardantwoord, terwijl een vereniging die namens tien of meer bedrijven schrijft wordt uitgenodigd voor overleg. Van een verplichting voor de gemeente is geen sprake."
+      },
+      {
+        "prompt": "Een winkelier met een zaak van 30 vierkante meter wil in juni lid worden van de vereniging in Bergwijk. Wat betaalt hij?",
+        "options": [
+          "25 euro per maand en 50 euro inschrijfgeld.",
+          "20 euro per maand en 50 euro inschrijfgeld.",
+          "20 euro per maand en geen inschrijfgeld."
+        ],
+        "correct": 1,
+        "explanation": "In alinea IV staat dat de contributie 25 euro is, met vijf euro korting voor winkels onder 40 vierkante meter, en dat wie later lid wordt eenmalig 50 euro inschrijfgeld betaalt."
+      },
+      {
+        "prompt": "Welk argument kunnen de twee winkeliers gebruiken die geen lid willen worden?",
+        "options": [
+          "Zij vinden de contributie te hoog in vergelijking met de korting op de verzekering.",
+          "Zij vinden dat de vereniging te weinig overleg heeft met de gemeente.",
+          "Zij vinden dat vooral andere ondernemers voordeel hebben van wat zij betalen."
+        ],
+        "correct": 2,
+        "explanation": "In alinea IV zeggen deze twee winkeliers dat zij vooral betalen voor activiteiten waarvan de horeca in de straat profiteert. Over de hoogte van de contributie tegenover de verzekering doen zij geen uitspraak."
+      },
+      {
+        "prompt": "Wat bedoelt adviseur Kappelhof in alinea V met \"Een vereniging is geen doel op zich\"?",
+        "options": [
+          "Een vereniging is alleen zinvol als de gemeente subsidie geeft.",
+          "Een vereniging moet niet te veel leden tegelijk aannemen.",
+          "Een vereniging is een middel om praktische zaken op te lossen.",
+          "Een vereniging heeft officiële statuten nodig om te bestaan."
+        ],
+        "correct": 2,
+        "explanation": "In alinea V legt Kappelhof haar uitspraak zelf uit: de vereniging is het gereedschap waarmee ondernemers dingen regelen die ze alleen niet kunnen. De subsidie is één voordeel, maar niet de voorwaarde die zij noemt."
+      }
+    ]
+  },
+  {
+    "section": "regels",
+    "title": "Werkinstructie hygiëne in de keuken",
+    "intro": "Deze tekst komt uit het personeelshandboek van restaurant De Groene Linde. De tekst geeft de regels voor het bewaren en bereiden van voedsel in de keuken.",
+    "body_html": "<p><strong>I</strong> Iedereen die in onze keuken werkt, is verantwoordelijk voor veilig voedsel. Gasten moeten erop kunnen vertrouwen dat zij niet ziek worden van een maaltijd, en de Nederlandse Voedsel- en Warenautoriteit controleert of wij ons aan de regels houden. Daarom werken wij met een vast plan, dat wij het hygiëneplan noemen. In dat plan staat welke temperaturen wij aanhouden, hoe lang wij producten bewaren en wie wat controleert. Nieuwe medewerkers krijgen in de eerste week een korte uitleg van de chef, maar zij blijven zelf verantwoordelijk voor het naleven van de regels. Wie iets niet zeker weet, vraagt het aan de chef of aan de dienstdoende leidinggevende. Vragen kost tijd, maar een besmetting kost het restaurant veel meer.</p><p><strong>Bewaren en koelen</strong></p><p><strong>II</strong> Verse producten gaan direct na de levering de koeling in. De koelkast staat op maximaal 4 graden, de vrieskist op minimaal min 18 graden. Vlees en vis liggen altijd op de onderste plank, zodat er geen vocht op andere producten kan druppelen. Rauwe en bereide producten worden nooit in dezelfde bak bewaard, ook niet kort. Elke geopende verpakking krijgt een sticker met de datum waarop hij is geopend en de naam van de medewerker die hem heeft geopend. Zonder sticker is een product niet meer bruikbaar, hoewel het er nog goed uitziet, omdat wij dan niet kunnen nagaan hoe oud het is.</p><p><strong>III</strong> Voor de bewaartermijnen geldt de volgende tabel:</p><table><tr><th>Product</th><th>Bewaren in de koeling</th></tr><tr><td>Gesneden rauwe groente</td><td>2 dagen</td></tr><tr><td>Bereide saus of soep</td><td>3 dagen</td></tr><tr><td>Rauw gehakt en rauwe vis</td><td>1 dag</td></tr><tr><td>Geopende zuivel</td><td>3 dagen</td></tr></table><p>Wordt een termijn overschreden, dan gooit u het product weg en schrijft u dit op de weeglijst bij de afvalbak. Die lijst gebruiken wij niet om medewerkers te controleren, maar om te zien welke producten wij te ruim inkopen. Wie eerlijk opschrijft dat er iets is weggegooid, krijgt dus geen opmerking van de chef.</p><p><strong>IV</strong> Bij het bereiden werken wij met gescheiden snijplanken: rood voor vlees, blauw voor vis, groen voor groente en fruit. Na elk gebruik gaat een plank in de vaatwasser, ook wanneer hij schoon lijkt. Handen wast u met warme zeep aan het begin van de dienst, na het toilet, na het aanraken van rauw vlees en na het weggooien van afval. Gerechten die warm worden uitgegeven, verhitten wij tot ten minste 75 graden in de kern. De kerntemperatuur meet u met de digitale thermometer, die u voor en na gebruik met een alcoholdoekje schoonmaakt. Warme gerechten die niet direct worden uitgegeven, koelt u binnen twee uur terug naar 7 graden of lager.</p><p><strong>V</strong> Een medewerker die diarree, overgeven of een ontstoken wond aan de hand heeft, meldt dit vóór de dienst bij de leidinggevende. Wij zetten die medewerker die dag niet in bij de bereiding, maar zoeken ander werk in de zaal of in de voorraad. Een pleister op een vinger is toegestaan, mits u daarover een blauwe handschoen draagt, omdat een blauwe pleister of handschoen goed opvalt in eten. Sieraden aan handen en armen laat u thuis of in het kluisje; een gladde trouwring mag blijven zitten.</p><p><strong>VI</strong> Twee keer per dag vult de dienstdoende kok de controlelijst in met de temperatuur van de koeling en de vrieskist. Wijkt een temperatuur meer dan 2 graden af, dan waarschuwt u onmiddellijk de leidinggevende en verplaatst u de producten naar de tweede koeling. De lijsten bewaren wij een jaar, omdat een inspecteur ze kan opvragen. Wie de lijst vergeet, kan dat later niet meer herstellen, want een controle achteraf zegt niets over de temperatuur van dat moment.</p>",
+    "questions": [
+      {
+        "prompt": "Wat staat er in alinea I over de verantwoordelijkheid van medewerkers?",
+        "options": [
+          "De chef is verantwoordelijk zodra hij uitleg heeft gegeven.",
+          "Elke medewerker blijft zelf verantwoordelijk voor de regels.",
+          "De Voedsel- en Warenautoriteit bepaalt wie verantwoordelijk is."
+        ],
+        "correct": 1,
+        "explanation": "In alinea I staat dat nieuwe medewerkers uitleg krijgen, maar zelf verantwoordelijk blijven. Optie A is aantrekkelijk omdat de uitleg van de chef genoemd wordt, maar die uitleg neemt de eigen verantwoordelijkheid niet weg."
+      },
+      {
+        "prompt": "Een kok heeft gisteren een pan tomatensaus gemaakt. Hoe lang mag die saus volgens de tekst in de koeling blijven?",
+        "options": [
+          "1 dag",
+          "2 dagen",
+          "3 dagen",
+          "4 dagen"
+        ],
+        "correct": 2,
+        "explanation": "In de tabel in alinea III staat bij bereide saus of soep 3 dagen. De 1 dag hoort bij rauw gehakt en rauwe vis, en de 2 dagen bij gesneden rauwe groente."
+      },
+      {
+        "prompt": "Wat wil de schrijver duidelijk maken met de opmerking over de weeglijst in alinea III?",
+        "options": [
+          "Dat medewerkers zonder angst mogen opschrijven wat weg moet.",
+          "Dat de chef precies bijhoudt wie het meeste weggooit.",
+          "Dat het restaurant te veel geld verliest aan afval."
+        ],
+        "correct": 0,
+        "explanation": "Alinea III legt uit dat de lijst dient om de inkoop te beoordelen en dat eerlijk opschrijven geen opmerking oplevert. Optie B is juist wat de tekst uitdrukkelijk tegenspreekt."
+      },
+      {
+        "prompt": "Een medewerker heeft een snee in haar vinger. Welk argument kan zij gebruiken om toch in de keuken te blijven werken?",
+        "options": [
+          "Een wond is geen ziekte, dus zij hoeft niets te melden.",
+          "Zij mag werken met een pleister onder een blauwe handschoen.",
+          "Zij mag werken zolang zij haar handen extra vaak wast."
+        ],
+        "correct": 1,
+        "explanation": "In alinea V staat dat een pleister mag, mits er een blauwe handschoen over zit. Optie A is fout, want een ontstoken wond moet juist vóór de dienst gemeld worden."
+      },
+      {
+        "prompt": "In welke alinea vindt een kok het antwoord op de vraag: 'Wat moet ik doen als de koelkast 8 graden aangeeft?'",
+        "options": [
+          "In alinea II",
+          "In alinea III",
+          "In alinea IV",
+          "In alinea VI"
+        ],
+        "correct": 3,
+        "explanation": "Alinea VI beschrijft wat u doet bij een afwijking van meer dan 2 graden: de leidinggevende waarschuwen en de producten verplaatsen. Alinea II noemt wel de temperatuur van 4 graden, maar niet welke stappen u bij een afwijking zet."
+      }
+    ]
+  },
+  {
+    "section": "brief",
+    "title": "Uw aanvraag voor een WW-uitkering",
+    "intro": "Deze tekst is een brief van het UWV aan iemand die zijn baan verliest. In de brief staat hoe hij een WW-uitkering kan aanvragen.",
+    "body_html": "<p>UWV<br>Afdeling Werkloosheidswet<br>Postbus 3182<br>1000 CD Amsterdam</p><p>Mevrouw R. Bekkering<br>Sluiskade 14<br>7602 BR Almelo</p><p>Datum: 11 maart 2025<br>Betreft: uw melding van ontslag<br>Kenmerk: WW-2025-448120</p><p>Geachte mevrouw Bekkering,</p><p><strong>I</strong> Uw werkgever heeft ons laten weten dat uw arbeidscontract op 30 april 2025 eindigt. Wij sturen u deze brief omdat u vanaf 1 mei 2025 misschien recht heeft op een WW-uitkering. Een WW-uitkering is een bedrag dat u elke maand van ons ontvangt zolang u geen werk heeft. U krijgt dat bedrag niet automatisch: u moet de uitkering zelf aanvragen. Wij mogen namelijk geen aanvraag voor u invullen, ook niet als wij al weten dat u werkloos wordt.</p><p><strong>II</strong> Wij raden u aan de aanvraag te doen in de week voordat u werkloos wordt. U mag de aanvraag al een maand vooraf insturen, maar niet eerder. Doet u de aanvraag later, dan is dat niet meteen een probleem, zolang u binnen een week na uw laatste werkdag reageert. Bij een aanvraag die meer dan een week te laat komt, kunnen wij uw uitkering korten. Hoeveel wij korten, hangt af van het aantal weken dat u gewacht heeft. Vraagt u de uitkering meer dan 26 weken te laat aan, dan vervalt uw recht over die hele periode.</p><p><strong>Wat u nodig heeft</strong></p><p><strong>III</strong> U doet de aanvraag op onze website, in uw persoonlijke omgeving. Daarvoor logt u in met DigiD. Zorg dat u de volgende gegevens bij de hand heeft:</p><ul><li>het rekeningnummer waarop u de uitkering wilt ontvangen;</li><li>de naam en het adres van uw laatste werkgever;</li><li>de datum waarop uw contract eindigt en de reden van het ontslag;</li><li>een overzicht van eventuele andere inkomsten, bijvoorbeeld uit een tweede baan.</li></ul><p>Heeft u geen DigiD of werkt uw DigiD niet, dan kunt u een papieren formulier bij ons opvragen via telefoonnummer 0800 - 92 94. Houd er rekening mee dat een papieren aanvraag ongeveer twee weken langer duurt, doordat wij de gegevens met de hand moeten invoeren.</p><p><strong>IV</strong> Na uw aanvraag beslissen wij binnen vier weken of u recht heeft op een uitkering. Wij kijken daarbij vooral naar uw arbeidsverleden: u moet in de 36 weken voor uw werkloosheid minstens 26 weken gewerkt hebben. Voldoet u aan die voorwaarde, dan duurt uw uitkering minimaal drie maanden. Heeft u langer gewerkt, dan wordt die periode langer. U ontvangt onze beslissing per brief. Zolang wij nog geen beslissing hebben genomen, kunt u ons om een voorschot vragen, bijvoorbeeld wanneer u uw huur niet meer kunt betalen.</p><p><strong>V</strong> Vanaf de dag dat u een uitkering aanvraagt, geldt voor u de sollicitatieplicht. Dat betekent dat u elke vier weken minstens vier keer moet solliciteren en dat u passend werk niet mag weigeren. Ook geeft u elke maand door wat u gedaan heeft en hoeveel u eventueel verdiend heeft. Doet u dat niet, dan verlagen wij de uitkering tijdelijk. Er is één uitzondering: bent u ziek, dan hoeft u tijdens uw ziekte niet te solliciteren, mits u de ziekte binnen twee dagen aan ons meldt.</p><p><strong>VI</strong> Heeft u na het lezen van deze brief nog vragen, dan kunt u ons bellen of een afspraak maken op een van onze vestigingen. Bent u het niet eens met onze beslissing, dan kunt u binnen zes weken bezwaar maken. Hoe u dat doet, leest u in de beslissingsbrief die u later ontvangt.</p><p>Met vriendelijke groet,<br>H. Vermaas<br>Manager Werk en Inkomen</p>",
+    "questions": [
+      {
+        "prompt": "Wat staat er in alinea I over de WW-uitkering?",
+        "options": [
+          "Mevrouw Bekkering moet de uitkering zelf in orde maken.",
+          "Het UWV heeft de uitkering al voor haar geregeld.",
+          "Haar werkgever heeft de aanvraag voor haar gedaan."
+        ],
+        "correct": 0,
+        "explanation": "In alinea I staat dat de uitkering niet automatisch komt en dat zij hem zelf moet aanvragen. Dat de werkgever iets doorgaf, betekent niet dat hij ook de aanvraag heeft gedaan."
+      },
+      {
+        "prompt": "Mevrouw Bekkering vraagt haar uitkering drie weken te laat aan. Wat kan er volgens alinea II gebeuren?",
+        "options": [
+          "Zij verliest haar recht op een uitkering helemaal.",
+          "Zij krijgt een lager bedrag aan uitkering.",
+          "Zij moet eerst nog 26 weken werken."
+        ],
+        "correct": 1,
+        "explanation": "Volgens alinea II kan het UWV bij een aanvraag van meer dan een week te laat de uitkering korten. Het recht vervalt pas bij meer dan 26 weken te laat."
+      },
+      {
+        "prompt": "Waarom noemt het UWV in alinea III het papieren formulier?",
+        "options": [
+          "Om te laten zien dat een aanvraag zonder DigiD ook mogelijk is.",
+          "Om duidelijk te maken dat de website vaak niet werkt.",
+          "Om aan te geven dat papier sneller verwerkt wordt.",
+          "Om te waarschuwen dat een telefonische aanvraag niet geldig is."
+        ],
+        "correct": 0,
+        "explanation": "In alinea III wordt het formulier genoemd als oplossing voor mensen zonder werkende DigiD. Dat de verwerking langer duurt, is een nadeel, geen voordeel."
+      },
+      {
+        "prompt": "Hoeveel weken moet iemand volgens de brief gewerkt hebben om recht op WW te hebben?",
+        "options": [
+          "Minstens 36 weken in de laatste 26 weken.",
+          "Minstens 4 weken in de laatste 3 maanden.",
+          "Minstens 26 weken in de laatste 36 weken."
+        ],
+        "correct": 2,
+        "explanation": "Alinea IV noemt 26 gewerkte weken in de 36 weken voor de werkloosheid. De cijfers 36 en 26 staan in optie A verwisseld."
+      },
+      {
+        "prompt": "Mevrouw Bekkering is een week ziek en kan niet solliciteren. Welk argument kan zij gebruiken?",
+        "options": [
+          "Tijdens ziekte hoeft zij niet te solliciteren, als zij dat snel meldt.",
+          "Tijdens ziekte mag zij passend werk weigeren zonder gevolgen.",
+          "Tijdens ziekte hoeft zij haar inkomsten niet door te geven."
+        ],
+        "correct": 0,
+        "explanation": "Alinea V noemt ziekte als uitzondering op de sollicitatieplicht, op voorwaarde dat zij de ziekte binnen twee dagen meldt. Over het weigeren van passend werk of het doorgeven van inkomsten wordt geen uitzondering gemaakt."
+      },
+      {
+        "prompt": "In welke alinea leest mevrouw Bekkering wat zij kan doen als zij tijdens de behandeling van haar aanvraag geen geld heeft?",
+        "options": [
+          "In alinea II.",
+          "In alinea III.",
+          "In alinea IV.",
+          "In alinea VI."
+        ],
+        "correct": 2,
+        "explanation": "In alinea IV staat dat zij om een voorschot kan vragen zolang er nog geen beslissing is. Alinea VI gaat over vragen en bezwaar, niet over geld."
+      }
+    ]
+  }
+]

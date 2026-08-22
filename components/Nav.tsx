@@ -122,7 +122,7 @@ const CONTENT_SECTIONS: NavSection[] = [
         icon: Euro,
       },
       { href: '/inburgering', label: 'inburgering_hub', icon: Compass },
-      { href: '/inburgering/tools/tijdlijn', label: 'tool_tijdlijn', icon: CalendarClock, soon: true },
+      { href: '/inburgering/tools/tijdlijn', label: 'tool_tijdlijn', icon: CalendarClock },
       /* The blog is deliberately **not** here: the mockup gives it its own top-level item, and
        * listing it in both places is the M1 duplication bug over again. */
     ],
@@ -285,15 +285,25 @@ export default function Nav() {
 
   return (
     <header
-      className="fixed top-0 w-full z-50 border-b border-outline-variant/30"
-      style={{ background: '#ffffff', boxShadow: '0 1px 0 rgba(0,43,109,0.08)' }}
+      /* **Navy, not glass** (owner's decision, 2026-08-22). It used to be `surface` at 80% with a
+         20px backdrop-blur, so the header floated over the page — correct per §2 for a floating
+         element, and it went wrong in practice: nearly every page header on this site is a navy
+         Horizon banner, so a white bar sat on top of a navy panel and read as two headers stacked.
+         On `primary` the bar and the banner beneath it are one surface.
+         The 1px edge stays — and stays 1px — because `--nav-h` includes it and the row is sized
+         `calc(var(--nav-h) - 1px)`; removing it would put a 1px stripe of page background under
+         the bar on every `(main)` page, which is exactly the bug that token exists to prevent. It
+         is now drawn in white at 10% rather than as a ghost border, because a dark line on a dark
+         bar is invisible where the page below is also dark. */
+      className="fixed top-0 w-full z-50 bg-primary"
+      style={{ borderBottom: '1px solid rgba(255,255,255,0.10)', boxShadow: '0 1px 24px rgba(0,20,52,0.28)' }}
       aria-label={t('ariaMain')}
     >
       <div className="flex justify-between items-center max-w-7xl mx-auto px-6 h-[calc(var(--nav-h)_-_1px)]">
         {/* Logo */}
         <Link href="/" className="flex items-center gap-2 no-underline shrink-0">
-          <LogoMark size={32} className="w-6 h-6 sm:w-8 sm:h-8" />
-          <span className="text-sm sm:text-xl font-extrabold tracking-tight text-primary font-headline whitespace-nowrap">
+          <LogoMark size={32} surface="dark" className="w-6 h-6 sm:w-8 sm:h-8" />
+          <span className="text-sm sm:text-xl font-extrabold tracking-tight text-white font-headline whitespace-nowrap">
             Inburgering Oefenen
           </span>
         </Link>
@@ -320,7 +330,7 @@ export default function Nav() {
           >
             <button
               type="button"
-              className="flex items-center gap-1.5 text-on-surface-variant hover:text-primary transition-colors whitespace-nowrap"
+              className="flex items-center gap-1.5 text-white/80 hover:text-white transition-colors whitespace-nowrap"
               aria-expanded={openMenu === 'examens'}
               aria-haspopup="true"
               onClick={() => setOpenMenu(o => (o === 'examens' ? null : 'examens'))}
@@ -381,7 +391,7 @@ export default function Nav() {
           ))}
 
           {FEATURES.blog && (
-            <Link href="/blog" className="text-on-surface-variant hover:text-primary transition-colors no-underline whitespace-nowrap">
+            <Link href="/blog" className="text-white/80 hover:text-white transition-colors no-underline whitespace-nowrap">
               {t('blog')}
             </Link>
           )}
@@ -398,16 +408,18 @@ export default function Nav() {
             aria-label={t('langLabel')}
             value={locale}
             onChange={(e) => handleLangChange(e.target.value)}
-            className="hidden menu:block text-xs font-semibold text-on-surface-variant bg-transparent border border-transparent rounded-lg pl-2 pr-1 py-1.5 cursor-pointer hover:bg-surface-container-low hover:border-outline-variant/60 transition-colors focus:outline-none focus:ring-2 focus:ring-primary/30"
+            className="hidden menu:block text-xs font-semibold text-white/75 bg-transparent border-0 rounded-lg pl-2 pr-1 py-1.5 cursor-pointer hover:text-white hover:bg-white/10 transition-colors focus:outline-none focus:ring-2 focus:ring-white/40"
           >
             {LOCALES.map((l) => (
-              <option key={l.code} value={l.code}>{l.labelShort}</option>
+              /* The popup itself is drawn by the OS and does not inherit the bar's navy, so the
+                 option text has to be set back to the page's ink or it is white on white. */
+              <option key={l.code} value={l.code} style={{ color: '#191c1e' }}>{l.labelShort}</option>
             ))}
           </select>
 
           <Link
             href="/login"
-            className="hidden menu:block text-primary font-semibold text-sm px-4 py-2 border border-outline-variant rounded-xl hover:bg-surface-container-low transition-colors no-underline whitespace-nowrap"
+            className="hidden menu:block text-white font-semibold text-sm px-4 py-2 rounded-xl transition-colors no-underline whitespace-nowrap bg-white/12 hover:bg-white/20"
           >
             {t('login')}
           </Link>
@@ -423,13 +435,13 @@ export default function Nav() {
 
           <button
             onClick={() => setMobileOpen((o) => !o)}
-            className="menu:hidden flex flex-col justify-center items-center w-10 h-10 -mr-1 rounded-xl hover:bg-surface-container-low transition-colors"
+            className="menu:hidden flex flex-col justify-center items-center w-10 h-10 -mr-1 rounded-xl hover:bg-white/10 transition-colors"
             aria-label={mobileOpen ? t('menuClose') : t('menuOpen')}
             aria-expanded={mobileOpen}
           >
-            <span className="w-5 h-[2px] bg-primary rounded-full block" />
-            <span className="w-5 h-[2px] bg-primary rounded-full block my-[5px]" />
-            <span className="w-5 h-[2px] bg-primary rounded-full block" />
+            <span className="w-5 h-[2px] bg-white rounded-full block" />
+            <span className="w-5 h-[2px] bg-white rounded-full block my-[5px]" />
+            <span className="w-5 h-[2px] bg-white rounded-full block" />
           </button>
         </div>
       </div>
@@ -439,7 +451,7 @@ export default function Nav() {
           the bottom where the thumb is. */}
       {mobileOpen && (
         <div
-          className="menu:hidden border-t border-outline-variant/30 max-h-[calc(100dvh-4.5rem)] overflow-y-auto"
+          className="menu:hidden border-t border-white/10 max-h-[calc(100dvh-4.5rem)] overflow-y-auto"
           style={{ background: '#f8f9fb' }}
           aria-label={t('ariaMobile')}
         >
@@ -542,7 +554,7 @@ export default function Nav() {
       >
         <button
           type="button"
-          className="flex items-center gap-1.5 text-on-surface-variant hover:text-primary transition-colors whitespace-nowrap"
+          className="flex items-center gap-1.5 text-white/80 hover:text-white transition-colors whitespace-nowrap"
           aria-expanded={open}
           aria-haspopup="true"
           onClick={() => setOpenMenu(o => (o === section.id ? null : section.id))}

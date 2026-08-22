@@ -92,7 +92,7 @@ export default function BetalingGeluktPage() {
         {state === 'success' && (
           <>
             <div className="w-20 h-20 rounded-full flex items-center justify-center" style={{ background: 'rgba(22,163,74,0.1)' }}>
-              <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#16a34a" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+              <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#a24000" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
             </div>
             <div>
               <h1 className="font-headline font-extrabold text-2xl text-primary mb-2">Betaling geslaagd!</h1>

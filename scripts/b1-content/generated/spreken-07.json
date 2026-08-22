@@ -1,0 +1,266 @@
+[
+  {
+    "title": "Deel 1",
+    "instruction_html": "<p>In dit deel geeft u korte antwoorden. U hoort en leest steeds een situatie. Daarna spreekt u.</p><ul><li>U leest eerst de situatie. Soms hoort u ook iemand die iets tegen u zegt.</li><li>Bij sommige opgaven staat een plaatje. Gebruik de informatie van dat plaatje in uw antwoord.</li><li>Een paar woorden tot twee zinnen is genoeg. U hoeft geen lang verhaal te vertellen.</li><li>U heeft per opgave twintig seconden spreektijd.</li><li>Spreek duidelijk en geef antwoord op de vraag die gesteld wordt.</li></ul><p>Succes met dit onderdeel.</p>",
+    "tasks": [
+      {
+        "image_usage": "react",
+        "title": "Groepsopdracht",
+        "prompt": "U volgt een opleiding tot logistiek medewerker.\nU maakt met drie medestudenten een groepsopdracht.\nEén medestudent wil de taken anders verdelen.\n\nLuister naar de medestudent en reageer.",
+        "prompt_spoken": "Zeg, ik wil de taken toch anders verdelen. Jij doet de hele presentatie, want ik heb het echt te druk deze week.",
+        "voice": "woman_young",
+        "model_answer": "Nou, dat vind ik niet zo eerlijk. Ik wil de presentatie best doen, maar dan neem jij het verslag helemaal voor je rekening.",
+        "images": [
+          {
+            "slot": "spreken-7-d1-o1-a",
+            "query": "female student talking to classmate at table with laptop and notes in classroom",
+            "caption": "Medestudente aan tafel",
+            "variant": 0
+          }
+        ]
+      },
+      {
+        "image_usage": "none",
+        "title": "Stage kiezen",
+        "prompt": "U wilt een beroepsopleiding gaan doen.\nEr zijn twee opleidingen. Bij de ene opleiding loopt u veel stage.\nBij de andere opleiding zit u vooral in de les.\n\nVertel welke opleiding u zou kiezen.\nVertel ook waarom u dat kiest.",
+        "model_answer": "Ik zou de opleiding met veel stage kiezen. In de praktijk leer ik sneller, en ik maak meteen contact met mensen uit het vak. Dat helpt later bij het zoeken naar werk.",
+        "images": []
+      },
+      {
+        "image_usage": "react",
+        "title": "Klacht klant",
+        "prompt": "U werkt bij de klantenservice van een webwinkel.\nEen klant heeft een bestelling ontvangen.\nHet product is kapot aangekomen.\n\nLuister naar de klant en reageer.",
+        "prompt_spoken": "Ik heb gisteren de lamp gekregen, maar het glas is helemaal gebroken. Ik heb er zestig euro voor betaald, hoor!",
+        "voice": "man_older",
+        "model_answer": "Wat vervelend voor u, meneer. Ik stuur u vandaag nog een nieuwe lamp, of u krijgt uw geld terug. Wat vindt u het prettigst?",
+        "images": [
+          {
+            "slot": "spreken-7-d1-o3-a",
+            "query": "older man on phone holding broken package damaged parcel at home",
+            "caption": "Klant met kapot pakket",
+            "variant": 0
+          }
+        ]
+      },
+      {
+        "image_usage": "describe",
+        "title": "Instructiekaart",
+        "prompt": "U werkt in een productiehal.\nBij een machine hangt een instructiekaart.\nEen nieuwe collega kan de kaart niet lezen.\n\nKijk naar het plaatje.\nLeg uit wat er op de instructiekaart staat.",
+        "model_answer": "Op de kaart staat dat je eerst je veiligheidsbril en handschoenen aandoet. Daarna zet je de machine aan met de groene knop. Bij problemen druk je meteen op de rode stopknop.",
+        "images": [
+          {
+            "slot": "spreken-7-d1-o4-a",
+            "query": "safety instruction sign next to industrial machine factory with pictograms gloves goggles",
+            "caption": "Instructiekaart bij machine",
+            "variant": 0
+          }
+        ]
+      },
+      {
+        "image_usage": "none",
+        "title": "Vier werkdagen",
+        "prompt": "U werkt bij een schoonmaakbedrijf.\nHet bedrijf wil dat iedereen vier dagen per week werkt, negen uur per dag.\nU werkt nu vijf dagen van zeven uur.\n\nVertel wat u van dit plan vindt.\nVertel ook waarom u dat vindt.",
+        "model_answer": "Ik vind het eigenlijk best een goed plan, want dan heb ik een dag extra vrij. Alleen zijn negen uur schoonmaken wel zwaar, dus ik zou graag een langere pauze willen.",
+        "images": []
+      },
+      {
+        "image_usage": "react",
+        "title": "Cursus volgen",
+        "prompt": "U werkt bij een zorginstelling.\nU wilt graag een cursus doen om beter te worden in uw werk.\nU heeft een gesprek met uw leidinggevende.\n\nLuister naar uw leidinggevende en reageer.",
+        "prompt_spoken": "Ik zie in je aanvraag dat je die cursus wilt volgen. Vertel eens, waarom is dat belangrijk voor je?",
+        "voice": "man_young",
+        "model_answer": "Ik wil graag leren hoe ik beter met de computerdossiers werk. Daardoor maak ik minder fouten en kan ik straks ook nieuwe collega's helpen.",
+        "images": [
+          {
+            "slot": "spreken-7-d1-o6-a",
+            "query": "manager talking with employee in office one on one meeting healthcare",
+            "caption": "Gesprek met leidinggevende",
+            "variant": 0
+          }
+        ]
+      },
+      {
+        "image_usage": "none",
+        "title": "Alleen of samen",
+        "prompt": "U begint bij een nieuw bedrijf.\nU mag kiezen: u werkt alleen aan uw eigen taken, of u werkt in een team.\nUw contactpersoon vraagt naar uw voorkeur.\n\nVertel welke manier van werken u kiest.\nVertel ook waarom u dat kiest.",
+        "model_answer": "Ik werk het liefst in een team. Je kunt elkaar helpen als iets niet lukt, en ik vind het gezellig om overleg te hebben. Alleen werken vind ik op den duur saai.",
+        "images": []
+      },
+      {
+        "image_usage": "describe",
+        "title": "Snijwond",
+        "prompt": "U werkt in de keuken van een restaurant.\nEen collega heeft zich gesneden aan een mes.\nDe bedrijfsleider is er niet.\n\nKijk naar het plaatje.\nVertel wat er gebeurd is en wat u gaat doen.",
+        "model_answer": "Mijn collega heeft zich in haar vinger gesneden bij het snijden van groente. Ze bloedt behoorlijk. Ik pak de verbanddoos, doe er een pleister op en schrijf het op in het ongevallenboek.",
+        "images": [
+          {
+            "slot": "spreken-7-d1-o8-a",
+            "query": "chef with cut finger bleeding in restaurant kitchen first aid kit",
+            "caption": "Snijwond in de keuken",
+            "variant": 0
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "title": "Deel 2",
+    "instruction_html": "<p>U gaat nu verder met deel 2 van het onderdeel Spreken. In dit deel geeft u langere antwoorden dan in deel 1. U vertelt, legt uit of geeft advies, en u onderbouwt uw antwoord met redenen of voorbeelden.</p><ul><li>U leest bij elke opgave een korte situatie. Soms hoort u ook iemand die u iets vraagt.</li><li>Na de opgave heeft u vijftien seconden om na te denken over uw antwoord.</li><li>Daarna heeft u dertig seconden spreektijd.</li><li>Geef een samenhangend antwoord van ongeveer vier tot zeven zinnen. Een antwoord van één zin is te kort.</li><li>Bij sommige opgaven staan plaatjes. U moet die plaatjes in uw antwoord gebruiken.</li><li>Spreek in gewone spreektaal en let op de aanspreekvorm die bij de situatie past.</li></ul><p>Succes met dit deel.</p>",
+    "tasks": [
+      {
+        "image_usage": "cover_all",
+        "title": "Inschrijven cursus",
+        "prompt": "U volgt een cursus Nederlands bij een buurtcentrum in Zwolle.\nEen kennis wil zich ook inschrijven, maar zij weet niet hoe dat gaat.\nKijk naar de plaatjes.\n\nLeg haar uit hoe zij zich kan inschrijven voor de cursus.\nU moet daarbij alle plaatjes gebruiken.\nU hoort eerst wat uw kennis vraagt.",
+        "prompt_spoken": "Ik zou die cursus ook graag willen doen, maar ik snap niet hoe ik me moet aanmelden. Kun jij me uitleggen wat ik precies moet doen?",
+        "voice": "woman_young",
+        "model_answer": "Het is niet moeilijk, hoor. Je gaat eerst naar de website van het buurtcentrum en daar vul je het inschrijfformulier in. Je moet je naam, je adres en je telefoonnummer invullen, en ook welke cursus je wilt volgen. Daarna word je gebeld voor een kort gesprek, zodat ze kunnen kijken welk niveau bij je past. Als dat gesprek klaar is, krijg je een mail met de dag en de tijd van de lessen. Dan betaal je het cursusgeld en kun je gewoon beginnen.",
+        "images": [
+          {
+            "slot": "spreken-7-d2-o1-a",
+            "query": "person filling in online registration form on laptop",
+            "caption": "Formulier invullen",
+            "variant": 0
+          },
+          {
+            "slot": "spreken-7-d2-o1-b",
+            "query": "woman having phone conversation with notebook at desk",
+            "caption": "Telefonisch gesprek",
+            "variant": 1
+          },
+          {
+            "slot": "spreken-7-d2-o1-c",
+            "query": "email confirmation on smartphone screen calendar",
+            "caption": "Bevestiging per mail",
+            "variant": 2
+          }
+        ]
+      },
+      {
+        "image_usage": "none",
+        "title": "Verandering op het werk",
+        "prompt": "U werkt bij een schoonmaakbedrijf.\nUw leidinggevende vraagt de medewerkers naar hun ideeën.\nZij wil weten wat er beter kan op de werkvloer.\n\nVertel welke verandering u op uw werk zou willen.\nVertel ook waarom u dat belangrijk vindt.",
+        "prompt_spoken": "We willen graag weten wat jullie zelf zouden veranderen. Wat zou jij anders willen op je werk, en waarom eigenlijk?",
+        "voice": "woman_older",
+        "model_answer": "Ik zou graag willen dat het rooster eerder bekend is. Nu krijgen we het pas op donderdag voor de week erna, en dat is voor mij lastig, omdat ik kinderen heb. Als ik het rooster twee weken van tevoren krijg, kan ik de opvang beter regelen. Ik denk ook dat er dan minder mensen ruilen, waardoor er minder gedoe is. Verder zou ik willen dat we meer materiaal krijgen, want we moeten nu vaak wachten op nieuwe doeken. Dat kost tijd en dat is jammer.",
+        "images": []
+      },
+      {
+        "image_usage": "cover_all",
+        "title": "Open dag",
+        "prompt": "Uw neef wil volgend jaar een opleiding gaan doen.\nHij twijfelt of hij naar de open dag van het opleidingscentrum zal gaan.\nU bent er vorig jaar zelf geweest.\nKijk naar de plaatjes.\n\nVertel hem wat er tijdens de open dag gebeurt.\nU moet daarbij alle plaatjes gebruiken.\nU hoort eerst wat uw neef vraagt.",
+        "prompt_spoken": "Ik weet niet of ik naar die open dag ga. Wat doen ze daar eigenlijk allemaal?",
+        "voice": "man_young",
+        "model_answer": "Je moet zeker gaan, want je leert er veel. Het begint met een korte presentatie in de aula, waar een docent uitlegt welke opleidingen er zijn en hoe lang ze duren. Daarna krijg je een rondleiding door het gebouw, zodat je de lokalen en de werkplaatsen kunt zien. Op het laatst kun je met docenten en met studenten praten bij de kraampjes. Zij vertellen eerlijk hoe zwaar de opleiding is en welk werk je later kunt doen. Neem je vragen mee, dan haal je er echt iets uit.",
+        "images": [
+          {
+            "slot": "spreken-7-d2-o3-a",
+            "query": "teacher giving presentation to audience in school auditorium",
+            "caption": "Presentatie in de aula",
+            "variant": 0
+          },
+          {
+            "slot": "spreken-7-d2-o3-b",
+            "query": "group of visitors touring school workshop classroom",
+            "caption": "Rondleiding door school",
+            "variant": 1
+          },
+          {
+            "slot": "spreken-7-d2-o3-c",
+            "query": "students talking with teacher at information stand open day",
+            "caption": "Vragen stellen bij kraampje",
+            "variant": 2
+          }
+        ]
+      },
+      {
+        "image_usage": "choose",
+        "title": "Welke laptop",
+        "prompt": "Uw buurvrouw begint in september met een opleiding administratie.\nZij wil een laptop kopen en heeft twee modellen gezien.\nKijk naar de twee plaatjes.\n\nAdviseer haar welke laptop zij moet kopen.\nNoem minstens twee redenen voor uw keuze.",
+        "prompt_spoken": "Ik zie door de bomen het bos niet meer. Welke van deze twee laptops zou jij nemen voor mijn opleiding?",
+        "voice": "woman_older",
+        "model_answer": "Ik zou de kleine, lichte laptop nemen. Je moet elke dag met de trein naar school, en dan is een zwaar apparaat echt vervelend in je tas. De accu van dat kleine model gaat ook langer mee, zodat je niet steeds een stopcontact hoeft te zoeken in de klas. Voor administratie werk je vooral met tekst en met tabellen, en daar heb je geen zware computer voor nodig. Die grote laptop is meer voor spelletjes of voor filmbewerking, en hij is duurder. Ik denk dus dat de kleine laptop beter bij jou past.",
+        "images": [
+          {
+            "slot": "spreken-7-d2-o4-a",
+            "query": "thin lightweight laptop on table small screen",
+            "caption": "Lichte, kleine laptop",
+            "variant": 0
+          },
+          {
+            "slot": "spreken-7-d2-o4-b",
+            "query": "large heavy gaming laptop with big screen on desk",
+            "caption": "Grote, zware laptop",
+            "variant": 1
+          }
+        ]
+      },
+      {
+        "image_usage": "cover_all",
+        "title": "Kassa afsluiten",
+        "prompt": "U werkt in een tuincentrum bij de kassa.\nEen nieuwe collega moet vanavond de winkel sluiten.\nHij weet nog niet hoe hij de kassa afsluit.\nKijk naar de plaatjes.\n\nLeg uw collega uit wat hij aan het eind van de dag moet doen.\nU moet daarbij alle plaatjes gebruiken.\nU hoort eerst wat uw collega vraagt.",
+        "prompt_spoken": "Ik moet vanavond afsluiten, maar ik heb dat nog nooit gedaan. Kun je me uitleggen hoe ik de kassa afsluit?",
+        "voice": "man_young",
+        "model_answer": "Ja, natuurlijk. Je begint met de eindafsluiting op het scherm van de kassa, dan drukt de kassa een bonnetje af met het totaalbedrag van de dag. Daarna tel je het geld in de kassalade en je kijkt of het bedrag klopt met dat bonnetje. Schrijf het bedrag op het formulier en zet er je naam bij. Vervolgens doe je het geld met de bon in het zakje en stop je dat in de kluis achter in het kantoor. Kloppen de bedragen niet, bel dan even de chef, want je moet dat altijd melden.",
+        "images": [
+          {
+            "slot": "spreken-7-d2-o5-a",
+            "query": "cash register terminal printing daily receipt end of day",
+            "caption": "Eindafsluiting op kassa",
+            "variant": 0
+          },
+          {
+            "slot": "spreken-7-d2-o5-b",
+            "query": "hands counting euro banknotes and coins from cash drawer",
+            "caption": "Geld tellen",
+            "variant": 1
+          },
+          {
+            "slot": "spreken-7-d2-o5-c",
+            "query": "person putting money bag into office safe",
+            "caption": "Geld in de kluis",
+            "variant": 2
+          }
+        ]
+      },
+      {
+        "image_usage": "none",
+        "title": "Thuiswerken",
+        "prompt": "Bij uw werkgever werken veel collega's tegenwoordig thuis.\nTijdens een werkoverleg wordt er over thuiswerken gepraat.\nEen collega vraagt naar uw mening.\n\nVertel wat volgens u de nadelen van thuiswerken zijn.\nGeef ook voorbeelden uit uw eigen ervaring.",
+        "prompt_spoken": "Iedereen is altijd zo positief over thuiswerken. Wat vind jij eigenlijk de nadelen ervan?",
+        "voice": "man_older",
+        "model_answer": "Ik zie zeker een paar nadelen. Als je thuis werkt, zie je je collega's bijna niet, waardoor je minder van elkaar leert. Kleine vragen stel je op kantoor even tussendoor, maar thuis moet je bellen of mailen en dat kost meer tijd. Ik merk ook dat ik langer doorwerk, omdat mijn laptop gewoon op tafel blijft staan. En niet iedereen heeft thuis een rustige plek; ik woon klein, dus ik zit soms in de woonkamer met de kinderen erbij. Twee dagen thuis en drie dagen op kantoor vind ik daarom het beste.",
+        "images": []
+      },
+      {
+        "image_usage": "choose",
+        "title": "Welke zaal",
+        "prompt": "U werkt bij een gemeente en organiseert een cursus voor twintig deelnemers.\nDe cursus duurt een hele dag en er wordt in groepjes gewerkt.\nEr zijn twee zalen beschikbaar.\nKijk naar de twee plaatjes.\n\nAdviseer uw collega welke zaal geschikt is.\nNoem minstens twee redenen voor uw keuze.",
+        "prompt_spoken": "Ik moet vandaag nog een zaal vastleggen. Welke van deze twee is volgens jou het beste voor onze cursus?",
+        "voice": "woman_young",
+        "model_answer": "Ik zou kiezen voor de zaal met de losse tafels. De deelnemers moeten namelijk in groepjes werken, en dan kun je de tafels makkelijk verschuiven. In die andere zaal staan alle stoelen in rijen achter elkaar, waardoor mensen elkaar niet kunnen aankijken. De eerste zaal heeft ook grote ramen, dus er is daglicht, en dat is fijn als je er een hele dag zit. Er is bovendien een scherm aanwezig voor de presentatie. Voor twintig personen is die ruimte groot genoeg, dus ik zou die zaal reserveren.",
+        "images": [
+          {
+            "slot": "spreken-7-d2-o7-a",
+            "query": "bright meeting room with separate group tables and large windows",
+            "caption": "Zaal met groepstafels",
+            "variant": 0
+          },
+          {
+            "slot": "spreken-7-d2-o7-b",
+            "query": "lecture hall with rows of chairs facing front",
+            "caption": "Zaal met stoelenrijen",
+            "variant": 1
+          }
+        ]
+      },
+      {
+        "image_usage": "none",
+        "title": "Goede buur",
+        "prompt": "In uw flat komt een nieuwe bewoner wonen.\nDe woningcorporatie maakt een boekje over prettig samenwonen in de flat.\nEen medewerkster vraagt bewoners naar hun ervaring.\n\nVertel wat u een goede buur maakt.\nGeef ook voorbeelden van wat u voor uw buren doet.",
+        "prompt_spoken": "Wij vragen alle bewoners hetzelfde: wat maakt u volgens uzelf een goede buur?",
+        "voice": "woman_older",
+        "model_answer": "Ik denk dat ik een goede buur ben, omdat ik rekening houd met anderen. Ik zet geen harde muziek aan na tienen en ik waarschuw de buren als ik een feestje geef. Als iemand op vakantie is, haal ik de post uit de bus en geef ik de planten water. Mijn bovenbuurvrouw is al tachtig, dus ik doe soms boodschappen voor haar. Verder groet ik iedereen in het trappenhuis, want daardoor praat je makkelijker met elkaar als er een probleem is. Ruzie helpt niemand; ik bel liever even aan om het uit te praten.",
+        "images": []
+      }
+    ]
+  }
+]

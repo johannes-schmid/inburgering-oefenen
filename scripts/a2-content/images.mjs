@@ -36,7 +36,17 @@ import path from 'node:path';
 import sharp from 'sharp';
 import { ROOT, IMAGE_BUCKET } from './lib.mjs';
 
-const LOCK_PATH = path.join(ROOT, 'scripts', 'a2-content', 'images.lock.json');
+/**
+ * The level parameterises three things and nothing else: which lock file is read, which prefix
+ * the stored objects get, and which heading the credits are appended under. B1 reuses the whole
+ * pipeline — `scripts/b1-content/` has its own `images.lock.json` and its pictures live under
+ * `b1/`, so the two levels can never collide on a slot key or clobber each other's objects.
+ *
+ * Defaults are A2's, so every existing call site behaves byte-for-byte as before.
+ */
+function lockPathFor(level) {
+  return path.join(ROOT, 'scripts', `${level}-content`, 'images.lock.json');
+}
 const CREDITS_PATH = path.join(ROOT, 'resources', 'images', 'CREDITS.md');
 
 /**
@@ -53,14 +63,15 @@ const WEBP_QUALITY = 72;
 /** Below this the Pexels original is too small to survive the resize with any detail. */
 const MIN_SOURCE_WIDTH = 1000;
 
-export function readLock() {
-  if (!fs.existsSync(LOCK_PATH)) return {};
-  return JSON.parse(fs.readFileSync(LOCK_PATH, 'utf8'));
+export function readLock(level = 'a2') {
+  const p = lockPathFor(level);
+  if (!fs.existsSync(p)) return {};
+  return JSON.parse(fs.readFileSync(p, 'utf8'));
 }
 
-function writeLock(lock) {
+function writeLock(lock, level = 'a2') {
   const sorted = Object.fromEntries(Object.entries(lock).sort(([a], [b]) => a.localeCompare(b)));
-  fs.writeFileSync(LOCK_PATH, `${JSON.stringify(sorted, null, 2)}\n`);
+  fs.writeFileSync(lockPathFor(level), `${JSON.stringify(sorted, null, 2)}\n`);
 }
 
 const sleep = ms => new Promise(r => setTimeout(r, ms));
@@ -106,8 +117,8 @@ function pick(photos, variant) {
   return pool[variant % pool.length];
 }
 
-export function createImages({ storage, apiKey, dryRun = false }) {
-  const lock = readLock();
+export function createImages({ storage, apiKey, dryRun = false, level = 'a2' }) {
+  const lock = readLock(level);
   const credits = [];
   let fetched = 0;
   let reused = 0;
@@ -123,7 +134,7 @@ export function createImages({ storage, apiKey, dryRun = false }) {
     // Path is derived from the slot, so local and production agree and a re-run is a HEAD, not a
     // download. Each slot owns its path and is referenced by exactly one item, so there is nothing
     // for a re-upload to clobber.
-    const objectPath = `a2/${slot}.webp`;
+    const objectPath = `${level}/${slot}.webp`;
 
     const already = await storage.existing(IMAGE_BUCKET, objectPath);
     if (already && lock[slot]) {
@@ -147,7 +158,7 @@ export function createImages({ storage, apiKey, dryRun = false }) {
       };
       lock[slot] = entry;
       credits.push({ slot, ...entry });
-      writeLock(lock);
+      writeLock(lock, level);
     }
 
     const srcRes = await fetch(entry.src);
@@ -187,9 +198,10 @@ export function createImages({ storage, apiKey, dryRun = false }) {
         `- \`${c.slot}\` (${c.query}) — photo by [${c.photographer}](${c.photographer_url}) ` +
         `on Pexels (#${c.pexels_id})`
     );
-    const header = '\n## A2 exam images (Pexels)\n\n';
+    const heading = `## ${level.toUpperCase()} exam images (Pexels)`;
+    const header = `\n${heading}\n\n`;
     const existing = fs.existsSync(CREDITS_PATH) ? fs.readFileSync(CREDITS_PATH, 'utf8') : '# Image credits\n';
-    const body = existing.includes('## A2 exam images (Pexels)')
+    const body = existing.includes(heading)
       ? `${existing.trimEnd()}\n${lines.join('\n')}\n`
       : `${existing.trimEnd()}\n${header}${lines.join('\n')}\n`;
     fs.writeFileSync(CREDITS_PATH, body);

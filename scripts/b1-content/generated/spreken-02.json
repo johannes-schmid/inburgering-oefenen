@@ -1,0 +1,266 @@
+[
+  {
+    "title": "Deel 1",
+    "instruction_html": "<p>In dit deel van het examen krijgt u acht korte opgaven. U leest steeds een situatie op het scherm. Soms hoort u daarna iemand die iets tegen u zegt.</p><p>Geef bij elke opgave een kort antwoord. Een paar woorden tot twee zinnen is genoeg. U hebt per opgave twintig seconden spreektijd.</p><ul><li>Lees eerst de situatie en de opdracht goed door.</li><li>Bij sommige opgaven staat een plaatje. Gebruik de informatie van dat plaatje in uw antwoord.</li><li>Spreek duidelijk en in hele zinnen, zodat de ander u goed begrijpt.</li><li>Let op de vorm die bij de situatie past: tegen een klant of een leidinggevende zegt u 'u', tegen een collega of medestudent zegt u 'je'.</li></ul><p>U hoeft geen lang verhaal te vertellen. Antwoord kort, maar wel volledig, zodat de ander weet wat u bedoelt.</p>",
+    "tasks": [
+      {
+        "image_usage": "react",
+        "title": "Dienst overnemen",
+        "prompt": "U werkt in een verzorgingshuis.\nUw collega Ramon moet vrijdagavond werken.\nHij vraagt of u zijn dienst wilt overnemen.\n\nLuister naar Ramon en reageer.\nVertel ook waarom u dat wel of niet kunt doen.",
+        "prompt_spoken": "Zeg, ik zit een beetje met vrijdagavond. Zou jij mijn dienst willen overnemen?",
+        "voice": "man_young",
+        "model_answer": "Sorry Ramon, vrijdagavond kan ik echt niet, want dan past mijn zus op mijn kinderen niet. Zaterdag wil ik wel voor je werken, als dat je helpt.",
+        "images": [
+          {
+            "slot": "spreken-2-d1-o1-a",
+            "query": "male care worker talking to colleague in nursing home corridor",
+            "caption": "Collega in de gang",
+            "variant": 0
+          }
+        ]
+      },
+      {
+        "image_usage": "none",
+        "title": "Thuis of kantoor",
+        "prompt": "U mag zelf kiezen waar u werkt.\nU kunt twee dagen thuiswerken.\nU kunt ook elke dag naar het kantoor komen.\n\nVertel wat u kiest.\nVertel ook waarom u dat kiest.",
+        "model_answer": "Ik zou twee dagen thuiswerken kiezen. Thuis kan ik rustig doorwerken en ik ben minder lang onderweg. Maar op kantoor zie ik mijn collega's, dus die andere dagen kom ik graag.",
+        "images": []
+      },
+      {
+        "image_usage": "react",
+        "title": "Klant in de winkel",
+        "prompt": "U werkt in een grote bouwmarkt.\nEen klant zoekt iets en kan het niet vinden.\nZij spreekt u aan bij de kassa.\n\nLuister naar de klant en reageer.\nVertel haar waar zij moet zijn.",
+        "prompt_spoken": "Meneer, sorry dat ik u stoor. Ik zoek witte verf voor de badkamer, maar ik zie hier alleen kwasten liggen.",
+        "voice": "woman_older",
+        "model_answer": "Geen probleem, mevrouw. De verf staat achterin, in gang zes, naast de ladders. Als u het niet vindt, vraagt u het daar even aan mijn collega.",
+        "images": [
+          {
+            "slot": "spreken-2-d1-o3-a",
+            "query": "older woman customer asking employee for help in hardware store aisle",
+            "caption": "Klant zoekt iets",
+            "variant": 0
+          }
+        ]
+      },
+      {
+        "image_usage": "describe",
+        "title": "Het rooster",
+        "prompt": "U werkt in een restaurant.\nAan de muur in de keuken hangt het rooster van deze week.\nEen nieuwe collega heeft het rooster nog niet gezien.\n\nKijk naar het plaatje.\nLeg uit wat er op het rooster staat.",
+        "model_answer": "Dit is het rooster van deze week. Hier bovenaan staan de dagen en links staan onze namen. Achter je naam zie je hoe laat je begint en hoe laat je stopt.",
+        "images": [
+          {
+            "slot": "spreken-2-d1-o4-a",
+            "query": "weekly staff schedule roster sheet on kitchen wall with names and times",
+            "caption": "Rooster aan de muur",
+            "variant": 0
+          }
+        ]
+      },
+      {
+        "image_usage": "none",
+        "title": "Kantine korter open",
+        "prompt": "U werkt in een fabriek.\nDe kantine gaat vanaf volgende maand een uur korter open.\nDe leiding vraagt de werknemers om hun mening.\n\nVertel wat u van dit plan vindt.\nVertel ook waarom u dat vindt.",
+        "model_answer": "Ik vind het geen goed plan, want ik werk in de late dienst en dan is de kantine straks al dicht. Dan moet ik zelf eten meenemen, terwijl een warme maaltijd wel fijn is.",
+        "images": []
+      },
+      {
+        "image_usage": "react",
+        "title": "Medestudent",
+        "prompt": "U volgt een beroepsopleiding.\nU maakt een opdracht in het computerlokaal.\nEen medestudent begrijpt de opdracht niet.\n\nLuister naar uw medestudent en reageer.\nLeg uit wat zij moet doen.",
+        "prompt_spoken": "Ik snap er echt niks van. Moeten we nu een verslag schrijven of alleen die vragen invullen?",
+        "voice": "woman_young",
+        "model_answer": "We hoeven geen verslag te maken. Je vult eerst de vragen op bladzijde twee in en daarna zet je er een korte uitleg bij. Kijk maar even mee op mijn scherm.",
+        "images": [
+          {
+            "slot": "spreken-2-d1-o6-a",
+            "query": "young female student looking confused at laptop asking classmate for help",
+            "caption": "Medestudent vraagt hulp",
+            "variant": 0
+          }
+        ]
+      },
+      {
+        "image_usage": "none",
+        "title": "Cursus naast werk",
+        "prompt": "U werkt vier dagen per week.\nUw werkgever biedt u een cursus aan van tien avonden.\nDe cursus is gratis, maar u moet in uw eigen tijd komen.\n\nVertel of u de cursus gaat volgen.\nVertel ook waarom u dat wel of niet doet.",
+        "model_answer": "Ik denk dat ik de cursus ga doen. Het is gratis en ik kan er later een betere baan mee krijgen. Tien avonden is druk, maar het is maar voor korte tijd.",
+        "images": []
+      },
+      {
+        "image_usage": "describe",
+        "title": "Kind op de opvang",
+        "prompt": "U loopt stage bij een kinderopvang.\nEen jongetje van vier is op het plein gevallen.\nHij huilt en zit op de grond.\n\nKijk naar het plaatje.\nTroost het kind en zeg wat u gaat doen.",
+        "model_answer": "Ach, gevallen? Kom, ik help je even overeind. Ik zie een schaafwond op je knie. We gaan naar binnen, dan maak ik het schoon en doe ik er een pleister op.",
+        "images": [
+          {
+            "slot": "spreken-2-d1-o8-a",
+            "query": "little boy crying with scraped knee sitting on playground ground",
+            "caption": "Gevallen kind op plein",
+            "variant": 0
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "title": "Deel 2",
+    "instruction_html": "<p>In dit deel geeft u langere antwoorden. U vertelt iets, u legt iets uit of u geeft uw mening met een uitleg erbij. Een antwoord van één zin is te kort: bouw uw antwoord op met vier tot zeven zinnen, zodat de luisteraar u goed kan volgen.</p><ul><li>U leest bij elke opgave eerst de situatie en daarna de opdracht.</li><li>Soms hoort u ook iemand die u een vraag stelt of om advies vraagt.</li><li>U hebt vijftien seconden om na te denken over uw antwoord.</li><li>Daarna hebt u dertig seconden om te spreken.</li><li>Bij sommige opgaven staan plaatjes. U moet die plaatjes in uw antwoord gebruiken.</li><li>Spreek in hele zinnen en leg uit waarom u iets vindt of adviseert.</li></ul><p>Let erop dat u de juiste vorm kiest: bij onbekenden en leidinggevenden gebruikt u 'u', bij collega's en medestudenten mag u 'je' gebruiken.</p>",
+    "tasks": [
+      {
+        "image_usage": "cover_all",
+        "title": "Eerste werkdag",
+        "prompt": "U werkt in een groot tuincentrum in Zwolle.\nEr begint vandaag een nieuwe collega, Rachid.\nHij weet nog niet wat hij op zijn eerste dag moet doen.\nKijk naar de plaatjes.\n\nLeg Rachid uit wat hij vandaag achter elkaar moet doen.\nU moet daarbij alle plaatjes gebruiken.\n\nU hoort eerst Rachid.",
+        "prompt_spoken": "Goedemorgen! Ik ben Rachid, ik begin vandaag. Kun je me vertellen wat ik allemaal moet doen vandaag?",
+        "voice": "man_young",
+        "model_answer": "Welkom, leuk dat je er bent. Je gaat eerst naar de kantine, want daar krijg je van de teamleider je pasje en je werkkleding. Daarna loop je een rondje door het tuincentrum, zodat je weet waar de kassa's en het magazijn zijn. Ik loop dat rondje met je mee en dan stel ik je aan iedereen voor. Na de pauze ga je met mij aan de kassa staan en dan kijk je eerst hoe ik het doe. Als je iets niet weet, vraag het gewoon, want niemand verwacht dat je alles meteen kunt.",
+        "images": [
+          {
+            "slot": "spreken-2-d2-o1-a",
+            "query": "employee receiving badge and work uniform in staff canteen",
+            "caption": "Pasje en werkkleding ophalen",
+            "variant": 0
+          },
+          {
+            "slot": "spreken-2-d2-o1-b",
+            "query": "manager giving new employee tour of garden centre",
+            "caption": "Rondleiding door het bedrijf",
+            "variant": 1
+          },
+          {
+            "slot": "spreken-2-d2-o1-c",
+            "query": "trainee watching colleague at shop checkout",
+            "caption": "Meekijken aan de kassa",
+            "variant": 2
+          }
+        ]
+      },
+      {
+        "image_usage": "none",
+        "title": "Sport aanraden",
+        "prompt": "Een vriend van u zit veel achter de computer.\nHij wil meer gaan bewegen, maar hij weet niet wat.\nHij vraagt u om een tip.\n\nVertel welke sport u hem aanraadt.\nVertel ook waarom u juist die sport een goed idee vindt.",
+        "prompt_spoken": "Ik zit de hele dag stil en dat is niet gezond. Welke sport zou jij mij aanraden?",
+        "voice": "man_young",
+        "model_answer": "Ik zou zwemmen aanraden, want dat is heel goed voor je rug en je schouders. Jij zit de hele dag gebogen achter een beeldscherm, dus je hebt beweging nodig waar je geen pijn van krijgt. Bij zwemmen belast je je knieën bijna niet, terwijl je toch je hele lichaam gebruikt. Bovendien kun je zelf kiezen wanneer je gaat, dus je hoeft niet op een team te wachten. Bij ons in de wijk kost een badpakje ongeveer vier euro per keer, en dat is niet duur. Begin gewoon één keer per week, en als je het leuk vindt, ga je vaker.",
+        "images": []
+      },
+      {
+        "image_usage": "cover_all",
+        "title": "Wasmachine op het werk",
+        "prompt": "U werkt in een zorginstelling in Apeldoorn.\nIn de personeelsruimte staat een wasmachine voor de werkkleding.\nEen nieuwe medewerkster weet niet hoe die werkt.\nKijk naar de plaatjes.\n\nLeg haar stap voor stap uit hoe zij de wasmachine moet gebruiken.\nU moet daarbij alle plaatjes gebruiken.\n\nU hoort eerst uw collega.",
+        "prompt_spoken": "Ik moet mijn vieze schort wassen, maar ik snap die machine niet. Kun je uitleggen hoe het moet?",
+        "voice": "woman_young",
+        "model_answer": "Dat is niet moeilijk, ik leg het je uit. Doe eerst de kleding in de machine, maar maak hem niet helemaal vol, want dan wordt de was niet schoon. Daarna doe je één schepje waspoeder in het bakje bovenin, en niet meer, want anders blijft er zeep in de kleding zitten. Dan draai je de knop op dertig graden en druk je op de startknop. Het programma duurt ongeveer een uur, dus zet hem aan het begin van je dienst aan. Vergeet niet de was er daarna uit te halen, zodat de volgende collega de machine kan gebruiken.",
+        "images": [
+          {
+            "slot": "spreken-2-d2-o3-a",
+            "query": "person putting work clothes into washing machine drum",
+            "caption": "Kleding in de machine",
+            "variant": 0
+          },
+          {
+            "slot": "spreken-2-d2-o3-b",
+            "query": "hand pouring washing powder into detergent drawer",
+            "caption": "Waspoeder in het bakje",
+            "variant": 1
+          },
+          {
+            "slot": "spreken-2-d2-o3-c",
+            "query": "finger pressing start button on washing machine dial",
+            "caption": "Programma kiezen en starten",
+            "variant": 2
+          }
+        ]
+      },
+      {
+        "image_usage": "choose",
+        "title": "Zaal kiezen",
+        "prompt": "U zit in de activiteitencommissie van uw buurthuis.\nEr komt een informatieavond over de nieuwe parkeerregels.\nEr komen ongeveer veertig bewoners.\nEen bestuurslid twijfelt tussen twee zalen.\nKijk naar de twee plaatjes.\n\nZeg welke zaal u kiest voor deze avond.\nGeef minstens twee redenen voor uw keuze.",
+        "prompt_spoken": "We kunnen twee zalen huren. Welke lijkt jou het beste voor die informatieavond?",
+        "voice": "woman_older",
+        "model_answer": "Ik zou de zaal met de rijen stoelen en het scherm kiezen. Er komen veertig bewoners en die moeten allemaal naar één spreker luisteren, dus iedereen moet vooraan kunnen kijken. Op het scherm kunnen we de kaart van de wijk laten zien, waardoor mensen precies zien waar niet meer geparkeerd mag worden. De andere zaal heeft kleine tafeltjes, en dan gaan mensen aan hun eigen tafel praten. Bovendien passen daar niet genoeg mensen, terwijl we niemand willen wegsturen. Na de uitleg kunnen we in de kleine zaal koffie drinken, dan hebben we allebei de ruimtes goed gebruikt.",
+        "images": [
+          {
+            "slot": "spreken-2-d2-o4-a",
+            "query": "empty meeting hall with rows of chairs and projection screen",
+            "caption": "Zaal met stoelenrijen",
+            "variant": 0
+          },
+          {
+            "slot": "spreken-2-d2-o4-b",
+            "query": "small community room with round tables and chairs",
+            "caption": "Zaal met ronde tafels",
+            "variant": 1
+          }
+        ]
+      },
+      {
+        "image_usage": "cover_all",
+        "title": "Open dag",
+        "prompt": "U volgt een opleiding logistiek aan een opleidingscentrum in Tilburg.\nZaterdag is er een open dag voor nieuwe studenten.\nEen buurvrouw wil met haar zoon komen kijken.\nKijk naar de plaatjes.\n\nVertel haar wat er die dag te doen is en in welke volgorde.\nU moet daarbij alle plaatjes gebruiken.\n\nU hoort eerst uw buurvrouw.",
+        "prompt_spoken": "Mijn zoon wil zaterdag naar die open dag. Wat kunnen we daar eigenlijk allemaal verwachten?",
+        "voice": "woman_older",
+        "model_answer": "Leuk dat jullie komen, er is genoeg te zien. Jullie beginnen bij de balie in de hal, want daar krijgen jullie een programma en een plattegrond. Om elf uur is er een korte voorlichting in het lokaal, waarin een docent uitlegt hoe de opleiding is opgebouwd en welk werk je later kunt doen. Daarna mag je in de praktijkhal zelf met een heftruck en de scanners werken, en dat vinden de meeste jongeren het leukst. Studenten lopen er ook rond, dus je zoon kan hun gewoon vragen stellen. Ik zou wel vroeg komen, omdat het na het middaguur heel druk wordt.",
+        "images": [
+          {
+            "slot": "spreken-2-d2-o5-a",
+            "query": "welcome desk with brochures at school open day",
+            "caption": "Aanmelden bij de balie",
+            "variant": 0
+          },
+          {
+            "slot": "spreken-2-d2-o5-b",
+            "query": "teacher giving presentation to visitors in classroom",
+            "caption": "Voorlichting in het lokaal",
+            "variant": 1
+          },
+          {
+            "slot": "spreken-2-d2-o5-c",
+            "query": "students practising with forklift in logistics training hall",
+            "caption": "Meedoen in de praktijkhal",
+            "variant": 2
+          }
+        ]
+      },
+      {
+        "image_usage": "none",
+        "title": "Doorwerken na pensioen",
+        "prompt": "Steeds meer mensen blijven werken nadat zij de pensioenleeftijd hebben bereikt.\nSommigen doen dat voor het geld, anderen voor de contacten.\nIn de kantine praat een collega hierover met u.\n\nVertel wat u hiervan vindt.\nLeg ook uit waarom u dat vindt.",
+        "prompt_spoken": "Mijn vader is bijna zeventig en hij werkt nog steeds twee dagen. Wat vind jij daar eigenlijk van?",
+        "voice": "man_older",
+        "model_answer": "Ik vind het goed, zolang iemand het echt zelf kiest. Veel mensen missen na hun pensioen de contacten en de structuur, waardoor ze zich thuis snel eenzaam voelen. Als je nog twee dagen werkt, blijf je actief en je geeft je ervaring door aan jongere collega's. Maar ik vind het niet goed als iemand moet doorwerken omdat het pensioen te laag is, want dan is het geen vrije keuze. Bij zwaar lichamelijk werk lukt het bovendien vaak niet meer. Daarom zou ik zeggen: doorwerken mag, maar het moet nooit moeten.",
+        "images": []
+      },
+      {
+        "image_usage": "choose",
+        "title": "Werkschoenen kiezen",
+        "prompt": "U werkt bij een bouwbedrijf in Almere.\nEen collega mag nieuwe werkschoenen uitzoeken.\nHij werkt vooral buiten op de steiger.\nKijk naar de twee plaatjes.\n\nAdviseer hem welke schoenen hij moet kiezen.\nGeef minstens twee redenen voor uw advies.",
+        "prompt_spoken": "Ik mag nieuwe werkschoenen bestellen, hoge of lage. Welke zou jij nemen?",
+        "voice": "man_young",
+        "model_answer": "Ik zou de hoge schoenen nemen, dus die met de veters tot boven je enkel. Jij staat de hele dag op de steiger, en daar zijn de planken smal en soms nat. Hoge schoenen steunen je enkel, waardoor je minder snel verzwikt als je scheef stapt. Ze houden ook beter water en zand tegen, dus je voeten blijven droger. De lage schoenen zijn lichter en zitten misschien fijner, maar ze beschermen veel minder. Voor binnenwerk zou ik die wel kiezen, maar voor jouw werk echt de hoge.",
+        "images": [
+          {
+            "slot": "spreken-2-d2-o7-a",
+            "query": "high ankle safety work boots with laces",
+            "caption": "Hoge werkschoenen",
+            "variant": 0
+          },
+          {
+            "slot": "spreken-2-d2-o7-b",
+            "query": "low safety shoes sneaker style with steel toe",
+            "caption": "Lage werkschoenen",
+            "variant": 1
+          }
+        ]
+      },
+      {
+        "image_usage": "none",
+        "title": "Goede leidinggevende",
+        "prompt": "U doet mee aan een gesprek over werkplezier bij uw werkgever.\nDe gespreksleider wil weten wat medewerkers van hun leidinggevende verwachten.\nZij vraagt het aan u.\n\nVertel wat u belangrijk vindt in een goede leidinggevende.\nLeg ook uit waarom u dat belangrijk vindt.",
+        "prompt_spoken": "Wat vindt u nu echt belangrijk in een goede leidinggevende?",
+        "voice": "woman_young",
+        "model_answer": "Voor mij is het belangrijkste dat een leidinggevende duidelijk is. Als ik precies weet wat er van mij wordt verwacht, kan ik mijn werk rustig doen en maak ik minder fouten. Verder vind ik het belangrijk dat hij echt luistert, ook wanneer iemand een klacht heeft over het rooster. Een goede chef geeft niet alleen kritiek, maar zegt ook wanneer iets goed gaat, waardoor je met plezier naar je werk komt. En hij moet iedereen gelijk behandelen, want anders krijg je snel ruzie in het team. Zelf hoef ik geen vriend, maar wel iemand die eerlijk is en zijn afspraken nakomt.",
+        "images": []
+      }
+    ]
+  }
+]

@@ -1,0 +1,417 @@
+[
+  {
+    "section": "website",
+    "title": "Techniekopleiding met baangarantie bij ROC Rivierendal",
+    "intro": "Deze tekst komt van de website van ROC Rivierendal. De tekst gaat over technische opleidingen waarbij de school samen met bedrijven werk garandeert na het diploma.",
+    "body_html": "<p><strong>I</strong> ROC Rivierendal verzorgt al ruim dertig jaar technische opleidingen op de locaties Meerdijk en Bovenkerk. In onze regio staan veel installatiebedrijven, machinefabrieken en onderhoudsbedrijven, en die sector schreeuwt om vakmensen: er komen elk jaar meer vacatures bij dan er studenten met een technisch diploma van school komen. Werkgevers klaagden daarom jarenlang over personeelstekorten, terwijl jongeren twijfelden of een technische opleiding wel zekerheid gaf. Om die twijfel weg te nemen, hebben de school en 62 aangesloten bedrijven in 2022 afgesproken dat studenten een baangarantie krijgen.</p><p><strong>Wat houdt de baangarantie in?</strong></p><p><strong>II</strong> De baangarantie betekent dat een van de aangesloten bedrijven u binnen drie maanden na uw diploma een arbeidsovereenkomst aanbiedt van minimaal twaalf maanden en minimaal 32 uur per week. U kiest echter niet zelf bij welk bedrijf u gaat werken, en het kan zijn dat u tot veertig kilometer moet reizen. Om recht te houden op de garantie moet u uw beroepspraktijkvorming, dus uw stage, met een voldoende afsluiten. Weigert u twee redelijke aanbiedingen, dan vervalt de garantie en helpt onze loopbaancoach u alleen nog met sollicitatieadvies.</p><p><strong>III</strong> Wij bieden de volgende voltijdopleidingen aan:</p><ul><li>Installatiemonteur, niveau 2, twee jaar</li><li>Elektrotechniek, niveau 3, drie jaar</li><li>Mechatronica, niveau 4, vier jaar</li><li>Onderhoudstechniek windenergie, niveau 4, drie jaar</li></ul><p>De baangarantie geldt voor de opleidingen op niveau 3 en niveau 4. Studenten van de opleiding installatiemonteur vallen er alleen onder wanneer zij na hun diploma doorstromen naar niveau 3. Dat is geen straf, maar een afspraak met de bedrijven: zij zoeken vooral monteurs die zelfstandig storingen kunnen oplossen.</p><p><strong>IV</strong> Bent u 18 jaar of ouder, dan betaalt u het wettelijke lesgeld van € 1.412 per schooljaar. Voor studenten die op 1 augustus nog geen 18 zijn, is het onderwijs gratis. Daarnaast heeft iedere student een gereedschapspakket nodig dat € 385 kost. De aangesloten bedrijven nemen daarvan € 200 voor hun rekening, zodat u zelf het resterende bedrag betaalt. Voor boeken en werkkleding rekent u op ongeveer € 300 per jaar. Wie deze kosten niet in één keer kan betalen, kan bij de studentenadministratie een regeling in tien maandelijkse termijnen aanvragen.</p><p><strong>V</strong> Sommige mensen denken dat techniek alleen iets is voor jonge mannen die graag met vieze handen werken. Fatima Ourahou (34) dacht dat ook. Zij stond acht jaar achter de kassa en meldde zich vooral aan omdat zij vast werk wilde. Tijdens de meeloopdag merkte zij dat het werk in de elektrotechniek vooral meten, rekenen en overleggen is. Nu werkt zij als monteur laadinfrastructuur. Wie al jaren zonder diploma in de techniek werkt, kan bovendien een verkorte route volgen: op basis van een gesprek en een praktijktoets kan de opleiding maximaal een jaar korter worden.</p><p><strong>VI</strong> Aanmelden kan tot en met 1 mei via ons aanmeldformulier. Daarna volgt een gesprek en een instaptoets rekenen en Nederlands. Haalt u die toets niet, dan kunt u eerst het voorbereidende programma Techniekstart van twintig weken doen. De open dag is op zaterdag 8 februari, van 10.00 tot 15.00 uur.<br>ROC Rivierendal, afdeling Voorlichting<br>Postbus 4180<br>8022 CJ Meerdijk<br>Telefoon: 088 - 45 12 300</p>",
+    "questions": [
+      {
+        "prompt": "Waarom zijn de school en de bedrijven met de baangarantie begonnen?",
+        "options": [
+          "Omdat er in de regio steeds minder technische bedrijven overbleven.",
+          "Omdat de bedrijven te weinig stageplaatsen aan de school aanboden.",
+          "Omdat jongeren niet zeker wisten of techniek hun werk zou opleveren.",
+          "Omdat de opleidingen op niveau 2 te weinig studenten trokken."
+        ],
+        "correct": 2,
+        "explanation": "In alinea I staat dat jongeren twijfelden of een technische opleiding zekerheid gaf; om die twijfel weg te nemen kwam de garantie. De klacht van werkgevers over personeelstekorten wordt wel genoemd, maar dat tekort bestond al jaren zonder garantie."
+      },
+      {
+        "prompt": "Wat wordt bedoeld met 'die sector schreeuwt om vakmensen' (alinea I)?",
+        "options": [
+          "De bedrijven zijn ontevreden over het niveau van de monteurs.",
+          "In de sector is een groot tekort aan geschoolde werknemers.",
+          "De bedrijven willen dat de school meer opleidingen aanbiedt.",
+          "In de sector wordt hard en onder veel lawaai gewerkt."
+        ],
+        "correct": 1,
+        "explanation": "De uitleg volgt direct in alinea I: er komen meer vacatures bij dan er gediplomeerde studenten zijn. Over het niveau van de zittende monteurs zegt de tekst niets."
+      },
+      {
+        "prompt": "Wat staat er in alinea II over de baangarantie?",
+        "options": [
+          "U krijgt werk aangeboden, maar niet per se in de plaats die u het liefst wilt.",
+          "U mag zelf uit de aangesloten bedrijven een werkgever kiezen.",
+          "U krijgt een vast contract voor onbepaalde tijd bij een groot bedrijf.",
+          "U hoeft alleen uw stage af te ronden om een baan te krijgen."
+        ],
+        "correct": 0,
+        "explanation": "Volgens alinea II kiest u niet zelf het bedrijf en kan de reisafstand tot veertig kilometer zijn. Het contract duurt minimaal twaalf maanden en is dus niet voor onbepaalde tijd."
+      },
+      {
+        "prompt": "Een student van de opleiding installatiemonteur wil weten of hij baangarantie heeft. Wat leest hij in alinea III?",
+        "options": [
+          "Hij heeft baangarantie zodra hij zijn stage met een voldoende afsluit.",
+          "Hij heeft alleen baangarantie als hij daarna verder leert op niveau 3.",
+          "Hij heeft geen baangarantie, omdat die alleen voor niveau 4 geldt."
+        ],
+        "correct": 1,
+        "explanation": "Alinea III zegt dat studenten van de opleiding installatiemonteur (niveau 2) er alleen onder vallen als zij doorstromen naar niveau 3. De garantie geldt dus voor niveau 3 én 4, niet alleen voor niveau 4."
+      },
+      {
+        "prompt": "Hoeveel betaalt een student zelf voor het gereedschapspakket?",
+        "options": [
+          "€ 385",
+          "€ 300",
+          "€ 200",
+          "€ 185"
+        ],
+        "correct": 3,
+        "explanation": "In alinea IV staat dat het pakket € 385 kost en dat de bedrijven € 200 betalen; de student betaalt dus € 185. De € 300 is bedoeld voor boeken en werkkleding."
+      },
+      {
+        "prompt": "Waarom noemt de schrijver het verhaal van Fatima Ourahou?",
+        "options": [
+          "Om te laten zien dat de verkorte route voor iedereen mogelijk is.",
+          "Om duidelijk te maken dat kassawerk slechter betaalt dan techniek.",
+          "Om te laten zien dat een verkeerd beeld van techniek kan veranderen.",
+          "Om aan te tonen dat vrouwen in de techniek meer moeten oefenen."
+        ],
+        "correct": 2,
+        "explanation": "Alinea V begint met het beeld dat techniek vies en mannenwerk zou zijn; Fatima merkte tijdens de meeloopdag dat het anders is. De verkorte route wordt wel genoemd, maar geldt voor mensen met werkervaring en niet voor iedereen."
+      },
+      {
+        "prompt": "Wat is het belangrijkste doel van deze tekst?",
+        "options": [
+          "Belangstellenden informeren over de technische opleidingen en de baangarantie.",
+          "Bedrijven vragen om zich bij het netwerk van de school aan te sluiten.",
+          "Studenten uitleggen hoe zij hun lesgeld in termijnen kunnen betalen."
+        ],
+        "correct": 0,
+        "explanation": "De hele tekst legt uit welke opleidingen er zijn, wat de baangarantie inhoudt, wat het kost en hoe u zich aanmeldt. De betalingsregeling in alinea IV is maar één detail binnen dat geheel."
+      }
+    ]
+  },
+  {
+    "section": "studieboek",
+    "title": "Uitzendbureau, detachering of een vast contract?",
+    "intro": "Deze tekst komt uit een cursusmap over werk en arbeidsrecht voor beginnende werknemers. De tekst legt uit welke verschillen er zijn tussen werken via een uitzendbureau, werken via detachering en een vast contract bij een bedrijf.",
+    "body_html": "<p><strong>I</strong> Wie in Nederland aan het werk gaat, komt vaak drie vormen van werk tegen: werken via een uitzendbureau, werken via detachering en een contract bij het bedrijf zelf. Op de werkvloer lijkt het werk in alle drie de gevallen sterk op elkaar, maar juridisch is er een groot verschil. Dat verschil zit vooral in de vraag wie uw werkgever is en wie uw loon betaalt. Daarom is het belangrijk dat u weet welke afspraken bij welke vorm horen, zodat u later niet voor verrassingen komt te staan.</p><p><strong>II</strong> Werkt u via een uitzendbureau, dan bent u in dienst van dat bureau, terwijl u het werk doet bij een ander bedrijf. Dat andere bedrijf heet de inlener. In de eerste periode, die maximaal 52 gewerkte weken duurt, mag het uitzendbureau uw contract per direct be&euml;indigen als de opdracht bij de inlener stopt. Die afspraak heet het uitzendbeding. Daarna volgt een fase met tijdelijke contracten van het bureau; die fase duurt maximaal drie jaar. Voor uw loon geldt de inlenersbeloning: u hebt recht op hetzelfde salaris als de vaste medewerkers van de inlener die hetzelfde werk doen. Krijgt u minder, dan kunt u dat bij het uitzendbureau aan de orde stellen.</p><p><strong>III</strong> Bij detachering staat u op de loonlijst van een detacheringsbureau. Toch zijn er belangrijke verschillen met uitzendwerk. Een detacheringsbureau geeft vaker een contract voor langere tijd en betaalt uw loon ook door als een opdracht is afgelopen terwijl de volgende nog niet is begonnen. In die weken volgt u soms een cursus, want veel bureaus betalen de opleiding van hun medewerkers. Detachering komt vooral voor in de zorg, de techniek en de administratie, omdat bedrijven daar specialisten nodig hebben voor een project van een paar maanden. Het salaris ligt soms iets lager dan bij het bedrijf zelf, doordat het bureau ook de weken zonder opdracht moet betalen.</p><p><strong>IV</strong> Bij een vast contract bent u rechtstreeks in dienst van het bedrijf waar u werkt. In het begin geldt meestal een proeftijd; bij een contract voor onbepaalde tijd is die maximaal twee maanden. Na de proeftijd kan uw werkgever u niet zomaar ontslaan, want daarvoor is toestemming van het UWV of van de rechter nodig. Wilt u zelf weg, dan geldt voor u een opzegtermijn van &eacute;&eacute;n maand, tenzij in de cao een andere termijn staat. Verder bouwt u pensioen op via de regeling van het bedrijf, en banken kijken bij een hypotheekaanvraag gunstiger naar een vast contract.</p><p><strong>Schema</strong></p><p><strong>V</strong> In het schema hieronder staan de belangrijkste verschillen kort bij elkaar.</p><table><tr><th>Vorm van werk</th><th>Uw werkgever</th><th>Zekerheid over de duur</th></tr><tr><td>Uitzendwerk</td><td>het uitzendbureau</td><td>klein in de eerste periode</td></tr><tr><td>Detachering</td><td>het detacheringsbureau</td><td>redelijk, ook tussen projecten</td></tr><tr><td>Vast werk</td><td>het bedrijf zelf</td><td>groot, met ontslagbescherming</td></tr></table><p><strong>VI</strong> Een vast contract is niet voor iedereen de beste keuze. Bram (28) kiest bewust voor uitzendwerk, omdat hij elk jaar drie maanden naar het buitenland gaat en daarna weer bij een nieuw bedrijf begint. Voor hem weegt vrijheid zwaarder dan zekerheid. Wie een keuze moet maken, kan het beste vooraf drie vragen stellen: welke cao geldt er, wie betaalt de reiskosten en de opleiding, en hoe lang duurt de opdracht? Twijfelt u over uw contract, dan kunt u terecht bij een vakbond of bij een juridisch adviespunt in uw gemeente.</p>",
+    "questions": [
+      {
+        "prompt": "Wat staat er in alinea II over werken via een uitzendbureau?",
+        "options": [
+          "Het bedrijf waar u het werk doet, is dan uw werkgever.",
+          "In de eerste periode kan uw contract meteen stoppen als het werk wegvalt.",
+          "Na de eerste periode moet het bureau u een vast contract aanbieden."
+        ],
+        "correct": 1,
+        "explanation": "In alinea II staat dat het uitzendbureau in de eerste 52 gewerkte weken het contract per direct mag be&euml;indigen (het uitzendbeding). Optie A is fout, want uw werkgever is het bureau en niet de inlener."
+      },
+      {
+        "prompt": "Youssef werkt via een uitzendbureau in een fabriek. Hij hoort dat een vaste medewerker van de fabriek meer per uur verdient voor precies hetzelfde werk. Welk argument kan Youssef gebruiken?",
+        "options": [
+          "Het uitzendbureau mag zijn contract niet per direct be&euml;indigen.",
+          "Na 52 gewerkte weken krijgt hij een contract van de fabriek zelf.",
+          "Hij heeft recht op hetzelfde loon als de vaste collega's van de inlener."
+        ],
+        "correct": 2,
+        "explanation": "Alinea II legt de inlenersbeloning uit: hetzelfde salaris als vaste medewerkers die hetzelfde werk doen. Optie B is fout, want na die periode volgen tijdelijke contracten van het bureau, niet van de inlener."
+      },
+      {
+        "prompt": "Marina wil weten of ze salaris krijgt in de weken tussen twee opdrachten bij een detacheringsbureau. In welke alinea vindt zij het antwoord?",
+        "options": [
+          "In alinea II.",
+          "In alinea III.",
+          "In alinea IV.",
+          "In alinea V."
+        ],
+        "correct": 1,
+        "explanation": "Alleen alinea III zegt dat het detacheringsbureau het loon doorbetaalt als de ene opdracht is afgelopen en de volgende nog niet is begonnen. Het schema in alinea V gaat over de werkgever en de zekerheid, niet over loon."
+      },
+      {
+        "prompt": "Hoe lang mag de proeftijd volgens de tekst maximaal duren bij een contract voor onbepaalde tijd?",
+        "options": [
+          "Twee maanden.",
+          "E&eacute;n maand.",
+          "Drie maanden."
+        ],
+        "correct": 0,
+        "explanation": "In alinea IV staat dat de proeftijd bij een contract voor onbepaalde tijd maximaal twee maanden is. E&eacute;n maand is de opzegtermijn voor de werknemer, dus optie B antwoordt niet op deze vraag."
+      },
+      {
+        "prompt": "Wat betekent \"op de loonlijst van een detacheringsbureau staan\" (alinea III)?",
+        "options": [
+          "U mag alleen werken bij bedrijven die het bureau voor u uitkiest.",
+          "Het bedrijf waar u het project doet, betaalt u per gewerkt uur.",
+          "Het bureau betaalt uw salaris en is dus uw werkgever."
+        ],
+        "correct": 2,
+        "explanation": "Uit alinea III en het schema in alinea V blijkt dat het detacheringsbureau uw werkgever is en uw salaris betaalt. Het bedrijf waar u het project doet, betaalt u dus niet zelf."
+      },
+      {
+        "prompt": "Wat is het belangrijkste doel van deze tekst?",
+        "options": [
+          "Waarschuwen dat uitzendwerk voor beginners meestal onverstandig is.",
+          "Uitleggen hoe u zo snel mogelijk een vast contract kunt krijgen.",
+          "Aanraden om bij twijfel altijd voor detachering te kiezen.",
+          "Duidelijk maken welke afspraken bij welke vorm van werken horen."
+        ],
+        "correct": 3,
+        "explanation": "Alinea I noemt het doel: weten wie uw werkgever is en welke afspraken bij welke vorm horen. De tekst raadt geen enkele vorm aan, want alinea VI laat juist zien dat de beste keuze per persoon verschilt."
+      }
+    ]
+  },
+  {
+    "section": "folder",
+    "title": "Wijkcentrum De Waterlelie: welkom in Zuiderveld",
+    "intro": "Deze tekst komt uit een folder van Wijkcentrum De Waterlelie in de wijk Zuiderveld. De folder informeert nieuwe bewoners over de activiteiten, de kosten, de hulp bij formulieren en het vrijwilligerswerk.",
+    "body_html": "<p><strong>I</strong> Bent u pas verhuisd naar de wijk Zuiderveld? Dan is Wijkcentrum De Waterlelie een goede plek om uw buren te leren kennen. Het wijkcentrum bestaat sinds 2009 en wordt betaald door de gemeente Meerdonk en door giften van bewoners en bedrijven uit de wijk. Iedere week vinden er ongeveer veertig activiteiten plaats, van volleybal tot huiswerkbegeleiding. Hoewel een deel van de bezoekers al jaren komt, is bijna een derde van de deelnemers nog korter dan een jaar in Zuiderveld. Nieuwe bewoners zijn hier dus zeker niet de enige nieuwkomers.</p><p><strong>Kennismaken met de wijk</strong></p><p><strong>II</strong> Elke eerste woensdag van de maand is er van 10.00 tot 12.00 uur een welkomstochtend voor nieuwe bewoners. U hoeft zich niet aan te melden en de koffie is gratis, dus u kunt gewoon binnenlopen. Een medewerker vertelt eerst kort welke voorzieningen er in de wijk zijn. Daarna maken we een wandeling van ongeveer een uur langs de basisschool, het gezondheidscentrum en de bibliotheek. Een bewoonster die vorig jaar meeliep, zei achteraf: &#39;Ik woonde er al vier maanden, maar pas tijdens die wandeling zag ik dat er twee straten verder een tandarts zit.&#39; Aan de balie ligt bovendien een wijkgids, die in vijf talen te krijgen is.</p><p><strong>III</strong> De meeste activiteiten zijn goedkoop, omdat vrijwilligers ze organiseren. Een paar voorbeelden:</p><ul><li>Taalcaf&eacute;, elke dinsdag van 19.00 tot 21.00 uur, gratis.</li><li>Computerles voor beginners, zes bijeenkomsten, &euro; 18,00 in totaal.</li><li>Buurtmaaltijd, elke donderdag om 18.00 uur, &euro; 4,50 per persoon; kinderen tot en met twaalf jaar betalen &euro; 2,25.</li><li>Fietsles voor volwassenen, tien lessen, &euro; 25,00.</li></ul><p>Wie vaak komt, kan een buurtpas kopen voor &euro; 12,50 per jaar. Met die pas krijgt u vijf euro korting op elke cursus en mag u de zaal &eacute;&eacute;n keer per jaar gratis gebruiken voor een familiefeest. Bij de buurtmaaltijd geldt de korting niet, omdat wij daarvan alleen de boodschappen betalen.</p><p><strong>IV</strong> Begrijpt u een brief van de gemeente of van uw zorgverzekering niet? Dan kunt u terecht bij de formulierenhulp, op maandag en woensdag van 13.30 tot 16.00 uur. Vrijwilligers helpen u met het lezen van brieven en met het aanvragen van bijvoorbeeld huurtoeslag. U moet hiervoor wel eerst een afspraak maken, want zonder afspraak is er meestal geen plaats. De hulp zelf is gratis. Gaat het om een conflict, bijvoorbeeld met uw verhuurder of uw werkgever? Dan verwijzen wij u door naar het Sociaal Juridisch Punt, dat op donderdagavond in ons gebouw zit. Onze vrijwilligers mogen namelijk geen juridisch advies geven.</p><p><strong>V</strong> Misschien wilt u zelf iets voor de wijk doen. Wij zoeken steeds vrijwilligers, bijvoorbeeld voor de keuken, de kinderclub of het onderhoud van de tuin. Wij vragen u om minimaal drie uur per week te komen en dat een half jaar vol te houden, zodat de bezoekers vaste gezichten zien. Voordat u begint, volgt u een korte introductiecursus van vier avonden. Denkt u dat uw Nederlands nog niet goed genoeg is? Dat hoeft geen bezwaar te zijn, want u werkt de eerste weken altijd samen met een ervaren vrijwilliger. Woont u verder dan vijf kilometer van het wijkcentrum, dan vergoeden wij &euro; 0,23 per kilometer.</p><p><strong>VI</strong> U vindt ons hier:<br>Wijkcentrum De Waterlelie<br>Kaardenbaan 14<br>3078 KL Meerdonk<br>Telefoon: 0100 - 456 78 90<br>E-mail: welkom@waterlelie-meerdonk.nl<br>Geopend: maandag tot en met vrijdag van 9.00 tot 22.00 uur en zaterdag van 10.00 tot 16.00 uur. Op zondag en op feestdagen is het wijkcentrum gesloten.</p>",
+    "questions": [
+      {
+        "prompt": "Wat moet iemand doen die naar de welkomstochtend wil komen?",
+        "options": [
+          "Zich uiterlijk een week vooraf per e-mail aanmelden.",
+          "Niets regelen en op de eerste woensdag binnenlopen.",
+          "Eerst een buurtpas van € 12,50 per jaar aanschaffen."
+        ],
+        "correct": 1,
+        "explanation": "In alinea II staat dat aanmelden niet nodig is en dat u gewoon kunt binnenlopen. De buurtpas uit alinea III is bedoeld voor korting op cursussen, niet voor de welkomstochtend."
+      },
+      {
+        "prompt": "Wat wil de schrijver duidelijk maken met de uitspraak van de bewoonster in alinea II?",
+        "options": [
+          "Dat er in de wijk Zuiderveld te weinig tandartsen werken.",
+          "Dat de wandeling door de wijk voor veel mensen te lang is.",
+          "Dat nieuwe bewoners tijdens de wandeling voorzieningen ontdekken die ze nog niet kenden.",
+          "Dat de wijkgids in vijf talen beter werkt dan een gesprek met een medewerker."
+        ],
+        "correct": 2,
+        "explanation": "De uitspraak in alinea II laat zien dat iemand die er al maanden woonde, pas tijdens de wandeling een voorziening in de buurt vond. Over een tekort aan tandartsen zegt de tekst niets."
+      },
+      {
+        "prompt": "Een vader komt met zijn kinderen van acht en tien jaar naar de buurtmaaltijd. Hoeveel betaalt hij samen?",
+        "options": [
+          "€ 6,75",
+          "€ 9,00",
+          "€ 11,25",
+          "€ 13,50"
+        ],
+        "correct": 1,
+        "explanation": "Volgens alinea III betaalt een volwassene € 4,50 en betalen kinderen tot en met twaalf jaar € 2,25, dus 4,50 + 2 × 2,25 = € 9,00. De korting van de buurtpas geldt hier niet."
+      },
+      {
+        "prompt": "Mevrouw Yildiz heeft een brief van de gemeente gekregen die ze niet begrijpt. In welke alinea vindt zij het antwoord op haar vraag?",
+        "options": [
+          "Alinea II",
+          "Alinea III",
+          "Alinea IV",
+          "Alinea V"
+        ],
+        "correct": 2,
+        "explanation": "Alinea IV gaat over de formulierenhulp bij brieven van de gemeente en de zorgverzekering. Alinea III noemt alleen activiteiten en prijzen."
+      },
+      {
+        "prompt": "Mevrouw Adnan wil vrijwilliger worden, maar ze twijfelt omdat ze haar Nederlands nog niet goed genoeg vindt. Welk argument uit de tekst kan haar helpen?",
+        "options": [
+          "Ze werkt in het begin samen met een vrijwilliger die al ervaring heeft.",
+          "Ze mag de introductiecursus van vier avonden ook overslaan.",
+          "Ze krijgt haar reiskosten vergoed vanaf de eerste kilometer."
+        ],
+        "correct": 0,
+        "explanation": "In alinea V staat dat een onvoldoende taalniveau geen bezwaar hoeft te zijn, omdat je de eerste weken met een ervaren vrijwilliger samenwerkt. De reiskosten worden pas vergoed boven vijf kilometer en zeggen niets over de taal."
+      }
+    ]
+  },
+  {
+    "section": "artikel",
+    "title": "Supermarkten in de strijd tegen voedselverspilling",
+    "intro": "Deze tekst komt uit een vakblad voor medewerkers in de levensmiddelenbranche. De tekst gaat over de manieren waarop supermarkten proberen minder eten weg te gooien.",
+    "body_html": "<p><strong>I</strong> In Nederland gooit een gemiddelde supermarkt elk jaar duizenden kilo's eten weg. Vaak gaat het om producten waarvan de houdbaarheidsdatum bijna is bereikt, of om groente en fruit met een klein beschadigd plekje. Volgens onderzoek van het kennisinstituut Voedselbalans belandt ongeveer twee procent van alle verkochte hoeveelheid in de container. Dat lijkt weinig, maar omgerekend over de hele branche gaat het jaarlijks om meer dan honderdduizend ton. Supermarkten hebben daar niet alleen om milieuredenen last van: elk product dat wordt weggegooid, is ook geld dat de winkel is kwijtgeraakt. Daarom zijn de meeste ketens de afgelopen jaren serieus gaan zoeken naar oplossingen.</p><p><strong>Slimmer inkopen</strong></p><p><strong>II</strong> De belangrijkste stap wordt gezet voordat een product in de winkel ligt. Grote ketens gebruiken computerprogramma's die per filiaal voorspellen hoeveel er van iets verkocht zal worden. Zo'n programma kijkt naar de verkoop van vorige weken, naar het weer en naar schoolvakanties of feestdagen. Wie een bestelling plaatst voor verse aardbeien, krijgt dus een advies dat rekening houdt met de weersverwachting, omdat bij warm weer meer zacht fruit wordt gekocht. Filiaalmanager Nadira Elhaddouti van een winkel in Zwolle zegt dat haar afval met bijna een derde is gedaald sinds ze het programma volgt. \"Vroeger bestelde ik liever te veel dan te weinig, want een leeg schap vindt een klant erger dan een volle container achter de winkel.\"</p><p><strong>III</strong> Toch blijft er altijd voorraad over. Voor die producten hanteren winkels een vast stappenplan. Twee dagen voor het verstrijken van de datum krijgt een artikel een gele sticker met vijfentwintig procent korting. Op de laatste dag loopt die korting op tot zeventig procent. Wat dan nog niet verkocht is, gaat naar een voedselbank of naar een app waarmee klanten voor een lage prijs een verrassingspakket kunnen ophalen. Alleen vlees, vis en verse zuivel vallen buiten deze regeling, doordat de wet voorschrijft dat die producten na de datum niet meer mogen worden meegegeven. Brood van gisteren gaat in veel filialen naar een bedrijf dat er veevoer van maakt.</p><p><strong>IV</strong> Niet alle plannen werken zoals bedacht. Een keten in het zuiden van het land probeerde vorig jaar de kortingen al vijf dagen vooraf te laten beginnen. Het gevolg was dat klanten gingen wachten op de sticker en de gewone prijs nauwelijks nog betaalden. De omzet daalde, terwijl de hoeveelheid afval bijna gelijk bleef. Het experiment is na drie maanden gestopt. Volgens onderzoeker Bram Verhoeven laat dat zien dat een korting pas nuttig is als klanten niet kunnen voorspellen wanneer die komt. \"Een winkel moet voedsel redden zonder het eigen verdienmodel te ondermijnen.\"</p><p><strong>V</strong> Er is nog een obstakel: onduidelijkheid bij de klant. Veel mensen denken dat 'tenminste houdbaar tot' hetzelfde betekent als 'te gebruiken tot'. Bij de eerste aanduiding gaat het echter alleen om kwaliteit, dus mag een product daarna nog gegeten worden. Bij de tweede kan er wel gevaar voor de gezondheid ontstaan. Supermarkten hangen daarom borden op en laten medewerkers uitleg geven bij het schap. Personeel dat hierover vragen krijgt, kan een korte cursus volgen die door de branchevereniging is ontwikkeld en die ongeveer twee uur duurt.</p><p><strong>VI</strong> De branche heeft afgesproken dat de verspilling in 2030 gehalveerd moet zijn ten opzichte van 2020. Dat doel wordt volgens de laatste tussenmeting nog niet gehaald, hoewel de dalende lijn duidelijk zichtbaar is. Winkels die achterblijven, krijgen geen boete, maar hun cijfers worden wel openbaar gemaakt. Die openheid werkt volgens de branchevereniging beter dan een straf, omdat niemand onderaan een lijst wil staan die iedere klant kan bekijken.</p>",
+    "questions": [
+      {
+        "prompt": "Wat zegt alinea I over het weggooien van eten door supermarkten?",
+        "options": [
+          "Supermarkten gooien vooral producten weg die klanten hebben laten vallen.",
+          "Voor supermarkten is verspilling niet alleen slecht voor het milieu, maar ook duur.",
+          "Het percentage weggegooid voedsel is de laatste jaren flink toegenomen."
+        ],
+        "correct": 1,
+        "explanation": "In alinea I staat dat elk weggegooid product ook verloren geld is, naast de milieuredenen. Dat het percentage is toegenomen, staat er niet: er wordt alleen een percentage van twee procent genoemd."
+      },
+      {
+        "prompt": "Waarom houdt het computerprogramma in alinea II rekening met de weersverwachting?",
+        "options": [
+          "Omdat vers fruit bij warm weer sneller slecht wordt in het schap.",
+          "Omdat leveranciers bij warm weer minder vaak kunnen bezorgen.",
+          "Omdat klanten bij warm weer meer zacht fruit kopen."
+        ],
+        "correct": 2,
+        "explanation": "Alinea II legt uit dat er bij warm weer meer zacht fruit wordt gekocht, waardoor het besteladvies verandert. Dat fruit sneller bederft, wordt in de tekst niet als reden genoemd."
+      },
+      {
+        "prompt": "Hoeveel korting krijgt een product volgens alinea III op de laatste dag van de houdbaarheid?",
+        "options": [
+          "Vijfentwintig procent",
+          "Zeventig procent",
+          "Vijftig procent"
+        ],
+        "correct": 1,
+        "explanation": "Volgens alinea III begint de korting twee dagen vooraf met vijfentwintig procent en loopt die op de laatste dag op tot zeventig procent."
+      },
+      {
+        "prompt": "Wat wil de schrijver duidelijk maken met het voorbeeld van de keten in het zuiden van het land (alinea IV)?",
+        "options": [
+          "Dat kortingen die te vroeg beginnen de winkel geld kosten zonder minder afval op te leveren.",
+          "Dat klanten alleen naar de winkel komen als er hoge kortingen worden aangeboden.",
+          "Dat drie maanden een te korte periode is om een nieuwe werkwijze goed te beoordelen.",
+          "Dat een keten in het zuiden andere klanten heeft dan een keten in het noorden."
+        ],
+        "correct": 0,
+        "explanation": "Alinea IV vertelt dat de omzet daalde terwijl de hoeveelheid afval bijna gelijk bleef; dat is de les van het voorbeeld. Dat drie maanden te kort zou zijn, is geen conclusie in de tekst."
+      },
+      {
+        "prompt": "Een medewerker krijgt van een klant de vraag of yoghurt na de datum op het pak nog gegeten kan worden. In welke alinea vindt hij informatie over dit verschil tussen data?",
+        "options": [
+          "In alinea III",
+          "In alinea IV",
+          "In alinea V"
+        ],
+        "correct": 2,
+        "explanation": "Alinea V legt het verschil uit tussen 'tenminste houdbaar tot' en 'te gebruiken tot'. Alinea III gaat over kortingen en over producten die niet mogen worden weggegeven, niet over de betekenis van de data."
+      },
+      {
+        "prompt": "Wat gebeurt er volgens alinea VI met supermarkten die te weinig doen tegen verspilling?",
+        "options": [
+          "Zij moeten een boete betalen aan de branchevereniging.",
+          "Zij moeten hun cijfers vaker laten controleren.",
+          "Zij mogen geen kortingsstickers meer gebruiken.",
+          "Zij komen met hun cijfers op een openbare lijst te staan."
+        ],
+        "correct": 3,
+        "explanation": "In alinea VI staat dat achterblijvers geen boete krijgen, maar dat hun cijfers openbaar worden gemaakt. De optie met de boete wordt in de tekst juist uitgesloten."
+      }
+    ]
+  },
+  {
+    "section": "regels",
+    "title": "Werkinstructie: leveringen aannemen en controleren",
+    "intro": "Deze tekst komt uit het personeelshandboek van groothandel De Meerhoek. De tekst legt uit hoe medewerkers van de afdeling Goederenontvangst een levering aannemen en controleren.",
+    "body_html": "<p><strong>I</strong> De afdeling Goederenontvangst van groothandel De Meerhoek neemt op werkdagen tussen twintig en veertig leveringen aan. Deze instructie geldt voor alle medewerkers van de afdeling, dus ook voor uitzendkrachten en voor collega's die tijdelijk bijspringen. Werk de stappen altijd in dezelfde volgorde af, hoewel dat bij drukte soms lastig lijkt. Een fout die op de dag van levering wordt gemeld, wordt bijna altijd door de leverancier hersteld. Wordt een fout pas een week later ontdekt, dan draait De Meerhoek meestal zelf op voor de kosten.</p><p><strong>II</strong> De loskade is open van maandag tot en met vrijdag, van 07.00 tot 15.30 uur. Chauffeurs die later aankomen, melden zich bij de portier. Die maakt dan een nieuwe afspraak voor de volgende werkdag, want na 15.30 uur wordt er niet meer gelost. Leveringen van meer dan tien pallets moeten minstens 24 uur vooraf worden aangemeld, zodat er genoeg ruimte en mankracht is. Is een grote levering niet aangemeld, dan mag je die weigeren, maar overleg dat eerst met de teamleider.</p><p><strong>Controleren in vier stappen</strong></p><p><strong>III</strong> Zodra de vrachtwagen is gelost, voer je de volgende controles uit:</p><ul><li>Vergelijk het aantal pakketten en pallets met de vrachtbrief. Klopt het aantal niet, tel dan opnieuw, samen met de chauffeur, voordat je iets opschrijft.</li><li>Kijk of de buitenkant van de verpakking heel is. Let vooral op natte hoeken, ingedrukte dozen en losse folie.</li><li>Open bij elke levering minimaal twee dozen en controleer of de inhoud overeenkomt met de bestelling.</li><li>Controleer bij versproducten de uiterste houdbaarheidsdatum. Producten die binnen vijf dagen verlopen, nemen wij niet aan.</li></ul><p><strong>IV</strong> Ontbreekt er iets of is er schade, dan schrijf je dat op de vrachtbrief voordat de chauffeur wegrijdt. Zet je handtekening met de woorden \"onder voorbehoud\". Je bevestigt daarmee alleen dat de vracht is aangekomen, en niet dat de goederen in goede staat zijn. Maak minstens drie foto's van de schade en meld het probleem dezelfde dag bij de leverancier. Schade die je pas ziet nadat de verpakking is verwijderd, mag je nog tot vijf werkdagen na levering melden. Daarna vervalt het recht op vervanging.</p><p><strong>V</strong> Voor gekoelde producten geldt een strengere regel. Meet met de handthermometer de temperatuur van twee pakken uit verschillende dozen. Is de temperatuur hoger dan 7 °C, dan neem je de hele partij niet aan, ook niet als de chauffeur zegt dat de koeling net is uitgevallen. Zet de partij in geen geval in de koelcel, want opnieuw koelen maakt het product niet weer veilig. Waarschuw meteen de teamleider, die de klant informeert als er een bestelling door uitvalt.</p><p><strong>VI</strong> Iedere levering wordt vóór het einde van je dienst in het voorraadsysteem geregistreerd, met het ordernummer en eventuele opmerkingen. Leg de vrachtbrief daarna in de blauwe map bij de balie; de administratie haalt die map elke ochtend leeg. Twijfel je over een levering, dan bel je liever te vaak dan te weinig.<br>Teamleider Goederenontvangst: Farida Boukhris<br>Toestel 214<br>Bij afwezigheid: afdeling Inkoop, toestel 230</p>",
+    "questions": [
+      {
+        "prompt": "Een chauffeur komt om 16.10 uur bij de loskade aan. Wat staat er in de tekst over deze situatie?",
+        "options": [
+          "Hij mag lossen zolang er nog medewerkers op de afdeling aanwezig zijn.",
+          "Hij meldt zich bij de portier en krijgt een afspraak voor de volgende dag.",
+          "Hij mag alleen leveringen van minder dan tien pallets nog afgeven."
+        ],
+        "correct": 1,
+        "explanation": "In alinea II staat dat er na 15.30 uur niet meer wordt gelost en dat de portier een nieuwe afspraak maakt. De regel over tien pallets gaat niet over te laat komen, maar over leveringen die vooraf aangemeld moeten worden."
+      },
+      {
+        "prompt": "Wat moet je volgens alinea III doen als het aantal pakketten niet overeenkomt met de vrachtbrief?",
+        "options": [
+          "Samen met de chauffeur opnieuw tellen voordat je het verschil opschrijft.",
+          "Direct de teamleider bellen en de vrachtwagen laten wachten.",
+          "De hele levering weigeren en de chauffeur laten vertrekken.",
+          "Het verschil later in het voorraadsysteem verbeteren."
+        ],
+        "correct": 0,
+        "explanation": "Alinea III zegt dat je bij een afwijkend aantal opnieuw telt, samen met de chauffeur, voordat je iets opschrijft. Registreren in het systeem gebeurt wel, maar dat staat in alinea VI en is niet de eerste stap bij een telverschil."
+      },
+      {
+        "prompt": "Wat betekent het dat je de vrachtbrief \"onder voorbehoud\" ondertekent?",
+        "options": [
+          "Je tekent pas nadat de leverancier op de melding heeft gereageerd.",
+          "Je tekent voor het aantal pallets, maar niet voor de houdbaarheidsdatum.",
+          "Je tekent voor de ontvangst, maar niet voor de goede staat van de goederen."
+        ],
+        "correct": 2,
+        "explanation": "In alinea IV wordt de uitdrukking uitgelegd: je bevestigt alleen dat de vracht is aangekomen, niet dat alles in orde is. Je tekent dus wél meteen, en niet pas na een reactie van de leverancier."
+      },
+      {
+        "prompt": "Een medewerker meet bij een gekoelde levering 9 °C. In welke alinea leest hij wat hij dan moet doen?",
+        "options": [
+          "In alinea II.",
+          "In alinea III.",
+          "In alinea IV.",
+          "In alinea V."
+        ],
+        "correct": 3,
+        "explanation": "Alinea V gaat over gekoelde producten en zegt dat je boven 7 °C de hele partij niet aanneemt. Alinea IV gaat over schade en ontbrekende goederen, niet over temperatuur."
+      },
+      {
+        "prompt": "Wat is het belangrijkste doel van deze tekst?",
+        "options": [
+          "Medewerkers laten zien hoe zij een levering controleren en problemen melden.",
+          "Leveranciers uitleggen hoe zij hun vrachtwagens moeten aanmelden.",
+          "Uitleggen waarom de kosten van beschadigde leveringen zo hoog zijn."
+        ],
+        "correct": 0,
+        "explanation": "De tekst is volgens alinea I bedoeld voor medewerkers van de afdeling en beschrijft stap voor stap de controle en de meldingen. De kosten worden alleen als reden genoemd, niet als hoofdonderwerp."
+      }
+    ]
+  },
+  {
+    "section": "brief",
+    "title": "Huurverhoging per 1 juli 2025 en nieuwe voorwaarden",
+    "intro": "Deze tekst is een brief van een woningstichting aan een van haar huurders. De brief gaat over de jaarlijkse huurverhoging en over wijzigingen in het huurcontract.",
+    "body_html": "<p>Woningstichting De Vijverhof<br>Postbus 3312<br>5900 AB Venlo</p><p>Mevrouw S. Karimi<br>Lindelaan 47b<br>5911 CD Venlo</p><p>Datum: 28 april 2025<br>Betreft: huurverhoging per 1 juli 2025 en wijziging van de voorwaarden</p><p>Geachte mevrouw Karimi,</p><p><strong>I</strong> Elk jaar passen wij op 1 juli de huurprijzen van onze woningen aan. Dat mogen wij doen op grond van artikel 9 van uw huurcontract. De minister heeft bepaald dat sociale huurwoningen dit jaar met maximaal 5,0 procent duurder mogen worden. Wij verhogen uw huur met 4,2 procent en blijven dus onder dat wettelijke maximum, hoewel onze kosten voor onderhoud en verduurzaming sterker zijn gestegen. Er is één uitzondering: woningen die in 2024 zijn geïsoleerd en van nieuwe kozijnen zijn voorzien, krijgen dit jaar geen verhoging, omdat die huurders vorig jaar al meer zijn gaan betalen.</p><p><strong>II</strong> In de tabel hieronder ziet u wat de verhoging voor uw woning betekent.</p><table><tr><th>Onderdeel</th><th>Nu per maand</th><th>Vanaf 1 juli 2025</th></tr><tr><td>Kale huur</td><td>€ 648,20</td><td>€ 675,42</td></tr><tr><td>Servicekosten (voorschot)</td><td>€ 42,00</td><td>€ 42,00</td></tr><tr><td>Totaal</td><td>€ 690,20</td><td>€ 717,42</td></tr></table><p>Het voorschot voor de servicekosten blijft gelijk. In oktober ontvangt u de afrekening over het afgelopen jaar. Waren de werkelijke kosten voor schoonmaak en tuinonderhoud lager dan uw voorschot, dan krijgt u geld terug. Waren ze hoger, dan betaalt u het verschil bij.</p><p><strong>III</strong> Betaalt u met een automatische incasso, dan schrijven wij vanaf juli het nieuwe bedrag af. U hoeft daarvoor niets te regelen. Maakt u de huur zelf over, dan past u het bedrag vanaf de betaling van juli zelf aan. De nieuwe huurprijs geven wij door aan de Belastingdienst, waardoor uw huurtoeslag automatisch wordt herberekend. Verandert uw inkomen, bijvoorbeeld doordat u meer uren gaat werken, dan moet u dat wel zelf aan de Belastingdienst melden.</p><p><strong>Niet eens met de verhoging?</strong></p><p><strong>IV</strong> Bent u het niet eens met de nieuwe huurprijs, dan kunt u schriftelijk bezwaar maken. Uw brief of formulier moet vóór 1 juli 2025 bij ons binnen zijn. Een bezwaar wordt alleen behandeld als u zich beroept op een rekenfout in de bedragen, of op een gebrek dat u eerder schriftelijk hebt gemeld en dat wij nog niet hebben verholpen. Dat u de huur hoog vindt of dat uw inkomen dit jaar niet is gestegen, is helaas geen geldige reden. Wijzen wij uw bezwaar af, dan kunt u de zaak binnen zes weken voorleggen aan de Huurcommissie. Dat kost € 25, die u terugkrijgt als de commissie u gelijk geeft.</p><p><strong>V</strong> Per 1 juli gelden ook nieuwe algemene voorwaarden, die de versie uit 2016 vervangen. De belangrijkste veranderingen zijn:</p><ul><li>Uw woning of een kamer daarin verhuren aan iemand anders mag alleen met onze schriftelijke toestemming.</li><li>Kleine reparaties tot € 50, zoals een nieuwe kraanleertje of een scharnier, betaalt u zelf.</li><li>Veranderingen aan de buitenkant van de woning meldt u vooraf, zodat wij kunnen beoordelen of ze veilig zijn.</li></ul><p>Staat er over een van deze punten iets anders in uw persoonlijke contract, dan geldt uw contract en niet de nieuwe voorwaarden.</p><p><strong>VI</strong> Verwacht u dat u het nieuwe bedrag niet kunt betalen, neem dan binnen twee weken contact met ons op. Samen met een medewerker van de afdeling Wonen bekijkt u of een betalingsregeling mogelijk is. Wachten tot er een achterstand is ontstaan, maakt een oplossing moeilijker. Voor vragen kunt u ook langskomen op ons spreekuur in het wijkkantoor, elke woensdag van 14.00 tot 16.00 uur. Wij vragen u wel om u vooraf telefonisch aan te melden.</p><p>Met vriendelijke groet,<br>J. Bouwmeester<br>manager Verhuur</p>",
+    "questions": [
+      {
+        "prompt": "Wat staat er in alinea I over het percentage van de huurverhoging?",
+        "options": [
+          "De minister heeft voor deze woningstichting een percentage van 4,2 procent vastgesteld.",
+          "De woningstichting vraagt minder dan wettelijk is toegestaan.",
+          "Het percentage is hoger geworden door de kosten van onderhoud en verduurzaming."
+        ],
+        "correct": 1,
+        "explanation": "In alinea I staat dat het maximum 5,0 procent is en dat de verhoging 4,2 procent wordt. Optie C is te sterk: de kosten zijn wel gestegen, maar juist daarom blijft de verhoging onder het maximum."
+      },
+      {
+        "prompt": "Hoeveel gaat mevrouw Karimi vanaf 1 juli 2025 in totaal per maand betalen?",
+        "options": [
+          "€ 675,42",
+          "€ 690,20",
+          "€ 717,42",
+          "€ 759,42"
+        ],
+        "correct": 2,
+        "explanation": "In de tabel bij alinea II staat het totaal vanaf 1 juli: € 717,42. € 675,42 is alleen de kale huur en € 690,20 is het huidige totaalbedrag."
+      },
+      {
+        "prompt": "Wat moet mevrouw Karimi volgens alinea III zelf doen?",
+        "options": [
+          "Zij moet het nieuwe bedrag aanpassen als zij de huur zelf overmaakt.",
+          "Zij moet de nieuwe huurprijs doorgeven aan de Belastingdienst.",
+          "Zij moet vóór 1 juli een automatische incasso aanvragen."
+        ],
+        "correct": 0,
+        "explanation": "Volgens alinea III hoeft zij bij een automatische incasso niets te doen, maar past zij het bedrag zelf aan als zij overmaakt. De nieuwe huurprijs geeft de woningstichting zelf aan de Belastingdienst door."
+      },
+      {
+        "prompt": "Mevrouw Karimi wil bezwaar maken tegen de huurverhoging. Welk argument kan zij volgens alinea IV gebruiken?",
+        "options": [
+          "Zij vindt de nieuwe huurprijs te hoog voor haar inkomen.",
+          "Haar inkomen is dit jaar niet gestegen.",
+          "Zij heeft een kleine reparatie in de woning zelf betaald.",
+          "Een lekkage die zij schriftelijk heeft gemeld, is nog niet verholpen."
+        ],
+        "correct": 3,
+        "explanation": "Alinea IV noemt als geldige redenen een rekenfout en een gemeld gebrek dat niet is verholpen. Een hoge huur of een gelijk gebleven inkomen wordt in dezelfde alinea juist als ongeldige reden genoemd."
+      },
+      {
+        "prompt": "Mevrouw Karimi wil een kamer in haar woning verhuren aan een student. In welke alinea vindt zij daarover informatie?",
+        "options": [
+          "Alinea III",
+          "Alinea IV",
+          "Alinea V",
+          "Alinea VI"
+        ],
+        "correct": 2,
+        "explanation": "In alinea V staat bij de nieuwe voorwaarden dat verhuren aan iemand anders alleen mag met schriftelijke toestemming. Alinea VI gaat over betalingsproblemen en het spreekuur."
+      },
+      {
+        "prompt": "Wat is het belangrijkste doel van deze brief?",
+        "options": [
+          "De huurder uitleggen hoe zij huurtoeslag kan aanvragen.",
+          "De huurder informeren over de nieuwe huurprijs en haar mogelijkheden.",
+          "De huurder waarschuwen voor de gevolgen van een huurachterstand."
+        ],
+        "correct": 1,
+        "explanation": "De hele brief geeft de nieuwe bedragen (alinea II) en legt uit wat de huurder kan doen, zoals bezwaar maken (IV) of een regeling vragen (VI). De huurachterstand en de huurtoeslag zijn slechts onderdelen van de brief."
+      }
+    ]
+  }
+]

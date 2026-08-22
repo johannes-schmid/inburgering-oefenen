@@ -1,5 +1,6 @@
 'use client';
 
+import { HorizonBanner } from '@/components/horizon';
 import { useState, useRef, type ReactNode } from 'react';
 import type { KnmQuestion } from '@/data/questions';
 import { useAudioEnabled } from '@/lib/audio-pref';
@@ -77,16 +78,19 @@ export default function ExamIntro({ questions, sampleUrl, onStart, labels, teach
 
   return (
     <div
-      className="bg-white rounded-3xl overflow-hidden"
-      style={{ border: '1px solid #e6e8ea', boxShadow: '0 10px 40px -12px rgba(0,43,109,0.18), 0 2px 6px rgba(28,43,74,0.05)' }}
+      className="bg-surface-container-lowest rounded-3xl overflow-hidden"
+      style={{ boxShadow: 'var(--shadow-ambient)' }}
     >
-      {/* Gradient header band */}
+      {/* The header band is the same Dutch Horizon banner the site's page headers use: the brand
+          gradient, the dot field, a skyline on the street line and the horizon band closing it.
+          It replaces a bespoke navy gradient (#001a44 → #143d8a, stops in no token file) and a
+          large orange radial wash — §7.3 allows exactly one sun-shaped accent and forbids the
+          orange as a texture. */}
       <div
-        className="relative px-6 sm:px-8 pt-7 pb-8"
-        style={{ background: 'linear-gradient(135deg,#001a44 0%,#002b6d 55%,#143d8a 100%)' }}
+        className="relative px-6 sm:px-8 pt-7 pb-10 overflow-hidden"
+        style={{ background: 'var(--gradient-brand)' }}
       >
-        <div aria-hidden className="absolute inset-0 pointer-events-none"
-          style={{ background: 'radial-gradient(120% 90% at 100% 0%, rgba(254,118,44,0.22), transparent 55%)' }} />
+        <HorizonBanner desktopHouses={12} desktopHeight={56} mobileHouses={5} mobileHeight={40} seed={4} sun={false} />
 
         <div className="relative">
           <div className="uppercase font-extrabold mb-2"

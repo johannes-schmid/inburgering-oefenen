@@ -40,6 +40,39 @@
   --font-headline: var(--font-manrope), sans-serif;
   --font-body:     var(--font-public-sans), sans-serif;
 
+  /* ── Type scale (docs/design/DESIGN_SYSTEM.md §3) ──
+     Manrope for display/headline, Public Sans for body/label. The pairs below are the spec's own
+     names, so a page can say `text-display-lg` instead of re-deciding a size and a tracking every
+     time — which is how the site ended up with headings at eight different sizes. Body line-height
+     is 1.6 deliberately: it is a reading-pace decision for non-native speakers, not taste. */
+  --text-display-lg:                  3.5rem;
+  --text-display-lg--line-height:     1.02;
+  --text-display-lg--letter-spacing:  -0.02em;
+  --text-display-lg--font-weight:     800;
+  --text-display-md:                  2.5rem;
+  --text-display-md--line-height:     1.06;
+  --text-display-md--letter-spacing:  -0.02em;
+  --text-display-md--font-weight:     800;
+  --text-headline-lg:                 2rem;
+  --text-headline-lg--line-height:    1.15;
+  --text-headline-lg--letter-spacing: -0.015em;
+  --text-headline-lg--font-weight:    700;
+  --text-headline-md:                 1.75rem;
+  --text-headline-md--line-height:    1.2;
+  --text-headline-md--letter-spacing: -0.015em;
+  --text-headline-md--font-weight:    700;
+  --text-headline-sm:                 1.25rem;
+  --text-headline-sm--line-height:    1.3;
+  --text-headline-sm--letter-spacing: -0.01em;
+  --text-headline-sm--font-weight:    700;
+  --text-body-lg:                     1rem;
+  --text-body-lg--line-height:        1.6;
+  --text-body-md:                     0.9375rem;
+  --text-body-md--line-height:        1.6;
+  --text-label-md:                    0.75rem;
+  --text-label-md--line-height:       1.4;
+  --text-label-md--letter-spacing:    0.12em;
+
   /* Border radii (ported from config) */
   --radius:     0.125rem;
   --radius-lg:  0.25rem;
@@ -115,6 +148,25 @@
   * {
     @apply border-border outline-ring/50;
   }
+}
+
+/* ── Dutch Horizon — shared design tokens (docs/design/DESIGN_SYSTEM.md §2, §4)
+   The graphic primitives themselves live in `components/horizon/`; these are the values the spec
+   states that are not expressible there because they are applied to arbitrary surfaces. ── */
+:root {
+  /* §4 Ambient shadow: 32px blur, no offset, 6% of `on_surface`. A soft glow of light, never a
+     heavy weight — this replaces the 2010 drop shadow on floating cards. */
+  --shadow-ambient: 0 0 32px rgba(25, 28, 30, 0.06);
+  /* §4 Ghost border: `outline_variant` at 20%. The only border the no-line rule permits, and only
+     where accessibility demands one (a high-stakes input). Never at 100% opacity. */
+  --ghost-border: rgba(196, 198, 210, 0.20);
+  /* §5 The focused-input / selected-option ring: 2px `primary` at 40%, as an inset shadow so
+     selection never introduces a line. */
+  --ring-selected: inset 0 0 0 2px rgba(0, 43, 109, 0.40);
+  /* §5 The "pressed coin" inner glow on a primary button's top edge. */
+  --inner-glow: inset 0 2px 0 rgba(255, 255, 255, 0.10);
+  /* §2 Glass: a `surface` at 80% with a 20px blur, for anything that floats. */
+  --glass-surface: rgba(248, 249, 251, 0.80);
 }
 
 /* ── Glass nav ── */
@@ -1150,3 +1202,97 @@
   .tl-wall { background: #000 !important; }
   @page { size: A4 portrait; margin: 14mm; }
 }
+
+/* ── De Inburgering-route: fasekaarten, stappen en de sectienavigatie ──
+   Used by `components/inburgering/*`. Everything here is `transform`, `opacity` or one named
+   property — never `transition-all`, and each rule has a `prefers-reduced-motion` escape.
+
+   The one rule in this block that is a **bug fix rather than decoration** is
+   `.article-body h2 { scroll-margin-top }`. The step lists and the sidebar nav both jump to an
+   `<h2 id>`, and the public header is fixed: without a scroll margin the browser scrolls the
+   heading to y=0, which is *behind* the nav bar, so every jump lands on a heading the reader
+   cannot see and appears to have gone to the wrong place. The offset is `--nav-h` plus breathing
+   room, read from the token rather than typed — that token is the single definition of the header's
+   height and three numbers already drifted apart once (see CLAUDE.md, "The header's height is a
+   token"). */
+.article-body h2 {
+  scroll-margin-top: calc(var(--nav-h) + 24px);
+}
+
+/* A fase card lifts on hover, and only when it is not the open one — the open card is already
+   raised, so lifting it further reads as it being clickable into something else. */
+.phase-card {
+  transition: transform 240ms cubic-bezier(0.22, 1, 0.36, 1),
+              box-shadow 240ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+.phase-card[aria-selected='false']:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 10px 28px rgba(0, 43, 109, 0.10);
+}
+.phase-card:active { transform: translateY(-1px) scale(0.995); }
+
+/* A step row. The border warms rather than the whole card tinting: the row's border already
+   carries the current-step state in orange, so hover has to be a smaller move than that or the two
+   become indistinguishable. */
+.step-row {
+  transition: transform 200ms cubic-bezier(0.22, 1, 0.36, 1),
+              border-color 200ms ease,
+              box-shadow 200ms ease;
+}
+.step-row:hover {
+  transform: translateY(-2px);
+  border-color: var(--color-secondary-container);
+  box-shadow: 0 8px 22px rgba(0, 43, 109, 0.08);
+}
+.step-row:active { transform: translateY(0); }
+/* The step arrow nudges in the direction of travel — which is *leftwards* in Arabic, and the glyph
+   itself is mirrored there too. Note the function order: transforms apply right-to-left, so
+   `translateX(-3px) scaleX(-1)` flips the arrow and then moves it left in the page's own axes.
+   Writing it the other way round moves it right, back against the reading direction. */
+.step-row-arrow { transition: transform 200ms cubic-bezier(0.22, 1, 0.36, 1); }
+.step-row:hover .step-row-arrow { transform: translateX(3px); }
+[dir='rtl'] .step-row-arrow { transform: scaleX(-1); }
+[dir='rtl'] .step-row:hover .step-row-arrow { transform: translateX(-3px) scaleX(-1); }
+
+/* An arrow or chevron that means "forward" or "back" points the other way in Arabic — it encodes
+   the reading direction, not a fixed picture. Only the glyphs marked with this class flip; a
+   diagram, or anything annotating a fixed image, must not (CLAUDE.md, "A raster cannot flip"). */
+.rtl-flip { transform: none; }
+[dir='rtl'] .rtl-flip { transform: scaleX(-1); }
+
+@media (prefers-reduced-motion: reduce) {
+  .phase-card,
+  .step-row,
+  .step-row-arrow {
+    transition: none;
+  }
+  .phase-card[aria-selected='false']:hover,
+  .step-row:hover,
+  .phase-card:active,
+  .step-row:active {
+    transform: none;
+  }
+  .step-row:hover .step-row-arrow,
+  [dir='rtl'] .step-row:hover .step-row-arrow {
+    transform: none;
+  }
+}
+
+
+/* ── The landing page's dot grid ────────────────────────────────────────────
+   One grid behind the whole page instead of a `DotField` per section. The
+   component is absolutely positioned inside its own section, so with six
+   sections the grid restarted six times and the dots stepped out of phase at
+   every boundary — a seam exactly where the no-line rule (§2) says there must
+   not be one. As a background on the page wrapper the lattice is continuous
+   and the section boundaries come from what sits *on* it.
+   Every `(main)` section that carries it must therefore be transparent; a
+   `bg-surface` section would paint over it. Card surfaces still cover it, and
+   that is what now separates a card from the page. */
+.dot-page {
+  background-color: var(--color-surface);
+  background-image: radial-gradient(circle at center, rgba(0, 43, 109, 0.14) 1.4px, transparent 1.5px);
+  background-size: 26px 26px;
+  background-position: 13px 13px;
+}
+

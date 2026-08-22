@@ -47,16 +47,36 @@ describe('exam task rules', () => {
     }
   });
 
-  /** A2 Spreken: four onderdelen of four, which must come to the 16 opgaven DUO sets. */
-  it('makes A2 Spreken add up to 16', () => {
-    const { partCount, itemsPerPart } = formatRules('a2', 'spreken');
-    expect(partCount! * itemsPerPart!).toBe(getFormat('a2', 'spreken').itemCount);
+  /**
+   * Spreken's delen must come to the opgaven DUO sets: A2 is four onderdelen of four, B1 is
+   * two delen of eight. Both are 16, by different arithmetic — which is exactly why this is
+   * computed per level rather than asserted as a constant.
+   */
+  it('makes every Spreken exam add up out of its parts', () => {
+    for (const level of LEVELS) {
+      const { partCount, itemsPerPart } = formatRules(level, 'spreken');
+      if (partCount === null || itemsPerPart === null) continue;
+      expect(partCount * itemsPerPart, `${level} spreken`).toBe(getFormat(level, 'spreken').itemCount);
+    }
   });
 
-  /** B1 is deliberately unverified — an empty list, never a copy of A2's. */
-  it('leaves B1 unverified', () => {
-    for (const skill of SKILL_SLUGS) {
-      expect(formatTaskRules('b1', skill)).toEqual([]);
+  /**
+   * B1 Luisteren is unverified and must stay that way until someone has DUO's B1 Luisteren
+   * material in hand. Every other (level, skill) is filled in; this pins the one gap, so
+   * "fill in B1 for symmetry" cannot quietly invent the standard the docent is measured by.
+   */
+  it('leaves B1 Luisteren unverified', () => {
+    expect(formatTaskRules('b1', 'luisteren')).toEqual([]);
+    expect(getFormat('b1', 'luisteren').itemCount).toBeNull();
+    expect(getFormat('b1', 'luisteren').durationMinutes).toBeNull();
+    expect(formatRules('b1', 'luisteren').stimulusCount).toBeNull();
+  });
+
+  /** The three B1 onderdelen that *were* counted must all be present, or the mirror is half-done. */
+  it('has B1 Lezen, Schrijven and Spreken filled in', () => {
+    for (const skill of ['lezen', 'schrijven', 'spreken'] as SkillSlug[]) {
+      expect(getFormat('b1', skill).itemCount, `b1 ${skill} itemCount`).not.toBeNull();
+      expect(getFormat('b1', skill).durationMinutes, `b1 ${skill} duration`).not.toBeNull();
     }
   });
 });

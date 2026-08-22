@@ -1,0 +1,207 @@
+[
+  {
+    "task_type": "sentence_completion",
+    "title": "Verzoek andere stageplek",
+    "prompt_html": "<p>U volgt de opleiding Verzorgende bij het Rijnzicht College in Deventer. Via het stagebureau bent u geplaatst bij een zorglocatie die ruim een uur reizen van uw huis ligt. U schrijft een mail aan mevrouw Beumer van het stagebureau, omdat u een andere stageplek wilt.</p>",
+    "email_to": "stagebureau@rijnzichtcollege.nl",
+    "email_subject": "Verzoek om een andere stageplek",
+    "greeting": "Geachte mevrouw Beumer,\n\nSinds 6 januari loop ik stage bij woonzorglocatie De Lindehof in Almelo. Ik ben blij met de begeleiding daar, maar ik wil u toch vragen om een andere stageplek, omdat …",
+    "closing": "Ik hoor graag of er een andere mogelijkheid is.\n\nMet vriendelijke groet,",
+    "model_answer": "de reis elke dag bijna twee uur duurt en ik pas na zeven uur 's avonds thuis ben. Daardoor houd ik te weinig tijd over om mijn opdrachten voor school te maken, terwijl mijn cijfers wel belangrijk zijn. Een stageplek in Deventer of Zutphen zou voor mij veel beter werken."
+  },
+  {
+    "task_type": "sentence_completion",
+    "title": "Tegoed na storing",
+    "prompt_html": "<p>U werkt bij internetaanbieder Snelnet als medewerker klantenservice. Een klant, meneer Vermaas, heeft vier dagen geen internet gehad door een storing in de wijk. U schrijft hem een mail over de gevolgen voor zijn rekening.</p>",
+    "email_to": "j.vermaas@webpostnl.nl",
+    "email_subject": "Uw melding over de storing van vorige week",
+    "greeting": "Geachte heer Vermaas,\n\nHartelijk dank voor uw melding over de storing in uw wijk. Wij hebben uw dossier bekeken en daarom …",
+    "closing": "Heeft u nog vragen, dan kunt u ons gewoon bellen.\n\nMet vriendelijke groet,",
+    "model_answer": "krijgt u een tegoed van 18,50 euro op uw volgende rekening. Dit bedrag is het deel van het abonnement over de vier dagen dat u geen verbinding had. U hoeft hier zelf niets voor te doen, omdat wij het tegoed automatisch verwerken."
+  },
+  {
+    "task_type": "sentence_completion",
+    "title": "Cursus Nederlands",
+    "prompt_html": "<p>U werkt in de keuken van zorginstelling Het Havenhuis. Uw werkgever wil een cursus Nederlands op de werkvloer starten, maar er moeten minstens acht deelnemers zijn. U plaatst een bericht op het intranet voor uw collega's.</p>",
+    "greeting": "Beste collega's,\n\nVanaf maart kan er een cursus Nederlands op ons eigen terrein komen, één keer per week na de dienst. Ik zoek nog collega's die mee willen doen, want …",
+    "closing": "Laat het me voor 20 februari weten, dan geef ik ons samen op.\n\nGroet,",
+    "model_answer": "de cursus alleen doorgaat als er minstens acht mensen meedoen. De lessen duren anderhalf uur en de werkgever betaalt alles, dus je hebt zelf geen kosten. Je leert vooral praten en schrijven over dingen die met ons werk te maken hebben."
+  },
+  {
+    "task_type": "sentence_completion",
+    "title": "Tweede paar werkschoenen",
+    "prompt_html": "<p>U werkt als medewerker in het distributiecentrum van groothandel Vaneken. U heeft één paar veiligheidsschoenen van uw werkgever gekregen. U schrijft een mail aan uw leidinggevende, meneer Groenewold, met een verzoek.</p>",
+    "email_to": "p.groenewold@vaneken-groothandel.nl",
+    "email_subject": "Verzoek tweede paar veiligheidsschoenen",
+    "greeting": "Beste meneer Groenewold,\n\nIn oktober heb ik van u een paar veiligheidsschoenen gekregen voor mijn werk in de hal. Ik wil u vragen of ik een tweede paar kan krijgen, omdat …",
+    "closing": "Wilt u me laten weten of dit mogelijk is?\n\nMet vriendelijke groet,",
+    "model_answer": "ik veel buiten bij de laadperrons sta en mijn schoenen bij regen 's avonds nog nat zijn. De volgende ochtend moet ik ze dan weer aan, waardoor ik last van mijn voeten krijg. Met twee paar kan ik ze afwisselen en gaan ze bovendien langer mee."
+  },
+  {
+    "task_type": "sentence_completion",
+    "title": "Levering klopt niet",
+    "prompt_html": "<p>U bent inkoper bij bakkerij De Korenaar in Gorinchem. Vandaag is er een levering bloem en gist bezorgd, maar die komt niet overeen met uw bestelling. U schrijft een mail aan uw leverancier.</p>",
+    "email_to": "orders@molenaar-ingredienten.nl",
+    "email_subject": "Levering van 14 maart, ordernummer 20841",
+    "greeting": "Geachte heer, mevrouw,\n\nVanmorgen hebben wij de levering bij ordernummer 20841 ontvangen. Bij het uitpakken bleek echter dat …",
+    "closing": "Ik verwacht uw reactie graag deze week.\n\nMet vriendelijke groet,",
+    "model_answer": "de levering niet klopt: wij hebben tien zakken volkorenmeel gekregen, terwijl wij twintig zakken tarwebloem hebben besteld. De gist ontbreekt helemaal, waardoor wij vrijdag niet genoeg kunnen bakken. Kunt u de juiste producten uiterlijk donderdag bezorgen en de verkeerde zakken dan meenemen?"
+  },
+  {
+    "task_type": "sentence_completion",
+    "title": "Straat weer open",
+    "prompt_html": "<p>U woont aan de Weverstraat en heeft een kleine kapsalon aan huis. Door werkzaamheden aan het riool is de straat al drie weken afgesloten. U schrijft een mail aan de gemeente.</p>",
+    "email_to": "meldpunt@gemeentebeekdal.nl",
+    "email_subject": "Vraag over de werkzaamheden in de Weverstraat",
+    "greeting": "Geachte heer, mevrouw,\n\nSinds 3 april wordt er in de Weverstraat aan het riool gewerkt. Ik zou graag willen weten …",
+    "closing": "Ik hoor graag wanneer ik hierover bericht kan verwachten.\n\nMet vriendelijke groet,",
+    "model_answer": "wanneer de straat weer helemaal open gaat voor auto's en of de stoep dan ook weer bruikbaar is. Ik heb een kapsalon aan huis en mijn klanten kunnen nu nergens parkeren, waardoor ik veel afspraken mis. Als het nog weken duurt, wil ik mijn klanten daar op tijd over informeren."
+  },
+  {
+    "task_type": "sentence_completion",
+    "title": "Oppas voor hond",
+    "prompt_html": "<p>U heeft een rustige hond van vier jaar en gaat binnenkort een week naar het buitenland. U plaatst een bericht op een website waar mensen huisdieren van anderen opvangen.</p>",
+    "greeting": "Hallo allemaal,\n\nIk zoek van 12 tot en met 19 juli iemand die op mijn hond Sam wil passen. Sam is …",
+    "closing": "Wil je reageren? Stuur dan een bericht, dan maken we een afspraak om kennis te maken.\n\nVriendelijke groet,",
+    "model_answer": "een rustige labrador van vier jaar die goed met kinderen en andere honden omgaat. Hij moet twee keer per dag naar buiten en heeft verder weinig aandacht nodig, omdat hij vooral graag slaapt. Ik breng zelf zijn voer en zijn mand, en natuurlijk betaal ik een vergoeding voor de hele week."
+  },
+  {
+    "task_type": "sentence_completion",
+    "title": "Excursie geregeld",
+    "prompt_html": "<p>U volgt de opleiding Logistiek bij het Noorderpoort Vakcollege en zit in de klassencommissie. De docent heeft u gevraagd de excursie naar een distributiecentrum te regelen. U mailt uw medestudenten over de afspraken.</p>",
+    "email_to": "klas-lo2b@noorderpoortvakcollege.nl",
+    "email_subject": "Excursie distributiecentrum donderdag 6 juni",
+    "greeting": "Beste medestudenten,\n\nDonderdag 6 juni gaan we met de klas naar een distributiecentrum in Meppel. Ik heb alles geregeld, dus …",
+    "closing": "Heb je nog vragen, stel ze dan gerust in de les.\n\nGroet,",
+    "model_answer": "let goed op het volgende. We verzamelen om 8.15 uur bij de hoofdingang van school en gaan met de bus, die om 8.30 uur precies vertrekt. Neem je identiteitsbewijs mee en trek dichte schoenen aan, omdat je zonder die schoenen de hal niet in mag."
+  },
+  {
+    "task_type": "data_text",
+    "title": "Advies personeelsuitje",
+    "prompt_html": "<p>U werkt als planner bij schoonmaakbedrijf Helderwit in Zwolle. Het bedrijf heeft ongeveer tachtig medewerkers, die op veel verschillende locaties werken. Daarom vindt de directie het belangrijk dat er ieder jaar een personeelsuitje is, zodat de collega's elkaar ook buiten het werk leren kennen.</p><p>U bent lid van de personeelsvereniging. De directeur, mevrouw Kramer, heeft u gevraagd om te onderzoeken wat de medewerkers graag willen doen. U hebt een korte vragenlijst rondgestuurd, waarop 79 van de 80 medewerkers hebben geantwoord. De uitkomsten staan in de tabel hieronder. Het budget is 45 euro per persoon.</p><table><tr><th>Activiteit</th><th>Aantal stemmen</th><th>Percentage</th></tr><tr><td>Dagje varen op het IJsselmeer</td><td>26</td><td>33%</td></tr><tr><td>Workshop koken in een kookstudio</td><td>20</td><td>25%</td></tr><tr><td>Sportmiddag met een barbecue</td><td>16</td><td>20%</td></tr><tr><td>Bezoek aan een museum in Amsterdam</td><td>10</td><td>13%</td></tr><tr><td>Wandeltocht op de Veluwe</td><td>7</td><td>9%</td></tr></table><p><strong>Opdracht</strong></p><p>Schrijf een e-mail aan mevrouw Kramer waarin u haar adviseert over het personeelsuitje. De tabel wordt bij uw tekst gevoegd, dus uw tekst moet goed bij de cijfers passen. Gebruik de gegevens uit de tabel en schrijf in de u-vorm. Overige informatie, bijvoorbeeld over de datum of over het vervoer, mag u zelf verzinnen.</p><p>Het doel van de tekst is de directie op basis van de uitkomsten te adviseren welke activiteit gekozen moet worden, zodat mevrouw Kramer een besluit kan nemen.</p>",
+    "bullet_points": [
+      "U legt kort uit hoe u de voorkeuren van uw collega's hebt onderzocht en hoeveel medewerkers hebben geantwoord.",
+      "U beschrijft de belangrijkste uitkomsten uit de tabel en u vertelt wat daarbij opvalt.",
+      "U geeft een duidelijk advies over de activiteit en u onderbouwt dat met minimaal twee argumenten.",
+      "U schrijft wat er nog geregeld moet worden en wanneer u een reactie van mevrouw Kramer wilt ontvangen."
+    ],
+    "email_to": "a.kramer@helderwit-zwolle.nl",
+    "email_subject": "Advies over het personeelsuitje",
+    "greeting": "Geachte mevrouw Kramer,",
+    "closing": "Met vriendelijke groet,\n\nSamira el Amrani\nlid van de personeelsvereniging Helderwit",
+    "model_answer": "U hebt mij gevraagd om te onderzoeken wat onze medewerkers graag willen doen tijdens het personeelsuitje. Daarom heb ik een korte vragenlijst met vijf activiteiten rondgestuurd. Iedere medewerker kon één activiteit kiezen. Bijna alle collega's hebben meegewerkt, want 79 van de 80 medewerkers hebben een antwoord gegeven. Dat is een mooi resultaat, omdat veel mensen op verschillende locaties werken.\n\nUit de tabel blijkt dat een dagje varen op het IJsselmeer de meeste stemmen heeft gekregen: 26 medewerkers, dat is 33 procent. Daarna volgt de workshop koken met 20 stemmen (25 procent) en de sportmiddag met een barbecue met 16 stemmen (20 procent). Het museumbezoek en de wandeltocht zijn duidelijk minder populair, want samen kregen die maar 17 stemmen. Wat opvalt, is dat de stemmen behoorlijk verdeeld zijn, hoewel de eerste drie activiteiten allemaal buiten of in een groep gebeuren.\n\nIk adviseer u om te kiezen voor het dagje varen op het IJsselmeer. In de eerste plaats heeft deze activiteit de meeste stemmen gekregen. In de tweede plaats kunnen we op een boot de hele dag met elkaar praten, waardoor collega's die elkaar nooit zien toch contact krijgen. Bovendien past de prijs binnen het budget van 45 euro per persoon, omdat een boot voor een grote groep niet duur is.\n\nAls u het met mijn advies eens bent, vraag ik een prijsopgave aan bij twee rederijen in Lemmer. Ook wil ik dan bussen regelen voor het vervoer. Wilt u mij vóór 15 maart laten weten wat u besluit? Dan kan het uitje in juni doorgaan.\n\nAlvast hartelijk dank voor uw reactie."
+  },
+  {
+    "task_type": "form",
+    "title": "Aanvraag tegemoetkoming schoolkosten",
+    "prompt_html": "<p>U bent 34 jaar en u woont in Meerdijk. Sinds september volgt u een beroepsopleiding tot installatiemonteur aan het Regiocollege Meerdijk. U werkt drie dagen per week en u gaat twee dagen naar school. De opleiding kost u dit jaar veel geld, omdat u boeken, werkkleding en gereedschap zelf moet betalen.</p><p>De gemeente Meerdijk werkt samen met Stichting Studiesteun Meerdijk. Deze stichting geeft een tegemoetkoming in de schoolkosten: dat is een bedrag dat u niet hoeft terug te betalen. U kunt maximaal 600 euro per schooljaar krijgen. Om de aanvraag te doen, moet u een vragenlijst invullen. De stichting leest uw antwoorden en beslist daarna of u het geld krijgt.</p><p><strong>Opdracht</strong></p><p>Vul het aanvraagformulier van Stichting Studiesteun Meerdijk in. U schrijft bij iedere vraag een volledig antwoord van enkele zinnen. U geeft bij elke vraag ook een uitleg, zodat de stichting begrijpt waarom u de tegemoetkoming nodig heeft. U mag de informatie zelf verzinnen.</p><p>Het doel van de tekst is de stichting zo duidelijk en volledig te informeren over uw opleiding, uw kosten en uw situatie, dat zij uw aanvraag voor een tegemoetkoming kan goedkeuren.</p>",
+    "model_answer": "1. Ik volg de opleiding installatiemonteur, niveau 3, aan het Regiocollege Meerdijk. Ik heb voor deze opleiding gekozen omdat ik al vier jaar als hulpmonteur werk, maar zonder diploma kom ik niet verder. Mijn werkgever heeft gezegd dat ik meer verantwoordelijkheid krijg zodra ik mijn diploma heb.\n\n2. Dit schooljaar heb ik drie soorten kosten. De boeken en het lesmateriaal kosten ongeveer 420 euro. Daarnaast moest ik werkschoenen en werkkleding kopen voor 180 euro, omdat ik zonder veilige kleding niet in de praktijkles mag werken. Ten slotte heb ik een eigen gereedschapskist nodig van ongeveer 250 euro, want de school leent geen gereedschap uit voor de stage.\n\n3. Op dit moment betaal ik alles uit mijn salaris. Ik werk drie dagen per week en verdien netto 1.150 euro per maand. Dat is moeilijk, omdat de huur en de energiekosten samen al bijna 800 euro zijn. Voor de gereedschapskist heb ik geld geleend van mijn broer, en dat wil ik dit jaar terugbetalen.\n\n4. Als ik de tegemoetkoming niet krijg, kan ik de gereedschapskist niet betalen. Daardoor kan ik in februari niet aan mijn stage beginnen, terwijl de stage een verplicht onderdeel van de opleiding is. Ik ben bang dat ik dan een jaar moet wachten of zelfs moet stoppen met de opleiding.\n\n5. Ik probeer zelf de kosten zo laag mogelijk te houden. Ik heb twee boeken tweedehands gekocht van een student uit een hoger jaar en ik reis met de bus in plaats van met de auto. Ook maak ik mijn huiswerk in de bibliotheek, zodat ik geen eigen laptop hoef te kopen. Ik doe dit omdat ik de opleiding graag zelf wil betalen en alleen hulp vraag voor de kosten die ik echt niet kan opbrengen.\n\n6. Na mijn opleiding wil ik als zelfstandig monteur werken bij het installatiebedrijf waar ik nu al werk. Mijn leidinggevende heeft mij een contract voor vier dagen per week beloofd zodra ik geslaagd ben. De tegemoetkoming helpt daarbij, omdat ik door dit bedrag mijn stage op tijd kan afmaken en volgend jaar juni mijn diploma kan halen. Daarna heb ik geen financiële hulp meer nodig.",
+    "form_schema": {
+      "sections": [
+        {
+          "heading": "Gegevens van de aanvrager",
+          "rows": [
+            {
+              "kind": "static",
+              "label": "Naam en voorletters",
+              "value": "Y. Bekkaoui"
+            },
+            {
+              "kind": "static",
+              "label": "Aanvraagnummer",
+              "value": "SM-2024-1187"
+            },
+            {
+              "kind": "choice",
+              "label": "Ik volg mijn opleiding",
+              "options": [
+                "voltijd",
+                "deeltijd",
+                "als werkende met een leerbaan"
+              ]
+            },
+            {
+              "kind": "choice",
+              "label": "Ik heb eerder een tegemoetkoming van de stichting ontvangen",
+              "options": [
+                "ja",
+                "nee"
+              ]
+            }
+          ]
+        },
+        {
+          "heading": "Vragen over uw aanvraag",
+          "rows": [
+            {
+              "kind": "text",
+              "label": "1. Welke opleiding volgt u en waarom heeft u voor deze opleiding gekozen?",
+              "placeholder": "Noem de naam van de opleiding, de school en uw reden."
+            },
+            {
+              "kind": "text",
+              "label": "2. Welke kosten maakt u dit schooljaar voor uw opleiding? Noem minimaal twee kosten en leg uit waarvoor u het geld nodig heeft.",
+              "placeholder": "Noem ook de bedragen in euro's."
+            },
+            {
+              "kind": "text",
+              "label": "3. Hoe betaalt u de schoolkosten nu? Leg uit waarom dat voor u moeilijk is.",
+              "placeholder": "Schrijf over uw inkomen en uw vaste lasten."
+            },
+            {
+              "kind": "text",
+              "label": "4. Wat gebeurt er met uw opleiding als u de tegemoetkoming niet krijgt? Leg uit waarom.",
+              "placeholder": "Leg de gevolgen uit."
+            },
+            {
+              "kind": "text",
+              "label": "5. Wat doet u zelf om de kosten van uw opleiding laag te houden? Leg uit waarom u dat doet.",
+              "placeholder": "Noem minimaal twee dingen die u zelf doet."
+            },
+            {
+              "kind": "text",
+              "label": "6. Wat wilt u na uw opleiding gaan doen en waarom helpt de tegemoetkoming u daarbij?",
+              "placeholder": "Schrijf over uw plannen voor werk of vervolgopleiding."
+            }
+          ]
+        }
+      ]
+    }
+  },
+  {
+    "task_type": "email",
+    "title": "Minder afval op het werk",
+    "prompt_html": "<p>U werkt sinds twee jaar bij Verpakkingsbedrijf De Vlinder in Zwolle. In de kantine en in de productiehal wordt veel weggegooid: plastic bekertjes, papier en restjes materiaal. Alles gaat in dezelfde grijze container, omdat er geen aparte bakken staan.</p><p>Tijdens de pauze praat u hierover met uw collega's. Zij vinden ook dat het anders kan. U besluit een e-mail te schrijven aan mevrouw Bakker, de bedrijfsleider, met een voorstel om minder afval te maken.</p><p><strong>Opdracht</strong></p><p>Schrijf een e-mail aan mevrouw Bakker. U mag de informatie zelf verzinnen.</p><p>Het doel van de tekst is uw werkgever overtuigen dat minder afval op het werk mogelijk is, zodat zij uw voorstel serieus bekijkt en met u in gesprek gaat.</p>",
+    "bullet_points": [
+      "U stelt zich kort voor en u schrijft op welke afdeling u werkt.",
+      "U legt uit welk probleem u op het werk ziet met het afval.",
+      "U doet minimaal twee concrete voorstellen om minder afval te maken.",
+      "U noemt minstens één voordeel van uw voorstellen voor het bedrijf.",
+      "U schrijft dat uw collega's het met u eens zijn.",
+      "U vraagt om een reactie of om een gesprek over uw voorstel."
+    ],
+    "email_to": "m.bakker@devlinder-zwolle.nl",
+    "email_subject": "Voorstel voor minder afval op het werk",
+    "greeting": "Geachte mevrouw Bakker,",
+    "closing": "Met vriendelijke groet,",
+    "model_answer": "Geachte mevrouw Bakker,\n\nMijn naam is Amir Yusuf en ik werk sinds twee jaar bij De Vlinder. Ik werk op de afdeling inpakken, in de ochtendploeg. Ik schrijf u omdat ik een voorstel heb over het afval in ons bedrijf.\n\nIn de kantine en in de productiehal gooien wij elke dag heel veel weg. Papier, plastic bekertjes en restjes karton gaan allemaal in dezelfde grijze container, omdat er geen aparte bakken staan. Daardoor wordt bijna niets gescheiden, hoewel een groot deel van dit afval opnieuw gebruikt kan worden. Ik vind dat jammer, want met kleine veranderingen kunnen we veel afval voorkomen.\n\nIk heb twee voorstellen. Ten eerste zou u in de kantine en bij de inpaklijn drie aparte bakken kunnen plaatsen: één voor papier en karton, één voor plastic en één voor restafval. Met duidelijke stickers op de bakken weet iedereen meteen waar het afval hoort. Ten tweede stel ik voor dat de plastic bekertjes bij de koffieautomaat verdwijnen. Als iedere medewerker een eigen beker of mok krijgt met het logo van het bedrijf, gooien we per week honderden bekertjes minder weg.\n\nDeze veranderingen hebben ook voordelen voor het bedrijf. Wij hoeven minder bekertjes te kopen, waardoor de kosten lager worden. Bovendien betaalt het bedrijf voor gescheiden afval vaak minder dan voor één volle container met alles door elkaar. Ik denk ook dat klanten het positief vinden als wij netjes met materiaal omgaan.\n\nIk heb er in de pauze met mijn collega's over gesproken. Zij zijn het met mij eens en willen graag meehelpen, bijvoorbeeld met het ophangen van de stickers en het uitleggen van de nieuwe regels aan nieuwe medewerkers.\n\nWilt u mij laten weten wat u van mijn voorstel vindt? Ik kan het graag verder uitleggen in een kort gesprek. Ik ben van maandag tot donderdag na drie uur beschikbaar. U kunt mij bereiken op 06 13 45 78 92.\n\nMet vriendelijke groet,\n\nAmir Yusuf\nAfdeling inpakken"
+  },
+  {
+    "task_type": "letter",
+    "title": "Briefje voor het straatfeest",
+    "prompt_html": "<p>U woont sinds twee jaar in de Kastanjestraat in Zutphen. Samen met een paar buren wilt u op zaterdag 14 juni een straatfeest organiseren, omdat veel buren elkaar nog niet kennen. Er is al een klein bedrag gespaard uit de buurtpot, maar u hebt nog hulp nodig bij het opbouwen, het eten en het opruimen.</p><p>U schrijft een briefje aan de bewoners van de Kastanjestraat. U stopt het briefje bij alle huizen in de brievenbus. U weet niet hoe de buren heten, dus u schrijft aan alle buren samen.</p><p><strong>Opdracht</strong></p><p>Schrijf een briefje aan de buren over het straatfeest. Behandel alle punten hieronder. U mag de informatie zelf verzinnen.</p><p>Het doel van de tekst is de buren informeren over het straatfeest en hen vragen om te helpen bij de organisatie.</p>",
+    "bullet_points": [
+      "U vertelt wie u bent en waar u in de straat woont.",
+      "U legt uit dat er een straatfeest komt en waarom u dat een goed idee vindt.",
+      "U noemt de datum, de tijd en de plaats van het feest.",
+      "U vraagt de buren om hulp en noemt minimaal twee taken waarbij u hulp nodig hebt.",
+      "U schrijft wat de buren zelf kunnen meenemen naar het feest.",
+      "U legt uit hoe en voor welke datum de buren kunnen laten weten dat zij meedoen."
+    ],
+    "email_to": "",
+    "email_subject": "",
+    "greeting": "Beste buren,",
+    "closing": "Met vriendelijke groet,\n\nSamira El Amrani\nKastanjestraat 27",
+    "model_answer": "Beste buren,\n\nMijn naam is Samira El Amrani en ik woon op nummer 27, naast de kleine speeltuin. Ik woon hier nu twee jaar en ik vind het jammer dat veel bewoners elkaar niet kennen. Daarom wil ik samen met een paar buren een straatfeest organiseren. Zo kunnen we elkaar rustig leren kennen, terwijl de kinderen buiten spelen.\n\nHet feest is op zaterdag 14 juni van 15.00 tot 20.00 uur. We zetten de tafels neer op het brede stuk van de straat, voor de nummers 20 tot 30. De gemeente heeft toestemming gegeven, zodat er die middag geen auto's door de straat rijden. Als het hard regent, gaan we naar de garage van de familie Bosma op nummer 12.\n\nGraag vraag ik uw hulp, omdat ik dit feest niet alleen kan organiseren. We zoeken vier mensen die om 13.00 uur helpen met het opbouwen van de tafels en de partytent. Ook zoeken we twee mensen die na het feest helpen met opruimen en schoonmaken. Hebt u een grote koelbox of een muziekinstallatie? Dan zou dat ons erg helpen.\n\nUit de buurtpot betalen we het brood, het vlees en de drinken voor de kinderen. Wilt u zelf een salade, een soep of een gerecht uit uw eigen land meenemen? Dan krijgen we samen een mooie tafel met veel verschillende gerechten. Neem ook uw eigen stoel mee, want we hebben niet genoeg zitplaatsen.\n\nWilt u vóór 1 juni laten weten of u komt en of u wilt helpen? U kunt een briefje in mijn brievenbus doen op nummer 27, of u kunt gewoon even aanbellen. Schrijf er dan bij hoeveel personen er meekomen en welke taak u wilt doen.\n\nIk hoop dat veel buren meedoen, want dan wordt het een gezellige middag voor de hele straat.\n\nMet vriendelijke groet,\n\nSamira El Amrani\nKastanjestraat 27"
+  }
+]

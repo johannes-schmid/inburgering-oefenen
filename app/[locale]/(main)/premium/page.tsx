@@ -3,6 +3,7 @@ import { getTranslations } from 'next-intl/server';
 import { routing } from '@/i18n/routing';
 import { Link } from '@/i18n/navigation';
 import { cn } from '@/lib/utils';
+import { HorizonBanner, SkylineTopper, HERO_GRADIENT } from '@/components/horizon';
 import { buttonVariants } from '@/components/ui/button';
 import { TeacherCard, SkillIcon } from '@/components/site';
 import PricingViewTracker from '@/components/PricingViewTracker';
@@ -58,7 +59,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
 /* ─── icons ──────────────────────────────────────────────────────────────── */
 const CheckGreen = () => (
-  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#1a7a3c" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className="flex-shrink-0 mt-0.5"><polyline points="20 6 9 17 4 12"/></svg>
+  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#a24000" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className="flex-shrink-0 mt-0.5"><polyline points="20 6 9 17 4 12"/></svg>
 );
 const XGray = () => (
   <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#c4c6d2" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className="flex-shrink-0 mt-0.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
@@ -114,7 +115,7 @@ function BrowserMockup() {
               <p style={{ fontSize:'10px',color:'#747782',marginTop:'3px' }}>6 van 10 oefenexamens gedaan. Goed bezig!</p>
               <div style={{ display:'flex',gap:'6px',marginTop:'6px',flexWrap:'wrap' }}>
                 <span style={{ fontSize:'9px',fontWeight:600,background:'#f2f4f6',color:'#434651',padding:'2px 6px',borderRadius:'99px' }}>25 vragen per examen</span>
-                <span style={{ fontSize:'9px',fontWeight:700,background:'#f0fdf4',color:'#15803d',padding:'2px 6px',borderRadius:'99px',border:'1px solid rgba(22,163,74,0.2)' }}>Gem. 79%</span>
+                <span style={{ fontSize:'9px',fontWeight:700,background:'rgba(254,118,44,0.16)',color:'#a24000',padding:'2px 6px',borderRadius:'99px' }}>Gem. 79%</span>
               </div>
             </div>
           </div>
@@ -132,17 +133,17 @@ function BrowserMockup() {
               <div key={ex.n} style={{ background:'#fff',border:'1px solid #eceef0',borderRadius:'8px',padding:'10px' }}>
                 <div style={{ display:'flex',alignItems:'center',justifyContent:'space-between',marginBottom:'6px' }}>
                   <span style={{ fontSize:'9px',fontWeight:700,color:'#191c1e' }}>Examen {ex.n}</span>
-                  <span style={{ fontSize:'8px',fontWeight:700,color:'#15803d',background:'#f0fdf4',padding:'2px 5px',borderRadius:'99px',display:'inline-flex',alignItems:'center',gap:'2px' }}><Check size={8} strokeWidth={3} aria-hidden="true" />Gesl.</span>
+                  <span style={{ fontSize:'8px',fontWeight:700,color:'#a24000',background:'rgba(254,118,44,0.16)',padding:'2px 5px',borderRadius:'99px',display:'inline-flex',alignItems:'center',gap:'2px' }}><Check size={8} strokeWidth={3} aria-hidden="true" />Gesl.</span>
                 </div>
                 <div style={{ fontFamily:'var(--font-headline)',fontWeight:800,fontSize:'18px',color:'#002b6d',lineHeight:1 }}>{ex.s}</div>
-                <div style={{ height:'4px',background:'#f2f4f6',borderRadius:'99px',marginTop:'6px',overflow:'hidden' }}><div style={{ height:'100%',background:'#22c55e',borderRadius:'99px',width:ex.s }}/></div>
+                <div style={{ height:'4px',background:'#f2f4f6',borderRadius:'99px',marginTop:'6px',overflow:'hidden' }}><div style={{ height:'100%',background:'linear-gradient(90deg,#a24000,#fe762c)',borderRadius:'99px',width:ex.s }}/></div>
               </div>
             ))}
           </div>
           <div style={{ marginTop:'12px',background:'#fff',border:'1px solid #eceef0',borderRadius:'8px',padding:'12px' }}>
             <div style={{ display:'flex',alignItems:'center',justifyContent:'space-between',marginBottom:'8px' }}>
               <span style={{ fontSize:'10px',fontWeight:700,color:'#191c1e' }}>Woordenlijst Lezen</span>
-              <span style={{ fontSize:'8px',fontWeight:700,color:'#002b6d',background:'#eff6ff',padding:'2px 6px',borderRadius:'99px' }}>hoort bij je module</span>
+              <span style={{ fontSize:'8px',fontWeight:700,color:'#002b6d',background:'var(--color-surface-container-high)',padding:'2px 6px',borderRadius:'99px' }}>hoort bij je module</span>
             </div>
             <div style={{ display:'flex',alignItems:'center',gap:'8px' }}>
               <div style={{ flex:1,height:'6px',background:'#f2f4f6',borderRadius:'99px',overflow:'hidden' }}>
@@ -177,7 +178,7 @@ function ExamensMockup() {
             <div style={{ textAlign:'right' }}>
               {ex.s ? <>
                 <p style={{ fontFamily:'var(--font-headline)',fontWeight:800,fontSize:'18px',color:'#002b6d',lineHeight:1 }}>{ex.s}</p>
-                <span style={{ fontSize:'9px',fontWeight:700,color:'#15803d',background:'#f0fdf4',padding:'2px 6px',borderRadius:'99px',display:'inline-flex',alignItems:'center',gap:'3px' }}><Check size={9} strokeWidth={3} aria-hidden="true" />Geslaagd</span>
+                <span style={{ fontSize:'9px',fontWeight:700,color:'#a24000',background:'rgba(254,118,44,0.16)',padding:'2px 6px',borderRadius:'99px',display:'inline-flex',alignItems:'center',gap:'3px' }}><Check size={9} strokeWidth={3} aria-hidden="true" />Geslaagd</span>
               </> : (
                 <span style={{ fontSize:'10px',fontWeight:600,color:'#a24000',background:'rgba(254,118,44,0.10)',padding:'4px 8px',borderRadius:'99px' }}>Nu doen →</span>
               )}
@@ -192,7 +193,7 @@ function ExamensMockup() {
 function LessonMockup() {
   return (
     <div style={{ padding:'20px', background:'#f8f9fb', borderBottom:'1px solid #eceef0' }}>
-      <div style={{ background:'linear-gradient(135deg,#002b6d,#0044ad)',borderRadius:'12px',padding:'12px 14px',marginBottom:'10px',display:'flex',alignItems:'center',gap:'10px' }}>
+      <div style={{ background: HERO_GRADIENT,borderRadius:'12px',padding:'12px 14px',marginBottom:'10px',display:'flex',alignItems:'center',gap:'10px' }}>
         <Headphones size={18} strokeWidth={1.9} style={{ color:'#fff',flexShrink:0 }} aria-hidden="true" />
         <div>
           <p style={{ fontSize:'8px',fontWeight:700,color:'rgba(255,255,255,0.55)',textTransform:'uppercase',letterSpacing:'0.06em' }}>Les · module Luisteren</p>
@@ -237,7 +238,7 @@ function WoordenlijstMockup() {
         <p style={{ fontFamily:'var(--font-headline)',fontWeight:800,fontSize:'20px',color:'#002b6d',lineHeight:1.2 }}>de aanvraag</p>
         <p style={{ fontSize:'10px',color:'#747782',marginTop:'6px' }}>the application · الطلب</p>
         <div style={{ display:'flex',alignItems:'center',justifyContent:'center',gap:'6px',marginTop:'10px' }}>
-          <span style={{ display:'inline-flex',alignItems:'center',gap:'4px',fontSize:'9px',fontWeight:700,color:'#002b6d',background:'#eff6ff',padding:'3px 8px',borderRadius:'99px' }}>
+          <span style={{ display:'inline-flex',alignItems:'center',gap:'4px',fontSize:'9px',fontWeight:700,color:'#002b6d',background:'var(--color-surface-container-high)',padding:'3px 8px',borderRadius:'99px' }}>
             <Headphones size={9} strokeWidth={2.4} aria-hidden="true" />Beluister
           </span>
           <span style={{ fontSize:'9px',color:'#747782' }}>Kaart 7 van 24</span>
@@ -245,7 +246,7 @@ function WoordenlijstMockup() {
       </div>
       <div style={{ display:'flex',gap:'6px' }}>
         <div style={{ flex:1,background:'#fff',border:'1px solid #eceef0',borderRadius:'8px',padding:'8px',textAlign:'center',fontSize:'9px',fontWeight:700,color:'#747782' }}>Nog even oefenen</div>
-        <div style={{ flex:1,background:'#f0fdf4',border:'1px solid rgba(22,163,74,0.2)',borderRadius:'8px',padding:'8px',textAlign:'center',fontSize:'9px',fontWeight:700,color:'#15803d' }}>Ik ken dit woord</div>
+        <div style={{ flex:1,background:'rgba(254,118,44,0.12)',borderRadius:'8px',padding:'8px',textAlign:'center',fontSize:'9px',fontWeight:700,color:'#a24000' }}>Ik ken dit woord</div>
       </div>
     </div>
   );
@@ -262,17 +263,17 @@ function FeedbackMockup() {
             <span style={{ width:'20px',height:'20px',background:'#eceef0',color:'#747782',borderRadius:'6px',display:'flex',alignItems:'center',justifyContent:'center',fontSize:'9px',fontWeight:700,flexShrink:0 }}>A</span>
             <span style={{ fontSize:'10px',color:'#747782' }}>Binnen een week</span>
           </div>
-          <div style={{ display:'flex',alignItems:'center',gap:'8px',padding:'8px',borderRadius:'8px',border:'2px solid #4ade80',background:'#f0fdf4' }}>
-            <span style={{ width:'20px',height:'20px',background:'#dcfce7',color:'#15803d',borderRadius:'6px',display:'flex',alignItems:'center',justifyContent:'center',fontSize:'9px',fontWeight:700,flexShrink:0 }}>B</span>
-            <span style={{ fontSize:'10px',color:'#15803d',fontWeight:600,display:'inline-flex',alignItems:'center',gap:'4px' }}>Voor 1 maart<Check size={10} strokeWidth={3} aria-hidden="true" /></span>
+          <div style={{ display:'flex',alignItems:'center',gap:'8px',padding:'8px',borderRadius:'8px',boxShadow:'inset 0 0 0 2px rgba(0,43,109,0.40)',background:'rgba(254,118,44,0.10)' }}>
+            <span style={{ width:'20px',height:'20px',background:'rgba(0,43,109,0.10)',color:'#002b6d',borderRadius:'6px',display:'flex',alignItems:'center',justifyContent:'center',fontSize:'9px',fontWeight:700,flexShrink:0 }}>B</span>
+            <span style={{ fontSize:'10px',color:'#a24000',fontWeight:600,display:'inline-flex',alignItems:'center',gap:'4px' }}>Voor 1 maart<Check size={10} strokeWidth={3} aria-hidden="true" /></span>
           </div>
-          <div style={{ display:'flex',alignItems:'center',gap:'8px',padding:'8px',borderRadius:'8px',border:'1px solid #fca5a5',background:'#fef2f2',opacity:0.6 }}>
-            <span style={{ width:'20px',height:'20px',background:'#fee2e2',color:'#dc2626',borderRadius:'6px',display:'flex',alignItems:'center',justifyContent:'center',fontSize:'9px',fontWeight:700,flexShrink:0 }}>C</span>
-            <span style={{ fontSize:'10px',color:'#dc2626',textDecoration:'line-through' }}>Na de vakantie</span>
+          <div style={{ display:'flex',alignItems:'center',gap:'8px',padding:'8px',borderRadius:'8px',background:'rgba(186,26,26,0.06)',boxShadow:'inset 0 0 0 2px rgba(186,26,26,0.20)' }}>
+            <span style={{ width:'20px',height:'20px',background:'rgba(186,26,26,0.10)',color:'#ba1a1a',borderRadius:'6px',display:'flex',alignItems:'center',justifyContent:'center',fontSize:'9px',fontWeight:700,flexShrink:0 }}>C</span>
+            <span style={{ fontSize:'10px',color:'#ba1a1a',textDecoration:'line-through' }}>Na de vakantie</span>
           </div>
         </div>
       </div>
-      <div style={{ background:'#eff6ff',borderRadius:'12px',border:'1px solid rgba(59,130,246,0.2)',padding:'12px' }}>
+      <div style={{ background:'var(--color-surface-container-high)',borderRadius:'12px',padding:'12px' }}>
         <p style={{ fontSize:'9px',fontWeight:700,color:'#002b6d',marginBottom:'4px',display:'flex',alignItems:'center',gap:'4px' }}>
           <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
           Uitleg van de docent
@@ -466,10 +467,12 @@ export default async function PremiumPage({ params }: Props) {
       {/* ── 1. HERO ─────────────────────────────────────────────────────── */}
       <section
         className="relative overflow-hidden px-6 py-20 md:py-28"
-        style={{ background: 'linear-gradient(155deg,#001840 0%,#002b6d 50%,#001840 100%)' }}
+        style={{ background: HERO_GRADIENT }}
       >
-        <div className="absolute pointer-events-none" style={{ top:'-100px',right:'-60px',width:'560px',height:'560px',background:'radial-gradient(circle,rgba(254,118,44,0.16) 0%,transparent 68%)' }}/>
-        <div className="absolute pointer-events-none" style={{ bottom:'-80px',left:'5%',width:'380px',height:'380px',background:'radial-gradient(circle,rgba(254,118,44,0.08) 0%,transparent 70%)' }}/>
+        {/* Was two large orange radial washes. §7.3: exactly one sun disc per composition, and
+            the orange is a pointer, never a texture — two soft glows made the whole header read
+            orange-tinted, which is the fastest way to cheapen this palette. */}
+        <HorizonBanner desktopHouses={16} desktopHeight={92} seed={1} sun={{ size: 104, right: '8%', top: '12%' }} />
 
         <div className="max-w-6xl mx-auto relative z-10 grid lg:grid-cols-2 gap-14 items-center">
           <div className="max-w-xl">
@@ -495,7 +498,7 @@ export default async function PremiumPage({ params }: Props) {
                 tP('hero_bullet5'),
               ] as string[]).map(b => (
                 <div key={b} className="flex items-start gap-3 text-white/85 text-sm font-medium">
-                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#4ade80" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className="flex-shrink-0 mt-0.5"><polyline points="20 6 9 17 4 12"/></svg>
+                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#fe762c" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className="flex-shrink-0 mt-0.5"><polyline points="20 6 9 17 4 12"/></svg>
                   <span>{b}</span>
                 </div>
               ))}
@@ -520,7 +523,9 @@ export default async function PremiumPage({ params }: Props) {
       </section>
 
       {/* ── 2. MODULES ──────────────────────────────────────────────────── */}
-      <section id="modules" className="py-14 px-6 scroll-mt-8" style={{ background:'linear-gradient(180deg,#eef2ff 0%,#f8f9fb 100%)' }}>
+      {/* Was a wash from `#eef2ff` — Tailwind indigo-50, a hue in no token file and the "standard
+          blue" §6 forbids. A tonal step does the same sectioning job (§2, the no-line rule). */}
+      <section id="modules" className="py-14 px-6 scroll-mt-8 bg-surface-container-low">
         <div className="max-w-6xl mx-auto">
           <div className="text-center mb-10">
             <p className="text-xs font-bold uppercase tracking-widest text-on-surface-variant mb-3">{tP('pricing_eyebrow')}</p>
@@ -530,14 +535,24 @@ export default async function PremiumPage({ params }: Props) {
 
           {/* four module cards */}
           <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
-            {a2Modules.map(mod => {
+            {a2Modules.map((mod, i) => {
               const skill = getSkill(mod.skill)!;
               return (
                 <div
                   key={mod.slug}
-                  className="flex flex-col rounded-2xl bg-white border border-outline-variant/60 overflow-hidden"
-                  style={{ boxShadow:'0 1px 4px rgba(0,43,109,0.05),0 6px 20px rgba(0,43,109,0.05)' }}
+                  className="flex flex-col rounded-2xl bg-surface-container-lowest overflow-hidden"
+                  style={{ boxShadow:'var(--shadow-ambient)' }}
                 >
+                  {/* The module card of §7.2, the same one the homepage grid uses — one tint and
+                      one `seed` per module, so four cards are four streets rather than one graphic
+                      repeated four times. */}
+                  <SkylineTopper
+                    height={64}
+                    houses={6}
+                    seed={i * 3}
+                    tint={(['gradient', 'reverse', 'primary', 'container'] as const)[i % 4]}
+                    band={false}
+                  />
                   <div className="px-5 pt-6 pb-5 flex-1">
                     <SkillIcon skill={mod.skill} size="md" />
                     <h3 className="font-headline font-extrabold text-on-surface text-lg mt-3.5 mb-1">{tS(`${skill.key}.name`)}</h3>
@@ -569,7 +584,7 @@ export default async function PremiumPage({ params }: Props) {
                       </div>
                     </div>
                   </div>
-                  <div className="px-5 pb-5 pt-4 border-t border-outline-variant/40">
+                  <div className="px-5 pb-5 pt-4 bg-surface-container-low">
                     <Link
                       href={{ pathname: '/register', query: { module: mod.slug } }}
                       className={cn(buttonVariants({ variant: 'ghostLight', size: 'cta' }), 'w-full justify-center text-sm')}
@@ -585,7 +600,7 @@ export default async function PremiumPage({ params }: Props) {
           {/* bundle + free, side by side */}
           <div className="grid lg:grid-cols-[1.6fr_1fr] gap-5 items-stretch pt-4">
             {/* BUNDLE — hero card */}
-            <div className="flex flex-col rounded-2xl relative overflow-visible" style={{ background:'linear-gradient(160deg,#001535 0%,#002b6d 55%,#083a8a 100%)', boxShadow:'0 12px 40px rgba(0,43,109,0.30),0 4px 12px rgba(0,43,109,0.18)' }}>
+            <div className="flex flex-col rounded-2xl relative overflow-visible" style={{ background:'linear-gradient(160deg,#002b6d 0%,#1d428a 100%)', boxShadow:'0 12px 40px rgba(0,43,109,0.30),0 4px 12px rgba(0,43,109,0.18)' }}>
               <div className="absolute inset-0 rounded-2xl overflow-hidden pointer-events-none">
                 <div style={{ position:'absolute', top:'-60px',right:'-60px',width:'260px',height:'260px',background:'radial-gradient(circle,rgba(254,118,44,0.22) 0%,transparent 65%)' }}/>
                 <div style={{ position:'absolute', bottom:'-40px',left:'-40px',width:'180px',height:'180px',background:'radial-gradient(circle,rgba(59,130,246,0.15) 0%,transparent 65%)' }}/>
@@ -607,7 +622,7 @@ export default async function PremiumPage({ params }: Props) {
                   <span className="text-sm mb-1" style={{ color:'rgba(255,255,255,0.5)' }}>{tP('bundle_price_note')}</span>
                   <span className="text-sm mb-1 line-through" style={{ color:'rgba(255,255,255,0.35)' }}>{tP('bundle_was', { list })}</span>
                 </div>
-                <p className="text-xs font-semibold mb-6" style={{ color:'#4ade80' }}>{tP('bundle_saving', { saving })}</p>
+                <p className="text-xs font-semibold mb-6" style={{ color:'#fe762c' }}>{tP('bundle_saving', { saving })}</p>
 
                 <div className="grid sm:grid-cols-2 gap-x-6 gap-y-2.5">
                   {[
@@ -618,7 +633,7 @@ export default async function PremiumPage({ params }: Props) {
                     tP('bundle_f5'),
                   ].map(f => (
                     <div key={f} className="flex items-start gap-2.5 text-sm font-medium" style={{ color:'rgba(255,255,255,0.9)' }}>
-                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#4ade80" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className="flex-shrink-0 mt-0.5"><polyline points="20 6 9 17 4 12"/></svg>
+                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#fe762c" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className="flex-shrink-0 mt-0.5"><polyline points="20 6 9 17 4 12"/></svg>
                       <span>{f}</span>
                     </div>
                   ))}
@@ -634,7 +649,7 @@ export default async function PremiumPage({ params }: Props) {
             </div>
 
             {/* FREE */}
-            <div className="flex flex-col rounded-2xl bg-white border border-outline-variant/60 overflow-hidden" style={{ boxShadow:'0 1px 4px rgba(0,43,109,0.05),0 4px 16px rgba(0,43,109,0.04)' }}>
+            <div className="flex flex-col rounded-2xl bg-surface-container-lowest overflow-hidden" style={{ boxShadow:'var(--shadow-ambient)' }}>
               <div className="px-6 pt-7 pb-5 flex-1">
                 <p className="text-[11px] font-bold uppercase tracking-widest text-on-surface-variant mb-4">{tP('free_label')}</p>
                 <div className="flex items-end gap-1.5 mb-1">
@@ -654,7 +669,7 @@ export default async function PremiumPage({ params }: Props) {
                   ))}
                 </div>
               </div>
-              <div className="px-6 pb-6 pt-4 border-t border-outline-variant/40">
+              <div className="px-6 pb-6 pt-4 bg-[rgba(255,255,255,0.06)]">
                 <Link href="/oefenen" className={cn(buttonVariants({ variant: 'ghostLight', size: 'cta' }), 'w-full justify-center')}>
                   {tP('compare_free_cta')}
                 </Link>
@@ -693,7 +708,7 @@ export default async function PremiumPage({ params }: Props) {
               { mockup: <WoordenlijstMockup />, title: tP('feature2_title'),      desc: tP('feature2_desc'),      soon: !FEATURES.woordkaarten },
               { mockup: <FeedbackMockup />,     title: tP('feature3_title'),      desc: tP('feature3_desc'),      soon: false },
             ].map(f => (
-              <div key={f.title} className="bg-white rounded-2xl border border-outline-variant/50 overflow-hidden flex flex-col" style={{ boxShadow:'0 2px 8px rgba(0,43,109,0.04),0 10px 32px rgba(0,43,109,0.07)' }}>
+              <div key={f.title} className="bg-surface-container-lowest rounded-2xl overflow-hidden flex flex-col" style={{ boxShadow:'var(--shadow-ambient)' }}>
                 {f.mockup}
                 <div className="p-5 flex-1">
                   <h3 className="font-headline font-extrabold text-on-surface text-base mb-2 leading-snug">
@@ -711,7 +726,7 @@ export default async function PremiumPage({ params }: Props) {
               quote="Alle opgaven zijn door mij persoonlijk geschreven of gecontroleerd. Geen AI-gegenereerde content. De beoordelingsrubric voor Schrijven en Spreken komt ook van mij — ik controleer de beoordelingen en stuur bij waar nodig."
               stats={[{ value: '10+', label: 'jaar ervaring' }, { value: String(totalExams), label: 'oefenexamens' }]}
             />
-            <div className="bg-white rounded-2xl border border-outline-variant/50 overflow-hidden" style={{ boxShadow:'0 2px 8px rgba(0,43,109,0.04),0 10px 32px rgba(0,43,109,0.07)' }}>
+            <div className="bg-surface-container-lowest rounded-2xl overflow-hidden" style={{ boxShadow:'var(--shadow-ambient)' }}>
               <RubricMockup />
               <div className="p-5">
                 <h3 className="font-headline font-extrabold text-on-surface text-base mb-2 leading-snug">{tP('feature4_title')}</h3>
@@ -730,14 +745,14 @@ export default async function PremiumPage({ params }: Props) {
 
             {/* DESKTOP TABLE */}
             <div className="hidden md:block overflow-x-auto">
-              <div className="bg-white rounded-2xl border border-outline-variant/50 overflow-hidden" style={{ boxShadow:'0 2px 8px rgba(0,43,109,0.04)' }}>
-                <div className="grid grid-cols-[1fr_110px_140px_160px] border-b border-outline-variant/50 text-center text-xs font-bold uppercase tracking-wider">
+              <div className="bg-surface-container-lowest rounded-2xl overflow-hidden" style={{ boxShadow:'var(--shadow-ambient)' }}>
+                <div className="grid grid-cols-[1fr_110px_140px_160px] border-b border-outline-variant/20 text-center text-xs font-bold uppercase tracking-wider">
                   <div className="px-5 py-3.5 text-left text-on-surface-variant" />
-                  <div className="px-3 py-3.5 border-l border-outline-variant/30 text-on-surface-variant">{tP('col_free')}</div>
-                  <div className="px-3 py-3.5 border-l border-outline-variant/30" style={{ color:'#002b6d', background:'rgba(240,244,255,0.7)' }}>
+                  <div className="px-3 py-3.5 border-l border-outline-variant/20 text-on-surface-variant">{tP('col_free')}</div>
+                  <div className="px-3 py-3.5 border-l border-outline-variant/20" style={{ color:'#002b6d', background:'var(--color-surface-container-high)' }}>
                     {tP('col_module')}<span className="block font-normal normal-case tracking-normal mt-0.5 text-[11px]">{price}</span>
                   </div>
-                  <div className="px-3 py-3.5 border-l border-outline-variant/30 text-white" style={{ background:'#002b6d' }}>
+                  <div className="px-3 py-3.5 border-l border-outline-variant/20 text-white" style={{ background:'#002b6d' }}>
                     {tP('col_bundle')}<span className="block font-normal normal-case tracking-normal mt-0.5 text-[11px] text-white/70">{bundle}</span>
                   </div>
                 </div>
@@ -795,13 +810,13 @@ export default async function PremiumPage({ params }: Props) {
                 },
                 {
                   label: tP('col_bundle'), priceLabel: bundle, note: tP('bundle_price_note'),
-                  color: '#fe762c', bg: 'linear-gradient(155deg,#001535 0%,#002b6d 60%,#083a8a 100%)', borderStyle: 'none',
+                  color: '#fe762c', bg: 'linear-gradient(155deg,#002b6d 0%,#1d428a 100%)', borderStyle: 'none',
                   dark: true,
                   features: allFeatures.map(f => ({ label: f.label, soon: f.soon, has: f.bundle })),
                   cta: <Link href={{ pathname: '/register', query: { module: 'all' } }} className={cn(buttonVariants({ variant: 'orange', size: 'cta' }), 'w-full justify-center')}><span>{tP('bundle_cta')}</span><svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M6 3l5 5-5 5" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg></Link>,
                 },
               ] as const).map(plan => (
-                <details key={plan.label} className="rounded-2xl overflow-hidden" style={{ background: plan.bg, border: plan.borderStyle, boxShadow:'0 2px 12px rgba(0,43,109,0.08)' }}>
+                <details key={plan.label} className="rounded-2xl overflow-hidden" style={{ background: plan.bg, border: plan.borderStyle, boxShadow:'var(--shadow-ambient)' }}>
                   <summary className="flex items-center justify-between gap-3 px-5 py-4 cursor-pointer list-none">
                     <div>
                       <p className="text-[10px] font-bold uppercase tracking-widest" style={{ color: plan.color }}>{plan.label}</p>
@@ -817,9 +832,9 @@ export default async function PremiumPage({ params }: Props) {
                       {plan.features.map(f => (
                         <div key={f.label} className="flex items-start gap-2.5 text-sm" style={{ color: f.has ? (plan.dark ? 'rgba(255,255,255,0.9)' : '#191c1e') : (plan.dark ? 'rgba(255,255,255,0.3)' : '#b0b3c1') }}>
                           {f.has === 'partial'
-                            ? <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke={plan.dark ? '#4ade80' : '#1a7a3c'} strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className="flex-shrink-0 mt-0.5"><polyline points="20 6 9 17 4 12"/></svg>
+                            ? <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke={plan.dark ? '#fe762c' : '#a24000'} strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className="flex-shrink-0 mt-0.5"><polyline points="20 6 9 17 4 12"/></svg>
                             : f.has
-                              ? <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke={plan.dark ? '#4ade80' : '#1a7a3c'} strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className="flex-shrink-0 mt-0.5"><polyline points="20 6 9 17 4 12"/></svg>
+                              ? <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke={plan.dark ? '#fe762c' : '#a24000'} strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className="flex-shrink-0 mt-0.5"><polyline points="20 6 9 17 4 12"/></svg>
                               : <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke={plan.dark ? 'rgba(255,255,255,0.25)' : '#c4c6d2'} strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className="flex-shrink-0 mt-0.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
                           }
                           <span>
@@ -852,7 +867,7 @@ export default async function PremiumPage({ params }: Props) {
                 { q: tP('faq_q5'), a: tP('faq_a5') },
                 { q: tP('faq_q6'), a: tP('faq_a6') },
               ].map(faq => (
-                <div key={faq.q} className="bg-white rounded-2xl border border-outline-variant/50 overflow-hidden" style={{ boxShadow:'0 2px 8px rgba(0,43,109,0.04)' }}>
+                <div key={faq.q} className="bg-surface-container-lowest rounded-2xl overflow-hidden" style={{ boxShadow:'var(--shadow-ambient)' }}>
                   <details>
                     <summary className="flex items-center justify-between gap-4 px-5 py-4 cursor-pointer font-semibold text-on-surface text-sm list-none">
                       <span>{faq.q}</span>
@@ -866,7 +881,7 @@ export default async function PremiumPage({ params }: Props) {
               ))}
             </div>
 
-            <div className="rounded-2xl p-6 text-center" style={{ background:'linear-gradient(135deg,#002b6d,#0044ad)',boxShadow:'0 4px 16px rgba(0,43,109,0.25)' }}>
+            <div className="rounded-2xl p-6 text-center" style={{ background: HERO_GRADIENT,boxShadow:'var(--shadow-ambient)' }}>
               <p className="font-headline font-extrabold text-white text-lg mb-1">{tP('final_cta_heading')}</p>
               <p className="text-white/65 text-sm mb-5">{tP('final_cta_sub')}</p>
               <div className="flex flex-col gap-2">

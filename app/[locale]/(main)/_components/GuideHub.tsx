@@ -30,6 +30,9 @@ import { DEFAULT_LEVEL, SKILLS } from '@/data/skills';
 import { FEATURES } from '@/lib/features';
 import { getPostBySlug, getPostLocale, getPostSlug } from '@/data/blog-posts';
 import { publishedGuides, getGuideLocale, guideHref } from '@/data/guides/helpers';
+import { PHASES, phaseFromParam } from '@/data/guides/phases';
+import { guideSections } from '@/lib/guides/sections';
+import RouteExplorer, { type PhaseView } from '@/components/inburgering/RouteExplorer';
 import type { GuideSection } from '@/data/guides/types';
 
 /**
@@ -70,17 +73,51 @@ const HUB_POSTS: Record<GuideSection, string[]> = {
 export default async function GuideHub({
   section,
   locale,
+  fase,
 }: {
   section: GuideSection;
   locale: string;
+  /**
+   * `?fase=` — which of the three Inburgering fasen opens first. Only `/inburgering` passes it;
+   * the other two hubs have no route. An unrecognised value falls back to fase 1 rather than to
+   * nothing (`phaseFromParam`), so a stale link from an e-mail still lands on a usable page.
+   */
+  fase?: string;
 }) {
   const t = await getTranslations({ locale, namespace: 'guides' });
   const tS = await getTranslations({ locale, namespace: `guides.${section}` });
   const tB = await getTranslations({ locale, namespace: 'breadcrumbs' });
   const tSkills = await getTranslations({ locale, namespace: 'skills' });
+  const tR = await getTranslations({ locale, namespace: 'inburgering_route' });
 
   const guides = publishedGuides(section);
   const cards = Array.from({ length: SECTION_CARDS[section] }, (_, i) => i + 1);
+
+  /* The Inburgering route. Built here rather than in the client component because the step titles
+     are the guides' own `<h2>`s, which means reading `articleHtml` — and `articleHtml` must never
+     cross into the browser bundle: the four bodies together are ~90 kB of prose that the hub does
+     not render. So the server extracts `{ id, title, minutes }` per section and ships only that.
+     A phase whose guides are all unpublished is dropped, so an unreviewed guide cannot put an
+     empty card at the top of the funnel. */
+  const phaseViews: PhaseView[] =
+    section === 'inburgering'
+      ? PHASES.map(p => ({
+          id: p.id,
+          number: p.number,
+          guides: p.guides
+            .map(slug => guides.find(g => g.slug === slug))
+            .filter((g): g is NonNullable<typeof g> => Boolean(g))
+            .map(g => {
+              const lg = getGuideLocale(g, locale);
+              return {
+                slug: g.slug,
+                title: lg.heroTitle,
+                sections: guideSections(lg.articleHtml),
+              };
+            }),
+        })).filter(p => p.guides.length > 0)
+      : [];
+  const showRoute = phaseViews.length > 0;
   const posts = FEATURES.blog
     ? HUB_POSTS[section].map(slug => getPostBySlug(slug)).filter(Boolean)
     : [];
@@ -149,7 +186,7 @@ export default async function GuideHub({
 
       <main className="bg-surface">
         {/* The guides themselves — only once one has been reviewed. */}
-        {guides.length > 0 && (
+        {guides.length > 0 && !showRoute && (
           <section className="py-16 px-6">
             <div className="max-w-7xl mx-auto">
               <SectionHeader title={t('guides_title')} />
@@ -181,6 +218,19 @@ export default async function GuideHub({
           </section>
         )}
 
+        {/* The route — Inburgering only. It is the page's spine, so it sits directly under the
+            hero, above the orientation prose: a reader who knows what inburgering is should not
+            have to scroll past a definition of it to find where to start. `SectionHeader` carries
+            the same copy the fasen cards used to introduce. */}
+        {showRoute && (
+          <section className="py-14 px-6">
+            <div className="max-w-7xl mx-auto">
+              <SectionHeader title={tR('heading')} subtitle={tR('subheading')} />
+              <RouteExplorer phases={phaseViews} initialPhase={phaseFromParam(fase)} />
+            </div>
+          </section>
+        )}
+
         {/* Orientation. Always rendered: with no guides it is the page, with guides it is context. */}
         <section className={guides.length > 0 ? 'pb-16 px-6' : 'py-16 px-6'}>
           <div className="max-w-7xl mx-auto">
@@ -199,6 +249,9 @@ export default async function GuideHub({
               </p>
             </div>
 
+            {/* The five traject cards. On Inburgering the fasen above now carry the "where do I
+                start" job, and these are the DUO process end to end — kept, because they answer a
+                different question, but demoted below the route rather than competing with it. */}
             <SectionHeader title={tS('phases_title')} />
             <ol className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6 list-none p-0">
               {cards.map(n => (

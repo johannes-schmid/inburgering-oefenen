@@ -1,0 +1,266 @@
+[
+  {
+    "title": "Deel 1",
+    "instruction_html": "<p>In dit deel geeft u korte antwoorden. U leest bij elke opgave een korte situatie. Daarna zegt u wat u in die situatie zou zeggen.</p><ul><li>Een paar woorden tot twee zinnen is genoeg.</li><li>U heeft per opgave 20 seconden spreektijd.</li><li>Bij sommige opgaven hoort u iemand die tegen u praat. U reageert dan op die persoon.</li><li>Bij sommige opgaven staat een plaatje. Gebruik de informatie van dat plaatje in uw antwoord.</li><li>Spreek duidelijk en let erop dat u de opdracht helemaal uitvoert.</li></ul><p>Succes.</p>",
+    "tasks": [
+      {
+        "image_usage": "react",
+        "title": "De presentatie",
+        "prompt": "U volgt een opleiding tot doktersassistent.\nMorgen geeft u samen met een medestudent een presentatie.\nAlles is al af, maar zij wil nu iets anders.\n\nLuister naar uw medestudent en reageer.\nZeg wat u ervan vindt en waarom.",
+        "prompt_spoken": "Zeg, ik heb er vannacht over nagedacht: laten we die hele presentatie omgooien en er een toneelstukje van maken. Veel leuker toch?",
+        "voice": "woman_young",
+        "model_answer": "Eerlijk gezegd vind ik dat geen goed idee, want we moeten morgen al presenteren. We hebben nu geen tijd meer om iets nieuws te oefenen. Laten we het gewoon houden zoals het is.",
+        "images": [
+          {
+            "slot": "spreken-1-d1-o1-a",
+            "query": "two students with laptop discussing presentation in classroom",
+            "caption": "Overleg over de presentatie",
+            "variant": 0
+          }
+        ]
+      },
+      {
+        "image_usage": "react",
+        "title": "Het pakket",
+        "prompt": "U werkt bij een groot kantoor.\nU loopt langs de receptie.\nEen collega van de receptie spreekt u aan.\n\nLuister naar uw collega en reageer.",
+        "prompt_spoken": "Goedemiddag, ik zoek een pakket voor uw afdeling. Het is gisteren bezorgd, maar niemand weet waar het is gebleven. Heeft u het misschien gezien?",
+        "voice": "man_older",
+        "model_answer": "Nee, ik heb het niet gezien. Maar er stond gisteren wel een doos in de vergaderzaal. Ik ga even kijken en ik laat het u meteen weten.",
+        "images": [
+          {
+            "slot": "spreken-1-d1-o2-a",
+            "query": "office reception desk with parcel and receptionist",
+            "caption": "Receptie met pakket",
+            "variant": 0
+          }
+        ]
+      },
+      {
+        "image_usage": "none",
+        "title": "Vier dagen werken",
+        "prompt": "U gaat vanaf volgende maand vier dagen per week werken in plaats van vijf.\nU mag zelf kiezen welke dag u vrij neemt.\nUw leidinggevende vraagt uw voorkeur.\n\nVertel welke dag u vrij wilt zijn.\nVertel ook waarom u die dag kiest.",
+        "model_answer": "Ik zou het liefst op woensdag vrij zijn. Dan kan ik mijn kinderen van school halen en boodschappen doen. Bovendien is het op woensdag meestal niet zo druk op het werk.",
+        "images": []
+      },
+      {
+        "image_usage": "react",
+        "title": "Het boeket",
+        "prompt": "U werkt in een bloemenwinkel.\nEen klant komt binnen.\nHij zoekt bloemen voor een feest.\n\nLuister naar de klant en reageer.\nGeef hem een advies.",
+        "prompt_spoken": "Mijn ouders zijn veertig jaar getrouwd en ik wil een mooi boeket geven. Ik heb ongeveer dertig euro. Wat raadt u me aan?",
+        "voice": "man_young",
+        "model_answer": "Wat leuk, gefeliciteerd namens hen. Voor dertig euro kan ik een groot boeket met rozen en witte lelies maken. Dat staat heel feestelijk, en ik doe er gratis een mooi lint om.",
+        "images": [
+          {
+            "slot": "spreken-1-d1-o4-a",
+            "query": "florist shop counter with colourful bouquets of flowers",
+            "caption": "Bloemenwinkel met boeketten",
+            "variant": 0
+          }
+        ]
+      },
+      {
+        "image_usage": "none",
+        "title": "Cursus op zaterdag",
+        "prompt": "U werkt bij een transportbedrijf.\nUw werkgever biedt een cursus veilig rijden aan.\nDe cursus is vier keer op zaterdagochtend, in uw vrije tijd.\nUw werkgever betaalt de cursus.\n\nVertel of u de cursus gaat volgen.\nVertel ook waarom u dat wel of niet doet.",
+        "model_answer": "Ik denk dat ik het toch ga doen, ook al is het in mijn vrije tijd. Zo'n diploma is handig als ik later ander werk wil. Vier ochtenden is bovendien niet zo lang.",
+        "images": []
+      },
+      {
+        "image_usage": "describe",
+        "title": "De voorraadkast",
+        "prompt": "U werkt in de schoonmaak bij een school.\nEr is een nieuwe collega begonnen.\nHij weet nog niet waar de spullen liggen.\n\nKijk naar het plaatje.\nLeg uw nieuwe collega uit wat er in de voorraadkast staat en waar hij het kan vinden.",
+        "model_answer": "Kijk, op de bovenste plank staan de flessen schoonmaakmiddel en op de plank daaronder liggen de doeken en handschoenen. De emmers en de dweilen staan onderaan, en de rol vuilniszakken hangt links aan de deur.",
+        "images": [
+          {
+            "slot": "spreken-1-d1-o6-a",
+            "query": "cleaning supply storage cupboard shelves with buckets mops bottles cloths",
+            "caption": "Voorraadkast met schoonmaakspullen",
+            "variant": 0
+          }
+        ]
+      },
+      {
+        "image_usage": "none",
+        "title": "Excursie afgelast",
+        "prompt": "U volgt een opleiding techniek.\nVolgende week zou uw klas naar een fabriek gaan.\nDe school heeft de excursie afgelast, omdat er te weinig begeleiders zijn.\nEen medestudent vraagt wat u ervan vindt.\n\nVertel wat u van dit besluit vindt.\nVertel ook waarom u dat vindt.",
+        "model_answer": "Ik vind het echt jammer, want ik had me er al weken op verheugd. Zo'n bezoek leer je meer van dan uit een boek. Ik hoop dat de school een nieuwe datum zoekt.",
+        "images": []
+      },
+      {
+        "image_usage": "describe",
+        "title": "De activiteit",
+        "prompt": "U werkt in een verzorgingshuis.\nVanmiddag is er een activiteit in de grote zaal.\nEen bewoonster zegt dat ze liever op haar kamer blijft.\n\nKijk naar het plaatje.\nVertel de bewoonster wat er in de zaal gebeurt en probeer haar over te halen om mee te gaan.",
+        "model_answer": "Kom toch even mee, mevrouw. In de zaal zijn ze aan het zingen met muziek, en er staat koffie met gebak op de tafels. Uw buurvrouw zit er ook al, dus u zit zeker niet alleen.",
+        "images": [
+          {
+            "slot": "spreken-1-d1-o8-a",
+            "query": "elderly people singing and having coffee in nursing home activity room",
+            "caption": "Activiteit in de zaal",
+            "variant": 0
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "title": "Deel 2",
+    "instruction_html": "<p>In dit deel van het examen geeft u langere antwoorden. U leest bij elke opgave een korte situatie. Daarna vertelt u iets, legt u iets uit of geeft u uw mening.</p><ul><li>Geef een volledig antwoord van ongeveer vier tot zeven zinnen, dus niet één woord of één zin.</li><li>U hebt vijftien seconden om uw antwoord voor te bereiden.</li><li>Daarna hebt u dertig seconden om te spreken.</li><li>Bij sommige opgaven staan plaatjes. U moet die plaatjes dan in uw antwoord gebruiken.</li><li>Vertel steeds ook waarom u iets vindt of adviseert, zodat uw antwoord duidelijk is.</li></ul><p>Spreek rustig en duidelijk, en probeer de hele spreektijd te gebruiken.</p>",
+    "tasks": [
+      {
+        "image_usage": "cover_all",
+        "title": "Inwerkdag",
+        "prompt": "U werkt bij een groot tuincentrum.\nVandaag begint er een nieuwe medewerker.\nHij vraagt u hoe de eerste dag eruitziet.\n\nKijk naar de plaatjes.\nVertel hem wat het programma van de inwerkdag is.\nU moet daarbij alle plaatjes gebruiken.\n\nU hoort eerst wat de nieuwe medewerker zegt.",
+        "prompt_spoken": "Goedemorgen, ik ben Youssef, ik begin vandaag. Weet jij misschien wat we vandaag allemaal gaan doen?",
+        "voice": "man_young",
+        "model_answer": "Welkom! We beginnen om negen uur met koffie in de kantine, zodat je iedereen van het team even ziet. Daarna krijg je een korte uitleg over veiligheid, want je moet weten hoe je zwaar spul moet tillen. Om half elf lopen we samen door het hele tuincentrum, en dan laat ik je de kassa en het magazijn zien. Om twaalf uur gaan we samen lunchen met de afdeling. 's Middags werk je gewoon mee, en ik loop de eerste uren naast je. Als je iets niet weet, vraag je het gewoon aan mij.",
+        "images": [
+          {
+            "slot": "spreken-1-d2-o1-a",
+            "query": "colleagues drinking coffee together in office canteen morning",
+            "caption": "Koffie in de kantine",
+            "variant": 0
+          },
+          {
+            "slot": "spreken-1-d2-o1-b",
+            "query": "employee receiving safety instruction with clipboard in warehouse",
+            "caption": "Uitleg over veiligheid",
+            "variant": 1
+          },
+          {
+            "slot": "spreken-1-d2-o1-c",
+            "query": "manager showing new employee around garden centre store",
+            "caption": "Rondleiding door de winkel",
+            "variant": 2
+          }
+        ]
+      },
+      {
+        "image_usage": "none",
+        "title": "Een land bezoeken",
+        "prompt": "U praat met een vriendin over vakantie.\nZij vertelt dat zij graag naar Portugal wil.\nDaarna vraagt zij het aan u.\n\nVertel naar welk land u graag zou willen gaan.\nVertel ook waarom u juist dat land wilt bezoeken.",
+        "prompt_spoken": "Ik zou zelf zo graag naar Portugal gaan. En jij, welk land wil jij een keer bezoeken?",
+        "voice": "woman_young",
+        "model_answer": "Ik zou heel graag een keer naar Canada gaan. Mijn nicht woont daar al tien jaar, dus ik kan bij haar slapen en dat is natuurlijk goedkoper. Ik wil vooral de natuur zien, want ik hou van wandelen in de bergen en bij grote meren. Ik heb ook gehoord dat de mensen daar heel vriendelijk zijn. Het liefst ga ik in de herfst, omdat de bossen dan mooie kleuren hebben. Als ik genoeg gespaard heb, boek ik volgend jaar een ticket.",
+        "images": []
+      },
+      {
+        "image_usage": "cover_all",
+        "title": "Boeken lenen",
+        "prompt": "U volgt een opleiding tot verzorgende.\nIn de mediatheek van de school staat een boekenkast met studieboeken.\nEen nieuwe student weet niet hoe het systeem werkt.\n\nKijk naar de plaatjes.\nLeg hem uit wat hij precies moet doen.\nU moet daarbij alle plaatjes gebruiken.\n\nU hoort eerst wat de nieuwe student vraagt.",
+        "prompt_spoken": "Ik zoek een boek over anatomie, maar ik snap niet hoe het hier werkt. Kun jij het me uitleggen?",
+        "voice": "man_young",
+        "model_answer": "Dat is niet moeilijk. Je gaat eerst naar de computer bij de ingang en je typt daar de titel of het onderwerp in. Op het scherm zie je dan een nummer, en dat nummer schrijf je op of je maakt er een foto van. Daarna zoek je datzelfde nummer op de kastjes, want elk vak in de kast heeft een eigen nummer. Als je het boek hebt, ga je naar het apparaat bij de balie en scan je je studentenkaart en het boek. Je mag het boek drie weken houden, en anders krijg je een boete.",
+        "images": [
+          {
+            "slot": "spreken-1-d2-o3-a",
+            "query": "student searching library catalogue on computer screen",
+            "caption": "Zoeken op de computer",
+            "variant": 0
+          },
+          {
+            "slot": "spreken-1-d2-o3-b",
+            "query": "library shelves with numbered labels on books",
+            "caption": "Nummer op de kast",
+            "variant": 1
+          },
+          {
+            "slot": "spreken-1-d2-o3-c",
+            "query": "self service book checkout machine in library",
+            "caption": "Zelf scannen bij de balie",
+            "variant": 2
+          }
+        ]
+      },
+      {
+        "image_usage": "cover_all",
+        "title": "Bezorging",
+        "prompt": "U werkt op de administratie van een meubelfabriek.\nEr komt vandaag een nieuwe bezorger goederen brengen.\nHij belt u op, omdat hij het terrein niet kent.\n\nKijk naar de plaatjes.\nVertel hem wat hij bij aankomst op het terrein moet doen.\nU moet daarbij alle plaatjes gebruiken.\n\nU hoort eerst wat de bezorger vraagt.",
+        "prompt_spoken": "Ik ben over tien minuten bij jullie, maar ik ben er nog nooit geweest. Wat moet ik doen als ik aankom?",
+        "voice": "man_older",
+        "model_answer": "Goed dat u belt. U stopt eerst bij de slagboom en u belt aan bij de portier, want de slagboom gaat niet automatisch open. U zegt daar uw naam en voor welk bedrijf u rijdt. Daarna moet u een veiligheidsvest aandoen, omdat dat op het hele terrein verplicht is. U rijdt dan rechtdoor naar laadperron drie, en daar staat een collega die u helpt met lossen. Vergeet niet de bon te laten aftekenen voordat u weer wegrijdt.",
+        "images": [
+          {
+            "slot": "spreken-1-d2-o4-a",
+            "query": "truck driver pressing intercom at barrier gate of factory",
+            "caption": "Aanbellen bij de slagboom",
+            "variant": 0
+          },
+          {
+            "slot": "spreken-1-d2-o4-b",
+            "query": "worker putting on high visibility safety vest",
+            "caption": "Veiligheidsvest aandoen",
+            "variant": 1
+          },
+          {
+            "slot": "spreken-1-d2-o4-c",
+            "query": "delivery truck at numbered loading dock warehouse",
+            "caption": "Naar laadperron drie",
+            "variant": 2
+          }
+        ]
+      },
+      {
+        "image_usage": "choose",
+        "title": "Nieuwe werkplek",
+        "prompt": "Op uw werk wordt de kantoorruimte verbouwd.\nEr zijn twee soorten nieuwe werkplekken gemaakt.\nEen collega was ziek en heeft ze nog niet gezien.\n\nKijk naar de twee plaatjes.\nBeschrijf hoe de twee werkplekken eruitzien en zeg welke u zou kiezen.\nGeef minimaal twee redenen voor uw keuze.",
+        "prompt_spoken": "Ik hoorde dat we mogen kiezen tussen twee soorten werkplekken. Hoe zien ze eruit, en welke zou jij nemen?",
+        "voice": "woman_older",
+        "model_answer": "Op het eerste plaatje zie je een grote open ruimte met lange tafels en veel collega's bij elkaar. Op het tweede plaatje is het een klein kamertje met één bureau, een stoel en een raam. Ik zou zelf het kleine kamertje kiezen. In de eerste plaats kan ik daar rustig werken, omdat ik veel telefoongesprekken met klanten heb. Bovendien is het in die grote ruimte vaak lawaaiig, waardoor ik me moeilijk kan concentreren. Voor overleg kunnen we dan gewoon even naar de open ruimte lopen.",
+        "images": [
+          {
+            "slot": "spreken-1-d2-o5-a",
+            "query": "open plan office with long shared desks and colleagues working",
+            "caption": "Open kantoor met lange tafels",
+            "variant": 0
+          },
+          {
+            "slot": "spreken-1-d2-o5-b",
+            "query": "small quiet single office room with one desk and window",
+            "caption": "Klein kantoor met één bureau",
+            "variant": 1
+          }
+        ]
+      },
+      {
+        "image_usage": "none",
+        "title": "Zwemmen of fitness",
+        "prompt": "Uw zus wil meer aan sport gaan doen.\nZij twijfelt tussen zwemmen en fitness.\nZij vraagt u om advies.\n\nGeef uw zus een advies.\nVertel ook waarom u haar dat adviseert.",
+        "prompt_spoken": "Ik wil echt meer bewegen, maar ik weet niet wat ik moet kiezen: zwemmen of fitness. Wat vind jij?",
+        "voice": "woman_young",
+        "model_answer": "Ik zou beginnen met zwemmen, want dat is beter voor je rug en je knieën. Je hebt vaak last van je rug, en in het water belast je je gewrichten bijna niet. Bovendien is een badpak genoeg, dus je hoeft geen duur abonnement en geen schoenen te kopen. Bij fitness moet je meestal een jaar vastzitten aan een contract, en dat vind ik zonde als je toch stopt. Het zwembad bij jou in de wijk is ook maar tien minuten lopen. Ga eerst een maand twee keer per week, en daarna kijk je of het bevalt.",
+        "images": []
+      },
+      {
+        "image_usage": "choose",
+        "title": "Welke tas",
+        "prompt": "Uw neef begint maandag aan zijn eerste werkdag op een kantoor.\nHij heeft twee tassen in huis.\nHij weet niet welke tas hij zal meenemen.\n\nKijk naar de twee plaatjes.\nAdviseer uw neef welke tas hij mee moet nemen.\nGeef minimaal twee redenen voor uw keuze.",
+        "prompt_spoken": "Maandag is mijn eerste werkdag. Welke tas moet ik nou meenemen, denk je?",
+        "voice": "man_young",
+        "model_answer": "Ik zou de nette leren tas meenemen. Je gaat op een kantoor werken, en die tas staat gewoon veel formeler dan een sportieve rugzak. Bovendien past je laptop er goed in, en de map met je papieren ook. Een rugzak is natuurlijk lekker als je met de fiets komt, maar hij ziet er al een beetje versleten uit. De eerste dag maak je nu eenmaal een eerste indruk, dus zorg dat het netjes is. Later kun je altijd nog de rugzak gebruiken.",
+        "images": [
+          {
+            "slot": "spreken-1-d2-o7-a",
+            "query": "brown leather laptop briefcase business bag on table",
+            "caption": "Nette leren tas",
+            "variant": 0
+          },
+          {
+            "slot": "spreken-1-d2-o7-b",
+            "query": "casual sporty backpack rucksack on floor",
+            "caption": "Sportieve rugzak",
+            "variant": 1
+          }
+        ]
+      },
+      {
+        "image_usage": "none",
+        "title": "Vrouwen in de techniek",
+        "prompt": "U leest een bericht over het tekort aan technisch personeel.\nIn de techniek werken nog weinig vrouwen.\nEen medestudent begint erover te praten.\n\nZeg wat u van deze situatie vindt.\nVertel ook waarom u dat vindt.",
+        "prompt_spoken": "Bij ons in de klas zitten bijna alleen jongens. Wat vind jij daarvan, dat er zo weinig vrouwen in de techniek werken?",
+        "voice": "woman_young",
+        "model_answer": "Ik vind dat jammer, want techniek is echt niet alleen werk voor mannen. Volgens mij denken veel meisjes op de basisschool al dat het niets voor hen is, doordat ze bijna geen vrouwelijke monteurs of technici zien. Bedrijven hebben nu heel veel mensen nodig, dus ze laten kansen liggen. Ik denk dat scholen meer moeten laten zien wat je met techniek kunt doen, bijvoorbeeld met stages en open dagen. Ook zou het helpen als er een paar vrouwen les komen geven. Als er meer vrouwen komen, wordt de sfeer op de werkvloer bovendien vaak beter.",
+        "images": []
+      }
+    ]
+  }
+]

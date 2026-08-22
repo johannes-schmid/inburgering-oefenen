@@ -92,7 +92,8 @@ function buildJsonLd(locale: string) {
         description: 'Gecertificeerde NT2-docent met meer dan 10 jaar ervaring in het onderwijs, inburgering en de voorbereiding op het inburgeringsexamen en het NT2-staatsexamen.',
         image: `${SITE_URL}/images/marieke-schipper.jpg`,
         knowsAbout: [
-          'inburgeringsexamen A2',
+          'inburgeringsexamen',
+          'KNM — Kennis van de Nederlandse Maatschappij',
           'NT2 — Nederlands als tweede taal',
           'NT2 staatsexamen',
           'Inburgering Nederland',
@@ -155,7 +156,7 @@ export default async function DocentPage({ params }: Props) {
             <div className="mt-4 flex flex-col gap-2">
               <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-semibold" style={{ background: 'rgba(255,255,255,0.12)', color: 'rgba(255,255,255,0.85)' }}>✓ NT2-gecertificeerd</span>
               <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-semibold" style={{ background: 'rgba(255,255,255,0.12)', color: 'rgba(255,255,255,0.85)' }}>✓ 10+ jaar ervaring</span>
-              <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-semibold" style={{ background: 'rgba(254,118,44,0.25)', color: '#fe762c' }}>✓ Inburgering A2</span>
+              <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-semibold" style={{ background: 'rgba(254,118,44,0.25)', color: '#fe762c' }}>✓ Inburgering &amp; NT2</span>
             </div>
           </div>
         </div>
@@ -210,7 +211,7 @@ export default async function DocentPage({ params }: Props) {
                   { year: '2014', title: 'Start in het basisonderwijs', desc: 'Eerste jaren als leerkracht, focus op taalontwikkeling bij jonge leerlingen.' },
                   { year: '2016', title: 'NT2-bevoegdheid behaald', desc: 'Certificering als NT2-docent via erkende opleiding — toegang tot werken met volwassen anderstaligen.' },
                   { year: '2018', title: 'Inburgering & NT2-focus', desc: 'Start begeleiding van inburgeraars, gericht op het inburgeringsexamen en het NT2-staatsexamen.' },
-                  { year: '2024', title: 'Oefenplatform inburgering A2', desc: 'Opzet van dit platform: oefenexamens voor de vier taalonderdelen, in het formaat van het echte examen.' },
+                  { year: '2024', title: 'Oefenplatform inburgering', desc: 'Opzet van dit platform: oefenexamens voor de vier taalonderdelen en gidsen over het hele inburgeringstraject.' },
                 ].map((item, i, arr) => (
                   <div key={item.year} className="grid pb-8" style={{ gridTemplateColumns: '80px 1fr', gap: '20px', position: 'relative' }}>
                     {i < arr.length - 1 && (
@@ -270,7 +271,7 @@ export default async function DocentPage({ params }: Props) {
             <div>
               <EyebrowBadge tone="primary" className="mb-5">Aanpak &amp; methode</EyebrowBadge>
               <h2 className="font-headline font-bold text-on-surface mb-5 mt-4" style={{ fontSize: 'clamp(1.5rem,2.5vw,2rem)', letterSpacing: '-0.01em' }}>
-                Zo bereid je je voor op het inburgeringsexamen A2
+                Zo bereid je je voor op het inburgeringsexamen
               </h2>
               <p className="text-on-surface-variant mb-6 leading-relaxed text-sm">
                 Marieke&apos;s aanpak is gebaseerd op drie pijlers: <strong className="text-on-surface">herhaling</strong>, <strong className="text-on-surface">begrip</strong> en <strong className="text-on-surface">situationeel denken</strong>. Het examen test niet of je losse woordjes kent — het test of je Nederlands begrijpt en gebruikt in alledaagse situaties.

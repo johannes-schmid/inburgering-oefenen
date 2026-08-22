@@ -28,7 +28,6 @@ import type { GuideSection } from './guides/types';
 
 /** A pathname declared in `i18n/routing.ts`. A literal union so a typo is a build error. */
 export type PlannedHref =
-  | '/inburgering/tools/tijdlijn'
   | '/knm/woordenlijst'
   | '/taalexamens/woordenlijst'
   | '/taalexamens/grammatica';
@@ -61,21 +60,6 @@ export type PlannedSurface = {
 };
 
 export const PLANNED_SURFACES: PlannedSurface[] = [
-  {
-    href: '/inburgering/tools/tijdlijn',
-    section: 'inburgering',
-    slug: 'tijdlijn',
-    kind: 'tool',
-    key: 'tijdlijn',
-    milestone: 'M2',
-    /* The pillar already explains the termijn rule this tool will compute, so it is the single
-     * most useful thing to hand someone who came looking for the calculator. */
-    related: [
-      { pathname: '/inburgering/[slug]', params: { slug: 'inburgering-stappenplan' } },
-      '/inburgering',
-      '/oefenen',
-    ],
-  },
   {
     href: '/knm/woordenlijst',
     section: 'knm',
@@ -119,5 +103,8 @@ export function getPlannedSurface(href: PlannedHref): PlannedSurface {
  */
 export function reservedSlugs(section: GuideSection): string[] {
   const fromRegistry = PLANNED_SURFACES.filter(s => s.section === section).map(s => s.slug);
+  /* `tools` stays reserved by hand now that the tijdlijn tool has shipped and left this registry:
+   * `/inburgering/tools/…` is a real occupied segment, and a guide authored at the slug `tools`
+   * would still be shadowed by it. The invariant outlives the placeholder that introduced it. */
   return section === 'inburgering' ? [...fromRegistry, 'tools'] : fromRegistry;
 }

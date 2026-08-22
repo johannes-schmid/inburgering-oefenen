@@ -1,0 +1,222 @@
+[
+  {
+    "task_type": "sentence_completion",
+    "title": "Afspraak verzetten",
+    "prompt_html": "<p>U heeft volgende week een afspraak bij uw huisarts voor een controle. Op dat moment moet u onverwacht een dienst overnemen op uw werk. U stuurt een mail naar de assistente van de huisartsenpraktijk.</p>",
+    "email_to": "assistente@huisartsenpraktijk-molenveld.nl",
+    "email_subject": "Afspraak van 14 maart verzetten",
+    "greeting": "Geachte mevrouw,\n\nIk heb een afspraak bij dokter Verhoeven op donderdag 14 maart om 10.15 uur. Helaas kan ik op dat moment niet komen, omdat …",
+    "closing": "Ik hoor graag welke dag mogelijk is.\n\nMet vriendelijke groet,\nKarim Aydin",
+    "model_answer": "ik die ochtend voor een zieke collega moet werken en de winkel niet alleen open kan laten. Ik zou de afspraak graag verzetten naar een middag later die week, het liefst na 15.00 uur. Als er niets vrij is, wil ik ook de week daarna wel komen."
+  },
+  {
+    "task_type": "sentence_completion",
+    "title": "Inwerken nieuw systeem",
+    "prompt_html": "<p>U werkt als administratief medewerker bij een installatiebedrijf. Sinds deze week gebruikt uw afdeling een nieuw computersysteem voor de urenregistratie. Uw collega Samira werkt er al langer mee en u stuurt haar een mail.</p>",
+    "email_to": "s.bouali@installatietechniek-vermeer.nl",
+    "email_subject": "Hulp met het nieuwe urensysteem",
+    "greeting": "Hoi Samira,\n\nSinds maandag werk ik met het nieuwe urensysteem, maar ik kom er niet goed uit. Ik wilde je vragen of …",
+    "closing": "Laat je weten wanneer het jou schikt?\n\nGroetjes,\nElena",
+    "model_answer": "je mij een keer wilt inwerken, want ik weet nog niet hoe ik de uren van de monteurs moet goedkeuren. Een half uurtje samen achter de computer zou mij al erg helpen. Woensdagmiddag of donderdagochtend kan ik het beste, maar ik pas mij graag aan jouw agenda aan."
+  },
+  {
+    "task_type": "sentence_completion",
+    "title": "Taalcafé in de bibliotheek",
+    "prompt_html": "<p>U werkt als vrijwilliger bij de bibliotheek van uw gemeente. Vanaf volgende maand start er elke week een taalcafé, waar mensen Nederlands kunnen oefenen. U schrijft een kort bericht voor de website van de bibliotheek.</p>",
+    "greeting": "Nieuw: taalcafé in de bibliotheek\n\nVanaf woensdag 3 april is iedereen welkom in ons taalcafé op de eerste verdieping. In het taalcafé kunt u …",
+    "closing": "Aanmelden is niet nodig; u kunt gewoon binnenlopen.\n\nMet vriendelijke groet,\nde medewerkers van Bibliotheek Steenwijkerbrug",
+    "model_answer": "onder begeleiding van vrijwilligers Nederlands spreken over alledaagse onderwerpen, zoals werk, gezondheid en het openbaar vervoer. Wij komen elke woensdag samen van 19.00 tot 20.30 uur en er is gratis koffie en thee. Het taalcafé is bedoeld voor iedereen die al wat Nederlands begrijpt en meer durf wil krijgen in het spreken."
+  },
+  {
+    "task_type": "sentence_completion",
+    "title": "Levering later",
+    "prompt_html": "<p>U werkt bij een meubelzaak en regelt de leveringen. Een klant heeft een eettafel besteld, maar de fabriek levert het hout later dan afgesproken. U stuurt de klant een mail.</p>",
+    "email_to": "j.dewaal@kpnpost.nl",
+    "email_subject": "Uw bestelling 20841 – nieuwe leverdatum",
+    "greeting": "Geachte mevrouw De Waal,\n\nU heeft bij ons een eettafel besteld met levering op 22 mei. Ik moet u helaas laten weten dat …",
+    "closing": "Mijn excuses voor het ongemak.\n\nMet vriendelijke groet,\nTom Kersten\nMeubelhuis Koster",
+    "model_answer": "de levering ongeveer drie weken later plaatsvindt, doordat onze leverancier het eikenhout te laat heeft aangeleverd. De nieuwe leverdatum is dinsdag 11 juni, en u ontvangt twee dagen daarvoor een bericht over het tijdstip. Omdat u langer moet wachten, brengen wij geen bezorgkosten in rekening."
+  },
+  {
+    "task_type": "sentence_completion",
+    "title": "Eerste stageweek",
+    "prompt_html": "<p>U volgt de opleiding Verzorgende IG en loopt stage in een woonzorgcentrum. Uw stagebegeleider van school vroeg u om na de eerste week kort te melden hoe het gaat. U stuurt haar een mail.</p>",
+    "email_to": "m.oosterhuis@roc-nieuwland.nl",
+    "email_subject": "Verslag eerste stageweek",
+    "greeting": "Beste mevrouw Oosterhuis,\n\nZoals afgesproken laat ik u weten hoe mijn eerste week in woonzorgcentrum De Linde is gegaan. In deze week heb ik …",
+    "closing": "Volgende week wil ik graag beginnen met mijn eerste opdracht.\n\nMet vriendelijke groet,\nAissatou Diallo",
+    "model_answer": "vooral meegelopen met twee verzorgenden van de ochtenddienst, zodat ik de bewoners en de dagindeling leerde kennen. Ik heb geholpen bij het aankleden en bij de maaltijden, en ik heb geleerd hoe ik rapporteer in het zorgdossier. Het contact met de bewoners gaat goed, hoewel ik het tempo in de ochtend nog wel hoog vind."
+  },
+  {
+    "task_type": "sentence_completion",
+    "title": "Schoolreis meenemen",
+    "prompt_html": "<p>Uw dochter zit in groep 6 van een basisschool en gaat volgende week op schoolreis. In de brief van de school staat niet duidelijk wat de kinderen mee moeten nemen. U stuurt de leraar een mail.</p>",
+    "email_to": "groep6@basisschooldeklaverweide.nl",
+    "email_subject": "Vraag over de schoolreis van 6 juni",
+    "greeting": "Beste meneer Van Dijk,\n\nVorige week kreeg ik de brief over de schoolreis naar het natuurpark. Ik wil graag weten …",
+    "closing": "Alvast bedankt voor uw antwoord.\n\nMet vriendelijke groet,\nNadia Chaib, moeder van Layla",
+    "model_answer": "wat Layla precies mee moet nemen in haar rugzak. Moet zij zelf eten en drinken voor de hele dag meenemen, of krijgen de kinderen tussendoor iets van school? Verder hoor ik graag of zij zakgeld nodig heeft en of regenkleding verstandig is."
+  },
+  {
+    "task_type": "sentence_completion",
+    "title": "Tips over isolatie",
+    "prompt_html": "<p>U huurt een oud appartement en heeft het in de winter vaak koud. Op een forum over wonen en energie wisselen huurders ervaringen uit. U plaatst daar een bericht.</p>",
+    "greeting": "Onderwerp: isolatie in een huurwoning – wie heeft tips?\n\nIk woon sinds twee jaar in een huurappartement uit 1965 en mijn energierekening is erg hoog. Ik zoek tips over …",
+    "closing": "Ik ben nieuwsgierig naar jullie ervaringen.\n\nGroet,\nRobert",
+    "model_answer": "wat ik zelf kan doen om de woning warmer te houden, zonder dat ik grote dingen aan het gebouw verander. De ramen hebben nog enkel glas en onder de voordeur voel ik duidelijk een koude luchtstroom. Weet iemand of ik de verhuurder kan vragen om betere kozijnen, en welke maatregelen zonder toestemming mogen?"
+  },
+  {
+    "task_type": "sentence_completion",
+    "title": "Hulp op de open dag",
+    "prompt_html": "<p>U werkt bij een technisch opleidingscentrum en organiseert de open dag. U heeft nog te weinig medewerkers die die zaterdag aanwezig kunnen zijn. U stuurt een mail naar al uw collega's.</p>",
+    "email_to": "medewerkers@vakcentrum-noorderpoel.nl",
+    "email_subject": "Wie helpt mee op de open dag van 15 november?",
+    "greeting": "Beste collega's,\n\nOp zaterdag 15 november houden wij onze jaarlijkse open dag voor nieuwe studenten. Ik ben nog op zoek naar …",
+    "closing": "Wil je je voor 1 november bij mij aanmelden?\n\nMet vriendelijke groet,\nHilde Ravensbergen",
+    "model_answer": "vijf collega's die die dag een paar uur willen helpen bij de ontvangst en bij de rondleidingen door de werkplaatsen. Je hoeft geen hele dag te blijven; een dienst van drie uur is al heel welkom. De gewerkte uren mag je uiteraard opschrijven of later opnemen als vrije tijd."
+  },
+  {
+    "task_type": "email",
+    "title": "Verzoek om studiebegeleiding",
+    "prompt_html": "<p>U volgt sinds september een beroepsopleiding tot verzorgende bij het Rijnstroom College in Zutphen. U werkt daarnaast drie dagen per week in een woonzorgcentrum. De afgelopen maanden gaat het minder goed met uw studie. U heeft twee toetsen niet gehaald en u loopt achter met uw praktijkopdrachten, doordat u thuis weinig tijd en rust heeft om te leren.</p><p>Op de website van de opleiding staat dat studenten studiebegeleiding kunnen aanvragen. U schrijft een e-mail aan mevrouw Van Duren, de studieloopbaanbegeleider van uw opleiding, om die begeleiding te vragen. U mag de informatie zelf verzinnen.</p><p><strong>Opdracht</strong></p><p>Schrijf een e-mail aan mevrouw Van Duren. Behandel alle onderstaande punten in hele zinnen en in de juiste volgorde. Gebruik de u-vorm.</p><p>Het doel van de tekst is mevrouw Van Duren duidelijk maken waarom u studiebegeleiding nodig heeft, zodat zij een afspraak met u maakt.</p>",
+    "bullet_points": [
+      "U stelt uzelf voor en u vertelt welke opleiding u volgt en in welk leerjaar u zit.",
+      "U legt uit waarom u deze e-mail schrijft.",
+      "U beschrijft welke problemen u bij uw studie heeft en u noemt minimaal twee oorzaken.",
+      "U vertelt wat u zelf al heeft geprobeerd om de situatie te verbeteren.",
+      "U schrijft welke hulp u van de opleiding verwacht.",
+      "U vraagt om een afspraak en u noemt op welke dagen en tijden u kunt komen."
+    ],
+    "email_to": "m.vanduren@rijnstroomcollege.nl",
+    "email_subject": "Verzoek om studiebegeleiding",
+    "greeting": "Geachte mevrouw Van Duren,",
+    "closing": "Met vriendelijke groet,",
+    "model_answer": "Mijn naam is Amira Zoubir en ik ben student bij het Rijnstroom College in Zutphen. Ik volg het eerste leerjaar van de opleiding tot verzorgende. Mijn klas is VZ1C en mijn studentnummer is 204871.\n\nIk schrijf u deze e-mail, omdat ik graag studiebegeleiding wil aanvragen. Op de website van de opleiding las ik dat studenten met studieproblemen bij u terecht kunnen. Ik hoop dat u mij kunt helpen, want ik wil mijn opleiding zeker afmaken.\n\nDe afgelopen maanden gaat het minder goed met mijn studie. Ik heb de toetsen anatomie en communicatie niet gehaald en ik ben ook te laat met twee praktijkopdrachten. Dat komt door twee dingen. Ten eerste werk ik drie dagen per week in een woonzorgcentrum en daarna ben ik vaak te moe om te leren. Ten tweede heb ik thuis weinig rust, doordat ik met mijn twee kinderen in een klein huis woon.\n\nIk heb zelf al een paar dingen geprobeerd. Ik maak nu elke week een planning en ik leer op zaterdagochtend in de bibliotheek. Ook heb ik met een medestudent afgesproken dat wij samen de praktijkopdrachten voorbereiden. Toch lukt het mij niet om de achterstand alleen weg te werken.\n\nDaarom vraag ik hulp van de opleiding. Ik zou graag samen met u een studieplan maken, zodat duidelijk wordt welke opdrachten ik eerst moet afmaken. Verder wil ik weten of ik de twee toetsen later dit jaar opnieuw mag doen en of er extra uitleg mogelijk is bij het vak anatomie.\n\nKan ik een afspraak met u maken? Ik ben op maandag en woensdag de hele dag op school aanwezig. Op dinsdag kan ik na drie uur 's middags komen. Wilt u mij laten weten welk moment u het beste past? U kunt mij ook bellen op 06 12 34 56 78.\n\nAlvast hartelijk dank voor uw hulp en uw tijd."
+  },
+  {
+    "task_type": "form",
+    "title": "Vragenlijst over werkdruk",
+    "prompt_html": "<p>U werkt sinds twee jaar bij woonzorgcentrum Het Roggeveld in Zwolle. De laatste maanden is het op uw afdeling erg druk, omdat er vaak collega's ziek zijn en er weinig vervangers zijn.</p><p>De directie wil weten hoe het personeel de werkdruk ervaart. Daarom heeft de afdeling personeelszaken een digitale vragenlijst rondgestuurd. De antwoorden worden gebruikt voor een nieuw werkplan, dat in het voorjaar met de medezeggenschapsraad wordt besproken. Uw naam en e-mailadres zijn al ingevuld.</p><p><strong>Opdracht</strong></p><p>Vul de vragenlijst in. Kies eerst uw afdeling. Beantwoord daarna alle open vragen met minimaal twee of drie hele zinnen. Bij elke vraag legt u ook uit waarom dat zo is of waarom u dat vindt. U mag de informatie zelf verzinnen.</p><p>Het doel van de tekst is uw werkgever duidelijk maken hoe u de werkdruk op uw afdeling ervaart en welke verandering volgens u nodig is.</p>",
+    "bullet_points": [],
+    "model_answer": "1. Ik vind de werkdruk op dit moment te hoog. We werken bijna elke dienst met één medewerker minder, omdat er veel collega's ziek zijn. Daardoor heb ik vaak het gevoel dat ik mijn werk niet rustig kan afmaken.\n\n2. De drukte is het grootst in de ochtend, tussen zeven en tien uur. In die uren moeten veel bewoners tegelijk uit bed geholpen worden, terwijl er ook medicijnen gegeven moeten worden. Ook op zondag is het zwaar, doordat er dan minder mensen werken.\n\n3. Mijn werk wordt zwaarder door de administratie. Ik moet dezelfde informatie soms op papier en in de computer invullen, omdat niet iedereen met het nieuwe systeem werkt. Dat kost ongeveer een half uur per dienst, en die tijd heb ik liever voor de bewoners.\n\n4. Buiten het werk merk ik dat ik moe ben. Ik ga vaak vroeg naar bed en ik kom minder bij mijn familie, hoewel ik dat wel graag wil. Na een drukke week heb ik twee dagen nodig om echt uit te rusten.\n\n5. Zelf probeer ik goede afspraken te maken met mijn collega's. Aan het begin van de dienst verdelen we de taken, zodat iedereen weet wat hij moet doen. Verder neem ik altijd mijn pauze, want anders houd ik het niet vol.\n\n6. Ik wil voorstellen om een vaste medewerker aan te nemen voor de ochtenddienst. Dan hoeven we niet steeds een uitzendkracht in te werken, waardoor we tijd en energie besparen. Ik denk dat de bewoners daar ook rustiger van worden.",
+    "form_schema": {
+      "sections": [
+        {
+          "heading": "Uw gegevens",
+          "rows": [
+            {
+              "kind": "static",
+              "label": "Naam",
+              "value": "A. Ferreira"
+            },
+            {
+              "kind": "static",
+              "label": "E-mailadres",
+              "value": "a.ferreira@hetroggeveld-zwolle.nl"
+            },
+            {
+              "kind": "choice",
+              "label": "Op welke afdeling werkt u?",
+              "options": [
+                "Zorg, afdeling Noord",
+                "Zorg, afdeling Zuid",
+                "Keuken en restaurant",
+                "Facilitaire dienst",
+                "Administratie"
+              ]
+            }
+          ]
+        },
+        {
+          "heading": "Vragen over werkdruk",
+          "rows": [
+            {
+              "kind": "text",
+              "label": "1. Hoe ervaart u op dit moment de werkdruk op uw afdeling? Leg ook uit waarom.",
+              "placeholder": "Uw antwoord"
+            },
+            {
+              "kind": "text",
+              "label": "2. Op welke momenten in de week is het het drukst? Leg ook uit waardoor dat komt.",
+              "placeholder": "Uw antwoord"
+            },
+            {
+              "kind": "text",
+              "label": "3. Welke taak maakt uw werk zwaarder dan nodig is? Geef een voorbeeld en leg uit waarom.",
+              "placeholder": "Uw antwoord"
+            },
+            {
+              "kind": "text",
+              "label": "4. Welke gevolgen heeft de werkdruk voor u buiten het werk? Leg ook uit waarom.",
+              "placeholder": "Uw antwoord"
+            },
+            {
+              "kind": "text",
+              "label": "5. Wat doet u zelf om de werkdruk beter aan te kunnen? Leg ook uit waarom dat helpt.",
+              "placeholder": "Uw antwoord"
+            },
+            {
+              "kind": "text",
+              "label": "6. Welke verandering wilt u aan de directie voorstellen? Leg ook uit waarom die verandering zou helpen.",
+              "placeholder": "Uw antwoord"
+            }
+          ]
+        }
+      ]
+    }
+  },
+  {
+    "task_type": "picture_report",
+    "title": "Verslag introductiedag",
+    "prompt_html": "<p>U werkt sinds kort bij zorgorganisatie De Wilgenhof in Apeldoorn. Vorige week heeft u samen met acht andere nieuwe medewerkers een introductiedag gevolgd. Uw teamleider, mevrouw Van Dongen, kon er zelf niet bij zijn. Zij vraagt u om een verslag van die dag, omdat zij wil weten of de introductiedag nuttig was voor nieuwe medewerkers.</p><p>De drie plaatjes hieronder laten zien wat er die dag gebeurd is, in de juiste volgorde. U gebruikt alle drie de plaatjes in uw verslag.</p><p><strong>Opdracht</strong></p><p>Schrijf een verslag van de introductiedag voor mevrouw Van Dongen. Beschrijf wat er gebeurd is en wat u ervan vond. U mag de informatie zelf verzinnen, bijvoorbeeld namen, tijden en details over het programma.</p><p>De plaatjes worden niet bij uw verslag gevoegd. Uw lezer ziet de plaatjes dus niet. Schrijf uw tekst daarom zo, dat iemand die de plaatjes niet kent alles kan begrijpen.</p><p>Het doel van de tekst is dat mevrouw Van Dongen een duidelijk beeld krijgt van het verloop van de introductiedag en van uw mening over het nut van die dag.</p>",
+    "bullet_points": [
+      "U vertelt wanneer en waar de introductiedag was en wie er aanwezig waren.",
+      "U beschrijft het eerste deel van de dag: de ontvangst en de kennismaking met de andere nieuwe medewerkers.",
+      "U beschrijft het tweede deel van de dag: de uitleg over het werk, de regels en de afspraken.",
+      "U beschrijft het laatste deel van de dag: de rondleiding door het gebouw en de afsluiting.",
+      "U geeft uw mening over de introductiedag en noemt minimaal twee dingen die u nuttig vond.",
+      "U geeft één tip om de introductiedag voor volgende nieuwe medewerkers te verbeteren."
+    ],
+    "email_to": "mevrouw Van Dongen, teamleider De Wilgenhof",
+    "email_subject": "Verslag introductiedag nieuwe medewerkers",
+    "greeting": "Geachte mevrouw Van Dongen,",
+    "closing": "Met vriendelijke groet,\n\nNadia Haddad\nmedewerker afdeling Lindehof",
+    "model_answer": "Geachte mevrouw Van Dongen,\n\nHierbij stuur ik u mijn verslag van de introductiedag voor nieuwe medewerkers. De dag was op donderdag 14 maart in het hoofdgebouw van De Wilgenhof aan de Beeklaan. Er waren negen nieuwe medewerkers aanwezig. De dag werd geleid door mevrouw Bergsma van de afdeling personeelszaken en door een verpleegkundige uit het team van de Lindehof.\n\nWe begonnen om negen uur met koffie en een korte kennismaking. Iedereen vertelde in twee minuten wie hij was, op welke afdeling hij ging werken en welke ervaring hij al had. Dat vond ik een goed begin, omdat ik daardoor meteen een paar gezichten kende. Twee collega's uit mijn eigen team waren er ook, waardoor het gesprek al snel op gang kwam.\n\nNa de pauze volgde een lange presentatie over het werk en over de afspraken binnen de organisatie. Mevrouw Bergsma legde uit hoe de werktijden geregeld zijn en hoe we ons moeten ziekmelden. Ook kregen we uitleg over de cao, de proeftijd en de regels voor privacy van cliënten. We kregen een map met alle informatie mee naar huis, zodat we alles later nog eens kunnen nalezen.\n\nHet laatste deel van de middag bestond uit een rondleiding door het gebouw. We hebben de afdelingen, de keuken, de kleedruimtes en het kantoor van de teamleiders gezien. Bij elke afdeling vertelde een medewerker kort wat daar gebeurt. Om half vijf sloten we de dag af met een korte evaluatie en een drankje.\n\nIk vond de introductiedag nuttig. Vooral de uitleg over het ziekmelden en de rondleiding waren voor mij waardevol, omdat ik nu weet waar ik moet zijn en bij wie ik terecht kan met vragen. Ook het contact met de andere nieuwe medewerkers hielp me, hoewel ik hen niet allemaal meer bij naam ken.\n\nIk heb wel één tip. De presentatie in de ochtend duurde bijna twee uur en dat was erg lang. Misschien is het beter om die informatie in twee kortere delen te geven, zodat nieuwe medewerkers alles beter kunnen onthouden.\n\nAls u nog vragen hebt over mijn verslag, wil ik ze graag beantwoorden.\n\nMet vriendelijke groet,\n\nNadia Haddad\nmedewerker afdeling Lindehof",
+    "images": [
+      {
+        "slot": "schrijven-5-o11-p1",
+        "query": "new employees introduction meeting coffee name badges circle",
+        "caption": "Ontvangst en kennismaking",
+        "variant": 0
+      },
+      {
+        "slot": "schrijven-5-o11-p2",
+        "query": "trainer giving presentation to employees in meeting room screen",
+        "caption": "Uitleg over regels",
+        "variant": 1
+      },
+      {
+        "slot": "schrijven-5-o11-p3",
+        "query": "group of staff guided tour through care home hallway",
+        "caption": "Rondleiding door gebouw",
+        "variant": 2
+      }
+    ]
+  },
+  {
+    "task_type": "letter",
+    "title": "Sollicitatiebrief thuiszorg",
+    "prompt_html": "<p>U woont in Zwolle en u bent op zoek naar een nieuwe baan. In de plaatselijke krant staat een advertentie van thuiszorgorganisatie De Groene Linde. Zij zoeken een medewerker verzorging voor 24 uur per week. In de advertentie staat dat ervaring in de zorg gewenst is, maar dat mensen met een andere achtergrond ook mogen reageren, omdat de organisatie zelf opleidt.</p><p>U wilt graag in de thuiszorg werken. U schrijft een sollicitatiebrief aan de afdeling Personeelszaken.</p><p>Het adres is:<br>Thuiszorgorganisatie De Groene Linde<br>Afdeling Personeelszaken<br>Mevrouw R. Bakhuis<br>Postbus 2140<br>8000 AC Zwolle</p><p><strong>Opdracht</strong></p><p>Schrijf een sollicitatiebrief van ongeveer 200 woorden. Behandel alle punten die hieronder staan. U mag de informatie over uzelf, uw opleiding en uw werk zelf verzinnen.</p><p>Het doel van de tekst is de afdeling Personeelszaken ervan overtuigen dat u geschikt bent voor de baan in de thuiszorg, zodat u wordt uitgenodigd voor een gesprek.</p>",
+    "bullet_points": [
+      "U vertelt waarom u schrijft en waar u de advertentie gevonden hebt.",
+      "U legt uit waarom u in de thuiszorg wilt werken en u noemt minimaal twee redenen.",
+      "U vertelt kort welke opleiding u hebt gedaan en welk werk u eerder hebt gedaan.",
+      "U beschrijft twee eigenschappen van uzelf die belangrijk zijn in de zorg en u geeft bij elke eigenschap een voorbeeld.",
+      "U schrijft op welke dagen en hoeveel uur u kunt werken.",
+      "U vraagt om een gesprek en u vertelt hoe de organisatie u kan bereiken."
+    ],
+    "greeting": "Geachte mevrouw Bakhuis,",
+    "closing": "Met vriendelijke groet,\n\nAmina Yildiz\nBloemstraat 47\n8021 KL Zwolle\nTelefoon: 06 - 21 45 88 32",
+    "model_answer": "Geachte mevrouw Bakhuis,\n\nIn de Zwolse Courant van 6 maart las ik uw advertentie voor de functie van medewerker verzorging voor 24 uur per week. Graag solliciteer ik op deze baan, omdat het werk goed bij mij past.\n\nIk wil in de thuiszorg werken om twee redenen. In de eerste plaats vind ik het belangrijk dat oudere mensen langer thuis kunnen blijven wonen. In de tweede plaats werk ik liever met mensen dan met machines, terwijl ik in mijn vorige baan bijna altijd alleen was.\n\nIk ben 34 jaar en ik woon vijf jaar in Nederland. In mijn eigen land heb ik een opleiding voor verpleegkundige gedaan, maar dat diploma is hier niet geldig. Daarom volg ik nu een cursus Nederlands op niveau B1. De laatste drie jaar heb ik in een groot wasserijbedrijf gewerkt.\n\nIk ben geduldig en ik ben betrouwbaar. Als ik iemand help met wassen of aankleden, neem ik rustig de tijd, zodat de cliënt zich veilig voelt. Verder kom ik altijd op tijd; in drie jaar heb ik geen dag gemist.\n\nIk kan van maandag tot en met donderdag werken, ongeveer zes uur per dag. In de weekenden kan ik soms ook invallen.\n\nGraag vertel ik u in een gesprek meer over mijzelf. U kunt mij bellen op 06 - 21 45 88 32.\n\nMet vriendelijke groet,\n\nAmina Yildiz\nBloemstraat 47\n8021 KL Zwolle"
+  }
+]

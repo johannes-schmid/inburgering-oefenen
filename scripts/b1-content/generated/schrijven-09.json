@@ -1,0 +1,221 @@
+[
+  {
+    "task_type": "sentence_completion",
+    "title": "Vergoeding fysiotherapie",
+    "prompt_html": "<p>U bent verzekerd bij zorgverzekeraar Nooterhof. Uw huisarts heeft u doorgestuurd naar een fysiotherapeut, maar u weet niet of die behandelingen betaald worden door de verzekering. U stuurt een mail naar de klantenservice.</p>",
+    "email_to": "klantenservice@nooterhof-zorg.nl",
+    "email_subject": "Vraag over vergoeding fysiotherapie",
+    "greeting": "Geachte heer, mevrouw,\n\nIk ben sinds januari verzekerd bij uw maatschappij, met polisnummer 44 82 671. Mijn huisarts heeft mij doorverwezen naar een fysiotherapeut, omdat ik al maanden pijn in mijn rug heb. Ik wil graag weten of …",
+    "closing": "Ik hoor graag van u.\n\nMet vriendelijke groet,\nElvira Mandic",
+    "model_answer": "deze behandelingen door mijn basisverzekering worden vergoed en hoeveel behandelingen ik per jaar mag gebruiken. Daarnaast wil ik weten of ik eerst mijn eigen risico moet betalen, want dat is voor mij een groot bedrag. Kunt u mij ook vertellen of ik de rekening zelf moet voorschieten?"
+  },
+  {
+    "task_type": "sentence_completion",
+    "title": "Gegevens wijzigen",
+    "prompt_html": "<p>U werkt op de klantenservice van tuincentrum De Groene Hoek. Een klant, meneer Bakker, heeft gemaild dat hij verhuisd is en een nieuw telefoonnummer heeft. Hij vraagt hoe hij dit kan doorgeven; u antwoordt hem.</p>",
+    "email_to": "j.bakker@postbus-nu.nl",
+    "email_subject": "Uw adres en telefoonnummer wijzigen",
+    "greeting": "Beste meneer Bakker,\n\nBedankt voor uw bericht van 12 maart. U vroeg hoe u uw nieuwe adres en telefoonnummer aan ons kunt doorgeven. Dat kunt u het beste zelf doen in uw account, en dat werkt zo: …",
+    "closing": "Ik hoop dat u er zo mee verder kunt.\n\nMet vriendelijke groet,\nSanne Verlinden\nKlantenservice De Groene Hoek",
+    "model_answer": "u meldt zich aan op onze website met uw e-mailadres en wachtwoord en klikt daarna op 'Mijn gegevens'. Vervolgens vult u uw nieuwe adres en telefoonnummer in en slaat u de wijziging op met de knop onderaan de pagina. Lukt het aanmelden niet, dan kunt u de gegevens ook telefonisch aan ons doorgeven, zodat wij ze voor u aanpassen."
+  },
+  {
+    "task_type": "sentence_completion",
+    "title": "Trainers gezocht",
+    "prompt_html": "<p>U bent bestuurslid van korfbalvereniging Zuiderveld. Twee trainers van de jeugdteams stoppen na dit seizoen, waardoor er nieuwe trainers nodig zijn. U plaatst een bericht op de website van de club.</p>",
+    "greeting": "Beste leden en ouders,\n\nAan het einde van dit seizoen nemen Ferdi en Loes afscheid als trainer van de jeugdteams. Daarom zijn wij op zoek naar twee nieuwe trainers, en wij hopen iemand binnen de club te vinden. Wij zoeken mensen die …",
+    "closing": "Wil je meer weten? Stuur dan een bericht naar het bestuur.\n\nSportieve groet,\nHet bestuur van Zuiderveld",
+    "model_answer": "twee keer per week een uur beschikbaar zijn en het leuk vinden om met kinderen van acht tot twaalf jaar te werken. Ervaring is fijn, maar niet verplicht, want je krijgt van ons een cursus en een ervaren trainer die je in het begin helpt. Ook op zaterdag zoeken we hulp bij de wedstrijden, ook als je maar één keer per maand kunt."
+  },
+  {
+    "task_type": "sentence_completion",
+    "title": "Uitstel opdracht",
+    "prompt_html": "<p>U volgt de opleiding Verzorgende bij het Rijnpoort College. U moet vrijdag een verslag over uw stage inleveren, maar u bent een week ziek geweest en het verslag is nog niet klaar. U mailt uw docent, mevrouw Terhorst.</p>",
+    "email_to": "a.terhorst@rijnpoortcollege.nl",
+    "email_subject": "Verslag stage later inleveren",
+    "greeting": "Beste mevrouw Terhorst,\n\nIk zit in de groep VZ2B en moet vrijdag 5 april mijn stageverslag inleveren. Helaas ben ik vorige week zes dagen ziek geweest en heb ik daardoor weinig aan het verslag kunnen werken. Ik wil u daarom vragen of …",
+    "closing": "Ik hoor graag of dat mogelijk is.\n\nMet vriendelijke groet,\nOmar Chafik",
+    "model_answer": "ik het verslag een week later mag inleveren, dus uiterlijk vrijdag 12 april. Ik heb het eerste deel al af en ik kan dit weekend en maandagavond aan het tweede deel werken. Als u een bewijs van mijn ziekte nodig hebt, kan ik u de afspraakbrief van de huisarts sturen."
+  },
+  {
+    "task_type": "sentence_completion",
+    "title": "Hulp bij klant",
+    "prompt_html": "<p>U werkt als medewerker bij administratiekantoor Van Loon. Een klant klaagt al drie weken over een rekening en u komt er samen niet uit. U mailt uw collega Samira, die veel ervaring heeft met moeilijke klanten.</p>",
+    "email_to": "s.aydin@vanloon-administratie.nl",
+    "email_subject": "Meekijken bij klant Berkhout?",
+    "greeting": "Hoi Samira,\n\nIk heb sinds drie weken contact met mevrouw Berkhout over een rekening van 480 euro. Zij vindt de rekening te hoog en wordt aan de telefoon steeds bozer, terwijl ik haar niet meer kan uitleggen dan ik al gedaan heb. Zou jij misschien …",
+    "closing": "Laat je even weten of dat lukt?\n\nGroet,\nDennis",
+    "model_answer": "donderdag een halfuur met mij naar dit dossier willen kijken? Jij hebt veel meer ervaring met dit soort gesprekken en misschien zie jij iets in de brieven dat ik gemist heb. Het zou mij ook helpen als je bij het volgende telefoongesprek meeluistert, zodat je me daarna tips kunt geven."
+  },
+  {
+    "task_type": "sentence_completion",
+    "title": "Lager termijnbedrag",
+    "prompt_html": "<p>U bent klant bij energieleverancier Stroomwaard. U betaalt elke maand 210 euro voorschot, maar uit de jaarrekening blijkt dat u veel te veel betaalt. U mailt de leverancier met het verzoek om een lager termijnbedrag.</p>",
+    "email_to": "klant@stroomwaard.nl",
+    "email_subject": "Verzoek verlaging termijnbedrag",
+    "greeting": "Geachte heer, mevrouw,\n\nIk ben klant bij u met klantnummer 7 305 992 en betaal nu elke maand een termijnbedrag van 210 euro. Uit de jaarafrekening van februari blijkt dat ik 640 euro terugkrijg, omdat mijn verbruik veel lager is dan verwacht. Ik wil u daarom vragen om …",
+    "closing": "Ik verzoek u mij schriftelijk te laten weten wat u besluit.\n\nMet vriendelijke groet,\nGerda Nijboer",
+    "model_answer": "mijn termijnbedrag te verlagen naar ongeveer 150 euro per maand. Ik heb vorig jaar een warmtepomp laten plaatsen en betere isolatie aangebracht, waardoor mijn verbruik ook dit jaar lager zal blijven. Als u een lager bedrag niet meteen kunt goedkeuren, hoor ik graag welke gegevens u van mij nodig hebt."
+  },
+  {
+    "task_type": "sentence_completion",
+    "title": "Ervaringen mantelzorg",
+    "prompt_html": "<p>Uw moeder wordt ouder en heeft steeds meer hulp nodig. U wilt weten hoe andere mensen het verzorgen van een familielid combineren met hun werk. U plaatst een bericht op een forum over zorg en gezondheid.</p>",
+    "greeting": "Hallo allemaal,\n\nMijn moeder is 81 jaar en woont nog zelfstandig, maar zij kan steeds minder zelf doen. Ik ga nu vier keer per week bij haar langs, terwijl ik ook 32 uur per week werk. Ik ben benieuwd hoe jullie …",
+    "closing": "Alle tips zijn welkom, alvast bedankt.\n\nGroeten,\nRachida",
+    "model_answer": "de zorg voor een ouder of partner combineren met een baan. Hebben jullie afspraken gemaakt met de werkgever, bijvoorbeeld over zorgverlof of andere werktijden? Ik hoor ook graag of het aanvragen van hulp bij de gemeente veel tijd kost en of jullie ondersteuning van een mantelzorgorganisatie hebben gekregen."
+  },
+  {
+    "task_type": "sentence_completion",
+    "title": "Werkkleding inleveren",
+    "prompt_html": "<p>U werkt als teamleider bij schoonmaakbedrijf Helderwit. Het bedrijf krijgt nieuwe werkkleding, maar veel medewerkers hebben hun oude kleding nog niet ingeleverd. U mailt uw team hierover.</p>",
+    "email_to": "team-noord@helderwit-schoonmaak.nl",
+    "email_subject": "Oude werkkleding vóór 20 mei inleveren",
+    "greeting": "Beste collega's,\n\nVolgende maand krijgen we allemaal nieuwe werkkleding met het nieuwe logo. De leverancier wil eerst de oude sets terug, en op dit moment hebben nog maar acht van de dertig collega's iets ingeleverd. Ik wil jullie daarom vragen om …",
+    "closing": "Bedankt voor jullie medewerking.\n\nMet vriendelijke groet,\nTeamleider Bram Kolthof",
+    "model_answer": "je oude broeken, jassen en poloshirts vóór maandag 20 mei in de grijze bak bij de kantine te leggen. Zet je naam op een briefje in de zak, zodat wij kunnen zien wie de kleding heeft ingeleverd. Als je nog een set thuis hebt hangen die kapot is, lever die dan toch in, want alles gaat samen naar de leverancier."
+  },
+  {
+    "task_type": "email",
+    "title": "E-mail over de schoolreis",
+    "prompt_html": "<p>Uw dochter Amira zit in groep 7 van basisschool De Vlieger in Zwolle. Vorige week kreeg u een brief van de ouderraad over de schoolreis van groep 7 en 8. De kinderen gaan op 12 juni met de bus naar een groot attractiepark. De eigen bijdrage is 45 euro per kind. In de brief staat ook dat de ouderraad nog begeleiders zoekt.</p><p>U vindt de schoolreis een goed idee, maar u heeft een paar vragen en een voorstel. Daarom schrijft u een e-mail aan de ouderraad.</p><p><strong>Opdracht</strong></p><p>Schrijf een e-mail aan de ouderraad van basisschool De Vlieger. Behandel alle punten die hieronder staan. U mag de informatie zelf verzinnen.</p><p>Het doel van de tekst is de ouderraad informeren over uw vragen en uw voorstel, zodat de ouderraad u kan antwoorden en weet dat u wilt helpen.</p>",
+    "bullet_points": [
+      "U vertelt wie u bent en in welke groep uw kind zit.",
+      "U schrijft dat u de brief over de schoolreis heeft gelezen en wat u van het plan vindt.",
+      "U stelt minimaal twee vragen over de dag zelf, bijvoorbeeld over het vervoer, het eten of de tijden.",
+      "U legt uit dat de eigen bijdrage van 45 euro voor sommige ouders hoog is en u vraagt of er een regeling mogelijk is.",
+      "U biedt aan om als begeleider mee te gaan en u noemt op welke manier u kunt helpen.",
+      "U vraagt of de ouderraad u voor 20 mei een antwoord wil geven."
+    ],
+    "email_to": "ouderraad@bsdevlieger.nl",
+    "email_subject": "Vragen over de schoolreis van groep 7",
+    "greeting": "Geachte leden van de ouderraad,",
+    "closing": "Met vriendelijke groet,",
+    "model_answer": "Mijn naam is Fatima Yildiz en ik ben de moeder van Amira Yildiz. Zij zit dit jaar in groep 7 bij meester Bram. Vorige week heb ik uw brief over de schoolreis naar het attractiepark gelezen.\n\nIk vind het een leuk plan, omdat de kinderen op deze manier een keer samen op stap gaan buiten de school. Amira praat er al elke dag over. Toch heb ik nog een paar vragen over de dag zelf. Hoe laat vertrekt de bus op 12 juni en hoe laat zijn de kinderen weer terug bij de school? Krijgen de kinderen in het park eten en drinken, of moeten zij zelf een lunchpakket meenemen? Ik wil dat graag weten, zodat ik Amira goed kan voorbereiden.\n\nDaarnaast wil ik iets zeggen over de eigen bijdrage. Voor onze familie is 45 euro veel geld, en ik denk dat andere ouders dat ook vinden. Is het mogelijk om in twee keer te betalen? Misschien is er ook een regeling voor ouders met een laag inkomen. Ik hoor graag welke mogelijkheden er zijn, want ik zou het jammer vinden als een kind door het geld niet mee kan.\n\nIn uw brief las ik dat u nog begeleiders zoekt. Ik wil graag als begeleider mee, want ik heb die dag vrij van mijn werk. Ik kan een groepje kinderen begeleiden in het park en ik kan ook helpen met het eten en drinken in de bus. Ik heb al eerder meegeholpen bij het schoolfeest, dus ik weet ongeveer hoe het gaat.\n\nWilt u mij voor 20 mei een antwoord geven? Dan kan ik de vrije dag op tijd aanvragen bij mijn werkgever. U kunt mij bereiken op dit e-mailadres of op telefoonnummer 06 12 34 56 78.\n\nAlvast hartelijk dank voor uw reactie."
+  },
+  {
+    "task_type": "form",
+    "title": "Vragenlijst over cursussen",
+    "prompt_html": "<p>U woont in Apeldoorn en u bent lid van Bibliotheek Het Baken. Vorig jaar heeft u daar een cursus gevolgd, omdat u uw Nederlands en uw computervaardigheden wilde verbeteren. De bibliotheek wil het cursusaanbod voor volgend jaar veranderen en vraagt daarom aan de deelnemers wat zij van de cursussen vinden.</p><p>U krijgt een e-mail van mevrouw Van Dijk, de medewerkster die de cursussen organiseert. In die e-mail zit een vragenlijst. Uw naam en uw e-mailadres zijn al ingevuld, omdat die gegevens bij de bibliotheek bekend zijn. De rest van de vragenlijst vult u zelf in.</p><p><strong>Opdracht</strong></p><p>Vul de vragenlijst van de bibliotheek in. Kruis eerst aan hoe vaak u in de bibliotheek komt. Beantwoord daarna alle open vragen. Geef bij elke vraag niet alleen uw mening, maar leg ook uit waarom u dat vindt of wilt. Schrijf bij elke vraag minimaal drie zinnen en gebruik hele zinnen. U mag de informatie zelf verzinnen.</p><p>Het doel van de tekst is dat de bibliotheek weet wat u van het huidige cursusaanbod vindt en welke cursussen zij volgend jaar moet aanbieden.</p>",
+    "model_answer": "1. Ik heb de cursus Digitaal op weg gevolgd, van januari tot maart. Ik koos voor deze cursus omdat ik op mijn werk steeds vaker met de computer moet werken. Mijn werkgever verwacht dat ik mijn uren zelf in het systeem zet, terwijl ik daar eerst weinig ervaring mee had. Een collega vertelde mij dat de bibliotheek zulke cursussen goedkoop aanbiedt, dus heb ik mij meteen aangemeld.\n\n2. Het niveau van de cursus vond ik goed, hoewel het begin voor mij een beetje te makkelijk was. De docent legde alles rustig uit en herhaalde de moeilijke stappen, waardoor iedereen het kon volgen. Ik vond het fijn dat de groep klein was, omdat je dan sneller een vraag durft te stellen. Alleen de laatste les ging te snel, want er waren te veel nieuwe onderwerpen.\n\n3. Ik wil het liefst een cursus op dinsdagavond volgen, tussen zeven en negen uur. Op dinsdag werk ik tot vijf uur, dus ik heb daarna genoeg tijd om te eten en naar de bibliotheek te fietsen. Op zaterdag lukt het mij niet, omdat ik dan voor mijn familie zorg en boodschappen doe. Een cursus in de ochtend is voor werkende mensen bijna nooit mogelijk.\n\n4. In het aanbod mis ik een cursus over solliciteren in Nederland. Ik zou graag leren hoe ik een goede brief schrijf en hoe ik mij in een gesprek presenteer. Die cursus is nuttig voor mij, omdat ik volgend jaar ander werk wil zoeken in de zorg. Veel cursisten uit mijn groep zeiden dat zij hier ook belangstelling voor hebben.\n\n5. De prijs van € 45 per cursus vind ik redelijk, want je krijgt acht lessen en een werkboek. Toch is dit bedrag voor sommige deelnemers veel geld, doordat zij een kleine uitkering hebben. Misschien kan de bibliotheek een korting geven aan mensen met een laag inkomen. Dan kunnen meer mensen meedoen, en dat is precies het doel van de bibliotheek.\n\n6. Ja, ik zou een cursus van de bibliotheek zeker aanraden aan anderen. Ik heb veel geleerd en ik werk nu met meer zelfvertrouwen op de computer. Bovendien heb ik nieuwe mensen uit de buurt leren kennen, waardoor ik mij hier meer thuis voel. Ik heb de cursus al aan twee buren aangeraden en één buurvrouw heeft zich inmiddels aangemeld.",
+    "form_schema": {
+      "sections": [
+        {
+          "heading": "Uw gegevens",
+          "rows": [
+            {
+              "kind": "static",
+              "label": "Naam",
+              "value": "mevrouw A. Yildiz"
+            },
+            {
+              "kind": "static",
+              "label": "E-mailadres",
+              "value": "a.yildiz@mijnmail.nl"
+            },
+            {
+              "kind": "choice",
+              "label": "Hoe vaak komt u in de bibliotheek?",
+              "options": [
+                "elke week",
+                "een of twee keer per maand",
+                "een paar keer per jaar"
+              ]
+            }
+          ]
+        },
+        {
+          "heading": "Uw mening over het cursusaanbod",
+          "rows": [
+            {
+              "kind": "text",
+              "label": "1. Welke cursus heeft u bij ons gevolgd? Leg ook uit waarom u juist voor deze cursus gekozen heeft.",
+              "placeholder": "Schrijf hier uw antwoord."
+            },
+            {
+              "kind": "text",
+              "label": "2. Wat vond u van het niveau van de cursus? Leg ook uit waarom u dat vindt.",
+              "placeholder": "Schrijf hier uw antwoord."
+            },
+            {
+              "kind": "text",
+              "label": "3. Op welke dag en welk tijdstip wilt u het liefst een cursus volgen? Leg ook uit waarom dat moment u goed past.",
+              "placeholder": "Schrijf hier uw antwoord."
+            },
+            {
+              "kind": "text",
+              "label": "4. Welke cursus mist u in ons aanbod? Leg ook uit waarom die cursus nuttig voor u is.",
+              "placeholder": "Schrijf hier uw antwoord."
+            },
+            {
+              "kind": "text",
+              "label": "5. Wat vindt u van de prijs van € 45 per cursus? Leg ook uit waarom u dat vindt.",
+              "placeholder": "Schrijf hier uw antwoord."
+            },
+            {
+              "kind": "text",
+              "label": "6. Raadt u onze cursussen aan anderen aan? Leg ook uit waarom wel of waarom niet.",
+              "placeholder": "Schrijf hier uw antwoord."
+            }
+          ]
+        }
+      ]
+    }
+  },
+  {
+    "task_type": "picture_report",
+    "title": "Verslag meewerkdag verzorgingshuis",
+    "prompt_html": "<p>U volgt een beroepsopleiding tot verzorgende bij opleidingscentrum Zuidveld in Apeldoorn. Gisteren heeft u een meewerkdag gehad in verzorgingshuis De Lindehof. U hebt daar de hele dag meegelopen met een begeleider en zelf ook taken uitgevoerd.</p><p>Uw docent, mevrouw Verhoeven, vraagt alle studenten om na de meewerkdag een verslag te sturen. Zij gebruikt de verslagen tijdens de volgende les, omdat de groep dan de ervaringen met elkaar kan vergelijken.</p><p>De drie plaatjes hieronder laten zien wat u die dag hebt gedaan, in de juiste volgorde. U mag de informatie zelf verzinnen: namen, tijden en details bedenkt u er zelf bij.</p><p><strong>Opdracht</strong></p><p>Schrijf een verslag van uw meewerkdag in De Lindehof voor mevrouw Verhoeven. Gebruik alle drie de plaatjes in uw tekst. De plaatjes worden niet bij uw verslag meegestuurd. Uw lezer ziet de plaatjes dus niet, waardoor u alles zelf duidelijk moet uitleggen. Uw tekst moet ook zonder de plaatjes goed te begrijpen zijn.</p><p>Het doel van de tekst is uw docent informeren over het verloop van uw meewerkdag en uitleggen wat u die dag hebt geleerd.</p>",
+    "bullet_points": [
+      "U vertelt wanneer en waar u de meewerkdag hebt gehad en met wie u hebt meegelopen.",
+      "U beschrijft wat u in de ochtend hebt gedaan bij de bewoners tijdens het ontbijt.",
+      "U beschrijft de activiteit in de gezamenlijke zaal en legt uit welke rol u daarbij had.",
+      "U legt uit wat u aan het einde van de dag hebt gedaan met de rapportage.",
+      "U noemt minimaal twee dingen die u die dag hebt geleerd.",
+      "U schrijft wat u nog moeilijk vindt en waarbij u hulp of extra uitleg wilt."
+    ],
+    "email_to": "m.verhoeven@zuidveld-opleidingen.nl",
+    "email_subject": "Verslag meewerkdag De Lindehof",
+    "greeting": "Geachte mevrouw Verhoeven,",
+    "closing": "Met vriendelijke groet,\nSamira El Amrani",
+    "model_answer": "Geachte mevrouw Verhoeven,\n\nHierbij stuur ik u het verslag van mijn meewerkdag. Op dinsdag 12 maart heb ik van 8.00 tot 16.30 uur meegelopen in verzorgingshuis De Lindehof in Apeldoorn. Ik was op afdeling twee en werd begeleid door Ellen Bakker, een verzorgende die daar al twaalf jaar werkt.\n\nIn de ochtend heb ik geholpen bij het ontbijt. Ik bracht het eten naar de kamers en ik hielp twee bewoners bij het eten en drinken, omdat zij hun handen niet goed kunnen gebruiken. Mevrouw Kortenhoeven eet heel langzaam, dus ik moest rustig naast haar blijven zitten. Dat vond ik in het begin lastig, terwijl ik het later juist het mooiste deel van de ochtend vond. We hebben tijdens het ontbijt veel gepraat over haar familie.\n\nOm elf uur was er een beweegles in de gezamenlijke zaal. Ongeveer tien bewoners deden mee met oefeningen op een stoel, zoals armen strekken en met een bal gooien. Ik heb de bewoners naar de zaal gebracht en ik deed de oefeningen voor, zodat iedereen goed kon zien wat de bedoeling was. Twee bewoners wilden niet meedoen, maar na een gesprekje kwamen zij er toch bij zitten.\n\nAan het einde van de middag heb ik samen met Ellen de rapportage gedaan. Zij liet mij zien hoe je in de computer opschrijft wat een bewoner heeft gegeten en hoe hij zich voelde. Ik heb zelf een korte rapportage over mevrouw Kortenhoeven geschreven, die Ellen daarna heeft nagekeken.\n\nIk heb deze dag twee belangrijke dingen geleerd. Ten eerste heb ik geleerd dat je bij oudere mensen echt de tijd moet nemen, hoewel er veel werk is. Ten tweede weet ik nu hoe belangrijk een goede rapportage is, doordat collega's van de volgende dienst die informatie nodig hebben.\n\nHet schrijven van de rapportage vind ik nog moeilijk, omdat ik niet altijd weet welke woorden ik moet gebruiken. Zou u daar in de les extra uitleg over kunnen geven? Ik zou ook graag een voorbeeld van een goede rapportage willen zien.\n\nMet vriendelijke groet,\nSamira El Amrani",
+    "images": [
+      {
+        "slot": "schrijven-9-o11-p1",
+        "query": "caregiver helping elderly woman eat breakfast in nursing home room",
+        "caption": "Hulp bij het ontbijt",
+        "variant": 0
+      },
+      {
+        "slot": "schrijven-9-o11-p2",
+        "query": "group of elderly people doing chair exercises with ball in activity room",
+        "caption": "Beweegles in de zaal",
+        "variant": 1
+      },
+      {
+        "slot": "schrijven-9-o11-p3",
+        "query": "care worker writing report on computer at nursing home desk",
+        "caption": "Rapportage aan het eind",
+        "variant": 2
+      }
+    ]
+  },
+  {
+    "task_type": "letter",
+    "title": "Sollicitatiebrief chauffeur",
+    "prompt_html": "<p>U woont in Zwolle en u heeft een rijbewijs B en een rijbewijs C. De laatste drie jaar heeft u gewerkt als bezorger bij een groothandel in diepvriesproducten. Dat bedrijf gaat sluiten, waardoor u binnenkort geen werk meer heeft.</p><p>In de plaatselijke krant staat een advertentie van Bakkerij De Korenaar in Zwolle. De bakkerij zoekt een chauffeur voor de ochtendroute langs winkels en scholen. De werktijden zijn van 05.00 uur tot 13.00 uur. In de advertentie staat dat u een brief kunt sturen naar mevrouw K. Verhoeven, hoofd bezorging.</p><p>U stuurt uw sollicitatiebrief naar dit adres:</p><p>Bakkerij De Korenaar<br>T.a.v. mevrouw K. Verhoeven<br>Molenweg 118<br>8021 CJ Zwolle</p><p><strong>Opdracht</strong></p><p>Schrijf een sollicitatiebrief aan mevrouw Verhoeven. Behandel alle punten hieronder. U mag de informatie over uzelf zelf verzinnen. Schrijf ongeveer 150 tot 200 woorden.</p><p>Het doel van de tekst is mevrouw Verhoeven ervan overtuigen dat u geschikt bent voor de baan als chauffeur, zodat zij u uitnodigt voor een gesprek.</p>",
+    "bullet_points": [
+      "U schrijft waarom u deze brief stuurt en waar u de advertentie heeft gelezen.",
+      "U legt uit waarom u wilt solliciteren en u noemt minimaal twee redenen.",
+      "U vertelt welk werk u nu doet of tot voor kort deed en welke rijbewijzen u heeft.",
+      "U beschrijft twee eigenschappen die belangrijk zijn voor een chauffeur bij een bakkerij.",
+      "U geeft aan dat u geen probleem heeft met de vroege werktijden en waarom niet.",
+      "U vraagt om een gesprek en u schrijft wanneer u bereikbaar bent."
+    ],
+    "email_to": "",
+    "email_subject": "",
+    "greeting": "Geachte mevrouw Verhoeven,",
+    "closing": "Met vriendelijke groet,\n\nSamir El Amrani\nVeldbeekstraat 42\n8014 PL Zwolle\nTelefoon: 06 - 24 88 15 30",
+    "model_answer": "Geachte mevrouw Verhoeven,\n\nIn de Zwolse Courant van 8 maart las ik uw advertentie voor een chauffeur bij Bakkerij De Korenaar. Graag solliciteer ik op deze functie.\n\nIk solliciteer om twee redenen. In de eerste plaats sluit het bedrijf waar ik nu werk over twee maanden zijn deuren, waardoor ik nieuw werk moet zoeken. In de tweede plaats wil ik graag voor een kleiner bedrijf rijden, omdat het contact met de klanten daar persoonlijker is.\n\nDe afgelopen drie jaar heb ik gewerkt als bezorger bij een groothandel in diepvriesproducten. Ik bracht elke dag bestellingen naar winkels en restaurants in Overijssel. Ik heb rijbewijs B en rijbewijs C, en ik heb nooit een ongeluk gehad.\n\nVolgens mij is een chauffeur bij een bakkerij vooral betrouwbaar en vriendelijk. Ik kom altijd op tijd, ook als het hard waait of als er veel file staat. Daarnaast praat ik graag met klanten, zodat zij zich welkom voelen.\n\nDe vroege werktijden zijn geen probleem voor mij. In mijn huidige baan begin ik al om 04.30 uur, dus ik ben aan die uren gewend.\n\nGraag kom ik langs voor een gesprek. U kunt mij bellen na 14.00 uur.\n\nMet vriendelijke groet,\n\nSamir El Amrani\nVeldbeekstraat 42\n8014 PL Zwolle\nTelefoon: 06 - 24 88 15 30"
+  }
+]

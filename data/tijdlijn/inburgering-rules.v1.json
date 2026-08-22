@@ -1,0 +1,885 @@
+{
+  "version": "2026.08.20",
+  "note": "Legal rules are cited and dated. Planning heuristics are ours and must never be rendered with a DUO badge.",
+  "sources": {
+    "S1": {
+      "name": "DUO – U gaat inburgeren",
+      "url": "https://www.inburgeren.nl/u-gaat-inburgeren/",
+      "checkedOn": "2026-08-20",
+      "authority": "primary"
+    },
+    "S2": {
+      "name": "DUO – Hoeveel kost inburgeren?",
+      "url": "https://www.inburgeren.nl/inburgeren-betalen/",
+      "checkedOn": "2026-08-20",
+      "authority": "primary"
+    },
+    "S3": {
+      "name": "DUO – Hoeveel mag u lenen?",
+      "url": "https://www.inburgeren.nl/inburgeren-betalen/hoeveel-geld-mag-u-lenen.jsp",
+      "checkedOn": "2026-08-20",
+      "authority": "primary"
+    },
+    "S4": {
+      "name": "DUO – Extra tijd om in te burgeren",
+      "url": "https://www.inburgeren.nl/extra-tijd/",
+      "checkedOn": "2026-08-20",
+      "authority": "primary"
+    },
+    "S5": {
+      "name": "DUO – Boete",
+      "url": "https://www.inburgeren.nl/u-gaat-inburgeren/boete.jsp",
+      "checkedOn": "2026-08-20",
+      "authority": "primary"
+    },
+    "S6": {
+      "name": "DUO – Naturaliseren",
+      "url": "https://www.inburgeren.nl/u-gaat-inburgeren/naturaliseren.jsp",
+      "checkedOn": "2026-08-20",
+      "authority": "primary"
+    },
+    "S7": {
+      "name": "DUO – Uitslag examen",
+      "url": "https://www.inburgeren.nl/examen-doen/uitslag.jsp",
+      "checkedOn": "2026-08-20",
+      "authority": "primary"
+    },
+    "S8": {
+      "name": "DUO – Aanmelden examen",
+      "url": "https://www.inburgeren.nl/examen-doen/aanmelden-examen.jsp",
+      "checkedOn": "2026-08-20",
+      "authority": "primary"
+    },
+    "S9": {
+      "name": "DUO – Kennisexamens",
+      "url": "https://www.inburgeren.nl/examen-doen/inhoud-kennisexamens.jsp",
+      "checkedOn": "2026-08-20",
+      "authority": "primary"
+    },
+    "S10": {
+      "name": "DUO – Minder of geen examens doen",
+      "url": "https://www.inburgeren.nl/minder-of-geen-examens/",
+      "checkedOn": "2026-08-20",
+      "authority": "primary"
+    },
+    "S11": {
+      "name": "Divosa – Wet inburgering in vraag en antwoord",
+      "url": "https://www.divosa.nl/publicaties/wet-inburgering-vraag-en-antwoord/uitvoering/brede-intake-pip",
+      "checkedOn": "2026-08-20",
+      "authority": "secondary_expert"
+    },
+    "S12": {
+      "name": "Staatscourant 2025, 31825 – optie- en naturalisatiegelden 2026",
+      "url": "https://zoek.officielebekendmakingen.nl/stcrt-2025-31825.html",
+      "checkedOn": "2026-08-20",
+      "authority": "primary"
+    },
+    "S13": {
+      "name": "Internetconsultatie – Verlenging naturalisatietermijnen",
+      "url": "https://www.internetconsultatie.nl/naturalisatietermijn/b1",
+      "checkedOn": "2026-08-20",
+      "authority": "primary"
+    },
+    "S14": {
+      "name": "Stimulansz – Nieuwe wet inburgering 2021",
+      "url": "https://www.stimulansz.nl/nieuwe-wet-inburgering-2021/",
+      "checkedOn": "2026-08-20",
+      "authority": "secondary",
+      "needsPrimaryConfirmation": true
+    },
+    "S15": {
+      "name": "DUO – nieuws: uitslag Spreken A2 en Schrijven A2 duurt langer",
+      "url": "https://www.inburgeren.nl/",
+      "checkedOn": "2026-08-20",
+      "authority": "primary",
+      "volatile": true
+    }
+  },
+  "legal": {
+    "laws": {
+      "wi2021": {
+        "appliesFrom": "2022-01-01",
+        "appliesTo": "obligation arising on or after 2022-01-01",
+        "termijnYears": 3,
+        "termijnStart": {
+          "rule": "day_after_first_pip_date",
+          "note": "Start of the obligation (IND notification) and start of the term (day after the date on the first PIP) are different dates.",
+          "sourceId": "S11",
+          "checkedOn": "2026-08-20"
+        },
+        "pvtWithinTermijn": true,
+        "mapWithinTermijn": true,
+        "duoLetterPreconditions": [
+          "bsn",
+          "residence_permit",
+          "gemeente_registration"
+        ],
+        "duoLetterLeadWeeks": 8,
+        "sourceId": "S1",
+        "checkedOn": "2026-08-20"
+      },
+      "wi2013": {
+        "appliesTo": "obligation arising before 2022-01-01",
+        "termijnYears": 3,
+        "termijnStart": {
+          "rule": "date_stated_in_duo_letter",
+          "sourceId": "S1",
+          "checkedOn": "2026-08-20"
+        },
+        "pvtDeadline": {
+          "months": 12,
+          "from": "gemeente_registration",
+          "sourceId": "S9",
+          "checkedOn": "2026-08-20"
+        },
+        "duoLetterLeadWeeks": 8
+      }
+    },
+    "routes": {
+      "b1": {
+        "law": "wi2021",
+        "languageLevel": "b1",
+        "required": [
+          "lezen",
+          "luisteren",
+          "spreken",
+          "schrijven",
+          "knm",
+          "pvt",
+          "map"
+        ],
+        "afschalenToA2": {
+          "minCourseHours": 600,
+          "requiresGemeenteAgreement": true
+        },
+        "sourceId": "S1",
+        "checkedOn": "2026-08-20"
+      },
+      "onderwijs": {
+        "law": "wi2021",
+        "languageLevel": "b1_or_b2",
+        "required": [
+          "lezen",
+          "luisteren",
+          "spreken",
+          "schrijven",
+          "knm",
+          "pvt"
+        ],
+        "indicativeProgramme": {
+          "totalHours": 1500,
+          "languageHours": 1000,
+          "durationMonths": [
+            18,
+            24
+          ],
+          "sourceId": "S11",
+          "confidence": "medium"
+        },
+        "afschalen": false,
+        "sourceId": "S1",
+        "checkedOn": "2026-08-20"
+      },
+      "z": {
+        "law": "wi2021",
+        "languageLevel": "a1",
+        "required": [
+          "pvt",
+          "map",
+          "z_eindgesprek"
+        ],
+        "optional": [
+          "lezen",
+          "luisteren",
+          "spreken",
+          "schrijven"
+        ],
+        "minimumHours": {
+          "language": 800,
+          "participation": 800,
+          "sourceId": "S11",
+          "confidence": "medium"
+        },
+        "outcome": "certificate",
+        "certificateSufficientForNaturalisation": false,
+        "sourceId": "S1",
+        "checkedOn": "2026-08-20"
+      },
+      "a2_wi2013": {
+        "law": "wi2013",
+        "languageLevel": "a2",
+        "required": [
+          "lezen",
+          "luisteren",
+          "spreken",
+          "schrijven",
+          "knm",
+          "ona",
+          "pvt"
+        ],
+        "sourceId": "S1",
+        "checkedOn": "2026-08-20"
+      }
+    },
+    "fees": {
+      "wi2021": {
+        "lezen": 5000,
+        "luisteren": 5000,
+        "spreken": 5000,
+        "schrijven": 5000,
+        "knm": 5000,
+        "map": 0,
+        "pvt": 0,
+        "currency": "EUR",
+        "totalExams": 25000,
+        "sourceId": "S2",
+        "checkedOn": "2026-08-20"
+      },
+      "wi2013": {
+        "lezen": 5000,
+        "luisteren": 5000,
+        "spreken": 5000,
+        "schrijven": 5000,
+        "knm": 5000,
+        "ona": 4000,
+        "pvt": {
+          "asiel": 0,
+          "other": 15000
+        },
+        "currency": "EUR",
+        "totalExams": 29000,
+        "sourceId": "S2",
+        "checkedOn": "2026-08-20"
+      },
+      "basisexamen_buitenland": {
+        "full": 15000,
+        "perPart": 5000,
+        "parts": [
+          "kns",
+          "lezen",
+          "spreken"
+        ],
+        "sourceId": "S15",
+        "confidence": "low",
+        "needsPrimaryConfirmation": true
+      },
+      "naturalisation": {
+        "effectiveFrom": "2026-01-01",
+        "single_standard": 113900,
+        "single_reduced": 84700,
+        "joint_standard": 145400,
+        "joint_reduced": 116300,
+        "minor_conaturalising": 16800,
+        "indexedAnnually": true,
+        "sourceId": "S12",
+        "checkedOn": "2026-08-20"
+      },
+      "agi_literacy_test": {
+        "amount": 15000,
+        "sourceId": "S6",
+        "checkedOn": "2026-08-20"
+      }
+    },
+    "payer": {
+      "wi2021_asiel": {
+        "course": "gemeente",
+        "exams": "first_two_attempts_free",
+        "freeAttemptsPerExam": 2,
+        "freeAttemptCondition": "at_or_above_pip_level",
+        "canBorrowFromDuo": false,
+        "sourceId": "S2",
+        "checkedOn": "2026-08-20"
+      },
+      "wi2021_other": {
+        "course": "self_or_loan",
+        "exams": "self_or_loan",
+        "canBorrowFromDuo": true,
+        "loanAmount": "income_dependent",
+        "loanRestriction": "approved_schools_only",
+        "sourceId": "S3",
+        "checkedOn": "2026-08-20"
+      },
+      "wi2013_asiel": {
+        "course": "loan",
+        "exams": "loan",
+        "canBorrowFromDuo": true,
+        "loanMaxCents": 1000000,
+        "sourceId": "S3",
+        "checkedOn": "2026-08-20"
+      },
+      "wi2013_other": {
+        "course": "self_or_loan",
+        "exams": "self_or_loan",
+        "canBorrowFromDuo": true,
+        "loanAmount": "income_dependent",
+        "sourceId": "S3",
+        "checkedOn": "2026-08-20"
+      },
+      "childcareAllowance": {
+        "availableFor": [
+          "course",
+          "map",
+          "pvt",
+          "z_participation"
+        ],
+        "condition": "has_duo_letter_and_children_in_childcare",
+        "sourceId": "S2",
+        "checkedOn": "2026-08-20"
+      }
+    },
+    "leadTimes": {
+      "registration": {
+        "weeks": 7,
+        "publishedAs": "more_than_6_weeks",
+        "sourceId": "S8",
+        "checkedOn": "2026-08-20"
+      },
+      "changeOrCancel": {
+        "weeksBefore": 1,
+        "refundIfCancelledInTime": true,
+        "sourceId": "S8",
+        "checkedOn": "2026-08-20"
+      },
+      "result_default": {
+        "weeks": 8,
+        "sourceId": "S7",
+        "checkedOn": "2026-08-20"
+      },
+      "result_spreken_a2": {
+        "weeks": 16,
+        "volatile": true,
+        "note": "Temporary DUO notice. Re-check monthly.",
+        "sourceId": "S15",
+        "checkedOn": "2026-08-20"
+      },
+      "result_schrijven_a2": {
+        "weeks": 16,
+        "volatile": true,
+        "sourceId": "S15",
+        "checkedOn": "2026-08-20"
+      },
+      "result_nt2_b1_b2": {
+        "weeks": null,
+        "status": "unknown",
+        "todo": "capture from duo.nl NT2 pages"
+      },
+      "ona_portfolio_review": {
+        "weeks": 6,
+        "repeatsOnResubmission": true,
+        "sourceId": "S9",
+        "checkedOn": "2026-08-20"
+      },
+      "ona_eindgesprek_wait": {
+        "weeks": 6,
+        "sourceId": "S9",
+        "checkedOn": "2026-08-20"
+      },
+      "ona_result": {
+        "weeks": 8,
+        "sourceId": "S9",
+        "checkedOn": "2026-08-20"
+      },
+      "pvt_registration_visible": {
+        "weeks": 3,
+        "sourceId": "S9",
+        "checkedOn": "2026-08-20"
+      },
+      "duo_decision": {
+        "weeks": 8,
+        "appliesTo": [
+          "extension",
+          "loan",
+          "income_change",
+          "agi_advice"
+        ],
+        "sourceId": "S4",
+        "checkedOn": "2026-08-20"
+      },
+      "paper_diploma": {
+        "weeks": 8,
+        "sourceId": "S6",
+        "checkedOn": "2026-08-20"
+      }
+    },
+    "extensions": [
+      {
+        "id": "childbirth",
+        "laws": [
+          "wi2021",
+          "wi2013"
+        ],
+        "grantMonths": 3.7,
+        "grantWeeks": 16,
+        "automatic": false,
+        "conditions": [
+          "applicant_is_woman",
+          "child_born_within_termijn",
+          "termijn_started_at_least_30_months_ago"
+        ],
+        "evidence": [
+          "birth_certificate_copy"
+        ],
+        "decisionWeeks": 8,
+        "sourceId": "S4",
+        "checkedOn": "2026-08-20"
+      },
+      {
+        "id": "many_hours_asiel_wi2021",
+        "laws": [
+          "wi2021"
+        ],
+        "status": [
+          "asiel"
+        ],
+        "grantMonths": 6,
+        "automatic": true,
+        "conditions": [
+          "route_b1_including_afgeschaald",
+          "termijn_started_at_least_30_months_ago",
+          "passed_at_least_2_of_4_language_exams_at_pip_level_or_higher",
+          "knm_passed",
+          "all_knm_course_hours_attended",
+          "all_pip_language_lessons_attended",
+          "pvt_completed",
+          "map_completed"
+        ],
+        "sourceId": "S4",
+        "checkedOn": "2026-08-20"
+      },
+      {
+        "id": "many_hours_gezin_wi2021",
+        "laws": [
+          "wi2021"
+        ],
+        "status": [
+          "gezin_overig"
+        ],
+        "grantMonths": 6,
+        "automatic": true,
+        "conditions": [
+          "route_b1_including_afgeschaald",
+          "termijn_started_at_least_30_months_ago",
+          "passed_at_least_2_of_4_language_exams_at_pip_level_or_higher",
+          "knm_passed",
+          "at_least_450_language_course_hours_plus_knm_hours_at_bow_school",
+          "pvt_completed",
+          "map_completed"
+        ],
+        "sourceId": "S4",
+        "checkedOn": "2026-08-20"
+      },
+      {
+        "id": "many_hours_wi2013",
+        "laws": [
+          "wi2013"
+        ],
+        "automatic": false,
+        "conditions": [
+          "at_least_300_course_hours_at_bow_school_or_vso_pro_isk_within_2_years",
+          "online_hours_excluded",
+          "at_least_one_full_ona_attempt",
+          "all_other_unpassed_exams_attempted_at_least_twice",
+          "termijn_started_at_least_30_months_ago"
+        ],
+        "decisionWeeks": 8,
+        "sourceId": "S4",
+        "checkedOn": "2026-08-20"
+      },
+      {
+        "id": "literacy_course",
+        "laws": [
+          "wi2021",
+          "wi2013"
+        ],
+        "automatic": false,
+        "sourceId": "S4",
+        "checkedOn": "2026-08-20"
+      },
+      {
+        "id": "dutch_education",
+        "laws": [
+          "wi2021",
+          "wi2013"
+        ],
+        "automatic": false,
+        "note": "mbo entree (level 1) qualifies; mbo level 2 does not",
+        "confidence": "medium",
+        "sourceId": "S4",
+        "checkedOn": "2026-08-20"
+      },
+      {
+        "id": "illness_self_or_family",
+        "laws": [
+          "wi2021",
+          "wi2013"
+        ],
+        "automatic": false,
+        "sourceId": "S4",
+        "checkedOn": "2026-08-20"
+      },
+      {
+        "id": "death_of_family_member",
+        "laws": [
+          "wi2021",
+          "wi2013"
+        ],
+        "automatic": false,
+        "sourceId": "S4",
+        "checkedOn": "2026-08-20"
+      },
+      {
+        "id": "homeless_or_shelter",
+        "laws": [
+          "wi2021",
+          "wi2013"
+        ],
+        "automatic": false,
+        "sourceId": "S4",
+        "checkedOn": "2026-08-20"
+      },
+      {
+        "id": "gemeente_or_school_failure",
+        "laws": [
+          "wi2021"
+        ],
+        "automatic": false,
+        "sourceId": "S4",
+        "checkedOn": "2026-08-20"
+      },
+      {
+        "id": "other_reason",
+        "laws": [
+          "wi2021",
+          "wi2013"
+        ],
+        "automatic": false,
+        "sourceId": "S4",
+        "checkedOn": "2026-08-20"
+      }
+    ],
+    "extensionMeta": {
+      "onePerPeriod": true,
+      "maxNonCulpableYears": 2,
+      "maxNonCulpableConfidence": "low",
+      "maxNonCulpableSourceId": "S14",
+      "needsPrimaryConfirmation": true,
+      "decidedBy": "DUO",
+      "sourceId": "S4",
+      "checkedOn": "2026-08-20"
+    },
+    "fines": {
+      "asielExempt": {
+        "value": true,
+        "note": "Asylum status holders are never fined. Following a Raad van State ruling DUO may not fine status holders under Wi2013 or Wi2021 for exceeding the term, nor reclaim integration loan money.",
+        "volatile": true,
+        "sourceId": "S5",
+        "checkedOn": "2026-08-20"
+      },
+      "wi2021": {
+        "warningLetterMonthsBeforeEnd": 2,
+        "preAnnouncement": "vooraankondiging_termijnoverschrijding",
+        "leerrouteMaxCents": 100000,
+        "leerrouteFactors": [
+          "route",
+          "course_hours_at_registered_school",
+          "attempts",
+          "exams_passed"
+        ],
+        "pvtCents": 34000,
+        "mapCents": 34000,
+        "extraTimeAfterFine": {
+          "b1_or_onderwijs_by_exams_passed": {
+            "0": 24,
+            "1": 18,
+            "2": 12,
+            "3": 6,
+            "4": 6
+          },
+          "z_by_course_hours": [
+            {
+              "maxHours": 200,
+              "months": 24
+            },
+            {
+              "maxHours": 400,
+              "months": 18
+            },
+            {
+              "maxHours": 600,
+              "months": 12
+            },
+            {
+              "maxHours": 800,
+              "months": 6
+            }
+          ],
+          "pvt_late_months": 6,
+          "map_late_months": 6,
+          "pvt_and_map_late_months": 12,
+          "multipleFinesRule": "longest_applies_not_cumulative"
+        },
+        "sourceId": "S5",
+        "checkedOn": "2026-08-20"
+      },
+      "wi2013": {
+        "diplomaMaxCents": 125000,
+        "diplomaFactors": [
+          "course_hours_at_bow_school",
+          "attempts",
+          "components_passed"
+        ],
+        "pvtCents": 34000,
+        "pvtConsequence": "no_further_duo_borrowing",
+        "extraTimeAfterFineMonths": 24,
+        "sourceId": "S5",
+        "checkedOn": "2026-08-20"
+      }
+    },
+    "exemptions": [
+      {
+        "id": "serious_illness_or_disability",
+        "laws": [
+          "wi2021",
+          "wi2013"
+        ],
+        "effect": "partial_or_full",
+        "sourceId": "S10",
+        "checkedOn": "2026-08-20"
+      },
+      {
+        "id": "nt2_certificate_partial",
+        "laws": [
+          "wi2021",
+          "wi2013"
+        ],
+        "effect": "partial",
+        "sourceId": "S10",
+        "checkedOn": "2026-08-20"
+      },
+      {
+        "id": "dutch_language_diploma_nl_be_sr",
+        "laws": [
+          "wi2021",
+          "wi2013"
+        ],
+        "effect": "full",
+        "sourceId": "S10",
+        "checkedOn": "2026-08-20"
+      },
+      {
+        "id": "ten_years_nl_five_worked",
+        "laws": [
+          "wi2021",
+          "wi2013"
+        ],
+        "effect": "full",
+        "sourceId": "S10",
+        "checkedOn": "2026-08-20"
+      },
+      {
+        "id": "bio_special_circumstances",
+        "laws": [
+          "wi2021"
+        ],
+        "effect": "full",
+        "sufficientForNaturalisation": false,
+        "sourceId": "S10",
+        "checkedOn": "2026-08-20"
+      },
+      {
+        "id": "600_hours_agi",
+        "laws": [
+          "wi2013"
+        ],
+        "effect": "full",
+        "sourceId": "S10",
+        "checkedOn": "2026-08-20"
+      },
+      {
+        "id": "ona_worked_6_months",
+        "laws": [
+          "wi2013"
+        ],
+        "effect": "partial_ona_only",
+        "sourceId": "S10",
+        "checkedOn": "2026-08-20"
+      },
+      {
+        "id": "aow_age",
+        "laws": [
+          "wi2021",
+          "wi2013"
+        ],
+        "effect": "full_from_aow_age",
+        "alsoStopsBorrowing": true,
+        "sourceId": "S10",
+        "checkedOn": "2026-08-20"
+      }
+    ],
+    "naturalisation": {
+      "languageRequirement": {
+        "level": "a2",
+        "alternative": "staatsexamen_nt2_b1_or_b2",
+        "sourceId": "S6",
+        "checkedOn": "2026-08-20"
+      },
+      "residenceYears": {
+        "value": 5,
+        "status": "in_force",
+        "sourceId": "S6",
+        "checkedOn": "2026-08-20"
+      },
+      "residenceYearsPartnerOfDutchNational": {
+        "value": 3,
+        "confidence": "medium"
+      },
+      "appliedAt": "gemeente",
+      "decidedBy": "IND",
+      "decisionMaxMonths": 12,
+      "decisionTypicalMonths": [
+        6,
+        9
+      ],
+      "decisionConfidence": "low",
+      "fromAbroadRequiredExams": [
+        "lezen",
+        "schrijven",
+        "spreken",
+        "luisteren",
+        "knm"
+      ],
+      "fromAbroadExamsTakenInNlAlsoRequire": [
+        "ona"
+      ],
+      "aowExemptsOna": true,
+      "zRouteCertificateSufficient": false,
+      "agiAdvice": {
+        "a2CourseRoute": {
+          "minHours": 600,
+          "minAttemptsAllExams": 3,
+          "maxNt2CountedPerComponent": 2,
+          "schoolMustBeRegistered": true
+        },
+        "literacyRoute": {
+          "minHours": 600,
+          "minLiteracyHours": 300,
+          "testFeeCents": 15000
+        },
+        "decisionWeeks": 8,
+        "requiresResidenceInNl": true,
+        "sourceId": "S6",
+        "checkedOn": "2026-08-20"
+      },
+      "pending": [
+        {
+          "id": "naturalisation_term_10y",
+          "status": "proposed",
+          "effectiveFrom": null,
+          "value": {
+            "residenceYears": 10,
+            "partnerYears": 5
+          },
+          "supersedes": "residenceYears",
+          "note": "Consultation autumn 2025; IND implementation assessment Feb 2026. NOT in force as at 2026-08-20. Verify before every release.",
+          "sourceId": "S13",
+          "checkedOn": "2026-08-20"
+        },
+        {
+          "id": "naturalisation_language_b1",
+          "status": "intended",
+          "effectiveFrom": null,
+          "value": {
+            "level": "b1"
+          },
+          "note": "Government intention; no bill in force.",
+          "sourceId": "S13",
+          "checkedOn": "2026-08-20"
+        }
+      ]
+    }
+  },
+  "planning": {
+    "disclaimer": "These are inburgeringoefenen.nl planning estimates, not rules from DUO. Always render as a range and label as an estimate.",
+    "studyHours": {
+      "a0_a1": [
+        150,
+        250
+      ],
+      "a1_a2": [
+        200,
+        350
+      ],
+      "a0_a2": [
+        350,
+        600
+      ],
+      "a2_b1": [
+        300,
+        500
+      ],
+      "b1_b2": [
+        350,
+        600
+      ],
+      "literacy_pre_a0": [
+        300,
+        800
+      ]
+    },
+    "selfStudyWeighting": 0.5,
+    "diagnosticMultipliers": {
+      "8_10": 0.25,
+      "5_7": 0.6,
+      "0_4": 1.0,
+      "unknown": 0.8
+    },
+    "expectedAttempts": {
+      "8_10": 1.1,
+      "5_7": 1.5,
+      "0_4": 2.2,
+      "unknown": 1.5
+    },
+    "safetyBufferWeeks": 4,
+    "modeThresholds": {
+      "onTrackMinBufferWeeks": 12,
+      "tightMinBufferWeeks": 0
+    },
+    "recommendedOrder": [
+      "knm",
+      "pvt",
+      "map",
+      "lezen",
+      "luisteren",
+      "schrijven",
+      "spreken",
+      "ona"
+    ],
+    "recommendedOrderRationale": "KNM is the fastest win and the component we teach best; Spreken and Schrijven carry the longest result waits so they must be started early even though they are attempted last.",
+    "componentBaseWeeks": {
+      "knm": [
+        15,
+        23
+      ],
+      "pvt": [
+        2,
+        6
+      ],
+      "map": [
+        4,
+        10
+      ],
+      "ona": [
+        8,
+        16
+      ],
+      "z_eindgesprek": [
+        4,
+        8
+      ]
+    },
+    "componentBaseWeeksRationale": "Ours, confidence low. KNM is calibrated so a 6/10 diagnostic (x0.6) lands at the 9-14 weeks used in the worked example in 02-RULES-AND-DATA section 11. PVT/MAP are gemeente activities with no study load; ONA is a portfolio, not a course.",
+    "examSpacingWeeks": 2,
+    "examSpacingRationale": "Ours. Reaching a level makes all four language exams possible at once, but nobody sits four DUO exams in one week: each needs its own slot. The nth exam in recommendedOrder is therefore staggered by this many weeks. Tunable; not a DUO rule.",
+    "maxPlanningHorizonWeeks": 520
+  }
+}

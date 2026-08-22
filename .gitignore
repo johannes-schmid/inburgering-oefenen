@@ -38,3 +38,7 @@ supabase/.temp
 # show the *correct answer* for every item — publishing them hands over the answer key,
 # quite apart from DUO's no-reproduction notice on the material they were modelled on.
 /Example Exams/
+
+# Per-unit authoring cache for the B1 dataset. The committed artifact is
+# scripts/b1-content/generated/, which only holds complete exams.
+scripts/b1-content/.unit-cache/

@@ -1,0 +1,411 @@
+[
+  {
+    "section": "website",
+    "title": "Fotografie: leren kijken buiten de school",
+    "intro": "Deze tekst komt van de website van een opleiding voor fotografie. De tekst gaat over de praktijkopdrachten die studenten buiten het schoolgebouw uitvoeren.",
+    "body_html": "<p><strong>I</strong> De opleiding Fotografie van het Roelands College in Zwolle duurt drie jaar. Studenten leren werken met licht, met camera's en met beeldbewerking op de computer. Toch besteden zij ongeveer de helft van hun studietijd niet in het schoolgebouw, maar in de stad, bij bedrijven en in wijkcentra. Wij vinden namelijk dat een fotograaf pas leert kijken wanneer hij buiten staat, tussen mensen die hij niet kent. In de klas kun je een lamp precies zetten waar je hem wilt; op straat moet je werken met het licht dat er is. Die onzekerheid hoort bij het vak.</p><p><strong>Hoe de buitenopdrachten zijn opgebouwd</strong></p><p><strong>II</strong> In het eerste jaar krijgen studenten elke maand een korte opdracht van twee dagen, bijvoorbeeld het fotograferen van een markt of van een sportvereniging. Deze opdrachten zijn nog niet voor een echte klant, zodat een mislukt resultaat geen gevolgen heeft. Vanaf het tweede jaar verandert dat. Studenten werken dan in groepjes van drie voor opdrachtgevers uit de regio: een zorginstelling die nieuwe foto's voor haar website nodig heeft, een gemeente die een verbouwing wil vastleggen, een kleine uitgeverij die portretten zoekt. De opdrachtgever betaalt geen geld aan de studenten, maar wel een vergoeding van 250 euro per opdracht aan de opleiding. Dat bedrag gebruiken wij voor het huren van apparatuur en voor de reiskosten van de studenten.</p><p><strong>III</strong> Wie voor een echte opdrachtgever werkt, loopt tegen vragen aan die in een leerboek niet voorkomen. Mag je een bewoner van een verpleeghuis fotograferen als hij zelf niet meer kan zeggen of hij dat wil? Wat doe je wanneer de opdrachtgever twintig foto's vraagt en er na een dag werken maar zes goed zijn? Om studenten hierop voor te bereiden, geven wij in het tweede jaar de module Beroepshouding. Daarin komen afspraken over toestemming, rechten op beeld en het maken van een duidelijke prijsafspraak aan de orde. Docenten spelen moeilijke gesprekken met studenten voor, waarna de studenten dezelfde gesprekken zelf oefenen.</p><p><strong>IV</strong> Niet elke student is meteen enthousiast over zo veel werken buiten de school. Sommigen zeggen dat zij zich hadden ingeschreven om techniek te leren en niet om aan de deur van vreemden te staan. Wij nemen die klacht serieus, maar wij houden vast aan onze aanpak. Uit ons eigen onderzoek onder oud-studenten blijkt dat 78 procent binnen een jaar na het diploma betaald werk in de beeldbranche vindt. Zij noemen daarbij bijna altijd het contact met opdrachtgevers als de vaardigheid die hen het meeste heeft geholpen. Techniek kun je later nog bijleren; een gesprek durven aangaan leer je moeilijker alleen achter een bureau.</p><p><strong>V</strong> Voor de buitenopdrachten gelden een paar vaste voorwaarden. Studenten melden zich uiterlijk vijf werkdagen voor de startdatum bij de opdrachtgever. Zij gebruiken apparatuur van de school, die zij op donderdag ophalen en op maandag terugbrengen. Wie apparatuur beschadigt, betaalt een eigen bijdrage van maximaal 75 euro. Verder levert elk groepje binnen twee weken na afloop een verslag in met de gemaakte keuzes en met een eerlijke beschrijving van wat er niet lukte. Dat laatste weegt bij de beoordeling even zwaar als het beeldmateriaal zelf.</p><p><strong>VI</strong> Wilt u weten of deze opleiding bij u past, dan kunt u een dag meelopen met een tweedejaars student. U hoeft daarvoor geen eigen camera te hebben. Aanmelden kan via het formulier op deze website. Wij plaatsen u binnen tien werkdagen bij een groepje in de regio waar u woont.</p>",
+    "questions": [
+      {
+        "prompt": "Wat wil de schrijver duidelijk maken met de vergelijking tussen een lamp in de klas en het licht op straat (alinea I)?",
+        "options": [
+          "Dat studenten in de klas te weinig aandacht krijgen voor techniek",
+          "Dat goede apparatuur belangrijker is dan de plaats van de opnamen",
+          "Dat fotograferen buiten om omgaan met onzekere omstandigheden vraagt"
+        ],
+        "correct": 2,
+        "explanation": "In alinea I staat dat je op straat moet werken met het licht dat er is en dat die onzekerheid bij het vak hoort. Over te weinig techniekles gaat het pas in alinea IV, en dan als klacht van studenten, niet als standpunt van de school."
+      },
+      {
+        "prompt": "Wat staat er in alinea II over de opdrachten in het eerste jaar?",
+        "options": [
+          "Ze worden uitgevoerd zonder dat een klant op het resultaat wacht",
+          "Ze duren langer dan de opdrachten in het tweede jaar",
+          "Ze worden altijd in groepjes van drie studenten gedaan",
+          "Ze leveren de student een vergoeding van 250 euro op"
+        ],
+        "correct": 0,
+        "explanation": "Volgens alinea II zijn de eerstejaarsopdrachten nog niet voor een echte klant, zodat mislukken geen gevolgen heeft. De groepjes van drie en de vergoeding horen bij het tweede jaar, en die vergoeding gaat naar de opleiding."
+      },
+      {
+        "prompt": "Een student heeft de apparatuur van de school laten vallen. Welk bedrag moet hij volgens de tekst zelf betalen?",
+        "options": [
+          "Niets, omdat de opdrachtgever een vergoeding betaalt",
+          "Ten hoogste 75 euro",
+          "Altijd 250 euro"
+        ],
+        "correct": 1,
+        "explanation": "In alinea V staat dat wie apparatuur beschadigt een eigen bijdrage van maximaal 75 euro betaalt. De 250 euro uit alinea II is de vergoeding van de opdrachtgever aan de opleiding en heeft niets met schade te maken."
+      },
+      {
+        "prompt": "Een student wil weten hoe hij moet reageren als een opdrachtgever meer foto's verwacht dan hij kan leveren. In welke alinea vindt hij hierover informatie?",
+        "options": [
+          "Alinea II",
+          "Alinea III",
+          "Alinea V",
+          "Alinea VI"
+        ],
+        "correct": 1,
+        "explanation": "Alinea III noemt precies dit soort vragen en beschrijft de module Beroepshouding, waarin studenten moeilijke gesprekken oefenen. Alinea V gaat alleen over praktische voorwaarden zoals termijnen en apparatuur."
+      },
+      {
+        "prompt": "Een aankomende student zegt dat hij vooral techniek wil leren en niet naar buiten wil. Welk argument gebruikt de opleiding in alinea IV tegen hem?",
+        "options": [
+          "Buitenopdrachten kosten minder tijd dan lessen in het gebouw",
+          "Techniek is voor de beeldbranche van weinig belang geworden",
+          "Contact met opdrachtgevers is lastiger later te leren dan techniek"
+        ],
+        "correct": 2,
+        "explanation": "Alinea IV zegt dat je techniek later nog kunt bijleren, maar een gesprek durven aangaan moeilijk alleen achter een bureau leert. Dat techniek onbelangrijk zou zijn, staat er niet; de opleiding besteedt er juist les aan (alinea I)."
+      },
+      {
+        "prompt": "Wat betekent de uitdrukking \"loopt tegen vragen aan\" in alinea III?",
+        "options": [
+          "krijgt met problemen te maken waar hij niet op gerekend had",
+          "stelt de opdrachtgever zo veel mogelijk vragen",
+          "weigert vragen van de opdrachtgever te beantwoorden"
+        ],
+        "correct": 0,
+        "explanation": "Uit alinea III blijkt dat het gaat om kwesties die in een leerboek niet voorkomen en die zich onverwacht tijdens het werk voordoen. De student stelt die vragen niet aan de opdrachtgever, maar komt ze onderweg tegen."
+      }
+    ]
+  },
+  {
+    "section": "studieboek",
+    "title": "Van vacature tot arbeidscontract: de sollicitatieprocedure bij een grote werkgever",
+    "intro": "Deze tekst komt uit een cursusmap voor de module Loopbaan en Werk van een regionaal opleidingscentrum. De tekst legt uit welke stappen een sollicitant doorloopt bij een grote werkgever.",
+    "body_html": "<p><strong>I</strong> Wie bij een klein bedrijf solliciteert, spreekt vaak meteen met de eigenaar. Bij een grote werkgever gaat dat anders, omdat daar honderden mensen werken en er per vacature soms tientallen brieven binnenkomen. De organisatie werkt daarom met een vaste procedure, die meestal uit vier of vijf stappen bestaat. Die stappen zijn vooraf beschreven, zodat iedere kandidaat op dezelfde manier wordt beoordeeld. Voor de sollicitant is het handig om te weten hoe zo'n procedure verloopt. Dan weet u wat u kunt verwachten en wanneer u iets moet doen.</p><p><strong>Stap 1: de vacature en de brief</strong></p><p><strong>II</strong> Een vacature begint met een vacaturetekst op de website van de werkgever. Daarin staat welke taken bij de functie horen, welke opleiding gevraagd wordt en hoeveel uur per week u werkt. Ook staat er een sluitingsdatum bij. Brieven die na die datum binnenkomen, worden in principe niet meer gelezen. Wij raden aan om minstens drie dagen voor de sluitingsdatum te reageren, omdat een digitaal formulier soms vastloopt. U stuurt een motivatiebrief en een curriculum vitae, dus een overzicht van uw opleidingen en uw werkervaring. In de brief legt u uit waarom u deze functie wilt en wat u de werkgever te bieden hebt.</p><p><strong>III</strong> Grote werkgevers gebruiken vaak een computerprogramma dat de brieven sorteert. Het programma zoekt naar woorden uit de vacaturetekst, bijvoorbeeld een diploma of een bepaald certificaat. Daarom is het verstandig om de woorden uit de vacature ook in uw brief te gebruiken. Iemand die in de vacature leest dat een rijbewijs C nodig is, schrijft dus niet \"ik mag grote wagens besturen\", maar noemt het rijbewijs met de juiste letter. Na de eerste selectie krijgt u binnen twee weken bericht. Hoort u niets, dan mag u na die twee weken bellen met de afdeling personeelszaken.</p><p><strong>Stap 2 en 3: de gesprekken</strong></p><p><strong>IV</strong> Meestal volgen er twee gesprekken. Het eerste gesprek voert u met een medewerker van personeelszaken en met de toekomstige leidinggevende. Zij willen weten of u bij de afdeling past en of uw ervaring klopt met wat in uw brief staat. Het tweede gesprek gaat dieper over het werk zelf. Bij sommige functies maakt u dan ook een praktijkopdracht of een test, terwijl u bij andere functies alleen met twee collega's spreekt. Reiskosten voor deze gesprekken worden vergoed, maar alleen als u daar zelf om vraagt en een bewijs van de reis meestuurt. De vergoeding bedraagt bij ons 0,23 euro per kilometer.</p><p><strong>V</strong> Sommige kandidaten vinden een tweede gesprek overbodig, omdat zij in het eerste gesprek al alles hebben verteld. Toch is er een goede reden voor. Een verkeerde keuze kost de werkgever veel geld, doordat een nieuwe medewerker maanden nodig heeft om zich in te werken. Ook voor u is het gesprek nuttig: u ziet de werkplek, u hoort van collega's hoe het werk echt is en u kunt vragen stellen over de werktijden. Wie zwijgt en niets vraagt, maakt vaak een minder betrokken indruk dan iemand met een paar concrete vragen.</p><p><strong>VI</strong> Krijgt u de baan, dan volgt een aanbod met het salaris, het aantal uren en de duur van het contract. Neem de tijd om dat aanbod te lezen; u hebt bij ons vijf werkdagen om te reageren. Let vooral op de proeftijd. In die periode kunnen u en de werkgever het contract per direct beëindigen, zonder opzegtermijn. Bij een contract van een jaar of langer mag de proeftijd maximaal twee maanden duren; bij een kortere overeenkomst is dat één maand. Vraagt de werkgever een verklaring omtrent het gedrag, dan regelt u die via de gemeente. Die aanvraag kost geld en duurt ongeveer vier weken.</p>",
+    "questions": [
+      {
+        "prompt": "Wat is volgens alinea I het verschil tussen een klein bedrijf en een grote werkgever?",
+        "options": [
+          "Een grote werkgever plaatst meer vacatures op de website dan een klein bedrijf.",
+          "Een grote werkgever beoordeelt alle kandidaten volgens vaste, vooraf beschreven stappen.",
+          "Bij een grote werkgever beslist de eigenaar pas na vier of vijf gesprekken."
+        ],
+        "correct": 1,
+        "explanation": "In alinea I staat dat een grote werkgever met een vaste procedure werkt, zodat iedere kandidaat op dezelfde manier wordt beoordeeld. Het aantal vacatures wordt niet vergeleken; de tekst noemt alleen het aantal brieven per vacature."
+      },
+      {
+        "prompt": "Waarom raadt de tekst in alinea II aan om niet tot de sluitingsdatum te wachten?",
+        "options": [
+          "Omdat de werkgever de eerste brieven altijd als eerste beoordeelt.",
+          "Omdat u dan uw curriculum vitae nog kunt aanpassen.",
+          "Omdat een digitaal formulier op het laatste moment kan vastlopen."
+        ],
+        "correct": 2,
+        "explanation": "Alinea II noemt als reden dat een digitaal formulier soms vastloopt. Dat de eerste brieven voorrang krijgen, staat er niet; er staat alleen dat brieven na de sluitingsdatum niet meer gelezen worden."
+      },
+      {
+        "prompt": "Wat wil de schrijver duidelijk maken met het voorbeeld van het rijbewijs C in alinea III?",
+        "options": [
+          "Dat u in uw brief dezelfde woorden moet gebruiken als in de vacaturetekst.",
+          "Dat een certificaat belangrijker is voor de computer dan een diploma.",
+          "Dat u zonder rijbewijs beter niet op zo'n vacature reageert.",
+          "Dat de afdeling personeelszaken uw diploma's altijd controleert."
+        ],
+        "correct": 0,
+        "explanation": "Het voorbeeld in alinea III laat zien dat het sorteerprogramma naar woorden uit de vacature zoekt, dus schrijft u het rijbewijs met de juiste letter. Over de controle van diploma's gaat het pas in alinea IV, en dan in de gesprekken."
+      },
+      {
+        "prompt": "Mevrouw Diallo heeft twintig dagen geleden gesolliciteerd en nog geen antwoord gekregen. In welke alinea vindt zij wat zij nu kan doen?",
+        "options": [
+          "In alinea II.",
+          "In alinea III.",
+          "In alinea IV.",
+          "In alinea VI."
+        ],
+        "correct": 1,
+        "explanation": "Alinea III zegt dat u binnen twee weken bericht krijgt en dat u daarna mag bellen met personeelszaken. Alinea II gaat over de sluitingsdatum voor het versturen van de brief, niet over het uitblijven van antwoord."
+      },
+      {
+        "prompt": "Welk argument kan iemand die het tweede gesprek onnodig vindt, volgens alinea V juist overtuigen?",
+        "options": [
+          "Dat de reiskosten van het tweede gesprek volledig worden vergoed.",
+          "Dat kandidaten met een praktijkopdracht meer salaris kunnen vragen.",
+          "Dat de kandidaat in dat gesprek zelf de werkplek en de werktijden leert kennen."
+        ],
+        "correct": 2,
+        "explanation": "Alinea V noemt als voordeel voor de kandidaat dat hij de werkplek ziet en vragen kan stellen over de werktijden. De reiskostenvergoeding staat in alinea IV en is geen argument voor het nut van het gesprek."
+      },
+      {
+        "prompt": "Meneer Bakker krijgt een contract voor acht maanden aangeboden. Wat geldt er dan volgens de tekst?",
+        "options": [
+          "De proeftijd mag hoogstens één maand duren.",
+          "Hij moet binnen twee maanden op het aanbod reageren.",
+          "Er geldt tijdens de proeftijd een opzegtermijn van vijf werkdagen."
+        ],
+        "correct": 0,
+        "explanation": "Volgens alinea VI is de proeftijd bij een overeenkomst korter dan een jaar maximaal één maand. De twee maanden gelden voor contracten van een jaar of langer, en in de proeftijd geldt juist géén opzegtermijn."
+      },
+      {
+        "prompt": "Wat is het belangrijkste doel van deze tekst?",
+        "options": [
+          "Sollicitanten waarschuwen dat grote werkgevers strenge eisen stellen.",
+          "Sollicitanten uitleggen welke stappen een procedure heeft en waar zij op moeten letten.",
+          "Sollicitanten helpen bij het aanvragen van een verklaring omtrent het gedrag."
+        ],
+        "correct": 1,
+        "explanation": "De tekst beschrijft stap voor stap de procedure en geeft daarbij praktische adviezen, zoals in alinea I wordt aangekondigd. De verklaring omtrent het gedrag is slechts één detail aan het eind van alinea VI."
+      }
+    ]
+  },
+  {
+    "section": "folder",
+    "title": "Zorgt u voor iemand anders? Het Steunpunt Mantelzorg helpt u verder",
+    "intro": "Deze tekst komt uit een folder van de gemeente Waardenveld. De folder gaat over de hulp die de gemeente biedt aan inwoners die voor een ziek of hulpbehoevend familielid, buur of vriend zorgen.",
+    "body_html": "<p><strong>I</strong> In de gemeente Waardenveld zorgen ongeveer negenduizend inwoners voor iemand in hun omgeving die ziek, oud of gehandicapt is. Deze mensen heten mantelzorgers. Mantelzorg is niet hetzelfde als vrijwilligerswerk. Een vrijwilliger kiest zelf een organisatie en spreekt af hoeveel uur hij beschikbaar is, terwijl een mantelzorger de zorg meestal niet kiest: die hoort bij de band met de ander. Wie elke dag boodschappen doet voor zijn moeder omdat zij de deur niet meer uit komt, is dus mantelzorger, ook al noemt hij zichzelf nooit zo. Het Steunpunt Mantelzorg Waardenveld wil juist deze inwoners bereiken, omdat veel van hen niet weten dat er ook hulp voor henzelf bestaat.</p><p><strong>II</strong> Bij het Steunpunt kunt u terecht met al uw vragen over het zorgen voor een ander. U kunt op werkdagen tussen 9.00 en 13.00 uur bellen, of u vraagt een huisbezoek aan. Zo'n bezoek vindt binnen tien werkdagen plaats. Het advies van onze consulenten is gratis, ook wanneer u geen enkele voorziening aanvraagt. Een consulent kan bovendien met u meegaan naar het gesprek met de gemeente over hulp uit de Wmo (Wet maatschappelijke ondersteuning), zodat u er niet alleen voor staat en geen belangrijke vraag vergeet. Onze consulenten kennen de regels en weten welke woorden in zo'n gesprek gebruikt worden.</p><p><strong>Even vrij van de zorg</strong></p><p><strong>III</strong> Respijt betekent rust: iemand anders neemt uw taken tijdelijk over, zodat u even op adem kunt komen. Die vervanger kan een geschoolde vrijwilliger zijn die bij uw naaste thuis blijft, maar uw naaste kan ook kort verblijven in zorghotel De Beukhof. De gemeente vergoedt maximaal veertien dagen per kalenderjaar. Vraagt u respijtzorg minstens zes weken vóór de gewenste datum aan, want er is niet altijd meteen plaats. De eigen bijdrage bedraagt €12,50 per dag; bij een inkomen onder €1.600 per maand vervalt die bijdrage. Heeft uw naaste een indicatie voor de Wet langdurige zorg (Wlz), dan regelt u vervangende zorg niet bij de gemeente, maar bij het zorgkantoor.</p><p><strong>IV</strong> Als waardering voor uw inzet keert de gemeente eenmaal per jaar €175 uit. U vraagt dit bedrag aan met het formulier Mantelzorgwaardering, dat vóór 1 november bij de gemeente binnen moet zijn. Er gelden drie voorwaarden: degene voor wie u zorgt woont in Waardenveld, u zorgt minstens acht uur per week en u doet dat al langer dan drie maanden. U hoeft zelf dus niet in de gemeente te wonen. Per zorgvrager kunnen hoogstens twee mantelzorgers de waardering ontvangen. Het bedrag is een gift en heeft geen gevolgen voor uw uitkering.</p><p><strong>V</strong> Veel mantelzorgers lopen op hun tenen: zij vragen zo veel van zichzelf dat zij uiteindelijk zelf klachten krijgen. Daarom organiseren wij een gespreksgroep, elke tweede dinsdag van de maand van 19.30 tot 21.30 uur in buurthuis De Wilgenhof. De eerste bijeenkomst is gratis, daarna betaalt u €5 per keer. Werkt u daarnaast in loondienst, dan is de cursus Werk en zorg combineren nuttig. In drie avonden leert u welke soorten zorgverlof bestaan en hoe u dit met uw werkgever bespreekt. Jonge mantelzorgers tot 23 jaar komen op zaterdagmiddag bij elkaar in een eigen groep.</p><p><strong>VI</strong> Wilt u meer weten of een afspraak maken? Neem dan contact op:<br>Steunpunt Mantelzorg Waardenveld<br>Postbus 118<br>3900 AB Waardenveld<br>Telefoon: 0800 - 22 33 445<br>Bezoek op afspraak: Kerkweg 4, Waardenveld</p>",
+    "questions": [
+      {
+        "prompt": "Wat maakt de schrijver in alinea I duidelijk met het voorbeeld van de man die elke dag boodschappen doet voor zijn moeder?",
+        "options": [
+          "Dat mensen mantelzorger kunnen zijn zonder zich zo te noemen.",
+          "Dat boodschappen doen de gewoonste vorm van mantelzorg is.",
+          "Dat mantelzorgers vooral voor een ouder familielid zorgen."
+        ],
+        "correct": 0,
+        "explanation": "In alinea I staat dat deze man mantelzorger is, ook al gebruikt hij dat woord zelf nooit. Optie B en C gaan over de taak en de zorgvrager, terwijl het voorbeeld juist wil laten zien dat mensen hun rol niet herkennen.\n"
+      },
+      {
+        "prompt": "Meneer Yildiz vindt het moeilijk om alleen met de gemeente te praten over hulp voor zijn vrouw. In welke alinea leest hij wat het Steunpunt voor hem kan doen?",
+        "options": [
+          "In alinea I.",
+          "In alinea II.",
+          "In alinea III.",
+          "In alinea IV."
+        ],
+        "correct": 1,
+        "explanation": "Alinea II vertelt dat een consulent met u meegaat naar het gesprek met de gemeente over de Wmo. Alinea III gaat over vervangende zorg, niet over begeleiding bij een gesprek."
+      },
+      {
+        "prompt": "Wat staat er in alinea III over respijtzorg?",
+        "options": [
+          "De gemeente vergoedt veertien dagen per maand.",
+          "Een kort verblijf in zorghotel De Beukhof is gratis.",
+          "Wie een Wlz-indicatie heeft, krijgt veertien extra dagen.",
+          "De aanvraag moet zes weken voor de gewenste datum binnen zijn."
+        ],
+        "correct": 3,
+        "explanation": "In alinea III staat dat u respijtzorg minstens zes weken vóór de gewenste datum aanvraagt. De veertien dagen gelden per kalenderjaar en niet per maand, dus optie A is te ruim."
+      },
+      {
+        "prompt": "Mevrouw Bakker woont in Ravenstijn en zorgt vier dagen per week voor haar vader in Waardenveld. Welk argument kan zij gebruiken bij haar aanvraag voor de mantelzorgwaardering?",
+        "options": [
+          "Zij zorgt al langer dan zes weken voor haar vader.",
+          "Haar vader woont in Waardenveld, en dat is de voorwaarde.",
+          "Zij is de enige mantelzorger die haar vader helpt."
+        ],
+        "correct": 1,
+        "explanation": "Volgens alinea IV moet de zorgvrager in Waardenveld wonen; de mantelzorger zelf hoeft er niet te wonen. De zorg moet al langer dan drie maanden duren, dus zes weken is niet genoeg."
+      },
+      {
+        "prompt": "Wat wordt in alinea V bedoeld met 'op hun tenen lopen'?",
+        "options": [
+          "Zij durven bijna nooit om hulp te vragen.",
+          "Zij hebben weinig contact met andere mantelzorgers.",
+          "Zij vragen te veel van hun eigen krachten."
+        ],
+        "correct": 2,
+        "explanation": "In alinea V wordt de uitdrukking meteen uitgelegd: mantelzorgers vragen zo veel van zichzelf dat zij zelf klachten krijgen. Dat zij geen hulp durven vragen, staat er niet."
+      },
+      {
+        "prompt": "Wat is het belangrijkste doel van deze folder?",
+        "options": [
+          "Mantelzorgers laten zien welke steun de gemeente hen biedt.",
+          "Inwoners vragen om vrijwilligerswerk in de zorg te gaan doen.",
+          "Uitleggen hoe een aanvraag voor de Wmo precies verloopt."
+        ],
+        "correct": 0,
+        "explanation": "De folder geeft in alle alinea's een overzicht van advies, respijtzorg, waardering en cursussen voor mantelzorgers. De Wmo wordt in alinea II alleen genoemd en niet uitgelegd."
+      }
+    ]
+  },
+  {
+    "section": "artikel",
+    "title": "Na je dertigste weer aan een opleiding beginnen",
+    "intro": "Deze tekst komt uit een personeelsblad voor werknemers. De tekst gaat over het groeiende aantal mensen dat na hun dertigste aan een tweede opleiding begint.",
+    "body_html": "<p><strong>I</strong> Steeds meer mensen beginnen na hun dertigste aan een tweede opleiding. Onderzoeksbureau Vandelo vergeleek de inschrijvingen van de afgelopen tien jaar en zag een duidelijke stijging. Tien jaar geleden schreven ongeveer 38.000 dertigers en veertigers zich in voor een beroepsopleiding of een deeltijdstudie, vorig jaar waren dat er 61.000. De groei is het sterkst bij vrouwen tussen 35 en 45 jaar. Opvallend is dat de meeste deelnemers blijven werken terwijl zij studeren; slechts &eacute;&eacute;n op de zeven stopt tijdelijk met werken om zich helemaal op de opleiding te richten.</p><p><strong>II</strong> De belangrijkste reden voor deze ontwikkeling is dat beroepen sneller veranderen dan vroeger. Werk dat eerder met de hand werd gedaan, wordt nu vaak door machines of computers overgenomen, waardoor bepaalde functies verdwijnen. Tegelijkertijd is er een groot tekort aan personeel in de zorg, de techniek en het onderwijs. Karin Doesburg (41) werkte veertien jaar op de administratie van een transportbedrijf in Zwolle. Toen haar afdeling werd samengevoegd met een kantoor in Utrecht, koos zij niet voor een nieuwe administratieve baan, maar voor de deeltijdopleiding verpleegkunde. &bdquo;Ik wilde werk waarvan ik zeker weet dat het er over tien jaar nog is&rdquo;, zegt zij.</p><p><strong>Geld en voorwaarden</strong></p><p><strong>III</strong> Wie op latere leeftijd gaat studeren, moet de kosten vaak grotendeels zelf betalen. Toch is er meer mogelijk dan veel werknemers denken, doordat in verschillende cao's een ontwikkelvoucher is opgenomen. In de cao voor de groothandel gaat het bijvoorbeeld om maximaal &euro; 1.250 per twee jaar. Daarvoor gelden drie voorwaarden:</p><ul><li>de werknemer is minstens &eacute;&eacute;n jaar in dienst;</li><li>de opleiding staat in een erkend register;</li><li>de aanvraag wordt uiterlijk zes weken voor de start van de opleiding ingediend.</li></ul><p>Wordt de aanvraag te laat verstuurd, dan vervalt het recht voor dat jaar. Studenten boven de dertig krijgen geen studiefinanciering meer, maar zij kunnen wel collegegeldkrediet lenen, dat later moet worden terugbetaald.</p><p><strong>IV</strong> Niet iedereen haalt de eindstreep. Uit de cijfers van Vandelo blijkt dat ongeveer &eacute;&eacute;n op de vijf deelnemers binnen het eerste jaar stopt, meestal doordat de studie moeilijk te combineren is met werk en de zorg voor kinderen. Hoogleraar arbeidsmarkt Renske Oudkerk plaatst daarnaast een kritische opmerking bij de nadruk op omscholing. &bdquo;Als het werk in een sector zwaar en slecht betaald is, lopen mensen weg, hoeveel opleidingen je ook aanbiedt&rdquo;, zegt zij. Volgens haar moeten werkgevers eerst de arbeidsomstandigheden verbeteren, hoewel zij het waardevol vindt dat mensen zich blijven ontwikkelen.</p><p><strong>Sneller klaar</strong></p><p><strong>V</strong> Wie de studie korter wil maken, kan om vrijstellingen vragen. Dat betekent dat een student bepaalde vakken niet hoeft te volgen, omdat hij die kennis al in de praktijk heeft opgedaan. Bij Hogeschool De Waterlinie ronden studenten met vrijstellingen hun opleiding gemiddeld in drie jaar af, terwijl anderen er vier jaar over doen. Verder is het verstandig om een loopbaanadviseur te spreken; bij veel bedrijven hebben werknemers recht op twee van die gesprekken per jaar. Bespreek ten slotte op tijd met de leidinggevende welke werkdagen kunnen worden aangepast, zodat de studie en het werk elkaar niet in de weg zitten.</p>",
+    "questions": [
+      {
+        "prompt": "Wat staat er in alinea I over mensen die na hun dertigste gaan studeren?",
+        "options": [
+          "De groei komt vooral doordat mannen boven de vijftig weer gaan studeren.",
+          "Hun aantal is in tien jaar gestegen van ongeveer 38.000 naar 61.000.",
+          "De meeste deelnemers stoppen met werken zodra hun opleiding begint."
+        ],
+        "correct": 1,
+        "explanation": "In alinea I staan de cijfers van onderzoeksbureau Vandelo: van ongeveer 38.000 naar 61.000. Optie C is fout, want juist slechts één op de zeven stopt tijdelijk met werken."
+      },
+      {
+        "prompt": "Waarom noemt de schrijver in alinea II het verhaal van Karin Doesburg?",
+        "options": [
+          "Om te laten zien dat werken in de zorg lichter is dan administratief werk.",
+          "Om duidelijk te maken dat een verhuizing naar Utrecht vaak onvermijdelijk is.",
+          "Om te illustreren dat mensen kiezen voor werk met meer zekerheid in de toekomst."
+        ],
+        "correct": 2,
+        "explanation": "Alinea II gaat over veranderende beroepen; Karin kiest voor werk waarvan zij zeker weet dat het blijft bestaan. Over de zwaarte van het werk in de zorg zegt zij niets."
+      },
+      {
+        "prompt": "Wanneer moet de aanvraag voor de ontwikkelvoucher volgens alinea III worden ingediend?",
+        "options": [
+          "Minstens zes weken voordat de opleiding begint.",
+          "Binnen zes weken na de start van de opleiding.",
+          "Uiterlijk een jaar nadat iemand in dienst is gekomen.",
+          "In het tweede jaar van de opleiding."
+        ],
+        "correct": 0,
+        "explanation": "Bij de voorwaarden in alinea III staat dat de aanvraag uiterlijk zes weken vóór de start moet zijn ingediend. Het jaar in optie C hoort bij de eis over het dienstverband, niet bij de termijn."
+      },
+      {
+        "prompt": "Anna wil weten of haar jarenlange werkervaring haar studie korter kan maken. In welke alinea vindt zij het antwoord?",
+        "options": [
+          "In alinea II.",
+          "In alinea III.",
+          "In alinea IV.",
+          "In alinea V."
+        ],
+        "correct": 3,
+        "explanation": "Alinea V legt uit dat vrijstellingen mogelijk zijn voor kennis die al in de praktijk is opgedaan. Alinea III gaat alleen over geld en aanvraagvoorwaarden."
+      },
+      {
+        "prompt": "Wat is het belangrijkste doel van de tekst?",
+        "options": [
+          "Werknemers ervan overtuigen dat zij zich snel moeten omscholen naar de zorg.",
+          "Informeren over het studeren na je dertigste en de voorwaarden daarbij.",
+          "Kritiek geven op werkgevers die te weinig geld voor opleidingen vrijmaken."
+        ],
+        "correct": 1,
+        "explanation": "De tekst geeft cijfers, redenen, regelingen en tips, dus hij informeert. De kritiek in alinea IV komt van één hoogleraar en is niet het doel van de hele tekst."
+      }
+    ]
+  },
+  {
+    "section": "regels",
+    "title": "Gereedschap lenen en inleveren op de bouwplaats Waterlinieweg",
+    "intro": "Deze tekst komt uit het informatieblad dat Bouwbedrijf Van Meerlo aan alle medewerkers op de bouwplaats uitreikt. De tekst gaat over de regels voor het lenen en terugbrengen van gereedschap.",
+    "body_html": "<p><strong>I</strong> Op de bouwplaats aan de Waterlinieweg in Nieuwegein staat het gereedschapsdepot naast de kantine. Daar lenen medewerkers alle machines en al het handgereedschap dat zij voor hun werk nodig hebben. De regels hieronder gelden voor iedereen die op deze bouwplaats werkt, dus ook voor uitzendkrachten en voor medewerkers van onderaannemers. Wie zich niet aan de regels houdt, kan het recht om zelfstandig gereedschap te lenen tijdelijk kwijtraken.</p><p><strong>Openingstijden en uitgifte</strong></p><p><strong>II</strong> Het depot is op werkdagen open van 6.45 tot 8.00 uur en van 15.30 tot 16.45 uur. Buiten deze tijden is de balie gesloten, omdat de depotbeheerder dan de voorraad controleert en machines nakijkt. Hebt u tussendoor toch dringend iets nodig, dan roept u de depotbeheerder op via de portofoon, kanaal 3. Hij komt alleen naar de balie wanneer het werk anders stil komt te liggen. Elk stuk gereedschap wordt met uw personeelspas geregistreerd, zodat altijd duidelijk is wie wat in gebruik heeft.</p><p><strong>III</strong> U mag geleend gereedschap drie werkdagen houden. Hebt u het langer nodig, dan vraagt u een verlenging aan in de app Werkplaats, uiterlijk om 12.00 uur op de laatste leendag. Verlengen kan hoogstens twee keer; daarna moet het gereedschap eerst terug naar het depot voor controle. Voor duur gereedschap, zoals een laserwaterpas of een tacker, geldt bovendien een waarborgsom van 25 euro. Dat bedrag wordt van uw loon ingehouden en na inlevering weer bijgeschreven. Bent u drie keer te laat met inleveren, dan mag u een maand lang niets meer op eigen naam lenen; uw voorman moet de aanvraag dan voor u doen.</p><p><strong>IV</strong> Terugbrengen betekent: schoon en compleet. Snoeren rolt u op, zaagbladen en boren horen terug in de koffer en accu's levert u samen met de bijbehorende lader in. Ontstaat er schade of werkt een machine niet meer, dan meldt u dat binnen 24 uur bij de balie. Zelf repareren is niet toegestaan, ook niet als u denkt dat het om een kleinigheid gaat. Bij normale slijtage betaalt u niets. Is de schade duidelijk het gevolg van nalatigheid, bijvoorbeeld omdat een machine een nacht buiten in de regen heeft gelegen, dan vraagt het bedrijf een eigen bijdrage van maximaal 50 euro.</p><p><strong>V</strong> Elke machine heeft een groene keuringssticker met een datum erop. Zo'n keuring is twaalf maanden geldig. Zit er een rode sticker op de machine, of ontbreekt de sticker, dan mag u het gereedschap niet gebruiken, hoe goed het er ook uitziet. Vorige maand werd een haspel afgekeurd die er van buiten prima uitzag, terwijl de stekker aan de binnenkant verbrand was. Afgekeurd gereedschap legt u in het rode defectenrek bij de ingang van het depot. Leg het nooit terug in het rek voor bruikbare machines, want dan pakt een collega het zonder te kijken mee.</p><p><strong>VI</strong> Hebt u vragen over deze regels of over een machine die u niet kent, stel ze dan voordat u aan het werk gaat. Een korte uitleg bij de balie kost twee minuten, terwijl een ongeluk of een kapotte machine dagen werk kan kosten.</p><p>Depotbeheerder: Karim Elzinga<br>Portofoon: kanaal 3<br>Telefoon: 030 - 555 21 40<br>Aanwezig: werkdagen 6.30 - 17.00 uur</p>",
+    "questions": [
+      {
+        "prompt": "Kees heeft om half elf 's ochtends dringend een breekhamer nodig. Wat moet hij volgens alinea II doen?",
+        "options": [
+          "Hij vult in de app Werkplaats een aanvraag in.",
+          "Hij wacht tot de balie 's middags weer opengaat.",
+          "Hij roept de depotbeheerder op via de portofoon."
+        ],
+        "correct": 2,
+        "explanation": "In alinea II staat dat u de depotbeheerder bij spoed via kanaal 3 van de portofoon oproept. Wachten tot 15.30 uur hoeft dus niet; de app is er volgens alinea III voor verlengingen."
+      },
+      {
+        "prompt": "Wat staat er in alinea III over het verlengen van de leentermijn?",
+        "options": [
+          "Een verlenging vraagt u persoonlijk aan bij de balie van het depot.",
+          "Een verlenging regelt uw voorman voor u in de app Werkplaats.",
+          "Een verlenging is mogelijk zolang de waarborgsom niet is terugbetaald.",
+          "Een verlenging kan twee keer; daarna gaat het gereedschap eerst terug."
+        ],
+        "correct": 3,
+        "explanation": "Alinea III zegt dat verlengen hoogstens twee keer kan en dat het gereedschap daarna terug moet voor controle. U vraagt de verlenging zelf aan in de app, niet bij de balie en niet via de voorman."
+      },
+      {
+        "prompt": "Wat is het gevolg als een medewerker voor de derde keer te laat inlevert?",
+        "options": [
+          "Hij betaalt per keer een boete van 25 euro.",
+          "Hij mag een maand niets op eigen naam lenen.",
+          "Hij krijgt zijn waarborgsom niet meer terug."
+        ],
+        "correct": 1,
+        "explanation": "Volgens alinea III mag hij dan een maand lang niet zelf lenen en moet de voorman de aanvraag doen. De 25 euro is een waarborgsom die wordt bijgeschreven, geen boete."
+      },
+      {
+        "prompt": "Youssef ziet dat zijn cirkelzaag niet meer start en dat er een rode sticker op de machine zit. In welke alinea's vindt hij wat hij moet doen?",
+        "options": [
+          "In alinea II en III.",
+          "In alinea III en IV.",
+          "In alinea IV en V."
+        ],
+        "correct": 2,
+        "explanation": "Alinea IV legt uit dat u een storing binnen 24 uur meldt en niet zelf repareert; alinea V gaat over de rode sticker en het defectenrek. Alinea III gaat alleen over termijnen en waarborgsom."
+      },
+      {
+        "prompt": "Wat wil de schrijver duidelijk maken met het voorbeeld van de afgekeurde haspel?",
+        "options": [
+          "Dat gereedschap ook onveilig kan zijn als het er goed uitziet.",
+          "Dat een keuring niet langer dan twaalf maanden geldig blijft.",
+          "Dat kleine reparaties beter aan de beheerder worden overgelaten."
+        ],
+        "correct": 0,
+        "explanation": "In alinea V dient de haspel als bewijs dat een machine er van buiten prima uit kan zien terwijl hij binnenin defect is. De geldigheid van twaalf maanden staat er wel, maar is niet de reden voor het voorbeeld."
+      },
+      {
+        "prompt": "Wat is het belangrijkste doel van deze tekst?",
+        "options": [
+          "Medewerkers waarschuwen voor de kosten van schade aan machines.",
+          "De openingstijden van het gereedschapsdepot bekendmaken.",
+          "Medewerkers uitleggen hoe zij gereedschap lenen en inleveren."
+        ],
+        "correct": 2,
+        "explanation": "De hele tekst beschrijft achtereenvolgens de uitgifte, de leentermijn, het inleveren en de keuring. De kosten (alinea IV) en de openingstijden (alinea II) zijn maar onderdelen daarvan."
+      }
+    ]
+  },
+  {
+    "section": "brief",
+    "title": "Nieuwe manier van afspraken maken bij Tandartspraktijk De Vijverhof",
+    "intro": "Deze tekst is een brief van een tandartspraktijk aan een patiënt. De brief gaat over een nieuw systeem om afspraken te maken.",
+    "body_html": "<p>Tandartspraktijk De Vijverhof<br>Kastanjelaan 18<br>8021 GH Zwolle<br><br>Mevrouw K. Bouwman<br>Rietveldstraat 44<br>8024 LP Zwolle<br><br>Zwolle, 14 januari 2025<br><br>Betreft: afspraken maken vanaf 1 maart</p><p><strong>I</strong> Geachte mevrouw Bouwman,<br>In onze praktijk staan ruim 4.200 patiënten ingeschreven. Zij bellen ons samen ongeveer 350 keer per week, en bijna de helft van die telefoontjes komt binnen tussen 8.00 en 9.00 uur. Daardoor moeten veel patiënten in dat eerste uur lang in de wachtrij staan voordat een medewerker hen te woord kan staan. Soms loopt de wachttijd op tot tien minuten, terwijl onze assistentes op dat moment ook patiënten in de behandelkamer helpen. Om die drukte te verminderen, gaan wij vanaf 1 maart 2025 werken met een afsprakenportaal op internet.</p><p><strong>II</strong> Het portaal heet Mijn Vijverhof en is dag en nacht bereikbaar. U ontvangt binnen twee weken een aparte brief met een persoonlijke activatiecode. Let op: die code moet binnen dertig dagen worden gebruikt, anders vervalt hij en moet u een nieuwe aanvragen. Nadat u een wachtwoord heeft gekozen, ziet u in het portaal alle vrije momenten van uw eigen tandarts, tot zes maanden vooruit. U kunt een afspraak zelf inplannen, verzetten of afzeggen, zonder dat u daarvoor hoeft te bellen.</p><p><strong>III</strong> Wij vragen u een afspraak uiterlijk 24 uur van tevoren af te zeggen, zodat wij de tijd aan een andere patiënt kunnen geven. Zegt u later af, of komt u zonder bericht niet opdagen, dan brengen wij een verzuimtarief van 25 euro in rekening. Voor patiënten onder de achttien jaar geldt een lager bedrag van 12,50 euro. Wordt u op de dag zelf plotseling ziek, of is er een sterfgeval in uw familie, dan rekenen wij niets, mits u ons diezelfde dag telefonisch op de hoogte brengt.</p><p><strong>Hulp voor wie niet online werkt</strong></p><p><strong>IV</strong> Wij begrijpen dat niet iedereen een computer of smartphone gebruikt. Daarom blijft de telefoon open, hoewel de tijden korter worden: op werkdagen kunt u ons bellen tussen 8.30 en 10.30 uur. Ook aan de balie kunnen wij een afspraak voor u vastleggen. Vindt u het prettig om het portaal een keer samen te bekijken, dan bent u welkom op de inloopmiddag van donderdag 13 maart, van 14.00 tot 16.00 uur. Neem in dat geval uw telefoon en een identiteitsbewijs mee. Een familielid of buur mag u begeleiden en mag u daarna ook thuis blijven helpen.</p><p><strong>V</strong> Enkele patiënten hebben ons gevraagd of hun gegevens in zo'n portaal wel veilig zijn. Die vraag begrijpen wij goed. Uw gegevens staan op een beveiligde server in Nederland en alleen medewerkers van onze praktijk kunnen ze inzien. Wij geven niets door aan andere bedrijven. Nieuw is verder dat u drie dagen voor uw afspraak automatisch een bericht per sms of e-mail ontvangt. Wilt u die herinnering niet, dan kunt u dat in het portaal zelf uitzetten.</p><p><strong>VI</strong> Afspraken die u eerder telefonisch heeft gemaakt, blijven gewoon geldig; u hoeft daar niets voor te doen. De jaarlijkse oproep voor de controle sturen wij vanaf mei niet meer per kaart, maar per e-mail. Controleer daarom of uw e-mailadres bij ons klopt. Heeft u nog vragen over het portaal of over het verzuimtarief, dan kunt u terecht bij onze praktijkmanager, mevrouw Terlouw.</p><p>Met vriendelijke groet,<br>J. Aardema<br>tandarts en praktijkhouder</p>",
+    "questions": [
+      {
+        "prompt": "Wat is volgens alinea I de reden voor de verandering?",
+        "options": [
+          "De praktijk heeft te weinig medewerkers aan de balie.",
+          "Veel patiënten moeten lang wachten voordat ze iemand spreken.",
+          "Het aantal patiënten van de praktijk groeit ieder jaar verder."
+        ],
+        "correct": 1,
+        "explanation": "In alinea I staat dat de wachttijd aan de telefoon soms tot tien minuten oploopt, vooral in het eerste uur. Over te weinig baliemedewerkers zegt de brief niets; de assistentes helpen ook patiënten in de behandelkamer, maar dat is geen personeelstekort."
+      },
+      {
+        "prompt": "Wat staat er in de brief over de activatiecode?",
+        "options": [
+          "U moet de code zelf aanvragen bij de balie.",
+          "U krijgt de code samen met deze brief toegestuurd.",
+          "De code blijft zes maanden geldig.",
+          "De code moet binnen dertig dagen gebruikt worden."
+        ],
+        "correct": 3,
+        "explanation": "Volgens alinea II vervalt de code na dertig dagen. De zes maanden in optie C gaan over de periode waarin u vrije momenten kunt inplannen, niet over de geldigheid van de code."
+      },
+      {
+        "prompt": "Wat betekent 'verzuimtarief' in alinea III?",
+        "options": [
+          "een bedrag voor een afspraak die niet is nagekomen",
+          "een korting voor patiënten die op tijd afzeggen",
+          "een vast bedrag voor de controle van elk jaar"
+        ],
+        "correct": 0,
+        "explanation": "Uit alinea III blijkt dat het bedrag wordt gerekend als iemand te laat afzegt of niet komt. Het gaat dus niet om een korting of om een jaarlijks tarief voor de controle."
+      },
+      {
+        "prompt": "Een buurvrouw van mevrouw Bouwman heeft geen computer. In welke alinea vindt zij wat zij moet doen?",
+        "options": [
+          "in alinea II",
+          "in alinea IV",
+          "in alinea V"
+        ],
+        "correct": 1,
+        "explanation": "Alinea IV noemt de telefoontijden, de balie en de inloopmiddag voor mensen die niet online werken. Alinea II beschrijft juist het gebruik van het portaal zelf."
+      },
+      {
+        "prompt": "Wat is het belangrijkste doel van deze brief?",
+        "options": [
+          "patiënten waarschuwen voor de kosten van te laat afzeggen",
+          "patiënten uitnodigen voor de inloopmiddag in maart",
+          "patiënten uitleggen hoe zij voortaan een afspraak maken",
+          "patiënten vragen minder vaak naar de praktijk te bellen"
+        ],
+        "correct": 2,
+        "explanation": "De brief kondigt in alinea I het nieuwe portaal aan en legt daarna uit hoe het werkt. Het verzuimtarief en de inloopmiddag zijn onderdelen van die uitleg, niet het hoofddoel."
+      }
+    ]
+  }
+]

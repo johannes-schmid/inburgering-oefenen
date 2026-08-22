@@ -1,0 +1,411 @@
+[
+  {
+    "section": "website",
+    "title": "Nederlands leren bij Taalcentrum De Brugwal",
+    "intro": "Deze tekst komt van de website van een taalschool. De tekst gaat over de cursussen, de niveaus en het intakegesprek.",
+    "body_html": "<p><strong>I</strong> Taalcentrum De Brugwal geeft sinds 2009 taalcursussen Nederlands aan volwassenen in Zutphen en Deventer. Onze cursisten zijn heel verschillend: sommigen werken al jaren in de bouw of de zorg en willen beter met collega's kunnen praten, terwijl anderen zich voorbereiden op een beroepsopleiding of op het Staatsexamen. Omdat de doelen zo uiteenlopen, werken wij niet met &eacute;&eacute;n standaardcursus. U kiest een cursus die past bij uw niveau, uw tempo en de tijd die u naast werk of gezin beschikbaar hebt. Op deze pagina leest u welke cursussen wij aanbieden, hoe het intakegesprek verloopt en welke kosten u kunt verwachten.</p><p><strong>Ons aanbod</strong></p><p><strong>II</strong> Wij hebben drie soorten cursussen. De <em>dagcursus</em> duurt twintig weken en bestaat uit twee lessen van drie uur per week, meestal op maandag en woensdag. Deze cursus is bedoeld voor cursisten die snel willen vorderen en die overdag vrij zijn. De <em>avondcursus</em> duurt dertig weken en heeft &eacute;&eacute;n les van drie uur per week; het tempo is dus lager, maar u bereikt hetzelfde eindniveau. Daarnaast bieden wij een <em>werkcursus</em> aan, waarbij een docent naar uw werkplek komt en de lessen zich richten op de taal van uw eigen beroep. Een werkcursus wordt alleen gestart als een werkgever minstens zes deelnemers aanmeldt.</p><p><strong>III</strong> Elke cursus werkt naar &eacute;&eacute;n niveau toe. Wij volgen de niveaus A1, A2, B1 en B2. Wie op A2 begint, kan in &eacute;&eacute;n cursus doorgroeien naar B1. Van B1 naar B2 duurt in de praktijk langer, doordat op dat niveau ook geschreven teksten over minder bekende onderwerpen aan de orde komen. Cursisten die willen weten of hun niveau genoeg is voor een opleiding, adviseren wij eerst met de school te overleggen. Veel opleidingen in de zorg vragen namelijk B1 voor spreken en lezen, maar sommige vragen B2 voor schrijven. Dat verschil is groter dan mensen vaak denken, en het bepaalt welke cursus voor u zinvol is.</p><p><strong>Het intakegesprek</strong></p><p><strong>IV</strong> Iedereen die zich aanmeldt, komt eerst naar een intakegesprek van ongeveer een uur. In het eerste half uur maakt u een korte toets op de computer, waarin uw lees- en schrijfvaardigheid wordt gemeten. Daarna praat u met een docent over uw werk, uw opleiding en uw plannen. Wij vragen u een geldig identiteitsbewijs mee te nemen. Het intakegesprek kost &euro; 35. Dat bedrag wordt van het cursusgeld afgehaald zodra u zich inschrijft, zodat u het feitelijk alleen betaalt als u besluit niet te beginnen.</p><p><strong>V</strong> Na het intakegesprek krijgt u binnen vijf werkdagen per e-mail een advies met de cursus die volgens ons het beste past. U bent niet verplicht dat advies te volgen. Wie toch in een hogere groep wil starten, mag twee proeflessen meedoen. Blijkt de groep te moeilijk, dan verhuist u zonder extra kosten naar een lagere groep. Andersom komt ook voor: soms merkt een docent na drie weken dat een cursist zich verveelt, en dan zoeken wij samen een snellere groep.</p><p><strong>VI</strong> De dagcursus kost &euro; 1.150 en de avondcursus &euro; 980; het lesboek van &euro; 45 is daarbij niet inbegrepen. Betalen in vier termijnen is mogelijk, maar dan brengen wij &euro; 20 administratiekosten in rekening. Werkt u bij een bedrijf met een cao waarin een opleidingsbudget is opgenomen, dan vergoedt uw werkgever de cursus vaak geheel of gedeeltelijk. Vraag dit na v&oacute;&oacute;r uw inschrijving, want een aanvraag met terugwerkende kracht wordt zelden goedgekeurd. Aanmelden kan via het formulier op deze website of telefonisch op werkdagen tussen 9.00 en 16.00 uur.</p>",
+    "questions": [
+      {
+        "prompt": "Wat kost het intakegesprek volgens alinea IV uiteindelijk als iemand zich daarna inschrijft?",
+        "options": [
+          "Niets, omdat het bedrag van het cursusgeld wordt afgetrokken",
+          "€ 20, omdat er administratiekosten bij komen",
+          "€ 35, want dat bedrag staat los van het cursusgeld",
+          "€ 45, samen met het lesboek"
+        ],
+        "correct": 0,
+        "explanation": "In alinea IV staat dat de € 35 van het cursusgeld wordt afgehaald bij inschrijving, dus betaalt u feitelijk niets. Optie C klopt alleen voor wie besluit niet te beginnen."
+      },
+      {
+        "prompt": "Wat wil de schrijver duidelijk maken met het voorbeeld van de opleidingen in de zorg (alinea III)?",
+        "options": [
+          "Dat werkgevers in de zorg vaak de cursus betalen",
+          "Dat een cursus van B1 naar B2 twee keer zo lang duurt",
+          "Dat het per opleiding verschilt welk niveau nodig is"
+        ],
+        "correct": 2,
+        "explanation": "Het voorbeeld in alinea III laat zien dat de ene opleiding B1 vraagt en de andere B2 voor schrijven; daarom moet u eerst navragen wat nodig is. Dat de duur precies verdubbelt, staat er niet."
+      },
+      {
+        "prompt": "Meneer Yıldız krijgt het advies om in een A2-groep te beginnen, maar hij denkt zelf dat hij hoger kan. Welk argument uit de tekst kan hij gebruiken?",
+        "options": [
+          "Hij mag twee proeflessen in een hogere groep volgen zonder risico",
+          "Hij kan een werkcursus aanvragen die bij zijn niveau past",
+          "Hij hoeft geen intakegesprek te doen als hij al eerder les had"
+        ],
+        "correct": 0,
+        "explanation": "Alinea V zegt dat wie in een hogere groep wil starten twee proeflessen mag meedoen en zonder extra kosten kan terugkeren. Een werkcursus (alinea II) gaat over beroepstaal en vereist zes deelnemers van een werkgever."
+      },
+      {
+        "prompt": "In welke alinea vindt iemand het antwoord op de vraag of de werkgever kan meebetalen?",
+        "options": [
+          "Alinea II",
+          "Alinea IV",
+          "Alinea V",
+          "Alinea VI"
+        ],
+        "correct": 3,
+        "explanation": "In alinea VI staat dat een werkgever de cursus vaak vergoedt als er een opleidingsbudget in de cao staat. Alinea II noemt de werkgever alleen bij het aanmelden van zes deelnemers voor een werkcursus."
+      }
+    ]
+  },
+  {
+    "section": "studieboek",
+    "title": "Arbeidscontracten en de proeftijd",
+    "intro": "Deze tekst komt uit een cursusmap van een opleiding voor administratief medewerkers. De tekst gaat over de verschillende soorten arbeidscontracten en over de regels rond de proeftijd.",
+    "body_html": "<p><strong>I</strong> Wie in Nederland in loondienst gaat werken, sluit een arbeidsovereenkomst met de werkgever. In zo'n overeenkomst staat wat u doet en wat u daarvoor krijgt: het loon, het aantal uren, de functie en de datum waarop u begint. Een arbeidsovereenkomst hoeft volgens de wet niet per se op papier te staan, maar in de praktijk zetten werkgevers de afspraken bijna altijd op schrift. Dat is verstandig, omdat u bij een conflict moet kunnen aantonen wat er precies is afgesproken. Mondelinge beloftes zijn achteraf namelijk moeilijk te bewijzen.</p><p><strong>II</strong> Er bestaan twee hoofdvormen. Bij een contract voor bepaalde tijd is van tevoren afgesproken wanneer het werk eindigt, bijvoorbeeld na zes maanden of na een jaar. Bij een contract voor onbepaalde tijd is er geen einddatum; zo'n contract wordt in het dagelijks spraakgebruik een vast contract genoemd. Een werkgever mag u niet eindeloos tijdelijke contracten blijven aanbieden. Krijgt u meer dan drie contracten voor bepaalde tijd achter elkaar, of duren die contracten samen langer dan drie jaar, dan verandert het laatste contract automatisch in een contract voor onbepaalde tijd. In sommige branches staan in de cao andere aantallen, waardoor de regel daar iets ruimer of juist strenger kan zijn.</p><p><strong>III</strong> Naast deze twee hoofdvormen komen bijzondere contracten voor. Bij een oproepcontract werkt u alleen als de werkgever u nodig heeft, terwijl bij een uitzendcontract niet het bedrijf waar u staat, maar het uitzendbureau uw werkgever is. Ook een leerwerkovereenkomst hoort in dit rijtje thuis: u volgt dan een opleiding en werkt tegelijk bij een erkend leerbedrijf. Wie via een oproepcontract werkt, heeft recht op een oproep van minstens vier dagen van tevoren. Zegt de werkgever de dienst later af, dan moet hij die uren toch uitbetalen.</p><p><strong>Wat is een proeftijd?</strong></p><p><strong>IV</strong> In veel contracten staat een proeftijd. In die eerste periode kunnen werkgever en werknemer bekijken of het werk en de samenwerking bevallen. Beide partijen mogen het contract tijdens de proeftijd per direct beëindigen, zonder opzegtermijn en zonder toestemming van het UWV. Een reden geven is niet verplicht, hoewel de werknemer er wel om mag vragen. Die vrijheid maakt de proeftijd voor een nieuwe werknemer spannend, want ook wie al een woning heeft gehuurd op basis van het nieuwe salaris, staat na één gesprek weer op straat.</p><p><strong>V</strong> Omdat de gevolgen zo groot zijn, heeft de wetgever de proeftijd streng begrensd. De belangrijkste regels zijn:</p><ul><li>Bij een contract van zes maanden of korter is een proeftijd niet toegestaan.</li><li>Duurt het contract langer dan zes maanden maar korter dan twee jaar, dan is de proeftijd maximaal één maand.</li><li>Bij een contract van twee jaar of langer en bij een vast contract geldt maximaal twee maanden.</li><li>De proeftijd moet schriftelijk zijn vastgelegd en voor beide partijen even lang zijn.</li></ul><p><strong>VI</strong> Staat er een te lange proeftijd in uw contract, dan is die afspraak ongeldig. Er geldt dan helemaal geen proeftijd, ook niet voor de periode die wél had gemogen. Een werkgever die u in de tweede maand van een jaarcontract op staande voet naar huis stuurt, handelt dus onrechtmatig. Twijfelt u over uw situatie, dan kunt u terecht bij het Juridisch Steunpunt Werk of bij de vakbond. Neem uw contract en eventuele brieven altijd mee, zodat de medewerker meteen kan zien welke afspraken er gelden.</p>",
+    "questions": [
+      {
+        "prompt": "Waarom raadt de tekst in alinea I aan om afspraken op papier te zetten?",
+        "options": [
+          "Omdat de wet een schriftelijke overeenkomst verplicht stelt",
+          "Omdat u anders bij onenigheid niets kunt bewijzen",
+          "Omdat de werkgever dan het loon eerder overmaakt"
+        ],
+        "correct": 1,
+        "explanation": "In alinea I staat dat mondelinge beloftes achteraf moeilijk te bewijzen zijn bij een conflict. Optie A is fout: in dezelfde alinea staat juist dat de wet een schriftelijk contract niet verplicht stelt."
+      },
+      {
+        "prompt": "Wat staat er in alinea II over tijdelijke contracten?",
+        "options": [
+          "Na drie jaar krijgt iedere werknemer altijd een vast contract",
+          "Een cao kan afwijkende aantallen en termijnen bevatten",
+          "Een werkgever mag hoogstens twee tijdelijke contracten geven",
+          "Contracten voor bepaalde tijd hebben nooit een einddatum"
+        ],
+        "correct": 1,
+        "explanation": "Alinea II eindigt met de opmerking dat in sommige branches andere aantallen in de cao staan. Optie A is te stellig: de cao kan de regel juist ruimer of strenger maken."
+      },
+      {
+        "prompt": "Hoe lang van tevoren moet een werkgever iemand met een oproepcontract oproepen?",
+        "options": [
+          "Minstens vier dagen",
+          "Minstens één week",
+          "Minstens twee dagen"
+        ],
+        "correct": 0,
+        "explanation": "In alinea III staat dat de oproep minstens vier dagen van tevoren moet komen; anders moeten de uren toch worden betaald."
+      },
+      {
+        "prompt": "Wat wil de schrijver duidelijk maken met het voorbeeld van de gehuurde woning in alinea IV?",
+        "options": [
+          "Dat werknemers pas na de proeftijd mogen verhuizen",
+          "Dat een huurwoning zonder vast contract moeilijk te krijgen is",
+          "Dat ontslag in de proeftijd grote gevolgen kan hebben"
+        ],
+        "correct": 2,
+        "explanation": "Het voorbeeld in alinea IV illustreert waarom de proeftijd spannend is: je kunt van de ene op de andere dag zonder inkomen zitten. Optie B gaat over de huurmarkt, en daar zegt de tekst niets over."
+      },
+      {
+        "prompt": "Sanne krijgt een contract voor acht maanden aangeboden. In het contract staat een proeftijd van twee maanden. Welk argument kan zij gebruiken?",
+        "options": [
+          "Bij een contract van acht maanden is een proeftijd helemaal verboden",
+          "Bij een contract korter dan twee jaar mag de proeftijd maar één maand duren",
+          "De proeftijd hoeft niet schriftelijk te worden vastgelegd",
+          "Zij mag zelf een kortere proeftijd voorstellen dan de werkgever"
+        ],
+        "correct": 1,
+        "explanation": "Volgens de opsomming in alinea V geldt bij een contract tussen zes maanden en twee jaar een proeftijd van maximaal één maand. Optie A klopt niet: het verbod geldt alleen bij contracten van zes maanden of korter."
+      },
+      {
+        "prompt": "Wat betekent het volgens alinea VI als er een te lange proeftijd in het contract staat?",
+        "options": [
+          "De proeftijd wordt automatisch teruggebracht tot de wettelijke termijn",
+          "Er geldt in het geheel geen proeftijd meer",
+          "De werkgever moet een nieuw contract opstellen"
+        ],
+        "correct": 1,
+        "explanation": "Alinea VI zegt dat de afspraak ongeldig is en dat er dan helemaal geen proeftijd geldt. Optie A lijkt logisch, maar de tekst sluit die oplossing uitdrukkelijk uit."
+      }
+    ]
+  },
+  {
+    "section": "folder",
+    "title": "Huurdersloket Midden-Nederland: hulp bij klachten over uw woning",
+    "intro": "Deze tekst is een folder van het Huurdersloket Midden-Nederland, een onafhankelijke instelling die huurders helpt bij klachten over hun woning en hun verhuurder.",
+    "body_html": "<p><strong>I</strong> Bijna iedereen die huurt, krijgt vroeg of laat te maken met een probleem. Soms is dat een lekkage die maar niet wordt gemaakt, soms een huurverhoging waarvan u de berekening niet begrijpt. Veel huurders weten in zo'n situatie niet bij wie zij moeten aankloppen, waardoor een klein probleem soms maandenlang blijft bestaan. Het Huurdersloket Midden-Nederland is opgericht om die drempel weg te nemen. Wij zijn onafhankelijk: wij werken niet voor een verhuurder en ook niet voor de gemeente, zodat wij vrij zijn om uw belang voorop te stellen. Onze hulp is gratis voor iedereen die een woning huurt in onze regio, of dat nu een sociale huurwoning is of een woning van een particuliere eigenaar.</p><p><strong>II</strong> Bij ons loket kunt u terecht met vragen over onderhoud, servicekosten, huurverhoging, borg en overlast. Ook wanneer u vermoedt dat uw huurcontract niet klopt, kijken onze medewerkers met u mee. Wat wij niet doen, is het conflict van u overnemen. Wij voeren geen rechtszaken en wij zijn geen advocatenkantoor. Wel bereiden wij samen met u een brief voor, leggen wij uit welke regels gelden en bellen wij zo nodig met de verhuurder om een gesprek op gang te brengen. In ongeveer zeven van de tien zaken die wij in het afgelopen jaar behandelden, kwam er een oplossing zonder dat er een rechter aan te pas kwam.</p><p><strong>Hoe wij te werk gaan</strong></p><p><strong>III</strong> Een melding begint altijd met een gesprek. Dat kan telefonisch, maar u mag ook langskomen op ons inloopspreekuur. Wij vragen u dan om uw huurcontract mee te nemen en om alle brieven of e-mails die u met de verhuurder hebt uitgewisseld. Daarna geldt een vaste volgorde:</p><ul><li>U meldt de klacht eerst schriftelijk bij uw verhuurder en geeft hem vier weken de tijd om te reageren.</li><li>Reageert de verhuurder niet of bent u het niet eens met het antwoord, dan maakt u een afspraak bij ons loket.</li><li>Een medewerker bekijkt uw dossier en laat binnen tien werkdagen weten welke stappen mogelijk zijn.</li><li>Als het nodig is, verwijzen wij u door naar de Huurcommissie of naar het Juridisch Loket.</li></ul><p>Die eerste stap slaan veel mensen over, terwijl een verhuurder wettelijk de kans moet krijgen om de klacht zelf op te lossen. Zonder bewijs van uw melding neemt de Huurcommissie een zaak meestal niet in behandeling.</p><p><strong>IV</strong> Voor een procedure bij de Huurcommissie betaalt u eenmalig 25 euro. Dat bedrag krijgt u terug wanneer de commissie u gelijk geeft. Verdient u minder dan het minimumloon, dan kunt u bij ons een verzoek om vrijstelling invullen, zodat u het bedrag niet hoeft voor te schieten. Let op de termijn: een bezwaar tegen de jaarlijkse huurverhoging moet vóór 1 juli bij de Huurcommissie binnen zijn. Wie later is, kan pas het volgende jaar opnieuw bezwaar maken, hoe sterk zijn argumenten ook zijn.</p><p><strong>V</strong> Ons inloopspreekuur is op dinsdag en donderdag van 13.00 tot 16.00 uur. Op maandag en woensdag zijn wij alleen telefonisch bereikbaar, tussen 9.00 en 12.00 uur. Voor een uitgebreid adviesgesprek van een uur maakt u vooraf een afspraak; door de drukte is de wachttijd daarvoor gemiddeld drie weken. Hebt u een spoedeisend probleem, bijvoorbeeld geen warm water of een woning zonder verwarming in de winter, meld dat dan meteen bij het telefoongesprek. Spoedmeldingen behandelen wij binnen twee werkdagen.</p><p><strong>VI</strong> U vindt ons hier:<br>Huurdersloket Midden-Nederland<br>Kastanjelaan 14<br>3811 GH Amersfoort<br>Telefoon: 033 - 555 21 40<br>E-mail: info@huurdersloket-mn.nl<br>Wilt u liever dat iemand met u meegaat naar de verhuurder? Vraag dan naar onze vrijwilligers. Zij spreken samen met u het gesprek voor en gaan zo nodig mee.</p>",
+    "questions": [
+      {
+        "prompt": "Wat staat er in alinea I over het Huurdersloket?",
+        "options": [
+          "Het loket helpt alleen huurders van een sociale huurwoning.",
+          "Het loket is niet verbonden aan een verhuurder of aan de gemeente.",
+          "Het loket vraagt een kleine bijdrage van huurders met werk."
+        ],
+        "correct": 1,
+        "explanation": "In alinea I staat dat het loket onafhankelijk is en niet voor een verhuurder of de gemeente werkt. Sociale huur wordt wel genoemd, maar juist als één van de twee soorten woningen: particuliere huurders kunnen er ook terecht."
+      },
+      {
+        "prompt": "Wat maakt de schrijver in alinea II duidelijk?",
+        "options": [
+          "Dat het loket vooral rechtszaken tegen verhuurders voorbereidt.",
+          "Dat huurders hun klacht helemaal aan het loket kunnen overdragen.",
+          "Dat het loket ondersteunt en adviseert, maar het conflict niet overneemt.",
+          "Dat de meeste verhuurders niet willen praten met huurders."
+        ],
+        "correct": 2,
+        "explanation": "Alinea II noemt eerst waarvoor u terechtkunt en zegt daarna duidelijk dat het loket geen advocatenkantoor is en geen rechtszaken voert. Optie B is aantrekkelijk omdat het loket wel brieven helpt schrijven en belt, maar de huurder blijft zelf eigenaar van de zaak."
+      },
+      {
+        "prompt": "Waarom is het volgens alinea III belangrijk dat u uw klacht eerst schriftelijk bij de verhuurder meldt?",
+        "options": [
+          "Omdat de Huurcommissie een zaak zonder dat bewijs meestal afwijst.",
+          "Omdat het loket anders geen afspraak met u wil maken.",
+          "Omdat de verhuurder dan binnen tien werkdagen moet reageren."
+        ],
+        "correct": 0,
+        "explanation": "Aan het eind van alinea III staat dat de Huurcommissie een zaak meestal niet behandelt zonder bewijs van uw melding. De termijn van tien werkdagen geldt voor het loket zelf, niet voor de verhuurder."
+      },
+      {
+        "prompt": "Mevrouw Bakker wil bezwaar maken tegen haar huurverhoging, maar heeft weinig geld. In welke alinea vindt zij informatie die voor haar situatie van belang is?",
+        "options": [
+          "In alinea II.",
+          "In alinea III.",
+          "In alinea IV.",
+          "In alinea V."
+        ],
+        "correct": 2,
+        "explanation": "Alinea IV gaat over de kosten van 25 euro, de mogelijke vrijstelling bij een laag inkomen en de termijn van 1 juli. Alinea III beschrijft wel de stappen, maar zegt niets over geld of over de datum."
+      },
+      {
+        "prompt": "Wat kunt u doen als u in januari geen verwarming hebt?",
+        "options": [
+          "Een afspraak maken voor een adviesgesprek van een uur.",
+          "Dit direct melden aan de telefoon, zodat het snel wordt opgepakt.",
+          "Wachten tot het inloopspreekuur op dinsdag of donderdag."
+        ],
+        "correct": 1,
+        "explanation": "Volgens alinea V moet u een spoedeisend probleem, zoals een woning zonder verwarming in de winter, meteen tijdens het telefoongesprek melden; spoedmeldingen worden binnen twee werkdagen behandeld. Voor een adviesgesprek geldt juist een wachttijd van gemiddeld drie weken."
+      },
+      {
+        "prompt": "Wat is het belangrijkste doel van deze folder?",
+        "options": [
+          "Huurders waarschuwen voor verhuurders die zich niet aan de regels houden.",
+          "Huurders uitnodigen om vrijwilliger te worden bij het loket.",
+          "Huurders laten zien waarvoor en op welke manier zij het loket kunnen inschakelen."
+        ],
+        "correct": 2,
+        "explanation": "De folder legt uit met welke klachten u terechtkunt, welke stappen u zet en wanneer het loket bereikbaar is. Vrijwilligers worden alleen kort in alinea VI genoemd als extra hulp, niet als oproep om zelf vrijwilliger te worden."
+      }
+    ]
+  },
+  {
+    "section": "artikel",
+    "title": "Zoeken naar een stageplek in de zorg",
+    "intro": "Deze tekst komt uit een vakblad voor medewerkers in de zorg en het onderwijs. De tekst gaat over het tekort aan stageplaatsen voor zorgopleidingen en over de manieren waarop scholen dit tekort proberen op te lossen.",
+    "body_html": "<p><strong>I</strong> Ieder jaar beginnen duizenden studenten aan een opleiding in de zorg, omdat er in ziekenhuizen, verpleeghuizen en de thuiszorg veel werk is. Wie zo'n opleiding volgt, moet een groot deel van de studietijd op een stageplek doorbrengen. Bij de opleiding verzorgende is dat ongeveer de helft van de totale studieduur. Juist die stageplekken zijn moeilijk te vinden. Uit een rondgang langs achttien opleidingen bleek dat vorig schooljaar bijna 1.400 studenten later aan hun stage begonnen dan gepland. Voor ongeveer 300 van hen duurde het langer dan drie maanden voordat er een plek was.</p><p><strong>II</strong> Dat er te weinig plaatsen zijn, komt niet doordat instellingen geen stagiairs willen. Het probleem zit vooral bij de begeleiding. Een stagiair heeft een werkbegeleider nodig: een medewerker die tijd vrijmaakt om uit te leggen, mee te kijken en beoordelingen te schrijven. Omdat veel afdelingen zelf te weinig personeel hebben, blijft er weinig ruimte over voor die taak. \"Wij zeggen soms nee tegen een student, terwijl we die student over twee jaar graag in dienst nemen\", zegt Karin Bosveld, teamleider bij verpleeghuis De Meidoorn in Zwolle. \"Dat voelt onlogisch, maar met één begeleider kunnen we niet vier stagiairs tegelijk verantwoord opleiden.\"</p><p><strong>Andere manieren van begeleiden</strong></p><p><strong>III</strong> Scholen en instellingen zoeken daarom naar vormen van stage waarbij één begeleider meer studenten kan helpen. De bekendste vorm is de leerafdeling. Op zo'n afdeling werken zes tot tien studenten samen, verdeeld over verschillende leerjaren. De eerstejaars leren van de derdejaars, en pas als een student iets echt niet weet, komt de werkbegeleider erbij. Regionaal Opleidingscentrum Maasstroom werkt sinds vorig jaar met vier leerafdelingen en kon daardoor 52 extra studenten plaatsen. Een tweede oplossing is de gedeelde stage: twee studenten delen één plek en zijn ieder drie dagen per week aanwezig, waardoor de afdeling toch elke dag hulp heeft.</p><p><strong>IV</strong> Niet iedereen is enthousiast. Docent Ramon Vermeer waarschuwt dat studenten op een leerafdeling minder vaak met ervaren verpleegkundigen samenwerken. \"Een student die vooral van medestudenten leert, ziet weinig routine van iemand met twintig jaar praktijk\", zegt hij. Toch blijkt uit een onderzoek onder 240 studenten dat de tevredenheid op leerafdelingen niet lager is dan op gewone afdelingen. Wel geven studenten aan dat zij duidelijke afspraken willen over wie zij bij twijfel mogen bellen, ook in de avonduren.</p><p><strong>V</strong> Verder proberen scholen het aanbod beter te verdelen. Vroeger zocht iedere student zelf een plek, waardoor populaire ziekenhuizen tientallen aanvragen kregen en kleinere organisaties bijna niets. Nu melden instellingen hun plekken aan bij één regionaal bureau, dat de plaatsing regelt. Studenten mogen twee voorkeuren opgeven, maar krijgen geen garantie. Wie een aangeboden plek zonder goede reden afwijst, komt onderaan de lijst en moet wachten tot de volgende ronde. Alleen bij zorgtaken thuis of bij een reistijd van meer dan negentig minuten enkele reis wordt een uitzondering gemaakt.</p><p><strong>VI</strong> Voor instellingen die extra begeleiders willen opleiden, bestaat een vergoeding. Een medewerker kan een cursus werkbegeleiding volgen van vijf dagdelen; de school betaalt de cursus en de instelling krijgt daarnaast 450 euro per opgeleide begeleider. In de eerste twee jaar hebben ruim 600 medewerkers die cursus gevolgd. Volgens het regionale bureau is dat nog niet genoeg: om alle studenten op tijd te plaatsen zijn er de komende drie jaar nog zeker duizend werkbegeleiders nodig.</p>",
+    "questions": [
+      {
+        "prompt": "Wat is volgens alinea II de belangrijkste oorzaak van het tekort aan stageplaatsen?",
+        "options": [
+          "Zorginstellingen twijfelen of stagiairs later bij hen willen werken.",
+          "Er is te weinig personeel om studenten op de werkplek te begeleiden.",
+          "Studenten van zorgopleidingen moeten te veel uren stage lopen."
+        ],
+        "correct": 1,
+        "explanation": "In alinea II staat dat instellingen wel stagiairs willen, maar dat afdelingen door personeelsgebrek weinig ruimte hebben voor begeleiding. Dat instellingen twijfelen aan toekomstige medewerkers is juist niet zo: de teamleider zou de student later graag in dienst nemen."
+      },
+      {
+        "prompt": "Waarom noemt de schrijver in alinea II het voorbeeld van verpleeghuis De Meidoorn?",
+        "options": [
+          "Om te laten zien dat verpleeghuizen minder geschikt zijn voor stagiairs dan ziekenhuizen.",
+          "Om duidelijk te maken dat instellingen studenten weigeren terwijl ze hen eigenlijk nodig hebben.",
+          "Om aan te geven dat teamleiders te weinig zeggenschap hebben over hun eigen afdeling.",
+          "Om uit te leggen dat studenten vaak verkeerde verwachtingen hebben van een stage."
+        ],
+        "correct": 1,
+        "explanation": "De teamleider vertelt dat ze soms nee zegt tegen een student die ze later graag zou aannemen; dat voorbeeld laat de tegenstelling zien tussen behoefte en mogelijkheden (alinea II). Over een verschil tussen verpleeghuizen en ziekenhuizen zegt de tekst niets."
+      },
+      {
+        "prompt": "Wat is een leerafdeling volgens alinea III?",
+        "options": [
+          "Een afdeling waar studenten uit verschillende leerjaren elkaar helpen.",
+          "Een afdeling waar twee studenten samen één stageplek delen.",
+          "Een afdeling waar alleen eerstejaars studenten worden geplaatst."
+        ],
+        "correct": 0,
+        "explanation": "In alinea III staat dat op een leerafdeling zes tot tien studenten uit verschillende leerjaren samenwerken en dat eerstejaars van derdejaars leren. Het delen van één plek door twee studenten is de gedeelde stage, een andere oplossing."
+      },
+      {
+        "prompt": "Een student wil weten of hij een aangeboden stageplek mag weigeren omdat de reis erg lang is. In welke alinea vindt hij het antwoord?",
+        "options": [
+          "In alinea III.",
+          "In alinea IV.",
+          "In alinea V.",
+          "In alinea VI."
+        ],
+        "correct": 2,
+        "explanation": "Alinea V beschrijft de plaatsing door het regionale bureau en noemt de uitzondering bij een reistijd van meer dan negentig minuten enkele reis. Alinea IV gaat over de kritiek van een docent, niet over weigeren."
+      },
+      {
+        "prompt": "Welk bedrag krijgt een instelling volgens alinea VI per medewerker die de cursus werkbegeleiding heeft afgerond?",
+        "options": [
+          "450 euro.",
+          "600 euro.",
+          "Vijf dagdelen aan verlof."
+        ],
+        "correct": 0,
+        "explanation": "In alinea VI staat dat de instelling 450 euro per opgeleide begeleider ontvangt. Het getal 600 hoort bij het aantal medewerkers dat de cursus al heeft gevolgd."
+      }
+    ]
+  },
+  {
+    "section": "regels",
+    "title": "Veilig werken met de heftruck: instructie voor alle medewerkers",
+    "intro": "Deze tekst is een veiligheidsinstructie van een distributiecentrum. De tekst gaat over de regels voor het werken met een heftruck in het magazijn.",
+    "body_html": "<p><strong>Veiligheidsinstructie magazijn Vandermeer Logistiek</strong><br>Versie 4 – geldig vanaf 1 maart 2025</p><p><strong>I</strong> In ons magazijn rijden dagelijks veertien heftrucks tussen de stellingen. Een heftruck weegt met lading al snel meer dan drie ton, waardoor een botsing met een voetganger bijna altijd ernstig afloopt. Daarom gelden er strenge regels, ook voor medewerkers die zelf nooit op een heftruck zitten. Iedereen die het magazijn betreedt, moet deze instructie hebben gelezen en de ontvangst ervan aftekenen bij de teamleider. Wie de instructie niet heeft afgetekend, mag het magazijn alleen betreden onder begeleiding van een collega met een geldig certificaat.</p><p><strong>II</strong> Alleen medewerkers met een geldig heftruckcertificaat mogen rijden. Dat certificaat is vijf jaar geldig; daarna volgt u een herhalingsdag van vier uur. U ontvangt drie maanden voor de vervaldatum een bericht van de afdeling Personeelszaken, zodat u de herhalingsdag op tijd kunt inplannen. Is uw certificaat toch verlopen, dan vervalt uw rijbevoegdheid onmiddellijk, hoewel u wel gewoon ander magazijnwerk mag doen. Uitzendkrachten hebben naast een certificaat ook een schriftelijke toestemming van de magazijnchef nodig, omdat zij onze routes en gewoonten nog niet kennen.</p><p><strong>III</strong> Voor elke dienst voert u een controle uit van ongeveer tien minuten. U kijkt naar de banden, de vorken, de remmen, de claxon en het zwaailicht, en u controleert of de veiligheidsgordel goed werkt. Ook noteert u de stand van de accu. Constateert u een gebrek, dan meldt u dit direct in het digitale logboek en hangt u het rode kaartje aan het stuur. Een heftruck met een rood kaartje mag niemand gebruiken, ook niet voor één korte rit naar het laadperron. Die uitzondering klinkt onschuldig, maar juist bij zo'n korte rit zijn in het verleden twee ongelukken gebeurd.</p><p><strong>IV</strong> Tijdens het rijden gelden de volgende regels:</p><ul><li>De maximumsnelheid in het magazijn is 8 kilometer per uur; bij de laaddeuren is dat 5.</li><li>U draagt altijd de gordel, ook als u alleen achteruit een pallet verplaatst.</li><li>De vorken houdt u tijdens het rijden ongeveer vijftien centimeter boven de vloer.</li><li>Op een heftruck mag nooit een tweede persoon meerijden, ook niet op de vorken.</li><li>U gebruikt de claxon bij elke kruising en bij elke klapdeur.</li></ul><p><strong>V</strong> Voetgangers lopen uitsluitend op de gele looppaden. Wilt u een rijbaan oversteken, dan maakt u eerst oogcontact met de bestuurder, want een bestuurder die zijn lading recht voor zich heeft, ziet vaak minder dan u denkt. Draag in het hele magazijn een veiligheidshesje en veiligheidsschoenen. Bezoekers krijgen bij de balie een hesje in bruikleen en worden altijd begeleid. Muziek luisteren met oordopjes is in de rijzones verboden, omdat u de claxon dan te laat hoort.</p><p><strong>VI</strong> Gaat er toch iets mis, dan stopt u de heftruck, schakelt u de motor uit en waarschuwt u de teamleider. Elk incident wordt gemeld, ook wanneer er geen schade lijkt te zijn; een beschadigde stelling kan namelijk dagen later alsnog bezwijken. Bij persoonlijk letsel belt u het interne alarmnummer 555. De bedrijfshulpverlening is tussen 6.00 en 22.00 uur aanwezig. Wie zich herhaaldelijk niet aan deze regels houdt, krijgt eerst een gesprek met de magazijnchef en daarna een schriftelijke waarschuwing. In het uiterste geval trekt de directie de rijbevoegdheid definitief in.</p>",
+    "questions": [
+      {
+        "prompt": "Wat staat er in alinea I over medewerkers die zelf niet op een heftruck rijden?",
+        "options": [
+          "Zij moeten de instructie ook kennen en de ontvangst aftekenen.",
+          "Zij mogen het magazijn alleen tijdens de pauzes betreden.",
+          "Zij hoeven de instructie pas te lezen na een incident."
+        ],
+        "correct": 0,
+        "explanation": "In alinea I staat dat de regels ook gelden voor wie nooit rijdt, en dat iedereen de instructie moet aftekenen. Begeleiding is alleen nodig voor wie níét heeft afgetekend, dus dat geldt niet automatisch voor alle voetgangers."
+      },
+      {
+        "prompt": "Hoe lang is een heftruckcertificaat geldig?",
+        "options": [
+          "Drie maanden.",
+          "Vier jaar.",
+          "Vijf jaar.",
+          "Tien jaar."
+        ],
+        "correct": 2,
+        "explanation": "Alinea II noemt een geldigheid van vijf jaar. De drie maanden slaan op het bericht vooraf van Personeelszaken, niet op de geldigheidsduur."
+      },
+      {
+        "prompt": "Waarom noemt de schrijver in alinea III de korte rit naar het laadperron?",
+        "options": [
+          "Om te laten zien dat korte ritten sneller mogen worden gereden.",
+          "Om duidelijk te maken dat het verbod ook geldt in kleine gevallen.",
+          "Om uit te leggen wanneer de teamleider toestemming kan geven."
+        ],
+        "correct": 1,
+        "explanation": "Het voorbeeld in alinea III laat zien dat een heftruck met een rood kaartje echt door niemand gebruikt mag worden, ook niet even. Van toestemming van de teamleider is bij een rood kaartje geen sprake."
+      },
+      {
+        "prompt": "Een uitzendkracht met een geldig certificaat wil bij Vandermeer Logistiek op de heftruck rijden. In welke alinea vindt hij wat hij verder nodig heeft?",
+        "options": [
+          "Alinea I.",
+          "Alinea II.",
+          "Alinea IV.",
+          "Alinea VI."
+        ],
+        "correct": 1,
+        "explanation": "Alinea II vermeldt dat uitzendkrachten daarnaast schriftelijke toestemming van de magazijnchef nodig hebben. Alinea I gaat over het aftekenen van de instructie door iedereen, niet over uitzendkrachten."
+      },
+      {
+        "prompt": "Wat is volgens alinea V de reden om oogcontact te maken met de bestuurder?",
+        "options": [
+          "Omdat de bestuurder door zijn lading een slecht zicht kan hebben.",
+          "Omdat de bestuurder anders zijn claxon niet mag gebruiken.",
+          "Omdat voetgangers zonder hesje niet zichtbaar zijn."
+        ],
+        "correct": 0,
+        "explanation": "In alinea V staat dat een bestuurder met lading voor zich minder ziet dan de voetganger denkt. Het hesje wordt wel genoemd, maar niet als reden voor het oogcontact."
+      },
+      {
+        "prompt": "Een medewerker rijdt licht tegen een stelling aan. Er is geen schade te zien. Welk argument uit de tekst laat zien dat hij dit toch moet melden?",
+        "options": [
+          "De bedrijfshulpverlening is maar tot 22.00 uur aanwezig.",
+          "Een beschadigde stelling kan later alsnog instorten.",
+          "Bij elk incident volgt een schriftelijke waarschuwing."
+        ],
+        "correct": 1,
+        "explanation": "Alinea VI geeft precies dit argument: schade aan een stelling kan dagen later gevolgen hebben. Een schriftelijke waarschuwing volgt pas bij herhaald overtreden van de regels, niet na één melding."
+      },
+      {
+        "prompt": "Wat is het belangrijkste doel van deze tekst?",
+        "options": [
+          "Uitleggen hoe medewerkers een heftruckcertificaat kunnen halen.",
+          "Aankondigen dat de directie strenger gaat controleren in het magazijn.",
+          "Duidelijk maken welke regels in het magazijn gelden en waarom."
+        ],
+        "correct": 2,
+        "explanation": "De tekst zet in alle alinea's regels op een rij en geeft er telkens een reden bij. Het intrekken van de rijbevoegdheid komt alleen in alinea VI aan bod en is niet het hoofddoel."
+      }
+    ]
+  },
+  {
+    "section": "brief",
+    "title": "Groot onderhoud aan de gevel van uw woning",
+    "intro": "Deze tekst is een brief van een woningcorporatie aan een huurder over werkzaamheden aan de buitenkant van het gebouw.",
+    "body_html": "<p>Woningstichting De Meerhoeve<br>Afdeling Vastgoed en Onderhoud<br>Postbus 4180<br>3502 GD Utrecht</p><p>Aan de bewoner(s) van<br>Kastanjelaan 118<br>3512 BR Utrecht</p><p>Datum: 11 maart 2025<br>Onderwerp: groot onderhoud gevel Kastanjelaan 100-140<br>Kenmerk: ON-2025-0417</p><p>Geachte heer, mevrouw,</p><p><strong>I</strong> Uw woning maakt deel uit van een complex dat in 1978 is gebouwd. Bij de laatste controle hebben onze technici vastgesteld dat het voegwerk in de buitenmuur op veel plaatsen los zit, waardoor regenwater in de muur kan trekken. Ook de kozijnen aan de straatkant zijn aan een nieuwe verflaag toe. Hoewel er nu nog geen sprake is van schade binnen in de woningen, willen wij niet wachten tot bewoners last krijgen van vochtplekken of schimmel. Wij hebben daarom besloten om groot onderhoud aan de gevel uit te voeren. De werkzaamheden starten op maandag 14 april 2025 en duren naar verwachting tien weken.</p><p><strong>II</strong> Aannemersbedrijf Van Doorn en Zonen voert het werk voor ons uit. De aannemer plaatst in de week van 7 april een steiger langs de hele voorgevel. Die steiger blijft staan tot alle werkzaamheden klaar zijn. Wij begrijpen dat een steiger voor het raam vervelend is, omdat u minder daglicht hebt en het gevoel kunt krijgen dat vreemden bij u naar binnen kijken. Om die reden krijgt de steiger aan de buitenkant doeken en worden de trappen buiten werktijd afgesloten met een hek op slot. De werklieden zijn aanwezig van maandag tot en met vrijdag tussen 07.30 en 16.00 uur. In het weekend en op Tweede Paasdag wordt er niet gewerkt.</p><p><strong>Wat wij van u vragen</strong></p><p><strong>III</strong> Wij vragen u om vóór 11 april de volgende zaken te regelen:</p><ul><li>Haal planten, meubels en fietsen weg bij de voorgevel, zodat de steigerbouwers erlangs kunnen.</li><li>Houd uw ramen aan de straatkant gesloten op dagen dat er geschilderd wordt.</li><li>Zorg dat uw huisdieren niet naar buiten kunnen via een openstaand raam.</li></ul><p>Spullen die op 11 april nog bij de gevel staan, worden door de aannemer tijdelijk verplaatst naar de fietsenberging. Wij zijn niet aansprakelijk voor schade aan spullen die u ondanks ons verzoek hebt laten staan. Bewoners die door ziekte of een lichamelijke beperking niet zelf kunnen opruimen, kunnen dit uiterlijk 4 april melden. Onze medewerkers helpen dan kosteloos.</p><p><strong>IV</strong> Voor de werkzaamheden hoeft de aannemer in principe niet in uw woning te zijn. Er is één uitzondering: bij zeven woningen moet het kozijn van de slaapkamer aan de achterzijde worden vervangen. Als dat bij u het geval is, ontvangt u begin april een aparte brief met een afspraak van twee uur. U hoeft daarvoor geen vrij te nemen; een afspraak in de avond of op zaterdag is mogelijk. Kunt u op het voorgestelde moment echt niet aanwezig zijn, dan kunt u de sleutel afgeven bij de opzichter, mits u dat schriftelijk bevestigt.</p><p><strong>V</strong> Het groot onderhoud leidt niet tot een hogere huur, omdat het hier geen verbetering maar herstel van de bestaande situatie betreft. Wel geldt er tijdens het werk een tegemoetkoming voor overlast van 25 euro per maand. Dit bedrag wordt in juli automatisch verrekend met uw huur; u hoeft daar niets voor aan te vragen. Huurders die vinden dat de overlast veel groter is dan hier beschreven, kunnen een schriftelijke klacht indienen bij onze klachtencommissie. Die commissie reageert binnen drie weken.</p><p><strong>VI</strong> Op dinsdag 25 maart om 19.30 uur houden wij een informatiebijeenkomst in buurthuis De Wilg aan de Kastanjelaan 12. De opzichter en een medewerker van de aannemer beantwoorden daar uw vragen. Aanmelden is niet nodig. Lukt het u niet om te komen, dan kunt u ons bellen op 030 - 555 21 40 of mailen naar onderhoud@demeerhoeve-wonen.nl.</p><p>Met vriendelijke groet,<br>M. Bergkamp<br>Manager Vastgoed en Onderhoud</p>",
+    "questions": [
+      {
+        "prompt": "Waarom voert de woningcorporatie het onderhoud nu uit (alinea I)?",
+        "options": [
+          "Omdat veel bewoners hebben geklaagd over vocht en schimmel in hun woning.",
+          "Omdat het gebouw uit 1978 volgens de regels na vijftig jaar vernieuwd moet worden.",
+          "Omdat de corporatie schade binnen in de woningen wil voorkomen."
+        ],
+        "correct": 2,
+        "explanation": "In alinea I staat dat er binnen nog geen schade is, maar dat de corporatie niet wil wachten tot bewoners last krijgen van vocht of schimmel. Optie A is te sterk: klachten van bewoners worden niet genoemd."
+      },
+      {
+        "prompt": "Wat doet de corporatie volgens alinea II om een nadeel van de steiger te beperken?",
+        "options": [
+          "De steiger wordt na elke werkdag gedeeltelijk afgebroken.",
+          "De trappen van de steiger gaan buiten werktijd op slot.",
+          "De werklieden werken alleen in de ochtenduren aan de voorgevel."
+        ],
+        "correct": 1,
+        "explanation": "In alinea II staat dat de steiger doeken krijgt en dat de trappen buiten werktijd met een hek op slot worden afgesloten. De steiger blijft juist staan tot het werk klaar is, dus optie A klopt niet."
+      },
+      {
+        "prompt": "Vóór welke datum moeten bewoners melden dat zij hulp nodig hebben bij het opruimen?",
+        "options": [
+          "4 april",
+          "7 april",
+          "11 april",
+          "14 april"
+        ],
+        "correct": 0,
+        "explanation": "Alinea III noemt 4 april als uiterste datum voor het melden van hulp. 11 april is de datum waarop de spullen weg moeten zijn."
+      },
+      {
+        "prompt": "Wat staat er in alinea IV over de afspraak voor het vervangen van een kozijn?",
+        "options": [
+          "Iedere huurder krijgt begin april een afspraak van twee uur thuis.",
+          "De huurder mag de sleutel alleen afgeven na een schriftelijke bevestiging.",
+          "De huurder moet voor de afspraak een halve dag vrij nemen van het werk."
+        ],
+        "correct": 1,
+        "explanation": "Alinea IV zegt dat afgeven van de sleutel mag, mits de huurder dat schriftelijk bevestigt. Optie A is te algemeen: het gaat maar om zeven woningen."
+      },
+      {
+        "prompt": "Wat wordt in alinea V bedoeld met de zin dat het bedrag automatisch wordt verrekend met de huur?",
+        "options": [
+          "De huurder betaalt in juli minder huur, zonder zelf iets te doen.",
+          "De huurder krijgt het bedrag terug nadat hij een formulier heeft ingevuld.",
+          "De huur wordt na afloop van het werk voor iedereen blijvend verlaagd."
+        ],
+        "correct": 0,
+        "explanation": "In alinea V staat dat de tegemoetkoming in juli met de huur wordt verrekend en dat aanvragen niet nodig is. Een blijvende huurverlaging is er niet: de huur gaat juist niet omhoog of omlaag."
+      },
+      {
+        "prompt": "Een huurder vindt dat hij veel meer last heeft dan in de brief staat. Welk argument of welke stap past bij zijn situatie?",
+        "options": [
+          "Hij kan de aannemer vragen de werkzaamheden bij zijn woning uit te stellen.",
+          "Hij kan tijdens de bijeenkomst om een hogere maandelijkse huurkorting vragen.",
+          "Hij kan schriftelijk een klacht indienen en krijgt binnen drie weken antwoord."
+        ],
+        "correct": 2,
+        "explanation": "Alinea V wijst huurders met meer overlast dan beschreven op de klachtencommissie, die binnen drie weken reageert. De bijeenkomst in alinea VI is bedoeld voor vragen, niet voor het regelen van een hogere vergoeding."
+      },
+      {
+        "prompt": "Wat is het belangrijkste doel van deze brief?",
+        "options": [
+          "De corporatie wil huurders uitnodigen voor een bijeenkomst in het buurthuis.",
+          "De corporatie wil huurders informeren over het onderhoud en wat er van hen verwacht wordt.",
+          "De corporatie wil huurders waarschuwen voor schade door vocht in oude woningen."
+        ],
+        "correct": 1,
+        "explanation": "De hele brief gaat over de planning, de gevolgen en de taken van de huurder; alinea III noemt duidelijk wat de bewoner moet doen. De uitnodiging in alinea VI is maar één onderdeel van de brief."
+      }
+    ]
+  }
+]

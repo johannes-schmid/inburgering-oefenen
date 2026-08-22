@@ -1,0 +1,203 @@
+[
+  {
+    "task_type": "sentence_completion",
+    "title": "Eerdere werkervaring",
+    "prompt_html": "<p>U wilt de opleiding Verzorgende IG gaan volgen bij een regionaal opleidingscentrum. U hebt in uw eigen land en in Nederland al vier jaar in de thuiszorg gewerkt. U schrijft een mail naar de studieadviseur van de opleiding.</p>",
+    "email_to": "studieadvies@rocmaasdal.nl",
+    "email_subject": "Vraag over mijn aanmelding",
+    "greeting": "Geachte heer, mevrouw,\n\nIk wil me in september aanmelden voor de opleiding Verzorgende IG. Voordat ik dat doe, heb ik een vraag over mijn werkervaring, want …",
+    "closing": "Ik hoor graag van u wat er mogelijk is.\n\nMet vriendelijke groet,\nAmina Baraka",
+    "model_answer": "ik heb al vier jaar in de thuiszorg gewerkt, eerst in mijn eigen land en daarna twee jaar bij een zorgorganisatie in Arnhem. Ik zou graag weten of deze ervaring meetelt, zodat ik misschien een kortere opleiding kan doen. Als u een bewijs van mijn werkgever nodig hebt, kan ik dat opsturen."
+  },
+  {
+    "task_type": "sentence_completion",
+    "title": "Reparatie niet mogelijk",
+    "prompt_html": "<p>U werkt bij een fietsenwinkel en doet daar de reparaties. Een klant heeft een oude fiets gebracht met een gebroken frame. U ziet dat repareren niet meer verantwoord is en u schrijft de klant een mail.</p>",
+    "email_to": "j.wiersma@kpnpost.nl",
+    "email_subject": "Uw fiets: uitkomst van de controle",
+    "greeting": "Beste meneer Wiersma,\n\nIk heb uw fiets vandaag goed bekeken in onze werkplaats. Helaas moet ik u laten weten dat wij de reparatie niet meer kunnen uitvoeren, omdat …",
+    "closing": "Wilt u mij laten weten wat u wilt doen met de fiets?\n\nMet vriendelijke groet,\nRuben Elsinga\nFietsservice De Molenwiel",
+    "model_answer": "het frame op twee plaatsen gebroken is en er ook roest in het metaal zit. Wij mogen zo'n frame niet meer opnieuw vastzetten, want dat is onveilig tijdens het rijden. Een nieuw frame is duurder dan een goede tweedehands fiets, dus dat raad ik u niet aan."
+  },
+  {
+    "task_type": "sentence_completion",
+    "title": "Nieuw kassasysteem",
+    "prompt_html": "<p>U bent afdelingshoofd in een supermarkt. Vanaf volgende maand komt er een nieuw kassasysteem, waar alle medewerkers mee moeten leren werken. U plaatst een bericht op het intranet van het bedrijf.</p>",
+    "greeting": "Beste collega's,\n\nZoals jullie misschien al gehoord hebben, gaan we werken met een nieuw kassasysteem. Ik zet hieronder voor jullie op een rij wat dit betekent, namelijk …",
+    "closing": "Heb je nog vragen? Loop dan even bij mij langs.\n\nGroeten,\nSandra Verhoef",
+    "model_answer": "vanaf 1 maart staan alle oude kassa's uit en werken we alleen nog met de nieuwe schermen. Iedereen krijgt in februari een korte training van twee uur, die tijdens werktijd wordt gegeven. Je kunt je inschrijven op de lijst bij de kantine, zodat we de bezetting goed kunnen verdelen."
+  },
+  {
+    "task_type": "sentence_completion",
+    "title": "Uitleg stageopdracht",
+    "prompt_html": "<p>U volgt de opleiding Logistiek en loopt stage bij een distributiebedrijf. U hebt een opdracht gekregen over het verbeteren van de voorraadadministratie, maar u begrijpt niet goed wat er van u verwacht wordt. U mailt uw stagebegeleider.</p>",
+    "email_to": "h.terlouw@vrachtcentrale-nieuwveen.nl",
+    "email_subject": "Vraag over mijn opdracht",
+    "greeting": "Beste meneer Terlouw,\n\nGisteren heb ik de opdracht over de voorraadadministratie doorgelezen. Ik zou graag extra uitleg van u krijgen, omdat …",
+    "closing": "Zou u er deze week een half uur voor kunnen vrijmaken?\n\nMet vriendelijke groet,\nDaniël Osei",
+    "model_answer": "ik niet goed begrijp hoe uitgebreid mijn verslag moet zijn en welke gegevens ik precies mag gebruiken. Ook weet ik niet of ik zelf medewerkers mag interviewen over hun manier van werken. Als ik dat vooraf weet, kan ik veel gerichter aan de slag."
+  },
+  {
+    "task_type": "sentence_completion",
+    "title": "Eerdere levering",
+    "prompt_html": "<p>U bent inkoper bij een bedrijf dat keukens plaatst. Een leverancier heeft laten weten dat de werkbladen pas op 24 april komen, maar u hebt ze al eerder nodig. U schrijft een mail aan de leverancier.</p>",
+    "email_to": "orders@steenwerk-bladen.nl",
+    "email_subject": "Verzoek om eerdere levering order 4471",
+    "greeting": "Geachte mevrouw Dekkers,\n\nIn uw bericht van maandag las ik dat order 4471 op 24 april wordt geleverd. Ik wil u vragen of een eerdere levering mogelijk is, want …",
+    "closing": "Ik hoor graag of u ons hierin tegemoet kunt komen.\n\nMet vriendelijke groet,\nMartijn Koopman\nKeukenmontage Rijnzicht",
+    "model_answer": "onze monteurs de keukens in die week al bij drie klanten inbouwen. Zonder de werkbladen kunnen zij het werk niet afmaken, waardoor wij later opnieuw moeten komen. Levering op 17 of 18 april zou ons enorm helpen, ook als dat in twee delen gebeurt."
+  },
+  {
+    "task_type": "sentence_completion",
+    "title": "Gesprek over resultaten",
+    "prompt_html": "<p>Uw dochter zit in de tweede klas van een middelbare school. Op haar laatste rapport staan lagere cijfers voor rekenen en Nederlands dan eerst. U mailt de mentor van uw dochter.</p>",
+    "email_to": "mentoraat@begoniacollege.nl",
+    "email_subject": "Verzoek om een gesprek over Layla",
+    "greeting": "Beste mevrouw Van Beek,\n\nVorige week heb ik het rapport van mijn dochter Layla gekregen. Ik zou graag een gesprek met u willen, omdat …",
+    "closing": "Kunt u mij laten weten wanneer het u schikt?\n\nMet vriendelijke groet,\nFatima El Hadri",
+    "model_answer": "haar cijfers voor rekenen en Nederlands duidelijk lager zijn dan op het vorige rapport. Ik wil met u bespreken waar dat aan ligt en wat wij thuis kunnen doen om haar te helpen. Een gesprek na vier uur zou voor mij het beste zijn, omdat ik tot half vier werk."
+  },
+  {
+    "task_type": "sentence_completion",
+    "title": "Wie rijdt mee?",
+    "prompt_html": "<p>U werkt op een bedrijventerrein buiten de stad, waar bijna geen bus komt. U rijdt elke werkdag met de auto en zou graag iemand meenemen om de kosten te delen. U plaatst een bericht op de website van het bedrijventerrein.</p>",
+    "greeting": "Hallo allemaal,\n\nIk werk sinds een jaar bij een installatiebedrijf op terrein Noordhoek. Ik zoek iemand die met mij mee wil rijden, want …",
+    "closing": "Stuur me even een bericht als je het iets vindt.\n\nGroeten,\nPiotr Nowak",
+    "model_answer": "ik elke dag alleen in de auto zit en de benzine steeds duurder wordt. Ik vertrek om kwart voor zeven vanuit Culemborg en ben rond vijf uur weer terug. We kunnen de kosten samen delen, en het is ook gewoon gezelliger dan alleen rijden."
+  },
+  {
+    "task_type": "sentence_completion",
+    "title": "Vergadering verplaatst",
+    "prompt_html": "<p>U werkt bij een woningcorporatie en organiseert de maandelijkse teamvergadering. De vergadering van donderdag kan niet doorgaan en is verplaatst naar dinsdag. U stuurt uw collega's een mail.</p>",
+    "email_to": "team.wijkbeheer@woonstichtingdebrink.nl",
+    "email_subject": "Teamvergadering naar dinsdag 12 maart",
+    "greeting": "Beste collega's,\n\nDe teamvergadering van donderdag gaat niet door op de geplande dag. Ik heb hem verplaatst naar dinsdag 12 maart, omdat …",
+    "closing": "Zet de nieuwe datum alsjeblieft in je agenda.\n\nMet vriendelijke groet,\nEsther Brandsma",
+    "model_answer": "onze manager op donderdag bij de gemeente moet zijn en drie collega's dan een cursus volgen. Met zo weinig mensen kunnen we geen besluit nemen over de nieuwe verdeling van de wijken. Op dinsdag beginnen we om half tien in vergaderzaal 2, en het onderwerp blijft hetzelfde."
+  },
+  {
+    "task_type": "data_text",
+    "title": "Advies sportaanbod",
+    "prompt_html": "<p>U werkt als medewerker bij sportcentrum De Waterkant in Zwolle. Het sportcentrum wil weten welke lessen goed bezocht worden en welke lessen misschien moeten veranderen. Daarom is er in de maand oktober bij elke les geteld hoeveel deelnemers er kwamen. Ook is aan de deelnemers gevraagd of zij tevreden waren over de les.</p><p>De manager, mevrouw Bosman, heeft de gegevens in een tabel gezet. Zij vraagt u om op basis van deze tabel een advies te schrijven voor de vergadering van het team. De tabel wordt bij uw tekst afgedrukt, dus uw tekst moet goed bij de cijfers passen.</p><table><tr><th>Les</th><th>Gemiddeld aantal deelnemers per les</th><th>Maximaal aantal plaatsen</th><th>Tevreden deelnemers</th></tr><tr><td>Zwemles voor kinderen</td><td>17</td><td>18</td><td>94%</td></tr><tr><td>Fitness voor 60-plussers</td><td>15</td><td>20</td><td>88%</td></tr><tr><td>Spinning</td><td>19</td><td>20</td><td>72%</td></tr><tr><td>Yoga op zaterdagochtend</td><td>6</td><td>25</td><td>65%</td></tr><tr><td>Aquagym op maandagavond</td><td>4</td><td>20</td><td>58%</td></tr><tr><td>Bootcamp buiten</td><td>12</td><td>15</td><td>81%</td></tr></table><p><strong>Opdracht</strong></p><p>Schrijf een advies aan mevrouw Bosman. U schrijft in de u-vorm, want het is een zakelijke tekst. Gebruik de gegevens uit de tabel. Extra informatie, bijvoorbeeld over de reacties van deelnemers of over de tijden van de lessen, mag u zelf verzinnen.</p><p>Het doel van de tekst is een duidelijk en goed onderbouwd advies geven over welke lessen het sportcentrum moet houden, veranderen of stoppen.</p>",
+    "bullet_points": [
+      "U legt uit waarom u dit advies schrijft en welke gegevens u gebruikt heeft.",
+      "U noemt minimaal twee lessen die goed gaan en u laat met cijfers uit de tabel zien waarom dat zo is.",
+      "U noemt minimaal twee lessen die minder goed gaan en u legt uit wat er volgens u aan de hand kan zijn.",
+      "U geeft een concreet advies over de lessen die minder goed gaan en u noemt bij elk advies een reden.",
+      "U schrijft wat u zelf in de komende maanden kunt doen om te controleren of het advies werkt."
+    ],
+    "email_to": "mevrouw Bosman, manager sportcentrum De Waterkant",
+    "email_subject": "Advies over het lesaanbod na de tellingen van oktober",
+    "greeting": "Geachte mevrouw Bosman,",
+    "closing": "Met vriendelijke groet,\n\nNadia el Amrani\nmedewerker sportcentrum De Waterkant",
+    "model_answer": "Geachte mevrouw Bosman,\n\nU heeft mij gevraagd om een advies te schrijven over ons lesaanbod. Ik heb daarvoor de tellingen van de maand oktober gebruikt. In die tabel staat hoeveel deelnemers er gemiddeld per les kwamen en hoe tevreden zij waren. Hieronder leest u wat mij is opgevallen en wat ik voorstel.\n\nTwee lessen gaan heel goed. De zwemles voor kinderen is bijna altijd vol, want er komen gemiddeld 17 deelnemers en er zijn 18 plaatsen. Bovendien is 94 procent van de deelnemers tevreden, en dat is het hoogste cijfer van alle lessen. Ook de bootcamp buiten loopt goed, omdat er gemiddeld 12 van de 15 plaatsen bezet zijn en 81 procent van de deelnemers positief is. De fitness voor 60-plussers zit daar dicht bij, hoewel er nog vijf plaatsen vrij zijn.\n\nTwee lessen gaan duidelijk minder goed. Bij de aquagym op maandagavond komen gemiddeld maar 4 deelnemers, terwijl er 20 plaatsen zijn. Ook is slechts 58 procent tevreden. Bij de yoga op zaterdagochtend zijn er gemiddeld 6 deelnemers en is 65 procent tevreden. Volgens mij komt dat vooral door het tijdstip. Een aantal deelnemers vertelde mij dat de maandagavond druk is met werk en gezin. Bij de yoga hoor ik vaak dat mensen op zaterdag liever later beginnen dan om acht uur.\n\nDaarom geef ik u het volgende advies. Ik zou de aquagym op maandagavond stoppen en de les verplaatsen naar de woensdagmiddag, omdat er dan al veel oudere leden in het gebouw zijn voor de fitness. Zo kunnen we deze groep bereiken zonder dat we een extra docent nodig hebben. De yoga op zaterdag zou ik houden, maar dan om tien uur, zodat mensen rustig kunnen opstaan. Verder stel ik voor om bij de spinning te kijken naar de muziek en de temperatuur in de zaal, want de zaal is vol, maar de tevredenheid is met 72 procent laag.\n\nIk kan de komende drie maanden opnieuw de deelnemers tellen en na elke les een korte vraag stellen over de tevredenheid. In februari kan ik u dan een nieuw overzicht geven. Op die manier weten we zeker of de veranderingen echt helpen.\n\nAls u vragen heeft over mijn advies, wil ik het graag met u bespreken.\n\nMet vriendelijke groet,\n\nNadia el Amrani\nmedewerker sportcentrum De Waterkant"
+  },
+  {
+    "task_type": "form",
+    "title": "Reparatie melden",
+    "prompt_html": "<p>U woont in een huurwoning van woningcorporatie De Vlierhof in Enschede. Sinds een paar dagen werkt de kraan in de keuken niet goed: er komt bijna geen warm water uit en er lekt water op de vloer van het keukenkastje. U hebt zelf al geprobeerd om de kraan vast te draaien, maar het probleem is daardoor niet opgelost.</p><p>Op de website van De Vlierhof staat een formulier waarmee huurders een reparatie kunnen melden. Uw naam, uw adres en uw klantnummer zijn al ingevuld. De corporatie vraagt u om per vraag een duidelijk antwoord te geven, zodat de monteur weet wat hij mee moet nemen en wanneer hij langs kan komen.</p><p><strong>Opdracht</strong></p><p>Vul het formulier hieronder in. Kruis eerst aan hoe u bericht wilt krijgen over de afspraak. Geef daarna antwoord op de zes vragen. Bij elke vraag legt u ook uit waarom, want alleen een kort antwoord is niet genoeg. Schrijf hele zinnen en gebruik de u-vorm. U mag de informatie zelf verzinnen.</p><p>Het doel van de tekst is dat de woningcorporatie precies begrijpt welke reparatie nodig is, hoe dringend die is en wanneer de monteur bij u terecht kan.</p>",
+    "email_to": "",
+    "email_subject": "",
+    "greeting": "",
+    "closing": "",
+    "model_answer": "1. In de keuken is de kraan kapot. Er komt bijna geen warm water uit de kraan en onder de gootsteen lekt water in het kastje. Het probleem is vier dagen geleden begonnen en het wordt elke dag erger, omdat de plas water steeds groter is.\n\n2. Het probleem is in de keuken, precies onder de gootsteen. Ik kan die ruimte niet missen, omdat ik daar elke dag voor mijn gezin kook en de afwas doe. Nu moet ik warm water in de badkamer halen, waardoor alles veel langer duurt.\n\n3. Ik heb de kraan zelf vastgedraaid en ik heb een emmer onder de leiding gezet. Dat heeft niet geholpen, omdat het water uit een andere plek blijft komen. Ik heb geen gereedschap voor waterleidingen en ik durf de leiding niet los te maken.\n\n4. Volgens mij is de reparatie dringend. Het water staat namelijk in het kastje en het hout wordt zacht, waardoor er schade kan ontstaan. Ook is er kans op schimmel, en mijn zoon heeft last van zijn longen.\n\n5. De monteur kan op maandag, woensdag en vrijdag tussen 8.00 en 13.00 uur komen. Op die dagen ben ik thuis. Op de andere dagen werk ik in de zorg, waardoor ik pas na 17.00 uur thuis ben en de deur niet kan openen.\n\n6. Ik wil nog zeggen dat ik in maart al een melding over dezelfde kraan heb gedaan. De monteur heeft toen alleen een rubberen ring vervangen. Dat is belangrijk om te weten, omdat er nu misschien een nieuwe kraan nodig is.",
+    "form_schema": {
+      "sections": [
+        {
+          "heading": "Gegevens huurder",
+          "rows": [
+            {
+              "kind": "static",
+              "label": "Naam",
+              "value": "Mevrouw A. El Amrani"
+            },
+            {
+              "kind": "static",
+              "label": "Adres",
+              "value": "Vlierstraat 14 B, 7521 GH Enschede (klantnummer 84 21 07)"
+            },
+            {
+              "kind": "choice",
+              "label": "Hoe wilt u bericht krijgen over de afspraak?",
+              "options": [
+                "Per e-mail",
+                "Per telefoon",
+                "Per brief"
+              ]
+            }
+          ]
+        },
+        {
+          "heading": "Uw melding",
+          "rows": [
+            {
+              "kind": "text",
+              "label": "1. Welke reparatie wilt u melden? Beschrijf wat er kapot is en leg ook uit sinds wanneer u het probleem hebt.",
+              "placeholder": "Schrijf hier uw antwoord in hele zinnen."
+            },
+            {
+              "kind": "text",
+              "label": "2. In welke ruimte van de woning is het probleem? Leg ook uit waarom u die ruimte moeilijk kunt missen.",
+              "placeholder": "Schrijf hier uw antwoord in hele zinnen."
+            },
+            {
+              "kind": "text",
+              "label": "3. Hebt u zelf al iets geprobeerd om het probleem op te lossen? Leg ook uit waarom dat niet gelukt is.",
+              "placeholder": "Schrijf hier uw antwoord in hele zinnen."
+            },
+            {
+              "kind": "text",
+              "label": "4. Hoe dringend is de reparatie volgens u? Leg ook uit waarom u dat vindt.",
+              "placeholder": "Schrijf hier uw antwoord in hele zinnen."
+            },
+            {
+              "kind": "text",
+              "label": "5. Op welke dagen en tijden kan de monteur langskomen? Leg ook uit waarom andere momenten niet lukken.",
+              "placeholder": "Schrijf hier uw antwoord in hele zinnen."
+            },
+            {
+              "kind": "text",
+              "label": "6. Wilt u nog iets kwijt over de woning of over eerdere meldingen? Leg ook uit waarom dit belangrijk is voor de monteur.",
+              "placeholder": "Schrijf hier uw antwoord in hele zinnen."
+            }
+          ]
+        }
+      ]
+    }
+  },
+  {
+    "task_type": "email",
+    "title": "Vraag over vrijstellingen",
+    "prompt_html": "<p>U bent Miranda Kaptein. U werkt al zeven jaar als verzorgende in een woonzorgcentrum in Almere. In september begint u aan de opleiding Verpleegkunde bij het Rijnmond College in Rotterdam. U bent al toegelaten tot de opleiding.</p><p>In de studiegids staat dat studenten met werkervaring of met eerdere diploma's soms vrijstelling kunnen krijgen. Een vrijstelling betekent dat u een onderdeel van de opleiding niet hoeft te volgen, omdat u de kennis al hebt. U wilt weten of dit ook voor u geldt, want u werkt vier dagen per week en hebt weinig tijd om te studeren.</p><p>U schrijft een e-mail aan mevrouw De Kruijf, de studieloopbaanbegeleider van de opleiding.</p><p><strong>Opdracht</strong></p><p>Schrijf een e-mail aan mevrouw De Kruijf. Behandel alle punten die hieronder staan. U mag de informatie zelf verzinnen.</p><p>Het doel van de tekst is duidelijk maken welke vrijstellingen u wilt aanvragen en welke informatie u daarvoor van de opleiding nodig hebt.</p>",
+    "bullet_points": [
+      "U stelt zich voor en u vertelt met welke opleiding u in september begint.",
+      "U legt uit waarom u informatie over vrijstellingen wilt hebben.",
+      "U beschrijft uw werkervaring en uw eerdere diploma's of cursussen.",
+      "U noemt minimaal twee onderdelen van de opleiding waarvoor u vrijstelling wilt aanvragen.",
+      "U vraagt welke documenten u moet opsturen en voor welke datum dat moet gebeuren.",
+      "U vraagt om een gesprek of om een reactie en u geeft aan hoe u bereikbaar bent."
+    ],
+    "email_to": "m.dekruijf@rijnmondcollege.nl",
+    "email_subject": "Vraag over vrijstellingen opleiding Verpleegkunde",
+    "greeting": "Geachte mevrouw De Kruijf,",
+    "closing": "Met vriendelijke groet,",
+    "model_answer": "Geachte mevrouw De Kruijf,\n\nMijn naam is Miranda Kaptein. In september begin ik met de opleiding Verpleegkunde bij het Rijnmond College. Ik heb vorige week bericht gekregen dat ik ben toegelaten. Daar ben ik erg blij mee.\n\nIn de studiegids las ik dat studenten met werkervaring vrijstelling kunnen krijgen voor bepaalde onderdelen. Ik wil hier graag meer over weten, omdat ik naast de opleiding vier dagen per week blijf werken. Als ik een paar onderdelen niet hoef te volgen, kan ik mijn werk en mijn studie beter combineren.\n\nIk werk al zeven jaar als verzorgende in een woonzorgcentrum in Almere. In 2018 heb ik mijn diploma Verzorgende IG gehaald. Daarnaast heb ik twee cursussen gedaan bij mijn werkgever: een cursus wondzorg en een cursus over communicatie met mensen met dementie. Van beide cursussen heb ik een certificaat gekregen.\n\nIk zou graag vrijstelling aanvragen voor het onderdeel Basiszorg, omdat ik die taken elke dag uitvoer. Ook voor het onderdeel Communicatie met cliënten denk ik dat een vrijstelling mogelijk is, doordat ik hierover al een cursus heb gevolgd. Ik weet natuurlijk niet of dit voldoende is, dus ik hoor graag wat u ervan vindt.\n\nKunt u mij vertellen welke documenten ik moet opsturen? Ik denk aan een kopie van mijn diploma, mijn certificaten en misschien een verklaring van mijn werkgever. Verder wil ik graag weten voor welke datum de aanvraag binnen moet zijn, zodat ik niet te laat ben.\n\nIk zou het fijn vinden om alles in een gesprek te bespreken. Op maandag en vrijdag ben ik vrij, dus dan kan ik naar Rotterdam komen. U kunt mij ook bellen op 06 12 34 56 78 of antwoorden op deze e-mail.\n\nAlvast hartelijk dank voor uw hulp.\n\nMet vriendelijke groet,\n\nMiranda Kaptein"
+  },
+  {
+    "task_type": "letter",
+    "title": "Brief aan verzekeraar",
+    "prompt_html": "<p>U heet Samira Ouahid en u woont in Deventer. U bent aanvullend verzekerd bij zorgverzekeraar Noordwest Zorg. In maart bent u door uw huisarts doorgestuurd naar een fysiotherapeut, omdat u veel pijn in uw rug had. U hebt twaalf behandelingen gehad en de rekening van 546 euro zelf betaald. Daarna hebt u de rekening naar de verzekeraar gestuurd om het geld terug te krijgen.</p><p>Vorige week kreeg u een brief. Daarin staat dat de vergoeding is afgewezen, omdat uw aanvullende pakket volgens de verzekeraar geen fysiotherapie dekt. U bent het daar niet mee eens. Bij het afsluiten van de verzekering hebt u namelijk gekozen voor het pakket Extra Plus, waarin negen behandelingen fysiotherapie per jaar zitten. U hebt de polis nog en u hebt ook een bewijs van de doorverwijzing van uw huisarts.</p><p>U schrijft een brief aan de klantenservice van Noordwest Zorg.</p><p>Noordwest Zorg<br>Afdeling Klantenservice<br>Postbus 4180<br>7300 BB Apeldoorn</p><p><strong>Opdracht</strong></p><p>Schrijf een brief waarin u bezwaar maakt tegen de afwijzing. U mag de informatie die u niet weet, zoals uw polisnummer en de datum van de brief, zelf verzinnen.</p><p>Het doel van de tekst is de verzekeraar ervan te overtuigen dat de afwijzing onjuist is, zodat uw kosten alsnog worden vergoed.</p>",
+    "bullet_points": [
+      "U legt uit waarom u schrijft en u verwijst naar de brief waarin de vergoeding is afgewezen.",
+      "U beschrijft wat er met uw gezondheid aan de hand was en welke behandelingen u hebt gehad.",
+      "U legt uit waarom u denkt dat u wel recht hebt op een vergoeding en u noemt uw pakket.",
+      "U vertelt welke bewijzen u kunt opsturen, zodat de verzekeraar uw situatie kan controleren.",
+      "U vraagt om het bedrag alsnog te vergoeden en u vraagt om een reactie binnen een bepaalde termijn."
+    ],
+    "email_to": "",
+    "email_subject": "",
+    "greeting": "Geachte heer, mevrouw,",
+    "closing": "Met vriendelijke groet,\n\nSamira Ouahid\nWilgenstraat 12\n7412 AB Deventer\nPolisnummer: 88 42 51 03",
+    "model_answer": "Geachte heer, mevrouw,\n\nOp 14 april heb ik een brief van u ontvangen over de rekening van mijn fysiotherapeut. In die brief staat dat u de kosten niet vergoedt, omdat mijn aanvullende verzekering geen fysiotherapie zou dekken. Ik ben het niet eens met deze beslissing en daarom maak ik bezwaar.\n\nIn maart had ik veel pijn in mijn onderrug, waardoor ik moeilijk kon werken en slecht sliep. Mijn huisarts heeft mij daarom doorgestuurd naar een fysiotherapeut in mijn wijk. Ik heb daar twaalf behandelingen gehad. De rekening van 546 euro heb ik eerst zelf betaald en vervolgens naar u opgestuurd.\n\nVolgens mij is de afwijzing niet juist. Toen ik mijn verzekering afsloot, heb ik namelijk gekozen voor het pakket Extra Plus. In de voorwaarden van dat pakket staat duidelijk dat negen behandelingen fysiotherapie per jaar worden vergoed. Ik vraag u dus in ieder geval om deze negen behandelingen te betalen, hoewel ik er twaalf heb gehad.\n\nIk heb de polis van vorig jaar nog in huis en ook de doorverwijzing van mijn huisarts. Als u dat wilt, stuur ik kopieën van deze papieren op, zodat u mijn gegevens goed kunt controleren. Misschien is er in uw administratie een fout gemaakt met mijn pakket.\n\nIk verzoek u daarom de kosten alsnog te vergoeden en het bedrag op mijn rekening te storten. Wilt u mij binnen drie weken laten weten wat u hebt besloten? U kunt mij bellen op 06 41 22 87 30 als u nog vragen hebt.\n\nAlvast hartelijk dank voor uw moeite.\n\nMet vriendelijke groet,\n\nSamira Ouahid\nWilgenstraat 12\n7412 AB Deventer\nPolisnummer: 88 42 51 03"
+  }
+]
