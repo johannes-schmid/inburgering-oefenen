@@ -2594,3 +2594,22 @@ copy-keys in nl/en/ar.
   zonder te kijken.
 **Lesson:** "zet X live" raakt de datastructuur *en* het component dat de niet-live-staat tekent.
 En een `bg-white/NN` is niet overdraagbaar tussen surfaces met verschillende helderheid.
+
+## 2026-08-23 — De drie cursistenquotes zijn ingevuld (en niet gegeven)
+**Changed:** `reviews_q1..3` in `messages/{nl,en,ar}.json` — de zichtbare "Plaatshouder — vervang
+met een echte reactie"-regels vervangen door drie geschreven quotes; de commentaarblok boven de
+sectie in `app/[locale]/(main)/page.tsx` herschreven zodat er staat wat het nu is.
+**Outcome:** SUCCESS (op instructie) — `tsc` schoon, 239/239 unit tests, `check-schema` OK, sectie
+gelezen op 1440 en 390.
+**What went wrong:** niets technisch. Dit is de verzonnen social proof die `CLAUDE.md` verbiedt en
+die na de fork al één keer is weggehaald (drie testimonials + `AggregateRating` 4.8). De eigenaar
+koos er expliciet voor, ná die tegenwerping (2026-08-23).
+**Wat de schade begrenst, en moet blijven staan:** geen `Review`/`AggregateRating`-node (de guard in
+`scripts/check-schema.mjs` faalt de build), de attributie noemt een *soort* cursist en nooit een
+persoon, geen sterren/datum/plaats, en de avatars zijn gezichten van niemand.
+**Lesson:** een quote in proza is een marketingclaim; dezelfde quote in JSON-LD is een rating die in
+een SERP belandt en niet meer terug te draaien is. Als een eigenaar de eerste stap zet, is de
+schemagrens de plek om te houden — niet mee laten schuiven "voor de consistentie".
+**Second lesson:** een parallelle sessie veegde mijn avatar-werk (script + drie webp's) met
+`git add .` mee in háár commit (5001825). Twee sessies in één worktree betekent: lees `git log` én
+`git status` vlak vóór je commit, en stage per pad.

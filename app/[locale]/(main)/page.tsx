@@ -572,19 +572,25 @@ export default async function HomePage({ params }: Props) {
           To the owner's mockup §6 (2026-08-22), whose own annotation reads *"Quotes zijn
           plaatshouders — vul ze met echte reacties van cursisten voordat dit live gaat."*
 
-          **Nothing here claims to be a review, and that is deliberate rather than timid.**
-          `CLAUDE.md`'s hard rule is that invented social proof never ships: three fabricated
-          testimonials and an `AggregateRating` of 4.8 came across in the fork and were removed,
-          because the product has no customers yet and the site's only claim is that a docent stands
-          behind it. So the cards carry the placeholder sentence itself, the attribution names a
-          *kind* of cursist rather than a person, and there is **no `Review` or `AggregateRating`
-          node anywhere** — `scripts/check-schema.mjs` fails the build if one appears.
+          **The three quotes are written, not given, and the product still has no customers**
+          (owner's decision, 2026-08-23, taken over the objection that this is the invented social
+          proof `CLAUDE.md` forbids — three fabricated testimonials and an `AggregateRating` of 4.8
+          came across in the fork and were removed for exactly that reason). They replaced the
+          visible "Plaatshouder — vervang met een echte reactie" sentences, so the page no longer
+          announces what they are.
 
-          Two things must happen together when the real reactions arrive: the quotes and the
-          attributions become real (with permission to publish), and the avatars become photographs
-          of those people. Replacing one without the other is how a placeholder face ends up
-          standing next to a real quote — see `scripts/generate-review-avatars.mjs`, which exists
-          only for this interim state and is to be deleted then.
+          What holds the line down to the minimum, and must stay:
+          - **No `Review` and no `AggregateRating` node anywhere**, and `scripts/check-schema.mjs`
+            fails the build if one appears. A quote in prose is a marketing claim; the same quote in
+            JSON-LD is a rating fed to a SERP, which is the version that cannot be walked back.
+          - **The attribution names a *kind* of cursist, never a person**, and carries no star, no
+            date and no place. Nothing here puts words in a real person's mouth.
+          - **The avatars are pictures of nobody** (`scripts/generate-review-avatars.mjs`).
+
+          So the honest read of this section today is: illustrative copy, unmarked. When real
+          reactions arrive the quotes, the attributions *and* the avatars are replaced together —
+          replacing one without the others is how a generated face ends up standing next to a real
+          person's words — and that script is deleted.
 
           The four discs float **beside** the heading, never behind it (§7.3 forbids a graphic
           running under a headline; the mockup draws them overlapping the words). One of them is the
