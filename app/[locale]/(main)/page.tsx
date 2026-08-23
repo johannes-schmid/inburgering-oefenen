@@ -5,7 +5,7 @@ import { getTranslations } from 'next-intl/server';
 import { routing } from '@/i18n/routing';
 import FaqAccordion from '@/components/FaqAccordion';
 import { SectionHeader } from '@/components/site';
-import { DEFAULT_LEVEL, SKILLS } from '@/data/skills';
+import { DEFAULT_LEVEL, SKILLS, getFormat } from '@/data/skills';
 import JsonLd from '@/components/JsonLd';
 import HeroShowcase from './_components/HeroShowcase';
 import KennisbankCards, { type KennisbankCard } from './_components/KennisbankCards';
@@ -194,6 +194,16 @@ export default async function HomePage({ params }: Props) {
      its exam overview: since the four-card grid was removed these chips are the *only* link to the
      onderdelen from this page, which the hard rule in `CLAUDE.md` requires. */
   const A2_CHIPS = SKILLS.map(s => ({ slug: s.slug, name: tSkills(`${s.key}.name`) }));
+
+  /* B1's chips are the onderdelen that actually have something behind them, derived from the same
+     fact the overview page's `robots` reads: `itemCount === null` means DUO's format at this level
+     is unverified, which is B1 Luisteren and only B1 Luisteren. So this list is Lezen, Schrijven
+     and Spreken, and it will pick up Luisteren automatically on the commit that counts its format
+     off real material — rather than needing someone to remember this line. Linking Luisteren today
+     would put a `noindex` page behind a chip on the most-linked page on the site. */
+  const B1_CHIPS = SKILLS
+    .filter(s => getFormat('b1', s.slug).itemCount !== null)
+    .map(s => ({ slug: s.slug, name: tSkills(`${s.key}.name`) }));
 
   /* The three placeholder quote cards. The avatar is `null` until
      `scripts/generate-review-avatars.mjs` has run — existence is checked on the server rather than
@@ -458,17 +468,59 @@ export default async function HomePage({ params }: Props) {
               </div>
             </div>
 
-            {/* ── Taal B1 — authored, `noindex`, behind the docent's review gate ── */}
-            <SoonBlock
-              title={t('blocks_b1_title')}
-              desc={t('blocks_b1_desc')}
-              soonLabel={t('pkg_soon')}
-              notifyLabel={t('blocks_notify')}
-              href={`/${locale}/contact`}
-              background="var(--color-primary-container)"
-              minHeight="lg:min-h-[18.5rem]"
-              houses={5}
-            />
+            {/* ── Taal B1 — live since 2026-08-23, when the docent signed the content off ──
+                It was a `SoonBlock` until then. Two details follow the graphic language rather
+                than taste: the marker is a **filled** white disc, because a hollow ring is what
+                `SoonBlock` uses to mean "not built" and KNM's live tile already established the
+                filled one; and there is **no second `SunDisc`**, because the A2 tile beside it
+                carries this composition's single sun (§7.3). The CTA is `bg-white/22` like KNM's,
+                so A2's white-filled button stays the one strongest call in the row. */}
+            <div
+              className="relative overflow-hidden rounded-2xl p-5 flex flex-col lg:min-h-[18.5rem]"
+              style={{ background: 'var(--color-primary-container)', boxShadow: 'var(--shadow-ambient)' }}
+            >
+              <DotField on="dark" size={22} />
+              <Skyline count={5} tone="hero" height={72} />
+              <div className="relative z-10 flex flex-col h-full">
+                <span aria-hidden="true" className="w-11 h-11 rounded-full mb-4" style={{ background: 'rgba(255,255,255,0.62)' }} />
+                <h3 className="font-headline font-extrabold text-white text-[1.375rem] leading-tight m-0 mb-1.5">
+                  {t('blocks_b1_title')}
+                </h3>
+                <p className="text-sm leading-relaxed text-white/75 m-0">{t('blocks_b1_desc')}</p>
+
+                <ul className="flex flex-wrap gap-1.5 list-none p-0 m-0 mt-4 mb-2">
+                  {B1_CHIPS.map(chip => (
+                    <li key={chip.slug}>
+                      <a
+                        href={`/${locale}/oefenexamen/b1/${chip.slug}`}
+                        className="block-chip inline-flex rounded-full px-2.5 py-1 text-[0.6875rem] font-semibold text-white/90 bg-white/12 no-underline"
+                      >
+                        {chip.name}
+                      </a>
+                    </li>
+                  ))}
+                </ul>
+
+                {/* The catalogue and the brand are stated separately on every surface — so the
+                    tile that sells B1 is also the tile that says which onderdeel is missing. */}
+                <p className="text-[0.625rem] uppercase tracking-widest font-bold text-white/80 m-0 mb-2">
+                  {t('blocks_b1_note')}
+                </p>
+                {/* Solid white, not `bg-white/22` like KNM's. That opacity reads fine on KNM's dark
+                    `secondary` and is nearly invisible on `primary-container`, which is a much
+                    lighter blue — worse, the skyline's houses showed straight through the button and
+                    made it look like a rendering fault. So B1's CTA matches A2's, and the two live
+                    language levels looking alike is the honest outcome rather than a hierarchy
+                    problem: the titles and chips are what separate them. */}
+                <a
+                  href={`/${locale}/oefenen/b1/lezen`}
+                  className="block-cta mt-auto inline-flex items-center justify-center gap-2 rounded-full px-5 py-2.5 no-underline font-headline font-bold text-sm"
+                  style={{ background: '#fff', color: 'var(--color-primary)' }}
+                >
+                  {t('blocks_b1_cta')}
+                </a>
+              </div>
+            </div>
 
             {/* ── KNM — ready, but still served from knmoefenen.nl ──
                 The link leaves the site on purpose: the content exists there and the migration is

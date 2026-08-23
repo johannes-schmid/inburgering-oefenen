@@ -266,7 +266,7 @@
     "blocks_knm_note": "Now on knmoefenen.nl",
     "blocks_knm_cta": "Practise KNM",
     "blocks_b1_title": "Language B1",
-    "blocks_b1_desc": "The standard route under the 2021 Integration Act.",
+    "blocks_b1_desc": "Reading, Writing and Speaking — ten practice exams each.",
     "blocks_ona_title": "ONA",
     "blocks_ona_desc": "Portfolio and final interview, step by step.",
     "blocks_notify": "Keep me posted",
@@ -296,7 +296,9 @@
     "kb_knm_desc": "Housing, work, health and values — the eight official themes of the KNM exam.",
     "closing_eyebrow": "One platform, the whole inburgering",
     "closing_heading": "Start with the part you need right now",
-    "closing_sub": "The first practice exam of every part is free — no account needed."
+    "closing_sub": "The first practice exam of every part is free — no account needed.",
+    "blocks_b1_note": "B1 Listening is on the way",
+    "blocks_b1_cta": "Practise B1"
   },
   "oefenen": {
     "meta_title": "Practise for free — 10 A2 integration exam questions | Inburgering Oefenen",

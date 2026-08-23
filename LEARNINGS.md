@@ -2556,3 +2556,41 @@ when the tree is not yours alone**, and read `git status` before every commit ra
 mist is de plaats waar niets faalt. Zoek hem door de *conditie* te greppen (`=== 'a2'`,
 `DEFAULT_LEVEL`, `forbid`), niet de feature — en vervang hem door het onderliggende feit, zodat de
 volgende release zichzelf opent.
+
+## 2026-08-23 — De drie placeholder-avatars staan er, via OpenAI direct
+**Changed:** `scripts/generate-review-avatars.mjs` kreeg een tweede route — OpenAI direct
+(`OPEN_AI_API_KEY`, `gpt-image-2`) vóór de AI Gateway (`openai/gpt-image-2`) — en is gerund:
+`public/images/reviews/placeholder-{1,2,3}.webp` (256px, ~5 kB elk).
+**Outcome:** SUCCESS — homepage op 1440 en 390 gelezen; de drie portretten staan naast de
+placeholder-quotes, koppen goed in beeld, geen kaartje zonder avatar meer.
+**What went wrong:** de gateway weigert met `402 insufficient_funds` — expliciet **ook bij BYOK**,
+omdat er anders geen fallback-providers beschikbaar zijn. Een opgewaardeerde OpenAI-rekening lost
+dat dus niet op; de gateway wil zijn eigen creditsaldo.
+**Lesson:** de AI Gateway is geen doorgeefluik. Zit er geen credit op de gateway, dan helpt alleen
+een directe route naar de provider — houd voor een betaalde run daarom altijd beide paden in het
+script, met dezelfde model-id, zodat de route een boekhoudkundig detail blijft en geen inhoudelijk.
+**Standing debt:** dit zijn gezichten van niemand naast quotes die letterlijk "vervang met een
+echte reactie" zeggen. Zodra er echte reacties zijn: echte foto's mét toestemming, en dit script
+wordt verwijderd.
+
+## 2026-08-23 — de landingspagina had B1 nog als "Binnenkort"
+**Changed:** de B1-`SoonBlock` in `app/[locale]/(main)/page.tsx` is een live tegel (afgeleide
+`B1_CHIPS`, eigen CTA naar de gratis B1-taster, note "Luisteren B1 komt eraan"), plus drie
+copy-keys in nl/en/ar.
+**Outcome:** SUCCESS
+**What worked / went wrong:**
+- **`TRACKS` op `live: true` zetten was maar de helft.** Die chipstrip in de hero is klein; het blok
+  dat een bezoeker echt leest — "Het hele examen, blok voor blok" — rende B1 nog als `SoonBlock`
+  met "Binnenkort" en een *houd me op de hoogte*-link naar `/contact`. Eén feature-flag-achtige
+  waarde omzetten dekt zelden de hele pagina; grep op het *component* (`SoonBlock`), niet alleen op
+  de datastructuur.
+- **De chips zijn afgeleid van `getFormat('b1', slug).itemCount !== null`**, hetzelfde feit als de
+  `robots`-gate. Daardoor staat Luisteren er niet (noindex-pagina achter een chip op de
+  meest-gelinkte pagina van de site) en komt hij er automatisch bij zodra iemand het format telt.
+- **`bg-white/22` van KNM's tegel overnemen was een fout die alleen een screenshot vindt.** Op KNM's
+  donkere `secondary` leest die knop prima; op `primary-container` was hij vrijwel onzichtbaar én de
+  huizen van de skyline schenen erdoorheen, wat als renderfout leest. Een doorschijnende vulling is
+  geen kleur maar een *relatie* met wat eronder ligt — hergebruik hem nooit op een lichtere tegel
+  zonder te kijken.
+**Lesson:** "zet X live" raakt de datastructuur *en* het component dat de niet-live-staat tekent.
+En een `bg-white/NN` is niet overdraagbaar tussen surfaces met verschillende helderheid.

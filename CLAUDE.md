@@ -452,6 +452,22 @@ node scripts/seed-b1-content.mjs all --production  # the hosted project
     in those counts opens the page in the same commit, which is the coupling to want.
   - **B1 Luisteren's ten exams are unpublished** on local *and* production; the other thirty are
     published on both. No DB write was needed to ship this.
+  - **The landing page's tile row is the fifth place, and it was the one that mattered most to a
+    visitor.** `TRACKS` (the small chip strip in the hero) was only half the job: the "Het hele
+    examen, blok voor blok" row rendered B1 as a `SoonBlock` — "Binnenkort" plus a *houd me op de
+    hoogte* link to `/contact`. It is now a live tile, and it follows the row's existing vocabulary
+    rather than inventing one: **a filled white disc means live** (KNM's tile established it), **a
+    hollow ring means not built** (`SoonBlock`), and there is **no second `SunDisc`** because the A2
+    tile beside it carries the composition's single sun (§7.3).
+  - **Its chips are derived, not typed**: `B1_CHIPS` filters `SKILLS` on
+    `getFormat('b1', slug).itemCount !== null`, the same fact as the `robots` gate. So the row shows
+    Lezen/Schrijven/Spreken today and picks up Luisteren on the commit that counts its format —
+    rather than needing someone to remember this line. Linking B1 Luisteren today would put a
+    `noindex` page behind a chip on the most-linked page on the site.
+  - **B1's CTA is solid white, deliberately unlike KNM's `bg-white/22`.** That opacity reads fine on
+    KNM's dark `secondary` and is nearly invisible on `primary-container`; worse, the skyline's
+    houses showed through the button and it looked like a rendering fault. Two live language levels
+    with the same button is the honest outcome — the titles and chips separate them.
   - **No B1 exam is `is_free`.** A2 gives exam 1 of each onderdeel away; B1 gives nothing. That is
     the open pricing decision — see the taster note below, which hands out ten of B1 Lezen exam 1's
     thirty-five questions anyway.

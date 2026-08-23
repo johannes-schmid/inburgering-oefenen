@@ -266,7 +266,7 @@
     "blocks_knm_note": "Nu op knmoefenen.nl",
     "blocks_knm_cta": "Oefen KNM",
     "blocks_b1_title": "Taal B1",
-    "blocks_b1_desc": "De standaardroute onder de Wet inburgering 2021.",
+    "blocks_b1_desc": "Lezen, Schrijven en Spreken — tien oefenexamens per onderdeel.",
     "blocks_ona_title": "ONA",
     "blocks_ona_desc": "Portfolio en eindgesprek, stap voor stap.",
     "blocks_notify": "Houd me op de hoogte",
@@ -296,7 +296,9 @@
     "kb_knm_desc": "Wonen, werk, gezondheid en waarden — de acht officiële thema’s van het KNM-examen.",
     "closing_eyebrow": "Één platform, hele inburgering",
     "closing_heading": "Begin bij het onderdeel dat jij nu nodig hebt",
-    "closing_sub": "Het eerste oefenexamen van elk onderdeel is gratis — zonder account."
+    "closing_sub": "Het eerste oefenexamen van elk onderdeel is gratis — zonder account.",
+    "blocks_b1_note": "Luisteren B1 komt eraan",
+    "blocks_b1_cta": "Oefen B1"
   },
   "oefenen": {
     "meta_title": "Gratis oefenen — 10 oefenvragen inburgering A2 | Inburgering Oefenen",
