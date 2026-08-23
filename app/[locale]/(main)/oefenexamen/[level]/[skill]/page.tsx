@@ -47,22 +47,20 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     title: t('meta_title', vars),
     description: t('meta_description', vars),
     /*
-     * B1 stays out of the index — but the reason changed on 2026-08-21 and is worth stating,
-     * because the old one ("B1 has no content yet") is no longer true.
+     * The review gate is lifted: B1 is indexed (owner's confirmation, 2026-08-23 — the docent
+     * has been through the thirty B1 oefenexamens). The three B1 gates came down together, and
+     * they are the three places to change if a level is ever pulled back: this `robots`, the
+     * `Course` node below, and the `LEVELS` loop in `app/sitemap.ts`.
      *
-     * B1 Lezen, Schrijven and Spreken now have ten published oefenexamens each. That content is
-     * machine-authored and awaiting the docent's review in /admin — the same model the A2
-     * dataset shipped under. Asking Google to index it before she has been through it would put
-     * unreviewed material in front of search traffic and stake the "echt door een docent
-     * gevalideerd" claim on it. So this is now a *review* gate, not an emptiness gate.
-     *
-     * B1 Luisteren has no content at all (no DUO reference material — see `data/skills.ts`),
-     * so it is doubly excluded.
-     *
-     * When the docent signs B1 off, this becomes the place to change, together with
-     * `app/sitemap.ts` (which lists `DEFAULT_LEVEL` only) and the `Course` node below.
+     * **What replaced it is not "index everything".** An onderdeel whose format at this level is
+     * unverified — `itemCount === null`, which is B1 Luisteren and only B1 Luisteren — has no
+     * content and no counted shape, so its overview is forty "Binnenkort" slots. That is the
+     * page this gate now excludes, and it excludes it by asking the honest question ("do we know
+     * what this exam looks like?") rather than by naming the level. Filling in B1 Luisteren's
+     * counts therefore opens its page in the same commit, which is the coupling to want: the
+     * counts and the content arrive together or not at all.
      */
-    robots: { index: level === 'a2', follow: true },
+    robots: { index: skill.itemCount !== null, follow: true },
     alternates: {
       canonical: `${BASE}/${locale}/${path}`,
       languages: {
@@ -111,9 +109,10 @@ export default async function SkillOverviewPage({ params }: Props) {
    * full `Course` nodes for one `url` with different descriptions is a contradiction that no
    * validator reports and a search engine settles by picking one.
    *
-   * Emitted for A2 only. `generateMetadata` returns `robots: { index: false }` for B1 while its
-   * content waits on the docent's review, and shipping rich data for a page we ask Google to
-   * ignore says the opposite of the meta tag on the same page.
+   * Emitted wherever the page is indexed, and gated on exactly the same condition — shipping
+   * rich data for a page we ask Google to ignore says the opposite of the meta tag on the same
+   * page, so these two must not be able to disagree. Since 2026-08-23 that means both levels,
+   * minus B1 Luisteren, whose format is unverified (`itemCount === null`).
    *
    * `omitEmpty` matters here: B1 Luisteren's `itemCount` and `durationMinutes` are still `null`
    * (no DUO reference material — see `data/skills.ts`), and in JSON-LD an absent property means
@@ -123,7 +122,7 @@ export default async function SkillOverviewPage({ params }: Props) {
    */
   const path = `oefenexamen/${level}/${skill.slug}`;
   const url = absUrl(locale, path);
-  const jsonLd = level !== 'a2' ? null : {
+  const jsonLd = skill.itemCount === null ? null : {
     '@context': 'https://schema.org',
     '@graph': [
       omitEmpty({

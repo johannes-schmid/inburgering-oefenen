@@ -11,6 +11,17 @@ import type { SkillSlug } from './skills';
  * they are used only as a format reference for length, register and question style.
  */
 
+/**
+ * Which answer letters an item can offer.
+ *
+ * The twenty static A2 items are all three-option, which is DUO's A2 shape. B1 Lezen is 3 *or*
+ * 4 (`exam_formats.options_min/_max`), and the B1 taster is derived from a real seeded exam
+ * rather than hand-authored — so `D` has to exist here or a four-option item silently loses its
+ * last answer, which can be the correct one. `optionD` is therefore optional and the renderer
+ * builds its list from what is present; nothing about the A2 sets changed.
+ */
+export type OptionKey = 'A' | 'B' | 'C' | 'D';
+
 export type FreePracticeItem = {
   id: string;
   /** Which DUO text/audio genre this item practises — shown in the results breakdown */
@@ -27,7 +38,9 @@ export type FreePracticeItem = {
   optionA: string;
   optionB: string;
   optionC: string;
-  correct: 'A' | 'B' | 'C';
+  /** Present only where DUO's format allows a fourth option — B1 Lezen. */
+  optionD?: string;
+  correct: OptionKey;
   explanation: string;
 };
 
@@ -35,6 +48,18 @@ export type FreePracticeSet = {
   skill: SkillSlug;
   items: FreePracticeItem[];
 };
+
+/** The answer letters an item actually offers, in order. */
+export function optionKeys(item: FreePracticeItem): OptionKey[] {
+  return item.optionD ? ['A', 'B', 'C', 'D'] : ['A', 'B', 'C'];
+}
+
+export function optionText(item: FreePracticeItem, key: OptionKey): string {
+  return key === 'A' ? item.optionA
+    : key === 'B' ? item.optionB
+    : key === 'C' ? item.optionC
+    : (item.optionD ?? '');
+}
 
 const LEES_EERST = 'Lees eerst de vraag.\nLees daarna de tekst.';
 const LUISTER_EERST = 'Lees eerst de vraag.\nLuister daarna naar het gesprek.';

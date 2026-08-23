@@ -179,7 +179,11 @@ export default async function HomePage({ params }: Props) {
      KNM is the documented fifth onderdeel and is not built; ONA is announced and not built. */
   const TRACKS = [
     { key: 'track_a2', live: true },
-    { key: 'track_b1', live: false },
+    /* B1 went live 2026-08-23: the docent signed off the thirty B1 oefenexamens, so its pages
+       are indexed and its modules buyable. This chip, `TRACKS` on `/platform`, the `robots` on
+       `oefenexamen/[level]/[skill]` and the `LEVELS` loop in `app/sitemap.ts` are one decision
+       in four files and move together. */
+    { key: 'track_b1', live: true },
     { key: 'track_knm', live: false },
     { key: 'track_ona', live: false },
   ] as const;

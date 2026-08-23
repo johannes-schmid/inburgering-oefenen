@@ -9,13 +9,16 @@
  * back real reactions, the avatars are replaced with real photos (with permission) and **this
  * script is deleted** — it must never become the thing that supplies faces for real quotes.
  *
- * Routed through the Vercel AI Gateway (`AI_GATEWAY_API_KEY`), the same way the B1 authoring run
- * is, so there is no second image key to hold. Model: openai/gpt-image-2.
+ * Two routes, in this order: **OpenAI directly** (`OPEN_AI_API_KEY`, model `gpt-image-2`) and the
+ * Vercel AI Gateway (`AI_GATEWAY_API_KEY`, `openai/gpt-image-2`). Same model either way, so the
+ * route is a billing detail and not a content one. Direct is first because the gateway refuses
+ * every request — BYOK included — without a positive credit balance of its own.
  */
 import { writeFile, mkdir, readFile } from 'node:fs/promises';
 import sharp from 'sharp';
 
-const MODEL = 'openai/gpt-image-2';
+const GATEWAY = { url: 'https://ai-gateway.vercel.sh/v1/images/generations', model: 'openai/gpt-image-2', env: 'AI_GATEWAY_API_KEY' };
+const OPENAI = { url: 'https://api.openai.com/v1/images/generations', model: 'gpt-image-2', env: 'OPEN_AI_API_KEY' };
 const OUT = 'public/images/reviews';
 const SIZE = 256;
 
@@ -28,26 +31,34 @@ const BRIEFS = [
   'A natural, warm head-and-shoulders portrait photograph of a woman in her late twenties with dark skin and short curly black hair, wearing a plain rust-coloured blouse, calm neutral expression with a faint smile, looking at the camera, soft even daylight, plain very light grey studio background, shallow depth of field, documentary photography, no text.',
 ];
 
-async function key() {
+async function key(name) {
+  if (process.env[name]) return process.env[name];
   for (const f of ['.env.local', '.env.development.local', '.env']) {
     try {
-      const m = (await readFile(f, 'utf8')).match(/^AI_GATEWAY_API_KEY=(.+)$/m);
+      const m = (await readFile(f, 'utf8')).match(new RegExp(`^${name}=(.+)$`, 'm'));
       if (m) return m[1].trim().replace(/^["']|["']$/g, '');
     } catch { /* next file */ }
   }
-  throw new Error('AI_GATEWAY_API_KEY not found in .env.local / .env.development.local / .env');
+  return null;
 }
 
-const apiKey = process.env.AI_GATEWAY_API_KEY || await key();
+const route = await (async () => {
+  for (const r of [OPENAI, GATEWAY]) {
+    const apiKey = await key(r.env);
+    if (apiKey) return { ...r, apiKey };
+  }
+  throw new Error(`no key: set ${OPENAI.env} or ${GATEWAY.env}`);
+})();
+console.log(`route: ${route.model} via ${new URL(route.url).host}`);
 await mkdir(OUT, { recursive: true });
 
 for (const [i, prompt] of BRIEFS.entries()) {
-  const res = await fetch('https://ai-gateway.vercel.sh/v1/images/generations', {
+  const res = await fetch(route.url, {
     method: 'POST',
-    headers: { Authorization: `Bearer ${apiKey}`, 'Content-Type': 'application/json' },
-    body: JSON.stringify({ model: MODEL, prompt, n: 1, size: '1024x1024' }),
+    headers: { Authorization: `Bearer ${route.apiKey}`, 'Content-Type': 'application/json' },
+    body: JSON.stringify({ model: route.model, prompt, n: 1, size: '1024x1024' }),
   });
-  if (!res.ok) throw new Error(`${MODEL} ${res.status}: ${await res.text()}`);
+  if (!res.ok) throw new Error(`${route.model} ${res.status}: ${await res.text()}`);
   const json = await res.json();
   const b64 = json.data?.[0]?.b64_json;
   if (!b64) throw new Error(`no image in response: ${JSON.stringify(json).slice(0, 400)}`);

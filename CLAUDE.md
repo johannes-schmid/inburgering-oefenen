@@ -440,10 +440,21 @@ node scripts/seed-b1-content.mjs all --production  # the hosted project
   `react`-only. The seeder now generates a clip for **any** opgave carrying a spoken line.
 - **Structured outputs reject `minItems > 1`, `maximum` and `minimum`.** Counts and bounds are
   enforced in each unit's `validate()`, not in the JSON schema.
-- **B1 stays `noindex`, and the reason changed.** It is no longer "B1 has no content" but "this
-  content has not been through the docent yet" — a review gate. When she signs it off, the places
-  to change are `oefenexamen/[level]/[skill]/page.tsx` (robots *and* the `Course` node) and
-  `app/sitemap.ts`, which lists `DEFAULT_LEVEL` only.
+- ~~**B1 stays `noindex`**~~ **B1 IS LIVE — the gate came down on 2026-08-23** (owner's
+  confirmation that the docent has been through the thirty exams). **The gate was in four places,
+  not the three this section listed**, and the fourth is the one worth remembering:
+  `scripts/check-schema.mjs` carried `forbid: ['Course']` on `/nl/oefenexamen/b1/lezen`. Nothing
+  else would have caught it — tsc, the build and every screenshot were clean.
+  - **What replaced the gate is a fact, not a level.** `robots` is now
+    `{ index: skill.itemCount !== null }`, and `app/sitemap.ts` skips on the same condition.
+    `itemCount === null` is B1 Luisteren and only B1 Luisteren (no DUO reference material — see
+    `data/skills.ts`), so its overview is still `noindex` and still absent from the sitemap. Filling
+    in those counts opens the page in the same commit, which is the coupling to want.
+  - **B1 Luisteren's ten exams are unpublished** on local *and* production; the other thirty are
+    published on both. No DB write was needed to ship this.
+  - **No B1 exam is `is_free`.** A2 gives exam 1 of each onderdeel away; B1 gives nothing. That is
+    the open pricing decision — see the taster note below, which hands out ten of B1 Lezen exam 1's
+    thirty-five questions anyway.
 - **Pictures live under `b1/` in the same bucket, with their own lock file.**
   `createImages({ level })` parameterises the object prefix, the lock path and the credits
   heading; A2's defaults are unchanged and its 399-entry lock is untouched.
@@ -468,7 +479,7 @@ onderdeel that has no reviewed content spends exactly that credibility.
 | Track | Status | What a page may say |
 |---|---|---|
 | **Taal A2** | live — 40 exams published | available, by name |
-| **Taal B1** | 30 exams authored, `noindex` behind the docent's review gate | *binnenkort*, never as available |
+| **Taal B1** | **live — Lezen/Schrijven/Spreken published and indexed (2026-08-23); Luisteren empty** | available, by name |
 | **KNM** | the documented fifth onderdeel; kennisgidsen live, oefenexamens not built | gidsen by name; exams *binnenkort* |
 | **ONA** | announced only; covered by the tijdlijn tool and the gidsen | *binnenkort* |
 
@@ -1309,6 +1320,30 @@ anyone else's.
 ### Where content lives
 - **Free taster (20 items):** `data/free-practice.ts`. Static on purpose — it is the top of
   the funnel and must render for anonymous visitors with no DB round-trip.
+- **The B1 taster is the exception, and deliberately so** (owner's decision, 2026-08-23).
+  `lib/free-practice-b1.ts` derives ten items from **B1 Lezen oefenexamen 1** rather than authoring
+  a second static set. The browser still does no query — it is a server component — but three
+  things follow and are easy to forget:
+  - **The page depends on that exam staying published.** `fetchExamContent` returns null for an
+    unpublished exam, so unpublishing turns the taster *off* (the route `notFound()`s) rather than
+    rendering an empty quiz. That is the failure mode to want.
+  - **It gives away ten of that exam's thirty-five questions**, and B1 exam 1 is not free. Whether
+    it should be is the open pricing decision above.
+  - **It must never widen past `stimuli`.** `ExamContent` also carries `open_tasks`, including
+    `model_answer` — a scoring key — and this module's return value goes straight into a client
+    component. It reads only the fields the taster renders; do not spread a row.
+  - **Lezen only.** Luisteren has no B1 content and no verified format; Schrijven and Spreken are
+    rubric-graded, so every answer costs a model call and needs an account first — the same reason
+    they have no anonymous A2 taster.
+- **`/oefenen/[skill]` is A2 and `/oefenen/b1/[skill]` is B1 — the asymmetry is intentional.** The
+  four A2 taster URLs are indexed and ranking; re-pathing the entry point of the funnel to
+  `/oefenen/a2/[skill]` would cost a redirect hop and some equity to buy nothing a visitor can see
+  (owner's decision, 2026-08-23). A2 is the unprefixed default; a level nests.
+- **`FreePracticeItem` has an optional `optionD`, and it is load-bearing.** The twenty A2 items are
+  all three-option, which is DUO's A2 shape; B1 Lezen is 3 *or* 4, and one of the ten items the
+  taster shows has **D** as its correct answer. The engine builds its option list from
+  `optionKeys(item)` for that reason — hardcoded A/B/C left that question with no selectable
+  correct answer, on a page that looked entirely normal.
 - **Paid exams:** Supabase (`exams` / `questions` / `open_tasks`), authored in `/admin`.
 - **Taster audio:** committed mp3s in `public/audio/free-practice/`, generated by
   `scripts/generate-free-practice-audio.mjs` (two ElevenLabs voices, stitched with ffmpeg).

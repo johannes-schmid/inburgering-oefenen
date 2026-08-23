@@ -1,6 +1,7 @@
 import type { MetadataRoute } from 'next';
-import { DEFAULT_LEVEL, SKILLS } from '@/data/skills';
+import { DEFAULT_LEVEL, LEVELS, SKILLS, getFormat } from '@/data/skills';
 import { hasFreePractice } from '@/data/free-practice';
+import { b1TasterSkills } from '@/lib/free-practice-b1';
 import { FEATURES } from '@/lib/features';
 import { getSortedPosts, getPostSlug, hasTranslation } from '@/data/blog-posts';
 import { publishedGuides, hasTranslation as guideHasTranslation } from '@/data/guides/helpers';
@@ -56,22 +57,44 @@ export default function sitemap(): MetadataRoute.Sitemap {
         lastModified: TODAY,
       });
     }
-  }
-
-  // One overview page per exam component (lezen / luisteren / schrijven / spreken).
-  //
-  // A2 only. The B1 pages exist and resolve, but every one of their forty slots is
-  // "Binnenkort" — submitting forty empty grids spends crawl budget on pages that answer
-  // nothing, and their `robots` meta is `noindex` anyway (see the overview page), so listing
-  // them here would only contradict it. They join the sitemap when the docent publishes.
-  for (const skill of SKILLS) {
-    for (const locale of LOCALES) {
+    /* The B1 tasters, nested under their level. Only the onderdelen that have a source exam —
+       the route 404s for the rest, and `b1TasterSkills()` is the same list the route's
+       `generateStaticParams` uses, so the sitemap cannot advertise a URL that does not build. */
+    for (const skill of b1TasterSkills()) {
       entries.push({
-        url: `${BASE}/${locale}/oefenexamen/${DEFAULT_LEVEL}/${skill.slug}`,
-        changeFrequency: 'weekly',
-        priority: 0.9,
+        url: `${BASE}/${locale}/oefenen/b1/${skill}`,
+        changeFrequency: 'monthly',
+        priority: 0.8,
         lastModified: TODAY,
       });
+    }
+  }
+
+  /* One overview page per (level, onderdeel).
+   *
+   * Both levels since 2026-08-23. This block listed `DEFAULT_LEVEL` only for as long as B1 was
+   * `noindex` behind the docent's review gate — a sitemap entry for a noindex URL is a
+   * contradiction we would be asking Google to resolve for us. The gate is lifted (owner's
+   * confirmation, 2026-08-23) and the overview page's `robots` now indexes both levels, so the
+   * two moved together. **They must keep moving together**: if a level is ever pulled back to
+   * noindex, this loop is the second place to change.
+   *
+   * The condition is the overview page's own: `itemCount === null` means DUO's format for this
+   * (level, onderdeel) is unverified, which today is B1 Luisteren and only B1 Luisteren. Its
+   * page is `noindex`, so listing it here would be the contradiction this block exists to
+   * avoid. Gating on the same fact rather than on a second hand-kept list is what stops the two
+   * drifting. */
+  for (const skill of SKILLS) {
+    for (const level of LEVELS) {
+      if (getFormat(level, skill.slug).itemCount === null) continue;
+      for (const locale of LOCALES) {
+        entries.push({
+          url: `${BASE}/${locale}/oefenexamen/${level}/${skill.slug}`,
+          changeFrequency: 'weekly',
+          priority: level === DEFAULT_LEVEL ? 0.9 : 0.8,
+          lastModified: TODAY,
+        });
+      }
     }
   }
 

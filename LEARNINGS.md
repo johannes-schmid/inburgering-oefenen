@@ -2524,3 +2524,35 @@ so budget a screenshot pass *per size the thing renders at*, not one per feature
 **Second lesson:** the working tree held someone else's in-progress B1 feature that did not
 typecheck. `git add .` would have swept it into this commit and broken `main`. **Stage by path
 when the tree is not yours alone**, and read `git status` before every commit rather than after.
+
+## 2026-08-23 — B1 gaat live, en de gratis B1-taster komt uit een echt examen
+**Changed:** vier gates open (`robots` + `Course` in `oefenexamen/[level]/[skill]/page.tsx`, de
+`LEVELS`-loop in `app/sitemap.ts`, de `forbid: ['Course']`-regel in `scripts/check-schema.mjs`),
+`TRACKS` op de homepage en `/platform` op `live: true`, nieuwe route
+`app/[locale]/(main)/oefenen/b1/[skill]/page.tsx` met `lib/free-practice-b1.ts`, vierde optie in
+`data/free-practice.ts` + `FreePracticeEngine.tsx`, twee e2e-asserties omgedraaid, copy in nl/en/ar.
+**Outcome:** SUCCESS
+**What worked / went wrong:**
+- **De review-gate zat op vier plekken, niet op de drie die CLAUDE.md noemt.** De vierde was
+  `scripts/check-schema.mjs`, die `Course` op `/nl/oefenexamen/b1/lezen` *verbood*. Alleen omdat die
+  check bestaat viel hij op — tsc, de build en elke screenshot waren schoon.
+- **Niet op het niveau gaan gaten, maar op het feit.** `robots: { index: level === 'a2' }` is
+  vervangen door `robots: { index: skill.itemCount !== null }`. Dat sluit precies B1 Luisteren uit
+  (geen DUO-referentiemateriaal, dus counts `null`) en het opent zichzelf zodra iemand die counts
+  invult — de sitemap leest hetzelfde feit, dus de twee kunnen niet meer uit elkaar lopen.
+- **De vierde antwoordoptie was load-bearing en bijna gemist.** `FreePracticeEngine` was hard
+  A/B/C; B1 Lezen is 3 *of* 4 opties en één van de tien getoonde items heeft **D** als juist
+  antwoord. Zonder de verbreding had die vraag geen selecteerbaar juist antwoord gehad — en de
+  pagina had er volkomen normaal uitgezien.
+- **Turbopack serveerde weer een verouderde chunk.** De eerste doorloop door de quiz gaf tien keer
+  3 opties terwijl de RSC-payload en de database 4 zeiden voor vier items. Dezelfde staleness die
+  CLAUDE.md voor CSS documenteert, nu voor JS. Grep de payload (`grep -c optionD` op de HTML)
+  vóór je concludeert dat de renderlogica fout is.
+- **Twee edits aan `oefenen/page.tsx` en `messages/*.json` zijn tussen twee stappen teruggedraaid**
+  en de tweede edit las het teruggedraaide bestand, dus alles leek te lukken terwijl het blok weg
+  was. Alleen een screenshot vond het. Bevestig een edit op schijf (`grep -c`) direct na het
+  schrijven, niet aan het eind.
+**Lesson:** een noindex-gate zit op meer plaatsen dan de documentatie opsomt, en de plaats die je
+mist is de plaats waar niets faalt. Zoek hem door de *conditie* te greppen (`=== 'a2'`,
+`DEFAULT_LEVEL`, `forbid`), niet de feature — en vervang hem door het onderliggende feit, zodat de
+volgende release zichzelf opent.

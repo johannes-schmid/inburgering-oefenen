@@ -56,7 +56,10 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 /** The whole traject, in the order a candidate meets it. `live: false` renders the chip. */
 const TRACKS = [
   { key: 'a2', live: true, href: '/taalexamens' as const },
-  { key: 'b1', live: false },
+  /* B1 is live and linked since 2026-08-23. It could not carry an `href` while it was
+     `noindex`: a site-wide-ish link from here would have handed a crawler exactly the pages we
+     told it to ignore. That is no longer true, so it links like A2 does. */
+  { key: 'b1', live: true, href: '/taalexamens' as const },
   { key: 'knm', live: false },
   { key: 'ona', live: false },
 ] as const;

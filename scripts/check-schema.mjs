@@ -77,8 +77,16 @@ const PAGES = [
   { path: '/nl/inburgering/boete-en-termijn',         expect: ['Article', 'BreadcrumbList', 'FAQPage'] },
   { path: '/nl/inburgering/pvt-map-en-ona',           expect: ['Article', 'BreadcrumbList', 'FAQPage'] },
   { path: '/nl/inburgering/vrijstelling-en-ontheffing', expect: ['Article', 'BreadcrumbList', 'FAQPage'] },
-  // B1 is noindex — forty empty slots. Rich data there would contradict the meta tag.
-  { path: '/nl/oefenexamen/b1/lezen',   expect: [], forbid: ['Course'] },
+  /* B1 went live 2026-08-23 and this row inverted with it: Lezen now *owns* its `Course` node,
+     exactly like A2. Luisteren keeps the old assertion, because its format is unverified
+     (`itemCount === null`, `data/skills.ts`), so its overview is still `noindex` — and rich data
+     on a page we ask Google to ignore says the opposite of the meta tag beside it. The `robots`
+     tag and this row read the same fact; keeping both is what catches one moving without the
+     other. */
+  { path: '/nl/oefenexamen/b1/lezen',     expect: ['Course', 'BreadcrumbList'] },
+  { path: '/nl/oefenexamen/b1/luisteren', expect: [], forbid: ['Course'] },
+  // The free B1 taster. Lezen only — see `lib/free-practice-b1.ts`.
+  { path: '/nl/oefenen/b1/lezen',         expect: ['Quiz', 'BreadcrumbList'] },
   { path: '/en/premium',                expect: ['Product'] },
   { path: '/ar/premium',                expect: ['Product'] },
 ];

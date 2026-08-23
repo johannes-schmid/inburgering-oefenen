@@ -205,11 +205,12 @@ test.describe('the kennisgids sections', () => {
       ]) {
         await expect(page.locator(`main a[href="${href}"]`).first(), href).toBeVisible();
       }
-      /* B1 is announced and is **not** a link: its pages exist and are `noindex` behind the
-         docent's review gate, so linking them would hand a crawler the page we tell it to
-         ignore. Same for the two unbuilt tracks. */
-      await expect(page.locator('main a[href*="/oefenexamen/b1/"]')).toHaveCount(0);
+      /* B1 is live and linked since 2026-08-23 — it could not be while it was `noindex` behind
+         the docent's review gate, because a link from here would have handed a crawler exactly
+         the pages we told it to ignore. The two genuinely unbuilt tracks are still not links,
+         which is the part of this assertion that still has teeth. */
       await expect(page.getByText('Taalexamens B1')).toBeVisible();
+      await expect(page.locator('main a[href*="/knm/oefenexamen"]')).toHaveCount(0);
 
       // Gidsen: every published guide, the three hubs and the blog.
       await page.goto('/nl/gidsen');

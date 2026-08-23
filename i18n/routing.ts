@@ -80,6 +80,10 @@ export const routing = defineRouting({
     '/taalexamens/grammatica': '/taalexamens/grammatica',
     '/oefenen': '/oefenen',
     '/oefenen/[skill]': '/oefenen/[skill]',
+    /* The B1 taster is nested and A2's is not, deliberately — the four A2 taster URLs are
+       indexed and ranking, and re-pathing the funnel's entry point buys nothing a visitor can
+       see. See the header of `oefenen/b1/[skill]/page.tsx`. */
+    '/oefenen/b1/[skill]': '/oefenen/b1/[skill]',
     // The level is part of the path at both levels, including A2 — see the redirects in
     // next.config.ts that 301 the old A2-implicit URLs onto these.
     '/oefenexamen/[level]/[skill]': '/oefenexamen/[level]/[skill]',

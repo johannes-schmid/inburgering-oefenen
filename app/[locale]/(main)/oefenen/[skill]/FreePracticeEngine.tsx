@@ -3,14 +3,14 @@
 import { useState, useRef, useEffect, useCallback } from 'react';
 import { useTranslations } from 'next-intl';
 import { track } from '@/lib/analytics';
-import type { FreePracticeItem } from '@/data/free-practice';
-import { DEFAULT_LEVEL, type SkillSlug } from '@/data/skills';
+import { optionKeys, optionText, type FreePracticeItem, type OptionKey } from '@/data/free-practice';
+import { DEFAULT_LEVEL, type Level, type SkillSlug } from '@/data/skills';
 import SkillIcon from '@/components/site/SkillIcon';
 import { Check, Star, UserRoundCheck, Headphones } from 'lucide-react';
 
 const PASS_PCT = 70;
 
-type Answered = { item: FreePracticeItem; chosen: 'A' | 'B' | 'C'; isCorrect: boolean };
+type Answered = { item: FreePracticeItem; chosen: OptionKey; isCorrect: boolean };
 type Phase = 'intro' | 'quiz' | 'gate' | 'results';
 
 type Props = {
@@ -18,14 +18,20 @@ type Props = {
   skillName: string;
   items: FreePracticeItem[];
   locale: string;
+  /**
+   * Which level's oefenexamen the result screen sends the candidate to. Defaults to A2,
+   * which is where the four unprefixed `/oefenen/[skill]` tasters live — a B1 taster that
+   * fell back to A2 would upsell the wrong module at the one point the visitor is convinced.
+   */
+  level?: Level;
 };
 
-export default function FreePracticeEngine({ skill, skillName, items, locale }: Props) {
+export default function FreePracticeEngine({ skill, skillName, items, locale, level = DEFAULT_LEVEL }: Props) {
   const t = useTranslations('oefenen');
 
   const [phase, setPhase] = useState<Phase>('intro');
   const [idx, setIdx] = useState(0);
-  const [selected, setSelected] = useState<'A' | 'B' | 'C' | null>(null);
+  const [selected, setSelected] = useState<OptionKey | null>(null);
   const [log, setLog] = useState<Answered[]>([]);
   const logRef = useRef<Answered[]>([]);
 
@@ -49,7 +55,7 @@ export default function FreePracticeEngine({ skill, skillName, items, locale }: 
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }
 
-  function choose(option: 'A' | 'B' | 'C') {
+  function choose(option: OptionKey) {
     if (selected) return;
     const item = items[idx];
     const isCorrect = option === item.correct;
@@ -400,7 +406,7 @@ export default function FreePracticeEngine({ skill, skillName, items, locale }: 
         </h3>
         <p className="text-sm text-on-surface-variant leading-relaxed mb-5">{t('signup_desc')}</p>
         <a
-          href={`/${locale}/oefenexamen/${DEFAULT_LEVEL}/${skill}`}
+          href={`/${locale}/oefenexamen/${level}/${skill}`}
           className="w-full inline-flex items-center justify-center gap-2 text-white font-black no-underline hover:-translate-y-0.5 transition-transform active:scale-[.99]"
           style={{ fontSize: 16, padding: '15px', borderRadius: 14, background: 'linear-gradient(135deg,#fe762c 0%,#d94f00 100%)', boxShadow: '0 8px 22px rgba(254,118,44,0.38)' }}
         >
@@ -420,10 +426,6 @@ export default function FreePracticeEngine({ skill, skillName, items, locale }: 
       </div>
     </div>
   );
-}
-
-function optionText(item: FreePracticeItem, key: 'A' | 'B' | 'C') {
-  return key === 'A' ? item.optionA : key === 'B' ? item.optionB : item.optionC;
 }
 
 /* ── Stimulus pane: reading passage or audio player ─────────────────────── */
@@ -551,22 +553,18 @@ function fmt(seconds: number) {
   return `${m}:${String(s).padStart(2, '0')}`;
 }
 
-/* ── Question pane: A/B/C with inline feedback ──────────────────────────── */
+/* ── Question pane: three or four options, with inline feedback ─────────── */
 function QuestionPane({
   item, selected, onChoose, explanationLabel, correctLabel, wrongLabel,
 }: {
   item: FreePracticeItem;
-  selected: 'A' | 'B' | 'C' | null;
-  onChoose: (o: 'A' | 'B' | 'C') => void;
+  selected: OptionKey | null;
+  onChoose: (o: OptionKey) => void;
   explanationLabel: string;
   correctLabel: string;
   wrongLabel: string;
 }) {
-  const options: { key: 'A' | 'B' | 'C'; text: string }[] = [
-    { key: 'A', text: item.optionA },
-    { key: 'B', text: item.optionB },
-    { key: 'C', text: item.optionC },
-  ];
+  const options = optionKeys(item).map(key => ({ key, text: optionText(item, key) }));
 
   return (
     <div className="rounded-2xl p-5 sm:p-6 bg-surface-container-lowest" style={{ boxShadow: 'var(--shadow-card-md)' }}>
