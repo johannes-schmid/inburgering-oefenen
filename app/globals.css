@@ -1296,3 +1296,55 @@
   background-position: 13px 13px;
 }
 
+
+/* ── Folded FAQ on a kennisgids ──
+   `<details>`, so an answer is in the DOM before hydration and before it is opened: the page's
+   `FAQPage` JSON-LD claims this text is here, and a fold that renders nothing until clicked would
+   make that claim false. No 1px separators (§2) — the rows are surface shifts. */
+.faq-folds { display: flex; flex-direction: column; gap: 8px; }
+.faq-fold {
+  background: var(--color-surface-container-low);
+  border-radius: 14px;
+  padding: 2px 18px;
+}
+.faq-fold > summary {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  cursor: pointer;
+  list-style: none;
+  padding: 16px 0;
+  font-family: var(--font-headline);
+  font-weight: 700;
+  font-size: 0.97rem;
+  line-height: 1.5;
+  color: #191c1e;
+}
+.faq-fold > summary::-webkit-details-marker { display: none; }
+/* The marker is drawn, not a glyph: a lucide chevron cannot live inside a `summary` rendered by
+   the server without a component per row, and `+`/`−` are typography, not an emoji. */
+.faq-fold > summary::after {
+  content: '';
+  margin-inline-start: auto;
+  flex: 0 0 auto;
+  width: 9px;
+  height: 9px;
+  border-right: 2px solid var(--color-on-surface-variant);
+  border-bottom: 2px solid var(--color-on-surface-variant);
+  transform: rotate(45deg);
+  transform-origin: center;
+  transition: transform 200ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+.faq-fold[open] > summary::after { transform: rotate(-135deg); }
+.faq-fold > summary:focus-visible { outline: 2px solid var(--color-primary); outline-offset: 2px; border-radius: 8px; }
+.faq-fold > p {
+  margin: 0 0 18px;
+  padding-inline-end: 21px;
+  font-size: 0.95rem;
+  line-height: 1.75;
+  color: #434651;
+}
+@media (prefers-reduced-motion: reduce) {
+  .faq-fold > summary::after { transition: none; }
+}
+

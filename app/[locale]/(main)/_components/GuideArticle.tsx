@@ -30,9 +30,10 @@ import { FEATURES } from '@/lib/features';
 import { getPostBySlug, getPostLocale, getPostSlug } from '@/data/blog-posts';
 import { getGuideLocale, hasTranslation, relatedGuides, guideHref, hubHref } from '@/data/guides/helpers';
 import { phaseOfGuide } from '@/data/guides/phases';
-import { guideSections } from '@/lib/guides/sections';
+import { guideParts, guideSections } from '@/lib/guides/sections';
 import PhaseStrip from '@/components/inburgering/PhaseStrip';
 import GuideSectionNav from '@/components/inburgering/GuideSectionNav';
+import GuideReader from '@/components/guides/GuideReader';
 import SituationCheck from '@/components/inburgering/SituationCheck';
 import type { Guide } from '@/data/guides/types';
 
@@ -45,6 +46,7 @@ export default async function GuideArticle({
 }) {
   const t = await getTranslations({ locale, namespace: 'guides' });
   const tB = await getTranslations({ locale, namespace: 'breadcrumbs' });
+  const tR = await getTranslations({ locale, namespace: 'inburgering_route' });
 
   const lg = getGuideLocale(guide, locale);
   const translated = hasTranslation(guide, locale);
@@ -67,6 +69,19 @@ export default async function GuideArticle({
    * while the ids — and therefore the recorded progress — are shared across nl/en/ar. */
   const phase = phaseOfGuide(guide.slug);
   const sections = phase ? guideSections(lg.articleHtml) : [];
+
+  /* The guide as **delen** — one `<h2>` section per view (`GuideReader`, owner's mockups of
+     2026-08-23). Every guide reads this way now, not only the Inburgering ones, so the split is on
+     "does the body have at least two `<h2 id>`s" — a fact about the text rather than about the
+     section. A one-heading guide keeps the plain article: a reading view with a single deel is
+     chrome around nothing.
+     `phaseLabel` is the only route-specific thing that reaches the reader, and it is absent outside
+     `phases.ts` rather than defaulted — a guide in no fase claims no place in the route. */
+  const { intro, parts } = guideParts(lg.articleHtml);
+  const paged = parts.length > 1;
+  const phaseLabel = phase
+    ? tR('phase_eyebrow', { number: phase.number, label: tR(`phase.${phase.id}.label`) })
+    : undefined;
 
   /* `Article`, deliberately not `BlogPosting`: a kennisgids is a maintained reference page, not a
    * dated post, and the type is the honest one. `author` and `publisher` are references to the
@@ -250,198 +265,385 @@ export default async function GuideArticle({
       {phase && <PhaseStrip current={phase.id} locale={locale} />}
 
       <main className="bg-surface">
+        {/* Two shapes, one decision (see `paged` above): delen, or the plain article. The reader
+            renders **both** grid children — the white card and the aside — because the delen list
+            and the reading view share one piece of state. */}
         <div className="article-layout">
-          <div
-            className="bg-surface-container-lowest rounded-2xl p-8 md:p-10"
-            style={{ boxShadow: '0 2px 32px rgba(0,43,109,0.06)' }}
-          >
-            {/* An unreviewed guide says so, on the page, in every locale. */}
-            {guide.status === 'draft' && (
-              <div className="info-box mb-6">
-                <p>{t('draft_notice')}</p>
-              </div>
-            )}
-
-            {/* An untranslated locale falls back to the Dutch body, forced LTR: inside the Arabic
-                layout (dir="rtl") Dutch text renders with its punctuation on the wrong side. The
-                page is noindex in this state. Same handling as a blog post. */}
-            {translated ? (
-              <ArticleContent html={lg.articleHtml} />
-            ) : (
-              <>
-                <div className="info-box mb-6">
-                  <p>
-                    {t('not_translated')}{' '}
-                    <Link
-                      href={guideHref(guide)}
-                      locale="nl"
-                    >
-                      {t('read_in_dutch')}
-                    </Link>
-                  </p>
-                </div>
-                <div dir="ltr" lang="nl">
-                  <ArticleContent html={lg.articleHtml} />
-                </div>
-              </>
-            )}
-
-            {lg.faq.length > 0 && (
-              <section className="mt-12">
-                <h2
-                  className="font-headline font-bold text-on-surface mb-2"
-                  style={{ fontSize: '1.4rem', letterSpacing: '-0.01em' }}
-                >
-                  {t('faq_title')}
-                </h2>
-                <div className="article-faq article-body">
-                  {lg.faq.map(f => (
-                    <div key={f.q} className="article-faq-item">
-                      <p className="article-faq-q">{f.q}</p>
-                      <p>{f.a}</p>
+          {paged ? (
+            <GuideReader
+              slug={guide.slug}
+              section={guide.section}
+              guideTitle={lg.heroTitle}
+              intro={intro}
+              parts={parts}
+              phaseLabel={phaseLabel}
+              bodyDir={translated ? undefined : 'ltr'}
+              notices={<>
+                  {/* An unreviewed guide says so, on the page, in every locale. */}
+                  {guide.status === 'draft' && (
+                    <div className="info-box mb-6">
+                      <p>{t('draft_notice')}</p>
                     </div>
-                  ))}
+                  )}
+                  {/* An untranslated locale reads the Dutch body, and the reader is told so. The
+                      delen themselves are forced LTR through `bodyDir` — inside the Arabic layout
+                      Dutch text renders with its punctuation on the wrong side. */}
+                  {!translated && (
+                    <div className="info-box mb-6">
+                      <p>
+                        {t('not_translated')}{' '}
+                        <Link href={guideHref(guide)} locale="nl">
+                          {t('read_in_dutch')}
+                        </Link>
+                      </p>
+                    </div>
+                  )}
+                </>}
+              trailing={
+                <>
+                  {/* The FAQ folds. Expanded it was a third of the pillar's length, below a
+                      reading view whose whole point is one thing at a time (owner, 2026-08-23).
+                      `<details>` and not the client `FaqAccordion`: the answers stay in the DOM
+                      collapsed, so the `FAQPage` JSON-LD above still describes text that is on the
+                      page, it needs no JavaScript, and no `max-height` can clip a long answer. */}
+                  {lg.faq.length > 0 && (
+                    <section
+                      className="bg-surface-container-lowest rounded-2xl p-6 sm:p-8 md:p-10"
+                      style={{ boxShadow: '0 2px 32px rgba(0,43,109,0.06)' }}
+                    >
+                      <h2
+                        className="font-headline font-bold text-on-surface mb-4"
+                        style={{ fontSize: '1.4rem', letterSpacing: '-0.01em' }}
+                      >
+                        {t('faq_title')}
+                      </h2>
+                      <div className="faq-folds">
+                        {lg.faq.map(f => (
+                          <details key={f.q} className="faq-fold">
+                            <summary>
+                              <span>{f.q}</span>
+                            </summary>
+                            <p>{f.a}</p>
+                          </details>
+                        ))}
+                      </div>
+                    </section>
+                  )}
+
+                  {/* Only a reviewed guide can make the claim, because only it has the fields. */}
+                  {guide.status === 'reviewed' && guide.reviewedBy && guide.reviewedOn && (
+                    <p className="text-sm text-on-surface-variant px-2 m-0">
+                      {t('reviewed_by', {
+                        name: guide.reviewedBy,
+                        date: new Date(guide.reviewedOn).toLocaleDateString(langTag(locale), {
+                          day: 'numeric',
+                          month: 'long',
+                          year: 'numeric',
+                        }),
+                      })}
+                    </p>
+                  )}
+
+                  <div className="rounded-2xl p-8 text-center" style={{ background: 'var(--gradient-brand)' }}>
+                    <p className="font-headline font-bold text-white text-xl mb-3">{lg.ctaTitle}</p>
+                    <p className="mb-6 text-sm" style={{ color: 'rgba(255,255,255,0.6)' }}>
+                      {lg.ctaDesc}
+                    </p>
+                    <Link
+                      href={guide.ctaHref}
+                      className="inline-flex items-center gap-2 bg-secondary-container text-on-secondary-container px-6 py-3 rounded-xl font-bold text-sm no-underline hover:opacity-90 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 active:scale-[0.98] transition-opacity"
+                      style={{ boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.1)', textDecoration: 'none' }}
+                    >
+                      {lg.ctaLabel}
+                      <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">
+                        <path
+                          d="M3 7h8M7 3l4 4-4 4"
+                          stroke="currentColor"
+                          strokeWidth="1.5"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                        />
+                      </svg>
+                    </Link>
+                  </div>
+                </>
+              }
+              sidebar={
+                <>
+                  {phase && <SituationCheck variant="compact" />}
+
+                  <div className="rounded-2xl p-6 text-center" style={{ background: 'var(--gradient-brand)' }}>
+                    <div className="flex justify-center mb-3">
+                      <PenLine className="w-7 h-7" style={{ color: 'rgba(255,255,255,0.85)' }} aria-hidden="true" />
+                    </div>
+                    <h2 className="font-headline font-bold text-white text-lg mb-2">{t('sidebar_cta_title')}</h2>
+                    <p className="text-sm mb-5 leading-relaxed" style={{ color: 'rgba(255,255,255,0.6)' }}>
+                      {t('sidebar_cta_desc')}
+                    </p>
+                    <Link
+                      href="/oefenen"
+                      className="block bg-secondary-container text-on-secondary-container px-4 py-2.5 rounded-xl font-bold text-sm text-center no-underline hover:opacity-90 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 active:scale-[0.98] transition-opacity"
+                      style={{ boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.1)', textDecoration: 'none' }}
+                    >
+                      {t('sidebar_cta_btn')}
+                    </Link>
+                  </div>
+
+                  {lg.sidebarHtml && <div dangerouslySetInnerHTML={{ __html: lg.sidebarHtml }} />}
+
+                  {siblings.length > 0 && (
+                    <div
+                      className="bg-surface-container-lowest rounded-2xl p-6"
+                      style={{ boxShadow: '0 2px 16px rgba(0,43,109,0.06)' }}
+                    >
+                      <h2 className="text-xs font-bold uppercase tracking-widest text-on-surface-variant mb-4">
+                        {t('related_title')}
+                      </h2>
+                      <div className="flex flex-col gap-4">
+                        {siblings.map((g, i) => {
+                          const sl = getGuideLocale(g, locale);
+                          return (
+                            <div key={g.slug}>
+                              {i > 0 && <div className="h-px bg-surface-container mb-4" />}
+                              <Link
+                                href={guideHref(g)}
+                                className="block no-underline group"
+                                style={{ textDecoration: 'none' }}
+                              >
+                                <p className="text-sm text-on-surface font-semibold leading-snug mb-1 group-hover:text-primary transition-colors">
+                                  {sl.heroTitle}
+                                </p>
+                                <p className="text-xs text-on-surface-variant">{sl.description}</p>
+                              </Link>
+                            </div>
+                          );
+                        })}
+                      </div>
+                    </div>
+                  )}
+
+                  {posts.length > 0 && (
+                    <div
+                      className="bg-surface-container-lowest rounded-2xl p-6"
+                      style={{ boxShadow: '0 2px 16px rgba(0,43,109,0.06)' }}
+                    >
+                      <h2 className="text-xs font-bold uppercase tracking-widest text-on-surface-variant mb-4">
+                        {t('related_posts_title')}
+                      </h2>
+                      <div className="flex flex-col gap-4">
+                        {posts.map((post, i) => {
+                          const lp = getPostLocale(post!, locale);
+                          return (
+                            <div key={post!.slug}>
+                              {i > 0 && <div className="h-px bg-surface-container mb-4" />}
+                              <Link
+                                href={{ pathname: '/blog/[slug]', params: { slug: getPostSlug(post!, locale) } }}
+                                className="block no-underline group"
+                                style={{ textDecoration: 'none' }}
+                              >
+                                <p className="text-sm text-on-surface font-semibold leading-snug mb-1 group-hover:text-primary transition-colors">
+                                  {lp.heroTitle}
+                                </p>
+                              </Link>
+                            </div>
+                          );
+                        })}
+                      </div>
+                    </div>
+                  )}
+                </>
+              }
+            />
+          ) : (
+            <>
+              <div
+                className="bg-surface-container-lowest rounded-2xl p-8 md:p-10"
+                style={{ boxShadow: '0 2px 32px rgba(0,43,109,0.06)' }}
+              >
+                {/* An unreviewed guide says so, on the page, in every locale. */}
+                {guide.status === 'draft' && (
+                  <div className="info-box mb-6">
+                    <p>{t('draft_notice')}</p>
+                  </div>
+                )}
+
+                {/* An untranslated locale falls back to the Dutch body, forced LTR: inside the Arabic
+                    layout (dir="rtl") Dutch text renders with its punctuation on the wrong side. The
+                    page is noindex in this state. Same handling as a blog post. */}
+                {translated ? (
+                  <ArticleContent html={lg.articleHtml} />
+                ) : (
+                  <>
+                    <div className="info-box mb-6">
+                      <p>
+                        {t('not_translated')}{' '}
+                        <Link
+                          href={guideHref(guide)}
+                          locale="nl"
+                        >
+                          {t('read_in_dutch')}
+                        </Link>
+                      </p>
+                    </div>
+                    <div dir="ltr" lang="nl">
+                      <ArticleContent html={lg.articleHtml} />
+                    </div>
+                  </>
+                )}
+
+                {lg.faq.length > 0 && (
+                  <section className="mt-12">
+                    <h2
+                      className="font-headline font-bold text-on-surface mb-2"
+                      style={{ fontSize: '1.4rem', letterSpacing: '-0.01em' }}
+                    >
+                      {t('faq_title')}
+                    </h2>
+                    <div className="article-faq article-body">
+                      {lg.faq.map(f => (
+                        <div key={f.q} className="article-faq-item">
+                          <p className="article-faq-q">{f.q}</p>
+                          <p>{f.a}</p>
+                        </div>
+                      ))}
+                    </div>
+                  </section>
+                )}
+
+                {/* Only a reviewed guide can make the claim, because only it has the fields. */}
+                {guide.status === 'reviewed' && guide.reviewedBy && guide.reviewedOn && (
+                  <p
+                    className="mt-10 pt-6 text-sm text-on-surface-variant"
+                    style={{ borderTop: '1px solid rgba(196,198,210,0.3)' }}
+                  >
+                    {t('reviewed_by', {
+                      name: guide.reviewedBy,
+                      date: new Date(guide.reviewedOn).toLocaleDateString(langTag(locale), {
+                        day: 'numeric',
+                        month: 'long',
+                        year: 'numeric',
+                      }),
+                    })}
+                  </p>
+                )}
+
+                <div className="mt-8 rounded-2xl p-8 text-center" style={{ background: 'var(--gradient-brand)' }}>
+                  <p className="font-headline font-bold text-white text-xl mb-3">{lg.ctaTitle}</p>
+                  <p className="mb-6 text-sm" style={{ color: 'rgba(255,255,255,0.6)' }}>
+                    {lg.ctaDesc}
+                  </p>
+                  <Link
+                    href={guide.ctaHref}
+                    className="inline-flex items-center gap-2 bg-secondary-container text-on-secondary-container px-6 py-3 rounded-xl font-bold text-sm no-underline hover:opacity-90 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 active:scale-[0.98] transition-opacity"
+                    style={{ boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.1)', textDecoration: 'none' }}
+                  >
+                    {lg.ctaLabel}
+                    <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">
+                      <path
+                        d="M3 7h8M7 3l4 4-4 4"
+                        stroke="currentColor"
+                        strokeWidth="1.5"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                      />
+                    </svg>
+                  </Link>
                 </div>
-              </section>
-            )}
+              </div>
 
-            {/* Only a reviewed guide can make the claim, because only it has the fields. */}
-            {guide.status === 'reviewed' && guide.reviewedBy && guide.reviewedOn && (
-              <p
-                className="mt-10 pt-6 text-sm text-on-surface-variant"
-                style={{ borderTop: '1px solid rgba(196,198,210,0.3)' }}
-              >
-                {t('reviewed_by', {
-                  name: guide.reviewedBy,
-                  date: new Date(guide.reviewedOn).toLocaleDateString(langTag(locale), {
-                    day: 'numeric',
-                    month: 'long',
-                    year: 'numeric',
-                  }),
-                })}
-              </p>
-            )}
-
-            <div className="mt-8 rounded-2xl p-8 text-center" style={{ background: 'var(--gradient-brand)' }}>
-              <p className="font-headline font-bold text-white text-xl mb-3">{lg.ctaTitle}</p>
-              <p className="mb-6 text-sm" style={{ color: 'rgba(255,255,255,0.6)' }}>
-                {lg.ctaDesc}
-              </p>
-              <Link
-                href={guide.ctaHref}
-                className="inline-flex items-center gap-2 bg-secondary-container text-on-secondary-container px-6 py-3 rounded-xl font-bold text-sm no-underline hover:opacity-90 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 active:scale-[0.98] transition-opacity"
-                style={{ boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.1)', textDecoration: 'none' }}
-              >
-                {lg.ctaLabel}
-                <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">
-                  <path
-                    d="M3 7h8M7 3l4 4-4 4"
-                    stroke="currentColor"
-                    strokeWidth="1.5"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
+              <aside className="sidebar">
+                {phase && sections.length > 1 && (
+                  <GuideSectionNav
+                    slug={guide.slug}
+                    guideTitle={lg.heroTitle}
+                    sections={sections}
+                    phase={phase.id}
                   />
-                </svg>
-              </Link>
-            </div>
-          </div>
+                )}
+                {phase && <SituationCheck variant="compact" />}
 
-          <aside className="sidebar">
-            {/* The outline comes first in the sidebar, above every CTA. It is the only item here
-                that helps with the page the reader is actually on; a promotion above it would be
-                the site asking for something before giving anything. It also owns the progress
-                recording that the hub's fasen display — see `GuideSectionNav`. */}
-            {phase && sections.length > 1 && (
-              <GuideSectionNav
-                slug={guide.slug}
-                guideTitle={lg.heroTitle}
-                sections={sections}
-                phase={phase.id}
-              />
-            )}
-
-            {phase && <SituationCheck variant="compact" />}
-
-            <div className="rounded-2xl p-6 text-center" style={{ background: 'var(--gradient-brand)' }}>
-              <div className="flex justify-center mb-3">
-                <PenLine className="w-7 h-7" style={{ color: 'rgba(255,255,255,0.85)' }} aria-hidden="true" />
-              </div>
-              <h2 className="font-headline font-bold text-white text-lg mb-2">{t('sidebar_cta_title')}</h2>
-              <p className="text-sm mb-5 leading-relaxed" style={{ color: 'rgba(255,255,255,0.6)' }}>
-                {t('sidebar_cta_desc')}
-              </p>
-              <Link
-                href="/oefenen"
-                className="block bg-secondary-container text-on-secondary-container px-4 py-2.5 rounded-xl font-bold text-sm text-center no-underline hover:opacity-90 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 active:scale-[0.98] transition-opacity"
-                style={{ boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.1)', textDecoration: 'none' }}
-              >
-                {t('sidebar_cta_btn')}
-              </Link>
-            </div>
-
-            {lg.sidebarHtml && <div dangerouslySetInnerHTML={{ __html: lg.sidebarHtml }} />}
-
-            {siblings.length > 0 && (
-              <div
-                className="bg-surface-container-lowest rounded-2xl p-6"
-                style={{ boxShadow: '0 2px 16px rgba(0,43,109,0.06)' }}
-              >
-                <h2 className="text-xs font-bold uppercase tracking-widest text-on-surface-variant mb-4">
-                  {t('related_title')}
-                </h2>
-                <div className="flex flex-col gap-4">
-                  {siblings.map((g, i) => {
-                    const sl = getGuideLocale(g, locale);
-                    return (
-                      <div key={g.slug}>
-                        {i > 0 && <div className="h-px bg-surface-container mb-4" />}
-                        <Link
-                          href={guideHref(g)}
-                          className="block no-underline group"
-                          style={{ textDecoration: 'none' }}
-                        >
-                          <p className="text-sm text-on-surface font-semibold leading-snug mb-1 group-hover:text-primary transition-colors">
-                            {sl.heroTitle}
-                          </p>
-                          <p className="text-xs text-on-surface-variant">{sl.description}</p>
-                        </Link>
-                      </div>
-                    );
-                  })}
+                <div className="rounded-2xl p-6 text-center" style={{ background: 'var(--gradient-brand)' }}>
+                  <div className="flex justify-center mb-3">
+                    <PenLine className="w-7 h-7" style={{ color: 'rgba(255,255,255,0.85)' }} aria-hidden="true" />
+                  </div>
+                  <h2 className="font-headline font-bold text-white text-lg mb-2">{t('sidebar_cta_title')}</h2>
+                  <p className="text-sm mb-5 leading-relaxed" style={{ color: 'rgba(255,255,255,0.6)' }}>
+                    {t('sidebar_cta_desc')}
+                  </p>
+                  <Link
+                    href="/oefenen"
+                    className="block bg-secondary-container text-on-secondary-container px-4 py-2.5 rounded-xl font-bold text-sm text-center no-underline hover:opacity-90 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 active:scale-[0.98] transition-opacity"
+                    style={{ boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.1)', textDecoration: 'none' }}
+                  >
+                    {t('sidebar_cta_btn')}
+                  </Link>
                 </div>
-              </div>
-            )}
 
-            {posts.length > 0 && (
-              <div
-                className="bg-surface-container-lowest rounded-2xl p-6"
-                style={{ boxShadow: '0 2px 16px rgba(0,43,109,0.06)' }}
-              >
-                <h2 className="text-xs font-bold uppercase tracking-widest text-on-surface-variant mb-4">
-                  {t('related_posts_title')}
-                </h2>
-                <div className="flex flex-col gap-4">
-                  {posts.map((post, i) => {
-                    const lp = getPostLocale(post!, locale);
-                    return (
-                      <div key={post!.slug}>
-                        {i > 0 && <div className="h-px bg-surface-container mb-4" />}
-                        <Link
-                          href={{ pathname: '/blog/[slug]', params: { slug: getPostSlug(post!, locale) } }}
-                          className="block no-underline group"
-                          style={{ textDecoration: 'none' }}
-                        >
-                          <p className="text-sm text-on-surface font-semibold leading-snug mb-1 group-hover:text-primary transition-colors">
-                            {lp.heroTitle}
-                          </p>
-                        </Link>
-                      </div>
-                    );
-                  })}
-                </div>
-              </div>
-            )}
-          </aside>
+                {lg.sidebarHtml && <div dangerouslySetInnerHTML={{ __html: lg.sidebarHtml }} />}
+
+                {siblings.length > 0 && (
+                  <div
+                    className="bg-surface-container-lowest rounded-2xl p-6"
+                    style={{ boxShadow: '0 2px 16px rgba(0,43,109,0.06)' }}
+                  >
+                    <h2 className="text-xs font-bold uppercase tracking-widest text-on-surface-variant mb-4">
+                      {t('related_title')}
+                    </h2>
+                    <div className="flex flex-col gap-4">
+                      {siblings.map((g, i) => {
+                        const sl = getGuideLocale(g, locale);
+                        return (
+                          <div key={g.slug}>
+                            {i > 0 && <div className="h-px bg-surface-container mb-4" />}
+                            <Link
+                              href={guideHref(g)}
+                              className="block no-underline group"
+                              style={{ textDecoration: 'none' }}
+                            >
+                              <p className="text-sm text-on-surface font-semibold leading-snug mb-1 group-hover:text-primary transition-colors">
+                                {sl.heroTitle}
+                              </p>
+                              <p className="text-xs text-on-surface-variant">{sl.description}</p>
+                            </Link>
+                          </div>
+                        );
+                      })}
+                    </div>
+                  </div>
+                )}
+
+                {posts.length > 0 && (
+                  <div
+                    className="bg-surface-container-lowest rounded-2xl p-6"
+                    style={{ boxShadow: '0 2px 16px rgba(0,43,109,0.06)' }}
+                  >
+                    <h2 className="text-xs font-bold uppercase tracking-widest text-on-surface-variant mb-4">
+                      {t('related_posts_title')}
+                    </h2>
+                    <div className="flex flex-col gap-4">
+                      {posts.map((post, i) => {
+                        const lp = getPostLocale(post!, locale);
+                        return (
+                          <div key={post!.slug}>
+                            {i > 0 && <div className="h-px bg-surface-container mb-4" />}
+                            <Link
+                              href={{ pathname: '/blog/[slug]', params: { slug: getPostSlug(post!, locale) } }}
+                              className="block no-underline group"
+                              style={{ textDecoration: 'none' }}
+                            >
+                              <p className="text-sm text-on-surface font-semibold leading-snug mb-1 group-hover:text-primary transition-colors">
+                                {lp.heroTitle}
+                              </p>
+                            </Link>
+                          </div>
+                        );
+                      })}
+                    </div>
+                  </div>
+                )}
+              </aside>
+            </>
+          )}
         </div>
       </main>
     </>

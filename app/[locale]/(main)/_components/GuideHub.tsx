@@ -32,7 +32,8 @@ import { getPostBySlug, getPostLocale, getPostSlug } from '@/data/blog-posts';
 import { publishedGuides, getGuideLocale, guideHref } from '@/data/guides/helpers';
 import { PHASES, phaseFromParam } from '@/data/guides/phases';
 import { guideSections } from '@/lib/guides/sections';
-import RouteExplorer, { type PhaseView } from '@/components/inburgering/RouteExplorer';
+import RouteReader, { type RoutePhaseView } from '@/components/inburgering/RouteReader';
+import RouteProgress from '@/components/inburgering/RouteProgress';
 import type { GuideSection } from '@/data/guides/types';
 
 /**
@@ -99,23 +100,28 @@ export default async function GuideHub({
      not render. So the server extracts `{ id, title, minutes }` per section and ships only that.
      A phase whose guides are all unpublished is dropped, so an unreviewed guide cannot put an
      empty card at the top of the funnel. */
-  const phaseViews: PhaseView[] =
+  const phaseViews: RoutePhaseView[] =
     section === 'inburgering'
       ? PHASES.map(p => ({
           id: p.id,
           number: p.number,
-          guides: p.guides
-            .map(slug => guides.find(g => g.slug === slug))
-            .filter((g): g is NonNullable<typeof g> => Boolean(g))
-            .map(g => {
-              const lg = getGuideLocale(g, locale);
-              return {
-                slug: g.slug,
-                title: lg.heroTitle,
-                sections: guideSections(lg.articleHtml),
-              };
-            }),
-        })).filter(p => p.guides.length > 0)
+          /* A fase's delen are its guides' `<h2>` sections, concatenated in reading order. The
+             extraction reads `articleHtml`, which is why it happens here: the four bodies are ~90 kB
+             of prose the hub does not render and which must never reach the browser bundle. */
+          delen: p.guides.flatMap(slug => {
+            const g = guides.find(x => x.slug === slug);
+            if (!g) return [];
+            const lg = getGuideLocale(g, locale);
+            return guideSections(lg.articleHtml).map(sec => ({
+              id: sec.id,
+              title: sec.title,
+              minutes: sec.minutes,
+              slug: g.slug,
+              section: g.section,
+              guideTitle: lg.heroTitle,
+            }));
+          }),
+        })).filter(p => p.delen.length > 0)
       : [];
   const showRoute = phaseViews.length > 0;
   const posts = FEATURES.blog
@@ -176,6 +182,9 @@ export default async function GuideHub({
           >
             {tS('heading')}
           </h1>
+          {/* Where the reader is in the route. Renders nothing until localStorage has been read —
+              see `RouteProgress`. */}
+          <RouteProgress phases={phaseViews} />
           <p className="text-lg leading-relaxed" style={{ color: 'rgba(255,255,255,0.72)' }}>
             {tS('subheading')}
           </p>
@@ -225,8 +234,10 @@ export default async function GuideHub({
         {showRoute && (
           <section className="py-14 px-6">
             <div className="max-w-7xl mx-auto">
-              <SectionHeader title={tR('heading')} subtitle={tR('subheading')} />
-              <RouteExplorer phases={phaseViews} initialPhase={phaseFromParam(fase)} />
+              {/* No `SectionHeader` above the route: the open fase already prints its own eyebrow
+                  and title, and two headings stacked read as one of them being a subtitle of the
+                  other (owner's mockup, 2026-08-23). */}
+              <RouteReader phases={phaseViews} initialPhase={phaseFromParam(fase)} />
             </div>
           </section>
         )}

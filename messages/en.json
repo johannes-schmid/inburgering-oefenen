@@ -904,6 +904,25 @@
       "phase_3_body": "You fill in a form and write short texts, such as an email or a note. This component is marked by people.",
       "phase_4_title": "Speaking",
       "phase_4_body": "You record your answers at a computer. You respond to questions and describe what you see in a picture."
+    },
+    "reader": {
+      "back_to_guide": "Back to the guide",
+      "back_to_parts": "Back to the parts",
+      "part_of": "Part {number} / {total}",
+      "part_n": "Part {number}",
+      "parts_in_guide": "Parts in this guide",
+      "overview_start": "Where do you start?",
+      "overview_resume": "Carry on where you left off",
+      "read_part": "Read this part",
+      "continue_part": "Read this part",
+      "next_up": "Next",
+      "read_on": "Read on",
+      "previous": "Previous",
+      "next": "Next",
+      "finish": "Finished this guide",
+      "read_whole": "Read the whole guide in one go",
+      "parts_note": "This guide has {total} parts · {read} read",
+      "all_guides": "All guides"
     }
   },
   "inburgering_route": {
@@ -994,7 +1013,16 @@
           "body": "With these answers it is not certain. The good news: you do not have to work it out yourself. DUO decides and sends you a letter. Below you can read how to check it."
         }
       }
-    }
+    },
+    "hero_progress": "Part {read} of {total} · phase {phase} of {phases}",
+    "deel_n": "Part {number}",
+    "deel_count": "{read} of {total} parts",
+    "in_this_route": "In this route",
+    "next_up": "Next",
+    "read_deel": "Read this part",
+    "continue_deel": "Read this part",
+    "phase_note": "This phase has {total} parts · {read} read",
+    "seal_note": "Checked by a certified NT2 teacher. Every figure carries its source."
   },
   "planned": {
     "eyebrow_tool": "Tool",
@@ -1510,6 +1538,44 @@
     "cta_label": "Start a free practice exam",
     "sec_inburgering_empty": "The whole route from letter to diploma, in three phases.",
     "sec_taalexamens_empty": "What each component asks of you, with the question count and the time.",
-    "sec_knm_empty": "The eight official themes of the KNM exam, explained."
+    "sec_knm_empty": "The eight official themes of the KNM exam, explained.",
+    "tablist_label": "The three phases of the route",
+    "hero_progress": "Part {read} of {total} · phase {phase} of {phases}",
+    "deel_eyebrow": "{phase} · Part {number}",
+    "read_deel": "Read this part",
+    "continue_deel": "Read this part",
+    "next_up": "Next",
+    "in_this_route": "In this route",
+    "deel_count": "{read} of {total} parts",
+    "phase_note": "This phase has {total} parts · {read} read",
+    "seal_note": "Checked by a certified NT2 teacher. Every figure carries its source.",
+    "modules": {
+      "eyebrow": "Guides",
+      "heading": "What do you want to know more about?",
+      "lede": "Four modules, one entry point each. Not sure where you stand? Start with the starting guide above.",
+      "start_eyebrow": "Not sure where you stand?",
+      "start_title": "Integrating in the Netherlands, explained",
+      "start_body": "Three phases — orient, choose, do. Start at step 1 and you will know which exams you have to take.",
+      "start_cta": "Start at step 1",
+      "a2_title": "Language A2",
+      "a2_state": "Practise now",
+      "a2_body": "Reading, Listening, Writing and Speaking — the format, the timing and the pitfalls of each component.",
+      "knm_title": "KNM",
+      "knm_state": "{count} themes",
+      "knm_body": "How the Netherlands works: housing, work, healthcare, education, institutions and values — theme by theme.",
+      "knm_theme_wonen": "Housing",
+      "knm_theme_werk": "Work",
+      "knm_theme_waarden": "Values",
+      "b1_title": "Language B1",
+      "b1_state": "Coming soon",
+      "b1_body": "The standard route under the 2021 act: the same four components at a higher level. What changes exactly?",
+      "b1_link": "See the difference A2 → B1",
+      "ona_title": "ONA",
+      "ona_state": "On the roadmap",
+      "ona_body": "A portfolio of eight results and a closing interview. No exam — so a guide rather than practice questions.",
+      "ona_link": "Keep me posted"
+    },
+    "all_title": "All guides",
+    "all_sub": "Every guide the teacher has reviewed, by subject."
   }
 }

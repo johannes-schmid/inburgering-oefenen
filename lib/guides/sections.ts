@@ -78,3 +78,48 @@ export function guideSections(articleHtml: string): GuideSectionEntry[] {
 export function sectionCount(articleHtml: string): number {
   return guideSections(articleHtml).length;
 }
+
+/**
+ * The same sections, each with its own HTML — the guide as a sequence of *delen*.
+ *
+ * `guideSections()` answers "what is in this guide"; this answers "what does deel 3 say", which is
+ * what the paged reading view needs (`components/guides/GuideReader.tsx`, owner's mockups
+ * 2026-08-23). It is a slice of the *same* string by the *same* headings, so a deel can never hold
+ * text the outline does not account for and the two cannot disagree about where a section ends.
+ *
+ * **Everything before the first `<h2>` is the `intro`, and it is never dropped.** The guides open
+ * with a paragraph or a fact box above their first heading; a splitter that started at heading one
+ * would silently delete the text that says what the guide is. An `<h2>` with no `id` is still not a
+ * boundary (rule 1 above), so its text stays inside the deel it visually belongs to rather than
+ * starting an unlinkable one.
+ *
+ * The heading itself is **excluded** from the deel's html: the reader renders the title as the
+ * view's own heading, and a body repeating it reads as a duplicated heading.
+ */
+export type GuidePart = GuideSectionEntry & { html: string };
+
+export function guideParts(articleHtml: string): { intro: string; parts: GuidePart[] } {
+  const heads: { id: string; title: string; start: number; end: number }[] = [];
+
+  H2.lastIndex = 0;
+  let m: RegExpExecArray | null;
+  while ((m = H2.exec(articleHtml)) !== null) {
+    const id = /\bid=["']([^"']+)["']/.exec(m[1])?.[1];
+    if (!id) continue;
+    heads.push({ id, title: stripTags(m[2]), start: m.index, end: m.index + m[0].length });
+  }
+
+  return {
+    intro: heads.length ? articleHtml.slice(0, heads[0].start) : articleHtml,
+    parts: heads.map((h, i) => {
+      const bodyEnd = i + 1 < heads.length ? heads[i + 1].start : articleHtml.length;
+      const html = articleHtml.slice(h.end, bodyEnd);
+      return {
+        id: h.id,
+        title: h.title,
+        minutes: Math.max(1, Math.ceil(countWords(html) / WPM)),
+        html,
+      };
+    }),
+  };
+}

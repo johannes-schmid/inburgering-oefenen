@@ -94,13 +94,17 @@ export function getAllGuideParams(section: GuideSection): { locale: string; slug
  * it to `/knm/[thema]` — a wrong page, not a build error. Adding `taalexamens` is what would have
  * triggered that, so the branch became a lookup instead.
  *
+ * `hash` is threaded through the same switch rather than spread onto the result by the caller:
+ * `{ ...guideHref(g), hash }` collapses the union into one widened member, which is exactly the
+ * shape the typed `Link` must reject (it would permit `/knm/[thema]` with a `slug` param).
+ *
  * The dynamic segment differs per section (`[slug]` vs `[thema]`) because the KNM route was named
  * for its content before the sections were a set; the param name is part of the route, so it stays.
  */
 export type GuideRoute =
-  | { pathname: '/inburgering/[slug]'; params: { slug: string } }
-  | { pathname: '/knm/[thema]'; params: { thema: string } }
-  | { pathname: '/taalexamens/[slug]'; params: { slug: string } };
+  | { pathname: '/inburgering/[slug]'; params: { slug: string }; hash?: string }
+  | { pathname: '/knm/[thema]'; params: { thema: string }; hash?: string }
+  | { pathname: '/taalexamens/[slug]'; params: { slug: string }; hash?: string };
 
 /**
  * A `switch` and not a lookup table, because the return type must stay a **discriminated** union:
@@ -110,14 +114,14 @@ export type GuideRoute =
  *
  * The `never` default makes a fourth `GuideSection` a compile error here rather than a wrong URL.
  */
-export function guideHref(guide: Pick<Guide, 'section' | 'slug'>): GuideRoute {
+export function guideHref(guide: Pick<Guide, 'section' | 'slug'>, hash?: string): GuideRoute {
   switch (guide.section) {
     case 'inburgering':
-      return { pathname: '/inburgering/[slug]', params: { slug: guide.slug } };
+      return { pathname: '/inburgering/[slug]', params: { slug: guide.slug }, hash };
     case 'knm':
-      return { pathname: '/knm/[thema]', params: { thema: guide.slug } };
+      return { pathname: '/knm/[thema]', params: { thema: guide.slug }, hash };
     case 'taalexamens':
-      return { pathname: '/taalexamens/[slug]', params: { slug: guide.slug } };
+      return { pathname: '/taalexamens/[slug]', params: { slug: guide.slug }, hash };
     default: {
       const unreachable: never = guide.section;
       throw new Error(`Unhandled guide section: ${unreachable}`);

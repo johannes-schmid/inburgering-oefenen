@@ -904,6 +904,25 @@
       "phase_3_body": "Je vult een formulier in en schrijft korte teksten, zoals een e-mail of een briefje. Dit onderdeel wordt door mensen nagekeken.",
       "phase_4_title": "Spreken",
       "phase_4_body": "Je spreekt je antwoorden in achter de computer. Je reageert op vragen en beschrijft wat je op een plaatje ziet."
+    },
+    "reader": {
+      "back_to_guide": "Terug naar de gids",
+      "back_to_parts": "Terug naar de delen",
+      "part_of": "Deel {number} / {total}",
+      "part_n": "Deel {number}",
+      "parts_in_guide": "Delen in deze gids",
+      "overview_start": "Waar begin je?",
+      "overview_resume": "Verder waar je gebleven was",
+      "read_part": "Lees dit deel",
+      "continue_part": "Lees dit deel",
+      "next_up": "Hierna",
+      "read_on": "Lees verder",
+      "previous": "Vorige",
+      "next": "Volgende",
+      "finish": "Klaar met deze gids",
+      "read_whole": "Lees de hele gids in één keer",
+      "parts_note": "Deze gids heeft {total} delen · {read} gelezen",
+      "all_guides": "Alle gidsen"
     }
   },
   "inburgering_route": {
@@ -994,7 +1013,16 @@
           "body": "Met deze antwoorden is het niet zeker. Gelukkig hoef je het niet zelf uit te zoeken: DUO bepaalt het en stuurt je een brief. Hieronder lees je hoe je dat controleert."
         }
       }
-    }
+    },
+    "hero_progress": "Deel {read} van {total} · fase {phase} van {phases}",
+    "deel_n": "Deel {number}",
+    "deel_count": "{read} van {total} delen",
+    "in_this_route": "In deze route",
+    "next_up": "Hierna",
+    "read_deel": "Lees dit deel",
+    "continue_deel": "Lees dit deel",
+    "phase_note": "Deze fase heeft {total} delen · {read} gelezen",
+    "seal_note": "Gecontroleerd door een NT2-docent. Bij elk getal staat de bron."
   },
   "planned": {
     "eyebrow_tool": "Tool",
@@ -1510,6 +1538,44 @@
     "cta_label": "Start gratis oefenexamen",
     "sec_inburgering_empty": "De hele route van brief tot diploma, in drie fasen.",
     "sec_taalexamens_empty": "Wat elk onderdeel van je vraagt, met het aantal vragen en de tijd.",
-    "sec_knm_empty": "De acht officiële thema’s van het KNM-examen, uitgelegd."
+    "sec_knm_empty": "De acht officiële thema’s van het KNM-examen, uitgelegd.",
+    "tablist_label": "De drie fasen van de route",
+    "hero_progress": "Deel {read} van {total} · fase {phase} van {phases}",
+    "deel_eyebrow": "{phase} · Deel {number}",
+    "read_deel": "Lees dit deel",
+    "continue_deel": "Lees dit deel",
+    "next_up": "Hierna",
+    "in_this_route": "In deze route",
+    "deel_count": "{read} van {total} delen",
+    "phase_note": "Deze fase heeft {total} delen · {read} gelezen",
+    "seal_note": "Gecontroleerd door een NT2-docent. Bij elk getal staat de bron.",
+    "modules": {
+      "eyebrow": "Gidsen",
+      "heading": "Waar wil je meer over weten?",
+      "lede": "Vier modules, één ingang per module. Weet je nog niet waar je staat? Begin met de startgids hierboven.",
+      "start_eyebrow": "Weet je nog niet waar je staat?",
+      "start_title": "Inburgeren in Nederland, uitgelegd",
+      "start_body": "Drie fasen — oriënteren, kiezen, doen. Begin bij stap 1 en je weet welke examens jij moet doen.",
+      "start_cta": "Start bij stap 1",
+      "a2_title": "Taal A2",
+      "a2_state": "Nu te oefenen",
+      "a2_body": "Lezen, Luisteren, Schrijven en Spreken — per onderdeel het format, de tijd en de valkuilen.",
+      "knm_title": "KNM",
+      "knm_state": "{count} thema’s",
+      "knm_body": "Hoe Nederland werkt: wonen, werk, zorg, onderwijs, instanties en waarden — per thema uitgelegd.",
+      "knm_theme_wonen": "Wonen",
+      "knm_theme_werk": "Werk",
+      "knm_theme_waarden": "Waarden",
+      "b1_title": "Taal B1",
+      "b1_state": "Binnenkort",
+      "b1_body": "De standaardroute onder de Wet 2021: zelfde vier onderdelen, hoger niveau. Wat verandert er precies?",
+      "b1_link": "Bekijk het verschil A2 → B1",
+      "ona_title": "ONA",
+      "ona_state": "Op de roadmap",
+      "ona_body": "Portfolio met acht resultaten en een eindgesprek. Geen examen — daarom een gids in plaats van oefenvragen.",
+      "ona_link": "Houd me op de hoogte"
+    },
+    "all_title": "Alle gidsen",
+    "all_sub": "Elke gids die de docent heeft nagekeken, per onderwerp."
   }
 }

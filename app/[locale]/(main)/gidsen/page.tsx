@@ -12,6 +12,23 @@
  * by URL so it can be reviewed, and appears in no list, no hub, no sitemap and no JSON-LD — that
  * gate is the owner's 2026-08-19 decision expressed as a constraint rather than a comment.
  *
+ * **Redesigned 2026-08-23 (owner's mockups).** The page is the *module overview* — what the
+ * platform covers, one card per module, with the startgids above the grid — followed by a compact
+ * index of every reviewed guide and the blog.
+ *
+ * **The delen-route that briefly sat here is gone, deliberately** (owner's instruction, same day):
+ * reading a guide step by step is now what the guide's own page does (`components/guides/
+ * GuideReader.tsx`), and a second copy of that route on the index was the same experience twice, one
+ * click apart. What this page owes the site is a plain visible link to every published guide and to
+ * the three hubs — that is the compact index at the bottom, and `tests/public.spec.js` pins it.
+ *
+ * Superseded note, kept because the reasoning still applies: It was three stacked grids of
+ * equal cards; it is now three part cards carrying the reader's own progress, with the open part's
+ * guides opened out into their `<h2>` steps (`components/gidsen/GuideIndexExplorer.tsx`). A grid
+ * answers "what have you written"; this page's reader is asking "which of these do I need, and how
+ * much is left". Nothing about the index's job changed — every published guide still gets a plain
+ * internal link from here, and every hub still gets one from a panel sidebar.
+ *
  * The blog is here rather than in the bar: it is informational material of the same kind, and a
  * top-level entry for five posts was crowding a header that had to get quieter.
  */
@@ -23,8 +40,9 @@ import { routing } from '@/i18n/routing';
 import { absUrl, alternatesFor, breadcrumbs, PROVIDER_REF } from '@/lib/schema';
 import { WEBSITE_ID, langTag } from '@/lib/site';
 import JsonLd from '@/components/JsonLd';
-import { HorizonBanner, CategoryMark } from '@/components/horizon';
-import { SectionHeader, CTABanner } from '@/components/site';
+import { GradientHero, Breadcrumb, SectionHeader, CTABanner } from '@/components/site';
+import { CategoryMark } from '@/components/horizon';
+import ModuleOverview from './_components/ModuleOverview';
 import { FEATURES } from '@/lib/features';
 import { getSortedPosts, getPostBySlug, getPostLocale, getPostSlug } from '@/data/blog-posts';
 import { publishedGuides, getGuideLocale, guideHref, hubHref } from '@/data/guides/helpers';
@@ -53,7 +71,11 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   };
 }
 
-/** The three sections, in funnel order: orientation, then the exams, then the KNM material. */
+/**
+ * The three sections, in funnel order: orientation, then the exams, then the KNM material. The
+ * marks are `CategoryMark`'s — the bridge for the traject, the document for the taalexamens, the
+ * colonnade for KNM (see that component's header for why those three and not a lucide glyph).
+ */
 const SECTIONS: { id: GuideSection; mark: 'gidsen' | 'lezen' | 'knm' }[] = [
   { id: 'inburgering', mark: 'gidsen' },
   { id: 'taalexamens', mark: 'lezen' },
@@ -87,15 +109,19 @@ export default async function GidsenIndexPage({ params }: Props) {
 
   const sections = SECTIONS.map(s => ({
     ...s,
-    guides: publishedGuides(s.id).map(g => ({
-      slug: g.slug,
-      href: guideHref(g),
-      /* `/knm/<thema>` and `/taalexamens/<slug>` are not `/inburgering/<slug>` — deriving the
-         JSON-LD url from the section is the only thing that keeps this list honest once the other
-         two sections have guides in them. */
-      url: absUrl(locale, `${s.id}/${g.slug}`),
-      ...getGuideLocale(g, locale),
-    })),
+    guides: publishedGuides(s.id).map(g => {
+      const lg = getGuideLocale(g, locale);
+      return {
+        slug: g.slug,
+        section: g.section,
+        title: lg.heroTitle,
+        description: lg.description,
+        /* `/knm/<thema>` and `/taalexamens/<slug>` are not `/inburgering/<slug>` — deriving the
+           JSON-LD url from the section is the only thing that keeps this list honest once the other
+           two sections have guides in them. */
+        url: absUrl(locale, `${s.id}/${g.slug}`),
+      };
+    }),
   }));
 
   /* Per-section posts first, so the blog row below can skip what is already on the page — the
@@ -156,120 +182,80 @@ export default async function GidsenIndexPage({ params }: Props) {
     <main className="bg-surface min-h-screen">
       <JsonLd data={jsonLd} />
 
-      <section className="relative overflow-hidden px-6 pt-14 pb-16" style={{ background: 'var(--gradient-brand)' }}>
-        <HorizonBanner seed={9} sun={false} />
-        <div className="relative max-w-4xl mx-auto text-center">
-          <span
-            className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-bold uppercase tracking-widest mb-5"
-            style={{ background: 'rgba(255,255,255,0.15)', color: 'rgba(255,255,255,0.9)' }}
-          >
+      <GradientHero className="pb-16">
+        <div className="max-w-3xl">
+          <span className="inline-block px-3 py-1 rounded-full font-bold text-xs uppercase tracking-widest mb-5 bg-secondary-container text-on-secondary-container">
             {t('eyebrow')}
           </span>
           <h1
-            className="font-headline font-extrabold text-white mb-4"
-            style={{ fontSize: 'clamp(1.9rem, 4vw, 2.8rem)', letterSpacing: '-0.02em', lineHeight: 1.06, textWrap: 'balance' }}
+            className="font-headline font-bold text-white tracking-tight mb-6 leading-tight"
+            style={{ fontSize: 'clamp(2rem,4vw,3rem)' }}
           >
             {t('heading')}
           </h1>
-          <p className="text-base sm:text-lg leading-relaxed max-w-2xl mx-auto m-0" style={{ color: 'rgba(255,255,255,0.85)' }}>
+          <p className="text-lg leading-relaxed" style={{ color: 'rgba(255,255,255,0.72)' }}>
             {t('lede')}
           </p>
         </div>
-      </section>
+      </GradientHero>
 
-      {sections.map((section, idx) => (
-        <section
-          key={section.id}
-          className={`px-6 py-14 sm:py-16 ${idx % 2 === 1 ? 'bg-surface-container-low' : ''}`}
-        >
-          <div className="max-w-5xl mx-auto">
-            <SectionHeader
-              eyebrow={tG(`${section.id}.eyebrow`)}
-              title={t(`sec_${section.id}`)}
-              subtitle={t(`sec_${section.id}_sub`)}
-            />
+      {/* The visible trail. The BreadcrumbList JSON-LD was here before the trail was — a crawler
+          was told about a parent the reader could not see. */}
+      <Breadcrumb items={[{ label: tB('home'), href: '/' }, { label: t('breadcrumb') }]} />
 
-            <ul className="grid gap-4 sm:grid-cols-2 list-none p-0 m-0 mb-6">
-              {section.guides.map(guide => (
-                  <li key={guide.slug}>
-                    <Link
-                      href={guide.href}
-                      className="flex gap-4 h-full rounded-2xl p-5 no-underline bg-surface-container-lowest transition-transform hover:-translate-y-0.5"
-                      style={{ boxShadow: 'var(--shadow-ambient)' }}
-                    >
-                      <CategoryMark category={section.mark} size={36} />
-                      <span className="min-w-0">
-                        <span className="block font-headline font-bold text-base text-on-surface leading-snug">
-                          {guide.title}
-                        </span>
-                        <span className="block text-sm text-on-surface-variant leading-relaxed mt-1.5">
-                          {guide.description}
-                        </span>
-                      </span>
-                    </Link>
-                  </li>
-                ))}
+      {/* What the platform covers, module by module — the page's opening question. */}
+      <ModuleOverview locale={locale} />
 
-              {/* A section with no reviewed guide yet still has to point somewhere real. */}
-              {(sectionPosts.get(section.id) ?? []).map(post => (
-                <li key={post.slug}>
-                  <Link
-                    href={{ pathname: '/blog/[slug]', params: { slug: post.slug } }}
-                    className="flex gap-4 h-full rounded-2xl p-5 no-underline bg-surface-container-lowest transition-transform hover:-translate-y-0.5"
-                    style={{ boxShadow: 'var(--shadow-ambient)' }}
-                  >
-                    <CategoryMark category={section.mark} size={36} />
-                    <span className="min-w-0">
-                      <span className="block font-headline font-bold text-base text-on-surface leading-snug">
-                        {post.heroTitle}
-                      </span>
-                      <span className="block text-sm text-on-surface-variant leading-relaxed mt-1.5">
-                        {post.description}
-                      </span>
-                    </span>
-                  </Link>
-                </li>
-              ))}
-
-              {section.guides.length === 0 && (sectionPosts.get(section.id) ?? []).length === 0 && (
-                <li className="sm:col-span-2">
-                  <Link
-                    href={hubHref(section.id)}
-                    className="flex gap-4 rounded-2xl p-5 no-underline bg-surface-container-lowest transition-transform hover:-translate-y-0.5"
-                    style={{ boxShadow: 'var(--shadow-ambient)' }}
-                  >
-                    <CategoryMark category={section.mark} size={36} />
-                    <span className="min-w-0">
-                      <span className="block font-headline font-bold text-base text-on-surface leading-snug">
-                        {t(`sec_${section.id}_hub`)}
-                      </span>
-                      <span className="block text-sm text-on-surface-variant leading-relaxed mt-1.5">
-                        {t(`sec_${section.id}_empty`)}
-                      </span>
-                    </span>
-                  </Link>
-                </li>
-              )}
-            </ul>
-
-            {/* The hub link is not a nicety: it is where a section's own orientation lives (the
-                three-fase route, the four onderdelen, the eight thema's), which this index
-                deliberately does not restate. Suppressed when the section had nothing to list and
-                the empty-state card above *is* that link — the same destination twice reads as a
-                rendering bug, not as emphasis. */}
-            {!(section.guides.length === 0 && (sectionPosts.get(section.id) ?? []).length === 0) && (
-            <Link
-              href={hubHref(section.id)}
-              className="inline-flex items-center gap-1.5 text-sm font-bold no-underline"
-              style={{ color: '#a24000' }}
-            >
-              {t(`sec_${section.id}_hub`)}
-              <ArrowRight size={14} className="rtl-flip" aria-hidden="true" />
-            </Link>
-            )}
+      {/* Every published guide, once, as a compact index — the page's floor rather than a second
+          set of cards. The three card grids that used to sit here restated what the module cards
+          above and the route already say (owner's instruction, 2026-08-23: remove the bottom part).
+          It cannot be dropped entirely, and the reason is mechanical: only one fase's panel is
+          visible at a time, so without this list two thirds of the Inburgering guides would have no
+          *visible* link on their own index page — a hidden link is enough for a crawler and no use
+          to a reader. `tests/public.spec.js` asserts all four are visible here, which is what caught
+          it. Each section also names its hub, where its own orientation lives. */}
+      <section className="px-6 py-14 sm:py-16">
+        <div className="max-w-5xl mx-auto">
+          <SectionHeader title={t('all_title')} subtitle={t('all_sub')} />
+          <div className="grid gap-6 sm:grid-cols-3">
+            {sections.map(section => (
+              <div key={section.id}>
+                <p className="flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-on-surface-variant mb-3">
+                  <CategoryMark category={section.mark} size={22} />
+                  {t(`sec_${section.id}`)}
+                </p>
+                <ul className="list-none p-0 m-0 flex flex-col gap-2 mb-3">
+                  {section.guides.map(guide => (
+                    <li key={guide.slug}>
+                      <Link
+                        href={guideHref({ section: guide.section, slug: guide.slug })}
+                        className="text-sm font-semibold no-underline leading-snug"
+                        style={{ color: '#002b6d', textDecoration: 'none' }}
+                      >
+                        {guide.title}
+                      </Link>
+                    </li>
+                  ))}
+                  {/* A section with nothing reviewed says so rather than showing an empty column. */}
+                  {section.guides.length === 0 && (
+                    <li className="text-sm text-on-surface-variant leading-snug">
+                      {t(`sec_${section.id}_empty`)}
+                    </li>
+                  )}
+                </ul>
+                <Link
+                  href={hubHref(section.id)}
+                  className="inline-flex items-center gap-1.5 text-sm font-bold no-underline"
+                  style={{ color: '#a24000', textDecoration: 'none' }}
+                >
+                  {t(`sec_${section.id}_hub`)}
+                  <ArrowRight size={14} className="rtl-flip" aria-hidden="true" />
+                </Link>
+              </div>
+            ))}
           </div>
-        </section>
-      ))}
+        </div>
+      </section>
 
       {posts.length > 0 && (
         <section className="px-6 py-14 sm:py-16 bg-surface-container-low">

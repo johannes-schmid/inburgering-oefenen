@@ -2322,3 +2322,107 @@ i18n-middleware redirect, en de e2e-assertie op de gerenderde href zag de link d
 **Lesson:** Voordat je navigatie weghaalt, tel wat die navigatie aan interne links opleverde en wijs
 aan waar die terugkomen. En een link die "werkt" via een redirect is geen werkende link: hij kost een
 hop en is onzichtbaar voor elke test die op de href kijkt.
+
+## 2026-08-23 — /gidsen wordt een moduleoverzicht met een delen-route
+**Changed:** `app/[locale]/(main)/gidsen/page.tsx` + `_components/ModuleOverview.tsx` (nieuw),
+`components/gidsen/GuideIndexExplorer.tsx` en `RouteProgressLine.tsx` (nieuw),
+`components/guides/GuideStepList.tsx` (uit `RouteExplorer` gehaald en gedeeld),
+`guideHref(guide, hash)` in `data/guides/helpers.ts`, `gidsen.*` in nl/en/ar.
+**Outcome:** SUCCESS — `tsc`, `next build`, 235 unit tests, `check-schema` en `public.spec.js` groen
+(op vier `exam overviews`-tests na: die falen omdat er lokaal geen A2-examens geseed zijn, niet door
+deze wijziging).
+**What worked / went wrong:** drie keer een verkeerd doel geraakt voordat de opdracht duidelijk was —
+de eerste mockup was een screenshot van de *huidige* `/inburgering`, dus "redesign the guides
+section" zag eruit als "maak /gidsen zo", terwijl de latere mockups over de modulekaarten gingen.
+Eén technische val was echt: een verborgen `<a>` in een gesloten fase-paneel staat eerder in de DOM
+dan de zichtbare, dus `locator(...).first()` pakt de verborgen — `public.spec.js` viel daarop om.
+**Lesson:** een mockup die precies op een bestaande pagina lijkt, *is* die pagina — vergelijk eerst
+met een screenshot en vraag welk oppervlak bedoeld is, vóór je bouwt. En: een link die alleen in een
+gesloten tabpaneel bestaat is geen zichtbare link; zet de canonieke link buiten de panelen.
+
+## 2026-08-23 — de leesweergave: elke gids is nu een reeks delen
+**Changed:** `components/guides/GuideReader.tsx` (nieuw), `guideParts()` in `lib/guides/sections.ts`,
+`_components/GuideArticle.tsx` (twee vormen: delen of het vlakke artikel), `guides.reader.*` in
+nl/en/ar, en `/gidsen` verloor de drie kaartrasters onderaan voor één compacte index.
+**Outcome:** SUCCESS — `tsc`, `next build`, 235 unit tests, `public.spec.js` 37 groen (dezelfde vier
+`exam overviews` falen op ontbrekende lokale seed-data).
+**What worked / went wrong:** de leesweergave is **een view, geen route** — alle delen staan in de
+DOM met `hidden`, de gids houdt één URL en een deel is deep-linkbaar via de `<h2 id>` die de docent
+zelf al schreef. Twee dingen waren bijna een bug: (1) de zijbalklijst moest `<a href="#id">` blijven
+in plaats van `<button>`, anders verdwijnt de outline voor een crawler *en* valt de e2e-test om die
+op `nav[aria-label="De stappen in deze gids"] a[href^="#"]` staat; (2) `guideParts()` moet alles
+vóór de eerste `<h2>` als `intro` teruggeven — anders verdwijnt stilzwijgend de alinea die vertelt
+waar de gids over gaat.
+**Lesson:** pagineren van lange content mag nooit URL's toevoegen aan een pagina die als één pagina
+rankt; splits de weergave, niet de route. En laat een afgeleide navigatie altijd echte links
+gebruiken — een `button` breekt zowel crawlbaarheid als de tests die dat afdwingen.
+
+## 2026-08-23 — /gidsen is het moduleoverzicht, /inburgering is één volgend deel
+**Changed:** de delen-route is van `/gidsen` verdwenen (`app/[locale]/(main)/gidsen/page.tsx`; de
+twee componenten eronder verwijderd) en staat nu op de hub: `components/inburgering/RouteReader.tsx`
++ `RouteProgress.tsx` vervangen `RouteExplorer.tsx` en `components/guides/GuideStepList.tsx` (beide
+verwijderd). Nieuwe keys in `inburgering_route.*` in nl/en/ar.
+**Outcome:** SUCCESS — `tsc`, `next build`, 235 unit tests, `public.spec.js` 37 groen (dezelfde vier
+`exam overviews` vallen om op ontbrekende lokale seed-data).
+**What worked / went wrong:** hetzelfde patroon stond twee keer op de site — een routekaart op de
+index én op de hub — en dat is één keer te veel: de index verkoopt de modules, de hub wijst het
+volgende deel aan. Wat bijna stukging: de e2e-suite eist dat élke gepubliceerde gids een `<a>` zonder
+hash heeft op de hub (`toBeAttached`), terwijl `/gidsen` eist dat de *eerste* match zichtbaar is
+(`toBeVisible`). Dat zijn tegengestelde eisen: de hub mag verborgen links in gesloten fase-panelen
+hebben, de index niet.
+**Lesson:** verborgen links in een gesloten tabpaneel zijn goed voor een crawler en waardeloos voor
+een lezer — zet ze op een pagina waar een zichtbare variant elders staat, en nooit vóór de zichtbare
+link in de DOM.
+
+## 2026-08-23 — de fase-lijst op /inburgering is een wachtrij van twee, geen inhoudsopgave
+**Changed:** `components/inburgering/RouteReader.tsx` — de volledige, genummerde `<ol>` van alle delen
+van een fase vervangen door alleen de **volgende twee** delen, gedempt, met stippellijn en één
+"Hierna"-badge (mockup eigenaar). De twee wachtrijkaarten hebben dezelfde maat als de actieve kaart —
+zelfde 220px-paneel en `min-h-[150px]` — met een `SkylineTopper locked` als straat: het verschil is de
+neutrale ramp en de ontbrekende knop, niet de omvang.
+**Outcome:** SUCCESS — `tsc` schoon, `check-ui.mjs` op 390 en 1440 nagekeken.
+**What worked:** de kaart met het huidige deel en de fasebalken in de zijbalk zeggen samen al waar je
+bent; twintig rijen eronder waren een tweede navigatie die de eyebrow ("FASE 1 · DEEL 1") overstemde.
+De hash-vrije "Lees de hele gids"-links blijven staan — die zijn de enige interne links naar de
+gidsen van een gesloten fase en dus niet cosmetisch.
+**Lesson:** een lijst van alles onder een kaart die zegt *dit* is je volgende stap, haalt die kaart
+onderuit. Toon de wachtrij, niet de index.
+
+## 2026-08-23 — de gids leest als losse secties, en de FAQ vouwt
+**Changed:** `components/guides/GuideReader.tsx` (één witte kaart → een stapel kaarten per regio,
+`CARD`/`CARD_SHADOW`; de leesbalk is nu zelf een sticky kaart),
+`app/[locale]/(main)/_components/GuideArticle.tsx` (FAQ als `<details>`, review-regel en CTA zonder
+eigen marges) en `app/globals.css` (`.faq-folds` / `.faq-fold`).
+**Outcome:** SUCCESS — `tsc` schoon; overzicht, deel-view (via puppeteer-klik) en FAQ nagekeken op
+390 en 1440.
+**What worked:** `<details>` in plaats van de client-side `FaqAccordion`: het antwoord staat
+dichtgevouwen nog in de DOM, dus de `FAQPage`-JSON-LD beschrijft tekst die er echt staat, er is geen
+JS nodig en geen `max-height: 400px` die een lang antwoord afkapt.
+**What went wrong:** de nieuwe CSS stond op schijf en niet op de pagina — Turbopack serveerde een
+verouderde chunk (bekend, staat in CLAUDE.md). Een newline aan `globals.css` forceerde de
+hercompilatie; gecontroleerd door de chunk te `curl`en en op `faq-fold` te grepen.
+**Lesson:** een lange leespagina wordt niet korter door secties, maar wel leesbaar: de grens tussen
+blokken is een oppervlaksprong (§2), en één kaart om alles heen heeft geen grenzen.
+
+## 2026-08-23 — de gids opent op deel 1, het tussenscherm is weg
+**Changed:** `components/guides/GuideReader.tsx` — `View` is nu `'read' | 'all'`, het overzicht
+(intro + startkaart + delenlijst + "deze gids heeft N delen") is verwijderd, de intro verhuisde naar
+deel 1, de leesbalk linkt naar de hub in plaats van naar het overzicht, en de laatste "Afronden"
+markeert alleen nog als gelezen.
+**Outcome:** SUCCESS — `tsc` schoon, 235 unit tests groen, 390/1440 nagekeken.
+**What worked:** de intro expliciet in deel 1 hangen. De tekst die zegt wát de gids is stond alléén
+op het overzicht; het paneel weghalen zonder dat zou hem stil verwijderd hebben.
+**Lesson:** een launcher-pagina vóór de inhoud vraagt een tweede keuze voor het eerste woord. De
+delenlijst die hij droeg staat al in de zijbalk, op elk deel — dan is het scherm eromheen niets.
+
+## 2026-08-23 — "Klaar met deze gids" deed niets (FAILURE, daarna gefixt)
+**Changed:** `components/guides/GuideReader.tsx` — de knop op het laatste deel is een `Link` naar de
+hub met `markSectionRead` in `onClick`.
+**Outcome:** eerst FAILURE, nu SUCCESS (puppeteer: klik → `/nl/inburgering`, en
+`ib.read.v1` bevat het laatste deel).
+**What went wrong:** bij het verwijderen van het overzicht viel `setView('overview')` weg uit
+`goNext`, dus op het laatste deel markeerde de knop alleen voortgang — geen zichtbaar gevolg, wat
+leest als een kapotte knop. `tsc` en de screenshots zagen er niets van; de knop was niet aan te
+klikken in een full-page shot.
+**Lesson:** een tak weghalen uit een handler betekent dat de knop die daarop leunde een nieuwe
+bestemming nodig heeft. Klik na zo'n verwijdering elke actie één keer echt aan.

@@ -13,7 +13,7 @@ import GuideHub from '../_components/GuideHub';
 /**
  * `searchParams` is here only for `?fase=` — which of the three fasen the route opens on. It is a
  * deep-link convenience (the strip on a guide page links back with it), never state the page writes
- * back: switching fase on the hub is a `tablist`, not a navigation. See `RouteExplorer`.
+ * back: switching fase on the hub is a `tablist`, not a navigation. See `RouteReader`.
  *
  * Reading `searchParams` normally opts a route out of static generation. It costs nothing here:
  * every `[locale]` route in this app already builds as dynamic (`ƒ`), so the hub was never
