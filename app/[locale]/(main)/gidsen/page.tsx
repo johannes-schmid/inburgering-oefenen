@@ -35,6 +35,7 @@
 import type { Metadata } from 'next';
 import { getTranslations, setRequestLocale } from 'next-intl/server';
 import { ArrowRight } from 'lucide-react';
+import GuideCover from '@/components/horizon/GuideCover';
 import { Link } from '@/i18n/navigation';
 import { routing } from '@/i18n/routing';
 import { absUrl, alternatesFor, breadcrumbs, PROVIDER_REF } from '@/lib/schema';
@@ -116,6 +117,8 @@ export default async function GidsenIndexPage({ params }: Props) {
         section: g.section,
         title: lg.heroTitle,
         description: lg.description,
+        coverGlyph: g.coverGlyph,
+        pillar: g.pillar,
         /* `/knm/<thema>` and `/taalexamens/<slug>` are not `/inburgering/<slug>` — deriving the
            JSON-LD url from the section is the only thing that keeps this list honest once the other
            two sections have guides in them. */
@@ -227,12 +230,24 @@ export default async function GidsenIndexPage({ params }: Props) {
                 <ul className="list-none p-0 m-0 flex flex-col gap-2 mb-3">
                   {section.guides.map(guide => (
                     <li key={guide.slug}>
+                      {/* A thumbnail, not a card. This page is the index — twenty-one full covers
+                          here would turn it into a gallery and push the blog row below the fold.
+                          `compact` drops the street, which at 56px is a smudge anyway; the field
+                          colour and the glyph still do the identifying work. */}
                       <Link
                         href={guideHref({ section: guide.section, slug: guide.slug })}
-                        className="text-sm font-semibold no-underline leading-snug"
+                        className="flex items-center gap-3 text-sm font-semibold no-underline leading-snug"
                         style={{ color: '#002b6d', textDecoration: 'none' }}
                       >
-                        {guide.title}
+                        <GuideCover
+                          slug={guide.slug}
+                          field={guide.section}
+                          glyph={guide.coverGlyph}
+                          pillar={guide.pillar}
+                          compact
+                          className="w-14 shrink-0"
+                        />
+                        <span className="min-w-0">{guide.title}</span>
                       </Link>
                     </li>
                   ))}

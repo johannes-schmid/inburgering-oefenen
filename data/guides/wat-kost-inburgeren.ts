@@ -53,6 +53,7 @@ const guide: Guide = {
   reviewedBy: 'Marieke Schipper',
   reviewedOn: '2026-08-20',
   pillar: false,
+  coverGlyph: 'euro',
 
   title: 'Wat kost inburgeren? Alle kosten op een rij',
   description:

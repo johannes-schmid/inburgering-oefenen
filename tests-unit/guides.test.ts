@@ -68,11 +68,12 @@ describe('the review gate', () => {
   });
 
   it('counts per section, and the two counts add up', () => {
-    expect(guideCount('inburgering') + guideCount('knm')).toBe(publishedGuides().length);
+    expect(guideCount('inburgering') + guideCount('knm') + guideCount('taalexamens'))
+      .toBe(publishedGuides().length);
   });
 
   it('sorts the pillar first', () => {
-    for (const section of ['inburgering', 'knm'] as const) {
+    for (const section of ['inburgering', 'knm', 'taalexamens'] as const) {
       const list = publishedGuides(section);
       const firstSpoke = list.findIndex(g => !g.pillar);
       if (firstSpoke === -1) continue;
@@ -81,7 +82,7 @@ describe('the review gate', () => {
   });
 
   it('has at most one pillar per section', () => {
-    for (const section of ['inburgering', 'knm'] as const) {
+    for (const section of ['inburgering', 'knm', 'taalexamens'] as const) {
       expect(GUIDES.filter(g => g.section === section && g.pillar).length).toBeLessThanOrEqual(1);
     }
   });

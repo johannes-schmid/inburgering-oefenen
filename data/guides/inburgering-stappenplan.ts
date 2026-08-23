@@ -57,6 +57,7 @@ const guide: Guide = {
   reviewedBy: 'Marieke Schipper',
   reviewedOn: '2026-08-19',
   pillar: true,
+  coverGlyph: 'steps',
 
   title: 'Inburgering in Nederland: het complete stappenplan',
   description:

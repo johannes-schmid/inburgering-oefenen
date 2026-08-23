@@ -61,6 +61,7 @@ const guide: Guide = {
   reviewedBy: 'Marieke Schipper',
   reviewedOn: '2026-08-20',
   pillar: false,
+  coverGlyph: 'fork',
 
   title: 'Moet ik inburgeren? Check je situatie',
   description:

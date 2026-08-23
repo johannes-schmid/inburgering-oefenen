@@ -45,6 +45,7 @@ const guide: Guide = {
   reviewedBy: 'Marieke Schipper',
   reviewedOn: '2026-08-20',
   pillar: false,
+  coverGlyph: 'route',
 
   title: 'Welke inburgeringswet en welke route geldt voor jou?',
   description:

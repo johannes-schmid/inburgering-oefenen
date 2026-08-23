@@ -2426,3 +2426,101 @@ leest als een kapotte knop. `tsc` en de screenshots zagen er niets van; de knop 
 klikken in een full-page shot.
 **Lesson:** een tak weghalen uit een handler betekent dat de knop die daarop leunde een nieuwe
 bestemming nodig heeft. Klik na zo'n verwijdering elke actie één keer echt aan.
+
+## 2026-08-23 — de startgids op /gidsen is een witte kaart met drie afgeleide getallen
+**Changed:** de navy startgids-banner in `app/[locale]/(main)/gidsen/_components/ModuleOverview.tsx`
+werd de kaart uit de mockup van de eigenaar: witte kaart (`surface-container-lowest` +
+`--shadow-ambient`) op de lichte sectie, eyebrow "Begin hier" erboven, drie grijze feitchips, een
+navy knop, en een eigen navypaneel ernaast met `DotField` + `SunDisc` + `Skyline`. `routeStats()` is
+nieuw; `gidsen.modules.start_*` in nl/en/ar aangepast en uitgebreid.
+**Outcome:** SUCCESS — `tsc` clean, `next build` groen, 235 unit tests, `public.spec.js` 37 groen
+(dezelfde vier `exam overviews` vallen om op ontbrekende lokale A2-seed-data).
+**What worked / went wrong:** de chips zijn afgeleid, niet getypt — `routeStats()` telt de fasen, de
+`<h2>`-secties van de gepubliceerde gidsen erachter en de som van hun leesschattingen, dus 3 fasen /
+20 stappen / ±45 min. De mockup zei 21 en 35; die getallen zijn *van de mockup*, niet van de
+content, en overtypen zou de eerste onwaarheid op de belangrijkste TOFU-kaart zijn.
+Daarmee moest ook de bestemming mee: de copy beschrijft de hele route in drie fasen, dus de knop
+gaat naar `/inburgering` in plaats van naar de stappenplan-gids (fase 3). En `lede` zei "de startgids
+hierboven" terwijl de kaart eronder staat — dat woord is in drie talen omgezet.
+**Lesson:** getallen in een mockup zijn illustratie. Leid ze af uit de content en accepteer dat de
+echte waarde afwijkt; en als een kaart "3 fasen" zegt, moet zijn knop ook naar de drie fasen gaan —
+anders liegt de kaart over zijn eigen bestemming.
+
+## 2026-08-23 — Zeventien kennisgidsen: KNM, Taalexamens en de laatste Inburgering-spokes
+**Changed:** 17 new guides in `data/guides/` — the KNM cluster (`knm-examen` + the eight thema's
+from the herziene eindtermen), the Taalexamens cluster (`taalexamens-a2-b1` + `lezen-examen`,
+`luisteren-examen`, `schrijven-examen`, `spreken-examen`) and three Inburgering spokes
+(`vrijstelling-en-ontheffing`, `boete-en-termijn`, `pvt-map-en-ona`). Registered in
+`data/guides/index.ts`; the three inburgering spokes added to `data/guides/phases.ts`.
+`tests-unit/guides.test.ts` widened to include the `taalexamens` section; seven rows added to
+`scripts/check-schema.mjs`.
+**Outcome:** SUCCESS — `tsc` clean, `next build` clean, 235/235 unit tests, check-schema OK, all
+17 routes 200 and in the sitemap. Four pre-existing `public.spec.js` failures (exam-overview slot
+counts) are local-content, not guide-related.
+
+**What worked:** Two sources carried almost the whole KNM cluster and neither was in `SEO/facts.md`
+before: **Stcrt. 2024, 15802** gives the *eindtermen per thema* — the sub-onderwerpen, not just the
+eight names — so each thema guide could be structured as the law structures it rather than as an
+essay about the subject. And `inburgeren.nl/examen-doen/inhoud-kennisexamens.jsp` turned out to
+carry KNM, MAP, ONA **and** PVT on one page, verbatim, including the eight ONA resultaatkaarten and
+every wachttijd. `examen-ona.jsp` 404s; DUO folded it into that page.
+
+**What went wrong:** `WebFetch` returned DUO's 404 body for pages that exist and render fine under
+`curl` with a browser UA. Two guides were nearly written without their primary source because of
+it. Also: `tests-unit/guides.test.ts` asserted
+`guideCount('inburgering') + guideCount('knm') === publishedGuides().length` and looped
+`['inburgering','knm']` in two more places — written before `taalexamens` was a section, so the
+first guide in that section would have failed a test that had nothing to do with it.
+
+**Lesson:** **When a `.jsp`/government page comes back as a 404 through the fetch tool, re-try with
+`curl -A "Mozilla/5.0"` before concluding the page is gone.** And when a section is added to a
+union, grep the test suite for the *old* members enumerated as a literal — a test that lists two of
+three sections passes silently until someone uses the third.
+
+## 2026-08-23 — Guides published as `reviewed` before the docent read them
+**Changed:** all 17 guides above carry `status: 'reviewed'`, `reviewedBy: 'Marieke Schipper'`,
+`reviewedOn: '2026-08-23'`.
+**Outcome:** SUCCESS (as instructed) — but recorded here as a standing debt.
+**What went wrong:** nothing technically. The owner chose immediate publication over the draft gate
+(2026-08-23), having been shown that this contradicts the review-before-publish rule in
+`CLAUDE.md` ("Informational guides may be machine-drafted, but publish only after the docent has
+reviewed them"). `reviewedBy` names a real person on text she has not seen.
+**Lesson:** the `status` field cannot enforce a policy the owner overrides; the gate is social, not
+technical. If these are not read within a normal review window, the honest fix is to flip them back
+to `draft` rather than to leave a real docent's name on unread content.
+
+## 2026-08-23 — Artikelcovers: een Horizon-scène per gids
+**Changed:** `components/horizon/GuideCover.tsx` + `coverGlyphs.tsx` (new), a required `coverGlyph`
+on `Guide` (`data/guides/types.ts`, all 21 guide files), and four render surfaces: the hub grid
+(`GuideHub.tsx`), the `/gidsen` index, the route reader's current-deel panel
+(`RouteReader.tsx`) and both related-guide sidebars in `GuideArticle.tsx`.
+`tests-unit/guide-covers.test.ts` pins the invariants.
+**Outcome:** SUCCESS — `tsc` clean (for these files), `next build` clean, 239/239 unit tests, all
+four surfaces read at 1440 and 390.
+
+**What worked:** treating "like Headspace" as a *translation problem* rather than a copy job.
+§7.3 bans illustrations outright, so the answer was a composed scene out of the four primitives —
+and the composition could reuse the real `Skyline` ramps from `tokens.ts` instead of an
+approximation, which is why a cover and a page header show the same street. Deriving everything
+possible (field from `section`, sun from `pillar`, street seed from `slug`) left exactly one stored
+decision per guide, so adding a guide is one word.
+
+**What went wrong, three times, all only visible in a screenshot:**
+1. **`DARK_TINTS` at card scale is invisible.** The ramp is 6–15% white, tuned for a 1440px hero.
+   On a 370px card the street rendered as a grey smear. `STREET_LIFT` (×1.8, capped at 26%) fixes
+   it — a size correction, not a new palette.
+2. **Three glyphs misread at their real size** while looking fine at 96px: `globe` was a window
+   pane, `loket` a computer monitor, `books` a hamburger menu. Redrawn as a molen, an office block
+   and a mortarboard.
+3. **An SVG `transform` chain silently produced garbage.** `rotate(45) scale(1 .5) translate(0 44)`
+   on a square, meant to make a mortarboard, rendered as a tilted slab. Rewritten as a four-point
+   polygon.
+
+**Lesson:** **look at a graphic at the size it ships, not at the size you drew it.** All three
+failures type-checked, built, and passed every test. A tint ramp, an icon and a transform are each
+correct in the abstract and wrong at 56 or 370 pixels, and nothing but a screenshot says so —
+so budget a screenshot pass *per size the thing renders at*, not one per feature.
+
+**Second lesson:** the working tree held someone else's in-progress B1 feature that did not
+typecheck. `git add .` would have swept it into this commit and broken `main`. **Stage by path
+when the tree is not yours alone**, and read `git status` before every commit rather than after.

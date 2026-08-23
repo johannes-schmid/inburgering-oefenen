@@ -26,6 +26,7 @@ import { absUrl, breadcrumbs, PROVIDER_REF } from '@/lib/schema';
 import { WEBSITE_ID, langTag } from '@/lib/site';
 import { GradientHero, Breadcrumb, SectionHeader, CTABanner } from '@/components/site';
 import SkillIcon from '@/components/site/SkillIcon';
+import GuideCover from '@/components/horizon/GuideCover';
 import { DEFAULT_LEVEL, SKILLS } from '@/data/skills';
 import { FEATURES } from '@/lib/features';
 import { getPostBySlug, getPostLocale, getPostSlug } from '@/data/blog-posts';
@@ -119,6 +120,10 @@ export default async function GuideHub({
               slug: g.slug,
               section: g.section,
               guideTitle: lg.heroTitle,
+              /* Carried per deel rather than looked up in the client: `RouteReader` never sees a
+                 `Guide`, and shipping one to it would drag `articleHtml` into the bundle. */
+              coverGlyph: g.coverGlyph,
+              pillar: g.pillar,
             }));
           }),
         })).filter(p => p.delen.length > 0)
@@ -206,19 +211,31 @@ export default async function GuideHub({
                     <Link
                       key={guide.slug}
                       href={guideHref(guide)}
-                      className="bg-surface-container-lowest rounded-2xl p-7 flex flex-col gap-3 no-underline shadow-sm post-card focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2"
+                      className="bg-surface-container-lowest rounded-2xl overflow-hidden flex flex-col no-underline shadow-sm post-card focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2"
                       style={{ textDecoration: 'none' }}
                     >
-                      <span
-                        className="inline-block px-3 py-1 font-bold text-xs uppercase tracking-widest rounded-full w-fit"
-                        style={{ background: 'rgba(0,43,109,0.06)', color: '#002b6d' }}
-                      >
-                        {lg.eyebrow}
-                      </span>
-                      <h2 className="font-headline font-bold text-lg text-on-surface leading-snug">
-                        {lg.heroTitle}
-                      </h2>
-                      <p className="text-on-surface-variant text-sm leading-relaxed">{lg.description}</p>
+                      {/* The cover carries the eyebrow's job visually — the field says which cluster
+                          and the sun says whether this is the pillar — so the chip stays for the
+                          words and the two do not compete. See `components/horizon/GuideCover.tsx`. */}
+                      <GuideCover
+                        slug={guide.slug}
+                        field={guide.section}
+                        glyph={guide.coverGlyph}
+                        pillar={guide.pillar}
+                        className="rounded-none"
+                      />
+                      <div className="p-7 flex flex-col gap-3">
+                        <span
+                          className="inline-block px-3 py-1 font-bold text-xs uppercase tracking-widest rounded-full w-fit"
+                          style={{ background: 'rgba(0,43,109,0.06)', color: '#002b6d' }}
+                        >
+                          {lg.eyebrow}
+                        </span>
+                        <h2 className="font-headline font-bold text-lg text-on-surface leading-snug">
+                          {lg.heroTitle}
+                        </h2>
+                        <p className="text-on-surface-variant text-sm leading-relaxed">{lg.description}</p>
+                      </div>
                     </Link>
                   );
                 })}

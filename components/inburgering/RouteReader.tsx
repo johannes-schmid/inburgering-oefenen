@@ -26,10 +26,12 @@ import { useEffect, useMemo, useState } from 'react';
 import { useTranslations } from 'next-intl';
 import { ArrowRight } from 'lucide-react';
 import { Link } from '@/i18n/navigation';
-import { HorizonBanner, SkylineTopper, DocentSeal } from '@/components/horizon';
+import { SkylineTopper, DocentSeal } from '@/components/horizon';
 import { guideHref } from '@/data/guides/helpers';
 import type { PhaseId } from '@/data/guides/phases';
 import type { GuideSection } from '@/data/guides/types';
+import GuideCover from '@/components/horizon/GuideCover';
+import type { CoverGlyph } from '@/components/horizon/coverGlyphs';
 import { useReadProgress } from '@/lib/guides/progress';
 
 /** One deel: a guide's `<h2>`, flattened into its fase's reading order by the server. */
@@ -41,6 +43,9 @@ export type DeelView = {
   slug: string;
   section: GuideSection;
   guideTitle: string;
+  /** The guide's cover mark, so the panel can say *which* guide instead of drawing generic chrome. */
+  coverGlyph: CoverGlyph;
+  pillar: boolean;
 };
 
 export type RoutePhaseView = { id: PhaseId; number: number; delen: DeelView[] };
@@ -125,10 +130,18 @@ export default function RouteReader({
                   textDecoration: 'none',
                 }}
               >
-                <span className="relative overflow-hidden block min-h-[150px]" style={{ background: 'var(--gradient-brand)' }}>
-                  {/* `sun={false}`: at 220px the disc lands on the houses rather than beside them,
-                      and one sun per composition means a legible one. */}
-                  <HorizonBanner seed={p.number} sun={false} />
+                {/* The guide's own cover, not a generic banner. Same slot, same size — but it now
+                    identifies the guide you are about to open, which is the one thing this panel
+                    was not saying. `fill` because the slot sets its own box (220×150, not 400:250). */}
+                <span className="relative overflow-hidden block min-h-[150px]">
+                  <GuideCover
+                    slug={current.slug}
+                    field={current.section}
+                    glyph={current.coverGlyph}
+                    pillar={current.pillar}
+                    fill
+                    className="rounded-none"
+                  />
                 </span>
                 <span className="block p-6">
                   <span className="block font-headline font-bold text-on-surface leading-snug mb-1" style={{ fontSize: '1.3rem' }}>

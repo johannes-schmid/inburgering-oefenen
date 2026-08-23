@@ -43,6 +43,8 @@
  * decided the URL, and every one of them compiled cleanly with a third section and routed it to
  * `/knm/[thema]`.
  */
+import type { CoverGlyph } from '@/components/horizon/coverGlyphs';
+
 export type GuideSection = 'inburgering' | 'knm' | 'taalexamens';
 
 export type GuideFaq = { q: string; a: string };
@@ -122,6 +124,21 @@ export type Guide = {
 
   /** The cluster's pillar. Its hub lists it first, above the spokes. */
   pillar: boolean;
+
+  /**
+   * The mark at the centre of this guide's cover.
+   *
+   * Every guide has one, and the field is **required on purpose**: a card grid where one cover is
+   * blank reads as a broken image, and an optional field is one a new guide silently omits. The
+   * rest of the cover is derived rather than stored — the field colour comes from `section`, the
+   * sun disc from `pillar`, and the street's seed from `slug` — so this is the only per-guide
+   * decision, and `components/horizon/GuideCover.tsx` is where the composition lives.
+   *
+   * **One glyph, one guide.** Two guides sharing a mark makes a grid look like a rendering bug;
+   * `tests-unit/guide-covers.test.ts` refuses a duplicate. The type is imported from the component
+   * so the two cannot drift — a glyph deleted there becomes a compile error here.
+   */
+  coverGlyph: CoverGlyph;
 
   /** Meta title. ≤60 characters — `SEO/README.md`'s on-page checklist. */
   title: string;

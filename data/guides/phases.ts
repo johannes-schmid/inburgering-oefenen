@@ -41,9 +41,9 @@ export type GuidePhase = {
 };
 
 export const PHASES: GuidePhase[] = [
-  { id: 'orienteren', number: 1, guides: ['moet-ik-inburgeren', 'wat-kost-inburgeren'] },
+  { id: 'orienteren', number: 1, guides: ['moet-ik-inburgeren', 'vrijstelling-en-ontheffing', 'wat-kost-inburgeren'] },
   { id: 'kiezen', number: 2, guides: ['welke-wet-en-welke-route'] },
-  { id: 'doen', number: 3, guides: ['inburgering-stappenplan'] },
+  { id: 'doen', number: 3, guides: ['inburgering-stappenplan', 'pvt-map-en-ona', 'boete-en-termijn'] },
 ];
 
 export const PHASE_IDS = PHASES.map(p => p.id);

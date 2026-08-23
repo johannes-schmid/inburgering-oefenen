@@ -67,6 +67,16 @@ const PAGES = [
   { path: '/nl/inburgering/moet-ik-inburgeren',       expect: ['Article', 'BreadcrumbList', 'FAQPage'] },
   { path: '/nl/inburgering/welke-wet-en-welke-route', expect: ['Article', 'BreadcrumbList', 'FAQPage'] },
   { path: '/nl/inburgering/wat-kost-inburgeren',      expect: ['Article', 'BreadcrumbList', 'FAQPage'] },
+  /* One article per section, so a route that stops emitting its graph is caught wherever it lives.
+     The KNM and Taalexamens detail routes are separate page files from the Inburgering one; a
+     guard that only ever visits /inburgering/* would not notice either of them going dark. */
+  { path: '/nl/knm/knm-examen',                       expect: ['Article', 'BreadcrumbList', 'FAQPage'] },
+  { path: '/nl/knm/instanties',                       expect: ['Article', 'BreadcrumbList', 'FAQPage'] },
+  { path: '/nl/taalexamens/taalexamens-a2-b1',        expect: ['Article', 'BreadcrumbList', 'FAQPage'] },
+  { path: '/nl/taalexamens/spreken-examen',           expect: ['Article', 'BreadcrumbList', 'FAQPage'] },
+  { path: '/nl/inburgering/boete-en-termijn',         expect: ['Article', 'BreadcrumbList', 'FAQPage'] },
+  { path: '/nl/inburgering/pvt-map-en-ona',           expect: ['Article', 'BreadcrumbList', 'FAQPage'] },
+  { path: '/nl/inburgering/vrijstelling-en-ontheffing', expect: ['Article', 'BreadcrumbList', 'FAQPage'] },
   // B1 is noindex — forty empty slots. Rich data there would contradict the meta tag.
   { path: '/nl/oefenexamen/b1/lezen',   expect: [], forbid: ['Course'] },
   { path: '/en/premium',                expect: ['Product'] },

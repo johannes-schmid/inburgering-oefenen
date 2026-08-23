@@ -23,6 +23,7 @@ import { PenLine } from 'lucide-react';
 import { Link } from '@/i18n/navigation';
 import ArticleContent from '@/components/ArticleContent';
 import JsonLd from '@/components/JsonLd';
+import GuideCover from '@/components/horizon/GuideCover';
 import { absUrl, breadcrumbs } from '@/lib/schema';
 import { ORG_ID, TEACHER_ID, langTag } from '@/lib/site';
 import { Breadcrumb } from '@/components/site';
@@ -407,13 +408,25 @@ export default async function GuideArticle({
                               {i > 0 && <div className="h-px bg-surface-container mb-4" />}
                               <Link
                                 href={guideHref(g)}
-                                className="block no-underline group"
+                                className="flex gap-3 no-underline group"
                                 style={{ textDecoration: 'none' }}
                               >
-                                <p className="text-sm text-on-surface font-semibold leading-snug mb-1 group-hover:text-primary transition-colors">
-                                  {sl.heroTitle}
-                                </p>
-                                <p className="text-xs text-on-surface-variant">{sl.description}</p>
+                                {/* `compact`: the sidebar runs ~270px inside its padding, so a thumbnail is about 64px
+                                    wide and eleven houses stop reading at that size. Field and glyph still identify it. */}
+                                <GuideCover
+                                  slug={g.slug}
+                                  field={g.section}
+                                  glyph={g.coverGlyph}
+                                  pillar={g.pillar}
+                                  compact
+                                  className="w-16 shrink-0"
+                                />
+                                <span className="block min-w-0">
+                                  <span className="block text-sm text-on-surface font-semibold leading-snug mb-1 group-hover:text-primary transition-colors">
+                                    {sl.heroTitle}
+                                  </span>
+                                  <span className="block text-xs text-on-surface-variant">{sl.description}</span>
+                                </span>
                               </Link>
                             </div>
                           );
@@ -597,13 +610,25 @@ export default async function GuideArticle({
                             {i > 0 && <div className="h-px bg-surface-container mb-4" />}
                             <Link
                               href={guideHref(g)}
-                              className="block no-underline group"
+                              className="flex gap-3 no-underline group"
                               style={{ textDecoration: 'none' }}
                             >
-                              <p className="text-sm text-on-surface font-semibold leading-snug mb-1 group-hover:text-primary transition-colors">
-                                {sl.heroTitle}
-                              </p>
-                              <p className="text-xs text-on-surface-variant">{sl.description}</p>
+                              {/* `compact`: the sidebar runs ~270px inside its padding, so a thumbnail is about 64px
+                                  wide and eleven houses stop reading at that size. Field and glyph still identify it. */}
+                              <GuideCover
+                                slug={g.slug}
+                                field={g.section}
+                                glyph={g.coverGlyph}
+                                pillar={g.pillar}
+                                compact
+                                className="w-16 shrink-0"
+                              />
+                              <span className="block min-w-0">
+                                <span className="block text-sm text-on-surface font-semibold leading-snug mb-1 group-hover:text-primary transition-colors">
+                                  {sl.heroTitle}
+                                </span>
+                                <span className="block text-xs text-on-surface-variant">{sl.description}</span>
+                              </span>
                             </Link>
                           </div>
                         );
