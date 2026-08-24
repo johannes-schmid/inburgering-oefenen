@@ -74,6 +74,8 @@ const PAGES = [
   { path: '/nl/knm/instanties',                       expect: ['Article', 'BreadcrumbList', 'FAQPage'] },
   { path: '/nl/taalexamens/taalexamens-a2-b1',        expect: ['Article', 'BreadcrumbList', 'FAQPage'] },
   { path: '/nl/taalexamens/spreken-examen',           expect: ['Article', 'BreadcrumbList', 'FAQPage'] },
+  { path: '/nl/taalexamens/b1-examen',                expect: ['Article', 'BreadcrumbList', 'FAQPage'] },
+  { path: '/nl/inburgering/ona-examen',               expect: ['Article', 'BreadcrumbList', 'FAQPage'] },
   { path: '/nl/inburgering/boete-en-termijn',         expect: ['Article', 'BreadcrumbList', 'FAQPage'] },
   { path: '/nl/inburgering/pvt-map-en-ona',           expect: ['Article', 'BreadcrumbList', 'FAQPage'] },
   { path: '/nl/inburgering/vrijstelling-en-ontheffing', expect: ['Article', 'BreadcrumbList', 'FAQPage'] },

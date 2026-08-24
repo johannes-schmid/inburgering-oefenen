@@ -6,12 +6,17 @@
  * arrives with. The list of individual guides still follows, and the fase-route below it is where a
  * reader who does not yet know which module applies to them starts.
  *
- * **Two cards are filled and two are placeholders, and that split is the catalogue, not a style
+ * **Three cards are filled and one is a placeholder, and that split is the catalogue, not a style
  * choice.** CLAUDE.md's brand rule: the traject is the promise, the *catalogue* is what is built,
- * and the two are stated separately on every surface. Taal A2 is live and KNM has a hub with its
- * eight thema's; **Taal B1 is `noindex` behind the docent's review gate and ONA is announced only**,
- * so neither may be drawn like a live module and neither links to a page we tell crawlers to ignore.
- * They link to what genuinely exists instead — the A2-versus-B1 explainer, and contact.
+ * and the two are stated separately on every surface. Taal A2 is live, KNM has a hub with its eight
+ * thema's, and **Taal B1 became live on 2026-08-23** — Lezen/Schrijven/Spreken published and
+ * indexed, and since 2026-08-24 it has its own gids. Its card was grey and linked a blog post
+ * because B1 was then `noindex`; that reason expired, and the card moved with it.
+ *
+ * **ONA stays a placeholder, and it still links somewhere real.** Nothing is built for it — but it
+ * now has a gids (`/inburgering/ona-examen`) instead of a *houd me op de hoogte* link to contact,
+ * which is the difference between an announcement and an answer. The card must keep saying that no
+ * oefenmateriaal exists: the gids is the whole of what ONA has here.
  *
  * The startgids banner sits **above** the cards (owner's instruction, overriding the mockup, which
  * has it last and calls it "onderaan" in the copy — that sentence moved with it). A visitor who
@@ -25,10 +30,19 @@ import { getTranslations } from 'next-intl/server';
 import { ArrowRight } from 'lucide-react';
 import { Link } from '@/i18n/navigation';
 import { DotField, Skyline, SunDisc } from '@/components/horizon';
-import { SKILLS } from '@/data/skills';
+import { SKILLS, getFormat } from '@/data/skills';
 import { PHASES } from '@/data/guides/phases';
 import { getGuideLocale, publishedGuides } from '@/data/guides/helpers';
 import { guideSections } from '@/lib/guides/sections';
+
+/**
+ * The onderdelen B1 actually has, **derived and never typed** — exactly as `B1_CHIPS` on the
+ * homepage is. `getFormat('b1', slug).itemCount !== null` is the same fact that gates a B1 overview
+ * out of `robots` and the sitemap (`data/skills.ts`), so this row shows Lezen/Schrijven/Spreken
+ * today and picks up Luisteren on the commit that counts its format — rather than needing someone
+ * to remember this line. A chip for B1 Luisteren today would name a page we tell crawlers to ignore.
+ */
+const B1_SKILLS = SKILLS.filter(s => getFormat('b1', s.slug).itemCount !== null);
 
 /** The three KNM thema's named on the card, plus how many more there are. Eight in total. */
 const KNM_THEMES = ['wonen', 'werk', 'waarden'] as const;
@@ -258,29 +272,45 @@ export default async function ModuleOverview({ locale }: { locale: string }) {
             </span>
           </Link>
 
-          {/* ── Taal B1: authored, unreviewed, `noindex`. The card therefore links the A2-versus-B1
-                 explainer — a real published page — and never `/oefenexamen/b1/…`, which would hand a
-                 crawler exactly the page the robots tag tells it to ignore. ── */}
-          <div className="rounded-2xl p-7" style={{ background: 'var(--color-surface-container-low)' }}>
-            <div className="flex flex-wrap items-center gap-3 mb-4">
-              <h3 className="font-headline font-extrabold m-0" style={{ color: '#002b6d', fontSize: '1.75rem', letterSpacing: '-0.02em' }}>
-                {t('b1_title')}
-              </h3>
-              <StateChip label={t('b1_state')} filled={false} />
-            </div>
-            <p className="text-base text-on-surface-variant leading-relaxed mb-6">{t('b1_body')}</p>
-            <Link
-              href={{ pathname: '/blog/[slug]', params: { slug: 'taalniveaus-a1-a2-b1-nederlands' } }}
-              className="inline-flex items-center gap-1.5 text-sm font-bold no-underline"
-              style={{ color: '#a24000', textDecoration: 'none' }}
-            >
-              {t('b1_link')}
-              <ArrowRight className="w-4 h-4 rtl-flip" aria-hidden="true" />
-            </Link>
-          </div>
+          {/* ── Taal B1: live since 2026-08-23 (Lezen/Schrijven/Spreken published and indexed),
+                 and with its own gids since 2026-08-24. So it is a filled card and it links that
+                 gids — not `/oefenexamen/b1/…`, which is a tool and belongs on `/platform`, and not
+                 B1 Luisteren, which has no content and whose overview is still `noindex`.
 
-          {/* ── ONA: announced, nothing built. No guide to link, so the honest destination is the
-                 contact page — a placeholder that is a dead end is the one thing it must not be. ── */}
+                 Solid `primary` rather than a second `--gradient-brand`: two identical gradient
+                 cards in one grid read as one module split in half, and the homepage already
+                 established that a second live language level gets its own flat field rather than a
+                 copy of A2's. No sun disc anywhere in this grid — §7.3, one per composition, and
+                 the startgids panel above already has it. ── */}
+          <Link
+            href={{ pathname: '/taalexamens/[slug]', params: { slug: 'b1-examen' } }}
+            className="relative overflow-hidden block rounded-2xl p-7 no-underline"
+            style={{ background: '#002b6d', textDecoration: 'none' }}
+          >
+            <DotField />
+            <span className="relative block">
+              <span className="flex flex-wrap items-center gap-3 mb-4">
+                <span className="font-headline font-extrabold text-white m-0" style={{ fontSize: '1.75rem', letterSpacing: '-0.02em' }}>
+                  {t('b1_title')}
+                </span>
+                <StateChip label={t('b1_state')} filled />
+              </span>
+              <span className="block text-base leading-relaxed mb-6" style={{ color: 'rgba(255,255,255,0.78)' }}>
+                {t('b1_body')}
+              </span>
+              <span className="flex flex-wrap items-center gap-2">
+                {B1_SKILLS.map(skill => (
+                  <Chip key={skill.slug} tone="onDark">
+                    {tSkills(`${skill.key}.name`)}
+                  </Chip>
+                ))}
+              </span>
+            </span>
+          </Link>
+
+          {/* ── ONA: announced, nothing built — no oefenmateriaal, and the card does not imply any.
+                 It stays on the neutral ramp for that reason. What changed on 2026-08-24 is that it
+                 has a real destination: the ONA gids, which is the whole of what this module is. ── */}
           <div className="rounded-2xl p-7" style={{ background: 'var(--color-surface-container-low)' }}>
             <div className="flex flex-wrap items-center gap-3 mb-4">
               <h3 className="font-headline font-extrabold m-0" style={{ color: '#002b6d', fontSize: '1.75rem', letterSpacing: '-0.02em' }}>
@@ -290,7 +320,7 @@ export default async function ModuleOverview({ locale }: { locale: string }) {
             </div>
             <p className="text-base text-on-surface-variant leading-relaxed mb-6">{t('ona_body')}</p>
             <Link
-              href="/contact"
+              href={{ pathname: '/inburgering/[slug]', params: { slug: 'ona-examen' } }}
               className="inline-flex items-center gap-1.5 text-sm font-bold no-underline"
               style={{ color: '#a24000', textDecoration: 'none' }}
             >

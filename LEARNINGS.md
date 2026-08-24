@@ -2613,3 +2613,38 @@ schemagrens de plek om te houden — niet mee laten schuiven "voor de consistent
 **Second lesson:** een parallelle sessie veegde mijn avatar-werk (script + drie webp's) met
 `git add .` mee in háár commit (5001825). Twee sessies in één worktree betekent: lees `git log` én
 `git status` vlak vóór je commit, en stage per pad.
+
+## 2026-08-24 — B1 en ONA hebben nu een eigen gids
+**Changed:** `data/guides/b1-examen.ts` (taalexamens) en `data/guides/ona-examen.ts`
+(inburgering), geregistreerd in `data/guides/index.ts`; ONA toegevoegd aan fase 3 in
+`data/guides/phases.ts`; twee nieuwe cover-glyphs (`ladder`, `cards`) in
+`components/horizon/coverGlyphs.tsx`; de B1- en ONA-kaarten in
+`app/[locale]/(main)/gidsen/_components/ModuleOverview.tsx` linken nu die gidsen; kruislinks
+vanuit `taalexamens-a2-b1.ts` en `pvt-map-en-ona.ts`; copy in nl/en/ar; twee rijen in
+`scripts/check-schema.mjs`.
+**Outcome:** SUCCESS — tsc schoon, `next build` schoon, 239 unit tests, 53 e2e, check-schema OK.
+
+**What worked:**
+- Eerst de *bestaande dekking* opzoeken. B1 zat al in de taalexamens-pillar en in elke
+  onderdeel-spoke, en ONA had al een volledige sectie in `pvt-map-en-ona`. Zonder die check waren
+  het twee concurrerende pagina's geweest. Beide nieuwe gidsen zijn daarom expliciet *gescoped* in
+  hun header, met het `lezen-examen`-precedent (gids naast blogpost) als model, en beide oude
+  pagina's linken nu naar de nieuwe in plaats van erover te zwijgen.
+- Alle 21 cover-glyphs waren al bezet. `tests-unit/guide-covers.test.ts` dwingt uniciteit af, dus
+  een nieuwe gids kost een nieuwe tekening — reken daarop bij het plannen, het is geen bijzaak.
+- `B1_SKILLS` afgeleid uit `getFormat('b1', slug).itemCount !== null`, net als `B1_CHIPS` op de
+  homepage. Zo verschijnt B1 Luisteren vanzelf zodra iemand het format telt, en nooit eerder.
+
+**What went wrong:**
+- **Ik heb CSS-klassen verzonnen die niet bestaan.** Beide gidsen gebruikten
+  `.yesno-card` + `.yesno-icon`; `app/globals.css` kent alleen `.yesno-col` + `.yesno-title` met
+  de icoontjes *in de `<li>`*. Resultaat: twee reusachtige zwarte SVG's midden in het artikel.
+  `tsc`, de build, 239 unit tests en check-schema waren allemaal schoon — alleen de screenshot
+  zag het.
+- De eerste screenshot van een net gecompileerde route kwam zonder CSS binnen (Turbopack
+  compileert on demand). `curl` de URL één keer vóór `check-ui.mjs`, anders fotografeer je een
+  ongestylede pagina en denk je dat je CSS stuk is.
+
+**Lesson:** een gids is HTML in een string, en een klassenaam daarin wordt door **niets** in de
+stack gecontroleerd. Grep de klasse in `app/globals.css` vóór je hem gebruikt, en kopieer het blok
+uit een bestaande gids in plaats van het uit je hoofd te schrijven.

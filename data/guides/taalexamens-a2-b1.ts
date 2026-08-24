@@ -266,7 +266,7 @@ ${docent('Het grootste verschil tussen slagen en zakken is bij mijn cursisten ze
     },
   ],
 
-  related: ['lezen-examen', 'luisteren-examen', 'schrijven-examen', 'spreken-examen'],
+  related: ['b1-examen', 'lezen-examen', 'luisteren-examen', 'schrijven-examen', 'spreken-examen'],
   relatedPosts: ['inburgeringsexamen-a2-uitleg', 'taalniveaus-a1-a2-b1-nederlands'],
 
   ctaTitle: 'Oefen een compleet examenonderdeel',

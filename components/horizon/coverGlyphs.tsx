@@ -1,7 +1,7 @@
 /**
  * The article-cover glyph sheet.
  *
- * Twenty marks on one 96×96 grid, each built from **rectangles, discs and the one permitted
+ * Twenty-three marks on one 96×96 grid, each built from **rectangles, discs and the one permitted
  * triangle** — the same blocks the gable houses and the `CategoryMark`s are made of. That is not a
  * stylistic preference: `docs/design/DESIGN_SYSTEM.md` §7.3 bans illustrations, mascots and
  * line-art imagery outright, so a cover cannot carry a drawing. Headspace's article art is exactly
@@ -36,7 +36,7 @@ import type { ReactNode } from 'react';
 export type CoverGlyph =
   | 'colonnade' | 'briefcase' | 'twopeople' | 'house' | 'cross' | 'globe' | 'scales' | 'books'
   | 'loket' | 'quad' | 'doc' | 'headphones' | 'pen' | 'mic' | 'steps' | 'fork' | 'route'
-  | 'euro' | 'stamp' | 'clock' | 'sign';
+  | 'euro' | 'stamp' | 'clock' | 'sign' | 'ladder' | 'cards';
 
 /**
  * Every glyph, drawn into a 96×96 box.
@@ -227,6 +227,31 @@ export const GLYPHS: Record<CoverGlyph, (ink: string, cut: string) => ReactNode>
       <circle cx="48" cy="48" r="38" fill={ink} opacity={0.9} />
       <rect x="44" y="20" width="8" height="30" rx="3" fill={cut} />
       <rect x="46" y="44" width="26" height="8" rx="3" fill={cut} />
+    </>
+  ),
+  /* B1 — a ladder, not `steps`. `steps` is the stappenplan's rising bars and is taken; a ladder
+     says the same thing (a level above the one you are on) in a shape that cannot be confused with
+     it at card size, and it is two rails and four rungs — rectangles only, §7.3. */
+  ladder: (ink) => (
+    <>
+      <rect x="18" y="8" width="10" height="80" rx="3" fill={ink} />
+      <rect x="68" y="8" width="10" height="80" rx="3" fill={ink} />
+      <rect x="26" y="66" width="44" height="9" rx="3" fill={ink} opacity={0.45} />
+      <rect x="26" y="48" width="44" height="9" rx="3" fill={ink} opacity={0.6} />
+      <rect x="26" y="30" width="44" height="9" rx="3" fill={ink} opacity={0.78} />
+      <rect x="26" y="12" width="44" height="9" rx="3" fill={ink} />
+    </>
+  ),
+  /* ONA — the portfolio: three resultaatkaarten stacked, the top one carrying its two written
+     lines in `cut`. Deliberately not `doc` (one sheet, the Lezen spoke) and not `clipboard`: the
+     whole of ONA is that you hand in a *set* of cards, so the mark is the stack. */
+  cards: (ink, cut) => (
+    <>
+      <rect x="10" y="26" width="58" height="62" rx="5" fill={ink} opacity={0.4} />
+      <rect x="19" y="18" width="58" height="62" rx="5" fill={ink} opacity={0.6} />
+      <rect x="28" y="10" width="58" height="62" rx="5" fill={ink} />
+      <rect x="38" y="26" width="38" height="7" rx="3" fill={cut} opacity={0.55} />
+      <rect x="38" y="42" width="26" height="7" rx="3" fill={cut} opacity={0.4} />
     </>
   ),
   sign: (ink) => (

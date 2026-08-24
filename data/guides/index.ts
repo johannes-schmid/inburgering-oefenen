@@ -34,6 +34,7 @@ import lezenExamen from './lezen-examen';
 import luisterenExamen from './luisteren-examen';
 import schrijvenExamen from './schrijven-examen';
 import sprekenExamen from './spreken-examen';
+import b1Examen from './b1-examen';
 
 /* The remaining Inburgering spokes. Each must also be added to a fase in `phases.ts`, in the same
    commit — `tests-unit/inburgering-route.test.ts` requires every published inburgering guide to
@@ -41,6 +42,7 @@ import sprekenExamen from './spreken-examen';
 import vrijstellingEnOntheffing from './vrijstelling-en-ontheffing';
 import boeteEnTermijn from './boete-en-termijn';
 import pvtMapEnOna from './pvt-map-en-ona';
+import onaExamen from './ona-examen';
 
 export const GUIDES: Guide[] = [
   inburgeringStappenplan,
@@ -63,10 +65,12 @@ export const GUIDES: Guide[] = [
   luisterenExamen,
   schrijvenExamen,
   sprekenExamen,
+  b1Examen,
 
   vrijstellingEnOntheffing,
   boeteEnTermijn,
   pvtMapEnOna,
+  onaExamen,
 ];
 
 export type { Guide, GuideSection, GuideFaq, GuideLocale, ResolvedGuide } from './types';

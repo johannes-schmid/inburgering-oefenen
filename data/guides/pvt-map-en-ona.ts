@@ -162,7 +162,9 @@ ${docent('De MAP wordt door cursisten vaak gezien als een verplicht nummer. Zond
 
 <p>ONA is het onderdeel van de <strong>oude wet</strong>, de Wet inburgering 2013. Het is de
 voorloper van de MAP en werkt heel anders: het is een portfolio dat je zelf maakt, plus een tweede
-deel naar keuze.</p>
+deel naar keuze. Hieronder staat hoe het werkt; wil je de acht resultaatkaarten stuk voor stuk en
+de planning erbij, lees dan de gids
+<a href="/inburgering/ona-examen">Het ONA-examen: portfolio, eindgesprek en planning</a>.</p>
 
 <h3>Wie hoeft geen ONA te doen?</h3>
 <ul>
@@ -284,7 +286,7 @@ ${inlineCta('Werk intussen aan je taalexamens', 'Terwijl je portfolio wordt nage
     },
   ],
 
-  related: ['inburgering-stappenplan', 'welke-wet-en-welke-route', 'boete-en-termijn'],
+  related: ['ona-examen', 'inburgering-stappenplan', 'welke-wet-en-welke-route', 'boete-en-termijn'],
   relatedPosts: [],
 
   ctaTitle: 'Werk intussen aan je taalexamens',

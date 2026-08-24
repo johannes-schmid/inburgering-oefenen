@@ -29,7 +29,7 @@
  * - **The eyebrow names a fase only when the guide is in one** (`phaseOfGuide`). A KNM or
  *   Taalexamens guide reads "Deel 2 · 4 min" and claims no place in a route it is not part of.
  */
-import { useCallback, useEffect, useMemo, useState, type ReactNode } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState, type ReactNode } from 'react';
 import { useTranslations } from 'next-intl';
 import { ArrowLeft, ArrowRight, Check, ChevronLeft, ListTree } from 'lucide-react';
 import { Link } from '@/i18n/navigation';
@@ -114,12 +114,23 @@ export default function GuideReader({
      they want (the hash) or nothing at all — silently starting them in the middle of an argument
      they have not read is worse than a paragraph they can skip. The sidebar shows what is read. */
 
+  const cardRef = useRef<HTMLDivElement>(null);
+
   const open = useCallback((i: number) => {
     setIndex(i);
     setView('read');
     /* The bar and the title are above the fold of the *previous* deel, so a click that only swaps
-       the body would leave the reader mid-page in text they did not choose. */
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+       the body would leave the reader mid-page in text they did not choose. Scroll to the top of
+       the reader itself, not of the page: sending the reader back past the hero on every deel
+       makes them re-scroll through the header to carry on reading. The nav height is subtracted
+       because the header is fixed and the reading bar sticks directly under it. */
+    const el = cardRef.current;
+    if (!el) { window.scrollTo({ top: 0, behavior: 'smooth' }); return; }
+    const navH = parseFloat(
+      getComputedStyle(document.documentElement).getPropertyValue('--nav-h'),
+    ) || 0;
+    const top = el.getBoundingClientRect().top + window.scrollY - navH - 8;
+    window.scrollTo({ top: Math.max(0, top), behavior: 'smooth' });
   }, []);
 
   /* Forwards marks the deel behind you read — see the header. */
@@ -133,7 +144,7 @@ export default function GuideReader({
       {/* The white card is rendered here rather than by the page, because `.article-layout` is a
           two-column grid and its two children are this card and the aside — both of which need the
           reader's state. */}
-      <div className="flex flex-col gap-6 min-w-0">
+      <div ref={cardRef} className="flex flex-col gap-6 min-w-0">
       {notices}
 
       {/* ── The reading bar. Only in a deel: on the overview the hero above already says which
