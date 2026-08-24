@@ -20,20 +20,20 @@ import {
   docent, note, inlineCta, factTwo,
 } from './kit';
 
-const SRC_EINDTERMEN = 'https://zoek.officielebekendmakingen.nl/stcrt-2024-15802.html';
-const SRC_DIGID = 'https://www.digid.nl/';
-const SRC_TOESLAGEN = 'https://www.belastingdienst.nl/wps/wcm/connect/nl/toeslagen/toeslagen';
-const SRC_AANGIFTE = 'https://www.belastingdienst.nl/wps/wcm/connect/nl/aangifte-inkomstenbelasting/aangifte-inkomstenbelasting';
-const SRC_POLITIE = 'https://www.politie.nl/informatie/wanneer-bel-ik-112.html';
-const SRC_JURIDISCHLOKET = 'https://www.juridischloket.nl/';
-const SRC_RECHTSBIJSTAND = 'https://www.rijksoverheid.nl/onderwerpen/rechtsbijstand';
-const SRC_GEMEENTE = 'https://www.rijksoverheid.nl/onderwerpen/gemeenten';
-const CHECKED = '23-08-2026';
+export const SRC_EINDTERMEN = 'https://zoek.officielebekendmakingen.nl/stcrt-2024-15802.html';
+export const SRC_DIGID = 'https://www.digid.nl/';
+export const SRC_TOESLAGEN = 'https://www.belastingdienst.nl/wps/wcm/connect/nl/toeslagen/toeslagen';
+export const SRC_AANGIFTE = 'https://www.belastingdienst.nl/wps/wcm/connect/nl/aangifte-inkomstenbelasting/aangifte-inkomstenbelasting';
+export const SRC_POLITIE = 'https://www.politie.nl/informatie/wanneer-bel-ik-112.html';
+export const SRC_JURIDISCHLOKET = 'https://www.juridischloket.nl/';
+export const SRC_RECHTSBIJSTAND = 'https://www.rijksoverheid.nl/onderwerpen/rechtsbijstand';
+export const SRC_GEMEENTE = 'https://www.rijksoverheid.nl/onderwerpen/gemeenten';
+export const CHECKED = '23-08-2026';
 
-const card = (icon: string, title: string, body: string) =>
+export const card = (icon: string, title: string, body: string) =>
   `<div class="guide-card"><span class="guide-card-icon">${icon}</span><h3>${title}</h3><p>${body}</p></div>`;
 
-const row = (key: string, val: string) =>
+export const row = (key: string, val: string) =>
   `<div class="compare-row"><p class="compare-key">${key}</p><p class="compare-val">${val}</p></div>`;
 
 const guide: Guide = {

@@ -17,19 +17,19 @@ import type { Guide } from './types';
 import { fact } from './types';
 import { I_CHECK, I_X, I_USER, I_ALERT, I_EURO, I_USERS, I_CLOCK, docent, note, inlineCta, factTwo } from './kit';
 
-const SRC_EINDTERMEN = 'https://zoek.officielebekendmakingen.nl/stcrt-2024-15802.html';
-const SRC_ZORGVERZ = 'https://www.rijksoverheid.nl/onderwerpen/zorgverzekering';
-const SRC_EIGENRISICO = 'https://www.rijksoverheid.nl/onderwerpen/zorgverzekering/vraag-en-antwoord/eigen-risico-zorgverzekering';
-const SRC_ZORGTOESLAG = 'https://www.belastingdienst.nl/wps/wcm/connect/nl/zorgtoeslag/zorgtoeslag';
-const SRC_HUISARTS = 'https://www.thuisarts.nl/';
-const SRC_112 = 'https://www.politie.nl/informatie/wanneer-bel-ik-112.html';
-const SRC_WMO = 'https://www.rijksoverheid.nl/onderwerpen/zorg-en-ondersteuning-thuis/wmo-2015';
-const CHECKED = '23-08-2026';
+export const SRC_EINDTERMEN = 'https://zoek.officielebekendmakingen.nl/stcrt-2024-15802.html';
+export const SRC_ZORGVERZ = 'https://www.rijksoverheid.nl/onderwerpen/zorgverzekering';
+export const SRC_EIGENRISICO = 'https://www.rijksoverheid.nl/onderwerpen/zorgverzekering/vraag-en-antwoord/eigen-risico-zorgverzekering';
+export const SRC_ZORGTOESLAG = 'https://www.belastingdienst.nl/wps/wcm/connect/nl/zorgtoeslag/zorgtoeslag';
+export const SRC_HUISARTS = 'https://www.thuisarts.nl/';
+export const SRC_112 = 'https://www.politie.nl/informatie/wanneer-bel-ik-112.html';
+export const SRC_WMO = 'https://www.rijksoverheid.nl/onderwerpen/zorg-en-ondersteuning-thuis/wmo-2015';
+export const CHECKED = '23-08-2026';
 
-const card = (icon: string, title: string, body: string) =>
+export const card = (icon: string, title: string, body: string) =>
   `<div class="guide-card"><span class="guide-card-icon">${icon}</span><h3>${title}</h3><p>${body}</p></div>`;
 
-const row = (key: string, val: string) =>
+export const row = (key: string, val: string) =>
   `<div class="compare-row"><p class="compare-key">${key}</p><p class="compare-val">${val}</p></div>`;
 
 const guide: Guide = {

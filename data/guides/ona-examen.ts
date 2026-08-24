@@ -35,17 +35,17 @@ import {
   docent, note, inlineCta, factTwo,
 } from './kit';
 
-const SRC_KENNIS = 'https://www.inburgeren.nl/examen-doen/inhoud-kennisexamens.jsp';
-const SRC_ONA_PDF = 'https://www.inburgeren.nl/images/ona-toelichting.pdf';
-const SRC_EXAMENS = 'https://www.inburgeren.nl/examen-doen/index.jsp';
-const SRC_BETALEN = 'https://www.inburgeren.nl/inburgeren-betalen/index.jsp';
-const SRC_SCHOLEN = 'https://www.zoekinburgerschool.nl/';
-const CHECKED = '24-08-2026';
+export const SRC_KENNIS = 'https://www.inburgeren.nl/examen-doen/inhoud-kennisexamens.jsp';
+export const SRC_ONA_PDF = 'https://www.inburgeren.nl/images/ona-toelichting.pdf';
+export const SRC_EXAMENS = 'https://www.inburgeren.nl/examen-doen/index.jsp';
+export const SRC_BETALEN = 'https://www.inburgeren.nl/inburgeren-betalen/index.jsp';
+export const SRC_SCHOLEN = 'https://www.zoekinburgerschool.nl/';
+export const CHECKED = '24-08-2026';
 
-const card = (icon: string, title: string, body: string) =>
+export const card = (icon: string, title: string, body: string) =>
   `<div class="guide-card"><span class="guide-card-icon">${icon}</span><h3>${title}</h3><p>${body}</p></div>`;
 
-const row = (key: string, val: string) =>
+export const row = (key: string, val: string) =>
   `<div class="compare-row"><p class="compare-key">${key}</p><p class="compare-val">${val}</p></div>`;
 
 const guide: Guide = {

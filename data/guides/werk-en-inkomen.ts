@@ -19,16 +19,16 @@ import {
   docent, note, inlineCta, factTwo,
 } from './kit';
 
-const SRC_EINDTERMEN = 'https://zoek.officielebekendmakingen.nl/stcrt-2024-15802.html';
-const SRC_WERKNEMER = 'https://www.rijksoverheid.nl/onderwerpen/arbeidsovereenkomst-en-cao';
-const SRC_MINIMUMLOON = 'https://www.rijksoverheid.nl/onderwerpen/minimumloon';
-const SRC_DISCRIMINATIE = 'https://www.rijksoverheid.nl/onderwerpen/discriminatie';
-const SRC_MENSENRECHTEN = 'https://www.mensenrechten.nl/';
-const SRC_KVK = 'https://www.kvk.nl/starten/';
-const SRC_UWV = 'https://www.uwv.nl/particulieren/werkloos/';
-const CHECKED = '23-08-2026';
+export const SRC_EINDTERMEN = 'https://zoek.officielebekendmakingen.nl/stcrt-2024-15802.html';
+export const SRC_WERKNEMER = 'https://www.rijksoverheid.nl/onderwerpen/arbeidsovereenkomst-en-cao';
+export const SRC_MINIMUMLOON = 'https://www.rijksoverheid.nl/onderwerpen/minimumloon';
+export const SRC_DISCRIMINATIE = 'https://www.rijksoverheid.nl/onderwerpen/discriminatie';
+export const SRC_MENSENRECHTEN = 'https://www.mensenrechten.nl/';
+export const SRC_KVK = 'https://www.kvk.nl/starten/';
+export const SRC_UWV = 'https://www.uwv.nl/particulieren/werkloos/';
+export const CHECKED = '23-08-2026';
 
-const row = (key: string, val: string) =>
+export const row = (key: string, val: string) =>
   `<div class="compare-row"><p class="compare-key">${key}</p><p class="compare-val">${val}</p></div>`;
 
 const guide: Guide = {

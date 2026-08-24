@@ -18,18 +18,18 @@ import type { Guide } from './types';
 import { fact } from './types';
 import { I_HOME, I_LANDMARK, I_USERS, I_BOOK, I_ROUTE, docent, note, inlineCta, factTwo } from './kit';
 
-const SRC_EINDTERMEN = 'https://zoek.officielebekendmakingen.nl/stcrt-2024-15802.html';
-const SRC_CANON = 'https://www.canonvannederland.nl/nl/canon';
-const SRC_KONINKLIJK = 'https://www.koninklijkhuis.nl/onderwerpen/koningsdag';
-const SRC_WATER = 'https://www.rijksoverheid.nl/onderwerpen/water-en-veiligheid';
-const SRC_PROVINCIES = 'https://www.rijksoverheid.nl/onderwerpen/provincies';
-const SRC_CBS = 'https://www.cbs.nl/nl-nl/visualisaties/dashboard-bevolking';
-const CHECKED = '23-08-2026';
+export const SRC_EINDTERMEN = 'https://zoek.officielebekendmakingen.nl/stcrt-2024-15802.html';
+export const SRC_CANON = 'https://www.canonvannederland.nl/nl/canon';
+export const SRC_KONINKLIJK = 'https://www.koninklijkhuis.nl/onderwerpen/koningsdag';
+export const SRC_WATER = 'https://www.rijksoverheid.nl/onderwerpen/water-en-veiligheid';
+export const SRC_PROVINCIES = 'https://www.rijksoverheid.nl/onderwerpen/provincies';
+export const SRC_CBS = 'https://www.cbs.nl/nl-nl/visualisaties/dashboard-bevolking';
+export const CHECKED = '23-08-2026';
 
-const card = (icon: string, title: string, body: string) =>
+export const card = (icon: string, title: string, body: string) =>
   `<div class="guide-card"><span class="guide-card-icon">${icon}</span><h3>${title}</h3><p>${body}</p></div>`;
 
-const row = (key: string, val: string) =>
+export const row = (key: string, val: string) =>
   `<div class="compare-row"><p class="compare-key">${key}</p><p class="compare-val">${val}</p></div>`;
 
 const guide: Guide = {

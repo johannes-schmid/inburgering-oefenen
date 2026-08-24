@@ -25,16 +25,16 @@ import {
   I_USER, I_CAP, docent, note, inlineCta, factTwo,
 } from './kit';
 
-const SRC_KENNIS = 'https://www.inburgeren.nl/examen-doen/inhoud-kennisexamens.jsp';
-const SRC_EINDTERMEN = 'https://zoek.officielebekendmakingen.nl/stcrt-2024-15802.html';
-const SRC_KOSTEN = 'https://www.inburgeren.nl/inburgeren-betalen/index.jsp';
-const SRC_UITSLAG = 'https://www.inburgeren.nl/examen-doen/uitslag-examen.jsp';
-const SRC_PLAATSEN = 'https://www.inburgeren.nl/examen-doen/examenplaatsen.jsp';
-const SRC_ROUTES = 'https://www.inburgeren.nl/u-gaat-inburgeren/';
-const SRC_REGLEMENT = 'https://www.inburgeren.nl/images/examenreglement.pdf';
-const CHECKED = '23-08-2026';
+export const SRC_KENNIS = 'https://www.inburgeren.nl/examen-doen/inhoud-kennisexamens.jsp';
+export const SRC_EINDTERMEN = 'https://zoek.officielebekendmakingen.nl/stcrt-2024-15802.html';
+export const SRC_KOSTEN = 'https://www.inburgeren.nl/inburgeren-betalen/index.jsp';
+export const SRC_UITSLAG = 'https://www.inburgeren.nl/examen-doen/uitslag-examen.jsp';
+export const SRC_PLAATSEN = 'https://www.inburgeren.nl/examen-doen/examenplaatsen.jsp';
+export const SRC_ROUTES = 'https://www.inburgeren.nl/u-gaat-inburgeren/';
+export const SRC_REGLEMENT = 'https://www.inburgeren.nl/images/examenreglement.pdf';
+export const CHECKED = '23-08-2026';
 
-const card = (icon: string, title: string, body: string) =>
+export const card = (icon: string, title: string, body: string) =>
   `<div class="guide-card"><span class="guide-card-icon">${icon}</span><h3>${title}</h3><p>${body}</p></div>`;
 
 const guide: Guide = {

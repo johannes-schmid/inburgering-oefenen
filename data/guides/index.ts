@@ -8,6 +8,7 @@
  * Order here is irrelevant: `publishedGuides()` sorts pillar-first, then newest.
  */
 import type { Guide } from './types';
+import { TRANSLATIONS } from './translations';
 import inburgeringStappenplan from './inburgering-stappenplan';
 import moetIkInburgeren from './moet-ik-inburgeren';
 import welkeWetEnWelkeRoute from './welke-wet-en-welke-route';
@@ -44,7 +45,16 @@ import boeteEnTermijn from './boete-en-termijn';
 import pvtMapEnOna from './pvt-map-en-ona';
 import onaExamen from './ona-examen';
 
-export const GUIDES: Guide[] = [
+/**
+ * The Dutch guides, before their translations are attached.
+ *
+ * Kept separate from `GUIDES` so the merge below is the only place a translation reaches a guide.
+ * Four guides (the pillar and the three earliest Inburgering spokes) still carry their EN/AR
+ * bodies inline in their own file; everything since 2026-08-24 lives in `translations/`. The merge
+ * lets both shapes coexist, with the file-based one winning on a key it defines — there is no
+ * guide where both exist, and `tests-unit/guides.test.ts` refuses one.
+ */
+const SOURCES: Guide[] = [
   inburgeringStappenplan,
   moetIkInburgeren,
   welkeWetEnWelkeRoute,
@@ -72,6 +82,12 @@ export const GUIDES: Guide[] = [
   pvtMapEnOna,
   onaExamen,
 ];
+
+export const GUIDES: Guide[] = SOURCES.map(guide => {
+  const extra = TRANSLATIONS[guide.slug];
+  if (!extra) return guide;
+  return { ...guide, translations: { ...guide.translations, ...extra } };
+});
 
 export type { Guide, GuideSection, GuideFaq, GuideLocale, ResolvedGuide } from './types';
 export default GUIDES;

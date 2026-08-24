@@ -35,21 +35,21 @@ import {
   docent, note, inlineCta, factTwo,
 } from './kit';
 
-const SRC_TAALEXAMENS = 'https://www.inburgeren.nl/examen-doen/inhoud-taalexamens-a2-b1-b2.jsp';
-const SRC_ROUTES = 'https://www.inburgeren.nl/u-gaat-inburgeren/';
-const SRC_PLAATSEN = 'https://www.inburgeren.nl/examen-doen/examenplaatsen.jsp';
-const SRC_AANMELDEN = 'https://www.inburgeren.nl/examen-doen/aanmelden-examen.jsp';
-const SRC_NT2 = 'https://www.staatsexamensnt2.nl/';
-const SRC_NT2_GELD = 'https://duo.nl/particulier/staatsexamen-nt2/examengeld.jsp';
-const SRC_BESLUIT55 = 'https://wetten.overheid.nl/jci1.3:c:BWBR0045555&artikel=5.5';
-const SRC_IND = 'https://ind.nl/nl/met-een-verblijfsvergunning-wonen-in-nederland/inburgering-bij-sterkere-verblijfsvergunning-en-naturalisatie';
-const SRC_DIPLOMA = 'https://www.inburgeren.nl/examen-doen/diploma.jsp';
-const CHECKED = '24-08-2026';
+export const SRC_TAALEXAMENS = 'https://www.inburgeren.nl/examen-doen/inhoud-taalexamens-a2-b1-b2.jsp';
+export const SRC_ROUTES = 'https://www.inburgeren.nl/u-gaat-inburgeren/';
+export const SRC_PLAATSEN = 'https://www.inburgeren.nl/examen-doen/examenplaatsen.jsp';
+export const SRC_AANMELDEN = 'https://www.inburgeren.nl/examen-doen/aanmelden-examen.jsp';
+export const SRC_NT2 = 'https://www.staatsexamensnt2.nl/';
+export const SRC_NT2_GELD = 'https://duo.nl/particulier/staatsexamen-nt2/examengeld.jsp';
+export const SRC_BESLUIT55 = 'https://wetten.overheid.nl/jci1.3:c:BWBR0045555&artikel=5.5';
+export const SRC_IND = 'https://ind.nl/nl/met-een-verblijfsvergunning-wonen-in-nederland/inburgering-bij-sterkere-verblijfsvergunning-en-naturalisatie';
+export const SRC_DIPLOMA = 'https://www.inburgeren.nl/examen-doen/diploma.jsp';
+export const CHECKED = '24-08-2026';
 
-const card = (icon: string, title: string, body: string) =>
+export const card = (icon: string, title: string, body: string) =>
   `<div class="guide-card"><span class="guide-card-icon">${icon}</span><h3>${title}</h3><p>${body}</p></div>`;
 
-const row = (key: string, val: string) =>
+export const row = (key: string, val: string) =>
   `<div class="compare-row"><p class="compare-key">${key}</p><p class="compare-val">${val}</p></div>`;
 
 const guide: Guide = {

@@ -1038,6 +1038,83 @@ elke gids blijft compleet, de secties komen aan de zijkant te staan.
 De diagnostische quiz per onderdeel en de `.ics`-export van de tijdlijn staan nog open (zie M2c); de
 vijf overige M2-spokes ook.
 
+### The gidsen are translated, and the site now describes itself to models (2026-08-24)
+
+Twenty-three guides were live in Dutch and only four had EN/AR bodies, so `hasTranslation()`
+`noindex`ed **forty pages** in the two languages much of the paying audience reads. The gate was
+right; it was empty. It is filled now, and the AI-crawler surface was built at the same time.
+
+**Translations live in `data/guides/translations/<slug>.<locale>.ts`, one file per (guide, locale),
+and the registry merges them onto the guide.** The four earliest guides keep their EN/AR inline;
+both shapes coexist and `data/guides/index.ts` is the only place they meet.
+
+- **The arrow points one way: a translation imports its guide, a guide never imports its
+  translation.** A translated body reuses the guide's own `row()`, `card()` and `SRC_*` — that is
+  what stops the markup drifting between three languages — so the guide file *exports* them. If the
+  guide then imported its translations back, that ESM cycle resolves to `undefined` in whichever
+  half loses the race, and both modules evaluate template literals at import time. The merge
+  therefore happens in the registry, which is downstream of both.
+- **`scripts/translate-guides.mjs` writes them, one Opus call per (guide, locale)**, cached on a
+  hash of the Dutch source in `scripts/.translation-cache/` (gitignored). `plan` shows the work,
+  `--check` re-validates what is on disk, `--force` re-renders from cache and `--retranslate` pays
+  for new calls — the two are separate because most re-runs fix how a file is *rendered*, and
+  re-paying 38 translations to fix a header is waste.
+- **The model is handed the `.ts` source, not rendered HTML**, and returns TypeScript. Handing it
+  HTML gets HTML back and freezes every block at the shape it had that day.
+- **`<h2 id>` values are keys and are never translated.** `lib/guides/sections.ts` reads them as the
+  step list on `/inburgering` and reading progress is stored under them, so a translated id splits
+  one section's progress into three and empties the step list on the translated hub. The script
+  refuses a body whose id sequence differs, and `tests-unit/guide-translations.test.ts` pins it
+  again for the hand edits the generated files invite.
+- **The validator's other rule that matters is the interpolation *sequence*.** It is the only check
+  that sees a *dropped block*: a body missing one `${card(…)}` compiles, renders, reads perfectly
+  and is quietly missing a third of a comparison.
+- **Imports are derived from every identifier inside an interpolation, not from its head.** A fact
+  box is `${factIn('en', claim, label, SRC_HUURWONING, CHECKED)}`, so the two constants that need
+  importing never appear at the head of anything. Deriving from heads produced a file referencing
+  four undefined names.
+- **`fact` / `factTwo` / `docent` must become `factIn` / `factTwoIn` / `docentIn`.** The Dutch three
+  hardcode "Bron:", "geraadpleegd" and "NT2-docent" — a translated page still saying them is the
+  defect that looks completely finished. A test refuses those four strings in any translated body.
+- **The translations are machine-produced and were NOT reviewed** (owner's decision, 2026-08-24).
+  The Dutch source was. `guides.translated_note` says exactly that, in the reader's own language,
+  appended to the `reviewed_by` line — **do not drop that clause to tidy a layout.** Without it a
+  machine translation inherits a human review it never had, which is the one thing the site's only
+  claim cannot survive.
+- **hreflang no longer advertises a `noindex` locale.** `alternatesFor()` takes an optional locale
+  list and the three guide routes pass `indexableLocales(guide)`. Pointing hreflang at a page whose
+  own meta tag says `noindex` is a contradiction Google resolves by distrusting the cluster — so the
+  locales that *are* translated were paying for the ones that were not. The sitemap already gated
+  correctly.
+
+**`/llms.txt`, `/llms-full.txt` and `/robots.txt` are all generated routes now** (`lib/llms.ts`,
+`app/llms.txt/`, `app/llms-full.txt/`, `app/robots.txt/`). `public/robots.txt` is deleted.
+
+- **The old `robots.txt` exempted the six bots that matter from every `Disallow`.** A robots.txt
+  group is **not additive**: a crawler that matches a named group ignores `User-agent: *` entirely.
+  The file had `User-agent: GPTBot` / `Allow: /` with no disallows under it, so GPTBot,
+  ChatGPT-User, PerplexityBot, ClaudeBot, anthropic-ai and Bingbot were each told everything was
+  allowed, including `/admin` and `/login`. Every group is now built from one `DISALLOW` array. It
+  also had `Googlebot-Extended`, which is not a token — Google's is `Google-Extended`, and a
+  typo'd user agent is a group that matches nothing while reading like a decision.
+- **A route handler rather than `app/robots.ts`** because the metadata convention cannot emit
+  comments, and the reasoning belongs in the file a person opens.
+- **Both llms files are derived from the same registries the sitemap reads**, so they inherit
+  `publishedGuides()`, `hasTranslation()` and the `itemCount !== null` gate for free. A
+  hand-written index of 23 guides is stale the day one publishes, and a stale llms.txt is worse
+  than none.
+- **No prices and no exam items, ever.** `/premium` is the only page that may state our figure.
+  `htmlToText()` drops the `.guide-cta-inline` blocks for exactly this reason — one of them
+  interpolates `MODULE_PRICE`, correctly, and a subscription price in a corpus gets quoted back
+  months after the page is corrected. DUO's own €50 fee **stays**: it is sourced reference content
+  with its government URL and consulted-on date beside it.
+- **`/llms.txt` carries a "How to cite this site" block, and it is the wedge in machine-readable
+  form**: every figure comes with its source and date, and the unsourceable pass norms
+  (`SEO/facts.md` §9 — "18 van de 25", "500 punten") are named there in order to be refused, so a
+  model cannot attribute them to us. `tests-unit/llms.test.ts` pins that both ways.
+- **`proxy.ts`'s matcher skips any path containing a dot**, which is why these three are served at
+  the root and not locale-prefixed. Nothing had to change there.
+
 ---
 
 ## The four surfaces — never mix their layouts

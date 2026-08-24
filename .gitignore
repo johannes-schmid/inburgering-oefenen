@@ -42,3 +42,4 @@ supabase/.temp
 # Per-unit authoring cache for the B1 dataset. The committed artifact is
 # scripts/b1-content/generated/, which only holds complete exams.
 scripts/b1-content/.unit-cache/
+scripts/.translation-cache/

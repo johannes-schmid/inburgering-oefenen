@@ -16,14 +16,14 @@ import type { Guide } from './types';
 import { fact } from './types';
 import { I_CHECK, I_X, I_USERS, I_CLIPBOARD, I_HOME, docent, note, inlineCta, factTwo } from './kit';
 
-const SRC_EINDTERMEN = 'https://zoek.officielebekendmakingen.nl/stcrt-2024-15802.html';
-const SRC_GRONDWET = 'https://wetten.overheid.nl/jci1.3:c:BWBR0001840&artikel=1';
-const SRC_PVT = 'https://www.inburgeren.nl/examen-doen/inhoud-kennisexamens.jsp';
-const SRC_DISCRIMINATIE = 'https://www.rijksoverheid.nl/onderwerpen/discriminatie';
-const SRC_VRIJWILLIG = 'https://www.rijksoverheid.nl/onderwerpen/vrijwilligerswerk';
-const CHECKED = '23-08-2026';
+export const SRC_EINDTERMEN = 'https://zoek.officielebekendmakingen.nl/stcrt-2024-15802.html';
+export const SRC_GRONDWET = 'https://wetten.overheid.nl/jci1.3:c:BWBR0001840&artikel=1';
+export const SRC_PVT = 'https://www.inburgeren.nl/examen-doen/inhoud-kennisexamens.jsp';
+export const SRC_DISCRIMINATIE = 'https://www.rijksoverheid.nl/onderwerpen/discriminatie';
+export const SRC_VRIJWILLIG = 'https://www.rijksoverheid.nl/onderwerpen/vrijwilligerswerk';
+export const CHECKED = '23-08-2026';
 
-const card = (icon: string, title: string, body: string) =>
+export const card = (icon: string, title: string, body: string) =>
   `<div class="guide-card"><span class="guide-card-icon">${icon}</span><h3>${title}</h3><p>${body}</p></div>`;
 
 const guide: Guide = {

@@ -15,19 +15,19 @@ import type { Guide } from './types';
 import { fact } from './types';
 import { I_CHECK, I_X, I_CAP, I_USERS, I_EURO, I_HOME, I_CLIPBOARD, docent, note, inlineCta, factTwo } from './kit';
 
-const SRC_EINDTERMEN = 'https://zoek.officielebekendmakingen.nl/stcrt-2024-15802.html';
-const SRC_LEERPLICHT = 'https://www.rijksoverheid.nl/onderwerpen/leerplicht';
-const SRC_ONDERWIJS = 'https://www.rijksoverheid.nl/onderwerpen/schoolsysteem-nederland';
-const SRC_OUDERBIJDRAGE = 'https://www.rijksoverheid.nl/onderwerpen/financiering-onderwijs/vraag-en-antwoord/ouderbijdrage-school';
-const SRC_KINDERBIJSLAG = 'https://www.svb.nl/nl/kinderbijslag';
-const SRC_KINDEROPVANG = 'https://www.belastingdienst.nl/wps/wcm/connect/nl/kinderopvangtoeslag/kinderopvangtoeslag';
-const SRC_VEILIGTHUIS = 'https://veiligthuis.nl/';
-const CHECKED = '23-08-2026';
+export const SRC_EINDTERMEN = 'https://zoek.officielebekendmakingen.nl/stcrt-2024-15802.html';
+export const SRC_LEERPLICHT = 'https://www.rijksoverheid.nl/onderwerpen/leerplicht';
+export const SRC_ONDERWIJS = 'https://www.rijksoverheid.nl/onderwerpen/schoolsysteem-nederland';
+export const SRC_OUDERBIJDRAGE = 'https://www.rijksoverheid.nl/onderwerpen/financiering-onderwijs/vraag-en-antwoord/ouderbijdrage-school';
+export const SRC_KINDERBIJSLAG = 'https://www.svb.nl/nl/kinderbijslag';
+export const SRC_KINDEROPVANG = 'https://www.belastingdienst.nl/wps/wcm/connect/nl/kinderopvangtoeslag/kinderopvangtoeslag';
+export const SRC_VEILIGTHUIS = 'https://veiligthuis.nl/';
+export const CHECKED = '23-08-2026';
 
-const card = (icon: string, title: string, body: string) =>
+export const card = (icon: string, title: string, body: string) =>
   `<div class="guide-card"><span class="guide-card-icon">${icon}</span><h3>${title}</h3><p>${body}</p></div>`;
 
-const row = (key: string, val: string) =>
+export const row = (key: string, val: string) =>
   `<div class="compare-row"><p class="compare-key">${key}</p><p class="compare-val">${val}</p></div>`;
 
 const guide: Guide = {

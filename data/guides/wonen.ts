@@ -13,18 +13,18 @@ import type { Guide } from './types';
 import { fact } from './types';
 import { I_CHECK, I_X, I_HOME, I_EURO, I_USERS, I_CLIPBOARD, docent, note, inlineCta, factTwo } from './kit';
 
-const SRC_EINDTERMEN = 'https://zoek.officielebekendmakingen.nl/stcrt-2024-15802.html';
-const SRC_HUURWONING = 'https://www.rijksoverheid.nl/onderwerpen/huurwoning';
-const SRC_HUURCOMMISSIE = 'https://www.huurcommissie.nl/';
-const SRC_HUURTOESLAG = 'https://www.belastingdienst.nl/wps/wcm/connect/nl/huurtoeslag/huurtoeslag';
-const SRC_BRP = 'https://www.rijksoverheid.nl/onderwerpen/privacy-en-persoonsgegevens/basisregistratie-personen-brp';
-const SRC_AFVAL = 'https://www.rijksoverheid.nl/onderwerpen/afval';
-const CHECKED = '23-08-2026';
+export const SRC_EINDTERMEN = 'https://zoek.officielebekendmakingen.nl/stcrt-2024-15802.html';
+export const SRC_HUURWONING = 'https://www.rijksoverheid.nl/onderwerpen/huurwoning';
+export const SRC_HUURCOMMISSIE = 'https://www.huurcommissie.nl/';
+export const SRC_HUURTOESLAG = 'https://www.belastingdienst.nl/wps/wcm/connect/nl/huurtoeslag/huurtoeslag';
+export const SRC_BRP = 'https://www.rijksoverheid.nl/onderwerpen/privacy-en-persoonsgegevens/basisregistratie-personen-brp';
+export const SRC_AFVAL = 'https://www.rijksoverheid.nl/onderwerpen/afval';
+export const CHECKED = '23-08-2026';
 
-const card = (icon: string, title: string, body: string) =>
+export const card = (icon: string, title: string, body: string) =>
   `<div class="guide-card"><span class="guide-card-icon">${icon}</span><h3>${title}</h3><p>${body}</p></div>`;
 
-const row = (key: string, val: string) =>
+export const row = (key: string, val: string) =>
   `<div class="compare-row"><p class="compare-key">${key}</p><p class="compare-val">${val}</p></div>`;
 
 const guide: Guide = {

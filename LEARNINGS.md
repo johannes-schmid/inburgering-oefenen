@@ -2648,3 +2648,25 @@ vanuit `taalexamens-a2-b1.ts` en `pvt-map-en-ona.ts`; copy in nl/en/ar; twee rij
 **Lesson:** een gids is HTML in een string, en een klassenaam daarin wordt door **niets** in de
 stack gecontroleerd. Grep de klasse in `app/globals.css` vóór je hem gebruikt, en kopieer het blok
 uit een bestaande gids in plaats van het uit je hoofd te schrijven.
+
+## 2026-08-24 — de gidsen zijn vertaald, en de site legt zichzelf uit aan modellen
+**Changed:** `data/guides/translations/` (één bestand per gids per taal) + de merge in
+`data/guides/index.ts`; `scripts/translate-guides.mjs`; `lib/llms.ts` met `app/llms.txt/`,
+`app/llms-full.txt/` en `app/robots.txt/` (en `public/robots.txt` verwijderd);
+`alternatesFor()` in `lib/schema.ts` + `indexableLocales()` in `data/guides/helpers.ts`;
+`guides.translated_note` in de drie messagebestanden; `tests-unit/guide-translations.test.ts`
+en `tests-unit/llms.test.ts`.
+**Outcome:** SUCCESS
+**What worked / went wrong:** de import-afleiding was eerst fout: die las alleen de *kop* van elke
+`${...}`, terwijl `SRC_HUURWONING` en `CHECKED` alleen als *argument* van `factIn(...)` voorkomen.
+Het gegenereerde bestand verwees naar vier ongedefinieerde namen. `tsc` ving het — maar de
+validator in het script kon het niet zien, want die kijkt naar de tekst, niet naar de module.
+Tweede vondst, groter: `public/robots.txt` gaf zes AI-bots `Allow: /` in hun eigen groep **zonder**
+de `Disallow`-regels. Een robots.txt-groep is niet cumulatief, dus precies de zes crawlers die het
+meest langskomen waren vrijgesteld van elke uitsluiting, inclusief `/admin`. En `Googlebot-Extended`
+bestaat niet; het token is `Google-Extended`.
+**Lesson:** twee dingen. (1) Bij codegeneratie is de compiler de laatste vangnet, geen eerste —
+leid imports af uit *alles* wat binnen een interpolatie staat, niet uit de kop. (2) Een
+`robots.txt`-groep vervángt `User-agent: *`, hij vult hem niet aan. Elke benoemde groep moet de
+uitsluitingen herhalen, en dus horen ze uit één lijst te komen in plaats van uit een handgeschreven
+bestand.

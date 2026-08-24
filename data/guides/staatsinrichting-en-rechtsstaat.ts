@@ -16,19 +16,19 @@ import type { Guide } from './types';
 import { fact } from './types';
 import { I_CHECK, I_X, I_LANDMARK, I_USERS, I_CLIPBOARD, I_HOME, docent, note, inlineCta, factTwo } from './kit';
 
-const SRC_EINDTERMEN = 'https://zoek.officielebekendmakingen.nl/stcrt-2024-15802.html';
-const SRC_GRONDWET = 'https://wetten.overheid.nl/BWBR0001840';
-const SRC_ART1 = 'https://wetten.overheid.nl/jci1.3:c:BWBR0001840&artikel=1';
-const SRC_PARLEMENT = 'https://www.rijksoverheid.nl/onderwerpen/parlement';
-const SRC_VERKIEZINGEN = 'https://www.rijksoverheid.nl/onderwerpen/verkiezingen';
-const SRC_RECHTSPRAAK = 'https://www.rechtspraak.nl/Organisatie-en-contact/Rechtsstaat';
-const SRC_KONING = 'https://www.koninklijkhuis.nl/onderwerpen/staatsrecht';
-const CHECKED = '23-08-2026';
+export const SRC_EINDTERMEN = 'https://zoek.officielebekendmakingen.nl/stcrt-2024-15802.html';
+export const SRC_GRONDWET = 'https://wetten.overheid.nl/BWBR0001840';
+export const SRC_ART1 = 'https://wetten.overheid.nl/jci1.3:c:BWBR0001840&artikel=1';
+export const SRC_PARLEMENT = 'https://www.rijksoverheid.nl/onderwerpen/parlement';
+export const SRC_VERKIEZINGEN = 'https://www.rijksoverheid.nl/onderwerpen/verkiezingen';
+export const SRC_RECHTSPRAAK = 'https://www.rechtspraak.nl/Organisatie-en-contact/Rechtsstaat';
+export const SRC_KONING = 'https://www.koninklijkhuis.nl/onderwerpen/staatsrecht';
+export const CHECKED = '23-08-2026';
 
-const card = (icon: string, title: string, body: string) =>
+export const card = (icon: string, title: string, body: string) =>
   `<div class="guide-card"><span class="guide-card-icon">${icon}</span><h3>${title}</h3><p>${body}</p></div>`;
 
-const row = (key: string, val: string) =>
+export const row = (key: string, val: string) =>
   `<div class="compare-row"><p class="compare-key">${key}</p><p class="compare-val">${val}</p></div>`;
 
 const guide: Guide = {

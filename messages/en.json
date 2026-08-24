@@ -842,6 +842,7 @@
     "author_role": "NT2 teacher",
     "faq_title": "Frequently asked questions",
     "reviewed_by": "Reviewed by {name}, certified NT2 teacher — {date}",
+    "translated_note": "This page is a translation of that reviewed Dutch text; the translation itself was not reviewed. The Dutch version is the source.",
     "draft_notice": "Draft. This guide has not been reviewed by the teacher yet, so it is not listed and not in the sitemap.",
     "not_translated": "This guide is not available in English or Arabic yet. The Dutch text is below.",
     "read_in_dutch": "Read the Dutch version",

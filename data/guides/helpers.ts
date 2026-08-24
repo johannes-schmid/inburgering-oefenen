@@ -140,3 +140,18 @@ export function relatedGuides(guide: Guide): Guide[] {
     .map(slug => getGuideBySlug(guide.section, slug))
     .filter((g): g is Guide => Boolean(g) && g!.status === 'reviewed');
 }
+
+/**
+ * The locales this guide may be indexed in — the hreflang set for its route.
+ *
+ * A guide is `noindex` in a locale it has no body for (see `hasTranslation`), and it used to still
+ * advertise that URL as its hreflang alternative. Google treats an hreflang pointing at a
+ * `noindex` page as a contradiction and can discount the whole cluster, so the locale is omitted
+ * rather than claimed. An unreviewed guide is `noindex` everywhere and therefore claims nothing.
+ *
+ * Dutch is always in the list when the guide is published: it is the source and the `x-default`.
+ */
+export function indexableLocales(guide: Guide): readonly string[] {
+  if (guide.status !== 'reviewed') return [];
+  return (['nl', 'en', 'ar'] as const).filter(l => hasTranslation(guide, l));
+}

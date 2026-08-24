@@ -22,17 +22,17 @@ import {
   docent, note, inlineCta, factTwo,
 } from './kit';
 
-const SRC_MINDER = 'https://www.inburgeren.nl/minder-of-geen-examens/index.jsp';
-const SRC_DIPLOMA = 'https://www.inburgeren.nl/minder-of-geen-examens/diploma-gehaald.jsp';
-const SRC_ZIEKTE = 'https://www.inburgeren.nl/minder-of-geen-examens/ziekte-of-handicap.jsp';
-const SRC_GEWERKT = 'https://www.inburgeren.nl/minder-of-geen-examens/in-nederland-gewerkt.jsp';
-const SRC_RIJKS = 'https://www.rijksoverheid.nl/onderwerpen/immigratie-naar-nederland/vraag-en-antwoord/moet-ik-als-nieuwkomer-inburgeren';
-const SRC_WET4 = 'https://wetten.overheid.nl/jci1.3:c:BWBR0044770&artikel=4';
-const SRC_WET5 = 'https://wetten.overheid.nl/jci1.3:c:BWBR0044770&artikel=5';
-const SRC_IND = 'https://ind.nl/nl/met-een-verblijfsvergunning-wonen-in-nederland/inburgering-bij-sterkere-verblijfsvergunning-en-naturalisatie';
-const CHECKED = '23-08-2026';
+export const SRC_MINDER = 'https://www.inburgeren.nl/minder-of-geen-examens/index.jsp';
+export const SRC_DIPLOMA = 'https://www.inburgeren.nl/minder-of-geen-examens/diploma-gehaald.jsp';
+export const SRC_ZIEKTE = 'https://www.inburgeren.nl/minder-of-geen-examens/ziekte-of-handicap.jsp';
+export const SRC_GEWERKT = 'https://www.inburgeren.nl/minder-of-geen-examens/in-nederland-gewerkt.jsp';
+export const SRC_RIJKS = 'https://www.rijksoverheid.nl/onderwerpen/immigratie-naar-nederland/vraag-en-antwoord/moet-ik-als-nieuwkomer-inburgeren';
+export const SRC_WET4 = 'https://wetten.overheid.nl/jci1.3:c:BWBR0044770&artikel=4';
+export const SRC_WET5 = 'https://wetten.overheid.nl/jci1.3:c:BWBR0044770&artikel=5';
+export const SRC_IND = 'https://ind.nl/nl/met-een-verblijfsvergunning-wonen-in-nederland/inburgering-bij-sterkere-verblijfsvergunning-en-naturalisatie';
+export const CHECKED = '23-08-2026';
 
-const row = (key: string, val: string) =>
+export const row = (key: string, val: string) =>
   `<div class="compare-row"><p class="compare-key">${key}</p><p class="compare-val">${val}</p></div>`;
 
 const guide: Guide = {

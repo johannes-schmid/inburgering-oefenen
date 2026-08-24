@@ -38,17 +38,23 @@ export function courseId(locale: string, level: Level, skill: SkillSlug): string
  * their literal maps.
  *
  * `path` carries no leading slash: `alternatesFor('nl', 'inburgering')`.
+ *
+ * `indexable` narrows the hreflang set to the locales that are actually indexable, and exists
+ * because of the kennisgidsen. A guide with no English body is `noindex` on `/en/...` — correct,
+ * it would be a thin duplicate — but the block still advertised that URL as the English
+ * alternative. **An hreflang pointing at a `noindex` page is a contradiction Google resolves by
+ * distrusting the cluster**, so the guide it *does* have a translation for loses the signal too.
+ * Omit the locale instead: hreflang is a claim that an alternative exists, and for those pages it
+ * does not. `x-default` stays unconditional — Dutch is always there and is always the fallback.
+ *
+ * Pass nothing for a route that is genuinely translated in all three (every hand-written page).
  */
-export function alternatesFor(locale: string, path: string) {
-  return {
-    canonical: absUrl(locale, path),
-    languages: {
-      nl: absUrl('nl', path),
-      en: absUrl('en', path),
-      ar: absUrl('ar', path),
-      'x-default': absUrl('nl', path),
-    },
-  };
+export function alternatesFor(locale: string, path: string, indexable?: readonly string[]) {
+  const locales = indexable ?? ['nl', 'en', 'ar'];
+  const languages: Record<string, string> = {};
+  for (const l of locales) languages[l] = absUrl(l, path);
+  languages['x-default'] = absUrl('nl', path);
+  return { canonical: absUrl(locale, path), languages };
 }
 
 export type Crumb = {

@@ -331,7 +331,11 @@ export default async function GuideArticle({
                     </section>
                   )}
 
-                  {/* Only a reviewed guide can make the claim, because only it has the fields. */}
+                  {/* Only a reviewed guide can make the claim, because only it has the fields. On a
+                      translated page the claim is narrowed in the same sentence: the docent read the
+                      Dutch, not this rendering of it. Dropping that clause would let a machine
+                      translation inherit a human review it never had — the one thing the site's
+                      only claim cannot survive. */}
                   {guide.status === 'reviewed' && guide.reviewedBy && guide.reviewedOn && (
                     <p className="text-sm text-on-surface-variant px-2 m-0">
                       {t('reviewed_by', {
@@ -342,6 +346,7 @@ export default async function GuideArticle({
                           year: 'numeric',
                         }),
                       })}
+                      {locale !== 'nl' && ` ${t('translated_note')}`}
                     </p>
                   )}
 
@@ -537,6 +542,7 @@ export default async function GuideArticle({
                         year: 'numeric',
                       }),
                     })}
+                    {locale !== 'nl' && ` ${t('translated_note')}`}
                   </p>
                 )}
 

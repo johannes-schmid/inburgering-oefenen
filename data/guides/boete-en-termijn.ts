@@ -22,15 +22,15 @@ import {
   docent, note, inlineCta, factTwo,
 } from './kit';
 
-const SRC_BOETE = 'https://www.inburgeren.nl/u-gaat-inburgeren/boete.jsp';
-const SRC_RVS = 'https://www.rijksoverheid.nl/actueel/nieuws/2025/07/09/uitspraak-raad-van-state-in-zaak-boetes-en-leningen-inburgering';
-const SRC_EXTRATIJD = 'https://www.inburgeren.nl/extra-tijd/';
-const SRC_WET11 = 'https://wetten.overheid.nl/jci1.3:c:BWBR0044770&artikel=11';
-const SRC_KENNIS = 'https://www.inburgeren.nl/examen-doen/inhoud-kennisexamens.jsp';
-const SRC_NIEUWS = 'https://www.inburgeren.nl/nieuwsberichten/artikel.jsp?cid=tcm:94-243309-16';
-const CHECKED = '23-08-2026';
+export const SRC_BOETE = 'https://www.inburgeren.nl/u-gaat-inburgeren/boete.jsp';
+export const SRC_RVS = 'https://www.rijksoverheid.nl/actueel/nieuws/2025/07/09/uitspraak-raad-van-state-in-zaak-boetes-en-leningen-inburgering';
+export const SRC_EXTRATIJD = 'https://www.inburgeren.nl/extra-tijd/';
+export const SRC_WET11 = 'https://wetten.overheid.nl/jci1.3:c:BWBR0044770&artikel=11';
+export const SRC_KENNIS = 'https://www.inburgeren.nl/examen-doen/inhoud-kennisexamens.jsp';
+export const SRC_NIEUWS = 'https://www.inburgeren.nl/nieuwsberichten/artikel.jsp?cid=tcm:94-243309-16';
+export const CHECKED = '23-08-2026';
 
-const price = (icon: string, name: string, sub: string, amount: string) =>
+export const price = (icon: string, name: string, sub: string, amount: string) =>
   `<div class="price-row"><span class="price-icon">${icon}</span>` +
   `<span class="price-name">${name}<span>${sub}</span></span>` +
   `<span class="price-amount">${amount}</span></div>`;

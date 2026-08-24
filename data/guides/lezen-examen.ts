@@ -16,13 +16,13 @@ import type { Guide } from './types';
 import { fact } from './types';
 import { I_CHECK, I_X, I_BOOK, I_CLOCK, I_ALERT, docent, note, inlineCta, factTwo } from './kit';
 
-const SRC_TAALEXAMENS = 'https://www.inburgeren.nl/examen-doen/inhoud-taalexamens-a2-b1-b2.jsp';
-const SRC_OEFENEN = 'https://www.inburgeren.nl/examen-doen/oefenen.jsp';
-const SRC_NT2 = 'https://www.staatsexamensnt2.nl/';
-const SRC_REGELS = 'https://www.inburgeren.nl/examen-doen/regels-examen.jsp';
-const CHECKED = '23-08-2026';
+export const SRC_TAALEXAMENS = 'https://www.inburgeren.nl/examen-doen/inhoud-taalexamens-a2-b1-b2.jsp';
+export const SRC_OEFENEN = 'https://www.inburgeren.nl/examen-doen/oefenen.jsp';
+export const SRC_NT2 = 'https://www.staatsexamensnt2.nl/';
+export const SRC_REGELS = 'https://www.inburgeren.nl/examen-doen/regels-examen.jsp';
+export const CHECKED = '23-08-2026';
 
-const card = (icon: string, title: string, body: string) =>
+export const card = (icon: string, title: string, body: string) =>
   `<div class="guide-card"><span class="guide-card-icon">${icon}</span><h3>${title}</h3><p>${body}</p></div>`;
 
 const guide: Guide = {

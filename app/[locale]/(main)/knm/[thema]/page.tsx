@@ -11,7 +11,7 @@ import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import { setRequestLocale } from 'next-intl/server';
 import { absUrl, alternatesFor } from '@/lib/schema';
-import { getGuideBySlug, getAllGuideParams, getGuideLocale, hasTranslation } from '@/data/guides/helpers';
+import { getGuideBySlug, getAllGuideParams, getGuideLocale, hasTranslation, indexableLocales } from '@/data/guides/helpers';
 import GuideArticle from '../../_components/GuideArticle';
 
 type Props = { params: Promise<{ locale: string; thema: string }> };
@@ -33,7 +33,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     title: lg.title,
     description: lg.description,
     robots: { index: publishable, follow: true },
-    alternates: alternatesFor(locale, `knm/${guide.slug}`),
+    alternates: alternatesFor(locale, `knm/${guide.slug}`, indexableLocales(guide)),
     openGraph: {
       type: 'article',
       title: lg.heroTitle,
