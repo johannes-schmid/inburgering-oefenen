@@ -152,13 +152,64 @@ function exportedNames(file) {
 const headingIds = html => [...html.matchAll(/<h2 id="([^"]+)"/g)].map(m => m[1]);
 
 /**
- * The ordered sequence of interpolated expressions, by their head identifier.
+ * The span of every **top-level** interpolation, as `[start, end)` offsets into the body.
+ *
+ * Top-level is the whole point. A guide body may nest a template literal inside an interpolation —
+ * `ona-examen.ts` writes
+ * `${row('Waar', `Een school op <a href="${SRC_SCHOLEN}">…</a>`)}` — and the inner `${SRC_SCHOLEN}`
+ * is part of that argument, not a block of its own. Walking every `${` in the string put it in the
+ * structural fingerprint, which the model could only reproduce by nesting a literal of its own,
+ * which the no-backtick rule forbade. Two rules contradicting each other: no attempt could pass,
+ * and the retry message demanded exactly what the other rule rejected. (Same shape as the B1
+ * run-together-lines detector in `scripts/b1-content/` — a check that fires on its own fix.)
+ *
+ * The walk advances past each span it finds, so nested interpolations are skipped by construction.
+ */
+function interpolations(text) {
+  const spans = [];
+  for (let i = 0; i < text.length; i++) {
+    if (text.slice(i, i + 2) !== '${') continue;
+    let depth = 1;
+    let j = i + 2;
+    for (; j < text.length && depth > 0; j++) {
+      if (text[j] === '{') depth++;
+      else if (text[j] === '}') depth--;
+    }
+    spans.push([i, j]);
+    i = j - 1;
+  }
+  return spans;
+}
+
+/**
+ * The ordered sequence of top-level interpolations, by their head identifier.
  *
  * `${row('3.1', …)}` → `row`, `${SRC_AFVAL}` → `SRC_AFVAL`. Comparing the *sequence* rather than
  * the set is deliberate: a body that keeps every kind of block but loses one of three `card()`s is
  * the failure this catches, and a set would not see it.
  */
-const expressionSeq = html => [...html.matchAll(/\$\{\s*([A-Za-z_$][\w$]*)/g)].map(m => m[1]);
+const expressionSeq = html =>
+  interpolations(html)
+    .map(([a, b]) => html.slice(a + 2, b - 1).match(/^\s*([A-Za-z_$][\w$]*)/)?.[1])
+    .filter(Boolean);
+
+/**
+ * Whether a backtick sits outside every interpolation — where it would end the template literal
+ * the generated file wraps the body in, and truncate the page at that point.
+ *
+ * Inside an interpolation a backtick is legitimate: it opens a nested template literal, which some
+ * guide bodies genuinely need. So the rule is not "no backticks", it is "no backtick that would
+ * escape". `tsc` is the backstop either way, but a unit rejected here costs one call and a unit
+ * that reaches `tsc` costs the whole run.
+ */
+function hasLooseBacktick(text) {
+  const spans = interpolations(text);
+  const inside = i => spans.some(([a, b]) => i >= a && i < b);
+  for (let i = 0; i < text.length; i++) {
+    if (text[i] === '`' && !inside(i)) return true;
+  }
+  return false;
+}
 
 /** The Dutch helpers that must become their localised twin. */
 const LOCALISED = { fact: 'factIn', factTwo: 'factTwoIn', docent: 'docentIn' };
@@ -178,20 +229,19 @@ const localisedSeq = seq => seq.map(name => LOCALISED[name] ?? name);
  */
 function usedIdentifiers(text) {
   const found = new Set();
-  for (let i = 0; i < text.length; i++) {
-    if (text.slice(i, i + 2) !== '${') continue;
-    let depth = 1;
-    let j = i + 2;
-    for (; j < text.length && depth > 0; j++) {
-      if (text[j] === '{') depth++;
-      else if (text[j] === '}') depth--;
-    }
+  for (const [i, j] of interpolations(text)) {
     const inner = text.slice(i + 2, j - 1);
-    /* Skip anything inside a quoted string: translated prose contains words that collide with
-       identifier names, and importing `Source` because a sentence used it is a compile error. */
-    const bare = inner.replace(/'(?:[^'\\]|\\.)*'/g, ' ').replace(/"(?:[^"\\]|\\.)*"/g, ' ');
+    /* Skip anything that is text rather than code. Translated prose contains words that collide
+       with identifier names, and "cannot resolve identifiers: A, school, on, a, href" is what this
+       looks like when it goes wrong.
+    
+       A nested template literal has to be handled before the quote stripping, and not by deleting
+       it: its prose must go, but the `${SRC_SCHOLEN}` inside it is precisely the identifier that
+       needs importing. So a nested literal collapses to just its own interpolations. */
+    const unnested = inner.replace(/`([^`]*)`/g, (_, body) =>
+      [...body.matchAll(/\$\{([^}]*)\}/g)].map(m => m[1]).join(' '));
+    const bare = unnested.replace(/'(?:[^'\\]|\\.)*'/g, ' ').replace(/"(?:[^"\\]|\\.)*"/g, ' ');
     for (const m of bare.matchAll(/[A-Za-z_$][\w$]*/g)) found.add(m[0]);
-    i = j - 1;
   }
   return [...found];
 }
@@ -292,8 +342,10 @@ the backticks**, as TypeScript template-literal source — do not include the ba
    id spelled exactly as shown and only the heading text translated:
 ${dutch.ids.map((id, i) => `   ${i + 1}. id="${id}"`).join('\n')}
 
-2. **Interpolations.** The body must contain exactly this sequence of \${...} expressions, in this
-   order. Same helper, same number of arguments, arguments translated:
+2. **Interpolations.** The body must contain exactly this sequence of **top-level** \${...}
+   expressions, in this order. Same helper, same number of arguments, arguments translated. An
+   interpolation nested inside another one does not count towards this list, but must still be kept
+   where the Dutch has it:
 ${dutch.seq.map((n, i) => `   ${i + 1}. \${${n}...}`).join('\n')}
 
    Three of them change name, because the Dutch versions hardcode Dutch chrome:
@@ -304,8 +356,13 @@ ${dutch.seq.map((n, i) => `   ${i + 1}. \${${n}...}`).join('\n')}
    name a Dutch government page that does not exist under a translated name. \`SRC_*\` constants and
    \`CHECKED\` are passed through unchanged, by name.
 
-3. **Never a backtick** anywhere in your output. Use ' for strings inside interpolations, and
-   escape nothing else.
+3. **Backticks.** \`articleHtml\` is inserted into the file between backticks, so a backtick in your
+   output at the top level would end it early and truncate the page. Use ' for strings inside
+   interpolations. The one exception is where the Dutch itself nests a template literal inside an
+   argument — for example
+   \`\${row('Waar', \`text with a <a href="\${SOME_URL}">link</a> in it\`)}\` — there you must keep the
+   nested backticks and the inner \${...} exactly as the Dutch has them, because that is how the URL
+   constant reaches the markup. Only nest one where the Dutch does.
 
 4. **\`description\` must be between 140 and 160 characters** — this is enforced by a test, so count
    it. It is the meta description: one sentence that says what the page answers.
@@ -361,7 +418,12 @@ function validate(unit, dutch, locale) {
 
   if (!body.trim()) problems.push('articleHtml is empty');
 
-  if (body.includes('`')) problems.push('articleHtml contains a backtick, which is not allowed');
+  if (hasLooseBacktick(body)) {
+    problems.push(
+      'articleHtml has a backtick outside an interpolation, which would end the template literal ' +
+      'early. A backtick is only allowed inside a ${...}, to open a nested template literal.',
+    );
+  }
 
   let depth = 0;
   for (let i = 0; i < body.length; i++) {
@@ -708,6 +770,17 @@ async function main() {
   const todo = units.filter(u => flags.has('--force') || flags.has('--retranslate') || !u.exists);
   console.log(`${todo.length} unit(s) to translate.\n`);
 
+  /**
+   * A unit that cannot be authored is recorded and the run carries on.
+   *
+   * It used to throw, which is right for the B1 dataset — an exam missing a tekst is not an exam —
+   * and wrong here. Every (guide, locale) is independent, and an untranslated locale is simply
+   * `noindex`, exactly as it was before the run started. Aborting on the third unit meant one hard
+   * guide cost the eighteen behind it, and the eighteen were fine. The failures are listed at the
+   * end and the exit code is non-zero, so this is still a failure — just not a contagious one.
+   */
+  const failures = [];
+
   for (const [i, u] of todo.entries()) {
     const label = `[${i + 1}/${todo.length}] ${u.slug}.${u.locale}`;
     const cachePath = path.join(CACHE_DIR, `${u.slug}.${u.locale}.${u.dutch.hash}.json`);
@@ -743,14 +816,23 @@ async function main() {
           `these points and keep everything else identical:\n` +
           problems.map(p => `- ${p}`).join('\n');
       }
-      if (!unit) throw new Error(`${u.slug}.${u.locale}: still invalid after 3 attempts`);
+      if (!unit) {
+        failures.push(`${u.slug}.${u.locale}: still invalid after 3 attempts`);
+        continue;
+      }
       fs.writeFileSync(cachePath, `${JSON.stringify(unit, null, 2)}\n`);
     }
 
-    fs.writeFileSync(
-      u.out,
-      renderFile({ slug: u.slug, locale: u.locale, unit, dutch: u.dutch, kitExports, guideExports }),
-    );
+    try {
+      fs.writeFileSync(
+        u.out,
+        renderFile({ slug: u.slug, locale: u.locale, unit, dutch: u.dutch, kitExports, guideExports }),
+      );
+    } catch (err) {
+      /* An unresolvable identifier is the one render-time failure, and it means the body referenced
+         a helper no module exports — a translation problem, not a file-system one. */
+      failures.push(`${u.slug}.${u.locale}: ${err.message}`);
+    }
   }
 
   const n = writeRegistry();
@@ -759,7 +841,13 @@ async function main() {
     `\n${n} translation file(s) registered. ` +
     `${usage.calls} call(s), ${usage.inTokens} in / ${usage.outTokens} out ≈ $${usd.toFixed(2)}.`,
   );
+  if (failures.length) {
+    console.log(`\n${failures.length} unit(s) failed:`);
+    for (const f of failures) console.log(`  ✗ ${f}`);
+    console.log('\nEverything else was written. Re-run to retry only the failures.');
+  }
   console.log('Now run: npx tsc --noEmit && npm run test:unit');
+  if (failures.length) process.exitCode = 1;
 }
 
 main().catch(err => {

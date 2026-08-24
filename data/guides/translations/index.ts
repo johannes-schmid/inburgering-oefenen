@@ -61,6 +61,27 @@ import lezenExamenAr from './lezen-examen.ar';
 import lezenExamenEn from './lezen-examen.en';
 import luisterenExamenAr from './luisteren-examen.ar';
 import luisterenExamenEn from './luisteren-examen.en';
+import omgangsvormenWaardenEnNormenAr from './omgangsvormen-waarden-en-normen.ar';
+import omgangsvormenWaardenEnNormenEn from './omgangsvormen-waarden-en-normen.en';
+import onaExamenAr from './ona-examen.ar';
+import onaExamenEn from './ona-examen.en';
+import onderwijsEnOpvoedingAr from './onderwijs-en-opvoeding.ar';
+import onderwijsEnOpvoedingEn from './onderwijs-en-opvoeding.en';
+import pvtMapEnOnaAr from './pvt-map-en-ona.ar';
+import pvtMapEnOnaEn from './pvt-map-en-ona.en';
+import schrijvenExamenAr from './schrijven-examen.ar';
+import schrijvenExamenEn from './schrijven-examen.en';
+import sprekenExamenAr from './spreken-examen.ar';
+import sprekenExamenEn from './spreken-examen.en';
+import staatsinrichtingEnRechtsstaatAr from './staatsinrichting-en-rechtsstaat.ar';
+import staatsinrichtingEnRechtsstaatEn from './staatsinrichting-en-rechtsstaat.en';
+import taalexamensA2B1Ar from './taalexamens-a2-b1.ar';
+import taalexamensA2B1En from './taalexamens-a2-b1.en';
+import vrijstellingEnOntheffingAr from './vrijstelling-en-ontheffing.ar';
+import vrijstellingEnOntheffingEn from './vrijstelling-en-ontheffing.en';
+import werkEnInkomenAr from './werk-en-inkomen.ar';
+import werkEnInkomenEn from './werk-en-inkomen.en';
+import wonenAr from './wonen.ar';
 import wonenEn from './wonen.en';
 
 /** Keyed by guide slug. A slug with no entry simply has no translations yet. */
@@ -73,7 +94,17 @@ export const TRANSLATIONS: Record<string, Partial<Record<'en' | 'ar', GuideLocal
   'knm-examen': { en: knmExamenEn, ar: knmExamenAr },
   'lezen-examen': { en: lezenExamenEn, ar: lezenExamenAr },
   'luisteren-examen': { en: luisterenExamenEn, ar: luisterenExamenAr },
-  'wonen': { en: wonenEn },
+  'omgangsvormen-waarden-en-normen': { en: omgangsvormenWaardenEnNormenEn, ar: omgangsvormenWaardenEnNormenAr },
+  'ona-examen': { en: onaExamenEn, ar: onaExamenAr },
+  'onderwijs-en-opvoeding': { en: onderwijsEnOpvoedingEn, ar: onderwijsEnOpvoedingAr },
+  'pvt-map-en-ona': { en: pvtMapEnOnaEn, ar: pvtMapEnOnaAr },
+  'schrijven-examen': { en: schrijvenExamenEn, ar: schrijvenExamenAr },
+  'spreken-examen': { en: sprekenExamenEn, ar: sprekenExamenAr },
+  'staatsinrichting-en-rechtsstaat': { en: staatsinrichtingEnRechtsstaatEn, ar: staatsinrichtingEnRechtsstaatAr },
+  'taalexamens-a2-b1': { en: taalexamensA2B1En, ar: taalexamensA2B1Ar },
+  'vrijstelling-en-ontheffing': { en: vrijstellingEnOntheffingEn, ar: vrijstellingEnOntheffingAr },
+  'werk-en-inkomen': { en: werkEnInkomenEn, ar: werkEnInkomenAr },
+  'wonen': { en: wonenEn, ar: wonenAr },
 };
 /* GENERATED:END */
 
