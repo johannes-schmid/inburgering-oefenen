@@ -210,3 +210,13 @@ export function targetSentence(target: LengthTarget | null): string | null {
   if (!target) return null;
   return `${target.min} tot ${target.max} ${target.unit}`;
 }
+
+/**
+ * The bounds on a docent-named target length, in the one module both sides can import.
+ *
+ * They live here rather than in `lib/ai/rewrite.ts` because the number field that enforces them is
+ * a client component: importing them from the AI module would pull `ai` and `zod` into the browser
+ * bundle for two integers.
+ */
+export const MIN_TARGET_WORDS = 20;
+export const MAX_TARGET_WORDS = 600;

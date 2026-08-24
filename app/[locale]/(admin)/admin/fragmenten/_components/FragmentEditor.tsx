@@ -124,6 +124,82 @@ export default function FragmentEditor({
   const outsideRange =
     perStimulus != null && (live.length < perStimulus[0] || live.length > perStimulus[1]);
 
+  /**
+   * Check the live questions against the fragment as it now reads, and patch only what changed.
+   *
+   * Handed to `StimulusEditor` as the second button beside the length rewrite, because the
+   * questions live here and the text lives there. Three rules the route already enforces and this
+   * relies on:
+   *
+   * - A question the model leaves alone comes back in `skipped` and is **not** touched here, so it
+   *   keeps its own option ids and the docent's own wording.
+   * - A revised question keeps exactly the labels and option count it was sent with. Options are
+   *   reconciled by label on save (`saveQuestionDraft`), and a dropped label would delete a
+   *   `question_options` row — which cascades `user_question_results.chosen_option_id` to NULL and
+   *   erases what past candidates picked.
+   * - Nothing is written. This patches the draft; "Opslaan" is still the only write on this page.
+   */
+  async function reviseQuestions(): Promise<string> {
+    if (!stimulusText) throw new Error('Dit fragment heeft nog geen tekst om de vragen tegen te controleren.');
+    if (live.length === 0) throw new Error('Er staan nog geen vragen op dit fragment.');
+
+    const res = await fetch('/api/admin/rewrite-length', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        target: 'questions',
+        level,
+        skill: exam.skill,
+        stimulusText,
+        questions: live.map((q, i) => ({
+          sort_order: i + 1,
+          prompt: q.prompt,
+          explanation: q.explanation,
+          options: q.options.map(o => ({ label: o.label, body: o.body, is_correct: o.is_correct })),
+        })),
+      }),
+    });
+    const json = await res.json();
+    if (!res.ok || !json.revision) throw new Error(json.error || 'Bijwerken is niet gelukt.');
+
+    const revised = json.revision.revised as {
+      sort_order: number;
+      prompt: string;
+      explanation: string;
+      options: { label: string; body: string; is_correct: boolean }[];
+    }[];
+
+    if (revised.length === 0) {
+      return 'Alle vragen kloppen nog bij deze tekst — niets aangepast.';
+    }
+
+    // Keyed on the position in the live list, which is what was sent. The stored `sort_order` on a
+    // draft can lag a reorder, so matching on it would patch the wrong question.
+    const byPosition = new Map(revised.map(r => [r.sort_order, r]));
+    setQuestions(qs => {
+      let position = 0;
+      return qs.map(q => {
+        if (q.id && removed.has(q.id)) return q;
+        position += 1;
+        const r = byPosition.get(position);
+        if (!r) return q;
+        const byLabel = new Map(r.options.map(o => [o.label, o]));
+        return {
+          ...q,
+          prompt: r.prompt,
+          explanation: r.explanation,
+          options: q.options.map(o => {
+            const next = byLabel.get(o.label);
+            return next ? { ...o, body: next.body, is_correct: next.is_correct } : o;
+          }),
+        };
+      });
+    });
+
+    const numbers = revised.map(r => r.sort_order).join(', ');
+    return `Vraag ${numbers} aangepast aan de nieuwe tekst. Lees na en sla zelf op.`;
+  }
+
   function patchQuestion(index: number, next: QuestionDraft) {
     setQuestions(qs => qs.map((q, i) => (i === index ? next : q)));
     setNote('');
@@ -315,6 +391,8 @@ export default function FragmentEditor({
             onClose={() => router.back()}
             onSaved={() => router.refresh()}
             embedded
+            questionCount={live.length}
+            onReviseQuestions={reviseQuestions}
           />
 
           <section className="space-y-2.5">

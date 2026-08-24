@@ -9,6 +9,7 @@ import { speakersInScript } from '@/lib/tts-dialogue';
 import { formatRange, formatRules, isSkillSlug, type Level } from '@/data/skills';
 import MagicFill from './MagicFill';
 import LengthMeter from './LengthMeter';
+import LengthRewrite from './LengthRewrite';
 import { stripHtml } from '@/lib/admin/length-targets';
 import RichTextEditor from './RichTextEditor';
 
@@ -135,6 +136,8 @@ export default function StimulusEditor({
   value,
   onChange,
   showSave = true,
+  questionCount,
+  onReviseQuestions,
 }: {
   /** Where a new fragment lands. In the questions view this is the backlog. */
   examId: number;
@@ -157,6 +160,15 @@ export default function StimulusEditor({
   value?: Draft;
   onChange?: (next: Draft) => void;
   showSave?: boolean;
+  /**
+   * How many questions hang off this fragment, and how to check them against a rewritten text.
+   *
+   * Only the fragment page can supply these — it owns the questions. Without them the length
+   * control still rewrites the text and simply does not offer "Vragen bijwerken", which is the
+   * honest behaviour in a drawer that cannot show what changed.
+   */
+  questionCount?: number;
+  onReviseQuestions?: () => Promise<string>;
 }) {
   const supabase = createClient();
   const [internal, setInternal] = useState<Draft>(initial);
@@ -379,6 +391,20 @@ export default function StimulusEditor({
               skill={skill}
               showSentences
             />
+            {/* The meter says how long it is; this says how long it should be, and rewrites to
+                there. Nothing is saved — the new text lands in the editor above. */}
+            <LengthRewrite
+              level={level}
+              skill={skill}
+              field="stimulus_text"
+              kind="text"
+              intro={editing.intro}
+              title={editing.title}
+              content={editing.body_html}
+              onRewrite={html => setEditing(prev => ({ ...prev, body_html: html }))}
+              questionCount={questionCount}
+              onReviseQuestions={onReviseQuestions}
+            />
           </Field>
         )}
 
@@ -420,6 +446,24 @@ export default function StimulusEditor({
                 against a 40–50 band can be lengthened without spending a generation first. The
                 real length is read off the file afterwards — see `lib/mp3-duration.ts`. */}
             <LengthMeter text={editing.script} level={level} field="script" skill={skill} />
+            {/* Lengthening a script *before* generating is the cheap moment to do it: the band is
+                seconds, the lever is words, and a regenerated take costs a call. The old audio is
+                cleared with the script for the same reason `applySuggestion` clears it — an mp3
+                that says something else is a mismatch nothing downstream can see. */}
+            <LengthRewrite
+              level={level}
+              skill={skill}
+              field="script"
+              kind="audio"
+              intro={editing.intro}
+              title={editing.title}
+              content={editing.script}
+              onRewrite={script =>
+                setEditing(prev => ({ ...prev, script, audio_url: '', audio_seconds: '' }))
+              }
+              questionCount={questionCount}
+              onReviseQuestions={onReviseQuestions}
+            />
           </Field>
 
           {/* Casting is authored per speaker. The generator refuses an uncast speaker rather

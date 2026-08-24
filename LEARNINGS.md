@@ -2670,3 +2670,22 @@ leid imports af uit *alles* wat binnen een interpolatie staat, niet uit de kop. 
 `robots.txt`-groep vervángt `User-agent: *`, hij vult hem niet aan. Elke benoemde groep moet de
 uitsluitingen herhalen, en dus horen ze uit één lijst te komen in plaats van uit een handgeschreven
 bestand.
+
+## 2026-08-24 — een doellengte per fragment, en een herschrijving daarnaartoe
+**Changed:** `lib/ai/rewrite.ts` (+ `MIN/MAX_TARGET_WORDS` in `lib/admin/length-targets.ts`),
+`app/api/admin/rewrite-length/route.ts`, `app/[locale]/(admin)/_components/LengthRewrite.tsx`,
+gekoppeld in `_components/StimulusEditor.tsx` (tekst én script) en
+`admin/fragmenten/_components/FragmentEditor.tsx` (de vragen-pas).
+**Outcome:** SUCCESS — `tsc`, `next build`, 256 unit tests groen; beide routepaden echt gecurld met
+een admin-sessie, en screenshots op 390/1440 van een tekst- en een audiofragment.
+**What worked / went wrong:** De meter zei al hoe lang een tekst *is*; de doellengte is de andere
+helft en hoort per fragment gezet te worden, niet per band — een mededeling en een brief vallen in
+dezelfde `richtlijn`. Twee dingen gingen bijna fout: het scriptveld erft zijn band uit
+`exam_formats.audio_seconds`, dus het getalveld werd geseed met **35** uit een 25–45-*seconden*
+band — een vijfde van de juiste lengte. Nu omgerekend via `SPEECH_WPM`. En `MIN/MAX_TARGET_WORDS`
+stonden eerst in `lib/ai/rewrite.ts`, wat `ai` + `zod` in de browserbundle trok voor twee gehele
+getallen; ze horen in het client-veilige `length-targets.ts`.
+**Lesson:** Een doelwaarde in een andere eenheid dan het veld waarin de docent hem invult is een
+stille factor-vier-fout, niet een afrondingskwestie — reken de band om op de plek waar hij geseed
+wordt. En een constante die een client component nodig heeft, hoort nooit in een module die een
+model-SDK importeert.
