@@ -2,10 +2,10 @@ import type { Metadata } from 'next';
 import { redirect } from 'next/navigation';
 import { Check } from 'lucide-react';
 import { createClient } from '@/lib/supabase/server';
-import { ownsModule, planFromMetadata } from '@/lib/entitlements';
+import { ownsKnm, ownsModule, planFromMetadata } from '@/lib/entitlements';
 import { FREE_GRADED_PER_SKILL } from '@/lib/grading-limits';
 import { MODULES } from '@/lib/pricing';
-import { DEFAULT_LEVEL, getSkill, levelLabel } from '@/data/skills';
+import { DEFAULT_LEVEL, getOnderdeel, moduleGroupLabel, type SkillSlug } from '@/data/skills';
 import { fetchPublishedExamNumbers } from '@/lib/portal-progress';
 import SkillIcon from '@/components/site/SkillIcon';
 import AppShell from '../../components/AppShell';
@@ -56,8 +56,12 @@ export default async function PakkettenPage({
    * page is never empty; every other level earns its place by having content.
    */
   const published = await fetchPublishedExamNumbers();
-  const sellable = MODULES.filter(
-    m => m.level === DEFAULT_LEVEL || published[m.level][m.skill].size > 0,
+  const sellable = MODULES.filter(m =>
+    // KNM earns its place the same way B1 does — by having published exams. It has no level
+    // to index, so it is matched before the per-level lookup rather than inside it.
+    m.level === null
+      ? published.knm.size > 0
+      : m.level === DEFAULT_LEVEL || published[m.level][m.skill as SkillSlug].size > 0,
   );
 
   // Highlighted when the candidate arrived from a specific locked onderdeel, so the module they
@@ -95,18 +99,20 @@ export default async function PakkettenPage({
             locale={locale}
             initialSelection={focus ? [focus] : []}
             modules={sellable.map(mod => {
-              const skill = getSkill(mod.skill)!;
+              const skill = getOnderdeel(mod.skill)!;
               return {
                 slug: mod.slug,
                 level: mod.level,
-                levelLabel: levelLabel(mod.level),
+                levelLabel: moduleGroupLabel(mod.level),
                 skill: mod.skill,
                 label: skill.slug,
                 examCount: mod.examCount,
                 itemCount: mod.itemCount,
                 itemNoun: skill.scoring === 'open' ? 'opdrachten' : 'vragen',
                 hasRubricFeedback: mod.hasRubricFeedback,
-                owned: ownsModule(meta, mod.level, mod.skill),
+                owned: mod.level === null
+                  ? ownsKnm(meta)
+                  : ownsModule(meta, mod.level, mod.skill as SkillSlug),
               };
             })}
           />

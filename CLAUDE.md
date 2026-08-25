@@ -475,6 +475,141 @@ node scripts/seed-b1-content.mjs all --production  # the hosted project
   `createImages({ level })` parameterises the object prefix, the lock path and the credits
   heading; A2's defaults are unchanged and its 399-entry lock is untouched.
 
+
+### KNM is the fifth onderdeel, and it is the one without a level (2026-08-24)
+
+The content moved across from **knmoefenen.nl production** — not from that repo's `data/*.ts`
+files, which are a snapshot the docent's admin edits had already moved past (owner's
+instruction). 419 questions, 43 sub-topics, 7 lesson modules of 43 sections, 366 woordkaarten,
+and 3,201 media objects.
+
+```bash
+node scripts/knm-content/export-from-knm.mjs        # read knm-website production -> generated/
+node scripts/knm-content/generate-leren-data.mjs    # generated/ -> data/leren/*.ts
+node scripts/knm-content/seed-knm-content.mjs --dry-run
+node scripts/knm-content/seed-knm-content.mjs                 # local stack
+node scripts/knm-content/seed-knm-content.mjs --production    # the hosted project
+```
+
+- **`SKILLS`, `SkillSlug`, `FORMATS`, `RULES` and `TASK_RULES` still mean the four
+  *taalonderdelen*, and that is deliberate.** KNM lives at the bottom of `data/skills.ts` as
+  `KNM`, with `OnderdeelSlug` as the union for surfaces that genuinely mean "anything we sell".
+  Roughly eighty modules read those exports and nearly all are per-level; the decisive one is
+  `priceForSelection`, which reads `SKILLS.length` to decide a basket holds a **complete
+  level** and therefore gets the bundle price. Widening `SKILLS` would have made the A2 bundle
+  unreachable and turned every "vier onderdelen" string into a wrong number, with nothing
+  failing to say so.
+- **`exams.level IS NULL` for KNM, and `.eq('level', null)` matches nothing in PostgREST.**
+  That is the trap this onderdeel sets over and over: the query returns zero rows, 200 OK, and
+  every KNM surface renders its empty state with nothing logged. `levelFilter()` in
+  `lib/exams.ts` is the single place that branch lives — route every new level-filtered query
+  through it.
+- **Its URLs carry no level** — `/oefenexamen/knm`, `/oefenexamen/knm/[n]`, `/dashboard/knm` —
+  as static siblings of the `[level]` segment.
+  **A static segment does not save you from a redirect**, which is matched *before* the App
+  Router: the A2-implicit rule in `next.config.ts` swallowed both KNM pages into
+  `/oefenexamen/a2/knm`, which is not a route. Its `(?!a2$|b1$)` lookahead anchored `$` against
+  the whole path, so it only ever excluded a value ending the URL — the two-segment rule had no
+  working guard at all and was saved only by the levelled URLs having one more segment. **Both
+  rules are now an explicit allowlist of the four legacy slugs**, which cannot fail that way.
+  `tests/public.spec.js` pins both KNM URLs, and `scripts/check-schema.mjs` has a row for the
+  overview — nothing else noticed while `tsc` and `next build` were clean.
+- **A KNM question stands alone: `stimulus_id IS NULL`.** `ExamContent.standalone` carries them
+  and `ExamShell` renders them single-column, because keying the left pane on a synthetic
+  one-question stimulus would remount an empty pane forty times. `questions.section_id` is new
+  and is the sub-topic of a *standalone* question only — `stimuli.section_id` is still the
+  authority wherever a stimulus exists. Reading only the stimulus put every KNM answer under
+  "Overig" and threw away the 43-way score breakdown.
+- **It is its own module at EUR 9,95, outside both level bundles** (owner's decision). `ModuleId`
+  gained the bare slug `knm`; `ownsKnm()` is separate from `ownsModule()` on purpose, because
+  widening the latter to `Level | null` would make "I forgot to pass the level" type-check as
+  "KNM". Exam 1 is free with an account, matching A2.
+- **`itemCount: 40` is ours, not DUO's** — the 419-question bank divides into ten sittings of
+  forty, with nineteen in the backlog. `durationMinutes: 45` *is* DUO's published length. Never
+  restate 40 as a DUO norm; same discipline as `SEO/facts.md` section 1.
+- **The media is mirrored into our own buckets, not linked.** 3,201 objects under `knm/`,
+  keyed on *our* row ids so a re-run is a HEAD and the two projects never share a namespace.
+  Pointing exam items at knmoefenen.nl's Storage is the failure the admin upload route exists
+  to prevent, and that domain is on a path to being retired. **knmoefenen.nl is deliberately
+  still up and not redirected** — it stays a ranking asset until KNM ranks here.
+- **`FEATURES.leren` and `FEATURES.woordkaarten` are on, and both surfaces are KNM's**, reached
+  from the KNM module rather than from the portal's top level: Lezen and Luisteren still have
+  no lesson content, which is why they were flagged off in the first place. `/leren` (the index
+  it never had) and `/dashboard/woordkaarten` are new routes; both `notFound()` when their flag
+  is false, so the gate is intact.
+- **In the sidebar they are a *collapsible sub-menu under* KNM, not a second top-level
+  section** (owner's decision, 2026-08-25). They briefly sat under their own "KNM LESMODULES"
+  heading, which read as a peer of ONDERDELEN — a second thing the portal offers — when they are
+  what the KNM module contains, beside its ten exams. `.nav-sub`'s 1px rail is the one line in
+  the portal chrome and is deliberate: §2's no-line rule is about not *sectioning* with borders,
+  and a navy sidebar has no background tiers to shift between to say "these belong to the row
+  above". The admin sidebar's level sub-menu already draws it that way.
+- **The row is a link and the chevron is a separate trigger**, which is shadcn's
+  `SidebarMenuAction` shape rather than `sidebar-07`'s, where the whole `SidebarMenuButton` is
+  the `CollapsibleTrigger`. Making the entire row toggle is the tidier markup and it takes away
+  `/dashboard/knm`, which is the page the row is *for*. Two hit targets in one row is the price
+  of keeping both, and it is the owner's instruction on both counts.
+- **`components/ui/collapsible.tsx` is a new shadcn primitive, and it is on `@base-ui/react`**,
+  not Radix — that is the layer the rest of `components/ui/` already uses (see `accordion.tsx`).
+  The panel animates on `--collapsible-panel-height`, the variable base-ui sets from the
+  measured content: `height: auto` is not animatable and a hardcoded pixel height breaks the
+  moment the list gains an item.
+- **The expanded state is `localStorage`, not `useState` alone.** Every portal page is a server
+  component, so the sidebar remounts on each navigation — plain state would snap the menu shut
+  the instant you clicked one of its own children, which is the one interaction it exists for.
+  It initialises from `inKnm` rather than from storage, because reading storage during render
+  costs a hydration mismatch on every portal page; the effect reconciles afterwards. **Being on
+  a KNM page always beats a stored "closed"**: collapsing the menu that contains the current
+  page would hide where you are. Every access is wrapped — a nav sub-menu must never be able to
+  break the page it decorates.
+- **The `<style>` block in `AppShell` is a template literal, so it cannot contain a backtick.**
+  A CSS comment written with `` `height:auto` `` in it terminated the literal and produced a
+  JSX parse error twenty lines further down, where nothing looks wrong.
+- **The KNM row has a third state, `.within`.** `active` is the current page and `within` is
+  "you are somewhere inside this onderdeel". Without it the lesson and woordkaarten pages left
+  *no* onderdeel marked at all, so the candidate could see which page they were on but not which
+  module it belonged to — the one thing the nesting exists to say. It is half `.active`'s tint
+  with no inset ring, so the current child stays the strongest row, and `aria-current="page"`
+  is still only on the true current one.
+- **Mobile has no sidebar**, so the nesting is a desktop affordance; the bottom tab bar's sixth
+  tab goes to `/dashboard/knm`, whose two cards are the way into both surfaces there.
+- **The admin's level sub-menu gained a third tab, `?niveau=knm`, which resolves to `level =
+  null`.** `AdminLevel` is `Level | null` and `undefined` means "no level in the URL" — the
+  three are distinct and collapsing them highlights KNM on every detail route. Rubrics has no
+  KNM tab: KNM is `scoring: 'mcq'` and has nothing to grade. **The "Opzet" sheet renders
+  nothing for KNM** rather than shipping a silent no-op — all six of its panels save with
+  `.eq('level', level)`, which for KNM would return 200 and change nothing.
+- **`ContentTable`'s `atLevel` changed meaning.** A null-level row used to show under *every*
+  level tab, so it could be reached at all; now it shows only under the KNM tab, which is where
+  it belongs. Leaving the old rule would have put 419 KNM questions inside A2's and B1's counts.
+
+**Three pre-existing bugs were fixed on the way through, all found by KNM needing the thing they
+got wrong.**
+
+1. **Every B1 sitting was being recorded as A2.** `exam_attempts.level` carries `DEFAULT 'a2'`
+   and *no caller ever sent the column* — so `fetchPortalProgress`, which keys on (level, skill,
+   number), put a B1 Lezen 3 attempt on the A2 Lezen 3 card. Nothing errored. `AttemptInput.level`
+   is now **required**, not optional: a default that is right for the original case is exactly the
+   shape that fails silently when a second case arrives, and KNM would have been the third.
+2. **PostgREST caps a plain `select()` at 1,000 rows, silently, and two admin screens had
+   passed it.** `/admin/exams` tallies items per exam by fetching every `questions` row, so a
+   complete forty-question exam rendered as "23 / 40" with its progress bar two-thirds full;
+   `/admin/questions` simply omitted 269 items from the only screen that lists them. B1's thirty
+   exams got the table close to the cap and KNM's 419 questions took it past — the number is
+   plausible enough that it reads as missing content rather than as a bug, on the screen whose
+   whole job is telling the docent what is missing. **`lib/admin/fetch-all.ts` pages with
+   `range()`, and any admin query that tallies or lists a whole table must go through it.**
+3. **The woordkaarten gated on `plan !== 'free'`**, the legacy all-access check, so a customer
+   who had bought the KNM module and nothing else saw themes 2-7 locked — the same disagreement
+   between the card and the gate that `ownsModule` was introduced to fix in the exam player. It
+   takes an `owns` prop now. Its locked badge also still read "Professioneel Pakket", a tier
+   nothing has sold since the move to per-module pricing.
+
+**Still open, deliberately:** there is **no anonymous KNM taster** at `/oefenen`. The A2 sets are
+static and the B1 one derives from `stimuli`, which KNM has none of, so it needs its own
+derivation from `standalone` — real work beyond transferring the content, and worth its own change.
+The `oefenvragen` free topic-quiz pages are still empty and still earmarked for this (M3).
+
 ---
 
 ## Project Overview
@@ -496,7 +631,7 @@ onderdeel that has no reviewed content spends exactly that credibility.
 |---|---|---|
 | **Taal A2** | live — 40 exams published | available, by name |
 | **Taal B1** | **live — Lezen/Schrijven/Spreken published and indexed (2026-08-23); Luisteren empty** | available, by name |
-| **KNM** | the documented fifth onderdeel; kennisgidsen live, oefenexamens not built | gidsen by name; exams *binnenkort* |
+| **KNM** | **live — 10 oefenexamens, 7 lesmodules en 366 woordkaarten, overgezet van knmoefenen.nl op 2026-08-24** | available, by name |
 | **ONA** | announced only; covered by the tijdlijn tool and the gidsen | *binnenkort* |
 
 `TRACKS` in `app/[locale]/(main)/page.tsx` is that table as code (`live: false` renders the

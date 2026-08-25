@@ -8,7 +8,8 @@
  */
 import { createClient } from '@/lib/supabase/server';
 import { BACKLOG_EXAM_NUMBER } from '@/lib/admin/backlog';
-import { SKILLS, type Level, type SkillSlug } from '@/data/skills';
+import { levelFilter } from '@/lib/exams';
+import { catalogueOnderdelen, type Level, type OnderdeelSlug } from '@/data/skills';
 import type { AdminStimulus } from '@/lib/admin/stimuli';
 
 export type AuthoringSection = { id: number; name_nl: string; topic: string };
@@ -28,7 +29,7 @@ export type AuthoringStimulus = Omit<AdminStimulus, 'questions'> & {
 
 export type AuthoringContext = {
   /** `skill` → the exam id of its backlog, where a new fragment lands. */
-  backlogExamIds: Partial<Record<SkillSlug, number>>;
+  backlogExamIds: Partial<Record<OnderdeelSlug, number>>;
   sections: AuthoringSection[];
   stimuli: AuthoringStimulus[];
 };
@@ -38,21 +39,22 @@ const STIMULUS_COLS =
   'image_url, image_alt, audio_url, audio_seconds, script, voice_cast, review_status, ' +
   'exams!inner(number, level), questions(id)';
 
-export async function fetchAuthoringContext(level: Level): Promise<AuthoringContext> {
+/** `level` is `Level | null` — `null` is the KNM catalogue. See `AdminLevel`. */
+export async function fetchAuthoringContext(level: Level | null): Promise<AuthoringContext> {
   const supabase = await createClient();
 
   const [examsRes, sectionsRes, stimuliRes] = await Promise.all([
-    supabase.from('exams').select('id, skill, number').eq('level', level),
+    levelFilter(supabase.from('exams').select('id, skill, number'), level),
     // Level-filtered: `sections` is keyed (level, slug), and an unfiltered read would offer the
     // other level's tekstsoorten in the picker.
-    supabase.from('sections').select('id, name_nl, topic').eq('level', level).order('sort_order'),
+    levelFilter(supabase.from('sections').select('id, name_nl, topic'), level).order('sort_order'),
     supabase.from('stimuli').select(STIMULUS_COLS).order('exam_id').order('sort_order'),
   ]);
 
-  const backlogExamIds: Partial<Record<SkillSlug, number>> = {};
+  const backlogExamIds: Partial<Record<OnderdeelSlug, number>> = {};
   for (const e of (examsRes.data ?? []) as { id: number; skill: string; number: number }[]) {
     if (e.number !== BACKLOG_EXAM_NUMBER) continue;
-    const slug = SKILLS.find(s => s.slug === e.skill)?.slug;
+    const slug = catalogueOnderdelen(level).find(s => s.slug === e.skill)?.slug;
     if (slug) backlogExamIds[slug] = e.id;
   }
 

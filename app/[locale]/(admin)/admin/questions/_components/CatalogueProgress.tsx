@@ -4,7 +4,7 @@ import { useMemo } from 'react';
 
 import type { ContentRow } from '@/lib/admin/content-rows';
 import { isBacklog } from '@/lib/admin/backlog';
-import { getSkillAtLevel, levelLabel, type Level } from '@/data/skills';
+import { formatOf, levelLabel, type Level, type OnderdeelSlug } from '@/data/skills';
 
 /**
  * How much of one onderdeel's catalogue exists, and how it is spread over the categories.
@@ -30,11 +30,12 @@ export default function CatalogueProgress({
 }: {
   /** Every item of this (level, skill) — unfiltered, so the panel does not move with the filters. */
   rows: ContentRow[];
-  level: Level;
+  /** `null` is the KNM catalogue. */
+  level: Level | null;
   skill: string;
 }) {
   const isOpenSkill = skill === 'schrijven' || skill === 'spreken';
-  const format = getSkillAtLevel(level, skill);
+  const format = formatOf(level, skill as OnderdeelSlug);
   const target =
     format?.itemCount != null ? format.itemCount * format.examCount : null;
 
@@ -73,7 +74,7 @@ export default function CatalogueProgress({
           ) : (
             <>
               <span className="tabular-nums font-semibold text-on-surface">{total}</span>{' '}
-              {isOpenSkill ? 'opgaven' : 'vragen'} · doel voor {levelLabel(level)} nog niet
+              {isOpenSkill ? 'opgaven' : 'vragen'} · doel voor {level === null ? 'KNM' : levelLabel(level)} nog niet
               vastgesteld
             </>
           )}

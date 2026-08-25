@@ -1,5 +1,6 @@
 import { createClient } from '@/lib/supabase/server';
 import { levelFromSearch } from '@/lib/admin/nav';
+import { DEFAULT_LEVEL } from '@/data/skills';
 import RubricsTable, { type RubricRow } from './_components/RubricsTable';
 
 export const revalidate = 0;
@@ -20,7 +21,13 @@ export default async function RubricsPage({
   searchParams: Promise<{ niveau?: string }>;
 }) {
   const { locale } = await params;
-  const level = levelFromSearch((await searchParams).niveau);
+  /**
+   * Rubrics are level-only: the KNM tab is not offered here (`AdminNavItem.knm` is unset for
+   * this section) because KNM is `scoring: 'mcq'` and has nothing to grade against a rubric.
+   * A hand-typed `?niveau=knm` therefore falls back to A2 rather than rendering an empty
+   * library that would read as "the KNM rubrics have gone missing".
+   */
+  const level = levelFromSearch((await searchParams).niveau) ?? DEFAULT_LEVEL;
   const supabase = await createClient();
 
   const { data } = await supabase

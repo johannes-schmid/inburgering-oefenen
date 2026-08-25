@@ -75,7 +75,12 @@
     "promo_platform_cta": "Start nu",
     "promo_gidsen": "Maak jouw tijdlijn",
     "promo_gidsen_sub": "Zes vragen, en je weet wanneer je je uiterlijk moet aanmelden.",
-    "promo_gidsen_cta": "Bereken jouw termijn"
+    "promo_gidsen_cta": "Bereken jouw termijn",
+    "knm_exams": "KNM oefenexamens",
+    "knm_leren": "KNM lesmodules",
+    "knm_woordkaarten": "KNM woordkaarten",
+    "knm_expand": "KNM-onderdelen tonen",
+    "knm_collapse": "KNM-onderdelen verbergen"
   },
   "breadcrumbs": {
     "home": "Home",
@@ -263,7 +268,7 @@
     "blocks_a2_cta": "Oefen nu",
     "blocks_knm_title": "KNM",
     "blocks_knm_desc": "Acht thema's over het leven in Nederland.",
-    "blocks_knm_note": "Nu op knmoefenen.nl",
+    "blocks_knm_note": "10 oefenexamens · 7 lesmodules · 366 woordkaarten",
     "blocks_knm_cta": "Oefen KNM",
     "blocks_b1_title": "Taal B1",
     "blocks_b1_desc": "Lezen, Schrijven en Spreken — tien oefenexamens per onderdeel.",
@@ -694,7 +699,7 @@
     "wk_desc": "Leer de woordenschat met flashcards — bekijk de vertaling door op de kaart te tikken.",
     "wk_progress": "Totale voortgang",
     "wk_progress_stats": "{known} van {total} woorden gekend",
-    "wk_locked_badge": "Professioneel Pakket",
+    "wk_locked_badge": "KNM-module",
     "wk_unlock_link": "Klik om te ontgrendelen",
     "wk_card_position": "Kaart {current} van {total}",
     "btn_back_to_themes": "Terug naar thema's",
@@ -763,7 +768,12 @@
     "coming_soon": "Binnenkort beschikbaar",
     "coming_soon_body": "We werken aan dit onderdeel. Begin alvast met de oefenexamens.",
     "items_label": "vragen",
-    "duration_label": "minuten"
+    "duration_label": "minuten",
+    "knm": {
+      "name": "KNM",
+      "short": "KNM",
+      "tagline": "Kennis van de Nederlandse Maatschappij: wonen, werk, zorg, onderwijs en de rechtsstaat."
+    }
   },
   "oefenexamen": {
     "meta_title": "{skill} {level} oefenen — 10 oefenexamens van een NT2-docent",
@@ -781,7 +791,16 @@
     "other_skills": "Andere onderdelen",
     "not_ready_title": "Deze oefenexamens komen eraan",
     "not_ready_body": "De docent werkt op dit moment aan de oefenexamens voor dit onderdeel. Oefenexamen 1 verschijnt hier zodra het is gecontroleerd.",
-    "guide_link": "Hoe werkt inburgeren in Nederland? Lees het stappenplan"
+    "guide_link": "Hoe werkt inburgeren in Nederland? Lees het stappenplan",
+    "knm_meta_title": "KNM oefenexamen — 10 volledige proefexamens | Inburgering Oefenen",
+    "knm_meta_description": "Oefen het KNM-examen met tien volledige proefexamens van 40 vragen. Met uitleg bij elk antwoord, gemaakt en nagekeken door een NT2-docent.",
+    "knm_heading": "KNM oefenexamens",
+    "knm_no_level": "KNM wordt niet per taalniveau afgenomen — dit examen is hetzelfde voor A2 en B1.",
+    "knm_themes_title": "De zeven thema’s",
+    "knm_lessons_cta": "Lees de uitleg per thema",
+    "knm_words_cta": "Oefen de woorden",
+    "knm_unlock_title": "Alle tien KNM-oefenexamens ontgrendelen",
+    "knm_unlock_body": "Oefenexamen 1 is gratis met een account. De KNM-module geeft je alle tien de oefenexamens, de zeven lesmodules en de woordkaarten."
   },
   "portal": {
     "sidebar_subtitle": "Oefenportaal",
@@ -835,7 +854,9 @@
     "plan_premium": "Professioneel",
     "plan_premium_plus": "Compleet",
     "level_section": "Niveau {level}",
-    "level_section_sub": "Alle vier de onderdelen op {level}-niveau"
+    "level_section_sub": "Alle vier de onderdelen op {level}-niveau",
+    "knm_section": "KNM",
+    "knm_section_sub": "Kennis van de Nederlandse Maatschappij — één examen, voor elk taalniveau."
   },
   "guides": {
     "reading_time": "{minutes} min lezen",
@@ -1493,7 +1514,7 @@
     "track_b1": "Taalexamens B1",
     "track_b1_sub": "Lezen, Schrijven en Spreken: dertig oefenexamens, nagekeken door de docent. Luisteren B1 komt eraan.",
     "track_knm": "KNM",
-    "track_knm_sub": "De acht officiële thema’s. De kennisgidsen staan al online; de oefenexamens komen eraan.",
+    "track_knm_sub": "Tien oefenexamens van 40 vragen, zeven lesmodules en 366 woordkaarten. Eén examen voor elk taalniveau.",
     "track_ona": "ONA",
     "track_ona_sub": "Oriëntatie op de Nederlandse Arbeidsmarkt. De tijdlijn-maker rekent er al mee.",
     "why_eyebrow": "Waarom hier",
@@ -1588,5 +1609,14 @@
     },
     "all_title": "Alle gidsen",
     "all_sub": "Elke gids die de docent heeft nagekeken, per onderwerp."
+  },
+  "knm": {
+    "leren_title": "KNM lesmodules",
+    "leren_lede": "Zeven thema’s met uitleg, voorbeelden en een quiz. Alles wat het KNM-examen van je vraagt.",
+    "woorden_title": "KNM woordkaarten",
+    "woorden_lede": "De woorden die in het KNM-examen terugkomen, met uitspraak, voorbeeldzin en vertaling.",
+    "sections_count": "{count} onderdelen",
+    "words_count": "{count} woorden",
+    "open": "Openen"
   }
 }

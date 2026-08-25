@@ -9,7 +9,7 @@
  * listed here, or it has no route in from the chrome at all.
  *
  * **The catalogue and the roadmap are stated separately, in one list.** A2 is live; B1 exists but
- * is `noindex` behind the docent's review gate; KNM and ONA are not built. The unbuilt three are
+ * is `noindex` behind the docent's review gate; ONA is not built. The unbuilt track is
  * rendered as **non-links** with a "binnenkort" chip — the same discipline `TRACKS` uses on the
  * homepage, and the same reason: the site's only claim is that a docent stands behind what is on
  * it, and advertising a level with no reviewed content spends exactly that credibility. A link
@@ -60,7 +60,9 @@ const TRACKS = [
      `noindex`: a site-wide-ish link from here would have handed a crawler exactly the pages we
      told it to ignore. That is no longer true, so it links like A2 does. */
   { key: 'b1', live: true, href: '/taalexamens' as const },
-  { key: 'knm', live: false },
+  /* KNM went live 2026-08-24 and links to its own overview rather than to `/taalexamens`,
+     which is the hub for the four *taalonderdelen* and does not describe it. */
+  { key: 'knm', live: true, href: '/oefenexamen/knm' as const },
   { key: 'ona', live: false },
 ] as const;
 

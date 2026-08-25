@@ -11,8 +11,13 @@
 export const FEATURES = {
   blog: true,
   oefenvragen: false,
-  leren: false,
-  woordkaarten: false,
+  // Both switched on 2026-08-24, when KNM's content moved across from knmoefenen.nl: seven
+  // lesson modules (43 sections) and 366 woordkaarten, all authored and reviewed on that
+  // platform. **They are KNM's, not the taalonderdelen's** — Lezen and Luisteren still have no
+  // lesson content, which is why both surfaces are reached from the KNM module rather than
+  // from the portal's top level.
+  leren: true,
+  woordkaarten: true,
 } as const;
 
 export type FeatureKey = keyof typeof FEATURES;

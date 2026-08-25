@@ -1,0 +1,51 @@
+[
+  {
+    "id": 1,
+    "slug": "thema-1-geschiedenis-en-geografie",
+    "title": "Geschiedenis en Geografie",
+    "quizCategory": "Geschiedenis en Geografie",
+    "description": "Nederland heeft een rijke geschiedenis die nog steeds zichtbaar is in het dagelijks leven. In dit thema leer je alles wat het KNM-examen verwacht: van de kaart van Nederland en het openbaar vervoer tot de Gouden Eeuw, het koloniale verleden en de Tweede Wereldoorlog."
+  },
+  {
+    "id": 2,
+    "slug": "thema-2-wonen",
+    "title": "Wonen",
+    "quizCategory": "Wonen",
+    "description": "In dit thema leer je alles over wonen in Nederland: huren of kopen, een huis zoeken, het huurcontract, belastingen en verzekeringen, energie en water, en afval scheiden. Elke les heeft een audio-uitleg met interactieve onderdelen."
+  },
+  {
+    "id": 3,
+    "slug": "thema-3-gezondheid",
+    "title": "Gezondheid",
+    "quizCategory": "Gezondheid en Gezondheidszorg",
+    "description": "In dit thema leer je alles over gezondheid en gezondheidszorg in Nederland: de huisarts, spoedeisende hulp, de apotheek, de zorgverzekering en meer."
+  },
+  {
+    "id": 4,
+    "slug": "thema-4-onderwijs",
+    "title": "Onderwijs",
+    "quizCategory": "Onderwijs en Opvoeding",
+    "description": "In dit thema leer je alles over het Nederlandse onderwijs: de leerplicht, de schoolsoorten, het vervolgonderwijs en de rol van ouders."
+  },
+  {
+    "id": 5,
+    "slug": "thema-5-werk",
+    "title": "Werk en Inkomen",
+    "quizCategory": "Werk en Inkomen",
+    "description": "In dit thema leer je alles over werk en inkomen in Nederland: talenten ontdekken, werk zoeken, solliciteren, je contract, je salaris en meer."
+  },
+  {
+    "id": 6,
+    "slug": "thema-6-instanties",
+    "title": "Instanties",
+    "quizCategory": "Instanties",
+    "description": "In dit thema leer je welke instanties en organisaties belangrijk zijn in Nederland: de gemeente, de hulpdiensten, de Belastingdienst, hulpverlening en de SVB."
+  },
+  {
+    "id": 7,
+    "slug": "thema-7-regering-en-wet",
+    "title": "Regering en Wet",
+    "quizCategory": "Staatsinrichting en Rechtsstaat",
+    "description": "In dit thema leer je alles over de Nederlandse democratie, het bestuur en de rechtsstaat: hoe wetten worden gemaakt, wie de macht heeft en hoe je je rechten kunt gebruiken."
+  }
+]

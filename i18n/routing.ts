@@ -27,6 +27,9 @@ export const routing = defineRouting({
     '/login': '/login',
     '/dashboard': '/dashboard',
     '/dashboard/[level]/[skill]': '/dashboard/[level]/[skill]',
+    // KNM's portal pages carry no level segment — see the KNM section in data/skills.ts.
+    '/dashboard/knm': '/dashboard/knm',
+    '/dashboard/woordkaarten': '/dashboard/woordkaarten',
     '/dashboard/profiel': '/dashboard/profiel',
     '/dashboard/pakketten': '/dashboard/pakketten',
     '/dashboard/analyse': '/dashboard/analyse',
@@ -35,6 +38,7 @@ export const routing = defineRouting({
     '/blog/[slug]': '/blog/[slug]',
     '/oefenvragen': '/oefenvragen',
     '/leren': '/leren',
+    '/leren/[slug]': '/leren/[slug]',
     '/activate': '/activate',
     '/register': '/register',
     '/uitschrijven': '/uitschrijven',
@@ -88,6 +92,10 @@ export const routing = defineRouting({
     // next.config.ts that 301 the old A2-implicit URLs onto these.
     '/oefenexamen/[level]/[skill]': '/oefenexamen/[level]/[skill]',
     '/oefenexamen/[level]/[skill]/[number]': '/oefenexamen/[level]/[skill]/[number]',
+    // KNM is not levelled, so its exams sit one segment shallower. The static `knm` segment
+    // shadows `[level]`, which is what makes /oefenexamen/knm/3 mean exam 3 and not skill 3.
+    '/oefenexamen/knm': '/oefenexamen/knm',
+    '/oefenexamen/knm/[number]': '/oefenexamen/knm/[number]',
   },
 });
 

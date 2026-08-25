@@ -4,8 +4,8 @@ import { useState } from 'react';
 import Link from 'next/link';
 import { usePathname, useSearchParams } from 'next/navigation';
 
-import { ADMIN_NAV, NAV_LEVELS, adminHref, type AdminNavItem } from '@/lib/admin/nav';
-import { isLevel } from '@/data/skills';
+import { ADMIN_NAV, adminHref, navLevelsFor, type AdminLevel, type AdminNavItem } from '@/lib/admin/nav';
+import { isKnm, isLevel } from '@/data/skills';
 
 /**
  * The admin nav, shared by the desktop sidebar and the mobile drawer.
@@ -22,7 +22,13 @@ export default function AdminNav({ locale, onNavigate }: { locale: string; onNav
   // `/admin/exams/5` there is no `?niveau=`, and defaulting to A2 there highlighted the wrong child
   // while a B1 exam was on screen.
   const rawLevel = search.get('niveau');
-  const activeLevel = isLevel(rawLevel) ? rawLevel : null;
+  /**
+   * `undefined` means "no level in the URL", which is different from `null`, which **is** the
+   * KNM tab. Collapsing the two would highlight KNM on every detail route that carries no
+   * `?niveau=` at all.
+   */
+  const activeLevel: AdminLevel | undefined =
+    isKnm(rawLevel) ? null : isLevel(rawLevel) ? rawLevel : undefined;
 
   const primary = ADMIN_NAV.filter(i => !i.secondary);
   const secondary = ADMIN_NAV.filter(i => i.secondary);
@@ -56,7 +62,8 @@ function NavEntry({
   item: AdminNavItem;
   locale: string;
   pathname: string;
-  activeLevel: string | null;
+  /** `undefined` = no level in the URL; `null` = the KNM tab. */
+  activeLevel: AdminLevel | undefined;
   onNavigate?: () => void;
 }) {
   const base = `/${locale}/admin${item.path}`;
@@ -95,12 +102,12 @@ function NavEntry({
 
       {open && (
         <ul className="mt-0.5 mb-1 ml-[26px] list-none space-y-0.5 border-l border-white/15 p-0 pl-2">
-          {NAV_LEVELS.map(({ level, label }) => {
+          {navLevelsFor(item).map(({ level, label, param }) => {
             // Only marked current when this section is the one being viewed — otherwise every
             // expanded section would show an A2 child highlighted.
-            const current = active && activeLevel === level;
+            const current = active && activeLevel !== undefined && activeLevel === level;
             return (
-              <li key={level}>
+              <li key={param}>
                 <Link
                   href={adminHref(locale, item.path, level)}
                   onClick={onNavigate}

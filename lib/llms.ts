@@ -40,7 +40,7 @@
 import { publishedGuides, getGuideLocale, hasTranslation, indexableLocales } from '@/data/guides/helpers';
 import type { Guide, GuideSection } from '@/data/guides/types';
 import { getSortedPosts, getPostSlug, hasTranslation as postHasTranslation } from '@/data/blog-posts';
-import { LEVELS, SKILLS, getSkillAtLevel } from '@/data/skills';
+import { KNM, KNM_THEMES, LEVELS, SKILLS, getSkillAtLevel } from '@/data/skills';
 import type { SkillSlug } from '@/data/skills';
 import { FEATURES } from '@/lib/features';
 import { PLANNED_SURFACES } from '@/data/planned-surfaces';
@@ -61,6 +61,9 @@ const SKILL_LABEL: Record<SkillSlug, string> = {
   schrijven: 'Schrijven',
   spreken: 'Spreken',
 };
+
+/** KNM's own label. Not in `SKILL_LABEL`, which is keyed by `SkillSlug` — the four onderdelen. */
+const KNM_LABEL = 'KNM';
 
 /** `[title](url): note` — the llmstxt.org list item. */
 const item = (title: string, href: string, note: string) => `- [${title}](${href}): ${note}`;
@@ -111,6 +114,20 @@ function examLines(): string[] {
       );
     }
   }
+  /* KNM's overview, which has no level in its URL. Appended rather than folded into the loop:
+     the loop's whole shape is (level, skill), and a level-less row inside it would need the
+     level interpolation guarded in three places. */
+  if (KNM.itemCount !== null) {
+    lines.push(
+      item(
+        `Oefenexamens ${KNM_LABEL}`,
+        `${BASE}/nl/oefenexamen/knm`,
+        `Ten practice exams on Kennis van de Nederlandse Maatschappij. ${KNM.itemCount} items ` +
+          `per exam, ${KNM.durationMinutes} minutes. Not examined per CEFR level — the same exam ` +
+          'serves A2 and B1 candidates. Exam 1 requires a free account; the rest need a paid module.',
+      ),
+    );
+  }
   return lines;
 }
 
@@ -123,8 +140,8 @@ function examLines(): string[] {
  * list here would keep saying "B1 Luisteren is not built" on the day it shipped — so the language
  * rows read the same `itemCount !== null` fact that `robots` and the sitemap gate on, and flip on
  * their own. KNM and ONA are named from `TRACKS`'s roadmap rather than from a format table,
- * because neither has one yet; when either gains exams it gains a format, and then it belongs in
- * the derived half above it.
+ * because neither had one. KNM gained both on 2026-08-24 and its row now states the real
+ * catalogue; ONA still has neither.
  */
 function catalogueLines(): string {
   const rows: string[] = [];
@@ -144,8 +161,10 @@ function catalogueLines(): string {
     rows.push(`- ${label} — live for ${names}. Ten practice exams each.${gap}`);
   }
   rows.push(
-    "- **KNM** — the eight official thema's are covered by kennisgidsen. KNM practice exams are " +
-      'not built yet.',
+    `- **KNM** — live. Ten practice exams of ${KNM.itemCount} questions, ` +
+      `${KNM_THEMES.length} lesson modules and 366 word cards, across the thema's ` +
+      `${KNM_THEMES.map(t => t.title).join(', ')}. The eight official thema's are also covered ` +
+      "by kennisgidsen. KNM is not examined per CEFR level: one exam serves A2 and B1 candidates.",
   );
   rows.push(
     '- **ONA** — covered by the kennisgidsen and the tijdlijn planner. No ONA practice exams yet.',

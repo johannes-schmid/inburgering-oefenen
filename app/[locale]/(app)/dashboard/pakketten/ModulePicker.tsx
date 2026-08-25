@@ -3,7 +3,7 @@
 import { useMemo, useState } from 'react';
 import { ArrowRight, Check, Loader2, Lock, Sparkles, TriangleAlert } from 'lucide-react';
 import SkillIcon from '@/components/site/SkillIcon';
-import type { Level, SkillSlug } from '@/data/skills';
+import type { Level, OnderdeelSlug } from '@/data/skills';
 import {
   BUNDLE_LIST_PRICE_CENTS,
   BUNDLE_PRICE_CENTS,
@@ -18,11 +18,12 @@ import {
 export type PickerModule = {
   /** The full `level:skill` module id — what gets posted to checkout. */
   slug: ModuleSlug;
-  level: Level;
-  /** `'A2'` — for the group heading. */
+  /** `null` for KNM, which is not examined per CEFR level and forms a group of its own. */
+  level: Level | null;
+  /** `'A2'`, or `'KNM'` for the onderdeel that has no level. For the group heading. */
   levelLabel: string;
-  /** The bare skill, for the icon (which keys on skill, not on module id). */
-  skill: SkillSlug;
+  /** The bare onderdeel, for the icon (which keys on that, not on the module id). */
+  skill: OnderdeelSlug;
   label: string;
   examCount: number;
   /** `null` where DUO's format for this level is unverified. */
@@ -70,7 +71,7 @@ export default function ModulePicker({
    * read as a claim about any four, which is not the offer.
    */
   const groups = useMemo(() => {
-    const out: { level: Level; levelLabel: string; mods: PickerModule[] }[] = [];
+    const out: { level: Level | null; levelLabel: string; mods: PickerModule[] }[] = [];
     for (const m of modules) {
       const g = out.find(x => x.level === m.level);
       if (g) g.mods.push(m);
@@ -117,9 +118,14 @@ export default function ModulePicker({
   return (
     <div className="mp">
       {groups.map(group => (
-      <section key={group.level} className="mp-group">
+      <section key={group.level ?? 'knm'} className="mp-group">
         {/* Only labelled when there is more than one level to tell apart. */}
-        {groups.length > 1 && <h2 className="mp-group-title">Niveau {group.levelLabel}</h2>}
+        {groups.length > 1 && (
+          <h2 className="mp-group-title">
+            {/* KNM has no level, so "Niveau KNM" would be a category error on screen. */}
+            {group.level ? `Niveau ${group.levelLabel}` : group.levelLabel}
+          </h2>
+        )}
         <div className="mp-grid">
         {group.mods.map(mod => {
           const on = selected.includes(mod.slug);

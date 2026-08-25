@@ -3,10 +3,11 @@ import { redirect } from 'next/navigation';
 import { getTranslations } from 'next-intl/server';
 import { ArrowRight, Lock } from 'lucide-react';
 import { createClient } from '@/lib/supabase/server';
-import { ownsModule, planFromMetadata } from '@/lib/entitlements';
+import { ownsKnm, ownsModule, planFromMetadata } from '@/lib/entitlements';
 import { fetchPortalProgress, fetchPublishedExamNumbers } from '@/lib/portal-progress';
 import {
   DEFAULT_LEVEL,
+  KNM,
   LEVELS,
   SKILLS,
   formatCount,
@@ -80,6 +81,7 @@ export default async function DashboardPage({ params }: { params: Promise<{ loca
     (n, l) => n + SKILLS.reduce((m, s) => m + progress[l][s.slug].examsDone, 0),
     0,
   );
+  const knmProgress = progress.knm;
   const meta = user.user_metadata ?? {};
   const firstName = String(meta.full_name ?? meta.name ?? '').trim().split(' ')[0];
 
@@ -208,6 +210,95 @@ export default async function DashboardPage({ params }: { params: Promise<{ loca
           </div>
           </section>
           ))}
+
+
+          {/* ── KNM ──────────────────────────────────────────────────────────
+              Its own section rather than a fifth card inside a level's grid, because it is
+              not a card *of* that level: the grid above says "the four onderdelen of A2", and
+              a KNM tile in it would make that heading false and put KNM in a bundle that does
+              not include it. Shown whenever it has content, a sitting, or a purchase — the
+              same test the second level passes. */}
+          {(published.knm.size > 0 || knmProgress.examsDone > 0 || ownsKnm(user.user_metadata)) && (
+            <section className="mt-10">
+              <header className="mb-4">
+                <h2
+                  className="font-headline font-extrabold text-on-surface"
+                  style={{ fontSize: '1.15rem', letterSpacing: '-0.02em' }}
+                >
+                  {t('knm_section')}
+                </h2>
+                <p className="text-xs text-outline mt-0.5">{t('knm_section_sub')}</p>
+              </header>
+
+              <div className="grid gap-4 sm:gap-5 md:grid-cols-2">
+                <a href={`/${locale}/dashboard/knm`} className="skill-card no-underline flex flex-col">
+                  <div className="flex items-start gap-3 mb-4">
+                    <SkillIcon skill="knm" size="md" />
+                    <div className="min-w-0 flex-1">
+                      <h2
+                        className="font-headline font-extrabold text-on-surface"
+                        style={{ fontSize: '1.075rem', letterSpacing: '-0.015em' }}
+                      >
+                        {tSkills('knm.name')}
+                      </h2>
+                      <p className="text-xs text-outline mt-0.5">
+                        {t('card_meta', {
+                          items: formatCount(KNM.itemCount),
+                          minutes: formatCount(KNM.durationMinutes),
+                        })}
+                      </p>
+                    </div>
+                    <span className="skill-card-arrow" aria-hidden="true">
+                      <ArrowRight size={17} strokeWidth={2.2} />
+                    </span>
+                  </div>
+
+                  <p className="text-[0.82rem] text-on-surface-variant mb-5" style={{ lineHeight: 1.6 }}>
+                    {tSkills('knm.tagline')}
+                  </p>
+
+                  <div className="mt-auto">
+                    <div className="flex items-baseline justify-between mb-2">
+                      <span className="text-xs font-bold text-on-surface-variant">
+                        {t('card_progress', { done: knmProgress.examsDone, total: KNM.examCount })}
+                      </span>
+                      {knmProgress.averagePct != null && (
+                        <span
+                          className="text-xs font-extrabold"
+                          style={{ color: 'var(--color-primary)', fontVariantNumeric: 'tabular-nums' }}
+                        >
+                          {t('card_average', { pct: knmProgress.averagePct })}
+                        </span>
+                      )}
+                    </div>
+
+                    <ExamSegments
+                      count={KNM.examCount}
+                      states={Array.from({ length: KNM.examCount }, (_, i) =>
+                        segmentState(i + 1, knmProgress, published.knm, hasPaidPlan),
+                      )}
+                      labels={segmentLabels}
+                    />
+
+                    <p className="text-xs mt-3 flex items-center gap-1.5" style={{ color: 'var(--color-outline)' }}>
+                      {knmProgress.examsDone === 0 && published.knm.size === 0 ? (
+                        <>
+                          <Lock size={12} strokeWidth={2} />
+                          {t('card_none_published')}
+                        </>
+                      ) : knmProgress.examsDone === 0 ? (
+                        t('card_cta_start')
+                      ) : knmProgress.examsDone >= KNM.examCount ? (
+                        t('card_cta_all_done')
+                      ) : (
+                        t('card_cta_continue', { number: knmProgress.nextExamNumber })
+                      )}
+                    </p>
+                  </div>
+                </a>
+              </div>
+            </section>
+          )}
 
           {!hasPaidPlan && (
             <aside className="upsell mt-8">

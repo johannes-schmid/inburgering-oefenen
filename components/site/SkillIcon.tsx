@@ -1,16 +1,21 @@
-import { BookOpen, Headphones, PenLine, Mic, type LucideIcon } from 'lucide-react';
-import type { SkillSlug } from '@/data/skills';
+import { BookOpen, Headphones, Landmark, PenLine, Mic, type LucideIcon } from 'lucide-react';
+import type { OnderdeelSlug } from '@/data/skills';
 
 /**
  * One lucide icon per exam component, so Lezen/Luisteren/Schrijven/Spreken read the same
  * everywhere they appear (nav, cards, page headers). Replaces the emoji we started with —
  * emoji render differently per platform and cannot be colour-matched to the brand.
  */
-export const SKILL_ICONS: Record<SkillSlug, LucideIcon> = {
+export const SKILL_ICONS: Record<OnderdeelSlug, LucideIcon> = {
   lezen: BookOpen,
   luisteren: Headphones,
   schrijven: PenLine,
   spreken: Mic,
+  // KNM's affordance is a lucide glyph like the other four, *not* `CategoryMark`. This
+  // component is the control layer — nav rows, picker rows, admin tables — and a category
+  // mark there would be brand imagery standing in for a button. `Landmark` for the same
+  // reason the mark is a colonnade: KNM is the onderdeel about how the Dutch state works.
+  knm: Landmark,
 };
 
 type Size = 'sm' | 'md' | 'lg';
@@ -22,7 +27,7 @@ const SIZES: Record<Size, { box: number; icon: number; radius: number }> = {
 };
 
 type Props = {
-  skill: SkillSlug;
+  skill: OnderdeelSlug;
   size?: Size;
   /** `tile` draws the brand-tinted rounded square; `bare` renders the glyph only. */
   variant?: 'tile' | 'bare';

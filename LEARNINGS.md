@@ -2689,3 +2689,59 @@ getallen; ze horen in het client-veilige `length-targets.ts`.
 stille factor-vier-fout, niet een afrondingskwestie — reken de band om op de plek waar hij geseed
 wordt. En een constante die een client component nodig heeft, hoort nooit in een module die een
 model-SDK importeert.
+
+## 2026-08-24 — KNM transferred in as the fifth onderdeel
+**Changed:** `supabase/migrations/20260824120000_knm_onderdeel.sql`, `scripts/knm-content/*`
+(export → generate → seed), `data/skills.ts` (the `KNM` / `OnderdeelSlug` / catalogue-axis
+block), `lib/{exams,exam-content,portal-progress,attempts,entitlements,pricing,llms}.ts`,
+`lib/admin/{nav,authoring,stimuli,exam-setup-server}.ts`, the KNM routes under
+`(main)/oefenexamen/knm` and `(app)/{oefenexamen/knm,dashboard/knm,dashboard/woordkaarten,leren}`,
+`next.config.ts`, `app/sitemap.ts`, `data/leren/*` (generated), `tests-unit/knm.test.ts`.
+**Outcome:** SUCCESS — 274 unit tests, 56 e2e, `next build`, `check-schema.mjs` all green;
+419 questions / 366 woordkaarten / 43 lessecties / 3,201 media objects seeded locally.
+**What worked:** exporting from knm-website *production* rather than its `data/*.ts` snapshot;
+keeping `SKILLS` meaning the four taalonderdelen and adding KNM beside it, which left ~80
+consumers correct by construction; putting the one `.eq` vs `.is` level branch in `levelFilter()`.
+**What went wrong:** four silent failures, all the same species — a default or a pattern that
+was right for the original case and wrong for the second. (1) A redirect in `next.config.ts`
+swallowed both KNM URLs; its negative lookahead anchored `$` against the whole path, so the
+two-segment rule had never had a working guard. `tsc`, `next build` and every screenshot were
+clean — only a `curl` of the URL found it. (2) `exam_attempts.level` defaults to `'a2'` and no
+caller ever sent it, so **every B1 sitting on production has been recorded as A2**. (3) PostgREST caps a
+plain `select()` at 1,000 rows without saying so, and `questions` had passed it — `/admin/exams`
+showed "23 / 40" for full exams and `/admin/questions` hid 269 items (`lib/admin/fetch-all.ts`).
+(4) The woordkaarten gated on the legacy `plan !== 'free'`, locking six of seven themes for a
+module-only customer.
+**Lesson:** when adding the second member of a set the code has only ever had one of, the danger
+is never the code that errors — it is the **defaults and the anchored patterns**, which keep
+returning a plausible answer for the new case. Grep for `DEFAULT` on the columns you are about
+to write and for `$` in any route pattern you are about to widen, and verify a new URL by
+fetching it, because the build output lists routes it will never actually serve.
+
+## 2026-08-25 — the KNM study surfaces became a sub-menu
+**Changed:** `app/[locale]/(app)/components/PlatformSidebar.tsx` (children nested under the KNM
+row, `within` state on the parent), `AppShell.tsx` (`.nav-sub` / `.nav-subitem` / `.nav-item.within`).
+**Outcome:** SUCCESS — 274 unit, 56 e2e, `next build` clean; verified on the KNM dashboard and on
+both child pages.
+**What worked:** copying the admin sidebar's rail rather than inventing a second nesting style,
+so the two navigations stay one system.
+**Lesson:** a nested item needs *two* highlight states, not one. Marking only the current row
+left no parent marked on a child page — the sidebar could say where you were but not what you
+were inside, which is the entire reason to nest.
+
+## 2026-08-25 — the KNM sub-menu became a real shadcn collapsible
+**Changed:** `components/ui/collapsible.tsx` (new, on `@base-ui/react`),
+`app/[locale]/(app)/components/PlatformSidebar.tsx` (Collapsible + chevron trigger +
+localStorage-backed expanded state), `AppShell.tsx` (`.nav-row*`, `.nav-collapsible`),
+`messages/{nl,en,ar}.json` (two aria labels).
+**Outcome:** SUCCESS — 274 unit, 56 e2e, `next build` clean; toggle verified by clicking it in
+Puppeteer and comparing the open and collapsed shots.
+**What worked:** checking which primitive layer the repo's shadcn build actually uses before
+installing anything — it is base-ui, not Radix, so `@radix-ui/react-collapsible` would have
+pulled a second primitive library in for one component.
+**What went wrong:** a backtick inside a CSS *comment* in `AppShell`'s `<style>{`...`}</style>`
+template literal terminated the literal; tsc reported a `'}' expected` twenty lines later, in
+code that was fine.
+**Lesson:** state that has to survive a remount cannot live in `useState` alone. Every page in
+this portal is a server component, so the sidebar is rebuilt on every navigation — a menu that
+remembers nothing closes itself the moment you use it.

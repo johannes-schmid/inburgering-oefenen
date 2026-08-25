@@ -168,6 +168,9 @@ function toQuestionItem(q: QuestionDraft, index: number): QuestionItem {
     // unsaved one gets a stable negative id derived from its position.
     id: q.id ?? -(index + 1),
     sort_order: q.sort_order,
+    // The fragment editor only ever previews stimulus-backed questions; the sub-topic there
+    // is the fragment's, shown by the rail beside it.
+    section_id: null,
     prompt: q.prompt.trim() || '(nog geen vraagtekst)',
     prompt_audio_url: null,
     image_url: q.image_url.trim() || null,

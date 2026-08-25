@@ -112,11 +112,35 @@ test.describe('exam overviews', () => {
   }
 
   test('the level-less URL still resolves, via a permanent redirect', async ({ page }) => {
-    // next.config.ts 308s the pre-B1 paths. The `(?!a2$|b1$)` guard in that rule is what stops it
-    // matching its own destination and looping, so this asserts the destination as well as the hop.
+    // next.config.ts 308s the pre-B1 paths. The allowlist in that rule is what stops it matching
+    // its own destination and looping, so this asserts the destination as well as the hop.
     const res = await page.goto('/nl/oefenexamen/lezen');
     expect(res?.status()).toBe(200);
     expect(page.url()).toContain('/nl/oefenexamen/a2/lezen');
+  });
+
+  /**
+   * KNM's overview is a *static* sibling of `[level]`, because KNM carries no CEFR level.
+   *
+   * Both of these are regression pins for the same near-miss. The A2-implicit redirect in
+   * next.config.ts used a negative lookahead whose `$` anchors against the whole path, so it
+   * only ever excluded a value that ended the URL: `/oefenexamen/knm` was fine and
+   * `/oefenexamen/knm/1` 308'd to `/oefenexamen/a2/knm/1`, which is not a route. The whole
+   * onderdeel 404'd while `next build` listed both pages as present, and tsc was clean.
+   */
+  test('KNM lists ten slots at its own level-less URL', async ({ page }) => {
+    const res = await page.goto('/nl/oefenexamen/knm');
+    expect(res?.status()).toBe(200);
+    expect(page.url()).toContain('/nl/oefenexamen/knm');
+
+    await expect(page.locator('h1')).toBeVisible();
+    const slots = page.locator('ul').filter({ has: page.locator('.exam-card') }).first().locator('> li');
+    await expect(slots).toHaveCount(10);
+  });
+
+  test('a KNM exam URL is not rewritten into the A2 shape', async ({ page }) => {
+    await page.goto('/nl/oefenexamen/knm/1');
+    expect(page.url()).not.toContain('/oefenexamen/a2/knm');
   });
 });
 
@@ -443,9 +467,22 @@ test.describe('the language switcher', () => {
 test.describe('the disabled surfaces are actually disabled', () => {
   // `lib/features.ts` is the switch. Blog is *on* now, so it is asserted live rather than absent —
   // this test failing after a flag flip is the point of it.
-  test('leren has no route at all', async ({ page }) => {
-    const res = await page.goto('/nl/leren');
-    expect(res?.status()).toBe(404);
+  /**
+   * `leren` and `woordkaarten` were flipped on 2026-08-24 with KNM's content, so this pair
+   * asserts the *new* truth: they are real pages behind an account, not 404s.
+   *
+   * The flag still turns them off — both pages call `notFound()` when it is false — so the
+   * gate is intact; what changed is which side of it we are on. This test failing after a flag
+   * flip is the point of it.
+   */
+  test('leren is live and requires an account', async ({ page }) => {
+    await page.goto('/nl/leren');
+    await expect(page).toHaveURL(/\/login/);
+  });
+
+  test('woordkaarten is live and requires an account', async ({ page }) => {
+    await page.goto('/nl/dashboard/woordkaarten');
+    await expect(page).toHaveURL(/\/login/);
   });
 
   test('oefenvragen sends the visitor to the live funnel', async ({ page }) => {

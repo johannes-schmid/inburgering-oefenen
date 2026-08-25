@@ -38,6 +38,12 @@ const PAGES = [
   { path: '/nl/oefenen/luisteren',      expect: ['Quiz', 'BreadcrumbList'] },
   { path: '/nl/oefenexamen/a2/lezen',   expect: ['Course', 'BreadcrumbList'] },
   { path: '/nl/oefenexamen/a2/spreken', expect: ['Course', 'BreadcrumbList'] },
+  // KNM's overview owns its own `Course`, one segment shallower because KNM is not levelled.
+  // `educationalLevel` is deliberately absent from that node — KNM has no CEFR level, and a
+  // guessed `A2` would be a false claim about who the course is for. This row is also what
+  // catches the whole onderdeel disappearing behind a redirect: `/oefenexamen/knm` used to be
+  // swallowed by the A2-implicit rule in next.config.ts, and nothing else noticed.
+  { path: '/nl/oefenexamen/knm',        expect: ['Course', 'BreadcrumbList'] },
   { path: '/nl/docent',                 expect: ['ProfilePage', 'Person'] },
   // The blog is live and was never covered by this guard.
   { path: '/nl/blog',                   expect: ['Blog', 'ItemList'] },

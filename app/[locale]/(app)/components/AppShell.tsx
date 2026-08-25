@@ -52,6 +52,47 @@ export default function AppShell({
         .nav-item:active { background:rgba(255,255,255,0.18); }
         .nav-item.active { background:rgba(255,255,255,0.15); color:#fff; font-weight:600; box-shadow:inset 0 0 0 1px rgba(255,255,255,0.12); }
         .nav-heading { margin:14px 14px 6px; font-size:10.5px; font-weight:800; letter-spacing:0.13em; text-transform:uppercase; color:rgba(255,255,255,0.38); }
+
+        /* The nested rail under KNM. The 1px left border is the *only* place the portal chrome
+           uses a line, and it is deliberate: this is a hierarchy cue, not a section boundary,
+           and the no-line rule (§2) is about not sectioning with borders. A background tier
+           shift cannot say "these two belong to the row above" on a navy sidebar that has no
+           tiers to shift between. The admin sidebar's level sub-menu already draws it this way,
+           so the two navigations stay one system. */
+        .nav-sub { list-style:none; margin:2px 0 4px; padding:0 0 0 8px; margin-left:23px; border-left:1px solid rgba(255,255,255,0.15); display:flex; flex-direction:column; gap:2px; }
+        .nav-subitem { padding:8px 12px; font-size:13px; }
+
+        /* A row that is a link *and* a disclosure toggle. The highlight lives on the wrapper so
+           both halves light up together — put it on the anchor and the chevron sits outside a
+           highlighted pill, which reads as two separate rows. */
+        .nav-row { display:flex; align-items:center; border-radius:10px; transition:background .15s ease; }
+        .nav-row-link { flex:1; min-width:0; background:none; }
+        .nav-row-link:hover, .nav-row-link.active { background:none; }
+        .nav-row:hover { background:rgba(255,255,255,0.1); }
+        .nav-row:hover .nav-row-link { color:rgba(255,255,255,0.9); }
+        .nav-row.active { background:rgba(255,255,255,0.15); box-shadow:inset 0 0 0 1px rgba(255,255,255,0.12); }
+        .nav-row.active .nav-row-link { color:#fff; font-weight:600; }
+        /* "You are inside this onderdeel", not "this is the page you are on" — half the tint of
+           .active and no inset ring, so the current child stays the strongest row. */
+        .nav-row.within { background:rgba(255,255,255,0.07); }
+        .nav-row.within .nav-row-link { color:rgba(255,255,255,0.85); font-weight:600; }
+
+        /* 32px is the smallest square that still clears the 24px minimum touch target once the
+           row's own padding is counted, without making the chevron look like a second button. */
+        .nav-row-toggle { display:flex; align-items:center; justify-content:center; flex-shrink:0; width:32px; height:32px; margin-right:6px; border:none; background:none; border-radius:8px; color:rgba(255,255,255,0.5); cursor:pointer; padding:0; transition:background .15s ease, color .15s ease; }
+        .nav-row-toggle:hover { background:rgba(255,255,255,0.12); color:#fff; }
+        .nav-row-toggle:focus-visible { outline:2px solid #fe762c; outline-offset:2px; }
+        .nav-row-toggle svg { transition:transform .18s cubic-bezier(0.22,1,0.36,1); }
+
+        /* base-ui measures the panel and exposes its height as a custom property. A height of
+           auto cannot be animated, and a hardcoded pixel value breaks the moment the list grows.
+           (No backticks in this block: the whole stylesheet is a template literal.) */
+        .nav-collapsible { overflow:hidden; transition:height .2s cubic-bezier(0.22,1,0.36,1); }
+        .nav-collapsible[data-starting-style], .nav-collapsible[data-ending-style] { height:0; }
+        .nav-collapsible[data-open] { height:var(--collapsible-panel-height); }
+        /* Indented rows sit closer to the rail than to the icons above them, so the icon is a
+           notch smaller too — matching the parent's 18px here made the child look like a peer. */
+        .nav-subitem svg { flex-shrink:0; }
         #app-mobile-header { display:none; }
         #dash-bottom-bar { display:none; position:fixed; bottom:0; left:0; right:0; z-index:100; background:linear-gradient(180deg,#002266 0%,#001d4e 100%); border-top:1px solid rgba(255,255,255,0.08); box-shadow:0 -4px 20px rgba(0,27,78,0.3); padding-bottom:env(safe-area-inset-bottom); }
         .tab-item { flex:1; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:3px; padding:10px 2px 8px; background:none; border:none; cursor:pointer; color:rgba(255,255,255,0.45); font-size:10.5px; font-weight:700; font-family:inherit; text-decoration:none; transition:color .15s ease; }
@@ -65,7 +106,7 @@ export default function AppShell({
           #dash-bottom-bar { display:flex !important; }
         }
         @media (prefers-reduced-motion: reduce) {
-          .nav-item, .tab-item { transition:none; }
+          .nav-item, .tab-item, .nav-row, .nav-row-toggle, .nav-row-toggle svg, .nav-collapsible { transition:none; }
         }
         ::-webkit-scrollbar { width:5px; }
         ::-webkit-scrollbar-track { background:transparent; }
@@ -126,6 +167,16 @@ export default function AppShell({
             <span>{tSkills(`${skill.key}.short`)}</span>
           </a>
         ))}
+        {/* Six tabs at 390px is 65px each, which is tight but legible — the labels are all
+            short ("Lezen", "KNM") and the icons carry the meaning. Adding a seventh would
+            need this bar rethought, not squeezed. */}
+        <a
+          href={`/${locale}/dashboard/knm`}
+          className={`tab-item${active === 'knm' ? ' active' : ''}`}
+        >
+          <SkillIcon skill="knm" size="sm" variant="bare" onDark />
+          <span>{tSkills('knm.short')}</span>
+        </a>
       </nav>
     </>
   );

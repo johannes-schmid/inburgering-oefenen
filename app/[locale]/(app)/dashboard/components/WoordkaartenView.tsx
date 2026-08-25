@@ -15,11 +15,21 @@ type WkSubView = 'overview' | 'list' | 'deck' | 'review';
 type Props = {
   userId?: string;
   plan: Plan;
+  /**
+   * Does this account have paid access to the KNM module?
+   *
+   * Passed in rather than derived from `plan`, because the product is sold per onderdeel now.
+   * `plan !== 'free'` is the legacy all-access check: it locked themes 2–7 for a customer who
+   * had bought the KNM module and nothing else — the same disagreement between the card and
+   * the gate that `ownsModule` was introduced to fix in the exam player. Optional and
+   * defaulting to the old behaviour so the unrouted dashboard SPA keeps compiling.
+   */
+  owns?: boolean;
   supabase: ReturnType<typeof createClient>;
   onGoToProfile?: () => void;
 };
 
-export default function WoordkaartenView({ userId, plan, supabase, onGoToProfile }: Props) {
+export default function WoordkaartenView({ userId, plan, supabase, owns, onGoToProfile }: Props) {
   const t = useTranslations('dashboard');
   const locale = useLocale();
   const [wkProgress, setWkProgress] = useState<WkProgress>({});
@@ -40,7 +50,7 @@ export default function WoordkaartenView({ userId, plan, supabase, onGoToProfile
     setCardHeight(Math.max(front, back, 260));
   }, [cardIdx, lang]);
 
-  const isPremium = plan !== 'free';
+  const isPremium = owns ?? plan !== 'free';
   const isGuest = !userId;
   const cacheKey = userId ? `io_wk_progress_${userId}` : 'io_wk_progress_guest';
 

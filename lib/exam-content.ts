@@ -12,7 +12,8 @@
  * this module rather than querying the tables directly.
  */
 import { createClient } from './supabase/server';
-import type { Level, SkillSlug } from '@/data/skills';
+import { levelFilter } from './exams';
+import type { Level, OnderdeelSlug } from '@/data/skills';
 
 export type OptionItem = {
   id: number;
@@ -28,6 +29,12 @@ export type OptionItem = {
 export type QuestionItem = {
   id: number;
   sort_order: number;
+  /**
+   * Sub-topic of a **standalone** question (KNM). NULL wherever the question hangs off a
+   * stimulus — there the tekstsoort is `StimulusItem.section_id`, because a text shared by
+   * three questions has one genre. Read by the per-onderdeel score breakdown.
+   */
+  section_id: number | null;
   prompt: string;
   prompt_audio_url: string | null;
   image_url: string | null;
@@ -114,8 +121,9 @@ export type ExamPartItem = {
 
 export type ExamMeta = {
   id: number;
-  level: Level;
-  skill: SkillSlug;
+  /** `null` for KNM — see `levelFilter` in lib/exams.ts. */
+  level: Level | null;
+  skill: OnderdeelSlug;
   number: number;
   title: string | null;
   is_free: boolean;
@@ -127,6 +135,15 @@ export type ExamContent = {
   exam: ExamMeta;
   parts: ExamPartItem[];
   stimuli: StimulusItem[];
+  /**
+   * Questions that hang off no stimulus — KNM's whole bank.
+   *
+   * A separate list rather than a synthetic one-question stimulus each: the player keys the
+   * left pane on the stimulus id to keep a Lezen text mounted across its questions, and forty
+   * throwaway stimuli would mean forty remounts of an empty pane. `ExamShell` renders these
+   * single-column, which is also what they should look like.
+   */
+  standalone: QuestionItem[];
   tasks: OpenTaskItem[];
   /** section_id → Dutch sub-skill name, for the per-question-type breakdown. */
   sectionNames: Record<number, string>;
@@ -134,7 +151,7 @@ export type ExamContent = {
 
 const OPTION_COLS = 'id, label, sort_order, body, image_urls, image_alt, audio_url, is_correct';
 const QUESTION_COLS =
-  `id, sort_order, prompt, prompt_audio_url, image_url, explanation, option_layout, ` +
+  `id, sort_order, section_id, prompt, prompt_audio_url, image_url, explanation, option_layout, ` +
   `question_options(${OPTION_COLS})`;
 const STIMULUS_COLS =
   `id, part_id, sort_order, section_id, kind, intro, title, body_html, image_url, ` +
@@ -154,8 +171,8 @@ const byOrder = <T extends { sort_order: number }>(rows: T[]) =>
  * select applies per parent and is easy to get silently wrong.
  */
 export async function fetchExamContent(
-  level: Level,
-  skill: SkillSlug,
+  level: Level | null,
+  skill: OnderdeelSlug,
   number: number
 ): Promise<ExamContent | null> {
   const supabase = await createClient();
@@ -163,12 +180,14 @@ export async function fetchExamContent(
   // `maybeSingle()` throws when the filter matches more than one row. Before `level` existed
   // on this query that is exactly what a second level would have caused — (skill, number) is
   // no longer unique on its own.
-  const { data: exam, error } = await supabase
-    .from('exams')
-    .select(
-      'id, level, skill, number, title, is_free, duration_seconds, pass_threshold_pct, published',
-    )
-    .eq('level', level)
+  const { data: exam, error } = await levelFilter(
+    supabase
+      .from('exams')
+      .select(
+        'id, level, skill, number, title, is_free, duration_seconds, pass_threshold_pct, published',
+      ),
+    level,
+  )
     .eq('skill', skill)
     .eq('number', number)
     .maybeSingle();
@@ -176,17 +195,18 @@ export async function fetchExamContent(
   if (error || !exam || !(exam as { published: boolean }).published) return null;
   const meta = exam as ExamMeta & { published: boolean };
 
-  const [partsRes, stimuliRes, tasksRes, sectionsRes] = await Promise.all([
+  const [partsRes, stimuliRes, standaloneRes, tasksRes, sectionsRes] = await Promise.all([
     supabase
       .from('exam_parts')
       .select('id, sort_order, title, instruction_html, show_instruction')
       .eq('exam_id', meta.id),
     supabase.from('stimuli').select(STIMULUS_COLS).eq('exam_id', meta.id),
+    supabase.from('questions').select(QUESTION_COLS).eq('exam_id', meta.id).is('stimulus_id', null),
     supabase.from('open_tasks').select(TASK_COLS).eq('exam_id', meta.id),
     // Filtered by level too: the sub-skill names are per (level, skill) since sections
     // became keyed (level, slug), and an unfiltered read would map a section_id to the
     // other level's label in the score breakdown.
-    supabase.from('sections').select('id, name_nl').eq('level', level).eq('topic', skill),
+    levelFilter(supabase.from('sections').select('id, name_nl'), level).eq('topic', skill),
   ]);
 
   type RawStimulus = Omit<StimulusItem, 'questions'> & {
@@ -200,6 +220,15 @@ export async function fetchExamContent(
       questions: byOrder(
         s.questions.map(q => ({ ...q, options: byOrder(q.question_options ?? []) }))
       ),
+    }))
+  );
+
+  type RawQuestion = Omit<QuestionItem, 'options'> & { question_options: OptionItem[] };
+
+  const standalone: QuestionItem[] = byOrder(
+    ((standaloneRes.data ?? []) as unknown as RawQuestion[]).map(q => ({
+      ...q,
+      options: byOrder(q.question_options ?? []),
     }))
   );
 
@@ -229,6 +258,7 @@ export async function fetchExamContent(
     },
     parts: byOrder((partsRes.data ?? []) as ExamPartItem[]),
     stimuli,
+    standalone,
     tasks,
     sectionNames,
   };

@@ -8,7 +8,10 @@
  * fallback for accounts that predate the rename.
  */
 import { UNGATE_PAID_FEATURES } from './features';
-import { DEFAULT_LEVEL, isLevel, isSkillSlug, type Level, type SkillSlug } from '@/data/skills';
+import {
+  DEFAULT_LEVEL, KNM_SLUG, isKnm, isLevel, isSkillSlug,
+  type KnmSlug, type Level, type SkillSlug,
+} from '@/data/skills';
 
 export type Plan = 'free' | 'premium' | 'premium_plus';
 
@@ -49,13 +52,26 @@ export function canSeeExplanations(plan: Plan): boolean {
  * moment B1 content ships — giving away the entire second catalogue to people who paid for
  * the first.
  */
-export type ModuleId = `${Level}:${SkillSlug}`;
+export type LevelledModuleId = `${Level}:${SkillSlug}`;
 
-export function moduleId(level: Level, skill: SkillSlug): ModuleId {
+/**
+ * KNM's module id carries no level, because KNM carries no level.
+ *
+ * DUO examines KNM once for every candidate; `exams.level IS NULL` for all ten of its
+ * oefenexamens. A `a2:knm` id would be a level that does not exist, and it would place KNM
+ * inside the A2 bundle — which is priced as "the four taalonderdelen of one level" and does
+ * not include it (owner's decision, 2026-08-24).
+ */
+export type ModuleId = LevelledModuleId | KnmSlug;
+
+export function moduleId(level: Level, skill: SkillSlug): LevelledModuleId {
   return `${level}:${skill}`;
 }
 
-export function parseModuleId(raw: string): { level: Level; skill: SkillSlug } | null {
+export const KNM_MODULE_ID: KnmSlug = KNM_SLUG;
+
+export function parseModuleId(raw: string): { level: Level | null; skill: SkillSlug | KnmSlug } | null {
+  if (isKnm(raw)) return { level: null, skill: KNM_SLUG };
   const [level, skill] = raw.split(':');
   if (!isLevel(level) || !isSkillSlug(skill)) return null;
   return { level, skill };
@@ -73,6 +89,9 @@ export function parseModuleId(raw: string): { level: Level; skill: SkillSlug } |
  * with all three. Reading is idempotent and cannot lose a purchase.
  */
 export function normaliseModule(raw: string): ModuleId | null {
+  // Checked before the bare-slug branch: `knm` is not a `SkillSlug`, so it would otherwise
+  // fall through to `parseModuleId` and be rejected — silently voiding a real purchase.
+  if (isKnm(raw)) return KNM_MODULE_ID;
   if (isSkillSlug(raw)) return moduleId(DEFAULT_LEVEL, raw);
   return parseModuleId(raw) ? (raw as ModuleId) : null;
 }
@@ -135,4 +154,21 @@ export function purchasedModules(meta: Meta): ModuleId[] {
 export function ownsModule(meta: Meta, level: Level, skill: SkillSlug): boolean {
   if (planFromMetadata(meta) !== 'free') return true; // legacy all-access purchase
   return modulesFromMetadata(meta).includes(moduleId(level, skill));
+}
+
+/**
+ * Does this account have paid access to KNM?
+ *
+ * Kept as its own function rather than folded into `ownsModule` with a nullable level: every
+ * one of `ownsModule`'s ~dozen call sites passes a concrete `Level`, and widening its
+ * signature to `Level | null` would make "I forgot to pass the level" type-check as "KNM".
+ *
+ * The legacy all-access grant opens it, on the same reasoning as the levels: those accounts
+ * bought "alle oefenexamens" as the offer was then worded. Note that this is a genuine
+ * giveaway of content they never saw — KNM did not exist on this domain when they bought —
+ * and it is accepted for the same support-cost reason.
+ */
+export function ownsKnm(meta: Meta): boolean {
+  if (planFromMetadata(meta) !== 'free') return true;
+  return modulesFromMetadata(meta).includes(KNM_MODULE_ID);
 }

@@ -1,5 +1,5 @@
 import type { MetadataRoute } from 'next';
-import { DEFAULT_LEVEL, LEVELS, SKILLS, getFormat } from '@/data/skills';
+import { DEFAULT_LEVEL, KNM, LEVELS, SKILLS, getFormat } from '@/data/skills';
 import { hasFreePractice } from '@/data/free-practice';
 import { b1TasterSkills } from '@/lib/free-practice-b1';
 import { FEATURES } from '@/lib/features';
@@ -95,6 +95,25 @@ export default function sitemap(): MetadataRoute.Sitemap {
           lastModified: TODAY,
         });
       }
+    }
+  }
+
+  /* KNM's overview, which has no level segment.
+   *
+   * Gated on the same fact as the loop above — `itemCount === null` means we have not
+   * established what this exam looks like, and its page is `noindex` in that case. KNM's
+   * format is filled in (`exam_formats` for (NULL, 'knm')), so it is listed.
+   *
+   * The individual exams are **not** here, and neither are the taalonderdelen's: the player
+   * lives in the portal behind a login and is `robots: index: false`. */
+  if (KNM.itemCount !== null) {
+    for (const locale of LOCALES) {
+      entries.push({
+        url: `${BASE}/${locale}/oefenexamen/knm`,
+        changeFrequency: 'weekly',
+        priority: 0.9,
+        lastModified: TODAY,
+      });
     }
   }
 

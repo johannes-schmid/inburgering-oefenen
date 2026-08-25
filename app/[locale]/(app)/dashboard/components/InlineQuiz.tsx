@@ -177,6 +177,9 @@ export default function InlineQuiz({ questions, examNum, topicLabel, timerSecond
         recordExamAttempt(supabase, {
           userId: session.user.id,
           skill: questions[0]?.skill ?? 'lezen',
+          // This surface only ever runs A2 taster questions; see `AttemptInput.level` for why
+          // the column is passed explicitly rather than left to its (A2) default.
+          level: 'a2',
           examNumber: examNum,
           score: result.score,
           total: result.total,

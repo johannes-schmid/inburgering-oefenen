@@ -75,7 +75,12 @@
     "promo_platform_cta": "Start now",
     "promo_gidsen": "Build your timeline",
     "promo_gidsen_sub": "Six questions, and you know the date you must register by.",
-    "promo_gidsen_cta": "Work out your deadline"
+    "promo_gidsen_cta": "Work out your deadline",
+    "knm_exams": "KNM practice exams",
+    "knm_leren": "KNM lessons",
+    "knm_woordkaarten": "KNM word cards",
+    "knm_expand": "Show KNM sections",
+    "knm_collapse": "Hide KNM sections"
   },
   "breadcrumbs": {
     "home": "Home",
@@ -263,7 +268,7 @@
     "blocks_a2_cta": "Practise now",
     "blocks_knm_title": "KNM",
     "blocks_knm_desc": "Eight themes about life in the Netherlands.",
-    "blocks_knm_note": "Now on knmoefenen.nl",
+    "blocks_knm_note": "10 practice exams · 7 lessons · 366 word cards",
     "blocks_knm_cta": "Practise KNM",
     "blocks_b1_title": "Language B1",
     "blocks_b1_desc": "Reading, Writing and Speaking — ten practice exams each.",
@@ -694,7 +699,7 @@
     "wk_desc": "Learn the vocabulary with flashcards — see the translation by tapping the card.",
     "wk_progress": "Overall progress",
     "wk_progress_stats": "{known} of {total} words mastered",
-    "wk_locked_badge": "Professional Package",
+    "wk_locked_badge": "KNM module",
     "wk_unlock_link": "Click to unlock",
     "wk_card_position": "Card {current} of {total}",
     "btn_back_to_themes": "Back to themes",
@@ -763,7 +768,12 @@
     "coming_soon": "Coming soon",
     "coming_soon_body": "We're working on this section. In the meantime, start with the practice exams.",
     "items_label": "questions",
-    "duration_label": "minutes"
+    "duration_label": "minutes",
+    "knm": {
+      "name": "KNM",
+      "short": "KNM",
+      "tagline": "Knowledge of Dutch Society: housing, work, healthcare, education and the rule of law."
+    }
   },
   "oefenexamen": {
     "meta_title": "{skill} {level} practice — 10 practice exams from an NT2 teacher",
@@ -781,7 +791,16 @@
     "other_skills": "Other parts",
     "not_ready_title": "These practice exams are on the way",
     "not_ready_body": "The teacher is writing the practice exams for this part right now. Practice exam 1 appears here as soon as it has been reviewed.",
-    "guide_link": "How does integrating in the Netherlands work? Read the steps"
+    "guide_link": "How does integrating in the Netherlands work? Read the steps",
+    "knm_meta_title": "KNM practice exam — 10 full mock exams | Inburgering Oefenen",
+    "knm_meta_description": "Practise the KNM exam with ten full mock exams of 40 questions. With an explanation for every answer, written and checked by a certified NT2 teacher.",
+    "knm_heading": "KNM practice exams",
+    "knm_no_level": "KNM is not examined per language level — this exam is the same for A2 and B1.",
+    "knm_themes_title": "The seven themes",
+    "knm_lessons_cta": "Read the explanation per theme",
+    "knm_words_cta": "Practise the words",
+    "knm_unlock_title": "Unlock all ten KNM practice exams",
+    "knm_unlock_body": "Practice exam 1 is free with an account. The KNM module gives you all ten practice exams, the seven lesson modules and the word cards."
   },
   "portal": {
     "sidebar_subtitle": "Practice portal",
@@ -835,7 +854,9 @@
     "plan_premium": "Professional",
     "plan_premium_plus": "Complete",
     "level_section": "Level {level}",
-    "level_section_sub": "All four parts at {level} level"
+    "level_section_sub": "All four parts at {level} level",
+    "knm_section": "KNM",
+    "knm_section_sub": "Knowledge of Dutch Society — one exam, for every language level."
   },
   "guides": {
     "reading_time": "{minutes} min read",
@@ -1493,7 +1514,7 @@
     "track_b1": "Language exams B1",
     "track_b1_sub": "Reading, Writing and Speaking: thirty practice exams, reviewed by the teacher. B1 Listening is on the way.",
     "track_knm": "KNM",
-    "track_knm_sub": "The eight official themes. The knowledge guides are already online; the practice exams are coming.",
+    "track_knm_sub": "Ten practice exams of 40 questions, seven lesson modules and 366 word cards. One exam for every language level.",
     "track_ona": "ONA",
     "track_ona_sub": "Orientation on the Dutch labour market. The timeline builder already accounts for it.",
     "why_eyebrow": "Why here",
@@ -1588,5 +1609,14 @@
     },
     "all_title": "All guides",
     "all_sub": "Every guide the teacher has reviewed, by subject."
+  },
+  "knm": {
+    "leren_title": "KNM lessons",
+    "leren_lede": "Seven themes with explanations, examples and a quiz. Everything the KNM exam asks of you.",
+    "woorden_title": "KNM word cards",
+    "woorden_lede": "The words that come back in the KNM exam, with pronunciation, an example sentence and a translation.",
+    "sections_count": "{count} parts",
+    "words_count": "{count} words",
+    "open": "Open"
   }
 }

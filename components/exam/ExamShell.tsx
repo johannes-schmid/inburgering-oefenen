@@ -106,7 +106,12 @@ function openResultFrom(
 
 /** One step of the exam: an MCQ question with its stimulus, or an open task. */
 type Step =
-  | { kind: 'mcq'; stimulus: StimulusItem; question: QuestionItem; partId: number | null }
+  /**
+   * `stimulus` is null for a **standalone** question — KNM's whole bank. The player then
+   * renders one full-width column instead of the two-pane split, because there is no text or
+   * fragment to put beside it and an empty left pane reads as content that failed to load.
+   */
+  | { kind: 'mcq'; stimulus: StimulusItem | null; question: QuestionItem; partId: number | null }
   | { kind: 'task'; task: OpenTaskItem; partId: number | null };
 
 type Props = {
@@ -132,16 +137,24 @@ const RUBRIC_FEEDBACK_IS_GATED = false;
 const RECORDING_BUCKET = 'speaking-submissions';
 
 export default function ExamShell({ content, canSeeExplanations }: Props) {
-  const { exam, parts, stimuli, tasks, sectionNames } = content;
+  const { exam, parts, stimuli, standalone, tasks, sectionNames } = content;
   const supabase = useMemo(() => createClient(), []);
   const isOpenSkill = exam.skill === 'schrijven' || exam.skill === 'spreken';
 
   const steps = useMemo<Step[]>(() => {
     if (isOpenSkill) return tasks.map(task => ({ kind: 'task' as const, task, partId: task.part_id }));
-    return stimuli.flatMap(s =>
-      s.questions.map(question => ({ kind: 'mcq' as const, stimulus: s, question, partId: s.part_id }))
-    );
-  }, [isOpenSkill, stimuli, tasks]);
+    return [
+      ...stimuli.flatMap(s =>
+        s.questions.map(question => ({ kind: 'mcq' as const, stimulus: s, question, partId: s.part_id }))
+      ),
+      // Appended, not interleaved: an onderdeel has one shape or the other. Lezen and
+      // Luisteren are all stimulus-backed and this list is empty; KNM is all standalone and
+      // the first list is. Ordering across the two would need a key neither table shares.
+      ...standalone.map(question => ({
+        kind: 'mcq' as const, stimulus: null, question, partId: null,
+      })),
+    ];
+  }, [isOpenSkill, stimuli, standalone, tasks]);
 
   const [phase, setPhase] = useState<Phase>('intro');
   const [idx, setIdx] = useState(0);
@@ -200,7 +213,11 @@ export default function ExamShell({ content, canSeeExplanations }: Props) {
     const acc: Record<string, { correct: number; total: number }> = {};
     for (const step of steps) {
       if (step.kind !== 'mcq') continue;
-      const name = step.stimulus.section_id ? sectionNames[step.stimulus.section_id] : null;
+      // The sub-topic is on the stimulus where there is one and on the question where there
+      // is not (KNM). Reading only the stimulus put every KNM answer under "Overig" and threw
+      // away the 43-way breakdown that is the most useful part of a KNM result.
+      const sectionId = step.stimulus?.section_id ?? step.question.section_id;
+      const name = sectionId ? sectionNames[sectionId] : null;
       const key = name ?? 'Overig';
       acc[key] ??= { correct: 0, total: 0 };
       acc[key].total++;
@@ -229,7 +246,7 @@ export default function ExamShell({ content, canSeeExplanations }: Props) {
 
     if (userId) {
       const id = await startExamAttempt(supabase, {
-        userId, skill: exam.skill, examNumber: exam.number, examId: exam.id,
+        userId, skill: exam.skill, level: exam.level, examNumber: exam.number, examId: exam.id,
         feedbackMode: isOpenSkill ? feedbackMode : 'exam',
       });
       attemptRef.current = id;
@@ -530,7 +547,21 @@ export default function ExamShell({ content, canSeeExplanations }: Props) {
           answered={answeredCount}
         />
 
-        {step.kind === 'mcq' ? (
+        {step.kind === 'mcq' && step.stimulus === null ? (
+          // Standalone question (KNM): one column, centred to a readable measure rather than
+          // stretched across the grid's full width, which would leave a 1,200px line length.
+          <div className="max-w-2xl w-full mx-auto">
+            <McqQuestion
+              question={step.question}
+              questionNumber={idx + 1}
+              total={totalItems}
+              chosenId={chosen[step.question.id]?.id ?? null}
+              onSelect={o => setChosen(prev => ({ ...prev, [step.question.id]: o }))}
+              showFeedback={false}
+              sectionName={step.question.section_id ? sectionNames[step.question.section_id] : undefined}
+            />
+          </div>
+        ) : step.kind === 'mcq' ? (
           <div className="grid gap-5 lg:grid-cols-2 items-start">
             {/* The key decides whether the pane survives moving between two questions on one
                 stimulus, and the two skills want opposite things:
@@ -542,9 +573,9 @@ export default function ExamShell({ content, canSeeExplanations }: Props) {
                 Changing this back would silently change what the exam tests. */}
             <StimulusPane
               key={exam.skill === 'luisteren'
-                ? `${step.stimulus.id}:${step.question.id}`
-                : step.stimulus.id}
-              stimulus={step.stimulus}
+                ? `${step.stimulus!.id}:${step.question.id}`
+                : step.stimulus!.id}
+              stimulus={step.stimulus!}
             />
             <McqQuestion
               question={step.question}
@@ -553,7 +584,7 @@ export default function ExamShell({ content, canSeeExplanations }: Props) {
               chosenId={chosen[step.question.id]?.id ?? null}
               onSelect={o => setChosen(prev => ({ ...prev, [step.question.id]: o }))}
               showFeedback={false}
-              sectionName={step.stimulus.section_id ? sectionNames[step.stimulus.section_id] : undefined}
+              sectionName={step.stimulus!.section_id ? sectionNames[step.stimulus!.section_id] : undefined}
             />
           </div>
         ) : step.task.task_type === 'speaking' ? (

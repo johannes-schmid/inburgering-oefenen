@@ -33,7 +33,8 @@ import {
   InputGroup, InputGroupAddon, InputGroupButton, InputGroupInput,
 } from '@/components/ui/input-group';
 
-import { SKILLS, type Level } from '@/data/skills';
+import { catalogueOnderdelen, type Level } from '@/data/skills';
+import { levelParam } from '@/lib/admin/nav';
 import type { ContentRow } from '@/lib/admin/content-rows';
 import type { AuthoringContext, AuthoringStimulus } from '@/lib/admin/authoring';
 import { examLabel, isBacklog } from '@/lib/admin/backlog';
@@ -77,14 +78,19 @@ function isIncomplete(row: ContentRow): boolean {
 }
 
 /**
- * Does this row belong under the level tab being viewed?
+ * Does this row belong under the catalogue tab being viewed?
  *
- * A `null` level means the onderdeel is not CEFR-graded (KNM's shape), so it shows under
- * every tab rather than none — it is required alongside A2 *and* B1, and hiding it from both
- * would make its content unreachable from the only screen that lists items.
+ * The `null` tab **is** KNM (see `AdminLevel` in lib/admin/nav.ts), and it shows only rows
+ * whose own level is null.
+ *
+ * Before that tab existed, a null-level row showed under *every* level tab, on the reasoning
+ * that hiding it from both would make it unreachable from the only screen that lists items.
+ * That reasoning is now satisfied by KNM having a tab of its own, and leaving the old rule in
+ * place would put 419 KNM questions inside the A2 and B1 tabs as well — where they are not
+ * part of the catalogue those tabs count.
  */
-function atLevel(rowLevel: Level | null, tab: Level): boolean {
-  return rowLevel === null || rowLevel === tab;
+function atLevel(rowLevel: Level | null, tab: Level | null): boolean {
+  return rowLevel === tab;
 }
 
 /**
@@ -126,15 +132,19 @@ export default function ContentTable({
 }: {
   rows: ContentRow[];
   locale: string;
-  level: Level;
+  /** `null` is the KNM tab — see `AdminLevel`. */
+  level: Level | null;
   authoring: AuthoringContext;
   /** `?onderdeel=` — how the exam builder deep-links into the right tab. */
   initialSkill?: string;
 }) {
   const router = useRouter();
 
+  /** The onderdeel tabs of this catalogue: the four taalonderdelen, or KNM alone. */
+  const tabs = useMemo(() => catalogueOnderdelen(level), [level]);
+
   const [skill, setSkill] = useState<string>(
-    SKILLS.find(s => s.slug === initialSkill)?.slug ?? SKILLS[0].slug
+    tabs.find(s => s.slug === initialSkill)?.slug ?? tabs[0].slug
   );
   const [examFilter, setExamFilter] = useState<number[]>([]);
   const [statusFilter, setStatusFilter] = useState<string[]>([]);
@@ -485,7 +495,7 @@ export default function ContentTable({
     <div className="space-y-4">
       <Tabs value={skill} onValueChange={setSkill}>
         <TabsList>
-          {SKILLS.map(s => (
+          {tabs.map(s => (
             <TabsTrigger key={s.slug} value={s.slug}>
               {SKILL_LABELS[s.slug]}
               <span className="ml-2 text-xs tabular-nums text-on-surface-variant">
@@ -620,7 +630,7 @@ export default function ContentTable({
                   variant="outline"
                   onClick={() =>
                     router.push(
-                      `/${locale}/admin/fragmenten/nieuw?niveau=${level}&onderdeel=${skill}`
+                      `/${locale}/admin/fragmenten/nieuw?niveau=${levelParam(level)}&onderdeel=${skill}`
                     )
                   }
                   disabled={!backlogExamId}

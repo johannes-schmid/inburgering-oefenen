@@ -5,7 +5,7 @@ import { getTranslations } from 'next-intl/server';
 import { routing } from '@/i18n/routing';
 import FaqAccordion from '@/components/FaqAccordion';
 import { SectionHeader } from '@/components/site';
-import { DEFAULT_LEVEL, SKILLS, getFormat } from '@/data/skills';
+import { DEFAULT_LEVEL, KNM_THEMES, SKILLS, getFormat } from '@/data/skills';
 import JsonLd from '@/components/JsonLd';
 import HeroShowcase from './_components/HeroShowcase';
 import KennisbankCards, { type KennisbankCard } from './_components/KennisbankCards';
@@ -184,7 +184,12 @@ export default async function HomePage({ params }: Props) {
        `oefenexamen/[level]/[skill]` and the `LEVELS` loop in `app/sitemap.ts` are one decision
        in four files and move together. */
     { key: 'track_b1', live: true },
-    { key: 'track_knm', live: false },
+    /* KNM went live 2026-08-24, when its content moved across from knmoefenen.nl: ten
+       oefenexamens, seven lesmodules and 366 woordkaarten, all authored on that platform by
+       the same docent. This chip, the tile below, `TRACKS` on `/platform`, the KNM rows in
+       `app/sitemap.ts` and `lib/llms.ts`, and the table at the top of `CLAUDE.md` are one
+       decision in six places and move together. */
+    { key: 'track_knm', live: true },
     { key: 'track_ona', live: false },
   ] as const;
 
@@ -522,11 +527,17 @@ export default async function HomePage({ params }: Props) {
               </div>
             </div>
 
-            {/* ── KNM — ready, but still served from knmoefenen.nl ──
-                The link leaves the site on purpose: the content exists there and the migration is
-                the owner's next job, so the honest tile is one that says where it is now rather
-                than one that promises it here. When KNM lands as the fifth onderdeel, this becomes
-                an internal href and the note comes off. */}
+            {/* ── KNM — the fifth onderdeel, live here since 2026-08-24 ──
+                The CTA used to leave the site for knmoefenen.nl, because that was where the
+                content was. It is here now, so the link is internal and the note states the
+                catalogue instead of an address. knmoefenen.nl is deliberately still up and is
+                **not** redirected — CLAUDE.md keeps it as a ranking asset until KNM's rankings
+                hold on this domain.
+
+                The chips follow A2's rule: derived from `KNM_THEMES`, never typed, so a renamed
+                or added thema cannot leave a stale string on the most-linked page on the site.
+                They point at the kennisgidsen — public, no account — rather than at the lesson
+                modules, which need one. */}
             <div
               className="relative overflow-hidden rounded-2xl p-5 flex flex-col lg:min-h-[20rem]"
               style={{ background: 'var(--color-secondary)', boxShadow: 'var(--shadow-ambient)' }}
@@ -540,12 +551,24 @@ export default async function HomePage({ params }: Props) {
                 </h3>
                 <p className="text-sm leading-relaxed text-white/75 m-0">{t('blocks_knm_desc')}</p>
 
-                <p className="text-[0.625rem] uppercase tracking-widest font-bold text-white/70 m-0 mt-5 mb-2">
+                <ul className="flex flex-wrap gap-1.5 list-none p-0 m-0 mt-4 mb-2">
+                  {KNM_THEMES.map(theme => (
+                    <li key={theme.id}>
+                      <a
+                        href={`/${locale}/knm/${theme.guideSlug}`}
+                        className="block-chip inline-flex rounded-full px-2.5 py-1 text-[0.6875rem] font-semibold text-white/90 bg-white/12 no-underline"
+                      >
+                        {theme.title}
+                      </a>
+                    </li>
+                  ))}
+                </ul>
+
+                <p className="text-[0.625rem] uppercase tracking-widest font-bold text-white/80 m-0 mt-3 mb-2">
                   {t('blocks_knm_note')}
                 </p>
                 <a
-                  href="https://knmoefenen.nl"
-                  rel="noopener"
+                  href={`/${locale}/oefenexamen/knm`}
                   className="block-cta mt-auto inline-flex items-center justify-center gap-2 rounded-full px-5 py-2.5 no-underline font-headline font-bold text-sm text-white bg-white/22"
                 >
                   {t('blocks_knm_cta')}

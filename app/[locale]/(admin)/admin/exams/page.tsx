@@ -1,12 +1,20 @@
 import Link from 'next/link';
 import { createClient } from '@/lib/supabase/server';
-import { SKILLS, formatCount, formatRules, getFormat, levelLabel } from '@/data/skills';
-import { levelFromSearch } from '@/lib/admin/nav';
+import { catalogueOnderdelen, formatCount, formatOf, rulesOf } from '@/data/skills';
+import { adminLevelLabel, levelFromSearch } from '@/lib/admin/nav';
+import { fetchAll } from '@/lib/admin/fetch-all';
 import { isBacklog } from '@/lib/admin/backlog';
 import { fetchExamSetup } from '@/lib/admin/exam-setup-server';
 import ExamSetupButton from './_components/ExamSetupButton';
 
 export const revalidate = 0;
+
+/** One `stimuli` row as this page tallies it: its exam, its tekstsoort, and that soort's name. */
+type StimulusTallyRow = {
+  exam_id: number;
+  section_id: number | null;
+  sections: { name_nl: string } | null;
+};
 
 type ExamRow = {
   id: number;
@@ -42,16 +50,24 @@ export default async function ExamsPage({
   const level = levelFromSearch((await searchParams).niveau);
   const supabase = await createClient();
 
-  const [examsRes, questionsRes, tasksRes, stimuliRes] = await Promise.all([
-    supabase.from('exams').select('id, level, skill, number, title, is_free, published').order('level').order('skill').order('number'),
-    supabase.from('questions').select('exam_id'),
-    supabase.from('open_tasks').select('exam_id'),
+  // All four page through `fetchAll`, because PostgREST caps a plain select at 1,000 rows and
+  // says nothing about it — see the note there. `questions` passed that cap and the item counts
+  // on this very grid went quietly wrong.
+  const [exams, questionRows, taskRows, stimulusRows] = await Promise.all([
+    fetchAll<ExamRow>((from, to) =>
+      supabase.from('exams').select('id, level, skill, number, title, is_free, published')
+        .order('level').order('skill').order('number').range(from, to)),
+    fetchAll<{ exam_id: number }>((from, to) =>
+      supabase.from('questions').select('exam_id').range(from, to)),
+    fetchAll<{ exam_id: number }>((from, to) =>
+      supabase.from('open_tasks').select('exam_id').range(from, to)),
     // section_id and the section name come along so the card can show the tekstsoort mix —
     // "is examen 3 the right shape?" is not answerable from a total.
-    supabase.from('stimuli').select('exam_id, section_id, sections(name_nl)'),
+    fetchAll<StimulusTallyRow>((from, to) =>
+      supabase.from('stimuli').select('exam_id, section_id, sections(name_nl)')
+        .range(from, to) as unknown as PromiseLike<{ data: StimulusTallyRow[] | null; error: unknown }>),
   ]);
 
-  const exams = (examsRes.data ?? []) as ExamRow[];
   const tally = (rows: { exam_id: number }[] | null) => {
     const acc: Record<number, number> = {};
     for (const r of rows ?? []) acc[r.exam_id] = (acc[r.exam_id] ?? 0) + 1;
@@ -64,12 +80,12 @@ export default async function ExamsPage({
    * page is the surface whose scope actually matches them. Four parallel reads, admin-only.
    */
   const setups = Object.fromEntries(
-    await Promise.all(SKILLS.map(async s => [s.slug, await fetchExamSetup(level, s.slug)] as const)),
+    await Promise.all(catalogueOnderdelen(level).map(async s => [s.slug, await fetchExamSetup(level, s.slug)] as const)),
   );
 
-  const questionCount = tally(questionsRes.data as { exam_id: number }[] | null);
-  const taskCount = tally(tasksRes.data as { exam_id: number }[] | null);
-  const stimulusCount = tally(stimuliRes.data as { exam_id: number }[] | null);
+  const questionCount = tally(questionRows);
+  const taskCount = tally(taskRows);
+  const stimulusCount = tally(stimulusRows);
 
   /**
    * Per exam, how many fragments of each tekstsoort.
@@ -78,9 +94,8 @@ export default async function ExamsPage({
    * with no tekstsoort is the gap the docent most needs to see, and silently omitting it would
    * make an exam look tidier than it is.
    */
-  type StimulusRow = { exam_id: number; section_id: number | null; sections: { name_nl: string } | null };
   const categories: Record<number, Record<string, number>> = {};
-  for (const r of (stimuliRes.data ?? []) as unknown as StimulusRow[]) {
+  for (const r of stimulusRows) {
     const name = r.sections?.name_nl ?? 'Geen tekstsoort';
     categories[r.exam_id] ??= {};
     categories[r.exam_id][name] = (categories[r.exam_id][name] ?? 0) + 1;
@@ -90,7 +105,8 @@ export default async function ExamsPage({
     <div>
       <div className="mb-8">
         <p className="font-headline text-xs font-bold uppercase tracking-[0.08em] text-secondary">
-          Niveau {levelLabel(level)}
+          {/* "Niveau KNM" would be a category error — KNM has no level. */}
+          {level === null ? 'KNM' : `Niveau ${adminLevelLabel(level)}`}
         </p>
         <h1 className="text-2xl font-headline font-bold text-on-surface">Examens</h1>
         <p className="text-sm text-on-surface-variant mt-1">
@@ -101,7 +117,7 @@ export default async function ExamsPage({
       <div className="space-y-12">
         <div>
           <div className="space-y-9">
-        {SKILLS.map(skill => {
+        {catalogueOnderdelen(level).map(skill => {
           const forSkill = exams.filter(e => e.level === level && e.skill === skill.slug);
           // The backlog is an exam row but not an oefenexamen: it must never be an eleventh card in
           // this grid. See lib/admin/backlog.ts.
@@ -114,10 +130,10 @@ export default async function ExamsPage({
           // `null` where DUO's format for this level has not been verified — the progress bar
           // and the "complete" check below both fall back to "unknown" rather than to zero,
           // which would mark every empty B1 exam as finished.
-          const { itemCount } = getFormat(level, skill.slug);
+          const { itemCount = null, durationMinutes = null } = formatOf(level, skill.slug) ?? {};
           // The authoring rules for this pair; `stimulusCount` is null where DUO's shape has
           // not been worked out, and renders as an em dash rather than a zero.
-          const rules = formatRules(level, skill.slug);
+          const rules = rulesOf(level, skill.slug);
 
           return (
             <section key={skill.slug}>
@@ -139,7 +155,7 @@ export default async function ExamsPage({
                 <div className="flex items-center gap-3">
                   <p className="text-xs text-on-surface-variant m-0">
                     {formatCount(itemCount)} {open ? 'opdrachten' : 'vragen'} per examen ·{' '}
-                    {formatCount(getFormat(level, skill.slug).durationMinutes)} min
+                    {formatCount(durationMinutes)} min
                     {/* Only stated when the ten agree — see `ExamDefaults`. */}
                     {setups[skill.slug].defaults.passThresholdPct !== null &&
                       ` · geslaagd vanaf ${setups[skill.slug].defaults.passThresholdPct}%`}

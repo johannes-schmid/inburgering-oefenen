@@ -386,3 +386,181 @@ export function formatRange(range: [number, number] | null): string {
   const [lo, hi] = range;
   return lo === hi ? String(lo) : `${lo}–${hi}`;
 }
+
+/* ═══════════════════════════════════════════════════════════════════════════
+ * KNM — the fifth onderdeel, and the one that is not levelled
+ *
+ * Added 2026-08-24, when the content moved across from knmoefenen.nl. Everything above
+ * this line still means exactly what it did: **`SKILLS`, `SkillSlug`, `FORMATS`, `RULES`
+ * and `TASK_RULES` are the four *taalonderdelen*, examined per CEFR level.**
+ *
+ * That is deliberate, and it is the whole reason KNM lives down here rather than as a
+ * fifth entry in `SKILLS`. Roughly eighty modules read those exports, and almost all of
+ * them are per-level: `skillsAtLevel(level)`, `Record<Level, Record<SkillSlug, …>>`,
+ * `fetchExamsForSkill(level, skill)`, and — most consequentially —
+ * `priceForSelection()`, which reads `SKILLS.length` to decide that a basket holds a
+ * *complete level* and therefore gets the bundle price. Widening `SKILLS` would have
+ * silently made the A2 bundle unreachable (four of five is no longer complete) and
+ * turned every "vier onderdelen" string on the site into a wrong number, with nothing
+ * failing to say so.
+ *
+ * So KNM is its own thing, and the union `OnderdeelSlug` is what a surface uses when it
+ * genuinely means "anything the product sells". Reach for `SkillSlug` by default; reach
+ * for `OnderdeelSlug` only where KNM really belongs.
+ *
+ * ## What "not levelled" costs, concretely
+ *
+ * `exams.level IS NULL` for every KNM exam, enforced by `exams_level_matches_skill()`
+ * against `skills.is_levelled`. DUO does not examine KNM at A2 versus B1 — one exam
+ * serves both — so filing it under A2 would hide it from B1 candidates and drag it into
+ * the per-level bundle. The consequences in code, all handled:
+ *
+ *   - `.eq('level', …)` never matches NULL, so every query for KNM must use `.is('level',
+ *     null)`. `levelFilter()` in `lib/exams.ts` is the one place that branch lives.
+ *   - Its URLs carry no level: `/oefenexamen/knm/[nummer]`, `/dashboard/knm`. The static
+ *     `knm` segment shadows the `[level]` dynamic one, which is what makes that work.
+ *   - It is its own module in `lib/pricing.ts` at the plain module price, outside both
+ *     level bundles (owner's decision, 2026-08-24).
+ *
+ * ## Where its numbers come from
+ *
+ * `durationMinutes: 45` is DUO's published length for het examen Kennis van de Nederlandse
+ * Maatschappij. **`itemCount: 40` is ours, not DUO's**: the 419-question bank divides into
+ * ten sittings of forty, with nineteen left in the backlog. Never restate 40 as a DUO norm —
+ * the same discipline `SEO/facts.md` §1 imposes on the A2 counts. Mirrored by the
+ * `exam_formats` row in `20260824120000_knm_onderdeel.sql`; change both together.
+ * ═══════════════════════════════════════════════════════════════════════════ */
+
+export const KNM_SLUG = 'knm' as const;
+export type KnmSlug = typeof KNM_SLUG;
+
+/** Anything the product sells as an onderdeel: the four taalonderdelen, plus KNM. */
+export type OnderdeelSlug = SkillSlug | KnmSlug;
+
+/**
+ * KNM's identity and format in one object, because there is only one of it.
+ *
+ * `isLevelled: false` and `requiresStimulus: false` mirror its `skills` row: a KNM question
+ * is a single prompt with three options and nothing above it, which is what makes
+ * `questions.stimulus_id` nullable for this onderdeel and this onderdeel only.
+ */
+export type KnmOnderdeel = Omit<Skill, 'slug' | 'key'> & SkillFormat & { slug: KnmSlug; key: KnmSlug };
+
+export const KNM: KnmOnderdeel = {
+  slug: KNM_SLUG,
+  key: KNM_SLUG,
+  scoring: 'mcq',
+  requiresStimulus: false,
+  isLevelled: false,
+  itemCount: 40,
+  durationMinutes: 45,
+  examCount: 10,
+};
+
+/** The three or four options a KNM question offers. The whole bank is A/B/C. */
+export const KNM_RULES: SkillRules = { ...NO_RULES, options: [3, 3] };
+
+/**
+ * The seven KNM thema's the question bank is organised by.
+ *
+ * Three names for one thing, and each has a reason to exist:
+ *   - `title` is the official thema name, as DUO words it and as the kennisgids is titled;
+ *   - `guideSlug` is the public kennisgids at `/knm/[thema]` — TOFU, no account needed;
+ *   - `lessonSlug` is the lesson module at `/leren/[slug]` — the paid study surface.
+ *
+ * `id` is the join key: it is `sections.theme_id`, `leren_content.theme_id` and
+ * `word_cards.theme_id`, so a thema resolves to its questions, its lessons and its words.
+ *
+ * **DUO names eight thema's; this list has seven.** "Omgangsvormen, waarden en normen" has a
+ * kennisgids but no questions and no lesson module in the bank that came across, so it is not
+ * a thema *of the question bank* and listing it here would promise content that is not there.
+ * The gids is still reachable from the `/knm` hub.
+ */
+export const KNM_THEMES = [
+  { id: 1, title: 'Geschiedenis en Geografie',      guideSlug: 'geschiedenis-en-geografie',      lessonSlug: 'thema-1-geschiedenis-en-geografie' },
+  { id: 2, title: 'Wonen',                          guideSlug: 'wonen',                          lessonSlug: 'thema-2-wonen' },
+  { id: 3, title: 'Gezondheid en Gezondheidszorg',  guideSlug: 'gezondheid-en-gezondheidszorg',  lessonSlug: 'thema-3-gezondheid' },
+  { id: 4, title: 'Onderwijs en Opvoeding',         guideSlug: 'onderwijs-en-opvoeding',         lessonSlug: 'thema-4-onderwijs' },
+  { id: 5, title: 'Werk en Inkomen',                guideSlug: 'werk-en-inkomen',                lessonSlug: 'thema-5-werk' },
+  { id: 6, title: 'Instanties',                     guideSlug: 'instanties',                     lessonSlug: 'thema-6-instanties' },
+  { id: 7, title: 'Staatsinrichting en Rechtsstaat', guideSlug: 'staatsinrichting-en-rechtsstaat', lessonSlug: 'thema-7-regering-en-wet' },
+] as const;
+
+export function isKnm(x: unknown): x is KnmSlug {
+  return x === KNM_SLUG;
+}
+
+export function isOnderdeelSlug(x: unknown): x is OnderdeelSlug {
+  return isSkillSlug(x) || isKnm(x);
+}
+
+/** Identity for any onderdeel, KNM included. Use `getSkill` where KNM cannot occur. */
+export function getOnderdeel(slug: string): Skill | KnmOnderdeel | undefined {
+  return isKnm(slug) ? KNM : getSkill(slug);
+}
+
+/**
+ * The heading a group of modules gets: `'A2'`, `'B1'`, or `'KNM'`.
+ *
+ * KNM's group is named for the onderdeel rather than for a level, because it has none —
+ * "Niveau KNM" is a category error on screen, and a blank heading loses the grouping.
+ */
+export function moduleGroupLabel(level: Level | null): string {
+  return level === null ? 'KNM' : levelLabel(level);
+}
+
+/**
+ * Every onderdeel a *level's* catalogue holds, plus KNM, which every level's candidate takes.
+ *
+ * For nav, marketing and the dashboard. Anything doing per-level arithmetic (pricing a bundle,
+ * counting a level's exams) must keep using `skillsAtLevel`, or KNM lands inside a number that
+ * is defined as "of one level".
+ */
+export function onderdelenAtLevel(level: Level): (LevelledSkill | KnmOnderdeel)[] {
+  return [...skillsAtLevel(level), KNM];
+}
+
+/**
+ * Is this KNM exam free to sit?
+ *
+ * Exam 1, matching A2's free tier — one full sitting behind an account. Mirrored by
+ * `exams.is_free`; this function decides what the UI offers and that column decides what
+ * the player allows, and they must agree.
+ */
+export function isFreeKnmExam(examNumber: number): boolean {
+  return examNumber === 1;
+}
+
+/* ── The catalogue axis: (level | null) × onderdeel ──────────────────────────
+ *
+ * Admin, and only admin, works in "which catalogue am I authoring" terms — A2, B1, or KNM.
+ * These three functions are that axis, and they exist so the admin pages do not each grow
+ * their own `level === null ? … : …` branch. `null` is KNM throughout, matching what
+ * `exams.level` and `sections.level` actually hold.
+ *
+ * Public and portal surfaces should keep using `skillsAtLevel` / `getFormat`, which are
+ * total functions over a concrete level and cannot silently be handed a KNM that they would
+ * then render as A2.
+ */
+
+/** The onderdelen in one catalogue: the four taalonderdelen, or KNM alone. */
+export function catalogueOnderdelen(level: Level | null): (Skill | KnmOnderdeel)[] {
+  return level === null ? [KNM] : SKILLS;
+}
+
+/** The format for one (catalogue, onderdeel), or `undefined` if that pair does not exist. */
+export function formatOf(level: Level | null, slug: OnderdeelSlug): SkillFormat | undefined {
+  if (level === null) return isKnm(slug) ? KNM : undefined;
+  return isKnm(slug) ? undefined : FORMATS[level][slug];
+}
+
+/** The authoring rules for one (catalogue, onderdeel). `NO_RULES` where the pair is unknown. */
+export function rulesOf(level: Level | null, slug: OnderdeelSlug): SkillRules {
+  if (level === null) return isKnm(slug) ? KNM_RULES : NO_RULES;
+  return isKnm(slug) ? NO_RULES : RULES[level][slug];
+}
+
+/** Is exam `n` of this (catalogue, onderdeel) free? */
+export function isFreeExamOf(level: Level | null, examNumber: number): boolean {
+  return level === null ? isFreeKnmExam(examNumber) : isFreeExam(level, examNumber);
+}

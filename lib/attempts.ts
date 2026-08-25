@@ -10,11 +10,23 @@
  * `attempt_no` is assigned by a trigger, so callers must not send it.
  */
 import type { SupabaseClient } from '@supabase/supabase-js';
-import type { SkillSlug } from '@/data/skills';
+import type { Level, OnderdeelSlug } from '@/data/skills';
 
 export type AttemptInput = {
   userId: string;
-  skill: SkillSlug;
+  skill: OnderdeelSlug;
+  /**
+   * The level this sitting belongs to. `null` for KNM, which is not levelled.
+   *
+   * **Required, not optional, and that closed a live bug.** `exam_attempts.level` carries
+   * `DEFAULT 'a2'`, no caller ever sent the column, and so every B1 sitting was recorded as
+   * A2 — `fetchPortalProgress` keys on (level, skill, number), so a B1 Lezen 3 attempt landed
+   * on the A2 Lezen 3 card. Nothing errored; the dashboard simply showed the wrong exam as
+   * sat. A default that is right for the original case is exactly the shape that fails
+   * silently when a second case arrives, and KNM would have been the third: `undefined`
+   * would have filed it under A2 as well.
+   */
+  level: Level | null;
   examNumber: number;
   /** Row id in `exams`, when the caller knows it. */
   examId?: number | null;
@@ -46,6 +58,7 @@ export async function recordExamAttempt(
       user_id: input.userId,
       exam_id: input.examId ?? null,
       skill: input.skill,
+      level: input.level,
       exam_number: input.examNumber,
       score: input.score,
       total: input.total,
@@ -79,7 +92,9 @@ export async function startExamAttempt(
   supabase: SupabaseClient,
   input: {
     userId: string;
-    skill: SkillSlug;
+    skill: OnderdeelSlug;
+    /** See `AttemptInput.level` — required, because the column's `DEFAULT 'a2'` lies. */
+    level: Level | null;
     examNumber: number;
     examId?: number | null;
     /**
@@ -96,6 +111,7 @@ export async function startExamAttempt(
       user_id: input.userId,
       exam_id: input.examId ?? null,
       skill: input.skill,
+      level: input.level,
       exam_number: input.examNumber,
       feedback_mode: input.feedbackMode ?? 'practice',
       started_at: new Date().toISOString(),

@@ -6,6 +6,7 @@
  * unpublished content — that is the whole point of the authoring surface.
  */
 import { createClient } from '@/lib/supabase/server';
+import { levelFilter } from '@/lib/exams';
 import { BACKLOG_EXAM_NUMBER } from '@/lib/admin/backlog';
 import { countAnswersPerQuestion } from '@/lib/admin/backlog-server';
 import type { Level } from '@/data/skills';
@@ -265,14 +266,15 @@ export async function fetchFragment(stimulusId: number): Promise<FragmentContext
 
 /** The context a *new* fragment needs: which backlog it lands in, and the tekstsoort options. */
 export async function fetchNewFragmentContext(
-  level: Level,
+  /** `null` is the KNM catalogue — see `AdminLevel` in lib/admin/nav.ts. */
+  level: Level | null,
   skill: string
 ): Promise<FragmentContext | null> {
   const supabase = await createClient();
-  const { data } = await supabase
-    .from('exams')
-    .select('id, number, level, skill')
-    .eq('level', level)
+  const { data } = await levelFilter(
+    supabase.from('exams').select('id, number, level, skill'),
+    level,
+  )
     .eq('skill', skill)
     .eq('number', BACKLOG_EXAM_NUMBER)
     .maybeSingle();

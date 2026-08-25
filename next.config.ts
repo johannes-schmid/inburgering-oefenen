@@ -43,17 +43,28 @@ const nextConfig: NextConfig = {
       // Every exam URL used to omit the level and mean A2. Those paths are indexed and
       // linked from e-mails already sent, so they 301 rather than 404.
       //
-      // The `(?!a2|b1)` guard is what stops these from matching the new URLs and looping:
-      // without it `/nl/oefenexamen/a2/lezen` would redirect to
-      // `/nl/oefenexamen/a2/a2/lezen`. Next matches redirects before routing, so a
-      // too-greedy pattern here takes down the page it is meant to preserve.
+      // **The pattern is an allowlist of the four taalonderdelen, not a negative lookahead.**
+      //
+      // It used to be `:skill((?!a2$|b1$)[^/]+)`, and that guard is subtly wrong: the `$`
+      // anchors against the *whole remaining path*, not against the segment, so it only ever
+      // excluded a value that ended the URL. The two-segment rule below therefore had no
+      // working guard at all — it was saved only by the levelled URLs having one more segment
+      // than it matches. KNM is the case that exposed it: `/oefenexamen/knm/1` is exactly the
+      // two-segment legacy shape, so it 308'd to `/oefenexamen/a2/knm/1`, which is not a route.
+      // The whole onderdeel 404'd while the build output listed it as present.
+      //
+      // An allowlist cannot have that failure mode. These four slugs are the only ones that
+      // ever appeared in an unlevelled URL, so naming them is also the honest description of
+      // what is being preserved — and a fifth onderdeel can never accidentally match it.
+      // Redirects are matched *before* the App Router, so a static `knm` segment shadowing
+      // `[level]` does not save these; the pattern has to be right here.
       {
-        source: '/:locale(nl|en|ar)/oefenexamen/:skill((?!a2$|b1$)[^/]+)',
+        source: '/:locale(nl|en|ar)/oefenexamen/:skill(lezen|luisteren|schrijven|spreken)',
         destination: '/:locale/oefenexamen/a2/:skill',
         permanent: true,
       },
       {
-        source: '/:locale(nl|en|ar)/oefenexamen/:skill((?!a2$|b1$)[^/]+)/:number(\\d+)',
+        source: '/:locale(nl|en|ar)/oefenexamen/:skill(lezen|luisteren|schrijven|spreken)/:number(\\d+)',
         destination: '/:locale/oefenexamen/a2/:skill/:number',
         permanent: true,
       },

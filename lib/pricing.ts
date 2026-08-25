@@ -13,8 +13,11 @@
  * subscription); entitlement is `lib/entitlements.ts`. `PRODUCTS` in `lib/api-constants.ts` is
  * now only read to describe *historic* one-off payments — nothing sells those tiers any more.
  */
-import { LEVELS, SKILLS, getFormat, type Level, type SkillSlug } from '@/data/skills';
-import { moduleId, type ModuleId } from './entitlements';
+import {
+  KNM, KNM_SLUG, LEVELS, SKILLS, getFormat, isKnm,
+  type KnmSlug, type Level, type SkillSlug,
+} from '@/data/skills';
+import { KNM_MODULE_ID, moduleId, type ModuleId } from './entitlements';
 
 /** Price of a single module, per month, in cents. */
 export const MODULE_PRICE_CENTS = 995;
@@ -53,8 +56,16 @@ export type ModuleSlug = ModuleId;
 
 export type ModuleOffer = {
   slug: ModuleSlug;
-  level: Level;
-  skill: SkillSlug;
+  /**
+   * `null` for KNM, which DUO does not examine per CEFR level.
+   *
+   * This is the field the bundle arithmetic keys on, so the null is load-bearing rather than
+   * cosmetic: `priceForSelection` counts a level complete when all four of *its* onderdelen
+   * are in the basket, and a KNM module that claimed a level would make three taalonderdelen
+   * plus KNM price as a full bundle.
+   */
+  level: Level | null;
+  skill: SkillSlug | KnmSlug;
   priceCents: number;
   /** Practice exams included — all of them for this skill at this level. */
   examCount: number;
@@ -64,7 +75,7 @@ export type ModuleOffer = {
   hasRubricFeedback: boolean;
 };
 
-export const MODULES: ModuleOffer[] = LEVELS.flatMap(level =>
+const LEVELLED_MODULES: ModuleOffer[] = LEVELS.flatMap(level =>
   SKILLS.map(skill => {
     const fmt = getFormat(level, skill.slug);
     return {
@@ -81,12 +92,48 @@ export const MODULES: ModuleOffer[] = LEVELS.flatMap(level =>
   }),
 );
 
+/**
+ * KNM, sold as its own module at the plain module price and **outside both level bundles**
+ * (owner's decision, 2026-08-24).
+ *
+ * Leaving it out of the bundle is the honest reading of what the bundle is: "de vier
+ * taalonderdelen van één niveau", which is what the copy on /premium says and what
+ * `BUNDLE_PAID_MODULES` counts. Folding KNM in would either make that sentence false or
+ * quietly reprice the bundle — and a candidate taking A2 and KNM is a different basket from
+ * one taking A2 alone, not a discounted version of it.
+ */
+const KNM_MODULE: ModuleOffer = {
+  slug: KNM_MODULE_ID,
+  level: null,
+  skill: KNM_SLUG,
+  priceCents: MODULE_PRICE_CENTS,
+  examCount: KNM.examCount,
+  itemCount: KNM.itemCount === null ? null : KNM.itemCount * KNM.examCount,
+  hasRubricFeedback: false,
+};
+
+export const MODULES: ModuleOffer[] = [...LEVELLED_MODULES, KNM_MODULE];
+
 export function getModule(slug: string): ModuleOffer | undefined {
   return MODULES.find(m => m.slug === slug);
 }
 
-export function modulesForLevel(level: Level): ModuleOffer[] {
-  return MODULES.filter(m => m.level === level);
+/**
+ * A module that definitely has a level — everything except KNM.
+ *
+ * Narrowed rather than cast at each call site: `courseId(locale, level, skill)` and the
+ * per-level marketing copy all need a concrete `Level`, and a cast there would let a KNM
+ * module through as A2 with no error and a wrong `@id` in the page's structured data.
+ */
+export type LevelledModuleOffer = ModuleOffer & { level: Level; skill: SkillSlug };
+
+export function modulesForLevel(level: Level): LevelledModuleOffer[] {
+  return MODULES.filter((m): m is LevelledModuleOffer => m.level === level);
+}
+
+/** The KNM module. Its own accessor so no caller has to know its id is a bare slug. */
+export function knmModule(): ModuleOffer {
+  return KNM_MODULE;
 }
 
 /** Every practice exam at one level — what "alle oefenexamens" means in that level's copy. */
@@ -133,6 +180,10 @@ export function priceForSelection(selection: ModuleSelection): number {
     if (n === 0) continue;
     total += n === SKILLS.length ? BUNDLE_PRICE_CENTS : n * MODULE_PRICE_CENTS;
   }
+  // KNM belongs to no level, so the loop above never sees it. Added at the plain price —
+  // and added *explicitly*, because a module the loop silently skips would be a module the
+  // customer gets for nothing.
+  if (unique.includes(KNM_MODULE_ID)) total += MODULE_PRICE_CENTS;
   return total;
 }
 
@@ -162,7 +213,13 @@ export function parseSelection(raw: unknown): ModuleSelection {
   const out: ModuleSlug[] = [];
   for (const x of raw) {
     if (typeof x !== 'string') continue;
-    const candidate = (SKILL_SLUG_SET.has(x) ? moduleId('a2', x as SkillSlug) : x) as ModuleSlug;
+    // `knm` is a bare slug that is *not* an A2 module — checked first, or it becomes `a2:knm`,
+    // which matches nothing and prices to zero.
+    const candidate = (isKnm(x)
+      ? KNM_MODULE_ID
+      : SKILL_SLUG_SET.has(x)
+        ? moduleId('a2', x as SkillSlug)
+        : x) as ModuleSlug;
     if (MODULES.some(m => m.slug === candidate)) out.push(candidate);
   }
   return [...new Set(out)];

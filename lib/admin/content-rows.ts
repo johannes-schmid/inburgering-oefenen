@@ -12,6 +12,7 @@
  * scoring changes.
  */
 import { createClient } from '@/lib/supabase/server';
+import { fetchAll } from './fetch-all';
 import type { Level, SkillSlug } from '@/data/skills';
 
 export type ContentKind = 'question' | 'task';
@@ -80,8 +81,11 @@ export async function fetchContentRows(): Promise<ContentRow[]> {
 
   // Two round trips rather than one view: the shapes share almost no columns, and a UNION view
   // would have to null-pad both sides and be maintained alongside every column either table gains.
+  // Both page through `fetchAll`: PostgREST caps a plain select at 1,000 rows silently, and
+  // this list passed that cap. The missing items were simply absent from the only screen that
+  // lists them — no error, no empty state, just a shorter table. See lib/admin/fetch-all.ts.
   const [questions, tasks] = await Promise.all([
-    supabase
+    fetchAll<QRaw>((from, to) => supabase
       .from('questions')
       .select(
         'id, sort_order, prompt, explanation, option_layout, review_status, updated_at, prompt_audio_url, ' +
@@ -93,17 +97,25 @@ export async function fetchContentRows(): Promise<ContentRow[]> {
           // screen that shows it. `questions.exam_id` is NOT NULL, so the exam is always
           // there whether the stimulus is or not.
           'exams!inner(level, skill, number, published), ' +
+          // The question's *own* tekstsoort, for a standalone question (KNM). It is NULL
+          // wherever a stimulus exists — there the fragment owns the genre, because a text
+          // shared by three questions has one. Reading only through the stimulus filed all
+          // 419 KNM questions under "Geen tekstsoort", which is the chip the docent scans
+          // for actual gaps.
+          'sections(name_nl), ' +
           'stimuli(id, sort_order, title, kind, audio_url, sections(name_nl))'
       )
-      .order('id'),
-    supabase
+      .order('id')
+      .range(from, to) as unknown as PromiseLike<{ data: QRaw[] | null; error: unknown }>),
+    fetchAll<TRaw>((from, to) => supabase
       .from('open_tasks')
       .select(
         'id, sort_order, skill, task_type, title, prompt_html, image_usage, review_status, updated_at, ' +
           'rubric_id, model_answer, prompt_audio_url, ' +
           'exams!inner(level, number, published), open_task_images(id), sections(name_nl)'
       )
-      .order('id'),
+      .order('id')
+      .range(from, to) as unknown as PromiseLike<{ data: TRaw[] | null; error: unknown }>),
   ]);
 
   type QRaw = {
@@ -117,6 +129,7 @@ export async function fetchContentRows(): Promise<ContentRow[]> {
       id: number; sort_order: number; title: string | null; kind: string; audio_url: string | null;
       sections: { name_nl: string } | null;
     } | null;
+    sections: { name_nl: string } | null;
   };
 
   type TRaw = {
@@ -131,7 +144,7 @@ export async function fetchContentRows(): Promise<ContentRow[]> {
 
   const rows: ContentRow[] = [];
 
-  for (const q of (questions.data ?? []) as unknown as QRaw[]) {
+  for (const q of questions as unknown as QRaw[]) {
     const options = q.question_options ?? [];
     rows.push({
       uid: `question:${q.id}`,
@@ -156,11 +169,11 @@ export async function fetchContentRows(): Promise<ContentRow[]> {
       stimulusId: q.stimuli?.id ?? null,
       stimulusTitle: q.stimuli?.title ?? null,
       stimulusKind: q.stimuli?.kind ?? null,
-      sectionName: q.stimuli?.sections?.name_nl ?? null,
+      sectionName: q.stimuli?.sections?.name_nl ?? q.sections?.name_nl ?? null,
     });
   }
 
-  for (const t of (tasks.data ?? []) as unknown as TRaw[]) {
+  for (const t of tasks as unknown as TRaw[]) {
     const label =
       t.skill === 'spreken'
         ? `spreken · ${IMAGE_USAGE_LABEL[t.image_usage] ?? t.image_usage}`

@@ -41,6 +41,10 @@ export default function Footer() {
                 {tSkills(`${skill.key}.name`)}
               </Link>
             ))}
+            {/* KNM, one segment shallower because it is not levelled. */}
+            <Link href="/oefenexamen/knm" className="hover:text-white transition-colors no-underline">
+              {tSkills('knm.name')}
+            </Link>
             {/* The two pages the header links to. The bar is four plain links now, so the footer
                 is the only other site-wide route to them. */}
             <Link href="/platform" className="hover:text-white transition-colors no-underline">{t('platformOverview')}</Link>

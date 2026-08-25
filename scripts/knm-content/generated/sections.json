@@ -1,0 +1,389 @@
+[
+  {
+    "id": 1,
+    "topic": "Geschiedenis en Geografie",
+    "slug": "gg-gouden-eeuw",
+    "name_nl": "De Gouden Eeuw en handel",
+    "rationale": "Questions about the 17th-century Golden Age, the VOC, Amsterdam's canal houses, and Dutch wealth through trade.",
+    "sort_order": 1,
+    "created_at": "2026-05-30T12:42:21.695104+00:00"
+  },
+  {
+    "id": 2,
+    "topic": "Geschiedenis en Geografie",
+    "slug": "gg-geografie-provincies",
+    "name_nl": "Geografie, provincies en transport",
+    "rationale": "Questions about Dutch provinces, capital cities, water management (polders, Deltaworks, Afsluitdijk), and public transport.",
+    "sort_order": 2,
+    "created_at": "2026-05-30T12:42:21.695104+00:00"
+  },
+  {
+    "id": 3,
+    "topic": "Geschiedenis en Geografie",
+    "slug": "gg-wo2-holocaust",
+    "name_nl": "Tweede Wereldoorlog en Holocaust",
+    "rationale": "Questions about German occupation, the Holocaust, liberation, and post-war legislation against antisemitism.",
+    "sort_order": 3,
+    "created_at": "2026-05-30T12:42:21.695104+00:00"
+  },
+  {
+    "id": 4,
+    "topic": "Geschiedenis en Geografie",
+    "slug": "gg-slavernij-kolonies",
+    "name_nl": "Slavernij, koloniën en migratie",
+    "rationale": "Questions about Dutch colonial history, slavery, Keti Koti, Suriname, and post-war labour migration.",
+    "sort_order": 4,
+    "created_at": "2026-05-30T12:42:21.695104+00:00"
+  },
+  {
+    "id": 5,
+    "topic": "Geschiedenis en Geografie",
+    "slug": "gg-eu-international",
+    "name_nl": "EU, NAVO en internationale organisaties",
+    "rationale": "Questions about the European Union, NATO, UN, EU membership rights, and international cooperation.",
+    "sort_order": 5,
+    "created_at": "2026-05-30T12:42:21.695104+00:00"
+  },
+  {
+    "id": 6,
+    "topic": "Geschiedenis en Geografie",
+    "slug": "gg-herdenkingen",
+    "name_nl": "Nationale herdenkingen en symbolen",
+    "rationale": "Questions about Dodenherdenking (4 mei), Bevrijdingsdag (5 mei), Keti Koti, the Wilhelmus, and other national commemorations.",
+    "sort_order": 6,
+    "created_at": "2026-05-30T12:42:21.695104+00:00"
+  },
+  {
+    "id": 7,
+    "topic": "Wonen",
+    "slug": "wo-huren",
+    "name_nl": "Huren, huurcontract en huurrecht",
+    "rationale": "Questions about renting a home, social housing, housing corporations, lease agreements, tenant rights, and the Huurcommissie.",
+    "sort_order": 7,
+    "created_at": "2026-05-30T12:42:21.695104+00:00"
+  },
+  {
+    "id": 8,
+    "topic": "Wonen",
+    "slug": "wo-kopen",
+    "name_nl": "Koopwoning, hypotheek en makelaar",
+    "rationale": "Questions about buying a home, mortgages, estate agents, and property ownership responsibilities.",
+    "sort_order": 8,
+    "created_at": "2026-05-30T12:42:21.695104+00:00"
+  },
+  {
+    "id": 9,
+    "topic": "Wonen",
+    "slug": "wo-verzekeringen",
+    "name_nl": "Verzekeringen voor de woning",
+    "rationale": "Questions about home insurance (opstal, inboedel, WA), when and how to use them, and insurance obligations.",
+    "sort_order": 9,
+    "created_at": "2026-05-30T12:42:21.695104+00:00"
+  },
+  {
+    "id": 10,
+    "topic": "Wonen",
+    "slug": "wo-energie-utilities",
+    "name_nl": "Energie, water en internet",
+    "rationale": "Questions about arranging energy and water contracts, variable versus fixed tariffs, internet providers, and annual bills.",
+    "sort_order": 10,
+    "created_at": "2026-05-30T12:42:21.695104+00:00"
+  },
+  {
+    "id": 11,
+    "topic": "Wonen",
+    "slug": "wo-afval-milieu",
+    "name_nl": "Afval scheiden en milieu",
+    "rationale": "Questions about waste separation, recycling, municipal collection rules, deposit returns, and chemical waste.",
+    "sort_order": 11,
+    "created_at": "2026-05-30T12:42:21.695104+00:00"
+  },
+  {
+    "id": 12,
+    "topic": "Wonen",
+    "slug": "wo-toeslagen-belasting",
+    "name_nl": "Huurtoeslag en gemeentelijke belastingen",
+    "rationale": "Questions about applying for rent allowance via Dienst Toeslagen, reporting income changes, and local taxes (OZB, riool).",
+    "sort_order": 12,
+    "created_at": "2026-05-30T12:42:21.695104+00:00"
+  },
+  {
+    "id": 13,
+    "topic": "Wonen",
+    "slug": "wo-samenwonen-trouwen",
+    "name_nl": "Samenwonen, trouwen en relatie",
+    "rationale": "Questions about cohabitation, marriage, registered partnership, legal rights, and municipality registration.",
+    "sort_order": 13,
+    "created_at": "2026-05-30T12:42:21.695104+00:00"
+  },
+  {
+    "id": 14,
+    "topic": "Gezondheid en Gezondheidszorg",
+    "slug": "gz-huisarts",
+    "name_nl": "Huisarts en eerste hulp",
+    "rationale": "Questions about registering with a GP, when to call the huisartsenpost, referrals, the role of the translator, and switching doctors.",
+    "sort_order": 14,
+    "created_at": "2026-05-30T12:42:21.695104+00:00"
+  },
+  {
+    "id": 15,
+    "topic": "Gezondheid en Gezondheidszorg",
+    "slug": "gz-zorgverzekering",
+    "name_nl": "Zorgverzekering en eigen risico",
+    "rationale": "Questions about mandatory health insurance, switching insurer, supplementary insurance, eigen risico, and claiming reimbursement.",
+    "sort_order": 15,
+    "created_at": "2026-05-30T12:42:21.695104+00:00"
+  },
+  {
+    "id": 16,
+    "topic": "Gezondheid en Gezondheidszorg",
+    "slug": "gz-apotheek-medicijnen",
+    "name_nl": "Apotheek, medicijnen en recept",
+    "rationale": "Questions about obtaining prescriptions, visiting the pharmacy, own contribution for medicines, and the role of the GP in prescribing.",
+    "sort_order": 16,
+    "created_at": "2026-05-30T12:42:21.695104+00:00"
+  },
+  {
+    "id": 17,
+    "topic": "Gezondheid en Gezondheidszorg",
+    "slug": "gz-specialist-tandarts",
+    "name_nl": "Specialist, tandarts en mondzorg",
+    "rationale": "Questions about referrals to specialists, dental care, the mondhygiënist, and how to register with a dentist.",
+    "sort_order": 17,
+    "created_at": "2026-05-30T12:42:21.695104+00:00"
+  },
+  {
+    "id": 18,
+    "topic": "Gezondheid en Gezondheidszorg",
+    "slug": "gz-zwangerschap-baby",
+    "name_nl": "Zwangerschap, bevalling en baby",
+    "rationale": "Questions about midwives, kraamzorg, the consultatiebureau, birth registration, organ donation, and Dutch birth traditions.",
+    "sort_order": 18,
+    "created_at": "2026-05-30T12:42:21.695104+00:00"
+  },
+  {
+    "id": 19,
+    "topic": "Gezondheid en Gezondheidszorg",
+    "slug": "gz-geestelijk-ouderenzorg",
+    "name_nl": "Geestelijke gezondheid en ouderenzorg",
+    "rationale": "Questions about mental health support (depression, psychologist), home care for elderly (WMO), and emergency numbers (112).",
+    "sort_order": 19,
+    "created_at": "2026-05-30T12:42:21.695104+00:00"
+  },
+  {
+    "id": 20,
+    "topic": "Onderwijs en Opvoeding",
+    "slug": "oo-schoolsysteem",
+    "name_nl": "Schoolsysteem en onderwijstypen",
+    "rationale": "Questions about the Dutch education structure from daycare through university, including vmbo, havo, vwo, mbo, and hbo admission requirements.",
+    "sort_order": 20,
+    "created_at": "2026-05-30T12:42:21.695104+00:00"
+  },
+  {
+    "id": 21,
+    "topic": "Onderwijs en Opvoeding",
+    "slug": "oo-leerplicht",
+    "name_nl": "Leerplicht, vakantie en verzuim",
+    "rationale": "Questions about compulsory schooling ages (5–16), kwalificatieplicht (to 18), holiday rules, and school absence permissions.",
+    "sort_order": 21,
+    "created_at": "2026-05-30T12:42:21.695104+00:00"
+  },
+  {
+    "id": 22,
+    "topic": "Onderwijs en Opvoeding",
+    "slug": "oo-ouders-school",
+    "name_nl": "Ouders en school betrokkenheid",
+    "rationale": "Questions about parent-teacher conversations, ten-minute interviews, parental participation in activities, and school fees.",
+    "sort_order": 22,
+    "created_at": "2026-05-30T12:42:21.695104+00:00"
+  },
+  {
+    "id": 23,
+    "topic": "Onderwijs en Opvoeding",
+    "slug": "oo-opvoeding-hulp",
+    "name_nl": "Opvoeding en jeugdhulp",
+    "rationale": "Questions about parental liability for minors' damage, child protection organisations, CJG, Raad voor Kinderbescherming, and jeugdzorg.",
+    "sort_order": 23,
+    "created_at": "2026-05-30T12:42:21.695104+00:00"
+  },
+  {
+    "id": 24,
+    "topic": "Onderwijs en Opvoeding",
+    "slug": "oo-kinderopvang-financien",
+    "name_nl": "Kinderopvang, toeslag en kinderbijslag",
+    "rationale": "Questions about daycare, kinderopvangtoeslag from Dienst Toeslagen, kinderbijslag from SVB, and studiefinanciering via DUO.",
+    "sort_order": 24,
+    "created_at": "2026-05-30T12:42:21.695104+00:00"
+  },
+  {
+    "id": 25,
+    "topic": "Onderwijs en Opvoeding",
+    "slug": "oo-feestdagen",
+    "name_nl": "Nederlandse feesten en tradities",
+    "rationale": "Questions about Dutch customs tied to education milestones and national celebrations: Sinterklaas, Kerst, Oud en Nieuw, and exam traditions.",
+    "sort_order": 25,
+    "created_at": "2026-05-30T12:42:21.695104+00:00"
+  },
+  {
+    "id": 26,
+    "topic": "Werk en Inkomen",
+    "slug": "wi-werk-zoeken",
+    "name_nl": "Werk zoeken en solliciteren",
+    "rationale": "Questions about finding vacancies, writing a CV and motivation letter, preparing for interviews, and the role of uitzendbureaus.",
+    "sort_order": 26,
+    "created_at": "2026-05-30T12:42:21.695104+00:00"
+  },
+  {
+    "id": 27,
+    "topic": "Werk en Inkomen",
+    "slug": "wi-arbeidscontract",
+    "name_nl": "Arbeidscontract en arbeidsvoorwaarden",
+    "rationale": "Questions about fixed and temporary contracts, part-time work, collective labour agreements (cao), and employment conditions.",
+    "sort_order": 27,
+    "created_at": "2026-05-30T12:42:21.695104+00:00"
+  },
+  {
+    "id": 28,
+    "topic": "Werk en Inkomen",
+    "slug": "wi-salaris-belasting",
+    "name_nl": "Salaris, belasting en jaaropgave",
+    "rationale": "Questions about bruto/netto salary, loonbelasting, the jaaropgave, and retaining payroll documents for the Belastingdienst.",
+    "sort_order": 28,
+    "created_at": "2026-05-30T12:42:21.695104+00:00"
+  },
+  {
+    "id": 29,
+    "topic": "Werk en Inkomen",
+    "slug": "wi-uitkering-uwv",
+    "name_nl": "WW-uitkering, bijstand en UWV",
+    "rationale": "Questions about unemployment benefit (WW), when and how to apply, obligations while receiving benefits, and the role of the UWV.",
+    "sort_order": 29,
+    "created_at": "2026-05-30T12:42:21.695104+00:00"
+  },
+  {
+    "id": 30,
+    "topic": "Werk en Inkomen",
+    "slug": "wi-zelfstandige-kvk",
+    "name_nl": "Zzp, eigen bedrijf en KvK",
+    "rationale": "Questions about starting a business, mandatory KvK registration, business plans, AOV insurance for self-employed, and pension.",
+    "sort_order": 30,
+    "created_at": "2026-05-30T12:42:21.695104+00:00"
+  },
+  {
+    "id": 31,
+    "topic": "Werk en Inkomen",
+    "slug": "wi-vakbond-or",
+    "name_nl": "Vakbond, OR en personeelsvereniging",
+    "rationale": "Questions about the role of trade unions, ondernemingsraad, personeelsvereniging, striking, and employee representation.",
+    "sort_order": 31,
+    "created_at": "2026-05-30T12:42:21.695104+00:00"
+  },
+  {
+    "id": 32,
+    "topic": "Werk en Inkomen",
+    "slug": "wi-inburgering-map",
+    "name_nl": "Inburgering, MAP en diplomawaardering",
+    "rationale": "Questions about the MAP module, IDW diploma recognition, and preparing newcomers for the Dutch labour market.",
+    "sort_order": 32,
+    "created_at": "2026-05-30T12:42:21.695104+00:00"
+  },
+  {
+    "id": 33,
+    "topic": "Instanties",
+    "slug": "in-gemeente",
+    "name_nl": "Gemeente, BRP en gemeentelijke diensten",
+    "rationale": "Questions about mandatory notifications to the municipality (moving, birth, death, marriage), and services like paspoort and rijbewijs.",
+    "sort_order": 33,
+    "created_at": "2026-05-30T12:42:21.695104+00:00"
+  },
+  {
+    "id": 34,
+    "topic": "Instanties",
+    "slug": "in-belasting-digid",
+    "name_nl": "Belastingdienst, DigiD en toeslagen",
+    "rationale": "Questions about filing tax returns, what taxes fund, DigiD usage, requesting toeslagen, and responding to Belastingdienst decisions.",
+    "sort_order": 34,
+    "created_at": "2026-05-30T12:42:21.695104+00:00"
+  },
+  {
+    "id": 35,
+    "topic": "Instanties",
+    "slug": "in-politie-veiligheid",
+    "name_nl": "Politie, veiligheid en identificatie",
+    "rationale": "Questions about police duties, ID obligation from age 14, when to call 112 vs 0900-8844, and stopping when ordered.",
+    "sort_order": 35,
+    "created_at": "2026-05-30T12:42:21.695104+00:00"
+  },
+  {
+    "id": 36,
+    "topic": "Instanties",
+    "slug": "in-ind-nationaliteit",
+    "name_nl": "IND, verblijfsvergunning en naturalisatie",
+    "rationale": "Questions about the IND, residence permits, naturalisation conditions, dual nationality rules, and BSN privacy.",
+    "sort_order": 36,
+    "created_at": "2026-05-30T12:42:21.695104+00:00"
+  },
+  {
+    "id": 37,
+    "topic": "Instanties",
+    "slug": "in-juridisch-ombudsman",
+    "name_nl": "Juridisch Loket en ombudsman",
+    "rationale": "Questions about the Juridisch Loket for free legal advice, the Nationale Ombudsman, and how to complain about government.",
+    "sort_order": 37,
+    "created_at": "2026-05-30T12:42:21.695104+00:00"
+  },
+  {
+    "id": 38,
+    "topic": "Instanties",
+    "slug": "in-uitkeringen-svb",
+    "name_nl": "Uitkeringen, bijstand en SVB",
+    "rationale": "Questions about bijstand from the municipality, WW rights and obligations, kinderbijslag from SVB, and voedselbank access.",
+    "sort_order": 38,
+    "created_at": "2026-05-30T12:42:21.695104+00:00"
+  },
+  {
+    "id": 39,
+    "topic": "Staatsinrichting en Rechtsstaat",
+    "slug": "sr-democratie-kiesrecht",
+    "name_nl": "Democratie, verkiezingen en kiesrecht",
+    "rationale": "Questions about active and passive voting rights, election types, who may vote in which elections, and whether voting is compulsory.",
+    "sort_order": 39,
+    "created_at": "2026-05-30T12:42:21.695104+00:00"
+  },
+  {
+    "id": 40,
+    "topic": "Staatsinrichting en Rechtsstaat",
+    "slug": "sr-machtenscheiding",
+    "name_nl": "Machtenscheiding en rechtsstaat",
+    "rationale": "Questions about the three branches of power, rule of law, government accountability, corruption, and appeal procedures.",
+    "sort_order": 40,
+    "created_at": "2026-05-30T12:42:21.695104+00:00"
+  },
+  {
+    "id": 41,
+    "topic": "Staatsinrichting en Rechtsstaat",
+    "slug": "sr-grondrechten",
+    "name_nl": "Grondrechten en vrijheden",
+    "rationale": "Questions about constitutional rights including freedom of religion, equality, privacy, freedom of expression, and self-determination.",
+    "sort_order": 41,
+    "created_at": "2026-05-30T12:42:21.695104+00:00"
+  },
+  {
+    "id": 42,
+    "topic": "Staatsinrichting en Rechtsstaat",
+    "slug": "sr-koningshuis",
+    "name_nl": "Koningshuis, symbolen en feestdagen",
+    "rationale": "Questions about King Willem-Alexander, Koningsdag, the Wilhelmus, and royal national symbols and traditions.",
+    "sort_order": 42,
+    "created_at": "2026-05-30T12:42:21.695104+00:00"
+  },
+  {
+    "id": 43,
+    "topic": "Staatsinrichting en Rechtsstaat",
+    "slug": "sr-strafrecht-normen",
+    "name_nl": "Strafrecht, normen en waarden",
+    "rationale": "Questions about what is punishable in the Netherlands (eerwraak, kindermishandeling, oproep tot geweld), legal norms, and the role of the judge.",
+    "sort_order": 43,
+    "created_at": "2026-05-30T12:42:21.695104+00:00"
+  }
+]

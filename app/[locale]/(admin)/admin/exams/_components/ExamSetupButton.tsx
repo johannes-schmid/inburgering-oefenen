@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import { Settings2 } from 'lucide-react';
-import type { Level, SkillSlug } from '@/data/skills';
+import type { Level, OnderdeelSlug, SkillSlug } from '@/data/skills';
 import type { ExamSetup } from '@/lib/admin/exam-setup';
 import ExamSetupSheet from './ExamSetupSheet';
 
@@ -23,11 +23,23 @@ export default function ExamSetupButton({
   skill,
   setup,
 }: {
-  level: Level;
-  skill: SkillSlug;
+  /**
+   * `null` for KNM — see the catalogue axis in data/skills.ts. The button renders **nothing**
+   * in that case, deliberately.
+   *
+   * Every panel inside the sheet saves with `.eq('level', level)`, and `.eq('level', null)`
+   * matches no rows in PostgREST while still returning 200 — so a KNM "Opslaan" would report
+   * success and change nothing, which is the exact failure this repo has already been bitten
+   * by twice (the RLS-denied UPDATE, and `fetchExamsForSkill`). KNM's format is set by
+   * `20260824120000_knm_onderdeel.sql`; making the sheet level-nullable is its own change.
+   */
+  level: Level | null;
+  skill: OnderdeelSlug;
   setup: ExamSetup;
 }) {
   const [open, setOpen] = useState(false);
+
+  if (level === null) return null;
 
   return (
     <>
@@ -42,7 +54,7 @@ export default function ExamSetupButton({
       <ExamSetupSheet
         open={open}
         level={level}
-        skill={skill}
+        skill={skill as SkillSlug}
         setup={setup}
         onClose={() => setOpen(false)}
       />

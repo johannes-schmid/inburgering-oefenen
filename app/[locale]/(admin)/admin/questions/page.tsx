@@ -1,7 +1,7 @@
 import { fetchContentRows } from '@/lib/admin/content-rows';
 import { fetchAuthoringContext } from '@/lib/admin/authoring';
-import { levelFromSearch } from '@/lib/admin/nav';
-import { levelLabel } from '@/data/skills';
+import { adminLevelLabel, levelFromSearch } from '@/lib/admin/nav';
+
 import ContentTable from './_components/ContentTable';
 
 export const revalidate = 0;
@@ -38,13 +38,13 @@ export default async function QuestionsPage({
     <div className="space-y-6">
       <header>
         <p className="font-headline text-xs font-bold tracking-[0.08em] text-secondary uppercase">
-          Niveau {levelLabel(level)}
+          {level === null ? 'KNM' : `Niveau ${adminLevelLabel(level)}`}
         </p>
         <h1 className="font-headline text-2xl font-extrabold tracking-tight text-on-surface">
           Vragen en opdrachten
         </h1>
         <p className="mt-1 max-w-2xl text-sm leading-relaxed text-on-surface-variant">
-          Alle items van de vier onderdelen. Klik op een rij om hem te bewerken, tekst te laten
+          Alle items van dit onderdeel. Klik op een rij om hem te bewerken, tekst te laten
           voorstellen of audio te genereren.
         </p>
       </header>

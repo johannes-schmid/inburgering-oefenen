@@ -1,5 +1,6 @@
 import { createClient } from '@/lib/supabase/server';
-import type { Level, SkillSlug } from '@/data/skills';
+import { levelFilter } from '@/lib/exams';
+import type { Level, OnderdeelSlug } from '@/data/skills';
 import type { ExamDefaults, ExamSetup, FormatRow, SectionRow, TaskRuleRow } from './exam-setup';
 
 /**
@@ -8,24 +9,28 @@ import type { ExamDefaults, ExamSetup, FormatRow, SectionRow, TaskRuleRow } from
  * `task_categories` is the outer side of the task-rule join on purpose: a category with no rule
  * row yet must still be offered, or a soort opgave could never be given rules for the first time.
  */
-export async function fetchExamSetup(level: Level, skill: SkillSlug): Promise<ExamSetup> {
+/**
+ * `level` is `Level | null` — `null` is KNM, which has no CEFR level. Every filter below goes
+ * through `levelFilter`, because `.eq('level', null)` matches nothing in PostgREST and would
+ * quietly return an empty setup for KNM rather than an error.
+ */
+export async function fetchExamSetup(level: Level | null, skill: OnderdeelSlug): Promise<ExamSetup> {
   const supabase = await createClient();
 
   const [formatRes, sectionRes, categoryRes, ruleRes, usageRes, examRes] = await Promise.all([
-    supabase
-      .from('exam_formats')
-      .select(
-        'level, skill, item_count, duration_seconds, part_count, items_per_part, stimulus_count, ' +
-        'questions_per_stimulus_min, questions_per_stimulus_max, options_min, options_max, ' +
-        'audio_seconds_min, audio_seconds_max, verified_note'
-      )
-      .eq('level', level)
+    levelFilter(
+      supabase
+        .from('exam_formats')
+        .select(
+          'level, skill, item_count, duration_seconds, part_count, items_per_part, stimulus_count, ' +
+          'questions_per_stimulus_min, questions_per_stimulus_max, options_min, options_max, ' +
+          'audio_seconds_min, audio_seconds_max, verified_note'
+        ),
+      level,
+    )
       .eq('skill', skill)
       .maybeSingle(),
-    supabase
-      .from('sections')
-      .select('id, level, topic, slug, name_nl, sort_order')
-      .eq('level', level)
+    levelFilter(supabase.from('sections').select('id, level, topic, slug, name_nl, sort_order'), level)
       .eq('topic', skill)
       .order('sort_order'),
     supabase
@@ -33,24 +38,22 @@ export async function fetchExamSetup(level: Level, skill: SkillSlug): Promise<Ex
       .select('skill, category, label_nl, sort_order')
       .eq('skill', skill)
       .order('sort_order'),
-    supabase
-      .from('exam_task_rules')
-      .select(
-        'level, skill, category, min_per_exam, max_per_exam, image_count, min_sentences, ' +
-        'bullets_min, bullets_max, record_seconds'
-      )
-      .eq('level', level)
-      .eq('skill', skill),
+    levelFilter(
+      supabase
+        .from('exam_task_rules')
+        .select(
+          'level, skill, category, min_per_exam, max_per_exam, image_count, min_sentences, ' +
+          'bullets_min, bullets_max, record_seconds'
+        ),
+      level,
+    ).eq('skill', skill),
     // How many fragments each tekstsoort holds, across every exam of this onderdeel — the
     // number that turns "verwijderen" from a guess into a decision.
     supabase.from('stimuli').select('section_id').eq('skill', skill),
     // The two settings the player actually reads. They live per exam, so they are summarised
     // here and only reported as a number when the ten oefenexamens agree — see `ExamDefaults`.
     // The backlog is excluded: exam 0 is a holding area and its duration means nothing.
-    supabase
-      .from('exams')
-      .select('duration_seconds, pass_threshold_pct, number')
-      .eq('level', level)
+    levelFilter(supabase.from('exams').select('duration_seconds, pass_threshold_pct, number'), level)
       .eq('skill', skill)
       .gt('number', 0),
   ]);

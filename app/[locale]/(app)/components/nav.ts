@@ -1,4 +1,4 @@
-import type { SkillSlug } from '@/data/skills';
+import type { OnderdeelSlug } from '@/data/skills';
 
 /**
  * Which portal page is current. A plain type in its own module so the shell (a client
@@ -6,4 +6,4 @@ import type { SkillSlug } from '@/data/skills';
  * other — a type exported from a `'use client'` file drags the whole module into the server
  * graph.
  */
-export type PortalNav = 'overview' | SkillSlug | 'profile';
+export type PortalNav = 'overview' | OnderdeelSlug | 'profile' | 'leren' | 'woordkaarten';
