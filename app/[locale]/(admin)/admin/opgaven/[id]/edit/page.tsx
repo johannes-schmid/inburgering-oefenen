@@ -1,12 +1,20 @@
-import Link from 'next/link';
 import { notFound } from 'next/navigation';
-import { ArrowLeft } from 'lucide-react';
 import { createClient } from '@/lib/supabase/server';
-import { fetchOpenTaskChoices } from '@/lib/admin/open-tasks';
+import { fetchOpenTaskChoices, fetchOpgaveNav } from '@/lib/admin/open-tasks';
 import OpgaveForm from '../../_components/OpgaveForm';
-import { TASK_TYPE_LABELS, type OpgaveDraft } from '../../_draft';
+import { type OpgaveDraft } from '../../_draft';
 
 export const revalidate = 0;
+
+/**
+ * One opgave, full page: the fields, a live candidate preview beside them, and the run of opgaven
+ * it belongs to in the header.
+ *
+ * Clicking a Schrijven or Spreken row in `/admin/questions` lands here rather than opening the
+ * drawer, for the same reason a fragment does: the drawer showed a fraction of an opgave at a
+ * time, and an opdracht is a text plus its bullets plus a form or a picture set plus a rubric —
+ * none of which can be judged without seeing the thing the candidate sees.
+ */
 
 export default async function EditOpgavePage({
   params,
@@ -86,26 +94,17 @@ export default async function EditOpgavePage({
     images,
   };
 
+  const nav = await fetchOpgaveNav(initial.exam_id!, initial.id!);
+
   return (
-    <div className="space-y-6">
-      <Link
-        href={`/${locale}/admin/opgaven`}
-        className="inline-flex items-center gap-1.5 text-sm text-on-surface-variant hover:text-on-surface transition-colors"
-      >
-        <ArrowLeft size={15} aria-hidden />
-        Opgaven
-      </Link>
-      <h1 className="font-headline text-2xl font-extrabold text-on-surface tracking-tight">
-        {initial.title || TASK_TYPE_LABELS[initial.task_type]}
-      </h1>
-      <OpgaveForm
-        initial={initial}
-        exams={choices.exams}
-        parts={choices.parts}
-        rubrics={choices.rubrics}
-        sections={choices.sections}
-        locale={locale}
-      />
-    </div>
+    <OpgaveForm
+      initial={initial}
+      exams={choices.exams}
+      parts={choices.parts}
+      rubrics={choices.rubrics}
+      sections={choices.sections}
+      nav={nav}
+      locale={locale}
+    />
   );
 }

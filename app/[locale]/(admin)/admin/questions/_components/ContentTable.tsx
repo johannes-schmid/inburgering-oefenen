@@ -39,7 +39,6 @@ import type { ContentRow } from '@/lib/admin/content-rows';
 import type { AuthoringContext, AuthoringStimulus } from '@/lib/admin/authoring';
 import { examLabel, isBacklog } from '@/lib/admin/backlog';
 import CatalogueProgress from './CatalogueProgress';
-import ContentSheet from './ContentSheet';
 
 const SKILL_LABELS: Record<string, string> = {
   lezen: 'Lezen',
@@ -150,7 +149,6 @@ export default function ContentTable({
   const [statusFilter, setStatusFilter] = useState<string[]>([]);
   const [onlyIncomplete, setOnlyIncomplete] = useState(false);
   const [query, setQuery] = useState('');
-  const [openUid, setOpenUid] = useState<string | null>(null);
   /**
    * A fragment is edited on its own page, not in a drawer — `/admin/fragmenten/[id]`.
    *
@@ -160,6 +158,34 @@ export default function ContentTable({
    */
   const openFragment = useCallback(
     (id: number) => router.push(`/${locale}/admin/fragmenten/${id}`),
+    [router, locale]
+  );
+  /**
+   * Every item is edited on a full page, never in the drawer — owner's instruction, 2026-08-27.
+   *
+   * Where that page is depends on what the item *is*, which is the whole point:
+   *
+   * - a **Schrijven/Spreken opgave** goes to `/admin/opgaven/[id]/edit`, which now carries a live
+   *   candidate preview, the review status and a walk to the next opgave;
+   * - an **MCQ question hanging off a fragment** goes to the *fragment* page with that question
+   *   opened. A Lezen question edited away from the text it is about is exactly what that page
+   *   exists to prevent, so it is not given a page of its own;
+   * - a **standalone question** (KNM has no stimulus) has no fragment to open, so it goes to
+   *   `/admin/questions/[id]/edit`.
+   *
+   * The drawer stays mounted for its other job — it is still what a row *previews* into from the
+   * exam builder — but nothing in this table opens it any more.
+   */
+  const openItem = useCallback(
+    (row: ContentRow) => {
+      if (row.kind === 'task') {
+        router.push(`/${locale}/admin/opgaven/${row.id}/edit`);
+      } else if (row.stimulusId) {
+        router.push(`/${locale}/admin/fragmenten/${row.stimulusId}?vraag=${row.id}`);
+      } else {
+        router.push(`/${locale}/admin/questions/${row.id}/edit`);
+      }
+    },
     [router, locale]
   );
   /** Collapsed fragments, by id. Expanded is the default — the nesting is the point. */
@@ -296,7 +322,7 @@ export default function ContentTable({
             onClick={e => {
               e.stopPropagation();
               if (r.kind === 'fragment') openFragment(r.stimulus.id);
-              else setOpenUid(r.row.uid);
+              else openItem(r.row);
             }}
             aria-label={r.kind === 'fragment' ? 'Fragment bewerken' : 'Item bewerken'}
             className="text-on-surface-variant hover:text-primary transition-colors p-1"
@@ -488,7 +514,6 @@ export default function ContentTable({
     getSortedRowModel: getSortedRowModel(),
   });
 
-  const open = rows.find(r => r.uid === openUid) ?? null;
   const fragmentCount = gridRows.filter(r => r.kind === 'fragment').length;
 
   return (
@@ -516,7 +541,7 @@ export default function ContentTable({
         onRowClick={row => {
           const r = row as GridRow;
           if (r.kind === 'fragment') openFragment(r.stimulus.id);
-          else setOpenUid(r.row.uid);
+          else openItem(r.row);
         }}
         emptyMessage="Geen items die aan deze filters voldoen."
       >
@@ -678,7 +703,6 @@ export default function ContentTable({
         </Frame>
       </DataGrid>
 
-      <ContentSheet row={open} locale={locale} onClose={() => setOpenUid(null)} />
     </div>
   );
 }

@@ -1,5 +1,19 @@
 'use client';
 
+/**
+ * ⚠️ NOTHING ROUTES HERE ANY MORE (2026-08-27).
+ *
+ * Every item in `/admin/questions` now opens on a full page — an opgave at
+ * `/admin/opgaven/[id]/edit`, a fragment-backed question at `/admin/fragmenten/[id]?vraag=`, a
+ * standalone one at `/admin/questions/[id]/edit`. `ContentTable` no longer imports this drawer, so
+ * it is unreachable.
+ *
+ * It is left on disk rather than deleted because it is the only surface that has been through a
+ * docent's hands, and the full-page editors have not yet. Delete it once they have — an
+ * unreachable second write path over the same rows is exactly the duplication this repo removed
+ * `ExamsGrid` and `QuestionsTable`'s drawer to avoid.
+ */
+
 import { useCallback, useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';

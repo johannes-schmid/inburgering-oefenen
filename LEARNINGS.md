@@ -2745,3 +2745,22 @@ code that was fine.
 **Lesson:** state that has to survive a remount cannot live in `useState` alone. Every page in
 this portal is a server component, so the sidebar is rebuilt on every navigation — a menu that
 remembers nothing closes itself the moment you use it.
+
+## 2026-08-27 — Elk item opent op een volle pagina, met preview, status en "volgende"
+**Changed:** `/admin/opgaven/[id]/edit` is een volledige editor geworden — sticky header met
+statuschip en vorige/volgende, formulier links (3/5), live kandidaat-preview rechts (2/5) via de
+nieuwe `opgaven/_components/OpgavePreview.tsx`. `fetchOpgaveNav()` in `lib/admin/open-tasks.ts`
+levert de buren; `ExamChoice` draagt nu `level`. `ContentTable` routeert elke rij naar een volle
+pagina (`openItem`) in plaats van de drawer; `ContentSheet` is losgekoppeld en gemarkeerd als
+onbereikbaar. `fragmenten/[id]` leest `?vraag=` en opent die vraag.
+**Outcome:** SUCCESS — `tsc` schoon, `next build` schoon, 274 unit tests groen, vier
+check-ui-auth-shots gelezen (schrijven, spreken, tabel-klik, `?vraag=`).
+**What worked / went wrong:** De preview was in eerste instantie onleesbaar. `.wr-split` en
+`.sp-split` klappen open op `@media (min-width: 900px)` — dat is de **viewport**, niet de
+container. In een kolom van een derde bij 1440px vuurde die query dus wél, kregen de twee panelen
+elk ~160px, en schoven de Aan/Onderwerp-rijen van de e-mail over elkaar heen. Geen media query kan
+dat zien; alleen de screenshot.
+**Lesson:** Een speler-component hergebruiken in een smalle admin-kolom erft zijn breekpunten, en
+die zijn op de viewport geschreven. Forceer de gestapelde variant in de preview-scope en laat de
+component zelf met rust — en controleer het altijd met een echte shot, want tsc en de build zien
+een kapotte kolom niet.

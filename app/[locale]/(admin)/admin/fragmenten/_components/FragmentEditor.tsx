@@ -47,9 +47,16 @@ import QuestionCard from './QuestionCard';
 export default function FragmentEditor({
   context,
   locale,
+  focusQuestionId = null,
 }: {
   context: FragmentContext;
   locale: string;
+  /**
+   * Open this question rather than the first one. The content table links a question row to its
+   * fragment — a Lezen question is not editable away from the text it is about — and without this
+   * the link would land on the right page with the wrong question expanded.
+   */
+  focusQuestionId?: number | null;
 }) {
   const router = useRouter();
   const { exam, sections } = context;
@@ -81,8 +88,13 @@ export default function FragmentEditor({
   );
   /** Ids marked for deletion, applied on save. Only ever holds ids that exist in the database. */
   const [removed, setRemoved] = useState<Set<number>>(new Set());
-  const [openIndex, setOpenIndex] = useState<number | null>(context.questions.length ? 0 : null);
-  const [previewIndex, setPreviewIndex] = useState(0);
+  /** The question `?vraag=` asked for, or the first one. -1 when it is not on this fragment. */
+  const focusIndex = focusQuestionId
+    ? context.questions.findIndex(q => q.id === focusQuestionId)
+    : -1;
+  const initialIndex = focusIndex >= 0 ? focusIndex : context.questions.length ? 0 : null;
+  const [openIndex, setOpenIndex] = useState<number | null>(initialIndex);
+  const [previewIndex, setPreviewIndex] = useState(Math.max(0, focusIndex));
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState('');
   const [note, setNote] = useState('');

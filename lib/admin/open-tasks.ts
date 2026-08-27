@@ -8,6 +8,8 @@ import { rubricCategory, type RubricCategory } from '@/lib/rubrics';
 
 export type ExamChoice = {
   id: number;
+  /** `null` only for a non-levelled onderdeel; the two open skills are always levelled. */
+  level: string | null;
   skill: 'schrijven' | 'spreken';
   number: number;
   title: string | null;
@@ -98,4 +100,42 @@ export function suggestRubric(
   });
   const hit = rubrics.find(r => r.skill === skill && r.task_type === category && r.active);
   return hit?.id ?? null;
+}
+
+export type OpgaveNav = {
+  /** Position of this opgave among its examen's opgaven, 1-based, in `sort_order`. */
+  position: number;
+  total: number;
+  prevId: number | null;
+  nextId: number | null;
+  /** The whole run, so the header can offer "opgave 3 van 4" as a jump list. */
+  siblings: { id: number; sort_order: number; title: string | null; review_status: string }[];
+};
+
+/**
+ * Where one opgave sits in its examen, and what is either side of it.
+ *
+ * This exists so the editor can carry a "volgende opgave" button. Schrijven is four opgaven and
+ * Spreken sixteen; walking them meant going back to the table and finding the next row each time,
+ * which is most of the work of reviewing an examen. Ordered by `sort_order` — the same order the
+ * candidate meets them in, so "volgende" means the same thing here as in the player.
+ */
+export async function fetchOpgaveNav(examId: number, id: number): Promise<OpgaveNav> {
+  const supabase = await createClient();
+  const { data } = await supabase
+    .from('open_tasks')
+    .select('id, sort_order, title, review_status')
+    .eq('exam_id', examId)
+    .order('sort_order');
+
+  const siblings = (data ?? []) as OpgaveNav['siblings'];
+  const index = siblings.findIndex(s => s.id === id);
+
+  return {
+    position: index >= 0 ? index + 1 : 1,
+    total: siblings.length || 1,
+    prevId: index > 0 ? siblings[index - 1].id : null,
+    nextId: index >= 0 && index < siblings.length - 1 ? siblings[index + 1].id : null,
+    siblings,
+  };
 }

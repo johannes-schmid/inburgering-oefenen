@@ -2,10 +2,16 @@
 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { Check, Info, Loader2, Plus, Save, Trash2, TriangleAlert } from 'lucide-react';
+import Link from 'next/link';
+import {
+  ArrowLeft, Check, ChevronLeft, ChevronRight, CircleCheck, CircleDashed, Info, Loader2, Plus,
+  Save, Trash2, TriangleAlert,
+} from 'lucide-react';
 import { createClient } from '@/lib/supabase/client';
 import { categoryLabel, rubricCategory } from '@/lib/rubrics';
-import type { ExamChoice, PartChoice, RubricChoice, SectionChoice } from '@/lib/admin/open-tasks';
+import { levelLabel, type Level } from '@/data/skills';
+import type { ExamChoice, OpgaveNav, PartChoice, RubricChoice, SectionChoice } from '@/lib/admin/open-tasks';
+import OpgavePreview from './OpgavePreview';
 import OptionImagePicker from '../../questions/_components/OptionImagePicker';
 import {
   IMAGE_USAGE_LABELS,
@@ -46,6 +52,7 @@ export default function OpgaveForm({
   parts,
   rubrics,
   sections,
+  nav,
   locale,
 }: {
   initial: OpgaveDraft;
@@ -53,6 +60,8 @@ export default function OpgaveForm({
   parts: PartChoice[];
   rubrics: RubricChoice[];
   sections: SectionChoice[];
+  /** Absent on `/opgaven/new` — there is no run to walk until the row exists. */
+  nav?: OpgaveNav;
   locale: string;
 }) {
   const router = useRouter();
@@ -229,18 +238,78 @@ export default function OpgaveForm({
       setSaving(false);
       return;
     }
-    router.push(`/${locale}/admin/opgaven`);
+    router.push(`/${locale}/admin/questions?niveau=${level}&onderdeel=${form.skill}`);
   }
 
   const warns = warnings();
+  const validated = form.review_status === 'validated';
+  const exam = exams.find(e => e.id === form.exam_id) ?? null;
+  const level = (exam?.level ?? 'a2') as Level;
+  const backHref = `/${locale}/admin/questions?niveau=${level}&onderdeel=${form.skill}`;
+  const href = (id: number) => `/${locale}/admin/opgaven/${id}/edit`;
 
   return (
-    <form onSubmit={handleSave} className="space-y-6 max-w-3xl">
+    <form onSubmit={handleSave} className="space-y-4">
+      {/* Sticky: an opgave with a form schema or three plaatjes runs to several screens, and
+          "Opslaan" is the only thing that writes any of it. A save button below the fold on a
+          one-draft page is a page that loses work — the same call `FragmentEditor` made. */}
+      <header className="sticky top-0 z-10 -mx-1 flex flex-wrap items-start justify-between gap-3 bg-surface/95 px-1 pt-1 pb-2 backdrop-blur">
+        <div className="min-w-0">
+          <Link
+            href={backHref}
+            className="inline-flex items-center gap-1.5 text-xs font-medium text-on-surface-variant no-underline hover:text-on-surface"
+          >
+            <ArrowLeft size={13} aria-hidden />
+            Terug naar vragen &amp; opdrachten
+          </Link>
+          <div className="mt-1.5 flex flex-wrap items-center gap-2">
+            <h1 className="m-0 font-headline text-xl font-extrabold tracking-tight text-on-surface">
+              {isNew ? 'Nieuwe opgave' : form.title.trim() || TASK_TYPE_LABELS[form.task_type]}
+            </h1>
+            {/* The review status, at the top where it is read rather than at the bottom where it
+                is set. "Is deze opgave al nagekeken?" is the question the docent arrives with, and
+                the checkbox answering it was the last control on a five-screen page. */}
+            <StatusChip validated={validated} />
+          </div>
+          <p className="m-0 mt-1 text-xs text-on-surface-variant">
+            Niveau {levelLabel(level)} · {form.skill}
+            {exam ? ` · examen ${exam.number}` : ''}
+            {nav ? ` · opgave ${nav.position} van ${nav.total}` : ''}
+          </p>
+        </div>
+
+        <div className="flex flex-wrap items-center gap-2">
+          {nav && nav.total > 1 && (
+            <div className="flex items-center gap-1">
+              <StepLink href={nav.prevId ? href(nav.prevId) : null} direction="prev" />
+              <StepLink href={nav.nextId ? href(nav.nextId) : null} direction="next" />
+            </div>
+          )}
+          <button
+            type="submit"
+            disabled={saving}
+            className="inline-flex items-center gap-2 rounded-xl bg-primary px-5 py-2.5 text-sm font-medium text-white transition-colors hover:bg-primary-container disabled:opacity-50"
+          >
+            {saving ? (
+              <Loader2 size={16} className="animate-spin" aria-hidden />
+            ) : saved ? (
+              <Check size={16} aria-hidden />
+            ) : (
+              <Save size={16} aria-hidden />
+            )}
+            {saving ? 'Opslaan…' : saved ? 'Opgeslagen' : 'Opslaan'}
+          </button>
+        </div>
+      </header>
+
       {error && (
         <div className="bg-error/10 border border-error/20 rounded-xl p-3 text-sm text-error">
           {error}
         </div>
       )}
+
+      <div className="grid grid-cols-1 gap-5 lg:grid-cols-5">
+        <div className="space-y-6 lg:col-span-3">
 
       {/* ── Where it lives ── */}
       <div className="grid gap-4 sm:grid-cols-2">
@@ -643,27 +712,9 @@ export default function OpgaveForm({
         </div>
       )}
 
+      {/* Save lives in the sticky header; only the destructive action is down here, where it
+          cannot be hit on the way to something else. */}
       <div className="flex items-center gap-3 pt-2">
-        <button
-          type="submit"
-          disabled={saving}
-          className="inline-flex items-center gap-2 bg-primary text-white px-5 py-2.5 rounded-xl text-sm font-medium hover:bg-primary-container transition-colors disabled:opacity-50"
-        >
-          {saving ? (
-            <>
-              <Loader2 size={16} className="animate-spin" aria-hidden /> Opslaan…
-            </>
-          ) : saved ? (
-            <>
-              <Check size={16} aria-hidden /> Opgeslagen
-            </>
-          ) : (
-            <>
-              <Save size={16} aria-hidden /> Opslaan
-            </>
-          )}
-        </button>
-
         {!isNew && (
           <button
             type="button"
@@ -687,6 +738,20 @@ export default function OpgaveForm({
           </button>
         )}
       </div>
+        </div>
+
+        {/* Sticky, because the point of a preview is to watch it change while you type in the
+            column beside it — one that scrolls away is a screenshot. */}
+        <aside className="lg:sticky lg:top-20 lg:col-span-2 lg:max-h-[calc(100vh-6rem)]">
+          <div className="h-full rounded-2xl border border-outline-variant bg-surface-container-low/40 p-4">
+            <OpgavePreview
+              form={form}
+              position={nav?.position ?? form.sort_order}
+              total={nav?.total ?? form.sort_order}
+            />
+          </div>
+        </aside>
+      </div>
 
       <style>{`
         .field { width:100%; border:1px solid var(--color-outline-variant); border-radius:0.75rem; padding:0.5rem 0.75rem; font-size:0.875rem; outline:none; background:var(--color-surface); color:var(--color-on-surface); }
@@ -694,6 +759,62 @@ export default function OpgaveForm({
         .field:disabled { background: var(--color-surface-container-low); color: var(--color-on-surface-variant); }
       `}</style>
     </form>
+  );
+}
+
+/**
+ * Is this opgave nagekeken? A chip rather than a dot: "gevalideerd" and "in behandeling" are the
+ * two words the publish gate uses, and a colour alone cannot say which is which to anyone who
+ * cannot separate the two hues. Clay for done, never a green — see the no-new-hue rule.
+ */
+function StatusChip({ validated }: { validated: boolean }) {
+  const Icon = validated ? CircleCheck : CircleDashed;
+  return (
+    <span
+      className="inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 text-xs font-bold whitespace-nowrap"
+      style={
+        validated
+          ? { background: 'var(--color-secondary-container)', color: 'var(--color-on-secondary-container)' }
+          : { background: '#fcecdd', color: '#a24000' }
+      }
+    >
+      <Icon size={12} aria-hidden />
+      {validated ? 'Gevalideerd' : 'In behandeling'}
+    </span>
+  );
+}
+
+/**
+ * Walk to the opgave either side of this one, in `sort_order` — the order the candidate meets
+ * them in, so "volgende" means here what it means in the player.
+ *
+ * A plain `<Link>`, not a router push: this is a full page load of the next opgave's own server
+ * data, and the unsaved draft is deliberately *not* carried across. Silently moving a half-typed
+ * opdracht onto the next row is the one thing a next button must never do.
+ */
+function StepLink({ href, direction }: { href: string | null; direction: 'prev' | 'next' }) {
+  const Icon = direction === 'prev' ? ChevronLeft : ChevronRight;
+  const label = direction === 'prev' ? 'Vorige opgave' : 'Volgende opgave';
+  const cls =
+    'inline-flex h-9 items-center gap-1.5 rounded-lg border border-outline-variant px-2.5 text-xs font-medium transition-colors';
+
+  if (!href) {
+    return (
+      <span className={`${cls} text-on-surface-variant opacity-35`} aria-hidden>
+        {direction === 'prev' && <Icon size={14} />}
+        {direction === 'next' && <>Volgende<Icon size={14} /></>}
+      </span>
+    );
+  }
+  return (
+    <Link
+      href={href}
+      aria-label={label}
+      className={`${cls} text-on-surface-variant no-underline hover:bg-surface-container hover:text-on-surface`}
+    >
+      {direction === 'prev' && <Icon size={14} aria-hidden />}
+      {direction === 'next' && <>Volgende<Icon size={14} aria-hidden /></>}
+    </Link>
   );
 }
 

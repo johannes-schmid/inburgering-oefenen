@@ -17,15 +17,27 @@ export const revalidate = 0;
  */
 export default async function FragmentPage({
   params,
+  searchParams,
 }: {
   params: Promise<{ locale: string; id: string }>;
+  /** `?vraag=` opens one question of the fragment — how the content table links to a question. */
+  searchParams: Promise<{ vraag?: string }>;
 }) {
   const { locale, id } = await params;
+  const { vraag } = await searchParams;
   const stimulusId = Number(id);
   if (!Number.isInteger(stimulusId) || stimulusId <= 0) notFound();
 
   const context = await fetchFragment(stimulusId);
   if (!context) notFound();
 
-  return <FragmentEditor context={context} locale={locale} />;
+  const focusQuestionId = Number(vraag);
+
+  return (
+    <FragmentEditor
+      context={context}
+      locale={locale}
+      focusQuestionId={Number.isInteger(focusQuestionId) ? focusQuestionId : null}
+    />
+  );
 }
