@@ -6,6 +6,7 @@
  * time only — `tsc` and `next build` both pass. See LEARNINGS 2026-07-30.
  */
 import type { FormField } from '@/lib/exam-content';
+import type { VoiceKey } from '@/lib/tts-voices';
 
 export type TaskType = 'email' | 'short_text' | 'form' | 'picture_note' | 'speaking';
 export type ImageUsage = 'none' | 'react' | 'describe' | 'choose' | 'cover_all';
@@ -41,6 +42,8 @@ export type OpgaveDraft = {
   image_usage: ImageUsage;
   prompt_audio_url: string;
   prompt_script: string;
+  /** Key into data/tts-voices.json. null = never chosen; the narrator is used. */
+  prompt_voice: VoiceKey | null;
   max_record_seconds: number;
   model_answer: string;
   rubric_id: number | null;
@@ -96,6 +99,7 @@ export function emptyDraft(skill: 'schrijven' | 'spreken' = 'schrijven'): Opgave
     image_usage: 'none',
     prompt_audio_url: '',
     prompt_script: '',
+    prompt_voice: null,
     max_record_seconds: 60,
     model_answer: '',
     rubric_id: null,

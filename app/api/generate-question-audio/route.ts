@@ -1,6 +1,6 @@
 import { createAdminClient } from '@/lib/supabase/admin';
 import { NextRequest, NextResponse } from 'next/server';
-import { NARRATOR, voiceId } from '@/lib/tts-voices';
+import { NARRATOR, VOICES, voiceId, type VoiceKey } from '@/lib/tts-voices';
 import { requireAdmin } from '@/lib/admin/guard';
 
 /**
@@ -14,7 +14,7 @@ import { requireAdmin } from '@/lib/admin/guard';
  * was reachable by anyone who knew the path. `requireAdmin()` closes that.
  */
 
-const VOICE_ID = voiceId(NARRATOR);
+const isVoiceKey = (v: unknown): v is VoiceKey => typeof v === 'string' && v in VOICES;
 // multilingual_v2, not flash: this audio is generated once and cached in Storage, so there
 // is no latency budget to trade quality against. `language_code` is dropped — the API
 // ignores it on multilingual_v2.
@@ -22,8 +22,8 @@ const MODEL_ID = 'eleven_multilingual_v2';
 const SPEED    = 0.9;
 const BUCKET   = 'question-audio';
 
-async function synthesize(text: string, apiKey: string): Promise<ArrayBuffer> {
-  const res = await fetch(`https://api.elevenlabs.io/v1/text-to-speech/${VOICE_ID}`, {
+async function synthesize(text: string, apiKey: string, voice: VoiceKey = NARRATOR): Promise<ArrayBuffer> {
+  const res = await fetch(`https://api.elevenlabs.io/v1/text-to-speech/${voiceId(voice)}`, {
     method: 'POST',
     headers: { 'xi-api-key': apiKey, 'Content-Type': 'application/json' },
     body: JSON.stringify({
@@ -63,38 +63,64 @@ export async function POST(req: NextRequest) {
   const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
   const serviceKey  = process.env.SUPABASE_SERVICE_KEY!;
 
-  const { id, openTaskId } = await req.json();
+  const body = await req.json();
+  const { id, openTaskId } = body as { id?: number; openTaskId?: number };
+  // The script the docent is looking at, which may not be the one in the row: the editor holds
+  // one draft and saves once, so generating from the saved row would speak the *previous* text.
+  const draftScript = typeof body.script === 'string' ? body.script.trim() : '';
+  if (body.voice !== undefined && body.voice !== null && !isVoiceKey(body.voice)) {
+    return NextResponse.json({ error: `Onbekende stem: ${String(body.voice)}` }, { status: 400 });
+  }
+  const requestedVoice: VoiceKey | null = isVoiceKey(body.voice) ? body.voice : null;
   const supabase = createAdminClient();
 
   /* ── Spreken prompt audio ──────────────────────────────────────────────────────────────────
-   * Until now nothing generated `open_tasks.prompt_audio_url` at all — it could only be pasted.
+   * Until now nothing generated `open_tasks.prompt_audio_url` at all — it could only be pasted,
+   * it was always the narrator, and nothing recorded which voice had spoken it.
+   *
+   * Draft mode (`script` with no `openTaskId`) exists for the same reason the stimulus route has
+   * one: a new opgave has no id to key a file on, and the docent must be able to hear the line
+   * before committing the row. The object is keyed by timestamp and no row is written; an
+   * abandoned draft leaves one orphan mp3, which is the accepted cost.
    */
-  if (openTaskId) {
-    const { data: task, error: taskErr } = await supabase
-      .from('open_tasks')
-      .select('id, prompt_script')
-      .eq('id', openTaskId)
-      .single();
-    if (taskErr || !task) return NextResponse.json({ error: 'Opgave niet gevonden.' }, { status: 404 });
+  if (openTaskId || draftScript) {
+    let spoken = draftScript;
+    let voice: VoiceKey = requestedVoice ?? NARRATOR;
 
-    // `prompt_script` is what the candidate should HEAR; `prompt_html` is what they read. They are
-    // not the same text, and reading the HTML aloud would speak the layout.
-    const spoken = (task.prompt_script ?? '').trim();
+    if (openTaskId) {
+      const { data: task, error: taskErr } = await supabase
+        .from('open_tasks')
+        .select('id, prompt_script, prompt_voice')
+        .eq('id', openTaskId)
+        .single();
+      if (taskErr || !task) return NextResponse.json({ error: 'Opgave niet gevonden.' }, { status: 404 });
+      // `prompt_script` is what the candidate should HEAR; `prompt_html` is what they read. They
+      // are not the same text, and reading the HTML aloud would speak the layout.
+      if (!spoken) spoken = (task.prompt_script ?? '').trim();
+      if (!requestedVoice && isVoiceKey(task.prompt_voice)) voice = task.prompt_voice;
+    }
+
     if (!spoken) {
       return NextResponse.json(
-        { error: 'Deze opgave heeft nog geen gesproken tekst (prompt_script).' },
+        { error: 'Deze opgave heeft nog geen gesproken tekst (script van de vraag).' },
         { status: 400 }
       );
     }
 
-    const audio = await synthesize(spoken, apiKey);
-    const url = await uploadAudio(supabaseUrl, serviceKey, `task-${task.id}/prompt.mp3`, audio);
-    const { error: updErr } = await supabase
-      .from('open_tasks')
-      .update({ prompt_audio_url: url })
-      .eq('id', task.id);
-    if (updErr) return NextResponse.json({ error: updErr.message }, { status: 500 });
-    return NextResponse.json({ prompt_audio_url: url });
+    const audio = await synthesize(spoken, apiKey, voice);
+    const path = openTaskId ? `task-${openTaskId}/prompt.mp3` : `task-draft/${Date.now()}.mp3`;
+    const url = await uploadAudio(supabaseUrl, serviceKey, path, audio);
+
+    if (openTaskId) {
+      // The voice is written in the same UPDATE as the URL, so the row can never claim a voice
+      // the file was not generated with.
+      const { error: updErr } = await supabase
+        .from('open_tasks')
+        .update({ prompt_audio_url: url, prompt_voice: voice })
+        .eq('id', openTaskId);
+      if (updErr) return NextResponse.json({ error: updErr.message }, { status: 500 });
+    }
+    return NextResponse.json({ prompt_audio_url: url, voice });
   }
 
   if (!id) return NextResponse.json({ error: 'Missing question id' }, { status: 400 });

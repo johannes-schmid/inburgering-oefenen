@@ -4,10 +4,11 @@ import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import {
-  ArrowLeft, Check, ChevronLeft, ChevronRight, CircleCheck, CircleDashed, Info, Loader2, Plus,
-  Save, Trash2, TriangleAlert,
+  ArrowLeft, Check, ChevronLeft, ChevronRight, CircleCheck, CircleDashed, Info, Loader2, Play,
+  Plus, Save, Trash2, TriangleAlert, Volume2,
 } from 'lucide-react';
 import { createClient } from '@/lib/supabase/client';
+import { NARRATOR, VOICES, type VoiceKey } from '@/lib/tts-voices';
 import { categoryLabel, rubricCategory } from '@/lib/rubrics';
 import { levelLabel, type Level } from '@/data/skills';
 import type { ExamChoice, OpgaveNav, PartChoice, RubricChoice, SectionChoice } from '@/lib/admin/open-tasks';
@@ -70,6 +71,9 @@ export default function OpgaveForm({
   const [saved, setSaved] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [confirmDelete, setConfirmDelete] = useState(false);
+  /** null = idle; 'audio' = generating the prompt; otherwise the voice being previewed. */
+  const [busyAudio, setBusyAudio] = useState<'audio' | VoiceKey | null>(null);
+  const [audioNote, setAudioNote] = useState<string | null>(null);
 
   const isNew = !form.id;
   const isSpeaking = form.skill === 'spreken';
@@ -140,6 +144,70 @@ export default function OpgaveForm({
     return out;
   }
 
+  /**
+   * Generate the spoken prompt from the **draft** script, not from the saved row.
+   *
+   * The editor holds one draft and saves once, so the row may still hold the previous text — and
+   * generating from it would produce audio of a line the docent is no longer looking at. The route
+   * therefore takes the script; when the opgave already exists it also writes `prompt_audio_url`
+   * and `prompt_voice`, so the file and the row can never disagree about which voice spoke it.
+   *
+   * The URL comes back cache-busted, which is what makes the preview on the right update in place
+   * after a regeneration rather than replaying the old take.
+   */
+  async function generatePromptAudio() {
+    const script = form.prompt_script.trim();
+    if (!script) {
+      setAudioNote('Vul eerst het script van de vraag in.');
+      return;
+    }
+    setBusyAudio('audio');
+    setAudioNote(null);
+    try {
+      const res = await fetch('/api/generate-question-audio', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          openTaskId: form.id ?? undefined,
+          script,
+          voice: form.prompt_voice ?? NARRATOR,
+        }),
+      });
+      const json = await res.json();
+      if (!res.ok) throw new Error(json.error ?? 'Genereren mislukt.');
+      patch({ prompt_audio_url: json.prompt_audio_url, prompt_voice: json.voice });
+      setAudioNote(
+        form.id
+          ? 'Nieuwe audio gegenereerd en opgeslagen bij deze opgave.'
+          : 'Nieuwe audio gegenereerd. Sla de opgave op om hem te bewaren.'
+      );
+    } catch (err) {
+      setAudioNote(err instanceof Error ? err.message : 'Genereren mislukt.');
+    } finally {
+      setBusyAudio(null);
+    }
+  }
+
+  /** One cached sample per voice — see /api/admin/voice-preview. */
+  async function previewVoice(voice: VoiceKey) {
+    setBusyAudio(voice);
+    setAudioNote(null);
+    try {
+      const res = await fetch('/api/admin/voice-preview', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ voice }),
+      });
+      const json = await res.json();
+      if (!res.ok) throw new Error(json.error ?? 'Voorbeeld mislukt.');
+      await new Audio(json.url).play();
+    } catch (err) {
+      setAudioNote(err instanceof Error ? err.message : 'Voorbeeld mislukt.');
+    } finally {
+      setBusyAudio(null);
+    }
+  }
+
   async function handleSave(e: React.FormEvent) {
     e.preventDefault();
     const problem = validate();
@@ -174,6 +242,7 @@ export default function OpgaveForm({
       image_usage: isSpeaking ? form.image_usage : 'none',
       prompt_audio_url: isSpeaking ? form.prompt_audio_url.trim() || null : null,
       prompt_script: isSpeaking ? form.prompt_script.trim() || null : null,
+      prompt_voice: isSpeaking ? form.prompt_voice : null,
       max_record_seconds: isSpeaking ? form.max_record_seconds : 60,
       model_answer: form.model_answer.trim() || null,
       rubric_id: form.rubric_id,
@@ -540,7 +609,10 @@ export default function OpgaveForm({
               ))}
             </select>
           </Field>
-          <Field label="Script van de vraag" hint="De tekst waaruit de audio gegenereerd is.">
+          <Field
+            label="Script van de vraag"
+            hint="De tekst waaruit de audio gegenereerd wordt. Pas hem aan en genereer opnieuw."
+          >
             <textarea
               value={form.prompt_script}
               onChange={e => patch({ prompt_script: e.target.value })}
@@ -548,8 +620,76 @@ export default function OpgaveForm({
               className="field resize-y"
             />
           </Field>
+
+          <Field
+            label="Stem"
+            hint="De stem moet passen bij de persoon op het plaatje — een vrouw krijgt een vrouwenstem."
+          >
+            <div className="grid gap-2 sm:grid-cols-2">
+              {(Object.keys(VOICES) as VoiceKey[]).map(key => {
+                const selected = (form.prompt_voice ?? NARRATOR) === key;
+                return (
+                  <div
+                    key={key}
+                    className="flex items-center gap-2 rounded-xl p-2 transition-colors"
+                    style={selected ? { boxShadow: 'var(--ring-selected)' } : undefined}
+                  >
+                    <button
+                      type="button"
+                      onClick={() => patch({ prompt_voice: key })}
+                      className="flex-1 min-w-0 text-left"
+                      aria-pressed={selected}
+                    >
+                      <span className="block text-sm font-medium text-on-surface truncate">
+                        {VOICES[key].name}
+                      </span>
+                      <span className="block text-xs text-on-surface-variant">
+                        {VOICES[key].gender === 'female' ? 'vrouw' : 'man'} ·{' '}
+                        {VOICES[key].age === 'young' ? 'jonger' : 'ouder'}
+                      </span>
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => previewVoice(key)}
+                      disabled={busyAudio !== null}
+                      title="Beluister deze stem"
+                      aria-label={`Beluister ${VOICES[key].name}`}
+                      className="shrink-0 rounded-lg p-2 text-primary hover:bg-surface-container-high disabled:opacity-50"
+                    >
+                      {busyAudio === key ? (
+                        <Loader2 size={16} className="animate-spin" aria-hidden />
+                      ) : (
+                        <Volume2 size={16} aria-hidden />
+                      )}
+                    </button>
+                  </div>
+                );
+              })}
+            </div>
+          </Field>
+
+          <div className="flex flex-wrap items-center gap-3">
+            <button
+              type="button"
+              onClick={generatePromptAudio}
+              disabled={busyAudio !== null || !form.prompt_script.trim()}
+              className="inline-flex items-center gap-2 rounded-xl bg-primary px-4 py-2 text-sm font-semibold text-on-primary disabled:opacity-50"
+            >
+              {busyAudio === 'audio' ? (
+                <Loader2 size={16} className="animate-spin" aria-hidden />
+              ) : (
+                <Play size={16} aria-hidden />
+              )}
+              {form.prompt_audio_url ? 'Audio opnieuw genereren' : 'Audio genereren'}
+            </button>
+            {form.prompt_audio_url && (
+              <audio key={form.prompt_audio_url} src={form.prompt_audio_url} controls className="h-9 max-w-full" />
+            )}
+          </div>
+          {audioNote && <p className="text-xs text-on-surface-variant">{audioNote}</p>}
+
           <div className="grid gap-3 sm:grid-cols-2">
-            <Field label="Audio-URL van de vraag">
+            <Field label="Audio-URL van de vraag" hint="Wordt door genereren overschreven.">
               <input
                 value={form.prompt_audio_url}
                 onChange={e => patch({ prompt_audio_url: e.target.value })}

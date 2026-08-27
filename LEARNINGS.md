@@ -2782,3 +2782,18 @@ een kapotte kolom niet.
 **Outcome:** SUCCESS
 **What worked / went wrong:** `/api/admin/upload-image` gaf op productie 500 op élke request. De diagnose zat in een GET: een GET op een route met alleen een POST-handler moet 405 zijn, dus een 500 betekent dat het bestand niet eens laadt. Alle andere adminroutes gaven 401, en de enige import die ze niet delen is sharp — dat staat wel op Next's eigen externals-lijst, maar niet expliciet in de config. Lokaal was niets te zien: `next build`, `next dev` en de route zelf werkten allemaal.
 **Lesson:** Om te bepalen of een routebestand laadt: doe een request met de verkeerde methode. 405 = geladen, 500 = viel om bij import. En importeer een native module in de handler, niet op moduleniveau — anders antwoordt de route 500 op alles, inclusief de auth-guard, en lijkt een importfout op een bug in de logica.
+
+## 2026-08-27 — de spreekopdracht krijgt een stem en een regenereerknop
+**Changed:** `open_tasks.prompt_voice` (`supabase/migrations/20260827000000_open_task_prompt_voice.sql`),
+`/api/generate-question-audio` (stemkeuze + draft-modus die uit het meegestuurde script genereert),
+nieuwe `/api/admin/voice-preview` (één gecachet sample per stem), en de Spreken-fieldset in
+`admin/opgaven/_components/OpgaveForm.tsx` (stemkiezer met beluisterknop, "audio opnieuw genereren",
+speler naast het veld).
+**Outcome:** SUCCESS — `tsc`, `next build` en 274 unit tests groen.
+**What worked:** genereren uit het **draft**-script in plaats van uit de rij; de editor houdt één
+concept en slaat één keer op, dus de rij bevat vaak nog de vorige tekst. De route schrijft
+`prompt_audio_url` en `prompt_voice` in dezelfde UPDATE, zodat het bestand en de rij het nooit
+oneens kunnen zijn over wie er spreekt. De URL komt cache-busted terug, waardoor de preview rechts
+de nieuwe opname speelt in plaats van de oude.
+**Lesson:** een gegenereerd bestand moet de keuze die het maakte in de rij achterlaten — een stem is
+niet uit een mp3 terug te lezen, dus zonder kolom wisselt hij stilletjes bij de volgende generatie.

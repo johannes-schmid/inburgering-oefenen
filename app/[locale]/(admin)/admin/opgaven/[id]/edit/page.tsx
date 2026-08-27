@@ -30,7 +30,7 @@ export default async function EditOpgavePage({
       .select(
         'id, exam_id, part_id, skill, sort_order, section_id, task_type, title, prompt_html, ' +
           'bullet_points, email_to, email_cc, email_subject, greeting, closing, min_sentences, ' +
-          'form_schema, image_usage, prompt_audio_url, prompt_script, max_record_seconds, ' +
+          'form_schema, image_usage, prompt_audio_url, prompt_script, prompt_voice, max_record_seconds, ' +
           'model_answer, rubric_id, review_status, ' +
           'open_task_images(id, sort_order, image_url, caption, alt_text, group_label)'
       )
@@ -86,6 +86,7 @@ export default async function EditOpgavePage({
     })),
     image_usage: r.image_usage as OpgaveDraft['image_usage'],
     prompt_audio_url: (r.prompt_audio_url as string | null) ?? '',
+    prompt_voice: (r.prompt_voice as OpgaveDraft['prompt_voice']) ?? null,
     prompt_script: (r.prompt_script as string | null) ?? '',
     max_record_seconds: (r.max_record_seconds as number) ?? 60,
     model_answer: (r.model_answer as string | null) ?? '',
