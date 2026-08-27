@@ -1,8 +1,9 @@
 'use client';
 
-import { useMemo, useState, useTransition, useCallback, useRef, useEffect } from 'react';
+import { useMemo, useState, useTransition, useRef, useEffect } from 'react';
 import { useRouter, usePathname } from 'next/navigation';
 import { createClient } from '@/lib/supabase/client';
+import ImagePicker from '../../../_components/ImagePicker';
 import {
   ColumnDef,
   getCoreRowModel,
@@ -146,18 +147,10 @@ export default function WoordkaartenTable({ cards }: Props) {
     setSaving(true);
     setError('');
 
-    let imageUrl = form.image_url || null;
-    if (imageUrl?.startsWith('https://images.pexels.com')) {
-      try {
-        const res = await fetch('/api/upload-wordcard-image', {
-          method: 'POST',
-          headers: { 'content-type': 'application/json' },
-          body: JSON.stringify({ url: imageUrl, wordcardId: form.id }),
-        });
-        const data = await res.json();
-        if (data.publicUrl) imageUrl = data.publicUrl;
-      } catch { /* keep Pexels URL as fallback */ }
-    }
+    // Already in our own bucket: `ImagePicker` stores a pick the moment it is clicked. This used
+    // to rehost here, at save time, and `catch` a failure by keeping the `images.pexels.com` URL —
+    // so the quiet path wrote a third-party URL into the row.
+    const imageUrl = form.image_url || null;
 
     const supabase = createClient();
     const { error: err } = await supabase.from('word_cards').update({
@@ -761,13 +754,17 @@ function ImageStatusCell({ url }: { url: string | null }) {
   return <span className="inline-flex items-center justify-center w-6 h-6 rounded-full bg-emerald-100 text-emerald-700"><span className="material-symbols-outlined text-[14px]">image</span></span>;
 }
 
-type PexelsPhoto = {
-  id: number;
-  src: { medium: string; large: string };
-  photographer: string;
-  alt: string;
-};
-
+/**
+ * The woordkaart's picture — the shared Pexels picker plus this screen's own touch: an AI-drafted
+ * search term.
+ *
+ * It used to be a second Pexels implementation (its own search, its own grid, its own selected
+ * state) that stored `images.pexels.com` URLs in form state and rehosted them during save. The
+ * search and the storing are `ImagePicker`'s job now; what is genuinely local is
+ * `/api/wordcard-pexels-query`, which turns "de fiets / bicycle / Ik ga op de fiets" into an
+ * English photo query — a woordkaart is one word, so the prefill has more work to do here than on
+ * an exam item.
+ */
 function WordcardImagePicker({
   dutch,
   translationEn,
@@ -781,181 +778,41 @@ function WordcardImagePicker({
   value: string;
   onChange: (url: string) => void;
 }) {
-  const [photos, setPhotos] = useState<PexelsPhoto[]>([]);
-  const [loading, setLoading] = useState(false);
-  const [searchInput, setSearchInput] = useState('');
-  const [autoQueried, setAutoQueried] = useState(false);
+  const [suggested, setSuggested] = useState('');
+  const [asked, setAsked] = useState(false);
 
-  const isStoredImage = value && !value.startsWith('https://images.pexels.com');
-  const [storedImageBroken, setStoredImageBroken] = useState(false);
-  useEffect(() => { setStoredImageBroken(false); }, [value]);
-
-  // Reset when a different card is opened
   useEffect(() => {
-    setAutoQueried(false);
-    setPhotos([]);
-    setSearchInput('');
+    setAsked(false);
+    setSuggested('');
   }, [dutch]);
 
-  const fetchPhotos = useCallback(async (q: string, autoSelect = false) => {
-    if (!q.trim()) return;
-    setLoading(true);
-    try {
-      const res = await fetch(`/api/pexels-search?q=${encodeURIComponent(q)}`);
-      const data = await res.json();
-      const fetched: PexelsPhoto[] = data.photos ?? [];
-      setPhotos(fetched);
-      if (autoSelect && fetched.length > 0) {
-        onChange(fetched[0].src.large);
-      }
-    } catch {
-      setPhotos([]);
-    } finally {
-      setLoading(false);
-    }
-  }, [onChange]);
-
   useEffect(() => {
-    // Don't auto-select if an image is already saved — only auto-query for no-image cards
-    if (autoQueried || !dutch.trim() || isStoredImage) return;
-    setAutoQueried(true);
-    const fetchQuery = async () => {
-      const fallback = translationEn || dutch;
+    if (asked || !dutch.trim()) return;
+    setAsked(true);
+    const fallback = translationEn || dutch;
+    (async () => {
       try {
         const res = await fetch(
           `/api/wordcard-pexels-query?dutch=${encodeURIComponent(dutch)}&translation_en=${encodeURIComponent(translationEn)}&example=${encodeURIComponent(example)}`
         );
         const data = await res.json();
-        const q = data.query || fallback;
-        setSearchInput(q);
-        fetchPhotos(q, !value);
+        setSuggested(data.query || fallback);
       } catch {
-        setSearchInput(fallback);
-        fetchPhotos(fallback, !value);
+        setSuggested(fallback);
       }
-    };
-    fetchQuery();
-  }, [dutch, translationEn, example, autoQueried, fetchPhotos, value, isStoredImage]);
-
-  const selectedPexelsPhoto = photos.find(p => p.src.large === value);
+    })();
+  }, [dutch, translationEn, example, asked]);
 
   return (
-    <div className="space-y-3">
-      <p className="text-xs font-semibold text-on-surface uppercase tracking-wide">Afbeelding</p>
-
-      {/* Stored / saved image */}
-      {isStoredImage && (
-        <div className="space-y-1.5">
-          <p className={`text-[11px] font-medium flex items-center gap-1.5 ${storedImageBroken ? 'text-red-600' : 'text-on-surface-variant'}`}>
-            <span className={`material-symbols-outlined text-[14px] ${storedImageBroken ? 'text-red-600' : 'text-emerald-600'}`}>
-              {storedImageBroken ? 'broken_image' : 'check_circle'}
-            </span>
-            {storedImageBroken ? 'Afbeelding niet gevonden (URL ongeldig)' : 'Huidige afbeelding (opgeslagen)'}
-          </p>
-          {!storedImageBroken && (
-            <div className="relative rounded-xl overflow-hidden border border-outline-variant group w-full" style={{ aspectRatio: '16/6' }}>
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src={value} alt="Huidige afbeelding" className="w-full h-full object-cover" onError={() => setStoredImageBroken(true)} />
-              <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
-                <button
-                  type="button"
-                  onClick={() => onChange('')}
-                  className="flex items-center gap-1.5 bg-white/90 text-red-600 text-xs font-medium px-3 py-1.5 rounded-lg"
-                >
-                  <span className="material-symbols-outlined text-[16px]">delete</span>
-                  Verwijderen
-                </button>
-              </div>
-            </div>
-          )}
-          {storedImageBroken && (
-            <button
-              type="button"
-              onClick={() => onChange('')}
-              className="flex items-center gap-1.5 text-red-600 text-xs font-medium px-3 py-1.5 rounded-lg border border-red-200 bg-red-50"
-            >
-              <span className="material-symbols-outlined text-[16px]">delete</span>
-              URL wissen en nieuwe foto kiezen
-            </button>
-          )}
-          <p className="text-[11px] text-on-surface-variant">Kies hieronder een andere Pexels-foto om te vervangen.</p>
-        </div>
-      )}
-
-      {/* Pexels photo selected (not yet saved to storage) */}
-      {value && !isStoredImage && (
-        <div className="relative rounded-xl overflow-hidden border border-primary/40 group w-full" style={{ aspectRatio: '16/6' }}>
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src={value} alt="Geselecteerde afbeelding" className="w-full h-full object-cover" />
-          <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
-            <button
-              type="button"
-              onClick={() => onChange('')}
-              className="flex items-center gap-1.5 bg-white/90 text-red-600 text-xs font-medium px-3 py-1.5 rounded-lg"
-            >
-              <span className="material-symbols-outlined text-[16px]">delete</span>
-              Verwijderen
-            </button>
-          </div>
-          {selectedPexelsPhoto && (
-            <span className="absolute bottom-2 right-2 text-white/70 text-[10px] bg-black/50 px-2 py-0.5 rounded-full">
-              © {selectedPexelsPhoto.photographer} via Pexels
-            </span>
-          )}
-        </div>
-      )}
-
-      <div className="flex gap-2">
-        <input
-          type="text"
-          value={searchInput}
-          onChange={e => setSearchInput(e.target.value)}
-          onKeyDown={e => e.key === 'Enter' && (e.preventDefault(), fetchPhotos(searchInput))}
-          placeholder="Zoek Pexels-foto…"
-          className="field flex-1"
-        />
-        <button
-          type="button"
-          onClick={() => fetchPhotos(searchInput)}
-          disabled={loading}
-          className="flex items-center gap-1.5 bg-primary text-white px-3 py-2 rounded-xl text-xs font-medium hover:bg-primary/90 transition-colors disabled:opacity-50 shrink-0"
-        >
-          {loading ? (
-            <span className="material-symbols-outlined text-[16px] animate-spin">autorenew</span>
-          ) : (
-            <span className="material-symbols-outlined text-[16px]">search</span>
-          )}
-          Zoeken
-        </button>
-      </div>
-
-      {photos.length > 0 && (
-        <div className="grid grid-cols-3 gap-2">
-          {photos.map(photo => {
-            const selected = photo.src.large === value;
-            return (
-              <button
-                key={photo.id}
-                type="button"
-                onClick={() => onChange(selected ? (isStoredImage ? value : '') : photo.src.large)}
-                title={photo.photographer}
-                className={`relative rounded-xl overflow-hidden border-2 transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary ${
-                  selected ? 'border-primary ring-2 ring-primary/30' : 'border-transparent hover:border-primary/40'
-                }`}
-                style={{ aspectRatio: '4/3' }}
-              >
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img src={photo.src.medium} alt={photo.alt} className="w-full h-full object-cover" loading="lazy" />
-                {selected && (
-                  <div className="absolute inset-0 bg-primary/20 flex items-center justify-center">
-                    <span className="material-symbols-outlined text-white text-[28px] drop-shadow">check_circle</span>
-                  </div>
-                )}
-              </button>
-            );
-          })}
-        </div>
-      )}
+    <div className="space-y-2">
+      <p className="text-xs font-semibold uppercase tracking-wide text-on-surface">Afbeelding</p>
+      <ImagePicker
+        urls={value ? [value] : []}
+        max={1}
+        target="wordcard"
+        query={suggested}
+        onChange={urls => onChange(urls[0] ?? '')}
+      />
     </div>
   );
 }

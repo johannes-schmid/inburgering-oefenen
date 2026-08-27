@@ -2764,3 +2764,15 @@ dat zien; alleen de screenshot.
 die zijn op de viewport geschreven. Forceer de gestapelde variant in de preview-scope en laat de
 component zelf met rust — en controleer het altijd met een echte shot, want tsc en de build zien
 een kapotte kolom niet.
+
+## 2026-08-27 — de A2-taster leest de database
+**Changed:** `lib/free-practice-db.ts` (nieuw, level-agnostisch, uit `free-practice-b1.ts` gehaald), `lib/free-practice.ts` (nieuw: A2 db-first met statische fallback), `lib/free-practice-b1.ts` (nu een dunne wrapper), `app/[locale]/(main)/oefenen/[skill]/page.tsx`.
+**Outcome:** SUCCESS
+**What worked / went wrong:** De B1-derivatie sloeg alles over wat geen `kind = 'text'` was, dus A2 Luisteren had een tweede tak nodig: een audio-stimulus heeft geen `body_html` maar wél een `audio_url`, en die gaat rechtstreeks in `FreePracticeItem.audioSrc` — de gecommitte mp3's zijn daar niet meer voor nodig. Extra filter toegevoegd: een item zonder `explanation` wordt overgeslagen, want de directe uitleg is de hele belofte van de pagina. Geverifieerd op lokaal én productie (A2 lezen/luisteren examen 1 gepubliceerd, 25 vragen, 0 zonder uitleg, 0 niet-tekst-opties, 10 fragmenten met audio).
+**Lesson:** Een derivatie die op één onderdeel is geschreven filtert stilzwijgend op de aannames van dát onderdeel. Bij het generaliseren naar een tweede onderdeel is de vraag niet "werkt het" maar "welke `continue` was een regel en welke was een aanname". En laat de statische set staan als fallback wanneer de URL rankt: DB-first mag de ingang van de funnel niet kunnen 404'en.
+
+## 2026-08-27 — één Pexels-kiezer voor alle admin-schermen
+**Changed:** `app/[locale]/(admin)/_components/ImagePicker.tsx` (nieuw), `OptionImagePicker.tsx` (nu een re-export), `StimulusEditor.tsx`, `WoordkaartenTable.tsx`, `app/api/admin/upload-image/route.ts` (`target` → bucket/breedte); `app/api/upload-pexels-image/` en `app/api/upload-wordcard-image/` verwijderd.
+**Outcome:** SUCCESS
+**What worked / went wrong:** Er waren drie manieren om een plaatje te kiezen en twee ervan konden een URL van derden in een rij zetten: `StimulusEditor` had alleen een `https://…`-tekstveld, en de woordkaarten-drawer bewaarde de `images.pexels.com`-URL in form state en herhostte pas bij opslaan — met een `catch` die de Pexels-URL liet staan. Nu is de keuze altijd Pexels en wordt een klik meteen naar `/api/admin/upload-image` gestuurd, dus de URL die de docent te zien krijgt is al de onze. Eén naamconflict onderweg: het nieuwe `target` in `fromUrl()` botste met de bestaande `let target: URL`. End-to-end geverifieerd in een echte adminsessie: AI-voorstel als zoekterm, 12 resultaten, klik → WebP van 114 kB in `wordcard-images`, 381 kB in `question-images`, anoniem 401.
+**Lesson:** Als drie schermen dezelfde handeling aanbieden, is de vraag niet welke de mooiste UI heeft maar welke de stille faalwijze heeft. En herhosten "bij opslaan, met een fallback" is geen herhosten: de fallback ís het pad dat je wilde afsluiten.

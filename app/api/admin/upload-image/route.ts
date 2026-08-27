@@ -5,7 +5,7 @@ import { requireAdmin } from '@/lib/admin/guard';
 import { createAdminClient } from '@/lib/supabase/admin';
 
 /**
- * One upload endpoint for every exam image: a file off the docent's disk, or a remote URL to rehost.
+ * One endpoint for every admin image: the remote URL of a picked Pexels photo, or a file upload.
  *
  * ## Why rehosting a picked stock photo matters
  * The image pickers used to store the Pexels CDN URL directly. An exam item whose picture is a
@@ -21,11 +21,30 @@ import { createAdminClient } from '@/lib/supabase/admin';
  * pictures being comparable, and a forced crop can remove the very detail being tested.
  *
  * Admin-only: it writes to a public bucket, so an open version is a free image host.
+ *
+ * ## `target` — which bucket, at which width
+ * `content` (the default) is every exam image, in `question-images` at ≤1600px. `wordcard` is the
+ * woordkaarten bucket, at ≤800px because that card renders small. The woordkaarten drawer used to
+ * have its own route for this (`/api/upload-wordcard-image`, which rehosted at save time and fell
+ * back to keeping the Pexels URL when it failed); it now comes through here, so there is one place
+ * where an admin image's encoding and provenance are decided. That route is deleted, along with
+ * `/api/upload-pexels-image` — which stored the fetched bytes **uncompressed** under an
+ * id-shaped path, so a second pick silently overwrote the first item's picture.
  */
+
+type Target = 'content' | 'wordcard';
+
+const TARGETS: Record<Target, { bucket: string; prefix: string; width: number; quality: number }> = {
+  content: { bucket: 'question-images', prefix: 'content', width: 1600, quality: 82 },
+  wordcard: { bucket: 'wordcard-images', prefix: 'wordcards', width: 800, quality: 80 },
+};
+
+function targetFrom(value: unknown): Target {
+  return value === 'wordcard' ? 'wordcard' : 'content';
+}
 
 /** Comfortably above a phone photo, well below what would make a function time out. */
 const MAX_BYTES = 12 * 1024 * 1024;
-const BUCKET = 'question-images';
 
 export async function POST(request: Request) {
   const admin = await requireAdmin();
@@ -41,24 +60,26 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: source.error }, { status: source.status });
     }
 
+    const spec = TARGETS[source.target];
+
     const webp = await sharp(source.bytes)
       .rotate() // honour EXIF orientation — a portrait phone photo otherwise lands on its side
-      .resize({ width: 1600, withoutEnlargement: true })
-      .webp({ quality: 82 })
+      .resize({ width: spec.width, withoutEnlargement: true })
+      .webp({ quality: spec.quality })
       .toBuffer();
 
     // Content path is random rather than derived from the item: an image is reused across options
     // and re-uploaded on a change, and an `id`-shaped path (the old `questions/<id>.jpg`) means a
     // second upload silently overwrites the first item's picture wherever else it is referenced.
-    const path = `content/${randomUUID()}.webp`;
+    const path = `${spec.prefix}/${randomUUID()}.webp`;
 
     const supabase = createAdminClient();
     const { error } = await supabase.storage
-      .from(BUCKET)
+      .from(spec.bucket)
       .upload(path, webp, { contentType: 'image/webp', upsert: false });
     if (error) throw new Error(error.message);
 
-    const { data } = supabase.storage.from(BUCKET).getPublicUrl(path);
+    const { data } = supabase.storage.from(spec.bucket).getPublicUrl(path);
     return NextResponse.json({ url: data.publicUrl, bytes: webp.byteLength });
   } catch (err) {
     const message = err instanceof Error ? err.message : String(err);
@@ -72,7 +93,7 @@ export async function POST(request: Request) {
   }
 }
 
-type Source = { bytes: Buffer } | { error: string; status: number };
+type Source = { bytes: Buffer; target: Target } | { error: string; status: number };
 
 async function fromUpload(request: Request): Promise<Source> {
   const form = await request.formData();
@@ -84,11 +105,12 @@ async function fromUpload(request: Request): Promise<Source> {
   if (file.type && !file.type.startsWith('image/')) {
     return { error: 'Dit is geen afbeelding.', status: 415 };
   }
-  return { bytes: Buffer.from(await file.arrayBuffer()) };
+  return { bytes: Buffer.from(await file.arrayBuffer()), target: targetFrom(form.get('target')) };
 }
 
 async function fromUrl(request: Request): Promise<Source> {
-  const body = (await request.json()) as { url?: unknown };
+  const body = (await request.json()) as { url?: unknown; target?: unknown };
+  const imageTarget = targetFrom(body.target);
   const raw = typeof body.url === 'string' ? body.url.trim() : '';
   if (!raw) return { error: 'Geen URL ontvangen.', status: 400 };
 
@@ -113,7 +135,7 @@ async function fromUrl(request: Request): Promise<Source> {
 
   const bytes = Buffer.from(await res.arrayBuffer());
   if (bytes.byteLength > MAX_BYTES) return { error: 'Deze afbeelding is groter dan 12 MB.', status: 413 };
-  return { bytes };
+  return { bytes, target: imageTarget };
 }
 
 function isLocalHost(hostname: string): boolean {

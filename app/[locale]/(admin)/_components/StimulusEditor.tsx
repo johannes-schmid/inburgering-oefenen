@@ -9,6 +9,7 @@ import { speakersInScript } from '@/lib/tts-dialogue';
 import { formatRange, formatRules, isSkillSlug, type Level } from '@/data/skills';
 import MagicFill from './MagicFill';
 import LengthMeter from './LengthMeter';
+import ImagePicker from './ImagePicker';
 import LengthRewrite from './LengthRewrite';
 import { stripHtml } from '@/lib/admin/length-targets';
 import RichTextEditor from './RichTextEditor';
@@ -408,14 +409,18 @@ export default function StimulusEditor({
           </Field>
         )}
 
+        {/* The picture was a bare `https://…` text field here, which is how a fragment could end
+            up pointing at a URL nobody controls — the one thing rehosting exists to prevent. It is
+            the same Pexels picker every other admin surface uses; a pick is compressed and stored
+            in our own bucket before it reaches this form's state. */}
         {(editing.kind === 'image' || editing.kind === 'audio') && (
-          <div className="grid grid-cols-2 gap-3">
-            <Field label={editing.kind === 'image' ? 'Afbeelding-URL' : 'Afbeelding-URL (optioneel)'}>
-              <input
-                value={editing.image_url}
-                onChange={e => setEditing({ ...editing, image_url: e.target.value })}
-                placeholder="https://…"
-                className="field"
+          <div className="space-y-3">
+            <Field label={editing.kind === 'image' ? 'Afbeelding' : 'Afbeelding (optioneel)'}>
+              <ImagePicker
+                urls={editing.image_url ? [editing.image_url] : []}
+                max={1}
+                query={editing.title || editing.intro}
+                onChange={urls => setEditing({ ...editing, image_url: urls[0] ?? '' })}
               />
             </Field>
             <Field label="Alt-tekst">
