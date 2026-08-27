@@ -3,7 +3,8 @@ import { notFound, redirect } from 'next/navigation';
 import { getTranslations } from 'next-intl/server';
 import { routing } from '@/i18n/routing';
 import { SKILLS, getSkill } from '@/data/skills';
-import { getFreePractice, hasFreePractice } from '@/data/free-practice';
+import { hasFreePractice } from '@/data/free-practice';
+import { fetchA2FreePractice } from '@/lib/free-practice';
 import FreePracticeEngine from './FreePracticeEngine';
 import JsonLd from '@/components/JsonLd';
 import { langTag } from '@/lib/site';
@@ -71,9 +72,11 @@ export default async function FreePracticePage({ params }: Props) {
   const skill = getSkill(slug);
   if (!skill) notFound();
 
-  // A real exam component whose taster is not written yet (Schrijven / Spreken):
-  // send the visitor back to the picker rather than showing a dead end.
-  const set = getFreePractice(skill.slug);
+  /* The items come from A2 exam 1 of this onderdeel, with the twenty static items in
+   * `data/free-practice.ts` as the fallback — see `lib/free-practice.ts` for why the fallback
+   * exists. A real exam component with neither (Schrijven / Spreken) sends the visitor back to
+   * the picker rather than showing a dead end. */
+  const set = await fetchA2FreePractice(skill.slug);
   if (!set) redirect(`/${locale}/oefenen`);
 
   const tSkills = await getTranslations({ locale, namespace: 'skills' });
