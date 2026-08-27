@@ -18,6 +18,26 @@ const nextConfig: NextConfig = {
    * again, check this line before anything in the route. */
   serverExternalPackages: ['sharp'],
 
+  /* …and the native binary has to be *copied into* the function, which is a second problem.
+   *
+   * With sharp external, the upload route got as far as loading it and then died on
+   * `libvips-cpp.so.8.18.3: cannot open shared object file`. `@img/sharp-linux-x64` holds the
+   * `.node` addon; the shared library lives in a *sibling* package, `@img/sharp-libvips-linux-x64`,
+   * and the addon dlopens it at runtime. Nothing in the source says so, so Next's file tracing
+   * cannot see it and leaves it out of the bundle — the addon then looks for a file that was never
+   * deployed. The two packages are also pinned in `optionalDependencies`, because the copy inside
+   * `next/node_modules` is an older pair (sharp 0.34 / libvips 1.2) and matching majors is not
+   * optional here: the addon names the exact `.so` version it needs.
+   *
+   * Local development never sees any of this — macOS resolves its own darwin pair from
+   * `node_modules` with no bundling involved. */
+  outputFileTracingIncludes: {
+    '/api/admin/upload-image': [
+      './node_modules/@img/sharp-linux-x64/**',
+      './node_modules/@img/sharp-libvips-linux-x64/**',
+    ],
+  },
+
   // There is deliberately NO `env:` block here. It used to map
   //   NEXT_PUBLIC_SUPABASE_ANON_KEY: process.env.SUPABASE_SERVICE_KEY
   // which inlined the service-role key into every browser bundle — the leak recorded in
