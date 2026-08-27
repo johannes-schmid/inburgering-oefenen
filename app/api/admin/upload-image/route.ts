@@ -1,5 +1,4 @@
 import { NextResponse } from 'next/server';
-import sharp from 'sharp';
 import { randomUUID } from 'node:crypto';
 import { requireAdmin } from '@/lib/admin/guard';
 import { createAdminClient } from '@/lib/supabase/admin';
@@ -61,6 +60,12 @@ export async function POST(request: Request) {
     }
 
     const spec = TARGETS[source.target];
+
+    /* Imported here, not at module scope. A native module that fails to initialise takes the whole
+     * route file with it, and a route that cannot load answers 500 to everything — including the
+     * admin guard, so the log says nothing about auth and the failure looks like a bug in the
+     * upload. Inside the handler the same failure is one catchable error with a message. */
+    const { default: sharp } = await import('sharp');
 
     const webp = await sharp(source.bytes)
       .rotate() // honour EXIF orientation — a portrait phone photo otherwise lands on its side

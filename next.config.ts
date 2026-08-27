@@ -6,6 +6,18 @@ const withNextIntl = createNextIntlPlugin('./i18n/request.ts');
 const nextConfig: NextConfig = {
   skipTrailingSlashRedirect: true,
 
+  /* `sharp` is a native module and must stay outside the server bundle.
+   *
+   * It is on Next's own default external list, and that was not enough: on production
+   * `/api/admin/upload-image` answered **500 to every request, including a GET** — a GET on a
+   * route with only a POST handler is a 405 if the module loaded at all, so the module itself was
+   * failing to initialise. Every other admin route 401'd correctly, and the only import they do not
+   * share is this one. Nothing local sees it: `next build` and `next dev` both resolve sharp fine.
+   *
+   * Listing it explicitly is the documented fix and costs nothing. If an image upload ever 500s
+   * again, check this line before anything in the route. */
+  serverExternalPackages: ['sharp'],
+
   // There is deliberately NO `env:` block here. It used to map
   //   NEXT_PUBLIC_SUPABASE_ANON_KEY: process.env.SUPABASE_SERVICE_KEY
   // which inlined the service-role key into every browser bundle — the leak recorded in
