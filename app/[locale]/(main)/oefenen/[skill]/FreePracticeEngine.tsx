@@ -4,7 +4,7 @@ import { useState, useRef, useEffect, useCallback } from 'react';
 import { useTranslations } from 'next-intl';
 import { track } from '@/lib/analytics';
 import { optionKeys, optionText, type FreePracticeItem, type OptionKey } from '@/data/free-practice';
-import { DEFAULT_LEVEL, type Level, type SkillSlug } from '@/data/skills';
+import { DEFAULT_LEVEL, type Level, type OnderdeelSlug } from '@/data/skills';
 import SkillIcon from '@/components/site/SkillIcon';
 import { Check, Star, UserRoundCheck, Headphones } from 'lucide-react';
 
@@ -14,7 +14,7 @@ type Answered = { item: FreePracticeItem; chosen: OptionKey; isCorrect: boolean 
 type Phase = 'intro' | 'quiz' | 'gate' | 'results';
 
 type Props = {
-  skill: SkillSlug;
+  skill: OnderdeelSlug;
   skillName: string;
   items: FreePracticeItem[];
   locale: string;
@@ -22,8 +22,12 @@ type Props = {
    * Which level's oefenexamen the result screen sends the candidate to. Defaults to A2,
    * which is where the four unprefixed `/oefenen/[skill]` tasters live — a B1 taster that
    * fell back to A2 would upsell the wrong module at the one point the visitor is convinced.
+   *
+   * **`null` is KNM and only KNM**, whose exams carry no level and whose URLs carry no level
+   * segment either. It has to be spelled, not omitted: `undefined` means "not passed" and
+   * falls back to A2, which would send a KNM visitor to `/oefenexamen/a2/knm` — not a route.
    */
-  level?: Level;
+  level?: Level | null;
 };
 
 export default function FreePracticeEngine({ skill, skillName, items, locale, level = DEFAULT_LEVEL }: Props) {
@@ -41,6 +45,8 @@ export default function FreePracticeEngine({ skill, skillName, items, locale, le
   const [emailCaptured, setEmailCaptured] = useState(false);
 
   const isListening = skill === 'luisteren';
+  /** KNM's URLs carry no level segment — see `level` above. */
+  const examsHref = `/${locale}/oefenexamen/${level === null ? '' : `${level}/`}${skill}`;
   const total = items.length;
   const score = log.filter(a => a.isCorrect).length;
   const pct = total ? Math.round((score / total) * 100) : 0;
@@ -202,6 +208,12 @@ export default function FreePracticeEngine({ skill, skillName, items, locale, le
     const item = items[idx];
     const done = (idx / total) * 100;
     const isLast = idx === total - 1;
+    /**
+     * A KNM question stands alone: `stimulus_id IS NULL`, so there is no passage and no audio.
+     * It is rendered single-column for the same reason `ExamShell` does — a two-pane grid whose
+     * left pane is an empty card reads as content that failed to load.
+     */
+    const hasStimulus = !!item.stimulusHtml || !!item.audioSrc;
 
     return (
       <div>
@@ -219,9 +231,10 @@ export default function FreePracticeEngine({ skill, skillName, items, locale, le
           </div>
         </div>
 
-        {/* Two panes, like the DUO player: stimulus left, question right */}
-        <div className="grid lg:grid-cols-2 gap-4 items-start">
-          <StimulusPane item={item} isListening={isListening} />
+        {/* Two panes, like the DUO player: stimulus left, question right. One pane where the
+            question stands alone. */}
+        <div className={hasStimulus ? 'grid lg:grid-cols-2 gap-4 items-start' : 'max-w-2xl'}>
+          {hasStimulus && <StimulusPane item={item} isListening={isListening} />}
           <QuestionPane
             item={item}
             selected={selected}
@@ -233,7 +246,7 @@ export default function FreePracticeEngine({ skill, skillName, items, locale, le
         </div>
 
         {selected && (
-          <div className="mt-5 flex justify-end">
+          <div className={`mt-5 flex justify-end${hasStimulus ? '' : ' max-w-2xl'}`}>
             <button
               onClick={next}
               className="inline-flex items-center gap-2 px-6 py-3 font-bold rounded-xl text-sm border-0 cursor-pointer text-white hover:-translate-y-0.5 transition-transform active:scale-95 w-full sm:w-auto justify-center"
@@ -406,7 +419,7 @@ export default function FreePracticeEngine({ skill, skillName, items, locale, le
         </h3>
         <p className="text-sm text-on-surface-variant leading-relaxed mb-5">{t('signup_desc')}</p>
         <a
-          href={`/${locale}/oefenexamen/${level}/${skill}`}
+          href={examsHref}
           className="w-full inline-flex items-center justify-center gap-2 text-white font-black no-underline hover:-translate-y-0.5 transition-transform active:scale-[.99]"
           style={{ fontSize: 16, padding: '15px', borderRadius: 14, background: 'linear-gradient(135deg,#fe762c 0%,#d94f00 100%)', boxShadow: '0 8px 22px rgba(254,118,44,0.38)' }}
         >

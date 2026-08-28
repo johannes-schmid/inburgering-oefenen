@@ -88,6 +88,9 @@ export const routing = defineRouting({
        indexed and ranking, and re-pathing the funnel's entry point buys nothing a visitor can
        see. See the header of `oefenen/b1/[skill]/page.tsx`. */
     '/oefenen/b1/[skill]': '/oefenen/b1/[skill]',
+    // KNM has no level at any depth, so its taster is a static sibling rather than a level
+    // segment — the same shape as /oefenexamen/knm below.
+    '/oefenen/knm': '/oefenen/knm',
     // The level is part of the path at both levels, including A2 — see the redirects in
     // next.config.ts that 301 the old A2-implicit URLs onto these.
     '/oefenexamen/[level]/[skill]': '/oefenexamen/[level]/[skill]',

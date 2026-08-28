@@ -605,10 +605,43 @@ got wrong.**
    takes an `owns` prop now. Its locked badge also still read "Professioneel Pakket", a tier
    nothing has sold since the move to per-module pricing.
 
-**Still open, deliberately:** there is **no anonymous KNM taster** at `/oefenen`. The A2 sets are
-static and the B1 one derives from `stimuli`, which KNM has none of, so it needs its own
-derivation from `standalone` — real work beyond transferring the content, and worth its own change.
-The `oefenvragen` free topic-quiz pages are still empty and still earmarked for this (M3).
+**The anonymous KNM taster shipped on 2026-08-28**, and `/oefenen` became a two-step picker.
+Ten questions from KNM oefenexamen 1 (which is `is_free`) at `/oefenen/knm` — a **static** sibling
+of `[skill]`, because that route resolves through `getSkill()`, the four taalonderdelen.
+`lib/free-practice-db.ts` is level-agnostic now: `Level | null` throughout, a `sourceKey()` that
+spells KNM's absent level `none` (two keys differing only by a missing segment collide), and it
+reads `content.standalone` beside `content.stimuli`. **A stimulus-less item changes the renderer,
+not just the query** — `FreePracticeEngine` drops the left pane and goes single-column, the same
+call `ExamShell` makes, because a two-pane grid whose left pane is empty reads as content that
+failed to load. The `oefenvragen` free topic-quiz pages are still empty and still earmarked (M3).
+
+**`/oefenen` is examen → onderdeel, and mobile is a different flow from desktop.** Flow 1b of
+`Gratis Oefenen Opties.dc.html` (Claude Design), owner's instruction 2026-08-28. It replaced three
+stacked grids that listed nine cards and left the visitor to work out from the headings that A2 and
+B1 are the *same four onderdelen* twice.
+- **`_components/FreePracticeChooser.tsx` renders both flows from one `tracks` array and one
+  `selected` state.** Desktop is the tile row plus an open panel (A2 pre-selected); **mobile is two
+  screens** — the 2×2 examen grid, then the onderdeel list with a back control, the other examens as
+  chips and "stap 2 van 2". A second data path for the phone is how the two drift apart.
+- **Both flows are in the DOM at every width**, one hidden by a media query. An e2e assertion of
+  "nothing is on screen yet" must therefore use `:visible`; a plain `toHaveCount(0)` never reaches
+  zero and silently tests nothing. `tests/public.spec.js` pins the flow that way.
+- **Nothing is derived in the browser.** The server page resolves which onderdelen have a taster,
+  which need an account and where each links; a client component re-deriving that would need the
+  exam registry in the bundle and could disagree with the routes' own `generateStaticParams`.
+- **A track with no `parts` is the roadmap statement** — one condition, not a second flag. That is
+  ONA, drawn on the neutral ramp with a hollow ring (the homepage's "not built" vocabulary) and
+  rendered as a `<div>`, never a disabled button.
+
+**`components/horizon/LevelMark.tsx` is the A2/B1 mark, and it is deliberately not a
+`CategoryMark`.** A category mark names *a thing the product sells*; a level is a **property** of
+the four taalonderdelen, and the picker needs both on one screen. The mockup drew a flat ring with
+"A2" set inside it — two levels drawn that way differ only by the two characters in the middle, so
+the graphic carries no meaning, and at 48px the ring reads as a border. Here **the arc is the
+meaning**: one gauge, opened further for B1, closed by an orange cap of identical length on both,
+so "one step higher" is legible before the label is. Its fill fractions are the drawing and **not a
+claim about how much Dutch a level is** — no such number exists and `SEO/facts.md` forbids
+inventing one. Same 72×72 grid as `CategoryMark`; pass `size`, never re-draw.
 
 ---
 

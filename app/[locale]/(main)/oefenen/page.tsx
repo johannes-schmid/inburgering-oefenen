@@ -1,12 +1,13 @@
 import type { Metadata } from 'next';
 import { getTranslations } from 'next-intl/server';
-import { HorizonBanner } from '@/components/horizon';
+import { HorizonBanner, ValidationChip } from '@/components/horizon';
 import { routing } from '@/i18n/routing';
-import { SKILLS } from '@/data/skills';
+import { KNM, KNM_SLUG, SKILLS, type Level } from '@/data/skills';
 import { DEFAULT_LEVEL } from '@/data/skills';
-import { hasFreePractice, getFreePractice } from '@/data/free-practice';
+import { hasFreePractice } from '@/data/free-practice';
 import { b1TasterSkills } from '@/lib/free-practice-b1';
-import { SkillIcon } from '@/components/site';
+import { hasDbFreePractice } from '@/lib/free-practice-db';
+import FreePracticeChooser, { type ChooserPart, type ChooserTrack } from './_components/FreePracticeChooser';
 import { ArrowRight } from 'lucide-react';
 import JsonLd from '@/components/JsonLd';
 import { langTag, WEBSITE_ID } from '@/lib/site';
@@ -55,6 +56,82 @@ export default async function OefenenPickerPage({ params }: Props) {
   const t = await getTranslations({ locale, namespace: 'oefenen' });
   const tSkills = await getTranslations({ locale, namespace: 'skills' });
   const tB = await getTranslations({ locale, namespace: 'breadcrumbs' });
+
+  /**
+   * The four examens and what is inside each — resolved here, on the server, and handed to the
+   * client component whole. See `FreePracticeChooser` for why nothing is derived over there.
+   *
+   * A taalonderdeel lands in one of three states and each is a fact about the data, never a
+   * hand-maintained list:
+   *
+   *  - **a free taster** — `hasFreePractice` (A2's four indexed URLs, which keep a static
+   *    fallback) or `b1TasterSkills()` (B1, whose route 404s without a published source exam);
+   *  - **free with an account** — Schrijven and Spreken, at both levels. Every answer is marked
+   *    per criterium by a model, which costs money per submission, so it has to hang off an
+   *    account; oefenexamen 1 is `is_free` at both levels, so what the card promises is real;
+   *  - **absent** — B1 Luisteren, which has no content and no counted format (`data/skills.ts`).
+   *    Omitted rather than shown as "binnenkort": a card would advertise a level of an onderdeel
+   *    nobody has authored a single item at.
+   *
+   * ONA carries no parts at all, which is what makes its tile the roadmap statement instead of a
+   * control — one condition, not a second flag to keep in step.
+   */
+  const b1Tasters = b1TasterSkills();
+
+  const partsAt = (level: Level): ChooserPart[] =>
+    SKILLS.flatMap<ChooserPart>(skill => {
+      const taster = level === DEFAULT_LEVEL ? hasFreePractice(skill.slug) : b1Tasters.includes(skill.slug);
+      const name = tSkills(`${skill.key}.name`);
+      if (taster) {
+        return [{
+          slug: skill.slug,
+          name,
+          note: t('row_free'),
+          href: level === DEFAULT_LEVEL ? `/${locale}/oefenen/${skill.slug}` : `/${locale}/oefenen/b1/${skill.slug}`,
+          needsAccount: false,
+        }];
+      }
+      if (skill.scoring === 'open') {
+        return [{
+          slug: skill.slug,
+          name,
+          note: t('row_account'),
+          href: `/${locale}/oefenexamen/${level}/${skill.slug}/1`,
+          needsAccount: true,
+        }];
+      }
+      return [];
+    });
+
+  const tracks: ChooserTrack[] = [
+    {
+      id: 'knm',
+      name: tSkills('knm.name'),
+      // A fact about the exam DUO sets, not about our bank: DUO names eight thema's. Our
+      // question bank covers seven of them (`KNM_THEMES`), which is a different sentence and is
+      // not the one a tile should make.
+      subtitle: t('track_themes', { count: 8 }),
+      blurb: t('knm_sub'),
+      parts: hasDbFreePractice(null, KNM_SLUG)
+        ? [{ slug: KNM_SLUG, name: tSkills('knm.name'), note: t('row_free'), href: `/${locale}/oefenen/knm`, needsAccount: false }]
+        : [],
+    },
+    {
+      id: 'a2',
+      name: t('track_a2'),
+      subtitle: t('track_parts', { count: SKILLS.length }),
+      blurb: t('track_blurb_open'),
+      parts: partsAt('a2'),
+    },
+    {
+      id: 'b1',
+      name: t('track_b1'),
+      subtitle: t('track_parts', { count: partsAt('b1').length }),
+      blurb: t('track_blurb_open'),
+      parts: partsAt('b1'),
+    },
+    { id: 'ona', name: t('track_ona'), subtitle: '', blurb: '', parts: [] },
+  ];
 
   /* ── Structured data ──────────────────────────────────────────────────────
    * A `CollectionPage` whose `ItemList` is the four onderdelen, in the taxonomy's order. This
@@ -123,200 +200,16 @@ export default async function OefenenPickerPage({ params }: Props) {
         </div>
       </section>
 
-      {/* Skill picker */}
+      {/* The picker itself. Two flows out of one data set — see FreePracticeChooser. */}
       <section className="px-6 py-14">
         <div className="max-w-4xl mx-auto">
-          {/* The A2 block gained a heading when the B1 block was added: an unlabelled grid
-              followed by a labelled one reads as the second being an exception to the first. */}
-          <h2 className="font-headline font-bold text-on-surface text-xl tracking-tight mb-5">
-            {t('a2_heading')}
-          </h2>
-          <ul className="grid sm:grid-cols-2 gap-5 list-none p-0 m-0">
-            {SKILLS.map(skill => {
-              const available = hasFreePractice(skill.slug);
-              const set = getFreePractice(skill.slug);
-              const genres = set ? Array.from(new Set(set.items.map(i => i.subSkill))) : [];
+          <FreePracticeChooser tracks={tracks} locale={locale} />
 
-              /**
-               * Schrijven and Spreken have no anonymous taster and cannot have one: every answer
-               * is graded by a model, which costs money per submission, so it has to be attributable
-               * to an account before it runs. They therefore point at oefenexamen 1 — free, but
-               * behind a login. The player redirects to /login?next= itself, so signing up lands the
-               * candidate straight in the exercise rather than back on this page.
-               *
-               * The two-free-exercises limit is not enforced here; `lib/grading-limits.ts` counts
-               * actual graded submissions. This card only has to state it honestly.
-               */
-              const accountRequired = !available && skill.scoring === 'open';
+          <div className="mt-8 flex justify-center">
+            <ValidationChip>{t('docent_note')}</ValidationChip>
+          </div>
 
-              if (accountRequired) {
-                return (
-                  <li key={skill.slug}>
-                    <a
-                      href={`/${locale}/oefenexamen/${DEFAULT_LEVEL}/${skill.slug}/1`}
-                      className="pick-card h-full flex flex-col gap-3 p-6 rounded-2xl bg-surface-container-lowest no-underline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-secondary-container"
-                      style={{ boxShadow: 'var(--shadow-card-md)' }}
-                    >
-                      <div className="flex items-center justify-between gap-3">
-                        <SkillIcon skill={skill.slug} size="lg" />
-                        <span
-                          className="text-[0.68rem] font-bold uppercase tracking-widest px-2.5 py-1 rounded-full"
-                          style={{ background: '#eef4ff', color: '#002b6d' }}
-                        >
-                          {t('pick_account_badge')}
-                        </span>
-                      </div>
-
-                      <h2 className="font-headline font-bold text-on-surface text-lg tracking-tight">
-                        {tSkills(`${skill.key}.name`)}
-                      </h2>
-                      <p className="text-sm text-on-surface-variant leading-relaxed">
-                        {tSkills(`${skill.key}.tagline`)}
-                      </p>
-
-                      <p className="text-xs text-on-surface-variant mt-auto">
-                        {t('pick_account_note')}
-                      </p>
-                      <span className="pick-cta inline-flex items-center gap-1.5 text-sm font-bold" style={{ color: '#a24000' }}>
-                        {t('pick_account_cta')}
-                        <ArrowRight size={15} strokeWidth={2.2} aria-hidden="true" />
-                      </span>
-                    </a>
-                  </li>
-                );
-              }
-
-              if (!available) {
-                return (
-                  <li key={skill.slug}>
-                    <div
-                      className="h-full flex flex-col gap-3 p-6 rounded-2xl bg-surface-container-low opacity-70"
-                      style={{ boxShadow: 'var(--shadow-card)' }}
-                    >
-                      <div className="flex items-center justify-between gap-3">
-                        <SkillIcon skill={skill.slug} size="lg" />
-                        <span className="text-[0.68rem] font-bold uppercase tracking-widest px-2.5 py-1 rounded-full bg-surface-container text-on-surface-variant">
-                          {t('pick_soon')}
-                        </span>
-                      </div>
-                      <h2 className="font-headline font-bold text-on-surface-variant text-lg tracking-tight">
-                        {tSkills(`${skill.key}.name`)}
-                      </h2>
-                      <p className="text-sm text-on-surface-variant leading-relaxed">{t('pick_soon_note')}</p>
-                    </div>
-                  </li>
-                );
-              }
-
-              return (
-                <li key={skill.slug}>
-                  <a
-                    href={`/${locale}/oefenen/${skill.slug}`}
-                    className="pick-card h-full flex flex-col gap-3 p-6 rounded-2xl bg-surface-container-lowest no-underline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-secondary-container"
-                    style={{ boxShadow: 'var(--shadow-card-md)' }}
-                  >
-                    <div className="flex items-center justify-between gap-3">
-                      <SkillIcon skill={skill.slug} size="lg" />
-                      <span
-                        className="text-[0.68rem] font-bold uppercase tracking-widest px-2.5 py-1 rounded-full"
-                        style={{ background: 'rgba(254,118,44,0.14)', color: '#a24000' }}
-                      >
-                        {tSkills('free_badge')}
-                      </span>
-                    </div>
-
-                    <h2 className="font-headline font-bold text-on-surface text-lg tracking-tight">
-                      {tSkills(`${skill.key}.name`)}
-                    </h2>
-                    <p className="text-sm text-on-surface-variant leading-relaxed">
-                      {tSkills(`${skill.key}.tagline`)}
-                    </p>
-
-                    <div className="flex flex-wrap gap-1.5 my-1">
-                      {genres.map(g => (
-                        <span
-                          key={g}
-                          className="text-xs px-2 py-0.5 rounded-full"
-                          style={{ background: 'var(--color-surface-container-low)', color: 'var(--color-on-surface-variant)' }}
-                        >
-                          {g}
-                        </span>
-                      ))}
-                    </div>
-
-                    <p className="text-xs text-on-surface-variant mt-auto">
-                      {t('pick_questions')} · {t('pick_minutes')}
-                    </p>
-                    <span className="pick-cta inline-flex items-center gap-1.5 text-sm font-bold" style={{ color: '#a24000' }}>
-                      {t('pick_cta')}
-                      <ArrowRight size={15} strokeWidth={2.2} aria-hidden="true" />
-                    </span>
-                  </a>
-                </li>
-              );
-            })}
-          </ul>
-
-          {/* ── The B1 tasters ───────────────────────────────────────────────────
-              A second block rather than a level switcher on the cards above: A2 is the offer
-              most visitors came for and it keeps the whole first screen. Only the onderdelen
-              with a source exam appear — `b1TasterSkills()` is the same list the route's
-              `generateStaticParams` uses, so this can never link a URL that 404s.
-
-              B1 Luisteren is absent and stays absent until DUO's B1 Luisteren format has been
-              counted off real material (`data/skills.ts`). */}
-          {b1TasterSkills().length > 0 && (
-            <div className="mt-12">
-              <h2 className="font-headline font-bold text-on-surface text-xl tracking-tight mb-1">
-                {t('b1_heading')}
-              </h2>
-              <p className="text-sm text-on-surface-variant leading-relaxed mb-5 max-w-2xl">
-                {t('b1_sub')}
-              </p>
-              <ul className="grid sm:grid-cols-2 gap-5 list-none p-0 m-0">
-                {b1TasterSkills().map(slug => (
-                  <li key={slug}>
-                    <a
-                      href={`/${locale}/oefenen/b1/${slug}`}
-                      className="pick-card h-full flex flex-col gap-3 p-6 rounded-2xl bg-surface-container-lowest no-underline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-secondary-container"
-                      style={{ boxShadow: 'var(--shadow-card-md)' }}
-                    >
-                      <div className="flex items-center justify-between gap-3">
-                        <SkillIcon skill={slug} size="lg" />
-                        <span
-                          className="text-[0.68rem] font-bold uppercase tracking-widest px-2.5 py-1 rounded-full"
-                          style={{ background: 'rgba(254,118,44,0.14)', color: '#a24000' }}
-                        >
-                          {tSkills('free_badge')}
-                        </span>
-                      </div>
-
-                      <h3 className="font-headline font-bold text-on-surface text-lg tracking-tight">
-                        {tSkills(`${slug}.name`)} B1
-                      </h3>
-                      {/* Its own line, not `skills.<slug>.tagline` — that tagline names A2's
-                          genres (advertenties, folders, formulieren) and B1 Lezen is websites,
-                          studiemateriaal and brieven van instanties. Reusing it would describe
-                          the wrong exam on the card that sells the level. */}
-                      <p className="text-sm text-on-surface-variant leading-relaxed">
-                        {t('b1_card_body')}
-                      </p>
-
-                      <p className="text-xs text-on-surface-variant mt-auto">
-                        {t('pick_questions')} · {t('pick_minutes')}
-                      </p>
-                      <span className="pick-cta inline-flex items-center gap-1.5 text-sm font-bold" style={{ color: '#a24000' }}>
-                        {t('pick_cta')}
-                        <ArrowRight size={15} strokeWidth={2.2} aria-hidden="true" />
-                      </span>
-                    </a>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          )}
-
-          <p className="text-center text-sm text-on-surface-variant mt-10 leading-relaxed">
+          <p className="text-center text-sm text-on-surface-variant mt-8 leading-relaxed">
             {t('pick_footer')}{' '}
             <a href={`/${locale}/oefenexamen/${DEFAULT_LEVEL}/lezen`} className="inline-flex items-center gap-1 font-semibold" style={{ color: '#a24000' }}>
               {t('pick_footer_link')}
@@ -327,16 +220,16 @@ export default async function OefenenPickerPage({ params }: Props) {
       </section>
 
       <style>{`
-        .pick-card {
-          transition: transform 0.2s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.2s ease;
+        .track-tile, .part-row {
+          transition: transform 0.2s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.2s ease, background-color 0.2s ease;
         }
-        .pick-card:hover {
-          transform: translateY(-4px);
-          box-shadow: 0 12px 32px rgba(0,43,109,0.12) !important;
+        .part-row:hover { transform: translateY(-2px); box-shadow: 0 12px 32px rgba(0,43,109,0.10) !important; }
+        .track-tile:hover { transform: translateY(-2px); }
+        .track-tile:active, .part-row:active { transform: translateY(0); }
+        @media (prefers-reduced-motion: reduce) {
+          .track-tile, .part-row { transition: none; }
+          .track-tile:hover, .part-row:hover { transform: none; }
         }
-        .pick-card:active { transform: translateY(-1px); }
-        .pick-card:hover .pick-cta { text-decoration: underline; }
-        @media (prefers-reduced-motion: reduce) { .pick-card { transition: none; } }
       `}</style>
     </main>
   );

@@ -2819,3 +2819,52 @@ component rendert twee keer per pagina, dus het id komt uit `useId()`.
 was de glyph; dezelfde afbeelding als SVG heeft geen van de bezwaren (platformafhankelijk,
 ontbreekt op Windows, niet kleur-af te stemmen). Check bij zo'n omkering eerst welk *argument*
 er destijds is opgeschreven — hier gold maar de helft ervan nog.
+
+## 2026-08-28 — B1 op /oefenen: drie kaarten, en de Lezen-taster mengt tien examens
+**Changed:** `lib/free-practice-db.ts` (`SOURCE` is nu `number[]` per (level, skill); nieuwe
+`itemsFromExam()` + round-robin in `fetchDbFreePractice`), het B1-blok in
+`app/[locale]/(main)/oefenen/page.tsx` (afgeleide `b1Entries`, twee kaartvormen), `b1_sub` +
+nieuwe `pick_account_note_b1` in `messages/{nl,en,ar}.json`, en `exams.is_free = true` op B1
+examen 1 van Lezen/Schrijven/Spreken — lokaal én op productie.
+**Outcome:** SUCCESS — tsc schoon, `next build` schoon, 274 unit tests, 44 e2e in
+`public.spec.js`, en de tien taster-vragen komen aantoonbaar uit examen 1 t/m 10 (één per
+examen, gecontroleerd via `questions.exam_id`).
+**What worked / went wrong:** De vraag "toon B1 ook op /oefenen" leek een UI-taak maar zat vast
+op een prijsbeslissing: Schrijven en Spreken kúnnen geen anonieme taster hebben (elk antwoord
+kost een modelcall), dus de site lost dat op A2 op met "gratis met account" → oefenexamen 1,
+dat `is_free` is. Op B1 was geen enkel examen gratis, dus dezelfde kaart zou naar `/premium`
+bouncen — een "gratis oefenen"-kaart die niets gratis geeft. Eerst de eigenaar gevraagd, daarna
+pas gebouwd; dat scheelde een verkeerd product.
+**Lesson:** Een kaart op een gratis-funnelpagina is een belofte over een *entitlement*, niet over
+een route. Controleer `is_free`/`ownsModule` van de bestemming vóór je de kaart tekent — de link
+werkt, de belofte niet. En: de "mix uit meerdere examens" is alleen gratis wanneer de bron gratis
+is; A2 blijft daarom bij examen 1 (2–10 zijn betaald) terwijl B1 juist één vraag per examen pakt,
+zodat geen enkele zitting noemenswaardig weglekt.
+
+## 2026-08-28 — KNM-taster, en /oefenen wordt examen → onderdeel (flow 1b)
+**Changed:** `lib/free-practice-db.ts` (level `Level | null`, `sourceKey()`, standalone-vragen via
+`content.standalone`, gedeelde `mcqItem()`), nieuwe route
+`app/[locale]/(main)/oefenen/knm/page.tsx`, `FreePracticeEngine` (accepteert `OnderdeelSlug` en
+`level: null`, één kolom zonder stimulus), nieuwe
+`app/[locale]/(main)/oefenen/_components/FreePracticeChooser.tsx` + herschreven
+`oefenen/page.tsx`, nieuwe `components/horizon/LevelMark.tsx`, `i18n/routing.ts`, `app/sitemap.ts`,
+`scripts/check-schema.mjs`, twee nieuwe e2e-cases en keys in `messages/{nl,en,ar}.json`.
+**Outcome:** SUCCESS — tsc schoon, `next build` schoon, 274 unit tests, 53 e2e groen,
+`check-schema.mjs` OK, en de tien KNM-vragen komen aantoonbaar uit `standalone` met hun eigen
+sub-thema (`questions.section_id`) in de uitslagverdeling.
+**What worked / went wrong:** Drie dingen die niet vanzelf gingen.
+(1) **`stimulus_id IS NULL` raakt de renderer, niet alleen de query.** De taster-engine tekende
+altijd twee panelen; met een KNM-vraag werd de linker een lege kaart — dat leest als content die
+niet geladen is, niet als "deze vraag staat op zichzelf". Zelfde beslissing als `ExamShell`:
+één kolom.
+(2) **Twee flows in één component betekent dat beide in de DOM staan.** De e2e-test
+`toHaveCount(0)` faalde omdat de desktop-variant er wél is, alleen `hidden` via een media query.
+`:visible` in de selector is het verschil tussen "staat er niet" en "is niet zichtbaar".
+(3) **Het merkteken uit de mockup droeg geen betekenis.** A2 en B1 waren een platte ring met twee
+letters erin — identiek op alles behalve die letters, en op 48px leest zo'n ring als een rand. De
+`LevelMark` maakt er een meter van: dezelfde boog, verder open voor B1, met een oranje kap van
+gelijke lengte. Het verschil is nu zichtbaar vóór het label gelezen is.
+**Lesson:** Een icoon dat alleen door zijn bijschrift van zijn buurman verschilt, is decoratie die
+zich voordoet als betekenis — laat het verschil in de vorm zitten. En bij een responsive flow die
+twee schermen tegen één scherm zet: test op *zichtbaarheid*, niet op aanwezigheid, anders test je
+de media query helemaal niet.

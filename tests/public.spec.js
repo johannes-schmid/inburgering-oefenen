@@ -93,6 +93,40 @@ test.describe('the free picker at /oefenen', () => {
       await expect(page.locator(`a[href="/nl/oefenexamen/a2/${skill}/1"]`)).toBeVisible();
     }
   });
+
+  test('carries B1 and KNM beside A2, each reachable from the picker', async ({ page }) => {
+    await page.goto('/nl/oefenen');
+
+    // B1 Lezen is an anonymous taster; B1 Schrijven/Spreken are free *with* an account, which
+    // only holds because B1 exam 1 is `is_free`. KNM has no level in its URL at any depth.
+    // `:visible` throughout: both flows are in the DOM at every width and the inactive one is
+    // hidden by a media query, so a plain locator matches two nodes and a count assertion would
+    // never reach zero.
+    await page.getByRole('button', { name: /Taal B1/ }).first().click();
+    await expect(page.locator('a[href="/nl/oefenen/b1/lezen"]:visible')).toHaveCount(1);
+    for (const skill of ['schrijven', 'spreken']) {
+      await expect(page.locator(`a[href="/nl/oefenexamen/b1/${skill}/1"]:visible`)).toHaveCount(1);
+    }
+
+    await page.getByRole('button', { name: /KNM/ }).first().click();
+    await expect(page.locator('a[href="/nl/oefenen/knm"]:visible')).toHaveCount(1);
+  });
+
+  test('is a two-screen flow on a phone: examen first, onderdeel second', async ({ page }) => {
+    // The desktop panel and the phone's second screen render from one data set, so this is the
+    // only place the *flow* is pinned: on a phone nothing about the onderdelen is on screen
+    // until an examen is chosen, and the back control returns to the choice.
+    await page.setViewportSize({ width: 390, height: 844 });
+    await page.goto('/nl/oefenen');
+
+    const lezen = page.locator('a[href="/nl/oefenen/lezen"]:visible');
+    await expect(lezen).toHaveCount(0);
+    await page.getByRole('button', { name: /Taal A2/ }).first().click();
+    await expect(lezen).toHaveCount(1);
+
+    await page.getByRole('button', { name: 'Examen' }).click();
+    await expect(lezen).toHaveCount(0);
+  });
 });
 
 test.describe('exam overviews', () => {
