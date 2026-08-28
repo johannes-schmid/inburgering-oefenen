@@ -87,23 +87,34 @@ export default function FreePracticeChooser({ tracks }: Props) {
           ))}
         </ul>
 
-        {desktopTrack && (
-          <div className="mt-5 rounded-3xl p-6 lg:p-7 bg-surface-container-low">
+        {/* Every track's panel is rendered and the closed ones get `hidden`.
+            **Not** `selected === track.id && <Panel/>`: with only the open panel in the DOM, the
+            B1 and KNM tasters have no internal link from `/oefenen` at all — on the page that is
+            the entry point of the whole free funnel, and the one that should be passing authority
+            to them. That is the same bug `/inburgering`'s fase-panelen shipped once; `tsc`, the
+            build and every screenshot were clean both times, and only a look at the served HTML
+            found it. */}
+        {openable.map(track => (
+          <div
+            key={track.id}
+            hidden={track.id !== desktopTrack?.id}
+            className="mt-5 rounded-3xl p-6 lg:p-7 bg-surface-container-low"
+          >
             <div className="flex flex-wrap items-baseline gap-x-3.5 gap-y-1 mb-5">
               <h2 className="font-headline font-extrabold text-on-surface text-xl tracking-tight m-0">
-                {t('panel_heading', { track: desktopTrack.name })}
+                {t('panel_heading', { track: track.name })}
               </h2>
-              <p className="text-sm text-on-surface-variant m-0">{desktopTrack.blurb}</p>
+              <p className="text-sm text-on-surface-variant m-0">{track.blurb}</p>
             </div>
             <ul className="grid lg:grid-cols-2 gap-3.5 list-none p-0 m-0">
-              {desktopTrack.parts.map(part => (
+              {track.parts.map(part => (
                 <li key={part.slug}>
                   <PartRow part={part} accountLabel={t('row_account_badge')} />
                 </li>
               ))}
             </ul>
           </div>
-        )}
+        ))}
       </div>
 
       {/* ── Mobile step 1: which examen ───────────────────────────────────── */}

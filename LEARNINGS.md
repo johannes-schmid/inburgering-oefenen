@@ -2868,3 +2868,19 @@ gelijke lengte. Het verschil is nu zichtbaar vóór het label gelezen is.
 zich voordoet als betekenis — laat het verschil in de vorm zitten. En bij een responsive flow die
 twee schermen tegen één scherm zet: test op *zichtbaarheid*, niet op aanwezigheid, anders test je
 de media query helemaal niet.
+
+## 2026-08-28 — de dichte panelen van de picker hadden geen enkele interne link
+**Changed:** `app/[locale]/(main)/oefenen/_components/FreePracticeChooser.tsx` — alle panelen
+worden gerenderd, de dichte krijgen `hidden`.
+**Outcome:** FAILURE, daarna gefixt in dezelfde sessie.
+**What went wrong:** De eerste versie rende `{desktopTrack && <Panel/>}`, dus stond alleen het
+open paneel in de DOM. Daardoor hadden `/oefenen/b1/lezen`, `/oefenen/knm` en de twee B1
+oefenexamens **geen enkele interne link vanaf `/oefenen`** — de entreepagina van de hele gratis
+funnel, en precies de pagina die autoriteit naar die URL's moet doorgeven. tsc, `next build`, de
+e2e-suite en alle screenshots waren schoon; het viel pas op bij het grepen van de *geserveerde*
+HTML op productie, ná de push.
+**Lesson:** Dit is exact dezelfde bug als de fase-panelen op `/inburgering` in M2d, en hij is op
+dezelfde manier ontsnapt. Bij elke tab/accordeon/uitklap: render alles en verberg met `hidden` —
+conditioneel renderen verwijdert links die niemand mist tot een crawler ze niet meer vindt.
+Controleer na een navigatiewijziging de HTML die de server stuurt (`curl | grep href`), niet de
+pagina in de browser.
