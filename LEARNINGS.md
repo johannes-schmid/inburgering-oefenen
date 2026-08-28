@@ -2797,3 +2797,25 @@ oneens kunnen zijn over wie er spreekt. De URL komt cache-busted terug, waardoor
 de nieuwe opname speelt in plaats van de oude.
 **Lesson:** een gegenereerd bestand moet de keuze die het maakte in de rij achterlaten — een stem is
 niet uit een mp3 terug te lezen, dus zonder kolom wisselt hij stilletjes bij de volgende generatie.
+
+## 2026-08-28 — Mollie schreef de eerste maand dubbel af
+**Changed:** `startDate` (vandaag + 1 maand, geklemd op maandeinde) op `customerSubscriptions.create()` in `lib/mollie-modules.ts`.
+**Outcome:** SUCCESS
+**What worked / went wrong:** Een iDEAL-betaling van €29,95 om 10:29 en een pending SEPA-incasso van €29,95 om 11:30 — dezelfde dag, dezelfde maand. Mollie zet `startDate` bij weglaten op *vandaag*, dus de eerste incasso van het abonnement viel bovenop de mandaatbetaling die het abonnement mogelijk maakte. Niets faalde: beide betalingen zijn geldig, er staat geen fout in de logs, en het is alleen zichtbaar in de betalingslijst.
+**Lesson:** Bij een terugkerende betaling die start uit een `first`-betaling: die eerste betaling *is* periode één. Zet altijd expliciet wanneer periode twee wordt geïncasseerd — een provider-default voor "wanneer begint dit" is een default over andermans geld.
+
+## 2026-08-28 — de vlaggen staan weer in de taalkiezer, als SVG
+**Changed:** `components/site/LocaleFlag.tsx` (nieuw: NL/GB/SA als platte inline SVG),
+`components/Nav.tsx` (beide `<select>`s vervangen — desktop een `DropdownMenu`, mobiel drie
+knoppen), `tests/public.spec.js` (de switcher-tests klikken nu het menu; het emoji-commentaar
+klopt weer).
+**Outcome:** SUCCESS — `tsc`, `next build`, 274 unit tests en de 9 betrokken e2e-tests groen.
+**What worked / went wrong:** De echte blokkade was niet de tekening maar het besturingselement:
+een `<option>` kan geen SVG bevatten, dus "voeg vlaggen toe" is onvermijdelijk "vervang de
+taalkiezer". De `DropdownMenuContent` staat standaard op `w-(--anchor-width)` — zonder `w-auto`
+was het paneel twee tekens breed geworden. De Union Jack heeft een `clipPath` nodig en het
+component rendert twee keer per pagina, dus het id komt uit `useId()`.
+**Lesson:** De no-emoji-regel gaat over emoji, niet over vlaggen. Wat 2026-08-20 terecht weghaalde
+was de glyph; dezelfde afbeelding als SVG heeft geen van de bezwaren (platformafhankelijk,
+ontbreekt op Windows, niet kleur-af te stemmen). Check bij zo'n omkering eerst welk *argument*
+er destijds is opgeschreven — hier gold maar de helft ervan nog.

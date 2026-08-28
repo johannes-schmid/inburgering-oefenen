@@ -4,15 +4,26 @@ import { useState } from 'react';
 import { useTranslations, useLocale } from 'next-intl';
 import { useParams } from 'next/navigation';
 import { Link, usePathname, useRouter } from '@/i18n/navigation';
+import { Check, ChevronDown } from 'lucide-react';
 import LogoMark from '@/components/site/LogoMark';
+import LocaleFlag from '@/components/site/LocaleFlag';
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu';
 
 /**
- * No flag emoji, for two reasons that happen to agree.
+ * Flags, drawn as SVG rather than typed as emoji (owner's decision, 2026-08-28).
  *
- * The project rule is lucide icons and no emoji anywhere in the UI — emoji render per-platform and
- * cannot be brand-matched — and `tests/public.spec.js` carried a `test.fixme` recording that this
- * select was the one place breaking it. Flags-for-languages is also its own bug: a Union Jack is
- * not "English" for most of the people reading this site, and an Arabic speaker is not Saudi.
+ * This reverses the 2026-08-20 removal, which took the flags out because they were the last emoji
+ * in the site chrome and the project forbids emoji anywhere in the UI. That rule is intact: emoji
+ * render per-platform, are absent entirely on Windows, and cannot be colour-matched — inline SVG
+ * has none of those problems. See `components/site/LocaleFlag.tsx`.
+ *
+ * A native `<select>` cannot hold an SVG, which is why the desktop control is a dropdown menu and
+ * the mobile one is a list of buttons rather than the two selects that used to be here.
  */
 const LOCALES = [
   { code: 'nl', labelShort: 'NL', labelLong: 'Nederlands' },
@@ -113,18 +124,31 @@ export default function Nav() {
 
         {/* Right: language, login, CTA, hamburger. One filled weight only — the CTA. */}
         <div className="flex items-center gap-3 shrink-0">
-          <select
-            aria-label={t('langLabel')}
-            value={locale}
-            onChange={(e) => handleLangChange(e.target.value)}
-            className="hidden menu:block text-[0.8125rem] font-medium text-on-surface-variant bg-transparent border-0 rounded-lg pl-2 pr-1 py-1.5 cursor-pointer hover:text-primary hover:bg-surface-container transition-colors focus:outline-none focus:ring-2 focus:ring-primary/30"
-          >
-            {LOCALES.map((l) => (
-              /* The popup is drawn by the OS and does not inherit the bar, so the option text is
-                 set back to the page's ink explicitly. */
-              <option key={l.code} value={l.code} style={{ color: '#191c1e' }}>{l.labelShort}</option>
-            ))}
-          </select>
+          <DropdownMenu>
+            <DropdownMenuTrigger
+              aria-label={t('langLabel')}
+              className="hidden menu:flex items-center gap-1.5 text-[0.8125rem] font-medium text-on-surface-variant bg-transparent rounded-lg pl-2 pr-1.5 py-1.5 cursor-pointer hover:text-primary hover:bg-surface-container transition-colors focus:outline-none focus:ring-2 focus:ring-primary/30"
+            >
+              <LocaleFlag locale={locale} />
+              {LOCALES.find((l) => l.code === locale)?.labelShort}
+              <ChevronDown className="w-3.5 h-3.5 opacity-60" />
+            </DropdownMenuTrigger>
+            {/* `w-auto` overrides the primitive's default of matching the trigger's width — the
+                trigger is two characters wide and the language names are not. */}
+            <DropdownMenuContent align="end" className="w-auto min-w-44">
+              {LOCALES.map((l) => (
+                <DropdownMenuItem
+                  key={l.code}
+                  onClick={() => handleLangChange(l.code)}
+                  className="gap-2.5 px-2 py-1.5 cursor-pointer"
+                >
+                  <LocaleFlag locale={l.code} />
+                  <span className="flex-1">{l.labelLong}</span>
+                  {l.code === locale && <Check className="w-3.5 h-3.5 text-primary" />}
+                </DropdownMenuItem>
+              ))}
+            </DropdownMenuContent>
+          </DropdownMenu>
 
           <Link
             href="/login"
@@ -193,17 +217,24 @@ export default function Nav() {
             </a>
 
             <div className="pt-2 pb-3">
-              <select
-                aria-label={t('langLabel')}
-                value={locale}
-                onChange={(e) => handleLangChange(e.target.value)}
-                onClick={(e) => e.stopPropagation()}
-                className="w-full text-sm font-semibold text-on-surface-variant bg-surface-container-low border border-outline-variant rounded-xl px-3 py-2.5 cursor-pointer focus:outline-none focus:ring-2 focus:ring-primary/30"
-              >
+              {/* A row of buttons rather than a select: it is what lets all three flags show at
+                  once, and it gives a bigger touch target. The current one is marked with the
+                  inset selection ring, never a border (§2, the no-line rule). */}
+              <div role="group" aria-label={t('langLabel')} className="flex gap-2" onClick={(e) => e.stopPropagation()}>
                 {LOCALES.map((l) => (
-                  <option key={l.code} value={l.code}>{l.labelLong}</option>
+                  <button
+                    key={l.code}
+                    type="button"
+                    onClick={() => handleLangChange(l.code)}
+                    aria-current={l.code === locale ? 'true' : undefined}
+                    className="flex-1 flex flex-col items-center gap-1.5 rounded-xl bg-surface-container-low px-2 py-2.5 text-xs font-semibold text-on-surface-variant cursor-pointer transition-colors hover:text-primary focus:outline-none focus:ring-2 focus:ring-primary/30"
+                    style={l.code === locale ? { boxShadow: 'var(--ring-selected)', color: 'var(--color-primary)' } : undefined}
+                  >
+                    <LocaleFlag locale={l.code} className="w-7 h-[18px]" />
+                    {l.labelLong}
+                  </button>
                 ))}
-              </select>
+              </div>
             </div>
           </nav>
         </div>

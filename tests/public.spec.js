@@ -55,10 +55,10 @@ test.describe('homepage', () => {
     expect(emoji, `found emoji: ${emoji?.[0]}`).toBeNull();
   });
 
-  // Was a `test.fixme` until 2026-08-20: the language switcher labelled the three locales with flag
-  // emoji, the one place in the UI breaking the no-emoji rule. They are gone — flags-for-languages
-  // was its own bug anyway (a Union Jack is not "English" for most of this site's readers), and
-  // dropping them also bought header width. Now a live test so they cannot come back.
+  // Was a `test.fixme` until 2026-08-20, when the flag *emoji* came out of the language switcher —
+  // the one place in the UI breaking the no-emoji rule. The flags came back on 2026-08-28 as inline
+  // SVG (`components/site/LocaleFlag.tsx`), which is why this still passes: the rule is about
+  // emoji, which render per-platform and are missing entirely on Windows, not about flags.
   test('no emoji in the site chrome either', async ({ page }) => {
     await page.goto('/nl');
     const chrome = await page.locator('header').innerText();
@@ -458,7 +458,8 @@ test.describe('the language switcher', () => {
   ]) {
     test(`switches locale on ${path}`, async ({ page }) => {
       await page.goto(path);
-      await page.selectOption('select[aria-label="Taal"]', 'en');
+      await page.click('button[aria-label="Taal"]');
+      await page.click('[role="menuitem"]:has-text("English")');
       await expect(page).toHaveURL(expected);
     });
   }
