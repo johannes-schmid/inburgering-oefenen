@@ -35,6 +35,18 @@ export type FreePracticeItem = {
   /** Public path to the generated mp3, produced by scripts/generate-free-practice-audio.mjs */
   audioSrc?: string;
   question: string;
+  /**
+   * A picture belonging to **the question itself**, not to a stimulus above it.
+   *
+   * KNM is the only onderdeel that uses these — all 419 of its questions carry one, and the
+   * question is frequently *about* the picture ("welke van deze gebouwen…"). They were dropped
+   * silently when the KNM taster shipped, because the two stimulus fields above are the only
+   * media this type had and a KNM question has no stimulus. `McqQuestion` in the paid player
+   * renders `questions.image_url` and `questions.prompt_audio_url`; the taster now matches it.
+   */
+  questionImage?: string;
+  /** The question read aloud — `questions.prompt_audio_url`. KNM carries one on every item. */
+  questionAudioSrc?: string;
   optionA: string;
   optionB: string;
   optionC: string;

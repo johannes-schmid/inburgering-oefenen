@@ -2884,3 +2884,25 @@ dezelfde manier ontsnapt. Bij elke tab/accordeon/uitklap: render alles en verber
 conditioneel renderen verwijdert links die niemand mist tot een crawler ze niet meer vindt.
 Controleer na een navigatiewijziging de HTML die de server stuurt (`curl | grep href`), niet de
 pagina in de browser.
+
+## 2026-08-28 — de vraag blijft in beeld in de gratis taster
+**Changed:** `app/[locale]/(main)/oefenen/[skill]/FreePracticeEngine.tsx` — de rechterkolom (QuestionPane + de Volgende-knop) is één `lg:sticky` blok onder `--nav-h`, met `maxHeight: calc(100vh - var(--nav-h) - 2rem)` en interne scroll; de knop staat nu *binnen* die kolom en is `lg:sticky lg:bottom-0`.
+**Outcome:** SUCCESS
+**What worked / went wrong:** Een DUO Lezen-tekst is veel hoger dan één viewport, dus de vraag én de weg vooruit scrolden uit beeld. De knop verplaatsen naar de sticky kolom lost beide klachten met één ingreep op. Geverifieerd met een Puppeteer-script dat echt doorklikt — `check-ui.mjs` fotografeert alleen de startkaart.
+**Lesson:** Een tweepaans-speler met ongelijke paneelhoogtes heeft altijd een sticky kant nodig; zet de primaire actie in diezelfde kolom in plaats van onder het langste paneel.
+
+## 2026-08-28 — de KNM-taster liet het plaatje en de audio van elke vraag weg
+**Changed:** `data/free-practice.ts` (`questionImage` + `questionAudioSrc` op `FreePracticeItem`),
+`lib/free-practice-db.ts` (mapping in `mcqItem`), `FreePracticeEngine`'s `QuestionPane` rendert ze.
+**Outcome:** FAILURE, gefixt.
+**What went wrong:** `FreePracticeItem` had alleen media op *stimulus*-niveau (`stimulusHtml`,
+`audioSrc`), want tot nu toe kwam alle media van de tekst of het fragment boven de vraag. Een
+KNM-vraag heeft geen stimulus en draagt zijn media zelf: alle 419 vragen hebben een `image_url`
+én een `prompt_audio_url`. De mapping las die velden niet, dus ze verdwenen zonder één foutmelding
+— en bij KNM is de vraag vaak *over* het plaatje ("wat kun je nu nog zien uit de 17e eeuw?"), dus
+er stond een vraag op het scherm die zonder afbeelding half onbeantwoordbaar is. De betaalde
+speler (`McqQuestion`) rendert ze wel, dus in het echte examen was er niets te zien.
+**Lesson:** Een nieuw soort item overnemen is niet klaar bij de query. Loop de renderer van de
+bestaande speler regel voor regel na en vink af welk databaseveld daar getekend wordt — alles wat
+je nieuwe mapping niet noemt, verdwijnt stil. Bij `stimulus_id IS NULL` verhuist de media van de
+stimulus naar de vraag, en dat is precies het veld dat een op stimuli gebouwd type niet heeft.

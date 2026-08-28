@@ -215,6 +215,8 @@ function mcqItem(
   return {
     ...shell,
     question: q.prompt,
+    ...(q.image_url ? { questionImage: q.image_url } : {}),
+    ...(q.prompt_audio_url ? { questionAudioSrc: q.prompt_audio_url } : {}),
     optionA: a.body,
     optionB: b.body,
     optionC: c.body,

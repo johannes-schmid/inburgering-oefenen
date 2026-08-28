@@ -235,28 +235,38 @@ export default function FreePracticeEngine({ skill, skillName, items, locale, le
             question stands alone. */}
         <div className={hasStimulus ? 'grid lg:grid-cols-2 gap-4 items-start' : 'max-w-2xl'}>
           {hasStimulus && <StimulusPane item={item} isListening={isListening} />}
-          <QuestionPane
-            item={item}
-            selected={selected}
-            onChoose={choose}
-            explanationLabel={t('explanation_label')}
-            correctLabel={t('correct_label_inline')}
-            wrongLabel={t('wrong_label_inline')}
-          />
-        </div>
-
-        {selected && (
-          <div className={`mt-5 flex justify-end${hasStimulus ? '' : ' max-w-2xl'}`}>
-            <button
-              onClick={next}
-              className="inline-flex items-center gap-2 px-6 py-3 font-bold rounded-xl text-sm border-0 cursor-pointer text-white hover:-translate-y-0.5 transition-transform active:scale-95 w-full sm:w-auto justify-center"
-              style={{ background: isLast ? 'linear-gradient(135deg,#fe762c 0%,#d94f00 100%)' : '#002b6d', boxShadow: '0 6px 18px rgba(0,43,109,0.22)' }}
-            >
-              {isLast ? t('finish_btn') : t('next_btn')}
-              <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true"><path d="M3 7h8M7 3l4 4-4 4" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" /></svg>
-            </button>
+          {/* The question travels with the reader. A DUO Lezen text is far taller than one
+              viewport, so a static question pane scrolls out of sight and the candidate has to
+              scroll back up to answer what they have just read. On lg the pane sticks below the
+              fixed header (`--nav-h`) and scrolls internally if it is itself taller than the
+              viewport — and the Volgende-knop lives *inside* it, so the way forward is on screen
+              the moment an answer is chosen rather than at the foot of the passage. */}
+          <div
+            className={hasStimulus ? 'lg:sticky lg:overflow-y-auto flex flex-col gap-4' : 'flex flex-col gap-4'}
+            style={hasStimulus ? { top: 'calc(var(--nav-h) + 1rem)', maxHeight: 'calc(100vh - var(--nav-h) - 2rem)' } : undefined}
+          >
+            <QuestionPane
+              item={item}
+              selected={selected}
+              onChoose={choose}
+              explanationLabel={t('explanation_label')}
+              correctLabel={t('correct_label_inline')}
+              wrongLabel={t('wrong_label_inline')}
+            />
+            {selected && (
+              <div className={`flex justify-end${hasStimulus ? ' lg:sticky lg:bottom-0' : ' max-w-2xl'}`}>
+                <button
+                  onClick={next}
+                  className="inline-flex items-center gap-2 px-6 py-3 font-bold rounded-xl text-sm border-0 cursor-pointer text-white hover:-translate-y-0.5 transition-transform active:scale-95 w-full sm:w-auto justify-center"
+                  style={{ background: isLast ? 'linear-gradient(135deg,#fe762c 0%,#d94f00 100%)' : '#002b6d', boxShadow: '0 6px 18px rgba(0,43,109,0.22)' }}
+                >
+                  {isLast ? t('finish_btn') : t('next_btn')}
+                  <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true"><path d="M3 7h8M7 3l4 4-4 4" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" /></svg>
+                </button>
+              </div>
+            )}
           </div>
-        )}
+        </div>
       </div>
     );
   }
@@ -581,7 +591,22 @@ function QuestionPane({
 
   return (
     <div className="rounded-2xl p-5 sm:p-6 bg-surface-container-lowest" style={{ boxShadow: 'var(--shadow-card-md)' }}>
-      <p className="text-base font-semibold text-on-surface whitespace-pre-line leading-relaxed mb-5">{item.question}</p>
+      <p className="text-base font-semibold text-on-surface whitespace-pre-line leading-relaxed mb-4">{item.question}</p>
+
+      {/* Media belonging to the question rather than to a stimulus — KNM's whole bank carries
+          both, and the question is often *about* the picture. Same order as `McqQuestion` in the
+          paid player: the spoken question, then the image, then the options. */}
+      {item.questionAudioSrc && (
+        <div className="mb-4">
+          <AudioPlayer src={item.questionAudioSrc} />
+        </div>
+      )}
+      {item.questionImage && (
+        <figure className="m-0 mb-4 rounded-xl overflow-hidden" style={{ boxShadow: 'var(--shadow-card)' }}>
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img src={item.questionImage} alt="" style={{ width: '100%', height: 'auto', display: 'block' }} />
+        </figure>
+      )}
 
       <div role="radiogroup" className="flex flex-col gap-2.5">
         {options.map(({ key, text }) => {
