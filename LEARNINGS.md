@@ -2918,3 +2918,17 @@ stimulus naar de vraag, en dat is precies het veld dat een op stimuli gebouwd ty
 **Outcome:** SUCCESS
 **What worked / went wrong:** Beide endpoints getest met de echte key vóór het bouwen ($34,07 over / $20,93 ooit) — dat gaf meteen de vorm van het antwoord in plaats van een aanname. Drie dingen die het ontwerp bepaalden en niet uit de code volgen: `/v1/report` is account-breed (dus tags, anders zit de B1-authering erin), rapportage kost $5/1.000 queries (dus cachen, anders factureert het paneel zichzelf voor open blijven staan), en Scribe zit niet in de Gateway (dus blijft `ai_usage` de bron voor de gemiddeldes). `GradeTask` heeft geen `skill`; de onderdeeltag komt uit "is er audio", wat per constructie klopt.
 **Lesson:** Lees eerst de docs *en* doe één echte call vóór je een integratie ontwerpt — de beperkingen die het ontwerp bepalen (scope, prijs, latency van de ingestie) staan in de docs en niet in de responsevorm. En een leverancier die kosten rapporteert dekt zelden je hele keten: check wat er *niet* in zit voordat je zijn cijfer als bron neemt.
+
+## 2026-08-28 — Wekelijkse conversiegraaf op /admin
+**Changed:** Ported knm-website's `ConversionDashboard` to
+`app/[locale]/(admin)/admin/_components/ConversionDashboard.tsx` and added the weekly
+aanmelding→betaling aggregation to `app/[locale]/(admin)/admin/page.tsx` (12 weeks, UTC-Monday
+buckets, signups paged off `auth.admin.listUsers`).
+**Outcome:** SUCCESS — `tsc --noEmit` and `next build` clean, verified with `check-ui-auth.mjs`
+at 390 and 1440.
+**What worked / went wrong:** The stale scratchpad admin cookie photographed the login page and
+looked like a broken route; minting a fresh session against the local stack fixed it. An empty
+chart in a downscaled full-page screenshot reads as a collapsed container — measuring the element
+(`getBoundingClientRect`) proved it was 256px with an SVG inside, i.e. simply no data locally.
+**Lesson:** Before concluding a chart is broken from a screenshot, measure the element; and always
+re-mint the auth cookie rather than reusing one from an earlier session.
