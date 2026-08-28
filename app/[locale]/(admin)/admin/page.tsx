@@ -3,6 +3,8 @@ import { QuestionsDonutChart } from './_components/QuestionsDonutChart';
 import { ActivityLineChart } from './_components/ActivityLineChart';
 import { CategoryRadarChart } from './_components/CategoryRadarChart';
 import { RevenueDashboard } from './_components/RevenueDashboard';
+import { AiCostCard } from './_components/AiCostCard';
+import { fetchAiSpend } from '@/lib/admin/ai-spend';
 
 export default async function AdminDashboard() {
   const supabase = createAdminClient();
@@ -142,6 +144,8 @@ export default async function AdminDashboard() {
     chartData,
   };
 
+  const aiSpend = await fetchAiSpend();
+
   const stats = [
     { label: 'Vragen', value: questionCount ?? 0, icon: 'quiz', href: 'admin/questions', color: 'bg-primary/10 text-primary' },
     { label: 'Woordkaarten', value: wordCardCount ?? 0, icon: 'style', href: 'admin/woordkaarten', color: 'bg-secondary/10 text-secondary' },
@@ -154,6 +158,8 @@ export default async function AdminDashboard() {
       <p className="text-on-surface-variant text-sm mb-6">Welkom terug. Beheer hier vragen, lessen en woordkaarten.</p>
 
       <RevenueDashboard data={revenueData} />
+
+      <AiCostCard spend={aiSpend} />
 
       <div className="bg-amber-50 border border-amber-200 rounded-2xl px-5 py-4 mb-8">
         <p className="text-sm font-bold text-amber-800 mb-1">Let op</p>

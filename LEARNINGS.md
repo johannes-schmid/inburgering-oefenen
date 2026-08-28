@@ -2906,3 +2906,15 @@ speler (`McqQuestion`) rendert ze wel, dus in het echte examen was er niets te z
 bestaande speler regel voor regel na en vink af welk databaseveld daar getekend wordt — alles wat
 je nieuwe mapping niet noemt, verdwijnt stil. Bij `stimulus_id IS NULL` verhuist de media van de
 stimulus naar de vraag, en dat is precies het veld dat een op stimuli gebouwd type niet heeft.
+
+## 2026-08-28 — AI-kosten op het admin-dashboard
+**Changed:** new `ai_usage` table (`supabase/migrations/20260828130000_ai_usage.sql`), `lib/ai/costs.ts` (rates, budget, USD→EUR), `lib/ai/usage.ts` (`recordAiUsage`), usage returned from `gradeOpenAnswer` (`lib/ai/grade.ts`) and recorded in `app/api/grade-open/route.ts` for both Scribe and the grader, `lib/admin/ai-spend.ts`, and the `AiCostCard` block on `/admin`.
+**Outcome:** SUCCESS
+**What worked / went wrong:** Nothing recorded AI cost at all, so the panel needed the plumbing first. A Spreken check is **two** provider calls, so a `request_id` shared by them is what makes "gemiddeld per nakijkactie" honest — averaging rows reported Spreken at half its real cost. `bg-primary/10` renders **fully opaque** navy in the admin bundle (the same reason the dashboard's stat tiles are solid squares), so the budget meter at 0,03% looked completely full; the track is an inline rgba now. A sub-pixel fill also reads as "niets besteed", so a non-zero meter has a 1,5% floor.
+**Lesson:** A cost figure needs its unit fixed before its arithmetic — "per call" and "per nakijkactie" differ by 2× for exactly the onderdeel the panel exists to compare. And never trust a Tailwind opacity modifier on a brand token in this repo: measure the computed background.
+
+## 2026-08-28 — AI-kosten uit de Vercel Gateway zelf
+**Changed:** `lib/ai/gateway-api.ts` (`/v1/credits` + `/v1/report`, uurcache, degradeert naar null), gradingcalls getagd met `feature:nakijken` + `onderdeel:<skill>` (`lib/ai/grade.ts`), `generation_id` op `ai_usage` (migratie `20260828160000`, met psql toegepast — geen reset), budget in `AiCostCard` van env naar creditsstand, `AI_MONTHLY_BUDGET_EUR` verwijderd.
+**Outcome:** SUCCESS
+**What worked / went wrong:** Beide endpoints getest met de echte key vóór het bouwen ($34,07 over / $20,93 ooit) — dat gaf meteen de vorm van het antwoord in plaats van een aanname. Drie dingen die het ontwerp bepaalden en niet uit de code volgen: `/v1/report` is account-breed (dus tags, anders zit de B1-authering erin), rapportage kost $5/1.000 queries (dus cachen, anders factureert het paneel zichzelf voor open blijven staan), en Scribe zit niet in de Gateway (dus blijft `ai_usage` de bron voor de gemiddeldes). `GradeTask` heeft geen `skill`; de onderdeeltag komt uit "is er audio", wat per constructie klopt.
+**Lesson:** Lees eerst de docs *en* doe één echte call vóór je een integratie ontwerpt — de beperkingen die het ontwerp bepalen (scope, prijs, latency van de ingestie) staan in de docs en niet in de responsevorm. En een leverancier die kosten rapporteert dekt zelden je hele keten: check wat er *niet* in zit voordat je zijn cijfer als bron neemt.

@@ -2324,6 +2324,38 @@ and `admin/run-eval` use it. **`generate-question-audio`, `generate-wordcard-aud
 `admin/generate-lesson-audio` still do not** — they are reachable by anyone who knows the path and
 each spends ElevenLabs credits per call. Worth closing.
 
+### AI-kosten komen van de leveranciers, niet van een getal in .env (2026-08-28)
+
+`ai_usage` is het grootboek: één rij per betaalde providercall, geschreven door `lib/ai/usage.ts`
+op de service key, nooit fataal. Het paneel staat op `/admin` (`_components/AiCostCard.tsx`,
+`lib/admin/ai-spend.ts`).
+
+- **Een nakijkactie is niet een call.** Spreken is Scribe + de grader, Schrijven alleen de grader.
+  Ze delen één `request_id` en het gemiddelde gaat over *distinct request ids*. Over rijen
+  gemiddeld rapporteert Spreken de helft van de echte kosten — precies de vergelijking waarvoor het
+  paneel bestaat.
+- **Het budget is de creditsstand van de Gateway** (`GET /v1/credits`), geen
+  `AI_MONTHLY_BUDGET_EUR`; die env-var is bewust weer weg. Vercel biedt **geen** endpoint voor de
+  API-key-budget zelf (docs 2026-08-28), en een bedrag dat we niet kunnen verifiëren hoort niet op
+  een beslispagina.
+- **`GET /v1/report` is account-breed**, dus ongefilterd zit het B1-autheringswerk op
+  `anthropic/claude-opus-5` erin. Elke gradingcall draagt daarom
+  `providerOptions.gateway.tags = ['feature:nakijken', 'onderdeel:<skill>']` en de query filtert
+  daarop. Verwijder die tags niet: dan is het controlecijfer een getal over iets anders.
+- **Rapportage kost geld** ($5/1.000 queries, $0.075/1.000 tagwrites) en loopt minuten achter.
+  Beide gateway-reads zijn daarom een uur gecached via `fetch`'s `next: { revalidate }`, en het
+  Vercel-cijfer staat in de voetnoot als *controle* — nooit als bron voor de gemiddeldes, want
+  Scribe (~15% van een Spreken-check) zit er niet in.
+- **Alles degradeert naar `null`.** Geen key, een 403 (het endpoint vereist Pro), API down: het
+  paneel laat de vergelijking weg. Een adminpagina mag niet omvallen op de rapportage-API van een
+  derde.
+- **`USD_EUR` in `lib/ai/costs.ts` is de enige aanname** en wordt bewust niet live opgehaald: een
+  historie die meebeweegt met de FX-markt valt niet tegen een factuur te leggen. Tarieven daar zijn
+  gepubliceerde leverancierstarieven; wijzig er nooit één zonder `RATES_CHECKED_ON` mee te zetten.
+- **`bg-primary/10` rendert in de adminbundle volledig dekkend** (zelfde reden als de dichte
+  vierkanten van de statstegels), dus de meter gebruikt een inline rgba. Een vulling onder ~1,5%
+  is subpixel en leest als "niets besteed", vandaar de ondergrens.
+
 ## Verification — required after every change
 
 1. `npx tsc --noEmit`
