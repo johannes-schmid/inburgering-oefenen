@@ -1,0 +1,227 @@
+{
+  "items": [
+    {
+      "kind": "uitleg",
+      "tier": null,
+      "explanation": null,
+      "payload": {
+        "body_html": "<p>In het examen lezen krijg je vaak een <strong>brief</strong>. Een brief komt van een instantie, bijvoorbeeld de gemeente, een school of de verhuurder. In een brief staat bijna altijd dezelfde soort informatie op dezelfde plek. Bovenaan staat de <strong>afzender</strong> (wie de brief stuurt) en de datum. In het midden staat waarom je de brief krijgt en wat je moet doen. Onderaan staat vaak een datum, een bedrag of een telefoonnummer.</p><p>Lees eerst het onderwerp en de laatste alinea. Daar staat meestal wat je moet doen en wanneer.</p>",
+        "cards": [
+          {
+            "label": "BOVENAAN",
+            "example_html": "<mark>Gemeente Wielenburg</mark> — 14 maart 2024"
+          },
+          {
+            "label": "MIDDEN",
+            "example_html": "<mark>Uw aanvraag is niet compleet.</mark>"
+          },
+          {
+            "label": "ONDERAAN",
+            "example_html": "<mark>Reageer voor 28 maart 2024.</mark>"
+          }
+        ]
+      }
+    },
+    {
+      "kind": "leestekst",
+      "tier": null,
+      "explanation": null,
+      "payload": {
+        "title": "Brief van Woonstichting De Meerhof",
+        "body_html": "<p>Woonstichting De Meerhof<br>Kanaalweg 12, 3812 AB Wielenburg</p><p>Aan: mevrouw F. Adem, Lijsterstraat 44</p><p>Datum: 8 april 2024<br>Onderwerp: onderhoud aan de kraan in uw keuken</p><p>Geachte mevrouw Adem,</p><p>U heeft ons gebeld over een lekkende kraan in uw keuken. Wij komen dit gratis repareren. De monteur komt op <strong>woensdag 17 april tussen 9.00 en 12.00 uur</strong>. Zorg dat er iemand thuis is. Als u niet thuis bent, betaalt u 45 euro voorrijkosten.</p><p>Kunt u niet op deze dag? Bel dan uiterlijk 15 april naar 030 555 21 90. Wij maken dan een nieuwe afspraak.</p><p>Met vriendelijke groet,<br>J. Pronk, afdeling onderhoud</p>",
+        "words": [
+          {
+            "word": "de woonstichting",
+            "meaning": "het bedrijf dat je huis verhuurt"
+          },
+          {
+            "word": "het onderhoud",
+            "meaning": "reparaties aan je huis"
+          },
+          {
+            "word": "de monteur",
+            "meaning": "de man of vrouw die iets komt repareren"
+          },
+          {
+            "word": "de voorrijkosten",
+            "meaning": "geld dat je betaalt omdat iemand voor niets naar je toe komt"
+          },
+          {
+            "word": "uiterlijk",
+            "meaning": "niet later dan"
+          }
+        ],
+        "marks": [
+          "woensdag 17 april tussen 9.00 en 12.00 uur",
+          "betaalt u 45 euro voorrijkosten",
+          "Bel dan uiterlijk 15 april"
+        ]
+      }
+    },
+    {
+      "kind": "mcq",
+      "tier": 0,
+      "explanation": "Bovenaan de brief staat de afzender: Woonstichting De Meerhof. Dat is het bedrijf dat de brief stuurt.",
+      "payload": {
+        "prompt": "Wie stuurt deze brief?"
+      },
+      "options": [
+        {
+          "label": "A",
+          "body": "De gemeente Wielenburg",
+          "is_correct": false
+        },
+        {
+          "label": "B",
+          "body": "Woonstichting De Meerhof",
+          "is_correct": true
+        },
+        {
+          "label": "C",
+          "body": "Mevrouw F. Adem",
+          "is_correct": false
+        }
+      ]
+    },
+    {
+      "kind": "mcq",
+      "tier": 0,
+      "explanation": "Bij 'Onderwerp' staat waarover de brief gaat: onderhoud aan de kraan in de keuken.",
+      "payload": {
+        "prompt": "Waarover gaat deze brief?"
+      },
+      "options": [
+        {
+          "label": "A",
+          "body": "Over een kraan die lekt",
+          "is_correct": true
+        },
+        {
+          "label": "B",
+          "body": "Over de huur die te laat is betaald",
+          "is_correct": false
+        },
+        {
+          "label": "C",
+          "body": "Over een nieuwe woning",
+          "is_correct": false
+        },
+        {
+          "label": "D",
+          "body": "Over lawaai van de buren",
+          "is_correct": false
+        }
+      ]
+    },
+    {
+      "kind": "markeren",
+      "tier": 0,
+      "explanation": "De dag en tijd van het bezoek staan in de middelste alinea, vet gedrukt. Daar zoek je informatie over 'wanneer'.",
+      "payload": {
+        "instruction": "Markeer in de brief wanneer de monteur komt.",
+        "body_html": "<p>Wij komen dit gratis repareren. De monteur komt op <strong>woensdag 17 april tussen 9.00 en 12.00 uur</strong>. Zorg dat er iemand thuis is. Als u niet thuis bent, betaalt u 45 euro voorrijkosten.</p>",
+        "targets": [
+          {
+            "label": "dag en tijd",
+            "text": "woensdag 17 april tussen 9.00 en 12.00 uur"
+          }
+        ]
+      }
+    },
+    {
+      "kind": "mcq",
+      "tier": 1,
+      "explanation": "In de brief staat: als je niet thuis bent, betaal je 45 euro voorrijkosten.",
+      "payload": {
+        "prompt": "Mevrouw Adem is op 17 april niet thuis. Wat gebeurt er dan?"
+      },
+      "options": [
+        {
+          "label": "A",
+          "body": "De reparatie is gratis.",
+          "is_correct": false
+        },
+        {
+          "label": "B",
+          "body": "Zij moet 45 euro betalen.",
+          "is_correct": true
+        },
+        {
+          "label": "C",
+          "body": "De monteur komt de volgende dag terug.",
+          "is_correct": false
+        }
+      ]
+    },
+    {
+      "kind": "mcq",
+      "tier": 1,
+      "explanation": "In de laatste alinea staat wat je moet doen als de dag niet past: uiterlijk 15 april bellen naar 030 555 21 90.",
+      "payload": {
+        "prompt": "Mevrouw Adem moet op 17 april werken. Wat moet zij doen?"
+      },
+      "options": [
+        {
+          "label": "A",
+          "body": "Een brief schrijven naar de woonstichting.",
+          "is_correct": false
+        },
+        {
+          "label": "B",
+          "body": "Voor 15 april bellen voor een nieuwe afspraak.",
+          "is_correct": true
+        },
+        {
+          "label": "C",
+          "body": "Zelf een monteur zoeken.",
+          "is_correct": false
+        },
+        {
+          "label": "D",
+          "body": "Niets doen en thuisblijven.",
+          "is_correct": false
+        }
+      ]
+    },
+    {
+      "kind": "mcq",
+      "tier": 1,
+      "explanation": "De brief zegt duidelijk: wij komen dit gratis repareren. Je betaalt alleen als je niet thuis bent.",
+      "payload": {
+        "prompt": "Wat kost de reparatie van de kraan?"
+      },
+      "options": [
+        {
+          "label": "A",
+          "body": "Niets, de reparatie is gratis.",
+          "is_correct": true
+        },
+        {
+          "label": "B",
+          "body": "45 euro voor de reparatie.",
+          "is_correct": false
+        },
+        {
+          "label": "C",
+          "body": "Dat staat niet in de brief.",
+          "is_correct": false
+        }
+      ]
+    },
+    {
+      "kind": "open_zin",
+      "tier": 2,
+      "explanation": "In je antwoord moet staan wat je doet en wanneer: bellen naar de woonstichting, uiterlijk 15 april.",
+      "payload": {
+        "prompt": "Jij krijgt deze brief, maar je kunt op 17 april niet thuis zijn. Schrijf in één of twee zinnen wat je doet en wanneer.",
+        "model_answer": "Ik bel voor 15 april naar 030 555 21 90. Dan maak ik een nieuwe afspraak met de monteur.",
+        "checklist": [
+          "Ik schrijf dat ik ga bellen.",
+          "Ik noem de datum 15 april of het telefoonnummer.",
+          "Ik schrijf dat ik een nieuwe afspraak maak."
+        ]
+      }
+    }
+  ],
+  "what_you_learn": "Je leert hoe een brief van een instantie in elkaar zit. Je weet waar de afzender, de datum, het onderwerp en de actie staan. Je kunt de vragen bij zo'n brief beantwoorden en vertellen wat je zelf moet doen."
+}

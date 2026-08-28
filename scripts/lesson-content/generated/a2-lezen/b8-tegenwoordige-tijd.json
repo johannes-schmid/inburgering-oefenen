@@ -1,0 +1,204 @@
+{
+  "items": [
+    {
+      "kind": "uitleg",
+      "tier": null,
+      "explanation": null,
+      "payload": {
+        "body_html": "<p>Als je praat over nu, gebruik je de tegenwoordige tijd. Je begint met de <strong>ik-vorm</strong>: ik werk, ik woon, ik betaal. Bij <strong>jij, hij, zij en u</strong> komt er een <strong>-t</strong> achter: jij werkt, hij woont, u betaalt. Bij <strong>wij, jullie en zij</strong> gebruik je het hele woord: wij werken, jullie wonen, zij betalen.</p>",
+        "cards": [
+          {
+            "label": "ZONDER T",
+            "example_html": "Ik <mark>werk</mark> in een winkel. Wij <mark>werken</mark> hard."
+          },
+          {
+            "label": "MET T",
+            "example_html": "Jij <mark>werkt</mark> in een winkel. Hij <mark>werkt</mark> hard."
+          }
+        ]
+      }
+    },
+    {
+      "kind": "voorbeeld",
+      "tier": null,
+      "explanation": null,
+      "payload": {
+        "sentence_html": "Mijn buurman <mark>betaalt</mark> de huur altijd op tijd."
+      }
+    },
+    {
+      "kind": "voorbeeld",
+      "tier": null,
+      "explanation": null,
+      "payload": {
+        "sentence_html": "Wij <mark>wachten</mark> op de brief van de gemeente."
+      }
+    },
+    {
+      "kind": "mcq",
+      "tier": 0,
+      "explanation": "Na <em>jij</em> komt er een -t achter het werkwoord: jij woont.",
+      "payload": {
+        "prompt": "Welke zin is goed?"
+      },
+      "options": [
+        {
+          "label": "A",
+          "body": "Jij woon in Almere.",
+          "is_correct": false
+        },
+        {
+          "label": "B",
+          "body": "Jij woont in Almere.",
+          "is_correct": true
+        },
+        {
+          "label": "C",
+          "body": "Jij wonen in Almere.",
+          "is_correct": false
+        }
+      ]
+    },
+    {
+      "kind": "mcq",
+      "tier": 0,
+      "explanation": "Bij <em>ik</em> gebruik je het werkwoord zonder -t en zonder -en: ik werk.",
+      "payload": {
+        "prompt": "Welke zin is goed?"
+      },
+      "options": [
+        {
+          "label": "A",
+          "body": "Ik werkt bij een bakker.",
+          "is_correct": false
+        },
+        {
+          "label": "B",
+          "body": "Ik werken bij een bakker.",
+          "is_correct": false
+        },
+        {
+          "label": "C",
+          "body": "Ik werk bij een bakker.",
+          "is_correct": true
+        }
+      ]
+    },
+    {
+      "kind": "gap_choice",
+      "tier": 1,
+      "explanation": "Na <em>hij</em> komt er een -t achter het werkwoord.",
+      "payload": {
+        "sentence": "Hij ___ elke dag naar zijn werk met de bus.",
+        "choices": [
+          "ga",
+          "gaat",
+          "gaan"
+        ],
+        "answer": "gaat"
+      }
+    },
+    {
+      "kind": "gap_choice",
+      "tier": 1,
+      "explanation": "Na <em>wij</em> gebruik je de vorm met -en, dus zonder -t.",
+      "payload": {
+        "sentence": "Wij ___ vanavond samen met de kinderen.",
+        "choices": [
+          "eet",
+          "eet t",
+          "eten"
+        ],
+        "answer": "eten"
+      }
+    },
+    {
+      "kind": "gap_choice",
+      "tier": 1,
+      "explanation": "Ook na <em>u</em> komt er een -t achter het werkwoord.",
+      "payload": {
+        "sentence": "U ___ een formulier bij de balie.",
+        "choices": [
+          "krijg",
+          "krijgt",
+          "krijgen"
+        ],
+        "answer": "krijgt"
+      }
+    },
+    {
+      "kind": "matchen",
+      "tier": 1,
+      "explanation": "Bij ik zonder -t, bij jij en hij met -t, bij wij en jullie met -en.",
+      "payload": {
+        "instruction": "Zoek bij elk woord de juiste vorm van <em>leren</em>.",
+        "pairs": [
+          {
+            "left": "ik",
+            "right": "leer"
+          },
+          {
+            "left": "jij",
+            "right": "leert"
+          },
+          {
+            "left": "hij",
+            "right": "leert"
+          },
+          {
+            "left": "wij",
+            "right": "leren"
+          },
+          {
+            "left": "jullie",
+            "right": "leren"
+          }
+        ]
+      }
+    },
+    {
+      "kind": "gap_type",
+      "tier": 2,
+      "explanation": "Na <em>zij</em> (één persoon) komt er een -t: zij belt.",
+      "payload": {
+        "sentence": "Zij ___ vandaag met de huisarts. (bellen)",
+        "answer": "belt"
+      }
+    },
+    {
+      "kind": "woordorde",
+      "tier": 2,
+      "explanation": "Na <em>jij</em> hoort de vorm met -t: jij betaalt.",
+      "payload": {
+        "instruction": "Maak een goede zin.",
+        "tokens": [
+          "betaalt",
+          "de",
+          "jij",
+          "rekening"
+        ],
+        "answer": [
+          "jij",
+          "betaalt",
+          "de",
+          "rekening"
+        ]
+      }
+    },
+    {
+      "kind": "open_zin",
+      "tier": 2,
+      "explanation": "Bij <em>ik</em> gebruik je het werkwoord zonder -t, bij <em>mijn buurvrouw</em> juist met -t.",
+      "payload": {
+        "prompt": "Schrijf twee zinnen over nu: één met <em>ik</em> en één met <em>mijn buurvrouw</em>.",
+        "model_answer": "Ik werk drie dagen per week in een winkel. Mijn buurvrouw werkt in een ziekenhuis.",
+        "checklist": [
+          "Bij ik staat het werkwoord zonder -t.",
+          "Bij mijn buurvrouw staat er een -t achter het werkwoord.",
+          "Beide zinnen gaan over nu."
+        ]
+      }
+    }
+  ],
+  "what_you_learn": "Je leert praten over nu met de tegenwoordige tijd. Je weet dat er bij jij, hij, zij en u een -t achter het werkwoord komt. Bij ik gebruik je het woord zonder -t, en bij wij, jullie en zij de vorm met -en."
+}

@@ -6,6 +6,7 @@ import { createClient } from '@/lib/supabase/server';
 import { canSeeExplanations, ownsKnm, planFromMetadata } from '@/lib/entitlements';
 import AppShell from '../../../components/AppShell';
 import ExamShell from '@/components/exam/ExamShell';
+import { fetchPortalMenu } from '@/lib/portal-menu';
 
 /**
  * The KNM player. A static sibling of `[level]/[skill]/[number]`, for the same reason the
@@ -42,8 +43,10 @@ export default async function KnmExamPage({ params }: Props) {
     redirect(`/${locale}/premium?vanaf=oefenexamen-knm-${number}`);
   }
 
+  const menu = await fetchPortalMenu();
+
   return (
-    <AppShell locale={locale} email={user.email ?? ''} active="knm">
+    <AppShell locale={locale} email={user.email ?? ''} active="knm" activeGroup="knm" menu={menu}>
       <div className="px-5 py-7 sm:px-8">
         <div className="max-w-6xl mx-auto">
           <ExamShell content={content} canSeeExplanations={canSeeExplanations(plan)} />

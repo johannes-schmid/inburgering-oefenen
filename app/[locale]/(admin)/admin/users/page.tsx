@@ -48,7 +48,7 @@ export default async function UsersPage() {
   const [paymentsRes, examsRes, lerenRes, cardsRes] = await Promise.all([
     admin.from('payments').select('user_id, amount_cents, product, status, created_at').eq('status', 'paid').order('created_at', { ascending: false }),
     admin.from('exam_submissions').select('user_id, exam_number, pct, passed, completed_at').not('user_id', 'is', null),
-    admin.from('user_leren_progress').select('user_id, thema_id, completed, completed_at, updated_at'),
+    admin.from('user_leren_progress').select('user_id, thema_id, max_section, completed, completed_at, updated_at'),
     admin.from('user_word_card_progress').select('user_id, status, seen_count, last_seen_at, updated_at').not('user_id', 'is', null),
   ]);
 
@@ -101,7 +101,7 @@ export default async function UsersPage() {
         })),
         ...userLeren.map(l => ({
           type: 'leren' as const,
-          label: `Thema ${l.thema_id} ${l.completed ? 'afgerond' : `(sectie ${l.thema_id})`}`,
+          label: `Thema ${l.thema_id} ${l.completed ? 'afgerond' : `(sectie ${l.max_section})`}`,
           at: l.completed_at ?? l.updated_at,
         })),
         ...userCards

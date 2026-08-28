@@ -1,0 +1,14 @@
+{
+  "artboards": [
+    { "file": "Main.dc.html", "x": 0, "y": 0, "w": 1440, "h": 1180, "title": "1 · De matrix" },
+    { "file": "Planner.dc.html", "x": 1600, "y": 0, "w": 1440, "h": 1180, "title": "2 · Het plan" },
+    { "file": "Diagnose.dc.html", "x": 3200, "y": 0, "w": 1440, "h": 1260, "title": "3 · Waar je staat" }
+  ],
+  "annotations": [
+    { "id": "brief", "x": 0, "y": -230, "w": 520, "text": "Platform-dashboard, drie richtingen\n\nElke richting draagt hetzelfde materiaal: A2 · B1 · KNM · ONA, elk met oefenexamens, leermodules en woordenlijsten. Ze verschillen in wat de pagina eerst zegt.\n\nAlle getallen zijn voorbeeldstand van een verzonnen cursist. Wat niet gebouwd is (B1-leermodules, KNM-examens, ONA) staat overal als 'binnenkort' — nooit als beschikbaar." },
+    { "id": "note-matrix", "x": 640, "y": -230, "w": 420, "text": "1 · De matrix\n\nEen raster: rij = traject, kolom = soort module. Compleet en voorspelbaar; je ziet in één blik dat er drie manieren zijn om aan Luisteren te werken, en wat er nog leeg is.\n\nTradeoff: het is een catalogus. De cursist moet zelf kiezen; het plan staat onderaan als strip." },
+    { "id": "note-planner", "x": 1600, "y": -230, "w": 420, "text": "2 · Het plan\n\nDe agenda is de pagina. Eén schuif (uren per week) rekent de einddatum, het aantal weken en de marge tot je termijn door — sleep hem en alles beweegt.\n\nTradeoff: de catalogus is bijna onzichtbaar. Wie wil rondkijken in plaats van werken, moet doorklikken." },
+    { "id": "note-diagnose", "x": 3200, "y": -230, "w": 420, "text": "3 · Waar je staat\n\nBegint bij de diagnose: drie vindingen met bewijs, elk met de modules die het gat dichten. De catalogus staat pas onderaan.\n\nTradeoff: dit vraagt echte data. Bij een nieuwe cursist is er niets te diagnosticeren — die heeft een lege staat nodig die de andere twee niet nodig hebben." }
+  ],
+  "launch": { "view": "canvas" }
+}

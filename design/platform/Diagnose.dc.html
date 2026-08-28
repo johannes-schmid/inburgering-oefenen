@@ -1,0 +1,287 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@500;700;800&family=Public+Sans:wght@400;500;600;700;800&display=swap">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; }
+    body { margin: 0; font-family: 'Public Sans', system-ui, sans-serif; color: #191c1e; background: #f0f3f8; }
+    h1, h2, h3, h4 { font-family: 'Manrope', system-ui, sans-serif; margin: 0; letter-spacing: -0.02em; }
+    a { color: #a24000; text-decoration: none; } a:hover { color: #5f2200; }
+    .card { background: #fff; border-radius: 18px; box-shadow: 0 0 32px rgba(25,28,30,0.06); }
+    .eyebrow { font-size: 10.5px; font-weight: 800; letter-spacing: 0.14em; text-transform: uppercase; color: #a24000; }
+    .navitem { display: flex; align-items: center; gap: 10px; padding: 10px 14px; border-radius: 10px; font-size: 14px; font-weight: 500; color: rgba(255,255,255,0.65); }
+    .navitem.active { background: rgba(255,255,255,0.15); color: #fff; font-weight: 600; box-shadow: inset 0 0 0 1px rgba(255,255,255,0.12); }
+    .navhead { margin: 16px 14px 6px; font-size: 10.5px; font-weight: 800; letter-spacing: 0.13em; text-transform: uppercase; color: rgba(255,255,255,0.38); }
+    .chip { display: inline-flex; align-items: center; gap: 6px; padding: 4px 10px; border-radius: 999px; font-size: 11px; font-weight: 700; }
+    .remedy { display: flex; align-items: center; gap: 10px; padding: 10px 12px; border-radius: 12px; background: #f8f9fb; }
+    .rbar { height: 8px; border-radius: 5px; background: #e0e3e5; overflow: hidden; }
+    .rbar > span { display: block; height: 100%; }
+  </style>
+</helmet>
+
+<div style="width: 1440px; min-height: 1260px; display: flex; font-size: 15px;">
+
+  <aside style="width: 248px; flex-shrink: 0; background: linear-gradient(180deg,#001d4e 0%,#002b6d 45%,#003580 100%); box-shadow: 4px 0 24px rgba(0,27,78,0.18); display: flex; flex-direction: column; padding: 18px 12px 16px;">
+    <div style="display: flex; align-items: center; gap: 9px; padding: 0 6px 6px;">
+      <svg width="30" height="30" viewBox="0 0 100 100" aria-hidden="true" style="display:block">
+        <rect width="100" height="100" rx="23" fill="#ffffff"></rect>
+        <rect x="26" y="27" width="17" height="46" rx="8.5" fill="#002b6d"></rect>
+        <circle cx="65" cy="50" r="17" fill="#fe762c"></circle>
+      </svg>
+      <span style="font-family: 'Manrope', sans-serif; font-weight: 800; font-size: 15px; color: #fff; letter-spacing: -0.02em;">Inburgering Oefenen</span>
+    </div>
+    <div class="navhead">Mijn traject</div>
+    <div class="navitem active">
+      <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"></circle><circle cx="12" cy="12" r="4.5"></circle></svg>
+      Waar je staat
+    </div>
+    <div class="navitem">Studieplan</div>
+    <div class="navitem">Oefenexamens</div>
+    <div class="navitem">Leermodules</div>
+    <div class="navitem">Woordenlijsten</div>
+    <div class="navhead">Onderdelen</div>
+    <div class="navitem">Lezen <span style="margin-left:auto; font-size:11px; color:rgba(255,255,255,0.42);">82%</span></div>
+    <div class="navitem" style="color:#fff; background:rgba(254,118,44,0.14);">Luisteren <span style="margin-left:auto; font-size:11px; color:#fe762c; font-weight:800;">54%</span></div>
+    <div class="navitem">Schrijven <span style="margin-left:auto; font-size:11px; color:rgba(255,255,255,0.42);">71%</span></div>
+    <div class="navitem">Spreken <span style="margin-left:auto; font-size:11px; color:rgba(255,255,255,0.42);">66%</span></div>
+    <div class="navitem">KNM <span style="margin-left:auto; font-size:11px; color:rgba(255,255,255,0.42);">2/9</span></div>
+    <div style="margin-top: auto; display: flex; align-items: center; gap: 10px; padding: 10px 12px; border-radius: 12px; background: rgba(255,255,255,0.08);">
+      <span style="width: 30px; height: 30px; border-radius: 10px; background: rgba(254,118,44,0.24); color: #fe762c; display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 13px;">A</span>
+      <span><span style="display: block; font-size: 12.5px; font-weight: 700; color: #fff;">Amina Yıldız</span><span style="display: block; font-size: 11px; color: rgba(255,255,255,0.5);">3 modules actief</span></span>
+    </div>
+  </aside>
+
+  <main style="flex: 1; min-width: 0; padding: 34px 40px 44px;">
+
+    <header style="margin-bottom: 24px; max-width: 780px;">
+      <p class="eyebrow" style="margin: 0 0 7px;">Waar je staat</p>
+      <h1 style="font-size: 31px; font-weight: 800; line-height: 1.08;">Drie dingen houden je nu tegen</h1>
+      <p style="margin: 9px 0 0; font-size: 14.5px; line-height: 1.6; color: #434651;">
+        Gebaseerd op je laatste 13 oefenexamens en de beoordelingen van de docent.
+        Werk ze van boven naar beneden af — daarboven wordt je score niet meer beter van meer oefenexamens.
+      </p>
+    </header>
+
+    <!-- ── The focus queue: finding, evidence, and the modules that fix it ── -->
+    <section style="display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; margin-bottom: 28px;">
+
+      <div class="card" style="padding: 20px 20px 18px; display: flex; flex-direction: column; gap: 12px; box-shadow: 0 0 32px rgba(25,28,30,0.06), inset 0 0 0 2px rgba(254,118,44,0.5);">
+        <div style="display: flex; align-items: center; justify-content: space-between;">
+          <span class="chip" style="background: #fcecdd; color: #a24000;">Grootste gat</span>
+          <span style="font-family: 'Manrope', sans-serif; font-size: 13px; font-weight: 800; color: #a24000;">Luisteren A2</span>
+        </div>
+        <h2 style="font-size: 18px; font-weight: 800; line-height: 1.25;">Gesprekken met twee sprekers</h2>
+        <p style="margin: 0; font-size: 13px; line-height: 1.6; color: #434651;">
+          12 van je 18 fouten zitten hier. Bij mededelingen en telefoongesprekken gaat het juist goed.
+        </p>
+        <div style="display: flex; align-items: center; gap: 10px; margin-top: 2px;">
+          <span class="rbar" style="flex: 1;"><span style="width: 41%; background: linear-gradient(90deg,#a24000,#fe762c);"></span></span>
+          <span style="font-size: 12px; font-weight: 800; color: #a24000; font-variant-numeric: tabular-nums;">41% goed</span>
+        </div>
+        <div style="display: flex; flex-direction: column; gap: 8px; margin-top: 6px;">
+          <div class="remedy" style="background: #fcecdd;">
+            <span style="width: 26px; height: 26px; border-radius: 8px; background: #fff; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#a24000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 18V7l8-3 8 3v11"></path><path d="M4 18h16"></path></svg>
+            </span>
+            <span style="min-width: 0;">
+              <span style="display: block; font-size: 12.5px; font-weight: 800; color: #5f2200;">Leermodule: wie zegt wat</span>
+              <span style="display: block; font-size: 11.5px; color: #5f2200;">25 min · begin hier</span>
+            </span>
+          </div>
+          <div class="remedy">
+            <span style="width: 26px; height: 26px; border-radius: 8px; background: #eceef0; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#002b6d" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="14" height="14" rx="2"></rect><path d="M7 9h6M7 13h4"></path></svg>
+            </span>
+            <span><span style="display: block; font-size: 12.5px; font-weight: 700;">62 woorden: afspraken maken</span><span style="display: block; font-size: 11.5px; color: #747782;">15 min</span></span>
+          </div>
+          <div class="remedy">
+            <span style="width: 26px; height: 26px; border-radius: 8px; background: #eceef0; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#002b6d" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="3" width="16" height="18" rx="2"></rect><path d="M8 12l2.5 2.5L16 9"></path></svg>
+            </span>
+            <span><span style="display: block; font-size: 12.5px; font-weight: 700;">Oefenexamen Luisteren 6</span><span style="display: block; font-size: 11.5px; color: #747782;">45 min · daarna meten</span></span>
+          </div>
+        </div>
+      </div>
+
+      <div class="card" style="padding: 20px 20px 18px; display: flex; flex-direction: column; gap: 12px;">
+        <div style="display: flex; align-items: center; justify-content: space-between;">
+          <span class="chip" style="background: #eceef0; color: #434651;">Tweede</span>
+          <span style="font-family: 'Manrope', sans-serif; font-size: 13px; font-weight: 800; color: #002b6d;">Spreken A2</span>
+        </div>
+        <h2 style="font-size: 18px; font-weight: 800; line-height: 1.25;">Uitspraak en tempo</h2>
+        <p style="margin: 0; font-size: 13px; line-height: 1.6; color: #434651;">
+          De docent gaf drie keer een 2 op uitspraak, terwijl je woordenschat een 3 haalt. Je zegt genoeg — het komt niet altijd over.
+        </p>
+        <div style="display: flex; flex-direction: column; gap: 7px; margin-top: 2px;">
+          <div style="display: flex; align-items: center; gap: 10px;">
+            <span style="width: 92px; font-size: 12px; color: #434651;">Uitspraak</span>
+            <span class="rbar" style="flex: 1;"><span style="width: 50%; background: linear-gradient(90deg,#a24000,#fe762c);"></span></span>
+            <span style="font-size: 11.5px; font-weight: 800; color: #a24000; width: 26px; text-align: right;">2,0</span>
+          </div>
+          <div style="display: flex; align-items: center; gap: 10px;">
+            <span style="width: 92px; font-size: 12px; color: #434651;">Woordenschat</span>
+            <span class="rbar" style="flex: 1;"><span style="width: 75%; background: #002b6d;"></span></span>
+            <span style="font-size: 11.5px; font-weight: 800; color: #002b6d; width: 26px; text-align: right;">3,0</span>
+          </div>
+          <div style="display: flex; align-items: center; gap: 10px;">
+            <span style="width: 92px; font-size: 12px; color: #434651;">Samenhang</span>
+            <span class="rbar" style="flex: 1;"><span style="width: 68%; background: #002b6d;"></span></span>
+            <span style="font-size: 11.5px; font-weight: 800; color: #002b6d; width: 26px; text-align: right;">2,7</span>
+          </div>
+        </div>
+        <div style="display: flex; flex-direction: column; gap: 8px; margin-top: 6px;">
+          <div class="remedy">
+            <span style="width: 26px; height: 26px; border-radius: 8px; background: #eceef0; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#002b6d" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 18V7l8-3 8 3v11"></path><path d="M4 18h16"></path></svg>
+            </span>
+            <span><span style="display: block; font-size: 12.5px; font-weight: 700;">Leermodule: klanken en klemtoon</span><span style="display: block; font-size: 11.5px; color: #747782;">20 min · met opnemen</span></span>
+          </div>
+          <div class="remedy">
+            <span style="width: 26px; height: 26px; border-radius: 8px; background: #eceef0; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#002b6d" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v11"></path><path d="M8 7a4 4 0 0 1 8 0v4a4 4 0 0 1-8 0z"></path><path d="M6 20h12"></path></svg>
+            </span>
+            <span><span style="display: block; font-size: 12.5px; font-weight: 700;">Vier opgaven Spreken opnieuw</span><span style="display: block; font-size: 11.5px; color: #747782;">Met je oude opname erbij</span></span>
+          </div>
+        </div>
+      </div>
+
+      <div class="card" style="padding: 20px 20px 18px; display: flex; flex-direction: column; gap: 12px;">
+        <div style="display: flex; align-items: center; justify-content: space-between;">
+          <span class="chip" style="background: #eceef0; color: #434651;">Derde</span>
+          <span style="font-family: 'Manrope', sans-serif; font-size: 13px; font-weight: 800; color: #a24000;">KNM</span>
+        </div>
+        <h2 style="font-size: 18px; font-weight: 800; line-height: 1.25;">Nog niet aan begonnen</h2>
+        <p style="margin: 0; font-size: 13px; line-height: 1.6; color: #434651;">
+          KNM is een eigen examen van 43 vragen. Je hebt twee van de negen gidsen gelezen; zes thema's heb je nog niet gezien.
+        </p>
+        <div style="display: flex; flex-wrap: wrap; gap: 6px; margin-top: 2px;">
+          <span class="chip" style="background: #002b6d; color: #fff;">Wonen</span>
+          <span class="chip" style="background: #002b6d; color: #fff;">Werk</span>
+          <span class="chip" style="background: #eceef0; color: #747782;">Gezondheid</span>
+          <span class="chip" style="background: #eceef0; color: #747782;">Geschiedenis</span>
+          <span class="chip" style="background: #eceef0; color: #747782;">Instanties</span>
+          <span class="chip" style="background: #eceef0; color: #747782;">Onderwijs</span>
+          <span class="chip" style="background: #eceef0; color: #747782;">Omgangsvormen</span>
+          <span class="chip" style="background: #eceef0; color: #747782;">Geldzaken</span>
+        </div>
+        <div style="display: flex; flex-direction: column; gap: 8px; margin-top: 6px;">
+          <div class="remedy">
+            <span style="width: 26px; height: 26px; border-radius: 8px; background: #eceef0; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#002b6d" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 5h16v14H4z"></path><path d="M8 9h8M8 13h5"></path></svg>
+            </span>
+            <span><span style="display: block; font-size: 12.5px; font-weight: 700;">Kennisgids: Gezondheid</span><span style="display: block; font-size: 11.5px; color: #747782;">20 min · met de woordenlijst</span></span>
+          </div>
+          <div class="remedy" style="background: #eceef0;">
+            <span style="width: 26px; height: 26px; border-radius: 8px; background: #fff; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#747782" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="10" width="16" height="10" rx="2"></rect><path d="M8 10V7a4 4 0 0 1 8 0v3"></path></svg>
+            </span>
+            <span><span style="display: block; font-size: 12.5px; font-weight: 700; color: #434651;">Oefenexamens KNM</span><span style="display: block; font-size: 11.5px; color: #747782;">Binnenkort</span></span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── The full diagnostic picture ── -->
+    <section class="card" style="padding: 22px 24px; margin-bottom: 26px;">
+      <div style="display: flex; align-items: baseline; justify-content: space-between; margin-bottom: 18px;">
+        <h2 style="font-size: 17px; font-weight: 800;">Je scores per soort opgave</h2>
+        <span style="font-size: 12.5px; color: #747782;">Alleen sittings zonder feedback tussendoor tellen mee</span>
+      </div>
+      <div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 26px 40px;">
+
+        <div>
+          <p style="margin: 0 0 11px; font-family: 'Manrope', sans-serif; font-size: 14px; font-weight: 800;">Lezen A2 <span style="font-weight: 700; color: #747782;">· 82%</span></p>
+          <div style="display: flex; flex-direction: column; gap: 9px;">
+            <div style="display: flex; align-items: center; gap: 12px;"><span style="width: 148px; font-size: 12.5px; color: #434651;">Mededelingen</span><span class="rbar" style="flex: 1;"><span style="width: 92%; background: #002b6d;"></span></span><span style="font-size: 11.5px; font-weight: 700; width: 32px; text-align: right; font-variant-numeric: tabular-nums;">92%</span></div>
+            <div style="display: flex; align-items: center; gap: 12px;"><span style="width: 148px; font-size: 12.5px; color: #434651;">Regels of instructie</span><span class="rbar" style="flex: 1;"><span style="width: 84%; background: #002b6d;"></span></span><span style="font-size: 11.5px; font-weight: 700; width: 32px; text-align: right; font-variant-numeric: tabular-nums;">84%</span></div>
+            <div style="display: flex; align-items: center; gap: 12px;"><span style="width: 148px; font-size: 12.5px; color: #434651;">Advertenties</span><span class="rbar" style="flex: 1;"><span style="width: 78%; background: #002b6d;"></span></span><span style="font-size: 11.5px; font-weight: 700; width: 32px; text-align: right; font-variant-numeric: tabular-nums;">78%</span></div>
+            <div style="display: flex; align-items: center; gap: 12px;"><span style="width: 148px; font-size: 12.5px; color: #434651;">Lange teksten</span><span class="rbar" style="flex: 1;"><span style="width: 66%; background: #002b6d;"></span></span><span style="font-size: 11.5px; font-weight: 700; width: 32px; text-align: right; font-variant-numeric: tabular-nums;">66%</span></div>
+          </div>
+        </div>
+
+        <div>
+          <p style="margin: 0 0 11px; font-family: 'Manrope', sans-serif; font-size: 14px; font-weight: 800;">Luisteren A2 <span style="font-weight: 700; color: #a24000;">· 54%</span></p>
+          <div style="display: flex; flex-direction: column; gap: 9px;">
+            <div style="display: flex; align-items: center; gap: 12px;"><span style="width: 148px; font-size: 12.5px; color: #434651;">Mededelingen</span><span class="rbar" style="flex: 1;"><span style="width: 74%; background: #002b6d;"></span></span><span style="font-size: 11.5px; font-weight: 700; width: 32px; text-align: right; font-variant-numeric: tabular-nums;">74%</span></div>
+            <div style="display: flex; align-items: center; gap: 12px;"><span style="width: 148px; font-size: 12.5px; color: #434651;">Telefoongesprekken</span><span class="rbar" style="flex: 1;"><span style="width: 61%; background: #002b6d;"></span></span><span style="font-size: 11.5px; font-weight: 700; width: 32px; text-align: right; font-variant-numeric: tabular-nums;">61%</span></div>
+            <div style="display: flex; align-items: center; gap: 12px;"><span style="width: 148px; font-size: 12.5px; color: #5f2200; font-weight: 700;">Gesprekken</span><span class="rbar" style="flex: 1;"><span style="width: 41%; background: linear-gradient(90deg,#a24000,#fe762c);"></span></span><span style="font-size: 11.5px; font-weight: 800; color: #a24000; width: 32px; text-align: right; font-variant-numeric: tabular-nums;">41%</span></div>
+            <div style="display: flex; align-items: center; gap: 12px;"><span style="width: 148px; font-size: 12.5px; color: #434651;">Radiofragmenten</span><span class="rbar" style="flex: 1;"><span style="width: 52%; background: #002b6d;"></span></span><span style="font-size: 11.5px; font-weight: 700; width: 32px; text-align: right; font-variant-numeric: tabular-nums;">52%</span></div>
+          </div>
+        </div>
+
+        <div>
+          <p style="margin: 0 0 11px; font-family: 'Manrope', sans-serif; font-size: 14px; font-weight: 800;">Schrijven A2 <span style="font-weight: 700; color: #747782;">· 2,8 gemiddeld</span></p>
+          <div style="display: flex; flex-direction: column; gap: 9px;">
+            <div style="display: flex; align-items: center; gap: 12px;"><span style="width: 148px; font-size: 12.5px; color: #434651;">Inhoud en volledigheid</span><span class="rbar" style="flex: 1;"><span style="width: 82%; background: #002b6d;"></span></span><span style="font-size: 11.5px; font-weight: 700; width: 32px; text-align: right;">3,3</span></div>
+            <div style="display: flex; align-items: center; gap: 12px;"><span style="width: 148px; font-size: 12.5px; color: #434651;">Woordenschat</span><span class="rbar" style="flex: 1;"><span style="width: 72%; background: #002b6d;"></span></span><span style="font-size: 11.5px; font-weight: 700; width: 32px; text-align: right;">2,9</span></div>
+            <div style="display: flex; align-items: center; gap: 12px;"><span style="width: 148px; font-size: 12.5px; color: #434651;">Grammatica</span><span class="rbar" style="flex: 1;"><span style="width: 60%; background: #002b6d;"></span></span><span style="font-size: 11.5px; font-weight: 700; width: 32px; text-align: right;">2,4</span></div>
+            <div style="display: flex; align-items: center; gap: 12px;"><span style="width: 148px; font-size: 12.5px; color: #747782;">Formulier invullen</span><span class="rbar" style="flex: 1;"><span style="width: 0%; background: #002b6d;"></span></span><span style="font-size: 11.5px; color: #747782; width: 32px; text-align: right;">—</span></div>
+          </div>
+          <p style="margin: 9px 0 0; font-size: 11.5px; color: #747782;">Een streepje betekent: nog niet nagekeken, niet nul.</p>
+        </div>
+
+        <div>
+          <p style="margin: 0 0 11px; font-family: 'Manrope', sans-serif; font-size: 14px; font-weight: 800;">Spreken A2 <span style="font-weight: 700; color: #747782;">· 2,6 gemiddeld</span></p>
+          <div style="display: flex; flex-direction: column; gap: 9px;">
+            <div style="display: flex; align-items: center; gap: 12px;"><span style="width: 148px; font-size: 12.5px; color: #434651;">Reageren</span><span class="rbar" style="flex: 1;"><span style="width: 78%; background: #002b6d;"></span></span><span style="font-size: 11.5px; font-weight: 700; width: 32px; text-align: right;">3,1</span></div>
+            <div style="display: flex; align-items: center; gap: 12px;"><span style="width: 148px; font-size: 12.5px; color: #434651;">Plaatje beschrijven</span><span class="rbar" style="flex: 1;"><span style="width: 70%; background: #002b6d;"></span></span><span style="font-size: 11.5px; font-weight: 700; width: 32px; text-align: right;">2,8</span></div>
+            <div style="display: flex; align-items: center; gap: 12px;"><span style="width: 148px; font-size: 12.5px; color: #434651;">Kiezen en uitleggen</span><span class="rbar" style="flex: 1;"><span style="width: 65%; background: #002b6d;"></span></span><span style="font-size: 11.5px; font-weight: 700; width: 32px; text-align: right;">2,6</span></div>
+            <div style="display: flex; align-items: center; gap: 12px;"><span style="width: 148px; font-size: 12.5px; color: #5f2200; font-weight: 700;">Uitspraak</span><span class="rbar" style="flex: 1;"><span style="width: 50%; background: linear-gradient(90deg,#a24000,#fe762c);"></span></span><span style="font-size: 11.5px; font-weight: 800; color: #a24000; width: 32px; text-align: right;">2,0</span></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── The catalogue, compact, at the bottom where it belongs on this direction ── -->
+    <section>
+      <div style="display: flex; align-items: baseline; justify-content: space-between; margin-bottom: 13px;">
+        <h2 style="font-size: 17px; font-weight: 800;">Je hele traject</h2>
+        <span style="font-size: 12.5px; color: #747782;">Oefenexamens · leermodules · woorden per onderdeel</span>
+      </div>
+      <div style="display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 14px;">
+        <div class="card" style="padding: 16px 18px; display: flex; flex-direction: column; gap: 9px;">
+          <span class="chip" style="background: #002b6d; color: #fff; align-self: flex-start;">Taal A2</span>
+          <span style="font-family: 'Manrope', sans-serif; font-size: 14px; font-weight: 800;">Vier onderdelen</span>
+          <span style="font-size: 12px; color: #434651; line-height: 1.6;">40 oefenexamens · 18 leermodules · 1.240 woorden</span>
+          <span style="display: flex; align-items: center; gap: 8px; margin-top: auto;">
+            <span class="rbar" style="flex: 1;"><span style="width: 34%; background: #002b6d;"></span></span>
+            <span style="font-size: 11.5px; font-weight: 800; color: #002b6d; font-variant-numeric: tabular-nums;">34%</span>
+          </span>
+        </div>
+        <div class="card" style="padding: 16px 18px; display: flex; flex-direction: column; gap: 9px;">
+          <span class="chip" style="background: #1d428a; color: #fff; align-self: flex-start;">Taal B1</span>
+          <span style="font-family: 'Manrope', sans-serif; font-size: 14px; font-weight: 800;">Drie onderdelen</span>
+          <span style="font-size: 12px; color: #434651; line-height: 1.6;">30 oefenexamens · leermodules en woorden in voorbereiding</span>
+          <span style="display: flex; align-items: center; gap: 8px; margin-top: auto;">
+            <span class="rbar" style="flex: 1;"><span style="width: 0%; background: #002b6d;"></span></span>
+            <span style="font-size: 11.5px; font-weight: 700; color: #747782;">nog niet begonnen</span>
+          </span>
+        </div>
+        <div class="card" style="padding: 16px 18px; display: flex; flex-direction: column; gap: 9px;">
+          <span class="chip" style="background: #a24000; color: #fff; align-self: flex-start;">KNM</span>
+          <span style="font-family: 'Manrope', sans-serif; font-size: 14px; font-weight: 800;">Acht thema's</span>
+          <span style="font-size: 12px; color: #434651; line-height: 1.6;">9 kennisgidsen · 366 woorden · oefenexamens binnenkort</span>
+          <span style="display: flex; align-items: center; gap: 8px; margin-top: auto;">
+            <span class="rbar" style="flex: 1;"><span style="width: 22%; background: #002b6d;"></span></span>
+            <span style="font-size: 11.5px; font-weight: 800; color: #002b6d; font-variant-numeric: tabular-nums;">22%</span>
+          </span>
+        </div>
+        <div style="border-radius: 18px; padding: 16px 18px; background: #eceef0; display: flex; flex-direction: column; gap: 9px;">
+          <span class="chip" style="background: #5f2200; color: #fff; align-self: flex-start;">ONA</span>
+          <span style="font-family: 'Manrope', sans-serif; font-size: 14px; font-weight: 800; color: #434651;">Acht resultaatkaarten</span>
+          <span style="font-size: 12px; color: #747782; line-height: 1.6;">Wat je moet aanleveren staat in de gidsen; de module komt na KNM.</span>
+          <span class="chip" style="margin-top: auto; align-self: flex-start; background: #fff; color: #a24000; box-shadow: inset 0 0 0 1px rgba(196,198,210,0.5);">Binnenkort</span>
+        </div>
+      </div>
+    </section>
+  </main>
+</div>
+</x-dc>
+</body>
+</html>

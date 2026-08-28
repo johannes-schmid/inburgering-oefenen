@@ -1,0 +1,1238 @@
+{
+  "wonen": [
+    {
+      "dutch": "huurcontract",
+      "article": "het",
+      "plural": "huurcontracten",
+      "frame": null,
+      "meaning_nl": "papier met afspraken tussen bewoner en eigenaar van de woning",
+      "example": "Ik heb het huurcontract voor twee jaar getekend.",
+      "usage": "receptief"
+    },
+    {
+      "dutch": "huurder",
+      "article": "de",
+      "plural": "huurders",
+      "frame": null,
+      "meaning_nl": "persoon die elke maand geld betaalt voor een woning",
+      "example": "De huurder betaalt elke maand op tijd.",
+      "usage": "productief"
+    },
+    {
+      "dutch": "verhuurder",
+      "article": "de",
+      "plural": "verhuurders",
+      "frame": null,
+      "meaning_nl": "eigenaar die zijn woning aan iemand anders geeft tegen betaling",
+      "example": "Mijn verhuurder komt de kapotte kraan maken.",
+      "usage": "receptief"
+    },
+    {
+      "dutch": "woningcorporatie",
+      "article": "de",
+      "plural": "woningcorporaties",
+      "frame": null,
+      "meaning_nl": "organisatie met veel woningen voor mensen met een laag inkomen",
+      "example": "De woningcorporatie stuurde een brief over het onderhoud.",
+      "usage": "receptief"
+    },
+    {
+      "dutch": "huurtoeslag",
+      "article": "de",
+      "plural": "huurtoeslagen",
+      "frame": "huurtoeslag aanvragen",
+      "meaning_nl": "geld van de overheid als je woning te duur is",
+      "example": "Fatima vraagt dit jaar huurtoeslag aan.",
+      "usage": "receptief"
+    },
+    {
+      "dutch": "borg",
+      "article": "de",
+      "plural": "borgen",
+      "frame": null,
+      "meaning_nl": "geld dat je vooraf betaalt en later terugkrijgt",
+      "example": "Ik betaalde 800 euro borg voor de kamer.",
+      "usage": "receptief"
+    },
+    {
+      "dutch": "verdieping",
+      "article": "de",
+      "plural": "verdiepingen",
+      "frame": null,
+      "meaning_nl": "laag of etage in een gebouw",
+      "example": "Wij wonen op de derde verdieping zonder lift.",
+      "usage": "productief"
+    },
+    {
+      "dutch": "balkon",
+      "article": "het",
+      "plural": "balkons",
+      "frame": null,
+      "meaning_nl": "kleine buitenruimte aan de voorkant of achterkant van een flat",
+      "example": "Op het balkon staan twee stoelen en planten.",
+      "usage": "productief"
+    },
+    {
+      "dutch": "buurman",
+      "article": "de",
+      "plural": "buurmannen",
+      "frame": null,
+      "meaning_nl": "man die naast jou woont",
+      "example": "Mijn buurman helpt mij met de zware dozen.",
+      "usage": "productief"
+    },
+    {
+      "dutch": "buurthuis",
+      "article": "het",
+      "plural": "buurthuizen",
+      "frame": null,
+      "meaning_nl": "gebouw in de wijk met cursussen en activiteiten voor bewoners",
+      "example": "In het buurthuis is elke dinsdag een taalcafé.",
+      "usage": "receptief"
+    },
+    {
+      "dutch": "wijk",
+      "article": "de",
+      "plural": "wijken",
+      "frame": null,
+      "meaning_nl": "deel van een stad met straten en woningen",
+      "example": "In onze wijk komt een nieuwe school.",
+      "usage": "receptief"
+    },
+    {
+      "dutch": "klacht",
+      "article": "de",
+      "plural": "klachten",
+      "frame": "een klacht indienen (over)",
+      "meaning_nl": "bericht waarin je zegt dat iets niet goed is",
+      "example": "Ik heb een klacht over de kapotte lift.",
+      "usage": "productief"
+    },
+    {
+      "dutch": "geluid",
+      "article": "het",
+      "plural": "geluiden",
+      "frame": null,
+      "meaning_nl": "wat je met je oren hoort",
+      "example": "Het geluid van de buren houdt mij wakker.",
+      "usage": "receptief"
+    },
+    {
+      "dutch": "verhuizen",
+      "article": null,
+      "plural": null,
+      "frame": "verhuizen (naar)",
+      "meaning_nl": "met je spullen in een andere woning gaan wonen",
+      "example": "Wij verhuizen volgende maand naar Almere.",
+      "usage": "productief"
+    },
+    {
+      "dutch": "opzeggen",
+      "article": null,
+      "plural": null,
+      "frame": "de huur opzeggen",
+      "meaning_nl": "schriftelijk laten weten dat je stopt met een afspraak",
+      "example": "Je moet de huur een maand van tevoren opzeggen.",
+      "usage": "receptief"
+    },
+    {
+      "dutch": "inschrijven",
+      "article": null,
+      "plural": null,
+      "frame": "zich inschrijven (bij)",
+      "meaning_nl": "je naam en gegevens officieel laten opnemen op een lijst",
+      "example": "Ik ga mij inschrijven bij de gemeente Utrecht.",
+      "usage": "productief"
+    },
+    {
+      "dutch": "container",
+      "article": "de",
+      "plural": "containers",
+      "frame": null,
+      "meaning_nl": "grote bak op straat voor papier, glas of huisvuil",
+      "example": "De container voor papier staat om de hoek.",
+      "usage": "receptief"
+    },
+    {
+      "dutch": "gemeente",
+      "article": "de",
+      "plural": "gemeenten",
+      "frame": null,
+      "meaning_nl": "bestuur van een stad of dorp",
+      "example": "De gemeente maakt de straat volgende week schoon.",
+      "usage": "receptief"
+    },
+    {
+      "dutch": "meterkast",
+      "article": "de",
+      "plural": "meterkasten",
+      "frame": null,
+      "meaning_nl": "kleine kast met de aansluitingen voor stroom, gas en water",
+      "example": "De monteur kijkt even in de meterkast.",
+      "usage": "receptief"
+    },
+    {
+      "dutch": "schimmel",
+      "article": "de",
+      "plural": "schimmels",
+      "frame": null,
+      "meaning_nl": "zwarte of groene vlekken op een vochtige muur",
+      "example": "In de badkamer zit schimmel op de muur.",
+      "usage": "receptief"
+    },
+    {
+      "dutch": "reparatie",
+      "article": "de",
+      "plural": "reparaties",
+      "frame": null,
+      "meaning_nl": "het maken van iets dat kapot is",
+      "example": "De reparatie van de deur duurt twee dagen.",
+      "usage": "productief"
+    },
+    {
+      "dutch": "storing",
+      "article": "de",
+      "plural": "storingen",
+      "frame": null,
+      "meaning_nl": "probleem waardoor iets tijdelijk niet werkt",
+      "example": "Er is een storing in de verwarming.",
+      "usage": "receptief"
+    },
+    {
+      "dutch": "bewoner",
+      "article": "de",
+      "plural": "bewoners",
+      "frame": null,
+      "meaning_nl": "iemand die in een bepaald huis of gebouw woont",
+      "example": "Alle bewoners krijgen een brief over het onderhoud.",
+      "usage": "receptief"
+    },
+    {
+      "dutch": "speeltuin",
+      "article": "de",
+      "plural": "speeltuinen",
+      "frame": null,
+      "meaning_nl": "plek buiten waar kinderen kunnen klimmen en schommelen",
+      "example": "Achter ons huis is een kleine speeltuin.",
+      "usage": "productief"
+    }
+  ],
+  "gezondheid": [
+    {
+      "dutch": "huisarts",
+      "article": "de",
+      "plural": "huisartsen",
+      "frame": null,
+      "meaning_nl": "dokter in de buurt waar je eerst naartoe gaat",
+      "example": "Ik ga morgen naar de huisarts in Zwolle.",
+      "usage": "productief"
+    },
+    {
+      "dutch": "afspraak",
+      "article": "de",
+      "plural": "afspraken",
+      "frame": "een afspraak maken (met)",
+      "meaning_nl": "vaste tijd om ergens te komen",
+      "example": "Ik wil graag een afspraak maken voor donderdag.",
+      "usage": "productief"
+    },
+    {
+      "dutch": "spreekuur",
+      "article": "het",
+      "plural": "spreekuren",
+      "frame": null,
+      "meaning_nl": "tijd waarop de dokter patiënten ontvangt",
+      "example": "Het spreekuur is elke dag van negen tot twaalf.",
+      "usage": "receptief"
+    },
+    {
+      "dutch": "wachtkamer",
+      "article": "de",
+      "plural": "wachtkamers",
+      "frame": null,
+      "meaning_nl": "ruimte waar je zit tot je aan de beurt bent",
+      "example": "Neemt u plaats in de wachtkamer, meneer De Wit.",
+      "usage": "receptief"
+    },
+    {
+      "dutch": "verwijsbrief",
+      "article": "de",
+      "plural": "verwijsbrieven",
+      "frame": null,
+      "meaning_nl": "papier van de huisarts dat je nodig hebt voor de specialist",
+      "example": "Zonder verwijsbrief kunt u niet naar het ziekenhuis.",
+      "usage": "receptief"
+    },
+    {
+      "dutch": "specialist",
+      "article": "de",
+      "plural": "specialisten",
+      "frame": null,
+      "meaning_nl": "arts in het ziekenhuis voor één soort ziekte",
+      "example": "De specialist bekijkt de foto van mijn knie.",
+      "usage": "receptief"
+    },
+    {
+      "dutch": "apotheek",
+      "article": "de",
+      "plural": "apotheken",
+      "frame": null,
+      "meaning_nl": "winkel waar je pillen en zalf ophaalt",
+      "example": "De apotheek naast het station is open tot zes uur.",
+      "usage": "productief"
+    },
+    {
+      "dutch": "recept",
+      "article": "het",
+      "plural": "recepten",
+      "frame": null,
+      "meaning_nl": "papier van de arts waarmee je medicijnen krijgt",
+      "example": "De dokter geeft mij een recept voor hoestdrank.",
+      "usage": "receptief"
+    },
+    {
+      "dutch": "medicijn",
+      "article": "het",
+      "plural": "medicijnen",
+      "frame": null,
+      "meaning_nl": "middel dat je slikt om beter te worden",
+      "example": "Ik gebruik elke dag een medicijn voor mijn maag.",
+      "usage": "productief"
+    },
+    {
+      "dutch": "bijwerking",
+      "article": "de",
+      "plural": "bijwerkingen",
+      "frame": null,
+      "meaning_nl": "vervelend gevolg van een pil, naast de goede werking",
+      "example": "Deze pillen hebben als bijwerking dat je slaperig wordt.",
+      "usage": "receptief"
+    },
+    {
+      "dutch": "klacht",
+      "article": "de",
+      "plural": "klachten",
+      "frame": null,
+      "meaning_nl": "iets in je lichaam dat pijn doet of niet goed voelt",
+      "example": "Ik heb al twee weken klachten aan mijn rug.",
+      "usage": "productief"
+    },
+    {
+      "dutch": "pijn",
+      "article": "de",
+      "plural": "pijnen",
+      "frame": "pijn hebben (aan)",
+      "meaning_nl": "naar gevoel in je lichaam, bijvoorbeeld na een val",
+      "example": "Ik heb veel pijn aan mijn linkerschouder.",
+      "usage": "productief"
+    },
+    {
+      "dutch": "koorts",
+      "article": "de",
+      "plural": "koortsen",
+      "frame": "koorts hebben",
+      "meaning_nl": "te hoge temperatuur van je lichaam bij ziekte",
+      "example": "Mijn zoon heeft koorts en blijft thuis.",
+      "usage": "productief"
+    },
+    {
+      "dutch": "onderzoek",
+      "article": "het",
+      "plural": "onderzoeken",
+      "frame": null,
+      "meaning_nl": "de dokter kijkt en meet hoe het met je gaat",
+      "example": "Na het onderzoek belt de arts u op.",
+      "usage": "receptief"
+    },
+    {
+      "dutch": "behandeling",
+      "article": "de",
+      "plural": "behandelingen",
+      "frame": null,
+      "meaning_nl": "wat de arts doet om je beter te maken",
+      "example": "De behandeling duurt ongeveer zes weken.",
+      "usage": "receptief"
+    },
+    {
+      "dutch": "zorgverzekering",
+      "article": "de",
+      "plural": "zorgverzekeringen",
+      "frame": null,
+      "meaning_nl": "regeling waarvoor je maandelijks betaalt en kosten van artsen vergoed krijgt",
+      "example": "Iedereen in Nederland moet een zorgverzekering hebben.",
+      "usage": "productief"
+    },
+    {
+      "dutch": "eigen risico",
+      "article": "het",
+      "plural": "eigen risico's",
+      "frame": null,
+      "meaning_nl": "bedrag dat je eerst zelf betaalt voordat je geld terugkrijgt",
+      "example": "Het eigen risico is dit jaar weer hoger.",
+      "usage": "receptief"
+    },
+    {
+      "dutch": "bloeddruk",
+      "article": "de",
+      "plural": "bloeddrukken",
+      "frame": null,
+      "meaning_nl": "waarde die de dokter meet met een band om je arm",
+      "example": "De assistente meet eerst mijn bloeddruk.",
+      "usage": "receptief"
+    },
+    {
+      "dutch": "vaccinatie",
+      "article": "de",
+      "plural": "vaccinaties",
+      "frame": null,
+      "meaning_nl": "prik die je beschermt tegen een ziekte",
+      "example": "Anouk krijgt volgende week een vaccinatie op school.",
+      "usage": "receptief"
+    },
+    {
+      "dutch": "verzekerd",
+      "article": null,
+      "plural": null,
+      "frame": "verzekerd zijn (voor)",
+      "meaning_nl": "je betaalt premie, dus de kosten worden vergoed",
+      "example": "Bent u verzekerd voor tandartskosten?",
+      "usage": "receptief"
+    },
+    {
+      "dutch": "doorverwijzen",
+      "article": null,
+      "plural": null,
+      "frame": "doorverwijzen (naar)",
+      "meaning_nl": "iemand naar een andere arts sturen",
+      "example": "De huisarts wil mij doorverwijzen naar het ziekenhuis.",
+      "usage": "receptief"
+    },
+    {
+      "dutch": "innemen",
+      "article": null,
+      "plural": null,
+      "frame": "medicijnen innemen",
+      "meaning_nl": "een pil in je mond doen en doorslikken",
+      "example": "U moet deze tabletten drie keer per dag innemen.",
+      "usage": "productief"
+    },
+    {
+      "dutch": "genezen",
+      "article": null,
+      "plural": null,
+      "frame": null,
+      "meaning_nl": "weer helemaal beter worden na ziekte",
+      "example": "De wond aan zijn hand is goed genezen.",
+      "usage": "receptief"
+    },
+    {
+      "dutch": "huisartsenpost",
+      "article": "de",
+      "plural": "huisartsenposten",
+      "frame": null,
+      "meaning_nl": "plek voor dringende hulp 's avonds en in het weekend",
+      "example": "Bel bij spoed de huisartsenpost in Almere.",
+      "usage": "receptief"
+    }
+  ],
+  "werk": [
+    {
+      "dutch": "vacature",
+      "article": "de",
+      "plural": "vacatures",
+      "frame": null,
+      "meaning_nl": "een plek in een bedrijf waar nog iemand voor gezocht wordt",
+      "example": "Op de website staan drie nieuwe vacatures voor de keuken.",
+      "usage": "receptief"
+    },
+    {
+      "dutch": "solliciteren",
+      "article": null,
+      "plural": null,
+      "frame": "solliciteren (naar)",
+      "meaning_nl": "vragen of je een bepaalde baan mag krijgen",
+      "example": "Ik wil solliciteren naar de baan van chauffeur.",
+      "usage": "productief"
+    },
+    {
+      "dutch": "sollicitatiegesprek",
+      "article": "het",
+      "plural": "sollicitatiegesprekken",
+      "frame": null,
+      "meaning_nl": "afspraak waarin een bedrijf vragen stelt aan iemand die werk zoekt",
+      "example": "Mijn sollicitatiegesprek is dinsdag om tien uur in Utrecht.",
+      "usage": "receptief"
+    },
+    {
+      "dutch": "motivatiebrief",
+      "article": "de",
+      "plural": "motivatiebrieven",
+      "frame": null,
+      "meaning_nl": "tekst waarin je uitlegt waarom jij de baan wilt",
+      "example": "Stuur uw motivatiebrief en cv naar dit e-mailadres.",
+      "usage": "productief"
+    },
+    {
+      "dutch": "cv",
+      "article": "het",
+      "plural": "cv's",
+      "frame": null,
+      "meaning_nl": "overzicht van je scholen, cursussen en vorige banen",
+      "example": "Mijn cv is maar één pagina lang.",
+      "usage": "productief"
+    },
+    {
+      "dutch": "werkgever",
+      "article": "de",
+      "plural": "werkgevers",
+      "frame": null,
+      "meaning_nl": "bedrijf of persoon die mensen in dienst neemt en betaalt",
+      "example": "Mijn werkgever betaalt het salaris altijd op de 25e.",
+      "usage": "receptief"
+    },
+    {
+      "dutch": "werknemer",
+      "article": "de",
+      "plural": "werknemers",
+      "frame": null,
+      "meaning_nl": "iemand die in dienst is van een bedrijf",
+      "example": "Het bedrijf in Zwolle heeft veertig werknemers.",
+      "usage": "receptief"
+    },
+    {
+      "dutch": "arbeidscontract",
+      "article": "het",
+      "plural": "arbeidscontracten",
+      "frame": null,
+      "meaning_nl": "papier met de afspraken tussen een bedrijf en iemand die er werkt",
+      "example": "Lees uw arbeidscontract goed voordat u tekent.",
+      "usage": "receptief"
+    },
+    {
+      "dutch": "salaris",
+      "article": "het",
+      "plural": "salarissen",
+      "frame": null,
+      "meaning_nl": "het geld dat je elke maand krijgt voor je werk",
+      "example": "Het salaris staat elke maand op mijn rekening.",
+      "usage": "receptief"
+    },
+    {
+      "dutch": "werkervaring",
+      "article": "de",
+      "plural": "werkervaringen",
+      "frame": null,
+      "meaning_nl": "wat je eerder in banen hebt gedaan en geleerd",
+      "example": "Ik heb drie jaar werkervaring in de zorg.",
+      "usage": "productief"
+    },
+    {
+      "dutch": "opleiding",
+      "article": "de",
+      "plural": "opleidingen",
+      "frame": null,
+      "meaning_nl": "school of cursus waar je een vak leert",
+      "example": "Ik volg een opleiding tot verzorgende in Breda.",
+      "usage": "productief"
+    },
+    {
+      "dutch": "diploma",
+      "article": "het",
+      "plural": "diploma's",
+      "frame": null,
+      "meaning_nl": "papier dat bewijst dat je een school met succes hebt afgerond",
+      "example": "Neem uw diploma's mee naar het gesprek.",
+      "usage": "productief"
+    },
+    {
+      "dutch": "deeltijdbaan",
+      "article": "de",
+      "plural": "deeltijdbanen",
+      "frame": null,
+      "meaning_nl": "werk voor maar een paar dagen of uren per week",
+      "example": "Zij zoekt een deeltijdbaan van twintig uur.",
+      "usage": "receptief"
+    },
+    {
+      "dutch": "uitzendbureau",
+      "article": "het",
+      "plural": "uitzendbureaus",
+      "frame": null,
+      "meaning_nl": "kantoor dat mensen tijdelijk werk bij bedrijven geeft",
+      "example": "Via het uitzendbureau kreeg ik werk in een magazijn.",
+      "usage": "receptief"
+    },
+    {
+      "dutch": "proeftijd",
+      "article": "de",
+      "plural": "proeftijden",
+      "frame": null,
+      "meaning_nl": "eerste periode van een baan, waarin beide partijen snel kunnen stoppen",
+      "example": "De eerste maand is een proeftijd.",
+      "usage": "receptief"
+    },
+    {
+      "dutch": "functie",
+      "article": "de",
+      "plural": "functies",
+      "frame": null,
+      "meaning_nl": "de taak of plaats die iemand heeft binnen een bedrijf",
+      "example": "In welke functie werkte u bij dat bedrijf?",
+      "usage": "receptief"
+    },
+    {
+      "dutch": "rooster",
+      "article": "het",
+      "plural": "roosters",
+      "frame": null,
+      "meaning_nl": "lijst met de dagen en uren waarop je moet werken",
+      "example": "Het nieuwe rooster hangt in de kantine.",
+      "usage": "receptief"
+    },
+    {
+      "dutch": "collega",
+      "article": "de",
+      "plural": "collega's",
+      "frame": null,
+      "meaning_nl": "iemand die bij hetzelfde bedrijf werkt als jij",
+      "example": "Mijn collega's zijn erg aardig en helpen mij vaak.",
+      "usage": "productief"
+    },
+    {
+      "dutch": "loonstrook",
+      "article": "de",
+      "plural": "loonstroken",
+      "frame": null,
+      "meaning_nl": "papier waarop staat hoeveel geld je die maand hebt verdiend",
+      "example": "Op mijn loonstrook zie ik hoeveel belasting ik betaal.",
+      "usage": "receptief"
+    },
+    {
+      "dutch": "ontslaan",
+      "article": null,
+      "plural": null,
+      "frame": "ontslaan (bij)",
+      "meaning_nl": "tegen iemand zeggen dat hij niet meer mag komen werken",
+      "example": "De fabriek moet twintig mensen ontslaan.",
+      "usage": "receptief"
+    },
+    {
+      "dutch": "werkloos",
+      "article": null,
+      "plural": null,
+      "frame": null,
+      "meaning_nl": "zonder betaald werk zitten",
+      "example": "Hij is al zes maanden werkloos.",
+      "usage": "receptief"
+    },
+    {
+      "dutch": "beschikbaar",
+      "article": null,
+      "plural": null,
+      "frame": "beschikbaar (voor)",
+      "meaning_nl": "vrij en klaar om iets te doen",
+      "example": "Ik ben beschikbaar voor avonden en weekenden.",
+      "usage": "productief"
+    },
+    {
+      "dutch": "bijlage",
+      "article": "de",
+      "plural": "bijlagen",
+      "frame": null,
+      "meaning_nl": "papier of bestand dat je meestuurt met een brief of mail",
+      "example": "In de bijlage vindt u mijn kopie van het diploma.",
+      "usage": "receptief"
+    },
+    {
+      "dutch": "overwerken",
+      "article": null,
+      "plural": null,
+      "frame": null,
+      "meaning_nl": "langer doorgaan dan de uren die zijn afgesproken",
+      "example": "Vrijdag moet ik twee uur overwerken.",
+      "usage": "receptief"
+    }
+  ],
+  "gemeente": [
+    {
+      "dutch": "gemeente",
+      "article": "de",
+      "plural": "gemeenten",
+      "frame": null,
+      "meaning_nl": "het bestuur van een stad of dorp",
+      "example": "De gemeente stuurt u een brief over uw aanvraag.",
+      "usage": "productief"
+    },
+    {
+      "dutch": "loket",
+      "article": "het",
+      "plural": "loketten",
+      "frame": null,
+      "meaning_nl": "plek met een raampje waar een medewerker je helpt",
+      "example": "U moet uw paspoort ophalen bij loket 3.",
+      "usage": "receptief"
+    },
+    {
+      "dutch": "afspraak",
+      "article": "de",
+      "plural": "afspraken",
+      "frame": "een afspraak maken (met)",
+      "meaning_nl": "vaste dag en tijd om ergens te komen",
+      "example": "Ik heb maandag een afspraak bij de gemeente Utrecht.",
+      "usage": "productief"
+    },
+    {
+      "dutch": "formulier",
+      "article": "het",
+      "plural": "formulieren",
+      "frame": "een formulier invullen",
+      "meaning_nl": "papier met vragen die je moet beantwoorden",
+      "example": "Vul dit formulier in en zet uw handtekening.",
+      "usage": "productief"
+    },
+    {
+      "dutch": "aanvragen",
+      "article": null,
+      "plural": null,
+      "frame": "iets aanvragen (bij)",
+      "meaning_nl": "officieel vragen of je iets mag krijgen",
+      "example": "Ik wil een nieuw rijbewijs aanvragen bij de gemeente.",
+      "usage": "productief"
+    },
+    {
+      "dutch": "identiteitsbewijs",
+      "article": "het",
+      "plural": "identiteitsbewijzen",
+      "frame": null,
+      "meaning_nl": "officieel pasje of boekje met je naam en foto",
+      "example": "Neem uw identiteitsbewijs mee naar het gemeentehuis.",
+      "usage": "receptief"
+    },
+    {
+      "dutch": "verhuizen",
+      "article": null,
+      "plural": null,
+      "frame": "verhuizen (naar)",
+      "meaning_nl": "in een andere woning gaan wonen",
+      "example": "Wij verhuizen volgende maand naar Almere.",
+      "usage": "productief"
+    },
+    {
+      "dutch": "doorgeven",
+      "article": null,
+      "plural": null,
+      "frame": "iets doorgeven (aan)",
+      "meaning_nl": "informatie aan iemand anders vertellen of sturen",
+      "example": "Ik moet mijn nieuwe adres doorgeven aan de gemeente.",
+      "usage": "productief"
+    },
+    {
+      "dutch": "inschrijven",
+      "article": null,
+      "plural": null,
+      "frame": "zich inschrijven (bij)",
+      "meaning_nl": "je naam officieel op een lijst laten zetten",
+      "example": "U moet zich binnen vijf dagen inschrijven bij de gemeente.",
+      "usage": "receptief"
+    },
+    {
+      "dutch": "uittreksel",
+      "article": "het",
+      "plural": "uittreksels",
+      "frame": null,
+      "meaning_nl": "kort officieel papier met gegevens van de gemeente",
+      "example": "Voor het werk heb ik een uittreksel nodig.",
+      "usage": "receptief"
+    },
+    {
+      "dutch": "geldig",
+      "article": null,
+      "plural": null,
+      "frame": "geldig tot",
+      "meaning_nl": "je mag het nog gebruiken, de datum is nog niet voorbij",
+      "example": "Uw pas is geldig tot 1 juni 2027.",
+      "usage": "receptief"
+    },
+    {
+      "dutch": "legitimeren",
+      "article": null,
+      "plural": null,
+      "frame": "zich legitimeren",
+      "meaning_nl": "met een pasje laten zien wie je bent",
+      "example": "Aan de balie moet u zich legitimeren.",
+      "usage": "receptief"
+    },
+    {
+      "dutch": "postzegel",
+      "article": "de",
+      "plural": "postzegels",
+      "frame": null,
+      "meaning_nl": "klein plakplaatje op een brief, je betaalt zo het versturen",
+      "example": "Op deze brief moet nog een postzegel.",
+      "usage": "receptief"
+    },
+    {
+      "dutch": "afzender",
+      "article": "de",
+      "plural": "afzenders",
+      "frame": null,
+      "meaning_nl": "de persoon of instantie die de brief verstuurt",
+      "example": "Op de envelop staat de afzender: de gemeente Zwolle.",
+      "usage": "receptief"
+    },
+    {
+      "dutch": "aangetekend",
+      "article": null,
+      "plural": null,
+      "frame": "aangetekend versturen",
+      "meaning_nl": "met een handtekening bij het afgeven, extra zeker verstuurd",
+      "example": "Deze brief is aangetekend verstuurd naar mijn adres.",
+      "usage": "receptief"
+    },
+    {
+      "dutch": "bezorgen",
+      "article": null,
+      "plural": null,
+      "frame": "iets bezorgen (bij)",
+      "meaning_nl": "post of pakket naar het adres brengen",
+      "example": "De postbode komt het pakket morgen bezorgen.",
+      "usage": "receptief"
+    },
+    {
+      "dutch": "rekening",
+      "article": "de",
+      "plural": "rekeningen",
+      "frame": null,
+      "meaning_nl": "papier waarop staat hoeveel geld je moet betalen",
+      "example": "Ik heb de rekening van de tandarts al betaald.",
+      "usage": "productief"
+    },
+    {
+      "dutch": "overmaken",
+      "article": null,
+      "plural": null,
+      "frame": "geld overmaken (naar)",
+      "meaning_nl": "geld van je bankrekening naar iemand anders sturen",
+      "example": "Ik moet vandaag 50 euro overmaken naar de gemeente.",
+      "usage": "productief"
+    },
+    {
+      "dutch": "bedrag",
+      "article": "het",
+      "plural": "bedragen",
+      "frame": null,
+      "meaning_nl": "hoeveel euro het precies is",
+      "example": "Het bedrag van 45 euro staat onderaan de brief.",
+      "usage": "receptief"
+    },
+    {
+      "dutch": "boete",
+      "article": "de",
+      "plural": "boetes",
+      "frame": null,
+      "meaning_nl": "geld dat je moet betalen omdat je iets fout deed",
+      "example": "Hij kreeg een boete omdat hij te hard reed.",
+      "usage": "receptief"
+    },
+    {
+      "dutch": "herinnering",
+      "article": "de",
+      "plural": "herinneringen",
+      "frame": null,
+      "meaning_nl": "tweede brief omdat je nog niet betaald hebt",
+      "example": "Ik kreeg een herinnering voor de rekening van maart.",
+      "usage": "receptief"
+    },
+    {
+      "dutch": "pinpas",
+      "article": "de",
+      "plural": "pinpassen",
+      "frame": null,
+      "meaning_nl": "kaart van de bank waarmee je in de winkel betaalt",
+      "example": "Mijn pinpas werkt niet meer bij de kassa.",
+      "usage": "receptief"
+    },
+    {
+      "dutch": "saldo",
+      "article": "het",
+      "plural": "saldi",
+      "frame": null,
+      "meaning_nl": "het geld dat nog op je bankrekening staat",
+      "example": "Mijn saldo is te laag voor deze rekening.",
+      "usage": "receptief"
+    },
+    {
+      "dutch": "toeslag",
+      "article": "de",
+      "plural": "toeslagen",
+      "frame": null,
+      "meaning_nl": "geld van de overheid als hulp bij vaste kosten",
+      "example": "Zij krijgt elke maand een toeslag voor de huur.",
+      "usage": "receptief"
+    }
+  ],
+  "winkelen": [
+    {
+      "dutch": "aanbieding",
+      "article": "de",
+      "plural": "aanbiedingen",
+      "frame": "in de aanbieding",
+      "meaning_nl": "artikel dat tijdelijk minder geld kost",
+      "example": "De koffie is deze week in de aanbieding.",
+      "usage": "productief"
+    },
+    {
+      "dutch": "korting",
+      "article": "de",
+      "plural": "kortingen",
+      "frame": "korting (op)",
+      "meaning_nl": "je betaalt minder dan de gewone prijs",
+      "example": "Ik krijg tien procent korting op deze jas.",
+      "usage": "productief"
+    },
+    {
+      "dutch": "kassabon",
+      "article": "de",
+      "plural": "kassabonnen",
+      "frame": null,
+      "meaning_nl": "papiertje met wat je gekocht en betaald hebt",
+      "example": "Bewaar de kassabon goed, dat is belangrijk.",
+      "usage": "receptief"
+    },
+    {
+      "dutch": "ruilen",
+      "article": null,
+      "plural": null,
+      "frame": "ruilen (voor)",
+      "meaning_nl": "iets terugbrengen en iets anders meenemen",
+      "example": "Kan ik deze broek ruilen voor een grotere?",
+      "usage": "productief"
+    },
+    {
+      "dutch": "garantie",
+      "article": "de",
+      "plural": "garanties",
+      "frame": "garantie (op)",
+      "meaning_nl": "belofte dat de winkel kapotte spullen gratis repareert",
+      "example": "Op deze wasmachine zit twee jaar garantie.",
+      "usage": "receptief"
+    },
+    {
+      "dutch": "bezorgen",
+      "article": null,
+      "plural": null,
+      "frame": "bezorgen (bij)",
+      "meaning_nl": "iets naar het adres van de klant brengen",
+      "example": "De winkel komt de kast morgen bij ons bezorgen.",
+      "usage": "productief"
+    },
+    {
+      "dutch": "bezorgkosten",
+      "article": "de",
+      "plural": "bezorgkosten",
+      "frame": null,
+      "meaning_nl": "extra geld dat je betaalt voor het thuisbrengen",
+      "example": "Boven de vijftig euro betaalt u geen bezorgkosten.",
+      "usage": "receptief"
+    },
+    {
+      "dutch": "levertijd",
+      "article": "de",
+      "plural": "levertijden",
+      "frame": null,
+      "meaning_nl": "hoelang je moet wachten voor je iets krijgt",
+      "example": "De levertijd van deze bank is drie weken.",
+      "usage": "receptief"
+    },
+    {
+      "dutch": "bestellen",
+      "article": null,
+      "plural": null,
+      "frame": "bestellen (bij)",
+      "meaning_nl": "vragen of ze iets voor je klaarmaken of sturen",
+      "example": "Ik wil deze schoenen graag online bestellen.",
+      "usage": "productief"
+    },
+    {
+      "dutch": "bedrag",
+      "article": "het",
+      "plural": "bedragen",
+      "frame": null,
+      "meaning_nl": "hoeveel euro iets kost of hoeveel je betaalt",
+      "example": "Het totale bedrag staat onderaan de rekening.",
+      "usage": "receptief"
+    },
+    {
+      "dutch": "klantenservice",
+      "article": "de",
+      "plural": "klantenservices",
+      "frame": null,
+      "meaning_nl": "afdeling die vragen en problemen van kopers behandelt",
+      "example": "Bel de klantenservice als uw pakket niet komt.",
+      "usage": "receptief"
+    },
+    {
+      "dutch": "retourneren",
+      "article": null,
+      "plural": null,
+      "frame": null,
+      "meaning_nl": "iets terugsturen naar de winkel en geld terugkrijgen",
+      "example": "U mag het artikel binnen veertien dagen retourneren.",
+      "usage": "receptief"
+    },
+    {
+      "dutch": "uitverkocht",
+      "article": null,
+      "plural": null,
+      "frame": null,
+      "meaning_nl": "helemaal weg, er is niets meer van",
+      "example": "De blauwe jassen zijn helaas uitverkocht.",
+      "usage": "receptief"
+    },
+    {
+      "dutch": "gratis",
+      "article": null,
+      "plural": null,
+      "frame": null,
+      "meaning_nl": "je hoeft er geen geld voor te betalen",
+      "example": "Bij twee broden krijgt u een krentenbol gratis.",
+      "usage": "productief"
+    },
+    {
+      "dutch": "verpakking",
+      "article": "de",
+      "plural": "verpakkingen",
+      "frame": null,
+      "meaning_nl": "doos of plastic waar het product in zit",
+      "example": "Doe het product terug in de originele verpakking.",
+      "usage": "receptief"
+    },
+    {
+      "dutch": "voorraad",
+      "article": "de",
+      "plural": "voorraden",
+      "frame": "op voorraad",
+      "meaning_nl": "de spullen die de winkel nog in het magazijn heeft",
+      "example": "Deze televisie is nog op voorraad in Zwolle.",
+      "usage": "receptief"
+    },
+    {
+      "dutch": "maat",
+      "article": "de",
+      "plural": "maten",
+      "frame": null,
+      "meaning_nl": "het nummer of de grootte van kleding en schoenen",
+      "example": "Heeft u deze trui ook in maat 42?",
+      "usage": "productief"
+    },
+    {
+      "dutch": "klacht",
+      "article": "de",
+      "plural": "klachten",
+      "frame": "een klacht (over)",
+      "meaning_nl": "wat je zegt als je ontevreden bent over iets",
+      "example": "Ik heb een klacht over mijn nieuwe telefoon.",
+      "usage": "receptief"
+    },
+    {
+      "dutch": "geldig",
+      "article": null,
+      "plural": null,
+      "frame": "geldig (tot)",
+      "meaning_nl": "je mag het gebruiken, het is nog niet voorbij",
+      "example": "Deze bon is geldig tot 1 maart.",
+      "usage": "receptief"
+    },
+    {
+      "dutch": "afhalen",
+      "article": null,
+      "plural": null,
+      "frame": "afhalen (bij)",
+      "meaning_nl": "zelf naar de winkel gaan om iets op te halen",
+      "example": "U kunt uw bestelling afhalen in onze winkel.",
+      "usage": "receptief"
+    }
+  ],
+  "school": [
+    {
+      "dutch": "basisschool",
+      "article": "de",
+      "plural": "basisscholen",
+      "frame": null,
+      "meaning_nl": "School voor kinderen van vier tot ongeveer twaalf jaar.",
+      "example": "Onze dochter zit op een basisschool in Zwolle.",
+      "usage": "productief"
+    },
+    {
+      "dutch": "leerkracht",
+      "article": "de",
+      "plural": "leerkrachten",
+      "frame": null,
+      "meaning_nl": "Persoon die les geeft aan een klas.",
+      "example": "De leerkracht van groep 5 heet meneer Bakker.",
+      "usage": "productief"
+    },
+    {
+      "dutch": "rapport",
+      "article": "het",
+      "plural": "rapporten",
+      "frame": null,
+      "meaning_nl": "Papier met de resultaten van een kind op school.",
+      "example": "Sanne kreeg vrijdag haar eerste rapport mee naar huis.",
+      "usage": "receptief"
+    },
+    {
+      "dutch": "ouderavond",
+      "article": "de",
+      "plural": "ouderavonden",
+      "frame": null,
+      "meaning_nl": "Avond waarop de school met vaders en moeders praat.",
+      "example": "De ouderavond begint dinsdag om half acht.",
+      "usage": "receptief"
+    },
+    {
+      "dutch": "leerplicht",
+      "article": "de",
+      "plural": "leerplichten",
+      "frame": null,
+      "meaning_nl": "Regel dat een kind naar school moet gaan.",
+      "example": "In Nederland geldt de leerplicht vanaf vijf jaar.",
+      "usage": "receptief"
+    },
+    {
+      "dutch": "huiswerk",
+      "article": "het",
+      "plural": "huiswerken",
+      "frame": null,
+      "meaning_nl": "Opdrachten die je thuis maakt voor school.",
+      "example": "Youssef maakt zijn huiswerk aan de keukentafel.",
+      "usage": "productief"
+    },
+    {
+      "dutch": "kinderopvang",
+      "article": "de",
+      "plural": "kinderopvangen",
+      "frame": null,
+      "meaning_nl": "Plek waar kleine kinderen overdag worden verzorgd.",
+      "example": "Onze zoon gaat drie dagen naar de kinderopvang.",
+      "usage": "productief"
+    },
+    {
+      "dutch": "naschoolse opvang",
+      "article": "de",
+      "plural": "naschoolse opvangen",
+      "frame": null,
+      "meaning_nl": "Plek waar kinderen blijven na de lessen, tot ouders komen.",
+      "example": "Lisa blijft tot vijf uur bij de naschoolse opvang.",
+      "usage": "receptief"
+    },
+    {
+      "dutch": "schoolvakantie",
+      "article": "de",
+      "plural": "schoolvakanties",
+      "frame": null,
+      "meaning_nl": "Periode waarin er geen lessen zijn.",
+      "example": "In de schoolvakantie gaan we naar mijn zus in Breda.",
+      "usage": "productief"
+    },
+    {
+      "dutch": "schooljaar",
+      "article": "het",
+      "plural": "schooljaren",
+      "frame": null,
+      "meaning_nl": "Periode van augustus tot juli met lessen.",
+      "example": "Het nieuwe schooljaar start op 2 september.",
+      "usage": "receptief"
+    },
+    {
+      "dutch": "groep",
+      "article": "de",
+      "plural": "groepen",
+      "frame": null,
+      "meaning_nl": "Klas op de basisschool, met een nummer.",
+      "example": "Mijn zoon zit dit jaar in groep 6.",
+      "usage": "receptief"
+    },
+    {
+      "dutch": "cijfer",
+      "article": "het",
+      "plural": "cijfers",
+      "frame": null,
+      "meaning_nl": "Getal dat aangeeft hoe goed een toets is gemaakt.",
+      "example": "Ahmed haalde een mooi cijfer voor rekenen.",
+      "usage": "receptief"
+    },
+    {
+      "dutch": "inschrijven",
+      "article": null,
+      "plural": null,
+      "frame": "zich inschrijven (voor)",
+      "meaning_nl": "Je naam ergens laten noteren om mee te doen.",
+      "example": "U kunt uw kind online inschrijven voor de school.",
+      "usage": "productief"
+    },
+    {
+      "dutch": "spijbelen",
+      "article": null,
+      "plural": null,
+      "frame": null,
+      "meaning_nl": "Niet naar de les gaan zonder goede reden.",
+      "example": "De school belt de ouders als leerlingen spijbelen.",
+      "usage": "receptief"
+    },
+    {
+      "dutch": "ouderbijdrage",
+      "article": "de",
+      "plural": "ouderbijdragen",
+      "frame": null,
+      "meaning_nl": "Geld dat vaders en moeders vrijwillig betalen aan de school.",
+      "example": "De ouderbijdrage is dit jaar vijftig euro.",
+      "usage": "receptief"
+    },
+    {
+      "dutch": "schooladvies",
+      "article": "het",
+      "plural": "schooladviezen",
+      "frame": null,
+      "meaning_nl": "Wat de leerkracht denkt dat past na groep 8.",
+      "example": "Fatima kreeg een positief schooladvies van haar juf.",
+      "usage": "receptief"
+    },
+    {
+      "dutch": "brugklas",
+      "article": "de",
+      "plural": "brugklassen",
+      "frame": null,
+      "meaning_nl": "Eerste jaar na de basisschool.",
+      "example": "Mijn dochter zit sinds september in de brugklas.",
+      "usage": "receptief"
+    },
+    {
+      "dutch": "gymles",
+      "article": "de",
+      "plural": "gymlessen",
+      "frame": null,
+      "meaning_nl": "Uur op school met sport en bewegen.",
+      "example": "Neem woensdag schone schoenen mee voor de gymles.",
+      "usage": "receptief"
+    },
+    {
+      "dutch": "ziekmelden",
+      "article": null,
+      "plural": null,
+      "frame": "zich ziekmelden (bij)",
+      "meaning_nl": "Doorgeven dat iemand niet kan komen door ziekte.",
+      "example": "Ik moet mijn zoon ziekmelden bij de school.",
+      "usage": "productief"
+    },
+    {
+      "dutch": "oudergesprek",
+      "article": "het",
+      "plural": "oudergesprekken",
+      "frame": null,
+      "meaning_nl": "Kort gesprek van de leerkracht met vader of moeder.",
+      "example": "Wij hebben donderdag een oudergesprek over Noor.",
+      "usage": "receptief"
+    }
+  ]
+}

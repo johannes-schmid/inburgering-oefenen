@@ -12,12 +12,13 @@ import {
   SKILLS,
   formatCount,
   levelLabel,
-  skillsAtLevel,
 } from '@/data/skills';
 import { totalExamsForLevel } from '@/lib/pricing';
 import SkillIcon from '@/components/site/SkillIcon';
 import AppShell from '../components/AppShell';
 import ExamSegments, { segmentState, type SegmentState } from './components/ExamSegments';
+import ModuleSkillGrid from './_components/ModuleSkillGrid';
+import { fetchPortalMenu } from '@/lib/portal-menu';
 
 export const metadata: Metadata = {
   title: 'Mijn oefenportaal | Inburgering Oefenen',
@@ -85,12 +86,15 @@ export default async function DashboardPage({ params }: { params: Promise<{ loca
   const meta = user.user_metadata ?? {};
   const firstName = String(meta.full_name ?? meta.name ?? '').trim().split(' ')[0];
 
+  const menu = await fetchPortalMenu();
+
   return (
     <AppShell
       locale={locale}
       email={user.email ?? ''}
       avatarUrl={String(meta.avatar_url ?? meta.picture ?? '')}
       active="overview"
+      menu={menu}
     >
       <div className="px-5 py-7 sm:px-8 sm:py-10">
         <div className="max-w-5xl mx-auto">
@@ -119,95 +123,30 @@ export default async function DashboardPage({ params }: { params: Promise<{ loca
                 the sole grid is a label for a distinction the candidate cannot yet make. */}
             {visibleLevels.length > 1 && (
               <header className="mb-4">
-                <h2
-                  className="font-headline font-extrabold text-on-surface"
-                  style={{ fontSize: '1.15rem', letterSpacing: '-0.02em' }}
-                >
-                  {t('level_section', { level: levelLabel(level) })}
-                </h2>
+                {/* The heading is the way into the level's own overview. On a phone it is the
+                    only way — the module rail is desktop-only — so this link is not a
+                    convenience, it is the mobile route to `/dashboard/[level]`. */}
+                <a href={`/${locale}/dashboard/${level}`} className="no-underline group inline-flex items-center gap-1.5">
+                  <h2
+                    className="font-headline font-extrabold text-on-surface group-hover:underline"
+                    style={{ fontSize: '1.15rem', letterSpacing: '-0.02em' }}
+                  >
+                    {t('level_section', { level: levelLabel(level) })}
+                  </h2>
+                  <ArrowRight size={15} strokeWidth={2.4} className="text-outline" aria-hidden />
+                </a>
                 <p className="text-xs text-outline mt-0.5">
                   {t('level_section_sub', { level: levelLabel(level) })}
                 </p>
               </header>
             )}
-          <div className="grid gap-4 sm:gap-5 md:grid-cols-2">
-            {skillsAtLevel(level).map(skill => {
-              const p = progress[level][skill.slug];
-              const pub = published[level][skill.slug];
-              const states = Array.from({ length: skill.examCount }, (_, i) =>
-                segmentState(i + 1, p, pub, hasPaidPlan),
-              );
-              const nothingPublished = pub.size === 0;
-
-              return (
-                <a
-                  key={skill.slug}
-                  href={`/${locale}/dashboard/${level}/${skill.slug}`}
-                  className="skill-card no-underline flex flex-col"
-                >
-                  <div className="flex items-start gap-3 mb-4">
-                    <SkillIcon skill={skill.slug} size="md" />
-                    <div className="min-w-0 flex-1">
-                      <h2
-                        className="font-headline font-extrabold text-on-surface"
-                        style={{ fontSize: '1.075rem', letterSpacing: '-0.015em' }}
-                      >
-                        {tSkills(`${skill.key}.name`)}
-                      </h2>
-                      <p className="text-xs text-outline mt-0.5">
-                        {t('card_meta', {
-                          items: formatCount(skill.itemCount),
-                          minutes: formatCount(skill.durationMinutes),
-                        })}
-                      </p>
-                    </div>
-                    <span className="skill-card-arrow" aria-hidden="true">
-                      <ArrowRight size={17} strokeWidth={2.2} />
-                    </span>
-                  </div>
-
-                  <p className="text-[0.82rem] text-on-surface-variant mb-5" style={{ lineHeight: 1.6 }}>
-                    {tSkills(`${skill.key}.tagline`)}
-                  </p>
-
-                  <div className="mt-auto">
-                    <div className="flex items-baseline justify-between mb-2">
-                      <span className="text-xs font-bold text-on-surface-variant">
-                        {t('card_progress', { done: p.examsDone, total: skill.examCount })}
-                      </span>
-                      {p.averagePct != null && (
-                        <span
-                          className="text-xs font-extrabold"
-                          style={{ color: 'var(--color-primary)', fontVariantNumeric: 'tabular-nums' }}
-                        >
-                          {t('card_average', { pct: p.averagePct })}
-                        </span>
-                      )}
-                    </div>
-
-                    <ExamSegments count={skill.examCount} states={states} labels={segmentLabels} />
-
-                    <p className="text-xs mt-3 flex items-center gap-1.5" style={{ color: 'var(--color-outline)' }}>
-                      {/* Progress wins over "nothing published": once you have sat an exam,
-                          telling you none are available reads as data loss. */}
-                      {p.examsDone === 0 && nothingPublished ? (
-                        <>
-                          <Lock size={12} strokeWidth={2} />
-                          {t('card_none_published')}
-                        </>
-                      ) : p.examsDone === 0 ? (
-                        t('card_cta_start')
-                      ) : p.examsDone >= skill.examCount ? (
-                        t('card_cta_all_done')
-                      ) : (
-                        t('card_cta_continue', { number: p.nextExamNumber })
-                      )}
-                    </p>
-                  </div>
-                </a>
-              );
-            })}
-          </div>
+          <ModuleSkillGrid
+            locale={locale}
+            level={level}
+            progress={progress[level]}
+            published={published}
+            hasPaidPlan={hasPaidPlan}
+          />
           </section>
           ))}
 

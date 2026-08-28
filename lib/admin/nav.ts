@@ -41,6 +41,10 @@ export const ADMIN_NAV: AdminNavItem[] = [
   { path: '', icon: 'dashboard', label: 'Dashboard' },
   { path: '/exams', icon: 'assignment', label: 'Examens', levelled: true, knm: true },
   { path: '/questions', icon: 'quiz', label: 'Vragen & opdrachten', levelled: true, knm: true },
+  // Lessen is levelled maar heeft GEEN KNM-tab: KNM's leerlaag zit in `leren_content` en heeft
+  // zijn eigen surface. Een KNM-tab hier zou een leeg scherm openen voor content die elders
+  // staat — dezelfde reden waarom Rubrieken er ook geen heeft.
+  { path: '/lessen', icon: 'school', label: 'Lessen', levelled: true },
   { path: '/rubrics', icon: 'checklist', label: 'Rubrieken', levelled: true },
   // Beoordelen is deliberately NOT levelled: it is a queue of what is waiting, and splitting the
   // inbox by level would hide work rather than organise it. The level is a column there.

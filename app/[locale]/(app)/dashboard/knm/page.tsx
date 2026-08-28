@@ -10,6 +10,7 @@ import { KNM, KNM_THEMES, formatCount, isFreeKnmExam } from '@/data/skills';
 import SkillIcon from '@/components/site/SkillIcon';
 import AppShell from '../../components/AppShell';
 import ExamListStyles from '../_components/ExamListStyles';
+import { fetchPortalMenu } from '@/lib/portal-menu';
 
 /**
  * KNM's ten oefenexamens inside the portal — the level-less twin of
@@ -52,12 +53,16 @@ export default async function KnmExamsPage({ params }: Props) {
   const pub = published.knm;
   const meta = user.user_metadata ?? {};
 
+  const menu = await fetchPortalMenu();
+
   return (
     <AppShell
       locale={locale}
       email={user.email ?? ''}
       avatarUrl={String(meta.avatar_url ?? meta.picture ?? '')}
-      active="knm"
+      active="overview-module"
+      activeGroup="knm"
+      menu={menu}
     >
       <div className="px-5 py-7 sm:px-8 sm:py-10">
         <div className="max-w-3xl mx-auto">

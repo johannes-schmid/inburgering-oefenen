@@ -1,0 +1,245 @@
+{
+  "items": [
+    {
+      "kind": "uitleg",
+      "tier": null,
+      "explanation": null,
+      "payload": {
+        "body_html": "<p>Bij een brief vraagt het examen bijna altijd naar drie dingen: de <strong>afzender</strong> (wie stuurt de brief), de <strong>datum</strong> (wanneer moet het gebeuren) en de <strong>actie</strong> (wat moet jij doen).</p><p>Zoek ze altijd in dezelfde volgorde. Zo vergeet je niets.</p><p>Stap 1: kijk bovenaan en onderaan. Daar staat de afzender. Stap 2: zoek een getal met een maand, bijvoorbeeld 14 maart. Stap 3: zoek een zin met <em>u moet</em>, <em>stuur</em>, <em>bel</em> of <em>kom</em>. Dat is de actie.</p>",
+        "cards": [
+          {
+            "label": "AFZENDER",
+            "example_html": "Deze brief komt van <mark>Woningstichting De Beemd</mark>."
+          },
+          {
+            "label": "DATUM",
+            "example_html": "U moet betalen <mark>voor 20 april 2025</mark>."
+          },
+          {
+            "label": "ACTIE",
+            "example_html": "<mark>Stuur het formulier terug</mark> in de bijgevoegde envelop."
+          }
+        ]
+      }
+    },
+    {
+      "kind": "leestekst",
+      "tier": null,
+      "explanation": null,
+      "payload": {
+        "title": "Brief over de jaarlijkse controle",
+        "body_html": "<p>Woningstichting De Beemd<br>Postbus 214, 3812 AB Amersfoort</p><p>Amersfoort, 3 februari 2025</p><p>Geachte mevrouw Osei,</p><p>Wij komen elk jaar in uw woning kijken. Dit heet de jaarlijkse controle. Onze monteur controleert de kraan, de verwarming en de meterkast. Zo blijft uw woning veilig.</p><p>De monteur komt op <strong>woensdag 19 februari 2025</strong> tussen 9.00 en 12.00 uur. U hoeft niets te betalen.</p><p>Kunt u niet thuis zijn? Bel dan voor 12 februari naar 033 555 21 40. Wij maken een nieuwe afspraak met u.</p><p>Met vriendelijke groet,<br>M. de Waard<br>Afdeling Onderhoud</p>",
+        "words": [
+          {
+            "word": "de woningstichting",
+            "meaning": "de organisatie die huizen verhuurt"
+          },
+          {
+            "word": "de monteur",
+            "meaning": "iemand die dingen repareert"
+          },
+          {
+            "word": "de meterkast",
+            "meaning": "de kast met de knoppen voor gas, water en licht"
+          },
+          {
+            "word": "de jaarlijkse controle",
+            "meaning": "elk jaar kijken of alles goed werkt"
+          },
+          {
+            "word": "de afdeling",
+            "meaning": "een deel van een organisatie"
+          }
+        ],
+        "marks": [
+          "Woningstichting De Beemd",
+          "woensdag 19 februari 2025",
+          "Bel dan voor 12 februari naar 033 555 21 40"
+        ]
+      }
+    },
+    {
+      "kind": "markeren",
+      "tier": 0,
+      "explanation": "De afzender staat bovenaan de brief en onderaan bij de groet. Hier is dat Woningstichting De Beemd.",
+      "payload": {
+        "instruction": "Markeer wie deze brief stuurt (de afzender).",
+        "body_html": "<p>Woningstichting De Beemd<br>Postbus 214, 3812 AB Amersfoort</p><p>Amersfoort, 3 februari 2025</p><p>Geachte mevrouw Osei,</p><p>Wij komen elk jaar in uw woning kijken.</p>",
+        "targets": [
+          {
+            "label": "afzender",
+            "text": "Woningstichting De Beemd"
+          }
+        ]
+      }
+    },
+    {
+      "kind": "mcq",
+      "tier": 0,
+      "explanation": "De naam bovenaan de brief is de organisatie die schrijft. Mevrouw Osei krijgt de brief, zij stuurt hem niet.",
+      "payload": {
+        "prompt": "Van wie komt deze brief?"
+      },
+      "options": [
+        {
+          "label": "A",
+          "body": "Van mevrouw Osei",
+          "is_correct": false
+        },
+        {
+          "label": "B",
+          "body": "Van Woningstichting De Beemd",
+          "is_correct": true
+        },
+        {
+          "label": "C",
+          "body": "Van de gemeente Amersfoort",
+          "is_correct": false
+        }
+      ]
+    },
+    {
+      "kind": "markeren",
+      "tier": 0,
+      "explanation": "Je zoekt de datum van de afspraak: een dag met een getal en een maand. Dat is woensdag 19 februari 2025.",
+      "payload": {
+        "instruction": "Markeer de dag waarop de monteur komt.",
+        "body_html": "<p>De monteur komt op <strong>woensdag 19 februari 2025</strong> tussen 9.00 en 12.00 uur. U hoeft niets te betalen.</p><p>Kunt u niet thuis zijn? Bel dan voor 12 februari naar 033 555 21 40.</p>",
+        "targets": [
+          {
+            "label": "datum van de afspraak",
+            "text": "woensdag 19 februari 2025"
+          }
+        ]
+      }
+    },
+    {
+      "kind": "mcq",
+      "tier": 0,
+      "explanation": "In de brief staan twee data. 3 februari is de dag van de brief zelf; de monteur komt op 19 februari.",
+      "payload": {
+        "prompt": "Wanneer komt de monteur langs?"
+      },
+      "options": [
+        {
+          "label": "A",
+          "body": "Op 3 februari 2025",
+          "is_correct": false
+        },
+        {
+          "label": "B",
+          "body": "Op 12 februari 2025",
+          "is_correct": false
+        },
+        {
+          "label": "C",
+          "body": "Op 19 februari 2025",
+          "is_correct": true
+        },
+        {
+          "label": "D",
+          "body": "Op 20 februari 2025",
+          "is_correct": false
+        }
+      ]
+    },
+    {
+      "kind": "markeren",
+      "tier": 1,
+      "explanation": "De actie staat in een zin met een opdracht, zoals 'bel dan'. Je moet bellen als je niet thuis kunt zijn.",
+      "payload": {
+        "instruction": "Markeer wat je moet doen als je niet thuis kunt zijn.",
+        "body_html": "<p>De monteur komt op woensdag 19 februari 2025 tussen 9.00 en 12.00 uur. U hoeft niets te betalen.</p><p>Kunt u niet thuis zijn? Bel dan voor 12 februari naar 033 555 21 40. Wij maken een nieuwe afspraak met u.</p>",
+        "targets": [
+          {
+            "label": "actie",
+            "text": "Bel dan voor 12 februari naar 033 555 21 40"
+          }
+        ]
+      }
+    },
+    {
+      "kind": "mcq",
+      "tier": 1,
+      "explanation": "In de brief staat dat je niets hoeft te betalen. De actie is alleen bellen als de dag niet past.",
+      "payload": {
+        "prompt": "Wat moet mevrouw Osei doen volgens deze brief?"
+      },
+      "options": [
+        {
+          "label": "A",
+          "body": "Geld overmaken naar de woningstichting",
+          "is_correct": false
+        },
+        {
+          "label": "B",
+          "body": "Bellen als 19 februari niet past",
+          "is_correct": true
+        },
+        {
+          "label": "C",
+          "body": "Een formulier terugsturen naar Postbus 214",
+          "is_correct": false
+        }
+      ]
+    },
+    {
+      "kind": "mcq",
+      "tier": 1,
+      "explanation": "De brief zegt: bel voor 12 februari. Dat is de laatste dag om te bellen.",
+      "payload": {
+        "prompt": "Tot welke dag kun je bellen voor een nieuwe afspraak?"
+      },
+      "options": [
+        {
+          "label": "A",
+          "body": "Tot 12 februari",
+          "is_correct": true
+        },
+        {
+          "label": "B",
+          "body": "Tot 19 februari",
+          "is_correct": false
+        },
+        {
+          "label": "C",
+          "body": "Tot 3 februari",
+          "is_correct": false
+        }
+      ]
+    },
+    {
+      "kind": "open_zin",
+      "tier": 2,
+      "explanation": "Je legt in eigen woorden uit hoe je de drie stappen gebruikt: eerst afzender, dan datum, dan actie.",
+      "payload": {
+        "prompt": "Schrijf in 2 of 3 zinnen hoe je deze brief hebt gelezen. Noem de afzender, de datum en de actie.",
+        "model_answer": "Eerst keek ik bovenaan. De afzender is Woningstichting De Beemd. Daarna zocht ik de datum: de monteur komt op 19 februari 2025. De actie is bellen voor 12 februari als ik niet thuis kan zijn.",
+        "checklist": [
+          "Ik noem de afzender van de brief.",
+          "Ik noem de datum van de afspraak.",
+          "Ik noem wat ik zelf moet doen."
+        ]
+      }
+    },
+    {
+      "kind": "uitleg",
+      "tier": null,
+      "explanation": null,
+      "payload": {
+        "body_html": "<p>Let op: in een brief staan vaak twee data. De datum bovenaan is de dag dat de brief geschreven is. De datum in de tekst is de dag dat er iets gebeurt of dat jij iets moet doen.</p><p>Vraag je altijd af: welke datum hoort bij de actie? Die datum heeft het examen nodig.</p>",
+        "cards": [
+          {
+            "label": "DATUM VAN DE BRIEF",
+            "example_html": "<mark>Amersfoort, 3 februari 2025</mark>"
+          },
+          {
+            "label": "DATUM VAN DE ACTIE",
+            "example_html": "Bel dan <mark>voor 12 februari</mark>."
+          }
+        ]
+      }
+    }
+  ],
+  "what_you_learn": "Je leert brieven lezen met een vaste aanpak: eerst de afzender, dan de datum, dan de actie. Je weet waar je in de brief moet kijken voor elk van die drie. Ook kun je het verschil zien tussen de datum van de brief en de datum waarop jij iets moet doen."
+}

@@ -1,0 +1,224 @@
+{
+  "items": [
+    {
+      "kind": "uitleg",
+      "tier": null,
+      "explanation": null,
+      "payload": {
+        "title": "Signaalwoorden: kleine woorden die alles omdraaien",
+        "body_html": "<p>In een tekst staan soms kleine woorden die de betekenis omdraaien. Denk aan <strong>maar</strong>, <strong>behalve</strong>, <strong>alleen</strong>, <strong>niet</strong> en <strong>tenzij</strong>. Als je die woorden mist, kies je het verkeerde antwoord.</p><p>Werk zo: 1. Lees de vraag. 2. Zoek de regel in de tekst. 3. Kijk of er een signaalwoord bij staat. 4. Lees dan pas de antwoorden. Streep of markeer het signaalwoord altijd eerst.</p>",
+        "cards": [
+          {
+            "label": "MAAR",
+            "example_html": "De balie is open, <mark>maar</mark> niet op vrijdag."
+          },
+          {
+            "label": "BEHALVE",
+            "example_html": "Alle dagen open, <mark>behalve</mark> op zondag."
+          },
+          {
+            "label": "ALLEEN",
+            "example_html": "Je kunt <mark>alleen</mark> met een afspraak komen."
+          }
+        ]
+      }
+    },
+    {
+      "kind": "leestekst",
+      "tier": null,
+      "explanation": null,
+      "payload": {
+        "title": "Brief van de gemeente Beekdal: afvalpas",
+        "body_html": "<p>Beste bewoner,</p><p>Vanaf 1 maart hebt u een afvalpas nodig voor de afvalcontainer in de straat. Elk huishouden krijgt één pas per adres. De pas is gratis, maar een tweede pas kost 12 euro.</p><p>U kunt de pas ophalen bij de balie in het gemeentehuis. De balie is elke dag open van 9.00 tot 16.00 uur, behalve op woensdag. Op woensdag is de balie gesloten.</p><p>Neem uw legitimatiebewijs mee. Zonder legitimatiebewijs krijgt u geen pas. Wij sturen de pas alleen per post als u ouder bent dan 75 jaar.</p><p>Met vriendelijke groet,<br>Afdeling Afval, gemeente Beekdal</p>",
+        "words": [
+          {
+            "word": "de afvalpas",
+            "meaning": "kaartje waarmee je de afvalcontainer opent"
+          },
+          {
+            "word": "het huishouden",
+            "meaning": "alle mensen die samen in één huis wonen"
+          },
+          {
+            "word": "het legitimatiebewijs",
+            "meaning": "papier met je naam en foto, zoals een paspoort"
+          },
+          {
+            "word": "gesloten",
+            "meaning": "dicht, niet open"
+          },
+          {
+            "word": "per post",
+            "meaning": "met de brievenbus thuisbezorgd"
+          }
+        ],
+        "marks": [
+          "maar een tweede pas kost 12 euro",
+          "behalve op woensdag",
+          "Zonder legitimatiebewijs krijgt u geen pas",
+          "alleen per post als u ouder bent dan 75 jaar"
+        ]
+      }
+    },
+    {
+      "kind": "markeren",
+      "tier": 0,
+      "explanation": "Het woord \"behalve\" haalt woensdag weg uit \"elke dag\". Daarom is de balie op woensdag dicht.",
+      "payload": {
+        "instruction": "Markeer het signaalwoord met de dag erbij. Het zegt wanneer de balie NIET open is.",
+        "body_html": "<p>De balie is elke dag open van 9.00 tot 16.00 uur, behalve op woensdag. Op woensdag is de balie gesloten.</p>",
+        "targets": [
+          {
+            "label": "signaalwoord",
+            "text": "behalve op woensdag"
+          }
+        ]
+      }
+    },
+    {
+      "kind": "mcq",
+      "tier": 0,
+      "explanation": "In de tekst staat \"behalve op woensdag\". Alle andere dagen kun je wel komen.",
+      "payload": {
+        "prompt": "Je wilt de afvalpas ophalen. Op welke dag kan dat niet?"
+      },
+      "options": [
+        {
+          "label": "A",
+          "body": "Op maandag",
+          "is_correct": false
+        },
+        {
+          "label": "B",
+          "body": "Op woensdag",
+          "is_correct": true
+        },
+        {
+          "label": "C",
+          "body": "Op vrijdag",
+          "is_correct": false
+        }
+      ]
+    },
+    {
+      "kind": "markeren",
+      "tier": 0,
+      "explanation": "Het woordje \"maar\" draait de eerste mededeling om: gratis geldt alleen voor de eerste pas.",
+      "payload": {
+        "instruction": "Markeer het stukje met het signaalwoord dat zegt dat de pas niet altijd gratis is.",
+        "body_html": "<p>Elk huishouden krijgt één pas per adres. De pas is gratis, maar een tweede pas kost 12 euro.</p>",
+        "targets": [
+          {
+            "label": "signaalwoord",
+            "text": "maar een tweede pas kost 12 euro"
+          }
+        ]
+      }
+    },
+    {
+      "kind": "mcq",
+      "tier": 0,
+      "explanation": "Na \"maar\" staat de prijs van de tweede pas: 12 euro. De eerste pas is gratis.",
+      "payload": {
+        "prompt": "Je hebt al een afvalpas. Je vraagt nog een pas. Wat betaal je?"
+      },
+      "options": [
+        {
+          "label": "A",
+          "body": "Niets, de pas is gratis.",
+          "is_correct": false
+        },
+        {
+          "label": "B",
+          "body": "12 euro.",
+          "is_correct": true
+        },
+        {
+          "label": "C",
+          "body": "Eerst niets, later 12 euro per jaar.",
+          "is_correct": false
+        }
+      ]
+    },
+    {
+      "kind": "markeren",
+      "tier": 0,
+      "explanation": "Het woord \"alleen\" zet een voorwaarde: de post geldt maar voor één groep mensen.",
+      "payload": {
+        "instruction": "Markeer het stukje met het signaalwoord dat zegt wie de pas thuis krijgt.",
+        "body_html": "<p>Wij sturen de pas alleen per post als u ouder bent dan 75 jaar.</p>",
+        "targets": [
+          {
+            "label": "signaalwoord",
+            "text": "alleen per post als u ouder bent dan 75 jaar"
+          }
+        ]
+      }
+    },
+    {
+      "kind": "mcq",
+      "tier": 0,
+      "explanation": "Door \"alleen ... als u ouder bent dan 75 jaar\" krijgt een man van 40 jaar de pas niet thuis. Hij moet hem ophalen.",
+      "payload": {
+        "prompt": "Meneer Osman is 40 jaar. Krijgt hij de afvalpas per post?"
+      },
+      "options": [
+        {
+          "label": "A",
+          "body": "Ja, iedereen krijgt de pas per post.",
+          "is_correct": false
+        },
+        {
+          "label": "B",
+          "body": "Nee, hij moet de pas zelf ophalen.",
+          "is_correct": true
+        },
+        {
+          "label": "C",
+          "body": "Ja, maar hij betaalt dan 12 euro.",
+          "is_correct": false
+        }
+      ]
+    },
+    {
+      "kind": "mcq",
+      "tier": 1,
+      "explanation": "In de tekst staat \"Zonder legitimatiebewijs krijgt u geen pas\". Het woord \"zonder\" en het woord \"geen\" draaien het antwoord om.",
+      "payload": {
+        "prompt": "Je gaat naar de balie, maar je paspoort ligt thuis. Wat gebeurt er?"
+      },
+      "options": [
+        {
+          "label": "A",
+          "body": "Je krijgt de pas toch mee.",
+          "is_correct": false
+        },
+        {
+          "label": "B",
+          "body": "Je krijgt geen pas.",
+          "is_correct": true
+        },
+        {
+          "label": "C",
+          "body": "Je krijgt de pas per post.",
+          "is_correct": false
+        }
+      ]
+    },
+    {
+      "kind": "open_zin",
+      "tier": 2,
+      "explanation": "Je legt in eigen woorden uit welke stap je zet: eerst het signaalwoord zoeken, dan het antwoord kiezen.",
+      "payload": {
+        "prompt": "Schrijf in 2 of 3 zinnen wat je deed bij de vraag over woensdag. Welk woord hielp je? Waarom?",
+        "model_answer": "Ik zocht de regel over de openingstijden. Daar stond het woord \"behalve\". Dat woord haalt woensdag weg, dus op woensdag is de balie dicht.",
+        "checklist": [
+          "Ik noem het signaalwoord (behalve).",
+          "Ik zeg dat dit woord de betekenis omdraait.",
+          "Ik geef het antwoord: op woensdag is de balie gesloten."
+        ]
+      }
+    }
+  ],
+  "what_you_learn": "Je leert letten op kleine signaalwoorden zoals maar, behalve, alleen en zonder. Je zoekt eerst de regel in de tekst en markeert het signaalwoord, en pas daarna kies je een antwoord. Zo trap je niet in een antwoord dat bijna goed lijkt."
+}

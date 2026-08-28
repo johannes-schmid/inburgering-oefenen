@@ -5,6 +5,7 @@ import { ownsKnm, planFromMetadata } from '@/lib/entitlements';
 import { FEATURES } from '@/lib/features';
 import AppShell from '../../components/AppShell';
 import WoordkaartenClient from './WoordkaartenClient';
+import { fetchPortalMenu } from '@/lib/portal-menu';
 
 /**
  * The KNM woordkaarten, given a route of their own.
@@ -34,12 +35,16 @@ export default async function WoordkaartenPage({ params }: Props) {
 
   const meta = user.user_metadata ?? {};
 
+  const menu = await fetchPortalMenu();
+
   return (
     <AppShell
       locale={locale}
       email={user.email ?? ''}
       avatarUrl={String(meta.avatar_url ?? meta.picture ?? '')}
       active="woordkaarten"
+      activeGroup="knm"
+      menu={menu}
     >
       <div className="px-5 py-7 sm:px-8 sm:py-10">
         <div className="max-w-3xl mx-auto">

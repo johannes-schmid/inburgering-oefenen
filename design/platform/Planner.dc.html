@@ -1,0 +1,314 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@500;700;800&family=Public+Sans:wght@400;500;600;700;800&display=swap">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; }
+    body { margin: 0; font-family: 'Public Sans', system-ui, sans-serif; color: #191c1e; background: #f0f3f8; }
+    h1, h2, h3, h4 { font-family: 'Manrope', system-ui, sans-serif; margin: 0; letter-spacing: -0.02em; }
+    a { color: #a24000; text-decoration: none; } a:hover { color: #5f2200; }
+    .card { background: #fff; border-radius: 18px; box-shadow: 0 0 32px rgba(25,28,30,0.06); }
+    .eyebrow { font-size: 10.5px; font-weight: 800; letter-spacing: 0.14em; text-transform: uppercase; color: #a24000; }
+    .navitem { display: flex; align-items: center; gap: 10px; padding: 10px 14px; border-radius: 10px; font-size: 14px; font-weight: 500; color: rgba(255,255,255,0.65); }
+    .navitem.active { background: rgba(255,255,255,0.15); color: #fff; font-weight: 600; box-shadow: inset 0 0 0 1px rgba(255,255,255,0.12); }
+    .navhead { margin: 16px 14px 6px; font-size: 10.5px; font-weight: 800; letter-spacing: 0.13em; text-transform: uppercase; color: rgba(255,255,255,0.38); }
+    .chip { display: inline-flex; align-items: center; gap: 6px; padding: 3px 9px; border-radius: 999px; font-size: 11px; font-weight: 700; }
+    .task { display: grid; grid-template-columns: 26px 1fr auto auto; gap: 14px; align-items: center; padding: 12px 16px; border-radius: 13px; background: #f8f9fb; }
+    .task.now { background: #fcecdd; }
+    .box { width: 20px; height: 20px; border-radius: 6px; box-shadow: inset 0 0 0 2px rgba(0,43,109,0.22); }
+    .box.done { background: #002b6d; box-shadow: none; display: flex; align-items: center; justify-content: center; }
+  </style>
+</helmet>
+
+<div style="width: 1440px; min-height: 1180px; display: flex; font-size: 15px;">
+
+  <aside style="width: 248px; flex-shrink: 0; background: linear-gradient(180deg,#001d4e 0%,#002b6d 45%,#003580 100%); box-shadow: 4px 0 24px rgba(0,27,78,0.18); display: flex; flex-direction: column; padding: 18px 12px 16px;">
+    <div style="display: flex; align-items: center; gap: 9px; padding: 0 6px 6px;">
+      <svg width="30" height="30" viewBox="0 0 100 100" aria-hidden="true" style="display:block">
+        <rect width="100" height="100" rx="23" fill="#ffffff"></rect>
+        <rect x="26" y="27" width="17" height="46" rx="8.5" fill="#002b6d"></rect>
+        <circle cx="65" cy="50" r="17" fill="#fe762c"></circle>
+      </svg>
+      <span style="font-family: 'Manrope', sans-serif; font-weight: 800; font-size: 15px; color: #fff; letter-spacing: -0.02em;">Inburgering Oefenen</span>
+    </div>
+    <div class="navhead">Mijn traject</div>
+    <div class="navitem">Overzicht</div>
+    <div class="navitem active">
+      <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="16" rx="2"></rect><path d="M8 3v4M16 3v4M3 10h18"></path></svg>
+      Studieplan
+    </div>
+    <div class="navitem">Oefenexamens</div>
+    <div class="navitem">Leermodules</div>
+    <div class="navitem">Woordenlijsten</div>
+    <div class="navhead">Onderdelen</div>
+    <div class="navitem">Lezen <span style="margin-left:auto; font-size:11px; color:rgba(255,255,255,0.42);">A2 · B1</span></div>
+    <div class="navitem">Luisteren <span style="margin-left:auto; font-size:11px; color:rgba(255,255,255,0.42);">A2</span></div>
+    <div class="navitem">Schrijven <span style="margin-left:auto; font-size:11px; color:rgba(255,255,255,0.42);">A2 · B1</span></div>
+    <div class="navitem">Spreken <span style="margin-left:auto; font-size:11px; color:rgba(255,255,255,0.42);">A2 · B1</span></div>
+    <div class="navitem">KNM <span style="margin-left:auto; font-size:11px; color:rgba(255,255,255,0.42);">8 thema's</span></div>
+    <div style="margin-top: auto; display: flex; align-items: center; gap: 10px; padding: 10px 12px; border-radius: 12px; background: rgba(255,255,255,0.08);">
+      <span style="width: 30px; height: 30px; border-radius: 10px; background: rgba(254,118,44,0.24); color: #fe762c; display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 13px;">A</span>
+      <span><span style="display: block; font-size: 12.5px; font-weight: 700; color: #fff;">Amina Yıldız</span><span style="display: block; font-size: 11px; color: rgba(255,255,255,0.5);">3 modules actief</span></span>
+    </div>
+  </aside>
+
+  <main style="flex: 1; min-width: 0; padding: 34px 40px 44px;">
+
+    <!-- ── The claim the page makes, and the one lever behind it ── -->
+    <header style="margin-bottom: 22px;">
+      <p class="eyebrow" style="margin: 0 0 7px;">Jouw studieplan</p>
+      <h1 style="font-size: 31px; font-weight: 800; line-height: 1.08; max-width: 760px;">
+        Met {{uren}} uur per week ben je {{klaar}} door alles heen
+      </h1>
+      <p style="margin: 9px 0 0; font-size: 14.5px; line-height: 1.6; color: #434651; max-width: 720px;">
+        Nog {{weken}} weken werk: {{taken}} taken over vier onderdelen, KNM en ONA.
+        Je termijn loopt af op <strong style="color:#191c1e;">14 maart 2027</strong> — dat haal je met {{marge}} weken marge.
+      </p>
+    </header>
+
+    <div style="display: grid; grid-template-columns: minmax(0, 1fr) 344px; gap: 22px; align-items: start;">
+
+      <!-- ── The plan itself, week by week ── -->
+      <div>
+        <section class="card" style="padding: 18px 20px 20px; margin-bottom: 18px;">
+          <div style="display: flex; align-items: center; justify-content: space-between; gap: 20px; flex-wrap: wrap;">
+            <span>
+              <span style="display: block; font-family: 'Manrope', sans-serif; font-size: 14.5px; font-weight: 800;">Hoeveel tijd heb je per week?</span>
+              <span style="display: block; font-size: 12.5px; color: #434651; margin-top: 3px;">Alles hieronder rekent mee — sleep en je ziet je einddatum verschuiven.</span>
+            </span>
+            <span style="display: flex; align-items: center; gap: 12px;">
+              <span style="width: 210px; height: 7px; border-radius: 4px; background: #e0e3e5; position: relative;">
+                <span style="position: absolute; left: 0; top: 0; bottom: 0; width: {{schuifPct}}; border-radius: 4px; background: linear-gradient(90deg,#a24000,#fe762c);"></span>
+                <span style="position: absolute; top: -6px; left: {{schuifPct}}; width: 19px; height: 19px; margin-left: -9px; border-radius: 50%; background: #fff; box-shadow: 0 2px 8px rgba(0,43,109,0.28);"></span>
+              </span>
+              <span style="font-family: 'Manrope', sans-serif; font-size: 20px; font-weight: 800; color: #002b6d; font-variant-numeric: tabular-nums; min-width: 74px;">{{uren}} u/wk</span>
+            </span>
+          </div>
+        </section>
+
+        <!-- Week 1 -->
+        <section style="margin-bottom: 20px;">
+          <div style="display: flex; align-items: baseline; gap: 12px; margin-bottom: 10px;">
+            <h2 style="font-size: 16px; font-weight: 800;">Deze week</h2>
+            <span style="font-size: 12.5px; color: #747782;">ma 24 – zo 30 augustus · {{uren}} uur gepland</span>
+          </div>
+          <div class="card" style="padding: 12px; display: flex; flex-direction: column; gap: 9px;">
+            <div class="task">
+              <span class="box done"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="m20 6-11 11-5-5"></path></svg></span>
+              <span>
+                <span style="display: block; font-size: 14px; font-weight: 700; color: #747782; text-decoration: line-through;">Leermodule: mededelingen lezen</span>
+                <span style="display: block; font-size: 12px; color: #747782; margin-top: 2px;">Afgerond op maandag</span>
+              </span>
+              <span class="chip" style="background: #eceef0; color: #434651;">Lezen A2</span>
+              <span style="font-size: 12px; color: #747782; font-variant-numeric: tabular-nums;">25 min</span>
+            </div>
+            <div class="task now">
+              <span class="box" style="box-shadow: inset 0 0 0 2px rgba(162,64,0,0.4);"></span>
+              <span>
+                <span style="display: block; font-size: 14px; font-weight: 800; color: #5f2200;">Leermodule: gesprekken volgen</span>
+                <span style="display: block; font-size: 12px; color: #5f2200; margin-top: 2px;">Vandaag — dit is je zwakste onderdeel</span>
+              </span>
+              <span class="chip" style="background: #fff; color: #a24000;">Luisteren A2</span>
+              <span style="font-size: 12px; color: #5f2200; font-weight: 700; font-variant-numeric: tabular-nums;">25 min</span>
+            </div>
+            <div class="task">
+              <span class="box"></span>
+              <span>
+                <span style="display: block; font-size: 14px; font-weight: 700;">Oefenexamen Luisteren 6</span>
+                <span style="display: block; font-size: 12px; color: #434651; margin-top: 2px;">Volledig examen, feedback pas na het inleveren</span>
+              </span>
+              <span class="chip" style="background: #eceef0; color: #434651;">Luisteren A2</span>
+              <span style="font-size: 12px; color: #747782; font-variant-numeric: tabular-nums;">45 min</span>
+            </div>
+            <div class="task">
+              <span class="box"></span>
+              <span>
+                <span style="display: block; font-size: 14px; font-weight: 700;">40 woorden: wonen en buurt</span>
+                <span style="display: block; font-size: 12px; color: #434651; margin-top: 2px;">De woorden die je vorige week fout had</span>
+              </span>
+              <span class="chip" style="background: #eceef0; color: #434651;">Woorden</span>
+              <span style="font-size: 12px; color: #747782; font-variant-numeric: tabular-nums;">15 min</span>
+            </div>
+          </div>
+        </section>
+
+        <!-- Week 2 -->
+        <section style="margin-bottom: 20px;">
+          <div style="display: flex; align-items: baseline; gap: 12px; margin-bottom: 10px;">
+            <h2 style="font-size: 16px; font-weight: 800;">Volgende week</h2>
+            <span style="font-size: 12.5px; color: #747782;">ma 31 aug – zo 6 sep · aanmelden Lezen sluit vrijdag</span>
+          </div>
+          <div class="card" style="padding: 12px; display: flex; flex-direction: column; gap: 9px;">
+            <div class="task" style="background: #f8f9fb; box-shadow: inset 0 0 0 2px rgba(162,64,0,0.18);">
+              <span style="display: flex; align-items: center; justify-content: center; width: 20px; height: 20px; border-radius: 6px; background: #a24000;">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.6" stroke-linecap="round"><path d="M12 8v5l3 2"></path><circle cx="12" cy="12" r="9"></circle></svg>
+              </span>
+              <span>
+                <span style="display: block; font-size: 14px; font-weight: 800;">Meld je aan voor Lezen A2</span>
+                <span style="display: block; font-size: 12px; color: #434651; margin-top: 2px;">Aanmelden duurt meer dan zes weken — dit is de laatste veilige week</span>
+              </span>
+              <span class="chip" style="background: #fcecdd; color: #a24000;">Bij DUO</span>
+              <span style="font-size: 12px; color: #747782; font-variant-numeric: tabular-nums;">10 min</span>
+            </div>
+            <div class="task">
+              <span class="box"></span>
+              <span>
+                <span style="display: block; font-size: 14px; font-weight: 700;">Oefenexamen Luisteren 7</span>
+                <span style="display: block; font-size: 12px; color: #434651; margin-top: 2px;">Doel: 20 van de 25 goed</span>
+              </span>
+              <span class="chip" style="background: #eceef0; color: #434651;">Luisteren A2</span>
+              <span style="font-size: 12px; color: #747782; font-variant-numeric: tabular-nums;">45 min</span>
+            </div>
+            <div class="task">
+              <span class="box"></span>
+              <span>
+                <span style="display: block; font-size: 14px; font-weight: 700;">Kennisgids: Wonen</span>
+                <span style="display: block; font-size: 12px; color: #434651; margin-top: 2px;">Eerste van de acht KNM-thema's</span>
+              </span>
+              <span class="chip" style="background: #eceef0; color: #434651;">KNM</span>
+              <span style="font-size: 12px; color: #747782; font-variant-numeric: tabular-nums;">20 min</span>
+            </div>
+          </div>
+        </section>
+
+        <!-- Later -->
+        <section>
+          <div style="display: flex; align-items: baseline; gap: 12px; margin-bottom: 10px;">
+            <h2 style="font-size: 16px; font-weight: 800;">Daarna</h2>
+            <span style="font-size: 12.5px; color: #747782;">Verschuift mee met je uren per week</span>
+          </div>
+          <div class="card" style="padding: 16px 18px; display: flex; flex-direction: column; gap: 12px;">
+            <div style="display: flex; align-items: center; gap: 14px;">
+              <span style="width: 96px; flex-shrink: 0; font-size: 12px; font-weight: 800; color: #747782; font-variant-numeric: tabular-nums;">sep – okt</span>
+              <span style="flex: 1; height: 26px; border-radius: 8px; background: linear-gradient(90deg,#002b6d,#1d428a); display: flex; align-items: center; padding: 0 12px; color: #fff; font-size: 12px; font-weight: 700;">Luisteren en Spreken A2 afmaken · 12 taken</span>
+            </div>
+            <div style="display: flex; align-items: center; gap: 14px;">
+              <span style="width: 96px; flex-shrink: 0; font-size: 12px; font-weight: 800; color: #747782; font-variant-numeric: tabular-nums;">okt – dec</span>
+              <span style="flex: 1; height: 26px; border-radius: 8px; background: #fcecdd; display: flex; align-items: center; padding: 0 12px; color: #5f2200; font-size: 12px; font-weight: 700;">KNM: acht thema's en de woordenlijst · 11 taken</span>
+            </div>
+            <div style="display: flex; align-items: center; gap: 14px;">
+              <span style="width: 96px; flex-shrink: 0; font-size: 12px; font-weight: 800; color: #747782; font-variant-numeric: tabular-nums;">jan – feb</span>
+              <span style="flex: 1; height: 26px; border-radius: 8px; background: repeating-linear-gradient(135deg, rgba(0,43,109,0.12) 0 6px, rgba(0,43,109,0.04) 6px 12px); display: flex; align-items: center; padding: 0 12px; color: #434651; font-size: 12px; font-weight: 700;">ONA: portfolio en eindgesprek · komt nog online</span>
+            </div>
+            <p style="margin: 2px 0 0; font-size: 12px; color: #747782; line-height: 1.6;">
+              Wachttijden staan al in het plan: een uitslag duurt 8 weken, voor Schrijven en Spreken A2 nu 16.
+            </p>
+          </div>
+        </section>
+      </div>
+
+      <!-- ── Right rail: what is left, and where you stand ── -->
+      <div style="display: flex; flex-direction: column; gap: 18px;">
+        <section class="card" style="padding: 18px 20px;">
+          <p class="eyebrow" style="margin: 0 0 12px;">Wat er nog ligt</p>
+          <div style="display: flex; flex-direction: column; gap: 13px;">
+            <div>
+              <div style="display: flex; align-items: baseline; justify-content: space-between; margin-bottom: 5px;">
+                <span style="font-size: 13px; font-weight: 700;">Oefenexamens</span>
+                <span style="font-size: 12px; color: #434651; font-variant-numeric: tabular-nums;">27 van 40</span>
+              </div>
+              <span style="display: block; height: 7px; border-radius: 4px; background: #e0e3e5; overflow: hidden;"><span style="display: block; width: 33%; height: 100%; background: linear-gradient(90deg,#002b6d,#1d428a);"></span></span>
+            </div>
+            <div>
+              <div style="display: flex; align-items: baseline; justify-content: space-between; margin-bottom: 5px;">
+                <span style="font-size: 13px; font-weight: 700;">Leermodules</span>
+                <span style="font-size: 12px; color: #434651; font-variant-numeric: tabular-nums;">11 van 18</span>
+              </div>
+              <span style="display: block; height: 7px; border-radius: 4px; background: #e0e3e5; overflow: hidden;"><span style="display: block; width: 39%; height: 100%; background: linear-gradient(90deg,#002b6d,#1d428a);"></span></span>
+            </div>
+            <div>
+              <div style="display: flex; align-items: baseline; justify-content: space-between; margin-bottom: 5px;">
+                <span style="font-size: 13px; font-weight: 700;">Woorden</span>
+                <span style="font-size: 12px; color: #434651; font-variant-numeric: tabular-nums;">546 van 1.240</span>
+              </div>
+              <span style="display: block; height: 7px; border-radius: 4px; background: #e0e3e5; overflow: hidden;"><span style="display: block; width: 56%; height: 100%; background: linear-gradient(90deg,#002b6d,#1d428a);"></span></span>
+            </div>
+            <div>
+              <div style="display: flex; align-items: baseline; justify-content: space-between; margin-bottom: 5px;">
+                <span style="font-size: 13px; font-weight: 700;">KNM-gidsen</span>
+                <span style="font-size: 12px; color: #434651; font-variant-numeric: tabular-nums;">7 van 9</span>
+              </div>
+              <span style="display: block; height: 7px; border-radius: 4px; background: #e0e3e5; overflow: hidden;"><span style="display: block; width: 22%; height: 100%; background: linear-gradient(90deg,#002b6d,#1d428a);"></span></span>
+            </div>
+          </div>
+        </section>
+
+        <section class="card" style="padding: 18px 20px;">
+          <p class="eyebrow" style="margin: 0 0 12px;">Waar je staat</p>
+          <div style="display: flex; flex-direction: column; gap: 11px;">
+            <div style="display: flex; align-items: center; gap: 11px;">
+              <span style="width: 62px; font-size: 12.5px; font-weight: 700;">Lezen</span>
+              <span style="flex: 1; height: 9px; border-radius: 5px; background: #e0e3e5; overflow: hidden;"><span style="display: block; width: 82%; height: 100%; background: #002b6d;"></span></span>
+              <span style="font-size: 12px; font-weight: 800; color: #002b6d; font-variant-numeric: tabular-nums; width: 34px; text-align: right;">82%</span>
+            </div>
+            <div style="display: flex; align-items: center; gap: 11px;">
+              <span style="width: 62px; font-size: 12.5px; font-weight: 700;">Luisteren</span>
+              <span style="flex: 1; height: 9px; border-radius: 5px; background: #e0e3e5; overflow: hidden;"><span style="display: block; width: 54%; height: 100%; background: #fe762c;"></span></span>
+              <span style="font-size: 12px; font-weight: 800; color: #a24000; font-variant-numeric: tabular-nums; width: 34px; text-align: right;">54%</span>
+            </div>
+            <div style="display: flex; align-items: center; gap: 11px;">
+              <span style="width: 62px; font-size: 12.5px; font-weight: 700;">Schrijven</span>
+              <span style="flex: 1; height: 9px; border-radius: 5px; background: #e0e3e5; overflow: hidden;"><span style="display: block; width: 71%; height: 100%; background: #002b6d;"></span></span>
+              <span style="font-size: 12px; font-weight: 800; color: #002b6d; font-variant-numeric: tabular-nums; width: 34px; text-align: right;">71%</span>
+            </div>
+            <div style="display: flex; align-items: center; gap: 11px;">
+              <span style="width: 62px; font-size: 12.5px; font-weight: 700;">Spreken</span>
+              <span style="flex: 1; height: 9px; border-radius: 5px; background: #e0e3e5; overflow: hidden;"><span style="display: block; width: 66%; height: 100%; background: #002b6d;"></span></span>
+              <span style="font-size: 12px; font-weight: 800; color: #002b6d; font-variant-numeric: tabular-nums; width: 34px; text-align: right;">66%</span>
+            </div>
+          </div>
+          <p style="margin: 14px 0 0; font-size: 12px; color: #747782; line-height: 1.6;">
+            De grens die DUO aanhoudt is niet openbaar. Dit is je eigen gemiddelde, geen voorspelling.
+          </p>
+        </section>
+
+        <section style="border-radius: 18px; padding: 18px 20px; background: linear-gradient(135deg,#002b6d 0%,#1d428a 100%); box-shadow: 0 10px 30px rgba(0,27,78,0.22);">
+          <p style="margin: 0; font-family: 'Manrope', sans-serif; font-size: 15px; font-weight: 800; color: #fff;">Zet je plan in je agenda</p>
+          <p style="margin: 7px 0 14px; font-size: 12.5px; line-height: 1.6; color: rgba(255,255,255,0.75);">
+            Elke taak met datum als agenda-bestand, plus een mail acht weken voor je laatste aanmelddatum.
+          </p>
+          <span style="display: inline-flex; align-items: center; gap: 8px; padding: 10px 16px; border-radius: 12px; font-size: 13px; font-weight: 800; color: #fff; background: linear-gradient(135deg,#fe762c,#d94f00); box-shadow: inset 0 1px 0 rgba(255,255,255,0.12), 0 4px 16px rgba(254,118,44,0.35);">
+            Plan downloaden
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4v12"></path><path d="m7 12 5 5 5-5"></path><path d="M5 20h14"></path></svg>
+          </span>
+        </section>
+      </div>
+    </div>
+  </main>
+</div>
+</x-dc>
+
+<script data-dc-script data-props='{"urenPerWeek":{"editor":"range","default":6,"min":2,"max":14,"step":1,"unit":"u/wk","section":"Plan"}}'>
+class Component extends DCLogic {
+  renderVals() {
+    /* One lever, and every number on the page hangs off it. 84 hours of work left:
+       27 oefenexamens, 11 leermodules, the KNM gidsen and the woordenlijsten. */
+    const uren = Math.max(2, Math.min(14, Number(this.props.urenPerWeek ?? 6)));
+    const totaalUren = 84;
+    const weken = Math.ceil(totaalUren / uren);
+    const maanden = ['januari','februari','maart','april','mei','juni','juli','augustus','september','oktober','november','december'];
+    /* Anchor: maandag 24 augustus 2026. Plain arithmetic, so the artboard reads the same every open. */
+    const eind = new Date(2026, 7, 24 + weken * 7);
+    const klaar = eind.getDate() + ' ' + maanden[eind.getMonth()] + (eind.getFullYear() === 2026 ? '' : ' ' + eind.getFullYear());
+    /* The termijn ends 14 March 2027; marge is what is left between being through and that date. */
+    const termijn = new Date(2027, 2, 14);
+    const marge = Math.max(0, Math.floor((termijn - eind) / (7 * 24 * 3600 * 1000)));
+    return {
+      uren,
+      weken,
+      klaar,
+      marge,
+      taken: 49,
+      schuifPct: Math.round(((uren - 2) / 12) * 100) + '%',
+    };
+  }
+}
+</script>
+</body>
+</html>

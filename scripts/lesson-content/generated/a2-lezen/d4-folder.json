@@ -1,0 +1,165 @@
+{
+  "items": [
+    {
+      "kind": "uitleg",
+      "tier": null,
+      "explanation": null,
+      "payload": {
+        "body_html": "<p>Je leest nu een folder en je maakt daarna vragen, net als in het examen.</p>",
+        "cards": []
+      }
+    },
+    {
+      "kind": "leestekst",
+      "tier": null,
+      "explanation": null,
+      "payload": {
+        "title": "Folder: Buurtpunt De Zonnehof",
+        "body_html": "<p><strong>Buurtpunt De Zonnehof</strong><br>Hulp in de buurt, dichtbij en gratis.</p><p>Heb je een brief van de gemeente die je niet begrijpt? Kom naar Buurtpunt De Zonnehof. Onze medewerkers lezen de brief met je en leggen uit wat je moet doen. Ook helpen we bij formulieren, bijvoorbeeld voor huurtoeslag of een uitkering.</p><p>Wij zijn open op maandag, woensdag en vrijdag van 9.00 tot 13.00 uur. Je hoeft geen afspraak te maken. Neem wel je brief of formulier mee en je identiteitsbewijs.</p><p>De hulp kost niets. Wil je liever eerst bellen? Bel dan 030 - 555 21 40.</p><p>Adres: Kastanjelaan 12, Utrecht. Tram 8 stopt voor de deur.</p>",
+        "words": [],
+        "marks": []
+      }
+    },
+    {
+      "kind": "mcq",
+      "tier": 0,
+      "explanation": "In de folder staat dat je op maandag, woensdag en vrijdag kunt komen. Dinsdag staat er niet bij.",
+      "payload": {
+        "prompt": "Op welke dag is Buurtpunt De Zonnehof open?"
+      },
+      "options": [
+        {
+          "label": "A",
+          "body": "Op dinsdag",
+          "is_correct": false
+        },
+        {
+          "label": "B",
+          "body": "Op woensdag",
+          "is_correct": true
+        },
+        {
+          "label": "C",
+          "body": "Op zondag",
+          "is_correct": false
+        }
+      ]
+    },
+    {
+      "kind": "mcq",
+      "tier": 0,
+      "explanation": "De folder gaat over gratis hulp bij brieven en formulieren. Dat is de hoofdgedachte.",
+      "payload": {
+        "prompt": "Waar gaat deze folder vooral over?"
+      },
+      "options": [
+        {
+          "label": "A",
+          "body": "Over gratis hulp bij post en formulieren",
+          "is_correct": true
+        },
+        {
+          "label": "B",
+          "body": "Over een cursus Nederlands in de buurt",
+          "is_correct": false
+        },
+        {
+          "label": "C",
+          "body": "Over een nieuwe tramlijn in Utrecht",
+          "is_correct": false
+        }
+      ]
+    },
+    {
+      "kind": "matchen",
+      "tier": 0,
+      "explanation": "Je zoekt de gegevens op in de folder: het telefoonnummer, het adres en de openingstijd staan er letterlijk in.",
+      "payload": {
+        "instruction": "Zoek de informatie in de folder. Wat hoort bij elkaar?",
+        "pairs": [
+          {
+            "left": "het telefoonnummer",
+            "right": "030 - 555 21 40"
+          },
+          {
+            "left": "het adres",
+            "right": "Kastanjelaan 12, Utrecht"
+          },
+          {
+            "left": "de openingstijd",
+            "right": "van 9.00 tot 13.00 uur"
+          },
+          {
+            "left": "het openbaar vervoer",
+            "right": "tram 8"
+          }
+        ]
+      }
+    },
+    {
+      "kind": "mcq",
+      "tier": 1,
+      "explanation": "In de folder staat dat je je brief of formulier én je identiteitsbewijs meeneemt.",
+      "payload": {
+        "prompt": "Je gaat naar het buurtpunt met een brief van de gemeente. Wat moet je meenemen?"
+      },
+      "options": [
+        {
+          "label": "A",
+          "body": "Alleen geld voor de hulp",
+          "is_correct": false
+        },
+        {
+          "label": "B",
+          "body": "De brief en je identiteitsbewijs",
+          "is_correct": true
+        },
+        {
+          "label": "C",
+          "body": "Een brief van je werkgever",
+          "is_correct": false
+        }
+      ]
+    },
+    {
+      "kind": "gap_choice",
+      "tier": 1,
+      "explanation": "In de folder staat: je hoeft geen afspraak te maken. Je kunt dus zonder afspraak komen.",
+      "payload": {
+        "sentence": "Je kunt naar het buurtpunt komen ___ afspraak.",
+        "choices": [
+          "zonder",
+          "met",
+          "na"
+        ],
+        "answer": "zonder"
+      }
+    },
+    {
+      "kind": "mcq",
+      "tier": 1,
+      "explanation": "De folder zegt: de hulp kost niets. De hulp is dus gratis voor iedereen.",
+      "payload": {
+        "prompt": "Wat moet je betalen voor de hulp?"
+      },
+      "options": [
+        {
+          "label": "A",
+          "body": "Niets, de hulp is gratis",
+          "is_correct": true
+        },
+        {
+          "label": "B",
+          "body": "Een klein bedrag per formulier",
+          "is_correct": false
+        },
+        {
+          "label": "C",
+          "body": "Alleen als je belt",
+          "is_correct": false
+        }
+      ]
+    }
+  ],
+  "what_you_learn": "Je oefent met het lezen van een folder, zoals in het examen. Je zoekt snel een detail op, zoals een dag of een adres. Je begrijpt ook waar de folder over gaat en wat je zelf moet doen."
+}

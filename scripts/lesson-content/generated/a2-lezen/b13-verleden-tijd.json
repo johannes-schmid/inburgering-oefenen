@@ -1,0 +1,186 @@
+{
+  "items": [
+    {
+      "kind": "uitleg",
+      "tier": null,
+      "explanation": null,
+      "payload": {
+        "body_html": "<p>Je kunt op twee manieren over vroeger praten. De eerste manier is met <strong>hebben</strong> of <strong>zijn</strong> plus een woord met ge-: <em>ik heb gewerkt</em>. De tweede manier is één woord: <em>ik werkte</em>. Deze tweede vorm zie je vaak in verhalen en in het nieuws.</p><p>Bij veel werkwoorden komt er <strong>-te</strong> of <strong>-de</strong> achter de stam. Maar sommige werkwoorden veranderen van klank: <em>gaan</em> wordt <em>ging</em>.</p>",
+        "cards": [
+          {
+            "label": "MET -TE OF -DE",
+            "example_html": "Ik <mark>werkte</mark> gisteren in de winkel."
+          },
+          {
+            "label": "MET EEN ANDERE KLANK",
+            "example_html": "Wij <mark>gingen</mark> naar het gemeentehuis."
+          }
+        ]
+      }
+    },
+    {
+      "kind": "voorbeeld",
+      "tier": null,
+      "explanation": null,
+      "payload": {
+        "sentence_html": "Vorige week <mark>woonde</mark> mijn buurvrouw nog in Almere."
+      }
+    },
+    {
+      "kind": "voorbeeld",
+      "tier": null,
+      "explanation": null,
+      "payload": {
+        "sentence_html": "De kinderen <mark>kwamen</mark> om vier uur uit school."
+      }
+    },
+    {
+      "kind": "mcq",
+      "tier": 0,
+      "explanation": "<em>Betaalde</em> is de vorm van vroeger; <em>betaal</em> en <em>betalen</em> gaan over nu.",
+      "payload": {
+        "prompt": "<p>In welke zin staat een werkwoord dat over vroeger gaat?</p>"
+      },
+      "options": [
+        {
+          "label": "A",
+          "body": "Ik betaal de huur op 1 maart.",
+          "is_correct": false
+        },
+        {
+          "label": "B",
+          "body": "Ik betaalde de huur op 1 maart.",
+          "is_correct": true
+        },
+        {
+          "label": "C",
+          "body": "Wij betalen de huur elke maand.",
+          "is_correct": false
+        }
+      ]
+    },
+    {
+      "kind": "mcq",
+      "tier": 0,
+      "explanation": "<em>Gingen</em> is de vorm van vroeger bij <em>gaan</em>; de klank verandert van aa naar i.",
+      "payload": {
+        "prompt": "<p>Lees de zin: <em>Wij gingen samen naar de dokter.</em> Wat is de vorm van nu?</p>"
+      },
+      "options": [
+        {
+          "label": "A",
+          "body": "Wij gaan samen naar de dokter.",
+          "is_correct": true
+        },
+        {
+          "label": "B",
+          "body": "Wij zijn samen naar de dokter geweest.",
+          "is_correct": false
+        },
+        {
+          "label": "C",
+          "body": "Wij zullen samen naar de dokter gaan.",
+          "is_correct": false
+        }
+      ]
+    },
+    {
+      "kind": "gap_choice",
+      "tier": 1,
+      "explanation": "<em>Vorig jaar</em> gaat over vroeger, dus je kiest <em>werkte</em>.",
+      "payload": {
+        "sentence": "Vorig jaar ___ ik in een groot ziekenhuis in Tilburg.",
+        "choices": [
+          "werk",
+          "werkte",
+          "werken"
+        ],
+        "answer": "werkte"
+      }
+    },
+    {
+      "kind": "gap_choice",
+      "tier": 1,
+      "explanation": "Bij <em>wij</em> in de tijd van vroeger hoort <em>gingen</em> met -en.",
+      "payload": {
+        "sentence": "Gisteren ___ wij met de bus naar de markt.",
+        "choices": [
+          "gaan",
+          "ging",
+          "gingen"
+        ],
+        "answer": "gingen"
+      }
+    },
+    {
+      "kind": "gap_choice",
+      "tier": 1,
+      "explanation": "De vorm van vroeger bij <em>hebben</em> is <em>had</em>, en dat past bij <em>ik</em>.",
+      "payload": {
+        "sentence": "Ik ___ toen nog geen werk en weinig geld.",
+        "choices": [
+          "heb",
+          "had",
+          "hadden"
+        ],
+        "answer": "had"
+      }
+    },
+    {
+      "kind": "matchen",
+      "tier": 1,
+      "explanation": "Bij elk werkwoord van nu hoort één vaste vorm van vroeger; die moet je uit je hoofd leren.",
+      "payload": {
+        "instruction": "Zet het werkwoord van nu bij de vorm van vroeger.",
+        "pairs": [
+          {
+            "left": "ik woon",
+            "right": "ik woonde"
+          },
+          {
+            "left": "wij gaan",
+            "right": "wij gingen"
+          },
+          {
+            "left": "ik ben",
+            "right": "ik was"
+          },
+          {
+            "left": "zij komen",
+            "right": "zij kwamen"
+          }
+        ]
+      }
+    },
+    {
+      "kind": "gap_type",
+      "tier": 2,
+      "explanation": "De stam van <em>bellen</em> is <em>bel</em>; daar komt -de achter, dus <em>belde</em>.",
+      "payload": {
+        "sentence": "Vorige week ___ ik de gemeente over mijn brief. (bellen)",
+        "answer": "belde"
+      }
+    },
+    {
+      "kind": "woordorde",
+      "tier": 2,
+      "explanation": "Het werkwoord van vroeger <em>was</em> staat op de tweede plaats in de zin.",
+      "payload": {
+        "instruction": "Maak van deze woorden een goede zin.",
+        "tokens": [
+          "was",
+          "ik",
+          "gisteren",
+          "ziek"
+        ],
+        "answer": [
+          "gisteren",
+          "was",
+          "ik",
+          "ziek"
+        ]
+      }
+    }
+  ],
+  "what_you_learn": "Je leert de tweede manier om over vroeger te praten, met één werkwoord: ik werkte, wij gingen. Je herkent deze vorm in verhalen en korte teksten. Je kiest en maakt zelf de juiste vorm bij woorden als werken, gaan, hebben en zijn."
+}

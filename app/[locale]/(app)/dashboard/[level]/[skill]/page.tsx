@@ -5,12 +5,16 @@ import { ArrowRight, Check, Lock, Clock, ListChecks, RotateCcw } from 'lucide-re
 import { createClient } from '@/lib/supabase/server';
 import { ownsModule } from '@/lib/entitlements';
 import { fetchPortalProgress, fetchPublishedExamNumbers } from '@/lib/portal-progress';
-import { formatCount, getSkillAtLevel, isFreeExam, isLevel } from '@/data/skills';
+import { formatCount, getSkillAtLevel, isFreeExam, isLevel, levelLabel } from '@/data/skills';
 import SkillIcon from '@/components/site/SkillIcon';
 import CriterionProgress from '@/components/exam/CriterionProgress';
 import { fetchCriterionSeries } from '@/lib/criterion-progress';
+import { fetchCourse } from '@/lib/lessons/lessons-server';
+import { blockProgress, courseProgressPct, coursePath, nextLesson } from '@/lib/lessons/lessons';
+import { HorizonBand } from '@/components/horizon';
 import AppShell from '../../../components/AppShell';
 import ExamListStyles from '../../_components/ExamListStyles';
+import { fetchPortalMenu } from '@/lib/portal-menu';
 
 type Props = { params: Promise<{ locale: string; level: string; skill: string }> };
 
@@ -40,6 +44,7 @@ export default async function SkillExamsPage({ params }: Props) {
 
   const t = await getTranslations('portal');
   const tSkills = await getTranslations('skills');
+  const tLessons = await getTranslations('lessons');
 
   const supabase = await createClient();
   const { data: { user } } = await supabase.auth.getUser();
@@ -66,22 +71,38 @@ export default async function SkillExamsPage({ params }: Props) {
     ? await fetchCriterionSeries(user.id, skill.slug as 'schrijven' | 'spreken')
     : [];
 
+  const menu = await fetchPortalMenu();
+
+  // De lescursus van dit onderdeel. Een leeg resultaat betekent dat de docent nog niets heeft
+  // vrijgegeven; dan komt er geen kaart in plaats van een kaart die naar een 404 wijst.
+  const blocks = await fetchCourse(level, skill.slug, user.id);
+  const hasCourse = blocks.some(b => b.lessons.length > 0);
+  const coursePct = hasCourse ? courseProgressPct(blocks) : 0;
+  const courseNext = hasCourse ? nextLesson(blocks) : null;
+  const lessonsDone = blocks.reduce((n, b) => n + blockProgress(b).done, 0);
+  const lessonsTotal = blocks.reduce((n, b) => n + b.lessons.length, 0);
+
   return (
     <AppShell
       locale={locale}
       email={user.email ?? ''}
       avatarUrl={String(meta.avatar_url ?? meta.picture ?? '')}
       active={skill.slug}
+      activeGroup={level}
+      menu={menu}
     >
       <div className="px-5 py-7 sm:px-8 sm:py-10">
         <div className="max-w-3xl mx-auto">
 
           <header className="mb-7">
+            {/* Back to **this level's** overview, not to the portal overview: since the rail
+                arrived, the module you are in is the level, and stepping up from Lezen lands on
+                A2. `/dashboard` is one more step up and is the rail's own first tile. */}
             <a
-              href={`/${locale}/dashboard`}
+              href={`/${locale}/dashboard/${level}`}
               className="text-xs font-bold text-on-surface-variant no-underline hover:underline"
             >
-              ← {t('nav_overview')}
+              ← {t('level_section', { level: levelLabel(level) })}
             </a>
             <div className="flex items-start gap-3.5 mt-3">
               <SkillIcon skill={skill.slug} size="lg" />
@@ -121,6 +142,38 @@ export default async function SkillExamsPage({ params }: Props) {
               <p className="rubric-note mt-4">{t('rubric_note')}</p>
             )}
           </header>
+
+          {/* De cursus, boven de examens.
+              Bewust in deze volgorde: leren gaat aan toetsen vooraf, en wie hier komt om
+              examen 4 te maken vindt de examenlijst er direct onder. De voortgang staat op
+              deze kaart en niet in de portaalchrome — dat paneel draagt één as (de tien
+              examens), per de beslissing van de eigenaar van 27-08. */}
+          {hasCourse && (
+            <a href={`/${locale}${coursePath(level, skill.slug)}`} className="course-card">
+              <span className="cc-top">
+                <span className="mini-label" style={{ margin: 0 }}>{tLessons('card_head')}</span>
+                <span className="cc-pct">{coursePct}%</span>
+              </span>
+              <span className="cc-line">
+                {tLessons('course_progress', { done: lessonsDone, total: lessonsTotal })}
+              </span>
+              <HorizonBand progress={coursePct} rounded height={6} />
+              {courseNext && (
+                <span className="cc-next">
+                  <span className="cb-letter">{courseNext.block.letter}</span>
+                  <span className="min-w-0">
+                    <span className="block text-[0.7rem] font-bold uppercase tracking-wider text-on-surface-variant">
+                      {tLessons('continue')}
+                    </span>
+                    <span className="block font-extrabold text-on-surface truncate">
+                      {courseNext.lesson.title}
+                    </span>
+                  </span>
+                  <ArrowRight size={17} strokeWidth={2.5} className="ms-auto shrink-0 text-secondary rtl-flip" />
+                </span>
+              )}
+            </a>
+          )}
 
           {criterionSeries.length > 0 && <CriterionProgress series={criterionSeries} className="mb-6" />}
 

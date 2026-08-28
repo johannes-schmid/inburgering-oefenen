@@ -10,6 +10,7 @@ import { fetchPublishedExamNumbers } from '@/lib/portal-progress';
 import SkillIcon from '@/components/site/SkillIcon';
 import AppShell from '../../components/AppShell';
 import ModulePicker from './ModulePicker';
+import { fetchPortalMenu } from '@/lib/portal-menu';
 
 export const metadata: Metadata = {
   title: 'Pakketten | Inburgering Oefenen',
@@ -68,12 +69,15 @@ export default async function PakkettenPage({
   // actually need is the one they see first. The param carries a full `level:skill` id.
   const focus = sellable.find(m => m.slug === onderdeel)?.slug ?? null;
 
+  const menu = await fetchPortalMenu();
+
   return (
     <AppShell
       locale={locale}
       email={user.email ?? ''}
       avatarUrl={String(meta.avatar_url ?? meta.picture ?? '')}
       active="overview"
+      menu={menu}
     >
       <div className="px-5 py-7 sm:px-8 sm:py-10">
         <div className="max-w-5xl mx-auto">

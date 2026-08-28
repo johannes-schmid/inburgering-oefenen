@@ -6,6 +6,7 @@ import { createClient } from '@/lib/supabase/server';
 import { canSeeExplanations, ownsModule, planFromMetadata } from '@/lib/entitlements';
 import AppShell from '../../../../components/AppShell';
 import ExamShell from '@/components/exam/ExamShell';
+import { fetchPortalMenu } from '@/lib/portal-menu';
 
 type Props = {
   params: Promise<{ locale: string; level: string; skill: string; number: string }>;
@@ -49,8 +50,10 @@ export default async function ExamPage({ params }: Props) {
     redirect(`/${locale}/premium?vanaf=oefenexamen-${level}-${skill.slug}-${number}`);
   }
 
+  const menu = await fetchPortalMenu();
+
   return (
-    <AppShell locale={locale} email={user.email ?? ''} active={skill.slug}>
+    <AppShell locale={locale} email={user.email ?? ''} active={skill.slug} activeGroup={level} menu={menu}>
       <div className="px-5 py-7 sm:px-8">
         <div className="max-w-6xl mx-auto">
           <ExamShell content={content} canSeeExplanations={canSeeExplanations(plan)} />

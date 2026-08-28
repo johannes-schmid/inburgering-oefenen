@@ -1348,3 +1348,472 @@
   .faq-fold > summary::after { transition: none; }
 }
 
+
+/* ── De leerlaag: lesstroom, blokkenlijst en conceptkaarten ──
+   Hoort bij `components/lessons/` en `dashboard/[level]/[skill]/leren`.
+
+   Vier regels uit `docs/design/DESIGN_SYSTEM.md` die hier zichtbaar zijn afgedwongen:
+   1. Geen 1px-lijn om te sectioneren — grenzen zijn een verschuiving van surface-tier.
+   2. Selectie en focus zijn een INSET box-shadow (`--ring-selected`), nooit een border.
+   3. Geen nieuwe tint voor een status: goed is klei (`secondary`), fout is `--color-error`,
+      en een lucide Check/X draagt de betekenis voor wie de twee niet kan scheiden.
+   4. Diepte is `--shadow-ambient`, een gloed en geen gewicht.                              */
+
+.lesson-stream { display: flex; flex-direction: column; gap: 0; }
+
+.stream-count {
+  font-size: 0.75rem; font-weight: 700; letter-spacing: 0.04em; text-transform: uppercase;
+  color: var(--color-on-surface-variant); margin-bottom: 0.75rem;
+}
+
+.stream-list { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 0.85rem; }
+
+/* ── uitleg en materiaal ── */
+.blk {
+  background: var(--color-surface-container-lowest);
+  border-radius: 1.25rem;
+  padding: 1.25rem 1.35rem;
+  box-shadow: var(--shadow-ambient);
+}
+.blk-body p, .blk-body ul, .blk-body ol { margin: 0 0 0.7rem; line-height: 1.7; }
+.blk-body p:last-child, .blk-body ul:last-child { margin-bottom: 0; }
+.blk-body strong { font-weight: 800; color: var(--color-on-surface); }
+.blk-body ul, .blk-body ol { padding-inline-start: 1.15rem; }
+
+/* Het gemarkeerde fragment. Klei op 18%: leesbaar op wit, en het is de enige plek waar de
+   accentkleur in een lestekst voorkomt, zodat hij blijft wijzen.
+
+   **Eén selector voor de hele leerlaag, geen lijst van ouders.** De eerste versie noemde vier
+   specifieke ouders en vergat `.cc-example` — waardoor elk voorbeeldzinnetje op de
+   conceptenpagina de brówserstandaard kreeg: felgeel. Een kleur die in geen enkel tokenbestand
+   staat, op de pagina die de bibliotheek etaleert. Een opsomming van ouders is een lijst die je
+   moet bijwerken; deze regel dekt alles wat de leerlaag rendert. */
+.lesson-stream mark,
+.blk mark,
+.cc-example mark,
+.concept-card mark,
+.course-block mark,
+.ex mark,
+.fb-why mark {
+  background: rgba(254, 118, 44, 0.18);
+  color: inherit; border-radius: 0.25rem; padding: 0.05em 0.22em; font-weight: 700;
+}
+
+.mini-label {
+  display: block; font-size: 0.68rem; font-weight: 800; letter-spacing: 0.08em;
+  text-transform: uppercase; color: var(--color-on-surface-variant); margin-bottom: 0.3rem;
+}
+
+.card-pair { display: grid; gap: 0.7rem; margin-top: 1rem; }
+@media (min-width: 560px) { .card-pair { grid-template-columns: 1fr 1fr; } }
+.mini-card { background: var(--color-surface-container-low); border-radius: 0.9rem; padding: 0.8rem 0.9rem; }
+.mini-card p { margin: 0; line-height: 1.6; }
+
+/* Een voorbeeldzin is geen kaart maar een aangewezen regel.
+   `surface-container-low` op `surface` is een tonaal verschil van vier tinten en dat is te
+   klein: op een screenshot las het als kale, zwevende tekst met te veel lucht eromheen. Een
+   inset-rail aan de aanloopkant wijst hem aan zonder een omlijning te zijn — dezelfde
+   oplossing die `.les-row.is-current` gebruikt, en toegestaan waar een 1px-border dat niet is. */
+.blk-voorbeeld {
+  background: var(--color-surface-container-low);
+  box-shadow: inset 3px 0 0 0 var(--color-secondary-container);
+  padding-block: 0.9rem;
+}
+.vb-sentence { margin: 0; font-size: 1.05rem; line-height: 1.6; }
+.vb-note { margin: 0.45rem 0 0; font-size: 0.85rem; color: var(--color-on-surface-variant); }
+
+/* ── leestekst met woordhulp ── */
+.blk-tekst { display: grid; gap: 1rem; }
+@media (min-width: 820px) { .blk-tekst { grid-template-columns: minmax(0, 1fr) 15rem; } }
+.tekst-src {
+  font-size: 0.68rem; font-weight: 800; letter-spacing: 0.08em; text-transform: uppercase;
+  color: var(--color-on-surface-variant);
+}
+.tekst-main h3 {
+  font-family: var(--font-headline); font-weight: 800; font-size: 1.2rem;
+  letter-spacing: -0.02em; margin: 0.3rem 0 0.6rem; color: var(--color-primary);
+}
+.tekst-body p { margin: 0 0 0.65rem; line-height: 1.75; }
+.tekst-body p:last-child { margin-bottom: 0; }
+
+/* De oranje kolom uit de mockup. Klei op 22% — een vlak, geen kader. */
+.woordhulp { background: rgba(254, 118, 44, 0.22); border-radius: 1rem; padding: 0.9rem 1rem; align-self: start; }
+.wh-head {
+  display: block; font-size: 0.68rem; font-weight: 800; letter-spacing: 0.08em;
+  text-transform: uppercase; color: var(--color-secondary); margin-bottom: 0.5rem;
+}
+.woordhulp dl { margin: 0; display: flex; flex-direction: column; gap: 0.55rem; }
+.woordhulp dt { font-weight: 800; font-size: 0.9rem; }
+.woordhulp dd { margin: 0; font-size: 0.85rem; line-height: 1.5; color: var(--color-on-surface-variant); }
+
+/* ── woordenlijst ── */
+.blk-woorden { display: flex; flex-direction: column; gap: 1.1rem; }
+.woordgroep ul { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 0.6rem; }
+.woordgroep li {
+  display: flex; flex-wrap: wrap; align-items: baseline; gap: 0.35rem 0.5rem;
+  background: var(--color-surface-container-low); border-radius: 0.75rem; padding: 0.55rem 0.75rem;
+}
+.woordgroep li strong { font-size: 0.98rem; }
+.w-plural, .w-frame { font-size: 0.82rem; color: var(--color-on-surface-variant); }
+.w-frame { font-style: italic; }
+.w-meaning { flex: 1 1 100%; font-size: 0.88rem; color: var(--color-on-surface-variant); line-height: 1.5; }
+.w-example { flex: 1 1 100%; font-size: 0.85rem; font-style: italic; color: var(--color-outline); }
+
+/* ── zinnenbank ── */
+.blk-zinnen { display: grid; gap: 1rem; }
+@media (min-width: 640px) { .blk-zinnen { grid-template-columns: repeat(auto-fit, minmax(12rem, 1fr)); } }
+.blk-zinnen ul { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 0.35rem; }
+.blk-zinnen li { font-size: 0.9rem; line-height: 1.55; }
+
+.blk-audio audio, .blk-video video { width: 100%; border-radius: 0.75rem; }
+.transcript { margin-top: 0.6rem; font-size: 0.88rem; }
+.transcript summary { cursor: pointer; font-weight: 700; color: var(--color-secondary); }
+
+/* ── de opgave ──
+   Iets donkerder dan een uitlegblok, zodat "hier moet je iets doen" een tier-verschuiving is
+   en geen omlijning.                                                                        */
+.ex {
+  background: var(--color-surface-container-low);
+  border-radius: 1.25rem; padding: 1.15rem 1.3rem;
+  transition: box-shadow 220ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+.ex.is-right { box-shadow: inset 0 0 0 2px rgba(162, 64, 0, 0.35); }
+.ex.is-wrong { box-shadow: inset 0 0 0 2px rgba(186, 26, 26, 0.30); }
+
+.ex-tier {
+  display: inline-block; font-size: 0.65rem; font-weight: 800; letter-spacing: 0.08em;
+  text-transform: uppercase; color: var(--color-on-surface-variant);
+  background: var(--color-surface-container-high);
+  border-radius: 999px; padding: 0.12rem 0.5rem; margin-bottom: 0.6rem;
+}
+.ex-intro { margin: 0 0 0.5rem; font-size: 0.9rem; color: var(--color-on-surface-variant); }
+.ex-prompt { margin: 0 0 0.8rem; font-weight: 700; font-size: 1rem; line-height: 1.55; }
+.ex-hint { margin: 0.5rem 0 0; font-size: 0.82rem; color: var(--color-on-surface-variant); }
+
+/* ── meerkeuze ── */
+.opts { display: flex; flex-direction: column; gap: 0.45rem; }
+.opts-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(9rem, 1fr)); }
+.opt {
+  display: flex; align-items: center; gap: 0.65rem; width: 100%; text-align: start;
+  background: var(--color-surface-container-lowest); border: none; border-radius: 0.8rem;
+  padding: 0.7rem 0.85rem; cursor: pointer; font: inherit; color: inherit;
+  transition: box-shadow 180ms cubic-bezier(0.22, 1, 0.36, 1), transform 180ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+.opt:hover:not(:disabled) { box-shadow: inset 0 0 0 1.5px var(--ghost-border); }
+.opt:focus-visible { outline: none; box-shadow: var(--ring-selected); }
+.opt:active:not(:disabled) { transform: translateY(1px); }
+.opt.picked { box-shadow: var(--ring-selected); }
+.opt.right { box-shadow: inset 0 0 0 2px var(--color-secondary-container); background: rgba(254, 118, 44, 0.10); }
+.opt.wrong { box-shadow: inset 0 0 0 2px var(--color-error); background: rgba(186, 26, 26, 0.06); }
+.opt:disabled { cursor: default; }
+.opt-l {
+  flex: 0 0 auto; width: 1.6rem; height: 1.6rem; border-radius: 999px;
+  background: var(--color-surface-container-high); display: grid; place-items: center;
+  font-size: 0.78rem; font-weight: 800;
+}
+.opt-b { flex: 1 1 auto; line-height: 1.5; }
+.opt-i { flex: 0 0 auto; }
+.opt.right .opt-i { color: var(--color-secondary); }
+.opt.wrong .opt-i { color: var(--color-error); }
+
+/* ── het gat ── */
+.gap-sentence { margin: 0 0 0.85rem; font-size: 1.05rem; line-height: 2.1; }
+.gap-slot {
+  display: inline-block; min-width: 4.5rem; text-align: center; margin: 0 0.2rem;
+  background: var(--color-surface-container-lowest); border-radius: 0.5rem;
+  padding: 0.1rem 0.5rem; font-weight: 800; color: var(--color-primary);
+  box-shadow: inset 0 0 0 1.5px var(--ghost-border);
+}
+.gap-slot.filled { box-shadow: var(--ring-selected); }
+.gap-input {
+  display: inline-block; margin: 0 0.2rem; font: inherit; font-weight: 700;
+  color: var(--color-primary); background: var(--color-surface-container-lowest);
+  border: none; border-radius: 0.5rem; padding: 0.1rem 0.5rem;
+  box-shadow: inset 0 0 0 1.5px var(--ghost-border);
+}
+.gap-input:focus-visible { outline: none; box-shadow: var(--ring-selected); }
+
+.chips { display: flex; flex-wrap: wrap; gap: 0.4rem; }
+.chip {
+  background: var(--color-surface-container-lowest); border: none; border-radius: 0.6rem;
+  padding: 0.45rem 0.8rem; font: inherit; font-weight: 700; cursor: pointer; color: inherit;
+  transition: box-shadow 180ms cubic-bezier(0.22, 1, 0.36, 1), transform 180ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+.chip:hover:not(:disabled) { box-shadow: inset 0 0 0 1.5px var(--ghost-border); }
+.chip:focus-visible { outline: none; box-shadow: var(--ring-selected); }
+.chip:active:not(:disabled) { transform: translateY(1px); }
+.chip.picked { box-shadow: var(--ring-selected); color: var(--color-primary); }
+.chip:disabled { cursor: default; }
+
+/* ── woordorde ── */
+.wo-line {
+  display: flex; flex-wrap: wrap; gap: 0.4rem; min-height: 2.6rem; align-items: center;
+  background: var(--color-surface-container-lowest); border-radius: 0.8rem;
+  padding: 0.5rem 0.6rem; margin-bottom: 0.7rem;
+}
+.wo-empty { color: var(--color-outline); font-weight: 700; padding-inline: 0.3rem; }
+
+/* ── matchen ── */
+.match { display: flex; flex-direction: column; gap: 0.5rem; }
+.match-row {
+  display: flex; align-items: center; gap: 0.6rem; flex-wrap: wrap;
+  background: var(--color-surface-container-lowest); border-radius: 0.8rem; padding: 0.55rem 0.75rem;
+}
+.match-l { flex: 1 1 9rem; font-weight: 700; line-height: 1.45; }
+.match-row select {
+  flex: 1 1 10rem; font: inherit; background: var(--color-surface-container-low);
+  border: none; border-radius: 0.5rem; padding: 0.35rem 0.5rem; color: inherit;
+}
+.match-row select:focus-visible { outline: none; box-shadow: var(--ring-selected); }
+.match-row.right { box-shadow: inset 0 0 0 2px rgba(162, 64, 0, 0.30); }
+.match-row.right svg { color: var(--color-secondary); }
+.match-row.wrong { box-shadow: inset 0 0 0 2px rgba(186, 26, 26, 0.28); }
+.match-row.wrong svg { color: var(--color-error); }
+
+/* ── open zin ── */
+.open-input {
+  width: 100%; font: inherit; line-height: 1.6; resize: vertical;
+  background: var(--color-surface-container-lowest); border: none; border-radius: 0.8rem;
+  padding: 0.7rem 0.85rem; color: inherit;
+}
+.open-input:focus-visible { outline: none; box-shadow: var(--ring-selected); }
+.ex-peek {
+  margin-top: 0.6rem; display: inline-flex; align-items: center; gap: 0.35rem;
+  background: none; border: none; padding: 0; cursor: pointer;
+  font: inherit; font-size: 0.85rem; font-weight: 700; color: var(--color-secondary);
+}
+.ex-peek:hover { text-decoration: underline; }
+.model { margin-top: 0.2rem; }
+.model-a {
+  margin: 0; background: var(--color-surface-container-lowest); border-radius: 0.7rem;
+  padding: 0.6rem 0.8rem; line-height: 1.6; font-weight: 600;
+}
+.model-a.peeked { margin-top: 0.5rem; }
+.model-check { list-style: none; margin: 0.6rem 0 0; padding: 0; display: flex; flex-direction: column; gap: 0.3rem; }
+.model-check li { display: flex; align-items: baseline; gap: 0.4rem; font-size: 0.87rem; color: var(--color-on-surface-variant); }
+.model-check svg { flex: 0 0 auto; color: var(--color-secondary); }
+.model-note { margin: 0.6rem 0 0; font-size: 0.82rem; color: var(--color-on-surface-variant); }
+
+/* ── markeren ── */
+.mark-body {
+  background: var(--color-surface-container-lowest); border-radius: 0.8rem;
+  padding: 0.85rem 1rem; margin-bottom: 0.8rem;
+}
+.mark-body p { margin: 0 0 0.6rem; line-height: 1.75; }
+.mark-body p:last-child { margin-bottom: 0; }
+.mark-body ::selection { background: rgba(254, 118, 44, 0.35); }
+.mark-picks { display: flex; flex-direction: column; gap: 0.45rem; }
+.mark-pick {
+  display: flex; align-items: center; gap: 0.6rem; flex-wrap: wrap;
+  background: var(--color-surface-container-lowest); border-radius: 0.7rem; padding: 0.5rem 0.7rem;
+}
+.mark-pick .mini-label { margin: 0; flex: 0 0 auto; }
+.mark-pick output { flex: 1 1 8rem; font-weight: 700; font-size: 0.92rem; }
+.mark-pick button {
+  background: var(--color-surface-container-high); border: none; border-radius: 0.5rem;
+  padding: 0.3rem 0.6rem; font: inherit; font-size: 0.8rem; font-weight: 700; cursor: pointer; color: inherit;
+}
+.mark-pick button:focus-visible { outline: none; box-shadow: var(--ring-selected); }
+
+/* ── nakijken en feedback ── */
+.ex-foot { margin-top: 0.9rem; display: flex; align-items: center; gap: 0.7rem; }
+.ex-check {
+  background: var(--color-secondary-container); color: #fff; border: none; border-radius: 0.7rem;
+  padding: 0.5rem 1.1rem; font: inherit; font-weight: 800; cursor: pointer;
+  transition: transform 180ms cubic-bezier(0.22, 1, 0.36, 1), opacity 180ms;
+}
+.ex-check:hover:not(:disabled) { transform: translateY(-1px); }
+.ex-check:active:not(:disabled) { transform: translateY(1px); }
+.ex-check:focus-visible { outline: none; box-shadow: var(--ring-selected); }
+.ex-check:disabled { opacity: 0.45; cursor: default; }
+.ex-again {
+  display: inline-flex; align-items: center; gap: 0.35rem; background: none; border: none;
+  padding: 0; cursor: pointer; font: inherit; font-size: 0.85rem; font-weight: 700;
+  color: var(--color-on-surface-variant);
+}
+.ex-again:hover { text-decoration: underline; }
+
+.ex-fb { margin-top: 0.9rem; }
+.fb-head {
+  display: flex; align-items: center; gap: 0.4rem; margin: 0 0 0.6rem;
+  font-weight: 800; font-size: 0.98rem;
+}
+.is-right .fb-head { color: var(--color-secondary); }
+.is-wrong .fb-head { color: var(--color-error); }
+.fb-answer { margin: 0 0 0.6rem; font-size: 0.92rem; }
+.fb-why { background: var(--color-surface-container-lowest); border-radius: 0.8rem; padding: 0.7rem 0.85rem; }
+.fb-why p { margin: 0; line-height: 1.65; font-size: 0.92rem; }
+.fb-targets { list-style: none; margin: 0 0 0.6rem; padding: 0; display: flex; flex-direction: column; gap: 0.35rem; }
+.fb-targets li { font-size: 0.9rem; }
+.fb-targets .mini-label { display: inline; margin: 0; margin-inline-end: 0.35rem; }
+
+/* ── de blokkenlijst naast de les ── */
+.block-nav { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 0.3rem; }
+.block-nav-head {
+  display: flex; align-items: center; justify-content: space-between; gap: 0.5rem;
+  background: var(--color-surface-container); border-radius: 0.7rem; padding: 0.5rem 0.7rem;
+  font-size: 0.82rem; font-weight: 800;
+}
+.block-nav-head .bl-letter { color: var(--color-secondary); }
+.block-nav-head.is-open { background: var(--color-surface-container-lowest); }
+.block-nav-count { font-size: 0.75rem; font-weight: 700; color: var(--color-on-surface-variant); }
+.les-row {
+  display: flex; align-items: center; gap: 0.5rem; padding: 0.45rem 0.7rem;
+  border-radius: 0.6rem; font-size: 0.85rem; text-decoration: none; color: inherit;
+  background: var(--color-surface-container-lowest);
+  transition: background 180ms;
+}
+.les-row:hover { background: var(--color-surface-container-low); }
+.les-row.is-current {
+  background: rgba(254, 118, 44, 0.14); font-weight: 800;
+  box-shadow: inset 3px 0 0 0 var(--color-secondary-container);
+}
+.les-row .les-done { color: var(--color-secondary); flex: 0 0 auto; }
+.les-row .les-min { margin-inline-start: auto; font-size: 0.75rem; color: var(--color-on-surface-variant); }
+
+/* ── de cursuspagina ── */
+.course-block { background: var(--color-surface-container-lowest); border-radius: 1.25rem; padding: 1.1rem 1.25rem; box-shadow: var(--shadow-ambient); }
+.cb-head { display: flex; align-items: baseline; gap: 0.6rem; margin-bottom: 0.2rem; }
+.cb-letter {
+  flex: 0 0 auto; width: 1.75rem; height: 1.75rem; border-radius: 0.55rem;
+  background: var(--color-primary); color: #fff; display: grid; place-items: center;
+  font-family: var(--font-headline); font-weight: 800; font-size: 0.9rem;
+}
+.cb-title { font-family: var(--font-headline); font-weight: 800; font-size: 1.1rem; letter-spacing: -0.02em; margin: 0; }
+.cb-count { margin-inline-start: auto; font-size: 0.78rem; font-weight: 700; color: var(--color-on-surface-variant); }
+.cb-intro { margin: 0.35rem 0 0.85rem; font-size: 0.9rem; line-height: 1.6; color: var(--color-on-surface-variant); }
+.cb-lessons { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 0.4rem; }
+
+.outcomes { margin-top: 0.9rem; background: var(--color-surface-container-low); border-radius: 0.9rem; padding: 0.8rem 0.95rem; }
+.outcomes ul { list-style: none; margin: 0.4rem 0 0; padding: 0; display: flex; flex-direction: column; gap: 0.35rem; }
+.outcomes li { display: flex; align-items: baseline; gap: 0.45rem; font-size: 0.88rem; line-height: 1.55; }
+.outcomes svg { flex: 0 0 auto; color: var(--color-secondary); }
+
+/* ── conceptkaarten ── */
+.concept-grid { display: grid; gap: 0.8rem; }
+@media (min-width: 640px) { .concept-grid { grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr)); } }
+.concept-card {
+  display: flex; flex-direction: column; gap: 0.45rem; text-decoration: none; color: inherit;
+  background: var(--color-surface-container-lowest); border-radius: 1.1rem; padding: 1rem 1.1rem;
+  box-shadow: var(--shadow-ambient);
+  transition: transform 200ms cubic-bezier(0.22, 1, 0.36, 1), box-shadow 200ms;
+}
+.concept-card:hover { transform: translateY(-2px); }
+.concept-card:focus-visible { outline: none; box-shadow: var(--ring-selected); }
+.cc-chips { font-size: 0.63rem; font-weight: 800; letter-spacing: 0.07em; text-transform: uppercase; color: var(--color-on-surface-variant); }
+.cc-name { font-family: var(--font-headline); font-weight: 800; font-size: 1.02rem; letter-spacing: -0.02em; margin: 0; color: var(--color-primary); }
+.cc-one { margin: 0; font-size: 0.87rem; line-height: 1.55; color: var(--color-on-surface-variant); }
+.cc-example { margin: 0.2rem 0 0; background: var(--color-surface-container-low); border-radius: 0.6rem; padding: 0.5rem 0.65rem; font-size: 0.9rem; line-height: 1.5; }
+.cc-foot { margin-top: auto; padding-top: 0.5rem; display: flex; align-items: center; justify-content: space-between; gap: 0.5rem; font-size: 0.76rem; font-weight: 700; }
+.cc-state { color: var(--color-on-surface-variant); }
+.cc-state.beheerst { color: var(--color-secondary); }
+.cc-state.niet-begonnen { color: var(--color-outline); }
+
+/* ── de reviewbanner op een nog niet nagekeken les ── */
+.pending-banner {
+  background: rgba(254, 118, 44, 0.16); border-radius: 0.9rem; padding: 0.75rem 0.95rem;
+  font-size: 0.87rem; line-height: 1.55; color: var(--color-secondary); font-weight: 600;
+  margin-bottom: 1rem;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .opt, .chip, .ex, .ex-check, .concept-card { transition: none; }
+  .concept-card:hover, .ex-check:hover:not(:disabled) { transform: none; }
+}
+
+/* De cursuskaart op de onderdeelpagina. Boven de examenlijst, want leren gaat aan toetsen
+   vooraf; de examens staan er direct onder.                                                */
+.course-card {
+  display: flex; flex-direction: column; gap: 0.5rem; margin-bottom: 1.5rem;
+  background: var(--color-surface-container-lowest); border-radius: 1.25rem;
+  padding: 1.1rem 1.25rem; text-decoration: none; color: inherit;
+  box-shadow: var(--shadow-ambient);
+  transition: transform 200ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+.course-card:hover { transform: translateY(-2px); }
+.course-card:focus-visible { outline: none; box-shadow: var(--ring-selected); }
+.course-card .cc-top { display: flex; align-items: baseline; justify-content: space-between; gap: 0.75rem; }
+.course-card .cc-pct { font-size: 1.05rem; font-weight: 800; color: var(--color-secondary); }
+.course-card .cc-line { font-size: 0.85rem; color: var(--color-on-surface-variant); }
+.course-card .cc-next {
+  display: flex; align-items: center; gap: 0.7rem; margin-top: 0.35rem;
+  background: var(--color-surface-container-low); border-radius: 0.85rem; padding: 0.6rem 0.75rem;
+}
+@media (prefers-reduced-motion: reduce) {
+  .course-card { transition: none; }
+  .course-card:hover { transform: none; }
+}
+
+/* Een spoor waarvoor nog geen les bestaat. Geen link, geen slot: er is niets te ontsluiten,
+   en een slot zou beloven dat betalen het oplevert.                                        */
+.les-row.is-unbuilt { background: var(--color-surface-container-low); cursor: default; }
+.les-row.is-unbuilt:hover { background: var(--color-surface-container-low); }
+
+/* ── /admin/lessen ── */
+.admin-les-row {
+  display: flex; align-items: center; gap: 0.7rem; flex-wrap: wrap;
+  background: var(--color-surface-container-lowest); border-radius: 0.75rem;
+  padding: 0.6rem 0.8rem;
+}
+.admin-les-state { flex: 0 0 auto; display: grid; place-items: center; width: 1.1rem; }
+.admin-les-link {
+  display: inline-flex; align-items: center; gap: 0.3rem; text-decoration: none;
+  font-size: 0.78rem; font-weight: 700; color: var(--color-on-surface-variant);
+  background: var(--color-surface-container); border-radius: 0.5rem; padding: 0.3rem 0.6rem;
+}
+.admin-les-link:hover { background: var(--color-surface-container-high); }
+.admin-les-release { display: inline-flex; align-items: center; gap: 0.4rem; }
+.admin-les-release button {
+  background: var(--color-secondary-container); color: #fff; border: none;
+  border-radius: 0.5rem; padding: 0.32rem 0.7rem; font: inherit; font-size: 0.78rem;
+  font-weight: 800; cursor: pointer;
+}
+.admin-les-release button.is-live {
+  background: var(--color-surface-container-high); color: var(--color-on-surface-variant);
+}
+.admin-les-release button:disabled { opacity: 0.5; cursor: default; }
+.admin-les-error { font-size: 0.72rem; font-weight: 700; color: var(--color-error); }
+
+/* ── De leerlaag in het Arabisch ──
+   Twee dingen die alleen op een screenshot te zien waren.
+
+   1. DE LESINHOUD IS ALTIJD NEDERLANDS EN MOET DUS LTR BLIJVEN.
+      De chrome, de knoppen en de labels spiegelen mee — dat hoort. Maar de zinnen zélf zijn
+      Nederlands, en rechts uitgelijnd binnen een RTL-pagina zet bidi de slotpunt aan de
+      verkeerde kant: ".Ik blijf thuis omdat ik ziek ben". Elke authored Nederlandse string
+      krijgt daarom `direction: ltr` met `text-align: start`. Dit is dezelfde les als
+      `.guide-figure-split`: pin de richting waar de taal van de inhoud vaststaat, en laat
+      alleen de UI-tekst de locale volgen.
+
+      Let op wat hier NIET in staat: `.mini-label`, `.ex-tier`, `.fb-head`, de knoppen en de
+      blokkenlijst. Dat zijn vertaalde strings en die moeten wél spiegelen.                */
+[dir="rtl"] .blk-body,
+[dir="rtl"] .mini-card p,
+[dir="rtl"] .vb-sentence,
+[dir="rtl"] .tekst-main h3,
+[dir="rtl"] .tekst-body,
+[dir="rtl"] .mark-body,
+[dir="rtl"] .gap-sentence,
+[dir="rtl"] .ex-prompt,
+[dir="rtl"] .opt-b,
+[dir="rtl"] .cc-example,
+[dir="rtl"] .model-a,
+[dir="rtl"] .woordhulp dl,
+[dir="rtl"] .woordgroep li,
+[dir="rtl"] .blk-zinnen li,
+[dir="rtl"] .wo-line,
+[dir="rtl"] .chips,
+[dir="rtl"] .match-l,
+[dir="rtl"] .mark-pick output {
+  direction: ltr;
+  text-align: start;
+}
+
+/*  2. EEN INSET-RAIL HEEFT GEEN LOGISCHE VARIANT.
+      `box-shadow: inset 3px 0 0 0` is fysiek links. In het Arabisch hoort de aanloopkant
+      rechts te zijn, en de rail stond dus aan het eind van de regel in plaats van aan het
+      begin. CSS kent geen `inset-inline-start` voor schaduwen, dus dit is een expliciete
+      spiegeling — dezelfde reden dat elke voorwaartse pijl `.rtl-flip` draagt.             */
+[dir="rtl"] .blk-voorbeeld { box-shadow: inset -3px 0 0 0 var(--color-secondary-container); }
+[dir="rtl"] .les-row.is-current { box-shadow: inset -3px 0 0 0 var(--color-secondary-container); }
+

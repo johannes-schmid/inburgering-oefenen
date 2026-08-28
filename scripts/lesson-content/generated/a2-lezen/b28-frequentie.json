@@ -1,0 +1,207 @@
+{
+  "items": [
+    {
+      "kind": "uitleg",
+      "tier": null,
+      "explanation": null,
+      "payload": {
+        "body_html": "<p>Met een klein woord zeg je <strong>hoe vaak</strong> iets gebeurt. Deze woorden noem je woorden van frequentie (hoe vaak).</p><p><strong>Altijd</strong> = elke keer, 100%. <strong>Vaak</strong> = veel keren. <strong>Soms</strong> = een paar keer. <strong>Nooit</strong> = geen enkele keer, 0%.</p><p>Deze woorden staan meestal na het werkwoord. Bij <em>nooit</em> is de zin negatief: je gebruikt dan geen <em>niet</em>.</p>",
+        "cards": [
+          {
+            "label": "VAAK / ALTIJD",
+            "example_html": "Ik ga <mark>altijd</mark> op maandag naar de dokter."
+          },
+          {
+            "label": "SOMS / NOOIT",
+            "example_html": "Ik ga <mark>nooit</mark> op zondag naar de dokter."
+          }
+        ]
+      }
+    },
+    {
+      "kind": "voorbeeld",
+      "tier": null,
+      "explanation": null,
+      "payload": {
+        "sentence_html": "Fatima betaalt de huur <mark>altijd</mark> voor de eerste van de maand."
+      }
+    },
+    {
+      "kind": "voorbeeld",
+      "tier": null,
+      "explanation": null,
+      "payload": {
+        "sentence_html": "Mijn buurman werkt in de winkel, maar hij werkt <mark>nooit</mark> in het weekend."
+      }
+    },
+    {
+      "kind": "mcq",
+      "tier": 0,
+      "explanation": "Nooit betekent 0 procent: het gebeurt geen enkele keer.",
+      "options": [
+        {
+          "label": "A",
+          "body": "elke dag",
+          "is_correct": false
+        },
+        {
+          "label": "B",
+          "body": "geen enkele keer",
+          "is_correct": true
+        },
+        {
+          "label": "C",
+          "body": "een paar keer per week",
+          "is_correct": false
+        }
+      ],
+      "payload": {
+        "prompt": "Wat betekent het woord nooit in de zin: \"Ik drink nooit koffie in de avond.\"?"
+      }
+    },
+    {
+      "kind": "mcq",
+      "tier": 0,
+      "explanation": "Altijd betekent elke keer, 100 procent; dat is meer dan vaak of soms.",
+      "options": [
+        {
+          "label": "A",
+          "body": "soms",
+          "is_correct": false
+        },
+        {
+          "label": "B",
+          "body": "vaak",
+          "is_correct": false
+        },
+        {
+          "label": "C",
+          "body": "altijd",
+          "is_correct": true
+        },
+        {
+          "label": "D",
+          "body": "nooit",
+          "is_correct": false
+        }
+      ],
+      "payload": {
+        "prompt": "Welk woord betekent: het gebeurt elke keer, 100 procent van de tijd?"
+      }
+    },
+    {
+      "kind": "gap_choice",
+      "tier": 1,
+      "explanation": "Bij 100 procent (elke maand) gebruik je altijd.",
+      "payload": {
+        "sentence": "De gemeente stuurt ___ elke maand een brief over de huurtoeslag.",
+        "choices": [
+          "nooit",
+          "altijd",
+          "soms"
+        ],
+        "answer": "altijd"
+      }
+    },
+    {
+      "kind": "gap_choice",
+      "tier": 1,
+      "explanation": "Bij 0 procent, dus geen enkele keer, gebruik je nooit.",
+      "payload": {
+        "sentence": "Karim eet geen vlees. Hij eet ___ een broodje met ham.",
+        "choices": [
+          "altijd",
+          "vaak",
+          "nooit"
+        ],
+        "answer": "nooit"
+      }
+    },
+    {
+      "kind": "gap_choice",
+      "tier": 1,
+      "explanation": "Eén of twee keer per jaar is niet veel: dan past soms.",
+      "payload": {
+        "sentence": "Ik ga ___ naar de tandarts, ongeveer één keer per jaar.",
+        "choices": [
+          "soms",
+          "altijd",
+          "nooit"
+        ],
+        "answer": "soms"
+      }
+    },
+    {
+      "kind": "matchen",
+      "tier": 1,
+      "explanation": "Je let op hoe vaak het gebeurt: elke keer is altijd, veel keren is vaak, een paar keer is soms en geen enkele keer is nooit.",
+      "payload": {
+        "instruction": "Match het woord met de goede uitleg.",
+        "pairs": [
+          {
+            "left": "altijd",
+            "right": "elke keer, 100 procent"
+          },
+          {
+            "left": "vaak",
+            "right": "veel keren, bijna elke week"
+          },
+          {
+            "left": "soms",
+            "right": "een paar keer, niet veel"
+          },
+          {
+            "left": "nooit",
+            "right": "geen enkele keer, 0 procent"
+          }
+        ]
+      }
+    },
+    {
+      "kind": "gap_type",
+      "tier": 2,
+      "explanation": "Vijf dagen per week is heel veel keren, maar niet elke dag; daarom past vaak.",
+      "payload": {
+        "sentence": "Anja fietst vijf dagen per week naar haar werk. Zij fietst ___ naar haar werk.",
+        "answer": "vaak"
+      }
+    },
+    {
+      "kind": "woordorde",
+      "tier": 2,
+      "explanation": "Het woord van frequentie staat na het werkwoord: ik werk nooit op zondag.",
+      "payload": {
+        "instruction": "Zet de woorden in de juiste volgorde.",
+        "tokens": [
+          "nooit",
+          "ik",
+          "zondag",
+          "werk",
+          "op"
+        ],
+        "answer": [
+          "ik",
+          "werk",
+          "nooit",
+          "op",
+          "zondag"
+        ]
+      }
+    },
+    {
+      "kind": "open_zin",
+      "tier": 2,
+      "explanation": "Je gebruikt soms of vaak op de goede plek: na het werkwoord in de zin.",
+      "payload": {
+        "prompt": "Schrijf één zin over de supermarkt met het woord soms of vaak.",
+        "model_answer": "Ik ga vaak naar de supermarkt in de straat naast mijn huis.",
+        "checklist": [
+          "In je zin staat soms of vaak.",
+          "Het woord staat na het werkwoord.",
+          "Je zin gaat over de supermarkt."
+        ]
+      }
+    }
+  ],
+  "what_you_learn": "Je leert wat de woorden altijd, vaak, soms en nooit betekenen. Je ziet hoe vaak iets gebeurt in een zin en je kiest zelf het juiste woord. Ook weet je waar dit woord in de zin staat: meestal na het werkwoord."
+}

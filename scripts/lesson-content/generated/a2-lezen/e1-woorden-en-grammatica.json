@@ -1,0 +1,224 @@
+{
+  "items": [
+    {
+      "kind": "mcq",
+      "tier": 0,
+      "explanation": "In een hoofdzin staat het werkwoord op plaats twee. 'Morgen' is plaats één, dus daarna komt 'ga'.",
+      "payload": {
+        "prompt": "Welke zin is goed?"
+      },
+      "options": [
+        {
+          "label": "A",
+          "body": "Morgen ga ik naar de gemeente.",
+          "is_correct": true
+        },
+        {
+          "label": "B",
+          "body": "Morgen ik ga naar de gemeente.",
+          "is_correct": false
+        },
+        {
+          "label": "C",
+          "body": "Morgen naar de gemeente ik ga.",
+          "is_correct": false
+        }
+      ]
+    },
+    {
+      "kind": "gap_choice",
+      "tier": 1,
+      "explanation": "Na 'omdat' gaat het werkwoord naar achteren, dus 'ben' staat aan het eind.",
+      "payload": {
+        "sentence": "Ik blijf vandaag thuis, omdat ik ___.",
+        "choices": [
+          "ben ziek",
+          "ziek ben",
+          "ziek bent"
+        ],
+        "answer": "ziek ben"
+      }
+    },
+    {
+      "kind": "gap_type",
+      "tier": 2,
+      "explanation": "Je praat over gisteren met 'hebben' plus een woord met ge-. Bij 'werken' hoort ge-werk-t.",
+      "payload": {
+        "sentence": "Gisteren heb ik acht uur ___ in de fabriek.",
+        "answer": "gewerkt"
+      }
+    },
+    {
+      "kind": "matchen",
+      "tier": 0,
+      "explanation": "Woorden op -er, -el en -e krijgen vaak -s. Andere woorden krijgen -en. Een woord dat eindigt op een klinker krijgt -'s.",
+      "payload": {
+        "instruction": "Zoek het goede meervoud bij elk woord.",
+        "pairs": [
+          {
+            "left": "de tafel",
+            "right": "de tafels"
+          },
+          {
+            "left": "de brief",
+            "right": "de brieven"
+          },
+          {
+            "left": "de foto",
+            "right": "de foto's"
+          },
+          {
+            "left": "de moeder",
+            "right": "de moeders"
+          }
+        ]
+      }
+    },
+    {
+      "kind": "woordorde",
+      "tier": 2,
+      "explanation": "Bij een scheidbaar werkwoord valt het woord in twee stukken: 'vul' staat op plaats twee en 'in' gaat naar achteren.",
+      "payload": {
+        "instruction": "Maak van deze woorden een goede zin.",
+        "tokens": [
+          "het",
+          "in",
+          "vul",
+          "ik",
+          "formulier"
+        ],
+        "answer": [
+          "ik",
+          "vul",
+          "het",
+          "formulier",
+          "in"
+        ]
+      }
+    },
+    {
+      "kind": "mcq",
+      "tier": 0,
+      "explanation": "Bij een vraag zonder vraagwoord staat het werkwoord vooraan, dus 'Kom je ...'.",
+      "payload": {
+        "prompt": "Welke vraag is goed?"
+      },
+      "options": [
+        {
+          "label": "A",
+          "body": "Je komt morgen naar de les?",
+          "is_correct": false
+        },
+        {
+          "label": "B",
+          "body": "Kom je morgen naar de les?",
+          "is_correct": true
+        },
+        {
+          "label": "C",
+          "body": "Morgen kom je naar de les?",
+          "is_correct": false
+        }
+      ]
+    },
+    {
+      "kind": "gap_choice",
+      "tier": 1,
+      "explanation": "Bij 'ik' hoort 'me'. Het werkwoord 'zich voelen' krijgt altijd me, je of zich erbij.",
+      "payload": {
+        "sentence": "Ik voel ___ vandaag niet goed.",
+        "choices": [
+          "me",
+          "zich",
+          "je"
+        ],
+        "answer": "me"
+      }
+    },
+    {
+      "kind": "gap_choice",
+      "tier": 1,
+      "explanation": "'Gaan' is onregelmatig: over vroeger zeg je 'wij gingen'.",
+      "payload": {
+        "sentence": "Vroeger ___ wij elke zomer naar Groningen.",
+        "choices": [
+          "gingen",
+          "gegaan",
+          "gaan"
+        ],
+        "answer": "gingen"
+      }
+    },
+    {
+      "kind": "woordorde",
+      "tier": 2,
+      "explanation": "Na 'toen' gaat het werkwoord naar het eind van het zinsdeel, dus 'woonde' staat achteraan.",
+      "payload": {
+        "instruction": "Maak een goede zin met 'toen'.",
+        "tokens": [
+          "toen",
+          "in",
+          "woonde",
+          "ik",
+          "Almere"
+        ],
+        "answer": [
+          "toen",
+          "ik",
+          "in",
+          "Almere",
+          "woonde"
+        ]
+      }
+    },
+    {
+      "kind": "gap_type",
+      "tier": 2,
+      "explanation": "Bij een reis of beweging gebruik je 'zijn' plus het woord met ge-: 'is gekomen'.",
+      "payload": {
+        "sentence": "Mijn zus ___ vorige week naar Nederland gekomen.",
+        "answer": "is"
+      }
+    },
+    {
+      "kind": "mcq",
+      "tier": 0,
+      "explanation": "Een vraagwoord staat vooraan, en daarna komt direct het werkwoord: 'Waarom moet ik ...'.",
+      "payload": {
+        "prompt": "Welke vraag met een vraagwoord is goed?"
+      },
+      "options": [
+        {
+          "label": "A",
+          "body": "Waarom ik moet dit formulier invullen?",
+          "is_correct": false
+        },
+        {
+          "label": "B",
+          "body": "Waarom moet ik dit formulier invullen?",
+          "is_correct": true
+        },
+        {
+          "label": "C",
+          "body": "Waarom dit formulier moet ik invullen?",
+          "is_correct": false
+        }
+      ]
+    },
+    {
+      "kind": "open_zin",
+      "tier": 2,
+      "explanation": "Je gebruikt 'als' plus een werkwoord aan het eind, en in de hoofdzin staat het werkwoord op plaats twee.",
+      "payload": {
+        "prompt": "Schrijf één zin met 'als'. Vertel wat je doet als je ziek bent.",
+        "model_answer": "Als ik ziek ben, bel ik de huisarts.",
+        "checklist": [
+          "Na 'als' staat het werkwoord aan het eind.",
+          "In de hoofdzin staat het werkwoord op plaats twee.",
+          "De zin heeft een hoofdletter en een punt."
+        ]
+      }
+    }
+  ],
+  "what_you_learn": "In deze toets kijk je zelf hoe goed je de belangrijkste woorden en grammatica al kent. Je maakt korte opgaven over de plaats van het werkwoord, vragen, praten over vroeger, scheidbare werkwoorden en het meervoud. Daarna weet je welke onderdelen je nog moet oefenen."
+}

@@ -610,6 +610,130 @@ static and the B1 one derives from `stimuli`, which KNM has none of, so it needs
 derivation from `standalone` — real work beyond transferring the content, and worth its own change.
 The `oefenvragen` free topic-quiz pages are still empty and still earmarked for this (M3).
 
+### De leerlaag: concepten, lessen en de weg terug van een fout antwoord (2026-08-27)
+
+Het portaal kon één ding — examens maken. Wie A2 Lezen examen 3 verprutste wist dát het fout
+ging en niet wát hij moest leren. **M-L1 zet daar een cursus naast**, en de motor is generiek:
+`20260828100000_lesson_layer.sql` plus `lib/lessons/`. A2 Lezen is de eerste gevulde cursus
+(51 lessen, 558 items, 126 woorden, 31 concepten); M-L2 t/m M-L5 vullen de rest.
+
+**Drie assen, en ze niet door elkaar halen is het hele ontwerp:**
+
+- **Een CONCEPT is één leerbaar ding op een niveau** en staat één keer in `concepts`. De
+  **uitleg** hoort erbij; de **opgaven niet**. Die hangen aan de les, per onderdeel: Luisteren
+  oefent `omdat` op het gehoor, Schrijven laat hem bouwen. `concept_onderdelen` is de
+  "KOMT IN …"-rij — een grammaticaconcept staat er vaak vier keer, een `strategie`-concept
+  **altijd precies één keer**, en dat laatste is het hele antwoord op "hoe bereid je iemand voor
+  die alleen Luisteren doet".
+- **Beheersing telt op het CONCEPT, over de onderdelen heen.** Eén rij in
+  `user_concept_mastery`, gevoed door elke les die het uitlegt. Receptief en productief worden
+  **apart** geteld (`tierBucket`), want "herkent het" en "kan het maken" zijn niet hetzelfde:
+  `masteryPct` maximeert receptief-alleen op **50%**, omdat 100% daar zou lezen als "hier ben je
+  klaar". Trap 1 telt als productief. **`mastery_pct` is ONS getal en heet zo op het scherm** —
+  `SEO/facts.md` §9 verbiedt een onnavolgbare slaagnorm, en een percentage dat als slaagkans
+  leest zou datzelfde doen.
+- **`question_concepts` / `open_task_concepts` is de remediatie.** Voor KNM liep die weg langs de
+  tekstsoort (`lib/leren-links.ts`); voor de taalonderdelen kan dat niet, want "Advertentie" is
+  geen leerbaar concept. `/api/lesson-advice` groepeert de foute antwoorden per concept, sorteert
+  op hoe vaak ze terugkomen en linkt naar de les die het `teaches`. **Een concept zonder
+  vrijgegeven les valt terug op de conceptpagina** in plaats van naar een 404 te wijzen.
+
+**De reviewgate is echt, anders dan bij de A2-examendataset.** De seeder schrijft **alles**
+`pending` en er is **geen `--publish`-vlag**: vrijgeven gebeurt per les in `/admin/lessen`, door
+een mens, en `reviewed_by` komt uit de sessie en nooit uit een body. Een `pending` les is langs
+zijn URL leesbaar (dát maakt reviewen mogelijk) en staat in geen blok, geen menu en geen
+voortgang. Geverifieerd: HTTP 200 op de les, 0 keer op de cursuspagina.
+
+**De publicatiegate is een feit over de content, geen vlag.** `hasCourse()` en
+`fetchConceptLevels()` vragen of er een `validated` rij bestaat. `FEATURES.leren` is één boolean
+en kan niet zeggen "KNM leeft, A2 leeft, B1 nog niet"; een tweede vlag ernaast zou een tweede
+schakelaar voor hetzelfde ding zijn. Zelfde koppeling als de `robots`-gate voor B1
+(`itemCount !== null`).
+
+**Wat het paneel NIET draagt.** De lescursus staat niet in de portaalchrome: die draagt één as —
+hoe ver je door de tien examens bent (eigenaar, 27-08). Het paneel krijgt alleen een
+niveaubrede **Concepten**-rij; de cursus wordt bereikt via een kaart bovenaan de
+onderdeelpagina, die zijn eigen voortgang draagt. Acht rijen in 196px is geen navigatie meer.
+
+**`lesson_items` is ÉÉN tabel voor uitleg én opgaven**, op één `sort_order`. Dat is de belofte
+van de laag: na de uitleg oefen je meteen, in dezelfde stroom. `kind` discrimineert en de
+renderer is een `switch` met een `never`-default, zodat een nieuwe soort een compilefout geeft en
+geen leeg blok. `tier` (0/1/2) is een didactisch feit en geen sortering — het is waarom een les
+met alleen meerkeuze niets bewijst.
+
+**`lib/lessons/items.ts` is de enige definitie van een geldige opgave**, en de scripts lezen hem
+óók: `scripts/lesson-content/load-items.mjs` transpileert dat ene bestand met de `typescript` uit
+`node_modules` (er is geen `tsx`) en faalt luid zodra `items.ts` iets anders dan `zod`
+importeert. De alternatieven waren twee kopieën van veertien payloadvormen, of een build-tool
+erbij.
+
+**De contentpijplijn — `scripts/lesson-content/`:**
+
+```bash
+node scripts/lesson-content/generate.mjs plan            # wat er geschreven zou worden
+node scripts/lesson-content/generate.mjs a2:lezen        # schrijf ze (hervat uit .unit-cache)
+node scripts/lesson-content/generate.mjs a2:lezen --check
+node scripts/lesson-content/seed.mjs a2:lezen --dry-run --partial
+node scripts/lesson-content/seed.mjs a2:lezen
+node scripts/lesson-content/tag-questions.mjs a2:lezen   # question_concepts
+node scripts/lesson-content/check-answer-loop.mjs <lesUrl> <cookieFile>
+```
+
+- **De syllabus is met de hand vastgelegd**: `concepts-a2.mjs` (31 concepten, uit **TaalCompleet
+  A2**'s onderwerpenlijst — vorm wel, inhoud nooit; de PDF's horen in `resources/`) en `plan.mjs`
+  (blokken, lessen, woordthema's, strategieconcepten). Het model schrijft alleen het Nederlands
+  voor een slot dat het krijgt. Vraag het dertig keer om "een grammaticales" en je krijgt dertig
+  varianten op één les.
+- **Het JSON-schema wordt PER LESSOORT samengesteld** (`KINDS_PER_LESSON` in `author.mjs`), en
+  dat begon als omweg om een API-limiet (max 24 optionele velden) en is de scherpste regel
+  geworden: een grammaticales kán geen `leestekst` bevatten, een examentraining geen `voorbeeld`.
+- **Samengestelde payloadvelden zijn stringlijsten met `||`**, geen geneste objecten: met
+  objecten binnen de item-array weigert de API het schema ("too complex").
+  `normalisePayloads()` zet ze terug en is **idempotent**, want hij loopt ook over `generated/`.
+- **`answer_order` bestaat omdat `answer` twee vormen had.** Eén string bij `gap_choice`, een
+  lijst bij `woordorde`; het model liet het veld dan weg en dat kostte een extra call per les.
+- **De Vercel AI Gateway weigert `output_config.format` sinds 2026-08-27** en neemt in plaats
+  daarvan één tool met `input_schema` + `tool_choice`. Die tak zit in
+  `scripts/b1-content/author.mjs` (`viaTool`) en repareert ook de B1-pijplijn, die er stil op
+  stuk lag. **Verwijder hem niet omdat de directe route werkt** — op 27-08 was die zonder
+  krediet en de gateway zonder `output_config`, tegelijk.
+- **`--partial` seeds een cursus waarvan lessen ontbreken**, somt ze op, en wordt **geweigerd met
+  `--production`**: een halve cursus gaat niet live.
+- **Een woord staat één keer per onderdeel.** Twee thema's die hetzelfde woord opvoeren geven
+  anders "ON CONFLICT DO UPDATE command cannot affect row a second time"; de seeder dedupliceert
+  en zegt wat hij laat vallen.
+- **`ON CONFLICT` kan geen DEFERRABLE constraint als arbiter.** `lesson_items_sort_key` is
+  deferrable, dus de seeder verwijdert de items van een les en schrijft ze opnieuw. Dat mag
+  hier: aan een lesitem hangt geen kandidaatantwoord, anders dan bij `question_options`, waar een
+  delete `user_question_results.chosen_option_id` op NULL zet.
+
+**Nakijken gebeurt twee keer, en dat is opzet.** De lesstroom kijkt lokaal na met dezelfde pure
+functies (`matchesTyped`) zodat de feedback direct staat; `/api/lesson-answer` kijkt opnieuw na
+en **dát** getal gaat de database in. Niet uit angst voor fraude — het antwoordmodel is publiek
+leesbaar, net als `question_options.is_correct` — maar omdat een zelfgerapporteerd cijfer geen
+cijfer is. De client stuurt nooit of het goed was, welke trap het was, of welk concept eraan
+hangt.
+
+**`open_zin` wordt bewust NIET rubriek-beoordeeld.** Dat kost een modelcall per oefenzin, en de
+Schrijven-rubrieken bestaan om een héle opgave te beoordelen. De cursist krijgt een
+voorbeeldantwoord plus checklist en vergelijkt zelf; er is dus geen "fout". `model_answer` mág
+hier de client bereiken — anders dan `open_tasks.model_answer`, dat een beoordelingssleutel is.
+
+**Drie toestanden op een conceptspoor, en ze moeten verschillen:** vinkje (les + bezit), slot
+(les, niet bezeten → link naar het aanbod), streepje (**nog geen les** → geen link, geen slot).
+Een slot bij "niet gebouwd" belooft dat betalen het oplevert. Zelfde discipline als de drie
+niet-openbare examenslots.
+
+**In het Arabisch blijft de lesinhoud LTR.** De chrome spiegelt, de Nederlandse zinnen niet:
+rechts uitgelijnd zet bidi de slotpunt vooraan (".Ik blijf thuis omdat ik ziek ben"). Dezelfde
+les als `.guide-figure-split`. En een `box-shadow: inset` heeft geen logische variant, dus elke
+accentrail wordt onder `[dir="rtl"]` expliciet gespiegeld.
+
+**Nog open in deze laag:** `d1-advertentie` en `d5-regels` ontbreken (beide API-budgetten op), en
+`tag-questions.mjs` is nog niet echt gedraaid — zeven koppelingen staan met de hand om de lus te
+bewijzen. **De hele laag staat nog alleen op de lokale stack**; de migratie is niet op productie
+toegepast.
+
 ---
 
 ## Project Overview

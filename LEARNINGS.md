@@ -2797,3 +2797,263 @@ oneens kunnen zijn over wie er spreekt. De URL komt cache-busted terug, waardoor
 de nieuwe opname speelt in plaats van de oude.
 **Lesson:** een gegenereerd bestand moet de keuze die het maakte in de rij achterlaten — een stem is
 niet uit een mp3 terug te lezen, dus zonder kolom wisselt hij stilletjes bij de volgende generatie.
+
+## 2026-08-27 — de portaalzijbalk is je cursus, niet de catalogus
+**Changed:** `lib/portal-menu.ts` (nieuw), `app/[locale]/(app)/components/PlatformSidebar.tsx` (herschreven),
+`AppShell.tsx` (groep-CSS + twee nieuwe props), negen portaalpagina's die `menu` doorgeven,
+`tests-unit/portal-menu.test.ts` (nieuw), drie locale-bestanden.
+**Outcome:** SUCCESS — tsc schoon, `next build` schoon, 282 unit tests, portal.spec.js 9/9.
+
+**What worked:** de zijbalk toonde altijd alle vier de taalonderdelen plus KNM — de catalogus,
+identiek voor een betalende klant en voor iemand die niets heeft. Nu staan gekochte modules
+bovenaan als uitklapgroepen ("Jouw cursus") en zakt de rest naar één ingeklapte groep
+("Nog niet in jouw cursus") boven de "Cursus uitbreiden"-knop. Variant C van drie voorgelegde
+varianten (eigenaar, 27-08).
+
+**What went wrong / wat het duurst was:** de zijbalk is een client component en kan de sessie
+niet lezen, dus het menu moet op de server gebouwd worden en als *prop* naar binnen. Negen
+serverpagina's roepen `fetchPortalMenu()` aan; `/dashboard/analyse` en `/dashboard/fouten` zijn
+client components (de ongerouteerde KNM-restanten) en kunnen dat niet — daarom is `menu`
+optioneel en valt de zijbalk terug op de aanbod-vorm in plaats van op een tweede, platte kopie
+van de nav.
+
+**Lesson:** een groepsvlag en een itemvlag zijn niet hetzelfde. `group.owned` is waar zodra
+één van de vier onderdelen gekocht is; zonder een aparte `item.owned` kreeg Spreken in een
+A2-groep dezelfde opmaak én dezelfde voortgangsbalk als het onderdeel dat wél betaald was —
+de zijbalk vertelde de klant dat hij iets bezit waar de player hem uit gooit. Twee vlaggen,
+of één leugen.
+
+**Derde lesson (dezelfde dag, mockup-ronde 2):** `CategoryMark`'s tone volgt de *rij*, niet de
+zijbalk. Een dark-tone mark tekent witte inkt op een doorschijnende witte tegel — op de witte
+pil van de actieve rij is dat wit op wit, en alleen het oranje accent overleeft. De rail moest
+om dezelfde reden omkeren: de track verdonkert op wit in plaats van te verlichten.
+
+**Vierde lesson:** een CSS-comment in de `<style>`-template-literal van `AppShell` mag geen
+backtick bevatten. Ik schreef er `.nav-item.active` tussen backticks in en kreeg een TS-fout
+twintig regels verderop, waar niets fout lijkt. Staat al in CLAUDE.md; ik liep er alsnog in.
+
+**Tweede lesson:** een badge en een label naast elkaar mogen niet hetzelfde zeggen.
+`levelLabel('a2')` geeft "A2" en de badge geeft "A2", dus de rij las "A2   A2" — wat als een
+renderfout leest. Het label is nu `portal.level_section` ("Niveau A2"); KNM houdt zijn eigen
+naam, want "Niveau KNM" is een categoriefout.
+
+**Mobiel is meegegaan.** De tabbalk toonde Overzicht plus alle vier de taalonderdelen plus KNM,
+ongeacht bezit — vijf van de zes tabs leidden naar een vergrendelde pagina en de twee
+navigaties waren het oneens over wat het product bevat. Nu: Overzicht, de gekochte onderdelen
+(max vier, met het niveau in het label zodat A2 Lezen en B1 Lezen niet twee identieke tabs
+worden), en Uitbreiden zolang er nog iets te verkopen is.
+
+**De module-kop linkt naar `/dashboard#module-<niveau>`, niet naar het eerste onderdeel.** Een
+modulerij vraagt "hoe sta ik ervoor over de vier heen"; hem naar Lezen sturen laat Lezen "A2"
+betekenen op precies de plek waar dat niet mag. Er is geen `/dashboard/[level]`-route en die is
+ook niet nodig — het overzicht rendert al een sectie per niveau, dus het anker is de pagina die
+er al is.
+
+## 2026-08-27 (2) — het portaal is twee kolommen: modulerail + onderdeelpaneel
+**Changed:** `components/ModuleRail.tsx` en `ModulePanel.tsx` (nieuw, vervangen `PlatformSidebar.tsx`),
+`AppShell.tsx` (chrome-CSS herschreven), `dashboard/[level]/page.tsx` (nieuwe route),
+`dashboard/_components/ModuleSkillGrid.tsx` (nieuw, gedeeld), `leren/[slug]` gesplitst in een
+serverpagina + `LerenThemaClient.tsx`, `lib/portal-menu.ts`, `components/nav.ts`, drie locales.
+**Outcome:** SUCCESS — tsc schoon, `next build` schoon, 282 unit tests, portal+admin e2e 20/20.
+
+**What worked:** de oude zijbalk droeg twee assen tegelijk — wélke module en wáár daarbinnen —
+en had uitklapgroepen nodig om dat te kunnen. Gesplitst in een smalle navy rail (modules) en een
+licht paneel (onderdelen van de gekozen module) is er geen groep meer om in te klappen, en
+verdween de hele `localStorage`-dans die daarbij hoorde. Variant A van twee voorgelegde
+varianten (eigenaar, 27-08).
+
+**Lesson:** "je landt eerst op het overzicht" was geen chrome-wens maar een ontbrekende route.
+`/dashboard/[level]` bestond niet; een railtegel die naar Lezen sprong zou Lezen "A2" laten
+betekenen op precies de plek waar dat niet mag. De nieuwe pagina draagt één ondubbelzinnige
+volgende actie — het laagste ongedane, gepubliceerde examen in een onderdeel dat je bezit —
+en dat kan het portaaloverzicht niet, want dat gaat over meerdere modules tegelijk.
+
+**Wat de rail brak en wat dat leert:** `PlatformSidebar` verdween en nam ongemerkt uitloggen én
+de gast-CTA's mee. Niets faalde: `tsc` was schoon en de e2e-suite raakt die knoppen niet.
+Alleen de eslint-waarschuwing "'email' is defined but never used" in `AppShell` verried het.
+**Een ongebruikte prop na een herschrijving is een verdwenen functie tot je het tegendeel hebt
+gecontroleerd.**
+
+**Tweede vondst:** `/leren/[slug]` tekende zijn eigen zijbalk — een tweede kopie van de chrome,
+met een vaste onderbalk op `left:248px`, de breedte van de oude zijbalk. Precies de duplicatie
+die `AppShell` bestaat om te voorkomen, en hij was al gedrift. De chrome-breedte is nu
+`--portal-chrome-w` en de pagina is gesplitst in een server- en een clienthelft.
+
+**Naronde, drie leesbaarheidsfouten die alleen op een screenshot te zien waren:**
+1. **"OVERZICHT" liep buiten zijn tegel.** De railtegel was 48px en het label ~55px, dus het
+   woord werd aan beide kanten afgekapt — dat leest als een kapotte tegel, niet als een lang
+   woord. Tegel is nu 70px in een 84px rail en het label wrapt in plaats van af te kappen, zodat
+   een langere vertaling de tegel laat groeien in plaats van letters te verliezen.
+2. **De rijen in het paneel hadden geen echte inktkleur.** `#5b6570` en voor niet-gekochte
+   onderdelen een alpha van 50% daarvan — op een bijna-witte kolom ongeveer 2,4:1. Leesbaar op
+   een groot scherm op volle helderheid en nergens anders.
+3. **De actieve rij was een gevuld navy blok** over de volle paneelbreedte. Naast een navy rail
+   is dat een tweede donkere massa en leest het als een banner in plaats van als "hier ben je".
+   Nu een tint plus een oranje streep aan de aanloopkant — zelfde boodschap, een fractie van het
+   gewicht, en de rail blijft het enige donkere vlak.
+
+**Lesson:** een tegel met een label erin heeft twee maten die op elkaar moeten passen, en de
+langste taal bepaalt welke. Laat een label wrappen, nooit clippen.
+
+
+## 2026-08-27 (3) — twee kolommen die nooit bestonden, en de KNM-lesvoortgang die daardoor nooit is opgeslagen
+
+**Changed:** `supabase/migrations/20260828000000_leren_progress_drift.sql` voegt `max_section`
+en `completed_at` toe aan `user_leren_progress`. `app/[locale]/(app)/leren/[slug]/LerenThemaClient.tsx`
+laat zijn twee upserts niet meer stil falen en maakt `max_section` een echte high-water mark.
+`app/[locale]/(admin)/admin/users/page.tsx` selecteert `max_section` mee en toont hem in het
+sectielabel, waar eerst het thema-id stond.
+
+**Outcome:** SUCCESS
+
+**What worked:** dit was stap 0 van het leerlagenplan — niet bouwen op een tabel waarvan we de
+echte vorm niet kennen — en de tabel bleek inderdaad niet te bestaan zoals de code hem gebruikte.
+Vier plekken lazen of schreven `max_section` en `completed_at`; **geen enkele migratie heeft ze
+ooit aangemaakt, lokaal noch op productie.** Gecontroleerd door productie's PostgREST rechtstreeks
+te bevragen: `?select=max_section` gaf 42703 "column does not exist", en de tabel stond op nul
+rijen. Die nul rijen waren geen teken dat niemand de KNM-lessen gebruikt — het was het bewijs dat
+**er nooit één lesvoortgang is vastgelegd.**
+
+Er faalde nergens iets zichtbaar, en dat is precies waarom het zo lang stond:
+- `LerenThemaClient` deed beide upserts met `.then(() => {})`. PostgREST antwoordde 400, het
+  resultaat ging de prullenbak in, de pagina rendeerde vrolijk verder.
+- `/admin/users` selecteerde `completed_at` mee en deed `lerenRes.data ?? []`. Diezelfde 400 werd
+  een lege lijst, dus de leren-regels in de activiteitentijdlijn van élke gebruiker waren altijd
+  afwezig.
+
+**Lesson:** **een weggegooid resultaat is een verdwenen feature tot je het tegendeel hebt
+gecontroleerd.** `.then(() => {})` en `?? []` zijn geen foutafhandeling maar het onderdrukken van
+de enige melding die je zou hebben gehad. `tsc` ziet het niet (de kolomnamen zijn strings in een
+objectliteraal), de build niet, en geen enkele test raakte het. Dit is dezelfde vorm als de
+`--no-backup`-les en als de zijbalk van gisteren: de fout zat niet in de code die brak, maar in de
+code die niet meldde dat er iets brak. Nieuwe regel voor dit project: een write waarvan het
+resultaat wordt genegeerd, logt minimaal `error.message` — de conventie die `lib/attempts.ts` al
+had (`console.error('[attempts] failed to …')`) en die de leerlaag nu ook volgt.
+
+**Tweede vondst, uit de kolomnaam zelf:** de sectie-upsert schreef `max_section: idx + 1`
+onvoorwaardelijk, dus terugbladeren naar sectie 1 zou de voortgang van sectie 7 hebben *verlaagd*.
+Een "high-water mark" die kan zakken is geen high-water mark. PostgREST kent geen `GREATEST()` in
+een upsert, dus de vergelijking moet in de client, en dan moet de opgeslagen waarde één keer
+gelezen worden — dat is nu een `maxSectionRef` die uit de database initialiseert en alleen bij een
+strikte toename schrijft. **Een kolomcommentaar dat de code tegenspreekt is een bug, niet een
+slecht commentaar:** kies welke van de twee waar is voordat je een van beide opschrijft.
+
+**Hoe het is geverifieerd, en waarom niet met `db reset`:** de lokale stack draagt de veertig
+A2/B1-examens en de KNM-content, geseed door scripts die TTS en afbeeldingen hebben gekost — een
+reset gooit dat weg en `seed.sql` brengt het niet terug. In plaats daarvan de migratie twee keer
+toegepast (idempotent, `ADD COLUMN IF NOT EXISTS`) en de schrijfpaden **end-to-end door PostgREST
+met een echte gebruikers-JWT** gelopen, met `Prefer: return=representation` — want een
+RLS-geweigerde write geeft 200 met nul rijen en ziet er identiek uit aan een geslaagde save. Beide
+upserts gaven een echte rij terug; daarna de proefgebruiker verwijderd en gecontroleerd dat de
+cascade de rij meenam. Een replay op een lege database kon **niet**: de baseline heeft het
+`auth`-schema nodig dat Supabase' eigen bootstrap aanmaakt, dus een kale scratch-database faalt op
+regel 5. Dat is een beperking van de verificatie en geen bewijs dat de keten schoon replayt.
+
+**Nog open, gevonden en bewust niet aangeraakt** (staat in niet-gecommitteerd werk van gisteren):
+`LerenThemaClient` heeft een `email`-state die wordt geschreven en nooit gelezen, en `SectionView`
+krijgt een `onGoToSection` die het niet gebruikt. Volgens de les van gisteren zijn dat twee
+kandidaat-verdwenen-features, geen dode variabelen — controleer het voordat je ze weghaalt.
+`LerenThemaView.tsx` en `LerenView.tsx` verwijzen ook naar deze kolommen en zijn aantoonbaar dood
+(nergens geïmporteerd).
+
+## 2026-08-27 (4) — M-L1: de leerlaag staat, en A2 Lezen is een echte cursus
+
+**Changed:** `supabase/migrations/20260828100000_lesson_layer.sql` (14 tabellen), `lib/lessons/`
+(items, lessons, lessons-server, concepts-server), `components/lessons/` (LessonStream met
+veertien renderers, ConceptAdvice), vijf routes onder `dashboard/[level]/`, `/admin/lessen` met
+`/api/admin/release-lesson`, `/api/lesson-answer`, `/api/lesson-advice`,
+`scripts/lesson-content/` (syllabus, generator, seeder, tagger), `lessons`-namespace in nl/en/ar,
+en 38 unit tests.
+
+**Outcome:** SUCCESS, met twee expliciete gaten (zie onderaan).
+
+**Wat er nu staat:** 31 A2-concepten in 6 groepen + 5 strategieconcepten, 51 lessen over blok
+A–E, 558 items waarvan 430 opgaven, 126 woorden met receptief/productief-splitsing. Alles
+geseed op `pending`; 20 lessen vrijgegeven om beide toestanden te kunnen zien.
+
+**De drie dingen die dit ontwerp dragen, en die alle drie geverifieerd zijn met een query en
+niet met een aanname:**
+
+1. **Eén concept, vier manieren van oefenen.** De uitleg staat één keer op `concepts`; de
+   opgaven hangen aan de les, per onderdeel. Getest door tijdelijk een Luisteren-les te maken
+   die hetzelfde concept uitlegt: een fout antwoord in de Lezen-les (tier 0) en een goed
+   antwoord in de Luisteren-les (tier 2) kwamen in **één** `user_concept_mastery`-rij terecht,
+   als `rec 0/1` en `prod 1/1`, met `mastery_pct = 50`. Dat is precies wat `masteryPct`
+   voorschrijft en het is de hele reden dat de trap bestaat.
+2. **De reviewgate is echt.** Een `pending` les geeft HTTP 200 op zijn eigen URL — dát maakt
+   reviewen mogelijk — en komt **0 keer** voor op de cursuspagina. Anders dan de
+   A2-examendataset, die `validated` schreef vóór de docent had gekeken; dat veld is het enige
+   in dat systeem dat liegt, en op lescontent is die kortere weg het duurst.
+3. **Entitlement is per spoor.** Met een account dat alléén A2 Lezen bezit toont de
+   conceptpagina drie verschillende toestanden: Lezen met een vinkje en een pijl, Luisteren met
+   een slot en een link naar het aanbod, Schrijven/Spreken met een streepje en géén link. Dat
+   laatste onderscheid was er eerst niet — beide kregen een slot, en een slot bij "nog niet
+   gebouwd" belooft dat betalen het oplevert.
+
+**Vier keer 400 van de API voordat één les geschreven kon worden, en dat is de les over
+structured outputs:** `output_config.format` wordt door de **Vercel AI Gateway sinds vandaag
+geweigerd** ("Extra inputs are not permitted") — de B1-pijplijn was daarmee óók stil stuk. De
+gateway neemt wél één tool met een `input_schema` plus `tool_choice`, dus die tak zit nu in
+`scripts/b1-content/author.mjs` en fixt beide pijplijnen. Daarna wees de directe API drie
+schemavormen af: een `enum` met `null` naast `type: ['string','null']`, `additionalProperties:
+true`, en meer dan 24 optionele velden. Dat laatste dwong het schema **per lessoort** samen te
+stellen, en dat is het beste deel van het ontwerp geworden: een grammaticales kán nu geen
+`leestekst` bevatten en een examentraining geen `voorbeeld`, wat precies is wat de blokken van
+elkaar onderscheidt. **Een API-limiet die je tot een scherpere modellering dwingt is geen
+obstakel.**
+
+**Twee eigen fouten die geld kostten:**
+- `answer` was overladen: één string bij `gap_choice`, een lijst bij `woordorde`. Het JSON-schema
+  staat twee types op één veldnaam niet toe, en het model liet het veld dan simpelweg **weg** —
+  één extra call per woordorde-les, twintig lessen lang. Een eigen veldnaam (`answer_order`) met
+  één conversie op één plek loste het op. **Een veld dat twee vormen heeft, heeft twee namen.**
+- De regel "gebruik minstens twee verschillende opgavesoorten" kon voor blok D **niet gehaald
+  worden**: examentraining mag per ontwerp alleen `mcq` bevatten, want dat is wat het examen bij
+  Lezen ook is. Drie retries op rij afgekeurd, daarna gaf de run op. Exact dezelfde vorm als de
+  run-together-lines-detector uit `scripts/b1-content`: **een check die op zijn eigen oplossing
+  afvuurt, waardoor geen enkele retry kan slagen.** De regel leest nu eerst wat de lessoort
+  toestaat.
+
+**Twee UI-fouten die alleen op een screenshot te zien waren:**
+- Het `<mark>`-fragment op de conceptenpagina was **felgeel**: mijn CSS-regel noemde vier
+  specifieke ouders en `.cc-example` zat er niet bij, dus de browserstandaard won — een kleur die
+  in geen enkel tokenbestand staat, op de pagina die de bibliotheek etaleert. **Een opsomming van
+  ouders is een lijst die je moet bijwerken;** één selector voor de hele laag niet.
+- In het Arabisch stond de slotpunt van elke Nederlandse zin **links** (".Ik blijf thuis omdat ik
+  ziek ben") en lagen de accentrails aan de verkeerde kant. De lesinhoud is altijd Nederlands en
+  krijgt nu `direction: ltr` terwijl de UI-tekst wél spiegelt — dezelfde les als
+  `.guide-figure-split`: pin de richting waar de taal van de inhoud vaststaat. En een
+  `box-shadow: inset` heeft geen logische variant, dus die spiegeling is expliciet.
+  **Turbopack serveerde beide fixes een ronde lang niet**; de chunk gecurld en gegrept vóór ik
+  concludeerde dat de CSS fout was, precies zoals de vorige les voorschrijft.
+
+**Eén definitie van de regels, over de .ts/.mjs-grens heen.** De generator, de seeder en
+`/admin` valideren alle drie tegen `lib/lessons/items.ts`. Er is geen `tsx` in dit project, dus
+`scripts/lesson-content/load-items.mjs` transpileert dat ene bestand met de `typescript` die al
+in `node_modules` staat en importeert het resultaat. Hij faalt luid als `items.ts` ooit iets
+anders dan `zod` importeert. Het alternatief — de regels in `.mjs` herschrijven zoals
+`rules.mjs` voor de examenvorm doet — zou twee kopieën van veertien payloadvormen betekenen, en
+die lopen gegarandeerd uiteen.
+
+**Lesson:** de scherpste ontwerpbeslissingen van deze milestone kwamen niet uit het plan maar uit
+weigeringen — van de API (schema per lessoort), van Postgres (`ON CONFLICT` kan geen deferrable
+constraint als arbiter, dus de seeder verwijdert en schrijft opnieuw) en van een screenshot
+(drie sporen, drie toestanden). **Bouw tot iets weigert, en behandel de weigering als informatie
+over het model en niet als een hindernis.**
+
+**Twee gaten, expliciet:**
+1. **Twee van de 53 lessen ontbreken** (`d1-advertentie`, `d5-regels`). De directe Anthropic-key
+   is zonder krediet en de gateway-key zit op zijn budgetplafond ($20,29 van $20,00). De cursus
+   is geseed met `--partial`, dat de ontbrekende lessen opsomt en met `--production` wordt
+   geweigerd — een halve cursus gaat niet live.
+2. **`question_concepts` is nog niet echt gevuld.** `tag-questions.mjs` is af en zijn dry-run
+   klopt (100 fragmenten, 250 vragen, 33 concepten), maar de run kost modelcalls. Zeven
+   koppelingen zijn met de hand gezet om de remediatielus te bewijzen: `/api/lesson-advice`
+   gaf de vier concepten terug, gesorteerd op hoe vaak ze in de fouten voorkwamen, elk met de
+   les die het uitlegt — en `modale-werkwoorden`, dat nog geen vrijgegeven les heeft, viel
+   correct terug op de conceptpagina.
+
+**Nog open, gevonden en niet aangeraakt:** `.panel-row.on::before` in `AppShell` gebruikt
+`left: 3px`, dus in het Arabisch staat de actieve-rij-rail van de portaalchrome aan de
+verkeerde kant — dezelfde fout die ik in de leerlaag net heb gerepareerd. Het zit in
+niet-gecommitteerd werk van 27-08 en is één regel.

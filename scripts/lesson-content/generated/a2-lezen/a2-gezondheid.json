@@ -1,0 +1,184 @@
+{
+  "what_you_learn": "Je leert de belangrijkste woorden over gezondheid, de dokter en de apotheek. Je herkent wat woorden als verwijsbrief, eigen risico en bijwerking betekenen. Daarna vul je deze woorden zelf in korte zinnen in.",
+  "items": [
+    {
+      "kind": "uitleg",
+      "tier": null,
+      "explanation": null,
+      "payload": {
+        "body_html": "<p>In Nederland ga je bij ziekte eerst naar de huisarts. Dat is de dokter in je buurt. De huisarts kan je doorverwijzen naar een specialist in het ziekenhuis. Voor medicijnen ga je met een recept naar de apotheek.</p>",
+        "cards": [
+          {
+            "label": "BIJ DE HUISARTS",
+            "example_html": "Ik maak een <mark>afspraak</mark> voor het <mark>spreekuur</mark> van morgen."
+          },
+          {
+            "label": "BIJ DE APOTHEEK",
+            "example_html": "Met dit <mark>recept</mark> haal ik mijn <mark>medicijn</mark> op."
+          }
+        ]
+      }
+    },
+    {
+      "kind": "woordenlijst",
+      "tier": null,
+      "explanation": null,
+      "payload": {
+        "theme": "gezondheid",
+        "instruction": "Lees de woorden en de betekenis. Zeg elk woord hardop."
+      }
+    },
+    {
+      "kind": "matchen",
+      "tier": 0,
+      "explanation": "Je zoekt bij elk woord de goede betekenis. De huisarts is de eerste dokter, de specialist werkt in het ziekenhuis.",
+      "payload": {
+        "instruction": "Zoek bij elk woord de goede betekenis.",
+        "pairs": [
+          {
+            "left": "de huisarts",
+            "right": "dokter in de buurt waar je eerst naartoe gaat"
+          },
+          {
+            "left": "de specialist",
+            "right": "arts in het ziekenhuis voor één soort ziekte"
+          },
+          {
+            "left": "de wachtkamer",
+            "right": "ruimte waar je zit tot je aan de beurt bent"
+          },
+          {
+            "left": "de apotheek",
+            "right": "winkel waar je pillen en zalf ophaalt"
+          }
+        ]
+      }
+    },
+    {
+      "kind": "mcq",
+      "tier": 0,
+      "explanation": "Een verwijsbrief is het papier van de huisarts. Zonder dat papier kun je meestal niet naar de specialist.",
+      "payload": {
+        "prompt": "Je hebt pijn in je knie. De huisarts stuurt je naar het ziekenhuis. Welk papier heb je nodig?"
+      },
+      "options": [
+        {
+          "label": "A",
+          "body": "de verwijsbrief",
+          "is_correct": true
+        },
+        {
+          "label": "B",
+          "body": "het recept",
+          "is_correct": false
+        },
+        {
+          "label": "C",
+          "body": "de zorgverzekering",
+          "is_correct": false
+        }
+      ]
+    },
+    {
+      "kind": "matchen",
+      "tier": 0,
+      "explanation": "Deze woorden gaan over geld en over ziek zijn. Het eigen risico betaal je altijd eerst zelf.",
+      "payload": {
+        "instruction": "Zoek bij elk woord de goede betekenis.",
+        "pairs": [
+          {
+            "left": "de zorgverzekering",
+            "right": "regeling waarvoor je elke maand betaalt"
+          },
+          {
+            "left": "het eigen risico",
+            "right": "bedrag dat je eerst zelf betaalt"
+          },
+          {
+            "left": "de koorts",
+            "right": "te hoge temperatuur van je lichaam"
+          },
+          {
+            "left": "de bijwerking",
+            "right": "vervelend gevolg van een pil"
+          }
+        ]
+      }
+    },
+    {
+      "kind": "gap_choice",
+      "tier": 1,
+      "explanation": "De dokter meet met een band om je arm de bloeddruk. Dat is geen onderzoek van je bloed, maar een waarde.",
+      "payload": {
+        "sentence": "De dokter doet een band om mijn arm en meet mijn ___.",
+        "choices": [
+          "bloeddruk",
+          "koorts",
+          "vaccinatie",
+          "klacht"
+        ],
+        "answer": "bloeddruk"
+      }
+    },
+    {
+      "kind": "gap_choice",
+      "tier": 1,
+      "explanation": "'s Avonds en in het weekend is de gewone huisarts dicht. Voor dringende hulp bel je dan de huisartsenpost.",
+      "payload": {
+        "sentence": "Het is zondagavond en mijn zoon heeft hoge koorts. Ik bel de ___.",
+        "choices": [
+          "huisartsenpost",
+          "apotheek",
+          "wachtkamer",
+          "zorgverzekering"
+        ],
+        "answer": "huisartsenpost"
+      }
+    },
+    {
+      "kind": "gap_choice",
+      "tier": 1,
+      "explanation": "Een pil in je mond doen en doorslikken heet innemen. Je neemt een medicijn in.",
+      "payload": {
+        "sentence": "Je moet deze pillen drie keer per dag ___ met een glas water.",
+        "choices": [
+          "innemen",
+          "genezen",
+          "doorverwijzen",
+          "onderzoeken"
+        ],
+        "answer": "innemen"
+      }
+    },
+    {
+      "kind": "gap_type",
+      "tier": 2,
+      "explanation": "De tijd waarop de dokter patiënten ontvangt, heet het spreekuur. Je maakt daarvoor een afspraak.",
+      "payload": {
+        "sentence": "Het ___ van de huisarts is elke dag van 8.00 tot 11.00 uur.",
+        "answer": "spreekuur",
+        "prompt": "Vul het juiste woord in. Het begint met 's'."
+      }
+    },
+    {
+      "kind": "gap_type",
+      "tier": 2,
+      "explanation": "Iets in je lichaam dat pijn doet of niet goed voelt, noem je een klacht. De dokter vraagt altijd naar je klachten.",
+      "payload": {
+        "sentence": "De dokter vraagt: welke ___ heeft u precies?",
+        "answer": "klacht",
+        "prompt": "Vul het juiste woord in het enkelvoud in."
+      }
+    },
+    {
+      "kind": "gap_type",
+      "tier": 2,
+      "explanation": "Ben je verzekerd, dan betaal je premie en worden de kosten vergoed. Verzekerd hoort bij de zorgverzekering.",
+      "payload": {
+        "sentence": "Ik betaal elke maand premie, dus ik ben goed ___.",
+        "answer": "verzekerd",
+        "prompt": "Vul het juiste woord in. Het hoort bij 'de zorgverzekering'."
+      }
+    }
+  ]
+}

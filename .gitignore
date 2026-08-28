@@ -43,3 +43,10 @@ supabase/.temp
 # scripts/b1-content/generated/, which only holds complete exams.
 scripts/b1-content/.unit-cache/
 scripts/.translation-cache/
+
+# Per-les authoring cache van de leerlaag. Het gecommitte artefact is
+# scripts/lesson-content/generated/, dat alleen complete lessen bevat.
+scripts/lesson-content/.unit-cache/
+# Getranspileerde kopie van lib/lessons/items.ts, zodat de scripts tegen dezelfde regels
+# valideren als /admin. Afgeleid, dus nooit gecommit — zie load-items.mjs.
+scripts/lesson-content/.generated/

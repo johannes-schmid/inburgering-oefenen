@@ -19,6 +19,7 @@ import {
 import type { ExamContent, OpenTaskItem, OptionItem, QuestionItem, StimulusItem } from '@/lib/exam-content';
 import StimulusPane from './StimulusPane';
 import McqQuestion from './McqQuestion';
+import ConceptAdvice from '@/components/lessons/ConceptAdvice';
 import WritingTask, { type WritingAnswer } from './WritingTask';
 import SpeakingTask, { type SpeakingAnswer } from './SpeakingTask';
 import RubricFeedback, {
@@ -225,6 +226,20 @@ export default function ExamShell({ content, canSeeExplanations }: Props) {
     }
     return acc;
   }, [steps, chosen, sectionNames]);
+
+  /**
+   * De vragen die fout zijn gegaan, als input voor het conceptadvies.
+   *
+   * Alleen beantwoorde vragen: een overgeslagen vraag is geen bewijs dat een concept ontbreekt,
+   * en hem meerekenen zou het advies laten sturen op wat de kandidaat niet heeft gezien.
+   */
+  const wrongQuestionIds = useMemo(
+    () => steps
+      .filter(s => s.kind === 'mcq')
+      .map(s => s.question.id)
+      .filter(id => chosen[id] && !chosen[id].is_correct),
+    [steps, chosen],
+  );
 
   /* ── Lifecycle ── */
 
@@ -889,6 +904,23 @@ export default function ExamShell({ content, canSeeExplanations }: Props) {
             })}
           </div>
         </div>
+      )}
+
+      {/* Van fout antwoord naar de les die het uitlegt.
+          Naast de tekstsoort-uitsplitsing hierboven en niet in plaats daarvan: die zegt waar
+          het misging, dit zegt wat je eraan doet. Rendert niets als de items van dit examen nog
+          niet aan concepten hangen — zie `ConceptAdvice`. */}
+      {exam.level && (
+        <ConceptAdvice
+          level={exam.level}
+          onderdeel={exam.skill}
+          wrongQuestionIds={wrongQuestionIds}
+          labels={{
+            head: 'Dit verklaart je fouten',
+            misses: '{n}x fout in dit examen',
+            lesson: 'les beschikbaar',
+          }}
+        />
       )}
 
       <div

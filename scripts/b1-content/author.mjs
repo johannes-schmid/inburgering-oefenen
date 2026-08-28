@@ -132,7 +132,16 @@ export function looksEscaped(value) {
 
 /* ── the client ──────────────────────────────────────────────────────────── */
 
-export function createAuthor({ apiKey, gatewayKey, effort = 'high', verbose = true }) {
+export function createAuthor({ apiKey, gatewayKey, effort = 'high', verbose = true,
+  /**
+   * Waar de units gecachet worden. Standaard B1's eigen map, zodat elke bestaande
+   * aanroeper ongewijzigd blijft werken; `scripts/lesson-content/` geeft zijn eigen map
+   * mee. Twee datasets in één cache zou betekenen dat een sleutelbotsing een les met een
+   * examentekst vult — en die zou valideren, want beide zijn geldige JSON met de goede
+   * velden.
+   */
+  cacheDir = CACHE_DIR,
+}) {
   const viaGateway = Boolean(gatewayKey);
   const client = viaGateway
     ? new Anthropic({ apiKey: gatewayKey, baseURL: GATEWAY_URL })
@@ -145,21 +154,47 @@ export function createAuthor({ apiKey, gatewayKey, effort = 'high', verbose = tr
   let inTokens = 0;
   let outTokens = 0;
 
-  fs.mkdirSync(CACHE_DIR, { recursive: true });
+  fs.mkdirSync(cacheDir, { recursive: true });
 
   /**
    * One structured call. Streamed, because a six-hundred-word tekst with 35 vragen behind it
    * runs long enough to hit the SDK's non-streaming HTTP timeout.
    */
   async function ask({ system, prompt, schema, maxTokens = 16000 }) {
-    const stream = client.messages.stream({
+    // Twee manieren om een schema af te dwingen, en welke het is hangt af van de route.
+    //
+    // De directe Anthropic-API neemt `output_config.format` — het nieuwste en strakste
+    // mechanisme. **De Vercel AI Gateway weigert dat sinds 2026-08-27** met
+    // `output_config: Extra inputs are not permitted`; hij spreekt een oudere variant van
+    // /v1/messages. Daar wordt daarom één tool met een `input_schema` gebruikt en
+    // `tool_choice` op die tool gezet — het klassieke structured-output-mechanisme, dat de
+    // gateway wél aanneemt. Zelfde model, zelfde schema, ander omhulsel.
+    //
+    // Dit is geen theoretische voorziening: op 2026-08-27 was de directe route *tegelijk*
+    // zonder krediet en de gateway zonder `output_config`, en zonder deze tak was er geen weg
+    // naar buiten. Verwijder de gateway-tak dus niet omdat de directe route werkt.
+    const viaTool = viaGateway;
+
+    const request = {
       model,
       max_tokens: maxTokens,
       thinking: { type: 'adaptive' },
-      output_config: { effort, format: { type: 'json_schema', schema } },
       system,
       messages: [{ role: 'user', content: prompt }],
-    });
+    };
+
+    if (viaTool) {
+      request.tools = [{
+        name: 'geef_resultaat',
+        description: 'Geef het gevraagde resultaat volgens het schema.',
+        input_schema: schema,
+      }];
+      request.tool_choice = { type: 'tool', name: 'geef_resultaat' };
+    } else {
+      request.output_config = { effort, format: { type: 'json_schema', schema } };
+    }
+
+    const stream = client.messages.stream(request);
     const message = await stream.finalMessage();
     calls++;
     inTokens += message.usage?.input_tokens ?? 0;
@@ -168,6 +203,16 @@ export function createAuthor({ apiKey, gatewayKey, effort = 'high', verbose = tr
     if (message.stop_reason === 'refusal') {
       throw new Error(`model declined: ${message.stop_details?.explanation ?? 'no explanation'}`);
     }
+
+    if (viaTool) {
+      const call = message.content.find(b => b.type === 'tool_use');
+      if (!call) {
+        const said = message.content.filter(b => b.type === 'text').map(b => b.text).join('');
+        throw new Error(`no tool_use in response: ${said.slice(0, 200)}`);
+      }
+      return unescapeLiterals(call.input);
+    }
+
     const text = message.content.filter(b => b.type === 'text').map(b => b.text).join('');
     if (!text.trim()) throw new Error('empty response');
     let parsed;
@@ -187,7 +232,7 @@ export function createAuthor({ apiKey, gatewayKey, effort = 'high', verbose = tr
    * the same mistake at the same cost.
    */
   async function askValidated({ key, system, prompt, schema, validate, maxTokens }) {
-    const cachePath = path.join(CACHE_DIR, `${key}.json`);
+    const cachePath = path.join(cacheDir, `${key}.json`);
     if (fs.existsSync(cachePath)) {
       const cached = JSON.parse(fs.readFileSync(cachePath, 'utf8'));
       if (validate(cached).length === 0) return cached;

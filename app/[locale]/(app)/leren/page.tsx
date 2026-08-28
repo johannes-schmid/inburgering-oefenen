@@ -8,6 +8,7 @@ import { FEATURES } from '@/lib/features';
 import { THEMAS } from '@/data/leren';
 import CategoryMark from '@/components/horizon/CategoryMark';
 import AppShell from '../components/AppShell';
+import { fetchPortalMenu } from '@/lib/portal-menu';
 
 /**
  * The index of KNM's seven lesson modules.
@@ -39,12 +40,16 @@ export default async function LerenIndexPage({ params }: Props) {
   const meta = user.user_metadata ?? {};
   const owns = ownsKnm(meta);
 
+  const menu = await fetchPortalMenu();
+
   return (
     <AppShell
       locale={locale}
       email={user.email ?? ''}
       avatarUrl={String(meta.avatar_url ?? meta.picture ?? '')}
       active="leren"
+      activeGroup="knm"
+      menu={menu}
     >
       <div className="px-5 py-7 sm:px-8 sm:py-10">
         <div className="max-w-3xl mx-auto">

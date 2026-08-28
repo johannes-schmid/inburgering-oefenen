@@ -1,0 +1,195 @@
+{
+  "items": [
+    {
+      "kind": "uitleg",
+      "tier": null,
+      "explanation": null,
+      "payload": {
+        "body_html": "<p>Als je vertelt wat klaar is, gebruik je <strong>hebben</strong> of <strong>zijn</strong> plus een deelwoord (het woord met <strong>ge-</strong>). Veel deelwoorden eindigen op <strong>-d</strong> of <strong>-t</strong>, zoals <em>gewerkt</em>. Maar er is ook een groep die eindigt op <strong>-en</strong>, zoals <em>gelezen</em>. Die groep moet je uit je hoofd leren.</p>",
+        "cards": [
+          {
+            "label": "OP -D OF -T",
+            "example_html": "Ik heb de brief <mark>gemaakt</mark>."
+          },
+          {
+            "label": "OP -EN",
+            "example_html": "Ik heb de brief <mark>gelezen</mark>."
+          }
+        ]
+      }
+    },
+    {
+      "kind": "voorbeeld",
+      "tier": null,
+      "explanation": null,
+      "payload": {
+        "sentence_html": "Ik heb de post van de gemeente <mark>gelezen</mark>."
+      }
+    },
+    {
+      "kind": "voorbeeld",
+      "tier": null,
+      "explanation": null,
+      "payload": {
+        "sentence_html": "Fatima heeft het formulier <mark>geschreven</mark> en opgestuurd."
+      }
+    },
+    {
+      "kind": "mcq",
+      "tier": 0,
+      "explanation": "Het deelwoord van lezen is gelezen. Het eindigt op -en, niet op -d of -t.",
+      "payload": {
+        "prompt": "Welke zin is goed? Kijk naar het woord met ge-."
+      },
+      "options": [
+        {
+          "label": "A",
+          "body": "Ik heb de krant geleesd.",
+          "is_correct": false
+        },
+        {
+          "label": "B",
+          "body": "Ik heb de krant gelezen.",
+          "is_correct": true
+        },
+        {
+          "label": "C",
+          "body": "Ik heb de krant geleest.",
+          "is_correct": false
+        }
+      ]
+    },
+    {
+      "kind": "mcq",
+      "tier": 0,
+      "explanation": "Gedronken eindigt op -en, dus het hoort bij de groep die je moet leren. Gewerkt, gepraat en gehuurd eindigen op -t of -d.",
+      "payload": {
+        "prompt": "Welk deelwoord (woord met ge-) eindigt op -en?"
+      },
+      "options": [
+        {
+          "label": "A",
+          "body": "gewerkt",
+          "is_correct": false
+        },
+        {
+          "label": "B",
+          "body": "gepraat",
+          "is_correct": false
+        },
+        {
+          "label": "C",
+          "body": "gedronken",
+          "is_correct": true
+        },
+        {
+          "label": "D",
+          "body": "gehuurd",
+          "is_correct": false
+        }
+      ]
+    },
+    {
+      "kind": "gap_choice",
+      "tier": 1,
+      "explanation": "Bij schrijven hoort het deelwoord geschreven, met -en aan het eind.",
+      "payload": {
+        "sentence": "Ik heb een brief naar de huisbaas ___.",
+        "choices": [
+          "geschreven",
+          "geschrijfd",
+          "schreef"
+        ],
+        "answer": "geschreven"
+      }
+    },
+    {
+      "kind": "gap_choice",
+      "tier": 1,
+      "explanation": "Bij nemen hoort het deelwoord genomen. Het eindigt op -en en de klank verandert.",
+      "payload": {
+        "sentence": "Wij hebben de bus naar het ziekenhuis ___.",
+        "choices": [
+          "geneemd",
+          "genomen",
+          "genemen"
+        ],
+        "answer": "genomen"
+      }
+    },
+    {
+      "kind": "gap_choice",
+      "tier": 1,
+      "explanation": "Bij vinden hoort het deelwoord gevonden, met -en aan het eind.",
+      "payload": {
+        "sentence": "Karim heeft snel nieuw werk ___.",
+        "choices": [
+          "gevind",
+          "gevonden",
+          "gevindt"
+        ],
+        "answer": "gevonden"
+      }
+    },
+    {
+      "kind": "matchen",
+      "tier": 1,
+      "explanation": "Al deze deelwoorden eindigen op -en. De klank in het midden verandert soms, daarom leer je ze uit je hoofd.",
+      "payload": {
+        "instruction": "Zet het werkwoord bij het juiste deelwoord (het woord met ge-).",
+        "pairs": [
+          {
+            "left": "lezen",
+            "right": "gelezen"
+          },
+          {
+            "left": "drinken",
+            "right": "gedronken"
+          },
+          {
+            "left": "spreken",
+            "right": "gesproken"
+          },
+          {
+            "left": "eten",
+            "right": "gegeten"
+          }
+        ]
+      }
+    },
+    {
+      "kind": "gap_type",
+      "tier": 2,
+      "explanation": "Bij lezen hoort gelezen. Je schrijft ge- ervoor en -en aan het eind.",
+      "payload": {
+        "sentence": "Ik heb de rekening van het gas nog niet ___.",
+        "answer": "gelezen"
+      }
+    },
+    {
+      "kind": "woordorde",
+      "tier": 2,
+      "explanation": "Na hebben komt het deelwoord gesproken helemaal achteraan in de zin.",
+      "payload": {
+        "instruction": "Maak een goede zin.",
+        "tokens": [
+          "heb",
+          "dokter",
+          "ik",
+          "de",
+          "met",
+          "gesproken"
+        ],
+        "answer": [
+          "ik",
+          "heb",
+          "met",
+          "de",
+          "dokter",
+          "gesproken"
+        ]
+      }
+    }
+  ],
+  "what_you_learn": "Je leert dat sommige deelwoorden (woorden met ge-) niet op -d of -t eindigen, maar op -en. Je herkent vormen zoals gelezen, geschreven en genomen in een tekst. Je kunt zelf een zin maken met hebben plus zo'n deelwoord."
+}

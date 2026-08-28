@@ -1,0 +1,153 @@
+{
+  "items": [
+    {
+      "kind": "uitleg",
+      "tier": null,
+      "explanation": null,
+      "payload": {
+        "body_html": "<p>Je leest nu een formulier en beantwoordt de vragen erover, net als in het examen.</p>",
+        "cards": []
+      }
+    },
+    {
+      "kind": "leestekst",
+      "tier": null,
+      "explanation": null,
+      "payload": {
+        "title": "Aanvraagformulier bijdrage sportkosten kinderen",
+        "body_html": "<p><strong>Gemeente Meerveld — Aanvraagformulier bijdrage sportkosten kinderen</strong></p><p>Met dit formulier vraagt u geld aan voor de sportclub van uw kind. De bijdrage is maximaal 250 euro per kind per jaar.</p><p><strong>1. Uw gegevens</strong><br>Naam: .....<br>Adres: .....<br>Telefoonnummer: .....</p><p><strong>2. Uw kind</strong><br>Naam kind: .....<br>Geboortedatum: .....<br>Naam van de sportclub: .....</p><p><strong>3. Bijlagen</strong><br>Stuur altijd een kopie van uw loonstrook van vorige maand mee. Zonder loonstrook kunnen wij uw aanvraag niet behandelen.</p><p><strong>4. Versturen</strong><br>Stuur het formulier voor 1 maart naar Postbus 88, 3800 AB Meerveld. U krijgt binnen vier weken een brief met het antwoord.</p>",
+        "words": [],
+        "marks": []
+      }
+    },
+    {
+      "kind": "mcq",
+      "tier": 0,
+      "explanation": "Bij vraag 2 staat 'Naam van de sportclub'. Die naam moet je dus zelf invullen.",
+      "options": [
+        {
+          "label": "A",
+          "body": "De naam van de sportclub van je kind",
+          "is_correct": true
+        },
+        {
+          "label": "B",
+          "body": "De naam van de school van je kind",
+          "is_correct": false
+        },
+        {
+          "label": "C",
+          "body": "De naam van de trainer van je kind",
+          "is_correct": false
+        }
+      ],
+      "payload": {
+        "prompt": "Wat vul je in bij deel 2 van het formulier?"
+      }
+    },
+    {
+      "kind": "mcq",
+      "tier": 0,
+      "explanation": "In de tekst staat dat de bijdrage maximaal 250 euro per kind per jaar is.",
+      "options": [
+        {
+          "label": "A",
+          "body": "150 euro per kind per jaar",
+          "is_correct": false
+        },
+        {
+          "label": "B",
+          "body": "250 euro per kind per jaar",
+          "is_correct": true
+        },
+        {
+          "label": "C",
+          "body": "250 euro per kind per maand",
+          "is_correct": false
+        }
+      ],
+      "payload": {
+        "prompt": "Hoeveel geld kun je maximaal krijgen?"
+      }
+    },
+    {
+      "kind": "gap_choice",
+      "tier": 1,
+      "explanation": "Bij deel 3 staat dat je altijd een kopie van je loonstrook van vorige maand meestuurt.",
+      "payload": {
+        "sentence": "Bij het formulier stuur je een kopie van je ___ mee.",
+        "choices": [
+          "paspoort",
+          "loonstrook",
+          "huurcontract"
+        ],
+        "answer": "loonstrook"
+      }
+    },
+    {
+      "kind": "mcq",
+      "tier": 1,
+      "explanation": "Het formulier moet voor 1 maart naar Postbus 88 in Meerveld. Dat is de laatste stap.",
+      "options": [
+        {
+          "label": "A",
+          "body": "Het formulier voor 1 maart naar de postbus sturen",
+          "is_correct": true
+        },
+        {
+          "label": "B",
+          "body": "Het formulier voor 1 maart bij de sportclub brengen",
+          "is_correct": false
+        },
+        {
+          "label": "C",
+          "body": "Vier weken wachten en dan het formulier sturen",
+          "is_correct": false
+        }
+      ],
+      "payload": {
+        "prompt": "Wat moet je doen als het formulier is ingevuld?"
+      }
+    },
+    {
+      "kind": "gap_choice",
+      "tier": 1,
+      "explanation": "In de tekst staat dat je binnen vier weken een brief met het antwoord krijgt.",
+      "payload": {
+        "sentence": "Na je aanvraag krijg je binnen ___ weken een brief.",
+        "choices": [
+          "twee",
+          "vier",
+          "acht"
+        ],
+        "answer": "vier"
+      }
+    },
+    {
+      "kind": "mcq",
+      "tier": 1,
+      "explanation": "Het hele formulier gaat over geld aanvragen voor de sportclub van je kind. Dat is de hoofdgedachte.",
+      "options": [
+        {
+          "label": "A",
+          "body": "Je meldt je kind aan bij een nieuwe sportclub.",
+          "is_correct": false
+        },
+        {
+          "label": "B",
+          "body": "Je vraagt de gemeente om geld voor de sport van je kind.",
+          "is_correct": true
+        },
+        {
+          "label": "C",
+          "body": "Je klaagt bij de gemeente over de kosten van sport.",
+          "is_correct": false
+        }
+      ],
+      "payload": {
+        "prompt": "Waar gaat dit formulier vooral over?"
+      }
+    }
+  ],
+  "what_you_learn": "Je oefent met het lezen van een formulier van de gemeente, zonder woordhulp. Je zoekt snel een detail op, je begrijpt waar het formulier over gaat en je weet wat je zelf moet doen. Zo werk je net zoals in het examen."
+}

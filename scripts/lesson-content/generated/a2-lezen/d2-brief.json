@@ -1,0 +1,205 @@
+{
+  "items": [
+    {
+      "kind": "uitleg",
+      "tier": null,
+      "explanation": null,
+      "payload": {
+        "body_html": "<p>Je leest hierna een brief en beantwoordt de vragen erover, net als in het examen.</p>",
+        "cards": []
+      }
+    },
+    {
+      "kind": "leestekst",
+      "tier": null,
+      "explanation": null,
+      "payload": {
+        "title": "Brief over het onderhoud van de badkamer",
+        "body_html": "<p>Woonstichting De Vaart<br>Kanaalweg 12, 3512 AB Utrecht</p><p>Mevrouw F. Ilias<br>Bloemstraat 44a<br>3514 CD Utrecht</p><p>Utrecht, 14 maart 2025</p><p>Betreft: onderhoud badkamer</p><p>Geachte mevrouw Ilias,</p><p>U heeft ons gebeld over de kranen in uw badkamer. Het water loopt te langzaam. Wij komen dit repareren.</p><p>Onze loodgieter komt op <mark>dinsdag 25 maart tussen 9.00 en 12.00 uur</mark>. Zorg dat er iemand thuis is. Als niemand thuis is, moet u zelf 45 euro betalen voor een nieuwe afspraak.</p><p>Past deze dag u niet? <mark>Bel dan uiterlijk 20 maart naar 030 555 21 40.</mark> Wij plannen dan een andere dag.</p><p>Met vriendelijke groet,</p><p>J. Hoekstra<br>Afdeling Onderhoud</p>",
+        "words": [],
+        "marks": [
+          "dinsdag 25 maart tussen 9.00 en 12.00 uur",
+          "Bel dan uiterlijk 20 maart naar 030 555 21 40."
+        ]
+      }
+    },
+    {
+      "kind": "mcq",
+      "tier": 0,
+      "explanation": "In de brief staat dat de loodgieter komt op dinsdag 25 maart tussen 9.00 en 12.00 uur. Dat is in de ochtend.",
+      "payload": {
+        "prompt": "Wanneer komt de loodgieter?"
+      },
+      "options": [
+        {
+          "label": "A",
+          "body": "Op 20 maart in de middag.",
+          "is_correct": false
+        },
+        {
+          "label": "B",
+          "body": "Op 25 maart in de ochtend.",
+          "is_correct": true
+        },
+        {
+          "label": "C",
+          "body": "Op 14 maart in de avond.",
+          "is_correct": false
+        }
+      ]
+    },
+    {
+      "kind": "mcq",
+      "tier": 0,
+      "explanation": "De hele brief gaat over de reparatie van de kranen in de badkamer en de afspraak daarvoor.",
+      "payload": {
+        "prompt": "Waarover gaat deze brief vooral?"
+      },
+      "options": [
+        {
+          "label": "A",
+          "body": "Over een afspraak om de kranen te repareren.",
+          "is_correct": true
+        },
+        {
+          "label": "B",
+          "body": "Over een nieuwe huurprijs voor de woning.",
+          "is_correct": false
+        },
+        {
+          "label": "C",
+          "body": "Over een klacht over de buren.",
+          "is_correct": false
+        }
+      ]
+    },
+    {
+      "kind": "mcq",
+      "tier": 1,
+      "explanation": "De brief zegt: zorg dat er iemand thuis is. Dat is wat mevrouw Ilias moet doen op 25 maart.",
+      "payload": {
+        "prompt": "Wat moet mevrouw Ilias doen op 25 maart?"
+      },
+      "options": [
+        {
+          "label": "A",
+          "body": "Zelf de kranen repareren.",
+          "is_correct": false
+        },
+        {
+          "label": "B",
+          "body": "Thuis zijn of iemand anders thuis laten.",
+          "is_correct": true
+        },
+        {
+          "label": "C",
+          "body": "Naar het kantoor van de woonstichting gaan.",
+          "is_correct": false
+        }
+      ]
+    },
+    {
+      "kind": "mcq",
+      "tier": 1,
+      "explanation": "Als de dag niet past, moet je uiterlijk 20 maart bellen naar het nummer in de brief.",
+      "payload": {
+        "prompt": "De dinsdag past mevrouw Ilias niet. Wat moet zij doen?"
+      },
+      "options": [
+        {
+          "label": "A",
+          "body": "Voor 20 maart bellen naar 030 555 21 40.",
+          "is_correct": true
+        },
+        {
+          "label": "B",
+          "body": "Een brief sturen naar de loodgieter.",
+          "is_correct": false
+        },
+        {
+          "label": "C",
+          "body": "Wachten tot de loodgieter zelf belt.",
+          "is_correct": false
+        }
+      ]
+    },
+    {
+      "kind": "mcq",
+      "tier": 1,
+      "explanation": "In de brief staat dat je 45 euro betaalt voor een nieuwe afspraak als er niemand thuis is.",
+      "payload": {
+        "prompt": "Wanneer moet mevrouw Ilias 45 euro betalen?"
+      },
+      "options": [
+        {
+          "label": "A",
+          "body": "Als de reparatie langer dan drie uur duurt.",
+          "is_correct": false
+        },
+        {
+          "label": "B",
+          "body": "Als er niemand thuis is bij de afspraak.",
+          "is_correct": true
+        },
+        {
+          "label": "C",
+          "body": "Als zij de kranen zelf al heeft laten maken.",
+          "is_correct": false
+        }
+      ]
+    },
+    {
+      "kind": "mcq",
+      "tier": 0,
+      "explanation": "Bovenaan staat de afzender: Woonstichting De Vaart stuurt de brief, mevrouw Ilias krijgt hem.",
+      "payload": {
+        "prompt": "Wie heeft deze brief gestuurd?"
+      },
+      "options": [
+        {
+          "label": "A",
+          "body": "Mevrouw F. Ilias.",
+          "is_correct": false
+        },
+        {
+          "label": "B",
+          "body": "De gemeente Utrecht.",
+          "is_correct": false
+        },
+        {
+          "label": "C",
+          "body": "Woonstichting De Vaart.",
+          "is_correct": true
+        }
+      ]
+    },
+    {
+      "kind": "gap_choice",
+      "tier": 1,
+      "explanation": "De brief zegt duidelijk: bel uiterlijk 20 maart. Dat is de laatste dag om te bellen.",
+      "payload": {
+        "sentence": "Mevrouw Ilias moet uiterlijk ___ bellen als de dinsdag haar niet past.",
+        "choices": [
+          "14 maart",
+          "20 maart",
+          "25 maart"
+        ],
+        "answer": "20 maart"
+      }
+    },
+    {
+      "kind": "open_zin",
+      "tier": 2,
+      "explanation": "Je schrijft in je eigen woorden wat de brief van je vraagt: thuis zijn of anders tijdig bellen.",
+      "payload": {
+        "prompt": "Schrijf in één of twee zinnen wat mevrouw Ilias volgens deze brief moet doen.",
+        "model_answer": "Mevrouw Ilias moet op dinsdag 25 maart tussen 9.00 en 12.00 uur thuis zijn. Als dat niet kan, moet zij voor 20 maart bellen naar 030 555 21 40.",
+        "checklist": [
+          "Je noemt de dag en de tijd van de afspraak.",
+          "Je noemt dat zij anders moet bellen voor 20 maart."
+        ]
+      }
+    }
+  ],
+  "what_you_learn": "Je oefent met het lezen van een brief van een woningcorporatie, zoals in het examen. Je zoekt snel een detail op, zoals een datum, een tijd of een bedrag. Je begrijpt ook waar de brief over gaat en wat je zelf moet doen."
+}

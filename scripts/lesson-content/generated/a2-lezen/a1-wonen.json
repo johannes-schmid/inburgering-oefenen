@@ -1,0 +1,173 @@
+{
+  "what_you_learn": "Je leert de belangrijkste woorden over wonen en de buurt herkennen, zoals huurcontract, huurtoeslag, woningcorporatie en buurthuis. Je kunt deze woorden koppelen aan hun betekenis en ze in een zin invullen. Daarna kun je het juiste woord zelf typen in een brief of tekst over je woning.",
+  "items": [
+    {
+      "kind": "uitleg",
+      "tier": null,
+      "explanation": null,
+      "payload": {
+        "body_html": "<p>In brieven over je woning kom je steeds dezelfde woorden tegen. Sommige woorden gaan over het huis zelf, andere over de buurt waarin je woont.</p><p>Als je deze woorden kent, begrijp je een brief van de gemeente of de woningcorporatie veel sneller.</p>",
+        "cards": [
+          {
+            "label": "OVER JE WONING",
+            "example_html": "Ik betaal elke maand huur aan de <mark>verhuurder</mark>."
+          },
+          {
+            "label": "OVER JE BUURT",
+            "example_html": "In het <mark>buurthuis</mark> is een cursus Nederlands."
+          }
+        ]
+      }
+    },
+    {
+      "kind": "woordenlijst",
+      "tier": null,
+      "explanation": null,
+      "payload": {
+        "theme": "wonen"
+      }
+    },
+    {
+      "kind": "matchen",
+      "tier": 0,
+      "explanation": "Je koppelt elk woord aan de juiste omschrijving. De huurder betaalt, de verhuurder is de eigenaar.",
+      "payload": {
+        "instruction": "Zoek bij elk woord de juiste betekenis.",
+        "pairs": [
+          {
+            "left": "de huurder",
+            "right": "de persoon die elke maand geld betaalt voor een woning"
+          },
+          {
+            "left": "de verhuurder",
+            "right": "de eigenaar die zijn woning tegen betaling aan iemand geeft"
+          },
+          {
+            "left": "het huurcontract",
+            "right": "het papier met de afspraken over de woning"
+          },
+          {
+            "left": "de borg",
+            "right": "geld dat je vooraf betaalt en later terugkrijgt"
+          },
+          {
+            "left": "de verdieping",
+            "right": "een laag of etage in een gebouw"
+          }
+        ]
+      }
+    },
+    {
+      "kind": "mcq",
+      "tier": 0,
+      "explanation": "Huurtoeslag is geld van de overheid als je woning te duur is voor jouw inkomen.",
+      "payload": {
+        "prompt": "Welk woord betekent: geld van de overheid als je woning te duur is?hetaveave?worden?Kies het juiste woord."
+      },
+      "options": [
+        {
+          "label": "A",
+          "body": "de huurtoeslag",
+          "is_correct": true
+        },
+        {
+          "label": "B",
+          "body": "de borg",
+          "is_correct": false
+        },
+        {
+          "label": "C",
+          "body": "de reparatie",
+          "is_correct": false
+        }
+      ]
+    },
+    {
+      "kind": "gap_choice",
+      "tier": 1,
+      "explanation": "Een woningcorporatie is een organisatie met veel woningen voor mensen met een laag inkomen.",
+      "payload": {
+        "sentence": "Mijn woning is niet van een particulier, maar van een ___ .",
+        "choices": [
+          "woningcorporatie",
+          "meterkast",
+          "speeltuin",
+          "storing"
+        ],
+        "answer": "woningcorporatie"
+      }
+    },
+    {
+      "kind": "gap_choice",
+      "tier": 1,
+      "explanation": "Als iets niet goed is, stuur je een klacht. Een klacht is een bericht waarin je zegt dat iets niet goed is.",
+      "payload": {
+        "sentence": "De buren maken elke nacht veel lawaai. Ik stuur een ___ naar de verhuurder.",
+        "choices": [
+          "klacht",
+          "borg",
+          "container",
+          "bewoner"
+        ],
+        "answer": "klacht"
+      }
+    },
+    {
+      "kind": "matchen",
+      "tier": 1,
+      "explanation": "Deze woorden gaan over de buurt en over problemen in huis. Let goed op wat er kapot is en wat buiten staat.",
+      "payload": {
+        "instruction": "Zoek bij elkaar wat past.",
+        "pairs": [
+          {
+            "left": "de container",
+            "right": "de grote bak op straat voor papier of glas"
+          },
+          {
+            "left": "de speeltuin",
+            "right": "de plek buiten waar kinderen kunnen schommelen"
+          },
+          {
+            "left": "de schimmel",
+            "right": "de groene of zwarte vlekken op een vochtige muur"
+          },
+          {
+            "left": "de storing",
+            "right": "het probleem waardoor iets tijdelijk niet werkt"
+          },
+          {
+            "left": "de meterkast",
+            "right": "de kleine kast met de aansluitingen voor stroom en gas"
+          }
+        ]
+      }
+    },
+    {
+      "kind": "gap_type",
+      "tier": 2,
+      "explanation": "Met je spullen naar een andere woning gaan heet verhuizen. Na 'gaan wij' schrijf je het hele werkwoord.",
+      "payload": {
+        "sentence": "Volgende maand gaan wij naar een groter huis ___ .",
+        "answer": "verhuizen"
+      }
+    },
+    {
+      "kind": "gap_type",
+      "tier": 2,
+      "explanation": "Een schriftelijk bericht dat je stopt met een afspraak is opzeggen. Je zegt het huurcontract op.",
+      "payload": {
+        "sentence": "Ik ga weg uit deze woning. Daarom moet ik mijn huurcontract schriftelijk ___ .",
+        "answer": "opzeggen"
+      }
+    },
+    {
+      "kind": "gap_type",
+      "tier": 2,
+      "explanation": "Bij de gemeente laat je je naam en gegevens officieel opnemen: dat is inschrijven.",
+      "payload": {
+        "sentence": "Na de verhuizing moet je je binnen vijf dagen bij de gemeente ___ op je nieuwe adres.",
+        "answer": "inschrijven"
+      }
+    }
+  ]
+}

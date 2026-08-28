@@ -1,0 +1,188 @@
+{
+  "what_you_learn": "Je leert twintig woorden die je vaak tegenkomt bij winkelen en bestellen, zoals aanbieding, kassabon en bezorgkosten. Je herkent wat ze betekenen in korte zinnen en in teksten van een winkel. Daarna kies en typ je zelf het juiste woord in een zin.",
+  "items": [
+    {
+      "kind": "uitleg",
+      "tier": null,
+      "explanation": null,
+      "payload": {
+        "body_html": "<p>Bij winkelen en bestellen kom je steeds dezelfde woorden tegen. Je ziet ze op een bon, in een e-mail van een webwinkel of op een bordje in de winkel. Als je die woorden kent, begrijp je snel wat je moet doen of betalen.</p>",
+        "cards": [
+          {
+            "label": "IN DE WINKEL",
+            "example_html": "Deze jas is in de <mark>aanbieding</mark>: hij kost nu 20 euro."
+          },
+          {
+            "label": "ONLINE BESTELLEN",
+            "example_html": "De <mark>levertijd</mark> is drie werkdagen."
+          }
+        ]
+      }
+    },
+    {
+      "kind": "woordenlijst",
+      "tier": null,
+      "explanation": null,
+      "payload": {
+        "theme": "winkelen"
+      }
+    },
+    {
+      "kind": "matchen",
+      "tier": 0,
+      "explanation": "Je zoekt bij elk woord de uitleg. De kassabon is het papiertje met de prijs, en gratis betekent dat je niets betaalt.",
+      "payload": {
+        "instruction": "Zoek het woord bij de goede betekenis.",
+        "pairs": [
+          {
+            "left": "de kassabon",
+            "right": "papiertje met wat je gekocht en betaald hebt"
+          },
+          {
+            "left": "de korting",
+            "right": "je betaalt minder dan de gewone prijs"
+          },
+          {
+            "left": "gratis",
+            "right": "je hoeft er geen geld voor te betalen"
+          },
+          {
+            "left": "uitverkocht",
+            "right": "helemaal weg, er is niets meer van"
+          },
+          {
+            "left": "de maat",
+            "right": "het nummer of de grootte van kleding"
+          }
+        ]
+      }
+    },
+    {
+      "kind": "mcq",
+      "tier": 0,
+      "explanation": "Retourneren betekent iets terugsturen naar de winkel en je geld terugkrijgen. Ruilen is iets anders: dan neem je een ander artikel mee.",
+      "payload": {
+        "prompt": "Je hebt een broek online gekocht. Hij past niet en je wilt je geld terug. Wat doe je?"
+      },
+      "options": [
+        {
+          "label": "A",
+          "body": "Je gaat de broek retourneren.",
+          "is_correct": true
+        },
+        {
+          "label": "B",
+          "body": "Je gaat de broek bezorgen.",
+          "is_correct": false
+        },
+        {
+          "label": "C",
+          "body": "Je gaat de broek afhalen.",
+          "is_correct": false
+        }
+      ]
+    },
+    {
+      "kind": "gap_choice",
+      "tier": 1,
+      "explanation": "De bezorgkosten zijn het extra geld voor het thuisbrengen van je pakket. Bezorgen is het werkwoord, dus dat past hier niet.",
+      "payload": {
+        "sentence": "Je bestelling is 30 euro. De ___ zijn 4,95 euro extra.",
+        "choices": [
+          "bezorgkosten",
+          "levertijd",
+          "garantie",
+          "voorraad"
+        ],
+        "answer": "bezorgkosten"
+      }
+    },
+    {
+      "kind": "gap_choice",
+      "tier": 1,
+      "explanation": "De garantie is de belofte van de winkel om kapotte spullen gratis te repareren. Daarom heb je de kassabon nodig als bewijs.",
+      "payload": {
+        "sentence": "De wasmachine is kapot. Je hebt nog twee jaar ___ op het apparaat.",
+        "choices": [
+          "korting",
+          "garantie",
+          "klacht",
+          "maat"
+        ],
+        "answer": "garantie"
+      }
+    },
+    {
+      "kind": "matchen",
+      "tier": 0,
+      "explanation": "Deze woorden gaan over bestellen en over problemen. De klantenservice helpt je als je een klacht hebt.",
+      "payload": {
+        "instruction": "Zoek het woord bij de goede betekenis.",
+        "pairs": [
+          {
+            "left": "de klantenservice",
+            "right": "afdeling die vragen en problemen van kopers behandelt"
+          },
+          {
+            "left": "de klacht",
+            "right": "wat je zegt als je ontevreden bent"
+          },
+          {
+            "left": "de verpakking",
+            "right": "doos of plastic waar het product in zit"
+          },
+          {
+            "left": "de levertijd",
+            "right": "hoelang je moet wachten voor je iets krijgt"
+          },
+          {
+            "left": "afhalen",
+            "right": "zelf naar de winkel gaan om iets op te halen"
+          }
+        ]
+      }
+    },
+    {
+      "kind": "gap_choice",
+      "tier": 1,
+      "explanation": "Geldig betekent dat je iets nog mag gebruiken. Na de datum op de bon is de korting voorbij.",
+      "payload": {
+        "sentence": "Deze bon is nog ___ tot en met 31 maart.",
+        "choices": [
+          "gratis",
+          "geldig",
+          "uitverkocht",
+          "bezorgd"
+        ],
+        "answer": "geldig"
+      }
+    },
+    {
+      "kind": "gap_type",
+      "tier": 2,
+      "explanation": "Als de winkel niets meer heeft, is het artikel uitverkocht. Typ dit woord zonder lidwoord.",
+      "payload": {
+        "sentence": "Sorry, deze schoenen zijn in maat 42 ___ .",
+        "answer": "uitverkocht"
+      }
+    },
+    {
+      "kind": "gap_type",
+      "tier": 2,
+      "explanation": "Bewaar de kassabon: dat is het papiertje met wat je gekocht en betaald hebt. Zonder dat papiertje kun je vaak niet ruilen.",
+      "payload": {
+        "sentence": "Bewaar de ___ , anders kun je de trui niet ruilen.",
+        "answer": "kassabon"
+      }
+    },
+    {
+      "kind": "gap_type",
+      "tier": 2,
+      "explanation": "Het bedrag is hoeveel euro je moet betalen. Het woord past achter 'het totale'.",
+      "payload": {
+        "sentence": "Het totale ___ op de rekening is 48,50 euro.",
+        "answer": "bedrag"
+      }
+    }
+  ]
+}

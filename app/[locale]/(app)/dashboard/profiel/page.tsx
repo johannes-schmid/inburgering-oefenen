@@ -12,6 +12,7 @@ import LogoutButton from './LogoutButton';
 import CancelSubscription from './CancelSubscription';
 import { listLiveSubscriptions } from '@/lib/subscriptions';
 import { euro } from '@/lib/pricing';
+import { fetchPortalMenu } from '@/lib/portal-menu';
 
 export const metadata: Metadata = {
   title: 'Mijn account | Inburgering Oefenen',
@@ -63,12 +64,15 @@ export default async function ProfilePage({ params }: { params: Promise<{ locale
     (n, l) => n + SKILLS.reduce((m, s) => m + progress[l][s.slug].examsDone, 0), 0);
   const planLabel = t(`plan_${plan}` as 'plan_free');
 
+  const menu = await fetchPortalMenu();
+
   return (
     <AppShell
       locale={locale}
       email={user.email ?? ''}
       avatarUrl={String(meta.avatar_url ?? meta.picture ?? '')}
       active="profile"
+      menu={menu}
     >
       <div className="px-5 py-7 sm:px-8 sm:py-10">
         <div className="max-w-2xl mx-auto">

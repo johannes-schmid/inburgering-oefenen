@@ -1,0 +1,215 @@
+{
+  "items": [
+    {
+      "kind": "uitleg",
+      "tier": null,
+      "explanation": null,
+      "payload": {
+        "body_html": "<p>Wil je twee dingen vergelijken? Zet dan <strong>-er</strong> achter het bijvoeglijk naamwoord (het woord dat iets beschrijft, zoals <em>groot</em>). Daarna komt het woord <strong>dan</strong>.</p><p>Eindigt het woord op een <strong>-r</strong>? Dan schrijf je <strong>-der</strong>, dus <em>duur</em> wordt <em>duurder</em>. Let ook op: <em>goed</em> wordt <em>beter</em> en <em>veel</em> wordt <em>meer</em>.</p>",
+        "cards": [
+          {
+            "label": "GEWOON -ER",
+            "example_html": "Mijn nieuwe huis is <mark>groter dan</mark> mijn oude huis."
+          },
+          {
+            "label": "NA EEN -R KOMT -DER",
+            "example_html": "De trein is <mark>duurder dan</mark> de bus."
+          }
+        ]
+      }
+    },
+    {
+      "kind": "voorbeeld",
+      "tier": null,
+      "explanation": null,
+      "payload": {
+        "sentence_html": "De kamer van mijn dochter is <mark>kleiner dan</mark> de kamer van mijn zoon."
+      }
+    },
+    {
+      "kind": "voorbeeld",
+      "tier": null,
+      "explanation": null,
+      "payload": {
+        "sentence_html": "In de winkel op de hoek is het brood <mark>lekkerder dan</mark> in de supermarkt."
+      }
+    },
+    {
+      "kind": "mcq",
+      "tier": 0,
+      "explanation": "Je vergelijkt twee dingen, dus je gebruikt de vorm met -er plus het woord dan: goedkoper dan.",
+      "options": [
+        {
+          "label": "A",
+          "body": "De bus is goedkoop dan de trein.",
+          "is_correct": false
+        },
+        {
+          "label": "B",
+          "body": "De bus is goedkoper dan de trein.",
+          "is_correct": true
+        },
+        {
+          "label": "C",
+          "body": "De bus is goedkoper als de trein goedkoop.",
+          "is_correct": false
+        }
+      ],
+      "payload": {
+        "prompt": "Welke zin is goed?"
+      }
+    },
+    {
+      "kind": "mcq",
+      "tier": 0,
+      "explanation": "Het woord duur eindigt op een -r. Dan komt er -der achter: duurder.",
+      "options": [
+        {
+          "label": "A",
+          "body": "duurer",
+          "is_correct": false
+        },
+        {
+          "label": "B",
+          "body": "duurder",
+          "is_correct": true
+        },
+        {
+          "label": "C",
+          "body": "meer duur",
+          "is_correct": false
+        },
+        {
+          "label": "D",
+          "body": "duurst",
+          "is_correct": false
+        }
+      ],
+      "payload": {
+        "prompt": "Wat is de juiste vorm van duur in de zin: Deze jas is ___ dan die jas."
+      }
+    },
+    {
+      "kind": "gap_choice",
+      "tier": 1,
+      "explanation": "Je vergelijkt twee huizen met elkaar, dus je gebruikt de vorm met -er: kleiner.",
+      "payload": {
+        "sentence": "Mijn woning is ___ dan de woning van mijn buurman.",
+        "choices": [
+          "klein",
+          "kleiner",
+          "kleinst"
+        ],
+        "answer": "kleiner"
+      }
+    },
+    {
+      "kind": "gap_choice",
+      "tier": 1,
+      "explanation": "Het woord goed heeft een bijzondere vergelijking: goed wordt beter.",
+      "payload": {
+        "sentence": "Na de cursus spreek ik ___ Nederlands dan vorig jaar.",
+        "choices": [
+          "goeder",
+          "beter",
+          "goed"
+        ],
+        "answer": "beter"
+      }
+    },
+    {
+      "kind": "gap_choice",
+      "tier": 1,
+      "explanation": "Zwaar eindigt op een -r, dus je schrijft -der: zwaarder.",
+      "payload": {
+        "sentence": "Deze tas is ___ dan mijn rugzak.",
+        "choices": [
+          "zwaarer",
+          "zwaarder",
+          "zwaar"
+        ],
+        "answer": "zwaarder"
+      }
+    },
+    {
+      "kind": "matchen",
+      "tier": 1,
+      "explanation": "Bij elk woord zet je -er achter het woord. Eindigt het woord op een -r, dan schrijf je -der. Goed en veel zijn bijzonder: beter en meer.",
+      "payload": {
+        "instruction": "Zoek bij elk woord de juiste vergelijkende vorm.",
+        "pairs": [
+          {
+            "left": "groot",
+            "right": "groter"
+          },
+          {
+            "left": "duur",
+            "right": "duurder"
+          },
+          {
+            "left": "goed",
+            "right": "beter"
+          },
+          {
+            "left": "veel",
+            "right": "meer"
+          },
+          {
+            "left": "lang",
+            "right": "langer"
+          }
+        ]
+      }
+    },
+    {
+      "kind": "gap_type",
+      "tier": 2,
+      "explanation": "Je vergelijkt twee bedragen, dus je zet -er achter hoog: hoger dan.",
+      "payload": {
+        "sentence": "De huur van dit appartement is ___ dan 800 euro per maand.",
+        "answer": "hoger"
+      }
+    },
+    {
+      "kind": "woordorde",
+      "tier": 2,
+      "explanation": "Eerst de vergelijkende vorm met -er, daarna het woord dan en dan waarmee je vergelijkt.",
+      "payload": {
+        "instruction": "Zet de woorden in de juiste volgorde.",
+        "tokens": [
+          "dan",
+          "de",
+          "fiets",
+          "is",
+          "auto",
+          "sneller",
+          "de"
+        ],
+        "answer": [
+          "de",
+          "auto",
+          "is",
+          "sneller",
+          "dan",
+          "de",
+          "fiets"
+        ]
+      }
+    },
+    {
+      "kind": "open_zin",
+      "tier": 2,
+      "explanation": "In je zin staat een woord met -er (of -der) en daarna het woord dan.",
+      "payload": {
+        "prompt": "Vergelijk je huis nu met je vorige huis. Schrijf één zin met -er en dan.",
+        "model_answer": "Mijn huis in Almere is groter dan mijn vorige huis in Rotterdam.",
+        "checklist": [
+          "Er staat een woord met -er of -der in je zin.",
+          "Na dat woord staat het woord dan.",
+          "Je vergelijkt twee dingen met elkaar."
+        ]
+      }
+    }
+  ],
+  "what_you_learn": "Je leert twee dingen met elkaar vergelijken in het Nederlands. Je zet -er achter het woord en daarna het woord dan, bijvoorbeeld: groter dan. Je let op woorden die op een -r eindigen (duurder) en op de bijzondere vormen beter en meer."
+}
