@@ -870,7 +870,13 @@
     "level_section_sub": "All four parts at {level} level",
     "knm_section": "KNM",
     "knm_section_sub": "Knowledge of Dutch Society — one exam, for every language level.",
-    "locked_note": "The free lessons are always available. The rest belongs to this component's module."
+    "locked_note": "The free lessons are always available. The rest belongs to this component's module.",
+    "tag_soon": "Coming soon",
+    "tag_roadmap": "Roadmap",
+    "learn_lessons": "Lessons",
+    "learn_concepts": "Concepts",
+    "learn_back_course": "Back to the course",
+    "learn_back_module": "Back to the component"
   },
   "guides": {
     "reading_time": "{minutes} min read",

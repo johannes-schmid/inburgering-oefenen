@@ -650,6 +650,39 @@ en kan niet zeggen "KNM leeft, A2 leeft, B1 nog niet"; een tweede vlag ernaast z
 schakelaar voor hetzelfde ding zijn. Zelfde koppeling als de `robots`-gate voor B1
 (`itemCount !== null`).
 
+### De portaalchrome is weer één zijbalk (29-08)
+
+Het rail+paneel van 27-08 is terug naar **één navy zijbalk met uitklapbare modules**
+(beslissing eigenaar, naar de mockup "Studieportaal Navigatie Opties"). `ModuleRail.tsx` en
+`ModulePanel.tsx` zijn verwijderd; `PortalSidebar.tsx` en `LearnPanel.tsx` staan ervoor in de
+plaats. `AppShell`'s API is ongewijzigd op één optionele prop na.
+
+- **Twee vaste kolommen zeiden op elke pagina twee dingen terwijl er op de meeste maar één te
+  zeggen valt.** Op het portaaloverzicht toonde het paneel een module die de bezoeker niet had
+  gekozen, en op de profielpagina een module waar hij niet in zat.
+- **Een tweede kolom is nu een uitzondering met een reden**, en dat is de opdracht: alleen
+  binnen een cursus (`…/[skill]/leren`, één les) en in de conceptenbibliotheek. Daar is "welke
+  les / welk concept" een echte tweede as die de hele bezoekduur meegaat. Buiten die routes
+  krijgt `AppShell` geen `learn` en is er één kolom.
+- **De pagina bouwt het paneel, niet de chrome** — alleen de pagina kent de blokken, de
+  voortgang en welk item het huidige is. `coursePanel()` / `conceptsPanel()` in
+  `(app)/components/nav.ts` zijn de gedeelde bouwers; de labels komen als argument mee, want
+  dat bestand mag geen vertalingen lezen.
+- **De blokkenlijst op de lespagina is nu `lg:hidden`.** Op desktop draagt het paneel hem;
+  twee keer dezelfde lijst naast elkaar leest als een renderfout. Op een telefoon is er geen
+  chrome, en daar staat hij nog steeds ónder de les.
+- **De uitklapstaat is `localStorage`, en op de module staan wint van een opgeslagen "dicht"** —
+  dezelfde regel en dezelfde reden als bij het KNM-submenu van 25-08: elke portaalpagina is een
+  servercomponent, dus de zijbalk hermount bij iedere navigatie.
+- **De volgorde is de catalogus (A2, B1, KNM), niet bezit-eerst.** `PortalMenu` splitst op
+  bezit; in één zijbalk zou dat KNM tussen A2 en B1 laten springen zodra je KNM koopt. Bezit
+  blijft zichtbaar in de rijen zelf — wat niet van jou is staat doffer.
+- **`--portal-chrome-w` verandert mee** (256px, 464px met paneel — dezelfde maten en fontgroottes als de adminzijbalk, `w-64` / `text-sm` / `text-[0.8rem]`): de vaste onderbalk van de
+  KNM-lespagina leest hem.
+- **Backticks kunnen niet in `AppShell`'s `<style>`-blok** — het is een template literal, en een
+  CSS-commentaar met `` `on` `` erin gaf een JSX-parsefout twintig regels verderop. Dat is
+  precies de val die de 25-08-notitie al beschrijft, en hij is opnieuw ingelopen.
+
 **Wat het paneel NIET draagt.** De lescursus staat niet in de portaalchrome: die draagt één as —
 hoe ver je door de tien examens bent (eigenaar, 27-08). Het paneel krijgt alleen een
 niveaubrede **Concepten**-rij; de cursus wordt bereikt via een kaart bovenaan de

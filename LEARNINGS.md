@@ -3057,3 +3057,18 @@ over het model en niet als een hindernis.**
 `left: 3px`, dus in het Arabisch staat de actieve-rij-rail van de portaalchrome aan de
 verkeerde kant — dezelfde fout die ik in de leerlaag net heb gerepareerd. Het zit in
 niet-gecommitteerd werk van 27-08 en is één regel.
+
+## 2026-08-29 — De portaalchrome terug naar één zijbalk
+**Changed:** `ModuleRail.tsx`/`ModulePanel.tsx` verwijderd; `(app)/components/PortalSidebar.tsx`
+(één navy zijbalk met uitklapbare modules) en `LearnPanel.tsx` (tweede kolom, alleen in een
+cursus of de conceptenbibliotheek) ervoor in de plaats, plus `coursePanel()`/`conceptsPanel()`
+in `components/nav.ts` en de bedrading in de vier lespagina's.
+**Outcome:** SUCCESS — `tsc` schoon, `next build` schoon, 344 unit tests groen, en de portaal-,
+onderdeel-, KNM- en lespaneelschermen gecontroleerd met `check-ui-auth.mjs` op 390 en 1440.
+**What worked / went wrong:** de val uit de 25-08-notitie opnieuw ingelopen — een backtick in
+een CSS-commentaar binnen `AppShell`'s `<style>{`…`}` beëindigde de template literal en gaf
+twintig regels verderop een onbegrijpelijke JSX-parsefout. Verder gaf het lespaneel eerst elke
+nog niet gedane les een leeg vierkantje, wat als een uitgevinkt vakje leest; alleen `done` en
+`locked` krijgen nu een tegel.
+**Lesson:** een navigatiekolom moet op élke pagina iets te zeggen hebben — kan hij dat niet,
+dan hoort hij bij de pagina's waar hij dat wél kan, niet in de chrome.

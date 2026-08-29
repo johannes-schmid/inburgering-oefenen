@@ -870,7 +870,13 @@
     "level_section_sub": "الأجزاء الأربعة كلها في مستوى {level}",
     "knm_section": "KNM",
     "knm_section_sub": "معرفة المجتمع الهولندي — امتحان واحد لكل المستويات اللغوية.",
-    "locked_note": "الدروس المجانية متاحة دائماً. الباقي يخص وحدة هذا القسم."
+    "locked_note": "الدروس المجانية متاحة دائماً. الباقي يخص وحدة هذا القسم.",
+    "tag_soon": "قريبًا",
+    "tag_roadmap": "خارطة الطريق",
+    "learn_lessons": "الدروس",
+    "learn_concepts": "المفاهيم",
+    "learn_back_course": "العودة إلى الدورة",
+    "learn_back_module": "العودة إلى الجزء"
   },
   "guides": {
     "reading_time": "{minutes} دقائق قراءة",

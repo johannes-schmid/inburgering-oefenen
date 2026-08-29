@@ -870,7 +870,13 @@
     "level_section_sub": "Alle vier de onderdelen op {level}-niveau",
     "knm_section": "KNM",
     "knm_section_sub": "Kennis van de Nederlandse Maatschappij — één examen, voor elk taalniveau.",
-    "locked_note": "De gratis lessen kun je altijd doen. De rest hoort bij de module van dit onderdeel."
+    "locked_note": "De gratis lessen kun je altijd doen. De rest hoort bij de module van dit onderdeel.",
+    "tag_soon": "Binnenkort",
+    "tag_roadmap": "Roadmap",
+    "learn_lessons": "Lessen",
+    "learn_concepts": "Concepten",
+    "learn_back_course": "Terug naar de cursus",
+    "learn_back_module": "Terug naar het onderdeel"
   },
   "guides": {
     "reading_time": "{minutes} min lezen",

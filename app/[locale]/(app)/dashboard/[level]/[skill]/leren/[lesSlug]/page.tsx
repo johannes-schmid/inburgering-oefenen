@@ -11,6 +11,7 @@ import { conceptPath, coursePath, lessonPath, nextLesson } from '@/lib/lessons/l
 import LessonStream from '@/components/lessons/LessonStream';
 import type { LessonItem } from '@/components/lessons/item-helpers';
 import AppShell from '../../../../../components/AppShell';
+import { coursePanel } from '../../../../../components/nav';
 
 type Props = { params: Promise<{ locale: string; level: string; skill: string; lesSlug: string }> };
 
@@ -94,13 +95,23 @@ export default async function LessonPage({ params }: Props) {
       active={skill.slug}
       activeGroup={level}
       menu={menu}
+      learn={coursePanel(blocks, {
+        title: lesson.block.name_nl,
+        backHref: coursePath(level, skill.slug),
+        backLabel: t('back_to_course'),
+        lessonHref: (slug: string) => lessonPath(level, skill.slug, slug),
+        currentSlug: lesson.slug,
+        owned,
+      })}
     >
       <div className="px-5 py-7 sm:px-8 sm:py-10">
         <div className="mx-auto flex max-w-5xl flex-col gap-7 lg:flex-row lg:gap-9">
 
-          {/* De blokkenlijst. Op mobiel onder de les: daar is de les het doel en de navigatie
-              de uitweg, niet andersom. */}
-          <nav className="order-2 w-full shrink-0 lg:order-1 lg:w-56" aria-label={t('course_nav')}>
+          {/* De blokkenlijst, **alleen op mobiel**. Op desktop draagt het lespaneel in de
+              chrome hem; twee keer dezelfde lijst naast elkaar leest als een renderfout. Op
+              een telefoon is er geen chrome, en daar staat hij ónder de les: daar is de les
+              het doel en de navigatie de uitweg, niet andersom. */}
+          <nav className="order-2 w-full shrink-0 lg:hidden" aria-label={t('course_nav')}>
             <a
               href={`/${locale}${coursePath(level, skill.slug)}`}
               className="mb-3 block text-xs font-bold text-on-surface-variant no-underline hover:underline"
@@ -142,7 +153,7 @@ export default async function LessonPage({ params }: Props) {
             </ol>
           </nav>
 
-          <main className="order-1 min-w-0 flex-1 lg:order-2">
+          <main className="order-1 min-w-0 flex-1">
             {lesson.review_status !== 'validated' && (
               <p className="pending-banner">{t('pending_banner')}</p>
             )}

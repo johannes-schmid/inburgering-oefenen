@@ -11,6 +11,7 @@ import { blockProgress, courseProgressPct, lessonPath, nextLesson } from '@/lib/
 import { HorizonBand } from '@/components/horizon';
 import SkillIcon from '@/components/site/SkillIcon';
 import AppShell from '../../../../components/AppShell';
+import { coursePanel } from '../../../../components/nav';
 
 type Props = { params: Promise<{ locale: string; level: string; skill: string }> };
 
@@ -67,6 +68,15 @@ export default async function CoursePage({ params }: Props) {
       active={skill.slug}
       activeGroup={level}
       menu={menu}
+      /* De tweede kolom hoort hier: binnen een cursus is "welke les" een echte tweede as die
+         de hele bezoekduur meegaat. Buiten de cursus is de chrome één zijbalk. */
+      learn={coursePanel(blocks, {
+        title: t('course_title', { skill: tSkills(`${skill.key}.name`), level: levelLabel(level) }),
+        backHref: `/dashboard/${level}/${skill.slug}`,
+        backLabel: tSkills(`${skill.key}.name`),
+        lessonHref: (slug: string) => lessonPath(level, skill.slug, slug),
+        owned,
+      })}
     >
       <div className="px-5 py-7 sm:px-8 sm:py-10">
         <div className="max-w-3xl mx-auto">

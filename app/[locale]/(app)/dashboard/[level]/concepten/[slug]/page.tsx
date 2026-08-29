@@ -5,10 +5,11 @@ import { ArrowRight, Check, Lock, Minus } from 'lucide-react';
 import { createClient } from '@/lib/supabase/server';
 import { isLevel, levelLabel, SKILLS, isKnm } from '@/data/skills';
 import { fetchPortalMenu } from '@/lib/portal-menu';
-import { fetchConcept, fetchConceptTracks, fetchMastery } from '@/lib/lessons/concepts-server';
-import { conceptsPath, isMastered, masteryState, MASTERY_STREAK } from '@/lib/lessons/lessons';
+import { fetchConcept, fetchConcepts, fetchConceptTracks, fetchMastery } from '@/lib/lessons/concepts-server';
+import { conceptPath, conceptsPath, isMastered, masteryState, MASTERY_STREAK } from '@/lib/lessons/lessons';
 import { LensRing, ValidationChip } from '@/components/horizon';
 import AppShell from '../../../../components/AppShell';
+import { conceptsPanel } from '../../../../components/nav';
 
 type Props = { params: Promise<{ locale: string; level: string; slug: string }> };
 
@@ -47,11 +48,30 @@ export default async function ConceptPage({ params }: Props) {
   if (!concept || concept.review_status !== 'validated') notFound();
 
   const meta = user.user_metadata ?? {};
-  const [tracks, mastery, menu] = await Promise.all([
+  const [tracks, mastery, menu, siblings] = await Promise.all([
     fetchConceptTracks(concept.id, level, meta),
     fetchMastery(user.id, [concept.id]),
     fetchPortalMenu(),
+    // De hele bibliotheek, voor het lespaneel: binnen een concept is "welk concept" de tweede
+    // as, en zonder de buren is het paneel een lijst van één.
+    fetchConcepts(level),
   ]);
+
+  const panelGroups = [...siblings
+    .reduce((acc, c) => {
+      const key = c.group?.slug ?? '_strategie';
+      const entry = acc.get(key) ?? {
+        key,
+        name: c.group?.name_nl ?? t('group_strategy'),
+        sort: c.group?.sort_order ?? 999,
+        concepts: [] as typeof siblings,
+      };
+      entry.concepts.push(c);
+      acc.set(key, entry);
+      return acc;
+    }, new Map<string, { key: string; name: string; sort: number; concepts: typeof siblings }>())
+    .values()]
+    .sort((a, b) => a.sort - b.sort);
 
   const m = mastery.get(concept.id);
   const state = masteryState(m);
@@ -71,6 +91,13 @@ export default async function ConceptPage({ params }: Props) {
       active="concepten"
       activeGroup={level}
       menu={menu}
+      learn={conceptsPanel(panelGroups, {
+        title: t('concepts_title', { level: levelLabel(level) }),
+        backHref: conceptsPath(level),
+        backLabel: t('concepts_title', { level: levelLabel(level) }),
+        conceptHref: (slug: string) => conceptPath(level, slug),
+        currentSlug: concept.slug,
+      })}
     >
       <div className="px-5 py-7 sm:px-8 sm:py-10">
         <div className="mx-auto flex max-w-4xl flex-col gap-7 lg:flex-row lg:gap-9">

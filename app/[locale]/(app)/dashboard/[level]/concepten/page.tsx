@@ -8,6 +8,7 @@ import { fetchConcepts, fetchMastery } from '@/lib/lessons/concepts-server';
 import { conceptPath, masteryState, weakestFirst } from '@/lib/lessons/lessons';
 import { LensRing } from '@/components/horizon';
 import AppShell from '../../../components/AppShell';
+import { conceptsPanel } from '../../../components/nav';
 
 type Props = { params: Promise<{ locale: string; level: string }> };
 
@@ -65,6 +66,11 @@ export default async function ConceptsPage({ params }: Props) {
     groups.set(key, entry);
   }
   const ordered = [...groups.values()].sort((a, b) => a.sort - b.sort);
+  // Dezelfde volgorde als de kaarten op de pagina: het paneel is een inhoudsopgave van wat
+  // eronder staat, en een tweede sortering zou het een tweede lijst maken.
+  const panelGroups = [...groups.entries()]
+    .sort((a, b) => a[1].sort - b[1].sort)
+    .map(([key, g]) => ({ key, name: g.name, concepts: g.items }));
 
   const skillName = (slug: string) => {
     const s = SKILLS.find(x => x.slug === slug);
@@ -79,6 +85,12 @@ export default async function ConceptsPage({ params }: Props) {
       active="concepten"
       activeGroup={level}
       menu={menu}
+      learn={conceptsPanel(panelGroups, {
+        title: t('concepts_title', { level: levelLabel(level) }),
+        backHref: `/dashboard/${level}`,
+        backLabel: levelLabel(level),
+        conceptHref: (slug: string) => conceptPath(level, slug),
+      })}
     >
       <div className="px-5 py-7 sm:px-8 sm:py-10">
         <div className="max-w-4xl mx-auto">

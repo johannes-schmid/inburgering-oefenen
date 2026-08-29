@@ -3,12 +3,12 @@
 import type { ReactNode } from 'react';
 import { useTranslations } from 'next-intl';
 import { LayoutDashboard, Plus, User } from 'lucide-react';
-import ModuleRail from './ModuleRail';
-import ModulePanel from './ModulePanel';
+import PortalSidebar from './PortalSidebar';
+import LearnPanel from './LearnPanel';
 import CategoryMark from '@/components/horizon/CategoryMark';
 import LogoMark from '@/components/site/LogoMark';
 import type { PortalMenu } from '@/lib/portal-menu';
-import type { PortalNav } from './nav';
+import type { LearnPanelData, PortalNav } from './nav';
 
 type Props = {
   locale: string;
@@ -34,6 +34,12 @@ type Props = {
    * offer-only shape rather than to a second, flat copy of the nav.
    */
   menu?: PortalMenu | null;
+  /**
+   * De tweede kolom, en alleen binnen een lesmodule of de conceptenbibliotheek.
+   *
+   * Weglaten is de regel: de chrome is één zijbalk. Zie `LearnPanelData` in `nav.ts`.
+   */
+  learn?: LearnPanelData | null;
   isGuest?: boolean;
   children: ReactNode;
 };
@@ -46,6 +52,9 @@ type Props = {
  * here and only here — the KNM version duplicated the same block in `AppShell` and in
  * `dashboard/page.tsx`, and the two had already drifted apart (different `#dash-main`
  * backgrounds, and only one of them styled the tab bar).
+ *
+ * **Eén zijbalk, en een tweede kolom alleen waar er een tweede as is** (beslissing eigenaar,
+ * 29-08). Zie `PortalSidebar` en `LearnPanel`.
  */
 export default function AppShell({
   locale,
@@ -54,6 +63,7 @@ export default function AppShell({
   active = 'overview',
   activeGroup = null,
   menu = null,
+  learn = null,
   isGuest = false,
   children,
 }: Props) {
@@ -83,83 +93,92 @@ export default function AppShell({
     <>
       <style>{`
         *, *::before, *::after { box-sizing: border-box; }
-        /* The chrome's total width, read by anything that has to sit beside it — the lesson
-           page's fixed bottom bar is the current caller. Rail + panel, in one place, so the two
-           cannot drift the way the old hard-coded 248px did. */
-        :root { --portal-chrome-w: 280px; }
+        /* De totale breedte van de chrome, gelezen door alles wat ernaast moet staan — de
+           vaste onderbalk van de KNM-lespagina is de huidige gebruiker. Hij verandert mee met
+           het lespaneel, want dat is er niet altijd. */
+        :root { --portal-chrome-w: ${learn ? '464px' : '256px'}; }
         body { font-family: var(--font-body); background: #f0f3f8; color: #191c1e; }
         h1,h2,h3,h4 { font-family: var(--font-headline); }
-        /* ── The chrome is two columns as of 2026-08-27 ─────────────────────────────
-           A narrow navy **rail** (which module) and a light **panel** (where in it). The
-           previous single sidebar carried both axes and needed collapsible groups to do it;
-           split, the panel never shows two modules and nothing folds away. The panel is light
-           on purpose (owner's variant A): with the rail carrying the brand, a second navy
-           column made the two axes read as one block. */
-        #dash-rail { width:84px; flex-shrink:0; background:linear-gradient(180deg,#001d4e 0%,#002b6d 55%,#003580 100%); display:flex; flex-direction:column; align-items:center; gap:4px; padding:14px 0 12px; height:100vh; position:sticky; top:0; color:#fff; }
-        .rail-logo { display:flex; margin-bottom:8px; border-radius:11px; }
-        .rail-logo:focus-visible { outline:2px solid #fe762c; outline-offset:3px; }
-        .rail-sep { width:34px; height:1px; background:rgba(255,255,255,0.14); margin:5px 0 4px; }
 
-        /* A rail tile is an icon over its name. It is **70px wide, not 48**, because the tag has
-           to fit inside the tile: at 48 the Dutch "OVERZICHT" ran past both edges and rendered
-           clipped, which reads as a broken tile rather than as a long word. The tag wraps rather
-           than truncating, so a longer translation grows the tile instead of losing letters. */
-        .rail-item { position:relative; width:70px; min-height:48px; padding:6px 4px 5px; border-radius:12px; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:2px; color:rgba(255,255,255,0.62); text-decoration:none; transition:background .15s ease, color .15s ease; }
-        .rail-item:hover { background:rgba(255,255,255,0.10); color:#fff; }
-        .rail-item:focus-visible { outline:2px solid #fe762c; outline-offset:2px; }
-        .rail-badge { font-family:var(--font-headline); font-weight:800; font-size:13px; line-height:1; letter-spacing:0.01em; }
-        .rail-tag { font-size:8px; font-weight:800; letter-spacing:0.03em; text-transform:uppercase; opacity:0.8; line-height:1.2; text-align:center; max-width:100%; overflow-wrap:anywhere; }
-        .rail-rule { width:16px; height:2.5px; border-radius:2px; background:transparent; }
-        /* The current module is the one white tile in the rail — the same inversion the logo
-           uses, so "this is where you are" and "this is us" are drawn the same way. */
-        .rail-item.on { background:#fff; color:#002b6d; box-shadow:0 5px 14px rgba(0,20,60,0.34); }
-        .rail-item.on .rail-rule { background:#fe762c; }
-        .rail-item.on .rail-tag { opacity:0.85; }
-        /* Not bought: on the rail, findable and visibly not yours. */
-        .rail-item.dim { color:rgba(255,255,255,0.38); }
-        .rail-item.dim:hover { color:rgba(255,255,255,0.75); }
-        /* Announced and not built. Not a link, and dimmer than "not bought" — the rail must not
-           promise a page that does not exist. */
-        .rail-item.soon { color:rgba(255,255,255,0.26); cursor:default; }
-        .rail-item.soon:hover { background:none; color:rgba(255,255,255,0.26); }
-        .rail-item.accent { background:rgba(254,118,44,0.20); color:#fe762c; }
-        .rail-item.accent:hover { background:rgba(254,118,44,0.30); color:#fff; }
-        .rail-item button, button.rail-item { border:none; cursor:pointer; font-family:inherit; }
-        .rail-foot { margin-top:auto; display:flex; flex-direction:column; align-items:center; gap:4px; padding-top:8px; }
+        /* ── Eén navy zijbalk ────────────────────────────────────────────────────────
+           Terug naar één kolom op 29-08 (eigenaar, naar de mockup). Twee vaste kolommen
+           droegen twee assen op elke pagina terwijl er op de meeste maar één te zeggen valt;
+           de modules klappen hier uit en het lespaneel komt er alleen bij binnen een cursus. */
+        #dash-side { width:256px; flex-shrink:0; background:linear-gradient(180deg,#001d4e 0%,#002b6d 55%,#003580 100%); display:flex; flex-direction:column; height:100vh; position:sticky; top:0; color:#fff; padding:16px; }
+        .side-logo { display:flex; align-items:center; gap:8px; padding:0 6px 14px; color:#fff; text-decoration:none; font-family:var(--font-headline); font-weight:700; font-size:14px; line-height:1.2; letter-spacing:-0.01em; }
+        .side-logo:focus-visible { outline:2px solid #fe762c; outline-offset:3px; border-radius:11px; }
+        .side-scroll { flex:1; min-height:0; overflow-y:auto; display:flex; flex-direction:column; gap:1px; }
+        .side-label { font-size:10px; font-weight:800; letter-spacing:0.14em; text-transform:uppercase; color:rgba(255,255,255,0.45); margin:14px 12px 6px; }
 
-        #dash-panel { width:196px; flex-shrink:0; height:100vh; position:sticky; top:0; display:flex; flex-direction:column; padding:16px 10px 10px; background:var(--color-surface,#fff); box-shadow:1px 0 0 rgba(0,43,109,0.08); }
-        .panel-head { padding:0 8px 12px; }
-        .panel-title { font-family:var(--font-headline); font-weight:800; font-size:14.5px; letter-spacing:-0.02em; color:#191c1e; line-height:1.25; }
-        .panel-sub { font-size:11px; color:#6b7683; margin-top:2px; line-height:1.4; }
-        .panel-nav { display:flex; flex-direction:column; gap:1px; overflow-y:auto; }
-        .panel-head-label { font-size:9.5px; font-weight:800; letter-spacing:0.13em; text-transform:uppercase; color:#7c8794; margin:12px 10px 4px; }
-        /* Rows carry a real ink colour, not a tint of the background. They were #5b6570 at 100%
-           and the unowned ones a 50% alpha of it, which on a near-white panel is roughly 2.4:1 —
-           legible on a big screen at full brightness and nowhere else. */
-        .panel-row { position:relative; display:flex; align-items:center; gap:9px; padding:7px 9px 7px 11px; border-radius:9px; font-size:13px; font-weight:500; color:#3f4750; text-decoration:none; transition:background .15s ease, color .15s ease; }
-        .panel-row:hover { background:rgba(0,43,109,0.05); color:#191c1e; }
-        .panel-row:focus-visible { outline:2px solid #fe762c; outline-offset:2px; }
-        /* The current page is a **marked** row, not a filled navy slab. A solid block the width
-           of the panel put a second dark mass beside the rail and read as a banner rather than
-           as "you are here"; the tint plus the orange leading rule says the same thing at a
-           fraction of the weight, and leaves the rail as the only dark surface. */
-        .panel-row.on { background:rgba(0,43,109,0.08); color:#002b6d; font-weight:700; }
-        .panel-row.on:hover { background:rgba(0,43,109,0.11); color:#002b6d; }
-        .panel-row.on::before { content:''; position:absolute; left:3px; top:8px; bottom:8px; width:3px; border-radius:2px; background:#fe762c; }
-        .panel-row.dim { color:#8a939e; }
-        .panel-row.dim:hover { color:#3f4750; }
-        .panel-lb { flex:1; min-width:0; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
-        .panel-n { font-size:11px; font-variant-numeric:tabular-nums; color:#6b7683; flex-shrink:0; }
-        .panel-row.on .panel-n { color:#002b6d; }
-        .panel-mk { width:20px; height:20px; border-radius:6px; flex-shrink:0; display:flex; align-items:center; justify-content:center; background:rgba(0,43,109,0.08); }
-        .panel-row.on .panel-mk { background:rgba(0,43,109,0.14); }
-        /* A category mark draws its own tile, so the wrapper must not draw a second one. */
-        .panel-mk.bare { background:none; }
-        .panel-row.on .panel-mk.bare { background:none; }
-        .panel-cta { margin-top:auto; display:flex; align-items:center; gap:9px; padding:9px 10px; border-radius:9px; background:rgba(254,118,44,0.12); color:#a24000; font-weight:700; font-size:12.5px; text-decoration:none; transition:background .15s ease; }
-        .panel-cta:hover { background:rgba(254,118,44,0.2); }
-        .panel-cta:focus-visible { outline:2px solid #fe762c; outline-offset:2px; }
-        .panel-plus { width:24px; height:24px; border-radius:7px; background:#fe762c; color:#fff; display:flex; align-items:center; justify-content:center; flex-shrink:0; }
+        .side-row { position:relative; display:flex; align-items:center; gap:12px; width:100%; padding:10px 12px; border-radius:12px; font-size:14px; font-weight:500; color:rgba(255,255,255,0.72); text-decoration:none; background:none; border:none; font-family:inherit; text-align:left; cursor:pointer; transition:background .15s ease, color .15s ease; }
+        .side-row:hover { background:rgba(255,255,255,0.10); color:#fff; }
+        .side-row:focus-visible { outline:2px solid #fe762c; outline-offset:2px; }
+        /* De huidige pagina is de ene lichte rij — dezelfde inversie als het logo, zodat "hier
+           ben je" en "dit zijn wij" op dezelfde manier getekend zijn. */
+        .side-row.on { background:rgba(255,255,255,0.14); color:#fff; font-weight:600; box-shadow:inset 0 0 0 1px rgba(255,255,255,0.10); }
+        .side-row.dim { color:rgba(255,255,255,0.42); }
+        .side-row.dim:hover { color:rgba(255,255,255,0.78); }
+        .side-row.accent { background:rgba(254,118,44,0.20); color:#fe762c; }
+        .side-row.accent:hover { background:rgba(254,118,44,0.30); color:#fff; }
+        .side-row.sub { padding:6px 12px; border-radius:8px; font-size:0.8rem; font-weight:500; gap:10px; }
+        .side-lb { flex:1; min-width:0; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+        .side-ic { width:20px; height:20px; border-radius:7px; flex-shrink:0; display:flex; align-items:center; justify-content:center; background:rgba(255,255,255,0.12); }
+        /* Een category mark tekent zijn eigen tegel, dus de wikkel mag er geen tweede tekenen. */
+        .side-ic.bare { background:none; }
+        .side-tag { font-size:9.5px; font-weight:800; letter-spacing:0.09em; text-transform:uppercase; color:rgba(255,255,255,0.42); flex-shrink:0; }
+        /* De voortgangsrail: hoe ver door de tien oefenexamens, en niets anders. Eén as in de
+           chrome — een gemiddelde erbij zou een cijfer zijn waar je niet vanaf komt. */
+        .side-rail { width:34px; height:4px; border-radius:3px; background:rgba(255,255,255,0.18); flex-shrink:0; overflow:hidden; display:block; }
+        .side-rail > span { display:block; height:100%; border-radius:3px; background:#fe762c; }
+
+        .side-group { display:flex; flex-direction:column; gap:1px; }
+        .side-mod { display:flex; align-items:center; border-radius:12px; color:rgba(255,255,255,0.9); transition:background .15s ease; }
+        .side-mod:hover { background:rgba(255,255,255,0.08); }
+        /* Drie toestanden, en ze moeten verschillen: 'on' is de modulepagina zelf, 'within' is
+           "je zit ergens in deze module". Zonder 'within' bleef er bij een lespagina géén
+           module gemarkeerd — het enige wat het nesten te zeggen heeft. */
+        .side-mod.within { background:rgba(255,255,255,0.08); }
+        .side-mod.on { background:rgba(255,255,255,0.15); box-shadow:inset 0 0 0 1px rgba(255,255,255,0.12); }
+        .side-mod-link { flex:1; min-width:0; display:flex; align-items:center; gap:12px; padding:10px 4px 10px 12px; color:inherit; text-decoration:none; font-size:14px; font-weight:600; letter-spacing:0; }
+        .side-mod-link:focus-visible { outline:2px solid #fe762c; outline-offset:2px; border-radius:10px; }
+        .side-badge { width:22px; height:22px; border-radius:7px; flex-shrink:0; display:flex; align-items:center; justify-content:center; background:rgba(255,255,255,0.16); font-family:var(--font-headline); font-weight:800; font-size:11.5px; letter-spacing:0.01em; }
+        .side-badge.mark { background:none; }
+        .side-chev { display:flex; align-items:center; justify-content:center; width:28px; height:32px; margin-right:4px; border:none; background:none; color:rgba(255,255,255,0.55); cursor:pointer; border-radius:8px; transition:transform .18s cubic-bezier(0.22,1,0.36,1), color .15s ease; }
+        .side-chev:hover { color:#fff; background:rgba(255,255,255,0.10); }
+        .side-chev:focus-visible { outline:2px solid #fe762c; outline-offset:2px; }
+        .side-group.open .side-chev { transform:rotate(90deg); }
+        /* De 1px-rail is de enige lijn in de portaalchrome en is bewust: de geen-lijnenregel
+           gaat over niet *secties maken* met randen, en een navy zijbalk heeft geen
+           achtergrondtrappen om mee te zeggen "deze horen bij de rij hierboven". */
+        .side-sub { display:flex; flex-direction:column; gap:2px; margin:2px 0 4px 26px; padding-left:8px; border-left:1px solid rgba(255,255,255,0.15); }
+        .side-mod.soon { color:rgba(255,255,255,0.3); cursor:default; padding-right:10px; }
+        .side-mod.soon:hover { background:none; }
+
+        .side-cta { margin-top:10px; display:flex; align-items:center; gap:12px; padding:10px 12px; border-radius:12px; background:rgba(254,118,44,0.18); color:#ffd9c2; font-weight:600; font-size:14px; text-decoration:none; transition:background .15s ease; }
+        .side-cta:hover { background:rgba(254,118,44,0.3); color:#fff; }
+        .side-cta:focus-visible { outline:2px solid #fe762c; outline-offset:2px; }
+        .side-plus { width:20px; height:20px; border-radius:6px; background:#fe762c; color:#fff; display:flex; align-items:center; justify-content:center; flex-shrink:0; }
+        .side-foot { margin-top:10px; padding-top:10px; border-top:1px solid rgba(255,255,255,0.12); display:flex; flex-direction:column; gap:1px; }
+
+        /* ── Het lespaneel: alleen binnen een cursus of de conceptenbibliotheek ────────── */
+        #dash-panel { width:208px; flex-shrink:0; height:100vh; position:sticky; top:0; display:flex; flex-direction:column; padding:16px 10px 12px; background:var(--color-surface,#fff); box-shadow:1px 0 0 rgba(0,43,109,0.08); overflow-y:auto; }
+        .lp-back { display:flex; align-items:center; gap:6px; padding:0 8px; font-size:11.5px; font-weight:700; color:#6b7683; text-decoration:none; }
+        .lp-back:hover { color:#002b6d; }
+        .lp-title { font-family:var(--font-headline); font-weight:700; font-size:14px; letter-spacing:-0.02em; color:#191c1e; line-height:1.3; padding:6px 8px 10px; }
+        .lp-nav { display:flex; flex-direction:column; gap:10px; }
+        .lp-sec { display:flex; flex-direction:column; gap:1px; }
+        .lp-sec-head { display:flex; align-items:center; justify-content:space-between; gap:6px; font-size:10px; font-weight:800; letter-spacing:0.11em; text-transform:uppercase; color:#7c8794; margin:4px 9px 3px; }
+        .lp-letter { display:inline-flex; align-items:center; justify-content:center; width:15px; height:15px; border-radius:5px; margin-right:5px; background:rgba(0,43,109,0.09); color:#002b6d; font-size:9px; }
+        .lp-n { font-variant-numeric:tabular-nums; letter-spacing:0; }
+        .lp-row { position:relative; display:flex; align-items:center; gap:9px; padding:6px 12px; border-radius:8px; font-size:0.8rem; font-weight:500; color:#3f4750; text-decoration:none; transition:background .15s ease, color .15s ease; }
+        .lp-row:hover { background:rgba(0,43,109,0.05); color:#191c1e; }
+        .lp-row:focus-visible { outline:2px solid #fe762c; outline-offset:2px; }
+        .lp-row.on { background:rgba(0,43,109,0.08); color:#002b6d; font-weight:700; }
+        .lp-row.on::before { content:''; position:absolute; left:2px; top:7px; bottom:7px; width:3px; border-radius:2px; background:#fe762c; }
+        .lp-row.dim { color:#8a939e; }
+        .lp-gap { width:15px; flex-shrink:0; }
+        .lp-mark { width:15px; height:15px; border-radius:5px; flex-shrink:0; display:flex; align-items:center; justify-content:center; background:rgba(0,43,109,0.07); color:#a24000; }
+        .lp-lb { flex:1; min-width:0; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
 
         #dash-main { flex:1; min-width:0; overflow-y:auto; height:100vh; background:#f0f3f8; }
         #app-mobile-header { display:none; }
@@ -174,15 +193,18 @@ export default function AppShell({
         .tab-item.active::before { content:''; position:absolute; top:0; left:14px; right:14px; height:2.5px; border-radius:0 0 2px 2px; background:#fe762c; }
         .tab-plus { width:21px; height:21px; border-radius:7px; background:#fe762c; color:#fff; display:flex; align-items:center; justify-content:center; }
         .tab-item:focus-visible { outline:2px solid #fe762c; outline-offset:-2px; }
+        [dir="rtl"] .side-sub { margin:2px 26px 4px 0; padding:0 8px 0 0; border-left:none; border-right:1px solid rgba(255,255,255,0.14); }
+        [dir="rtl"] .side-group.open .side-chev { transform:rotate(90deg) scaleX(-1); }
+        [dir="rtl"] .lp-row.on::before { left:auto; right:2px; }
         @media (max-width:768px) {
           :root { --portal-chrome-w: 0px; }
-          #dash-rail, #dash-panel { display:none !important; }
+          #dash-side, #dash-panel { display:none !important; }
           #dash-main { height:auto; overflow-y:visible; padding-bottom:78px; }
           #app-mobile-header { display:flex !important; }
           #dash-bottom-bar { display:flex !important; }
         }
         @media (prefers-reduced-motion: reduce) {
-          .rail-item, .panel-row, .panel-cta, .tab-item { transition:none; }
+          .side-row, .side-mod, .side-chev, .side-cta, .lp-row, .tab-item { transition:none; }
         }
         ::-webkit-scrollbar { width:5px; }
         ::-webkit-scrollbar-track { background:transparent; }
@@ -218,7 +240,7 @@ export default function AppShell({
       </header>
 
       <div id="dash-layout" className="flex">
-        <ModuleRail
+        <PortalSidebar
           locale={locale}
           email={email}
           avatarUrl={avatarUrl}
@@ -227,7 +249,7 @@ export default function AppShell({
           menu={menu}
           isGuest={isGuest}
         />
-        <ModulePanel locale={locale} active={active} activeGroup={activeGroup} menu={menu} />
+        {learn && <LearnPanel locale={locale} data={learn} />}
         <main id="dash-main">{children}</main>
       </div>
 
@@ -245,8 +267,8 @@ export default function AppShell({
           seventh needs this bar rethought, not squeezed. Anything past the cap is reachable
           through Overzicht, which is always the first tab. */}
       <nav id="dash-bottom-bar" aria-label={t('nav_aria')}>
-        {/* A module's own overview has no tab of its own — there is no rail on a phone and the
-            bar is full at five. It marks Overzicht instead, which is the page it is reached
+        {/* A module's own overview has no tab of its own — there is no sidebar on a phone and
+            the bar is full at five. It marks Overzicht instead, which is the page it is reached
             from and the nearest thing to an ancestor the bar can name. */}
         <a
           href={`/${locale}/dashboard`}
