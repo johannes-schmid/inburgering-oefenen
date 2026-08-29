@@ -745,9 +745,20 @@ function QuestionPane({
         </div>
       )}
       {item.questionImage && (
-        <figure className="m-0 mb-4 rounded-xl overflow-hidden" style={{ boxShadow: 'var(--shadow-card)' }}>
+        /* Capped and centred rather than filling the card. Once the standalone question went
+           full-width the photo grew to ~1450px and pushed all three answers below the fold —
+           on a question that is frequently *about* the picture, so both have to be in one view.
+           The cap is a measure, not the card's width. */
+        <figure
+          className="m-0 mb-4 mx-auto rounded-xl overflow-hidden"
+          style={{ boxShadow: 'var(--shadow-card)', maxWidth: 560 }}
+        >
           {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src={item.questionImage} alt="" style={{ width: '100%', height: 'auto', display: 'block' }} />
+          <img
+            src={item.questionImage}
+            alt=""
+            style={{ width: '100%', maxHeight: '38vh', objectFit: 'contain', display: 'block' }}
+          />
         </figure>
       )}
 

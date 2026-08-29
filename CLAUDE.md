@@ -646,6 +646,21 @@ knmoefenen.nl presents it. It is on the free taster (`/oefenen/knm`) *and* in th
   duration. There is no `/with-timestamps` call here. Good enough at one word per ~300ms; if it
   ever needs to be exact, that ElevenLabs endpoint plus a cues JSON is the upgrade, and the hook
   would take a `timings` array and skip `scheduleWordTimers`.
+- **The answers play at `OPTION_RATE` (1.25×) and the question at 1×.** `rate` is per segment,
+  because the vraag is the thing that has to be understood while the antwoorden are short and the
+  candidate is reading along. Two traps: `playbackRate` must be re-set **after** assigning `src`
+  (some browsers reset it on a source change), and the word timers must be divided by the rate or
+  the highlight falls progressively behind the voice.
+- **Every clip of a question is prefetched on mount, and that is what removed the audible gap.**
+  One `<audio>` element means each segment is a fresh `src` and so a fresh network fetch — a pause
+  between the vraag and antwoord A, and again between each answer. A `fetch(url, {cache:
+  'force-cache'})` per clip warms the HTTP cache; measured silence between clips is then 30–43 ms.
+- **A standalone question fills the page's own `max-w-5xl` column, and its picture is capped at
+  560px / 38vh.** `max-w-2xl` without `mx-auto` pinned the card to the left and let the progress
+  bar run past it (owner's report). Going full width then blew the photo up to ~1450px and pushed
+  all three answers below the fold — on a question frequently *about* the photo. **A width fix
+  moves the problem to the largest child;** check that the answer is still in view, not that the
+  card looks right.
 - **The preference is `localStorage` (`knm-audio-enabled`), default on**, shared across tabs by a
   `CustomEvent`. So the candidate is asked once and the answer survives the next oefenexamen.
 
