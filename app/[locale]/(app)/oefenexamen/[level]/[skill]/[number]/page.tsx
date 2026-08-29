@@ -34,7 +34,9 @@ export default async function ExamPage({ params }: Props) {
 
   const supabase = await createClient();
   const { data: { user } } = await supabase.auth.getUser();
-  if (!user) redirect(`/${locale}/login?next=/oefenexamen/${level}/${skill.slug}/${number}`);
+  // The conversion wall: an anonymous visitor may browse the portal, but sitting an
+  // oefenexamen — the free one included — needs an account.
+  if (!user) redirect(`/${locale}/register?next=/oefenexamen/${level}/${skill.slug}/${number}`);
 
   const content = await fetchExamContent(level, skill.slug, number);
   if (!content) notFound();

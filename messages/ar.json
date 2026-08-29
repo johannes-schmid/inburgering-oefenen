@@ -330,6 +330,15 @@
     "start_btn": "ابدأ التدريب",
     "switch_skill": "اختر جزءاً آخر",
     "audio_hint": "شغّل الصوت أو استخدم سمّاعات — كل سؤال يتضمّن محادثة للاستماع.",
+    "readaloud_heading": "قراءة الأسئلة بصوت عالٍ",
+    "readaloud_on_desc": "يُقرأ كل سؤال وكل جواب بصوت عالٍ تلقائيًا.",
+    "readaloud_off_desc": "شغّل هذا الخيار لقراءة كل سؤال بصوت عالٍ.",
+    "readaloud_sample": "استمع",
+    "readaloud_sample_stop": "إيقاف",
+    "readaloud_turn_on": "تشغيل القراءة بصوت عالٍ",
+    "readaloud_turn_off": "إيقاف القراءة بصوت عالٍ",
+    "readaloud_read": "اقرأ بصوت عالٍ",
+    "readaloud_stop": "إيقاف",
     "q_progress": "السؤال {current} من {total}",
     "q_done": "{pct}٪ مكتمل",
     "next_btn": "السؤال التالي",
@@ -405,7 +414,19 @@
     "row_account": "تصحيح مجاني لواجبين",
     "docent_note": "جميع الأسئلة مراجَعة من معلمة NT2 معتمدة",
     "track_soon": "قريباً",
-    "row_account_badge": "حساب"
+    "row_account_badge": "حساب",
+    "result_score_eyebrow": "نتيجتك · {score} من {total} صحيحة",
+    "potential_headline": "يمكن أن تصل فرصتك في النجاح إلى",
+    "gauge_now": "الآن",
+    "legend_now": "الآن {pct}%",
+    "legend_potential": "ممكن {pct}%",
+    "weak_intro": "فقدت نقاطًا في {topics}. مع حساب مجاني يمكنك التدرب على ذلك تحديدًا.",
+    "weak_none": "كل الإجابات صحيحة — بداية قوية. مع حساب مجاني تحافظ على هذا المستوى حتى الامتحان.",
+    "email_cta_locked": "أدخل بريدك الإلكتروني لعرض نتيجتك",
+    "email_cta_after": "هل تريد تقريرك عبر البريد الإلكتروني أيضًا؟",
+    "platform_cta": "تابع التدريب على المنصة",
+    "platform_note": "حساب مجاني · الامتحان التجريبي 1 من كل جزء مجاني",
+    "email_send": "أرسل"
   },
   "activate": {
     "back": "العودة إلى لوحة التحكم",
@@ -877,7 +898,9 @@
     "level_section": "المستوى {level}",
     "level_section_sub": "الأجزاء الأربعة كلها في مستوى {level}",
     "knm_section": "KNM",
-    "knm_section_sub": "معرفة المجتمع الهولندي — امتحان واحد لكل المستويات اللغوية."
+    "knm_section_sub": "معرفة المجتمع الهولندي — امتحان واحد لكل المستويات اللغوية.",
+    "guest_upsell_title": "أنشئ حسابًا مجانيًا",
+    "guest_upsell_body": "تصفح كل ما تقدمه المنصة. لأداء امتحان تجريبي — بما في ذلك المجاني — عليك أولًا إنشاء حساب."
   },
   "guides": {
     "reading_time": "{minutes} دقائق قراءة",

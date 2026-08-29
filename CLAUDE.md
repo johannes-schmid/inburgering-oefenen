@@ -615,6 +615,40 @@ not just the query** — `FreePracticeEngine` drops the left pane and goes singl
 call `ExamShell` makes, because a two-pane grid whose left pane is empty reads as content that
 failed to load. The `oefenvragen` free topic-quiz pages are still empty and still earmarked (M3).
 
+**KNM reads itself aloud, and that is the fifth onderdeel's own affordance (2026-08-29).** The
+vraag and then every antwoord are spoken in sequence, with the word being said marked, exactly as
+knmoefenen.nl presents it. It is on the free taster (`/oefenen/knm`) *and* in the paid player
+(`/oefenexamen/knm/[n]`), asked once on the start screen.
+
+- **The playback engine was already here and unused.** `components/proefexamen/useReadAloud.ts`
+  and `lib/audio-pref.ts` came across with the KNM fork. The hook is **index-generic** —
+  `activeSeg` is only an array position — so a four-option B1 item needs no change to it. Only the
+  presentation was ported, into `components/exam/ReadAloud.tsx`, because KNM's version was
+  pre-Horizon inline hex and used the retired greens.
+- **It is KNM-only by construction, not by a flag.** It needs `question_options.audio_url`, which
+  `/api/generate-question-audio` populates for KNM's bank and nothing else. The taster derives
+  `canReadAloud` from the audio actually present (`readAloudSegments()`); `ExamShell` additionally
+  gates on `exam.skill === 'knm'`. **Auto-reading a Luisteren question would speak over the
+  fragment the item is testing** — that is the reason for the second gate, not tidiness.
+- **The kit's CSS lives in `app/globals.css`, never in a `<style>` block in the component.** Every
+  one of those blocks sat *inside* a button or inside the question text, and a `<style>` element
+  contributes its source to the element's `textContent` and so to its accessible name: a screen
+  reader read a media query aloud as part of an answer. No screenshot can show that; a DOM probe
+  of `textContent` is what found it.
+- **Answer state wins over reading state, in *two* layers.** The option's surface and the word
+  mark are separate, and shielding only the surface leaves a clay highlight sitting inside the
+  green "Goed" row — the sequence reads on past the click. Both are dropped once answered.
+- **The sample button on the start screen is load-bearing.** Browsers block programmatic playback
+  until a gesture unlocks it, and the hook reuses one `<audio>` element for the whole sitting, so
+  pressing "Beluister" unlocks autoplay for every question after it. Without it the first question
+  is silent and reads as broken.
+- **Word timings are estimated, not measured** — character weight scaled to the clip's real
+  duration. There is no `/with-timestamps` call here. Good enough at one word per ~300ms; if it
+  ever needs to be exact, that ElevenLabs endpoint plus a cues JSON is the upgrade, and the hook
+  would take a `timings` array and skip `scheduleWordTimers`.
+- **The preference is `localStorage` (`knm-audio-enabled`), default on**, shared across tabs by a
+  `CustomEvent`. So the candidate is asked once and the answer survives the next oefenexamen.
+
 **`/oefenen` is examen → onderdeel, and mobile is a different flow from desktop.** Flow 1b of
 `Gratis Oefenen Opties.dc.html` (Claude Design), owner's instruction 2026-08-28. It replaced three
 stacked grids that listed nine cards and left the visitor to work out from the headings that A2 and
@@ -632,6 +666,36 @@ B1 are the *same four onderdelen* twice.
 - **A track with no `parts` is the roadmap statement** — one condition, not a second flag. That is
   ONA, drawn on the neutral ramp with a hollow ring (the homepage's "not built" vocabulary) and
   rendered as a `<div>`, never a disabled button.
+
+### De taster eindigt op één kaart, en het portaal is zonder account te bekijken (2026-08-29)
+
+Overgenomen van knmoefenen.nl, opdracht van de eigenaar. De taster liep op een aparte
+e-mailpoort gevolgd door een pagina van vijf blokken (score, per tekstsoort, foute antwoorden,
+upsell, knoppen); de uitleg per vraag is tijdens de sessie al gegeven, dus die blokken duwden
+de enige actie waarvoor het scherm bestaat drie schermen naar beneden.
+
+- **Eén resultaatkaart, met de slaagkansmeter ernaast.** `SlaagkansGauge` in
+  `FreePracticeEngine.tsx` tekent twee bogen op één halve cirkel: oranje is nu, bleek is wat
+  oefenen kan halen — het *gat* tussen de bogen is de pitch. `projectSlaagkans` in
+  `lib/practice-result.ts` is die projectie: verankerd op de behaalde score, afgetopt op 92, en
+  het is nadrukkelijk **geen DUO-norm** (`SEO/facts.md` §9). De copy blijft voorwaardelijk
+  ("kan naar"), nooit voorspellend.
+- **De score staat achter een blur, niet buiten de DOM.** `.fp-locked` draagt blur,
+  `pointer-events:none`, `user-select:none` én `aria-hidden`/`inert`. Alle vier horen erbij: een
+  visueel geblurd getal dat een screenreader nog voorleest is niet achtergehouden. De e2e-test
+  assert daarom op dat mechanisme; `not.toContainText('%')` slaagde na deze wijziging voor de
+  verkeerde reden. **De skip-link blijft** (beslissing eigenaar, ongewijzigd).
+- **De platformkaart verschijnt pas na het onthullen.** Hij is de uitgang; hem naast een
+  geblurde uitslag zetten vraagt de bezoeker te vertrekken vóór hij heeft gezien waarvoor hij kwam.
+- **Het portaal is anoniem te bekijken en de muur staat bij het oefenexamen.**
+  `/dashboard`, `/dashboard/[level]/[skill]` en `/dashboard/knm` renderen voor een gast met
+  `emptyLevelledProgress()`; de twee spelerroutes redirecten naar **`/register?next=…`** in
+  plaats van `/login`. **Een gast kan niets openen, ook het gratis examen niet** — het account
+  aanmaken *is* wat hier verkocht wordt, en een gratis examen dat zonder account opent laat
+  niets over om je voor aan te melden. `AppShell`/`PlatformSidebar` hadden de `isGuest`-stand al
+  uit de KNM-fork, dus er is geen tweede chrome bijgekomen.
+- **`.eq('level', null)` blijft de val**: gastprogressie komt uit `emptyLevelledProgress()`,
+  niet uit een query op een niet-bestaande gebruiker.
 
 **`components/horizon/LevelMark.tsx` is the A2/B1 mark, and it is deliberately not a
 `CategoryMark`.** A category mark names *a thing the product sells*; a level is a **property** of

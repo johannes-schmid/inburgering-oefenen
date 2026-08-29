@@ -39,15 +39,20 @@ test.describe('lezen taster', () => {
   test('withholds the score behind the e-mail step, and lets the visitor past it', async ({ page }) => {
     for (let i = 0; i < 10; i += 1) await answerAndAdvance(page);
 
-    // The gate. A percentage visible here would be the one thing this screen exists not to show.
+    // The gate. The score renders behind a blur rather than being withheld from the DOM, so
+    // what is asserted is that it is *unreadable and unreachable* — `.fp-locked` carries the
+    // blur, `pointer-events: none` and `aria-hidden`, and losing any of those hands the number
+    // to a cursor, a caret or a screen reader while the design still looks gated.
     const gate = page.locator('#fp-email');
     await expect(gate).toBeVisible({ timeout: 10000 });
-    await expect(page.locator('main')).not.toContainText('%');
+    await expect(page.locator('.fp-gauge')).toHaveClass(/fp-locked/);
+    await expect(page.locator('.fp-head')).toHaveAttribute('aria-hidden', 'true');
 
     // The skip link is deliberate and documented: withholding a result the visitor earned, with no
     // way out, is coercive and mostly harvests junk addresses. Do not delete this test to make a
     // "stronger" gate pass — that decision belongs to the owner.
     await page.getByRole('button', { name: /zonder e-mail|liever niet/i }).click();
+    await expect(page.locator('.fp-gauge')).not.toHaveClass(/fp-locked/);
     await expect(page.locator('main')).toContainText('%');
   });
 
@@ -58,14 +63,16 @@ test.describe('lezen taster', () => {
     await page.locator('form button[type="submit"]').click();
     await expect(page.locator('#fp-email-error')).toBeVisible();
     // Still gated: a failed submit must not reveal the score as a side effect.
-    await expect(page.locator('main')).not.toContainText('%');
+    await expect(page.locator('.fp-gauge')).toHaveClass(/fp-locked/);
   });
 
   test('ends on a route into the paid exams', async ({ page }) => {
     for (let i = 0; i < 10; i += 1) await answerAndAdvance(page);
     await page.getByRole('button', { name: /zonder e-mail|liever niet/i }).click();
 
-    await expect(page.locator('a[href*="/oefenexamen/a2/lezen"]').first()).toBeVisible();
+    // The exit is the portal itself: an anonymous visitor may browse it, and the account is
+    // asked for at the oefenexamen. Scoped to `main` — the chrome links the exams anyway.
+    await expect(page.locator('main a[href$="/dashboard"]').first()).toBeVisible();
   });
 });
 

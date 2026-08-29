@@ -1,10 +1,9 @@
 import type { Metadata } from 'next';
-import { redirect } from 'next/navigation';
 import { getTranslations } from 'next-intl/server';
 import { ArrowRight, BookText, Check, Clock, Layers, ListChecks, Lock, RotateCcw } from 'lucide-react';
 import { createClient } from '@/lib/supabase/server';
 import { ownsKnm } from '@/lib/entitlements';
-import { fetchPortalProgress, fetchPublishedExamNumbers } from '@/lib/portal-progress';
+import { emptyLevelledProgress, fetchPortalProgress, fetchPublishedExamNumbers } from '@/lib/portal-progress';
 import { FEATURES } from '@/lib/features';
 import { KNM, KNM_THEMES, formatCount, isFreeKnmExam } from '@/data/skills';
 import SkillIcon from '@/components/site/SkillIcon';
@@ -40,24 +39,26 @@ export default async function KnmExamsPage({ params }: Props) {
 
   const supabase = await createClient();
   const { data: { user } } = await supabase.auth.getUser();
-  if (!user) redirect(`/${locale}/login?next=/dashboard/knm`);
+  /** Browsable anonymously; the wall is the oefenexamen itself. See `dashboard/page.tsx`. */
+  const isGuest = !user;
+  const meta = user?.user_metadata ?? {};
 
-  const owns = ownsKnm(user.user_metadata);
+  const owns = ownsKnm(meta);
   const [progress, published] = await Promise.all([
-    fetchPortalProgress(user.id),
+    user ? fetchPortalProgress(user.id) : Promise.resolve(emptyLevelledProgress()),
     fetchPublishedExamNumbers(),
   ]);
 
   const p = progress.knm;
   const pub = published.knm;
-  const meta = user.user_metadata ?? {};
 
   return (
     <AppShell
       locale={locale}
-      email={user.email ?? ''}
+      email={user?.email ?? ''}
       avatarUrl={String(meta.avatar_url ?? meta.picture ?? '')}
       active="knm"
+      isGuest={isGuest}
     >
       <div className="px-5 py-7 sm:px-8 sm:py-10">
         <div className="max-w-3xl mx-auto">
@@ -135,10 +136,13 @@ export default async function KnmExamsPage({ params }: Props) {
               const done = p.exams[n];
               const isPublished = pub.has(n);
               const free = isFreeKnmExam(n);
-              const openable = isPublished && (free || owns);
+              // See the same branch in `dashboard/[level]/[skill]` — a guest opens nothing.
+              const openable = isPublished && !isGuest && (free || owns);
 
               const href = openable
                 ? `/${locale}/oefenexamen/knm/${n}`
+                : isGuest && isPublished
+                  ? `/${locale}/register?next=/oefenexamen/knm/${n}`
                 : isPublished
                   // The module id is the bare slug — KNM has no level to prefix it with.
                   ? `/${locale}/dashboard/pakketten?onderdeel=knm&vanaf=oefenexamen-${n}`

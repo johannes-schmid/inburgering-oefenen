@@ -217,6 +217,16 @@ function mcqItem(
     question: q.prompt,
     ...(q.image_url ? { questionImage: q.image_url } : {}),
     ...(q.prompt_audio_url ? { questionAudioSrc: q.prompt_audio_url } : {}),
+    // Per-option read-aloud audio. Keyed by letter rather than spread from the option row, so
+    // only the one field the taster plays crosses into a client component — the same discipline
+    // `lib/free-practice-b1.ts` records for `model_answer`.
+    ...(() => {
+      const optionAudio: Partial<Record<OptionKey, string>> = {};
+      for (const [key, o] of [['A', a], ['B', b], ['C', c], ['D', d]] as const) {
+        if (o?.audio_url) optionAudio[key as OptionKey] = o.audio_url;
+      }
+      return Object.keys(optionAudio).length ? { optionAudio } : {};
+    })(),
     optionA: a.body,
     optionB: b.body,
     optionC: c.body,

@@ -179,11 +179,18 @@ test.describe('exam overviews', () => {
 });
 
 test.describe('the exam player is gated', () => {
-  test('an anonymous visitor is sent to login, even for the free exam', async ({ page }) => {
+  test('an anonymous visitor is sent to register, even for the free exam', async ({ page }) => {
     // Exam 1 is free, but free means "free with an account": results have to be attributable for
-    // progress and grading to mean anything.
+    // progress and grading to mean anything. The player is the conversion wall — the portal
+    // around it is browsable without an account, so this redirect goes to /register, not /login.
     await page.goto('/nl/oefenexamen/a2/lezen/1');
-    await expect(page).toHaveURL(/\/login/);
+    await expect(page).toHaveURL(/\/register\?next=/);
+  });
+
+  test('the portal itself is browsable without an account', async ({ page }) => {
+    await page.goto('/nl/dashboard');
+    await expect(page).toHaveURL(/\/dashboard$/);
+    await expect(page.locator('a[href*="/register"]').first()).toBeVisible();
   });
 });
 

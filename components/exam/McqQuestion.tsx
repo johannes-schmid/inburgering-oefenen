@@ -2,6 +2,16 @@
 
 import { Check, X } from 'lucide-react';
 import AudioPlayer from './AudioPlayer';
+import { useReadAloud } from '@/components/proefexamen/useReadAloud';
+import { useAudioEnabled } from '@/lib/audio-pref';
+import {
+  EqBars,
+  HighlightedText,
+  ReadAloudPill,
+  readingBadgeStyle,
+  readingOptionStyle,
+} from './ReadAloud';
+import { OPTION_RATE } from '@/data/free-practice';
 import type { OptionItem, QuestionItem } from '@/lib/exam-content';
 
 type Props = {
@@ -14,6 +24,15 @@ type Props = {
   /** Reveal correct/incorrect and the explanation immediately (practice mode). */
   showFeedback: boolean;
   sectionName?: string;
+  /**
+   * Read the question and every answer aloud, in sequence, with the spoken word marked.
+   *
+   * Opt-in per caller and **KNM-only in practice**: it needs `question_options.audio_url`,
+   * which is populated for KNM's bank and for nothing else, and auto-reading a Luisteren
+   * question would speak over the fragment the item is testing. `ExamShell` therefore passes
+   * it on the standalone branch only. Off by default, so Lezen/Luisteren/B1 are untouched.
+   */
+  readAloud?: boolean;
 };
 
 /**
@@ -29,11 +48,31 @@ export default function McqQuestion({
   onSelect,
   showFeedback,
   sectionName,
+  readAloud = false,
 }: Props) {
   const answered = chosenId !== null;
   const correct = q.options.find(o => o.is_correct) ?? null;
   const gotItRight = answered && correct?.id === chosenId;
   const isGrid = q.option_layout !== 'text';
+
+  /**
+   * The read-aloud sequence, index-aligned with `[prompt, ...options]` — so `activeSeg === 0` is
+   * the question and `activeSeg === i + 1` is option *i*, which is what lets the option being
+   * spoken glow. `useReadAloud` keys its autoplay on the segment urls, so advancing to the next
+   * question stops the previous clip and starts the new one with nothing wired here.
+   *
+   * The hook is called unconditionally (rules of hooks) and handed an empty array when the
+   * caller has not opted in, which leaves it idle.
+   */
+  const segments = readAloud
+    ? [
+        { url: q.prompt_audio_url, text: q.prompt },
+        ...q.options.map(o => ({ url: o.audio_url, text: o.body ?? '', rate: OPTION_RATE })),
+      ]
+    : [];
+  const [audioEnabled] = useAudioEnabled();
+  const { reading, activeSeg, activeWord, toggle } = useReadAloud(segments, audioEnabled);
+  const hasReadAloud = segments.some(s => s.url);
 
   return (
     <div
@@ -56,16 +95,26 @@ export default function McqQuestion({
         )}
       </div>
 
-      <h2
-        className="font-headline font-bold text-on-surface mb-4"
-        style={{ fontSize: '1.15rem', lineHeight: 1.35, letterSpacing: '-0.01em', textWrap: 'balance' }}
-      >
-        {q.prompt}
-      </h2>
+      <div className="flex items-start justify-between gap-3 mb-4">
+        <h2
+          className="font-headline font-bold text-on-surface m-0 flex-1"
+          style={{ fontSize: '1.15rem', lineHeight: 1.35, letterSpacing: '-0.01em', textWrap: 'balance' }}
+        >
+          {hasReadAloud
+            ? <HighlightedText text={q.prompt} reading={reading} activeSeg={activeSeg} thisSeg={0} activeWord={activeWord} />
+            : q.prompt}
+        </h2>
+        {hasReadAloud && (
+          <div className="flex-shrink-0">
+            <ReadAloudPill reading={reading} onToggle={toggle} readLabel="Lees voor" stopLabel="Stop" />
+          </div>
+        )}
+      </div>
 
       {/* On Luisteren the question itself is spoken — a second player, independent of the
-          stimulus fragment above it. */}
-      {q.prompt_audio_url && (
+          stimulus fragment above it. Hidden where read-aloud is on: it is the same recording
+          the sequence already plays, and two controls for one clip invite starting both. */}
+      {q.prompt_audio_url && !hasReadAloud && (
         <div className="mb-4">
           <AudioPlayer src={q.prompt_audio_url} label="Vraag beluisteren" compact />
         </div>
@@ -84,7 +133,7 @@ export default function McqQuestion({
         role="radiogroup"
         aria-label={q.prompt}
       >
-        {q.options.map(o => (
+        {q.options.map((o, i) => (
           <OptionButton
             key={o.id}
             option={o}
@@ -94,6 +143,11 @@ export default function McqQuestion({
             isCorrect={o.is_correct}
             reveal={answered && showFeedback}
             onSelect={() => onSelect(o)}
+            /* Segment 0 is the prompt, so this option is segment i + 1. */
+            beingRead={hasReadAloud && reading && activeSeg === i + 1}
+            /* Dropped once answered: the sequence reads on past the click, and a clay word-mark
+               inside a revealed verdict row overpaints it. */
+            highlight={hasReadAloud && !answered ? { activeSeg, activeWord, thisSeg: i + 1, reading } : undefined}
           />
         ))}
       </div>
@@ -134,6 +188,8 @@ function OptionButton({
   isCorrect,
   reveal,
   onSelect,
+  beingRead = false,
+  highlight,
 }: {
   option: OptionItem;
   layout: 'text' | 'image' | 'image_grid';
@@ -142,6 +198,10 @@ function OptionButton({
   isCorrect: boolean;
   reveal: boolean;
   onSelect: () => void;
+  /** This option is the one currently being read aloud. */
+  beingRead?: boolean;
+  /** Present only when read-aloud is on: which word of which segment is being spoken. */
+  highlight?: { activeSeg: number; activeWord: number; thisSeg: number; reading: boolean };
 }) {
   /**
    * §7.2 / §5: an answer option is a `surface-container-low` **fill**, and every state is
@@ -156,6 +216,13 @@ function OptionButton({
   if (chosen && !reveal) {
     surface = { background: 'rgba(0,43,109,0.05)', boxShadow: 'var(--ring-selected)' };
     badge = { background: '#002b6d', color: '#fff' };
+  }
+  /* Read-aloud state is applied before the reveal branches below, so **answer state wins**:
+     a revealed correct/wrong option keeps its verdict colour even while it is spoken. A
+     highlight overpainting a verdict is the one thing this must never do. */
+  if (beingRead && !answered) {
+    surface = readingOptionStyle();
+    badge = readingBadgeStyle();
   }
   if (reveal && isCorrect) {
     surface = { background: 'var(--color-correct-container)', boxShadow: 'inset 0 0 0 2px rgba(14,122,75,0.45)' };
@@ -209,8 +276,14 @@ function OptionButton({
         <span
           className={`text-sm leading-relaxed text-on-surface ${layout === 'text' ? 'flex-1' : ''}`}
         >
-          {o.body}
+          {highlight
+            ? <HighlightedText text={o.body} reading={highlight.reading} activeSeg={highlight.activeSeg} thisSeg={highlight.thisSeg} activeWord={highlight.activeWord} />
+            : o.body}
         </span>
+      )}
+
+      {beingRead && !answered && (
+        <span className="flex-shrink-0" style={{ color: '#d94f00' }}><EqBars size={14} /></span>
       )}
 
       <style>{`

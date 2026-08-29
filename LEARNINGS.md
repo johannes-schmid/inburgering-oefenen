@@ -2938,3 +2938,33 @@ re-mint the auth cookie rather than reusing one from an earlier session.
 **Outcome:** SUCCESS
 **What worked / went wrong:** Beslissing eigenaar — de kleiaccent op een nagekeken antwoord las als "kijk hier", niet als een oordeel, en botste met het oranje van de voortgangsbalk en de CTA in hetzelfde beeld. `ExamQuestionCard` gebruikte al groen, maar los Tailwind-groen (#22c55e); dat is nu hetzelfde token. Fout blijft `--color-error`, en de Check/X blijft de betekenis dragen.
 **Lesson:** Als een designregel wordt teruggedraaid, doe het via een token en niet via losse hexwaarden — anders staan er over een half jaar weer drie groenen op drie schermen.
+
+## 2026-08-29 — dev state toolbar (local only)
+**Changed:** `lib/dev-tools.ts` (guard + entitlement presets + screen links), `app/api/dev/portal-state/route.ts` (GET state / POST preset), `components/dev/DevStateBar.tsx`, mounted in `(main)` and `(app)` layouts behind `devToolsEnabled()`.
+**Outcome:** SUCCESS — `tsc` and `next build` clean, pill renders on `/nl`, the API 401s without a session and 404s outside a local build.
+**What worked:** ported the shape from `knm-website`, but the presets had to be re-modelled onto this project's per-module entitlement (`user_metadata.modules` + `modules_until`) instead of the KNM `plan` tiers.
+**Lesson:** `updateUserById` merges `user_metadata`, so a preset must write every key it controls — `modules_until: null` explicitly, or the "expired" preset sticks for every later preset.
+
+## 2026-08-29 — dev toolbar became flow jumps, not a link list
+**Changed:** `lib/dev-tools.ts` (`DEV_FLOWS` + `DEV_FLOW_PARAM`), `components/dev/DevStateBar.tsx`, and `?devFlow=` readers in `components/exam/ExamShell.tsx` and `oefenen/[skill]/FreePracticeEngine.tsx`.
+**Outcome:** SUCCESS — verified with screenshots: taster 30% result, KNM uitslag 12/40 with the 43-way breakdown, mid-exam at 21/40.
+**What worked:** seeding the *answers* and moving the phase, never calling `submitExam` — the result screens derive score, verdict and breakdown from state, so they render for real without writing an attempt or paying the grader.
+**What went wrong:** the flows pointed at A2 Lezen 1, which has no items on this database (only KNM is seeded locally) — the player renders "nog geen opgaven", which reads as a broken jump. KNM leads now and the rest say they need seeded content.
+**Lesson:** a dev jump into a data-backed screen is only as good as the local dataset; point the default at content that is actually seeded, and say so on the ones that are not.
+
+## 2026-08-29 — KNM leest zichzelf voor, in de taster én in de speler
+**Changed:** `components/exam/ReadAloud.tsx` (nieuw — `HighlightedText`, `EqBars`, `AudioPrefRow`, `ReadAloudPill`, `readingOptionStyle/BadgeStyle`), de "Read-aloud kit" in `app/globals.css`, `optionAudio` + `readAloudSegments()` in `data/free-practice.ts`, het vullen ervan in `lib/free-practice-db.ts`, de onboarding en het voorlezen in `app/[locale]/(main)/oefenen/[skill]/FreePracticeEngine.tsx`, `readAloud`-prop in `components/exam/McqQuestion.tsx`, de KNM-tak + intro in `components/exam/ExamShell.tsx`, negen `readaloud_*`-sleutels in nl/en/ar.
+**Outcome:** SUCCESS — `tsc` schoon, `next build` schoon, 274 unit tests groen, `public.spec.js` + `free-practice.spec.js` volledig groen; met screenshots gecontroleerd op 390/900/1440 in de taster en in de betaalde speler.
+**What worked:** de *engine* hoefde niet geport te worden. `components/proefexamen/useReadAloud.ts` en `lib/audio-pref.ts` stonden al in dit repo (meegekomen met de KNM-fork) en waren ongebruikt; de hook is index-generiek (`activeSeg` is alleen een arraypositie), dus vier opties werken zonder wijziging. Alleen de *presentatie* was nog pre-Horizon inline hex — die is één module geworden.
+**What went wrong (drie dingen die alleen een screenshot of een DOM-probe vond):**
+1. Elke `<style>`-blok van de kit stond *binnen* een button of binnen de vraagtekst. Een `<style>`-element draagt zijn CSS-broncode bij aan `textContent` en dus aan de accessible name — een screenreader las een media query voor als deel van een antwoord. Mijn probe las `pill.textContent` en gaf de hele media query terug; dat is hoe het opviel. Alle CSS staat nu in `globals.css`.
+2. De onboardingrij was op 390px onleesbaar: icoon + sample-knop + switch lieten ~90px over voor de beschrijving, die naar vijf regels wikkelde. Nu `flex-wrap` met de controls op hun eigen regel.
+3. De woordmarkering bleef staan op een al beantwoord antwoord: de reeks leest door na de klik, dus er stond een kleikleurig kader ín de groene "Goed"-rij. De *surface* had ik wel afgeschermd (antwoordstaat wint), de *woordmarkering* niet.
+**Lesson:** een read-aloud-highlight en een nakijkverdict vechten om dezelfde rij, en er zijn twee lagen om af te schermen — de achtergrond én de woordmarkering. Schermde je er één af, dan lijkt het klaar. En: zet nooit een `<style>` binnen een interactief element; wat je niet ziet, leest een screenreader wél voor.
+**Note:** `portal.spec.js` (5) faalt met én zonder deze wijziging — vier op B1-fixtures die lokaal geen items hebben, en de anonieme-redirect-test op de nog niet-gecommitte dev-tools uit een eerdere sessie van vandaag (`devToolsEnabled()` in beide layouts). Niet door deze wijziging veroorzaakt; met `git stash` geverifieerd.
+
+## 2026-08-29 — De taster eindigt op één resultaatkaart, en het portaal is zonder account te bekijken
+**Changed:** `FreePracticeEngine.tsx` (gate-fase weg, één KNM-vormige resultaatkaart met blur-poort en `SlaagkansGauge`), `lib/practice-result.ts` (nieuw), de drie dashboard-pagina's en de twee spelerpagina's in `(app)`, `messages/{nl,en,ar}.json`, `tests/free-practice.spec.js`, `tests/public.spec.js`.
+**Outcome:** SUCCESS — tsc, `next build`, 274 unit tests en de e2e-suite groen; geverifieerd met `check-ui.mjs` op `?devFlow=gate|results_pass|results_fail` en op `/nl/dashboard` als gast.
+**What worked / went wrong:** De blur-poort houdt de score in de DOM, dus de e2e-assertie `not.toContainText('%')` was niet langer een test van iets. Vervangen door een assertie op `.fp-locked` én op `aria-hidden` — een visueel geblurde score die een screenreader nog voorleest is helemaal niet achtergehouden. `AppShell`/`PlatformSidebar` bleken de `isGuest`-stand al te hebben (overgebleven uit de KNM-fork), dus de gastmodus was drie pagina's aanpassen en geen nieuwe chrome.
+**Lesson:** Als een poort van "weglaten" naar "onleesbaar maken" gaat, verhuist de test mee naar het mechanisme (blur + pointer-events + aria-hidden) — een assertie op afwezige tekst slaagt dan voor de verkeerde reden.

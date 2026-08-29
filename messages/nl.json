@@ -330,6 +330,15 @@
     "start_btn": "Begin met oefenen",
     "switch_skill": "Ander onderdeel kiezen",
     "audio_hint": "Zet je geluid aan of gebruik een koptelefoon — bij elke vraag hoor je een gesprek.",
+    "readaloud_heading": "Vragen voorlezen",
+    "readaloud_on_desc": "Elke vraag en elk antwoord wordt automatisch voorgelezen.",
+    "readaloud_off_desc": "Zet dit aan om elke vraag te laten voorlezen.",
+    "readaloud_sample": "Beluister",
+    "readaloud_sample_stop": "Stop",
+    "readaloud_turn_on": "Voorlezen aanzetten",
+    "readaloud_turn_off": "Voorlezen uitzetten",
+    "readaloud_read": "Lees voor",
+    "readaloud_stop": "Stop",
     "q_progress": "Vraag {current} van {total}",
     "q_done": "{pct}% voltooid",
     "next_btn": "Volgende vraag",
@@ -405,7 +414,19 @@
     "row_account": "2 opdrachten gratis nagekeken",
     "docent_note": "Alle opgaven gecontroleerd door een NT2-docent",
     "track_soon": "Binnenkort",
-    "row_account_badge": "Account"
+    "row_account_badge": "Account",
+    "result_score_eyebrow": "Je resultaat · {score} van {total} goed",
+    "potential_headline": "Je slaagkans kan naar",
+    "gauge_now": "Nu",
+    "legend_now": "Nu {pct}%",
+    "legend_potential": "Mogelijk {pct}%",
+    "weak_intro": "Je liet punten liggen op {topics}. Met een gratis account oefen je daar gericht verder.",
+    "weak_none": "Alles goed — sterk begin. Met een gratis account houd je dit niveau vast tot je examen.",
+    "email_cta_locked": "Vul je e-mailadres in en bekijk je uitslag",
+    "email_cta_after": "Liever je rapport ook per e-mail?",
+    "platform_cta": "Verder oefenen op het platform",
+    "platform_note": "Gratis account · oefenexamen 1 van elk onderdeel is gratis",
+    "email_send": "Stuur op"
   },
   "activate": {
     "back": "Terug naar dashboard",
@@ -877,7 +898,9 @@
     "level_section": "Niveau {level}",
     "level_section_sub": "Alle vier de onderdelen op {level}-niveau",
     "knm_section": "KNM",
-    "knm_section_sub": "Kennis van de Nederlandse Maatschappij — één examen, voor elk taalniveau."
+    "knm_section_sub": "Kennis van de Nederlandse Maatschappij — één examen, voor elk taalniveau.",
+    "guest_upsell_title": "Maak een gratis account",
+    "guest_upsell_body": "Bekijk hier alles wat het platform heeft. Om een oefenexamen te doen — ook het gratis exemplaar — maak je eerst een account aan."
   },
   "guides": {
     "reading_time": "{minutes} min lezen",

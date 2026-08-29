@@ -3,6 +3,7 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { ArrowLeft, ArrowRight, Check, Clock, FileCheck2, X } from 'lucide-react';
 import { HorizonBanner } from '@/components/horizon';
+import { AudioPrefRow } from './ReadAloud';
 import { Link } from '@/i18n/navigation';
 import { createClient } from '@/lib/supabase/client';
 import { completeExamAttempt, startExamAttempt } from '@/lib/attempts';
@@ -25,6 +26,8 @@ import RubricFeedback, {
   type FeedbackHighlight,
   type RubricFeedbackState,
 } from './RubricFeedback';
+
+import { DEV_FLOW_PARAM, devToolsEnabled, examFlow } from '@/lib/dev-tools';
 
 type Phase = 'intro' | 'part' | 'exam' | 'results';
 
@@ -194,6 +197,59 @@ export default function ExamShell({ content, canSeeExplanations }: Props) {
       setUserId(session?.user?.id ?? null);
     });
   }, [supabase]);
+
+  /**
+   * Local-only: jump into the middle of a sitting or straight onto the result screen.
+   *
+   * It fills `chosen` / `written` / `spoken` and moves the phase — it never calls
+   * `submitExam`, so nothing is written to `exam_attempts`, `user_question_results` or the
+   * grader. The result screen derives its score, verdict and per-tekstsoort breakdown from
+   * those answers, so seeding them is what makes the screen real rather than mocked.
+   *
+   * `devToolsEnabled()` is false in any production build, which makes the param inert there.
+   */
+  useEffect(() => {
+    if (!devToolsEnabled()) return;
+    const flow = examFlow(new URLSearchParams(window.location.search).get(DEV_FLOW_PARAM));
+    if (!flow || steps.length === 0) return;
+
+    if (flow === 'results_empty') {
+      // Ingeleverd, nog niet nagekeken — the state an open skill sits in between submitting
+      // and the grader coming back. No recording is invented: a Blob nobody can play back is
+      // worse than an obviously empty one.
+      setWritten(Object.fromEntries(tasks.map(t => [
+        t.id,
+        { text: 'Beste meneer De Vries,\n\nIk schrijf u over de cursus van volgende week. Ik kan helaas niet komen omdat ik moet werken.\n\nMet vriendelijke groet,\nSam', json: null },
+      ])));
+      setSpoken({});
+      setPhase('results');
+      return;
+    }
+
+    const wantPct = flow === 'results_fail' ? 30 : 85;
+    const answered = flow === 'mid' ? Math.floor(steps.length / 2) : steps.length;
+    const picks: Record<number, OptionItem> = {};
+    steps.forEach((step, i) => {
+      if (step.kind !== 'mcq' || i >= answered) return;
+      const opts = step.question.options;
+      if (opts.length === 0) return;
+      const wantCorrect = (i * 100) / answered < wantPct;
+      const pick = wantCorrect
+        ? opts.find(o => o.is_correct) ?? opts[0]
+        : opts.find(o => !o.is_correct) ?? opts[0];
+      picks[step.question.id] = pick;
+    });
+    setChosen(picks);
+
+    if (flow === 'mid') {
+      // No timer is started: a dev jump is for looking at the screen, and a running clock
+      // would auto-submit real rows out from under it.
+      setIdx(answered);
+      setPhase('exam');
+    } else {
+      setPhase('results');
+    }
+  }, [steps, tasks]);
 
   const stopTimer = useCallback(() => {
     if (timerRef.current) { clearInterval(timerRef.current); timerRef.current = null; }
@@ -484,6 +540,8 @@ export default function ExamShell({ content, canSeeExplanations }: Props) {
         content={content}
         totalItems={totalItems}
         isOpenSkill={isOpenSkill}
+        /* The read-aloud onboarding, KNM only — see `readAloud` on `McqQuestion` below. */
+        readAloudSample={exam.skill === 'knm' ? (content.standalone.find(q => q.prompt_audio_url)?.prompt_audio_url ?? null) : null}
         feedbackMode={feedbackMode}
         onFeedbackModeChange={setFeedbackMode}
         onStart={() => void startExam()}
@@ -559,6 +617,9 @@ export default function ExamShell({ content, canSeeExplanations }: Props) {
               onSelect={o => setChosen(prev => ({ ...prev, [step.question.id]: o }))}
               showFeedback={false}
               sectionName={step.question.section_id ? sectionNames[step.question.section_id] : undefined}
+              /* KNM only. Its bank is the one with per-option audio, and reading a Luisteren
+                 question aloud would speak over the fragment the item tests. */
+              readAloud={exam.skill === 'knm'}
             />
           </div>
         ) : step.kind === 'mcq' ? (
@@ -990,6 +1051,7 @@ function ExamIntroScreen({
   content,
   totalItems,
   isOpenSkill,
+  readAloudSample,
   feedbackMode,
   onFeedbackModeChange,
   onStart,
@@ -998,6 +1060,14 @@ function ExamIntroScreen({
   totalItems: number;
   /** Only the rubric skills have per-answer feedback to withhold, so only they get the choice. */
   isOpenSkill: boolean;
+  /**
+   * A question clip to offer as a sample, or null where this onderdeel has no read-aloud.
+   *
+   * Non-null is what puts the autoplay question on the start screen. Pressing the sample is
+   * also the gesture that unlocks programmatic playback for the whole sitting — without it the
+   * first question is silent and reads as broken.
+   */
+  readAloudSample: string | null;
   feedbackMode: FeedbackMode;
   onFeedbackModeChange: (mode: FeedbackMode) => void;
   onStart: () => void;
@@ -1043,6 +1113,21 @@ function ExamIntroScreen({
           NT2-docent.
         </p>
       </div>
+
+      {readAloudSample && !empty && (
+        <AudioPrefRow
+          sampleUrl={readAloudSample}
+          labels={{
+            heading: 'Vragen voorlezen',
+            onDesc: 'Elke vraag en elk antwoord wordt automatisch voorgelezen.',
+            offDesc: 'Zet dit aan om elke vraag te laten voorlezen.',
+            playSample: 'Beluister',
+            stopSample: 'Stop',
+            turnOn: 'Voorlezen aanzetten',
+            turnOff: 'Voorlezen uitzetten',
+          }}
+        />
+      )}
 
       {isOpenSkill && !empty && (
         <fieldset className="rounded-2xl bg-surface-container-lowest border-0 m-0" style={{ padding: '1.375rem 1.5rem', boxShadow: 'var(--shadow-ambient)' }}>

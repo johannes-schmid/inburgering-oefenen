@@ -330,6 +330,15 @@
     "start_btn": "Start practising",
     "switch_skill": "Choose another part",
     "audio_hint": "Turn your sound on or use headphones — every question has a conversation to listen to.",
+    "readaloud_heading": "Read questions aloud",
+    "readaloud_on_desc": "Every question and answer is read aloud automatically.",
+    "readaloud_off_desc": "Turn this on to have every question read aloud.",
+    "readaloud_sample": "Listen",
+    "readaloud_sample_stop": "Stop",
+    "readaloud_turn_on": "Turn reading aloud on",
+    "readaloud_turn_off": "Turn reading aloud off",
+    "readaloud_read": "Read aloud",
+    "readaloud_stop": "Stop",
     "q_progress": "Question {current} of {total}",
     "q_done": "{pct}% complete",
     "next_btn": "Next question",
@@ -405,7 +414,19 @@
     "row_account": "2 tasks marked free",
     "docent_note": "Every task checked by a certified NT2 teacher",
     "track_soon": "Coming soon",
-    "row_account_badge": "Account"
+    "row_account_badge": "Account",
+    "result_score_eyebrow": "Your result · {score} of {total} correct",
+    "potential_headline": "Your chance of passing can reach",
+    "gauge_now": "Now",
+    "legend_now": "Now {pct}%",
+    "legend_potential": "Possible {pct}%",
+    "weak_intro": "You lost points on {topics}. With a free account you can practise exactly those.",
+    "weak_none": "All correct — a strong start. With a free account you keep this level up to your exam.",
+    "email_cta_locked": "Enter your email address to see your result",
+    "email_cta_after": "Would you like your report by email too?",
+    "platform_cta": "Keep practising on the platform",
+    "platform_note": "Free account · practice exam 1 of every component is free",
+    "email_send": "Send"
   },
   "activate": {
     "back": "Back to dashboard",
@@ -877,7 +898,9 @@
     "level_section": "Level {level}",
     "level_section_sub": "All four parts at {level} level",
     "knm_section": "KNM",
-    "knm_section_sub": "Knowledge of Dutch Society — one exam, for every language level."
+    "knm_section_sub": "Knowledge of Dutch Society — one exam, for every language level.",
+    "guest_upsell_title": "Create a free account",
+    "guest_upsell_body": "Browse everything the platform offers. To sit a practice exam — the free one included — you first create an account."
   },
   "guides": {
     "reading_time": "{minutes} min read",

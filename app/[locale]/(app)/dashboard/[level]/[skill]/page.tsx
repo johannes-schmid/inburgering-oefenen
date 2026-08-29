@@ -1,10 +1,10 @@
 import type { Metadata } from 'next';
-import { notFound, redirect } from 'next/navigation';
+import { notFound } from 'next/navigation';
 import { getTranslations } from 'next-intl/server';
 import { ArrowRight, Check, Lock, Clock, ListChecks, RotateCcw } from 'lucide-react';
 import { createClient } from '@/lib/supabase/server';
 import { ownsModule } from '@/lib/entitlements';
-import { fetchPortalProgress, fetchPublishedExamNumbers } from '@/lib/portal-progress';
+import { emptyLevelledProgress, fetchPortalProgress, fetchPublishedExamNumbers } from '@/lib/portal-progress';
 import { formatCount, getSkillAtLevel, isFreeExam, isLevel } from '@/data/skills';
 import SkillIcon from '@/components/site/SkillIcon';
 import CriterionProgress from '@/components/exam/CriterionProgress';
@@ -43,35 +43,37 @@ export default async function SkillExamsPage({ params }: Props) {
 
   const supabase = await createClient();
   const { data: { user } } = await supabase.auth.getUser();
-  if (!user) redirect(`/${locale}/login?next=/dashboard/${level}/${skill.slug}`);
+  /** Browsable anonymously; the wall is the oefenexamen itself. See `dashboard/page.tsx`. */
+  const isGuest = !user;
+  const meta = user?.user_metadata ?? {};
 
   // Per-onderdeel ownership, not "has any paid plan". The dashboard overview already read it this
   // way, so the two screens disagreed: the card said the module was owned and its ten slots all
   // showed locked.
-  const ownsThisSkill = ownsModule(user.user_metadata, level, skill.slug);
+  const ownsThisSkill = ownsModule(meta, level, skill.slug);
   const [progress, published] = await Promise.all([
-    fetchPortalProgress(user.id),
+    user ? fetchPortalProgress(user.id) : Promise.resolve(emptyLevelledProgress()),
     fetchPublishedExamNumbers(),
   ]);
 
   const p = progress[level][skill.slug];
   const pub = published[level][skill.slug];
-  const meta = user.user_metadata ?? {};
   const isRubric = skill.scoring === 'open';
 
   // Only the two rubric skills have criteria to chart. `fetchCriterionSeries` returns [] until the
   // candidate has a graded answer, and CriterionProgress renders nothing for an empty series — so
   // this is quiet rather than an empty-state box on a page the candidate has just opened.
-  const criterionSeries = isRubric
+  const criterionSeries = isRubric && user
     ? await fetchCriterionSeries(user.id, skill.slug as 'schrijven' | 'spreken')
     : [];
 
   return (
     <AppShell
       locale={locale}
-      email={user.email ?? ''}
+      email={user?.email ?? ''}
       avatarUrl={String(meta.avatar_url ?? meta.picture ?? '')}
       active={skill.slug}
+      isGuest={isGuest}
     >
       <div className="px-5 py-7 sm:px-8 sm:py-10">
         <div className="max-w-3xl mx-auto">
@@ -129,10 +131,15 @@ export default async function SkillExamsPage({ params }: Props) {
               const done = p.exams[n];
               const isPublished = pub.has(n);
               const free = isFreeExam(level, n);
-              const openable = isPublished && (free || ownsThisSkill);
+              // A guest can open nothing, the free slot included: creating the account *is*
+              // the step being sold here, and a free exam that opened without one would
+              // leave nothing to sign up for.
+              const openable = isPublished && !isGuest && (free || ownsThisSkill);
 
               const href = openable
                 ? `/${locale}/oefenexamen/${level}/${skill.slug}/${n}`
+                : isGuest && isPublished
+                  ? `/${locale}/register?next=/oefenexamen/${level}/${skill.slug}/${n}`
                 : isPublished
                   // `onderdeel` carries the full module id, so the picker preselects the
                   // right level's module rather than defaulting to A2's.

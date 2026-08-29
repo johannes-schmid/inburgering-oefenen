@@ -1,10 +1,9 @@
 import type { Metadata } from 'next';
-import { redirect } from 'next/navigation';
 import { getTranslations } from 'next-intl/server';
 import { ArrowRight, Lock } from 'lucide-react';
 import { createClient } from '@/lib/supabase/server';
 import { ownsKnm, ownsModule, planFromMetadata } from '@/lib/entitlements';
-import { fetchPortalProgress, fetchPublishedExamNumbers } from '@/lib/portal-progress';
+import { emptyLevelledProgress, fetchPortalProgress, fetchPublishedExamNumbers } from '@/lib/portal-progress';
 import {
   DEFAULT_LEVEL,
   KNM,
@@ -42,12 +41,21 @@ export default async function DashboardPage({ params }: { params: Promise<{ loca
 
   const supabase = await createClient();
   const { data: { user } } = await supabase.auth.getUser();
-  if (!user) redirect(`/${locale}/login?next=/dashboard`);
 
-  const plan = planFromMetadata(user.user_metadata);
+  /**
+   * An anonymous visitor browses the portal rather than being bounced to /login.
+   *
+   * The wall is one step further in — at the oefenexamen itself, which redirects to
+   * /register. Sending them away from the catalogue was asking for the account before they
+   * had seen what the account is for; the free taster's CTA now lands here.
+   */
+  const isGuest = !user;
+  const userMeta = user?.user_metadata ?? {};
+
+  const plan = planFromMetadata(userMeta);
   const hasPaidPlan = plan !== 'free';
   const [progress, published] = await Promise.all([
-    fetchPortalProgress(user.id),
+    user ? fetchPortalProgress(user.id) : Promise.resolve(emptyLevelledProgress()),
     fetchPublishedExamNumbers(),
   ]);
 
@@ -72,7 +80,7 @@ export default async function DashboardPage({ params }: { params: Promise<{ loca
     if (level === DEFAULT_LEVEL) return true;
     const anyPublished = SKILLS.some(s => published[level][s.slug].size > 0);
     const anySat = SKILLS.some(s => progress[level][s.slug].examsDone > 0);
-    const anyOwned = SKILLS.some(s => ownsModule(user.user_metadata, level, s.slug));
+    const anyOwned = SKILLS.some(s => ownsModule(userMeta, level, s.slug));
     return anyPublished || anySat || anyOwned;
   });
 
@@ -82,13 +90,14 @@ export default async function DashboardPage({ params }: { params: Promise<{ loca
     0,
   );
   const knmProgress = progress.knm;
-  const meta = user.user_metadata ?? {};
+  const meta = userMeta;
   const firstName = String(meta.full_name ?? meta.name ?? '').trim().split(' ')[0];
 
   return (
     <AppShell
       locale={locale}
-      email={user.email ?? ''}
+      email={user?.email ?? ''}
+      isGuest={isGuest}
       avatarUrl={String(meta.avatar_url ?? meta.picture ?? '')}
       active="overview"
     >
@@ -218,7 +227,7 @@ export default async function DashboardPage({ params }: { params: Promise<{ loca
               a KNM tile in it would make that heading false and put KNM in a bundle that does
               not include it. Shown whenever it has content, a sitting, or a purchase — the
               same test the second level passes. */}
-          {(published.knm.size > 0 || knmProgress.examsDone > 0 || ownsKnm(user.user_metadata)) && (
+          {(published.knm.size > 0 || knmProgress.examsDone > 0 || ownsKnm(userMeta)) && (
             <section className="mt-10">
               <header className="mb-4">
                 <h2
@@ -300,18 +309,23 @@ export default async function DashboardPage({ params }: { params: Promise<{ loca
             </section>
           )}
 
+          {/* A guest is sold the account, not the modules: the paid pitch below is the wrong
+              next step for someone who cannot yet open the free exam. */}
           {!hasPaidPlan && (
             <aside className="upsell mt-8">
               <div className="min-w-0">
                 <h2 className="font-headline font-extrabold text-white" style={{ fontSize: '1.05rem', letterSpacing: '-0.015em' }}>
-                  {t('upsell_title')}
+                  {isGuest ? t('guest_upsell_title') : t('upsell_title')}
                 </h2>
                 <p className="text-[0.85rem] mt-1" style={{ color: 'rgba(255,255,255,0.72)', lineHeight: 1.65 }}>
-                  {t('upsell_body', { total: totalExams })}
+                  {isGuest ? t('guest_upsell_body') : t('upsell_body', { total: totalExams })}
                 </p>
               </div>
-              <a href={`/${locale}/dashboard/pakketten?vanaf=portaal`} className="upsell-cta no-underline">
-                {t('upsell_cta')}
+              <a
+                href={isGuest ? `/${locale}/register?next=/dashboard` : `/${locale}/dashboard/pakketten?vanaf=portaal`}
+                className="upsell-cta no-underline"
+              >
+                {isGuest ? t('guest_create_account') : t('upsell_cta')}
                 <ArrowRight size={16} strokeWidth={2.4} />
               </a>
             </aside>

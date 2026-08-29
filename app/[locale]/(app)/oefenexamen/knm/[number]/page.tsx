@@ -30,7 +30,9 @@ export default async function KnmExamPage({ params }: Props) {
 
   const supabase = await createClient();
   const { data: { user } } = await supabase.auth.getUser();
-  if (!user) redirect(`/${locale}/login?next=/oefenexamen/knm/${number}`);
+  // The conversion wall: an anonymous visitor may browse the portal, but sitting an
+  // oefenexamen — the free one included — needs an account.
+  if (!user) redirect(`/${locale}/register?next=/oefenexamen/knm/${number}`);
 
   const content = await fetchExamContent(null, 'knm', number);
   if (!content) notFound();

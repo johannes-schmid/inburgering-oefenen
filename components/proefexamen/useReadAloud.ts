@@ -10,7 +10,14 @@ export type ReadAloudState = {
   stop: () => void;
 };
 
-type Segment = { url: string | null | undefined; text: string };
+/**
+ * `rate` is `playbackRate` for this segment, default 1.
+ *
+ * It is per segment rather than per hook because the question and the answers want different
+ * speeds: the vraag is what has to be understood, the antwoorden are short and are read at pace
+ * so the candidate is not waiting through three of them. See `OPTION_RATE` in the callers.
+ */
+type Segment = { url: string | null | undefined; text: string; rate?: number };
 
 export function useReadAloud(segments: Segment[], enabled: boolean): ReadAloudState {
   const [reading, setReading] = useState(false);
@@ -31,6 +38,25 @@ export function useReadAloud(segments: Segment[], enabled: boolean): ReadAloudSt
   // closes over a stale question.
   const segmentsRef = useRef(segments);
   segmentsRef.current = segments;
+
+  /**
+   * Warm the HTTP cache for every clip of this question.
+   *
+   * There is one `<audio>` element by design, so each segment is a fresh `src` and therefore a
+   * fresh network fetch — which is audible as a pause between the vraag and antwoord A, and again
+   * between each answer. Fetching them up front puts them in the browser's cache, so assigning
+   * `src` resolves locally and the sequence runs without the gap. Failures are ignored: a clip
+   * that will not prefetch still plays, just with the pause it had before.
+   */
+  useEffect(() => {
+    if (!enabled) return;
+    const controller = new AbortController();
+    for (const seg of segments) {
+      if (seg.url) void fetch(seg.url, { signal: controller.signal, cache: 'force-cache' }).catch(() => {});
+    }
+    return () => controller.abort();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [segments.map(s => s.url ?? '').join('|'), enabled]);
 
   const clearTimers = () => {
     timersRef.current.forEach(clearTimeout);
@@ -99,15 +125,22 @@ export function useReadAloud(segments: Segment[], enabled: boolean): ReadAloudSt
     }
     audio.onended = next;
     audio.onerror = next;
+    const rate = seg.rate && seg.rate > 0 ? seg.rate : 1;
     audio.onloadedmetadata = () => {
       if (gen !== genRef.current) return;
       const d = audio!.duration;
-      scheduleWordTimers(Number.isFinite(d) && d > 0 ? d * 1000 : words.length * 380);
+      // Divide by the rate: at 1.25× the clip finishes in four fifths of its nominal duration,
+      // and word timers spread over the nominal one would fall progressively behind the voice.
+      scheduleWordTimers((Number.isFinite(d) && d > 0 ? d * 1000 : words.length * 380) / rate);
     };
+    audio.preload = 'auto';
+    audio.playbackRate = rate;
     audio.src = seg.url;
     try {
       audio.currentTime = 0;
     } catch {}
+    // Some browsers reset playbackRate when `src` changes, so it is set again after assignment.
+    audio.playbackRate = rate;
     const p = audio.play();
     if (p && typeof p.catch === 'function') p.catch(next);
   }, []);
