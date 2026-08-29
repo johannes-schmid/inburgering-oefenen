@@ -36,6 +36,16 @@
   --color-outline:                    #747782;
   --color-error:                      #ba1a1a;
 
+  /* ── Correct answer (owner's decision, 2026-08-29) ──
+     Quiz feedback uses green for "goed" instead of the clay accent. The accent means "look
+     here"; on a graded answer that read as a highlight, not as a verdict, and it collided with
+     the orange used for progress and CTAs in the same view. Wrong stays `--color-error`, and the
+     Check/X icon still carries the meaning for anyone who cannot separate the two hues. Use these
+     tokens — do not reintroduce loose Tailwind greens (#16a34a and family) on any surface. */
+  --color-correct:                    #0e7a4b;
+  --color-on-correct-container:       #0a5c39;
+  --color-correct-container:          #e6f4ec;
+
   /* Font families */
   --font-headline: var(--font-manrope), sans-serif;
   --font-body:     var(--font-public-sans), sans-serif;
@@ -85,6 +95,35 @@
 @keyframes eq {
   0%, 100% { transform: scaleY(0.30); }
   50%       { transform: scaleY(1); }
+}
+
+/* ── Read-aloud kit — components/exam/ReadAloud.tsx ──────────────────────────
+   These rules live here rather than in a <style> block inside the components
+   because every one of those blocks sat *inside* a button or inside the
+   question text: a <style> element contributes its CSS source to the element's
+   textContent and therefore to its accessible name, so a screen reader read a
+   media query aloud as part of the answer. Nothing in a screenshot can show
+   that. Keep this kit's CSS here. */
+.ra-mark {
+  display: inline-block;
+  padding: 2px 5px;
+  margin: -2px -1px;
+  border-radius: 7px;
+  transform: translateY(-1px);
+  transition: background-color .18s ease, color .18s ease, transform .18s ease;
+}
+.ra-btn { transition: background-color .18s ease, color .18s ease, transform .18s ease; }
+.ra-btn:hover { transform: translateY(-1px); }
+.ra-btn:active { transform: translateY(0) scale(0.97); }
+.ra-btn:focus-visible { outline: 3px solid var(--color-secondary); outline-offset: 2px; }
+.ra-switch { transition: background-color .25s ease; }
+.ra-switch:focus-visible { outline: 3px solid var(--color-secondary); outline-offset: 2px; }
+.ra-knob { transition: transform .25s cubic-bezier(0.22, 1, 0.36, 1); }
+@media (prefers-reduced-motion: reduce) {
+  .ra-mark, .ra-btn, .ra-switch, .ra-knob { transition: none; }
+  .ra-mark { transform: none; }
+  .ra-btn:hover, .ra-btn:active { transform: none; }
+  .ra-eq > span { animation: none; transform: scaleY(0.7); }
 }
 
 /* ── Shared design tokens (gradient, shadow) not expressible in @theme ── */

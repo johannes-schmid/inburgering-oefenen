@@ -605,10 +605,122 @@ got wrong.**
    takes an `owns` prop now. Its locked badge also still read "Professioneel Pakket", a tier
    nothing has sold since the move to per-module pricing.
 
-**Still open, deliberately:** there is **no anonymous KNM taster** at `/oefenen`. The A2 sets are
-static and the B1 one derives from `stimuli`, which KNM has none of, so it needs its own
-derivation from `standalone` — real work beyond transferring the content, and worth its own change.
-The `oefenvragen` free topic-quiz pages are still empty and still earmarked for this (M3).
+**The anonymous KNM taster shipped on 2026-08-28**, and `/oefenen` became a two-step picker.
+Ten questions from KNM oefenexamen 1 (which is `is_free`) at `/oefenen/knm` — a **static** sibling
+of `[skill]`, because that route resolves through `getSkill()`, the four taalonderdelen.
+`lib/free-practice-db.ts` is level-agnostic now: `Level | null` throughout, a `sourceKey()` that
+spells KNM's absent level `none` (two keys differing only by a missing segment collide), and it
+reads `content.standalone` beside `content.stimuli`. **A stimulus-less item changes the renderer,
+not just the query** — `FreePracticeEngine` drops the left pane and goes single-column, the same
+call `ExamShell` makes, because a two-pane grid whose left pane is empty reads as content that
+failed to load. The `oefenvragen` free topic-quiz pages are still empty and still earmarked (M3).
+
+**KNM reads itself aloud, and that is the fifth onderdeel's own affordance (2026-08-29).** The
+vraag and then every antwoord are spoken in sequence, with the word being said marked, exactly as
+knmoefenen.nl presents it. It is on the free taster (`/oefenen/knm`) *and* in the paid player
+(`/oefenexamen/knm/[n]`), asked once on the start screen.
+
+- **The playback engine was already here and unused.** `components/proefexamen/useReadAloud.ts`
+  and `lib/audio-pref.ts` came across with the KNM fork. The hook is **index-generic** —
+  `activeSeg` is only an array position — so a four-option B1 item needs no change to it. Only the
+  presentation was ported, into `components/exam/ReadAloud.tsx`, because KNM's version was
+  pre-Horizon inline hex and used the retired greens.
+- **It is KNM-only by construction, not by a flag.** It needs `question_options.audio_url`, which
+  `/api/generate-question-audio` populates for KNM's bank and nothing else. The taster derives
+  `canReadAloud` from the audio actually present (`readAloudSegments()`); `ExamShell` additionally
+  gates on `exam.skill === 'knm'`. **Auto-reading a Luisteren question would speak over the
+  fragment the item is testing** — that is the reason for the second gate, not tidiness.
+- **The kit's CSS lives in `app/globals.css`, never in a `<style>` block in the component.** Every
+  one of those blocks sat *inside* a button or inside the question text, and a `<style>` element
+  contributes its source to the element's `textContent` and so to its accessible name: a screen
+  reader read a media query aloud as part of an answer. No screenshot can show that; a DOM probe
+  of `textContent` is what found it.
+- **Answer state wins over reading state, in *two* layers.** The option's surface and the word
+  mark are separate, and shielding only the surface leaves a clay highlight sitting inside the
+  green "Goed" row — the sequence reads on past the click. Both are dropped once answered.
+- **The sample button on the start screen is load-bearing.** Browsers block programmatic playback
+  until a gesture unlocks it, and the hook reuses one `<audio>` element for the whole sitting, so
+  pressing "Beluister" unlocks autoplay for every question after it. Without it the first question
+  is silent and reads as broken.
+- **Word timings are estimated, not measured** — character weight scaled to the clip's real
+  duration. There is no `/with-timestamps` call here. Good enough at one word per ~300ms; if it
+  ever needs to be exact, that ElevenLabs endpoint plus a cues JSON is the upgrade, and the hook
+  would take a `timings` array and skip `scheduleWordTimers`.
+- **The answers play at `OPTION_RATE` (1.25×) and the question at 1×.** `rate` is per segment,
+  because the vraag is the thing that has to be understood while the antwoorden are short and the
+  candidate is reading along. Two traps: `playbackRate` must be re-set **after** assigning `src`
+  (some browsers reset it on a source change), and the word timers must be divided by the rate or
+  the highlight falls progressively behind the voice.
+- **Every clip of a question is prefetched on mount, and that is what removed the audible gap.**
+  One `<audio>` element means each segment is a fresh `src` and so a fresh network fetch — a pause
+  between the vraag and antwoord A, and again between each answer. A `fetch(url, {cache:
+  'force-cache'})` per clip warms the HTTP cache; measured silence between clips is then 30–43 ms.
+- **A standalone question fills the page's own `max-w-5xl` column, and its picture is capped at
+  560px / 38vh.** `max-w-2xl` without `mx-auto` pinned the card to the left and let the progress
+  bar run past it (owner's report). Going full width then blew the photo up to ~1450px and pushed
+  all three answers below the fold — on a question frequently *about* the photo. **A width fix
+  moves the problem to the largest child;** check that the answer is still in view, not that the
+  card looks right.
+- **The preference is `localStorage` (`knm-audio-enabled`), default on**, shared across tabs by a
+  `CustomEvent`. So the candidate is asked once and the answer survives the next oefenexamen.
+
+**`/oefenen` is examen → onderdeel, and mobile is a different flow from desktop.** Flow 1b of
+`Gratis Oefenen Opties.dc.html` (Claude Design), owner's instruction 2026-08-28. It replaced three
+stacked grids that listed nine cards and left the visitor to work out from the headings that A2 and
+B1 are the *same four onderdelen* twice.
+- **`_components/FreePracticeChooser.tsx` renders both flows from one `tracks` array and one
+  `selected` state.** Desktop is the tile row plus an open panel (A2 pre-selected); **mobile is two
+  screens** — the 2×2 examen grid, then the onderdeel list with a back control, the other examens as
+  chips and "stap 2 van 2". A second data path for the phone is how the two drift apart.
+- **Both flows are in the DOM at every width**, one hidden by a media query. An e2e assertion of
+  "nothing is on screen yet" must therefore use `:visible`; a plain `toHaveCount(0)` never reaches
+  zero and silently tests nothing. `tests/public.spec.js` pins the flow that way.
+- **Nothing is derived in the browser.** The server page resolves which onderdelen have a taster,
+  which need an account and where each links; a client component re-deriving that would need the
+  exam registry in the bundle and could disagree with the routes' own `generateStaticParams`.
+- **A track with no `parts` is the roadmap statement** — one condition, not a second flag. That is
+  ONA, drawn on the neutral ramp with a hollow ring (the homepage's "not built" vocabulary) and
+  rendered as a `<div>`, never a disabled button.
+
+### De taster eindigt op één kaart, en het portaal is zonder account te bekijken (2026-08-29)
+
+Overgenomen van knmoefenen.nl, opdracht van de eigenaar. De taster liep op een aparte
+e-mailpoort gevolgd door een pagina van vijf blokken (score, per tekstsoort, foute antwoorden,
+upsell, knoppen); de uitleg per vraag is tijdens de sessie al gegeven, dus die blokken duwden
+de enige actie waarvoor het scherm bestaat drie schermen naar beneden.
+
+- **Eén resultaatkaart, met de slaagkansmeter ernaast.** `SlaagkansGauge` in
+  `FreePracticeEngine.tsx` tekent twee bogen op één halve cirkel: oranje is nu, bleek is wat
+  oefenen kan halen — het *gat* tussen de bogen is de pitch. `projectSlaagkans` in
+  `lib/practice-result.ts` is die projectie: verankerd op de behaalde score, afgetopt op 92, en
+  het is nadrukkelijk **geen DUO-norm** (`SEO/facts.md` §9). De copy blijft voorwaardelijk
+  ("kan naar"), nooit voorspellend.
+- **De score staat achter een blur, niet buiten de DOM.** `.fp-locked` draagt blur,
+  `pointer-events:none`, `user-select:none` én `aria-hidden`/`inert`. Alle vier horen erbij: een
+  visueel geblurd getal dat een screenreader nog voorleest is niet achtergehouden. De e2e-test
+  assert daarom op dat mechanisme; `not.toContainText('%')` slaagde na deze wijziging voor de
+  verkeerde reden. **De skip-link blijft** (beslissing eigenaar, ongewijzigd).
+- **De platformkaart verschijnt pas na het onthullen.** Hij is de uitgang; hem naast een
+  geblurde uitslag zetten vraagt de bezoeker te vertrekken vóór hij heeft gezien waarvoor hij kwam.
+- **Het portaal is anoniem te bekijken en de muur staat bij het oefenexamen.**
+  `/dashboard`, `/dashboard/[level]/[skill]` en `/dashboard/knm` renderen voor een gast met
+  `emptyLevelledProgress()`; de twee spelerroutes redirecten naar **`/register?next=…`** in
+  plaats van `/login`. **Een gast kan niets openen, ook het gratis examen niet** — het account
+  aanmaken *is* wat hier verkocht wordt, en een gratis examen dat zonder account opent laat
+  niets over om je voor aan te melden. `AppShell`/`PlatformSidebar` hadden de `isGuest`-stand al
+  uit de KNM-fork, dus er is geen tweede chrome bijgekomen.
+- **`.eq('level', null)` blijft de val**: gastprogressie komt uit `emptyLevelledProgress()`,
+  niet uit een query op een niet-bestaande gebruiker.
+
+**`components/horizon/LevelMark.tsx` is the A2/B1 mark, and it is deliberately not a
+`CategoryMark`.** A category mark names *a thing the product sells*; a level is a **property** of
+the four taalonderdelen, and the picker needs both on one screen. The mockup drew a flat ring with
+"A2" set inside it — two levels drawn that way differ only by the two characters in the middle, so
+the graphic carries no meaning, and at 48px the ring reads as a border. Here **the arc is the
+meaning**: one gauge, opened further for B1, closed by an orange cap of identical length on both,
+so "one step higher" is legible before the label is. Its fill fractions are the drawing and **not a
+claim about how much Dutch a level is** — no such number exists and `SEO/facts.md` forbids
+inventing one. Same 72×72 grid as `CategoryMark`; pass `size`, never re-draw.
 
 ### De leerlaag: concepten, lessen en de weg terug van een fout antwoord (2026-08-27)
 
@@ -2447,6 +2559,38 @@ has no file. `lib/tts-dialogue.ts` holds the parsing and casting rules and is th
 and `admin/run-eval` use it. **`generate-question-audio`, `generate-wordcard-audio` and
 `admin/generate-lesson-audio` still do not** — they are reachable by anyone who knows the path and
 each spends ElevenLabs credits per call. Worth closing.
+
+### AI-kosten komen van de leveranciers, niet van een getal in .env (2026-08-28)
+
+`ai_usage` is het grootboek: één rij per betaalde providercall, geschreven door `lib/ai/usage.ts`
+op de service key, nooit fataal. Het paneel staat op `/admin` (`_components/AiCostCard.tsx`,
+`lib/admin/ai-spend.ts`).
+
+- **Een nakijkactie is niet een call.** Spreken is Scribe + de grader, Schrijven alleen de grader.
+  Ze delen één `request_id` en het gemiddelde gaat over *distinct request ids*. Over rijen
+  gemiddeld rapporteert Spreken de helft van de echte kosten — precies de vergelijking waarvoor het
+  paneel bestaat.
+- **Het budget is de creditsstand van de Gateway** (`GET /v1/credits`), geen
+  `AI_MONTHLY_BUDGET_EUR`; die env-var is bewust weer weg. Vercel biedt **geen** endpoint voor de
+  API-key-budget zelf (docs 2026-08-28), en een bedrag dat we niet kunnen verifiëren hoort niet op
+  een beslispagina.
+- **`GET /v1/report` is account-breed**, dus ongefilterd zit het B1-autheringswerk op
+  `anthropic/claude-opus-5` erin. Elke gradingcall draagt daarom
+  `providerOptions.gateway.tags = ['feature:nakijken', 'onderdeel:<skill>']` en de query filtert
+  daarop. Verwijder die tags niet: dan is het controlecijfer een getal over iets anders.
+- **Rapportage kost geld** ($5/1.000 queries, $0.075/1.000 tagwrites) en loopt minuten achter.
+  Beide gateway-reads zijn daarom een uur gecached via `fetch`'s `next: { revalidate }`, en het
+  Vercel-cijfer staat in de voetnoot als *controle* — nooit als bron voor de gemiddeldes, want
+  Scribe (~15% van een Spreken-check) zit er niet in.
+- **Alles degradeert naar `null`.** Geen key, een 403 (het endpoint vereist Pro), API down: het
+  paneel laat de vergelijking weg. Een adminpagina mag niet omvallen op de rapportage-API van een
+  derde.
+- **`USD_EUR` in `lib/ai/costs.ts` is de enige aanname** en wordt bewust niet live opgehaald: een
+  historie die meebeweegt met de FX-markt valt niet tegen een factuur te leggen. Tarieven daar zijn
+  gepubliceerde leverancierstarieven; wijzig er nooit één zonder `RATES_CHECKED_ON` mee te zetten.
+- **`bg-primary/10` rendert in de adminbundle volledig dekkend** (zelfde reden als de dichte
+  vierkanten van de statstegels), dus de meter gebruikt een inline rgba. Een vulling onder ~1,5%
+  is subpixel en leest als "niets besteed", vandaar de ondergrens.
 
 ## Verification — required after every change
 

@@ -2798,6 +2798,192 @@ de nieuwe opname speelt in plaats van de oude.
 **Lesson:** een gegenereerd bestand moet de keuze die het maakte in de rij achterlaten — een stem is
 niet uit een mp3 terug te lezen, dus zonder kolom wisselt hij stilletjes bij de volgende generatie.
 
+## 2026-08-28 — Mollie schreef de eerste maand dubbel af
+**Changed:** `startDate` (vandaag + 1 maand, geklemd op maandeinde) op `customerSubscriptions.create()` in `lib/mollie-modules.ts`.
+**Outcome:** SUCCESS
+**What worked / went wrong:** Een iDEAL-betaling van €29,95 om 10:29 en een pending SEPA-incasso van €29,95 om 11:30 — dezelfde dag, dezelfde maand. Mollie zet `startDate` bij weglaten op *vandaag*, dus de eerste incasso van het abonnement viel bovenop de mandaatbetaling die het abonnement mogelijk maakte. Niets faalde: beide betalingen zijn geldig, er staat geen fout in de logs, en het is alleen zichtbaar in de betalingslijst.
+**Lesson:** Bij een terugkerende betaling die start uit een `first`-betaling: die eerste betaling *is* periode één. Zet altijd expliciet wanneer periode twee wordt geïncasseerd — een provider-default voor "wanneer begint dit" is een default over andermans geld.
+
+## 2026-08-28 — de vlaggen staan weer in de taalkiezer, als SVG
+**Changed:** `components/site/LocaleFlag.tsx` (nieuw: NL/GB/SA als platte inline SVG),
+`components/Nav.tsx` (beide `<select>`s vervangen — desktop een `DropdownMenu`, mobiel drie
+knoppen), `tests/public.spec.js` (de switcher-tests klikken nu het menu; het emoji-commentaar
+klopt weer).
+**Outcome:** SUCCESS — `tsc`, `next build`, 274 unit tests en de 9 betrokken e2e-tests groen.
+**What worked / went wrong:** De echte blokkade was niet de tekening maar het besturingselement:
+een `<option>` kan geen SVG bevatten, dus "voeg vlaggen toe" is onvermijdelijk "vervang de
+taalkiezer". De `DropdownMenuContent` staat standaard op `w-(--anchor-width)` — zonder `w-auto`
+was het paneel twee tekens breed geworden. De Union Jack heeft een `clipPath` nodig en het
+component rendert twee keer per pagina, dus het id komt uit `useId()`.
+**Lesson:** De no-emoji-regel gaat over emoji, niet over vlaggen. Wat 2026-08-20 terecht weghaalde
+was de glyph; dezelfde afbeelding als SVG heeft geen van de bezwaren (platformafhankelijk,
+ontbreekt op Windows, niet kleur-af te stemmen). Check bij zo'n omkering eerst welk *argument*
+er destijds is opgeschreven — hier gold maar de helft ervan nog.
+
+## 2026-08-28 — B1 op /oefenen: drie kaarten, en de Lezen-taster mengt tien examens
+**Changed:** `lib/free-practice-db.ts` (`SOURCE` is nu `number[]` per (level, skill); nieuwe
+`itemsFromExam()` + round-robin in `fetchDbFreePractice`), het B1-blok in
+`app/[locale]/(main)/oefenen/page.tsx` (afgeleide `b1Entries`, twee kaartvormen), `b1_sub` +
+nieuwe `pick_account_note_b1` in `messages/{nl,en,ar}.json`, en `exams.is_free = true` op B1
+examen 1 van Lezen/Schrijven/Spreken — lokaal én op productie.
+**Outcome:** SUCCESS — tsc schoon, `next build` schoon, 274 unit tests, 44 e2e in
+`public.spec.js`, en de tien taster-vragen komen aantoonbaar uit examen 1 t/m 10 (één per
+examen, gecontroleerd via `questions.exam_id`).
+**What worked / went wrong:** De vraag "toon B1 ook op /oefenen" leek een UI-taak maar zat vast
+op een prijsbeslissing: Schrijven en Spreken kúnnen geen anonieme taster hebben (elk antwoord
+kost een modelcall), dus de site lost dat op A2 op met "gratis met account" → oefenexamen 1,
+dat `is_free` is. Op B1 was geen enkel examen gratis, dus dezelfde kaart zou naar `/premium`
+bouncen — een "gratis oefenen"-kaart die niets gratis geeft. Eerst de eigenaar gevraagd, daarna
+pas gebouwd; dat scheelde een verkeerd product.
+**Lesson:** Een kaart op een gratis-funnelpagina is een belofte over een *entitlement*, niet over
+een route. Controleer `is_free`/`ownsModule` van de bestemming vóór je de kaart tekent — de link
+werkt, de belofte niet. En: de "mix uit meerdere examens" is alleen gratis wanneer de bron gratis
+is; A2 blijft daarom bij examen 1 (2–10 zijn betaald) terwijl B1 juist één vraag per examen pakt,
+zodat geen enkele zitting noemenswaardig weglekt.
+
+## 2026-08-28 — KNM-taster, en /oefenen wordt examen → onderdeel (flow 1b)
+**Changed:** `lib/free-practice-db.ts` (level `Level | null`, `sourceKey()`, standalone-vragen via
+`content.standalone`, gedeelde `mcqItem()`), nieuwe route
+`app/[locale]/(main)/oefenen/knm/page.tsx`, `FreePracticeEngine` (accepteert `OnderdeelSlug` en
+`level: null`, één kolom zonder stimulus), nieuwe
+`app/[locale]/(main)/oefenen/_components/FreePracticeChooser.tsx` + herschreven
+`oefenen/page.tsx`, nieuwe `components/horizon/LevelMark.tsx`, `i18n/routing.ts`, `app/sitemap.ts`,
+`scripts/check-schema.mjs`, twee nieuwe e2e-cases en keys in `messages/{nl,en,ar}.json`.
+**Outcome:** SUCCESS — tsc schoon, `next build` schoon, 274 unit tests, 53 e2e groen,
+`check-schema.mjs` OK, en de tien KNM-vragen komen aantoonbaar uit `standalone` met hun eigen
+sub-thema (`questions.section_id`) in de uitslagverdeling.
+**What worked / went wrong:** Drie dingen die niet vanzelf gingen.
+(1) **`stimulus_id IS NULL` raakt de renderer, niet alleen de query.** De taster-engine tekende
+altijd twee panelen; met een KNM-vraag werd de linker een lege kaart — dat leest als content die
+niet geladen is, niet als "deze vraag staat op zichzelf". Zelfde beslissing als `ExamShell`:
+één kolom.
+(2) **Twee flows in één component betekent dat beide in de DOM staan.** De e2e-test
+`toHaveCount(0)` faalde omdat de desktop-variant er wél is, alleen `hidden` via een media query.
+`:visible` in de selector is het verschil tussen "staat er niet" en "is niet zichtbaar".
+(3) **Het merkteken uit de mockup droeg geen betekenis.** A2 en B1 waren een platte ring met twee
+letters erin — identiek op alles behalve die letters, en op 48px leest zo'n ring als een rand. De
+`LevelMark` maakt er een meter van: dezelfde boog, verder open voor B1, met een oranje kap van
+gelijke lengte. Het verschil is nu zichtbaar vóór het label gelezen is.
+**Lesson:** Een icoon dat alleen door zijn bijschrift van zijn buurman verschilt, is decoratie die
+zich voordoet als betekenis — laat het verschil in de vorm zitten. En bij een responsive flow die
+twee schermen tegen één scherm zet: test op *zichtbaarheid*, niet op aanwezigheid, anders test je
+de media query helemaal niet.
+
+## 2026-08-28 — de dichte panelen van de picker hadden geen enkele interne link
+**Changed:** `app/[locale]/(main)/oefenen/_components/FreePracticeChooser.tsx` — alle panelen
+worden gerenderd, de dichte krijgen `hidden`.
+**Outcome:** FAILURE, daarna gefixt in dezelfde sessie.
+**What went wrong:** De eerste versie rende `{desktopTrack && <Panel/>}`, dus stond alleen het
+open paneel in de DOM. Daardoor hadden `/oefenen/b1/lezen`, `/oefenen/knm` en de twee B1
+oefenexamens **geen enkele interne link vanaf `/oefenen`** — de entreepagina van de hele gratis
+funnel, en precies de pagina die autoriteit naar die URL's moet doorgeven. tsc, `next build`, de
+e2e-suite en alle screenshots waren schoon; het viel pas op bij het grepen van de *geserveerde*
+HTML op productie, ná de push.
+**Lesson:** Dit is exact dezelfde bug als de fase-panelen op `/inburgering` in M2d, en hij is op
+dezelfde manier ontsnapt. Bij elke tab/accordeon/uitklap: render alles en verberg met `hidden` —
+conditioneel renderen verwijdert links die niemand mist tot een crawler ze niet meer vindt.
+Controleer na een navigatiewijziging de HTML die de server stuurt (`curl | grep href`), niet de
+pagina in de browser.
+
+## 2026-08-28 — de vraag blijft in beeld in de gratis taster
+**Changed:** `app/[locale]/(main)/oefenen/[skill]/FreePracticeEngine.tsx` — de rechterkolom (QuestionPane + de Volgende-knop) is één `lg:sticky` blok onder `--nav-h`, met `maxHeight: calc(100vh - var(--nav-h) - 2rem)` en interne scroll; de knop staat nu *binnen* die kolom en is `lg:sticky lg:bottom-0`.
+**Outcome:** SUCCESS
+**What worked / went wrong:** Een DUO Lezen-tekst is veel hoger dan één viewport, dus de vraag én de weg vooruit scrolden uit beeld. De knop verplaatsen naar de sticky kolom lost beide klachten met één ingreep op. Geverifieerd met een Puppeteer-script dat echt doorklikt — `check-ui.mjs` fotografeert alleen de startkaart.
+**Lesson:** Een tweepaans-speler met ongelijke paneelhoogtes heeft altijd een sticky kant nodig; zet de primaire actie in diezelfde kolom in plaats van onder het langste paneel.
+
+## 2026-08-28 — de KNM-taster liet het plaatje en de audio van elke vraag weg
+**Changed:** `data/free-practice.ts` (`questionImage` + `questionAudioSrc` op `FreePracticeItem`),
+`lib/free-practice-db.ts` (mapping in `mcqItem`), `FreePracticeEngine`'s `QuestionPane` rendert ze.
+**Outcome:** FAILURE, gefixt.
+**What went wrong:** `FreePracticeItem` had alleen media op *stimulus*-niveau (`stimulusHtml`,
+`audioSrc`), want tot nu toe kwam alle media van de tekst of het fragment boven de vraag. Een
+KNM-vraag heeft geen stimulus en draagt zijn media zelf: alle 419 vragen hebben een `image_url`
+én een `prompt_audio_url`. De mapping las die velden niet, dus ze verdwenen zonder één foutmelding
+— en bij KNM is de vraag vaak *over* het plaatje ("wat kun je nu nog zien uit de 17e eeuw?"), dus
+er stond een vraag op het scherm die zonder afbeelding half onbeantwoordbaar is. De betaalde
+speler (`McqQuestion`) rendert ze wel, dus in het echte examen was er niets te zien.
+**Lesson:** Een nieuw soort item overnemen is niet klaar bij de query. Loop de renderer van de
+bestaande speler regel voor regel na en vink af welk databaseveld daar getekend wordt — alles wat
+je nieuwe mapping niet noemt, verdwijnt stil. Bij `stimulus_id IS NULL` verhuist de media van de
+stimulus naar de vraag, en dat is precies het veld dat een op stimuli gebouwd type niet heeft.
+
+## 2026-08-28 — AI-kosten op het admin-dashboard
+**Changed:** new `ai_usage` table (`supabase/migrations/20260828130000_ai_usage.sql`), `lib/ai/costs.ts` (rates, budget, USD→EUR), `lib/ai/usage.ts` (`recordAiUsage`), usage returned from `gradeOpenAnswer` (`lib/ai/grade.ts`) and recorded in `app/api/grade-open/route.ts` for both Scribe and the grader, `lib/admin/ai-spend.ts`, and the `AiCostCard` block on `/admin`.
+**Outcome:** SUCCESS
+**What worked / went wrong:** Nothing recorded AI cost at all, so the panel needed the plumbing first. A Spreken check is **two** provider calls, so a `request_id` shared by them is what makes "gemiddeld per nakijkactie" honest — averaging rows reported Spreken at half its real cost. `bg-primary/10` renders **fully opaque** navy in the admin bundle (the same reason the dashboard's stat tiles are solid squares), so the budget meter at 0,03% looked completely full; the track is an inline rgba now. A sub-pixel fill also reads as "niets besteed", so a non-zero meter has a 1,5% floor.
+**Lesson:** A cost figure needs its unit fixed before its arithmetic — "per call" and "per nakijkactie" differ by 2× for exactly the onderdeel the panel exists to compare. And never trust a Tailwind opacity modifier on a brand token in this repo: measure the computed background.
+
+## 2026-08-28 — AI-kosten uit de Vercel Gateway zelf
+**Changed:** `lib/ai/gateway-api.ts` (`/v1/credits` + `/v1/report`, uurcache, degradeert naar null), gradingcalls getagd met `feature:nakijken` + `onderdeel:<skill>` (`lib/ai/grade.ts`), `generation_id` op `ai_usage` (migratie `20260828160000`, met psql toegepast — geen reset), budget in `AiCostCard` van env naar creditsstand, `AI_MONTHLY_BUDGET_EUR` verwijderd.
+**Outcome:** SUCCESS
+**What worked / went wrong:** Beide endpoints getest met de echte key vóór het bouwen ($34,07 over / $20,93 ooit) — dat gaf meteen de vorm van het antwoord in plaats van een aanname. Drie dingen die het ontwerp bepaalden en niet uit de code volgen: `/v1/report` is account-breed (dus tags, anders zit de B1-authering erin), rapportage kost $5/1.000 queries (dus cachen, anders factureert het paneel zichzelf voor open blijven staan), en Scribe zit niet in de Gateway (dus blijft `ai_usage` de bron voor de gemiddeldes). `GradeTask` heeft geen `skill`; de onderdeeltag komt uit "is er audio", wat per constructie klopt.
+**Lesson:** Lees eerst de docs *en* doe één echte call vóór je een integratie ontwerpt — de beperkingen die het ontwerp bepalen (scope, prijs, latency van de ingestie) staan in de docs en niet in de responsevorm. En een leverancier die kosten rapporteert dekt zelden je hele keten: check wat er *niet* in zit voordat je zijn cijfer als bron neemt.
+
+## 2026-08-28 — Wekelijkse conversiegraaf op /admin
+**Changed:** Ported knm-website's `ConversionDashboard` to
+`app/[locale]/(admin)/admin/_components/ConversionDashboard.tsx` and added the weekly
+aanmelding→betaling aggregation to `app/[locale]/(admin)/admin/page.tsx` (12 weeks, UTC-Monday
+buckets, signups paged off `auth.admin.listUsers`).
+**Outcome:** SUCCESS — `tsc --noEmit` and `next build` clean, verified with `check-ui-auth.mjs`
+at 390 and 1440.
+**What worked / went wrong:** The stale scratchpad admin cookie photographed the login page and
+looked like a broken route; minting a fresh session against the local stack fixed it. An empty
+chart in a downscaled full-page screenshot reads as a collapsed container — measuring the element
+(`getBoundingClientRect`) proved it was 256px with an SVG inside, i.e. simply no data locally.
+**Lesson:** Before concluding a chart is broken from a screenshot, measure the element; and always
+re-mint the auth cookie rather than reusing one from an earlier session.
+
+## 2026-08-29 — Groen voor een goed antwoord
+**Changed:** `--color-correct` / `--color-correct-container` / `--color-on-correct-container` toegevoegd aan `@theme` in `app/globals.css`; de "goed"-staat in `components/exam/McqQuestion.tsx`, `app/[locale]/(main)/oefenen/[skill]/FreePracticeEngine.tsx` en `components/proefexamen/ExamQuestionCard.tsx` leest die tokens.
+**Outcome:** SUCCESS
+**What worked / went wrong:** Beslissing eigenaar — de kleiaccent op een nagekeken antwoord las als "kijk hier", niet als een oordeel, en botste met het oranje van de voortgangsbalk en de CTA in hetzelfde beeld. `ExamQuestionCard` gebruikte al groen, maar los Tailwind-groen (#22c55e); dat is nu hetzelfde token. Fout blijft `--color-error`, en de Check/X blijft de betekenis dragen.
+**Lesson:** Als een designregel wordt teruggedraaid, doe het via een token en niet via losse hexwaarden — anders staan er over een half jaar weer drie groenen op drie schermen.
+
+## 2026-08-29 — dev state toolbar (local only)
+**Changed:** `lib/dev-tools.ts` (guard + entitlement presets + screen links), `app/api/dev/portal-state/route.ts` (GET state / POST preset), `components/dev/DevStateBar.tsx`, mounted in `(main)` and `(app)` layouts behind `devToolsEnabled()`.
+**Outcome:** SUCCESS — `tsc` and `next build` clean, pill renders on `/nl`, the API 401s without a session and 404s outside a local build.
+**What worked:** ported the shape from `knm-website`, but the presets had to be re-modelled onto this project's per-module entitlement (`user_metadata.modules` + `modules_until`) instead of the KNM `plan` tiers.
+**Lesson:** `updateUserById` merges `user_metadata`, so a preset must write every key it controls — `modules_until: null` explicitly, or the "expired" preset sticks for every later preset.
+
+## 2026-08-29 — dev toolbar became flow jumps, not a link list
+**Changed:** `lib/dev-tools.ts` (`DEV_FLOWS` + `DEV_FLOW_PARAM`), `components/dev/DevStateBar.tsx`, and `?devFlow=` readers in `components/exam/ExamShell.tsx` and `oefenen/[skill]/FreePracticeEngine.tsx`.
+**Outcome:** SUCCESS — verified with screenshots: taster 30% result, KNM uitslag 12/40 with the 43-way breakdown, mid-exam at 21/40.
+**What worked:** seeding the *answers* and moving the phase, never calling `submitExam` — the result screens derive score, verdict and breakdown from state, so they render for real without writing an attempt or paying the grader.
+**What went wrong:** the flows pointed at A2 Lezen 1, which has no items on this database (only KNM is seeded locally) — the player renders "nog geen opgaven", which reads as a broken jump. KNM leads now and the rest say they need seeded content.
+**Lesson:** a dev jump into a data-backed screen is only as good as the local dataset; point the default at content that is actually seeded, and say so on the ones that are not.
+
+## 2026-08-29 — KNM leest zichzelf voor, in de taster én in de speler
+**Changed:** `components/exam/ReadAloud.tsx` (nieuw — `HighlightedText`, `EqBars`, `AudioPrefRow`, `ReadAloudPill`, `readingOptionStyle/BadgeStyle`), de "Read-aloud kit" in `app/globals.css`, `optionAudio` + `readAloudSegments()` in `data/free-practice.ts`, het vullen ervan in `lib/free-practice-db.ts`, de onboarding en het voorlezen in `app/[locale]/(main)/oefenen/[skill]/FreePracticeEngine.tsx`, `readAloud`-prop in `components/exam/McqQuestion.tsx`, de KNM-tak + intro in `components/exam/ExamShell.tsx`, negen `readaloud_*`-sleutels in nl/en/ar.
+**Outcome:** SUCCESS — `tsc` schoon, `next build` schoon, 274 unit tests groen, `public.spec.js` + `free-practice.spec.js` volledig groen; met screenshots gecontroleerd op 390/900/1440 in de taster en in de betaalde speler.
+**What worked:** de *engine* hoefde niet geport te worden. `components/proefexamen/useReadAloud.ts` en `lib/audio-pref.ts` stonden al in dit repo (meegekomen met de KNM-fork) en waren ongebruikt; de hook is index-generiek (`activeSeg` is alleen een arraypositie), dus vier opties werken zonder wijziging. Alleen de *presentatie* was nog pre-Horizon inline hex — die is één module geworden.
+**What went wrong (drie dingen die alleen een screenshot of een DOM-probe vond):**
+1. Elke `<style>`-blok van de kit stond *binnen* een button of binnen de vraagtekst. Een `<style>`-element draagt zijn CSS-broncode bij aan `textContent` en dus aan de accessible name — een screenreader las een media query voor als deel van een antwoord. Mijn probe las `pill.textContent` en gaf de hele media query terug; dat is hoe het opviel. Alle CSS staat nu in `globals.css`.
+2. De onboardingrij was op 390px onleesbaar: icoon + sample-knop + switch lieten ~90px over voor de beschrijving, die naar vijf regels wikkelde. Nu `flex-wrap` met de controls op hun eigen regel.
+3. De woordmarkering bleef staan op een al beantwoord antwoord: de reeks leest door na de klik, dus er stond een kleikleurig kader ín de groene "Goed"-rij. De *surface* had ik wel afgeschermd (antwoordstaat wint), de *woordmarkering* niet.
+**Lesson:** een read-aloud-highlight en een nakijkverdict vechten om dezelfde rij, en er zijn twee lagen om af te schermen — de achtergrond én de woordmarkering. Schermde je er één af, dan lijkt het klaar. En: zet nooit een `<style>` binnen een interactief element; wat je niet ziet, leest een screenreader wél voor.
+**Note:** `portal.spec.js` (5) faalt met én zonder deze wijziging — vier op B1-fixtures die lokaal geen items hebben, en de anonieme-redirect-test op de nog niet-gecommitte dev-tools uit een eerdere sessie van vandaag (`devToolsEnabled()` in beide layouts). Niet door deze wijziging veroorzaakt; met `git stash` geverifieerd.
+
+## 2026-08-29 — De taster eindigt op één resultaatkaart, en het portaal is zonder account te bekijken
+**Changed:** `FreePracticeEngine.tsx` (gate-fase weg, één KNM-vormige resultaatkaart met blur-poort en `SlaagkansGauge`), `lib/practice-result.ts` (nieuw), de drie dashboard-pagina's en de twee spelerpagina's in `(app)`, `messages/{nl,en,ar}.json`, `tests/free-practice.spec.js`, `tests/public.spec.js`.
+**Outcome:** SUCCESS — tsc, `next build`, 274 unit tests en de e2e-suite groen; geverifieerd met `check-ui.mjs` op `?devFlow=gate|results_pass|results_fail` en op `/nl/dashboard` als gast.
+**What worked / went wrong:** De blur-poort houdt de score in de DOM, dus de e2e-assertie `not.toContainText('%')` was niet langer een test van iets. Vervangen door een assertie op `.fp-locked` én op `aria-hidden` — een visueel geblurde score die een screenreader nog voorleest is helemaal niet achtergehouden. `AppShell`/`PlatformSidebar` bleken de `isGuest`-stand al te hebben (overgebleven uit de KNM-fork), dus de gastmodus was drie pagina's aanpassen en geen nieuwe chrome.
+**Lesson:** Als een poort van "weglaten" naar "onleesbaar maken" gaat, verhuist de test mee naar het mechanisme (blur + pointer-events + aria-hidden) — een assertie op afwezige tekst slaagt dan voor de verkeerde reden.
+
+## 2026-08-29 — voorlezen sneller, zonder gat, en de KNM-vraag vult zijn kolom
+**Changed:** `rate` per segment + een prefetch-effect in `components/proefexamen/useReadAloud.ts`; `OPTION_RATE = 1.25` in `data/free-practice.ts`, gebruikt door `readAloudSegments()` en door `components/exam/McqQuestion.tsx`; de standalone-tak van `FreePracticeEngine.tsx` vult nu de paginakolom en de vraagafbeelding is gemaximeerd op 560px / 38vh.
+**Outcome:** SUCCESS — gemeten met een DOM-probe: stilte tussen twee clips 30/35/43 ms, vraag op 1×, antwoorden op 1,25×. `tsc` en `next build` schoon, 274 unit tests groen, `public` + `free-practice` e2e groen, geen horizontale overflow op 390 of 1280.
+**What worked / went wrong:**
+- **Het gat was netwerklatentie, geen timer.** Er is bewust één `<audio>`-element, dus elk segment is een nieuwe `src` en dus een nieuwe fetch — hoorbaar tussen de vraag en antwoord A. Eén `fetch(url, {cache:'force-cache'})` per clip bij het mounten van de vraag warmt de HTTP-cache op; daarna is de overgang 30–43 ms.
+- **`playbackRate` moet ná het zetten van `src` opnieuw worden gezet** — sommige browsers resetten hem op een bronwissel. En de woordtimers moeten door de rate gedeeld worden, anders loopt de markering bij 1,25× steeds verder achter de stem aan.
+- **De eerste probe loog.** Ik logde `this.currentSrc` in een patch op `play()`, maar direct na een `src`-toewijzing staat `currentSrc` nog op de vórige bron — dat las als "de vraag wordt op 1,25× voorgelezen", wat niet zo was. Loggen op `src` plus een `playing`-listener gaf het echte beeld.
+- **`max-w-2xl` zonder `mx-auto`** in een `max-w-5xl`-pagina plakte de kaart links en liet de voortgangsbalk er rechts langs doorlopen; dat las als een layoutfout. Volle breedte loste dat op maar blies de foto op tot ~1450px, waardoor alle drie de antwoorden onder de fold vielen — op een vraag die vaak *over* de foto gaat.
+**Lesson:** een breedtefix verplaatst het probleem naar het grootste kind in de container. Kijk na een breedtewijziging niet of de kaart goed staat, maar of het antwoord nog in beeld is.
+
+## 2026-08-29 — A2-only copy zwepen weggewerkt na de verbreding naar A2+B1+KNM
+**Changed:** `messages/{nl,en,ar}.json` (home.skills_subheading, home.faq_a1, oefenen.meta_title/description, platform.meta_description, oefenexamen.unlock_all_title/body), `app/[locale]/(auth)/register/page.tsx`, `app/[locale]/(main)/gebruiksvoorwaarden/page.tsx`, `app/[locale]/layout.tsx`.
+**Outcome:** SUCCESS — tsc schoon, 274 unit tests groen, `next build` schoon, register-scherm gescreenshot op 390 en 1440.
+**What worked / went wrong:** De meeste `A2`-treffers in `.tsx` zijn commentaar, niet copy — grep die eruit filtert vindt de echte vindplaatsen in één keer. Twee vondsten die niets met A2 te maken hadden kwamen mee: `oefenexamen.unlock_all_body` verkocht nog het "Professioneel Pakket" (een tier die niets verkoopt) en `unlock_all_title` claimde "alle 40" op een per-onderdeel-pagina. De meta-descriptions liepen bij het herschrijven boven de 160 tekens en `tests/seo.spec.js` pint 140–160; teruggebracht en per taal geverifieerd.
+**Lesson:** Copy die "op dit moment" of een catalogusgetal noemt, veroudert stil zodra de catalogus groeit — geen enkele test, tsc of build ziet het. Tel bij een uitbreiding altijd de *claims* (niveaus, aantallen, gratis slots) na, niet alleen de routes; en herschrijf een meta-description nooit zonder de lengte opnieuw te meten.
 ## 2026-08-27 — de portaalzijbalk is je cursus, niet de catalogus
 **Changed:** `lib/portal-menu.ts` (nieuw), `app/[locale]/(app)/components/PlatformSidebar.tsx` (herschreven),
 `AppShell.tsx` (groep-CSS + twee nieuwe props), negen portaalpagina's die `menu` doorgeven,

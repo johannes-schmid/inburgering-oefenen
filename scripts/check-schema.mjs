@@ -95,6 +95,9 @@ const PAGES = [
   { path: '/nl/oefenexamen/b1/luisteren', expect: [], forbid: ['Course'] },
   // The free B1 taster. Lezen only — see `lib/free-practice-b1.ts`.
   { path: '/nl/oefenen/b1/lezen',         expect: ['Quiz', 'BreadcrumbList'] },
+  /* KNM's taster carries no `educationalLevel` and no AlignmentObject — it is examined at no
+     CEFR level, and a guessed A2 there would be a false claim rather than a missing property. */
+  { path: '/nl/oefenen/knm',              expect: ['Quiz', 'BreadcrumbList'] },
   { path: '/en/premium',                expect: ['Product'] },
   { path: '/ar/premium',                expect: ['Product'] },
 ];

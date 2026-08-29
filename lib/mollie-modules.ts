@@ -88,6 +88,20 @@ export async function fulfilModulePayment(
 }
 
 /**
+ * Today + one month as `YYYY-MM-DD`, clamped to the end of a shorter month (31 Jan -> 28 Feb) so a
+ * subscription started on the 31st never rolls into the following month.
+ */
+function oneMonthFromToday(): string {
+  const now = new Date();
+  const y = now.getFullYear();
+  const m = now.getMonth() + 1;
+  const lastDay = new Date(Date.UTC(y, m + 1, 0)).getUTCDate();
+  const d = Math.min(now.getDate(), lastDay);
+  const next = new Date(Date.UTC(y, m, d));
+  return next.toISOString().slice(0, 10);
+}
+
+/**
  * Create the monthly subscription against the mandate this payment established — unless one is
  * already running.
  *
@@ -132,6 +146,11 @@ async function ensureSubscription(
       amount: payment.amount,
       interval: '1 month',
       description: `Inburgering Oefenen — ${owned.join(', ')} (${userId.slice(0, 8)})`,
+      // Without this Mollie defaults `startDate` to **today** and collects month one by SEPA within
+      // the hour — on top of the iDEAL payment that just paid for that same month. Every customer
+      // was charged twice for their first month. The mandate payment covers the month that has just
+      // started, so the first collection belongs a month out.
+      startDate: oneMonthFromToday(),
       webhookUrl: payment.webhookUrl ?? undefined,
       metadata: { userId, modules: owned, kind: 'modules' },
     });

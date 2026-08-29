@@ -5,6 +5,7 @@ import { rubricCategory, type Rubric, type RubricCriterion } from '@/lib/rubrics
 import type { Level } from '@/data/skills';
 import { gradeOpenAnswer, type FewShotExample, type GradeTask } from '@/lib/ai/grade';
 import { transcribeRecording } from '@/lib/ai/transcribe';
+import { providerOf, recordAiUsage } from '@/lib/ai/usage';
 import { planFromMetadata } from '@/lib/entitlements';
 import { checkGradingAllowed, clientIp, logGradeAttempt } from '@/lib/grading-limits';
 
@@ -210,6 +211,10 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: message, code: 'no_rubric' }, { status: 409 });
   }
 
+  // One id per nakijkactie, shared by every provider call it makes. A Spreken check is Scribe plus
+  // the grading model, and the cost the owner cares about is the pair — see `lib/ai/usage.ts`.
+  const requestId = `grade-${submission.id}-${Date.now()}`;
+
   try {
     // ---- Spreken: transcribe first, and persist that before grading. A transcript is worth
     // keeping even if the grader then fails; re-running should not re-pay for Scribe.
@@ -245,6 +250,16 @@ export async function POST(request: Request) {
         // context she needs when reviewing the verstaanbaarheid score.
         try {
           const result = await transcribeRecording(audio, `${submission.task_id}.wav`);
+          await recordAiUsage({
+            kind: 'transcribe',
+            provider: 'elevenlabs',
+            model: 'scribe_v2',
+            requestId,
+            skill: raw.skill,
+            level: raw.exams.level,
+            submissionId: submission.id,
+            audioSeconds: result.audio_duration_secs ?? audioSeconds ?? null,
+          });
           transcript = result.text;
           signals = result.signals as never;
           audioSeconds = audioSeconds ?? (Math.round(result.audio_duration_secs ?? 0) || null);
@@ -268,7 +283,7 @@ export async function POST(request: Request) {
 
     const examples = await fetchFewShot(supabase, rubric.level, raw.skill, task);
 
-    const result = await gradeOpenAnswer({
+    const { usage, ...result } = await gradeOpenAnswer({
       rubric,
       task,
       answer: {
@@ -280,6 +295,21 @@ export async function POST(request: Request) {
         audio,
       },
       examples,
+    });
+
+    await recordAiUsage({
+      kind: audio ? 'grade_audio' : 'grade_text',
+      provider: providerOf(usage.model),
+      model: usage.model,
+      requestId,
+      skill: raw.skill,
+      level: raw.exams.level,
+      submissionId: submission.id,
+      inputTokens: usage.inputTokens,
+      outputTokens: usage.outputTokens,
+      audioSeconds: audio ? audioSeconds : null,
+      billedUsd: usage.billedUsd,
+      generationId: usage.generationId,
     });
 
     await supabase

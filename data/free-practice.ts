@@ -35,6 +35,29 @@ export type FreePracticeItem = {
   /** Public path to the generated mp3, produced by scripts/generate-free-practice-audio.mjs */
   audioSrc?: string;
   question: string;
+  /**
+   * A picture belonging to **the question itself**, not to a stimulus above it.
+   *
+   * KNM is the only onderdeel that uses these — all 419 of its questions carry one, and the
+   * question is frequently *about* the picture ("welke van deze gebouwen…"). They were dropped
+   * silently when the KNM taster shipped, because the two stimulus fields above are the only
+   * media this type had and a KNM question has no stimulus. `McqQuestion` in the paid player
+   * renders `questions.image_url` and `questions.prompt_audio_url`; the taster now matches it.
+   */
+  questionImage?: string;
+  /** The question read aloud — `questions.prompt_audio_url`. KNM carries one on every item. */
+  questionAudioSrc?: string;
+  /**
+   * Each answer read aloud, keyed by letter — `question_options.audio_url`.
+   *
+   * KNM is the only onderdeel that has these: `/api/generate-question-audio` writes one mp3 per
+   * text-bearing option, and the KNM migration brought all four tracks per question across. They
+   * are what makes the sequential read-aloud possible at all — the vraag *and* all three answers,
+   * the way knmoefenen.nl presents it. An item without them simply gets no read-aloud control,
+   * which is the correct outcome for the A2/B1 tasters (they have no such audio, and on Luisteren
+   * a spoken option would talk over the fragment being tested).
+   */
+  optionAudio?: Partial<Record<OptionKey, string>>;
   optionA: string;
   optionB: string;
   optionC: string;
@@ -52,6 +75,35 @@ export type FreePracticeSet = {
 /** The answer letters an item actually offers, in order. */
 export function optionKeys(item: FreePracticeItem): OptionKey[] {
   return item.optionD ? ['A', 'B', 'C', 'D'] : ['A', 'B', 'C'];
+}
+
+/**
+ * How much faster the answers are read than the question.
+ *
+ * The vraag is the thing that has to be understood, so it plays at the recorded pace. The
+ * antwoorden are short, the candidate is reading along with the highlight, and three of them at
+ * dictation speed is most of the wait before they can answer. `/api/generate-question-audio`
+ * already renders at `speed 0.9`, so 1.25× here lands a little above natural pace, not fast.
+ */
+export const OPTION_RATE = 1.25;
+
+/**
+ * The read-aloud segments for an item: the question first, then every answer in order.
+ *
+ * Returns an empty array when the item carries no such audio, which is how every caller decides
+ * whether the read-aloud control exists at all — one condition, rather than a second flag that
+ * could disagree with the audio actually present.
+ */
+export function readAloudSegments(item: FreePracticeItem): { url: string | undefined; text: string }[] {
+  if (!item.questionAudioSrc && !item.optionAudio) return [];
+  return [
+    { url: item.questionAudioSrc, text: item.question },
+    ...optionKeys(item).map(key => ({
+      url: item.optionAudio?.[key],
+      text: optionText(item, key),
+      rate: OPTION_RATE,
+    })),
+  ];
 }
 
 export function optionText(item: FreePracticeItem, key: OptionKey): string {

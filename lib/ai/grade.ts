@@ -9,6 +9,7 @@ import {
 import { describeSignals, type SpeechSignals } from './transcribe';
 import { MAX_CRITERION_SCORE, type Rubric, type RubricCriterion } from '@/lib/rubrics';
 import { registerFor } from './level-register';
+import { GRADING_TAG } from './gateway-api';
 import type { Level } from '@/data/skills';
 
 /**
@@ -31,6 +32,22 @@ import type { Level } from '@/data/skills';
  * then promoted. Examples with `use_as_fewshot = false` are the **test set** and must never be fed
  * in here; that split is what makes /admin/beoordeling/evals mean anything.
  */
+
+/**
+ * What the call cost, handed back so `/api/grade-open` can record it in `ai_usage`.
+ *
+ * `billedUsd` is the AI Gateway's own figure (`providerMetadata.gateway.cost`) — the billed truth,
+ * which beats any arithmetic of ours. It is absent when the call did not go through the gateway or
+ * the gateway did not report it, and the recorder then estimates and marks the row as an estimate.
+ */
+export type GradeCallUsage = {
+  model: string;
+  inputTokens: number | null;
+  outputTokens: number | null;
+  billedUsd: number | null;
+  /** The gateway's own id for this call, which `GET /v1/generation` resolves to the billed cost. */
+  generationId: string | null;
+};
 
 export type GradeCriterionResult = {
   key: string;
@@ -424,6 +441,23 @@ function baseInstruction(level: Level): string {
  * Grade one answer. Throws on model or validation failure; the caller records that on the
  * submission (`grade_error`) so the docent sees a stuck answer instead of a silent gap.
  */
+function readUsage(
+  useAudio: boolean,
+  usage: { inputTokens?: number; outputTokens?: number } | undefined,
+  providerMetadata: Record<string, Record<string, unknown>> | undefined
+): GradeCallUsage {
+  const raw = providerMetadata?.gateway?.cost;
+  const gen = providerMetadata?.gateway?.generationId;
+  const billed = typeof raw === 'string' ? Number(raw) : typeof raw === 'number' ? raw : NaN;
+  return {
+    model: useAudio ? GRADER_AUDIO : GRADER_TEXT,
+    inputTokens: usage?.inputTokens ?? null,
+    outputTokens: usage?.outputTokens ?? null,
+    billedUsd: Number.isFinite(billed) ? billed : null,
+    generationId: typeof gen === 'string' ? gen : null,
+  };
+}
+
 export async function gradeOpenAnswer({
   rubric,
   task,
@@ -434,7 +468,7 @@ export async function gradeOpenAnswer({
   task: GradeTask;
   answer: GradeAnswer;
   examples?: FewShotExample[];
-}): Promise<GradeResult> {
+}): Promise<GradeResult & { usage: GradeCallUsage }> {
   assertGatewayConfigured();
 
   if (rubric.criteria.length === 0) {
@@ -471,12 +505,22 @@ export async function gradeOpenAnswer({
     },
   ];
 
-  const { object } = await generateObject({
+  const { object, usage, providerMetadata } = await generateObject({
     model: useAudio ? GRADER_AUDIO : GRADER_TEXT,
     schema: buildSchema(rubric.criteria, rubric.level),
     system,
     messages: content,
     temperature: GRADER_TEMPERATURE,
+    // Tags are what make the gateway's own spend report attributable. Without them `/v1/report` is
+    // account-wide and mixes grading in with the B1 authoring runs, so the panel's control figure
+    // would be a number about something else. Two tags: the feature, and the onderdeel.
+    providerOptions: {
+      gateway: {
+        // The recording is what separates the two onderdelen here — `GradeTask` carries no skill,
+        // and an audio answer is Spreken by construction (`SpeakingTask` is the only producer).
+        tags: [GRADING_TAG, useAudio ? 'onderdeel:spreken' : 'onderdeel:schrijven'],
+      },
+    },
     abortSignal: AbortSignal.timeout(GRADER_TIMEOUT_MS),
   });
 
@@ -510,5 +554,5 @@ export async function gradeOpenAnswer({
     );
   }
 
-  return { ...result, highlights: kept };
+  return { ...result, highlights: kept, usage: readUsage(useAudio, usage, providerMetadata) };
 }

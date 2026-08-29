@@ -18,3 +18,4 @@ export { DocentSeal, ValidationChip } from './Trust';
 export { SunDisc, HorizonBand, DotField, LensRing, GlassChip } from './primitives';
 export { C as HORIZON_COLORS, HERO_GRADIENT, HORIZON_GRADIENT, SUN_GRADIENT, dotField } from './tokens';
 export { default as CategoryMark, type Category } from './CategoryMark';
+export { default as LevelMark } from './LevelMark';

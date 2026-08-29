@@ -3,6 +3,9 @@ import { QuestionsDonutChart } from './_components/QuestionsDonutChart';
 import { ActivityLineChart } from './_components/ActivityLineChart';
 import { CategoryRadarChart } from './_components/CategoryRadarChart';
 import { RevenueDashboard } from './_components/RevenueDashboard';
+import { AiCostCard } from './_components/AiCostCard';
+import { ConversionDashboard, type WeekPoint } from './_components/ConversionDashboard';
+import { fetchAiSpend } from '@/lib/admin/ai-spend';
 
 export default async function AdminDashboard() {
   const supabase = createAdminClient();
@@ -142,6 +145,83 @@ export default async function AdminDashboard() {
     chartData,
   };
 
+  /**
+   * Weekly aanmelding -> betaling conversion.
+   *
+   * Signups come from the auth admin API rather than a table — there is no `profiles` row per
+   * user in this project — so they are paged: `listUsers` caps a page at 1000 and a partial page
+   * is the end of the list. Payments are counted, not summed: the question this panel answers is
+   * "how many of the people who signed up this week paid", not what they paid.
+   */
+  const signupUsers: { created_at: string }[] = [];
+  let userPage = 1;
+  while (true) {
+    const { data: usersPage } = await supabase.auth.admin.listUsers({ page: userPage, perPage: 1000 });
+    if (!usersPage?.users?.length) break;
+    signupUsers.push(...usersPage.users.map(u => ({ created_at: u.created_at })));
+    if (usersPage.users.length < 1000) break;
+    userPage++;
+  }
+
+  const WEEKS = 12;
+  // The Monday (UTC) of the week an ISO timestamp falls in — the bucket key for both series.
+  const weekKey = (iso: string) => {
+    const d = new Date(iso);
+    const day = d.getUTCDay();
+    const monday = new Date(Date.UTC(d.getUTCFullYear(), d.getUTCMonth(), d.getUTCDate()));
+    monday.setUTCDate(monday.getUTCDate() - ((day + 6) % 7));
+    return monday.toISOString().slice(0, 10);
+  };
+
+  const weekStarts = Array.from({ length: WEEKS }, (_, i) => {
+    const d = new Date(weekStart);
+    d.setUTCDate(weekStart.getUTCDate() - (WEEKS - 1 - i) * 7);
+    return d.toISOString().slice(0, 10);
+  });
+
+  const signupsByWeek: Record<string, number> = {};
+  for (const u of signupUsers) {
+    const k = weekKey(u.created_at);
+    signupsByWeek[k] = (signupsByWeek[k] ?? 0) + 1;
+  }
+  const paymentsByWeek: Record<string, number> = {};
+  for (const p of paymentsChart ?? []) {
+    const k = weekKey(p.created_at);
+    paymentsByWeek[k] = (paymentsByWeek[k] ?? 0) + 1;
+  }
+
+  const weeks: WeekPoint[] = weekStarts.map((ws) => {
+    const signups = signupsByWeek[ws] ?? 0;
+    const payments = paymentsByWeek[ws] ?? 0;
+    const d = new Date(ws);
+    return {
+      weekStart: ws,
+      label: `${d.getUTCDate()} ${d.toLocaleString('nl-NL', { month: 'short', timeZone: 'UTC' })}`,
+      signups,
+      payments,
+      conversionPct: signups > 0 ? (payments / signups) * 100 : 0,
+    };
+  });
+
+  const thisWeekKey = weekStart.toISOString().slice(0, 10);
+  const lastWeekKey = new Date(weekStart.getTime() - 7 * 86400000).toISOString().slice(0, 10);
+  const cntSignupsThisWeek = signupsByWeek[thisWeekKey] ?? 0;
+  const cntSignupsLastWeek = signupsByWeek[lastWeekKey] ?? 0;
+  const cntPaymentsThisWeek = paymentsByWeek[thisWeekKey] ?? 0;
+  const cntPaymentsLastWeek = paymentsByWeek[lastWeekKey] ?? 0;
+
+  const conversionData = {
+    weeks,
+    signupsThisWeek: cntSignupsThisWeek,
+    signupsLastWeek: cntSignupsLastWeek,
+    paymentsThisWeek: cntPaymentsThisWeek,
+    paymentsLastWeek: cntPaymentsLastWeek,
+    conversionThisWeek: cntSignupsThisWeek > 0 ? (cntPaymentsThisWeek / cntSignupsThisWeek) * 100 : 0,
+    conversionLastWeek: cntSignupsLastWeek > 0 ? (cntPaymentsLastWeek / cntSignupsLastWeek) * 100 : 0,
+  };
+
+  const aiSpend = await fetchAiSpend();
+
   const stats = [
     { label: 'Vragen', value: questionCount ?? 0, icon: 'quiz', href: 'admin/questions', color: 'bg-primary/10 text-primary' },
     { label: 'Woordkaarten', value: wordCardCount ?? 0, icon: 'style', href: 'admin/woordkaarten', color: 'bg-secondary/10 text-secondary' },
@@ -154,6 +234,10 @@ export default async function AdminDashboard() {
       <p className="text-on-surface-variant text-sm mb-6">Welkom terug. Beheer hier vragen, lessen en woordkaarten.</p>
 
       <RevenueDashboard data={revenueData} />
+
+      <ConversionDashboard data={conversionData} />
+
+      <AiCostCard spend={aiSpend} />
 
       <div className="bg-amber-50 border border-amber-200 rounded-2xl px-5 py-4 mb-8">
         <p className="text-sm font-bold text-amber-800 mb-1">Let op</p>

@@ -1,7 +1,8 @@
 import type { MetadataRoute } from 'next';
-import { DEFAULT_LEVEL, KNM, LEVELS, SKILLS, getFormat } from '@/data/skills';
+import { DEFAULT_LEVEL, KNM, KNM_SLUG, LEVELS, SKILLS, getFormat } from '@/data/skills';
 import { hasFreePractice } from '@/data/free-practice';
 import { b1TasterSkills } from '@/lib/free-practice-b1';
+import { hasDbFreePractice } from '@/lib/free-practice-db';
 import { FEATURES } from '@/lib/features';
 import { getSortedPosts, getPostSlug, hasTranslation } from '@/data/blog-posts';
 import { publishedGuides, hasTranslation as guideHasTranslation } from '@/data/guides/helpers';
@@ -63,6 +64,16 @@ export default function sitemap(): MetadataRoute.Sitemap {
     for (const skill of b1TasterSkills()) {
       entries.push({
         url: `${BASE}/${locale}/oefenen/b1/${skill}`,
+        changeFrequency: 'monthly',
+        priority: 0.8,
+        lastModified: TODAY,
+      });
+    }
+    /* KNM's taster, level-less like the rest of that onderdeel and gated on the same
+       `hasDbFreePractice` its route's `generateStaticParams` reads. */
+    if (hasDbFreePractice(null, KNM_SLUG)) {
+      entries.push({
+        url: `${BASE}/${locale}/oefenen/knm`,
         changeFrequency: 'monthly',
         priority: 0.8,
         lastModified: TODAY,
