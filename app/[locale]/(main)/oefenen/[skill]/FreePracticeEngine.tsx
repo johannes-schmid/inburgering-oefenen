@@ -615,7 +615,7 @@ function QuestionPane({
           const answered = selected !== null;
 
           let style: React.CSSProperties = { background: '#f8f9fb', border: '1.5px solid #e6e8ea' };
-          if (answered && isRight) style = { background: 'rgba(254,118,44,0.10)', boxShadow: 'inset 0 0 0 2px rgba(254,118,44,0.40)' };
+          if (answered && isRight) style = { background: 'var(--color-correct-container)', boxShadow: 'inset 0 0 0 2px rgba(14,122,75,0.45)' };
           else if (answered && isChosen) style = { background: '#fef2f2', border: '1.5px solid #fca5a5' };
           else if (answered) style = { background: '#f8f9fb', border: '1.5px solid #e6e8ea', opacity: 0.55 };
 
@@ -632,7 +632,7 @@ function QuestionPane({
               <span
                 className="w-7 h-7 min-w-7 rounded-lg flex items-center justify-center text-xs font-bold flex-shrink-0"
                 style={answered && isRight
-                  ? { background: 'rgba(254,118,44,0.20)', color: '#a24000' }
+                  ? { background: 'var(--color-correct)', color: '#fff' }
                   : answered && isChosen
                     ? { background: 'rgba(186,26,26,0.10)', color: '#ba1a1a' }
                     : { background: '#eceef0', color: '#434651' }}
@@ -641,7 +641,7 @@ function QuestionPane({
               </span>
               <span className="text-sm text-on-surface flex-1">{text}</span>
               {answered && isRight && (
-                <span className="text-xs font-bold flex-shrink-0" style={{ color: '#a24000' }}>{correctLabel}</span>
+                <span className="text-xs font-bold flex-shrink-0" style={{ color: 'var(--color-on-correct-container)' }}>{correctLabel}</span>
               )}
               {answered && isChosen && !isRight && (
                 <span className="text-xs font-bold flex-shrink-0" style={{ color: 'var(--color-error)' }}>{wrongLabel}</span>

@@ -141,7 +141,7 @@ export default function ExamQuestionCard({
   const getOptStyle = (opt: 'A' | 'B' | 'C', seg: number): React.CSSProperties => {
     const isReading = reading && activeSeg === seg;
     if (selected !== null) {
-      if (opt === q.correct) return { background: 'rgba(34,197,94,.08)', border: '2px solid rgba(34,197,94,.4)' };
+      if (opt === q.correct) return { background: 'var(--color-correct-container)', border: '2px solid rgba(14,122,75,.45)' };
       if (opt === selected) return { background: 'rgba(239,68,68,.07)', border: '2px solid rgba(239,68,68,.35)' };
     }
     if (isReading) return {
@@ -156,7 +156,7 @@ export default function ExamQuestionCard({
   const getLabelStyle = (opt: 'A' | 'B' | 'C', seg: number): React.CSSProperties => {
     const isReading = reading && activeSeg === seg;
     if (selected !== null) {
-      if (opt === q.correct) return { background: 'rgba(34,197,94,.15)', color: '#16a34a' };
+      if (opt === q.correct) return { background: 'var(--color-correct)', color: '#fff' };
       if (opt === selected) return { background: 'rgba(239,68,68,.15)', color: '#dc2626' };
     }
     if (isReading) return { background: '#e8740c', color: '#fff' };
@@ -329,7 +329,7 @@ export default function ExamQuestionCard({
           className="mt-3 px-4 py-3 rounded-xl text-sm leading-snug"
           style={
             selected === q.correct
-              ? { background: 'rgba(34,197,94,.06)', border: '1px solid rgba(34,197,94,.2)', color: '#434651' }
+              ? { background: 'var(--color-correct-container)', border: '1px solid rgba(14,122,75,.2)', color: '#434651' }
               : { background: 'rgba(239,68,68,.06)', border: '1px solid rgba(239,68,68,.2)', color: '#434651' }
           }
         >

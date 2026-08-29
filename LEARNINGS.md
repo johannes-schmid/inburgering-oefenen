@@ -2932,3 +2932,9 @@ chart in a downscaled full-page screenshot reads as a collapsed container — me
 (`getBoundingClientRect`) proved it was 256px with an SVG inside, i.e. simply no data locally.
 **Lesson:** Before concluding a chart is broken from a screenshot, measure the element; and always
 re-mint the auth cookie rather than reusing one from an earlier session.
+
+## 2026-08-29 — Groen voor een goed antwoord
+**Changed:** `--color-correct` / `--color-correct-container` / `--color-on-correct-container` toegevoegd aan `@theme` in `app/globals.css`; de "goed"-staat in `components/exam/McqQuestion.tsx`, `app/[locale]/(main)/oefenen/[skill]/FreePracticeEngine.tsx` en `components/proefexamen/ExamQuestionCard.tsx` leest die tokens.
+**Outcome:** SUCCESS
+**What worked / went wrong:** Beslissing eigenaar — de kleiaccent op een nagekeken antwoord las als "kijk hier", niet als een oordeel, en botste met het oranje van de voortgangsbalk en de CTA in hetzelfde beeld. `ExamQuestionCard` gebruikte al groen, maar los Tailwind-groen (#22c55e); dat is nu hetzelfde token. Fout blijft `--color-error`, en de Check/X blijft de betekenis dragen.
+**Lesson:** Als een designregel wordt teruggedraaid, doe het via een token en niet via losse hexwaarden — anders staan er over een half jaar weer drie groenen op drie schermen.

@@ -101,21 +101,21 @@ export default function McqQuestion({
       {answered && showFeedback && (
         <div
           className="mt-3.5 flex gap-2.5 px-4 py-3 rounded-xl text-sm leading-relaxed"
-          /* No 1px borders and no green (§2, §7.3). "Right" is the clay accent — the same colour
-             that means "this is the thing to look at" everywhere else — and "wrong" is the
-             `error` token, which is the one red the system has. The Check/X icon carries the
-             meaning for anyone who cannot separate the two hues. */
+          /* No 1px borders (§2). "Right" is the `correct` green token and "wrong" is the `error`
+             token; the Check/X icon carries the meaning for anyone who cannot separate the two
+             hues. Owner's decision 2026-08-29 — the clay accent read as a highlight, not a
+             verdict. */
           style={
             gotItRight
-              ? { background: 'rgba(254,118,44,0.12)' }
+              ? { background: 'var(--color-correct-container)' }
               : { background: 'rgba(186,26,26,0.07)' }
           }
         >
-          <span className="flex-shrink-0" style={{ marginTop: 2, color: gotItRight ? '#a24000' : '#ba1a1a' }}>
+          <span className="flex-shrink-0" style={{ marginTop: 2, color: gotItRight ? 'var(--color-correct)' : '#ba1a1a' }}>
             {gotItRight ? <Check size={16} strokeWidth={3} aria-hidden /> : <X size={16} strokeWidth={3} aria-hidden />}
           </span>
           <span className="text-on-surface-variant">
-            <strong style={{ color: gotItRight ? '#a24000' : '#ba1a1a' }}>
+            <strong style={{ color: gotItRight ? 'var(--color-on-correct-container)' : '#ba1a1a' }}>
               {gotItRight ? 'Goed. ' : `Niet goed — het juiste antwoord is ${correct?.label ?? '—'}. `}
             </strong>
             {q.explanation}
@@ -147,8 +147,8 @@ function OptionButton({
    * §7.2 / §5: an answer option is a `surface-container-low` **fill**, and every state is
    * expressed as an *inset* box-shadow rather than a border — that is the no-line rule applied
    * where it matters most, because a 2px border on a selected option also reflows the text inside
-   * it by 2px on every click. The greens are gone: "correct" is the clay accent and "wrong" is the
-   * one `error` token the system has, and the Check/X icon is what actually carries the meaning.
+   * it by 2px on every click. "Correct" is the `correct` green token and "wrong" is the one
+   * `error` token the system has; the Check/X icon is what actually carries the meaning.
    */
   let surface: React.CSSProperties = { background: 'var(--color-surface-container-low)' };
   let badge: React.CSSProperties = { background: 'var(--color-surface-container-high)', color: '#434651' };
@@ -158,8 +158,8 @@ function OptionButton({
     badge = { background: '#002b6d', color: '#fff' };
   }
   if (reveal && isCorrect) {
-    surface = { background: 'rgba(254,118,44,0.12)', boxShadow: 'inset 0 0 0 2px rgba(254,118,44,0.55)' };
-    badge = { background: '#fe762c', color: '#5f2200' };
+    surface = { background: 'var(--color-correct-container)', boxShadow: 'inset 0 0 0 2px rgba(14,122,75,0.45)' };
+    badge = { background: 'var(--color-correct)', color: '#fff' };
   } else if (reveal && chosen) {
     surface = { background: 'rgba(186,26,26,0.07)', boxShadow: 'inset 0 0 0 2px rgba(186,26,26,0.35)' };
     badge = { background: 'rgba(186,26,26,0.14)', color: '#ba1a1a' };

@@ -36,6 +36,16 @@
   --color-outline:                    #747782;
   --color-error:                      #ba1a1a;
 
+  /* ── Correct answer (owner's decision, 2026-08-29) ──
+     Quiz feedback uses green for "goed" instead of the clay accent. The accent means "look
+     here"; on a graded answer that read as a highlight, not as a verdict, and it collided with
+     the orange used for progress and CTAs in the same view. Wrong stays `--color-error`, and the
+     Check/X icon still carries the meaning for anyone who cannot separate the two hues. Use these
+     tokens — do not reintroduce loose Tailwind greens (#16a34a and family) on any surface. */
+  --color-correct:                    #0e7a4b;
+  --color-on-correct-container:       #0a5c39;
+  --color-correct-container:          #e6f4ec;
+
   /* Font families */
   --font-headline: var(--font-manrope), sans-serif;
   --font-body:     var(--font-public-sans), sans-serif;
