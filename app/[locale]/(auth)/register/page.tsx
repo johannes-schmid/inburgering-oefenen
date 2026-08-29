@@ -5,7 +5,7 @@ import { createClient } from '@/lib/supabase/server';
 import LogoMark from '@/components/site/LogoMark';
 import AuthPanel from '@/components/auth/AuthPanel';
 import { authErrorMessage, safeNext } from '@/lib/auth-redirect';
-import { SKILLS, getFormat } from '@/data/skills';
+import { KNM, SKILLS, getFormat } from '@/data/skills';
 
 export const metadata: Metadata = {
   title: 'Account aanmaken | Inburgering Oefenen',
@@ -22,6 +22,11 @@ type Props = {
  * woordkaarten, none of which is this product. Every number below comes from
  * `data/skills.ts`, so it cannot drift from what is actually shipped, and the free offer is
  * stated as it really is: exam 1 of each onderdeel, not "40 vragen gratis".
+ *
+ * It said "het inburgeringsexamen A2" and counted four onderdelen for as long as A2 was the
+ * whole product. It is not: the taalonderdelen ship at A2 and B1, and KNM is the fifth
+ * onderdeel. The panel now names the platform, and the numbers count what an account actually
+ * opens — the four taalonderdelen plus KNM, and exam 1 of each of the five, free.
  */
 export default async function RegisterPage({ params, searchParams }: Props) {
   const { locale } = await params;
@@ -31,13 +36,14 @@ export default async function RegisterPage({ params, searchParams }: Props) {
   const { data: { user } } = await supabase.auth.getUser();
   if (user) redirect(safeNext(next ?? null, `/${locale}/dashboard`));
 
-  // A2's numbers: this panel sells the free tier, and the free tier is A2 exam 1 of each
-  // onderdeel (isFreeExam). Quoting the combined A2+B1 catalogue here would advertise exams
-  // that signing up does not get you.
+  // This panel sells the free tier, and the free tier is exam 1 of each A2 onderdeel plus KNM
+  // exam 1 (isFreeExam / the KNM module's own free slot). Quoting the whole A2+B1+KNM
+  // catalogue here would advertise exams that signing up does not get you.
+  const onderdelen = [...SKILLS, KNM].length;
   const stats = [
-    { val: String(SKILLS.length), label: 'onderdelen' },
+    { val: String(onderdelen), label: 'onderdelen' },
     { val: String(getFormat('a2', 'lezen').examCount), label: 'oefenexamens elk' },
-    { val: '4', label: 'gratis examens' },
+    { val: String(onderdelen), label: 'gratis examens' },
   ];
 
   return (
@@ -81,11 +87,12 @@ export default async function RegisterPage({ params, searchParams }: Props) {
               className="font-headline font-extrabold text-white mb-3.5"
               style={{ fontSize: 'clamp(1.9rem,4.5vw,2.6rem)', lineHeight: 1.08, letterSpacing: '-0.02em', textWrap: 'balance' }}
             >
-              Oefen het inburgeringsexamen A2 met opgaven van een NT2-docent.
+              Oefen je hele inburgering met opgaven van een NT2-docent.
             </h1>
             <p className="text-sm sm:text-base leading-relaxed mb-7 max-w-[46ch]" style={{ color: 'rgba(255,255,255,0.68)' }}>
-              Maak een account en begin meteen met oefenexamen 1 van lezen, luisteren, schrijven
-              en spreken — gratis, en met je voortgang per onderdeel.
+              Maak een account en begin meteen met oefenexamen 1 van lezen, luisteren, schrijven,
+              spreken en KNM — gratis, en met je voortgang per onderdeel. Daarna oefen je verder
+              op A2 en op B1.
             </p>
 
             <div className="flex gap-5 sm:gap-7 mb-7">
