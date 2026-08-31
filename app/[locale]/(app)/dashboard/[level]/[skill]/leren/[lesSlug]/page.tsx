@@ -41,6 +41,7 @@ export default async function LessonPage({ params }: Props) {
   if (!skill) notFound();
 
   const t = await getTranslations('lessons');
+  const tSkills = await getTranslations('skills');
 
   const supabase = await createClient();
   const { data: { user } } = await supabase.auth.getUser();
@@ -96,7 +97,9 @@ export default async function LessonPage({ params }: Props) {
       activeGroup={level}
       menu={menu}
       learn={coursePanel(blocks, {
-        title: lesson.block.name_nl,
+        /* De cursus, niet het huidige blok. Het paneel toont álle blokken, dus een blokletter
+           als kop noemde de lijst naar één van zijn eigen secties. */
+        title: tSkills(`${skill.key}.name`),
         backHref: coursePath(level, skill.slug),
         backLabel: t('back_to_course'),
         lessonHref: (slug: string) => lessonPath(level, skill.slug, slug),

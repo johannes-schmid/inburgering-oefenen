@@ -247,6 +247,52 @@ async function fetchTeachingLessons(conceptId: number): Promise<Map<string, Teac
   }
 }
 
+/**
+ * Dezelfde vraag, maar voor een hele cursus in één query.
+ *
+ * `fetchTeachingLessons` is per concept, en de onderdeelpagina heeft er dertig — dat zou
+ * dertig round-trips zijn voor één kaart. Deze geeft per concept-id de les die het in *dit*
+ * (niveau, onderdeel) uitlegt.
+ */
+export async function fetchTeachersForCourse(
+  level: Level | null,
+  onderdeel: OnderdeelSlug,
+  conceptIds: number[],
+): Promise<Map<number, { slug: string; title: string }>> {
+  const out = new Map<number, { slug: string; title: string }>();
+  if (conceptIds.length === 0) return out;
+  try {
+    const supabase = await createClient();
+    let q = supabase
+      .from('lesson_concepts')
+      .select(`
+        concept_id,
+        lessons!inner (
+          slug, title, review_status,
+          lesson_blocks!inner ( level, onderdeel )
+        )
+      `)
+      .in('concept_id', conceptIds)
+      .eq('role', 'teaches')
+      .eq('lessons.review_status', 'validated')
+      .eq('lessons.lesson_blocks.onderdeel', onderdeel);
+
+    // `.eq('…level', null)` matcht niets in PostgREST — de val die KNM steeds opnieuw zet.
+    q = level
+      ? q.eq('lessons.lesson_blocks.level', level)
+      : q.is('lessons.lesson_blocks.level', null);
+
+    const { data } = await q;
+    type Row = { concept_id: number; lessons: { slug: string; title: string } };
+    for (const r of (data ?? []) as unknown as Row[]) {
+      out.set(r.concept_id, { slug: r.lessons.slug, title: r.lessons.title });
+    }
+    return out;
+  } catch {
+    return out;
+  }
+}
+
 // ---------------------------------------------------------------------------
 // De remediatie: van foute antwoorden naar concepten
 // ---------------------------------------------------------------------------

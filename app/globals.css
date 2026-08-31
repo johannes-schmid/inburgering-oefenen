@@ -1405,16 +1405,16 @@
   color: var(--color-on-surface-variant); margin-bottom: 0.75rem;
 }
 
-.stream-list { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 0.85rem; }
+.stream-list { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 0.55rem; }
 
 /* ── uitleg en materiaal ── */
 .blk {
   background: var(--color-surface-container-lowest);
-  border-radius: 1.25rem;
-  padding: 1.25rem 1.35rem;
+  border-radius: 1rem;
+  padding: 0.95rem 1.1rem;
   box-shadow: var(--shadow-ambient);
 }
-.blk-body p, .blk-body ul, .blk-body ol { margin: 0 0 0.7rem; line-height: 1.7; }
+.blk-body p, .blk-body ul, .blk-body ol { margin: 0 0 0.55rem; line-height: 1.6; }
 .blk-body p:last-child, .blk-body ul:last-child { margin-bottom: 0; }
 .blk-body strong { font-weight: 800; color: var(--color-on-surface); }
 .blk-body ul, .blk-body ol { padding-inline-start: 1.15rem; }
@@ -1443,9 +1443,9 @@
   text-transform: uppercase; color: var(--color-on-surface-variant); margin-bottom: 0.3rem;
 }
 
-.card-pair { display: grid; gap: 0.7rem; margin-top: 1rem; }
+.card-pair { display: grid; gap: 0.55rem; margin-top: 0.7rem; }
 @media (min-width: 560px) { .card-pair { grid-template-columns: 1fr 1fr; } }
-.mini-card { background: var(--color-surface-container-low); border-radius: 0.9rem; padding: 0.8rem 0.9rem; }
+.mini-card { background: var(--color-surface-container-low); border-radius: 0.8rem; padding: 0.6rem 0.75rem; }
 .mini-card p { margin: 0; line-height: 1.6; }
 
 /* Een voorbeeldzin is geen kaart maar een aangewezen regel.
@@ -1456,9 +1456,9 @@
 .blk-voorbeeld {
   background: var(--color-surface-container-low);
   box-shadow: inset 3px 0 0 0 var(--color-secondary-container);
-  padding-block: 0.9rem;
+  padding-block: 0.7rem;
 }
-.vb-sentence { margin: 0; font-size: 1.05rem; line-height: 1.6; }
+.vb-sentence { margin: 0; font-size: 1rem; line-height: 1.55; }
 .vb-note { margin: 0.45rem 0 0; font-size: 0.85rem; color: var(--color-on-surface-variant); }
 
 /* ── leestekst met woordhulp ── */
@@ -1513,7 +1513,7 @@
    en geen omlijning.                                                                        */
 .ex {
   background: var(--color-surface-container-low);
-  border-radius: 1.25rem; padding: 1.15rem 1.3rem;
+  border-radius: 1rem; padding: 0.85rem 1rem;
   transition: box-shadow 220ms cubic-bezier(0.22, 1, 0.36, 1);
 }
 .ex.is-right { box-shadow: inset 0 0 0 2px rgba(162, 64, 0, 0.35); }
@@ -1523,19 +1523,19 @@
   display: inline-block; font-size: 0.65rem; font-weight: 800; letter-spacing: 0.08em;
   text-transform: uppercase; color: var(--color-on-surface-variant);
   background: var(--color-surface-container-high);
-  border-radius: 999px; padding: 0.12rem 0.5rem; margin-bottom: 0.6rem;
+  border-radius: 999px; padding: 0.1rem 0.45rem; margin-bottom: 0.4rem;
 }
 .ex-intro { margin: 0 0 0.5rem; font-size: 0.9rem; color: var(--color-on-surface-variant); }
-.ex-prompt { margin: 0 0 0.8rem; font-weight: 700; font-size: 1rem; line-height: 1.55; }
+.ex-prompt { margin: 0 0 0.55rem; font-weight: 700; font-size: 0.97rem; line-height: 1.45; }
 .ex-hint { margin: 0.5rem 0 0; font-size: 0.82rem; color: var(--color-on-surface-variant); }
 
 /* ── meerkeuze ── */
-.opts { display: flex; flex-direction: column; gap: 0.45rem; }
+.opts { display: flex; flex-direction: column; gap: 0.3rem; }
 .opts-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(9rem, 1fr)); }
 .opt {
   display: flex; align-items: center; gap: 0.65rem; width: 100%; text-align: start;
-  background: var(--color-surface-container-lowest); border: none; border-radius: 0.8rem;
-  padding: 0.7rem 0.85rem; cursor: pointer; font: inherit; color: inherit;
+  background: var(--color-surface-container-lowest); border: none; border-radius: 0.7rem;
+  padding: 0.45rem 0.7rem; cursor: pointer; font: inherit; color: inherit;
   transition: box-shadow 180ms cubic-bezier(0.22, 1, 0.36, 1), transform 180ms cubic-bezier(0.22, 1, 0.36, 1);
 }
 .opt:hover:not(:disabled) { box-shadow: inset 0 0 0 1.5px var(--ghost-border); }
@@ -1546,7 +1546,7 @@
 .opt.wrong { box-shadow: inset 0 0 0 2px var(--color-error); background: rgba(186, 26, 26, 0.06); }
 .opt:disabled { cursor: default; }
 .opt-l {
-  flex: 0 0 auto; width: 1.6rem; height: 1.6rem; border-radius: 999px;
+  flex: 0 0 auto; width: 1.4rem; height: 1.4rem; border-radius: 999px;
   background: var(--color-surface-container-high); display: grid; place-items: center;
   font-size: 0.78rem; font-weight: 800;
 }
@@ -1556,7 +1556,7 @@
 .opt.wrong .opt-i { color: var(--color-error); }
 
 /* ── het gat ── */
-.gap-sentence { margin: 0 0 0.85rem; font-size: 1.05rem; line-height: 2.1; }
+.gap-sentence { margin: 0 0 0.6rem; font-size: 1rem; line-height: 1.9; }
 .gap-slot {
   display: inline-block; min-width: 4.5rem; text-align: center; margin: 0 0.2rem;
   background: var(--color-surface-container-lowest); border-radius: 0.5rem;
@@ -1575,7 +1575,7 @@
 .chips { display: flex; flex-wrap: wrap; gap: 0.4rem; }
 .chip {
   background: var(--color-surface-container-lowest); border: none; border-radius: 0.6rem;
-  padding: 0.45rem 0.8rem; font: inherit; font-weight: 700; cursor: pointer; color: inherit;
+  padding: 0.35rem 0.7rem; font: inherit; font-weight: 700; cursor: pointer; color: inherit;
   transition: box-shadow 180ms cubic-bezier(0.22, 1, 0.36, 1), transform 180ms cubic-bezier(0.22, 1, 0.36, 1);
 }
 .chip:hover:not(:disabled) { box-shadow: inset 0 0 0 1.5px var(--ghost-border); }
@@ -1588,15 +1588,15 @@
 .wo-line {
   display: flex; flex-wrap: wrap; gap: 0.4rem; min-height: 2.6rem; align-items: center;
   background: var(--color-surface-container-lowest); border-radius: 0.8rem;
-  padding: 0.5rem 0.6rem; margin-bottom: 0.7rem;
+  padding: 0.4rem 0.55rem; margin-bottom: 0.55rem;
 }
 .wo-empty { color: var(--color-outline); font-weight: 700; padding-inline: 0.3rem; }
 
 /* ── matchen ── */
-.match { display: flex; flex-direction: column; gap: 0.5rem; }
+.match { display: flex; flex-direction: column; gap: 0.35rem; }
 .match-row {
   display: flex; align-items: center; gap: 0.6rem; flex-wrap: wrap;
-  background: var(--color-surface-container-lowest); border-radius: 0.8rem; padding: 0.55rem 0.75rem;
+  background: var(--color-surface-container-lowest); border-radius: 0.8rem; padding: 0.4rem 0.65rem;
 }
 .match-l { flex: 1 1 9rem; font-weight: 700; line-height: 1.45; }
 .match-row select {
@@ -1613,7 +1613,7 @@
 .open-input {
   width: 100%; font: inherit; line-height: 1.6; resize: vertical;
   background: var(--color-surface-container-lowest); border: none; border-radius: 0.8rem;
-  padding: 0.7rem 0.85rem; color: inherit;
+  padding: 0.55rem 0.75rem; color: inherit;
 }
 .open-input:focus-visible { outline: none; box-shadow: var(--ring-selected); }
 .ex-peek {
@@ -1636,7 +1636,7 @@
 /* ── markeren ── */
 .mark-body {
   background: var(--color-surface-container-lowest); border-radius: 0.8rem;
-  padding: 0.85rem 1rem; margin-bottom: 0.8rem;
+  padding: 0.7rem 0.85rem; margin-bottom: 0.6rem;
 }
 .mark-body p { margin: 0 0 0.6rem; line-height: 1.75; }
 .mark-body p:last-child { margin-bottom: 0; }
@@ -1655,10 +1655,10 @@
 .mark-pick button:focus-visible { outline: none; box-shadow: var(--ring-selected); }
 
 /* ── nakijken en feedback ── */
-.ex-foot { margin-top: 0.9rem; display: flex; align-items: center; gap: 0.7rem; }
+.ex-foot { margin-top: 0.6rem; display: flex; align-items: center; gap: 0.6rem; }
 .ex-check {
   background: var(--color-secondary-container); color: #fff; border: none; border-radius: 0.7rem;
-  padding: 0.5rem 1.1rem; font: inherit; font-weight: 800; cursor: pointer;
+  padding: 0.4rem 0.95rem; font: inherit; font-weight: 800; cursor: pointer;
   transition: transform 180ms cubic-bezier(0.22, 1, 0.36, 1), opacity 180ms;
 }
 .ex-check:hover:not(:disabled) { transform: translateY(-1px); }
@@ -1672,7 +1672,7 @@
 }
 .ex-again:hover { text-decoration: underline; }
 
-.ex-fb { margin-top: 0.9rem; }
+.ex-fb { margin-top: 0.6rem; }
 .fb-head {
   display: flex; align-items: center; gap: 0.4rem; margin: 0 0 0.6rem;
   font-weight: 800; font-size: 0.98rem;
@@ -1759,6 +1759,114 @@
   .opt, .chip, .ex, .ex-check, .concept-card { transition: none; }
   .concept-card:hover, .ex-check:hover:not(:disabled) { transform: none; }
 }
+
+/* ── Portaal: de paginakop ────────────────────────────────────────────────────
+   Navy paneel met de grafische laag van `HorizonBanner` erin en de oranje band als onderrand.
+   Hij loopt tot aan de randen van het contentgebied (negatieve marges tegen de padding van de
+   pagina), want een kop met lucht eromheen leest als een kaart en niet als de kop van de pagina. */
+.portal-hero {
+  position: relative; overflow: hidden;
+  /* De onderrand is ruim: de skyline staat 40–56px hoog onderin en §7.3 verbiedt een graphic
+     achter de tekst. Minder padding en de lede loopt door de daken. */
+  margin: -1.75rem -1.25rem 1.5rem; padding: 1.75rem 1.25rem 4rem;
+  background: var(--color-primary); color: #fff;
+}
+@media (min-width: 640px) {
+  .portal-hero { margin: -2.5rem -2rem 1.75rem; padding: 2.25rem 2rem 4.75rem; }
+}
+.portal-hero .ph-body {
+  position: relative; z-index: 10; display: flex; flex-wrap: wrap; align-items: flex-start;
+  gap: 1.25rem 2rem; max-width: 64rem; margin: 0 auto;
+}
+.portal-hero .ph-copy { flex: 1 1 20rem; min-width: 0; }
+.portal-hero .ph-back {
+  display: inline-flex; align-items: center; gap: 0.375rem; margin-bottom: 0.6rem;
+  font-size: 0.72rem; font-weight: 700; text-decoration: none;
+  color: rgba(255, 255, 255, 0.66);
+}
+.portal-hero .ph-back:hover { color: #fff; text-decoration: underline; }
+.portal-hero .ph-kicker {
+  font-size: 0.65rem; font-weight: 800; letter-spacing: 0.16em; text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.62); margin-bottom: 0.4rem;
+}
+.portal-hero .ph-title {
+  font-family: var(--font-headline); font-weight: 800; letter-spacing: -0.03em;
+  font-size: clamp(1.6rem, 3.4vw, 2.15rem); line-height: 1.08; text-wrap: balance;
+}
+.portal-hero .ph-lede {
+  margin-top: 0.5rem; max-width: 42ch; font-size: 0.9rem; line-height: 1.65;
+  color: rgba(255, 255, 255, 0.76);
+}
+.portal-hero .ph-side { display: flex; flex-wrap: wrap; align-items: stretch; gap: 0.75rem; }
+.portal-hero .ph-ring,
+.portal-hero .ph-tiles > div {
+  background: rgba(255, 255, 255, 0.10); border-radius: 0.85rem; padding: 0.85rem 1rem;
+}
+.portal-hero .ph-ring { display: flex; align-items: center; gap: 0.85rem; max-width: 19rem; }
+.portal-hero .ph-ring-label {
+  font-size: 0.65rem; font-weight: 800; letter-spacing: 0.13em; text-transform: uppercase;
+}
+.portal-hero .ph-ring-note {
+  margin-top: 0.2rem; font-size: 0.7rem; line-height: 1.45; color: rgba(255, 255, 255, 0.62);
+}
+.portal-hero .ph-tiles { display: flex; gap: 0.75rem; }
+.portal-hero .ph-tiles > div { min-width: 7.5rem; }
+.portal-hero .ph-tiles dt {
+  font-size: 0.62rem; font-weight: 800; letter-spacing: 0.14em; text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.6);
+}
+.portal-hero .ph-tiles dd {
+  font-family: var(--font-headline); font-weight: 800; font-size: 1.45rem; line-height: 1.2;
+  font-variant-numeric: tabular-nums;
+}
+.portal-hero .ph-tiles p { font-size: 0.68rem; color: rgba(255, 255, 255, 0.62); }
+
+/* ── Portaal: de modulekaart ──────────────────────────────────────────────────
+   De vorm van §7.2, en op drie schermen dezelfde: skyline-topper, merkteken over de straatlijn,
+   dan de tekst. Geen rand (§2) — wit op een tonale pagina plus de ambient schaduw van §4.       */
+.mod-card {
+  background: var(--color-surface-container-lowest); border-radius: 1.125rem;
+  box-shadow: var(--shadow-ambient);
+  transition: transform 220ms cubic-bezier(0.22, 1, 0.36, 1), box-shadow 220ms ease;
+}
+a.mod-card:hover { transform: translateY(-3px); box-shadow: 0 10px 30px rgba(0,43,109,0.13), 0 2px 6px rgba(0,43,109,0.07); }
+a.mod-card:active { transform: translateY(-1px); }
+.mod-card:focus-visible { outline: 2px solid var(--color-secondary-container); outline-offset: 3px; }
+.mod-cta {
+  display: inline-flex; align-items: center; gap: 0.375rem; flex-shrink: 0;
+  border-radius: 0.625rem; padding: 0.4rem 0.75rem; font-size: 0.76rem; font-weight: 800;
+  color: #fff; background: var(--gradient-btn-orange); box-shadow: var(--shadow-btn-orange);
+}
+.mod-bar { display: block; height: 6px; border-radius: 999px; background: var(--color-surface-container-high); overflow: hidden; }
+.mod-bar i { display: block; height: 100%; border-radius: 999px; }
+@media (prefers-reduced-motion: reduce) {
+  .mod-card { transition: none; }
+  a.mod-card:hover { transform: none; }
+}
+
+/* ── Portaal: de twee vormen die op drie schermen terugkomen ──────────────────
+   `.mini-head` is het sectiekopje boven een blok kaarten en `.panel` de witte doos eromheen.
+   Ze staan hier en niet in elk `<style>`-blok van de drie pagina's: dat waren drie kopieën die
+   binnen een maand uit elkaar lopen, precies zoals `sections` en `task_type` dat deden.
+   Geen 1px-rand (§2) — het contrast tussen `surface` en `surface-container-lowest` doet het
+   werk, plus de ambient schaduw van §4.                                                     */
+.mini-head {
+  font-size: 0.68rem; font-weight: 800; letter-spacing: 0.15em; text-transform: uppercase;
+  color: var(--color-on-surface-variant); margin-bottom: 0.75rem;
+}
+.panel {
+  background: var(--color-surface-container-lowest); border-radius: 1.125rem;
+  padding: 1.125rem 1.25rem; box-shadow: var(--shadow-ambient);
+}
+.panel.flat { background: var(--color-surface-container-low); box-shadow: none; }
+
+/* Het lijstje "wat komt hierna" in de cursuskaart. Stippen en geen nummers: het is geen
+   genummerde stap maar een blik vooruit, en nummers zouden botsen met de blokletters.        */
+.course-card .cc-list { display: flex; flex-direction: column; gap: 0.1rem; margin-top: 0.35rem; }
+.course-card .cc-row { display: flex; align-items: center; gap: 0.6rem; padding: 0.42rem 0.1rem; font-size: 0.83rem; }
+.course-card .cc-dot { width: 6px; height: 6px; border-radius: 50%; flex: none; background: var(--color-outline-variant); }
+.course-card .cc-nm { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; color: var(--color-on-surface-variant); }
+.course-card .cc-min { font-size: 0.72rem; color: var(--color-outline); flex: none; }
 
 /* De cursuskaart op de onderdeelpagina. Boven de examenlijst, want leren gaat aan toetsen
    vooraf; de examens staan er direct onder.                                                */
@@ -1855,4 +1963,5 @@
       spiegeling — dezelfde reden dat elke voorwaartse pijl `.rtl-flip` draagt.             */
 [dir="rtl"] .blk-voorbeeld { box-shadow: inset -3px 0 0 0 var(--color-secondary-container); }
 [dir="rtl"] .les-row.is-current { box-shadow: inset -3px 0 0 0 var(--color-secondary-container); }
+
 

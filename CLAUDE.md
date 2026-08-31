@@ -879,6 +879,76 @@ accentrail wordt onder `[dir="rtl"]` expliciet gespiegeld.
 bewijzen. **De hele laag staat nog alleen op de lokale stack**; de migratie is niet op productie
 toegepast.
 
+### Het portaal is vier schermen, en de leerlaag zit er in (29-08)
+
+`/dashboard` → `/dashboard/[level]` → `/dashboard/[level]/[skill]` → de les. Vier vragen, elk op
+één scherm: *wat heb ik?* · *waar sta ik op dit niveau?* · *ben ik klaar voor dit examen?* ·
+*wat moet ik nu leren?*
+
+- **Het overzicht toont MODULES, niet onderdelen.** Het toonde per niveau de vier onderdelen —
+  twaalf kaarten voor iemand met twee niveaus en KNM, en geen ervan wist iets van de leerlaag.
+  Nu is het A2 · B1 · KNM · ONA met per module twee meters (leren, oefenen), en daaronder drie
+  vervolgstappen. De volgorde is **de catalogus, niet bezit-eerst** — zelfde regel als
+  `PortalMenu`, anders springt KNM tussen A2 en B1 zodra je KNM koopt. Drie toestanden en ze
+  moeten verschillen: van jou (link, volle kleur), te koop (doffer, met de prijs), **niet
+  gebouwd (geen link, "binnenkort", nooit een slot)**.
+- **`lib/lessons/readiness.ts` is "examenklaar", en het is ONS getal.** De twee helften — lessen
+  en examens — wegen even zwaar; een cursus zonder examens komt niet boven **50** ("gelezen is
+  niet bewezen") en de oefenhelft is *dekking maal kwaliteit*, want drie examens op 80% is niet
+  hetzelfde als tien op 24%. Twee randen zijn gepind in `tests-unit/readiness.test.ts`: een
+  gemaakt maar nog niet nagekeken open examen is **geen 0** (dat toont een nakijkwachtrij als een
+  onvoldoende), en een onderdeel zonder cijfer valt uit de deler van het niveaugemiddelde (anders
+  presenteert onze roadmap zich als de voortgang van de kandidaat). Het heet op elk scherm
+  *examenklaar* met de zin "onze inschatting … geen voorspelling van je DUO-uitslag" ernaast —
+  `SEO/facts.md` §9, dezelfde discipline als `masteryPct`.
+- **`ReadinessRing` rendert `null` als een streepje, niet als 0%.** "Wij weten er niets van" is
+  iets anders dan "je staat op nul". Zelfde regel als `formatCount` en de nulmeting.
+- **Een zwak concept wordt alleen gemeld bij een onderdeel waar je iets gedaan hebt.** Beheersing
+  telt op het *concept*, over de onderdelen heen — dat is het ontwerp — maar "Zwak: signaalwoorden"
+  bij Spreken waar de kandidaat nooit een opgave deed verwijt hem iets wat hij daar nooit
+  probeerde.
+- **`StrengthWeakness` tekent vier vakjes, geen balk.** Een balk van 31% leest als een meting op
+  de procent nauwkeurig terwijl het getal uit een handvol antwoorden komt. Nul vakjes + "geen data"
+  is **niet** zwak en kleurt niet oranje.
+- **`lib/portal-next.ts` is "wat nu?" op één plek.** Drie schermen stellen die vraag. Een module
+  die je niet hebt wordt overgeslagen — een volgende stap die naar het aanbod wijst is een upsell
+  vermomd als advies. `fetchNextLesson` doet één `fetchCourse` per module tot er één iets oplevert,
+  niet alle modules tegelijk.
+- **`fetchTeachersForCourse` is de bulkvorm van `fetchTeachingLessons`.** Per concept zou de
+  onderdeelpagina dertig round-trips doen voor één kaart. Let op de `level`-tak: `.eq(…, null)`
+  matcht niets in PostgREST — de val die KNM steeds opnieuw zet.
+- **`.mini-head` en `.panel` staan in `globals.css`**, niet in drie `<style>`-blokken. En:
+  **Turbopack serveerde opnieuw een verouderde CSS-chunk** — de regels stonden op schijf en niet in
+  de chunk, en een newline toevoegen hielp niet. Alleen een herstart van de dev-server. Zelfde val
+  als de 22-08-notitie.
+- **`PortalHero` is de kop van élk portaalscherm**, en hij bestaat omdat de eerste versie van dit
+  werk vier witte kaarten op grijs was — geen enkel element uit `components/horizon/`, wat de harde
+  regel bovenaan dit document verbiedt en waardoor het ingelogde deel als een ander product las dan
+  de pagina waar de bezoeker vandaan kwam. Navy paneel, `HorizonBanner` (lage skyline, geen zon:
+  de rechterflank draagt de tegels), oranje band als onderrand, en daarin kicker · titel · lede ·
+  tegels · de examenklaar-ring. **De onderrand moet ruimer zijn dan de skyline hoog is** — anders
+  loopt de lede door de daken, wat §7.3 verbiedt.
+- **De modulekaart is `SkylineTopper` + het merkteken over de straatlijn**, op alle drie de
+  schermen en identiek aan `SkillCard` op de homepage. `LevelMark` voor A2/B1, `CategoryMark` voor
+  KNM, de onderdelen en ONA. Tint en `seed` per index: vier kaarten zijn vier straten in één stad,
+  en variatie komt **nooit** uit een nieuwe kleur (§7.3). `locked` (de neutrale ramp) is de
+  niet-gebouwd-toestand, en die kaart draagt één zin in plaats van twee lege meters.
+- **`.next` kan een verouderde CSS-chunk over meerdere herstarts vasthouden.** Nieuwe regels in
+  `globals.css` bereikten de pagina niet en de chunk-hash bleef gelijk na `kill` + opnieuw starten;
+  alleen `rm -rf .next` hielp. De oudere notitie hierover zegt "herstart de dev-server" — dat is
+  niet genoeg.
+- **De lespagina was al het gevraagde scherm** (links het pad via `coursePanel`, rechts de les);
+  alleen de paneelkop was de *blok*naam en heet nu naar de cursus — een blokletter als kop noemde
+  de lijst naar één van zijn eigen secties.
+- **Bezit is per module, ook voor de verkooppitch.** `planFromMetadata(meta) !== 'free'` is
+  onwaar voor iemand die één module kocht, dus die kreeg de upsell onder zijn eigen modules.
+
+**Lokaal opzetten om dit met content te bekijken** (de leerlaagmigratie staat nog steeds niet op
+productie): pas `20260828100000_lesson_layer.sql` toe met `psql` — **nooit `supabase db reset`**,
+dat wist de scriptseeds — en draai `node scripts/lesson-content/seed.mjs a2:lezen --partial`.
+Alles komt `pending` binnen en is dus onzichtbaar; voor een lokale review zet je `lessons` en
+`concepts` met de hand op `validated`. Op productie hoort dat per les in `/admin/lessen`.
+
 ---
 
 ## Project Overview

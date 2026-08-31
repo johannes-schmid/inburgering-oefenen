@@ -71,8 +71,18 @@ test.describe('a free account', () => {
     await applySession(context, session);
   });
 
-  test('sees all four onderdelen on the dashboard', async ({ page }) => {
+  test('sees every module on the dashboard, and the four onderdelen one click in', async ({ page }) => {
+    // Het overzicht toont sinds 29-08 modules (A2, B1, KNM, ONA) in plaats van de vier
+    // onderdelen: met twee niveaus en KNM waren dat twaalf kaarten, een catalogus in plaats
+    // van een overzicht. De belofte "de vier onderdelen zijn altijd zichtbaar" is niet
+    // vervallen, hij is één klik verder gaan wonen — dus die klik wordt hier gemaakt.
     await page.goto('/nl/dashboard');
+    for (const level of ['a2', 'b1']) {
+      await expect(page.locator(`a[href$="/dashboard/${level}"]`).first(), level).toBeVisible();
+    }
+    await expect(page.locator('a[href$="/dashboard/knm"]').first()).toBeVisible();
+
+    await page.goto('/nl/dashboard/a2');
     for (const skill of ['lezen', 'luisteren', 'schrijven', 'spreken']) {
       await expect(page.locator(`a[href*="/dashboard/a2/${skill}"]`).first(), skill).toBeVisible();
     }

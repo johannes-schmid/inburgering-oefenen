@@ -96,7 +96,7 @@ export default function AppShell({
         /* De totale breedte van de chrome, gelezen door alles wat ernaast moet staan — de
            vaste onderbalk van de KNM-lespagina is de huidige gebruiker. Hij verandert mee met
            het lespaneel, want dat is er niet altijd. */
-        :root { --portal-chrome-w: ${learn ? '464px' : '256px'}; }
+        :root { --portal-chrome-w: ${learn ? '540px' : '280px'}; }
         body { font-family: var(--font-body); background: #f0f3f8; color: #191c1e; }
         h1,h2,h3,h4 { font-family: var(--font-headline); }
 
@@ -104,7 +104,7 @@ export default function AppShell({
            Terug naar één kolom op 29-08 (eigenaar, naar de mockup). Twee vaste kolommen
            droegen twee assen op elke pagina terwijl er op de meeste maar één te zeggen valt;
            de modules klappen hier uit en het lespaneel komt er alleen bij binnen een cursus. */
-        #dash-side { width:256px; flex-shrink:0; background:linear-gradient(180deg,#001d4e 0%,#002b6d 55%,#003580 100%); display:flex; flex-direction:column; height:100vh; position:sticky; top:0; color:#fff; padding:16px; }
+        #dash-side { width:280px; flex-shrink:0; background:linear-gradient(180deg,#001d4e 0%,#002b6d 55%,#003580 100%); display:flex; flex-direction:column; height:100vh; position:sticky; top:0; color:#fff; padding:16px; }
         .side-logo { display:flex; align-items:center; gap:8px; padding:0 6px 14px; color:#fff; text-decoration:none; font-family:var(--font-headline); font-weight:700; font-size:14px; line-height:1.2; letter-spacing:-0.01em; }
         .side-logo:focus-visible { outline:2px solid #fe762c; outline-offset:3px; border-radius:11px; }
         .side-scroll { flex:1; min-height:0; overflow-y:auto; display:flex; flex-direction:column; gap:1px; }
@@ -161,16 +161,24 @@ export default function AppShell({
         .side-foot { margin-top:10px; padding-top:10px; border-top:1px solid rgba(255,255,255,0.12); display:flex; flex-direction:column; gap:1px; }
 
         /* ── Het lespaneel: alleen binnen een cursus of de conceptenbibliotheek ────────── */
-        #dash-panel { width:208px; flex-shrink:0; height:100vh; position:sticky; top:0; display:flex; flex-direction:column; padding:16px 10px 12px; background:var(--color-surface,#fff); box-shadow:1px 0 0 rgba(0,43,109,0.08); overflow-y:auto; }
+        #dash-panel { width:260px; flex-shrink:0; height:100vh; position:sticky; top:0; display:flex; flex-direction:column; padding:18px 12px 14px; background:var(--color-surface,#fff); box-shadow:1px 0 0 rgba(0,43,109,0.08); overflow-y:auto; }
         .lp-back { display:flex; align-items:center; gap:6px; padding:0 8px; font-size:11.5px; font-weight:700; color:#6b7683; text-decoration:none; }
         .lp-back:hover { color:#002b6d; }
-        .lp-title { font-family:var(--font-headline); font-weight:700; font-size:14px; letter-spacing:-0.02em; color:#191c1e; line-height:1.3; padding:6px 8px 10px; }
-        .lp-nav { display:flex; flex-direction:column; gap:10px; }
+        .lp-title { font-family:var(--font-headline); font-weight:700; font-size:15.5px; letter-spacing:-0.02em; color:#191c1e; line-height:1.3; padding:6px 8px 10px; }
+        .lp-nav { display:flex; flex-direction:column; gap:4px; }
         .lp-sec { display:flex; flex-direction:column; gap:1px; }
-        .lp-sec-head { display:flex; align-items:center; justify-content:space-between; gap:6px; font-size:10px; font-weight:800; letter-spacing:0.11em; text-transform:uppercase; color:#7c8794; margin:4px 9px 3px; }
+        /* Elke sectie klapt uit. Eén lange lijst van vijftig lessen is geen navigatie meer; de
+           sectie waar je in zit staat open, de rest is één regel. */
+        .lp-sec-head { display:flex; align-items:center; gap:7px; width:100%; padding:6px 8px; border:none; background:none; font-family:inherit; font-size:10.5px; font-weight:800; letter-spacing:0.11em; text-transform:uppercase; color:#6b7683; cursor:pointer; border-radius:8px; text-align:left; }
+        .lp-sec-head:hover { background:rgba(0,43,109,0.05); color:#002b6d; }
+        .lp-sec-head:focus-visible { outline:2px solid #fe762c; outline-offset:2px; }
+        .lp-sec-lb { flex:1; min-width:0; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+        .lp-chev { flex-shrink:0; color:#9aa4b0; transition:transform .18s cubic-bezier(0.22,1,0.36,1); }
+        .lp-sec.open .lp-chev { transform:rotate(90deg); }
+        .lp-items { display:flex; flex-direction:column; gap:1px; padding-bottom:6px; }
         .lp-letter { display:inline-flex; align-items:center; justify-content:center; width:15px; height:15px; border-radius:5px; margin-right:5px; background:rgba(0,43,109,0.09); color:#002b6d; font-size:9px; }
         .lp-n { font-variant-numeric:tabular-nums; letter-spacing:0; }
-        .lp-row { position:relative; display:flex; align-items:center; gap:9px; padding:6px 12px; border-radius:8px; font-size:0.8rem; font-weight:500; color:#3f4750; text-decoration:none; transition:background .15s ease, color .15s ease; }
+        .lp-row { position:relative; display:flex; align-items:center; gap:9px; padding:7px 12px; border-radius:8px; font-size:0.85rem; font-weight:500; color:#3f4750; text-decoration:none; transition:background .15s ease, color .15s ease; }
         .lp-row:hover { background:rgba(0,43,109,0.05); color:#191c1e; }
         .lp-row:focus-visible { outline:2px solid #fe762c; outline-offset:2px; }
         .lp-row.on { background:rgba(0,43,109,0.08); color:#002b6d; font-weight:700; }
@@ -196,6 +204,7 @@ export default function AppShell({
         [dir="rtl"] .side-sub { margin:2px 26px 4px 0; padding:0 8px 0 0; border-left:none; border-right:1px solid rgba(255,255,255,0.14); }
         [dir="rtl"] .side-group.open .side-chev { transform:rotate(90deg) scaleX(-1); }
         [dir="rtl"] .lp-row.on::before { left:auto; right:2px; }
+        [dir="rtl"] .lp-sec.open .lp-chev { transform:rotate(90deg) scaleX(-1); }
         @media (max-width:768px) {
           :root { --portal-chrome-w: 0px; }
           #dash-side, #dash-panel { display:none !important; }

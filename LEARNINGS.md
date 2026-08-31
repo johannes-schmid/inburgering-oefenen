@@ -3258,3 +3258,72 @@ nog niet gedane les een leeg vierkantje, wat als een uitgevinkt vakje leest; all
 `locked` krijgen nu een tegel.
 **Lesson:** een navigatiekolom moet op élke pagina iets te zeggen hebben — kan hij dat niet,
 dan hoort hij bij de pagina's waar hij dat wél kan, niet in de chrome.
+
+## 2026-08-29 — het portaal is vier schermen geworden, en de leerlaag zit erin
+**Changed:** `dashboard/page.tsx` (modules in plaats van onderdelen), `dashboard/[level]/page.tsx`
+(examenklaar-ring, gedeelde concepten, wat-nu-lijst), `_components/ModuleSkillGrid.tsx` (ring per
+onderdeel), `[level]/[skill]/page.tsx` (ring + `StrengthWeakness` naast de cursuskaart),
+`leren/[lesSlug]/page.tsx` (paneelkop = de cursus), nieuw: `lib/lessons/readiness.ts`,
+`lib/portal-next.ts`, `_components/ReadinessRing.tsx`, `_components/ModuleCard.tsx`,
+`_components/StrengthWeakness.tsx`, `fetchTeachersForCourse` in `concepts-server.ts`,
+`.mini-head`/`.panel` in `globals.css`, 60 sleutels in de drie messages-bestanden.
+**Outcome:** SUCCESS
+**What worked / went wrong:**
+- `main` was 12 commits vooruit met de gastmodus; de merge botste op vier bestanden. De echte
+  vondst zat in `dashboard/[level]/[skill]/page.tsx`: main maakte `user` nullable en de leerlaag
+  had er `user.id` bij gezet. `tsc` ving dat, de merge niet.
+- De lokale database had de leerlaagmigratie **niet**. Toegepast met `psql` (nooit `db reset` —
+  dat wist de scriptseeds), daarna `seed.mjs a2:lezen --partial`: 51 lessen, 558 items, 31
+  concepten. Alles komt `pending` binnen, dus lokaal met de hand op `validated` gezet.
+- Turbopack serveerde opnieuw een verouderde CSS-chunk: de nieuwe `.mini-head`/`.panel` stonden
+  op schijf en niet in de chunk, en een newline toevoegen aan `globals.css` hielp niet. Alleen
+  een herstart van de dev-server. Dit staat al in de 22-08-notitie en is opnieuw ingelopen.
+- Eén e2e-test brak terecht: "sees all four onderdelen on the dashboard". Het overzicht toont nu
+  modules; de vier onderdelen zijn één klik verder. De test maakt die klik nu, in plaats van te
+  verdwijnen. De vijf andere `portal.spec.js`-failures bestonden al op de mergecommit (B1-content
+  ontbreekt lokaal + gastmodus) — geverifieerd met `git stash`.
+**Lesson:** Als een scherm een belofte verplaatst in plaats van hem te breken, verplaats de test
+mee. Een test die verdwijnt met de UI die hem droeg neemt de belofte mee.
+
+## 2026-08-29 — "examenklaar" is één getal en het moest van ons zijn
+**Changed:** `lib/lessons/readiness.ts` + `tests-unit/readiness.test.ts`.
+**Outcome:** SUCCESS
+**What worked / went wrong:** De kaart droeg twee balken (lessen, examens) waar de kandidaat er
+één van wil. De formule weegt de helften even zwaar en klemt een cursus-zonder-examens op 50%:
+gelezen is niet bewezen. Twee valkuilen zaten in de randen — een gemaakt maar nog niet nagekeken
+open examen mag geen 0 zijn (dat toont een nakijkwachtrij als een onvoldoende), en een onderdeel
+zonder cijfer mag niet in de deler van het niveaugemiddelde (dan presenteert onze roadmap zich als
+de voortgang van de kandidaat). Allebei gepind in de unittest.
+**Lesson:** Elk getal dat wij verzinnen krijgt zijn eigen module, zijn eigen naam op het scherm en
+een zin die zegt van wie het is. Zelfde discipline als `masteryPct`; `SEO/facts.md` §9 is waarom.
+
+## 2026-08-29 — het portaal sprak de grafische taal niet, en dat was de hele klacht
+**Changed:** nieuw `_components/PortalHero.tsx` (+ `.portal-hero` in `globals.css`), `ModuleCard`
+en `ModuleSkillGrid` omgebouwd naar `SkylineTopper` + `CategoryMark`/`LevelMark`, de koppen van
+`/dashboard`, `/dashboard/[level]`, `/dashboard/[level]/[skill]` en `…/leren` vervangen,
+`.mod-card`/`.mini-head`/`.panel` naar `globals.css`, ring toont een procentteken, ONA krijgt een
+zin in plaats van twee lege meters, de cursuskaart krijgt een vooruitblik van vier lessen.
+**Outcome:** SUCCESS
+**What worked / went wrong:**
+- De eerste ronde was vier witte kaarten op een grijze pagina: **geen enkel element uit
+  `components/horizon/`**, terwijl CLAUDE.md's harde regel zegt dat elke nieuwe pagina daaruit
+  gebouwd wordt. De mockup van de eigenaar had een navy kop met tegels en een oranje band; ik had
+  de body gebouwd en de kop overgeslagen. Het resultaat las als een ander product dan de pagina
+  waar de bezoeker vandaan komt.
+- **`.next` overleefde twee herstarts van de dev-server met een verouderde CSS-chunk.** Dezelfde
+  hash (`0l9fcvu`) na `kill` + opnieuw starten, dus nieuwe regels in `globals.css` bereikten de
+  pagina niet en de kop rendeerde als kale tekst. Alleen `rm -rf .next` hielp. De 22-08-notitie
+  zei "herstart de dev-server"; dat is niet genoeg.
+- Een kop zonder ruime onderrand loopt door de skyline heen (§7.3 verbiedt een graphic achter de
+  tekst). `padding-bottom` moet groter zijn dan `desktopHeight` van de banner.
+- "24" in een ring leest als een positie of een aantal. Met `%` erbij weet de lezer wát er gemeten
+  wordt — op 56px past het.
+**Lesson:** Een nieuw scherm is pas af als het de bestaande taal *spreekt*, niet als het de data
+klopt. Begin bij de kop en pak `HorizonBanner`/`SkylineTopper` vóór je een eigen doosje tekent —
+en controleer met een screenshot, want `tsc` en de build zien geen huisstijl.
+
+## 2026-08-29 — Het lespaneel klapt uit, en de lesstroom is compacter
+**Changed:** `(app)/components/LearnPanel.tsx` (secties zijn nu uitklapbaar, staat in `localStorage`, de sectie met de huidige les staat altijd open), `(app)/components/AppShell.tsx` (zijbalk 256→280px, paneel 208→260px, `--portal-chrome-w` 464→540px, `.lp-sec-head` is een knop met chevron), `app/globals.css` (paddings/gaps van `.blk`, `.ex`, `.opt`, `.ex-foot`, `.stream-list` teruggebracht).
+**Outcome:** SUCCESS — tsc schoon, 350 unittests groen, geverifieerd met een screenshot op `/nl/dashboard/a2/lezen/leren/b12-hebben-of-zijn`.
+**What worked / went wrong:** De screenshotloop kostte de meeste tijd om de verkeerde reden: het bewaarde cookiebestand was verlopen én de lesslug was geraden (`hebben-of-zijn` bestaat niet; het is `b12-hebben-of-zijn`), dus puppeteer fotografeerde een 404/loginpagina. Een `curl` met dezelfde cookie die op de klasnamen grept kost één seconde en zegt meteen of de pagina überhaupt de juiste is.
+**Lesson:** Controleer vóór een screenshot met `curl` of de URL en het sessiecookie nog kloppen — een browser die een inlogpagina fotografeert ziet er niet uit als een fout.

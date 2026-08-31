@@ -8,9 +8,8 @@ import { getSkillAtLevel, isLevel, levelLabel } from '@/data/skills';
 import { fetchPortalMenu } from '@/lib/portal-menu';
 import { fetchCourse } from '@/lib/lessons/lessons-server';
 import { blockProgress, courseProgressPct, lessonPath, nextLesson } from '@/lib/lessons/lessons';
-import { HorizonBand } from '@/components/horizon';
-import SkillIcon from '@/components/site/SkillIcon';
 import AppShell from '../../../../components/AppShell';
+import PortalHero from '../../../_components/PortalHero';
 import { coursePanel } from '../../../../components/nav';
 
 type Props = { params: Promise<{ locale: string; level: string; skill: string }> };
@@ -81,61 +80,41 @@ export default async function CoursePage({ params }: Props) {
       <div className="px-5 py-7 sm:px-8 sm:py-10">
         <div className="max-w-3xl mx-auto">
 
-          <header className="mb-7">
+          <PortalHero
+            back={{ href: `/${locale}/dashboard/${level}/${skill.slug}`, label: tSkills(`${skill.key}.name`) }}
+            kicker={`${levelLabel(level)} · ${tSkills(`${skill.key}.name`)}`}
+            title={t('course_title', { skill: tSkills(`${skill.key}.name`), level: levelLabel(level) })}
+            lede={t('course_lede')}
+            seed={3}
+            tiles={[{
+              label: tPortal('mod_learn'),
+              value: `${pct}%`,
+              sub: t('course_progress', {
+                done: blocks.reduce((n, b) => n + blockProgress(b).done, 0),
+                total: blocks.reduce((n, b) => n + b.lessons.length, 0),
+              }),
+            }]}
+          />
+
+          {next && (
             <a
-              href={`/${locale}/dashboard/${level}/${skill.slug}`}
-              className="text-xs font-bold text-on-surface-variant no-underline hover:underline"
+              href={`/${locale}${lessonPath(level, skill.slug, next.lesson.slug)}`}
+              className="mb-6 flex items-center gap-3 rounded-2xl px-4 py-3.5 no-underline"
+              style={{
+                background: 'var(--color-surface-container-lowest)',
+                boxShadow: 'var(--shadow-ambient)',
+              }}
             >
-              ← {tSkills(`${skill.key}.name`)}
+              <span className="cb-letter">{next.block.letter}</span>
+              <span className="min-w-0">
+                <span className="block text-xs font-bold uppercase tracking-wider text-on-surface-variant">
+                  {t('continue')}
+                </span>
+                <span className="block font-extrabold text-on-surface truncate">{next.lesson.title}</span>
+              </span>
+              <ArrowRight size={18} strokeWidth={2.5} className="ms-auto shrink-0 text-secondary rtl-flip" />
             </a>
-            <div className="flex items-start gap-3.5 mt-3">
-              <SkillIcon skill={skill.slug} size="lg" />
-              <div className="min-w-0">
-                <h1
-                  className="font-headline font-extrabold text-on-surface"
-                  style={{ fontSize: 'clamp(1.5rem,3.2vw,1.95rem)', letterSpacing: '-0.03em' }}
-                >
-                  {t('course_title', { skill: tSkills(`${skill.key}.name`), level: levelLabel(level) })}
-                </h1>
-                <p className="text-sm text-on-surface-variant mt-1" style={{ lineHeight: 1.65 }}>
-                  {t('course_lede')}
-                </p>
-              </div>
-            </div>
-
-            <div className="mt-5">
-              <div className="flex items-baseline justify-between gap-3 mb-1.5">
-                <span className="text-xs font-bold uppercase tracking-wider text-on-surface-variant">
-                  {t('course_progress', {
-                    done: blocks.reduce((n, b) => n + blockProgress(b).done, 0),
-                    total: blocks.reduce((n, b) => n + b.lessons.length, 0),
-                  })}
-                </span>
-                <span className="text-sm font-extrabold text-secondary">{pct}%</span>
-              </div>
-              <HorizonBand progress={pct} rounded height={8} />
-            </div>
-
-            {next && (
-              <a
-                href={`/${locale}${lessonPath(level, skill.slug, next.lesson.slug)}`}
-                className="mt-5 flex items-center gap-3 rounded-2xl px-4 py-3.5 no-underline"
-                style={{
-                  background: 'var(--color-surface-container-lowest)',
-                  boxShadow: 'var(--shadow-ambient)',
-                }}
-              >
-                <span className="cb-letter">{next.block.letter}</span>
-                <span className="min-w-0">
-                  <span className="block text-xs font-bold uppercase tracking-wider text-on-surface-variant">
-                    {t('continue')}
-                  </span>
-                  <span className="block font-extrabold text-on-surface truncate">{next.lesson.title}</span>
-                </span>
-                <ArrowRight size={18} strokeWidth={2.5} className="ms-auto shrink-0 text-secondary rtl-flip" />
-              </a>
-            )}
-          </header>
+          )}
 
           <ol className="flex flex-col gap-3 list-none p-0 m-0">
             {blocks.map(block => {

@@ -6,11 +6,14 @@ import { createClient } from '@/lib/supabase/server';
 import { ownsModule } from '@/lib/entitlements';
 import { emptyLevelledProgress, fetchPortalProgress, fetchPublishedExamNumbers } from '@/lib/portal-progress';
 import { formatCount, getSkillAtLevel, isFreeExam, isLevel, levelLabel } from '@/data/skills';
-import SkillIcon from '@/components/site/SkillIcon';
 import CriterionProgress from '@/components/exam/CriterionProgress';
 import { fetchCriterionSeries } from '@/lib/criterion-progress';
 import { fetchCourse } from '@/lib/lessons/lessons-server';
-import { blockProgress, courseProgressPct, coursePath, nextLesson } from '@/lib/lessons/lessons';
+import { fetchConcepts, fetchMastery, fetchTeachersForCourse } from '@/lib/lessons/concepts-server';
+import { readiness } from '@/lib/lessons/readiness';
+import PortalHero from '../../_components/PortalHero';
+import StrengthWeakness, { type SwRow } from '../../_components/StrengthWeakness';
+import { blockProgress, courseProgressPct, coursePath, lessonPath, nextLesson } from '@/lib/lessons/lessons';
 import { HorizonBand } from '@/components/horizon';
 import AppShell from '../../../components/AppShell';
 import ExamListStyles from '../../_components/ExamListStyles';
@@ -83,6 +86,51 @@ export default async function SkillExamsPage({ params }: Props) {
   const lessonsDone = blocks.reduce((n, b) => n + blockProgress(b).done, 0);
   const lessonsTotal = blocks.reduce((n, b) => n + b.lessons.length, 0);
 
+  /**
+   * Examenklaar: één getal uit de twee assen die dit scherm draagt.
+   *
+   * Zie `lib/lessons/readiness.ts` — het is ONS getal, geen slaagkans, en de kop zegt dat
+   * erbij. Het staat hier omdat dit de pagina is waar de kandidaat beslist of hij nog een les
+   * doet of het examen aandurft.
+   */
+  const r = readiness({
+    lessonsDone,
+    lessonsTotal,
+    examsDone: p.examsDone,
+    examCount: skill.examCount,
+    averagePct: p.averagePct,
+  });
+
+  /**
+   * Sterk & zwak, per concept van dit onderdeel.
+   *
+   * Alleen concepten die in dít onderdeel voorkomen (`fetchConcepts` filtert op
+   * `concept_onderdelen`), want "signaalwoorden" beheersen in Lezen zegt niets over Schrijven
+   * — daar moet je ze maken. Zes rijen: de zwakste eerst, dan wat nog geen data heeft, zodat
+   * de kaart iets zegt in plaats van dertig regels te zijn.
+   */
+  const concepts = user ? await fetchConcepts(level, skill.slug) : [];
+  const mastery = await fetchMastery(user?.id ?? null, concepts.map(c => c.id));
+  const teachers = await fetchTeachersForCourse(level, skill.slug, concepts.map(c => c.id));
+  /**
+   * De vier lessen ná de eerstvolgende — de kaart vertelt dan niet alleen waar je verdergaat maar
+   * ook wat eraan komt. Zonder dit stond er onder "ga verder bij" een half lege kaart naast een
+   * volle kaart met sterk & zwak, en dat leest als iets dat nog niet af is.
+   */
+  const upcoming = blocks
+    .flatMap(b => b.lessons.map(l => ({ ...l, letter: b.letter })))
+    .filter(l => l.progress?.state !== 'done')
+    .slice(1, 5);
+
+  const swRows: SwRow[] = concepts
+    .map(c => ({
+      concept: c,
+      mastery: mastery.get(c.id) ?? null,
+      lessonHref: teachers.has(c.id) ? lessonPath(level, skill.slug, teachers.get(c.id)!.slug) : null,
+    }))
+    .sort((a, b) => (a.mastery?.mastery_pct ?? 101) - (b.mastery?.mastery_pct ?? 101))
+    .slice(0, 6);
+
   return (
     <AppShell
       locale={locale}
@@ -94,62 +142,42 @@ export default async function SkillExamsPage({ params }: Props) {
       isGuest={isGuest}
     >
       <div className="px-5 py-7 sm:px-8 sm:py-10">
-        <div className="max-w-3xl mx-auto">
+        <div className="max-w-5xl mx-auto">
 
-          <header className="mb-7">
-            {/* Back to **this level's** overview, not to the portal overview: since the rail
-                arrived, the module you are in is the level, and stepping up from Lezen lands on
-                A2. `/dashboard` is one more step up and is the rail's own first tile. */}
-            <a
-              href={`/${locale}/dashboard/${level}`}
-              className="text-xs font-bold text-on-surface-variant no-underline hover:underline"
-            >
-              ← {t('level_section', { level: levelLabel(level) })}
-            </a>
-            <div className="flex items-start gap-3.5 mt-3">
-              <SkillIcon skill={skill.slug} size="lg" />
-              <div className="min-w-0">
-                <h1
-                  className="font-headline font-extrabold text-on-surface"
-                  style={{ fontSize: 'clamp(1.5rem,3.2vw,1.95rem)', letterSpacing: '-0.03em' }}
-                >
-                  {tSkills(`${skill.key}.name`)}
-                </h1>
-                <p className="text-sm text-on-surface-variant mt-1" style={{ lineHeight: 1.65 }}>
-                  {tSkills(`${skill.key}.tagline`)}
-                </p>
-              </div>
-            </div>
+          <PortalHero
+            back={{ href: `/${locale}/dashboard/${level}`, label: t('level_section', { level: levelLabel(level) }) }}
+            kicker={`${levelLabel(level)} · ${t('kicker_onderdeel')}`}
+            title={tSkills(`${skill.key}.name`)}
+            lede={tSkills(`${skill.key}.tagline`)}
+            seed={skill.slug.length}
+            ring={{
+              pct: r.pct,
+              label: t('readiness_label'),
+              note: t('readiness_note'),
+              aria: r.pct === null ? t('readiness_unknown_aria') : t('readiness_aria', { pct: r.pct }),
+            }}
+            tiles={[
+              {
+                label: t('stat_exams'),
+                value: t('stat_exams_value', { done: p.examsDone, total: skill.examCount }),
+                sub: p.averagePct != null ? t('card_average', { pct: p.averagePct }) : undefined,
+              },
+              {
+                label: t('stat_items'),
+                value: formatCount(skill.itemCount),
+                sub: t('stat_duration_value', { minutes: formatCount(skill.durationMinutes) }),
+              },
+            ]}
+          />
 
-            <dl className="stat-row mt-5">
-              <div>
-                <dt>{t('stat_exams')}</dt>
-                <dd>{t('stat_exams_value', { done: p.examsDone, total: skill.examCount })}</dd>
-              </div>
-              <div>
-                <dt>{t('stat_items')}</dt>
-                <dd>{formatCount(skill.itemCount)}</dd>
-              </div>
-              <div>
-                <dt>{t('stat_duration')}</dt>
-                <dd>{t('stat_duration_value', { minutes: formatCount(skill.durationMinutes) })}</dd>
-              </div>
-              <div>
-                <dt>{t('stat_average')}</dt>
-                <dd>{p.averagePct != null ? `${p.averagePct}%` : '—'}</dd>
-              </div>
-            </dl>
-
-            {isRubric && (
-              <p className="rubric-note mt-4">{t('rubric_note')}</p>
-            )}
-          </header>
+          {isRubric && <p className="rubric-note mb-5">{t('rubric_note')}</p>}
 
           {/* De cursus, boven de examens.
               Bewust in deze volgorde: leren gaat aan toetsen vooraf, en wie hier komt om
               examen 4 te maken vindt de examenlijst er direct onder. De voortgang staat op
               deze kaart en niet in de portaalchrome — dat paneel draagt één as (de tien
               examens), per de beslissing van de eigenaar van 27-08. */}
+          <div className="grid gap-4 sm:gap-5 lg:grid-cols-2 mb-7 items-stretch">
           {hasCourse && (
             <a href={`/${locale}${coursePath(level, skill.slug)}`} className="course-card">
               <span className="cc-top">
@@ -174,11 +202,28 @@ export default async function SkillExamsPage({ params }: Props) {
                   <ArrowRight size={17} strokeWidth={2.5} className="ms-auto shrink-0 text-secondary rtl-flip" />
                 </span>
               )}
+              {upcoming.length > 0 && (
+                <span className="cc-list">
+                  {upcoming.map(u => (
+                    <span key={u.slug} className="cc-row">
+                      <span className="cc-dot" aria-hidden />
+                      <span className="cc-nm">{u.title}</span>
+                      {u.minutes != null && <span className="cc-min">{t('minutes', { n: u.minutes })}</span>}
+                    </span>
+                  ))}
+                </span>
+              )}
             </a>
           )}
 
+          {/* Sterk & zwak staat naast de cursus en niet onder de examens: het is het antwoord
+              op "wat moet ik nog leren", en dat is dezelfde vraag als de cursuskaart stelt. */}
+          <StrengthWeakness locale={locale} rows={swRows} />
+          </div>
+
           {criterionSeries.length > 0 && <CriterionProgress series={criterionSeries} className="mb-6" />}
 
+          <h2 className="mini-head">{t('practice_card_title')}</h2>
           <ol className="flex flex-col gap-2.5">
             {Array.from({ length: skill.examCount }, (_, i) => i + 1).map(n => {
               const done = p.exams[n];
