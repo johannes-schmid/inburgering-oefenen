@@ -1,0 +1,210 @@
+{
+  "items": [
+    {
+      "kind": "uitleg",
+      "tier": null,
+      "explanation": null,
+      "payload": {
+        "body_html": "<p>De woorden <strong>moeten, mogen, hoeven, kunnen</strong> en <strong>willen</strong> zeggen iets over een andere handeling. Het tweede werkwoord staat achteraan in de zin en verandert niet: <em>werken, betalen, komen</em>.</p><p>Let op het woordje <strong>te</strong>. Na <em>hoeven</em> staat altijd <strong>te</strong>. Na moeten, mogen, kunnen en willen staat <strong>geen</strong> te.</p>",
+        "cards": [
+          {
+            "label": "ZONDER TE",
+            "example_html": "Je <mark>moet</mark> het formulier <mark>invullen</mark>."
+          },
+          {
+            "label": "MET TE",
+            "example_html": "Je <mark>hoeft</mark> het formulier niet in <mark>te</mark> vullen."
+          }
+        ]
+      }
+    },
+    {
+      "kind": "voorbeeld",
+      "tier": null,
+      "explanation": null,
+      "payload": {
+        "sentence_html": "In de wachtkamer <mark>mag je niet bellen</mark>, want dat stoort andere mensen."
+      }
+    },
+    {
+      "kind": "voorbeeld",
+      "tier": null,
+      "explanation": null,
+      "payload": {
+        "sentence_html": "Je <mark>hoeft</mark> vandaag niet <mark>te</mark> betalen; de rekening komt volgende week."
+      }
+    },
+    {
+      "kind": "mcq",
+      "tier": 0,
+      "explanation": "Na <em>hoeven</em> staat altijd <strong>te</strong> voor het tweede werkwoord. In zin B staat dat correct.",
+      "options": [
+        {
+          "label": "A",
+          "body": "Je hoeft niet komen naar de vergadering.",
+          "is_correct": false
+        },
+        {
+          "label": "B",
+          "body": "Je hoeft niet naar de vergadering te komen.",
+          "is_correct": true
+        },
+        {
+          "label": "C",
+          "body": "Je hoeft te niet naar de vergadering komen.",
+          "is_correct": false
+        }
+      ],
+      "payload": {
+        "prompt": "Welke zin is goed geschreven?"
+      }
+    },
+    {
+      "kind": "mcq",
+      "tier": 0,
+      "explanation": "<em>Mogen</em> zegt dat iets is toegestaan. Hier krijgt de klant toestemming om te betalen met een pinkaart.",
+      "options": [
+        {
+          "label": "A",
+          "body": "iets wat verplicht is",
+          "is_correct": false
+        },
+        {
+          "label": "B",
+          "body": "iets wat is toegestaan",
+          "is_correct": true
+        },
+        {
+          "label": "C",
+          "body": "iets wat niet nodig is",
+          "is_correct": false
+        }
+      ],
+      "payload": {
+        "prompt": "Lees de zin: \"U mag hier met uw pinkaart betalen.\" Wat betekent <em>mag</em> in deze zin?"
+      }
+    },
+    {
+      "kind": "gap_choice",
+      "tier": 1,
+      "explanation": "Het is verplicht: zonder legitimatie kun je niet naar binnen. Daarom gebruik je <em>moet</em>, en na moeten komt geen te.",
+      "payload": {
+        "sentence": "Bij de gemeente ___ je je paspoort meenemen.",
+        "choices": [
+          "moet",
+          "hoeft",
+          "mag"
+        ],
+        "answer": "moet"
+      }
+    },
+    {
+      "kind": "gap_choice",
+      "tier": 1,
+      "explanation": "Iets is niet nodig. Dan gebruik je <em>hoeft</em>, en verderop in de zin staat <strong>te</strong> voor het werkwoord.",
+      "payload": {
+        "sentence": "Je ___ geen brief te schrijven, een telefoontje is genoeg.",
+        "choices": [
+          "moet",
+          "hoeft",
+          "kunt"
+        ],
+        "answer": "hoeft"
+      }
+    },
+    {
+      "kind": "gap_choice",
+      "tier": 1,
+      "explanation": "Na <em>kunnen</em> komt geen te. Het werkwoord <em>helpen</em> staat achteraan in de basisvorm.",
+      "payload": {
+        "sentence": "Mijn buurvrouw ___ mij met het formulier helpen.",
+        "choices": [
+          "kan",
+          "hoeft",
+          "kan te"
+        ],
+        "answer": "kan"
+      }
+    },
+    {
+      "kind": "matchen",
+      "tier": 1,
+      "explanation": "Elk werkwoord heeft zijn eigen betekenis: verplicht, toegestaan, niet nodig, in staat zijn of zelf graag doen.",
+      "payload": {
+        "instruction": "Zet elk werkwoord bij de juiste betekenis.",
+        "pairs": [
+          {
+            "left": "moeten",
+            "right": "het is verplicht"
+          },
+          {
+            "left": "mogen",
+            "right": "het is toegestaan"
+          },
+          {
+            "left": "hoeven",
+            "right": "het is niet nodig"
+          },
+          {
+            "left": "kunnen",
+            "right": "je bent er toe in staat"
+          },
+          {
+            "left": "willen",
+            "right": "je doet het graag"
+          }
+        ]
+      }
+    },
+    {
+      "kind": "gap_type",
+      "tier": 2,
+      "explanation": "Na <em>hoeven</em> staat altijd <strong>te</strong> voor het laatste werkwoord.",
+      "payload": {
+        "sentence": "Je hoeft niet de hele dag thuis ___ blijven.",
+        "answer": "te"
+      }
+    },
+    {
+      "kind": "woordorde",
+      "tier": 2,
+      "explanation": "Het werkwoord <em>moet</em> staat op de tweede plaats; het tweede werkwoord <em>betalen</em> staat achteraan, zonder te.",
+      "payload": {
+        "instruction": "Maak van deze woorden een goede zin.",
+        "tokens": [
+          "moet",
+          "je",
+          "betalen",
+          "de",
+          "huur",
+          "maandag",
+          "voor"
+        ],
+        "answer": [
+          "je",
+          "moet",
+          "de",
+          "huur",
+          "voor",
+          "maandag",
+          "betalen"
+        ]
+      }
+    },
+    {
+      "kind": "open_zin",
+      "tier": 2,
+      "explanation": "Je gebruikt <em>hoeven</em> met <strong>te</strong> om te zeggen dat iets niet nodig is.",
+      "payload": {
+        "prompt": "Schrijf één zin met <em>hoeven</em>: iets wat jij deze week niet hoeft te doen.",
+        "model_answer": "Ik hoef deze week niet te werken, want ik heb vrij.",
+        "checklist": [
+          "Er staat een vorm van hoeven in de zin.",
+          "Er staat <strong>te</strong> voor het tweede werkwoord.",
+          "Het tweede werkwoord staat achteraan in de basisvorm."
+        ]
+      }
+    }
+  ],
+  "what_you_learn": "Je leert wat de werkwoorden moeten, mogen, hoeven, kunnen en willen betekenen in een zin. Je ziet snel of iets verplicht is, toegestaan is of juist niet nodig. Ook weet je dat er na hoeven altijd <em>te</em> staat, en na de andere werkwoorden niet."
+}

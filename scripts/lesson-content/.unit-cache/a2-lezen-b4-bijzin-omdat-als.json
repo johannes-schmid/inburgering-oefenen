@@ -1,0 +1,181 @@
+{
+  "what_you_learn": "Je leert wat er met het werkwoord gebeurt na de woorden omdat, als en toen. Je ziet dat het werkwoord dan naar het einde van het zinsdeel gaat. Je herkent deze zinnen bij het lezen en je maakt zelf zulke zinnen.",
+  "items": [
+    {
+      "kind": "uitleg",
+      "tier": null,
+      "explanation": null,
+      "payload": {
+        "body_html": "<p>Na <strong>omdat</strong>, <strong>als</strong> en <strong>toen</strong> verandert de volgorde van de zin. Het werkwoord gaat dan naar achteren, naar het einde van dat stukje zin. <em>Omdat</em> geeft een reden. <em>Als</em> geeft een voorwaarde (wanneer iets zo is). <em>Toen</em> gebruik je voor iets in het verleden.</p><p>Vergelijk: <em>Ik ben ziek.</em> Maar: <em>… omdat ik ziek <strong>ben</strong>.</em></p>",
+        "cards": [
+          {
+            "label": "GEWONE ZIN",
+            "example_html": "Ik <mark>ben</mark> ziek."
+          },
+          {
+            "label": "NA OMDAT",
+            "example_html": "Ik blijf thuis omdat ik ziek <mark>ben</mark>."
+          }
+        ]
+      },
+      "options": []
+    },
+    {
+      "kind": "voorbeeld",
+      "tier": null,
+      "explanation": null,
+      "payload": {
+        "sentence_html": "Ik bel de huisarts omdat mijn dochter koorts <mark>heeft</mark>."
+      }
+    },
+    {
+      "kind": "voorbeeld",
+      "tier": null,
+      "explanation": null,
+      "payload": {
+        "sentence_html": "Toen ik in Zwolle <mark>woonde</mark>, werkte ik in een supermarkt."
+      }
+    },
+    {
+      "kind": "mcq",
+      "tier": 0,
+      "explanation": "Na 'omdat' staat het werkwoord achteraan. Daarom is 'omdat de winkel dicht is' juist.",
+      "payload": {
+        "prompt": "Welke zin is goed?"
+      },
+      "options": [
+        {
+          "label": "A",
+          "body": "Ik koop niets omdat is de winkel dicht.",
+          "is_correct": false
+        },
+        {
+          "label": "B",
+          "body": "Ik koop niets omdat de winkel dicht is.",
+          "is_correct": true
+        },
+        {
+          "label": "C",
+          "body": "Ik koop niets omdat de winkel is dicht.",
+          "is_correct": false
+        }
+      ]
+    },
+    {
+      "kind": "mcq",
+      "tier": 0,
+      "explanation": "Ook na 'toen' gaat het werkwoord naar het einde: 'toen ik klein was'.",
+      "payload": {
+        "prompt": "Welke zin is goed?"
+      },
+      "options": [
+        {
+          "label": "A",
+          "body": "Toen ik klein was, sprak ik geen Nederlands.",
+          "is_correct": true
+        },
+        {
+          "label": "B",
+          "body": "Toen was ik klein, sprak ik geen Nederlands.",
+          "is_correct": false
+        },
+        {
+          "label": "C",
+          "body": "Toen ik was klein, sprak ik geen Nederlands.",
+          "is_correct": false
+        }
+      ]
+    },
+    {
+      "kind": "gap_choice",
+      "tier": 1,
+      "explanation": "Na 'omdat' staat het werkwoord achteraan, dus achter 'te duur'.",
+      "payload": {
+        "sentence": "Ik neem deze jas niet, omdat hij te duur ___.",
+        "choices": [
+          "is",
+          "is hij",
+          "hij"
+        ],
+        "answer": "is"
+      }
+    },
+    {
+      "kind": "gap_choice",
+      "tier": 1,
+      "explanation": "Het woord 'als' geeft een voorwaarde. Het werkwoord 'hebt' staat daarna netjes achteraan.",
+      "payload": {
+        "sentence": "___ je vragen over de huur hebt, bel je de woningstichting.",
+        "choices": [
+          "Als",
+          "Toen",
+          "Omdat"
+        ],
+        "answer": "Als"
+      }
+    },
+    {
+      "kind": "gap_choice",
+      "tier": 1,
+      "explanation": "'Toen' gebruik je voor iets in het verleden. Het werkwoord 'kwam' staat aan het einde van dat stukje zin.",
+      "payload": {
+        "sentence": "___ ik in Nederland kwam, sprak ik alleen Arabisch.",
+        "choices": [
+          "Toen",
+          "Als",
+          "Omdat"
+        ],
+        "answer": "Toen"
+      }
+    },
+    {
+      "kind": "matchen",
+      "tier": 1,
+      "explanation": "In elk tweede deel staat het werkwoord achteraan, na omdat, als of toen.",
+      "payload": {
+        "instruction": "Zoek de twee delen bij elkaar.",
+        "pairs": [
+          {
+            "left": "Ik ga naar de dokter",
+            "right": "omdat ik veel hoofdpijn heb."
+          },
+          {
+            "left": "Bel de gemeente",
+            "right": "als je een vraag over je paspoort hebt."
+          },
+          {
+            "left": "Ik werkte in een winkel",
+            "right": "toen ik in Breda woonde."
+          },
+          {
+            "left": "Neem een paraplu mee",
+            "right": "als het vandaag regent."
+          }
+        ]
+      }
+    },
+    {
+      "kind": "gap_type",
+      "tier": 2,
+      "explanation": "Na 'omdat' zet je het werkwoord achteraan. Bij 'de trein' hoort de vorm 'is'.",
+      "payload": {
+        "sentence": "Ik kom later op mijn werk, omdat de trein te laat ___.",
+        "answer": "is"
+      }
+    },
+    {
+      "kind": "open_zin",
+      "tier": 2,
+      "explanation": "Je oefent zelf een zin met 'omdat'. Het werkwoord moet aan het einde staan.",
+      "payload": {
+        "prompt": "Schrijf één zin met 'omdat'. Vertel waarom je vandaag naar de winkel gaat.",
+        "model_answer": "Ik ga naar de winkel omdat ik geen brood meer heb.",
+        "checklist": [
+          "De zin begint met een gewone zin, daarna komt 'omdat'.",
+          "Het werkwoord staat helemaal achteraan.",
+          "De zin gaat over vandaag."
+        ]
+      }
+    }
+  ]
+}

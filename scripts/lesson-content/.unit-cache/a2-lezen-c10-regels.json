@@ -1,0 +1,236 @@
+{
+  "items": [
+    {
+      "kind": "uitleg",
+      "tier": null,
+      "explanation": null,
+      "payload": {
+        "title": "Wat zijn 'regels'?",
+        "body_html": "<p>Een tekst met <strong>regels</strong> vertelt wat je moet doen en wat je niet mag doen. Je vindt zo'n tekst bij het zwembad, in een flat, op het werk, in de bibliotheek of bij de sportzaal. Boven de tekst staat vaak een titel, bijvoorbeeld 'Huisregels'. Daaronder staan korte punten, vaak met een streepje of een nummer.</p><p>Bij regels let je op vier dingen: <strong>wie</strong> de regel maakt, <strong>waar</strong> de regel geldt, <strong>wat</strong> je moet doen en <strong>wanneer</strong>. Woorden als <em>moet</em>, <em>mag niet</em>, <em>verboden</em> en <em>graag</em> laten zien of iets verplicht is of niet. Onderaan staat vaak wie je kunt bellen bij vragen.</p>",
+        "cards": [
+          {
+            "label": "MOETEN",
+            "example_html": "Je <mark>moet</mark> je schoenen uitdoen."
+          },
+          {
+            "label": "NIET MAGEN",
+            "example_html": "Roken <mark>is verboden</mark> in het gebouw."
+          },
+          {
+            "label": "WANNEER",
+            "example_html": "Na 22.00 uur is het stil in de flat."
+          }
+        ]
+      }
+    },
+    {
+      "kind": "leestekst",
+      "tier": null,
+      "explanation": null,
+      "payload": {
+        "title": "Huisregels Buurtcentrum De Wilgenhof",
+        "body_html": "<p><strong>Huisregels Buurtcentrum De Wilgenhof</strong></p><p>Welkom in ons buurtcentrum. Lees deze regels goed door.</p><ul><li>Het centrum is open van maandag tot vrijdag, van 9.00 tot 21.00 uur. Op zaterdag sluiten wij om 17.00 uur.</li><li>U moet zich altijd melden bij de balie. U krijgt daar een pasje.</li><li>Kinderen onder de 12 jaar komen alleen met een begeleider.</li><li>Roken is verboden in het hele gebouw. Buiten mag u roken bij de asbak.</li><li>Ruim uw eigen kopjes op. Wij hebben geen schoonmaker in de zaal.</li><li>Bij schade betaalt u de kosten zelf.</li></ul><p>Vragen? Bel de beheerder, mevrouw Kadir, op 030 - 555 21 40.</p>",
+        "words": [
+          {
+            "word": "de begeleider",
+            "meaning": "een persoon die met je mee gaat en op je let"
+          },
+          {
+            "word": "de balie",
+            "meaning": "de tafel bij de ingang waar iemand je helpt"
+          },
+          {
+            "word": "verboden",
+            "meaning": "het mag niet"
+          },
+          {
+            "word": "de schade",
+            "meaning": "iets is stuk of kapot gemaakt"
+          },
+          {
+            "word": "de beheerder",
+            "meaning": "de persoon die het gebouw regelt"
+          }
+        ],
+        "marks": [
+          "U moet zich altijd melden bij de balie.",
+          "Roken is verboden in het hele gebouw.",
+          "Bij schade betaalt u de kosten zelf."
+        ]
+      }
+    },
+    {
+      "kind": "mcq",
+      "tier": 0,
+      "explanation": "Boven de tekst staat 'Huisregels Buurtcentrum De Wilgenhof'. De regels gelden dus in dat buurtcentrum.",
+      "payload": {
+        "prompt": "Waar gelden deze regels?"
+      },
+      "options": [
+        {
+          "label": "A",
+          "body": "In een buurtcentrum",
+          "is_correct": true
+        },
+        {
+          "label": "B",
+          "body": "In een ziekenhuis",
+          "is_correct": false
+        },
+        {
+          "label": "C",
+          "body": "In een school",
+          "is_correct": false
+        }
+      ]
+    },
+    {
+      "kind": "mcq",
+      "tier": 0,
+      "explanation": "In de tekst staat dat het centrum op zaterdag om 17.00 uur sluit.",
+      "payload": {
+        "prompt": "Hoe laat sluit het centrum op zaterdag?"
+      },
+      "options": [
+        {
+          "label": "A",
+          "body": "Om 9.00 uur",
+          "is_correct": false
+        },
+        {
+          "label": "B",
+          "body": "Om 17.00 uur",
+          "is_correct": true
+        },
+        {
+          "label": "C",
+          "body": "Om 21.00 uur",
+          "is_correct": false
+        },
+        {
+          "label": "D",
+          "body": "Het centrum is dicht",
+          "is_correct": false
+        }
+      ]
+    },
+    {
+      "kind": "mcq",
+      "tier": 0,
+      "explanation": "De tekst zegt: roken is verboden in het hele gebouw. 'Verboden' betekent dat het niet mag.",
+      "payload": {
+        "prompt": "Mag je in het gebouw roken?"
+      },
+      "options": [
+        {
+          "label": "A",
+          "body": "Ja, overal",
+          "is_correct": false
+        },
+        {
+          "label": "B",
+          "body": "Ja, maar alleen in de zaal",
+          "is_correct": false
+        },
+        {
+          "label": "C",
+          "body": "Nee, roken mag niet in het gebouw",
+          "is_correct": true
+        }
+      ]
+    },
+    {
+      "kind": "mcq",
+      "tier": 1,
+      "explanation": "In de tekst staat: kinderen onder de 12 jaar komen alleen met een begeleider. Een kind van 9 jaar mag dus niet alleen komen.",
+      "payload": {
+        "prompt": "Sara is 9 jaar. Wat moet zij doen?"
+      },
+      "options": [
+        {
+          "label": "A",
+          "body": "Zij komt met een begeleider mee.",
+          "is_correct": true
+        },
+        {
+          "label": "B",
+          "body": "Zij mag alleen komen.",
+          "is_correct": false
+        },
+        {
+          "label": "C",
+          "body": "Zij betaalt bij de balie.",
+          "is_correct": false
+        }
+      ]
+    },
+    {
+      "kind": "mcq",
+      "tier": 1,
+      "explanation": "Onderaan de tekst staat het telefoonnummer van de beheerder, mevrouw Kadir. Bij vragen bel je haar.",
+      "payload": {
+        "prompt": "Je hebt een vraag over het pasje. Wat doe je?"
+      },
+      "options": [
+        {
+          "label": "A",
+          "body": "Je belt mevrouw Kadir op 030 - 555 21 40.",
+          "is_correct": true
+        },
+        {
+          "label": "B",
+          "body": "Je stuurt een brief naar de gemeente.",
+          "is_correct": false
+        },
+        {
+          "label": "C",
+          "body": "Je gaat op zondag naar het centrum.",
+          "is_correct": false
+        },
+        {
+          "label": "D",
+          "body": "Je betaalt de kosten zelf.",
+          "is_correct": false
+        }
+      ]
+    },
+    {
+      "kind": "markeren",
+      "tier": 0,
+      "explanation": "Bij een tekst met regels zoek je de woorden 'moet', 'verboden' en 'betaalt u zelf'. Die woorden laten zien wat verplicht is.",
+      "payload": {
+        "instruction": "Markeer in de tekst wat je moet doen, wat niet mag en wie je kunt bellen.",
+        "body_html": "<p><strong>Huisregels Buurtcentrum De Wilgenhof</strong></p><p>U moet zich altijd melden bij de balie. Roken is verboden in het hele gebouw. Bij schade betaalt u de kosten zelf. Vragen? Bel de beheerder, mevrouw Kadir, op 030 - 555 21 40.</p>",
+        "targets": [
+          {
+            "label": "dit moet je doen",
+            "text": "U moet zich altijd melden bij de balie."
+          },
+          {
+            "label": "dit mag niet",
+            "text": "Roken is verboden in het hele gebouw."
+          },
+          {
+            "label": "wie je belt",
+            "text": "Bel de beheerder, mevrouw Kadir"
+          }
+        ]
+      }
+    },
+    {
+      "kind": "open_zin",
+      "tier": 2,
+      "explanation": "Je noemt één regel uit de tekst en gebruikt daarbij een woord als 'moet' of 'mag niet'. Zo laat je zien dat je de regel begrijpt.",
+      "payload": {
+        "prompt": "Schrijf één regel uit het buurtcentrum in je eigen woorden. Gebruik 'moet' of 'mag niet'.",
+        "model_answer": "Ik moet me eerst melden bij de balie. Daar krijg ik een pasje.",
+        "checklist": [
+          "Je gebruikt 'moet' of 'mag niet'.",
+          "De regel staat echt in de tekst.",
+          "Je schrijft een hele zin met een punt."
+        ]
+      }
+    }
+  ],
+  "what_you_learn": "Je leert hoe een tekst met regels in elkaar zit, bijvoorbeeld de huisregels van een buurtcentrum. Je weet waar je de openingstijden vindt, wat je moet doen en wat verboden is. Je kunt de belangrijke woorden zoals 'moet', 'mag niet' en 'verboden' snel terugvinden en de vragen erbij goed beantwoorden."
+}

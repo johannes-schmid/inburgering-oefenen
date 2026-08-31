@@ -573,13 +573,11 @@ function StimulusPane({ item, isListening }: { item: FreePracticeItem; isListeni
       {isListening && item.audioSrc ? (
         <AudioPlayer src={item.audioSrc} />
       ) : (
-        <div className="stimulus-body text-sm text-on-surface leading-relaxed" dangerouslySetInnerHTML={{ __html: item.stimulusHtml ?? '' }} />
+        <div className="stimulus-body exam-rich exam-rich-scroll text-sm text-on-surface leading-relaxed" dangerouslySetInnerHTML={{ __html: item.stimulusHtml ?? '' }} />
       )}
+      {/* Tag-level rules live in .exam-rich in app/globals.css — see the note there. */}
       <style>{`
-        .stimulus-body h4 { font-family: var(--font-headline); font-weight: 800; font-size: 0.95rem; margin: 0 0 0.6rem; color: #002b6d; }
-        .stimulus-body p { margin: 0 0 0.75rem; line-height: 1.7; }
-        .stimulus-body p:last-child { margin-bottom: 0; }
-        .stimulus-body strong { font-weight: 700; color: #191c1e; }
+        .stimulus-body { line-height: 1.7; }
       `}</style>
     </div>
   );

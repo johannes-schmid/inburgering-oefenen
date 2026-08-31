@@ -227,7 +227,7 @@ export default function SpeakingTask({
 
         {task.prompt_html && (
           <div
-            className="sp-prompt"
+            className="sp-prompt exam-rich exam-rich-scroll"
             dangerouslySetInnerHTML={{ __html: task.prompt_html }}
           />
         )}
@@ -511,9 +511,8 @@ const CSS = `
     letter-spacing: -0.02em; color: var(--color-on-surface); margin: 0 0 10px;
     text-wrap: balance; line-height: 1.25;
   }
+  /* Tag-level rules live in .exam-rich in app/globals.css — see the note there. */
   .sp-prompt { font-size: 1rem; line-height: 1.7; color: var(--color-on-surface); }
-  .sp-prompt > * + * { margin-top: 0.75rem; }
-  .sp-prompt p { margin: 0; }
 
   .sp-rule {
     display: flex; align-items: center; gap: 7px; margin: 14px 0 0;

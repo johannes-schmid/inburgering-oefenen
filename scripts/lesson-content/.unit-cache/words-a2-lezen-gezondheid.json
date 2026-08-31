@@ -1,0 +1,220 @@
+{
+  "words": [
+    {
+      "dutch": "huisarts",
+      "article": "de",
+      "plural": "huisartsen",
+      "frame": null,
+      "meaning_nl": "dokter in de buurt waar je eerst naartoe gaat",
+      "example": "Ik ga morgen naar de huisarts in Zwolle.",
+      "usage": "productief"
+    },
+    {
+      "dutch": "afspraak",
+      "article": "de",
+      "plural": "afspraken",
+      "frame": "een afspraak maken (met)",
+      "meaning_nl": "vaste tijd om ergens te komen",
+      "example": "Ik wil graag een afspraak maken voor donderdag.",
+      "usage": "productief"
+    },
+    {
+      "dutch": "spreekuur",
+      "article": "het",
+      "plural": "spreekuren",
+      "frame": null,
+      "meaning_nl": "tijd waarop de dokter patiënten ontvangt",
+      "example": "Het spreekuur is elke dag van negen tot twaalf.",
+      "usage": "receptief"
+    },
+    {
+      "dutch": "wachtkamer",
+      "article": "de",
+      "plural": "wachtkamers",
+      "frame": null,
+      "meaning_nl": "ruimte waar je zit tot je aan de beurt bent",
+      "example": "Neemt u plaats in de wachtkamer, meneer De Wit.",
+      "usage": "receptief"
+    },
+    {
+      "dutch": "verwijsbrief",
+      "article": "de",
+      "plural": "verwijsbrieven",
+      "frame": null,
+      "meaning_nl": "papier van de huisarts dat je nodig hebt voor de specialist",
+      "example": "Zonder verwijsbrief kunt u niet naar het ziekenhuis.",
+      "usage": "receptief"
+    },
+    {
+      "dutch": "specialist",
+      "article": "de",
+      "plural": "specialisten",
+      "frame": null,
+      "meaning_nl": "arts in het ziekenhuis voor één soort ziekte",
+      "example": "De specialist bekijkt de foto van mijn knie.",
+      "usage": "receptief"
+    },
+    {
+      "dutch": "apotheek",
+      "article": "de",
+      "plural": "apotheken",
+      "frame": null,
+      "meaning_nl": "winkel waar je pillen en zalf ophaalt",
+      "example": "De apotheek naast het station is open tot zes uur.",
+      "usage": "productief"
+    },
+    {
+      "dutch": "recept",
+      "article": "het",
+      "plural": "recepten",
+      "frame": null,
+      "meaning_nl": "papier van de arts waarmee je medicijnen krijgt",
+      "example": "De dokter geeft mij een recept voor hoestdrank.",
+      "usage": "receptief"
+    },
+    {
+      "dutch": "medicijn",
+      "article": "het",
+      "plural": "medicijnen",
+      "frame": null,
+      "meaning_nl": "middel dat je slikt om beter te worden",
+      "example": "Ik gebruik elke dag een medicijn voor mijn maag.",
+      "usage": "productief"
+    },
+    {
+      "dutch": "bijwerking",
+      "article": "de",
+      "plural": "bijwerkingen",
+      "frame": null,
+      "meaning_nl": "vervelend gevolg van een pil, naast de goede werking",
+      "example": "Deze pillen hebben als bijwerking dat je slaperig wordt.",
+      "usage": "receptief"
+    },
+    {
+      "dutch": "klacht",
+      "article": "de",
+      "plural": "klachten",
+      "frame": null,
+      "meaning_nl": "iets in je lichaam dat pijn doet of niet goed voelt",
+      "example": "Ik heb al twee weken klachten aan mijn rug.",
+      "usage": "productief"
+    },
+    {
+      "dutch": "pijn",
+      "article": "de",
+      "plural": "pijnen",
+      "frame": "pijn hebben (aan)",
+      "meaning_nl": "naar gevoel in je lichaam, bijvoorbeeld na een val",
+      "example": "Ik heb veel pijn aan mijn linkerschouder.",
+      "usage": "productief"
+    },
+    {
+      "dutch": "koorts",
+      "article": "de",
+      "plural": "koortsen",
+      "frame": "koorts hebben",
+      "meaning_nl": "te hoge temperatuur van je lichaam bij ziekte",
+      "example": "Mijn zoon heeft koorts en blijft thuis.",
+      "usage": "productief"
+    },
+    {
+      "dutch": "onderzoek",
+      "article": "het",
+      "plural": "onderzoeken",
+      "frame": null,
+      "meaning_nl": "de dokter kijkt en meet hoe het met je gaat",
+      "example": "Na het onderzoek belt de arts u op.",
+      "usage": "receptief"
+    },
+    {
+      "dutch": "behandeling",
+      "article": "de",
+      "plural": "behandelingen",
+      "frame": null,
+      "meaning_nl": "wat de arts doet om je beter te maken",
+      "example": "De behandeling duurt ongeveer zes weken.",
+      "usage": "receptief"
+    },
+    {
+      "dutch": "zorgverzekering",
+      "article": "de",
+      "plural": "zorgverzekeringen",
+      "frame": null,
+      "meaning_nl": "regeling waarvoor je maandelijks betaalt en kosten van artsen vergoed krijgt",
+      "example": "Iedereen in Nederland moet een zorgverzekering hebben.",
+      "usage": "productief"
+    },
+    {
+      "dutch": "eigen risico",
+      "article": "het",
+      "plural": "eigen risico's",
+      "frame": null,
+      "meaning_nl": "bedrag dat je eerst zelf betaalt voordat je geld terugkrijgt",
+      "example": "Het eigen risico is dit jaar weer hoger.",
+      "usage": "receptief"
+    },
+    {
+      "dutch": "bloeddruk",
+      "article": "de",
+      "plural": "bloeddrukken",
+      "frame": null,
+      "meaning_nl": "waarde die de dokter meet met een band om je arm",
+      "example": "De assistente meet eerst mijn bloeddruk.",
+      "usage": "receptief"
+    },
+    {
+      "dutch": "vaccinatie",
+      "article": "de",
+      "plural": "vaccinaties",
+      "frame": null,
+      "meaning_nl": "prik die je beschermt tegen een ziekte",
+      "example": "Anouk krijgt volgende week een vaccinatie op school.",
+      "usage": "receptief"
+    },
+    {
+      "dutch": "verzekerd",
+      "article": null,
+      "plural": null,
+      "frame": "verzekerd zijn (voor)",
+      "meaning_nl": "je betaalt premie, dus de kosten worden vergoed",
+      "example": "Bent u verzekerd voor tandartskosten?",
+      "usage": "receptief"
+    },
+    {
+      "dutch": "doorverwijzen",
+      "article": null,
+      "plural": null,
+      "frame": "doorverwijzen (naar)",
+      "meaning_nl": "iemand naar een andere arts sturen",
+      "example": "De huisarts wil mij doorverwijzen naar het ziekenhuis.",
+      "usage": "receptief"
+    },
+    {
+      "dutch": "innemen",
+      "article": null,
+      "plural": null,
+      "frame": "medicijnen innemen",
+      "meaning_nl": "een pil in je mond doen en doorslikken",
+      "example": "U moet deze tabletten drie keer per dag innemen.",
+      "usage": "productief"
+    },
+    {
+      "dutch": "genezen",
+      "article": null,
+      "plural": null,
+      "frame": null,
+      "meaning_nl": "weer helemaal beter worden na ziekte",
+      "example": "De wond aan zijn hand is goed genezen.",
+      "usage": "receptief"
+    },
+    {
+      "dutch": "huisartsenpost",
+      "article": "de",
+      "plural": "huisartsenposten",
+      "frame": null,
+      "meaning_nl": "plek voor dringende hulp 's avonds en in het weekend",
+      "example": "Bel bij spoed de huisartsenpost in Almere.",
+      "usage": "receptief"
+    }
+  ]
+}

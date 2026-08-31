@@ -1,0 +1,220 @@
+{
+  "words": [
+    {
+      "dutch": "huurcontract",
+      "article": "het",
+      "plural": "huurcontracten",
+      "frame": null,
+      "meaning_nl": "papier met afspraken tussen bewoner en eigenaar van de woning",
+      "example": "Ik heb het huurcontract voor twee jaar getekend.",
+      "usage": "receptief"
+    },
+    {
+      "dutch": "huurder",
+      "article": "de",
+      "plural": "huurders",
+      "frame": null,
+      "meaning_nl": "persoon die elke maand geld betaalt voor een woning",
+      "example": "De huurder betaalt elke maand op tijd.",
+      "usage": "productief"
+    },
+    {
+      "dutch": "verhuurder",
+      "article": "de",
+      "plural": "verhuurders",
+      "frame": null,
+      "meaning_nl": "eigenaar die zijn woning aan iemand anders geeft tegen betaling",
+      "example": "Mijn verhuurder komt de kapotte kraan maken.",
+      "usage": "receptief"
+    },
+    {
+      "dutch": "woningcorporatie",
+      "article": "de",
+      "plural": "woningcorporaties",
+      "frame": null,
+      "meaning_nl": "organisatie met veel woningen voor mensen met een laag inkomen",
+      "example": "De woningcorporatie stuurde een brief over het onderhoud.",
+      "usage": "receptief"
+    },
+    {
+      "dutch": "huurtoeslag",
+      "article": "de",
+      "plural": "huurtoeslagen",
+      "frame": "huurtoeslag aanvragen",
+      "meaning_nl": "geld van de overheid als je woning te duur is",
+      "example": "Fatima vraagt dit jaar huurtoeslag aan.",
+      "usage": "receptief"
+    },
+    {
+      "dutch": "borg",
+      "article": "de",
+      "plural": "borgen",
+      "frame": null,
+      "meaning_nl": "geld dat je vooraf betaalt en later terugkrijgt",
+      "example": "Ik betaalde 800 euro borg voor de kamer.",
+      "usage": "receptief"
+    },
+    {
+      "dutch": "verdieping",
+      "article": "de",
+      "plural": "verdiepingen",
+      "frame": null,
+      "meaning_nl": "laag of etage in een gebouw",
+      "example": "Wij wonen op de derde verdieping zonder lift.",
+      "usage": "productief"
+    },
+    {
+      "dutch": "balkon",
+      "article": "het",
+      "plural": "balkons",
+      "frame": null,
+      "meaning_nl": "kleine buitenruimte aan de voorkant of achterkant van een flat",
+      "example": "Op het balkon staan twee stoelen en planten.",
+      "usage": "productief"
+    },
+    {
+      "dutch": "buurman",
+      "article": "de",
+      "plural": "buurmannen",
+      "frame": null,
+      "meaning_nl": "man die naast jou woont",
+      "example": "Mijn buurman helpt mij met de zware dozen.",
+      "usage": "productief"
+    },
+    {
+      "dutch": "buurthuis",
+      "article": "het",
+      "plural": "buurthuizen",
+      "frame": null,
+      "meaning_nl": "gebouw in de wijk met cursussen en activiteiten voor bewoners",
+      "example": "In het buurthuis is elke dinsdag een taalcafé.",
+      "usage": "receptief"
+    },
+    {
+      "dutch": "wijk",
+      "article": "de",
+      "plural": "wijken",
+      "frame": null,
+      "meaning_nl": "deel van een stad met straten en woningen",
+      "example": "In onze wijk komt een nieuwe school.",
+      "usage": "receptief"
+    },
+    {
+      "dutch": "klacht",
+      "article": "de",
+      "plural": "klachten",
+      "frame": "een klacht indienen (over)",
+      "meaning_nl": "bericht waarin je zegt dat iets niet goed is",
+      "example": "Ik heb een klacht over de kapotte lift.",
+      "usage": "productief"
+    },
+    {
+      "dutch": "geluid",
+      "article": "het",
+      "plural": "geluiden",
+      "frame": null,
+      "meaning_nl": "wat je met je oren hoort",
+      "example": "Het geluid van de buren houdt mij wakker.",
+      "usage": "receptief"
+    },
+    {
+      "dutch": "verhuizen",
+      "article": null,
+      "plural": null,
+      "frame": "verhuizen (naar)",
+      "meaning_nl": "met je spullen in een andere woning gaan wonen",
+      "example": "Wij verhuizen volgende maand naar Almere.",
+      "usage": "productief"
+    },
+    {
+      "dutch": "opzeggen",
+      "article": null,
+      "plural": null,
+      "frame": "de huur opzeggen",
+      "meaning_nl": "schriftelijk laten weten dat je stopt met een afspraak",
+      "example": "Je moet de huur een maand van tevoren opzeggen.",
+      "usage": "receptief"
+    },
+    {
+      "dutch": "inschrijven",
+      "article": null,
+      "plural": null,
+      "frame": "zich inschrijven (bij)",
+      "meaning_nl": "je naam en gegevens officieel laten opnemen op een lijst",
+      "example": "Ik ga mij inschrijven bij de gemeente Utrecht.",
+      "usage": "productief"
+    },
+    {
+      "dutch": "container",
+      "article": "de",
+      "plural": "containers",
+      "frame": null,
+      "meaning_nl": "grote bak op straat voor papier, glas of huisvuil",
+      "example": "De container voor papier staat om de hoek.",
+      "usage": "receptief"
+    },
+    {
+      "dutch": "gemeente",
+      "article": "de",
+      "plural": "gemeenten",
+      "frame": null,
+      "meaning_nl": "bestuur van een stad of dorp",
+      "example": "De gemeente maakt de straat volgende week schoon.",
+      "usage": "receptief"
+    },
+    {
+      "dutch": "meterkast",
+      "article": "de",
+      "plural": "meterkasten",
+      "frame": null,
+      "meaning_nl": "kleine kast met de aansluitingen voor stroom, gas en water",
+      "example": "De monteur kijkt even in de meterkast.",
+      "usage": "receptief"
+    },
+    {
+      "dutch": "schimmel",
+      "article": "de",
+      "plural": "schimmels",
+      "frame": null,
+      "meaning_nl": "zwarte of groene vlekken op een vochtige muur",
+      "example": "In de badkamer zit schimmel op de muur.",
+      "usage": "receptief"
+    },
+    {
+      "dutch": "reparatie",
+      "article": "de",
+      "plural": "reparaties",
+      "frame": null,
+      "meaning_nl": "het maken van iets dat kapot is",
+      "example": "De reparatie van de deur duurt twee dagen.",
+      "usage": "productief"
+    },
+    {
+      "dutch": "storing",
+      "article": "de",
+      "plural": "storingen",
+      "frame": null,
+      "meaning_nl": "probleem waardoor iets tijdelijk niet werkt",
+      "example": "Er is een storing in de verwarming.",
+      "usage": "receptief"
+    },
+    {
+      "dutch": "bewoner",
+      "article": "de",
+      "plural": "bewoners",
+      "frame": null,
+      "meaning_nl": "iemand die in een bepaald huis of gebouw woont",
+      "example": "Alle bewoners krijgen een brief over het onderhoud.",
+      "usage": "receptief"
+    },
+    {
+      "dutch": "speeltuin",
+      "article": "de",
+      "plural": "speeltuinen",
+      "frame": null,
+      "meaning_nl": "plek buiten waar kinderen kunnen klimmen en schommelen",
+      "example": "Achter ons huis is een kleine speeltuin.",
+      "usage": "productief"
+    }
+  ]
+}

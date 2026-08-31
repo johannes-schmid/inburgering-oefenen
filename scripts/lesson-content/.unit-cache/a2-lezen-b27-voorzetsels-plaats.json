@@ -1,0 +1,204 @@
+{
+  "items": [
+    {
+      "kind": "uitleg",
+      "tier": null,
+      "explanation": null,
+      "payload": {
+        "body_html": "<p>Met kleine woordjes zoals <strong>in</strong>, <strong>op</strong>, <strong>naast</strong> en <strong>langs</strong> zeg je waar iets is. Je gebruikt <strong>in</strong> als iets binnen een ruimte is. Je gebruikt <strong>op</strong> als iets boven op een vlak ligt. Met <strong>naast</strong> zeg je dat iets aan de zijkant staat, en met <strong>langs</strong> volg je een lijn of een route.",
+        "cards": [
+          {
+            "label": "PLEK",
+            "example_html": "De brief ligt <mark>op</mark> de tafel in de keuken."
+          },
+          {
+            "label": "ROUTE",
+            "example_html": "Ik loop <mark>langs</mark> het gezondheidscentrum naar mijn werk."
+          }
+        ]
+      }
+    },
+    {
+      "kind": "voorbeeld",
+      "tier": null,
+      "explanation": null,
+      "payload": {
+        "sentence_html": "Je paspoort ligt <mark>in</mark> de bruine map."
+      }
+    },
+    {
+      "kind": "voorbeeld",
+      "tier": null,
+      "explanation": null,
+      "payload": {
+        "sentence_html": "De apotheek staat <mark>naast</mark> de supermarkt."
+      }
+    },
+    {
+      "kind": "mcq",
+      "tier": 0,
+      "explanation": "De boodschappen zitten binnen in de tas, dus je gebruikt 'in'.",
+      "payload": {
+        "prompt": "Welk woordje past? De boodschappen zitten ___ de tas."
+      },
+      "options": [
+        {
+          "label": "A",
+          "body": "in",
+          "is_correct": true
+        },
+        {
+          "label": "B",
+          "body": "langs",
+          "is_correct": false
+        },
+        {
+          "label": "C",
+          "body": "naast",
+          "is_correct": false
+        }
+      ]
+    },
+    {
+      "kind": "mcq",
+      "tier": 0,
+      "explanation": "Met 'langs' volg je een lijn of route, hier de route van de rivier.",
+      "payload": {
+        "prompt": "In welke zin wijst het woordje een route aan?"
+      },
+      "options": [
+        {
+          "label": "A",
+          "body": "De sleutel ligt op de kast.",
+          "is_correct": false
+        },
+        {
+          "label": "B",
+          "body": "Wij fietsen langs de rivier naar het park.",
+          "is_correct": true
+        },
+        {
+          "label": "C",
+          "body": "De fiets staat naast de deur.",
+          "is_correct": false
+        }
+      ]
+    },
+    {
+      "kind": "gap_choice",
+      "tier": 1,
+      "explanation": "Het formulier ligt boven op een vlak, namelijk op de balie. Daarom gebruik je 'op'.",
+      "payload": {
+        "sentence": "Het formulier ligt ___ de balie van de gemeente.",
+        "choices": [
+          "in",
+          "op",
+          "langs"
+        ],
+        "answer": "op"
+      }
+    },
+    {
+      "kind": "gap_choice",
+      "tier": 1,
+      "explanation": "De school staat aan de zijkant van het buurthuis, dus je gebruikt 'naast'.",
+      "payload": {
+        "sentence": "De school van mijn dochter staat ___ het buurthuis.",
+        "choices": [
+          "naast",
+          "in",
+          "op"
+        ],
+        "answer": "naast"
+      }
+    },
+    {
+      "kind": "gap_choice",
+      "tier": 1,
+      "explanation": "Je loopt een stuk mee met de gracht; dat is een route. Daarom past 'langs'.",
+      "payload": {
+        "sentence": "Wij wandelen ___ de gracht tot de brug.",
+        "choices": [
+          "in",
+          "op",
+          "langs"
+        ],
+        "answer": "langs"
+      }
+    },
+    {
+      "kind": "matchen",
+      "tier": 1,
+      "explanation": "Kijk of iets binnen is (in), boven op een vlak (op), aan de zijkant (naast) of een route volgt (langs).",
+      "payload": {
+        "instruction": "Zoek bij elke zin het juiste woordje.",
+        "pairs": [
+          {
+            "left": "Het geld zit ___ mijn portemonnee.",
+            "right": "in"
+          },
+          {
+            "left": "De kopjes staan ___ het aanrecht.",
+            "right": "op"
+          },
+          {
+            "left": "De bank staat ___ het raam.",
+            "right": "naast"
+          },
+          {
+            "left": "De bus rijdt ___ het ziekenhuis.",
+            "right": "langs"
+          }
+        ]
+      }
+    },
+    {
+      "kind": "gap_type",
+      "tier": 2,
+      "explanation": "De jas hangt binnen in de kast, dus je typt 'in'.",
+      "payload": {
+        "sentence": "Mijn jas hangt ___ de kast op de gang.",
+        "answer": "in"
+      }
+    },
+    {
+      "kind": "woordorde",
+      "tier": 2,
+      "explanation": "Na het woordje 'naast' komt de plek: naast de apotheek. Zo wijs je de plek aan.",
+      "payload": {
+        "instruction": "Maak van deze woorden een goede zin.",
+        "tokens": [
+          "staat",
+          "de",
+          "naast",
+          "apotheek",
+          "de",
+          "bakker"
+        ],
+        "answer": [
+          "de",
+          "bakker",
+          "staat",
+          "naast",
+          "de",
+          "apotheek"
+        ]
+      }
+    },
+    {
+      "kind": "open_zin",
+      "tier": 2,
+      "explanation": "Je gebruikt 'langs' om te zeggen welke plek je op je route voorbij komt.",
+      "payload": {
+        "prompt": "Schrijf één zin over je weg naar de winkel. Gebruik het woordje 'langs'.",
+        "model_answer": "Ik loop langs het park naar de winkel.",
+        "checklist": [
+          "Het woordje 'langs' staat in je zin.",
+          "Na 'langs' noem je een plek, bijvoorbeeld het park of de school.",
+          "Je zin heeft een werkwoord, bijvoorbeeld loop of fiets."
+        ]
+      }
+    }
+  ],
+  "what_you_learn": "Na deze les weet je wat de woordjes in, op, naast en langs betekenen. Je ziet in een zin of iets binnen is, boven op iets ligt, aan de zijkant staat of een route volgt. Je kiest zelf het juiste woordje en maakt er een korte zin mee."
+}

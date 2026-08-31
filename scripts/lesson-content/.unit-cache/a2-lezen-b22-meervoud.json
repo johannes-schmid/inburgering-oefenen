@@ -1,0 +1,199 @@
+{
+  "items": [
+    {
+      "kind": "uitleg",
+      "tier": null,
+      "explanation": null,
+      "payload": {
+        "body_html": "<p>Bij meer dan één ding gebruik je het meervoud. De meeste woorden krijgen <strong>-en</strong>. Woorden die eindigen op <strong>-e, -el, -em, -en, -er, -je</strong> krijgen vaak <strong>-s</strong>. Eindigt het woord op een losse klinker (a, i, o, u, y)? Dan schrijf je <strong>-'s</strong>.</p>",
+        "cards": [
+          {
+            "label": "MEESTAL -EN",
+            "example_html": "Ik krijg twee <mark>brieven</mark> van de gemeente."
+          },
+          {
+            "label": "SOMS -S",
+            "example_html": "De <mark>tafels</mark> in de kantine zijn nieuw."
+          }
+        ]
+      }
+    },
+    {
+      "kind": "voorbeeld",
+      "tier": null,
+      "explanation": null,
+      "payload": {
+        "sentence_html": "Mijn buurvrouw heeft drie <mark>kinderen</mark> op school."
+      }
+    },
+    {
+      "kind": "voorbeeld",
+      "tier": null,
+      "explanation": null,
+      "payload": {
+        "sentence_html": "In de keuken staan twee <mark>oma's</mark> te praten."
+      }
+    },
+    {
+      "kind": "mcq",
+      "tier": 0,
+      "explanation": "Het woord 'formulier' eindigt op -er, en dan krijg je -en of -s. Hier is 'formulieren' de juiste vorm; 'formulier's' bestaat niet, want een apostrof gebruik je alleen na een losse klinker.",
+      "payload": {
+        "prompt": "Welke zin is goed geschreven?"
+      },
+      "options": [
+        {
+          "label": "A",
+          "body": "Ik moet twee formulieren invullen.",
+          "is_correct": true
+        },
+        {
+          "label": "B",
+          "body": "Ik moet twee formulier's invullen.",
+          "is_correct": false
+        },
+        {
+          "label": "C",
+          "body": "Ik moet twee formulieres invullen.",
+          "is_correct": false
+        }
+      ]
+    },
+    {
+      "kind": "mcq",
+      "tier": 0,
+      "explanation": "'Foto' eindigt op de klinker o. Na een losse klinker schrijf je -'s, dus: foto's.",
+      "payload": {
+        "prompt": "Wat is het meervoud van 'foto'?"
+      },
+      "options": [
+        {
+          "label": "A",
+          "body": "fotoen",
+          "is_correct": false
+        },
+        {
+          "label": "B",
+          "body": "foto's",
+          "is_correct": true
+        },
+        {
+          "label": "C",
+          "body": "fotos",
+          "is_correct": false
+        },
+        {
+          "label": "D",
+          "body": "foto'en",
+          "is_correct": false
+        }
+      ]
+    },
+    {
+      "kind": "gap_choice",
+      "tier": 1,
+      "explanation": "'Rekening' is een gewoon woord zonder -e of -el aan het eind, dus het krijgt -en: rekeningen.",
+      "payload": {
+        "sentence": "Ik betaal elke maand drie ___ met internetbankieren.",
+        "choices": [
+          "rekeningen",
+          "rekenings",
+          "rekening's"
+        ],
+        "answer": "rekeningen"
+      }
+    },
+    {
+      "kind": "gap_choice",
+      "tier": 1,
+      "explanation": "'Meisje' eindigt op -je, en woorden op -je krijgen -s: meisjes.",
+      "payload": {
+        "sentence": "In de klas van mijn zoon zitten twaalf ___.",
+        "choices": [
+          "meisjeen",
+          "meisjes",
+          "meisje's"
+        ],
+        "answer": "meisjes"
+      }
+    },
+    {
+      "kind": "gap_choice",
+      "tier": 1,
+      "explanation": "'Menu' eindigt op de klinker u. Na een losse klinker schrijf je -'s: menu's.",
+      "payload": {
+        "sentence": "De kok maakt twee nieuwe ___ voor het restaurant.",
+        "choices": [
+          "menuen",
+          "menus",
+          "menu's"
+        ],
+        "answer": "menu's"
+      }
+    },
+    {
+      "kind": "matchen",
+      "tier": 1,
+      "explanation": "Woorden op -el, -er en -e krijgen -s. Andere woorden krijgen meestal -en, en na een losse klinker komt -'s.",
+      "payload": {
+        "instruction": "Zet elk woord bij de juiste meervoudsuitgang: -en, -s of -'s.",
+        "pairs": [
+          {
+            "left": "de winkel",
+            "right": "-s"
+          },
+          {
+            "left": "de dokter",
+            "right": "-s"
+          },
+          {
+            "left": "de brief",
+            "right": "-en"
+          },
+          {
+            "left": "de tuin",
+            "right": "-en"
+          },
+          {
+            "left": "de video",
+            "right": "-'s"
+          }
+        ]
+      }
+    },
+    {
+      "kind": "gap_type",
+      "tier": 2,
+      "explanation": "'Kamer' eindigt op -er, dus het meervoud krijgt -s: kamers.",
+      "payload": {
+        "sentence": "Ons nieuwe huis heeft vier ___ (kamer).",
+        "answer": "kamers"
+      }
+    },
+    {
+      "kind": "woordorde",
+      "tier": 2,
+      "explanation": "'Tante' eindigt op -e, dus het meervoud is 'tantes' met -s.",
+      "payload": {
+        "instruction": "Maak van deze woorden een goede zin.",
+        "tokens": [
+          "twee",
+          "in",
+          "wonen",
+          "Utrecht",
+          "tantes",
+          "mijn"
+        ],
+        "answer": [
+          "mijn",
+          "twee",
+          "tantes",
+          "wonen",
+          "in",
+          "Utrecht"
+        ]
+      }
+    }
+  ],
+  "what_you_learn": "Je leert wanneer een woord in het meervoud -en krijgt en wanneer -s. Ook leer je dat je na een losse klinker een apostrof plus s schrijft, zoals in foto's. Zo lees en schrijf je meervoudsvormen zonder twijfel."
+}

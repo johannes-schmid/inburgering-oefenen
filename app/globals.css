@@ -1387,3 +1387,78 @@
   .faq-fold > summary::after { transition: none; }
 }
 
+
+/* ── `.exam-rich` — authored HTML inside an oefening ────────────────────────
+ *
+ * Every exercise surface renders a docent-authored HTML string: the Lezen/Luisteren fragment
+ * (`stimuli.body_html`), the Schrijven opdracht and the Spreken opdracht (`open_tasks.prompt_html`),
+ * the onderdeel instruction (`exam_parts.instruction_html`) and the taster's passage. Tailwind's
+ * preflight unsets `font-size`/`font-weight` on h1–h6, strips the marker from every ul/ol and
+ * leaves tables borderless — so a heading rendered as body text, an opsomming as unindented lines
+ * and a tabel as one run of figures. That is authored structure silently disappearing on the one
+ * screen where the candidate is being tested on reading it.
+ *
+ * It lives here rather than in five component `<style>` blocks because those blocks had drifted:
+ * `.exam-task-prompt` styled `p` alone while the instructions it renders are mostly `<ul>`, and
+ * `.exam-stimulus-body` had no rule for the 200-odd `<h3>`s in the fragment bank. One definition,
+ * one place to fix. A surface still sets its own base size and colour on its own class.
+ *
+ * NOTE: a `<style>` element's source counts towards its parent's accessible name, so a rule set
+ * placed inside a question or a button gets read aloud by a screen reader. Keep it in this file.
+ */
+.exam-rich > * + * { margin-top: 0.85rem; }
+.exam-rich p { margin: 0; }
+.exam-rich strong, .exam-rich b { font-weight: 700; }
+.exam-rich em, .exam-rich i { font-style: italic; }
+.exam-rich a { color: var(--color-primary); text-decoration: underline; }
+
+.exam-rich h1, .exam-rich h2, .exam-rich h3, .exam-rich h4, .exam-rich h5, .exam-rich h6 {
+  font-family: var(--font-headline);
+  font-weight: 800;
+  letter-spacing: -0.01em;
+  line-height: 1.3;
+  color: var(--color-primary);
+  margin: 0;
+}
+.exam-rich h1 { font-size: 1.25em; }
+.exam-rich h2 { font-size: 1.15em; }
+.exam-rich h3, .exam-rich h4 { font-size: 1.05em; }
+.exam-rich h5, .exam-rich h6 { font-size: 1em; }
+/* A heading introduces what follows, so it sits closer to it than to the block above — which is
+   what separates one kopje's section from the previous one in a fragment of five or six. */
+.exam-rich * + :is(h1, h2, h3, h4, h5, h6) { margin-top: 1.5rem; }
+.exam-rich :is(h1, h2, h3, h4, h5, h6) + * { margin-top: 0.35rem; }
+/* An empty paragraph is a keystroke in the editor, not a blank line the candidate should see. */
+.exam-rich p:empty { display: none; }
+
+.exam-rich ul { padding-left: 1.35rem; margin: 0; list-style: disc; }
+.exam-rich ol { padding-left: 1.35rem; margin: 0; list-style: decimal; }
+.exam-rich li + li { margin-top: 0.35rem; }
+/* The fragment editor wraps a list item's text in a <p> (ProseMirror's list schema does), so the
+   item's spacing has to come from the <li>, not from the paragraph inside it. */
+.exam-rich li > p { margin: 0; }
+.exam-rich li > ul, .exam-rich li > ol { margin-top: 0.35rem; }
+
+.exam-rich blockquote {
+  margin: 0; padding-left: 0.9rem;
+  border-left: 3px solid var(--color-secondary-container);
+  color: var(--color-on-surface-variant);
+}
+.exam-rich hr { border: 0; border-top: 1px solid var(--color-outline-variant); margin: 0; }
+.exam-rich img { max-width: 100%; height: auto; border-radius: 10px; }
+
+/* B1's data_text opdracht hands the candidate a tabel and asks for a text that fits the numbers,
+   so the table *is* the opdracht. The wrapper scrolls rather than the page: a six-column table
+   must not make the whole exam pane scroll sideways on a phone. */
+.exam-rich-scroll { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+.exam-rich table {
+  border-collapse: collapse; width: 100%; min-width: 340px;
+  font-size: 0.88em; font-variant-numeric: tabular-nums;
+  background: var(--color-surface-container-lowest);
+  border-radius: 10px; overflow: hidden;
+}
+.exam-rich th, .exam-rich td {
+  border: 1px solid rgba(0, 43, 109, 0.12); padding: 7px 10px; text-align: left;
+  color: var(--color-on-surface);
+}
+.exam-rich th { background: rgba(0, 43, 109, 0.05); font-weight: 700; }

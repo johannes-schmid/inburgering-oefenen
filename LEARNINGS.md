@@ -2984,3 +2984,22 @@ re-mint the auth cookie rather than reusing one from an earlier session.
 **Outcome:** SUCCESS — tsc schoon, 274 unit tests groen, `next build` schoon, register-scherm gescreenshot op 390 en 1440.
 **What worked / went wrong:** De meeste `A2`-treffers in `.tsx` zijn commentaar, niet copy — grep die eruit filtert vindt de echte vindplaatsen in één keer. Twee vondsten die niets met A2 te maken hadden kwamen mee: `oefenexamen.unlock_all_body` verkocht nog het "Professioneel Pakket" (een tier die niets verkoopt) en `unlock_all_title` claimde "alle 40" op een per-onderdeel-pagina. De meta-descriptions liepen bij het herschrijven boven de 160 tekens en `tests/seo.spec.js` pint 140–160; teruggebracht en per taal geverifieerd.
 **Lesson:** Copy die "op dit moment" of een catalogusgetal noemt, veroudert stil zodra de catalogus groeit — geen enkele test, tsc of build ziet het. Tel bij een uitbreiding altijd de *claims* (niveaus, aantallen, gratis slots) na, niet alleen de routes; en herschrijf een meta-description nooit zonder de lengte opnieuw te meten.
+
+## 2026-08-31 — de opmaak van een opgave overleeft Tailwind's preflight
+**Changed:** `.exam-rich` toegevoegd in `app/globals.css` en toegepast op elke plek waar
+door de docent geschreven HTML wordt gerenderd: `StimulusPane`, `ExamShell` (de
+onderdeel-instructie), `WritingTask`, `SpeakingTask`, `FreePracticeEngine` en de
+fragmentpreview in `ExamBuilder`. De dubbele tagregels in die vijf `<style>`-blokken zijn eruit.
+**Outcome:** SUCCESS
+**What worked / went wrong:** Tailwind's preflight zet `font-size`/`font-weight` op h1–h6 op
+`inherit`, haalt de marker van elke ul/ol weg en laat tabellen zonder rand. De vijf blokken
+styleden vrijwel allemaal alleen `p`, dus 201 `<h3>`-koppen in de fragmentenbank lazen als
+gewone tekst, de 102 `<li>`'s in `exam_parts.instruction_html` als losse regels en de tabellen
+in een `data_text`-opdracht als één rij cijfers. Niets faalde — tsc, de build en elke test waren
+groen. Gevonden door de tags in de productie-inhoud te tellen, niet door naar de code te kijken.
+Verder liep ik precies in de val die CLAUDE.md al beschrijft: een backtick in een CSS-commentaar
+binnen een template literal beëindigt de literal en geeft een parsefout twintig regels verderop.
+**Lesson:** Een renderer van vreemde HTML moet gestyled worden op wat de *inhoud* bevat, niet op
+wat de auteur van het component toevallig voor ogen had — tel de tags in de echte data. En één
+definitie op één plek: vijf `<style>`-blokken voor hetzelfde probleem zijn vijf kansen om te
+driften, en ze driftten alle vijf.

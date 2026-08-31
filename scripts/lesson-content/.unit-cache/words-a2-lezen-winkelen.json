@@ -1,0 +1,184 @@
+{
+  "words": [
+    {
+      "dutch": "aanbieding",
+      "article": "de",
+      "plural": "aanbiedingen",
+      "frame": "in de aanbieding",
+      "meaning_nl": "artikel dat tijdelijk minder geld kost",
+      "example": "De koffie is deze week in de aanbieding.",
+      "usage": "productief"
+    },
+    {
+      "dutch": "korting",
+      "article": "de",
+      "plural": "kortingen",
+      "frame": "korting (op)",
+      "meaning_nl": "je betaalt minder dan de gewone prijs",
+      "example": "Ik krijg tien procent korting op deze jas.",
+      "usage": "productief"
+    },
+    {
+      "dutch": "kassabon",
+      "article": "de",
+      "plural": "kassabonnen",
+      "frame": null,
+      "meaning_nl": "papiertje met wat je gekocht en betaald hebt",
+      "example": "Bewaar de kassabon goed, dat is belangrijk.",
+      "usage": "receptief"
+    },
+    {
+      "dutch": "ruilen",
+      "article": null,
+      "plural": null,
+      "frame": "ruilen (voor)",
+      "meaning_nl": "iets terugbrengen en iets anders meenemen",
+      "example": "Kan ik deze broek ruilen voor een grotere?",
+      "usage": "productief"
+    },
+    {
+      "dutch": "garantie",
+      "article": "de",
+      "plural": "garanties",
+      "frame": "garantie (op)",
+      "meaning_nl": "belofte dat de winkel kapotte spullen gratis repareert",
+      "example": "Op deze wasmachine zit twee jaar garantie.",
+      "usage": "receptief"
+    },
+    {
+      "dutch": "bezorgen",
+      "article": null,
+      "plural": null,
+      "frame": "bezorgen (bij)",
+      "meaning_nl": "iets naar het adres van de klant brengen",
+      "example": "De winkel komt de kast morgen bij ons bezorgen.",
+      "usage": "productief"
+    },
+    {
+      "dutch": "bezorgkosten",
+      "article": "de",
+      "plural": "bezorgkosten",
+      "frame": null,
+      "meaning_nl": "extra geld dat je betaalt voor het thuisbrengen",
+      "example": "Boven de vijftig euro betaalt u geen bezorgkosten.",
+      "usage": "receptief"
+    },
+    {
+      "dutch": "levertijd",
+      "article": "de",
+      "plural": "levertijden",
+      "frame": null,
+      "meaning_nl": "hoelang je moet wachten voor je iets krijgt",
+      "example": "De levertijd van deze bank is drie weken.",
+      "usage": "receptief"
+    },
+    {
+      "dutch": "bestellen",
+      "article": null,
+      "plural": null,
+      "frame": "bestellen (bij)",
+      "meaning_nl": "vragen of ze iets voor je klaarmaken of sturen",
+      "example": "Ik wil deze schoenen graag online bestellen.",
+      "usage": "productief"
+    },
+    {
+      "dutch": "bedrag",
+      "article": "het",
+      "plural": "bedragen",
+      "frame": null,
+      "meaning_nl": "hoeveel euro iets kost of hoeveel je betaalt",
+      "example": "Het totale bedrag staat onderaan de rekening.",
+      "usage": "receptief"
+    },
+    {
+      "dutch": "klantenservice",
+      "article": "de",
+      "plural": "klantenservices",
+      "frame": null,
+      "meaning_nl": "afdeling die vragen en problemen van kopers behandelt",
+      "example": "Bel de klantenservice als uw pakket niet komt.",
+      "usage": "receptief"
+    },
+    {
+      "dutch": "retourneren",
+      "article": null,
+      "plural": null,
+      "frame": null,
+      "meaning_nl": "iets terugsturen naar de winkel en geld terugkrijgen",
+      "example": "U mag het artikel binnen veertien dagen retourneren.",
+      "usage": "receptief"
+    },
+    {
+      "dutch": "uitverkocht",
+      "article": null,
+      "plural": null,
+      "frame": null,
+      "meaning_nl": "helemaal weg, er is niets meer van",
+      "example": "De blauwe jassen zijn helaas uitverkocht.",
+      "usage": "receptief"
+    },
+    {
+      "dutch": "gratis",
+      "article": null,
+      "plural": null,
+      "frame": null,
+      "meaning_nl": "je hoeft er geen geld voor te betalen",
+      "example": "Bij twee broden krijgt u een krentenbol gratis.",
+      "usage": "productief"
+    },
+    {
+      "dutch": "verpakking",
+      "article": "de",
+      "plural": "verpakkingen",
+      "frame": null,
+      "meaning_nl": "doos of plastic waar het product in zit",
+      "example": "Doe het product terug in de originele verpakking.",
+      "usage": "receptief"
+    },
+    {
+      "dutch": "voorraad",
+      "article": "de",
+      "plural": "voorraden",
+      "frame": "op voorraad",
+      "meaning_nl": "de spullen die de winkel nog in het magazijn heeft",
+      "example": "Deze televisie is nog op voorraad in Zwolle.",
+      "usage": "receptief"
+    },
+    {
+      "dutch": "maat",
+      "article": "de",
+      "plural": "maten",
+      "frame": null,
+      "meaning_nl": "het nummer of de grootte van kleding en schoenen",
+      "example": "Heeft u deze trui ook in maat 42?",
+      "usage": "productief"
+    },
+    {
+      "dutch": "klacht",
+      "article": "de",
+      "plural": "klachten",
+      "frame": "een klacht (over)",
+      "meaning_nl": "wat je zegt als je ontevreden bent over iets",
+      "example": "Ik heb een klacht over mijn nieuwe telefoon.",
+      "usage": "receptief"
+    },
+    {
+      "dutch": "geldig",
+      "article": null,
+      "plural": null,
+      "frame": "geldig (tot)",
+      "meaning_nl": "je mag het gebruiken, het is nog niet voorbij",
+      "example": "Deze bon is geldig tot 1 maart.",
+      "usage": "receptief"
+    },
+    {
+      "dutch": "afhalen",
+      "article": null,
+      "plural": null,
+      "frame": "afhalen (bij)",
+      "meaning_nl": "zelf naar de winkel gaan om iets op te halen",
+      "example": "U kunt uw bestelling afhalen in onze winkel.",
+      "usage": "receptief"
+    }
+  ]
+}

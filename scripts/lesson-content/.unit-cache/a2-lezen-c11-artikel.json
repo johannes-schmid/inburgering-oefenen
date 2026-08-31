@@ -1,0 +1,227 @@
+{
+  "items": [
+    {
+      "kind": "uitleg",
+      "tier": null,
+      "explanation": null,
+      "payload": {
+        "title": "Wat is een artikel?",
+        "body_html": "<p>Een <strong>artikel</strong> is een tekst uit een krant, een tijdschrift of een website. Het artikel vertelt iets over nieuws of geeft je informatie en tips. Je vindt artikelen in de wijkkrant, in de krant van de gemeente of op internet.</p><p>Een artikel heeft bijna altijd dezelfde opbouw. Boven de tekst staat de <strong>titel</strong> (de kop). De titel zegt kort waar de tekst over gaat. In de eerste alinea staat het belangrijkste: wat, waar en wanneer. In de alinea's daarna staan de details, bijvoorbeeld een prijs, een datum of een adres. Onderaan staat vaak waar je meer informatie kunt vragen.</p><p>Bij een artikel horen vragen over het onderwerp, over een detail (een klein stukje informatie) en over de bedoeling van de schrijver. Lees eerst de titel. Zoek daarna in de tekst het stukje dat bij de vraag hoort.</p>",
+        "cards": [
+          {
+            "label": "TITEL",
+            "example_html": "Nieuwe fietsenstalling bij het station"
+          },
+          {
+            "label": "EERSTE ALINEA",
+            "example_html": "Vanaf 1 maart is de stalling open voor alle inwoners."
+          },
+          {
+            "label": "DETAIL",
+            "example_html": "Een plek kost 12 euro per jaar."
+          }
+        ]
+      }
+    },
+    {
+      "kind": "leestekst",
+      "tier": null,
+      "explanation": null,
+      "payload": {
+        "title": "Gratis taalcafé in buurthuis De Zonnehoek",
+        "body_html": "<p><strong>Gratis taalcafé in buurthuis De Zonnehoek</strong></p><p>Vanaf woensdag 8 oktober begint er een taalcafé in buurthuis De Zonnehoek in Bakelveen. In het taalcafé praat je Nederlands met andere bewoners uit de wijk. Er zijn geen lessen en geen boeken. Je praat over gewone dingen, bijvoorbeeld over werk, koken of de school van je kinderen.</p><p>Het taalcafé is elke woensdag van 10.00 tot 11.30 uur. Deelnemen is gratis. Koffie en thee kosten 50 cent. Je hoeft je niet aan te melden. Je mag ook één keer komen kijken.</p><p>Bij het taalcafé helpen zes vrijwilligers uit de buurt. Zij spreken langzaam en verbeteren je niet steeds. \"Veel mensen durven bijna nooit Nederlands te spreken\", zegt vrijwilliger Anneke Buurma. \"Hier oefen je zonder spanning.\"</p><p>Wil je meer weten? Bel het buurthuis op maandag tussen 9.00 en 12.00 uur.</p>",
+        "words": [
+          {
+            "word": "het taalcafé",
+            "meaning": "plek waar je samen Nederlands praat"
+          },
+          {
+            "word": "de bewoners",
+            "meaning": "mensen die in de wijk wonen"
+          },
+          {
+            "word": "deelnemen",
+            "meaning": "meedoen"
+          },
+          {
+            "word": "de vrijwilligers",
+            "meaning": "mensen die helpen zonder loon"
+          },
+          {
+            "word": "de spanning",
+            "meaning": "het gevoel dat je bang of nerveus bent"
+          }
+        ],
+        "marks": [
+          "Vanaf woensdag 8 oktober",
+          "Deelnemen is gratis.",
+          "Je hoeft je niet aan te melden."
+        ]
+      }
+    },
+    {
+      "kind": "mcq",
+      "tier": 0,
+      "explanation": "De titel en de eerste alinea zeggen het samen: er begint een taalcafé waar je Nederlands praat. Dat is het onderwerp van het hele artikel.",
+      "payload": {
+        "prompt": "Waar gaat dit artikel over?"
+      },
+      "options": [
+        {
+          "label": "A",
+          "body": "Een nieuwe cursus Nederlands met boeken en huiswerk.",
+          "is_correct": false
+        },
+        {
+          "label": "B",
+          "body": "Een taalcafé waar je samen Nederlands praat.",
+          "is_correct": true
+        },
+        {
+          "label": "C",
+          "body": "Een buurthuis dat gaat sluiten.",
+          "is_correct": false
+        }
+      ]
+    },
+    {
+      "kind": "mcq",
+      "tier": 0,
+      "explanation": "In de tweede alinea staat: het taalcafé is elke woensdag van 10.00 tot 11.30 uur. Die tijd is het antwoord.",
+      "payload": {
+        "prompt": "Hoe laat begint het taalcafé?"
+      },
+      "options": [
+        {
+          "label": "A",
+          "body": "Om 9.00 uur.",
+          "is_correct": false
+        },
+        {
+          "label": "B",
+          "body": "Om 10.00 uur.",
+          "is_correct": true
+        },
+        {
+          "label": "C",
+          "body": "Om 11.30 uur.",
+          "is_correct": false
+        },
+        {
+          "label": "D",
+          "body": "Om 12.00 uur.",
+          "is_correct": false
+        }
+      ]
+    },
+    {
+      "kind": "mcq",
+      "tier": 1,
+      "explanation": "In de tekst staat: deelnemen is gratis, maar koffie en thee kosten 50 cent. Je betaalt dus alleen voor je drinken.",
+      "payload": {
+        "prompt": "Wat moet je betalen als je naar het taalcafé komt?"
+      },
+      "options": [
+        {
+          "label": "A",
+          "body": "Niets, ook je koffie is gratis.",
+          "is_correct": false
+        },
+        {
+          "label": "B",
+          "body": "Alleen 50 cent voor koffie of thee.",
+          "is_correct": true
+        },
+        {
+          "label": "C",
+          "body": "Vijftig cent per week voor deelnemen.",
+          "is_correct": false
+        }
+      ]
+    },
+    {
+      "kind": "markeren",
+      "tier": 0,
+      "explanation": "In een artikel staat het praktische nieuws vaak in korte losse zinnen. De startdatum staat in de eerste alinea, en hoe je meer informatie krijgt staat onderaan.",
+      "payload": {
+        "instruction": "Markeer in dit stukje uit het artikel de startdatum en de manier waarop je meer informatie kunt krijgen.",
+        "body_html": "<p>Vanaf woensdag 8 oktober begint er een taalcafé in buurthuis De Zonnehoek in Bakelveen. Deelnemen is gratis. Je hoeft je niet aan te melden. Wil je meer weten? Bel het buurthuis op maandag tussen 9.00 en 12.00 uur.</p>",
+        "targets": [
+          {
+            "label": "startdatum",
+            "text": "woensdag 8 oktober"
+          },
+          {
+            "label": "meer informatie",
+            "text": "Bel het buurthuis op maandag tussen 9.00 en 12.00 uur."
+          }
+        ]
+      }
+    },
+    {
+      "kind": "mcq",
+      "tier": 1,
+      "explanation": "In de tekst staat dat je je niet hoeft aan te melden en één keer mag komen kijken. Je kunt dus gewoon binnenlopen.",
+      "payload": {
+        "prompt": "Je wilt woensdag naar het taalcafé. Wat moet je doen?"
+      },
+      "options": [
+        {
+          "label": "A",
+          "body": "Je meldt je eerst per brief aan.",
+          "is_correct": false
+        },
+        {
+          "label": "B",
+          "body": "Je gaat naar het buurthuis en loopt binnen.",
+          "is_correct": true
+        },
+        {
+          "label": "C",
+          "body": "Je vraagt een pasje bij de gemeente.",
+          "is_correct": false
+        }
+      ]
+    },
+    {
+      "kind": "mcq",
+      "tier": 1,
+      "explanation": "De vrijwilliger zegt dat je hier oefent zonder spanning. Het artikel wil dus zeggen dat je rustig kunt oefenen zonder angst.",
+      "payload": {
+        "prompt": "Waarom is het taalcafé volgens vrijwilliger Anneke Buurma fijn voor de bezoekers?"
+      },
+      "options": [
+        {
+          "label": "A",
+          "body": "Omdat je daar zonder spanning kunt oefenen.",
+          "is_correct": true
+        },
+        {
+          "label": "B",
+          "body": "Omdat je daar een diploma kunt halen.",
+          "is_correct": false
+        },
+        {
+          "label": "C",
+          "body": "Omdat de koffie en thee er gratis zijn.",
+          "is_correct": false
+        }
+      ]
+    },
+    {
+      "kind": "open_zin",
+      "tier": 2,
+      "explanation": "Je moet in eigen woorden het belangrijkste uit het artikel halen: wat het is, wanneer het is en dat het gratis is.",
+      "payload": {
+        "prompt": "Een buurvrouw wil beter Nederlands leren. Vertel haar in twee of drie zinnen wat het taalcafé is, wanneer het is en wat het kost.",
+        "model_answer": "In buurthuis De Zonnehoek is een taalcafé. Daar praat je Nederlands met andere mensen uit de wijk. Het is elke woensdag van 10.00 tot 11.30 uur. Meedoen is gratis, alleen koffie of thee kost 50 cent.",
+        "checklist": [
+          "Ik noem wat het taalcafé is: samen Nederlands praten.",
+          "Ik noem de dag en de tijd.",
+          "Ik schrijf dat meedoen gratis is."
+        ]
+      }
+    }
+  ],
+  "what_you_learn": "Je leert hoe een artikel uit een krant of van een website in elkaar zit. Je weet dat de titel het onderwerp geeft en dat details zoals tijd, prijs en adres verderop in de tekst staan. Daarna kun je vragen over het onderwerp en over kleine stukjes informatie snel beantwoorden."
+}

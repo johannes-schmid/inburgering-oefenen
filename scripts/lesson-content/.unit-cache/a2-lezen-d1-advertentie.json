@@ -1,0 +1,175 @@
+{
+  "items": [
+    {
+      "kind": "uitleg",
+      "tier": null,
+      "explanation": null,
+      "payload": {
+        "body_html": "<p>Je leest nu een advertentie en beantwoordt daarna vragen, net als in het examen.</p>",
+        "cards": []
+      }
+    },
+    {
+      "kind": "leestekst",
+      "tier": null,
+      "explanation": null,
+      "payload": {
+        "title": "Advertentie: Tweedehandsmarkt in buurthuis De Zonnehoek",
+        "body_html": "<p><strong>Tweedehandsmarkt in buurthuis De Zonnehoek</strong></p><p>Zaterdag 15 maart van 10.00 tot 15.00 uur. Adres: Beukenlaan 22, Almere.</p><p>Op de markt verkopen buurtbewoners kleding, speelgoed, boeken en klein meubilair. Alles is tweedehands, maar in goede staat. De prijzen zijn laag: veel spullen kosten minder dan 5 euro.</p><p>Wilt u zelf iets verkopen? U kunt een tafel huren voor 7,50 euro. Er zijn nog 8 tafels vrij. Bel voor een tafel naar 036 123 45 67. Bellen kan van maandag tot en met vrijdag tussen 9.00 en 12.00 uur. Reserveren per e-mail is niet mogelijk.</p><p>De toegang is gratis. In de hal staat een kraam met koffie, thee en soep voor 1 euro. Betalen kan alleen met contant geld, niet met pinpas.</p>",
+        "words": [],
+        "marks": []
+      }
+    },
+    {
+      "kind": "mcq",
+      "tier": 0,
+      "explanation": "In de advertentie staat dat de markt op zaterdag 15 maart is, van 10.00 tot 15.00 uur.",
+      "payload": {
+        "prompt": "Wanneer is de tweedehandsmarkt?"
+      },
+      "options": [
+        {
+          "label": "A",
+          "body": "Op zaterdag 15 maart, van 10.00 tot 15.00 uur.",
+          "is_correct": true
+        },
+        {
+          "label": "B",
+          "body": "Elke maandag tot vrijdag, van 9.00 tot 12.00 uur.",
+          "is_correct": false
+        },
+        {
+          "label": "C",
+          "body": "Op zaterdag 15 maart, van 9.00 tot 12.00 uur.",
+          "is_correct": false
+        }
+      ]
+    },
+    {
+      "kind": "mcq",
+      "tier": 0,
+      "explanation": "De hele advertentie gaat over een markt waar buurtbewoners tweedehands spullen verkopen.",
+      "payload": {
+        "prompt": "Waar gaat deze advertentie vooral over?"
+      },
+      "options": [
+        {
+          "label": "A",
+          "body": "Over een cursus in het buurthuis.",
+          "is_correct": false
+        },
+        {
+          "label": "B",
+          "body": "Over een markt met tweedehands spullen.",
+          "is_correct": true
+        },
+        {
+          "label": "C",
+          "body": "Over een nieuwe meubelwinkel in Almere.",
+          "is_correct": false
+        }
+      ]
+    },
+    {
+      "kind": "mcq",
+      "tier": 1,
+      "explanation": "In de tekst staat dat een tafel 7,50 euro kost. De toegang is gratis, dat is iets anders.",
+      "payload": {
+        "prompt": "Je wilt zelf spullen verkopen op de markt. Hoeveel kost een tafel?"
+      },
+      "options": [
+        {
+          "label": "A",
+          "body": "Niets, het is gratis.",
+          "is_correct": false
+        },
+        {
+          "label": "B",
+          "body": "5 euro.",
+          "is_correct": false
+        },
+        {
+          "label": "C",
+          "body": "7,50 euro.",
+          "is_correct": true
+        }
+      ]
+    },
+    {
+      "kind": "mcq",
+      "tier": 1,
+      "explanation": "Er staat dat je moet bellen voor een tafel. Reserveren per e-mail kan niet.",
+      "payload": {
+        "prompt": "Wat moet je doen als je een tafel wilt?"
+      },
+      "options": [
+        {
+          "label": "A",
+          "body": "Bellen naar 036 123 45 67 op een werkdag in de ochtend.",
+          "is_correct": true
+        },
+        {
+          "label": "B",
+          "body": "Een e-mail sturen naar het buurthuis.",
+          "is_correct": false
+        },
+        {
+          "label": "C",
+          "body": "Op zaterdag naar Beukenlaan 22 komen.",
+          "is_correct": false
+        }
+      ]
+    },
+    {
+      "kind": "mcq",
+      "tier": 1,
+      "explanation": "In de tekst staat dat betalen alleen met contant geld kan, niet met pinpas.",
+      "payload": {
+        "prompt": "Je wilt soep kopen op de markt. Wat neem je mee?"
+      },
+      "options": [
+        {
+          "label": "A",
+          "body": "Alleen je pinpas.",
+          "is_correct": false
+        },
+        {
+          "label": "B",
+          "body": "Contant geld.",
+          "is_correct": true
+        },
+        {
+          "label": "C",
+          "body": "Een kaartje van het buurthuis.",
+          "is_correct": false
+        }
+      ]
+    },
+    {
+      "kind": "mcq",
+      "tier": 0,
+      "explanation": "In de advertentie staat dat de toegang gratis is. Je betaalt alleen voor spullen of eten.",
+      "payload": {
+        "prompt": "Wat moet je betalen om naar binnen te gaan?"
+      },
+      "options": [
+        {
+          "label": "A",
+          "body": "Niets, de toegang is gratis.",
+          "is_correct": true
+        },
+        {
+          "label": "B",
+          "body": "1 euro.",
+          "is_correct": false
+        },
+        {
+          "label": "C",
+          "body": "5 euro.",
+          "is_correct": false
+        }
+      ]
+    }
+  ],
+  "what_you_learn": "Je oefent met het lezen van een advertentie, zoals in het examen. Je zoekt snel een detail op, zoals een tijd, een prijs of een adres. Ook bepaal je waar de tekst over gaat en wat je zelf moet doen."
+}

@@ -1,0 +1,196 @@
+{
+  "what_you_learn": "Na deze les weet je dat in een gewone Nederlandse zin (de hoofdzin) het werkwoord altijd op plaats twee staat. Je herkent zinnen die beginnen met het onderwerp en zinnen die beginnen met een tijd of plaats. Je kunt zelf goede hoofdzinnen maken, ook als de zin niet met 'ik' begint.",
+  "items": [
+    {
+      "kind": "uitleg",
+      "tier": null,
+      "explanation": null,
+      "payload": {
+        "body_html": "<p>Een gewone zin heet een hoofdzin. In een hoofdzin staat het werkwoord op plaats twee. Dat verandert bijna nooit. Begint de zin met een tijd of een plaats? Dan komt het onderwerp na het werkwoord.</p>",
+        "cards": [
+          {
+            "label": "EERST HET ONDERWERP",
+            "example_html": "Ik <mark>werk</mark> op maandag."
+          },
+          {
+            "label": "EERST IETS ANDERS",
+            "example_html": "Op maandag <mark>werk</mark> ik."
+          }
+        ]
+      }
+    },
+    {
+      "kind": "voorbeeld",
+      "tier": null,
+      "explanation": null,
+      "payload": {
+        "sentence_html": "Mijn buurvrouw <mark>koopt</mark> brood bij de bakker."
+      }
+    },
+    {
+      "kind": "voorbeeld",
+      "tier": null,
+      "explanation": null,
+      "payload": {
+        "sentence_html": "Om negen uur <mark>begint</mark> de les Nederlands."
+      }
+    },
+    {
+      "kind": "mcq",
+      "tier": 0,
+      "explanation": "In een hoofdzin staat het werkwoord op plaats twee. 'Morgen' is plaats één, dus daarna komt eerst 'ga' en dan 'ik'.",
+      "payload": {
+        "prompt": "Welke zin is goed?",
+        "choices": [],
+        "instruction": ""
+      },
+      "options": [
+        {
+          "label": "A",
+          "body": "Morgen ik ga naar de dokter.",
+          "is_correct": false
+        },
+        {
+          "label": "B",
+          "body": "Morgen ga ik naar de dokter.",
+          "is_correct": true
+        },
+        {
+          "label": "C",
+          "body": "Morgen naar de dokter ik ga.",
+          "is_correct": false
+        }
+      ]
+    },
+    {
+      "kind": "mcq",
+      "tier": 0,
+      "explanation": "Het werkwoord 'betaal' moet op plaats twee staan. Na 'Elke maand' komt dus eerst het werkwoord en daarna 'ik'.",
+      "payload": {
+        "prompt": "In welke zin staat het werkwoord op plaats twee?",
+        "choices": [],
+        "instruction": ""
+      },
+      "options": [
+        {
+          "label": "A",
+          "body": "Elke maand ik betaal de huur.",
+          "is_correct": false
+        },
+        {
+          "label": "B",
+          "body": "Elke maand de huur betaal ik.",
+          "is_correct": false
+        },
+        {
+          "label": "C",
+          "body": "Elke maand betaal ik de huur.",
+          "is_correct": true
+        }
+      ]
+    },
+    {
+      "kind": "gap_choice",
+      "tier": 1,
+      "explanation": "De zin begint met 'Morgen'. Daarna komt het werkwoord en pas daarna het onderwerp 'ik'.",
+      "payload": {
+        "sentence": "Morgen ___ naar mijn werk.",
+        "choices": [
+          "ik ga",
+          "ga ik",
+          "gaan ik"
+        ],
+        "answer": "ga ik"
+      }
+    },
+    {
+      "kind": "gap_choice",
+      "tier": 1,
+      "explanation": "Hier begint de zin met het onderwerp 'Wij'. Dan staat het werkwoord op plaats twee, dus 'wij gaan'.",
+      "payload": {
+        "sentence": "___ in de zomer naar Spanje.",
+        "choices": [
+          "Gaan wij",
+          "Wij gaan",
+          "In de zomer"
+        ],
+        "answer": "Wij gaan"
+      }
+    },
+    {
+      "kind": "gap_choice",
+      "tier": 1,
+      "explanation": "'Op zaterdag' is plaats één. Het werkwoord 'werkt' staat op plaats twee, daarna komt het onderwerp 'mijn dochter'.",
+      "payload": {
+        "sentence": "Op zaterdag ___ mijn dochter in de supermarkt.",
+        "choices": [
+          "werkt",
+          "zij werkt",
+          "werken"
+        ],
+        "answer": "werkt"
+      }
+    },
+    {
+      "kind": "matchen",
+      "tier": 1,
+      "explanation": "Kijk waarmee de zin begint. Begint hij met het onderwerp, dan komt daarna het werkwoord. Begint hij met een tijd, dan komt eerst het werkwoord en daarna het onderwerp.",
+      "payload": {
+        "instruction": "Zoek het goede tweede deel bij het begin van de zin.",
+        "pairs": [
+          {
+            "left": "Ik",
+            "right": "woon in Almere."
+          },
+          {
+            "left": "Sinds januari",
+            "right": "woon ik in Almere."
+          },
+          {
+            "left": "De post",
+            "right": "komt om tien uur."
+          },
+          {
+            "left": "Elke dag",
+            "right": "komt de post om tien uur."
+          }
+        ]
+      }
+    },
+    {
+      "kind": "gap_type",
+      "tier": 2,
+      "explanation": "De zin begint met 'Vanavond'. Het werkwoord 'blijven' hoort op plaats twee en past bij 'ik': blijf.",
+      "payload": {
+        "sentence": "Vanavond ___ ik thuis.",
+        "answer": "blijf",
+        "instruction": "Typ de juiste vorm van 'blijven'.",
+        "model_answer": "blijf"
+      }
+    },
+    {
+      "kind": "gap_type",
+      "tier": 2,
+      "explanation": "Na 'Om acht uur' komt eerst het werkwoord. Het werkwoord past bij 'de winkel', dus 'opent' staat op plaats twee.",
+      "payload": {
+        "sentence": "Om acht uur ___ de winkel.",
+        "answer": "opent",
+        "instruction": "Typ de juiste vorm van 'openen'.",
+        "model_answer": "opent"
+      }
+    },
+    {
+      "kind": "open_zin",
+      "tier": 2,
+      "explanation": "Je zin begint met een tijd. Daarom staat het werkwoord op plaats twee en het onderwerp erna.",
+      "payload": {
+        "prompt": "Schrijf één zin die begint met 'Volgende week'.",
+        "model_answer": "Volgende week ga ik naar de gemeente.",
+        "checklist": [
+          "Het werkwoord staat op plaats twee.",
+          "Het onderwerp staat na het werkwoord."
+        ]
+      }
+    }
+  ]
+}

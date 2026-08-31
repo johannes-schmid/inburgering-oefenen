@@ -1,0 +1,214 @@
+{
+  "what_you_learn": "Je leert de belangrijkste woorden over werk en solliciteren herkennen, zoals de vacature, het sollicitatiegesprek en de loonstrook. Je kunt deze woorden koppelen aan hun betekenis en ze zelf invullen in een zin. Zo begrijp je brieven en teksten over werk beter.",
+  "items": [
+    {
+      "kind": "uitleg",
+      "tier": null,
+      "explanation": null,
+      "payload": {
+        "body_html": "<p>In het examen lees je vaak teksten over werk. Denk aan een advertentie voor een baan, een brief van een bedrijf of een papier met je loon.</p><p>Hieronder leer je de woorden die je daarbij nodig hebt.</p>",
+        "cards": [
+          {
+            "label": "WERKGEVER",
+            "example_html": "De <mark>werkgever</mark> betaalt elke maand het salaris."
+          },
+          {
+            "label": "WERKNEMER",
+            "example_html": "De <mark>werknemer</mark> werkt vier dagen per week."
+          }
+        ]
+      }
+    },
+    {
+      "kind": "woordenlijst",
+      "tier": null,
+      "explanation": null,
+      "payload": {
+        "theme": "werk",
+        "instruction": "Lees de woorden en de betekenis rustig door. Zeg elk woord hardop."
+      }
+    },
+    {
+      "kind": "matchen",
+      "tier": 0,
+      "explanation": "Elk woord hoort bij één betekenis. Een vacature is een open plek, en solliciteren doe je om die plek te krijgen.",
+      "payload": {
+        "instruction": "Zoek bij elk woord de juiste betekenis.",
+        "pairs": [
+          {
+            "left": "de vacature",
+            "right": "een plek in een bedrijf waar nog iemand voor gezocht wordt"
+          },
+          {
+            "left": "solliciteren",
+            "right": "vragen of je een bepaalde baan mag krijgen"
+          },
+          {
+            "left": "het cv",
+            "right": "overzicht van je scholen, cursussen en vorige banen"
+          },
+          {
+            "left": "de motivatiebrief",
+            "right": "tekst waarin je uitlegt waarom jij de baan wilt"
+          }
+        ]
+      }
+    },
+    {
+      "kind": "matchen",
+      "tier": 0,
+      "explanation": "Deze woorden gaan over de afspraken en het geld bij een baan. Op de loonstrook staat wat je die maand hebt verdiend.",
+      "payload": {
+        "instruction": "Zoek bij elk woord de juiste betekenis.",
+        "pairs": [
+          {
+            "left": "het arbeidscontract",
+            "right": "papier met de afspraken tussen een bedrijf en iemand die er werkt"
+          },
+          {
+            "left": "het salaris",
+            "right": "het geld dat je elke maand krijgt voor je werk"
+          },
+          {
+            "left": "de loonstrook",
+            "right": "papier waarop staat hoeveel geld je die maand hebt verdiend"
+          },
+          {
+            "left": "de proeftijd",
+            "right": "eerste periode van een baan, waarin beide partijen snel kunnen stoppen"
+          }
+        ]
+      }
+    },
+    {
+      "kind": "mcq",
+      "tier": 0,
+      "explanation": "Een diploma is het papier dat bewijst dat je een school hebt afgerond. Een cv is een overzicht van je scholen en banen.",
+      "payload": {
+        "prompt": "Jamila heeft de opleiding tot verzorgende afgemaakt. Welk papier krijgt zij dan?"
+      },
+      "options": [
+        {
+          "label": "A",
+          "body": "het diploma",
+          "is_correct": true
+        },
+        {
+          "label": "B",
+          "body": "de loonstrook",
+          "is_correct": false
+        },
+        {
+          "label": "C",
+          "body": "de bijlage",
+          "is_correct": false
+        },
+        {
+          "label": "D",
+          "body": "het rooster",
+          "is_correct": false
+        }
+      ]
+    },
+    {
+      "kind": "gap_choice",
+      "tier": 1,
+      "explanation": "Een gesprek waarin het bedrijf vragen stelt aan iemand die werk zoekt, heet een sollicitatiegesprek.",
+      "payload": {
+        "sentence": "Meneer De Wit is uitgenodigd voor een ___ op maandag 14 april.",
+        "choices": [
+          "sollicitatiegesprek",
+          "uitzendbureau",
+          "rooster",
+          "diploma"
+        ],
+        "answer": "sollicitatiegesprek"
+      }
+    },
+    {
+      "kind": "gap_choice",
+      "tier": 1,
+      "explanation": "Op het rooster staat op welke dagen en uren je moet werken.",
+      "payload": {
+        "sentence": "Op het ___ kun je zien wanneer je deze week moet werken.",
+        "choices": [
+          "rooster",
+          "salaris",
+          "contract",
+          "cv"
+        ],
+        "answer": "rooster"
+      }
+    },
+    {
+      "kind": "gap_choice",
+      "tier": 1,
+      "explanation": "Werk voor maar een paar dagen of uren per week heet een deeltijdbaan.",
+      "payload": {
+        "sentence": "Ik werk drie dagen per week. Ik heb dus een ___.",
+        "choices": [
+          "deeltijdbaan",
+          "werkervaring",
+          "proeftijd",
+          "functie"
+        ],
+        "answer": "deeltijdbaan"
+      }
+    },
+    {
+      "kind": "gap_choice",
+      "tier": 1,
+      "explanation": "Iemand die bij hetzelfde bedrijf werkt als jij, is je collega.",
+      "payload": {
+        "sentence": "Mijn ___ Ahmed helpt mij met de computer op kantoor.",
+        "choices": [
+          "collega",
+          "werkgever",
+          "bijlage",
+          "opleiding"
+        ],
+        "answer": "collega"
+      }
+    },
+    {
+      "kind": "gap_type",
+      "tier": 2,
+      "explanation": "Wie geen betaald werk heeft, is werkloos. Het woord past bij 'zonder werk zitten'.",
+      "payload": {
+        "sentence": "Sinds januari heeft Karim geen baan meer. Hij is nu ___.",
+        "answer": "werkloos",
+        "prompt": "Typ het woord dat past.......past.....Betbetekent: zonder betaald werk zitten....past past past past.: zonder betaald werk.: zonder betaald werk zitten.: zonder betaald werk zitten.: zonder betaald werk zitten.: zonder betaald werk zitten.: zonder betaald werk zitten.: zonder betaald werk zitten.: zonder betaald werk zitten.: zonder betaald werk zitten.: zonder betaald werk zitten.: zonder betaald werk zitten.: zonder betaald werk zitten.: zonder betaald werk zitten.: zonder betaald werk zitten.: zonder betaald werk zitten.: zonder betaald werk zitten."
+      }
+    },
+    {
+      "kind": "gap_type",
+      "tier": 2,
+      "explanation": "Wat je eerder in banen hebt gedaan en geleerd, heet je werkervaring.",
+      "payload": {
+        "sentence": "Ik heb vijf jaar in een keuken gewerkt. Ik heb dus veel ___ in de horeca.",
+        "answer": "werkervaring",
+        "prompt": "Typ het juiste woord."
+      }
+    },
+    {
+      "kind": "gap_type",
+      "tier": 2,
+      "explanation": "Een papier of bestand dat je meestuurt met een brief of mail, heet de bijlage.",
+      "payload": {
+        "sentence": "Mijn cv en mijn diploma stuur ik mee als ___.",
+        "answer": "bijlage",
+        "prompt": "Typ het juiste woord."
+      }
+    },
+    {
+      "kind": "gap_type",
+      "tier": 2,
+      "explanation": "Langer doorgaan dan de afgesproken uren heet overwerken.",
+      "payload": {
+        "sentence": "Het is heel druk in de winkel. Vandaag moet ik twee uur ___.",
+        "answer": "overwerken",
+        "prompt": "Typ het juiste woord."
+      }
+    }
+  ]
+}

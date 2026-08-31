@@ -1,0 +1,240 @@
+{
+  "items": [
+    {
+      "kind": "uitleg",
+      "tier": null,
+      "explanation": null,
+      "payload": {
+        "title": "Een woord raden uit de zin",
+        "body_html": "<p>Bij lezen kom je altijd woorden tegen die je niet kent. Dat is niet erg. De rest van de zin verklapt vaak wat het woord betekent.</p><p>Werk in stappen:</p><ol><li>Lees de hele zin door, ook het stuk na het moeilijke woord.</li><li>Kijk of er een uitleg bij staat, bijvoorbeeld na <strong>dat wil zeggen</strong>, <strong>dus</strong> of tussen streepjes.</li><li>Kijk naar de zin ervoor en erna. Waar gaat het over?</li><li>Vul zelf een makkelijk woord in. Past het in de zin? Dan is je gok goed genoeg.</li></ol><p>Je hoeft het woord niet precies te weten. Je moet alleen de vraag kunnen beantwoorden.</p>",
+        "cards": [
+          {
+            "label": "UITLEG STAAT ERBIJ",
+            "example_html": "U krijgt <mark>huurtoeslag, dat is geld van de overheid voor uw huur</mark>."
+          },
+          {
+            "label": "REST VAN DE ZIN HELPT",
+            "example_html": "De monteur komt de kapotte kraan <mark>repareren, zodat het water niet meer lekt</mark>."
+          },
+          {
+            "label": "WOORD IN STUKJES",
+            "example_html": "Het woord <mark>tandartspraktijk</mark> bestaat uit tandarts en praktijk."
+          }
+        ]
+      }
+    },
+    {
+      "kind": "leestekst",
+      "tier": null,
+      "explanation": null,
+      "payload": {
+        "title": "Brief van woningstichting De Vaart",
+        "body_html": "<p>Geachte mevrouw Bakker,</p><p>Wij gaan in uw woning aan de Lindestraat 14 werk laten doen. De oude kozijnen — dat zijn de houten randen om de ramen — zijn slecht. Het hout is nat en rot. Daarom vervangen wij ze door nieuwe.</p><p>Het werk begint op maandag 8 april. De werkzaamheden duren ongeveer drie dagen. U hoeft niet thuis te blijven. Wel vragen wij u de spullen bij de ramen weg te halen, dus stoelen, planten en gordijnen.</p><p>Heeft u vragen? Bel dan met onze opzichter, de heer Van Dongen. Hij controleert het werk en beantwoordt uw vragen. Zijn nummer is 030 555 21 40.</p><p>Met vriendelijke groet,<br>Woningstichting De Vaart</p>",
+        "words": [
+          {
+            "word": "de kozijnen",
+            "meaning": "de houten randen om de ramen"
+          },
+          {
+            "word": "rot",
+            "meaning": "kapot en zacht van het water"
+          },
+          {
+            "word": "de werkzaamheden",
+            "meaning": "het werk in en aan het huis"
+          },
+          {
+            "word": "de opzichter",
+            "meaning": "iemand die controleert of het werk goed gaat"
+          }
+        ],
+        "marks": [
+          "dat zijn de houten randen om de ramen",
+          "Het hout is nat en rot",
+          "dus stoelen, planten en gordijnen",
+          "Hij controleert het werk en beantwoordt uw vragen"
+        ]
+      }
+    },
+    {
+      "kind": "markeren",
+      "tier": 0,
+      "explanation": "Direct na het moeilijke woord staat een uitleg tussen streepjes. Die uitleg vertelt je wat kozijnen zijn.",
+      "payload": {
+        "instruction": "Je kent het woord \"kozijnen\" niet. Markeer het stukje in de brief dat uitlegt wat het betekent.",
+        "body_html": "<p>De oude kozijnen — dat zijn de houten randen om de ramen — zijn slecht. Het hout is nat en rot. Daarom vervangen wij ze door nieuwe.</p>",
+        "targets": [
+          {
+            "label": "uitleg van kozijnen",
+            "text": "dat zijn de houten randen om de ramen"
+          }
+        ]
+      }
+    },
+    {
+      "kind": "mcq",
+      "tier": 0,
+      "explanation": "De zin ervoor zegt dat het hout nat is. Nat hout dat slecht is, is kapot. Dus \"rot\" betekent kapot van het water.",
+      "payload": {
+        "prompt": "Wat betekent \"rot\" in de zin: \"Het hout is nat en rot.\"?"
+      },
+      "options": [
+        {
+          "label": "A",
+          "body": "kapot en zacht geworden",
+          "is_correct": true
+        },
+        {
+          "label": "B",
+          "body": "nieuw en sterk",
+          "is_correct": false
+        },
+        {
+          "label": "C",
+          "body": "heel duur",
+          "is_correct": false
+        }
+      ]
+    },
+    {
+      "kind": "markeren",
+      "tier": 0,
+      "explanation": "Na het woord \"opzichter\" staat een zin die vertelt wat hij doet. Zo weet je wat het woord betekent.",
+      "payload": {
+        "instruction": "Markeer het stukje dat uitlegt wat een opzichter doet.",
+        "body_html": "<p>Bel dan met onze opzichter, de heer Van Dongen. Hij controleert het werk en beantwoordt uw vragen.</p>",
+        "targets": [
+          {
+            "label": "taak van de opzichter",
+            "text": "Hij controleert het werk en beantwoordt uw vragen"
+          }
+        ]
+      }
+    },
+    {
+      "kind": "mcq",
+      "tier": 1,
+      "explanation": "Na \"dus\" staan voorbeelden: stoelen, planten en gordijnen. Dat zijn dingen in huis, dus \"spullen\" zijn dingen.",
+      "payload": {
+        "prompt": "In de brief staat: \"Wel vragen wij u de spullen bij de ramen weg te halen, dus stoelen, planten en gordijnen.\" Wat betekent \"spullen\"?"
+      },
+      "options": [
+        {
+          "label": "A",
+          "body": "dingen die in de kamer staan",
+          "is_correct": true
+        },
+        {
+          "label": "B",
+          "body": "mensen die bij je wonen",
+          "is_correct": false
+        },
+        {
+          "label": "C",
+          "body": "papieren van de woningstichting",
+          "is_correct": false
+        },
+        {
+          "label": "D",
+          "body": "geld voor de huur",
+          "is_correct": false
+        }
+      ]
+    },
+    {
+      "kind": "mcq",
+      "tier": 1,
+      "explanation": "De brief gaat over werk aan de ramen dat drie dagen duurt. \"Werkzaamheden\" betekent hier het werk aan het huis.",
+      "payload": {
+        "prompt": "\"De werkzaamheden duren ongeveer drie dagen.\" Wat zijn de werkzaamheden?"
+      },
+      "options": [
+        {
+          "label": "A",
+          "body": "het werk aan de ramen van de woning",
+          "is_correct": true
+        },
+        {
+          "label": "B",
+          "body": "de uren dat mevrouw Bakker werkt",
+          "is_correct": false
+        },
+        {
+          "label": "C",
+          "body": "de vragen aan de opzichter",
+          "is_correct": false
+        }
+      ]
+    },
+    {
+      "kind": "mcq",
+      "tier": 1,
+      "explanation": "Je hoeft het woord niet precies te kennen. Je kijkt naar de rest van de zin en gokt een makkelijk woord dat past.",
+      "payload": {
+        "prompt": "Je leest een woord in de brief dat je niet kent. Wat doe je in het examen als eerste?"
+      },
+      "options": [
+        {
+          "label": "A",
+          "body": "Ik lees de hele zin en de zin erna, en ik zoek een uitleg.",
+          "is_correct": true
+        },
+        {
+          "label": "B",
+          "body": "Ik stop met lezen en sla de hele tekst over.",
+          "is_correct": false
+        },
+        {
+          "label": "C",
+          "body": "Ik lees alleen het moeilijke woord nog een keer.",
+          "is_correct": false
+        }
+      ]
+    },
+    {
+      "kind": "mcq",
+      "tier": 2,
+      "explanation": "\"Vervangen\" betekent hier: de oude weghalen en nieuwe erin zetten. Dat lees je in \"door nieuwe\".",
+      "payload": {
+        "prompt": "\"Daarom vervangen wij ze door nieuwe.\" Wat gaat de woningstichting doen?"
+      },
+      "options": [
+        {
+          "label": "A",
+          "body": "De oude kozijnen weghalen en nieuwe plaatsen.",
+          "is_correct": true
+        },
+        {
+          "label": "B",
+          "body": "De oude kozijnen schoonmaken en laten zitten.",
+          "is_correct": false
+        },
+        {
+          "label": "C",
+          "body": "De ramen dichtplakken met plastic.",
+          "is_correct": false
+        },
+        {
+          "label": "D",
+          "body": "Nieuwe gordijnen ophangen.",
+          "is_correct": false
+        }
+      ]
+    },
+    {
+      "kind": "open_zin",
+      "tier": 2,
+      "explanation": "Je legt in eigen woorden uit hoe je een onbekend woord raadt. Noem waar je keek in de tekst.",
+      "payload": {
+        "prompt": "Schrijf in twee of drie zinnen: hoe wist je wat \"opzichter\" betekent? Waar keek je in de brief?",
+        "model_answer": "Ik kende het woord \"opzichter\" niet. Ik las de zin erna: \"Hij controleert het werk en beantwoordt uw vragen.\" Daarom weet ik dat een opzichter iemand is die het werk controleert.",
+        "checklist": [
+          "Je noemt dat je het woord niet kende.",
+          "Je noemt de zin of het stukje uit de brief waar je keek.",
+          "Je zegt in eigen woorden wat het woord betekent."
+        ]
+      }
+    }
+  ],
+  "what_you_learn": "Je leert wat je doet als je een woord in een tekst niet kent. Je zoekt de uitleg in de rest van de zin, in de zin ervoor of erna, en je vult zelf een makkelijk woord in. Zo kun je de vragen bij een brief toch goed beantwoorden."
+}

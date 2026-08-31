@@ -88,7 +88,7 @@ export default function WritingTask({
         {task.title && <h2 className="wr-title">{task.title}</h2>}
 
         {task.prompt_html && (
-          <div className="wr-prompt wr-table-wrap" dangerouslySetInnerHTML={{ __html: task.prompt_html }} />
+          <div className="wr-prompt exam-rich exam-rich-scroll" dangerouslySetInnerHTML={{ __html: task.prompt_html }} />
         )}
 
         {/* Numbered rather than bulleted: these are the points the rubric checks off one by one,
@@ -283,33 +283,8 @@ const CSS = `
     letter-spacing: -0.025em; color: var(--color-primary); margin: 0 0 10px;
     text-wrap: balance; line-height: 1.2;
   }
+  /* Tag-level rules live in .exam-rich in app/globals.css — see the note there. */
   .wr-prompt { font-size: 0.95rem; line-height: 1.7; color: var(--color-on-surface-variant); }
-  .wr-prompt > * + * { margin-top: 0.7rem; }
-  .wr-prompt p { margin: 0; }
-  /* list-style restated because Tailwind's preflight strips markers from every ul/ol — the same
-     fix .exam-stimulus-body needed, and for the same reason: an opsomming in an opdracht
-     otherwise renders as unindented plain lines. */
-  .wr-prompt ul { padding-left: 1.35rem; margin: 0; list-style: disc; }
-  .wr-prompt ol { padding-left: 1.35rem; margin: 0; list-style: decimal; }
-  .wr-prompt li + li { margin-top: 0.3rem; }
-  /*
-   * B1's data_text opdracht hands the candidate a tabel or grafiek and asks for a text that
-   * fits the numbers, so the table *is* the opdracht. Preflight leaves it borderless and
-   * uncollapsed, which renders the figures as one run of text — unreadable exactly where reading
-   * them is the task. The wrapper scrolls rather than the page: a six-column table must not make
-   * the whole exam pane scroll sideways on a phone.
-   */
-  .wr-table-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; }
-  .wr-prompt table {
-    border-collapse: collapse; width: 100%; min-width: 340px;
-    font-size: 0.88rem; font-variant-numeric: tabular-nums;
-    background: var(--color-surface-container-lowest); border-radius: 10px; overflow: hidden;
-  }
-  .wr-prompt th, .wr-prompt td {
-    border: 1px solid rgba(0, 43, 109, 0.12); padding: 7px 10px; text-align: left;
-  }
-  .wr-prompt th { background: rgba(0, 43, 109, 0.05); font-weight: 700; color: var(--color-on-surface); }
-  .wr-prompt td { color: var(--color-on-surface); }
 
   .wr-points { list-style: none; margin: 16px 0 0; padding: 0; display: flex; flex-direction: column; gap: 10px; }
   .wr-points li { display: flex; align-items: flex-start; gap: 10px; font-size: 0.92rem; line-height: 1.55; color: var(--color-on-surface); }

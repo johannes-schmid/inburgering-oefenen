@@ -846,7 +846,7 @@ export default function ExamBuilder({
 
                       {s.kind === 'text' && s.body_html && (
                         <div
-                          className="text-xs text-on-surface leading-relaxed"
+                          className="exam-rich exam-rich-scroll text-xs text-on-surface leading-relaxed"
                           dangerouslySetInnerHTML={{ __html: s.body_html }}
                         />
                       )}

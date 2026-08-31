@@ -1,0 +1,188 @@
+{
+  "items": [
+    {
+      "kind": "uitleg",
+      "tier": null,
+      "explanation": null,
+      "payload": {
+        "body_html": "<p>Wil je zeggen dat iets de nummer één is? Dan gebruik je de <strong>-st</strong>-vorm. Je zet er bijna altijd <strong>het</strong> voor: <em>het grootst</em>, <em>het duurst</em>. Een paar woorden zijn onregelmatig: <em>goed</em> wordt <em>het beste</em> en <em>veel</em> wordt <em>het meest</em>.</p><p>Staat er een zelfstandig naamwoord achter (bijvoorbeeld <em>de winkel</em>)? Dan schrijf je <em>de grootste winkel</em> of <em>het grootste plein</em>, met <strong>-ste</strong>.</p>",
+        "cards": [
+          {
+            "label": "GEWOON -ST",
+            "example_html": "Deze fiets is <mark>het duurst</mark> van de drie."
+          },
+          {
+            "label": "ONREGELMATIG",
+            "example_html": "Dit brood vind ik <mark>het beste</mark> van de bakker."
+          }
+        ]
+      }
+    },
+    {
+      "kind": "voorbeeld",
+      "tier": null,
+      "explanation": null,
+      "payload": {
+        "sentence_html": "Van alle straten in het dorp is de Kerkstraat <mark>het langst</mark>."
+      }
+    },
+    {
+      "kind": "voorbeeld",
+      "tier": null,
+      "explanation": null,
+      "payload": {
+        "sentence_html": "De gemeente helpt eerst de mensen met <mark>het minst</mark> geld."
+      }
+    },
+    {
+      "kind": "mcq",
+      "tier": 0,
+      "explanation": "Bij de nummer één gebruik je de -st-vorm met het: het goedkoopst. \"Goedkoper\" vergelijkt maar twee dingen.",
+      "options": [
+        {
+          "label": "A",
+          "body": "Deze winkel is goedkoop.",
+          "is_correct": false
+        },
+        {
+          "label": "B",
+          "body": "Deze winkel is goedkoper.",
+          "is_correct": false
+        },
+        {
+          "label": "C",
+          "body": "Deze winkel is het goedkoopst.",
+          "is_correct": true
+        }
+      ],
+      "payload": {
+        "prompt": "In welke zin staat de nummer-één-vorm (de -st-vorm)?"
+      }
+    },
+    {
+      "kind": "mcq",
+      "tier": 0,
+      "explanation": "Het onregelmatige woord bij goed is het beste. \"Het goedst\" bestaat niet in het Nederlands.",
+      "options": [
+        {
+          "label": "A",
+          "body": "Dit is het goedst medicijn tegen hoofdpijn.",
+          "is_correct": false
+        },
+        {
+          "label": "B",
+          "body": "Dit is het beste medicijn tegen hoofdpijn.",
+          "is_correct": true
+        },
+        {
+          "label": "C",
+          "body": "Dit is het meer goed medicijn tegen hoofdpijn.",
+          "is_correct": false
+        }
+      ],
+      "payload": {
+        "prompt": "Welke zin is goed?"
+      }
+    },
+    {
+      "kind": "gap_choice",
+      "tier": 1,
+      "explanation": "Van alle drie is één huis de nummer één, dus je gebruikt de -st-vorm met het: het duurst.",
+      "payload": {
+        "sentence": "Van deze drie huizen is dit huis ___.",
+        "choices": [
+          "duur",
+          "duurder",
+          "het duurst"
+        ],
+        "answer": "het duurst"
+      }
+    },
+    {
+      "kind": "gap_choice",
+      "tier": 1,
+      "explanation": "Bij goed is de nummer-één-vorm onregelmatig: het beste.",
+      "payload": {
+        "sentence": "Van alle dagen vind ik zaterdag ___.",
+        "choices": [
+          "het beste",
+          "het goedst",
+          "beter"
+        ],
+        "answer": "het beste"
+      }
+    },
+    {
+      "kind": "gap_choice",
+      "tier": 1,
+      "explanation": "Er staat een zelfstandig naamwoord achter (school), dus je schrijft -ste: de grootste school.",
+      "payload": {
+        "sentence": "Mijn zoon zit op de ___ school van de wijk.",
+        "choices": [
+          "groter",
+          "grootste",
+          "groot"
+        ],
+        "answer": "grootste"
+      }
+    },
+    {
+      "kind": "matchen",
+      "tier": 1,
+      "explanation": "Bij elk woord hoort één nummer-één-vorm. Goed en veel zijn onregelmatig: het beste en het meest.",
+      "payload": {
+        "instruction": "Zet het woord bij de juiste nummer-één-vorm.",
+        "pairs": [
+          {
+            "left": "klein",
+            "right": "het kleinst"
+          },
+          {
+            "left": "goed",
+            "right": "het beste"
+          },
+          {
+            "left": "veel",
+            "right": "het meest"
+          },
+          {
+            "left": "goedkoop",
+            "right": "het goedkoopst"
+          }
+        ]
+      }
+    },
+    {
+      "kind": "gap_type",
+      "tier": 2,
+      "explanation": "Je maakt van laag de nummer-één-vorm: het laagst. Zo zeg je dat geen prijs lager is.",
+      "payload": {
+        "sentence": "Bij deze verzekering betaal je ___ van allemaal. (laag)",
+        "answer": "het laagst"
+      }
+    },
+    {
+      "kind": "woordorde",
+      "tier": 2,
+      "explanation": "Eerst het onderwerp en het werkwoord, dan de nummer-één-vorm het beste aan het eind.",
+      "payload": {
+        "instruction": "Maak een goede zin van deze woorden.",
+        "tokens": [
+          "het",
+          "deze",
+          "beste",
+          "dokter",
+          "is"
+        ],
+        "answer": [
+          "deze",
+          "dokter",
+          "is",
+          "het",
+          "beste"
+        ]
+      }
+    }
+  ],
+  "what_you_learn": "Je leert zeggen dat iets de nummer één is met de -st-vorm, zoals het grootst en het duurst. Je leert ook de twee onregelmatige vormen: het beste en het meest. En je ziet wanneer je -ste schrijft, zoals in de grootste winkel."
+}

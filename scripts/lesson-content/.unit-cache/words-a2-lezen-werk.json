@@ -1,0 +1,220 @@
+{
+  "words": [
+    {
+      "dutch": "vacature",
+      "article": "de",
+      "plural": "vacatures",
+      "frame": null,
+      "meaning_nl": "een plek in een bedrijf waar nog iemand voor gezocht wordt",
+      "example": "Op de website staan drie nieuwe vacatures voor de keuken.",
+      "usage": "receptief"
+    },
+    {
+      "dutch": "solliciteren",
+      "article": null,
+      "plural": null,
+      "frame": "solliciteren (naar)",
+      "meaning_nl": "vragen of je een bepaalde baan mag krijgen",
+      "example": "Ik wil solliciteren naar de baan van chauffeur.",
+      "usage": "productief"
+    },
+    {
+      "dutch": "sollicitatiegesprek",
+      "article": "het",
+      "plural": "sollicitatiegesprekken",
+      "frame": null,
+      "meaning_nl": "afspraak waarin een bedrijf vragen stelt aan iemand die werk zoekt",
+      "example": "Mijn sollicitatiegesprek is dinsdag om tien uur in Utrecht.",
+      "usage": "receptief"
+    },
+    {
+      "dutch": "motivatiebrief",
+      "article": "de",
+      "plural": "motivatiebrieven",
+      "frame": null,
+      "meaning_nl": "tekst waarin je uitlegt waarom jij de baan wilt",
+      "example": "Stuur uw motivatiebrief en cv naar dit e-mailadres.",
+      "usage": "productief"
+    },
+    {
+      "dutch": "cv",
+      "article": "het",
+      "plural": "cv's",
+      "frame": null,
+      "meaning_nl": "overzicht van je scholen, cursussen en vorige banen",
+      "example": "Mijn cv is maar één pagina lang.",
+      "usage": "productief"
+    },
+    {
+      "dutch": "werkgever",
+      "article": "de",
+      "plural": "werkgevers",
+      "frame": null,
+      "meaning_nl": "bedrijf of persoon die mensen in dienst neemt en betaalt",
+      "example": "Mijn werkgever betaalt het salaris altijd op de 25e.",
+      "usage": "receptief"
+    },
+    {
+      "dutch": "werknemer",
+      "article": "de",
+      "plural": "werknemers",
+      "frame": null,
+      "meaning_nl": "iemand die in dienst is van een bedrijf",
+      "example": "Het bedrijf in Zwolle heeft veertig werknemers.",
+      "usage": "receptief"
+    },
+    {
+      "dutch": "arbeidscontract",
+      "article": "het",
+      "plural": "arbeidscontracten",
+      "frame": null,
+      "meaning_nl": "papier met de afspraken tussen een bedrijf en iemand die er werkt",
+      "example": "Lees uw arbeidscontract goed voordat u tekent.",
+      "usage": "receptief"
+    },
+    {
+      "dutch": "salaris",
+      "article": "het",
+      "plural": "salarissen",
+      "frame": null,
+      "meaning_nl": "het geld dat je elke maand krijgt voor je werk",
+      "example": "Het salaris staat elke maand op mijn rekening.",
+      "usage": "receptief"
+    },
+    {
+      "dutch": "werkervaring",
+      "article": "de",
+      "plural": "werkervaringen",
+      "frame": null,
+      "meaning_nl": "wat je eerder in banen hebt gedaan en geleerd",
+      "example": "Ik heb drie jaar werkervaring in de zorg.",
+      "usage": "productief"
+    },
+    {
+      "dutch": "opleiding",
+      "article": "de",
+      "plural": "opleidingen",
+      "frame": null,
+      "meaning_nl": "school of cursus waar je een vak leert",
+      "example": "Ik volg een opleiding tot verzorgende in Breda.",
+      "usage": "productief"
+    },
+    {
+      "dutch": "diploma",
+      "article": "het",
+      "plural": "diploma's",
+      "frame": null,
+      "meaning_nl": "papier dat bewijst dat je een school met succes hebt afgerond",
+      "example": "Neem uw diploma's mee naar het gesprek.",
+      "usage": "productief"
+    },
+    {
+      "dutch": "deeltijdbaan",
+      "article": "de",
+      "plural": "deeltijdbanen",
+      "frame": null,
+      "meaning_nl": "werk voor maar een paar dagen of uren per week",
+      "example": "Zij zoekt een deeltijdbaan van twintig uur.",
+      "usage": "receptief"
+    },
+    {
+      "dutch": "uitzendbureau",
+      "article": "het",
+      "plural": "uitzendbureaus",
+      "frame": null,
+      "meaning_nl": "kantoor dat mensen tijdelijk werk bij bedrijven geeft",
+      "example": "Via het uitzendbureau kreeg ik werk in een magazijn.",
+      "usage": "receptief"
+    },
+    {
+      "dutch": "proeftijd",
+      "article": "de",
+      "plural": "proeftijden",
+      "frame": null,
+      "meaning_nl": "eerste periode van een baan, waarin beide partijen snel kunnen stoppen",
+      "example": "De eerste maand is een proeftijd.",
+      "usage": "receptief"
+    },
+    {
+      "dutch": "functie",
+      "article": "de",
+      "plural": "functies",
+      "frame": null,
+      "meaning_nl": "de taak of plaats die iemand heeft binnen een bedrijf",
+      "example": "In welke functie werkte u bij dat bedrijf?",
+      "usage": "receptief"
+    },
+    {
+      "dutch": "rooster",
+      "article": "het",
+      "plural": "roosters",
+      "frame": null,
+      "meaning_nl": "lijst met de dagen en uren waarop je moet werken",
+      "example": "Het nieuwe rooster hangt in de kantine.",
+      "usage": "receptief"
+    },
+    {
+      "dutch": "collega",
+      "article": "de",
+      "plural": "collega's",
+      "frame": null,
+      "meaning_nl": "iemand die bij hetzelfde bedrijf werkt als jij",
+      "example": "Mijn collega's zijn erg aardig en helpen mij vaak.",
+      "usage": "productief"
+    },
+    {
+      "dutch": "loonstrook",
+      "article": "de",
+      "plural": "loonstroken",
+      "frame": null,
+      "meaning_nl": "papier waarop staat hoeveel geld je die maand hebt verdiend",
+      "example": "Op mijn loonstrook zie ik hoeveel belasting ik betaal.",
+      "usage": "receptief"
+    },
+    {
+      "dutch": "ontslaan",
+      "article": null,
+      "plural": null,
+      "frame": "ontslaan (bij)",
+      "meaning_nl": "tegen iemand zeggen dat hij niet meer mag komen werken",
+      "example": "De fabriek moet twintig mensen ontslaan.",
+      "usage": "receptief"
+    },
+    {
+      "dutch": "werkloos",
+      "article": null,
+      "plural": null,
+      "frame": null,
+      "meaning_nl": "zonder betaald werk zitten",
+      "example": "Hij is al zes maanden werkloos.",
+      "usage": "receptief"
+    },
+    {
+      "dutch": "beschikbaar",
+      "article": null,
+      "plural": null,
+      "frame": "beschikbaar (voor)",
+      "meaning_nl": "vrij en klaar om iets te doen",
+      "example": "Ik ben beschikbaar voor avonden en weekenden.",
+      "usage": "productief"
+    },
+    {
+      "dutch": "bijlage",
+      "article": "de",
+      "plural": "bijlagen",
+      "frame": null,
+      "meaning_nl": "papier of bestand dat je meestuurt met een brief of mail",
+      "example": "In de bijlage vindt u mijn kopie van het diploma.",
+      "usage": "receptief"
+    },
+    {
+      "dutch": "overwerken",
+      "article": null,
+      "plural": null,
+      "frame": null,
+      "meaning_nl": "langer doorgaan dan de uren die zijn afgesproken",
+      "example": "Vrijdag moet ik twee uur overwerken.",
+      "usage": "receptief"
+    }
+  ]
+}

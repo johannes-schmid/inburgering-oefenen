@@ -562,16 +562,15 @@ export default function ExamShell({ content, canSeeExplanations }: Props) {
         >
           {part?.instruction_html ? (
             <div
-              className="exam-task-prompt text-on-surface"
+              className="exam-task-prompt exam-rich exam-rich-scroll text-on-surface"
               dangerouslySetInnerHTML={{ __html: part.instruction_html }}
             />
           ) : (
             <p className="text-sm text-on-surface-variant m-0">Lees de opdracht goed door.</p>
           )}
+          {/* Tag-level rules live in .exam-rich in app/globals.css — see the note there. */}
           <style>{`
             .exam-task-prompt { font-size: 0.95rem; line-height: 1.7; }
-            .exam-task-prompt > * + * { margin-top: 0.75rem; }
-            .exam-task-prompt p { margin: 0; }
           `}</style>
         </div>
         <button

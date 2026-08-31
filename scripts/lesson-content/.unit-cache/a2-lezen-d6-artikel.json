@@ -1,0 +1,155 @@
+{
+  "items": [
+    {
+      "kind": "uitleg",
+      "tier": null,
+      "explanation": null,
+      "payload": {
+        "body_html": "<p>Je leest nu een artikel uit een wijkkrant en beantwoordt daarna de vragen, net als in het examen.</p>",
+        "cards": []
+      }
+    },
+    {
+      "kind": "leestekst",
+      "tier": null,
+      "explanation": null,
+      "payload": {
+        "title": "Nieuwe fietsenstalling bij het station",
+        "body_html": "<p>In de wijk Zuiderveld komt een nieuwe fietsenstalling bij het station. De oude stalling is te klein. Elke dag zetten meer dan duizend mensen hun fiets bij het station, maar er is plaats voor zeshonderd fietsen. Daarom staan er veel fietsen op de stoep. Voetgangers en mensen met een rolstoel kunnen er dan slecht langs.</p><p>De gemeente begint op 3 maart met de bouw. De nieuwe stalling is klaar in september. Het eerste jaar mag je je fiets er gratis neerzetten. Daarna kost het 15 cent per dag.</p><p>Tijdens de bouw is de oude stalling gesloten. Zet je fiets dan in de tijdelijke stalling aan de Molenstraat. Fietsen op de stoep worden weggehaald door de gemeente.</p>",
+        "words": [],
+        "marks": []
+      }
+    },
+    {
+      "kind": "mcq",
+      "tier": 0,
+      "explanation": "In de tekst staat dat er plaats is voor zeshonderd fietsen.",
+      "payload": {
+        "prompt": "Hoeveel fietsen kunnen er nu in de oude stalling staan?"
+      },
+      "options": [
+        {
+          "label": "A",
+          "body": "Zeshonderd fietsen.",
+          "is_correct": true
+        },
+        {
+          "label": "B",
+          "body": "Duizend fietsen.",
+          "is_correct": false
+        },
+        {
+          "label": "C",
+          "body": "Vijftienhonderd fietsen.",
+          "is_correct": false
+        }
+      ]
+    },
+    {
+      "kind": "mcq",
+      "tier": 0,
+      "explanation": "De hele tekst gaat over een nieuwe, grotere stalling omdat de oude te klein is.",
+      "payload": {
+        "prompt": "Waar gaat dit artikel vooral over?"
+      },
+      "options": [
+        {
+          "label": "A",
+          "body": "Over een nieuwe fietsenstalling bij het station.",
+          "is_correct": true
+        },
+        {
+          "label": "B",
+          "body": "Over nieuwe regels voor voetgangers in de wijk.",
+          "is_correct": false
+        },
+        {
+          "label": "C",
+          "body": "Over een nieuwe trein naar Zuiderveld.",
+          "is_correct": false
+        }
+      ]
+    },
+    {
+      "kind": "gap_choice",
+      "tier": 1,
+      "explanation": "In de tekst staat dat de gemeente op 3 maart met de bouw begint.",
+      "payload": {
+        "sentence": "De gemeente begint op ___ met de bouw van de stalling.",
+        "choices": [
+          "3 maart",
+          "3 september",
+          "15 maart"
+        ],
+        "answer": "3 maart",
+        "prompt": "Vul het juiste antwoord in."
+      }
+    },
+    {
+      "kind": "mcq",
+      "tier": 1,
+      "explanation": "Tijdens de bouw is de oude stalling dicht, dus je zet je fiets in de tijdelijke stalling aan de Molenstraat.",
+      "payload": {
+        "prompt": "Wat moet je doen met je fiets tijdens de bouw?"
+      },
+      "options": [
+        {
+          "label": "A",
+          "body": "Je zet je fiets in de stalling aan de Molenstraat.",
+          "is_correct": true
+        },
+        {
+          "label": "B",
+          "body": "Je zet je fiets op de stoep bij het station.",
+          "is_correct": false
+        },
+        {
+          "label": "C",
+          "body": "Je zet je fiets in de oude stalling.",
+          "is_correct": false
+        }
+      ]
+    },
+    {
+      "kind": "gap_choice",
+      "tier": 1,
+      "explanation": "In de tekst staat dat het eerste jaar gratis is en dat het daarna 15 cent per dag kost.",
+      "payload": {
+        "sentence": "Na het eerste jaar kost de nieuwe stalling ___ per dag.",
+        "choices": [
+          "niets",
+          "15 cent",
+          "15 euro"
+        ],
+        "answer": "15 cent",
+        "prompt": "Vul het juiste antwoord in."
+      }
+    },
+    {
+      "kind": "mcq",
+      "tier": 1,
+      "explanation": "In de tekst staat dat voetgangers en mensen met een rolstoel er slecht langs kunnen door de fietsen op de stoep.",
+      "payload": {
+        "prompt": "Waarom is het een probleem dat er fietsen op de stoep staan?"
+      },
+      "options": [
+        {
+          "label": "A",
+          "body": "Mensen kunnen er slecht langs lopen.",
+          "is_correct": true
+        },
+        {
+          "label": "B",
+          "body": "De fietsen worden vaak gestolen.",
+          "is_correct": false
+        },
+        {
+          "label": "C",
+          "body": "De stoep wordt dan niet schoongemaakt.",
+          "is_correct": false
+        }
+      ]
+    }
+  ],
+  "what_you_learn": "Je oefent met het lezen van een artikel, zoals in het examen. Je zoekt een detail op, je bepaalt de hoofdgedachte en je leest wat je zelf moet doen. Je krijgt geen woordhulp, dus je leert raden wat een woord betekent."
+}

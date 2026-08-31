@@ -1,0 +1,230 @@
+{
+  "items": [
+    {
+      "kind": "mcq",
+      "tier": 0,
+      "explanation": "Na een tijdsbepaling aan het begin wisselen het werkwoord en 'ik' van plaats: 'Morgen ga ik...'.",
+      "payload": {
+        "prompt": "Welke zin is goed?"
+      },
+      "options": [
+        {
+          "label": "A",
+          "body": "Morgen ik ga naar de tandarts.",
+          "is_correct": false
+        },
+        {
+          "label": "B",
+          "body": "Morgen ga ik naar de tandarts.",
+          "is_correct": true
+        },
+        {
+          "label": "C",
+          "body": "Morgen ik naar de tandarts ga.",
+          "is_correct": false
+        }
+      ]
+    },
+    {
+      "kind": "gap_choice",
+      "tier": 1,
+      "explanation": "Bij 'jij' krijgt het werkwoord een t: jij werkt.",
+      "payload": {
+        "sentence": "Jij ___ elke zaterdag in de supermarkt.",
+        "choices": [
+          "werk",
+          "werkt",
+          "werken"
+        ],
+        "answer": "werkt"
+      }
+    },
+    {
+      "kind": "mcq",
+      "tier": 0,
+      "explanation": "'Verhuizen' begint met ver-. Zulke werkwoorden krijgen geen ge- in de voltooide tijd: verhuisd.",
+      "payload": {
+        "prompt": "Wat hoort er in de zin? 'Wij zijn vorige maand naar Almere ___.'"
+      },
+      "options": [
+        {
+          "label": "A",
+          "body": "geverhuisd",
+          "is_correct": false
+        },
+        {
+          "label": "B",
+          "body": "verhuisd",
+          "is_correct": true
+        },
+        {
+          "label": "C",
+          "body": "verhuizen",
+          "is_correct": false
+        }
+      ]
+    },
+    {
+      "kind": "gap_choice",
+      "tier": 1,
+      "explanation": "Na 'wachten' gebruik je altijd het voorzetsel 'op'.",
+      "payload": {
+        "sentence": "Ik wacht ___ de brief van de gemeente.",
+        "choices": [
+          "voor",
+          "op",
+          "aan"
+        ],
+        "answer": "op"
+      }
+    },
+    {
+      "kind": "woordorde",
+      "tier": 2,
+      "explanation": "Na 'dat' gaat het werkwoord naar achteren: dat hij ziek is.",
+      "payload": {
+        "instruction": "Maak een goede zin.",
+        "tokens": [
+          "Hij",
+          "zegt",
+          "dat",
+          "hij",
+          "is",
+          "ziek"
+        ],
+        "answer": [
+          "Hij",
+          "zegt",
+          "dat",
+          "hij",
+          "ziek",
+          "is"
+        ]
+      }
+    },
+    {
+      "kind": "gap_type",
+      "tier": 2,
+      "explanation": "Bij twee dingen vergelijken gebruik je -er plus 'dan': groter dan.",
+      "payload": {
+        "sentence": "Mijn nieuwe kamer is ___ dan mijn oude kamer.",
+        "answer": "groter"
+      }
+    },
+    {
+      "kind": "matchen",
+      "tier": 1,
+      "explanation": "Deze werkwoorden hebben altijd hetzelfde voorzetsel erbij.",
+      "payload": {
+        "instruction": "Zoek bij elk werkwoord het juiste voorzetsel.",
+        "pairs": [
+          {
+            "left": "zorgen",
+            "right": "voor"
+          },
+          {
+            "left": "wachten",
+            "right": "op"
+          },
+          {
+            "left": "denken",
+            "right": "aan"
+          },
+          {
+            "left": "kijken",
+            "right": "naar"
+          }
+        ]
+      }
+    },
+    {
+      "kind": "mcq",
+      "tier": 0,
+      "explanation": "'Hij vraagt of...' vertelt een vraag na. Het werkwoord staat dan achteraan: of ik kom.",
+      "payload": {
+        "prompt": "De buurman vraagt: 'Kom je vanavond?' Hoe vertel je dat na?"
+      },
+      "options": [
+        {
+          "label": "A",
+          "body": "De buurman vraagt of ik kom.",
+          "is_correct": true
+        },
+        {
+          "label": "B",
+          "body": "De buurman vraagt of kom ik.",
+          "is_correct": false
+        },
+        {
+          "label": "C",
+          "body": "De buurman vraagt of ik komen.",
+          "is_correct": false
+        }
+      ]
+    },
+    {
+      "kind": "gap_choice",
+      "tier": 1,
+      "explanation": "Het deelwoord van 'lezen' is 'gelezen'. Veel deelwoorden eindigen op -en.",
+      "payload": {
+        "sentence": "Ik heb de brief van de school al ___.",
+        "choices": [
+          "gelees",
+          "gelezen",
+          "lezen"
+        ],
+        "answer": "gelezen"
+      }
+    },
+    {
+      "kind": "woordorde",
+      "tier": 2,
+      "explanation": "De zin begint met een plaats, dus het werkwoord staat vóór 'ik': In Utrecht werk ik.",
+      "payload": {
+        "instruction": "Maak een goede zin. Begin met 'In Utrecht'.",
+        "tokens": [
+          "In",
+          "Utrecht",
+          "werk",
+          "ik",
+          "een",
+          "in",
+          "ziekenhuis"
+        ],
+        "answer": [
+          "In",
+          "Utrecht",
+          "werk",
+          "ik",
+          "in",
+          "een",
+          "ziekenhuis"
+        ]
+      }
+    },
+    {
+      "kind": "gap_type",
+      "tier": 2,
+      "explanation": "Over later praat je met 'gaan' plus het hele werkwoord: ga ik bellen.",
+      "payload": {
+        "sentence": "Volgende week ___ ik de huisarts bellen.",
+        "answer": "ga"
+      }
+    },
+    {
+      "kind": "open_zin",
+      "tier": 2,
+      "explanation": "Je begint met een tijd, dus het werkwoord komt vóór 'ik'. Daarna gebruik je 'omdat' met het werkwoord achteraan.",
+      "payload": {
+        "prompt": "Schrijf één zin. Begin met 'Vandaag'. Vertel wat je doet en waarom. Gebruik 'omdat'.",
+        "model_answer": "Vandaag blijf ik thuis, omdat ik ziek ben.",
+        "checklist": [
+          "Het werkwoord staat direct na 'Vandaag'.",
+          "Na 'omdat' staat het werkwoord achteraan.",
+          "De zin gaat over nu of vandaag."
+        ]
+      }
+    }
+  ],
+  "what_you_learn": "In deze toets kijk je hoe goed je de belangrijkste regels al kent. Je maakt korte opgaven over de tegenwoordige tijd, de voltooide tijd, praten over later, vaste voorzetsels en vergelijken. Na de toets weet je welke onderdelen je nog moet oefenen."
+}

@@ -1,0 +1,198 @@
+{
+  "items": [
+    {
+      "kind": "uitleg",
+      "tier": null,
+      "explanation": null,
+      "payload": {
+        "body_html": "<p>Wil je praten over gisteren? Dan gebruik je twee delen. Eerst een vorm van <strong>hebben</strong> of <strong>zijn</strong>. Daarna het woord met <strong>ge-</strong>, bijvoorbeeld <em>gewerkt</em> of <em>gebeld</em>. Dat woord met ge- staat vaak achteraan in de zin.</p><p>De meeste woorden krijgen <strong>hebben</strong>. Woorden die iets zeggen over gaan of veranderen krijgen <strong>zijn</strong>, bijvoorbeeld <em>gaan</em>, <em>komen</em> en <em>blijven</em>.</p>",
+        "cards": [
+          {
+            "label": "MET HEBBEN",
+            "example_html": "Ik <mark>heb</mark> gisteren <mark>gewerkt</mark>."
+          },
+          {
+            "label": "MET ZIJN",
+            "example_html": "Ik <mark>ben</mark> naar de dokter <mark>geweest</mark>."
+          }
+        ]
+      }
+    },
+    {
+      "kind": "voorbeeld",
+      "tier": null,
+      "explanation": null,
+      "payload": {
+        "sentence_html": "Mijn buurvrouw <mark>heeft</mark> de huur <mark>betaald</mark>."
+      }
+    },
+    {
+      "kind": "voorbeeld",
+      "tier": null,
+      "explanation": null,
+      "payload": {
+        "sentence_html": "Wij <mark>zijn</mark> gisteren naar de gemeente <mark>gegaan</mark>."
+      }
+    },
+    {
+      "kind": "mcq",
+      "tier": 0,
+      "explanation": "Bij <em>komen</em> hoor je <em>zijn</em>. Het woord met ge- is <em>gekomen</em> en staat achteraan.",
+      "options": [
+        {
+          "label": "A",
+          "body": "Ik heb te laat gekomen.",
+          "is_correct": false
+        },
+        {
+          "label": "B",
+          "body": "Ik ben te laat gekomen.",
+          "is_correct": true
+        },
+        {
+          "label": "C",
+          "body": "Ik ben te laat komen.",
+          "is_correct": false
+        }
+      ],
+      "payload": {
+        "prompt": "Welke zin over gisteren is goed?"
+      }
+    },
+    {
+      "kind": "mcq",
+      "tier": 0,
+      "explanation": "Het woord met ge- van <em>werken</em> is <em>gewerkt</em>, met een t aan het eind.",
+      "options": [
+        {
+          "label": "A",
+          "body": "Hij heeft gisteren gewerkt.",
+          "is_correct": true
+        },
+        {
+          "label": "B",
+          "body": "Hij heeft gisteren werken.",
+          "is_correct": false
+        },
+        {
+          "label": "C",
+          "body": "Hij is gisteren gewerkt.",
+          "is_correct": false
+        }
+      ],
+      "payload": {
+        "prompt": "Welke zin over gisteren is goed?"
+      }
+    },
+    {
+      "kind": "gap_choice",
+      "tier": 1,
+      "explanation": "Bij <em>bellen</em> hoor je <em>hebben</em>. Bij <em>ik</em> is dat <em>heb</em>.",
+      "payload": {
+        "sentence": "Ik ___ vanmorgen de school gebeld.",
+        "choices": [
+          "heb",
+          "ben"
+        ],
+        "answer": "heb"
+      }
+    },
+    {
+      "kind": "gap_choice",
+      "tier": 1,
+      "explanation": "<em>Gaan</em> zegt iets over gaan van de ene plek naar de andere. Daarom gebruik je <em>zijn</em>: <em>is</em>.",
+      "payload": {
+        "sentence": "Mijn zoon ___ gisteren naar de tandarts gegaan.",
+        "choices": [
+          "heeft",
+          "is"
+        ],
+        "answer": "is"
+      }
+    },
+    {
+      "kind": "gap_choice",
+      "tier": 1,
+      "explanation": "Van <em>betalen</em> maak je <em>betaald</em>, met een d aan het eind.",
+      "payload": {
+        "sentence": "Wij hebben de rekening al ___.",
+        "choices": [
+          "betaald",
+          "betaalt",
+          "betalen"
+        ],
+        "answer": "betaald"
+      }
+    },
+    {
+      "kind": "matchen",
+      "tier": 1,
+      "explanation": "Woorden over gaan, komen en blijven krijgen <em>zijn</em>. De andere woorden krijgen <em>hebben</em>.",
+      "payload": {
+        "instruction": "Welk hulpwoord hoort bij dit woord met ge-? Kies hebben of zijn.",
+        "pairs": [
+          {
+            "left": "gewerkt",
+            "right": "hebben"
+          },
+          {
+            "left": "gegaan",
+            "right": "zijn"
+          },
+          {
+            "left": "gebeld",
+            "right": "hebben"
+          },
+          {
+            "left": "gebleven",
+            "right": "zijn"
+          }
+        ]
+      }
+    },
+    {
+      "kind": "gap_type",
+      "tier": 2,
+      "explanation": "Bij <em>hebben</em> en <em>ik</em> schrijf je <em>heb</em>. Het woord met ge- blijft achteraan staan.",
+      "payload": {
+        "sentence": "Ik ___ gisteren de brief van de gemeente gelezen.",
+        "answer": "heb"
+      }
+    },
+    {
+      "kind": "woordorde",
+      "tier": 2,
+      "explanation": "Eerst <em>ik</em>, dan het hulpwoord <em>heb</em>, en het woord met ge- staat achteraan.",
+      "payload": {
+        "instruction": "Zet de woorden in de juiste volgorde.",
+        "tokens": [
+          "gewerkt",
+          "heb",
+          "zaterdag",
+          "ik"
+        ],
+        "answer": [
+          "ik",
+          "heb",
+          "zaterdag",
+          "gewerkt"
+        ]
+      }
+    },
+    {
+      "kind": "open_zin",
+      "tier": 2,
+      "explanation": "Je gebruikt <em>heb</em> of <em>ben</em> en zet het woord met ge- achteraan in de zin.",
+      "payload": {
+        "prompt": "Schrijf één zin over gisteren. Gebruik heb of ben en een woord met ge-.",
+        "model_answer": "Ik heb gisteren boodschappen gedaan.",
+        "checklist": [
+          "Er staat heb of ben in de zin.",
+          "Er staat een woord met ge- in, bijvoorbeeld gedaan of gewerkt.",
+          "Het woord met ge- staat achteraan."
+        ]
+      }
+    }
+  ],
+  "what_you_learn": "Je leert praten en lezen over gisteren. Je ziet dat je een vorm van hebben of zijn gebruikt met een woord met ge-, zoals gewerkt of gegaan. Je weet ook dat dat woord met ge- achteraan in de zin staat."
+}

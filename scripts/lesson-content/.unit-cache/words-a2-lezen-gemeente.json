@@ -1,0 +1,220 @@
+{
+  "words": [
+    {
+      "dutch": "gemeente",
+      "article": "de",
+      "plural": "gemeenten",
+      "frame": null,
+      "meaning_nl": "het bestuur van een stad of dorp",
+      "example": "De gemeente stuurt u een brief over uw aanvraag.",
+      "usage": "productief"
+    },
+    {
+      "dutch": "loket",
+      "article": "het",
+      "plural": "loketten",
+      "frame": null,
+      "meaning_nl": "plek met een raampje waar een medewerker je helpt",
+      "example": "U moet uw paspoort ophalen bij loket 3.",
+      "usage": "receptief"
+    },
+    {
+      "dutch": "afspraak",
+      "article": "de",
+      "plural": "afspraken",
+      "frame": "een afspraak maken (met)",
+      "meaning_nl": "vaste dag en tijd om ergens te komen",
+      "example": "Ik heb maandag een afspraak bij de gemeente Utrecht.",
+      "usage": "productief"
+    },
+    {
+      "dutch": "formulier",
+      "article": "het",
+      "plural": "formulieren",
+      "frame": "een formulier invullen",
+      "meaning_nl": "papier met vragen die je moet beantwoorden",
+      "example": "Vul dit formulier in en zet uw handtekening.",
+      "usage": "productief"
+    },
+    {
+      "dutch": "aanvragen",
+      "article": null,
+      "plural": null,
+      "frame": "iets aanvragen (bij)",
+      "meaning_nl": "officieel vragen of je iets mag krijgen",
+      "example": "Ik wil een nieuw rijbewijs aanvragen bij de gemeente.",
+      "usage": "productief"
+    },
+    {
+      "dutch": "identiteitsbewijs",
+      "article": "het",
+      "plural": "identiteitsbewijzen",
+      "frame": null,
+      "meaning_nl": "officieel pasje of boekje met je naam en foto",
+      "example": "Neem uw identiteitsbewijs mee naar het gemeentehuis.",
+      "usage": "receptief"
+    },
+    {
+      "dutch": "verhuizen",
+      "article": null,
+      "plural": null,
+      "frame": "verhuizen (naar)",
+      "meaning_nl": "in een andere woning gaan wonen",
+      "example": "Wij verhuizen volgende maand naar Almere.",
+      "usage": "productief"
+    },
+    {
+      "dutch": "doorgeven",
+      "article": null,
+      "plural": null,
+      "frame": "iets doorgeven (aan)",
+      "meaning_nl": "informatie aan iemand anders vertellen of sturen",
+      "example": "Ik moet mijn nieuwe adres doorgeven aan de gemeente.",
+      "usage": "productief"
+    },
+    {
+      "dutch": "inschrijven",
+      "article": null,
+      "plural": null,
+      "frame": "zich inschrijven (bij)",
+      "meaning_nl": "je naam officieel op een lijst laten zetten",
+      "example": "U moet zich binnen vijf dagen inschrijven bij de gemeente.",
+      "usage": "receptief"
+    },
+    {
+      "dutch": "uittreksel",
+      "article": "het",
+      "plural": "uittreksels",
+      "frame": null,
+      "meaning_nl": "kort officieel papier met gegevens van de gemeente",
+      "example": "Voor het werk heb ik een uittreksel nodig.",
+      "usage": "receptief"
+    },
+    {
+      "dutch": "geldig",
+      "article": null,
+      "plural": null,
+      "frame": "geldig tot",
+      "meaning_nl": "je mag het nog gebruiken, de datum is nog niet voorbij",
+      "example": "Uw pas is geldig tot 1 juni 2027.",
+      "usage": "receptief"
+    },
+    {
+      "dutch": "legitimeren",
+      "article": null,
+      "plural": null,
+      "frame": "zich legitimeren",
+      "meaning_nl": "met een pasje laten zien wie je bent",
+      "example": "Aan de balie moet u zich legitimeren.",
+      "usage": "receptief"
+    },
+    {
+      "dutch": "postzegel",
+      "article": "de",
+      "plural": "postzegels",
+      "frame": null,
+      "meaning_nl": "klein plakplaatje op een brief, je betaalt zo het versturen",
+      "example": "Op deze brief moet nog een postzegel.",
+      "usage": "receptief"
+    },
+    {
+      "dutch": "afzender",
+      "article": "de",
+      "plural": "afzenders",
+      "frame": null,
+      "meaning_nl": "de persoon of instantie die de brief verstuurt",
+      "example": "Op de envelop staat de afzender: de gemeente Zwolle.",
+      "usage": "receptief"
+    },
+    {
+      "dutch": "aangetekend",
+      "article": null,
+      "plural": null,
+      "frame": "aangetekend versturen",
+      "meaning_nl": "met een handtekening bij het afgeven, extra zeker verstuurd",
+      "example": "Deze brief is aangetekend verstuurd naar mijn adres.",
+      "usage": "receptief"
+    },
+    {
+      "dutch": "bezorgen",
+      "article": null,
+      "plural": null,
+      "frame": "iets bezorgen (bij)",
+      "meaning_nl": "post of pakket naar het adres brengen",
+      "example": "De postbode komt het pakket morgen bezorgen.",
+      "usage": "receptief"
+    },
+    {
+      "dutch": "rekening",
+      "article": "de",
+      "plural": "rekeningen",
+      "frame": null,
+      "meaning_nl": "papier waarop staat hoeveel geld je moet betalen",
+      "example": "Ik heb de rekening van de tandarts al betaald.",
+      "usage": "productief"
+    },
+    {
+      "dutch": "overmaken",
+      "article": null,
+      "plural": null,
+      "frame": "geld overmaken (naar)",
+      "meaning_nl": "geld van je bankrekening naar iemand anders sturen",
+      "example": "Ik moet vandaag 50 euro overmaken naar de gemeente.",
+      "usage": "productief"
+    },
+    {
+      "dutch": "bedrag",
+      "article": "het",
+      "plural": "bedragen",
+      "frame": null,
+      "meaning_nl": "hoeveel euro het precies is",
+      "example": "Het bedrag van 45 euro staat onderaan de brief.",
+      "usage": "receptief"
+    },
+    {
+      "dutch": "boete",
+      "article": "de",
+      "plural": "boetes",
+      "frame": null,
+      "meaning_nl": "geld dat je moet betalen omdat je iets fout deed",
+      "example": "Hij kreeg een boete omdat hij te hard reed.",
+      "usage": "receptief"
+    },
+    {
+      "dutch": "herinnering",
+      "article": "de",
+      "plural": "herinneringen",
+      "frame": null,
+      "meaning_nl": "tweede brief omdat je nog niet betaald hebt",
+      "example": "Ik kreeg een herinnering voor de rekening van maart.",
+      "usage": "receptief"
+    },
+    {
+      "dutch": "pinpas",
+      "article": "de",
+      "plural": "pinpassen",
+      "frame": null,
+      "meaning_nl": "kaart van de bank waarmee je in de winkel betaalt",
+      "example": "Mijn pinpas werkt niet meer bij de kassa.",
+      "usage": "receptief"
+    },
+    {
+      "dutch": "saldo",
+      "article": "het",
+      "plural": "saldi",
+      "frame": null,
+      "meaning_nl": "het geld dat nog op je bankrekening staat",
+      "example": "Mijn saldo is te laag voor deze rekening.",
+      "usage": "receptief"
+    },
+    {
+      "dutch": "toeslag",
+      "article": "de",
+      "plural": "toeslagen",
+      "frame": null,
+      "meaning_nl": "geld van de overheid als hulp bij vaste kosten",
+      "example": "Zij krijgt elke maand een toeslag voor de huur.",
+      "usage": "receptief"
+    }
+  ]
+}

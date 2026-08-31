@@ -1,0 +1,184 @@
+{
+  "words": [
+    {
+      "dutch": "basisschool",
+      "article": "de",
+      "plural": "basisscholen",
+      "frame": null,
+      "meaning_nl": "School voor kinderen van vier tot ongeveer twaalf jaar.",
+      "example": "Onze dochter zit op een basisschool in Zwolle.",
+      "usage": "productief"
+    },
+    {
+      "dutch": "leerkracht",
+      "article": "de",
+      "plural": "leerkrachten",
+      "frame": null,
+      "meaning_nl": "Persoon die les geeft aan een klas.",
+      "example": "De leerkracht van groep 5 heet meneer Bakker.",
+      "usage": "productief"
+    },
+    {
+      "dutch": "rapport",
+      "article": "het",
+      "plural": "rapporten",
+      "frame": null,
+      "meaning_nl": "Papier met de resultaten van een kind op school.",
+      "example": "Sanne kreeg vrijdag haar eerste rapport mee naar huis.",
+      "usage": "receptief"
+    },
+    {
+      "dutch": "ouderavond",
+      "article": "de",
+      "plural": "ouderavonden",
+      "frame": null,
+      "meaning_nl": "Avond waarop de school met vaders en moeders praat.",
+      "example": "De ouderavond begint dinsdag om half acht.",
+      "usage": "receptief"
+    },
+    {
+      "dutch": "leerplicht",
+      "article": "de",
+      "plural": "leerplichten",
+      "frame": null,
+      "meaning_nl": "Regel dat een kind naar school moet gaan.",
+      "example": "In Nederland geldt de leerplicht vanaf vijf jaar.",
+      "usage": "receptief"
+    },
+    {
+      "dutch": "huiswerk",
+      "article": "het",
+      "plural": "huiswerken",
+      "frame": null,
+      "meaning_nl": "Opdrachten die je thuis maakt voor school.",
+      "example": "Youssef maakt zijn huiswerk aan de keukentafel.",
+      "usage": "productief"
+    },
+    {
+      "dutch": "kinderopvang",
+      "article": "de",
+      "plural": "kinderopvangen",
+      "frame": null,
+      "meaning_nl": "Plek waar kleine kinderen overdag worden verzorgd.",
+      "example": "Onze zoon gaat drie dagen naar de kinderopvang.",
+      "usage": "productief"
+    },
+    {
+      "dutch": "naschoolse opvang",
+      "article": "de",
+      "plural": "naschoolse opvangen",
+      "frame": null,
+      "meaning_nl": "Plek waar kinderen blijven na de lessen, tot ouders komen.",
+      "example": "Lisa blijft tot vijf uur bij de naschoolse opvang.",
+      "usage": "receptief"
+    },
+    {
+      "dutch": "schoolvakantie",
+      "article": "de",
+      "plural": "schoolvakanties",
+      "frame": null,
+      "meaning_nl": "Periode waarin er geen lessen zijn.",
+      "example": "In de schoolvakantie gaan we naar mijn zus in Breda.",
+      "usage": "productief"
+    },
+    {
+      "dutch": "schooljaar",
+      "article": "het",
+      "plural": "schooljaren",
+      "frame": null,
+      "meaning_nl": "Periode van augustus tot juli met lessen.",
+      "example": "Het nieuwe schooljaar start op 2 september.",
+      "usage": "receptief"
+    },
+    {
+      "dutch": "groep",
+      "article": "de",
+      "plural": "groepen",
+      "frame": null,
+      "meaning_nl": "Klas op de basisschool, met een nummer.",
+      "example": "Mijn zoon zit dit jaar in groep 6.",
+      "usage": "receptief"
+    },
+    {
+      "dutch": "cijfer",
+      "article": "het",
+      "plural": "cijfers",
+      "frame": null,
+      "meaning_nl": "Getal dat aangeeft hoe goed een toets is gemaakt.",
+      "example": "Ahmed haalde een mooi cijfer voor rekenen.",
+      "usage": "receptief"
+    },
+    {
+      "dutch": "inschrijven",
+      "article": null,
+      "plural": null,
+      "frame": "zich inschrijven (voor)",
+      "meaning_nl": "Je naam ergens laten noteren om mee te doen.",
+      "example": "U kunt uw kind online inschrijven voor de school.",
+      "usage": "productief"
+    },
+    {
+      "dutch": "spijbelen",
+      "article": null,
+      "plural": null,
+      "frame": null,
+      "meaning_nl": "Niet naar de les gaan zonder goede reden.",
+      "example": "De school belt de ouders als leerlingen spijbelen.",
+      "usage": "receptief"
+    },
+    {
+      "dutch": "ouderbijdrage",
+      "article": "de",
+      "plural": "ouderbijdragen",
+      "frame": null,
+      "meaning_nl": "Geld dat vaders en moeders vrijwillig betalen aan de school.",
+      "example": "De ouderbijdrage is dit jaar vijftig euro.",
+      "usage": "receptief"
+    },
+    {
+      "dutch": "schooladvies",
+      "article": "het",
+      "plural": "schooladviezen",
+      "frame": null,
+      "meaning_nl": "Wat de leerkracht denkt dat past na groep 8.",
+      "example": "Fatima kreeg een positief schooladvies van haar juf.",
+      "usage": "receptief"
+    },
+    {
+      "dutch": "brugklas",
+      "article": "de",
+      "plural": "brugklassen",
+      "frame": null,
+      "meaning_nl": "Eerste jaar na de basisschool.",
+      "example": "Mijn dochter zit sinds september in de brugklas.",
+      "usage": "receptief"
+    },
+    {
+      "dutch": "gymles",
+      "article": "de",
+      "plural": "gymlessen",
+      "frame": null,
+      "meaning_nl": "Uur op school met sport en bewegen.",
+      "example": "Neem woensdag schone schoenen mee voor de gymles.",
+      "usage": "receptief"
+    },
+    {
+      "dutch": "ziekmelden",
+      "article": null,
+      "plural": null,
+      "frame": "zich ziekmelden (bij)",
+      "meaning_nl": "Doorgeven dat iemand niet kan komen door ziekte.",
+      "example": "Ik moet mijn zoon ziekmelden bij de school.",
+      "usage": "productief"
+    },
+    {
+      "dutch": "oudergesprek",
+      "article": "het",
+      "plural": "oudergesprekken",
+      "frame": null,
+      "meaning_nl": "Kort gesprek van de leerkracht met vader of moeder.",
+      "example": "Wij hebben donderdag een oudergesprek over Noor.",
+      "usage": "receptief"
+    }
+  ]
+}
