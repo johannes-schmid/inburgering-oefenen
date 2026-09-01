@@ -3003,3 +3003,9 @@ binnen een template literal beëindigt de literal en geeft een parsefout twintig
 wat de auteur van het component toevallig voor ogen had — tel de tags in de echte data. En één
 definitie op één plek: vijf `<style>`-blokken voor hetzelfde probleem zijn vijf kansen om te
 driften, en ze driftten alle vijf.
+
+## 2026-09-01 — De 10-nakijklimiet gold ook voor betalende modulekopers
+**Changed:** `lib/grading-limits.ts` (`planCoversSkill` → `coversSkill(meta, level, skill)` op `ownsModule`, `checkGradingAllowed` neemt `level` + `meta` in plaats van `plan`) en `app/api/grade-open/route.ts` geeft `raw.exams.level` + `user.user_metadata` mee.
+**Outcome:** SUCCESS — `tsc`, `next build` en 274 unit tests groen.
+**What worked / went wrong:** De limietcheck las `planFromMetadata()`. Sinds de per-module prijzen schrijft niets meer `plan`, dus een klant die `a2:schrijven` had gekocht las als `free` en kreeg na tien opdrachten de paywall — precies de fout die `ownsModule` in de spelerroute al had gesloten.
+**Lesson:** Elke betaalpoort leest `ownsModule`/`ownsKnm`, nooit `plan`. Grep op `planFromMetadata` bij elke nieuwe gate.

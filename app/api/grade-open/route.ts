@@ -6,7 +6,6 @@ import type { Level } from '@/data/skills';
 import { gradeOpenAnswer, type FewShotExample, type GradeTask } from '@/lib/ai/grade';
 import { transcribeRecording } from '@/lib/ai/transcribe';
 import { providerOf, recordAiUsage } from '@/lib/ai/usage';
-import { planFromMetadata } from '@/lib/entitlements';
 import { checkGradingAllowed, clientIp, logGradeAttempt } from '@/lib/grading-limits';
 
 /**
@@ -182,7 +181,8 @@ export async function POST(request: Request) {
       userId: user.id,
       ip,
       skill: raw.skill,
-      plan: planFromMetadata(user.user_metadata),
+      level: raw.exams.level,
+      meta: user.user_metadata,
     });
 
     if (!verdict.allowed) {

@@ -14,7 +14,8 @@
  * Server-only: every function here needs the service key to see other users' rows.
  */
 import { createAdminClient } from './supabase/admin';
-import type { Plan } from './entitlements';
+import { ownsModule } from './entitlements';
+import type { Level } from '@/data/skills';
 
 /** Free graded exercises per rubric skill, before the paywall. */
 export const FREE_GRADED_PER_SKILL = 10;
@@ -34,6 +35,8 @@ export const RATE_LIMITS = {
   perIpPerHour: 80,
 } as const;
 
+type Meta = Parameters<typeof ownsModule>[0];
+
 export type LimitVerdict =
   | { allowed: true }
   | {
@@ -46,9 +49,16 @@ export type LimitVerdict =
       freeLimit?: number;
     };
 
-/** Whether the plan covers this skill. Per-module entitlements are not built yet — see CLAUDE.md. */
-export function planCoversSkill(plan: Plan): boolean {
-  return plan !== 'free';
+/**
+ * Whether this account has paid access to the module the task belongs to.
+ *
+ * **Never a bare plan check.** Since per-module pricing there is no `plan` on a subscriber's
+ * metadata — a customer who bought `a2:schrijven` reads as `plan: 'free'` — so a plan check
+ * counted a paying customer's exercises against the free tier and paywalled them after ten.
+ * `ownsModule` covers both shapes: the per-module list and the legacy all-access grant.
+ */
+export function coversSkill(meta: Meta, level: Level, skill: 'schrijven' | 'spreken'): boolean {
+  return ownsModule(meta, level, skill);
 }
 
 /**
@@ -61,16 +71,20 @@ export async function checkGradingAllowed({
   userId,
   ip,
   skill,
-  plan,
+  level,
+  meta,
 }: {
   userId: string;
   ip: string | null;
   skill: 'schrijven' | 'spreken';
-  plan: Plan;
+  /** The level of the exam the task belongs to — part of the module's identity. */
+  level: Level;
+  /** `user.user_metadata`, read through `ownsModule`. */
+  meta: Meta;
 }): Promise<LimitVerdict> {
   const admin = createAdminClient();
 
-  if (!planCoversSkill(plan)) {
+  if (!coversSkill(meta, level, skill)) {
     const { data, error } = await admin.rpc('graded_exercise_count', {
       p_user_id: userId,
       p_skill: skill,
