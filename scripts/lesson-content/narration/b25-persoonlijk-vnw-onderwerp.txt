@@ -1,0 +1,37 @@
+# De ingesproken uitleg van `b25-persoonlijk-vnw-onderwerp`.
+# Regels met # zijn commentaar. [[id]] of [[id | extra uitleg]] markeert waar de stem over
+# welk element begint; de extra uitleg staat op de pagina bij dat element en mag niet herhalen
+# wat de stem net zei.
+# Geldige id's: vis, vis-1 t/m vis-6, rule, card-0, card-1, demo-0, demo-1, exercises.
+
+Deze les gaat over de woordjes die zeggen wie iets doet.
+
+[[vis-1 | Ik werk: de stam, zonder uitgang. Dat is les 8.]]
+Kijk naar het plaatje. Links staat de persoon, rechts het werkwoord dat erbij hoort. Bij ik hoort werk.
+
+[[vis-2 | In een vraag valt de -t weg: werk je?]]
+Bij jij hoort werkt.
+
+[[vis-3 | Bij hij, zij en het is de vorm gelijk aan die van jij.]]
+Bij hij en zij hoort ook werkt.
+
+[[vis-4 | Wij en we betekenen hetzelfde. We is korter en klinkt gewoner.]]
+Bij wij hoort werken.
+
+[[rule | Vraag je bij het lezen af: wie doet het?]]
+Deze woordjes staan in plaats van een naam. Fatima werkt in de winkel wordt: zij werkt in de winkel. Als je leest, zoek je dus eerst wie het doet.
+
+[[card-0 | Ik, jij, u, hij, zij, het.]]
+De eerste kaart is één persoon.
+
+[[card-1 | Wij, jullie, zij: dan eindigt het werkwoord op -en.]]
+De tweede kaart is meer personen.
+
+[[demo-0 | Ze is hier één persoon: zij gaat.]]
+Twee voorbeelden. Ze gaat morgen naar de dokter.
+
+[[demo-1 | Karel en ik is samen we, dus werken.]]
+En: Karel en ik hebben weinig tijd, want we werken allebei.
+
+[[exercises]]
+Doe nu de opgaven. Kijk steeds naar het woordje vóór het werkwoord.

@@ -1,0 +1,185 @@
+{
+  "items": [
+    {
+      "kind": "uitleg",
+      "tier": null,
+      "explanation": null,
+      "payload": {
+        "body_html": "<p>In getallen, tijden en prijzen zit vaak de belangrijkste informatie. Maar Nederlanders spreken getallen snel uit. Je hoort iets anders dan je op papier ziet staan.</p><p>Let vooral op de tientallen: bij <strong>zevenentwintig</strong> hoor je eerst de 7 en dan de 20. En bij een tijd hoor je vaak <strong>half</strong> of <strong>kwart</strong>, niet de losse cijfers.</p>",
+        "cards": [
+          {
+            "label": "WAT JE ZIET",
+            "example_html": "27 euro 50 &mdash; 14.45 uur"
+          },
+          {
+            "label": "WAT JE HOORT",
+            "example_html": "<mark>zeven</mark>entwintig euro vijftig &mdash; <mark>kwart voor drie</mark>"
+          }
+        ]
+      }
+    },
+    {
+      "kind": "audio",
+      "tier": null,
+      "explanation": null,
+      "payload": {
+        "script": "A: Goedemiddag, kan ik u helpen?\nB: Ja, ik kom mijn nieuwe bril ophalen. Op naam van Bakker.\nA: Even kijken, hoor. Bakker... ja, hier. Die is klaar. Maar de rekening is nog niet betaald.\nB: O. Hoeveel is het?\nA: Honderdvijfenzeventig euro tachtig.\nB: Pin dat maar. En hoe laat gaan jullie vandaag dicht?\nA: Om half zes. Maar op zaterdag zijn we al om kwart over vier gesloten.\nB: Duidelijk. En mijn oude bril, kan ik die inleveren?\nA: Ja hoor, dat mag. Loopt u even mee naar balie drie?",
+        "label": "Bij de opticien: een bril ophalen",
+        "audio_url": "http://127.0.0.1:54421/storage/v1/object/public/leren-audio/fragment/a2-luisteren/b1-getallen-en-tijden-1.mp3",
+        "voice_cast": {
+          "A": "woman_young",
+          "B": "man_young"
+        },
+        "transcript": "Goedemiddag, kan ik u helpen? Ja, ik kom mijn nieuwe bril ophalen. Op naam van Bakker. Even kijken, hoor. Bakker... ja, hier. Die is klaar. Maar de rekening is nog niet betaald. O. Hoeveel is het? Honderdvijfenzeventig euro tachtig. Pin dat maar. En hoe laat gaan jullie vandaag dicht? Om half zes. Maar op zaterdag zijn we al om kwart over vier gesloten. Duidelijk. En mijn oude bril, kan ik die inleveren? Ja hoor, dat mag. Loopt u even mee naar balie drie?",
+        "seconds": 29.99
+      }
+    },
+    {
+      "kind": "mcq",
+      "tier": 0,
+      "explanation": "Je hoort \"honderdvijfenzeventig euro tachtig\". Bij vijfenzeventig hoor je eerst de 5 en dan de 70.",
+      "payload": {
+        "prompt": "Hoeveel moet meneer Bakker betalen?"
+      },
+      "options": [
+        {
+          "label": "A",
+          "body": "155 euro 80",
+          "is_correct": false
+        },
+        {
+          "label": "B",
+          "body": "175 euro 80",
+          "is_correct": true
+        },
+        {
+          "label": "C",
+          "body": "175 euro 18",
+          "is_correct": false
+        },
+        {
+          "label": "D",
+          "body": "165 euro 80",
+          "is_correct": false
+        }
+      ]
+    },
+    {
+      "kind": "mcq",
+      "tier": 0,
+      "explanation": "De medewerker zegt \"om half zes\". Half zes is 17.30 uur, dus half uur vóór zes.",
+      "payload": {
+        "prompt": "Hoe laat gaat de winkel vandaag dicht?"
+      },
+      "options": [
+        {
+          "label": "A",
+          "body": "Om 17.30 uur",
+          "is_correct": true
+        },
+        {
+          "label": "B",
+          "body": "Om 18.30 uur",
+          "is_correct": false
+        },
+        {
+          "label": "C",
+          "body": "Om 16.30 uur",
+          "is_correct": false
+        },
+        {
+          "label": "D",
+          "body": "Om 06.30 uur",
+          "is_correct": false
+        }
+      ]
+    },
+    {
+      "kind": "gap_choice",
+      "tier": 1,
+      "explanation": "Op zaterdag is de winkel \"om kwart over vier\" gesloten, dus om 16.15 uur.",
+      "payload": {
+        "sentence": "Op zaterdag is de winkel om ___ over vier gesloten.",
+        "choices": [
+          "half",
+          "kwart",
+          "tien"
+        ],
+        "answer": "kwart"
+      }
+    },
+    {
+      "kind": "gap_choice",
+      "tier": 1,
+      "explanation": "Meneer Bakker moet naar balie drie. Dat nummer zegt de medewerker aan het eind.",
+      "payload": {
+        "sentence": "Meneer Bakker moet meelopen naar balie ___.",
+        "choices": [
+          "twee",
+          "drie",
+          "vier"
+        ],
+        "answer": "drie"
+      }
+    },
+    {
+      "kind": "gap_choice",
+      "tier": 1,
+      "explanation": "Je hoort \"honderdvijfenzeventig euro tachtig\". De centen zijn tachtig, niet achttien.",
+      "payload": {
+        "sentence": "De rekening is honderdvijfenzeventig euro ___.",
+        "choices": [
+          "achttien",
+          "tachtig",
+          "achtenzeventig"
+        ],
+        "answer": "tachtig"
+      }
+    },
+    {
+      "kind": "matchen",
+      "tier": 1,
+      "explanation": "Zo klinken de getallen en tijden uit het gesprek als je ze in cijfers opschrijft.",
+      "payload": {
+        "instruction": "Wat je hoort, en wat je opschrijft. Maak de goede paren.",
+        "pairs": [
+          {
+            "left": "honderdvijfenzeventig euro tachtig",
+            "right": "€ 175,80"
+          },
+          {
+            "left": "half zes",
+            "right": "17.30 uur"
+          },
+          {
+            "left": "kwart over vier",
+            "right": "16.15 uur"
+          },
+          {
+            "left": "balie drie",
+            "right": "balie 3"
+          }
+        ]
+      }
+    },
+    {
+      "kind": "gap_type",
+      "tier": 2,
+      "explanation": "Je hoort \"tachtig\" achter het bedrag: honderdvijfenzeventig euro tachtig.",
+      "payload": {
+        "sentence": "Schrijf het woord dat je hoort: honderdvijfenzeventig euro ___.",
+        "answer": "tachtig"
+      }
+    },
+    {
+      "kind": "gap_type",
+      "tier": 2,
+      "explanation": "Je hoort \"half\": de winkel gaat om half zes dicht.",
+      "payload": {
+        "sentence": "Schrijf het woord dat je hoort: De winkel gaat om ___ zes dicht.",
+        "answer": "half"
+      }
+    }
+  ],
+  "what_you_learn": "Je leert getallen, tijden en prijzen goed horen in een gesprek. Je merkt dat een getal als 175,80 anders klinkt dan het er staat, en je herkent tijden met \"half\" en \"kwart\". Na deze les kun je een bedrag en een sluitingstijd in één keer goed opschrijven."
+}

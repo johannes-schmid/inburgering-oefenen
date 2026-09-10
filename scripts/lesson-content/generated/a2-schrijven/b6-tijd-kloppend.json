@@ -1,0 +1,178 @@
+{
+  "items": [
+    {
+      "kind": "uitleg",
+      "tier": null,
+      "explanation": null,
+      "payload": {
+        "body_html": "<p>Als je schrijft over gisteren, blijf je in de verleden tijd. Als je schrijft over morgen, blijf je in de toekomst. Wissel niet halfweg van tijd. Lees je zin nog een keer: past de tijd bij het moment waarover je schrijft?</p>",
+        "cards": [
+          {
+            "label": "GOED",
+            "example_html": "Gisteren <mark>was</mark> ik ziek. Ik <mark>ging</mark> niet naar het werk."
+          },
+          {
+            "label": "MINDER GOED",
+            "example_html": "Gisteren <mark>was</mark> ik ziek. Ik <mark>ga</mark> niet naar het werk."
+          }
+        ]
+      }
+    },
+    {
+      "kind": "voorbeeld",
+      "tier": null,
+      "explanation": null,
+      "payload": {
+        "sentence_html": "<p>In een e-mail aan de school: Mijn zoon <mark>had gisteren koorts</mark>, daarom <mark>bleef</mark> hij thuis.</p>"
+      }
+    },
+    {
+      "kind": "voorbeeld",
+      "tier": null,
+      "explanation": null,
+      "payload": {
+        "sentence_html": "<p>Op een briefje voor de buurvrouw: <mark>Morgen kom ik</mark> de sleutel <mark>brengen</mark>.</p>"
+      }
+    },
+    {
+      "kind": "mcq",
+      "tier": 0,
+      "explanation": "Het woord <strong>vorige week</strong> gaat over het verleden. Dan horen ook <strong>heb gestuurd</strong> en <strong>kreeg</strong> in de verleden tijd.",
+      "payload": {
+        "prompt": "Welke zin uit een e-mail aan de gemeente is goed geschreven?"
+      },
+      "options": [
+        {
+          "label": "A",
+          "body": "Vorige week heb ik het formulier gestuurd, maar ik krijg geen antwoord.",
+          "is_correct": false
+        },
+        {
+          "label": "B",
+          "body": "Vorige week heb ik het formulier gestuurd, maar ik kreeg geen antwoord.",
+          "is_correct": true
+        },
+        {
+          "label": "C",
+          "body": "Vorige week stuur ik het formulier, maar ik kreeg geen antwoord.",
+          "is_correct": false
+        }
+      ]
+    },
+    {
+      "kind": "mcq",
+      "tier": 0,
+      "explanation": "In deze zin gaat het over <strong>volgende maandag</strong>. Dan schrijf je <strong>kan ik niet komen</strong>, want het is nog niet gebeurd.",
+      "payload": {
+        "prompt": "Welke zin uit een briefje aan de huisarts is goed geschreven?"
+      },
+      "options": [
+        {
+          "label": "A",
+          "body": "Volgende maandag kon ik niet komen, want ik moest werken.",
+          "is_correct": false
+        },
+        {
+          "label": "B",
+          "body": "Volgende maandag kan ik niet komen, want ik moet werken.",
+          "is_correct": true
+        },
+        {
+          "label": "C",
+          "body": "Volgende maandag kan ik niet komen, want ik moest werken.",
+          "is_correct": false
+        }
+      ]
+    },
+    {
+      "kind": "gap_choice",
+      "tier": 1,
+      "explanation": "De zin begint met <strong>gisteren</strong>. Daarom blijf je in de verleden tijd: <strong>was</strong>.",
+      "payload": {
+        "sentence": "Gisteren ___ ik bij de apotheek, maar de medicijnen waren er nog niet.",
+        "choices": [
+          "ben",
+          "was",
+          "zal zijn"
+        ],
+        "answer": "was"
+      }
+    },
+    {
+      "kind": "gap_choice",
+      "tier": 1,
+      "explanation": "<strong>Morgen</strong> gaat over de toekomst. Dan schrijf je de tegenwoordige tijd <strong>breng</strong>.",
+      "payload": {
+        "sentence": "Morgen ___ ik de papieren naar het loket van de gemeente.",
+        "choices": [
+          "bracht",
+          "breng",
+          "had gebracht"
+        ],
+        "answer": "breng"
+      }
+    },
+    {
+      "kind": "gap_choice",
+      "tier": 1,
+      "explanation": "De eerste zin staat in de verleden tijd (<strong>kreeg</strong>). De tweede zin gaat over hetzelfde moment, dus ook verleden tijd: <strong>begreep</strong>.",
+      "payload": {
+        "sentence": "Ik kreeg vorige week uw brief. Ik ___ de vraag niet goed.",
+        "choices": [
+          "begrijp",
+          "begreep",
+          "ga begrijpen"
+        ],
+        "answer": "begreep"
+      }
+    },
+    {
+      "kind": "gap_type",
+      "tier": 2,
+      "explanation": "Bij <strong>vorige week dinsdag</strong> hoort de verleden tijd van <em>werken</em>: <strong>werkte</strong>.",
+      "payload": {
+        "sentence": "Vorige week dinsdag ___ ik tot acht uur in de winkel.",
+        "answer": "werkte"
+      }
+    },
+    {
+      "kind": "woordorde",
+      "tier": 2,
+      "explanation": "Na <strong>vorige maand</strong> blijf je in de verleden tijd: <em>verhuisde</em>. De persoonsvorm komt op de tweede plaats.",
+      "payload": {
+        "instruction": "Zet de woorden in de juiste volgorde. Het is een zin uit een e-mail aan de woningbouw.",
+        "tokens": [
+          "verhuisde",
+          "vorige",
+          "naar",
+          "ik",
+          "maand",
+          "Almere"
+        ],
+        "answer": [
+          "vorige",
+          "maand",
+          "verhuisde",
+          "ik",
+          "naar",
+          "Almere"
+        ]
+      }
+    },
+    {
+      "kind": "open_zin",
+      "tier": 2,
+      "explanation": "Je schrijft over iets wat al gebeurd is. Gebruik daarom in beide zinnen de verleden tijd.",
+      "payload": {
+        "prompt": "Schrijf twee zinnen voor een e-mail aan je werk. Vertel dat je gisteren niet kon komen en waarom. Blijf in dezelfde tijd.",
+        "model_answer": "Gisteren kon ik niet naar het werk komen. Mijn dochter was ziek en ik moest bij haar blijven.",
+        "checklist": [
+          "Beide zinnen staan in de verleden tijd.",
+          "Je noemt een reden.",
+          "Elke zin heeft een persoonsvorm en begint met een hoofdletter."
+        ]
+      }
+    }
+  ],
+  "what_you_learn": "Je leert in je eigen tekst dezelfde tijd vasthouden. Je ziet aan woorden als <strong>gisteren</strong>, <strong>vorige week</strong> of <strong>morgen</strong> welke tijd je nodig hebt. Zo schrijf je een e-mail of briefje waarin het verleden en de toekomst niet door elkaar lopen."
+}

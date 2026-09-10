@@ -1,0 +1,17 @@
+# Als het snel gaat — audio
+# les b2-verkorte-spraak, item 3
+# Casting:
+#   A = woman_young (Female Voice 1 — younger woman)
+#   B = man_young (Male Voice 1 — younger man)
+#
+# Dit bestand is de leesbare afdruk van wat er is ingesproken. De bron is de payload in
+# generated/a2-luisteren/b2-verkorte-spraak.json — pas die aan en spreek opnieuw in.
+A: Goedemiddag, kan ik u helpen?
+B: Ja, 'k heb een brief gekregen van de gemeente. Over mijn paspoort.
+A: Even kijken. Ah ja, uw paspoort is klaar. U kunt 'm vandaag ophalen.
+B: Mooi. Moet ik nog betalen?
+A: Nee, u heeft 't al betaald. Alleen even uw brief meenemen, hoor.
+B: En zijn d'r nog foto's nodig?
+A: Nee, die hebben we al. U kunt naar loket 4, dat is daar rechts.
+B: Dank u wel. Tot hoe laat bent u open?
+A: Tot half vijf.

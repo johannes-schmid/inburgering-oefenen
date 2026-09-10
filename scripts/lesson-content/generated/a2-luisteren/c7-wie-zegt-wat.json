@@ -1,0 +1,180 @@
+{
+  "items": [
+    {
+      "kind": "uitleg",
+      "tier": null,
+      "explanation": null,
+      "payload": {
+        "body_html": "<p>Bij het luisterexamen hoor je vaak twee mensen praten. De vraag gaat dan niet alleen over <strong>wat</strong> er gezegd wordt, maar ook over <strong>wie</strong> het zegt. Dat is de val: je hoort het juiste detail, maar je koppelt het aan de verkeerde persoon.</p><p>Werk in drie stappen. Eén: luister eerst wie de sprekers zijn. Wie belt, wie helpt? Twee: onthoud bij elk belangrijk detail de persoon. Denk kort: <em>de vrouw zegt dinsdag</em>. Drie: lees de vraag goed. Staat er \"wat zegt de man?\", dan mag je het antwoord van de vrouw niet kiezen.</p>",
+        "cards": [
+          {
+            "label": "STAP 1",
+            "example_html": "Wie praten er? <mark>Een klant en een medewerker.</mark>"
+          },
+          {
+            "label": "STAP 2",
+            "example_html": "Koppel het detail aan de persoon: <mark>de medewerker</mark> noemt het tijdstip."
+          },
+          {
+            "label": "STAP 3",
+            "example_html": "Lees in de vraag: gaat het over <mark>de man</mark> of over <mark>de vrouw</mark>?"
+          }
+        ]
+      }
+    },
+    {
+      "kind": "audio",
+      "tier": null,
+      "explanation": null,
+      "payload": {
+        "label": "Telefoongesprek met de tandartspraktijk",
+        "script": "A: Tandartspraktijk De Meerpaal, u spreekt met Ilse.\nB: Goedemiddag, met Karim Bouzid. Ik heb morgen een afspraak, om half tien.\nA: Even kijken, ja, ik zie hem staan. Klopt dat niet?\nB: Nee, het klopt wel. Maar ik moet morgen werken. Kan het later deze week?\nA: Hmm, donderdag om vier uur is er nog plek.\nB: Donderdag om vier uur is goed. Moet ik iets meenemen?\nA: Uw verzekeringspas, graag. En kom vijf minuten eerder, dan vult u een formulier in.\nB: Prima, dank u wel.",
+        "audio_url": "http://127.0.0.1:54421/storage/v1/object/public/leren-audio/fragment/a2-luisteren/c7-wie-zegt-wat-1.mp3",
+        "voice_cast": {
+          "A": "woman_young",
+          "B": "man_young"
+        },
+        "transcript": "Tandartspraktijk De Meerpaal, u spreekt met Ilse. Goedemiddag, met Karim Bouzid. Ik heb morgen een afspraak, om half tien. Even kijken, ja, ik zie hem staan. Klopt dat niet? Nee, het klopt wel. Maar ik moet morgen werken. Kan het later deze week? Hmm, donderdag om vier uur is er nog plek. Donderdag om vier uur is goed. Moet ik iets meenemen? Uw verzekeringspas, graag. En kom vijf minuten eerder, dan vult u een formulier in. Prima, dank u wel.",
+        "seconds": 28.79
+      }
+    },
+    {
+      "kind": "mcq",
+      "tier": 0,
+      "explanation": "Karim zegt zelf: \"Ik moet morgen werken.\" Dat is zijn reden. Het tijdstip half tien noemt hij ook, maar dat is niet de reden.",
+      "payload": {
+        "prompt": "Waarom wil Karim de afspraak veranderen?"
+      },
+      "options": [
+        {
+          "label": "A",
+          "body": "Hij moet morgen werken.",
+          "is_correct": true
+        },
+        {
+          "label": "B",
+          "body": "Hij is de afspraak vergeten.",
+          "is_correct": false
+        },
+        {
+          "label": "C",
+          "body": "Hij is ziek.",
+          "is_correct": false
+        }
+      ]
+    },
+    {
+      "kind": "mcq",
+      "tier": 0,
+      "explanation": "De assistente noemt donderdag om vier uur. Half tien is het oude tijdstip dat Karim zelf noemt — dat is precies de val: goed detail, verkeerde spreker.",
+      "payload": {
+        "prompt": "Welk nieuw moment noemt de assistente?"
+      },
+      "options": [
+        {
+          "label": "A",
+          "body": "Morgen om half tien.",
+          "is_correct": false
+        },
+        {
+          "label": "B",
+          "body": "Donderdag om vier uur.",
+          "is_correct": true
+        },
+        {
+          "label": "C",
+          "body": "Vrijdag om vier uur.",
+          "is_correct": false
+        },
+        {
+          "label": "D",
+          "body": "Donderdag om tien uur.",
+          "is_correct": false
+        }
+      ]
+    },
+    {
+      "kind": "mcq",
+      "tier": 1,
+      "explanation": "De assistente vraagt om de verzekeringspas. Karim vraagt alleen óf hij iets moet meenemen; hij noemt zelf niets.",
+      "payload": {
+        "prompt": "Wie zegt dat de verzekeringspas nodig is?"
+      },
+      "options": [
+        {
+          "label": "A",
+          "body": "Karim, de beller.",
+          "is_correct": false
+        },
+        {
+          "label": "B",
+          "body": "Ilse, de assistente.",
+          "is_correct": true
+        },
+        {
+          "label": "C",
+          "body": "Niemand zegt dat.",
+          "is_correct": false
+        }
+      ]
+    },
+    {
+      "kind": "mcq",
+      "tier": 1,
+      "explanation": "De assistente vraagt of hij vijf minuten eerder komt, want dan vult hij een formulier in. Karim vraagt niet om extra tijd.",
+      "payload": {
+        "prompt": "Wat vraagt de assistente nog aan Karim?"
+      },
+      "options": [
+        {
+          "label": "A",
+          "body": "Of hij vijf minuten eerder wil komen.",
+          "is_correct": false
+        },
+        {
+          "label": "B",
+          "body": "Of hij vijf minuten eerder komt om een formulier in te vullen.",
+          "is_correct": true
+        },
+        {
+          "label": "C",
+          "body": "Of hij een half uur eerder komt.",
+          "is_correct": false
+        }
+      ]
+    },
+    {
+      "kind": "gap_type",
+      "tier": 2,
+      "explanation": "De assistente noemt haar naam aan het begin: \"u spreekt met Ilse\". Schrijf het detail op van de juiste spreker.",
+      "payload": {
+        "sentence": "De assistente van de praktijk heet ___.",
+        "answer": "Ilse"
+      }
+    },
+    {
+      "kind": "gap_type",
+      "tier": 2,
+      "explanation": "De assistente zegt: \"Uw verzekeringspas, graag.\" Dat is het ding dat Karim moet meenemen.",
+      "payload": {
+        "sentence": "Karim moet zijn ___ meenemen naar de afspraak.",
+        "answer": "verzekeringspas"
+      }
+    },
+    {
+      "kind": "open_zin",
+      "tier": 2,
+      "explanation": "Je legt in eigen woorden uit hoe je de spreker en het detail aan elkaar koppelt. Dat helpt je bij de volgende vraag met twee sprekers.",
+      "payload": {
+        "prompt": "Hoe wist je dat donderdag om vier uur van de assistente kwam en niet van Karim? Schrijf twee of drie zinnen.",
+        "model_answer": "Ik hoorde eerst wie de sprekers waren: een assistente en een man die belt. De assistente zocht in de agenda en zei donderdag om vier uur. Karim noemde alleen half tien, dus dat was zijn oude afspraak.",
+        "checklist": [
+          "Je noemt wie de twee sprekers zijn.",
+          "Je zegt welk detail bij welke spreker hoort.",
+          "Je gebruikt twee of drie korte zinnen."
+        ]
+      }
+    }
+  ],
+  "what_you_learn": "Je leert bij een gesprek met twee sprekers onthouden wie iets zegt. Je koppelt elk detail direct aan de juiste persoon, zodat je niet in de val loopt van een goed detail bij de verkeerde spreker. Daarna schrijf je het detail op dat de vraag van je wil."
+}

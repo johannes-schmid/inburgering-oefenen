@@ -2,7 +2,7 @@ import type { Metadata } from 'next';
 import { getTranslations } from 'next-intl/server';
 import { routing } from '@/i18n/routing';
 import { Link } from '@/i18n/navigation';
-import { SectionHeader, SkillIcon } from '@/components/site';
+import { SectionHeader } from '@/components/site';
 import { DotField, HorizonBand, HorizonHero, ValidationChip } from '@/components/horizon';
 import CategoryMark from '@/components/horizon/CategoryMark';
 import { KNM, KNM_THEMES, SKILLS, DEFAULT_LEVEL, getFormat, isFreeKnmExam } from '@/data/skills';
@@ -132,7 +132,7 @@ export default async function KnmOverviewPage({ params }: Props) {
       <HorizonHero houses={14} skylineHeight={84} containerClass="max-w-5xl pt-16 pb-16">
         <div>
           <span className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-bold uppercase tracking-widest text-white/85 mb-5" style={{ background: 'rgba(255,255,255,0.15)' }}>
-            <SkillIcon skill="knm" size="sm" variant="bare" onDark />
+            <CategoryMark category="knm" size={22} tone="dark" />
             {tSkills('exams_count', { count: KNM.examCount })}
           </span>
           <h1 className="font-headline font-extrabold text-white tracking-tight mb-4" style={{ fontSize: 'clamp(2rem, 4vw, 3rem)', letterSpacing: '-0.03em' }}>
@@ -287,7 +287,7 @@ export default async function KnmOverviewPage({ params }: Props) {
                 className="exam-card flex items-center gap-4 p-5 rounded-2xl bg-surface-container-lowest no-underline"
                 style={{ boxShadow: 'var(--shadow-card)' }}
               >
-                <SkillIcon skill={other.slug} size="md" />
+                <CategoryMark category={other.slug} size={44} />
                 <div>
                   <p className="font-headline font-semibold text-on-surface text-sm">{tSkills(`${other.key}.name`)}</p>
                   <p className="text-xs text-on-surface-variant">{tSkills('exams_count', { count: getFormat(DEFAULT_LEVEL, other.slug).examCount })}</p>

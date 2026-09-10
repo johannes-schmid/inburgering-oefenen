@@ -1,0 +1,183 @@
+{
+  "items": [
+    {
+      "kind": "uitleg",
+      "tier": null,
+      "explanation": null,
+      "payload": {
+        "body_html": "<p>Elke zin begint met een <strong>hoofdletter</strong>. Elke zin eindigt met een <strong>punt</strong>. Dat geldt ook in een korte e-mail of een briefje. Na de punt begint een nieuwe zin weer met een hoofdletter.</p>",
+        "cards": [
+          {
+            "label": "GOED",
+            "example_html": "<mark>I</mark>k kom morgen niet werken<mark>.</mark> Ik ben ziek<mark>.</mark>"
+          },
+          {
+            "label": "MINDER GOED",
+            "example_html": "<mark>i</mark>k kom morgen niet werken ik ben ziek"
+          }
+        ]
+      }
+    },
+    {
+      "kind": "voorbeeld",
+      "tier": null,
+      "explanation": null,
+      "payload": {
+        "sentence_html": "Beste meneer De Wit, <mark>H</mark>ierbij stuur ik het formulier<mark>.</mark>"
+      }
+    },
+    {
+      "kind": "voorbeeld",
+      "tier": null,
+      "explanation": null,
+      "payload": {
+        "sentence_html": "De sleutel ligt bij de buren<mark>. D</mark>ank u wel."
+      }
+    },
+    {
+      "kind": "mcq",
+      "tier": 0,
+      "explanation": "Een zin begint met een hoofdletter en eindigt met een punt. Alleen bij B staan die er allebei.",
+      "payload": {
+        "prompt": "Welke zin is goed geschreven? Het is een regel uit een briefje voor de buurman."
+      },
+      "options": [
+        {
+          "label": "A",
+          "body": "ik ben van 3 juli tot 20 juli op vakantie",
+          "is_correct": false
+        },
+        {
+          "label": "B",
+          "body": "Ik ben van 3 juli tot 20 juli op vakantie.",
+          "is_correct": true
+        },
+        {
+          "label": "C",
+          "body": "ik ben van 3 juli tot 20 juli op vakantie.",
+          "is_correct": false
+        }
+      ]
+    },
+    {
+      "kind": "mcq",
+      "tier": 0,
+      "explanation": "Na de punt begint een nieuwe zin, dus daar hoort weer een hoofdletter. Bij C staat na elke punt een hoofdletter.",
+      "payload": {
+        "prompt": "Welke regel uit een e-mail aan de school is goed geschreven?"
+      },
+      "options": [
+        {
+          "label": "A",
+          "body": "Mijn dochter is ziek. zij komt vandaag niet naar school.",
+          "is_correct": false
+        },
+        {
+          "label": "B",
+          "body": "Mijn dochter is ziek zij komt vandaag niet naar school",
+          "is_correct": false
+        },
+        {
+          "label": "C",
+          "body": "Mijn dochter is ziek. Zij komt vandaag niet naar school.",
+          "is_correct": true
+        },
+        {
+          "label": "D",
+          "body": "mijn dochter is ziek. Zij komt vandaag niet naar school",
+          "is_correct": false
+        }
+      ]
+    },
+    {
+      "kind": "gap_choice",
+      "tier": 1,
+      "explanation": "Dit is het begin van een nieuwe zin, dus je schrijft het woord met een hoofdletter.",
+      "payload": {
+        "sentence": "Ik heb het formulier ingevuld. ___ stuur het vandaag op.",
+        "choices": [
+          "ik",
+          "Ik",
+          "IK"
+        ],
+        "answer": "Ik"
+      }
+    },
+    {
+      "kind": "gap_choice",
+      "tier": 1,
+      "explanation": "De zin is afgelopen, dus daar hoort een punt. Een vraagteken gebruik je alleen bij een vraag.",
+      "payload": {
+        "sentence": "Mijn nieuwe adres is Kerkstraat 12 in Zwolle___",
+        "choices": [
+          ".",
+          "?",
+          "!"
+        ],
+        "answer": "."
+      }
+    },
+    {
+      "kind": "gap_choice",
+      "tier": 1,
+      "explanation": "Na de punt begint een nieuwe zin. Die begint met een hoofdletter, dus 'Kunt u'.",
+      "payload": {
+        "sentence": "Ik kan niet naar de afspraak komen. ___ mij een nieuwe datum geven?",
+        "choices": [
+          "kunt u",
+          "Kunt u",
+          "kunt U"
+        ],
+        "answer": "Kunt u"
+      }
+    },
+    {
+      "kind": "gap_type",
+      "tier": 2,
+      "explanation": "Het is het eerste woord van de zin in het briefje, dus je typt het met een hoofdletter: Bedankt.",
+      "payload": {
+        "sentence": "___ voor uw hulp bij het formulier.",
+        "answer": "Bedankt"
+      }
+    },
+    {
+      "kind": "woordorde",
+      "tier": 2,
+      "explanation": "De zin begint met het woord met de hoofdletter en eindigt met de punt.",
+      "payload": {
+        "instruction": "Maak van deze woorden één goede zin voor een e-mail aan de gemeente.",
+        "tokens": [
+          "een",
+          "Ik",
+          "afspraak",
+          "maken",
+          "wil",
+          "."
+        ],
+        "answer": [
+          "Ik",
+          "wil",
+          "een",
+          "afspraak",
+          "maken",
+          "."
+        ]
+      }
+    },
+    {
+      "kind": "open_zin",
+      "tier": 2,
+      "explanation": "Elke zin begint met een hoofdletter en eindigt met een punt, ook in een kort briefje.",
+      "payload": {
+        "prompt": "Schrijf twee zinnen voor een briefje aan je buurvrouw. Je bent een week weg en zij geeft de planten water. Let op de hoofdletters en de punten.",
+        "model_answer": "Ik ben volgende week niet thuis. Wilt u mijn planten water geven?",
+        "checklist": [
+          "Elke zin begint met een hoofdletter.",
+          "Elke zin eindigt met een punt of een vraagteken.",
+          "Je hebt twee zinnen geschreven."
+        ]
+      }
+    }
+  ],
+  "what_you_learn": "Na deze les schrijf je elke zin met een hoofdletter aan het begin en een punt aan het eind. Je let daar ook op in een korte e-mail, een briefje of een formulier. Je ziet zelf waar een nieuwe zin begint."
+}

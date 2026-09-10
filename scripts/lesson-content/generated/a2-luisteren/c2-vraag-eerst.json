@@ -1,0 +1,180 @@
+{
+  "items": [
+    {
+      "kind": "uitleg",
+      "tier": null,
+      "explanation": null,
+      "payload": {
+        "body_html": "<p>Bij het examen luisteren hoor je een fragment <strong>één keer</strong>. Daarom lees je eerst de vraag en de antwoorden. Dan weet je waar je op moet letten: een tijd, een prijs, een plaats of een reden. Tijdens het luisteren zoek je alleen dat ene ding.</p><p>Werk in drie stappen:</p><ul><li>Lees de vraag. Wat wordt er gevraagd?</li><li>Bedenk wat je zoekt: een getal, een dag, een naam of een reden.</li><li>Luister en let daar op. Kies daarna je antwoord.</li></ul><p>Let op: in een fragment worden vaak <em>meer</em> getallen of dagen genoemd. Niet elk getal is het antwoord. Alleen het getal dat bij de vraag hoort is goed.</p>",
+        "cards": [
+          {
+            "label": "VRAAG",
+            "example_html": "Hoe laat begint de cursus?"
+          },
+          {
+            "label": "IK ZOEK",
+            "example_html": "een <mark>tijd</mark>, dus ik let op \"uur\" en \"half\"."
+          },
+          {
+            "label": "VAL",
+            "example_html": "In het fragment hoor je ook <mark>een andere tijd</mark>. Die hoort niet bij de vraag."
+          }
+        ]
+      }
+    },
+    {
+      "kind": "audio",
+      "tier": null,
+      "explanation": null,
+      "payload": {
+        "script": "A: Buurthuis De Wilgenhof, goedemiddag. U spreekt met Sanne.\nB: Goedemiddag. Ik bel over de taalcursus. Kan ik me nog aanmelden?\nA: Ja hoor, er zijn nog twee plaatsen vrij.\nB: Fijn. Wanneer is de les?\nA: De les is elke woensdag van zeven tot negen uur. Op maandag is er een cursus computers, maar die is al vol.\nB: En wat kost het?\nA: De cursus kost vijfendertig euro voor tien lessen. Het boek betaal je zelf, dat is twaalf euro.\nB: Goed. En waar moet ik zijn?\nA: In de grote zaal, op de eerste verdieping. Neem je paspoort even mee.",
+        "label": "Telefoongesprek met het buurthuis",
+        "audio_url": "http://127.0.0.1:54421/storage/v1/object/public/leren-audio/fragment/a2-luisteren/c2-vraag-eerst-1.mp3",
+        "voice_cast": {
+          "A": "woman_young",
+          "B": "man_young"
+        },
+        "transcript": "Buurthuis De Wilgenhof, goedemiddag. U spreekt met Sanne. Goedemiddag. Ik bel over de taalcursus. Kan ik me nog aanmelden? Ja hoor, er zijn nog twee plaatsen vrij. Fijn. Wanneer is de les? De les is elke woensdag van zeven tot negen uur. Op maandag is er een cursus computers, maar die is al vol. En wat kost het? De cursus kost vijfendertig euro voor tien lessen. Het boek betaal je zelf, dat is twaalf euro. Goed. En waar moet ik zijn? In de grote zaal, op de eerste verdieping. Neem je paspoort even mee.",
+        "seconds": 33.59
+      }
+    },
+    {
+      "kind": "mcq",
+      "tier": 0,
+      "explanation": "De vraag gaat over de taalcursus. Die is op woensdag. Maandag hoort bij de computercursus: dat is de val van dit fragment.",
+      "payload": {
+        "prompt": "Op welke dag is de taalcursus?"
+      },
+      "options": [
+        {
+          "label": "A",
+          "body": "Op maandag",
+          "is_correct": false
+        },
+        {
+          "label": "B",
+          "body": "Op woensdag",
+          "is_correct": true
+        },
+        {
+          "label": "C",
+          "body": "Op vrijdag",
+          "is_correct": false
+        }
+      ]
+    },
+    {
+      "kind": "mcq",
+      "tier": 0,
+      "explanation": "De vraag vraagt naar de prijs van de cursus: vijfendertig euro. Twaalf euro is de prijs van het boek, dus dat is het verkeerde getal.",
+      "payload": {
+        "prompt": "Wat kost de cursus?"
+      },
+      "options": [
+        {
+          "label": "A",
+          "body": "12 euro",
+          "is_correct": false
+        },
+        {
+          "label": "B",
+          "body": "35 euro",
+          "is_correct": true
+        },
+        {
+          "label": "C",
+          "body": "47 euro",
+          "is_correct": false
+        },
+        {
+          "label": "D",
+          "body": "10 euro",
+          "is_correct": false
+        }
+      ]
+    },
+    {
+      "kind": "mcq",
+      "tier": 1,
+      "explanation": "Je zoekt een reden. Sanne zegt dat er nog twee plaatsen vrij zijn, dus Amir kan zich nog aanmelden.",
+      "payload": {
+        "prompt": "Waarom kan Amir zich nog aanmelden voor de taalcursus?"
+      },
+      "options": [
+        {
+          "label": "A",
+          "body": "Omdat er nog twee plaatsen vrij zijn.",
+          "is_correct": true
+        },
+        {
+          "label": "B",
+          "body": "Omdat de cursus vandaag begint.",
+          "is_correct": false
+        },
+        {
+          "label": "C",
+          "body": "Omdat hij een paspoort heeft.",
+          "is_correct": false
+        }
+      ]
+    },
+    {
+      "kind": "mcq",
+      "tier": 1,
+      "explanation": "Voor deze vraag zoek je een plaats. Sanne noemt de grote zaal op de eerste verdieping.",
+      "payload": {
+        "prompt": "Waar moet Amir zijn?"
+      },
+      "options": [
+        {
+          "label": "A",
+          "body": "In de kantine beneden",
+          "is_correct": false
+        },
+        {
+          "label": "B",
+          "body": "In de grote zaal op de eerste verdieping",
+          "is_correct": true
+        },
+        {
+          "label": "C",
+          "body": "In het kleine lokaal naast de ingang",
+          "is_correct": false
+        }
+      ]
+    },
+    {
+      "kind": "gap_type",
+      "tier": 2,
+      "explanation": "Je zoekt een tijd. De les is van zeven tot negen uur, dus de les begint om zeven uur.",
+      "payload": {
+        "sentence": "De les begint om ___ uur.",
+        "answer": "zeven"
+      }
+    },
+    {
+      "kind": "gap_type",
+      "tier": 2,
+      "explanation": "Sanne zegt aan het eind welk document Amir moet meenemen: zijn paspoort.",
+      "payload": {
+        "sentence": "Amir moet zijn ___ meenemen.",
+        "answer": "paspoort"
+      }
+    },
+    {
+      "kind": "open_zin",
+      "tier": 2,
+      "explanation": "Je legt in eigen woorden uit hoe je werkt: eerst de vraag lezen, dan bedenken wat je zoekt, dan gericht luisteren.",
+      "payload": {
+        "prompt": "Leg uit hoe je het antwoord op de vraag over de prijs vond. Schrijf 2 of 3 zinnen.",
+        "model_answer": "Ik las eerst de vraag. Ik zocht een prijs, dus ik lette op euro's. Ik hoorde twee bedragen en koos het bedrag van de cursus: vijfendertig euro.",
+        "checklist": [
+          "Je schrijft dat je eerst de vraag hebt gelezen.",
+          "Je schrijft wat je zocht: een prijs of een bedrag.",
+          "Je schrijft waarom het andere bedrag niet goed was."
+        ]
+      }
+    }
+  ],
+  "what_you_learn": "Je leert eerst de vraag lezen en daarna gericht luisteren. Je bedenkt vooraf wat je zoekt: een tijd, een prijs, een plaats of een reden. Zo kies je het juiste antwoord, ook als je in het fragment meer getallen of dagen hoort."
+}

@@ -11,8 +11,18 @@ export type Voice = {
 
 export const VOICES = voices as Record<VoiceKey, Voice>;
 
-/** Single-narrator surfaces: question read-aloud, lesson audio, woordkaarten. */
+/** Single-narrator surfaces: question read-aloud, woordkaarten. */
 export const NARRATOR: VoiceKey = 'woman_young';
+
+/**
+ * De stem die een les inspreekt — de oudere vrouwenstem, gekozen door de eigenaar (02-09).
+ *
+ * Apart van `NARRATOR` en niet in plaats daarvan. Die stem leest *vragen* en *woordkaarten*
+ * voor: neutraal materiaal waar de stem niemand hoort te zijn. De narratie is het tegendeel —
+ * daar staat een docent naast je die iets uitlegt — en de twee door elkaar halen zou de
+ * woordkaarten opeens laten klinken als een les.
+ */
+export const LESSON_NARRATOR: VoiceKey = 'woman_older';
 
 export function voiceId(key: VoiceKey): string {
   return VOICES[key].id;

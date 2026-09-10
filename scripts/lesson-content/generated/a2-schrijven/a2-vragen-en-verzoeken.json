@@ -1,0 +1,199 @@
+{
+  "items": [
+    {
+      "kind": "uitleg",
+      "tier": null,
+      "explanation": null,
+      "payload": {
+        "body_html": "<p>Soms moet je iets vragen aan de gemeente, een school of je verhuurder. Dan schrijf je een e-mail of een briefje met een <strong>verzoek</strong>: je vraagt iets vriendelijk.</p>",
+        "cards": [
+          {
+            "label": "VRAGEN OM HULP",
+            "example_html": "Kunt u mij <mark>helpen</mark> met dit formulier?"
+          },
+          {
+            "label": "VRAGEN OM MEER TIJD",
+            "example_html": "Ik vraag <mark>uitstel</mark> voor de betaling."
+          },
+          {
+            "label": "VRIENDELIJK AFSLUITEN",
+            "example_html": "Met <mark>vriendelijke groet</mark>, Amina Yildiz"
+          }
+        ]
+      }
+    },
+    {
+      "kind": "woordenlijst",
+      "tier": null,
+      "explanation": null,
+      "payload": {
+        "theme": "vragen-en-verzoeken"
+      }
+    },
+    {
+      "kind": "zinnenbank",
+      "tier": null,
+      "explanation": null,
+      "payload": {
+        "columns": [
+          {
+            "heading": "Iets vriendelijk vragen",
+            "phrases": [
+              "Kunt u mij helpen met de aanvraag?",
+              "Wilt u mij uitleggen wat ik moet invullen?",
+              "Ik wil graag een afspraak maken.",
+              "Mag ik u iets vragen over de brief?"
+            ]
+          },
+          {
+            "heading": "Iets vragen bij een instantie",
+            "phrases": [
+              "Ik wil een uitkering aanvragen.",
+              "Ik vraag uitstel voor de betaling.",
+              "Wilt u mijn pas verlengen?",
+              "Ik heb hiervoor uw toestemming nodig."
+            ]
+          },
+          {
+            "heading": "Netjes beginnen en afsluiten",
+            "phrases": [
+              "Geachte heer, mevrouw,",
+              "Ik stuur de bijlage met deze e-mail mee.",
+              "Wilt u zo snel mogelijk reageren?",
+              "Alvast bedanken voor uw antwoord.",
+              "Met vriendelijke groet, Karim Bakker"
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "kind": "matchen",
+      "tier": 0,
+      "explanation": "Je kiest bij elke situatie de vaste zin die past. Elke zin heeft een eigen doel: hulp, meer tijd, een afspraak of afsluiten.",
+      "payload": {
+        "instruction": "Welke zin past bij welke situatie? Verbind de situatie met de juiste zin.",
+        "pairs": [
+          {
+            "left": "Je begrijpt het formulier niet",
+            "right": "Kunt u mij helpen met de aanvraag?"
+          },
+          {
+            "left": "Je hebt meer tijd nodig",
+            "right": "Ik vraag uitstel voor de betaling."
+          },
+          {
+            "left": "Je wilt de arts spreken",
+            "right": "Ik wil graag een afspraak maken."
+          },
+          {
+            "left": "Je sluit je e-mail netjes af",
+            "right": "Met vriendelijke groet, Karim Bakker"
+          },
+          {
+            "left": "Je begint een brief aan een onbekende",
+            "right": "Geachte heer, mevrouw,"
+          }
+        ]
+      }
+    },
+    {
+      "kind": "gap_choice",
+      "tier": 1,
+      "explanation": "Bij een instantie vraag je iets officieel: dat is <strong>aanvragen</strong>. Je vraagt de gemeente om een uitkering, met een formulier.",
+      "payload": {
+        "sentence": "Ik wil bij de gemeente een uitkering ___.",
+        "choices": [
+          "aanvragen",
+          "bedanken",
+          "doorgeven"
+        ],
+        "answer": "aanvragen"
+      }
+    },
+    {
+      "kind": "gap_choice",
+      "tier": 1,
+      "explanation": "Een bestand of papier dat je met je e-mail meestuurt, heet <strong>de bijlage</strong>.",
+      "payload": {
+        "sentence": "Mijn loonstrook zit in de ___ van deze e-mail.",
+        "choices": [
+          "afspraak",
+          "bijlage",
+          "toestemming"
+        ],
+        "answer": "bijlage"
+      }
+    },
+    {
+      "kind": "gap_choice",
+      "tier": 1,
+      "explanation": "Je vraagt iemand iets duidelijk te vertellen, zodat je het begrijpt. Dat is <strong>uitleggen</strong>.",
+      "payload": {
+        "sentence": "Wilt u mij ___ welke gegevens ik moet invullen?",
+        "choices": [
+          "uitleggen",
+          "sturen",
+          "verlengen"
+        ],
+        "answer": "uitleggen"
+      }
+    },
+    {
+      "kind": "gap_type",
+      "tier": 2,
+      "explanation": "Met het woord <strong>graag</strong> maak je je vraag vriendelijk. Zonder dat woord klinkt de zin kort en streng.",
+      "payload": {
+        "sentence": "Ik wil ___ een afspraak maken met een medewerker.",
+        "answer": "graag"
+      }
+    },
+    {
+      "kind": "gap_type",
+      "tier": 2,
+      "explanation": "Je zet je naam onderaan de brief: dat is <strong>ondertekenen</strong>. Zonder je naam is de aanvraag niet geldig.",
+      "payload": {
+        "sentence": "Ik heb het formulier ingevuld en ___.",
+        "answer": "ondertekend"
+      }
+    },
+    {
+      "kind": "gap_type",
+      "tier": 2,
+      "explanation": "Als je iets vraagt aan iemand die u is, gebruik je het woord <strong>alstublieft</strong>.",
+      "payload": {
+        "sentence": "Wilt u de brief naar mijn nieuwe adres sturen, ___?",
+        "answer": "alstublieft"
+      }
+    },
+    {
+      "kind": "open_zin",
+      "tier": 2,
+      "explanation": "Je gebruikt een vaste zin met <strong>verlengen</strong> en je sluit netjes af met een groet. Zo is je verzoek duidelijk en vriendelijk.",
+      "payload": {
+        "prompt": "Je pas van de bibliotheek is bijna niet meer geldig. Schrijf twee zinnen in een e-mail: vraag of ze de pas willen verlengen en sluit netjes af.",
+        "model_answer": "Geachte heer, mevrouw, ik wil mijn pas graag verlengen. Wilt u mij een antwoord sturen? Met vriendelijke groet, Amina Yildiz",
+        "checklist": [
+          "Ik gebruik het woord verlengen.",
+          "Mijn vraag is vriendelijk: ik gebruik graag of alstublieft.",
+          "Ik sluit af met een vriendelijke groet en mijn naam."
+        ]
+      }
+    },
+    {
+      "kind": "open_zin",
+      "tier": 2,
+      "explanation": "Je vraagt om hulp bij het invullen en je bedankt de ander. Dat zijn twee vaste zinnen uit een verzoek.",
+      "payload": {
+        "prompt": "Je begrijpt een formulier van de gemeente niet. Schrijf een briefje van twee of drie zinnen: vraag om hulp bij het invullen en bedank de medewerker.",
+        "model_answer": "Geachte heer, mevrouw, ik snap de aanvraag niet goed. Kunt u mij helpen met het invullen van het formulier? Alvast bedankt voor uw antwoord.",
+        "checklist": [
+          "Ik vraag om hulp met kunt u of wilt u.",
+          "Ik gebruik het woord invullen.",
+          "Ik bedank de ander aan het eind."
+        ]
+      }
+    }
+  ],
+  "what_you_learn": "In deze les leer je woorden en vaste zinnen om iets te vragen. Je kunt een vriendelijk verzoek opschrijven in een e-mail of een briefje. Je weet ook hoe je zo'n bericht netjes begint en afsluit."
+}

@@ -6,7 +6,6 @@ import { ownsKnm } from '@/lib/entitlements';
 import { emptyLevelledProgress, fetchPortalProgress, fetchPublishedExamNumbers } from '@/lib/portal-progress';
 import { FEATURES } from '@/lib/features';
 import { KNM, KNM_THEMES, formatCount, isFreeKnmExam } from '@/data/skills';
-import SkillIcon from '@/components/site/SkillIcon';
 import AppShell from '../../components/AppShell';
 import ExamListStyles from '../_components/ExamListStyles';
 import { fetchPortalMenu } from '@/lib/portal-menu';
@@ -66,145 +65,146 @@ export default async function KnmExamsPage({ params }: Props) {
       isGuest={isGuest}
     >
       <div className="px-5 py-7 sm:px-8 sm:py-10">
-        <div className="max-w-3xl mx-auto">
+        <div className="max-w-5xl mx-auto">
 
-          <header className="mb-7">
-            <a
-              href={`/${locale}/dashboard`}
-              className="text-xs font-bold text-on-surface-variant no-underline hover:underline"
-            >
-              ← {t('nav_overview')}
-            </a>
-            <div className="flex items-start gap-3.5 mt-3">
-              <SkillIcon skill="knm" size="lg" />
-              <div className="min-w-0">
-                <h1
-                  className="font-headline font-extrabold text-on-surface"
-                  style={{ fontSize: 'clamp(1.5rem,3.2vw,1.95rem)', letterSpacing: '-0.03em' }}
-                >
-                  {tSkills('knm.name')}
-                </h1>
-                <p className="text-sm text-on-surface-variant mt-1" style={{ lineHeight: 1.65 }}>
-                  {tSkills('knm.tagline')}
-                </p>
-              </div>
-            </div>
-
-            <dl className="stat-row mt-5">
-              <div>
-                <dt>{t('stat_exams')}</dt>
-                <dd>{t('stat_exams_value', { done: p.examsDone, total: KNM.examCount })}</dd>
-              </div>
-              <div>
-                <dt>{t('stat_items')}</dt>
-                <dd>{formatCount(KNM.itemCount)}</dd>
-              </div>
-              <div>
-                <dt>{t('stat_duration')}</dt>
-                <dd>{t('stat_duration_value', { minutes: formatCount(KNM.durationMinutes) })}</dd>
-              </div>
-              <div>
-                <dt>{t('stat_average')}</dt>
-                <dd>{p.averagePct != null ? `${p.averagePct}%` : '—'}</dd>
-              </div>
-            </dl>
+          {/* Dezelfde kop als /dashboard en /dashboard/[level]: titel, ondertitel, en de cijfers
+              naar de kolom rechts. Het merkteken en de terugknop zijn eruit — de zijbalk zegt al
+              waar je bent, en een tweede KNM-mark naast de actieve rij is dubbelop. */}
+          <header className="ov-head">
+            <h1>{tSkills('knm.name')}</h1>
+            <p>{tSkills('knm.tagline')}</p>
           </header>
 
-          {/* ── The study surfaces that come with the module ── */}
-          {(FEATURES.leren || FEATURES.woordkaarten) && (
-            <div className="grid sm:grid-cols-2 gap-2.5 mb-7">
-              {FEATURES.leren && (
-                <a href={`/${locale}/leren`} className="knm-side no-underline">
-                  <span className="knm-side-icon"><BookText size={18} strokeWidth={1.9} /></span>
-                  <span className="min-w-0">
-                    <span className="knm-side-title">{tKnm('leren_title')}</span>
-                    <span className="knm-side-sub">{tKnm('sections_count', { count: KNM_THEMES.length })}</span>
-                  </span>
-                  <ArrowRight size={16} strokeWidth={2.2} className="ml-auto flex-shrink-0" aria-hidden />
-                </a>
-              )}
-              {FEATURES.woordkaarten && (
-                <a href={`/${locale}/dashboard/woordkaarten`} className="knm-side no-underline">
-                  <span className="knm-side-icon"><Layers size={18} strokeWidth={1.9} /></span>
-                  <span className="min-w-0">
-                    <span className="knm-side-title">{tKnm('woorden_title')}</span>
-                    <span className="knm-side-sub">{tKnm('woorden_lede')}</span>
-                  </span>
-                  <ArrowRight size={16} strokeWidth={2.2} className="ml-auto flex-shrink-0" aria-hidden />
-                </a>
-              )}
-            </div>
-          )}
-
-          <ol className="flex flex-col gap-2.5">
-            {Array.from({ length: KNM.examCount }, (_, i) => i + 1).map(n => {
-              const done = p.exams[n];
-              const isPublished = pub.has(n);
-              const free = isFreeKnmExam(n);
-              // See the same branch in `dashboard/[level]/[skill]` — a guest opens nothing.
-              const openable = isPublished && !isGuest && (free || owns);
-
-              const href = openable
-                ? `/${locale}/oefenexamen/knm/${n}`
-                : isGuest && isPublished
-                  ? `/${locale}/register?next=/oefenexamen/knm/${n}`
-                : isPublished
-                  // The module id is the bare slug — KNM has no level to prefix it with.
-                  ? `/${locale}/dashboard/pakketten?onderdeel=knm&vanaf=oefenexamen-${n}`
-                  : undefined;
-
-              const Row = href ? 'a' : 'div';
-
-              return (
-                <li key={n}>
-                  <Row
-                    {...(href ? { href } : {})}
-                    className={`exam-row no-underline${openable ? '' : ' is-locked'}`}
-                  >
-                    <span className={`exam-num${done ? (done.passed ? ' passed' : ' sat') : ''}`}>
-                      {done?.passed ? <Check size={16} strokeWidth={3} /> : n}
+          <div className="ov-grid">
+            <div className="ov-rows">
+            {/* ── The study surfaces that come with the module ── */}
+            {(FEATURES.leren || FEATURES.woordkaarten) && (
+              <div className="grid sm:grid-cols-2 gap-2.5 mb-7">
+                {FEATURES.leren && (
+                  <a href={`/${locale}/leren`} className="knm-side no-underline">
+                    <span className="knm-side-icon"><BookText size={18} strokeWidth={1.9} /></span>
+                    <span className="min-w-0">
+                      <span className="knm-side-title">{tKnm('leren_title')}</span>
+                      <span className="knm-side-sub">{tKnm('sections_count', { count: KNM_THEMES.length })}</span>
                     </span>
+                    <ArrowRight size={16} strokeWidth={2.2} className="ml-auto flex-shrink-0" aria-hidden />
+                  </a>
+                )}
+                {FEATURES.woordkaarten && (
+                  <a href={`/${locale}/dashboard/woordkaarten`} className="knm-side no-underline">
+                    <span className="knm-side-icon"><Layers size={18} strokeWidth={1.9} /></span>
+                    <span className="min-w-0">
+                      <span className="knm-side-title">{tKnm('woorden_title')}</span>
+                      <span className="knm-side-sub">{tKnm('woorden_lede')}</span>
+                    </span>
+                    <ArrowRight size={16} strokeWidth={2.2} className="ml-auto flex-shrink-0" aria-hidden />
+                  </a>
+                )}
+              </div>
+            )}
 
-                    <span className="min-w-0 flex-1">
-                      <span className="exam-title">
-                        {t('exam_row_title', { number: n })}
-                        {free && <span className="badge badge-free">{tSkills('free_badge')}</span>}
+            <ol className="flex flex-col gap-2.5">
+              {Array.from({ length: KNM.examCount }, (_, i) => i + 1).map(n => {
+                const done = p.exams[n];
+                const isPublished = pub.has(n);
+                const free = isFreeKnmExam(n);
+                // See the same branch in `dashboard/[level]/[skill]` — a guest opens nothing.
+                const openable = isPublished && !isGuest && (free || owns);
+
+                const href = openable
+                  ? `/${locale}/oefenexamen/knm/${n}`
+                  : isGuest && isPublished
+                    ? `/${locale}/register?next=/oefenexamen/knm/${n}`
+                  : isPublished
+                    // The module id is the bare slug — KNM has no level to prefix it with.
+                    ? `/${locale}/dashboard/pakketten?onderdeel=knm&vanaf=oefenexamen-${n}`
+                    : undefined;
+
+                const Row = href ? 'a' : 'div';
+
+                return (
+                  <li key={n}>
+                    <Row
+                      {...(href ? { href } : {})}
+                      className={`exam-row no-underline${openable ? '' : ' is-locked'}`}
+                    >
+                      <span className={`exam-num${done ? (done.passed ? ' passed' : ' sat') : ''}`}>
+                        {done?.passed ? <Check size={16} strokeWidth={3} /> : n}
                       </span>
-                      <span className="exam-sub">
-                        {!isPublished && !done ? (
-                          t('exam_row_unpublished')
+
+                      <span className="min-w-0 flex-1">
+                        <span className="exam-title">
+                          {t('exam_row_title', { number: n })}
+                          {free && <span className="badge badge-free">{tSkills('free_badge')}</span>}
+                        </span>
+                        <span className="exam-sub">
+                          {!isPublished && !done ? (
+                            t('exam_row_unpublished')
+                          ) : done ? (
+                            <>
+                              {done.bestPct != null
+                                ? t('exam_row_best', { pct: done.bestPct })
+                                : t('exam_row_awaiting')}
+                              {done.attempts > 1 && ` · ${t('exam_row_attempts', { count: done.attempts })}`}
+                            </>
+                          ) : (
+                            <>
+                              <ListChecks size={12} strokeWidth={2} className="inline-block mr-1 -mt-px" />
+                              {formatCount(KNM.itemCount)}
+                              <Clock size={12} strokeWidth={2} className="inline-block ml-2.5 mr-1 -mt-px" />
+                              {t('stat_duration_value', { minutes: formatCount(KNM.durationMinutes) })}
+                            </>
+                          )}
+                        </span>
+                      </span>
+
+                      <span className="exam-action" aria-hidden="true">
+                        {!openable ? (
+                          <Lock size={16} strokeWidth={2.1} />
                         ) : done ? (
-                          <>
-                            {done.bestPct != null
-                              ? t('exam_row_best', { pct: done.bestPct })
-                              : t('exam_row_awaiting')}
-                            {done.attempts > 1 && ` · ${t('exam_row_attempts', { count: done.attempts })}`}
-                          </>
+                          <RotateCcw size={16} strokeWidth={2.1} />
                         ) : (
-                          <>
-                            <ListChecks size={12} strokeWidth={2} className="inline-block mr-1 -mt-px" />
-                            {formatCount(KNM.itemCount)}
-                            <Clock size={12} strokeWidth={2} className="inline-block ml-2.5 mr-1 -mt-px" />
-                            {t('stat_duration_value', { minutes: formatCount(KNM.durationMinutes) })}
-                          </>
+                          <ArrowRight size={16} strokeWidth={2.3} />
                         )}
                       </span>
-                    </span>
+                    </Row>
+                  </li>
+                );
+              })}
+            </ol>
 
-                    <span className="exam-action" aria-hidden="true">
-                      {!openable ? (
-                        <Lock size={16} strokeWidth={2.1} />
-                      ) : done ? (
-                        <RotateCcw size={16} strokeWidth={2.1} />
-                      ) : (
-                        <ArrowRight size={16} strokeWidth={2.3} />
-                      )}
-                    </span>
-                  </Row>
-                </li>
-              );
-            })}
-          </ol>
+            </div>
+
+            <aside className="ov-side">
+              {/* Het gemiddelde als het ene getal, want dat is wat KNM's tien examens samen
+                  zeggen. Een streepje zolang er niets gemaakt is: 0% zou "je haalt niets" zeggen
+                  waar "nog niet gemeten" bedoeld is. */}
+              <section className="ov-card ov-total">
+                <span className="ov-kick">{t('stat_average')}</span>
+                <div className="ov-total-top">
+                  <b>{p.averagePct != null ? `${p.averagePct}%` : '—'}</b>
+                </div>
+                <span className="ov-rail" aria-hidden><i style={{ width: `${p.averagePct ?? 0}%` }} /></span>
+              </section>
+
+              <section className="ov-card">
+                <dl className="ov-stats">
+                  <div className="ov-stat">
+                    <dt>{t('stat_exams')}</dt>
+                    <dd><b>{t('stat_exams_value', { done: p.examsDone, total: KNM.examCount })}</b></dd>
+                  </div>
+                  <div className="ov-stat">
+                    <dt>{t('stat_items')}</dt>
+                    <dd><b>{formatCount(KNM.itemCount)}</b></dd>
+                  </div>
+                  <div className="ov-stat">
+                    <dt>{t('stat_duration')}</dt>
+                    <dd><b>{t('stat_duration_value', { minutes: formatCount(KNM.durationMinutes) })}</b></dd>
+                  </div>
+                </dl>
+              </section>
+            </aside>
+          </div>
         </div>
       </div>
 

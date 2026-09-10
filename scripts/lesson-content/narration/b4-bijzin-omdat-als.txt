@@ -1,0 +1,34 @@
+# De ingesproken uitleg van `b4-bijzin-omdat-als`.
+# Regels met # zijn commentaar. [[id]] of [[id | extra uitleg]] markeert waar de stem over
+# welk element begint; de extra uitleg staat op de pagina bij dat element en mag niet herhalen
+# wat de stem net zei.
+# Geldige id's: vis, vis-1 t/m vis-3, rule, card-0, card-1, demo-0, demo-1, exercises.
+
+Deze les gaat over omdat, als en toen.
+
+[[vis-1 | Dit deel blijft gewoon: onderwerp, werkwoord, rest.]]
+Kijk naar het plaatje. Links staat de hoofdzin: ik blijf thuis. Daar verandert niets aan.
+
+[[vis-2 | Omdat geeft een reden. Als geeft een voorwaarde. Toen is verleden tijd.]]
+In het midden staat het voegwoord: omdat. Dat woord is de schakel. Zodra je het gebruikt, verandert het stukje erna.
+
+[[vis-3 | Let op de pijl: het werkwoord gaat naar het laatste vakje.]]
+Rechts staat de bijzin: ik ziek ben. Het werkwoord ben staat helemaal achteraan. Dat is het hele verschil.
+
+[[rule | Los: "Ik ben ziek." Na omdat: "… omdat ik ziek ben."]]
+Vergelijk het even. Los zeg je: ik ben ziek. Met omdat wordt het: ik blijf thuis omdat ik ziek ben. Het werkwoord schuift naar het einde.
+
+[[card-0 | De zin zoals je hem in les 1 leerde.]]
+De eerste kaart laat de gewone zin zien.
+
+[[card-1 | Alleen het werkwoord beweegt. De rest blijft op zijn plek.]]
+De tweede kaart laat zien wat omdat ermee doet.
+
+[[demo-0 | Heeft staat achteraan, achter "koorts".]]
+Twee voorbeelden. Ik bel de huisarts omdat mijn dochter koorts heeft.
+
+[[demo-1 | Begint de zin met de bijzin? Dan volgt inversie in de hoofdzin: werkte ik.]]
+En: toen ik in Zwolle woonde, werkte ik in een supermarkt.
+
+[[exercises]]
+Doe nu de opgaven. Zoek het voegwoord, en kijk dan waar het werkwoord staat.

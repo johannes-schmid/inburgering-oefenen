@@ -7,6 +7,8 @@
  * kort te houden en om `LessonItemView` één keer te definiëren.
  */
 
+import { isExerciseKind } from '@/lib/lessons/items';
+
 export {
   GAP,
   isExerciseKind,
@@ -43,9 +45,35 @@ export type LessonWord = {
  * databron nodig heeft.
  *
  * Een *distributieve* conditional over de union, dus alleen de `woordenlijst`-tak krijgt het
- * veld: op alle veertien takken zetten zou betekenen dat een mcq-renderer `item.words` mag
+ * veld: op alle zestien takken zetten zou betekenen dat een mcq-renderer `item.words` mag
  * lezen en altijd `undefined` krijgt.
  */
 type WithWords<T> = T extends { kind: 'woordenlijst' } ? T & { words?: LessonWord[] } : T;
 
 export type LessonItem = WithWords<Row>;
+
+/**
+ * De uitleg uit de itemlijst halen: de eerste `uitleg` is de regel, de `voorbeeld`-items horen
+ * ernaast, de rest blijft in `sort_order` staan.
+ *
+ * Twee componenten hebben dit nodig — `LessonStage` (de uitleg in de speler) en `LessonStream`
+ * (de uitleg als statisch blok, voor een les zonder opname) — en twee kopieën van deze regel is
+ * hoe de speler en de pagina het oneens zouden worden over wat "de regel" is.
+ *
+ * Alleen de *eerste* uitleg wordt de regel. Een tweede uitleg midden in een les is een tweede
+ * uitleg en geen tweede kop; die blijft in `rest`.
+ */
+export function splitUitleg(items: LessonItem[]): {
+  lead: Extract<LessonItem, { kind: 'uitleg' }> | undefined;
+  demos: Extract<LessonItem, { kind: 'voorbeeld' }>[];
+  rest: LessonItem[];
+} {
+  const blocks = items.filter(i => !isExerciseKind(i.kind));
+  const lead = blocks.find(i => i.kind === 'uitleg') as
+    Extract<LessonItem, { kind: 'uitleg' }> | undefined;
+  const demos = lead
+    ? (blocks.filter(i => i.kind === 'voorbeeld') as Extract<LessonItem, { kind: 'voorbeeld' }>[])
+    : [];
+  const hoisted = new Set<number>([...(lead ? [lead.id] : []), ...demos.map(d => d.id)]);
+  return { lead, demos, rest: blocks.filter(i => !hoisted.has(i.id)) };
+}

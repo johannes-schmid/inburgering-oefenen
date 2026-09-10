@@ -1,0 +1,37 @@
+# De ingesproken uitleg van `b13-verleden-tijd`.
+# Regels met # zijn commentaar. [[id]] of [[id | extra uitleg]] markeert waar de stem over
+# welk element begint; de extra uitleg staat op de pagina bij dat element en mag niet herhalen
+# wat de stem net zei.
+# Geldige id's: vis, vis-1 t/m vis-4, rule, card-0, card-1, demo-0, demo-1, exercises.
+
+Deze les gaat over de verleden tijd in één woord: ik werkte.
+
+[[vis-1 | 't kofschip weer: werk eindigt op een k, dus -te.]]
+Kijk naar het plaatje. Neem de stam werk. Bij ik, jij en hij komt -te erachter. Ik werkte.
+
+[[vis-2 | Meer dan één persoon? Dan komt er een -n bij.]]
+Bij wij, jullie en zij wordt het -ten. Wij werkten.
+
+[[vis-3 | Woon eindigt op een n, en die staat niet in 't kofschip.]]
+Nu de stam woon. Die eindigt niet op een letter uit 't kofschip. Dan wordt het -de. Ik woonde.
+
+[[vis-4 | Dus: -te en -ten, of -de en -den.]]
+En in het meervoud: wij woonden.
+
+[[rule | Gaan wordt ging, komen wordt kwam: die staan in de lijst bij deze les.]]
+Let op: sommige werkwoorden veranderen van klank in plaats van een uitgang te krijgen. Die leer je uit je hoofd.
+
+[[card-0 | De regelmatige groep: stam plus -te of -de.]]
+De eerste kaart is de groep met -te of -de.
+
+[[card-1 | Deze vormen zie je vaak in verhalen en in het nieuws.]]
+De tweede kaart is de groep met een andere klank.
+
+[[demo-0 | Woonde met een -d, want woon eindigt op een n.]]
+Twee voorbeelden. Vorige week woonde mijn buurvrouw nog in Almere.
+
+[[demo-1 | Kwamen komt van komen: een andere klank, geen uitgang.]]
+En: de kinderen kwamen om vier uur uit school.
+
+[[exercises]]
+Doe nu de opgaven. Zeg de stam hardop, en luister naar de laatste letter.

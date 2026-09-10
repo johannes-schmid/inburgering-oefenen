@@ -1,0 +1,18 @@
+# Training: Telefoongesprek — audio
+# les d2-telefoongesprek, item 6
+# Casting:
+#   A = woman_young (Female Voice 1 — younger woman)
+#   B = man_young (Male Voice 1 — younger man)
+#
+# Dit bestand is de leesbare afdruk van wat er is ingesproken. De bron is de payload in
+# generated/a2-luisteren/d2-telefoongesprek.json — pas die aan en spreek opnieuw in.
+A: Woningstichting Nieuwveld, met Karima.
+B: Goedemiddag, ik ben Peter Bosman van de Lijsterstraat 24. Mijn kraan in de keuken lekt.
+A: Lekt hij hard?
+B: Nogal, ja. Er staat water op de vloer.
+A: Dan stuur ik een loodgieter. Die komt vrijdag tussen één en drie uur.
+B: Vrijdagmiddag, dat is goed. Moet ik iets betalen?
+A: Nee, een lekkende kraan valt onder ons onderhoud. U betaalt niets.
+B: Fijn. En moet ik nog iets regelen?
+A: Zet u alstublieft de spullen onder de gootsteen weg. En zorg dat iemand thuis is.
+B: Doe ik. Bedankt, Karima.

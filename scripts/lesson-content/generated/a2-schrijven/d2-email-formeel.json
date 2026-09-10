@@ -1,0 +1,139 @@
+{
+  "items": [
+    {
+      "kind": "uitleg",
+      "tier": null,
+      "explanation": null,
+      "payload": {
+        "body_html": "<p>Je schrijft nu een e-mail aan een instantie, zoals in het examen; voor de hele opdracht heb je ongeveer 20 minuten.</p>",
+        "cards": []
+      }
+    },
+    {
+      "kind": "mcq",
+      "tier": 0,
+      "explanation": "In een e-mail aan een instantie hoort je eigen naam, want de medewerker moet weten wie schrijft. Je pasfoto en je salaris zijn niet nodig.",
+      "options": [
+        {
+          "label": "A",
+          "body": "Je naam onder de e-mail.",
+          "is_correct": true
+        },
+        {
+          "label": "B",
+          "body": "Een foto van jezelf.",
+          "is_correct": false
+        },
+        {
+          "label": "C",
+          "body": "Hoeveel geld je per maand verdient.",
+          "is_correct": false
+        }
+      ],
+      "payload": {
+        "prompt": "Je schrijft een e-mail aan de gemeente. Wat moet er zeker in staan?"
+      }
+    },
+    {
+      "kind": "mcq",
+      "tier": 0,
+      "explanation": "In een e-mail aan een instantie schrijf je zakelijk. \"Hoi, alles goed?\" is te informeel; je begint met \"Geachte heer of mevrouw,\".",
+      "options": [
+        {
+          "label": "A",
+          "body": "Geachte heer of mevrouw,",
+          "is_correct": false
+        },
+        {
+          "label": "B",
+          "body": "Hoi, alles goed?",
+          "is_correct": true
+        },
+        {
+          "label": "C",
+          "body": "Met vriendelijke groet,",
+          "is_correct": false
+        },
+        {
+          "label": "D",
+          "body": "Ik hoor graag van u.",
+          "is_correct": false
+        }
+      ],
+      "payload": {
+        "prompt": "Wat hoort NIET in een e-mail aan een instantie?"
+      }
+    },
+    {
+      "kind": "woordorde",
+      "tier": 2,
+      "explanation": "Na \"omdat\" komt het werkwoord achteraan: \"omdat ik moet werken\". \"Ik kan niet komen\" is de hoofdzin.",
+      "payload": {
+        "instruction": "Zet de woorden in de juiste volgorde. Deze zin kun je in je e-mail gebruiken.",
+        "tokens": [
+          "niet",
+          "moet",
+          "komen",
+          "ik",
+          "kan",
+          "omdat",
+          "werken",
+          "ik"
+        ],
+        "answer": [
+          "ik",
+          "kan",
+          "niet",
+          "komen",
+          "omdat",
+          "ik",
+          "moet",
+          "werken"
+        ]
+      }
+    },
+    {
+      "kind": "open_zin",
+      "tier": 2,
+      "explanation": "Een goede e-mail heeft een nette aanhef, alle gevraagde punten en een nette afsluiting met je naam.",
+      "payload": {
+        "prompt": "Je hebt een brief van de gemeente Nieuwveen gekregen. Je moet op 12 maart om 10.00 uur naar het loket komen. Je kunt niet komen. Schrijf een e-mail aan de gemeente. Schrijf in je e-mail: <ul><li>waarom je schrijft;</li><li>dat je op 12 maart niet kunt komen;</li><li>waarom je niet kunt komen;</li><li>wanneer je wel kunt komen;</li><li>een vraag of dat goed is.</li></ul>",
+        "model_answer": "Geachte heer of mevrouw,\n\nIk schrijf u over de brief van 3 maart. In die brief staat dat ik op 12 maart om 10.00 uur naar het loket moet komen.\n\nHelaas kan ik op 12 maart niet komen. Ik moet die dag werken tot 17.00 uur.\n\nIk kan wel komen op 14 maart in de ochtend. Kunt u mij laten weten of dat goed is?\n\nMet vriendelijke groet,\nAmina Yildiz\nKerkstraat 18, Nieuwveen",
+        "checklist": [
+          "Ik begin met \"Geachte heer of mevrouw,\" en eindig met mijn naam.",
+          "Alle vijf punten uit de opdracht staan in mijn e-mail.",
+          "Ik stel een vraag met \"Kunt u...?\" of \"Wilt u...?\"."
+        ]
+      }
+    },
+    {
+      "kind": "open_zin",
+      "tier": 2,
+      "explanation": "Je noemt duidelijk het probleem, wat je al hebt gedaan en wat je van de instantie wilt. Zo weet de lezer wat hij moet doen.",
+      "payload": {
+        "prompt": "In je huis is de kraan in de keuken kapot. Het water blijft lopen. Schrijf een e-mail aan woningstichting De Linde. Schrijf in je e-mail: <ul><li>wie je bent en waar je woont;</li><li>wat het probleem is;</li><li>hoe lang het probleem er al is;</li><li>wat je zelf al hebt gedaan;</li><li>wat de woningstichting moet doen.</li></ul>",
+        "model_answer": "Geachte heer of mevrouw,\n\nMijn naam is Karim Bakri. Ik woon op de Molenweg 42 in Nieuwveen.\n\nDe kraan in mijn keuken is kapot. Het water blijft de hele dag lopen. Het probleem is al vier dagen.\n\nIk heb de kraan zelf goed dichtgedraaid, maar dat helpt niet.\n\nKunt u een monteur sturen? Ik ben elke dag na 16.00 uur thuis.\n\nMet vriendelijke groet,\nKarim Bakri",
+        "checklist": [
+          "Ik schrijf mijn naam en mijn adres.",
+          "Ik schrijf wat kapot is en hoe lang al.",
+          "Ik vraag duidelijk om hulp, bijvoorbeeld een monteur."
+        ]
+      }
+    },
+    {
+      "kind": "open_zin",
+      "tier": 2,
+      "explanation": "Bij een aanvraag noem je je gegevens, wat je vraagt en waarom. Je vraagt ook wat je nog moet doen of meesturen.",
+      "payload": {
+        "prompt": "Je wilt een cursus Nederlands doen bij taalschool Het Anker. Schrijf een e-mail aan de taalschool. Schrijf in je e-mail: <ul><li>wie je bent;</li><li>welke cursus je wilt doen;</li><li>waarom je de cursus wilt doen;</li><li>op welke dagen je kunt;</li><li>een vraag over de kosten.</li></ul>",
+        "model_answer": "Geachte heer of mevrouw,\n\nMijn naam is Fatima Osman. Ik woon sinds twee jaar in Nieuwveen.\n\nIk wil graag de cursus Nederlands op niveau A2 doen. Ik wil de cursus doen omdat ik beter wil leren schrijven. Daarna wil ik werk zoeken in de zorg.\n\nIk kan op maandag en woensdag in de avond komen.\n\nHoeveel kost de cursus per maand? Ik hoor graag van u.\n\nMet vriendelijke groet,\nFatima Osman",
+        "checklist": [
+          "Ik noem mijn naam en welke cursus ik wil doen.",
+          "Ik geef een reden met \"omdat\" of \"want\".",
+          "Ik stel een vraag over de kosten."
+        ]
+      }
+    }
+  ],
+  "what_you_learn": "Je oefent met het schrijven van een e-mail aan een instantie, zoals in het examen. Je leert alle punten uit de opdracht in je e-mail zetten, met een nette aanhef en afsluiting. Je ziet ook wat er juist niet in een zakelijke e-mail hoort."
+}

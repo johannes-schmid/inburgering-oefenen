@@ -11,7 +11,7 @@ import { describe, it, expect } from 'vitest';
 import {
   masteryPct, isMastered, masteryState, weakestFirst,
   blockProgress, courseProgressPct, nextLesson, exerciseCount,
-  coursePath, lessonPath, conceptPath, conceptsPath, tierChip, isPublished,
+  coursePath, lessonPath, conceptPath, tierChip, isPublished,
   MASTERY_STREAK, MASTERY_THRESHOLD,
   type LessonBlock, type Mastery, type Concept,
 } from '@/lib/lessons/lessons';
@@ -183,8 +183,7 @@ describe('paden', () => {
     // routeerde naar de verkeerde pagina.
     expect(coursePath('a2', 'lezen')).toBe('/dashboard/a2/lezen/leren');
     expect(lessonPath('a2', 'lezen', 'b4-omdat')).toBe('/dashboard/a2/lezen/leren/b4-omdat');
-    expect(conceptsPath('b1')).toBe('/dashboard/b1/concepten');
-    expect(conceptPath('b1', 'passief')).toBe('/dashboard/b1/concepten/passief');
+    expect(conceptPath('b1', 'passief')).toBe('/dashboard/b1/taalregel/passief');
   });
 });
 

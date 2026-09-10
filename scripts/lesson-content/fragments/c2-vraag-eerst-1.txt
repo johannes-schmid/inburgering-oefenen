@@ -1,0 +1,17 @@
+# Lees eerst de vraag — audio
+# les c2-vraag-eerst, item 2
+# Casting:
+#   A = woman_young (Female Voice 1 — younger woman)
+#   B = man_young (Male Voice 1 — younger man)
+#
+# Dit bestand is de leesbare afdruk van wat er is ingesproken. De bron is de payload in
+# generated/a2-luisteren/c2-vraag-eerst.json — pas die aan en spreek opnieuw in.
+A: Buurthuis De Wilgenhof, goedemiddag. U spreekt met Sanne.
+B: Goedemiddag. Ik bel over de taalcursus. Kan ik me nog aanmelden?
+A: Ja hoor, er zijn nog twee plaatsen vrij.
+B: Fijn. Wanneer is de les?
+A: De les is elke woensdag van zeven tot negen uur. Op maandag is er een cursus computers, maar die is al vol.
+B: En wat kost het?
+A: De cursus kost vijfendertig euro voor tien lessen. Het boek betaal je zelf, dat is twaalf euro.
+B: Goed. En waar moet ik zijn?
+A: In de grote zaal, op de eerste verdieping. Neem je paspoort even mee.

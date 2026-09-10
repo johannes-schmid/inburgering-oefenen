@@ -1,0 +1,37 @@
+# De ingesproken uitleg van `b26-persoonlijk-vnw-lijdend`.
+# Regels met # zijn commentaar. [[id]] of [[id | extra uitleg]] markeert waar de stem over
+# welk element begint; de extra uitleg staat op de pagina bij dat element en mag niet herhalen
+# wat de stem net zei.
+# Geldige id's: vis, vis-1 t/m vis-6, rule, card-0, card-1, demo-0, demo-1, exercises.
+
+Deze les gaat over mij, jou, hem, haar en ons.
+
+[[vis-1 | Ik doe iets. Mij overkomt iets.]]
+Kijk naar het plaatje. Links staat de vorm die de zin begint, rechts de vorm voor wie iets ondergaat. Ik wordt mij. Zij belt mij morgen.
+
+[[vis-2 | Jou is nadruk, je is gewoner: ik zie je morgen.]]
+Jij wordt jou.
+
+[[vis-3 | Hij wordt hem. Nooit "ik ken hij".]]
+Hij wordt hem.
+
+[[vis-4 | Haar is zowel het voorwerp als het bezit: haar brief.]]
+Zij wordt haar.
+
+[[rule | Na een voorzetsel altijd de tweede vorm: met mij, voor hem, over ons.]]
+De regel is dus: doet de persoon iets, dan gebruik je de eerste vorm. Ondergaat de persoon iets, dan de tweede.
+
+[[card-0 | Deze vorm staat meestal vooraan in de zin.]]
+De eerste kaart is: wie doet het?
+
+[[card-1 | Deze vorm staat meestal achter het werkwoord.]]
+De tweede kaart is: wie ondergaat het?
+
+[[demo-0 | Ons staat achter stuurt: de gemeente doet het, wij ondergaan het.]]
+Twee voorbeelden. De gemeente stuurt ons een brief over de huur.
+
+[[demo-1 | Haar, want ik help en zij wordt geholpen.]]
+En: mijn buurvrouw is ziek, dus ik help haar met de boodschappen.
+
+[[exercises]]
+Doe nu de opgaven. Vraag je bij elk woordje af: doet die persoon iets, of niet?

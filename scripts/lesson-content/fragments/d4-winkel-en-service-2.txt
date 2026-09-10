@@ -1,0 +1,18 @@
+# Training: In de winkel — audio
+# les d4-winkel-en-service, item 6
+# Casting:
+#   A = man_young (Male Voice 1 — younger man)
+#   B = woman_young (Female Voice 1 — younger woman)
+#
+# Dit bestand is de leesbare afdruk van wat er is ingesproken. De bron is de payload in
+# generated/a2-luisteren/d4-winkel-en-service.json — pas die aan en spreek opnieuw in.
+A: Goedemorgen, mevrouw Bergman. Uw boodschappen zijn ingepakt.
+B: Fijn. Wat is het totaal?
+A: Dat is achttien euro vijftig. Maar de kaas staat er nog niet op.
+B: O, die had ik al betaald bij de kaasafdeling.
+A: Ah, dan is het goed. Betaalt u met pin of contant?
+B: Met pin. Eh, spaart u ook punten?
+A: Ja, maar dan heeft u een spaarkaart nodig. Die krijgt u gratis bij de klantenservice.
+B: Dan haal ik er straks een.
+A: Dat kan tot zes uur vandaag. Morgen zijn we gesloten.
+B: Goed om te weten. Dank u.

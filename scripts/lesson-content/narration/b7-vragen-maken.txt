@@ -1,0 +1,34 @@
+# De ingesproken uitleg van `b7-vragen-maken`.
+# Regels met # zijn commentaar. [[id]] of [[id | extra uitleg]] markeert waar de stem over
+# welk element begint; de extra uitleg staat op de pagina bij dat element en mag niet herhalen
+# wat de stem net zei.
+# Geldige id's: vis, vis-1 t/m vis-3, rule, card-0, card-1, demo-0, demo-1, exercises.
+
+Deze les gaat over vragen maken.
+
+[[vis-1 | De gewone zin uit les 1, als vergelijking.]]
+Kijk naar het plaatje. De eerste rij is een gewone zin: je woont in Utrecht.
+
+[[vis-2 | Let op: woon je, niet woont je. De -t valt weg.]]
+De tweede rij is een vraag zonder vraagwoord. Het werkwoord gaat naar voren: woon je in Utrecht? Op zo'n vraag antwoord je met ja of nee.
+
+[[vis-3 | Waar, wanneer, hoeveel, hoe: elk vraagwoord neemt plaats één.]]
+De derde rij heeft een vraagwoord. Waar staat op plaats één. Het werkwoord staat weer op plaats twee: waar woon je?
+
+[[rule | Zonder vraagwoord: werkwoord vooraan. Met vraagwoord: werkwoord op plaats twee.]]
+Er zijn dus twee manieren. Zonder vraagwoord begint de vraag met het werkwoord. Met een vraagwoord begint de vraag met dat woord.
+
+[[card-0 | Hoeveel, waar, wanneer, waarom: dan volgt het werkwoord.]]
+De eerste kaart is de vraag met een vraagwoord.
+
+[[card-1 | Deze vraag kun je met ja of nee beantwoorden.]]
+De tweede kaart zet het werkwoord vooraan.
+
+[[demo-0 | Kost staat op plaats twee, achter hoeveel.]]
+Twee voorbeelden. Hoeveel kost een kaartje voor de bus?
+
+[[demo-1 | Bij u blijft de -t staan: heeft u.]]
+En: heeft u de brief van de gemeente gelezen?
+
+[[exercises]]
+Doe nu de opgaven. Kijk eerst of er een vraagwoord staat.

@@ -7,7 +7,6 @@ import { FREE_GRADED_PER_SKILL } from '@/lib/grading-limits';
 import { MODULES } from '@/lib/pricing';
 import { DEFAULT_LEVEL, getOnderdeel, moduleGroupLabel, type SkillSlug } from '@/data/skills';
 import { fetchPublishedExamNumbers } from '@/lib/portal-progress';
-import SkillIcon from '@/components/site/SkillIcon';
 import AppShell from '../../components/AppShell';
 import ModulePicker from './ModulePicker';
 import { fetchPortalMenu } from '@/lib/portal-menu';

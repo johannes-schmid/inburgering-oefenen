@@ -1,0 +1,193 @@
+{
+  "items": [
+    {
+      "kind": "uitleg",
+      "tier": null,
+      "explanation": null,
+      "payload": {
+        "body_html": "<p>Soms weet je de weg niet in een stad of dorp. Dan vraag je iemand op straat de weg, of je legt zelf uit waar iets is.</p>",
+        "cards": [
+          {
+            "label": "JE VRAAGT",
+            "example_html": "<mark>Weet u waar</mark> het station is?"
+          },
+          {
+            "label": "JE WIJST",
+            "example_html": "U gaat hier <mark>rechtdoor</mark> en dan linksaf."
+          }
+        ]
+      }
+    },
+    {
+      "kind": "woordenlijst",
+      "tier": null,
+      "explanation": null,
+      "payload": {
+        "theme": "weg-en-plaats"
+      }
+    },
+    {
+      "kind": "zinnenbank",
+      "tier": null,
+      "explanation": null,
+      "payload": {
+        "columns": [
+          {
+            "heading": "De weg vragen",
+            "phrases": [
+              "Mag ik iets vragen?",
+              "Weet u waar de apotheek is?",
+              "Hoe kom ik bij het station?",
+              "Is het vlakbij of ver?",
+              "Ik ben verdwaald, kunt u mij helpen?"
+            ]
+          },
+          {
+            "heading": "De weg wijzen",
+            "phrases": [
+              "U loopt hier rechtdoor.",
+              "Bij het stoplicht gaat u linksaf.",
+              "Neem de tweede afslag na de rotonde.",
+              "Het is verderop, tegenover de school.",
+              "U moet hier oversteken bij het zebrapad."
+            ]
+          },
+          {
+            "heading": "Iets niet begrijpen",
+            "phrases": [
+              "Kunt u dat nog een keer zeggen?",
+              "Sorry, ik begrijp het niet.",
+              "Kunt u het op de kaart wijzen?",
+              "Dus ik ga eerst rechtsaf?",
+              "Kunt u iets langzamer praten?"
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "kind": "matchen",
+      "tier": 0,
+      "explanation": "Je kiest bij elke situatie de zin die daar precies bij past. Zo weet je welke vaste zin je in een gesprek kunt gebruiken.",
+      "payload": {
+        "instruction": "Welke zin past bij de situatie? Maak de goede paren.",
+        "pairs": [
+          {
+            "left": "Je weet de weg niet meer",
+            "right": "Ik ben verdwaald, kunt u mij helpen?"
+          },
+          {
+            "left": "Je begint een gesprek met een onbekende",
+            "right": "Mag ik iets vragen?"
+          },
+          {
+            "left": "Je hebt de uitleg niet goed gehoord",
+            "right": "Kunt u dat nog een keer zeggen?"
+          },
+          {
+            "left": "Je wijst iemand de weg naar het park",
+            "right": "U loopt hier rechtdoor."
+          }
+        ]
+      }
+    },
+    {
+      "kind": "gap_choice",
+      "tier": 1,
+      "explanation": "Een stoplicht is de lamp met rood, oranje en groen voor het verkeer. Bij een stoplicht sta je stil of loop je door.",
+      "payload": {
+        "sentence": "U loopt deze straat in. Bij het ___ gaat u linksaf.",
+        "choices": [
+          "stoplicht",
+          "zebrapad",
+          "bord"
+        ],
+        "answer": "stoplicht"
+      }
+    },
+    {
+      "kind": "gap_choice",
+      "tier": 1,
+      "explanation": "Een rotonde is een rond punt in de weg waar je omheen gaat. Daarna neem je een afslag.",
+      "payload": {
+        "sentence": "Ga om de ___ heen en neem dan de tweede afslag.",
+        "choices": [
+          "hoek",
+          "rotonde",
+          "stoep"
+        ],
+        "answer": "rotonde"
+      }
+    },
+    {
+      "kind": "gap_choice",
+      "tier": 1,
+      "explanation": "Oversteken is naar de andere kant van de straat gaan. Dat doe je veilig bij het zebrapad, de witte strepen voor voetgangers.",
+      "payload": {
+        "sentence": "U moet hier ___ bij het zebrapad.",
+        "choices": [
+          "volgen",
+          "oversteken",
+          "wijzen"
+        ],
+        "answer": "oversteken"
+      }
+    },
+    {
+      "kind": "gap_type",
+      "tier": 2,
+      "explanation": "Rechtdoor betekent in dezelfde richting verder, niet naar links en niet naar rechts.",
+      "payload": {
+        "sentence": "U gaat hier niet linksaf en niet rechtsaf. U loopt gewoon ___.",
+        "answer": "rechtdoor"
+      }
+    },
+    {
+      "kind": "gap_type",
+      "tier": 2,
+      "explanation": "Vlakbij betekent op heel korte afstand. Bij twee minuten lopen is iets dus vlakbij.",
+      "payload": {
+        "sentence": "De apotheek is ___. Het is maar twee minuten lopen.",
+        "answer": "vlakbij"
+      }
+    },
+    {
+      "kind": "gap_type",
+      "tier": 2,
+      "explanation": "Tegenover betekent aan de andere kant van de straat, precies ertegen aan.",
+      "payload": {
+        "sentence": "De bakker zit ___ de school, aan de andere kant van de straat.",
+        "answer": "tegenover"
+      }
+    },
+    {
+      "kind": "open_zin",
+      "tier": 2,
+      "explanation": "Je begint netjes met een vraag om iets te mogen vragen, en daarna zeg je duidelijk wat je zoekt.",
+      "payload": {
+        "prompt": "Je staat op straat in Almere. Je zoekt het gemeentehuis. Vraag een mevrouw de weg. Schrijf twee zinnen.",
+        "model_answer": "Mag ik iets vragen? Weet u waar het gemeentehuis is? Is het vlakbij?",
+        "checklist": [
+          "Je begint vriendelijk, bijvoorbeeld met 'Mag ik iets vragen?'",
+          "Je zegt duidelijk welke plek je zoekt",
+          "Je gebruikt 'u' tegen een onbekende mevrouw"
+        ]
+      }
+    },
+    {
+      "kind": "open_zin",
+      "tier": 2,
+      "explanation": "Als je de weg wijst, gebruik je richtingwoorden zoals rechtdoor, linksaf en rechtsaf en een punt op de weg, zoals het stoplicht of de rotonde.",
+      "payload": {
+        "prompt": "Iemand vraagt jou de weg naar de supermarkt. Wijs de weg. Gebruik minstens twee woorden uit de lijst, bijvoorbeeld rechtdoor, stoplicht, rotonde of rechtsaf.",
+        "model_answer": "U loopt hier rechtdoor tot het stoplicht. Daar gaat u rechtsaf. De supermarkt is verderop, tegenover de apotheek.",
+        "checklist": [
+          "Je gebruikt minstens twee woorden over de weg en de richting",
+          "Je zegt in welke volgorde de persoon moet lopen",
+          "Je zinnen zijn kort en duidelijk"
+        ]
+      }
+    }
+  ],
+  "what_you_learn": "Na deze les kun je op straat aan iemand de weg vragen. Je kent de woorden voor de weg, zoals de kruising, het stoplicht en de rotonde. Je kunt ook zelf iemand de weg wijzen met rechtdoor, linksaf en rechtsaf."
+}

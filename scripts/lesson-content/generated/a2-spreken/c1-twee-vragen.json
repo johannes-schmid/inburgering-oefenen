@@ -1,0 +1,172 @@
+{
+  "items": [
+    {
+      "kind": "uitleg",
+      "tier": null,
+      "explanation": null,
+      "payload": {
+        "body_html": "<p>In het eerste deel van het spreekexamen zie je een korte film. Daarna hoor je <strong>twee vragen</strong> bij dat filmpje.</p><p>Geef antwoord op <strong>beide</strong> vragen. Ook een kort antwoord is goed, maar je moet wel twee keer iets zeggen.</p><p>Werk in stappen: 1. luister welke twee dingen worden gevraagd. 2. antwoord eerst op vraag 1. 3. antwoord daarna op vraag 2. Gebruik een woordje als <em>en</em>, <em>ook</em> of <em>daarna</em>, zodat de twee delen goed te horen zijn.</p>",
+        "cards": [
+          {
+            "label": "ZWAK",
+            "example_html": "<mark>Ik ben ziek.</mark> (alleen antwoord op vraag 1)"
+          },
+          {
+            "label": "GOED",
+            "example_html": "Ik ben ziek. <mark>En ik kom morgen weer werken.</mark>"
+          }
+        ]
+      }
+    },
+    {
+      "kind": "voorbeeld",
+      "tier": null,
+      "explanation": null,
+      "payload": {
+        "sentence_html": "Mijn zoon is verkouden. <mark>En daarom blijft hij vandaag thuis.</mark>"
+      }
+    },
+    {
+      "kind": "voorbeeld",
+      "tier": null,
+      "explanation": null,
+      "payload": {
+        "sentence_html": "Ik wil een nieuwe pas aanvragen. <mark>Ik kom ook mijn adres doorgeven.</mark>"
+      }
+    },
+    {
+      "kind": "mcq",
+      "tier": 0,
+      "explanation": "Je moet twee dingen zeggen: wat je wil kopen en waarom. Antwoord B doet dat.",
+      "payload": {
+        "prompt": "Je ziet een filmpje in een fietsenwinkel. Je hoort twee vragen: Wat voor fiets zoek je? En waarom wil je die fiets? Welk antwoord past hier?"
+      },
+      "options": [
+        {
+          "label": "A",
+          "body": "Een fiets, graag.",
+          "is_correct": false
+        },
+        {
+          "label": "B",
+          "body": "Ik zoek een gewone damesfiets. Ik wil er elke dag naar mijn werk mee.",
+          "is_correct": true
+        },
+        {
+          "label": "C",
+          "body": "De fietsen zijn hier heel duur.",
+          "is_correct": false
+        }
+      ]
+    },
+    {
+      "kind": "mcq",
+      "tier": 0,
+      "explanation": "Antwoord A geeft alleen de tijd. De tweede vraag, wat je gaat doen, blijft zonder antwoord.",
+      "payload": {
+        "prompt": "De twee vragen zijn: Hoe laat ben je vrij? En wat ga je dan doen? Welk antwoord is te kort?"
+      },
+      "options": [
+        {
+          "label": "A",
+          "body": "Om vijf uur.",
+          "is_correct": true
+        },
+        {
+          "label": "B",
+          "body": "Ik ben om vijf uur vrij. Dan ga ik boodschappen doen.",
+          "is_correct": false
+        },
+        {
+          "label": "C",
+          "body": "Om vijf uur, en daarna haal ik mijn dochter op.",
+          "is_correct": false
+        }
+      ]
+    },
+    {
+      "kind": "mcq",
+      "tier": 0,
+      "explanation": "Je hoort een vraag over de klacht én een vraag over de tijd. In antwoord C staan die twee dingen.",
+      "payload": {
+        "prompt": "Je ziet een filmpje bij de huisarts. De twee vragen zijn: Wat heb je precies? En hoe lang heb je dat al? Welk antwoord past hier?"
+      },
+      "options": [
+        {
+          "label": "A",
+          "body": "Ik heb heel veel pijn, dokter.",
+          "is_correct": false
+        },
+        {
+          "label": "B",
+          "body": "Ik heb al drie dagen niet gewerkt.",
+          "is_correct": false
+        },
+        {
+          "label": "C",
+          "body": "Ik heb pijn in mijn rug. Dat heb ik nu ongeveer een week.",
+          "is_correct": true
+        }
+      ]
+    },
+    {
+      "kind": "matchen",
+      "tier": 1,
+      "explanation": "Bij elke situatie horen twee vragen. Je kiest het antwoord dat op beide vragen iets zegt.",
+      "payload": {
+        "instruction": "Welk antwoord past bij welke situatie? Verbind de situatie met wat je zegt.",
+        "pairs": [
+          {
+            "left": "Wat wil je huren? En voor hoeveel personen?",
+            "right": "Ik zoek een klein huis. Het is voor mij en mijn twee kinderen."
+          },
+          {
+            "left": "Waarom bel je? En wanneer kun je komen?",
+            "right": "Ik bel voor een afspraak. Ik kan donderdagochtend komen."
+          },
+          {
+            "left": "Wat is er kapot? En sinds wanneer?",
+            "right": "De kraan lekt. Dat is al sinds maandag."
+          },
+          {
+            "left": "Welke cursus doe je? En hoe vaak heb je les?",
+            "right": "Ik doe een taalcursus. Ik heb twee keer per week les."
+          }
+        ]
+      }
+    },
+    {
+      "kind": "opnemen",
+      "tier": 2,
+      "explanation": "Je zegt eerst wat je zoekt en daarna hoeveel je wil betalen. Zo geef je antwoord op beide vragen.",
+      "payload": {
+        "prompt": "Je ziet een filmpje in een meubelwinkel. Een verkoper vraagt je twee dingen: Wat voor bank zoekt u? En hoeveel wilt u ongeveer betalen? Neem je antwoord op. Vergelijk je antwoord daarna met het voorbeeld.",
+        "model_answer": "Ik zoek een bank voor drie personen, het liefst in een donkere kleur. En ik wil ongeveer vierhonderd euro betalen. Meer kan ik nu niet doen.",
+        "checklist": [
+          "Ik geef antwoord op vraag 1: wat voor bank.",
+          "Ik geef antwoord op vraag 2: hoeveel geld.",
+          "Ik zeg minstens twee zinnen."
+        ],
+        "image_urls": [],
+        "record_seconds": 60
+      }
+    },
+    {
+      "kind": "opnemen",
+      "tier": 2,
+      "explanation": "De twee vragen gaan over de reden en over de tijd. Beide dingen komen in je antwoord terug.",
+      "payload": {
+        "prompt": "Je ziet een filmpje bij de balie van de gemeente. De medewerker vraagt twee dingen: Waarvoor komt u vandaag? En hoe lang woont u al in deze stad? Neem je antwoord op. Vergelijk je antwoord daarna met het voorbeeld.",
+        "model_answer": "Ik kom mijn nieuwe adres doorgeven. Ik ben vorige week verhuisd naar de Beukenlaan. En ik woon nu ongeveer drie jaar in deze stad.",
+        "checklist": [
+          "Ik zeg waarvoor ik kom.",
+          "Ik zeg ook hoe lang ik hier woon.",
+          "Ik gebruik een woordje als en of ook tussen de twee delen."
+        ],
+        "image_urls": [],
+        "record_seconds": 60
+      }
+    }
+  ],
+  "what_you_learn": "In deze les leer je dat er bij elk filmpje twee vragen worden gesteld. Je leert antwoorden op beide vragen, ook als je antwoord kort is. Je oefent met woordjes als en, ook en daarna, zodat je twee delen goed hoorbaar maakt."
+}

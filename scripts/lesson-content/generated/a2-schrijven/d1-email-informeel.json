@@ -1,0 +1,133 @@
+{
+  "items": [
+    {
+      "kind": "uitleg",
+      "tier": null,
+      "explanation": null,
+      "payload": {
+        "body_html": "<p>Je schrijft een korte e-mail aan iemand die je kent; in het examen heb je voor deze opdracht ongeveer 10 minuten.</p>",
+        "cards": []
+      }
+    },
+    {
+      "kind": "open_zin",
+      "tier": 2,
+      "explanation": "Alle drie de inhoudspunten moeten in je e-mail staan, en je schrijft aan een bekende, dus je gebruikt 'je' en een informele groet.",
+      "payload": {
+        "prompt": "<p><strong>Opdracht 1</strong></p><p>Je buurvrouw Fatima heeft een week op je post gelet. Schrijf een e-mail aan Fatima.</p><p>Schrijf in je e-mail:</p><ul><li>dat je haar bedankt voor het letten op je post;</li><li>hoe je vakantie was;</li><li>dat je haar zaterdag wilt uitnodigen voor koffie.</li></ul><p>Schrijf ongeveer 40 woorden. Begin met een aanhef en eindig met een groet.</p>",
+        "model_answer": "<p>Hoi Fatima,</p><p>Bedankt dat je op mijn post hebt gelet. Dat was heel fijn. Mijn vakantie was mooi, het weer was warm. Kom je zaterdag koffiedrinken bij mij? Ik ben de hele dag thuis.</p><p>Groetjes,<br>Amina</p>",
+        "checklist": [
+          "Ik bedank Fatima voor het letten op de post.",
+          "Ik schrijf hoe mijn vakantie was.",
+          "Ik nodig haar zaterdag uit voor koffie, en er staat een aanhef en een groet."
+        ]
+      }
+    },
+    {
+      "kind": "mcq",
+      "tier": 0,
+      "explanation": "Je schrijft alleen wat in de opdracht staat; je adres of andere extra informatie hoort er niet in.",
+      "payload": {
+        "prompt": "<p>Je schrijft de e-mail aan Fatima. Wat hoort er <strong>niet</strong> in?</p>"
+      },
+      "options": [
+        {
+          "label": "A",
+          "body": "Je adres en je telefoonnummer.",
+          "is_correct": true
+        },
+        {
+          "label": "B",
+          "body": "Een bedankje voor de post.",
+          "is_correct": false
+        },
+        {
+          "label": "C",
+          "body": "Een uitnodiging voor zaterdag.",
+          "is_correct": false
+        }
+      ]
+    },
+    {
+      "kind": "woordorde",
+      "tier": 2,
+      "explanation": "In een vraag met 'kun je' staat het werkwoord vooraan, daarna het onderwerp en dan de rest.",
+      "payload": {
+        "instruction": "Maak van deze woorden een goede vraag voor je e-mail.",
+        "tokens": [
+          "zaterdag",
+          "kun",
+          "je",
+          "langskomen",
+          "even"
+        ],
+        "answer": [
+          "kun",
+          "je",
+          "zaterdag",
+          "even",
+          "langskomen"
+        ]
+      }
+    },
+    {
+      "kind": "open_zin",
+      "tier": 2,
+      "explanation": "Je moet alle drie de punten uit de opdracht noemen; een e-mail met alleen sorry is niet genoeg.",
+      "payload": {
+        "prompt": "<p><strong>Opdracht 2</strong></p><p>Je hebt een afspraak met je vriend Karim, maar je kunt niet komen. Schrijf een e-mail aan Karim.</p><p>Schrijf in je e-mail:</p><ul><li>dat je vrijdag niet kunt komen;</li><li>waarom je niet kunt komen;</li><li>wanneer je wel kunt afspreken.</li></ul><p>Schrijf ongeveer 40 woorden. Begin met een aanhef en eindig met een groet.</p>",
+        "model_answer": "<p>Hoi Karim,</p><p>Sorry, ik kan vrijdag niet komen. Ik moet die dag werken, want mijn collega is ziek. Kunnen we zondag afspreken? Ik ben na twee uur vrij. Laat je even weten of dat lukt?</p><p>Groetjes,<br>Samir</p>",
+        "checklist": [
+          "Ik schrijf dat ik vrijdag niet kan komen.",
+          "Ik geef een reden met 'want' of 'omdat'.",
+          "Ik noem een nieuwe dag en tijd."
+        ]
+      }
+    },
+    {
+      "kind": "mcq",
+      "tier": 0,
+      "explanation": "Je schrijft aan iemand die je goed kent, dus 'Hoi Karim' past; 'Geachte heer' gebruik je voor een instantie.",
+      "payload": {
+        "prompt": "<p>Welke aanhef past het beste in een e-mail aan je vriend Karim?</p>"
+      },
+      "options": [
+        {
+          "label": "A",
+          "body": "Geachte heer Karim,",
+          "is_correct": false
+        },
+        {
+          "label": "B",
+          "body": "Hoi Karim,",
+          "is_correct": true
+        },
+        {
+          "label": "C",
+          "body": "Aan de heer Karim,",
+          "is_correct": false
+        },
+        {
+          "label": "D",
+          "body": "Beste mevrouw,",
+          "is_correct": false
+        }
+      ]
+    },
+    {
+      "kind": "open_zin",
+      "tier": 2,
+      "explanation": "Ook hier gelden alle drie de eisen uit de opdracht: vragen, uitleggen en een tijd noemen.",
+      "payload": {
+        "prompt": "<p><strong>Opdracht 3</strong></p><p>Je collega Ellen heeft een auto. Jij moet een grote kast ophalen. Schrijf een e-mail aan Ellen.</p><p>Schrijf in je e-mail:</p><ul><li>dat je haar auto wilt lenen;</li><li>waarvoor je de auto nodig hebt;</li><li>hoe lang je de auto nodig hebt.</li></ul><p>Schrijf ongeveer 40 woorden. Begin met een aanhef en eindig met een groet.</p>",
+        "model_answer": "<p>Hoi Ellen,</p><p>Mag ik zaterdag je auto lenen? Ik heb een kast gekocht in Almere. Die kast is te groot voor de trein. Ik heb de auto ongeveer twee uur nodig. Is dat goed?</p><p>Groetjes,<br>Nadia</p>",
+        "checklist": [
+          "Ik vraag netjes of ik de auto mag lenen.",
+          "Ik leg uit waarvoor ik de auto nodig heb.",
+          "Ik schrijf hoe lang ik de auto nodig heb."
+        ]
+      }
+    }
+  ],
+  "what_you_learn": "Je oefent met het schrijven van een korte e-mail aan iemand die je kent. Je leert alle punten uit de opdracht in je e-mail te zetten, met een aanhef en een groet. Je ziet ook wat er juist niet in zo'n e-mail hoort."
+}

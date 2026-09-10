@@ -1,0 +1,180 @@
+{
+  "items": [
+    {
+      "kind": "uitleg",
+      "tier": null,
+      "explanation": null,
+      "payload": {
+        "body_html": "<p>Bij luisteren beslissen kleine woordjes vaak het antwoord. <strong>Niet</strong>, <strong>geen</strong>, <strong>te</strong> en <strong>juist</strong> draaien de betekenis om. \"De jas is <em>te</em> groot\" betekent niet dat de jas groot en goed is: hij past niet.</p><p>Werk in drie stappen. 1. Lees de vraag en bedenk waar je op let. 2. Luister naar het kleine woordje vóór het belangrijke woord. 3. Kies pas daarna een antwoord.</p><p>Let op: een fout antwoord gebruikt vaak precies het woord dat je hoorde, maar zonder dat kleine woordje.</p>",
+        "cards": [
+          {
+            "label": "TE",
+            "example_html": "De schoenen zijn <mark>te</mark> klein: ze passen niet."
+          },
+          {
+            "label": "GEEN",
+            "example_html": "Ik heb <mark>geen</mark> tijd op maandag."
+          },
+          {
+            "label": "JUIST",
+            "example_html": "Niet dinsdag, <mark>juist</mark> woensdag komt hij."
+          }
+        ]
+      }
+    },
+    {
+      "kind": "audio",
+      "tier": null,
+      "explanation": null,
+      "payload": {
+        "script": "A: Goedemiddag, kan ik u helpen?\nB: Ja, ik kom deze broek terugbrengen. Hij is te lang.\nA: Heeft u de bon nog?\nB: Nee, ik heb geen bon. Mijn dochter heeft de broek gekocht.\nA: Dan kan ik geen geld teruggeven. Maar ruilen mag wel.\nB: Ruilen is goed. Heeft u de broek een maat kleiner?\nA: Even kijken hoor. Nee, kleiner hebben we niet. Juist een maat groter ligt er nog.\nB: Groter heb ik niet nodig.\nA: Dinsdag komt er nieuwe voorraad. Komt u dan even terug?\nB: Goed, dan kom ik dinsdag na vier uur.",
+        "label": "Gesprek in een kledingwinkel",
+        "audio_url": "http://127.0.0.1:54421/storage/v1/object/public/leren-audio/fragment/a2-luisteren/c5-kleine-woordjes-1.mp3",
+        "voice_cast": {
+          "A": "woman_young",
+          "B": "man_young"
+        },
+        "transcript": "Goedemiddag, kan ik u helpen? Ja, ik kom deze broek terugbrengen. Hij is te lang. Heeft u de bon nog? Nee, ik heb geen bon. Mijn dochter heeft de broek gekocht. Dan kan ik geen geld teruggeven. Maar ruilen mag wel. Ruilen is goed. Heeft u de broek een maat kleiner? Even kijken hoor. Nee, kleiner hebben we niet. Juist een maat groter ligt er nog. Groter heb ik niet nodig. Dinsdag komt er nieuwe voorraad. Komt u dan even terug? Goed, dan kom ik dinsdag na vier uur.",
+        "seconds": 33.02
+      }
+    },
+    {
+      "kind": "mcq",
+      "tier": 0,
+      "explanation": "Meneer Bakker zegt: \"Hij is te lang.\" Het woordje <strong>te</strong> betekent dat de broek niet past. Optie B is de val: je hoort wel \"lang\", maar met \"te\" ervoor is het een probleem.",
+      "payload": {
+        "prompt": "Wat is er met de broek?"
+      },
+      "options": [
+        {
+          "label": "A",
+          "body": "De broek past niet, hij is te lang.",
+          "is_correct": true
+        },
+        {
+          "label": "B",
+          "body": "De broek is mooi lang en past goed.",
+          "is_correct": false
+        },
+        {
+          "label": "C",
+          "body": "De broek is kapot bij de knie.",
+          "is_correct": false
+        }
+      ]
+    },
+    {
+      "kind": "mcq",
+      "tier": 0,
+      "explanation": "Hij zegt: \"Ik heb geen bon.\" Het woordje <strong>geen</strong> draait de betekenis om: de bon is er niet.",
+      "payload": {
+        "prompt": "Heeft meneer Bakker een bon?"
+      },
+      "options": [
+        {
+          "label": "A",
+          "body": "Ja, hij heeft de bon bij zich.",
+          "is_correct": false
+        },
+        {
+          "label": "B",
+          "body": "Nee, hij heeft geen bon.",
+          "is_correct": false
+        },
+        {
+          "label": "C",
+          "body": "Nee, hij heeft geen bon; zijn dochter kocht de broek.",
+          "is_correct": true
+        }
+      ]
+    },
+    {
+      "kind": "mcq",
+      "tier": 1,
+      "explanation": "De medewerker zegt: \"kleiner hebben we niet\" en \"juist een maat groter ligt er nog\". Het woordje <strong>juist</strong> wijst naar de maat die er wél is.",
+      "payload": {
+        "prompt": "Welke maat heeft de winkel nog wel?"
+      },
+      "options": [
+        {
+          "label": "A",
+          "body": "Een maat groter.",
+          "is_correct": true
+        },
+        {
+          "label": "B",
+          "body": "Een maat kleiner.",
+          "is_correct": false
+        },
+        {
+          "label": "C",
+          "body": "Dezelfde maat.",
+          "is_correct": false
+        },
+        {
+          "label": "D",
+          "body": "Alle maten.",
+          "is_correct": false
+        }
+      ]
+    },
+    {
+      "kind": "mcq",
+      "tier": 1,
+      "explanation": "Er zit één woordje in dat het antwoord bepaalt: \"Dan kan ik <strong>geen</strong> geld teruggeven. Maar ruilen mag wel.\"",
+      "payload": {
+        "prompt": "Wat kan meneer Bakker zonder bon doen?"
+      },
+      "options": [
+        {
+          "label": "A",
+          "body": "Zijn geld terugkrijgen.",
+          "is_correct": false
+        },
+        {
+          "label": "B",
+          "body": "De broek ruilen.",
+          "is_correct": true
+        },
+        {
+          "label": "C",
+          "body": "Niets, hij moet de broek houden.",
+          "is_correct": false
+        }
+      ]
+    },
+    {
+      "kind": "gap_type",
+      "tier": 2,
+      "explanation": "Meneer Bakker zegt: \"dan kom ik dinsdag na vier uur\". Schrijf de dag op die je hoorde.",
+      "payload": {
+        "sentence": "Meneer Bakker komt ___ terug naar de winkel.",
+        "answer": "dinsdag"
+      }
+    },
+    {
+      "kind": "gap_type",
+      "tier": 2,
+      "explanation": "Hij zegt: \"na vier uur\". Het kleine woordje <strong>na</strong> hoort erbij: hij komt niet vóór vier uur.",
+      "payload": {
+        "sentence": "Hij komt terug na ___ uur.",
+        "answer": "vier"
+      }
+    },
+    {
+      "kind": "open_zin",
+      "tier": 2,
+      "explanation": "Je legt in eigen woorden uit welk klein woordje je hoorde en wat het met de betekenis deed.",
+      "payload": {
+        "prompt": "Hoe wist je dat de broek niet goed was? Schrijf in twee zinnen welk klein woordje je hoorde en wat het betekende.",
+        "model_answer": "Ik hoorde het woordje \"te\" voor \"lang\". Daardoor weet ik dat de broek niet past en dat hij hem terugbrengt.",
+        "checklist": [
+          "Je noemt het kleine woordje dat je hoorde.",
+          "Je zegt wat het woordje met de betekenis doet.",
+          "Je schrijft twee korte zinnen."
+        ]
+      }
+    }
+  ],
+  "what_you_learn": "Je leert letten op kleine woordjes als niet, geen, te en juist. Die woordjes draaien de betekenis van een zin om: \"te groot\" betekent dat iets niet past. Je oefent met een gesprek en kiest pas een antwoord nadat je het kleine woordje hebt gehoord."
+}

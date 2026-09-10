@@ -1,0 +1,17 @@
+# De vraag zegt het anders — audio
+# les c4-andere-woorden, item 2
+# Casting:
+#   A = woman_young (Female Voice 1 — younger woman)
+#   B = woman_older (Female Voice 2 — older woman)
+#
+# Dit bestand is de leesbare afdruk van wat er is ingesproken. De bron is de payload in
+# generated/a2-luisteren/c4-andere-woorden.json — pas die aan en spreek opnieuw in.
+A: Tandartspraktijk De Beukenlaan, goedemiddag.
+B: Goedemiddag, u spreekt met Amina Sahin. Ik heb erge kiespijn.
+A: Wat naar. Kunt u morgenochtend komen? Om kwart over negen is er plaats.
+B: Morgenochtend werk ik. Kan het ook later op de dag?
+A: Even kijken, hoor. Om tien voor vier is er ook nog plek.
+B: Dat is goed. En moet ik dan meteen betalen?
+A: Nee, u krijgt de rekening later thuis. Neemt u wel uw verzekeringspas mee.
+B: Prima. Tot morgen dan.
+A: Tot morgen, mevrouw Sahin.

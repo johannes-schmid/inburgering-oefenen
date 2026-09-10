@@ -1,0 +1,16 @@
+# Onthouden zonder pen — audio
+# les c3-kernwoorden, item 2
+# Casting:
+#   A = woman_young (Female Voice 1 — younger woman)
+#   B = man_young (Male Voice 1 — younger man)
+#
+# Dit bestand is de leesbare afdruk van wat er is ingesproken. De bron is de payload in
+# generated/a2-luisteren/c3-kernwoorden.json — pas die aan en spreek opnieuw in.
+A: Goedemiddag, huisartsenpraktijk De Linde, met Anja.
+B: Goedemiddag, u spreekt met Rachid Bouali. Ik heb morgen een afspraak, geloof ik om half tien.
+A: Even kijken, meneer Bouali. Ja, morgen om half tien bij dokter Veenstra. Maar dokter Veenstra is ziek.
+B: Oh. En nu?
+A: U kunt morgen om kwart over elf komen bij dokter Prins. Dat is in dezelfde praktijk, kamer vier.
+B: Kwart over elf, kamer vier. Dat is goed.
+A: Fijn. Neemt u uw verzekeringskaart mee, hoor. En kom vijf minuten eerder.
+B: Dat doe ik. Dank u wel, tot morgen.

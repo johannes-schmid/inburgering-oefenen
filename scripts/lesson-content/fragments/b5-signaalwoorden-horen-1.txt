@@ -1,0 +1,18 @@
+# Signaalwoorden horen — audio
+# les b5-signaalwoorden-horen, item 2
+# Casting:
+#   A = woman_young (Female Voice 1 — younger woman)
+#   B = woman_older (Female Voice 2 — older woman)
+#
+# Dit bestand is de leesbare afdruk van wat er is ingesproken. De bron is de payload in
+# generated/a2-luisteren/b5-signaalwoorden-horen.json — pas die aan en spreek opnieuw in.
+A: Tandartspraktijk De Linde, goedemorgen.
+B: Goedemorgen, met Amina Hadi. Ik heb vandaag een afspraak om half drie.
+A: Ja, ik zie het staan.
+B: Maar ik kan niet komen, want mijn dochter is ziek.
+A: Dat is jammer. Dan zoek ik even een nieuwe dag, hoor.
+B: Graag.
+A: Woensdag om tien uur? Dus over een week.
+B: Woensdag is goed.
+A: Fijn. U komt eerst bij mij aan de balie, en daarna gaat u naar kamer 4.
+B: Duidelijk. Dank u wel.

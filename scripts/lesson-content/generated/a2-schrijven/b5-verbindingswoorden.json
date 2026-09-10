@@ -1,0 +1,198 @@
+{
+  "items": [
+    {
+      "kind": "uitleg",
+      "tier": null,
+      "explanation": null,
+      "payload": {
+        "body_html": "<p>Als je schrijft, wil je dat je tekst <strong>loopt</strong>. Dat betekent: de lezer snapt waarom je iets zegt. Met de woorden <strong>want</strong>, <strong>omdat</strong> en <strong>daarom</strong> plak je twee zinnen aan elkaar. Dan is het geen rijtje losse zinnen meer, maar één tekst.</p>",
+        "cards": [
+          {
+            "label": "LOSSE ZINNEN",
+            "example_html": "Ik kan niet komen. Ik ben ziek. Ik bel morgen."
+          },
+          {
+            "label": "ÉÉN TEKST",
+            "example_html": "Ik kan niet komen, <mark>want</mark> ik ben ziek. <mark>Daarom</mark> bel ik morgen."
+          }
+        ]
+      }
+    },
+    {
+      "kind": "uitleg",
+      "tier": null,
+      "explanation": null,
+      "payload": {
+        "body_html": "<p>Let op de plaats van het werkwoord. Na <strong>want</strong> en <strong>daarom</strong> blijft de zin een gewone zin. Na <strong>omdat</strong> gaat het werkwoord naar het eind. Na <strong>daarom</strong> komt eerst het werkwoord en dan pas <em>ik</em>.</p>",
+        "cards": [
+          {
+            "label": "WANT / OMDAT",
+            "example_html": "Ik blijf thuis, <mark>want</mark> mijn zoon is ziek. Ik blijf thuis, <mark>omdat</mark> mijn zoon ziek <mark>is</mark>."
+          },
+          {
+            "label": "DAAROM",
+            "example_html": "Mijn zoon is ziek. <mark>Daarom blijf ik</mark> thuis."
+          }
+        ]
+      }
+    },
+    {
+      "kind": "voorbeeld",
+      "tier": null,
+      "explanation": null,
+      "payload": {
+        "sentence_html": "<p>Beste meneer De Wit, ik kom vrijdag niet naar de les, <mark>want ik heb een afspraak bij de tandarts</mark>.</p>"
+      }
+    },
+    {
+      "kind": "voorbeeld",
+      "tier": null,
+      "explanation": null,
+      "payload": {
+        "sentence_html": "<p>De lift is al twee weken kapot. <mark>Daarom vraag ik</mark> u om snel een monteur te sturen.</p>"
+      }
+    },
+    {
+      "kind": "mcq",
+      "tier": 0,
+      "explanation": "Na <em>omdat</em> gaat het werkwoord naar het eind van de zin: <em>… omdat ik moet werken</em>.",
+      "payload": {
+        "prompt": "In een e-mail aan de school. Welke zin is goed geschreven?"
+      },
+      "options": [
+        {
+          "label": "A",
+          "body": "Ik kom niet naar het gesprek, omdat ik moet werken.",
+          "is_correct": false
+        },
+        {
+          "label": "B",
+          "body": "Ik kom niet naar het gesprek, omdat ik werken moet.",
+          "is_correct": false
+        },
+        {
+          "label": "C",
+          "body": "Ik kom niet naar het gesprek, omdat ik moet werken op vrijdag.",
+          "is_correct": false
+        },
+        {
+          "label": "D",
+          "body": "Ik kom niet naar het gesprek, omdat ik vrijdag moet werken.",
+          "is_correct": true
+        }
+      ]
+    },
+    {
+      "kind": "mcq",
+      "tier": 0,
+      "explanation": "Na <em>daarom</em> komt eerst het werkwoord en dan het onderwerp: <em>daarom stuur ik</em>.",
+      "payload": {
+        "prompt": "In een briefje aan de verhuurder. Welke zin is goed geschreven?"
+      },
+      "options": [
+        {
+          "label": "A",
+          "body": "Ik heb geen antwoord gekregen. Daarom ik stuur deze brief.",
+          "is_correct": false
+        },
+        {
+          "label": "B",
+          "body": "Ik heb geen antwoord gekregen. Daarom stuur ik deze brief.",
+          "is_correct": true
+        },
+        {
+          "label": "C",
+          "body": "Ik heb geen antwoord gekregen. Daarom deze brief ik stuur.",
+          "is_correct": false
+        }
+      ]
+    },
+    {
+      "kind": "gap_choice",
+      "tier": 1,
+      "explanation": "Het werkwoord <em>ben</em> staat aan het eind, dus hoort daar <em>omdat</em> bij.",
+      "payload": {
+        "sentence": "Ik kan morgen niet komen, ___ ik nog ziek ben.",
+        "choices": [
+          "want",
+          "omdat",
+          "daarom"
+        ],
+        "answer": "omdat"
+      }
+    },
+    {
+      "kind": "gap_choice",
+      "tier": 1,
+      "explanation": "Na het gat komt eerst het werkwoord <em>vraag</em> en dan <em>ik</em>. Dat past bij <em>daarom</em>.",
+      "payload": {
+        "sentence": "Mijn rekening is te hoog. ___ vraag ik u om uitleg.",
+        "choices": [
+          "omdat",
+          "want",
+          "daarom"
+        ],
+        "answer": "daarom"
+      }
+    },
+    {
+      "kind": "gap_choice",
+      "tier": 1,
+      "explanation": "Na <em>want</em> blijft de zin een gewone zin: <em>het is</em>. Na <em>omdat</em> zou er <em>het te duur is</em> staan.",
+      "payload": {
+        "sentence": "Wij nemen de cursus niet, ___ het is te duur voor ons.",
+        "choices": [
+          "want",
+          "omdat"
+        ],
+        "answer": "want"
+      }
+    },
+    {
+      "kind": "gap_type",
+      "tier": 2,
+      "explanation": "Het werkwoord <em>heb</em> staat aan het eind van de zin, dus je gebruikt <em>omdat</em>.",
+      "payload": {
+        "sentence": "Ik vul het formulier later in, ___ ik nu geen kopie van mijn paspoort heb.",
+        "answer": "omdat"
+      }
+    },
+    {
+      "kind": "woordorde",
+      "tier": 2,
+      "explanation": "Na <em>omdat</em> gaat het werkwoord naar het eind: <em>omdat mijn dochter ziek is</em>.",
+      "payload": {
+        "instruction": "Maak van deze woorden een goede zin voor een briefje aan de juf.",
+        "tokens": [
+          "is",
+          "omdat",
+          "dochter",
+          "ziek",
+          "mijn"
+        ],
+        "answer": [
+          "omdat",
+          "mijn",
+          "dochter",
+          "ziek",
+          "is"
+        ]
+      }
+    },
+    {
+      "kind": "open_zin",
+      "tier": 2,
+      "explanation": "Je verbindt twee zinnen met <em>want</em> of <em>daarom</em>, en na <em>daarom</em> zet je het werkwoord vooraan.",
+      "payload": {
+        "prompt": "Schrijf twee zinnen voor een e-mail aan de gemeente. Je kunt donderdag niet naar de afspraak, want je moet werken. Vraag om een nieuwe afspraak. Gebruik <strong>want</strong> en <strong>daarom</strong>.",
+        "model_answer": "Ik kan donderdag niet naar de afspraak komen, want ik moet werken. Daarom vraag ik u om een nieuwe afspraak.",
+        "checklist": [
+          "Ik gebruik want en daarom.",
+          "Na daarom staat eerst het werkwoord, dan ik.",
+          "Mijn tekst loopt: de lezer snapt waarom ik niet kan komen."
+        ]
+      }
+    }
+  ],
+  "what_you_learn": "Je leert hoe je losse zinnen aan elkaar plakt met want, omdat en daarom. Je ziet waar het werkwoord dan staat. Zo schrijf je een e-mail of een briefje dat goed loopt."
+}

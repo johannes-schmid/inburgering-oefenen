@@ -1,0 +1,180 @@
+{
+  "items": [
+    {
+      "kind": "uitleg",
+      "tier": null,
+      "explanation": null,
+      "payload": {
+        "body_html": "<p>Als je schrijft, kies je eerst: schrijf ik <strong>je</strong> of <strong>u</strong>? Aan de gemeente, een verhuurder of een arts schrijf je <strong>u</strong>. Aan een vriend, buur of familie schrijf je <strong>je</strong>. Kies één vorm en houd die vol tot het einde van je tekst.</p><p>Bij <strong>u</strong> horen ook <em>uw</em> en <em>u</em>: \"Ik heb uw brief gelezen.\" Bij <strong>je</strong> horen <em>je</em> en <em>jouw</em>: \"Ik heb jouw briefje gelezen.\"</p>",
+        "cards": [
+          {
+            "label": "GOED: ÉÉN VORM",
+            "example_html": "Geachte mevrouw De Wit, ik heb <mark>uw</mark> brief gekregen. Kunt <mark>u</mark> mij bellen?"
+          },
+          {
+            "label": "MINDER GOED: GEWISSELD",
+            "example_html": "Geachte mevrouw De Wit, ik heb <mark>uw</mark> brief gekregen. Kun <mark>je</mark> mij bellen?"
+          }
+        ]
+      }
+    },
+    {
+      "kind": "voorbeeld",
+      "tier": null,
+      "explanation": null,
+      "payload": {
+        "sentence_html": "<p>Beste Fatima, ik kan morgen niet komen. Kun <mark>je</mark> jouw sleutel meenemen?</p>"
+      }
+    },
+    {
+      "kind": "voorbeeld",
+      "tier": null,
+      "explanation": null,
+      "payload": {
+        "sentence_html": "<p>Geachte heer Bakker, ik stuur <mark>u</mark> mijn nieuwe adres. Wilt <mark>u</mark> het in het dossier zetten?</p>"
+      }
+    },
+    {
+      "kind": "mcq",
+      "tier": 0,
+      "explanation": "In een e-mail aan de gemeente schrijf je 'u'. In optie C staat twee keer 'u': de vorm blijft hetzelfde.",
+      "options": [
+        {
+          "label": "A",
+          "body": "Geachte mevrouw Jansen, ik heb u brief gekregen. Kun je mij bellen?",
+          "is_correct": false
+        },
+        {
+          "label": "B",
+          "body": "Geachte mevrouw Jansen, ik heb uw brief gekregen. Kun je mij bellen?",
+          "is_correct": false
+        },
+        {
+          "label": "C",
+          "body": "Geachte mevrouw Jansen, ik heb uw brief gekregen. Kunt u mij bellen?",
+          "is_correct": true
+        }
+      ],
+      "payload": {
+        "prompt": "Je schrijft een e-mail aan de gemeente. Welke tekst is goed geschreven?"
+      }
+    },
+    {
+      "kind": "mcq",
+      "tier": 0,
+      "explanation": "Aan je buurvrouw schrijf je 'je'. In optie A staat 'je' en 'jouw': de hele tekst blijft in dezelfde vorm.",
+      "options": [
+        {
+          "label": "A",
+          "body": "Hoi Els, ik ben je pakketje vergeten. Mag ik het morgen bij jou brengen?",
+          "is_correct": true
+        },
+        {
+          "label": "B",
+          "body": "Hoi Els, ik ben uw pakketje vergeten. Mag ik het morgen bij jou brengen?",
+          "is_correct": false
+        },
+        {
+          "label": "C",
+          "body": "Hoi Els, ik ben je pakketje vergeten. Mag ik het morgen bij u brengen?",
+          "is_correct": false
+        }
+      ],
+      "payload": {
+        "prompt": "Je schrijft een briefje aan je buurvrouw Els. Welke tekst is goed geschreven?"
+      }
+    },
+    {
+      "kind": "gap_choice",
+      "tier": 1,
+      "explanation": "De brief begint met 'Geachte heer', dus je schrijft de hele brief met 'u'. Bij 'u' hoort 'uw brief'.",
+      "payload": {
+        "sentence": "Geachte heer De Groot, ik heb ___ brief van 3 maart gelezen.",
+        "choices": [
+          "uw",
+          "jouw",
+          "je"
+        ],
+        "answer": "uw"
+      }
+    },
+    {
+      "kind": "gap_choice",
+      "tier": 1,
+      "explanation": "Je bent al begonnen met 'u', dus je houdt 'u' vol. Bij 'u' hoort de werkwoordsvorm 'kunt'.",
+      "payload": {
+        "sentence": "Ik stuur u mijn telefoonnummer. ___ u mij deze week bellen?",
+        "choices": [
+          "Kun",
+          "Kunt",
+          "Kan je"
+        ],
+        "answer": "Kunt"
+      }
+    },
+    {
+      "kind": "gap_choice",
+      "tier": 1,
+      "explanation": "Het briefje begint met 'Hoi Samir', dus je schrijft met 'je'. Bij 'je' hoort 'jouw fiets'.",
+      "payload": {
+        "sentence": "Hoi Samir, ik heb ___ fiets in de schuur gezet.",
+        "choices": [
+          "uw",
+          "jouw",
+          "u"
+        ],
+        "answer": "jouw"
+      }
+    },
+    {
+      "kind": "gap_type",
+      "tier": 2,
+      "explanation": "In het formulier voor de woningcorporatie schrijf je 'u'. Na 'ik hoor graag van' hoort dan 'u'.",
+      "payload": {
+        "sentence": "Geachte mevrouw Visser, ik heb het formulier ingevuld. Ik hoor graag van ___.",
+        "answer": "u"
+      }
+    },
+    {
+      "kind": "woordorde",
+      "tier": 2,
+      "explanation": "Bij 'u' hoort de vorm 'kunt'. De vraag begint met het werkwoord: 'Kunt u mij een nieuw formulier sturen?'",
+      "payload": {
+        "instruction": "Maak van deze woorden een nette vraag voor een e-mail aan de gemeente.",
+        "tokens": [
+          "u",
+          "sturen",
+          "Kunt",
+          "formulier",
+          "mij",
+          "een",
+          "nieuw"
+        ],
+        "answer": [
+          "Kunt",
+          "u",
+          "mij",
+          "een",
+          "nieuw",
+          "formulier",
+          "sturen"
+        ]
+      }
+    },
+    {
+      "kind": "open_zin",
+      "tier": 2,
+      "explanation": "Je schrijft aan een instantie, dus je gebruikt overal 'u' en 'uw'. Wissel niet halverwege naar 'je'.",
+      "payload": {
+        "prompt": "Schrijf twee zinnen in een e-mail aan het buurthuis De Linde. Je wilt weten wanneer de taalles begint. Gebruik overal dezelfde vorm.",
+        "model_answer": "Geachte medewerker, ik wil graag meedoen aan de taalles. Kunt u mij vertellen wanneer de les begint?",
+        "checklist": [
+          "Ik gebruik in beide zinnen 'u' of 'uw'.",
+          "Ik heb nergens 'je' of 'jouw' geschreven.",
+          "Mijn vraag begint met een werkwoord, bijvoorbeeld 'Kunt u'."
+        ]
+      }
+    }
+  ],
+  "what_you_learn": "Na deze les kies je aan het begin van je tekst of je 'je' of 'u' schrijft. Je weet dat 'u' hoort bij de gemeente, een verhuurder of een arts, en 'je' bij familie, buren en vrienden. Je houdt die vorm vol in je hele e-mail, briefje of formulier."
+}

@@ -1,0 +1,34 @@
+# De ingesproken uitleg van `b2-inversie`.
+# Regels met # zijn commentaar. [[id]] of [[id | extra uitleg]] markeert waar de stem over
+# welk element begint; de extra uitleg staat op de pagina bij dat element en mag niet herhalen
+# wat de stem net zei.
+# Geldige id's: vis, vis-1 t/m vis-3, rule, card-0, card-1, demo-0, demo-1, exercises.
+
+Deze les gaat over inversie. Kijk mee met het plaatje.
+
+[[vis-1 | Wij, gaan, morgen naar de dokter. De volgorde die je verwacht.]]
+In de eerste rij begint de zin met het onderwerp. Wij gaan morgen naar de dokter. Wij is plaats één, gaan is plaats twee.
+
+[[vis-2 | Het onderwerp "wij" staat nu op plaats drie, achter het werkwoord.]]
+Nu begint de zin met de tijd: morgen. En dan gebeurt er iets. Het werkwoord gaan blijft op plaats twee. Het onderwerp wij komt erachter. Dit heet inversie.
+
+[[vis-3 | "Omdat ik ziek ben" is samen plaats één. Zes woorden, één vakje.]]
+In de laatste rij begint de zin met een hele bijzin. Ook dan is dat samen plaats één. Daarna komt meteen het werkwoord: blijf. En dan het onderwerp: ik.
+
+[[rule | Onthoud: het werkwoord blijft staan, het onderwerp schuift.]]
+De regel is dus kort. Begint de zin niet met het onderwerp, dan wisselen het onderwerp en het werkwoord van plaats.
+
+[[card-0 | Dit is de zin uit les 1: eerst het onderwerp.]]
+De eerste kaart laat de gewone volgorde zien.
+
+[[card-1 | Elke tijd of plaats vooraan geeft inversie: morgen, thuis, om acht uur.]]
+De tweede kaart begint met een tijd. Daar zie je de inversie.
+
+[[demo-0 | "In de winkel" is een plaats, dus plaats één.]]
+Twee voorbeelden. In de winkel koop ik brood en melk. Koop staat op plaats twee, ik komt daarna.
+
+[[demo-1 | Ook hier: eerst de tijd, dan het werkwoord, dan ik.]]
+En: om negen uur begin ik met mijn werk.
+
+[[exercises]]
+Doe nu de opgaven. Zoek eerst het werkwoord, en kijk dan wat ervoor staat.

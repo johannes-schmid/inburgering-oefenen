@@ -106,6 +106,32 @@ const nextConfig: NextConfig = {
         permanent: true,
       },
 
+      /* ── HET REGELSPOOR HEET SINDS 10-09 `taalregels` EN NIET `grammatica` ──────
+         De slug staat in gedeelde links en in voortgang, dus hij wordt omgeleid en niet
+         gesloten. Dit vervangt de omleiding die hier stond van `lezen/spoor/grammatica` naar
+         de bibliotheek: die bibliotheek bestaat niet meer, en Lezen heeft zijn regelstap weer
+         zelf — hem daarheen blijven sturen zou de stap naar een verwijderde route wijzen.
+
+         Hier en niet met `redirect()` in de pagina: die kwam ná het streamen van de <head> en
+         leverde een 200 met een clientside sprong, waar een bezoeker een laadscherm van maakt.
+         Een regel hier is een echte omleiding vóór het renderen. */
+      {
+        source: '/:locale/dashboard/:level/:skill/spoor/grammatica/:module*',
+        destination: '/:locale/dashboard/:level/:skill/spoor/taalregels/:module*',
+        permanent: false,
+      },
+
+      /* De twee bibliotheken zijn vervallen: de regels van een examen staan in stap 2 van die
+         cursus. Het niveauscherm is het eerlijke vangnet — daar staan de vier cursussen. De
+         naslag per régel blijft bestaan en verhuist alleen van naam. */
+      { source: '/:locale/dashboard/:level/taalregels', destination: '/:locale/dashboard/:level', permanent: false },
+      { source: '/:locale/dashboard/:level/concepten', destination: '/:locale/dashboard/:level', permanent: false },
+      {
+        source: '/:locale/dashboard/:level/concepten/:slug',
+        destination: '/:locale/dashboard/:level/taalregel/:slug',
+        permanent: false,
+      },
+
       // AR translated route redirects
       { source: '/ar/premium',  destination: '/ar/%D8%A7%D9%84%D8%A8%D8%A7%D9%82%D8%A9-%D8%A7%D9%84%D9%85%D9%85%D9%8A%D8%B2%D8%A9', permanent: true },
       { source: '/ar/docent',   destination: '/ar/%D8%A7%D9%84%D9%85%D8%B9%D9%84%D9%85%D8%A9', permanent: true },

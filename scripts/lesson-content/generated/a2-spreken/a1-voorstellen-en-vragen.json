@@ -1,0 +1,200 @@
+{
+  "items": [
+    {
+      "kind": "uitleg",
+      "tier": null,
+      "explanation": null,
+      "payload": {
+        "body_html": "<p>Je stelt jezelf voor als je iemand nog niet kent. Dat doe je bij de gemeente, op je werk, op school of bij de dokter.</p><p>Daarna stel je zelf ook vragen, of je vraagt of iemand iets wil herhalen.</p>",
+        "cards": [
+          {
+            "label": "JEZELF VOORSTELLEN",
+            "example_html": "<mark>Aangenaam</mark>, ik ben Samira Haddad."
+          },
+          {
+            "label": "EEN VRAAG STELLEN",
+            "example_html": "Mag ik u iets <mark>vragen</mark>?"
+          },
+          {
+            "label": "IETS NIET VERSTAAN",
+            "example_html": "Sorry, kunt u dat <mark>herhalen</mark>?"
+          }
+        ]
+      }
+    },
+    {
+      "kind": "woordenlijst",
+      "tier": null,
+      "explanation": null,
+      "payload": {
+        "theme": "voorstellen-en-vragen"
+      }
+    },
+    {
+      "kind": "zinnenbank",
+      "tier": null,
+      "explanation": null,
+      "payload": {
+        "columns": [
+          {
+            "heading": "Jezelf voorstellen",
+            "phrases": [
+              "Goedemiddag, ik ben Karim Belhaj.",
+              "Mijn voornaam is Karim en mijn achternaam is Belhaj.",
+              "Ik ben afkomstig uit Marokko.",
+              "Ik ben getrouwd en ik heb twee kinderen.",
+              "Aangenaam, leuk om kennis te maken."
+            ]
+          },
+          {
+            "heading": "Iets over jezelf vertellen",
+            "phrases": [
+              "Mijn geboortedatum is 12 maart 1990.",
+              "Mijn geboorteland is Syrië.",
+              "Mijn moedertaal is Arabisch.",
+              "Mijn beroep is verpleegkundige.",
+              "Mijn hobby is voetballen."
+            ]
+          },
+          {
+            "heading": "Vragen stellen in een gesprek",
+            "phrases": [
+              "Mag ik u een vraag stellen?",
+              "Sorry, ik versta u niet goed.",
+              "Kunt u dat opnieuw zeggen?",
+              "Wat bedoelt u precies?",
+              "Kunt u het woord voor mij spellen?"
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "kind": "matchen",
+      "tier": 0,
+      "explanation": "Elke zin past bij één situatie. Je kijkt naar het doel van de zin: iets over jezelf zeggen of iets vragen.",
+      "payload": {
+        "instruction": "Welke zin past bij welke situatie? Verbind de zin met de situatie.",
+        "pairs": [
+          {
+            "left": "Aangenaam, ik ben Fatima.",
+            "right": "Je stelt jezelf voor"
+          },
+          {
+            "left": "Kunt u dat herhalen, alstublieft?",
+            "right": "Je hebt het niet goed verstaan"
+          },
+          {
+            "left": "Mijn moedertaal is Tigrinya.",
+            "right": "Je vertelt welke taal je thuis leerde"
+          },
+          {
+            "left": "Mijn beroep is monteur.",
+            "right": "Je vertelt over je werk"
+          },
+          {
+            "left": "Ik ben getrouwd.",
+            "right": "Je vertelt over je burgerlijke staat"
+          }
+        ]
+      }
+    },
+    {
+      "kind": "gap_choice",
+      "tier": 1,
+      "explanation": "Je achternaam is de naam van je familie. Je voornaam is de naam die je ouders voor je kozen.",
+      "payload": {
+        "sentence": "Mijn voornaam is Yusuf en mijn ___ is Demir.",
+        "choices": [
+          "achternaam",
+          "geboorteland",
+          "hobby"
+        ],
+        "answer": "achternaam"
+      }
+    },
+    {
+      "kind": "gap_choice",
+      "tier": 1,
+      "explanation": "Spellen is letter voor letter zeggen hoe een woord gaat. Dat helpt bij een moeilijke naam.",
+      "payload": {
+        "sentence": "Mijn naam is moeilijk. Ik ga hem voor u ___: D-E-M-I-R.",
+        "choices": [
+          "spellen",
+          "bedoelen",
+          "verstaan"
+        ],
+        "answer": "spellen"
+      }
+    },
+    {
+      "kind": "gap_choice",
+      "tier": 1,
+      "explanation": "Je geboorteland is het land waar je geboren bent. Een datum hoort bij je geboortedatum, niet bij je land.",
+      "payload": {
+        "sentence": "Ik woon in Almere, maar mijn ___ is Somalië.",
+        "choices": [
+          "geboorteland",
+          "geboortedatum",
+          "gesprek"
+        ],
+        "answer": "geboorteland"
+      }
+    },
+    {
+      "kind": "gap_type",
+      "tier": 2,
+      "explanation": "Je vraagt of iemand iets nog een keer zegt. Dat woord is 'herhalen'.",
+      "payload": {
+        "sentence": "Sorry, ik versta u niet goed. Kunt u dat ___?",
+        "answer": "herhalen"
+      }
+    },
+    {
+      "kind": "gap_type",
+      "tier": 2,
+      "explanation": "Aangenaam zeg je als je iemand voor het eerst ontmoet. Het hoort bij kennismaken.",
+      "payload": {
+        "sentence": "___, ik ben Nadia. Leuk om kennis te maken.",
+        "answer": "Aangenaam"
+      }
+    },
+    {
+      "kind": "gap_type",
+      "tier": 2,
+      "explanation": "Je moedertaal is de taal die je als kind thuis leerde.",
+      "payload": {
+        "sentence": "Ik spreek nu Nederlands, maar mijn ___ is Pools.",
+        "answer": "moedertaal"
+      }
+    },
+    {
+      "kind": "open_zin",
+      "tier": 2,
+      "explanation": "Je noemt eerst je naam en daarna iets over jezelf. Zo maak je op een normale manier kennis.",
+      "payload": {
+        "prompt": "Je komt voor het eerst op een cursus. Stel jezelf voor in drie zinnen. Zeg je voornaam en achternaam, je geboorteland en je beroep.",
+        "model_answer": "Goedemiddag, ik ben Amina Yilmaz. Mijn voornaam is Amina en mijn achternaam is Yilmaz. Ik ben afkomstig uit Turkije en mijn beroep is naaister.",
+        "checklist": [
+          "Ik noem mijn voornaam en mijn achternaam.",
+          "Ik zeg uit welk land ik afkomstig ben.",
+          "Ik noem mijn beroep."
+        ]
+      }
+    },
+    {
+      "kind": "open_zin",
+      "tier": 2,
+      "explanation": "Je stelt een vraag omdat je een antwoord wilt. Met 'Mag ik u iets vragen?' begin je vriendelijk een gesprek.",
+      "payload": {
+        "prompt": "Je praat met een nieuwe buurvrouw. Schrijf twee vragen die je haar stelt over haarzelf.",
+        "model_answer": "Mag ik u iets vragen? Wat is uw geboorteland? En wat is uw hobby in uw vrije tijd?",
+        "checklist": [
+          "Ik schrijf twee vragen met een vraagteken.",
+          "Ik gebruik een woord uit de les, zoals geboorteland, beroep of hobby."
+        ]
+      }
+    }
+  ],
+  "what_you_learn": "Je leert jezelf voorstellen aan iemand die je nog niet kent. Je kunt je voornaam, achternaam, geboorteland, beroep en moedertaal noemen. Ook leer je vragen stellen en vragen of iemand iets wil herhalen of uitleggen."
+}

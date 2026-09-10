@@ -1,0 +1,195 @@
+{
+  "items": [
+    {
+      "kind": "uitleg",
+      "tier": null,
+      "explanation": null,
+      "payload": {
+        "body_html": "<p>Je hoort twee fragmenten en beantwoordt daarna de vragen, net als in het examen.</p>",
+        "cards": []
+      }
+    },
+    {
+      "kind": "audio",
+      "tier": null,
+      "explanation": null,
+      "payload": {
+        "label": "Telefoongesprek met de tandartsassistente",
+        "script": "A: Tandartspraktijk De Wilgenhof, goedemiddag.\nB: Goedemiddag, u spreekt met Rachid Bouzid. Ik heb kiespijn, al twee dagen.\nA: Oh, dat is niet fijn. Even kijken hoor. Kunt u morgen om kwart over negen?\nB: Morgen om kwart over negen, ja, dat kan.\nA: Mooi. En wilt u uw verzekeringspas meenemen? Anders moet u de rekening zelf betalen.\nB: Mijn verzekeringspas, goed. En hoeveel kost zo'n controle?\nA: Een korte controle is achttien euro vijftig. Als we meer moeten doen, hoort u dat eerst van de tandarts.\nB: Duidelijk. Tot morgen dan.\nA: Tot morgen, meneer Bouzid.",
+        "audio_url": "http://127.0.0.1:54421/storage/v1/object/public/leren-audio/fragment/a2-luisteren/e2-fragmenten-en-vragen-1.mp3",
+        "voice_cast": {
+          "A": "woman_young",
+          "B": "man_young"
+        },
+        "transcript": "Tandartspraktijk De Wilgenhof, goedemiddag. Goedemiddag, u spreekt met Rachid Bouzid. Ik heb kiespijn, al twee dagen. Oh, dat is niet fijn. Even kijken hoor. Kunt u morgen om kwart over negen? Morgen om kwart over negen, ja, dat kan. Mooi. En wilt u uw verzekeringspas meenemen? Anders moet u de rekening zelf betalen. Mijn verzekeringspas, goed. En hoeveel kost zo'n controle? Een korte controle is achttien euro vijftig. Als we meer moeten doen, hoort u dat eerst van de tandarts. Duidelijk. Tot morgen dan. Tot morgen, meneer Bouzid.",
+        "seconds": 34.14
+      }
+    },
+    {
+      "kind": "mcq",
+      "tier": 0,
+      "explanation": "De assistente zegt: \"Kunt u morgen om kwart over negen?\" Rachid herhaalt die tijd en zegt dat het kan.",
+      "payload": {
+        "prompt": "Hoe laat is de afspraak van meneer Bouzid?"
+      },
+      "options": [
+        {
+          "label": "A",
+          "body": "Om kwart voor negen",
+          "is_correct": false
+        },
+        {
+          "label": "B",
+          "body": "Om kwart over negen",
+          "is_correct": true
+        },
+        {
+          "label": "C",
+          "body": "Om kwart over tien",
+          "is_correct": false
+        }
+      ]
+    },
+    {
+      "kind": "mcq",
+      "tier": 1,
+      "explanation": "De assistente vraagt: \"Wilt u uw verzekeringspas meenemen?\" Dat is dus wat hij moet doen.",
+      "payload": {
+        "prompt": "Wat moet meneer Bouzid meenemen?"
+      },
+      "options": [
+        {
+          "label": "A",
+          "body": "Zijn verzekeringspas",
+          "is_correct": true
+        },
+        {
+          "label": "B",
+          "body": "De rekening van vorig jaar",
+          "is_correct": false
+        },
+        {
+          "label": "C",
+          "body": "Een brief van de huisarts",
+          "is_correct": false
+        }
+      ]
+    },
+    {
+      "kind": "mcq",
+      "tier": 1,
+      "explanation": "In het gesprek noemt de assistente achttien euro vijftig voor een korte controle.",
+      "payload": {
+        "prompt": "Wat kost een korte controle?"
+      },
+      "options": [
+        {
+          "label": "A",
+          "body": "8 euro 50",
+          "is_correct": false
+        },
+        {
+          "label": "B",
+          "body": "18 euro 50",
+          "is_correct": true
+        },
+        {
+          "label": "C",
+          "body": "80 euro",
+          "is_correct": false
+        }
+      ]
+    },
+    {
+      "kind": "audio",
+      "tier": null,
+      "explanation": null,
+      "payload": {
+        "label": "Bericht op de voicemail van de basisschool",
+        "script": "A: Goedemorgen, u spreekt met Anneke Vermeer van basisschool De Sleutelbloem. Ik bel over de schoolreis van groep vier. We gaan volgende week woensdag naar de kinderboerderij. De kinderen moeten om half negen op school zijn, niet later, want de bus wacht niet. Geeft u uw kind een brood en wat te drinken mee? Wij zorgen voor een appel. Snoep hoeft niet, dat vragen we juist niet mee te geven. En let u even op de jas: buiten is het koud. Heeft u nog vragen? Bel dan gerust naar de school. Tot woensdag.",
+        "audio_url": "http://127.0.0.1:54421/storage/v1/object/public/leren-audio/fragment/a2-luisteren/e2-fragmenten-en-vragen-2.mp3",
+        "voice_cast": {
+          "A": "woman_young"
+        },
+        "transcript": "Goedemorgen, u spreekt met Anneke Vermeer van basisschool De Sleutelbloem. Ik bel over de schoolreis van groep vier. We gaan volgende week woensdag naar de kinderboerderij. De kinderen moeten om half negen op school zijn, niet later, want de bus wacht niet. Geeft u uw kind een brood en wat te drinken mee? Wij zorgen voor een appel. Snoep hoeft niet, dat vragen we juist niet mee te geven. En let u even op de jas: buiten is het koud. Heeft u nog vragen? Bel dan gerust naar de school. Tot woensdag.",
+        "seconds": 30.38
+      }
+    },
+    {
+      "kind": "mcq",
+      "tier": 0,
+      "explanation": "Anneke Vermeer belt over de schoolreis van groep vier. Dat is waar het hele bericht over gaat.",
+      "payload": {
+        "prompt": "Waarover gaat dit bericht?"
+      },
+      "options": [
+        {
+          "label": "A",
+          "body": "Over een schoolreis van groep vier",
+          "is_correct": true
+        },
+        {
+          "label": "B",
+          "body": "Over een ziek kind in de klas",
+          "is_correct": false
+        },
+        {
+          "label": "C",
+          "body": "Over het betalen van de ouderbijdrage",
+          "is_correct": false
+        }
+      ]
+    },
+    {
+      "kind": "mcq",
+      "tier": 1,
+      "explanation": "Ze zegt: de kinderen moeten om half negen op school zijn, niet later, want de bus wacht niet.",
+      "payload": {
+        "prompt": "Hoe laat moeten de kinderen op school zijn?"
+      },
+      "options": [
+        {
+          "label": "A",
+          "body": "Om acht uur",
+          "is_correct": false
+        },
+        {
+          "label": "B",
+          "body": "Om half negen",
+          "is_correct": true
+        },
+        {
+          "label": "C",
+          "body": "Om negen uur",
+          "is_correct": false
+        }
+      ]
+    },
+    {
+      "kind": "mcq",
+      "tier": 1,
+      "explanation": "Ze vraagt om een brood en wat te drinken mee te geven. De appel komt van de school en snoep juist niet.",
+      "payload": {
+        "prompt": "Wat moeten de ouders meegeven?"
+      },
+      "options": [
+        {
+          "label": "A",
+          "body": "Een appel en snoep",
+          "is_correct": false
+        },
+        {
+          "label": "B",
+          "body": "Geld voor de bus",
+          "is_correct": false
+        },
+        {
+          "label": "C",
+          "body": "Een brood en iets te drinken",
+          "is_correct": true
+        }
+      ]
+    }
+  ],
+  "what_you_learn": "Je oefent luisteren zoals in het examen. Je hoort twee korte fragmenten en beantwoordt daarna vragen over een detail, over waar het gesprek over gaat en over wat iemand moet doen. Zo leer je bij één keer luisteren de belangrijkste informatie vasthouden."
+}

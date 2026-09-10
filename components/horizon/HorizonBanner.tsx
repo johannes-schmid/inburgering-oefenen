@@ -1,4 +1,4 @@
-import Skyline from './Skyline';
+import Skyline, { type SkylineTone } from './Skyline';
 import { DotField, HorizonBand, SunDisc } from './primitives';
 
 /**
@@ -23,6 +23,9 @@ export default function HorizonBanner({
   /** Where the sun sits, or `false` for a centred header that has no empty flank to put it in. */
   sun = { size: 104, right: '8%', top: '16%' } as { size: number; right: string; top: string } | false,
   band = true,
+  /** Which dot field the background takes: `light` dots on a navy panel, `dark` on a white one. */
+  dots = 'light',
+  tone = 'hero',
 }: {
   desktopHouses?: number;
   mobileHouses?: number;
@@ -32,15 +35,19 @@ export default function HorizonBanner({
   windows?: boolean;
   sun?: { size: number; right: string; top: string } | false;
   band?: boolean;
+  dots?: 'light' | 'dark';
+  /** The house ramp. `hero` for a navy panel; `silhouette` for a white one, where the navy-tinted
+   *  ramp of `hero` is invisible. */
+  tone?: SkylineTone;
 }) {
   return (
     <>
-      <DotField on="light" />
+      <DotField on={dots} />
       <div aria-hidden="true" className="absolute inset-0 sm:hidden">
-        <Skyline count={mobileHouses} tone="hero" height={mobileHeight} offset={band ? 8 : 0} seed={seed} />
+        <Skyline count={mobileHouses} tone={tone} height={mobileHeight} offset={band ? 8 : 0} seed={seed} />
       </div>
       <div aria-hidden="true" className="absolute inset-0 hidden sm:block">
-        <Skyline count={desktopHouses} tone="hero" height={desktopHeight} offset={band ? 8 : 0} seed={seed} windows={windows} />
+        <Skyline count={desktopHouses} tone={tone} height={desktopHeight} offset={band ? 8 : 0} seed={seed} windows={windows} />
       </div>
       {sun && (
         /* Hidden below `sm`: at 390px the copy fills the full width, and §7.3 forbids any graphic

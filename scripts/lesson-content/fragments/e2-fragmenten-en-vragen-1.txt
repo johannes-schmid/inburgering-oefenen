@@ -1,0 +1,17 @@
+# Fragmenten en vragen — audio
+# les e2-fragmenten-en-vragen, item 2
+# Casting:
+#   A = woman_young (Female Voice 1 — younger woman)
+#   B = man_young (Male Voice 1 — younger man)
+#
+# Dit bestand is de leesbare afdruk van wat er is ingesproken. De bron is de payload in
+# generated/a2-luisteren/e2-fragmenten-en-vragen.json — pas die aan en spreek opnieuw in.
+A: Tandartspraktijk De Wilgenhof, goedemiddag.
+B: Goedemiddag, u spreekt met Rachid Bouzid. Ik heb kiespijn, al twee dagen.
+A: Oh, dat is niet fijn. Even kijken hoor. Kunt u morgen om kwart over negen?
+B: Morgen om kwart over negen, ja, dat kan.
+A: Mooi. En wilt u uw verzekeringspas meenemen? Anders moet u de rekening zelf betalen.
+B: Mijn verzekeringspas, goed. En hoeveel kost zo'n controle?
+A: Een korte controle is achttien euro vijftig. Als we meer moeten doen, hoort u dat eerst van de tandarts.
+B: Duidelijk. Tot morgen dan.
+A: Tot morgen, meneer Bouzid.

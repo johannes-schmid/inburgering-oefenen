@@ -1,0 +1,34 @@
+# De ingesproken uitleg van `b15-gebiedende-wijs`.
+# Regels met # zijn commentaar. [[id]] of [[id | extra uitleg]] markeert waar de stem over
+# welk element begint; de extra uitleg staat op de pagina bij dat element en mag niet herhalen
+# wat de stem net zei.
+# Geldige id's: vis, vis-1 t/m vis-3, rule, card-0, card-1, demo-0, demo-1, exercises.
+
+Deze les gaat over een opdracht geven.
+
+[[vis-1 | De gewone zin: eerst wie het doet, dan het werkwoord.]]
+Kijk naar het plaatje. In de eerste rij staat een normale zin: je doet de deur dicht.
+
+[[vis-2 | Doe, vul, kom, ga: de stam, zonder uitgang.]]
+In de tweede rij staat de opdracht: doe de deur dicht. Het onderwerp je is weg. En het werkwoord staat vooraan, zonder uitgang.
+
+[[vis-3 | Met u klinkt het vriendelijker. Dat hoor je vaak aan een balie.]]
+In de derde rij staat een derde vorm: doet u de deur dicht. Hier komt het onderwerp er wel bij, en het werkwoord krijgt een -t.
+
+[[rule | Op een formulier lees je vaak alleen de stam: vul in, kruis aan, stuur op.]]
+De regel is dus: een opdracht begint met het werkwoord zonder uitgang, en er staat geen onderwerp bij.
+
+[[card-0 | Hier lees je wie het doet.]]
+De eerste kaart is de normale zin.
+
+[[card-1 | Hier lees je alleen wát er moet gebeuren.]]
+De tweede kaart is de opdracht.
+
+[[demo-0 | Dicht hoort bij doe: samen dichtdoen.]]
+Twee voorbeelden. Doe de deur dicht, het is koud buiten.
+
+[[demo-1 | Vul in: het stukje in gaat naar achteren. Dat is les 16.]]
+En: vul het formulier in met blauwe pen.
+
+[[exercises]]
+Doe nu de opgaven. Op formulieren en in brieven zie je deze vorm het vaakst.

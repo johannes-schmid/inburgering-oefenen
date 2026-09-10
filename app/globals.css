@@ -850,7 +850,7 @@
 }
 .blog-quiz-opt:hover:not(:disabled) { background: #eceef0; }
 .blog-quiz-opt:disabled { cursor: default; }
-.blog-quiz-correct { border-color: #2d7a52 !important; background: rgba(44,130,83,0.06) !important; }
+.blog-quiz-correct { border-color: var(--color-correct) !important; background: var(--color-correct-container) !important; }
 .blog-quiz-wrong { border-color: #ba1a1a !important; background: rgba(186,26,26,0.05) !important; }
 .blog-quiz-letter {
   width: 24px; height: 24px; border-radius: 6px; background: #eceef0;
@@ -908,14 +908,14 @@
 }
 .opt-btn:hover:not(:disabled) { background: #eceef0; transform: translateX(2px); }
 .opt-btn:disabled { cursor: default; }
-.opt-btn.correct { border-color: #2d7a52; background: rgba(44,130,83,0.06); }
+.opt-btn.correct { border-color: var(--color-correct); background: var(--color-correct-container); }
 .opt-btn.incorrect { border-color: #ba1a1a; background: rgba(186,26,26,0.05); }
 .opt-label {
   width: 26px; height: 26px; border-radius: 7px; background: #ffffff;
   display: flex; align-items: center; justify-content: center;
   font-size: 0.75rem; font-weight: 700; color: #434651; flex-shrink: 0; margin-top: 1px;
 }
-.opt-btn.correct .opt-label { background: rgba(44,130,83,0.12); color: #2d7a52; }
+.opt-btn.correct .opt-label { background: var(--color-correct); color: #fff; }
 .opt-btn.incorrect .opt-label { background: rgba(186,26,26,0.1); color: #ba1a1a; }
 .opt-text { flex: 1; }
 .feedback {
@@ -1394,8 +1394,10 @@
    Vier regels uit `docs/design/DESIGN_SYSTEM.md` die hier zichtbaar zijn afgedwongen:
    1. Geen 1px-lijn om te sectioneren — grenzen zijn een verschuiving van surface-tier.
    2. Selectie en focus zijn een INSET box-shadow (`--ring-selected`), nooit een border.
-   3. Geen nieuwe tint voor een status: goed is klei (`secondary`), fout is `--color-error`,
-      en een lucide Check/X draagt de betekenis voor wie de twee niet kan scheiden.
+   3. Geen nieuwe tint voor een status: goed is `--color-correct`, fout is `--color-error`,
+      en een lucide Check/X draagt de betekenis voor wie de twee niet kan scheiden. Klei was
+      hier eerder de goed-kleur; die las als markering en niet als uitslag (besluit van de
+      eigenaar, 2026-08-29 voor de speler, 2026-09-03 voor de leerlaag).
    4. Diepte is `--shadow-ambient`, een gloed en geen gewicht.                              */
 
 .lesson-stream { display: flex; flex-direction: column; gap: 0; }
@@ -1516,7 +1518,7 @@
   border-radius: 1rem; padding: 0.85rem 1rem;
   transition: box-shadow 220ms cubic-bezier(0.22, 1, 0.36, 1);
 }
-.ex.is-right { box-shadow: inset 0 0 0 2px rgba(162, 64, 0, 0.35); }
+.ex.is-right { box-shadow: inset 0 0 0 2px rgba(14, 122, 75, 0.35); }
 .ex.is-wrong { box-shadow: inset 0 0 0 2px rgba(186, 26, 26, 0.30); }
 
 .ex-tier {
@@ -1542,7 +1544,7 @@
 .opt:focus-visible { outline: none; box-shadow: var(--ring-selected); }
 .opt:active:not(:disabled) { transform: translateY(1px); }
 .opt.picked { box-shadow: var(--ring-selected); }
-.opt.right { box-shadow: inset 0 0 0 2px var(--color-secondary-container); background: rgba(254, 118, 44, 0.10); }
+.opt.right { box-shadow: inset 0 0 0 2px rgba(14, 122, 75, 0.45); background: var(--color-correct-container); }
 .opt.wrong { box-shadow: inset 0 0 0 2px var(--color-error); background: rgba(186, 26, 26, 0.06); }
 .opt:disabled { cursor: default; }
 .opt-l {
@@ -1552,25 +1554,31 @@
 }
 .opt-b { flex: 1 1 auto; line-height: 1.5; }
 .opt-i { flex: 0 0 auto; }
-.opt.right .opt-i { color: var(--color-secondary); }
+.opt.right .opt-i { color: var(--color-correct); }
 .opt.wrong .opt-i { color: var(--color-error); }
 
 /* ── het gat ── */
 .gap-sentence { margin: 0 0 0.6rem; font-size: 1rem; line-height: 1.9; }
+/* Het gat moet te zien zijn dat het een gat is.
+   Hiervoor droeg het lege vakje alleen `--ghost-border` — `outline_variant` op 20% — en op de
+   grijze opgavekaart was dat onzichtbaar: de zin las als "Ik voel      vanmorgen ziek", met
+   witruimte waar een invulplek hoort. Nu draagt het een onderrand van 2px, wat de no-line-regel
+   uitdrukkelijk toestaat waar een invoerveld het vraagt (§2), en de gevulde staat wisselt die
+   rand naar klei zodat "hier heb ik iets gekozen" ook zonder de tekst te lezen zichtbaar is. */
 .gap-slot {
   display: inline-block; min-width: 4.5rem; text-align: center; margin: 0 0.2rem;
-  background: var(--color-surface-container-lowest); border-radius: 0.5rem;
-  padding: 0.1rem 0.5rem; font-weight: 800; color: var(--color-primary);
-  box-shadow: inset 0 0 0 1.5px var(--ghost-border);
+  background: var(--color-surface-container-lowest); border-radius: 0.4rem 0.4rem 0 0;
+  padding: 0.1rem 0.5rem; font-weight: 800; color: var(--color-primary); min-height: 1.5em;
+  box-shadow: inset 0 -2px 0 0 var(--color-outline-variant);
 }
-.gap-slot.filled { box-shadow: var(--ring-selected); }
+.gap-slot.filled { box-shadow: inset 0 -2px 0 0 var(--color-secondary-container); }
 .gap-input {
   display: inline-block; margin: 0 0.2rem; font: inherit; font-weight: 700;
   color: var(--color-primary); background: var(--color-surface-container-lowest);
-  border: none; border-radius: 0.5rem; padding: 0.1rem 0.5rem;
-  box-shadow: inset 0 0 0 1.5px var(--ghost-border);
+  border: none; border-radius: 0.4rem 0.4rem 0 0; padding: 0.1rem 0.5rem;
+  box-shadow: inset 0 -2px 0 0 var(--color-outline-variant);
 }
-.gap-input:focus-visible { outline: none; box-shadow: var(--ring-selected); }
+.gap-input:focus-visible { outline: none; box-shadow: inset 0 -2px 0 0 var(--color-secondary-container), var(--ring-selected); }
 
 .chips { display: flex; flex-wrap: wrap; gap: 0.4rem; }
 .chip {
@@ -1604,8 +1612,8 @@
   border: none; border-radius: 0.5rem; padding: 0.35rem 0.5rem; color: inherit;
 }
 .match-row select:focus-visible { outline: none; box-shadow: var(--ring-selected); }
-.match-row.right { box-shadow: inset 0 0 0 2px rgba(162, 64, 0, 0.30); }
-.match-row.right svg { color: var(--color-secondary); }
+.match-row.right { box-shadow: inset 0 0 0 2px rgba(14, 122, 75, 0.35); background: var(--color-correct-container); }
+.match-row.right svg { color: var(--color-correct); }
 .match-row.wrong { box-shadow: inset 0 0 0 2px rgba(186, 26, 26, 0.28); }
 .match-row.wrong svg { color: var(--color-error); }
 
@@ -1654,6 +1662,71 @@
 }
 .mark-pick button:focus-visible { outline: none; box-shadow: var(--ring-selected); }
 
+/* ── naspreken en opnemen: de microfoon in een les ──
+   De twee opgavesoorten waarin de cursist zelf spreekt. Zie `LessonRecorder.tsx` — de opname
+   verlaat de browser niet en wordt niet beoordeeld, dus er is geen enkele foutstaat te stylen:
+   de kaart heeft alleen "nog niet ingesproken" en "ingesproken". */
+.rec { display: flex; flex-direction: column; gap: 0.6rem; margin-top: 0.85rem; }
+.rec-row { display: flex; align-items: center; flex-wrap: wrap; gap: 0.6rem 0.85rem; }
+.rec-btn {
+  display: inline-flex; align-items: center; gap: 0.4rem;
+  font: inherit; font-size: 0.875rem; font-weight: 700;
+  padding: 0.42rem 0.85rem; border: none; border-radius: 0.7rem;
+  background: var(--color-surface-container-high); color: inherit; cursor: pointer;
+  transition: transform 180ms cubic-bezier(0.22, 1, 0.36, 1), opacity 180ms;
+}
+.rec-btn:hover:not(:disabled) { transform: translateY(-1px); }
+.rec-btn:active:not(:disabled) { transform: translateY(1px); }
+.rec-btn:focus-visible { outline: none; box-shadow: var(--ring-selected); }
+.rec-btn:disabled { opacity: 0.45; cursor: default; }
+/* Opnemen is de enige actie in deze kaart die de microfoon opent, dus die mag de accentkleur
+   dragen zolang hij loopt — en alleen dan. */
+.rec-btn.is-live { background: var(--color-secondary-container); color: #fff; }
+.rec-meter {
+  display: block; width: 5rem; height: 0.4rem; border-radius: 999px;
+  background: var(--color-surface-container-high); overflow: hidden;
+}
+.rec-meter i {
+  display: block; width: 100%; height: 100%;
+  background: var(--color-secondary-container);
+  transform-origin: left center; transition: transform 90ms linear;
+}
+.rec-time {
+  font-size: 0.8125rem; color: var(--color-on-surface-variant);
+  font-variant-numeric: tabular-nums;
+}
+.rec-play { height: 2rem; max-width: 100%; }
+.rec-error { margin: 0; font-size: 0.8125rem; color: var(--color-error); }
+/* `-low` en niet `-lowest`: de opgavekaart zelf is al wit, dus een blok op `-lowest` heeft geen
+   zichtbare rand of vlak en leest als losse tekst. De tonale laag moet één trap verschillen van
+   wat eronder ligt, niet gelijk zijn — zie de vier oppervlaktetrappen in DESIGN_SYSTEM.md. */
+.rec-heard {
+  background: var(--color-surface-container-low); border-radius: 0.7rem;
+  padding: 0.6rem 0.8rem; display: flex; flex-direction: column; gap: 0.25rem;
+}
+.rec-heard p { margin: 0; line-height: 1.6; }
+.rec-heard-note { font-size: 0.82rem; color: var(--color-on-surface-variant); }
+/* Het voorbeeldfragment van een naspreek-opgave, en de regel waar je op moet letten. */
+.say-target {
+  margin: 0.5rem 0 0; background: var(--color-surface-container-low); border-radius: 0.7rem;
+  padding: 0.6rem 0.8rem; line-height: 1.6; font-weight: 700;
+}
+.say-focus { margin: 0.5rem 0 0; font-size: 0.87rem; color: var(--color-on-surface-variant); }
+.say-audio { width: 100%; margin-top: 0.6rem; border-radius: 0.75rem; }
+/* Audio die nog niet is ingesproken. Een lege plek zou eruitzien als kapotte audio; deze
+   regel zegt wat er aan de hand is. Zie `audioPayload` in lib/lessons/items.ts. */
+.audio-todo {
+  margin: 0; font-size: 0.85rem; color: var(--color-on-surface-variant);
+  background: var(--color-surface-container-low); border-radius: 0.7rem; padding: 0.6rem 0.8rem;
+}
+.rec-shots { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 0.6rem; }
+.rec-shots img { max-width: 100%; border-radius: 0.75rem; }
+
+@media (prefers-reduced-motion: reduce) {
+  .rec-btn, .rec-meter i { transition: none; }
+  .rec-btn:hover:not(:disabled) { transform: none; }
+}
+
 /* ── nakijken en feedback ── */
 .ex-foot { margin-top: 0.6rem; display: flex; align-items: center; gap: 0.6rem; }
 .ex-check {
@@ -1677,7 +1750,7 @@
   display: flex; align-items: center; gap: 0.4rem; margin: 0 0 0.6rem;
   font-weight: 800; font-size: 0.98rem;
 }
-.is-right .fb-head { color: var(--color-secondary); }
+.is-right .fb-head { color: var(--color-on-correct-container); }
 .is-wrong .fb-head { color: var(--color-error); }
 .fb-answer { margin: 0 0 0.6rem; font-size: 0.92rem; }
 .fb-why { background: var(--color-surface-container-lowest); border-radius: 0.8rem; padding: 0.7rem 0.85rem; }
@@ -1766,13 +1839,14 @@
    pagina), want een kop met lucht eromheen leest als een kaart en niet als de kop van de pagina. */
 .portal-hero {
   position: relative; overflow: hidden;
-  /* De onderrand is ruim: de skyline staat 40–56px hoog onderin en §7.3 verbiedt een graphic
-     achter de tekst. Minder padding en de lede loopt door de daken. */
-  margin: -1.75rem -1.25rem 1.5rem; padding: 1.75rem 1.25rem 4rem;
-  background: var(--color-primary); color: #fff;
+  /* Wit en zonder graphic. Het navy paneel met de skyline trok alle aandacht naar de kop in
+     plaats van naar de onderdelen, en twee navy vlakken naast de navy zijbalk lazen als een
+     streep dwars over het scherm. De inhoud is dezelfde — kicker, titel, lede, ring, tegels. */
+  margin: -1.75rem -1.25rem 1.25rem; padding: 1.75rem 1.25rem 0.5rem;
+  background: var(--color-surface-container-lowest); color: var(--color-on-surface);
 }
 @media (min-width: 640px) {
-  .portal-hero { margin: -2.5rem -2rem 1.75rem; padding: 2.25rem 2rem 4.75rem; }
+  .portal-hero { margin: -2.5rem -2rem 1.5rem; padding: 2.25rem 2rem 0.75rem; }
 }
 .portal-hero .ph-body {
   position: relative; z-index: 10; display: flex; flex-wrap: wrap; align-items: flex-start;
@@ -1782,63 +1856,162 @@
 .portal-hero .ph-back {
   display: inline-flex; align-items: center; gap: 0.375rem; margin-bottom: 0.6rem;
   font-size: 0.72rem; font-weight: 700; text-decoration: none;
-  color: rgba(255, 255, 255, 0.66);
+  color: var(--color-on-surface-variant);
 }
-.portal-hero .ph-back:hover { color: #fff; text-decoration: underline; }
+.portal-hero .ph-back:hover { color: var(--color-primary); text-decoration: underline; }
 .portal-hero .ph-kicker {
   font-size: 0.65rem; font-weight: 800; letter-spacing: 0.16em; text-transform: uppercase;
-  color: rgba(255, 255, 255, 0.62); margin-bottom: 0.4rem;
+  color: var(--color-on-surface-variant); margin-bottom: 0.4rem;
 }
 .portal-hero .ph-title {
   font-family: var(--font-headline); font-weight: 800; letter-spacing: -0.03em;
   font-size: clamp(1.6rem, 3.4vw, 2.15rem); line-height: 1.08; text-wrap: balance;
+  color: var(--color-primary);
 }
 .portal-hero .ph-lede {
   margin-top: 0.5rem; max-width: 42ch; font-size: 0.9rem; line-height: 1.65;
-  color: rgba(255, 255, 255, 0.76);
+  color: var(--color-on-surface-variant);
 }
 .portal-hero .ph-side { display: flex; flex-wrap: wrap; align-items: stretch; gap: 0.75rem; }
 .portal-hero .ph-ring,
 .portal-hero .ph-tiles > div {
-  background: rgba(255, 255, 255, 0.10); border-radius: 0.85rem; padding: 0.85rem 1rem;
+  background: var(--color-surface-container-low); border-radius: 0.85rem; padding: 0.85rem 1rem;
 }
 .portal-hero .ph-ring { display: flex; align-items: center; gap: 0.85rem; max-width: 19rem; }
 .portal-hero .ph-ring-label {
   font-size: 0.65rem; font-weight: 800; letter-spacing: 0.13em; text-transform: uppercase;
+  color: var(--color-primary);
 }
 .portal-hero .ph-ring-note {
-  margin-top: 0.2rem; font-size: 0.7rem; line-height: 1.45; color: rgba(255, 255, 255, 0.62);
+  margin-top: 0.2rem; font-size: 0.7rem; line-height: 1.45; color: var(--color-on-surface-variant);
 }
 .portal-hero .ph-tiles { display: flex; gap: 0.75rem; }
 .portal-hero .ph-tiles > div { min-width: 7.5rem; }
 .portal-hero .ph-tiles dt {
   font-size: 0.62rem; font-weight: 800; letter-spacing: 0.14em; text-transform: uppercase;
-  color: rgba(255, 255, 255, 0.6);
+  color: var(--color-on-surface-variant);
 }
 .portal-hero .ph-tiles dd {
   font-family: var(--font-headline); font-weight: 800; font-size: 1.45rem; line-height: 1.2;
-  font-variant-numeric: tabular-nums;
+  font-variant-numeric: tabular-nums; color: var(--color-primary);
 }
-.portal-hero .ph-tiles p { font-size: 0.68rem; color: rgba(255, 255, 255, 0.62); }
+.portal-hero .ph-tiles p { font-size: 0.68rem; color: var(--color-on-surface-variant); }
 
-/* ── Portaal: de modulekaart ──────────────────────────────────────────────────
-   De vorm van §7.2, en op drie schermen dezelfde: skyline-topper, merkteken over de straatlijn,
-   dan de tekst. Geen rand (§2) — wit op een tonale pagina plus de ambient schaduw van §4.       */
+/* ── Portaal: het overzicht en de modulekaart ─────────────────────────────────
+   De mockup van de eigenaar (01-09): begroeting, een 2×2 van modules, en ernaast "wat nu?".
+   Geen 1px-randen (§2) — wit op een tonale pagina plus de ambient schaduw van §4 doet het werk.
+   De enige uitzondering is de gestippelde omtrek van een module die nog niet bestaat: die zegt
+   "dit is een lege plek", wat een schaduw niet kan zeggen.                                    */
+.dash-head { margin-bottom: 1.5rem; }
+.dash-head h1 {
+  font-family: var(--font-headline); font-weight: 800; font-size: 1.9rem; line-height: 1.15;
+  letter-spacing: -0.03em; color: var(--color-on-surface);
+}
+.dash-head p { margin-top: 0.35rem; font-size: 0.9rem; color: var(--color-on-surface-variant); }
+
+/* Eén kolom op een telefoon; de "wat nu?"-kolom komt er pas naast als hij er ook naast past. */
+.dash-grid { display: grid; gap: 1.75rem; align-items: start; }
+@media (min-width: 1024px) { .dash-grid { grid-template-columns: minmax(0, 1fr) 20rem; } }
+
+.dash-sec-head { display: flex; align-items: baseline; justify-content: space-between; gap: 1rem; margin-bottom: 0.75rem; }
+.dash-owned { font-size: 0.78rem; color: var(--color-on-surface-variant); }
+
 .mod-card {
-  background: var(--color-surface-container-lowest); border-radius: 1.125rem;
-  box-shadow: var(--shadow-ambient);
+  display: flex; flex-direction: column; gap: 0.7rem;
+  background: var(--color-surface-container-lowest); border-radius: 1rem; padding: 1.05rem 1.15rem;
+  box-shadow: var(--shadow-ambient); color: inherit;
   transition: transform 220ms cubic-bezier(0.22, 1, 0.36, 1), box-shadow 220ms ease;
 }
 a.mod-card:hover { transform: translateY(-3px); box-shadow: 0 10px 30px rgba(0,43,109,0.13), 0 2px 6px rgba(0,43,109,0.07); }
 a.mod-card:active { transform: translateY(-1px); }
 .mod-card:focus-visible { outline: 2px solid var(--color-secondary-container); outline-offset: 3px; }
-.mod-cta {
-  display: inline-flex; align-items: center; gap: 0.375rem; flex-shrink: 0;
-  border-radius: 0.625rem; padding: 0.4rem 0.75rem; font-size: 0.76rem; font-weight: 800;
-  color: #fff; background: var(--gradient-btn-orange); box-shadow: var(--shadow-btn-orange);
+/* Niet gebouwd: geen schaduw, een gestippelde omtrek en geen link. Nooit `opacity` — zichtbare
+   scope is de belofte van het platform (§7.2b).                                              */
+.mod-card.soon {
+  background: var(--color-surface-container-low); box-shadow: none;
+  outline: 1.5px dashed var(--color-outline-variant); outline-offset: -1.5px;
 }
-.mod-bar { display: block; height: 6px; border-radius: 999px; background: var(--color-surface-container-high); overflow: hidden; }
+
+.mod-chiprow { display: flex; flex-wrap: wrap; align-items: center; gap: 0.4rem; }
+.mod-chiplab {
+  font-size: 0.6rem; font-weight: 800; letter-spacing: 0.13em; text-transform: uppercase;
+  color: var(--color-on-surface-variant); margin-inline-end: 0.15rem;
+}
+.mod-chip {
+  border-radius: 0.5rem; padding: 0.22rem 0.5rem; font-size: 0.74rem; font-weight: 600;
+  /* Een tint van de merkkleur, niet `primary-container` — dat token is een mid-navy en levert
+     vier dichte blokjes op waar de chip alleen een label is. Als letterlijke rgba en niet als
+     `color-mix`: de screenshotbrowser (Chromium 101) kent die functie niet en liet de chip dan
+     als een dicht blokje zien met de tekst erin onleesbaar. */
+  background: rgba(0, 43, 109, 0.07);
+  color: var(--color-primary);
+}
+.mod-card.soon .mod-chip, .mod-card.unowned .mod-chip { background: var(--color-surface-container-high); color: var(--color-outline); }
+.mod-badge {
+  margin-inline-start: auto; border-radius: 999px; padding: 0.2rem 0.55rem;
+  font-size: 0.62rem; font-weight: 800; letter-spacing: 0.1em; text-transform: uppercase;
+  background: var(--color-surface-container-high); color: var(--color-on-surface-variant);
+}
+
+.mod-title { display: flex; align-items: flex-start; gap: 0.6rem; }
+/* Het merkteken staat vóór de naam en niet als losse tegel erboven: het benoemt de module, dus
+   het hoort op dezelfde regel als de naam. `flex: none` — een mark mag nooit meekrimpen, dan
+   klopt zijn 72×72-raster niet meer.                                                          */
+.mod-mark { flex: none; display: inline-flex; line-height: 0; margin-top: -0.15rem; }
+.mod-title h3 { flex: 1; }
+.mod-title h3 {
+  font-family: var(--font-headline); font-weight: 800; font-size: 1.05rem; letter-spacing: -0.015em;
+  color: var(--color-on-surface); min-width: 0;
+}
+.mod-sub { font-family: var(--font-body); font-weight: 400; font-size: 0.82rem; color: var(--color-outline); }
+.mod-pct { margin-inline-start: auto; margin-top: 0.15rem; font-size: 0.82rem; font-weight: 800; color: var(--color-on-surface-variant); font-variant-numeric: tabular-nums; flex: none; }
+.mod-soon { font-size: 0.82rem; line-height: 1.6; color: var(--color-on-surface-variant); }
+
+.mod-meters { display: flex; flex-direction: column; gap: 0.55rem; }
+.mod-meter-row { display: flex; align-items: baseline; justify-content: space-between; gap: 0.5rem; margin-bottom: 0.3rem; }
+.mod-meter-lab { font-size: 0.78rem; color: var(--color-on-surface-variant); }
+.mod-meter-val { font-size: 0.78rem; font-weight: 700; color: var(--color-on-surface); font-variant-numeric: tabular-nums; }
+.mod-bar { display: block; height: 4px; border-radius: 999px; background: var(--color-surface-container-high); overflow: hidden; }
 .mod-bar i { display: block; height: 100%; border-radius: 999px; }
+
+.mod-cta {
+  display: inline-flex; align-items: center; gap: 0.35rem; margin-top: 0.1rem;
+  font-size: 0.82rem; font-weight: 800; color: var(--color-primary);
+}
+a.mod-card:hover .mod-cta { text-decoration: underline; }
+
+/* ── Portaal: de "wat nu?"-kolom ──────────────────────────────────────────── */
+.wn-card {
+  display: flex; flex-direction: column; gap: 0.6rem;
+  background: var(--color-surface-container-lowest); border-radius: 1rem; padding: 1.05rem 1.15rem;
+  box-shadow: var(--shadow-ambient);
+}
+.wn-top { display: flex; align-items: baseline; justify-content: space-between; gap: 0.75rem; }
+.wn-title { font-family: var(--font-headline); font-weight: 800; font-size: 1.02rem; letter-spacing: -0.015em; color: var(--color-on-surface); }
+.wn-pct { font-family: var(--font-headline); font-weight: 800; font-size: 1.35rem; color: var(--color-primary); font-variant-numeric: tabular-nums; }
+.wn-until { font-size: 0.74rem; color: var(--color-outline); }
+.wn-body { font-size: 0.82rem; line-height: 1.6; color: var(--color-on-surface-variant); }
+
+.wn-steps { display: flex; flex-direction: column; gap: 0.75rem; margin-top: 0.2rem; }
+.wn-steps li { display: flex; gap: 0.7rem; align-items: flex-start; }
+/* De stip is de stap; de lijn ertussen is de tijd. Beide in de neutrale ramp, behalve waar je
+   nu bent — dat is de enige oranje op deze kaart (§7.3, één accent per compositie).          */
+.wn-dot {
+  position: relative; flex: none; width: 9px; height: 9px; margin-top: 0.32rem; border-radius: 50%;
+  background: var(--color-surface-container-lowest);
+  box-shadow: inset 0 0 0 1.5px var(--color-outline-variant);
+}
+.wn-steps li:not(:last-child) .wn-dot::after {
+  content: ''; position: absolute; inset-inline-start: 50%; top: 100%; translate: -50% 0;
+  width: 1.5px; height: calc(100% + 0.75rem); background: var(--color-outline-variant);
+}
+.wn-steps li.is-now .wn-dot { background: var(--color-secondary-container); box-shadow: none; }
+.wn-step-title { display: block; font-size: 0.86rem; font-weight: 700; color: var(--color-on-surface); }
+.wn-step-note { display: block; font-size: 0.76rem; color: var(--color-on-surface-variant); }
+
+.wn-cta { display: inline-flex; align-items: center; gap: 0.35rem; margin-top: 0.3rem; font-size: 0.82rem; font-weight: 800; color: var(--color-primary); }
+.wn-cta:hover { text-decoration: underline; }
+
 @media (prefers-reduced-motion: reduce) {
   .mod-card { transition: none; }
   a.mod-card:hover { transform: none; }
@@ -1859,6 +2032,158 @@ a.mod-card:active { transform: translateY(-1px); }
   padding: 1.125rem 1.25rem; box-shadow: var(--shadow-ambient);
 }
 .panel.flat { background: var(--color-surface-container-low); box-shadow: none; }
+
+/* ── Portaal: het onderdeelscherm (A2/B1 · Lezen, Luisteren, …) ───────────────
+   Herontwerp van 02-09. De navy paginakop is eraf: de diagnose staat bovenaan, en een kop met
+   tegels die dezelfde cijfers nóg eens noemde duwde die diagnose onder de fold. Wat er staat is
+   nu vier dingen in volgorde: welk onderdeel → hoe sta je ervoor → de drie stappen → de tien
+   examens.                                                                                    */
+/* Compacter sinds 03-09: naam en tagline staan op één regel naast elkaar. De naam stond eerder
+   op 2,15rem met de tagline eronder, samen 100px, en de diagnose begon daardoor pas halverwege
+   het scherm. De zijbalk zegt al waar je bent — de kop hoeft het alleen te bevestigen. */
+.skill-head {
+  display: flex; flex-wrap: wrap; align-items: baseline; gap: 0.25rem 0.85rem;
+  margin-bottom: 1rem;
+}
+.skill-head h1 {
+  font-family: var(--font-headline); font-weight: 800; letter-spacing: -0.025em;
+  font-size: clamp(1.4rem, 2.4vw, 1.65rem); line-height: 1.1; color: var(--color-primary);
+}
+.skill-head p {
+  max-width: 52ch; font-size: 0.85rem; line-height: 1.5;
+  color: var(--color-on-surface-variant);
+}
+
+/* `stretch`, niet `start`: de meter is 20rem hoog en het docentpaneel is dat lang niet altijd,
+   en twee panelen van verschillende hoogte naast elkaar lieten een gat van 150px onder het
+   rechterpaneel staan. Het paneel groeit dus mee en centreert zijn inhoud — dezelfde keuze die
+   `MariekeFeedback` op het KNM-overzicht maakt. */
+.skill-diag { display: grid; gap: 1rem; margin-bottom: 1.5rem; align-items: stretch; }
+@media (min-width: 900px) { .skill-diag { grid-template-columns: 15rem 1fr; } }
+/* De meter is een SVG die zijn kolom vult; een kolom van 19rem gaf een paneel van 330px hoog
+   voor één getal. Hij wordt hier afgetopt op 12rem breed en gecentreerd. */
+.skill-diag .sd-gauge {
+  padding: 0.875rem 0.75rem 1rem;
+  display: flex; flex-direction: column; justify-content: center;
+}
+.skill-diag .sd-gauge > :first-child { width: 100%; max-width: 12rem; margin: 0 auto; }
+.skill-diag .sd-note {
+  text-align: center; font-size: 0.72rem; line-height: 1.5; color: var(--color-outline);
+  margin-top: 0.15rem;
+}
+
+/* Het docentpaneel: één regel van de docent, dan de balken zwakste-eerst. */
+.docent-panel { display: flex; flex-direction: column; justify-content: center; }
+.docent-panel .dp-quote { display: flex; gap: 0.75rem; align-items: flex-start; margin-bottom: 1.15rem; }
+.docent-panel .dp-photo {
+  position: relative; flex: none; width: 42px; height: 42px; border-radius: 50%; overflow: hidden;
+}
+.docent-panel .dp-quote p { font-size: 0.875rem; line-height: 1.6; color: var(--color-on-surface-variant); }
+.docent-panel .dp-quote b { color: var(--color-secondary); font-weight: 800; }
+.docent-panel .dp-head { margin-bottom: 0.875rem; }
+.docent-panel .dp-empty { font-size: 0.82rem; line-height: 1.6; color: var(--color-on-surface-variant); }
+.docent-panel .dp-bars { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 0.85rem; }
+.docent-panel .dp-row { display: flex; justify-content: space-between; align-items: baseline; gap: 0.625rem; margin-bottom: 0.35rem; }
+.docent-panel .dp-nm { font-size: 0.85rem; font-weight: 600; color: var(--color-on-surface); }
+.docent-panel .dp-pct {
+  font-size: 0.78rem; font-weight: 700; color: var(--color-on-surface-variant);
+  font-variant-numeric: tabular-nums; flex: none;
+}
+.docent-panel .dp-pct.weak { color: var(--color-secondary); }
+/* Geen nieuwe tint voor een status (§8): zwak is de clay-accent, sterk is navy — dezelfde twee
+   die `StrengthWeakness` in zijn legenda gebruikt. */
+.docent-panel .dp-track {
+  display: block; height: 7px; border-radius: 999px; overflow: hidden;
+  background: var(--color-surface-container-high);
+}
+.docent-panel .dp-track > span { display: block; height: 100%; border-radius: 999px; background: var(--color-primary-container); }
+.docent-panel .dp-track > span.weak { background: var(--color-secondary-container); }
+.docent-panel .dp-acts { display: flex; flex-wrap: wrap; align-items: center; gap: 0.875rem; margin-top: 1.15rem; }
+.docent-panel .dp-cta {
+  display: inline-flex; align-items: center; gap: 0.4rem; border-radius: 999px; padding: 0.375rem 0.75rem;
+  font-size: 0.72rem; font-weight: 800; text-decoration: none; background: #fcecdd; color: var(--color-secondary);
+}
+.docent-panel .dp-cta:hover { text-decoration: underline; }
+.docent-panel .dp-link {
+  display: inline-flex; align-items: center; gap: 0.375rem; font-size: 0.75rem; font-weight: 700;
+  color: var(--color-primary); text-decoration: none;
+}
+.docent-panel .dp-link:hover { text-decoration: underline; }
+
+/* ── De leerroutekaart ────────────────────────────────────────────────────────
+   De vorm komt van de KNM-woordkaartenkaarten die op productie werken: navy kop met de mark als
+   watermerk, oranje stapchip, en het witte deel met de feiten en de ring. De mark staat `bare`,
+   dus zonder tegel — een tegel binnen de kop is een tweede rechthoek in dezelfde rechthoek.   */
+.leer-grid { display: grid; gap: 1rem; }
+@media (min-width: 640px) { .leer-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (min-width: 980px) { .leer-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+
+.leer-card {
+  display: flex; flex-direction: column; overflow: hidden; text-decoration: none;
+  background: var(--color-surface-container-lowest); border-radius: 1.125rem;
+  box-shadow: var(--shadow-ambient);
+  transition: transform 0.2s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.2s ease;
+}
+a.leer-card:hover { transform: translateY(-2px); box-shadow: 0 10px 28px rgba(0, 43, 109, 0.13); }
+a.leer-card:focus-visible { outline: 2px solid var(--color-secondary-container); outline-offset: 2px; }
+a.leer-card:active { transform: translateY(0); }
+/* Het nummerplaatje op de kop. De leerroute draagt het niet meer — daar zei "Stap 1" hetzelfde
+   als de sectiekop erboven — maar de modulepagina's van een spoor en de woordkaarten nummeren
+   hun kaarten wél, en die gebruiken dezelfde kaart. */
+.leer-card .lc-chip {
+  position: relative; z-index: 1; display: inline-flex; align-items: center;
+  padding: 0.2rem 0.55rem; border-radius: 999px;
+  background: var(--color-secondary-container); color: #fff;
+  font-size: 0.66rem; font-weight: 800; letter-spacing: 0.02em;
+}
+.leer-card.is-empty .lc-chip, .leer-card.is-locked .lc-chip { background: var(--color-outline); }
+.leer-card .lc-cap {
+  position: relative; display: block; overflow: hidden; height: 3.25rem; padding: 0.75rem 1rem;
+  background: var(--gradient-brand);
+}
+/* Het watermerk staat gecentreerd in de lage kop; met een `bottom`-offset viel er van het teken
+   niets meer te zien dan een hoek. */
+.leer-card .lc-mark {
+  position: absolute; inset-inline-end: 0.75rem; top: 50%; transform: translateY(-50%);
+  opacity: 0.2; line-height: 0;
+}
+.leer-card .lc-body { display: flex; flex-direction: column; gap: 0.6rem; flex: 1; padding: 0.85rem 1.05rem 0.95rem; }
+.leer-card .lc-copy { display: block; }
+.leer-card .lc-title {
+  display: block; font-family: var(--font-headline); font-size: 1rem; font-weight: 800;
+  letter-spacing: -0.015em; color: var(--color-on-surface);
+}
+.leer-card .lc-soon {
+  display: block; font-size: 0.78rem; line-height: 1.5; color: var(--color-on-surface-variant);
+  background: var(--color-surface-container); border-radius: 0.6rem; padding: 0.5rem 0.65rem;
+}
+.leer-card .lc-facts { display: flex; flex-direction: column; gap: 0.25rem; font-size: 0.78rem; color: var(--color-outline); }
+.leer-card .lc-facts > span { display: flex; justify-content: space-between; gap: 0.625rem; }
+.leer-card .lc-facts b { font-weight: 700; color: var(--color-on-surface-variant); font-variant-numeric: tabular-nums; }
+.leer-card .lc-foot { display: flex; align-items: center; gap: 0.6rem; margin-top: auto; padding-top: 0.15rem; }
+.leer-card .lc-cap-label {
+  font-size: 0.63rem; font-weight: 800; letter-spacing: 0.1em; text-transform: uppercase;
+  color: var(--color-outline); line-height: 1.35;
+}
+.leer-card .lc-cap-label b {
+  display: block; font-family: var(--font-headline); font-size: 0.82rem; letter-spacing: 0;
+  color: var(--color-on-surface); font-variant-numeric: tabular-nums;
+}
+.leer-card .lc-go {
+  margin-inline-start: auto; display: inline-flex; align-items: center; gap: 0.375rem;
+  font-size: 0.78rem; font-weight: 800; color: var(--color-primary);
+}
+/* Een stap waar de docent nog geen concept van heeft vrijgegeven. Gestippeld, want dat zegt
+   "hier komt iets" — een schaduw kan dat niet zeggen. Zelfde uitzondering als de lege
+   modulekaart op het overzicht. */
+.leer-card.is-empty { background: var(--color-surface-container-low); box-shadow: none; }
+.leer-card.is-empty .lc-cap { background: var(--color-surface-container-high); }
+.leer-card.is-empty .lc-mark { opacity: 0.5; }
+
+@media (prefers-reduced-motion: reduce) {
+  .leer-card { transition: none; }
+  a.leer-card:hover { transform: none; }
+}
 
 /* Het lijstje "wat komt hierna" in de cursuskaart. Stippen en geen nummers: het is geen
    genummerde stap maar een blik vooruit, en nummers zouden botsen met de blokletters.        */
@@ -1921,6 +2246,220 @@ a.mod-card:active { transform: translateY(-1px); }
 .admin-les-release button:disabled { opacity: 0.5; cursor: default; }
 .admin-les-error { font-size: 0.72rem; font-weight: 700; color: var(--color-error); }
 
+/* ── /admin/lessen/[id] — de leseditor ──
+   Eén stroom items, elk dicht een regel en open een formulier. Drie dingen die hier regels zijn
+   en geen smaak:
+
+   1. GEEN ENKELE LIJN SCHEIDT IETS. De kaarten, de open body en de invoervelden liggen elk op een
+      andere surfacetier; wat een border zou doen, doet hier de achtergrond. Focus en selectie zijn
+      een INSET box-shadow (`--ring-selected`), nooit een rand — een rand verschuift de layout en
+      dat is precies zichtbaar in een lijst van veertig velden.
+   2. EEN OPGAVE ZIET ANDERS UIT DAN LEERSTOF, MAAR STAAT IN DEZELFDE LIJST. Het verschil is een
+      oranje randmarkering links, niet een tweede kolom: de sortering is één ding.
+   3. ALLEEN `transform` EN `opacity` ANIMEREN, en niets animeert wat de hoogte bepaalt — een
+      openklappend item dat de lijst laat schuiven kost de docent haar plek in 53 lessen.        */
+
+.lei { display: flex; flex-direction: column; gap: 0.9rem; }
+
+.lei-back {
+  display: inline-flex; align-items: center; gap: 0.35rem; text-decoration: none;
+  font-size: 0.78rem; font-weight: 700; color: var(--color-on-surface-variant);
+}
+.lei-back:hover { color: var(--color-on-surface); }
+.lei-back:focus-visible { outline: none; box-shadow: var(--ring-selected); border-radius: 0.4rem; }
+
+/* De twee besluiten over een les. Ze staan boven de inhoud omdat ze erover gaan, niet erin. */
+.lei-status {
+  display: flex; flex-direction: column; gap: 0.5rem; margin-bottom: 1.1rem;
+  background: var(--color-surface-container-lowest); border-radius: 1rem;
+  padding: 0.85rem 1rem; box-shadow: var(--shadow-ambient);
+}
+.lei-status-row { display: flex; align-items: center; gap: 0.6rem; flex-wrap: wrap; }
+.lei-chip {
+  display: inline-flex; align-items: center; gap: 0.4rem;
+  background: var(--color-surface-container); border-radius: 999px;
+  padding: 0.3rem 0.7rem; font-size: 0.78rem; font-weight: 700;
+  color: var(--color-on-surface-variant);
+}
+.lei-chip.is-on { background: rgba(0, 43, 109, 0.08); color: var(--color-primary); }
+
+.lei-btn {
+  display: inline-flex; align-items: center; gap: 0.35rem;
+  background: var(--color-surface-container-high); color: var(--color-on-surface-variant);
+  border: none; border-radius: 0.55rem; padding: 0.36rem 0.7rem;
+  font: inherit; font-size: 0.78rem; font-weight: 800; cursor: pointer; text-decoration: none;
+  transition: opacity 160ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+.lei-btn:hover { opacity: 0.85; }
+.lei-btn:focus-visible { outline: none; box-shadow: var(--ring-selected); }
+.lei-btn:active { transform: translateY(1px); }
+.lei-btn:disabled { opacity: 0.5; cursor: default; }
+.lei-btn.is-primary { background: var(--color-primary); color: #fff; }
+.lei-btn.is-plain { background: transparent; }
+.lei-add-item { align-self: flex-start; }
+
+.lei-warn, .lei-note, .lei-error, .lei-hint-line {
+  display: flex; align-items: center; gap: 0.35rem;
+  margin: 0; font-size: 0.76rem; font-weight: 700; line-height: 1.5;
+}
+.lei-warn { color: #a24000; }
+.lei-note { color: var(--color-primary); }
+.lei-error {
+  color: var(--color-error); background: rgba(186, 26, 26, 0.07);
+  border-radius: 0.6rem; padding: 0.5rem 0.7rem; font-weight: 700;
+}
+.lei-hint-line { color: var(--color-outline); font-weight: 400; }
+
+/* De leskop. Eén kaart, want titel, minuten en "wat je leert" horen bij elkaar. */
+.lei-card {
+  background: var(--color-surface-container-lowest); border-radius: 1rem;
+  padding: 0.95rem 1rem; box-shadow: var(--shadow-ambient);
+}
+.lei-card-title {
+  font-family: var(--font-headline); font-weight: 800; font-size: 0.95rem;
+  margin: 0 0 0.6rem; letter-spacing: -0.01em;
+}
+
+.lei-fields { display: flex; flex-direction: column; gap: 0.7rem; }
+.lei-row { display: flex; align-items: flex-end; gap: 0.9rem; flex-wrap: wrap; }
+.lei-field { display: flex; flex-direction: column; gap: 0.25rem; }
+.lei-field-short { max-width: 12rem; }
+.lei-label {
+  display: flex; flex-direction: column; gap: 0.1rem;
+  font-size: 0.72rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.06em;
+  color: var(--color-on-surface-variant);
+}
+.lei-hint {
+  font-size: 0.72rem; font-weight: 400; font-style: normal; text-transform: none;
+  letter-spacing: 0; color: var(--color-outline);
+}
+
+.lei-input {
+  width: 100%; background: var(--color-surface-container); color: var(--color-on-surface);
+  border: none; border-radius: 0.6rem; padding: 0.45rem 0.6rem;
+  font: inherit; font-size: 0.86rem; line-height: 1.6;
+}
+.lei-input:focus-visible { outline: none; box-shadow: var(--ring-selected); }
+.lei-mono { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 0.78rem; }
+textarea.lei-input { resize: vertical; }
+
+.lei-list { display: flex; flex-direction: column; gap: 0.3rem; }
+.lei-list-row { display: flex; align-items: center; gap: 0.4rem; }
+.lei-columns { display: flex; flex-direction: column; gap: 0.6rem; }
+.lei-column {
+  display: flex; flex-direction: column; gap: 0.3rem;
+  background: var(--color-surface-container-low); border-radius: 0.7rem; padding: 0.55rem;
+}
+
+.lei-icon-btn {
+  display: inline-grid; place-items: center; flex: none; width: 1.7rem; height: 1.7rem;
+  background: var(--color-surface-container); color: var(--color-on-surface-variant);
+  border: none; border-radius: 0.45rem; cursor: pointer; padding: 0;
+}
+.lei-icon-btn:hover { background: var(--color-surface-container-high); }
+.lei-icon-btn:focus-visible { outline: none; box-shadow: var(--ring-selected); }
+.lei-icon-btn.is-danger:hover { color: var(--color-error); }
+
+.lei-add {
+  align-self: flex-start; display: inline-flex; align-items: center; gap: 0.3rem;
+  background: transparent; border: none; padding: 0.2rem 0;
+  font: inherit; font-size: 0.76rem; font-weight: 800; color: var(--color-primary);
+  cursor: pointer;
+}
+.lei-add:hover { text-decoration: underline; }
+.lei-add:focus-visible { outline: none; box-shadow: var(--ring-selected); border-radius: 0.35rem; }
+
+.lei-check, .lei-correct {
+  display: inline-flex; align-items: center; gap: 0.35rem;
+  font-size: 0.78rem; font-weight: 700; color: var(--color-on-surface-variant);
+}
+.lei-slug { font-size: 0.72rem; color: var(--color-outline); margin-inline-start: auto; }
+
+/* De filterstrook. Dezelfde vorm als de onderdeeltabs op de lijstpagina. */
+.lei-toolbar { display: flex; align-items: center; gap: 0.8rem; flex-wrap: wrap; }
+.lei-filter { display: flex; gap: 0.3rem; flex-wrap: wrap; }
+.lei-filter button {
+  background: var(--color-surface-container); color: var(--color-on-surface-variant);
+  border: none; border-radius: 0.55rem; padding: 0.34rem 0.7rem;
+  font: inherit; font-size: 0.78rem; font-weight: 800; cursor: pointer;
+}
+.lei-filter button.is-on { background: var(--color-primary); color: #fff; }
+.lei-filter button:focus-visible { outline: none; box-shadow: var(--ring-selected); }
+.lei-actions { margin-inline-start: auto; display: flex; align-items: center; gap: 0.6rem; flex-wrap: wrap; }
+
+.lei-items { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 0.4rem; }
+.lei-item {
+  background: var(--color-surface-container-lowest); border-radius: 0.8rem;
+  padding: 0.5rem 0.6rem;
+}
+/* Een opgave draagt de oranje markering: in één stroom is dat het enige wat je moet kunnen zien
+   zonder te lezen. Eén accent, links, en geen tweede kleur voor de trap.                      */
+.lei-item.is-exercise { box-shadow: inset 3px 0 0 0 var(--color-secondary-container); }
+.lei-item.is-open { background: var(--color-surface-container-low); }
+.lei-item.has-problem { box-shadow: inset 3px 0 0 0 var(--color-error); }
+
+.lei-item-head { display: flex; align-items: center; gap: 0.5rem; }
+.lei-num {
+  flex: none; width: 1.6rem; text-align: center;
+  font-size: 0.72rem; font-weight: 800; color: var(--color-outline);
+}
+.lei-item-open {
+  flex: 1; min-width: 0; display: flex; align-items: center; gap: 0.5rem;
+  background: transparent; border: none; padding: 0.25rem 0; font: inherit;
+  text-align: start; cursor: pointer; color: inherit;
+}
+.lei-item-open:focus-visible { outline: none; box-shadow: var(--ring-selected); border-radius: 0.5rem; }
+.lei-kind {
+  flex: none; font-size: 0.7rem; font-weight: 800; text-transform: uppercase;
+  letter-spacing: 0.05em; color: var(--color-primary);
+}
+.lei-tier { flex: none; font-size: 0.7rem; font-weight: 700; color: var(--color-on-surface-variant); }
+.lei-summary {
+  flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+  font-size: 0.84rem; color: var(--color-on-surface-variant);
+  /* De inhoud is altijd Nederlands en blijft dus LTR, ook op de Arabische chrome. */
+  direction: ltr; text-align: start;
+}
+.lei-item-tools { flex: none; display: inline-flex; gap: 0.25rem; }
+.lei-item-body {
+  display: flex; flex-direction: column; gap: 0.7rem;
+  margin-top: 0.55rem; padding: 0.7rem;
+  background: var(--color-surface-container-lowest); border-radius: 0.7rem;
+}
+.lei-problem {
+  display: flex; align-items: center; gap: 0.35rem; margin: 0.3rem 0 0 2.1rem;
+  font-size: 0.74rem; font-weight: 700; color: var(--color-error);
+}
+.lei-opt-label {
+  flex: none; display: inline-grid; place-items: center; width: 1.5rem; height: 1.5rem;
+  background: var(--color-surface-container-high); border-radius: 0.4rem;
+  font-size: 0.74rem; font-weight: 800; color: var(--color-on-surface-variant);
+}
+
+.lei-kinds {
+  display: flex; flex-direction: column; gap: 0.4rem; align-items: flex-start;
+  background: var(--color-surface-container-lowest); border-radius: 0.8rem; padding: 0.75rem;
+}
+.lei-kinds-head {
+  margin: 0; font-size: 0.7rem; font-weight: 800; text-transform: uppercase;
+  letter-spacing: 0.06em; color: var(--color-on-surface-variant);
+}
+.lei-kinds-row { display: flex; flex-wrap: wrap; gap: 0.3rem; }
+
+/* Op een telefoon past soort + trap + samenvatting niet op één regel, en de samenvatting werd
+   afgekapt op vijf tekens — precies het stuk waaraan je een item herkent. Onder 640px zakt hij
+   daarom naar zijn eigen regel; de knoppen blijven rechts staan waar ze staan.               */
+.lei-caret { flex: none; display: inline-grid; place-items: center; color: var(--color-outline); }
+
+@media (max-width: 640px) {
+  .lei-item-open { flex-wrap: wrap; }
+  /* De samenvatting krijgt zijn eigen regel; de chevron schuift naar de eerste regel, want als
+     derde regel onder een afgekapte zin leest hij niet meer als "dit klapt open".            */
+  .lei-summary { flex-basis: 100%; order: 2; }
+  .lei-caret { order: 1; margin-inline-start: auto; }
+  .lei-item-tools { align-self: flex-start; }
+}
+
 /* ── De leerlaag in het Arabisch ──
    Twee dingen die alleen op een screenshot te zien waren.
 
@@ -1965,3 +2504,2007 @@ a.mod-card:active { transform: translateY(-1px); }
 [dir="rtl"] .les-row.is-current { box-shadow: inset -3px 0 0 0 var(--color-secondary-container); }
 
 
+
+
+/* ── Portaal: de woordkaarten van de leerlaag ─────────────────────────────────
+   Het overzicht hergebruikt `.leer-card` (navy kop, mark als watermerk) met een voortgangsbalk in
+   plaats van een ring: een thema is een lijst die je afwerkt, en een balk zegt "zoveel van
+   zoveel" waar een ring een score suggereert.                                                 */
+.wt-back {
+  display: inline-flex; align-items: center; gap: 0.375rem; margin-bottom: 0.6rem;
+  font-size: 0.72rem; font-weight: 700; text-decoration: none; color: var(--color-on-surface-variant);
+}
+.wt-back:hover { color: var(--color-primary); text-decoration: underline; }
+
+.wt-total { display: flex; align-items: center; gap: 1rem; margin-bottom: 1.25rem; }
+.wt-total-mark { flex: none; }
+.wt-total-body { flex: 1; min-width: 0; }
+.wt-total-head {
+  display: block; font-family: var(--font-headline); font-size: 0.85rem; font-weight: 800;
+  color: var(--color-on-surface); margin-bottom: 0.4rem;
+}
+.wt-total-bar {
+  display: block; height: 8px; border-radius: 999px; overflow: hidden;
+  background: var(--color-surface-container-high);
+}
+.wt-total-bar > span { display: block; height: 100%; border-radius: 999px; background: var(--color-primary); }
+.wt-total-sub { display: block; margin-top: 0.35rem; font-size: 0.75rem; color: var(--color-outline); }
+.wt-total-pct {
+  flex: none; font-family: var(--font-headline); font-size: 1.35rem; font-weight: 800;
+  color: var(--color-primary); font-variant-numeric: tabular-nums;
+}
+
+.wt-grid { display: grid; gap: 1rem; }
+@media (min-width: 640px) { .wt-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (min-width: 980px) { .wt-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+.wt-card .lc-cap { height: 5.5rem; }
+.wt-prog {
+  display: block; height: 6px; border-radius: 999px; overflow: hidden;
+  background: var(--color-surface-container-high);
+}
+.wt-prog > span { display: block; height: 100%; border-radius: 999px; background: var(--color-secondary-container); }
+.wt-foot { display: flex; align-items: center; justify-content: space-between; gap: 0.625rem; margin-top: auto; }
+.wt-foot-n { font-size: 0.76rem; color: var(--color-outline); font-variant-numeric: tabular-nums; }
+.wt-foot-go {
+  display: inline-flex; align-items: center; gap: 0.375rem; font-size: 0.78rem; font-weight: 800;
+  color: var(--color-primary);
+}
+.leer-card.is-locked { background: var(--color-surface-container-low); box-shadow: none; }
+.leer-card.is-locked .lc-cap { background: var(--color-surface-container-high); }
+.leer-card.is-locked .wt-foot-go { color: var(--color-outline); }
+.wt-upsell {
+  display: inline-flex; align-items: center; gap: 0.5rem; margin-top: 1.25rem; border-radius: 999px;
+  padding: 0.6rem 1.1rem; font-size: 0.8rem; font-weight: 800; text-decoration: none;
+  background: var(--gradient-btn-orange); color: #fff; box-shadow: var(--shadow-btn-orange);
+  transition: transform 0.18s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.18s ease;
+}
+.wt-upsell:hover { transform: translateY(-1px); box-shadow: var(--shadow-btn-orange-hover); color: #fff; }
+
+/* ── De deck ──────────────────────────────────────────────────────────────────
+   Eén kaart per keer, groot. De kaart zelf is de knop die omdraait; ken-ik en nog-leren staan
+   eronder, want een knop bínnen een tikbaar vlak dat iets anders doet is hoe je per ongeluk
+   markeert.                                                                                    */
+.wd-head { margin-bottom: 1.25rem; }
+.wd-kicker {
+  font-size: 0.65rem; font-weight: 800; letter-spacing: 0.15em; text-transform: uppercase;
+  color: var(--color-on-surface-variant); margin-bottom: 0.3rem;
+}
+.wd-top { display: flex; align-items: center; gap: 0.75rem; margin-bottom: 0.5rem; }
+.wd-close { display: inline-flex; color: var(--color-outline); }
+.wd-close:hover { color: var(--color-primary); }
+.wd-count { font-size: 0.78rem; font-weight: 700; color: var(--color-on-surface-variant); font-variant-numeric: tabular-nums; }
+.wd-known { margin-inline-start: auto; font-size: 0.78rem; color: var(--color-outline); font-variant-numeric: tabular-nums; }
+.wd-bar { height: 6px; border-radius: 999px; overflow: hidden; background: var(--color-surface-container-high); margin-bottom: 1.25rem; }
+.wd-bar > span { display: block; height: 100%; border-radius: 999px; background: var(--color-primary); transition: width 0.3s ease; }
+
+.wd-card {
+  position: relative; display: flex; flex-direction: column; align-items: center; justify-content: center;
+  width: 100%; min-height: 17rem; padding: 2.25rem 1.75rem 1.75rem; text-align: center; cursor: pointer;
+  background: var(--color-surface-container-lowest); border: none; border-radius: 1.25rem;
+  box-shadow: var(--shadow-ambient);
+  transition: transform 0.18s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.18s ease;
+}
+.wd-card:hover { transform: translateY(-2px); box-shadow: 0 10px 30px rgba(0, 43, 109, 0.12); }
+.wd-card:focus-visible { outline: 2px solid var(--color-secondary-container); outline-offset: 3px; }
+.wd-card.is-back { background: var(--color-surface-container-low); }
+.wd-chip {
+  position: absolute; top: 1rem; inset-inline-start: 1rem; border-radius: 999px; padding: 0.15rem 0.65rem;
+  font-size: 0.62rem; font-weight: 800; letter-spacing: 0.08em; text-transform: uppercase;
+}
+.wd-receptief { background: rgba(0, 43, 109, 0.08); color: var(--color-primary); }
+.wd-productief { background: #fcecdd; color: var(--color-secondary); }
+
+.wd-front, .wd-back { display: flex; flex-direction: column; align-items: center; gap: 0.5rem; width: 100%; }
+.wd-word {
+  font-family: var(--font-headline); font-size: clamp(1.9rem, 5vw, 2.6rem); font-weight: 800;
+  letter-spacing: -0.02em; line-height: 1.15; color: var(--color-primary);
+}
+.wd-plural, .wd-frame { font-size: 0.85rem; color: var(--color-on-surface-variant); }
+.wd-frame { font-style: italic; }
+.wd-word-sm {
+  font-family: var(--font-headline); font-size: 1.15rem; font-weight: 800; color: var(--color-primary);
+  margin-bottom: 0.25rem;
+}
+.wd-meaning { font-size: 1.05rem; line-height: 1.55; color: var(--color-on-surface); max-width: 34ch; }
+.wd-example {
+  margin-top: 0.5rem; font-size: 0.9rem; line-height: 1.6; color: var(--color-on-surface-variant);
+  max-width: 38ch; font-style: italic;
+}
+.wd-trans {
+  display: flex; align-items: baseline; justify-content: center; gap: 0.5rem; margin-top: 1rem;
+  padding-top: 0.9rem; font-size: 1rem; font-weight: 700; color: var(--color-on-surface);
+  /* De enige rand die de no-line-regel toestaat is er hier geen: de scheiding tussen de
+     Nederlandse kant en de vertaling is een tintverschil, niet een streep. */
+  width: 100%; background: linear-gradient(var(--color-surface-container), var(--color-surface-container)) top / 100% 1px no-repeat;
+}
+.wd-trans-lang {
+  font-size: 0.6rem; font-weight: 800; letter-spacing: 0.1em; color: var(--color-outline);
+}
+.wd-unreviewed { margin-top: 0.4rem; font-size: 0.68rem; line-height: 1.5; color: var(--color-outline); max-width: 36ch; }
+.wd-hint {
+  display: inline-flex; align-items: center; gap: 0.375rem; margin-top: 1.25rem;
+  font-size: 0.7rem; font-weight: 700; color: var(--color-outline);
+}
+
+.wd-marks { display: grid; grid-template-columns: 1fr 1fr; gap: 0.625rem; margin-top: 1rem; }
+.wd-btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: 0.5rem; border: none;
+  border-radius: 0.85rem; padding: 0.8rem 1rem; font-family: var(--font-body); font-size: 0.85rem;
+  font-weight: 800; cursor: pointer;
+  transition: transform 0.18s cubic-bezier(0.22, 1, 0.36, 1), background-color 0.18s ease;
+}
+.wd-btn:active { transform: scale(0.98); }
+.wd-btn:focus-visible { outline: 2px solid var(--color-secondary-container); outline-offset: 2px; }
+.wd-btn-learn { background: #fcecdd; color: var(--color-secondary); }
+.wd-btn-learn:hover { background: #f9dcc4; }
+.wd-btn-known { background: var(--color-correct-container); color: var(--color-on-correct-container); }
+.wd-btn-known:hover { background: #d7ecdf; }
+.wd-btn-p { background: var(--gradient-btn-orange); color: #fff; box-shadow: var(--shadow-btn-orange); }
+
+.wd-nav { display: flex; align-items: center; gap: 0.75rem; margin-top: 1rem; }
+.wd-arrow {
+  display: inline-flex; align-items: center; justify-content: center; width: 2.5rem; height: 2.5rem;
+  border: none; border-radius: 0.75rem; background: var(--color-surface-container-low);
+  color: var(--color-primary); cursor: pointer; transition: background-color 0.18s ease;
+}
+.wd-arrow:hover:not(:disabled) { background: var(--color-surface-container-high); }
+.wd-arrow:disabled { opacity: 0.4; cursor: default; }
+.wd-arrow:focus-visible { outline: 2px solid var(--color-secondary-container); outline-offset: 2px; }
+.wd-status {
+  flex: 1; text-align: center; font-size: 0.68rem; font-weight: 800; letter-spacing: 0.1em;
+  text-transform: uppercase; color: var(--color-outline);
+}
+.wd-status-known { color: var(--color-correct); }
+.wd-status-learning { color: var(--color-secondary); }
+.wd-lang {
+  border: none; border-radius: 999px; padding: 0.4rem 0.8rem; font-family: var(--font-body);
+  font-size: 0.72rem; font-weight: 800; background: var(--color-surface-container-low);
+  color: var(--color-primary); cursor: pointer;
+}
+.wd-lang:hover { background: var(--color-surface-container-high); }
+.wd-keys { margin-top: 1rem; text-align: center; font-size: 0.68rem; color: var(--color-outline); }
+
+.wd-done { text-align: center; padding: 2.5rem 1.5rem; }
+.wd-done-h { font-family: var(--font-headline); font-size: 1.35rem; font-weight: 800; color: var(--color-primary); }
+.wd-done-b { margin-top: 0.5rem; font-size: 0.9rem; color: var(--color-on-surface-variant); }
+.wd-done-acts { display: flex; align-items: center; justify-content: center; gap: 1rem; margin-top: 1.5rem; flex-wrap: wrap; }
+.wd-link { font-size: 0.8rem; font-weight: 700; }
+
+@media (prefers-reduced-motion: reduce) {
+  .wd-card, .wd-btn, .wd-arrow, .wd-bar > span, .wt-upsell { transition: none; }
+  .wd-card:hover, .wt-upsell:hover { transform: none; }
+}
+
+/* ── De les: uitleg als vormkaarten, opgaven per trap ─────────────────────────
+   Herontwerp van 02-09 (variant L2 + P2 van het ontwerpcanvas). Twee dingen veranderen
+   tegenover de eerste versie van de lesstroom:
+
+   1. **De uitleg is niet langer één blok tekst.** De regel staat links, een werkend voorbeeld
+      staat er navy naast, en de kaarten uit `uitleg.cards` worden tegels waarop het fragment
+      dat je moet onthouden het grootste is. Dat is wat "veel bloktekst" oploste: dezelfde
+      inhoud, drie leesniveaus.
+   2. **De opgaven staan gegroepeerd per trap** — herkennen, invullen, zelf maken. Die as
+      bestond al (`lesson_items.tier`, en `user_concept_mastery` telt receptief en productief
+      apart), maar was alleen een chipje per opgave. Nu is het de vorm van de sectie, met een
+      balkje per trap.
+
+   **Dit draait één vastgelegde keuze om**: de kop van `LessonStream` zei "uitleg en opgaven in
+   ÉÉN lijst, op sort_order". Dat is nu twee secties. De reden die daar stond — je wilt tijdens
+   een opgave terug kunnen kijken naar de uitleg — blijft gelden, en daarom is dit nog steeds
+   één lange pagina zonder tabs en zonder quizmodus: de uitleg staat er boven, niet elders.  */
+
+/* de kop van de les, met de voortgang van les én blok */
+.les-prog { display: flex; align-items: center; gap: 1rem; flex-wrap: wrap; background: var(--color-surface-container-lowest); border-radius: 1rem; padding: 0.875rem 1rem 1rem; box-shadow: var(--shadow-ambient); margin-top: 1rem; }
+.les-prog .lp-item { flex: 1 1 9rem; min-width: 0; }
+.les-prog .lp-top { display: flex; justify-content: space-between; align-items: baseline; gap: 0.625rem; margin-bottom: 0.375rem; }
+.les-prog .lp-top b { font-family: var(--font-headline); font-size: 0.8rem; font-weight: 800; color: var(--color-on-surface); }
+.les-prog .lp-top span { font-size: 0.72rem; color: var(--color-outline); font-variant-numeric: tabular-nums; }
+.les-prog .lp-bar { height: 7px; border-radius: 999px; background: var(--color-surface-container-high); overflow: hidden; }
+.les-prog .lp-bar > i { display: block; height: 100%; border-radius: 999px; background: var(--color-primary); }
+.les-prog .lp-bar.clay > i { background: var(--color-secondary-container); }
+/* De blokjes A–E: waar in de cursus staat deze les. Vijf streepjes en geen letters, want de
+   letters staan al in het lespaneel; dit is een positie, geen navigatie. */
+.les-prog .lp-blocks { display: flex; gap: 4px; flex: 0 0 auto; }
+.les-prog .lp-blocks i { display: block; width: 22px; height: 7px; border-radius: 999px; background: var(--color-surface-container-high); }
+.les-prog .lp-blocks i.on { background: var(--color-primary); }
+.les-prog .lp-blocks i.now { background: var(--color-secondary-container); }
+
+/* ── uitleg, variant L2 ── */
+.les-split { display: grid; gap: 0.875rem; margin-bottom: 0.875rem; }
+@media (min-width: 760px) { .les-split { grid-template-columns: 1fr 1fr; } }
+
+.rule-panel { background: var(--color-surface-container-lowest); border-radius: 1rem; padding: 1.125rem 1.25rem; box-shadow: var(--shadow-ambient); }
+.rule-panel .rp-kick { display: block; font-size: 0.63rem; font-weight: 800; letter-spacing: 0.1em; text-transform: uppercase; color: var(--color-outline); margin-bottom: 0.5rem; }
+.rule-panel p { font-size: 0.9rem; line-height: 1.6; color: var(--color-on-surface-variant); margin-bottom: 0.5rem; }
+.rule-panel p:last-child { margin-bottom: 0; }
+.rule-panel strong { font-weight: 800; color: var(--color-primary); }
+.rule-panel em { color: var(--color-on-surface); }
+/* ── Stappen en opsommingen in de regel ──
+   De preflight haalt elke marker weg, dus een `<ol>` in de uitleg kwam neer als vier
+   ingesprongen zinnen zonder nummer: precies de plek waar een A2-lezer de volgorde kwijtraakt.
+   De nummers worden hier dus zelf getekend, met een eigen teller, en elke stap krijgt lucht —
+   een stappenlijst is de enige plek in de les waar de volgorde de inhoud ís. */
+.rule-panel ul, .rule-panel ol {
+  list-style: none; padding-inline-start: 0; margin: 0.625rem 0 0.75rem;
+  display: flex; flex-direction: column; gap: 0.5rem;
+}
+.rule-panel li {
+  position: relative; padding-inline-start: 2rem;
+  font-size: 0.9rem; line-height: 1.6; color: var(--color-on-surface-variant);
+}
+.rule-panel ol { counter-reset: step; }
+.rule-panel ol > li { counter-increment: step; }
+.rule-panel ol > li::before {
+  content: counter(step);
+  position: absolute; inset-inline-start: 0; top: 0.05em;
+  display: grid; place-items: center; width: 1.4rem; height: 1.4rem; border-radius: 0.5rem;
+  background: rgba(254, 118, 44, 0.16); color: #a24000;
+  font-family: var(--font-headline); font-size: 0.72rem; font-weight: 800;
+  font-variant-numeric: tabular-nums;
+}
+/* Een opsomming is géén volgorde, dus een stip en geen cijfer — anders leest een lijst
+   voorbeelden als een stappenplan. */
+.rule-panel ul > li::before {
+  content: ''; position: absolute; inset-inline-start: 0.45rem; top: 0.6em;
+  width: 0.4rem; height: 0.4rem; border-radius: 999px; background: var(--color-secondary);
+}
+/* De zin die de stappen aankondigt ("Werk in vier stappen:") hoort bij de lijst eronder. */
+.rule-panel p:has(+ ol), .rule-panel p:has(+ ul) { margin-bottom: 0; }
+
+/* Het werkende voorbeeld, navy. De `<mark>` wordt hier vol oranje in plaats van 18% tint:
+   op navy is een tint van 18% oranje onleesbaar. */
+.demo-panel { display: flex; flex-direction: column; justify-content: center; gap: 0.75rem; background: var(--gradient-brand); border-radius: 1rem; padding: 1.25rem; color: #fff; }
+.demo-panel .dp-kick { font-size: 0.62rem; font-weight: 800; letter-spacing: 0.14em; text-transform: uppercase; color: rgba(255, 255, 255, 0.6); }
+.demo-panel .dp-sent { font-family: var(--font-headline); font-size: 1.05rem; font-weight: 700; line-height: 1.45; }
+.demo-panel .dp-sent mark { background: var(--color-secondary-container); color: #fff; border-radius: 0.3rem; padding: 0.06em 0.3em; font-weight: 800; }
+.demo-panel .dp-note { display: flex; align-items: flex-start; gap: 0.5rem; font-size: 0.78rem; line-height: 1.5; color: rgba(255, 255, 255, 0.72); }
+.demo-panel .dp-note svg { flex: none; margin-top: 2px; }
+
+/* De vormkaarten uit `uitleg.cards`. Maximaal drie, dus drie kolommen op desktop. */
+.form-cards { display: grid; gap: 0.625rem; margin-bottom: 0.875rem; }
+@media (min-width: 560px) { .form-cards { grid-template-columns: repeat(auto-fit, minmax(11rem, 1fr)); } }
+.fcard { background: var(--color-surface-container-lowest); border-radius: 1rem; padding: 0.875rem 1rem; box-shadow: var(--shadow-ambient); }
+.fcard .fc-label { display: block; font-size: 0.66rem; font-weight: 800; letter-spacing: 0.08em; text-transform: uppercase; color: var(--color-outline); margin-bottom: 0.4rem; }
+.fcard .fc-body { font-size: 0.95rem; line-height: 1.5; color: var(--color-on-surface); }
+/* Het gemarkeerde fragment is hier het grootste op de kaart: dat is wat je moet onthouden. */
+.fcard .fc-body mark { font-family: var(--font-headline); font-size: 1.15rem; font-weight: 800; letter-spacing: -0.01em; }
+
+/* ── De twee sectiekoppen van een les: Uitleg en Oefenen ──
+   De enige scheiding tussen de twee helften van de pagina. Geen streep en geen tweede
+   achtergrondtrap (die zou de kaarten erin platslaan) — een kop met lucht eromheen. */
+.les-sec { margin: 1.75rem 0 0.75rem; }
+.les-sec:first-child { margin-top: 0.25rem; }
+.les-sec h2 {
+  font-family: var(--font-headline); font-size: 0.72rem; font-weight: 800;
+  letter-spacing: 0.14em; text-transform: uppercase; color: var(--color-outline);
+}
+.les-sec p { margin-top: 0.2rem; font-size: 0.78rem; line-height: 1.5; color: var(--color-outline); }
+
+/* ── de opgavepager ───────────────────────────────────────────────────────────
+   Eén opgave in beeld, met de nummers erboven (mockup van de eigenaar, 08-09). De trapkaarten
+   (`.exgroup*`) zijn hiermee weg: drie kaarten met elk een balkje boven negen open opgaven
+   vertelden hoeveel er nog kwam, maar niet welke vraag nu aan de beurt was.
+
+   Geen lijnen: de stapjes en de kaart staan op eigen oppervlaktetrappen, en de huidige stap is
+   navy gevuld in plaats van omrand. */
+.exq { margin-top: 1rem; }
+.exq-head {
+  display: flex; flex-wrap: wrap; align-items: baseline; gap: 0.2rem 0.75rem; margin-bottom: 0.7rem;
+}
+.exq-head b {
+  font-family: var(--font-headline); font-size: 0.95rem; font-weight: 800;
+  letter-spacing: -0.015em; color: var(--color-on-surface);
+}
+.exq-head span {
+  margin-inline-start: auto; font-size: 0.78rem; color: var(--color-on-surface-variant);
+  font-variant-numeric: tabular-nums;
+}
+
+.exq-steps { display: flex; align-items: center; gap: 0.5rem; }
+.exq-steps > ol {
+  list-style: none; margin: 0; padding: 0; flex: 1; min-width: 0;
+  display: flex; gap: 0.35rem;
+}
+.exq-steps > ol > li { flex: 1 1 0; min-width: 1.9rem; }
+.exq-steps button {
+  display: flex; align-items: center; justify-content: center;
+  width: 100%; height: 2.1rem; border: 0; border-radius: 0.7rem; cursor: pointer;
+  background: var(--color-surface-container-lowest); box-shadow: var(--shadow-ambient);
+  font-family: var(--font-headline); font-size: 0.85rem; font-weight: 800;
+  color: var(--color-on-surface-variant); font-variant-numeric: tabular-nums;
+  transition: background-color 200ms ease, color 200ms ease,
+    transform 200ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+.exq-steps button:hover { background: var(--color-surface-container); color: var(--color-primary); }
+.exq-steps button:active { transform: scale(0.96); }
+.exq-steps button:focus-visible { outline: none; box-shadow: var(--ring-selected); }
+/* Waar je nu staat: navy gevuld. */
+.exq-steps button.is-at { background: var(--color-primary); color: #fff; }
+/* Nagekeken: klei voor goed, foutrood voor fout — dezelfde twee die de opgavekaart zelf
+   gebruikt, en geen derde tint voor "gedaan" (§8). */
+.exq-steps button.is-done { background: var(--color-secondary-container); color: var(--color-primary); }
+.exq-steps button.is-wrong { background: rgba(198, 40, 40, 0.12); color: var(--color-error); }
+
+/* Op een telefoon passen negen stapjes plus twee pijlen niet op één regel: de negende schoof
+   onder de pijlen. Vijf per rij, en de pijlen zakken naar hun eigen regel rechts. */
+@media (max-width: 640px) {
+  .exq-steps { flex-wrap: wrap; gap: 0.4rem 0; }
+  .exq-steps > ol { flex-wrap: wrap; flex-basis: 100%; gap: 0.35rem; }
+  .exq-steps > ol > li { flex: 0 0 calc(20% - 0.28rem); }
+  .exq-nav { margin-inline-start: auto; }
+}
+
+.exq-nav { display: flex; flex: none; gap: 0.35rem; }
+.exq-nav button {
+  width: 2.4rem; height: 2.1rem; border: 0; border-radius: 0.7rem; cursor: pointer;
+  display: inline-flex; align-items: center; justify-content: center;
+  background: var(--color-surface-container-lowest); color: var(--color-primary);
+  box-shadow: var(--shadow-ambient);
+  transition: background-color 200ms ease, transform 200ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+.exq-nav button.is-now { background: var(--color-primary); color: #fff; }
+.exq-nav button:hover { background: var(--color-surface-container); }
+.exq-nav button.is-now:hover { background: var(--gradient-brand); }
+.exq-nav button:active { transform: scale(0.94); }
+.exq-nav button:focus-visible { outline: none; box-shadow: var(--ring-selected); }
+.exq-nav button:disabled { opacity: 0.35; cursor: default; transform: none; }
+
+/* De kaart om de ene opgave. Nu er één opgave in beeld staat mag die het witte vlak van de
+   mockup zijn: als negen kaarten onder elkaar stonden was dat negen keer een pop-overlaag. */
+.exq-card { margin-top: 0.75rem; }
+.exq-card .ex {
+  background: var(--color-surface-container-lowest);
+  padding: 1.1rem 1.15rem 1rem; box-shadow: var(--shadow-ambient);
+}
+/* En dan is "Nakijken" de knop van dit scherm, niet één van negen: precies één oranje
+   zonneschijf in de compositie (§8). Het stille knopje bestaat nog voor de preview in
+   `/admin/lessen`, waar de opgaven wél allemaal open staan. */
+.exq-card .ex-check-quiet {
+  color: #fff; background: var(--gradient-btn-orange);
+  box-shadow: var(--shadow-btn-orange); padding: 0.55rem 1.1rem; font-size: 0.85rem;
+}
+.exq-card .ex-check-quiet:hover:not(:disabled) { box-shadow: var(--shadow-btn-orange), var(--ring-selected); }
+.exq-card .ex-check-quiet:disabled { color: rgba(255, 255, 255, 0.7); }
+/* De keuzes stonden wit op het grijze vlak van `.ex`. Nu die kaart zelf wit is, schuift de
+   keuze een trap terug — anders zijn de opties onzichtbaar als vlak en leest de vraag als
+   vier regels tekst. Ze houden meer lucht, want er is er maar één opgave in beeld. */
+.exq-card .opts { gap: 0.4rem; }
+.exq-card .opt {
+  background: var(--color-surface-container-low); padding: 0.7rem 0.85rem;
+}
+.exq-card .opt-l { background: var(--color-surface-container-high); }
+
+.exq-skip {
+  display: inline-flex; align-items: center; gap: 0.35rem;
+  border: 0; border-radius: 0.6rem; padding: 0.4rem 0.55rem; cursor: pointer;
+  background: transparent; color: var(--color-primary);
+  font-family: inherit; font-size: 0.8rem; font-weight: 800;
+}
+.exq-skip:hover { background: var(--color-surface-container-low); }
+.exq-skip:focus-visible { outline: none; box-shadow: var(--ring-selected); }
+
+@media (prefers-reduced-motion: reduce) {
+  .exq-steps button, .exq-nav button { transition: none; transform: none; }
+}
+
+/* Het nummer van de opgave, doorlopend over de drie trappen. */
+.ex-num { display: inline-flex; align-items: center; justify-content: center; min-width: 1.25rem; font-family: var(--font-headline); font-size: 0.72rem; font-weight: 800; color: var(--color-outline); font-variant-numeric: tabular-nums; }
+.ex-head { display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.4rem; }
+.ex-head .ex-tier { margin-bottom: 0; }
+.ex-ok { margin-inline-start: auto; display: inline-flex; align-items: center; gap: 0.3rem; font-size: 0.72rem; font-weight: 800; color: var(--color-correct); }
+.ex-ok.is-wrong { color: var(--color-error); }
+
+/* De stille nakijkknop.
+   De eerste versie gaf elke opgave dezelfde volle oranje knop, en op een les met negen
+   opgaven waren dat negen oranje knoppen onder elkaar — met de uitgeschakelde variant op 45%
+   opacity, wat als een kapotte pagina las. De actie is per opgave dezelfde en dus niet de
+   plek voor het enige accent op het scherm; de trapkoppen dragen dat nu. */
+.ex-check-quiet {
+  display: inline-flex; align-items: center; gap: 0.4rem; border: none; border-radius: 0.6rem;
+  padding: 0.42rem 0.85rem; font-family: var(--font-body); font-size: 0.78rem; font-weight: 800;
+  color: var(--color-primary); background: var(--color-surface-container-lowest);
+  box-shadow: inset 0 0 0 1.5px var(--ghost-border); cursor: pointer;
+  transition: box-shadow 180ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+.ex-check-quiet:hover:not(:disabled) { box-shadow: var(--ring-selected); }
+.ex-check-quiet:focus-visible { outline: none; box-shadow: var(--ring-selected); }
+.ex-check-quiet:disabled { color: var(--color-outline); cursor: default; }
+
+@media (prefers-reduced-motion: reduce) {
+  .ex-check-quiet { transition: none; }
+}
+
+/* ── De module: één brok lessen van een leerspoor ──────────────────────────────
+   Geen 1px-lijnen: de rij is een eigen oppervlaktetrap op de sectie, en de
+   afgeronde les schuift een trap donkerder in plaats van een vinkje in de marge
+   te zetten. Het cijfer in de rij is de plaats in de module, want dat is de hele
+   belofte van dit scherm — je werkt hem op volgorde af. */
+.mod-kick {
+  font-size: 0.68rem; font-weight: 800; letter-spacing: 0.08em; text-transform: uppercase;
+  color: var(--color-outline); margin-bottom: 0.2rem;
+}
+.mod-total { margin-bottom: 1rem; }
+.wt-foot-pct {
+  margin-inline-start: 0.5rem; font-family: var(--font-headline); font-weight: 800;
+  color: var(--color-on-surface); font-variant-numeric: tabular-nums;
+}
+
+.mod-cont {
+  display: flex; align-items: center; gap: 0.75rem; margin-bottom: 1.5rem;
+  border-radius: 1rem; padding: 0.875rem 1rem; text-decoration: none;
+  background: var(--color-surface-container-lowest); box-shadow: var(--shadow-ambient);
+  transition: transform 0.2s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.mod-cont:hover { transform: translateY(-1px); }
+.mod-cont:focus-visible { outline: none; box-shadow: var(--ring-selected); }
+.mod-cont-kick {
+  display: block; font-size: 0.68rem; font-weight: 800; letter-spacing: 0.06em;
+  text-transform: uppercase; color: var(--color-on-surface-variant);
+}
+.mod-cont-title {
+  display: block; font-family: var(--font-headline); font-weight: 800;
+  color: var(--color-on-surface); overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+}
+.mod-next { margin-top: 1.5rem; margin-bottom: 0; }
+
+/* Eén kaart die de lijst draagt, en de rijen erin zijn doorzichtig. Zeven zwevende
+   kaartjes onder elkaar lazen als zeven losse dingen; het is één module. */
+.mod-list {
+  display: flex; flex-direction: column; list-style: none; margin: 0;
+  padding: 0.4rem; border-radius: 1rem;
+  background: var(--color-surface-container-lowest); box-shadow: var(--shadow-ambient);
+}
+.mod-row {
+  display: flex; align-items: center; gap: 0.75rem; padding: 0.625rem 0.75rem;
+  border-radius: 0.7rem; text-decoration: none;
+  transition: transform 0.2s cubic-bezier(0.22, 1, 0.36, 1), background-color 0.2s ease;
+}
+.mod-row:hover { background: var(--color-surface-container-low); transform: translateX(2px); }
+.mod-row:focus-visible { outline: none; box-shadow: var(--ring-selected); }
+.mod-n {
+  display: grid; place-items: center; flex: none; width: 1.65rem; height: 1.65rem;
+  border-radius: 0.55rem; background: var(--color-surface-container-high);
+  font-size: 0.76rem; font-weight: 800; color: var(--color-on-surface-variant);
+  font-variant-numeric: tabular-nums;
+}
+.mod-row-body { min-width: 0; flex: 1; }
+.mod-row-title {
+  display: block; font-weight: 700; color: var(--color-on-surface);
+  overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+}
+.mod-row-sub { display: block; font-size: 0.72rem; color: var(--color-outline); }
+.mod-go { flex: none; color: var(--color-outline); }
+.mod-row:hover .mod-go { color: var(--color-secondary); }
+.mod-lock { flex: none; color: var(--color-outline); }
+
+/* Af: één trap donkerder, en de teller wordt de klei-tint. Geen nieuwe kleur voor
+   een status — klei is al "goed" in het hele portaal. */
+.mod-row.is-done { background: var(--color-surface-container-low); }
+.mod-row.is-done .mod-n { background: var(--color-secondary-container); color: var(--color-on-secondary-container); }
+.mod-row.is-done .mod-row-title { color: var(--color-on-surface-variant); }
+.mod-row.is-started .mod-n {
+  background: var(--color-surface-container-lowest);
+  box-shadow: inset 0 0 0 2px var(--color-secondary-container);
+}
+
+/* De link van een cursusblok naar zijn modulerooster. */
+.cb-spoor {
+  display: inline-flex; align-items: center; gap: 0.375rem; margin-bottom: 0.75rem;
+  font-size: 0.78rem; font-weight: 800; color: var(--color-secondary); text-decoration: none;
+}
+.cb-spoor:hover { color: #7d3100; text-decoration: underline; }
+
+/* ── Het kruimelpad van het studieportaal ──────────────────────────────────────
+   Geen lijn eronder en geen achtergrond: het pad is chrome en hoort niet als
+   blok te lezen. De scheiding is een lucide-chevron, niet een "/" — een leesteken
+   dat als pad moet lezen is precies waar `.rtl-flip` niet bij helpt. */
+.crumbs { margin-bottom: 0.85rem; }
+.crumbs > ol {
+  display: flex; flex-wrap: wrap; align-items: center; gap: 0.1rem;
+  list-style: none; margin: 0; padding: 0;
+}
+.crumbs li { display: inline-flex; align-items: center; gap: 0.1rem; min-width: 0; }
+.crumb-sep { flex: none; color: var(--color-outline-variant); margin: 0 0.1rem; }
+
+.crumb {
+  display: inline-block; max-width: 14rem; overflow: hidden; text-overflow: ellipsis;
+  white-space: nowrap; vertical-align: bottom;
+  border-radius: 0.4rem; padding: 0.1rem 0.3rem;
+  font-size: 0.78rem; font-weight: 700; color: var(--color-on-surface-variant);
+  text-decoration: none; transition: color 0.15s ease, background-color 0.15s ease;
+}
+a.crumb:hover { color: var(--color-primary); background: var(--color-surface-container); }
+a.crumb:focus-visible { outline: none; box-shadow: var(--ring-selected); }
+a.crumb:active { color: var(--color-primary); }
+.crumb.is-here { color: var(--color-on-surface); font-weight: 800; }
+
+.crumb-pick {
+  display: inline-grid; place-items: center; flex: none;
+  width: 1.15rem; height: 1.15rem; border: 0; padding: 0; margin-inline-start: 0.05rem;
+  border-radius: 0.35rem; background: transparent; cursor: pointer;
+  color: var(--color-outline); transition: color 0.15s ease, background-color 0.15s ease;
+}
+.crumb-pick:hover { color: var(--color-primary); background: var(--color-surface-container); }
+.crumb-pick:focus-visible { outline: none; box-shadow: var(--ring-selected); }
+.crumb-pick[data-popup-open] { color: var(--color-primary); background: var(--color-surface-container); }
+
+.crumb-menu { min-width: 13rem; max-width: 20rem; }
+.crumb-opt {
+  display: flex; align-items: center; gap: 0.4rem;
+  font-size: 0.82rem; font-weight: 700; color: var(--color-on-surface); text-decoration: none;
+}
+.crumb-opt-tick {
+  display: inline-grid; place-items: center; flex: none;
+  width: 0.85rem; color: var(--color-secondary);
+}
+.crumb-opt.is-current { color: var(--color-primary); }
+.crumb-opt.is-muted { color: var(--color-outline); font-weight: 600; }
+
+/* ── De ingesproken uitleg, naast de lestitel ──────────────────────────────────
+   Eén oranje accent: de speelknop. De voortgangsbalk is klei, zoals elke andere
+   voortgang in het portaal — een tweede oranje schijf in één beeld is precies
+   waar dit palet goedkoop van gaat lijken. */
+.nar-wrap { margin-top: 1rem; }
+
+/* De kaart is navy: op deze pagina is navy "dit is van de docent". Als lichte aside naast de
+   titel las de ingesproken uitleg als een kadertje ernaast, terwijl het de kern van deze laag
+   is. Eén oranje accent — de speelknop — en verder niets oranje in dit beeld. */
+.nar-card {
+  position: relative; overflow: hidden;
+  display: grid; align-items: center;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  gap: 0.75rem 1rem;
+  max-width: 30rem;
+  border-radius: 0.95rem; padding: 0.85rem 1rem;
+  background: linear-gradient(160deg, #002b6d 0%, #001f4f 100%);
+  box-shadow: var(--shadow-ambient);
+}
+
+/* −10 · play · +10. De ringen om de spoelknoppen zijn een `inset` schaduw en geen rand: op deze
+   navy is een 1px lijn precies wat §2 verbiedt, en inset geeft dezelfde vorm. */
+.nar-ctrls { display: flex; align-items: center; gap: 0.5rem; }
+.nar-jump {
+  display: grid; place-items: center; flex: none; width: 2.1rem; height: 2.1rem;
+  border: 0; border-radius: 999px; cursor: pointer;
+  font-family: var(--font-body); font-size: 0.68rem; font-weight: 800;
+  font-variant-numeric: tabular-nums;
+  color: rgba(255, 255, 255, 0.78); background: transparent;
+  box-shadow: inset 0 0 0 1.5px rgba(255, 255, 255, 0.24);
+  transition: transform 0.2s cubic-bezier(0.22, 1, 0.36, 1), color 0.2s ease, box-shadow 0.2s ease;
+}
+.nar-jump:hover { color: #fff; box-shadow: inset 0 0 0 1.5px rgba(255, 255, 255, 0.5); }
+.nar-jump:active { transform: scale(0.94); }
+.nar-jump:focus-visible { outline: none; box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.7); }
+
+.nar-play {
+  display: grid; place-items: center; flex: none; width: 2.85rem; height: 2.85rem;
+  border: 0; border-radius: 999px; cursor: pointer; color: #fff;
+  background: var(--gradient-btn-orange); box-shadow: var(--shadow-btn-orange);
+  transition: transform 0.2s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.2s ease;
+}
+.nar-play:hover { transform: scale(1.05); box-shadow: var(--shadow-btn-orange-hover); }
+.nar-play:active { transform: scale(0.96); }
+.nar-play:focus-visible { outline: none; box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.65); }
+
+.nar-mid { min-width: 0; }
+.nar-kicker {
+  display: flex; align-items: center; gap: 0.3rem;
+  font-size: 0.82rem; font-weight: 800; color: #fff; letter-spacing: -0.01em;
+}
+.nar-kicker > svg { flex: none; opacity: 0.75; }
+
+/* ── de staafjes ──
+   Geen golfvorm: de hoogte is de woorddichtheid uit `word_times` (zie `bars` in
+   LessonNarration), dus een echt gegeven over de opname en geen tekening. Het gespeelde deel is
+   oranje — dezelfde rol als de horizonbalk — en het vakje waar de stem nu in zit staat lichter,
+   zodat de kop van de balk te zien is zonder een tweede kleur te introduceren. */
+.nar-wave {
+  display: flex; align-items: center; gap: 2px;
+  height: 1.85rem; margin-top: 0.3rem; cursor: pointer;
+}
+.nar-wave > i {
+  flex: 1 1 0; min-width: 0; border-radius: 2px;
+  background: rgba(255, 255, 255, 0.22);
+  transition: background-color 0.12s linear;
+}
+.nar-wave > i.is-said { background: var(--color-secondary-container); }
+.nar-wave > i.is-now { background: rgba(254, 118, 44, 0.55); }
+
+/* "nu: de regel" krijgt zijn eigen regel zodra hij er is.
+   Op één regel met de tijd paste hij niet: de naam van een deel van de les kan "het plaatje,
+   stap 4" zijn, en dan kapte de kaart hem af tot "sta…". Een afgekapt feit is geen feit. */
+.nar-now {
+  display: block; margin-top: 0.25rem;
+  font-family: var(--font-mono, ui-monospace, SFMono-Regular, Menlo, monospace);
+  font-size: 0.68rem; line-height: 1.45; color: rgba(255, 255, 255, 0.78);
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+
+.nar-side { display: grid; justify-items: end; gap: 0.4rem; }
+.nar-time {
+  font-family: var(--font-mono, ui-monospace, SFMono-Regular, Menlo, monospace);
+  font-size: 0.72rem; font-weight: 700; color: rgba(255, 255, 255, 0.82);
+  font-variant-numeric: tabular-nums; white-space: nowrap;
+}
+.nar-btns { display: flex; align-items: center; gap: 0.4rem; }
+.nar-follow, .nar-rate {
+  flex: none; border: 0; border-radius: 0.55rem; cursor: pointer;
+  background: rgba(255, 255, 255, 0.12); color: rgba(255, 255, 255, 0.85);
+  font-family: inherit; font-size: 0.72rem; font-weight: 800;
+  font-variant-numeric: tabular-nums;
+  transition: background-color 0.2s ease, color 0.2s ease, transform 0.2s ease;
+}
+.nar-follow {
+  display: inline-flex; align-items: center; gap: 0.35rem; padding: 0.42rem 0.7rem;
+  white-space: nowrap;
+}
+.nar-follow > svg { flex: none; }
+.nar-rate { padding: 0.42rem 0.55rem; }
+.nar-follow:hover, .nar-rate:hover { background: rgba(255, 255, 255, 0.2); color: #fff; }
+.nar-follow:active, .nar-rate:active { transform: scale(0.96); }
+.nar-follow:focus-visible, .nar-rate:focus-visible {
+  outline: none; box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.7);
+}
+/* Aan staat de schakelaar in klei, niet in oranje: het gespeelde deel van de balk is het
+   oranje van deze kaart. */
+.nar-follow.is-on { background: var(--color-secondary); color: #fff; }
+
+/* ── de hoofdstukken ──
+   De cues van de opname, met hun tijd. Eén rij die zijwaarts schuift: negen pillen over drie
+   regels maakt van de balk een blok, en de kaart moet compact blijven. */
+.nar-chaps {
+  grid-column: 1 / -1; display: flex; align-items: center; gap: 0.7rem;
+  min-width: 0; margin-top: 0.15rem; padding-top: 0.7rem;
+  /* Geen lijn maar een toonwissel zou hier niets scheiden — dit is één vlak. De scheiding is
+     dus de ruimte, plus deze zeer lichte streep die het ontwerp van de eigenaar aanhoudt. */
+  box-shadow: inset 0 1px 0 0 rgba(255, 255, 255, 0.1);
+}
+.nar-chaps .nc-lab {
+  flex: none; font-family: var(--font-body); font-size: 0.62rem; font-weight: 800;
+  letter-spacing: 0.14em; text-transform: uppercase; color: rgba(255, 255, 255, 0.45);
+}
+.nar-chaps .nc-row {
+  display: flex; align-items: center; gap: 0.4rem; min-width: 0;
+  overflow-x: auto; scrollbar-width: none; padding-bottom: 1px;
+}
+.nar-chaps .nc-row::-webkit-scrollbar { display: none; }
+.nar-chaps .nc-pill {
+  flex: none; border: 0; border-radius: 999px; cursor: pointer;
+  padding: 0.34rem 0.7rem; white-space: nowrap;
+  font-family: var(--font-body); font-size: 0.72rem; font-weight: 600;
+  color: rgba(255, 255, 255, 0.8); background: rgba(255, 255, 255, 0.1);
+  transition: background-color 0.2s ease, color 0.2s ease, transform 0.2s ease;
+}
+.nar-chaps .nc-pill:hover { background: rgba(255, 255, 255, 0.18); color: #fff; }
+.nar-chaps .nc-pill:active { transform: scale(0.97); }
+.nar-chaps .nc-pill:focus-visible { outline: none; box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.7); }
+.nar-chaps .nc-pill.is-at {
+  background: var(--color-secondary-container); color: #fff; font-weight: 800;
+}
+
+/* De kale balk: alleen als er geen woordtijden zijn, en dan is er niets om staafjes uit te
+   rekenen. */
+.nar-bar {
+  height: 4px; margin-top: 0.55rem; cursor: pointer;
+  background: rgba(255, 255, 255, 0.14); border-radius: 2px;
+}
+.nar-bar > i {
+  display: block; height: 100%; border-radius: 2px;
+  background: var(--color-secondary-container);
+  transition: width 0.1s linear;
+}
+
+@media (max-width: 560px) {
+  .nar-card { grid-template-columns: auto minmax(0, 1fr); gap: 0.6rem 0.75rem; }
+  .nar-side {
+    grid-column: 1 / -1; grid-row: 2;
+    justify-items: stretch; justify-content: space-between;
+    display: flex; align-items: center;
+  }
+  .nar-chaps { grid-row: 3; }
+}
+
+/* ── Het meelezen ─────────────────────────────────────────────────────────────
+   Het voorgelezen script in een eigen leesvlak, met het woord dat nu klinkt onder een
+   markeerstift. Een vaste hoogte met eigen scroll en niet de volle lengte in de pagina: het
+   script is ~250 woorden en dat zou de uitleg waar het over gáát van het scherm duwen. */
+.nar-read {
+  /* `position: relative` is hier niet cosmetisch: het meerollen rekent met `offsetTop` van het
+     gemarkeerde woord, en dat getal is relatief aan de naaste *gepositioneerde* voorouder.
+     Zonder deze regel mat het vanaf een voorouder honderden pixels hoger, en rolde het paneel
+     bij elk woord naar het einde van het script. */
+  position: relative;
+  max-height: 11.5rem; overflow-y: auto; overscroll-behavior: contain;
+  margin-top: 0.6rem; padding: 0.85rem 1rem;
+  border-radius: 0.8rem; background: var(--color-surface-container-lowest);
+  box-shadow: var(--shadow-ambient);
+  font-size: 0.86rem; line-height: 1.85; color: var(--color-on-surface-variant);
+}
+.nar-read p { margin: 0 0 0.55rem; }
+.nar-read p:last-child { margin-bottom: 0; }
+
+/* Elk woord is een spoelknop, dus een `button` — en die moet er uitzien als tekst. */
+.nar-w {
+  border: 0; padding: 0.05rem 0.1rem; margin: 0 -0.02rem; border-radius: 0.25rem;
+  background: transparent; color: inherit; cursor: pointer;
+  font: inherit; letter-spacing: inherit;
+  transition: background-color 0.18s ease, color 0.18s ease, opacity 0.18s ease;
+}
+.nar-w:hover { background: var(--color-surface-container-high); }
+/* Al gezegd treedt terug; dat is wat het oog naar de markering trekt in plaats van naar het
+   spoor erachter. */
+.nar-w.is-said { opacity: 0.45; }
+/* De markeerstift. Zand met de leesbare oranje tekstkleur — `text-warning` is geel-500 en
+   onleesbaar op zijn eigen tint, en een nieuwe tint voor een status mag niet. */
+.nar-w.is-now {
+  background: #fcecdd; color: #a24000; font-weight: 700;
+  box-shadow: 0 0 0 2px #fcecdd;
+}
+
+.nar-pending {
+  margin: 0.7rem 0 0; max-width: 30rem;
+  font-size: 0.7rem; line-height: 1.5; color: #a24000;
+  background: #fcecdd; border-radius: 0.5rem; padding: 0.35rem 0.5rem;
+}
+
+/* De leskop is één kolom: de speler staat onder de inleiding, niet ernaast. In een kolom van
+   19rem paste het meeleesvlak niet — en de speler hoort onder de zin die zegt wat je gaat
+   leren, want dat is waar hij over gaat. */
+.les-top { display: grid; gap: 0.25rem; align-items: start; }
+
+/* ── de leskop volgens de mockup van 08-09 ────────────────────────────────────
+   Eerst het opnameblok over de volle breedte, dan twee kolommen: links wat je leert, rechts
+   waar je in deze les staat. Geen lijnen — de rechterkaart is een oppervlaktetrap. */
+.nar-wrap.is-hero { display: grid; gap: 0.6rem; margin: 1.25rem 0 1.5rem; }
+.nar-hero > * { grid-column: 1; }
+.nar-hero {
+  position: relative; display: grid; place-items: center; gap: 0.6rem;
+  min-height: clamp(9.5rem, 19vw, 13.5rem); border-radius: 1.25rem; padding: 1.4rem;
+  background: var(--color-surface-container-low);
+  /* Het diagonale streepvlak van de mockup: een vlak, geen tekening (§8). */
+  background-image: repeating-linear-gradient(
+    -45deg,
+    rgba(0, 43, 109, 0.04) 0 10px,
+    rgba(0, 43, 109, 0) 10px 20px
+  );
+}
+.nar-bigplay {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 4.5rem; height: 4.5rem; border: 0; border-radius: 999px; cursor: pointer;
+  color: #fff; background: var(--gradient-btn-orange); box-shadow: var(--shadow-btn-orange);
+  transition: transform 220ms cubic-bezier(0.22, 1, 0.36, 1), box-shadow 220ms ease;
+}
+.nar-bigplay:hover { transform: translateY(-2px) scale(1.03); }
+.nar-bigplay:active { transform: scale(0.96); }
+.nar-bigplay:focus-visible { outline: none; box-shadow: var(--shadow-btn-orange), var(--ring-selected); }
+.nar-cap {
+  font-family: var(--font-body); font-size: 0.8rem; font-weight: 600;
+  color: var(--color-on-surface-variant); text-align: center;
+}
+
+/* De sluier vóór de eerste keer spelen: hij dekt de eerste dia af zonder hem te verbergen, en
+   laat kliks door — alleen de knop vangt ze. */
+.nar-veil {
+  position: absolute; inset: 0; z-index: 2; pointer-events: none;
+  display: grid; place-content: center; justify-items: center; gap: 0.5rem;
+  border-radius: 1.25rem; padding: 1.5rem;
+  background: rgba(244, 246, 249, 0.72);
+}
+.nar-veil .nar-bigplay { pointer-events: auto; }
+
+/* ── de leskop: een kaartje met de tegel ──────────────────────────────────────
+   De navy tegel uit de mockup van de eigenaar (08-09), maar klein: het lesnummer op de tegel,
+   de titel ernaast. Hij lag eerst over het hele lesblok, en dan zag je niet meer wat er straks
+   met de stem mee gaat verspringen — de sluier hoort dóórzichtig te zijn.
+
+   De schijf op de tegel is klei, geen zon: `rgba` letterlijk (nooit `color-mix`, §8), en het
+   enige oranje in dit beeld blijft de speelknop van het blok eronder. */
+.les-card {
+  display: flex; align-items: center; gap: 0.85rem;
+  margin: 0.6rem 0 0; padding: 0.7rem 0.9rem; border-radius: 1rem;
+  background: var(--color-surface-container-lowest); box-shadow: var(--shadow-ambient);
+}
+.les-card .lc-tile {
+  position: relative; overflow: hidden; flex: 0 0 auto;
+  width: 3.35rem; height: 3.35rem; border-radius: 0.85rem;
+  display: grid; place-items: center;
+  background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-primary-container) 100%);
+}
+.les-card .lc-tile::after {
+  content: ''; position: absolute; right: -0.85rem; bottom: -1.05rem;
+  width: 2.4rem; height: 2.4rem; border-radius: 999px; background: rgba(162, 64, 0, 0.62);
+}
+.les-card .lc-n {
+  position: relative; z-index: 1; font-family: var(--font-headline);
+  font-size: 1.15rem; font-weight: 800; letter-spacing: -0.03em; color: #fff;
+}
+.les-card .lc-kick {
+  display: block; font-family: var(--font-body); font-size: 0.68rem; font-weight: 800;
+  letter-spacing: 0.14em; text-transform: uppercase; color: var(--color-on-surface-variant);
+}
+.les-card h1 {
+  margin: 0.05rem 0 0; font-family: var(--font-headline); font-weight: 800;
+  font-size: clamp(1.35rem, 3vw, 1.8rem); line-height: 1.15; letter-spacing: -0.03em;
+  color: var(--color-on-surface);
+}
+
+/* ── het lesblok: de uitleg die met de stem meeverspringt (LessonStage) ─────── */
+.nar-hero.is-empty { min-height: clamp(9.5rem, 19vw, 13.5rem); }
+.nar-hero:not(.is-empty) {
+  display: block; min-height: 0; padding: 0.9rem 1rem 0.75rem;
+  background: var(--color-surface-container-lowest);
+  background-image: none; box-shadow: var(--shadow-ambient);
+}
+.stage { display: grid; gap: 0.75rem; }
+/* Eén maat voor het blok, wat er ook in staat: de dia wordt geschaald (`Fit` in LessonStage),
+   niet de doos. Zo verspringt de pagina niet terwijl de stem van onderdeel naar onderdeel gaat
+   en wordt een lang plaatje niet afgeknipt. */
+.stg-fit { height: clamp(16rem, 34vw, 26rem); display: grid; align-content: center; }
+.stg-fit-in { transform-origin: center center; }
+.stg-fit-in > * { margin: 0; }
+/* Het plaatje staat al alleen in beeld, dus de ring die zegt "hier praat ze over" is er
+   dubbelop: in de stroom onderscheidde die het plaatje van vier andere blokken, hier van
+   niets. De stap binnen het plaatje licht wél op — dat is de informatie. */
+.stg-fit .les-vis,
+.stg-fit .les-vis.is-narrating { margin: 0; box-shadow: none; padding: 0; background: transparent; }
+
+/* De kickers zijn per paneel gescopeerd (`.rule-panel .rp-kick` enzovoort); in de dia dragen
+   ze dezelfde vorm, want het is dezelfde tekst in een ander frame. */
+.stg-rule .rp-kick, .stg-card .fc-label {
+  display: block; margin-bottom: 0.5rem;
+  font-size: 0.64rem; font-weight: 800; letter-spacing: 0.1em; text-transform: uppercase;
+  color: var(--color-outline);
+}
+.stg-demo .dp-kick {
+  display: block; margin-bottom: 0.45rem;
+  font-size: 0.62rem; font-weight: 800; letter-spacing: 0.14em; text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.6);
+}
+.stg-rule { font-size: 0.95rem; line-height: 1.75; color: var(--color-on-surface); }
+.stg-rule > div > * + * { margin-top: 0.6rem; }
+.stg-demo {
+  border-radius: 0.9rem; padding: 0.9rem 1rem;
+  background: var(--gradient-brand); color: #fff;
+}
+.stg-demo .dp-sent { font-size: 1.05rem; line-height: 1.6; }
+.stg-card {
+  border-radius: 0.9rem; padding: 0.9rem 1rem;
+  background: var(--color-surface-container-low);
+}
+
+/* ── de regel die nu klinkt ───────────────────────────────────────────────────
+   Eén zin, met het woord dat nú gezegd wordt in de kleitint en de al gezegde woorden
+   teruggetreden. Geen rand en geen nieuwe kleur: de markering is een vlakje achter het woord,
+   dezelfde die het meeleespaneel gebruikt. */
+.nar-line {
+  margin-top: 0.35rem;
+  display: flex; flex-wrap: wrap; gap: 0 0.28rem; align-items: baseline;
+  font-size: 0.92rem; line-height: 1.5; color: rgba(255, 255, 255, 0.82);
+}
+.nar-line > span { transition: color 160ms ease, background-color 160ms ease; }
+.nar-line > span.is-said { color: rgba(255, 255, 255, 0.45); }
+.nar-line > span.is-now {
+  border-radius: 0.3rem; padding: 0.05rem 0.22rem; margin: 0 -0.02rem;
+  background: var(--color-secondary-container); color: var(--color-primary); font-weight: 700;
+}
+@media (prefers-reduced-motion: reduce) {
+  .nar-line > span { transition: none; }
+}
+
+.stg-nav { display: flex; align-items: center; gap: 0.6rem; }
+.stg-nav > button {
+  flex: none; width: 2.1rem; height: 2.1rem; border: 0; border-radius: 0.65rem; cursor: pointer;
+  display: inline-flex; align-items: center; justify-content: center;
+  background: var(--color-surface-container-low); color: var(--color-primary);
+  transition: background-color 200ms ease, transform 200ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+.stg-nav > button:hover { background: var(--color-surface-container-high); }
+.stg-nav > button:active { transform: scale(0.94); }
+.stg-nav > button:focus-visible { outline: none; box-shadow: var(--ring-selected); }
+.stg-nav > button:disabled { opacity: 0.35; cursor: default; transform: none; }
+
+.stg-dots { list-style: none; margin: 0; padding: 0; display: flex; gap: 0.3rem; }
+.stg-dots button {
+  width: 0.5rem; height: 0.5rem; border: 0; border-radius: 999px; padding: 0; cursor: pointer;
+  background: var(--color-surface-container-high);
+  transition: background-color 200ms ease, transform 200ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+.stg-dots button.is-at { background: var(--color-primary); transform: scale(1.35); }
+.stg-dots button:focus-visible { outline: none; box-shadow: var(--ring-selected); }
+.stg-name {
+  margin-inline-start: auto; font-size: 0.75rem; font-weight: 700;
+  color: var(--color-on-surface-variant);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .stg-nav > button, .stg-dots button { transition: none; transform: none; }
+}
+/* Eén zonneschijf per compositie: het blok erboven heeft vóór het spelen zijn eigen oranje
+   speelknop op de sluier, dus die in de balk is tonaal. Zodra er gespeeld wordt, is het
+   gespeelde deel van de staafjesbalk het enige oranje in dit beeld. */
+.nar-wrap.is-hero .nar-card { max-width: none; }
+.nar-wrap.is-hero .nar-play {
+  background: rgba(255, 255, 255, 0.14); box-shadow: none; color: #fff;
+}
+.nar-wrap.is-hero .nar-play:hover { box-shadow: none; background: rgba(255, 255, 255, 0.22); }
+
+.les-learn { display: grid; gap: 1rem; align-items: start; }
+@media (min-width: 800px) {
+  .les-learn { grid-template-columns: minmax(0, 1fr) 19rem; gap: 1.75rem; }
+}
+.ll-head {
+  font-family: var(--font-headline); font-size: 1rem; font-weight: 800;
+  letter-spacing: -0.015em; color: var(--color-on-surface);
+}
+.ll-body { margin-top: 0.4rem; line-height: 1.7; color: var(--color-on-surface-variant); }
+
+.nowcard {
+  border-radius: 1.1rem; padding: 1rem 1.1rem 1.1rem;
+  background: var(--color-surface-container-low);
+}
+.nc-kick {
+  display: block; margin-bottom: 0.6rem;
+  font-size: 0.68rem; font-weight: 800; letter-spacing: 0.11em; text-transform: uppercase;
+  color: var(--color-on-surface-variant);
+}
+.nc-rows { list-style: none; margin: 0 0 0.9rem; padding: 0; display: grid; gap: 0.5rem; }
+.nc-rows li {
+  display: flex; align-items: center; gap: 0.6rem;
+  font-size: 0.9rem; color: var(--color-outline);
+}
+.nc-rows li.is-on { color: var(--color-on-surface); font-weight: 600; }
+.nc-dot {
+  flex: none; display: grid; place-items: center;
+  width: 1.4rem; height: 1.4rem; border-radius: 999px;
+  background: var(--color-surface-container-high); color: #fff;
+}
+.nc-rows li.is-on .nc-dot { background: var(--color-primary); }
+.nc-cta {
+  display: flex; align-items: center; justify-content: center; gap: 0.45rem;
+  border-radius: 0.75rem; padding: 0.7rem 1rem;
+  color: #fff; background: var(--gradient-btn-orange); box-shadow: var(--shadow-btn-orange);
+  font-family: var(--font-headline); font-size: 0.92rem; font-weight: 800;
+  transition: transform 200ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+.nc-cta:hover { transform: translateY(-1px); }
+.nc-cta:active { transform: scale(0.98); }
+.nc-cta:focus-visible { outline: none; box-shadow: var(--shadow-btn-orange), var(--ring-selected); }
+.nc-note {
+  margin-top: 0.6rem; font-size: 0.78rem; line-height: 1.5; color: var(--color-outline);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .nar-bigplay, .nc-cta { transition: none; transform: none; }
+}
+
+/* ── Wat de stem nu bespreekt ──────────────────────────────────────────────────
+   `transform` en `opacity`, plus een inset ring — geen border (de no-line-regel)
+   en geen nieuwe kleur: klei is in dit portaal al "hier gebeurt het". De niet-
+   actieve elementen zakken naar 0.55 opacity zodra er íets speelt, want oplichten
+   werkt alleen als de rest terugtreedt. */
+/* De ruimte die het navy paneel onderaan vrijhoudt voor zijn noot. Alleen op een
+   les mét narratie: anders staat er onderaan elk voorbeeldpaneel een gat om
+   niets. Drie regels van 0.78rem plus de padding van de noot. */
+.les-has-narration .demo-panel { --nar-slot: 4.6rem; }
+
+.les-split .rule-panel,
+.demo-panel .dp-item,
+.form-cards .fcard,
+.les-prog.nar-exhead {
+  transition:
+    transform 0.45s cubic-bezier(0.22, 1, 0.36, 1),
+    opacity 0.45s ease,
+    box-shadow 0.45s ease;
+}
+
+.is-narrating {
+  transform: translateY(-2px) scale(1.012);
+  box-shadow:
+    var(--shadow-ambient),
+    inset 0 0 0 2px var(--color-secondary-container);
+}
+/* Het navy paneel draagt zijn eigen achtergrond, dus daar is de ring lichter nodig
+   om er nog bovenuit te komen. */
+/* Geen `transform` op een voorbeeldzin, en dat is geen smaak: een element met een
+   transform wórdt het containing block voor alles wat erin absoluut gepositioneerd
+   staat — óók zonder `position: relative`. Daardoor landde de noot bovenaan de zin
+   in plaats van onderaan het paneel, en lag hij over de tekst. De ring alleen is
+   binnen het navy vlak trouwens ook genoeg. */
+.demo-panel .dp-item.is-narrating {
+  transform: none;
+  box-shadow: inset 0 0 0 2px rgba(254, 118, 44, 0.55);
+  border-radius: 0.6rem;
+}
+.demo-panel .dp-item { border-radius: 0.6rem; padding: 0.35rem 0.5rem; margin: 0 -0.5rem; }
+
+/* De extra uitleg die bij het besproken element hoort.
+   **Gepind en niet in de flow.** In de flow gemeten liet hij zijn element groeien
+   en duwde alles eronder ~40px omlaag — acht keer heen en acht keer terug per
+   opname, terwijl iemand meeleest. Absoluut onder het element zweeft hij erover,
+   en omdat de buren op 0.55 staan leest dat als een laag en niet als een fout. */
+/* De noot wordt gepositioneerd tegen zijn element — behalve in het navy paneel, waar
+   hij tegen het páneel moet. `.dp-item` mag daarom geen positioned ancestor zijn: met
+   `position: relative` erop landde `bottom: 1.25rem` onderaan de zin zelf en lag de
+   noot precies over de tekst die hij toelicht. */
+[data-narrate]:not(.dp-item) { position: relative; }
+.nar-note {
+  position: absolute; inset-inline: 0; top: calc(100% + 0.45rem); z-index: 2;
+  display: flex; align-items: flex-start; gap: 0.45rem;
+  margin: 0; padding: 0.55rem 0.7rem;
+  border-radius: 0.55rem; background: var(--nar-note-bg, #fcecdd); color: #a24000;
+  box-shadow: var(--shadow-ambient);
+  font-size: 0.78rem; line-height: 1.5; font-weight: 600; text-align: start;
+  animation: nar-note-in 0.35s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+.nar-note > svg { flex: none; margin-top: 0.15rem; }
+
+/* De punt die de noot aan zijn element vastmaakt.
+   Zonder deze hing er een los vakje onder de kaart en was niet te zien waar het
+   bij hoorde — precies wat er "vreemd" aan was. Een gedraaid vierkant en geen
+   `border`-driehoek: dat laatste erft geen achtergrondkleur, en de noot heeft er
+   twee (zand op wit, navy in het navy paneel). */
+.nar-note::before {
+  content: ''; position: absolute; top: -0.28rem; inset-inline-start: 1.15rem;
+  width: 0.6rem; height: 0.6rem; border-radius: 0.1rem;
+  background: var(--nar-note-bg, #fcecdd); transform: rotate(45deg);
+}
+
+/* In het navy paneel is zand een gat in het vlak; daar is de noot een lichtere
+   laag óp het navy, met de tekstkleur van de rest van het paneel.
+
+   **In het navy paneel hangt de noot onderaan het paneel, niet onder de zin.**
+   Twee keer gemeten en twee keer fout: gepind onder de zin lag hij bovenop de
+   tweede voorbeeldzin (twee teksten door elkaar), en in de flow duwde hij het
+   paneel 63px uit — en daarmee de vormkaarten eronder. Het paneel is te klein
+   voor beide. Onderaan, in ruimte die er altíjd is (`--nar-slot`), overlapt hij
+   niets en beweegt er niets; welke zin het is zegt de ring. */
+.demo-panel { position: relative; padding-bottom: calc(1.25rem + var(--nar-slot, 0px)); }
+.demo-panel .nar-note {
+  --nar-note-bg: #1d428a;
+  inset-inline: 1.25rem; top: auto; bottom: 1.25rem;
+  color: #fff; box-shadow: 0 8px 24px rgba(0, 20, 55, 0.35);
+}
+.demo-panel .nar-note::before { display: none; }
+
+@keyframes nar-note-in {
+  from { opacity: 0; transform: translateY(-4px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* Terugtreden gebeurt via de kop: alleen zolang er audio speelt. */
+/* 0.62 en niet 0.55: op 0.55 werd de tekst in de regelkaart lichtgrijs en las het
+   als een ingeladen-maar-stukke pagina in plaats van als achtergrond. */
+.les-narrating .les-split .rule-panel,
+.les-narrating .demo-panel .dp-item,
+.les-narrating .form-cards .fcard,
+.les-narrating .les-prog.nar-exhead { opacity: 0.62; }
+.les-narrating .is-narrating { opacity: 1; }
+
+@media (prefers-reduced-motion: reduce) {
+  .les-split .rule-panel,
+  .demo-panel .dp-item,
+  .form-cards .fcard,
+  .les-prog.nar-exhead { transition: opacity 0.2s ease; }
+  .is-narrating { transform: none; }
+  .nar-note { animation: none; }
+}
+
+/* ── Correct-answer reward — lib/answer-chime.ts is the sound, this is the motion ─────────────
+   Applied to the option the candidate just got right, to the answer's own words, and to the
+   verdict row underneath. The whole reward is green: `--color-correct` is the one success hue
+   (§8, "no new hue for a status"), and the gradient only travels between that token and the
+   lighter `#4caf7a` already used by the Schrijven mark-up.
+
+   Two of these animate paint rather than transform/opacity, which §8 otherwise forbids: the
+   conic angle of the ring and the colour of the word pass. Both are deliberate and owner-asked
+   (2026-09-03) — the word pass is the same effect `.sp-read` already uses while a Spreken answer
+   is being checked, and the ring is one small masked frame, one-shot, ~2s. Everything is dropped
+   under `prefers-reduced-motion`; the green fill and the Check icon carry the verdict on their
+   own, so nothing is lost.
+
+   These rules live here, not in a <style> block inside the option button: a <style> element
+   contributes to its element's accessible name, so a screen reader reads the CSS out as part of
+   the answer. */
+@property --answer-spin {
+  syntax: '<angle>';
+  inherits: false;
+  initial-value: 0deg;
+}
+
+.answer-correct {
+  position: relative;
+  animation: answer-correct-settle 0.42s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+/* The travelling frame: a conic gradient whose bright arc runs twice around the option and then
+   fades out. `mask-composite: exclude` punches out the middle, so what is left is a 2px border of
+   gradient — the box's own fill and text are never covered, which is why this needs no wrapper
+   element and no z-index juggling on the content. */
+.answer-correct::after {
+  content: '';
+  position: absolute;
+  inset: -2px;
+  padding: 2px;
+  border-radius: inherit;
+  pointer-events: none;
+  background: conic-gradient(
+    from var(--answer-spin),
+    rgba(14, 122, 75, 0) 0deg,
+    rgba(14, 122, 75, 0) 130deg,
+    var(--color-correct) 200deg,
+    #4caf7a 250deg,
+    var(--color-correct) 290deg,
+    rgba(14, 122, 75, 0) 360deg
+  );
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  mask-composite: exclude;
+  animation:
+    answer-spin 1.05s linear 2 both,
+    answer-ring-fade 2.1s ease-out both;
+}
+
+@keyframes answer-spin {
+  to { --answer-spin: 360deg; }
+}
+
+@keyframes answer-ring-fade {
+  0%, 62%  { opacity: 1; }
+  100%     { opacity: 0; }
+}
+
+@keyframes answer-correct-settle {
+  0%   { transform: scale(1); }
+  38%  { transform: scale(1.022); }
+  100% { transform: scale(1); }
+}
+
+/* The word pass: the answer's own words light up in turn, left to right, the way a Spreken
+   transcript lights while it is being checked. `components/exam/WordPass.tsx` writes the spans
+   and the per-word delay. */
+.answer-words > span {
+  animation: answer-word 0.85s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+@keyframes answer-word {
+  0%   { color: inherit; }
+  30%  { color: #4caf7a; }
+  55%  { color: var(--color-correct); }
+  100% { color: var(--color-on-correct-container); }
+}
+
+.answer-verdict {
+  animation: answer-verdict-in 0.3s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+@keyframes answer-verdict-in {
+  0%   { transform: translateY(-4px); opacity: 0; }
+  100% { transform: translateY(0);    opacity: 1; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .answer-correct,
+  .answer-verdict { animation: none; }
+  .answer-correct::after { display: none; }
+  .answer-words > span { animation: none; color: var(--color-on-correct-container); }
+}
+
+/* ── Portaal: de tien oefenexamens als strook kaartjes ────────────────────────
+   Eén paneel in plaats van tien rijen. Elk kaartje heeft een navy kop (de score of het nummer
+   plus zijn status) en een lichte voet (naam, wat het examen inhoudt, en de knop). De strook
+   scrollt horizontaal in zijn eigen container; de pagina zelf schuift nooit mee (§design).
+   Geen 1px-randen (§2) — behalve de inset-ring om het examen dat nu aan de beurt is, want dat
+   is selectie en dus een inset-schaduw, geen border.                                        */
+.exam-strip .es-head {
+  display: flex; flex-wrap: wrap; align-items: baseline; gap: 0.3rem 0.8rem; margin-bottom: 0.9rem;
+}
+.exam-strip .es-title {
+  font-family: var(--font-headline); font-weight: 800; font-size: 1.05rem;
+  letter-spacing: -0.02em; color: var(--color-on-surface);
+}
+.exam-strip .es-meta { font-size: 0.8rem; color: var(--color-on-surface-variant); }
+.exam-strip .es-all {
+  display: inline-flex; align-items: center; gap: 0.35rem; margin-inline-start: auto;
+  font-size: 0.78rem; font-weight: 800; color: #a24000;
+}
+.exam-strip .es-all:hover { text-decoration: underline; }
+.exam-strip .es-all:focus-visible { outline: none; box-shadow: var(--ring-selected); border-radius: 8px; }
+
+/* De strook is een carrousel (embla, `components/ui/carousel`). Het spoor krijgt geen eigen
+   overflow: dat doet `CarouselContent` al met `overflow: hidden`. */
+.exam-strip .es-carousel { position: relative; }
+/* De clipper van `CarouselContent` krijgt lucht boven en onder, anders knipt hij de 2px
+   hover-lift en de selectiering van een kaartje af. */
+.exam-strip [data-slot='carousel-content'] { margin: -0.5rem 0; padding: 0.5rem 0; }
+/* Vaste kaartbreedte, geen tien kolommen die meekrimpen: bij tien gelijke kolommen in deze
+   contentbreedte werd elk kaartje ~90px en kapte élke regel af. Nu leest een kaartje altijd, en
+   op een breed scherm passen ze alle tien. */
+.exam-strip .es-slide { flex: 0 0 auto; width: 11.25rem; display: flex; }
+
+/* De pijlen staan in de kop, niet zwevend over de kaartjes — zie `ExamCarousel`. Ze verschijnen
+   alleen als er iets buiten beeld staat, dus een zichtbare pijl wijst altijd ergens naar. */
+.exam-strip .es-nav { display: inline-flex; gap: 0.3rem; margin-inline-start: 0.6rem; }
+.exam-strip .es-nav button {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 1.85rem; height: 1.85rem; border: 0; border-radius: 999px; cursor: pointer;
+  background: var(--color-surface-container-low); color: var(--color-primary);
+  transition: background-color 200ms ease, transform 200ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+.exam-strip .es-nav button:hover { background: var(--color-surface-container-high); }
+.exam-strip .es-nav button:active { transform: scale(0.94); }
+.exam-strip .es-nav button:focus-visible { outline: none; box-shadow: var(--ring-selected); }
+.exam-strip .es-nav button:disabled { opacity: 0.35; cursor: default; transform: none; }
+
+/* Het raster van `oefenexamens/page.tsx`: alle tien tegelijk, en dan mag een kaartje meegroeien. */
+.exam-strip .es-grid {
+  list-style: none; margin: 0; padding: 0;
+  display: grid; gap: 0.7rem; grid-template-columns: repeat(auto-fill, minmax(8.75rem, 1fr));
+}
+/* Twee kolommen op een telefoon, en dan mag de feitenregel afbreken: tien kaartjes onder elkaar
+   is precies de lijst waar deze kaartjes voor in de plaats kwamen. */
+.exam-strip .es-grid .es-fact { white-space: normal; }
+
+.exam-strip .es-card {
+  display: flex; flex-direction: column; height: 100%; border-radius: 0.9rem; overflow: hidden;
+  color: inherit; background: var(--color-surface-container-lowest); box-shadow: var(--shadow-ambient);
+  transition: transform 200ms cubic-bezier(0.22, 1, 0.36, 1), box-shadow 200ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+.exam-strip a.es-card:hover { transform: translateY(-2px); box-shadow: 0 12px 28px rgba(0,27,78,0.14); }
+.exam-strip a.es-card:focus-visible { outline: none; box-shadow: var(--ring-selected); }
+
+/* De kop: de score als je die hebt, anders het nummer. Navy, met de status eronder. */
+.exam-strip .es-cap {
+  display: grid; justify-items: center; gap: 1px; padding: 0.7rem 0.5rem 0.6rem;
+  background: var(--gradient-brand);
+}
+.exam-strip .es-cap b {
+  display: inline-flex; align-items: center; gap: 0.25rem;
+  font-family: var(--font-headline); font-size: 1.15rem; font-weight: 800; letter-spacing: -0.03em;
+  color: #fff; font-variant-numeric: tabular-nums;
+}
+.exam-strip .es-cap i {
+  font-style: normal; font-size: 0.53rem; font-weight: 800; letter-spacing: 0.07em;
+  text-transform: uppercase; color: rgba(255,255,255,0.66); text-align: center;
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 100%;
+}
+/* Nog niet gehaald: de kleibalk-kleur op het label, geen tweede statuskleur en geen groen (§8). */
+.exam-strip .is-sat .es-cap i { color: #ffc39c; }
+.exam-strip .is-locked .es-cap, .exam-strip .is-empty .es-cap { background: rgba(0,43,109,0.55); }
+.exam-strip .is-empty .es-cap b { color: rgba(255,255,255,0.72); }
+
+.exam-strip .es-body { display: flex; flex-direction: column; gap: 0.2rem; padding: 0.65rem 0.7rem 0.7rem; }
+.exam-strip .es-nm {
+  font-family: var(--font-headline); font-size: 0.85rem; font-weight: 800; letter-spacing: -0.015em;
+  color: var(--color-on-surface); overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+}
+.exam-strip .es-fact {
+  font-size: 0.7rem; line-height: 1.4; color: var(--color-outline);
+  overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+}
+.exam-strip .es-act {
+  display: inline-flex; align-items: center; justify-content: center; gap: 0.3rem; margin-top: 0.5rem;
+  padding: 0.45rem 0.6rem; border-radius: 0.6rem; font-size: 0.75rem; font-weight: 800;
+  color: var(--color-primary); background: var(--color-surface-container-low);
+}
+/* Eén oranje knop op de strook: het examen dat nu aan de beurt is. */
+.exam-strip .es-act.is-now {
+  color: #fff; background: var(--gradient-btn-orange); box-shadow: var(--shadow-btn-orange);
+}
+.exam-strip .is-next { box-shadow: var(--ring-selected), var(--shadow-ambient); }
+.exam-strip .is-empty .es-nm, .exam-strip .is-empty .es-act { color: var(--color-outline); }
+
+@media (prefers-reduced-motion: reduce) {
+  .exam-strip .es-card, .exam-strip a.es-card:hover { transition: none; transform: none; }
+}
+
+/* ══════════════════════════════════════════════════════════════════════════════
+   HET LESPLAATJE — components/lessons/LessonVisual.tsx
+   ══════════════════════════════════════════════════════════════════════════════
+   Tien soorten figuren die de regel van een les tónen. Ze delen één skelet: een
+   kop met de doorloopknop, het figuur zelf, en het onderschrift met de regel in
+   één zin. Alles is gebouwd uit vlakken en achtergrondtrappen — geen lijnen om
+   te sectioneren, geen tekeningen, geen nieuwe tint voor een status.
+
+   Wat een figuur mag zeggen met kleur, en niets anders:
+     navy   = het werkwoord, en het resultaat van een bouw
+     klei   = de stap waar het nu over gaat
+     zand   = een noot van de opname
+     rood   = een foute zin, en dan altijd met een kruisje erbij
+   ────────────────────────────────────────────────────────────────────────────── */
+.les-vis {
+  position: relative;
+  margin: 0 0 1.25rem; padding: 0.9rem 1rem 1rem;
+  border-radius: 1rem;
+  background: var(--color-surface-container-lowest);
+  box-shadow: var(--shadow-ambient);
+  transition: transform 0.45s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.45s ease,
+    opacity 0.45s ease;
+}
+/* Tijdens de opname licht het plaatje op zoals de regelkaart dat doet — dezelfde ring,
+   want het is dezelfde soort gebeurtenis. */
+.les-vis.is-narrating {
+  box-shadow: var(--shadow-ambient), inset 0 0 0 2px var(--color-secondary-container);
+}
+.les-narrating .les-vis:not(.is-narrating) { opacity: 0.62; }
+
+.lv-head { display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.7rem; }
+.lv-kicker {
+  font-size: 0.64rem; font-weight: 800; letter-spacing: 0.1em; text-transform: uppercase;
+  color: var(--color-on-surface-variant);
+}
+.lv-walk {
+  margin-inline-start: auto;
+  display: inline-flex; align-items: center; gap: 0.3rem;
+  border: 0; border-radius: 0.5rem; padding: 0.25rem 0.5rem; cursor: pointer;
+  background: var(--color-surface-container-low); color: var(--color-on-surface-variant);
+  font-family: inherit; font-size: 0.68rem; font-weight: 800;
+  transition: background-color 0.2s ease, color 0.2s ease, transform 0.2s ease;
+}
+.lv-walk:hover { background: var(--color-surface-container); color: var(--color-primary); }
+.lv-walk:active { transform: scale(0.97); }
+.lv-walk:focus-visible { outline: none; box-shadow: var(--ring-selected); }
+.lv-walk.is-on { background: var(--color-secondary); color: #fff; }
+/* Tijdens de opname stuurt de stem het plaatje; de knop is dan geen keuze meer. */
+.lv-walk:disabled { opacity: 0.4; cursor: default; }
+
+.les-vis figcaption {
+  margin-top: 0.85rem;
+  font-size: 0.82rem; line-height: 1.6; font-weight: 600;
+  color: var(--color-on-surface-variant);
+}
+
+.lv-note {
+  display: flex; align-items: flex-start; gap: 0.45rem;
+  margin: 0.7rem 0 0; padding: 0.5rem 0.65rem;
+  border-radius: 0.55rem; background: #fcecdd; color: #a24000;
+  font-size: 0.78rem; line-height: 1.5; font-weight: 600;
+}
+.lv-note > svg { flex: none; margin-top: 0.15rem; }
+
+.lv-body-note {
+  margin: 0.7rem 0 0; font-size: 0.78rem; line-height: 1.6;
+  color: var(--color-on-surface-variant);
+}
+
+/* ── de stap ───────────────────────────────────────────────────────────────────
+   Elke stap is een knop, want dit plaatje is met een toetsenbord door te lopen.
+   Een knop moet daarvoor eerst álles afleren wat een knop van zichzelf meebrengt. */
+.lv-step {
+  display: block; width: 100%; text-align: start;
+  border: 0; margin: 0; padding: 0.5rem 0.6rem; border-radius: 0.7rem;
+  background: transparent; color: inherit; cursor: pointer;
+  font: inherit;
+  transition: background-color 0.3s ease, opacity 0.3s ease, transform 0.3s ease,
+    box-shadow 0.3s ease;
+}
+.lv-step:hover { background: var(--color-surface-container-low); }
+.lv-step:focus-visible { outline: none; box-shadow: var(--ring-selected); }
+.lv-step.is-on {
+  background: var(--color-surface-container-low);
+  box-shadow: inset 0 0 0 2px var(--color-secondary-container);
+}
+/* Terugtreden, niet verdwijnen: op 0.4 is de rij nog te lezen als je hem opzoekt, en
+   is hij toch geen concurrent van de stap die aan de beurt is. */
+.lv-step.is-off { opacity: 0.4; }
+
+/* ── zinslots: de genummerde vakjes ───────────────────────────────────────── */
+.lv-rows { display: flex; flex-direction: column; gap: 0.15rem; }
+.lv-row-label {
+  display: inline-flex; align-items: center; gap: 0.3rem; margin-bottom: 0.4rem;
+  font-size: 0.68rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.06em;
+  color: var(--color-outline);
+}
+.lv-row-label > svg { color: var(--color-correct); }
+.lv-row.is-wrong .lv-row-label { color: var(--color-error); }
+.lv-row.is-wrong .lv-row-label > svg { color: var(--color-error); }
+
+.lv-strip { display: flex; flex-wrap: wrap; align-items: stretch; gap: 0.3rem; }
+/* Een foute zin krijgt een streep. Fout mág getoond worden — de docent vraagt er juist om,
+   want dit is de fout die gemaakt wordt — maar nooit zonder dat het beeld het zegt. */
+.lv-row.is-wrong .lv-strip { text-decoration: line-through; text-decoration-color: var(--color-error); }
+
+.lv-slot {
+  display: flex; flex-direction: column; gap: 0.1rem;
+  padding: 0.3rem 0.5rem 0.35rem; border-radius: 0.5rem;
+  background: var(--color-surface-container-low);
+  transition: background-color 0.3s ease, transform 0.3s ease;
+}
+.lv-place {
+  font-size: 0.6rem; font-weight: 800; letter-spacing: 0.04em;
+  color: var(--color-outline); font-variant-numeric: tabular-nums;
+}
+.lv-word {
+  font-family: var(--font-headline); font-size: 0.92rem; font-weight: 700;
+  color: var(--color-on-surface); letter-spacing: -0.015em;
+}
+.lv-tag {
+  display: block; margin-top: 0.15rem;
+  font-size: 0.62rem; font-weight: 700; line-height: 1.3; color: var(--color-outline);
+}
+
+/* Het werkwoord is het enige navy vakje in elk plaatje van blok B. Eén kleur voor één
+   ding, in alle 28 lessen — dat is wat het oog leert. */
+.lv-werkwoord { background: var(--color-primary); }
+.lv-werkwoord .lv-word { color: #fff; }
+.lv-werkwoord .lv-place, .lv-werkwoord .lv-tag { color: rgba(255, 255, 255, 0.7); }
+
+.lv-onderwerp { background: var(--color-surface-container-high); }
+.lv-bepaling  { background: #fcecdd; }
+.lv-bepaling .lv-word { color: #a24000; }
+.lv-bepaling .lv-place, .lv-bepaling .lv-tag { color: #a24000; opacity: 0.75; }
+.lv-schakel {
+  background: transparent; box-shadow: inset 0 0 0 2px var(--color-outline-variant);
+}
+.lv-rest { background: var(--color-surface-container-low); }
+
+/* Twee vakjes die van plaats gewisseld zijn: ze komen een millimeter naar voren. Een boog
+   ertussen tekenen zou een lijn zijn over een rij die kan afbreken naar twee regels — en dan
+   loopt de boog dwars door de tekst. */
+.lv-slot.is-moved { transform: translateY(-2px); box-shadow: 0 3px 0 0 var(--color-secondary-container); }
+
+.lv-row-note {
+  display: block; margin-top: 0.45rem;
+  font-size: 0.75rem; line-height: 1.55; color: var(--color-on-surface-variant);
+}
+
+/* ── bijzin: het werkwoord schuift naar achter ─────────────────────────────── */
+.lv-bz-strip { display: flex; flex-wrap: wrap; align-items: stretch; gap: 0.35rem; }
+.lv-bijzin .lv-step { width: auto; flex: 1 1 auto; min-width: 7rem; }
+.lv-bz-kick {
+  display: block; margin-bottom: 0.3rem;
+  font-size: 0.6rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.06em;
+  color: var(--color-outline);
+}
+.lv-bz-main { background: var(--color-surface-container-low); }
+.lv-bz-hinge { flex: 0 0 auto; background: #fcecdd; }
+.lv-bz-hinge .lv-word { color: #a24000; }
+.lv-bz-sub { flex: 2 1 12rem; background: var(--color-surface-container-low); }
+.lv-bz-inner { display: flex; align-items: center; gap: 0.35rem; flex-wrap: wrap; }
+/* De pijl is de regel: hier gaat het werkwoord naartoe. */
+.lv-bz-arrow { display: inline-grid; place-items: center; color: var(--color-secondary); }
+.lv-bz-plain {
+  margin: 0.7rem 0 0; font-size: 0.8rem; color: var(--color-on-surface-variant);
+}
+.lv-bz-plain > span {
+  display: inline-block; margin-inline-end: 0.4rem; padding: 0.05rem 0.35rem;
+  border-radius: 0.3rem; background: var(--color-surface-container);
+  font-size: 0.62rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.06em;
+  color: var(--color-outline);
+}
+
+/* ── vervoeging: stam plus uitgang ─────────────────────────────────────────── */
+.lv-verv-top {
+  display: flex; align-items: center; gap: 0.4rem; margin: 0 0 0.6rem;
+  font-size: 0.8rem; color: var(--color-on-surface-variant);
+}
+.lv-verv-top b { font-family: var(--font-headline); color: var(--color-on-surface); }
+.lv-verv-top > svg { color: var(--color-outline); }
+
+.lv-verv-rows { display: flex; flex-direction: column; gap: 0.15rem; }
+.lv-verv-row { display: grid; grid-template-columns: 8.5rem minmax(0, auto) 1fr; gap: 0.6rem; align-items: center; }
+@media (max-width: 520px) {
+  .lv-verv-row { grid-template-columns: 6.5rem minmax(0, auto); }
+  .lv-verv-note { grid-column: 1 / -1; }
+}
+.lv-verv-person { font-size: 0.8rem; font-weight: 700; color: var(--color-on-surface-variant); }
+.lv-verv-form { display: inline-flex; align-items: stretch; gap: 2px; }
+.lv-verv-base {
+  padding: 0.25rem 0.45rem; border-radius: 0.4rem 0.15rem 0.15rem 0.4rem;
+  background: var(--color-surface-container-high);
+  font-family: var(--font-headline); font-size: 0.92rem; font-weight: 700;
+  color: var(--color-on-surface);
+}
+/* De uitgang is een eigen blokje in navy: dát is wat er per persoon verandert. */
+.lv-verv-end {
+  padding: 0.25rem 0.45rem; border-radius: 0.15rem 0.4rem 0.4rem 0.15rem;
+  background: var(--color-primary); color: #fff;
+  font-family: var(--font-headline); font-size: 0.92rem; font-weight: 800;
+}
+/* Géén uitgang is ook een feit — "ik werk". Een leeg vak zegt dat; een weggelaten vak niet. */
+.lv-verv-end.is-empty {
+  background: transparent; color: var(--color-outline);
+  box-shadow: inset 0 0 0 2px var(--color-outline-variant);
+}
+.lv-verv-note { font-size: 0.72rem; line-height: 1.45; color: var(--color-outline); }
+
+/* ── bouwer: de vorm in blokken ────────────────────────────────────────────── */
+.lv-blocks { display: flex; flex-wrap: wrap; align-items: stretch; gap: 0.35rem; }
+.lv-bouwer .lv-step { width: auto; flex: 0 1 auto; text-align: center; }
+.lv-block { background: var(--color-surface-container-low); }
+.lv-block.is-muted { opacity: 0.55; }
+.lv-block.is-muted .lv-word { color: var(--color-outline); }
+.lv-eq {
+  display: grid; place-items: center; padding: 0 0.2rem;
+  font-family: var(--font-headline); font-weight: 800; color: var(--color-outline);
+}
+.lv-result { background: var(--color-primary); }
+.lv-result .lv-word { color: #fff; font-size: 1rem; }
+.lv-result.is-on { box-shadow: inset 0 0 0 2px var(--color-secondary-container); }
+
+.lv-more {
+  display: flex; flex-wrap: wrap; gap: 0.35rem 1rem;
+  margin: 0.8rem 0 0; padding: 0; list-style: none;
+}
+.lv-more li {
+  display: inline-flex; align-items: center; gap: 0.35rem;
+  font-size: 0.8rem; color: var(--color-on-surface-variant);
+}
+.lv-more li > svg { color: var(--color-outline); }
+.lv-more b { font-family: var(--font-headline); color: var(--color-on-surface); }
+
+/* ── tijdbalk: een verticale rail ──────────────────────────────────────────────
+   Verticaal en niet horizontaal: bij vijf punten viel de horizontale as in twee
+   rijen en liep de lijn alleen achter de eerste rij door — een raster dat zich
+   voordeed als een tijdlijn. Van boven naar beneden betekent in elke taal
+   "daarna", dus deze hoeft ook niet op LTR vast te staan. */
+.lv-tijd { position: relative; padding-inline-start: 0.15rem; }
+.lv-tijd-rail {
+  position: absolute; inset-block: 0.9rem 1.2rem; inset-inline-start: 0.45rem;
+  width: 3px; border-radius: 999px; background: var(--color-surface-container-high);
+}
+.lv-tijd-points { display: flex; flex-direction: column; gap: 0.1rem; }
+.lv-tijd-p { position: relative; padding-inline-start: 1.5rem; }
+.lv-tijd-dot {
+  position: absolute; inset-inline-start: 0.05rem; top: 0.85rem;
+  width: 0.6rem; height: 0.6rem; border-radius: 999px;
+  background: var(--color-outline-variant);
+  box-shadow: 0 0 0 3px var(--color-surface-container-lowest);
+}
+/* Klei en niet de oranje schijf: op deze pagina is er al één oranje ding, en dat is
+   de speelknop van de opname. */
+.lv-tijd-p.is-here .lv-tijd-dot { background: var(--color-secondary); }
+.lv-tijd-when {
+  display: block; margin-bottom: 0.15rem;
+  font-size: 0.62rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.06em;
+  color: var(--color-outline);
+}
+.lv-tijd-p.is-here .lv-word { color: var(--color-primary); }
+
+/* ── sorteren: de bakjes ───────────────────────────────────────────────────── */
+.lv-buckets { display: grid; gap: 0.5rem; grid-template-columns: repeat(auto-fit, minmax(11rem, 1fr)); }
+.lv-bucket { background: var(--color-surface-container-low); }
+.lv-bucket-name {
+  display: block;
+  font-family: var(--font-headline); font-size: 1.05rem; font-weight: 800;
+  color: var(--color-primary); letter-spacing: -0.02em;
+}
+.lv-bucket-rule {
+  display: block; margin: 0.1rem 0 0.5rem;
+  font-size: 0.7rem; line-height: 1.4; color: var(--color-outline);
+}
+.lv-chips { display: flex; flex-wrap: wrap; gap: 0.25rem; }
+.lv-chip {
+  padding: 0.18rem 0.42rem; border-radius: 0.4rem;
+  background: var(--color-surface-container-lowest);
+  font-size: 0.76rem; font-weight: 600; color: var(--color-on-surface);
+}
+.lv-bucket.is-on .lv-chip { background: #fff; }
+/* De uitzonderingen in zand: ze horen bij de regel en ze breken hem niet, en die twee
+   dingen tegelijk zeggen kan alleen door ze apart te zetten. */
+.lv-exc { margin-top: 0.4rem; background: #fcecdd; }
+.lv-exc .lv-chip { background: rgba(255, 255, 255, 0.72); color: #a24000; }
+.lv-exc-note {
+  display: block; margin-top: 0.4rem;
+  font-size: 0.75rem; line-height: 1.55; font-weight: 600; color: #a24000;
+}
+
+/* ── trap: oplopende balken ────────────────────────────────────────────────────
+   **Altijd één rij, en dat is de hele voorstelling.** In een `auto-fit`-raster viel
+   de trap bij drie stappen in twee rijen: groot en groter naast elkaar, het grootst
+   eronder. Dan is de hoogte geen trap meer maar toeval. `grid-auto-flow: column`
+   houdt ze op één rij en laat de kolommen krimpen.
+
+   Onder 560px is er geen hoogte meer te verdelen die iets zegt, en wordt dezelfde
+   trap een breedte: liggende balken die langer worden. Hetzelfde getal
+   (`--lv-trap`), een andere as. */
+.lv-trap-steps {
+  display: grid; grid-auto-flow: column; grid-auto-columns: minmax(0, 1fr);
+  gap: 0.4rem; align-items: start;
+}
+/* Twee rijen: de balk in een vak dat meegroeit, de woorden eronder. Zonder dat vak
+   stonden de teksten per kolom op een andere hoogte — de balken duwden ze omlaag — en
+   dan lijkt de trap een rommelig raster in plaats van drie stappen. */
+/* Een vást vak voor de balk (6.4rem is de hoogste balk plus lucht), zodat álle balken op
+   dezelfde onderlijn staan en alle woorden op dezelfde bovenlijn beginnen. Met een `1fr`-rij
+   duwde een voorbeeld van drie regels de balk van díe kolom omhoog, en dan is de trap geen
+   trap meer maar een rij op ooghoogte. */
+.lv-trap-step { display: grid; grid-template-rows: 6.4rem auto; }
+.lv-trap-bar { align-self: end; }
+/* De balk staat onder de woorden, niet erachter: als achtergrond zou de tekst erop
+   moeten en dan bepaalt de leesbaarheid de hoogte in plaats van de trap. */
+.lv-trap-bar {
+  display: block; width: 100%; margin-bottom: 0.5rem;
+  /* Unitless en niet een percentage: een percentagehoogte lost op tegen de ouder, en die is
+     hier `auto` — dan is de balk 0 pixels hoog en verdwijnt de trap. */
+  height: calc(2.4rem + var(--lv-trap, 100) * 0.6px);
+  border-radius: 0.4rem 0.4rem 0.15rem 0.15rem;
+  background: linear-gradient(180deg, var(--color-primary-container), var(--color-primary));
+}
+.lv-trap-step.is-on .lv-trap-bar {
+  background: linear-gradient(180deg, var(--color-secondary-container), var(--color-secondary));
+}
+
+@media (max-width: 560px) {
+  .lv-trap-steps { grid-auto-flow: row; grid-auto-columns: auto; align-items: stretch; }
+  .lv-trap-step { grid-template-rows: auto auto; }
+  .lv-trap-bar {
+    height: 0.5rem; width: calc(var(--lv-trap, 100) * 1%); margin-bottom: 0.35rem;
+    border-radius: 999px;
+    background: linear-gradient(90deg, var(--color-primary-container), var(--color-primary));
+  }
+  .lv-trap-step.is-on .lv-trap-bar {
+    background: linear-gradient(90deg, var(--color-secondary-container), var(--color-secondary));
+  }
+}
+
+.lv-irr { margin-top: 0.9rem; padding: 0.6rem 0.7rem; border-radius: 0.7rem; background: var(--color-surface-container-low); }
+.lv-irr-kick {
+  display: block; margin-bottom: 0.4rem;
+  font-size: 0.62rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.08em;
+  color: var(--color-outline);
+}
+.lv-irr ul { display: grid; gap: 0.2rem; margin: 0; padding: 0; list-style: none; }
+.lv-irr li { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 0.4rem; font-size: 0.78rem; }
+.lv-irr li > span { color: var(--color-on-surface-variant); }
+.lv-irr li > b { font-family: var(--font-headline); color: var(--color-on-surface); }
+
+/* ── paren: twee helften van één woord ─────────────────────────────────────── */
+.lv-paren-heads {
+  display: grid; grid-template-columns: 5rem 5rem; gap: 0.3rem; margin-bottom: 0.35rem;
+  padding-inline-start: 0.6rem;
+  font-size: 0.6rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.06em;
+  color: var(--color-outline);
+}
+.lv-paren-rows { display: flex; flex-direction: column; gap: 0.1rem; }
+.lv-paar { display: grid; grid-template-columns: 10.3rem 1fr; gap: 0.6rem; align-items: center; }
+@media (max-width: 520px) {
+  .lv-paar { grid-template-columns: 1fr; }
+  .lv-paren-heads { display: none; }
+}
+/* De twee helften raken elkaar: het is één woord met een naad, niet twee woorden. */
+.lv-paar-pair { display: inline-flex; align-items: stretch; gap: 2px; }
+.lv-paar-l, .lv-paar-r {
+  display: grid; place-items: center; min-width: 5rem; padding: 0.25rem 0.4rem;
+  font-family: var(--font-headline); font-size: 0.88rem; font-weight: 700;
+}
+.lv-paar-l {
+  border-radius: 0.4rem 0.15rem 0.15rem 0.4rem;
+  background: var(--color-surface-container-high); color: var(--color-on-surface);
+}
+.lv-paar-r {
+  border-radius: 0.15rem 0.4rem 0.4rem 0.15rem;
+  background: var(--color-primary); color: #fff;
+}
+
+/* ── ruimte: een doos en een stip ──────────────────────────────────────────── */
+.lv-ruimte { display: grid; gap: 0.4rem; grid-template-columns: repeat(auto-fit, minmax(9.5rem, 1fr)); }
+.lv-rm { text-align: center; }
+/* De hele voorstelling: een doos van 2.6rem en een stip die ergens ligt. Twee rechthoeken
+   uit CSS en geen tekening — de plek van de stip is de betekenis van het woord. */
+.lv-rm-scene {
+  position: relative; display: block; width: 100%; height: 3.6rem; margin-bottom: 0.4rem;
+}
+.lv-rm-box {
+  position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%);
+  width: 2.9rem; height: 1.8rem; border-radius: 0.3rem;
+  background: var(--color-surface-container-high);
+}
+.lv-rm-dot {
+  position: absolute; width: 0.62rem; height: 0.62rem; border-radius: 999px;
+  /* Klei en niet de oranje schijf: acht plaatjes naast elkaar zijn acht stippen, en acht
+     oranje schijven in één beeld is precies waar dit palet goedkoop van gaat lijken. De
+     schijf is voor de stap die aan de beurt is. */
+  background: var(--color-secondary);
+  box-shadow: 0 0 0 3px var(--color-surface-container-lowest);
+  transition: left 0.35s cubic-bezier(0.22, 1, 0.36, 1), top 0.35s cubic-bezier(0.22, 1, 0.36, 1),
+    background-color 0.25s ease;
+}
+.lv-rm.is-on .lv-rm-dot { background: var(--color-secondary-container); }
+
+/* De doos is 1.8rem hoog, dus 0.9rem boven en onder het midden. Elke stip hieronder is
+   uitgerekend tegen die rand: binnen, op de rand, of er duidelijk buiten. Een stip die
+   "onder" heet en binnen de doos ligt, leert het verkeerde woord. */
+.lv-rm-scene.is-in     .lv-rm-dot { left: calc(50% - 0.31rem); top: calc(50% - 0.31rem); }
+.lv-rm-scene.is-op     .lv-rm-dot { left: calc(50% - 0.31rem); top: calc(50% - 1.25rem); }
+.lv-rm-scene.is-boven  .lv-rm-dot { left: calc(50% - 0.31rem); top: calc(50% - 1.95rem); }
+.lv-rm-scene.is-onder  .lv-rm-dot { left: calc(50% - 0.31rem); top: calc(50% + 1.05rem); }
+.lv-rm-scene.is-naast  .lv-rm-dot { left: calc(50% + 1.7rem); top: calc(50% - 0.31rem); }
+/* "Voor" en "achter" verschillen alleen in diepte, en diepte is op een plat vlak niet met
+   een positie te zeggen. Voor ligt óp de onderrand van de doos en dekt hem af; achter piept
+   half boven de doos uit en wordt door hem afgedekt. De overlap is het hele verschil. */
+.lv-rm-scene.is-voor   .lv-rm-dot { left: calc(50% - 0.31rem); top: calc(50% + 0.55rem); z-index: 2; }
+.lv-rm-scene.is-achter .lv-rm-dot { left: calc(50% - 0.31rem); top: calc(50% - 1.15rem); }
+.lv-rm-scene.is-achter .lv-rm-box { z-index: 2; }
+/* "Tussen" heeft twee dozen nodig, met de stip er middenin. */
+.lv-rm-scene.is-tussen .lv-rm-box  { left: calc(50% - 1.85rem); width: 1.6rem; }
+.lv-rm-scene.is-tussen .lv-rm-box2 {
+  position: absolute; left: calc(50% + 0.25rem); top: 50%; transform: translateY(-50%);
+  width: 1.6rem; height: 1.8rem; border-radius: 0.3rem;
+  background: var(--color-surface-container-high);
+}
+.lv-rm-scene.is-tussen .lv-rm-dot { left: calc(50% - 0.31rem); top: calc(50% - 0.31rem); }
+
+/* ── frequentie: de as van nooit naar altijd ───────────────────────────────── */
+.lv-freq-axis { position: relative; height: 1.5rem; margin: 0 0.2rem 0.5rem; }
+.lv-freq-line {
+  position: absolute; inset-inline: 0; top: 0.45rem; height: 3px; border-radius: 999px;
+  background: linear-gradient(90deg, var(--color-surface-container-high), var(--color-secondary-container));
+}
+.lv-freq-mark {
+  position: absolute; top: 0.2rem; width: 0.45rem; height: 0.45rem; margin-inline-start: -0.22rem;
+  border-radius: 999px; background: var(--color-outline);
+}
+.lv-freq-ends {
+  position: absolute; inset-inline: 0; top: 0.85rem; display: flex; justify-content: space-between;
+  font-size: 0.6rem; font-weight: 700; color: var(--color-outline);
+}
+.lv-freq-rows { display: flex; flex-direction: column; gap: 0.1rem; }
+.lv-freq-row { display: grid; grid-template-columns: 7rem 6rem 1fr; gap: 0.6rem; align-items: center; }
+@media (max-width: 560px) {
+  .lv-freq-row { grid-template-columns: 4.5rem 1fr; }
+  .lv-freq-row .lv-row-note { grid-column: 1 / -1; margin-top: 0.1rem; }
+}
+.lv-freq-bar { display: block; height: 0.5rem; border-radius: 999px; background: var(--color-surface-container-high); }
+.lv-freq-bar > i { display: block; height: 100%; border-radius: 999px; background: var(--color-primary); }
+.lv-freq-row.is-on .lv-freq-bar > i { background: var(--color-secondary-container); }
+
+@media (prefers-reduced-motion: reduce) {
+  .les-vis, .lv-step, .lv-slot, .lv-rm-dot { transition: opacity 0.2s ease; }
+  .lv-slot.is-moved { transform: none; }
+}
+
+/* ── Portaal: de kaart van een track of een onderdeel ─────────────────────────
+   Eén vorm voor twee altitudes, want het is dezelfde vraag op twee niveaus: /dashboard toont de
+   modules (`ExamMark` op het navy paneel) en /dashboard/[level] de vier onderdelen erbinnen
+   (`CategoryMark` op het lichte paneel, `.tone-light`). De tegelinversie is de laag, niet de
+   status — zie COMPONENTS.md §Icons. Gedeeld in globals.css en niet in een `<style>` per pagina,
+   anders had de tweede pagina een tweede kaart met dezelfde naam gekregen.                    */
+/* ── Eén track als kaart ──
+   De catalogusvorm: navy kunstpaneel boven, tekst eronder, en de voet zegt of voortgang
+   of waar de module uit bestaat. Geen rand (§2): wit op de tonale pagina plus de ambient
+   schaduw doen het werk. */
+/* Vast twee kolommen, niet auto-fill: vier tracks horen als 2×2 te lezen, en een
+   auto-raster maakte er op een brede kolom stilletjes 3 + 1 van. */
+.ov-cards { display:grid; gap:12px; grid-template-columns:1fr; }
+@media (min-width:560px) { .ov-cards { grid-template-columns:repeat(2,minmax(0,1fr)); } }
+.tcard { display:flex; flex-direction:column; border-radius:18px; overflow:hidden; background:var(--color-surface-container-lowest); box-shadow:var(--shadow-ambient); transition:transform .2s cubic-bezier(0.22,1,0.36,1), box-shadow .2s ease; }
+a.tcard:hover { transform:translateY(-2px); box-shadow:0 14px 34px rgba(0,27,78,0.16); }
+a.tcard:focus-visible { outline:none; box-shadow:var(--ring-selected); }
+
+/* De tegel van een track is navy — de inversie is de laag, niet de status; bij soon en
+   locked is diezelfde tegel doffer, nooit lichter. */
+.tcard-art { position:relative; height:118px; display:grid; place-items:center; background:var(--gradient-brand); }
+.tcard.is-soon .tcard-art { background:rgba(0,43,109,0.30); }
+.tcard.is-locked .tcard-art { background:rgba(0,43,109,0.62); }
+.tcard-mark { display:flex; }
+.tcard-flag { position:absolute; top:10px; inset-inline-end:10px; padding:3px 8px; border-radius:999px; font-size:0.55rem; font-weight:800; letter-spacing:0.1em; text-transform:uppercase; color:#fff; background:rgba(255,255,255,0.18); }
+.tcard-lock { position:absolute; top:10px; inset-inline-end:10px; display:grid; place-items:center; width:24px; height:24px; border-radius:999px; color:#fff; background:rgba(255,255,255,0.18); }
+
+.tcard-body { display:flex; flex-direction:column; flex:1; padding:13px 16px 14px; }
+/* Een spacer, niet marge op de knop: 'margin-top:auto' vult de resthoogte en zou de
+   minimumafstand van 14px opslokken zodra een kaart precies vol staat. */
+.tcard-gap { flex:1; min-height:12px; }
+.tcard-kick { font-size:0.58rem; font-weight:800; letter-spacing:0.13em; text-transform:uppercase; color:var(--color-outline); }
+.tcard-title { margin-top:5px; font-family:var(--font-headline); font-size:1.02rem; font-weight:800; letter-spacing:-0.025em; color:var(--color-on-surface); }
+.tcard.is-soon .tcard-title { color:var(--color-outline); }
+.tcard-note { margin-top:6px; font-size:0.8rem; line-height:1.5; color:var(--color-outline); display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden; }
+.tcard-note-soon { margin-bottom:auto; }
+
+.tcard-meta { list-style:none; margin:0; padding:0; display:flex; flex-wrap:wrap; gap:4px 12px; min-width:0; }
+.tcard-meta li { display:inline-flex; align-items:center; gap:5px; font-size:0.76rem; color:var(--color-outline); }
+
+.tcard-prog { display:flex; align-items:center; gap:9px; margin-top:9px; }
+.tcard-bar { flex:1; height:7px; border-radius:999px; background:rgba(0,43,109,0.10); overflow:hidden; }
+.tcard-bar > i { display:block; height:100%; border-radius:999px; background:#fe762c; }
+.tcard-pct { font-family:var(--font-headline); font-size:0.78rem; font-weight:800; color:var(--color-primary); font-variant-numeric:tabular-nums; }
+.tcard-progl { font-size:0.74rem; color:var(--color-outline); }
+.tcard-foot { display:flex; flex-wrap:wrap; align-items:center; justify-content:space-between; gap:10px 12px; }
+
+/* De voet duwt de knop naar beneden, zodat vier kaarten met verschillende teksten
+   dezelfde knoplijn houden. */
+.tcard-cta { flex:none; margin-inline-start:auto; display:inline-flex; align-items:center; gap:6px; padding:8px 14px; border-radius:11px; font-size:0.8rem; font-weight:800; color:var(--color-primary); background:var(--color-surface-container-low); }
+.tcard-cta.is-accent { color:#fff; background:var(--gradient-btn-orange); box-shadow:var(--shadow-btn-orange); }
+
+/* Een onderdeel: hetzelfde navy paneel, maar vlak in plaats van het merkverloop. Het verloop is
+   van de module — het ding met een prijs en een examendatum — en een vlak vlak eronder zegt "dit
+   zit daarin" zonder een tweede kleur te introduceren. Het merkteken is hier `CategoryMark`
+   met `tone="dark"`: witte ink, doorschijnende tegel, de navy als cut-kleur. */
+.tcard.layer-onderdeel .tcard-art { background: var(--color-primary); }
+
+@media (prefers-reduced-motion: reduce) {
+  a.tcard, a.tcard:hover { transition: none; transform: none; }
+}
+
+/* ── Portaal: de kop en de kolom met widgets ──────────────────────────────────
+   Gedeeld door /dashboard en /dashboard/[level]: één kop, links de kaarten, rechts de cijfers
+   die niet op een kaart passen. Stond eerst in een `<style>` van het overzicht; de niveaupagina
+   heeft dezelfde vorm nodig (08-09, de kop met de ring is daar vervangen door deze kolom), en
+   twee kopieën van `.ov-side` zouden meteen uit elkaar lopen.                                 */
+.ov-head { margin-bottom:20px; }
+.ov-head h1 { font-family:var(--font-headline); font-size:clamp(1.5rem,3.4vw,2rem); font-weight:800; letter-spacing:-0.035em; color:var(--color-primary); }
+.ov-head p { margin-top:4px; font-size:0.88rem; color:var(--color-outline); }
+
+.ov-grid { display:grid; gap:16px; align-items:start; }
+@media (min-width:940px) { .ov-grid { grid-template-columns:minmax(0,1fr) 270px; } }
+.ov-rows { display:flex; flex-direction:column; gap:10px; }
+
+/* ── Het widget rechts ── */
+.ov-side { display:flex; flex-direction:column; gap:12px; }
+.ov-card { padding:16px; border-radius:18px; background:var(--color-surface-container-lowest); box-shadow:var(--shadow-ambient); }
+.ov-kick { display:block; font-size:0.6rem; font-weight:800; letter-spacing:0.13em; text-transform:uppercase; color:var(--color-outline); }
+.ov-total { background:var(--gradient-brand); box-shadow:0 10px 30px rgba(0,27,78,0.22); }
+.ov-total .ov-kick { color:rgba(255,255,255,0.55); }
+.ov-total-top { display:flex; align-items:baseline; gap:7px; margin:8px 0 12px; }
+.ov-total-top b { font-family:var(--font-headline); font-size:2rem; font-weight:800; letter-spacing:-0.04em; color:#fff; font-variant-numeric:tabular-nums; }
+.ov-total-top span { font-size:0.78rem; color:rgba(255,255,255,0.62); }
+.ov-rail { display:block; height:8px; border-radius:999px; background:rgba(255,255,255,0.18); overflow:hidden; }
+.ov-rail > i { display:block; height:100%; border-radius:999px; background:#fe762c; }
+
+.ov-week { margin-top:14px; }
+.ov-week-lb { display:block; font-size:0.76rem; color:rgba(255,255,255,0.62); }
+.ov-days { display:flex; gap:4px; margin-top:7px; }
+.ov-days span { flex:1; height:7px; border-radius:999px; background:rgba(255,255,255,0.18); }
+.ov-days span.on { background:#fe762c; }
+/* De cijfers onder elkaar op één lichte kaart: label, getal, en waar het getal vandaan komt.
+   Geen tweede ring — de kaarten links dragen hun eigen balk al. */
+.ov-stats { display: flex; flex-direction: column; gap: 12px; margin-top: 10px; }
+.ov-stat dt {
+  font-size: 0.6rem; font-weight: 800; letter-spacing: 0.13em; text-transform: uppercase;
+  color: var(--color-outline);
+}
+.ov-stat dd {
+  display: flex; align-items: baseline; gap: 7px; margin-top: 2px;
+}
+.ov-stat b {
+  font-family: var(--font-headline); font-size: 1.35rem; font-weight: 800; letter-spacing: -0.03em;
+  color: var(--color-primary); font-variant-numeric: tabular-nums;
+}
+.ov-stat span { font-size: 0.76rem; color: var(--color-outline); }
+.ov-note { margin-top: 12px; font-size: 0.72rem; line-height: 1.55; color: rgba(255,255,255,0.62); }
+
+/* De weg terug op de enige portaalpagina zonder eigen rij in de zijbalk. Geen knop: het is een
+   link naar boven, en een knop zou met de CTA's op de kaarten concurreren. */
+.ov-back {
+  display: inline-block; margin-bottom: 8px; font-size: 0.76rem; font-weight: 800;
+  color: var(--color-outline); text-decoration: none;
+}
+.ov-back:hover { color: var(--color-primary); }
+.ov-back:focus-visible { outline: none; box-shadow: var(--ring-selected); border-radius: 6px; }
+
+/* ── Portaal: de statistiekbalk boven een onderdeel ───────────────────────────
+   Eén kaart: de naam op een eigen bovenregel, daaronder drie kolommen — de meter op zijn eigen
+   tonale vlak, de regel van de docent met de twee uitgangen, en de zwakste concepten. De
+   kolommen worden gescheiden door dat tonale vlak en door ruimte, nooit door een 1px-lijn (§2).
+   Zie `_components/SkillStatBar.tsx`.                                                        */
+.statbar {
+  margin-bottom: 16px; padding: 16px 16px 16px; border-radius: 18px;
+  background: var(--color-surface-container-lowest); box-shadow: var(--shadow-ambient);
+}
+
+.sb-id { display: flex; flex-wrap: wrap; align-items: baseline; gap: 3px 13px; margin: 2px 6px 12px; }
+.sb-id h1 {
+  font-family: var(--font-headline); font-size: clamp(1.5rem, 3.4vw, 2rem); font-weight: 800;
+  letter-spacing: -0.035em; color: var(--color-primary);
+}
+.sb-id p { font-size: 0.88rem; line-height: 1.6; color: var(--color-outline); }
+
+.sb-body { display: grid; grid-template-columns: 1fr; gap: 12px; }
+@media (min-width: 860px) {
+  .sb-body { grid-template-columns: 232px minmax(0, 1fr); gap: 16px; align-items: stretch; }
+}
+
+/* De meter van KNM, `bare`, met een plafond: hij schaalt op breedte en zou anders de hele kaart
+   hoog maken. Compact gehouden — deze kop mag niet meer dan een derde van het scherm kosten. */
+.sb-gaugecol { display: flex; flex-direction: column; justify-content: center; }
+.sb-gauge { width: 100%; max-width: 184px; margin: 0 auto; }
+.sb-note { margin-top: 2px; font-size: 0.72rem; line-height: 1.5; text-align: center; color: var(--color-outline); }
+
+.sb-panel {
+  min-width: 0; display: flex; flex-direction: column; gap: 12px; padding: 14px 16px;
+  border-radius: 14px; background: var(--color-surface-container-low);
+}
+.sb-quote { display: flex; align-items: flex-start; gap: 10px; }
+.sb-photo {
+  position: relative; width: 32px; height: 32px; flex: none; border-radius: 999px;
+  overflow: hidden; background: var(--color-surface-container-high);
+}
+.sb-line { min-width: 0; font-size: 0.86rem; line-height: 1.55; color: var(--color-on-surface); }
+.sb-line b { color: #a24000; }
+
+.sb-diag { min-width: 0; }
+.sb-kick {
+  display: block; margin-bottom: 8px; font-size: 0.6rem; font-weight: 800; letter-spacing: 0.13em;
+  text-transform: uppercase; color: var(--color-outline);
+}
+.sb-rows { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 9px; }
+/* Naam en percentage op één regel, de balk op volle breedte eronder: een balk tussen twee teksten
+   is te kort om tien punten verschil te laten zien. */
+.sb-row { display: flex; align-items: baseline; justify-content: space-between; gap: 10px; }
+.sb-nm { min-width: 0; font-size: 0.85rem; font-weight: 700; color: var(--color-on-surface); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.sb-pct {
+  flex: none; font-family: var(--font-headline); font-size: 0.85rem; font-weight: 800;
+  color: #a24000; font-variant-numeric: tabular-nums;
+}
+.sb-bar { display: block; margin-top: 4px; height: 7px; border-radius: 999px; background: rgba(0,43,109,0.10); overflow: hidden; }
+.sb-bar > i { display: block; height: 100%; border-radius: 999px; background: var(--color-secondary-container); }
+
+.sb-acts { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 16px; margin-top: auto; }
+/* De ene knop wijst naar je zwakke plek, de andere naar een lijst — dus een zachte pil tegen een
+   link, niet twee knoppen. Het oranje is de tint en niet het verloop: de startknop van het
+   oefenexamen verderop is de enige volle oranje CTA (§8, één zonneschijf per compositie). */
+.sb-cta {
+  display: inline-flex; align-items: center; gap: 6px; padding: 8px 14px; border-radius: 11px;
+  font-size: 0.82rem; font-weight: 800; color: #a24000; background: rgba(254,118,44,0.14);
+  text-decoration: none; transition: background .2s ease;
+}
+.sb-cta:hover { background: rgba(254,118,44,0.24); }
+.sb-cta:focus-visible { outline: none; box-shadow: var(--ring-selected); }
+.sb-link {
+  display: inline-flex; align-items: center; gap: 6px; font-size: 0.82rem; font-weight: 800;
+  color: var(--color-primary); text-decoration: none;
+}
+.sb-link:hover { text-decoration: underline; }
+.sb-link:focus-visible { outline: none; box-shadow: var(--ring-selected); border-radius: 8px; }
+
+@media (prefers-reduced-motion: reduce) { .sb-cta { transition: none; } }
+
+/* Drie op een rij: de leerroute is drie stappen en de volgorde is dragend, dus ze horen naast
+   elkaar te staan en niet in een 2×2 waarin stap 3 onder stap 1 belandt. */
+.ov-cards.is-three { grid-template-columns: 1fr; }
+@media (min-width: 720px) { .ov-cards.is-three { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+
+/* Hier stonden `.rules-doors`, `.rules-door`, `.ov-rules*` en `.rules-out`: de vier
+   sorteerdeuren van de regelbibliotheek, haar kaart in de zijkolom van het niveauscherm en de
+   uitgang van een leerspoor ernaartoe. Alle drie vervallen op 10-09 — de regels van een examen
+   staan in stap 2 van die cursus, dus er is geen bibliotheek meer om naartoe te sorteren of
+   naartoe te wijzen. Het gewicht staat nu als tekstregel op de modulekaart zelf. */
+
+/* De docentregel zonder balken: één rij, want wat er staat is een quote en twee uitgangen. */
+.docent-panel.is-line { padding: 14px 18px; margin-bottom: 18px; }
+.docent-panel.is-line .dp-quote { margin: 0; }
+.docent-panel.is-line .dp-acts { margin-top: 10px; }
+@media (min-width: 720px) {
+  .docent-panel.is-line { display: flex; align-items: center; gap: 18px; }
+  .docent-panel.is-line .dp-quote { flex: 1; min-width: 0; }
+  .docent-panel.is-line .dp-acts { margin: 0; flex: none; }
+}
+
+/* ── De zwakke-regelstrook boven het modulerraster van stap 2 ──────────────────
+   Wat de vervallen conceptenpagina als enige had: waar je op dit moment het meeste kunt
+   winnen. Eén rij en geen kaartenraster — het is een aanwijzing bij de modules eronder, en
+   drie kaarten erboven zouden om dezelfde aandacht vragen als de modules zelf.
+
+   Geen randen (de no-line-regel): de strook staat op een eigen tonale laag, de items op de
+   laag erboven. */
+.sp-weak { padding: 14px 18px; margin-bottom: 18px; }
+.sp-weak-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-top: 0.6rem;
+}
+.sp-weak-item {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 0.5rem;
+  padding: 0.45rem 0.8rem;
+  border-radius: 0.25rem;
+  background: var(--color-surface-container-low);
+  text-decoration: none;
+  transition: background-color 160ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+.sp-weak-item b {
+  font-size: 0.875rem;
+  font-weight: 700;
+  color: var(--color-on-surface);
+}
+.sp-weak-item span {
+  font-size: 0.8125rem;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  color: var(--color-secondary);
+}
+.sp-weak-item:hover { background: var(--color-surface-container); }
+.sp-weak-item:focus-visible { outline: none; box-shadow: var(--ring-selected); }
+@media (prefers-reduced-motion: reduce) { .sp-weak-item { transition: none; } }

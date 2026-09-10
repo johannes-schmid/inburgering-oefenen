@@ -1,0 +1,180 @@
+{
+  "items": [
+    {
+      "kind": "uitleg",
+      "tier": null,
+      "explanation": null,
+      "payload": {
+        "body_html": "<p>Bij luisteren zegt de vraag vaak <strong>andere woorden</strong> dan het fragment. Je hoort \"augustus\", maar de vraag zegt \"in de zomer\". Dat is hetzelfde antwoord.</p><p>Werk zo: 1. Lees de vraag en de opties. 2. Bedenk welk woord je ongeveer gaat horen. 3. Luister naar de <em>betekenis</em>, niet naar losse woorden. 4. Kies de optie die hetzelfde zegt, ook met andere woorden.</p><p>Let op de val: een optie met precies hetzelfde woord uit het fragment is vaak fout.</p>",
+        "cards": [
+          {
+            "label": "JE HOORT",
+            "example_html": "Het is open op <mark>zaterdag en zondag</mark>."
+          },
+          {
+            "label": "DE VRAAG ZEGT",
+            "example_html": "Het is open <mark>in het weekend</mark>."
+          },
+          {
+            "label": "DE VAL",
+            "example_html": "Een optie met een woord dat je hoorde, maar met een <mark>andere betekenis</mark>."
+          }
+        ]
+      }
+    },
+    {
+      "kind": "audio",
+      "tier": null,
+      "explanation": null,
+      "payload": {
+        "label": "Telefoongesprek met de tandartspraktijk",
+        "script": "A: Tandartspraktijk De Beukenlaan, goedemiddag.\nB: Goedemiddag, u spreekt met Amina Sahin. Ik heb erge kiespijn.\nA: Wat naar. Kunt u morgenochtend komen? Om kwart over negen is er plaats.\nB: Morgenochtend werk ik. Kan het ook later op de dag?\nA: Even kijken, hoor. Om tien voor vier is er ook nog plek.\nB: Dat is goed. En moet ik dan meteen betalen?\nA: Nee, u krijgt de rekening later thuis. Neemt u wel uw verzekeringspas mee.\nB: Prima. Tot morgen dan.\nA: Tot morgen, mevrouw Sahin.",
+        "audio_url": "http://127.0.0.1:54421/storage/v1/object/public/leren-audio/fragment/a2-luisteren/c4-andere-woorden-1.mp3",
+        "voice_cast": {
+          "A": "woman_young",
+          "B": "woman_older"
+        },
+        "transcript": "Tandartspraktijk De Beukenlaan, goedemiddag. Goedemiddag, u spreekt met Amina Sahin. Ik heb erge kiespijn. Wat naar. Kunt u morgenochtend komen? Om kwart over negen is er plaats. Morgenochtend werk ik. Kan het ook later op de dag? Even kijken, hoor. Om tien voor vier is er ook nog plek. Dat is goed. En moet ik dan meteen betalen? Nee, u krijgt de rekening later thuis. Neemt u wel uw verzekeringspas mee. Prima. Tot morgen dan. Tot morgen, mevrouw Sahin.",
+        "seconds": 30.54
+      }
+    },
+    {
+      "kind": "mcq",
+      "tier": 0,
+      "explanation": "Amina zegt dat ze erge kiespijn heeft. Kiespijn is een probleem met haar gebit, dus ze belt over pijn in haar mond.",
+      "payload": {
+        "prompt": "Waarom belt Amina de praktijk?"
+      },
+      "options": [
+        {
+          "label": "A",
+          "body": "Ze heeft pijn in haar mond.",
+          "is_correct": true
+        },
+        {
+          "label": "B",
+          "body": "Ze wil een rekening betalen.",
+          "is_correct": false
+        },
+        {
+          "label": "C",
+          "body": "Ze zoekt een nieuwe tandarts.",
+          "is_correct": false
+        }
+      ]
+    },
+    {
+      "kind": "mcq",
+      "tier": 0,
+      "explanation": "Je hoort \"tien voor vier\". Dat is 's middags, dus in de middag. De optie met \"morgenochtend\" is de val: dat woord hoor je wel, maar dat tijdstip past Amina niet.",
+      "payload": {
+        "prompt": "Wanneer komt Amina naar de praktijk?"
+      },
+      "options": [
+        {
+          "label": "A",
+          "body": "Morgenochtend.",
+          "is_correct": false
+        },
+        {
+          "label": "B",
+          "body": "Morgenmiddag.",
+          "is_correct": true
+        },
+        {
+          "label": "C",
+          "body": "Morgenavond.",
+          "is_correct": false
+        },
+        {
+          "label": "D",
+          "body": "Vandaag.",
+          "is_correct": false
+        }
+      ]
+    },
+    {
+      "kind": "mcq",
+      "tier": 1,
+      "explanation": "De assistente zegt: u krijgt de rekening later thuis. \"Later thuis\" betekent dat je niet in de praktijk betaalt, maar achteraf.",
+      "payload": {
+        "prompt": "Hoe moet Amina betalen?"
+      },
+      "options": [
+        {
+          "label": "A",
+          "body": "Meteen bij de balie.",
+          "is_correct": false
+        },
+        {
+          "label": "B",
+          "body": "Achteraf, na de rekening thuis.",
+          "is_correct": true
+        },
+        {
+          "label": "C",
+          "body": "Ze hoeft niets te betalen.",
+          "is_correct": false
+        }
+      ]
+    },
+    {
+      "kind": "mcq",
+      "tier": 1,
+      "explanation": "Ze moet haar verzekeringspas meenemen. Dat is haar pas van de zorgverzekering, dus een bewijs van haar verzekering.",
+      "payload": {
+        "prompt": "Wat moet Amina meenemen?"
+      },
+      "options": [
+        {
+          "label": "A",
+          "body": "Geld.",
+          "is_correct": false
+        },
+        {
+          "label": "B",
+          "body": "Haar pas van de zorgverzekering.",
+          "is_correct": true
+        },
+        {
+          "label": "C",
+          "body": "Een brief van de huisarts.",
+          "is_correct": false
+        }
+      ]
+    },
+    {
+      "kind": "gap_type",
+      "tier": 2,
+      "explanation": "Je hoort \"tien voor vier\". Schrijf de tijd op zoals je hem hoort.",
+      "payload": {
+        "sentence": "Amina komt morgen om tien voor ___ .",
+        "answer": "vier"
+      }
+    },
+    {
+      "kind": "gap_type",
+      "tier": 2,
+      "explanation": "De praktijk heet Tandartspraktijk De Beukenlaan. De assistente zegt die naam aan het begin van het gesprek.",
+      "payload": {
+        "sentence": "De praktijk heet Tandartspraktijk De ___ .",
+        "answer": "Beukenlaan"
+      }
+    },
+    {
+      "kind": "open_zin",
+      "tier": 2,
+      "explanation": "Je legt in eigen woorden uit hoe je van andere woorden naar het goede antwoord komt. Je noemt het woord uit het fragment en het woord uit de vraag.",
+      "payload": {
+        "prompt": "Hoe wist je dat Amina in de middag komt? Schrijf twee zinnen. Noem het woord dat je hoorde en het woord uit de vraag.",
+        "model_answer": "Ik hoorde \"tien voor vier\". Dat is 's middags, dus het antwoord is morgenmiddag. Het woord \"middag\" hoorde ik niet, maar de tijd zegt het.",
+        "checklist": [
+          "Ik noem wat ik in het fragment hoorde.",
+          "Ik leg uit dat de vraag andere woorden gebruikt.",
+          "Ik schrijf twee korte zinnen."
+        ]
+      }
+    }
+  ],
+  "what_you_learn": "Je leert dat de vraag bij luisteren vaak andere woorden gebruikt dan het fragment. Je hoort bijvoorbeeld \"tien voor vier\" en de vraag zegt \"in de middag\". Je oefent hoe je op de betekenis let en niet in de val trapt van een optie met precies hetzelfde woord."
+}

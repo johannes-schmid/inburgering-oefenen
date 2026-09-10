@@ -1,0 +1,34 @@
+# De ingesproken uitleg van `b21-lidwoorden`.
+# Regels met # zijn commentaar. [[id]] of [[id | extra uitleg]] markeert waar de stem over
+# welk element begint; de extra uitleg staat op de pagina bij dat element en mag niet herhalen
+# wat de stem net zei.
+# Geldige id's: vis, vis-1 t/m vis-3, rule, card-0, card-1, demo-0, demo-1, exercises.
+
+Deze les gaat over de en het.
+
+[[vis-1 | Twee op de drie woorden zijn de-woorden.]]
+Kijk naar het plaatje. Er staan twee bakjes. In het eerste bakje staan de de-woorden: de man, de vrouw, de brief, de gemeente. Dit bakje is het grootst.
+
+[[vis-2 | Verkleinwoorden op -je krijgen altijd het: het broodje, het kaartje.]]
+In het tweede bakje staan de het-woorden: het kind, het huis, het jaar, het formulier. Woorden die eindigen op -je horen hier ook.
+
+[[vis-3 | In het meervoud is het altijd de. Ook bij het-woorden.]]
+En let op het meervoud. Het kind wordt de kinderen. In het meervoud is het lidwoord altijd de.
+
+[[rule | Twijfel je? Dan is de de veiligste gok.]]
+Je kunt het lidwoord niet zien aan het woord. Je moet het dus leren bij het woord. Leer daarom altijd samen: de brief, het formulier.
+
+[[card-0 | De meeste woorden zitten in dit bakje.]]
+De eerste kaart is het de-woord.
+
+[[card-1 | Dit bakje is kleiner, maar je moet het uit je hoofd kennen.]]
+De tweede kaart is het het-woord.
+
+[[demo-0 | De tafel en de huisarts: twee de-woorden.]]
+Twee voorbeelden. Op de tafel ligt een rekening van de huisarts.
+
+[[demo-1 | Het kind, maar de kinderen.]]
+En: morgen breng ik het kind naar school.
+
+[[exercises]]
+Doe nu de opgaven. Leer elk nieuw woord met zijn lidwoord erbij.

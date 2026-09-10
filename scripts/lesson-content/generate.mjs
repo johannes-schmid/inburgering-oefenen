@@ -29,8 +29,8 @@ import fs from 'node:fs';
 import path from 'node:path';
 import { ROOT } from '../a2-content/lib.mjs';
 import { loadItemRules } from './load-items.mjs';
-import { createLessonAuthor, normalisePayloads } from './author.mjs';
-import { coursePlan, parseTarget, BUILT, WORD_THEMES, STRATEGY_CONCEPTS } from './plan.mjs';
+import { createLessonAuthor, normalisePayloads, kindProblems, audioProblems } from './author.mjs';
+import { coursePlan, parseTarget, BUILT, wordThemes, STRATEGY_CONCEPTS } from './plan.mjs';
 import { A2_CONCEPTS } from './concepts-a2.mjs';
 import { createWordAuthor } from './words.mjs';
 
@@ -68,6 +68,7 @@ async function main() {
 
   const rules = await loadItemRules();
   const blocks = coursePlan(level, onderdeel);
+  const themes = wordThemes(onderdeel);
   const outDir = path.join(GEN_DIR, `${level}-${onderdeel}`);
   fs.mkdirSync(outDir, { recursive: true });
 
@@ -86,10 +87,10 @@ async function main() {
   let words = fs.existsSync(wordsPath) ? JSON.parse(fs.readFileSync(wordsPath, 'utf8')) : null;
 
   if (!words) {
-    console.log(`\nWoordenlijsten voor ${level}:${onderdeel} — ${WORD_THEMES.length} thema's`);
+    console.log(`\nWoordenlijsten voor ${level}:${onderdeel} — ${themes.length} thema's`);
     const wordAuthor = createWordAuthor({ apiKey, gatewayKey });
     words = {};
-    for (const theme of WORD_THEMES) {
+    for (const theme of themes) {
       process.stdout.write(`  ${theme.slug.padEnd(12)} `);
       words[theme.slug] = await wordAuthor.writeTheme({ level, onderdeel, theme });
       console.log(`${words[theme.slug].length} woorden`);
@@ -127,7 +128,7 @@ async function main() {
       // geheel alleen per ongeluk valideert is geen dataset.
       if (fs.existsSync(file)) {
         const existing = JSON.parse(fs.readFileSync(file, 'utf8'));
-        if (lessonProblems(existing, rules).length === 0) {
+        if (lessonProblems(existing, rules, lesson.kind).length === 0) {
           done++;
           console.log(`  ✓ ${lesson.slug.padEnd(34)} (al gedaan)`);
           continue;
@@ -168,39 +169,81 @@ async function main() {
  * concept een les uitlegt is een feit uit `plan.mjs`, niet iets wat het model mag kiezen.
  */
 function contextFor({ lesson, onderdeel, words }) {
+  /* De lessoorten die één concept uitleggen, en waar dat concept vandaan komt. Blok B en C van
+     de drie nieuwe cursussen leunen allemaal op `STRATEGY_CONCEPTS` — daar ís de mechaniek een
+     aanpak en geen grammaticaregel. */
+  const STRATEGY_KINDS = new Set([
+    'strategie', 'klank', 'bouwsteen', 'uitspraak',
+    'luisterstrategie', 'schrijfstrategie', 'spreekstrategie',
+  ]);
+  const TRAINING_KINDS = new Set(['luistertraining', 'schrijftraining', 'spreektraining']);
+
+  if (STRATEGY_KINDS.has(lesson.kind)) {
+    const concept = (STRATEGY_CONCEPTS[onderdeel] ?? [])
+      .find(c => c.slug === lesson.strategyConcept);
+    if (!concept) {
+      throw new Error(`strategieconcept "${lesson.strategyConcept}" bestaat niet voor ${onderdeel}`);
+    }
+    return { concept, onderdeel };
+  }
+
+  if (TRAINING_KINDS.has(lesson.kind)) {
+    /* De categorie is een `task_categories`-slug en de generator heeft geen database, dus hij
+       krijgt hem leesbaar gemaakt. Hij is een hint bij de titel, geen bron van waarheid: de
+       échte eisen per soort opdracht staan in `TASK_RULES` en worden in de examenspeler
+       afgedwongen, niet hier. */
+    return {
+      onderdeel,
+      categoryLabel: lesson.category ? lesson.category.replace(/_/g, ' ') : null,
+    };
+  }
+
   switch (lesson.kind) {
     case 'woorden':
-      return { words: words[lesson.theme] ?? [] };
+    case 'zinnen':
+      return { words: words[lesson.theme] ?? [], onderdeel };
     case 'grammatica': {
       const concept = A2_CONCEPTS.find(c => c.slug === lesson.concept);
       if (!concept) throw new Error(`concept "${lesson.concept}" bestaat niet in concepts-a2.mjs`);
-      return { concept };
-    }
-    case 'strategie': {
-      const concept = (STRATEGY_CONCEPTS[onderdeel] ?? []).find(c => c.slug === lesson.strategyConcept);
-      if (!concept) throw new Error(`strategieconcept "${lesson.strategyConcept}" bestaat niet`);
-      return { concept };
+      return { concept, onderdeel };
     }
     case 'tekstsoort':
     case 'training':
       // De naam van de tekstsoort komt normaal uit `sections.name_nl`. De generator heeft geen
       // database, dus hier de slug, leesbaar gemaakt. De seeder zet de echte titel.
-      return { sectionName: lesson.section.replace(/-/g, ' ').replace('lezen', '').trim() };
+      return { sectionName: lesson.section.replace(/-/g, ' ').replace('lezen', '').trim(), onderdeel };
     case 'toets':
-      // De toets gaat over de concepten van dit onderdeel — een selectie, want twaalf opgaven
-      // over 28 concepten is geen toets maar een steekproef van één per concept.
-      return {
-        concepts: A2_CONCEPTS
-          .filter(c => c.onderdelen.includes(onderdeel))
-          .filter((_, i) => i % 3 === (lesson.slug.startsWith('e1') ? 0 : 1))
-          .slice(0, 8),
-      };
+    case 'luistertoets':
+    case 'spreektoets':
+      return { concepts: toetsConcepts(onderdeel, lesson), onderdeel };
     default:
       throw new Error(`onbekende lessoort "${lesson.kind}"`);
   }
 }
 
-function lessonProblems(unit, rules) {
+/**
+ * Waar de toets van blok E over gaat.
+ *
+ * Bij **Lezen** zijn dat de grammaticaconcepten van blok B — een selectie, want twaalf opgaven
+ * over 28 concepten is geen toets maar een steekproef van één per concept.
+ *
+ * Bij de drie andere cursussen is er geen grammaticablok, en dan zou die selectie de cursist
+ * toetsen op iets wat hij in deze cursus nooit heeft gezien. Daar gaat e1 dus over de eigen
+ * mechaniek: de concepten van blok B en C van dit onderdeel.
+ */
+function toetsConcepts(onderdeel, lesson) {
+  const first = lesson.slug.startsWith('e1');
+  if (onderdeel === 'lezen') {
+    return A2_CONCEPTS
+      .filter(c => c.onderdelen.includes(onderdeel))
+      .filter((_, i) => i % 3 === (first ? 0 : 1))
+      .slice(0, 8);
+  }
+  const own = STRATEGY_CONCEPTS[onderdeel] ?? [];
+  return own.filter((_, i) => (first ? i % 2 === 0 : i % 2 === 1)).slice(0, 8);
+}
+
+function lessonProblems(unit, rules, lessonKind) {
   if (!unit?.items?.length) return ['leeg'];
   normalisePayloads(unit);
   const items = unit.items.map((it, i) => ({
@@ -211,8 +254,14 @@ function lessonProblems(unit, rules) {
       label: o.label, body: o.body, image_urls: [], is_correct: !!o.is_correct, sort_order: j,
     })),
   }));
-  return rules.validateItems(items).map(i =>
-    `${i.index >= 0 ? `item ${i.index + 1}` : 'les'} (${i.kind}): ${i.message}`);
+  return [
+    ...rules.validateItems(items).map(i =>
+      `${i.index >= 0 ? `item ${i.index + 1}` : 'les'} (${i.kind}): ${i.message}`),
+    /* Ook hier, want `--check` is de enige plek die een al geschreven cursus opnieuw beoordeelt
+       en de item-schema's weten niets over lessoorten. Zie `kindProblems`. */
+    ...(lessonKind ? kindProblems(items, lessonKind) : []),
+    ...audioProblems(items),
+  ];
 }
 
 function checkOnDisk(outDir, blocks, rules, only) {
@@ -229,7 +278,7 @@ function checkOnDisk(outDir, blocks, rules, only) {
         missing++;
         continue;
       }
-      const problems = lessonProblems(JSON.parse(fs.readFileSync(file, 'utf8')), rules);
+      const problems = lessonProblems(JSON.parse(fs.readFileSync(file, 'utf8')), rules, lesson.kind);
       if (problems.length) {
         console.log(`  ✗ ${lesson.slug.padEnd(34)} ${problems.slice(0, 3).join(' · ')}`);
         bad++;

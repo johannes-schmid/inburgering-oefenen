@@ -1,0 +1,34 @@
+# De ingesproken uitleg van `b6-om-te`.
+# Regels met # zijn commentaar. [[id]] of [[id | extra uitleg]] markeert waar de stem over
+# welk element begint; de extra uitleg staat op de pagina bij dat element en mag niet herhalen
+# wat de stem net zei.
+# Geldige id's: vis, vis-1 t/m vis-3, rule, card-0, card-1, demo-0, demo-1, exercises.
+
+Deze les gaat over om … te. Daarmee zeg je waarvoor je iets doet.
+
+[[vis-1 | Dit is wat je doet. Het waarom komt erna.]]
+Kijk naar het plaatje. Links staat de hoofdzin: ik ga naar de gemeente.
+
+[[vis-2 | Na om komt geen nieuw onderwerp. Het blijft over dezelfde persoon gaan.]]
+In het midden staat om. Dat woord opent het stukje waarin het doel staat.
+
+[[vis-3 | Te staat vlak voor het werkwoord, en dat werkwoord verandert niet.]]
+Rechts staat: een paspoort te halen. Het woord te staat vlak voor het werkwoord, en het werkwoord staat achteraan. Het blijft in de hele vorm: halen, niet haal.
+
+[[rule | Los: "Ik haal een paspoort." Met om … te wordt dat het doel van de eerste zin.]]
+Dus: ik ga naar de gemeente om een paspoort te halen. Eerst wat je doet, dan waarvoor.
+
+[[card-0 | Eén werkwoord: te ervoor, werkwoord erachter.]]
+De eerste kaart is een gewoon werkwoord.
+
+[[card-1 | Bij opbellen wordt het: om op te bellen. Te komt in het midden.]]
+De tweede kaart is een werkwoord met twee delen. Dan komt te ertussen.
+
+[[demo-0 | Aanvragen valt in twee stukken: aan te vragen.]]
+Twee voorbeelden. Fatima gaat naar de gemeente om een nieuw paspoort aan te vragen.
+
+[[demo-1 | Te betalen: één werkwoord, dus blijft het bij elkaar.]]
+En: wij sparen elke maand geld om een wasmachine te betalen.
+
+[[exercises]]
+Doe nu de opgaven. Kijk goed waar te staat.

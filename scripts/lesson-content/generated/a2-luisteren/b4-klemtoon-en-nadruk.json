@@ -1,0 +1,175 @@
+{
+  "items": [
+    {
+      "kind": "uitleg",
+      "tier": null,
+      "explanation": null,
+      "payload": {
+        "body_html": "<p>In een gesproken zin wordt één woord harder en langzamer gezegd. Dat woord is de nadruk. De spreker doet dat om het belangrijkste te laten horen.</p><p>Bij een vraag over een tijd, een prijs of een plaats ligt de nadruk bijna altijd op het antwoord. Let dus op het woord dat eruit springt.</p>",
+        "cards": [
+          {
+            "label": "WAT JE ZIET STAAN",
+            "example_html": "De les begint om tien uur op maandag."
+          },
+          {
+            "label": "WAT JE HOORT",
+            "example_html": "De les begint om <mark>half tien</mark>, niet om tien uur."
+          }
+        ]
+      }
+    },
+    {
+      "kind": "audio",
+      "tier": null,
+      "explanation": null,
+      "payload": {
+        "script": "A: Goedemiddag, ik kom voor de taalles van morgen. Die begint om tien uur, toch?\nB: Nee mevrouw, hij begint om half tien. Niet om tien uur.\nA: Oh, half tien. Dat is vroeg, hoor.\nB: Ja, en het is in lokaal drie. Even opletten: lokaal drie, niet lokaal dertien.\nA: Lokaal drie. En wat kost het boek?\nB: Het boek kost twaalf euro vijftig. Twaalf euro vijftig, ja. U betaalt bij de balie.\nA: Goed, dank u wel.",
+        "label": "Bij de balie van een taalschool",
+        "audio_url": "http://127.0.0.1:54421/storage/v1/object/public/leren-audio/fragment/a2-luisteren/b4-klemtoon-en-nadruk-1.mp3",
+        "voice_cast": {
+          "A": "woman_young",
+          "B": "man_young"
+        },
+        "transcript": "Goedemiddag, ik kom voor de taalles van morgen. Die begint om tien uur, toch? Nee mevrouw, hij begint om half tien. Niet om tien uur. Oh, half tien. Dat is vroeg, hoor. Ja, en het is in lokaal drie. Even opletten: lokaal drie, niet lokaal dertien. Lokaal drie. En wat kost het boek? Het boek kost twaalf euro vijftig. Twaalf euro vijftig, ja. U betaalt bij de balie. Goed, dank u wel.",
+        "seconds": 29.02
+      }
+    },
+    {
+      "kind": "mcq",
+      "tier": 0,
+      "explanation": "De medewerker zegt harder \"half tien\". Dat is het woord met de nadruk, dus dat is de juiste tijd.",
+      "payload": {
+        "prompt": "Hoe laat begint de taalles?"
+      },
+      "options": [
+        {
+          "label": "A",
+          "body": "Om tien uur",
+          "is_correct": false
+        },
+        {
+          "label": "B",
+          "body": "Om half tien",
+          "is_correct": true
+        },
+        {
+          "label": "C",
+          "body": "Om half elf",
+          "is_correct": false
+        }
+      ]
+    },
+    {
+      "kind": "mcq",
+      "tier": 0,
+      "explanation": "Hij zegt met nadruk \"lokaal drie, niet lokaal dertien\". Het woord met de nadruk is het antwoord.",
+      "payload": {
+        "prompt": "In welk lokaal is de les?"
+      },
+      "options": [
+        {
+          "label": "A",
+          "body": "Lokaal dertien",
+          "is_correct": false
+        },
+        {
+          "label": "B",
+          "body": "Lokaal drie",
+          "is_correct": true
+        },
+        {
+          "label": "C",
+          "body": "Lokaal dertig",
+          "is_correct": false
+        }
+      ]
+    },
+    {
+      "kind": "gap_choice",
+      "tier": 1,
+      "explanation": "De medewerker zegt de prijs twee keer met nadruk: twaalf euro vijftig.",
+      "payload": {
+        "sentence": "Het boek kost ___ euro vijftig.",
+        "choices": [
+          "twintig",
+          "twaalf",
+          "tien"
+        ],
+        "answer": "twaalf"
+      }
+    },
+    {
+      "kind": "gap_choice",
+      "tier": 1,
+      "explanation": "De medewerker zegt: \"U betaalt bij de balie.\" Dat woord krijgt de nadruk.",
+      "payload": {
+        "sentence": "Mevrouw Bakker betaalt bij de ___.",
+        "choices": [
+          "balie",
+          "kassa",
+          "school"
+        ],
+        "answer": "balie"
+      }
+    },
+    {
+      "kind": "gap_choice",
+      "tier": 1,
+      "explanation": "Mevrouw Bakker herhaalt de tijd met nadruk en zegt dan: \"Dat is vroeg, hoor.\"",
+      "payload": {
+        "sentence": "Mevrouw Bakker vindt half tien ___.",
+        "choices": [
+          "laat",
+          "vroeg",
+          "goed"
+        ],
+        "answer": "vroeg"
+      }
+    },
+    {
+      "kind": "matchen",
+      "tier": 1,
+      "explanation": "Zet elk woord met nadruk naast het goede getal of woord uit het fragment.",
+      "payload": {
+        "instruction": "Verbind de vraag met wat je in het fragment hoort.",
+        "pairs": [
+          {
+            "left": "de tijd van de les",
+            "right": "half tien"
+          },
+          {
+            "left": "het lokaal",
+            "right": "drie"
+          },
+          {
+            "left": "de prijs van het boek",
+            "right": "twaalf euro vijftig"
+          },
+          {
+            "left": "waar je betaalt",
+            "right": "de balie"
+          }
+        ]
+      }
+    },
+    {
+      "kind": "gap_type",
+      "tier": 2,
+      "explanation": "Je hoort met nadruk \"half tien\". Schrijf precies op wat de spreker harder zegt.",
+      "payload": {
+        "sentence": "De les begint om ___.",
+        "answer": "half tien"
+      }
+    },
+    {
+      "kind": "gap_type",
+      "tier": 2,
+      "explanation": "De medewerker zegt de prijs twee keer, met nadruk op het getal: twaalf euro vijftig.",
+      "payload": {
+        "sentence": "Het boek kost ___ euro vijftig.",
+        "answer": "twaalf"
+      }
+    }
+  ],
+  "what_you_learn": "Je leert horen welk woord in een zin harder en langzamer wordt gezegd. Dat woord met de nadruk is bijna altijd het antwoord op de vraag. Zo haal je een tijd, een prijs of een plaats snel uit een gesprek."
+}

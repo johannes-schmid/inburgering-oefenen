@@ -50,3 +50,6 @@ scripts/lesson-content/.unit-cache/
 # Getranspileerde kopie van lib/lessons/items.ts, zodat de scripts tegen dezelfde regels
 # valideren als /admin. Afgeleid, dus nooit gecommit — zie load-items.mjs.
 scripts/lesson-content/.generated/
+
+# Walkthrough recordings — local review artefacts, never committed
+temporary_walkthroughs/

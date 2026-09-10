@@ -1,0 +1,8 @@
+# Waar leg je de klemtoon? — naspreken
+# les b6-klemtoon, item 4
+# Casting:
+#   één stem: woman_older
+#
+# Dit bestand is de leesbare afdruk van wat er is ingesproken. De bron is de payload in
+# generated/a2-spreken/b6-klemtoon.json — pas die aan en spreek opnieuw in.
+gemeente, verzekering, betalen

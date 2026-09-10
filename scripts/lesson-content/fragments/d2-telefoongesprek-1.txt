@@ -1,0 +1,16 @@
+# Training: Telefoongesprek — audio
+# les d2-telefoongesprek, item 2
+# Casting:
+#   A = woman_young (Female Voice 1 — younger woman)
+#   B = man_young (Male Voice 1 — younger man)
+#
+# Dit bestand is de leesbare afdruk van wat er is ingesproken. De bron is de payload in
+# generated/a2-luisteren/d2-telefoongesprek.json — pas die aan en spreek opnieuw in.
+A: Tandartspraktijk De Molen, goedemorgen.
+B: Goedemorgen, u spreekt met Amir Haddad. Ik heb kiespijn, al twee dagen.
+A: Oh, dat is niet fijn. Even kijken, hoor. Ik heb morgen een plekje om tien voor half tien.
+B: Morgen om tien voor half tien... dat is negen uur twintig, ja? Dat kan.
+A: Ja, negen uur twintig. En neemt u uw verzekeringspas mee?
+B: Die pas, ja. Moet ik nog iets anders doen?
+A: Nee, alleen even tien minuten eerder komen. Dan vult u een formulier in bij de balie.
+B: Goed, ik ben er om negen uur tien. Dank u wel.

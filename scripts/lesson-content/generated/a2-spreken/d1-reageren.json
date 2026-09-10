@@ -1,0 +1,142 @@
+{
+  "items": [
+    {
+      "kind": "uitleg",
+      "tier": null,
+      "explanation": null,
+      "payload": {
+        "body_html": "<p>Je hoort of leest een korte situatie en je reageert meteen; in het examen heb je ongeveer 30 seconden spreektijd per situatie.</p>",
+        "cards": [
+          {
+            "label": "SITUATIE",
+            "example_html": "Je pakket is niet gekomen."
+          },
+          {
+            "label": "JOUW REACTIE",
+            "example_html": "<mark>Sorry, mag ik iets vragen?</mark> Mijn pakket is er niet."
+          }
+        ]
+      }
+    },
+    {
+      "kind": "opnemen",
+      "tier": 2,
+      "explanation": "Je noemt eerst kort het probleem en daarna vraag je iets. Zo weet de ander wat je van hem wilt.",
+      "payload": {
+        "prompt": "Je woont sinds twee weken in een nieuw appartement. De kraan in de keuken lekt. Je belt de huisbaas. Wat zeg je? Neem je antwoord op. Je hebt ongeveer 30 seconden.",
+        "model_answer": "Goedemiddag, u spreekt met Amina Haddad van de Kerkstraat 12. De kraan in mijn keuken lekt al twee dagen. Kunt u iemand sturen om het te maken?",
+        "checklist": [
+          "Je zegt je naam en je adres.",
+          "Je vertelt kort wat het probleem is.",
+          "Je vraagt om hulp of om een monteur."
+        ],
+        "image_urls": [],
+        "record_seconds": 60
+      }
+    },
+    {
+      "kind": "mcq",
+      "tier": 0,
+      "explanation": "Je bent te laat, dus je zegt sorry en je geeft een korte reden. Alleen 'ja hoor' of een verwijt past hier niet.",
+      "payload": {
+        "prompt": "Je hebt een afspraak bij de tandarts om 10 uur. Je komt om 10 uur en 15 minuten binnen. Wat zeg je bij de balie?"
+      },
+      "options": [
+        {
+          "label": "A",
+          "body": "Ja hoor, ik ben er. Waar moet ik zitten?",
+          "is_correct": false
+        },
+        {
+          "label": "B",
+          "body": "Sorry dat ik te laat ben. De bus had vertraging. Kan ik nog naar binnen?",
+          "is_correct": true
+        },
+        {
+          "label": "C",
+          "body": "U moet mij eerder bellen, want ik wist het niet.",
+          "is_correct": false
+        },
+        {
+          "label": "D",
+          "body": "De tandarts is altijd te laat, dus dat is niet erg.",
+          "is_correct": false
+        }
+      ]
+    },
+    {
+      "kind": "opnemen",
+      "tier": 2,
+      "explanation": "Je zegt eerst wat er mis is met de jas en daarna wat je wilt: geld terug of een andere jas. Vriendelijk blijven helpt.",
+      "payload": {
+        "prompt": "Je hebt gisteren een jas gekocht voor 45 euro. Thuis zie je dat de rits kapot is. Je gaat terug naar de winkel. Wat zeg je tegen de verkoper? Neem je antwoord op. Je hebt ongeveer 30 seconden.",
+        "model_answer": "Goedemorgen, ik heb deze jas gisteren hier gekocht. Nu zie ik dat de rits kapot is. Kan ik mijn geld terugkrijgen of een andere jas ruilen?",
+        "checklist": [
+          "Je zegt wanneer je de jas hebt gekocht.",
+          "Je vertelt wat er kapot is.",
+          "Je vraagt om geld terug of om ruilen."
+        ],
+        "image_urls": [],
+        "record_seconds": 60
+      }
+    },
+    {
+      "kind": "opnemen",
+      "tier": 2,
+      "explanation": "Je meldt je afwezigheid en je geeft een reden. Je vraagt ook wat je moet doen, zodat het goed geregeld is.",
+      "payload": {
+        "prompt": "Je bent ziek. Je moet vandaag om 8 uur werken bij een schoonmaakbedrijf. Je belt je leidinggevende, meneer De Wit. Wat zeg je? Neem je antwoord op. Je hebt ongeveer 30 seconden.",
+        "model_answer": "Goedemorgen meneer De Wit, u spreekt met Jamal. Ik ben ziek, ik heb koorts en kan vandaag niet komen werken. Moet ik morgen weer bellen?",
+        "checklist": [
+          "Je zegt je naam.",
+          "Je zegt dat je ziek bent en geeft een reden.",
+          "Je vraagt wat je verder moet doen."
+        ],
+        "image_urls": [],
+        "record_seconds": 60
+      }
+    },
+    {
+      "kind": "mcq",
+      "tier": 0,
+      "explanation": "Je buurman weet niet waarom je klopt, dus je legt het probleem rustig uit en je doet een vriendelijk verzoek. Schreeuwen of dreigen past niet.",
+      "payload": {
+        "prompt": "Je buurman heeft 's avonds harde muziek aan. Je kind kan niet slapen. Je belt bij hem aan. Wat zeg je?"
+      },
+      "options": [
+        {
+          "label": "A",
+          "body": "Zet die muziek uit, anders bel ik de politie!",
+          "is_correct": false
+        },
+        {
+          "label": "B",
+          "body": "Sorry dat ik zo laat stoor. De muziek is best hard en mijn dochter kan niet slapen. Kunt u het iets zachter zetten?",
+          "is_correct": true
+        },
+        {
+          "label": "C",
+          "body": "Goedenavond, mag ik uw telefoonnummer? Ik wil u morgen bellen.",
+          "is_correct": false
+        }
+      ]
+    },
+    {
+      "kind": "opnemen",
+      "tier": 2,
+      "explanation": "Je vraagt eerst netjes om aandacht en daarna vraag je precies wat je wilt weten. Zo kan de medewerker je goed helpen.",
+      "payload": {
+        "prompt": "Je staat bij de balie van de gemeente. Je wilt een nieuw paspoort aanvragen, maar je weet niet welke papieren je nodig hebt. Wat vraag je aan de medewerker? Neem je antwoord op. Je hebt ongeveer 30 seconden.",
+        "model_answer": "Goedemiddag, mag ik u iets vragen? Ik wil een nieuw paspoort aanvragen. Welke papieren moet ik meenemen en moet ik daarvoor een afspraak maken?",
+        "checklist": [
+          "Je begroet de medewerker.",
+          "Je zegt wat je wilt aanvragen.",
+          "Je stelt een duidelijke vraag."
+        ],
+        "image_urls": [],
+        "record_seconds": 60
+      }
+    }
+  ],
+  "what_you_learn": "Je oefent met korte situaties zoals in het examen Spreken. Je reageert meteen met een paar zinnen: je noemt het probleem en je vraagt wat je nodig hebt. Je hoort je antwoord terug en vergelijkt het met het voorbeeld."
+}

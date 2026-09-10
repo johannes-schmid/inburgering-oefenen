@@ -1,0 +1,193 @@
+{
+  "items": [
+    {
+      "kind": "uitleg",
+      "tier": null,
+      "explanation": null,
+      "payload": {
+        "body_html": "<p>Soms doe je iets verkeerd of kom je te laat. Dan zeg je sorry en leg je kort uit wat er gebeurde.</p><p>Als iemand tegen jou sorry zegt, reageer je vriendelijk: <strong>het geeft niets</strong>.</p>",
+        "cards": [
+          {
+            "label": "SORRY ZEGGEN",
+            "example_html": "<mark>Sorry</mark>, ik was het helemaal vergeten."
+          },
+          {
+            "label": "REAGEREN",
+            "example_html": "Het <mark>geeft niets</mark>, hoor. Niet erg."
+          }
+        ]
+      }
+    },
+    {
+      "kind": "woordenlijst",
+      "tier": null,
+      "explanation": null,
+      "payload": {
+        "theme": "excuses-en-reageren"
+      }
+    },
+    {
+      "kind": "zinnenbank",
+      "tier": null,
+      "explanation": null,
+      "payload": {
+        "columns": [
+          {
+            "heading": "Sorry zeggen",
+            "phrases": [
+              "Sorry, dat was mijn fout.",
+              "Het spijt me echt.",
+              "Sorry dat ik je stoor.",
+              "Ik deed het per ongeluk."
+            ]
+          },
+          {
+            "heading": "Uitleggen en beloven",
+            "phrases": [
+              "Ik was de brief vergeten.",
+              "Ik bedoelde het niet zo.",
+              "Ik denk dat het een misverstand is.",
+              "Ik beloof dat ik het goedmaak."
+            ]
+          },
+          {
+            "heading": "Reageren op sorry",
+            "phrases": [
+              "Het geeft niets.",
+              "Niet erg, hoor.",
+              "Ik ben niet boos op je.",
+              "Dat kan gebeuren, zeg het opnieuw."
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "kind": "matchen",
+      "tier": 0,
+      "explanation": "Je kiest bij elke situatie de zin die past. Bij een fout van jezelf zeg je sorry, bij een fout van de ander zeg je dat het geen probleem is.",
+      "payload": {
+        "instruction": "Welke zin past bij welke situatie? Maak de juiste paren.",
+        "pairs": [
+          {
+            "left": "Je komt te laat op je werk.",
+            "right": "Sorry, dat was mijn fout."
+          },
+          {
+            "left": "Je buurman zegt sorry voor het lawaai.",
+            "right": "Het geeft niets, hoor."
+          },
+          {
+            "left": "Je belt je docent tijdens de les.",
+            "right": "Sorry dat ik je stoor."
+          },
+          {
+            "left": "Je vergat het formulier mee te nemen.",
+            "right": "Ik was het helemaal vergeten."
+          },
+          {
+            "left": "Je stootte een glas om zonder het te willen.",
+            "right": "Ik deed het per ongeluk."
+          }
+        ]
+      }
+    },
+    {
+      "kind": "gap_choice",
+      "tier": 1,
+      "explanation": "Iets doen zonder dat je het wilde, heet <strong>per ongeluk</strong>. Je deed het niet met een plan.",
+      "payload": {
+        "sentence": "Sorry, ik duwde tegen je tas. Dat deed ik ___.",
+        "choices": [
+          "per ongeluk",
+          "opnieuw",
+          "boos"
+        ],
+        "answer": "per ongeluk"
+      }
+    },
+    {
+      "kind": "gap_choice",
+      "tier": 1,
+      "explanation": "Als iemand sorry zegt, kun je zeggen dat het geen probleem is: <strong>geeft niets</strong>.",
+      "payload": {
+        "sentence": "\"Sorry, ik was te laat.\" \"Het ___ niets, hoor.\"",
+        "choices": [
+          "geeft",
+          "spijt",
+          "bedoelt"
+        ],
+        "answer": "geeft"
+      }
+    },
+    {
+      "kind": "gap_choice",
+      "tier": 1,
+      "explanation": "Twee mensen begrepen elkaar anders. Dat noem je een <strong>misverstand</strong>.",
+      "payload": {
+        "sentence": "Ik denk dat wij een ___ hadden. Ik dacht dat de les om tien uur begon.",
+        "choices": [
+          "misverstand",
+          "belofte",
+          "schuld"
+        ],
+        "answer": "misverstand"
+      }
+    },
+    {
+      "kind": "gap_type",
+      "tier": 2,
+      "explanation": "Je zegt zelf dat je iets fout deed. Dan is het jouw <strong>fout</strong>.",
+      "payload": {
+        "sentence": "Sorry, ik gaf je het verkeerde nummer. Dat was mijn ___.",
+        "answer": "fout"
+      }
+    },
+    {
+      "kind": "gap_type",
+      "tier": 2,
+      "explanation": "Als je zegt dat je iets zeker gaat doen, gebruik je <strong>beloven</strong>. Hier past de ik-vorm: beloof.",
+      "payload": {
+        "sentence": "Ik ___ dat ik morgen wel op tijd kom.",
+        "answer": "beloof"
+      }
+    },
+    {
+      "kind": "gap_type",
+      "tier": 2,
+      "explanation": "<strong>Niet erg</strong> betekent: het is geen probleem. Zo reageer je vriendelijk op sorry.",
+      "payload": {
+        "sentence": "\"Het spijt me, ik vergat je te bellen.\" \"Niet ___, hoor.\"",
+        "answer": "erg"
+      }
+    },
+    {
+      "kind": "open_zin",
+      "tier": 2,
+      "explanation": "Je zegt sorry, je legt kort uit waarom en je belooft iets. Dat zijn de drie delen van een goed excuus.",
+      "payload": {
+        "prompt": "Je hebt een afspraak bij de gemeente vergeten. Je belt de medewerker. Wat zeg je? Schrijf 2 of 3 zinnen.",
+        "model_answer": "Sorry, ik was de afspraak helemaal vergeten. Dat was mijn fout. Ik beloof dat ik volgende week op tijd kom.",
+        "checklist": [
+          "Je zegt sorry of: het spijt me.",
+          "Je legt kort uit wat er gebeurde.",
+          "Je belooft iets voor de volgende keer."
+        ]
+      }
+    },
+    {
+      "kind": "open_zin",
+      "tier": 2,
+      "explanation": "De ander zegt sorry en jij bent niet boos. Dan reageer je kort en vriendelijk.",
+      "payload": {
+        "prompt": "Je buurvrouw zegt: \"Sorry, ik zette mijn fiets voor jouw deur.\" Wat antwoord je? Schrijf 2 zinnen.",
+        "model_answer": "Het geeft niets, hoor. Ik ben niet boos, dat kan gebeuren.",
+        "checklist": [
+          "Je zegt dat het geen probleem is (geeft niets / niet erg).",
+          "Je blijft vriendelijk en kort."
+        ]
+      }
+    }
+  ],
+  "what_you_learn": "Je leert de woorden en de vaste zinnen om sorry te zeggen in het Nederlands. Je kunt kort uitleggen wat er gebeurde en beloven dat je het goedmaakt. Ook leer je vriendelijk reageren als iemand tegen jou sorry zegt."
+}

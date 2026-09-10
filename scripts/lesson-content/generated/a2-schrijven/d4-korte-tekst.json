@@ -1,0 +1,139 @@
+{
+  "items": [
+    {
+      "kind": "uitleg",
+      "tier": null,
+      "explanation": null,
+      "payload": {
+        "body_html": "<p>Je schrijft een korte tekst van ongeveer 40 woorden waarin je alle gevraagde punten noemt; in het examen heb je hier ongeveer 10 minuten voor.</p>",
+        "cards": []
+      }
+    },
+    {
+      "kind": "mcq",
+      "tier": 0,
+      "explanation": "In een korte tekst moet je alle gevraagde inhoudspunten noemen. Dat is waar de opdracht om vraagt.",
+      "payload": {
+        "prompt": "Je krijgt de opdracht: schrijf een bericht aan je buurman. Vertel wat je gaat doen, wanneer het is en waarom je het doet. Wat is het belangrijkste?"
+      },
+      "options": [
+        {
+          "label": "A",
+          "body": "Dat je een heel lange tekst schrijft met veel moeilijke woorden.",
+          "is_correct": false
+        },
+        {
+          "label": "B",
+          "body": "Dat je alle drie de gevraagde punten in je tekst noemt.",
+          "is_correct": true
+        },
+        {
+          "label": "C",
+          "body": "Dat je alleen vertelt wat je gaat doen, want dat is het eerste punt.",
+          "is_correct": false
+        }
+      ]
+    },
+    {
+      "kind": "mcq",
+      "tier": 0,
+      "explanation": "Je schrijft alleen wat de opdracht vraagt. Informatie over je vakantie hoort niet bij de gevraagde punten.",
+      "payload": {
+        "prompt": "Je moet aan de school schrijven dat je zoon ziek is, hoe lang hij thuis blijft en wie hem naar de dokter brengt. Wat hoort er juist NIET in je bericht?"
+      },
+      "options": [
+        {
+          "label": "A",
+          "body": "De naam van je zoon en dat hij ziek is.",
+          "is_correct": false
+        },
+        {
+          "label": "B",
+          "body": "Hoeveel dagen hij niet naar school komt.",
+          "is_correct": false
+        },
+        {
+          "label": "C",
+          "body": "Dat je volgende maand op vakantie gaat naar Spanje.",
+          "is_correct": true
+        },
+        {
+          "label": "D",
+          "body": "Wie er met hem naar de dokter gaat.",
+          "is_correct": false
+        }
+      ]
+    },
+    {
+      "kind": "woordorde",
+      "tier": 2,
+      "explanation": "Na 'omdat' staat het werkwoord achteraan: 'omdat hij hoge koorts heeft'. Zo maak je een goede reden in je tekst.",
+      "payload": {
+        "instruction": "Zet de woorden in de juiste volgorde. Dit is een zin uit een korte tekst.",
+        "tokens": [
+          "hoge",
+          "hij",
+          "omdat",
+          "koorts",
+          "heeft",
+          "blijft",
+          "thuis",
+          "hij"
+        ],
+        "answer": [
+          "hij",
+          "blijft",
+          "thuis",
+          "omdat",
+          "hij",
+          "hoge",
+          "koorts",
+          "heeft"
+        ]
+      }
+    },
+    {
+      "kind": "open_zin",
+      "tier": 2,
+      "explanation": "Een goed antwoord noemt alle drie de punten uit de opdracht en is een net bericht met een aanhef en je naam.",
+      "payload": {
+        "prompt": "<p>Je zoon Amir is ziek. Hij kan niet naar school. Schrijf een bericht aan de juf, mevrouw De Wit.</p><p>Schrijf in je bericht:</p><ul><li>wat er met Amir is;</li><li>hoe lang hij niet naar school komt;</li><li>wie hem naar de dokter brengt.</li></ul><p>Schrijf ongeveer 40 woorden.</p>",
+        "model_answer": "Beste mevrouw De Wit,\n\nMijn zoon Amir is ziek. Hij heeft hoge koorts en buikpijn. Hij komt deze week niet naar school, dus drie dagen. Morgen breng ik hem zelf naar de dokter. Ik bel u als hij weer beter is.\n\nMet vriendelijke groet,\nLeila Ozturk",
+        "checklist": [
+          "Ik schrijf wat er met Amir is (hij is ziek, met een klacht).",
+          "Ik schrijf hoe lang hij niet naar school komt.",
+          "Ik schrijf wie hem naar de dokter brengt, en ik eindig met mijn naam."
+        ]
+      }
+    },
+    {
+      "kind": "open_zin",
+      "tier": 2,
+      "explanation": "Je noemt de drie gevraagde punten en je vraagt netjes om iets. Zonder een vraag is je bericht niet af.",
+      "payload": {
+        "prompt": "<p>De kraan in je keuken lekt. Schrijf een bericht aan je verhuurder, de heer Bakker.</p><p>Schrijf in je bericht:</p><ul><li>welk probleem je hebt;</li><li>sinds wanneer het probleem er is;</li><li>wanneer je thuis bent voor een monteur.</li></ul><p>Schrijf ongeveer 40 woorden.</p>",
+        "model_answer": "Geachte heer Bakker,\n\nDe kraan in mijn keuken lekt. Er komt steeds water op de vloer. Het probleem is er sinds maandag 6 mei. Ik ben elke dag na 16.00 uur thuis. Kunt u een monteur sturen? Alvast bedankt.\n\nMet vriendelijke groet,\nSamira Haddad\nKerkstraat 12",
+        "checklist": [
+          "Ik schrijf duidelijk welk probleem er is.",
+          "Ik schrijf sinds wanneer het probleem er is, met een dag of datum.",
+          "Ik schrijf wanneer ik thuis ben en ik vraag om een monteur."
+        ]
+      }
+    },
+    {
+      "kind": "open_zin",
+      "tier": 2,
+      "explanation": "Ook hier moet je alle drie de punten noemen. Je schrijft kort en je laat weg wat niet gevraagd wordt.",
+      "payload": {
+        "prompt": "<p>Je begint volgende week met een nieuwe baan. Je wilt je nieuwe collega Bram iets vragen. Schrijf hem een bericht.</p><p>Schrijf in je bericht:</p><ul><li>wanneer je begint;</li><li>hoe laat je de eerste dag aanwezig moet zijn;</li><li>wat je moet meenemen.</li></ul><p>Schrijf ongeveer 40 woorden.</p>",
+        "model_answer": "Hallo Bram,\n\nIk begin maandag 13 januari bij het bedrijf. Ik heb twee vragen. Hoe laat moet ik de eerste dag aanwezig zijn? En wat moet ik meenemen, mijn paspoort of ook mijn diploma? Bedankt voor je antwoord.\n\nGroeten,\nJoseph Mensah",
+        "checklist": [
+          "Ik schrijf wanneer ik begin, met een dag of datum.",
+          "Ik vraag hoe laat ik aanwezig moet zijn.",
+          "Ik vraag wat ik moet meenemen en ik eindig met een groet en mijn naam."
+        ]
+      }
+    }
+  ],
+  "what_you_learn": "Je oefent met de examenopdracht 'korte tekst'. Je schrijft in ongeveer 40 woorden een bericht waarin alle gevraagde punten staan. Je leert ook wat er juist niet in je tekst hoort."
+}

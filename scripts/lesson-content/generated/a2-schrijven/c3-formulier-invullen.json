@@ -1,0 +1,211 @@
+{
+  "items": [
+    {
+      "kind": "uitleg",
+      "tier": null,
+      "explanation": null,
+      "payload": {
+        "body_html": "<p>Op een formulier vul je alleen in wat er gevraagd wordt. Lees dus eerst goed wat er staat. Bij <strong>voorletters</strong> schrijf je alleen de eerste letter van je voornaam, met een punt: <em>A.</em> Bij <strong>achternaam</strong> schrijf je alleen je familienaam.</p><p>Werk in stappen: 1) lees het woord voor het invulvak, 2) vul precies dat in, 3) zet onderaan de datum, 4) zet je handtekening (je naam met de hand).</p>",
+        "cards": [
+          {
+            "label": "VOORLETTERS",
+            "example_html": "Amira Bakker schrijft: <mark>A.</mark>"
+          },
+          {
+            "label": "ACHTERNAAM",
+            "example_html": "Amira Bakker schrijft: <mark>Bakker</mark>"
+          },
+          {
+            "label": "ONDERAAN",
+            "example_html": "<mark>Datum: 12 maart 2025</mark> en je handtekening"
+          }
+        ]
+      }
+    },
+    {
+      "kind": "voorbeeld",
+      "tier": null,
+      "explanation": null,
+      "payload": {
+        "sentence_html": "<p>Niet goed: Voorletters: <mark>Amira</mark> — dit is een voornaam, geen voorletter.</p>"
+      }
+    },
+    {
+      "kind": "voorbeeld",
+      "tier": null,
+      "explanation": null,
+      "payload": {
+        "sentence_html": "<p>Niet goed: het formulier is klaar, maar <mark>de handtekening is leeg</mark>.</p>"
+      }
+    },
+    {
+      "kind": "markeren",
+      "tier": 0,
+      "explanation": "Bij voorletters hoort alleen de eerste letter met een punt. Hier staat een hele voornaam, dus daar zit de fout.",
+      "payload": {
+        "instruction": "Hieronder staat een ingevuld formulier. Markeer de fout bij de voorletters.",
+        "body_html": "<p>Aanvraagformulier bibliotheek Zuidhoven</p><p>Voorletters: Karim<br>Achternaam: Yildiz<br>Adres: Molenstraat 14, Zuidhoven<br>Geboortedatum: 03-08-1990<br>Datum: 5 april 2025<br>Handtekening: K. Yildiz</p>",
+        "targets": [
+          {
+            "label": "de fout bij de voorletters",
+            "text": "Voorletters: Karim"
+          }
+        ]
+      }
+    },
+    {
+      "kind": "markeren",
+      "tier": 0,
+      "explanation": "Onderaan een formulier horen altijd de datum en je handtekening. Hier is het vak van de handtekening leeg gebleven.",
+      "payload": {
+        "instruction": "Markeer het deel dat nog niet is ingevuld.",
+        "body_html": "<p>Formulier: aanmelding taalcursus</p><p>Voorletters: S.<br>Achternaam: Demir<br>Telefoonnummer: 06 12 34 56 78<br>Datum: 9 mei 2025<br>Handtekening:</p>",
+        "targets": [
+          {
+            "label": "ontbrekend deel",
+            "text": "Handtekening:"
+          }
+        ]
+      }
+    },
+    {
+      "kind": "mcq",
+      "tier": 0,
+      "explanation": "Bij voorletters schrijf je alleen de eerste letter van je voornaam met een punt achter de letter.",
+      "payload": {
+        "prompt": "Fatima El Amrani vult een formulier in. Wat zet zij bij 'Voorletters'?"
+      },
+      "options": [
+        {
+          "label": "A",
+          "body": "Fatima",
+          "is_correct": false
+        },
+        {
+          "label": "B",
+          "body": "F.",
+          "is_correct": true
+        },
+        {
+          "label": "C",
+          "body": "El Amrani",
+          "is_correct": false
+        },
+        {
+          "label": "D",
+          "body": "Fatima El Amrani",
+          "is_correct": false
+        }
+      ]
+    },
+    {
+      "kind": "mcq",
+      "tier": 0,
+      "explanation": "Bij 'Achternaam' hoort alleen de familienaam, dus zonder de voornaam erbij.",
+      "payload": {
+        "prompt": "Op het formulier staat: Achternaam: ____ . Wat vult Jan de Boer hier in?"
+      },
+      "options": [
+        {
+          "label": "A",
+          "body": "Jan",
+          "is_correct": false
+        },
+        {
+          "label": "B",
+          "body": "J.",
+          "is_correct": false
+        },
+        {
+          "label": "C",
+          "body": "de Boer",
+          "is_correct": true
+        }
+      ]
+    },
+    {
+      "kind": "mcq",
+      "tier": 1,
+      "explanation": "Alleen bij B staan de voorletter met punt, de achternaam, de datum én de handtekening goed ingevuld.",
+      "payload": {
+        "prompt": "Welk formulier is helemaal goed ingevuld?"
+      },
+      "options": [
+        {
+          "label": "A",
+          "body": "Voorletters: Nadia — Achternaam: Hassan — Datum: 4 juni 2025 — Handtekening: N. Hassan",
+          "is_correct": false
+        },
+        {
+          "label": "B",
+          "body": "Voorletters: N. — Achternaam: Hassan — Datum: 4 juni 2025 — Handtekening: N. Hassan",
+          "is_correct": true
+        },
+        {
+          "label": "C",
+          "body": "Voorletters: N. — Achternaam: Nadia Hassan — Datum: 4 juni 2025 — Handtekening:",
+          "is_correct": false
+        },
+        {
+          "label": "D",
+          "body": "Voorletters: N. Hassan — Achternaam: Hassan — Datum: — Handtekening: N. Hassan",
+          "is_correct": false
+        }
+      ]
+    },
+    {
+      "kind": "mcq",
+      "tier": 1,
+      "explanation": "Een handtekening is je eigen naam die je met de hand zet; je kruisje of je geboortedatum hoort daar niet.",
+      "payload": {
+        "prompt": "Onderaan het formulier staat: 'Handtekening'. Wat zet je daar?"
+      },
+      "options": [
+        {
+          "label": "A",
+          "body": "Je naam, met de hand geschreven",
+          "is_correct": true
+        },
+        {
+          "label": "B",
+          "body": "Een kruisje in het vakje",
+          "is_correct": false
+        },
+        {
+          "label": "C",
+          "body": "Je geboortedatum",
+          "is_correct": false
+        }
+      ]
+    },
+    {
+      "kind": "open_zin",
+      "tier": 2,
+      "explanation": "Je vult per regel precies in wat er gevraagd wordt: alleen de voorletter met punt, alleen de achternaam, en onderaan de datum met je handtekening.",
+      "payload": {
+        "prompt": "Je heet Omar Zahiri. Je woont op de Kerkweg 8 in Zuidhoven. Vul dit formulier voor jezelf in. Schrijf de vier regels op: Voorletters, Achternaam, Adres, Datum en Handtekening.",
+        "model_answer": "Voorletters: O.\nAchternaam: Zahiri\nAdres: Kerkweg 8, Zuidhoven\nDatum: 12 maart 2025\nHandtekening: O. Zahiri",
+        "checklist": [
+          "Bij voorletters staat één letter met een punt.",
+          "Bij achternaam staat geen voornaam.",
+          "De datum en de handtekening zijn ingevuld."
+        ]
+      }
+    },
+    {
+      "kind": "open_zin",
+      "tier": 2,
+      "explanation": "In een korte e-mail noem je waarom je schrijft en wat je vraagt, en je sluit af met je naam.",
+      "payload": {
+        "prompt": "Je hebt een formulier voor de taalcursus ingevuld, maar je bent de datum vergeten. Schrijf een korte e-mail (3 zinnen) aan mevrouw Verhoeven van cursuscentrum De Brug. Vraag of je de datum nog mag toevoegen.",
+        "model_answer": "Geachte mevrouw Verhoeven,\n\nIk heb gisteren het formulier voor de taalcursus ingestuurd. Ik ben vergeten de datum in te vullen. Mag ik de datum nog toevoegen?\n\nMet vriendelijke groet,\nOmar Zahiri",
+        "checklist": [
+          "Er staat een aanhef en een slot met je naam.",
+          "Je vertelt kort wat je vergeten bent.",
+          "Je stelt één duidelijke vraag."
+        ]
+      }
+    }
+  ],
+  "what_you_learn": "Na deze les vul je een formulier goed in. Je weet dat voorletters alleen de eerste letter met een punt zijn, en geen voornaam. Je vergeet de datum en je handtekening niet meer."
+}

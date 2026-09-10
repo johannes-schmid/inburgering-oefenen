@@ -1,0 +1,176 @@
+{
+  "items": [
+    {
+      "kind": "uitleg",
+      "tier": null,
+      "explanation": null,
+      "payload": {
+        "body_html": "<p>Bij dit deel van het examen zie je een plaatje of hoor je een situatie. De vraag is: <strong>wat kan deze persoon zeggen?</strong> Je zegt dus niet wat jij vindt of wat jij zou doen.</p><p>Werk in drie stappen. Eén: wie praat er en met wie? Twee: wat wil die persoon (vragen, uitleggen, sorry zeggen)? Drie: zeg het in twee of drie korte zinnen.</p><p>Eén woord is te kort. Een heel verhaal is te veel. Twee of drie zinnen is precies goed.</p>",
+        "cards": [
+          {
+            "label": "TE ZWAK",
+            "example_html": "<mark>Ja.</mark>"
+          },
+          {
+            "label": "GOED",
+            "example_html": "<mark>Sorry, ik kom te laat. De bus had vertraging. Ik ben er over tien minuten.</mark>"
+          }
+        ]
+      }
+    },
+    {
+      "kind": "voorbeeld",
+      "tier": null,
+      "explanation": null,
+      "payload": {
+        "sentence_html": "De situatie: je pakje is niet gekomen. Je belt de winkel. Je zegt: <mark>Goedemiddag, ik heb een pakje besteld, maar het is niet gekomen.</mark>"
+      }
+    },
+    {
+      "kind": "voorbeeld",
+      "tier": null,
+      "explanation": null,
+      "payload": {
+        "sentence_html": "De situatie: je buurman maakt 's nachts veel lawaai. Je zegt: <mark>Sorry dat ik het zeg, maar ik kan niet slapen door de muziek.</mark>"
+      }
+    },
+    {
+      "kind": "mcq",
+      "tier": 0,
+      "explanation": "Je moet zeggen wat de persoon in de situatie zegt. Antwoord B past bij de balie van de gemeente en is twee zinnen.",
+      "payload": {
+        "prompt": "<p>Een vrouw staat bij de balie van de gemeente. Ze is verhuisd naar een nieuw huis. Wat kan zij zeggen?</p>"
+      },
+      "options": [
+        {
+          "label": "A",
+          "body": "Ik vind verhuizen heel vermoeiend.",
+          "is_correct": false
+        },
+        {
+          "label": "B",
+          "body": "Goedemorgen, ik ben verhuisd. Ik wil mijn nieuwe adres doorgeven.",
+          "is_correct": true
+        },
+        {
+          "label": "C",
+          "body": "De gemeente is open van negen tot vijf uur.",
+          "is_correct": false
+        }
+      ]
+    },
+    {
+      "kind": "mcq",
+      "tier": 0,
+      "explanation": "Antwoord C is één woord. Dat is te kort: je moet twee of drie zinnen zeggen.",
+      "payload": {
+        "prompt": "<p>Een man is bij de huisarts. Hij heeft al drie dagen buikpijn. Welk antwoord is <strong>te kort</strong>?</p>"
+      },
+      "options": [
+        {
+          "label": "A",
+          "body": "Ik heb buikpijn. Het is al drie dagen zo.",
+          "is_correct": false
+        },
+        {
+          "label": "B",
+          "body": "Dokter, mijn buik doet pijn. Ik heb er sinds maandag last van.",
+          "is_correct": false
+        },
+        {
+          "label": "C",
+          "body": "Buikpijn.",
+          "is_correct": true
+        }
+      ]
+    },
+    {
+      "kind": "mcq",
+      "tier": 0,
+      "explanation": "De persoon wil vrij vragen aan de chef. In antwoord A vraag je het duidelijk en je zegt waarom.",
+      "payload": {
+        "prompt": "<p>Een vrouw werkt in een winkel. Haar dochter is ziek. Ze praat met haar chef. Wat kan zij zeggen?</p>"
+      },
+      "options": [
+        {
+          "label": "A",
+          "body": "Mijn dochter is ziek. Mag ik vandaag vrij? Ik kan morgen wel werken.",
+          "is_correct": true
+        },
+        {
+          "label": "B",
+          "body": "Kinderen zijn vaak ziek in de winter.",
+          "is_correct": false
+        },
+        {
+          "label": "C",
+          "body": "Mijn chef is heel aardig voor mij.",
+          "is_correct": false
+        }
+      ]
+    },
+    {
+      "kind": "matchen",
+      "tier": 1,
+      "explanation": "Bij elke situatie hoort iets anders: vragen, sorry zeggen of uitleggen. Kijk eerst wat de persoon wil.",
+      "payload": {
+        "instruction": "Welke zin past bij welke situatie? Maak de goede paren.",
+        "pairs": [
+          {
+            "left": "Je bent te laat op de taalles.",
+            "right": "Sorry, ik ben te laat. De trein reed niet."
+          },
+          {
+            "left": "Je begrijpt de brief van de gemeente niet.",
+            "right": "Kunt u mij uitleggen wat hier staat?"
+          },
+          {
+            "left": "De kassa rekent een te hoog bedrag.",
+            "right": "Ik denk dat dit niet klopt. Kunt u het nakijken?"
+          },
+          {
+            "left": "Je wilt een afspraak bij de tandarts.",
+            "right": "Goedemorgen, ik wil graag een afspraak maken."
+          },
+          {
+            "left": "Je zoekt de afdeling burgerzaken.",
+            "right": "Mag ik iets vragen? Waar is burgerzaken?"
+          }
+        ]
+      }
+    },
+    {
+      "kind": "opnemen",
+      "tier": 2,
+      "explanation": "Je zegt wat de persoon in de situatie zegt: je noemt het probleem en je vraagt iets. Twee of drie zinnen is genoeg.",
+      "payload": {
+        "prompt": "<p>Een man woont in een huurhuis. De kraan in de keuken lekt al een week. Hij belt de verhuurder.</p><p>Wat kan deze persoon zeggen? Neem je antwoord op en vergelijk je antwoord met het voorbeeld.</p>",
+        "model_answer": "Goedemiddag, u spreekt met Karim Aydin van de Beukenlaan 14. De kraan in mijn keuken lekt al een week. Kan er iemand komen kijken?",
+        "checklist": [
+          "Je zegt wat het probleem is.",
+          "Je vraagt iets aan de verhuurder.",
+          "Je zegt twee of drie zinnen, geen los woord."
+        ],
+        "image_urls": [],
+        "record_seconds": 60
+      }
+    },
+    {
+      "kind": "opnemen",
+      "tier": 2,
+      "explanation": "Je hoeft niet te zeggen wat jij vindt van de school. Je zegt wat deze moeder tegen de leraar zegt.",
+      "payload": {
+        "prompt": "<p>Een vrouw komt op de school van haar zoon. Haar zoon is gisteren niet naar school geweest, want hij was ziek. Ze praat met de leraar.</p><p>Wat kan deze persoon zeggen? Neem je antwoord op en vergelijk je antwoord met het voorbeeld.</p>",
+        "model_answer": "Goedemorgen, ik ben de moeder van Samir. Hij was gisteren ziek, daarom is hij niet gekomen. Nu voelt hij zich weer beter.",
+        "checklist": [
+          "Je zegt wie je bent.",
+          "Je legt uit waarom je zoon niet op school was.",
+          "Je gebruikt korte zinnen en spreekt rustig."
+        ],
+        "image_urls": [],
+        "record_seconds": 60
+      }
+    }
+  ],
+  "what_you_learn": "Je leert hoe je bij het spreekexamen antwoordt op de vraag: wat kan deze persoon zeggen? Je kijkt eerst naar de situatie en bedenkt wat die persoon wil vragen of uitleggen. Daarna zeg je dat in twee of drie korte zinnen, niet in één woord."
+}

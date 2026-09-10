@@ -1,0 +1,185 @@
+{
+  "items": [
+    {
+      "kind": "uitleg",
+      "tier": null,
+      "explanation": null,
+      "payload": {
+        "body_html": "<p>Bij luisteren kiest je oor graag het antwoord met bekende woorden. Maar een antwoord dat woorden uit het fragment herhaalt, is vaak juist fout. Dat heet een <strong>lokker</strong>: een val die goed klinkt.</p><p>Werk daarom in drie stappen. Lees eerst de vraag: wat wordt er precies gevraagd? Luister dan naar de <strong>betekenis</strong>, niet naar losse woorden. Kies daarna het antwoord dat past bij wat er echt gebeurt, ook als het andere woorden gebruikt.</p><p>Let vooral op woorden die iets terugnemen: <em>maar</em>, <em>toch niet</em>, <em>helaas</em>, <em>in plaats daarvan</em>. Wat na die woorden komt, is meestal het juiste antwoord.</p>",
+        "cards": [
+          {
+            "label": "VAL",
+            "example_html": "Je hoort \"dinsdag\" en kiest <mark>dinsdag</mark>, maar de spreker zegt: het gaat niet door."
+          },
+          {
+            "label": "GOED",
+            "example_html": "Je hoort \"toch maar woensdag\" en kiest <mark>woensdag</mark>."
+          },
+          {
+            "label": "LET OP",
+            "example_html": "Woorden als <mark>maar</mark> en <mark>helaas</mark> veranderen de betekenis."
+          }
+        ]
+      },
+      "options": []
+    },
+    {
+      "kind": "audio",
+      "tier": null,
+      "explanation": null,
+      "payload": {
+        "label": "Telefoongesprek met de tandartspraktijk",
+        "script": "A: Tandartspraktijk De Linde, goedemiddag, u spreekt met Nadia.\nB: Goedemiddag, met Karim Aydin. Ik heb dinsdag een afspraak om half vier, geloof ik.\nA: Even kijken, hoor. Ja, dinsdag 14 mei, kwart over drie bij mevrouw Bosman.\nB: Kwart over drie, oké. Kan het dinsdag misschien later op de dag?\nA: Dinsdag helaas niet, alles is vol. Maar donderdag om vijf uur is nog vrij.\nB: Donderdag vijf uur, dat is goed. Dan zet u dinsdag eruit?\nA: Ja, ik haal dinsdag weg. Neemt u uw verzekeringspas mee?\nB: Die neem ik mee. Dank u wel.",
+        "audio_url": "http://127.0.0.1:54421/storage/v1/object/public/leren-audio/fragment/a2-luisteren/c8-afleiders-1.mp3",
+        "voice_cast": {
+          "A": "woman_young",
+          "B": "man_young"
+        },
+        "transcript": "Tandartspraktijk De Linde, goedemiddag, u spreekt met Nadia. Goedemiddag, met Karim Aydin. Ik heb dinsdag een afspraak om half vier, geloof ik. Even kijken, hoor. Ja, dinsdag 14 mei, kwart over drie bij mevrouw Bosman. Kwart over drie, oké. Kan het dinsdag misschien later op de dag? Dinsdag helaas niet, alles is vol. Maar donderdag om vijf uur is nog vrij. Donderdag vijf uur, dat is goed. Dan zet u dinsdag eruit? Ja, ik haal dinsdag weg. Neemt u uw verzekeringspas mee? Die neem ik mee. Dank u wel.",
+        "seconds": 32.39
+      },
+      "options": []
+    },
+    {
+      "kind": "mcq",
+      "tier": 0,
+      "explanation": "Je hoort het woord \"dinsdag\" heel vaak, maar de assistente zegt dat dinsdag niet kan. De nieuwe afspraak is donderdag om vijf uur.",
+      "payload": {
+        "prompt": "Wanneer komt Karim naar de praktijk?"
+      },
+      "options": [
+        {
+          "label": "A",
+          "body": "Dinsdag om kwart over drie",
+          "is_correct": false
+        },
+        {
+          "label": "B",
+          "body": "Dinsdag om half vier",
+          "is_correct": false
+        },
+        {
+          "label": "C",
+          "body": "Donderdag om vijf uur",
+          "is_correct": true
+        }
+      ]
+    },
+    {
+      "kind": "mcq",
+      "tier": 0,
+      "explanation": "Karim vraagt naar een later tijdstip op dinsdag. De assistente zegt: dinsdag is alles vol. Daarom belt hij niet om te verzetten naar een andere week of om af te zeggen.",
+      "payload": {
+        "prompt": "Waarom belt Karim?"
+      },
+      "options": [
+        {
+          "label": "A",
+          "body": "Hij wil zijn afspraak op een ander moment.",
+          "is_correct": true
+        },
+        {
+          "label": "B",
+          "body": "Hij wil weten hoeveel de behandeling kost.",
+          "is_correct": false
+        },
+        {
+          "label": "C",
+          "body": "Hij wil een nieuwe tandarts in de praktijk.",
+          "is_correct": false
+        },
+        {
+          "label": "D",
+          "body": "Hij wil zijn verzekeringspas doorgeven.",
+          "is_correct": false
+        }
+      ]
+    },
+    {
+      "kind": "mcq",
+      "tier": 1,
+      "explanation": "De val is optie A: je hoort letterlijk \"mevrouw Bosman\", maar dat is de tandarts, niet de persoon aan de telefoon. Aan de telefoon zit Nadia, de assistente van de praktijk.",
+      "payload": {
+        "prompt": "Met wie praat Karim aan de telefoon?"
+      },
+      "options": [
+        {
+          "label": "A",
+          "body": "Met mevrouw Bosman, de tandarts",
+          "is_correct": false
+        },
+        {
+          "label": "B",
+          "body": "Met Nadia, de assistente",
+          "is_correct": true
+        },
+        {
+          "label": "C",
+          "body": "Met iemand van de verzekering",
+          "is_correct": false
+        }
+      ]
+    },
+    {
+      "kind": "mcq",
+      "tier": 1,
+      "explanation": "De assistente vraagt hem de verzekeringspas mee te nemen. Over geld of een formulier zegt zij niets.",
+      "payload": {
+        "prompt": "Wat moet Karim meenemen?"
+      },
+      "options": [
+        {
+          "label": "A",
+          "body": "Een formulier van de praktijk",
+          "is_correct": false
+        },
+        {
+          "label": "B",
+          "body": "Geld voor de behandeling",
+          "is_correct": false
+        },
+        {
+          "label": "C",
+          "body": "Zijn verzekeringspas",
+          "is_correct": true
+        }
+      ]
+    },
+    {
+      "kind": "gap_type",
+      "tier": 2,
+      "explanation": "De assistente noemt de datum van de oude afspraak: dinsdag 14 mei. Schrijf het getal op dat je hoorde.",
+      "payload": {
+        "sentence": "De oude afspraak was op dinsdag ___ mei.",
+        "answer": "14"
+      },
+      "options": []
+    },
+    {
+      "kind": "gap_type",
+      "tier": 2,
+      "explanation": "De oude afspraak was om kwart over drie, niet om half vier. Karim dacht half vier, maar de assistente verbetert hem.",
+      "payload": {
+        "sentence": "De oude afspraak was om kwart over ___.",
+        "answer": "drie"
+      },
+      "options": []
+    },
+    {
+      "kind": "open_zin",
+      "tier": 2,
+      "explanation": "Je legt zelf uit hoe je de val hebt vermeden: je koos niet het woord dat je het vaakst hoorde, maar je luisterde naar de betekenis.",
+      "payload": {
+        "prompt": "Leg in twee zinnen uit hoe je wist dat Karim niet op dinsdag komt.",
+        "model_answer": "Ik hoorde het woord dinsdag heel vaak, maar dat was de oude afspraak. De assistente zei \"dinsdag helaas niet\" en daarna noemde zij donderdag om vijf uur.",
+        "checklist": [
+          "Je noemt dat \"dinsdag\" de oude afspraak was.",
+          "Je noemt een woord als \"helaas niet\" of \"maar\".",
+          "Je noemt het juiste nieuwe moment: donderdag vijf uur."
+        ]
+      },
+      "options": []
+    }
+  ],
+  "what_you_learn": "Je leert dat een antwoord met precies dezelfde woorden als het fragment vaak juist het foute antwoord is. Je let op woorden als \"maar\", \"helaas\" en \"in plaats daarvan\", want daarna komt meestal de goede informatie. Zo kies je bij luisteren het antwoord dat past bij de betekenis, niet bij de klank."
+}

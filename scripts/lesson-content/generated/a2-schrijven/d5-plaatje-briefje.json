@@ -1,0 +1,148 @@
+{
+  "items": [
+    {
+      "kind": "uitleg",
+      "tier": null,
+      "explanation": null,
+      "payload": {
+        "body_html": "<p>Bij deze opdracht schrijf je een kort briefje van ongeveer 30 tot 40 woorden bij een situatie met plaatjes; reken op ongeveer 10 minuten per briefje.</p>",
+        "cards": [
+          {
+            "label": "ALTIJD",
+            "example_html": "Schrijf <mark>alle</mark> inhoudspunten op."
+          },
+          {
+            "label": "ALTIJD",
+            "example_html": "Begin met een aanhef en eindig met je naam."
+          }
+        ]
+      }
+    },
+    {
+      "kind": "mcq",
+      "tier": 0,
+      "explanation": "Je moet altijd alle inhoudspunten uit de opdracht in je briefje zetten. Een punt vergeten kost punten.",
+      "payload": {
+        "prompt": "Je krijgt de opdracht: schrijf een briefje aan je buurvrouw. Zeg dat je op vakantie gaat, wanneer je weg bent en wat zij voor je kan doen. Wat is het belangrijkste bij deze opdracht?"
+      },
+      "options": [
+        {
+          "label": "A",
+          "body": "Je schrijft een lange, mooie brief van 100 woorden.",
+          "is_correct": false
+        },
+        {
+          "label": "B",
+          "body": "Je schrijft alle drie de punten uit de opdracht in je briefje.",
+          "is_correct": true
+        },
+        {
+          "label": "C",
+          "body": "Je schrijft alleen het punt dat je het makkelijkst vindt.",
+          "is_correct": false
+        }
+      ]
+    },
+    {
+      "kind": "mcq",
+      "tier": 0,
+      "explanation": "Je eigen mening of extra informatie is niet gevraagd. Alleen de punten uit de opdracht horen erin, plus een aanhef en je naam.",
+      "payload": {
+        "prompt": "Wat hoort er <strong>niet</strong> in zo'n briefje bij plaatjes?"
+      },
+      "options": [
+        {
+          "label": "A",
+          "body": "Een aanhef, bijvoorbeeld: Beste mevrouw De Vries,",
+          "is_correct": false
+        },
+        {
+          "label": "B",
+          "body": "Je naam onder het briefje.",
+          "is_correct": false
+        },
+        {
+          "label": "C",
+          "body": "Je mening over de buren en het weer van vorige week.",
+          "is_correct": true
+        },
+        {
+          "label": "D",
+          "body": "De informatie die in de opdracht gevraagd wordt.",
+          "is_correct": false
+        }
+      ]
+    },
+    {
+      "kind": "woordorde",
+      "tier": 2,
+      "explanation": "Na het woord \"omdat\" komt de persoonsvorm achteraan de zin. Daarom eindigt de zin met \"ben\".",
+      "payload": {
+        "instruction": "Maak van deze woorden een goede zin voor je briefje.",
+        "tokens": [
+          "kan",
+          "ik",
+          "niet",
+          "komen",
+          "omdat",
+          "ziek",
+          "ik",
+          "ben"
+        ],
+        "answer": [
+          "ik",
+          "kan",
+          "niet",
+          "komen",
+          "omdat",
+          "ik",
+          "ziek",
+          "ben"
+        ]
+      }
+    },
+    {
+      "kind": "open_zin",
+      "tier": 2,
+      "explanation": "In je briefje staan alle drie de gevraagde punten, een aanhef en je naam. Zo is de opdracht volledig.",
+      "payload": {
+        "prompt": "<p>Je gaat een week naar je familie in Groningen. Je vraagt je buurman Karel om hulp.</p><p>Schrijf een briefje aan Karel. Schrijf ongeveer 30 tot 40 woorden.</p><ul><li>Schrijf waar je naartoe gaat.</li><li>Schrijf hoelang je weg bent.</li><li>Vraag of hij de post uit de brievenbus wil halen.</li></ul>",
+        "model_answer": "Beste Karel,\n\nIk ga naar mijn familie in Groningen. Ik ben een week weg, van 3 tot 10 juni. Wil je de post uit mijn brievenbus halen? Dat is heel fijn. Bedankt alvast!\n\nGroeten,\nSamira",
+        "checklist": [
+          "Ik heb geschreven waar ik naartoe ga.",
+          "Ik heb geschreven hoelang ik weg ben.",
+          "Ik heb gevraagd of hij de post wil halen, en ik heb mijn naam eronder gezet."
+        ]
+      }
+    },
+    {
+      "kind": "open_zin",
+      "tier": 2,
+      "explanation": "Je schrijft aan een instantie, dus gebruik je 'u'. Alle drie de punten uit de opdracht moeten erin staan.",
+      "payload": {
+        "prompt": "<p>Je hebt een afspraak bij de tandarts op donderdag 12 maart om 14.00 uur. Je kunt niet komen, want je moet werken.</p><p>Schrijf een briefje aan de tandarts. Schrijf ongeveer 30 tot 40 woorden.</p><ul><li>Schrijf welke afspraak je hebt.</li><li>Schrijf dat je niet kunt komen en waarom.</li><li>Vraag om een nieuwe afspraak in de ochtend.</li></ul>",
+        "model_answer": "Geachte mevrouw Bakker,\n\nIk heb een afspraak op donderdag 12 maart om 14.00 uur. Ik kan niet komen, omdat ik dan moet werken. Kunt u mij een nieuwe afspraak geven in de ochtend?\n\nMet vriendelijke groet,\nAhmed Yildiz",
+        "checklist": [
+          "Ik heb de datum en tijd van mijn afspraak genoemd.",
+          "Ik heb geschreven dat ik niet kan komen en waarom.",
+          "Ik heb om een nieuwe afspraak in de ochtend gevraagd."
+        ]
+      }
+    },
+    {
+      "kind": "open_zin",
+      "tier": 2,
+      "explanation": "Je meldt een probleem, dus schrijf duidelijk wat er stuk is en wat je van de ander wilt. Zonder telefoonnummer kan de monteur je niet bellen.",
+      "payload": {
+        "prompt": "<p>De kraan in je keuken lekt. Je woont in een huurhuis van woningstichting De Kade.</p><p>Schrijf een briefje aan de woningstichting. Schrijf ongeveer 30 tot 40 woorden.</p><ul><li>Schrijf wat het probleem is.</li><li>Schrijf sinds wanneer je het probleem hebt.</li><li>Vraag of er snel een monteur komt en geef je telefoonnummer.</li></ul>",
+        "model_answer": "Geachte heer, mevrouw,\n\nDe kraan in mijn keuken lekt. Dat is al sinds vorige week zaterdag. Kan er snel een monteur komen? Mijn telefoonnummer is 06 12 34 56 78.\n\nMet vriendelijke groet,\nFatima El Amrani, Kerkstraat 14",
+        "checklist": [
+          "Ik heb geschreven wat er kapot is.",
+          "Ik heb geschreven sinds wanneer het probleem er is.",
+          "Ik heb om een monteur gevraagd en mijn telefoonnummer gegeven."
+        ]
+      }
+    }
+  ],
+  "what_you_learn": "Je oefent met de examenopdracht waarbij je een kort briefje schrijft bij een situatie. Je leert alle gevraagde punten in je briefje zetten, met een aanhef en je naam eronder. Ook zie je wat je juist niet moet opschrijven."
+}

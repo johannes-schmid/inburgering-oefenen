@@ -1,0 +1,204 @@
+{
+  "items": [
+    {
+      "kind": "uitleg",
+      "tier": null,
+      "explanation": null,
+      "payload": {
+        "body_html": "<p>Soms wil je zeggen wat je van iets vindt. Dat heet je <strong>mening</strong> geven.</p><p>Je gebruikt deze zinnen op je werk, bij de gemeente of op school van je kind.</p>",
+        "cards": [
+          {
+            "label": "MENING GEVEN",
+            "example_html": "Ik <mark>vind</mark> dat een goed voorstel."
+          },
+          {
+            "label": "EENS ZIJN",
+            "example_html": "Daar ben ik het <mark>mee eens</mark>."
+          },
+          {
+            "label": "ONEENS ZIJN",
+            "example_html": "Ik ben het er niet <mark>mee eens</mark>."
+          }
+        ]
+      }
+    },
+    {
+      "kind": "woordenlijst",
+      "tier": null,
+      "explanation": null,
+      "payload": {
+        "theme": "mening-geven"
+      }
+    },
+    {
+      "kind": "zinnenbank",
+      "tier": null,
+      "explanation": null,
+      "payload": {
+        "columns": [
+          {
+            "heading": "Je mening geven",
+            "phrases": [
+              "Ik vind dit een goed voorstel.",
+              "Volgens mij is dat niet eerlijk.",
+              "Ik denk dat het te duur is.",
+              "Ik geloof dat dit belangrijk is."
+            ]
+          },
+          {
+            "heading": "Eens of oneens zijn",
+            "phrases": [
+              "Daar ben ik het mee eens.",
+              "Ik ben het er niet mee eens.",
+              "U hebt gelijk, dat geef ik toe.",
+              "Ik twijfel nog een beetje."
+            ]
+          },
+          {
+            "heading": "Een reden geven of vragen",
+            "phrases": [
+              "Mijn argument is dat het veel tijd kost.",
+              "De reden is dat ik dan moet werken.",
+              "Kunt u dat nog een keer uitleggen?",
+              "Ik bedoel dat er ook een nadeel is.",
+              "Ik doe het liever op maandag."
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "kind": "matchen",
+      "tier": 0,
+      "explanation": "Je kiest bij elke situatie de zin die hetzelfde doel heeft. Zo weet je welke zin je in een gesprek kunt zeggen.",
+      "payload": {
+        "instruction": "Welke zin past bij welke situatie? Maak de goede paren.",
+        "pairs": [
+          {
+            "left": "Je denkt hetzelfde als je collega.",
+            "right": "Daar ben ik het mee eens."
+          },
+          {
+            "left": "Je denkt anders dan je collega.",
+            "right": "Ik ben het er niet mee eens."
+          },
+          {
+            "left": "Je weet nog niet wat je kiest.",
+            "right": "Ik twijfel nog een beetje."
+          },
+          {
+            "left": "Je begrijpt het plan niet goed.",
+            "right": "Kunt u dat nog een keer uitleggen?"
+          },
+          {
+            "left": "Je geeft de reden van je mening.",
+            "right": "Mijn argument is dat het veel tijd kost."
+          }
+        ]
+      }
+    },
+    {
+      "kind": "gap_choice",
+      "tier": 1,
+      "explanation": "Met <em>vinden</em> zeg je welk idee je over iets hebt. Je geeft dus je mening.",
+      "payload": {
+        "sentence": "Ik ___ dit een goed voorstel voor onze buurt.",
+        "choices": [
+          "vind",
+          "twijfel",
+          "leg uit"
+        ],
+        "answer": "vind"
+      }
+    },
+    {
+      "kind": "gap_choice",
+      "tier": 1,
+      "explanation": "Als iemand iets zegt wat juist is, dan heeft die persoon <em>gelijk</em>.",
+      "payload": {
+        "sentence": "U hebt ___: de brief was echt niet duidelijk.",
+        "choices": [
+          "gelijk",
+          "liever",
+          "misschien"
+        ],
+        "answer": "gelijk"
+      }
+    },
+    {
+      "kind": "gap_choice",
+      "tier": 1,
+      "explanation": "Iets goeds aan een plan is een <em>voordeel</em>. Iets slechts is een nadeel.",
+      "payload": {
+        "sentence": "Het ___ van de bus is dat hij elke tien minuten rijdt.",
+        "choices": [
+          "nadeel",
+          "voordeel",
+          "argument"
+        ],
+        "answer": "voordeel"
+      }
+    },
+    {
+      "kind": "gap_type",
+      "tier": 2,
+      "explanation": "Je bent niet zeker, dus je gebruikt <em>misschien</em>. Dan kan het wel zo zijn, maar je weet het niet.",
+      "payload": {
+        "sentence": "Ik weet het niet precies. ___ is de winkel morgen open.",
+        "answer": "Misschien"
+      }
+    },
+    {
+      "kind": "gap_type",
+      "tier": 2,
+      "explanation": "Met <em>liever</em> zeg je welke keuze jij fijner vindt.",
+      "payload": {
+        "sentence": "Ik werk ___ op maandag, want dan is mijn zoon op school.",
+        "answer": "liever"
+      }
+    },
+    {
+      "kind": "gap_choice",
+      "tier": 1,
+      "explanation": "Als je zegt dat de ander toch juist zit, dan geef je het <em>toe</em>.",
+      "payload": {
+        "sentence": "Dat had ik verkeerd begrepen. Dat geef ik ___.",
+        "choices": [
+          "toe",
+          "uit",
+          "mee"
+        ],
+        "answer": "toe"
+      }
+    },
+    {
+      "kind": "open_zin",
+      "tier": 2,
+      "explanation": "Je geeft eerst je mening en daarna je reden. Zo is je antwoord duidelijk voor de ander.",
+      "payload": {
+        "prompt": "Op je werk vraagt je leidinggevende: \"Wat vindt u van een vergadering elke maandag om acht uur?\" Geef je mening en geef één reden.",
+        "model_answer": "Ik vind acht uur een beetje vroeg. De reden is dat ik dan mijn kinderen naar school breng. Misschien kan de vergadering om negen uur beginnen.",
+        "checklist": [
+          "Je geeft je mening met <em>ik vind</em> of <em>ik denk</em>.",
+          "Je geeft één reden met <em>de reden is dat</em> of <em>want</em>.",
+          "Je zinnen zijn kort en duidelijk."
+        ]
+      }
+    },
+    {
+      "kind": "open_zin",
+      "tier": 2,
+      "explanation": "Je zegt eerst dat je het oneens bent en daarna waarom. Met een argument maak je je standpunt duidelijk.",
+      "payload": {
+        "prompt": "Een buurvrouw zegt: \"Alle kinderen moeten binnen spelen.\" Jij bent het er niet mee eens. Wat zeg je?",
+        "model_answer": "Ik ben het er niet mee eens. Volgens mij is buiten spelen belangrijk voor kinderen. Mijn argument is dat ze dan meer bewegen.",
+        "checklist": [
+          "Je zegt duidelijk dat je het oneens bent.",
+          "Je gebruikt een woord als <em>argument</em>, <em>reden</em> of <em>belangrijk</em>.",
+          "Je blijft vriendelijk en eerlijk."
+        ]
+      }
+    }
+  ],
+  "what_you_learn": "Na deze les kun je zeggen wat je van iets vindt. Je kent vaste zinnen om het eens of oneens te zijn en om een reden te geven. Je kunt ook vragen of iemand iets nog een keer uitlegt."
+}

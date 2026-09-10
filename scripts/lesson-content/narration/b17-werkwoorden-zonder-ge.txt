@@ -1,0 +1,37 @@
+# De ingesproken uitleg van `b17-werkwoorden-zonder-ge`.
+# Regels met # zijn commentaar. [[id]] of [[id | extra uitleg]] markeert waar de stem over
+# welk element begint; de extra uitleg staat op de pagina bij dat element en mag niet herhalen
+# wat de stem net zei.
+# Geldige id's: vis, vis-1 t/m vis-4, rule, card-0, card-1, demo-0, demo-1, exercises.
+
+Deze les gaat over deelwoorden zonder ge-.
+
+[[vis-1 | Het vakje is leeg, en dat is geen fout: hier hoort niets.]]
+Kijk naar het plaatje. Het eerste vakje is leeg. Bij betalen komt er géén ge- voor.
+
+[[vis-2 | Be- is al het begin van het woord. Dat is genoeg.]]
+Waarom niet? Omdat het werkwoord al zijn eigen begin heeft: be-talen.
+
+[[vis-3 | De uitgang blijft wel gewoon: -d of -t, net als in les 10.]]
+Achteraan komt wel een letter: betaald, met een -d.
+
+[[vis-4 | Fout is "gebetaald". Dat hoor je vaak, en het valt meteen op.]]
+Samen wordt het dus: betaald.
+
+[[rule | Vijf beginnetjes: be-, ge-, her-, ver- en ont-.]]
+De regel is dus: begint het werkwoord met be-, ge-, her-, ver- of ont-, dan komt er geen extra ge- bij. Vertellen wordt verteld. Ontmoeten wordt ontmoet. Herhalen wordt herhaald.
+
+[[card-0 | Werken, kopen, wonen: die krijgen wel ge-.]]
+De eerste kaart is een gewoon werkwoord.
+
+[[card-1 | Deze vijf beginnetjes leer je als groepje.]]
+De tweede kaart is de groep zonder ge-.
+
+[[demo-0 | Ontvangen: geen ge-, en ook geen -d of -t.]]
+Twee voorbeelden. De gemeente heeft mijn brief ontvangen.
+
+[[demo-1 | Verhuisd hoort bij zijn, want het is een verandering van plaats.]]
+En: wij zijn vorige maand naar Almere verhuisd.
+
+[[exercises]]
+Doe nu de opgaven. Kijk eerst naar de eerste letters van het werkwoord.

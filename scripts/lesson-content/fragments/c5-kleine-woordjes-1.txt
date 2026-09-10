@@ -1,0 +1,18 @@
+# Kleine woordjes, groot verschil — audio
+# les c5-kleine-woordjes, item 2
+# Casting:
+#   A = woman_young (Female Voice 1 — younger woman)
+#   B = man_young (Male Voice 1 — younger man)
+#
+# Dit bestand is de leesbare afdruk van wat er is ingesproken. De bron is de payload in
+# generated/a2-luisteren/c5-kleine-woordjes.json — pas die aan en spreek opnieuw in.
+A: Goedemiddag, kan ik u helpen?
+B: Ja, ik kom deze broek terugbrengen. Hij is te lang.
+A: Heeft u de bon nog?
+B: Nee, ik heb geen bon. Mijn dochter heeft de broek gekocht.
+A: Dan kan ik geen geld teruggeven. Maar ruilen mag wel.
+B: Ruilen is goed. Heeft u de broek een maat kleiner?
+A: Even kijken hoor. Nee, kleiner hebben we niet. Juist een maat groter ligt er nog.
+B: Groter heb ik niet nodig.
+A: Dinsdag komt er nieuwe voorraad. Komt u dan even terug?
+B: Goed, dan kom ik dinsdag na vier uur.

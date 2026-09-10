@@ -1,0 +1,17 @@
+# Getallen, tijden en prijzen — audio
+# les b1-getallen-en-tijden, item 2
+# Casting:
+#   A = woman_young (Female Voice 1 — younger woman)
+#   B = man_young (Male Voice 1 — younger man)
+#
+# Dit bestand is de leesbare afdruk van wat er is ingesproken. De bron is de payload in
+# generated/a2-luisteren/b1-getallen-en-tijden.json — pas die aan en spreek opnieuw in.
+A: Goedemiddag, kan ik u helpen?
+B: Ja, ik kom mijn nieuwe bril ophalen. Op naam van Bakker.
+A: Even kijken, hoor. Bakker... ja, hier. Die is klaar. Maar de rekening is nog niet betaald.
+B: O. Hoeveel is het?
+A: Honderdvijfenzeventig euro tachtig.
+B: Pin dat maar. En hoe laat gaan jullie vandaag dicht?
+A: Om half zes. Maar op zaterdag zijn we al om kwart over vier gesloten.
+B: Duidelijk. En mijn oude bril, kan ik die inleveren?
+A: Ja hoor, dat mag. Loopt u even mee naar balie drie?

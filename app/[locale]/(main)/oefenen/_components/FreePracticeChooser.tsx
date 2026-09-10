@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import { useTranslations } from 'next-intl';
 import { ArrowLeft, ArrowRight } from 'lucide-react';
-import { CategoryMark, LevelMark } from '@/components/horizon';
+import { CategoryMark, ExamMark } from '@/components/horizon';
 import type { Category } from '@/components/horizon';
 import type { Level, OnderdeelSlug } from '@/data/skills';
 
@@ -202,11 +202,10 @@ function TrackTile({
   soonLabel: string;
 }) {
   const soon = track.parts.length === 0;
-  const onDark = active ? 'dark' : 'light';
 
   const body = (
     <>
-      <TrackMark id={track.id} size={stacked ? 48 : 52} tone={onDark} muted={soon} />
+      <TrackMark id={track.id} size={stacked ? 48 : 52} onDark={active} />
       <span className={`flex flex-col gap-0.5 ${stacked ? '' : 'min-w-0'}`}>
         <span
           className="font-headline font-extrabold text-lg tracking-tight"
@@ -249,27 +248,17 @@ function TrackTile({
   );
 }
 
-function TrackMark({
-  id, size, tone, muted,
-}: { id: ChooserTrack['id']; size: number; tone: 'light' | 'dark'; muted: boolean }) {
-  if (id === 'a2' || id === 'b1') return <LevelMark level={id} size={size} tone={tone} />;
-  if (id === 'knm') return <CategoryMark category="knm" size={size} tone={tone} />;
-  /* ONA has no mark and deliberately gets none. A hollow ring on the neutral ramp is the
-     vocabulary this site already uses for "not built" (the homepage's `SoonBlock`); drawing a
-     seventh category mark would give an unbuilt onderdeel the same standing as the five real
-     ones, which is the one thing the tile must not say. */
-  return (
-    <span
-      aria-hidden="true"
-      className="inline-flex items-center justify-center shrink-0 rounded-[25%] bg-surface-container-high"
-      style={{ width: size, height: size, opacity: muted ? 1 : 0.6 }}
-    >
-      <span
-        className="rounded-full"
-        style={{ width: size * 0.5, height: size * 0.5, boxShadow: `inset 0 0 0 ${Math.max(3, size * 0.07)}px var(--color-outline-variant)` }}
-      />
-    </span>
-  );
+/**
+ * The four tracks in the chooser, all from one family.
+ *
+ * This used to mix three drawings — `LevelMark`'s gauge for A2/B1, a category mark for KNM and a
+ * hand-rolled hollow ring for ONA — which made a row of four peers look like four unrelated
+ * things. `ExamMark` is the studio's own set (§04b) and covers all four including the greyed
+ * "binnenkort" state, so the "not built" signal is still carried by the mark and is now drawn
+ * rather than improvised. `tone` is gone with it: a track mark is always the inverted navy tile.
+ */
+function TrackMark({ id, size, onDark }: { id: ChooserTrack['id']; size: number; onDark: boolean }) {
+  return <ExamMark track={id} size={size} muted={id === 'ona'} onDark={onDark} />;
 }
 
 /** One onderdeel: the same row on both flows, so the phone and the desktop cannot drift. */

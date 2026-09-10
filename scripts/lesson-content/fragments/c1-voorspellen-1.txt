@@ -1,0 +1,19 @@
+# Voorspellen wat je gaat horen — audio
+# les c1-voorspellen, item 2
+# Casting:
+#   A = woman_young (Female Voice 1 — younger woman)
+#   B = man_young (Male Voice 1 — younger man)
+#
+# Dit bestand is de leesbare afdruk van wat er is ingesproken. De bron is de payload in
+# generated/a2-luisteren/c1-voorspellen.json — pas die aan en spreek opnieuw in.
+A: Buurtcentrum De Wilgentak, goedemorgen.
+B: Goedemorgen. Ik bel over de taalcursus. Kan ik me nog aanmelden?
+A: Ja hoor, er zijn nog twee plaatsen vrij.
+B: Fijn. Wanneer is de les?
+A: Elke woensdag, van zeven uur tot half negen.
+B: En wat kost het?
+A: De cursus kost vijfentwintig euro voor tien lessen. Dat betaal je bij de eerste les.
+B: Goed. Moet ik iets meenemen?
+A: Neem even je identiteitsbewijs mee, want ik moet je naam en adres opschrijven.
+B: Duidelijk. Dank u wel.
+A: Graag gedaan. Tot woensdag.

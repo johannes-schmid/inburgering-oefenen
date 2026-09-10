@@ -1,17 +1,28 @@
 import type { Metadata } from 'next';
 import { notFound, redirect } from 'next/navigation';
 import { getTranslations } from 'next-intl/server';
-import { ArrowRight, Check } from 'lucide-react';
+import { ArrowRight } from 'lucide-react';
 import { createClient } from '@/lib/supabase/server';
 import { ownsModule } from '@/lib/entitlements';
 import { getSkillAtLevel, isLevel } from '@/data/skills';
 import { fetchPortalMenu } from '@/lib/portal-menu';
+import { closeTrail, skillTrail } from '@/lib/portal-crumbs';
+import { LessonProgressScope } from '@/components/lessons/LessonProgressScope';
+import LessonNowCard from '@/components/lessons/LessonNowCard';
+import LessonStage from '@/components/lessons/LessonStage';
+import PortalCrumbs from '../../../../../components/PortalCrumbs';
 import { fetchCourse, fetchLesson, fetchLessonWords } from '@/lib/lessons/lessons-server';
-import { conceptPath, coursePath, lessonPath, nextLesson } from '@/lib/lessons/lessons';
+import { fetchNarration, narrationCueNames } from '@/lib/lessons/narration';
+import { stepCount, visualFor } from '@/data/lesson-visuals';
+import { conceptPath, coursePath, lessonPath } from '@/lib/lessons/lessons';
+import { sporenFromBlocks } from '@/lib/lessons/sporen-server';
+import { findModule, modulePath, spoorPath } from '@/lib/lessons/sporen';
 import LessonStream from '@/components/lessons/LessonStream';
+import LessonNarration from '@/components/lessons/LessonNarration';
+import { NarrationScope } from '@/components/lessons/NarrationScope';
 import type { LessonItem } from '@/components/lessons/item-helpers';
 import AppShell from '../../../../../components/AppShell';
-import { coursePanel } from '../../../../../components/nav';
+import { modulePanel } from '../../../../../components/nav';
 
 type Props = { params: Promise<{ locale: string; level: string; skill: string; lesSlug: string }> };
 
@@ -23,10 +34,16 @@ export const metadata: Metadata = {
 /**
  * Eén les: uitleg en opgaven in één stroom.
  *
- * ── DE BLOKKENLIJST STAAT OP DE PAGINA, NIET IN DE CHROME ────────────────────
- * De portaalchrome draagt al twee assen — welke module (de rail) en waar daarbinnen (het
- * paneel). Een derde as erin duwen is precies wat de refactor van 27-08 heeft weggehaald. De
- * cursusnavigatie hoort dus bij de cursus, in de linkerkolom van deze pagina.
+ * ── ER IS GEEN LESSENLIJST MEER, IN DE CHROME NOCH OP DE PAGINA ──────────────
+ * Tot 02-09 stond de hele cursus hier in een tweede kolom (`coursePanel`) én nog eens als
+ * `block-nav` op mobiel. Dat is er af (beslissing eigenaar): een les hoort bij één module, en
+ * de module heeft nu zijn eigen scherm — `/spoor/[spoor]/[module]` — met de lijst, de
+ * voortgang en de volgende les erin. De les draagt dus precies twee uitgangen: terug naar zijn
+ * module, en door naar de volgende les *binnen* die module.
+ *
+ * Dat laatste woord is de reden dat dit `nextInModule` gebruikt en niet `nextLesson`: die
+ * tweede loopt de hele cursus af en stuurde je aan het eind van Grammatica zonder waarschuwing
+ * de examentraining in.
  *
  * ── EEN `pending` LES IS BEREIKBAAR, EN ZEGT DAT ─────────────────────────────
  * `fetchLesson` geeft ook een nog niet nagekeken les terug: precies dát maakt reviewen
@@ -41,6 +58,7 @@ export default async function LessonPage({ params }: Props) {
   if (!skill) notFound();
 
   const t = await getTranslations('lessons');
+  const tPortal = await getTranslations('portal');
   const tSkills = await getTranslations('skills');
 
   const supabase = await createClient();
@@ -56,10 +74,11 @@ export default async function LessonPage({ params }: Props) {
     redirect(`/${locale}/dashboard/pakketten?onderdeel=${level}:${skill.slug}&vanaf=leren-${lesSlug}`);
   }
 
-  const [blocks, wordsByItem, menu] = await Promise.all([
+  const [blocks, wordsByItem, menu, narration] = await Promise.all([
     fetchCourse(level, skill.slug, user.id),
     fetchLessonWords(lesson.items),
     fetchPortalMenu(),
+    fetchNarration(lesson.id),
   ]);
 
   // De woorden op hun item hangen, zodat de renderer één databron heeft. Zie `item-helpers.ts`.
@@ -68,8 +87,49 @@ export default async function LessonPage({ params }: Props) {
       ? { ...item, words: wordsByItem.get(item.id) ?? [] }
       : item) as LessonItem[];
 
-  const next = nextLesson(blocks);
-  const following = next && next.lesson.slug !== lesson.slug ? next : null;
+  /**
+   * In welke module deze les zit — waar "terug" heen gaat, en wat er hierna komt.
+   *
+   * `null` voor blok A (Woorden): die lessen horen bij de woordkaarten en zitten in geen
+   * spoor. Dat is een feit en geen fout, en de terugknop valt dan terug op de cursus.
+   */
+  /* Zonder naam geen taalregelmodule, en dat is hier ook niet nodig: deze aanroep dient de
+     terugknop van de les, en een regelles vindt zijn weg terug via de bibliotheek. */
+  const sporen = await sporenFromBlocks(blocks, level, skill.slug, user?.id ?? null);
+  const here = findModule(sporen, lesson.id);
+  const inModule = here
+    ? here.module.lessons.findIndex(l => l.id === lesson.id)
+    : -1;
+  const following = here && inModule >= 0
+    ? here.module.lessons[inModule + 1] ?? null
+    : null;
+  const backHref = here
+    ? modulePath(level, skill.slug, here.spoor.slug, here.module.slug)
+    : coursePath(level, skill.slug);
+  const backLabel = here ? here.module.name : t('back_to_course');
+
+  /**
+   * De tweede kolom: de lessen van de module waar deze les in zit.
+   *
+   * `null` voor blok A (Woorden) — die lessen zitten in geen spoor, en dan is er geen tweede
+   * as om te tonen. De les valt dan terug op de kale chrome, zoals hij die had.
+   */
+  const panel = here
+    ? modulePanel(here.spoor, here.module.slug, {
+        kicker: t('module_label'),
+        spoorTitle: tPortal(here.spoor.slug === 'taalregels'
+          ? 'leerroute_grammatica_title'
+          : 'leerroute_strategie_title'),
+        spoorHref: spoorPath(level, skill.slug, here.spoor.slug),
+        moduleHref: slug => modulePath(level, skill.slug, here.spoor.slug, slug),
+        lessonHref: slug => lessonPath(level, skill.slug, slug),
+        lockedHref: slug =>
+          `/dashboard/pakketten?onderdeel=${level}:${skill.slug}&vanaf=leren-${slug}`,
+        nextKicker: t('module_next'),
+        currentLessonId: lesson.id,
+        owned,
+      })
+    : null;
 
   const labels = {
     check: t('check'),
@@ -86,7 +146,70 @@ export default async function LessonPage({ params }: Props) {
     // client vult ze met `.replace()`.
     progress: t.raw('stream_progress') as string,
     yourAnswer: t('mark_pick'),
+    ruleKick: t('rule_kick'),
+    demoKick: t('demo_kick'),
+    learnHead: t('section_learn'),
+    learnSub: t('section_learn_sub'),
+    practiceHead: t('section_practice'),
+    exHead: t('ex_head'),
+    exSub: t('ex_sub'),
+    /* `t.raw` waar {n}/{total} pas in de client bekend zijn — zelfde reden als bij
+       `stream_progress` hierboven. */
+    exOf: t.raw('ex_of') as string,
+    exGoto: t.raw('ex_goto') as string,
+    exPrev: t('ex_prev'),
+    exNext: t('ex_next'),
+    exNextItem: t('ex_next_item'),
+    exSkip: t('ex_skip'),
+    tierHeads: [t('tier_0_head'), t('tier_1_head'), t('tier_2_head')] as [string, string, string],
+    tierSubs: [t('tier_0_sub'), t('tier_1_sub'), t('tier_2_sub')] as [string, string, string],
+    tierOther: t('tier_other_head'),
+    visual: {
+      kicker: t('visual_kicker'),
+      walk: t('visual_walk'),
+      walkStop: t('visual_walk_stop'),
+      step: t.raw('visual_step') as string,
+    },
+    /* De microfoon van `naspreken` en `opnemen`. Zie `LessonRecorder.tsx`. */
+    recorder: {
+      record: t('rec_record'),
+      stop: t('rec_stop'),
+      again: t('rec_again'),
+      recording: t('rec_recording'),
+      heard: t('rec_heard'),
+      heardNote: t('rec_heard_note'),
+      noMic: t('rec_no_mic'),
+      noRecorder: t('rec_no_recorder'),
+      seconds: t('rec_seconds'),
+    },
+    sayAfter: t('say_after'),
+    sayFocus: t('say_focus'),
+    audioTodo: t('audio_todo'),
   };
+
+  /**
+   * Het lesplaatje van deze les, en hoeveel stappen het heeft.
+   *
+   * Het aantal stappen is hier nodig en niet in het plaatje zelf: de speler moet de cue
+   * `vis-3` een naam kunnen geven, en dat kan alleen wie weet dat er een stap 3 is.
+   */
+  const visual = visualFor(lesson.slug);
+
+  /* De namen van de delen, voor de "nu:"-regel op de speler. `cards` komt uit het eerste
+     uitlegitem, want dat is waar `card-0` en `card-1` in `LessonStream` uit komen. */
+  const firstUitleg = lesson.items.find(i => i.kind === 'uitleg');
+  const cueNames = narrationCueNames({
+    cards: firstUitleg?.kind === 'uitleg' ? firstUitleg.payload.cards.map(c => c.label) : [],
+    demoCount: lesson.items.filter(i => i.kind === 'voorbeeld').length,
+    visualSteps: visual ? stepCount(visual) : 0,
+    labels: {
+      rule: t('narration_at_rule'),
+      demo: t.raw('narration_at_demo') as string,
+      visual: t('narration_at_visual'),
+      visualStep: t.raw('narration_at_visual_step') as string,
+      exercises: t('narration_at_exercises'),
+    },
+  });
 
   return (
     <AppShell
@@ -96,86 +219,142 @@ export default async function LessonPage({ params }: Props) {
       active={skill.slug}
       activeGroup={level}
       menu={menu}
-      learn={coursePanel(blocks, {
-        /* De cursus, niet het huidige blok. Het paneel toont álle blokken, dus een blokletter
-           als kop noemde de lijst naar één van zijn eigen secties. */
-        title: tSkills(`${skill.key}.name`),
-        backHref: coursePath(level, skill.slug),
-        backLabel: t('back_to_course'),
-        lessonHref: (slug: string) => lessonPath(level, skill.slug, slug),
-        currentSlug: lesson.slug,
-        owned,
-      })}
+      modulePanel={panel}
     >
       <div className="px-5 py-7 sm:px-8 sm:py-10">
-        <div className="mx-auto flex max-w-5xl flex-col gap-7 lg:flex-row lg:gap-9">
+        <div className="mx-auto max-w-3xl">
 
-          {/* De blokkenlijst, **alleen op mobiel**. Op desktop draagt het lespaneel in de
-              chrome hem; twee keer dezelfde lijst naast elkaar leest als een renderfout. Op
-              een telefoon is er geen chrome, en daar staat hij ónder de les: daar is de les
-              het doel en de navigatie de uitweg, niet andersom. */}
-          <nav className="order-2 w-full shrink-0 lg:hidden" aria-label={t('course_nav')}>
-            <a
-              href={`/${locale}${coursePath(level, skill.slug)}`}
-              className="mb-3 block text-xs font-bold text-on-surface-variant no-underline hover:underline"
-            >
-              ← {t('back_to_course')}
-            </a>
-            <ol className="block-nav">
-              {blocks.map(block => {
-                const isOpen = block.id === lesson.block.id;
-                return (
-                  <li key={block.id}>
-                    <div className={`block-nav-head${isOpen ? ' is-open' : ''}`}>
-                      <span><span className="bl-letter">{block.letter}</span> {block.name_nl}</span>
-                      <span className="block-nav-count">
-                        {block.lessons.filter(l => l.progress?.state === 'done').length}/{block.lessons.length}
-                      </span>
-                    </div>
-                    {isOpen && block.lessons.length > 0 && (
-                      <ol className="mt-1 flex list-none flex-col gap-1 p-0">
-                        {block.lessons.map(les => (
-                          <li key={les.id}>
-                            <a
-                              href={`/${locale}${lessonPath(level, skill.slug, les.slug)}`}
-                              className={`les-row${les.slug === lesson.slug ? ' is-current' : ''}`}
-                              aria-current={les.slug === lesson.slug ? 'page' : undefined}
-                            >
-                              {les.progress?.state === 'done'
-                                ? <Check size={14} strokeWidth={3} className="les-done" />
-                                : <span className="w-[14px] shrink-0" aria-hidden />}
-                              <span className="truncate">{les.title}</span>
-                            </a>
-                          </li>
-                        ))}
-                      </ol>
-                    )}
-                  </li>
-                );
-              })}
-            </ol>
-          </nav>
-
-          <main className="order-1 min-w-0 flex-1">
+          <NarrationScope hasNarration={narration !== null}>
+          <LessonProgressScope>
+          <main className="min-w-0">
             {lesson.review_status !== 'validated' && (
               <p className="pending-banner">{t('pending_banner')}</p>
             )}
 
             <header className="mb-6">
-              <span className="text-xs font-bold uppercase tracking-wider text-on-surface-variant">
-                {t('block_crumb', { letter: lesson.block.letter, block: lesson.block.name_nl })}
-              </span>
-              <h1
-                className="mt-1.5 font-headline font-extrabold text-on-surface"
-                style={{ fontSize: 'clamp(1.45rem,3vw,1.85rem)', letterSpacing: '-0.03em' }}
-              >
-                {lesson.title}
-              </h1>
-              {lesson.what_you_learn && (
-                <p className="mt-2.5 text-on-surface-variant" style={{ lineHeight: 1.7 }}>
-                  {lesson.what_you_learn}
-                </p>
+              {/* Het hele pad, want dit is het diepste scherm van het portaal. Het laatste
+                  kruimeltje kiest tussen de lessen van dézelfde module — de sprong die je
+                  binnen een module het vaakst maakt. */}
+              <PortalCrumbs
+                trail={closeTrail(
+                  [
+                    ...skillTrail({
+                      locale, level, skill: skill.slug,
+                      overviewLabel: tPortal('crumb_overview'),
+                      skillName: slug => tSkills(`${slug}.name`),
+                    }),
+                    ...(here
+                      ? [
+                          {
+                            label: tPortal(here.spoor.slug === 'taalregels'
+                              ? 'leerroute_grammatica_title'
+                              : 'leerroute_strategie_title'),
+                            href: `/${locale}${spoorPath(level, skill.slug, here.spoor.slug)}`,
+                          },
+                          { label: here.module.name, href: `/${locale}${backHref}` },
+                        ]
+                      : [{ label: backLabel, href: `/${locale}${backHref}` }]),
+                  ],
+                  {
+                    label: lesson.title,
+                    siblings: here?.module.lessons.map(l => ({
+                      label: l.title,
+                      href: `/${locale}${lessonPath(level, skill.slug, l.slug)}`,
+                      current: l.id === lesson.id,
+                    })),
+                  },
+                )}
+              />
+              {/* ── de leskop ──
+                  Een kaartje met de navy tegel uit de mockup: het lesnummer erop, de titel
+                  ernaast. Klein en niet over het lesblok, want dat blok laat vóór het spelen
+                  al zien wát er straks met de stem meeverspringt. */}
+              <div className="les-card">
+                {inModule >= 0 && (
+                  <span className="lc-tile" aria-hidden>
+                    <span className="lc-n">{inModule + 1}</span>
+                  </span>
+                )}
+                <span className="min-w-0">
+                  {inModule >= 0 && (
+                    <span className="lc-kick">{t('lesson_no', { n: inModule + 1 })}</span>
+                  )}
+                  <h1>{lesson.title}</h1>
+                </span>
+              </div>
+
+              {/* ── de opname als blok, en daaronder de tweedeling ──
+                  Mockup van de eigenaar (08-09). De opname was een compacte kaart naast de
+                  titel; nu is het het vlak waar de les mee begint, want beluisteren ís de
+                  eerste stap van deze laag. Daaronder staat links wat de les je brengt en
+                  rechts wat er nog van je gevraagd wordt, met de oefenknop erin — de opgaven
+                  staan onderaan een lange pagina en die knop is de lift ernaartoe. */}
+              {narration && (
+                <LessonNarration
+                  layout="hero"
+                  audioUrl={narration.audioUrl}
+                  durationSeconds={narration.durationSeconds}
+                  cues={narration.cues}
+                  words={narration.words}
+                  cueNames={cueNames}
+                  reviewed={narration.reviewStatus === 'validated'}
+                  labels={{
+                    kicker: t('narration_kicker'),
+                    play: t('narration_play'),
+                    pause: t('narration_pause'),
+                    speed: t('narration_speed'),
+                    pendingNote: t('narration_pending'),
+                    followLabel: t('narration_follow'),
+                    followOn: t('narration_follow_on'),
+                    followOff: t('narration_follow_off'),
+                    nowAt: t.raw('narration_now_at') as string,
+                    back10: t('narration_back10'),
+                    fwd10: t('narration_fwd10'),
+                    chapters: t('narration_chapters'),
+                    wave: t('narration_wave'),
+                  }}
+                >
+                  {/* De uitleg staat ín het blok en verspringt met de stem mee. Daarom staat
+                      hij niet ook nog in de stroom eronder — zie `withLead`. */}
+                  <LessonStage
+                    items={items}
+                    visual={visual}
+                    cueNames={cueNames}
+                    labels={{
+                      ruleKick: t('rule_kick'),
+                      demoKick: t('demo_kick'),
+                      prev: t('stage_prev'),
+                      next: t('stage_next'),
+                      goto: t.raw('stage_goto') as string,
+                      visual: labels.visual,
+                    }}
+                  />
+                </LessonNarration>
               )}
+
+              <div className="les-learn">
+                <div className="min-w-0">
+                  {lesson.what_you_learn && (
+                    <>
+                      <h2 className="ll-head">{t('learn_head')}</h2>
+                      <p className="ll-body">{lesson.what_you_learn}</p>
+                    </>
+                  )}
+                </div>
+
+                <LessonNowCard
+                  hasNarration={narration !== null}
+                  labels={{
+                    head: t('now_head'),
+                    learn: t('now_learn'),
+                    listen: t('now_listen'),
+                    practice: t.raw('now_practice') as string,
+                    cta: t('now_cta'),
+                    note: t('now_note'),
+                  }}
+                />
+              </div>
+
               {lesson.concepts.length > 0 && (
                 <p className="mt-3 text-xs font-bold uppercase tracking-wider text-on-surface-variant">
                   {t('teaches')}{' '}
@@ -189,13 +368,43 @@ export default async function LessonPage({ params }: Props) {
                   ))}
                 </p>
               )}
+
+              {here && inModule >= 0 && (
+                <div className="les-prog">
+                  <div className="lp-item">
+                    <div className="lp-top">
+                      <b>{here.module.name}</b>
+                      <span>
+                        {t('module_place', { n: inModule + 1, total: here.module.total })}
+                      </span>
+                    </div>
+                    <div className="lp-bar clay">
+                      <i style={{ width: `${here.module.pct}%` }} />
+                    </div>
+                  </div>
+                  {/* Eén streepje per les van deze module: waar je in de rij staat. Vroeger
+                      waren dit de vijf blokken van de hele cursus, en dat was op een
+                      lespagina de verkeerde schaal. */}
+                  <div className="lp-blocks" aria-hidden>
+                    {here.module.lessons.map((l, i) => (
+                      <i key={l.id} className={i < inModule ? 'on' : i === inModule ? 'now' : ''} />
+                    ))}
+                  </div>
+                </div>
+              )}
             </header>
 
-            <LessonStream lessonId={lesson.id} items={items} labels={labels} />
+            <LessonStream
+              lessonId={lesson.id}
+              items={items}
+              visual={visual}
+              withLead={narration === null}
+              labels={labels}
+            />
 
             {following && (
               <a
-                href={`/${locale}${lessonPath(level, skill.slug, following.lesson.slug)}`}
+                href={`/${locale}${lessonPath(level, skill.slug, following.slug)}`}
                 className="mt-8 flex items-center gap-3 rounded-2xl px-4 py-3.5 no-underline"
                 style={{
                   background: 'var(--color-surface-container-lowest)',
@@ -207,13 +416,30 @@ export default async function LessonPage({ params }: Props) {
                     {t('next_lesson')}
                   </span>
                   <span className="block font-extrabold text-on-surface truncate">
-                    {following.lesson.title}
+                    {following.title}
                   </span>
                 </span>
                 <ArrowRight size={18} strokeWidth={2.5} className="ms-auto shrink-0 text-secondary rtl-flip" />
               </a>
             )}
+
+            {/* De laatste les van de module: de uitweg is het spoor, niet de volgende les van
+                een module die de kandidaat nog niet gekozen heeft. */}
+            {here && !following && (
+              <a
+                href={`/${locale}${spoorPath(level, skill.slug, here.spoor.slug)}`}
+                className="mod-cont mod-next"
+              >
+                <span className="min-w-0">
+                  <span className="mod-cont-kick">{t('module_done_head')}</span>
+                  <span className="mod-cont-title">{t('module_back_to_spoor')}</span>
+                </span>
+                <ArrowRight size={18} strokeWidth={2.5} className="ms-auto shrink-0 text-secondary rtl-flip" />
+              </a>
+            )}
           </main>
+          </LessonProgressScope>
+          </NarrationScope>
         </div>
       </div>
     </AppShell>

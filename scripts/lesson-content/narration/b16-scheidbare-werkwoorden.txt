@@ -1,0 +1,34 @@
+# De ingesproken uitleg van `b16-scheidbare-werkwoorden`.
+# Regels met # zijn commentaar. [[id]] of [[id | extra uitleg]] markeert waar de stem over
+# welk element begint; de extra uitleg staat op de pagina bij dat element en mag niet herhalen
+# wat de stem net zei.
+# Geldige id's: vis, vis-1 t/m vis-3, rule, card-0, card-1, demo-0, demo-1, exercises.
+
+Deze les gaat over werkwoorden die in twee stukken vallen.
+
+[[vis-1 | Op, mee, aan, schoon: dit stukje reist naar het eind van de zin.]]
+Kijk naar het plaatje. We nemen opbellen. Dat woord bestaat uit twee stukken: op en bellen. In een gewone zin gaat het stukje op naar achteren.
+
+[[vis-2 | Bel blijft op plaats twee, precies zoals in les 1.]]
+Het werkwoord zelf blijft staan op plaats twee: bel.
+
+[[vis-3 | Alles wat erbij hoort staat ertussen: je, morgen.]]
+Samen wordt het: ik bel je morgen op. Het werkwoord staat vooraan in de zin en het kleine stukje staat achteraan.
+
+[[rule | In het deelwoord komt ge- ertussen: opgebeld, meegenomen, schoongemaakt.]]
+Onthoud dus: in een gewone zin valt het woord in twee stukken. Na moeten, kunnen, willen of gaan blijft het aan elkaar, en dan staat het achteraan.
+
+[[card-0 | Dit is de zin zonder een tweede werkwoord.]]
+De eerste kaart laat de twee stukken zien.
+
+[[card-1 | Na wil blijft invullen één woord, achteraan.]]
+De tweede kaart houdt het woord aan elkaar.
+
+[[demo-0 | In staat achteraan, los van vult.]]
+Twee voorbeelden. Fatima vult het formulier in.
+
+[[demo-1 | Na wil is het weer één woord: invullen.]]
+En: Fatima wil het formulier vandaag invullen.
+
+[[exercises]]
+Doe nu de opgaven. Zoek het losse stukje aan het eind van de zin.

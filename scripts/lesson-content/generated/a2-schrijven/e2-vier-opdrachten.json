@@ -1,0 +1,135 @@
+{
+  "items": [
+    {
+      "kind": "uitleg",
+      "tier": null,
+      "explanation": null,
+      "payload": {
+        "body_html": "<p>Bij dit examenonderdeel schrijf je vier korte opdrachten, bijvoorbeeld een briefje of een e-mail; je hebt in totaal ongeveer 35 minuten voor het hele onderdeel Schrijven.</p>",
+        "cards": []
+      }
+    },
+    {
+      "kind": "open_zin",
+      "tier": 2,
+      "explanation": "Je antwoord is goed als alle drie de inhoudspunten erin staan: dat je niet komt, waarom niet, en wanneer je wel kunt. Zonder één van die punten is de opdracht niet af.",
+      "payload": {
+        "prompt": "<p>Je hebt een afspraak bij de tandarts op dinsdag 14 mei om 9.00 uur. Je kunt niet komen. Schrijf een e-mail aan tandartspraktijk De Molenhoek.</p><p>Schrijf in je e-mail:</p><ul><li>dat je niet naar de afspraak kunt komen</li><li>waarom je niet kunt komen</li><li>wanneer je wel kunt komen</li></ul><p>Schrijf 30 tot 50 woorden.</p>",
+        "model_answer": "Geachte mevrouw, meneer,\n\nIk heb een afspraak op dinsdag 14 mei om 9.00 uur. Ik kan helaas niet komen, omdat ik die dag moet werken. Kan ik op vrijdag 17 mei komen? In de middag kan ik altijd.\n\nMet vriendelijke groet,\nNadia Bakkali",
+        "checklist": [
+          "Je schrijft dat je niet naar de afspraak kunt komen.",
+          "Je schrijft een reden, bijvoorbeeld werk of ziekte.",
+          "Je noemt een nieuwe dag of tijd waarop je wel kunt."
+        ]
+      }
+    },
+    {
+      "kind": "open_zin",
+      "tier": 2,
+      "explanation": "Alle inhoudspunten uit de opdracht moeten terugkomen: wat er kapot is, sinds wanneer, en wat je van de verhuurder wilt. Je gebruikt een aanhef en een afsluiting, want het is een brief aan een instantie.",
+      "payload": {
+        "prompt": "<p>De kraan in je keuken lekt al een week. Je woont in een huurhuis van woningstichting Het Anker. Schrijf een brief aan de woningstichting.</p><p>Schrijf in je brief:</p><ul><li>wat er kapot is</li><li>sinds wanneer het probleem er is</li><li>wat je wilt dat de woningstichting doet</li></ul><p>Schrijf 40 tot 60 woorden.</p>",
+        "model_answer": "Geachte heer, mevrouw,\n\nIk woon op de Kerkstraat 12 in Zwolle. De kraan in mijn keuken lekt. Het water loopt de hele dag door. Het probleem is er al sinds maandag 6 maart. Kunt u een monteur sturen om de kraan te maken? Ik ben elke dag na 16.00 uur thuis.\n\nMet vriendelijke groet,\nSamir Ait Ali",
+        "checklist": [
+          "Je schrijft duidelijk wat kapot is (de kraan lekt).",
+          "Je schrijft sinds wanneer het probleem er is.",
+          "Je vraagt om een oplossing, bijvoorbeeld een monteur."
+        ]
+      }
+    },
+    {
+      "kind": "open_zin",
+      "tier": 2,
+      "explanation": "Je vraagt iets aan de school, dus je schrijft wie je bent en om wie het gaat. De drie punten uit de opdracht moeten alle drie in je briefje staan.",
+      "payload": {
+        "prompt": "<p>Je zoon Youssef zit op basisschool De Vlieger. Hij moet volgende week naar het ziekenhuis. Schrijf een briefje aan de juf.</p><p>Schrijf in je briefje:</p><ul><li>welke dag je zoon niet op school is</li><li>waarom hij niet op school is</li><li>een vraag over het huiswerk</li></ul><p>Schrijf 30 tot 50 woorden.</p>",
+        "model_answer": "Beste juf Ellen,\n\nMijn zoon Youssef komt woensdag 22 januari niet naar school. Hij moet die dag naar het ziekenhuis voor een onderzoek. Kunt u mij vertellen welk huiswerk hij moet maken? Dan kan hij het donderdag inleveren.\n\nMet vriendelijke groet,\nFatima Yilmaz",
+        "checklist": [
+          "Je noemt de dag waarop je zoon er niet is.",
+          "Je schrijft de reden (het ziekenhuis).",
+          "Je stelt een duidelijke vraag over het huiswerk."
+        ]
+      }
+    },
+    {
+      "kind": "woordorde",
+      "tier": 2,
+      "explanation": "Na <em>omdat</em> staat het werkwoord achteraan: <em>omdat ik die dag moet werken</em>. Het gewone werkwoord komt na het hulpwerkwoord.",
+      "payload": {
+        "instruction": "Maak van deze woorden een goede zin voor je e-mail.",
+        "tokens": [
+          "werken",
+          "die",
+          "ik",
+          "omdat",
+          "moet",
+          "dag"
+        ],
+        "answer": [
+          "omdat",
+          "ik",
+          "die",
+          "dag",
+          "moet",
+          "werken"
+        ]
+      }
+    },
+    {
+      "kind": "mcq",
+      "tier": 0,
+      "explanation": "In de opdracht staan de inhoudspunten. Je moet alle punten in je tekst zetten, anders is je antwoord niet compleet.",
+      "options": [
+        {
+          "label": "A",
+          "body": "Eén van de drie punten, het punt dat je het makkelijkst vindt.",
+          "is_correct": false
+        },
+        {
+          "label": "B",
+          "body": "Alle drie de punten uit de opdracht.",
+          "is_correct": true
+        },
+        {
+          "label": "C",
+          "body": "Alleen het eerste en het laatste punt.",
+          "is_correct": false
+        }
+      ],
+      "payload": {
+        "prompt": "In de opdracht staan drie punten waarover je moet schrijven. Wat zet je in je brief?"
+      }
+    },
+    {
+      "kind": "mcq",
+      "tier": 0,
+      "explanation": "Je schrijft alleen wat met de opdracht te maken heeft. Een lang verhaal over je vakantie hoort er niet in en kost je tijd.",
+      "options": [
+        {
+          "label": "A",
+          "body": "Een aanhef, bijvoorbeeld: Geachte heer, mevrouw.",
+          "is_correct": false
+        },
+        {
+          "label": "B",
+          "body": "Een verhaal over je vakantie in de zomer.",
+          "is_correct": true
+        },
+        {
+          "label": "C",
+          "body": "Je naam onder de brief.",
+          "is_correct": false
+        },
+        {
+          "label": "D",
+          "body": "Een vraag aan de woningstichting.",
+          "is_correct": false
+        }
+      ],
+      "payload": {
+        "prompt": "Je schrijft een brief over een kapotte kraan. Wat hoort er juist NIET in?"
+      }
+    }
+  ],
+  "what_you_learn": "Je oefent met vier korte schrijfopdrachten, zoals in het examen. Je leert alle inhoudspunten uit de opdracht in je tekst te zetten, met een goede aanhef en afsluiting. Je merkt ook wat er juist niet in je brief hoort."
+}

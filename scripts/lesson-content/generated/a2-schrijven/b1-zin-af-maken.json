@@ -1,0 +1,178 @@
+{
+  "items": [
+    {
+      "kind": "uitleg",
+      "tier": null,
+      "explanation": null,
+      "payload": {
+        "body_html": "<p>Als je zelf een e-mail of een briefje schrijft, let dan op het werkwoord. Het werkwoord staat op plaats <strong>twee</strong> in de zin. Begin je met een tijdswoord, zoals <em>morgen</em> of <em>volgende week</em>? Dan komt het werkwoord daarna, en pas daarna het woord <em>ik</em>.</p>",
+        "cards": [
+          {
+            "label": "GOED",
+            "example_html": "Morgen <mark>kom</mark> ik niet werken."
+          },
+          {
+            "label": "MINDER GOED",
+            "example_html": "Morgen <mark>ik kom</mark> niet werken."
+          }
+        ]
+      }
+    },
+    {
+      "kind": "voorbeeld",
+      "tier": null,
+      "explanation": null,
+      "payload": {
+        "sentence_html": "<p>Om acht uur <mark>breng</mark> ik mijn zoon naar school.</p>"
+      }
+    },
+    {
+      "kind": "voorbeeld",
+      "tier": null,
+      "explanation": null,
+      "payload": {
+        "sentence_html": "<p>Op het formulier <mark>schrijf</mark> ik mijn adres en mijn telefoonnummer.</p>"
+      }
+    },
+    {
+      "kind": "mcq",
+      "tier": 0,
+      "explanation": "De zin begint met <em>vandaag</em>. Daarna komt eerst het werkwoord <em>kan</em> en dan <em>ik</em>.",
+      "options": [
+        {
+          "label": "A",
+          "body": "Vandaag ik kan niet naar de les komen.",
+          "is_correct": false
+        },
+        {
+          "label": "B",
+          "body": "Vandaag kan ik niet naar de les komen.",
+          "is_correct": true
+        },
+        {
+          "label": "C",
+          "body": "Vandaag niet ik kan naar de les komen.",
+          "is_correct": false
+        }
+      ],
+      "payload": {
+        "prompt": "Welke zin is goed geschreven in een e-mail aan je docent?"
+      }
+    },
+    {
+      "kind": "mcq",
+      "tier": 0,
+      "explanation": "Na <em>volgende week</em> staat het werkwoord <em>heb</em> op plaats twee. Daarna komt <em>ik</em>.",
+      "options": [
+        {
+          "label": "A",
+          "body": "Volgende week ik heb een afspraak bij de tandarts.",
+          "is_correct": false
+        },
+        {
+          "label": "B",
+          "body": "Volgende week een afspraak heb ik bij de tandarts.",
+          "is_correct": false
+        },
+        {
+          "label": "C",
+          "body": "Volgende week heb ik een afspraak bij de tandarts.",
+          "is_correct": true
+        }
+      ],
+      "payload": {
+        "prompt": "Welke zin schrijf je zo in een briefje voor je werk?"
+      }
+    },
+    {
+      "kind": "gap_choice",
+      "tier": 1,
+      "explanation": "De zin begint met <em>morgen</em>. Het werkwoord <em>werk</em> staat op plaats twee, dus daarna komt <em>ik</em>.",
+      "payload": {
+        "sentence": "Morgen ___ niet, want ik ben ziek.",
+        "choices": [
+          "ik werk",
+          "werk ik",
+          "werken ik"
+        ],
+        "answer": "werk ik"
+      }
+    },
+    {
+      "kind": "gap_choice",
+      "tier": 1,
+      "explanation": "Na het tijdswoord <em>om negen uur</em> komt eerst het werkwoord <em>ben</em> en dan <em>ik</em>.",
+      "payload": {
+        "sentence": "Om negen uur ___ bij de gemeente voor mijn paspoort.",
+        "choices": [
+          "ik ben",
+          "ben ik",
+          "ben"
+        ],
+        "answer": "ben ik"
+      }
+    },
+    {
+      "kind": "gap_choice",
+      "tier": 1,
+      "explanation": "De zin begint met <em>ik</em>. Dan staat het werkwoord <em>stuur</em> op plaats twee.",
+      "payload": {
+        "sentence": "Ik ___ het formulier vandaag met de post.",
+        "choices": [
+          "stuur",
+          "stuurt ik",
+          "sturen"
+        ],
+        "answer": "stuur"
+      }
+    },
+    {
+      "kind": "gap_type",
+      "tier": 2,
+      "explanation": "Na <em>volgende maand</em> komt het werkwoord op plaats twee: <em>ga</em>. Daarna schrijf je <em>ik</em>.",
+      "payload": {
+        "sentence": "Volgende maand ___ ik verhuizen naar een andere woning.",
+        "answer": "ga"
+      }
+    },
+    {
+      "kind": "woordorde",
+      "tier": 2,
+      "explanation": "Je begint met <em>vanmiddag</em>. Het werkwoord <em>haal</em> staat op plaats twee, daarna komt <em>ik</em>.",
+      "payload": {
+        "instruction": "Zet de woorden in de juiste volgorde. Dit is een zin uit een briefje voor de school.",
+        "tokens": [
+          "haal",
+          "vanmiddag",
+          "op",
+          "ik",
+          "mijn",
+          "dochter"
+        ],
+        "answer": [
+          "vanmiddag",
+          "haal",
+          "ik",
+          "mijn",
+          "dochter",
+          "op"
+        ]
+      }
+    },
+    {
+      "kind": "open_zin",
+      "tier": 2,
+      "explanation": "Je begint met een tijdswoord, dus daarna komt eerst het werkwoord en dan <em>ik</em>.",
+      "payload": {
+        "prompt": "Schrijf één zin voor een e-mail aan je werk. Begin met <strong>Morgen</strong> en vertel dat je later komt.",
+        "model_answer": "Morgen kom ik een uur later, want ik moet naar de dokter.",
+        "checklist": [
+          "Mijn zin begint met het woord Morgen.",
+          "Het werkwoord staat op plaats twee, vóór het woord ik.",
+          "Mijn zin eindigt met een punt."
+        ]
+      }
+    }
+  ],
+  "what_you_learn": "Je leert het werkwoord op de juiste plaats zetten als je zelf schrijft. Je ziet dat het werkwoord op plaats twee staat, ook als je zin met een tijdswoord begint. Zo schrijf je goede zinnen in een e-mail, een briefje of op een formulier."
+}

@@ -1,0 +1,172 @@
+{
+  "items": [
+    {
+      "kind": "uitleg",
+      "tier": null,
+      "explanation": null,
+      "payload": {
+        "body_html": "<p>Bij het spreekexamen krijg je een korte situatie. Je zegt dan twee of drie zinnen. Eén woord is te weinig.</p><p>Doe het in stappen. Zeg eerst <strong>wat</strong> je wil. Zeg daarna <strong>waarom</strong>, met <em>want</em> of <em>omdat</em>. Zeg als laatste een korte vraag of wens.</p><p>Praat niet te lang. Drie zinnen zijn genoeg.</p>",
+        "cards": [
+          {
+            "label": "TE WEINIG",
+            "example_html": "<mark>Ja.</mark>"
+          },
+          {
+            "label": "GOED",
+            "example_html": "<mark>Ja, graag. Ik wil een nieuwe pas, want mijn oude pas is kwijt.</mark>"
+          }
+        ]
+      }
+    },
+    {
+      "kind": "voorbeeld",
+      "tier": null,
+      "explanation": null,
+      "payload": {
+        "sentence_html": "<p>Ik kom morgen niet werken, <mark>omdat mijn dochter ziek is</mark>.</p>"
+      }
+    },
+    {
+      "kind": "voorbeeld",
+      "tier": null,
+      "explanation": null,
+      "payload": {
+        "sentence_html": "<p>Ik wil een andere afspraak, <mark>want ik moet die dag naar de tandarts</mark>.</p>"
+      }
+    },
+    {
+      "kind": "mcq",
+      "tier": 0,
+      "explanation": "Antwoord B zegt wat je wil en waarom. Eén woord of alleen een reden zonder je wens is te weinig.",
+      "options": [
+        {
+          "label": "A",
+          "body": "Nee.",
+          "is_correct": false
+        },
+        {
+          "label": "B",
+          "body": "Nee, dat past niet. Ik kan niet op maandag, omdat ik dan werk. Kan het op woensdag?",
+          "is_correct": true
+        },
+        {
+          "label": "C",
+          "body": "Maandag werk.",
+          "is_correct": false
+        }
+      ],
+      "payload": {
+        "prompt": "<p>De medewerker van de gemeente zegt: \"Kunt u maandag om 10 uur komen?\" Je kunt niet op maandag. Welk antwoord past hier?</p>"
+      }
+    },
+    {
+      "kind": "mcq",
+      "tier": 0,
+      "explanation": "Antwoord A is te kort. Er staat niet wat je wil en er staat geen reden bij.",
+      "options": [
+        {
+          "label": "A",
+          "body": "Klein.",
+          "is_correct": true
+        },
+        {
+          "label": "B",
+          "body": "Deze jas is te klein. Ik wil hem ruilen, want ik heb maat 42 nodig.",
+          "is_correct": false
+        },
+        {
+          "label": "C",
+          "body": "Ik wil deze jas ruilen. Hij is te klein, want ik heb een grotere maat nodig.",
+          "is_correct": false
+        }
+      ],
+      "payload": {
+        "prompt": "<p>Je bent in een winkel. De verkoper vraagt: \"Wat is er met de jas?\" Welk antwoord is <strong>te kort</strong>?</p>"
+      }
+    },
+    {
+      "kind": "mcq",
+      "tier": 0,
+      "explanation": "Na <em>omdat</em> komt het werkwoord aan het eind: \"omdat ik geen brief heb gekregen\".",
+      "options": [
+        {
+          "label": "A",
+          "body": "Ik bel over mijn aanvraag, omdat ik heb geen brief gekregen.",
+          "is_correct": false
+        },
+        {
+          "label": "B",
+          "body": "Ik bel over mijn aanvraag, omdat ik geen brief heb gekregen.",
+          "is_correct": true
+        },
+        {
+          "label": "C",
+          "body": "Ik bel over mijn aanvraag, omdat geen brief ik heb gekregen.",
+          "is_correct": false
+        }
+      ],
+      "payload": {
+        "prompt": "<p>Welke zin met <em>omdat</em> is goed?</p>"
+      }
+    },
+    {
+      "kind": "matchen",
+      "tier": 1,
+      "explanation": "Bij elke situatie past een antwoord met je wens én een reden. Je zoekt de reden die bij de situatie hoort.",
+      "payload": {
+        "instruction": "Zoek bij elke situatie wat je zegt.",
+        "pairs": [
+          {
+            "left": "Je wil een afspraak bij de huisarts.",
+            "right": "Ik wil graag een afspraak, want ik heb al drie dagen buikpijn."
+          },
+          {
+            "left": "Je komt te laat op je werk.",
+            "right": "Sorry dat ik te laat ben. De bus kwam niet, omdat er werk aan de weg was."
+          },
+          {
+            "left": "Je brengt een broek terug naar de winkel.",
+            "right": "Ik wil deze broek ruilen, want de maat is te klein."
+          },
+          {
+            "left": "Je vraagt uitstel voor een rekening.",
+            "right": "Ik kan nu niet betalen, omdat ik deze maand weinig geld heb."
+          }
+        ]
+      }
+    },
+    {
+      "kind": "opnemen",
+      "tier": 2,
+      "explanation": "Je zegt wat je wil en waarom, met want of omdat. Twee of drie zinnen zijn genoeg.",
+      "payload": {
+        "prompt": "<p>Je hebt een afspraak bij de gemeente op vrijdag om 9 uur. Je kunt niet komen, want je moet dan werken. Je belt de gemeente. De medewerker zegt: \"Goedemorgen, waarmee kan ik u helpen?\"</p><p>Spreek je antwoord in. Vergelijk je antwoord daarna met het voorbeeld.</p>",
+        "model_answer": "Goedemorgen, ik heb vrijdag om 9 uur een afspraak. Ik kan helaas niet komen, omdat ik die ochtend moet werken. Kan ik een nieuwe afspraak maken in de middag?",
+        "checklist": [
+          "Ik zeg eerst waarover ik bel.",
+          "Ik geef een reden met want of omdat.",
+          "Ik zeg twee of drie zinnen, niet één woord."
+        ],
+        "image_urls": [],
+        "record_seconds": 60
+      }
+    },
+    {
+      "kind": "opnemen",
+      "tier": 2,
+      "explanation": "Je noemt het probleem, je geeft een reden en je zegt wat je wil. Zo is je antwoord lang genoeg.",
+      "payload": {
+        "prompt": "<p>Je hebt gisteren een waterkoker gekocht bij een winkel in de buurt. Het apparaat werkt niet. Je gaat terug naar de winkel. De verkoper vraagt: \"Zegt u het maar, wat is er aan de hand?\"</p><p>Spreek je antwoord in. Vergelijk je antwoord daarna met het voorbeeld.</p>",
+        "model_answer": "Ik heb deze waterkoker gisteren hier gekocht. Hij werkt niet, want het water wordt niet warm. Ik wil graag mijn geld terug of een nieuwe.",
+        "checklist": [
+          "Ik vertel wat het probleem is.",
+          "Ik gebruik want of omdat.",
+          "Ik zeg duidelijk wat ik wil."
+        ],
+        "image_urls": [],
+        "record_seconds": 60
+      }
+    }
+  ],
+  "what_you_learn": "Je leert in twee of drie zinnen antwoorden op een vraag. Je zegt wat je wil en je geeft een reden met want of omdat. Je merkt zelf wanneer je antwoord te kort is."
+}

@@ -36,6 +36,8 @@ export const ITEM_KINDS = [
   'uitleg', 'voorbeeld', 'leestekst', 'audio', 'video', 'woordenlijst', 'zinnenbank',
   // opgaven — hebben altijd een `tier` en een `explanation`
   'mcq', 'gap_choice', 'gap_type', 'woordorde', 'matchen', 'open_zin', 'markeren',
+  // opgaven waarin de cursist spreekt — zie `naspreken` en `opnemen` verderop
+  'naspreken', 'opnemen',
 ] as const;
 
 export type ItemKind = (typeof ITEM_KINDS)[number];
@@ -49,6 +51,7 @@ export type ItemKind = (typeof ITEM_KINDS)[number];
  */
 export const EXERCISE_KINDS = [
   'mcq', 'gap_choice', 'gap_type', 'woordorde', 'matchen', 'open_zin', 'markeren',
+  'naspreken', 'opnemen',
 ] as const satisfies readonly ItemKind[];
 
 export type ExerciseKind = (typeof EXERCISE_KINDS)[number];
@@ -101,6 +104,39 @@ const safeHtml = nonEmpty.refine(
   s => !/<\s*(script|iframe|object|embed|link|style|form)\b/i.test(s),
   { message: 'script/iframe/style/form zijn niet toegestaan in lescontent' },
 );
+
+/**
+ * De opdrachtregel van een opgave: `prompt`, `instruction` en de checklist.
+ *
+ * **`safeHtml` en niet `nonEmpty`, en dat is een reparatie.** Deze velden waren platte tekst,
+ * maar de schrijfpijplijn zet er cursief in om een aangehaald woord aan te wijzen — *"In welke
+ * zin staat de juiste vorm bij <em>mijn zoon</em>?"*. Dat kwam op de lespagina letterlijk met
+ * tags en al in beeld, bij twaalf opgaven in de cursus, want de renderer zette de string als
+ * tekst neer. Twee mogelijke reparaties: de tags uit de content halen, of het veld toelaten wat
+ * er feitelijk in staat. Dit is de tweede, want het cursief betekent iets — het scheidt het
+ * aangehaalde woord van de vraag eromheen — en `uitleg.body_html` en `voorbeeld.sentence_html`
+ * doen het al zo.
+ *
+ * `safeHtml` accepteert platte tekst ook, dus geen bestaande opgave wordt hierdoor ongeldig.
+ */
+const promptHtml = safeHtml;
+
+/** Dezelfde toets, maar nullable — voor `explanation`, dat een default van `null` heeft. */
+const promptHtmlOpt2 = z
+  .string()
+  .refine(v => !/<\s*(script|iframe|object|embed|link|style|form)\b/i.test(v), {
+    message: 'script/iframe/style/form zijn niet toegestaan in lescontent',
+  })
+  .nullable();
+
+/** Dezelfde toets, voor een opdrachtregel die mag ontbreken (`woordorde`, `matchen`). */
+const promptHtmlOpt = z
+  .string()
+  .refine(v => !/<\s*(script|iframe|object|embed|link|style|form)\b/i.test(v), {
+    message: 'script/iframe/style/form zijn niet toegestaan in lescontent',
+  })
+  .nullable()
+  .optional();
 
 /** Eén optielabel. Spiegelt `lesson_item_options.label`. */
 export const OPTION_LABELS = ['A', 'B', 'C', 'D'] as const;
@@ -171,10 +207,28 @@ export const leestekstPayload = z.object({
   audio_url: z.string().nullable().optional(),
 });
 
+/**
+ * Een fragment om naar te luisteren.
+ *
+ * **`audio_url` is nullable, en dat is een ontwerpkeuze en geen slordigheid.** Een luisterles
+ * wordt geschreven vóórdat het fragment is ingesproken: eerst de tekst en de vragen erover,
+ * dan de TTS-run die de mp3 maakt (`scripts/lesson-content/generate-lesson-audio.mjs`). In die
+ * tussentijd is er echt geen audio, en een verzonnen pad zou een 404 zijn die eruitziet als
+ * kapotte audio in plaats van als ontbrekende audio — het verschil tussen "dit is nog niet
+ * ingesproken" en "dit is stuk" is precies wat de docent moet kunnen zien.
+ *
+ * `script` is de brontekst voor die run, in de `A: … B: …`-notatie van `lib/tts-dialogue.ts`,
+ * en `voice_cast` de stemmen per spreker (sleutels uit `data/tts-voices.json`, nooit een
+ * ElevenLabs-id). Beide blijven ná de run staan: ze zijn wat de docent nakijkt en wat een
+ * tweede run reproduceerbaar maakt.
+ */
 export const audioPayload = z.object({
-  audio_url: nonEmpty,
+  audio_url: z.string().nullable().optional(),
   label: z.string().nullable().optional(),
   transcript: z.string().nullable().optional(),
+  script: z.string().nullable().optional(),
+  voice_cast: z.record(z.string(), z.string()).nullable().optional(),
+  seconds: z.number().positive().nullable().optional(),
 });
 
 /**
@@ -212,7 +266,7 @@ export const zinnenbankPayload = z.object({
 
 /** Meerkeuze. Opties staan in `lesson_item_options`, niet hier. */
 export const mcqPayload = z.object({
-  prompt: nonEmpty,
+  prompt: promptHtml,
   intro: z.string().nullable().optional(),
   layout: z.enum(['text', 'image', 'image_grid']).default('text'),
 });
@@ -243,7 +297,7 @@ export const gapTypePayload = z.object({
 
 /** Woorden in de juiste volgorde slepen. `answer` is de juiste volgorde van `tokens`. */
 export const woordordePayload = z.object({
-  instruction: z.string().nullable().optional(),
+  instruction: promptHtmlOpt,
   tokens: z.array(nonEmpty).min(3).max(12),
   answer: z.array(nonEmpty).min(3).max(12),
 }).refine(
@@ -254,7 +308,7 @@ export const woordordePayload = z.object({
 
 /** Koppelen: links een vorm, rechts een functie of betekenis. */
 export const matchenPayload = z.object({
-  instruction: z.string().nullable().optional(),
+  instruction: promptHtmlOpt,
   pairs: z.array(z.object({ left: nonEmpty, right: nonEmpty })).min(2).max(8),
 });
 
@@ -267,10 +321,10 @@ export const matchenPayload = z.object({
  * beoordelingssleutel is en nooit naar een clientcomponent mag.
  */
 export const openZinPayload = z.object({
-  prompt: nonEmpty,
+  prompt: promptHtml,
   starter: z.string().nullable().optional(),
   model_answer: nonEmpty,
-  checklist: z.array(nonEmpty).default([]),
+  checklist: z.array(promptHtml).default([]),
 });
 
 /**
@@ -280,9 +334,57 @@ export const openZinPayload = z.object({
  * `leestekst.marks`: een positie verschuift bij elke redactie.
  */
 export const markerenPayload = z.object({
-  instruction: nonEmpty,
+  instruction: promptHtml,
   body_html: safeHtml,
   targets: z.array(z.object({ label: nonEmpty, text: nonEmpty })).min(1).max(5),
+});
+
+/**
+ * Naspreken: hoor de zin, zeg hem na, hoor jezelf terug.
+ *
+ * De uitspraakopgave van blok B bij Spreken, en de enige plek in de leerlaag waar de cursist
+ * zijn mond gebruikt om iets te oefenen dat geen antwoord is.
+ *
+ * **Deze opgave keurt nooit af.** De opname wordt niet vergeleken en niet beoordeeld: de
+ * cursist hoort het voorbeeld, hoort zichzelf, en hoort het verschil. Als de
+ * spraakherkenning aanslaat wordt er wél getoond *wat er verstaan is* — dat is het nuttigste
+ * signaal dat er bestaat voor verstaanbaarheid, en het is een observatie en geen cijfer. Een
+ * kruis bij een accent zou het tegendeel doen van wat deze opgave moet doen.
+ *
+ * `focus` is waar je op moet letten ("de -lijk klinkt als -luk"), `target` de zin zoals die
+ * hoort te klinken, en `audio_url` het voorbeeld — nullable om dezelfde reden als bij `audio`:
+ * de les bestaat vóór de TTS-run.
+ */
+export const nasprekenPayload = z.object({
+  prompt: promptHtmlOpt,
+  target: nonEmpty,
+  focus: nonEmpty,
+  audio_url: z.string().nullable().optional(),
+  script: z.string().nullable().optional(),
+  voice_key: z.string().nullable().optional(),
+});
+
+/**
+ * Opnemen: een gesproken antwoord op een examenopdracht.
+ *
+ * De productieve tegenhanger van `open_zin`, en met precies dezelfde afspraak: de cursist
+ * vergelijkt zijn eigen antwoord met `model_answer` en loopt `checklist` langs. Geen rubriek,
+ * geen modelcall, geen cijfer — zie de kop van de migratie
+ * `20260908120000_lesson_speaking_items.sql`.
+ *
+ * `record_seconds` staat op de opgave en niet in een constante, omdat het examen per soort
+ * opgave iets anders geeft en de les dat moet kunnen naspelen. `image_urls` draagt de
+ * plaatjes van een beschrijfopdracht; ze wijzen naar onze eigen Storage, zoals elk plaatje in
+ * dit systeem.
+ */
+export const opnemenPayload = z.object({
+  prompt: promptHtml,
+  intro: z.string().nullable().optional(),
+  image_urls: z.array(z.string()).default([]),
+  image_alt: z.string().nullable().optional(),
+  model_answer: nonEmpty,
+  checklist: z.array(promptHtml).default([]),
+  record_seconds: z.number().int().positive().default(60),
 });
 
 // ---------------------------------------------------------------------------
@@ -304,6 +406,8 @@ export const PAYLOAD_SCHEMAS = {
   matchen: matchenPayload,
   open_zin: openZinPayload,
   markeren: markerenPayload,
+  naspreken: nasprekenPayload,
+  opnemen: opnemenPayload,
 } as const satisfies Record<ItemKind, z.ZodTypeAny>;
 
 export type PayloadFor<K extends ItemKind> = z.infer<(typeof PAYLOAD_SCHEMAS)[K]>;
@@ -314,7 +418,15 @@ export const itemInputSchema = z.object({
   sort_order: z.number().int().nonnegative(),
   tier: z.union([z.literal(0), z.literal(1), z.literal(2)]).nullable().default(null),
   payload: z.unknown(),
-  explanation: z.string().nullable().default(null),
+  /**
+   * De "waarom"-regel onder een nagekeken opgave.
+   *
+   * Ook HTML, en dit was de grootste van de drie: **95 van de 430 uitleggen** dragen `<em>` of
+   * `<strong>` om de vorm aan te wijzen waar het om gaat ("Bij <em>ik</em> hoort altijd
+   * <strong>me</strong>"), en die kwamen allemaal met tags en al in beeld — precies op het
+   * moment dat de cursist net fout heeft geantwoord en de uitleg het hardst nodig heeft.
+   */
+  explanation: promptHtmlOpt2.default(null),
   section_slug: z.string().nullable().default(null),
   options: z.array(optionInputSchema).default([]),
 });

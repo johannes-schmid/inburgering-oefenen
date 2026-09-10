@@ -1,0 +1,232 @@
+{
+  "items": [
+    {
+      "kind": "mcq",
+      "tier": 0,
+      "explanation": "Na 'hij' schrijf je 'wordt' met dt: de stam 'word' plus een t.",
+      "payload": {
+        "prompt": "Welke zin is goed geschreven?"
+      },
+      "options": [
+        {
+          "label": "A",
+          "body": "Hij word volgende week geopereerd.",
+          "is_correct": false
+        },
+        {
+          "label": "B",
+          "body": "Hij wordt volgende week geopereerd.",
+          "is_correct": true
+        },
+        {
+          "label": "C",
+          "body": "Hij wort volgende week geopereerd.",
+          "is_correct": false
+        }
+      ]
+    },
+    {
+      "kind": "gap_choice",
+      "tier": 1,
+      "explanation": "Na 'ik' schrijf je alleen de stam: 'word', zonder t.",
+      "payload": {
+        "sentence": "Ik ___ in mei 40 jaar.",
+        "choices": [
+          "word",
+          "wordt"
+        ],
+        "answer": "word"
+      }
+    },
+    {
+      "kind": "gap_choice",
+      "tier": 1,
+      "explanation": "'Daarom' geeft een gevolg: eerst de reden, dan wat je doet. Na 'daarom' staat het werkwoord vooraan in de rest van de zin.",
+      "payload": {
+        "sentence": "Mijn dochter is ziek. ___ blijf ik vandaag thuis.",
+        "choices": [
+          "Daarom",
+          "Omdat",
+          "Want"
+        ],
+        "answer": "Daarom"
+      }
+    },
+    {
+      "kind": "woordorde",
+      "tier": 2,
+      "explanation": "Het werkwoord staat op plaats twee. Begin je met 'Morgen', dan komt 'ga' daarna en 'ik' erachter.",
+      "payload": {
+        "instruction": "Maak van deze woorden een goede zin.",
+        "tokens": [
+          "ik",
+          "morgen",
+          "de",
+          "naar",
+          "ga",
+          "gemeente"
+        ],
+        "answer": [
+          "morgen",
+          "ga",
+          "ik",
+          "naar",
+          "de",
+          "gemeente"
+        ]
+      }
+    },
+    {
+      "kind": "matchen",
+      "tier": 0,
+      "explanation": "Je kijkt bij elk woord op het formulier wat er precies gevraagd wordt: voorletters zijn niet je hele voornaam.",
+      "payload": {
+        "instruction": "Karim Bouzid is geboren op 3 maart 1990. Wat vul je in bij elk woord op het formulier?",
+        "pairs": [
+          {
+            "left": "Achternaam",
+            "right": "Bouzid"
+          },
+          {
+            "left": "Voorletters",
+            "right": "K."
+          },
+          {
+            "left": "Voornaam",
+            "right": "Karim"
+          },
+          {
+            "left": "Geboortedatum",
+            "right": "03-03-1990"
+          }
+        ]
+      }
+    },
+    {
+      "kind": "mcq",
+      "tier": 0,
+      "explanation": "Een briefje mag kort zijn, maar een aanhef en een slot met je naam horen er altijd bij.",
+      "payload": {
+        "prompt": "Je schrijft een kort briefje aan de juf van je zoon. Welk briefje is compleet?"
+      },
+      "options": [
+        {
+          "label": "A",
+          "body": "Zoon is ziek. Komt niet.",
+          "is_correct": false
+        },
+        {
+          "label": "B",
+          "body": "Beste juf Sanne, Mijn zoon Amir is ziek. Hij komt vandaag niet naar school. Met vriendelijke groet, Fatima Yildiz",
+          "is_correct": true
+        },
+        {
+          "label": "C",
+          "body": "Mijn zoon Amir is ziek en komt vandaag niet naar school.",
+          "is_correct": false
+        }
+      ]
+    },
+    {
+      "kind": "gap_type",
+      "tier": 2,
+      "explanation": "Bij 'u' schrijf je 'wordt' met dt, net als bij 'hij' en 'zij'.",
+      "payload": {
+        "sentence": "Mevrouw De Groot, u ___ om 10.00 uur verwacht bij de balie.",
+        "answer": "wordt"
+      }
+    },
+    {
+      "kind": "gap_choice",
+      "tier": 1,
+      "explanation": "Na 'omdat' staat het werkwoord achteraan in de bijzin: 'omdat de huur te hoog is'.",
+      "payload": {
+        "sentence": "Ik schrijf een brief aan de verhuurder, ___ de huur te hoog is.",
+        "choices": [
+          "omdat",
+          "daarom",
+          "en toen"
+        ],
+        "answer": "omdat"
+      }
+    },
+    {
+      "kind": "mcq",
+      "tier": 0,
+      "explanation": "In de opdracht staan drie punten. Alleen antwoord B noemt alle drie: de reden, de dag en het nieuwe moment.",
+      "payload": {
+        "prompt": "Opdracht: schrijf een bericht aan de tandarts. Noem: 1 waarom je niet kunt komen, 2 op welke dag je afspraak was, 3 wanneer je wel kunt. Welk bericht noemt alle drie de punten?"
+      },
+      "options": [
+        {
+          "label": "A",
+          "body": "Ik kan niet komen, want ik moet werken. Mijn afspraak was op dinsdag.",
+          "is_correct": false
+        },
+        {
+          "label": "B",
+          "body": "Ik kan niet komen, want ik moet werken. Mijn afspraak was op dinsdag 14 mei. Op vrijdagmiddag kan ik wel.",
+          "is_correct": true
+        },
+        {
+          "label": "C",
+          "body": "Mijn afspraak was op dinsdag 14 mei. Op vrijdagmiddag kan ik wel komen.",
+          "is_correct": false
+        }
+      ]
+    },
+    {
+      "kind": "woordorde",
+      "tier": 2,
+      "explanation": "Na 'want' blijft de zin normaal: eerst 'ik', dan het werkwoord 'heb'.",
+      "payload": {
+        "instruction": "Maak één zin met 'want'.",
+        "tokens": [
+          "want",
+          "geen",
+          "ik",
+          "heb",
+          "fiets"
+        ],
+        "answer": [
+          "want",
+          "ik",
+          "heb",
+          "geen",
+          "fiets"
+        ]
+      }
+    },
+    {
+      "kind": "open_zin",
+      "tier": 2,
+      "explanation": "Je verbindt de twee zinnen met 'omdat' of 'daarom', zodat de tekst loopt in plaats van hakkelt.",
+      "payload": {
+        "prompt": "Maak van deze twee zinnen één tekst die loopt. Gebruik 'omdat' of 'daarom'. Zin 1: De bus rijdt niet. Zin 2: Ik kom te laat op mijn werk.",
+        "model_answer": "De bus rijdt niet. Daarom kom ik te laat op mijn werk.",
+        "checklist": [
+          "Ik gebruik 'omdat' of 'daarom'.",
+          "Na 'daarom' staat het werkwoord meteen erachter.",
+          "Ik begin met een hoofdletter en eindig met een punt."
+        ]
+      },
+      "options": []
+    },
+    {
+      "kind": "open_zin",
+      "tier": 2,
+      "explanation": "Ook een kort bericht heeft een aanhef, de gevraagde punten en een slot met je naam.",
+      "payload": {
+        "prompt": "Schrijf een bericht van 3 of 4 regels aan je buurvrouw Ellen. Noem: dat je een week weg bent, wanneer je weggaat, en wat zij voor je kan doen.",
+        "model_answer": "Beste Ellen, Ik ben volgende week een week weg. Ik ga op maandag 6 juni. Kun je mijn post uit de brievenbus halen? Met vriendelijke groet, Nadia",
+        "checklist": [
+          "Ik begin met een aanhef, bijvoorbeeld 'Beste Ellen'.",
+          "Ik noem alle drie de punten uit de opdracht.",
+          "Ik eindig met een groet en mijn naam."
+        ]
+      },
+      "options": []
+    }
+  ],
+  "what_you_learn": "In deze toets kijk je zelf waar je nog moeite mee hebt bij schrijven. Je maakt opgaven over 'word' en 'wordt', over de plaats van het werkwoord, over want, omdat en daarom, en over formulieren en korte berichten. De uitslag laat zien welke onderdelen je nog een keer moet oefenen."
+}

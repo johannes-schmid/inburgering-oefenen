@@ -1,0 +1,177 @@
+{
+  "items": [
+    {
+      "kind": "uitleg",
+      "tier": null,
+      "explanation": null,
+      "payload": {
+        "body_html": "<p>Bij het examen spreken hoort de computer je stem. Daarom is duidelijk spreken belangrijk.</p><p>Doe het in drie stappen. <strong>Eén:</strong> spreek rustig, niet te snel. <strong>Twee:</strong> spreek hard genoeg, alsof je tegen iemand aan de andere kant van de kamer praat. <strong>Drie:</strong> beweeg je mond goed, zeg het hele woord af.</p><p>Een accent is geen probleem. Je hoeft niet als een Nederlander te klinken. Je moet wel te begrijpen zijn.</p>",
+        "cards": [
+          {
+            "label": "ZWAK",
+            "example_html": "<mark>Ehm... ja... dokter.</mark> (zacht en heel snel)"
+          },
+          {
+            "label": "GOED",
+            "example_html": "<mark>Ik bel voor een afspraak bij de dokter.</mark> (rustig en duidelijk)"
+          }
+        ]
+      }
+    },
+    {
+      "kind": "voorbeeld",
+      "tier": null,
+      "explanation": null,
+      "payload": {
+        "sentence_html": "Ik wil <mark>een afspraak maken</mark> bij de tandarts."
+      }
+    },
+    {
+      "kind": "voorbeeld",
+      "tier": null,
+      "explanation": null,
+      "payload": {
+        "sentence_html": "Sorry, kunt u dat <mark>langzamer</mark> zeggen?"
+      }
+    },
+    {
+      "kind": "mcq",
+      "tier": 0,
+      "explanation": "Antwoord B is een hele zin en je zegt wat je wilt. Zo weet de ander direct waarvoor je belt.",
+      "payload": {
+        "prompt": "Je belt naar de huisarts. De assistente vraagt: \"Waarmee kan ik u helpen?\" Welk antwoord past hier het beste?"
+      },
+      "options": [
+        {
+          "label": "A",
+          "body": "Ehm... pijn.",
+          "is_correct": false
+        },
+        {
+          "label": "B",
+          "body": "Goedemorgen, ik heb pijn in mijn rug. Kan ik vandaag komen?",
+          "is_correct": true
+        },
+        {
+          "label": "C",
+          "body": "Ik weet het niet zo goed, mevrouw.",
+          "is_correct": false
+        }
+      ]
+    },
+    {
+      "kind": "mcq",
+      "tier": 0,
+      "explanation": "Antwoord C is te kort. Eén woord is geen antwoord; zeg een hele zin met wat je zoekt.",
+      "payload": {
+        "prompt": "Je staat bij de balie van de gemeente. De medewerker vraagt: \"Waarvoor komt u?\" Welk antwoord is te kort?"
+      },
+      "options": [
+        {
+          "label": "A",
+          "body": "Ik kom mijn nieuwe adres doorgeven.",
+          "is_correct": false
+        },
+        {
+          "label": "B",
+          "body": "Ik heb een brief gekregen over mijn paspoort.",
+          "is_correct": false
+        },
+        {
+          "label": "C",
+          "body": "Paspoort.",
+          "is_correct": true
+        }
+      ]
+    },
+    {
+      "kind": "mcq",
+      "tier": 0,
+      "explanation": "Bij het examen spreek je in de microfoon. Rustig en hard genoeg praten helpt; heel snel of heel zacht praten niet.",
+      "payload": {
+        "prompt": "Wat is de beste manier om te spreken bij het examen?"
+      },
+      "options": [
+        {
+          "label": "A",
+          "body": "Heel snel, want dan kun je meer zeggen.",
+          "is_correct": false
+        },
+        {
+          "label": "B",
+          "body": "Rustig en hard genoeg, en je woorden helemaal afmaken.",
+          "is_correct": true
+        },
+        {
+          "label": "C",
+          "body": "Heel zacht, want dan hoort niemand je fouten.",
+          "is_correct": false
+        },
+        {
+          "label": "D",
+          "body": "Zonder accent, anders begrijpt niemand je.",
+          "is_correct": false
+        }
+      ]
+    },
+    {
+      "kind": "matchen",
+      "tier": 1,
+      "explanation": "Bij elke situatie past één duidelijke zin. Je zegt in één zin wat je wilt of wat er is.",
+      "payload": {
+        "instruction": "Sleep de situatie naar de zin die je dan duidelijk zegt.",
+        "pairs": [
+          {
+            "left": "Je begrijpt de medewerker niet",
+            "right": "Kunt u dat langzamer zeggen, alstublieft?"
+          },
+          {
+            "left": "Je komt te laat op je werk",
+            "right": "Sorry, de bus had vertraging. Ik ben er nu."
+          },
+          {
+            "left": "Je wilt een afspraak bij de tandarts",
+            "right": "Ik wil graag een afspraak maken voor volgende week."
+          },
+          {
+            "left": "Je kind is ziek en gaat niet naar school",
+            "right": "Ik bel over mijn dochter Amira. Zij is ziek vandaag."
+          }
+        ]
+      }
+    },
+    {
+      "kind": "opnemen",
+      "tier": 2,
+      "explanation": "Je zegt in twee of drie hele zinnen wie je bent, wat er is en wat je wilt. Zo begrijpt de ander je in één keer.",
+      "payload": {
+        "prompt": "Je bent te laat voor je afspraak bij de gemeente. Je belt de balie. Zeg wie je bent, dat je te laat bent en waarom. Spreek je antwoord in. Vergelijk je antwoord daarna met het voorbeeld.",
+        "model_answer": "Goedemiddag, u spreekt met Nadia Haddad. Ik heb om drie uur een afspraak, maar ik ben iets te laat. De bus had vertraging, ik ben er over tien minuten.",
+        "checklist": [
+          "Zeg ik mijn naam?",
+          "Zeg ik waarom ik te laat ben?",
+          "Spreek ik rustig en hard genoeg?"
+        ],
+        "image_urls": [],
+        "record_seconds": 60
+      }
+    },
+    {
+      "kind": "opnemen",
+      "tier": 2,
+      "explanation": "Je maakt hele zinnen en je zegt precies wat het probleem is en wat je wilt. Je mag daarbij een accent hebben.",
+      "payload": {
+        "prompt": "De verwarming in je huis werkt niet. Je belt de woningbouw. Zeg wat het probleem is en vraag of iemand kan komen kijken. Spreek je antwoord in. Vergelijk je antwoord daarna met het voorbeeld.",
+        "model_answer": "Goedemorgen, ik bel over mijn woning aan de Lindestraat 12. De verwarming werkt al twee dagen niet, het is heel koud. Kan er deze week iemand komen kijken?",
+        "checklist": [
+          "Zeg ik duidelijk wat het probleem is?",
+          "Vraag ik of er iemand komt?",
+          "Maak ik mijn woorden helemaal af?"
+        ],
+        "image_urls": [],
+        "record_seconds": 60
+      }
+    }
+  ],
+  "what_you_learn": "Je leert hoe je bij het spreken duidelijk klinkt: rustig, hard genoeg en met je mond goed open. Je merkt het verschil tussen een antwoord van één woord en een antwoord in hele zinnen. Je spreekt zelf twee antwoorden in en vergelijkt die met een voorbeeld. Een accent mag, je moet alleen te begrijpen zijn."
+}

@@ -3,8 +3,8 @@ import { notFound } from 'next/navigation';
 import { getTranslations } from 'next-intl/server';
 import { routing } from '@/i18n/routing';
 import { Link } from '@/i18n/navigation';
-import { SectionHeader, SkillIcon } from '@/components/site';
-import { DotField, HorizonBand, HorizonHero, ValidationChip } from '@/components/horizon';
+import { SectionHeader } from '@/components/site';
+import { CategoryMark, DotField, HorizonBand, HorizonHero, ValidationChip } from '@/components/horizon';
 import {
   LEVELS,
   SKILLS,
@@ -171,7 +171,7 @@ export default async function SkillOverviewPage({ params }: Props) {
       <HorizonHero houses={14} skylineHeight={84} containerClass="max-w-5xl pt-16 pb-16">
         <div>
           <span className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-bold uppercase tracking-widest text-white/85 mb-5" style={{ background: 'rgba(255,255,255,0.15)' }}>
-            <SkillIcon skill={skill.slug} size="sm" variant="bare" onDark />
+            <CategoryMark category={skill.slug} size={22} tone="dark" />
             {tSkills('exams_count', { count: skill.examCount })}
           </span>
           <h1 className="font-headline font-extrabold text-white tracking-tight mb-4" style={{ fontSize: 'clamp(2rem, 4vw, 3rem)', letterSpacing: '-0.03em' }}>
@@ -319,7 +319,7 @@ export default async function SkillOverviewPage({ params }: Props) {
                 className="exam-card flex items-center gap-4 p-5 rounded-2xl bg-surface-container-lowest no-underline"
                 style={{ boxShadow: 'var(--shadow-card)' }}
               >
-                <SkillIcon skill={other.slug} size="md" />
+                <CategoryMark category={other.slug} size={44} />
                 <div>
                   <p className="font-headline font-semibold text-on-surface text-sm">{tSkills(`${other.key}.name`)}</p>
                   <p className="text-xs text-on-surface-variant">{tSkills('exams_count', { count: getFormat(level, other.slug).examCount })}</p>

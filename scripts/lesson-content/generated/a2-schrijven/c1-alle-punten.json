@@ -1,0 +1,190 @@
+{
+  "items": [
+    {
+      "kind": "uitleg",
+      "tier": null,
+      "explanation": null,
+      "payload": {
+        "body_html": "<p>Bij een schrijfopdracht staat in de opdracht wat je moet schrijven. Vaak zijn dat drie of vier punten. Je moet <strong>alle</strong> punten noemen. Vergeet je één punt, dan mist je tekst iets, ook als de rest mooi is.</p><p>Werk in drie stappen. 1: streep de punten in de opdracht aan. 2: schrijf bij elk punt één zin. 3: tel na het schrijven of alle punten er staan.</p>",
+        "cards": [
+          {
+            "label": "OPDRACHT",
+            "example_html": "Schrijf waarom je komt, wanneer je kunt en hoe je bereikbaar bent."
+          },
+          {
+            "label": "MIJN LIJSTJE",
+            "example_html": "1 waarom - 2 wanneer - 3 telefoonnummer"
+          },
+          {
+            "label": "NAKIJKEN",
+            "example_html": "Ik <mark>tel</mark> mijn punten: 1, 2, 3. Alles staat erin."
+          }
+        ]
+      }
+    },
+    {
+      "kind": "voorbeeld",
+      "tier": null,
+      "explanation": null,
+      "payload": {
+        "sentence_html": "<p>De opdracht vraagt om een dag, een tijd en een telefoonnummer, maar in de e-mail staat alleen: <mark>Ik kan op woensdag komen.</mark></p>"
+      }
+    },
+    {
+      "kind": "voorbeeld",
+      "tier": null,
+      "explanation": null,
+      "payload": {
+        "sentence_html": "<p>Deze e-mail is wél compleet: Ik kan op woensdag komen, <mark>om 15.00 uur</mark>, en mijn nummer is 06 12 34 56 78.</p>"
+      }
+    },
+    {
+      "kind": "markeren",
+      "tier": 0,
+      "explanation": "De opdracht vraagt ook om een telefoonnummer. Dat punt staat nergens in de e-mail, dus dit is een niet-complete tekst.",
+      "payload": {
+        "instruction": "De opdracht was: schrijf welke dag je komt, hoe laat je komt en je telefoonnummer. Markeer in de e-mail de zin met de dag en de zin met de tijd. Zoek daarna zelf: welk punt mist?",
+        "body_html": "<p>Geachte mevrouw De Wit,</p><p>Ik heb uw brief over de cursus gekregen. Ik wil graag een gesprek op het kantoor.</p><p>Ik kan op donderdag komen. Ik kom om 10.00 uur.</p><p>Met vriendelijke groet,<br>Amina Yusuf</p>",
+        "targets": [
+          {
+            "label": "de dag",
+            "text": "Ik kan op donderdag komen."
+          },
+          {
+            "label": "de tijd",
+            "text": "Ik kom om 10.00 uur."
+          }
+        ]
+      }
+    },
+    {
+      "kind": "mcq",
+      "tier": 0,
+      "explanation": "De opdracht vraagt drie punten: wat er stuk is, sinds wanneer en wanneer je thuis bent. Alleen tekst B noemt alle drie.",
+      "payload": {
+        "prompt": "<p>De opdracht: schrijf aan de woningbouw wat er stuk is, sinds wanneer, en wanneer je thuis bent.</p><p>Welke tekst noemt alle punten?</p>"
+      },
+      "options": [
+        {
+          "label": "A",
+          "body": "De kraan in de keuken lekt. Kunt u snel iemand sturen?",
+          "is_correct": false
+        },
+        {
+          "label": "B",
+          "body": "De kraan in de keuken lekt al sinds maandag. Ik ben elke dag na 16.00 uur thuis.",
+          "is_correct": true
+        },
+        {
+          "label": "C",
+          "body": "Er is een probleem in mijn huis. Ik ben vaak thuis. Graag snel hulp.",
+          "is_correct": false
+        }
+      ]
+    },
+    {
+      "kind": "mcq",
+      "tier": 0,
+      "explanation": "Tekst A noemt de reden en de nieuwe dag. Tekst B en C laten één van die twee punten weg.",
+      "payload": {
+        "prompt": "<p>De opdracht: mail de tandarts dat je niet kunt komen, schrijf waarom, en vraag een nieuwe afspraak op vrijdag.</p><p>Welke tekst doet het goed?</p>"
+      },
+      "options": [
+        {
+          "label": "A",
+          "body": "Ik kan dinsdag niet komen, want ik moet werken. Kan ik vrijdag komen?",
+          "is_correct": true
+        },
+        {
+          "label": "B",
+          "body": "Ik kan dinsdag niet komen. Kan ik vrijdag komen?",
+          "is_correct": false
+        },
+        {
+          "label": "C",
+          "body": "Ik kan dinsdag niet komen, want ik moet werken. Graag een nieuwe afspraak.",
+          "is_correct": false
+        }
+      ]
+    },
+    {
+      "kind": "mcq",
+      "tier": 1,
+      "explanation": "De opdracht vraagt ook naar het aantal personen. Dat staat nog niet in de e-mail, dus dat punt moet je toevoegen.",
+      "payload": {
+        "prompt": "<p>De opdracht: vraag de gemeente een zaal voor een feest. Schrijf welke datum, hoeveel personen komen en of je een tafel nodig hebt.</p><p>Je e-mail: <em>Ik wil graag een zaal huren op 12 mei. Ik heb ook een grote tafel nodig.</em></p><p>Welke zin moet je nog toevoegen?</p>"
+      },
+      "options": [
+        {
+          "label": "A",
+          "body": "Ik woon al drie jaar in deze wijk.",
+          "is_correct": false
+        },
+        {
+          "label": "B",
+          "body": "Er komen ongeveer twintig personen.",
+          "is_correct": true
+        },
+        {
+          "label": "C",
+          "body": "Ik hoor graag snel van u.",
+          "is_correct": false
+        }
+      ]
+    },
+    {
+      "kind": "mcq",
+      "tier": 1,
+      "explanation": "Extra informatie over je buurman hoort niet bij de opdracht. Het is beter om kort alle gevraagde punten te noemen.",
+      "payload": {
+        "prompt": "<p>Je hebt alle punten van de opdracht opgeschreven. Wat doe je daarna?</p>"
+      },
+      "options": [
+        {
+          "label": "A",
+          "body": "Ik schrijf er nog veel extra informatie bij over mijn buurman.",
+          "is_correct": false
+        },
+        {
+          "label": "B",
+          "body": "Ik lees de opdracht nog een keer en tel of alle punten in mijn tekst staan.",
+          "is_correct": true
+        },
+        {
+          "label": "C",
+          "body": "Ik haal één punt weg, zodat de tekst korter wordt.",
+          "is_correct": false
+        }
+      ]
+    },
+    {
+      "kind": "open_zin",
+      "tier": 2,
+      "explanation": "Je moet alle drie de punten noemen: welke cursus, waarom je stopt en per wanneer. Eén zin per punt is genoeg.",
+      "payload": {
+        "prompt": "<p>Schrijf een korte e-mail aan het buurthuis. Noem deze drie punten: je stopt met de cursus koken, waarom je stopt (je hebt nieuw werk), en vanaf welke datum je stopt (1 juni).</p>",
+        "model_answer": "Geachte heer of mevrouw,\n\nIk wil stoppen met de cursus koken. Ik heb nieuw werk gevonden en kan niet meer komen. Ik stop vanaf 1 juni.\n\nMet vriendelijke groet,\nKarim Bakr",
+        "checklist": [
+          "Ik noem de cursus koken.",
+          "Ik schrijf waarom ik stop.",
+          "Ik schrijf de datum 1 juni."
+        ]
+      }
+    },
+    {
+      "kind": "open_zin",
+      "tier": 2,
+      "explanation": "De opdracht noemt drie punten. Je tekst is pas compleet als de klacht, de datum en je vraag om geld terug erin staan.",
+      "payload": {
+        "prompt": "<p>Schrijf een briefje aan een winkel. Noem deze drie punten: je schoenen zijn na twee weken stuk, je hebt ze op 3 maart gekocht, en je wilt je geld terug.</p>",
+        "model_answer": "Geachte heer of mevrouw,\n\nIk heb op 3 maart schoenen bij u gekocht. Na twee weken zijn ze al stuk. Ik wil graag mijn geld terug.\n\nMet vriendelijke groet,\nFatima Ali",
+        "checklist": [
+          "Ik schrijf wat het probleem met de schoenen is.",
+          "Ik noem de datum 3 maart.",
+          "Ik vraag om mijn geld terug."
+        ]
+      }
+    }
+  ],
+  "what_you_learn": "Je leert hoe je in een schrijfopdracht ziet welke punten erin moeten. Je oefent met teksten waar een punt mist, zodat je de fout snel herkent. Daarna schrijf je zelf een e-mail en een briefje waarin alle gevraagde punten staan."
+}

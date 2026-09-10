@@ -1,0 +1,180 @@
+{
+  "items": [
+    {
+      "kind": "uitleg",
+      "tier": null,
+      "explanation": null,
+      "payload": {
+        "body_html": "<p>Bij het examen luisteren mag je niets opschrijven. Je hoort het fragment en daarna kies je een antwoord. Daarom onthoud je niet alles, maar twee of drie <strong>kernwoorden</strong>. Kernwoorden zijn de belangrijkste woorden: wie, wat, waar, hoe laat of hoeveel euro.</p><p>Werk in drie stappen. Eerst lees je de vraag, zodat je weet waar je op let. Dan luister je en houd je twee of drie woorden vast in je hoofd. Daarna zeg je die woorden zachtjes in je hoofd na, tot je het antwoord kiest.</p><p>Let op: je hoort meestal meer getallen of plaatsen dan je nodig hebt. Onthoud alleen het woord dat bij de vraag past.</p>",
+        "cards": [
+          {
+            "label": "STAP 1",
+            "example_html": "Lees eerst de vraag: <mark>hoe laat</mark> komt de bus?"
+          },
+          {
+            "label": "STAP 2",
+            "example_html": "Houd twee woorden vast: <mark>tien over drie</mark>."
+          },
+          {
+            "label": "STAP 3",
+            "example_html": "Zeg ze in je hoofd na: <mark>tien over drie, tien over drie</mark>."
+          }
+        ]
+      }
+    },
+    {
+      "kind": "audio",
+      "tier": null,
+      "explanation": null,
+      "payload": {
+        "script": "A: Goedemiddag, huisartsenpraktijk De Linde, met Anja.\nB: Goedemiddag, u spreekt met Rachid Bouali. Ik heb morgen een afspraak, geloof ik om half tien.\nA: Even kijken, meneer Bouali. Ja, morgen om half tien bij dokter Veenstra. Maar dokter Veenstra is ziek.\nB: Oh. En nu?\nA: U kunt morgen om kwart over elf komen bij dokter Prins. Dat is in dezelfde praktijk, kamer vier.\nB: Kwart over elf, kamer vier. Dat is goed.\nA: Fijn. Neemt u uw verzekeringskaart mee, hoor. En kom vijf minuten eerder.\nB: Dat doe ik. Dank u wel, tot morgen.",
+        "label": "Telefoongesprek met de huisartsenpraktijk",
+        "audio_url": "http://127.0.0.1:54421/storage/v1/object/public/leren-audio/fragment/a2-luisteren/c3-kernwoorden-1.mp3",
+        "voice_cast": {
+          "A": "woman_young",
+          "B": "man_young"
+        },
+        "transcript": "Goedemiddag, huisartsenpraktijk De Linde, met Anja. Goedemiddag, u spreekt met Rachid Bouali. Ik heb morgen een afspraak, geloof ik om half tien. Even kijken, meneer Bouali. Ja, morgen om half tien bij dokter Veenstra. Maar dokter Veenstra is ziek. Oh. En nu? U kunt morgen om kwart over elf komen bij dokter Prins. Dat is in dezelfde praktijk, kamer vier. Kwart over elf, kamer vier. Dat is goed. Fijn. Neemt u uw verzekeringskaart mee, hoor. En kom vijf minuten eerder. Dat doe ik. Dank u wel, tot morgen.",
+        "seconds": 33.33
+      }
+    },
+    {
+      "kind": "mcq",
+      "tier": 0,
+      "explanation": "De nieuwe tijd is kwart over elf. Half tien is de oude afspraak: dat is de val van deze les, want dat getal hoor je eerst en het blijft in je hoofd hangen.",
+      "payload": {
+        "prompt": "Hoe laat is de nieuwe afspraak van meneer Bouali?"
+      },
+      "options": [
+        {
+          "label": "A",
+          "body": "Om half tien",
+          "is_correct": false
+        },
+        {
+          "label": "B",
+          "body": "Om kwart over elf",
+          "is_correct": true
+        },
+        {
+          "label": "C",
+          "body": "Om vier uur",
+          "is_correct": false
+        }
+      ]
+    },
+    {
+      "kind": "mcq",
+      "tier": 0,
+      "explanation": "De assistente zegt dat dokter Veenstra ziek is. Daarom moet de afspraak veranderen.",
+      "payload": {
+        "prompt": "Waarom belt de praktijk over een andere tijd? Wat is de reden?"
+      },
+      "options": [
+        {
+          "label": "A",
+          "body": "De dokter is ziek.",
+          "is_correct": true
+        },
+        {
+          "label": "B",
+          "body": "De praktijk is morgen dicht.",
+          "is_correct": false
+        },
+        {
+          "label": "C",
+          "body": "Meneer Bouali kan niet komen.",
+          "is_correct": false
+        },
+        {
+          "label": "D",
+          "body": "De verzekeringskaart is niet goed.",
+          "is_correct": false
+        }
+      ]
+    },
+    {
+      "kind": "mcq",
+      "tier": 1,
+      "explanation": "Je hoort: neemt u uw verzekeringskaart mee. Dat is het enige wat hij mee moet nemen.",
+      "payload": {
+        "prompt": "Wat moet meneer Bouali meenemen?"
+      },
+      "options": [
+        {
+          "label": "A",
+          "body": "Een brief van de gemeente",
+          "is_correct": false
+        },
+        {
+          "label": "B",
+          "body": "Zijn verzekeringskaart",
+          "is_correct": true
+        },
+        {
+          "label": "C",
+          "body": "Geld voor de afspraak",
+          "is_correct": false
+        }
+      ]
+    },
+    {
+      "kind": "mcq",
+      "tier": 1,
+      "explanation": "De nieuwe dokter is dokter Prins. Dokter Veenstra hoor je ook, maar die is juist ziek: onthoud dus de naam die bij de vraag past.",
+      "payload": {
+        "prompt": "Bij welke dokter komt meneer Bouali morgen?"
+      },
+      "options": [
+        {
+          "label": "A",
+          "body": "Bij dokter Veenstra",
+          "is_correct": false
+        },
+        {
+          "label": "B",
+          "body": "Bij dokter Prins",
+          "is_correct": true
+        },
+        {
+          "label": "C",
+          "body": "Bij assistente Anja",
+          "is_correct": false
+        }
+      ]
+    },
+    {
+      "kind": "gap_type",
+      "tier": 2,
+      "explanation": "De assistente zegt: kamer vier. Dat is een klein detail, dus houd het als kernwoord vast.",
+      "payload": {
+        "sentence": "Meneer Bouali moet naar kamer ___.",
+        "answer": "vier"
+      }
+    },
+    {
+      "kind": "gap_type",
+      "tier": 2,
+      "explanation": "Je hoort: kom vijf minuten eerder. Het getal vijf hoort bij de minuten, niet bij de tijd van de afspraak.",
+      "payload": {
+        "sentence": "Meneer Bouali moet ___ minuten eerder komen.",
+        "answer": "vijf"
+      }
+    },
+    {
+      "kind": "open_zin",
+      "tier": 2,
+      "explanation": "Je legt je eigen manier van werken uit. Noem de woorden die je vasthield en zeg hoe je ze onthield.",
+      "payload": {
+        "prompt": "Hoe vond jij de nieuwe tijd van de afspraak? Schrijf in twee of drie zinnen welke woorden je vasthield.",
+        "model_answer": "Ik las eerst de vraag over de tijd. Daarna hield ik twee woorden vast: kwart over elf. Ik zei ze in mijn hoofd na, en ik lette niet meer op half tien.",
+        "checklist": [
+          "Je noemt twee of drie kernwoorden die je onthield.",
+          "Je zegt dat je eerst de vraag las.",
+          "Je schrijft in hele zinnen met een werkwoord."
+        ]
+      }
+    }
+  ],
+  "what_you_learn": "Je leert luisteren zonder iets op te schrijven. Je houdt twee of drie kernwoorden vast, zoals een tijd, een naam of een bedrag. Zo kies je na het fragment het juiste antwoord, ook als je meer getallen hoort dan je nodig hebt."
+}

@@ -1,0 +1,17 @@
+# Klanken die op elkaar lijken — audio
+# les b3-klanken-die-lijken, item 2
+# Casting:
+#   A = woman_young (Female Voice 1 — younger woman)
+#   B = man_young (Male Voice 1 — younger man)
+#
+# Dit bestand is de leesbare afdruk van wat er is ingesproken. De bron is de payload in
+# generated/a2-luisteren/b3-klanken-die-lijken.json — pas die aan en spreek opnieuw in.
+A: Goedemiddag, kan ik u helpen?
+B: Ja, ik kom voor mijn bankpas. Die werkt niet meer.
+A: Wat is uw naam?
+B: Bang. Youssef Bang. Met een n en een g.
+A: Dank u. Even kijken, hoor. Ja, ik zie het al. Uw pas is verlopen op tien maart.
+B: En nu?
+A: U krijgt een nieuwe pas. Die kost zeven euro vijftig.
+B: Oké. Hoelang duurt dat?
+A: Ongeveer vijf dagen. De pas komt met de post.

@@ -1,0 +1,1112 @@
+{
+  "voorstellen-en-vragen": [
+    {
+      "dutch": "voorstellen",
+      "article": null,
+      "plural": null,
+      "frame": "zich voorstellen (aan)",
+      "meaning_nl": "je naam zeggen aan iemand die je nog niet kent",
+      "example": "Mag ik mij even voorstellen? Ik ben Karim.",
+      "example_form": "voorstellen",
+      "usage": "productief"
+    },
+    {
+      "dutch": "kennismaken",
+      "article": null,
+      "plural": null,
+      "frame": "kennismaken (met)",
+      "meaning_nl": "voor de eerste keer met iemand praten",
+      "example": "Ik wil graag kennismaken met mijn nieuwe buren.",
+      "example_form": "kennismaken",
+      "usage": "productief"
+    },
+    {
+      "dutch": "achternaam",
+      "article": "de",
+      "plural": "achternamen",
+      "frame": null,
+      "meaning_nl": "de naam van je familie",
+      "example": "Mijn achternaam is moeilijk, ik spel hem even.",
+      "example_form": "achternaam",
+      "usage": "productief"
+    },
+    {
+      "dutch": "voornaam",
+      "article": "de",
+      "plural": "voornamen",
+      "frame": null,
+      "meaning_nl": "de naam die je ouders voor je kozen",
+      "example": "Mijn voornaam is Amina en ik ben zesentwintig.",
+      "example_form": "voornaam",
+      "usage": "productief"
+    },
+    {
+      "dutch": "spellen",
+      "article": null,
+      "plural": null,
+      "frame": null,
+      "meaning_nl": "letter voor letter zeggen hoe een woord gaat",
+      "example": "Kunt u uw straat voor mij spellen?",
+      "example_form": "spellen",
+      "usage": "productief"
+    },
+    {
+      "dutch": "geboortedatum",
+      "article": "de",
+      "plural": "geboortedata",
+      "frame": null,
+      "meaning_nl": "de dag waarop iemand ter wereld kwam",
+      "example": "Mijn geboortedatum is drie mei negentienhonderdnegentig.",
+      "example_form": "geboortedatum",
+      "usage": "productief"
+    },
+    {
+      "dutch": "geboorteland",
+      "article": "het",
+      "plural": "geboortelanden",
+      "frame": null,
+      "meaning_nl": "het land waar iemand geboren is",
+      "example": "Mijn geboorteland is Marokko, maar ik woon in Utrecht.",
+      "example_form": "geboorteland",
+      "usage": "productief"
+    },
+    {
+      "dutch": "afkomstig",
+      "article": null,
+      "plural": null,
+      "frame": "afkomstig (uit)",
+      "meaning_nl": "oorspronkelijk komend van een bepaalde plaats",
+      "example": "Ik ben afkomstig uit Syrië en woon hier vier jaar.",
+      "example_form": "afkomstig",
+      "usage": "productief"
+    },
+    {
+      "dutch": "burgerlijke staat",
+      "article": "de",
+      "plural": null,
+      "frame": null,
+      "meaning_nl": "of je getrouwd bent of alleen",
+      "example": "Wat is uw burgerlijke staat, mevrouw?",
+      "example_form": "burgerlijke staat",
+      "usage": "receptief"
+    },
+    {
+      "dutch": "getrouwd",
+      "article": null,
+      "plural": null,
+      "frame": "getrouwd (met)",
+      "meaning_nl": "een man of vrouw hebben volgens de wet",
+      "example": "Ik ben getrouwd met Hasan en wij hebben twee kinderen.",
+      "example_form": "getrouwd",
+      "usage": "productief"
+    },
+    {
+      "dutch": "beroep",
+      "article": "het",
+      "plural": "beroepen",
+      "frame": null,
+      "meaning_nl": "het werk dat je hebt geleerd en doet",
+      "example": "Mijn beroep is verpleegkundige in een ziekenhuis.",
+      "example_form": "beroep",
+      "usage": "productief"
+    },
+    {
+      "dutch": "moedertaal",
+      "article": "de",
+      "plural": "moedertalen",
+      "frame": null,
+      "meaning_nl": "de taal die je als kind thuis leerde",
+      "example": "Mijn moedertaal is Tigrinya, maar ik leer nu Nederlands.",
+      "example_form": "moedertaal",
+      "usage": "productief"
+    },
+    {
+      "dutch": "verstaan",
+      "article": null,
+      "plural": null,
+      "frame": null,
+      "meaning_nl": "horen en begrijpen wat iemand zegt",
+      "example": "Sorry, ik kon u niet goed verstaan.",
+      "example_form": "verstaan",
+      "usage": "productief"
+    },
+    {
+      "dutch": "herhalen",
+      "article": null,
+      "plural": null,
+      "frame": null,
+      "meaning_nl": "nog een keer zeggen",
+      "example": "Kunt u dat langzaam herhalen, alstublieft?",
+      "example_form": "herhalen",
+      "usage": "productief"
+    },
+    {
+      "dutch": "vraag",
+      "article": "de",
+      "plural": "vragen",
+      "frame": null,
+      "meaning_nl": "iets wat je zegt omdat je antwoord wilt",
+      "example": "Ik heb nog een korte vraag over het formulier.",
+      "example_form": "vraag",
+      "usage": "productief"
+    },
+    {
+      "dutch": "antwoord",
+      "article": "het",
+      "plural": "antwoorden",
+      "frame": null,
+      "meaning_nl": "wat je zegt als iemand iets wil weten",
+      "example": "Sorry, op die vraag weet ik geen antwoord.",
+      "example_form": "antwoord",
+      "usage": "productief"
+    },
+    {
+      "dutch": "uitleggen",
+      "article": null,
+      "plural": null,
+      "frame": "uitleggen (aan)",
+      "meaning_nl": "iets duidelijk maken met woorden",
+      "example": "Kunt u mij uitleggen waar ik moet zijn?",
+      "example_form": "uitleggen",
+      "usage": "productief"
+    },
+    {
+      "dutch": "bedoelen",
+      "article": null,
+      "plural": null,
+      "frame": null,
+      "meaning_nl": "willen zeggen met je woorden",
+      "example": "Wat bedoelt u precies met deze brief?",
+      "example_form": "bedoelt",
+      "usage": "productief"
+    },
+    {
+      "dutch": "opnieuw",
+      "article": null,
+      "plural": null,
+      "frame": null,
+      "meaning_nl": "nog een keer, vanaf het begin",
+      "example": "Zegt u uw telefoonnummer opnieuw, ik schrijf het op.",
+      "example_form": "opnieuw",
+      "usage": "productief"
+    },
+    {
+      "dutch": "aangenaam",
+      "article": null,
+      "plural": null,
+      "frame": null,
+      "meaning_nl": "woord dat je zegt als je iemand voor het eerst ontmoet",
+      "example": "Aangenaam, ik ben de nieuwe collega van Sanne.",
+      "example_form": "Aangenaam",
+      "usage": "productief"
+    },
+    {
+      "dutch": "hobby",
+      "article": "de",
+      "plural": "hobby's",
+      "frame": null,
+      "meaning_nl": "iets leuks dat je in je vrije tijd doet",
+      "example": "Mijn hobby is voetballen met vrienden in het park.",
+      "example_form": "hobby",
+      "usage": "productief"
+    },
+    {
+      "dutch": "gesprek",
+      "article": "het",
+      "plural": "gesprekken",
+      "frame": null,
+      "meaning_nl": "als twee mensen samen praten",
+      "example": "Na het gesprek met de baas was ik blij.",
+      "example_form": "gesprek",
+      "usage": "productief"
+    }
+  ],
+  "mening-geven": [
+    {
+      "dutch": "mening",
+      "article": "de",
+      "plural": "meningen",
+      "frame": "de mening (over)",
+      "meaning_nl": "wat iemand van iets denkt of vindt",
+      "example": "Wat is jouw mening over dit plan?",
+      "example_form": "mening",
+      "usage": "productief"
+    },
+    {
+      "dutch": "vinden",
+      "article": null,
+      "plural": null,
+      "frame": "vinden (van)",
+      "meaning_nl": "een idee hebben over iets",
+      "example": "Ik vind de nieuwe bus veel te duur.",
+      "example_form": "vind",
+      "usage": "productief"
+    },
+    {
+      "dutch": "eens zijn",
+      "article": null,
+      "plural": null,
+      "frame": "het eens zijn (met)",
+      "meaning_nl": "hetzelfde denken als iemand anders",
+      "example": "Ik wil het graag eens zijn met mijn buren.",
+      "example_form": "eens zijn",
+      "usage": "productief"
+    },
+    {
+      "dutch": "oneens zijn",
+      "article": null,
+      "plural": null,
+      "frame": "het oneens zijn (met)",
+      "meaning_nl": "anders denken dan iemand anders",
+      "example": "We kunnen het ook oneens zijn en toch praten.",
+      "example_form": "oneens zijn",
+      "usage": "productief"
+    },
+    {
+      "dutch": "gelijk hebben",
+      "article": null,
+      "plural": null,
+      "frame": "gelijk hebben",
+      "meaning_nl": "iets zeggen wat juist is",
+      "example": "Je kunt gelijk hebben, maar ik twijfel nog.",
+      "example_form": "gelijk hebben",
+      "usage": "productief"
+    },
+    {
+      "dutch": "denken",
+      "article": null,
+      "plural": null,
+      "frame": "denken (dat)",
+      "meaning_nl": "iets in je hoofd voor waar houden",
+      "example": "Ik denk dat de vergadering te lang duurt.",
+      "example_form": "denk",
+      "usage": "productief"
+    },
+    {
+      "dutch": "geloven",
+      "article": null,
+      "plural": null,
+      "frame": "geloven (dat)",
+      "meaning_nl": "iets waarschijnlijk waar vinden",
+      "example": "Ik geloof dat Karim morgen ook komt.",
+      "example_form": "geloof",
+      "usage": "productief"
+    },
+    {
+      "dutch": "twijfelen",
+      "article": null,
+      "plural": null,
+      "frame": "twijfelen (over)",
+      "meaning_nl": "niet zeker weten wat je moet kiezen",
+      "example": "Ik twijfel over de nieuwe school in Zwolle.",
+      "example_form": "twijfel",
+      "usage": "productief"
+    },
+    {
+      "dutch": "voorstel",
+      "article": "het",
+      "plural": "voorstellen",
+      "frame": "een voorstel doen",
+      "meaning_nl": "een idee dat je aan anderen geeft",
+      "example": "Mijn voorstel is om later te beginnen.",
+      "example_form": "voorstel",
+      "usage": "productief"
+    },
+    {
+      "dutch": "argument",
+      "article": "het",
+      "plural": "argumenten",
+      "frame": null,
+      "meaning_nl": "de reden waarmee je iets duidelijk maakt",
+      "example": "Dat is een sterk argument voor de nieuwe regel.",
+      "example_form": "argument",
+      "usage": "productief"
+    },
+    {
+      "dutch": "reden",
+      "article": "de",
+      "plural": "redenen",
+      "frame": "de reden (voor)",
+      "meaning_nl": "waarom iets zo is of gebeurt",
+      "example": "Wat is de reden dat je niet meedoet?",
+      "example_form": "reden",
+      "usage": "productief"
+    },
+    {
+      "dutch": "voordeel",
+      "article": "het",
+      "plural": "voordelen",
+      "frame": null,
+      "meaning_nl": "iets goeds aan een plan of situatie",
+      "example": "Het voordeel is dat de trein sneller rijdt.",
+      "example_form": "voordeel",
+      "usage": "productief"
+    },
+    {
+      "dutch": "nadeel",
+      "article": "het",
+      "plural": "nadelen",
+      "frame": null,
+      "meaning_nl": "iets slechts aan een plan of situatie",
+      "example": "Het nadeel van dit huis is de kleine keuken.",
+      "example_form": "nadeel",
+      "usage": "productief"
+    },
+    {
+      "dutch": "eerlijk",
+      "article": null,
+      "plural": null,
+      "frame": null,
+      "meaning_nl": "zonder liegen, precies zoals het is",
+      "example": "Ik zeg eerlijk dat ik het niet leuk vind.",
+      "example_form": "eerlijk",
+      "usage": "productief"
+    },
+    {
+      "dutch": "duidelijk",
+      "article": null,
+      "plural": null,
+      "frame": null,
+      "meaning_nl": "goed te begrijpen, zonder vragen",
+      "example": "Wil je dat nog een keer duidelijk uitleggen?",
+      "example_form": "duidelijk",
+      "usage": "productief"
+    },
+    {
+      "dutch": "belangrijk",
+      "article": null,
+      "plural": null,
+      "frame": "belangrijk (voor)",
+      "meaning_nl": "waar veel waarde aan wordt gegeven",
+      "example": "Voor mij is rust in de straat belangrijk.",
+      "example_form": "belangrijk",
+      "usage": "productief"
+    },
+    {
+      "dutch": "misschien",
+      "article": null,
+      "plural": null,
+      "frame": null,
+      "meaning_nl": "het kan wel zo zijn, maar niet zeker",
+      "example": "Misschien heeft Anna een beter idee dan ik.",
+      "example_form": "Misschien",
+      "usage": "productief"
+    },
+    {
+      "dutch": "liever",
+      "article": null,
+      "plural": null,
+      "frame": "liever (dan)",
+      "meaning_nl": "iets kiezen omdat je het fijner vindt",
+      "example": "Ik ga liever met de fiets dan met de auto.",
+      "example_form": "liever",
+      "usage": "productief"
+    },
+    {
+      "dutch": "toegeven",
+      "article": null,
+      "plural": null,
+      "frame": "toegeven (dat)",
+      "meaning_nl": "zeggen dat de ander toch juist zit",
+      "example": "Hij geeft toe dat hij te laat was.",
+      "example_form": "geeft toe",
+      "usage": "productief"
+    },
+    {
+      "dutch": "uitleggen",
+      "article": null,
+      "plural": null,
+      "frame": "uitleggen (aan)",
+      "meaning_nl": "iets zo zeggen dat de ander het begrijpt",
+      "example": "Kun je aan de balie uitleggen wat je bedoelt?",
+      "example_form": "uitleggen",
+      "usage": "productief"
+    },
+    {
+      "dutch": "bedoelen",
+      "article": null,
+      "plural": null,
+      "frame": "bedoelen (met)",
+      "meaning_nl": "willen zeggen wat je in je hoofd hebt",
+      "example": "Wat bedoel je precies met dat woord?",
+      "example_form": "bedoel",
+      "usage": "productief"
+    },
+    {
+      "dutch": "standpunt",
+      "article": "het",
+      "plural": "standpunten",
+      "frame": null,
+      "meaning_nl": "de vaste kijk van iemand op een zaak",
+      "example": "De gemeente legde haar standpunt rustig uit.",
+      "example_form": "standpunt",
+      "usage": "receptief"
+    }
+  ],
+  "afspraak-maken": [
+    {
+      "dutch": "afspraak",
+      "article": "de",
+      "plural": "afspraken",
+      "frame": "een afspraak maken (met)",
+      "meaning_nl": "vaste tijd die je met iemand samen kiest om te komen",
+      "example": "Ik wil graag een afspraak maken met de dokter.",
+      "example_form": "afspraak",
+      "usage": "productief"
+    },
+    {
+      "dutch": "bellen",
+      "article": null,
+      "plural": null,
+      "frame": "bellen (naar)",
+      "meaning_nl": "met de telefoon iemand proberen te bereiken",
+      "example": "Ik bel morgen naar de tandarts in Zwolle.",
+      "example_form": "bel",
+      "usage": "productief"
+    },
+    {
+      "dutch": "balie",
+      "article": "de",
+      "plural": "balies",
+      "frame": "aan de balie",
+      "meaning_nl": "hoge tafel waar een medewerker je helpt",
+      "example": "U kunt zich melden aan de balie rechts.",
+      "example_form": "balie",
+      "usage": "productief"
+    },
+    {
+      "dutch": "melden",
+      "article": null,
+      "plural": null,
+      "frame": "zich melden (bij)",
+      "meaning_nl": "zeggen dat je er bent als je aankomt",
+      "example": "Meld u tien minuten voor de tijd bij de receptie.",
+      "example_form": "Meld u",
+      "usage": "productief"
+    },
+    {
+      "dutch": "wachtkamer",
+      "article": "de",
+      "plural": "wachtkamers",
+      "frame": null,
+      "meaning_nl": "ruimte waar je zit tot je aan de beurt bent",
+      "example": "Neemt u plaats in de wachtkamer, alstublieft.",
+      "example_form": "wachtkamer",
+      "usage": "productief"
+    },
+    {
+      "dutch": "beurt",
+      "article": "de",
+      "plural": "beurten",
+      "frame": "aan de beurt zijn",
+      "meaning_nl": "het moment dat jij mag komen of praten",
+      "example": "Ben ik nu aan de beurt of die meneer?",
+      "example_form": "beurt",
+      "usage": "productief"
+    },
+    {
+      "dutch": "tijdstip",
+      "article": "het",
+      "plural": "tijdstippen",
+      "frame": null,
+      "meaning_nl": "het precieze uur waarop iets begint",
+      "example": "Past dit tijdstip u, of liever later?",
+      "example_form": "tijdstip",
+      "usage": "productief"
+    },
+    {
+      "dutch": "verzetten",
+      "article": null,
+      "plural": null,
+      "frame": "iets verzetten (naar)",
+      "meaning_nl": "een gemaakte tijd veranderen naar een andere dag",
+      "example": "Kan ik mijn afspraak verzetten naar vrijdag?",
+      "example_form": "verzetten",
+      "usage": "productief"
+    },
+    {
+      "dutch": "afzeggen",
+      "article": null,
+      "plural": null,
+      "frame": null,
+      "meaning_nl": "laten weten dat je niet komt",
+      "example": "Ik moet de afspraak van dinsdag helaas afzeggen.",
+      "example_form": "afzeggen",
+      "usage": "productief"
+    },
+    {
+      "dutch": "schikken",
+      "article": null,
+      "plural": null,
+      "frame": "het schikt (iemand)",
+      "meaning_nl": "passen in je agenda, goed uitkomen",
+      "example": "Schikt woensdagmiddag om drie uur u?",
+      "example_form": "Schikt",
+      "usage": "receptief"
+    },
+    {
+      "dutch": "vrij",
+      "article": null,
+      "plural": null,
+      "frame": "vrij zijn / vrij nemen",
+      "meaning_nl": "niet hoeven werken op die dag",
+      "example": "Ik ben donderdag vrij, dan kan ik komen.",
+      "example_form": "vrij",
+      "usage": "productief"
+    },
+    {
+      "dutch": "beschikbaar",
+      "article": null,
+      "plural": null,
+      "frame": null,
+      "meaning_nl": "vrij en dus te gebruiken of te boeken",
+      "example": "Er is nog een plek beschikbaar op maandag.",
+      "example_form": "beschikbaar",
+      "usage": "receptief"
+    },
+    {
+      "dutch": "spoed",
+      "article": "de",
+      "plural": null,
+      "frame": "met spoed",
+      "meaning_nl": "heel snel, het kan niet wachten",
+      "example": "Ik heb pijn, kan het met spoed?",
+      "example_form": "spoed",
+      "usage": "productief"
+    },
+    {
+      "dutch": "legitimatiebewijs",
+      "article": "het",
+      "plural": "legitimatiebewijzen",
+      "frame": null,
+      "meaning_nl": "kaart of boekje met je naam en foto",
+      "example": "Neemt u uw legitimatiebewijs en de brief mee.",
+      "example_form": "legitimatiebewijs",
+      "usage": "receptief"
+    },
+    {
+      "dutch": "doorverbinden",
+      "article": null,
+      "plural": null,
+      "frame": "doorverbinden (met)",
+      "meaning_nl": "aan de telefoon iemand anders laten praten",
+      "example": "Ik verbind u door met mijn collega.",
+      "example_form": "verbind u door",
+      "usage": "receptief"
+    },
+    {
+      "dutch": "terugbellen",
+      "article": null,
+      "plural": null,
+      "frame": null,
+      "meaning_nl": "later zelf nog een keer telefoneren",
+      "example": "Kunt u mij vanmiddag terugbellen, meneer De Vries?",
+      "example_form": "terugbellen",
+      "usage": "productief"
+    },
+    {
+      "dutch": "bevestigen",
+      "article": null,
+      "plural": null,
+      "frame": null,
+      "meaning_nl": "zeggen of schrijven dat iets zeker klopt",
+      "example": "Kunt u de datum per e-mail bevestigen?",
+      "example_form": "bevestigen",
+      "usage": "productief"
+    },
+    {
+      "dutch": "agenda",
+      "article": "de",
+      "plural": "agenda's",
+      "frame": "in de agenda zetten",
+      "meaning_nl": "boekje of app waarin je je tijden opschrijft",
+      "example": "Ik zet het meteen in mijn agenda.",
+      "example_form": "agenda",
+      "usage": "productief"
+    },
+    {
+      "dutch": "gelegen",
+      "article": null,
+      "plural": null,
+      "frame": "gelegen komen",
+      "meaning_nl": "op een goed moment vallen voor iemand",
+      "example": "Komt vrijdagochtend u gelegen?",
+      "example_form": "gelegen",
+      "usage": "receptief"
+    },
+    {
+      "dutch": "loket",
+      "article": "het",
+      "plural": "loketten",
+      "frame": null,
+      "meaning_nl": "klein raam waar je papieren afgeeft of vragen stelt",
+      "example": "Voor paspoorten moet u naar loket vier.",
+      "example_form": "loket",
+      "usage": "receptief"
+    },
+    {
+      "dutch": "telefoonnummer",
+      "article": "het",
+      "plural": "telefoonnummers",
+      "frame": null,
+      "meaning_nl": "cijfers waarmee iemand jou kan bereiken",
+      "example": "Mijn telefoonnummer is nul zes, twaalf, drieëndertig.",
+      "example_form": "telefoonnummer",
+      "usage": "productief"
+    },
+    {
+      "dutch": "langskomen",
+      "article": null,
+      "plural": null,
+      "frame": "langskomen (bij)",
+      "meaning_nl": "even naar iemand toe gaan voor korte tijd",
+      "example": "Mag ik morgenmiddag langskomen bij het kantoor?",
+      "example_form": "langskomen",
+      "usage": "productief"
+    }
+  ],
+  "excuses-en-reageren": [
+    {
+      "dutch": "sorry",
+      "article": null,
+      "plural": null,
+      "frame": "sorry zeggen (tegen)",
+      "meaning_nl": "woord dat je gebruikt als je spijt hebt",
+      "example": "Ik zei sorry tegen mijn buurvrouw voor het lawaai.",
+      "example_form": "sorry",
+      "usage": "productief"
+    },
+    {
+      "dutch": "excuus",
+      "article": "het",
+      "plural": "excuses",
+      "frame": null,
+      "meaning_nl": "woorden waarmee je spijt laat zien",
+      "example": "Hij bood zijn excuses aan voor de late brief.",
+      "example_form": "excuses",
+      "usage": "productief"
+    },
+    {
+      "dutch": "verontschuldigen",
+      "article": null,
+      "plural": null,
+      "frame": "zich verontschuldigen (voor)",
+      "meaning_nl": "zeggen dat je iets fout deed en spijt hebt",
+      "example": "Ik wil me verontschuldigen voor mijn late reactie.",
+      "example_form": "verontschuldigen",
+      "usage": "receptief"
+    },
+    {
+      "dutch": "spijten",
+      "article": null,
+      "plural": null,
+      "frame": "het spijt me (dat)",
+      "meaning_nl": "gebruikt als je iets naars vindt van jezelf",
+      "example": "Het spijt me dat ik u gestoord heb.",
+      "example_form": "spijt",
+      "usage": "productief"
+    },
+    {
+      "dutch": "vergeven",
+      "article": null,
+      "plural": null,
+      "frame": "iemand iets vergeven",
+      "meaning_nl": "niet meer boos zijn over een fout",
+      "example": "Mijn zus heeft mij die ruzie al vergeven.",
+      "example_form": "vergeven",
+      "usage": "productief"
+    },
+    {
+      "dutch": "fout",
+      "article": "de",
+      "plural": "fouten",
+      "frame": "een fout maken",
+      "meaning_nl": "iets wat niet klopt of niet goed gaat",
+      "example": "Ik heb een fout gemaakt in het formulier.",
+      "example_form": "fout",
+      "usage": "productief"
+    },
+    {
+      "dutch": "schuld",
+      "article": "de",
+      "plural": "schulden",
+      "frame": "mijn schuld zijn",
+      "meaning_nl": "als jij oorzaak bent van iets naars",
+      "example": "Het was mijn schuld, ik keek niet uit.",
+      "example_form": "schuld",
+      "usage": "productief"
+    },
+    {
+      "dutch": "per ongeluk",
+      "article": null,
+      "plural": null,
+      "frame": null,
+      "meaning_nl": "zonder dat je het wilde doen",
+      "example": "Ik heb per ongeluk uw pakket opengemaakt.",
+      "example_form": "per ongeluk",
+      "usage": "productief"
+    },
+    {
+      "dutch": "bedoelen",
+      "article": null,
+      "plural": null,
+      "frame": "iets zo bedoelen",
+      "meaning_nl": "iets willen zeggen of van plan zijn",
+      "example": "Zo bedoelde ik het echt niet, sorry.",
+      "example_form": "bedoelde",
+      "usage": "productief"
+    },
+    {
+      "dutch": "vergeten",
+      "article": null,
+      "plural": null,
+      "frame": "vergeten (te)",
+      "meaning_nl": "niet meer weten of niet doen wat moest",
+      "example": "Ik was vergeten te bellen, mijn excuses.",
+      "example_form": "vergeten",
+      "usage": "productief"
+    },
+    {
+      "dutch": "storen",
+      "article": null,
+      "plural": null,
+      "frame": "iemand storen",
+      "meaning_nl": "iemand lastigvallen tijdens iets anders",
+      "example": "Stoor ik u? Dan kom ik later terug.",
+      "example_form": "Stoor",
+      "usage": "productief"
+    },
+    {
+      "dutch": "opnieuw",
+      "article": null,
+      "plural": null,
+      "frame": null,
+      "meaning_nl": "nog een keer, vanaf het begin",
+      "example": "Mag ik het opnieuw uitleggen? Ik zei het verkeerd.",
+      "example_form": "opnieuw",
+      "usage": "productief"
+    },
+    {
+      "dutch": "verkeerd",
+      "article": null,
+      "plural": null,
+      "frame": null,
+      "meaning_nl": "niet zoals het moet zijn",
+      "example": "Ik heb het verkeerd begrepen, sorry daarvoor.",
+      "example_form": "verkeerd",
+      "usage": "productief"
+    },
+    {
+      "dutch": "vervelend",
+      "article": null,
+      "plural": null,
+      "frame": null,
+      "meaning_nl": "niet leuk, hinderlijk voor iemand",
+      "example": "Wat vervelend voor u, dat begrijp ik.",
+      "example_form": "vervelend",
+      "usage": "productief"
+    },
+    {
+      "dutch": "toegeven",
+      "article": null,
+      "plural": null,
+      "frame": "toegeven (dat)",
+      "meaning_nl": "zeggen dat de ander gelijk heeft",
+      "example": "Hij geeft toe dat hij te hard reed.",
+      "example_form": "geeft toe",
+      "usage": "receptief"
+    },
+    {
+      "dutch": "goedmaken",
+      "article": null,
+      "plural": null,
+      "frame": "iets goedmaken",
+      "meaning_nl": "iets doen zodat de ander niet meer boos is",
+      "example": "Ik wil het goedmaken met een nieuwe afspraak.",
+      "example_form": "goedmaken",
+      "usage": "productief"
+    },
+    {
+      "dutch": "belofte",
+      "article": "de",
+      "plural": "beloftes",
+      "frame": null,
+      "meaning_nl": "wat je zegt dat je zeker gaat doen",
+      "example": "Sorry, ik kwam mijn belofte niet na.",
+      "example_form": "belofte",
+      "usage": "receptief"
+    },
+    {
+      "dutch": "beloven",
+      "article": null,
+      "plural": null,
+      "frame": "beloven (dat)",
+      "meaning_nl": "zeggen dat je iets zeker gaat doen",
+      "example": "Ik beloof dat het niet meer gebeurt.",
+      "example_form": "beloof",
+      "usage": "productief"
+    },
+    {
+      "dutch": "misverstand",
+      "article": "het",
+      "plural": "misverstanden",
+      "frame": null,
+      "meaning_nl": "situatie waarin twee mensen elkaar anders begrepen",
+      "example": "Het was een misverstand tussen mij en de baliemedewerker.",
+      "example_form": "misverstand",
+      "usage": "productief"
+    },
+    {
+      "dutch": "boos",
+      "article": null,
+      "plural": null,
+      "frame": "boos zijn (op)",
+      "meaning_nl": "kwaad, met een naar gevoel over iemand",
+      "example": "Ben je nog boos op mij, Karin?",
+      "example_form": "boos",
+      "usage": "productief"
+    },
+    {
+      "dutch": "geeft niets",
+      "article": null,
+      "plural": null,
+      "frame": "het geeft niets",
+      "meaning_nl": "antwoord waarmee je zegt dat het geen probleem is",
+      "example": "Het geeft niets, u kon er niets aan doen.",
+      "example_form": "geeft niets",
+      "usage": "productief"
+    },
+    {
+      "dutch": "erg",
+      "article": null,
+      "plural": null,
+      "frame": "niet erg zijn",
+      "meaning_nl": "vervelend of naar; met 'niet' juist geen probleem",
+      "example": "Niet erg, ik wacht wel even in de gang.",
+      "example_form": "erg",
+      "usage": "productief"
+    }
+  ],
+  "weg-en-plaats": [
+    {
+      "dutch": "kruising",
+      "article": "de",
+      "plural": "kruisingen",
+      "frame": null,
+      "meaning_nl": "plek waar twee straten elkaar snijden",
+      "example": "Bij de kruising moet u rechtsaf slaan.",
+      "example_form": "kruising",
+      "usage": "productief"
+    },
+    {
+      "dutch": "hoek",
+      "article": "de",
+      "plural": "hoeken",
+      "frame": "op de hoek (van)",
+      "meaning_nl": "plek waar twee straten samenkomen",
+      "example": "De bakker staat op de hoek van deze straat.",
+      "example_form": "hoek",
+      "usage": "productief"
+    },
+    {
+      "dutch": "stoplicht",
+      "article": "het",
+      "plural": "stoplichten",
+      "frame": null,
+      "meaning_nl": "lamp met rood, oranje en groen voor het verkeer",
+      "example": "Ga bij het stoplicht rechtdoor naar het plein.",
+      "example_form": "stoplicht",
+      "usage": "productief"
+    },
+    {
+      "dutch": "rotonde",
+      "article": "de",
+      "plural": "rotondes",
+      "frame": null,
+      "meaning_nl": "rond punt in de weg waar je omheen rijdt",
+      "example": "Neem op de rotonde de tweede afslag.",
+      "example_form": "rotonde",
+      "usage": "productief"
+    },
+    {
+      "dutch": "afslag",
+      "article": "de",
+      "plural": "afslagen",
+      "frame": null,
+      "meaning_nl": "plek waar je van de weg af gaat",
+      "example": "De eerste afslag brengt u naar Zwolle.",
+      "example_form": "afslag",
+      "usage": "receptief"
+    },
+    {
+      "dutch": "rechtdoor",
+      "article": null,
+      "plural": null,
+      "frame": null,
+      "meaning_nl": "in dezelfde richting verder, niet naar links of rechts",
+      "example": "U loopt rechtdoor tot aan de kerk.",
+      "example_form": "rechtdoor",
+      "usage": "productief"
+    },
+    {
+      "dutch": "rechtsaf",
+      "article": null,
+      "plural": null,
+      "frame": "rechtsaf slaan",
+      "meaning_nl": "naar de rechterkant gaan",
+      "example": "Bij de brug moet je rechtsaf slaan.",
+      "example_form": "rechtsaf",
+      "usage": "productief"
+    },
+    {
+      "dutch": "linksaf",
+      "article": null,
+      "plural": null,
+      "frame": "linksaf slaan",
+      "meaning_nl": "naar de linkerkant gaan",
+      "example": "Sla na het park linksaf de Kerkstraat in.",
+      "example_form": "linksaf",
+      "usage": "productief"
+    },
+    {
+      "dutch": "slaan",
+      "article": null,
+      "plural": null,
+      "frame": "slaan (linksaf/rechtsaf)",
+      "meaning_nl": "van richting veranderen tijdens het lopen of rijden",
+      "example": "Sla bij de apotheek rechtsaf, dan bent u er.",
+      "example_form": "Sla",
+      "usage": "productief"
+    },
+    {
+      "dutch": "oversteken",
+      "article": null,
+      "plural": null,
+      "frame": "oversteken (bij)",
+      "meaning_nl": "naar de andere kant van de straat gaan",
+      "example": "U moet hier oversteken bij het zebrapad.",
+      "example_form": "oversteken",
+      "usage": "productief"
+    },
+    {
+      "dutch": "zebrapad",
+      "article": "het",
+      "plural": "zebrapaden",
+      "frame": null,
+      "meaning_nl": "witte strepen op de weg voor voetgangers",
+      "example": "Wacht even, we lopen naar het zebrapad daar.",
+      "example_form": "zebrapad",
+      "usage": "productief"
+    },
+    {
+      "dutch": "stoep",
+      "article": "de",
+      "plural": "stoepen",
+      "frame": null,
+      "meaning_nl": "smalle strook naast de weg om te lopen",
+      "example": "Blijf op de stoep tot het einde van de straat.",
+      "example_form": "stoep",
+      "usage": "productief"
+    },
+    {
+      "dutch": "fietspad",
+      "article": "het",
+      "plural": "fietspaden",
+      "frame": null,
+      "meaning_nl": "rode strook waar alleen fietsers mogen rijden",
+      "example": "Volg het fietspad langs het kanaal naar het centrum.",
+      "example_form": "fietspad",
+      "usage": "productief"
+    },
+    {
+      "dutch": "richting",
+      "article": "de",
+      "plural": "richtingen",
+      "frame": "in de richting van",
+      "meaning_nl": "kant waar je naartoe gaat",
+      "example": "Loopt u even mee in de richting van het station?",
+      "example_form": "richting",
+      "usage": "productief"
+    },
+    {
+      "dutch": "volgen",
+      "article": null,
+      "plural": null,
+      "frame": "volgen (de borden)",
+      "meaning_nl": "achter iets of iemand aan blijven gaan",
+      "example": "Volg de borden naar het ziekenhuis in Haarlem.",
+      "example_form": "Volg",
+      "usage": "productief"
+    },
+    {
+      "dutch": "bord",
+      "article": "het",
+      "plural": "borden",
+      "frame": null,
+      "meaning_nl": "plaat langs de weg met een naam of pijl erop",
+      "example": "Op dat blauwe bord staat de weg naar Utrecht.",
+      "example_form": "bord",
+      "usage": "productief"
+    },
+    {
+      "dutch": "wijzen",
+      "article": null,
+      "plural": null,
+      "frame": "de weg wijzen",
+      "meaning_nl": "iemand vertellen of laten zien waar iets is",
+      "example": "Kunt u mij de weg wijzen naar de markt?",
+      "example_form": "wijzen",
+      "usage": "productief"
+    },
+    {
+      "dutch": "verderop",
+      "article": null,
+      "plural": null,
+      "frame": null,
+      "meaning_nl": "een stuk voorbij deze plek, in dezelfde straat",
+      "example": "De supermarkt zit honderd meter verderop links.",
+      "example_form": "verderop",
+      "usage": "productief"
+    },
+    {
+      "dutch": "tegenover",
+      "article": null,
+      "plural": null,
+      "frame": "tegenover (iets)",
+      "meaning_nl": "aan de andere kant van de straat, precies ertegen aan",
+      "example": "De school staat tegenover de bibliotheek.",
+      "example_form": "tegenover",
+      "usage": "productief"
+    },
+    {
+      "dutch": "vlakbij",
+      "article": null,
+      "plural": null,
+      "frame": null,
+      "meaning_nl": "op heel korte afstand",
+      "example": "Het busstation is vlakbij, u loopt er zo heen.",
+      "example_form": "vlakbij",
+      "usage": "productief"
+    },
+    {
+      "dutch": "verdwalen",
+      "article": null,
+      "plural": null,
+      "frame": null,
+      "meaning_nl": "de weg niet meer weten en verkeerd lopen",
+      "example": "Ik ben verdwaald, waar is de Hoofdstraat?",
+      "example_form": "verdwaald",
+      "usage": "productief"
+    },
+    {
+      "dutch": "doorlopen",
+      "article": null,
+      "plural": null,
+      "frame": "doorlopen (tot)",
+      "meaning_nl": "verder gaan zonder te stoppen",
+      "example": "U loopt door tot aan het grote plein.",
+      "example_form": "loopt door",
+      "usage": "productief"
+    }
+  ]
+}

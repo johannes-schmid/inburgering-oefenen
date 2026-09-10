@@ -1,0 +1,211 @@
+{
+  "items": [
+    {
+      "kind": "uitleg",
+      "tier": null,
+      "explanation": null,
+      "payload": {
+        "body_html": "<p>Aan de telefoon hoor je vaak dezelfde woorden. Je leert nu woorden over bellen en over een afspraak maken, verzetten of afzeggen.</p>",
+        "cards": [
+          {
+            "label": "AAN DE TELEFOON",
+            "example_html": "Ik <mark>verbind</mark> u even <mark>door</mark> met mijn collega."
+          },
+          {
+            "label": "EEN AFSPRAAK",
+            "example_html": "Kan ik mijn <mark>afspraak</mark> van dinsdag <mark>verzetten</mark>?"
+          }
+        ]
+      }
+    },
+    {
+      "kind": "woordenlijst",
+      "tier": null,
+      "explanation": null,
+      "payload": {
+        "theme": "telefoon-en-afspraak"
+      }
+    },
+    {
+      "kind": "matchen",
+      "tier": 0,
+      "explanation": "Elk woord hoort bij één korte betekenis. Zo weet je wat je hoort als iemand aan de telefoon dit woord gebruikt.",
+      "payload": {
+        "instruction": "Sleep het woord naar de juiste betekenis.",
+        "pairs": [
+          {
+            "left": "opnemen",
+            "right": "de telefoon aannemen als iemand belt"
+          },
+          {
+            "left": "doorverbinden",
+            "right": "iemand naar een andere medewerker sturen"
+          },
+          {
+            "left": "in gesprek",
+            "right": "de lijn is bezet, iemand belt al"
+          },
+          {
+            "left": "de wachtrij",
+            "right": "de bellers die op hun beurt wachten"
+          },
+          {
+            "left": "terugbellen",
+            "right": "later nog een keer bellen naar iemand"
+          }
+        ]
+      }
+    },
+    {
+      "kind": "matchen",
+      "tier": 0,
+      "explanation": "Deze woorden gaan over de telefoon zelf en over een afspraak. Let goed op het verschil tussen verzetten en afzeggen.",
+      "payload": {
+        "instruction": "Sleep het woord naar de juiste betekenis.",
+        "pairs": [
+          {
+            "left": "het keuzemenu",
+            "right": "een stem zegt welk cijfer je moet indrukken"
+          },
+          {
+            "left": "de toets",
+            "right": "een knopje op een telefoon"
+          },
+          {
+            "left": "verzetten",
+            "right": "naar een andere dag of tijd veranderen"
+          },
+          {
+            "left": "afzeggen",
+            "right": "laten weten dat je niet komt"
+          },
+          {
+            "left": "de openingstijden",
+            "right": "de uren dat een kantoor open is"
+          }
+        ]
+      }
+    },
+    {
+      "kind": "gap_choice",
+      "tier": 1,
+      "explanation": "Je hoort een stem die zegt welk cijfer je moet indrukken. Dat is het keuzemenu.",
+      "payload": {
+        "sentence": "Ik bel de gemeente. Eerst hoor ik een ___ met vier cijfers.",
+        "choices": [
+          "keuzemenu",
+          "klantnummer",
+          "balie"
+        ],
+        "answer": "keuzemenu"
+      }
+    },
+    {
+      "kind": "gap_choice",
+      "tier": 1,
+      "explanation": "Als iemand al aan het bellen is, is de lijn bezet. Dan is het toestel in gesprek.",
+      "payload": {
+        "sentence": "Ik krijg mevrouw De Wit niet te pakken. Haar telefoon is ___.",
+        "choices": [
+          "beschikbaar",
+          "in gesprek",
+          "bereikbaar"
+        ],
+        "answer": "in gesprek"
+      }
+    },
+    {
+      "kind": "gap_choice",
+      "tier": 1,
+      "explanation": "De medewerker stuurt je naar een andere collega. Dat heet doorverbinden.",
+      "payload": {
+        "sentence": "Ik ga u ___ met mijn collega van de afdeling werk.",
+        "choices": [
+          "doorverbinden",
+          "intoetsen",
+          "opnemen"
+        ],
+        "answer": "doorverbinden"
+      }
+    },
+    {
+      "kind": "gap_choice",
+      "tier": 1,
+      "explanation": "Je komt niet naar de afspraak. Dan zeg je de afspraak af. Bij verzetten kom je wel, maar op een andere dag.",
+      "payload": {
+        "sentence": "Ik ben ziek en kom morgen niet. Ik wil mijn afspraak ___.",
+        "choices": [
+          "afzeggen",
+          "verzetten",
+          "schikken"
+        ],
+        "answer": "afzeggen"
+      }
+    },
+    {
+      "kind": "gap_choice",
+      "tier": 1,
+      "explanation": "Een tijd die goed past in je agenda, schikt. Je zegt dan: dat schikt goed.",
+      "payload": {
+        "sentence": "Kan het op vrijdag om tien uur? Ja, dat ___ goed.",
+        "choices": [
+          "schikt",
+          "verzet",
+          "belt"
+        ],
+        "answer": "schikt"
+      }
+    },
+    {
+      "kind": "gap_type",
+      "tier": 2,
+      "explanation": "Niemand neemt op, dus je bericht komt op de voicemail. Dat apparaat bewaart je gesproken bericht.",
+      "payload": {
+        "sentence": "Er nam niemand op. Ik heb een bericht op de ___ ingesproken.",
+        "answer": "voicemail"
+      }
+    },
+    {
+      "kind": "gap_type",
+      "tier": 2,
+      "explanation": "Cijfers indrukken op de telefoon heet intoetsen. Je gebruikt daarvoor de toetsen.",
+      "payload": {
+        "sentence": "Wilt u uw klantnummer ___ en daarna op de hekjestoets drukken?",
+        "answer": "intoetsen"
+      }
+    },
+    {
+      "kind": "gap_type",
+      "tier": 2,
+      "explanation": "Als iemand je kan bellen of spreken, is die persoon bereikbaar.",
+      "payload": {
+        "sentence": "De huisarts is elke dag tussen acht en tien uur ___ voor vragen.",
+        "answer": "bereikbaar"
+      }
+    },
+    {
+      "kind": "gap_choice",
+      "tier": 1,
+      "explanation": "Bij spoed moet het heel snel gebeuren. Daarvoor is er een apart nummer.",
+      "payload": {
+        "sentence": "Is het ___? Belt u dan het nummer voor dringende hulp.",
+        "choices": [
+          "spoed",
+          "verbinding",
+          "wachtrij"
+        ],
+        "answer": "spoed"
+      }
+    },
+    {
+      "kind": "gap_type",
+      "tier": 2,
+      "explanation": "Je meldt je bij de balie, de plek in het gebouw waar een medewerker zit.",
+      "payload": {
+        "sentence": "Kom om half tien en meld je bij de ___ in de hal.",
+        "answer": "balie"
+      }
+    }
+  ],
+  "what_you_learn": "Je leert de woorden die je hoort als je belt of een afspraak maakt, zoals doorverbinden, in gesprek en het keuzemenu. Je begrijpt het verschil tussen een afspraak verzetten en een afspraak afzeggen. Je kunt deze woorden zelf in een zin gebruiken."
+}

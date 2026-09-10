@@ -1,0 +1,196 @@
+{
+  "items": [
+    {
+      "kind": "uitleg",
+      "tier": null,
+      "explanation": null,
+      "payload": {
+        "body_html": "<p>Je hoort twee telefoongesprekken en beantwoordt daarna de vragen, net als in het examen.</p>",
+        "cards": []
+      }
+    },
+    {
+      "kind": "audio",
+      "tier": null,
+      "explanation": null,
+      "payload": {
+        "label": "Telefoongesprek met de tandarts",
+        "script": "A: Tandartspraktijk De Molen, goedemorgen.\nB: Goedemorgen, u spreekt met Amir Haddad. Ik heb kiespijn, al twee dagen.\nA: Oh, dat is niet fijn. Even kijken, hoor. Ik heb morgen een plekje om tien voor half tien.\nB: Morgen om tien voor half tien... dat is negen uur twintig, ja? Dat kan.\nA: Ja, negen uur twintig. En neemt u uw verzekeringspas mee?\nB: Die pas, ja. Moet ik nog iets anders doen?\nA: Nee, alleen even tien minuten eerder komen. Dan vult u een formulier in bij de balie.\nB: Goed, ik ben er om negen uur tien. Dank u wel.",
+        "audio_url": "http://127.0.0.1:54421/storage/v1/object/public/leren-audio/fragment/a2-luisteren/d2-telefoongesprek-1.mp3",
+        "voice_cast": {
+          "A": "woman_young",
+          "B": "man_young"
+        },
+        "transcript": "Tandartspraktijk De Molen, goedemorgen. Goedemorgen, u spreekt met Amir Haddad. Ik heb kiespijn, al twee dagen. Oh, dat is niet fijn. Even kijken, hoor. Ik heb morgen een plekje om tien voor half tien. Morgen om tien voor half tien... dat is negen uur twintig, ja? Dat kan. Ja, negen uur twintig. En neemt u uw verzekeringspas mee? Die pas, ja. Moet ik nog iets anders doen? Nee, alleen even tien minuten eerder komen. Dan vult u een formulier in bij de balie. Goed, ik ben er om negen uur tien. Dank u wel.",
+        "seconds": 34.8
+      }
+    },
+    {
+      "kind": "mcq",
+      "tier": 0,
+      "explanation": "De assistente zegt \"tien voor half tien\" en dat is negen uur twintig.",
+      "options": [
+        {
+          "label": "A",
+          "body": "Om negen uur twintig",
+          "is_correct": true
+        },
+        {
+          "label": "B",
+          "body": "Om half tien",
+          "is_correct": false
+        },
+        {
+          "label": "C",
+          "body": "Om tien uur twintig",
+          "is_correct": false
+        }
+      ],
+      "payload": {
+        "prompt": "Hoe laat is de afspraak van Amir?"
+      }
+    },
+    {
+      "kind": "mcq",
+      "tier": 0,
+      "explanation": "Amir belt omdat hij al twee dagen kiespijn heeft en snel geholpen wil worden.",
+      "options": [
+        {
+          "label": "A",
+          "body": "Hij wil een afspraak verzetten.",
+          "is_correct": false
+        },
+        {
+          "label": "B",
+          "body": "Hij wil een afspraak maken omdat hij pijn heeft.",
+          "is_correct": true
+        },
+        {
+          "label": "C",
+          "body": "Hij wil weten wat de behandeling kost.",
+          "is_correct": false
+        }
+      ],
+      "payload": {
+        "prompt": "Waarom belt Amir de tandartspraktijk?"
+      }
+    },
+    {
+      "kind": "mcq",
+      "tier": 1,
+      "explanation": "De assistente vraagt om de verzekeringspas en zegt: kom tien minuten eerder voor een formulier.",
+      "options": [
+        {
+          "label": "A",
+          "body": "Zijn verzekeringspas meenemen en tien minuten eerder komen",
+          "is_correct": true
+        },
+        {
+          "label": "B",
+          "body": "Het formulier thuis invullen en opsturen",
+          "is_correct": false
+        },
+        {
+          "label": "C",
+          "body": "Morgen nog een keer bellen om te bevestigen",
+          "is_correct": false
+        }
+      ],
+      "payload": {
+        "prompt": "Wat moet Amir doen voor de afspraak?"
+      }
+    },
+    {
+      "kind": "audio",
+      "tier": null,
+      "explanation": null,
+      "payload": {
+        "label": "Telefoongesprek met de woningbouw over een kapotte kraan",
+        "script": "A: Woningstichting Nieuwveld, met Karima.\nB: Goedemiddag, ik ben Peter Bosman van de Lijsterstraat 24. Mijn kraan in de keuken lekt.\nA: Lekt hij hard?\nB: Nogal, ja. Er staat water op de vloer.\nA: Dan stuur ik een loodgieter. Die komt vrijdag tussen één en drie uur.\nB: Vrijdagmiddag, dat is goed. Moet ik iets betalen?\nA: Nee, een lekkende kraan valt onder ons onderhoud. U betaalt niets.\nB: Fijn. En moet ik nog iets regelen?\nA: Zet u alstublieft de spullen onder de gootsteen weg. En zorg dat iemand thuis is.\nB: Doe ik. Bedankt, Karima.",
+        "audio_url": "http://127.0.0.1:54421/storage/v1/object/public/leren-audio/fragment/a2-luisteren/d2-telefoongesprek-2.mp3",
+        "voice_cast": {
+          "A": "woman_young",
+          "B": "man_young"
+        },
+        "transcript": "Woningstichting Nieuwveld, met Karima. Goedemiddag, ik ben Peter Bosman van de Lijsterstraat 24. Mijn kraan in de keuken lekt. Lekt hij hard? Nogal, ja. Er staat water op de vloer. Dan stuur ik een loodgieter. Die komt vrijdag tussen één en drie uur. Vrijdagmiddag, dat is goed. Moet ik iets betalen? Nee, een lekkende kraan valt onder ons onderhoud. U betaalt niets. Fijn. En moet ik nog iets regelen? Zet u alstublieft de spullen onder de gootsteen weg. En zorg dat iemand thuis is. Doe ik. Bedankt, Karima.",
+        "seconds": 33.59
+      }
+    },
+    {
+      "kind": "mcq",
+      "tier": 0,
+      "explanation": "Karima zegt dat de loodgieter vrijdag tussen één en drie uur komt.",
+      "options": [
+        {
+          "label": "A",
+          "body": "Vrijdag tussen één en drie uur",
+          "is_correct": true
+        },
+        {
+          "label": "B",
+          "body": "Vrijdag om drie uur precies",
+          "is_correct": false
+        },
+        {
+          "label": "C",
+          "body": "Vandaag tussen één en drie uur",
+          "is_correct": false
+        }
+      ],
+      "payload": {
+        "prompt": "Wanneer komt de loodgieter?"
+      }
+    },
+    {
+      "kind": "mcq",
+      "tier": 1,
+      "explanation": "Karima zegt dat een lekkende kraan onder het onderhoud van de woningstichting valt: hij betaalt niets.",
+      "options": [
+        {
+          "label": "A",
+          "body": "Niets",
+          "is_correct": true
+        },
+        {
+          "label": "B",
+          "body": "Alleen de eerste kosten van de loodgieter",
+          "is_correct": false
+        },
+        {
+          "label": "C",
+          "body": "Dat hoort hij vrijdag van de loodgieter",
+          "is_correct": false
+        }
+      ],
+      "payload": {
+        "prompt": "Hoeveel moet Peter betalen?"
+      }
+    },
+    {
+      "kind": "mcq",
+      "tier": 1,
+      "explanation": "Karima vraagt om de spullen onder de gootsteen weg te zetten en dat er iemand thuis is.",
+      "options": [
+        {
+          "label": "A",
+          "body": "De kraan zelf dichtdraaien en water opruimen",
+          "is_correct": false
+        },
+        {
+          "label": "B",
+          "body": "De spullen onder de gootsteen weghalen en thuis zijn",
+          "is_correct": true
+        },
+        {
+          "label": "C",
+          "body": "Een brief sturen naar de woningstichting",
+          "is_correct": false
+        }
+      ],
+      "payload": {
+        "prompt": "Wat moet Peter doen voordat de loodgieter komt?"
+      }
+    }
+  ],
+  "what_you_learn": "Je oefent met twee telefoongesprekken zoals in het examen. Je hoort een fragment één keer en kiest daarna het juiste antwoord. Je let op een detail, op de hoofdgedachte en op wat iemand moet doen."
+}

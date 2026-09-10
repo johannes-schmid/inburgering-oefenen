@@ -1,25 +1,57 @@
 import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import { getTranslations } from 'next-intl/server';
-import { ArrowRight, Check, Lock, Clock, ListChecks, RotateCcw } from 'lucide-react';
 import { createClient } from '@/lib/supabase/server';
 import { ownsModule } from '@/lib/entitlements';
 import { emptyLevelledProgress, fetchPortalProgress, fetchPublishedExamNumbers } from '@/lib/portal-progress';
-import { formatCount, getSkillAtLevel, isFreeExam, isLevel, levelLabel } from '@/data/skills';
+import { getSkillAtLevel, isLevel } from '@/data/skills';
 import CriterionProgress from '@/components/exam/CriterionProgress';
 import { fetchCriterionSeries } from '@/lib/criterion-progress';
 import { fetchCourse } from '@/lib/lessons/lessons-server';
 import { fetchConcepts, fetchMastery, fetchTeachersForCourse } from '@/lib/lessons/concepts-server';
 import { readiness } from '@/lib/lessons/readiness';
-import PortalHero from '../../_components/PortalHero';
-import StrengthWeakness, { type SwRow } from '../../_components/StrengthWeakness';
-import { blockProgress, courseProgressPct, coursePath, lessonPath, nextLesson } from '@/lib/lessons/lessons';
-import { HorizonBand } from '@/components/horizon';
+import { buildLeerroute } from '@/lib/lessons/leerroute';
+import { fetchWordCounts } from '@/lib/lessons/words-server';
+import { wordsPath } from '@/lib/lessons/words';
+import { calculateSlaagkans } from '@/lib/exam-readiness';
+import SkillStatBar from '../../_components/SkillStatBar';
+import TrackCard from '../../_components/TrackCard';
+import { type SwRow } from '../../_components/StrengthWeakness';
+import { blockProgress, lessonPath, type ConceptKind } from '@/lib/lessons/lessons';
+import { spoorPath, type SpoorSlug } from '@/lib/lessons/sporen';
+import { skillTrail } from '@/lib/portal-crumbs';
+import PortalCrumbs from '../../../components/PortalCrumbs';
+import { sporenFromBlocks } from '@/lib/lessons/sporen-server';
+import { CategoryMark, type Category } from '@/components/horizon';
 import AppShell from '../../../components/AppShell';
-import ExamListStyles from '../../_components/ExamListStyles';
+import ExamStrip from '../../_components/ExamStrip';
 import { fetchPortalMenu } from '@/lib/portal-menu';
 
 type Props = { params: Promise<{ locale: string; level: string; skill: string }> };
+
+/**
+ * De mark per stap van de leerroute.
+ *
+ * `ConceptKind` heet `strategie` in de database en **Examentraining** op het scherm: de eerste
+ * is wat het is, de tweede is wat je erin doet. Deze map is de enige plek waar die twee namen
+ * aan elkaar zitten, zodat een naamswijziging op het scherm geen migratie is.
+ */
+/**
+ * Van conceptsoort naar leerspoor.
+ *
+ * `strategie` heet in de URL en op het scherm `examentraining`: het eerste is het woord van de
+ * database, het tweede dat van de kandidaat. Deze regel is de enige plek waar ze elkaar raken.
+ */
+const SPOOR_OF_KIND = {
+  grammatica: 'taalregels',
+  strategie: 'examentraining',
+} as const satisfies Record<Exclude<ConceptKind, 'woordenschat'>, SpoorSlug>;
+
+const LEER_MARK = {
+  woordenschat: 'woorden',
+  grammatica: 'grammatica',
+  strategie: 'examentraining',
+} as const satisfies Record<ConceptKind, Category>;
 
 export const metadata: Metadata = {
   title: 'Oefenexamens | Inburgering Oefenen',
@@ -47,7 +79,6 @@ export default async function SkillExamsPage({ params }: Props) {
 
   const t = await getTranslations('portal');
   const tSkills = await getTranslations('skills');
-  const tLessons = await getTranslations('lessons');
 
   const supabase = await createClient();
   const { data: { user } } = await supabase.auth.getUser();
@@ -80,9 +111,6 @@ export default async function SkillExamsPage({ params }: Props) {
   // De lescursus van dit onderdeel. Een leeg resultaat betekent dat de docent nog niets heeft
   // vrijgegeven; dan komt er geen kaart in plaats van een kaart die naar een 404 wijst.
   const blocks = await fetchCourse(level, skill.slug, user?.id ?? null);
-  const hasCourse = blocks.some(b => b.lessons.length > 0);
-  const coursePct = hasCourse ? courseProgressPct(blocks) : 0;
-  const courseNext = hasCourse ? nextLesson(blocks) : null;
   const lessonsDone = blocks.reduce((n, b) => n + blockProgress(b).done, 0);
   const lessonsTotal = blocks.reduce((n, b) => n + b.lessons.length, 0);
 
@@ -106,30 +134,62 @@ export default async function SkillExamsPage({ params }: Props) {
    *
    * Alleen concepten die in dít onderdeel voorkomen (`fetchConcepts` filtert op
    * `concept_onderdelen`), want "signaalwoorden" beheersen in Lezen zegt niets over Schrijven
-   * — daar moet je ze maken. Zes rijen: de zwakste eerst, dan wat nog geen data heeft, zodat
-   * de kaart iets zegt in plaats van dertig regels te zijn.
+   * — daar moet je ze maken. De zwakste eerst, dan wat nog geen data heeft; `DocentPanel`
+   * beslist zelf hoeveel rijen het paneel draagt.
    */
   const concepts = user ? await fetchConcepts(level, skill.slug) : [];
   const mastery = await fetchMastery(user?.id ?? null, concepts.map(c => c.id));
   const teachers = await fetchTeachersForCourse(level, skill.slug, concepts.map(c => c.id));
-  /**
-   * De vier lessen ná de eerstvolgende — de kaart vertelt dan niet alleen waar je verdergaat maar
-   * ook wat eraan komt. Zonder dit stond er onder "ga verder bij" een half lege kaart naast een
-   * volle kaart met sterk & zwak, en dat leest als iets dat nog niet af is.
-   */
-  const upcoming = blocks
-    .flatMap(b => b.lessons.map(l => ({ ...l, letter: b.letter })))
-    .filter(l => l.progress?.state !== 'done')
-    .slice(1, 5);
-
   const swRows: SwRow[] = concepts
     .map(c => ({
       concept: c,
       mastery: mastery.get(c.id) ?? null,
       lessonHref: teachers.has(c.id) ? lessonPath(level, skill.slug, teachers.get(c.id)!.slug) : null,
     }))
-    .sort((a, b) => (a.mastery?.mastery_pct ?? 101) - (b.mastery?.mastery_pct ?? 101))
-    .slice(0, 6);
+    .sort((a, b) => (a.mastery?.mastery_pct ?? 101) - (b.mastery?.mastery_pct ?? 101));
+
+  /**
+   * De leerroute: woordenschat → grammatica → examentraining.
+   *
+   * De drie stappen zijn `ConceptKind`, niet een indeling die hier wordt verzonnen — zie
+   * `lib/lessons/leerroute.ts`. De oefenhelft van de derde stap is de `practice`-helft van
+   * `readiness()`, zodat er één formule voor "hoe goed sta je op de tien examens" bestaat.
+   */
+  const wordCounts = await fetchWordCounts(level, skill.slug, user?.id ?? null);
+  /* De lessentelling komt uit de sporen en niet uit de `teaches`-relatie, zodat de kaart
+     hetzelfde getal noemt als het spoorscherm waar hij naartoe wijst. */
+  const sporen = await sporenFromBlocks(blocks, level, skill.slug, user?.id ?? null);
+  const leerroute = buildLeerroute({
+    concepts, mastery, teachers, blocks, examPractice: r.practice, wordCounts,
+    spoorLessons: {
+      grammatica: sporen.find(s => s.slug === 'taalregels'),
+      strategie: sporen.find(s => s.slug === 'examentraining'),
+    },
+    /* De middelste stap heet in élke cursus Taalregels: zie `Spoor.name`. */
+  });
+
+  /**
+   * De slaagkans-meter, dezelfde als op KNM.
+   *
+   * `calculateSlaagkans` weegt het gemiddelde tegen een prior van 50 en wordt pas na vijf
+   * examens volledig zeker — één examen van 90% mag niet als "90% slaagkans" lezen. De scores
+   * zijn de *beste* score per examen, want dat is wat de kandidaat aankan; een verprutste
+   * eerste poging die hij daarna heeft rechtgezet hoort hem niet te blijven achtervolgen.
+   */
+  /**
+   * De leerroute is drie kaarten, en er komt niets naast (besluit eigenaar, 10-09).
+   *
+   * Woorden → de taalregels die dit examen vraagt → het examen zelf. Er stonden hier eerst een
+   * vierde kaart *Alle taalregels* en daarna een bibliotheek als eigen menu-item; beide zijn
+   * vervallen. Alle regels van dít onderdeel staan nu ín stap 2, als eigen modules — zie
+   * `fetchRuleModules`. Een verzameling om in te grasduinen is navigatie, geen stap in een
+   * genummerde route, en naast een genummerde route wordt hij als stap gelezen.
+   */
+
+  const examScores = Object.values(p.exams)
+    .map(e => e.bestPct)
+    .filter((x): x is number => x != null);
+  const kans = calculateSlaagkans(examScores);
 
   return (
     <AppShell
@@ -144,166 +204,121 @@ export default async function SkillExamsPage({ params }: Props) {
       <div className="px-5 py-7 sm:px-8 sm:py-10">
         <div className="max-w-5xl mx-auto">
 
-          <PortalHero
-            back={{ href: `/${locale}/dashboard/${level}`, label: t('level_section', { level: levelLabel(level) }) }}
-            kicker={`${levelLabel(level)} · ${t('kicker_onderdeel')}`}
-            title={tSkills(`${skill.key}.name`)}
-            lede={tSkills(`${skill.key}.tagline`)}
-            seed={skill.slug.length}
-            ring={{
-              pct: r.pct,
-              label: t('readiness_label'),
-              note: t('readiness_note'),
-              aria: r.pct === null ? t('readiness_unknown_aria') : t('readiness_aria', { pct: r.pct }),
-            }}
-            tiles={[
-              {
-                label: t('stat_exams'),
-                value: t('stat_exams_value', { done: p.examsDone, total: skill.examCount }),
-                sub: p.averagePct != null ? t('card_average', { pct: p.averagePct }) : undefined,
-              },
-              {
-                label: t('stat_items'),
-                value: formatCount(skill.itemCount),
-                sub: t('stat_duration_value', { minutes: formatCount(skill.durationMinutes) }),
-              },
-            ]}
+          {/* De kop is één regel. De navy paginakop is er op 02-09 af gehaald (besluit van
+              de eigenaar): op dit scherm staat de diagnose bovenaan, en een kop met tegels
+              die dezelfde cijfers nog eens noemt duwde die diagnose onder de fold. De
+              zijbalk vertelt al waar je bent, dus de terugknop is hier ook weg. */}
+          <PortalCrumbs
+            trail={skillTrail({
+              locale, level, skill: skill.slug, last: true,
+              overviewLabel: t('crumb_overview'),
+              skillName: slug => tSkills(`${slug}.name`),
+            })}
           />
 
-          {isRubric && <p className="rubric-note mb-5">{t('rubric_note')}</p>}
+          {/* De kop is één balk over de volle breedte: links de naam, rechts de slaagkans en de
+              drie concepten waar je nu het meeste laat liggen (mockup van de eigenaar, 08-09).
+              Dat vervangt zowel de losse kop als de zijkolom van deze pagina — die zeiden dit,
+              maar in twee blokken en met de diagnose onder de fold. */}
+          <SkillStatBar
+            locale={locale}
+            level={level}
+            skill={skill.slug}
+            title={tSkills(`${skill.key}.name`)}
+            tagline={tSkills(`${skill.key}.tagline`)}
+            rows={swRows}
+            slaagkans={kans.slaagkans}
+            band={kans.band}
+            examsCount={examScores.length}
+            avgScore={kans.avgScore}
+          />
 
-          {/* De cursus, boven de examens.
-              Bewust in deze volgorde: leren gaat aan toetsen vooraf, en wie hier komt om
-              examen 4 te maken vindt de examenlijst er direct onder. De voortgang staat op
-              deze kaart en niet in de portaalchrome — dat paneel draagt één as (de tien
-              examens), per de beslissing van de eigenaar van 27-08. */}
-          <div className="grid gap-4 sm:gap-5 lg:grid-cols-2 mb-7 items-stretch">
-          {hasCourse && (
-            <a href={`/${locale}${coursePath(level, skill.slug)}`} className="course-card">
-              <span className="cc-top">
-                <span className="mini-label" style={{ margin: 0 }}>{tLessons('card_head')}</span>
-                <span className="cc-pct">{coursePct}%</span>
-              </span>
-              <span className="cc-line">
-                {tLessons('course_progress', { done: lessonsDone, total: lessonsTotal })}
-              </span>
-              <HorizonBand progress={coursePct} rounded height={6} />
-              {courseNext && (
-                <span className="cc-next">
-                  <span className="cb-letter">{courseNext.block.letter}</span>
-                  <span className="min-w-0">
-                    <span className="block text-[0.7rem] font-bold uppercase tracking-wider text-on-surface-variant">
-                      {tLessons('continue')}
-                    </span>
-                    <span className="block font-extrabold text-on-surface truncate">
-                      {courseNext.lesson.title}
-                    </span>
-                  </span>
-                  <ArrowRight size={17} strokeWidth={2.5} className="ms-auto shrink-0 text-secondary rtl-flip" />
-                </span>
-              )}
-              {upcoming.length > 0 && (
-                <span className="cc-list">
-                  {upcoming.map(u => (
-                    <span key={u.slug} className="cc-row">
-                      <span className="cc-dot" aria-hidden />
-                      <span className="cc-nm">{u.title}</span>
-                      {u.minutes != null && <span className="cc-min">{t('minutes', { n: u.minutes })}</span>}
-                    </span>
-                  ))}
-                </span>
-              )}
-            </a>
-          )}
+          {isRubric && <p className="rubric-note mt-4">{t('rubric_note')}</p>}
 
-          {/* Sterk & zwak staat naast de cursus en niet onder de examens: het is het antwoord
-              op "wat moet ik nog leren", en dat is dezelfde vraag als de cursuskaart stelt. */}
-          <StrengthWeakness locale={locale} rows={swRows} />
-          </div>
+            {/* De leerroute. De volgorde is dragend: woorden, dan regels, dan het examen zelf.
+                Elke stap krijgt één getal van 0–100 uit lessen én oefenvragen samen — zie
+                `lib/lessons/leerroute.ts`. Een stap waar de docent nog geen concept van heeft
+                vrijgegeven rendert als lege kaart met een streepje, niet als 0%. */}
+            <section className="mb-7">
+              <h2 className="mini-head">{t('leerroute_head')}</h2>
+              {/* Dezelfde kaart als de modules en de onderdelen, drie op een rij. Het merkteken
+                  is de leerroute-mark op het navy paneel, en de voet draagt de feiten van de
+                  stap in plaats van een examenstelling — die heeft een leerspoor niet. */}
+              <div className={'ov-cards is-three'}>
+                {leerroute.map((m, i) => (
+                  <TrackCard
+                    key={m.kind}
+                    layer="onderdeel"
+                    mark={<CategoryMark category={LEER_MARK[m.kind]} size={56} tone="dark" />}
+                    sub={t('leerroute_step', { n: i + 1, total: leerroute.length })}
+                    title={m.title ?? t(`leerroute_${m.kind}_title`)}
+                    state={m.score === null ? 'open' : 'active'}
+                    note={m.hasContent ? null : t('leerroute_empty')}
+                    pct={m.score}
+                    progressLabel={null}
+                    meta={[
+                      /* De woordkaarten zijn het enige harde getal dat Woordenschat heeft zolang
+                         de docent er geen concept van heeft vrijgegeven, dus die staat vooraan. */
+                      ...(m.words
+                        ? [{
+                            icon: 'parts' as const,
+                            label: `${t('leerroute_fact_words')} ${t('leerroute_fact_of', { done: m.words.known, total: m.words.total })}`,
+                          }]
+                        : []),
+                      /* De lessen zodra er lessen zijn, de concepten zodra er concepten zijn —
+                         twee aparte vragen, en ze samen op `conceptCount` hangen liet de
+                         Uitspraak-kaart van Spreken zonder lessentelling staan terwijl er zes
+                         lessen onder zaten. Blok B leunt daar op strategieconcepten, en die
+                         tellen mee in stap 3. Zelfde fout als `hasContent` had. */
+                      ...(m.lessonsTotal > 0
+                        ? [{
+                            icon: 'parts' as const,
+                            label: `${t('leerroute_fact_lessons')} ${t('leerroute_fact_of', { done: m.lessonsDone, total: m.lessonsTotal })}`,
+                          }]
+                        : []),
+                      /* Géén conceptentelling op de regelstap. `conceptCount` telt de regels
+                         van dit onderdeel (20 bij Luisteren), de stap telt lessen (23: vijf
+                         eigen plus achttien regellessen). Twee getallen naast elkaar over
+                         bijna-hetzelfde lezen als een fout, niet als twee feiten — en drie
+                         regels hebben nog geen les, dus ze zullen ook nooit gelijk zijn. */
+                      ...(m.conceptCount > 0 && m.kind !== 'grammatica'
+                        ? [{
+                            icon: 'exams' as const,
+                            label: `${t('leerroute_fact_concepts')} ${t('leerroute_fact_of', { done: m.conceptsStrong, total: m.conceptCount })}`,
+                          }]
+                        : []),
+                    ]}
+                    /* Elke stap wijst naar zijn eigen overzicht, niet naar één les diep erin:
+                       daar staat wat er is en waar je verdergaat. */
+                    cta={m.kind === 'woordenschat' ? t('leerroute_cta_words') : t('leerroute_cta_modules')}
+                    href={
+                      !m.hasContent
+                        ? null
+                        : m.kind === 'woordenschat'
+                          ? `/${locale}${wordsPath(level, skill.slug)}`
+                          : `/${locale}${spoorPath(level, skill.slug, SPOOR_OF_KIND[m.kind])}`
+                    }
+                    soonLabel={t('tag_soon')}
+                  />
+                ))}
+              </div>
+            </section>
 
-          {criterionSeries.length > 0 && <CriterionProgress series={criterionSeries} className="mb-6" />}
+            {criterionSeries.length > 0 && <CriterionProgress series={criterionSeries} className="mb-6" />}
 
-          <h2 className="mini-head">{t('practice_card_title')}</h2>
-          <ol className="flex flex-col gap-2.5">
-            {Array.from({ length: skill.examCount }, (_, i) => i + 1).map(n => {
-              const done = p.exams[n];
-              const isPublished = pub.has(n);
-              const free = isFreeExam(level, n);
-              // A guest can open nothing, the free slot included: creating the account *is*
-              // the step being sold here, and a free exam that opened without one would
-              // leave nothing to sign up for.
-              const openable = isPublished && !isGuest && (free || ownsThisSkill);
+            <ExamStrip
+              locale={locale}
+              level={level}
+              skill={skill}
+              progress={p}
+              published={pub}
+              isGuest={isGuest}
+              owns={ownsThisSkill}
+            />
 
-              const href = openable
-                ? `/${locale}/oefenexamen/${level}/${skill.slug}/${n}`
-                : isGuest && isPublished
-                  ? `/${locale}/register?next=/oefenexamen/${level}/${skill.slug}/${n}`
-                : isPublished
-                  // `onderdeel` carries the full module id, so the picker preselects the
-                  // right level's module rather than defaulting to A2's.
-                  ? `/${locale}/dashboard/pakketten?onderdeel=${level}:${skill.slug}&vanaf=oefenexamen-${n}`
-                  : undefined;
-
-              const Row = href ? 'a' : 'div';
-
-              return (
-                <li key={n}>
-                  <Row
-                    {...(href ? { href } : {})}
-                    className={`exam-row no-underline${openable ? '' : ' is-locked'}`}
-                  >
-                    <span className={`exam-num${done ? (done.passed ? ' passed' : ' sat') : ''}`}>
-                      {done?.passed ? <Check size={16} strokeWidth={3} /> : n}
-                    </span>
-
-                    <span className="min-w-0 flex-1">
-                      <span className="exam-title">
-                        {t('exam_row_title', { number: n })}
-                        {free && <span className="badge badge-free">{tSkills('free_badge')}</span>}
-                      </span>
-                      <span className="exam-sub">
-                        {/* A sat exam shows its score even if the slot was later unpublished —
-                            "nog niet beschikbaar" under a checkmark contradicts itself. */}
-                        {!isPublished && !done ? (
-                          t('exam_row_unpublished')
-                        ) : done ? (
-                          <>
-                            {done.bestPct != null
-                              ? t('exam_row_best', { pct: done.bestPct })
-                              : t('exam_row_awaiting')}
-                            {done.attempts > 1 && ` · ${t('exam_row_attempts', { count: done.attempts })}`}
-                          </>
-                        ) : (
-                          <>
-                            <ListChecks size={12} strokeWidth={2} className="inline-block mr-1 -mt-px" />
-                            {formatCount(skill.itemCount)}
-                            <Clock size={12} strokeWidth={2} className="inline-block ml-2.5 mr-1 -mt-px" />
-                            {t('stat_duration_value', { minutes: formatCount(skill.durationMinutes) })}
-                          </>
-                        )}
-                      </span>
-                    </span>
-
-                    <span className="exam-action" aria-hidden="true">
-                      {/* No "Binnenkort beschikbaar" label here: the sub-line already says it,
-                          and at 390px the two wrapped into each other. */}
-                      {!openable ? (
-                        <Lock size={16} strokeWidth={2.1} />
-                      ) : done ? (
-                        <RotateCcw size={16} strokeWidth={2.1} />
-                      ) : (
-                        <ArrowRight size={16} strokeWidth={2.3} />
-                      )}
-                    </span>
-                  </Row>
-                </li>
-              );
-            })}
-          </ol>
         </div>
       </div>
 
-      <ExamListStyles />
     </AppShell>
   );
 }

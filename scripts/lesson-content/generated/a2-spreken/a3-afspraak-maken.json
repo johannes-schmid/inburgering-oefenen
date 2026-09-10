@@ -1,0 +1,194 @@
+{
+  "items": [
+    {
+      "kind": "uitleg",
+      "tier": null,
+      "explanation": null,
+      "payload": {
+        "body_html": "<p>Je maakt een afspraak als je naar de dokter, de gemeente of een school moet. Meestal bel je op, of je vraagt het aan de balie.</p><p>Hieronder staan de zinnen die je dan kunt zeggen. Je kunt ze letterlijk gebruiken.</p>",
+        "cards": [
+          {
+            "label": "AAN DE TELEFOON",
+            "example_html": "Goedemorgen, ik wil graag <mark>een afspraak maken</mark>."
+          },
+          {
+            "label": "AAN DE BALIE",
+            "example_html": "Kunt u mij <mark>een tijdstip</mark> geven op dinsdag?"
+          }
+        ]
+      }
+    },
+    {
+      "kind": "woordenlijst",
+      "tier": null,
+      "explanation": null,
+      "payload": {
+        "theme": "afspraak-maken"
+      }
+    },
+    {
+      "kind": "zinnenbank",
+      "tier": null,
+      "explanation": null,
+      "payload": {
+        "columns": [
+          {
+            "heading": "Een afspraak vragen",
+            "phrases": [
+              "Goedemiddag, ik wil graag een afspraak maken.",
+              "Heeft u woensdag nog een tijdstip vrij?",
+              "Kan ik volgende week langskomen?",
+              "Wanneer bent u beschikbaar?"
+            ]
+          },
+          {
+            "heading": "Een tijd afspreken",
+            "phrases": [
+              "Dinsdag om tien uur schikt mij goed.",
+              "Die tijd komt mij niet gelegen.",
+              "Ik ben vrijdag vrij, dan kan ik komen.",
+              "Kunt u de afspraak nog bevestigen?"
+            ]
+          },
+          {
+            "heading": "Veranderen of afzeggen",
+            "phrases": [
+              "Ik wil mijn afspraak verzetten naar donderdag.",
+              "Ik moet de afspraak helaas afzeggen.",
+              "Kunt u mij doorverbinden met de assistente?",
+              "Kunt u mij vanmiddag terugbellen?"
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "kind": "matchen",
+      "tier": 0,
+      "explanation": "Elke zin hoort bij één situatie. Je kijkt naar het werkwoord in de zin: verzetten is veranderen, afzeggen is niet komen.",
+      "payload": {
+        "instruction": "Welke zin past bij welke situatie? Maak de juiste paren.",
+        "pairs": [
+          {
+            "left": "Je bent ziek en komt niet.",
+            "right": "Ik moet de afspraak afzeggen."
+          },
+          {
+            "left": "Je wilt een andere dag.",
+            "right": "Ik wil de afspraak verzetten naar maandag."
+          },
+          {
+            "left": "Je komt aan bij de balie.",
+            "right": "Goedemiddag, ik kom mij melden."
+          },
+          {
+            "left": "Je wilt met een andere medewerker praten.",
+            "right": "Kunt u mij doorverbinden?"
+          },
+          {
+            "left": "Je wilt weten of de tijd zeker klopt.",
+            "right": "Kunt u de afspraak bevestigen?"
+          }
+        ]
+      }
+    },
+    {
+      "kind": "gap_choice",
+      "tier": 1,
+      "explanation": "Je kiest 'bellen', want je gebruikt de telefoon om de dokter te bereiken.",
+      "payload": {
+        "sentence": "Ik ga vanmiddag naar de huisarts ___ voor een afspraak.",
+        "choices": [
+          "bellen",
+          "melden",
+          "schikken"
+        ],
+        "answer": "bellen"
+      }
+    },
+    {
+      "kind": "gap_choice",
+      "tier": 1,
+      "explanation": "'Schikt' betekent: het past goed in je agenda. Bij een voorgestelde tijd zeg je dat die je goed schikt.",
+      "payload": {
+        "sentence": "Donderdag om half drie ___ mij goed.",
+        "choices": [
+          "schikt",
+          "meldt",
+          "bevestigt"
+        ],
+        "answer": "schikt"
+      }
+    },
+    {
+      "kind": "gap_choice",
+      "tier": 1,
+      "explanation": "In de wachtkamer zit je tot je aan de beurt bent. 'De beurt' is het moment dat jij mag komen.",
+      "payload": {
+        "sentence": "Gaat u in de wachtkamer zitten, dan roep ik u als u aan de ___ bent.",
+        "choices": [
+          "beurt",
+          "balie",
+          "spoed"
+        ],
+        "answer": "beurt"
+      }
+    },
+    {
+      "kind": "gap_type",
+      "tier": 2,
+      "explanation": "Je zegt dat je niet komt: dat is 'afzeggen'. Na 'moet' komt het hele werkwoord.",
+      "payload": {
+        "sentence": "Ik ben ziek, dus ik moet mijn afspraak van morgen ___.",
+        "answer": "afzeggen"
+      }
+    },
+    {
+      "kind": "gap_type",
+      "tier": 2,
+      "explanation": "Een kaart of boekje met je naam en foto is je legitimatiebewijs. Bij de gemeente moet je die altijd meenemen.",
+      "payload": {
+        "sentence": "Neem bij het loket uw paspoort of een ander ___ mee.",
+        "answer": "legitimatiebewijs"
+      }
+    },
+    {
+      "kind": "gap_type",
+      "tier": 2,
+      "explanation": "Het precieze uur waarop iets begint, is het tijdstip. Je vraagt dus om een ander tijdstip.",
+      "payload": {
+        "sentence": "Om negen uur kan ik niet. Heeft u een later ___?",
+        "answer": "tijdstip"
+      }
+    },
+    {
+      "kind": "open_zin",
+      "tier": 2,
+      "explanation": "Je noemt eerst wat je wil (een afspraak maken) en daarna een dag of tijdstip. Zo weet de medewerker meteen genoeg.",
+      "payload": {
+        "prompt": "Je belt de tandarts. Je wilt een afspraak maken. Je bent alleen op vrijdag vrij. Wat zeg je?",
+        "model_answer": "Goedemorgen, u spreekt met Amina Yildiz. Ik wil graag een afspraak maken. Ik ben alleen op vrijdag vrij. Heeft u dan nog een tijdstip beschikbaar?",
+        "checklist": [
+          "Je zegt dat je een afspraak wil maken.",
+          "Je noemt de dag dat je vrij bent.",
+          "Je vraagt naar een tijdstip."
+        ]
+      }
+    },
+    {
+      "kind": "open_zin",
+      "tier": 2,
+      "explanation": "Je vraagt om te verzetten en je geeft zelf een nieuwe dag. Dan gaat het gesprek sneller.",
+      "payload": {
+        "prompt": "Je hebt maandag een afspraak bij de gemeente. Die tijd komt je niet gelegen, want je moet werken. Wat zeg je aan de telefoon?",
+        "model_answer": "Goedemiddag, ik heb maandag om tien uur een afspraak. Die tijd komt mij niet gelegen, want ik moet werken. Kan ik de afspraak verzetten naar woensdag?",
+        "checklist": [
+          "Je zegt welke afspraak je hebt.",
+          "Je legt uit waarom die tijd niet schikt.",
+          "Je vraagt om de afspraak te verzetten."
+        ]
+      }
+    }
+  ],
+  "what_you_learn": "Je leert de woorden die je nodig hebt als je een afspraak maakt, zoals het tijdstip, de balie en de wachtkamer. Je leert vaste zinnen om aan de telefoon of aan de balie een afspraak te vragen. Ook kun je een afspraak verzetten of afzeggen en om een andere dag vragen."
+}

@@ -1,0 +1,34 @@
+# De ingesproken uitleg van `b18-modale-werkwoorden`.
+# Regels met # zijn commentaar. [[id]] of [[id | extra uitleg]] markeert waar de stem over
+# welk element begint; de extra uitleg staat op de pagina bij dat element en mag niet herhalen
+# wat de stem net zei.
+# Geldige id's: vis, vis-1 t/m vis-3, rule, card-0, card-1, demo-0, demo-1, exercises.
+
+Deze les gaat over moeten, mogen, hoeven, kunnen en willen.
+
+[[vis-1 | Eén werkwoord, en dat staat op plaats twee.]]
+Kijk naar het plaatje. In de eerste rij staat een zin met één werkwoord: ik ga naar de dokter.
+
+[[vis-2 | Gaan blijft in de hele vorm. Het verandert niet mee.]]
+In de tweede rij staan er twee werkwoorden. Moet staat op plaats twee. En gaan staat helemaal achteraan, in de hele vorm.
+
+[[vis-3 | Deze fout komt uit andere talen, waar de werkwoorden wél naast elkaar staan.]]
+De derde rij is fout. Daar staan de twee werkwoorden naast elkaar: ik moet gaan naar de dokter. In het Nederlands staat het tweede werkwoord achteraan.
+
+[[rule | Na hoeven staat altijd te: je hoeft niet te betalen.]]
+Let ook op het woordje te. Na moeten, mogen, kunnen en willen staat geen te. Na hoeven staat wel te.
+
+[[card-0 | Moeten, mogen, kunnen en willen: zonder te.]]
+De eerste kaart is de groep zonder te.
+
+[[card-1 | Hoeven is het enige van de vijf met te.]]
+De tweede kaart is de vorm met te.
+
+[[demo-0 | Bellen staat achteraan, in de hele vorm.]]
+Twee voorbeelden. In de wachtkamer mag je niet bellen, want dat stoort andere mensen.
+
+[[demo-1 | Te betalen: hoeven vraagt om te.]]
+En: je hoeft vandaag niet te betalen; de rekening komt volgende week.
+
+[[exercises]]
+Doe nu de opgaven. Zoek het tweede werkwoord aan het eind van de zin.

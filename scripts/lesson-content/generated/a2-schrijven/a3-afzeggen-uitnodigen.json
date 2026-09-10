@@ -1,0 +1,194 @@
+{
+  "items": [
+    {
+      "kind": "uitleg",
+      "tier": null,
+      "explanation": null,
+      "payload": {
+        "body_html": "<p>Soms nodig je iemand uit voor een feest of een afspraak. Soms moet je juist <strong>afzeggen</strong>: je laat weten dat je niet komt. Voor beide dingen zijn er vaste zinnen die je zo kunt overnemen in een e-mail of een briefje.</p>",
+        "cards": [
+          {
+            "label": "UITNODIGEN",
+            "example_html": "Ik <mark>vier</mark> mijn verjaardag op 12 mei. Kom je ook?"
+          },
+          {
+            "label": "AFZEGGEN",
+            "example_html": "<mark>Helaas</mark> ben ik verhinderd. Ik kan niet komen."
+          }
+        ]
+      }
+    },
+    {
+      "kind": "woordenlijst",
+      "tier": null,
+      "explanation": null,
+      "payload": {
+        "theme": "afzeggen-uitnodigen"
+      }
+    },
+    {
+      "kind": "zinnenbank",
+      "tier": null,
+      "explanation": null,
+      "payload": {
+        "columns": [
+          {
+            "heading": "Iemand uitnodigen",
+            "phrases": [
+              "Ik vier mijn verjaardag op zaterdag 8 juni.",
+              "Kom je ook? Het wordt heel gezellig.",
+              "Je bent van harte welkom bij ons thuis.",
+              "Wil je me laten weten of je komt?"
+            ]
+          },
+          {
+            "heading": "Afzeggen of afmelden",
+            "phrases": [
+              "Helaas kan ik niet komen.",
+              "Ik ben verhinderd, want ik moet werken.",
+              "Ik wil me graag afmelden voor de bijeenkomst.",
+              "Mijn excuses voor het late bericht."
+            ]
+          },
+          {
+            "heading": "Een afspraak verzetten",
+            "phrases": [
+              "Kunnen we de afspraak verzetten?",
+              "Past een andere datum ook?",
+              "Ik hoop dat volgende week wel lukt.",
+              "Wilt u mij laten weten wat u past?"
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "kind": "matchen",
+      "tier": 0,
+      "explanation": "Je kijkt bij elke zin naar het doel: nodig je iemand uit, zeg je af, of vraag je een andere dag?",
+      "payload": {
+        "instruction": "Welke zin hoort bij welke situatie? Maak de goede paren.",
+        "pairs": [
+          {
+            "left": "Kom je ook naar mijn feest?",
+            "right": "uitnodigen"
+          },
+          {
+            "left": "Helaas kan ik niet komen.",
+            "right": "afzeggen"
+          },
+          {
+            "left": "Kunnen we de afspraak verzetten?",
+            "right": "een andere datum vragen"
+          },
+          {
+            "left": "Ik meld mijn zoon af voor de les.",
+            "right": "afmelden"
+          },
+          {
+            "left": "Het wordt heel gezellig.",
+            "right": "uitnodigen"
+          }
+        ]
+      }
+    },
+    {
+      "kind": "gap_choice",
+      "tier": 1,
+      "explanation": "\"Verhinderd\" betekent dat je door iets anders niet kunt komen. Dat past hier bij de reden dat je moet werken.",
+      "payload": {
+        "sentence": "Ik ben op dinsdag ___, want ik moet die dag werken.",
+        "choices": [
+          "verhinderd",
+          "aanwezig",
+          "gezellig"
+        ],
+        "answer": "verhinderd"
+      }
+    },
+    {
+      "kind": "gap_choice",
+      "tier": 1,
+      "explanation": "Als het feest niet gebeurt zoals gepland, dan gaat het niet <em>door</em>. \"Doorgaan\" gebruik je voor wel of niet gebeuren.",
+      "payload": {
+        "sentence": "Het feest gaat niet ___, omdat er te weinig mensen zijn.",
+        "choices": [
+          "door",
+          "aanwezig",
+          "verzetten"
+        ],
+        "answer": "door"
+      }
+    },
+    {
+      "kind": "gap_choice",
+      "tier": 1,
+      "explanation": "\"Gelegenheid\" is de bijzondere dag of het moment waarvoor mensen samenkomen, zoals een jubileum.",
+      "payload": {
+        "sentence": "Wij vieren een bijzondere ___: mijn ouders zijn 40 jaar getrouwd.",
+        "choices": [
+          "gelegenheid",
+          "reden",
+          "datum"
+        ],
+        "answer": "gelegenheid"
+      }
+    },
+    {
+      "kind": "gap_type",
+      "tier": 2,
+      "explanation": "Je begint een afzegging vaak met \"helaas\". Dat woord zegt: het spijt me dat het zo is.",
+      "payload": {
+        "sentence": "___ kan ik zaterdag niet komen. Mijn excuses daarvoor.",
+        "answer": "Helaas"
+      }
+    },
+    {
+      "kind": "gap_type",
+      "tier": 2,
+      "explanation": "Een afspraak op een andere dag zetten heet \"verzetten\".",
+      "payload": {
+        "sentence": "Kunnen wij de afspraak ___ naar volgende week donderdag?",
+        "answer": "verzetten"
+      }
+    },
+    {
+      "kind": "gap_type",
+      "tier": 2,
+      "explanation": "Als je iemand op de hoogte brengt, laat je het weten. In deze zin hoort het werkwoord \"weten\" achter \"laten\".",
+      "payload": {
+        "sentence": "Wil je mij voor 1 juni laten ___ of je komt?",
+        "answer": "weten"
+      }
+    },
+    {
+      "kind": "open_zin",
+      "tier": 2,
+      "explanation": "In een afzegging noem je drie dingen: dat je niet komt, de reden, en excuses of een hoop voor later.",
+      "payload": {
+        "prompt": "Je bent uitgenodigd voor de verjaardag van je buurvrouw Anja op zaterdag 15 maart. Je kunt niet komen, want je moet werken. Schrijf een kort bericht van 2 of 3 zinnen waarin je afzegt.",
+        "model_answer": "Beste Anja, helaas kan ik zaterdag 15 maart niet komen. Ik ben verhinderd, omdat ik die dag moet werken. Mijn excuses, en ik hoop dat het een gezellige dag wordt.",
+        "checklist": [
+          "Je schrijft dat je niet komt (bijvoorbeeld met \"helaas\" of \"verhinderd\").",
+          "Je noemt de reden waarom je niet komt.",
+          "Je maakt excuses of je hoopt iets aardigs."
+        ]
+      }
+    },
+    {
+      "kind": "open_zin",
+      "tier": 2,
+      "explanation": "In een uitnodiging staan altijd de gelegenheid, de datum en de vraag of iemand komt.",
+      "payload": {
+        "prompt": "Je viert je verjaardag op zondag 6 april bij je thuis. Schrijf een korte uitnodiging van 2 of 3 zinnen voor je buren.",
+        "model_answer": "Beste buren, op zondag 6 april vier ik mijn verjaardag bij mij thuis. Jullie zijn van harte welkom vanaf drie uur; het wordt vast gezellig. Willen jullie mij laten weten of jullie komen?",
+        "checklist": [
+          "Je noemt de gelegenheid en de datum.",
+          "Je vraagt of de mensen komen.",
+          "Je gebruikt een vriendelijk woord, zoals \"graag\", \"welkom\" of \"gezellig\"."
+        ]
+      }
+    }
+  ],
+  "what_you_learn": "Je leert de woorden en vaste zinnen om iemand uit te nodigen of om af te zeggen. Je kunt in een e-mail of briefje opschrijven dat je komt, dat je verhinderd bent of dat je een afspraak wilt verzetten. Ook leer je hoe je netjes een reden en excuses noemt."
+}

@@ -1,0 +1,137 @@
+{
+  "items": [
+    {
+      "kind": "uitleg",
+      "tier": null,
+      "explanation": null,
+      "payload": {
+        "body_html": "<p>Je krijgt een plaatje te zien en je vertelt kort wat je ziet of wat je zou zeggen; in het examen heb je ongeveer <strong>30 seconden</strong> spreektijd per opdracht.</p>",
+        "cards": [
+          {
+            "label": "WAT ZIE JE",
+            "example_html": "Ik zie een vrouw bij de balie van de gemeente."
+          },
+          {
+            "label": "WAT ZEG JE",
+            "example_html": "Goedemiddag, ik kom mijn nieuwe pas ophalen."
+          }
+        ]
+      }
+    },
+    {
+      "kind": "opnemen",
+      "tier": 2,
+      "explanation": "Je noemt eerst wat er op het plaatje gebeurt en daarna wat je zelf zegt. Zo geef je een antwoord dat bij de situatie past.",
+      "payload": {
+        "prompt": "Op het plaatje zie je een man bij de balie van het stadhuis. Hij houdt een brief in zijn hand. Jij bent die man. Je hebt een brief van de gemeente gekregen, maar je begrijpt de brief niet. Zeg wat je aan de medewerker vraagt. Neem je antwoord op. Je hebt ongeveer 30 seconden.",
+        "model_answer": "Goedemiddag, ik heb deze brief van de gemeente gekregen. Ik begrijp niet goed wat ik moet doen. Kunt u het misschien even uitleggen?",
+        "checklist": [
+          "Je begint met een groet, bijvoorbeeld goedemiddag.",
+          "Je zegt dat je de brief niet begrijpt.",
+          "Je stelt een vraag om hulp."
+        ],
+        "image_urls": [],
+        "record_seconds": 60
+      }
+    },
+    {
+      "kind": "mcq",
+      "tier": 0,
+      "explanation": "Bij een plaatje van een winkel hoort een vraag aan de verkoper. Antwoord A past bij de situatie en is vriendelijk.",
+      "payload": {
+        "prompt": "Op het plaatje staat een vrouw in een kledingwinkel. Ze houdt een jas vast en kijkt naar het prijskaartje. Welk antwoord past in deze situatie?"
+      },
+      "options": [
+        {
+          "label": "A",
+          "body": "Pardon, kunt u mij zeggen wat deze jas kost?",
+          "is_correct": true
+        },
+        {
+          "label": "B",
+          "body": "Ik woon al vier jaar in Nederland.",
+          "is_correct": false
+        },
+        {
+          "label": "C",
+          "body": "Mijn dochter gaat morgen naar school.",
+          "is_correct": false
+        }
+      ]
+    },
+    {
+      "kind": "opnemen",
+      "tier": 2,
+      "explanation": "Je vertelt wat je ziet en je geeft een reden waarom je iets vraagt. Een reden maakt je antwoord duidelijk voor de ander.",
+      "payload": {
+        "prompt": "Op het plaatje zie je een keuken met water op de vloer. Onder de gootsteen lekt een buis. Jij bent de huurder. Je belt de woningbouw. Zeg wat er aan de hand is en wat je wilt. Neem je antwoord op. Je hebt ongeveer 30 seconden.",
+        "model_answer": "Goedemorgen, u spreekt met Amina Sahin van de Tulpstraat 12. Er lekt water onder mijn gootsteen en de vloer is nat. Kan er vandaag iemand komen kijken?",
+        "checklist": [
+          "Je zegt je naam en je adres.",
+          "Je vertelt duidelijk wat het probleem is.",
+          "Je vraagt of er iemand komt."
+        ],
+        "image_urls": [],
+        "record_seconds": 60
+      }
+    },
+    {
+      "kind": "opnemen",
+      "tier": 2,
+      "explanation": "Je beschrijft het plaatje in een paar korte zinnen en je vertelt wat de mensen doen. Korte zinnen zijn goed te volgen.",
+      "payload": {
+        "prompt": "Op het plaatje zie je een wachtkamer bij de huisarts. Er zitten drie mensen te wachten. Een kind speelt op de grond. Vertel wat je op het plaatje ziet. Neem je antwoord op. Je hebt ongeveer 30 seconden.",
+        "model_answer": "Ik zie een wachtkamer bij de huisarts. Er zitten drie mensen op een stoel te wachten. Een klein kind speelt op de vloer met een boekje.",
+        "checklist": [
+          "Je zegt waar je bent, bijvoorbeeld bij de huisarts.",
+          "Je vertelt wat de mensen doen.",
+          "Je spreekt in hele zinnen."
+        ],
+        "image_urls": [],
+        "record_seconds": 60
+      }
+    },
+    {
+      "kind": "mcq",
+      "tier": 0,
+      "explanation": "Op het plaatje gaat het om een fiets die stuk is. Alleen antwoord C hoort bij die situatie.",
+      "payload": {
+        "prompt": "Op het plaatje zie je een man bij een fietsenmaker. Zijn achterwiel is lek. Welk antwoord past in deze situatie?"
+      },
+      "options": [
+        {
+          "label": "A",
+          "body": "Ik zoek werk in de bouw, heeft u iets voor mij?",
+          "is_correct": false
+        },
+        {
+          "label": "B",
+          "body": "Mag ik twee kilo aardappels, alstublieft?",
+          "is_correct": false
+        },
+        {
+          "label": "C",
+          "body": "Mijn achterwiel is lek. Kunt u het vandaag repareren?",
+          "is_correct": true
+        }
+      ]
+    },
+    {
+      "kind": "opnemen",
+      "tier": 2,
+      "explanation": "Je zegt eerst waarvoor je komt en daarna wat je nodig hebt. Zo weet de medewerker snel wat je bedoelt.",
+      "payload": {
+        "prompt": "Op het plaatje zie je een vrouw bij de balie van een basisschool. Ze heeft een formulier in haar hand. Jij bent die vrouw. Je wilt je zoon van zes jaar op deze school aanmelden. Zeg wat je komt doen en wat je vraagt. Neem je antwoord op. Je hebt ongeveer 30 seconden.",
+        "model_answer": "Goedemiddag, ik wil mijn zoon graag aanmelden op deze school. Hij is zes jaar en wij wonen hier in de buurt. Moet ik dit formulier helemaal invullen?",
+        "checklist": [
+          "Je zegt waarom je komt.",
+          "Je noemt de leeftijd van je zoon.",
+          "Je stelt één duidelijke vraag."
+        ],
+        "image_urls": [],
+        "record_seconds": 60
+      }
+    }
+  ],
+  "what_you_learn": "Je oefent met de examenopdracht bij een plaatje. Je vertelt kort wat je ziet en je zegt wat je in die situatie zou zeggen. Je hoort je eigen antwoord terug en je vergelijkt het met het voorbeeld."
+}

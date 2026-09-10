@@ -1,0 +1,210 @@
+{
+  "items": [
+    {
+      "kind": "uitleg",
+      "tier": null,
+      "explanation": null,
+      "payload": {
+        "body_html": "<p>Een e-mail schrijf je altijd in vier stappen. Zo weet de lezer snel wat je wil.</p><p><strong>1. Aanhef:</strong> je begint met een groet, zoals <em>Geachte heer of mevrouw,</em><br><strong>2. Waarom je schrijft:</strong> je vertelt in één zin wat de reden is.<br><strong>3. Wat je vraagt:</strong> je stelt je vraag of je verzoek (wat je wil dat de ander doet).<br><strong>4. Slot:</strong> je bedankt of groet, en je zet je naam eronder.</p><p>Houd altijd deze volgorde aan. Begin dus nooit meteen met je vraag.</p>",
+        "cards": [
+          {
+            "label": "AANHEF",
+            "example_html": "<mark>Geachte heer of mevrouw,</mark>"
+          },
+          {
+            "label": "WAAROM",
+            "example_html": "<mark>Ik schrijf u over mijn afspraak van 12 maart.</mark>"
+          },
+          {
+            "label": "SLOT",
+            "example_html": "<mark>Met vriendelijke groet, Amina Yildiz</mark>"
+          }
+        ]
+      }
+    },
+    {
+      "kind": "voorbeeld",
+      "tier": null,
+      "explanation": null,
+      "payload": {
+        "sentence_html": "Deze e-mail is niet goed: <mark>Kan de monteur morgen komen? De kraan lekt al drie dagen.</mark>"
+      }
+    },
+    {
+      "kind": "voorbeeld",
+      "tier": null,
+      "explanation": null,
+      "payload": {
+        "sentence_html": "Zo is het wel goed: Geachte heer of mevrouw, <mark>ik schrijf u omdat de kraan in mijn keuken lekt.</mark> Kan de monteur morgen komen?"
+      }
+    },
+    {
+      "kind": "markeren",
+      "tier": 0,
+      "explanation": "De aanhef is de groet aan het begin. Het slot is de groet aan het eind, vlak voor je naam.",
+      "payload": {
+        "instruction": "Lees de e-mail. Markeer de aanhef en het slot.",
+        "body_html": "<p>Geachte mevrouw De Wit,</p><p>Ik schrijf u over de brief van de gemeente van 4 april. Ik begrijp niet welke papieren ik moet opsturen. Kunt u mij uitleggen wat ik precies nodig heb?</p><p>Met vriendelijke groet,<br>Karim Haddad</p>",
+        "targets": [
+          {
+            "label": "aanhef",
+            "text": "Geachte mevrouw De Wit,"
+          },
+          {
+            "label": "slot",
+            "text": "Met vriendelijke groet,"
+          }
+        ]
+      }
+    },
+    {
+      "kind": "markeren",
+      "tier": 0,
+      "explanation": "Deze e-mail begint meteen met de vraag. De aanhef en de reden staan er niet, dus dat stuk is de fout.",
+      "payload": {
+        "instruction": "In dit briefje zit een fout. Markeer het stuk waar de fout zit: er begint iets zonder aanhef.",
+        "body_html": "<p>Stuur mij snel een nieuw formulier op.</p><p>Ik heb het oude formulier verloren tijdens de verhuizing. Dank u wel.</p><p>Sofia Peeters</p>",
+        "targets": [
+          {
+            "label": "fout",
+            "text": "Stuur mij snel een nieuw formulier op."
+          }
+        ]
+      }
+    },
+    {
+      "kind": "mcq",
+      "tier": 0,
+      "explanation": "Een e-mail begint met een aanhef, dus met een groet. Een vraag of een naam hoort niet op de eerste regel.",
+      "payload": {
+        "prompt": "Je schrijft een e-mail naar de woningcorporatie. Welke regel zet je bovenaan?"
+      },
+      "options": [
+        {
+          "label": "A",
+          "body": "Geachte heer of mevrouw,",
+          "is_correct": true
+        },
+        {
+          "label": "B",
+          "body": "Wanneer komt de monteur?",
+          "is_correct": false
+        },
+        {
+          "label": "C",
+          "body": "Met vriendelijke groet, Ali Demir",
+          "is_correct": false
+        }
+      ]
+    },
+    {
+      "kind": "mcq",
+      "tier": 0,
+      "explanation": "Na de aanhef vertel je eerst waarom je schrijft. Daarna komt pas je vraag.",
+      "payload": {
+        "prompt": "Wat staat er direct na de aanhef?"
+      },
+      "options": [
+        {
+          "label": "A",
+          "body": "Je vraag of je verzoek.",
+          "is_correct": false
+        },
+        {
+          "label": "B",
+          "body": "De reden waarom je schrijft.",
+          "is_correct": true
+        },
+        {
+          "label": "C",
+          "body": "Je naam en je adres.",
+          "is_correct": false
+        },
+        {
+          "label": "D",
+          "body": "Een bedankje.",
+          "is_correct": false
+        }
+      ]
+    },
+    {
+      "kind": "mcq",
+      "tier": 1,
+      "explanation": "In tekst B staan alle vier de delen op de goede plek: aanhef, reden, vraag en slot. In A ontbreekt de aanhef en in C staat de vraag vóór de reden.",
+      "payload": {
+        "prompt": "Welke e-mail heeft de goede opbouw?"
+      },
+      "options": [
+        {
+          "label": "A",
+          "body": "Ik kan niet komen op 9 mei. Kunt u een nieuwe afspraak maken? Met vriendelijke groet, Nadia Boks",
+          "is_correct": false
+        },
+        {
+          "label": "B",
+          "body": "Geachte heer Van Loon, ik schrijf u over mijn afspraak van 9 mei. Ik kan die dag niet komen. Kunt u een nieuwe afspraak maken? Met vriendelijke groet, Nadia Boks",
+          "is_correct": true
+        },
+        {
+          "label": "C",
+          "body": "Geachte heer Van Loon, kunt u een nieuwe afspraak maken? Ik schrijf u over mijn afspraak van 9 mei, want ik kan die dag niet komen.",
+          "is_correct": false
+        }
+      ]
+    },
+    {
+      "kind": "mcq",
+      "tier": 1,
+      "explanation": "Een slot is een korte, vriendelijke groet met je naam eronder. Een nieuwe vraag hoort niet in het slot.",
+      "payload": {
+        "prompt": "Je e-mail aan de school is bijna klaar. Welk slot kies je?"
+      },
+      "options": [
+        {
+          "label": "A",
+          "body": "Alvast bedankt voor uw antwoord. Met vriendelijke groet, Hassan Aziz",
+          "is_correct": true
+        },
+        {
+          "label": "B",
+          "body": "En hoe laat begint de les eigenlijk? Hassan Aziz",
+          "is_correct": false
+        },
+        {
+          "label": "C",
+          "body": "Doei! Hassan",
+          "is_correct": false
+        }
+      ]
+    },
+    {
+      "kind": "open_zin",
+      "tier": 2,
+      "explanation": "Je noemt eerst de reden van je e-mail, in één zin. Je vraag komt daar pas na.",
+      "payload": {
+        "prompt": "Je hebt een brief van de gemeente gekregen over je paspoort. Je begrijpt de brief niet. Schrijf de aanhef en één zin waarin je vertelt waarom je schrijft.",
+        "model_answer": "Geachte heer of mevrouw,\n\nIk schrijf u over uw brief van 7 juni over mijn paspoort.",
+        "checklist": [
+          "Ik begin met een aanhef en een komma.",
+          "Ik vertel in één zin waarom ik schrijf.",
+          "Ik stel in deze zin nog geen vraag."
+        ]
+      }
+    },
+    {
+      "kind": "open_zin",
+      "tier": 2,
+      "explanation": "Je schrijft eerst je vraag als een echte vraag met een vraagteken. Daarna sluit je af met een groet en je naam.",
+      "payload": {
+        "prompt": "Je wil weten hoeveel de cursus kost. Schrijf je vraag en daarna het slot van je e-mail.",
+        "model_answer": "Kunt u mij vertellen hoeveel de cursus kost?\n\nMet vriendelijke groet,\nFatima Ourhis",
+        "checklist": [
+          "Mijn vraag eindigt met een vraagteken.",
+          "Ik gebruik een vriendelijk slot, zoals 'Met vriendelijke groet'.",
+          "Mijn naam staat onder het slot."
+        ]
+      }
+    }
+  ],
+  "what_you_learn": "Na deze les weet je uit welke vier delen een e-mail bestaat. Je herkent de aanhef, de reden, de vraag en het slot in een tekst. Je schrijft die delen zelf in de juiste volgorde."
+}

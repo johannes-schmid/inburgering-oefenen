@@ -1,0 +1,149 @@
+{
+  "items": [
+    {
+      "kind": "uitleg",
+      "tier": null,
+      "explanation": null,
+      "payload": {
+        "body_html": "<p>Sommige letters spreek je anders uit dan je ze ziet. Bij <strong>-tie</strong> aan het eind van een woord zeg je <em>-tsie</em>. Bij <strong>sch-</strong> aan het begin van een woord zeg je eerst een <em>s</em> en dan <em>ch</em>. Je hoort dus twee klanken achter elkaar, niet één.</p>",
+        "cards": [
+          {
+            "label": "JE ZIET -TIE, JE ZEGT -TSIE",
+            "example_html": "Ik vraag <mark>informatie</mark> bij de gemeente. (in-for-maa-tsie)"
+          },
+          {
+            "label": "JE ZIET SCH-, JE ZEGT S + CH",
+            "example_html": "Mijn zoon gaat naar de <mark>school</mark> in de wijk. (s-chool)"
+          }
+        ]
+      },
+      "options": []
+    },
+    {
+      "kind": "naspreken",
+      "tier": 1,
+      "explanation": "Bij -tie hoor je een t en dan een s: je zegt -tsie.",
+      "payload": {
+        "prompt": "Zeg deze woorden na. Let op het einde van elk woord.",
+        "target": "informatie, vakantie, politie",
+        "focus": "Je ziet -tie, maar je zegt -tsie: in-for-maa-tsie.",
+        "audio_url": "http://127.0.0.1:54421/storage/v1/object/public/leren-audio/fragment/a2-spreken/b5-tie-en-sch-1.mp3",
+        "script": "informatie, vakantie, politie",
+        "seconds": 2.42
+      }
+    },
+    {
+      "kind": "naspreken",
+      "tier": 1,
+      "explanation": "Bij sch- spreek je de s en de ch los na elkaar uit.",
+      "payload": {
+        "prompt": "Zeg deze woorden na. Let op het begin van elk woord.",
+        "target": "school, schoon, schrijven",
+        "focus": "Je zegt eerst s en dan ch: s-chool.",
+        "audio_url": "http://127.0.0.1:54421/storage/v1/object/public/leren-audio/fragment/a2-spreken/b5-tie-en-sch-2.mp3",
+        "script": "school, schoon, schrijven",
+        "seconds": 2.06
+      }
+    },
+    {
+      "kind": "naspreken",
+      "tier": 1,
+      "explanation": "In één zin blijven de regels gelijk: -tie klinkt als -tsie.",
+      "payload": {
+        "prompt": "Zeg deze zin na.",
+        "target": "Ik vraag informatie over de vakantie van de school.",
+        "focus": "Zeg informa-tsie en vakan-tsie, en begin school met s plus ch.",
+        "audio_url": "http://127.0.0.1:54421/storage/v1/object/public/leren-audio/fragment/a2-spreken/b5-tie-en-sch-3.mp3",
+        "script": "Ik vraag informatie over de vakantie van de school.",
+        "seconds": 3.63
+      }
+    },
+    {
+      "kind": "naspreken",
+      "tier": 1,
+      "explanation": "Ook hier zeg je de s en de ch apart, en -tie klinkt als -tsie.",
+      "payload": {
+        "prompt": "Zeg deze zin na.",
+        "target": "De politie geeft uitleg op de school.",
+        "focus": "Zeg poli-tsie en s-chool, rustig en duidelijk.",
+        "audio_url": "http://127.0.0.1:54421/storage/v1/object/public/leren-audio/fragment/a2-spreken/b5-tie-en-sch-4.mp3",
+        "script": "De politie geeft uitleg op de school.",
+        "seconds": 2.62
+      }
+    },
+    {
+      "kind": "mcq",
+      "tier": 0,
+      "explanation": "De uitspraak sta-tsie hoort bij de spelling station, want -tie klinkt als -tsie.",
+      "payload": {
+        "prompt": "Iemand zegt: sta-tsie-on. Welk woord staat er op papier?"
+      },
+      "options": [
+        {
+          "label": "A",
+          "body": "statsion",
+          "is_correct": false
+        },
+        {
+          "label": "B",
+          "body": "station",
+          "is_correct": true
+        },
+        {
+          "label": "C",
+          "body": "stasion",
+          "is_correct": false
+        }
+      ]
+    },
+    {
+      "kind": "mcq",
+      "tier": 0,
+      "explanation": "Bij s-chrijven schrijf je sch- aan het begin: eerst s, dan ch.",
+      "payload": {
+        "prompt": "Iemand zegt: s-chrij-ven. Welk woord staat er op papier?"
+      },
+      "options": [
+        {
+          "label": "A",
+          "body": "srijven",
+          "is_correct": false
+        },
+        {
+          "label": "B",
+          "body": "sgrijven",
+          "is_correct": false
+        },
+        {
+          "label": "C",
+          "body": "schrijven",
+          "is_correct": true
+        },
+        {
+          "label": "D",
+          "body": "chrijven",
+          "is_correct": false
+        }
+      ]
+    },
+    {
+      "kind": "gap_type",
+      "tier": 2,
+      "explanation": "Je hoort -tsie, maar je schrijft -tie: vakantie.",
+      "payload": {
+        "sentence": "In juli hebben de kinderen ___ van school. (je zegt: va-kan-tsie)",
+        "answer": "vakantie"
+      }
+    },
+    {
+      "kind": "gap_type",
+      "tier": 2,
+      "explanation": "Je zegt eerst s en dan ch, maar je schrijft sch-: schoon.",
+      "payload": {
+        "sentence": "Ik maak de keuken elke dag ___ . (je zegt: s-choon)",
+        "answer": "schoon"
+      }
+    }
+  ],
+  "what_you_learn": "In deze les leer je twee lastige klanken goed uitspreken. Je zegt -tie aan het eind van een woord als -tsie, zoals in informatie en vakantie. Bij sch- aan het begin zeg je eerst een s en dan ch, zoals in school. Je oefent de woorden en je schrijft ze daarna zelf correct."
+}

@@ -1,0 +1,15 @@
+# Waar de nadruk ligt — audio
+# les b4-klemtoon-en-nadruk, item 2
+# Casting:
+#   A = woman_young (Female Voice 1 — younger woman)
+#   B = man_young (Male Voice 1 — younger man)
+#
+# Dit bestand is de leesbare afdruk van wat er is ingesproken. De bron is de payload in
+# generated/a2-luisteren/b4-klemtoon-en-nadruk.json — pas die aan en spreek opnieuw in.
+A: Goedemiddag, ik kom voor de taalles van morgen. Die begint om tien uur, toch?
+B: Nee mevrouw, hij begint om half tien. Niet om tien uur.
+A: Oh, half tien. Dat is vroeg, hoor.
+B: Ja, en het is in lokaal drie. Even opletten: lokaal drie, niet lokaal dertien.
+A: Lokaal drie. En wat kost het boek?
+B: Het boek kost twaalf euro vijftig. Twaalf euro vijftig, ja. U betaalt bij de balie.
+A: Goed, dank u wel.

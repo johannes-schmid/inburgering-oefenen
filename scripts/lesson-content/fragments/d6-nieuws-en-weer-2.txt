@@ -1,0 +1,8 @@
+# Training: Nieuws en weer — audio
+# les d6-nieuws-en-weer, item 6
+# Casting:
+#   A = woman_young (Female Voice 1 — younger woman)
+#
+# Dit bestand is de leesbare afdruk van wat er is ingesproken. De bron is de payload in
+# generated/a2-luisteren/d6-nieuws-en-weer.json — pas die aan en spreek opnieuw in.
+A: En dan nu het weer. Vandaag begint de dag grijs en koud. Vanmiddag komt er regen bij, vooral in het noorden van het land. Het wordt niet warmer dan zeven graden. Er staat ook een harde wind langs de kust. Neem dus een goede jas mee als je naar buiten gaat. Morgen is het beter. De regen gaat weg en in de middag zien we de zon. Het wordt dan elf graden. Let op: vannacht kan het glad zijn op de weg. Rijd voorzichtig, vooral op de kleine wegen buiten de stad.

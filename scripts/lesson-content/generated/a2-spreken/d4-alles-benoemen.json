@@ -1,0 +1,137 @@
+{
+  "items": [
+    {
+      "kind": "uitleg",
+      "tier": null,
+      "explanation": null,
+      "payload": {
+        "body_html": "<p>Je krijgt een situatie met meerdere plaatjes of punten; noem ze <strong>allemaal</strong> in je antwoord van ongeveer 30 seconden.</p>",
+        "cards": [
+          {
+            "label": "ALLE PUNTEN",
+            "example_html": "Ik wil een <mark>bed</mark>, een <mark>tafel</mark> en twee <mark>stoelen</mark> ophalen."
+          },
+          {
+            "label": "NIET VERGETEN",
+            "example_html": "Ik noem <mark>elk plaatje</mark> in één korte zin."
+          }
+        ]
+      }
+    },
+    {
+      "kind": "opnemen",
+      "tier": 2,
+      "explanation": "Je moet alle drie de dingen noemen: de dag, de tijd en het aantal personen. Als je er één vergeet, is je antwoord niet compleet.",
+      "payload": {
+        "prompt": "Je belt naar buurthuis De Kastanje om een zaal te huren. Op je papiertje staan drie punten: zaterdag, van 14.00 tot 17.00 uur, en 20 personen. Zeg wat je wilt huren. Neem je antwoord op.",
+        "model_answer": "Goedemiddag, ik wil graag een zaal huren op zaterdag. Ik heb de zaal nodig van twee uur tot vijf uur 's middags. We komen met twintig personen.",
+        "checklist": [
+          "Ik noemde de dag: zaterdag.",
+          "Ik noemde de tijd: van 14.00 tot 17.00 uur.",
+          "Ik noemde het aantal personen: twintig."
+        ],
+        "image_urls": [],
+        "record_seconds": 60
+      }
+    },
+    {
+      "kind": "mcq",
+      "tier": 0,
+      "explanation": "Alleen dit antwoord noemt alle punten van de situatie: de kapotte kraan, de datum en het telefoonnummer.",
+      "payload": {
+        "prompt": "Je moet de woningbouw bellen. Op je papiertje staat: kraan kapot, sinds maandag, bel mij terug op 06-24815907. Welk antwoord past het best?"
+      },
+      "options": [
+        {
+          "label": "A",
+          "body": "Goedemorgen, mijn kraan in de keuken is kapot. Dat is al sinds maandag zo. Kunt u mij terugbellen op 06-24815907?",
+          "is_correct": true
+        },
+        {
+          "label": "B",
+          "body": "Goedemorgen, er is iets kapot in mijn huis. Kunt u langskomen?",
+          "is_correct": false
+        },
+        {
+          "label": "C",
+          "body": "Goedemorgen, ik woon hier sinds maandag. Mijn nummer is 06-24815907.",
+          "is_correct": false
+        }
+      ]
+    },
+    {
+      "kind": "opnemen",
+      "tier": 2,
+      "explanation": "Je vertelt bij elk plaatje één korte zin, zodat de hele boodschap duidelijk is.",
+      "payload": {
+        "prompt": "Je bent ziek en belt je werk. Op je papiertje staan drie plaatjes: een thermometer, een bed en een kalender met woensdag. Vertel je leidinggevende wat er is. Neem je antwoord op.",
+        "model_answer": "Dag mevrouw De Rooij, ik ben ziek. Ik heb koorts en ik blijf vandaag in bed. Woensdag hoop ik weer te komen werken.",
+        "checklist": [
+          "Ik noemde dat ik koorts heb.",
+          "Ik zei dat ik in bed blijf.",
+          "Ik noemde de dag woensdag."
+        ],
+        "image_urls": [],
+        "record_seconds": 60
+      }
+    },
+    {
+      "kind": "opnemen",
+      "tier": 2,
+      "explanation": "In de winkel moet je zeggen wát je koopt, hoeveel en hoe je betaalt. Alle drie de punten horen in je antwoord.",
+      "payload": {
+        "prompt": "Je staat bij de kassa van een bouwmarkt. Op je papiertje staan drie punten: twee potten witte verf, een kwast, en betalen met pinpas. Zeg wat je wilt. Neem je antwoord op.",
+        "model_answer": "Goedemiddag, ik wil graag twee potten witte verf. Ik neem ook één kwast mee. Kan ik met mijn pinpas betalen?",
+        "checklist": [
+          "Ik noemde twee potten witte verf.",
+          "Ik noemde de kwast.",
+          "Ik vroeg of ik met de pinpas kan betalen."
+        ],
+        "image_urls": [],
+        "record_seconds": 60
+      }
+    },
+    {
+      "kind": "opnemen",
+      "tier": 2,
+      "explanation": "Je moet de reden, de nieuwe dag en je naam noemen. Zonder je naam weet de assistente niet wie belt.",
+      "payload": {
+        "prompt": "Je wilt je afspraak bij de tandarts verzetten. Op je papiertje staat: afspraak vrijdag, ik moet werken, graag een nieuwe afspraak in de middag. Bel de assistente. Neem je antwoord op.",
+        "model_answer": "Goedemorgen, u spreekt met Amira Haddad. Ik heb vrijdag een afspraak, maar ik moet dan werken. Kan ik een nieuwe afspraak krijgen in de middag?",
+        "checklist": [
+          "Ik noemde mijn naam.",
+          "Ik zei waarom vrijdag niet kan.",
+          "Ik vroeg om een nieuwe afspraak in de middag."
+        ],
+        "image_urls": [],
+        "record_seconds": 60
+      }
+    },
+    {
+      "kind": "mcq",
+      "tier": 0,
+      "explanation": "Dit antwoord noemt alle drie de plaatjes: de bus, de vertraging en het uur. De andere antwoorden laten iets weg.",
+      "payload": {
+        "prompt": "Je komt te laat op je cursus. Op je papiertje staan drie plaatjes: een bus, een klok met een uur later, en een leraar. Welk antwoord is compleet?"
+      },
+      "options": [
+        {
+          "label": "A",
+          "body": "Sorry, ik ben te laat. De bus had vertraging.",
+          "is_correct": false
+        },
+        {
+          "label": "B",
+          "body": "Sorry meneer, ik kom een uur te laat. De bus had vertraging en ik heb lang gewacht.",
+          "is_correct": true
+        },
+        {
+          "label": "C",
+          "body": "Sorry, ik heb lang gewacht bij de halte. Morgen kom ik op tijd.",
+          "is_correct": false
+        }
+      ]
+    }
+  ],
+  "what_you_learn": "In deze les oefen je een examenopdracht waarbij je alle plaatjes of punten moet gebruiken. Je leert in ongeveer 30 seconden alles noemen wat op je papiertje staat. Je hoort je antwoord terug en vergelijkt het met een voorbeeld."
+}

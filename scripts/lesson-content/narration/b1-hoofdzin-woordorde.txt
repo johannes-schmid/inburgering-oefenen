@@ -1,0 +1,45 @@
+# De ingesproken uitleg van `b1-hoofdzin-woordorde`.
+#
+# Regels die met # beginnen zijn commentaar en gaan niet mee naar de stem.
+#
+# [[id]] of [[id | extra uitleg]] markeert waar de stem over welk element begint. De marker zelf
+# gaat niet mee naar de stem; zijn positie in de schoongemaakte tekst wordt via de
+# ElevenLabs-alignment een tijdstip. De extra uitleg staat op de pagina bij dat element zodra de
+# stem eraan begint — hij mag dus niets zeggen wat de stem net al zei.
+#
+# Geldige id's: vis, vis-1 t/m vis-4, rule, card-0, card-1, demo-0, demo-1, exercises.
+# vis-1 = onderwerp vooraan, vis-2 = tijd vooraan, vis-3 = de foute zin, vis-4 = plaats één is
+# meerdere woorden. Elk id moet bestaan op de pagina, anders licht er niets op — de generator
+# controleert dat niet en kán dat niet, want hij kent de lesitems niet.
+
+Deze les gaat over de hoofdzin. Kijk eerst naar het plaatje.
+
+[[vis-1 | Ik, werk, op maandag: één, twee, drie. Zo staat de zin die je het vaakst maakt.]]
+Een gewone Nederlandse zin heet een hoofdzin. In het plaatje zie je vakjes met nummers. In de eerste rij staat: ik, werk, op maandag. Ik is plaats één. Werk is plaats twee. Het werkwoord staat dus op plaats twee.
+
+[[vis-2 | Het onderwerp "ik" is naar plaats drie geschoven. Het werkwoord bleef staan.]]
+Nu de tweede rij. Op maandag werk ik. De zin begint met een tijd. En het werkwoord? Nog steeds plaats twee. Het onderwerp komt daarna.
+
+[[vis-3 | Deze fout hoor je vaak. Het werkwoord mag niet naar plaats drie.]]
+De derde rij is fout. Daar staat: op maandag ik werk. Het onderwerp staat hier op plaats twee. Dat mag niet.
+
+[[vis-4 | Drie woorden, één vakje. Tel dus vakjes en geen woorden.]]
+Kijk naar de laatste rij. Mijn oude buurvrouw is samen plaats één. Plaats twee is niet het tweede woord, maar het tweede vakje.
+
+[[rule | Fout: "Op maandag ik werk." Goed: "Op maandag werk ik."]]
+Dit is de regel: in een hoofdzin staat het werkwoord altijd op plaats twee. Hij verandert bijna nooit.
+
+[[card-0 | Begint de zin met het onderwerp, dan staat alles in de volgorde die je verwacht.]]
+De eerste kaart laat zien wat er gebeurt als de zin begint met het onderwerp.
+
+[[card-1 | Dit heet inversie, en dat is de volgende les.]]
+De tweede kaart begint met iets anders. Dan schuift het onderwerp naar achter.
+
+[[demo-0 | "Mijn buurvrouw" is plaats één. Daarna meteen het werkwoord.]]
+Nog twee voorbeelden. Mijn buurvrouw koopt brood bij de bakker. Mijn buurvrouw is plaats één, koopt is plaats twee.
+
+[[demo-1 | "Om negen uur" is een tijd, dus plaats één.]]
+En: om negen uur begint de les Nederlands. Dus komt begint op plaats twee, en de les Nederlands komt daarna.
+
+[[exercises]]
+Doe hierna de opgaven. Eerst herkennen, dan invullen, en daarna zelf maken. Veel succes.

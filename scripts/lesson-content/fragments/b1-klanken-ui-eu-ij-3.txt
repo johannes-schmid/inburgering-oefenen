@@ -1,0 +1,8 @@
+# ui, eu en ij — naspreken
+# les b1-klanken-ui-eu-ij, item 4
+# Casting:
+#   één stem: woman_older
+#
+# Dit bestand is de leesbare afdruk van wat er is ingesproken. De bron is de payload in
+# generated/a2-spreken/b1-klanken-ui-eu-ij.json — pas die aan en spreek opnieuw in.
+trein, klein, wijk, tijd

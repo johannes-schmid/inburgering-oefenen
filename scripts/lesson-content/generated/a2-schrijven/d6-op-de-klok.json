@@ -1,0 +1,139 @@
+{
+  "items": [
+    {
+      "kind": "uitleg",
+      "tier": null,
+      "explanation": null,
+      "payload": {
+        "body_html": "<p>In dit deel schrijf je vier korte opdrachten en je hebt daar in het examen ongeveer 40 minuten voor.</p>",
+        "cards": []
+      }
+    },
+    {
+      "kind": "mcq",
+      "tier": 0,
+      "explanation": "Je moet alle drie de inhoudspunten uit de opdracht noemen, anders is je antwoord niet compleet.",
+      "options": [
+        {
+          "label": "A",
+          "body": "Alleen je naam en de datum.",
+          "is_correct": false
+        },
+        {
+          "label": "B",
+          "body": "Alle punten die in de opdracht staan.",
+          "is_correct": true
+        },
+        {
+          "label": "C",
+          "body": "Zo veel mogelijk woorden, ook over andere dingen.",
+          "is_correct": false
+        }
+      ],
+      "payload": {
+        "prompt": "Je krijgt een schrijfopdracht met drie inhoudspunten. Wat moet er in je antwoord staan?"
+      }
+    },
+    {
+      "kind": "mcq",
+      "tier": 0,
+      "explanation": "Je mening over de gemeente hoort niet in een korte zakelijke mededeling; je schrijft alleen de gevraagde informatie.",
+      "options": [
+        {
+          "label": "A",
+          "body": "Waarom je komt.",
+          "is_correct": false
+        },
+        {
+          "label": "B",
+          "body": "Op welke dag je kunt komen.",
+          "is_correct": false
+        },
+        {
+          "label": "C",
+          "body": "Wat je van de gemeente vindt.",
+          "is_correct": true
+        },
+        {
+          "label": "D",
+          "body": "Je telefoonnummer, als de opdracht dat vraagt.",
+          "is_correct": false
+        }
+      ],
+      "payload": {
+        "prompt": "Je schrijft een kort bericht aan de gemeente over een nieuwe afspraak. Wat hoort er juist NIET in?"
+      }
+    },
+    {
+      "kind": "woordorde",
+      "tier": 2,
+      "explanation": "Na <em>omdat</em> staat het werkwoord achteraan: <em>omdat ik moet werken</em>.",
+      "payload": {
+        "instruction": "Zet de woorden in de juiste volgorde. Zo maak je een zin voor je bericht.",
+        "tokens": [
+          "kan",
+          "omdat",
+          "ik",
+          "niet",
+          "moet",
+          "komen",
+          "ik",
+          "werken"
+        ],
+        "answer": [
+          "ik",
+          "kan",
+          "niet",
+          "komen",
+          "omdat",
+          "ik",
+          "moet",
+          "werken"
+        ]
+      }
+    },
+    {
+      "kind": "open_zin",
+      "tier": 2,
+      "explanation": "Je antwoord is goed als alle drie de gevraagde punten erin staan en je een aanhef en een afsluiting gebruikt.",
+      "payload": {
+        "prompt": "<p><strong>Opdracht 1.</strong> Je hebt een afspraak bij de gemeente Meerdijk op maandag 6 mei om 10.00 uur. Je kunt niet komen. Schrijf een e-mail aan de gemeente.</p><p>Schrijf in je e-mail:</p><ul><li>dat je de afspraak van maandag 6 mei wilt afzeggen;</li><li>waarom je niet kunt komen;</li><li>wanneer je wel kunt komen.</li></ul><p>Schrijf ongeveer 40 woorden.</p>",
+        "model_answer": "Geachte heer, mevrouw,\n\nIk heb een afspraak op maandag 6 mei om 10.00 uur. Ik kan helaas niet komen, omdat ik dan moet werken. Kan ik op woensdag 8 mei komen? Ik kan die dag de hele middag.\n\nMet vriendelijke groet,\nSamira Haddou",
+        "checklist": [
+          "Ik zeg dat ik de afspraak van maandag 6 mei afzeg.",
+          "Ik schrijf waarom ik niet kan komen.",
+          "Ik noem een dag waarop ik wel kan komen."
+        ]
+      }
+    },
+    {
+      "kind": "open_zin",
+      "tier": 2,
+      "explanation": "Je antwoord is goed als je het probleem noemt, zegt sinds wanneer het is en vraagt wat je wilt dat er gebeurt.",
+      "payload": {
+        "prompt": "<p><strong>Opdracht 2.</strong> De kraan in je keuken lekt. Je woont in een huurwoning van woningstichting De Beemd. Schrijf een bericht aan de woningstichting.</p><p>Schrijf in je bericht:</p><ul><li>wat het probleem is;</li><li>sinds wanneer je dit probleem hebt;</li><li>wat je van de woningstichting wilt.</li></ul><p>Schrijf ongeveer 40 woorden.</p>",
+        "model_answer": "Geachte heer, mevrouw,\n\nIk woon op de Kastanjelaan 14 in Meerdijk. De kraan in mijn keuken lekt. Dat is al zo sinds vorige week dinsdag. Er ligt steeds water op de vloer. Kunt u een monteur sturen? Ik ben elke dag na 15.00 uur thuis.\n\nMet vriendelijke groet,\nDaniël Okoro",
+        "checklist": [
+          "Ik schrijf wat er kapot is.",
+          "Ik schrijf sinds wanneer het probleem er is.",
+          "Ik vraag duidelijk om hulp of om een monteur."
+        ]
+      }
+    },
+    {
+      "kind": "open_zin",
+      "tier": 2,
+      "explanation": "Je antwoord is goed als je alle drie de punten geeft: het uur, de reden en wie het overneemt.",
+      "payload": {
+        "prompt": "<p><strong>Opdracht 3.</strong> Je werkt in een winkel. Je bent ziek en kunt morgen niet werken. Schrijf een bericht aan je leidinggevende, mevrouw Van Elst.</p><p>Schrijf in je bericht:</p><ul><li>dat je morgen niet kunt werken;</li><li>waarom niet;</li><li>wie jouw dienst kan overnemen.</li></ul><p>Schrijf ongeveer 40 woorden.</p>",
+        "model_answer": "Beste mevrouw Van Elst,\n\nIk ben ziek. Ik heb koorts en veel hoofdpijn. Daarom kan ik morgen niet werken. Ik heb Farid gebeld. Hij kan mijn dienst van 9.00 tot 17.00 uur overnemen. Ik bel u zodra ik beter ben.\n\nMet vriendelijke groet,\nLina Berger",
+        "checklist": [
+          "Ik schrijf dat ik morgen niet kom werken.",
+          "Ik schrijf waarom ik niet kan komen.",
+          "Ik schrijf wie mijn dienst overneemt."
+        ]
+      }
+    }
+  ],
+  "what_you_learn": "Je oefent met vier korte schrijfopdrachten, net zoals in het examen. Je leert eerst goed lezen wat de opdracht vraagt en daarna alle gevraagde punten opschrijven. Je let ook op de tijd: in het examen heb je ongeveer 40 minuten."
+}

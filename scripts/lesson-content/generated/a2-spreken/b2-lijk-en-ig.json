@@ -1,0 +1,143 @@
+{
+  "items": [
+    {
+      "kind": "uitleg",
+      "tier": null,
+      "explanation": null,
+      "payload": {
+        "body_html": "<p>Veel Nederlandse woorden eindigen op <strong>-lijk</strong> of <strong>-ig</strong>. Je ziet <strong>-lijk</strong>, maar je zegt <em>-luk</em>. Je ziet <strong>-ig</strong>, maar je zegt <em>-ug</em>. Het laatste stukje van het woord spreek je zacht en kort uit.</p>",
+        "cards": [
+          {
+            "label": "JE ZIET -LIJK",
+            "example_html": "moei<mark>lijk</mark> — je zegt: moei-luk"
+          },
+          {
+            "label": "JE ZIET -IG",
+            "example_html": "wein<mark>ig</mark> — je zegt: wei-nug"
+          }
+        ]
+      }
+    },
+    {
+      "kind": "naspreken",
+      "tier": 1,
+      "explanation": "In deze woorden zeg je -luk, niet -lijk. Het laatste stukje is kort en zacht.",
+      "payload": {
+        "prompt": "Zeg deze drie woorden na.",
+        "target": "moeilijk, makkelijk, gezellig",
+        "focus": "Je ziet -lijk, maar je zegt -luk. Bij gezellig zeg je -ug.",
+        "audio_url": "http://127.0.0.1:54421/storage/v1/object/public/leren-audio/fragment/a2-spreken/b2-lijk-en-ig-1.mp3",
+        "script": "moeilijk, makkelijk, gezellig",
+        "seconds": 2.52
+      }
+    },
+    {
+      "kind": "naspreken",
+      "tier": 1,
+      "explanation": "Ook in deze woorden spreek je het einde uit als -luk of -ug. Leg de klemtoon aan het begin van het woord.",
+      "payload": {
+        "prompt": "Zeg deze drie woorden na.",
+        "target": "eigenlijk, natuurlijk, weinig",
+        "focus": "Leg de nadruk op het eerste deel: EI-gen-luk, na-TUUR-luk, WEI-nug.",
+        "audio_url": "http://127.0.0.1:54421/storage/v1/object/public/leren-audio/fragment/a2-spreken/b2-lijk-en-ig-2.mp3",
+        "script": "eigenlijk, natuurlijk, weinig",
+        "seconds": 2.23
+      }
+    },
+    {
+      "kind": "naspreken",
+      "tier": 1,
+      "explanation": "In een zin blijft het einde van deze woorden kort en zacht: -luk en -ug.",
+      "payload": {
+        "prompt": "Zeg deze zin na.",
+        "target": "Het formulier is eigenlijk niet moeilijk.",
+        "focus": "Zeg ei-gen-luk en moei-luk, niet met een lange ij-klank.",
+        "audio_url": "http://127.0.0.1:54421/storage/v1/object/public/leren-audio/fragment/a2-spreken/b2-lijk-en-ig-3.mp3",
+        "script": "Het formulier is eigenlijk niet moeilijk.",
+        "seconds": 2.81
+      }
+    },
+    {
+      "kind": "naspreken",
+      "tier": 1,
+      "explanation": "Je zegt -ug aan het einde van woorden met -ig, ook midden in een zin.",
+      "payload": {
+        "prompt": "Zeg deze zin na.",
+        "target": "Ik heb weinig tijd, dus ik ga vandaag niet.",
+        "focus": "Zeg wei-nug, met een korte u-klank aan het einde.",
+        "audio_url": "http://127.0.0.1:54421/storage/v1/object/public/leren-audio/fragment/a2-spreken/b2-lijk-en-ig-4.mp3",
+        "script": "Ik heb weinig tijd, dus ik ga vandaag niet.",
+        "seconds": 2.98
+      }
+    },
+    {
+      "kind": "mcq",
+      "tier": 0,
+      "explanation": "De uitspraak moei-luk hoort bij de spelling moeilijk. Het einde schrijf je met -lijk, ook al zeg je -luk.",
+      "payload": {
+        "prompt": "Welk woord spreek je uit als \"moei-luk\"?"
+      },
+      "options": [
+        {
+          "label": "A",
+          "body": "moeiluk",
+          "is_correct": false
+        },
+        {
+          "label": "B",
+          "body": "moeilijk",
+          "is_correct": true
+        },
+        {
+          "label": "C",
+          "body": "moeilig",
+          "is_correct": false
+        }
+      ]
+    },
+    {
+      "kind": "mcq",
+      "tier": 0,
+      "explanation": "De uitspraak vei-lug hoort bij de spelling veilig. Woorden met de klank -ug aan het einde schrijf je met -ig.",
+      "payload": {
+        "prompt": "Welk woord spreek je uit als \"vei-lug\"?"
+      },
+      "options": [
+        {
+          "label": "A",
+          "body": "veilijk",
+          "is_correct": false
+        },
+        {
+          "label": "B",
+          "body": "veilug",
+          "is_correct": false
+        },
+        {
+          "label": "C",
+          "body": "veilig",
+          "is_correct": true
+        }
+      ]
+    },
+    {
+      "kind": "gap_type",
+      "tier": 2,
+      "explanation": "Je zegt duide-luk, maar je schrijft duidelijk met -lijk aan het einde.",
+      "payload": {
+        "sentence": "De brief van de gemeente is heel ___ (je zegt: dui-de-luk).",
+        "answer": "duidelijk"
+      }
+    },
+    {
+      "kind": "gap_type",
+      "tier": 2,
+      "explanation": "Je zegt gezel-lug, maar je schrijft gezellig met -ig aan het einde.",
+      "payload": {
+        "sentence": "Het feest bij de buren was heel ___ (je zegt: ge-zel-lug).",
+        "answer": "gezellig"
+      }
+    }
+  ],
+  "what_you_learn": "In deze les leer je woorden met -lijk en -ig goed uitspreken. Je ziet -lijk staan, maar je zegt -luk; bij -ig zeg je -ug. Je oefent het nazeggen en je leert het woord daarna ook goed opschrijven."
+}

@@ -1,0 +1,191 @@
+{
+  "items": [
+    {
+      "kind": "uitleg",
+      "tier": null,
+      "explanation": null,
+      "payload": {
+        "body_html": "<p>Op het station en in de bus hoor je veel berichten via de luidspreker. Je leert nu de woorden die je daarbij nodig hebt, zoals <strong>het spoor</strong>, <strong>de vertraging</strong> en <strong>overstappen</strong>.</p>",
+        "cards": [
+          {
+            "label": "OP HET STATION",
+            "example_html": "De trein naar Zwolle vertrekt van <mark>spoor 4</mark>."
+          },
+          {
+            "label": "IN DE BUS",
+            "example_html": "Bij de volgende <mark>halte</mark> moet je uitstappen."
+          }
+        ]
+      }
+    },
+    {
+      "kind": "woordenlijst",
+      "tier": null,
+      "explanation": null,
+      "payload": {
+        "theme": "omroep-en-reizen"
+      }
+    },
+    {
+      "kind": "matchen",
+      "tier": 0,
+      "explanation": "Elk woord hoort bij één korte betekenis. Zo onthoud je waar je naar luistert: het nummer van het spoor, het wachten op het perron en het later rijden bij vertraging.",
+      "payload": {
+        "instruction": "Sleep het woord naar de juiste betekenis.",
+        "pairs": [
+          {
+            "left": "het spoor",
+            "right": "de plaats met een nummer waar de trein staat"
+          },
+          {
+            "left": "het perron",
+            "right": "het verhoogde stuk waar reizigers wachten"
+          },
+          {
+            "left": "de vertraging",
+            "right": "later rijden dan gepland"
+          },
+          {
+            "left": "de conducteur",
+            "right": "de medewerker die kaartjes controleert"
+          }
+        ]
+      }
+    },
+    {
+      "kind": "matchen",
+      "tier": 0,
+      "explanation": "Deze woorden gaan over je kaartje en je route. Een enkele reis is alleen heen, een retour is heen en terug.",
+      "payload": {
+        "instruction": "Sleep het woord naar de juiste betekenis.",
+        "pairs": [
+          {
+            "left": "de enkele reis",
+            "right": "een kaartje voor één rit, niet terug"
+          },
+          {
+            "left": "het retour",
+            "right": "een kaartje voor heen en terug"
+          },
+          {
+            "left": "de bestemming",
+            "right": "de plaats waar je naartoe reist"
+          },
+          {
+            "left": "het loket",
+            "right": "de balie waar je kaartjes koopt"
+          }
+        ]
+      }
+    },
+    {
+      "kind": "gap_choice",
+      "tier": 1,
+      "explanation": "Een bericht via de luidspreker heet de omroep. Het perron is de plek waar je wacht, dus dat past hier niet.",
+      "payload": {
+        "sentence": "In de hal hoor je ___ over de trein naar Amersfoort.",
+        "choices": [
+          "de omroep",
+          "het perron",
+          "de reiziger"
+        ],
+        "answer": "de omroep"
+      }
+    },
+    {
+      "kind": "gap_choice",
+      "tier": 1,
+      "explanation": "Als de trein niet verder rijdt, stap je in een andere trein. Dat heet overstappen.",
+      "payload": {
+        "sentence": "In Utrecht moet je ___ op de trein naar Breda.",
+        "choices": [
+          "instappen",
+          "overstappen",
+          "uitstappen"
+        ],
+        "answer": "overstappen"
+      }
+    },
+    {
+      "kind": "gap_choice",
+      "tier": 1,
+      "explanation": "Bij reparaties aan het spoor rijden er bussen in plaats van treinen. Dat noem je vervangend vervoer.",
+      "payload": {
+        "sentence": "Door de werkzaamheden rijdt er vandaag ___ met bussen.",
+        "choices": [
+          "vervangend vervoer",
+          "de kaartautomaat",
+          "het reisproduct"
+        ],
+        "answer": "vervangend vervoer"
+      }
+    },
+    {
+      "kind": "gap_choice",
+      "tier": 1,
+      "explanation": "Het eindpunt is de laatste plek van de rit. Daar moeten alle reizigers de bus uit.",
+      "payload": {
+        "sentence": "Deze bus stopt bij ___, dus iedereen stapt hier uit.",
+        "choices": [
+          "de halte",
+          "het eindpunt",
+          "de aankomst"
+        ],
+        "answer": "het eindpunt"
+      }
+    },
+    {
+      "kind": "mcq",
+      "tier": 0,
+      "explanation": "In- en uitchecken doe je met je kaart bij de zuil, bij het begin en het einde van je reis.",
+      "payload": {
+        "prompt": "Je hoort: \"Vergeet niet in en uit te checken.\" Wat moet je doen?"
+      },
+      "options": [
+        {
+          "label": "A",
+          "body": "Je kaart bij de zuil langs het apparaat halen.",
+          "is_correct": true
+        },
+        {
+          "label": "B",
+          "body": "Een kaartje kopen bij het loket in de hal.",
+          "is_correct": false
+        },
+        {
+          "label": "C",
+          "body": "Op het perron wachten tot de trein komt.",
+          "is_correct": false
+        }
+      ]
+    },
+    {
+      "kind": "gap_type",
+      "tier": 2,
+      "explanation": "De vertrektijd is het uur waarop de trein wegrijdt. Op het bord staat dus de vertrektijd.",
+      "payload": {
+        "sentence": "Op het bord staat de ___ van de trein: 14.12 uur.",
+        "answer": "vertrektijd"
+      }
+    },
+    {
+      "kind": "gap_type",
+      "tier": 2,
+      "explanation": "Een machine waar je zelf een kaartje koopt, heet een kaartautomaat. Bij het loket helpt een medewerker je.",
+      "payload": {
+        "sentence": "Bij het loket is een lange rij, dus koop ik mijn kaartje bij de ___.",
+        "answer": "kaartautomaat"
+      }
+    },
+    {
+      "kind": "gap_type",
+      "tier": 2,
+      "explanation": "Als de gewone weg dicht is, rijdt de bus een andere route. Die andere route heet een omleiding.",
+      "payload": {
+        "sentence": "De weg is dicht, daarom rijdt bus 12 met een ___.",
+        "answer": "omleiding"
+      }
+    }
+  ],
+  "what_you_learn": "Je leert de woorden die je hoort op het station, in de bus en in de trein. Je begrijpt berichten over het spoor, de vertrektijd, een vertraging en overstappen. Je kunt deze woorden ook zelf gebruiken in een korte zin."
+}

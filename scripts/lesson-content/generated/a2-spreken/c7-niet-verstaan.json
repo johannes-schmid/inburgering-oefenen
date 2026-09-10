@@ -1,0 +1,172 @@
+{
+  "items": [
+    {
+      "kind": "uitleg",
+      "tier": null,
+      "explanation": null,
+      "payload": {
+        "body_html": "<p>Bij het spreekexamen hoor je een vraag of een situatie. Soms versta je het niet goed. Dat is niet erg. Je mag even nadenken en je mag zeggen dat je het niet begreep.</p><p>Doe het in drie stappen. Stap 1: adem rustig en denk twee seconden na. Stap 2: zeg in een hele zin dat je het niet verstond. Stap 3: geef daarna toch een antwoord met wat je wél begreep. Zwijg dus nooit helemaal, want een stil antwoord telt niet mee.</p>",
+        "cards": [
+          {
+            "label": "ZWAK",
+            "example_html": "<mark>Wat?</mark>"
+          },
+          {
+            "label": "GOED",
+            "example_html": "<mark>Sorry, ik verstond u niet goed.</mark> Kunt u het nog een keer zeggen?"
+          }
+        ]
+      }
+    },
+    {
+      "kind": "voorbeeld",
+      "tier": null,
+      "explanation": null,
+      "payload": {
+        "sentence_html": "<mark>Sorry, dat begreep ik niet helemaal.</mark> Ik denk dat u vraagt naar mijn werk."
+      }
+    },
+    {
+      "kind": "voorbeeld",
+      "tier": null,
+      "explanation": null,
+      "payload": {
+        "sentence_html": "<mark>Even denken, hoor.</mark> Ik zou eerst de gemeente bellen."
+      }
+    },
+    {
+      "kind": "mcq",
+      "tier": 0,
+      "explanation": "Je zegt in een hele zin dat je het niet verstond en je vraagt om herhaling. Dat is een net en volledig antwoord.",
+      "payload": {
+        "prompt": "Je hebt de vraag niet goed verstaan. Welk antwoord past hier het beste?"
+      },
+      "options": [
+        {
+          "label": "A",
+          "body": "Hè?",
+          "is_correct": false
+        },
+        {
+          "label": "B",
+          "body": "Sorry, ik verstond de vraag niet goed. Kunt u het nog een keer zeggen?",
+          "is_correct": true
+        },
+        {
+          "label": "C",
+          "body": "(niets zeggen en wachten)",
+          "is_correct": false
+        }
+      ]
+    },
+    {
+      "kind": "mcq",
+      "tier": 0,
+      "explanation": "Eén woord is te kort. In het spreekexamen moet je in hele zinnen antwoorden.",
+      "payload": {
+        "prompt": "Welk antwoord is te kort voor het examen?"
+      },
+      "options": [
+        {
+          "label": "A",
+          "body": "Wat zegt u?",
+          "is_correct": false
+        },
+        {
+          "label": "B",
+          "body": "Nogmaals?",
+          "is_correct": true
+        },
+        {
+          "label": "C",
+          "body": "Kunt u dat langzamer zeggen? Ik versta het niet.",
+          "is_correct": false
+        }
+      ]
+    },
+    {
+      "kind": "mcq",
+      "tier": 0,
+      "explanation": "Je mag zeggen dat je nadenkt en daarna toch antwoorden met wat je wel begreep. Zo blijf je aan het woord.",
+      "payload": {
+        "prompt": "Je begreep maar een klein deel van de vraag. Wat doe je?"
+      },
+      "options": [
+        {
+          "label": "A",
+          "body": "Je zegt: even denken. Daarna antwoord je over het deel dat je wel begreep.",
+          "is_correct": true
+        },
+        {
+          "label": "B",
+          "body": "Je zegt niets meer en wacht op de volgende vraag.",
+          "is_correct": false
+        },
+        {
+          "label": "C",
+          "body": "Je zegt alleen: ik weet het niet.",
+          "is_correct": false
+        }
+      ]
+    },
+    {
+      "kind": "matchen",
+      "tier": 1,
+      "explanation": "Bij elke situatie past een andere zin: te snel, te zacht, een moeilijk woord of tijd nodig om te denken.",
+      "payload": {
+        "instruction": "Zet de situatie bij de zin die je dan zegt.",
+        "pairs": [
+          {
+            "left": "De spreker praat heel snel",
+            "right": "Kunt u iets langzamer praten?"
+          },
+          {
+            "left": "Je hoort de stem heel zacht",
+            "right": "Kunt u het iets harder zeggen?"
+          },
+          {
+            "left": "Je kent één woord niet",
+            "right": "Wat betekent dat woord precies?"
+          },
+          {
+            "left": "Je hebt tijd nodig om te denken",
+            "right": "Even denken, hoor. Ik zeg het zo."
+          }
+        ]
+      }
+    },
+    {
+      "kind": "opnemen",
+      "tier": 2,
+      "explanation": "Je zegt eerst netjes dat je het niet verstond en je vraagt om herhaling. Daarna geef je toch een antwoord.",
+      "payload": {
+        "prompt": "Je bent bij de gemeente. De medewerker vraagt iets, maar hij praat heel snel. Je verstaat het niet. Neem je antwoord op en vergelijk je antwoord met het voorbeeld.",
+        "model_answer": "Sorry, ik verstond u niet goed. Kunt u het nog een keer zeggen, iets langzamer? Ik denk dat u naar mijn adres vraagt.",
+        "checklist": [
+          "Ik zeg in een hele zin dat ik het niet verstond.",
+          "Ik vraag om herhaling of om langzamer praten.",
+          "Ik geef daarna nog een antwoord."
+        ],
+        "image_urls": [],
+        "record_seconds": 60
+      }
+    },
+    {
+      "kind": "opnemen",
+      "tier": 2,
+      "explanation": "Je mag hardop zeggen dat je even nadenkt. Daarna geef je een kort antwoord over het deel dat je wel begreep.",
+      "payload": {
+        "prompt": "Je collega vraagt je iets over de werktijden. Je begreep alleen het woord maandag. Neem je antwoord op en vergelijk je antwoord met het voorbeeld.",
+        "model_answer": "Even denken, hoor. Ik hoorde alleen maandag. Bedoel je hoe laat ik maandag begin? Dan begin ik om acht uur.",
+        "checklist": [
+          "Ik vraag tijd om na te denken.",
+          "Ik zeg wat ik wel begreep.",
+          "Ik stel een vraag terug of ik geef een antwoord."
+        ],
+        "image_urls": [],
+        "record_seconds": 60
+      }
+    }
+  ],
+  "what_you_learn": "Je leert wat je zegt als je een vraag niet goed verstaat. Je vraagt netjes om herhaling of om langzamer praten. En je leert dat je even mag nadenken en daarna toch een antwoord geeft."
+}

@@ -1,0 +1,34 @@
+# De ingesproken uitleg van `b12-hebben-of-zijn`.
+# Regels met # zijn commentaar. [[id]] of [[id | extra uitleg]] markeert waar de stem over
+# welk element begint; de extra uitleg staat op de pagina bij dat element en mag niet herhalen
+# wat de stem net zei.
+# Geldige id's: vis, vis-1 t/m vis-3, rule, card-0, card-1, demo-0, demo-1, exercises.
+
+Deze les gaat over de keuze tussen hebben en zijn.
+
+[[vis-1 | Gewerkt, gepraat, gelezen, gezien: allemaal met hebben.]]
+Kijk naar het plaatje. Er staan twee bakjes. In het eerste bakje horen de meeste werkwoorden. Die krijgen hebben. Ik heb gewerkt. Ik heb betaald.
+
+[[vis-2 | Gaan, komen, blijven, vallen, worden: allemaal met zijn.]]
+In het tweede bakje staan werkwoorden die iets zeggen over beweging naar een plaats, of over verandering. Die krijgen zijn. Ik ben gegaan. Hij is gebleven.
+
+[[vis-3 | Fietsen, lopen en reizen kunnen in beide bakjes staan.]]
+En dan is er een klein groepje dat in beide bakjes past. Ik heb gefietst betekent: dat was mijn bezigheid. Ik ben naar huis gefietst betekent: van hier naar daar.
+
+[[rule | Vraag je bij twijfel af: is er beweging naar een plek, of een verandering?]]
+Dat is dus de vraag die je stelt. Beweging of verandering, dan zijn. Bijna alles anders, dan hebben.
+
+[[card-0 | Deze groep is klein en goed te onthouden.]]
+De eerste kaart is de groep met zijn.
+
+[[card-1 | Deze groep is groot: bij twijfel is hebben de veiligste keuze.]]
+De tweede kaart is de groep met hebben.
+
+[[demo-0 | Naar school: beweging naar een plaats, dus is.]]
+Twee voorbeelden. Mijn zoon is gisteren naar school gefietst.
+
+[[demo-1 | Boodschappen doen is een bezigheid, dus hebben.]]
+En: wij hebben vanmorgen boodschappen gedaan.
+
+[[exercises]]
+Doe nu de opgaven. Kijk bij elke zin: beweeg of verander je?

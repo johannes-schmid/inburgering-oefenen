@@ -1,0 +1,286 @@
+{
+  "items": [
+    {
+      "kind": "audio",
+      "tier": null,
+      "explanation": null,
+      "payload": {
+        "label": "Omroepbericht in een gezondheidscentrum",
+        "script": "A: Goedemiddag, dames en heren. Even een mededeling voor iedereen in de wachtkamer. De bloedprikpost is vandaag pas om kwart over twee open. Dokter Van Beek is er dus wel, maar de laborant komt later. Wilt u alleen bloed laten prikken? Dan kunt u het beste eerst een kop koffie halen. De koffie kost vijftig cent. Daarna hoort u uw naam. Heeft u een afspraak bij de huisarts? Die afspraken gaan gewoon door. Bedankt voor uw geduld.",
+        "audio_url": "http://127.0.0.1:54421/storage/v1/object/public/leren-audio/fragment/a2-luisteren/e1-woorden-en-klanken-1.mp3",
+        "voice_cast": {
+          "A": "woman_young"
+        },
+        "transcript": "Goedemiddag, dames en heren. Even een mededeling voor iedereen in de wachtkamer. De bloedprikpost is vandaag pas om kwart over twee open. Dokter Van Beek is er dus wel, maar de laborant komt later. Wilt u alleen bloed laten prikken? Dan kunt u het beste eerst een kop koffie halen. De koffie kost vijftig cent. Daarna hoort u uw naam. Heeft u een afspraak bij de huisarts? Die afspraken gaan gewoon door. Bedankt voor uw geduld.",
+        "seconds": 26.23
+      }
+    },
+    {
+      "kind": "mcq",
+      "tier": 0,
+      "explanation": "In het bericht hoor je \"pas om kwart over twee open\". Kwart over twee is 14.15 uur.",
+      "payload": {
+        "prompt": "Hoe laat gaat de bloedprikpost open?"
+      },
+      "options": [
+        {
+          "label": "A",
+          "body": "Om 14.15 uur",
+          "is_correct": true
+        },
+        {
+          "label": "B",
+          "body": "Om 14.45 uur",
+          "is_correct": false
+        },
+        {
+          "label": "C",
+          "body": "Om 12.15 uur",
+          "is_correct": false
+        }
+      ]
+    },
+    {
+      "kind": "mcq",
+      "tier": 0,
+      "explanation": "De vraag zegt \"in de middag\", het bericht zegt \"kwart over twee\". Dat is hetzelfde antwoord, alleen met andere woorden.",
+      "payload": {
+        "prompt": "De vraag is: \"Wanneer kun je bloed laten prikken?\" Het antwoord is: \"In de middag.\" Waarom is dat goed?"
+      },
+      "options": [
+        {
+          "label": "A",
+          "body": "Omdat het bericht \"in de middag\" zegt.",
+          "is_correct": false
+        },
+        {
+          "label": "B",
+          "body": "Omdat kwart over twee in de middag is. De vraag zegt het alleen met andere woorden.",
+          "is_correct": true
+        },
+        {
+          "label": "C",
+          "body": "Omdat de huisarts alleen in de middag werkt.",
+          "is_correct": false
+        }
+      ]
+    },
+    {
+      "kind": "gap_choice",
+      "tier": 1,
+      "explanation": "Je hoort \"maar de laborant komt later\". Het woord <strong>maar</strong> laat een verschil horen: de dokter is er wel, de laborant nog niet.",
+      "payload": {
+        "sentence": "Dokter Van Beek is er wel, ___ de laborant komt later.",
+        "choices": [
+          "maar",
+          "dus",
+          "daarna"
+        ],
+        "answer": "maar"
+      }
+    },
+    {
+      "kind": "gap_choice",
+      "tier": 1,
+      "explanation": "Je hoort \"eerst een kop koffie halen\" en \"daarna hoort u uw naam\". Het signaalwoord <strong>daarna</strong> zegt wat er later gebeurt.",
+      "payload": {
+        "sentence": "Je haalt eerst koffie. ___ hoor je je naam.",
+        "choices": [
+          "Daarna",
+          "Eerst",
+          "Maar"
+        ],
+        "answer": "Daarna"
+      }
+    },
+    {
+      "kind": "gap_type",
+      "tier": 2,
+      "explanation": "Schrijf op wat je hoort: de koffie kost vijftig cent. Dat is € 0,50.",
+      "payload": {
+        "sentence": "De koffie kost ___ cent.",
+        "answer": "vijftig"
+      }
+    },
+    {
+      "kind": "mcq",
+      "tier": 0,
+      "explanation": "Dit is een omroepbericht. Het belangrijkste staat vooraan: het gaat over de bloedprikpost in de wachtkamer.",
+      "payload": {
+        "prompt": "Is dit een gesprek of een omroepbericht? En waar staat het onderwerp?"
+      },
+      "options": [
+        {
+          "label": "A",
+          "body": "Een omroepbericht. Het onderwerp staat vooraan.",
+          "is_correct": true
+        },
+        {
+          "label": "B",
+          "body": "Een gesprek. Het onderwerp staat achteraan.",
+          "is_correct": false
+        },
+        {
+          "label": "C",
+          "body": "Een gesprek. Het onderwerp staat vooraan.",
+          "is_correct": false
+        }
+      ]
+    },
+    {
+      "kind": "audio",
+      "tier": null,
+      "explanation": null,
+      "payload": {
+        "label": "Telefoongesprek met de woningcorporatie",
+        "script": "A: Woonstichting De Meidoorn, met Nadia.\nB: Ja, goedemorgen, u spreekt met Tarik Yildiz. Mijn kraan lekt al twee dagen.\nA: Vervelend, hoor. Woont u op de Lindelaan?\nB: Ja, op nummer negentien.\nA: Even kijken. Ik kan een monteur sturen op donderdag.\nB: Moet ik daarvoor betalen?\nA: De monteur is gratis. Maar een nieuwe kraan kost negentien euro vijftig.\nB: Dat is goed. En hoe laat komt hij dan?\nA: Tussen negen en elf uur 's ochtends.",
+        "audio_url": "http://127.0.0.1:54421/storage/v1/object/public/leren-audio/fragment/a2-luisteren/e1-woorden-en-klanken-2.mp3",
+        "voice_cast": {
+          "A": "woman_young",
+          "B": "man_young"
+        },
+        "transcript": "Woonstichting De Meidoorn, met Nadia. Ja, goedemorgen, u spreekt met Tarik Yildiz. Mijn kraan lekt al twee dagen. Vervelend, hoor. Woont u op de Lindelaan? Ja, op nummer negentien. Even kijken. Ik kan een monteur sturen op donderdag. Moet ik daarvoor betalen? De monteur is gratis. Maar een nieuwe kraan kost negentien euro vijftig. Dat is goed. En hoe laat komt hij dan? Tussen negen en elf uur 's ochtends.",
+        "seconds": 26.31
+      }
+    },
+    {
+      "kind": "mcq",
+      "tier": 0,
+      "explanation": "Nadia zegt: \"Tussen negen en elf uur 's ochtends.\" Dat antwoord komt pas aan het eind van het gesprek.",
+      "payload": {
+        "prompt": "Hoe laat komt de monteur?"
+      },
+      "options": [
+        {
+          "label": "A",
+          "body": "Tussen negen en elf uur",
+          "is_correct": false
+        },
+        {
+          "label": "B",
+          "body": "Tussen negen en elf uur 's ochtends",
+          "is_correct": true
+        },
+        {
+          "label": "C",
+          "body": "Om negentien uur",
+          "is_correct": false
+        }
+      ]
+    },
+    {
+      "kind": "mcq",
+      "tier": 0,
+      "explanation": "In een gesprek staat het antwoord meestal achteraan. Tarik vraagt naar de tijd pas aan het eind, en dan hoor je het.",
+      "payload": {
+        "prompt": "Je moet weten hoe laat de monteur komt. Waar in dit gesprek let je goed op?"
+      },
+      "options": [
+        {
+          "label": "A",
+          "body": "Vooraan, bij de begroeting.",
+          "is_correct": false
+        },
+        {
+          "label": "B",
+          "body": "In het midden, bij het adres.",
+          "is_correct": false
+        },
+        {
+          "label": "C",
+          "body": "Achteraan, na de vraag van Tarik.",
+          "is_correct": true
+        }
+      ]
+    },
+    {
+      "kind": "mcq",
+      "tier": 0,
+      "explanation": "In het gesprek staan de woorden \"negentien\" en \"gratis\" bij verschillende dingen: het huisnummer en de monteur. Een antwoord met bekende woorden uit het fragment is vaak juist het foute antwoord.",
+      "payload": {
+        "prompt": "Wat is waar over het geld?"
+      },
+      "options": [
+        {
+          "label": "A",
+          "body": "De monteur kost negentien euro vijftig.",
+          "is_correct": false
+        },
+        {
+          "label": "B",
+          "body": "Alles is gratis, ook de kraan.",
+          "is_correct": false
+        },
+        {
+          "label": "C",
+          "body": "De monteur is gratis, de nieuwe kraan kost € 19,50.",
+          "is_correct": true
+        }
+      ]
+    },
+    {
+      "kind": "gap_type",
+      "tier": 2,
+      "explanation": "Schrijf op wat je hoort. Tarik woont op nummer negentien; de kraan kost negentien euro vijftig. Hier gaat het om het huisnummer.",
+      "payload": {
+        "sentence": "Tarik woont op de Lindelaan, nummer ___.",
+        "answer": "negentien"
+      }
+    },
+    {
+      "kind": "gap_choice",
+      "tier": 1,
+      "explanation": "Je hoort \"kraan\", niet \"krant\". Eén klank verschil geeft een ander woord en een ander antwoord.",
+      "payload": {
+        "sentence": "Tarik belt over zijn ___ die lekt.",
+        "choices": [
+          "kraan",
+          "krant",
+          "kranen"
+        ],
+        "answer": "kraan"
+      }
+    },
+    {
+      "kind": "matchen",
+      "tier": 1,
+      "explanation": "Deze woorden lijken op elkaar, maar er is één klank verschil. Luister goed naar het einde van het woord.",
+      "payload": {
+        "instruction": "Zet het woord uit het gesprek bij de juiste betekenis.",
+        "pairs": [
+          {
+            "left": "kraan",
+            "right": "één stuk, waar het water uit komt"
+          },
+          {
+            "left": "kranen",
+            "right": "meer dan één stuk"
+          },
+          {
+            "left": "maar",
+            "right": "er komt een verschil"
+          },
+          {
+            "left": "dus",
+            "right": "er komt een gevolg"
+          }
+        ]
+      }
+    },
+    {
+      "kind": "gap_choice",
+      "tier": 1,
+      "explanation": "Je hoort \"De monteur is gratis. Maar een nieuwe kraan kost negentien euro vijftig.\" Het signaalwoord <strong>maar</strong> laat het verschil horen tussen gratis en betalen.",
+      "payload": {
+        "sentence": "De monteur is gratis, ___ de nieuwe kraan kost geld.",
+        "choices": [
+          "maar",
+          "dus",
+          "eerst"
+        ],
+        "answer": "maar"
+      }
+    }
+  ],
+  "what_you_learn": "In deze les toets je jezelf op luisteren naar details. Je let op getallen, tijden en prijzen, op woorden die bijna hetzelfde klinken, en op signaalwoorden zoals maar en daarna. Na de toets weet je welke onderwerpen je nog moet oefenen."
+}

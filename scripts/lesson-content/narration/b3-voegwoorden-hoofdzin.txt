@@ -1,0 +1,34 @@
+# De ingesproken uitleg van `b3-voegwoorden-hoofdzin`.
+# Regels met # zijn commentaar. [[id]] of [[id | extra uitleg]] markeert waar de stem over
+# welk element begint; de extra uitleg staat op de pagina bij dat element en mag niet herhalen
+# wat de stem net zei.
+# Geldige id's: vis, vis-1 t/m vis-3, rule, card-0, card-1, demo-0, demo-1, exercises.
+
+Deze les gaat over en, maar, want, dus en of.
+
+[[vis-1 | Na "want" begint de nummering opnieuw bij één.]]
+Kijk naar het plaatje. Links staat een hoofdzin: ik blijf thuis. Dan komt het voegwoord want. Dat woord heeft geen nummer; het staat tussen de twee delen. En daarna? Ik is plaats één, ben is plaats twee, ziek is plaats drie.
+
+[[vis-2 | Dus, en, maar en of werken precies zo.]]
+De tweede rij doet hetzelfde met dus. Ik ben ziek, dus ik blijf thuis. Ook hier staat het werkwoord op plaats twee.
+
+[[vis-3 | Dit is de volgorde van een bijzin. Die komt in de volgende les.]]
+De derde rij is fout. Daar staat: want ik thuis blijf. Het werkwoord staat achteraan, en dat hoort hier niet.
+
+[[rule | Vijf woorden, één regel: de volgorde blijft gewoon.]]
+De regel is dus: deze vijf woorden verbinden twee hoofdzinnen, en ze veranderen niets aan de volgorde. Je hoeft niets om te draaien.
+
+[[card-0 | Twee zinnen die los ook goed zijn.]]
+De eerste kaart laat de twee losse zinnen zien.
+
+[[card-1 | Er komt alleen een woordje tussen. Verder blijft alles staan.]]
+De tweede kaart plakt ze aan elkaar.
+
+[[demo-0 | Voor "maar" komt een komma.]]
+Twee voorbeelden. Ik werk in een winkel, maar ik verdien weinig.
+
+[[demo-1 | Want geeft een reden. Dus geeft een gevolg.]]
+En: ik blijf thuis, want ik ben ziek.
+
+[[exercises]]
+Doe nu de opgaven. Kijk bij elk deel opnieuw waar het werkwoord staat.

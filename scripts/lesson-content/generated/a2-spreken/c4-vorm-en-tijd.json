@@ -1,0 +1,177 @@
+{
+  "items": [
+    {
+      "kind": "uitleg",
+      "tier": null,
+      "explanation": null,
+      "payload": {
+        "body_html": "<p>Als je praat, denk je aan je verhaal. Dan vergeet je snel de <strong>-t</strong> aan het einde van het werkwoord. Dat hoor je meteen: \"hij werk\" in plaats van \"hij werkt\".</p><p>Werk in drie stappen. Eén: neem even een halve seconde rust voor je begint. Twee: kies wie iets doet (ik, je, hij, wij). Drie: zeg het werkwoord hardop af, dus met de <strong>-t</strong> als dat nodig is.</p><p>Onthoud: bij <em>hij</em>, <em>zij</em>, <em>het</em>, <em>u</em>, <em>je</em> en <em>mijn zoon</em> hoort een <strong>-t</strong>. Bij <em>ik</em> niet.</p>",
+        "cards": [
+          {
+            "label": "ZWAK",
+            "example_html": "Mijn dochter <mark>ga</mark> naar school en zij <mark>vind</mark> het leuk."
+          },
+          {
+            "label": "GOED",
+            "example_html": "Mijn dochter <mark>gaat</mark> naar school en zij <mark>vindt</mark> het leuk."
+          }
+        ]
+      }
+    },
+    {
+      "kind": "voorbeeld",
+      "tier": null,
+      "explanation": null,
+      "payload": {
+        "sentence_html": "Mijn buurman <mark>werkt</mark> in de avond, dus hij <mark>slaapt</mark> in de ochtend."
+      }
+    },
+    {
+      "kind": "voorbeeld",
+      "tier": null,
+      "explanation": null,
+      "payload": {
+        "sentence_html": "<mark>Kunt u</mark> mij helpen, want de brief van de gemeente is niet duidelijk."
+      }
+    },
+    {
+      "kind": "mcq",
+      "tier": 0,
+      "explanation": "Bij \"mijn man\" (hij) hoort een -t: hij werkt. Antwoord A mist die -t.",
+      "payload": {
+        "prompt": "Je vertelt over je gezin. Welk antwoord is goed Nederlands?"
+      },
+      "options": [
+        {
+          "label": "A",
+          "body": "Mijn man werk bij een bakker in Zwolle.",
+          "is_correct": false
+        },
+        {
+          "label": "B",
+          "body": "Mijn man werkt bij een bakker in Zwolle.",
+          "is_correct": true
+        },
+        {
+          "label": "C",
+          "body": "Mijn man werken bij een bakker in Zwolle.",
+          "is_correct": false
+        }
+      ]
+    },
+    {
+      "kind": "mcq",
+      "tier": 0,
+      "explanation": "Antwoord C is te kort: het is één woord en geen zin. In het examen geef je altijd een hele zin met een werkwoord erin.",
+      "payload": {
+        "prompt": "De examinator vraagt: \"Waarom bent u naar het gemeentehuis gekomen?\" Welk antwoord is te kort?"
+      },
+      "options": [
+        {
+          "label": "A",
+          "body": "Ik kom voor een nieuw paspoort, want mijn oude is verlopen.",
+          "is_correct": false
+        },
+        {
+          "label": "B",
+          "body": "Ik heb een afspraak bij de balie om negen uur.",
+          "is_correct": false
+        },
+        {
+          "label": "C",
+          "body": "Paspoort.",
+          "is_correct": true
+        }
+      ]
+    },
+    {
+      "kind": "mcq",
+      "tier": 0,
+      "explanation": "Na \"ik\" komt het werkwoord zonder -t, maar na \"mijn zoon\" (hij) juist mét -t. Alleen B doet dat allebei goed.",
+      "payload": {
+        "prompt": "Je zegt tegen de juf: welk antwoord is helemaal goed?"
+      },
+      "options": [
+        {
+          "label": "A",
+          "body": "Ik brengt mijn zoon om acht uur en hij eet thuis.",
+          "is_correct": false
+        },
+        {
+          "label": "B",
+          "body": "Ik breng mijn zoon om acht uur en hij eet thuis.",
+          "is_correct": true
+        },
+        {
+          "label": "C",
+          "body": "Ik breng mijn zoon om acht uur en hij eten thuis.",
+          "is_correct": false
+        },
+        {
+          "label": "D",
+          "body": "Ik brengt mijn zoon om acht uur en hij eten thuis.",
+          "is_correct": false
+        }
+      ]
+    },
+    {
+      "kind": "matchen",
+      "tier": 1,
+      "explanation": "Je kiest bij elke situatie een hele zin met het werkwoord in de juiste vorm. Zo blijf je ook onder tijdsdruk goed spreken.",
+      "payload": {
+        "instruction": "Welke zin past bij welke situatie? Zeg de zin daarna hardop.",
+        "pairs": [
+          {
+            "left": "Je bent ziek en belt je werk",
+            "right": "Ik voel me niet goed, dus ik kom vandaag niet."
+          },
+          {
+            "left": "Je vertelt over je buurvrouw",
+            "right": "Zij helpt mij vaak met de post."
+          },
+          {
+            "left": "Je vraagt iets aan de medewerker",
+            "right": "Kunt u dat nog een keer zeggen?"
+          },
+          {
+            "left": "Je vertelt over je dochter",
+            "right": "Mijn dochter zit in groep vier."
+          }
+        ]
+      }
+    },
+    {
+      "kind": "opnemen",
+      "tier": 2,
+      "explanation": "Je gebruikt hele zinnen en je let op de -t bij hij, zij en u. Zo is je antwoord duidelijk en goed.",
+      "payload": {
+        "prompt": "Je bent bij de huisartsenpost. De assistent vraagt: \"Waarom komt u vandaag?\" Neem je antwoord op. Vergelijk je antwoord daarna met het voorbeeld.",
+        "model_answer": "Ik heb sinds drie dagen erge hoofdpijn. Mijn buurvrouw zegt dat ik moet komen. Zij denkt dat het van de koorts komt.",
+        "checklist": [
+          "Ik zeg minstens twee hele zinnen.",
+          "Bij hij, zij en u zeg ik de -t: zegt, denkt, komt.",
+          "Na \"ik\" zeg ik het werkwoord zonder -t: ik heb, ik kom."
+        ],
+        "image_urls": [],
+        "record_seconds": 60
+      }
+    },
+    {
+      "kind": "opnemen",
+      "tier": 2,
+      "explanation": "Je vertelt over een ander persoon, dus je hebt de -t nodig: hij werkt, hij begint. Zonder die -t klinkt je antwoord fout.",
+      "payload": {
+        "prompt": "De examinator vraagt: \"Vertelt u eens iets over iemand in uw familie. Wat doet die persoon op een dag?\" Neem je antwoord op. Vergelijk je antwoord daarna met het voorbeeld.",
+        "model_answer": "Mijn broer woont in Almere en hij werkt in een winkel. Hij begint om zeven uur en hij eet om twaalf uur. In de avond kookt hij voor zijn kinderen.",
+        "checklist": [
+          "Ik zeg twee of drie hele zinnen.",
+          "Elk werkwoord bij hij of zij eindigt op -t.",
+          "Ik praat rustig, zodat het einde van elk woord goed te horen is."
+        ],
+        "image_urls": [],
+        "record_seconds": 60
+      }
+    }
+  ],
+  "what_you_learn": "Je leert de -t aan het einde van het werkwoord ook horen en zeggen als je praat. Je merkt zelf wanneer een antwoord te kort is en je maakt er een hele zin van. Daarna spreek je zelf twee antwoorden in en vergelijk je die met een voorbeeld."
+}

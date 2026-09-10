@@ -1,0 +1,191 @@
+{
+  "items": [
+    {
+      "kind": "uitleg",
+      "tier": null,
+      "explanation": null,
+      "payload": {
+        "body_html": "<p>Op je werk hoor je vaak woorden over samen praten en plannen. Denk aan <strong>het overleg</strong>, <strong>de planning</strong> en <strong>de dienst</strong>.</p>",
+        "cards": [
+          {
+            "label": "SAMEN PRATEN",
+            "example_html": "In <mark>het werkoverleg</mark> praten we over het werk."
+          },
+          {
+            "label": "WERKTIJD",
+            "example_html": "Ik werk morgen <mark>de late dienst</mark>."
+          }
+        ]
+      }
+    },
+    {
+      "kind": "woordenlijst",
+      "tier": null,
+      "explanation": null,
+      "payload": {
+        "theme": "werk-en-overleg"
+      }
+    },
+    {
+      "kind": "matchen",
+      "tier": 0,
+      "explanation": "Elk woord hoort bij één betekenis. Let op wie iets doet en wat er gebeurt.",
+      "payload": {
+        "instruction": "Zet het woord bij de juiste betekenis.",
+        "pairs": [
+          {
+            "left": "de vergadering",
+            "right": "bijeenkomst waarin collega's over het werk praten"
+          },
+          {
+            "left": "de leidinggevende",
+            "right": "persoon die de anderen aanstuurt op het werk"
+          },
+          {
+            "left": "de notulen",
+            "right": "verslag op papier van wat er besproken is"
+          },
+          {
+            "left": "de pauze",
+            "right": "korte tijd waarin je even stopt met werken"
+          }
+        ]
+      }
+    },
+    {
+      "kind": "matchen",
+      "tier": 0,
+      "explanation": "Deze woorden zijn werkwoorden: ze zeggen wat iemand doet op het werk.",
+      "payload": {
+        "instruction": "Zet het werkwoord bij de juiste betekenis.",
+        "pairs": [
+          {
+            "left": "overwerken",
+            "right": "langer doorgaan dan de normale uren"
+          },
+          {
+            "left": "invallen",
+            "right": "het werk van een zieke collega tijdelijk doen"
+          },
+          {
+            "left": "melden",
+            "right": "laten weten dat je er bent of iets doorgeven"
+          },
+          {
+            "left": "regelen",
+            "right": "zorgen dat iets in orde komt"
+          }
+        ]
+      }
+    },
+    {
+      "kind": "gap_choice",
+      "tier": 1,
+      "explanation": "Een overzicht van wie wanneer werkt heet de planning. Een dienst is één periode waarin je werkt.",
+      "payload": {
+        "sentence": "De leidinggevende hangt elke maandag de nieuwe ___ op het bord.",
+        "choices": [
+          "planning",
+          "dienst",
+          "pauze"
+        ],
+        "answer": "planning"
+      }
+    },
+    {
+      "kind": "gap_choice",
+      "tier": 1,
+      "explanation": "Als een collega ziek is, doe je zijn werk tijdelijk: dan val je in.",
+      "payload": {
+        "sentence": "Fatima is ziek, dus ik moet vandaag voor haar ___.",
+        "choices": [
+          "invallen",
+          "afspreken",
+          "doorgeven"
+        ],
+        "answer": "invallen"
+      }
+    },
+    {
+      "kind": "gap_choice",
+      "tier": 1,
+      "explanation": "Na het overleg kiest het team iets. Wat gekozen is, heet het besluit.",
+      "payload": {
+        "sentence": "Na het overleg staat het ___ in de notulen.",
+        "choices": [
+          "voorstel",
+          "besluit",
+          "instructie"
+        ],
+        "answer": "besluit"
+      }
+    },
+    {
+      "kind": "mcq",
+      "tier": 0,
+      "explanation": "Een ploeg is een groep mensen die samen dezelfde uren werkt.",
+      "payload": {
+        "prompt": "Wat betekent 'de ploeg'?"
+      },
+      "options": [
+        {
+          "label": "A",
+          "body": "Een groep mensen die samen dezelfde uren werkt.",
+          "is_correct": true
+        },
+        {
+          "label": "B",
+          "body": "Een verslag van de vergadering.",
+          "is_correct": false
+        },
+        {
+          "label": "C",
+          "body": "Uitleg over hoe je iets moet doen.",
+          "is_correct": false
+        }
+      ]
+    },
+    {
+      "kind": "gap_type",
+      "tier": 2,
+      "explanation": "Uitleg over hoe je iets moet doen, heet een instructie.",
+      "payload": {
+        "sentence": "De machine is nieuw, dus lees eerst de ___ goed door.",
+        "answer": "instructie"
+      }
+    },
+    {
+      "kind": "gap_type",
+      "tier": 2,
+      "explanation": "Als je er niet bent, ben je afwezig. Je meldt dat bij je leidinggevende.",
+      "payload": {
+        "sentence": "Ik ben morgen ___, want ik moet naar de dokter.",
+        "answer": "afwezig"
+      }
+    },
+    {
+      "kind": "gap_type",
+      "tier": 2,
+      "explanation": "Informatie aan iemand anders vertellen is doorgeven.",
+      "payload": {
+        "sentence": "Wil je deze boodschap aan je collega ___?",
+        "answer": "doorgeven"
+      }
+    },
+    {
+      "kind": "gap_choice",
+      "tier": 1,
+      "explanation": "Samen bepalen wat er gaat gebeuren, is afspreken. Een taak is iets wat je moet doen.",
+      "payload": {
+        "sentence": "We gaan in het werkoverleg ___ wie de kast opruimt.",
+        "choices": [
+          "afspreken",
+          "overnemen",
+          "melden"
+        ],
+        "answer": "afspreken"
+      }
+    }
+  ],
+  "what_you_learn": "Je leert de belangrijkste woorden over werk en overleg, zoals de planning, de dienst en het werkoverleg. Je begrijpt wat woorden als invallen, overwerken en doorgeven betekenen. Daarna kun je deze woorden zelf in een zin gebruiken."
+}

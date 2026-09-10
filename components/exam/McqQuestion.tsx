@@ -2,8 +2,10 @@
 
 import { Check, X } from 'lucide-react';
 import AudioPlayer from './AudioPlayer';
+import WordPass from './WordPass';
 import { useReadAloud } from '@/components/proefexamen/useReadAloud';
 import { useAudioEnabled } from '@/lib/audio-pref';
+import { playCorrectChime } from '@/lib/answer-chime';
 import {
   EqBars,
   HighlightedText,
@@ -142,7 +144,12 @@ export default function McqQuestion({
             chosen={o.id === chosenId}
             isCorrect={o.is_correct}
             reveal={answered && showFeedback}
-            onSelect={() => onSelect(o)}
+            onSelect={() => {
+              /* Practice only: in a real sitting nothing is revealed, so there is nothing to
+                 reward yet — the score arrives at the end. */
+              if (showFeedback && o.is_correct) playCorrectChime();
+              onSelect(o);
+            }}
             /* Segment 0 is the prompt, so this option is segment i + 1. */
             beingRead={hasReadAloud && reading && activeSeg === i + 1}
             /* Dropped once answered: the sequence reads on past the click, and a clay word-mark
@@ -154,7 +161,7 @@ export default function McqQuestion({
 
       {answered && showFeedback && (
         <div
-          className="mt-3.5 flex gap-2.5 px-4 py-3 rounded-xl text-sm leading-relaxed"
+          className="answer-verdict mt-3.5 flex gap-2.5 px-4 py-3 rounded-xl text-sm leading-relaxed"
           /* No 1px borders (§2). "Right" is the `correct` green token and "wrong" is the `error`
              token; the Check/X icon carries the meaning for anyone who cannot separate the two
              hues. Owner's decision 2026-08-29 — the clay accent read as a highlight, not a
@@ -244,7 +251,7 @@ function OptionButton({
       onClick={onSelect}
       className={`exam-option w-full rounded-xl text-left ${
         layout === 'text' ? 'flex items-start gap-3.5 px-4 py-3.5' : 'flex flex-col gap-2.5 p-3'
-      }`}
+      } ${reveal && isCorrect ? 'answer-correct' : ''}`}
       style={{ ...surface, cursor: answered ? 'default' : 'pointer', font: 'inherit' }}
     >
       <span
@@ -278,7 +285,7 @@ function OptionButton({
         >
           {highlight
             ? <HighlightedText text={o.body} reading={highlight.reading} activeSeg={highlight.activeSeg} thisSeg={highlight.thisSeg} activeWord={highlight.activeWord} />
-            : o.body}
+            : <WordPass text={o.body} active={reveal && isCorrect} />}
         </span>
       )}
 

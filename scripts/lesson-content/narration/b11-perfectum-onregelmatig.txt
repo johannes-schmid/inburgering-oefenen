@@ -1,0 +1,37 @@
+# De ingesproken uitleg van `b11-perfectum-onregelmatig`.
+# Regels met # zijn commentaar. [[id]] of [[id | extra uitleg]] markeert waar de stem over
+# welk element begint; de extra uitleg staat op de pagina bij dat element en mag niet herhalen
+# wat de stem net zei.
+# Geldige id's: vis, vis-1 t/m vis-4, rule, card-0, card-1, demo-0, demo-1, exercises.
+
+Deze les gaat over deelwoorden die eindigen op -en.
+
+[[vis-1 | Ook deze groep krijgt ge-. Dat blijft gelijk.]]
+Kijk naar het plaatje. We nemen lezen. Vooraan komt ge-, net als in de vorige les.
+
+[[vis-2 | Lees wordt lez. Zulke klankwissels zie je vaak bij deze groep.]]
+Maar in het midden gebeurt iets nieuws: de klank verandert. Lees wordt lez.
+
+[[vis-3 | Hoor je -en aan het eind, dan is het een sterk werkwoord.]]
+En achteraan komt geen -d en geen -t, maar -en.
+
+[[vis-4 | Ik heb gelezen. Er staat dus ook hier hebben of zijn bij.]]
+Samen wordt het: gelezen.
+
+[[rule | Er is geen regel die zegt welke werkwoorden dit doen. Ze staan in de lijst bij deze les.]]
+Deze groep noem je sterke werkwoorden. Je kunt ze niet uitrekenen, dus je leert de rijtjes. Schrijven wordt geschreven. Nemen wordt genomen. Drinken wordt gedronken.
+
+[[card-0 | De groep uit de vorige les: gewerkt, gewoond, betaald.]]
+De eerste kaart is de groep op -d of -t.
+
+[[card-1 | Deze groep is kleiner, maar je gebruikt hem heel vaak.]]
+De tweede kaart is de groep op -en.
+
+[[demo-0 | Gelezen staat achteraan in de zin.]]
+Twee voorbeelden. Ik heb de post van de gemeente gelezen.
+
+[[demo-1 | Geschreven is sterk; opgestuurd is regelmatig, met ge- in het midden.]]
+En: Fatima heeft het formulier geschreven en opgestuurd.
+
+[[exercises]]
+Doe nu de opgaven. Twijfel je? Kijk dan naar de laatste letters.

@@ -1,0 +1,37 @@
+# De ingesproken uitleg van `b27-voorzetsels-plaats`.
+# Regels met # zijn commentaar. [[id]] of [[id | extra uitleg]] markeert waar de stem over
+# welk element begint; de extra uitleg staat op de pagina bij dat element en mag niet herhalen
+# wat de stem net zei.
+# Geldige id's: vis, vis-1 t/m vis-8, rule, card-0, card-1, demo-0, demo-1, exercises.
+
+Deze les gaat over woordjes die zeggen waar iets is.
+
+[[vis-1 | De stip zit binnen de doos.]]
+Kijk naar het plaatje. Bij elk woord staat een doos en een stip. Bij in zit de stip in de doos: de brief zit in de envelop.
+
+[[vis-2 | De stip ligt bovenop het vlak.]]
+Bij op ligt de stip bovenop: de post ligt op de tafel.
+
+[[vis-3 | De stip ligt eronder.]]
+Bij onder ligt de stip onder de doos: de schoenen staan onder het bed.
+
+[[vis-4 | De stip staat aan de zijkant, ernaast.]]
+Bij naast staat de stip ernaast: de apotheek zit naast de huisarts.
+
+[[rule | Langs staat niet in het plaatje: dat is geen plek maar een route.]]
+Onthoud dus: in is binnen een ruimte, op is bovenop een vlak, en naast is aan de zijkant. Met langs volg je een lijn of een route, bijvoorbeeld langs de gracht.
+
+[[card-0 | In, op, onder, naast: dat is een plek.]]
+De eerste kaart is een plek.
+
+[[card-1 | Langs en door zeggen iets over de weg die je volgt.]]
+De tweede kaart is een route.
+
+[[demo-0 | In de map: binnen iets.]]
+Twee voorbeelden. Je paspoort ligt in de bruine map.
+
+[[demo-1 | Naast de supermarkt: aan de zijkant.]]
+En: de apotheek staat naast de supermarkt.
+
+[[exercises]]
+Doe nu de opgaven. Maak in je hoofd het plaatje: waar ligt het precies?

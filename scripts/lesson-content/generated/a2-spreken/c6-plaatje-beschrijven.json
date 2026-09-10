@@ -1,0 +1,172 @@
+{
+  "items": [
+    {
+      "kind": "uitleg",
+      "tier": null,
+      "explanation": null,
+      "payload": {
+        "body_html": "<p>Bij het spreken zie je soms een plaatje op het scherm. De opdracht vraagt: zeg wat je ziet. Werk in drie stappen. <strong>Stap 1:</strong> zeg waar het plaatje over gaat. <strong>Stap 2:</strong> noem twee of drie dingen die je ziet. <strong>Stap 3:</strong> zeg iets over de mensen: wat doen ze?</p><p>Zeg altijd meer dan één woord. Een heel woord is geen antwoord; maak korte zinnen.</p>",
+        "cards": [
+          {
+            "label": "ZWAK",
+            "example_html": "<mark>Een dokter.</mark>"
+          },
+          {
+            "label": "GOED",
+            "example_html": "<mark>Ik zie een wachtkamer. Er zitten drie mensen op een stoel. Een vrouw praat met de assistente.</mark>"
+          }
+        ]
+      }
+    },
+    {
+      "kind": "voorbeeld",
+      "tier": null,
+      "explanation": null,
+      "payload": {
+        "sentence_html": "<mark>Op het plaatje zie ik</mark> een supermarkt met een lange rij bij de kassa."
+      }
+    },
+    {
+      "kind": "voorbeeld",
+      "tier": null,
+      "explanation": null,
+      "payload": {
+        "sentence_html": "Een man wijst naar een pak melk en <mark>hij vraagt iets aan de medewerker</mark>."
+      }
+    },
+    {
+      "kind": "mcq",
+      "tier": 0,
+      "explanation": "Je moet zeggen wat je ziet in korte zinnen. Eén los woord is te kort voor een antwoord.",
+      "payload": {
+        "prompt": "Je ziet een plaatje van een bushalte. De opdracht is: zeg wat je ziet. Welk antwoord past hier het beste?"
+      },
+      "options": [
+        {
+          "label": "A",
+          "body": "Bus.",
+          "is_correct": false
+        },
+        {
+          "label": "B",
+          "body": "Ik zie een bushalte. Er staan vier mensen te wachten. Het regent.",
+          "is_correct": true
+        },
+        {
+          "label": "C",
+          "body": "Ik ga elke dag met de bus naar mijn werk in Zwolle.",
+          "is_correct": false
+        }
+      ]
+    },
+    {
+      "kind": "mcq",
+      "tier": 0,
+      "explanation": "Een antwoord van één woord is te kort. Je zegt niets over wat je ziet of wat de mensen doen.",
+      "payload": {
+        "prompt": "Welk antwoord is te kort bij een plaatje van een schoolplein?"
+      },
+      "options": [
+        {
+          "label": "A",
+          "body": "Kinderen.",
+          "is_correct": true
+        },
+        {
+          "label": "B",
+          "body": "Ik zie een schoolplein. Twee kinderen spelen met een bal.",
+          "is_correct": false
+        },
+        {
+          "label": "C",
+          "body": "Op het plaatje zie ik een school. De kinderen hebben pauze.",
+          "is_correct": false
+        }
+      ]
+    },
+    {
+      "kind": "mcq",
+      "tier": 0,
+      "explanation": "De opdracht vraagt wat je ziet op het plaatje. Je eigen mening of je eigen verhaal is geen beschrijving.",
+      "payload": {
+        "prompt": "Je ziet een plaatje van een wachtkamer bij de huisarts. Welk antwoord hoort niet bij de opdracht 'zeg wat je ziet'?"
+      },
+      "options": [
+        {
+          "label": "A",
+          "body": "Ik zie een wachtkamer. Er hangt een klok aan de muur.",
+          "is_correct": false
+        },
+        {
+          "label": "B",
+          "body": "Ik vind de huisarts in mijn wijk heel aardig.",
+          "is_correct": true
+        },
+        {
+          "label": "C",
+          "body": "Een vrouw leest een tijdschrift. Naast haar zit een jongen.",
+          "is_correct": false
+        }
+      ]
+    },
+    {
+      "kind": "matchen",
+      "tier": 1,
+      "explanation": "Bij elk plaatje past een zin over wat je daar ziet. Je begint met 'ik zie' en noemt de plek en de mensen.",
+      "payload": {
+        "instruction": "Welke zin past bij welk plaatje? Verbind de twee delen.",
+        "pairs": [
+          {
+            "left": "Een plaatje van een markt",
+            "right": "Ik zie een kraam met groente en fruit."
+          },
+          {
+            "left": "Een plaatje van een tandarts",
+            "right": "Ik zie een man in een witte jas bij een stoel."
+          },
+          {
+            "left": "Een plaatje van een gemeentebalie",
+            "right": "Ik zie een vrouw achter een balie met een computer."
+          },
+          {
+            "left": "Een plaatje van een sportzaal",
+            "right": "Ik zie kinderen met een bal in een grote zaal."
+          }
+        ]
+      }
+    },
+    {
+      "kind": "opnemen",
+      "tier": 2,
+      "explanation": "Je noemt eerst de plek en daarna twee of drie dingen die je ziet. Zo geef je een volledig antwoord in hele zinnen.",
+      "payload": {
+        "prompt": "Je ziet een plaatje van een postkantoor. Achter de balie staat een medewerker. Voor de balie staat een vrouw met een pakket in haar handen. Zeg in drie zinnen wat je ziet. Neem je antwoord op en vergelijk je antwoord met het voorbeeld.",
+        "model_answer": "Op het plaatje zie ik een postkantoor. Achter de balie staat een medewerker. Een vrouw geeft een pakket aan hem.",
+        "checklist": [
+          "Ik zeg eerst waar het plaatje over gaat.",
+          "Ik noem minstens twee dingen die ik zie.",
+          "Ik spreek in hele zinnen, niet in losse woorden."
+        ],
+        "image_urls": [],
+        "record_seconds": 60
+      }
+    },
+    {
+      "kind": "opnemen",
+      "tier": 2,
+      "explanation": "Je zegt wat je ziet én wat de mensen doen. Daarmee is je antwoord lang genoeg en past het bij de opdracht.",
+      "payload": {
+        "prompt": "Je ziet een plaatje van een speeltuin in de wijk. Er staan twee moeders met een kinderwagen. Drie kinderen glijden van de glijbaan. De zon schijnt. Zeg wat je ziet op het plaatje. Neem je antwoord op en vergelijk je antwoord met het voorbeeld.",
+        "model_answer": "Ik zie een speeltuin. Er spelen drie kinderen bij de glijbaan. Twee moeders staan te praten bij een kinderwagen, en het is mooi weer.",
+        "checklist": [
+          "Ik zeg iets over de plek en over het weer.",
+          "Ik zeg wat de mensen doen.",
+          "Ik gebruik minstens twee zinnen."
+        ],
+        "image_urls": [],
+        "record_seconds": 60
+      }
+    }
+  ],
+  "what_you_learn": "Je leert wat je zegt als je bij een plaatje moet vertellen wat je ziet. Je noemt eerst de plek en daarna twee of drie dingen die je ziet. Ook leer je zeggen wat de mensen op het plaatje doen, in hele korte zinnen."
+}

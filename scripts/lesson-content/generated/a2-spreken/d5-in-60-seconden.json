@@ -1,0 +1,137 @@
+{
+  "items": [
+    {
+      "kind": "uitleg",
+      "tier": null,
+      "explanation": null,
+      "payload": {
+        "body_html": "<p>Je krijgt een korte situatie en spreekt daarna ongeveer <strong>zestig seconden</strong> in.</p>",
+        "cards": [
+          {
+            "label": "TIJD",
+            "example_html": "Je hebt <mark>60 seconden</mark> spreektijd per opdracht."
+          },
+          {
+            "label": "TEMPO",
+            "example_html": "Zeg <mark>drie of vier zinnen</mark> in rustig tempo."
+          }
+        ]
+      }
+    },
+    {
+      "kind": "opnemen",
+      "tier": 2,
+      "explanation": "Je noemt eerst wie je bent en wat het probleem is. Daarna vraag je concreet om hulp, want dat verwacht de situatie van je.",
+      "payload": {
+        "prompt": "De kraan in je keuken lekt al drie dagen. Je belt de woningstichting Groenhof. Vertel wie je bent, wat er stuk is en vraag of iemand langs kan komen.",
+        "model_answer": "Goedemiddag, u spreekt met Amina Hadaoui van de Beukenlaan 14. De kraan in mijn keuken lekt al drie dagen en er staat water op de vloer. Kan er deze week een monteur langskomen? Ik ben elke dag na vier uur thuis.",
+        "checklist": [
+          "Ik zeg mijn naam en mijn adres.",
+          "Ik vertel wat er stuk is en sinds wanneer.",
+          "Ik vraag duidelijk of iemand kan komen."
+        ],
+        "image_urls": [],
+        "record_seconds": 60
+      }
+    },
+    {
+      "kind": "mcq",
+      "tier": 0,
+      "explanation": "In deze situatie moet je je afmelden en een reden geven. Alleen het antwoord met een reden en een nieuwe afspraak past bij de vraag.",
+      "options": [
+        {
+          "label": "A",
+          "body": "Ik kan morgen niet komen, want mijn dochter is ziek. Kan de afspraak naar volgende week?",
+          "is_correct": true
+        },
+        {
+          "label": "B",
+          "body": "Ja, dat is goed. Tot morgen om tien uur.",
+          "is_correct": false
+        },
+        {
+          "label": "C",
+          "body": "Mijn dochter zit in groep vier. Ze vindt school heel leuk.",
+          "is_correct": false
+        }
+      ],
+      "payload": {
+        "prompt": "Je hebt morgen een afspraak bij de gemeente, maar je dochter is ziek. Je belt de gemeente. Welk antwoord past het beste?"
+      }
+    },
+    {
+      "kind": "opnemen",
+      "tier": 2,
+      "explanation": "Je vraagt om iets, dus je zegt eerst waarvoor je komt en daarna wat je precies nodig hebt. Een reden maakt je vraag duidelijk.",
+      "payload": {
+        "prompt": "Je werkt in een keuken. Je wilt op vrijdag 14 maart vrij, omdat je naar de tandarts moet. Vraag dit aan je leidinggevende, meneer Verkerk.",
+        "model_answer": "Meneer Verkerk, mag ik u even iets vragen? Ik moet op vrijdag 14 maart naar de tandarts. Kan ik die middag vrij krijgen? Ik kan de zaterdag daarna wel extra werken.",
+        "checklist": [
+          "Ik noem de dag en de datum.",
+          "Ik geef een reden waarom ik vrij wil.",
+          "Ik stel een oplossing voor of vraag om antwoord."
+        ],
+        "image_urls": [],
+        "record_seconds": 60
+      }
+    },
+    {
+      "kind": "opnemen",
+      "tier": 2,
+      "explanation": "Bij een klacht vertel je eerst rustig wat er gebeurd is en daarna wat je wilt. Zo begrijpt de ander wat je van hem vraagt.",
+      "payload": {
+        "prompt": "Je hebt gisteren een waterkoker gekocht bij winkel De Zonnehoek. Hij werkt niet. Je gaat terug naar de winkel. Vertel wat er aan de hand is en zeg wat je wilt.",
+        "model_answer": "Goedemorgen, ik heb hier gisteren deze waterkoker gekocht. Hij wordt helemaal niet warm en het lampje gaat niet aan. Hier is mijn bonnetje. Ik wil graag mijn geld terug of een nieuwe waterkoker.",
+        "checklist": [
+          "Ik vertel wanneer ik het ding gekocht heb.",
+          "Ik leg uit wat er niet werkt.",
+          "Ik zeg wat ik wil: geld terug of een nieuwe."
+        ],
+        "image_urls": [],
+        "record_seconds": 60
+      }
+    },
+    {
+      "kind": "opnemen",
+      "tier": 2,
+      "explanation": "Je geeft informatie over jezelf, dus je vertelt over je werk, je gezin en je vrije tijd. Drie korte zinnen zijn genoeg voor een minuut.",
+      "payload": {
+        "prompt": "Je bent nieuw op een cursus. De docent vraagt: vertel eens iets over jezelf. Vertel je naam, waar je woont, wat je doet en wat je in je vrije tijd graag doet.",
+        "model_answer": "Ik ben Sergio Almeida en ik woon sinds twee jaar in Zwolle. Ik werk drie dagen per week in een plantenkwekerij. In mijn vrije tijd fiets ik graag en ik kook voor mijn gezin.",
+        "checklist": [
+          "Ik noem mijn naam en mijn woonplaats.",
+          "Ik vertel wat ik doe: werk, cursus of thuis.",
+          "Ik zeg iets over mijn vrije tijd."
+        ],
+        "image_urls": [],
+        "record_seconds": 60
+      }
+    },
+    {
+      "kind": "mcq",
+      "tier": 0,
+      "explanation": "De buurman vraagt om hulp met een concrete vraag. Het antwoord dat ja zegt én een tijd noemt, past het beste.",
+      "options": [
+        {
+          "label": "A",
+          "body": "Ik heb ook een grote kast in mijn slaapkamer staan.",
+          "is_correct": false
+        },
+        {
+          "label": "B",
+          "body": "Dat is goed, ik kom om zeven uur even helpen.",
+          "is_correct": true
+        },
+        {
+          "label": "C",
+          "body": "Sorry, ik versta u niet. Wat zegt u?",
+          "is_correct": false
+        }
+      ],
+      "payload": {
+        "prompt": "Je buurman vraagt: kun je me vanavond even helpen met een zware kast? Welk antwoord past het beste?"
+      }
+    }
+  ],
+  "what_you_learn": "Je oefent het spreken zoals in het examen: je krijgt een korte situatie en spreekt ongeveer zestig seconden. Je leert in die tijd drie of vier duidelijke zinnen zeggen met een reden en een vraag. Je hoort je antwoord terug en vergelijkt het zelf met het voorbeeld."
+}

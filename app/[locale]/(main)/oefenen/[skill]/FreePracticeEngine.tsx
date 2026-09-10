@@ -5,9 +5,11 @@ import { useTranslations } from 'next-intl';
 import { track } from '@/lib/analytics';
 import { optionKeys, optionText, readAloudSegments, type FreePracticeItem, type OptionKey } from '@/data/free-practice';
 import { DEFAULT_LEVEL, type Level, type OnderdeelSlug } from '@/data/skills';
-import SkillIcon from '@/components/site/SkillIcon';
+import CategoryMark from '@/components/horizon/CategoryMark';
 import { useReadAloud } from '@/components/proefexamen/useReadAloud';
 import { useAudioEnabled } from '@/lib/audio-pref';
+import { playCorrectChime } from '@/lib/answer-chime';
+import WordPass from '@/components/exam/WordPass';
 import {
   AudioPrefRow,
   EqBars,
@@ -123,6 +125,7 @@ export default function FreePracticeEngine({ skill, skillName, items, locale, le
     if (selected) return;
     const item = items[idx];
     const isCorrect = option === item.correct;
+    if (isCorrect) playCorrectChime();
     setSelected(option);
     logRef.current = [...logRef.current, { item, chosen: option, isCorrect }];
     setLog(logRef.current);
@@ -191,7 +194,7 @@ export default function FreePracticeEngine({ skill, skillName, items, locale, le
               {t('eyebrow')}
             </div>
             <h1 className="font-headline font-extrabold text-white flex items-center gap-3" style={{ fontSize: '1.9rem', lineHeight: 1.1, letterSpacing: '-0.02em' }}>
-              <SkillIcon skill={skill} size="md" onDark />
+              <CategoryMark category={skill} size={44} tone="dark" />
               {t('heading', { count: total, skill: skillName })}
             </h1>
             <div className="flex flex-wrap gap-2 mt-5">
@@ -784,7 +787,7 @@ function QuestionPane({
               aria-checked={isChosen}
               disabled={answered}
               onClick={() => onChoose(key)}
-              className="answer-option flex items-center gap-3 p-3.5 rounded-xl text-left w-full cursor-pointer disabled:cursor-default"
+              className={`answer-option flex items-center gap-3 p-3.5 rounded-xl text-left w-full cursor-pointer disabled:cursor-default ${answered && isRight ? 'answer-correct' : ''}`}
               style={style}
             >
               <span
@@ -805,7 +808,7 @@ function QuestionPane({
                     highlight must never do. The question above keeps its marking. */}
                 {hasReadAloud && !answered
                   ? <HighlightedText text={text} reading={reading} activeSeg={activeSeg} thisSeg={i + 1} activeWord={activeWord} />
-                  : text}
+                  : <WordPass text={text} active={answered && isRight} />}
               </span>
               {isBeingRead && !answered && (
                 <span className="flex-shrink-0" style={{ color: '#d94f00' }}><EqBars size={14} /></span>
@@ -822,7 +825,7 @@ function QuestionPane({
       </div>
 
       {selected && (
-        <div className="mt-4 rounded-xl p-4" style={{ background: 'var(--color-surface-container-high)' }}>
+        <div className="answer-verdict mt-4 rounded-xl p-4" style={{ background: 'var(--color-surface-container-high)' }}>
           <p className="text-xs font-bold uppercase tracking-wider mb-1.5" style={{ color: '#002b6d', letterSpacing: '0.06em' }}>
             {explanationLabel}
           </p>

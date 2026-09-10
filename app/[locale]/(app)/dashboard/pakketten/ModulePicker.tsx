@@ -2,7 +2,7 @@
 
 import { useMemo, useState } from 'react';
 import { ArrowRight, Check, Loader2, Lock, Sparkles, TriangleAlert } from 'lucide-react';
-import SkillIcon from '@/components/site/SkillIcon';
+import CategoryMark from '@/components/horizon/CategoryMark';
 import type { Level, OnderdeelSlug } from '@/data/skills';
 import {
   BUNDLE_LIST_PRICE_CENTS,
@@ -147,7 +147,7 @@ export default function ModulePicker({
               </span>
 
               <span className="mp-head">
-                <SkillIcon skill={mod.skill} size="md" />
+                <CategoryMark category={mod.skill} size={44} />
                 <span className="min-w-0">
                   <span className="mp-name">{mod.label}</span>
                   <span className="mp-meta">

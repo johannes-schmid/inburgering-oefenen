@@ -1,0 +1,143 @@
+{
+  "items": [
+    {
+      "kind": "uitleg",
+      "tier": null,
+      "explanation": null,
+      "payload": {
+        "body_html": "<p>De klanken <strong>ui</strong>, <strong>eu</strong> en <strong>ij</strong> zijn moeilijk. Ze bestaan bijna nergens anders zo. Je maakt ze met ronde lippen of met een glijdende beweging. Kijk goed naar wat je ziet staan en naar wat je zegt.</p><p>Bij <strong>ui</strong> en <strong>eu</strong> duw je je lippen naar voren, als bij een kus. Bij <strong>ij</strong> glijd je van 'e' naar 'j'.</p>",
+        "cards": [
+          {
+            "label": "JE ZIET",
+            "example_html": "h<mark>ui</mark>s, br<mark>ui</mark>n, d<mark>eu</mark>r, l<mark>eu</mark>k, tr<mark>ei</mark>n, kl<mark>ei</mark>n"
+          },
+          {
+            "label": "JE ZEGT",
+            "example_html": "h-ui-s met ronde lippen, d-eu-r met ronde lippen, tr-ei-n glijdend van e naar j"
+          }
+        ]
+      }
+    },
+    {
+      "kind": "naspreken",
+      "tier": 1,
+      "explanation": "Bij ui duw je je lippen naar voren en rond. Je zegt niet 'oe' en niet 'u', maar één glijdende klank.",
+      "payload": {
+        "prompt": "Zeg deze woorden met de ui-klank na.",
+        "target": "huis, buiten, vuilnis, duidelijk",
+        "focus": "Duw je lippen naar voren en rond, zoals bij een kus.",
+        "audio_url": "http://127.0.0.1:54421/storage/v1/object/public/leren-audio/fragment/a2-spreken/b1-klanken-ui-eu-ij-1.mp3",
+        "script": "huis, buiten, vuilnis, duidelijk",
+        "seconds": 3.37
+      }
+    },
+    {
+      "kind": "naspreken",
+      "tier": 1,
+      "explanation": "Bij eu houd je je lippen rond en je tong hoog. Je zegt geen 'uu' en geen 'oo'.",
+      "payload": {
+        "prompt": "Zeg deze woorden met de eu-klank na.",
+        "target": "deur, leuk, keuken, euro",
+        "focus": "Ronde lippen, maar de klank blijft kort en gelijk.",
+        "audio_url": "http://127.0.0.1:54421/storage/v1/object/public/leren-audio/fragment/a2-spreken/b1-klanken-ui-eu-ij-2.mp3",
+        "script": "deur, leuk, keuken, euro",
+        "seconds": 2.38
+      }
+    },
+    {
+      "kind": "naspreken",
+      "tier": 1,
+      "explanation": "De ij en de ei klinken precies hetzelfde. Je glijdt van een e naar een j.",
+      "payload": {
+        "prompt": "Zeg deze woorden met de ij-klank na.",
+        "target": "trein, klein, wijk, tijd",
+        "focus": "Je glijdt van 'e' naar 'j': tr-e-j-n.",
+        "audio_url": "http://127.0.0.1:54421/storage/v1/object/public/leren-audio/fragment/a2-spreken/b1-klanken-ui-eu-ij-3.mp3",
+        "script": "trein, klein, wijk, tijd",
+        "seconds": 2.52
+      }
+    },
+    {
+      "kind": "naspreken",
+      "tier": 1,
+      "explanation": "In één zin komen alle drie de klanken terug. Zo hoor je het verschil tussen ui, eu en ij goed.",
+      "payload": {
+        "prompt": "Zeg deze hele zin na.",
+        "target": "Ik zet mijn fiets buiten bij de deur van de keuken.",
+        "focus": "Let op: mijn en bij met ij-klank, buiten met ui, deur en keuken met eu.",
+        "audio_url": "http://127.0.0.1:54421/storage/v1/object/public/leren-audio/fragment/a2-spreken/b1-klanken-ui-eu-ij-4.mp3",
+        "script": "Ik zet mijn fiets buiten bij de deur van de keuken.",
+        "seconds": 3.5
+      }
+    },
+    {
+      "kind": "mcq",
+      "tier": 0,
+      "explanation": "De uitspraak moei-luk hoort bij de spelling moeilijk. De -lijk aan het eind zeg je als -luk, maar je schrijft altijd -lijk.",
+      "payload": {
+        "prompt": "Je zegt: moei-luk. Welk woord staat er dan geschreven?"
+      },
+      "options": [
+        {
+          "label": "A",
+          "body": "moeiluk",
+          "is_correct": false
+        },
+        {
+          "label": "B",
+          "body": "moeilijk",
+          "is_correct": true
+        },
+        {
+          "label": "C",
+          "body": "moeileuk",
+          "is_correct": false
+        }
+      ]
+    },
+    {
+      "kind": "mcq",
+      "tier": 0,
+      "explanation": "De uitspraak duur heeft de uu-klank, dus je schrijft duur. Met de ui-klank zou het duir zijn, en dat woord bestaat niet.",
+      "payload": {
+        "prompt": "Je zegt: duur (het kost veel geld). Welk woord staat er dan geschreven?"
+      },
+      "options": [
+        {
+          "label": "A",
+          "body": "duur",
+          "is_correct": true
+        },
+        {
+          "label": "B",
+          "body": "deur",
+          "is_correct": false
+        },
+        {
+          "label": "C",
+          "body": "duir",
+          "is_correct": false
+        }
+      ]
+    },
+    {
+      "kind": "gap_type",
+      "tier": 2,
+      "explanation": "De ui-klank in bui-ten schrijf je met de letters u en i: buiten.",
+      "payload": {
+        "sentence": "Ik zet de vuilnisbak ___ (bui-ten) op straat.",
+        "answer": "buiten"
+      }
+    },
+    {
+      "kind": "gap_type",
+      "tier": 2,
+      "explanation": "De eu-klank in deur schrijf je met de letters e en u: deur.",
+      "payload": {
+        "sentence": "De postbode staat voor de ___ (deur) van mijn huis.",
+        "answer": "deur"
+      }
+    }
+  ],
+  "what_you_learn": "In deze les oefen je drie moeilijke Nederlandse klanken: ui, eu en ij. Je leert hoe je je lippen en je tong zet, zodat de klank goed klinkt. Je spreekt woorden en een zin na, en je schrijft woorden met deze klanken correct op."
+}

@@ -70,6 +70,15 @@ export type Concept = {
    * bereid je iemand voor die alleen Luisteren doet".
    */
   onderdelen: OnderdeelSlug[];
+  /**
+   * Hoe zwaar dit concept weegt in het onderdeel waarop is gefilterd — `kern` of `herkennen`.
+   *
+   * Alleen gevuld door `fetchConcepts(level, onderdeel)`, want het gewicht hangt aan de
+   * *combinatie*: hoofdzinwoordorde is kern bij Schrijven en herkennen bij Luisteren. Zonder
+   * onderdeelfilter is er dus niets te zeggen en staat hier `null`. Zie
+   * `supabase/migrations/20260909100000_concept_weights.sql`.
+   */
+  weight: 'kern' | 'herkennen' | null;
 };
 
 /** Eén concept met zijn uitleg erbij — alleen de detailpagina heeft dit nodig. */
@@ -302,12 +311,16 @@ export function lessonPath(level: Level, onderdeel: OnderdeelSlug, slug: string)
   return `${coursePath(level, onderdeel)}/${slug}`;
 }
 
-export function conceptsPath(level: Level): string {
-  return `/dashboard/${level}/concepten`;
-}
-
+/**
+ * De naslagpagina van één taalregel: de uitleg, je beheersing, en waar je hem kunt oefenen.
+ *
+ * Enkelvoud, en er staat geen index boven. De bibliotheekpagina's zijn op 10-09 vervallen —
+ * de regels van een examen staan in stap 2 van die cursus — maar déze pagina blijft, want
+ * niets anders toont `body_html`, de beheersing per regel en de vier oefenwegen naast elkaar.
+ * `fetchConceptAdvice` linkt er na een examen rechtstreeks naartoe.
+ */
 export function conceptPath(level: Level, slug: string): string {
-  return `${conceptsPath(level)}/${slug}`;
+  return `/dashboard/${level}/taalregel/${slug}`;
 }
 
 /** De trap van een opgave, als leesbaar label voor de UI. */

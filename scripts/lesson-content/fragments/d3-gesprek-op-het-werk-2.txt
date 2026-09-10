@@ -1,0 +1,18 @@
+# Training: Gesprek op het werk — audio
+# les d3-gesprek-op-het-werk, item 6
+# Casting:
+#   A = woman_young (Female Voice 1 — younger woman)
+#   B = man_young (Male Voice 1 — younger man)
+#
+# Dit bestand is de leesbare afdruk van wat er is ingesproken. De bron is de payload in
+# generated/a2-luisteren/d3-gesprek-op-het-werk.json — pas die aan en spreek opnieuw in.
+A: Zeg Youssef, heb je die brief over de cursus gezien?
+B: Welke cursus, Ellen?
+A: De cursus veilig tillen. Dinsdagmiddag, van twee tot vijf, in de grote vergaderzaal.
+B: Kost dat geld?
+A: Voor ons niet. Het bedrijf betaalt de cursus. Alleen als je je niet afmeldt en toch niet komt, betaal je vijftien euro.
+B: Oké. Moet iedereen komen?
+A: Iedereen van het magazijn. Dus jij en ik ook.
+B: En moet ik me nog aanmelden?
+A: Ja, dat is belangrijk. Je stuurt vandaag een mailtje naar Peter van de planning. Hij maakt de lijst.
+B: Dan doe ik dat straks in mijn pauze.

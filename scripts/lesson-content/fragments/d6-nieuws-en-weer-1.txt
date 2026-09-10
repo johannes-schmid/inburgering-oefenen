@@ -1,0 +1,8 @@
+# Training: Nieuws en weer — audio
+# les d6-nieuws-en-weer, item 2
+# Casting:
+#   A = man_young (Male Voice 1 — younger man)
+#
+# Dit bestand is de leesbare afdruk van wat er is ingesproken. De bron is de payload in
+# generated/a2-luisteren/d6-nieuws-en-weer.json — pas die aan en spreek opnieuw in.
+A: Goedemorgen, hier is het nieuws van tien uur. In de stad Meerdijk is vanmorgen een groot deel van het centrum zonder stroom. Ongeveer duizend huizen hebben geen licht en geen warm water. Volgens het energiebedrijf is er een kabel kapot bij de Kerkstraat. Monteurs zijn al aan het werk. Ze verwachten dat de stroom vanmiddag om drie uur weer terug is. Bewoners die hulp nodig hebben, kunnen terecht in het buurthuis aan de Molenweg. Daar is koffie en er is een warme maaltijd. Het buurthuis is open tot acht uur vanavond. Dan het weer.

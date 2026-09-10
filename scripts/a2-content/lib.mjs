@@ -276,8 +276,15 @@ export function createTts({ apiKey }) {
     return loudnorm(Buffer.from(await res.arrayBuffer()));
   }
 
-  /** Single narrator, for a spoken prompt. NARRATOR in lib/tts-voices.ts is woman_young. */
-  async function narratorAudio(text, voiceKey = 'woman_young') {
+  /**
+   * Single narrator, for a spoken prompt. NARRATOR in lib/tts-voices.ts is woman_young.
+   *
+   * `speed` is a parameter and not a constant because the lesson layer needs a slower take:
+   * `naspreken` audio exists to be *imitated*, and a sound you do not know yet cannot be copied
+   * at conversational pace. Exam prompts stay at 0.9 — slowing those down would make a spoken
+   * question sound unlike the exam it is preparing for.
+   */
+  async function narratorAudio(text, voiceKey = 'woman_young', speed = 0.9) {
     const res = await fetch(`${TTS_ENDPOINT}/${VOICES[voiceKey].id}`, {
       method: 'POST',
       headers: { 'xi-api-key': apiKey, 'Content-Type': 'application/json' },
@@ -288,7 +295,7 @@ export function createTts({ apiKey }) {
           stability: 0.45,
           similarity_boost: 0.75,
           use_speaker_boost: true,
-          speed: 0.9,
+          speed,
         },
         apply_text_normalization: 'on',
       }),

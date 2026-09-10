@@ -1,0 +1,31 @@
+# De ingesproken uitleg van `b23-vergrotende-trap`.
+# Regels met # zijn commentaar. [[id]] of [[id | extra uitleg]] markeert waar de stem over
+# welk element begint; de extra uitleg staat op de pagina bij dat element en mag niet herhalen
+# wat de stem net zei.
+# Geldige id's: vis, vis-1, vis-2, rule, card-0, card-1, demo-0, demo-1, exercises.
+
+Deze les gaat over vergelijken: groter, kleiner, duurder.
+
+[[vis-1 | De gewone vorm: het woord zoals je het leert.]]
+Kijk naar het plaatje. Links staat de laagste balk: groot. Mijn huis is groot.
+
+[[vis-2 | Na de -er komt bijna altijd dan.]]
+Rechts staat de hogere balk: groter. Er komt -er achter het woord. En daarna komt dan: jouw huis is groter dan mijn huis.
+
+[[rule | Eindigt het woord op een -r? Dan wordt het -der: duur wordt duurder.]]
+Dat is de regel. Zet -er achter het woord, en gebruik dan om de twee dingen te verbinden. Let op: goed wordt beter, en veel wordt meer.
+
+[[card-0 | Klein wordt kleiner, snel wordt sneller.]]
+De eerste kaart is de gewone -er.
+
+[[card-1 | Duur, lekker, zwaar: allemaal met -der.]]
+De tweede kaart is de vorm na een -r.
+
+[[demo-0 | Kleiner dan: de twee kamers worden vergeleken.]]
+Twee voorbeelden. De kamer van mijn dochter is kleiner dan de kamer van mijn zoon.
+
+[[demo-1 | Lekkerder met -der, want lekker eindigt op een r.]]
+En: in de winkel op de hoek is het brood lekkerder dan in de supermarkt.
+
+[[exercises]]
+Doe nu de opgaven. Zoek in elke zin het woordje dan.

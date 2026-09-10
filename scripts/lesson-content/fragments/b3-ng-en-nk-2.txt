@@ -1,0 +1,8 @@
+# -ng en -nk — naspreken
+# les b3-ng-en-nk, item 3
+# Casting:
+#   één stem: woman_older
+#
+# Dit bestand is de leesbare afdruk van wat er is ingesproken. De bron is de payload in
+# generated/a2-spreken/b3-ng-en-nk.json — pas die aan en spreek opnieuw in.
+bank, drank, dank, ziekenhuisbezoek

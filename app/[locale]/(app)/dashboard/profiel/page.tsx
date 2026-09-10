@@ -6,7 +6,7 @@ import { createClient } from '@/lib/supabase/server';
 import { modulesExpired, planFromMetadata } from '@/lib/entitlements';
 import { fetchPortalProgress } from '@/lib/portal-progress';
 import { LEVELS, SKILLS, levelLabel, skillsAtLevel } from '@/data/skills';
-import SkillIcon from '@/components/site/SkillIcon';
+import CategoryMark from '@/components/horizon/CategoryMark';
 import AppShell from '../../components/AppShell';
 import LogoutButton from './LogoutButton';
 import CancelSubscription from './CancelSubscription';
@@ -146,7 +146,7 @@ export default async function ProfilePage({ params }: { params: Promise<{ locale
                 return (
                   <li key={`${level}:${s.slug}`}>
                     <a href={`/${locale}/dashboard/${level}/${s.slug}`} className="skill-line no-underline">
-                      <SkillIcon skill={s.slug} size="sm" />
+                      <CategoryMark category={s.slug} size={32} />
                       <span className="flex-1 min-w-0 font-headline font-bold text-on-surface" style={{ fontSize: '0.9rem' }}>
                         {tSkills(`${s.key}.name`)}
                         {activeLevels.length > 1 && (

@@ -1,0 +1,143 @@
+{
+  "items": [
+    {
+      "kind": "uitleg",
+      "tier": null,
+      "explanation": null,
+      "payload": {
+        "body_html": "<p>Aan het eind van een woord hoor je soms <strong>-ng</strong> en soms <strong>-nk</strong>. Bij <strong>-ng</strong> klinkt de klank zacht en lang, je hoort geen k. Bij <strong>-nk</strong> hoor je aan het eind een duidelijke <strong>k</strong>. Het verschil is klein, maar het maakt een ander woord: <em>bang</em> of <em>bank</em>.</p>",
+        "cards": [
+          {
+            "label": "JE ZIET -NG",
+            "example_html": "Ik ben <mark>bang</mark> voor de hond. Je zegt: bang, zonder k."
+          },
+          {
+            "label": "JE ZIET -NK",
+            "example_html": "Ik ga naar de <mark>bank</mark>. Je zegt: bank, met een k aan het eind."
+          }
+        ]
+      }
+    },
+    {
+      "kind": "naspreken",
+      "tier": 1,
+      "explanation": "Bij -ng zeg je geen k aan het eind. Zo blijft het woord zacht klinken.",
+      "payload": {
+        "prompt": "Zeg deze woorden na. Ze eindigen allemaal op -ng.",
+        "target": "jong, lang, ring, woning",
+        "focus": "Laat de k weg: je zegt jong, niet jonk.",
+        "audio_url": "http://127.0.0.1:54421/storage/v1/object/public/leren-audio/fragment/a2-spreken/b3-ng-en-nk-1.mp3",
+        "script": "jong, lang, ring, woning",
+        "seconds": 2.66
+      }
+    },
+    {
+      "kind": "naspreken",
+      "tier": 1,
+      "explanation": "Bij -nk hoor je aan het eind een duidelijke k. Die klank moet je echt zeggen.",
+      "payload": {
+        "prompt": "Zeg deze woorden na. Ze eindigen allemaal op -nk.",
+        "target": "bank, drank, dank, ziekenhuisbezoek",
+        "focus": "Maak de k aan het eind goed hoorbaar: banK, danK.",
+        "audio_url": "http://127.0.0.1:54421/storage/v1/object/public/leren-audio/fragment/a2-spreken/b3-ng-en-nk-2.mp3",
+        "script": "bank, drank, dank, ziekenhuisbezoek",
+        "seconds": 2.76
+      }
+    },
+    {
+      "kind": "naspreken",
+      "tier": 1,
+      "explanation": "Twee woorden verschillen alleen aan het eind. Zo oefen je het verschil tussen -ng en -nk.",
+      "payload": {
+        "prompt": "Zeg deze paren na. Let op het einde van elk woord.",
+        "target": "bang - bank, long - lonk, zing - zink",
+        "focus": "Het eerste woord is zacht, het tweede woord eindigt met een k.",
+        "audio_url": "http://127.0.0.1:54421/storage/v1/object/public/leren-audio/fragment/a2-spreken/b3-ng-en-nk-3.mp3",
+        "script": "bang - bank, long - lonk, zing - zink",
+        "seconds": 5.22
+      }
+    },
+    {
+      "kind": "naspreken",
+      "tier": 1,
+      "explanation": "In een hele zin blijft het verschil hoorbaar. Je zegt bank met een k en jonge zonder k.",
+      "payload": {
+        "prompt": "Zeg deze zin na.",
+        "target": "Ik zet de nieuwe bank in de jonge woning.",
+        "focus": "Zeg bank met een k, maar jonge en woning zonder k.",
+        "audio_url": "http://127.0.0.1:54421/storage/v1/object/public/leren-audio/fragment/a2-spreken/b3-ng-en-nk-4.mp3",
+        "script": "Ik zet de nieuwe bank in de jonge woning.",
+        "seconds": 2.86
+      }
+    },
+    {
+      "kind": "mcq",
+      "tier": 0,
+      "explanation": "Je zegt de k aan het eind, dus het woord schrijf je met -nk: bank.",
+      "payload": {
+        "prompt": "Iemand zegt: \"banK\", met een duidelijke k aan het eind. Welk woord is dat?"
+      },
+      "options": [
+        {
+          "label": "A",
+          "body": "bang",
+          "is_correct": false
+        },
+        {
+          "label": "B",
+          "body": "bank",
+          "is_correct": true
+        },
+        {
+          "label": "C",
+          "body": "bange",
+          "is_correct": false
+        }
+      ]
+    },
+    {
+      "kind": "mcq",
+      "tier": 0,
+      "explanation": "Er is geen k aan het eind, dus je schrijft -ng: jong.",
+      "payload": {
+        "prompt": "Iemand zegt: \"jong\", zacht en zonder k aan het eind. Welk woord is dat?"
+      },
+      "options": [
+        {
+          "label": "A",
+          "body": "jonk",
+          "is_correct": false
+        },
+        {
+          "label": "B",
+          "body": "jong",
+          "is_correct": true
+        },
+        {
+          "label": "C",
+          "body": "jonge",
+          "is_correct": false
+        }
+      ]
+    },
+    {
+      "kind": "gap_type",
+      "tier": 2,
+      "explanation": "Je hoort een k aan het eind, dus je schrijft het woord met -nk: bank.",
+      "payload": {
+        "sentence": "Ik ga naar de ___ om geld te halen. Je zegt: banK, met een k.",
+        "answer": "bank"
+      }
+    },
+    {
+      "kind": "gap_type",
+      "tier": 2,
+      "explanation": "Er komt geen k aan het eind, dus je schrijft het woord met -ng: woning.",
+      "payload": {
+        "sentence": "Wij zoeken een grotere ___ in deze wijk. Je zegt: wo-ning, zonder k.",
+        "answer": "woning"
+      }
+    }
+  ],
+  "what_you_learn": "In deze les leer je het verschil tussen -ng en -nk aan het eind van een woord. Je hoort en zegt dat <em>bang</em> zacht eindigt en <em>bank</em> met een duidelijke k. Daarna schrijf je zelf het juiste woord bij de uitspraak."
+}

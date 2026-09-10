@@ -1,0 +1,142 @@
+{
+  "items": [
+    {
+      "kind": "uitleg",
+      "tier": null,
+      "explanation": null,
+      "payload": {
+        "body_html": "<p>Je krijgt korte opdrachten en je spreekt je antwoord in; per opdracht heb je ongeveer <strong>30 seconden</strong> spreektijd.</p>",
+        "cards": [
+          {
+            "label": "KORT",
+            "example_html": "Twee of drie zinnen is genoeg."
+          },
+          {
+            "label": "DUIDELIJK",
+            "example_html": "Zeg waarom je belt of iets vraagt."
+          }
+        ]
+      }
+    },
+    {
+      "kind": "opnemen",
+      "tier": 2,
+      "explanation": "Je noemt eerst je naam, daarna de reden en daarna een nieuwe dag. Zo weet de tandarts precies wat je wil.",
+      "payload": {
+        "prompt": "Je hebt morgen een afspraak bij de tandarts. Je moet werken en kan niet komen. Je belt de balie. Zeg wie je bent, waarom je niet kan komen en vraag om een nieuwe afspraak.",
+        "model_answer": "Goedemiddag, u spreekt met Amina Yildiz. Ik heb morgen om tien uur een afspraak, maar ik moet werken. Kan ik een nieuwe afspraak maken, het liefst in de middag?",
+        "checklist": [
+          "Ik zeg mijn naam.",
+          "Ik zeg waarom ik niet kan komen.",
+          "Ik vraag om een nieuwe afspraak."
+        ],
+        "image_urls": [],
+        "record_seconds": 60
+      }
+    },
+    {
+      "kind": "mcq",
+      "tier": 0,
+      "explanation": "Bij een winkel vraag je vriendelijk om hulp met een reden erbij. Alleen \"Waar?\" is te kort en niet duidelijk.",
+      "payload": {
+        "prompt": "Je staat in de supermarkt. Je zoekt de rijst en je ziet die niet. Wat zeg je tegen de medewerker?"
+      },
+      "options": [
+        {
+          "label": "A",
+          "body": "Waar? Rijst.",
+          "is_correct": false
+        },
+        {
+          "label": "B",
+          "body": "Sorry, mag ik iets vragen? Ik zoek de rijst.",
+          "is_correct": true
+        },
+        {
+          "label": "C",
+          "body": "Ik wil rijst kopen in een andere winkel.",
+          "is_correct": false
+        }
+      ]
+    },
+    {
+      "kind": "opnemen",
+      "tier": 2,
+      "explanation": "Je zegt eerst welk probleem er is en daarna wat je van de buurman vraagt. Vriendelijk blijven helpt.",
+      "payload": {
+        "prompt": "Je buurman zet zijn fiets elke dag voor jouw deur. Je kan er moeilijk langs. Je spreekt hem op de galerij. Zeg wat het probleem is en vraag hem vriendelijk om de fiets ergens anders te zetten.",
+        "model_answer": "Hallo meneer, mag ik u even iets vragen? Uw fiets staat vaak voor mijn deur en dan kan ik er niet goed langs. Kunt u hem misschien bij de fietsenstalling zetten?",
+        "checklist": [
+          "Ik zeg wat het probleem is.",
+          "Ik doe een vriendelijk verzoek.",
+          "Ik spreek in hele zinnen."
+        ],
+        "image_urls": [],
+        "record_seconds": 60
+      }
+    },
+    {
+      "kind": "opnemen",
+      "tier": 2,
+      "explanation": "Je meldt je te laat en je zegt hoe laat je er wel bent. Zo weet je leidinggevende waar hij op kan rekenen.",
+      "payload": {
+        "prompt": "Je werkt in een keuken. De bus rijdt niet en je komt een half uur te laat. Je belt je leidinggevende, mevrouw De Wit. Zeg wie je bent, waarom je te laat bent en hoe laat je er wel bent.",
+        "model_answer": "Goedemorgen mevrouw De Wit, u spreekt met Karim. De bus rijdt vandaag niet, dus ik ben later. Ik denk dat ik om half tien op het werk ben.",
+        "checklist": [
+          "Ik zeg mijn naam.",
+          "Ik geef de reden van het te laat komen.",
+          "Ik zeg hoe laat ik er ben."
+        ],
+        "image_urls": [],
+        "record_seconds": 60
+      }
+    },
+    {
+      "kind": "mcq",
+      "tier": 0,
+      "explanation": "Je moet zeggen wat er kapot is en waar je woont. Alleen zeggen dat je boos bent, lost het probleem niet op.",
+      "payload": {
+        "prompt": "De kraan in je keuken lekt. Je belt de woningbouw. Welk antwoord past het best?"
+      },
+      "options": [
+        {
+          "label": "A",
+          "body": "Ik ben heel boos over deze woning.",
+          "is_correct": false
+        },
+        {
+          "label": "B",
+          "body": "Goedemiddag, met Fatima Bakker van de Molenstraat 12. De kraan in mijn keuken lekt.",
+          "is_correct": true
+        },
+        {
+          "label": "C",
+          "body": "Mijn keuken is klein en oud.",
+          "is_correct": false
+        },
+        {
+          "label": "D",
+          "body": "Kunt u morgen langskomen? Dank u wel.",
+          "is_correct": false
+        }
+      ]
+    },
+    {
+      "kind": "opnemen",
+      "tier": 2,
+      "explanation": "Je vertelt wie je bent en welke informatie je nodig hebt. Een duidelijke vraag geeft een duidelijk antwoord.",
+      "payload": {
+        "prompt": "Je zoon zit in groep 4. Volgende week is er een schoolreis, maar je weet niet hoe laat de kinderen terug zijn. Je belt de school. Zeg wie je bent en vraag naar de tijd.",
+        "model_answer": "Goedemorgen, u spreekt met de moeder van Samir uit groep 4. Ik heb een vraag over de schoolreis van volgende week. Weet u hoe laat de kinderen weer terug zijn op school?",
+        "checklist": [
+          "Ik zeg wie ik ben.",
+          "Ik stel één duidelijke vraag.",
+          "Ik spreek rustig en niet te zacht."
+        ],
+        "image_urls": [],
+        "record_seconds": 60
+      }
+    }
+  ],
+  "what_you_learn": "Je oefent met spreekopdrachten zoals in het examen. Je spreekt in korte situaties zelf een antwoord in: je belt de tandarts, je werk, de woningbouw of de school. Daarna hoor je jezelf terug en vergelijk je met het voorbeeldantwoord."
+}

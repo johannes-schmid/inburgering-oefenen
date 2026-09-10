@@ -1,0 +1,180 @@
+{
+  "items": [
+    {
+      "kind": "uitleg",
+      "tier": null,
+      "explanation": null,
+      "payload": {
+        "body_html": "<p>Bij het luisterexamen zie je eerst de vraag. Lees die vraag goed voordat je luistert.</p><p>Bedenk dan: waar gaat dit over? Welke woorden ga ik waarschijnlijk horen?</p><p>Zo luister je gericht. Je wacht op één ding en je raakt niet in de war van de rest.</p><p>Werk in drie stappen:</p><ul><li><strong>Stap 1:</strong> lees de vraag en de opties.</li><li><strong>Stap 2:</strong> bedenk het onderwerp en twee of drie woorden die je verwacht.</li><li><strong>Stap 3:</strong> luister en let alleen op dat ene ding.</li></ul>",
+        "cards": [
+          {
+            "label": "VRAAG",
+            "example_html": "Hoe laat begint de cursus?"
+          },
+          {
+            "label": "IK VERWACHT",
+            "example_html": "een tijd: \"half acht\", \"om negen uur\""
+          },
+          {
+            "label": "IK LUISTER OP",
+            "example_html": "alleen de tijd, niet de rest"
+          }
+        ]
+      }
+    },
+    {
+      "kind": "audio",
+      "tier": null,
+      "explanation": null,
+      "payload": {
+        "script": "A: Buurtcentrum De Wilgentak, goedemorgen.\nB: Goedemorgen. Ik bel over de taalcursus. Kan ik me nog aanmelden?\nA: Ja hoor, er zijn nog twee plaatsen vrij.\nB: Fijn. Wanneer is de les?\nA: Elke woensdag, van zeven uur tot half negen.\nB: En wat kost het?\nA: De cursus kost vijfentwintig euro voor tien lessen. Dat betaal je bij de eerste les.\nB: Goed. Moet ik iets meenemen?\nA: Neem even je identiteitsbewijs mee, want ik moet je naam en adres opschrijven.\nB: Duidelijk. Dank u wel.\nA: Graag gedaan. Tot woensdag.",
+        "label": "Telefoongesprek met een buurtcentrum",
+        "audio_url": "http://127.0.0.1:54421/storage/v1/object/public/leren-audio/fragment/a2-luisteren/c1-voorspellen-1.mp3",
+        "voice_cast": {
+          "A": "woman_young",
+          "B": "man_young"
+        },
+        "transcript": "Buurtcentrum De Wilgentak, goedemorgen. Goedemorgen. Ik bel over de taalcursus. Kan ik me nog aanmelden? Ja hoor, er zijn nog twee plaatsen vrij. Fijn. Wanneer is de les? Elke woensdag, van zeven uur tot half negen. En wat kost het? De cursus kost vijfentwintig euro voor tien lessen. Dat betaal je bij de eerste les. Goed. Moet ik iets meenemen? Neem even je identiteitsbewijs mee, want ik moet je naam en adres opschrijven. Duidelijk. Dank u wel. Graag gedaan. Tot woensdag.",
+        "seconds": 31.03
+      }
+    },
+    {
+      "kind": "mcq",
+      "tier": 0,
+      "explanation": "De vraag gaat over het onderwerp. Ahmed belt om zich aan te melden voor de taalcursus, dus dat is het onderwerp van het gesprek.",
+      "payload": {
+        "prompt": "Waarover gaat dit telefoongesprek?"
+      },
+      "options": [
+        {
+          "label": "A",
+          "body": "Over het huren van een zaal.",
+          "is_correct": false
+        },
+        {
+          "label": "B",
+          "body": "Over aanmelden voor een taalcursus.",
+          "is_correct": true
+        },
+        {
+          "label": "C",
+          "body": "Over een klacht over de buren.",
+          "is_correct": false
+        }
+      ]
+    },
+    {
+      "kind": "mcq",
+      "tier": 0,
+      "explanation": "De vraag vraagt om een tijd, dus je luistert alleen naar een tijd. De les is van zeven uur tot half negen: hij begint om zeven uur. \"Half negen\" is de val, want dat is het einde van de les.",
+      "payload": {
+        "prompt": "Hoe laat begint de les?"
+      },
+      "options": [
+        {
+          "label": "A",
+          "body": "Om zeven uur.",
+          "is_correct": true
+        },
+        {
+          "label": "B",
+          "body": "Om half negen.",
+          "is_correct": false
+        },
+        {
+          "label": "C",
+          "body": "Om negen uur.",
+          "is_correct": false
+        },
+        {
+          "label": "D",
+          "body": "Om half acht.",
+          "is_correct": false
+        }
+      ]
+    },
+    {
+      "kind": "mcq",
+      "tier": 1,
+      "explanation": "Voordat je luistert, bedenk je bij het woord \"kosten\" dat je een bedrag in euro's verwacht. Je hoort: vijfentwintig euro voor tien lessen.",
+      "payload": {
+        "prompt": "Wat kost de cursus?"
+      },
+      "options": [
+        {
+          "label": "A",
+          "body": "Tien euro.",
+          "is_correct": false
+        },
+        {
+          "label": "B",
+          "body": "Vijftien euro.",
+          "is_correct": false
+        },
+        {
+          "label": "C",
+          "body": "Vijfentwintig euro.",
+          "is_correct": true
+        }
+      ]
+    },
+    {
+      "kind": "mcq",
+      "tier": 1,
+      "explanation": "Bij de vraag \"wat moet je meenemen?\" verwacht je een ding. De medewerker zegt dat hij zijn identiteitsbewijs moet meenemen.",
+      "payload": {
+        "prompt": "Wat moet Ahmed meenemen naar de eerste les?"
+      },
+      "options": [
+        {
+          "label": "A",
+          "body": "Zijn identiteitsbewijs.",
+          "is_correct": true
+        },
+        {
+          "label": "B",
+          "body": "Een boek en een schrift.",
+          "is_correct": false
+        },
+        {
+          "label": "C",
+          "body": "Een pasfoto.",
+          "is_correct": false
+        }
+      ]
+    },
+    {
+      "kind": "gap_type",
+      "tier": 2,
+      "explanation": "Je verwachtte een dag van de week, dus je luisterde naar een dag. De les is elke woensdag.",
+      "payload": {
+        "sentence": "De les is elke ___.",
+        "answer": "woensdag"
+      }
+    },
+    {
+      "kind": "gap_type",
+      "tier": 2,
+      "explanation": "Bij \"hoeveel plaatsen\" verwacht je een aantal. De medewerker zegt dat er nog twee plaatsen vrij zijn.",
+      "payload": {
+        "sentence": "Er zijn nog ___ plaatsen vrij.",
+        "answer": "twee"
+      }
+    },
+    {
+      "kind": "open_zin",
+      "tier": 2,
+      "explanation": "Je legt in eigen woorden uit hoe je werkte: eerst de vraag lezen, dan bedenken wat je verwacht, dan gericht luisteren.",
+      "payload": {
+        "prompt": "Leg uit hoe je het antwoord op de vraag over de kosten vond. Schrijf twee of drie zinnen.",
+        "model_answer": "Ik las eerst de vraag over de kosten. Ik wist dus dat ik een bedrag in euro's moest horen. Toen luisterde ik alleen naar het getal en ik hoorde vijfentwintig euro.",
+        "checklist": [
+          "Je schrijft wat je verwachtte te horen (een bedrag).",
+          "Je schrijft dat je gericht op dat ene ding luisterde.",
+          "Je zinnen beginnen met een hoofdletter en eindigen met een punt."
+        ]
+      }
+    }
+  ],
+  "what_you_learn": "Je leert eerst de vraag lezen en dan bedenken waar het fragment over gaat. Zo weet je welke woorden je kunt verwachten, bijvoorbeeld een tijd, een bedrag of een dag. Daarna luister je gericht naar dat ene ding en trap je niet in een val."
+}

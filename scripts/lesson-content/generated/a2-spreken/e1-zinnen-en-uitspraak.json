@@ -1,0 +1,186 @@
+{
+  "items": [
+    {
+      "kind": "mcq",
+      "tier": 0,
+      "explanation": "Bij één filmpje krijg je twee vragen. Je moet op beide vragen antwoorden, ook met een korte zin.",
+      "options": [
+        {
+          "label": "A",
+          "body": "Je kiest de vraag die je het makkelijkst vindt en antwoordt alleen daarop.",
+          "is_correct": false
+        },
+        {
+          "label": "B",
+          "body": "Je antwoordt op beide vragen, ook als je antwoord kort is.",
+          "is_correct": true
+        },
+        {
+          "label": "C",
+          "body": "Je antwoordt alleen op de tweede vraag, want die is het belangrijkst.",
+          "is_correct": false
+        }
+      ],
+      "payload": {
+        "prompt": "In een spreektoets zie je een filmpje. De persoon stelt twee vragen: \"Waar woon je?\" en \"Woon je daar graag?\" Wat doe je?"
+      }
+    },
+    {
+      "kind": "mcq",
+      "tier": 0,
+      "explanation": "Je zegt wat past in de situatie. De vrouw wil weten waar de melk staat, dus je wijst haar de weg.",
+      "options": [
+        {
+          "label": "A",
+          "body": "Ik drink zelf liever thee dan melk.",
+          "is_correct": false
+        },
+        {
+          "label": "B",
+          "body": "De melk staat achterin, bij de kaas. Ik loop even mee.",
+          "is_correct": true
+        },
+        {
+          "label": "C",
+          "body": "Melk is duur geworden dit jaar.",
+          "is_correct": false
+        }
+      ],
+      "payload": {
+        "prompt": "Je werkt in een winkel. Een vrouw vraagt: \"Weet u waar de melk staat?\" Wat kun je zeggen?"
+      }
+    },
+    {
+      "kind": "mcq",
+      "tier": 0,
+      "explanation": "Je mag eerlijk zeggen dat je het niet verstond en om herhaling vragen. Zwijgen helpt je niet.",
+      "options": [
+        {
+          "label": "A",
+          "body": "Je zegt niets en wacht tot de tijd voorbij is.",
+          "is_correct": false
+        },
+        {
+          "label": "B",
+          "body": "Je zegt: \"Sorry, ik begreep de vraag niet goed. Kunt u het herhalen?\"",
+          "is_correct": true
+        },
+        {
+          "label": "C",
+          "body": "Je praat heel snel over iets anders.",
+          "is_correct": false
+        }
+      ],
+      "payload": {
+        "prompt": "Je verstaat een vraag niet. Wat is een goede reactie?"
+      }
+    },
+    {
+      "kind": "matchen",
+      "tier": 1,
+      "explanation": "Bij -ng blijft de klank hangen in je neus. Bij -nk hoor je aan het eind een korte k.",
+      "payload": {
+        "instruction": "Zeg elk woord hardop. Hoort het eind bij -ng of bij -nk?",
+        "pairs": [
+          {
+            "left": "bang",
+            "right": "-ng"
+          },
+          {
+            "left": "bank",
+            "right": "-nk"
+          },
+          {
+            "left": "jong",
+            "right": "-ng"
+          },
+          {
+            "left": "drank",
+            "right": "-nk"
+          },
+          {
+            "left": "zingen",
+            "right": "-ng"
+          }
+        ]
+      }
+    },
+    {
+      "kind": "naspreken",
+      "tier": 1,
+      "explanation": "De klanken ui, eu en ij bestaan bijna alleen in het Nederlands. Daarom spreek je ze los na.",
+      "payload": {
+        "prompt": "Spreek dit rijtje na. Zeg elk woord rustig en apart.",
+        "target": "huis, deur, tijd, buiten, keuken, ijs",
+        "focus": "Let op drie verschillende klanken: ui in huis, eu in deur en ij in tijd.",
+        "audio_url": "http://127.0.0.1:54421/storage/v1/object/public/leren-audio/fragment/a2-spreken/e1-zinnen-en-uitspraak-1.mp3",
+        "script": "huis, deur, tijd, buiten, keuken, ijs",
+        "seconds": 3.45
+      }
+    },
+    {
+      "kind": "naspreken",
+      "tier": 1,
+      "explanation": "Bij -tie zeg je -tsie, en sch- is de s samen met ch. Zo blijf je goed te verstaan.",
+      "payload": {
+        "prompt": "Spreek deze zin na. Ga niet te snel.",
+        "target": "Ik zoek informatie over de school in mijn wijk.",
+        "focus": "Je ziet informatie, maar je zegt informa-tsie. School begint met s plus ch.",
+        "audio_url": "http://127.0.0.1:54421/storage/v1/object/public/leren-audio/fragment/a2-spreken/e1-zinnen-en-uitspraak-2.mp3",
+        "script": "Ik zoek informatie over de school in mijn wijk.",
+        "seconds": 3.5
+      }
+    },
+    {
+      "kind": "gap_type",
+      "tier": 2,
+      "explanation": "Je hoort de klank ui. Die schrijf je met de letters u en i: huisarts.",
+      "payload": {
+        "sentence": "Ik heb morgen een afspraak bij de h___arts.",
+        "answer": "ui"
+      }
+    },
+    {
+      "kind": "gap_type",
+      "tier": 2,
+      "explanation": "Je hoort -tsie aan het eind, maar je schrijft -tie: vakantie.",
+      "payload": {
+        "sentence": "In juli gaan we op vakan___ naar Zeeland.",
+        "answer": "tie"
+      }
+    },
+    {
+      "kind": "opnemen",
+      "tier": 2,
+      "explanation": "Duidelijk spreken betekent: niet te snel, hard genoeg en je mond bewegen. Een accent is geen probleem.",
+      "payload": {
+        "prompt": "Neem jezelf op. Vertel in twee of drie zinnen hoe je naar je werk of naar de les gaat. Spreek rustig en duidelijk.",
+        "model_answer": "Ik ga elke dag met de bus naar de les. De bus stopt bij mij in de straat. Het duurt ongeveer twintig minuten, dus ik ben snel binnen.",
+        "checklist": [
+          "Ik sprak langzaam genoeg en hard genoeg.",
+          "Ik heb mijn mond goed bewogen bij ui, eu en ij.",
+          "Ik heb twee of drie hele zinnen gezegd."
+        ],
+        "image_urls": [],
+        "record_seconds": 60
+      }
+    },
+    {
+      "kind": "opnemen",
+      "tier": 2,
+      "explanation": "In deze situatie past een reactie op wat de buurman zegt. Je vertelt niet je eigen mening over lawaai in het algemeen.",
+      "payload": {
+        "prompt": "Je buurman zegt: \"Sorry, was mijn muziek gisteravond te hard? Ik hoorde het zelf niet.\" Neem je antwoord op.",
+        "model_answer": "Ja, ik hoorde het wel een beetje, vooral na elf uur. Maar het is niet erg, hoor. Kun je het volgende keer iets zachter zetten?",
+        "checklist": [
+          "Ik gaf antwoord op zijn vraag over de muziek.",
+          "Ik zei ook wat ik van hem wil.",
+          "Ik sprak vriendelijk en duidelijk."
+        ],
+        "image_urls": [],
+        "record_seconds": 60
+      }
+    }
+  ],
+  "what_you_learn": "In deze toets kijk je hoe goed je Nederlands spreekt en uitspreekt. Je test de klanken ui, eu en ij, het verschil tussen -ng en -nk, en woorden met -tie en sch-. Je oefent ook wat je zegt in een situatie, en wat je doet als je een vraag niet verstaat. De uitslag laat zien wat je nog wilt oefenen."
+}

@@ -1,0 +1,16 @@
+# Wie zegt wat? — audio
+# les c7-wie-zegt-wat, item 2
+# Casting:
+#   A = woman_young (Female Voice 1 — younger woman)
+#   B = man_young (Male Voice 1 — younger man)
+#
+# Dit bestand is de leesbare afdruk van wat er is ingesproken. De bron is de payload in
+# generated/a2-luisteren/c7-wie-zegt-wat.json — pas die aan en spreek opnieuw in.
+A: Tandartspraktijk De Meerpaal, u spreekt met Ilse.
+B: Goedemiddag, met Karim Bouzid. Ik heb morgen een afspraak, om half tien.
+A: Even kijken, ja, ik zie hem staan. Klopt dat niet?
+B: Nee, het klopt wel. Maar ik moet morgen werken. Kan het later deze week?
+A: Hmm, donderdag om vier uur is er nog plek.
+B: Donderdag om vier uur is goed. Moet ik iets meenemen?
+A: Uw verzekeringspas, graag. En kom vijf minuten eerder, dan vult u een formulier in.
+B: Prima, dank u wel.

@@ -200,3 +200,127 @@ describe('nakijken van een getypt antwoord', () => {
     expect(matchesTyped('want', 'omdat')).toBe(false);
   });
 });
+
+/**
+ * De twee opgaven waarin de cursist spreekt.
+ *
+ * Wat hier gepind wordt is niet de vorm maar de belofte: beide zijn een opgave (dus met trap en
+ * uitleg), geen van beide draagt optierijen, en `audio_url` mag ontbreken — een luisterles wordt
+ * geschreven vóór de TTS-run, en een verzonnen pad zou een 404 zijn die eruitziet als kapotte
+ * audio. Zie de migratie 20260908120000_lesson_speaking_items.sql.
+ */
+describe('naspreken en opnemen', () => {
+  const naspreken = {
+    kind: 'naspreken', sort_order: 3, tier: 1,
+    payload: {
+      prompt: 'Luister en zeg de woorden na.',
+      target: 'moeilijk, makkelijk, natuurlijk',
+      focus: 'Je ziet -lijk, maar je zegt -luk.',
+      audio_url: null,
+    },
+    explanation: 'De -lijk aan het eind klinkt als -luk. Dat geldt voor al deze woorden.',
+    options: [],
+  };
+
+  const opnemen = {
+    kind: 'opnemen', sort_order: 4, tier: 2,
+    payload: {
+      prompt: 'Je komt te laat op je werk. Wat zeg je tegen je leidinggevende?',
+      model_answer: 'Sorry dat ik laat ben. De bus had vertraging. Het spijt me.',
+      checklist: ['Je zegt sorry', 'Je zegt waarom je laat bent'],
+      record_seconds: 60,
+    },
+    explanation: 'Je noemt twee dingen: dat het je spijt, en waarom je laat bent.',
+    options: [],
+  };
+
+  it('beide zijn een opgave', () => {
+    expect(isExerciseKind('naspreken')).toBe(true);
+    expect(isExerciseKind('opnemen')).toBe(true);
+  });
+
+  it('een geldige spreekopgave komt door de validatie', () => {
+    expect(messages(naspreken)).toBe('');
+    expect(messages(opnemen)).toBe('');
+  });
+
+  it('audio_url mag ontbreken, want de les bestaat vóór de opname', () => {
+    const { audio_url: _drop, ...rest } = naspreken.payload;
+    expect(messages({ ...naspreken, payload: rest })).toBe('');
+  });
+
+  it('zonder trap of uitleg is het geen opgave in deze laag', () => {
+    expect(messages({ ...naspreken, tier: null })).toMatch(/tier/);
+    expect(messages({ ...opnemen, explanation: null })).toMatch(/explanation/);
+  });
+
+  it('een spreekopgave draagt geen optierijen', () => {
+    // Alleen `mcq` heeft die, en de rij komt uit `lesson_item_options` — een spreekopgave met
+    // opties zou drie knoppen tekenen bij een vraag die je inspreekt.
+    const withOptions = { ...opnemen, options: [
+      { label: 'A', body: 'iets', image_urls: [], is_correct: true, sort_order: 1 },
+    ] };
+    expect(messages(withOptions)).toMatch(/draagt geen optierijen/);
+  });
+
+  it('naspreken zonder doelzin of zonder focus wordt geweigerd', () => {
+    // Zonder `target` staat er niets om na te zeggen; zonder `focus` is het een opname zonder
+    // leerdoel, en dan meet de opgave alleen of de microfoon werkt.
+    expect(messages({ ...naspreken, payload: { ...naspreken.payload, target: '' } }))
+      .toMatch(/target/);
+    expect(messages({ ...naspreken, payload: { ...naspreken.payload, focus: '' } }))
+      .toMatch(/focus/);
+  });
+
+  it('opnemen zonder voorbeeldantwoord wordt geweigerd', () => {
+    // Het voorbeeldantwoord IS de feedback: er is geen rubriek en geen cijfer, dus zonder
+    // model_answer krijgt de cursist na het inspreken helemaal niets terug.
+    expect(messages({ ...opnemen, payload: { ...opnemen.payload, model_answer: '' } }))
+      .toMatch(/model_answer/);
+  });
+
+  it('de spreektijd is een positief geheel getal, en standaard zestig seconden', () => {
+    const { record_seconds: _drop, ...rest } = opnemen.payload;
+    const parsed = PAYLOAD_SCHEMAS.opnemen.parse(rest);
+    expect(parsed.record_seconds).toBe(60);
+    expect(messages({ ...opnemen, payload: { ...opnemen.payload, record_seconds: 0 } }))
+      .toMatch(/record_seconds/);
+  });
+});
+
+/**
+ * Een audio-item zonder URL.
+ *
+ * De reden staat bij `audioPayload` in lib/lessons/items.ts: de les wordt geschreven vóór het
+ * fragment is ingesproken. Het script en de casting blijven ná de run staan — ze zijn wat de
+ * docent nakijkt en wat een tweede run reproduceerbaar maakt.
+ */
+describe('audio wordt geschreven vóór het is ingesproken', () => {
+  const audio = {
+    kind: 'audio', sort_order: 1, tier: null,
+    payload: {
+      label: 'Omroepbericht op het station',
+      script: 'A: Let op. De trein naar Zwolle vertrekt van spoor 4.',
+      voice_cast: { A: 'woman_young' },
+      audio_url: null,
+    },
+    explanation: null, options: [],
+  };
+
+  it('een fragment zonder audio_url is geldig', () => {
+    expect(messages(audio)).toBe('');
+  });
+
+  it('met een URL erbij ook', () => {
+    expect(messages({ ...audio, payload: { ...audio.payload, audio_url: 'https://x/y.mp3' } }))
+      .toBe('');
+  });
+
+  it('de casting is een sleutel per spreker, geen ElevenLabs-id', () => {
+    // Het type dwingt niet af dát het een sleutel is — dat doet `validateCast` in
+    // lib/tts-dialogue.ts vóór er een generatie wordt betaald. Hier wordt alleen gepind dat de
+    // vorm een map van spreker naar string is, zodat die check iets heeft om te lezen.
+    const parsed = PAYLOAD_SCHEMAS.audio.parse(audio.payload);
+    expect(parsed.voice_cast).toEqual({ A: 'woman_young' });
+  });
+});

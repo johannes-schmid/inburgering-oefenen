@@ -1,0 +1,180 @@
+{
+  "items": [
+    {
+      "kind": "uitleg",
+      "tier": null,
+      "explanation": null,
+      "payload": {
+        "body_html": "<p>Sommige woorden klinken bijna hetzelfde. Er is maar één klank verschil. Toch is de betekenis heel anders. Let dus goed op het einde van een woord: hoor je <strong>-n</strong>, <strong>-ng</strong> of <strong>-k</strong>?</p><p>Ook hoor je vaak niet elke letter die er staat. In gewoon tempo zegt iemand <em>vrouwe</em> in plaats van <em>vrouwen</em>. Je moet dan uit de zin halen welk woord het is.</p>",
+        "cards": [
+          {
+            "label": "WAT JE ZIET STAAN",
+            "example_html": "Er staan twee <mark>vrouwen</mark> bij de balie."
+          },
+          {
+            "label": "WAT JE HOORT",
+            "example_html": "Er staan twee <mark>vrouwe</mark> bij de balie."
+          }
+        ]
+      }
+    },
+    {
+      "kind": "audio",
+      "tier": null,
+      "explanation": null,
+      "payload": {
+        "label": "Aan de balie van de bank",
+        "script": "A: Goedemiddag, kan ik u helpen?\nB: Ja, ik kom voor mijn bankpas. Die werkt niet meer.\nA: Wat is uw naam?\nB: Bang. Youssef Bang. Met een n en een g.\nA: Dank u. Even kijken, hoor. Ja, ik zie het al. Uw pas is verlopen op tien maart.\nB: En nu?\nA: U krijgt een nieuwe pas. Die kost zeven euro vijftig.\nB: Oké. Hoelang duurt dat?\nA: Ongeveer vijf dagen. De pas komt met de post.",
+        "audio_url": "http://127.0.0.1:54421/storage/v1/object/public/leren-audio/fragment/a2-luisteren/b3-klanken-die-lijken-1.mp3",
+        "voice_cast": {
+          "A": "woman_young",
+          "B": "man_young"
+        },
+        "transcript": "Goedemiddag, kan ik u helpen? Ja, ik kom voor mijn bankpas. Die werkt niet meer. Wat is uw naam? Bang. Youssef Bang. Met een n en een g. Dank u. Even kijken, hoor. Ja, ik zie het al. Uw pas is verlopen op tien maart. En nu? U krijgt een nieuwe pas. Die kost zeven euro vijftig. Oké. Hoelang duurt dat? Ongeveer vijf dagen. De pas komt met de post.",
+        "seconds": 26.85
+      }
+    },
+    {
+      "kind": "mcq",
+      "tier": 0,
+      "explanation": "De man zegt zijn naam en spelt hem: \"Met een n en een g.\" Zijn naam is dus Bang, niet bank.",
+      "options": [
+        {
+          "label": "A",
+          "body": "Bank",
+          "is_correct": false
+        },
+        {
+          "label": "B",
+          "body": "Bang",
+          "is_correct": true
+        },
+        {
+          "label": "C",
+          "body": "Ban",
+          "is_correct": false
+        }
+      ],
+      "payload": {
+        "prompt": "Hoe heet de man? Wat hoorde je?"
+      }
+    },
+    {
+      "kind": "mcq",
+      "tier": 0,
+      "explanation": "De medewerker zegt \"zeven euro vijftig\". Vijftig en vijftien lijken op elkaar, maar de klemtoon ligt anders.",
+      "options": [
+        {
+          "label": "A",
+          "body": "zeven euro vijftien",
+          "is_correct": false
+        },
+        {
+          "label": "B",
+          "body": "zeventien euro vijftig",
+          "is_correct": false
+        },
+        {
+          "label": "C",
+          "body": "zeven euro vijftig",
+          "is_correct": true
+        },
+        {
+          "label": "D",
+          "body": "zeven euro vijf",
+          "is_correct": false
+        }
+      ],
+      "payload": {
+        "prompt": "Wat kost de nieuwe pas?"
+      }
+    },
+    {
+      "kind": "gap_choice",
+      "tier": 1,
+      "explanation": "De man komt voor zijn bankpas, want die werkt niet meer. Bankpas hoor je met een k aan het eind van bank.",
+      "payload": {
+        "sentence": "De man komt voor zijn ___.",
+        "choices": [
+          "bangpas",
+          "bankpas",
+          "banpas"
+        ],
+        "answer": "bankpas"
+      }
+    },
+    {
+      "kind": "gap_choice",
+      "tier": 1,
+      "explanation": "De medewerker zegt dat de pas verlopen is op tien maart. Tien en tint klinken bijna hetzelfde, maar hier hoor je tien.",
+      "payload": {
+        "sentence": "De pas is verlopen op ___ maart.",
+        "choices": [
+          "tien",
+          "tin",
+          "twee"
+        ],
+        "answer": "tien"
+      }
+    },
+    {
+      "kind": "gap_choice",
+      "tier": 1,
+      "explanation": "De medewerker zegt \"ongeveer vijf dagen\". Vijf dagen en vijftig dagen lijken op elkaar, dus let op het einde van het woord.",
+      "payload": {
+        "sentence": "De nieuwe pas duurt ongeveer ___ dagen.",
+        "choices": [
+          "vijf",
+          "vijftig",
+          "vijftien"
+        ],
+        "answer": "vijf"
+      }
+    },
+    {
+      "kind": "matchen",
+      "tier": 1,
+      "explanation": "Elk woord uit het fragment heeft een woord dat erop lijkt. Je hoort het verschil aan het einde of aan de klemtoon.",
+      "payload": {
+        "instruction": "Zet het woord uit het gesprek naast het woord dat erop lijkt.",
+        "pairs": [
+          {
+            "left": "bang",
+            "right": "bank"
+          },
+          {
+            "left": "vijftig",
+            "right": "vijftien"
+          },
+          {
+            "left": "pas",
+            "right": "pak"
+          },
+          {
+            "left": "post",
+            "right": "post­bus"
+          }
+        ]
+      }
+    },
+    {
+      "kind": "gap_type",
+      "tier": 2,
+      "explanation": "De medewerker zegt: \"De pas komt met de post.\" Post eindigt op -st, niet op -sk.",
+      "payload": {
+        "sentence": "De pas komt met de ___.",
+        "answer": "post"
+      }
+    },
+    {
+      "kind": "gap_type",
+      "tier": 2,
+      "explanation": "De medewerker noemt de dag: tien maart. Schrijf het getal in letters, zoals je het hoort.",
+      "payload": {
+        "sentence": "De pas is verlopen op ___ maart.",
+        "answer": "tien"
+      }
+    }
+  ],
+  "what_you_learn": "Je leert luisteren naar woorden die bijna hetzelfde klinken, zoals bank en bang of vijf en vijftig. Je hoort het verschil aan het einde van een woord en aan de klemtoon. Zo haal je uit een gesprek aan de balie de juiste naam, het juiste bedrag en de juiste datum."
+}

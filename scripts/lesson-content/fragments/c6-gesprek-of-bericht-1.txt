@@ -1,0 +1,18 @@
+# Gesprek of bericht? — audio
+# les c6-gesprek-of-bericht, item 2
+# Casting:
+#   A = woman_young (Female Voice 1 — younger woman)
+#   B = man_young (Male Voice 1 — younger man)
+#
+# Dit bestand is de leesbare afdruk van wat er is ingesproken. De bron is de payload in
+# generated/a2-luisteren/c6-gesprek-of-bericht.json — pas die aan en spreek opnieuw in.
+A: Goedemiddag, gezondheidscentrum De Vaartweg, met Nadia.
+B: Goedemiddag, u spreekt met Samir Ould. Ik wil graag een afspraak bij de tandarts.
+A: Ja, dat kan. Heeft u pijn?
+B: Ja, een beetje. Aan de rechterkant, al twee dagen.
+A: Even kijken, hoor. Morgenochtend om negen uur is er plaats.
+B: Morgenochtend kan ik niet, ik moet werken.
+A: Dan donderdag om half vier?
+B: Donderdag is goed, ja.
+A: Prima. Dan zet ik u donderdag om half vier bij tandarts Bergsma. Neemt u uw zorgverzekeringskaart mee.
+B: Dat doe ik. Dank u wel.

@@ -1,0 +1,212 @@
+{
+  "items": [
+    {
+      "kind": "uitleg",
+      "tier": null,
+      "explanation": null,
+      "payload": {
+        "body_html": "<p>Je bent klaar met schrijven. Neem dan nog twee minuten om na te kijken. Doe dat in drie stappen.</p><p><strong>Stap 1:</strong> Staan alle punten erin? Kijk terug naar de opdracht. Vraagt de opdracht drie dingen, dan moet je drie dingen schrijven.<br><strong>Stap 2:</strong> Kloppen de werkwoorden? Kijk naar <em>ik</em>, <em>je</em> en <em>hij</em>. Bij <em>ik</em> hoort geen -t.<br><strong>Stap 3:</strong> Staat er een aanhef en een slot? Een e-mail begint met <em>Beste ...</em> en eindigt met <em>Met vriendelijke groet</em> en je naam.</p>",
+        "cards": [
+          {
+            "label": "ALLE PUNTEN",
+            "example_html": "De opdracht vraagt de dag <mark>en</mark> het tijdstip."
+          },
+          {
+            "label": "WERKWOORD",
+            "example_html": "Ik <mark>kom</mark> morgen langs."
+          },
+          {
+            "label": "AANHEF EN SLOT",
+            "example_html": "<mark>Beste meneer Dekker,</mark> ... Met vriendelijke groet, Amina"
+          }
+        ]
+      }
+    },
+    {
+      "kind": "voorbeeld",
+      "tier": null,
+      "explanation": null,
+      "payload": {
+        "sentence_html": "Deze cursist vergat stap 2: <mark>Ik komt</mark> maandag naar de les."
+      }
+    },
+    {
+      "kind": "voorbeeld",
+      "tier": null,
+      "explanation": null,
+      "payload": {
+        "sentence_html": "Deze e-mail mist het slot: Ik kan niet komen. <mark>Groet.</mark>"
+      }
+    },
+    {
+      "kind": "markeren",
+      "tier": 0,
+      "explanation": "Bij <em>ik</em> hoort geen -t. Het moet <em>ik werk</em> zijn, dus <em>ik werkt</em> is de fout.",
+      "payload": {
+        "instruction": "In deze e-mail staat één fout in het werkwoord. Markeer de fout.",
+        "body_html": "<p>Beste mevrouw Vermeer,</p><p>Ik kan donderdag niet naar de cursus komen. Ik werkt die dag tot 18.00 uur. Kan ik de les op vrijdag inhalen?</p><p>Met vriendelijke groet,<br>Hakim Yildiz</p>",
+        "targets": [
+          {
+            "label": "de fout in het werkwoord",
+            "text": "Ik werkt die dag"
+          }
+        ]
+      }
+    },
+    {
+      "kind": "markeren",
+      "tier": 0,
+      "explanation": "De aanhef is de eerste regel met <em>Beste</em> en de naam. Het slot is de groet met je eigen naam eronder.",
+      "payload": {
+        "instruction": "Markeer in dit briefje de aanhef en het slot.",
+        "body_html": "<p>Beste buurman,</p><p>Ik ben vorige week verhuisd naar nummer 14. Volgende zaterdag geef ik een klein feest. Het kan een beetje druk zijn.</p><p>Met vriendelijke groet,<br>Sofia Petrova</p>",
+        "targets": [
+          {
+            "label": "aanhef",
+            "text": "Beste buurman,"
+          },
+          {
+            "label": "slot",
+            "text": "Met vriendelijke groet,"
+          }
+        ]
+      }
+    },
+    {
+      "kind": "mcq",
+      "tier": 0,
+      "explanation": "In tekst B staat <em>ik heb</em>. Bij <em>ik</em> komt geen -t achter het werkwoord.",
+      "payload": {
+        "prompt": "De opdracht: schrijf aan de gemeente dat je een nieuw adres hebt. In welke tekst klopt het werkwoord?"
+      },
+      "options": [
+        {
+          "label": "A",
+          "body": "Ik hebt een nieuw adres in Zwolle.",
+          "is_correct": false
+        },
+        {
+          "label": "B",
+          "body": "Ik heb een nieuw adres in Zwolle.",
+          "is_correct": true
+        },
+        {
+          "label": "C",
+          "body": "Ik hebben een nieuw adres in Zwolle.",
+          "is_correct": false
+        }
+      ]
+    },
+    {
+      "kind": "mcq",
+      "tier": 0,
+      "explanation": "De opdracht vraagt twee dingen: de reden én een nieuwe dag. Alleen tekst C schrijft ze beide.",
+      "payload": {
+        "prompt": "De opdracht: mail de tandarts. Zeg waarom je niet komt en vraag een nieuwe dag. Welke tekst doet het goed?"
+      },
+      "options": [
+        {
+          "label": "A",
+          "body": "Ik kan dinsdag niet komen. Met vriendelijke groet, Nadia.",
+          "is_correct": false
+        },
+        {
+          "label": "B",
+          "body": "Kan ik een nieuwe dag krijgen? Met vriendelijke groet, Nadia.",
+          "is_correct": false
+        },
+        {
+          "label": "C",
+          "body": "Ik kan dinsdag niet komen, want ik ben ziek. Kan ik een nieuwe dag krijgen? Met vriendelijke groet, Nadia.",
+          "is_correct": true
+        }
+      ]
+    },
+    {
+      "kind": "mcq",
+      "tier": 1,
+      "explanation": "Een e-mail aan een instantie eindigt met een groet en je naam. <em>Met vriendelijke groet</em> en je naam horen erbij.",
+      "payload": {
+        "prompt": "Vul het slot van deze e-mail in: \"Kunt u mij het formulier toesturen? ___\""
+      },
+      "options": [
+        {
+          "label": "A",
+          "body": "Met vriendelijke groet, Karim Aznou",
+          "is_correct": true
+        },
+        {
+          "label": "B",
+          "body": "Doei, Karim",
+          "is_correct": false
+        },
+        {
+          "label": "C",
+          "body": "Klaar.",
+          "is_correct": false
+        },
+        {
+          "label": "D",
+          "body": "Beste meneer,",
+          "is_correct": false
+        }
+      ]
+    },
+    {
+      "kind": "mcq",
+      "tier": 1,
+      "explanation": "Je kijkt bij stap 1 of alle punten uit de opdracht in je tekst staan. Het tijdstip is vergeten.",
+      "payload": {
+        "prompt": "De opdracht: schrijf een briefje aan de school. Noem de dag, het tijdstip en de naam van je kind. Je schreef: \"Mijn zoon Amir komt vrijdag later naar school.\" Wat mist er nog?"
+      },
+      "options": [
+        {
+          "label": "A",
+          "body": "De naam van je kind",
+          "is_correct": false
+        },
+        {
+          "label": "B",
+          "body": "Het tijdstip",
+          "is_correct": true
+        },
+        {
+          "label": "C",
+          "body": "De dag",
+          "is_correct": false
+        }
+      ]
+    },
+    {
+      "kind": "open_zin",
+      "tier": 2,
+      "explanation": "Je schrijft een aanhef met <em>Beste</em> en een slot met een groet en je eigen naam. Zo is je e-mail af.",
+      "payload": {
+        "prompt": "Schrijf de aanhef en het slot voor een e-mail aan mevrouw De Wit van de gemeente. Schrijf twee regels.",
+        "model_answer": "Beste mevrouw De Wit,<br>Met vriendelijke groet, Leyla Demir",
+        "checklist": [
+          "Ik begin met \"Beste\" en de naam.",
+          "Ik eindig met een groet.",
+          "Mijn eigen naam staat onder de groet."
+        ]
+      },
+      "options": []
+    },
+    {
+      "kind": "open_zin",
+      "tier": 2,
+      "explanation": "Je noemt beide punten uit de opdracht en je gebruikt <em>ik kan</em> en <em>ik wil</em> zonder -t.",
+      "payload": {
+        "prompt": "Schrijf een e-mail van 3 zinnen aan je werk. Zeg dat je maandag niet kunt werken en waarom. Vraag of je zaterdag mag werken. Kijk daarna je werkwoorden na.",
+        "model_answer": "Beste meneer Bakker,<br>Ik kan maandag niet werken, want mijn dochter is ziek.<br>Wil ik zaterdag werken in plaats van maandag? Kan dat?<br>Met vriendelijke groet, Omar Sahin",
+        "checklist": [
+          "Ik schrijf waarom ik maandag niet kan.",
+          "Ik vraag of ik zaterdag mag werken.",
+          "Bij \"ik\" staat geen -t achter het werkwoord."
+        ]
+      },
+      "options": []
+    }
+  ],
+  "what_you_learn": "Je leert je eigen tekst in twee minuten nakijken. Je kijkt of alle punten uit de opdracht erin staan en of de werkwoorden kloppen. Ook controleer je of je een aanhef en een slot hebt geschreven."
+}

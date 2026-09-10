@@ -8,7 +8,7 @@ export default function FeatureCard({
   iconBg = 'rgba(0,43,109,0.08)',
   iconColor = 'var(--color-primary)',
 }: {
-  /** A lucide icon component, e.g. `Target`. Not an emoji — see components/site/SkillIcon. */
+  /** A lucide icon component, e.g. `Target`. Not an emoji, and never a category mark — see COMPONENTS.md §Icons. */
   icon: LucideIcon;
   title: string;
   description: string;

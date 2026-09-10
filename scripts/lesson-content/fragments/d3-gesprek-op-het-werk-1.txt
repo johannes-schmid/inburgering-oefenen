@@ -1,0 +1,18 @@
+# Training: Gesprek op het werk — audio
+# les d3-gesprek-op-het-werk, item 2
+# Casting:
+#   A = woman_young (Female Voice 1 — younger woman)
+#   B = woman_older (Female Voice 2 — older woman)
+#
+# Dit bestand is de leesbare afdruk van wat er is ingesproken. De bron is de payload in
+# generated/a2-luisteren/d3-gesprek-op-het-werk.json — pas die aan en spreek opnieuw in.
+A: Dag Karima, kom binnen. Je wilde iets vragen?
+B: Ja, mevrouw Bakker. Volgende week donderdag moet ik naar het ziekenhuis met mijn dochter.
+A: Om hoe laat is die afspraak?
+B: Om half elf 's ochtends. Maar ik werk donderdag van acht tot vier.
+A: Dat gaat dus niet samen. Kun je ruilen met een collega?
+B: Ik heb het al aan Dennis gevraagd. Hij wil donderdag voor mij werken.
+A: Mooi. Dan werk jij zaterdag voor hem, dat is eerlijk.
+B: Dat is goed, hoor.
+A: Dan doen we het zo. Zet het even in het ruilschrift bij de kantine. Anders weet de planning het niet.
+B: Ik doe het meteen. Bedankt.

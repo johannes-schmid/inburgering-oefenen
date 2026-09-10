@@ -1,0 +1,16 @@
+# Een antwoord dat te goed past — audio
+# les c8-afleiders, item 2
+# Casting:
+#   A = woman_young (Female Voice 1 — younger woman)
+#   B = man_young (Male Voice 1 — younger man)
+#
+# Dit bestand is de leesbare afdruk van wat er is ingesproken. De bron is de payload in
+# generated/a2-luisteren/c8-afleiders.json — pas die aan en spreek opnieuw in.
+A: Tandartspraktijk De Linde, goedemiddag, u spreekt met Nadia.
+B: Goedemiddag, met Karim Aydin. Ik heb dinsdag een afspraak om half vier, geloof ik.
+A: Even kijken, hoor. Ja, dinsdag 14 mei, kwart over drie bij mevrouw Bosman.
+B: Kwart over drie, oké. Kan het dinsdag misschien later op de dag?
+A: Dinsdag helaas niet, alles is vol. Maar donderdag om vijf uur is nog vrij.
+B: Donderdag vijf uur, dat is goed. Dan zet u dinsdag eruit?
+A: Ja, ik haal dinsdag weg. Neemt u uw verzekeringspas mee?
+B: Die neem ik mee. Dank u wel.

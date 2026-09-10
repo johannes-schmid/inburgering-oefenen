@@ -1,0 +1,8 @@
+# Training: Omroepbericht — audio
+# les d1-omroepbericht, item 2
+# Casting:
+#   A = woman_young (Female Voice 1 — younger woman)
+#
+# Dit bestand is de leesbare afdruk van wat er is ingesproken. De bron is de payload in
+# generated/a2-luisteren/d1-omroepbericht.json — pas die aan en spreek opnieuw in.
+A: Goedemiddag, dames en heren. Even uw aandacht, alstublieft. Het winkelcentrum sluit vandaag eerder dan normaal. Wij sluiten om vijf uur, want er wordt gewerkt aan de verwarming. Doet u uw laatste boodschappen dus op tijd. De supermarkt op de eerste verdieping blijft wel open tot acht uur. Wilt u een parkeerkaart betalen? Dat kan alleen bij de automaat naast de hoofdingang. De automaat bij de zijingang werkt niet. Morgen zijn wij weer open om negen uur. Bedankt voor uw begrip en nog een fijne dag.

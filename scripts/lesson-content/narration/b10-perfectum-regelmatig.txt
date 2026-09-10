@@ -1,0 +1,37 @@
+# De ingesproken uitleg van `b10-perfectum-regelmatig`.
+# Regels met # zijn commentaar. [[id]] of [[id | extra uitleg]] markeert waar de stem over
+# welk element begint; de extra uitleg staat op de pagina bij dat element en mag niet herhalen
+# wat de stem net zei.
+# Geldige id's: vis, vis-1 t/m vis-4, rule, card-0, card-1, demo-0, demo-1, exercises.
+
+Deze les gaat over praten over gisteren, met een woord met ge-.
+
+[[vis-1 | Ge- staat er bijna altijd. Les 17 laat zien wanneer niet.]]
+Kijk naar het plaatje. We bouwen het woord op. Vooraan komt ge-.
+
+[[vis-2 | Werken min -en is werk: dezelfde stam als in les 8.]]
+In het midden komt de stam: werk.
+
+[[vis-3 | 't kofschip: t, k, f, s, ch en p. Hoor je die aan het eind van de stam, dan -t.]]
+En achteraan komt -t of -d. Werk eindigt op een k, dus krijgt het een -t.
+
+[[vis-4 | Ik heb gewerkt. Er staat dus altijd nog hebben of zijn bij.]]
+Samen wordt het: gewerkt. Ge, werk, t.
+
+[[rule | Wonen eindigt op n, dus gewoond met een -d.]]
+De regel is dus: ge- ervoor, de stam in het midden, en -t of -d erachter. Eindigt de stam op een letter uit 't kofschip, dan schrijf je -t. In alle andere gevallen -d.
+
+[[card-0 | De meeste werkwoorden krijgen hebben.]]
+De eerste kaart gebruikt hebben.
+
+[[card-1 | Gaan, komen en blijven krijgen zijn. Dat is les 12.]]
+De tweede kaart gebruikt zijn.
+
+[[demo-0 | Betaald met een -d, want betaal eindigt op een l.]]
+Twee voorbeelden. Mijn buurvrouw heeft de huur betaald.
+
+[[demo-1 | Gegaan hoort bij zijn, en staat achteraan in de zin.]]
+En: wij zijn gisteren naar de gemeente gegaan.
+
+[[exercises]]
+Doe nu de opgaven. Zoek eerst de stam, en kijk dan naar de laatste letter.

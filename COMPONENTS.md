@@ -104,6 +104,14 @@ Shared across public proefexamen and dashboard. Always use these — never dupli
 | `ExamIntro` | `components/proefexamen/ExamIntro.tsx` | Shared exam start-screen card (gradient header, stat pills, per-section question breakdown computed from the exam's questions, embedded `ExamAudioCheck`, teacher row, Start button). Used by both public `ProefexamenEngine` and dashboard `ExamsView`. Props: `questions`, `sampleUrl`, `onStart`, `labels`, optional `teacherHref`/`secondaryAction`. |
 | `useReadAloud` | `components/proefexamen/useReadAloud.ts` | Hook for sequential-track audio playback with word-by-word highlight. Takes segments `{url, text}[]` and `enabled`. Returns `{reading, activeSeg, activeWord, toggle, stop}`. |
 | `useAudioEnabled` | `lib/audio-pref.ts` | Global audio-on/off preference via localStorage. Returns `[enabled, setEnabled]`. Syncs across tabs. |
+| `WordPass` | `components/exam/WordPass.tsx` | The right answer's own words lighting up one after the other in green — the same pass `.sp-reading` runs while a Spreken answer is being checked. Props: `text`, `active`. Wrap the answer text of a **revealed correct** option in it; `active` off renders the plain string. Pair it with the `answer-correct` class on the box. |
+| `playCorrectChime` | `lib/answer-chime.ts` | The one place a correct answer makes a sound (`public/audio/ui/correct.mp3`, 0.73s). Call it from the answer handler on a right answer. Follows the global `useAudioEnabled` switch. |
+
+**The correct-answer reward is three things and they always travel together:** `playCorrectChime()`
+in the handler, the `answer-correct` class on the box that was right (a green gradient frame runs
+twice around it), and `WordPass` on that box's text. The verdict row that appears underneath gets
+`answer-verdict`. All three are defined in `app/globals.css` under *Correct-answer reward*, and
+**correct is always `--color-correct` green** — never clay, never a per-surface green.
 
 ---
 
@@ -173,3 +181,188 @@ Reusable, server-safe, image-free. **Check here before drawing anything decorati
 | `LensRing` | circular progress, level medals, avatar marks |
 | `GlassChip` | a control floating over a `primary` surface |
 | `DocentSeal` / `ValidationChip` | the NT2-docent validation claim, and nothing else |
+| `CategoryMark` | **naming an onderdeel** — see §Icons below |
+| `ExamMark` | **naming a track** (Taal A2, Taal B1, KNM, ONA) — see §Icons below |
+
+---
+
+## `PortalCrumbs` — de navigatie van het studieportaal
+
+`app/[locale]/(app)/components/PortalCrumbs.tsx`, met de vorm en de twee vaste kruimels in
+`lib/portal-crumbs.ts`.
+
+**Elk portaalscherm dieper dan `/dashboard/[level]` draagt dit pad, en geen eigen terugknop.**
+De losse `.wt-back`-links zijn er op 02-09 voor ingeruild: de leerlaag is vier niveaus diep
+(onderdeel → spoor → module → les) en één terugknop kan daarvan alleen de vorige noemen.
+
+```tsx
+<PortalCrumbs trail={closeTrail(skillTrail({ locale, level, skill, overviewLabel, skillName }), {
+  label: mod.name,
+  siblings: modules.map(m => ({ label: m.name, href, current: m.slug === mod.slug })),
+})} />
+```
+
+- **`skillTrail()` levert de kop** — Overzicht › A2 › Lezen — want zes pagina's beginnen ermee.
+  De onderdeelkruimel draagt de vier taalonderdelen als zusjes.
+- **`closeTrail()` zet de huidige pagina erachter**, zonder `href`. Dat ontbrekende `href` *is*
+  "je bent hier".
+- **`siblings` mag op elk kruimeltje**, niet alleen het laatste. De referentie zet de chevron
+  alleen achteraan, en dat is precies de sprong die het weghaalde: vanuit een les naar Luisteren
+  hangt aan de onderdeelkruimel, drie plekken terug.
+- **De items in het menu zijn echte `<a>`'s** (base-ui `render`), zodat middelklik werkt.
+  `router.push` in een `onClick` breekt dat stil en blijft alleen als toetsenbordvangnet staan.
+- **`muted`** is "bestaat, maar heeft nog geen inhoud" — een NULL `itemCount`, dus B1 Luisteren.
+  Grijs en wél klikbaar, niet weggelaten.
+- Scheiding is een lucide `ChevronRight` met `.rtl-flip`, geen `/`. Geen lijn, geen achtergrond:
+  het pad is chrome en mag niet als blok lezen.
+
+## `LessonNarration` + `NarrationScope` — de ingesproken uitleg
+
+`components/lessons/`. De speler staat in de leskop, de elementen die oplichten in
+`LessonStream`: twee broers, dus een context ertussen (`NarrationScope`) en geen module-store.
+Een store op moduleniveau leeft langer dan de pagina en liet bij KNM de laatste cue van de
+vorige les staan.
+
+- **`useNarrated(id)`** in een element: `{ active, note }`. De wrapper `Narrated` in
+  `LessonStream` zet `data-narrate` en `is-narrating` — vijf elementen doen hetzelfde ding.
+- **De context draagt géén tijd.** Zou de seconde erin staan, dan hertekende elke `timeupdate`
+  — vier keer per seconde — de hele lesstroom. Nu verandert hij acht keer per opname.
+- **De markering is een inset ring in klei** (op navy oranje), plus `translateY(-2px)` en
+  `scale(1.012)`. Geen border (no-line-regel), geen nieuwe kleur voor een status. De niet-
+  besproken elementen zakken naar `opacity: .55` via `.les-narrating` op de wrapper — en alleen
+  zolang er iets speelt, want een halfdoorzichtige pagina zonder geluid leest als een defect.
+- **De noot is gepind, niet in de flow.** In de flow gemeten liet hij zijn element groeien en
+  duwde alles eronder ~40px omlaag, acht keer heen en terug per opname.
+- Pauze laat de markering staan — je pauzeert juist om te kijken. Het einde zet hem uit.
+
+### De speler zelf (herzien 07-09)
+
+- **Navy kaart onder de inleiding, niet als lichte aside ernaast.** In de rechterkolom las de
+  ingesproken uitleg als een kadertje naast de les; navy is op deze pagina het niveau "dit is van
+  de docent". `.les-top` is daarom weer één kolom. Eén oranje accent: de speelknop.
+- **Eén statusregel zegt drie dingen** — `0:58 / 1:28 · meelezen aan · nu: de regel`. Die derde
+  is waarom de speler `cueNames` krijgt: kijk je naar de speler en niet naar de pagina, dan zie
+  je wél dat er iets oplicht maar niet wat.
+- **Het meelezen is een tweede, fijnere korrel.** `FollowAlong` zet het voorgelezen script neer
+  met het huidige woord onder een markeerstift; gezegde woorden treden terug naar `opacity: .45`.
+  Elk woord is een spoelknop. De voorkeur staat in `localStorage` (`les-meelezen`).
+- **De woorden komen uit `lesson_narration.word_times`, nooit uit `script`.** Zou de client zelf
+  tokeniseren, dan zijn er twee tokenizers die gelijk moeten blijven — en het verkeerde woord dat
+  oplicht ziet niemand in een test. De tokenizer staat in `narration-script.mjs`.
+- **De lus loopt op `requestAnimationFrame`, niet op `timeupdate`.** Die laatste vuurt ~4×/s:
+  genoeg voor een balk, zichtbaar te weinig voor een woordmarkering. De lus draait alleen tijdens
+  het spelen en zet state alleen als de woordindex verandert.
+
+## `LessonVisual` — het lesplaatje
+
+`components/lessons/LessonVisual.tsx`, data in **`data/lesson-visuals.ts`** (per lesslug).
+Staat **boven** de regel: eerst zien welke vorm de zin heeft, dan de woorden erbij.
+
+- **Tien soorten, elk voor één grammaticale vraag** — `zinslots` `bijzin` `vervoeging` `bouwer`
+  `tijdbalk` `sorteer` `trap` `paren` `ruimte` `frequentie`. Géén generiek "diagram" met vrije
+  vakjes: dat is de weg naar 28 plaatjes die alle 28 anders zijn. Nu ziet plaats twee er in les 2
+  uit als in les 1.
+- **Het werkwoord is het enige navy vakje**, in alle 28 lessen. Eén kleur voor één ding.
+- **Genummerde stappen, op drie manieren te doorlopen**: uit de opname (cue `vis-2`), met de hand
+  (klik), of automatisch (de doorloopknop). De opname wint van de hand.
+- **`stepCount()` staat in de data en niet in de component** — de pagina is een servercomponent en
+  moet de cue `vis-3` een naam kunnen geven. Een client-export daar aanroepen faalt hard.
+- **Elke stap is een `button`**, dus met een toetsenbord te doorlopen.
+- Een **foute zin mag** in het plaatje staan (de docent vraagt erom), maar nooit zonder kruisje en
+  doorhaling. Uitzonderingen staan in een eigen zandkleurig vak, niet in een bakje.
+- `tijdbalk`, `ruimte` en `frequentie` staan **vast op `dir="ltr"`**: "voor", "naast" en "later"
+  hebben een kant, en meespiegelen zou van het plaatje een leugen maken.
+- `tests-unit/narration-cues.test.ts` controleert dat elke `vis-N`-cue een stap heeft die bestaat.
+
+## `LessonRecorder` — de microfoon in een les
+
+`components/lessons/LessonRecorder.tsx`, gebruikt door de twee opgavesoorten waarin de cursist
+spreekt: **`naspreken`** (blok B van Spreken: hoor de zin, zeg hem na) en **`opnemen`** (blok C en
+D: geef een gesproken antwoord).
+
+- **Dit is niet `components/exam/SpeakingTask`.** Die neemt op om ín te leveren: hij uploadt een
+  WAV, laat hem tegen een rubriek beoordelen en toont de uitslag met gemarkeerde spans. Hier wordt
+  niets ingeleverd en niets beoordeeld — de opname blijft een blob in het tabblad. Ze delen de
+  *bouwstenen* (`WavRecorder`, `RealtimeTranscriber`) en niet de component: de examenspeler meet,
+  de les leert.
+- **De opgave keurt nooit af.** Zodra er een opname is, is hij gedaan. Precies dezelfde afspraak als
+  `open_zin`, en om een sterkere reden: een kruis omdat de spraakherkenning een accent niet volgde
+  zou de enige belofte van dit product omdraaien. Er is dus geen foutstaat te stylen.
+- **Het transcript is een observatie, geen cijfer.** Slaat de spraakherkenning aan, dan staat er
+  wát er verstaan is — voor uitspraak het nuttigste signaal dat bestaat. Het wordt nooit tegen de
+  doelzin afgezet.
+- **Mislukken mag en is de normale situatie.** Geen microfoontoegang, geen `speech_to_text`-scope,
+  geen netwerk: elk daarvan geeft één regel tekst en laat de rest van de les met rust. De
+  transcriptie is optioneel bovenop de opname, nooit een voorwaarde ervoor.
+- De niveaumeter komt uit de PCM-frames die de recorder tóch al maakt, en animeert op `transform`
+  (nooit `width`), met een `prefers-reduced-motion`-uitgang.
+- Alleen de opnameknop mag de accentkleur dragen, en alleen zolang hij loopt: één oranje ding per
+  kaart.
+
+## Icons — three layers, one job each
+
+Imported from the Claude Design project **Dutch Icon Studio** (§04 category marks, §04b exam
+marks, §06 tiles & states) on 2026-09-02. There is no fourth layer and no per-page exception:
+if a surface names an onderdeel or a track, it uses the mark below and no other drawing.
+
+| Layer | Component | Names | Tile | Sizes it survives |
+|---|---|---|---|---|
+| **Track** | `ExamMark track="a2\|b1\|knm\|ona"` | the thing you buy and sit an exam in | **inverted** — navy tile, white ink | **32–72**, `knm` from 40 |
+| **Onderdeel** | `CategoryMark category="lezen\|luisteren\|schrijven\|spreken\|knm\|gidsen\|ona\|wonen\|gezondheid\|werk\|woorden\|grammatica\|examentraining"` | what is *inside* a track: the onderdelen, the gidsen, the KNM thema's and the three leerroute steps | light — neutral tile, navy ink | **19–72**, 22 in prose |
+| **Control** | **lucide-react** | an affordance: chevron, close, lock, arrow, play | none | any |
+
+### Why the split exists
+
+A **mark** is brand imagery. It is built from the same rectangles, discs and one permitted
+triangle as the skyline, on a 72×72 grid, and it says *this is a thing we sell*. **lucide** is the
+control layer and says *you can press this*. Mixing them is how a design system ends up with two
+visual voices — which is exactly what happened before this pass: the same Lezen was a canal-house
+mark on the homepage and a `BookOpen` glyph in the portal. The deleted `components/site/SkillIcon`
+was that second voice.
+
+### When to use which
+
+- **A row of modules** (dashboard catalogue, the gratis-oefenen chooser, `/premium`'s picker) →
+  `ExamMark`. The navy tiles are the priced things; the light tiles below them are the practice.
+- **A row of onderdelen** (`SkillCard`, `ModuleSkillGrid`, the sidebar, the mobile tabs, an
+  overview hero's eyebrow) → `CategoryMark`.
+- **The three leerroute steps** (`woorden`, `grammatica`, `examentraining`) name the stages
+  *inside* one onderdeel and map 1:1 onto `ConceptKind` in `lib/lessons/lessons.ts`
+  (`woordenschat` → `woorden`, `strategie` → `examentraining`). Added 2026-09-02 for the A2 Lezen
+  redesign; `LeerModuleCard` is the only surface that uses them so far. They are category marks,
+  not `ExamMark`s: a step is not a thing you buy.
+- **`bare` drops the tile**, for the oversized watermark in a card header where a tile would draw
+  a second rectangle inside the one already there. `cut` then becomes `transparent`, which is the
+  only correct answer over a gradient — there is no single hex to repeat. Use it at low opacity
+  and large sizes only: below ~40px the cut shapes are what make a mark readable.
+- **A navy card header is not the navy tile.** `LeerModuleCard` puts a category mark on a navy
+  gradient cap, which reads *against* the "navy tile = a priced module" rule in CLAUDE.md §7. It
+  is the owner's decision (2026-09-02) because the KNM woordkaarten cards already ship that shape
+  and it reads as a card; the mark itself stays a **category** mark, so the layer it belongs to
+  has not moved. Do not read it as licence to promote other category marks onto navy tiles.
+- **KNM is in both sets and they are not interchangeable.** As a track it is the molen-mens-tulp
+  mark; as a category it is the colonnade. Pick by the question the surface answers: *which
+  module?* or *which onderdeel?*
+- **ONA** is announced only. `ExamMark track="ona" muted` is the grey "binnenkort" tile — the one
+  sanctioned way to show it as a module. `CategoryMark category="ona"` is the live-ink compass and
+  belongs only on gidsen and the tijdlijn, which *describe* ONA rather than sell it.
+- **Never a lucide glyph where a mark belongs**, and never a mark where a control belongs. A mark
+  is `aria-hidden` and carries no meaning a screen reader needs — the label beside it does.
+
+### Rules that constrain the code
+
+- **One geometry per mark, scaled by transform.** Both components draw on the studio's 72×72 grid
+  and scale to `size`. Never re-draw a mark at another size, and never nudge a coordinate for one
+  call-site.
+- **Tile radius is a quarter of the tile** at every size (studio §06). Both components compute it.
+- **The `cut` colour must equal the tile behind it.** `CategoryMark`'s cutouts (the pages of the
+  document, the doorway in the house) are the tile showing *through* the ink, which is why `tone`
+  switches ink and cut together and why a mark cannot be dropped on an arbitrary background.
+- **On a navy surface**: `CategoryMark tone="dark"`, `ExamMark onDark`. Nothing else.
+- **One accent per mark.** Orange is the pointer — the short last line in Lezen, the tallest bar in
+  Luisteren, the lit step in the stair, the compass needle. A second orange in one mark is a bug.
+- **A muted mark spends no orange**, because there is nothing live to point at.
+- **`ExamMark` has a floor of 32px (40 for `knm`).** `a2`/`b1` set their two characters at 18px on
+  the 72 grid, so below that the label is unreadable and the mark says nothing. Under the floor,
+  either fall back to `CategoryMark` (the colonnade, the compass) or set the level as plain text —
+  which is what the portal sidebar does at 19px, and why its module rows are *not* track marks.

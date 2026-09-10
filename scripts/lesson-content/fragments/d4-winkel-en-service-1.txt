@@ -1,0 +1,18 @@
+# Training: In de winkel — audio
+# les d4-winkel-en-service, item 2
+# Casting:
+#   A = woman_young (Female Voice 1 — younger woman)
+#   B = man_young (Male Voice 1 — younger man)
+#
+# Dit bestand is de leesbare afdruk van wat er is ingesproken. De bron is de payload in
+# generated/a2-luisteren/d4-winkel-en-service.json — pas die aan en spreek opnieuw in.
+A: Goedemiddag, kan ik u helpen?
+B: Ja, graag. Ik heb hier een broek gekocht, maar hij is te klein.
+A: Heeft u de kassabon nog?
+B: Ja, hier. Ik heb hem zaterdag gekocht.
+A: Dat is goed, hoor. U mag hem ruilen. Wilt u een grotere maat?
+B: Ja, maat achtenveertig. Kan ik ook mijn geld terugkrijgen?
+A: Geld terug doen we alleen bij de servicebalie. Die is op de eerste verdieping.
+B: En hoe laat sluit die balie?
+A: Om vijf uur. U heeft dus nog een uur.
+B: Oké, dan ga ik meteen naar boven. Dank u wel.

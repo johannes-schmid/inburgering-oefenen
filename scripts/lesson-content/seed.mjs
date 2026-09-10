@@ -33,8 +33,8 @@ import fs from 'node:fs';
 import path from 'node:path';
 import { ROOT } from '../a2-content/lib.mjs';
 import { loadItemRules } from './load-items.mjs';
-import { normalisePayloads } from './author.mjs';
-import { coursePlan, parseTarget, BUILT, WORD_THEMES, STRATEGY_CONCEPTS } from './plan.mjs';
+import { normalisePayloads, kindProblems, audioProblems } from './author.mjs';
+import { coursePlan, parseTarget, BUILT, wordThemes, STRATEGY_CONCEPTS } from './plan.mjs';
 import { A2_GROUPS, A2_CONCEPTS } from './concepts-a2.mjs';
 
 const GEN_DIR = path.join(ROOT, 'scripts', 'lesson-content', 'generated');
@@ -113,6 +113,35 @@ function createRest({ url, key }) {
   };
 }
 
+/**
+ * Upsert die een al vrijgegeven rij niet terug op `pending` zet.
+ *
+ * ── WAAROM DIT MOET ──────────────────────────────────────────────────────────
+ * De seeder is idempotent en schrijft alles op `pending`, en dat is goed voor een *nieuwe* rij:
+ * niets gaat live zonder dat een mens ernaar heeft gekeken. Maar een upsert schrijft die kolom
+ * ook op rijen die er al staan, en die zijn misschien nagekeken. Twee lessen bijschrijven aan
+ * een cursus van 53 zette op 09-09 51 vrijgegeven lessen én 36 vrijgegeven concepten terug op
+ * `pending` — de hele cursus verdween uit het portaal, stil, want een onzichtbare cursus is
+ * precies wat de reviewgate hóórt te doen.
+ *
+ * Dus: lees eerst wat er staat, en laat `review_status` van een bestaande rij ongemoeid. Een
+ * nieuwe rij krijgt nog steeds `pending`. Vrijgeven blijft mensenwerk in /admin/lessen.
+ *
+ * `keyOf` maakt van een rij dezelfde sleutel als `on_conflict`, en `filter` beperkt de leesquery
+ * tot wat deze run aanraakt — zonder filter zou het de plafond van 1.000 rijen raken zodra er
+ * een tweede niveau bij komt.
+ */
+async function upsertKeepingReview(rest, table, rows, onConflict, keyOf, filter) {
+  if (rows.length === 0) return [];
+  const cols = [...new Set([...onConflict.split(','), 'review_status'])].join(',');
+  const existing = await rest.select(table, `select=${cols}&${filter}`);
+  const was = new Map((existing ?? []).map(r => [keyOf(r), r.review_status]));
+  return rest.upsert(table, rows.map(r => {
+    const kept = was.get(keyOf(r));
+    return kept ? { ...r, review_status: kept } : r;
+  }), onConflict);
+}
+
 /* ── de run ──────────────────────────────────────────────────────────────── */
 
 async function main() {
@@ -146,6 +175,7 @@ async function main() {
 
   const rules = await loadItemRules();
   const blocks = coursePlan(level, onderdeel);
+  const themes = wordThemes(onderdeel);
   const dir = path.join(GEN_DIR, `${level}-${onderdeel}`);
 
   // ── 1. alles van schijf lezen en valideren vóór één netwerkcall ──────────
@@ -171,6 +201,12 @@ async function main() {
       const items = toItemRows(unit, rules);
       for (const issue of rules.validateItems(items)) {
         problems.push(`${lesson.slug} ${issue.index >= 0 ? `item ${issue.index + 1}` : ''}: ${issue.message}`);
+      }
+      /* De laatste muur vóór de database, en de enige die weet in welke lessoort dit item
+         staat. `validateItems` vindt élke bestaande soort geldig — zo kwam er een
+         spreekopdracht in de toets van een luistercursus terecht. Zie `kindProblems`. */
+      for (const msg of [...kindProblems(items, lesson.kind), ...audioProblems(items)]) {
+        problems.push(`${lesson.slug} ${msg}`);
       }
       units.set(lesson.slug, { unit, items });
     }
@@ -226,7 +262,7 @@ async function main() {
     review_status: 'pending',
   }));
 
-  const conceptRows = await rest.upsert('concepts', [
+  const conceptRows = await upsertKeepingReview(rest, 'concepts', [
     ...A2_CONCEPTS.map(c => ({
       level,
       group_id: groupId.get(c.group) ?? null,
@@ -240,19 +276,62 @@ async function main() {
       review_status: 'pending',
     })),
     ...strategy,
-  ], 'level,slug');
+  ], 'level,slug', r => r.slug, `level=eq.${level}`);
   const conceptId = new Map(conceptRows.map(c => [c.slug, c.id]));
   console.log(`  concepts            ${conceptRows.length}`);
 
   // De chips. Een grammaticaconcept staat hier vaak vier keer, een strategieconcept precies
   // één keer — dat verschil is wat een onderdeel zelfstandig verkoopbaar maakt.
+  //
+  // `weight` erbij: of je de regel in dít onderdeel zelf goed moet doen ('kern') of alleen moet
+  // begrijpen ('herkennen'). De verdeling staat in `concepts-a2.mjs`; hier wordt hij alleen
+  // uitgeschreven. Een strategieconcept is altijd kern — het hangt aan precies één onderdeel en
+  // is daar de vaardigheid zelf.
   const chips = [
     ...A2_CONCEPTS.flatMap(c =>
-      c.onderdelen.map(o => ({ concept_id: conceptId.get(c.slug), onderdeel: o }))),
-    ...strategy.map(c => ({ concept_id: conceptId.get(c.slug), onderdeel })),
+      c.onderdelen.map(o => ({
+        concept_id: conceptId.get(c.slug),
+        onderdeel: o,
+        weight: (c.kern ?? []).includes(o) ? 'kern' : 'herkennen',
+      }))),
+    ...strategy.map(c => ({ concept_id: conceptId.get(c.slug), onderdeel, weight: 'kern' })),
   ];
   await rest.upsert('concept_onderdelen', chips, 'concept_id,onderdeel');
-  console.log(`  concept_onderdelen  ${chips.length}`);
+
+  // ── EN DE VERWIJDERKANT, WANT EEN UPSERT KAN GEEN RIJ WÉGHALEN ─────────────
+  //
+  // Tot 10-09 stond hier alleen de upsert hierboven, en daardoor kon de koppeling alleen
+  // gróeien: een regel die de docent uit een onderdeel haalt bleef in de database staan en
+  // dus in de cursus. Zo kwam Lezen aan `lidwoorden` en `wederkerende-werkwoorden` — regels
+  // die aan de betekenis van een tekst niets veranderen. Een hertagging is pas een hertagging
+  // als een weggehaalde koppeling ook echt weg is.
+  //
+  // Alleen de concepten van déze run, en per onderdeel gebundeld: de grammaticachips dekken
+  // alle vier de onderdelen (`c.onderdelen`), de strategiechips precies dit ene. Rijen van
+  // strategieconcepten van een ánder onderdeel hangen aan een concept_id dat niet in deze map
+  // zit en blijven dus buiten de diff. `concept_onderdelen` draagt geen `review_status`, dus
+  // hier is niets vrij te geven of stil terug te zetten.
+  const wanted = new Set(chips.map(c => `${c.concept_id}|${c.onderdeel}`));
+  const seededIds = [...conceptId.values()];
+  const existingChips = await rest.select(
+    'concept_onderdelen',
+    `select=concept_id,onderdeel&concept_id=in.(${seededIds.join(',')})`,
+  );
+  const stale = (existingChips ?? []).filter(r => !wanted.has(`${r.concept_id}|${r.onderdeel}`));
+  const staleByOnderdeel = new Map();
+  for (const r of stale) {
+    staleByOnderdeel.set(r.onderdeel, [...(staleByOnderdeel.get(r.onderdeel) ?? []), r.concept_id]);
+  }
+  for (const [o, ids] of staleByOnderdeel) {
+    await rest.delete('concept_onderdelen', `onderdeel=eq.${o}&concept_id=in.(${ids.join(',')})`);
+  }
+
+  const kern = chips.filter(c => c.weight === 'kern').length;
+  console.log(`  concept_onderdelen  ${chips.length} (${kern} kern, ${chips.length - kern} herkennen)`);
+  if (stale.length > 0) {
+    const per = [...staleByOnderdeel].map(([o, ids]) => `${o} ${ids.length}`).join(', ');
+    console.log(`  ─ weggehaald        ${stale.length} koppeling(en): ${per}`);
+  }
 
   // ── 3. woorden ───────────────────────────────────────────────────────────
   //
@@ -268,7 +347,7 @@ async function main() {
   const wordRows = [];
   const seenWords = new Map();
   const droppedWords = [];
-  for (const theme of WORD_THEMES) {
+  for (const theme of themes) {
     const list = (wordsByTheme[theme.slug] ?? []).filter(w => {
       const key = String(w.dutch ?? '').trim().toLowerCase();
       if (seenWords.has(key)) {
@@ -291,7 +370,10 @@ async function main() {
       review_status: 'pending',
     }));
   }
-  const savedWords = await rest.upsert('lesson_words', wordRows, 'level,onderdeel,dutch');
+  const savedWords = await upsertKeepingReview(
+    rest, 'lesson_words', wordRows, 'level,onderdeel,dutch',
+    r => r.dutch, `level=eq.${level}&onderdeel=eq.${onderdeel}`,
+  );
   const wordIdByTheme = new Map();
   for (const w of savedWords) {
     const list = wordIdByTheme.get(w.theme) ?? [];
@@ -316,6 +398,17 @@ async function main() {
   console.log(`  lesson_blocks       ${blockRows.length}`);
 
   // ── 6. lessen, items, opties ─────────────────────────────────────────────
+  /* Welke lessen al vrijgegeven zijn. Eén query vóór de lus, want de lessen gaan er één voor
+     één in en per les opnieuw lezen zou een query per les zijn. Zie `upsertKeepingReview` voor
+     waarom dit moet: een re-seed mag een nagekeken les niet uit het portaal halen. */
+  const existingLessons = await rest.select(
+    'lessons',
+    `select=block_id,slug,review_status&block_id=in.(${[...blockId.values()].join(',')})`,
+  );
+  const reviewWas = new Map(
+    (existingLessons ?? []).map(l => [`${l.block_id}|${l.slug}`, l.review_status]),
+  );
+
   let itemCount = 0;
   let optionCount = 0;
   const conceptLinks = [];
@@ -348,8 +441,10 @@ async function main() {
         minutes: lesson.minutes ?? null,
         is_free: !!lesson.is_free,
         sort_order: lesson.sort_order,
-        // Nooit 'validated'. De docent geeft vrij, in /admin/lessen.
-        review_status: 'pending',
+        /* Nooit 'validated' voor een nieuwe les — de docent geeft vrij, in /admin/lessen. Maar
+           een les die al vrijgegeven ís houdt zijn status: zie `upsertKeepingReview`. Anders
+           haalt het bijschrijven van één les de hele cursus uit het portaal. */
+        review_status: reviewWas.get(`${blockId.get(block.letter)}|${lesson.slug}`) ?? 'pending',
       }], 'block_id,slug');
 
       // Items en opties opnieuw schrijven. Mag hier: aan een lesitem hangt geen
@@ -424,8 +519,9 @@ async function main() {
   await rest.upsert('lesson_concepts', conceptLinks, 'lesson_id,concept_id');
   console.log(`  lesson_concepts     ${conceptLinks.length}`);
 
-  console.log(`\nKlaar. Alles staat op review_status = 'pending' en is dus nog onzichtbaar ` +
-              `in het portaal.\nGeef lessen vrij in /admin/lessen.`);
+  console.log(`\nKlaar. Nieuwe rijen staan op review_status = 'pending' en zijn dus nog ` +
+              `onzichtbaar in het portaal; wat al vrijgegeven was, is vrijgegeven gebleven.` +
+              `\nGeef lessen vrij in /admin/lessen.`);
 }
 
 /**

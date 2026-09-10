@@ -1,0 +1,201 @@
+{
+  "items": [
+    {
+      "kind": "uitleg",
+      "tier": null,
+      "explanation": null,
+      "payload": {
+        "body_html": "<p>Als Nederlanders snel praten, laten ze klanken weg. Je hoort dan niet elk woord apart.</p><p>Op papier staat <strong>ik heb</strong>, maar je hoort vaak <strong>'k heb</strong>. En bij <strong>er</strong> hoor je vaak <strong>d'r</strong>. Dat is geen fout: zo klinkt gewone spreektaal.</p><p>Let dus op de hele zin. Raad het woord uit wat je eromheen hoort.</p>",
+        "cards": [
+          {
+            "label": "WAT STAAT ER",
+            "example_html": "<mark>Ik heb</mark> een vraag over de huur."
+          },
+          {
+            "label": "WAT JE HOORT",
+            "example_html": "<mark>'k Heb</mark> een vraag over de huur."
+          }
+        ]
+      },
+      "options": []
+    },
+    {
+      "kind": "uitleg",
+      "tier": null,
+      "explanation": null,
+      "payload": {
+        "body_html": "<p>Ook andere korte woorden worden ingeslikt. Dat gebeurt vooral bij <strong>het</strong>, <strong>er</strong>, <strong>een</strong> en <strong>de</strong>.</p><p>Je hoort dan maar een klein stukje van het woord. De betekenis blijft hetzelfde.</p>",
+        "cards": [
+          {
+            "label": "WAT STAAT ER",
+            "example_html": "Ik moet <mark>het</mark> nog betalen."
+          },
+          {
+            "label": "WAT JE HOORT",
+            "example_html": "Ik moet <mark>'t</mark> nog betalen."
+          }
+        ]
+      },
+      "options": []
+    },
+    {
+      "kind": "audio",
+      "tier": null,
+      "explanation": null,
+      "payload": {
+        "script": "A: Goedemiddag, kan ik u helpen?\nB: Ja, 'k heb een brief gekregen van de gemeente. Over mijn paspoort.\nA: Even kijken. Ah ja, uw paspoort is klaar. U kunt 'm vandaag ophalen.\nB: Mooi. Moet ik nog betalen?\nA: Nee, u heeft 't al betaald. Alleen even uw brief meenemen, hoor.\nB: En zijn d'r nog foto's nodig?\nA: Nee, die hebben we al. U kunt naar loket 4, dat is daar rechts.\nB: Dank u wel. Tot hoe laat bent u open?\nA: Tot half vijf.",
+        "label": "Aan de balie van de gemeente",
+        "audio_url": "http://127.0.0.1:54421/storage/v1/object/public/leren-audio/fragment/a2-luisteren/b2-verkorte-spraak-1.mp3",
+        "voice_cast": {
+          "A": "woman_young",
+          "B": "man_young"
+        },
+        "transcript": "Goedemiddag, kan ik u helpen? Ja, 'k heb een brief gekregen van de gemeente. Over mijn paspoort. Even kijken. Ah ja, uw paspoort is klaar. U kunt 'm vandaag ophalen. Mooi. Moet ik nog betalen? Nee, u heeft 't al betaald. Alleen even uw brief meenemen, hoor. En zijn d'r nog foto's nodig? Nee, die hebben we al. U kunt naar loket 4, dat is daar rechts. Dank u wel. Tot hoe laat bent u open? Tot half vijf.",
+        "seconds": 28.94
+      },
+      "options": []
+    },
+    {
+      "kind": "mcq",
+      "tier": 0,
+      "explanation": "Karim zegt \"'k heb een brief gekregen\". De ik-klank hoor je maar kort, maar hij zegt wel ik heb.",
+      "payload": {
+        "prompt": "Wat zegt de man aan het begin?"
+      },
+      "options": [
+        {
+          "label": "A",
+          "body": "'k heb een brief gekregen",
+          "is_correct": true
+        },
+        {
+          "label": "B",
+          "body": "'k had een brief gekregen",
+          "is_correct": false
+        },
+        {
+          "label": "C",
+          "body": "we heb een brief gekregen",
+          "is_correct": false
+        },
+        {
+          "label": "D",
+          "body": "'k heb een brief gekocht",
+          "is_correct": false
+        }
+      ]
+    },
+    {
+      "kind": "mcq",
+      "tier": 0,
+      "explanation": "De man vraagt \"zijn d'r nog foto's nodig?\". Met d'r bedoelt hij er.",
+      "payload": {
+        "prompt": "Wat vraagt de man over de foto's?"
+      },
+      "options": [
+        {
+          "label": "A",
+          "body": "Zijn er nog foto's nodig?",
+          "is_correct": true
+        },
+        {
+          "label": "B",
+          "body": "Zijn de foto's nodig?",
+          "is_correct": false
+        },
+        {
+          "label": "C",
+          "body": "Zijn die foto's van u?",
+          "is_correct": false
+        }
+      ]
+    },
+    {
+      "kind": "gap_choice",
+      "tier": 1,
+      "explanation": "De medewerker zegt \"u heeft 't al betaald\". Met 't bedoelt ze het.",
+      "payload": {
+        "sentence": "Nee, u heeft ___ al betaald.",
+        "choices": [
+          "het",
+          "er",
+          "dat"
+        ],
+        "answer": "het"
+      }
+    },
+    {
+      "kind": "gap_choice",
+      "tier": 1,
+      "explanation": "Ze zegt \"U kunt 'm vandaag ophalen\". Met 'm bedoelt ze hem: het paspoort.",
+      "payload": {
+        "sentence": "U kunt ___ vandaag ophalen.",
+        "choices": [
+          "hem",
+          "haar",
+          "ze"
+        ],
+        "answer": "hem"
+      }
+    },
+    {
+      "kind": "gap_choice",
+      "tier": 1,
+      "explanation": "De medewerker zegt dat de balie tot half vijf open is, dus tot 16.30 uur.",
+      "payload": {
+        "sentence": "De balie is open tot ___.",
+        "choices": [
+          "half vijf",
+          "half vier",
+          "vijf uur"
+        ],
+        "answer": "half vijf"
+      }
+    },
+    {
+      "kind": "matchen",
+      "tier": 1,
+      "explanation": "Links staat wat je snel hoort, rechts het hele woord dat er staat.",
+      "payload": {
+        "instruction": "Wat hoor je (links) en wat staat er (rechts)? Maak de paren.",
+        "pairs": [
+          {
+            "left": "'k heb",
+            "right": "ik heb"
+          },
+          {
+            "left": "'t al betaald",
+            "right": "het al betaald"
+          },
+          {
+            "left": "d'r nog",
+            "right": "er nog"
+          },
+          {
+            "left": "'m ophalen",
+            "right": "hem ophalen"
+          }
+        ]
+      }
+    },
+    {
+      "kind": "gap_type",
+      "tier": 2,
+      "explanation": "De medewerker zegt \"U kunt naar loket 4\". Je typt het getal dat je hoort.",
+      "payload": {
+        "sentence": "U kunt naar loket ___.",
+        "answer": "4"
+      }
+    },
+    {
+      "kind": "gap_type",
+      "tier": 2,
+      "explanation": "De man kreeg een brief van de gemeente. Dat woord hoor je duidelijk in het fragment.",
+      "payload": {
+        "sentence": "Ik heb een brief gekregen van de ___.",
+        "answer": "gemeente"
+      }
+    }
+  ],
+  "what_you_learn": "Je leert horen wat Nederlanders zeggen als ze snel praten. Je herkent korte vormen zoals 'k heb, 't en d'r, en je weet welke hele woorden daarbij horen. Zo begrijp je een gesprek aan een balie ook als niet elk woord apart klinkt."
+}

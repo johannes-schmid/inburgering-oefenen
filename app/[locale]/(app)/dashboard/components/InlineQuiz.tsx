@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect, useRef } from 'react';
+import { playCorrectChime } from '@/lib/answer-chime';
 import { sendGAEvent } from '@next/third-parties/google';
 import { track } from '@/lib/analytics';
 import { useTranslations, useLocale } from 'next-intl';
@@ -137,6 +138,7 @@ export default function InlineQuiz({ questions, examNum, topicLabel, timerSecond
     setSelected(opt);
     const q = questions[idx];
     const isCorrect = opt === q.correct;
+    if (isCorrect) playCorrectChime();
     if (isCorrect) {
       scoreRef.current++;
       setScore(s => s + 1);
@@ -324,11 +326,11 @@ export default function InlineQuiz({ questions, examNum, topicLabel, timerSecond
             </p>
             <div className="flex flex-wrap gap-1.5">
               {answeredLog.map((entry, i) => (
-                <div key={i} className="rounded-full flex-shrink-0" style={{ width: 16, height: 16, background: entry.isCorrect ? '#16a34a' : '#f97316' }} />
+                <div key={i} className="rounded-full flex-shrink-0" style={{ width: 16, height: 16, background: entry.isCorrect ? 'var(--color-correct)' : '#f97316' }} />
               ))}
             </div>
             <p style={{ fontSize: '.72rem', color: '#a0a3ad', marginTop: '.5rem' }}>
-              <span className="inline-block rounded-full align-middle mr-1" style={{ width: 9, height: 9, background: '#16a34a' }} />Goed&nbsp;&nbsp;
+              <span className="inline-block rounded-full align-middle mr-1" style={{ width: 9, height: 9, background: 'var(--color-correct)' }} />Goed&nbsp;&nbsp;
               <span className="inline-block rounded-full align-middle mr-1" style={{ width: 9, height: 9, background: '#f97316' }} />Fout
             </p>
           </div>
@@ -358,8 +360,8 @@ export default function InlineQuiz({ questions, examNum, topicLabel, timerSecond
                         <span style={{ fontSize: '.75rem', color: '#dc2626', textDecoration: 'line-through', lineHeight: 1.4 }}>{chosenText}</span>
                       </div>
                       <div className="flex items-start gap-1.5">
-                        <span style={{ color: '#16a34a', fontSize: '.7rem', fontWeight: 800, flexShrink: 0, lineHeight: 1.5 }}>✓</span>
-                        <span style={{ fontSize: '.75rem', color: '#16a34a', fontWeight: 600, lineHeight: 1.4 }}>{correctText}</span>
+                        <span style={{ color: 'var(--color-correct)', fontSize: '.7rem', fontWeight: 800, flexShrink: 0, lineHeight: 1.5 }}>✓</span>
+                        <span style={{ fontSize: '.75rem', color: 'var(--color-correct)', fontWeight: 600, lineHeight: 1.4 }}>{correctText}</span>
                       </div>
                     </div>
                   );
@@ -378,7 +380,7 @@ export default function InlineQuiz({ questions, examNum, topicLabel, timerSecond
                 <div className="flex flex-col gap-3">
                   {sortedCats.map(([cat, cs]) => {
                     const cp = cs.total ? Math.round((cs.correct / cs.total) * 100) : 0;
-                    const barColor = cp >= 70 ? '#16a34a' : cp >= 40 ? '#d97706' : '#dc2626';
+                    const barColor = cp >= 70 ? 'var(--color-correct)' : cp >= 40 ? '#d97706' : '#dc2626';
                     return (
                       <div key={cat}>
                         <div className="flex items-center justify-between mb-1">

@@ -1,0 +1,196 @@
+{
+  "items": [
+    {
+      "kind": "uitleg",
+      "tier": null,
+      "explanation": null,
+      "payload": {
+        "body_html": "<p>Je hoort twee gesprekken bij een loket en je kiest daarna het juiste antwoord.</p>",
+        "cards": []
+      }
+    },
+    {
+      "kind": "audio",
+      "tier": null,
+      "explanation": null,
+      "payload": {
+        "label": "Aan het loket van de gemeente",
+        "script": "A: Goedemiddag, waarmee kan ik u helpen?\nB: Ik kom voor een nieuw paspoort. Mijn oude is verlopen.\nA: Dat kan. Heeft u een pasfoto meegenomen?\nB: Ja, hier. En moet ik nu betalen?\nA: Ja, u betaalt vandaag. Een paspoort kost drieënzeventig euro.\nB: Oké. En wanneer is het klaar?\nA: Over vijf werkdagen. U kunt het volgende week donderdag ophalen, na twee uur.\nB: Moet ik dan weer een afspraak maken?\nA: Nee, dat hoeft niet. Voor ophalen loopt u gewoon naar binnen. Neemt u wel dit bewijsje mee, hoor. Zonder dat papiertje kunnen wij het paspoort niet meegeven.",
+        "audio_url": "http://127.0.0.1:54421/storage/v1/object/public/leren-audio/fragment/a2-luisteren/d5-loket-en-instructie-1.mp3",
+        "voice_cast": {
+          "A": "woman_young",
+          "B": "man_young"
+        },
+        "transcript": "Goedemiddag, waarmee kan ik u helpen? Ik kom voor een nieuw paspoort. Mijn oude is verlopen. Dat kan. Heeft u een pasfoto meegenomen? Ja, hier. En moet ik nu betalen? Ja, u betaalt vandaag. Een paspoort kost drieënzeventig euro. Oké. En wanneer is het klaar? Over vijf werkdagen. U kunt het volgende week donderdag ophalen, na twee uur. Moet ik dan weer een afspraak maken? Nee, dat hoeft niet. Voor ophalen loopt u gewoon naar binnen. Neemt u wel dit bewijsje mee, hoor. Zonder dat papiertje kunnen wij het paspoort niet meegeven.",
+        "seconds": 37.17
+      }
+    },
+    {
+      "kind": "mcq",
+      "tier": 0,
+      "explanation": "De medewerker zegt dat een paspoort drieënzeventig euro kost. Dat is 73 euro.",
+      "payload": {
+        "prompt": "Wat kost het paspoort?"
+      },
+      "options": [
+        {
+          "label": "A",
+          "body": "63 euro",
+          "is_correct": false
+        },
+        {
+          "label": "B",
+          "body": "73 euro",
+          "is_correct": true
+        },
+        {
+          "label": "C",
+          "body": "83 euro",
+          "is_correct": false
+        }
+      ]
+    },
+    {
+      "kind": "mcq",
+      "tier": 0,
+      "explanation": "Hij kan het paspoort volgende week donderdag ophalen, na twee uur.",
+      "payload": {
+        "prompt": "Wanneer kan meneer Yilmaz zijn paspoort ophalen?"
+      },
+      "options": [
+        {
+          "label": "A",
+          "body": "Volgende week donderdag, na twee uur",
+          "is_correct": true
+        },
+        {
+          "label": "B",
+          "body": "Over vijf maanden",
+          "is_correct": false
+        },
+        {
+          "label": "C",
+          "body": "Morgenochtend voor twee uur",
+          "is_correct": false
+        }
+      ]
+    },
+    {
+      "kind": "mcq",
+      "tier": 1,
+      "explanation": "De medewerker zegt dat een afspraak niet hoeft, maar dat hij het bewijsje mee moet nemen.",
+      "payload": {
+        "prompt": "Wat moet meneer Yilmaz doen als hij het paspoort komt ophalen?"
+      },
+      "options": [
+        {
+          "label": "A",
+          "body": "Een nieuwe afspraak maken",
+          "is_correct": false
+        },
+        {
+          "label": "B",
+          "body": "Het bewijsje meenemen",
+          "is_correct": true
+        },
+        {
+          "label": "C",
+          "body": "Nog een pasfoto meenemen",
+          "is_correct": false
+        }
+      ]
+    },
+    {
+      "kind": "audio",
+      "tier": null,
+      "explanation": null,
+      "payload": {
+        "label": "Instructie van de apotheek over medicijnen",
+        "script": "A: Mevrouw De Wit? Uw medicijnen zijn klaar. Ik leg het even uit.\nB: Ja, graag.\nA: U neemt elke dag één tablet. Doe dat 's ochtends, bij het ontbijt. Dus altijd met eten erbij, want anders krijgt u maagpijn.\nB: En als ik een dag vergeet?\nA: Dan slaat u die dag over. U neemt dus nooit twee tabletten op één dag.\nB: Goed. Hoe lang moet ik doorgaan?\nA: Tien dagen. Het doosje is daarna leeg. Wordt u niet beter, dan belt u de huisarts.\nB: Dank u wel.",
+        "audio_url": "http://127.0.0.1:54421/storage/v1/object/public/leren-audio/fragment/a2-luisteren/d5-loket-en-instructie-2.mp3",
+        "voice_cast": {
+          "A": "man_young",
+          "B": "woman_young"
+        },
+        "transcript": "Mevrouw De Wit? Uw medicijnen zijn klaar. Ik leg het even uit. Ja, graag. U neemt elke dag één tablet. Doe dat 's ochtends, bij het ontbijt. Dus altijd met eten erbij, want anders krijgt u maagpijn. En als ik een dag vergeet? Dan slaat u die dag over. U neemt dus nooit twee tabletten op één dag. Goed. Hoe lang moet ik doorgaan? Tien dagen. Het doosje is daarna leeg. Wordt u niet beter, dan belt u de huisarts. Dank u wel.",
+        "seconds": 28.71
+      }
+    },
+    {
+      "kind": "mcq",
+      "tier": 0,
+      "explanation": "De apotheker zegt: één tablet per dag, 's ochtends bij het ontbijt.",
+      "payload": {
+        "prompt": "Hoe moet mevrouw De Wit de tabletten innemen?"
+      },
+      "options": [
+        {
+          "label": "A",
+          "body": "Eén tablet per dag, 's ochtends met eten",
+          "is_correct": true
+        },
+        {
+          "label": "B",
+          "body": "Twee tabletten per dag, voor het slapen",
+          "is_correct": false
+        },
+        {
+          "label": "C",
+          "body": "Eén tablet per week, zonder eten",
+          "is_correct": false
+        }
+      ]
+    },
+    {
+      "kind": "mcq",
+      "tier": 1,
+      "explanation": "Het hele gesprek gaat over hoe zij de medicijnen moet gebruiken. Dat is de hoofdgedachte.",
+      "payload": {
+        "prompt": "Waar gaat dit gesprek vooral over?"
+      },
+      "options": [
+        {
+          "label": "A",
+          "body": "Over de prijs van de medicijnen",
+          "is_correct": false
+        },
+        {
+          "label": "B",
+          "body": "Over hoe zij de medicijnen moet gebruiken",
+          "is_correct": true
+        },
+        {
+          "label": "C",
+          "body": "Over een afspraak bij de huisarts",
+          "is_correct": false
+        }
+      ]
+    },
+    {
+      "kind": "mcq",
+      "tier": 1,
+      "explanation": "De apotheker zegt: als je niet beter wordt, bel dan de huisarts. Ze moet dus na tien dagen bellen als het niet beter gaat.",
+      "payload": {
+        "prompt": "Wat moet mevrouw De Wit doen als ze na tien dagen nog niet beter is?"
+      },
+      "options": [
+        {
+          "label": "A",
+          "body": "Twee tabletten per dag nemen",
+          "is_correct": false
+        },
+        {
+          "label": "B",
+          "body": "Terug naar de apotheek gaan voor een nieuw doosje",
+          "is_correct": false
+        },
+        {
+          "label": "C",
+          "body": "De huisarts bellen",
+          "is_correct": true
+        }
+      ]
+    }
+  ],
+  "what_you_learn": "Je oefent met luisteren naar een gesprek aan een loket en naar een instructie. Je hoort een fragment één keer en kiest daarna het juiste antwoord. Je let op een detail, op waar het gesprek over gaat en op wat iemand moet doen."
+}

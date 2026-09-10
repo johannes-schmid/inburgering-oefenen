@@ -1,0 +1,216 @@
+{
+  "items": [
+    {
+      "kind": "uitleg",
+      "tier": null,
+      "explanation": null,
+      "payload": {
+        "body_html": "<p>In een winkel of bij een pakket hoor je vaak dezelfde woorden. Je leert hier woorden over de <strong>bezorging</strong>, de <strong>bestelling</strong> en een <strong>klacht</strong>.</p>",
+        "cards": [
+          {
+            "label": "BESTELLEN",
+            "example_html": "Mijn <mark>pakket</mark> komt morgen."
+          },
+          {
+            "label": "KLAGEN",
+            "example_html": "Ik heb een <mark>klacht</mark> over de bezorging."
+          }
+        ]
+      }
+    },
+    {
+      "kind": "woordenlijst",
+      "tier": null,
+      "explanation": null,
+      "payload": {
+        "theme": "winkel-en-service"
+      }
+    },
+    {
+      "kind": "matchen",
+      "tier": 0,
+      "explanation": "Je verbindt elk woord met de betekenis die erbij hoort. Zo weet je zeker wat het woord in een gesprek betekent.",
+      "payload": {
+        "instruction": "Zet het woord bij de goede betekenis.",
+        "pairs": [
+          {
+            "left": "de bon",
+            "right": "papiertje met het bedrag dat je hebt betaald"
+          },
+          {
+            "left": "de kassa",
+            "right": "plek in de winkel waar je afrekent"
+          },
+          {
+            "left": "de bezorger",
+            "right": "persoon die pakketten naar de klant rijdt"
+          },
+          {
+            "left": "de vertraging",
+            "right": "later komen dan afgesproken was"
+          }
+        ]
+      }
+    },
+    {
+      "kind": "matchen",
+      "tier": 0,
+      "explanation": "Elk woord heeft één betekenis. Let goed op het verschil tussen kapot en beschadigd.",
+      "payload": {
+        "instruction": "Zet het woord bij de goede betekenis.",
+        "pairs": [
+          {
+            "left": "kapot",
+            "right": "niet meer heel of niet meer werkend"
+          },
+          {
+            "left": "beschadigd",
+            "right": "met een scheur, kras of deuk erin"
+          },
+          {
+            "left": "ruilen",
+            "right": "iets terugbrengen en iets anders meenemen"
+          },
+          {
+            "left": "terugbetalen",
+            "right": "het geld weer aan de klant geven"
+          }
+        ]
+      }
+    },
+    {
+      "kind": "mcq",
+      "tier": 0,
+      "explanation": "De klantenservice is de afdeling die vragen en problemen van kopers behandelt. Daar meld je dus een probleem met je bestelling.",
+      "payload": {
+        "prompt": "Je pakket is niet aangekomen. Welke afdeling bel je?"
+      },
+      "options": [
+        {
+          "label": "A",
+          "body": "de kassa",
+          "is_correct": false
+        },
+        {
+          "label": "B",
+          "body": "de klantenservice",
+          "is_correct": true
+        },
+        {
+          "label": "C",
+          "body": "de voorraad",
+          "is_correct": false
+        }
+      ]
+    },
+    {
+      "kind": "gap_choice",
+      "tier": 1,
+      "explanation": "Een artikel dat een tijdje goedkoper is, is een aanbieding. Een bon is het papiertje met het bedrag.",
+      "payload": {
+        "sentence": "De koffie is deze week in de ___ en kost maar 3 euro.",
+        "choices": [
+          "bon",
+          "aanbieding",
+          "garantie"
+        ],
+        "answer": "aanbieding"
+      }
+    },
+    {
+      "kind": "gap_choice",
+      "tier": 1,
+      "explanation": "Als de winkel iets niet meer in het magazijn heeft, is het niet op voorraad. Voorraad zijn de spullen die de winkel nog heeft.",
+      "payload": {
+        "sentence": "Deze schoenen zijn niet meer op ___, zegt de medewerker.",
+        "choices": [
+          "voorraad",
+          "korting",
+          "kassa"
+        ],
+        "answer": "voorraad"
+      }
+    },
+    {
+      "kind": "gap_choice",
+      "tier": 1,
+      "explanation": "Afleveren is iets naar het adres van de klant brengen. De bezorger doet dat.",
+      "payload": {
+        "sentence": "De bezorger komt je pakket morgen tussen 9 en 12 uur ___.",
+        "choices": [
+          "ruilen",
+          "afleveren",
+          "oplossen"
+        ],
+        "answer": "afleveren"
+      }
+    },
+    {
+      "kind": "gap_choice",
+      "tier": 1,
+      "explanation": "Bij een afhaalpunt haal je je pakje zelf op in een winkel. Een ontvangstbewijs is alleen een papier.",
+      "payload": {
+        "sentence": "Ik was niet thuis, dus mijn pakje ligt nu bij het ___ in de straat.",
+        "choices": [
+          "afhaalpunt",
+          "ontvangstbewijs",
+          "magazijn"
+        ],
+        "answer": "afhaalpunt"
+      }
+    },
+    {
+      "kind": "gap_type",
+      "tier": 2,
+      "explanation": "Je bent niet tevreden en dat zeg je tegen de winkel. Dat noem je een klacht.",
+      "payload": {
+        "sentence": "De trui was beschadigd. Daarom heb ik een ___ ingediend bij de winkel.",
+        "answer": "klacht"
+      }
+    },
+    {
+      "kind": "gap_type",
+      "tier": 2,
+      "explanation": "De garantie is de belofte dat iets bij een defect gratis wordt gemaakt. Daarom hoeft Fatima niets te betalen.",
+      "payload": {
+        "sentence": "De wasmachine is na twee maanden kapot. Gelukkig heb ik nog ___ op het apparaat.",
+        "answer": "garantie"
+      }
+    },
+    {
+      "kind": "gap_type",
+      "tier": 2,
+      "explanation": "De winkel geeft het geld weer aan de klant. Dat woord is terugbetalen.",
+      "payload": {
+        "sentence": "De jas past niet en ik wil hem niet ruilen. De winkel gaat het geld ___.",
+        "answer": "terugbetalen"
+      }
+    },
+    {
+      "kind": "mcq",
+      "tier": 0,
+      "explanation": "Oplossen betekent zorgen dat een probleem weg is. De medewerker doet dus iets aan het probleem.",
+      "payload": {
+        "prompt": "De medewerker zegt: \"Wij gaan dit voor u oplossen.\" Wat betekent dat?"
+      },
+      "options": [
+        {
+          "label": "A",
+          "body": "Zij zorgen dat het probleem weg is.",
+          "is_correct": true
+        },
+        {
+          "label": "B",
+          "body": "Zij sturen je naar een andere winkel.",
+          "is_correct": false
+        },
+        {
+          "label": "C",
+          "body": "Zij geven je korting op je volgende bestelling.",
+          "is_correct": false
+        }
+      ]
+    }
+  ],
+  "what_you_learn": "Je leert woorden over winkelen, een bestelling en de bezorging. Je begrijpt wat de klantenservice zegt over een klacht, ruilen of terugbetalen. Je kunt deze woorden ook zelf gebruiken in een korte zin."
+}

@@ -1,0 +1,215 @@
+{
+  "items": [
+    {
+      "kind": "uitleg",
+      "tier": null,
+      "explanation": null,
+      "payload": {
+        "body_html": "<p>Elke brief en elke e-mail begint met een <strong>aanhef</strong>: de eerste regel waarmee je iemand begroet. Onderaan komt de <strong>afsluiting</strong>: een groet en je naam.</p><p>Ken je de persoon niet, dan schrijf je netjes. Ken je de persoon wel, dan mag het vriendelijker.</p>",
+        "cards": [
+          {
+            "label": "NET",
+            "example_html": "<mark>Geachte</mark> heer Van Dijk, ... <mark>Hoogachtend</mark>, Amina Yilmaz"
+          },
+          {
+            "label": "VRIENDELIJK",
+            "example_html": "<mark>Beste</mark> Karin, ... Met vriendelijke <mark>groet</mark>, Samir"
+          },
+          {
+            "label": "BRIEFJE",
+            "example_html": "<mark>Hierbij</mark> een kort <mark>briefje</mark> voor de buren."
+          }
+        ]
+      }
+    },
+    {
+      "kind": "woordenlijst",
+      "tier": null,
+      "explanation": null,
+      "payload": {
+        "theme": "aanhef-en-slot"
+      }
+    },
+    {
+      "kind": "zinnenbank",
+      "tier": null,
+      "explanation": null,
+      "payload": {
+        "columns": [
+          {
+            "heading": "Aanhef (begin)",
+            "phrases": [
+              "Geachte heer De Wit,",
+              "Geachte mevrouw Jansen,",
+              "Geachte heer, mevrouw,",
+              "Beste Karin,",
+              "Beste collega's,"
+            ]
+          },
+          {
+            "heading": "Afsluiting (slot)",
+            "phrases": [
+              "Hoogachtend,",
+              "Met vriendelijke groet,",
+              "Alvast bedankt voor uw reactie.",
+              "Bij voorbaat dank voor uw hulp.",
+              "Ik hoor graag van u."
+            ]
+          },
+          {
+            "heading": "Midden in de brief",
+            "phrases": [
+              "Betreft: opzeggen van mijn abonnement",
+              "Hierbij stuur ik u een bijlage.",
+              "Ik verzoek u om een toelichting.",
+              "Ik hoop spoedig van u te vernemen.",
+              "Ik onderteken deze brief met mijn handtekening."
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "kind": "matchen",
+      "tier": 0,
+      "explanation": "Je kiest de zin die bij de situatie past: net Nederlands voor een instantie, vriendelijk Nederlands voor iemand die je kent.",
+      "payload": {
+        "instruction": "Welke zin past bij welke situatie? Verbind de situatie met de juiste zin.",
+        "pairs": [
+          {
+            "left": "Brief aan de gemeente, je kent de persoon niet",
+            "right": "Geachte heer, mevrouw,"
+          },
+          {
+            "left": "E-mail aan je buurvrouw Karin",
+            "right": "Beste Karin,"
+          },
+          {
+            "left": "Slot van een formele brief",
+            "right": "Hoogachtend,"
+          },
+          {
+            "left": "Slot van een e-mail aan een collega",
+            "right": "Met vriendelijke groet,"
+          },
+          {
+            "left": "Je stuurt een kopie van je loonstrook mee",
+            "right": "Hierbij stuur ik u een bijlage."
+          }
+        ]
+      }
+    },
+    {
+      "kind": "gap_choice",
+      "tier": 0,
+      "explanation": "Voor iemand die je niet kent gebruik je 'Geachte'. 'Beste' is vriendelijker en gebruik je voor mensen die je kent.",
+      "payload": {
+        "sentence": "___ heer De Wit, ik schrijf u over mijn huurwoning.",
+        "choices": [
+          "Geachte",
+          "Beste",
+          "Hierbij"
+        ],
+        "answer": "Geachte"
+      }
+    },
+    {
+      "kind": "gap_choice",
+      "tier": 1,
+      "explanation": "Het woord 'betreft' staat vooraan in een brief en zegt waar de brief over gaat.",
+      "payload": {
+        "sentence": "___: aanvraag van een nieuw paspoort.",
+        "choices": [
+          "Betreft",
+          "Bijlage",
+          "Hoogachtend"
+        ],
+        "answer": "Betreft"
+      }
+    },
+    {
+      "kind": "gap_choice",
+      "tier": 1,
+      "explanation": "Onder je brief zet je je naam met de hand: dat is je handtekening.",
+      "payload": {
+        "sentence": "Onderaan de brief zet ik mijn ___.",
+        "choices": [
+          "handtekening",
+          "toelichting",
+          "afzender"
+        ],
+        "answer": "handtekening"
+      }
+    },
+    {
+      "kind": "gap_choice",
+      "tier": 1,
+      "explanation": "'Bij voorbaat dank' is een nette manier om vooraf te bedanken in een brief.",
+      "payload": {
+        "sentence": "___ dank voor uw hulp bij mijn aanvraag.",
+        "choices": [
+          "Bij voorbaat",
+          "Alvast",
+          "Hierbij"
+        ],
+        "answer": "Bij voorbaat"
+      }
+    },
+    {
+      "kind": "gap_type",
+      "tier": 2,
+      "explanation": "In een e-mail aan iemand die je kent sluit je af met: Met vriendelijke groet. Het woord 'groet' hoort in het gat.",
+      "payload": {
+        "sentence": "Met vriendelijke ___, Samir El Amrani",
+        "answer": "groet"
+      }
+    },
+    {
+      "kind": "gap_type",
+      "tier": 2,
+      "explanation": "'Vernemen' betekent: iets te horen krijgen. 'Ik hoop spoedig van u te vernemen' is een vaste slotzin.",
+      "payload": {
+        "sentence": "Ik hoop spoedig van u te ___.",
+        "answer": "vernemen"
+      }
+    },
+    {
+      "kind": "gap_type",
+      "tier": 2,
+      "explanation": "'Verzoeken' is een nette manier om te vragen of iets kan. Je gebruikt het in een formele brief.",
+      "payload": {
+        "sentence": "Ik ___ u mij een nieuw formulier te sturen.",
+        "answer": "verzoek"
+      }
+    },
+    {
+      "kind": "open_zin",
+      "tier": 2,
+      "explanation": "Je schrijft een nette aanhef met 'Geachte' en een nette afsluiting met 'Hoogachtend' en je naam.",
+      "payload": {
+        "prompt": "Je schrijft een brief aan de gemeente. Je kent de medewerker niet. Schrijf de aanhef (eerste regel) en de afsluiting (laatste twee regels).",
+        "model_answer": "Geachte heer, mevrouw,\n\nHoogachtend,\nFatima Bakker",
+        "checklist": [
+          "Ik begin met 'Geachte'.",
+          "Ik sluit af met 'Hoogachtend,'.",
+          "Onder de afsluiting staat mijn naam."
+        ]
+      }
+    },
+    {
+      "kind": "open_zin",
+      "tier": 2,
+      "explanation": "In een e-mail aan iemand die je kent gebruik je 'Beste' en 'Met vriendelijke groet'. Je bedankt met 'alvast bedankt'.",
+      "payload": {
+        "prompt": "Je stuurt een e-mail aan je collega Karin. Je stuurt een bijlage mee en je bedankt haar vooraf. Schrijf de aanhef, één zin over de bijlage en de afsluiting.",
+        "model_answer": "Beste Karin,\n\nHierbij stuur ik je de bijlage met mijn uren. Alvast bedankt voor je reactie.\n\nMet vriendelijke groet,\nSamir El Amrani",
+        "checklist": [
+          "Ik begin met 'Beste' en de naam.",
+          "Ik gebruik het woord 'bijlage'.",
+          "Ik sluit af met 'Met vriendelijke groet,' en mijn naam."
+        ]
+      }
+    }
+  ],
+  "what_you_learn": "Na deze les weet je hoe je een brief of e-mail netjes begint en afsluit. Je kent woorden als aanhef, afsluiting, bijlage, handtekening en afzender. Je kunt vaste zinnen zoals 'Geachte heer, mevrouw' en 'Met vriendelijke groet' zelf opschrijven."
+}

@@ -1,0 +1,40 @@
+# De ingesproken uitleg van `b14-toekomende-tijd`.
+# Regels met # zijn commentaar. [[id]] of [[id | extra uitleg]] markeert waar de stem over
+# welk element begint; de extra uitleg staat op de pagina bij dat element en mag niet herhalen
+# wat de stem net zei.
+# Geldige id's: vis, vis-1 t/m vis-5, rule, card-0, card-1, demo-0, demo-1, exercises.
+
+Deze les gaat over praten over later.
+
+[[vis-1 | Dit is les 13: één woord voor het verleden.]]
+Kijk naar het plaatje. Het is een tijdbalk. Links staat gisteren: ik werkte.
+
+[[vis-2 | Dit is les 8: de tegenwoordige tijd.]]
+In het midden staat nu: ik werk.
+
+[[vis-3 | Gaan plus het hele werkwoord. Dat werkwoord staat achteraan.]]
+En rechts staat later. De gewoonste vorm is gaan plus het hele werkwoord: ik ga werken.
+
+[[vis-4 | Zullen hoor je vaker in brieven dan in gesprekken.]]
+Er is ook een tweede vorm: ik zal werken. Die klinkt formeler, en je gebruikt hem voor een belofte.
+
+[[vis-5 | Morgen, straks, volgende week: staat er zo'n woord, dan mag de tegenwoordige tijd.]]
+En soms doe je helemaal niets bijzonders: ik werk morgen. Dat kan, omdat het woordje morgen al zegt dat het later is.
+
+[[rule | Het hele werkwoord is de vorm uit het woordenboek: werken, betalen, komen.]]
+Onthoud dus: gaan plus het hele werkwoord, en dat werkwoord staat achteraan in de zin.
+
+[[card-0 | Ga, gaat, gaan: gaan wordt gewoon vervoegd.]]
+De eerste kaart is de vorm met gaan.
+
+[[card-1 | Hier doet het tijdswoord het werk.]]
+De tweede kaart heeft een tijdswoord in de zin.
+
+[[demo-0 | Beginnen staat achteraan, in de hele vorm.]]
+Twee voorbeelden. Fatima gaat volgende week beginnen in de winkel.
+
+[[demo-1 | Belt is tegenwoordige tijd; straks maakt het toekomst.]]
+En: de dokter belt straks met de uitslag.
+
+[[exercises]]
+Doe nu de opgaven. Zoek eerst het tijdswoord in de zin.

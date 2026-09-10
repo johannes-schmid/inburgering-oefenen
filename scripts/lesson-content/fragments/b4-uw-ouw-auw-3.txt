@@ -1,0 +1,8 @@
+# -uw, -ouw en -auw — naspreken
+# les b4-uw-ouw-auw, item 4
+# Casting:
+#   één stem: woman_older
+#
+# Dit bestand is de leesbare afdruk van wat er is ingesproken. De bron is de payload in
+# generated/a2-spreken/b4-uw-ouw-auw.json — pas die aan en spreek opnieuw in.
+nieuw - nou, duw - dauw, ruw - rouw

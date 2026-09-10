@@ -1,0 +1,8 @@
+# Woorden en klanken — audio
+# les e1-woorden-en-klanken, item 1
+# Casting:
+#   A = woman_young (Female Voice 1 — younger woman)
+#
+# Dit bestand is de leesbare afdruk van wat er is ingesproken. De bron is de payload in
+# generated/a2-luisteren/e1-woorden-en-klanken.json — pas die aan en spreek opnieuw in.
+A: Goedemiddag, dames en heren. Even een mededeling voor iedereen in de wachtkamer. De bloedprikpost is vandaag pas om kwart over twee open. Dokter Van Beek is er dus wel, maar de laborant komt later. Wilt u alleen bloed laten prikken? Dan kunt u het beste eerst een kop koffie halen. De koffie kost vijftig cent. Daarna hoort u uw naam. Heeft u een afspraak bij de huisarts? Die afspraken gaan gewoon door. Bedankt voor uw geduld.

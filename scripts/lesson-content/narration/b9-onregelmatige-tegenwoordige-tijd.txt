@@ -1,0 +1,40 @@
+# De ingesproken uitleg van `b9-onregelmatige-tegenwoordige-tijd`.
+# Regels met # zijn commentaar. [[id]] of [[id | extra uitleg]] markeert waar de stem over
+# welk element begint; de extra uitleg staat op de pagina bij dat element en mag niet herhalen
+# wat de stem net zei.
+# Geldige id's: vis, vis-1 t/m vis-5, rule, card-0, card-1, demo-0, demo-1, exercises.
+
+Deze les gaat over zijn, hebben, gaan en kunnen. Vier werkwoorden die je heel vaak nodig hebt.
+
+[[vis-1 | Niet "ik zij" en niet "ik zijn". Alleen ben.]]
+Kijk naar het plaatje. Boven staat zijn. Er staat geen stam bij, en dat is precies het punt: die is er niet. Bij ik hoort ben.
+
+[[vis-2 | Ook in een vraag: ben je? Dan zonder -t.]]
+Bij jij hoort bent.
+
+[[vis-3 | Bij u kun je bent of is gebruiken. Beide is goed.]]
+Bij u hoort ook bent.
+
+[[vis-4 | Eén letter, heel vaak nodig: is.]]
+Bij hij, zij en het hoort is.
+
+[[vis-5 | En bij het meervoud is de vorm gelijk aan het hele woord.]]
+En bij wij, jullie en zij hoort zijn.
+
+[[rule | Hebben, gaan en kunnen staan in de lijst bij deze les.]]
+Deze vormen kun je niet uitrekenen. Je leert ze uit je hoofd, en daarna gebruik je ze elke dag.
+
+[[card-0 | Werken doet wat je verwacht: stam plus uitgang.]]
+De eerste kaart laat een gewoon werkwoord zien.
+
+[[card-1 | Hier verandert het woord zelf, niet alleen de uitgang.]]
+De tweede kaart laat zien wat er bij deze vier gebeurt.
+
+[[demo-0 | Heeft: de vorm van hebben bij hij en zij.]]
+Twee voorbeelden. Mijn dochter heeft een brief van de school gekregen.
+
+[[demo-1 | Kunnen bij wij, en let op de bijzin met want.]]
+En: wij kunnen morgen niet naar de gemeente, want de balie is dicht.
+
+[[exercises]]
+Doe nu de opgaven. Zeg de rijtjes een keer hardop; dat helpt echt.

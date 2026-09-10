@@ -1,0 +1,209 @@
+{
+  "items": [
+    {
+      "kind": "uitleg",
+      "tier": null,
+      "explanation": null,
+      "payload": {
+        "body_html": "<p>Je vult vaak een formulier in bij de gemeente, de dokter of je werk. Soms moet je daarna een mail of een briefje schrijven over dat formulier.</p><p>In deze les leer je de woorden van een formulier. Je leert ook vaste zinnen die je zo kunt overnemen.</p>",
+        "cards": [
+          {
+            "label": "FORMULIER",
+            "example_html": "Ik heb het formulier <mark>ingevuld</mark> en <mark>ondertekend</mark>."
+          },
+          {
+            "label": "MAIL",
+            "example_html": "Ik stuur mijn paspoort mee als <mark>bijlage</mark>."
+          }
+        ]
+      }
+    },
+    {
+      "kind": "woordenlijst",
+      "tier": null,
+      "explanation": null,
+      "payload": {
+        "theme": "formulierwoorden"
+      }
+    },
+    {
+      "kind": "zinnenbank",
+      "tier": null,
+      "explanation": null,
+      "payload": {
+        "columns": [
+          {
+            "heading": "Netjes beginnen en eindigen",
+            "phrases": [
+              "Geachte mevrouw De Groot,",
+              "Betreft: het formulier voor de huurtoeslag",
+              "Met vriendelijke groet, Amina Haddad",
+              "Hartelijk dank voor uw hulp."
+            ]
+          },
+          {
+            "heading": "Zeggen wat je met het formulier deed",
+            "phrases": [
+              "Ik heb het formulier ingevuld.",
+              "Ik heb het formulier ondertekend.",
+              "Ik heb het juiste vakje aangekruist.",
+              "Ik heb de verkeerde woorden doorgehaald.",
+              "Ik stuur het formulier vandaag op."
+            ]
+          },
+          {
+            "heading": "Iets meesturen of vragen",
+            "phrases": [
+              "Ik stuur een kopie van mijn paspoort mee.",
+              "In de bijlage vindt u mijn loonstrook.",
+              "Ik wil nog een papier toevoegen.",
+              "Kunt u mij zeggen welke bijlage nog nodig is?",
+              "Mijn handtekening staat onderaan het formulier."
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "kind": "matchen",
+      "tier": 0,
+      "explanation": "Elke zin hoort bij één situatie. Je let op het werkwoord: invullen, ondertekenen, meesturen of aankruisen.",
+      "payload": {
+        "instruction": "Welke zin past bij welke situatie? Zoek de juiste paren.",
+        "pairs": [
+          {
+            "left": "Je zet je naam onderaan het papier.",
+            "right": "Ik heb het formulier ondertekend."
+          },
+          {
+            "left": "Je doet een kopie van je paspoort bij de mail.",
+            "right": "Ik stuur een kopie van mijn paspoort mee."
+          },
+          {
+            "left": "Je schrijft je gegevens in de lege vakjes.",
+            "right": "Ik heb het formulier ingevuld."
+          },
+          {
+            "left": "Je zet een streepje in een klein vakje.",
+            "right": "Ik heb het juiste vakje aangekruist."
+          },
+          {
+            "left": "Je zet een streep door woorden die niet kloppen.",
+            "right": "Ik heb de verkeerde woorden doorgehaald."
+          }
+        ]
+      }
+    },
+    {
+      "kind": "gap_choice",
+      "tier": 0,
+      "explanation": "Je familienaam heet de achternaam. Je voorletters zijn alleen de eerste letters van je voornamen.",
+      "payload": {
+        "sentence": "Op het formulier staat: naam van je familie. Dat is je ___.",
+        "choices": [
+          "achternaam",
+          "voorletters",
+          "woonplaats"
+        ],
+        "answer": "achternaam"
+      }
+    },
+    {
+      "kind": "gap_choice",
+      "tier": 1,
+      "explanation": "De geboorteplaats is de stad waar je geboren bent. De woonplaats is de stad waar je nu leeft.",
+      "payload": {
+        "sentence": "Ik ben geboren in Aleppo, maar ik woon nu in Zwolle. Mijn ___ is Zwolle.",
+        "choices": [
+          "geboorteplaats",
+          "woonplaats",
+          "nationaliteit"
+        ],
+        "answer": "woonplaats"
+      }
+    },
+    {
+      "kind": "gap_choice",
+      "tier": 1,
+      "explanation": "Het burgerservicenummer is je persoonlijke nummer van de overheid. Elke inwoner van Nederland heeft er één.",
+      "payload": {
+        "sentence": "De medewerker vraagt mijn persoonlijke nummer van de overheid. Dat is mijn ___.",
+        "choices": [
+          "burgerservicenummer",
+          "huisnummer",
+          "postcode"
+        ],
+        "answer": "burgerservicenummer"
+      }
+    },
+    {
+      "kind": "gap_type",
+      "tier": 2,
+      "explanation": "Aan het begin van een nette brief schrijf je Geachte. Daarna komt de naam van de persoon.",
+      "payload": {
+        "sentence": "___ mevrouw Van Dijk, ik schrijf u over het formulier van de gemeente.",
+        "answer": "Geachte"
+      }
+    },
+    {
+      "kind": "gap_type",
+      "tier": 2,
+      "explanation": "Het papier dat je met een mail meestuurt, heet de bijlage.",
+      "payload": {
+        "sentence": "In de ___ vindt u mijn loonstrook van december.",
+        "answer": "bijlage"
+      }
+    },
+    {
+      "kind": "gap_type",
+      "tier": 2,
+      "explanation": "Je naam die je zelf met de pen schrijft, heet de handtekening.",
+      "payload": {
+        "sentence": "Onderaan het formulier zet ik mijn ___ met een blauwe pen.",
+        "answer": "handtekening"
+      }
+    },
+    {
+      "kind": "gap_choice",
+      "tier": 1,
+      "explanation": "Bij Betreft schrijf je kort waar de mail over gaat.",
+      "payload": {
+        "sentence": "___: de aanvraag voor een nieuw paspoort",
+        "choices": [
+          "Betreft",
+          "Geachte",
+          "Bijlage"
+        ],
+        "answer": "Betreft"
+      }
+    },
+    {
+      "kind": "open_zin",
+      "tier": 2,
+      "explanation": "Je schrijft een korte mail met een nette aanhef, één zin over het formulier en een nette afsluiting.",
+      "payload": {
+        "prompt": "Je hebt een formulier van de gemeente ingevuld en ondertekend. Je stuurt het per mail. Schrijf drie regels: de aanhef, één zin over het formulier en de afsluiting.",
+        "model_answer": "Geachte heer Bakker,\nIk heb het formulier ingevuld en ondertekend. In de bijlage stuur ik het formulier mee.\nMet vriendelijke groet, Nadia Yilmaz",
+        "checklist": [
+          "Je begint met Geachte en de naam.",
+          "Je gebruikt ingevuld en ondertekend.",
+          "Je eindigt met Met vriendelijke groet en je naam."
+        ]
+      }
+    },
+    {
+      "kind": "open_zin",
+      "tier": 2,
+      "explanation": "Je vraagt netjes welk papier nog nodig is. Je gebruikt het woord bijlage of toevoegen.",
+      "payload": {
+        "prompt": "Je weet niet welk papier je nog moet meesturen. Schrijf twee zinnen aan de gemeente en vraag het netjes.",
+        "model_answer": "Geachte mevrouw De Groot, kunt u mij zeggen welke bijlage nog nodig is? Ik wil het papier graag snel toevoegen en opsturen.",
+        "checklist": [
+          "Je stelt een nette vraag met kunt u.",
+          "Je gebruikt het woord bijlage, toevoegen of opsturen."
+        ]
+      }
+    }
+  ],
+  "what_you_learn": "Na deze les ken je de belangrijkste woorden op een formulier, zoals achternaam, geboortedatum, burgerservicenummer en handtekening. Je weet wat invullen, aankruisen, doorhalen en ondertekenen betekenen. Je kunt ook een korte mail schrijven waarin je zegt dat je het formulier hebt ingevuld en wat je meestuurt."
+}

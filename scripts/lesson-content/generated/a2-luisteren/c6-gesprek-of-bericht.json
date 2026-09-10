@@ -1,0 +1,176 @@
+{
+  "items": [
+    {
+      "kind": "uitleg",
+      "tier": null,
+      "explanation": null,
+      "payload": {
+        "body_html": "<p>Bij luisteren hoor je twee soorten fragmenten: een <strong>omroepbericht</strong> (één stem, bijvoorbeeld op het station) en een <strong>gesprek</strong> (twee mensen praten samen).</p><p>In een omroepbericht staat het belangrijkste vaak <strong>vooraan</strong>. Je hoort snel waar het over gaat.</p><p>In een gesprek staat het antwoord meestal <strong>achteraan</strong>. Eerst praten de mensen, daarna volgt de afspraak of de oplossing.</p><p>Werk zo: 1. Luister eerst: één stem of twee stemmen? 2. Weet je dan waar je op moet letten. 3. Wacht bij een gesprek tot het eind. Verander je antwoord niet te snel.</p>",
+        "cards": [
+          {
+            "label": "OMROEP",
+            "example_html": "<mark>Let op:</mark> de trein naar Zwolle vertrekt van spoor 4."
+          },
+          {
+            "label": "GESPREK",
+            "example_html": "A: Kan ik morgen komen? B: Nee, <mark>komt u maar op vrijdag om tien uur.</mark>"
+          }
+        ]
+      }
+    },
+    {
+      "kind": "audio",
+      "tier": null,
+      "explanation": null,
+      "payload": {
+        "script": "A: Goedemiddag, gezondheidscentrum De Vaartweg, met Nadia.\nB: Goedemiddag, u spreekt met Samir Ould. Ik wil graag een afspraak bij de tandarts.\nA: Ja, dat kan. Heeft u pijn?\nB: Ja, een beetje. Aan de rechterkant, al twee dagen.\nA: Even kijken, hoor. Morgenochtend om negen uur is er plaats.\nB: Morgenochtend kan ik niet, ik moet werken.\nA: Dan donderdag om half vier?\nB: Donderdag is goed, ja.\nA: Prima. Dan zet ik u donderdag om half vier bij tandarts Bergsma. Neemt u uw zorgverzekeringskaart mee.\nB: Dat doe ik. Dank u wel.",
+        "label": "Telefoongesprek met de tandartsassistente",
+        "audio_url": "http://127.0.0.1:54421/storage/v1/object/public/leren-audio/fragment/a2-luisteren/c6-gesprek-of-bericht-1.mp3",
+        "voice_cast": {
+          "A": "woman_young",
+          "B": "man_young"
+        },
+        "transcript": "Goedemiddag, gezondheidscentrum De Vaartweg, met Nadia. Goedemiddag, u spreekt met Samir Ould. Ik wil graag een afspraak bij de tandarts. Ja, dat kan. Heeft u pijn? Ja, een beetje. Aan de rechterkant, al twee dagen. Even kijken, hoor. Morgenochtend om negen uur is er plaats. Morgenochtend kan ik niet, ik moet werken. Dan donderdag om half vier? Donderdag is goed, ja. Prima. Dan zet ik u donderdag om half vier bij tandarts Bergsma. Neemt u uw zorgverzekeringskaart mee. Dat doe ik. Dank u wel.",
+        "seconds": 34.61
+      }
+    },
+    {
+      "kind": "mcq",
+      "tier": 0,
+      "explanation": "Je hoort twee stemmen die op elkaar reageren, dus het is een gesprek. Bij een gesprek wacht je tot het eind, want daar staat de afspraak.",
+      "payload": {
+        "prompt": "Wat voor fragment hoorde je?"
+      },
+      "options": [
+        {
+          "label": "A",
+          "body": "Een omroepbericht met één spreker",
+          "is_correct": false
+        },
+        {
+          "label": "B",
+          "body": "Een gesprek tussen twee mensen",
+          "is_correct": true
+        },
+        {
+          "label": "C",
+          "body": "Het nieuws op de radio",
+          "is_correct": false
+        }
+      ]
+    },
+    {
+      "kind": "mcq",
+      "tier": 0,
+      "explanation": "Aan het eind hoor je: donderdag om half vier. Negen uur morgenochtend is de val: dat wordt eerst genoemd, maar Samir zegt dat het niet kan.",
+      "payload": {
+        "prompt": "Wanneer komt Samir naar de tandarts?"
+      },
+      "options": [
+        {
+          "label": "A",
+          "body": "Morgenochtend om negen uur",
+          "is_correct": false
+        },
+        {
+          "label": "B",
+          "body": "Donderdag om half vier",
+          "is_correct": true
+        },
+        {
+          "label": "C",
+          "body": "Vandaag om twaalf uur",
+          "is_correct": false
+        },
+        {
+          "label": "D",
+          "body": "Vrijdag om negen uur",
+          "is_correct": false
+        }
+      ]
+    },
+    {
+      "kind": "mcq",
+      "tier": 1,
+      "explanation": "Samir belt om een afspraak te maken. Dat zegt hij al in zijn eerste zin, maar de precieze afspraak komt pas aan het eind.",
+      "payload": {
+        "prompt": "Waarom belt Samir?"
+      },
+      "options": [
+        {
+          "label": "A",
+          "body": "Hij wil een afspraak maken.",
+          "is_correct": false
+        },
+        {
+          "label": "B",
+          "body": "Hij wil een afspraak afzeggen.",
+          "is_correct": false
+        },
+        {
+          "label": "C",
+          "body": "Hij wil een afspraak maken bij de tandarts.",
+          "is_correct": true
+        }
+      ]
+    },
+    {
+      "kind": "mcq",
+      "tier": 1,
+      "explanation": "Aan het eind zegt de assistente dat hij zijn zorgverzekeringskaart moet meenemen. In een gesprek staat zo'n opdracht bijna altijd achteraan.",
+      "payload": {
+        "prompt": "Wat moet Samir meenemen?"
+      },
+      "options": [
+        {
+          "label": "A",
+          "body": "Zijn paspoort",
+          "is_correct": false
+        },
+        {
+          "label": "B",
+          "body": "Zijn zorgverzekeringskaart",
+          "is_correct": true
+        },
+        {
+          "label": "C",
+          "body": "Een brief van de dokter",
+          "is_correct": false
+        }
+      ]
+    },
+    {
+      "kind": "gap_type",
+      "tier": 2,
+      "explanation": "De assistente noemt aan het eind de naam van de tandarts: tandarts Bergsma. Namen komen vaak in de laatste zin van een gesprek.",
+      "payload": {
+        "sentence": "Samir heeft een afspraak bij tandarts ___.",
+        "answer": "Bergsma"
+      }
+    },
+    {
+      "kind": "gap_type",
+      "tier": 2,
+      "explanation": "Samir zegt dat hij al twee dagen pijn heeft. Dit detail staat in het midden van het gesprek, bij de vraag van de assistente.",
+      "payload": {
+        "sentence": "Samir heeft al ___ dagen pijn.",
+        "answer": "twee"
+      }
+    },
+    {
+      "kind": "open_zin",
+      "tier": 2,
+      "explanation": "Je legt in eigen woorden uit hoe je het antwoord vond: bij een gesprek let je op het eind, want daar staat de afspraak.",
+      "payload": {
+        "prompt": "Schrijf in twee zinnen hoe je hoorde wanneer de afspraak is.",
+        "model_answer": "Ik hoorde twee stemmen, dus het was een gesprek. Daarom wachtte ik tot het eind, en daar zei de assistente: donderdag om half vier.",
+        "checklist": [
+          "Je schrijft dat je twee stemmen hoorde (een gesprek).",
+          "Je schrijft dat het antwoord aan het eind kwam.",
+          "Je noemt de dag of de tijd van de afspraak."
+        ]
+      }
+    }
+  ],
+  "what_you_learn": "Je leert eerst horen of je een omroepbericht of een gesprek hoort. Bij een omroep let je op het begin, want daar staat het belangrijkste. Bij een gesprek wacht je tot het eind, want daar staat de afspraak."
+}

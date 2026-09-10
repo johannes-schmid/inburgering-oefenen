@@ -3,6 +3,8 @@
 import { useState } from 'react';
 import { sendGAEvent } from '@next/third-parties/google';
 import { track } from '@/lib/analytics';
+import { playCorrectChime } from '@/lib/answer-chime';
+import WordPass from '@/components/exam/WordPass';
 import type { Question } from '@/data/oefenvragen-topics';
 import { cn } from '@/lib/utils';
 import { buttonVariants } from '@/components/ui/button';
@@ -41,7 +43,10 @@ export default function QuizWidget({ questions, topicTotal, strings, slug }: Pro
     if (selected !== null) return;
     setSelected(opt);
     const correct = opt === q.correct;
-    if (correct) setScore(s => s + 1);
+    if (correct) {
+      playCorrectChime();
+      setScore(s => s + 1);
+    }
     sendGAEvent('event', 'topic_quiz_answered', { topic: slug, correct });
     track('question_answered', { source: 'topic', exam_number: null, topic: slug, is_correct: correct });
   }
@@ -144,20 +149,22 @@ export default function QuizWidget({ questions, topicTotal, strings, slug }: Pro
             const text = lbl === 'A' ? q.optionA : lbl === 'B' ? q.optionB : q.optionC;
             let cls = 'opt-btn';
             if (selected !== null) {
-              if (lbl === q.correct) cls += ' correct';
+              if (lbl === q.correct) cls += ' correct answer-correct';
               else if (lbl === selected) cls += ' incorrect';
             }
             return (
               <button key={lbl} className={cls} disabled={selected !== null} onClick={() => selectAnswer(lbl)}>
                 <span className="opt-label">{lbl}</span>
-                <span className="opt-text">{text}</span>
+                <span className="opt-text">
+                  <WordPass text={text} active={selected !== null && lbl === q.correct} />
+                </span>
               </button>
             );
           })}
         </div>
 
         {selected !== null && (
-          <div className={`feedback ${selected === q.correct ? 'correct' : 'incorrect'}`} style={{ display: 'block' }}>
+          <div className={`feedback answer-verdict ${selected === q.correct ? 'correct' : 'incorrect'}`} style={{ display: 'block' }}>
             {selected === q.correct
               ? <><strong>✓ Correct!</strong> {q.explanation}</>
               : <><strong>✗ Niet correct.</strong> Het juiste antwoord is <strong>{q.correct}</strong>. {q.explanation}</>

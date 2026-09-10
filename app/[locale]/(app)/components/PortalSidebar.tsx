@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import { useTranslations } from 'next-intl';
-import { ChevronRight, LayoutDashboard, LogOut, Mail, Plus, Shapes, BookText, Layers, UserPlus } from 'lucide-react';
+import { ChevronRight, LayoutDashboard, LogOut, Mail, Plus, UserPlus } from 'lucide-react';
 import { createClient } from '@/lib/supabase/client';
 import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
 import LogoMark from '@/components/site/LogoMark';
@@ -176,9 +176,6 @@ export default function PortalSidebar({
                         aria-current={on ? 'page' : undefined}
                         className={`side-row sub${on ? ' on' : ''}${item.owned ? '' : ' dim'}`}
                       >
-                        <span className="side-ic bare">
-                          <CategoryMark category={item.slug} size={19} tone="dark" />
-                        </span>
                         <span className="side-lb">{tSkills(`${item.messageKey}.name`)}</span>
                         {/* Nul examens betekent hier: dit onderdeel is nog niet gebouwd
                             (B1 Luisteren). Een lege balk zou dat als "nog niets gedaan"
@@ -194,16 +191,11 @@ export default function PortalSidebar({
                     );
                   })}
 
-                  {group.hasConcepts && group.level && (
-                    <a
-                      href={`/${locale}/dashboard/${group.level}/concepten`}
-                      aria-current={inGroup && active === 'concepten' ? 'page' : undefined}
-                      className={`side-row sub${inGroup && active === 'concepten' ? ' on' : ''}`}
-                    >
-                      <span className="side-ic"><Shapes size={14} strokeWidth={2.1} /></span>
-                      <span className="side-lb">{tNav('concepten')}</span>
-                    </a>
-                  )}
+                  {/* Onder een niveau staan de vier onderdelen en niets anders (besluit
+                      eigenaar, 10-09). Hier stonden *Taalregels* en *Concepten*: twee rijen
+                      naar twee bibliotheken over dezelfde 31 regels, met elk een eigen
+                      telling. De regels van een examen staan nu in stap 2 van die cursus, en
+                      de naslag per regel hangt aan de les die hem uitlegt. */}
 
                   {isKnm && FEATURES.leren && (
                     <a
@@ -211,7 +203,6 @@ export default function PortalSidebar({
                       aria-current={active === 'leren' ? 'page' : undefined}
                       className={`side-row sub${active === 'leren' ? ' on' : ''}`}
                     >
-                      <span className="side-ic"><BookText size={14} strokeWidth={2.1} /></span>
                       <span className="side-lb">{tNav('knm_leren')}</span>
                     </a>
                   )}
@@ -221,7 +212,6 @@ export default function PortalSidebar({
                       aria-current={active === 'woordkaarten' ? 'page' : undefined}
                       className={`side-row sub${active === 'woordkaarten' ? ' on' : ''}`}
                     >
-                      <span className="side-ic"><Layers size={14} strokeWidth={2.1} /></span>
                       <span className="side-lb">{tNav('knm_woordkaarten')}</span>
                     </a>
                   )}
@@ -237,11 +227,11 @@ export default function PortalSidebar({
             een groep in `lib/portal-menu.ts` en verdwijnt dit blok. */}
         <span className="side-mod soon" aria-disabled="true">
           <span className="side-mod-link">
+            {/* Het kompas uit `CategoryMark`, niet `ExamMark`: op 19px valt het A2/B1-label in de
+                trackmerken weg, dus de zijbalk draagt overal de categorie-variant. Hier stond een
+                met de hand getekende koffer-SVG — precies wat COMPONENTS.md §Icons verbiedt. */}
             <span className="side-badge mark">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.9" aria-hidden>
-                <rect x="3" y="7" width="18" height="13" rx="2" />
-                <path d="M8 7V5a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2" />
-              </svg>
+              <CategoryMark category="ona" size={19} tone="dark" />
             </span>
             {/* Niet vertaald: ONA is een eigennaam, DUO's eigen afkorting. */}
             <span className="side-lb">ONA</span>

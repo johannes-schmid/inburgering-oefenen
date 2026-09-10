@@ -7,7 +7,7 @@
  *
  *   * De regels in `.mjs` herschrijven, zoals `scripts/b1-content/rules.mjs` doet voor de
  *     examenvorm. Dat werkt daar omdat het om een handvol getallen gaat. Hier zijn het
- *     veertien payloadvormen met hun onderlinge regels, en twee kopieën daarvan lopen
+ *     zestien payloadvormen met hun onderlinge regels, en twee kopieën daarvan lopen
  *     gegarandeerd uit elkaar — met als gevolg content die de generator goedkeurt en de editor
  *     afkeurt, of erger: omgekeerd.
  *   * `tsx` of `ts-node` als dependency toevoegen. Een build-tool erbij voor twee scripts,

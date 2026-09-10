@@ -1,0 +1,194 @@
+{
+  "items": [
+    {
+      "kind": "uitleg",
+      "tier": null,
+      "explanation": null,
+      "payload": {
+        "body_html": "<p>Je hoort twee korte berichten van de radio: het nieuws en het weerbericht. Luister één keer en kies daarna het goede antwoord.</p>",
+        "cards": []
+      }
+    },
+    {
+      "kind": "audio",
+      "tier": null,
+      "explanation": null,
+      "payload": {
+        "script": "A: Goedemorgen, hier is het nieuws van tien uur. In de stad Meerdijk is vanmorgen een groot deel van het centrum zonder stroom. Ongeveer duizend huizen hebben geen licht en geen warm water. Volgens het energiebedrijf is er een kabel kapot bij de Kerkstraat. Monteurs zijn al aan het werk. Ze verwachten dat de stroom vanmiddag om drie uur weer terug is. Bewoners die hulp nodig hebben, kunnen terecht in het buurthuis aan de Molenweg. Daar is koffie en er is een warme maaltijd. Het buurthuis is open tot acht uur vanavond. Dan het weer.",
+        "label": "Nieuwsbericht op de radio",
+        "audio_url": "http://127.0.0.1:54421/storage/v1/object/public/leren-audio/fragment/a2-luisteren/d6-nieuws-en-weer-1.mp3",
+        "voice_cast": {
+          "A": "man_young"
+        },
+        "transcript": "Goedemorgen, hier is het nieuws van tien uur. In de stad Meerdijk is vanmorgen een groot deel van het centrum zonder stroom. Ongeveer duizend huizen hebben geen licht en geen warm water. Volgens het energiebedrijf is er een kabel kapot bij de Kerkstraat. Monteurs zijn al aan het werk. Ze verwachten dat de stroom vanmiddag om drie uur weer terug is. Bewoners die hulp nodig hebben, kunnen terecht in het buurthuis aan de Molenweg. Daar is koffie en er is een warme maaltijd. Het buurthuis is open tot acht uur vanavond. Dan het weer.",
+        "seconds": 30.62
+      }
+    },
+    {
+      "kind": "mcq",
+      "tier": 0,
+      "explanation": "De nieuwslezer zegt dat de monteurs verwachten dat de stroom vanmiddag om drie uur terug is.",
+      "payload": {
+        "prompt": "Hoe laat is de stroom volgens het bericht weer terug?"
+      },
+      "options": [
+        {
+          "label": "A",
+          "body": "Om tien uur",
+          "is_correct": false
+        },
+        {
+          "label": "B",
+          "body": "Om drie uur",
+          "is_correct": true
+        },
+        {
+          "label": "C",
+          "body": "Om acht uur",
+          "is_correct": false
+        }
+      ]
+    },
+    {
+      "kind": "mcq",
+      "tier": 0,
+      "explanation": "Het hele bericht gaat over huizen zonder stroom in Meerdijk. Dat is de hoofdgedachte.",
+      "payload": {
+        "prompt": "Waar gaat het bericht over?"
+      },
+      "options": [
+        {
+          "label": "A",
+          "body": "Er is geen stroom in een deel van Meerdijk.",
+          "is_correct": true
+        },
+        {
+          "label": "B",
+          "body": "Er is een nieuw buurthuis geopend in Meerdijk.",
+          "is_correct": false
+        },
+        {
+          "label": "C",
+          "body": "Er is een ongeluk gebeurd in de Kerkstraat.",
+          "is_correct": false
+        }
+      ]
+    },
+    {
+      "kind": "mcq",
+      "tier": 1,
+      "explanation": "Bewoners die hulp nodig hebben, kunnen naar het buurthuis aan de Molenweg. Daar is koffie en een warme maaltijd.",
+      "payload": {
+        "prompt": "Wat moet je doen als je hulp nodig hebt?"
+      },
+      "options": [
+        {
+          "label": "A",
+          "body": "Naar het energiebedrijf bellen",
+          "is_correct": false
+        },
+        {
+          "label": "B",
+          "body": "Naar het buurthuis aan de Molenweg gaan",
+          "is_correct": true
+        },
+        {
+          "label": "C",
+          "body": "Thuis wachten tot de monteur komt",
+          "is_correct": false
+        }
+      ]
+    },
+    {
+      "kind": "audio",
+      "tier": null,
+      "explanation": null,
+      "payload": {
+        "script": "A: En dan nu het weer. Vandaag begint de dag grijs en koud. Vanmiddag komt er regen bij, vooral in het noorden van het land. Het wordt niet warmer dan zeven graden. Er staat ook een harde wind langs de kust. Neem dus een goede jas mee als je naar buiten gaat. Morgen is het beter. De regen gaat weg en in de middag zien we de zon. Het wordt dan elf graden. Let op: vannacht kan het glad zijn op de weg. Rijd voorzichtig, vooral op de kleine wegen buiten de stad.",
+        "label": "Weerbericht op de radio",
+        "audio_url": "http://127.0.0.1:54421/storage/v1/object/public/leren-audio/fragment/a2-luisteren/d6-nieuws-en-weer-2.mp3",
+        "voice_cast": {
+          "A": "woman_young"
+        },
+        "transcript": "En dan nu het weer. Vandaag begint de dag grijs en koud. Vanmiddag komt er regen bij, vooral in het noorden van het land. Het wordt niet warmer dan zeven graden. Er staat ook een harde wind langs de kust. Neem dus een goede jas mee als je naar buiten gaat. Morgen is het beter. De regen gaat weg en in de middag zien we de zon. Het wordt dan elf graden. Let op: vannacht kan het glad zijn op de weg. Rijd voorzichtig, vooral op de kleine wegen buiten de stad.",
+        "seconds": 28.13
+      }
+    },
+    {
+      "kind": "mcq",
+      "tier": 0,
+      "explanation": "In het weerbericht hoor je dat het vandaag niet warmer wordt dan zeven graden.",
+      "payload": {
+        "prompt": "Hoe warm wordt het vandaag?"
+      },
+      "options": [
+        {
+          "label": "A",
+          "body": "Zeven graden",
+          "is_correct": true
+        },
+        {
+          "label": "B",
+          "body": "Elf graden",
+          "is_correct": false
+        },
+        {
+          "label": "C",
+          "body": "Vijftien graden",
+          "is_correct": false
+        }
+      ]
+    },
+    {
+      "kind": "mcq",
+      "tier": 1,
+      "explanation": "De weervrouw zegt: neem een goede jas mee, want het regent en het is koud.",
+      "payload": {
+        "prompt": "Wat is het advies voor vandaag?"
+      },
+      "options": [
+        {
+          "label": "A",
+          "body": "Blijf de hele dag binnen.",
+          "is_correct": false
+        },
+        {
+          "label": "B",
+          "body": "Neem een goede jas mee naar buiten.",
+          "is_correct": true
+        },
+        {
+          "label": "C",
+          "body": "Ga met de trein in plaats van de auto.",
+          "is_correct": false
+        }
+      ]
+    },
+    {
+      "kind": "mcq",
+      "tier": 1,
+      "explanation": "Het bericht zegt dat het vannacht glad kan zijn op de weg, dus je moet voorzichtig rijden.",
+      "payload": {
+        "prompt": "Waarom moet je vannacht voorzichtig rijden?"
+      },
+      "options": [
+        {
+          "label": "A",
+          "body": "Omdat er veel wind langs de kust staat",
+          "is_correct": false
+        },
+        {
+          "label": "B",
+          "body": "Omdat de weg glad kan zijn",
+          "is_correct": true
+        },
+        {
+          "label": "C",
+          "body": "Omdat er werk aan de weg is",
+          "is_correct": false
+        }
+      ]
+    }
+  ],
+  "what_you_learn": "Je oefent met korte berichten van de radio: het nieuws en het weer. Je leert een detail horen, zoals een tijd of een temperatuur, en je zoekt waar het bericht over gaat. Ook hoor je wat je zelf moet doen na zo'n bericht."
+}

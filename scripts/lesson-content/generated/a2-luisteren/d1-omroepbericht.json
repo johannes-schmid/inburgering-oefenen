@@ -1,0 +1,194 @@
+{
+  "items": [
+    {
+      "kind": "uitleg",
+      "tier": null,
+      "explanation": null,
+      "payload": {
+        "body_html": "<p>Je hoort twee omroepberichten en beantwoordt daarna de vragen, net als in het examen.</p>",
+        "cards": []
+      }
+    },
+    {
+      "kind": "audio",
+      "tier": null,
+      "explanation": null,
+      "payload": {
+        "label": "Omroepbericht in een winkelcentrum",
+        "script": "A: Goedemiddag, dames en heren. Even uw aandacht, alstublieft. Het winkelcentrum sluit vandaag eerder dan normaal. Wij sluiten om vijf uur, want er wordt gewerkt aan de verwarming. Doet u uw laatste boodschappen dus op tijd. De supermarkt op de eerste verdieping blijft wel open tot acht uur. Wilt u een parkeerkaart betalen? Dat kan alleen bij de automaat naast de hoofdingang. De automaat bij de zijingang werkt niet. Morgen zijn wij weer open om negen uur. Bedankt voor uw begrip en nog een fijne dag.",
+        "audio_url": "http://127.0.0.1:54421/storage/v1/object/public/leren-audio/fragment/a2-luisteren/d1-omroepbericht-1.mp3",
+        "voice_cast": {
+          "A": "woman_young"
+        },
+        "transcript": "Goedemiddag, dames en heren. Even uw aandacht, alstublieft. Het winkelcentrum sluit vandaag eerder dan normaal. Wij sluiten om vijf uur, want er wordt gewerkt aan de verwarming. Doet u uw laatste boodschappen dus op tijd. De supermarkt op de eerste verdieping blijft wel open tot acht uur. Wilt u een parkeerkaart betalen? Dat kan alleen bij de automaat naast de hoofdingang. De automaat bij de zijingang werkt niet. Morgen zijn wij weer open om negen uur. Bedankt voor uw begrip en nog een fijne dag.",
+        "seconds": 30.07
+      }
+    },
+    {
+      "kind": "mcq",
+      "tier": 0,
+      "explanation": "In het bericht hoor je: het winkelcentrum sluit vandaag om vijf uur.",
+      "payload": {
+        "prompt": "Hoe laat sluit het winkelcentrum vandaag?"
+      },
+      "options": [
+        {
+          "label": "A",
+          "body": "Om vijf uur.",
+          "is_correct": true
+        },
+        {
+          "label": "B",
+          "body": "Om acht uur.",
+          "is_correct": false
+        },
+        {
+          "label": "C",
+          "body": "Om negen uur.",
+          "is_correct": false
+        }
+      ]
+    },
+    {
+      "kind": "mcq",
+      "tier": 0,
+      "explanation": "De omroepster zegt dat er gewerkt wordt aan de verwarming. Daarom sluit het centrum eerder.",
+      "payload": {
+        "prompt": "Waarom gaat het winkelcentrum eerder dicht?"
+      },
+      "options": [
+        {
+          "label": "A",
+          "body": "Er is een feest in het centrum.",
+          "is_correct": false
+        },
+        {
+          "label": "B",
+          "body": "Er wordt gewerkt aan de verwarming.",
+          "is_correct": true
+        },
+        {
+          "label": "C",
+          "body": "Er zijn te weinig medewerkers.",
+          "is_correct": false
+        }
+      ]
+    },
+    {
+      "kind": "mcq",
+      "tier": 1,
+      "explanation": "Je moet betalen bij de automaat naast de hoofdingang, want de automaat bij de zijingang werkt niet.",
+      "payload": {
+        "prompt": "Je wilt je parkeerkaart betalen. Wat moet je doen?"
+      },
+      "options": [
+        {
+          "label": "A",
+          "body": "Naar de automaat naast de hoofdingang gaan.",
+          "is_correct": true
+        },
+        {
+          "label": "B",
+          "body": "Naar de automaat bij de zijingang gaan.",
+          "is_correct": false
+        },
+        {
+          "label": "C",
+          "body": "In de supermarkt betalen.",
+          "is_correct": false
+        }
+      ]
+    },
+    {
+      "kind": "audio",
+      "tier": null,
+      "explanation": null,
+      "payload": {
+        "label": "Omroepbericht op het station",
+        "script": "A: Dames en heren, uw aandacht graag. De trein naar Zwolle van spoor vier vertrekt vandaag niet. Er ligt een boom op het spoor bij Amersfoort. Reizigers naar Zwolle nemen de bus. Die bussen staan voor het station, bij halte drie. De eerste bus vertrekt om tien over twee. U hoeft geen nieuw kaartje te kopen; uw treinkaartje is ook geldig in de bus. Reist u verder naar Groningen? Stap dan in Zwolle over op de trein van kwart voor vier. Onze medewerkers in het geel helpen u graag. Onze excuses voor het ongemak.",
+        "audio_url": "http://127.0.0.1:54421/storage/v1/object/public/leren-audio/fragment/a2-luisteren/d1-omroepbericht-2.mp3",
+        "voice_cast": {
+          "A": "man_young"
+        },
+        "transcript": "Dames en heren, uw aandacht graag. De trein naar Zwolle van spoor vier vertrekt vandaag niet. Er ligt een boom op het spoor bij Amersfoort. Reizigers naar Zwolle nemen de bus. Die bussen staan voor het station, bij halte drie. De eerste bus vertrekt om tien over twee. U hoeft geen nieuw kaartje te kopen; uw treinkaartje is ook geldig in de bus. Reist u verder naar Groningen? Stap dan in Zwolle over op de trein van kwart voor vier. Onze medewerkers in het geel helpen u graag. Onze excuses voor het ongemak.",
+        "seconds": 30.46
+      }
+    },
+    {
+      "kind": "mcq",
+      "tier": 0,
+      "explanation": "De omroeper zegt: de eerste bus vertrekt om tien over twee.",
+      "payload": {
+        "prompt": "Hoe laat vertrekt de eerste bus?"
+      },
+      "options": [
+        {
+          "label": "A",
+          "body": "Om tien voor twee.",
+          "is_correct": false
+        },
+        {
+          "label": "B",
+          "body": "Om tien over twee.",
+          "is_correct": true
+        },
+        {
+          "label": "C",
+          "body": "Om kwart voor vier.",
+          "is_correct": false
+        }
+      ]
+    },
+    {
+      "kind": "mcq",
+      "tier": 1,
+      "explanation": "Reizigers naar Zwolle moeten de bus nemen bij halte drie, voor het station.",
+      "payload": {
+        "prompt": "Je wilt naar Zwolle. Wat moet je doen?"
+      },
+      "options": [
+        {
+          "label": "A",
+          "body": "Wachten op spoor vier.",
+          "is_correct": false
+        },
+        {
+          "label": "B",
+          "body": "Een nieuw kaartje kopen.",
+          "is_correct": false
+        },
+        {
+          "label": "C",
+          "body": "Naar halte drie voor het station gaan.",
+          "is_correct": true
+        }
+      ]
+    },
+    {
+      "kind": "mcq",
+      "tier": 1,
+      "explanation": "Het hele bericht gaat over één ding: de trein rijdt niet, dus reizigers gaan met de bus.",
+      "payload": {
+        "prompt": "Waar gaat dit bericht vooral over?"
+      },
+      "options": [
+        {
+          "label": "A",
+          "body": "De trein rijdt niet, reizigers gaan met de bus.",
+          "is_correct": true
+        },
+        {
+          "label": "B",
+          "body": "Er is een nieuw kaartje nodig voor de trein.",
+          "is_correct": false
+        },
+        {
+          "label": "C",
+          "body": "Het station gaat vandaag eerder dicht.",
+          "is_correct": false
+        }
+      ]
+    }
+  ],
+  "what_you_learn": "Je oefent met omroepberichten zoals in het examen. Je hoort een bericht één keer en zoekt daarin een tijd, een plaats en wat je moet doen. Ook leer je snel te horen waar het bericht vooral over gaat."
+}

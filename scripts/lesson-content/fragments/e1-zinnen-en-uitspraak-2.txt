@@ -1,0 +1,8 @@
+# Zinnen en uitspraak — naspreken
+# les e1-zinnen-en-uitspraak, item 6
+# Casting:
+#   één stem: woman_older
+#
+# Dit bestand is de leesbare afdruk van wat er is ingesproken. De bron is de payload in
+# generated/a2-spreken/e1-zinnen-en-uitspraak.json — pas die aan en spreek opnieuw in.
+Ik zoek informatie over de school in mijn wijk.

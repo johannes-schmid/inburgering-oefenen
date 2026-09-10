@@ -1,0 +1,34 @@
+# De ingesproken uitleg van `b24-overtreffende-trap`.
+# Regels met # zijn commentaar. [[id]] of [[id | extra uitleg]] markeert waar de stem over
+# welk element begint; de extra uitleg staat op de pagina bij dat element en mag niet herhalen
+# wat de stem net zei.
+# Geldige id's: vis, vis-1 t/m vis-3, rule, card-0, card-1, demo-0, demo-1, exercises.
+
+Deze les gaat over de hoogste trap: het grootst, het beste.
+
+[[vis-1 | De gewone vorm.]]
+Kijk naar het plaatje. Er staan drie balken. De eerste is groot: dit huis is groot.
+
+[[vis-2 | Dat is les 23: vergelijken met -er en dan.]]
+De tweede is groter: dat huis is groter.
+
+[[vis-3 | Er is niets groter. Daarom staat er het voor.]]
+En de derde is het grootst. Er komt -st achter het woord, en er komt het voor: dit is het grootste huis van de straat.
+
+[[rule | Staat er een naamwoord achter, dan wordt het -ste: de grootste winkel.]]
+Onthoud dus: -st voor de hoogste trap, met het ervoor. Een paar woorden zijn onregelmatig: goed wordt het beste, veel wordt het meest, en graag wordt het liefst.
+
+[[card-0 | Lang wordt het langst, klein wordt het kleinst.]]
+De eerste kaart is de gewone -st.
+
+[[card-1 | Deze drie leer je uit je hoofd.]]
+De tweede kaart is de onregelmatige groep.
+
+[[demo-0 | Het langst: er is geen langere straat.]]
+Twee voorbeelden. Van alle straten in het dorp is de Kerkstraat het langst.
+
+[[demo-1 | Het minst: van weinig, uit de onregelmatige groep.]]
+En: de gemeente helpt eerst de mensen met het minst geld.
+
+[[exercises]]
+Doe nu de opgaven. Vraag je af: is er nog iets meer, of is dit de nummer één?

@@ -1,0 +1,826 @@
+<title>A2 Leerlaag Masterplan</title>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@500;700;800&family=Public+Sans:ital,wght@0,400;0,600;1,400&display=swap">
+<style>
+  :root {
+    --navy:        #002b6d;
+    --navy-mid:    #1d428a;
+    --accent:      #fe762c;
+    --clay:        #a24000;
+    --ground:      #f8f9fb;
+    --tier-section:#f2f4f6;
+    --tier-card:   #ffffff;
+    --tier-inset:  #eceef0;
+    --ink:         #191c1e;
+    --ink-soft:    #434651;
+    --ink-faint:   #747782;
+    --hair:        #c4c6d2;
+    --on-navy:     #ffffff;
+    --on-navy-soft:#c3cee4;
+    --band:        var(--navy);
+    --shadow-ambient: 0 0 32px rgba(0, 43, 109, 0.06);
+    color-scheme: light;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --navy:        #01193d;
+      --navy-mid:    #123071;
+      --accent:      #ff8a4d;
+      --clay:        #ffb083;
+      --ground:      #06122b;
+      --tier-section:#0b1c3c;
+      --tier-card:   #0f2449;
+      --tier-inset:  #16305a;
+      --ink:         #eaeef6;
+      --ink-soft:    #b3c0d8;
+      --ink-faint:   #8996b1;
+      --hair:        #26406f;
+      --on-navy:     #ffffff;
+      --on-navy-soft:#a9bada;
+      --band:        #010f27;
+      --shadow-ambient: 0 0 32px rgba(0, 0, 0, 0.35);
+      color-scheme: dark;
+    }
+  }
+  :root[data-theme="dark"] {
+    --navy:        #01193d;
+    --navy-mid:    #123071;
+    --accent:      #ff8a4d;
+    --clay:        #ffb083;
+    --ground:      #06122b;
+    --tier-section:#0b1c3c;
+    --tier-card:   #0f2449;
+    --tier-inset:  #16305a;
+    --ink:         #eaeef6;
+    --ink-soft:    #b3c0d8;
+    --ink-faint:   #8996b1;
+    --hair:        #26406f;
+    --on-navy:     #ffffff;
+    --on-navy-soft:#a9bada;
+    --band:        #010f27;
+    --shadow-ambient: 0 0 32px rgba(0, 0, 0, 0.35);
+    color-scheme: dark;
+  }
+
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    background: var(--ground);
+    color: var(--ink);
+    font-family: "Public Sans", -apple-system, "Segoe UI", Helvetica, Arial, sans-serif;
+    font-size: 1rem;
+    line-height: 1.7;
+    -webkit-font-smoothing: antialiased;
+  }
+  h1, h2, h3, h4 {
+    font-family: "Manrope", -apple-system, "Segoe UI", Helvetica, Arial, sans-serif;
+    text-wrap: balance;
+    margin: 0;
+  }
+  p { margin: 0; }
+  strong { font-weight: 600; }
+  code {
+    font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+    font-size: 0.86em;
+    background: var(--tier-inset);
+    color: var(--ink-soft);
+    padding: 0.1em 0.36em;
+    border-radius: 0.125rem;
+  }
+  .wrap { max-width: 62rem; margin: 0 auto; padding: 0 1.5rem; }
+  .eyebrow {
+    font-size: 0.75rem;
+    line-height: 1.4;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    font-weight: 600;
+    color: var(--ink-faint);
+  }
+
+  /* ── de band ── */
+  .band {
+    background: var(--band);
+    color: var(--on-navy);
+    padding: 4rem 0 0;
+    position: relative;
+    overflow: hidden;
+  }
+  .band .wrap { position: relative; z-index: 1; }
+  .band .eyebrow { color: var(--on-navy-soft); }
+  .sun {
+    position: absolute;
+    right: 8%;
+    top: 3.5rem;
+    width: 7rem;
+    height: 7rem;
+    border-radius: 50%;
+    background: var(--accent);
+    opacity: 0.9;
+    z-index: 0;
+  }
+  .horizon {
+    position: absolute;
+    left: 0; right: 0;
+    bottom: 5.5rem;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--navy-mid) 12%, var(--navy-mid) 88%, transparent);
+    z-index: 0;
+  }
+  h1 {
+    font-size: clamp(2.1rem, 5.4vw, 3.3rem);
+    line-height: 1.02;
+    letter-spacing: -0.02em;
+    font-weight: 800;
+    margin-top: 0.75rem;
+    max-width: 30ch;
+  }
+  .lede {
+    margin-top: 1.15rem;
+    max-width: 58ch;
+    font-size: 1.0625rem;
+    color: var(--on-navy-soft);
+  }
+  .kerncijfers {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 2.5rem 3.5rem;
+    margin: 2.75rem 0 0;
+    padding: 1.75rem 0 3.25rem;
+  }
+  .kern { display: flex; flex-direction: column; gap: 0.15rem; }
+  .kern b {
+    font-family: "Manrope", sans-serif;
+    font-size: 2rem;
+    font-weight: 800;
+    letter-spacing: -0.015em;
+    line-height: 1;
+    font-variant-numeric: tabular-nums;
+  }
+  .kern span { font-size: 0.875rem; color: var(--on-navy-soft); }
+
+  /* ── secties ── */
+  section { padding: 3.5rem 0; }
+  section.tier { background: var(--tier-section); }
+  .sec-head { max-width: 60ch; display: flex; flex-direction: column; gap: 0.6rem; }
+  .sec-head h2 {
+    font-size: clamp(1.5rem, 3vw, 2rem);
+    line-height: 1.15;
+    letter-spacing: -0.015em;
+    font-weight: 700;
+  }
+  .sec-head p { color: var(--ink-soft); }
+  .rule {
+    height: 2px;
+    width: 3rem;
+    background: var(--accent);
+    margin-bottom: 0.35rem;
+  }
+
+  /* ── stand van zaken ── */
+  .stand { margin-top: 2rem; display: flex; flex-direction: column; gap: 0.9rem; max-width: 44rem; }
+  .stand-row { display: grid; grid-template-columns: 8.5rem 1fr 4.5rem; align-items: center; gap: 1rem; }
+  .stand-row > span:first-child { font-weight: 600; font-size: 0.9375rem; }
+  .meter { height: 0.5rem; background: var(--tier-inset); border-radius: 999px; overflow: hidden; }
+  .meter i { display: block; height: 100%; background: var(--navy-mid); border-radius: 999px; }
+  .stand-row.gepland .meter i { background: var(--accent); opacity: 0.55; }
+  .stand-row > span:last-child {
+    text-align: right;
+    font-variant-numeric: tabular-nums;
+    font-size: 0.875rem;
+    color: var(--ink-soft);
+  }
+
+  /* ── uitgangspunten ── */
+  .grid3 { margin-top: 2rem; display: grid; gap: 1rem; grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr)); }
+  .principe {
+    background: var(--tier-card);
+    border-radius: 0.5rem;
+    padding: 1.4rem 1.4rem 1.5rem;
+    box-shadow: var(--shadow-ambient);
+    display: flex; flex-direction: column; gap: 0.5rem;
+  }
+  .principe h3 { font-size: 1.0625rem; font-weight: 700; letter-spacing: -0.01em; }
+  .principe p { font-size: 0.9375rem; color: var(--ink-soft); }
+
+  /* ── cursussen ── */
+  .cursus { margin-top: 2.25rem; }
+  .cursus-head {
+    display: flex; align-items: baseline; flex-wrap: wrap; gap: 0.75rem 1.1rem;
+    padding-bottom: 1rem;
+  }
+  .cursus-head h3 {
+    font-size: 1.5rem; font-weight: 700; letter-spacing: -0.015em;
+  }
+  .pill {
+    font-size: 0.75rem; letter-spacing: 0.08em; text-transform: uppercase; font-weight: 600;
+    background: var(--navy); color: var(--on-navy);
+    padding: 0.28rem 0.6rem; border-radius: 0.25rem;
+    font-variant-numeric: tabular-nums;
+  }
+  .pill.zacht { background: var(--tier-inset); color: var(--ink-soft); }
+  .doel { font-size: 0.9375rem; color: var(--ink-soft); max-width: 62ch; margin-bottom: 1.25rem; }
+  .doel em { color: var(--clay); font-style: normal; font-weight: 600; }
+
+  .blokken { display: flex; flex-direction: column; gap: 2px; }
+  .blok {
+    background: var(--tier-card);
+    display: grid;
+    grid-template-columns: 3rem 13rem 1fr;
+    gap: 0 1.25rem;
+    padding: 1.1rem 1.25rem;
+    align-items: start;
+  }
+  .blok:first-child { border-radius: 0.5rem 0.5rem 0 0; }
+  .blok:last-child { border-radius: 0 0 0.5rem 0.5rem; }
+  .letter {
+    font-family: "Manrope", sans-serif;
+    font-size: 1.25rem; font-weight: 800; line-height: 1.6;
+    color: var(--accent);
+  }
+  .blok-naam { display: flex; flex-direction: column; gap: 0.2rem; padding-top: 0.1rem; }
+  .blok-naam b { font-size: 1rem; font-weight: 700; font-family: "Manrope", sans-serif; }
+  .blok-naam span { font-size: 0.8125rem; color: var(--ink-faint); font-variant-numeric: tabular-nums; }
+  .lessen { display: flex; flex-direction: column; gap: 0.45rem; }
+  .les { font-size: 0.9375rem; line-height: 1.5; }
+  .les code { background: transparent; padding: 0; color: var(--navy-mid); font-weight: 600; }
+  .les i { font-style: normal; color: var(--ink-faint); }
+  .blok-note {
+    grid-column: 3;
+    font-size: 0.875rem;
+    color: var(--ink-soft);
+    background: var(--tier-inset);
+    border-radius: 0.25rem;
+    padding: 0.6rem 0.8rem;
+    margin-top: 0.75rem;
+  }
+
+  /* ── boek ── */
+  .boek {
+    margin-top: 1.25rem;
+    background: var(--tier-inset);
+    border-radius: 0.5rem;
+    padding: 1.1rem 1.25rem;
+    font-size: 0.9375rem;
+    color: var(--ink-soft);
+    max-width: 62rem;
+  }
+  .boek b { color: var(--ink); }
+
+  /* ── lijsten ── */
+  .lijst { margin: 1.75rem 0 0; padding: 0; list-style: none; display: flex; flex-direction: column; gap: 2px; }
+  .lijst li {
+    background: var(--tier-card);
+    padding: 0.95rem 1.25rem;
+    display: grid;
+    grid-template-columns: 1.75rem 1fr;
+    gap: 1rem;
+    font-size: 0.9375rem;
+  }
+  .lijst li:first-child { border-radius: 0.5rem 0.5rem 0 0; }
+  .lijst li:last-child { border-radius: 0 0 0.5rem 0.5rem; }
+  .lijst li > b:first-child {
+    font-family: "Manrope", sans-serif; font-weight: 800; color: var(--ink-faint);
+    font-variant-numeric: tabular-nums;
+  }
+  .lijst li p { color: var(--ink-soft); font-size: 0.9375rem; }
+  .lijst li p:first-of-type { color: var(--ink); }
+
+  /* ── fases ── */
+  .fases { margin-top: 2rem; display: grid; gap: 1rem; grid-template-columns: repeat(auto-fit, minmax(14rem, 1fr)); }
+  .fase {
+    background: var(--tier-card);
+    border-radius: 0.5rem;
+    padding: 1.3rem 1.3rem 1.4rem;
+    display: flex; flex-direction: column; gap: 0.45rem;
+    box-shadow: var(--shadow-ambient);
+  }
+  .fase .eyebrow { color: var(--clay); }
+  .fase h4 { font-size: 1.0625rem; font-weight: 700; }
+  .fase p { font-size: 0.9375rem; color: var(--ink-soft); }
+  .fase.nu { background: var(--navy); color: var(--on-navy); }
+  .fase.nu .eyebrow, .fase.nu p { color: var(--on-navy-soft); }
+
+  /* ── tabel woorden ── */
+  .tabelwrap { overflow-x: auto; margin-top: 1.75rem; }
+  table { border-collapse: collapse; width: 100%; min-width: 34rem; background: var(--tier-card); border-radius: 0.5rem; overflow: hidden; }
+  th, td { text-align: left; padding: 0.8rem 1.25rem; font-size: 0.9375rem; }
+  thead th {
+    background: var(--tier-inset);
+    font-family: "Manrope", sans-serif; font-weight: 700; font-size: 0.8125rem;
+    letter-spacing: 0.06em; text-transform: uppercase; color: var(--ink-soft);
+  }
+  tbody tr + tr td { box-shadow: inset 0 1px 0 var(--tier-section); }
+  td:first-child { font-weight: 600; }
+  td.num { font-variant-numeric: tabular-nums; color: var(--ink-soft); }
+
+  /* ── buiten scope ── */
+  .scope { margin-top: 1.75rem; display: flex; flex-direction: column; gap: 0.7rem; max-width: 62ch; }
+  .scope div { font-size: 0.9375rem; display: grid; grid-template-columns: 1.1rem 1fr; gap: 0.85rem; align-items: start; }
+  .scope span:first-child { color: var(--clay); font-weight: 700; }
+
+  footer {
+    background: var(--band); color: var(--on-navy-soft);
+    padding: 2.5rem 0; font-size: 0.875rem;
+  }
+  footer b { color: var(--on-navy); font-family: "Manrope", sans-serif; }
+
+  @media (max-width: 46rem) {
+    .blok { grid-template-columns: 2.25rem 1fr; }
+    .blok .lessen, .blok .blok-note { grid-column: 2; }
+    .blok .blok-naam { grid-column: 2; margin-bottom: 0.6rem; }
+    .sun { width: 4.5rem; height: 4.5rem; right: 6%; top: 2.5rem; }
+    .kerncijfers { gap: 1.5rem 2.25rem; }
+    .kern b { font-size: 1.6rem; }
+    .stand-row { grid-template-columns: 6.5rem 1fr 3.5rem; gap: 0.75rem; }
+  }
+</style>
+
+<div class="band">
+  <div class="sun" aria-hidden="true"></div>
+  <div class="horizon" aria-hidden="true"></div>
+  <div class="wrap">
+    <p class="eyebrow">Contentmasterplan &middot; leerlaag A2 &middot; 8 september 2026 &middot; gebouwd</p>
+    <h1>De drie cursussen die achter de modules stonden</h1>
+    <p class="lede">
+      A2 Lezen had 53 lessen; Luisteren, Schrijven en Spreken hadden examens maar geen cursus.
+      Dit is de syllabus voor die drie &mdash; elk gebouwd op wat dát DUO-examen echt van een
+      kandidaat vraagt, met de woorden en de examentraining erin. <strong>Alles hieronder is
+      geschreven, geseed, ingesproken en door Marieke vrijgegeven</strong> &mdash; 129 lessen in
+      de vier A2-cursussen.
+    </p>
+    <div class="kerncijfers">
+      <div class="kern"><b>76</b><span>nieuwe lessen</span></div>
+      <div class="kern"><b>575</b><span>nieuwe opgaven</span></div>
+      <div class="kern"><b>284</b><span>nieuwe woordkaarten</span></div>
+      <div class="kern"><b>55</b><span>fragmentscripts</span></div>
+      <div class="kern"><b>2</b><span>nieuwe opdrachtsoorten</span></div>
+    </div>
+  </div>
+</div>
+
+<section>
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="rule"></div>
+      <p class="eyebrow">Waar we staan</p>
+      <h2>Vier cursussen, 129 lessen</h2>
+      <p>
+        <code>plan.mjs</code> hiéld <code>BUILT = ['a2:lezen']</code> en <code>coursePlan()</code>
+        gooide een fout voor al het andere: wie Luisteren kocht kreeg oefenexamens en verder niets
+        om van te leren. Nu noemt <code>BUILT</code> alle vier de <code>a2:*</code>-cursussen, en
+        <code>tests-unit/lesson-syllabus.test.ts</code> pint de omvang van elk.
+      </p>
+    </div>
+    <div class="stand">
+      <div class="stand-row">
+        <span>Lezen</span>
+        <div class="meter"><i style="width:100%"></i></div>
+        <span>53 lessen</span>
+      </div>
+      <div class="stand-row">
+        <span>Luisteren</span>
+        <div class="meter"><i style="width:100%"></i></div>
+        <span>26 lessen</span>
+      </div>
+      <div class="stand-row">
+        <span>Schrijven</span>
+        <div class="meter"><i style="width:100%"></i></div>
+        <span>24 lessen</span>
+      </div>
+      <div class="stand-row">
+        <span>Spreken</span>
+        <div class="meter"><i style="width:100%"></i></div>
+        <span>26 lessen</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="tier">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="rule"></div>
+      <p class="eyebrow">Het uitgangspunt</p>
+      <h2>Drie keuzes die de hele syllabus bepalen</h2>
+    </div>
+    <div class="grid3">
+      <div class="principe">
+        <h3>Elke cursus traint zijn eigen examen</h3>
+        <p>
+          Luisteren traint hóren: getallen, verkorte spraak, parafrase. Schrijven traint produceren:
+          alle inhoudspunten, register, spelling. Spreken traint spreken en uitspraak. Geen cursus
+          leert de 28 grammaticaregels opnieuw &mdash; die blijven in blok B van Lezen en worden
+          daarvandaan gelinkt.
+        </p>
+      </div>
+      <div class="principe">
+        <h3>Eigen woorden per onderdeel</h3>
+        <p>
+          <code>lesson_words</code> is <code>UNIQUE (level, onderdeel, dutch)</code>, dus elke cursus
+          krijgt woorden die passen bij zijn examen: receptieve, gesproken vormen bij Luisteren,
+          productieve zinnen bij Spreken, formeel register bij Schrijven.
+        </p>
+      </div>
+      <div class="principe">
+        <h3>De kandidaat spreekt echt</h3>
+        <p>
+          Er komen twee opdrachtsoorten bij: <code>naspreken</code> (horen, opnemen, vergelijken) en
+          <code>opnemen</code> (vrij antwoord met een checklist). Zonder die twee is een
+          spreekcursus alleen maar lezen over spreken.
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="rule"></div>
+      <p class="eyebrow">De syllabus</p>
+      <h2>Dezelfde vijf blokken, drie keer een andere inhoud</h2>
+      <p>
+        A Woorden &middot; B vaardigheidsmechaniek &middot; C Examenuitleg &middot; D Examentraining
+        &middot; E Toets jezelf. Dezelfde ruggengraat als Lezen, dus <code>plan.mjs</code>,
+        <code>/admin/lessen</code> en het portaal hebben geen nieuw begrip nodig. Eerste les van elk
+        blok is gratis.
+      </p>
+    </div>
+
+    <!-- LUISTEREN -->
+    <div class="cursus">
+      <div class="cursus-head">
+        <h3>A2 Luisteren</h3>
+        <span class="pill">26 lessen</span>
+        <span class="pill zacht">25 vragen &middot; 45 min</span>
+      </div>
+      <p class="doel">
+        Het examen speelt fragmenten van 25&ndash;45 seconden en je mag niets opschrijven. Wat een
+        kandidaat laat zakken is bijna nooit woordenschat &mdash; het is <em>tempo, getallen en
+        parafrase</em>. Daar gaat blok B over, en blok C over de vraagtechniek.
+      </p>
+      <div class="blokken">
+        <div class="blok">
+          <span class="letter">A</span>
+          <span class="blok-naam"><b>Woorden</b><span>5 lessen &middot; 8 min &middot; ~22 woorden</span></span>
+          <div class="lessen">
+            <div class="les"><code>a1-omroep-en-reizen</code> <i>&mdash; station, perron, vertraging</i></div>
+            <div class="les"><code>a2-telefoon-en-afspraak</code> <i>&mdash; keuzemenu, doorverbinden</i></div>
+            <div class="les"><code>a3-werk-en-overleg</code> <i>&mdash; werkoverleg, dienst, instructie</i></div>
+            <div class="les"><code>a4-winkel-en-service</code> <i>&mdash; klacht, ruilen, bezorging</i></div>
+            <div class="les"><code>a5-gemeente-en-zorg</code> <i>&mdash; loket, aanvragen, afspraak</i></div>
+          </div>
+          <p class="blok-note">Alle woorden <code>usage: receptief</code> &mdash; je moet ze herkennen als je ze hoort, niet kunnen zeggen.</p>
+        </div>
+        <div class="blok">
+          <span class="letter">B</span>
+          <span class="blok-naam"><b>Klank en tempo</b><span>5 lessen &middot; 9 min</span></span>
+          <div class="lessen">
+            <div class="les"><code>b1-getallen-en-tijden</code> <i>&mdash; tijden, prijzen, data: het meest gevraagde detail</i></div>
+            <div class="les"><code>b2-verkorte-spraak</code> <i>&mdash; 'k heb, d'r, hebbie: natuurlijk tempo</i></div>
+            <div class="les"><code>b3-klanken-die-lijken</code> <i>&mdash; -ng/-nk, -uw/-ouw, -lijk als minimale paren</i></div>
+            <div class="les"><code>b4-klemtoon-en-nadruk</code> <i>&mdash; het beklemtoonde woord draagt het antwoord</i></div>
+            <div class="les"><code>b5-signaalwoorden-horen</code> <i>&mdash; maar, dus, eerst, daarna, toch</i></div>
+          </div>
+          <p class="blok-note">Dit blok vervangt het grammaticablok: het traint wat spraak onhoorbaar maakt, niet wat een zin fout maakt.</p>
+        </div>
+        <div class="blok">
+          <span class="letter">C</span>
+          <span class="blok-naam"><b>Examenuitleg</b><span>8 lessen &middot; 9 min</span></span>
+          <div class="lessen">
+            <div class="les"><code>c1-voorspellen</code> <i>&mdash; onderwerp en woorden voorspellen vóór je luistert</i></div>
+            <div class="les"><code>c2-vraag-eerst</code> <i>&mdash; vraag en opties eerst lezen</i></div>
+            <div class="les"><code>c3-kernwoorden</code> <i>&mdash; wat je vasthoudt zonder pen</i></div>
+            <div class="les"><code>c4-andere-woorden</code> <i>&mdash; augustus in het fragment, zomer in de vraag</i></div>
+            <div class="les"><code>c5-kleine-woordjes</code> <i>&mdash; te groot is niet groot; niet, geen, juist</i></div>
+            <div class="les"><code>c6-gesprek-of-bericht</code> <i>&mdash; waar het antwoord per soort fragment zit</i></div>
+            <div class="les"><code>c7-wie-zegt-wat</code> <i>&mdash; twee sprekers uit elkaar houden</i></div>
+            <div class="les"><code>c8-afleiders</code> <i>&mdash; een optie die woorden uit het fragment herhaalt is lokaas</i></div>
+          </div>
+        </div>
+        <div class="blok">
+          <span class="letter">D</span>
+          <span class="blok-naam"><b>Examentraining</b><span>6 lessen &middot; 12 min</span></span>
+          <div class="lessen">
+            <div class="les"><code>d1-omroepbericht</code> &middot; <code>d2-telefoongesprek</code> &middot; <code>d3-gesprek-op-het-werk</code></div>
+            <div class="les"><code>d4-winkel-en-service</code> &middot; <code>d5-loket-en-instructie</code> &middot; <code>d6-nieuws-en-weer</code></div>
+          </div>
+          <p class="blok-note">Op examentempo: fragmenten van 25&ndash;45 s met 2&ndash;3 vragen, precies zoals <code>RULES.a2.luisteren</code> voorschrijft.</p>
+        </div>
+        <div class="blok">
+          <span class="letter">E</span>
+          <span class="blok-naam"><b>Toets jezelf</b><span>2 lessen &middot; 15 min</span></span>
+          <div class="lessen">
+            <div class="les"><code>e1-woorden-en-klanken</code> &middot; <code>e2-fragmenten-en-vragen</code></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SCHRIJVEN -->
+    <div class="cursus">
+      <div class="cursus-head">
+        <h3>A2 Schrijven</h3>
+        <span class="pill">24 lessen</span>
+        <span class="pill zacht">4 opdrachten &middot; 40 min</span>
+      </div>
+      <p class="doel">
+        Vier opdrachten, veertig minuten, met de hand. Punten gaan niet verloren aan mooie taal maar
+        aan <em>een vergeten inhoudspunt, een verkeerd register en werkwoordspelling</em>. De cursus
+        is daar helemaal op gericht.
+      </p>
+      <div class="blokken">
+        <div class="blok">
+          <span class="letter">A</span>
+          <span class="blok-naam"><b>Woorden en vaste zinnen</b><span>4 lessen &middot; 8 min</span></span>
+          <div class="lessen">
+            <div class="les"><code>a1-aanhef-en-slot</code> <i>&mdash; Beste mevrouw De Jong tot Groetjes</i></div>
+            <div class="les"><code>a2-vragen-en-verzoeken</code> <i>&mdash; Zou u kunnen&hellip;, Ik wil graag&hellip;</i></div>
+            <div class="les"><code>a3-afzeggen-en-uitnodigen</code></div>
+            <div class="les"><code>a4-formulierwoorden</code> <i>&mdash; voorletters, geboortedatum, handtekening</i></div>
+          </div>
+          <p class="blok-note">Grotendeels <code>zinnenbank</code>-items: de <b>Handige zinnen</b> uit TaalCompleet, maar per examenopdracht gesorteerd.</p>
+        </div>
+        <div class="blok">
+          <span class="letter">B</span>
+          <span class="blok-naam"><b>Bouwstenen</b><span>6 lessen &middot; 10 min</span></span>
+          <div class="lessen">
+            <div class="les"><code>b1-zin-af-maken</code> <i>&mdash; woordorde als jij de zin maakt</i></div>
+            <div class="les"><code>b2-je-of-u</code> <i>&mdash; register volhouden in één tekst</i></div>
+            <div class="les"><code>b3-spelling-werkwoord</code> <i>&mdash; word of wordt, d of t</i></div>
+            <div class="les"><code>b4-hoofdletters-en-leestekens</code></div>
+            <div class="les"><code>b5-verbindingswoorden</code> <i>&mdash; drie zinnen worden één tekst</i></div>
+            <div class="les"><code>b6-tijd-kloppend-houden</code> <i>&mdash; vroeger of nu, niet door elkaar</i></div>
+          </div>
+          <p class="blok-note">Geen tweede grammaticacursus: alleen de fouten die je maakt zodra je zelf de zin moet schrijven.</p>
+        </div>
+        <div class="blok">
+          <span class="letter">C</span>
+          <span class="blok-naam"><b>Examenuitleg</b><span>6 lessen &middot; 9 min</span></span>
+          <div class="lessen">
+            <div class="les"><code>c1-alle-punten</code> <i>&mdash; elk inhoudspunt, niet meer en niet minder</i></div>
+            <div class="les"><code>c2-email-opbouw</code> &middot; <code>c3-formulier-invullen</code></div>
+            <div class="les"><code>c4-tekst-over-jezelf</code> &middot; <code>c5-briefje-en-bericht</code></div>
+            <div class="les"><code>c6-nakijken</code> <i>&mdash; de controlelijst als gewoonte</i></div>
+          </div>
+          <p class="blok-note">Aangeleerd zoals het boek het doet: twee modelantwoorden vergelijken en zelf de negen fouten onderstrepen &mdash; niet met een lijst adviezen.</p>
+        </div>
+        <div class="blok">
+          <span class="letter">D</span>
+          <span class="blok-naam"><b>Examentraining</b><span>6 lessen &middot; 12 min</span></span>
+          <div class="lessen">
+            <div class="les"><code>d1-email-informeel</code> &middot; <code>d2-email-formeel</code> <i>&mdash; email</i></div>
+            <div class="les"><code>d3-formulier</code> <i>&mdash; form</i> &middot; <code>d4-korte-tekst</code> <i>&mdash; short_text</i></div>
+            <div class="les"><code>d5-plaatje-briefje</code> <i>&mdash; picture_note</i></div>
+            <div class="les"><code>d6-op-de-klok</code> <i>&mdash; alle vier de opdrachten binnen 40 minuten</i></div>
+          </div>
+          <p class="blok-note">Eén op één afgebeeld op <code>TASK_RULES.a2.schrijven</code>, dus de training gebruikt dezelfde soorten opgave als de echte oefenexamens.</p>
+        </div>
+        <div class="blok">
+          <span class="letter">E</span>
+          <span class="blok-naam"><b>Toets jezelf</b><span>2 lessen &middot; 15 min</span></span>
+          <div class="lessen">
+            <div class="les"><code>e1-zinnen-en-spelling</code> &middot; <code>e2-vier-opdrachten</code></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SPREKEN -->
+    <div class="cursus">
+      <div class="cursus-head">
+        <h3>A2 Spreken</h3>
+        <span class="pill">26 lessen</span>
+        <span class="pill zacht">16 opdrachten &middot; 35 min</span>
+      </div>
+      <p class="doel">
+        Je praat tegen een koptelefoon, 60 seconden per opdracht. Wat telt is
+        <em>verstaanbaarheid, en of je beide vragen beantwoordt</em>. Accent mag; onbegrijpelijk
+        mag niet. Daarom is uitspraak hier een eigen blok en geen voetnoot.
+      </p>
+      <div class="blokken">
+        <div class="blok">
+          <span class="letter">A</span>
+          <span class="blok-naam"><b>Woorden en zinnen</b><span>5 lessen &middot; 8 min</span></span>
+          <div class="lessen">
+            <div class="les"><code>a1-voorstellen-en-vragen</code> &middot; <code>a2-mening-geven</code></div>
+            <div class="les"><code>a3-afspraak-maken</code> <i>&mdash; Zullen we&hellip;, Dat kan ik helaas niet</i></div>
+            <div class="les"><code>a4-excuses-en-reageren</code> <i>&mdash; Het spijt me, Het geeft niet</i></div>
+            <div class="les"><code>a5-weg-en-plaats</code> <i>&mdash; rechtdoor, om de hoek, aan de linkerkant</i></div>
+          </div>
+          <p class="blok-note">Gesorteerd op taalhandeling, niet op thema &mdash; want zo staat het ook in de examenopdracht.</p>
+        </div>
+        <div class="blok">
+          <span class="letter">B</span>
+          <span class="blok-naam"><b>Uitspraak</b><span>6 lessen &middot; 9 min</span></span>
+          <div class="lessen">
+            <div class="les"><code>b1-klanken-ui-eu-ij</code> &middot; <code>b2-lijk-en-ig</code> &middot; <code>b3-ng-en-nk</code></div>
+            <div class="les"><code>b4-uw-ouw-auw</code> &middot; <code>b5-tie-en-sch</code> &middot; <code>b6-klemtoon</code></div>
+          </div>
+          <p class="blok-note">Elke les draait de vierstapscyclus uit het boek: regelkader &rarr; <code>naspreken</code> &rarr; jezelf terughoren &rarr; dictee met <code>gap_type</code>.</p>
+        </div>
+        <div class="blok">
+          <span class="letter">C</span>
+          <span class="blok-naam"><b>Examenuitleg</b><span>7 lessen &middot; 9 min</span></span>
+          <div class="lessen">
+            <div class="les"><code>c1-twee-vragen</code> <i>&mdash; deel 1 vraagt twee dingen; beantwoord ze beide</i></div>
+            <div class="les"><code>c2-lang-genoeg</code> <i>&mdash; genoeg maar niet te veel, met want en omdat</i></div>
+            <div class="les"><code>c3-duidelijk-spreken</code> <i>&mdash; tempo, volume, mond bewegen</i></div>
+            <div class="les"><code>c4-vorm-en-tijd</code> &middot; <code>c5-wat-zeg-je</code> <i>&mdash; deel 2, receptief</i></div>
+            <div class="les"><code>c6-plaatje-beschrijven</code> &middot; <code>c7-niet-verstaan</code></div>
+          </div>
+          <p class="blok-note">Zoals het boek het aanpakt: drie opgenomen antwoorden die net niet goed zijn, en de kandidaat zoekt zelf waarom.</p>
+        </div>
+        <div class="blok">
+          <span class="letter">D</span>
+          <span class="blok-naam"><b>Examentraining</b><span>6 lessen &middot; 12 min</span></span>
+          <div class="lessen">
+            <div class="les"><code>d1-reageren</code> <i>&mdash; speaking_react</i> &middot; <code>d2-beschrijven</code> <i>&mdash; speaking_describe</i></div>
+            <div class="les"><code>d3-kiezen</code> <i>&mdash; speaking_choose</i> &middot; <code>d4-alles-benoemen</code> <i>&mdash; speaking_cover_all</i></div>
+            <div class="les"><code>d5-in-60-seconden</code> &middot; <code>d6-twee-delen</code> <i>&mdash; het tempo van 16 opdrachten</i></div>
+          </div>
+          <p class="blok-note">Afgebeeld op de vier <code>task_categories</code> van Spreken, met <code>recordSeconds: 60</code> zoals in het examen.</p>
+        </div>
+        <div class="blok">
+          <span class="letter">E</span>
+          <span class="blok-naam"><b>Toets jezelf</b><span>2 lessen &middot; 15 min</span></span>
+          <div class="lessen">
+            <div class="les"><code>e1-zinnen-en-uitspraak</code> &middot; <code>e2-zestien-opdrachten</code></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="boek">
+      <b>Wat TaalCompleet A2 heeft opgeleverd.</b> Niet de inhoud &mdash; die schrijven we zelf &mdash;
+      maar de didactische vorm: de achtstapscyclus van een luisterparagraaf (voorbespreken, woorden
+      vóór het fragment, globaal, detail, dan pas meelezen), de vierstapscyclus voor uitspraak,
+      strategie leren via mislukte voorbeelden in plaats van adviezen, en het woordcontract hieronder.
+      De grammaticaprogressie van het boek zit al in blok B van Lezen.
+    </div>
+  </div>
+</section>
+
+<section class="tier">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="rule"></div>
+      <p class="eyebrow">Woordenschat</p>
+      <h2>Het woordcontract</h2>
+      <p>
+        Het boek doet ongeveer 14 woorden per tekst en laat elk woord minstens zeven keer terugkomen.
+        Dat principe schalen we naar een cursus van 26 lessen: 20&ndash;24 woorden per thema, met de verhouding receptief/productief per onderdeel afgedwongen door <code>USAGE_MIX</code>, en elk
+        woord komt later in minstens drie opdrachten van zijn eigen cursus terug.
+      </p>
+    </div>
+    <div class="tabelwrap">
+      <table>
+        <thead>
+          <tr><th>Cursus</th><th>Thema&rsquo;s</th><th>Woorden</th><th>Gebruik</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Luisteren</td><td>omroep &amp; reizen, telefoon, werkoverleg, winkel, gemeente</td><td class="num">105</td><td class="num">18% productief</td></tr>
+          <tr><td>Spreken</td><td>voorstellen, mening, afspraak, excuses, weg wijzen</td><td class="num">105</td><td class="num">90% productief</td></tr>
+          <tr><td>Schrijven</td><td>aanhef &amp; slot, verzoeken, afzeggen, formulier</td><td class="num">74</td><td class="num">92% productief</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="scope" style="margin-top:1.5rem">
+      <div><span>&middot;</span><span><code>article</code>, <code>plural</code> en <code>frame</code> gevuld waar ze bestaan &mdash; <code>de gesprekken</code>, <code>zich melden (bij)</code>.</span></div>
+      <div><span>&middot;</span><span><code>meaning_nl</code> in A2-Nederlands, plus één <code>example</code>-zin.</span></div>
+      <div><span>&middot;</span><span>EN en AR via <code>translate-words.mjs</code>, met <code>translations_reviewed = false</code> &mdash; machinevertaling blijft als zodanig gemarkeerd.</span></div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="rule"></div>
+      <p class="eyebrow">Examenvoorbereiding</p>
+      <h2>Blok C en D zijn de examenvoorbereiding</h2>
+      <p>
+        Er komt geen apart examenblok. Per cursus doet blok C de vraagtechniek, blok D de echte
+        opdrachtsoorten, en één les zet de klok erop: <code>d6-op-de-klok</code> bij Schrijven,
+        <code>d5-in-60-seconden</code> bij Spreken, <code>e2-fragmenten-en-vragen</code> bij
+        Luisteren. De examendagbriefing &mdash; aanmelden via DUO, DigiD, identiteitsbewijs, een
+        halfuur eerder aanwezig &mdash; blijft in <code>/gidsen</code> op de publieke site en wordt
+        <b>niet</b> in de leerlaag herhaald: dat is één vraag, één eigenaar.
+      </p>
+    </div>
+  </div>
+</section>
+
+<section class="tier">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="rule"></div>
+      <p class="eyebrow">Fase 0</p>
+      <h2>Wat de engine hiervoor nodig heeft</h2>
+      <p>Negen ingrepen voordat er één les geschreven wordt. Alles wat de docent moet kunnen nalezen, staat als bestand in de repo.</p>
+    </div>
+    <ol class="lijst">
+      <li><b>1</b><div><p><b>Migratie</b> &mdash; de <code>kind</code>-CHECK op <code>lesson_items</code> opnieuw zetten met <code>naspreken</code> en <code>opnemen</code> erbij. Met <code>psql</code> tegen de draaiende container; nooit <code>supabase db reset</code>.</p></div></li>
+      <li><b>2</b><div><p><b>Payloadschema&rsquo;s</b> in <code>lib/lessons/items.ts</code> &mdash; <code>naspreken</code> als tier 1, <code>opnemen</code> als tier 2, met een checklist die de kandidaat zelf afvinkt. Geen rubric, geen AI-cijfer.</p></div></li>
+      <li><b>3</b><div><p><b>Renderers</b> in <code>components/lessons/</code>. De opname hergebruikt de recorder uit <code>components/exam/SpeakingTask.tsx</code>; het terughoren bij <code>naspreken</code> gaat via <code>/api/stt-token</code>.</p></div></li>
+      <li><b>4</b><div><p><b>Audiopijplijn</b> &mdash; <code>generate-lesson-audio.mjs</code>, gebouwd zoals <code>generate-narration.mjs</code>. Fragmentscripts als <code>.txt</code> in de repo, stemmen uit <code>data/tts-voices.json</code> gecast op geslacht, rijen <code>pending</code>.</p></div></li>
+      <li><b>5</b><div><p><b><code>plan.mjs</code></b> &mdash; <code>BUILT</code> uitbreiden naar alle vier de <code>a2:*</code>-sleutels, de drie bloktabellen erin, en de nieuwe lessoorten in <code>KINDS_PER_LESSON</code>.</p></div></li>
+      <li><b>6</b><div><p><b><code>sections</code>-rijen</b> &mdash; bloktitels van C en D komen bij het seeden uit <code>sections.name_nl</code>. Nakijken welke tekstsoorten al bestaan en de rest in dezelfde migratie zetten.</p></div></li>
+      <li><b>7</b><div><p><b>Concepten</b> in <code>concepts-a2.mjs</code> &mdash; luisterstrategie, klank en tempo, schrijfmechaniek, taalhandelingen, uitspraak. Anders vindt de remediatie vanuit een foute examenvraag geen les.</p></div></li>
+      <li><b>8</b><div><p><b>Geen nieuwe plaatjesoort.</b> Klemtoon en minimale paren gebruiken <code>paren</code> en <code>sorteer</code> uit <code>data/lesson-visuals.ts</code>. De regel geen illustraties blijft staan.</p></div></li>
+      <li><b>9</b><div><p><b>Ingesproken uitleg</b> &mdash; één <code>.txt</code> per les van blok B en C, 38 bestanden, precies zoals bij Lezen alleen het uitlegblok is ingesproken.</p></div></li>
+    </ol>
+    <div class="boek" style="margin-top:1.5rem">
+      <b>De belofte blijft overeind.</b> Lessen worden als concept gegenereerd en gaan als
+      <code>pending</code> de database in; de docent leest ze en zet ze vrij in <code>/admin/lessen</code>.
+      Precies zoals blok B van Lezen is gegaan. Examenitems worden hier niet aangeraakt, en niets
+      hiervan wordt gepresenteerd als een AI die je beoordeelt.
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="rule"></div>
+      <p class="eyebrow">Bouwvolgorde</p>
+      <h2>Schrijven eerst, Spreken laatst</h2>
+      <p>De volgorde volgt de bouwkosten, niet de examenvolgorde: de cursus die het minste nieuwe techniek nodig heeft, staat het eerst live.</p>
+    </div>
+    <div class="fases">
+      <div class="fase nu">
+        <p class="eyebrow">Fase 0 &middot; klaar</p>
+        <h4>De engine</h4>
+        <p>Migratie, twee opdrachtsoorten, audiopijplijn, <code>plan.mjs</code>. Levert geen les op, maakte de drie erna mogelijk.</p>
+      </div>
+      <div class="fase">
+        <p class="eyebrow">Fase 1 &middot; klaar</p>
+        <h4>Schrijven &middot; 24 lessen</h4>
+        <p>Heeft geen audio en geen opname nodig. De eerste cursus die live kan met de minste nieuwe techniek.</p>
+      </div>
+      <div class="fase">
+        <p class="eyebrow">Fase 2 &middot; klaar</p>
+        <h4>Luisteren &middot; 26 lessen</h4>
+        <p>Wacht op de audiopijplijn en ongeveer 40 fragmenten, elk met een script dat de docent kan nalezen.</p>
+      </div>
+      <div class="fase">
+        <p class="eyebrow">Fase 3 &middot; klaar</p>
+        <h4>Spreken &middot; 26 lessen</h4>
+        <p>Wacht op <code>naspreken</code>, <code>opnemen</code> en het terughoren via spraakherkenning.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="rule"></div>
+      <p class="eyebrow">Tijdens het bouwen</p>
+      <h2>Vijf dingen die anders bleken dan gepland</h2>
+      <p>
+        Het plan is uitgevoerd zoals hij hierboven staat. Op vijf punten week de uitvoering af, en
+        elk van die vijf staat als les in <code>LEARNINGS.md</code>.
+      </p>
+    </div>
+    <ol class="lijst">
+      <li><b>1</b><div><p><b>De <code>sections</code>-migratie bleek niet nodig.</b> A2 Luisteren heeft al vier rijen &mdash; gesprek, mededeling, telefoongesprek, instructie &mdash; en de zes trainingslessen wijzen daar met z'n zessen op: een omroepbericht en het nieuws zijn beide een <code>mededeling</code>, maar ze klinken niet hetzelfde. De titel staat daarom in <code>plan.mjs</code> en de <code>section</code> blijft eraan hangen als brug naar de examenvragen.</p></div></li>
+      <li><b>2</b><div><p><b>Er kwamen twee lessoorten bij: <code>luistertoets</code> en <code>spreektoets</code>.</b> Blok E kon geen gewone <code>toets</code> zijn &mdash; die staat geen audio en geen microfoon toe, en zou de toets van een luistercursus als geschreven tekst overhoren. Het model schreef er audio bij en had daarin gelijk; de lijst was mis.</p></div></li>
+      <li><b>3</b><div><p><b>Structured outputs bleken geen muur.</b> Ondanks een enum per lessoort leverde het model een spreekopdracht in de toets van de luistercursus, en die kwam ongezien de database in: de validatie keek alleen naar de payloadschema's, en die vinden elke bestáánde soort geldig. De kind-lijst wordt nu op drie plekken afgedwongen &mdash; bij het schrijven, bij <code>--check</code> en bij het seeden.</p></div></li>
+      <li><b>4</b><div><p><b>Twee woordcontroles waren onhaalbaar.</b> De check op de voorbeeldzin verwierp bijna elk werkwoord (&ldquo;vinde&rdquo; staat niet in &ldquo;Ik vind dat&hellip;&rdquo;), en de eis lidwoord-plus-meervoud verwierp elk niet-telbaar woord &mdash; de kritiek, het geld, de post. Het model levert nu de vorm die het gebruikte (<code>example_form</code>), zodat de controle een exacte match is in plaats van een gok.</p></div></li>
+      <li><b>5</b><div><p><b>Het middelste leerspoor heette overal &ldquo;Grammatica&rdquo;.</b> Op een uitspraakcursus is dat onjuist, en de lessen van blok B landden er onder de kop &ldquo;Overig&rdquo; terwijl de kaart ernaast &ldquo;nog geen inhoud&rdquo; zei. De slug blijft <code>grammatica</code> &mdash; die staat in URL's &mdash; maar de naam komt nu uit <code>lesson_blocks.name_nl</code>.</p></div></li>
+    </ol>
+    <div class="boek" style="margin-top:1.5rem">
+      <b>Wat er nog te doen is.</b> Marieke heeft de 76 lessen nagekeken en vrijgegeven, en alle
+      <b>55 fragmenten zijn ingesproken</b>: 15 minuten luisteraudio en 1,3 minuut
+      uitspraakvoorbeelden. Wat nog openstaat: blok B van de drie nieuwe cursussen heeft geen
+      ingesproken uitleg en geen lesplaatje &mdash; de geschreven uitleg <em>is</em> daar de les,
+      maar het verschil met A2 Lezen is zichtbaar. En een <code>uitspraak</code>-les heeft nog
+      geen eigen mark: die vocabulaire kent geen uitspraak, en een nieuwe tekening hoort in de
+      studio.
+    </div>
+  </div>
+</section>
+
+<section class="tier">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="rule"></div>
+      <p class="eyebrow">Buiten scope</p>
+      <h2>Wat dit plan bewust niet doet</h2>
+    </div>
+    <div class="scope">
+      <div><span>&times;</span><span><b>Geen grammaticablok per cursus.</b> De 28 regels blijven in blok B van Lezen; drie keer opnieuw schrijven levert dezelfde regel in een ander jasje op.</span></div>
+      <div><span>&times;</span><span><b>Geen B1.</b> B1 Luisteren heeft nog geen inhoud en geen vastgesteld format; een leerlaag erbovenop zou op een gok staan.</span></div>
+      <div><span>&times;</span><span><b>Geen KNM en geen ONA.</b> KNM heeft zijn eigen lesmodules en 366 woordkaarten; ONA is nog aangekondigd.</span></div>
+      <div><span>&times;</span><span><b>Geen examenitems.</b> Dit plan raakt <code>questions</code> en <code>open_tasks</code> niet aan.</span></div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <p><b>Contentmasterplan leerlaag A2</b> &mdash; Luisteren, Schrijven, Spreken. 76 lessen in vier fasen.</p>
+    <p>Bewaard als <code style="background:rgba(255,255,255,0.1);color:inherit">docs/decisions/leerlaag-a2-master-plan.html</code>. Bij verschil met CLAUDE.md is CLAUDE.md de actuele regel.</p>
+  </div>
+</footer>

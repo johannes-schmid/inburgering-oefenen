@@ -1,0 +1,142 @@
+{
+  "items": [
+    {
+      "kind": "uitleg",
+      "tier": null,
+      "explanation": null,
+      "payload": {
+        "body_html": "<p>Bij deze opdracht kies je zelf één van twee plaatjes en vertel je erover; je krijgt in het examen ongeveer <strong>30 seconden</strong> spreektijd per antwoord.</p>",
+        "cards": [
+          {
+            "label": "KIEZEN",
+            "example_html": "Ik <mark>kies</mark> het tweede plaatje."
+          },
+          {
+            "label": "VERTELLEN",
+            "example_html": "Op dit plaatje <mark>zie ik</mark> een volle bus."
+          }
+        ]
+      }
+    },
+    {
+      "kind": "opnemen",
+      "tier": 2,
+      "explanation": "Je zegt eerst welk plaatje je kiest en daarna waarom. Zo hoort de examinator meteen een keuze én een reden.",
+      "payload": {
+        "prompt": "Je ziet twee plaatjes. Op plaatje 1 rijdt iemand met de fiets naar het werk. Op plaatje 2 zit iemand in de bus. Kies één plaatje. Vertel welk plaatje je kiest en waarom je zo naar je werk wilt gaan. Neem je antwoord op.",
+        "model_answer": "Ik kies plaatje 1, de fiets. Ik ga graag met de fiets naar mijn werk, want dat is goedkoop. En ik krijg zo elke dag een beetje beweging.",
+        "checklist": [
+          "Ik zeg duidelijk welk plaatje ik kies.",
+          "Ik geef minstens één reden, met 'want' of 'omdat'.",
+          "Ik spreek ongeveer 30 seconden."
+        ],
+        "image_urls": [],
+        "record_seconds": 60
+      }
+    },
+    {
+      "kind": "mcq",
+      "tier": 0,
+      "explanation": "Bij deze opdracht moet je een keuze maken én een reden geven. Alleen 'ja' of 'twee plaatjes' is geen antwoord op de vraag.",
+      "payload": {
+        "prompt": "De opdracht is: 'Kies een van de plaatjes en vertel waarom.' Welk begin past het beste?"
+      },
+      "options": [
+        {
+          "label": "A",
+          "body": "Ik zie twee plaatjes op mijn scherm.",
+          "is_correct": false
+        },
+        {
+          "label": "B",
+          "body": "Ik kies het eerste plaatje, omdat ik daar rustig van word.",
+          "is_correct": true
+        },
+        {
+          "label": "C",
+          "body": "Ja, dat is goed, dank u wel.",
+          "is_correct": false
+        }
+      ]
+    },
+    {
+      "kind": "opnemen",
+      "tier": 2,
+      "explanation": "Je vertelt wat je op het plaatje ziet en wat je zelf doet. Zo geef je genoeg informatie om de spreektijd te vullen.",
+      "payload": {
+        "prompt": "Je ziet twee plaatjes. Op plaatje 1 doet een gezin samen boodschappen in de supermarkt. Op plaatje 2 kookt iemand alleen in de keuken. Kies één plaatje. Vertel wat je op het plaatje ziet en of je dit zelf ook zo doet. Neem je antwoord op.",
+        "model_answer": "Ik kies plaatje 2. Ik zie een vrouw die soep kookt in haar keuken. Ik kook ook bijna elke dag zelf, want eten uit de winkel vind ik te duur.",
+        "checklist": [
+          "Ik zeg welk plaatje ik kies.",
+          "Ik vertel kort wat ik op het plaatje zie.",
+          "Ik zeg iets over mijzelf."
+        ],
+        "image_urls": [],
+        "record_seconds": 60
+      }
+    },
+    {
+      "kind": "opnemen",
+      "tier": 2,
+      "explanation": "Je noemt je keuze en geeft daarna twee redenen. Met twee redenen praat je makkelijker 30 seconden.",
+      "payload": {
+        "prompt": "Je ziet twee plaatjes. Op plaatje 1 zit een groep cursisten in een klas met een docent. Op plaatje 2 zit iemand alleen met een laptop Nederlands te leren. Kies één plaatje. Vertel welke manier van leren jij het beste vindt en geef twee redenen. Neem je antwoord op.",
+        "model_answer": "Ik kies plaatje 1, de klas. In een klas kan ik vragen stellen aan de docent. Ook praat ik daar met andere cursisten, en dan leer ik sneller spreken.",
+        "checklist": [
+          "Ik geef twee verschillende redenen.",
+          "Ik gebruik 'want' of 'omdat' in mijn antwoord.",
+          "Ik praat rustig en duidelijk, niet te snel."
+        ],
+        "image_urls": [],
+        "record_seconds": 60
+      }
+    },
+    {
+      "kind": "mcq",
+      "tier": 0,
+      "explanation": "Een goed antwoord blijft bij het onderwerp van de plaatjes. Praten over je vakantie of over de klok hoort er niet bij.",
+      "payload": {
+        "prompt": "De plaatjes gaan over sport: plaatje 1 is voetballen in het park, plaatje 2 is zwemmen in het zwembad. Welk antwoord past bij de opdracht?"
+      },
+      "options": [
+        {
+          "label": "A",
+          "body": "Ik kies het zwembad. Ik zwem elke zaterdag met mijn dochter, want dat is gezond.",
+          "is_correct": true
+        },
+        {
+          "label": "B",
+          "body": "Ik heb geen tijd. Volgende week ga ik met vakantie naar mijn familie.",
+          "is_correct": false
+        },
+        {
+          "label": "C",
+          "body": "Het park is groot en de klok in het park is stuk.",
+          "is_correct": false
+        },
+        {
+          "label": "D",
+          "body": "Sport is een moeilijk woord voor mij, sorry.",
+          "is_correct": false
+        }
+      ]
+    },
+    {
+      "kind": "opnemen",
+      "tier": 2,
+      "explanation": "Je kiest één plaatje en legt uit wat het met jouw leven te maken heeft. Zo geef je een persoonlijk en compleet antwoord.",
+      "payload": {
+        "prompt": "Je ziet twee plaatjes. Op plaatje 1 werkt iemand in een winkel achter de kassa. Op plaatje 2 werkt iemand in een tuin bij een huis. Kies één plaatje. Vertel welk werk jij liever zou doen en waarom. Neem je antwoord op.",
+        "model_answer": "Ik kies plaatje 2, het werk in de tuin. Ik ben graag buiten en ik werk graag met mijn handen. In een winkel moet je de hele dag staan, en dat vind ik zwaar.",
+        "checklist": [
+          "Ik zeg welk plaatje ik kies.",
+          "Ik geef een reden voor mijn keuze.",
+          "Ik zeg ook waarom ik het andere plaatje minder leuk vind."
+        ],
+        "image_urls": [],
+        "record_seconds": 60
+      }
+    }
+  ],
+  "what_you_learn": "Je oefent de examenopdracht waarbij je zelf één van twee plaatjes kiest. Je leert eerst je keuze noemen en daarna kort vertellen waarom. Je hoort je eigen antwoord terug en vergelijkt het met een voorbeeld."
+}

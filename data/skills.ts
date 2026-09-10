@@ -57,7 +57,8 @@
  * no data to migrate — so it was left until there is a real decision to ship one. What it takes:
  *
  *   1. `SkillSlug` gains the slug, and `FORMATS` gains a row per level it exists at.
- *   2. `components/site/SkillIcon.tsx` needs an icon for it (lucide, never an emoji).
+ *   2. `components/horizon/CategoryMark.tsx` needs a mark for it, drawn on the 72 grid from
+ *      the studio's primitives — never a lucide glyph and never an emoji.
  *   3. **A non-levelled onderdeel needs `Level | null` plumbing.** `ExamRow.level`,
  *      `ExamMeta.level` and the `Record<Level, …>` keys in `lib/portal-progress.ts` all assume
  *      a level exists, and `fetchExamsForSkill` filters with `.eq('level', …)`, which never

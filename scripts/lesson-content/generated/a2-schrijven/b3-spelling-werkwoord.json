@@ -1,0 +1,178 @@
+{
+  "items": [
+    {
+      "kind": "uitleg",
+      "tier": null,
+      "explanation": null,
+      "payload": {
+        "body_html": "<p>Het werkwoord <strong>worden</strong> gaat vaak fout. Kijk eerst wie iets doet. Bij <em>ik</em> schrijf je <strong>word</strong>, zonder t. Bij <em>je, u, hij, zij, het</em> schrijf je <strong>wordt</strong>, met dt.</p><p>Staat <em>je</em> of <em>u</em> na het werkwoord, in een vraag? Dan schrijf je <strong>word</strong>: <em>Word je morgen geholpen?</em></p>",
+        "cards": [
+          {
+            "label": "GOED",
+            "example_html": "Ik <mark>word</mark> vrijdag geopereerd."
+          },
+          {
+            "label": "MINDER GOED",
+            "example_html": "Ik <mark>wordt</mark> vrijdag geopereerd."
+          }
+        ]
+      }
+    },
+    {
+      "kind": "voorbeeld",
+      "tier": null,
+      "explanation": null,
+      "payload": {
+        "sentence_html": "<p>Ik <mark>word</mark> volgende week 40 jaar en ik geef een feest.</p>"
+      }
+    },
+    {
+      "kind": "voorbeeld",
+      "tier": null,
+      "explanation": null,
+      "payload": {
+        "sentence_html": "<p>Mijn zoon <mark>wordt</mark> ziek van de warmte in het klaslokaal.</p>"
+      }
+    },
+    {
+      "kind": "mcq",
+      "tier": 0,
+      "explanation": "Na <em>ik</em> schrijf je <strong>word</strong>, zonder t. Alleen zin A is goed geschreven.",
+      "options": [
+        {
+          "label": "A",
+          "body": "Ik word donderdag verwacht bij de tandarts.",
+          "is_correct": true
+        },
+        {
+          "label": "B",
+          "body": "Ik wordt donderdag verwacht bij de tandarts.",
+          "is_correct": false
+        },
+        {
+          "label": "C",
+          "body": "Ik wort donderdag verwacht bij de tandarts.",
+          "is_correct": false
+        }
+      ],
+      "payload": {
+        "prompt": "Welke zin uit een e-mail is goed geschreven?"
+      }
+    },
+    {
+      "kind": "mcq",
+      "tier": 0,
+      "explanation": "Bij <em>de brief</em> (dat is hij/zij/het) schrijf je <strong>wordt</strong> met dt. Bij <em>ik</em> schrijf je <strong>word</strong>.",
+      "options": [
+        {
+          "label": "A",
+          "body": "De brief word maandag verstuurd. Ik wordt dan gebeld.",
+          "is_correct": false
+        },
+        {
+          "label": "B",
+          "body": "De brief wordt maandag verstuurd. Ik word dan gebeld.",
+          "is_correct": true
+        },
+        {
+          "label": "C",
+          "body": "De brief wordt maandag verstuurd. Ik wordt dan gebeld.",
+          "is_correct": false
+        }
+      ],
+      "payload": {
+        "prompt": "Welk briefje is helemaal goed geschreven?"
+      }
+    },
+    {
+      "kind": "gap_choice",
+      "tier": 1,
+      "explanation": "Het onderwerp is <em>ik</em>. Na <em>ik</em> schrijf je <strong>word</strong>, zonder t.",
+      "payload": {
+        "sentence": "Beste mevrouw De Groot, ik ___ vrijdag geopereerd in het ziekenhuis.",
+        "choices": [
+          "word",
+          "wordt"
+        ],
+        "answer": "word"
+      }
+    },
+    {
+      "kind": "gap_choice",
+      "tier": 1,
+      "explanation": "Het onderwerp is <em>mijn dochter</em>, dus hij/zij. Dan schrijf je <strong>wordt</strong> met dt.",
+      "payload": {
+        "sentence": "Mijn dochter ___ morgen om acht uur opgehaald door de taxi.",
+        "choices": [
+          "word",
+          "wordt"
+        ],
+        "answer": "wordt"
+      }
+    },
+    {
+      "kind": "gap_choice",
+      "tier": 1,
+      "explanation": "In een vraag staat <em>je</em> ná het werkwoord. Dan valt de t weg: <strong>word je</strong>.",
+      "payload": {
+        "sentence": "___ je volgende week al geholpen door de thuiszorg?",
+        "choices": [
+          "Word",
+          "Wordt",
+          "Wort"
+        ],
+        "answer": "Word"
+      }
+    },
+    {
+      "kind": "gap_type",
+      "tier": 2,
+      "explanation": "Het onderwerp is <em>het formulier</em> (het = hij/zij/het). Dan schrijf je <strong>wordt</strong> met dt.",
+      "payload": {
+        "sentence": "Het formulier ___ door de gemeente naar mijn huis gestuurd.",
+        "answer": "wordt"
+      }
+    },
+    {
+      "kind": "woordorde",
+      "tier": 2,
+      "explanation": "Het onderwerp is <em>ik</em>, dus <strong>word</strong> zonder t. Het werkwoord staat op de tweede plaats.",
+      "payload": {
+        "instruction": "Maak de zin voor je e-mail. Let op: word of wordt?",
+        "tokens": [
+          "morgen",
+          "ik",
+          "word",
+          "de",
+          "geopereerd",
+          "aan",
+          "knie"
+        ],
+        "answer": [
+          "ik",
+          "word",
+          "morgen",
+          "aan",
+          "de",
+          "knie",
+          "geopereerd"
+        ]
+      }
+    },
+    {
+      "kind": "open_zin",
+      "tier": 2,
+      "explanation": "Je gebruikt <strong>word</strong> zonder t na <em>ik</em>, en <strong>wordt</strong> met dt na <em>de les</em> of <em>het werk</em>.",
+      "payload": {
+        "prompt": "Schrijf twee zinnen voor een e-mail aan je docent. Zin 1 begint met <em>Ik</em>. Zin 2 begint met <em>De les</em>. Gebruik in beide zinnen het werkwoord worden.",
+        "model_answer": "Ik word volgende week geopereerd aan mijn arm. De les wordt daarom door een andere cursist gevolgd.",
+        "checklist": [
+          "Na <em>ik</em> staat <strong>word</strong>, zonder t.",
+          "Na <em>de les</em> staat <strong>wordt</strong>, met dt.",
+          "Beide zinnen beginnen met een hoofdletter en eindigen met een punt."
+        ]
+      }
+    }
+  ],
+  "what_you_learn": "Na deze les weet je wanneer je <strong>word</strong> schrijft en wanneer <strong>wordt</strong>. Je kijkt eerst wie iets doet: na <em>ik</em> komt geen t, na <em>hij, zij, het, je</em> of <em>u</em> wel. Zo controleer je snel je eigen e-mail of briefje voordat je hem verstuurt."
+}

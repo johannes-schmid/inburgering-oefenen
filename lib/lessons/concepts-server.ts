@@ -30,14 +30,14 @@ const CONCEPT_SELECT = `
 const CONCEPT_SELECT_SCOPED = `
   id, level, slug, name_nl, kind, one_liner, example_html, sort_order,
   concept_groups ( id, slug, name_nl, sort_order ),
-  concept_onderdelen!inner ( onderdeel )
+  concept_onderdelen!inner ( onderdeel, weight )
 `;
 
 type ConceptRow = {
   id: number; level: Level; slug: string; name_nl: string; kind: ConceptKind;
   one_liner: string; example_html: string | null; sort_order: number;
   concept_groups: ConceptGroup | null;
-  concept_onderdelen: { onderdeel: OnderdeelSlug }[] | null;
+  concept_onderdelen: { onderdeel: OnderdeelSlug; weight?: 'kern' | 'herkennen' }[] | null;
   body_html?: string | null;
   review_status?: string;
   reviewed_by?: string | null;
@@ -55,6 +55,12 @@ function toConcept(row: ConceptRow): Concept {
     example_html: row.example_html,
     group: row.concept_groups,
     onderdelen: (row.concept_onderdelen ?? []).map(o => o.onderdeel),
+    /* Alleen de gefilterde query levert precies één rij, en dan is het gewicht dat van dít
+       onderdeel. Zonder filter staan er vier rijen met verschillende gewichten en is er niets
+       te zeggen — vandaar `null` en niet de eerste die langskomt. */
+    weight: row.concept_onderdelen?.length === 1
+      ? row.concept_onderdelen[0].weight ?? null
+      : null,
   };
 }
 

@@ -1,0 +1,148 @@
+{
+  "items": [
+    {
+      "kind": "uitleg",
+      "tier": null,
+      "explanation": null,
+      "payload": {
+        "body_html": "<p>De letters <strong>uw</strong>, <strong>ouw</strong> en <strong>auw</strong> lijken op elkaar. Je hoort maar twee klanken. De <em>uw</em> klinkt als <strong>uu-w</strong>, zoals in <strong>nieuw</strong>. De <em>ouw</em> en de <em>auw</em> klinken precies hetzelfde: <strong>au-w</strong>, zoals in <strong>vrouw</strong> en <strong>blauw</strong>.</p><p>Je hoort dus niet of je <em>ouw</em> of <em>auw</em> moet schrijven. Dat moet je uit je hoofd leren.</p>",
+        "cards": [
+          {
+            "label": "WAT JE ZIET",
+            "example_html": "nieuw, duw, vrouw, koud, blauw, gauw"
+          },
+          {
+            "label": "WAT JE ZEGT",
+            "example_html": "nie-uu-w, duu-w, vrau-w, kau-d, blau-w, gau-w"
+          }
+        ]
+      }
+    },
+    {
+      "kind": "naspreken",
+      "tier": 1,
+      "explanation": "In <em>uw</em> hoor je eerst een lange uu en dan een w. Zo hoor je het verschil met <em>ouw</em>.",
+      "payload": {
+        "prompt": "Zeg deze woorden met -uw na. Spreek langzaam.",
+        "target": "nieuw, duw, ruw, sluw",
+        "focus": "Je zegt eerst een lange uu en dan een korte w: nie-uu-w.",
+        "audio_url": "http://127.0.0.1:54421/storage/v1/object/public/leren-audio/fragment/a2-spreken/b4-uw-ouw-auw-1.mp3",
+        "script": "nieuw, duw, ruw, sluw",
+        "seconds": 2.86
+      }
+    },
+    {
+      "kind": "naspreken",
+      "tier": 1,
+      "explanation": "<em>ouw</em> en <em>auw</em> klinken hetzelfde: au-w. De spelling verschilt, de klank niet.",
+      "payload": {
+        "prompt": "Zeg deze woorden na. Let op: ze klinken hetzelfde.",
+        "target": "vrouw, blauw, mouw, nauw",
+        "focus": "Je ziet ouw en auw, maar je zegt bij alle vier au-w.",
+        "audio_url": "http://127.0.0.1:54421/storage/v1/object/public/leren-audio/fragment/a2-spreken/b4-uw-ouw-auw-2.mp3",
+        "script": "vrouw, blauw, mouw, nauw",
+        "seconds": 2.42
+      }
+    },
+    {
+      "kind": "naspreken",
+      "tier": 1,
+      "explanation": "Als je de woorden na elkaar zegt, hoor je het verschil tussen uu-w en au-w goed.",
+      "payload": {
+        "prompt": "Zeg deze woordparen na. Hoor je het verschil?",
+        "target": "nieuw - nou, duw - dauw, ruw - rouw",
+        "focus": "Het eerste woord heeft uu-w, het tweede woord heeft au-w.",
+        "audio_url": "http://127.0.0.1:54421/storage/v1/object/public/leren-audio/fragment/a2-spreken/b4-uw-ouw-auw-3.mp3",
+        "script": "nieuw - nou, duw - dauw, ruw - rouw",
+        "seconds": 4.57
+      }
+    },
+    {
+      "kind": "naspreken",
+      "tier": 1,
+      "explanation": "In een hele zin blijven de klanken hetzelfde. Je zegt nie-uu-we, vrau-w en blau-we jas.",
+      "payload": {
+        "prompt": "Zeg deze zin na in één keer.",
+        "target": "De nieuwe vrouw draagt een blauwe jas.",
+        "focus": "Zeg nieuwe met uu-w, en vrouw en blauwe met au-w.",
+        "audio_url": "http://127.0.0.1:54421/storage/v1/object/public/leren-audio/fragment/a2-spreken/b4-uw-ouw-auw-4.mp3",
+        "script": "De nieuwe vrouw draagt een blauwe jas.",
+        "seconds": 2.76
+      }
+    },
+    {
+      "kind": "mcq",
+      "tier": 0,
+      "explanation": "Bij de uitspraak <em>vrau-w</em> hoor je au-w. Dat woord schrijf je met <strong>ouw</strong>: vrouw.",
+      "payload": {
+        "prompt": "Welk woord spreek je uit als \"vrau-w\"?"
+      },
+      "options": [
+        {
+          "label": "A",
+          "body": "vruw",
+          "is_correct": false
+        },
+        {
+          "label": "B",
+          "body": "vrouw",
+          "is_correct": true
+        },
+        {
+          "label": "C",
+          "body": "vraw",
+          "is_correct": false
+        }
+      ]
+    },
+    {
+      "kind": "mcq",
+      "tier": 0,
+      "explanation": "Bij <em>nie-uu-w</em> hoor je een lange uu en dan een w. Dat schrijf je met <strong>uw</strong>: nieuw.",
+      "payload": {
+        "prompt": "Welk woord spreek je uit als \"nie-uu-w\"?"
+      },
+      "options": [
+        {
+          "label": "A",
+          "body": "nieuw",
+          "is_correct": true
+        },
+        {
+          "label": "B",
+          "body": "niouw",
+          "is_correct": false
+        },
+        {
+          "label": "C",
+          "body": "niauw",
+          "is_correct": false
+        },
+        {
+          "label": "D",
+          "body": "niew",
+          "is_correct": false
+        }
+      ]
+    },
+    {
+      "kind": "gap_type",
+      "tier": 2,
+      "explanation": "Je hoort au-w, en dit woord schrijf je met <strong>auw</strong>: blauwe.",
+      "payload": {
+        "sentence": "Ik heb een ___ (blau-we) jas gekocht bij de winkel.",
+        "answer": "blauwe"
+      }
+    },
+    {
+      "kind": "gap_type",
+      "tier": 2,
+      "explanation": "Je hoort uu-w, dus je schrijft <strong>uw</strong>: nieuwe.",
+      "payload": {
+        "sentence": "Volgende week krijgen wij een ___ (nie-uu-we) buurvrouw.",
+        "answer": "nieuwe"
+      }
+    }
+  ],
+  "what_you_learn": "In deze les leer je het verschil horen tussen -uw, -ouw en -auw. Je zegt woorden als nieuw, vrouw en blauw duidelijk na. Je leert ook hoe je deze klanken goed opschrijft."
+}

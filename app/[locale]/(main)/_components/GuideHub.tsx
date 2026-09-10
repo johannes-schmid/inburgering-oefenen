@@ -25,7 +25,7 @@ import JsonLd from '@/components/JsonLd';
 import { absUrl, breadcrumbs, PROVIDER_REF } from '@/lib/schema';
 import { WEBSITE_ID, langTag } from '@/lib/site';
 import { GradientHero, Breadcrumb, SectionHeader, CTABanner } from '@/components/site';
-import SkillIcon from '@/components/site/SkillIcon';
+import CategoryMark from '@/components/horizon/CategoryMark';
 import GuideCover from '@/components/horizon/GuideCover';
 import { DEFAULT_LEVEL, SKILLS } from '@/data/skills';
 import { FEATURES } from '@/lib/features';
@@ -345,7 +345,7 @@ export default async function GuideHub({
                   className="bg-surface-container-lowest rounded-2xl p-6 flex items-center gap-3 no-underline shadow-sm post-card focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2"
                   style={{ textDecoration: 'none' }}
                 >
-                  <SkillIcon skill={skill.slug} size="sm" />
+                  <CategoryMark category={skill.slug} size={32} />
                   <span className="font-headline font-bold text-on-surface">
                     {tSkills(`${skill.key}.name`)}
                   </span>

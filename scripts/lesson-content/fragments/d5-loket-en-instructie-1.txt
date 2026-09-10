@@ -1,0 +1,17 @@
+# Training: Loket en instructie — audio
+# les d5-loket-en-instructie, item 2
+# Casting:
+#   A = woman_young (Female Voice 1 — younger woman)
+#   B = man_young (Male Voice 1 — younger man)
+#
+# Dit bestand is de leesbare afdruk van wat er is ingesproken. De bron is de payload in
+# generated/a2-luisteren/d5-loket-en-instructie.json — pas die aan en spreek opnieuw in.
+A: Goedemiddag, waarmee kan ik u helpen?
+B: Ik kom voor een nieuw paspoort. Mijn oude is verlopen.
+A: Dat kan. Heeft u een pasfoto meegenomen?
+B: Ja, hier. En moet ik nu betalen?
+A: Ja, u betaalt vandaag. Een paspoort kost drieënzeventig euro.
+B: Oké. En wanneer is het klaar?
+A: Over vijf werkdagen. U kunt het volgende week donderdag ophalen, na twee uur.
+B: Moet ik dan weer een afspraak maken?
+A: Nee, dat hoeft niet. Voor ophalen loopt u gewoon naar binnen. Neemt u wel dit bewijsje mee, hoor. Zonder dat papiertje kunnen wij het paspoort niet meegeven.

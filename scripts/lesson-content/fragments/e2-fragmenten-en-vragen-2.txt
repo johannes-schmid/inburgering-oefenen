@@ -1,0 +1,8 @@
+# Fragmenten en vragen — audio
+# les e2-fragmenten-en-vragen, item 6
+# Casting:
+#   A = woman_young (Female Voice 1 — younger woman)
+#
+# Dit bestand is de leesbare afdruk van wat er is ingesproken. De bron is de payload in
+# generated/a2-luisteren/e2-fragmenten-en-vragen.json — pas die aan en spreek opnieuw in.
+A: Goedemorgen, u spreekt met Anneke Vermeer van basisschool De Sleutelbloem. Ik bel over de schoolreis van groep vier. We gaan volgende week woensdag naar de kinderboerderij. De kinderen moeten om half negen op school zijn, niet later, want de bus wacht niet. Geeft u uw kind een brood en wat te drinken mee? Wij zorgen voor een appel. Snoep hoeft niet, dat vragen we juist niet mee te geven. En let u even op de jas: buiten is het koud. Heeft u nog vragen? Bel dan gerust naar de school. Tot woensdag.

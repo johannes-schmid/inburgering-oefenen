@@ -1,0 +1,177 @@
+{
+  "items": [
+    {
+      "kind": "uitleg",
+      "tier": null,
+      "explanation": null,
+      "payload": {
+        "body_html": "<p>Bij de gemeente en bij de huisarts hoor je vaak dezelfde woorden. Je leert nu woorden over een <strong>afspraak</strong>, de <strong>balie</strong>, het <strong>recept</strong> en de <strong>apotheek</strong>.</p>",
+        "cards": [
+          {
+            "label": "BIJ DE ARTS",
+            "example_html": "Ik heb een <mark>afspraak</mark> bij de huisarts."
+          },
+          {
+            "label": "BIJ DE GEMEENTE",
+            "example_html": "Je meldt je bij het <mark>loket</mark>."
+          }
+        ]
+      }
+    },
+    {
+      "kind": "woordenlijst",
+      "tier": null,
+      "explanation": null,
+      "payload": {
+        "theme": "gemeente-en-zorg"
+      }
+    },
+    {
+      "kind": "matchen",
+      "tier": 0,
+      "explanation": "Elk woord hoort bij één plek of ding. Zo weet je waar je bent en wat je moet doen.",
+      "payload": {
+        "instruction": "Sleep het woord naar de goede betekenis.",
+        "pairs": [
+          {
+            "left": "de wachtkamer",
+            "right": "ruimte waar je zit tot je aan de beurt bent"
+          },
+          {
+            "left": "het loket",
+            "right": "plek met een raampje waar je geholpen wordt"
+          },
+          {
+            "left": "de apotheek",
+            "right": "winkel waar je medicijnen ophaalt"
+          },
+          {
+            "left": "de balie",
+            "right": "tafel waar iemand je helpt in een gebouw"
+          }
+        ]
+      }
+    },
+    {
+      "kind": "matchen",
+      "tier": 0,
+      "explanation": "Deze woorden gaan over de arts en over medicijnen. Let goed op wie iets doet en wat je zelf doet.",
+      "payload": {
+        "instruction": "Sleep het woord naar de goede betekenis.",
+        "pairs": [
+          {
+            "left": "de specialist",
+            "right": "arts die maar één soort ziekte behandelt"
+          },
+          {
+            "left": "het recept",
+            "right": "papier van de arts voor medicijnen bij de apotheek"
+          },
+          {
+            "left": "de bijwerking",
+            "right": "vervelend gevolg van een middel dat je slikt"
+          },
+          {
+            "left": "doorverwijzen",
+            "right": "je naar een andere hulpverlener sturen"
+          }
+        ]
+      }
+    },
+    {
+      "kind": "mcq",
+      "tier": 0,
+      "explanation": "Een klacht is iets wat pijn doet of niet goed gaat in je lichaam. Hoofdpijn is dus een klacht.",
+      "options": [
+        {
+          "label": "A",
+          "body": "de klacht",
+          "is_correct": true
+        },
+        {
+          "label": "B",
+          "body": "de beurt",
+          "is_correct": false
+        },
+        {
+          "label": "C",
+          "body": "de spoed",
+          "is_correct": false
+        }
+      ],
+      "payload": {
+        "prompt": "Je zegt tegen de huisarts: \"Ik heb al drie dagen hoofdpijn.\" Hoe noem je dat?"
+      }
+    },
+    {
+      "kind": "gap_choice",
+      "tier": 1,
+      "explanation": "Bij binnenkomst zeg je dat je er bent. Dat is je melden bij de balie.",
+      "payload": {
+        "sentence": "Kom je bij de huisarts? Dan moet je je eerst ___ bij de balie.",
+        "choices": [
+          "melden",
+          "innemen",
+          "vergoeden"
+        ],
+        "answer": "melden"
+      }
+    },
+    {
+      "kind": "gap_choice",
+      "tier": 1,
+      "explanation": "Het eigen risico is het bedrag aan zorgkosten dat je zelf betaalt.",
+      "payload": {
+        "sentence": "Het ziekenhuis stuurt een rekening van 180 euro. Dat is jouw ___.",
+        "choices": [
+          "eigen risico",
+          "verzekeringsbewijs",
+          "formulier"
+        ],
+        "answer": "eigen risico"
+      }
+    },
+    {
+      "kind": "gap_choice",
+      "tier": 1,
+      "explanation": "De assistente neemt de telefoon aan en helpt de arts.",
+      "payload": {
+        "sentence": "Ik bel de huisarts. De ___ vraagt wat mijn klacht is.",
+        "choices": [
+          "assistente",
+          "specialist",
+          "apotheek"
+        ],
+        "answer": "assistente"
+      }
+    },
+    {
+      "kind": "gap_type",
+      "tier": 2,
+      "explanation": "Een pil doorslikken heet innemen. Je neemt het medicijn in.",
+      "payload": {
+        "sentence": "Je moet dit medicijn drie keer per dag ___ met een glas water.",
+        "answer": "innemen"
+      }
+    },
+    {
+      "kind": "gap_type",
+      "tier": 2,
+      "explanation": "Bij de gemeente wil de medewerker een kaart met je naam en foto zien. Dat is je legitimatie.",
+      "payload": {
+        "sentence": "De medewerker aan het loket vraagt: \"Mag ik uw ___ zien, dus uw paspoort of identiteitskaart?\"",
+        "answer": "legitimatie"
+      }
+    },
+    {
+      "kind": "gap_type",
+      "tier": 2,
+      "explanation": "Je wacht tot jij geholpen wordt. Dat moment heet je beurt.",
+      "payload": {
+        "sentence": "Ga even in de wachtkamer zitten. Ik roep u als u aan de ___ bent.",
+        "answer": "beurt"
+      }
+    }
+  ],
+  "what_you_learn": "Je leert de woorden die je hoort bij de gemeente, bij de huisarts en in de apotheek. Je weet wat een afspraak, een loket, een recept en het eigen risico zijn. Je kunt deze woorden zelf in een zin gebruiken."
+}

@@ -1,0 +1,16 @@
+# Training: Loket en instructie — audio
+# les d5-loket-en-instructie, item 6
+# Casting:
+#   A = man_young (Male Voice 1 — younger man)
+#   B = woman_young (Female Voice 1 — younger woman)
+#
+# Dit bestand is de leesbare afdruk van wat er is ingesproken. De bron is de payload in
+# generated/a2-luisteren/d5-loket-en-instructie.json — pas die aan en spreek opnieuw in.
+A: Mevrouw De Wit? Uw medicijnen zijn klaar. Ik leg het even uit.
+B: Ja, graag.
+A: U neemt elke dag één tablet. Doe dat 's ochtends, bij het ontbijt. Dus altijd met eten erbij, want anders krijgt u maagpijn.
+B: En als ik een dag vergeet?
+A: Dan slaat u die dag over. U neemt dus nooit twee tabletten op één dag.
+B: Goed. Hoe lang moet ik doorgaan?
+A: Tien dagen. Het doosje is daarna leeg. Wordt u niet beter, dan belt u de huisarts.
+B: Dank u wel.

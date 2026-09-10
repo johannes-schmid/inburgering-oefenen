@@ -1,0 +1,37 @@
+# De ingesproken uitleg van `b22-meervoud`.
+# Regels met # zijn commentaar. [[id]] of [[id | extra uitleg]] markeert waar de stem over
+# welk element begint; de extra uitleg staat op de pagina bij dat element en mag niet herhalen
+# wat de stem net zei.
+# Geldige id's: vis, vis-1 t/m vis-4, rule, card-0, card-1, demo-0, demo-1, exercises.
+
+Deze les gaat over het meervoud.
+
+[[vis-1 | Brief wordt brieven: let op de f die een v wordt.]]
+Kijk naar het plaatje. Er staan drie bakjes. In het eerste bakje krijgen de woorden -en. Dat is de grootste groep: brief wordt brieven, boek wordt boeken.
+
+[[vis-2 | Na -el, -em, -en, -er en -je komt -s.]]
+In het tweede bakje krijgen de woorden -s. Tafel wordt tafels. Broodje wordt broodjes.
+
+[[vis-3 | Zonder apostrof zou je "omas" lezen, en dat klinkt anders.]]
+In het derde bakje staat een apostrof plus s. Dat doe je na een losse klinker: oma wordt oma's, foto wordt foto's.
+
+[[vis-4 | Kind wordt kinderen, ei wordt eieren, stad wordt steden.]]
+En er is een klein groepje dat iets heel anders doet. Die woorden leer je los.
+
+[[rule | Luister naar het eind van het woord; dat bepaalt de uitgang.]]
+Onthoud dus: meestal -en, na die vijf uitgangen -s, en na een losse klinker een apostrof plus s.
+
+[[card-0 | De grootste groep: -en.]]
+De eerste kaart is de groep met -en.
+
+[[card-1 | Deze groep hoor je aan het eind van het woord.]]
+De tweede kaart is de groep met -s.
+
+[[demo-0 | Kinderen: uit het kleine groepje met -eren.]]
+Twee voorbeelden. Mijn buurvrouw heeft drie kinderen op school.
+
+[[demo-1 | Oma's met een apostrof, want oma eindigt op een a.]]
+En: in de keuken staan twee oma's te praten.
+
+[[exercises]]
+Doe nu de opgaven. Zeg het woord hardop en luister naar de laatste klank.

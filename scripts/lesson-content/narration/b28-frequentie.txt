@@ -1,0 +1,37 @@
+# De ingesproken uitleg van `b28-frequentie`.
+# Regels met # zijn commentaar. [[id]] of [[id | extra uitleg]] markeert waar de stem over
+# welk element begint; de extra uitleg staat op de pagina bij dat element en mag niet herhalen
+# wat de stem net zei.
+# Geldige id's: vis, vis-1 t/m vis-6, rule, card-0, card-1, demo-0, demo-1, exercises.
+
+Deze les gaat over hoe vaak iets gebeurt.
+
+[[vis-1 | Nul procent: geen enkele keer.]]
+Kijk naar het plaatje. Het is een lijn van nooit naar altijd. Links staat nooit: ik ga nooit naar de sportschool.
+
+[[vis-3 | Een paar keer. Niet vaak, en niet nooit.]]
+Iets verder staat soms: soms werk ik op zaterdag.
+
+[[vis-4 | Veel keren, maar niet elke keer.]]
+Dan komt vaak: wij gaan vaak naar de markt.
+
+[[vis-6 | Honderd procent: elke keer.]]
+En rechts staat altijd: ik neem altijd mijn paspoort mee.
+
+[[rule | Bij nooit gebruik je geen niet: "ik ga nooit", niet "ik ga niet nooit".]]
+Deze woorden staan meestal na het werkwoord, of op plaats één. Soms werk ik op zaterdag, of: ik werk soms op zaterdag. Beide is goed.
+
+[[card-0 | Vaak en altijd: de rechterkant van de lijn.]]
+De eerste kaart is vaak en altijd.
+
+[[card-1 | Soms en nooit: de linkerkant.]]
+De tweede kaart is soms en nooit.
+
+[[demo-0 | Altijd staat hier achter het werkwoord.]]
+Twee voorbeelden. Fatima betaalt de huur altijd voor de eerste van de maand.
+
+[[demo-1 | Nooit staat vlak voor de rest van de zin.]]
+En: mijn buurman werkt in de winkel, maar hij werkt nooit in het weekend.
+
+[[exercises]]
+Doe nu de opgaven. Zet elk woord in gedachten op de lijn.

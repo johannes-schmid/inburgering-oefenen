@@ -3327,3 +3327,926 @@ en controleer met een screenshot, want `tsc` en de build zien geen huisstijl.
 **Outcome:** SUCCESS — tsc schoon, 350 unittests groen, geverifieerd met een screenshot op `/nl/dashboard/a2/lezen/leren/b12-hebben-of-zijn`.
 **What worked / went wrong:** De screenshotloop kostte de meeste tijd om de verkeerde reden: het bewaarde cookiebestand was verlopen én de lesslug was geraden (`hebben-of-zijn` bestaat niet; het is `b12-hebben-of-zijn`), dus puppeteer fotografeerde een 404/loginpagina. Een `curl` met dezelfde cookie die op de klasnamen grept kost één seconde en zegt meteen of de pagina überhaupt de juiste is.
 **Lesson:** Controleer vóór een screenshot met `curl` of de URL en het sessiecookie nog kloppen — een browser die een inlogpagina fotografeert ziet er niet uit als een fout.
+
+## 2026-09-01 — Het portaaloverzicht herbouwd naar de mockup van de eigenaar
+**Changed:** `app/[locale]/(app)/dashboard/page.tsx` (navy kop + rij van drie vervolgstappen eruit, begroeting + 2×2 modules + "wat nu?"-kolom erin), `_components/ModuleCard.tsx` (chips, merkteken op de titelregel, twee dunne meters), nieuw `_components/WhatNow.tsx` en `lib/portal-traject.ts`, plus `.dash-*`/`.mod-*`/`.wn-*` in `app/globals.css` en 21 nieuwe sleutels in nl/en/ar.
+**Outcome:** SUCCESS — `tsc`, `next build`, 350 unit tests groen; portal e2e faalt op 5 tests die vóór deze wijziging al faalden (de gast mag sinds 29-08 het portaal zien, de test verwacht nog een redirect).
+**What worked / went wrong:** Twee visuele fouten die alleen uit de screenshot bleken: `--color-primary-container` is een mid-navy, dus de chips werden dichte blokjes met onleesbare tekst; en de vervanging met `color-mix()` maakte het erger omdat Chromium 101 (puppeteer 13.7) die functie niet kent — een letterlijke rgba loste het op. De trajectdatums komen uit `tijdlijn_plans` en worden opnieuw doorgerekend; zonder opgeslagen tijdlijn staat er geen datum.
+**Lesson:** Een tint van een merkkleur is in dit repo een letterlijke rgba, niet `color-mix` of `bg-primary/10` — de screenshotbrowser en de adminbundle renderen die allebei dicht. En controleer een tokennaam met `-container` erin vóór je hem als lichte achtergrond gebruikt.
+
+## 2026-09-02 — CLAUDE.md gesplitst, en een videowalkthrough na een build
+**Changed:** `CLAUDE.md` 2.830 → ~590 regels (oriëntatie + invarianten), 2.525 regels geschiedenis naar `docs/decisions/*.md` (8 bestanden); vrije-examens en prijzen gecorrigeerd na verificatie tegen productie; nieuw `scripts/walkthrough/record.mjs` + twee flows + `.claude/skills/walkthrough/SKILL.md` + `npm run walkthrough`.
+**Outcome:** SUCCESS — beide flows opgenomen (0:51 en 0:39), geldige H.264 1280×800 MP4, chapterkaarten en klik-annotaties gecontroleerd op frames.
+**What worked / went wrong:** Playwright 1.60 heeft `screencast.start({path})`, `showChapter()` (letterlijk "useful for narrating video recordings") en `showActions()` — geen eigen caption-laag nodig, wat de meeste blogposts nog wel bouwen. Twee vallen: Playwright schrijft **WebM/VP8 en QuickTime opent dat niet**, dus de ffmpeg-pass naar H.264 is verplicht; en `ffmpeg -ss <t> -i file.mp4` zoekt op keyframe, wat op een variabele-framerate schermopname een frame van seconden eerder oplevert — daardoor leek een werkende navigatie kapot tot het laatste frame het tegendeel bewees. `-ss` ná `-i`, of `-sseof`.
+**Lesson:** Lees de `.d.ts` van de geïnstalleerde versie vóór je een patroon van internet overneemt — de API had de functie al. En verifieer een opname op frames, niet op de exitcode.
+
+## 2026-09-02 — één icoonlaag: `ExamMark` erbij, `SkillIcon` en `LevelMark` eruit
+**Changed:** nieuw `components/horizon/ExamMark.tsx` (studio §04b: a2/b1/knm/ona op de omgekeerde
+navy tegel, met `muted` en `onDark`); `ona` toegevoegd aan `CategoryMark`; `components/site/SkillIcon.tsx`
+en `components/horizon/LevelMark.tsx` verwijderd; 13 call-sites omgezet in `(app)` en `(main)`;
+handgetekende koffer-SVG in `PortalSidebar` vervangen; regel vastgelegd in `COMPONENTS.md §Icons`,
+`CLAUDE.md §7` en `docs/decisions/portal-and-admin.md`.
+**Outcome:** SUCCESS — `tsc` schoon, `next build` schoon, 350 unit tests groen, e2e gelijk aan een
+schone tree (die ene kennisgids-fasen-test faalt ook zónder deze wijziging in een volle run).
+**What worked / went wrong:** de echte bug was niet "er ontbreken iconen" maar "er zijn er twee voor
+één ding": dezelfde Lezen was een grachtenpand op de homepage en een lucide `BookOpen` in het portaal,
+en de modulerij op `/dashboard` droeg vier merktekens uit drie families — inclusief het *gidsen-brugje*
+voor ONA. Eén set kiezen en de andere wéghalen is wat het oplost; een derde set ernaast zetten niet.
+Twee harde ondergrenzen gevonden tijdens het controleren van screenshots: `ExamMark` a2/b1 zetten hun
+label op 18px van de 72-grid, dus onder 32px is het onleesbaar (knm onder 40px), en `CategoryMark`
+haalt 19px maar niet minder — de 4px-hairlines vallen dan onder één device pixel.
+**Lesson:** een icoonsysteem "invoeren" is vooral een verwijderactie. Grep eerst op alle bestaande
+sets voor hetzelfde begrip, verwijder de verliezer in dezelfde commit, en schrijf de ondergrens per
+merkteken op — anders komt de tweede set terug zodra iemand een mark op 16px nodig heeft.
+
+## 2026-09-02 — Het onderdeelscherm herontworpen: diagnose, leerroute, examens
+**Changed:** `app/[locale]/(app)/dashboard/[level]/[skill]/page.tsx` gestript en opnieuw
+opgebouwd in vier lagen: één kop (`h1`), de diagnose (`SlaagkansGauge` + nieuw `DocentPanel`),
+de leerroute (drie `LeerModuleCard`s) en de tien examens. Nieuw:
+`lib/lessons/leerroute.ts` (+ `tests-unit/leerroute.test.ts`, 7 cases),
+`_components/LeerModuleCard.tsx`, `_components/DocentPanel.tsx`, drie marks in
+`components/horizon/CategoryMark.tsx` (`woorden`, `grammatica`, `examentraining`) plus een
+`bare`-prop, ~120 regels CSS in `app/globals.css`, 26 keys × 3 locales, COMPONENTS.md §Icons.
+De navy `PortalHero` is van dit scherm af (besluit eigenaar).
+**Outcome:** SUCCESS — `tsc` clean, `next build` compiled, 357/357 unit tests, mobiel (390) en
+desktop (1440) gecontroleerd.
+**What worked / went wrong:** De drie stappen hoefden *niet* verzonnen te worden: `ConceptKind`
+is al `woordenschat | grammatica | strategie` en lessen hangen via `lesson_concepts` aan
+concepten, dus de leerroute is die ene as omgedraaid. Een `track`-kolom op `lessons` zou een
+tweede waarheid zijn geweest naast een as die de docent al invult. `MariekeFeedback` bleek
+onbruikbaar: die hangt aan `TopicStat` en linkt naar `/dashboard/analyse` en `/dashboard/fouten`,
+en die twee zijn KNM-only (ze lezen `KnmQuestion` en `THEMAS`) — hergebruik zou een A2-kandidaat
+naar KNM-stof hebben gestuurd. Vandaar een eigen paneel met dezelfde vorm en dezelfde
+regelgebaseerde toon. Twee panelen naast elkaar met `align-items: start` lieten een gat van
+150px onder het korte paneel; `stretch` + `justify-content: center` in het paneel loste het op.
+En: `check-ui-auth.mjs` fotografeert het portaal maar tot de viewporthoogte — `fullPage: true`
+helpt niet omdat de contentkolom zelf scrollt, dus een hoge viewport (1440×2400) is de manier om
+zo'n scherm helemaal te zien.
+**Lesson:** Voordat je een indeling voor een nieuw scherm bedenkt, kijk of de database hem al
+heeft. En een KNM-component hergebruiken op een taalonderdeel kan pas na een blik op *waar het
+naartoe linkt* — de vorm is generiek, de bestemmingen zijn dat niet.
+
+## 2026-09-02 — Contentgat: A2 Lezen heeft nul woordenschatconcepten
+**Changed:** niets (bevinding uit het herontwerp hierboven).
+**Outcome:** FAILURE — stap 1 van de leerroute staat op het onderdeel waar hij als eerste
+gebruikt wordt leeg.
+**What worked / went wrong:** `select c.kind, count(*) from concepts c join concept_onderdelen o
+… where o.onderdeel = 'lezen'` geeft 28 `grammatica` en 5 `strategie`, en geen enkele
+`woordenschat`. De kaart valt terug op zijn lege staat ("de docent heeft hier nog geen stof voor
+vrijgegeven"), dus het scherm is niet stuk, maar de route die het verkoopt begint met een gat.
+**Lesson:** Een scherm dat een volgorde oplegt, legt ook bloot welke stap nog geen content heeft.
+De lege staat moet dus zeggen dat *wij* nog niets hebben, nooit 0% — dat laatste zou een
+contentgat als een tekortkoming van de kandidaat tonen.
+
+## 2026-09-02 — Woordkaarten in de leerlaag, naar het model van KNM
+**Changed:** Migratie `20260902100000_lesson_word_cards.sql` (`user_lesson_word_progress` met RLS,
+plus `translation_en/ar` en `translations_reviewed` op `lesson_words`). Nieuw:
+`lib/lessons/words.ts` + `words-server.ts`, `data/lesson-themes.ts`,
+`_components/WordDeck.tsx`, de routes `[level]/[skill]/woorden` en `woorden/[theme]`,
+`scripts/lesson-content/translate-words.mjs`, ~150 regels CSS, 36 keys × 3 locales.
+`buildLeerroute` kreeg een `wordCounts`-helft en een `hasContent`-veld; stap 1 van de leerroute
+linkt nu naar de woordkaarten. `docs/decisions/schema.md` uitgebreid.
+**Outcome:** SUCCESS — 126 woorden vertaald ($0.20, 6 gateway-aanroepen), `tsc` clean,
+`next build` compiled, 357/357 unit tests, en de voortgang is door een echte sessie met RLS
+weggeschreven (`seen` op twee woorden in `wonen`) — niet alleen in de state van de browser.
+**What worked / went wrong:** De content stond er al: 126 woorden in `lesson_words` voor A2 Lezen
+in zes thema's, plus een ongebruikte `fetchWordsByTheme` die precies de overzichtsquery was. Het
+contentgat van de vorige sessie ("nul woordenschatconcepten") was dus geen contentgat maar een
+verkeerde bron — de stap keek naar `concepts` terwijl het bewijs in `lesson_words` lag.
+Drie dingen gingen mis. (1) Mijn validator in het vertaalscript keurde "Engelse vertaling is
+gelijk aan het Nederlandse woord" af; *diploma*, *container* en *specialist* zíjn in het Engels
+hetzelfde woord, dus drie batches deden een tweede poging waarin het model een slechter synoniem
+verzon. Regel verwijderd, cache geleegd, opnieuw gedraaid. (2) `supabase-js` in een script valt op
+Node 20 om over een ontbrekend `ws`-pakket (realtime-client); `createDb` uit
+`scripts/a2-content/lib.mjs` gaat via PostgREST en werkt overal — dat is waarom elk ander script
+dat al doet. (3) De "Thema N"-chip nummerde op de volgorde waarin de woorden uit de query kwamen,
+want `sort_order` sorteert woorden binnen een thema en zegt niets over de thema's onderling:
+"Thema 1" was Gemeente en had na één nieuw woord iets anders kunnen zijn. `LESSON_THEME_ORDER`
+maakt de nummering expliciet en stabiel.
+Verder: `setState` in een effect (de kaart als "gezien" markeren bij omdraaien) is een lintfout —
+`react-hooks/set-state-in-effect` — en terecht: omdraaien is een gebeurtenis, dus het hoort in de
+handler.
+**Lesson:** Voordat je concludeert dat er content mist, vraag of je naar de juiste tabel kijkt.
+En een validator die correcte uitvoer afkeurt maakt de dataset stiller slechter dan geen validator:
+het model gaat aan de eis voldoen.
+
+## 2026-09-02 — De lespagina: uitleg als vormkaarten, opgaven per trap
+**Changed:** `components/lessons/LessonStream.tsx` herbouwd van één `sort_order`-lijst naar twee
+secties: de uitleg bovenaan (regel links, navy voorbeeld ernaast, `uitleg.cards` als tegels) en
+de opgaven eronder, gegroepeerd op `tier` met een balkje per trap en één doorlopende nummering.
+`ExFrame` kreeg een kopregel (nummer, trap, uitslag) en een stille nakijkknop. Verder ~110 regels
+CSS in `app/globals.css`, de blokvoortgangsstrook in de lespagina, en 12 keys × 3 locales.
+**Outcome:** SUCCESS — `tsc` clean, `next build` compiled, 357/357 unit tests, en de
+antwoordroute door de browser gecontroleerd (1/2 → 2/2, groepsbalk, "waarom" verschijnt).
+**What worked / went wrong:** De trap-as hoefde niet verzonnen te worden: `lesson_items.tier`
+bestond al en `user_concept_mastery` telt receptief en productief allang apart — de sectie toont
+alleen wat er toch al gemeten werd. Dit draait wél een vastgelegde keuze om (de kop van
+`LessonStream` zei "uitleg en opgaven in ÉÉN lijst, op sort_order"); de kop is herschreven met
+de reden erbij, en wat de kern van die keuze was — één pagina, geen quizmodus, de uitleg blijft
+boven de opgaven leesbaar — is bewust behouden.
+Twee dingen die ik pas zag door te kijken in plaats van te lezen: (1) de negen identieke oranje
+nakijkknoppen onder elkaar, met de uitgeschakelde variant op 45% opacity, lazen als een kapotte
+pagina — vandaar `.ex-check-quiet`; (2) het gat in een invulopgave was onzichtbaar, want het
+droeg alleen `--ghost-border` (`outline_variant` op 20%) en dat verdwijnt op een grijze kaart.
+**Lesson:** Een tint van 20% als enige affordance van een invoerveld werkt op wit en verdwijnt
+op elke andere tier. Een invulplek hoort een rand te hebben die je ziet — §2 staat dat
+uitdrukkelijk toe waar een invoerveld het vraagt.
+
+## 2026-09-02 — Lescontent met HTML in platte-tekstvelden stond met tags en al op het scherm
+**Changed:** `prompt`, `instruction`, `checklist` en vooral `explanation` in
+`lib/lessons/items.ts` verbreed van `nonEmpty`/`z.string()` naar de bestaande `safeHtml`-toets,
+en de vijf renderers in `LessonStream.tsx` zetten ze nu met `dangerouslySetInnerHTML`.
+**Outcome:** SUCCESS — gevonden tijdens de ontwerpronde, niet door een test.
+**What worked / went wrong:** De schrijfpijplijn zet cursief in deze velden om een aangehaald
+woord aan te wijzen, maar de velden waren als platte tekst getypeerd en de renderers zetten ze
+als tekst neer. Op het scherm stond letterlijk `In welke zin staat de juiste vorm bij <em>mijn
+zoon</em>?`. Een query gaf de omvang: 7 mcq-prompts, 3 open_zin-prompts, 2 instructies — en
+**95 van de 430 `explanation`-velden**. Die laatste is de ergste: die verschijnt precies op het
+moment dat de cursist net fout heeft geantwoord en de uitleg het hardst nodig heeft.
+Twee mogelijke reparaties: de tags uit de content halen, of het veld toelaten wat er feitelijk
+in staat. De tweede, want het cursief betekent iets, `safeHtml` accepteert platte tekst ook (dus
+geen bestaande opgave wordt ongeldig), en `uitleg.body_html` deed het al zo.
+Bijna-fout: ik zette de nieuwe `promptHtml`-constante boven de declaratie van `safeHtml`, wat
+een `used before declaration`-fout gaf en drie testbestanden liet vallen — de volgorde in een
+module met top-level consts is niet vrij.
+**Lesson:** Een veld dat als `z.string()` is getypeerd zegt niet dat de content platte tekst
+ís. Als de pijplijn HTML kan schrijven, dwing het schema het af of laat het toe — de derde optie
+(hopen dat het platte tekst blijft) rendert de tags op de pagina van de cursist.
+
+## 2026-09-02 — Grammatica en Examentraining als modules, de tweede kolom eraf
+**Changed:** `lib/lessons/sporen.ts` + `sporen-server.ts` (nieuw), de routes
+`app/[locale]/(app)/dashboard/[level]/[skill]/spoor/[spoor]/{page,[module]/page}.tsx` (nieuw),
+`coursePanel` weg uit de lespagina en `leren/page.tsx`, `leerroute` wijst naar de sporen,
+`.mod-*` in `app/globals.css`, blok A onder het woordkaartenraster, `tests-unit/sporen.test.ts`.
+**Outcome:** SUCCESS
+**What worked:** de module-as van beide sporen stond al in de database — `concept_groups` voor
+Grammatica (5 groepen over 28 lessen), `lesson_blocks` C/D/E voor Examentraining. Voor de derde
+keer deze week was het antwoord op "hoe deel ik dit in" een kolom die er al was.
+**What went wrong:** de leerroutekaart zei "0 / 5 lessen" naast een spoorscherm met 17. Beide
+klopten op zichzelf — de kaart telde `teaches`-lessen, het spoor de blokken — en juist dat maakte
+het onvindbaar. Nu telt de kaart via `spoorLessons` uit `fetchSporen`.
+**Lesson:** twee schermen die naast elkaar hetzelfde ding tellen moeten door dezelfde functie
+worden geteld, ook als beide tellingen verdedigbaar zijn. "Allebei waar" is geen verdediging als
+de kandidaat ze binnen één klik naast elkaar ziet.
+
+## 2026-09-02 — `/leren/[spoor]` kon niet, `/spoor/[spoor]` wel
+**Changed:** niets buiten de padkeuze in `lib/lessons/sporen.ts`.
+**Outcome:** SUCCESS (voorkomen, niet gerepareerd)
+**What went wrong:** het spooroverzicht hoorde intuïtief onder `/leren`, maar daar staat al
+`/leren/[lesSlug]`. Twee dynamische segmenten op dezelfde positie kan Next niet, en de uitweg
+(de lespagina verhuizen) zou elke lesslug in voortgang, zijbalk en gedeelde links raken.
+**Lesson:** kijk welke dynamische segmenten een route al bezet vóór je een niveau toevoegt. De
+goedkoopste URL is de tak die niets hoeft te verhuizen, ook als hij minder mooi leest.
+
+## 2026-09-02 — De blok-A-lessen onder het woordkaartenraster: eraf
+**Changed:** de lessenlijst weg uit `.../woorden/page.tsx`, met de `fetchCourse`-aanroep en de
+`words_lessons_head`-sleutel in nl/en/ar.
+**Outcome:** FAILURE (teruggedraaid binnen één ronde)
+**What went wrong:** ik zette de zes blok-A-lessen onder de zes themakaarten om ze na de
+spoor-herindeling bereikbaar te houden. Ze dragen exact dezelfde zes namen als de kaarten
+erboven, dus het scherm zei hetzelfde ding twee keer.
+**Lesson:** "iets mag niet onbereikbaar worden" is geen reden om het te tonen waar het al staat.
+Als de naam van het nieuwe blok gelijk is aan de naam van iets dat er al staat, is dat het
+signaal dat het dezelfde inhoud is en geen tweede ingang nodig heeft.
+
+## 2026-09-02 — Eén kruimelpad voor het hele studieportaal
+**Changed:** `lib/portal-crumbs.ts` + `app/[locale]/(app)/components/PortalCrumbs.tsx` (nieuw),
+`.crumb*` in `app/globals.css`, de `.wt-back`-knop weg uit vijf leerschermen,
+`tests-unit/portal-crumbs.test.ts`, COMPONENTS.md.
+**Outcome:** SUCCESS
+**What worked:** het zustermenu op de onderdeelkruimel maakt "vanuit een les naar Luisteren" één
+klik. Geverifieerd door hem in een echte browser te klikken en de URL te lezen, niet door de
+markup te vertrouwen: `/nl/dashboard/a2/luisteren`.
+**What went wrong:** ik liet `closeTrail` de `siblings` van alle kruimels behalve de laatste
+weggooien — naar de referentie, waar alleen het laatste een chevron heeft. Daarmee sloopte ik
+precies de sprong waar de eigenaar om vroeg ("naar de listening part"), want die hangt aan een
+kruimel in het midden. Eén dropdown op het diepste scherm in plaats van twee.
+**Lesson:** een referentie-afbeelding laat een *vorm* zien, geen regel. Als de gevraagde functie
+en de nagebouwde vorm elkaar tegenspreken, wint de functie — en het aantal interactieve
+elementen tellen op de screenshot (`.crumb-pick` → 1, verwacht 2) vond het in één keer.
+
+## 2026-09-02 — Nieuwe CSS stond op schijf en niet op de pagina
+**Changed:** niets; `.next/dev` weggegooid en de dev-server herstart.
+**Outcome:** FAILURE (bekende faalmodus, opnieuw geraakt)
+**What went wrong:** het kruimelpad rendeerde als één kruimel per regel met standaard-lettergrootte.
+Niet de CSS: `curl` op het gecompileerde chunk gaf `crumb-pick` → 0 terwijl `mod-row` er 19 keer
+in stond. Een stale Turbopack-chunk, precies zoals CLAUDE.md §10 waarschuwt.
+**Lesson:** bij "mijn nieuwe CSS doet niets" is de eerste stap `curl` op het chunk en grep op de
+klasse, niet de selector nalezen. Twee minuten tegen twintig.
+
+## 2026-09-02 — Ingesproken uitleg op één les (proef)
+**Changed:** `supabase/migrations/20260902160000_lesson_narration.sql`, `lib/lessons/narration.ts`,
+`components/lessons/LessonNarration.tsx`, `scripts/lesson-content/generate-narration.mjs` +
+`narration/b1-hoofdzin-woordorde.txt`, `LESSON_NARRATOR` in `lib/tts-voices.ts`, `.nar-*` en
+`.les-top` in globals.css, 6 sleutels × 3 locales.
+**Outcome:** SUCCESS
+**What worked:** de door de eigenaar gegeven stem-ID stond al in `data/tts-voices.json` als
+`woman_older`, dus er hoefde geen vijfde stem bij (wat zonder zijn toestemming ook niet mag).
+Even nakijken vóór het toevoegen scheelde een migratie van het stembestand.
+**What worked:** de KNM-speler is *niet* overgenomen. Die zit in een sticky dock met een eigen
+store en een IntersectionObserver, en die machinerie bestaat omdat KNM audio per sectie had —
+meerdere spelers op één pagina die elkaar moeten uitzetten. Hier is er één narratie per les, dus
+één kaart met een `<audio>` erin is het hele probleem.
+**Lesson:** neem van een referentie-implementatie de *vorm* over en niet de infrastructuur;
+vraag eerst welk probleem die infrastructuur oploste en of dit scherm dat probleem heeft.
+Bijvangst: `bytes / 16000` is een exacte duurschatting voor deze endpoint (86,0 s berekend tegen
+86,33 s van ffprobe), want ElevenLabs levert constant 128 kbit/s.
+
+## 2026-09-02 — De besproken elementen lichten op, met extra uitleg erbij
+**Changed:** `20260902180000_lesson_narration_cues.sql` (jsonb `cues`),
+`scripts/lesson-content/narration-script.mjs` (parser) + `/with-timestamps` in de generator,
+`components/lessons/NarrationScope.tsx`, `Narrated` in `LessonStream.tsx`, `.is-narrating` /
+`.nar-note` in globals.css, `tests-unit/narration-script.test.ts`.
+**Outcome:** SUCCESS
+**What worked:** markers in het scriptbestand (`[[card-0 | extra uitleg]]`) in plaats van het
+script tegen de HTML matchen. KNM had daar 452 regels heuristiek voor die stil de verkeerde
+alinea koos bij een herhaalde zin; een marker is exact, en zijn tekenoffset is precies wat de
+ElevenLabs-alignment nodig heeft. Alle acht cues landden in één run goed.
+**What went wrong:** de extra uitleg stond eerst in de flow en liet zijn element groeien —
+alles eronder sprong ~40px, acht keer heen en acht keer terug per opname. Gevonden door de
+screenshots op twee cues naast elkaar te leggen, niet door de code te lezen. Nu absoluut gepind.
+**Lesson:** bij iets dat verschijnt en verdwijnt tijdens het lezen is de vraag niet "past het"
+maar "wat beweegt er als het komt". Twee screenshots op verschillende momenten van dezelfde
+animatie laten dat in één blik zien; één screenshot per staat nooit.
+
+## 2026-09-02 — De noot koppelen aan zijn element: drie keer fout gemeten
+**Changed:** `.nar-note::before` (de punt), `.demo-panel` reserveert `--nar-slot`,
+`[data-narrate]:not(.dp-item)`, `transform: none` op een besproken voorbeeldzin, terugtreden van
+0.55 naar 0.62, en het luidsprekertje werd een lampje.
+**Outcome:** SUCCESS, na drie fouten
+**What went wrong (1):** de noot hing als los vakje onder de kaart zonder iets dat hem eraan
+vastmaakte — de eigenaar noemde het "strange". Opgelost met een punt (gedraaid vierkant, geen
+`border`-driehoek: die erft geen achtergrondkleur en de noot heeft er twee).
+**What went wrong (2):** in het navy paneel lag de gepinde noot bovenop de tweede voorbeeldzin.
+In de flow gezet duwde hij het paneel 63px uit en de vormkaarten eronder mee. Uiteindelijk:
+onderaan het paneel, in ruimte die altijd gereserveerd is, dus geen overlap én geen verschuiving.
+**What went wrong (3):** die noot bleef bovenaan de zin plakken ondanks
+`[data-narrate]:not(.dp-item)`. Oorzaak: **een element met een `transform` is het containing
+block voor absoluut gepositioneerde kinderen, ook zonder `position: relative`** — en de
+besproken zin had `translateY(-2px) scale(1.012)`.
+**Lesson:** `position: static` garandeert niet dat een element geen containing block is;
+`transform`, `filter` en `will-change` doen hetzelfde. En: meet de verschuiving met
+`boundingBox()` op twee momenten in plaats van naar één screenshot te kijken — de eerste twee
+fouten waren zichtbaar, de derde alleen in de coördinaten.
+
+## 2026-09-03 — Modulekolom binnen een spoor
+**Changed:** `ModulePanel.tsx` + `modulePanel()`/`ModulePanelData` in `app/[locale]/(app)/components/nav.ts`, een `modulePanel` prop op `AppShell.tsx`, en de twee schermen die erin zitten: `spoor/[spoor]/[module]/page.tsx` en `leren/[lesSlug]/page.tsx`. Nieuwe sleutel `lessons.module_label` in nl/en/ar.
+**Outcome:** SUCCESS
+**What worked / went wrong:** De tweede kolom deelt `#dash-panel` met `LearnPanel` (breedte, achtergrond, mobiele verberging staan daardoor op één plek); alleen de inhoud verschilt, want de as is een andere — één module en zijn lessen, met een switcher naar de zusjes in plaats van uitklapbare secties. `--portal-chrome-w` moest mee op `learn || modulePanel`, anders staat de vaste onderbalk van de KNM-lespagina 260px scheef. Getest met een gemunte sessie (`tests/helpers/session.mjs`) via `check-ui-auth.mjs`; `npx tsc --noEmit`, `next build` en 383 unit tests groen.
+**Lesson:** Een tweede paneel naast een bestaand paneel is een tweede *data*vorm, geen tweede kolomlaag — hergebruik de kolom, niet het datatype.
+
+## 2026-09-03 — een belletje en een puls bij een goed antwoord
+**Changed:** `public/audio/ui/correct.mp3` (0,73s, uit de aangeleverde 3s-notificatie geknipt en
+op −18 LUFS genormaliseerd), `lib/answer-chime.ts` (de enige plek die dat geluid speelt),
+`answer-correct` / `answer-verdict` in `app/globals.css`, en de vijf antwoordoppervlakken:
+`components/exam/McqQuestion.tsx`, `components/proefexamen/ExamQuestionCard.tsx`,
+`components/lessons/LessonStream.tsx`,
+`app/[locale]/(main)/oefenen/[skill]/FreePracticeEngine.tsx`,
+`app/[locale]/(main)/oefenvragen/[slug]/QuizWidget.tsx`,
+`app/[locale]/(app)/dashboard/components/InlineQuiz.tsx`.
+**Outcome:** SUCCESS — `tsc` schoon, `next build` groen, 383 unit tests groen, en Playwright zag
+`/audio/ui/correct.mp3` alleen opgevraagd worden ná het juiste antwoord.
+**What worked / went wrong:** het bronbestand was 3,07s met 0,3s stilte vooraf en 2,1s stilte
+achteraan — `silencedetect` gaf de exacte grenzen, dus het echte geluid is 0,64s. Zonder die knip
+loopt de beloning door tot voorbij de volgende vraag. Het geluid volgt de bestaande
+`knm-audio-enabled`-schakelaar, uit localStorage gelezen in plaats van via `useAudioEnabled`, zodat
+het uit een click-handler aanroepbaar blijft.
+**Lesson:** één trechter per oppervlak is genoeg: in de leerlaag zit elke opgavesoort al in
+`settle()`, dus daar hoefde het belletje maar op één regel. En de CSS hoort in `globals.css`, niet in
+een `<style>` binnen de optieknop — een `<style>` daar telt mee in de accessible name.
+
+## 2026-09-03 — Modulepagina weg, les opgeruimd, percentages erbij
+**Changed:** `spoor/[spoor]/[module]/page.tsx` is nu alleen nog een redirect naar `nextInModule`; `components/lessons/LessonStream.tsx` kreeg twee benoemde secties (Uitleg / Oefenen) en elke trap staat in een eigen kaart (`.exgroup`, `.les-sec` in `app/globals.css`); percentage per module in `ModulePanel` (kolom + switcher, via `siblings.pct` in `nav.ts`) en op het spooroverzicht (`.wt-foot-pct`). Sleutels `section_learn`, `section_learn_sub`, `section_practice` in nl/en/ar. Bijvangst: het spooroverzicht las `crumb_overview` uit `lessons` in plaats van `portal` en toonde de kale sleutel.
+**Outcome:** SUCCESS
+**What worked / went wrong:** De modulekaart en de modulekolom zeiden hetzelfde, dus de pagina ertussen was een klik zonder inhoud — hem tot redirect terugbrengen (en de route laten staan) hield alle bestaande links geldig. Voor de opgaven was de fix niet een rand maar een kaart per trap: de geen-lijnenregel verbiedt de streep, en een oppervlaktetrap doet het werk beter. Let op: `check-ui-auth.mjs` schiet in het portaal alleen de viewport, want `#dash-main` scrollt zelf — voor alles onder de vouw is een eigen puppeteer-script met `#dash-main.scrollTo` nodig.
+**Lesson:** Als twee schermen dezelfde lijst tonen, is er één te veel; kies welke blijft en maak van de ander een doorgang.
+
+## 2026-09-03 — goed is overal groen, met een reizende gradient en een woordpas
+**Changed:** `components/exam/WordPass.tsx` (nieuw), de reward-CSS in `app/globals.css`
+(`@property --answer-spin`, `.answer-correct::after` als gemaskeerde conic-rand, `.answer-words`),
+en de goed-kleur in de leerlaag: `.ex.is-right`, `.opt.right`, `.match-row.right`,
+`.is-right .fb-head` stonden op klei en staan nu op `--color-correct`. Ook
+`.blog-quiz-correct`, `.opt-btn.correct` (eigen groen #2d7a52) en de vijf `#16a34a` in
+`InlineQuiz.tsx` naar het token. In de leerlaag zit de rand op de opgavekaart (`.ex`), niet op de
+optie, zodat invullen dezelfde beloning krijgt als meerkeuze.
+**Outcome:** SUCCESS — `tsc` schoon, `next build` groen, 383 unit tests groen. Playwright las
+onder het spelen `conic-gradient(from 279.981deg, …)` van de `::after`, dus de hoek animeert
+echt; screenshots op `/nl/oefenen/lezen` en in de leerlaag laten de rand halverwege zijn ronde
+zien.
+**What worked / went wrong:** de eigenaar zag geen groen omdat alleen de speler in 2026-08-29 was
+omgezet — de leerlaag, de blogquiz en de oefenvragen hadden elk hun eigen goed-kleur. Eén grep op
+`right|correct` gekruist met `secondary|fe762c|a24000` vond ze alle vijf; dat is de check die
+"altijd groen" hard maakt. De rand kan zonder wrapper-element en zonder z-index-gedoe omdat
+`mask-composite: exclude` het midden eruit stanst: alleen een 2px kader blijft over, dus de
+tekst wordt nooit overdekt.
+**Lesson:** een statuskleur veranderen is nooit één plek — de oude kleur zit ook in de
+surface-CSS van elk ander oppervlak. En twee animaties hier verven in plaats van te transformeren
+(de conic-hoek en de woordkleur), wat §8 verbiedt; dat is een expliciete keuze van de eigenaar en
+staat als zulks in de CSS-comment, met `prefers-reduced-motion` als uitgang. Zet zoiets bij het
+besluit, niet in een commit-message.
+
+## 2026-09-03 — mislukte poging: een sessie minten met `set -a; . .env.development.local`
+**Changed:** niets.
+**Outcome:** FAILURE
+**What worked / went wrong:** `.env.development.local` heeft een regel die zsh niet kan sourcen
+(`parse error near '\n'`), dus `SUPABASE_SERVICE_KEY` bleef leeg en `mintSession()` viel om met
+`invalid_credentials` — wat leest als een auth-probleem en het niet is. `dotenv` na de import
+zetten hielp ook niet: ESM hijst de imports, en `tests/helpers/session.mjs` leest de env op
+module-niveau.
+**Lesson:** voor een script dat `tests/helpers/session.mjs` gebruikt:
+`node --env-file=.env.development.local script.mjs`. De env moet er zijn vóór de import, niet erna.
+
+
+## 2026-09-03 — Portaaloverzicht herbouwd naar de ringen-mockup
+**Changed:** `app/[locale]/(app)/dashboard/page.tsx` herschreven; nieuw `_components/TrackDonut.tsx`; `fetchResume()` in `lib/lessons/lessons-server.ts`; sleutels `dash_total`, `mod_add`, `resume_head`, `resume_sub`, `resume_sub_plain` in nl/en/ar. De 2×2 `ModuleCard`-grid, de examenklaar-meter en de trajectkaart staan niet meer op dit scherm (`ModuleCard`/`WhatNow` blijven bestaan voor de trackschermen).
+**Outcome:** SUCCESS
+**What worked / went wrong:** Vier ringen naast elkaar in plaats van vier kaarten met chips en twee balken: één getal per track leest in één blik. Twee dingen die stil misgingen en gefixt zijn — een `stroke-linecap: round` tekent op 0% nog steeds een stip (las als "je bent al begonnen"), dus de boog wordt bij 0 helemaal niet gerenderd; en `fetchResume` mag de modulenaam niet zelf opzoeken, want `sporen-server` importeert `lessons-server` al — de pagina resolvet hem met `findModule`. De "ga verder"-regel toont alleen taalonderdelen: KNM-lessen hebben een eigen pad en zitten in geen spoor.
+**Lesson:** Een overzicht dat vier vragen tegelijk beantwoordt, beantwoordt er geen enkele meteen — kies het ene getal en zet de rest op het scherm eronder.
+
+## 2026-09-03 — de leerlaag is bewerkbaar geworden in /admin, en nagekeken is een eigen feit
+**Changed:** nieuw scherm `app/[locale]/(admin)/admin/lessen/[id]/` (page + `LessonEditor`,
+`LessonStatus`, `ItemCard`, `PayloadFields`, `item-fields.ts`), schrijflaag
+`lib/admin/lesson-write.ts`, `fetchAdminLesson` + `countBrokenItems` in
+`lib/lessons/lessons-server.ts`, route `app/api/admin/check-lesson/route.ts`, migratie
+`20260903100000_lesson_checked.sql` (`lessons.checked_by` / `checked_on`), `.lei-*` in
+`app/globals.css`, links en tellingen op `/admin/lessen`, tests `tests-unit/lesson-editor.test.ts`.
+**Outcome:** SUCCESS
+**What worked / went wrong:** drie dingen hebben tijd gescheeld en één heeft hem gekost.
+
+- **De veldenspec (`ITEM_FIELDS`) in plaats van veertien formulieren.** Eén tabel die per soort
+  zegt welke sleutel welke invoervorm krijgt (`html`, `strings`, `rows`, `columns`), met
+  `validateItem` als enige muur. Veertien losse formulieren zouden veertien plekken zijn waar een
+  verplicht veld kan ontbreken, en de editor zou dan iets kunnen opslaan wat de seeder afkeurt.
+- **De schrijfregels waren al opgeschreven.** `lesson_items_sort_key` draagt in de migratie het
+  commentaar dat DEFERRABLE de editor *niet* helpt (PostgREST doet elk request in zijn eigen
+  transactie) en dat omgesorteerde items op een negatieve `sort_order` geparkeerd moeten worden.
+  `saveLessonItems` doet precies dat, in de volgorde parkeren → schrijven → verwijderen.
+- **Het schrijfpad is door een échte sessie getest, niet aangenomen.** Met het access token van de
+  admin: PATCH geeft de rij terug; dezelfde PATCH anoniem geeft **200 met `[]`**. Dat is de val die
+  dit project twee keer heeft gehad, en daarom leest elke save hier het aantal geraakte rijen.
+- **De fout: een object-literal om per soort een veld te kiezen.** `itemSummary` koos de
+  samenvattingsregel met `{ woordorde: payload.answer.join(' '), gap_type: pick('sentence') }[kind]`.
+  JavaScript rekent in een literal *alle* takken uit, dus `answer.join` liep ook op een `gap_type`,
+  waar `answer` een string is: `TypeError`, 500 op de hele editor, voor één regel hulptekst.
+
+**Lesson:** een lookup-literal is geen `switch`. Zodra één tak een veld *aanraakt* dat alleen in
+zijn eigen variant bestaat, moet het een `switch` of een functie zijn — bij een discriminated union
+is dat de regel, niet de uitzondering. En: "nagekeken" en "vrijgegeven" waren één klik, waardoor de
+bewering die de USP draagt een bijproduct was van een publicatiebesluit; twee kolommen maken van
+één vlag kostte een migratie van vier regels en maakt "live maar niet nagekeken" eindelijk
+zégbaar — als waarschuwing, nooit als blokkade.
+
+## 2026-09-03 — Portaaloverzicht: tracks als rijen, drie kaartjes ernaast
+**Changed:** `dashboard/page.tsx` naar de tweekolomsmockup; nieuw `_components/TrackRow.tsx` (vervangt `TrackDonut`); `fetchNextLessons()` en `fetchWeek()` in `lib/lessons/lessons-server.ts`; sleutels `ov_*` in nl/en/ar.
+**Outcome:** SUCCESS
+**What worked / went wrong:** De vier-ringen-versie was leeg omdat een ring niets zegt over wat je nú moet doen — de rij draagt "volgende: <les> · <n> min" ernaast en dat vult het scherm met iets bruikbaars in plaats van met decoratie. Bewust afgeweken van de mockup op twee punten: geen kleur per module (een kleur betekent in dit portaal een status, geen categorie — de marks doen het onderscheid), en de totale voortgang is geen tweede donut maar één rail per track waarvan de bréédte het gewicht draagt (40 oefenexamens naast 10 is geen gelijke stem). Val gehad: `ov_week_body` bevatte zelf `{n}` terwijl het getal er al los boven stond — "1 1 lessen af".
+**Lesson:** Een mockup met kleurcodes per categorie is meestal een legenda die de gebruiker moet leren; de bestaande marks doen dat werk al.
+
+## 2026-09-03 — De niveaupagina: witte kop, en het onderdeel als één regel
+**Changed:** `.portal-hero` is wit in plaats van navy (`app/globals.css`), `HorizonBanner` kreeg
+`dots` en `tone` zodat de skyline op wit zichtbaar is (`tone="silhouette"`),
+`ModuleSkillGrid.tsx` is herschreven naar vier regels (`CategoryMark` + percentage + balk +
+"Volgende: …" + Verder), en `[level]/page.tsx` haalt de eerstvolgende les per onderdeel op.
+**Outcome:** SUCCESS — `tsc`, `next build` en 392 unittests groen; beide screenshots gelezen.
+**What worked / went wrong:** De kaart had zestien datapunten (topper, ring, tien examenslots,
+zwak concept, lestelling ×4) voor één vraag; alles wat weg is staat op de onderdeelpagina zelf.
+Eerste poging leek niet te werken: de nieuwe CSS zat niet in de gecompileerde chunk — de bekende
+stale Turbopack-chunk. `rm -rf .next/dev` + herstart loste het op; `touch globals.css` niet.
+Daarna was de skyline in de witte kop onzichtbaar: `tone="hero"` is de navy-ramp, op wit moet het
+`silhouette` zijn.
+**Lesson:** Een graphic-component die van ondergrond wisselt heeft twee tonen nodig (huisjes én
+stippen) — een witte variant van een navy paneel is nooit alleen een `background`-regel.
+
+**Vervolg dezelfde dag:** de skyline is er daarna hélemaal uit (`PortalHero` heeft geen
+`HorizonBanner` en geen `seed` meer) en de twee panelen onder het raster — de conceptentabel en
+"wat je nu moet doen" — zijn weg; de vier onderdeelkaarten zijn groter (46px merkteken, 1.28rem
+naam, 1.6rem percentage, 8px balk). De pagina is nu kop + vier regels.
+**Lesson:** Wat wij als "de grafische taal toepassen" zien, ziet de eigenaar op een werkscherm als
+ruis. Op een portaalpagina verdient een graphic zijn plek pas als hij iets zégt.
+
+## 2026-09-03 — /admin/woorden: de leerwoorden zijn een eigen module geworden
+**Changed:** nieuw scherm `app/[locale]/(admin)/admin/woorden/` (page + `WoordenTable`),
+leeslaag `lib/admin/words.ts`, nav-item in `lib/admin/nav.ts`, regel in CLAUDE.md §4.
+**Outcome:** SUCCESS
+**What worked / went wrong:** `lesson_words` (126 woorden, A2-Lezen, 6 thema's) had geen enkele
+adminingang, terwijl die woorden wél op de woordenlijstpagina van blok A en in de woordkaartendeck
+staan; ze waren alleen te wijzigen door opnieuw te seeden. Nu een ReUI-grid in dezelfde vorm als
+`/admin/woordkaarten` — zoeken, filters op thema/gebruik/audio/status, rechterpaneel, nieuw woord —
+maar met eigen kolommen, want het is een andere tabel.
+
+- **Dezelfde vorm, niet dezelfde component.** `lesson_words` heeft geen foto en geen Turks, wél
+  `usage` (receptief/productief) en `frame`, en zijn thema is een vrij tekstveld uit de cursus in
+  plaats van KNM's zeven vaste thema's. Eén component voor beide zou van elk verschil een `if`
+  maken en van "thema" een veld dat soms een nummer en soms een naam is.
+- **De opacity-val sprong twee keer in één scherm.** `bg-primary/10` rendert in de adminbundle
+  volledig dekkend: de themachip werd marineblauw-op-marineblauw en de ReUI-`Badge` met
+  `variant="primary-light"` slikte het woord "productief" op. Beide nu een letterlijke `rgba()`.
+  **De bestaande `/admin/woordkaarten` heeft dezelfde bug nog** (`WoordkaartenTable.tsx:246`) — daar
+  is de themachip een massief bolletje met een onzichtbaar cijfer; niet gefixt, want de eigenaar
+  koos alleen voor de nieuwe module.
+- **Het schrijfpad is met een echte sessie getest, niet aangenomen:** insert, update en delete via
+  PostgREST met het token van de admin werken; dezelfde UPDATE anoniem geeft **200 met `[]`**.
+  Daarom leest `save()` `select('id')` terug en klaagt bij nul rijen.
+- **De screenshot loog twee keer over het rechterpaneel.** Het staat in beide shots open terwijl
+  `form` null is: puppeteer 13.7 draait Chromium 101, dat de losse `translate`-property niet kent,
+  dus `translate-x-full` doet niets. Dat staat in de kop van `check-ui-auth.mjs` en het kostte
+  alsnog tijd — bij een paneel dat "open" lijkt, eerst de state controleren, niet de CSS.
+
+**Lesson:** een tint van een merkkleur is in de adminbundle een letterlijke `rgba()`, óók binnen een
+ReUI-`variant` — een component-API beschermt niet tegen een utility die daarachter alsnog opaak
+rendert. En twee woordtabellen met twee sleutels verdienen twee schermen; de verleiding om er één
+scherm met een `if` van te maken is precies hoe een A2-woord onder een KNM-thema belandt.
+
+## 2026-09-03 — Het onderdeelscherm compacter: strook, kortere kop, kaarten zonder blurb
+**Changed:** `_components/ExamStrip.tsx` (nieuw) vervangt de tien examenrijen op
+`[level]/[skill]/page.tsx` door één paneel met tien vakjes, kop-tellingen en één startknop;
+`.skill-head` is één regel (naam + tagline naast elkaar), de slaagkans-meter is afgetopt op 12rem,
+`LeerModuleCard` heeft geen `stepLabel` en geen `blurb` meer en een kop van 3,25rem; zeven nieuwe
+keys in nl/en/ar.
+**Outcome:** SUCCESS — `tsc`, `next build`, 392 unittests; screenshots van het onderdeelscherm,
+`/spoor/grammatica` en `/woorden` gelezen.
+**What worked / went wrong:** De hele pagina past nu in één viewport waar de examenlijst alleen al
+700px was. Twee dingen uit de mockup zijn er bewust níet in gegaan: het groen ("Gehaald" is navy
+met een vinkje, §8 verbiedt een nieuwe hue voor een status) en "70% nodig" — DUO publiceert geen
+zak-slaaggrens en `SEO/facts.md` §9 verbiedt er een te noemen. Eén echte fout onderweg: met
+`stepLabel` haalde ik ook `.leer-card .lc-chip` uit de CSS, terwijl `/spoor/[spoor]` en `/woorden`
+diezelfde kaart nummeren — teruggezet met een comment erbij.
+**Lesson:** Een class uit `globals.css` halen is geen lokale wijziging. `grep` de class door
+`app/` en `components/` vóór het verwijderen, ook als je alleen de component aanpast waar hij
+lijkt te horen.
+
+## 2026-09-07 — De speler, het meelezen en het lesplaatje voor heel blok B
+
+**Changed:** (1) Nieuwe migratie `20260907100000_lesson_narration_words.sql` — `word_times jsonb` op `lesson_narration`, met een array-CHECK; toegepast met `psql` tegen de container en de versie in `supabase_migrations.schema_migrations` gezet. (2) `scripts/lesson-content/narration-script.mjs` kreeg `wordTimes()`, dat de ElevenLabs-alignment in woorden met een starttijd en een alinea-index knipt; `generate-narration.mjs` schrijft die mee. (3) `LessonNarration.tsx` herbouwd: navy kaart onder de inleiding (was een lichte aside ernaast), één statusregel `0:58 / 1:28 · meelezen aan` plus een tweede regel `nu: <deel van de les>`, een meeleesschakelaar, en `FollowAlong` — het voorgelezen script met het huidige woord onder een markeerstift, elk woord een spoelknop. De klok loopt op `requestAnimationFrame` in plaats van `timeupdate`. (4) Nieuw `data/lesson-visuals.ts` (tien getypte soorten: `zinslots` `bijzin` `vervoeging` `bouwer` `tijdbalk` `sorteer` `trap` `paren` `ruimte` `frequentie`) + `components/lessons/LessonVisual.tsx`, boven de regel in `LessonStream`, met genummerde stappen die oplichten uit de opname (cue `vis-n`), met de hand, of via een doorloopknop. Alle 28 lessen van blok B hebben een plaatje. (5) 27 nieuwe narratiescripts in `scripts/lesson-content/narration/` plus b1 herschreven; alle 28 ingesproken (28,2 minuten, 3.981 getimede woorden, 268 cues, alle rijen `pending`). (6) `tests-unit/narration-cues.test.ts` bewaakt cue-id's en `wordTimes`. (7) Twaalf i18n-sleutels in nl/en/ar; `narration_hint` verwijderd.
+**Outcome:** SUCCESS — `tsc` clean, `next build` clean, 509/509 vitest groen, met puppeteer gecontroleerd dat op 42s de status "nu: het plaatje, stap 4" zegt, stap 4 oplicht en het juiste woord gemarkeerd staat.
+**What worked / went wrong:** Vier fouten, alle vier alleen zichtbaar in een screenshot of een echte afspeelbeurt:
+  1. `stepCount()` stond eerst in de clientcomponent en werd door de servercomponent aangeroepen → "Attempted to call stepCount() from the server". Verplaatst naar het databestand.
+  2. Het meeleesvlak rolde bij elk woord naar het einde van het script: het meerollen rekent met `offsetTop`, en dat getal is relatief aan de naaste *gepositioneerde* voorouder. `.nar-read` had geen `position: relative`.
+  3. De trap (`groot · groter · het grootst`) viel in een `auto-fit`-raster in twee rijen, waardoor de hoogte geen trap meer was maar toeval; en de balkhoogte via `calc(percentage * getal)` werd 0, want een percentagehoogte lost op tegen een ouder die `auto` is. Nu één rij met `grid-auto-flow: column`, een vást vak van 6.4rem voor de balken, en een unitless `--lv-trap` die smal een *breedte* wordt.
+  4. De tijdbalk was horizontaal: bij vijf punten viel hij in twee rijen en liep de as alleen achter de eerste rij door. Verticale rail.
+  En in het Arabisch spiegelde het Nederlandse lesmateriaal mee — het meeleesvlak las als ".plaatje het naar eerst Kijk" en plaats één stond rechts.
+**Lesson:** **Een plaatje dat een positie uitlegt, mag zelf nooit van positie wisselen.** Alles wat Nederlandse lescontent afbeeldt (het lesplaatje, het voorgelezen script) staat vast op `dir="ltr"`; alleen de chrome volgt de locale. Verder: een `auto-fit`-raster is verkeerd zodra de *volgorde of de hoogte* de betekenis draagt — dan is `grid-auto-flow: column` met een expliciete val-terug de enige veilige vorm. En een woordmarkering hoort niet aan `timeupdate` (~4×/s): die loopt zichtbaar achter en springt met twee woorden mee.
+
+## 2026-09-08 — Modulekaarten op /dashboard, en een git checkout die werk weggooide
+**Changed:** `app/[locale]/(app)/dashboard/_components/TrackCard.tsx` (nieuw) plus de kaartenraster-CSS en de `cards`-afleiding in `app/[locale]/(app)/dashboard/page.tsx`; drie sleutels (`card_parts`, `card_exams`, `card_start`) in `messages/{nl,en,ar}.json`. `TrackRow.tsx` is nu ongebruikt.
+**Outcome:** SUCCESS (met één omweg)
+**What worked / went wrong:** De vier tracks staan als catalogus-kaarten: navy kunstpaneel met de `ExamMark`, kicker, titel, en een voet die per toestand wisselt — `active` (huidige les, balk, percentage, oranje "Verder"), `open` (onderdelen/examens, "Beginnen"), `locked` (slotje op de tegel, "Toevoegen") en `soon` (ONA, geen link). Twee dingen misten eerst: backticks in een CSS-commentaar *binnen* het `<style>{\`…\`}`-template beëindigden de literal (TS1005-regen), en `margin-top:auto` op de knop slokte de minimumafstand op — een `.tcard-gap`-spacer lijnt de knoppen wél uit. Erger: ik schrok van een grote diff in `messages/*.json` en deed `git checkout` op de drie bestanden, wat 163 niet-gecommitte sleutels wegvaagde. Teruggehaald uit de gebouwde chunks in `.next/server/chunks/ssr/messages_*_json_*._.js` (`require()` geeft `[id, fn]`, `fn(null, b, null)` zet de JSON in `b.exports`), waarna de diff exact +163 sleutels was.
+**Lesson:** Een grote diff in een berichtenbestand is meestal echt werk, geen opmaakruis — controleer met een round-trip (`json.dumps(indent=2) == origineel`) vóórdat je `git checkout` overweegt, en nooit `git checkout` op een gewijzigd bestand zonder te vragen. En: geen backticks in CSS-commentaar binnen een template literal.
+
+## 2026-09-08 — /dashboard: 2×2 kaarten, één widget, twee blokken eruit
+**Changed:** `app/[locale]/(app)/dashboard/page.tsx` — vast tweekolommenraster voor de vier tracks, de navy kaart teruggebracht tot het totaalpercentage plus de weekstreak, en de kaarten "Jouw termijn" en "Ga verder bij …" verwijderd (met `fetchTraject`, `fetchSporen`/`findModule` en `lessonPath` eruit); `ov_week_count` toegevoegd in `messages/{nl,en,ar}.json`.
+**Outcome:** SUCCESS
+**What worked / went wrong:** `auto-fill` maakte van vier kaarten op een brede kolom 3 + 1; een vaste `repeat(2, minmax(0,1fr))` boven 560px leest als 2×2 en klapt op mobiel netjes naar één kolom. De rails-per-track met legenda in het widget waren een derde herhaling van hetzelfde getal — elke kaart draagt zijn eigen balk al — dus alleen het totaal en de zeven dagvakjes bleven staan.
+**Lesson:** Gebruik `auto-fill` alleen als het aantal kaarten onbekend is; bij een vaste catalogus is het aantal kolommen een ontwerpbesluit, geen gevolg van de kolombreedte.
+
+## 2026-09-08 — Modulekaart: groter kunstpaneel, voet op één regel
+**Changed:** `app/[locale]/(app)/dashboard/_components/TrackCard.tsx` (voet als `.tcard-foot`) en de kaart-CSS in `app/[locale]/(app)/dashboard/page.tsx` — kunstpaneel 92 → 118px, `ExamMark` 44 → 56px.
+**Outcome:** SUCCESS
+**What worked / went wrong:** De meta-regel of de examenstelling staat nu links en de knop rechts op dezelfde regel; dat haalt twee regels hoogte per kaart weg, waardoor de 2×2 plus het widget in één beeld past ondanks het grotere paneel.
+**Lesson:** Op een kaartraster koop je hoogte terug in de voet, niet in de koptekst: een knop op een eigen regel kost per kaart net zoveel als het hele visuele paneel groter maken oplevert.
+
+## 2026-09-08 — Dezelfde kaart op /dashboard/[level], en de submenu-iconen eruit
+**Changed:** `.tcard`-CSS verhuisd van de inline `<style>` in `app/[locale]/(app)/dashboard/page.tsx` naar `app/globals.css` (met `.tone-light`), `TrackCard` kreeg een `tone`-prop en een streepje bij `pct: null`, `ModuleSkillGrid` rendert nu `TrackCard` in plaats van `.skill-row` (die CSS is verwijderd), en de iconen in de uitgeklapte zijbalkrijen zijn weg (`PortalSidebar.tsx`).
+**Outcome:** SUCCESS
+**What worked / went wrong:** Eén kaartvorm op twee altitudes werkt omdat de tegelinversie het onderscheid al maakt: `ExamMark` op navy voor een module, `CategoryMark` op het lichte paneel voor een onderdeel erbinnen. Onderweg sloeg de bekende Turbopack-val toe: de nieuwe CSS stond in `globals.css` maar de geserveerde chunk had hem niet, dus de pagina rendeerde volledig ongestyled (en `DotField` lekte over de zijbalk omdat `position:relative` niet gold). `touch` op het bestand hielp niet; `rm -rf .next/dev` plus een herstart wel.
+**Lesson:** Ongestyled-lijkende pagina na CSS in `globals.css`: curl de chunk uit de HTML en grep je klasse vóórdat je aan de CSS zelf gaat twijfelen. En: CSS die twee pagina's delen hoort in `globals.css`, niet in een `<style>` van de eerste pagina — anders krijgt de tweede een tweede kaart met dezelfde naam.
+
+## 2026-09-08 — Onderdeelkaarten ook op navy
+**Changed:** `TrackCard` prop `tone` → `layer: 'track' | 'onderdeel'`, `.tcard.layer-onderdeel .tcard-art` op vlak `--color-primary` in `app/globals.css`, en `ModuleSkillGrid` geeft `CategoryMark tone="dark"` mee.
+**Outcome:** SUCCESS
+**What worked / went wrong:** Het paneel mag navy zijn zolang het merkteken meeschakelt: `tone="dark"` maakt de ink wit, de tegel doorschijnend en de *cut*-kleur de navy — met `tone="light"` zou er een lichte tegel in het paneel staan knipperen. Het verschil tussen de twee altitudes ligt nu bij de tekening, de kicker en het merkverloop (module) tegen het vlakke vlak (onderdeel), niet meer bij de tegelkleur.
+**Lesson:** Een mark verplaatsen naar een andere achtergrond is altijd twee wijzigingen: het paneel én de `tone`, want de cut-kleur moet de achtergrond zijn. En noem de prop naar de laag (`layer`), niet naar de kleur — `tone="light"` bij een navy paneel is een naam die liegt.
+
+## 2026-09-08 — /dashboard/[level]: de kop weg, de cijfers naar de zijkolom
+**Changed:** `app/[locale]/(app)/dashboard/[level]/page.tsx` gebruikt geen `PortalHero` meer maar `.ov-head` + `.ov-grid` met een `.ov-side`; de `.ov-*`-CSS is uit de inline `<style>` van `dashboard/page.tsx` naar `app/globals.css` verhuisd, met `.ov-stats` erbij voor Leren/Oefenen.
+**Outcome:** SUCCESS
+**What worked / went wrong:** De niveaupagina heeft nu exact de vorm van het overzicht: titel, kaarten links, cijfers rechts. De examenklaar-disclaimer ("geen voorspelling van je DUO-uitslag") staat in de navy kaart en is expliciet gemarkeerd als een feitelijke claim die niet mag sneuvelen bij een opruimactie. `PortalHero` blijft in gebruik op de leren-pagina, dus de component blijft staan.
+**Lesson:** Zodra een tweede pagina dezelfde vorm nodig heeft, verhuist de CSS naar `globals.css` in dezelfde commit — een gekopieerde `.ov-side` loopt binnen één sessie uit elkaar.
+
+## 2026-09-08 — De zijkolom op de onderdeel-, KNM- en lespagina
+**Changed:** `dashboard/[level]/[skill]/page.tsx` (de diagnose — `SlaagkansGauge` + `DocentPanel` — van de volle breedte naar `.ov-side`), `dashboard/knm/page.tsx` (kop naar `.ov-head`, gemiddelde + drie feiten naar de zijkolom, `CategoryMark` en de terugknop eruit), `dashboard/[level]/[skill]/leren/page.tsx` (`PortalHero` eruit, kop + zijkolom met het lespercentage), plus `.ov-back` in `app/globals.css`.
+**Outcome:** SUCCESS
+**What worked / went wrong:** Vier portaalpagina's hebben nu één vorm: titel, kaarten links, cijfers rechts. De slaagkansmeter blijft een meter en is geen rail geworden — het is de enige plek waar een band ("redelijk") bij het getal hoort, en die band is wat de kandidaat komt halen. De terugknop is alleen op de lespagina gebleven: dat is de enige van de vier zonder eigen rij in de zijbalk.
+**Lesson:** Bij het opschonen van een kop: kijk eerst of de zijbalk hetzelfde al zegt. Het merkteken en de terugknop op de KNM-kop waren precies de actieve rij in de zijbalk nog een keer; op de lespagina, die geen eigen rij heeft, was de terugknop juist de enige uitgang.
+
+## 2026-09-08 — Statistiekbalk boven een onderdeel, leerroute in dezelfde kaart
+**Changed:** nieuw `_components/SkillStatBar.tsx` (+ `.statbar`-CSS in `app/globals.css`), `dashboard/[level]/[skill]/page.tsx` gebruikt die balk in plaats van de kop plus zijkolom, `DocentPanel` kreeg `bars={false}` (quote en uitgangen op één regel), en de leerroute rendert `TrackCard` in `.ov-cards.is-three` in plaats van `LeerModuleCard`. Sleutel `leerroute_step` in nl/en/ar.
+**Outcome:** SUCCESS
+**What worked / went wrong:** De balk zegt in één regel wat eerst twee blokken kostte: naam plus ondertitel op wit, ring en de drie zwakste concepten op het tonale vlak (de scheiding is die kleurwissel, geen 1px-lijn). Twee dingen kostten een ronde: `slaagkans_label` woont in de `dashboard`-namespace en niet in `portal`, dus de balk rendeerde `portal.slaagkans_label` letterlijk; en de voet van `TrackCard` moest `flex-wrap` krijgen, want drie kaarten op een rij zijn te smal voor twee feitregels naast een knop. En weer: na CSS in `globals.css` serveerde Turbopack een verouderde chunk — `rm -rf .next/dev` plus herstart.
+**Lesson:** Grep een sleutel in het locale-bestand vóór je `useTranslations('x')` kiest: een ontbrekende sleutel valt niet om, hij rendert zijn eigen pad op het scherm. En bij Turbopack: reken op de herstart als je aan `globals.css` komt, dat scheelt twee screenshotrondes.
+
+## 2026-09-08 — De onderdeelkop als één kaart met de KNM-meter erin
+**Changed:** `_components/SkillStatBar.tsx` herbouwd naar drie kolommen (naam · `SlaagkansGauge bare` · de drie zwakste concepten) met een tonale voetstrook eronder die de docentregel en de twee uitgangen draagt; `.statbar`-CSS in `app/globals.css` herschreven; `DocentPanel` is niet meer in gebruik op deze pagina (de regel-logica is in de balk opgegaan). Sleutels `sw_to_lesson_short` en `docent_all_concepts_short` in nl/en/ar.
+**Outcome:** SUCCESS
+**What worked / went wrong:** De meter is die van het KNM-project en geen nieuwe tekening — het bandlabel ("redelijk") bij het getal is precies wat de vraag "is 64% veel?" beantwoordt. Getest met `review-portaal@local.test`, het enige lokale account met examenpogingen; met het lege testaccount ziet deze kop er onvermijdelijk anders uit (streepje plus de uitnodiging), en dat is de toestand die je makkelijk voor kapot aanziet.
+**Lesson:** Bij een kop die diagnose toont: screenshot met een account dat data heeft. Query eerst `exam_attempts` op de lokale stack om te zien wie dat is, in plaats van een leeg account te fotograferen en aan de CSS te gaan twijfelen.
+
+## 2026-09-08 — Statistiekbalk: kop links boven, meter naar links
+**Changed:** `.sb-top` in `app/globals.css` — `align-items: start` in plaats van `center`, de naamkolom van 0.85fr naar 0.72fr, en `.sb-gauge` zonder `margin: 0 auto`.
+**Outcome:** SUCCESS
+**What worked / went wrong:** Gecentreerd zakte de paginatitel mee met de hoogte van de meter en zweefde hij midden in de kaart; boven uitlijnen zet hem waar een titel hoort. De meter stond gecentreerd in zijn kolom, dus die `auto`-marge was wat hem naar rechts duwde — niet de kolombreedte.
+**Lesson:** Als een element "te veel naar rechts" staat in een grid, kijk eerst naar zijn eigen `margin: auto` voordat je aan de kolomverhoudingen gaat draaien.
+
+## 2026-09-08 — Statistiekbalk: naam en ondertitel als één bovenregel
+**Changed:** `.sb-top` in `app/globals.css` — `.sb-id` spant nu `grid-column: 1 / -1` met titel en ondertitel op één basislijn, en de tweede rij is meter (200px) plus concepten.
+**Outcome:** SUCCESS
+**What worked / went wrong:** In drie kolommen naast elkaar duwde de kop de meter naar het midden en brak de ondertitel over twee smalle regels. Als bovenregel leest de kop als een paginatitel en begint de meter helemaal links, wat de eigenaar vroeg.
+**Lesson:** Een kop en een diagnose willen niet dezelfde rij: zet de identiteit op een eigen volle-breedteregel en laat de cijfers de rij eronder verdelen.
+
+## 2026-09-08 — Statistiekbalk: drie kolommen onder een eigen kopregel
+**Changed:** `_components/SkillStatBar.tsx` en de `.statbar`-CSS in `app/globals.css` — kop op een eigen regel, daaronder `.sb-body` met de meter op een tonaal vlak, de docentregel met de twee uitgangen, en de zwakste concepten (naam plus percentage op één regel, de balk op volle breedte eronder).
+**Outcome:** SUCCESS
+**What worked / went wrong:** De tonale kolom onder de meter is de scheiding tussen de drie kolommen — dat is wat de mockup met dunne verticale lijnen deed, en het houdt zich aan de no-line-regel. De balken van de concepten zijn onder de naam gezet in plaats van ertussen: in een kolom van ~330px is een balk tussen twee teksten te kort om tien punten verschil te laten zien.
+**Lesson:** Een verticale scheidslijn uit een mockup vertaalt in dit systeem naar een tonaal vlak om één kolom, niet naar een border.
+
+## 2026-09-08 — Kop compacter (KNM-tweedeling) en de examens als kaartjesstrook
+**Changed:** `_components/SkillStatBar.tsx` naar twee kolommen (meter links, tonaal paneel rechts met quote → zwakste concepten → uitgangen) met kleinere maten; `_components/ExamStrip.tsx` herbouwd naar tien kaartjes met een navy kop (score of nummer plus status) en een lichte voet (naam, feiten, knop); bijbehorende CSS in `app/globals.css`. Sleutels `exam_card_items/minutes/available/in_package/title` in nl/en/ar.
+**Outcome:** SUCCESS
+**What worked / went wrong:** Tien gelijke kolommen die meekrimpen werd ~90px per kaartje en kapte élke regel af ("Oefenexame…", "25 vragen ·"). Een vaste kaartbreedte van 8.4rem met een horizontale scroller leest altijd en past op een breed scherm alsnog in één rij. Verder: `Read` op een fullPage-screenshot laat de onderkant van een lange pagina niet zien — een los puppeteer-scriptje dat één element fotografeert (`el.screenshot()`) was de snelste manier om alleen de strook te bekijken.
+**Lesson:** Voor een blok onderaan een lange pagina: fotografeer het element, niet de pagina. En bij een rij van tien: geef de kaartjes een vaste breedte plus scroll, want gelijk verdelen betekent bij tien stuks onleesbaar.
+
+## 2026-09-08 — De examenstrook is een carrousel, plus een "alle oefenexamens"-scherm
+**Changed:** `_components/exam-slots.ts` (nieuw, de tien slots als data), `ExamCard.tsx` (nieuw,
+het kaartje), `ExamCarousel.tsx` (nieuw, embla via `components/ui/carousel`), `ExamStrip.tsx`
+herschreven, nieuw scherm `dashboard/[level]/[skill]/oefenexamens/page.tsx` met dezelfde kaartjes
+in een raster, `.es-slide/.es-nav/.es-grid` in `app/globals.css`, `exams_prev/exams_next` in nl/en/ar.
+**Outcome:** SUCCESS
+**What worked / went wrong:** De `overflow-x`-strook had geen greep voor een muis; embla lost dat
+op. Twee dingen kostten een ronde: (1) `CarouselContent` zet zijn eigen `overflow: hidden` op de
+div met `data-slot="carousel-content"`, dus de 2px hover-lift en de selectiering van een kaartje
+werden afgeknipt — opgelost met `margin: -0.5rem 0; padding: 0.5rem 0` op datzelfde data-slot.
+(2) `CarouselItem` brengt `pl-4` mee en `box-sizing: border-box` telt dat in de breedte, dus 10rem
+slide = 9rem kaartje en de feitenregel ("25 vragen · 65 minuten") kapte weer af; 11.25rem is de
+maat waarop hij past. Op mobiel is het raster twee kolommen (`minmax(8.75rem, 1fr)`) en mag de
+feitenregel daar wél afbreken — tien kaartjes onder elkaar is de lijst waar dit voor in de plaats
+kwam.
+**Lesson:** Bouw de staten van een kaartje één keer als data (`buildExamSlots`) zodra een tweede
+scherm ze toont; en bij shadcn-primitives: kijk welke klassen de component zélf hardcodeert
+(`-ml-4`, `pl-4`, `overflow-hidden`) voordat je breedtes uitrekent.
+
+## 2026-09-08 — De opgaven als pager, en de uitleg ín de speler
+**Changed:** `components/lessons/LessonStream.tsx` (trapkaarten → één opgave per keer met
+nummerstapjes, `withLead`), `LessonStage.tsx` + `LessonProgressScope.tsx` + `LessonNowCard.tsx`
+(nieuw), `LessonNarration.tsx` (`layout="hero"`, sluier, de regel-die-nu-klinkt), `item-helpers.ts`
+(`splitUitleg`), de lespagina, `.exq-* .stg-* .nar-hero/.nar-line/.nowcard/.les-learn` in
+`app/globals.css`, en 16 sleutels in nl/en/ar.
+**Outcome:** SUCCESS
+**What worked / went wrong:** Vier dingen kostten een ronde. (1) De **stale Turbopack CSS-chunk**
+sloeg weer toe: `nar-hero` stond niet in de geserveerde chunk terwijl `exq-steps` (20 minuten
+eerder) er wel in stond — `touch globals.css` hielp niet, `rm -rf .next/dev` + herstart wel. Let op
+bij het grepen van een chunk: `ll-head` matchte `skill-head`, dus grep op een klasse die niet de
+staart van een andere is. (2) Een python-`replace` die van "caption" tot een sluitende `</div>`
+knipte at ook de sluier op — SSR miste daarna `.nar-bigplay` en de screenshot-klik faalde; dat is
+het foutsignaal dat een te grote knip oplevert. (3) `useContext` in `ExFrame` was de manier om
+"Overslaan →" naast "Nakijken" te krijgen zonder acht renderers een prop te laten doorgeven.
+(4) De dia's schalen met `transform` op basis van `offsetHeight` werkt omdat een transform de
+layout niet verandert — de gemeten hoogte blijft dus de ongeschaalde, ook als er al een schaal op
+staat. Een `ResizeObserver` op de inhoud is nodig: het lesplaatje klapt een noot open zodra de stem
+bij die stap komt.
+**Lesson:** Bouw de dia-indeling van een speler op de cues die de opname al heeft
+(`lesson_narration`), niet op een tweede ordening — die twee gaan anders uit elkaar lopen. En als
+één vaste maat gevraagd wordt voor wisselende inhoud: schaal de inhoud naar de doos, niet de doos
+naar de inhoud.
+
+## 2026-09-08 — De omslag: de leskop is de speler
+**Changed:** `components/lessons/LessonNarration.tsx` (nieuwe prop `cover={{kicker,title}}`, de lichte sluier wordt een navy omslag), `.nar-cover` in `app/globals.css`, de `h1` op de lespagina alleen nog zonder opname, `lessons.lesson_no` in nl/en/ar.
+**Outcome:** SUCCESS
+**What worked / went wrong:** De mockup was een navy tegel met "LES 2", de titel onderin en een kleischijf uit de hoek. Twee vragen van de eigenaar in één antwoord: het is de kop van de pagina *en* de omslag van de speler, dus draagt hij de `h1` en heeft de pagina er geen tweede meer. De schijf is `rgba(162,64,0,0.62)` op navy — geen `color-mix` (Chromium 101 in de screenshotbrowser rendert dat solide) en geen tweede zon, want het enige oranje in het beeld is de speelknop. Weer een verschaalde CSS-chunk in dev: de eerste screenshot toonde de omslag ongestyled (`rm -rf .next/dev` + herstart).
+**Lesson:** Een titel die op een omslag staat, moet van de pagina áf — twee keer dezelfde kop maakt de tweede tot bijschrift van de eerste. En de opake omslag mag alleen vóór de eerste start bestaan (`started = playing || current > 0`), anders verbergt hij de dia's die eronder meelopen.
+
+## 2026-09-08 — De omslag teruggedraaid: de tegel is een kaartje geworden
+**Changed:** `cover` weer uit `components/lessons/LessonNarration.tsx` (de doorzichtige `.nar-veil` is terug), `.nar-cover` in `app/globals.css` vervangen door `.les-card`, en de `h1` staat weer op de pagina — nu in een kaartje met de navy tegel en het lesnummer erop.
+**Outcome:** SUCCESS
+**What worked / went wrong:** De opake omslag was mooi maar verkeerd: hij dekte precies af wát er straks met de stem meeverspringt, en dat vooruitzicht is de hele belofte van dit blok. De eigenaar draaide het terug — de tegel blijft, maar als klein merk naast de titel. De schijf op de tegel schaalt mee (2.4rem op een tegel van 3.35rem) in plaats van uit de hoek van een heel vlak te lopen.
+**Lesson:** Een "druk op play"-laag moet laten zien waar je op drukt. Een omslag die het beeld eronder verbergt, verkoopt niets — de doorzichtige sluier van het KNM-portaal is er niet voor de sier.
+
+## 2026-09-08 — De balk volgens de mockup: −10 · play · +10, staafjes en hoofdstukken
+**Changed:** `components/lessons/LessonNarration.tsx` (spoelknoppen, `bars`, `chapters`, tijd rechts, "meelezen aan" als pil met tekst) en de hele `.nar-*`-blok in `app/globals.css`; vier sleutels bij in nl/en/ar (`narration_back10/fwd10/chapters/wave`).
+**Outcome:** SUCCESS
+**What worked / went wrong:** Twee dingen uit de mockup zijn bewust niet overgenomen. (1) De chip "door Marieke" — de stem is ElevenLabs, niet de docent; haar naam op die stem is precies de claim die dit product niet mag doen. (2) De golfvorm: we hebben geen amplitudes, dus de staafjes zijn de wóorddichtheid per vakje uit `word_times` — een echt gegeven over de opname in plaats van een tekening die iets belooft wat ze niet weet. De hoofdstukpillen komen uit de cues die er al zijn; de kapitalen van de vormkaartlabels (`GEWONE VOLGORDE`) gaan naar onderkast, maar alleen als een naam géén kleine letter heeft. De tijdstippen op de pillen zijn er op verzoek weer af: een pil is een sprong naar een onderdeel, en de tijd staat al één keer rechts.
+**Lesson:** Als een mockup een visualisatie vraagt waar geen data voor is, zoek eerst een echt getal dat dezelfde vorm heeft. Woorddichtheid ziet uit als een golfvorm en is waar.
+
+## 2026-09-08 — De leerlaag voor A2 Luisteren, Schrijven en Spreken: 76 lessen erbij
+**Changed:** (1) Migratie `20260908120000_lesson_speaking_items.sql` — de `kind`-CHECK op
+`lesson_items` opnieuw gezet met `naspreken` en `opnemen` erbij; met `psql` tegen de container
+toegepast en de versie in `supabase_migrations.schema_migrations` gezet. (2) `lib/lessons/items.ts`:
+twee payloadschema's erbij, `audioPayload` uitgebreid met `script`/`voice_cast`/`seconds` en
+`audio_url` **nullable** gemaakt. (3) Nieuw `components/lessons/LessonRecorder.tsx` plus twee
+renderers in `LessonStream.tsx`; CSS in `app/globals.css`; twaalf i18n-sleutels in nl/en/ar; de
+leegvormen en veldspecs in `lib/admin/lesson-write.ts` en `admin/lessen/[id]/_components/item-fields.ts`
+zodat de docent ze kan bewerken. (4) `scripts/lesson-content/plan.mjs` herschreven naar vier
+cursussen (`COURSES`, `wordThemes()`, `withOrder()`, 38 nieuwe strategieconcepten); `BUILT` is nu
+alle vier de `a2:*`. (5) `author.mjs`: tien nieuwe lessoorten in `KINDS_PER_LESSON` met een brief
+elk, vier nieuwe `FIELD_SCHEMAS`, `castFromSpeakers()` + `scriptToTranscript()` in
+`normalisePayloads`, en `kindProblems()`/`audioProblems()` als exporteerbare regels. (6) Nieuw
+`scripts/lesson-content/generate-lesson-audio.mjs` + 55 fragmentscripts in `fragments/`.
+(7) `sporen-server.ts` en `leerroute.ts`: blok B noemt zichzelf. (8) 76 lessen geschreven en geseed
+(`pending`), 310 woorden, 6 fragmenten ingesproken. (9) `tests-unit/`: 11 cases erbij.
+**Outcome:** SUCCESS — 531 unit tests groen, `tsc` en `next build` schoon, alle vier de cursussen
+`--check` schoon (53 + 26 + 24 + 26).
+**What worked:** de syllabus met de hand in `plan.mjs` en alleen het Nederlands laten schrijven,
+precies zoals bij Lezen. Tien lessoorten met elk een eigen brief gaf tien verschillende lessen in
+plaats van tien varianten op één les — de uitspraakles kwam er in één call uit met exact de
+vierstapscyclus uit het boek. Eén les per modelcall bleef de goede eenheid: 76 lessen, 3 mislukt,
+elk los te herhalen.
+**Lesson:** een cursus per onderdeel is geen kopie met andere voorbeelden. Wat blok B *is* — regel,
+klank, bouwsteen of uitspraak — is de hele beslissing, en die hoort in `plan.mjs` te staan en niet
+in een prompt.
+
+## 2026-09-08 — Structured outputs zijn geen muur: een spreekopdracht in een luistertoets
+**Changed:** `kindProblems()` in `author.mjs`, aangeroepen door `validateLesson`, door
+`generate.mjs --check` en door `seed.mjs`.
+**Outcome:** FAILURE, daarna gerepareerd.
+**What went wrong:** `lessonSchema()` zet `kind` op een **enum per lessoort** — en het model
+leverde alsnog een `opnemen`-item in `e1-woorden-en-klanken`, de toets van A2 Luisteren. Het kwam
+er ongezien langs, want de validatie keek alleen naar `validateItems` uit `lib/lessons/items.ts`,
+en dat vindt élke bestáánde soort geldig. Resultaat: een spreekopdracht in de toets van een
+luistercursus, geseed en in de database, zonder dat er iets faalde.
+**Lesson:** een enum in een JSON-schema is een verzoek, niet een garantie. Elke regel die je op het
+model legt hoort ook in de validatie te staan, en dan op alle drie de plekken die content
+beoordelen — anders keurt de generator goed wat de seeder afkeurt, of erger: omgekeerd.
+
+## 2026-09-08 — Veertien luisterfragmenten zonder label, en drie retries die niet konden slagen
+**Changed:** `FIELD_SCHEMAS.label` toegevoegd in `author.mjs`, plus een `orphans`-check in
+`lessonSchema()` die luid faalt op een veld uit `PAYLOAD_FIELDS` zonder vorm in `FIELD_SCHEMAS`.
+**Outcome:** FAILURE, daarna gerepareerd.
+**What went wrong:** `PAYLOAD_FIELDS.audio` noemde `label`, maar `FIELD_SCHEMAS` had er geen vorm
+voor. `Object.fromEntries(fields.map(f => [f, FIELD_SCHEMAS[f]]))` zette daar dus `undefined` neer,
+de API accepteerde dat schema zonder klagen, en het veld bestónd niet voor het model. Veertien van
+de negenentwintig fragmenten kwamen zonder label terug — twee naamloze spelers onder elkaar in een
+luistertraining. Toen de validatie er om ging vragen, faalden drie lessen **drie retries op rij**:
+de instructie was juist, het veld was er niet.
+**Lesson:** een ontbrekende schemavorm is geen onvolledig schema maar een onzichtbaar veld, en dat
+ziet er in de logs uit als een model dat niet luistert. Bij een retry die drie keer hetzelfde
+verwijt oplevert: controleer eerst of het veld dat je vraagt in het schema staat.
+
+## 2026-09-08 — De voorbeeldzin-check verwierp elk werkwoord
+**Changed:** `usesWord()` in `scripts/lesson-content/words.mjs`, plus een nieuw verplicht veld
+`example_form` in het woordschema.
+**Outcome:** FAILURE, in vier rondes gerepareerd.
+**What went wrong:** de check vergeleek de eerste vijf letters van het woord met de voorbeeldzin.
+Dat werkt voor zelfstandige naamwoorden en verwerpt bijna elk werkwoord: "vinde" staat niet in "Ik
+vind dat het te duur is". Op een lijst als *Je mening geven*, die vrijwel alleen uit werkwoorden
+bestaat, liep daardoor geen enkele schrijfronde meer door. Elke reparatie legde de volgende bloot:
+een stamvergelijking haalt "vind" uit "vinden" maar niet "ga" uit "gaan"; een exacte match op de
+opgegeven vorm brak op scheidbare werkwoorden ("U slaat rechts **af**" staat niet aaneengesloten);
+een match per deel brak op de ellipsnotatie ("toets ... in"); en woordgrenzen bleken nodig omdat
+"ga" in "vergadering" zit.
+**Lesson:** laat het model de vorm opschrijven die het gebruikte in plaats van hem te proberen
+afleiden. `example_form` maakt de controle een exacte match én laat de docent zien welke vorm hij
+nakijkt. Nederlandse morfologie is niet met een prefixvergelijking te doen.
+
+## 2026-09-08 — Een te strenge woordregel op niet-telbare woorden
+**Changed:** de check "een lidwoord maar geen meervoud" is uit `validateWords` gehaald; alleen "een
+meervoud zonder lidwoord" blijft.
+**Outcome:** FAILURE, daarna gerepareerd.
+**What went wrong:** de regel verwierp precies de niet-telbare woorden — de kritiek, het geld, de
+post — en op een lijst over meningen geven zijn dat er veel. Drie schrijfrondes liepen erop vast, en
+het antwoord dat de check wílde ("de kritieken") zou fóut Nederlands zijn geweest.
+**Lesson:** een validatie die alleen te bevredigen is met een fout antwoord is een kapotte
+validatie. De oorspronkelijke opmerking zei het zelf al — "*bijna* altijd een half ingevuld
+zelfstandig naamwoord" — en dat "bijna" was de helft van de lijst.
+
+## 2026-09-08 — De nieuwe CSS zat op schijf en niet op de pagina
+**Changed:** niets in de code; `rm -rf .next/dev` en de dev-server herstart.
+**Outcome:** FAILURE (een uur bijna aan het verkeerde probleem besteed), daarna gerepareerd.
+**What went wrong:** de opnameknop rendeerde als een kaal icoon met tekst eronder en het
+`.say-target`-blok had geen vlak. De CSS stond in `app/globals.css`; `curl` op de gecompileerde
+chunk gaf **0 treffers voor `.rec-btn`** terwijl buurregels als `.mark-pick` er wél in stonden. Een
+stale Turbopack-chunk, precies zoals CLAUDE.md §10 beschrijft.
+**Lesson:** de regel uit CLAUDE.md werkt en is de eerste stap, niet de laatste: `curl` de chunk en
+grep je klasse vóórdat je aan de component gaat twijfelen. En na een `rm -rf .next/dev`: de
+volgende zichtbare fout was echt — `--color-surface-container-lowest` is wit en dus onzichtbaar op
+een witte opgavekaart. Tonale lagen moeten één trap verschillen van wat eronder ligt.
+
+## 2026-09-08 — Blok B heette "Grammatica" op een uitspraakcursus
+**Changed:** `Spoor.name` in `lib/lessons/sporen.ts`, de fallbackmodule in `sporen-server.ts`,
+`LeerModule.title` en `hasContent` in `leerroute.ts`, en de titel op het onderdeelscherm.
+**Outcome:** SUCCESS.
+**What went wrong:** het middelste leerspoor is gekoppeld aan blokletter B en heette overal
+"Grammatica" via één vertaalsleutel. Bij de drie nieuwe cursussen ís blok B geen grammatica, en de
+lessen erin leunen op strategieconcepten — die hebben geen `group_id`, dus ze landden onder de kop
+**"Overig"**. Tegelijk telde de leerroutekaart nul concepten van soort `grammatica` en zei "nog geen
+inhoud", met een spoorscherm eronder waar zes lessen klaarstonden.
+**Lesson:** dezelfde fout als bij Woordenschat op 02-09, en om dezelfde reden: `hasContent` mag niet
+op één databron rusten. De slug mag `grammatica` blijven (die staat in URL's) maar de náám hoort uit
+`lesson_blocks.name_nl` te komen — de cursus weet zelf hoe zijn blok heet.
+
+## 2026-09-08 — De naam van blok B, op drie plekken achter elkaar
+**Changed:** `Spoor.intro` erbij in `sporen.ts`/`sporen-server.ts`; de spoorpagina gebruikt
+`current.name` en `current.intro`, ook voor de zusjes in het kruimelpad; de metaregels op de
+leerroutekaart zijn gesplitst (lessen zodra er lessen zijn, concepten zodra er concepten zijn).
+**Outcome:** SUCCESS, na drie rondes.
+**What went wrong:** één vertaalsleutel voor een spoor dat op de blokletter B staat. Elke ronde
+repareerde één laag en liet de volgende zichtbaar worden: de modulekaart zei "Uitspraak · 6 lessen"
+onder een kop **Grammatica**; toen de kop klopte stond er nog de inleiding "De regels per module";
+en de leerroutekaart liet de lessentelling weg omdat die aan `conceptCount` hing.
+**Lesson:** bij een label dat op vier plekken uit dezelfde bron komt: zoek eerst álle plekken op
+(`grep` op de vertaalsleutel) en repareer ze in één keer. Drie screenshots achter elkaar aan
+hetzelfde label is wat je krijgt als je per laag repareert. En: `lesson_blocks` heeft al een
+`name_nl` én een `intro` — de cursus wist zelf hoe hij heette.
+
+## 2026-09-08 — Vrijgeven legde bloot dat 26 lessen incomplete audio hadden
+**Changed:** de 76 lessen op `validated` met `checked_by`/`reviewed_by = 'Marieke'` (lokaal), en
+daarna alle 55 fragmenten ingesproken: 27 luisterfragmenten (15,0 min) en 22 naspreek-voorbeelden
+(1,3 min).
+**Outcome:** SUCCESS.
+**What worked / went wrong:** de audiopijplijn was bewezen op zes fragmenten en de rest stond
+bewust als `.txt` te wachten — verdedigbaar zolang alles `pending` was, want dan ziet niemand het.
+Op het moment van vrijgeven werd het een defect: **20 luisterlessen en 6 spreeklessen stonden live
+met een speler die "nog niet ingesproken" zei**, en een luisterles zonder audio is geen les. Eén
+query op `payload->>'audio_url' is null` naast `review_status='validated'` maakte het zichtbaar.
+**Lesson:** "af" hangt af van de reviewstatus. Content die op `pending` incompleet mag zijn, is dat
+op `validated` niet meer — dus hoort bij een vrijgeefactie een controle op de dingen die de
+reviewgate tot dan toe verborg. En: `audio_url` nullable maken was de goede keuze, juist omdat het
+verschil tussen "nog niet ingesproken" en "stuk" hier op te vragen is in SQL.
+
+## 2026-09-09 — grammatica is geen leesvaardigheid: het vijfde spoor Taalregels
+**Changed:** `supabase/migrations/20260909100000_concept_weights.sql` (kolom
+`concept_onderdelen.weight`), `scripts/lesson-content/concepts-a2.mjs` (`kern` per concept),
+`scripts/lesson-content/seed.mjs`, `lib/lessons/taalregels.ts` (nieuw),
+`lib/lessons/sporen-server.ts` (`fetchRulesModules`), `lib/lessons/{lessons,concepts-server}.ts`
+(`Concept.weight`), `app/[locale]/(app)/dashboard/[level]/taalregels/page.tsx` (nieuw), de
+onderdeel- en niveauschermen, `PortalSidebar`, `nav.ts`, `next.config.ts`, `app/globals.css`,
+`messages/{nl,en,ar}.json`, `tests-unit/lesson-syllabus.test.ts`.
+**Outcome:** SUCCESS.
+**What worked / went wrong:** de kaart "STAP 2 · Grammatica · 2 / 28" op het onderdeelscherm van
+Lezen was de enige onwaarheid in de leerlaag, en ook de enige reden dat Lezen 53 lessen had tegen
+26 / 24 / 26. Twee externe ijkpunten wezen dezelfde kant op: **TaalCompleet A2** besteedt 47 van
+109 paragrafen (43%) aan grammatica en zet het onder géén vaardigheid, en **nt2taalmenu.nl** heeft
+*Grammatica* als gelijke van de vier onderdelen in het hoofdmenu. 28 lessen was dus niet te veel —
+het label was fout. De lessen zijn niet verhuisd (`lesson_blocks.onderdeel` is een FK naar
+`skills.slug`, en een vijfde slug maakt de bundelprijs onbereikbaar want `priceForSelection` leest
+`SKILLS.length`); ze worden alleen elders geadresseerd.
+**Lesson:** een indeling die uit de bouwvolgorde komt in plaats van uit de inhoud, verkoopt zich
+als inhoud. De vraag "waarom staat dit hier?" heeft hier vier maanden lang het antwoord "omdat het
+als eerste geschreven is" gehad, en dat is op geen enkel scherm te zien.
+
+## 2026-09-09 — `concept_onderdelen` was een stempel, geen uitspraak
+**Changed:** `weight` ('kern' | 'herkennen') per (concept, onderdeel); de verdeling in
+`concepts-a2.mjs` als `kern`-array per concept, met de tellingen vastgezet in
+`tests-unit/lesson-syllabus.test.ts`.
+**Outcome:** SUCCESS.
+**What worked / went wrong:** 27 van de 31 grammaticaconcepten stonden op alle vier de onderdelen.
+De tabel las als een inhoudelijke keuze en was er geen: hij beweerde dat de overtreffende trap
+even hard telt voor een luistervraag als hoofdzinwoordorde voor een geschreven e-mail. Na het
+wegen: Lezen 7 kern, Luisteren 5, Schrijven 19, Spreken 21. Dat verschil is de hele reden dat één
+bibliotheek vier deuren kan hebben.
+**Lesson:** een many-to-many die bijna altijd vol staat, draagt geen informatie. "Komt voor in" en
+"weegt zwaar in" zijn twee vragen, en de tweede is degene waar een leerroute op kan sorteren.
+
+## 2026-09-09 — een re-seed zette 51 vrijgegeven lessen en 36 concepten terug op `pending`
+**Changed:** `upsertKeepingReview()` in `scripts/lesson-content/seed.mjs`, toegepast op
+`concepts`, `lesson_words` en `lessons`.
+**Outcome:** FAILURE, daarna gerepareerd.
+**What worked / went wrong:** twee ontbrekende lessen bijschrijven vroeg een `seed.mjs a2:lezen`,
+en die upsert schrijft `review_status: 'pending'` óók op rijen die er al stonden. 51 door Marieke
+vrijgegeven lessen en 36 vrijgegeven concepten verdwenen daarmee uit het portaal. Het is volkomen
+stil: een onzichtbare cursus is precies wat de reviewgate hóórt te doen, dus er is geen fout te
+zien. Ontdekt doordat de nieuwe pagina 0 kernregels toonde — `fetchConcepts` filtert op
+`review_status = 'validated'` en gaf nul rijen terug, óók met de service key.
+**Lesson:** een idempotente seeder is niet hetzelfde als een veilige seeder. `pending` als default
+is goed voor een nieuwe rij en destructief voor een bestaande; wie een kolom schrijft die een mens
+heeft gezet, moet eerst lezen wat er staat. En: herstelbaar was dit alleen doordat `reviewed_by`
+níet werd overschreven — dat veld was de enige overgebleven bron van "dit was vrijgegeven".
+
+## 2026-09-09 — `redirect()` ná het flushen van de <head> is geen redirect
+**Changed:** de omleiding van `/dashboard/[level]/lezen/spoor/grammatica` naar
+`/dashboard/[level]/taalregels` staat nu in `next.config.ts` en niet in de pagina.
+**Outcome:** FAILURE, daarna gerepareerd.
+**What worked / went wrong:** `redirect()` in de server component leverde **HTTP 200** met de
+`<title>` van de oude route en een clientside sprong in de body; Puppeteer liep er met
+`networkidle2` in 45 s op een navigatietimeout. Een regel in `redirects()` geeft een echte 307
+vóór het renderen, en de module-URL's eronder blijven ongemoeid.
+**Lesson:** wie een pad wil omleiden en geen sessie hoeft te lezen, doet dat in `next.config.ts`.
+`redirect()` in een component is voor een beslissing die de data nodig heeft, en dan is de status
+niet gegarandeerd 307.
+
+## 2026-09-09 — curl met een niet-gesplitste Supabase-cookie fotografeert de inlogpagina
+**Changed:** niets in de code; de verificatiemethode.
+**Outcome:** FAILURE.
+**What worked / went wrong:** vijf portaalroutes gaven allemaal netjes 200 en ik las dat als "de
+route werkt". Het waren vijf keer de inlogpagina: `@supabase/ssr` leest de sessie uit
+`sb-127-auth-token.0` / `.1`, en één ongesplitste cookie bestaat voor de server niet. Dezelfde val
+die `check-ui-auth.mjs` en de e2e-helper al opgelost hadden — alleen niet in een losse `curl`.
+**Lesson:** 200 is bij een ingelogde route geen bewijs. Controleer op iets uit de pagina zelf (een
+`<title>`, een modulenaam), of splits de cookie zoals `check-ui-auth.mjs` doet.
+
+## 2026-09-09 — de kernregels horen ín stap 2, niet alleen in een bibliotheek ernaast
+**Changed:** `fetchRulesModule()` in `lib/lessons/sporen-server.ts`, `SpoorModule.href` in
+`sporen.ts`, `buildSporen` krijgt `onderdeel`, de onderdeel- en spoorschermen, `next.config.ts`
+(de redirect draagt nu `?voor=lezen`), vier nieuwe sleutels in `messages/{nl,en,ar}.json`.
+**Outcome:** SUCCESS.
+**What worked / went wrong:** het vijfde spoor loste het label op maar liet de kandidaat met een
+keuze zitten: 28 regels in een bibliotheek naast zijn cursus, zonder te zeggen welke hij nodig
+heeft. Nu draagt stap 2 van elke cursus één module *Regels voor <onderdeel>* met precies de
+kernregels — 7 bij Lezen, 18 bij Schrijven en Spreken — en staat de hele bibliotheek als aparte
+kaart eronder. Bij Lezen ís die module de hele stap, dus "Grammatica · 2 / 28" is nu "Regels voor
+Lezen · 0 / 7".
+Eén ding moest anders dan gedacht: de module kan niet naar zijn eigen modulescherm wijzen, want
+dat redirect naar `lessonPath(level, dit onderdeel, slug)` en `fetchLesson` is op onderdeel
+gescoped — `/luisteren/leren/b1-hoofdzin-woordorde` bestaat niet. Vandaar `SpoorModule.href`.
+**Lesson:** een gedeelde bron krijgt zoveel ingangen als je wil, maar houdt één huis. Zodra een
+kaart in cursus X naar een les in cursus Y wijst, is de vraag niet "welke URL" maar "wie is de
+eigenaar van die les" — en het antwoord moet één plek zijn.
+
+## 2026-09-10 — de twee betwiste regels alsnog naar kern, en wat dat blootlegde
+**Changed:** `scripts/lesson-content/concepts-a2.mjs` — `onregelmatige-tegenwoordige-tijd` van
+`GEEN_KERN` naar `KERN_P`, `lange-korte-klank` van `KERN_KLANK` naar alle drie zijn onderdelen;
+de gewichten in de database bijgewerkt; de vastgezette tellingen in
+`tests-unit/lesson-syllabus.test.ts` (Schrijven 19 → 21, Spreken 21 → 22).
+**Outcome:** SUCCESS.
+**What worked / went wrong:** de twee regels die ik bij het vrijgeven van de weging al als fout
+had aangemerkt, zijn nu kern: *zijn, hebben, gaan, kunnen* omdat je zonder die vier geen
+Nederlandse zin schrijft, en *man of maan* omdat die de f→v van het meervoud regeert. Nieuwe
+verhouding: Lezen 7, Luisteren 5, Schrijven 21, Spreken 22.
+Wat het wegen daarna liet zien is belangrijker dan de hertagging zelf: **drie kernregels hebben
+geen les.** `bijvoeglijk-naamwoord` is kern bij Schrijven en Spreken en heeft er nooit een gehad
+(19 kernregels leverden 18 lessen), en de hele groep `spelling-uitspraak` — `klemtoon`,
+`lange-korte-klank` — is leeg. Zolang alle 31 concepten even zwaar wogen, viel dat niemand op.
+**Lesson:** een prioritering is ook een gatendetector. Zodra je zegt welke regels de kandidaat
+écht nodig heeft, wordt "er is geen les voor" een uitspraak in plaats van een detail — en die
+uitspraak is te tellen in SQL.
+
+## 2026-09-10 — de regels ín de module van stap 2, en `fetchLesson` valt terug
+**Changed:** `fetchRulesModule` → `fetchRulesLessons` in `lib/lessons/sporen-server.ts` (levert
+lessen, geen module), de merge in `sporenFromBlocks`, `SpoorModule.href` weer verwijderd, de
+val-terug op `RULES_HOME` in `fetchLesson` (`lib/lessons/lessons-server.ts`), de link *Alle
+taalregels bekijken* op het spoorscherm + `.rules-out` in `app/globals.css`, één sleutel in
+`messages/{nl,en,ar}.json`.
+**Outcome:** SUCCESS.
+**What worked / went wrong:** de regels stonden als tweede modulekaart náást het eigen blok, en
+dat zei op één scherm twee keer "hier leer je de regels" — de kandidaat moest kiezen tussen zijn
+eigen blok en een blok dat er even zwaar uitzag. Nu is er één lijst per stap: eerst wat de cursus
+zelf leert, dan de regels die dít examen nodig heeft. Luisteren 8 (5 + 3), Schrijven en Spreken 25
+(6 + 19), Lezen 7.
+De echte reparatie zat eronder: `SpoorModule.href` bestond alleen omdat een regelles niet opende
+vanuit een andere cursus. Zodra `fetchLesson` op het regelblok terugvalt, kan de les gewoon in de
+lijst staan en verdwijnt het uitzonderingsveld. De voortgang was al gedeeld, dus een regel die je
+via Schrijven doet staat bij Luisteren ook af.
+**Lesson:** een uitzonderingsveld in een type is vaak een symptoom van een ontbrekende val-terug
+een laag lager. `href` op een module was drie regels code en één regel uitleg; de fout zat in een
+query die één onderdeel accepteerde waar de content twee kende.
+
+## 2026-09-10 — de leerroute is drie kaarten, niet vier
+**Changed:** de sectie *Alle taalregels* van
+`app/[locale]/(app)/dashboard/[level]/[skill]/page.tsx` af, met de bijbehorende query
+(`fetchRulesModules`), zeven ongebruikte sleutels uit `messages/{nl,en,ar}.json` en `.ov-cards.is-one`
+uit `app/globals.css`.
+**Outcome:** SUCCESS.
+**What worked / went wrong:** ik had de gedeelde bibliotheek als vierde kaart onder de leerroute
+gezet om "je kunt ook alles bekijken" te zeggen. Op het scherm werd dat een vierde stap: dezelfde
+kaartvorm, dezelfde maat, dezelfde navy kop, direct onder een rij van drie die "doe ze in deze
+volgorde" heet. De kandidaat moest kiezen tussen een route en een bibliotheek die eruitzagen als
+elkaars gelijken. De regels die zijn examen nodig heeft zitten al ín stap 2; de hele verzameling
+hoort in de navigatie.
+**Lesson:** een kaart naast een genummerde route wordt gelezen als een stap in die route, wat er
+ook op staat. Een verzameling om in te grasduinen is navigatie, geen stap — en het verschil moet
+in de vorm zitten, niet in de kop.
+
+## 2026-09-10 — één kolom als filter én als sortering geeft twee totalen
+**Changed:** `fetchRulesLessons` → `fetchRuleModules` in `lib/lessons/sporen-server.ts`; de
+gewichtsfilter eruit, groepering per `concept_groups` erin.
+**Outcome:** SUCCESS
+**What worked / went wrong:** De bibliotheekpagina zei "28 lessen voor Luisteren", stap 2 van
+Luisteren zei "8 lessen". Beide lazen dezelfde 28 rijen: `taalregels/page.tsx` *sorteerde* op
+`concept_onderdelen.weight`, `fetchRulesLessons` *filterde* erop (`weight === 'kern'`). Geen
+error, geen log, geen kapotte query — alleen twee schermen die iets anders beweren over dezelfde
+rijen, en een eigenaar die het als eerste zag.
+**Lesson:** een kolom die op het ene scherm een filter is en op het andere een sortering levert
+twee verschillende totalen voor dezelfde rijen, en dat faalt volledig stil. Leg per kolom vast
+wát hij mag: lidmaatschap beslist wat er in zit, gewicht beslist alleen de volgorde.
+
+## 2026-09-10 — een upsert-only seeder kan een verzameling alleen laten groeien
+**Changed:** diff-en-delete voor `concept_onderdelen` in `scripts/lesson-content/seed.mjs`, naast
+de bestaande upsert en gescoped op de concepten van die run.
+**Outcome:** SUCCESS
+**What worked / went wrong:** 27 van de 31 grammaticaregels stonden op `onderdelen: ALL` terwijl de
+kop van `concepts-a2.mjs` al betoogde dat de koppeling "per concept afgewogen en niet standaard
+alle vier" is. De reden dat het zo bleef: de seeder upsert `concept_onderdelen` en verwijdert
+nooit, dus een regel uit een onderdeel halen was een no-op. Daardoor ging `herkennen` twee dingen
+betekenen — "begrijpen is genoeg" én "hoort hier eigenlijk niet" — en droeg Lezen `lidwoorden` en
+`vaste-voorzetsels`. 118 rijen → 101.
+**Lesson:** een verzameling die door een upsert-only seeder wordt beheerd kan alleen groeien, en
+dus is elke "afweging" erin op termijn een leugen. Wie een curatie in code wil, moet de
+verwijderkant meeschrijven — anders is de intentie in de kop van het bestand het enige dat er nog
+van over is.
+
+## 2026-09-10 — FAILURE: `git checkout` op een bestand met niet-gecommit werk
+**Changed:** niets blijvend; `scripts/lesson-content/concepts-a2.mjs` teruggezet en herbouwd.
+**Outcome:** FAILURE
+**What worked / went wrong:** Een regex met `re.S` en `.*?` sprong over een objectgrens en
+herschreef het verkeerde concept. Om dat terug te draaien liep ik `git checkout <bestand>` — maar
+dat bestand droeg ook de niet-gecommitte `kern`-arrays en hun constantenblok uit een eerdere
+sessie, en die waren daarmee weg. Herstel kon omdat de waarden nog in de lokale database stonden
+én omdat ze in dezelfde taak toch werden vervangen.
+**Lesson:** `git checkout <bestand>` is in een repo met 130 vieze bestanden geen "undo" maar een
+verwijdering: het gooit álles weg wat niet in HEAD staat, niet alleen de laatste bewerking. Maak
+eerst een kopie in de scratchpad. En anker een regex per record op één regel in plaats van met
+`.*?` over meerdere regels: die kruipt bij de eerste niet-passende waarde naar het volgende record.
+
+## 2026-09-10 — De adminzijbalk gegroepeerd, Woordkaarten onder Woorden
+**Changed:** `lib/admin/nav.ts` — `ADMIN_NAV_SECTIONS` (Toetsen · Leerlaag · Nakijken · Beheer) vervangt de platte lijst met één `secondary`-streep; `AdminNavItem.extra` hangt `/admin/woordkaarten` als derde tab onder Woorden. `AdminNav.tsx` rendert de koppen en de extra kinderen, en houdt de ouder open op een kindpad.
+**Outcome:** SUCCESS
+**What worked:** `ADMIN_NAV` blijft bestaan als `flatMap` van de secties, dus niets buiten de zijbalk hoefde mee. De twee tabellen (`lesson_words` / `word_cards`) zijn níet samengevoegd — alleen de ingang.
+**Lesson:** Een zijbalk met één streep erdoor scheidt niets inhoudelijks; een kop per laag geeft een nieuwe surface een plek. En twee tabellen kunnen één ingang delen zonder dat de sleutels moeten doen alsof ze dezelfde zijn — dat is een navigatiekeuze, geen schemakeuze.

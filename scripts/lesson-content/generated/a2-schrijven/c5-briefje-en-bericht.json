@@ -1,0 +1,196 @@
+{
+  "items": [
+    {
+      "kind": "uitleg",
+      "tier": null,
+      "explanation": null,
+      "payload": {
+        "body_html": "<p>Bij het schrijfexamen moet je soms een kort bericht schrijven. Bijvoorbeeld een e-mail aan de school of een briefje aan de buren. Kort mag, maar niet onvolledig. Ook drie regels hebben een begin en een eind.</p><p>Werk in vier stappen:</p><ol><li><strong>Aanhef.</strong> Aan wie schrijf je? <em>Beste meneer Van Dijk,</em> of <em>Hallo Sanne,</em></li><li><strong>Reden.</strong> Waarom schrijf je? <em>Mijn zoon is ziek.</em></li><li><strong>Verzoek of mededeling.</strong> Wat wil je? <em>Kan hij morgen vrij zijn?</em></li><li><strong>Slot.</strong> Een slotgroet en je naam. <em>Met vriendelijke groet, Amina Bakri</em></li></ol><p>Een bericht zonder aanhef of zonder naam is niet af. Ook al staat er verder niets fout.</p>",
+        "cards": [
+          {
+            "label": "NIET AF",
+            "example_html": "<mark>Kind is ziek.</mark>"
+          },
+          {
+            "label": "WEL AF",
+            "example_html": "<mark>Beste meneer Van Dijk, mijn zoon Karim is ziek. Hij komt vandaag niet naar school. Met vriendelijke groet, Amina Bakri</mark>"
+          }
+        ]
+      }
+    },
+    {
+      "kind": "voorbeeld",
+      "tier": null,
+      "explanation": null,
+      "payload": {
+        "sentence_html": "<p>Dit briefje mist het slot: <em>Hallo Sanne, ik kan zaterdag niet komen. Ik moet werken.</em> <mark>Er staat geen groet en geen naam.</mark></p>"
+      }
+    },
+    {
+      "kind": "voorbeeld",
+      "tier": null,
+      "explanation": null,
+      "payload": {
+        "sentence_html": "<p>Dit briefje is kort én af: <mark>Beste buren, morgen komt de loodgieter. Er is even geen water. Groetjes, Peter uit nummer 12</mark></p>"
+      }
+    },
+    {
+      "kind": "markeren",
+      "tier": 0,
+      "explanation": "De aanhef staat bovenaan en zegt aan wie je schrijft. Het verzoek is wat je van de ander vraagt. Het slot is de groet met je naam.",
+      "payload": {
+        "instruction": "Lees de e-mail. Markeer de aanhef, het verzoek en het slot.",
+        "body_html": "<p>Beste mevrouw Ter Horst,</p><p>Ik heb een brief van de gemeente gekregen over mijn parkeervergunning. Ik begrijp de brief niet goed. Kunt u mij bellen om het uit te leggen? Mijn nummer staat onderaan.</p><p>Met vriendelijke groet,<br>Farid Ahmadi</p>",
+        "targets": [
+          {
+            "label": "aanhef",
+            "text": "Beste mevrouw Ter Horst,"
+          },
+          {
+            "label": "verzoek",
+            "text": "Kunt u mij bellen om het uit te leggen?"
+          },
+          {
+            "label": "slot",
+            "text": "Met vriendelijke groet,"
+          }
+        ]
+      }
+    },
+    {
+      "kind": "mcq",
+      "tier": 0,
+      "explanation": "Bericht B heeft een aanhef, een reden en een slot met een naam. De andere twee zijn kort, maar niet af.",
+      "payload": {
+        "prompt": "Welk bericht is af? Je schrijft aan de leraar van je dochter."
+      },
+      "options": [
+        {
+          "label": "A",
+          "body": "Mijn dochter komt niet. Ze is ziek.",
+          "is_correct": false
+        },
+        {
+          "label": "B",
+          "body": "Beste meneer Kramer, mijn dochter Nour is ziek. Ze komt vandaag niet naar school. Met vriendelijke groet, Layla Hamid",
+          "is_correct": true
+        },
+        {
+          "label": "C",
+          "body": "Beste meneer Kramer, Nour is ziek en komt niet.",
+          "is_correct": false
+        }
+      ]
+    },
+    {
+      "kind": "mcq",
+      "tier": 0,
+      "explanation": "In dit briefje staat geen groet en geen naam. De ander weet dan niet van wie het briefje komt.",
+      "payload": {
+        "prompt": "Wat ontbreekt in dit briefje?<br><em>Beste mevrouw Visser, de lamp in het trappenhuis is stuk. Kunt u die laten maken?</em>"
+      },
+      "options": [
+        {
+          "label": "A",
+          "body": "De aanhef.",
+          "is_correct": false
+        },
+        {
+          "label": "B",
+          "body": "Het verzoek.",
+          "is_correct": false
+        },
+        {
+          "label": "C",
+          "body": "Het slot met je naam.",
+          "is_correct": true
+        },
+        {
+          "label": "D",
+          "body": "Er ontbreekt niets.",
+          "is_correct": false
+        }
+      ]
+    },
+    {
+      "kind": "mcq",
+      "tier": 1,
+      "explanation": "Je schrijft aan een medewerker die je niet kent. Dan gebruik je een nette aanhef met de naam of met 'mevrouw' of 'meneer'.",
+      "payload": {
+        "prompt": "Je schrijft een e-mail aan een medewerker van de gemeente. Je kent hem niet. Welke aanhef past?"
+      },
+      "options": [
+        {
+          "label": "A",
+          "body": "Hoi!",
+          "is_correct": false
+        },
+        {
+          "label": "B",
+          "body": "Geachte heer De Wit,",
+          "is_correct": true
+        },
+        {
+          "label": "C",
+          "body": "Hallo daar,",
+          "is_correct": false
+        }
+      ]
+    },
+    {
+      "kind": "mcq",
+      "tier": 1,
+      "explanation": "Antwoord C zegt duidelijk wat je wilt: een nieuwe afspraak. Bij A en B weet de ander niet wat hij moet doen.",
+      "payload": {
+        "prompt": "Je kunt niet naar je afspraak bij de tandarts komen. Welke zin is een goed verzoek?"
+      },
+      "options": [
+        {
+          "label": "A",
+          "body": "Het komt niet uit.",
+          "is_correct": false
+        },
+        {
+          "label": "B",
+          "body": "Ik heb helaas geen tijd, sorry hoor.",
+          "is_correct": false
+        },
+        {
+          "label": "C",
+          "body": "Kunt u een nieuwe afspraak voor mij maken?",
+          "is_correct": true
+        }
+      ]
+    },
+    {
+      "kind": "open_zin",
+      "tier": 2,
+      "explanation": "Een goed slot heeft twee delen: een slotgroet en je eigen naam. Zonder naam is het bericht niet af.",
+      "payload": {
+        "prompt": "Hier is een bericht zonder slot:<br><em>Beste mevrouw Ter Horst, ik kan maandag niet naar de cursus komen. Ik moet naar het ziekenhuis.</em><br>Schrijf jij het slot erbij. Gebruik twee regels.",
+        "model_answer": "Met vriendelijke groet,\nSamira El Amrani",
+        "checklist": [
+          "Er staat een slotgroet, bijvoorbeeld 'Met vriendelijke groet'.",
+          "Er staat een naam onder de groet."
+        ]
+      },
+      "options": []
+    },
+    {
+      "kind": "open_zin",
+      "tier": 2,
+      "explanation": "Je bericht mag kort zijn, maar het moet vier delen hebben: aanhef, reden, verzoek en slot met je naam.",
+      "payload": {
+        "prompt": "Schrijf een kort bericht aan je buurvrouw, mevrouw De Groot. Je gaat een week op vakantie. Je vraagt of zij je post uit de brievenbus haalt. Schrijf 3 tot 5 regels.",
+        "model_answer": "Beste mevrouw De Groot,\n\nIk ga volgende week een week op vakantie. Wilt u mijn post uit de brievenbus halen? De sleutel geef ik u vrijdag.\n\nMet vriendelijke groet,\nTomasz Nowak",
+        "checklist": [
+          "Bovenaan staat een aanhef met de naam van de buurvrouw.",
+          "Je schrijft waarom je het bericht stuurt en wat je vraagt.",
+          "Onderaan staan een groet en je naam."
+        ]
+      },
+      "options": []
+    }
+  ],
+  "what_you_learn": "Je leert hoe je een kort briefje of een korte e-mail schrijft die helemaal af is. Je ziet aan een fout voorbeeld wat er vaak mist: de aanhef of het slot met je naam. Na deze les schrijf je in vier stappen: aanhef, reden, verzoek en slot."
+}

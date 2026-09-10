@@ -1,0 +1,148 @@
+{
+  "items": [
+    {
+      "kind": "uitleg",
+      "tier": null,
+      "explanation": null,
+      "payload": {
+        "body_html": "<p>In een Nederlands woord van meer dan één stukje zeg je één stukje harder. Dat harde stukje is de <strong>klemtoon</strong> (de nadruk). Leg je de nadruk op het verkeerde stukje, dan begrijpt de ander je vaak niet. Vaak ligt de klemtoon op het eerste stukje van het woord: <strong>ZIE</strong>-ken-huis.</p><p>Let ook op: het stukje zonder klemtoon zeg je zwak en kort. Je ziet <em>-lijk</em> staan, maar je zegt <em>-luk</em>.</p>",
+        "cards": [
+          {
+            "label": "JE ZIET",
+            "example_html": "Ik werk bij het <mark>ziekenhuis</mark>."
+          },
+          {
+            "label": "JE ZEGT",
+            "example_html": "Ik werk bij het <mark>ZIE-ken-huis</mark>."
+          }
+        ]
+      }
+    },
+    {
+      "kind": "naspreken",
+      "tier": 1,
+      "explanation": "De klemtoon ligt op het eerste stukje: MOEI, NA, DUI. Het stukje -lijk zeg je zwak als -luk.",
+      "payload": {
+        "prompt": "Zeg deze woorden na. Zeg het eerste stukje harder.",
+        "target": "moeilijk, natuurlijk, duidelijk",
+        "focus": "Je ziet -lijk, maar je zegt -luk: MOEI-luk, NA-tuur-luk, DUI-de-luk.",
+        "audio_url": "http://127.0.0.1:54421/storage/v1/object/public/leren-audio/fragment/a2-spreken/b6-klemtoon-1.mp3",
+        "script": "moeilijk, natuurlijk, duidelijk",
+        "seconds": 2.47
+      }
+    },
+    {
+      "kind": "naspreken",
+      "tier": 1,
+      "explanation": "Bij deze samengestelde woorden ligt de klemtoon op het eerste deel van het woord.",
+      "payload": {
+        "prompt": "Zeg deze woorden na. Zeg het eerste deel harder.",
+        "target": "ziekenhuis, huisarts, apotheek",
+        "focus": "Zeg ZIE-ken-huis en HUIS-arts, maar bij apotheek ligt de nadruk verderop: a-po-THEEK.",
+        "audio_url": "http://127.0.0.1:54421/storage/v1/object/public/leren-audio/fragment/a2-spreken/b6-klemtoon-2.mp3",
+        "script": "ziekenhuis, huisarts, apotheek",
+        "seconds": 2.66
+      }
+    },
+    {
+      "kind": "naspreken",
+      "tier": 1,
+      "explanation": "In gemeente en verzekering ligt de klemtoon niet op het eerste stukje, maar op het tweede of derde stukje.",
+      "payload": {
+        "prompt": "Zeg deze woorden na. De nadruk ligt niet vooraan.",
+        "target": "gemeente, verzekering, betalen",
+        "focus": "Zeg ge-MEEN-te, ver-ZE-ke-ring en be-TA-len.",
+        "audio_url": "http://127.0.0.1:54421/storage/v1/object/public/leren-audio/fragment/a2-spreken/b6-klemtoon-3.mp3",
+        "script": "gemeente, verzekering, betalen",
+        "seconds": 2.57
+      }
+    },
+    {
+      "kind": "naspreken",
+      "tier": 1,
+      "explanation": "In een hele zin blijft de klemtoon in elk woord op dezelfde plek staan.",
+      "payload": {
+        "prompt": "Zeg deze zin na. Houd de nadruk op de juiste stukjes.",
+        "target": "Ik heb morgen een afspraak bij de huisarts.",
+        "focus": "Zeg AF-spraak en HUIS-arts, en zeg de andere stukjes kort en zwak.",
+        "audio_url": "http://127.0.0.1:54421/storage/v1/object/public/leren-audio/fragment/a2-spreken/b6-klemtoon-4.mp3",
+        "script": "Ik heb morgen een afspraak bij de huisarts.",
+        "seconds": 3.08
+      }
+    },
+    {
+      "kind": "mcq",
+      "tier": 0,
+      "explanation": "De uitspraak \"moei-luk\" hoort bij de spelling moeilijk. Je zegt -luk, maar je schrijft -lijk.",
+      "payload": {
+        "prompt": "Iemand zegt: \"moei-luk\". Welk woord is dat?"
+      },
+      "options": [
+        {
+          "label": "A",
+          "body": "moeilik",
+          "is_correct": false
+        },
+        {
+          "label": "B",
+          "body": "moeilijk",
+          "is_correct": true
+        },
+        {
+          "label": "C",
+          "body": "moeiluk",
+          "is_correct": false
+        }
+      ]
+    },
+    {
+      "kind": "mcq",
+      "tier": 0,
+      "explanation": "De uitspraak \"ge-MEEN-te\" hoort bij het woord gemeente, met de nadruk op het middelste stukje.",
+      "payload": {
+        "prompt": "Iemand zegt: \"ge-MEEN-te\". Welke spelling is goed?"
+      },
+      "options": [
+        {
+          "label": "A",
+          "body": "gemeente",
+          "is_correct": true
+        },
+        {
+          "label": "B",
+          "body": "geminte",
+          "is_correct": false
+        },
+        {
+          "label": "C",
+          "body": "gemeenten",
+          "is_correct": false
+        },
+        {
+          "label": "D",
+          "body": "gemeinte",
+          "is_correct": false
+        }
+      ]
+    },
+    {
+      "kind": "gap_type",
+      "tier": 2,
+      "explanation": "Je zegt \"na-tuur-luk\", maar je schrijft natuurlijk, met -lijk aan het eind.",
+      "payload": {
+        "sentence": "Ik kom ___ naar de vergadering. (je zegt: na-tuur-luk)",
+        "answer": "natuurlijk"
+      }
+    },
+    {
+      "kind": "gap_type",
+      "tier": 2,
+      "explanation": "Je zegt \"ver-ZE-ke-ring\" met de nadruk op ZE, en je schrijft verzekering.",
+      "payload": {
+        "sentence": "Ik heb een brief van mijn ___ gekregen. (je zegt: ver-ZE-ke-ring)",
+        "answer": "verzekering"
+      }
+    }
+  ],
+  "what_you_learn": "Na deze les weet je waar de nadruk in een Nederlands woord ligt. Je hoort en zegt woorden als MOEI-luk, ZIE-ken-huis en ge-MEEN-te op de juiste manier. Je kunt van de uitspraak terug naar de goede spelling werken."
+}

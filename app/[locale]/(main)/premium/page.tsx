@@ -5,7 +5,8 @@ import { Link } from '@/i18n/navigation';
 import { cn } from '@/lib/utils';
 import { HorizonBanner, SkylineTopper, HERO_GRADIENT } from '@/components/horizon';
 import { buttonVariants } from '@/components/ui/button';
-import { TeacherCard, SkillIcon } from '@/components/site';
+import { TeacherCard } from '@/components/site';
+import CategoryMark from '@/components/horizon/CategoryMark';
 import PricingViewTracker from '@/components/PricingViewTracker';
 import JsonLd from '@/components/JsonLd';
 import { DEFAULT_LEVEL, SKILLS, formatCount, getSkill, getSkillAtLevel } from '@/data/skills';
@@ -92,7 +93,7 @@ function BrowserMockup() {
               { slug:'spreken',   label:'Spreken',   active:false, on:false },
             ] as const).map(item => (
               <div key={item.slug} style={{ display:'flex',alignItems:'center',gap:'7px',padding:'7px 10px',borderRadius:'6px',fontSize:'11px',fontWeight:item.active?700:500,color:item.active?'#002b6d':(item.on?'#434651':'#a0a3ad'),background:item.active?'#EEF2FF':undefined }}>
-                <SkillIcon skill={item.slug} size="sm" variant="bare" />
+                <CategoryMark category={item.slug} size={22} />
                 {item.label}
                 {!item.on && <Lock size={9} strokeWidth={2.2} style={{ marginLeft:'auto' }} aria-hidden="true" />}
               </div>
@@ -554,7 +555,7 @@ export default async function PremiumPage({ params }: Props) {
                     band={false}
                   />
                   <div className="px-5 pt-6 pb-5 flex-1">
-                    <SkillIcon skill={mod.skill} size="md" />
+                    <CategoryMark category={mod.skill} size={44} />
                     <h3 className="font-headline font-extrabold text-on-surface text-lg mt-3.5 mb-1">{tS(`${skill.key}.name`)}</h3>
                     <p className="text-xs text-on-surface-variant leading-relaxed mb-4 min-h-[2.6rem]">{tS(`${skill.key}.tagline`)}</p>
 
@@ -613,7 +614,7 @@ export default async function PremiumPage({ params }: Props) {
                 <p className="text-[11px] font-bold uppercase tracking-widest mb-2" style={{ color:'rgba(254,118,44,0.85)' }}>{tP('bundle_label')}</p>
 
                 <div className="flex items-center gap-2 mb-5">
-                  {SKILLS.map(s => <SkillIcon key={s.slug} skill={s.slug} size="sm" onDark />)}
+                  {SKILLS.map(s => <CategoryMark key={s.slug} category={s.slug} size={32} tone="dark" />)}
                   <span className="text-xs ml-1" style={{ color:'rgba(255,255,255,0.55)' }}>{tP('bundle_scope')}</span>
                 </div>
 

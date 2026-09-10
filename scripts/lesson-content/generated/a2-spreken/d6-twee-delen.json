@@ -1,0 +1,142 @@
+{
+  "items": [
+    {
+      "kind": "uitleg",
+      "tier": null,
+      "explanation": null,
+      "payload": {
+        "body_html": "<p>Je hoort een korte situatie en je zegt daarna zelf iets; in het examen heb je ongeveer 30 seconden spreektijd per opdracht.</p>",
+        "cards": [
+          {
+            "label": "KORT",
+            "example_html": "Zeg twee of drie zinnen, niet meer."
+          },
+          {
+            "label": "DUIDELIJK",
+            "example_html": "Noem meteen wat je wilt of wat er is."
+          }
+        ]
+      }
+    },
+    {
+      "kind": "opnemen",
+      "tier": 2,
+      "explanation": "Je moet zeggen wát er kapot is en wat je van de verhuurder wilt. Zonder een vraag om hulp is je antwoord niet compleet.",
+      "payload": {
+        "prompt": "De kraan in je keuken lekt al drie dagen. Je belt de verhuurder, meneer Bakker. Vertel wat er aan de hand is en vraag of iemand langskomt.",
+        "model_answer": "Goedemiddag meneer Bakker, u spreekt met Amina Yilmaz van de Kastanjelaan 14. De kraan in mijn keuken lekt al drie dagen. Kan er deze week iemand langskomen om het te maken?",
+        "checklist": [
+          "Ik zeg mijn naam en mijn adres.",
+          "Ik vertel wat er kapot is.",
+          "Ik vraag of iemand komt."
+        ],
+        "image_urls": [],
+        "record_seconds": 60
+      }
+    },
+    {
+      "kind": "mcq",
+      "tier": 0,
+      "explanation": "Je moet zeggen waarom je niet kunt komen en een nieuwe dag voorstellen. Alleen \"nee\" zeggen is te kort en niet duidelijk.",
+      "payload": {
+        "prompt": "De assistent van de huisarts zegt: \"U kunt donderdag om negen uur komen.\" Je werkt donderdagochtend. Welk antwoord past het beste?"
+      },
+      "options": [
+        {
+          "label": "A",
+          "body": "Donderdag komt slecht uit, want dan werk ik. Kan het vrijdagmiddag?",
+          "is_correct": true
+        },
+        {
+          "label": "B",
+          "body": "Nee, dat is niet goed. Dag.",
+          "is_correct": false
+        },
+        {
+          "label": "C",
+          "body": "Ik weet het niet. Wat vindt u zelf?",
+          "is_correct": false
+        }
+      ]
+    },
+    {
+      "kind": "opnemen",
+      "tier": 2,
+      "explanation": "Je vraagt om iets te ruilen, dus je noemt het probleem én wat je wilt. Een bonnetje noemen maakt je vraag sterker.",
+      "payload": {
+        "prompt": "Je hebt gisteren een broek gekocht bij een kledingwinkel. De broek is te klein. Je staat bij de kassa. Vraag of je de broek mag ruilen.",
+        "model_answer": "Goedemorgen, ik heb deze broek gisteren hier gekocht. Hij is helaas te klein voor mij. Mag ik hem ruilen voor een grotere maat? Ik heb de bon nog bij me.",
+        "checklist": [
+          "Ik vertel wat ik gekocht heb en wat er mis is.",
+          "Ik vraag netjes of ik mag ruilen.",
+          "Ik gebruik hele zinnen, geen losse woorden."
+        ],
+        "image_urls": [],
+        "record_seconds": 60
+      }
+    },
+    {
+      "kind": "opnemen",
+      "tier": 2,
+      "explanation": "Je meldt je kind ziek, dus de school moet weten wie je bent, welk kind het is en dat het vandaag niet komt.",
+      "payload": {
+        "prompt": "Je zoon Karim van acht jaar is ziek. Hij kan vandaag niet naar school. Je belt basisschool De Vlieger en spreekt met de administratie.",
+        "model_answer": "Goedemorgen, u spreekt met de moeder van Karim Aziz uit groep vier. Karim is ziek, hij heeft koorts. Hij komt vandaag niet naar school.",
+        "checklist": [
+          "Ik zeg wie ik ben en van welk kind ik bel.",
+          "Ik zeg dat mijn kind ziek is.",
+          "Ik zeg dat hij vandaag niet komt."
+        ],
+        "image_urls": [],
+        "record_seconds": 60
+      }
+    },
+    {
+      "kind": "mcq",
+      "tier": 0,
+      "explanation": "Bij een balie van de gemeente zeg je kort en concreet waarvoor je komt. Antwoorden zonder duidelijke vraag helpen de medewerker niet.",
+      "payload": {
+        "prompt": "Je staat bij de balie van de gemeente. De medewerker vraagt: \"Waarmee kan ik u helpen?\" Je bent verhuisd. Welk antwoord past het beste?"
+      },
+      "options": [
+        {
+          "label": "A",
+          "body": "Ik heb een nieuw huis. Heel mooi, met een tuin.",
+          "is_correct": false
+        },
+        {
+          "label": "B",
+          "body": "Goedemiddag, ik ben verhuisd. Ik wil mijn nieuwe adres doorgeven.",
+          "is_correct": true
+        },
+        {
+          "label": "C",
+          "body": "Ja, dat weet ik nog niet precies, mevrouw.",
+          "is_correct": false
+        },
+        {
+          "label": "D",
+          "body": "Wonen in deze stad is duur geworden.",
+          "is_correct": false
+        }
+      ]
+    },
+    {
+      "kind": "opnemen",
+      "tier": 2,
+      "explanation": "Je vraagt vrij, dus je noemt de dag en de reden. Je sluit af met een vraag, zodat je chef kan antwoorden.",
+      "payload": {
+        "prompt": "Je moet volgende week dinsdag naar het ziekenhuis voor een controle. Je werkt die dag van negen tot vijf. Vraag je chef, mevrouw De Wit, om die middag vrij.",
+        "model_answer": "Mevrouw De Wit, mag ik u even iets vragen? Ik moet volgende week dinsdag naar het ziekenhuis voor een controle. Kan ik die middag vrij nemen?",
+        "checklist": [
+          "Ik noem de dag en het moment.",
+          "Ik vertel de reden.",
+          "Ik stel een duidelijke vraag."
+        ],
+        "image_urls": [],
+        "record_seconds": 60
+      }
+    }
+  ],
+  "what_you_learn": "Je oefent het spreken zoals in het examen. Je krijgt korte situaties en je neemt zelf een antwoord op. Daarna hoor je jezelf terug en vergelijk je met het voorbeeld."
+}

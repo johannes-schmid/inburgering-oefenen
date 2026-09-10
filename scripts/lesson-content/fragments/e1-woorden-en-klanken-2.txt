@@ -1,0 +1,17 @@
+# Woorden en klanken — audio
+# les e1-woorden-en-klanken, item 8
+# Casting:
+#   A = woman_young (Female Voice 1 — younger woman)
+#   B = man_young (Male Voice 1 — younger man)
+#
+# Dit bestand is de leesbare afdruk van wat er is ingesproken. De bron is de payload in
+# generated/a2-luisteren/e1-woorden-en-klanken.json — pas die aan en spreek opnieuw in.
+A: Woonstichting De Meidoorn, met Nadia.
+B: Ja, goedemorgen, u spreekt met Tarik Yildiz. Mijn kraan lekt al twee dagen.
+A: Vervelend, hoor. Woont u op de Lindelaan?
+B: Ja, op nummer negentien.
+A: Even kijken. Ik kan een monteur sturen op donderdag.
+B: Moet ik daarvoor betalen?
+A: De monteur is gratis. Maar een nieuwe kraan kost negentien euro vijftig.
+B: Dat is goed. En hoe laat komt hij dan?
+A: Tussen negen en elf uur 's ochtends.

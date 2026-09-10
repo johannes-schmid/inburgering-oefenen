@@ -1,0 +1,37 @@
+# De ingesproken uitleg van `b20-vaste-voorzetsels`.
+# Regels met # zijn commentaar. [[id]] of [[id | extra uitleg]] markeert waar de stem over
+# welk element begint; de extra uitleg staat op de pagina bij dat element en mag niet herhalen
+# wat de stem net zei.
+# Geldige id's: vis, vis-1 t/m vis-6, rule, card-0, card-1, demo-0, demo-1, exercises.
+
+Deze les gaat over werkwoorden met een vast voorzetsel.
+
+[[vis-1 | Niet "wachten voor" en niet "wachten aan". Alleen op.]]
+Kijk naar het plaatje. Links staat het werkwoord, rechts het voorzetsel dat er vast bij hoort. Bij wachten hoort op. Ik wacht op de bus.
+
+[[vis-2 | Zorgen voor: voor je kinderen, voor de kat, voor het eten.]]
+Bij zorgen hoort voor.
+
+[[vis-3 | Denken aan iemand of iets. Dat is een ander woord dan denken over.]]
+Bij denken hoort aan.
+
+[[vis-4 | Zoeken naar werk, naar een woning, naar een oplossing.]]
+Bij zoeken hoort naar.
+
+[[rule | Leer het paar als één woord: niet "wachten", maar "wachten op".]]
+Er is geen regel die zegt welk voorzetsel je moet kiezen. Je kunt het dus niet uitrekenen. Leer het werkwoord en het voorzetsel daarom samen.
+
+[[card-0 | Wachten op iemand, op de bus, op een brief.]]
+De eerste kaart is wachten op.
+
+[[card-1 | Zorgen voor een persoon of een dier.]]
+De tweede kaart is zorgen voor.
+
+[[demo-0 | Op de brief: het voorzetsel staat vlak achter het werkwoord.]]
+Twee voorbeelden. Wij wachten op de brief van de gemeente.
+
+[[demo-1 | Zorgt voor de kat, en daarna de bijzin met als.]]
+En: mijn buurman zorgt voor de kat als wij op vakantie zijn.
+
+[[exercises]]
+Doe nu de opgaven. Zeg het paar hardop; zo blijft het beter zitten.

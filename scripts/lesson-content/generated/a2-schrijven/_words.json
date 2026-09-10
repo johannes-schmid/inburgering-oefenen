@@ -1,0 +1,890 @@
+{
+  "aanhef-en-slot": [
+    {
+      "dutch": "aanhef",
+      "article": "de",
+      "plural": "aanheffen",
+      "frame": null,
+      "meaning_nl": "de eerste regel van een brief, waarmee je iemand begroet",
+      "example": "De aanhef van mijn brief is: Geachte heer Bakker.",
+      "example_form": "aanhef",
+      "usage": "productief"
+    },
+    {
+      "dutch": "geachte",
+      "article": null,
+      "plural": null,
+      "frame": "geachte heer/mevrouw",
+      "meaning_nl": "nette begroeting in een brief aan iemand die je niet kent",
+      "example": "Geachte mevrouw De Wit, ik schrijf u over mijn contract.",
+      "example_form": "Geachte",
+      "usage": "productief"
+    },
+    {
+      "dutch": "beste",
+      "article": null,
+      "plural": null,
+      "frame": "beste + naam",
+      "meaning_nl": "vriendelijke begroeting in een brief of e-mail",
+      "example": "Beste Karim, bedankt voor je snelle antwoord.",
+      "example_form": "Beste",
+      "usage": "productief"
+    },
+    {
+      "dutch": "hoogachtend",
+      "article": null,
+      "plural": null,
+      "frame": null,
+      "meaning_nl": "heel nette afsluiting onderaan een formele brief",
+      "example": "Hoogachtend, Fatima Yildiz.",
+      "example_form": "Hoogachtend",
+      "usage": "productief"
+    },
+    {
+      "dutch": "groet",
+      "article": "de",
+      "plural": "groeten",
+      "frame": "met vriendelijke groet",
+      "meaning_nl": "woord waarmee je een brief vriendelijk afsluit",
+      "example": "Met vriendelijke groet, Peter Jansen.",
+      "example_form": "groet",
+      "usage": "productief"
+    },
+    {
+      "dutch": "afsluiting",
+      "article": "de",
+      "plural": "afsluitingen",
+      "frame": null,
+      "meaning_nl": "het laatste stuk van een brief of e-mail",
+      "example": "Vergeet de afsluiting van je e-mail niet.",
+      "example_form": "afsluiting",
+      "usage": "productief"
+    },
+    {
+      "dutch": "ondertekenen",
+      "article": null,
+      "plural": null,
+      "frame": null,
+      "meaning_nl": "je naam zetten onder een brief of formulier",
+      "example": "Wilt u het formulier hieronder ondertekenen?",
+      "example_form": "ondertekenen",
+      "usage": "productief"
+    },
+    {
+      "dutch": "handtekening",
+      "article": "de",
+      "plural": "handtekeningen",
+      "frame": null,
+      "meaning_nl": "je eigen naam die je met de hand schrijft als bewijs",
+      "example": "Onder de brief staat mijn handtekening.",
+      "example_form": "handtekening",
+      "usage": "productief"
+    },
+    {
+      "dutch": "bijlage",
+      "article": "de",
+      "plural": "bijlagen",
+      "frame": null,
+      "meaning_nl": "papier of bestand dat je met een brief meestuurt",
+      "example": "In de bijlage stuur ik mijn diploma mee.",
+      "example_form": "bijlage",
+      "usage": "productief"
+    },
+    {
+      "dutch": "betreft",
+      "article": null,
+      "plural": null,
+      "frame": "betreft:",
+      "meaning_nl": "woord vooraan een brief dat het onderwerp aangeeft",
+      "example": "Betreft: opzeggen van mijn abonnement.",
+      "example_form": "Betreft",
+      "usage": "receptief"
+    },
+    {
+      "dutch": "onderwerp",
+      "article": "het",
+      "plural": "onderwerpen",
+      "frame": null,
+      "meaning_nl": "waar de brief of e-mail over gaat",
+      "example": "Bij onderwerp schrijf ik: vraag over mijn huur.",
+      "example_form": "onderwerp",
+      "usage": "productief"
+    },
+    {
+      "dutch": "afzender",
+      "article": "de",
+      "plural": "afzenders",
+      "frame": null,
+      "meaning_nl": "de persoon die de brief verstuurt",
+      "example": "Boven de brief staan de naam en het adres van de afzender.",
+      "example_form": "afzender",
+      "usage": "productief"
+    },
+    {
+      "dutch": "geadresseerde",
+      "article": "de",
+      "plural": "geadresseerden",
+      "frame": null,
+      "meaning_nl": "de persoon aan wie de brief gestuurd wordt",
+      "example": "De naam van de geadresseerde staat links bovenaan.",
+      "example_form": "geadresseerde",
+      "usage": "receptief"
+    },
+    {
+      "dutch": "datum",
+      "article": "de",
+      "plural": "data",
+      "frame": null,
+      "meaning_nl": "de dag, maand en het jaar dat je de brief schrijft",
+      "example": "Ik schrijf de datum boven mijn brief.",
+      "example_form": "datum",
+      "usage": "productief"
+    },
+    {
+      "dutch": "alvast",
+      "article": null,
+      "plural": null,
+      "frame": "alvast bedankt",
+      "meaning_nl": "nu al, voordat iets gebeurd is",
+      "example": "Alvast bedankt voor uw antwoord.",
+      "example_form": "Alvast",
+      "usage": "productief"
+    },
+    {
+      "dutch": "bij voorbaat",
+      "article": null,
+      "plural": null,
+      "frame": "bij voorbaat dank",
+      "meaning_nl": "vooraf, nette manier om te bedanken in een brief",
+      "example": "Bij voorbaat dank voor uw hulp.",
+      "example_form": "Bij voorbaat",
+      "usage": "productief"
+    },
+    {
+      "dutch": "reactie",
+      "article": "de",
+      "plural": "reacties",
+      "frame": "een reactie (op)",
+      "meaning_nl": "antwoord van iemand op je brief of vraag",
+      "example": "Ik wacht op een reactie van de gemeente.",
+      "example_form": "reactie",
+      "usage": "productief"
+    },
+    {
+      "dutch": "vernemen",
+      "article": null,
+      "plural": null,
+      "frame": "van u vernemen",
+      "meaning_nl": "iets te horen krijgen, bericht ontvangen",
+      "example": "Ik hoop snel van u te vernemen.",
+      "example_form": "vernemen",
+      "usage": "receptief"
+    },
+    {
+      "dutch": "toelichting",
+      "article": "de",
+      "plural": "toelichtingen",
+      "frame": null,
+      "meaning_nl": "extra uitleg bij een brief of formulier",
+      "example": "Onderaan geef ik een korte toelichting bij mijn vraag.",
+      "example_form": "toelichting",
+      "usage": "receptief"
+    },
+    {
+      "dutch": "verzoeken",
+      "article": null,
+      "plural": null,
+      "frame": "verzoeken om",
+      "meaning_nl": "op nette manier vragen of iets kan",
+      "example": "Ik verzoek u om mij een nieuwe brief te sturen.",
+      "example_form": "verzoek",
+      "usage": "productief"
+    },
+    {
+      "dutch": "hierbij",
+      "article": null,
+      "plural": null,
+      "frame": null,
+      "meaning_nl": "met deze brief, samen met dit bericht",
+      "example": "Hierbij stuur ik u een kopie van mijn paspoort.",
+      "example_form": "Hierbij",
+      "usage": "productief"
+    },
+    {
+      "dutch": "briefje",
+      "article": "het",
+      "plural": "briefjes",
+      "frame": null,
+      "meaning_nl": "kort stukje tekst op papier voor iemand",
+      "example": "Ik leg een briefje voor de buren in de bus.",
+      "example_form": "briefje",
+      "usage": "productief"
+    }
+  ],
+  "vragen-en-verzoeken": [
+    {
+      "dutch": "verzoek",
+      "article": "het",
+      "plural": "verzoeken",
+      "frame": "een verzoek doen",
+      "meaning_nl": "wat je vriendelijk aan iemand vraagt",
+      "example": "Ik doe een verzoek om een nieuwe pas.",
+      "example_form": "verzoek",
+      "usage": "productief"
+    },
+    {
+      "dutch": "vragen",
+      "article": null,
+      "plural": null,
+      "frame": "vragen (om)",
+      "meaning_nl": "aan iemand zeggen dat je iets wilt weten of hebben",
+      "example": "Ik vraag om een kopie van de brief.",
+      "example_form": "vraag",
+      "usage": "productief"
+    },
+    {
+      "dutch": "aanvragen",
+      "article": null,
+      "plural": null,
+      "frame": "aanvragen (bij)",
+      "meaning_nl": "officieel om iets verzoeken bij een instantie",
+      "example": "Ik wil een uitkering aanvragen bij de gemeente.",
+      "example_form": "aanvragen",
+      "usage": "productief"
+    },
+    {
+      "dutch": "aanvraag",
+      "article": "de",
+      "plural": "aanvragen",
+      "frame": null,
+      "meaning_nl": "een officieel formulier of brief waarmee je iets vraagt",
+      "example": "Mijn aanvraag voor een paspoort is verstuurd.",
+      "example_form": "aanvraag",
+      "usage": "productief"
+    },
+    {
+      "dutch": "graag",
+      "article": null,
+      "plural": null,
+      "frame": null,
+      "meaning_nl": "woord dat je vraag vriendelijk maakt",
+      "example": "Ik wil graag een afspraak maken bij de tandarts.",
+      "example_form": "graag",
+      "usage": "productief"
+    },
+    {
+      "dutch": "alstublieft",
+      "article": null,
+      "plural": null,
+      "frame": null,
+      "meaning_nl": "vriendelijk woord bij een vraag aan iemand die u is",
+      "example": "Kunt u mij alstublieft het formulier toesturen?",
+      "example_form": "alstublieft",
+      "usage": "productief"
+    },
+    {
+      "dutch": "bedanken",
+      "article": null,
+      "plural": null,
+      "frame": "bedanken (voor)",
+      "meaning_nl": "zeggen dat je blij bent met wat iemand deed",
+      "example": "Ik wil u bedanken voor uw snelle antwoord.",
+      "example_form": "bedanken",
+      "usage": "productief"
+    },
+    {
+      "dutch": "antwoord",
+      "article": "het",
+      "plural": "antwoorden",
+      "frame": "antwoord (op)",
+      "meaning_nl": "wat iemand terugzegt of terugschrijft na een vraag",
+      "example": "Ik wacht nog op uw antwoord over de huur.",
+      "example_form": "antwoord",
+      "usage": "productief"
+    },
+    {
+      "dutch": "reageren",
+      "article": null,
+      "plural": null,
+      "frame": "reageren (op)",
+      "meaning_nl": "terugschrijven of terugbellen naar iemand",
+      "example": "Kunt u deze week reageren op mijn e-mail?",
+      "example_form": "reageren",
+      "usage": "productief"
+    },
+    {
+      "dutch": "sturen",
+      "article": null,
+      "plural": null,
+      "frame": "sturen (naar)",
+      "meaning_nl": "iets met de post of per mail laten bezorgen",
+      "example": "Ik stuur de kopie naar uw kantoor in Zwolle.",
+      "example_form": "stuur",
+      "usage": "productief"
+    },
+    {
+      "dutch": "bijlage",
+      "article": "de",
+      "plural": "bijlagen",
+      "frame": null,
+      "meaning_nl": "bestand of papier dat je met een e-mail meestuurt",
+      "example": "In de bijlage vindt u mijn loonstrook.",
+      "example_form": "bijlage",
+      "usage": "productief"
+    },
+    {
+      "dutch": "invullen",
+      "article": null,
+      "plural": null,
+      "frame": null,
+      "meaning_nl": "de gegevens op een formulier opschrijven",
+      "example": "Ik heb het formulier volledig ingevuld.",
+      "example_form": "ingevuld",
+      "usage": "productief"
+    },
+    {
+      "dutch": "ondertekenen",
+      "article": null,
+      "plural": null,
+      "frame": null,
+      "meaning_nl": "je naam onderaan een brief of formulier zetten",
+      "example": "Wilt u de brief ondertekenen en terugsturen?",
+      "example_form": "ondertekenen",
+      "usage": "productief"
+    },
+    {
+      "dutch": "uitleggen",
+      "article": null,
+      "plural": null,
+      "frame": null,
+      "meaning_nl": "zo vertellen dat de ander het begrijpt",
+      "example": "Kunt u mij uitleggen waarom ik moet betalen?",
+      "example_form": "uitleggen",
+      "usage": "productief"
+    },
+    {
+      "dutch": "helpen",
+      "article": null,
+      "plural": null,
+      "frame": "helpen (met)",
+      "meaning_nl": "iemand steunen bij iets dat moeilijk is",
+      "example": "Kunt u mij helpen met dit formulier?",
+      "example_form": "helpen",
+      "usage": "productief"
+    },
+    {
+      "dutch": "toestemming",
+      "article": "de",
+      "plural": null,
+      "frame": "toestemming (voor)",
+      "meaning_nl": "als iemand zegt dat je iets mag doen",
+      "example": "Ik vraag toestemming voor een vrije dag.",
+      "example_form": "toestemming",
+      "usage": "productief"
+    },
+    {
+      "dutch": "afspraak",
+      "article": "de",
+      "plural": "afspraken",
+      "frame": "een afspraak maken (met)",
+      "meaning_nl": "vaste tijd waarop je iemand ziet of spreekt",
+      "example": "Ik wil een afspraak maken met mijn begeleider.",
+      "example_form": "afspraak",
+      "usage": "productief"
+    },
+    {
+      "dutch": "uitstel",
+      "article": "het",
+      "plural": null,
+      "frame": "uitstel vragen",
+      "meaning_nl": "meer tijd krijgen voordat je iets moet doen",
+      "example": "Ik vraag uitstel voor het betalen van de rekening.",
+      "example_form": "uitstel",
+      "usage": "productief"
+    },
+    {
+      "dutch": "verlengen",
+      "article": null,
+      "plural": null,
+      "frame": null,
+      "meaning_nl": "zorgen dat iets langer geldig blijft",
+      "example": "Ik wil mijn rijbewijs laten verlengen.",
+      "example_form": "verlengen",
+      "usage": "productief"
+    },
+    {
+      "dutch": "doorgeven",
+      "article": null,
+      "plural": null,
+      "frame": "doorgeven (aan)",
+      "meaning_nl": "informatie aan iemand anders vertellen of melden",
+      "example": "Ik geef mijn nieuwe adres door aan de gemeente.",
+      "example_form": "geef door",
+      "usage": "productief"
+    },
+    {
+      "dutch": "vriendelijke groet",
+      "article": "de",
+      "plural": null,
+      "frame": "met vriendelijke groet",
+      "meaning_nl": "nette afsluiting onderaan een brief of e-mail",
+      "example": "Met vriendelijke groet, Fatima Bakker.",
+      "example_form": "vriendelijke groet",
+      "usage": "productief"
+    },
+    {
+      "dutch": "geachte",
+      "article": null,
+      "plural": null,
+      "frame": "geachte heer/mevrouw",
+      "meaning_nl": "nette aanhef bovenaan een brief aan een onbekende",
+      "example": "Geachte mevrouw De Vries, ik schrijf u over mijn huur.",
+      "example_form": "Geachte",
+      "usage": "receptief"
+    }
+  ],
+  "afzeggen-uitnodigen": [
+    {
+      "dutch": "uitnodigen",
+      "article": null,
+      "plural": null,
+      "frame": "iemand uitnodigen (voor)",
+      "meaning_nl": "vragen of iemand komt naar een feest of bijeenkomst",
+      "example": "Ik wil je uitnodigen voor mijn verjaardag op zaterdag.",
+      "example_form": "uitnodigen",
+      "usage": "productief"
+    },
+    {
+      "dutch": "uitnodiging",
+      "article": "de",
+      "plural": "uitnodigingen",
+      "frame": "een uitnodiging (voor)",
+      "meaning_nl": "briefje of bericht waarin je vraagt of iemand komt",
+      "example": "Bedankt voor de leuke uitnodiging voor jullie bruiloft.",
+      "example_form": "uitnodiging",
+      "usage": "productief"
+    },
+    {
+      "dutch": "afzeggen",
+      "article": null,
+      "plural": null,
+      "frame": "iets afzeggen",
+      "meaning_nl": "laten weten dat je niet komt of iets niet doorgaat",
+      "example": "Ik moet mijn les van dinsdag helaas afzeggen.",
+      "example_form": "afzeggen",
+      "usage": "productief"
+    },
+    {
+      "dutch": "afmelden",
+      "article": null,
+      "plural": null,
+      "frame": "zich afmelden (voor)",
+      "meaning_nl": "doorgeven dat je ergens niet aanwezig zult zijn",
+      "example": "Wilt u zich voor negen uur afmelden bij de balie?",
+      "example_form": "afmelden",
+      "usage": "productief"
+    },
+    {
+      "dutch": "aanwezig",
+      "article": null,
+      "plural": null,
+      "frame": "aanwezig zijn (bij)",
+      "meaning_nl": "op die plek, er ook echt bij",
+      "example": "Ik ben graag aanwezig bij de ouderavond op school.",
+      "example_form": "aanwezig",
+      "usage": "productief"
+    },
+    {
+      "dutch": "verhinderd",
+      "article": null,
+      "plural": null,
+      "frame": "verhinderd zijn",
+      "meaning_nl": "niet kunnen komen door iets anders",
+      "example": "Op maandag ben ik verhinderd, want ik werk dan.",
+      "example_form": "verhinderd",
+      "usage": "productief"
+    },
+    {
+      "dutch": "verzetten",
+      "article": null,
+      "plural": null,
+      "frame": "een afspraak verzetten (naar)",
+      "meaning_nl": "een afspraak op een andere dag of tijd zetten",
+      "example": "Kunnen we de afspraak verzetten naar volgende week woensdag?",
+      "example_form": "verzetten",
+      "usage": "productief"
+    },
+    {
+      "dutch": "doorgaan",
+      "article": null,
+      "plural": null,
+      "frame": "iets gaat (niet) door",
+      "meaning_nl": "wel of niet gebeuren zoals gepland",
+      "example": "Het feest gaat door, ook bij slecht weer.",
+      "example_form": "gaat door",
+      "usage": "productief"
+    },
+    {
+      "dutch": "helaas",
+      "article": null,
+      "plural": null,
+      "frame": null,
+      "meaning_nl": "jammer, het spijt me dat het zo is",
+      "example": "Helaas kan ik zaterdag niet naar je feest komen.",
+      "example_form": "Helaas",
+      "usage": "productief"
+    },
+    {
+      "dutch": "gelegenheid",
+      "article": "de",
+      "plural": "gelegenheden",
+      "frame": null,
+      "meaning_nl": "bijzondere dag of moment waarvoor mensen samenkomen",
+      "example": "Bij zo'n feestelijke gelegenheid draag ik een net pak.",
+      "example_form": "gelegenheid",
+      "usage": "receptief"
+    },
+    {
+      "dutch": "reden",
+      "article": "de",
+      "plural": "redenen",
+      "frame": "de reden (van/voor)",
+      "meaning_nl": "waarom iets gebeurt of waarom je iets doet",
+      "example": "De reden van mijn afwezigheid is een ziek kind.",
+      "example_form": "reden",
+      "usage": "productief"
+    },
+    {
+      "dutch": "bericht",
+      "article": "het",
+      "plural": "berichten",
+      "frame": "een bericht (sturen)",
+      "meaning_nl": "korte tekst die je naar iemand stuurt",
+      "example": "Ik stuur je vanavond nog een bericht over morgen.",
+      "example_form": "bericht",
+      "usage": "productief"
+    },
+    {
+      "dutch": "doorgeven",
+      "article": null,
+      "plural": null,
+      "frame": "iets doorgeven (aan)",
+      "meaning_nl": "informatie aan iemand anders laten weten",
+      "example": "Kun je aan Fatima doorgeven dat ik later kom?",
+      "example_form": "doorgeven",
+      "usage": "productief"
+    },
+    {
+      "dutch": "laten weten",
+      "article": null,
+      "plural": null,
+      "frame": "iemand laten weten (dat)",
+      "meaning_nl": "iemand op de hoogte brengen van iets",
+      "example": "Laat me even weten of je vrijdag kunt komen.",
+      "example_form": "Laat",
+      "usage": "productief"
+    },
+    {
+      "dutch": "graag",
+      "article": null,
+      "plural": null,
+      "frame": null,
+      "meaning_nl": "met plezier, ik wil het wel",
+      "example": "Ik kom graag naar jullie etentje in Utrecht.",
+      "example_form": "graag",
+      "usage": "productief"
+    },
+    {
+      "dutch": "excuses",
+      "article": null,
+      "plural": null,
+      "frame": "excuses (voor)",
+      "meaning_nl": "woorden waarmee je zegt dat iets je spijt",
+      "example": "Mijn excuses voor het late bericht over morgen.",
+      "example_form": "excuses",
+      "usage": "productief"
+    },
+    {
+      "dutch": "hopen",
+      "article": null,
+      "plural": null,
+      "frame": "hopen (dat)",
+      "meaning_nl": "graag willen dat iets gebeurt",
+      "example": "Ik hoop dat we snel een nieuwe datum vinden.",
+      "example_form": "hoop",
+      "usage": "productief"
+    },
+    {
+      "dutch": "datum",
+      "article": "de",
+      "plural": "data",
+      "frame": null,
+      "meaning_nl": "dag, maand en jaar van iets",
+      "example": "Wat is de datum van de vergadering in Zwolle?",
+      "example_form": "datum",
+      "usage": "productief"
+    },
+    {
+      "dutch": "gezellig",
+      "article": null,
+      "plural": null,
+      "frame": null,
+      "meaning_nl": "prettig en warm om samen te zijn",
+      "example": "Het was heel gezellig bij jullie thuis, dank je.",
+      "example_form": "gezellig",
+      "usage": "productief"
+    },
+    {
+      "dutch": "vieren",
+      "article": null,
+      "plural": null,
+      "frame": "iets vieren",
+      "meaning_nl": "een feest houden om een bijzondere dag",
+      "example": "Wij vieren onze verhuizing met koffie en gebak.",
+      "example_form": "vieren",
+      "usage": "productief"
+    },
+    {
+      "dutch": "verzoek",
+      "article": "het",
+      "plural": "verzoeken",
+      "frame": "een verzoek (om)",
+      "meaning_nl": "als je vriendelijk en netjes om iets vraagt",
+      "example": "Mijn verzoek om een andere dag is goedgekeurd.",
+      "example_form": "verzoek",
+      "usage": "receptief"
+    },
+    {
+      "dutch": "toch",
+      "article": null,
+      "plural": null,
+      "frame": null,
+      "meaning_nl": "anders dan eerst gedacht of gezegd",
+      "example": "Ik kan zondag toch komen, mijn dienst is geruild.",
+      "example_form": "toch",
+      "usage": "productief"
+    }
+  ],
+  "formulierwoorden": [
+    {
+      "dutch": "achternaam",
+      "article": "de",
+      "plural": "achternamen",
+      "frame": null,
+      "meaning_nl": "de naam van je familie",
+      "example": "Schrijf uw achternaam in hoofdletters op het formulier.",
+      "example_form": "achternaam",
+      "usage": "productief"
+    },
+    {
+      "dutch": "voorletters",
+      "article": "de",
+      "plural": "voorletters",
+      "frame": null,
+      "meaning_nl": "de eerste letters van je voornamen",
+      "example": "Bij voorletters schrijf ik J.M. en dan mijn naam.",
+      "example_form": "voorletters",
+      "usage": "productief"
+    },
+    {
+      "dutch": "geboortedatum",
+      "article": "de",
+      "plural": "geboortedata",
+      "frame": null,
+      "meaning_nl": "de dag waarop je geboren bent",
+      "example": "Mijn geboortedatum is 12 mei 1988.",
+      "example_form": "geboortedatum",
+      "usage": "productief"
+    },
+    {
+      "dutch": "geboorteplaats",
+      "article": "de",
+      "plural": "geboorteplaatsen",
+      "frame": null,
+      "meaning_nl": "de stad of het dorp waar je geboren bent",
+      "example": "Als geboorteplaats vul ik Rotterdam in.",
+      "example_form": "geboorteplaats",
+      "usage": "productief"
+    },
+    {
+      "dutch": "nationaliteit",
+      "article": "de",
+      "plural": "nationaliteiten",
+      "frame": null,
+      "meaning_nl": "het land waarvan je een paspoort hebt",
+      "example": "Vul hier uw nationaliteit in, bijvoorbeeld Nederlandse.",
+      "example_form": "nationaliteit",
+      "usage": "productief"
+    },
+    {
+      "dutch": "burgerservicenummer",
+      "article": "het",
+      "plural": "burgerservicenummers",
+      "frame": null,
+      "meaning_nl": "het persoonlijke nummer van de overheid voor iedere inwoner",
+      "example": "Mijn burgerservicenummer staat op mijn identiteitskaart.",
+      "example_form": "burgerservicenummer",
+      "usage": "productief"
+    },
+    {
+      "dutch": "postcode",
+      "article": "de",
+      "plural": "postcodes",
+      "frame": null,
+      "meaning_nl": "de cijfers en letters bij je straat en woonplaats",
+      "example": "Ik schrijf mijn postcode 3512 AB op de envelop.",
+      "example_form": "postcode",
+      "usage": "productief"
+    },
+    {
+      "dutch": "woonplaats",
+      "article": "de",
+      "plural": "woonplaatsen",
+      "frame": null,
+      "meaning_nl": "de stad of het dorp waar je nu leeft",
+      "example": "Bij woonplaats vul ik Almere in.",
+      "example_form": "woonplaats",
+      "usage": "productief"
+    },
+    {
+      "dutch": "huisnummer",
+      "article": "het",
+      "plural": "huisnummers",
+      "frame": null,
+      "meaning_nl": "het getal van je woning in de straat",
+      "example": "Vergeet uw huisnummer en toevoeging niet in te vullen.",
+      "example_form": "huisnummer",
+      "usage": "productief"
+    },
+    {
+      "dutch": "burgerlijke staat",
+      "article": "de",
+      "plural": null,
+      "frame": null,
+      "meaning_nl": "of je getrouwd bent, alleen of samenwonend",
+      "example": "Bij burgerlijke staat schrijf ik: gehuwd.",
+      "example_form": "burgerlijke staat",
+      "usage": "productief"
+    },
+    {
+      "dutch": "invullen",
+      "article": null,
+      "plural": null,
+      "frame": "invullen (op)",
+      "meaning_nl": "woorden of cijfers in de lege vakjes schrijven",
+      "example": "Wilt u het formulier met blauwe pen invullen?",
+      "example_form": "invullen",
+      "usage": "productief"
+    },
+    {
+      "dutch": "aankruisen",
+      "article": null,
+      "plural": null,
+      "frame": null,
+      "meaning_nl": "een klein streepje in een vakje zetten",
+      "example": "Kruis het juiste antwoord aan met een kruisje.",
+      "example_form": "Kruis ... aan",
+      "usage": "productief"
+    },
+    {
+      "dutch": "doorhalen",
+      "article": null,
+      "plural": null,
+      "frame": null,
+      "meaning_nl": "een streep door woorden zetten die niet kloppen",
+      "example": "Haal door wat voor u niet van toepassing is.",
+      "example_form": "Haal door",
+      "usage": "receptief"
+    },
+    {
+      "dutch": "ondertekenen",
+      "article": null,
+      "plural": null,
+      "frame": null,
+      "meaning_nl": "je naam onderaan een papier zetten",
+      "example": "U moet de brief onderaan ondertekenen en dateren.",
+      "example_form": "ondertekenen",
+      "usage": "productief"
+    },
+    {
+      "dutch": "handtekening",
+      "article": "de",
+      "plural": "handtekeningen",
+      "frame": null,
+      "meaning_nl": "je naam die je zelf met de pen schrijft",
+      "example": "Zet uw handtekening in het witte vak hieronder.",
+      "example_form": "handtekening",
+      "usage": "productief"
+    },
+    {
+      "dutch": "bijlage",
+      "article": "de",
+      "plural": "bijlagen",
+      "frame": null,
+      "meaning_nl": "het papier dat je met een brief of mail meestuurt",
+      "example": "In de bijlage stuur ik een kopie van mijn contract.",
+      "example_form": "bijlage",
+      "usage": "productief"
+    },
+    {
+      "dutch": "meesturen",
+      "article": null,
+      "plural": null,
+      "frame": "meesturen (met)",
+      "meaning_nl": "iets samen met een brief of mail versturen",
+      "example": "Ik stuur een kopie van mijn diploma mee.",
+      "example_form": "stuur ... mee",
+      "usage": "productief"
+    },
+    {
+      "dutch": "opsturen",
+      "article": null,
+      "plural": null,
+      "frame": "opsturen (naar)",
+      "meaning_nl": "met de post of per mail naar iemand versturen",
+      "example": "Ik stuur het formulier morgen naar de gemeente op.",
+      "example_form": "stuur ... op",
+      "usage": "productief"
+    },
+    {
+      "dutch": "toevoegen",
+      "article": null,
+      "plural": null,
+      "frame": "toevoegen (aan)",
+      "meaning_nl": "er nog iets bij doen",
+      "example": "Ik voeg mijn telefoonnummer aan het formulier toe.",
+      "example_form": "voeg ... toe",
+      "usage": "productief"
+    },
+    {
+      "dutch": "betreft",
+      "article": null,
+      "plural": null,
+      "frame": null,
+      "meaning_nl": "waar de brief of mail over gaat",
+      "example": "Betreft: aanvraag van een nieuwe huurwoning.",
+      "example_form": "Betreft",
+      "usage": "productief"
+    },
+    {
+      "dutch": "geachte",
+      "article": null,
+      "plural": null,
+      "frame": "geachte (heer/mevrouw)",
+      "meaning_nl": "nette aanhef aan het begin van een brief",
+      "example": "Geachte mevrouw De Wit, ik schrijf u over mijn aanvraag.",
+      "example_form": "Geachte",
+      "usage": "productief"
+    },
+    {
+      "dutch": "vriendelijke groet",
+      "article": "de",
+      "plural": null,
+      "frame": "met vriendelijke groet",
+      "meaning_nl": "nette afsluiting onderaan een brief of mail",
+      "example": "Met vriendelijke groet, Sanne Bakker uit Zwolle.",
+      "example_form": "vriendelijke groet",
+      "usage": "productief"
+    }
+  ]
+}

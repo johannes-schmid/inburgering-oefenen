@@ -1,7 +1,6 @@
 import { createClient } from './supabase/server';
 import { ownsKnm, ownsModule } from './entitlements';
 import { emptyLevelledProgress, fetchPortalProgress, type AllPortalProgress } from './portal-progress';
-import { fetchConceptLevels } from './lessons/concepts-server';
 import {
   KNM, KNM_SLUG, LEVELS, SKILLS, getFormat, moduleGroupLabel,
   type Level, type OnderdeelSlug,
@@ -66,19 +65,6 @@ export type PortalMenuGroup = {
   items: PortalMenuItem[];
   /** True when the account has paid access to at least one onderdeel in the group. */
   owned: boolean;
-  /**
-   * Heeft dit niveau een vrijgegeven conceptenbibliotheek?
-   *
-   * Een **feit over de content**, geen feature flag — zie `fetchConceptLevels()`. Altijd
-   * `false` voor KNM: dat onderdeel heeft geen grammaticaconcepten, zijn 43 subonderwerpen
-   * zitten al in `sections` en zijn remediatie loopt daarlangs.
-   *
-   * De lescursus zélf staat hier **niet** in, en dat is de beslissing van de eigenaar van
-   * 27-08: het paneel draagt één as en zegt hoe ver je door de tien examens bent, niets
-   * anders. Twee balken naast elkaar in 196px is onleesbaar, en de cursus draagt zijn eigen
-   * voortgang op zijn eigen pagina.
-   */
-  hasConcepts: boolean;
 };
 
 export type PortalMenu = {
@@ -138,13 +124,10 @@ export async function fetchPortalMenu(): Promise<PortalMenu> {
   try {
     const supabase = await createClient();
     const { data: { user } } = await supabase.auth.getUser();
-    if (!user) return buildPortalMenu(null, emptyLevelledProgress(), await fetchConceptLevels());
+    if (!user) return buildPortalMenu(null, emptyLevelledProgress());
 
-    const [progress, conceptLevels] = await Promise.all([
-      fetchPortalProgress(user.id),
-      fetchConceptLevels(),
-    ]);
-    return buildPortalMenu(user.user_metadata ?? null, progress, conceptLevels);
+    const progress = await fetchPortalProgress(user.id);
+    return buildPortalMenu(user.user_metadata ?? null, progress);
   } catch {
     return empty;
   }
@@ -160,7 +143,6 @@ type Meta = Record<string, unknown> | null;
 export function buildPortalMenu(
   meta: Meta,
   progress: AllPortalProgress,
-  conceptLevels: Set<Level> = new Set(),
 ): PortalMenu {
   const groups: PortalMenuGroup[] = LEVELS.map(level => {
     const items = SKILLS.map(s => skillItem(meta, level, s, progress));
@@ -178,7 +160,6 @@ export function buildPortalMenu(
       href: `/dashboard/${level}`,
       items,
       owned,
-      hasConcepts: conceptLevels.has(level),
     };
   });
 
@@ -190,7 +171,6 @@ export function buildPortalMenu(
     href: '/dashboard/knm',
     items: [knmItem(meta, progress)],
     owned: ownsKnm(meta),
-    hasConcepts: false,
   });
 
   const owned = groups.filter(g => g.owned);

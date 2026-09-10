@@ -1,0 +1,196 @@
+{
+  "items": [
+    {
+      "kind": "uitleg",
+      "tier": null,
+      "explanation": null,
+      "payload": {
+        "body_html": "<p>Je hoort twee gesprekken in een winkel en beantwoordt daarna de vragen, net als in het examen.</p>",
+        "cards": []
+      }
+    },
+    {
+      "kind": "audio",
+      "tier": null,
+      "explanation": null,
+      "payload": {
+        "script": "A: Goedemiddag, kan ik u helpen?\nB: Ja, graag. Ik heb hier een broek gekocht, maar hij is te klein.\nA: Heeft u de kassabon nog?\nB: Ja, hier. Ik heb hem zaterdag gekocht.\nA: Dat is goed, hoor. U mag hem ruilen. Wilt u een grotere maat?\nB: Ja, maat achtenveertig. Kan ik ook mijn geld terugkrijgen?\nA: Geld terug doen we alleen bij de servicebalie. Die is op de eerste verdieping.\nB: En hoe laat sluit die balie?\nA: Om vijf uur. U heeft dus nog een uur.\nB: Oké, dan ga ik meteen naar boven. Dank u wel.",
+        "label": "Gesprek bij de kledingafdeling",
+        "audio_url": "http://127.0.0.1:54421/storage/v1/object/public/leren-audio/fragment/a2-luisteren/d4-winkel-en-service-1.mp3",
+        "voice_cast": {
+          "A": "woman_young",
+          "B": "man_young"
+        },
+        "transcript": "Goedemiddag, kan ik u helpen? Ja, graag. Ik heb hier een broek gekocht, maar hij is te klein. Heeft u de kassabon nog? Ja, hier. Ik heb hem zaterdag gekocht. Dat is goed, hoor. U mag hem ruilen. Wilt u een grotere maat? Ja, maat achtenveertig. Kan ik ook mijn geld terugkrijgen? Geld terug doen we alleen bij de servicebalie. Die is op de eerste verdieping. En hoe laat sluit die balie? Om vijf uur. U heeft dus nog een uur. Oké, dan ga ik meteen naar boven. Dank u wel.",
+        "seconds": 31.9
+      }
+    },
+    {
+      "kind": "mcq",
+      "tier": 0,
+      "explanation": "De man zegt dat de broek te klein is. Hij wil daarom een grotere maat.",
+      "payload": {
+        "prompt": "Waarom komt de man naar de winkel?"
+      },
+      "options": [
+        {
+          "label": "A",
+          "body": "De broek is te klein.",
+          "is_correct": true
+        },
+        {
+          "label": "B",
+          "body": "De broek is kapot.",
+          "is_correct": false
+        },
+        {
+          "label": "C",
+          "body": "De broek was te duur.",
+          "is_correct": false
+        }
+      ]
+    },
+    {
+      "kind": "mcq",
+      "tier": 0,
+      "explanation": "De verkoopster zegt: de balie sluit om vijf uur. Dat is het tijdstip in het gesprek.",
+      "payload": {
+        "prompt": "Hoe laat sluit de servicebalie?"
+      },
+      "options": [
+        {
+          "label": "A",
+          "body": "Om vier uur.",
+          "is_correct": false
+        },
+        {
+          "label": "B",
+          "body": "Om vijf uur.",
+          "is_correct": true
+        },
+        {
+          "label": "C",
+          "body": "Om zes uur.",
+          "is_correct": false
+        }
+      ]
+    },
+    {
+      "kind": "mcq",
+      "tier": 1,
+      "explanation": "Geld terug kan alleen bij de servicebalie op de eerste verdieping. De man moet dus naar boven.",
+      "payload": {
+        "prompt": "Wat moet de man doen als hij zijn geld terug wil?"
+      },
+      "options": [
+        {
+          "label": "A",
+          "body": "Naar de servicebalie boven gaan.",
+          "is_correct": true
+        },
+        {
+          "label": "B",
+          "body": "Zaterdag terugkomen.",
+          "is_correct": false
+        },
+        {
+          "label": "C",
+          "body": "Een nieuwe kassabon vragen.",
+          "is_correct": false
+        }
+      ]
+    },
+    {
+      "kind": "audio",
+      "tier": null,
+      "explanation": null,
+      "payload": {
+        "script": "A: Goedemorgen, mevrouw Bergman. Uw boodschappen zijn ingepakt.\nB: Fijn. Wat is het totaal?\nA: Dat is achttien euro vijftig. Maar de kaas staat er nog niet op.\nB: O, die had ik al betaald bij de kaasafdeling.\nA: Ah, dan is het goed. Betaalt u met pin of contant?\nB: Met pin. Eh, spaart u ook punten?\nA: Ja, maar dan heeft u een spaarkaart nodig. Die krijgt u gratis bij de klantenservice.\nB: Dan haal ik er straks een.\nA: Dat kan tot zes uur vandaag. Morgen zijn we gesloten.\nB: Goed om te weten. Dank u.",
+        "label": "Gesprek bij de kassa van de supermarkt",
+        "audio_url": "http://127.0.0.1:54421/storage/v1/object/public/leren-audio/fragment/a2-luisteren/d4-winkel-en-service-2.mp3",
+        "voice_cast": {
+          "A": "man_young",
+          "B": "woman_young"
+        },
+        "transcript": "Goedemorgen, mevrouw Bergman. Uw boodschappen zijn ingepakt. Fijn. Wat is het totaal? Dat is achttien euro vijftig. Maar de kaas staat er nog niet op. O, die had ik al betaald bij de kaasafdeling. Ah, dan is het goed. Betaalt u met pin of contant? Met pin. Eh, spaart u ook punten? Ja, maar dan heeft u een spaarkaart nodig. Die krijgt u gratis bij de klantenservice. Dan haal ik er straks een. Dat kan tot zes uur vandaag. Morgen zijn we gesloten. Goed om te weten. Dank u.",
+        "seconds": 30.88
+      }
+    },
+    {
+      "kind": "mcq",
+      "tier": 0,
+      "explanation": "De medewerker noemt het bedrag: achttien euro vijftig.",
+      "payload": {
+        "prompt": "Hoeveel moet mevrouw Bergman betalen?"
+      },
+      "options": [
+        {
+          "label": "A",
+          "body": "€ 8,50",
+          "is_correct": false
+        },
+        {
+          "label": "B",
+          "body": "€ 18,50",
+          "is_correct": true
+        },
+        {
+          "label": "C",
+          "body": "€ 80,50",
+          "is_correct": false
+        }
+      ]
+    },
+    {
+      "kind": "mcq",
+      "tier": 1,
+      "explanation": "Voor punten sparen heb je een spaarkaart nodig. Die is gratis bij de klantenservice.",
+      "payload": {
+        "prompt": "Wat moet mevrouw Bergman doen om punten te sparen?"
+      },
+      "options": [
+        {
+          "label": "A",
+          "body": "Een spaarkaart halen bij de klantenservice.",
+          "is_correct": true
+        },
+        {
+          "label": "B",
+          "body": "Contant betalen aan de kassa.",
+          "is_correct": false
+        },
+        {
+          "label": "C",
+          "body": "Morgen terugkomen in de winkel.",
+          "is_correct": false
+        }
+      ]
+    },
+    {
+      "kind": "mcq",
+      "tier": 1,
+      "explanation": "Het gesprek gaat over afrekenen: het bedrag, de kaas en de manier van betalen. Dat is de hoofdgedachte.",
+      "payload": {
+        "prompt": "Waar gaat dit gesprek vooral over?"
+      },
+      "options": [
+        {
+          "label": "A",
+          "body": "Over het afrekenen van de boodschappen.",
+          "is_correct": true
+        },
+        {
+          "label": "B",
+          "body": "Over een klacht over oude kaas.",
+          "is_correct": false
+        },
+        {
+          "label": "C",
+          "body": "Over werk zoeken in de supermarkt.",
+          "is_correct": false
+        }
+      ]
+    }
+  ],
+  "what_you_learn": "Je oefent met luisteren naar korte gesprekken in een winkel. Je hoort een fragment één keer en zoekt daarna het juiste antwoord. Je let op een prijs, een tijd, waar het gesprek over gaat en wat iemand moet doen."
+}

@@ -1,0 +1,37 @@
+# De ingesproken uitleg van `b19-wederkerende-werkwoorden`.
+# Regels met # zijn commentaar. [[id]] of [[id | extra uitleg]] markeert waar de stem over
+# welk element begint; de extra uitleg staat op de pagina bij dat element en mag niet herhalen
+# wat de stem net zei.
+# Geldige id's: vis, vis-1 t/m vis-6, rule, card-0, card-1, demo-0, demo-1, exercises.
+
+Deze les gaat over werkwoorden met een extra woordje: me, je, zich of ons.
+
+[[vis-1 | Ik voel me. Nooit "ik voel".]]
+Kijk naar het plaatje. Links staat de persoon, rechts het woordje dat erbij hoort. Bij ik hoort me.
+
+[[vis-2 | Voel je je beter? Twee keer je, en dat is goed.]]
+Bij jij hoort je.
+
+[[vis-3 | Zich is de vorm voor hij, zij, u en zij in het meervoud.]]
+Bij hij en zij hoort zich.
+
+[[vis-4 | Wij vervelen ons: ons is ook het woordje van les 26.]]
+Bij wij hoort ons.
+
+[[rule | Het woordje staat vlak na het werkwoord.]]
+Dat extra woordje wijst terug naar de persoon zelf. Het verandert dus mee met wie het doet. Je ziet het bij zich voelen, zich vergissen en zich aankleden.
+
+[[card-0 | Bij ik en jij zijn de vormen me en je.]]
+De eerste kaart is de groep met me en je.
+
+[[card-1 | Bij hij, zij en ze is het altijd zich.]]
+De tweede kaart is de groep met zich.
+
+[[demo-0 | Me staat vlak achter voel.]]
+Twee voorbeelden. Ik voel me vandaag erg moe en ik bel de huisarts.
+
+[[demo-1 | Bij mijn buurvrouw hoort zich, want dat is zij.]]
+En: mijn buurvrouw voelt zich beter na de pillen van de dokter.
+
+[[exercises]]
+Doe nu de opgaven. Vergeet je het woordje, dan is de zin niet af.

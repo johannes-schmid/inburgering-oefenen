@@ -1,0 +1,37 @@
+# De ingesproken uitleg van `b8-tegenwoordige-tijd`.
+# Regels met # zijn commentaar. [[id]] of [[id | extra uitleg]] markeert waar de stem over
+# welk element begint; de extra uitleg staat op de pagina bij dat element en mag niet herhalen
+# wat de stem net zei.
+# Geldige id's: vis, vis-1 t/m vis-4, rule, card-0, card-1, demo-0, demo-1, exercises.
+
+Deze les gaat over praten over nu.
+
+[[vis-1 | Werken min -en is werk. Dat is de stam.]]
+Kijk naar het plaatje. Boven staat het werkwoord werken. Haal -en weg, en je hebt de stam: werk. Bij ik gebruik je die stam, zonder iets erachter. Ik werk.
+
+[[vis-2 | Jij, je en u krijgen alle drie een -t.]]
+Bij jij komt er een -t bij. Jij werkt. In het plaatje is dat het navy blokje achter de stam.
+
+[[vis-3 | Hij, zij en het krijgen dezelfde -t als jij.]]
+Bij hij, zij en het is het net zo: hij werkt.
+
+[[vis-4 | Dit is weer het hele woord, precies zoals in het woordenboek.]]
+En bij wij, jullie en zij komt -en erbij. Wij werken.
+
+[[rule | Vier vormen, twee uitgangen: niets, -t of -en.]]
+De regel is dus: stam voor ik, stam plus -t voor jij, hij en zij, en het hele woord voor wij, jullie en zij.
+
+[[card-0 | Alleen ik krijgt niets achter de stam.]]
+De eerste kaart is de vorm zonder -t.
+
+[[card-1 | Let op de vraag: "werk je?" — dan valt de -t weg.]]
+De tweede kaart is de vorm met -t.
+
+[[demo-0 | Betaalt: stam betaal plus -t.]]
+Twee voorbeelden. Mijn buurman betaalt de huur altijd op tijd.
+
+[[demo-1 | Wachten: bij wij het hele woord.]]
+En: wij wachten op de brief van de gemeente.
+
+[[exercises]]
+Doe nu de opgaven. Zoek eerst wie het doet, en kies dan de vorm.

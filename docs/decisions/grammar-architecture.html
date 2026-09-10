@@ -1,0 +1,786 @@
+<title>Where Grammar Lives</title>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@500;700;800&family=Public+Sans:ital,wght@0,400;0,600;1,400&display=swap">
+<style>
+  :root {
+    --navy:        #002b6d;
+    --navy-mid:    #1d428a;
+    --accent:      #fe762c;
+    --clay:        #a24000;
+    --ground:      #f8f9fb;
+    --tier-section:#f2f4f6;
+    --tier-card:   #ffffff;
+    --tier-inset:  #eceef0;
+    --ink:         #191c1e;
+    --ink-soft:    #434651;
+    --ink-faint:   #747782;
+    --on-navy:     #ffffff;
+    --on-navy-soft:#c3cee4;
+    --band:        var(--navy);
+    --shadow-ambient: 0 0 32px rgba(0, 43, 109, 0.06);
+    color-scheme: light;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --navy:        #01193d;
+      --navy-mid:    #123071;
+      --accent:      #ff8a4d;
+      --clay:        #ffb083;
+      --ground:      #06122b;
+      --tier-section:#0b1c3c;
+      --tier-card:   #0f2449;
+      --tier-inset:  #16305a;
+      --ink:         #eaeef6;
+      --ink-soft:    #b3c0d8;
+      --ink-faint:   #8996b1;
+      --on-navy:     #ffffff;
+      --on-navy-soft:#a9bada;
+      --band:        #010f27;
+      --shadow-ambient: 0 0 32px rgba(0, 0, 0, 0.35);
+      color-scheme: dark;
+    }
+  }
+  :root[data-theme="dark"] {
+    --navy:        #01193d;
+    --navy-mid:    #123071;
+    --accent:      #ff8a4d;
+    --clay:        #ffb083;
+    --ground:      #06122b;
+    --tier-section:#0b1c3c;
+    --tier-card:   #0f2449;
+    --tier-inset:  #16305a;
+    --ink:         #eaeef6;
+    --ink-soft:    #b3c0d8;
+    --ink-faint:   #8996b1;
+    --on-navy:     #ffffff;
+    --on-navy-soft:#a9bada;
+    --band:        #010f27;
+    --shadow-ambient: 0 0 32px rgba(0, 0, 0, 0.35);
+    color-scheme: dark;
+  }
+
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    background: var(--ground);
+    color: var(--ink);
+    font-family: "Public Sans", -apple-system, "Segoe UI", Helvetica, Arial, sans-serif;
+    font-size: 1rem;
+    line-height: 1.7;
+    -webkit-font-smoothing: antialiased;
+  }
+  h1, h2, h3, h4 {
+    font-family: "Manrope", -apple-system, "Segoe UI", Helvetica, Arial, sans-serif;
+    text-wrap: balance;
+    margin: 0;
+  }
+  p { margin: 0; }
+  strong { font-weight: 600; }
+  em { color: var(--ink-soft); }
+  code {
+    font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+    font-size: 0.86em;
+    background: var(--tier-inset);
+    color: var(--ink-soft);
+    padding: 0.1em 0.36em;
+    border-radius: 0.125rem;
+  }
+  a { color: var(--clay); text-decoration-thickness: 1px; text-underline-offset: 0.15em; }
+  a:hover { color: var(--accent); }
+  a:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; border-radius: 2px; }
+
+  .wrap { max-width: 64rem; margin: 0 auto; padding: 0 1.5rem; }
+  .eyebrow {
+    font-size: 0.75rem;
+    line-height: 1.4;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    font-weight: 600;
+    color: var(--ink-faint);
+  }
+
+  /* ── band ── */
+  .band {
+    background: var(--band);
+    color: var(--on-navy);
+    padding: 4rem 0 0;
+    position: relative;
+    overflow: hidden;
+  }
+  .band .wrap { position: relative; z-index: 1; }
+  .band .eyebrow { color: var(--on-navy-soft); }
+  .sun {
+    position: absolute;
+    right: 9%;
+    top: 3.5rem;
+    width: 7rem;
+    height: 7rem;
+    border-radius: 50%;
+    background: var(--accent);
+    opacity: 0.9;
+    z-index: 0;
+  }
+  .horizon {
+    position: absolute;
+    left: 0; right: 0;
+    bottom: 5.25rem;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--navy-mid) 12%, var(--navy-mid) 88%, transparent);
+    z-index: 0;
+  }
+  h1 {
+    font-size: clamp(2.1rem, 5.4vw, 3.3rem);
+    line-height: 1.02;
+    letter-spacing: -0.02em;
+    font-weight: 800;
+    margin-top: 0.75rem;
+    max-width: 26ch;
+  }
+  .lede {
+    margin-top: 1.15rem;
+    max-width: 60ch;
+    font-size: 1.0625rem;
+    color: var(--on-navy-soft);
+  }
+  .figures {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 2.25rem 3.5rem;
+    margin: 2.5rem 0 0;
+    padding: 1.5rem 0 3.25rem;
+  }
+  .fig { display: flex; flex-direction: column; gap: 0.15rem; }
+  .fig b {
+    font-family: "Manrope", sans-serif;
+    font-size: 2rem;
+    font-weight: 800;
+    letter-spacing: -0.015em;
+    line-height: 1;
+    font-variant-numeric: tabular-nums;
+  }
+  .fig span { font-size: 0.875rem; color: var(--on-navy-soft); max-width: 18ch; }
+
+  /* ── sections ── */
+  section { padding: 3.5rem 0; }
+  section.tier { background: var(--tier-section); }
+  .sec-head { max-width: 62ch; display: flex; flex-direction: column; gap: 0.6rem; }
+  .sec-head h2 {
+    font-size: clamp(1.5rem, 3vw, 2rem);
+    line-height: 1.15;
+    letter-spacing: -0.015em;
+    font-weight: 700;
+  }
+  .sec-head p { color: var(--ink-soft); }
+  .rule { height: 2px; width: 3rem; background: var(--accent); margin-bottom: 0.35rem; }
+
+  /* ── the tag audit ── */
+  .audit { margin-top: 2.25rem; display: grid; gap: 1.25rem; grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr); align-items: start; }
+  @media (max-width: 52rem) { .audit { grid-template-columns: 1fr; } }
+  .tagtable { background: var(--tier-card); border-radius: 0.5rem; box-shadow: var(--shadow-ambient); overflow: hidden; }
+  .tagtable h3 { font-size: 0.9375rem; font-weight: 700; padding: 1.1rem 1.25rem 0.75rem; }
+  .tagrow { display: grid; grid-template-columns: 1fr auto; gap: 1rem; padding: 0.55rem 1.25rem; align-items: baseline; }
+  .tagrow:nth-child(even) { background: var(--tier-inset); }
+  .tagrow span:first-child { font-size: 0.9375rem; }
+  .tagrow span:last-child { font-variant-numeric: tabular-nums; font-weight: 600; font-size: 0.9375rem; }
+  .tagrow.flag span:last-child { color: var(--clay); }
+  .tagnote { padding: 1rem 1.25rem 1.25rem; font-size: 0.875rem; color: var(--ink-soft); }
+  .callout {
+    background: var(--tier-card);
+    border-radius: 0.5rem;
+    box-shadow: var(--shadow-ambient);
+    padding: 1.5rem;
+    display: flex; flex-direction: column; gap: 0.75rem;
+  }
+  .callout h3 { font-size: 1.0625rem; font-weight: 700; }
+  .callout p { font-size: 0.9375rem; color: var(--ink-soft); }
+  .quote {
+    background: var(--tier-inset);
+    border-radius: 0.375rem;
+    padding: 0.9rem 1rem;
+    font-size: 0.9375rem;
+    font-style: italic;
+    color: var(--ink-soft);
+  }
+
+  /* ── benchmark ── */
+  .marks { margin-top: 2.25rem; display: grid; gap: 1rem; grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr)); }
+  .mark {
+    background: var(--tier-card);
+    border-radius: 0.5rem;
+    box-shadow: var(--shadow-ambient);
+    padding: 1.4rem;
+    display: flex; flex-direction: column; gap: 0.55rem;
+  }
+  .mark .who { font-family: "Manrope", sans-serif; font-weight: 700; font-size: 1.0625rem; }
+  .mark .where { font-size: 0.75rem; letter-spacing: 0.1em; text-transform: uppercase; font-weight: 600; color: var(--ink-faint); }
+  .mark p { font-size: 0.9375rem; color: var(--ink-soft); }
+  .mark .verdict { font-size: 0.9375rem; font-weight: 600; color: var(--clay); }
+
+  /* ── options ── */
+  .options { margin-top: 2.25rem; display: flex; flex-direction: column; gap: 1rem; }
+  .opt {
+    background: var(--tier-card);
+    border-radius: 0.5rem;
+    box-shadow: var(--shadow-ambient);
+    padding: 1.5rem;
+    display: grid;
+    grid-template-columns: 3rem minmax(0, 1fr) minmax(0, 15rem);
+    gap: 0.35rem 1.5rem;
+    align-items: start;
+  }
+  @media (max-width: 56rem) { .opt { grid-template-columns: 2.5rem minmax(0, 1fr); } .opt .ledger { grid-column: 2; } }
+  .opt.pick { box-shadow: inset 0 0 0 2px var(--accent), var(--shadow-ambient); }
+  .opt .num {
+    grid-row: span 3;
+    font-family: "Manrope", sans-serif;
+    font-size: 1.75rem;
+    font-weight: 800;
+    line-height: 1;
+    color: var(--ink-faint);
+    font-variant-numeric: tabular-nums;
+  }
+  .opt.pick .num { color: var(--accent); }
+  .opt h3 { font-size: 1.1875rem; font-weight: 700; letter-spacing: -0.01em; }
+  .opt .body { color: var(--ink-soft); font-size: 0.9375rem; }
+  .opt .tag {
+    display: inline-block;
+    font-size: 0.6875rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    font-weight: 700;
+    color: var(--on-navy);
+    background: var(--navy-mid);
+    padding: 0.15rem 0.5rem;
+    border-radius: 0.125rem;
+    margin-left: 0.6rem;
+    vertical-align: 0.15em;
+  }
+  .opt.pick .tag { background: var(--accent); color: #24160c; }
+  .ledger { grid-row: span 2; display: flex; flex-direction: column; gap: 0.7rem; background: var(--tier-inset); border-radius: 0.375rem; padding: 0.9rem 1rem; }
+  .ledger div { display: flex; flex-direction: column; gap: 0.1rem; }
+  .ledger dt, .ledger .k { font-size: 0.6875rem; letter-spacing: 0.1em; text-transform: uppercase; font-weight: 700; color: var(--ink-faint); }
+  .ledger .v { font-size: 0.875rem; color: var(--ink-soft); }
+
+  /* ── tiering ── */
+  .tiers { margin-top: 2.25rem; display: grid; gap: 1rem; grid-template-columns: repeat(auto-fit, minmax(17rem, 1fr)); }
+  .tier-card {
+    background: var(--tier-card);
+    border-radius: 0.5rem;
+    box-shadow: var(--shadow-ambient);
+    padding: 1.4rem;
+    display: flex; flex-direction: column; gap: 0.8rem;
+  }
+  .tier-card header { display: flex; flex-direction: column; gap: 0.2rem; }
+  .tier-card h3 { font-size: 1.0625rem; font-weight: 700; }
+  .tier-card .count { font-size: 0.8125rem; color: var(--ink-faint); font-variant-numeric: tabular-nums; }
+  .tier-card .use { font-size: 0.875rem; color: var(--clay); font-weight: 600; }
+  .chips { display: flex; flex-wrap: wrap; gap: 0.35rem; }
+  .chip {
+    font-size: 0.8125rem;
+    background: var(--tier-inset);
+    color: var(--ink-soft);
+    padding: 0.2rem 0.55rem;
+    border-radius: 0.125rem;
+  }
+
+  /* ── decisions ── */
+  .decide { margin-top: 2rem; display: flex; flex-direction: column; gap: 0.9rem; max-width: 52rem; }
+  .dec { background: var(--tier-card); border-radius: 0.5rem; box-shadow: var(--shadow-ambient); padding: 1.15rem 1.35rem; display: flex; flex-direction: column; gap: 0.3rem; }
+  .dec b { font-family: "Manrope", sans-serif; font-size: 1rem; }
+  .dec p { font-size: 0.9375rem; color: var(--ink-soft); }
+
+  footer { background: var(--band); color: var(--on-navy-soft); padding: 2.5rem 0 3rem; }
+  footer .wrap { display: flex; flex-direction: column; gap: 0.6rem; }
+  footer h2 { color: var(--on-navy); font-size: 1.25rem; font-weight: 700; }
+  footer p { font-size: 0.9375rem; }
+  footer a { color: var(--accent); }
+  .srcs { margin-top: 0.6rem; font-size: 0.8125rem; line-height: 2; }
+</style>
+
+<div class="band">
+  <div class="sun" aria-hidden="true"></div>
+  <div class="horizon" aria-hidden="true"></div>
+  <div class="wrap">
+    <p class="eyebrow">Content architecture &middot; 9 September 2026 &middot; built</p>
+    <h1>Where grammar lives</h1>
+    <p class="lede">
+      Thirty-one Dutch grammar rules sat inside the A2 Reading course, where they read as
+      &ldquo;step 2 of Reading&rdquo;. They are not a reading skill. This page sets out five ways to
+      place them and what each one costs. <strong>Options 1 and 2 are now built</strong> — grammar
+      is its own track, weighted per skill. What shipped is at the bottom.
+    </p>
+    <div class="figures">
+      <div class="fig"><b>31</b><span>grammar rules, in six groups</span></div>
+      <div class="fig"><b>28</b><span>written lessons, reviewed and released</span></div>
+      <div class="fig"><b>27</b><span>rules tagged to all four skills &mdash; the tag carries no information</span></div>
+      <div class="fig"><b>43%</b><span>of TaalCompleet A2 is grammar, filed under no skill at all</span></div>
+    </div>
+  </div>
+</div>
+
+<section>
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="rule"></div>
+      <p class="eyebrow">The finding</p>
+      <h2>The mechanism you are describing already exists. It is empty.</h2>
+      <p>
+        <code>concept_onderdelen</code> links every concept to the skills where it matters &mdash;
+        exactly the distinction you drew, that grammar weighs more on Writing and Speaking than on
+        two multiple-choice papers. The table is in the database, populated, and says almost nothing.
+      </p>
+    </div>
+
+    <div class="audit">
+      <div class="tagtable">
+        <h3>Grammar rules, by how their skill tags are set</h3>
+        <div class="tagrow flag"><span>Tagged to all four skills &mdash; no signal</span><span>27</span></div>
+        <div class="tagrow"><span><code>klemtoon</code> &mdash; listening, speaking</span><span>1</span></div>
+        <div class="tagrow"><span><code>lange-korte-klank</code> &mdash; all but reading</span><span>1</span></div>
+        <div class="tagrow"><span><code>bijvoeglijk-naamwoord</code> &mdash; writing, speaking</span><span>1</span></div>
+        <div class="tagrow"><span><code>lidwoorden</code> &mdash; all but listening</span><span>1</span></div>
+        <p class="tagnote">
+          So the platform currently asserts that the superlative matters as much to a listening
+          question as main-clause word order does to a written e-mail. You know that is false. The
+          software does not, which means remediation from a wrong exam answer cannot act on it.
+        </p>
+      </div>
+
+      <div class="callout">
+        <h3>What the six groups are</h3>
+        <p>
+          The grouping itself is sound and worth keeping: <em>Zinnen bouwen</em> (7 rules) &middot;
+          <em>Werkwoorden &amp; tijd</em> (8) &middot; <em>Soorten werkwoorden</em> (5) &middot;
+          <em>Woorden verbuigen</em> (5) &middot; <em>Verwijzen</em> (4) &middot;
+          <em>Spelling &amp; uitspraak</em> (2).
+        </p>
+        <p>
+          One rule equals one lesson equals one concept. That unit is what makes every option below
+          possible, and nothing here proposes changing it.
+        </p>
+        <p class="quote">
+          Also found while checking: the database holds 51 Reading lessons, not 53.
+          <code>d1-advertentie</code> and <code>d5-regels</code> were written but never seeded.
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="tier">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="rule"></div>
+      <p class="eyebrow">How others solve it</p>
+      <h2>Nobody who does this well files grammar under a skill</h2>
+      <p>
+        Four reference points, from the textbook we drew the syllabus from to the two ends of the
+        spectrum &mdash; grammar as the whole product, and grammar as something you only ever meet
+        when you get it wrong.
+      </p>
+    </div>
+
+    <div class="marks">
+      <div class="mark">
+        <p class="where">Textbook &middot; NT2</p>
+        <p class="who">TaalCompleet A2</p>
+        <p>
+          Organised by <strong>theme, not skill</strong>. Eight themes, and inside a theme the
+          paragraphs alternate between listening, grammar, reading, writing, speaking. Grammar is its
+          own kind of paragraph with its own icon, repeated cyclically &mdash;
+          <em>Herhaling: zinnen maken (1)</em>, then <em>(2)</em>, then <em>(3)</em> across three
+          themes.
+        </p>
+        <p class="verdict">47 of 109 paragraphs are grammar. None belongs to a skill.</p>
+      </div>
+
+      <div class="mark">
+        <p class="where">Free platform &middot; Dutch</p>
+        <p class="who">nt2taalmenu.nl</p>
+        <p>
+          The most-used free NT2 site puts <strong>Grammatica in the top-level menu as a peer</strong>
+          of Luisteren, Lezen, Schrijven, Spreken, alongside Woordenschat and KNM. A learner picks
+          grammar the same way they pick a skill.
+        </p>
+        <p class="verdict">Grammar is a sibling of the four, not a child.</p>
+      </div>
+
+      <div class="mark">
+        <p class="where">SRS platform &middot; JLPT</p>
+        <p class="who">Bunpro</p>
+        <p>
+          The opposite extreme: <strong>800+ grammar points are the entire product</strong>, sorted by
+          exam level N5&ndash;N1, each level split into ten groups. You do not walk a course &mdash;
+          learned points enter a spaced-repetition queue and come back as cloze exercises.
+        </p>
+        <p class="verdict">Grammar as a queue, not a course.</p>
+      </div>
+
+      <div class="mark">
+        <p class="where">Productive skills &middot; Cambridge</p>
+        <p class="who">Write &amp; Improve</p>
+        <p>
+          Grammar has <strong>no menu entry at all</strong>. You write, you get feedback per error,
+          and the error carries the explanation. The learner never chooses a rule; the rule arrives
+          when their own sentence was wrong.
+        </p>
+        <p class="verdict">Closest to your instinct about Writing and Speaking.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="rule"></div>
+      <p class="eyebrow">Five options</p>
+      <h2>What we could do, and what each one actually costs</h2>
+      <p>
+        The 28 lessons stay written and released in every option. What changes is where they are
+        addressed from and what decides their order.
+      </p>
+    </div>
+
+    <div class="options">
+      <div class="opt pick">
+        <p class="num">1</p>
+        <h3>Grammar becomes the fifth track<span class="tag">Built</span></h3>
+        <p class="body">
+          One <em>Language rules A2</em> track, sitting beside the four skills rather than inside
+          Reading, unlocked by owning any A2 module. The lessons do not move; the label stops lying.
+          This is the nt2taalmenu answer, and the textbook's icon system says the same thing.
+        </p>
+        <div class="ledger">
+          <div><span class="k">Fixes</span><span class="v">The card that reads &ldquo;step 2 of Reading, 2/28&rdquo;.</span></div>
+          <div><span class="k">Cost</span><span class="v">Presentation and entitlement. No new content.</span></div>
+          <div><span class="k">Leaves open</span><span class="v">A writer still gets the same 28 lessons in the same order as a reader.</span></div>
+        </div>
+      </div>
+
+      <div class="opt pick">
+        <p class="num">2</p>
+        <h3>One library, four doors<span class="tag">Built</span></h3>
+        <p class="body">
+          The same track, but filtered and ordered per skill by how heavily the rule weighs there.
+          <code>concept_onderdelen</code> gains a third column &mdash; core, recognise, skip. Writing
+          opens on word order, verb spelling and connectives; Listening on stress, numbers and small
+          function words; Reading on signal words and reference words.
+        </p>
+        <div class="ledger">
+          <div><span class="k">Fixes</span><span class="v">Your point, structurally &mdash; grammar weighted by the exam that needs it.</span></div>
+          <div><span class="k">Cost</span><span class="v">One column, one migration, and a teacher re-tagging 31 concepts in admin. Roughly half an hour of her time.</span></div>
+          <div><span class="k">Also unlocks</span><span class="v">Remediation from a wrong exam answer can finally rank what to study.</span></div>
+        </div>
+      </div>
+
+      <div class="opt">
+        <p class="num">3</p>
+        <h3>Grammar as reference, not a course</h3>
+        <p class="body">
+          The textbook's appendix model: a searchable rule library with back-references, which
+          exercises send you to. No progress bar, no &ldquo;2/28&rdquo;. Honest about what grammar is
+          for &mdash; but we hold 28 full lessons with diagrams and narrated explanations, and a bar
+          with 28 things to tick is exactly what keeps people coming back.
+        </p>
+        <div class="ledger">
+          <div><span class="k">Fixes</span><span class="v">The framing, cheaply.</span></div>
+          <div><span class="k">Cost</span><span class="v">Low.</span></div>
+          <div><span class="k">Risk</span><span class="v">Throws away the motivational surface we already paid to build.</span></div>
+        </div>
+      </div>
+
+      <div class="opt">
+        <p class="num">4</p>
+        <h3>Grammar as a returning queue</h3>
+        <p class="body">
+          Bunpro's model, and also what the textbook does with its <em>Herhaling</em> paragraphs: once
+          a rule is learned it comes back at intervals as short gap-fill items &mdash; inside any
+          course, including a listening lesson. It is the only option that makes a rule stick rather
+          than get ticked.
+        </p>
+        <div class="ledger">
+          <div><span class="k">Fixes</span><span class="v">The difference between 28 lessons done and 28 rules known.</span></div>
+          <div><span class="k">Cost</span><span class="v">Real engineering: a per-user, per-concept review schedule.</span></div>
+          <div><span class="k">Timing</span><span class="v">Wait for users. An empty queue is a handsome empty system.</span></div>
+        </div>
+      </div>
+
+      <div class="opt">
+        <p class="num">5</p>
+        <h3>Grammar arrives from your own mistake<span class="tag">Build next</span></h3>
+        <p class="body">
+          The Write &amp; Improve pattern, and we are most of the way there: rubric grading of Writing
+          and Speaking already writes one row per criterion. Link a criterion to a concept and the
+          feedback can say &mdash; <em>your sentence</em> Ik ga morgen naar de dokter omdat ik ben ziek
+          <em>: in an</em> omdat <em>clause the verb goes to the end.</em> With a link to the rule.
+        </p>
+        <div class="ledger">
+          <div><span class="k">Fixes</span><span class="v">The candidate stops having to choose grammar at all.</span></div>
+          <div><span class="k">Cost</span><span class="v">A criterion-to-concept mapping. No new lessons, no new schema of consequence.</span></div>
+          <div><span class="k">Note</span><span class="v">Stays rubric-driven and teacher-authored. Nothing here is framed as an AI judging the answer.</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="tier">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="rule"></div>
+      <p class="eyebrow">A starting proposal &mdash; to be shot at</p>
+      <h2>Which of the 31 rules actually move a mark</h2>
+      <p>
+        This is the content of option 2, and it is a teacher's call, not a developer's. The split
+        below is a first draft for Marieke to correct. The principle behind it: you do not need to be
+        able to <em>produce</em> a form to get a multiple-choice question right.
+      </p>
+    </div>
+
+    <div class="tiers">
+      <div class="tier-card">
+        <header>
+          <h3>Core</h3>
+          <p class="count">19 rules</p>
+          <p class="use">Writing and Speaking</p>
+        </header>
+        <p style="font-size:0.9375rem;color:var(--ink-soft)">
+          Get one of these wrong and it costs a mark on a rubric, because you had to build the
+          sentence yourself.
+        </p>
+        <div class="chips">
+          <span class="chip">hoofdzin-woordorde</span>
+          <span class="chip">inversie</span>
+          <span class="chip">tegenwoordige-tijd</span>
+          <span class="chip">perfectum-regelmatig</span>
+          <span class="chip">perfectum-onregelmatig</span>
+          <span class="chip">hebben-of-zijn</span>
+          <span class="chip">voegwoorden-hoofdzin</span>
+          <span class="chip">bijzin-omdat-als</span>
+          <span class="chip">bijzin-dat-of</span>
+          <span class="chip">vragen-maken</span>
+          <span class="chip">modale-werkwoorden</span>
+          <span class="chip">scheidbare-werkwoorden</span>
+          <span class="chip">om-te</span>
+          <span class="chip">lidwoorden</span>
+          <span class="chip">bijvoeglijk-naamwoord</span>
+          <span class="chip">meervoud</span>
+          <span class="chip">wederkerende-werkwoorden</span>
+          <span class="chip">vaste-voorzetsels</span>
+          <span class="chip">gebiedende-wijs</span>
+        </div>
+      </div>
+
+      <div class="tier-card">
+        <header>
+          <h3>Recognise only</h3>
+          <p class="count">10 rules</p>
+          <p class="use">Reading and Listening</p>
+        </header>
+        <p style="font-size:0.9375rem;color:var(--ink-soft)">
+          You need to understand these when you meet them. Producing them is not what an A2 paper
+          asks of you, so they should not be the first thing a writer is shown.
+        </p>
+        <div class="chips">
+          <span class="chip">verleden-tijd</span>
+          <span class="chip">vergrotende-trap</span>
+          <span class="chip">overtreffende-trap</span>
+          <span class="chip">frequentie</span>
+          <span class="chip">voorzetsels-plaats</span>
+          <span class="chip">werkwoorden-zonder-ge</span>
+          <span class="chip">onregelmatige-tegenwoordige-tijd</span>
+          <span class="chip">toekomende-tijd</span>
+          <span class="chip">persoonlijk-vnw-onderwerp</span>
+          <span class="chip">persoonlijk-vnw-lijdend</span>
+        </div>
+      </div>
+
+      <div class="tier-card">
+        <header>
+          <h3>Sound, not grammar</h3>
+          <p class="count">2 rules</p>
+          <p class="use">Listening and Speaking</p>
+        </header>
+        <p style="font-size:0.9375rem;color:var(--ink-soft)">
+          Already tagged correctly, and the only two rules that are. They belong to the ear, and the
+          Speaking course's pronunciation block already builds on them.
+        </p>
+        <div class="chips">
+          <span class="chip">klemtoon</span>
+          <span class="chip">lange-korte-klank</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="rule"></div>
+      <p class="eyebrow">Recommendation</p>
+      <h2>Options 1 and 2 together, then 5. Four is for when there are users.</h2>
+      <p>
+        Grammar becomes its own track <em>and</em> gets a weight per skill, in one change. Together
+        that is less work than a single one of the three courses we wrote last week, and it is the
+        honest picture: four exam courses plus one rule library all four of them draw on, each from
+        its own angle.
+      </p>
+    </div>
+
+    <div class="decide">
+      <div class="dec">
+        <b>Naming</b>
+        <p>
+          &ldquo;Grammatica&rdquo; is a school word with a school feeling for an A2 reader.
+          <em>Taalregels</em> or <em>Zinnen en woorden</em> reads lighter and is just as true. Your
+          call &mdash; it is copy, and copy about a real product.
+        </p>
+      </div>
+      <div class="dec">
+        <b>Who pays for the fifth track</b>
+        <p>
+          Recommended: unlocked by any A2 module, not sold separately. Grammar is not a fifth exam,
+          and pricing it as a product would make the platform look like it is charging for the
+          textbook. There is deliberately no all-access tier to hang it off.
+        </p>
+      </div>
+      <div class="dec">
+        <b>Whether the tiering above is right</b>
+        <p>
+          19 / 10 / 2 is my draft from the exam formats, not a teacher's judgement. If Marieke moves
+          five rules between columns, the whole of option 2 changes shape &mdash; so this decision
+          comes before the migration, not after.
+        </p>
+      </div>
+      <div class="dec">
+        <b>Not on the table</b>
+        <p>
+          Re-authoring grammar per skill. That was already decided, and the textbook confirms it:
+          those 47 paragraphs are 31 rules with repetitions, not four parallel courses.
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="tier">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="rule"></div>
+      <p class="eyebrow">What shipped</p>
+      <h2>Grammar is a track, and the library has four doors</h2>
+      <p>
+        Built on 9 September. The lessons did not move in the database &mdash; they still live in
+        block B of (a2, Reading), because <code>lesson_blocks.onderdeel</code> is a foreign key to
+        <code>skills.slug</code> and a fifth slug would widen <code>SKILLS</code>, which is what
+        <code>priceForSelection</code> reads to decide a basket is a whole level. What changed is
+        where they are addressed from.
+      </p>
+    </div>
+
+    <div class="marks">
+      <div class="mark">
+        <p class="where">Option 1</p>
+        <p class="who">The fifth track</p>
+        <p>
+          <code>/dashboard/[level]/taalregels</code>, in the sidebar beside the four skills and as a
+          card on the level screen. Unlocked by any module at that level, never sold separately.
+        </p>
+        <p class="verdict">Grammar is no longer step 2 of Reading.</p>
+      </div>
+
+      <div class="mark">
+        <p class="where">The refinement</p>
+        <p class="who">Core rules sit inside step 2</p>
+        <p>
+          Every course&rsquo;s step 2 now carries one module &mdash; <em>Rules for Reading</em>,
+          <em>Rules for Writing</em> &mdash; holding exactly the rules that are core for that exam:
+          7 lessons for Reading, 18 for Writing and Speaking. For Reading that module <em>is</em>
+          step 2. The full library sits below as its own card, so the minimum route and the
+          look-it-up route are separate answers to separate questions.
+        </p>
+        <p class="verdict">Reading: &ldquo;Grammar 2 / 28&rdquo; &rarr; &ldquo;Rules for Reading 0 / 7&rdquo;.</p>
+      </div>
+
+      <div class="mark">
+        <p class="where">Option 2</p>
+        <p class="who">The weight column</p>
+        <p>
+          <code>concept_onderdelen.weight</code> is <code>kern</code> or <code>herkennen</code> per
+          (rule, skill). The library sorts core-heavy groups first and each card says how many of
+          its rules are core for the skill you came in through.
+        </p>
+        <p class="verdict">Reading 7 &middot; Listening 5 &middot; Writing 19 &middot; Speaking 21</p>
+      </div>
+
+      <div class="mark">
+        <p class="where">Also fixed</p>
+        <p class="who">The two unseeded lessons</p>
+        <p>
+          <code>d1-advertentie</code> and <code>d5-regels</code> were written but never seeded.
+          Reading is now 53 lessons, of which 51 are released; those two sit at
+          <code>pending</code> and wait for review.
+        </p>
+        <p class="verdict">Nobody has reviewed them yet, so they stay invisible.</p>
+      </div>
+
+      <div class="mark">
+        <p class="where">Found on the way</p>
+        <p class="who">The seeder un-released content</p>
+        <p>
+          Adding two lessons required a re-seed, and that upsert wrote
+          <code>review_status: 'pending'</code> onto rows that already existed &mdash; silently
+          taking 51 released lessons and 36 released concepts out of the portal. The seeder now
+          reads the existing status and leaves it alone.
+        </p>
+        <p class="verdict">An idempotent seeder is not a safe seeder.</p>
+      </div>
+    </div>
+
+    <div class="decide">
+      <div class="dec">
+        <b>Two rules I would move, and did not</b>
+        <p>
+          The tiering was shipped exactly as published above, so this page and the database agree.
+          But I think <code>onregelmatige-tegenwoordige-tijd</code> (<em>zijn, hebben, gaan,
+          kunnen</em>) belongs in Core rather than Recognise &mdash; you cannot write a sentence
+          without it &mdash; and <code>lange-korte-klank</code> probably deserves Core for Writing
+          too, since it governs the <em>f&nbsp;&rarr;&nbsp;v</em> plural spelling. Both are a
+          one-line change in <code>concepts-a2.mjs</code> plus a re-seed; the unit test will hold
+          you to whatever number you pick.
+        </p>
+      </div>
+      <div class="dec">
+        <b>Still open</b>
+        <p>
+          The module URLs underneath still read <code>/lezen/spoor/grammatica/&lt;group&gt;</code>
+          &mdash; the same screen with the same rows, addressed by its old path. The track index
+          redirects, so there is one door; the deeper URLs are a known cosmetic wart, not a second
+          source of truth. And the name is still &ldquo;Taalregels&rdquo; &mdash; if you prefer
+          <em>Zinnen en woorden</em>, that is one translation key in three files.
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <h2>Next step</h2>
+    <p>
+      Correct the tiering wherever it reads wrong to a teacher, and pick the name. Everything here is
+      local: production has never been seeded with any of the leerlaag courses.
+    </p>
+    <p class="srcs">
+      Sources &mdash;
+      <a href="https://nt2taalmenu.nl/nt2-a2-oefeningen/">nt2taalmenu A2</a> &middot;
+      <a href="https://www.tofugu.com/reviews/bunpro/">Bunpro review, Tofugu</a> &middot;
+      <a href="https://www.cambridgeenglish.org/learning-english/free-resources/write-and-improve/">Cambridge Write &amp; Improve</a> &middot;
+      <a href="https://www.goethe.de/en/spr/prf/ueb/pb1.html">Goethe-Zertifikat B1 exam training</a> &middot;
+      <a href="https://www.inburgeren.nl/examen-doen/oefenen.jsp">DUO oefenen</a> &middot;
+      TaalCompleet A2 (KleurRijker, 4th ed. 2019) &mdash; structure only, no content reproduced
+    </p>
+  </div>
+</footer>

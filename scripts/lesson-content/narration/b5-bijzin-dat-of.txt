@@ -1,0 +1,34 @@
+# De ingesproken uitleg van `b5-bijzin-dat-of`.
+# Regels met # zijn commentaar. [[id]] of [[id | extra uitleg]] markeert waar de stem over
+# welk element begint; de extra uitleg staat op de pagina bij dat element en mag niet herhalen
+# wat de stem net zei.
+# Geldige id's: vis, vis-1 t/m vis-3, rule, card-0, card-1, demo-0, demo-1, exercises.
+
+Deze les gaat over dat en of.
+
+[[vis-1 | Hij zegt, zij vraagt, de dokter vertelt: dit deel blijft gewoon.]]
+Kijk naar het plaatje. Links staat de hoofdzin: hij zegt. Dat is het deel waarin iemand iets zegt of vraagt.
+
+[[vis-2 | Dat hoort bij een mededeling. Of hoort bij een vraag.]]
+In het midden staat de schakel: dat. Gebruik dat als je vertelt wát iemand zegt.
+
+[[vis-3 | Gaat staat achteraan, achter "dicht".]]
+Rechts komt de bijzin: de winkel om zes uur dicht gaat. Het werkwoord staat weer helemaal achteraan.
+
+[[rule | Los: "De winkel gaat om zes uur dicht."]]
+Vergelijk het. Los zeg je: de winkel gaat om zes uur dicht. Met dat wordt het: hij zegt dat de winkel om zes uur dicht gaat.
+
+[[card-0 | Een mededeling: iemand vertelt iets.]]
+De eerste kaart is de vorm met dat.
+
+[[card-1 | Een vraag zonder vraagwoord wordt in een bijzin altijd "of".]]
+De tweede kaart is de vorm met of. Zij vraagt of je morgen kunt komen.
+
+[[demo-0 | Moet drinken: twee werkwoorden, samen achteraan.]]
+Twee voorbeelden. De dokter zegt dat ik veel water moet drinken.
+
+[[demo-1 | Hier is het een vraag, dus of. Aanneem staat achteraan.]]
+En: mijn buurman vraagt of ik zijn pakje aanneem.
+
+[[exercises]]
+Doe nu de opgaven. Vraag je bij elke zin af: is het een mededeling of een vraag?

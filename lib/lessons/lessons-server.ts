@@ -19,6 +19,7 @@ import { createClient } from '@/lib/supabase/server';
 import { levelFilter } from '@/lib/exams';
 import { fetchAll } from '@/lib/admin/fetch-all';
 import type { Level, OnderdeelSlug } from '@/data/skills';
+import { RULES_HOME } from './taalregels';
 import {
   itemInputSchema, PAYLOAD_SCHEMAS,
   type ItemKind, type LessonItem, type Tier,
@@ -273,16 +274,37 @@ export async function fetchLesson(
   try {
     const supabase = await createClient();
 
-    const query = supabase.from('lessons').select(LESSON_SELECT)
-      .eq('slug', slug)
-      .eq('lesson_blocks.onderdeel', onderdeel);
+    /**
+     * Twee onderdelen, in deze volgorde: dit onderdeel, en anders de gedeelde regelbibliotheek.
+     *
+     * Een taalregel staat één keer in de database — in blok B van Lezen (`RULES_HOME`) — maar
+     * hij hoort bij stap 2 van álle vier de cursussen, en de kandidaat opent hem vanuit de
+     * cursus waar hij in zit. Zonder deze val-terug zou `/luisteren/leren/b1-hoofdzin-woordorde`
+     * een 404 zijn, en dan moest de kaart in Luisteren naar een ánder scherm wijzen dan de
+     * kaarten ernaast. Eén les, één voortgang, vier plekken waar je hem opent.
+     *
+     * De poort blijft de cursus waar je hem vandaan opent: de aanroeper controleert
+     * `ownsModule(meta, level, onderdeel)`, dus wie Luisteren heeft gekocht opent de regel via
+     * Luisteren en niet via een onderdeel dat hij niet heeft.
+     */
+    const onderdelen: OnderdeelSlug[] = onderdeel === RULES_HOME.onderdeel
+      ? [onderdeel]
+      : [onderdeel, RULES_HOME.onderdeel];
 
-    const { data, error } = await (level === null
-      ? query.is('lesson_blocks.level', null)
-      : query.eq('lesson_blocks.level', level)
-    ).maybeSingle();
+    let row: unknown = null;
+    for (const o of onderdelen) {
+      const query = supabase.from('lessons').select(LESSON_SELECT)
+        .eq('slug', slug)
+        .eq('lesson_blocks.onderdeel', o);
 
-    if (error || !data) return null;
+      const { data, error } = await (level === null
+        ? query.is('lesson_blocks.level', null)
+        : query.eq('lesson_blocks.level', level)
+      ).maybeSingle();
+
+      if (!error && data) { row = data; break; }
+    }
+    if (!row) return null;
 
     type Row = {
       id: number; slug: string; title: string; what_you_learn: string | null;
@@ -293,24 +315,24 @@ export async function fetchLesson(
       lesson_concepts: { role: 'teaches' | 'reviews'; concepts: { id: number; slug: string; name_nl: string } | null }[] | null;
     };
 
-    const row = data as unknown as Row;
+    const lesson = row as Row;
 
     return {
-      id: row.id,
-      slug: row.slug,
-      title: row.title,
-      what_you_learn: row.what_you_learn,
-      minutes: row.minutes,
-      is_free: row.is_free,
-      review_status: row.review_status,
-      reviewed_by: row.reviewed_by,
-      reviewed_on: row.reviewed_on,
-      block: row.lesson_blocks,
-      items: (row.lesson_items ?? [])
+      id: lesson.id,
+      slug: lesson.slug,
+      title: lesson.title,
+      what_you_learn: lesson.what_you_learn,
+      minutes: lesson.minutes,
+      is_free: lesson.is_free,
+      review_status: lesson.review_status,
+      reviewed_by: lesson.reviewed_by,
+      reviewed_on: lesson.reviewed_on,
+      block: lesson.lesson_blocks,
+      items: (lesson.lesson_items ?? [])
         .sort((a, b) => a.sort_order - b.sort_order)
         .map(toItem)
         .filter((i): i is LessonItem => i !== null),
-      concepts: (row.lesson_concepts ?? [])
+      concepts: (lesson.lesson_concepts ?? [])
         .flatMap(lc => lc.concepts ? [{ ...lc.concepts, role: lc.role }] : []),
     };
   } catch {
@@ -451,6 +473,8 @@ export type AdminLessonRow = {
   review_status: ReviewStatus;
   reviewed_by: string | null;
   reviewed_on: string | null;
+  checked_by: string | null;
+  checked_on: string | null;
   itemCount: number;
   exerciseCount: number;
   conceptNames: string[];
@@ -487,7 +511,7 @@ export async function fetchAdminLessons(
         id, letter, name_nl, sort_order,
         lessons (
           id, slug, title, minutes, is_free, sort_order,
-          review_status, reviewed_by, reviewed_on,
+          review_status, reviewed_by, reviewed_on, checked_by, checked_on,
           lesson_concepts ( concepts ( name_nl ) )
         )
       `),
@@ -502,6 +526,7 @@ export async function fetchAdminLessons(
       id: number; slug: string; title: string; minutes: number | null; is_free: boolean;
       sort_order: number; review_status: ReviewStatus;
       reviewed_by: string | null; reviewed_on: string | null;
+      checked_by: string | null; checked_on: string | null;
       lesson_concepts: { concepts: { name_nl: string } | null }[] | null;
     };
     type BlockRow = {
@@ -530,6 +555,8 @@ export async function fetchAdminLessons(
           review_status: l.review_status,
           reviewed_by: l.reviewed_by,
           reviewed_on: l.reviewed_on,
+          checked_by: l.checked_by,
+          checked_on: l.checked_on,
           itemCount: counts.get(l.id)?.total ?? 0,
           exerciseCount: counts.get(l.id)?.exercises ?? 0,
           conceptNames: (l.lesson_concepts ?? [])
@@ -566,5 +593,258 @@ async function fetchItemCounts(
     return out;
   } catch {
     return out;
+  }
+}
+
+// ---------------------------------------------------------------------------
+// /admin/lessen/[id] — één les, om te bewerken
+// ---------------------------------------------------------------------------
+
+export type AdminLessonDetail = {
+  id: number;
+  slug: string;
+  title: string;
+  what_you_learn: string | null;
+  minutes: number | null;
+  is_free: boolean;
+  sort_order: number;
+  review_status: ReviewStatus;
+  reviewed_by: string | null;
+  reviewed_on: string | null;
+  checked_by: string | null;
+  checked_on: string | null;
+  block: { id: number; letter: string; name_nl: string; level: Level | null; onderdeel: OnderdeelSlug };
+  items: LessonItem[];
+  concepts: { name_nl: string; role: 'teaches' | 'reviews' }[];
+};
+
+/**
+ * Eén les op id, met alles wat de editor nodig heeft — óók een `pending` les.
+ *
+ * **Op id en niet op slug**, anders dan `fetchLesson`. De editor komt uit de lijst in
+ * `/admin/lessen` en die heeft de id al; een slug zou hier bovendien het (niveau, onderdeel) mee
+ * moeten dragen om uniek te zijn, en dat is drie params in een URL die één rij bedoelt.
+ *
+ * Geeft `null` in plaats van te gooien, zodat de pagina `notFound()` kan doen op een id die niet
+ * bestaat in plaats van een 500 te tonen op een getypte URL.
+ */
+export async function fetchAdminLesson(id: number): Promise<AdminLessonDetail | null> {
+  try {
+    const supabase = await createClient();
+    const { data, error } = await supabase
+      .from('lessons')
+      .select(`
+        id, slug, title, what_you_learn, minutes, is_free, sort_order,
+        review_status, reviewed_by, reviewed_on, checked_by, checked_on,
+        lesson_blocks!inner ( id, letter, name_nl, level, onderdeel ),
+        lesson_items (
+          id, sort_order, kind, tier, payload, explanation,
+          sections ( name_nl ),
+          lesson_item_options ( id, label, body, image_urls, image_alt, is_correct, sort_order )
+        ),
+        lesson_concepts ( role, concepts ( name_nl ) )
+      `)
+      .eq('id', id)
+      .maybeSingle();
+
+    if (error || !data) return null;
+
+    type Row = Omit<AdminLessonDetail, 'block' | 'items' | 'concepts'> & {
+      lesson_blocks: AdminLessonDetail['block'];
+      lesson_items: ItemRow[] | null;
+      lesson_concepts: { role: 'teaches' | 'reviews'; concepts: { name_nl: string } | null }[] | null;
+    };
+    const row = data as unknown as Row;
+
+    return {
+      id: row.id,
+      slug: row.slug,
+      title: row.title,
+      what_you_learn: row.what_you_learn,
+      minutes: row.minutes,
+      is_free: row.is_free,
+      sort_order: row.sort_order,
+      review_status: row.review_status,
+      reviewed_by: row.reviewed_by,
+      reviewed_on: row.reviewed_on,
+      checked_by: row.checked_by,
+      checked_on: row.checked_on,
+      block: row.lesson_blocks,
+      // `toItem` slaat een item met een kapotte payload over en logt dat. Dat is hier één regel
+      // erger dan in het portaal: de docent zou een item kwijt zijn zónder het te zien. De
+      // editor toont daarom het aantal overgeslagen items apart — zie `skipped` hieronder.
+      items: (row.lesson_items ?? [])
+        .sort((a, b) => a.sort_order - b.sort_order)
+        .map(toItem)
+        .filter((i): i is LessonItem => i !== null),
+      concepts: (row.lesson_concepts ?? [])
+        .flatMap(lc => lc.concepts ? [{ name_nl: lc.concepts.name_nl, role: lc.role }] : []),
+    };
+  } catch {
+    return null;
+  }
+}
+
+/**
+ * Hoeveel items van deze les de editor niet kan tonen omdat hun payload niet valideert.
+ *
+ * Een aparte, kale telling. `fetchAdminLesson` gooit een kapot item stil weg (dat is wat één
+ * kapotte rij een hele les niet onbereikbaar laat maken), maar in een editor is stil weggooien
+ * precies verkeerd: opslaan zou het item dan definitief verwijderen zonder dat iemand het heeft
+ * gezien. Het scherm zet er een waarschuwing bij.
+ */
+export async function countBrokenItems(lessonId: number, shown: number): Promise<number> {
+  try {
+    const supabase = await createClient();
+    const { count } = await supabase
+      .from('lesson_items')
+      .select('id', { count: 'exact', head: true })
+      .eq('lesson_id', lessonId);
+    return Math.max(0, (count ?? shown) - shown);
+  } catch {
+    return 0;
+  }
+}
+
+// ---------------------------------------------------------------------------
+// Waar je gebleven was
+// ---------------------------------------------------------------------------
+
+export type Resume = {
+  level: Level | null;
+  onderdeel: OnderdeelSlug;
+  lessonId: number;
+  lessonSlug: string;
+  lessonTitle: string;
+};
+
+/**
+ * De les waar de kandidaat het laatst aan werkte — de "ga verder"-regel op het overzicht.
+ *
+ * De modulenaam zit er bewust *niet* in: die komt uit `sporen-server`, en dat bestand importeert
+ * dit bestand al. De aanroeper zoekt hem op met `findModule` als hij hem nodig heeft.
+ *
+ * De laatst aangeraakte rij in `user_lesson_progress`, ook een afgeronde: wie zojuist een les
+ * afmaakte wil de vólgende les van diezelfde module, en die kent de modulekolom. Eén rij en
+ * geen sortering in de code, want `order(...).limit(1)` doet dat in Postgres.
+ *
+ * Faalt stil naar `null`: dit is één regel op een overzichtsscherm, en een portaal dat niet
+ * laadt omdat de "ga verder"-regel niets kon vinden is de verkeerde ruil.
+ */
+export async function fetchResume(userId: string): Promise<Resume | null> {
+  try {
+    const supabase = await createClient();
+    const { data } = await supabase
+      .from('user_lesson_progress')
+      .select('lesson_id, lessons!inner(slug, title, lesson_blocks!inner(level, onderdeel))')
+      .eq('user_id', userId)
+      .order('updated_at', { ascending: false })
+      .limit(1);
+
+    const row = (data ?? [])[0] as unknown as {
+      lesson_id: number;
+      lessons: {
+        slug: string; title: string;
+        lesson_blocks: { level: Level | null; onderdeel: OnderdeelSlug };
+      };
+    } | undefined;
+    if (!row) return null;
+
+    return {
+      level: row.lessons.lesson_blocks.level,
+      onderdeel: row.lessons.lesson_blocks.onderdeel,
+      lessonId: row.lesson_id,
+      lessonSlug: row.lessons.slug,
+      lessonTitle: row.lessons.title,
+    };
+  } catch {
+    return null;
+  }
+}
+
+/**
+ * De eerstvolgende les per track — "volgende: …" op het overzicht.
+ *
+ * Eén query over alle nagekeken lessen plus de set afgeronde id's, en dan per track de eerste
+ * die nog niet af is, in de volgorde die de docent gaf (`lesson_blocks.sort_order`, dan
+ * `lessons.sort_order`). Per *track* en niet per onderdeel, want dat is de rij op het overzicht:
+ * een niveau is één regel, en KNM ook.
+ *
+ * De sleutel is `a2` / `b1` / `knm` — het niveau, of het onderdeel als er geen niveau is.
+ */
+export async function fetchNextLessons(
+  userId: string | null,
+): Promise<Map<string, { slug: string; title: string; minutes: number | null; onderdeel: OnderdeelSlug }>> {
+  const out = new Map<string, { slug: string; title: string; minutes: number | null; onderdeel: OnderdeelSlug }>();
+  try {
+    const supabase = await createClient();
+    const { data } = await supabase
+      .from('lessons')
+      .select('id, slug, title, minutes, sort_order, lesson_blocks!inner(level, onderdeel, sort_order)')
+      .eq('review_status', 'validated')
+      .order('sort_order', { ascending: true });
+
+    if (!data) return out;
+    type Row = {
+      id: number; slug: string; title: string; minutes: number | null; sort_order: number;
+      lesson_blocks: { level: Level | null; onderdeel: OnderdeelSlug; sort_order: number };
+    };
+    const rows = (data as unknown as Row[]).slice().sort(
+      (a, b) => a.lesson_blocks.sort_order - b.lesson_blocks.sort_order || a.sort_order - b.sort_order,
+    );
+
+    const doneIds = userId ? await fetchDoneLessonIds(userId) : new Set<number>();
+
+    for (const r of rows) {
+      const key = r.lesson_blocks.level ?? r.lesson_blocks.onderdeel;
+      if (out.has(key) || doneIds.has(r.id)) continue;
+      out.set(key, {
+        slug: r.slug,
+        title: r.title,
+        minutes: r.minutes,
+        onderdeel: r.lesson_blocks.onderdeel,
+      });
+    }
+    return out;
+  } catch {
+    return out;
+  }
+}
+
+/**
+ * Hoeveel lessen deze week zijn afgerond, en op welke dagen.
+ *
+ * Zeven vakjes, oudste eerst, met vandaag als laatste — dat is wat een reeks zichtbaar maakt.
+ * Alleen `state = 'done'` telt, en alleen met een `completed_at`: een rij zonder die datum is
+ * van vóór de kolom en hoort niet stil op vandaag te landen.
+ */
+export async function fetchWeek(
+  userId: string | null,
+): Promise<{ total: number; days: number[] }> {
+  const days = [0, 0, 0, 0, 0, 0, 0];
+  if (!userId) return { total: 0, days };
+  try {
+    const start = new Date();
+    start.setHours(0, 0, 0, 0);
+    start.setDate(start.getDate() - 6);
+
+    const supabase = await createClient();
+    const { data } = await supabase
+      .from('user_lesson_progress')
+      .select('completed_at')
+      .eq('user_id', userId)
+      .eq('state', 'done')
+      .gte('completed_at', start.toISOString());
+
+    for (const r of data ?? []) {
+      if (!r.completed_at) continue;
+      const d = new Date(r.completed_at as string);
+      d.setHours(0, 0, 0, 0);
+      const i = Math.round((d.getTime() - start.getTime()) / 86_400_000);
+      if (i >= 0 && i < 7) days[i] += 1;
+    }
+    return { total: days.reduce((a, b) => a + b, 0), days };
+  } catch {
+    return { total: 0, days };
   }
 }

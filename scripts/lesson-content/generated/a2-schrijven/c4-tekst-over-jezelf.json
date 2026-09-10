@@ -1,0 +1,191 @@
+{
+  "items": [
+    {
+      "kind": "uitleg",
+      "tier": null,
+      "explanation": null,
+      "payload": {
+        "body_html": "<p>Bij het schrijfexamen krijg je vaak een opdracht met streepjes. Elk streepje is een vraag. Je moet op <strong>elk</strong> streepje antwoord geven, met een hele zin.</p><p>Werk in vier stappen:</p><ol><li>Lees de opdracht en tel de streepjes.</li><li>Schrijf een aanhef, bijvoorbeeld <em>Beste meneer Doornbos,</em></li><li>Schrijf per streepje één of twee hele zinnen.</li><li>Schrijf een slot en je naam eronder.</li></ol><p>Een hele zin heeft een werkwoord. \"Uit Syrië\" is geen zin. \"Ik kom uit Syrië\" is een hele zin.</p>",
+        "cards": [
+          {
+            "label": "GEEN HELE ZIN",
+            "example_html": "<mark>32 jaar.</mark>"
+          },
+          {
+            "label": "WEL EEN HELE ZIN",
+            "example_html": "<mark>Ik ben 32 jaar oud.</mark>"
+          }
+        ]
+      }
+    },
+    {
+      "kind": "voorbeeld",
+      "tier": null,
+      "explanation": null,
+      "payload": {
+        "sentence_html": "<p>Opdracht: schrijf over je werk. Deze cursist antwoordt <mark>Nu schoonmaakwerk, eerst kok</mark> en dat zijn geen hele zinnen.</p>"
+      }
+    },
+    {
+      "kind": "voorbeeld",
+      "tier": null,
+      "explanation": null,
+      "payload": {
+        "sentence_html": "<p>Beter is: <mark>Ik werk nu als schoonmaker. Vroeger was ik kok in Aleppo.</mark></p>"
+      }
+    },
+    {
+      "kind": "markeren",
+      "tier": 0,
+      "explanation": "De opdracht vraagt ook naar je hobby. In de e-mail staat daar niets over, dus dat streepje is vergeten.",
+      "payload": {
+        "instruction": "De opdracht was: schrijf een e-mail over jezelf. Vertel je naam, waar je woont en wat je hobby is. Markeer in de e-mail de zin over de woonplaats. Markeer daarna de zin waarin de cursist zegt dat hij stopt, want de hobby staat er niet in.",
+        "body_html": "<p>Beste mevrouw Verkerk,</p><p>Ik stel me even voor. Ik heet Amina Yildiz en ik ben 29 jaar. Ik woon sinds twee jaar in Zwolle. Dat is genoeg over mij.</p><p>Met vriendelijke groet,<br>Amina Yildiz</p>",
+        "targets": [
+          {
+            "label": "woonplaats",
+            "text": "Ik woon sinds twee jaar in Zwolle."
+          },
+          {
+            "label": "slot zonder hobby",
+            "text": "Dat is genoeg over mij."
+          }
+        ]
+      }
+    },
+    {
+      "kind": "mcq",
+      "tier": 0,
+      "explanation": "De opdracht heeft drie streepjes: naam, gezin en werk. Alleen tekst B geeft op alle drie antwoord.",
+      "payload": {
+        "prompt": "<p>De opdracht is: schrijf over jezelf. Vertel:</p><ul><li>hoe je heet</li><li>met wie je woont</li><li>wat voor werk je doet</li></ul><p>Welke tekst doet het goed?</p>"
+      },
+      "options": [
+        {
+          "label": "A",
+          "body": "Ik heet Karim Bouziane. Ik woon met mijn vrouw en twee kinderen.",
+          "is_correct": false
+        },
+        {
+          "label": "B",
+          "body": "Ik heet Karim Bouziane. Ik woon met mijn vrouw en twee kinderen. Ik werk in een bakkerij.",
+          "is_correct": true
+        },
+        {
+          "label": "C",
+          "body": "Karim Bouziane, vrouw, twee kinderen, bakkerij.",
+          "is_correct": false
+        }
+      ]
+    },
+    {
+      "kind": "mcq",
+      "tier": 0,
+      "explanation": "Antwoord C is een hele zin met een werkwoord: 'ik woon'. De andere antwoorden hebben geen werkwoord.",
+      "payload": {
+        "prompt": "<p>In de opdracht staat het streepje: <em>waar je woont</em>. Welk antwoord is een hele zin?</p>"
+      },
+      "options": [
+        {
+          "label": "A",
+          "body": "In Almere.",
+          "is_correct": false
+        },
+        {
+          "label": "B",
+          "body": "Woonplaats Almere.",
+          "is_correct": false
+        },
+        {
+          "label": "C",
+          "body": "Ik woon in Almere.",
+          "is_correct": true
+        }
+      ]
+    },
+    {
+      "kind": "mcq",
+      "tier": 1,
+      "explanation": "Bij een streepje over je opleiding schrijf je over school of een cursus. Het weer hoort niet bij de opdracht.",
+      "payload": {
+        "prompt": "<p>Het streepje is: <em>welke opleiding je hebt gedaan</em>. Welke zin past hierbij?</p>"
+      },
+      "options": [
+        {
+          "label": "A",
+          "body": "Ik heb in Iran de middelbare school afgemaakt.",
+          "is_correct": true
+        },
+        {
+          "label": "B",
+          "body": "Ik vind het weer in Nederland koud.",
+          "is_correct": false
+        },
+        {
+          "label": "C",
+          "body": "Mijn adres is Kerkstraat 12 in Tilburg.",
+          "is_correct": false
+        },
+        {
+          "label": "D",
+          "body": "Opleiding: middelbare school.",
+          "is_correct": false
+        }
+      ]
+    },
+    {
+      "kind": "mcq",
+      "tier": 1,
+      "explanation": "Een tekst over jezelf sluit je netjes af met een slot en je naam eronder.",
+      "payload": {
+        "prompt": "<p>Je hebt alle streepjes beantwoord. Hoe eindig je de e-mail?</p>"
+      },
+      "options": [
+        {
+          "label": "A",
+          "body": "Einde.",
+          "is_correct": false
+        },
+        {
+          "label": "B",
+          "body": "Met vriendelijke groet, Nadia Haddad",
+          "is_correct": true
+        },
+        {
+          "label": "C",
+          "body": "Dat was het, doei.",
+          "is_correct": false
+        }
+      ]
+    },
+    {
+      "kind": "open_zin",
+      "tier": 2,
+      "explanation": "Je geeft op alle drie de streepjes antwoord, elke keer met een hele zin met een werkwoord.",
+      "payload": {
+        "prompt": "<p>Schrijf drie hele zinnen over jezelf. Gebruik deze streepjes:</p><ul><li>hoe je heet en hoe oud je bent</li><li>waar je woont</li><li>wat je in je vrije tijd doet</li></ul>",
+        "model_answer": "Ik heet Ahmed Sabri en ik ben 41 jaar oud. Ik woon met mijn gezin in Apeldoorn. In mijn vrije tijd wandel ik graag in het park.",
+        "checklist": [
+          "Ik heb drie zinnen geschreven, één voor elk streepje.",
+          "In elke zin staat een werkwoord.",
+          "Ik heb mijn naam, mijn leeftijd, mijn woonplaats en mijn vrije tijd genoemd."
+        ]
+      }
+    },
+    {
+      "kind": "open_zin",
+      "tier": 2,
+      "explanation": "Je schrijft een korte e-mail met een aanhef, een antwoord op elk streepje en een slot met je naam.",
+      "payload": {
+        "prompt": "<p>Je gaat naar een nieuwe taalcursus. De docent, mevrouw Bosman, vraagt een e-mail over jezelf. Schrijf een e-mail. Vertel:</p><ul><li>uit welk land je komt</li><li>hoe lang je in Nederland woont</li><li>waarom je Nederlands wilt leren</li></ul>",
+        "model_answer": "Beste mevrouw Bosman,\n\nIk stel me graag even voor. Ik kom uit Eritrea. Ik woon nu drie jaar in Nederland. Ik wil Nederlands leren, omdat ik werk wil zoeken in de zorg.\n\nMet vriendelijke groet,\nSelam Tesfay",
+        "checklist": [
+          "Ik begin met een aanhef, bijvoorbeeld 'Beste mevrouw Bosman,'.",
+          "Ik geef op alle drie de streepjes antwoord met een hele zin.",
+          "Ik eindig met een slot en mijn naam eronder."
+        ]
+      }
+    }
+  ],
+  "what_you_learn": "Na deze les weet je hoe je een tekst over jezelf schrijft bij de schrijfopdracht. Je geeft op elk streepje in de opdracht antwoord, en steeds met een hele zin. Je begint met een aanhef en je eindigt met een slot en je naam."
+}

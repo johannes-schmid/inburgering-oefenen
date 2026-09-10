@@ -3,6 +3,7 @@
 import { useState, useRef } from 'react';
 import { useReadAloud } from './useReadAloud';
 import { useAudioEnabled } from '@/lib/audio-pref';
+import WordPass from '@/components/exam/WordPass';
 import type { KnmQuestion } from '@/data/questions';
 
 /* ── Framed image with error hiding ── */
@@ -284,7 +285,9 @@ export default function ExamQuestionCard({
               data-testid="answer-btn"
               disabled={selected !== null}
               onClick={() => onSelect(opt)}
-              className="flex items-center gap-3.5 w-full rounded-xl px-4 py-4 text-left"
+              className={`flex items-center gap-3.5 w-full rounded-xl px-4 py-4 text-left ${
+                showFeedback && selected !== null && opt === q.correct ? 'answer-correct' : ''
+              }`}
               style={{
                 ...getOptStyle(opt, seg),
                 cursor: selected !== null ? 'default' : 'pointer',
@@ -305,13 +308,17 @@ export default function ExamQuestionCard({
                 {opt}
               </span>
               <span className="flex-1 text-sm leading-relaxed" style={{ color: '#2c3850' }}>
-                <HighlightedText
-                  text={text}
-                  active={reading}
-                  activeSeg={activeSeg}
-                  thisSeg={seg}
-                  activeWord={activeWord}
-                />
+                {showFeedback && selected !== null && opt === q.correct ? (
+                  <WordPass text={text} active />
+                ) : (
+                  <HighlightedText
+                    text={text}
+                    active={reading}
+                    activeSeg={activeSeg}
+                    thisSeg={seg}
+                    activeWord={activeWord}
+                  />
+                )}
               </span>
               {isReading && (
                 <span style={{ color: '#e8740c', flexShrink: 0 }}>
@@ -326,7 +333,7 @@ export default function ExamQuestionCard({
       {/* Inline feedback */}
       {showFeedback && selected !== null && (
         <div
-          className="mt-3 px-4 py-3 rounded-xl text-sm leading-snug"
+          className="answer-verdict mt-3 px-4 py-3 rounded-xl text-sm leading-snug"
           style={
             selected === q.correct
               ? { background: 'var(--color-correct-container)', border: '1px solid rgba(14,122,75,.2)', color: '#434651' }

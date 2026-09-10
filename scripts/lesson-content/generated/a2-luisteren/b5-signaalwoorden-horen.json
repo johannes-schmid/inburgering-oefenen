@@ -1,0 +1,184 @@
+{
+  "items": [
+    {
+      "kind": "uitleg",
+      "tier": null,
+      "explanation": null,
+      "payload": {
+        "body_html": "<p>Kleine woorden als <strong>maar</strong>, <strong>dus</strong>, <strong>eerst</strong> en <strong>daarna</strong> vertellen hoe de stukken van een verhaal bij elkaar horen. Ze zeggen: er komt iets anders, of dit is het gevolg, of dit is de volgorde. In een gesprek zijn deze woorden vaak kort en zacht. Je hoort ze soms half, dus je moet er extra goed op letten.</p>",
+        "cards": [
+          {
+            "label": "ZO STAAT HET OP PAPIER",
+            "example_html": "Ik kom <mark>maar</mark> ik ben later. <mark>Eerst</mark> ga ik naar de dokter, <mark>daarna</mark> naar mijn werk."
+          },
+          {
+            "label": "ZO HOOR JE HET",
+            "example_html": "Ik kom, <mark>maar</mark>'k ben later. <mark>Eerst</mark> naar de dokter, en <mark>daarna</mark>'t werk."
+          }
+        ]
+      }
+    },
+    {
+      "kind": "audio",
+      "tier": null,
+      "explanation": null,
+      "payload": {
+        "label": "Telefoongesprek met de tandartsassistente",
+        "script": "A: Tandartspraktijk De Linde, goedemorgen.\nB: Goedemorgen, met Amina Hadi. Ik heb vandaag een afspraak om half drie.\nA: Ja, ik zie het staan.\nB: Maar ik kan niet komen, want mijn dochter is ziek.\nA: Dat is jammer. Dan zoek ik even een nieuwe dag, hoor.\nB: Graag.\nA: Woensdag om tien uur? Dus over een week.\nB: Woensdag is goed.\nA: Fijn. U komt eerst bij mij aan de balie, en daarna gaat u naar kamer 4.\nB: Duidelijk. Dank u wel.",
+        "audio_url": "http://127.0.0.1:54421/storage/v1/object/public/leren-audio/fragment/a2-luisteren/b5-signaalwoorden-horen-1.mp3",
+        "voice_cast": {
+          "A": "woman_young",
+          "B": "woman_older"
+        },
+        "transcript": "Tandartspraktijk De Linde, goedemorgen. Goedemorgen, met Amina Hadi. Ik heb vandaag een afspraak om half drie. Ja, ik zie het staan. Maar ik kan niet komen, want mijn dochter is ziek. Dat is jammer. Dan zoek ik even een nieuwe dag, hoor. Graag. Woensdag om tien uur? Dus over een week. Woensdag is goed. Fijn. U komt eerst bij mij aan de balie, en daarna gaat u naar kamer 4. Duidelijk. Dank u wel.",
+        "seconds": 26.31
+      }
+    },
+    {
+      "kind": "mcq",
+      "tier": 0,
+      "explanation": "Amina zegt: \"Maar ik kan niet komen.\" Het woord <strong>maar</strong> laat horen dat er iets anders komt dan je verwacht.",
+      "payload": {
+        "prompt": "Wat zegt Amina over de afspraak van vandaag?"
+      },
+      "options": [
+        {
+          "label": "A",
+          "body": "Maar ik kan niet komen.",
+          "is_correct": true
+        },
+        {
+          "label": "B",
+          "body": "Want ik kan niet komen.",
+          "is_correct": false
+        },
+        {
+          "label": "C",
+          "body": "Dus ik kan niet komen.",
+          "is_correct": false
+        }
+      ]
+    },
+    {
+      "kind": "mcq",
+      "tier": 0,
+      "explanation": "De assistente zegt: \"Woensdag om tien uur? Dus over een week.\" Met <strong>dus</strong> legt ze uit wat dat betekent.",
+      "payload": {
+        "prompt": "Welk woord gebruikt de assistente vóór \"over een week\"?"
+      },
+      "options": [
+        {
+          "label": "A",
+          "body": "nog",
+          "is_correct": false
+        },
+        {
+          "label": "B",
+          "body": "dus",
+          "is_correct": true
+        },
+        {
+          "label": "C",
+          "body": "toch",
+          "is_correct": false
+        },
+        {
+          "label": "D",
+          "body": "maar",
+          "is_correct": false
+        }
+      ]
+    },
+    {
+      "kind": "gap_choice",
+      "tier": 1,
+      "explanation": "Je hoort: \"U komt eerst bij mij aan de balie.\" <strong>Eerst</strong> geeft de eerste stap aan.",
+      "payload": {
+        "sentence": "U komt ___ bij mij aan de balie.",
+        "choices": [
+          "eerst",
+          "dus",
+          "maar"
+        ],
+        "answer": "eerst"
+      }
+    },
+    {
+      "kind": "gap_choice",
+      "tier": 1,
+      "explanation": "Je hoort: \"en daarna gaat u naar kamer 4.\" <strong>Daarna</strong> geeft de tweede stap aan.",
+      "payload": {
+        "sentence": "En ___ gaat u naar kamer 4.",
+        "choices": [
+          "eerst",
+          "daarna",
+          "dus"
+        ],
+        "answer": "daarna"
+      }
+    },
+    {
+      "kind": "gap_choice",
+      "tier": 1,
+      "explanation": "Amina zegt: \"want mijn dochter is ziek.\" Met <strong>want</strong> geeft ze de reden.",
+      "payload": {
+        "sentence": "Ik kan niet komen, ___ mijn dochter is ziek.",
+        "choices": [
+          "want",
+          "daarna",
+          "maar"
+        ],
+        "answer": "want"
+      }
+    },
+    {
+      "kind": "matchen",
+      "tier": 1,
+      "explanation": "Elk signaalwoord uit het gesprek hoort bij een stuk van het verhaal. Zo hoor je hoe de delen aan elkaar vastzitten.",
+      "payload": {
+        "instruction": "Verbind het signaalwoord uit het gesprek met het stuk dat erop volgt.",
+        "pairs": [
+          {
+            "left": "maar",
+            "right": "ik kan niet komen"
+          },
+          {
+            "left": "want",
+            "right": "mijn dochter is ziek"
+          },
+          {
+            "left": "dus",
+            "right": "over een week"
+          },
+          {
+            "left": "eerst",
+            "right": "bij mij aan de balie"
+          },
+          {
+            "left": "daarna",
+            "right": "naar kamer 4"
+          }
+        ]
+      }
+    },
+    {
+      "kind": "gap_type",
+      "tier": 2,
+      "explanation": "De assistente noemt \"kamer 4\". Je schrijft het getal op dat je hoort.",
+      "payload": {
+        "sentence": "Daarna gaat u naar kamer ___.",
+        "answer": "4"
+      }
+    },
+    {
+      "kind": "gap_type",
+      "tier": 2,
+      "explanation": "De nieuwe afspraak is \"woensdag om tien uur\". Je schrijft de dag op die je hoort.",
+      "payload": {
+        "sentence": "De nieuwe afspraak is op ___ om tien uur.",
+        "answer": "woensdag"
+      }
+    }
+  ],
+  "what_you_learn": "Je leert kleine signaalwoorden horen in een gesprek: maar, want, dus, eerst en daarna. Je hoort daardoor hoe de stukken van een verhaal bij elkaar horen. Je oefent ook met het opschrijven van een dag en een kamernummer die je hoort."
+}

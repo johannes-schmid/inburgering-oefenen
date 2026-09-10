@@ -1,0 +1,8 @@
+# Training: Omroepbericht — audio
+# les d1-omroepbericht, item 6
+# Casting:
+#   A = man_young (Male Voice 1 — younger man)
+#
+# Dit bestand is de leesbare afdruk van wat er is ingesproken. De bron is de payload in
+# generated/a2-luisteren/d1-omroepbericht.json — pas die aan en spreek opnieuw in.
+A: Dames en heren, uw aandacht graag. De trein naar Zwolle van spoor vier vertrekt vandaag niet. Er ligt een boom op het spoor bij Amersfoort. Reizigers naar Zwolle nemen de bus. Die bussen staan voor het station, bij halte drie. De eerste bus vertrekt om tien over twee. U hoeft geen nieuw kaartje te kopen; uw treinkaartje is ook geldig in de bus. Reist u verder naar Groningen? Stap dan in Zwolle over op de trein van kwart voor vier. Onze medewerkers in het geel helpen u graag. Onze excuses voor het ongemak.

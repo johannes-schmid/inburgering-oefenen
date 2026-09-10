@@ -14,7 +14,8 @@
     "test:unit": "vitest run",
     "test:unit:watch": "vitest",
     "build:icons": "node scripts/build-icons.mjs",
-    "design": "python3 -m http.server 3010 --bind 127.0.0.1 --directory design"
+    "design": "python3 -m http.server 3010 --bind 127.0.0.1 --directory design",
+    "walkthrough": "node scripts/walkthrough/record.mjs"
   },
   "dependencies": {
     "@base-ui/react": "^1.5.0",

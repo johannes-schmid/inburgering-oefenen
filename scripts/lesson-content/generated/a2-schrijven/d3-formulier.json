@@ -1,0 +1,139 @@
+{
+  "items": [
+    {
+      "kind": "uitleg",
+      "tier": null,
+      "explanation": null,
+      "payload": {
+        "body_html": "<p>Je gaat nu formulieren invullen zoals in het examen: je krijgt ongeveer 5 minuten per formulier, dus schrijf kort en volledig.</p>",
+        "cards": []
+      }
+    },
+    {
+      "kind": "open_zin",
+      "tier": 2,
+      "explanation": "Je moet alle drie de gevraagde punten noemen: welk apparaat kapot is, wat het probleem is en wanneer je thuis bent. Mist er één punt, dan is de opdracht niet compleet.",
+      "payload": {
+        "prompt": "Je huurt een woning van woningbouwvereniging De Linde. De kraan in de keuken is kapot. Je vult het formulier 'Reparatie melden' in. Schrijf bij het vakje 'Beschrijf de klacht' 3 tot 5 zinnen.<br>Schrijf in je tekst:<br><ul><li>welk apparaat of onderdeel kapot is</li><li>wat het probleem precies is</li><li>sinds wanneer het probleem er is</li><li>wanneer je thuis bent voor de monteur</li></ul>",
+        "model_answer": "De kraan in mijn keuken is kapot. Er komt geen warm water meer uit de kraan. Het probleem is er sinds maandag 3 maart. Ik ben op dinsdag en donderdag na 15.00 uur thuis. Kunt u dan een monteur sturen?",
+        "checklist": [
+          "Ik noem welk onderdeel kapot is (de kraan in de keuken).",
+          "Ik schrijf wat het probleem is en sinds wanneer.",
+          "Ik schrijf wanneer ik thuis ben."
+        ]
+      }
+    },
+    {
+      "kind": "open_zin",
+      "tier": 2,
+      "explanation": "In dit vakje vraagt het formulier naar je reden en je nieuwe adres. Je schrijft alleen die informatie, in hele zinnen.",
+      "payload": {
+        "prompt": "Je verhuist naar een andere stad. Je vult bij de gemeente het formulier 'Verhuizing doorgeven' in. Schrijf bij het vakje 'Toelichting' 3 tot 4 zinnen.<br>Schrijf in je tekst:<br><ul><li>naar welke plaats je verhuist</li><li>op welke datum je verhuist</li><li>met hoeveel personen je verhuist</li><li>een vraag over je nieuwe afvalpas</li></ul>",
+        "model_answer": "Ik verhuis naar Zwolle. Mijn nieuwe adres is Beukenlaan 14. Ik verhuis op 1 april met mijn man en twee kinderen. Kunt u mij vertellen hoe ik een nieuwe afvalpas aanvraag?",
+        "checklist": [
+          "Ik noem de plaats en de datum van mijn verhuizing.",
+          "Ik schrijf met hoeveel personen ik verhuis.",
+          "Ik stel een vraag over de afvalpas."
+        ]
+      }
+    },
+    {
+      "kind": "open_zin",
+      "tier": 2,
+      "explanation": "Je vult alleen in wat het formulier vraagt: de reden van je afmelding en je nieuwe wens. Extra informatie is niet nodig.",
+      "payload": {
+        "prompt": "Je kind gaat niet mee met de schoolreis. Je vult het formulier 'Afmelden schoolreis' van basisschool De Vlieger in. Schrijf bij het vakje 'Reden van afmelding' 3 tot 4 zinnen.<br>Schrijf in je tekst:<br><ul><li>de naam en de groep van je kind</li><li>waarom je kind niet meegaat</li><li>of je het geld terug wilt</li><li>hoe de school je kan bereiken</li></ul>",
+        "model_answer": "Mijn dochter Amira zit in groep 5. Zij gaat niet mee met de schoolreis, omdat zij die dag naar het ziekenhuis moet. Ik wil het geld graag terug op mijn rekening. U kunt mij bellen op 06 12 34 56 78.",
+        "checklist": [
+          "Ik noem de naam en de groep van mijn kind.",
+          "Ik geef een reden met 'omdat'.",
+          "Ik schrijf hoe de school mij kan bereiken."
+        ]
+      }
+    },
+    {
+      "kind": "woordorde",
+      "tier": 2,
+      "explanation": "Na 'omdat' staat het werkwoord achteraan in de zin. Daarom eindigt de zin met 'is'.",
+      "payload": {
+        "instruction": "Zet de woorden in de juiste volgorde. Deze zin past in het vakje 'Beschrijf de klacht'.",
+        "tokens": [
+          "kapot",
+          "de",
+          "meld",
+          "ik",
+          "omdat",
+          "kraan",
+          "is",
+          "dit"
+        ],
+        "answer": [
+          "ik",
+          "meld",
+          "dit",
+          "omdat",
+          "de",
+          "kraan",
+          "kapot",
+          "is"
+        ]
+      }
+    },
+    {
+      "kind": "mcq",
+      "tier": 0,
+      "explanation": "Het formulier vraagt naar de klacht. De datum waarop het probleem begon hoort daar dus bij.",
+      "payload": {
+        "prompt": "Je vult het vakje 'Beschrijf de klacht' in. Welke informatie hoort hier zeker in?"
+      },
+      "options": [
+        {
+          "label": "A",
+          "body": "Sinds welke dag de kraan kapot is.",
+          "is_correct": true
+        },
+        {
+          "label": "B",
+          "body": "Hoeveel huur je elke maand betaalt.",
+          "is_correct": false
+        },
+        {
+          "label": "C",
+          "body": "In welk jaar je in Nederland bent gekomen.",
+          "is_correct": false
+        }
+      ]
+    },
+    {
+      "kind": "mcq",
+      "tier": 0,
+      "explanation": "Je schrijft alleen wat de opdracht vraagt. Je mening over de buren hoort niet in een verhuisformulier.",
+      "payload": {
+        "prompt": "Je geeft je verhuizing door aan de gemeente. Wat hoort juist NIET in het vakje 'Toelichting'?"
+      },
+      "options": [
+        {
+          "label": "A",
+          "body": "De datum van je verhuizing.",
+          "is_correct": false
+        },
+        {
+          "label": "B",
+          "body": "Dat je je oude buren niet aardig vond.",
+          "is_correct": true
+        },
+        {
+          "label": "C",
+          "body": "Het aantal personen dat meeverhuist.",
+          "is_correct": false
+        },
+        {
+          "label": "D",
+          "body": "Een vraag over de afvalpas.",
+          "is_correct": false
+        }
+      ]
+    }
+  ],
+  "what_you_learn": "Je oefent met het invullen van formulieren zoals in het examen. Je schrijft in een tekstvakje alle punten die de opdracht vraagt, in korte hele zinnen. Je leert ook wat je juist niet moet opschrijven."
+}

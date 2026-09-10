@@ -1,5 +1,4 @@
 import { ArrowLeft } from 'lucide-react';
-import { HorizonBanner } from '@/components/horizon';
 import ReadinessRing from './ReadinessRing';
 
 export type HeroTile = { label: string; value: string; sub?: string };
@@ -18,9 +17,10 @@ export type HeroTile = { label: string; value: string; sub?: string };
  * is — de examenklaar-ring. Vier keer dezelfde vier lagen met de hand samenstellen is precies hoe
  * dit repo eerder aan zes verschillende paginakoppen kwam.
  *
- * De skyline is laag (56px) en de zon staat uit: de rechterflank draagt de tegels, en §7.3
- * verbiedt een graphic achter de tekst. De oranje band sluit de kop af — dat is de rand die de
- * mockup van de eigenaar ook trekt.
+ * Er zit geen graphic in. De kop was navy met een skyline en een oranje band; wit las rustiger
+ * (03-09) en de skyline erin bleef een plaatje dat niets zei op de plek waar de kandidaat naar
+ * zijn cijfers kijkt. De grafische taal zit op de publieke site en in de merktekens per
+ * onderdeel; het portaal is een werkscherm.
  */
 export default function PortalHero({
   back,
@@ -29,7 +29,6 @@ export default function PortalHero({
   lede,
   tiles = [],
   ring,
-  seed = 0,
 }: {
   /** De weg terug, ín de kop. Buiten de kop staat hij los boven de eerste kaart en leest hij
       als een zwevend stukje tekst dat bij niets hoort. */
@@ -40,19 +39,9 @@ export default function PortalHero({
   tiles?: HeroTile[];
   /** De examenklaar-ring. `pct: null` rendert een streepje — zie `ReadinessRing`. */
   ring?: { pct: number | null; label: string; note: string; aria: string };
-  seed?: number;
 }) {
   return (
     <header className="portal-hero">
-      <HorizonBanner
-        desktopHouses={16}
-        mobileHouses={7}
-        desktopHeight={56}
-        mobileHeight={40}
-        seed={seed}
-        sun={false}
-      />
-
       <div className="ph-body">
         <div className="ph-copy">
           {back && (
@@ -70,7 +59,7 @@ export default function PortalHero({
           <div className="ph-side">
             {ring && (
               <div className="ph-ring">
-                <ReadinessRing pct={ring.pct} size={78} onDark label={ring.aria} />
+                <ReadinessRing pct={ring.pct} size={78} label={ring.aria} />
                 <div className="min-w-0">
                   <p className="ph-ring-label">{ring.label}</p>
                   <p className="ph-ring-note">{ring.note}</p>

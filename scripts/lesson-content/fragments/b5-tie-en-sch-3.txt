@@ -1,0 +1,8 @@
+# -tie en sch- — naspreken
+# les b5-tie-en-sch, item 4
+# Casting:
+#   één stem: woman_older
+#
+# Dit bestand is de leesbare afdruk van wat er is ingesproken. De bron is de payload in
+# generated/a2-spreken/b5-tie-en-sch.json — pas die aan en spreek opnieuw in.
+Ik vraag informatie over de vakantie van de school.

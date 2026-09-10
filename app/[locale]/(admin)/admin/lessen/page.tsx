@@ -1,5 +1,5 @@
 import type { Metadata } from 'next';
-import { Check, Clock, Eye, Lock } from 'lucide-react';
+import { Check, Clock, Eye, Lock, Pencil } from 'lucide-react';
 import { SKILLS, isSkillSlug, levelLabel, type SkillSlug } from '@/data/skills';
 import { getTranslations } from 'next-intl/server';
 import { levelFromSearch } from '@/lib/admin/nav';
@@ -50,6 +50,7 @@ export default async function AdminLessonsPage({ params, searchParams }: Props) 
 
   const all = blocks.flatMap(b => b.lessons);
   const released = all.filter(l => l.review_status === 'validated').length;
+  const checked = all.filter(l => l.checked_by).length;
 
   return (
     <div className="p-5 sm:p-8">
@@ -60,8 +61,9 @@ export default async function AdminLessonsPage({ params, searchParams }: Props) 
         <p className="mt-1 text-sm text-on-surface-variant">
           {all.length === 0
             ? 'Er is nog geen cursus geseed voor dit onderdeel.'
-            : `${released} van ${all.length} lessen vrijgegeven. Een les die niet is vrijgegeven ` +
-              'staat in geen blok, geen menu en geen voortgang — maar is wél te bekijken.'}
+            : `${released} van ${all.length} lessen vrijgegeven, ${checked} nagekeken. Een les die ` +
+              'niet is vrijgegeven staat in geen blok, geen menu en geen voortgang — maar is wél ' +
+              'te bekijken en te bewerken.'}
         </p>
       </header>
 
@@ -115,21 +117,39 @@ export default async function AdminLessonsPage({ params, searchParams }: Props) 
                             : <Clock size={14} strokeWidth={2.5} className="text-outline" />}
                         </span>
                         <span className="min-w-0 flex-1">
-                          <span className="block truncate font-bold text-on-surface">{les.title}</span>
+                          <a
+                            href={`/${locale}/admin/lessen/${les.id}`}
+                            className="block truncate font-bold text-on-surface no-underline hover:underline"
+                          >
+                            {les.title}
+                          </a>
                           <span className="block text-xs text-on-surface-variant">
                             {les.itemCount} items · {les.exerciseCount} opgaven
                             {thin && <strong className="text-secondary"> · weinig opgaven</strong>}
                             {les.is_free && ' · gratis'}
                             {les.conceptNames.length > 0 && ` · ${les.conceptNames.join(', ')}`}
                           </span>
-                          {live && les.reviewed_by && (
+                          {/* Nagekeken is sinds 03-09 een eigen feit, los van vrijgegeven: een
+                              vrijgegeven les die niemand heeft gelezen moet dat kunnen zeggen. */}
+                          {les.checked_by ? (
                             <span className="block text-[0.7rem] text-outline">
-                              nagekeken door {les.reviewed_by}
-                              {les.reviewed_on ? ` op ${les.reviewed_on}` : ''}
+                              nagekeken door {les.checked_by}
+                              {les.checked_on ? ` op ${les.checked_on}` : ''}
+                            </span>
+                          ) : (
+                            <span className="block text-[0.7rem] font-bold text-secondary">
+                              nog niet nagekeken
                             </span>
                           )}
                         </span>
 
+                        <a
+                          href={`/${locale}/admin/lessen/${les.id}`}
+                          className="admin-les-link"
+                          title="Bewerk de leerstof en de opgaven van deze les"
+                        >
+                          <Pencil size={13} strokeWidth={2.4} /> Bewerken
+                        </a>
                         <a
                           href={`/${locale}${lessonPath(level!, onderdeel, les.slug)}`}
                           className="admin-les-link"
