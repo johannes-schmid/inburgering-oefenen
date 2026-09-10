@@ -33,26 +33,73 @@ export type AdminNavItem = {
    * rubrics tab would open an authoring screen for a thing that cannot exist.
    */
   knm?: boolean;
-  /** Below the divider: supporting surfaces, not content authoring. */
-  secondary?: boolean;
+  /**
+   * Extra kinderen onder de niveautabs, met hun eigen pad.
+   *
+   * Dit is hoe **Woordkaarten** onder Woorden hangt (besluit eigenaar, 10-09). Het waren twee
+   * ingangen in de zijbalk voor twee tabellen, en dat blijven ze in de database ook — maar de
+   * vraag die de docent stelt is "welke woordenlijst", en KNM is daar een derde catalogus van,
+   * net zoals bij Examens en Vragen. Een kind met een eigen `path` gaat dus níet via
+   * `?niveau=`: `/admin/woordkaarten` heeft geen niveau-as en zou er ook niets mee doen.
+   */
+  extra?: { label: string; path: string }[];
 };
 
-export const ADMIN_NAV: AdminNavItem[] = [
-  { path: '', icon: 'dashboard', label: 'Dashboard' },
-  { path: '/exams', icon: 'assignment', label: 'Examens', levelled: true, knm: true },
-  { path: '/questions', icon: 'quiz', label: 'Vragen & opdrachten', levelled: true, knm: true },
-  // Lessen is levelled maar heeft GEEN KNM-tab: KNM's leerlaag zit in `leren_content` en heeft
-  // zijn eigen surface. Een KNM-tab hier zou een leeg scherm openen voor content die elders
-  // staat — dezelfde reden waarom Rubrieken er ook geen heeft.
-  { path: '/lessen', icon: 'school', label: 'Lessen', levelled: true },
-  { path: '/rubrics', icon: 'checklist', label: 'Rubrieken', levelled: true },
-  // Beoordelen is deliberately NOT levelled: it is a queue of what is waiting, and splitting the
-  // inbox by level would hide work rather than organise it. The level is a column there.
-  { path: '/beoordeling', icon: 'rate_review', label: 'Beoordelen' },
-  { path: '/users', icon: 'group', label: 'Gebruikers', secondary: true },
-  // Woordkaarten has no level axis: the 366 cards are KNM's and KNM is not levelled.
-  { path: '/woordkaarten', icon: 'style', label: 'Woordkaarten', secondary: true },
+/**
+ * Eén kop met de rijen eronder.
+ *
+ * De zijbalk was één lijst van tien rijen met één streep erdoor, en die streep scheidde niets
+ * inhoudelijks: Woordkaarten stond eronder los van Woorden, Rubrieken tussen de content en
+ * Beoordelen. De koppen volgen nu dezelfde lagen als het studieportaal — wat je toetst, wat je
+ * leert, wat je nakijkt, en het beheer — zodat een nieuwe surface een plek hééft.
+ */
+export type AdminNavSection = { title: string | null; items: AdminNavItem[] };
+
+export const ADMIN_NAV_SECTIONS: AdminNavSection[] = [
+  { title: null, items: [{ path: '', icon: 'dashboard', label: 'Dashboard' }] },
+  {
+    title: 'Toetsen',
+    items: [
+      { path: '/exams', icon: 'assignment', label: 'Examens', levelled: true, knm: true },
+      { path: '/questions', icon: 'quiz', label: 'Vragen & opdrachten', levelled: true, knm: true },
+    ],
+  },
+  {
+    title: 'Leerlaag',
+    items: [
+      // Lessen is levelled maar heeft GEEN KNM-tab: KNM's leerlaag zit in `leren_content` en
+      // heeft zijn eigen surface. Een KNM-tab hier zou een leeg scherm openen voor content die
+      // elders staat — dezelfde reden waarom Rubrieken er ook geen heeft.
+      { path: '/lessen', icon: 'school', label: 'Lessen', levelled: true },
+      // Woorden is de leerlaag-woordenlijst (`lesson_words`); Woordkaarten zijn de 366 KNM-kaarten
+      // (`word_cards`). Twee tabellen, en dat blijft zo — `lesson_words` is gekeyd op
+      // (niveau, onderdeel, dutch) en `word_cards` op KNM's thema-as, dus één scherm zou twee
+      // sleutels moeten laten doen alsof ze dezelfde zijn. Wat samenvalt is de ingáng: A2 · B1 ·
+      // KNM-woordkaarten. Geen KNM-tab via `?niveau=`, want `lesson_words.level` is NOT NULL.
+      {
+        path: '/woorden',
+        icon: 'translate',
+        label: 'Woorden',
+        levelled: true,
+        extra: [{ label: 'KNM-woordkaarten', path: '/woordkaarten' }],
+      },
+    ],
+  },
+  {
+    title: 'Nakijken',
+    items: [
+      { path: '/rubrics', icon: 'checklist', label: 'Rubrieken', levelled: true },
+      // Beoordelen is deliberately NOT levelled: it is a queue of what is waiting, and splitting
+      // the inbox by level would hide work rather than organise it. The level is a column there.
+      { path: '/beoordeling', icon: 'rate_review', label: 'Beoordelen' },
+    ],
+  },
+  { title: 'Beheer', items: [{ path: '/users', icon: 'group', label: 'Gebruikers' }] },
 ];
+
+/** Alle rijen plat, voor wie alleen de paden nodig heeft. */
+export const ADMIN_NAV: AdminNavItem[] = ADMIN_NAV_SECTIONS.flatMap(s => s.items);
+
 
 /**
  * A catalogue tab: a CEFR level, or KNM, which has none.

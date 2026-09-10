@@ -4,7 +4,13 @@ import { useState } from 'react';
 import Link from 'next/link';
 import { usePathname, useSearchParams } from 'next/navigation';
 
-import { ADMIN_NAV, adminHref, navLevelsFor, type AdminLevel, type AdminNavItem } from '@/lib/admin/nav';
+import {
+  ADMIN_NAV_SECTIONS,
+  adminHref,
+  navLevelsFor,
+  type AdminLevel,
+  type AdminNavItem,
+} from '@/lib/admin/nav';
 import { isKnm, isLevel } from '@/data/skills';
 
 /**
@@ -30,24 +36,29 @@ export default function AdminNav({ locale, onNavigate }: { locale: string; onNav
   const activeLevel: AdminLevel | undefined =
     isKnm(rawLevel) ? null : isLevel(rawLevel) ? rawLevel : undefined;
 
-  const primary = ADMIN_NAV.filter(i => !i.secondary);
-  const secondary = ADMIN_NAV.filter(i => i.secondary);
-
-  const render = (item: AdminNavItem) => (
-    <NavEntry
-      key={item.path}
-      item={item}
-      locale={locale}
-      pathname={pathname}
-      activeLevel={activeLevel}
-      onNavigate={onNavigate}
-    />
-  );
-
   return (
-    <nav className="flex-1 space-y-1 p-4">
-      {primary.map(render)}
-      <div className="mt-2 space-y-1 border-t border-white/10 pt-3">{secondary.map(render)}</div>
+    <nav className="flex-1 p-4">
+      {ADMIN_NAV_SECTIONS.map((section, i) => (
+        <div key={section.title ?? 'top'} className={i === 0 ? 'space-y-1' : 'mt-5 space-y-1'}>
+          {/* Een kop en geen streep: de scheiding komt van de ruimte en het label, niet van een
+              lijn — dezelfde regel als op de publieke kant. */}
+          {section.title && (
+            <p className="px-3 pb-1 text-[0.68rem] font-semibold uppercase tracking-[0.09em] text-white/40">
+              {section.title}
+            </p>
+          )}
+          {section.items.map(item => (
+            <NavEntry
+              key={item.path}
+              item={item}
+              locale={locale}
+              pathname={pathname}
+              activeLevel={activeLevel}
+              onNavigate={onNavigate}
+            />
+          ))}
+        </div>
+      ))}
     </nav>
   );
 }
@@ -67,9 +78,12 @@ function NavEntry({
   onNavigate?: () => void;
 }) {
   const base = `/${locale}/admin${item.path}`;
-  // Dashboard matches only itself; every other section also owns its detail routes
-  // (`/exams/12`, `/rubrics/3/edit`), which must keep the section highlighted and open.
-  const active = item.path === '' ? pathname === base : pathname.startsWith(base);
+  const onExtra = (item.extra ?? []).some(e => pathname.startsWith(`/${locale}/admin${e.path}`));
+  // Dashboard matcht alleen zichzelf; elke andere sectie bezit ook zijn detailroutes
+  // (`/exams/12`, `/rubrics/3/edit`). Een kind met een eigen pad (Woordkaarten) houdt zijn ouder
+  // wél open — anders markeert de zijbalk niets op een scherm dat er gewoon in staat.
+  const active =
+    (item.path === '' ? pathname === base : pathname.startsWith(base)) || onExtra;
   const [open, setOpen] = useState(active);
 
   if (!item.levelled) {
@@ -119,6 +133,27 @@ function NavEntry({
                   }`}
                 >
                   {label}
+                </Link>
+              </li>
+            );
+          })}
+
+          {(item.extra ?? []).map(extra => {
+            const href = `/${locale}/admin${extra.path}`;
+            const current = pathname.startsWith(href);
+            return (
+              <li key={extra.path}>
+                <Link
+                  href={href}
+                  onClick={onNavigate}
+                  aria-current={current ? 'page' : undefined}
+                  className={`block rounded-lg px-3 py-1.5 text-[0.8rem] font-medium transition-colors ${
+                    current
+                      ? 'bg-white/15 text-white'
+                      : 'text-white/55 hover:bg-white/10 hover:text-white'
+                  }`}
+                >
+                  {extra.label}
                 </Link>
               </li>
             );
