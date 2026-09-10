@@ -1,0 +1,200 @@
+{
+  "items": [
+    {
+      "kind": "uitleg",
+      "tier": null,
+      "explanation": null,
+      "payload": {
+        "body_html": "<p>Wil je zeggen <strong>waarom</strong> je iets doet? Dan gebruik je <strong>om … te</strong>.</p><p>Na <em>om</em> komt de rest van de zin. Het woord <em>te</em> staat vlak voor het werkwoord. Dat werkwoord staat helemaal achteraan en verandert niet.</p><p>Bij een werkwoord met twee delen, zoals <em>opbellen</em>, komt <em>te</em> in het midden: <em>om op te bellen</em>.</p>",
+        "cards": [
+          {
+            "label": "GEWOON WERKWOORD",
+            "example_html": "Ik ga naar de winkel <mark>om brood te kopen</mark>."
+          },
+          {
+            "label": "WERKWOORD MET TWEE DELEN",
+            "example_html": "Ik gebruik de telefoon <mark>om de dokter op te bellen</mark>."
+          }
+        ]
+      }
+    },
+    {
+      "kind": "voorbeeld",
+      "tier": null,
+      "explanation": null,
+      "payload": {
+        "sentence_html": "Fatima gaat naar de gemeente <mark>om een nieuw paspoort aan te vragen</mark>."
+      }
+    },
+    {
+      "kind": "voorbeeld",
+      "tier": null,
+      "explanation": null,
+      "payload": {
+        "sentence_html": "Wij sparen elke maand geld <mark>om een wasmachine te betalen</mark>."
+      }
+    },
+    {
+      "kind": "mcq",
+      "tier": 0,
+      "explanation": "In deze zin staat <em>om</em> vooraan en <em>te</em> vlak voor het werkwoord <em>halen</em>. Zo herken je de vorm om … te.",
+      "payload": {
+        "prompt": "Welk deel van de zin zegt waarom hij naar de apotheek gaat?<br>Hij gaat naar de apotheek om medicijnen te halen."
+      },
+      "options": [
+        {
+          "label": "A",
+          "body": "Hij gaat",
+          "is_correct": false
+        },
+        {
+          "label": "B",
+          "body": "naar de apotheek",
+          "is_correct": false
+        },
+        {
+          "label": "C",
+          "body": "om medicijnen te halen",
+          "is_correct": true
+        }
+      ]
+    },
+    {
+      "kind": "mcq",
+      "tier": 0,
+      "explanation": "Het woord <em>te</em> hoort vlak voor het werkwoord, en het werkwoord staat achteraan: <em>om de huur te betalen</em>.",
+      "payload": {
+        "prompt": "Welke zin is goed?"
+      },
+      "options": [
+        {
+          "label": "A",
+          "body": "Ik ga naar de bank om de huur te betalen.",
+          "is_correct": true
+        },
+        {
+          "label": "B",
+          "body": "Ik ga naar de bank om te de huur betalen.",
+          "is_correct": false
+        },
+        {
+          "label": "C",
+          "body": "Ik ga naar de bank om de huur betalen te.",
+          "is_correct": false
+        }
+      ]
+    },
+    {
+      "kind": "gap_choice",
+      "tier": 1,
+      "explanation": "Je zegt waarom je naar het spreekuur gaat. Dan begint dat deel met <em>om</em>.",
+      "payload": {
+        "sentence": "Ik ga naar het spreekuur ___ mijn rug te laten zien.",
+        "choices": [
+          "om",
+          "en",
+          "want"
+        ],
+        "answer": "om"
+      }
+    },
+    {
+      "kind": "gap_choice",
+      "tier": 1,
+      "explanation": "Na <em>om</em> komt <em>te</em> vlak voor het werkwoord. Het werkwoord blijft onveranderd: <em>te lezen</em>.",
+      "payload": {
+        "sentence": "Zij gebruikt haar bril om de brief ___ lezen.",
+        "choices": [
+          "te",
+          "voor",
+          "om"
+        ],
+        "answer": "te"
+      }
+    },
+    {
+      "kind": "gap_choice",
+      "tier": 1,
+      "explanation": "Bij een werkwoord met twee delen, zoals <em>inschrijven</em>, komt <em>te</em> in het midden: <em>in te schrijven</em>.",
+      "payload": {
+        "sentence": "Wij bellen de school om onze dochter ___ schrijven.",
+        "choices": [
+          "in te",
+          "te in",
+          "inte"
+        ],
+        "answer": "in te"
+      }
+    },
+    {
+      "kind": "matchen",
+      "tier": 1,
+      "explanation": "Bij elk doel hoort één werkwoord met <em>te</em> ervoor. Bij een werkwoord met twee delen staat <em>te</em> in het midden.",
+      "payload": {
+        "instruction": "Zet het begin van de zin bij het juiste einde.",
+        "pairs": [
+          {
+            "left": "Ik ga naar de bibliotheek om een boek",
+            "right": "te lenen."
+          },
+          {
+            "left": "Ik neem de bus om op tijd op mijn werk",
+            "right": "te komen."
+          },
+          {
+            "left": "Ik bel de gemeente om een vraag",
+            "right": "te stellen."
+          },
+          {
+            "left": "Ik gebruik de computer om het formulier in",
+            "right": "te vullen."
+          }
+        ]
+      }
+    },
+    {
+      "kind": "gap_type",
+      "tier": 2,
+      "explanation": "Het woord <em>te</em> staat altijd vlak voor het werkwoord dat achteraan staat.",
+      "payload": {
+        "sentence": "Hij werkt over om meer geld ___ verdienen.",
+        "answer": "te"
+      }
+    },
+    {
+      "kind": "woordorde",
+      "tier": 2,
+      "explanation": "Eerst <em>om</em>, dan de rest, en <em>te</em> vlak voor het werkwoord achteraan.",
+      "payload": {
+        "instruction": "Maak van deze woorden een goed deel van een zin.",
+        "tokens": [
+          "te",
+          "om",
+          "kopen",
+          "melk"
+        ],
+        "answer": [
+          "om",
+          "melk",
+          "te",
+          "kopen"
+        ]
+      }
+    },
+    {
+      "kind": "open_zin",
+      "tier": 2,
+      "explanation": "Je zegt zelf waarom je iets doet. Dat doe je met <em>om</em> vooraan en <em>te</em> vlak voor het werkwoord.",
+      "payload": {
+        "prompt": "Waarom leer je Nederlands? Maak de zin af met om … te.\nIk leer Nederlands …",
+        "model_answer": "Ik leer Nederlands om met mijn buren te praten.",
+        "checklist": [
+          "Je zin heeft het woord om.",
+          "Het woord te staat vlak voor het werkwoord.",
+          "Het werkwoord staat achteraan en is onveranderd."
+        ]
+      }
+    }
+  ],
+  "what_you_learn": "Na deze les kun je zeggen waarom je iets doet met om … te. Je weet dat te vlak voor het werkwoord staat en dat het werkwoord achteraan komt. Je kunt zulke zinnen herkennen in een tekst en zelf maken."
+}

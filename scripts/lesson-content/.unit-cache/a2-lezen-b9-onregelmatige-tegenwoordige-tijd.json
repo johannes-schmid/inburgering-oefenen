@@ -1,0 +1,188 @@
+{
+  "items": [
+    {
+      "kind": "uitleg",
+      "tier": null,
+      "explanation": null,
+      "payload": {
+        "body_html": "<p>De werkwoorden <strong>zijn</strong>, <strong>hebben</strong>, <strong>gaan</strong> en <strong>kunnen</strong> gebruik je heel vaak. Ze volgen niet de gewone regel. Je moet de vormen dus uit je hoofd leren.</p><p>Bij een gewoon werkwoord neem je de stam: <em>ik werk, jij werkt, wij werken</em>. Bij deze vier verandert het woord zelf: <em>ik ben, jij bent, wij zijn</em>.</p>",
+        "cards": [
+          {
+            "label": "GEWOON WERKWOORD",
+            "example_html": "Ik <mark>werk</mark> in een winkel. Wij <mark>werken</mark> samen."
+          },
+          {
+            "label": "NIET GEWOON",
+            "example_html": "Ik <mark>ben</mark> ziek. Wij <mark>zijn</mark> thuis."
+          }
+        ]
+      }
+    },
+    {
+      "kind": "voorbeeld",
+      "tier": null,
+      "explanation": null,
+      "payload": {
+        "sentence_html": "Mijn dochter <mark>heeft</mark> een brief van de school gekregen."
+      }
+    },
+    {
+      "kind": "voorbeeld",
+      "tier": null,
+      "explanation": null,
+      "payload": {
+        "sentence_html": "Wij <mark>kunnen</mark> morgen niet naar de gemeente, want de balie is dicht."
+      }
+    },
+    {
+      "kind": "mcq",
+      "tier": 0,
+      "explanation": "Bij <em>ik</em> hoort de vorm <em>ben</em>. De vormen <em>bent</em> en <em>is</em> horen bij jij, u, hij, zij of het.",
+      "options": [
+        {
+          "label": "A",
+          "body": "Ik ben vandaag thuis.",
+          "is_correct": true
+        },
+        {
+          "label": "B",
+          "body": "Ik bent vandaag thuis.",
+          "is_correct": false
+        },
+        {
+          "label": "C",
+          "body": "Ik is vandaag thuis.",
+          "is_correct": false
+        }
+      ],
+      "payload": {
+        "prompt": "Welke zin is goed?"
+      }
+    },
+    {
+      "kind": "mcq",
+      "tier": 0,
+      "explanation": "Bij <em>hij</em> hoort <em>heeft</em>. <em>Hebben</em> gebruik je bij wij, jullie en zij (meer personen).",
+      "options": [
+        {
+          "label": "A",
+          "body": "Hij heb pijn in zijn rug.",
+          "is_correct": false
+        },
+        {
+          "label": "B",
+          "body": "Hij heeft pijn in zijn rug.",
+          "is_correct": true
+        },
+        {
+          "label": "C",
+          "body": "Hij hebben pijn in zijn rug.",
+          "is_correct": false
+        }
+      ],
+      "payload": {
+        "prompt": "Welke zin is goed?"
+      }
+    },
+    {
+      "kind": "gap_choice",
+      "tier": 1,
+      "explanation": "Bij <em>wij</em> gebruik je <em>gaan</em>. De vorm <em>gaat</em> hoort bij één persoon, zoals hij of zij.",
+      "payload": {
+        "sentence": "Wij ___ morgen naar het gemeentehuis.",
+        "choices": [
+          "ga",
+          "gaat",
+          "gaan"
+        ],
+        "answer": "gaan"
+      }
+    },
+    {
+      "kind": "gap_choice",
+      "tier": 1,
+      "explanation": "Bij <em>jij</em> hoort <em>kunt</em> (of <em>kan</em>). <em>Kunnen</em> hoort bij meer personen.",
+      "payload": {
+        "sentence": "___ jij mij even helpen met dit formulier?",
+        "choices": [
+          "Kunt",
+          "Kunnen",
+          "Kunde"
+        ],
+        "answer": "Kunt"
+      }
+    },
+    {
+      "kind": "gap_choice",
+      "tier": 1,
+      "explanation": "Bij <em>mijn buren</em> (meer personen) hoort <em>zijn</em>, net als bij zij.",
+      "payload": {
+        "sentence": "Mijn buren ___ heel aardig.",
+        "choices": [
+          "is",
+          "ben",
+          "zijn"
+        ],
+        "answer": "zijn"
+      }
+    },
+    {
+      "kind": "matchen",
+      "tier": 1,
+      "explanation": "Elk persoonlijk voornaamwoord heeft zijn eigen vorm. Deze vormen leer je uit je hoofd.",
+      "payload": {
+        "instruction": "Zet het juiste woord bij de juiste vorm.",
+        "pairs": [
+          {
+            "left": "ik",
+            "right": "heb"
+          },
+          {
+            "left": "jij",
+            "right": "bent"
+          },
+          {
+            "left": "hij",
+            "right": "gaat"
+          },
+          {
+            "left": "jullie",
+            "right": "kunnen"
+          }
+        ]
+      }
+    },
+    {
+      "kind": "gap_type",
+      "tier": 2,
+      "explanation": "Bij <em>ik</em> is de vorm van hebben <em>heb</em>, zonder -t.",
+      "payload": {
+        "sentence": "Ik ___ nog geen antwoord van de woningcorporatie gekregen.",
+        "answer": "heb"
+      }
+    },
+    {
+      "kind": "woordorde",
+      "tier": 2,
+      "explanation": "Het werkwoord staat op de tweede plaats: <em>zij kan</em>. Bij <em>zij</em> (één persoon) hoort <em>kan</em>.",
+      "payload": {
+        "instruction": "Maak van deze woorden een goede zin.",
+        "tokens": [
+          "kan",
+          "zij",
+          "niet",
+          "werken",
+          "vandaag"
+        ],
+        "answer": [
+          "zij",
+          "kan",
+          "vandaag",
+          "niet",
+          "werken"
+        ]
+      }
+    }
+  ],
+  "what_you_learn": "Na deze les ken je de vormen van zijn, hebben, gaan en kunnen. Je ziet snel welke vorm bij ik, jij, hij, wij of zij hoort. Je kunt de juiste vorm zelf in een zin zetten."
+}

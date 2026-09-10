@@ -1,0 +1,185 @@
+{
+  "items": [
+    {
+      "kind": "uitleg",
+      "tier": null,
+      "explanation": null,
+      "payload": {
+        "body_html": "<p>In de voltooide tijd (de tijd met <strong>ge-</strong>) gebruik je <strong>hebben</strong> of <strong>zijn</strong>. Bij woorden van beweging naar een plaats en van verandering gebruik je <strong>zijn</strong>. Bij bijna alle andere woorden gebruik je <strong>hebben</strong>. Kijk dus altijd: is er beweging of verandering?</p>",
+        "cards": [
+          {
+            "label": "ZIJN: beweging of verandering",
+            "example_html": "Ik <mark>ben</mark> naar de dokter gegaan."
+          },
+          {
+            "label": "HEBBEN: bijna al het andere",
+            "example_html": "Ik <mark>heb</mark> de brief gelezen."
+          }
+        ]
+      }
+    },
+    {
+      "kind": "voorbeeld",
+      "tier": null,
+      "explanation": null,
+      "payload": {
+        "sentence_html": "Mijn zoon <mark>is</mark> gisteren naar school gefietst."
+      }
+    },
+    {
+      "kind": "voorbeeld",
+      "tier": null,
+      "explanation": null,
+      "payload": {
+        "sentence_html": "Wij <mark>hebben</mark> vanmorgen boodschappen gedaan."
+      }
+    },
+    {
+      "kind": "mcq",
+      "tier": 0,
+      "explanation": "Wandelen naar het park is beweging naar een plaats. Daarom staat hier de vorm van zijn.",
+      "options": [
+        {
+          "label": "A",
+          "body": "zijn, want er is beweging naar een plaats",
+          "is_correct": true
+        },
+        {
+          "label": "B",
+          "body": "hebben, want het gaat over de tijd",
+          "is_correct": false
+        },
+        {
+          "label": "C",
+          "body": "zijn, want het is een vraag",
+          "is_correct": false
+        }
+      ],
+      "payload": {
+        "prompt": "Lees de zin: \"Wij zijn naar het park gewandeld.\" Welke uitleg is juist?"
+      }
+    },
+    {
+      "kind": "mcq",
+      "tier": 0,
+      "explanation": "In deze zin is geen beweging en geen verandering. Bij bijna al het andere gebruik je hebben.",
+      "options": [
+        {
+          "label": "A",
+          "body": "Ik ben mijn pas kwijtgeraakt.",
+          "is_correct": false
+        },
+        {
+          "label": "B",
+          "body": "Ik heb het formulier ingevuld.",
+          "is_correct": true
+        },
+        {
+          "label": "C",
+          "body": "Ik ben naar de gemeente gelopen.",
+          "is_correct": false
+        }
+      ],
+      "payload": {
+        "prompt": "In welke zin gebruik je hebben omdat er geen beweging en geen verandering is?"
+      }
+    },
+    {
+      "kind": "gap_choice",
+      "tier": 1,
+      "explanation": "Verhuizen is een verandering van plaats. Daarom gebruik je zijn.",
+      "payload": {
+        "sentence": "Wij ___ vorig jaar naar Almere verhuisd.",
+        "choices": [
+          "hebben",
+          "zijn"
+        ],
+        "answer": "zijn"
+      }
+    },
+    {
+      "kind": "gap_choice",
+      "tier": 1,
+      "explanation": "Betalen is geen beweging en geen verandering. Daarom gebruik je hebben.",
+      "payload": {
+        "sentence": "Ik ___ de huur op tijd betaald.",
+        "choices": [
+          "heb",
+          "ben"
+        ],
+        "answer": "heb"
+      }
+    },
+    {
+      "kind": "gap_choice",
+      "tier": 1,
+      "explanation": "Vallen is een plotselinge beweging. Daarom gebruik je zijn.",
+      "payload": {
+        "sentence": "Mijn moeder ___ in de badkamer gevallen.",
+        "choices": [
+          "heeft",
+          "is"
+        ],
+        "answer": "is"
+      }
+    },
+    {
+      "kind": "matchen",
+      "tier": 1,
+      "explanation": "Bij beweging of verandering hoort zijn; bij de andere werkwoorden hoort hebben.",
+      "payload": {
+        "instruction": "Welk hulpwerkwoord hoort bij het woord: hebben of zijn?",
+        "pairs": [
+          {
+            "left": "gegaan naar de winkel",
+            "right": "zijn"
+          },
+          {
+            "left": "gewerkt in de fabriek",
+            "right": "hebben"
+          },
+          {
+            "left": "gekomen op het feest",
+            "right": "zijn"
+          },
+          {
+            "left": "gebeld met de huisarts",
+            "right": "hebben"
+          }
+        ]
+      }
+    },
+    {
+      "kind": "gap_type",
+      "tier": 2,
+      "explanation": "Reizen naar Utrecht is beweging naar een plaats, dus je gebruikt zijn: ben.",
+      "payload": {
+        "sentence": "Ik ___ met de trein naar Utrecht gereisd.",
+        "answer": "ben"
+      }
+    },
+    {
+      "kind": "woordorde",
+      "tier": 2,
+      "explanation": "Er is geen beweging en geen verandering, dus je gebruikt heeft bij het woord met ge-.",
+      "payload": {
+        "instruction": "Zet de woorden in de juiste volgorde.",
+        "tokens": [
+          "heeft",
+          "de",
+          "dokter",
+          "gebeld",
+          "Fatima"
+        ],
+        "answer": [
+          "Fatima",
+          "heeft",
+          "de",
+          "dokter",
+          "gebeld"
+        ]
+      }
+    }
+  ],
+  "what_you_learn": "Je leert wanneer je in de voltooide tijd hebben gebruikt en wanneer zijn. Bij beweging naar een plaats en bij verandering kies je zijn. Bij bijna alle andere werkwoorden kies je hebben, en je kunt dit zelf in een zin invullen."
+}

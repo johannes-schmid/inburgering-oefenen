@@ -1,0 +1,187 @@
+{
+  "items": [
+    {
+      "kind": "uitleg",
+      "tier": null,
+      "explanation": null,
+      "payload": {
+        "body_html": "<p>In een zin lees je vaak wie iets doet. Soms staat daar een naam: <strong>Fatima werkt in de winkel.</strong> Vaak staat er een kort woordje in plaats van de naam: <strong>ik, jij, u, hij, zij (ze), wij (we), jullie, zij (ze)</strong>.</p><p>Zo'n woordje verwijst naar een persoon. Als je leest, vraag je jezelf af: wie doet het?</p>",
+        "cards": [
+          {
+            "label": "ÉÉN PERSOON",
+            "example_html": "<mark>Hij</mark> betaalt de huur op tijd."
+          },
+          {
+            "label": "MEER PERSONEN",
+            "example_html": "<mark>Wij</mark> betalen de huur op tijd."
+          }
+        ]
+      },
+      "options": []
+    },
+    {
+      "kind": "voorbeeld",
+      "tier": null,
+      "explanation": null,
+      "payload": {
+        "sentence_html": "<mark>Ze</mark> gaat morgen naar de dokter."
+      }
+    },
+    {
+      "kind": "voorbeeld",
+      "tier": null,
+      "explanation": null,
+      "payload": {
+        "sentence_html": "Karel en ik hebben weinig tijd, want <mark>we</mark> werken allebei."
+      }
+    },
+    {
+      "kind": "mcq",
+      "tier": 0,
+      "explanation": "Het woordje 'ik' staat voor de persoon die zelf schrijft of praat. Dat is één persoon.",
+      "payload": {
+        "prompt": "Lees de zin: 'Ik woon in Almere.' Over wie gaat deze zin?"
+      },
+      "options": [
+        {
+          "label": "A",
+          "body": "Over de persoon die praat of schrijft.",
+          "is_correct": true
+        },
+        {
+          "label": "B",
+          "body": "Over twee buren samen.",
+          "is_correct": false
+        },
+        {
+          "label": "C",
+          "body": "Over de gemeente Almere.",
+          "is_correct": false
+        }
+      ]
+    },
+    {
+      "kind": "mcq",
+      "tier": 0,
+      "explanation": "'Wij' staat voor meer personen: de spreker samen met iemand anders. 'Hij' en 'ze' gaan hier niet over meer personen.",
+      "payload": {
+        "prompt": "In welke zin gaat het woordje over meer dan één persoon?"
+      },
+      "options": [
+        {
+          "label": "A",
+          "body": "Hij zoekt een nieuwe baan.",
+          "is_correct": false
+        },
+        {
+          "label": "B",
+          "body": "Wij zoeken een nieuwe woning.",
+          "is_correct": true
+        },
+        {
+          "label": "C",
+          "body": "Ze belt de huisarts.",
+          "is_correct": false
+        }
+      ]
+    },
+    {
+      "kind": "gap_choice",
+      "tier": 1,
+      "explanation": "'Meneer Bakker' is één man, dus je gebruikt 'hij'.",
+      "payload": {
+        "sentence": "Meneer Bakker is ziek. ___ blijft vandaag thuis.",
+        "choices": [
+          "Hij",
+          "Ze",
+          "Wij"
+        ],
+        "answer": "Hij"
+      }
+    },
+    {
+      "kind": "gap_choice",
+      "tier": 1,
+      "explanation": "'Mijn dochter' is één meisje, dus je gebruikt 'ze' (of 'zij').",
+      "payload": {
+        "sentence": "Mijn dochter is acht jaar. ___ zit in groep vier.",
+        "choices": [
+          "Hij",
+          "Ze",
+          "Jullie"
+        ],
+        "answer": "Ze"
+      }
+    },
+    {
+      "kind": "gap_choice",
+      "tier": 1,
+      "explanation": "'Mijn man en ik' zijn twee personen met de spreker erbij, dus je gebruikt 'we' (of 'wij').",
+      "payload": {
+        "sentence": "Mijn man en ik werken in de zorg. ___ hebben het druk.",
+        "choices": [
+          "Ik",
+          "We",
+          "Hij"
+        ],
+        "answer": "We"
+      }
+    },
+    {
+      "kind": "matchen",
+      "tier": 1,
+      "explanation": "Je kijkt of het om één persoon of om meer personen gaat, en of je zelf meedoet.",
+      "payload": {
+        "instruction": "Welk woordje past bij wie? Maak de juiste paren.",
+        "pairs": [
+          {
+            "left": "mijn buurman",
+            "right": "hij"
+          },
+          {
+            "left": "mijn zus",
+            "right": "ze"
+          },
+          {
+            "left": "Ali en ik",
+            "right": "we"
+          },
+          {
+            "left": "de spreker zelf",
+            "right": "ik"
+          }
+        ]
+      }
+    },
+    {
+      "kind": "gap_type",
+      "tier": 2,
+      "explanation": "'De vrouw van de gemeente' is één vrouw, dus je schrijft 'ze' (of 'zij').",
+      "payload": {
+        "sentence": "De vrouw van de gemeente belde gisteren. ___ vroeg om mijn loonstrook.",
+        "answer": "ze"
+      }
+    },
+    {
+      "kind": "woordorde",
+      "tier": 2,
+      "explanation": "Het woordje 'wij' staat vooraan; daarna komt het werkwoord 'wonen'.",
+      "payload": {
+        "instruction": "Zet de woorden in de juiste volgorde.",
+        "tokens": [
+          "wonen",
+          "wij",
+          "Utrecht",
+          "in"
+        ],
+        "answer": [
+          "wij",
+          "wonen",
+          "in",
+          "Utrecht"
+        ]
+      }
+    }
+  ],
+  "what_you_learn": "Na deze les weet je dat woordjes als ik, jij, hij, ze en we staan voor een persoon. Je ziet in een zin wie iets doet: één persoon of meer personen. Je kiest en schrijft zelf het juiste woordje."
+}

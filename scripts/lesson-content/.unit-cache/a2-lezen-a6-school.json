@@ -1,0 +1,198 @@
+{
+  "what_you_learn": "Je leert de belangrijkste woorden over school en kinderen herkennen en begrijpen. Je kunt woorden als leerplicht, ouderavond en schooladvies bij de juiste betekenis zoeken. Ook kun je deze woorden zelf invullen in een zin uit een brief van school.",
+  "items": [
+    {
+      "kind": "uitleg",
+      "tier": null,
+      "explanation": null,
+      "payload": {
+        "body_html": "<p>Op school krijg je vaak brieven en berichten mee. Daarin staan woorden over de klas, het huiswerk en de vakantie. In deze les leer je die woorden herkennen en begrijpen.</p>"
+      }
+    },
+    {
+      "kind": "woordenlijst",
+      "tier": null,
+      "explanation": null,
+      "payload": {
+        "theme": "school"
+      }
+    },
+    {
+      "kind": "matchen",
+      "tier": 0,
+      "explanation": "Je zoekt bij elk woord de goede uitleg. Zo onthoud je wat het woord betekent in een brief van school.",
+      "payload": {
+        "instruction": "Zoek het woord bij de goede betekenis.",
+        "pairs": [
+          {
+            "left": "de basisschool",
+            "right": "school voor kinderen van vier tot ongeveer twaalf jaar"
+          },
+          {
+            "left": "de leerkracht",
+            "right": "persoon die les geeft aan een klas"
+          },
+          {
+            "left": "het rapport",
+            "right": "papier met de resultaten van een kind"
+          },
+          {
+            "left": "het huiswerk",
+            "right": "opdrachten die je thuis maakt voor school"
+          }
+        ]
+      }
+    },
+    {
+      "kind": "matchen",
+      "tier": 0,
+      "explanation": "Deze woorden gaan over tijd en opvang. Let goed op het verschil tussen kinderopvang en naschoolse opvang.",
+      "payload": {
+        "instruction": "Zoek het woord bij de goede betekenis.",
+        "pairs": [
+          {
+            "left": "de kinderopvang",
+            "right": "plek waar kleine kinderen overdag worden verzorgd"
+          },
+          {
+            "left": "de naschoolse opvang",
+            "right": "plek waar kinderen blijven na de lessen"
+          },
+          {
+            "left": "de schoolvakantie",
+            "right": "periode waarin er geen lessen zijn"
+          },
+          {
+            "left": "het schooljaar",
+            "right": "periode van augustus tot juli met lessen"
+          }
+        ]
+      }
+    },
+    {
+      "kind": "mcq",
+      "tier": 0,
+      "explanation": "De leerplicht is de regel dat een kind naar school moet gaan. Het gaat dus niet over geld of over vakantie.",
+      "payload": {
+        "prompt": "Wat betekent 'de leerplicht'?','','','','','','','','','',''.replace|Wat betekent 'de leerplicht'?"
+      },
+      "options": [
+        {
+          "label": "A",
+          "body": "De regel dat een kind naar school moet gaan.",
+          "is_correct": true
+        },
+        {
+          "label": "B",
+          "body": "Het geld dat ouders aan de school betalen.",
+          "is_correct": false
+        },
+        {
+          "label": "C",
+          "body": "De periode waarin er geen lessen zijn.",
+          "is_correct": false
+        }
+      ]
+    },
+    {
+      "kind": "gap_choice",
+      "tier": 1,
+      "explanation": "Een avond waarop de school met vaders en moeders praat, heet een ouderavond. Een gymles is sport, en een rapport is een papier.",
+      "payload": {
+        "sentence": "Op dinsdag 12 maart is er een ___ voor alle vaders en moeders van groep 5.",
+        "choices": [
+          "ouderavond",
+          "gymles",
+          "rapport",
+          "brugklas"
+        ],
+        "answer": "ouderavond"
+      }
+    },
+    {
+      "kind": "gap_choice",
+      "tier": 1,
+      "explanation": "Een cijfer is een getal dat laat zien hoe goed een toets is gemaakt. Een groep is een klas, dus dat past hier niet.",
+      "payload": {
+        "sentence": "Sara heeft een hoog ___ voor de toets rekenen gehaald.",
+        "choices": [
+          "cijfer",
+          "groep",
+          "huiswerk",
+          "schooljaar"
+        ],
+        "answer": "cijfer"
+      }
+    },
+    {
+      "kind": "gap_choice",
+      "tier": 1,
+      "explanation": "Niet naar de les gaan zonder goede reden heet spijbelen. Ziekmelden doe je juist wél met een reden.",
+      "payload": {
+        "sentence": "De school belt de ouders als een kind zonder reden wegblijft en gaat ___.",
+        "choices": [
+          "spijbelen",
+          "ziekmelden",
+          "inschrijven",
+          "huiswerk"
+        ],
+        "answer": "spijbelen"
+      }
+    },
+    {
+      "kind": "gap_type",
+      "tier": 2,
+      "explanation": "Als je kind ziek is, moet je dit doorgeven aan school. Dat woord is 'ziekmelden'.",
+      "payload": {
+        "sentence": "Is je kind ziek? Bel dan voor half negen om je kind te ___.",
+        "answer": "ziekmelden",
+        "prompt": "Typ het juiste woord."
+      }
+    },
+    {
+      "kind": "gap_type",
+      "tier": 2,
+      "explanation": "Je naam ergens laten noteren om mee te doen, heet inschrijven. Dat doe je ook bij een nieuwe school.",
+      "payload": {
+        "sentence": "U kunt uw zoon vanaf drie jaar ___ op de basisschool bij u in de buurt.",
+        "answer": "inschrijven",
+        "prompt": "Typ het juiste woord."
+      }
+    },
+    {
+      "kind": "gap_type",
+      "tier": 2,
+      "explanation": "Wat de leerkracht denkt dat past na groep 8, heet het schooladvies. Daarna gaat het kind naar de brugklas.",
+      "payload": {
+        "sentence": "In groep 8 krijgt uw kind een ___ voor de middelbare school.",
+        "answer": "schooladvies",
+        "prompt": "Typ het juiste woord (één woord)."
+      }
+    },
+    {
+      "kind": "mcq",
+      "tier": 0,
+      "explanation": "De ouderbijdrage is geld dat ouders vrijwillig aan de school betalen. Het is geen straf en geen cijfer.",
+      "payload": {
+        "prompt": "In een brief staat: 'De ouderbijdrage is dit jaar 25 euro.' Waar gaat het over?"
+      },
+      "options": [
+        {
+          "label": "A",
+          "body": "Geld dat vaders en moeders vrijwillig aan de school betalen.",
+          "is_correct": true
+        },
+        {
+          "label": "B",
+          "body": "Een boete omdat een kind heeft gespijbeld.",
+          "is_correct": false
+        },
+        {
+          "label": "C",
+          "body": "Het cijfer voor de laatste toets van het kind.",
+          "is_correct": false
+        }
+      ]
+    }
+  ]
+}

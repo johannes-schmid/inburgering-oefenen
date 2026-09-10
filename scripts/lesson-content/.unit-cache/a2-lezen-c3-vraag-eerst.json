@@ -1,0 +1,247 @@
+{
+  "items": [
+    {
+      "kind": "uitleg",
+      "tier": null,
+      "explanation": null,
+      "payload": {
+        "body_html": "<p>Bij het examen lezen krijg je een tekst en een vraag. Lees <strong>eerst de vraag</strong>, daarna de tekst. Zo weet je wat je zoekt.</p><p>Werk in vier stappen:</p><ol><li>Lees de vraag en de antwoorden.</li><li>Onderstreep het belangrijkste woord in de vraag (bijvoorbeeld <em>wanneer</em>, <em>hoeveel</em>, <em>waar</em>).</li><li>Zoek dat woord of iets met dezelfde betekenis in de tekst.</li><li>Kies je antwoord en kijk of het echt in de tekst staat.</li></ol><p>Zo hoef je de tekst maar één keer goed te lezen.</p>",
+        "cards": [
+          {
+            "label": "VRAAGWOORD",
+            "example_html": "<mark>Hoeveel</mark> moet je betalen? Je zoekt een bedrag in euro's."
+          },
+          {
+            "label": "VRAAGWOORD",
+            "example_html": "<mark>Wanneer</mark> is de bijeenkomst? Je zoekt een datum of een tijd."
+          }
+        ]
+      }
+    },
+    {
+      "kind": "uitleg",
+      "tier": null,
+      "explanation": null,
+      "payload": {
+        "body_html": "<p>Het vraagwoord zegt wat voor soort antwoord je zoekt. Dat helpt je snel zoeken.</p><p>Zoek je een bedrag, dan kijk je naar cijfers met een euroteken. Zoek je een plaats, dan kijk je naar een adres of een gebouw. Zoek je een reden, dan kijk je naar woorden als <em>omdat</em> of <em>daarom</em>.</p>",
+        "cards": [
+          {
+            "label": "WAAR",
+            "example_html": "Je zoekt een <mark>plaats of adres</mark>, bijvoorbeeld Kerkstraat 12."
+          },
+          {
+            "label": "WAAROM",
+            "example_html": "Je zoekt een <mark>reden</mark>, bijvoorbeeld: omdat de zaal te klein is."
+          }
+        ]
+      }
+    },
+    {
+      "kind": "leestekst",
+      "tier": null,
+      "explanation": null,
+      "payload": {
+        "title": "Brief van de gemeente: nieuwe container voor papier",
+        "body_html": "<p>Beste bewoner,</p><p>De gemeente Meerdonk gaat het oud papier anders ophalen. U krijgt een nieuwe container voor papier. Die container is blauw.</p><p>De blauwe container komt op zaterdag 14 maart bij u thuis. U hoeft niet thuis te zijn. Zet de container daarna in de tuin of in de schuur.</p><p>Wij halen het papier elke tweede woensdag van de maand op. Zet de container voor 7.30 uur aan de straat. Doe geen vuile pizzadozen in de container, want dat papier is niet meer te gebruiken.</p><p>Hebt u geen ruimte voor een container? Bel dan naar 0800 - 22 44 66. U kunt dan gratis papieren zakken krijgen.</p><p>Met vriendelijke groet,<br>Afdeling Afval, gemeente Meerdonk</p>",
+        "words": [
+          {
+            "word": "de bewoner",
+            "meaning": "de persoon die in het huis woont"
+          },
+          {
+            "word": "de container",
+            "meaning": "een grote bak voor afval"
+          },
+          {
+            "word": "de schuur",
+            "meaning": "een klein gebouw in de tuin"
+          },
+          {
+            "word": "gratis",
+            "meaning": "je hoeft er niets voor te betalen"
+          },
+          {
+            "word": "de afdeling",
+            "meaning": "een deel van een organisatie"
+          }
+        ],
+        "marks": [
+          "op zaterdag 14 maart",
+          "elke tweede woensdag van de maand",
+          "voor 7.30 uur",
+          "0800 - 22 44 66"
+        ]
+      }
+    },
+    {
+      "kind": "mcq",
+      "tier": 0,
+      "explanation": "De vraag begint met 'welke kleur'. Je zoekt dus een kleurwoord. In de tekst staat: 'Die container is blauw.'",
+      "options": [
+        {
+          "label": "A",
+          "body": "Groen",
+          "is_correct": false
+        },
+        {
+          "label": "B",
+          "body": "Blauw",
+          "is_correct": true
+        },
+        {
+          "label": "C",
+          "body": "Grijs",
+          "is_correct": false
+        }
+      ],
+      "payload": {
+        "prompt": "Welke kleur heeft de nieuwe container voor papier?"
+      }
+    },
+    {
+      "kind": "markeren",
+      "tier": 0,
+      "explanation": "De vraag 'wanneer' vraagt om een datum. In de tekst staat de datum waarop de container wordt gebracht.",
+      "payload": {
+        "instruction": "De vraag is: wanneer komt de container bij je thuis? Markeer het antwoord in de tekst.",
+        "body_html": "<p>De blauwe container komt op zaterdag 14 maart bij u thuis. U hoeft niet thuis te zijn. Zet de container daarna in de tuin of in de schuur.</p>",
+        "targets": [
+          {
+            "label": "datum",
+            "text": "op zaterdag 14 maart"
+          }
+        ]
+      }
+    },
+    {
+      "kind": "markeren",
+      "tier": 0,
+      "explanation": "Bij 'hoe laat' zoek je een tijd met uur of cijfers. Die staat in de zin over de straat zetten.",
+      "payload": {
+        "instruction": "De vraag is: hoe laat moet de container aan de straat staan? Markeer het antwoord in de tekst.",
+        "body_html": "<p>Wij halen het papier elke tweede woensdag van de maand op. Zet de container voor 7.30 uur aan de straat. Doe geen vuile pizzadozen in de container, want dat papier is niet meer te gebruiken.</p>",
+        "targets": [
+          {
+            "label": "tijd",
+            "text": "voor 7.30 uur"
+          }
+        ]
+      }
+    },
+    {
+      "kind": "mcq",
+      "tier": 1,
+      "explanation": "Je zoekt bij 'hoe vaak' een woord over herhaling. In de tekst staat 'elke tweede woensdag van de maand', dus één keer per maand.",
+      "options": [
+        {
+          "label": "A",
+          "body": "Elke week",
+          "is_correct": false
+        },
+        {
+          "label": "B",
+          "body": "Eén keer per maand",
+          "is_correct": true
+        },
+        {
+          "label": "C",
+          "body": "Elke zaterdag",
+          "is_correct": false
+        },
+        {
+          "label": "D",
+          "body": "Twee keer per week",
+          "is_correct": false
+        }
+      ],
+      "payload": {
+        "prompt": "Hoe vaak haalt de gemeente het papier op?"
+      }
+    },
+    {
+      "kind": "mcq",
+      "tier": 1,
+      "explanation": "Het vraagwoord is 'waarom'. Je zoekt een reden. Na 'want' staat: dat papier is niet meer te gebruiken.",
+      "options": [
+        {
+          "label": "A",
+          "body": "Omdat de container dan te vol wordt.",
+          "is_correct": false
+        },
+        {
+          "label": "B",
+          "body": "Omdat vuil papier niet meer te gebruiken is.",
+          "is_correct": true
+        },
+        {
+          "label": "C",
+          "body": "Omdat de gemeente dan meer moet betalen.",
+          "is_correct": false
+        }
+      ],
+      "payload": {
+        "prompt": "Waarom mag je geen vuile pizzadozen in de container doen?"
+      }
+    },
+    {
+      "kind": "markeren",
+      "tier": 1,
+      "explanation": "De vraag vraagt wat je moet doen. Je zoekt een telefoonnummer, want dat is het antwoord op 'bel dan naar'.",
+      "payload": {
+        "instruction": "De vraag is: welk nummer bel je als je geen ruimte hebt voor een container? Markeer het antwoord in de tekst.",
+        "body_html": "<p>Hebt u geen ruimte voor een container? Bel dan naar 0800 - 22 44 66. U kunt dan gratis papieren zakken krijgen.</p>",
+        "targets": [
+          {
+            "label": "telefoonnummer",
+            "text": "0800 - 22 44 66"
+          }
+        ]
+      }
+    },
+    {
+      "kind": "mcq",
+      "tier": 2,
+      "explanation": "In de tekst staat 'U hoeft niet thuis te zijn'. Dat betekent dat je niet thuis hoeft te blijven op 14 maart.",
+      "options": [
+        {
+          "label": "A",
+          "body": "Je moet op 14 maart thuis zijn.",
+          "is_correct": false
+        },
+        {
+          "label": "B",
+          "body": "Je hoeft op 14 maart niet thuis te zijn.",
+          "is_correct": true
+        },
+        {
+          "label": "C",
+          "body": "Je moet de container zelf ophalen bij de gemeente.",
+          "is_correct": false
+        },
+        {
+          "label": "D",
+          "body": "Je moet de container op 14 maart aan de straat zetten.",
+          "is_correct": false
+        }
+      ],
+      "payload": {
+        "prompt": "Wat is waar over zaterdag 14 maart?"
+      }
+    },
+    {
+      "kind": "open_zin",
+      "tier": 2,
+      "explanation": "Je laat zien dat je eerst de vraag leest en daarna gericht zoekt. Zo hoef je de tekst niet twee keer helemaal te lezen.",
+      "payload": {
+        "prompt": "Leg in eigen woorden uit hoe je het antwoord op de vraag 'Hoe laat moet de container aan de straat staan?' hebt gevonden. Schrijf 2 of 3 zinnen.",
+        "model_answer": "Ik las eerst de vraag. Het belangrijkste woord was 'hoe laat', dus ik zocht een tijd. In de tekst zag ik 7.30 uur staan. Dat was mijn antwoord.",
+        "checklist": [
+          "Je noemt dat je eerst de vraag hebt gelezen.",
+          "Je noemt welk woord in de vraag belangrijk was (hoe laat / tijd).",
+          "Je noemt waar in de tekst je het antwoord vond."
+        ]
+      }
+    }
+  ],
+  "what_you_learn": "Je leert eerst de vraag lezen en daarna de tekst. Je let op het vraagwoord, zoals wanneer, hoeveel, waar of waarom, en weet zo wat voor antwoord je zoekt. Daarna vind je de juiste plek in de tekst en hoef je die maar één keer goed te lezen."
+}

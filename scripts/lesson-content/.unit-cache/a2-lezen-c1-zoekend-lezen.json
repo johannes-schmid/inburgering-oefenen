@@ -1,0 +1,214 @@
+{
+  "items": [
+    {
+      "kind": "uitleg",
+      "tier": null,
+      "explanation": null,
+      "payload": {
+        "title": "Zoekend lezen: zoek alleen wat je nodig hebt",
+        "body_html": "<p>Bij zoekend lezen lees je <strong>niet</strong> elk woord. Je zoekt alleen het stukje dat bij de vraag hoort. Lees eerst de vraag en bedenk: welk woord zoek ik? Ga daarna met je ogen langs de tekst tot je dat woord ziet.</p><p>Werk in vier stappen:</p><ol><li>Lees de vraag. Streep het belangrijkste woord aan (bijvoorbeeld <em>datum</em>, <em>prijs</em>, <em>telefoonnummer</em>).</li><li>Kijk naar de kopjes, de dikke woorden en de getallen.</li><li>Zoek dat ene stukje in de tekst.</li><li>Lees pas dan die twee of drie zinnen goed.</li></ol>",
+        "cards": [
+          {
+            "label": "VRAAG",
+            "example_html": "Hoeveel kost een dagkaart? Zoekwoord: <mark>kosten</mark>"
+          },
+          {
+            "label": "TEKST",
+            "example_html": "Een dagkaart <mark>kost 4,50 euro</mark> per persoon."
+          },
+          {
+            "label": "LET OP",
+            "example_html": "Je hoeft de rest van de tekst <mark>niet</mark> te lezen."
+          }
+        ]
+      }
+    },
+    {
+      "kind": "leestekst",
+      "tier": null,
+      "explanation": null,
+      "payload": {
+        "title": "Informatiebrief Sportcentrum De Waterkant",
+        "body_html": "<p>Beste bewoner,</p><p>Sportcentrum De Waterkant opent op <strong>maandag 6 januari</strong> een nieuw zwembad. U bent welkom om te komen kijken.</p><p><strong>Openingstijden</strong><br>Maandag tot vrijdag: 7.00 tot 21.00 uur.<br>Zaterdag en zondag: 9.00 tot 17.00 uur.</p><p><strong>Kosten</strong><br>Een losse kaart kost 5,25 euro. Kinderen tot 12 jaar betalen 3,00 euro. Met een abonnement betaalt u 24 euro per maand.</p><p><strong>Zwemles</strong><br>Wij geven zwemles aan kinderen vanaf 5 jaar. De les is op woensdagmiddag. U kunt uw kind aanmelden bij de balie.</p><p><strong>Vragen?</strong><br>Bel naar 030 - 555 21 40 of stuur een bericht naar info@dewaterkant-sport.nl.</p><p>Met vriendelijke groet,<br>Karima Bouzid, manager</p>",
+        "words": [
+          {
+            "word": "de bewoner",
+            "meaning": "iemand die in de buurt woont"
+          },
+          {
+            "word": "het abonnement",
+            "meaning": "je betaalt elke maand en mag dan altijd komen"
+          },
+          {
+            "word": "de balie",
+            "meaning": "de tafel bij de ingang waar iemand je helpt"
+          },
+          {
+            "word": "aanmelden",
+            "meaning": "opschrijven dat je meedoet"
+          },
+          {
+            "word": "de manager",
+            "meaning": "de baas van een bedrijf"
+          }
+        ],
+        "marks": [
+          "maandag 6 januari",
+          "Een losse kaart kost 5,25 euro.",
+          "De les is op woensdagmiddag.",
+          "030 - 555 21 40"
+        ]
+      }
+    },
+    {
+      "kind": "markeren",
+      "tier": 0,
+      "explanation": "De vraag gaat over de dag van de opening. Je zoekt dus een datum en niet de openingstijden.",
+      "payload": {
+        "instruction": "Wanneer opent het nieuwe zwembad? Markeer alleen de datum in de tekst.",
+        "body_html": "<p>Sportcentrum De Waterkant opent op <strong>maandag 6 januari</strong> een nieuw zwembad. U bent welkom om te komen kijken.</p>",
+        "targets": [
+          {
+            "label": "datum van de opening",
+            "text": "maandag 6 januari"
+          }
+        ]
+      }
+    },
+    {
+      "kind": "mcq",
+      "tier": 0,
+      "explanation": "Bij de vraag over geld zoek je het kopje Kosten. Daar staat dat een losse kaart 5,25 euro kost.",
+      "payload": {
+        "prompt": "Hoeveel kost één losse kaart voor een volwassene?"
+      },
+      "options": [
+        {
+          "label": "A",
+          "body": "3,00 euro",
+          "is_correct": false
+        },
+        {
+          "label": "B",
+          "body": "5,25 euro",
+          "is_correct": true
+        },
+        {
+          "label": "C",
+          "body": "24 euro",
+          "is_correct": false
+        }
+      ]
+    },
+    {
+      "kind": "markeren",
+      "tier": 0,
+      "explanation": "Je zoekt het telefoonnummer. Cijfers vind je snel, want ze zien er anders uit dan woorden.",
+      "payload": {
+        "instruction": "Je wilt bellen met een vraag. Markeer het telefoonnummer.",
+        "body_html": "<p><strong>Vragen?</strong><br>Bel naar 030 - 555 21 40 of stuur een bericht naar info@dewaterkant-sport.nl.</p>",
+        "targets": [
+          {
+            "label": "telefoonnummer",
+            "text": "030 - 555 21 40"
+          }
+        ]
+      }
+    },
+    {
+      "kind": "mcq",
+      "tier": 0,
+      "explanation": "Onder het kopje Zwemles staat dat de les op woensdagmiddag is. De andere dagen staan bij de openingstijden.",
+      "payload": {
+        "prompt": "Op welke dag is de zwemles voor kinderen?"
+      },
+      "options": [
+        {
+          "label": "A",
+          "body": "Op maandag",
+          "is_correct": false
+        },
+        {
+          "label": "B",
+          "body": "Op woensdag",
+          "is_correct": true
+        },
+        {
+          "label": "C",
+          "body": "Op zaterdag",
+          "is_correct": false
+        },
+        {
+          "label": "D",
+          "body": "Op zondag",
+          "is_correct": false
+        }
+      ]
+    },
+    {
+      "kind": "mcq",
+      "tier": 1,
+      "explanation": "Je zoekt bij het kopje Openingstijden naar zaterdag. Daar staat 9.00 tot 17.00 uur, dus om 8.00 uur is het zwembad nog dicht.",
+      "payload": {
+        "prompt": "Je wilt op zaterdag om 8.00 uur zwemmen. Kan dat?"
+      },
+      "options": [
+        {
+          "label": "A",
+          "body": "Ja, het zwembad is dan open.",
+          "is_correct": false
+        },
+        {
+          "label": "B",
+          "body": "Nee, het zwembad opent op zaterdag om 9.00 uur.",
+          "is_correct": true
+        },
+        {
+          "label": "C",
+          "body": "Dat staat niet in de tekst.",
+          "is_correct": false
+        }
+      ]
+    },
+    {
+      "kind": "mcq",
+      "tier": 1,
+      "explanation": "Bij een vraag over aanmelden zoek je het kopje Zwemles. Daar staat dat je je kind aanmeldt bij de balie.",
+      "payload": {
+        "prompt": "Waar meld je je kind aan voor zwemles?"
+      },
+      "options": [
+        {
+          "label": "A",
+          "body": "Bij de balie van het sportcentrum",
+          "is_correct": true
+        },
+        {
+          "label": "B",
+          "body": "Bij de gemeente",
+          "is_correct": false
+        },
+        {
+          "label": "C",
+          "body": "Bij de school van je kind",
+          "is_correct": false
+        }
+      ]
+    },
+    {
+      "kind": "open_zin",
+      "tier": 2,
+      "explanation": "Je legt in eigen woorden de aanpak uit: eerst de vraag, dan een zoekwoord, dan het juiste kopje, en pas daarna lees je goed.",
+      "payload": {
+        "prompt": "Leg in twee of drie zinnen uit hoe je het antwoord op de vraag over de prijs hebt gevonden. Schrijf welk woord je zocht en waar je keek.",
+        "model_answer": "Ik las eerst de vraag. Mijn zoekwoord was 'kost'. Ik keek naar het kopje Kosten en las daar twee zinnen. Zo vond ik het bedrag van 5,25 euro.",
+        "checklist": [
+          "Je noemt het zoekwoord uit de vraag.",
+          "Je noemt het kopje of de plek waar je keek.",
+          "Je schrijft dat je maar een klein stukje goed hebt gelezen."
+        ]
+      }
+    }
+  ],
+  "what_you_learn": "Je leert hoe je snel iets opzoekt in een tekst, zonder alles te lezen. Je haalt een zoekwoord uit de vraag en kijkt naar kopjes, dikke woorden en getallen. Daarna lees je alleen dat kleine stukje goed en geeft je het antwoord."
+}

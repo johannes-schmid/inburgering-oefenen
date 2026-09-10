@@ -1,0 +1,223 @@
+{
+  "items": [
+    {
+      "kind": "uitleg",
+      "tier": null,
+      "explanation": null,
+      "payload": {
+        "title": "Wat is een folder?",
+        "body_html": "<p>Een folder is een klein boekje of blad met informatie. Je krijgt een folder bij de gemeente, de huisarts, de bibliotheek of in een winkel. Een folder wil je iets vertellen of iets aanbieden.</p><p>In een folder staat de belangrijkste informatie in korte stukjes. Boven elk stukje staat een kopje (een klein titeltje). Onderaan staan vaak het adres, de openingstijden, een telefoonnummer of de kosten. Kijk dus eerst naar de kopjes: zo vind je snel het juiste stukje.</p>",
+        "cards": [
+          {
+            "label": "KOPJE",
+            "example_html": "<mark>Voor wie is de cursus?</mark> De cursus is voor ouders van jonge kinderen."
+          },
+          {
+            "label": "ONDERAAN",
+            "example_html": "<mark>Bel 030 - 555 21 90</mark> of kom langs op maandag."
+          }
+        ]
+      }
+    },
+    {
+      "kind": "leestekst",
+      "tier": null,
+      "explanation": null,
+      "payload": {
+        "title": "Folder: Taalcafé in Buurthuis De Meidoorn",
+        "body_html": "<p><strong>Taalcafé De Meidoorn — praat Nederlands met buurtbewoners</strong></p><p><strong>Wat doen we?</strong><br>In het Taalcafé praat je Nederlands met andere bewoners uit de wijk. Je oefent gewone gesprekken, bijvoorbeeld over werk, school en gezondheid. Het is geen les. Er is geen huiswerk.</p><p><strong>Voor wie?</strong><br>Voor iedereen van 18 jaar en ouder die Nederlands wil oefenen. Je hoeft geen diploma te hebben.</p><p><strong>Wanneer?</strong><br>Elke woensdag van 10.00 tot 11.30 uur. In de schoolvakantie zijn we gesloten.</p><p><strong>Kosten</strong><br>Deelname is gratis. Voor koffie of thee betaal je 50 cent.</p><p><strong>Aanmelden</strong><br>Aanmelden is niet nodig. Je kunt gewoon binnenlopen. Heb je een vraag? Bel de vrijwilliger Nadia Bakker: 030 - 555 21 90.</p>",
+        "words": [
+          {
+            "word": "het Taalcafé",
+            "meaning": "plek waar je samen Nederlands praat"
+          },
+          {
+            "word": "de bewoner",
+            "meaning": "iemand die in de wijk woont"
+          },
+          {
+            "word": "de deelname",
+            "meaning": "het meedoen"
+          },
+          {
+            "word": "de vrijwilliger",
+            "meaning": "iemand die werkt zonder loon"
+          },
+          {
+            "word": "binnenlopen",
+            "meaning": "naar binnen gaan zonder afspraak"
+          }
+        ],
+        "marks": [
+          "Aanmelden is niet nodig.",
+          "Elke woensdag van 10.00 tot 11.30 uur.",
+          "Deelname is gratis."
+        ]
+      }
+    },
+    {
+      "kind": "mcq",
+      "tier": 0,
+      "explanation": "Onder het kopje 'Wat doen we?' staat dat je Nederlands praat met bewoners uit de wijk. Dat is het doel van de folder.",
+      "payload": {
+        "prompt": "Waar gaat deze folder over?"
+      },
+      "options": [
+        {
+          "label": "A",
+          "body": "Over een cursus met huiswerk en een diploma.",
+          "is_correct": false
+        },
+        {
+          "label": "B",
+          "body": "Over samen Nederlands praten in het buurthuis.",
+          "is_correct": true
+        },
+        {
+          "label": "C",
+          "body": "Over werk zoeken in de wijk.",
+          "is_correct": false
+        }
+      ]
+    },
+    {
+      "kind": "mcq",
+      "tier": 0,
+      "explanation": "Onder het kopje 'Wanneer?' staat: elke woensdag van 10.00 tot 11.30 uur.",
+      "payload": {
+        "prompt": "Wanneer is het Taalcafé open?"
+      },
+      "options": [
+        {
+          "label": "A",
+          "body": "Elke woensdagochtend.",
+          "is_correct": true
+        },
+        {
+          "label": "B",
+          "body": "Elke dag van 10.00 tot 11.30 uur.",
+          "is_correct": false
+        },
+        {
+          "label": "C",
+          "body": "Elke woensdagavond.",
+          "is_correct": false
+        }
+      ]
+    },
+    {
+      "kind": "mcq",
+      "tier": 0,
+      "explanation": "In de folder staat: 'Voor iedereen van 18 jaar en ouder.' Een jongen van 15 jaar mag dus niet meedoen.",
+      "payload": {
+        "prompt": "Voor wie is het Taalcafé bedoeld?"
+      },
+      "options": [
+        {
+          "label": "A",
+          "body": "Alleen voor mensen met een diploma.",
+          "is_correct": false
+        },
+        {
+          "label": "B",
+          "body": "Alleen voor ouders van schoolkinderen.",
+          "is_correct": false
+        },
+        {
+          "label": "C",
+          "body": "Voor iedereen van 18 jaar en ouder.",
+          "is_correct": true
+        }
+      ]
+    },
+    {
+      "kind": "markeren",
+      "tier": 0,
+      "explanation": "De kosten staan onder het kopje 'Kosten'. Meedoen is gratis, maar voor koffie of thee betaal je 50 cent.",
+      "payload": {
+        "instruction": "Markeer in dit stukje van de folder wat het meedoen kost en wat je voor koffie betaalt.",
+        "body_html": "<p><strong>Kosten</strong><br>Deelname is gratis. Voor koffie of thee betaal je 50 cent.</p>",
+        "targets": [
+          {
+            "label": "kosten meedoen",
+            "text": "Deelname is gratis."
+          },
+          {
+            "label": "prijs koffie",
+            "text": "50 cent"
+          }
+        ]
+      }
+    },
+    {
+      "kind": "mcq",
+      "tier": 1,
+      "explanation": "Onder het kopje 'Aanmelden' staat: 'Aanmelden is niet nodig. Je kunt gewoon binnenlopen.' Je hoeft dus niets te doen.",
+      "payload": {
+        "prompt": "Vul aan: Als je wilt meedoen, moet je ___"
+      },
+      "options": [
+        {
+          "label": "A",
+          "body": "je niet aanmelden; je loopt gewoon binnen.",
+          "is_correct": true
+        },
+        {
+          "label": "B",
+          "body": "eerst bellen met Nadia Bakker.",
+          "is_correct": false
+        },
+        {
+          "label": "C",
+          "body": "een formulier bij de gemeente invullen.",
+          "is_correct": false
+        },
+        {
+          "label": "D",
+          "body": "50 cent per week betalen.",
+          "is_correct": false
+        }
+      ]
+    },
+    {
+      "kind": "mcq",
+      "tier": 1,
+      "explanation": "Het telefoonnummer staat onderaan de folder, bij 'Aanmelden'. Onderaan een folder vind je bijna altijd het adres en het telefoonnummer.",
+      "payload": {
+        "prompt": "Je wilt een vraag stellen over het Taalcafé. Waar in de folder vind je het telefoonnummer?"
+      },
+      "options": [
+        {
+          "label": "A",
+          "body": "In de titel bovenaan.",
+          "is_correct": false
+        },
+        {
+          "label": "B",
+          "body": "Onderaan, bij het laatste kopje.",
+          "is_correct": true
+        },
+        {
+          "label": "C",
+          "body": "Onder het kopje 'Kosten'.",
+          "is_correct": false
+        }
+      ]
+    },
+    {
+      "kind": "open_zin",
+      "tier": 2,
+      "explanation": "Je moet uit de folder halen dat het Taalcafé in de schoolvakantie gesloten is. Schrijf dat in één korte zin.",
+      "payload": {
+        "prompt": "Het is schoolvakantie. Je buurvrouw vraagt: 'Is het Taalcafé woensdag open?' Schrijf één zin met je antwoord.",
+        "model_answer": "Nee, in de schoolvakantie is het Taalcafé gesloten.",
+        "checklist": [
+          "Je antwoord begint met 'nee'.",
+          "Je noemt de schoolvakantie of het woord 'gesloten'.",
+          "Je schrijft één korte, hele zin."
+        ]
+      }
+    }
+  ],
+  "what_you_learn": "Je leert hoe een folder in elkaar zit en waar je de informatie vindt. Je gebruikt de kopjes om snel het juiste stukje te zoeken. Daarna beantwoord je vragen over tijden, kosten en aanmelden."
+}

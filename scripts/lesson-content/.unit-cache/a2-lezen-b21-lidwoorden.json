@@ -1,0 +1,194 @@
+{
+  "items": [
+    {
+      "kind": "uitleg",
+      "tier": null,
+      "explanation": null,
+      "payload": {
+        "body_html": "<p>Elk zelfstandig naamwoord (een woord voor een ding, een persoon of een plaats) heeft een lidwoord. In het Nederlands is dat <strong>de</strong> of <strong>het</strong>.</p><p>Je kunt het lidwoord niet zien aan het woord. Je moet het leren bij het woord.</p><p>Leer daarom altijd samen: <em>de brief</em>, <em>het formulier</em>.</p>",
+        "cards": [
+          {
+            "label": "DE-WOORD",
+            "example_html": "Ik lees <mark>de</mark> brief van de gemeente."
+          },
+          {
+            "label": "HET-WOORD",
+            "example_html": "Ik vul <mark>het</mark> formulier in."
+          }
+        ]
+      }
+    },
+    {
+      "kind": "voorbeeld",
+      "tier": null,
+      "explanation": null,
+      "payload": {
+        "sentence_html": "Op <mark>de</mark> tafel ligt een rekening van de huisarts."
+      }
+    },
+    {
+      "kind": "voorbeeld",
+      "tier": null,
+      "explanation": null,
+      "payload": {
+        "sentence_html": "Morgen breng ik <mark>het</mark> kind naar school."
+      }
+    },
+    {
+      "kind": "mcq",
+      "tier": 0,
+      "explanation": "Bij het woord huis hoort het lidwoord het: het is een het-woord.",
+      "payload": {
+        "prompt": "Welke regel is goed geschreven?"
+      },
+      "options": [
+        {
+          "label": "A",
+          "body": "Ik woon in de huis in Zwolle.",
+          "is_correct": false
+        },
+        {
+          "label": "B",
+          "body": "Ik woon in het huis in Zwolle.",
+          "is_correct": true
+        },
+        {
+          "label": "C",
+          "body": "Ik woon in de huis van Zwolle.",
+          "is_correct": false
+        }
+      ]
+    },
+    {
+      "kind": "mcq",
+      "tier": 0,
+      "explanation": "Rekening is een de-woord, dus je schrijft de rekening.",
+      "payload": {
+        "prompt": "In welke zin staat het juiste lidwoord?"
+      },
+      "options": [
+        {
+          "label": "A",
+          "body": "Het rekening komt volgende week.",
+          "is_correct": false
+        },
+        {
+          "label": "B",
+          "body": "De rekening komt volgende week.",
+          "is_correct": true
+        },
+        {
+          "label": "C",
+          "body": "Het rekening komt vandaag.",
+          "is_correct": false
+        },
+        {
+          "label": "D",
+          "body": "Het rekening is duur.",
+          "is_correct": false
+        }
+      ]
+    },
+    {
+      "kind": "gap_choice",
+      "tier": 1,
+      "explanation": "Bij paspoort hoort het: het is een het-woord.",
+      "payload": {
+        "sentence": "Ik moet ___ paspoort meenemen naar het loket.",
+        "choices": [
+          "de",
+          "het"
+        ],
+        "answer": "het"
+      }
+    },
+    {
+      "kind": "gap_choice",
+      "tier": 1,
+      "explanation": "Bij dokter hoort de: het is een de-woord.",
+      "payload": {
+        "sentence": "Morgen ga ik naar ___ dokter in het gezondheidscentrum.",
+        "choices": [
+          "de",
+          "het"
+        ],
+        "answer": "de"
+      }
+    },
+    {
+      "kind": "gap_choice",
+      "tier": 1,
+      "explanation": "Bij geld hoort het: je zegt het geld, niet de geld.",
+      "payload": {
+        "sentence": "Ik heb ___ geld al naar de verhuurder gestuurd.",
+        "choices": [
+          "de",
+          "het"
+        ],
+        "answer": "het"
+      }
+    },
+    {
+      "kind": "matchen",
+      "tier": 1,
+      "explanation": "Je leert het lidwoord bij het woord: brief, buurt en winkel krijgen de; kind en huis krijgen het.",
+      "payload": {
+        "instruction": "Zet bij elk woord het juiste lidwoord: de of het.",
+        "pairs": [
+          {
+            "left": "de brief",
+            "right": "de"
+          },
+          {
+            "left": "het kind",
+            "right": "het"
+          },
+          {
+            "left": "de buurt",
+            "right": "de"
+          },
+          {
+            "left": "het huis",
+            "right": "het"
+          },
+          {
+            "left": "de winkel",
+            "right": "de"
+          }
+        ]
+      }
+    },
+    {
+      "kind": "gap_type",
+      "tier": 2,
+      "explanation": "Bij formulier hoort het, dus je typt het formulier.",
+      "payload": {
+        "sentence": "Ik heb ___ formulier van de gemeente ingevuld.",
+        "answer": "het"
+      }
+    },
+    {
+      "kind": "woordorde",
+      "tier": 2,
+      "explanation": "Bij school hoort de, dus je schrijft de school van mijn zoon.",
+      "payload": {
+        "instruction": "Zet de woorden in de juiste volgorde.",
+        "tokens": [
+          "mijn",
+          "de",
+          "school",
+          "zoon",
+          "van"
+        ],
+        "answer": [
+          "de",
+          "school",
+          "van",
+          "mijn",
+          "zoon"
+        ]
+      }
+    }
+  ],
+  "what_you_learn": "Je leert dat elk zelfstandig naamwoord een lidwoord heeft: de of het. Je ziet dat je dat lidwoord niet aan het woord kunt zien, dus je leert het samen met het woord. Na deze les kies je bij bekende woorden zelf het juiste lidwoord."
+}

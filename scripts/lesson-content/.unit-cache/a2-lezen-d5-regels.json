@@ -1,0 +1,175 @@
+{
+  "items": [
+    {
+      "kind": "uitleg",
+      "tier": null,
+      "explanation": null,
+      "payload": {
+        "body_html": "<p>Je leest nu een tekst met regels, zoals in het examen, en je beantwoordt daarna zes vragen zonder woordhulp.</p>",
+        "cards": []
+      }
+    },
+    {
+      "kind": "leestekst",
+      "tier": null,
+      "explanation": null,
+      "payload": {
+        "title": "Regels voor de gemeenschappelijke wasruimte",
+        "body_html": "<p><strong>Woonstichting De Beukenhof — wasruimte Kerkstraat 40</strong></p><p>In de kelder staan vier wasmachines en twee drogers. De wasruimte is open van 07.00 tot 22.00 uur. Na 22.00 uur mag u de machines niet meer gebruiken, want de buren willen slapen.</p><p>U reserveert een machine op de lijst naast de deur. Schrijf uw naam en uw huisnummer erbij. U mag per week twee keer reserveren.</p><p>Haal uw was direct uit de machine als die klaar is. Wasgoed dat na een uur nog in de machine zit, leggen wij in de mand bij het raam.</p><p>Is een machine kapot? Bel dan de beheerder, mevrouw Aydin, op 030 555 21 84. Repareer de machine nooit zelf.</p><p>De schoonmaker komt op donderdagochtend. Dan is de wasruimte gesloten.</p>",
+        "words": [],
+        "marks": []
+      }
+    },
+    {
+      "kind": "mcq",
+      "tier": 0,
+      "explanation": "In de tekst staat dat de wasruimte open is van 07.00 tot 22.00 uur. Om 23.00 uur mag je de machines dus niet gebruiken.",
+      "payload": {
+        "prompt": "Tot hoe laat mag je de wasmachines gebruiken?"
+      },
+      "options": [
+        {
+          "label": "A",
+          "body": "Tot 20.00 uur.",
+          "is_correct": false
+        },
+        {
+          "label": "B",
+          "body": "Tot 22.00 uur.",
+          "is_correct": true
+        },
+        {
+          "label": "C",
+          "body": "Tot 24.00 uur.",
+          "is_correct": false
+        }
+      ]
+    },
+    {
+      "kind": "mcq",
+      "tier": 0,
+      "explanation": "De tekst zegt: u mag per week twee keer reserveren. Dat is dus twee keer in één week.",
+      "payload": {
+        "prompt": "Hoe vaak mag je per week een machine reserveren?"
+      },
+      "options": [
+        {
+          "label": "A",
+          "body": "Eén keer per week.",
+          "is_correct": false
+        },
+        {
+          "label": "B",
+          "body": "Twee keer per week.",
+          "is_correct": true
+        },
+        {
+          "label": "C",
+          "body": "Zo vaak als je wilt.",
+          "is_correct": false
+        }
+      ]
+    },
+    {
+      "kind": "mcq",
+      "tier": 1,
+      "explanation": "Bij de lijst naast de deur schrijf je je naam én je huisnummer. Alleen je naam is niet genoeg.",
+      "payload": {
+        "prompt": "Wat schrijf je op de lijst naast de deur?"
+      },
+      "options": [
+        {
+          "label": "A",
+          "body": "Je naam en je huisnummer.",
+          "is_correct": true
+        },
+        {
+          "label": "B",
+          "body": "Je naam en je telefoonnummer.",
+          "is_correct": false
+        },
+        {
+          "label": "C",
+          "body": "Je huisnummer en het nummer van de machine.",
+          "is_correct": false
+        }
+      ]
+    },
+    {
+      "kind": "mcq",
+      "tier": 1,
+      "explanation": "In de tekst staat dat wasgoed dat na een uur nog in de machine zit in de mand bij het raam gaat. Je was ligt dan dus in die mand.",
+      "payload": {
+        "prompt": "Je vergeet je was en komt pas na twee uur terug. Wat is er dan gebeurd?"
+      },
+      "options": [
+        {
+          "label": "A",
+          "body": "De was zit nog in de machine.",
+          "is_correct": false
+        },
+        {
+          "label": "B",
+          "body": "De was ligt in de mand bij het raam.",
+          "is_correct": true
+        },
+        {
+          "label": "C",
+          "body": "De beheerder heeft de was meegenomen.",
+          "is_correct": false
+        }
+      ]
+    },
+    {
+      "kind": "mcq",
+      "tier": 1,
+      "explanation": "De tekst zegt: bel de beheerder en repareer de machine nooit zelf. Je moet dus mevrouw Aydin bellen.",
+      "payload": {
+        "prompt": "De wasmachine doet niets meer. Wat moet je doen?"
+      },
+      "options": [
+        {
+          "label": "A",
+          "body": "Zelf de machine repareren.",
+          "is_correct": false
+        },
+        {
+          "label": "B",
+          "body": "Een briefje op de machine plakken.",
+          "is_correct": false
+        },
+        {
+          "label": "C",
+          "body": "Mevrouw Aydin bellen.",
+          "is_correct": true
+        }
+      ]
+    },
+    {
+      "kind": "mcq",
+      "tier": 1,
+      "explanation": "De hele tekst gaat over hoe je de gedeelde wasruimte gebruikt: tijden, reserveren, was ophalen en storingen melden.",
+      "payload": {
+        "prompt": "Waar gaat deze tekst vooral over?"
+      },
+      "options": [
+        {
+          "label": "A",
+          "body": "Over de afspraken voor het gebruik van de wasruimte.",
+          "is_correct": true
+        },
+        {
+          "label": "B",
+          "body": "Over de kosten van nieuwe wasmachines.",
+          "is_correct": false
+        },
+        {
+          "label": "C",
+          "body": "Over het schoonmaken van het hele gebouw.",
+          "is_correct": false
+        }
+      ]
+    }
+  ],
+  "what_you_learn": "Je oefent met het lezen van een tekst met regels, net als in het examen. Je zoekt snel een detail op, je snapt waar de tekst over gaat en je ziet wat je zelf moet doen. Je doet dat zonder woordhulp."
+}

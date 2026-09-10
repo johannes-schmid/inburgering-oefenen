@@ -1,0 +1,206 @@
+{
+  "items": [
+    {
+      "kind": "uitleg",
+      "tier": null,
+      "explanation": null,
+      "payload": {
+        "body_html": "<p>Wil je zeggen dat iets later gebeurt? Dan gebruik je vaak <strong>gaan</strong> plus het hele werkwoord. Het hele werkwoord (de vorm uit het woordenboek, zoals <em>werken</em>) staat achteraan in de zin.</p><p>Soms gebruik je gewoon de tegenwoordige tijd. Dat kan als er een tijdswoord in de zin staat, zoals <em>morgen</em>, <em>straks</em> of <em>volgende week</em>.</p>",
+        "cards": [
+          {
+            "label": "MET GAAN",
+            "example_html": "Ik <mark>ga</mark> morgen de huur <mark>betalen</mark>."
+          },
+          {
+            "label": "MET TIJDSWOORD",
+            "example_html": "Ik <mark>betaal</mark> de huur <mark>morgen</mark>."
+          }
+        ]
+      }
+    },
+    {
+      "kind": "voorbeeld",
+      "tier": null,
+      "explanation": null,
+      "payload": {
+        "sentence_html": "Fatima <mark>gaat volgende week beginnen</mark> in de winkel."
+      }
+    },
+    {
+      "kind": "voorbeeld",
+      "tier": null,
+      "explanation": null,
+      "payload": {
+        "sentence_html": "De dokter <mark>belt straks</mark> met de uitslag."
+      }
+    },
+    {
+      "kind": "mcq",
+      "tier": 0,
+      "explanation": "In deze zin staat 'ga' met het hele werkwoord 'halen' achteraan. Dat is de vorm met gaan.",
+      "payload": {
+        "prompt": "Welke zin praat over later met <strong>gaan</strong> plus het hele werkwoord?"
+      },
+      "options": [
+        {
+          "label": "A",
+          "body": "Ik haal het pakje bij de buren.",
+          "is_correct": false
+        },
+        {
+          "label": "B",
+          "body": "Ik ga morgen het pakje halen.",
+          "is_correct": true
+        },
+        {
+          "label": "C",
+          "body": "Ik heb het pakje gehaald.",
+          "is_correct": false
+        }
+      ]
+    },
+    {
+      "kind": "mcq",
+      "tier": 0,
+      "explanation": "'Volgende maand' is een tijdswoord. Daardoor kun je de tegenwoordige tijd 'verhuizen' gebruiken voor later.",
+      "payload": {
+        "prompt": "In welke zin praat de tegenwoordige tijd over <strong>later</strong>?"
+      },
+      "options": [
+        {
+          "label": "A",
+          "body": "Wij verhuizen volgende maand naar Almere.",
+          "is_correct": true
+        },
+        {
+          "label": "B",
+          "body": "Wij wonen graag in Almere.",
+          "is_correct": false
+        },
+        {
+          "label": "C",
+          "body": "Wij zijn gisteren verhuisd.",
+          "is_correct": false
+        },
+        {
+          "label": "D",
+          "body": "Wij hebben een mooi huis.",
+          "is_correct": false
+        }
+      ]
+    },
+    {
+      "kind": "gap_choice",
+      "tier": 1,
+      "explanation": "Na 'ga' komt het hele werkwoord. Dat is 'werken', niet 'werk' of 'gewerkt'.",
+      "payload": {
+        "sentence": "Ik ga volgende week in een café ___ .",
+        "choices": [
+          "werk",
+          "werken",
+          "gewerkt"
+        ],
+        "answer": "werken"
+      }
+    },
+    {
+      "kind": "gap_choice",
+      "tier": 1,
+      "explanation": "Het onderwerp is 'hij', dus je gebruikt 'gaat'. Daarna komt het hele werkwoord 'vragen'.",
+      "payload": {
+        "sentence": "Hij ___ morgen bij de gemeente een formulier vragen.",
+        "choices": [
+          "ga",
+          "gaat",
+          "gaan"
+        ],
+        "answer": "gaat"
+      }
+    },
+    {
+      "kind": "gap_choice",
+      "tier": 1,
+      "explanation": "Het onderwerp is 'wij', dus je gebruikt 'gaan'. Het hele werkwoord 'schoonmaken' staat achteraan.",
+      "payload": {
+        "sentence": "Wij ___ zaterdag de keuken schoonmaken.",
+        "choices": [
+          "gaat",
+          "gaan",
+          "ga"
+        ],
+        "answer": "gaan"
+      }
+    },
+    {
+      "kind": "matchen",
+      "tier": 1,
+      "explanation": "Bij elk onderwerp hoort één vorm van gaan. Het hele werkwoord blijft daarna hetzelfde.",
+      "payload": {
+        "instruction": "Zoek bij elk onderwerp de juiste vorm van <strong>gaan</strong>.",
+        "pairs": [
+          {
+            "left": "ik",
+            "right": "ga"
+          },
+          {
+            "left": "je",
+            "right": "gaat"
+          },
+          {
+            "left": "de kinderen",
+            "right": "gaan"
+          },
+          {
+            "left": "Ahmed en ik",
+            "right": "gaan"
+          }
+        ]
+      }
+    },
+    {
+      "kind": "gap_type",
+      "tier": 2,
+      "explanation": "Het onderwerp is 'ik', dus de vorm van gaan is 'ga'. Daarna komt het hele werkwoord 'bellen'.",
+      "payload": {
+        "sentence": "Ik ___ straks de huisarts bellen.",
+        "answer": "ga"
+      }
+    },
+    {
+      "kind": "woordorde",
+      "tier": 2,
+      "explanation": "De vorm van gaan staat op de tweede plaats en het hele werkwoord 'kopen' staat achteraan.",
+      "payload": {
+        "instruction": "Maak een goede zin over later.",
+        "tokens": [
+          "kopen",
+          "morgen",
+          "ga",
+          "brood",
+          "ik"
+        ],
+        "answer": [
+          "ik",
+          "ga",
+          "morgen",
+          "brood",
+          "kopen"
+        ]
+      }
+    },
+    {
+      "kind": "open_zin",
+      "tier": 2,
+      "explanation": "Je schrijft zelf een zin over later. Gebruik 'ga' of 'gaat' met het hele werkwoord achteraan, of een tijdswoord met de tegenwoordige tijd.",
+      "payload": {
+        "prompt": "Schrijf één zin over wat je volgende week doet.",
+        "model_answer": "Volgende week ga ik naar de bibliotheek om een boek te halen.",
+        "checklist": [
+          "Er staat een tijdswoord in, bijvoorbeeld 'volgende week'.",
+          "Je gebruikt 'ga' of 'gaat' met het hele werkwoord achteraan, of de tegenwoordige tijd."
+        ]
+      }
+    }
+  ],
+  "what_you_learn": "Je leert hoe je in het Nederlands over later praat. Je ziet dat je vaak <strong>gaan</strong> plus het hele werkwoord gebruikt, met dat werkwoord achteraan in de zin. Je leert ook dat de tegenwoordige tijd genoeg is als er een tijdswoord bij staat, zoals morgen of volgende week."
+}

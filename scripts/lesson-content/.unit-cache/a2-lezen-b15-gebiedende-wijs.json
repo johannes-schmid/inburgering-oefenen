@@ -1,0 +1,205 @@
+{
+  "items": [
+    {
+      "kind": "uitleg",
+      "tier": null,
+      "explanation": null,
+      "payload": {
+        "body_html": "<p>Soms wil je iemand iets laten doen. Dan gebruik je een opdracht. Bij een opdracht staat het <strong>werkwoord vooraan</strong> in de zin. Je zegt er geen <em>ik</em>, <em>je</em> of <em>u</em> bij.</p><p>Vergelijk het met een normale zin. In een normale zin staat eerst wie het doet, en daarna het werkwoord.</p>",
+        "cards": [
+          {
+            "label": "NORMALE ZIN",
+            "example_html": "Je <mark>sluit</mark> de deur."
+          },
+          {
+            "label": "OPDRACHT",
+            "example_html": "<mark>Sluit</mark> de deur."
+          }
+        ]
+      }
+    },
+    {
+      "kind": "voorbeeld",
+      "tier": null,
+      "explanation": null,
+      "payload": {
+        "sentence_html": "<mark>Doe</mark> de deur dicht, het is koud buiten."
+      }
+    },
+    {
+      "kind": "voorbeeld",
+      "tier": null,
+      "explanation": null,
+      "payload": {
+        "sentence_html": "<mark>Vul</mark> het formulier in met blauwe pen."
+      }
+    },
+    {
+      "kind": "mcq",
+      "tier": 0,
+      "explanation": "In zin B staat het werkwoord <em>bel</em> vooraan. Dat is een opdracht.",
+      "options": [
+        {
+          "label": "A",
+          "body": "Je belt de huisarts.",
+          "is_correct": false
+        },
+        {
+          "label": "B",
+          "body": "Bel de huisarts.",
+          "is_correct": true
+        },
+        {
+          "label": "C",
+          "body": "Ik bel de huisarts.",
+          "is_correct": false
+        }
+      ],
+      "payload": {
+        "prompt": "Welke zin is een opdracht?"
+      }
+    },
+    {
+      "kind": "mcq",
+      "tier": 0,
+      "explanation": "Bij een opdracht staat het werkwoord vooraan. In <em>Kom binnen.</em> staat <em>kom</em> op de eerste plaats.",
+      "options": [
+        {
+          "label": "A",
+          "body": "Kom binnen.",
+          "is_correct": true
+        },
+        {
+          "label": "B",
+          "body": "U komt binnen.",
+          "is_correct": false
+        },
+        {
+          "label": "C",
+          "body": "Wij komen binnen.",
+          "is_correct": false
+        },
+        {
+          "label": "D",
+          "body": "Hij komt binnen.",
+          "is_correct": false
+        }
+      ],
+      "payload": {
+        "prompt": "Welke zin is een opdracht? Kijk waar het werkwoord staat."
+      }
+    },
+    {
+      "kind": "gap_choice",
+      "tier": 1,
+      "explanation": "Bij een opdracht gebruik je het werkwoord zonder <em>-t</em> en zonder <em>je</em>: <em>Wacht</em>.",
+      "payload": {
+        "sentence": "___ hier even, de dokter komt zo.",
+        "choices": [
+          "Wacht",
+          "Je wacht",
+          "Wachten"
+        ],
+        "answer": "Wacht"
+      }
+    },
+    {
+      "kind": "gap_choice",
+      "tier": 1,
+      "explanation": "In een opdracht staat het werkwoord vooraan, zonder <em>u</em>: <em>Betaal</em> bij de kassa.",
+      "payload": {
+        "sentence": "___ bij de kassa naast de uitgang.",
+        "choices": [
+          "U betaalt",
+          "Betaal",
+          "Betalen"
+        ],
+        "answer": "Betaal"
+      }
+    },
+    {
+      "kind": "gap_choice",
+      "tier": 1,
+      "explanation": "Een opdracht begint met het werkwoord: <em>Neem</em> je paspoort mee.",
+      "payload": {
+        "sentence": "___ je paspoort mee naar de gemeente.",
+        "choices": [
+          "Neem",
+          "Je neemt",
+          "Nemen"
+        ],
+        "answer": "Neem"
+      }
+    },
+    {
+      "kind": "matchen",
+      "tier": 1,
+      "explanation": "Bij elke normale zin hoort een opdracht met hetzelfde werkwoord vooraan, zonder <em>je</em>.",
+      "payload": {
+        "instruction": "Zoek bij elke normale zin de opdracht.",
+        "pairs": [
+          {
+            "left": "Je doet de deur dicht.",
+            "right": "Doe de deur dicht."
+          },
+          {
+            "left": "Je schrijft je naam op.",
+            "right": "Schrijf je naam op."
+          },
+          {
+            "left": "Je zet de tas hier.",
+            "right": "Zet de tas hier."
+          },
+          {
+            "left": "Je leest de brief goed.",
+            "right": "Lees de brief goed."
+          }
+        ]
+      }
+    },
+    {
+      "kind": "gap_type",
+      "tier": 2,
+      "explanation": "Je maakt een opdracht met het werkwoord vooraan: <em>doe</em>. Er komt geen <em>je</em> bij en geen <em>-t</em>.",
+      "payload": {
+        "sentence": "Het is koud in de kamer. ___ het raam dicht.",
+        "answer": "Doe"
+      }
+    },
+    {
+      "kind": "woordorde",
+      "tier": 2,
+      "explanation": "Het werkwoord <em>vul</em> staat vooraan, want het is een opdracht.",
+      "payload": {
+        "instruction": "Maak een opdracht van deze woorden.",
+        "tokens": [
+          "formulier",
+          "in",
+          "vul",
+          "het"
+        ],
+        "answer": [
+          "vul",
+          "het",
+          "formulier",
+          "in"
+        ]
+      }
+    },
+    {
+      "kind": "open_zin",
+      "tier": 2,
+      "explanation": "Je zin is goed als het werkwoord vooraan staat en er geen <em>je</em> of <em>u</em> in staat.",
+      "payload": {
+        "prompt": "Je buurman staat bij de deur in de regen. Schrijf een opdracht van drie of vier woorden.",
+        "model_answer": "Kom snel binnen.",
+        "checklist": [
+          "Het werkwoord staat vooraan.",
+          "Er staat geen je of u in de zin.",
+          "De zin eindigt met een punt."
+        ]
+      }
+    }
+  ],
+  "what_you_learn": "Je leert hoe een opdracht in het Nederlands eruitziet. Je ziet dat het werkwoord dan vooraan staat, zonder je of u erbij. Je kunt zulke zinnen herkennen in korte teksten en ze zelf maken."
+}

@@ -55,23 +55,12 @@ function StimulusPane({ stimulus }: { stimulus: StimulusItem }) {
             </h2>
           )}
           <div
-            className="exam-stimulus-body text-on-surface"
+            className="exam-stimulus-body exam-rich exam-rich-scroll text-on-surface"
             dangerouslySetInnerHTML={{ __html: s.body_html }}
           />
+          {/* The tag-level rules live in .exam-rich in app/globals.css — see the note there. */}
           <style>{`
             .exam-stimulus-body { font-size: 0.95rem; line-height: 1.7; }
-            .exam-stimulus-body > * + * { margin-top: 0.85rem; }
-            .exam-stimulus-body p { margin: 0; }
-            .exam-stimulus-body strong { font-weight: 700; }
-            /* list-style restated because Tailwind's preflight strips markers from every
-               ul/ol — without it an opsomming in a fragment rendered as unindented plain lines. */
-            .exam-stimulus-body ul { padding-left: 1.35rem; margin: 0; list-style: disc; }
-            .exam-stimulus-body ol { padding-left: 1.35rem; margin: 0; list-style: decimal; }
-            .exam-stimulus-body li + li { margin-top: 0.35rem; }
-            /* The fragment editor wraps list items in a <p> (ProseMirror's list schema does), so
-               the item's own spacing has to come from the <li>, not from the paragraph inside it. */
-            .exam-stimulus-body li > p { margin: 0; }
-            .exam-stimulus-body a { color: var(--color-primary); }
           `}</style>
         </article>
       )}

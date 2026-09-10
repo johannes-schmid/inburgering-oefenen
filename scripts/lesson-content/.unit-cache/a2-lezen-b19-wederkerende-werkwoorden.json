@@ -1,0 +1,202 @@
+{
+  "items": [
+    {
+      "kind": "uitleg",
+      "tier": null,
+      "explanation": null,
+      "payload": {
+        "body_html": "<p>Sommige werkwoorden hebben een extra woordje nodig: <strong>me, je, zich, ons</strong>. Dat woordje wijst terug naar de persoon zelf. Je ziet het vaak bij <em>zich voelen</em>, <em>zich vergissen</em> en <em>zich aankleden</em>. Het extra woordje verandert mee met de persoon.</p>",
+        "cards": [
+          {
+            "label": "IK EN JIJ",
+            "example_html": "Ik voel <mark>me</mark> niet goed. Jij voelt <mark>je</mark> beter."
+          },
+          {
+            "label": "HIJ, ZIJ EN ZE",
+            "example_html": "Hij voelt <mark>zich</mark> ziek. Ze voelen <mark>zich</mark> moe."
+          }
+        ]
+      }
+    },
+    {
+      "kind": "voorbeeld",
+      "tier": null,
+      "explanation": null,
+      "payload": {
+        "sentence_html": "Ik voel <mark>me</mark> vandaag erg moe en ik bel de huisarts."
+      }
+    },
+    {
+      "kind": "voorbeeld",
+      "tier": null,
+      "explanation": null,
+      "payload": {
+        "sentence_html": "Mijn buurvrouw voelt <mark>zich</mark> beter na de pillen van de dokter."
+      }
+    },
+    {
+      "kind": "mcq",
+      "tier": 0,
+      "explanation": "Bij <em>ik</em> hoort altijd <strong>me</strong>. De vorm <em>zich</em> hoort bij hij, zij of ze.",
+      "options": [
+        {
+          "label": "A",
+          "body": "Ik voel me niet goed.",
+          "is_correct": true
+        },
+        {
+          "label": "B",
+          "body": "Ik voel zich niet goed.",
+          "is_correct": false
+        },
+        {
+          "label": "C",
+          "body": "Ik voel je niet goed.",
+          "is_correct": false
+        }
+      ],
+      "payload": {
+        "prompt": "Welke zin is goed?"
+      }
+    },
+    {
+      "kind": "mcq",
+      "tier": 0,
+      "explanation": "Bij <em>hij</em> gebruik je <strong>zich</strong>. De woorden <em>me</em> en <em>ons</em> horen bij ik en wij.",
+      "options": [
+        {
+          "label": "A",
+          "body": "Mijn zoon voelt me ziek.",
+          "is_correct": false
+        },
+        {
+          "label": "B",
+          "body": "Mijn zoon voelt zich ziek.",
+          "is_correct": true
+        },
+        {
+          "label": "C",
+          "body": "Mijn zoon voelt ons ziek.",
+          "is_correct": false
+        }
+      ],
+      "payload": {
+        "prompt": "In welke zin staat de juiste vorm bij <em>mijn zoon</em>?"
+      }
+    },
+    {
+      "kind": "gap_choice",
+      "tier": 1,
+      "explanation": "Het woord hoort bij <em>ik</em>, dus je kiest <strong>me</strong>.",
+      "payload": {
+        "sentence": "Ik voel ___ vanmorgen een beetje ziek.",
+        "choices": [
+          "me",
+          "je",
+          "zich"
+        ],
+        "answer": "me"
+      }
+    },
+    {
+      "kind": "gap_choice",
+      "tier": 1,
+      "explanation": "Het woord hoort bij <em>de kinderen</em> (zij), dus je kiest <strong>zich</strong>.",
+      "payload": {
+        "sentence": "De kinderen kleden ___ zelf aan voor school.",
+        "choices": [
+          "me",
+          "ons",
+          "zich"
+        ],
+        "answer": "zich"
+      }
+    },
+    {
+      "kind": "gap_choice",
+      "tier": 1,
+      "explanation": "Bij <em>wij</em> hoort <strong>ons</strong>.",
+      "payload": {
+        "sentence": "Wij voelen ___ goed na een lange wandeling in het park.",
+        "choices": [
+          "ons",
+          "zich",
+          "je"
+        ],
+        "answer": "ons"
+      }
+    },
+    {
+      "kind": "matchen",
+      "tier": 1,
+      "explanation": "Elke persoon heeft zijn eigen vorm: ik–me, jij–je, hij–zich, wij–ons.",
+      "payload": {
+        "instruction": "Zoek bij elke persoon het juiste woordje.",
+        "pairs": [
+          {
+            "left": "ik voel",
+            "right": "me"
+          },
+          {
+            "left": "jij voelt",
+            "right": "je"
+          },
+          {
+            "left": "hij voelt",
+            "right": "zich"
+          },
+          {
+            "left": "wij voelen",
+            "right": "ons"
+          }
+        ]
+      }
+    },
+    {
+      "kind": "gap_type",
+      "tier": 2,
+      "explanation": "Het woord hoort bij <em>mijn moeder</em> (zij), dus je typt <strong>zich</strong>.",
+      "payload": {
+        "sentence": "Mijn moeder voelt ___ al twee dagen niet goed.",
+        "answer": "zich"
+      }
+    },
+    {
+      "kind": "woordorde",
+      "tier": 2,
+      "explanation": "Na <em>ik</em> komt het werkwoord <em>voel</em> en daarna het woordje <strong>me</strong>.",
+      "payload": {
+        "instruction": "Maak van deze woorden een goede zin.",
+        "tokens": [
+          "me",
+          "ik",
+          "niet",
+          "voel",
+          "goed"
+        ],
+        "answer": [
+          "ik",
+          "voel",
+          "me",
+          "niet",
+          "goed"
+        ]
+      }
+    },
+    {
+      "kind": "open_zin",
+      "tier": 2,
+      "explanation": "Je schrijft over jezelf, dus je gebruikt <em>ik</em> met <strong>me</strong>.",
+      "payload": {
+        "prompt": "Je belt de huisartsenpost. Schrijf één zin over hoe je je vandaag voelt. Gebruik <em>ik</em> en <em>me</em>.",
+        "model_answer": "Ik voel me niet goed en ik heb sinds gisteren hoofdpijn.",
+        "checklist": [
+          "In de zin staat <em>ik</em> met het woordje <em>me</em>.",
+          "Het werkwoord staat op de tweede plaats.",
+          "De zin gaat over hoe je je voelt."
+        ]
+      }
+    }
+  ],
+  "what_you_learn": "Na deze les weet je dat sommige werkwoorden een extra woordje nodig hebben: me, je, zich of ons. Je ziet welk woordje bij welke persoon hoort. Je kunt zelf zeggen en schrijven hoe je je voelt."
+}

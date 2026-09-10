@@ -1,0 +1,202 @@
+{
+  "items": [
+    {
+      "kind": "uitleg",
+      "tier": null,
+      "explanation": null,
+      "payload": {
+        "body_html": "<p>Je kunt op twee manieren een vraag maken. Soms begin je met een <strong>vraagwoord</strong>, zoals <em>waar</em>, <em>wanneer</em> of <em>hoeveel</em>. Dan komt het werkwoord daarna.</p><p>Soms is er geen vraagwoord. Dan zet je het <strong>werkwoord vooraan</strong>, vóór het onderwerp. Op zo'n vraag antwoord je met ja of nee.</p>",
+        "cards": [
+          {
+            "label": "MET VRAAGWOORD",
+            "example_html": "<mark>Waar</mark> woont u nu?"
+          },
+          {
+            "label": "WERKWOORD VOORAAN",
+            "example_html": "<mark>Woont</mark> u in Zwolle?"
+          }
+        ]
+      }
+    },
+    {
+      "kind": "voorbeeld",
+      "tier": null,
+      "explanation": null,
+      "payload": {
+        "sentence_html": "<mark>Hoeveel</mark> kost een kaartje voor de bus?"
+      }
+    },
+    {
+      "kind": "voorbeeld",
+      "tier": null,
+      "explanation": null,
+      "payload": {
+        "sentence_html": "<mark>Heeft</mark> u de brief van de gemeente gelezen?"
+      }
+    },
+    {
+      "kind": "mcq",
+      "tier": 0,
+      "explanation": "De vraag begint met het vraagwoord 'wanneer'. Daarna komt het werkwoord 'begint'.",
+      "payload": {
+        "prompt": "Lees de vraag: 'Wanneer begint de les Nederlands?' Wat voor vraag is dit?"
+      },
+      "options": [
+        {
+          "label": "A",
+          "body": "Een vraag met een vraagwoord vooraan.",
+          "is_correct": true
+        },
+        {
+          "label": "B",
+          "body": "Een vraag met het werkwoord vooraan.",
+          "is_correct": false
+        },
+        {
+          "label": "C",
+          "body": "Geen vraag, maar een gewone zin.",
+          "is_correct": false
+        }
+      ]
+    },
+    {
+      "kind": "mcq",
+      "tier": 0,
+      "explanation": "Er is geen vraagwoord. Het werkwoord 'kunt' staat vooraan, vóór 'u'.",
+      "payload": {
+        "prompt": "Lees de vraag: 'Kunt u mij morgen bellen?' Wat staat er vooraan in deze vraag?"
+      },
+      "options": [
+        {
+          "label": "A",
+          "body": "Een vraagwoord.",
+          "is_correct": false
+        },
+        {
+          "label": "B",
+          "body": "Het werkwoord.",
+          "is_correct": true
+        },
+        {
+          "label": "C",
+          "body": "Het onderwerp 'u'.",
+          "is_correct": false
+        }
+      ]
+    },
+    {
+      "kind": "gap_choice",
+      "tier": 1,
+      "explanation": "Je vraagt naar een plaats, dus je gebruikt het vraagwoord 'waar'.",
+      "payload": {
+        "sentence": "___ is het gemeentehuis in deze stad?",
+        "choices": [
+          "Waar",
+          "Is",
+          "Hoeveel"
+        ],
+        "answer": "Waar"
+      }
+    },
+    {
+      "kind": "gap_choice",
+      "tier": 1,
+      "explanation": "Er is geen vraagwoord in deze vraag. Dan staat het werkwoord vooraan, vóór 'je'.",
+      "payload": {
+        "sentence": "___ je vandaag naar de dokter?",
+        "choices": [
+          "Ga",
+          "Waar",
+          "Wanneer"
+        ],
+        "answer": "Ga"
+      }
+    },
+    {
+      "kind": "gap_choice",
+      "tier": 1,
+      "explanation": "Je vraagt naar een tijd, dus je begint met het vraagwoord 'hoe laat'. Daarna komt het werkwoord 'gaat'.",
+      "payload": {
+        "sentence": "___ gaat de winkel open?",
+        "choices": [
+          "Hoe laat",
+          "Gaat",
+          "Wie"
+        ],
+        "answer": "Hoe laat"
+      }
+    },
+    {
+      "kind": "matchen",
+      "tier": 1,
+      "explanation": "Bij elk vraagwoord hoort een soort antwoord: 'waar' vraagt naar een plaats, 'wanneer' naar een tijd, 'hoeveel' naar een bedrag of aantal en 'wie' naar een persoon.",
+      "payload": {
+        "instruction": "Welk vraagwoord past bij welk antwoord? Maak de juiste paren.",
+        "pairs": [
+          {
+            "left": "Waar werkt Fatima?",
+            "right": "In een groot ziekenhuis."
+          },
+          {
+            "left": "Wanneer komt de post?",
+            "right": "Om tien uur."
+          },
+          {
+            "left": "Hoeveel kost de huur?",
+            "right": "Zeshonderd euro per maand."
+          },
+          {
+            "left": "Wie helpt jou met de brief?",
+            "right": "Mijn buurman Kees."
+          }
+        ]
+      }
+    },
+    {
+      "kind": "gap_type",
+      "tier": 2,
+      "explanation": "Er is geen vraagwoord, dus het werkwoord staat vooraan. Bij 'u' hoort de vorm 'woont'.",
+      "payload": {
+        "sentence": "___ u al lang in Nederland?",
+        "answer": "Woont"
+      }
+    },
+    {
+      "kind": "woordorde",
+      "tier": 2,
+      "explanation": "Het vraagwoord 'waarom' staat vooraan, daarna het werkwoord 'is' en dan het onderwerp.",
+      "payload": {
+        "instruction": "Maak van deze woorden een goede vraag.",
+        "tokens": [
+          "is",
+          "waarom",
+          "gesloten",
+          "school",
+          "de"
+        ],
+        "answer": [
+          "waarom",
+          "is",
+          "de",
+          "school",
+          "gesloten"
+        ]
+      }
+    },
+    {
+      "kind": "open_zin",
+      "tier": 2,
+      "explanation": "Je maakt twee vragen: één met een vraagwoord vooraan en één met het werkwoord vooraan.",
+      "payload": {
+        "prompt": "Je belt met de gemeente over een nieuw paspoort. Schrijf twee vragen: één vraag met een vraagwoord en één vraag met het werkwoord vooraan.",
+        "model_answer": "Wanneer kan ik langskomen voor een nieuw paspoort? Moet ik een foto meenemen?",
+        "checklist": [
+          "In mijn eerste vraag staat een vraagwoord vooraan, zoals waar, wanneer of hoeveel.",
+          "In mijn tweede vraag staat het werkwoord vooraan, vóór het onderwerp.",
+          "Achter elke vraag staat een vraagteken."
+        ]
+      }
+    }
+  ],
+  "what_you_learn": "Na deze les zie je snel of een vraag begint met een vraagwoord of met het werkwoord. Je weet dat na een vraagwoord als waar of wanneer het werkwoord komt. En je maakt zelf vragen op beide manieren, bijvoorbeeld aan de gemeente of de dokter."
+}

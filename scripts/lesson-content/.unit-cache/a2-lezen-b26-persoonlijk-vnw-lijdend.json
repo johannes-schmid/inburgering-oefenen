@@ -1,0 +1,193 @@
+{
+  "items": [
+    {
+      "kind": "uitleg",
+      "tier": null,
+      "explanation": null,
+      "payload": {
+        "body_html": "<p>Een woordje als <strong>ik</strong> of <strong>hij</strong> kan de zin beginnen. Dan doet die persoon iets.</p><p>Maar soms <em>ondergaat</em> de persoon iets: iets gebeurt met hem of haar. Dan verandert het woordje van vorm: <strong>ik</strong> wordt <strong>mij</strong>, <strong>hij</strong> wordt <strong>hem</strong>.</p><p>De vormen zijn: mij (of me), jou (of je), hem, haar, het, ons, jullie, hen.</p>",
+        "cards": [
+          {
+            "label": "WIE DOET HET",
+            "example_html": "<mark>Ik</mark> bel de dokter."
+          },
+          {
+            "label": "WIE ONDERGAAT HET",
+            "example_html": "De dokter belt <mark>mij</mark>."
+          }
+        ]
+      }
+    },
+    {
+      "kind": "voorbeeld",
+      "tier": null,
+      "explanation": null,
+      "payload": {
+        "sentence_html": "De gemeente stuurt <mark>ons</mark> een brief over de huur."
+      }
+    },
+    {
+      "kind": "voorbeeld",
+      "tier": null,
+      "explanation": null,
+      "payload": {
+        "sentence_html": "Mijn buurvrouw is ziek, dus ik help <mark>haar</mark> met de boodschappen."
+      }
+    },
+    {
+      "kind": "mcq",
+      "tier": 0,
+      "explanation": "De juf doet iets; Samir ondergaat het. Daarom staat er de vorm 'hem'.",
+      "options": [
+        {
+          "label": "A",
+          "body": "De juf",
+          "is_correct": false
+        },
+        {
+          "label": "B",
+          "body": "hem",
+          "is_correct": true
+        },
+        {
+          "label": "C",
+          "body": "morgen",
+          "is_correct": false
+        }
+      ],
+      "payload": {
+        "prompt": "In welk woord zie je de vorm van iemand die iets ondergaat? Zin: \"De juf belt hem morgen op.\""
+      }
+    },
+    {
+      "kind": "mcq",
+      "tier": 0,
+      "explanation": "'Mij' is de vorm die je gebruikt als iets met jou gebeurt. Na 'helpt' staat dus 'mij', niet 'ik'.",
+      "options": [
+        {
+          "label": "A",
+          "body": "Mijn zus helpt ik met het formulier.",
+          "is_correct": false
+        },
+        {
+          "label": "B",
+          "body": "Mijn zus helpt mij met het formulier.",
+          "is_correct": true
+        },
+        {
+          "label": "C",
+          "body": "Mijn zus helpt hij met het formulier.",
+          "is_correct": false
+        }
+      ],
+      "payload": {
+        "prompt": "Welke zin is goed?"
+      }
+    },
+    {
+      "kind": "gap_choice",
+      "tier": 1,
+      "explanation": "De dokter doet iets en jij ondergaat het. Dan gebruik je 'jou', niet 'jij'.",
+      "payload": {
+        "sentence": "De dokter roept ___ over vijf minuten binnen.",
+        "choices": [
+          "jij",
+          "jou"
+        ],
+        "answer": "jou"
+      }
+    },
+    {
+      "kind": "gap_choice",
+      "tier": 1,
+      "explanation": "Het gaat over je vader (een man) die iets ondergaat. Dan gebruik je 'hem'.",
+      "payload": {
+        "sentence": "Mijn vader begrijpt de brief niet, dus ik lees ___ de brief voor.",
+        "choices": [
+          "hij",
+          "hem",
+          "haar"
+        ],
+        "answer": "hem"
+      }
+    },
+    {
+      "kind": "gap_choice",
+      "tier": 1,
+      "explanation": "Het gaat over 'het pakje', een het-woord dat iets ondergaat. Dan gebruik je 'het'.",
+      "payload": {
+        "sentence": "Het pakje is te groot, dus de postbode brengt ___ naar de buren.",
+        "choices": [
+          "hem",
+          "het",
+          "hen"
+        ],
+        "answer": "het"
+      }
+    },
+    {
+      "kind": "matchen",
+      "tier": 1,
+      "explanation": "Elk woordje voor 'wie doet het' heeft een andere vorm voor 'wie ondergaat het'.",
+      "payload": {
+        "instruction": "Zoek bij elk woord de vorm voor iemand die iets ondergaat.",
+        "pairs": [
+          {
+            "left": "ik",
+            "right": "mij"
+          },
+          {
+            "left": "jij",
+            "right": "jou"
+          },
+          {
+            "left": "hij",
+            "right": "hem"
+          },
+          {
+            "left": "zij (één vrouw)",
+            "right": "haar"
+          },
+          {
+            "left": "wij",
+            "right": "ons"
+          }
+        ]
+      }
+    },
+    {
+      "kind": "gap_type",
+      "tier": 2,
+      "explanation": "Fatima is een vrouw en zij ondergaat het bellen. Daarom schrijf je 'haar'.",
+      "payload": {
+        "sentence": "Fatima is niet thuis. Ik bel ___ vanavond nog een keer.",
+        "answer": "haar"
+      }
+    },
+    {
+      "kind": "woordorde",
+      "tier": 2,
+      "explanation": "De werkgever doet iets, jij ondergaat het. Daarom staat 'mij' na het werkwoord 'betaalt'.",
+      "payload": {
+        "instruction": "Maak een goede zin van deze woorden.",
+        "tokens": [
+          "betaalt",
+          "mij",
+          "werkgever",
+          "De",
+          "maandag",
+          "op"
+        ],
+        "answer": [
+          "De",
+          "werkgever",
+          "betaalt",
+          "mij",
+          "op",
+          "maandag"
+        ]
+      }
+    }
+  ],
+  "what_you_learn": "Je leert het verschil tussen de persoon die iets doet en de persoon die iets ondergaat. Je herkent de vormen mij, jou, hem, haar, het, ons en hen in een zin. En je kiest zelf de juiste vorm als je een zin afmaakt."
+}

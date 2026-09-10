@@ -1,0 +1,188 @@
+{
+  "what_you_learn": "Je leert hoe je met en, maar, want, dus en of twee zinnen aan elkaar plakt. Je ziet dat de woordvolgorde in beide delen gewoon blijft staan. Daarna kies je zelf het juiste verbindingswoord in een zin.",
+  "items": [
+    {
+      "kind": "uitleg",
+      "tier": null,
+      "explanation": null,
+      "payload": {
+        "body_html": "<p>Met <strong>en, maar, want, dus</strong> en <strong>of</strong> maak je van twee zinnen één zin. Deze woorden staan tussen de twee delen. In allebei de delen blijft de woordvolgorde gewoon: eerst het onderwerp, dan het werkwoord. Je hoeft dus niets om te draaien.</p>",
+        "cards": [
+          {
+            "label": "TWEE LOSSE ZINNEN",
+            "example_html": "Ik ben moe. Ik ga naar bed."
+          },
+          {
+            "label": "AAN ELKAAR GEPLAKT",
+            "example_html": "Ik ben moe, <mark>dus</mark> ik ga naar bed."
+          }
+        ]
+      }
+    },
+    {
+      "kind": "voorbeeld",
+      "tier": null,
+      "explanation": null,
+      "payload": {
+        "sentence_html": "Ik werk in een winkel, <mark>maar</mark> ik verdien weinig."
+      }
+    },
+    {
+      "kind": "voorbeeld",
+      "tier": null,
+      "explanation": null,
+      "payload": {
+        "sentence_html": "Ik blijf thuis, <mark>want</mark> ik ben ziek."
+      }
+    },
+    {
+      "kind": "mcq",
+      "tier": 0,
+      "explanation": "Na <strong>want</strong> begint een gewone zin: eerst <em>ik</em>, dan het werkwoord <em>moet</em>. Je draait niets om.",
+      "payload": {
+        "prompt": "Welke zin is goed?"
+      },
+      "options": [
+        {
+          "label": "A",
+          "body": "Ik kom niet, want ik moet werken.",
+          "is_correct": true
+        },
+        {
+          "label": "B",
+          "body": "Ik kom niet, want moet ik werken.",
+          "is_correct": false
+        },
+        {
+          "label": "C",
+          "body": "Ik kom niet, want werken ik moet.",
+          "is_correct": false
+        }
+      ]
+    },
+    {
+      "kind": "mcq",
+      "tier": 0,
+      "explanation": "<strong>Want</strong> geeft een reden: je zegt waarom iets zo is. En, of en maar geven geen reden.",
+      "payload": {
+        "prompt": "Welk woord geeft een reden (het antwoord op 'waarom?')?"
+      },
+      "options": [
+        {
+          "label": "A",
+          "body": "en",
+          "is_correct": false
+        },
+        {
+          "label": "B",
+          "body": "want",
+          "is_correct": true
+        },
+        {
+          "label": "C",
+          "body": "of",
+          "is_correct": false
+        }
+      ]
+    },
+    {
+      "kind": "gap_choice",
+      "tier": 1,
+      "explanation": "Het tweede deel zegt waarom je naar de dokter gaat. Bij een reden gebruik je <strong>want</strong>.",
+      "payload": {
+        "sentence": "Ik ga naar de dokter, ___ ik heb veel pijn.",
+        "choices": [
+          "want",
+          "of",
+          "en"
+        ],
+        "answer": "want"
+      }
+    },
+    {
+      "kind": "gap_choice",
+      "tier": 1,
+      "explanation": "Er zijn twee mogelijkheden: pinpas of contant geld. Bij een keuze gebruik je <strong>of</strong>.",
+      "payload": {
+        "sentence": "Je betaalt met de pinpas ___ je betaalt met contant geld.",
+        "choices": [
+          "of",
+          "want",
+          "dus"
+        ],
+        "answer": "of"
+      }
+    },
+    {
+      "kind": "gap_choice",
+      "tier": 1,
+      "explanation": "Het tweede deel is het gevolg van het eerste deel. Bij een gevolg gebruik je <strong>dus</strong>.",
+      "payload": {
+        "sentence": "Ik heb geen werk, ___ ik zoek een baan.",
+        "choices": [
+          "dus",
+          "of",
+          "maar"
+        ],
+        "answer": "dus"
+      }
+    },
+    {
+      "kind": "matchen",
+      "tier": 1,
+      "explanation": "Elk verbindingswoord heeft een eigen betekenis: erbij, tegenstelling, reden, gevolg of keuze.",
+      "payload": {
+        "instruction": "Zoek bij elk woord de goede betekenis.",
+        "pairs": [
+          {
+            "left": "en",
+            "right": "er komt iets bij"
+          },
+          {
+            "left": "maar",
+            "right": "een tegenstelling"
+          },
+          {
+            "left": "want",
+            "right": "een reden"
+          },
+          {
+            "left": "dus",
+            "right": "een gevolg"
+          },
+          {
+            "left": "of",
+            "right": "een keuze"
+          }
+        ]
+      }
+    },
+    {
+      "kind": "gap_type",
+      "tier": 2,
+      "explanation": "De twee delen passen niet bij elkaar: je wilt wel, maar het kan niet. Bij een tegenstelling gebruik je <strong>maar</strong>.",
+      "payload": {
+        "sentence": "Ik wil naar het feest, ___ ik moet werken.",
+        "answer": "maar",
+        "tokens": [
+          "],",
+          "choices"
+        ],
+        "model_answer": ""
+      }
+    },
+    {
+      "kind": "open_zin",
+      "tier": 2,
+      "explanation": "Na <strong>want</strong> komt een hele zin met onderwerp en werkwoord in de gewone volgorde.",
+      "payload": {
+        "prompt": "Schrijf één zin met 'want'. Vertel waarom je vandaag naar de gemeente gaat.",
+        "model_answer": "Ik ga naar de gemeente, want ik moet mijn adres doorgeven.",
+        "checklist": [
+          "Je zin heeft twee delen.",
+          "Na 'want' staat eerst het onderwerp en dan het werkwoord."
+        ]
+      }
+    }
+  ]
+}

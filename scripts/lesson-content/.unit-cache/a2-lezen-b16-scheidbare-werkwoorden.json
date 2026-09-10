@@ -1,0 +1,188 @@
+{
+  "items": [
+    {
+      "kind": "uitleg",
+      "tier": null,
+      "explanation": null,
+      "payload": {
+        "body_html": "<p>Sommige werkwoorden bestaan uit twee stukken. Bijvoorbeeld <strong>opbellen</strong>: <em>op</em> + <em>bellen</em>. In een gewone zin valt het woord in twee stukken. Het werkwoord staat vooraan en het kleine stukje gaat naar achteren.</p><p>Bij <em>moeten</em>, <em>kunnen</em>, <em>willen</em> of <em>gaan</em> blijft het woord aan elkaar. Het staat dan achteraan in de zin.</p>",
+        "cards": [
+          {
+            "label": "IN TWEE STUKKEN",
+            "example_html": "Ik <mark>bel</mark> de dokter <mark>op</mark>."
+          },
+          {
+            "label": "AAN ELKAAR",
+            "example_html": "Ik moet de dokter <mark>opbellen</mark>."
+          }
+        ]
+      }
+    },
+    {
+      "kind": "voorbeeld",
+      "tier": null,
+      "explanation": null,
+      "payload": {
+        "sentence_html": "Fatima <mark>vult</mark> het formulier <mark>in</mark>."
+      }
+    },
+    {
+      "kind": "voorbeeld",
+      "tier": null,
+      "explanation": null,
+      "payload": {
+        "sentence_html": "Fatima wil het formulier vandaag <mark>invullen</mark>."
+      }
+    },
+    {
+      "kind": "mcq",
+      "tier": 0,
+      "explanation": "Het werkwoord is <em>opruimen</em>. In een gewone zin valt het in twee stukken: <em>ruim</em> vooraan en <em>op</em> achteraan.",
+      "options": [
+        {
+          "label": "A",
+          "body": "ruim ... op",
+          "is_correct": true
+        },
+        {
+          "label": "B",
+          "body": "ruimt ... aan",
+          "is_correct": false
+        },
+        {
+          "label": "C",
+          "body": "op ... ruim",
+          "is_correct": false
+        }
+      ],
+      "payload": {
+        "prompt": "Welke twee stukken van het werkwoord staan in deze zin? \"Ik ruim de keuken op.\""
+      }
+    },
+    {
+      "kind": "mcq",
+      "tier": 0,
+      "explanation": "Na <em>moet</em> blijft het scheidbare werkwoord aan elkaar en staat het achteraan: <em>meenemen</em>.",
+      "options": [
+        {
+          "label": "A",
+          "body": "Je moet je paspoort mee nemen.",
+          "is_correct": false
+        },
+        {
+          "label": "B",
+          "body": "Je moet je paspoort meenemen.",
+          "is_correct": true
+        },
+        {
+          "label": "C",
+          "body": "Je neemt moet je paspoort mee.",
+          "is_correct": false
+        }
+      ],
+      "payload": {
+        "prompt": "Welke zin is goed?"
+      }
+    },
+    {
+      "kind": "gap_choice",
+      "tier": 1,
+      "explanation": "Er staat geen <em>moeten</em> of <em>kunnen</em> in de zin. Het werkwoord valt dus in twee stukken en <em>op</em> gaat naar achteren.",
+      "payload": {
+        "sentence": "Ik ___ morgen de gemeente op.",
+        "choices": [
+          "bel",
+          "opbellen",
+          "bellen op"
+        ],
+        "answer": "bel"
+      }
+    },
+    {
+      "kind": "gap_choice",
+      "tier": 1,
+      "explanation": "Na <em>wil</em> blijft het werkwoord aan elkaar en staat het achteraan in de zin.",
+      "payload": {
+        "sentence": "Mijn buurman wil de huur graag ___.",
+        "choices": [
+          "betaal terug",
+          "terugbetalen",
+          "betaalt terug"
+        ],
+        "answer": "terugbetalen"
+      }
+    },
+    {
+      "kind": "gap_choice",
+      "tier": 1,
+      "explanation": "Het stukje van het werkwoord gaat naar het einde van de zin. Bij <em>meebrengen</em> is dat <em>mee</em>.",
+      "payload": {
+        "sentence": "Breng je zoon ook ___ naar het gesprek.",
+        "choices": [
+          "mee",
+          "in",
+          "op"
+        ],
+        "answer": "mee"
+      }
+    },
+    {
+      "kind": "matchen",
+      "tier": 1,
+      "explanation": "Elk werkwoord valt in twee stukken. Het kleine stukje gaat naar achteren in de zin.",
+      "payload": {
+        "instruction": "Welk stukje hoort achteraan in de zin? Zoek het juiste paar.",
+        "pairs": [
+          {
+            "left": "Ik vul het formulier ...",
+            "right": "in"
+          },
+          {
+            "left": "Ik zet de televisie ...",
+            "right": "aan"
+          },
+          {
+            "left": "Ik ruim mijn kamer ...",
+            "right": "op"
+          },
+          {
+            "left": "Ik bel de dokter ...",
+            "right": "op"
+          }
+        ]
+      }
+    },
+    {
+      "kind": "gap_type",
+      "tier": 2,
+      "explanation": "De zin heeft geen hulpwerkwoord. Het werkwoord <em>aankomen</em> valt in twee stukken: <em>komt</em> vooraan en <em>aan</em> achteraan.",
+      "payload": {
+        "sentence": "De trein ___ om tien uur aan.",
+        "answer": "komt"
+      }
+    },
+    {
+      "kind": "woordorde",
+      "tier": 2,
+      "explanation": "Het werkwoord valt in twee stukken. <em>Vul</em> staat vooraan en <em>in</em> gaat naar het einde van de zin.",
+      "payload": {
+        "instruction": "Maak een goede zin van deze woorden.",
+        "tokens": [
+          "in",
+          "vul",
+          "het",
+          "ik",
+          "formulier"
+        ],
+        "answer": [
+          "ik",
+          "vul",
+          "het",
+          "formulier",
+          "in"
+        ]
+      }
+    }
+  ],
+  "what_you_learn": "Je leert werkwoorden die uit twee stukken bestaan, zoals opbellen en invullen. Je ziet dat het woord in een gewone zin in twee stukken valt: het stukje gaat naar achteren. Je leert ook dat het woord na moeten, kunnen of willen aan elkaar blijft en achteraan staat."
+}

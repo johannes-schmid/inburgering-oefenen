@@ -1,0 +1,250 @@
+{
+  "what_you_learn": "Je leert woorden die je tegenkomt bij de gemeente, in de post en bij geldzaken. Je herkent wat woorden als het uittreksel, aangetekend en het saldo betekenen. Daarna kies en typ je zelf het juiste woord in een zin.",
+  "items": [
+    {
+      "kind": "uitleg",
+      "tier": null,
+      "explanation": null,
+      "payload": {
+        "body_html": "<p>Bij de gemeente, in je brievenbus en op je bankrekening kom je steeds dezelfde woorden tegen. Als je die woorden kent, begrijp je een brief veel sneller.</p><p>In deze les oefen je woorden over drie onderwerpen: de gemeente, de post en het geld.</p>",
+        "cards": [
+          {
+            "label": "GEMEENTE",
+            "example_html": "Ik maak een <mark>afspraak</mark> aan het loket."
+          },
+          {
+            "label": "POST",
+            "example_html": "Op de brief staat de <mark>afzender</mark>."
+          },
+          {
+            "label": "GELD",
+            "example_html": "Ik moet het <mark>bedrag</mark> overmaken."
+          }
+        ]
+      }
+    },
+    {
+      "kind": "woordenlijst",
+      "tier": null,
+      "explanation": null,
+      "payload": {
+        "theme": "gemeente"
+      }
+    },
+    {
+      "kind": "matchen",
+      "tier": 0,
+      "explanation": "Je zoekt bij elk woord de goede uitleg. Zo onthoud je wat het woord bij de gemeente betekent.",
+      "payload": {
+        "instruction": "Zoek bij elkaar: het woord en de betekenis.",
+        "pairs": [
+          {
+            "left": "het loket",
+            "right": "plek met een raampje waar een medewerker je helpt"
+          },
+          {
+            "left": "het formulier",
+            "right": "papier met vragen die je moet beantwoorden"
+          },
+          {
+            "left": "verhuizen",
+            "right": "in een andere woning gaan wonen"
+          },
+          {
+            "left": "het uittreksel",
+            "right": "kort officieel papier met gegevens van de gemeente"
+          },
+          {
+            "left": "geldig",
+            "right": "je mag het nog gebruiken, de datum is nog niet voorbij"
+          }
+        ]
+      }
+    },
+    {
+      "kind": "matchen",
+      "tier": 0,
+      "explanation": "Deze woorden gaan over post en geld. Je koppelt elk woord aan de juiste uitleg.",
+      "payload": {
+        "instruction": "Zoek bij elkaar: het woord en de betekenis.",
+        "pairs": [
+          {
+            "left": "de postzegel",
+            "right": "klein plakplaatje op een brief, je betaalt zo het versturen"
+          },
+          {
+            "left": "de afzender",
+            "right": "de persoon of instantie die de brief verstuurt"
+          },
+          {
+            "left": "de rekening",
+            "right": "papier waarop staat hoeveel geld je moet betalen"
+          },
+          {
+            "left": "de boete",
+            "right": "geld dat je moet betalen omdat je iets fout deed"
+          },
+          {
+            "left": "het saldo",
+            "right": "het geld dat nog op je bankrekening staat"
+          }
+        ]
+      }
+    },
+    {
+      "kind": "mcq",
+      "tier": 0,
+      "explanation": "Een herinnering is een tweede brief. Je krijgt die brief omdat je de eerste rekening nog niet betaald hebt.",
+      "payload": {
+        "prompt": "Je krijgt een brief met het woord 'herinnering'. Wat betekent dat?"
+      },
+      "options": [
+        {
+          "label": "A",
+          "body": "Je hebt te veel betaald en krijgt geld terug.",
+          "is_correct": false
+        },
+        {
+          "label": "B",
+          "body": "Je hebt de rekening nog niet betaald.",
+          "is_correct": true
+        },
+        {
+          "label": "C",
+          "body": "Je moet een nieuw identiteitsbewijs aanvragen.",
+          "is_correct": false
+        }
+      ]
+    },
+    {
+      "kind": "mcq",
+      "tier": 0,
+      "explanation": "Een pinpas is de kaart van de bank. Daarmee betaal je in de winkel.",
+      "payload": {
+        "prompt": "Waarmee betaal je in de winkel bij de kassa?"
+      },
+      "options": [
+        {
+          "label": "A",
+          "body": "met de pinpas",
+          "is_correct": true
+        },
+        {
+          "label": "B",
+          "body": "met het uittreksel",
+          "is_correct": false
+        },
+        {
+          "label": "C",
+          "body": "met de postzegel",
+          "is_correct": false
+        },
+        {
+          "label": "D",
+          "body": "met het formulier",
+          "is_correct": false
+        }
+      ]
+    },
+    {
+      "kind": "gap_choice",
+      "tier": 1,
+      "explanation": "Je gaat in een andere woning wonen. Dat noem je verhuizen.",
+      "payload": {
+        "sentence": "Wij gaan volgende maand ___ naar een groter huis in Almere.",
+        "choices": [
+          "verhuizen",
+          "bezorgen",
+          "doorgeven",
+          "legitimeren"
+        ],
+        "answer": "verhuizen"
+      }
+    },
+    {
+      "kind": "gap_choice",
+      "tier": 1,
+      "explanation": "Bij de gemeente moet je laten zien wie je bent. Dat doe je met een geldig identiteitsbewijs.",
+      "payload": {
+        "sentence": "Neem een geldig ___ mee, bijvoorbeeld je paspoort.",
+        "choices": [
+          "identiteitsbewijs",
+          "saldo",
+          "loket",
+          "bedrag"
+        ],
+        "answer": "identiteitsbewijs"
+      }
+    },
+    {
+      "kind": "gap_choice",
+      "tier": 1,
+      "explanation": "Geld van je bankrekening naar iemand anders sturen heet overmaken.",
+      "payload": {
+        "sentence": "Je moet het bedrag van 45 euro voor 1 maart ___ naar de gemeente.",
+        "choices": [
+          "overmaken",
+          "aanvragen",
+          "inschrijven",
+          "bezorgen"
+        ],
+        "answer": "overmaken"
+      }
+    },
+    {
+      "kind": "gap_choice",
+      "tier": 1,
+      "explanation": "Een pakket wordt naar je adres gebracht. Dat noem je bezorgen.",
+      "payload": {
+        "sentence": "De postbode komt het pakket morgen tussen 9 en 12 uur ___.",
+        "choices": [
+          "bezorgen",
+          "doorgeven",
+          "overmaken",
+          "legitimeren"
+        ],
+        "answer": "bezorgen"
+      }
+    },
+    {
+      "kind": "gap_type",
+      "tier": 2,
+      "explanation": "Officieel vragen of je iets mag krijgen heet aanvragen. Je vraagt de toeslag aan bij de overheid.",
+      "payload": {
+        "sentence": "Ik wil huurtoeslag ___ omdat mijn huur hoog is.",
+        "answer": "aanvragen",
+        "prompt": "Typ het juiste woord: officieel vragen of je iets mag krijgen."
+      }
+    },
+    {
+      "kind": "gap_type",
+      "tier": 2,
+      "explanation": "Informatie aan iemand anders vertellen of sturen is doorgeven. Je nieuwe adres geef je door aan de gemeente.",
+      "payload": {
+        "sentence": "Je moet je nieuwe adres binnen vijf dagen aan de gemeente ___.",
+        "answer": "doorgeven",
+        "prompt": "Typ het juiste woord: informatie aan iemand anders sturen."
+      }
+    },
+    {
+      "kind": "gap_type",
+      "tier": 2,
+      "explanation": "Een vaste dag en tijd om ergens te komen is een afspraak. Bij de gemeente maak je eerst een afspraak.",
+      "payload": {
+        "sentence": "Ik heb dinsdag om 10.15 uur een ___ bij het loket van de gemeente.",
+        "answer": "afspraak",
+        "prompt": "Typ het juiste woord: vaste dag en tijd om ergens te komen."
+      }
+    },
+    {
+      "kind": "gap_type",
+      "tier": 2,
+      "explanation": "Een brief die je met een handtekening ontvangt, is aangetekend verstuurd. Zo weet de afzender zeker dat de brief is aangekomen.",
+      "payload": {
+        "sentence": "De brief is ___ verstuurd, dus je zet een handtekening bij de postbode.",
+        "answer": "aangetekend",
+        "prompt": "Typ het juiste woord: extra zeker verstuurd, met een handtekening."
+      }
+    }
+  ]
+}

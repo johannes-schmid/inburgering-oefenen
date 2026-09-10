@@ -1,0 +1,257 @@
+{
+  "items": [
+    {
+      "kind": "uitleg",
+      "tier": null,
+      "explanation": null,
+      "payload": {
+        "title": "Wat is een formulier?",
+        "body_html": "<p>Een formulier is een papier of een pagina op internet die je moet invullen. Je vult daar je gegevens in, bijvoorbeeld je naam, je adres en je geboortedatum. Je komt een formulier tegen bij de gemeente, bij de huisarts, bij de school van je kind of bij een verzekering (een bedrijf dat betaalt als je schade hebt).</p><p>Een formulier is geen verhaal. Een formulier heeft <strong>kopjes</strong> en <strong>velden</strong>. Achter of onder een kopje staat een lege plek: daar vul jij iets in. Bovenaan staat vaak wie het formulier stuurt en waarvoor het is. Onderaan staat vaak wat je met het formulier moet doen: opsturen, mailen of afgeven.</p><p>Bij het lezen zoek je dus niet de hoofdgedachte van een verhaal. Je zoekt <em>waar</em> een bepaald gegeven staat en <em>wat</em> je bij een veld moet invullen.</p>",
+        "cards": [
+          {
+            "label": "KOPJE",
+            "example_html": "<mark>Gegevens van de aanvrager</mark>: hier vul je je eigen naam en adres in."
+          },
+          {
+            "label": "VELD",
+            "example_html": "Telefoonnummer: <mark>...............</mark>"
+          },
+          {
+            "label": "WAT MOET IK DOEN?",
+            "example_html": "<mark>Stuur dit formulier voor 1 maart terug.</mark>"
+          }
+        ]
+      }
+    },
+    {
+      "kind": "leestekst",
+      "tier": null,
+      "explanation": null,
+      "payload": {
+        "title": "Aanvraagformulier bijzondere bijstand",
+        "body_html": "<p><strong>Gemeente Bergveld — Aanvraagformulier bijzondere bijstand</strong><br>Met dit formulier vraagt u geld aan voor bijzondere kosten.</p><p><strong>1. Gegevens van de aanvrager</strong><br>Naam: ...............<br>Geboortedatum: ...............<br>Adres en postcode: ...............<br>Telefoonnummer: ...............</p><p><strong>2. Waarvoor vraagt u geld aan?</strong><br>[ ] een nieuwe bril<br>[ ] tandarts<br>[ ] verhuiskosten<br>[ ] anders, namelijk: ...............</p><p><strong>3. Bedrag</strong><br>Hoeveel kosten hebt u? € ...............</p><p><strong>4. Bijlagen</strong><br>Stuur altijd een kopie van de rekening mee.</p><p><strong>5. Ondertekening</strong><br>Datum: ...............   Handtekening: ...............</p><p>Stuur het formulier binnen 14 dagen naar Postbus 220, 4611 AB Bergveld. Hebt u hulp nodig bij het invullen? Bel 0180 - 55 43 21 op werkdagen tussen 9.00 en 12.00 uur.</p>",
+        "words": [
+          {
+            "word": "de aanvrager",
+            "meaning": "de persoon die iets vraagt aan de gemeente"
+          },
+          {
+            "word": "bijzondere bijstand",
+            "meaning": "extra geld van de gemeente voor kosten die je niet kunt betalen"
+          },
+          {
+            "word": "de bijlage",
+            "meaning": "papier dat je met het formulier meestuurt"
+          },
+          {
+            "word": "de handtekening",
+            "meaning": "je naam die je zelf met de hand schrijft"
+          },
+          {
+            "word": "de werkdag",
+            "meaning": "maandag tot en met vrijdag"
+          }
+        ],
+        "marks": [
+          "Gegevens van de aanvrager",
+          "Stuur altijd een kopie van de rekening mee.",
+          "Stuur het formulier binnen 14 dagen naar Postbus 220, 4611 AB Bergveld."
+        ]
+      }
+    },
+    {
+      "kind": "mcq",
+      "tier": 0,
+      "explanation": "Bovenaan het formulier staat de naam van de gemeente Bergveld. De gemeente stuurt het formulier.",
+      "payload": {
+        "prompt": "Van wie is dit formulier?"
+      },
+      "options": [
+        {
+          "label": "A",
+          "body": "Van de gemeente Bergveld.",
+          "is_correct": true
+        },
+        {
+          "label": "B",
+          "body": "Van de tandarts.",
+          "is_correct": false
+        },
+        {
+          "label": "C",
+          "body": "Van een school.",
+          "is_correct": false
+        }
+      ]
+    },
+    {
+      "kind": "mcq",
+      "tier": 0,
+      "explanation": "Onder kopje 1 staat 'Gegevens van de aanvrager'. Daar vul je je eigen naam, adres en telefoonnummer in.",
+      "payload": {
+        "prompt": "Waar vul je je eigen naam en adres in?"
+      },
+      "options": [
+        {
+          "label": "A",
+          "body": "Bij kopje 1, Gegevens van de aanvrager.",
+          "is_correct": true
+        },
+        {
+          "label": "B",
+          "body": "Bij kopje 3, Bedrag.",
+          "is_correct": false
+        },
+        {
+          "label": "C",
+          "body": "Bij kopje 4, Bijlagen.",
+          "is_correct": false
+        },
+        {
+          "label": "D",
+          "body": "Bij kopje 5, Ondertekening.",
+          "is_correct": false
+        }
+      ]
+    },
+    {
+      "kind": "mcq",
+      "tier": 0,
+      "explanation": "Bij kopje 4 staat dat je altijd een kopie van de rekening meestuurt.",
+      "payload": {
+        "prompt": "Wat moet je samen met het formulier opsturen?"
+      },
+      "options": [
+        {
+          "label": "A",
+          "body": "Een kopie van de rekening.",
+          "is_correct": true
+        },
+        {
+          "label": "B",
+          "body": "Een foto van jezelf.",
+          "is_correct": false
+        },
+        {
+          "label": "C",
+          "body": "Je paspoort.",
+          "is_correct": false
+        }
+      ]
+    },
+    {
+      "kind": "markeren",
+      "tier": 0,
+      "explanation": "Onderaan het formulier staat wat je moet doen en hoeveel tijd je hebt. Daar staan het adres en de termijn van 14 dagen.",
+      "payload": {
+        "instruction": "Markeer in dit stukje waar je het formulier naartoe stuurt en binnen hoeveel dagen dat moet.",
+        "body_html": "<p>Stuur het formulier binnen 14 dagen naar Postbus 220, 4611 AB Bergveld. Hebt u hulp nodig bij het invullen? Bel 0180 - 55 43 21 op werkdagen tussen 9.00 en 12.00 uur.</p>",
+        "targets": [
+          {
+            "label": "waar naartoe",
+            "text": "Postbus 220, 4611 AB Bergveld"
+          },
+          {
+            "label": "hoeveel tijd",
+            "text": "binnen 14 dagen"
+          }
+        ]
+      }
+    },
+    {
+      "kind": "mcq",
+      "tier": 1,
+      "explanation": "Je vraagt geld voor de tandarts. Bij kopje 2 staat 'tandarts' als keuze, dus daar zet je een kruisje.",
+      "payload": {
+        "prompt": "Je moet € 180 aan de tandarts betalen. Wat doe je bij kopje 2?"
+      },
+      "options": [
+        {
+          "label": "A",
+          "body": "Ik zet een kruisje bij 'tandarts'.",
+          "is_correct": true
+        },
+        {
+          "label": "B",
+          "body": "Ik zet een kruisje bij 'een nieuwe bril'.",
+          "is_correct": false
+        },
+        {
+          "label": "C",
+          "body": "Ik schrijf € 180 bij 'anders, namelijk'.",
+          "is_correct": false
+        },
+        {
+          "label": "D",
+          "body": "Ik vul niets in bij kopje 2.",
+          "is_correct": false
+        }
+      ]
+    },
+    {
+      "kind": "mcq",
+      "tier": 1,
+      "explanation": "Bij kopje 3 vraagt het formulier hoeveel de kosten zijn. Daar vul je het bedrag in euro's in.",
+      "payload": {
+        "prompt": "Waar schrijf je het bedrag van € 180?"
+      },
+      "options": [
+        {
+          "label": "A",
+          "body": "Bij kopje 3, Bedrag.",
+          "is_correct": true
+        },
+        {
+          "label": "B",
+          "body": "Bij kopje 1, Telefoonnummer.",
+          "is_correct": false
+        },
+        {
+          "label": "C",
+          "body": "Bij kopje 5, Datum.",
+          "is_correct": false
+        }
+      ]
+    },
+    {
+      "kind": "mcq",
+      "tier": 1,
+      "explanation": "Er staat dat je kunt bellen als je hulp nodig hebt bij het invullen, op werkdagen tussen 9.00 en 12.00 uur.",
+      "payload": {
+        "prompt": "Je snapt een veld niet. Wat kun je volgens het formulier doen?"
+      },
+      "options": [
+        {
+          "label": "A",
+          "body": "Bellen naar 0180 - 55 43 21 op een werkdag in de ochtend.",
+          "is_correct": true
+        },
+        {
+          "label": "B",
+          "body": "Het formulier leeg opsturen.",
+          "is_correct": false
+        },
+        {
+          "label": "C",
+          "body": "Op zondag naar de gemeente bellen.",
+          "is_correct": false
+        }
+      ]
+    },
+    {
+      "kind": "open_zin",
+      "tier": 2,
+      "explanation": "Bij kopje 5 hoort een datum en een handtekening. Zonder handtekening is het formulier niet geldig.",
+      "payload": {
+        "prompt": "Je hebt het formulier ingevuld. Wat moet je bij kopje 5 nog doen? Schrijf één of twee zinnen.",
+        "model_answer": "Bij kopje 5 vul ik de datum van vandaag in. Daarna zet ik mijn handtekening onder het formulier.",
+        "checklist": [
+          "Je noemt de datum.",
+          "Je noemt de handtekening.",
+          "Je schrijft hele zinnen met een werkwoord."
+        ]
+      }
+    }
+  ],
+  "what_you_learn": "Je leert hoe een formulier in elkaar zit: met kopjes, velden en een stukje onderaan over wat je moet doen. Je zoekt snel op waar je je naam, een bedrag of een datum invult. En je begrijpt vragen over een formulier, bijvoorbeeld wat je moet meesturen en waar je het naartoe stuurt."
+}

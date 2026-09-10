@@ -4250,3 +4250,28 @@ eerst een kopie in de scratchpad. En anker een regex per record op één regel i
 **Outcome:** SUCCESS
 **What worked:** `ADMIN_NAV` blijft bestaan als `flatMap` van de secties, dus niets buiten de zijbalk hoefde mee. De twee tabellen (`lesson_words` / `word_cards`) zijn níet samengevoegd — alleen de ingang.
 **Lesson:** Een zijbalk met één streep erdoor scheidt niets inhoudelijks; een kop per laag geeft een nieuwe surface een plek. En twee tabellen kunnen één ingang delen zonder dat de sleutels moeten doen alsof ze dezelfde zijn — dat is een navigatiekeuze, geen schemakeuze.
+
+## 2026-08-31 — de opmaak van een opgave overleeft Tailwind's preflight
+**Changed:** `.exam-rich` toegevoegd in `app/globals.css` en toegepast op elke plek waar
+door de docent geschreven HTML wordt gerenderd: `StimulusPane`, `ExamShell` (de
+onderdeel-instructie), `WritingTask`, `SpeakingTask`, `FreePracticeEngine` en de
+fragmentpreview in `ExamBuilder`. De dubbele tagregels in die vijf `<style>`-blokken zijn eruit.
+**Outcome:** SUCCESS
+**What worked / went wrong:** Tailwind's preflight zet `font-size`/`font-weight` op h1–h6 op
+`inherit`, haalt de marker van elke ul/ol weg en laat tabellen zonder rand. De vijf blokken
+styleden vrijwel allemaal alleen `p`, dus 201 `<h3>`-koppen in de fragmentenbank lazen als
+gewone tekst, de 102 `<li>`'s in `exam_parts.instruction_html` als losse regels en de tabellen
+in een `data_text`-opdracht als één rij cijfers. Niets faalde — tsc, de build en elke test waren
+groen. Gevonden door de tags in de productie-inhoud te tellen, niet door naar de code te kijken.
+Verder liep ik precies in de val die CLAUDE.md al beschrijft: een backtick in een CSS-commentaar
+binnen een template literal beëindigt de literal en geeft een parsefout twintig regels verderop.
+**Lesson:** Een renderer van vreemde HTML moet gestyled worden op wat de *inhoud* bevat, niet op
+wat de auteur van het component toevallig voor ogen had — tel de tags in de echte data. En één
+definitie op één plek: vijf `<style>`-blokken voor hetzelfde probleem zijn vijf kansen om te
+driften, en ze driftten alle vijf.
+
+## 2026-09-01 — De 10-nakijklimiet gold ook voor betalende modulekopers
+**Changed:** `lib/grading-limits.ts` (`planCoversSkill` → `coversSkill(meta, level, skill)` op `ownsModule`, `checkGradingAllowed` neemt `level` + `meta` in plaats van `plan`) en `app/api/grade-open/route.ts` geeft `raw.exams.level` + `user.user_metadata` mee.
+**Outcome:** SUCCESS — `tsc`, `next build` en 274 unit tests groen.
+**What worked / went wrong:** De limietcheck las `planFromMetadata()`. Sinds de per-module prijzen schrijft niets meer `plan`, dus een klant die `a2:schrijven` had gekocht las als `free` en kreeg na tien opdrachten de paywall — precies de fout die `ownsModule` in de spelerroute al had gesloten.
+**Lesson:** Elke betaalpoort leest `ownsModule`/`ownsKnm`, nooit `plan`. Grep op `planFromMetadata` bij elke nieuwe gate.

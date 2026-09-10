@@ -1,0 +1,190 @@
+{
+  "items": [
+    {
+      "kind": "uitleg",
+      "tier": null,
+      "explanation": null,
+      "payload": {
+        "body_html": "<p>Het voltooid deelwoord is het woord met <strong>ge-</strong>, zoals <em>gewerkt</em> of <em>gekocht</em>.</p><p>Maar sommige werkwoorden beginnen al met <strong>be-, ge-, her-, ver-</strong> of <strong>ont-</strong>. Deze werkwoorden krijgen dan géén extra <strong>ge-</strong>.</p><p>Je ziet dus <em>betaald</em> en niet <em>gebetaald</em>.</p>",
+        "cards": [
+          {
+            "label": "GEWOON WERKWOORD",
+            "example_html": "Ik heb de rekening <mark>ge</mark>maakt."
+          },
+          {
+            "label": "MET BE-, GE-, HER-, VER-, ONT-",
+            "example_html": "Ik heb de rekening <mark>be</mark>taald."
+          }
+        ]
+      }
+    },
+    {
+      "kind": "voorbeeld",
+      "tier": null,
+      "explanation": null,
+      "payload": {
+        "sentence_html": "De gemeente heeft mijn brief <mark>ontvangen</mark>."
+      }
+    },
+    {
+      "kind": "voorbeeld",
+      "tier": null,
+      "explanation": null,
+      "payload": {
+        "sentence_html": "Wij zijn vorige maand naar Almere <mark>verhuisd</mark>."
+      }
+    },
+    {
+      "kind": "mcq",
+      "tier": 0,
+      "explanation": "Het werkwoord <em>vertellen</em> begint al met <strong>ver-</strong>. Daarom komt er geen extra ge- bij.",
+      "options": [
+        {
+          "label": "A",
+          "body": "De dokter heeft het goed gevertelt.",
+          "is_correct": false
+        },
+        {
+          "label": "B",
+          "body": "De dokter heeft het goed verteld.",
+          "is_correct": true
+        },
+        {
+          "label": "C",
+          "body": "De dokter heeft het goed geverteld.",
+          "is_correct": false
+        }
+      ],
+      "payload": {
+        "prompt": "Welke zin is goed?"
+      }
+    },
+    {
+      "kind": "mcq",
+      "tier": 0,
+      "explanation": "<em>Beginnen</em> begint met <strong>be-</strong>, dus het deelwoord is <em>begonnen</em>, zonder ge-.",
+      "options": [
+        {
+          "label": "A",
+          "body": "De les is om negen uur gebegonnen.",
+          "is_correct": false
+        },
+        {
+          "label": "B",
+          "body": "De les is om negen uur begonnen.",
+          "is_correct": true
+        },
+        {
+          "label": "C",
+          "body": "De les is om negen uur begonnnen ge-.",
+          "is_correct": false
+        }
+      ],
+      "payload": {
+        "prompt": "Welke zin is goed?"
+      }
+    },
+    {
+      "kind": "gap_choice",
+      "tier": 1,
+      "explanation": "<em>Betalen</em> begint met <strong>be-</strong>. Het deelwoord is <em>betaald</em>, zonder extra ge-.",
+      "payload": {
+        "sentence": "Ik heb de huur op tijd ___.",
+        "choices": [
+          "betaald",
+          "gebetaald",
+          "gebetaalt"
+        ],
+        "answer": "betaald"
+      }
+    },
+    {
+      "kind": "gap_choice",
+      "tier": 1,
+      "explanation": "<em>Ontslaan</em> begint met <strong>ont-</strong>. Daarom zeg je <em>ontslagen</em> en niet geontslagen.",
+      "payload": {
+        "sentence": "Mijn buurman is vorige week ___.",
+        "choices": [
+          "geontslagen",
+          "ontslagen",
+          "ontgeslagen"
+        ],
+        "answer": "ontslagen"
+      }
+    },
+    {
+      "kind": "gap_choice",
+      "tier": 1,
+      "explanation": "<em>Gebeuren</em> begint al met <strong>ge-</strong>. Er komt geen tweede ge- bij.",
+      "payload": {
+        "sentence": "Wat is er op straat ___?",
+        "choices": [
+          "gegebeurd",
+          "gebeurd",
+          "begeurd"
+        ],
+        "answer": "gebeurd"
+      }
+    },
+    {
+      "kind": "matchen",
+      "tier": 1,
+      "explanation": "Deze werkwoorden beginnen met be-, ge-, her-, ver- of ont-. Het deelwoord krijgt daarom geen ge- erbij.",
+      "payload": {
+        "instruction": "Zet het werkwoord bij het juiste voltooid deelwoord.",
+        "pairs": [
+          {
+            "left": "herhalen",
+            "right": "herhaald"
+          },
+          {
+            "left": "verhuizen",
+            "right": "verhuisd"
+          },
+          {
+            "left": "ontvangen",
+            "right": "ontvangen"
+          },
+          {
+            "left": "bestellen",
+            "right": "besteld"
+          }
+        ]
+      }
+    },
+    {
+      "kind": "gap_type",
+      "tier": 2,
+      "explanation": "<em>Vergeten</em> begint met <strong>ver-</strong>, dus het deelwoord blijft <em>vergeten</em>, zonder ge-.",
+      "payload": {
+        "sentence": "Ik heb mijn pas thuis ___ (vergeten).",
+        "answer": "vergeten"
+      }
+    },
+    {
+      "kind": "woordorde",
+      "tier": 2,
+      "explanation": "Het deelwoord van <em>herhalen</em> is <em>herhaald</em>, zonder extra ge-, en staat achteraan in de zin.",
+      "payload": {
+        "instruction": "Maak een goede zin.",
+        "tokens": [
+          "de",
+          "vraag",
+          "heeft",
+          "docent",
+          "herhaald",
+          "de"
+        ],
+        "answer": [
+          "de",
+          "docent",
+          "heeft",
+          "de",
+          "vraag",
+          "herhaald"
+        ]
+      }
+    }
+  ],
+  "what_you_learn": "Je leert dat werkwoorden die beginnen met be-, ge-, her-, ver- of ont- géén extra ge- krijgen in de voltooide tijd. Je herkent deze vormen in een tekst en je kiest zelf de juiste vorm. Zo lees je zinnen als \"Ik heb de huur betaald\" zonder twijfel."
+}

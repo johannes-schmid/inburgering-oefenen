@@ -1,0 +1,188 @@
+{
+  "what_you_learn": "Je leert wat er met de woordvolgorde gebeurt als een zin niet met het onderwerp begint. Je ziet dat het werkwoord dan vóór 'ik' komt te staan. Je oefent met herkennen, kiezen en zelf maken van zulke zinnen.",
+  "items": [
+    {
+      "kind": "uitleg",
+      "tier": null,
+      "explanation": null,
+      "payload": {
+        "body_html": "<p>Meestal begint een Nederlandse zin met het onderwerp, bijvoorbeeld met <strong>ik</strong>. Het werkwoord staat dan op plaats twee. Maar je kunt ook beginnen met een tijd (morgen, om acht uur) of met een plaats (in de winkel, thuis). Dan wisselen het werkwoord en <strong>ik</strong> van plaats. Dat heet inversie: het werkwoord komt vóór het onderwerp.</p>",
+        "cards": [
+          {
+            "label": "GEWONE VOLGORDE",
+            "example_html": "Ik <mark>ga</mark> morgen naar de dokter."
+          },
+          {
+            "label": "TIJD VOORAAN",
+            "example_html": "Morgen <mark>ga ik</mark> naar de dokter."
+          }
+        ]
+      }
+    },
+    {
+      "kind": "voorbeeld",
+      "tier": null,
+      "explanation": null,
+      "payload": {
+        "sentence_html": "In de winkel <mark>koop ik</mark> brood en melk."
+      }
+    },
+    {
+      "kind": "voorbeeld",
+      "tier": null,
+      "explanation": null,
+      "payload": {
+        "sentence_html": "Om negen uur <mark>begin ik</mark> met mijn werk."
+      }
+    },
+    {
+      "kind": "mcq",
+      "tier": 0,
+      "explanation": "De zin begint met de tijd 'Vandaag'. Daarna komt eerst het werkwoord en dan 'ik'.",
+      "payload": {
+        "prompt": "Welke zin is goed?"
+      },
+      "options": [
+        {
+          "label": "A",
+          "body": "Vandaag ik werk in het ziekenhuis.",
+          "is_correct": false
+        },
+        {
+          "label": "B",
+          "body": "Vandaag werk ik in het ziekenhuis.",
+          "is_correct": true
+        },
+        {
+          "label": "C",
+          "body": "Vandaag ik werken in het ziekenhuis.",
+          "is_correct": false
+        }
+      ]
+    },
+    {
+      "kind": "mcq",
+      "tier": 0,
+      "explanation": "De zin begint met de plaats 'Bij de gemeente'. Het werkwoord 'haal' staat daarom vóór 'ik'.",
+      "payload": {
+        "prompt": "In welke zin staan het werkwoord en 'ik' omgedraaid?"
+      },
+      "options": [
+        {
+          "label": "A",
+          "body": "Ik haal een nieuw paspoort bij de gemeente.",
+          "is_correct": false
+        },
+        {
+          "label": "B",
+          "body": "Bij de gemeente haal ik een nieuw paspoort.",
+          "is_correct": true
+        },
+        {
+          "label": "C",
+          "body": "Ik ga naar de gemeente voor een nieuw paspoort.",
+          "is_correct": false
+        }
+      ]
+    },
+    {
+      "kind": "gap_choice",
+      "tier": 1,
+      "explanation": "De zin begint met de tijd 'Morgen'. Dan komt eerst het werkwoord en daarna 'ik'.",
+      "payload": {
+        "sentence": "Morgen ___ naar de tandarts.",
+        "choices": [
+          "ga ik",
+          "ik ga",
+          "ik gaat"
+        ],
+        "answer": "ga ik"
+      }
+    },
+    {
+      "kind": "gap_choice",
+      "tier": 1,
+      "explanation": "'Op zaterdag' is een tijd aan het begin van de zin. Daarom staat het werkwoord 'doe' vóór 'ik'.",
+      "payload": {
+        "sentence": "Op zaterdag ___ boodschappen in de supermarkt.",
+        "choices": [
+          "ik doe",
+          "doe ik",
+          "doen ik"
+        ],
+        "answer": "doe ik"
+      }
+    },
+    {
+      "kind": "gap_choice",
+      "tier": 1,
+      "explanation": "De zin begint met het onderwerp 'Ik'. Dan is er geen omdraaiing en staat het werkwoord gewoon op plaats twee.",
+      "payload": {
+        "sentence": "___ elke dag met de fiets naar mijn werk.",
+        "choices": [
+          "Ik ga",
+          "Ga ik",
+          "Gaan ik"
+        ],
+        "answer": "Ik ga"
+      }
+    },
+    {
+      "kind": "matchen",
+      "tier": 1,
+      "explanation": "Elke zin begint met een tijd of een plaats. Daarna komt eerst het werkwoord en dan 'ik'.",
+      "payload": {
+        "instruction": "Zoek het goede einde bij het begin van de zin.",
+        "pairs": [
+          {
+            "left": "Vanavond",
+            "right": "kook ik soep voor mijn kinderen."
+          },
+          {
+            "left": "In de klas",
+            "right": "spreek ik alleen Nederlands."
+          },
+          {
+            "left": "Om zeven uur",
+            "right": "sta ik op."
+          },
+          {
+            "left": "Na het werk",
+            "right": "haal ik mijn zoon van school."
+          }
+        ]
+      }
+    },
+    {
+      "kind": "gap_type",
+      "tier": 2,
+      "explanation": "De zin begint met de tijd 'Straks'. Typ eerst het werkwoord en daarna 'ik'.",
+      "payload": {
+        "sentence": "Straks ___ de huur betalen.",
+        "answer": "ga ik"
+      }
+    },
+    {
+      "kind": "gap_type",
+      "tier": 2,
+      "explanation": "'Volgende week' staat vooraan, dus het werkwoord 'heb' komt vóór 'ik'.",
+      "payload": {
+        "sentence": "Volgende week ___ een afspraak bij de dokter.",
+        "answer": "heb ik"
+      }
+    },
+    {
+      "kind": "open_zin",
+      "tier": 2,
+      "explanation": "Je zin begint met een tijd. Daarom moet het werkwoord vóór 'ik' staan.",
+      "payload": {
+        "prompt": "Schrijf één zin die begint met 'Morgen'. Gebruik 'ik' in de zin.",
+        "model_answer": "Morgen ga ik naar de Nederlandse les.",
+        "checklist": [
+          "De zin begint met 'Morgen'.",
+          "Het werkwoord staat vóór 'ik'."
+        ]
+      }
+    }
+  ]
+}

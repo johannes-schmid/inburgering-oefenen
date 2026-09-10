@@ -1,0 +1,197 @@
+{
+  "items": [
+    {
+      "kind": "uitleg",
+      "tier": null,
+      "explanation": null,
+      "payload": {
+        "body_html": "<p>Soms vertel je na wat iemand anders zegt of vraagt. Bij een mededeling gebruik je <strong>dat</strong>. Bij een vraag zonder vraagwoord gebruik je <strong>of</strong>. Na <em>dat</em> en <em>of</em> gaat het werkwoord naar het einde van de zin.</p>",
+        "cards": [
+          {
+            "label": "MET DAT (mededeling)",
+            "example_html": "Hij zegt dat hij morgen <mark>komt</mark>."
+          },
+          {
+            "label": "MET OF (vraag)",
+            "example_html": "Hij vraagt of ik tijd <mark>heb</mark>."
+          }
+        ]
+      }
+    },
+    {
+      "kind": "voorbeeld",
+      "tier": null,
+      "explanation": null,
+      "payload": {
+        "sentence_html": "De dokter zegt <mark>dat ik veel water moet drinken</mark>."
+      }
+    },
+    {
+      "kind": "voorbeeld",
+      "tier": null,
+      "explanation": null,
+      "payload": {
+        "sentence_html": "Mijn buurman vraagt <mark>of ik zijn pakje aanneem</mark>."
+      }
+    },
+    {
+      "kind": "mcq",
+      "tier": 0,
+      "explanation": "Na 'zegt' vertel je een mededeling na, dus je gebruikt 'dat'. Het werkwoord 'werkt' staat aan het einde.",
+      "payload": {
+        "prompt": "Welke zin is goed?"
+      },
+      "options": [
+        {
+          "label": "A",
+          "body": "Mijn zus zegt dat ze in een winkel werkt.",
+          "is_correct": true
+        },
+        {
+          "label": "B",
+          "body": "Mijn zus zegt of ze in een winkel werkt.",
+          "is_correct": false
+        },
+        {
+          "label": "C",
+          "body": "Mijn zus zegt dat ze werkt in een winkel niet.",
+          "is_correct": false
+        }
+      ]
+    },
+    {
+      "kind": "mcq",
+      "tier": 0,
+      "explanation": "Het is een vraag zonder vraagwoord, dus je gebruikt 'of'. Het werkwoord 'is' staat achteraan.",
+      "payload": {
+        "prompt": "Welke zin is goed?"
+      },
+      "options": [
+        {
+          "label": "A",
+          "body": "De juf vraagt dat mijn kind ziek is.",
+          "is_correct": false
+        },
+        {
+          "label": "B",
+          "body": "De juf vraagt of mijn kind ziek is.",
+          "is_correct": true
+        },
+        {
+          "label": "C",
+          "body": "De juf vraagt of is mijn kind ziek.",
+          "is_correct": false
+        }
+      ]
+    },
+    {
+      "kind": "gap_choice",
+      "tier": 1,
+      "explanation": "'zegt' hoort bij een mededeling, en dan gebruik je 'dat'.",
+      "payload": {
+        "sentence": "De gemeente zegt ___ de brief volgende week komt.",
+        "choices": [
+          "dat",
+          "of"
+        ],
+        "answer": "dat"
+      }
+    },
+    {
+      "kind": "gap_choice",
+      "tier": 1,
+      "explanation": "'vraagt' met een vraag zonder vraagwoord krijgt 'of'.",
+      "payload": {
+        "sentence": "Mijn baas vraagt ___ ik zaterdag kan werken.",
+        "choices": [
+          "dat",
+          "of"
+        ],
+        "answer": "of"
+      }
+    },
+    {
+      "kind": "gap_choice",
+      "tier": 1,
+      "explanation": "Na 'dat' gaat het werkwoord naar het einde: 'dat de huur duur is'.",
+      "payload": {
+        "sentence": "Hij zegt dat de huur te duur ___.",
+        "choices": [
+          "is",
+          "is niet",
+          "niet"
+        ],
+        "answer": "is"
+      }
+    },
+    {
+      "kind": "matchen",
+      "tier": 1,
+      "explanation": "Bij navertellen van een mededeling hoort 'dat', bij navertellen van een vraag hoort 'of'.",
+      "payload": {
+        "instruction": "Welk woord hoort erbij: dat of of?",
+        "pairs": [
+          {
+            "left": "Hij zegt … hij morgen komt.",
+            "right": "dat"
+          },
+          {
+            "left": "Zij vraagt … ik geld bij me heb.",
+            "right": "of"
+          },
+          {
+            "left": "De arts zegt … ik moet rusten.",
+            "right": "dat"
+          },
+          {
+            "left": "De man vraagt … de winkel open is.",
+            "right": "of"
+          }
+        ]
+      }
+    },
+    {
+      "kind": "gap_type",
+      "tier": 2,
+      "explanation": "Het is een vraag zonder vraagwoord na 'vraagt', dus je typt 'of'.",
+      "payload": {
+        "sentence": "De vrouw bij het loket vraagt ___ ik mijn paspoort bij me heb.",
+        "answer": "of"
+      }
+    },
+    {
+      "kind": "woordorde",
+      "tier": 2,
+      "explanation": "Na 'dat' gaat het werkwoord naar achteren: 'dat hij ziek is'.",
+      "payload": {
+        "instruction": "Maak een goede zin.",
+        "tokens": [
+          "dat",
+          "hij",
+          "is",
+          "ziek"
+        ],
+        "answer": [
+          "dat",
+          "hij",
+          "ziek",
+          "is"
+        ]
+      }
+    },
+    {
+      "kind": "open_zin",
+      "tier": 2,
+      "explanation": "Je gebruikt 'of' en zet het werkwoord aan het einde van de zin.",
+      "payload": {
+        "prompt": "Vertel na: je collega vraagt: 'Werk je morgen?' Begin met: Mijn collega vraagt …",
+        "model_answer": "Mijn collega vraagt of ik morgen werk.",
+        "checklist": [
+          "Je gebruikt 'of'.",
+          "Het werkwoord staat aan het einde."
+        ]
+      }
+    }
+  ],
+  "what_you_learn": "Je leert navertellen wat iemand anders zegt of vraagt. Je weet wanneer je 'dat' gebruikt en wanneer 'of'. Je zet het werkwoord daarna aan het einde van de zin."
+}

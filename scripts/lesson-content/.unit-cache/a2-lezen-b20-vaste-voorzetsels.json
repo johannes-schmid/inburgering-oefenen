@@ -1,0 +1,202 @@
+{
+  "items": [
+    {
+      "kind": "uitleg",
+      "tier": null,
+      "explanation": null,
+      "payload": {
+        "body_html": "<p>Sommige werkwoorden horen altijd bij hetzelfde voorzetsel. Een voorzetsel is een klein woord zoals <em>op</em>, <em>voor</em>, <em>aan</em> of <em>naar</em>. Je moet het paar samen leren: <strong>wachten op</strong>, <strong>zorgen voor</strong>. Als je een ander voorzetsel kiest, is de zin niet goed.</p>",
+        "cards": [
+          {
+            "label": "WACHTEN OP",
+            "example_html": "Ik <mark>wacht op</mark> de bus naar het werk."
+          },
+          {
+            "label": "ZORGEN VOOR",
+            "example_html": "Zij <mark>zorgt voor</mark> haar zieke moeder."
+          }
+        ]
+      }
+    },
+    {
+      "kind": "voorbeeld",
+      "tier": null,
+      "explanation": null,
+      "payload": {
+        "sentence_html": "Wij <mark>wachten op</mark> de brief van de gemeente."
+      }
+    },
+    {
+      "kind": "voorbeeld",
+      "tier": null,
+      "explanation": null,
+      "payload": {
+        "sentence_html": "Mijn buurman <mark>zorgt voor</mark> de kat als wij op vakantie zijn."
+      }
+    },
+    {
+      "kind": "mcq",
+      "tier": 0,
+      "explanation": "Bij het werkwoord <strong>wachten</strong> hoort altijd het voorzetsel <em>op</em>.",
+      "options": [
+        {
+          "label": "A",
+          "body": "Ik wacht voor de dokter.",
+          "is_correct": false
+        },
+        {
+          "label": "B",
+          "body": "Ik wacht op de dokter.",
+          "is_correct": true
+        },
+        {
+          "label": "C",
+          "body": "Ik wacht aan de dokter.",
+          "is_correct": false
+        }
+      ],
+      "payload": {
+        "prompt": "Welke zin is goed?"
+      }
+    },
+    {
+      "kind": "mcq",
+      "tier": 0,
+      "explanation": "Bij het werkwoord <strong>zorgen</strong> hoort altijd het voorzetsel <em>voor</em>.",
+      "options": [
+        {
+          "label": "A",
+          "body": "Hij zorgt op zijn kinderen.",
+          "is_correct": false
+        },
+        {
+          "label": "B",
+          "body": "Hij zorgt aan zijn kinderen.",
+          "is_correct": false
+        },
+        {
+          "label": "C",
+          "body": "Hij zorgt voor zijn kinderen.",
+          "is_correct": true
+        }
+      ],
+      "payload": {
+        "prompt": "Welke zin is goed?"
+      }
+    },
+    {
+      "kind": "gap_choice",
+      "tier": 1,
+      "explanation": "Je wacht altijd <em>op</em> iemand of iets. Dus hier hoort <strong>op</strong>.",
+      "payload": {
+        "sentence": "Wij wachten ___ de post, want de rekening komt vandaag.",
+        "choices": [
+          "op",
+          "voor",
+          "aan"
+        ],
+        "answer": "op"
+      }
+    },
+    {
+      "kind": "gap_choice",
+      "tier": 1,
+      "explanation": "Bij <strong>zorgen</strong> hoort <em>voor</em>. Je zorgt voor iemand die hulp nodig heeft.",
+      "payload": {
+        "sentence": "Mijn dochter zorgt ___ de hond van de buren.",
+        "choices": [
+          "op",
+          "voor",
+          "naar"
+        ],
+        "answer": "voor"
+      }
+    },
+    {
+      "kind": "gap_choice",
+      "tier": 1,
+      "explanation": "De vaste combinatie is <strong>wachten op</strong>, ook in een brief van een instantie.",
+      "payload": {
+        "sentence": "U moet nog even ___ ons antwoord wachten.",
+        "choices": [
+          "op",
+          "voor",
+          "van"
+        ],
+        "answer": "op"
+      }
+    },
+    {
+      "kind": "matchen",
+      "tier": 1,
+      "explanation": "Je leert het werkwoord en het voorzetsel als één paar: wachten hoort bij <em>op</em>, zorgen hoort bij <em>voor</em>.",
+      "payload": {
+        "instruction": "Zoek bij elk werkwoord het juiste voorzetsel.",
+        "pairs": [
+          {
+            "left": "wachten",
+            "right": "op"
+          },
+          {
+            "left": "zorgen",
+            "right": "voor"
+          },
+          {
+            "left": "Ik wacht ... de trein.",
+            "right": "op"
+          },
+          {
+            "left": "Ik zorg ... mijn oma.",
+            "right": "voor"
+          }
+        ]
+      }
+    },
+    {
+      "kind": "gap_type",
+      "tier": 2,
+      "explanation": "Bij <strong>zorgen</strong> schrijf je altijd <em>voor</em>.",
+      "payload": {
+        "sentence": "Wie zorgt ___ de kinderen als jij werkt?",
+        "answer": "voor"
+      }
+    },
+    {
+      "kind": "woordorde",
+      "tier": 2,
+      "explanation": "Het werkwoord <em>wachten</em> staat aan het eind, en het voorzetsel <strong>op</strong> hoort erbij.",
+      "payload": {
+        "instruction": "Maak een goede zin.",
+        "tokens": [
+          "wij",
+          "op",
+          "de",
+          "wachten",
+          "dokter"
+        ],
+        "answer": [
+          "wij",
+          "wachten",
+          "op",
+          "de",
+          "dokter"
+        ]
+      }
+    },
+    {
+      "kind": "open_zin",
+      "tier": 2,
+      "explanation": "In je antwoord staat het werkwoord <em>zorgen</em> met het vaste voorzetsel <strong>voor</strong>.",
+      "payload": {
+        "prompt": "Schrijf één zin met 'zorgen voor'. Vertel voor wie of wat jij zorgt.",
+        "model_answer": "Ik zorg voor mijn kleine broer na school.",
+        "checklist": [
+          "Er staat een vorm van 'zorgen' in je zin.",
+          "Direct daarna staat het woord 'voor'.",
+          "Je zin begint met een hoofdletter en eindigt met een punt."
+        ]
+      }
+    }
+  ],
+  "what_you_learn": "Je leert dat sommige werkwoorden altijd hetzelfde kleine woord (voorzetsel) bij zich hebben. Je herkent de vaste paren <strong>wachten op</strong> en <strong>zorgen voor</strong> in een tekst. Je vult zelf het juiste voorzetsel in en maakt er een goede zin mee."
+}

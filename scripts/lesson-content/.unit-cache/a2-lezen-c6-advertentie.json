@@ -1,0 +1,226 @@
+{
+  "items": [
+    {
+      "kind": "uitleg",
+      "tier": null,
+      "explanation": null,
+      "payload": {
+        "body_html": "<p>Een <strong>advertentie</strong> is een korte tekst waarmee iemand iets aanbiedt of vraagt. Je ziet advertenties in een huis-aan-huiskrant, op een prikbord in de supermarkt of op internet.</p><p>In een advertentie staat meestal: <strong>wat</strong> er wordt aangeboden, de <strong>prijs</strong>, de <strong>tijd</strong> of datum, de <strong>plaats</strong> en hoe je kunt <strong>reageren</strong> (een telefoonnummer of e-mailadres).</p><p>Je hoeft niet elk woord te lezen. Je zoekt alleen het stukje dat de vraag nodig heeft. Kijk goed naar getallen, dagen en namen.</p>",
+        "cards": [
+          {
+            "label": "WAT",
+            "example_html": "<mark>Tweedehands kinderfiets</mark> te koop."
+          },
+          {
+            "label": "PRIJS",
+            "example_html": "De fiets kost <mark>45 euro</mark>."
+          },
+          {
+            "label": "REAGEREN",
+            "example_html": "Bel of stuur een bericht naar <mark>06 12 34 56 78</mark>."
+          }
+        ]
+      }
+    },
+    {
+      "kind": "leestekst",
+      "tier": null,
+      "explanation": null,
+      "payload": {
+        "title": "Advertentie: kamer te huur in Zwolle",
+        "body_html": "<p><strong>Kamer te huur in Zwolle</strong></p><p>Wij verhuren een kamer in ons huis aan de Beukenlaan. De kamer is 14 vierkante meter en heeft een groot raam. Je deelt de keuken en de badkamer met twee andere huurders.</p><p>De huur is 420 euro per maand. De kosten voor gas, water en licht zitten bij de prijs in. Je betaalt een borg van 400 euro. Die borg krijg je terug als je weggaat.</p><p>De kamer is vrij vanaf 1 maart. Wij zoeken iemand die werkt of studeert. Huisdieren zijn helaas niet toegestaan.</p><p>Wil je de kamer bekijken? Bel dan op werkdagen na 18.00 uur naar 038 555 21 44. Vraag naar mevrouw Bakker. Je kunt ook mailen naar kamer.beukenlaan@postvrij.nl.</p>",
+        "words": [
+          {
+            "word": "verhuren",
+            "meaning": "iemand tegen betaling in je huis laten wonen"
+          },
+          {
+            "word": "de huurders",
+            "meaning": "de mensen die in het huis wonen en huur betalen"
+          },
+          {
+            "word": "de borg",
+            "meaning": "geld dat je vooraf betaalt en later terugkrijgt"
+          },
+          {
+            "word": "vrij vanaf",
+            "meaning": "je kunt er komen wonen vanaf die datum"
+          },
+          {
+            "word": "niet toegestaan",
+            "meaning": "het mag niet"
+          }
+        ],
+        "marks": [
+          "De huur is 420 euro per maand",
+          "De kamer is vrij vanaf 1 maart",
+          "Huisdieren zijn helaas niet toegestaan"
+        ]
+      }
+    },
+    {
+      "kind": "mcq",
+      "tier": 0,
+      "explanation": "In de advertentie staat: \"De huur is 420 euro per maand.\" De borg van 400 euro betaal je maar één keer.",
+      "payload": {
+        "prompt": "Hoeveel huur betaal je per maand voor de kamer?"
+      },
+      "options": [
+        {
+          "label": "A",
+          "body": "400 euro",
+          "is_correct": false
+        },
+        {
+          "label": "B",
+          "body": "420 euro",
+          "is_correct": true
+        },
+        {
+          "label": "C",
+          "body": "820 euro",
+          "is_correct": false
+        }
+      ]
+    },
+    {
+      "kind": "mcq",
+      "tier": 0,
+      "explanation": "In de tekst staat: \"De kamer is vrij vanaf 1 maart.\" Dat is de datum waarop je kunt komen wonen.",
+      "payload": {
+        "prompt": "Vanaf welke datum kun je in de kamer wonen?"
+      },
+      "options": [
+        {
+          "label": "A",
+          "body": "Vanaf 1 maart",
+          "is_correct": true
+        },
+        {
+          "label": "B",
+          "body": "Vanaf 14 maart",
+          "is_correct": false
+        },
+        {
+          "label": "C",
+          "body": "Vanaf 18 maart",
+          "is_correct": false
+        }
+      ]
+    },
+    {
+      "kind": "mcq",
+      "tier": 0,
+      "explanation": "De tekst zegt: \"De kosten voor gas, water en licht zitten bij de prijs in.\" Je betaalt die dus niet extra.",
+      "payload": {
+        "prompt": "Wat is waar over gas, water en licht?"
+      },
+      "options": [
+        {
+          "label": "A",
+          "body": "Die kosten betaal je apart aan de gemeente.",
+          "is_correct": false
+        },
+        {
+          "label": "B",
+          "body": "Die kosten zitten al in de huur van 420 euro.",
+          "is_correct": true
+        },
+        {
+          "label": "C",
+          "body": "Die kosten deel je met de buren.",
+          "is_correct": false
+        },
+        {
+          "label": "D",
+          "body": "Daar staat niets over in de advertentie.",
+          "is_correct": false
+        }
+      ]
+    },
+    {
+      "kind": "markeren",
+      "tier": 0,
+      "explanation": "In een advertentie staat altijd hoe je kunt reageren. Hier is dat het telefoonnummer, en de tijd waarop je mag bellen.",
+      "payload": {
+        "instruction": "Markeer in dit stukje van de advertentie het telefoonnummer en de tijd waarop je mag bellen.",
+        "body_html": "<p>Wil je de kamer bekijken? Bel dan op werkdagen na 18.00 uur naar 038 555 21 44. Vraag naar mevrouw Bakker.</p>",
+        "targets": [
+          {
+            "label": "telefoonnummer",
+            "text": "038 555 21 44"
+          },
+          {
+            "label": "wanneer bellen",
+            "text": "op werkdagen na 18.00 uur"
+          }
+        ]
+      }
+    },
+    {
+      "kind": "mcq",
+      "tier": 1,
+      "explanation": "In de tekst staat: \"Huisdieren zijn helaas niet toegestaan.\" Een kat is een huisdier, dus die mag niet mee.",
+      "payload": {
+        "prompt": "Karim wil de kamer huren. Hij heeft een kat. Wat is voor hem het probleem?"
+      },
+      "options": [
+        {
+          "label": "A",
+          "body": "De kamer is te klein voor een kat.",
+          "is_correct": false
+        },
+        {
+          "label": "B",
+          "body": "Huisdieren mogen niet in het huis.",
+          "is_correct": true
+        },
+        {
+          "label": "C",
+          "body": "Hij moet dan meer huur betalen.",
+          "is_correct": false
+        }
+      ]
+    },
+    {
+      "kind": "mcq",
+      "tier": 1,
+      "explanation": "De advertentie zegt: \"Wij zoeken iemand die werkt of studeert.\" Anna studeert, dus zij past bij die vraag.",
+      "payload": {
+        "prompt": "Anna is 22 jaar en studeert in Zwolle. Zij heeft geen huisdier. Wat kun je zeggen?"
+      },
+      "options": [
+        {
+          "label": "A",
+          "body": "Anna past bij deze advertentie.",
+          "is_correct": true
+        },
+        {
+          "label": "B",
+          "body": "Anna is te jong voor deze kamer.",
+          "is_correct": false
+        },
+        {
+          "label": "C",
+          "body": "Anna mag niet reageren, want zij heeft geen werk.",
+          "is_correct": false
+        }
+      ]
+    },
+    {
+      "kind": "open_zin",
+      "tier": 2,
+      "explanation": "Je gebruikt de informatie uit de advertentie: je belt op een werkdag na 18.00 uur en je vraagt naar mevrouw Bakker.",
+      "payload": {
+        "prompt": "Je wilt de kamer bekijken. Schrijf in twee of drie zinnen wat je doet. Noem wanneer je belt, welk nummer je belt en wie je vraagt.",
+        "model_answer": "Ik bel op een werkdag na 18.00 uur naar 038 555 21 44. Ik vraag naar mevrouw Bakker. Ik zeg dat ik de kamer graag wil bekijken.",
+        "checklist": [
+          "Je noemt de tijd: op een werkdag na 18.00 uur.",
+          "Je noemt het telefoonnummer 038 555 21 44.",
+          "Je noemt de naam mevrouw Bakker."
+        ]
+      }
+    }
+  ],
+  "what_you_learn": "Je leert wat een advertentie is en waar je zo'n tekst tegenkomt. Je weet waar de prijs, de datum en het telefoonnummer meestal staan. Je kunt snel de informatie zoeken die je nodig hebt om een vraag te beantwoorden."
+}
