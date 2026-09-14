@@ -368,6 +368,13 @@ async function main() {
       usage: w.usage,
       sort_order: (i + 1) * 10,
       review_status: 'pending',
+      // `image_url`, `audio_url`, `audio_example_url` en de drie `translation_*` staan hier NIET,
+      // en dat is de reden dat een re-seed de kaarten niet leegmaakt: PostgREST raakt bij
+      // `merge-duplicates` alleen de kolommen aan die in de payload staan. Ze horen ook niet
+      // hier — de foto kiest de docent in /admin/woorden, de opname komt uit de TTS-route en de
+      // vertalingen uit `translate-words.mjs`. Zet ze hier niet bij "voor de volledigheid": dan
+      // wist elke seed de foto's en de opnames, precies zoals één re-seed 51 vrijgegeven lessen
+      // terugzette op `pending` (09-09).
     }));
   }
   const savedWords = await upsertKeepingReview(

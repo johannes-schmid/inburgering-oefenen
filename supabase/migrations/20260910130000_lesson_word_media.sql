@@ -1,0 +1,36 @@
+-- De woordkaarten van de leerlaag krijgen dezelfde kaart als de KNM-kaarten: een foto, de
+-- Nederlandse uitspraak, en drie vertalingen (besluit eigenaar, 10-09).
+--
+-- ## Waarom dit drie kolommen op `lesson_words` zijn en geen tweede tabel
+--
+-- `word_cards` draagt zijn media zelf (`image_url`, `audio_dutch_word`, `audio_dutch_sentence`,
+-- `translation_tr`) en dat werkt: de docent beheert één rij per kaart in één paneel. Hier hetzelfde,
+-- op de andere tabel. De twee blijven twee tabellen — `lesson_words` is gekeyd op
+-- (level, onderdeel, dutch) en `word_cards` op KNM's thema-as — dus de media hier kopiëren de
+-- *vorm* van daar en niet de rijen.
+--
+-- ## De audio is twee sporen, niet één
+--
+-- `audio_url` bestond al en betekende "het woord". `word_cards` heeft daarnaast
+-- `audio_dutch_sentence`, en dat is geen luxe: een woord horen zegt niets over de klemtoon in een
+-- zin, en de voorbeeldzin is precies waar `frame` ("zich melden bij") pas hoorbaar wordt. Dus een
+-- tweede kolom, en niet één bestand met twee stukken erin — de speler moet ze los kunnen spelen.
+--
+-- Beide zijn en blijven **nullable**: het woord wordt geschreven vóór de TTS-run, precies zoals
+-- `lesson_narration` en `audio.audio_url` in een les. De kaart zegt dan niets over audio in plaats
+-- van een 404 te tonen.
+--
+-- ## Turks staat er nu wél bij
+--
+-- `20260902100000_lesson_word_cards.sql` liet Turks bewust weg: het portaal heeft geen tr-locale,
+-- en een kolom vullen voor een taal die geen pagina kan tonen is content die niemand nakijkt. Dat
+-- argument klopte over *paginavertaling* en niet over *woordvertaling*: de KNM-deck zet en/ar/tr
+-- naast elkaar in een taalknop op de kaart zelf, los van de locale van de pagina, en dat is de
+-- reden dat een Turkse kandidaat daar zijn woord vindt in een Nederlandse interface. Dezelfde
+-- knop hoort hier te staan, dus dezelfde derde kolom.
+--
+-- `translations_reviewed` dekt alle drie: ze komen uit dezelfde machinale run
+-- (`scripts/lesson-content/translate-words.mjs`) en worden in één keer nagekeken of niet.
+alter table lesson_words add column if not exists image_url text;
+alter table lesson_words add column if not exists audio_example_url text;
+alter table lesson_words add column if not exists translation_tr text;

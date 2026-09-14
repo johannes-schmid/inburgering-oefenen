@@ -1,8 +1,9 @@
 'use client';
 
-import { useMemo, useState, useTransition } from 'react';
+import { useEffect, useMemo, useState, useTransition } from 'react';
 import { useRouter } from 'next/navigation';
 import { createClient } from '@/lib/supabase/client';
+import ImagePicker from '../../../_components/ImagePicker';
 import {
   ColumnDef, getCoreRowModel, getPaginationRowModel, getSortedRowModel,
   PaginationState, RowSelectionState, SortingState, useReactTable,
@@ -31,11 +32,12 @@ import type { AdminWord } from '@/lib/admin/words';
  *
  * ── WAAROM DEZELFDE VORM EN NIET DEZELFDE COMPONENT ──────────────────────────
  * De ReUI-grid, de zoekbalk, de filterpopovers en het rechterpaneel zijn overgenomen omdat de
- * docent ze al kent. De *kolommen* zijn het niet: `lesson_words` heeft geen foto en geen Turks,
- * heeft wél een `usage` (receptief/productief) en een `frame` ("zich schamen (voor)"), en zijn
- * thema is een vrij tekstveld uit de cursus in plaats van KNM's zeven vaste thema's. Eén component
- * voor beide zou van elk van die verschillen een `if` maken en van het thema een veld dat soms een
- * nummer en soms een naam is.
+ * docent ze al kent. Sinds 10-09 is de *kaart* ook dezelfde: een foto, de uitspraak van het woord
+ * én van de zin, en drie vertalingen. De kolommen blijven het niet: `lesson_words` heeft een
+ * `usage` (receptief/productief) en een `frame` ("zich schamen (voor)") die `word_cards` niet
+ * heeft, en zijn thema is een vrij tekstveld uit de cursus in plaats van KNM's zeven vaste
+ * thema's. Eén component voor beide zou van elk van die verschillen een `if` maken en van het
+ * thema een veld dat soms een nummer en soms een naam is.
  *
  * ── DRIE VALLEN DIE HIER AL EENS ZIJN GESPRONGEN ─────────────────────────────
  * 1. **Een door RLS geweigerde UPDATE geeft 200 met nul rijen** en ziet er identiek uit aan een
@@ -62,6 +64,7 @@ export default function WoordenTable({
   const [selectedThemes, setSelectedThemes] = useState<string[]>([]);
   const [usageFilter, setUsageFilter] = useState<'all' | 'receptief' | 'productief'>('all');
   const [audioFilter, setAudioFilter] = useState<'all' | 'with' | 'without'>('all');
+  const [imageFilter, setImageFilter] = useState<'all' | 'with' | 'without'>('all');
   const [statusFilter, setStatusFilter] = useState<'all' | 'validated' | 'pending'>('all');
 
   const [rowSelection, setRowSelection] = useState<RowSelectionState>({});
@@ -73,6 +76,8 @@ export default function WoordenTable({
   const [saved, setSaved] = useState(false);
   const [error, setError] = useState('');
   const [confirmDelete, setConfirmDelete] = useState(false);
+  const [generatingAudio, setGeneratingAudio] = useState(false);
+  const [audioError, setAudioError] = useState('');
 
   /** De thema's zoals ze in deze cursus voorkomen — een vrij veld, dus uit de data en niet uit een lijst. */
   const themes = useMemo(
@@ -89,13 +94,15 @@ export default function WoordenTable({
       && (!selectedThemes.length || selectedThemes.includes(w.theme))
       && (usageFilter === 'all' || w.usage === usageFilter)
       && (audioFilter === 'all' || (audioFilter === 'with' ? !!w.audio_url : !w.audio_url))
+      && (imageFilter === 'all' || (imageFilter === 'with' ? !!w.image_url : !w.image_url))
       && (statusFilter === 'all' || w.review_status === statusFilter);
-  }), [words, searchQuery, selectedThemes, usageFilter, audioFilter, statusFilter]);
+  }), [words, searchQuery, selectedThemes, usageFilter, audioFilter, imageFilter, statusFilter]);
 
   function openRow(w: AdminWord) {
     setForm({ ...w });
     setSaved(false);
     setError('');
+    setAudioError('');
     setConfirmDelete(false);
   }
 
@@ -113,12 +120,15 @@ export default function WoordenTable({
       meaning_nl: '',
       example: null,
       usage: 'receptief',
+      image_url: null,
       audio_url: null,
+      audio_example_url: null,
       // Achteraan in zijn thema, zodat een nieuw woord niet stil vóór de rest komt te staan.
       sort_order: Math.max(0, ...words.map(w => w.sort_order)) + 1,
       review_status: 'pending',
       translation_en: null,
       translation_ar: null,
+      translation_tr: null,
       translations_reviewed: false,
     });
   }
@@ -152,10 +162,16 @@ export default function WoordenTable({
       meaning_nl: form.meaning_nl.trim(),
       example: nul(form.example),
       usage: form.usage,
+      // De foto gaat wél mee en de audio niet: het pad naar de foto kiest de docent hier, maar
+      // `audio_url` en `audio_example_url` worden alléén door de TTS-route geschreven. Ze in deze
+      // payload zetten zou een opslag ná een inspreekronde de net gemaakte URL laten overschrijven
+      // met wat er in de formulierstate stond toen het paneel openging.
+      image_url: nul(form.image_url),
       sort_order: form.sort_order,
       review_status: form.review_status,
       translation_en: nul(form.translation_en),
       translation_ar: nul(form.translation_ar),
+      translation_tr: nul(form.translation_tr),
       translations_reviewed: form.translations_reviewed,
     };
 
@@ -177,6 +193,37 @@ export default function WoordenTable({
       setError(e instanceof Error ? e.message : 'onbekende fout');
     } finally {
       setSaving(false);
+    }
+  }
+
+  /**
+   * Het woord en zijn voorbeeldzin laten inspreken.
+   *
+   * Per woord en niet per lijst: elke aanroep kost ElevenLabs-credits, en een knop die 410 woorden
+   * in één keer inspreekt is een knop waarmee een misklik geld kost. De route schrijft de twee
+   * URL's zelf en geeft ze terug, dus de state komt hier uit het antwoord en niet uit een gok.
+   */
+  async function generateAudio() {
+    if (!form || form.id <= 0) {
+      setAudioError('Sla het woord eerst op — de opname hangt aan het id.');
+      return;
+    }
+    setGeneratingAudio(true);
+    setAudioError('');
+    try {
+      const res = await fetch('/api/admin/generate-lesson-word-audio', {
+        method: 'POST',
+        headers: { 'content-type': 'application/json' },
+        body: JSON.stringify({ id: form.id }),
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error || 'Onbekende fout');
+      setForm(f => (f ? { ...f, audio_url: data.audio_url, audio_example_url: data.audio_example_url } : f));
+      startTransition(() => router.refresh());
+    } catch (e) {
+      setAudioError(e instanceof Error ? e.message : 'Inspreken mislukt');
+    } finally {
+      setGeneratingAudio(false);
     }
   }
 
@@ -313,6 +360,19 @@ export default function WoordenTable({
       size: 110,
     },
     {
+      id: 'image_url',
+      header: ({ column }) => <DataGridColumnHeader title="Foto" column={column} className={HEADER_CLS} />,
+      // Het duimnagel en niet een vinkje: de docent kijkt hier of de fóto klopt bij het woord, en
+      // dat is precies wat een vinkje niet kan zeggen. Geen `next/image`: dit is een 40px-duim uit
+      // onze eigen bucket, in een tabel die er vijfentwintig van tekent.
+      cell: ({ row }) => (row.original.image_url
+        // eslint-disable-next-line @next/next/no-img-element
+        ? <img src={row.original.image_url} alt="" loading="lazy" className="h-10 w-14 rounded-lg object-cover" />
+        : <span className="text-xs text-on-surface-variant">—</span>),
+      size: 80,
+      enableSorting: false,
+    },
+    {
       id: 'audio',
       header: ({ column }) => <DataGridColumnHeader title="Audio" column={column} className={HEADER_CLS} />,
       cell: ({ row }) => (row.original.audio_url
@@ -347,7 +407,8 @@ export default function WoordenTable({
   });
 
   const hasFilters = !!searchQuery || selectedThemes.length > 0
-    || usageFilter !== 'all' || audioFilter !== 'all' || statusFilter !== 'all';
+    || usageFilter !== 'all' || audioFilter !== 'all' || imageFilter !== 'all'
+    || statusFilter !== 'all';
 
   return (
     <div className={`flex flex-1 flex-col overflow-hidden transition-all duration-300 ${form ? 'pr-[500px]' : ''}`}>
@@ -435,6 +496,13 @@ export default function WoordenTable({
                 onChange={v => setAudioFilter(v as typeof audioFilter)}
               />
               <FilterPopover
+                label="Foto"
+                active={imageFilter !== 'all'}
+                options={[['all', 'Alle'], ['with', 'Met foto'], ['without', 'Zonder foto']]}
+                value={imageFilter}
+                onChange={v => setImageFilter(v as typeof imageFilter)}
+              />
+              <FilterPopover
                 label="Status"
                 active={statusFilter !== 'all'}
                 options={[['all', 'Alle'], ['validated', 'Nagekeken'], ['pending', 'Nog niet nagekeken']]}
@@ -447,7 +515,8 @@ export default function WoordenTable({
                   variant="ghost"
                   onClick={() => {
                     setSearchQuery(''); setSelectedThemes([]);
-                    setUsageFilter('all'); setAudioFilter('all'); setStatusFilter('all');
+                    setUsageFilter('all'); setAudioFilter('all');
+                    setImageFilter('all'); setStatusFilter('all');
                   }}
                 >
                   Wissen
@@ -611,6 +680,13 @@ export default function WoordenTable({
                     className="wdn-field"
                   />
                 </PanelField>
+                <PanelField label="Turks">
+                  <input
+                    value={form.translation_tr ?? ''}
+                    onChange={e => setField('translation_tr', e.target.value)}
+                    className="wdn-field"
+                  />
+                </PanelField>
                 <label className="flex items-center gap-2 text-sm text-on-surface-variant">
                   <input
                     type="checkbox"
@@ -626,11 +702,62 @@ export default function WoordenTable({
                 </p>
               </div>
 
-              {form.audio_url && (
-                <PanelField label="Audio">
-                  <audio controls preload="none" src={form.audio_url} className="w-full" />
-                </PanelField>
-              )}
+              <div className="space-y-2.5 rounded-2xl bg-surface-container-low p-4">
+                <div className="flex items-center justify-between">
+                  <p className="text-xs font-bold tracking-widest text-on-surface-variant uppercase">
+                    Uitspraak
+                  </p>
+                  <button
+                    type="button"
+                    onClick={generateAudio}
+                    disabled={generatingAudio || !form.dutch.trim()}
+                    className="flex items-center gap-1.5 rounded-lg px-2.5 py-1 text-[11px] font-medium text-primary transition-colors disabled:opacity-50"
+                    style={{ background: 'rgba(0, 43, 109, 0.08)' }}
+                  >
+                    <span className={`material-symbols-outlined text-[14px] ${generatingAudio ? 'animate-spin' : ''}`}>
+                      {generatingAudio ? 'autorenew' : form.audio_url ? 'refresh' : 'graphic_eq'}
+                    </span>
+                    {generatingAudio ? 'Bezig…' : form.audio_url ? 'Opnieuw inspreken' : 'Spreek in'}
+                  </button>
+                </div>
+
+                {form.audio_url
+                  ? (
+                    <>
+                      <PanelField label="Het woord">
+                        <audio controls preload="none" src={form.audio_url} className="w-full" />
+                      </PanelField>
+                      {form.audio_example_url && (
+                        <PanelField label="De voorbeeldzin">
+                          <audio controls preload="none" src={form.audio_example_url} className="w-full" />
+                        </PanelField>
+                      )}
+                      {!form.audio_example_url && (
+                        <p className="text-xs text-on-surface-variant">
+                          Alleen het woord is ingesproken — er stond geen voorbeeldzin. Vul die in en
+                          spreek opnieuw in als je hem er ook bij wilt.
+                        </p>
+                      )}
+                    </>
+                  )
+                  : (
+                    <p className="text-xs text-on-surface-variant">
+                      Nog niet ingesproken. Inspreken kost ElevenLabs-credits en gebeurt per woord —
+                      het woord én de voorbeeldzin, in twee losse bestanden.
+                    </p>
+                  )}
+                {audioError && <p className="text-xs font-bold text-error">{audioError}</p>}
+              </div>
+
+              {/* De foto onderaan, zoals op /admin/woordkaarten: het is het enige veld dat een
+                  eigen zoekvlak opent, en dat hoort niet tussen de tekstvelden te staan. */}
+              <WoordImagePicker
+                dutch={form.dutch}
+                translationEn={form.translation_en ?? ''}
+                example={form.example ?? ''}
+                value={form.image_url ?? ''}
+                onChange={url => setField('image_url', url || null)}
+              />
             </>
           )}
         </div>
@@ -678,6 +805,72 @@ export default function WoordenTable({
         .wdn-field::placeholder{color:var(--color-outline)}
         .wdn-error{background:rgba(186,26,26,0.08);border-radius:0.75rem;padding:0.75rem;font-size:0.875rem;font-weight:700;color:var(--color-error)}
       `}</style>
+    </div>
+  );
+}
+
+/**
+ * De foto van het woord — de gedeelde Pexels-picker plus de zoekterm die
+ * `/api/wordcard-pexels-query` eruit maakt.
+ *
+ * Letterlijk dezelfde constructie als `WordcardImagePicker` op /admin/woordkaarten, en met opzet:
+ * die route zet "de fiets / bicycle / Ik ga op de fiets" om in een Engelse fotozoekterm, en die
+ * vraag is hier woord voor woord dezelfde. De bucket is ook dezelfde (`target="wordcard"`) —
+ * beide tabellen tonen hun foto op een kaart aan de kandidaat, dus er is geen tweede bucket nodig.
+ *
+ * Twee kleine componenten en niet één gedeelde: dit zijn vijftien regels waarvan de helft de
+ * kop is, en de tabellen zijn al bewust niet gedeeld. Een derde bestand ertussen om dit te delen
+ * kost meer dan het spaart.
+ */
+function WoordImagePicker({
+  dutch,
+  translationEn,
+  example,
+  value,
+  onChange,
+}: {
+  dutch: string;
+  translationEn: string;
+  example: string;
+  value: string;
+  onChange: (url: string) => void;
+}) {
+  const [suggested, setSuggested] = useState('');
+  const [asked, setAsked] = useState(false);
+
+  /* Bij een ander woord opnieuw vragen: zonder dit houdt de picker de zoekterm van het vorige
+     woord vast, en dan zoekt de docent bij "de huur" nog steeds naar fietsen. */
+  useEffect(() => { setAsked(false); setSuggested(''); }, [dutch]);
+
+  useEffect(() => {
+    if (asked || !dutch.trim()) return;
+    setAsked(true);
+    const fallback = translationEn || dutch;
+    (async () => {
+      try {
+        const res = await fetch(
+          `/api/wordcard-pexels-query?dutch=${encodeURIComponent(dutch)}`
+          + `&translation_en=${encodeURIComponent(translationEn)}`
+          + `&example=${encodeURIComponent(example)}`,
+        );
+        const data = await res.json();
+        setSuggested(data.query || fallback);
+      } catch {
+        setSuggested(fallback);
+      }
+    })();
+  }, [dutch, translationEn, example, asked]);
+
+  return (
+    <div className="space-y-2">
+      <p className="text-xs font-bold tracking-widest text-on-surface-variant uppercase">Afbeelding</p>
+      <ImagePicker
+        urls={value ? [value] : []}
+        max={1}
+        target="wordcard"
+        query={suggested}
+        onChange={urls => onChange(urls[0] ?? '')}
+      />
     </div>
   );
 }

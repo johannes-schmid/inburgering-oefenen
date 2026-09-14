@@ -2577,9 +2577,20 @@ textarea.lei-input { resize: vertical; }
 .wd-bar { height: 6px; border-radius: 999px; overflow: hidden; background: var(--color-surface-container-high); margin-bottom: 1.25rem; }
 .wd-bar > span { display: block; height: 100%; border-radius: 999px; background: var(--color-primary); transition: width 0.3s ease; }
 
+/* ── De woordkaart: foto links, tekst rechts ───────────────────────────────
+   Overgenomen van de KNM-deck (besluit eigenaar, 10-09). Twee dingen zijn hier
+   load-bearing en geen smaak:
+
+   1. Beide kanten in dezelfde grid-cel zou hier niet werken — het beeldpaneel staat
+      búiten de wissel, want de foto blijft staan als de kaart omdraait. De hoogte
+      komt dus van de langste van de twee tekstkanten, en `min-height` houdt hem
+      stabiel zodat de kaart niet onder de duim verspringt.
+   2. `.is-plain` is de kaart zónder foto. Dat is de normale toestand voor een woord
+      dat nog niet gevuld is, dus die variant is niet een uitzondering maar de
+      terugvalvorm: één kolom, gecentreerd, zoals de kaart was vóór de foto's. */
 .wd-card {
-  position: relative; display: flex; flex-direction: column; align-items: center; justify-content: center;
-  width: 100%; min-height: 17rem; padding: 2.25rem 1.75rem 1.75rem; text-align: center; cursor: pointer;
+  position: relative; display: flex; align-items: stretch; width: 100%;
+  overflow: hidden; text-align: start; cursor: pointer;
   background: var(--color-surface-container-lowest); border: none; border-radius: 1.25rem;
   box-shadow: var(--shadow-ambient);
   transition: transform 0.18s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.18s ease;
@@ -2587,31 +2598,113 @@ textarea.lei-input { resize: vertical; }
 .wd-card:hover { transform: translateY(-2px); box-shadow: 0 10px 30px rgba(0, 43, 109, 0.12); }
 .wd-card:focus-visible { outline: 2px solid var(--color-secondary-container); outline-offset: 3px; }
 .wd-card.is-back { background: var(--color-surface-container-low); }
+
+.wd-pane-img { position: relative; flex: 0 0 42%; overflow: hidden; background: var(--color-surface-container); }
+/* `position:absolute` en niet `height:100%`: het paneel is een flexkind waarvan de hoogte uit
+   het tekstpaneel komt, en een foto die zelf hoogte claimt zou die verhouding omdraaien. */
+.wd-pane-img > img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+
+.wd-pane-body {
+  flex: 1 1 auto; min-width: 0; display: flex; flex-direction: column;
+  gap: 0.4rem; padding: 1.75rem 1.75rem 1.5rem; min-height: 19rem;
+}
+/* Zonder foto is de kaart één kolom en staat de tekst gecentreerd, zoals vóór 10-09. */
+.wd-card.is-plain .wd-pane-body { align-items: center; text-align: center; padding-top: 2.25rem; }
+.wd-card.is-plain .wd-foot-row { justify-content: center; }
+
+.wd-spacer { flex: 1 1 auto; min-height: 0.75rem; }
+.wd-foot-row { display: flex; align-items: flex-end; justify-content: space-between; gap: 1rem; flex-wrap: wrap; }
+.wd-foot-row-end { justify-content: flex-end; }
+
+.wd-chips { display: flex; align-items: center; gap: 0.45rem; flex-wrap: wrap; margin-bottom: 0.35rem; }
 .wd-chip {
-  position: absolute; top: 1rem; inset-inline-start: 1rem; border-radius: 999px; padding: 0.15rem 0.65rem;
+  border-radius: 999px; padding: 0.2rem 0.7rem;
   font-size: 0.62rem; font-weight: 800; letter-spacing: 0.08em; text-transform: uppercase;
 }
+.wd-chip-art { background: rgba(0, 43, 109, 0.08); color: var(--color-primary); text-transform: lowercase; letter-spacing: 0; font-size: 0.78rem; }
 .wd-receptief { background: rgba(0, 43, 109, 0.08); color: var(--color-primary); }
 .wd-productief { background: #fcecdd; color: var(--color-secondary); }
 
-.wd-front, .wd-back { display: flex; flex-direction: column; align-items: center; gap: 0.5rem; width: 100%; }
 .wd-word {
-  font-family: var(--font-headline); font-size: clamp(1.9rem, 5vw, 2.6rem); font-weight: 800;
-  letter-spacing: -0.02em; line-height: 1.15; color: var(--color-primary);
+  font-family: var(--font-headline); font-size: clamp(1.8rem, 4.4vw, 2.6rem); font-weight: 800;
+  letter-spacing: -0.02em; line-height: 1.12; color: var(--color-primary); overflow-wrap: anywhere;
 }
 .wd-plural, .wd-frame { font-size: 0.85rem; color: var(--color-on-surface-variant); }
 .wd-frame { font-style: italic; }
 .wd-word-sm {
   font-family: var(--font-headline); font-size: 1.15rem; font-weight: 800; color: var(--color-primary);
-  margin-bottom: 0.25rem;
 }
+
+/* ── De uitspraak ─────────────────────────────────────────────────────────── */
+.wd-speak { display: inline-flex; align-items: center; gap: 0.8rem; cursor: default; }
+.wd-speak-sm { gap: 0.4rem; vertical-align: middle; }
+.wd-speak-body { display: flex; flex-direction: column; gap: 0.4rem; min-width: 0; }
+.wd-speak-label { font-family: var(--font-headline); font-size: 0.85rem; font-weight: 800; color: var(--color-on-surface); }
+
+/* De equalizerknop. De vier staafjes zijn de enige plek waar deze kaart beweegt, en ze bewegen
+   alleen terwijl er geluid is — dat is wat "speelt nu" leesbaar maakt zonder een tweede kleur. */
+.wd-eq {
+  display: inline-flex; align-items: center; justify-content: center; gap: 2.5px;
+  width: 3.1rem; height: 3.1rem; border: none; border-radius: 999px; cursor: pointer;
+  background: var(--color-primary);
+  box-shadow: 0 0 0 4px rgba(0, 43, 109, 0.10);
+  transition: transform 0.18s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.18s ease;
+}
+.wd-eq > span { display: block; width: 3.5px; border-radius: 999px; background: #fff; height: 1.2rem; transform-origin: center; }
+.wd-eq > span:nth-child(1) { transform: scaleY(0.45); }
+.wd-eq > span:nth-child(2) { transform: scaleY(0.9); }
+.wd-eq > span:nth-child(3) { transform: scaleY(0.65); }
+.wd-eq > span:nth-child(4) { transform: scaleY(0.35); }
+.wd-eq:hover { transform: scale(1.05); box-shadow: 0 0 0 5px rgba(0, 43, 109, 0.14); }
+.wd-eq:focus-visible { outline: 2px solid var(--color-secondary-container); outline-offset: 3px; }
+.wd-eq.is-playing > span { animation: wd-eq 0.85s ease-in-out infinite; }
+.wd-eq.is-playing > span:nth-child(2) { animation-delay: 0.13s; }
+.wd-eq.is-playing > span:nth-child(3) { animation-delay: 0.26s; }
+.wd-eq.is-playing > span:nth-child(4) { animation-delay: 0.39s; }
+@keyframes wd-eq { 0%, 100% { transform: scaleY(0.35); } 50% { transform: scaleY(1); } }
+
+/* De kleine variant: op de achterkant naast het woord en naast de voorbeeldzin. Lichte tint in
+   plaats van massief marineblauw — daar is hij een bijzaak naast de tekst, niet de hoofdactie. */
+.wd-speak-sm .wd-eq { width: 1.9rem; height: 1.9rem; gap: 1.6px; background: rgba(0, 43, 109, 0.08); box-shadow: none; }
+.wd-speak-sm .wd-eq > span { width: 2.2px; height: 0.72rem; background: var(--color-primary); }
+
+.wd-speeds { display: flex; gap: 0.4rem; }
+.wd-speed {
+  border-radius: 999px; padding: 0.28rem 0.8rem; font-size: 0.75rem; font-weight: 700; cursor: pointer;
+  background: var(--color-surface-container); color: var(--color-on-surface-variant); border: none;
+  transition: background-color 0.15s ease, color 0.15s ease;
+}
+.wd-speed:hover { background: var(--color-surface-container-high); color: var(--color-on-surface); }
+.wd-speed.is-on { background: var(--color-primary); color: #fff; }
+.wd-speed:focus-visible { outline: 2px solid var(--color-secondary-container); outline-offset: 2px; }
+
+.wd-flip-pill {
+  display: inline-flex; align-items: center; gap: 0.4rem; flex-shrink: 0;
+  border-radius: 999px; padding: 0.4rem 0.8rem;
+  background: var(--color-surface-container); color: var(--color-on-surface-variant);
+  font-size: 0.75rem; font-weight: 700;
+}
+
+@media (max-width: 640px) {
+  /* Gestapeld, en het beeld krijgt een vaste hoogte in plaats van 42% breedte: op een telefoon
+     zou 42% van de breedte een strookje van een foto zijn. */
+  .wd-card { flex-direction: column; }
+  .wd-pane-img { flex: 0 0 9.5rem; }
+  .wd-pane-body { min-height: 0; padding: 1.25rem 1.25rem 1.15rem; }
+  .wd-foot-row { flex-direction: column; align-items: stretch; gap: 1rem; }
+  .wd-flip-pill { align-self: flex-start; }
+}
+
 .wd-meaning { font-size: 1.05rem; line-height: 1.55; color: var(--color-on-surface); max-width: 34ch; }
+/* De voorbeeldzin plus zijn eigen luisterknop, dus een rij en geen tekstblok. `baseline` zou de
+   knop op de laatste regel van een omgebroken zin zetten; `start` houdt hem bij de eerste. */
 .wd-example {
-  margin-top: 0.5rem; font-size: 0.9rem; line-height: 1.6; color: var(--color-on-surface-variant);
-  max-width: 38ch; font-style: italic;
+  display: flex; align-items: flex-start; gap: 0.45rem; margin-top: 0.5rem;
+  font-size: 0.9rem; line-height: 1.6; color: var(--color-on-surface-variant); max-width: 38ch;
 }
+.wd-example-t { font-style: italic; }
 .wd-trans {
-  display: flex; align-items: baseline; justify-content: center; gap: 0.5rem; margin-top: 1rem;
+  display: flex; align-items: baseline; gap: 0.5rem; margin-top: 1rem;
   padding-top: 0.9rem; font-size: 1rem; font-weight: 700; color: var(--color-on-surface);
   /* De enige rand die de no-line-regel toestaat is er hier geen: de scheiding tussen de
      Nederlandse kant en de vertaling is een tintverschil, niet een streep. */
@@ -2621,10 +2714,16 @@ textarea.lei-input { resize: vertical; }
   font-size: 0.6rem; font-weight: 800; letter-spacing: 0.1em; color: var(--color-outline);
 }
 .wd-unreviewed { margin-top: 0.4rem; font-size: 0.68rem; line-height: 1.5; color: var(--color-outline); max-width: 36ch; }
-.wd-hint {
-  display: inline-flex; align-items: center; gap: 0.375rem; margin-top: 1.25rem;
-  font-size: 0.7rem; font-weight: 700; color: var(--color-outline);
+/* "Audio automatisch" — uit tenzij aangezet, dus de uit-stand is de rustige van de twee. */
+.wd-toggle {
+  border-radius: 999px; padding: 0.3rem 0.75rem; border: none; cursor: pointer;
+  background: var(--color-surface-container); color: var(--color-on-surface-variant);
+  font-family: var(--font-body); font-size: 0.72rem; font-weight: 700;
+  transition: background-color 0.15s ease, color 0.15s ease;
 }
+.wd-toggle:hover { background: var(--color-surface-container-high); color: var(--color-on-surface); }
+.wd-toggle.is-on { background: var(--color-primary); color: #fff; }
+.wd-toggle:focus-visible { outline: 2px solid var(--color-secondary-container); outline-offset: 2px; }
 
 .wd-marks { display: grid; grid-template-columns: 1fr 1fr; gap: 0.625rem; margin-top: 1rem; }
 .wd-btn {
@@ -2671,8 +2770,11 @@ textarea.lei-input { resize: vertical; }
 .wd-link { font-size: 0.8rem; font-weight: 700; }
 
 @media (prefers-reduced-motion: reduce) {
-  .wd-card, .wd-btn, .wd-arrow, .wd-bar > span, .wt-upsell { transition: none; }
+  .wd-card, .wd-btn, .wd-arrow, .wd-bar > span, .wd-eq, .wd-speed, .wt-upsell { transition: none; }
   .wd-card:hover, .wt-upsell:hover { transform: none; }
+  .wd-eq:hover { transform: none; }
+  /* De equalizer is de enige animatie op deze kaart; hier staat hij stil op zijn rustvorm. */
+  .wd-eq.is-playing > span { animation: none; }
 }
 
 /* ── De les: uitleg als vormkaarten, opgaven per trap ─────────────────────────

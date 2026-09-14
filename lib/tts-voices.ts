@@ -15,12 +15,16 @@ export const VOICES = voices as Record<VoiceKey, Voice>;
 export const NARRATOR: VoiceKey = 'woman_young';
 
 /**
- * De stem die een les inspreekt — de oudere vrouwenstem, gekozen door de eigenaar (02-09).
+ * De stem van de leerlaag — de oudere vrouwenstem, gekozen door de eigenaar (02-09).
  *
- * Apart van `NARRATOR` en niet in plaats daarvan. Die stem leest *vragen* en *woordkaarten*
- * voor: neutraal materiaal waar de stem niemand hoort te zijn. De narratie is het tegendeel —
- * daar staat een docent naast je die iets uitlegt — en de twee door elkaar halen zou de
- * woordkaarten opeens laten klinken als een les.
+ * Apart van `NARRATOR` en niet in plaats daarvan. Die stem leest de *examenvragen* en de *366
+ * KNM-woordkaarten* voor: materiaal waar de stem niemand hoort te zijn.
+ *
+ * Sinds 14-09 spreekt deze stem ook de **leerwoorden** in (`lesson_words`, via
+ * `/api/admin/generate-lesson-word-audio` en `scripts/lesson-content/backfill-word-media.mjs`),
+ * nadat de eigenaar vijf varianten had beluisterd. De grens loopt dus langs de laag en niet
+ * langs de soort materiaal: alles in een cursus klinkt als dezelfde docent, de KNM-kaarten en de
+ * examenvragen houden `NARRATOR`.
  */
 export const LESSON_NARRATOR: VoiceKey = 'woman_older';
 

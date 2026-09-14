@@ -4275,3 +4275,97 @@ driften, en ze driftten alle vijf.
 **Outcome:** SUCCESS — `tsc`, `next build` en 274 unit tests groen.
 **What worked / went wrong:** De limietcheck las `planFromMetadata()`. Sinds de per-module prijzen schrijft niets meer `plan`, dus een klant die `a2:schrijven` had gekocht las als `free` en kreeg na tien opdrachten de paywall — precies de fout die `ownsModule` in de spelerroute al had gesloten.
 **Lesson:** Elke betaalpoort leest `ownsModule`/`ownsKnm`, nooit `plan`. Grep op `planFromMetadata` bij elke nieuwe gate.
+
+## 2026-09-10 — De leerlaag-woordkaart krijgt de KNM-kaart: foto, uitspraak, drie talen
+**Changed:** `supabase/migrations/20260910130000_lesson_word_media.sql` (`lesson_words.image_url`,
+`audio_example_url`, `translation_tr`, lokaal toegepast met psql) · `lib/lessons/words.ts`
+(`WordCardLang` wordt en/ar/tr, `WORD_CARD_LANG_LABEL`, `imageUrl`, `exampleAudioUrl`) ·
+`lib/lessons/words-server.ts` · `app/[locale]/(app)/dashboard/_components/WordDeck.tsx` (foto op de
+voorkant, `SayButton` voor woord én zin, taalknop loopt rond) · `app/globals.css` (`.wd-img`,
+`.wd-say`) · `app/api/admin/generate-lesson-word-audio/route.ts` (nieuw, mét `requireAdmin()`) ·
+`lib/admin/words.ts` · `app/[locale]/(admin)/admin/woorden/_components/WoordenTable.tsx`
+(fotokolom + -filter, uitspraakblok, Turks, `WoordImagePicker`) ·
+`scripts/lesson-content/translate-words.mjs` (Turks erbij) · `scripts/lesson-content/seed.mjs`
+(noot: de mediakolommen horen niet in de payload) · `messages/{nl,en,ar}.json`.
+**Outcome:** SUCCESS — `tsc` schoon, 537/537 unit, `next build` schoon, vier schermafdrukken gelezen
+op 390 en 1440 (voorkant, achterkant, adminpaneel).
+**What worked:** de media *lenen* van bestaande KNM-kaarten om de nieuwe kaart te kunnen zien
+zonder één ElevenLabs-credit of Pexels-zoekopdracht — vier rijen in de lokale stack, en na de
+afdrukken teruggezet op `null`. Een lege kolom is niet te fotograferen, en een echte foto verzinnen
+zou de dataset vervuilen met een plaatje van muntgeld op *huurcontract*.
+**What went wrong (bijna):** de eerste versie zette de nieuwe mediakolommen in de payload van
+`seed.mjs` "voor de volledigheid". Dat zou elke re-seed elke foto en elke opname hebben gewist —
+dezelfde vorm als de re-seed die op 09-09 stil 51 vrijgegeven lessen op `pending` zette. Nu staat
+er een noot op die plek in plaats van de kolommen.
+**Lesson:** het argument dat Turks weglaat ("het portaal heeft geen tr-locale") ging over
+*paginavertaling* en niet over *woordvertaling*, en dat verschil was in de vorige beslissing
+onzichtbaar omdat één woord — "vertaling" — beide dekte. De taalknop staat óp de kaart, dus hij is
+los van de locale van de pagina: de KNM-deck deed dat al met en/ar/tr in een Nederlandse interface.
+Een besluit dat een taal uitsluit hoort te zeggen wélke van de twee soorten vertaling het bedoelt,
+anders geldt het per ongeluk voor allebei.
+
+## 2026-09-10 — De woordkaart gevuld: Pexels-foto's, ElevenLabs-uitspraak, en de KNM-vorm
+**Changed:** `scripts/lesson-content/backfill-word-media.mjs` (nieuw — de KNM-fotopijplijn uit
+`knm-website/scripts/backfill-wordcard-images.mjs`, mét de audio erbij) ·
+`app/[locale]/(app)/dashboard/_components/WordDeck.tsx` (herschreven naar de KNM-vorm: foto links,
+tekst rechts, *Spreek uit* met Normaal/Langzaam, `SpeakBlock`) · `app/globals.css` (de tweepaneels
+kaart, `.wd-eq`, `.wd-speed`, `.wd-toggle`) · `messages/{nl,en,ar}.json` (vier sleutels) ·
+`.gitignore`.
+**Outcome:** SUCCESS voor de vorm en de pijplijn; de vulling liep nog toen dit werd geschreven.
+`tsc` schoon, 537/537 unit, `next build` schoon, vier schermafdrukken gelezen op 390 en 1440.
+**What worked:** eerst `--limit 3 --apply`, dan de bytes uit Storage terugtrekken en er `file` op
+zetten — 800x533 WebP en 128kbps MP3 — vóór er 410 woorden door dezelfde pijplijn gingen. En de
+vorm kopiëren uit `knm-website` in plaats van hem opnieuw ontwerpen: de kandidaat die van KNM naar
+A2 loopt hoort niet halverwege een andere kaart te leren lezen.
+**What went wrong:** 11 van de 126 Lezen-woorden vielen om op `fetch failed`, en dat waren geen
+API-fouten maar mijn eigen machine: `next build`, de dev-server, de schermafdrukken en de
+vulscript-run zaten tegelijk op dezelfde verbinding. Het script is idempotent, dus opnieuw draaien
+pakt precies die elf op — maar een vulronde hoort niet naast een build te lopen.
+**Lesson (de belangrijkste):** een cache op `id` is in dit project een stille foutbron. De eerste
+versie zette de fotozoektermen weg onder `level:onderdeel:id`, en ids komen per omgeving uit een
+eigen seed-run — dus een productierun zou de zoekterm van een *ánder* woord hebben gepakt en er
+een nette, verkeerde foto bij gezet hebben. Geen foutmelding, geen lege kaart, alleen een foto van
+iets anders. De cache staat nu op `(niveau, onderdeel, dutch)`, de echte sleutel van de tabel.
+Dezelfde vorm als de KNM-val van 09-02: wie in `lesson_words` op id sleutelt, sleutelt op iets dat
+alleen binnen één database iets betekent.
+**Lesson (bijkomend):** *Langzaam* is `playbackRate = 0.6` op hetzelfde bestand, niet een tweede
+opname. Een tweede TTS-run op lagere snelheid zou 410 × 2 opnames extra kosten voor iets wat de
+browser gratis doet.
+
+## 2026-09-14 — De stem van de leerwoorden: oudere vrouw, en een los woord krijgt context mee
+**Changed:** `lib/tts-voices.ts` (de kop van `LESSON_NARRATOR`), `app/api/admin/generate-lesson-word-audio/route.ts` en `scripts/lesson-content/backfill-word-media.mjs` — stem `woman_young` → `woman_older`, `stability` 0.45 → 0.90, snelheid 0.9 → 1.0, en een los woord gaat als `woord.` de API in met `previous_text`/`next_text` eromheen. Alle 410 woorden lokaal opnieuw ingesproken (820 mp3's, 0 mislukt).
+**Outcome:** SUCCESS
+**What worked / went wrong:** De eigenaar hoorde "een rare stem met een raar accent". Dat bleken twee losse oorzaken. De stem was er één: `NARRATOR` staat op de jonge vrouw en dat is de stem van de examenvragen en de KNM-kaarten, niet die van de leerlaag. Het accent was de tweede en die zat niet in de stem: `eleven_multilingual_v2` leidt de taal af uit de tékst, en één woord zonder context is te weinig — *gezellig* en *uitnodiging* kwamen er met Engelse klinkers uit. `language_code: 'nl'` is de voor de hand liggende reparatie en werkt hier niet: de API negeert hem op `multilingual_v2` en ondersteunt hem alleen op turbo/flash. Wat wél werkte zijn `previous_text` en `next_text` — tekst die het model meeleest maar niet uitspreekt. Vijf varianten gegenereerd (baseline, alleen-stem, twee met context, één turbo met `language_code`) op dezelfde vijf woorden met ui/ij/g/sch-klanken; de eigenaar koos D.
+**Lesson:** Een klacht over "de stem" kan twee oorzaken hebben die los van elkaar staan — wie hem is, en wat het model over de tekst weet. Genereer varianten die precies één ding tegelijk veranderen op hetzelfde materiaal, anders kiest de luisteraar een bundel in plaats van een oorzaak.
+
+## 2026-09-14 — Een instelling op twee plekken is twee plekken die uit elkaar lopen
+**Changed:** kruisverwijzende koppen in `generate-lesson-word-audio/route.ts` en `backfill-word-media.mjs`.
+**Outcome:** SUCCESS
+**What worked / went wrong:** Dezelfde vier TTS-instellingen staan in een route (de knop per woord in `/admin/woorden`) en in een `.mjs` (de bulkrun). Een `.mjs` kan de TypeScript-constanten niet importeren, dus delen kan hier niet. Bij het wijzigen was de bulkrun de vanzelfsprekende plek en de route bijna vergeten — en dan klinkt een woord dat de docent later opnieuw inspreekt anders dan de andere 409, zonder dat er iets faalt.
+**Lesson:** Waar dezelfde beslissing verplicht op twee plekken staat, zet in beide koppen het pad van de ander mét de reden. Een gedeelde constante is beter, maar een verwijzing is wat er overblijft als de taalgrens dat onmogelijk maakt.
+
+## 2026-09-14 — "Je vaardigheden": één zwaktekaart voor alle onderdelen
+**Changed:** `data/vaardigheden.ts` (nieuw — 5 vaardigheden voor Lezen, 5 voor Luisteren, elk
+concept precies één keer), `lib/vaardigheden.ts` (pure rollup), `lib/vaardigheden-server.ts`
+(query + rubriek-adapter), `components/exam/SkillWeakness.tsx` + `.sw-*` in `app/globals.css`,
+aangesloten in `dashboard/[level]/[skill]/page.tsx` in plaats van `CriterionProgress`. Twee
+testbestanden: `tests-unit/vaardigheden.test.ts` en `vaardigheden-rollup.test.ts`.
+**Outcome:** SUCCESS — 554 tests groen, `tsc` schoon, build ✓, kaart gefotografeerd op 390 en 1440.
+**What worked / went wrong:**
+- De hele machinerie lag er al en was alleen niet verbonden: `question_concepts`,
+  `open_task_concepts` en `tag-questions.mjs` bestaan sinds 28-08 en **zijn nooit gevuld**. Daardoor
+  gaf `fetchConceptAdvice` altijd `[]` en bewoog `SkillStatBar` niet — die leest
+  `user_concept_mastery`, en alleen `/api/lesson-answer` schrijft daarin.
+- 74 concepten zijn geen kaart. De vaardighedenlaag (4–5 koppen) is wat Lezen en Luisteren
+  leesbaar maakt, en het wóórd bestond al: `CriterionProgress` heet op het scherm "Je
+  vaardigheden". Geen nieuwe term in de taxonomie van §3.
+- De testset liet eerst niets zien: **RLS verbergt vragen van ongepubliceerde examens**, dus van de
+  36 ingevoerde antwoorden kwamen er 12 terug en bleef elke vaardigheid onder de drempel. Met de
+  service key gaf dezelfde query wél 36 rijen — dat verschil is precies de val.
+- Daarna rendeerde de kaart ongestyled: **stale Turbopack CSS-chunk**, alweer. `curl` op de
+  chunk gaf `les-card` wel en `sw-bar-fill` niet; `rm -rf .next/dev` + herstart loste het op.
+**Lesson:** Een lege koppeltabel is onzichtbaar op elke manier die je normaal zou controleren — de
+code compileert, de query slaagt, het scherm is gewoon leeg. Tel bij zo'n feature éérst de rijen
+(`select count(*) from question_concepts`) voordat je de leesweg gaat debuggen. En verifieer een
+RLS-afhankelijke query met de sessie van de gebruiker, nooit alleen met de service key: die twee
+geven hier verschillende antwoorden, en alleen de eerste is wat de kandidaat ziet.

@@ -18,8 +18,9 @@ import {
 } from './words';
 
 const WORD_COLS =
-  'id, theme, dutch, article, plural, frame, meaning_nl, example, usage, audio_url, ' +
-  'translation_en, translation_ar, translations_reviewed, sort_order';
+  'id, theme, dutch, article, plural, frame, meaning_nl, example, usage, ' +
+  'image_url, audio_url, audio_example_url, ' +
+  'translation_en, translation_ar, translation_tr, translations_reviewed, sort_order';
 
 type Row = {
   id: number;
@@ -31,9 +32,12 @@ type Row = {
   meaning_nl: string;
   example: string | null;
   usage: string;
+  image_url: string | null;
   audio_url: string | null;
+  audio_example_url: string | null;
   translation_en: string | null;
   translation_ar: string | null;
+  translation_tr: string | null;
   translations_reviewed: boolean | null;
   sort_order: number | null;
 };
@@ -51,8 +55,10 @@ function toWord(r: Row, status: WordStatus): LessonWord {
     // De CHECK op de kolom laat maar twee waarden toe; de cast is hier de grens tussen de
     // database en het type, niet een aanname.
     usage: r.usage === 'productief' ? 'productief' : 'receptief',
+    imageUrl: r.image_url,
     audioUrl: r.audio_url,
-    translations: { en: r.translation_en, ar: r.translation_ar },
+    exampleAudioUrl: r.audio_example_url,
+    translations: { en: r.translation_en, ar: r.translation_ar, tr: r.translation_tr },
     translationsReviewed: r.translations_reviewed ?? false,
     status,
   };

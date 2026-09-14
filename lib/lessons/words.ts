@@ -17,7 +17,23 @@ export type WordStatus = 'unseen' | 'seen' | 'learning' | 'known';
 
 export const WORD_STATUSES: WordStatus[] = ['unseen', 'seen', 'learning', 'known'];
 
-export type WordCardLang = 'en' | 'ar';
+/**
+ * De drie talen op de kaart, en ze staan los van de locale van de pagina.
+ *
+ * Turks hoort erbij om dezelfde reden als bij de KNM-deck: de kaart is de plek waar een kandidaat
+ * zijn eigen taal vindt terwijl de interface Nederlands blijft. Het portaal heeft geen tr-locale
+ * en dat verandert hier niets — `messages/tr.json` bestaat niet en hoeft niet te bestaan.
+ */
+export type WordCardLang = 'en' | 'ar' | 'tr';
+
+export const WORD_CARD_LANGS: WordCardLang[] = ['en', 'ar', 'tr'];
+
+/** Het eigen woord van elke taal, want een taalknop in het Nederlands helpt niemand. */
+export const WORD_CARD_LANG_LABEL: Record<WordCardLang, string> = {
+  en: 'English',
+  ar: 'العربية',
+  tr: 'Türkçe',
+};
 
 export type LessonWord = {
   id: number;
@@ -32,7 +48,23 @@ export type LessonWord = {
   meaningNl: string;
   example: string | null;
   usage: 'receptief' | 'productief';
+  /**
+   * De foto, of null. Zelfde rol als op een KNM-kaart: de voorkant is dan het beeld plus het
+   * woord in plaats van alleen het woord.
+   *
+   * Null is de normale toestand voor een net geschreven woord en geen fout — de kaart valt terug
+   * op de tekstvoorkant die hij altijd had, en niet op een grijs vlak.
+   */
+  imageUrl: string | null;
+  /** De uitspraak van het woord zelf. */
   audioUrl: string | null;
+  /**
+   * De uitspraak van de voorbeeldzin, los van het woord.
+   *
+   * Twee sporen en niet één bestand: klemtoon en `frame` (*zich melden bij*) zijn pas hoorbaar in
+   * een zin, en wie het woord nog een keer wil horen hoort niet de hele zin af te wachten.
+   */
+  exampleAudioUrl: string | null;
   /**
    * Machinaal gemaakte vertalingen, per taal, of null als die er niet is.
    *

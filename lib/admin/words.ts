@@ -27,11 +27,14 @@ export type AdminWord = {
   meaning_nl: string;
   example: string | null;
   usage: 'receptief' | 'productief';
+  image_url: string | null;
   audio_url: string | null;
+  audio_example_url: string | null;
   sort_order: number;
   review_status: 'pending' | 'validated';
   translation_en: string | null;
   translation_ar: string | null;
+  translation_tr: string | null;
   translations_reviewed: boolean;
 };
 
@@ -42,7 +45,7 @@ export async function fetchAdminWords(level: Level, onderdeel: SkillSlug): Promi
       .from('lesson_words')
       // Als letterlijke string en niet als constante: de gegenereerde Supabase-types parsen de
       // selectie op typeniveau, en een variabele wordt daar een `GenericStringError`.
-      .select('id, level, onderdeel, theme, dutch, article, plural, frame, meaning_nl, example, usage, audio_url, sort_order, review_status, translation_en, translation_ar, translations_reviewed')
+      .select('id, level, onderdeel, theme, dutch, article, plural, frame, meaning_nl, example, usage, image_url, audio_url, audio_example_url, sort_order, review_status, translation_en, translation_ar, translation_tr, translations_reviewed')
       .eq('level', level)
       .eq('onderdeel', onderdeel)
       .order('theme')

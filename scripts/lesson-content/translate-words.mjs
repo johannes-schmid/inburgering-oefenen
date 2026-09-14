@@ -1,5 +1,5 @@
 /**
- * Vertaalt de woorden van `lesson_words` naar Engels en Arabisch.
+ * Vertaalt de woorden van `lesson_words` naar Engels, Arabisch en Turks.
  *
  * ── WAT HIER MACHINAAL IS, EN WAT NIET ───────────────────────────────────────
  * De Nederlandse kant van een woordkaart is van de docent: het woord, het lidwoord, het meervoud,
@@ -25,6 +25,14 @@
  * Zonder `--force` worden alleen woorden zonder Engelse vertaling opgehaald, dus een tweede run
  * na een afgebroken eerste kost niets. `--dry` schrijft niets en print de eerste vijf.
  *
+ * ── WAAROM TURKS ERBIJ IS GEKOMEN (10-09) ────────────────────────────────────
+ * Het portaal heeft drie locales (nl/en/ar) en geen Turkse, en dat was de reden dat Turks er niet
+ * bij zat. Maar de taalknop staat óp de kaart en niet op de pagina: een Turkse kandidaat leest de
+ * interface in het Nederlands of Engels en wil zijn woord in het Turks — precies hoe de 366
+ * KNM-kaarten het al deden, die alle drie de kolommen gevuld hebben. `--force` is dus wat de 126
+ * bestaande vertalingen een Turkse kant geeft; zonder die vlag worden ze overgeslagen, want hun
+ * `translation_en` is al gevuld.
+ *
  * Schrijft standaard naar de **lokale** stack: `loadEnv` leest `.env.development.local` er
  * bovenop, precies zoals de rest van `scripts/`. Naar productie schrijven kost een expliciete
  * `--production`, en het script zegt welke van de twee het is voordat het begint.
@@ -47,7 +55,7 @@ const SCHEMA = {
       items: {
         type: 'object',
         additionalProperties: false,
-        required: ['dutch', 'en', 'ar'],
+        required: ['dutch', 'en', 'ar', 'tr'],
         properties: {
           dutch: {
             type: 'string',
@@ -65,13 +73,19 @@ const SCHEMA = {
               'De Arabische vertaling van het woord zelf, in Arabisch schrift. Modern Standaard ' +
               'Arabisch. Geen transliteratie, geen uitleg.',
           },
+          tr: {
+            type: 'string',
+            description:
+              'De Turkse vertaling van het woord zelf. Eén woord of een korte woordgroep, met de ' +
+              'Turkse diakritieken (ç ğ ı ö ş ü). Geen uitleg tussen haakjes.',
+          },
         },
       },
     },
   },
 };
 
-const SYSTEM = `Je vertaalt Nederlandse woorden uit een NT2-woordenlijst (niveau A2/B1) naar Engels en Arabisch.
+const SYSTEM = `Je vertaalt Nederlandse woorden uit een NT2-woordenlijst (niveau A2/B1) naar Engels, Arabisch en Turks.
 
 Je krijgt per woord: het woord, het lidwoord, de betekenis in eenvoudig Nederlands en een voorbeeldzin.
 
@@ -83,6 +97,9 @@ Regels:
 - Bij een samenstelling die in het Engels geen los woord heeft, geef een korte woordgroep
   ("rental contract"), niet een omschrijving van een halve zin.
 - Arabisch in Arabisch schrift, Modern Standaard Arabisch, zonder klinkertekens.
+- Turks met zijn eigen diakritieken: kira, sözleşme, belediye. Een Turkse vertaling zonder ç, ğ,
+  ı, ö, ş of ü kán goed zijn, maar een ontbrekend accent op een woord dat er een heeft is fout.
+- Bij een Turks werkwoord: de infinitief op -mek of -mak ("kaydolmak").
 - Geef exact evenveel items terug als je binnenkreeg, in dezelfde volgorde, met "dutch" letterlijk
   overgenomen.`;
 
@@ -96,6 +113,14 @@ const has = name => process.argv.includes(`--${name}`);
 
 /** Arabisch schrift, zodat een teruggevallen Latijnse transliteratie niet stil de database in gaat. */
 const ARABIC = /[؀-ۿ]/;
+
+/**
+ * Turks heeft geen eigen schrift, dus er is hier niets te controleren behalve aanwezigheid.
+ *
+ * Expliciet géén regel die Latijnse tekens buiten het Turkse alfabet afkeurt: *q*, *w* en *x*
+ * komen voor in leenwoorden (*taksi* niet, maar *faks* en *WhatsApp* wel), en een validator die
+ * correcte uitvoer afkeurt maakt de dataset slechter — zie de noot bij `en` hieronder.
+ */
 
 function validate(out, batch) {
   const problems = [];
@@ -111,6 +136,7 @@ function validate(out, batch) {
     if (!tr.en?.trim()) problems.push(`${at}: geen Engelse vertaling`);
     if (!tr.ar?.trim()) problems.push(`${at}: geen Arabische vertaling`);
     else if (!ARABIC.test(tr.ar)) problems.push(`${at}: "${tr.ar}" staat niet in Arabisch schrift`);
+    if (!tr.tr?.trim()) problems.push(`${at}: geen Turkse vertaling`);
     // Er is hier géén regel die "en gelijk aan dutch" afkeurt, en dat is een gerepareerde fout:
     // *diploma*, *container*, *specialist* en *taxi* zíjn in het Engels hetzelfde woord. Die regel
     // dwong drie batches tot een tweede poging waarin het model een slechter synoniem verzon om
@@ -197,7 +223,9 @@ async function main() {
       maxTokens: 8000,
     });
 
-    out.translations.forEach((tr, k) => done.push({ id: batch[k].id, en: tr.en.trim(), ar: tr.ar.trim() }));
+    out.translations.forEach((t, k) => done.push({
+      id: batch[k].id, en: t.en.trim(), ar: t.ar.trim(), tr: t.tr.trim(),
+    }));
     console.log(`  batch ${n}/${total} klaar (${done.length}/${words.length})`);
   }
 
@@ -205,7 +233,7 @@ async function main() {
     console.log('\n--dry: niets geschreven. De eerste vijf:');
     for (const d of done.slice(0, 5)) {
       const w = words.find(x => x.id === d.id);
-      console.log(`  ${w.dutch} → ${d.en} / ${d.ar}`);
+      console.log(`  ${w.dutch} → ${d.en} / ${d.ar} / ${d.tr}`);
     }
     return;
   }
@@ -218,6 +246,7 @@ async function main() {
       await db.patch('lesson_words', `id=eq.${d.id}`, {
         translation_en: d.en,
         translation_ar: d.ar,
+        translation_tr: d.tr,
         translations_reviewed: false,
       });
       written++;

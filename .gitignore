@@ -53,3 +53,6 @@ scripts/lesson-content/.generated/
 
 # Walkthrough recordings — local review artefacts, never committed
 temporary_walkthroughs/
+
+# De fotozoektermen van backfill-word-media.mjs — een cache, geen bron.
+.word-image-queries.json

@@ -425,6 +425,7 @@ a session, append to it at the end.
 | `stt-token` | mints a single-use ElevenLabs realtime token; the key never reaches the browser |
 | `generate-stimulus-audio` | two-voice Luisteren audio from `script` + `voice_cast` |
 | `generate-question-audio` / `generate-wordcard-audio` / `admin/generate-lesson-audio` | other TTS surfaces |
+| `admin/generate-lesson-word-audio` | the leerlaag word card's Dutch word + example sentence; **has `requireAdmin()`** |
 | `mollie-checkout` / `mollie-webhook` / `payment-status` / `checkout-modules` | payment + entitlement |
 | `cancel-subscription` / `reconcile-payments` | cancels live subscriptions; sets `modules_until` |
 | `submit-results` / `claim-submissions` | anon results mail + campaign queue; links them to an account |
