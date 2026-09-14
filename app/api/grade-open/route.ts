@@ -6,7 +6,7 @@ import type { Level } from '@/data/skills';
 import { gradeOpenAnswer, type FewShotExample, type GradeTask } from '@/lib/ai/grade';
 import { transcribeRecording } from '@/lib/ai/transcribe';
 import { providerOf, recordAiUsage } from '@/lib/ai/usage';
-import { checkGradingAllowed, clientIp, logGradeAttempt } from '@/lib/grading-limits';
+import { checkGradingAllowed, clientIp, coversSkill, logGradeAttempt } from '@/lib/grading-limits';
 
 /**
  * Grade one open submission against the docent's rubric.
@@ -39,7 +39,16 @@ import { checkGradingAllowed, clientIp, logGradeAttempt } from '@/lib/grading-li
  * re-grade from the review inbox.
  */
 
+/**
+ * Hoe vaak dezelfde opdracht opnieuw mag worden nagekeken.
+ *
+ * Voor de gratis laag is drie genoeg voor een herkansing plus een herziening na de feedback; daarna
+ * is het een loop. Wie het onderdeel heeft gekocht mag dezelfde opdracht blijven herschrijven —
+ * dat is oefenen, en het was een stille 429 voor de kandidaat die een examen voor de derde keer
+ * deed zonder `attempt_id` (dan telt de teller over álle zittingen samen).
+ */
 const MAX_GRADES_PER_TASK = 3;
+const MAX_GRADES_PER_TASK_PAID = 25;
 const FEW_SHOT_LIMIT = 4;
 const RECORDING_BUCKET = 'speaking-submissions';
 
@@ -147,6 +156,9 @@ export async function POST(request: Request) {
   // nullable — `startExamAttempt` can fail, and the anonymous-taster path never sets it — and an
   // `.eq('attempt_id', null)` would have matched nothing, so the cap silently did not exist for
   // exactly the submissions least likely to be well-formed.
+  const paidModule = coversSkill(user.user_metadata, raw.exams.level, raw.skill);
+  const perTaskCap = paidModule ? MAX_GRADES_PER_TASK_PAID : MAX_GRADES_PER_TASK;
+
   if (!force) {
     let query = supabase
       .from('open_submissions')
@@ -161,10 +173,10 @@ export async function POST(request: Request) {
 
     const { count } = await query;
 
-    if ((count ?? 0) >= MAX_GRADES_PER_TASK) {
+    if ((count ?? 0) >= perTaskCap) {
       return NextResponse.json(
         {
-          error: `Je kunt deze opdracht maximaal ${MAX_GRADES_PER_TASK} keer laten nakijken.`,
+          error: `Je kunt deze opdracht maximaal ${perTaskCap} keer laten nakijken.`,
           code: 'grade_limit',
         },
         { status: 429 }

@@ -59,13 +59,14 @@ export const STATE_PRESETS: { id: StatePreset; label: string; hint: string }[] =
 export const DEV_FLOW_PARAM = 'devFlow';
 
 /** Phases of the exam player (`components/exam/ExamShell.tsx`). */
-export type ExamFlow = 'mid' | 'results_pass' | 'results_fail' | 'results_empty';
+export type ExamFlow = 'mid' | 'grading' | 'results_pass' | 'results_fail' | 'results_empty';
 
 /** Phases of the free taster (`app/[locale]/(main)/oefenen/[skill]/FreePracticeEngine.tsx`). */
 export type TasterFlow = 'gate' | 'results_pass' | 'results_fail' | 'email_sent';
 
 export function examFlow(value: string | null): ExamFlow | null {
-  return value === 'mid' || value === 'results_pass' || value === 'results_fail' || value === 'results_empty'
+  return value === 'mid' || value === 'grading' || value === 'results_pass'
+    || value === 'results_fail' || value === 'results_empty'
     ? value
     : null;
 }
@@ -126,6 +127,7 @@ export const DEV_FLOWS: DevFlowGroup[] = [
       { id: 'exam-knm-mid',  label: 'KNM — midden in het examen', hint: 'helft beantwoord, klok stil',        href: `/oefenexamen/knm/1?${DEV_FLOW_PARAM}=mid`,          auth: true },
       { id: 'exam-pass',     label: 'A2 Lezen — uitslag geslaagd', hint: 'vereist geseede A2-content',        href: `/oefenexamen/a2/lezen/1?${DEV_FLOW_PARAM}=results_pass`, auth: true },
       { id: 'exam-fail',     label: 'A2 Lezen — uitslag gezakt',   hint: 'vereist geseede A2-content',        href: `/oefenexamen/a2/lezen/1?${DEV_FLOW_PARAM}=results_fail`, auth: true },
+      { id: 'exam-grading',  label: 'Nakijkscherm',                hint: 'tussen inleveren en uitslag · vereist A2-content',    href: `/oefenexamen/a2/spreken/1?${DEV_FLOW_PARAM}=grading`,         auth: true },
       { id: 'exam-write',    label: 'Schrijven — ingeleverd',      hint: 'uitslag zonder nakijkresultaat · vereist A2-content', href: `/oefenexamen/a2/schrijven/1?${DEV_FLOW_PARAM}=results_empty`, auth: true },
       { id: 'exam-speak',    label: 'Spreken — ingeleverd',        hint: 'idem, zonder opnames · vereist A2-content',           href: `/oefenexamen/a2/spreken/1?${DEV_FLOW_PARAM}=results_empty`,   auth: true },
     ],

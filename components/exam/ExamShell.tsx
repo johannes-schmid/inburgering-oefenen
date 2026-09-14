@@ -30,7 +30,18 @@ import RubricFeedback, {
 
 import { DEV_FLOW_PARAM, devToolsEnabled, examFlow } from '@/lib/dev-tools';
 
-type Phase = 'intro' | 'part' | 'exam' | 'results';
+/**
+ * `grading` zit tussen inleveren en de uitslag, en alleen bij een rubriekonderdeel.
+ *
+ * Vóór 14-09 sprong het scherm meteen naar `results` en werd er ónder die uitslag nog genakeken.
+ * De kandidaat zag dan "Je antwoorden zijn opgeslagen" zonder score — `openResultFrom` houdt de
+ * score terug zolang één beantwoorde opdracht niet is nagekeken — en had geen enkele reden om te
+ * blijven wachten. Nu is het wachten zelf een scherm, met een teller erbij.
+ */
+type Phase = 'intro' | 'part' | 'exam' | 'grading' | 'results';
+
+/** Hoeveel opdrachten tegelijk worden nagekeken bij het inleveren. */
+const GRADE_CONCURRENCY = 3;
 
 /**
  * Whether feedback is shown during the sitting.
@@ -144,6 +155,10 @@ export default function ExamShell({ content, canSeeExplanations }: Props) {
   const { exam, parts, stimuli, standalone, tasks, sectionNames } = content;
   const supabase = useMemo(() => createClient(), []);
   const isOpenSkill = exam.skill === 'schrijven' || exam.skill === 'spreken';
+  // Terug naar het onderdeel waar dit examen bij hoort, niet naar het hoofddashboard.
+  const dashboardHref = exam.level
+    ? ({ pathname: '/dashboard/[level]/[skill]', params: { level: exam.level, skill: exam.skill } } as const)
+    : ('/dashboard/knm' as const);
 
   const steps = useMemo<Step[]>(() => {
     if (isOpenSkill) return tasks.map(task => ({ kind: 'task' as const, task, partId: task.part_id }));
@@ -174,6 +189,9 @@ export default function ExamShell({ content, canSeeExplanations }: Props) {
   const [feedbackMode, setFeedbackMode] = useState<FeedbackMode>('practice');
   /** task id → its grade. Populated as the candidate presses "Nakijken", or at submit. */
   const [grades, setGrades] = useState<Record<number, TaskGrade>>({});
+  /** De teller van het nakijkscherm: hoeveel van hoeveel zijn klaar. */
+  const [gradingProgress, setGradingProgress] = useState({ done: 0, total: 0 });
+  const [regrading, setRegrading] = useState(false);
 
   const secondsRef = useRef(exam.duration_seconds);
   const timerRef = useRef<ReturnType<typeof setInterval> | null>(null);
@@ -213,6 +231,13 @@ export default function ExamShell({ content, canSeeExplanations }: Props) {
     if (!devToolsEnabled()) return;
     const flow = examFlow(new URLSearchParams(window.location.search).get(DEV_FLOW_PARAM));
     if (!flow || steps.length === 0) return;
+
+    if (flow === 'grading') {
+      // Alleen het wachtscherm zelf; er wordt niets nagekeken en niets opgeslagen.
+      setGradingProgress({ done: 9, total: 14 });
+      setPhase('grading');
+      return;
+    }
 
     if (flow === 'results_empty') {
       // Ingeleverd, nog niet nagekeken — the state an open skill sits in between submitting
@@ -353,7 +378,13 @@ export default function ExamShell({ content, canSeeExplanations }: Props) {
     const passed = pct >= exam.pass_threshold_pct;
     const attempt = attemptRef.current;
 
-    setPhase('results');
+    // Bij een rubriekonderdeel wordt er na het inleveren nog nagekeken, en dat duurt. Het
+    // nakijkscherm gaat er dus vóór — anders leest een uitslag zonder score als een kapotte pagina.
+    const pendingAtSubmit = isOpenSkill && userId
+      ? tasks.filter(t => hasAnswerFor(t.id) && gradesRef.current[t.id]?.state !== 'graded')
+      : [];
+    setGradingProgress({ done: 0, total: pendingAtSubmit.length });
+    setPhase(pendingAtSubmit.length > 0 ? 'grading' : 'results');
 
     if (userId) {
       if (!isOpenSkill) {
@@ -382,12 +413,24 @@ export default function ExamShell({ content, canSeeExplanations }: Props) {
       } else {
         // Grade anything not already graded. In Oefenmodus most tasks are done by now; in
         // Examenmodus none are, which is the whole point of that mode.
-        for (const task of tasks) {
-          if (!hasAnswerFor(task.id)) continue;
-          const existing = gradesRef.current[task.id];
-          if (existing?.state === 'graded') continue;
-          await gradeTask(task);
-        }
+        //
+        // Drie tegelijk, niet één voor één: een Spreken-examen heeft zestien opdrachten en elke
+        // beurt is een Scribe-call plus een modelcall. Serieel is dat minutenlang wachten op een
+        // scherm dat niets doet. Meer dan drie is het niet, want elke beurt kost geld bij twee
+        // leveranciers en een burst is precies wat de rate limit hoort te zien.
+        const queue = [...pendingAtSubmit];
+        const runner = async () => {
+          for (;;) {
+            const task = queue.shift();
+            if (!task) return;
+            await gradeTask(task);
+            setGradingProgress(p => ({ ...p, done: p.done + 1 }));
+          }
+        };
+        await Promise.all(
+          Array.from({ length: Math.min(GRADE_CONCURRENCY, pendingAtSubmit.length) }, runner)
+        );
+        setPhase('results');
       }
 
       if (attempt) {
@@ -418,8 +461,47 @@ export default function ExamShell({ content, canSeeExplanations }: Props) {
       score: computed, total: totalItems, pct, passed,
     });
 
+    // Vangnet: als er onderweg iets misgaat blijft het nakijkscherm anders staan, en dat is een
+    // scherm zonder uitweg. De uitslag mag onvolledig zijn; hij mag niet onbereikbaar zijn.
+    setPhase('results');
     setSubmitted(true);
     setSubmitting(false);
+  }
+
+  /**
+   * De opdrachten die bij het inleveren niet konden worden nagekeken alsnog nakijken.
+   *
+   * Nodig omdat `exam_attempts` bij het inleveren `pct: null` krijgt zodra één beantwoorde opdracht
+   * ongenakeken is — dat is bedoeld ("wordt beoordeeld" in plaats van een cijfer dat nog gaat
+   * bewegen), maar er was niets dat die staat ooit nog ophief. De poging wordt daarom na afloop
+   * opnieuw afgesloten met de dan bekende uitslag.
+   */
+  async function regradeFailed() {
+    if (regrading) return;
+    setRegrading(true);
+    try {
+      for (const task of tasks) {
+        if (!hasAnswerFor(task.id)) continue;
+        if (gradesRef.current[task.id]?.state !== 'error') continue;
+        await gradeTask(task);
+      }
+      const attempt = attemptRef.current;
+      if (attempt) {
+        const openResult = openResultFrom(
+          tasks, writtenRef.current, spokenRef.current, gradesRef.current, exam.pass_threshold_pct
+        );
+        await completeExamAttempt(supabase, attempt, {
+          score: null,
+          total: totalItems,
+          pct: openResult.pct,
+          passed: openResult.passed,
+          catScores,
+          passThresholdPct: exam.pass_threshold_pct,
+        });
+      }
+    } finally {
+      setRegrading(false);
+    }
   }
 
   /** Is there anything to grade for this task? Reads refs, so callers must not be in render. */
@@ -548,6 +630,10 @@ export default function ExamShell({ content, canSeeExplanations }: Props) {
   }
 
   /* ── Views ── */
+
+  if (phase === 'grading') {
+    return <GradingScreen done={gradingProgress.done} total={gradingProgress.total} />;
+  }
 
   if (phase === 'intro') {
     return (
@@ -802,6 +888,11 @@ export default function ExamShell({ content, canSeeExplanations }: Props) {
     const open = openResultFrom(tasks, written, spoken, grades, exam.pass_threshold_pct);
     const answeredTasks = tasks.filter(t => hasAnswer(written[t.id], spoken[t.id]));
     const ungraded = answeredTasks.filter(t => grades[t.id]?.state !== 'graded');
+    // Een mislukte nakijkbeurt is géén "de docent kijkt er nog naar": daar komt niemand meer langs.
+    // Het verschil stond nergens op het scherm, waardoor een rate limit of een paywall als een
+    // wachtrij las en de kandidaat bleef wachten op een uitslag die nooit kwam.
+    const failed = answeredTasks.filter(t => grades[t.id]?.state === 'error');
+    const failedReason = failed.map(t => grades[t.id]?.error).find(Boolean) ?? null;
 
     return (
       <div className="max-w-2xl mx-auto flex flex-col gap-5">
@@ -848,12 +939,42 @@ export default function ExamShell({ content, canSeeExplanations }: Props) {
           )}
         </div>
 
-        {ungraded.length > 0 && (
+        {ungraded.length - failed.length > 0 && (
           <p className="text-sm text-on-surface-variant m-0">
-            {ungraded.length === 1
+            {ungraded.length - failed.length === 1
               ? 'Eén opdracht wordt nog nagekeken.'
-              : `${ungraded.length} opdrachten worden nog nagekeken.`}
+              : `${ungraded.length - failed.length} opdrachten worden nog nagekeken.`}
           </p>
+        )}
+
+        {failed.length > 0 && (
+          <div
+            className="rounded-2xl flex flex-col gap-2"
+            style={{ background: '#fcecdd', padding: '1rem 1.15rem' }}
+          >
+            <p className="text-sm font-bold m-0" style={{ color: '#a24000' }}>
+              {failed.length === 1
+                ? 'Eén opdracht kon niet worden nagekeken.'
+                : `${failed.length} opdrachten konden niet worden nagekeken.`}
+            </p>
+            {failedReason && (
+              <p className="text-sm leading-relaxed m-0" style={{ color: '#a24000' }}>
+                {failedReason}
+              </p>
+            )}
+            <p className="text-sm leading-relaxed m-0" style={{ color: '#a24000' }}>
+              Je antwoorden zijn bewaard. Probeer het opnieuw — je verliest je werk niet.
+            </p>
+            <button
+              type="button"
+              onClick={() => void regradeFailed()}
+              disabled={regrading}
+              className="exam-primary-btn inline-flex items-center justify-center gap-2 rounded-xl font-bold text-sm self-start disabled:opacity-60"
+              style={{ padding: '0.7rem 1.2rem', background: '#fe762c', color: '#5f2200', boxShadow: 'var(--shadow-btn-orange)' }}
+            >
+              {regrading ? 'Bezig met nakijken…' : 'Opnieuw laten nakijken'}
+            </button>
+          </div>
         )}
 
         {/* Per opdracht, in the order they were sat. */}
@@ -886,7 +1007,7 @@ export default function ExamShell({ content, canSeeExplanations }: Props) {
         })}
 
         <Link
-          href="/dashboard"
+          href={dashboardHref}
           className="exam-primary-btn inline-flex items-center justify-center gap-2 rounded-xl font-bold text-sm no-underline self-start"
           style={{ padding: '0.8rem 1.5rem', background: '#fe762c', color: '#5f2200', boxShadow: 'var(--shadow-btn-orange)' }}
         >
@@ -1052,7 +1173,7 @@ export default function ExamShell({ content, canSeeExplanations }: Props) {
 
       <div className="flex flex-wrap gap-3">
         <Link
-          href="/dashboard"
+          href={dashboardHref}
           className="exam-ghost-btn inline-flex items-center gap-2 rounded-xl font-semibold text-sm no-underline bg-surface-container text-on-surface-variant"
           style={{ padding: '0.7rem 1.1rem' }}
         >
@@ -1394,6 +1515,90 @@ function TimerBar({
         {m}:{s < 10 ? '0' : ''}{s}
       </span>
     </div>
+  );
+}
+
+/**
+ * Het wachtscherm tussen inleveren en de uitslag.
+ *
+ * Eén scherm met een teller, want het nakijken duurt bij Spreken echt even: per opdracht een
+ * transcriptie plus een modelcall. De beweging is `transform` en `opacity` — de balk schaalt, de
+ * drie stippen pulsen — en bij `prefers-reduced-motion` blijft alleen de teller over, die het
+ * eigenlijke antwoord op "gebeurt er nog iets?" is.
+ */
+function GradingScreen({ done, total }: { done: number; total: number }) {
+  const pct = total > 0 ? Math.round((done / total) * 100) : 0;
+  return (
+    <div className="max-w-2xl mx-auto flex flex-col gap-5">
+      <div
+        className="rounded-3xl"
+        style={{ background: 'var(--gradient-brand)', padding: '2.5rem 1.875rem' }}
+      >
+        <p
+          className="text-[0.65rem] font-bold uppercase tracking-widest m-0 mb-2"
+          style={{ color: 'rgba(255,255,255,0.7)' }}
+        >
+          Ingeleverd
+        </p>
+        <h1
+          className="font-headline font-extrabold text-white m-0 mb-2"
+          style={{ fontSize: '1.6rem', letterSpacing: '-0.03em', textWrap: 'balance' }}
+        >
+          We kijken je opdrachten na
+        </h1>
+        <p className="text-sm leading-relaxed m-0" style={{ color: 'rgba(255,255,255,0.8)' }}>
+          Blijf even op deze pagina. Je krijgt je beoordeling zodra alle opdrachten klaar zijn.
+        </p>
+
+        <div
+          className="mt-6 rounded-full overflow-hidden"
+          style={{ height: '6px', background: 'rgba(255,255,255,0.22)' }}
+          role="progressbar"
+          aria-valuemin={0}
+          aria-valuemax={total}
+          aria-valuenow={done}
+          aria-label="Opdrachten nagekeken"
+        >
+          <div
+            className="exam-grade-bar h-full w-full origin-left"
+            style={{ background: '#fe762c', transform: `scaleX(${total > 0 ? done / total : 0})` }}
+          />
+        </div>
+
+        <div className="mt-3 flex items-center gap-3">
+          <p className="text-sm font-bold text-white m-0" aria-live="polite">
+            {done} van de {total} nagekeken
+            <span className="font-normal" style={{ color: 'rgba(255,255,255,0.7)' }}> · {pct}%</span>
+          </p>
+          <span className="exam-grade-dots inline-flex gap-1" aria-hidden>
+            <i /><i /><i />
+          </span>
+        </div>
+      </div>
+      <GradingScreenStyles />
+    </div>
+  );
+}
+
+function GradingScreenStyles() {
+  return (
+    <style>{`
+      .exam-grade-bar { transition: transform .5s cubic-bezier(0.22,1,0.36,1); }
+      .exam-grade-dots i {
+        width: 6px; height: 6px; border-radius: 9999px; background: rgba(255,255,255,0.75);
+        animation: exam-grade-pulse 1.2s cubic-bezier(0.22,1,0.36,1) infinite;
+      }
+      .exam-grade-dots i:nth-child(2) { animation-delay: .15s; }
+      .exam-grade-dots i:nth-child(3) { animation-delay: .3s; }
+      @keyframes exam-grade-pulse {
+        0%, 100% { opacity: .35; transform: scale(0.8); }
+        50% { opacity: 1; transform: scale(1); }
+      }
+      @media (prefers-reduced-motion: reduce) {
+        .exam-grade-bar { transition: none; }
+        .exam-grade-dots { display: none; }
+      }
+    `}</style>
   );
 }
 

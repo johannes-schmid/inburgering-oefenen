@@ -8,8 +8,9 @@
  *   1. **Entitlement** — has this person used up their free exercises? Counted from
  *      `open_submissions`, the durable record. A paid module has no limit.
  *   2. **Rate** — is this actor going faster than any human would? A sliding window over
- *      `grade_rate_log`, per user *and* per IP. Applies to everyone, including paying users,
- *      because a compromised or scripted paid account is still a bill.
+ *      `grade_rate_log`, per user *and* per IP. Geldt voor iedereen, ook voor betalende klanten,
+ *      want een gekaapt of gescript betaald account is nog steeds een rekening — maar voor wie
+ *      betaald heeft ligt het plafond zó hoog dat het alleen een script raakt (`PAID_RATE_LIMITS`).
  *
  * Server-only: every function here needs the service key to see other users' rows.
  */
@@ -21,18 +22,43 @@ import type { Level } from '@/data/skills';
 export const FREE_GRADED_PER_SKILL = 10;
 
 /**
- * Sliding-window ceilings. Generous against real use — a candidate working through a 16-task
- * Spreken exam legitimately grades 16 times in an hour — and tight against a loop.
+ * Sliding-window ceilings voor wie dit onderdeel *niet* heeft gekocht.
+ *
+ * Deze getallen mogen krap zijn: de gratis laag is al hard begrensd op
+ * `FREE_GRADED_PER_SKILL` nagekeken opdrachten, dus dit venster hoeft alleen een loop te stoppen.
  */
 export const RATE_LIMITS = {
-  perUserPerHour: 30,
-  perUserPerDay: 80,
+  perUserPerHour: 40,
+  perUserPerDay: 120,
   /**
    * Looser, because an IP is a building as often as a person: carrier NAT, a school, a library. A
    * false block here turns away a real candidate, so this is a backstop against one machine
    * cycling accounts, not a per-person limit.
    */
-  perIpPerHour: 80,
+  perIpPerHour: 120,
+} as const;
+
+/**
+ * De ceilings voor wie dít onderdeel heeft betaald — feitelijk onbeperkt (besluit eigenaar).
+ *
+ * Dit is de fout die een kandidaat vlak voor zijn examen raakte: één A2 Spreken-examen is **16
+ * opdrachten**, dus twee examens binnen een uur liepen tegen `perUserPerHour: 30` aan. De laatste
+ * twee opdrachten kwamen ongenakeken terug, en omdat `openResultFrom` de score verzwijgt zolang
+ * één beantwoorde opdracht niet is nagekeken, verdween de hele uitslag. Een betalende kandidaat
+ * die de dag voor zijn examen doorstampt is geen misbruik; dat is precies de klant.
+ *
+ * Er blijft een plafond staan, want een gekaapt of gescript account is nog steeds een rekening —
+ * maar het ligt zó hoog (≈ 25 volledige Spreken-examens per uur) dat geen mens het haalt.
+ */
+export const PAID_RATE_LIMITS = {
+  perUserPerHour: 400,
+  perUserPerDay: 1500,
+  /**
+   * Een betaald account draagt zijn eigen per-user-plafond. Het IP-venster is er tegen het
+   * *rondpompen* van accounts, en dat treft juist een gezin of een taalschool op één verbinding —
+   * vandaar navenant ruim.
+   */
+  perIpPerHour: 1200,
 } as const;
 
 type Meta = Parameters<typeof ownsModule>[0];
@@ -83,8 +109,10 @@ export async function checkGradingAllowed({
   meta: Meta;
 }): Promise<LimitVerdict> {
   const admin = createAdminClient();
+  const paid = coversSkill(meta, level, skill);
+  const limits = paid ? PAID_RATE_LIMITS : RATE_LIMITS;
 
-  if (!coversSkill(meta, level, skill)) {
+  if (!paid) {
     const { data, error } = await admin.rpc('graded_exercise_count', {
       p_user_id: userId,
       p_skill: skill,
@@ -130,7 +158,7 @@ export async function checkGradingAllowed({
       .gte('created_at', dayAgo),
   ]);
 
-  if ((userHour.count ?? 0) >= RATE_LIMITS.perUserPerHour) {
+  if ((userHour.count ?? 0) >= limits.perUserPerHour) {
     return {
       allowed: false,
       reason: 'rate',
@@ -138,7 +166,7 @@ export async function checkGradingAllowed({
       message: 'Je hebt veel opdrachten achter elkaar laten nakijken. Probeer het over een uur weer.',
     };
   }
-  if ((userDay.count ?? 0) >= RATE_LIMITS.perUserPerDay) {
+  if ((userDay.count ?? 0) >= limits.perUserPerDay) {
     return {
       allowed: false,
       reason: 'rate',
@@ -153,7 +181,7 @@ export async function checkGradingAllowed({
       .select('id', { count: 'exact', head: true })
       .eq('ip', ip)
       .gte('created_at', hourAgo);
-    if ((count ?? 0) >= RATE_LIMITS.perIpPerHour) {
+    if ((count ?? 0) >= limits.perIpPerHour) {
       return {
         allowed: false,
         reason: 'rate',

@@ -4465,3 +4465,21 @@ De drijvers staan op (0,0) in een verschoven `<g>` in plaats van op `transform-b
 **What worked / went wrong:** De zijbalk had drie tekens voor één laag — tekst voor de niveaus, een categoriemerk voor KNM en ONA — terwijl `/dashboard` daar de trackmerken zet. 40px is geen smaak maar de gedocumenteerde bodem van KNM's merk; op 19px liepen molen, mens en tulp in elkaar, en dát was destijds de reden om in de zijbalk op de categorievariant terug te vallen.
 **Lesson:** Een merk dat te klein wordt, vervang je niet door een ander merk maar door meer ruimte — anders krijgt dezelfde module twee gezichten op twee schermen.
 **Nagekomen:** De rij *Overzicht* kreeg dezelfde maat mee (`.side-row.lead`: tegel 40px, 15px/600), en de modulerijen gingen van 14 naar 15px. Het overzicht is een bestemming van dezelfde orde als een module; een kleinere tegel erboven las als een bijschrift bij de lijst in plaats van als de ingang. De onderbalk op mobiel ging mee: merken van 21 naar 26px en het label van 10,5 naar 11,5px. Daar bleef `CategoryMark` staan en niet `ExamMark` — die balk noemt de onderdelen, niet de trajecten. Een `text-overflow: ellipsis` erbij was fout: hij maakte van "Luisteren A2" "Luisteren…" en haalde juist het niveau weg dat A2 Lezen van B1 Lezen onderscheidt. Twee regels is daar het goede gedrag. Ook de voet van de zijbalk (Mijn account, Contact, Uitloggen, en de twee gastrijen) staat nu op 40px/15px: het zijn bestemmingen, geen bijschrift onder de navigatie.
+
+## 2026-09-14 — Nakijken bij Spreken: geen limiet voor betalende klanten, en een nakijkscherm
+**Changed:** `lib/grading-limits.ts` (`PAID_RATE_LIMITS`, gekozen op betaald/niet-betaald),
+`app/api/grade-open/route.ts` (`MAX_GRADES_PER_TASK_PAID`), `components/exam/ExamShell.tsx`
+(fase `grading` met teller + animatie, drie nakijkbeurten tegelijk, foutkaart met "Opnieuw laten
+nakijken" die de poging opnieuw afsluit), `lib/dev-tools.ts` (devFlow `grading`). Daarnaast leidt
+"Naar je dashboard" / "Alle examens" nu naar `/dashboard/[level]/[skill]`.
+**Outcome:** SUCCESS (tsc, next build, 554 unit tests groen; nakijkscherm gefotografeerd)
+**What worked / went wrong:** Een kandidaat meldde vlak voor zijn examen dat zijn Spreken-uitslag
+niet verscheen. Oorzaak: één A2 Spreken-examen is 16 opdrachten en `RATE_LIMITS.perUserPerHour`
+stond op 30 — twee examens binnen een uur liepen de limiet in. De laatste opdrachten kwamen
+ongenakeken terug, en `openResultFrom` verzwijgt de score zolang één beantwoorde opdracht niet is
+nagekeken. Resultaat: "Je antwoorden zijn opgeslagen", geen cijfer, en niets dat die staat ooit
+nog ophief. De 429 stond wél in `grades[].error`, maar het scherm toonde hem nergens.
+**Lesson:** Een limiet moet in de eenheid van het product staan, niet in een rond getal — 30 per
+uur naast een examen van 16 opdrachten is een limiet die op de tweede poging toeslaat. En een
+mislukte achtergrondstap mag nooit dezelfde tekst krijgen als een wachtrij: "de docent kijkt ernaar"
+terwijl niemand komt, is de duurste zin op het scherm.
