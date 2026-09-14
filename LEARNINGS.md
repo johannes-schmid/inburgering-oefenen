@@ -4369,3 +4369,99 @@ code compileert, de query slaagt, het scherm is gewoon leeg. Tel bij zo'n featur
 (`select count(*) from question_concepts`) voordat je de leesweg gaat debuggen. En verifieer een
 RLS-afhankelijke query met de sessie van de gebruiker, nooit alleen met de service key: die twee
 geven hier verschillende antwoorden, en alleen de eerste is wat de kandidaat ziet.
+
+## 2026-09-14 — Het paneel naast de slaagkansmeter leest nu ook de examens
+**Changed:** `withExamEvidence()` in `lib/vaardigheden.ts`, `conceptStats` erbij in
+`fetchSkillWeakness` (`lib/vaardigheden-server.ts`), toegepast op `swRows` in
+`dashboard/[level]/[skill]/page.tsx`. Plus `scripts/dev/seed-weakness-demo.mjs` — een idempotente
+demoset zodat de kaart lokaal te zien is.
+**Outcome:** SUCCESS — 559 tests groen, build ✓, paneel toont drie rijen op 390 en 1440.
+**What worked / went wrong:**
+- Het paneel las alleen `user_concept_mastery` en stond dus leeg voor wie alleen examens maakt.
+  Niet een tweede getal ernaast gezet maar de examenantwoorden **in dezelfde emmer** geteld en
+  `masteryPct` er één cijfer van laten maken — één formule blijft één formule.
+- Een meerkeuze-examenvraag is *receptief* bewijs, dus hij gaat in `seen_receptief`. Gevolg:
+  puur examenbewijs maximeert op 50% beheersing, precies zoals `masteryPct` dat voor receptief
+  bewijs bedoelt. Dat is een productuitspraak ("je herkent de regel, je hebt hem niet gemaakt")
+  en geen afrondingsfout — maar het betekent wél dat een foutloos Lezen-examen als 50% leest
+  terwijl "Je vaardigheden" eronder 100% zegt. Voorgelegd aan de eigenaar.
+- De seeder moest idempotent: de eerste versie maakte per run twaalf vragen per examen bij, dus
+  een tweede gebruiker verschoof de percentages van de eerste.
+**Lesson:** Als twee blokken op één scherm hetzelfde lijken te meten, is de vraag niet welke
+mooier is maar of ze dezelfde *soort* bewijs tellen. Voeg bewijs samen in de bestaande formule in
+plaats van een tweede formule te schrijven — en als die formule een bewuste plafondregel heeft,
+leg dan uit wat dat plafond op dit scherm betekent in plaats van het stil te omzeilen.
+
+## 2026-09-14 — "Je vaardigheden" verhuist de kopkaart in
+**Changed:** `SkillStatBar` toont rechts de vaardigheden in plaats van drie concepten uit
+`user_concept_mastery`; `components/exam/SkillWeakness.tsx` rendert alleen nog de lijst (kop,
+ondertitel en kaartchroom eraf); de losse kaart onder de leerroute is weg, net als `swRows` en
+`withExamEvidence` (+ zijn tests) — die had geen afnemer meer. CSS: `.sb-body` op `align-items:
+start`, meter bovenaan uitgelijnd, `.sw-*` aangepast aan het tonale paneel.
+**Outcome:** SUCCESS — 554 tests groen, build ✓, gecontroleerd op 390 en 1440, met data (Lezen)
+en zonder (Schrijven).
+**What worked / went wrong:**
+- De regel van de docent hangt nu aan de zwakste *vaardigheid* in plaats van aan een concept, en
+  dat repareerde een zin die onleesbaar was: "Pak eerst Hij zegt dat… — Hij vraagt of…" werd
+  "Pak eerst precies lezen".
+- Twee layoutfouten kwamen pas uit de screenshots, niet uit de code. `align-items: stretch` rekte
+  het paneel bij een onderdeel zónder cijfers tot de hoogte van de meter, en `margin-top: auto`
+  op de knoppenrij maakte daar een gat van honderd pixels van. En de meter stond gecentreerd in
+  een kolom die ineens 750px hoog was, dus hij zweefde halverwege het niets.
+- Door het samenvoegen verdween de open vraag over het 50%-plafond van `masteryPct`: het paneel
+  rekent niet meer met beheersing, dus er zijn geen twee schalen meer om te verzoenen.
+**Lesson:** Twee blokken samenvoegen is niet alleen verplaatsen — de omgeving van het verplaatste
+blok verandert (tonale achtergrond in plaats van wit, een kolom die meegroeit) en de code die om
+de oude hoogtes heen was ontworpen breekt stil. Fotografeer daarna zowel de gevulde als de lege
+staat; de lege was hier de enige die fout stond.
+
+## 2026-09-14 — De slaagkansmeter krijgt een bol en een inloop
+**Changed:** `app/[locale]/(app)/dashboard/components/SlaagkansGauge.tsx` — radiale bol binnen de ring (plus halo), een rAF-inloop van de boog/markerbol/percentage, en twee traag drijvende verloopvlekken (warm + koel) die de bol laten leven.
+**Outcome:** SUCCESS
+**What worked / went wrong:** Referentie is Lifesum *Weekly insights* (Mobbin). De Mobbin-MCP kan niet op screen-id zoeken en `WebFetch` geeft 403 op mobbin.com — het scherm kwam boven door een gewone `search_screens` op de beschrijving, waarna de id in de resultaten matchte. De animatie loopt over de *waarde*, niet over `stroke-dasharray`: marker en getal hangen aan diezelfde waarde en zouden anders stilstaan. De gradient-id's zijn per instantie (`useId`), want de meter staat ook in `ReadinessHero` en `FreePracticeEngine` — twee `#knmArc` op één document laat de tweede de eerste erven.
+De drijvers staan op (0,0) in een verschoven `<g>` in plaats van op `transform-box: view-box` — die waarde is jong en Chromium 101 in de screenshotharnas kent hem niet, en dan schaalt de vlek vanuit de hoek van de viewBox. Bewezen dat het echt beweegt door hetzelfde element twee keer met 4s ertussen te fotograferen en de bytes te vergelijken.
+**Lesson:** Een SVG-component dat twee keer op één pagina kan staan, mag geen vaste `<defs>`-id's hebben; en zoek een Mobbin-scherm op beschrijving, niet op URL.
+
+## 2026-09-14 — De vaardighedenkolom compacter
+**Changed:** `components/exam/SkillWeakness.tsx` + `.sw-*` / `.sb-gauge` in `app/globals.css` — twee regels per rij in plaats van vier, uitleg alleen nog onder de zwakste rij, en de meter mag op desktop 224px worden.
+**Outcome:** SUCCESS
+**What worked / went wrong:** De kopkaart ging van ~870px naar ~545px op 1440. Bewijs, verloop en score staan als blok rechts (`margin-inline-start: auto` op het bewijs, niet op de score), zodat de getallen van alle rijen onder elkaar lopen. Twee dingen die eruit rolden: `.sw-row-head > span { gap }` maakte van de score "33 %", want `<small>` is een kind van diezelfde span — nu `:not(.sw-score)`; en onder 620px paste bewijs + score niet naast de naam, waardoor de score een derde regel werd — daar zet een `order`-wissel de score bij de naam en het bewijs eronder.
+**Lesson:** Een `gap` op een regel met getallen raakt ook het teken achter het getal. En wie op één regel rechts uitlijnt met `margin-inline-start: auto` moet dat op het éérste element van het rechterblok zetten, niet op het laatste.
+
+## 2026-09-14 — Vlak 3B uit het ontwerp geïmplementeerd
+**Changed:** `SlaagkansGauge.tsx` (ring 270°/r88/streek16, harde kerncirkel met verloop, streepjes dwars door de streek, glans over het boogverloop), `SkillStatBar.tsx` (docentregel naar een voetbalk onder beide kolommen), `SkillWeakness.tsx` + `app/globals.css` (getinte blokken onder de 40%, sheen op hun balk, krappere insets dan het ontwerp).
+**Outcome:** SUCCESS
+**What worked / went wrong:** Bron is het Claude Design-project "Circular design with animated gradient", bestand `Lezen Overzicht.dc.html`, vlak 3B — via de DesignSync-MCP gelezen (`get_project` → `list_files` → `get_file`; het project is `PROJECT_TYPE_PROJECT`, dus alleen lezen was hier aan de orde). De glans over de ring is een SMIL-`animateTransform` op `gradientTransform`: CSS kan de coördinaten van een SVG-verloop niet animeren. SMIL luistert niet naar een media-query, dus wordt het element niet gerenderd als `prefers-reduced-motion` aan staat — dat is een `useEffect` met `matchMedia`, geen CSS. De balksheen schuift alleen `background-position` van een verloop van 220% breed, dus de balk blijft precies zo lang als het percentage.
+**Lesson:** Twee markeringen voor twee vragen: getint = "hier moet je kijken" (alles onder 40%), lessen eronder = "hier begin je" (één rij). Eén markering voor allebei maakt van een diagnose een menu.
+
+## 2026-09-14 — Eén regel per vaardigheid, docentregel en foutenlijst eruit
+**Changed:** `components/exam/SkillWeakness.tsx` (rij = naam · balk · bewijs · verloop · score op één regel; de conceptrijen eronder weg), `SkillStatBar.tsx` (de aanhaling van Marieke en haar foto eruit, alleen de twee uitgangen blijven), `app/globals.css` (`.sw-*` herschreven, `.sb-quote/.sb-photo/.sb-line/.sb-diag/.sb-foot` verwijderd).
+**Outcome:** SUCCESS
+**What worked / went wrong:** De kopkaart is van ~870px naar ~390px op 1440. De fouten per concept verhuizen later naar een eigen scherm met een foutenwachtrij (eigenaar, 14-09) — daarom hier weg en niet ingeklapt. Eén misser onderweg: bij het vervangen van het `.sw-*`-blok in `globals.css` sneed de slice één `}` te veel mee, en Turbopack gaf daarop een wit scherm met de fout alleen in de HTML-payload — `curl | grep -i error` vond hem, de screenshot liet enkel wit zien.
+**Lesson:** Een wit scherm na een CSS-bewerking is eerst een `CssSyntaxError`: curl de pagina en grep op "error" voordat je in de componenten gaat zoeken.
+
+## 2026-09-14 — Bewijs eruit, balken op één maat
+**Changed:** `components/exam/SkillWeakness.tsx` + `.sw-*` in `app/globals.css` — het bewijs ("3 van 9 goed · over 3 examens") alleen nog in het `aria-label`, en de rij is een grid met een eigen kolom voor de balk (260px desktop, 88px onder 620px).
+**Outcome:** SUCCESS
+**What worked / went wrong:** Met `flex: 1` hing de lengte van de balk aan de lengte van de naam ernaast — vijf balken van vijf lengtes lezen als vijf schalen. Een vaste kolom lost dat op. Daarna leek de fix níét te werken: de screenshot toonde nog de oude flex-rij, terwijl `globals.css` op schijf al klopte. Dat was de gedocumenteerde stale Turbopack-CSS-chunk — `curl` van de gecompileerde chunk liet nog `display:flex` zien; `rm -rf .next/dev` plus een herstart van de dev-server loste het op.
+**Lesson:** Als een CSS-wijziging op schijf staat maar niet op het scherm: curl de gecompileerde chunk en grep je eigen regel voordat je de CSS zelf gaat herschrijven.
+
+## 2026-09-14 — Eén kleurschaal voor de slaagkans: klei-oranje → navy
+**Changed:** `lib/slaagkans-kleur.ts` (nieuw) als enige bron van de schaal; `SlaagkansGauge.tsx` tekent de gevulde boog nu in segmenten van 3° die elk hun eigen kleur uit die schaal krijgen, met de glans als aparte doorzichtige overlay; `components/exam/SkillWeakness.tsx` + `app/globals.css` kleuren balk en score uit dezelfde functie.
+**Outcome:** SUCCESS
+**What worked / went wrong:** Eén `linearGradient` over de boog kán niet kloppen — een SVG-verloop loopt langs een rechte as, dus over 270° komt het omslagpunt van oranje naar navy ergens links onderin uit in plaats van op 65%. Segmenten met een halve graad overlap (ronde caps alleen aan de uiteinden) lossen dat op zonder zichtbare naad. De eerste stops legden het kantelpunt óp 65%, waardoor precies die stand de gemengde bruine tussenkleur kreeg; verschoven naar 0.65–0.76 zodat 65% het laatste volledig oranje punt is.
+**Lesson:** Een kleur die informatie draagt hoort in één functie te staan die elke surface aanroept — ring en balk op hetzelfde scherm met elk hun eigen verloop maken van de kleur decoratie. En leg een kantelpunt ná de drempel waar de tekst over gaat, niet erop.
+
+## 2026-09-14 — De ring in de 4K-vorm, en de voetregel eruit
+**Changed:** `SlaagkansGauge.tsx` — dunnere streek (16→12), schaalverdeling van elke 10% bínnen de ring in plaats van dwars door de streek, een wit kopje met de kleur van de stand aan het eind van de boog, en een kern die aan zijn rand uitdooft in plaats van een harde cirkelrand; `app/globals.css` geeft de meterkolom 262px met 24px lucht en de meter zelf 236px — dezelfde verhouding als de KNM-kaart op productie, waar de ring naast zijn lijst staat zonder hem te overstemmen. `SkillStatBar.tsx` verliest de voetregel met "Naar de les" en "Alle regels van dit onderdeel" (plus de bijbehorende `.sb-acts/.sb-cta/.sb-link`-regels en de props `locale/level/skill`).
+**Outcome:** SUCCESS
+**What worked / went wrong:** Naast een dunne ring las de harde rand van de kern als een tweede ring — twee cirkels om één getal. Uitdoven naar transparant lost dat op zonder de cirkelvorm op te geven. Streepjes dwars door de streek hakken bovendien de kleurschaal in stukken, dus staan ze nu binnen de ring. De maatvoering leek eerst niet aan te slaan: opnieuw een stale Turbopack CSS chunk (`max-width` bleef 224px). Bij het herstarten bleef er ook nog een next-server draaien wiens `.next/dev` ik net had weggegooid — die gaf 500 op elke route en de nieuwe server kon de poort niet krijgen.
+**Lesson:** Na `rm -rf .next/dev` eerst controleren dat `lsof -ti:3001` leeg is vóór de herstart; een overlevende server op een weggegooide build-map geeft 500 en laat de nieuwe niet starten, wat leest als een kapotte pagina.
+**Nagekomen:** het officiële `CategoryMark` van het onderdeel staat nu naast de kop van de kaart (38px, lichte tegel) — dezelfde Lezen als in de zijbalk en op de leerroutekaart eronder, en geen lucide-glyph (§7).
+
+## 2026-09-14 — De officiële trackmerken in de portaalzijbalk
+**Changed:** `app/[locale]/(app)/components/PortalSidebar.tsx` draagt nu `ExamMark` (`a2`/`b1`/`knm`/`ona`, `onDark`, 40px) op de modulerijen in plaats van de tekstbadges "A2"/"B1" en de `CategoryMark`-colonnade/kompas; `.side-badge.mark` in `AppShell.tsx` van 22 naar 40px.
+**Outcome:** SUCCESS
+**What worked / went wrong:** De zijbalk had drie tekens voor één laag — tekst voor de niveaus, een categoriemerk voor KNM en ONA — terwijl `/dashboard` daar de trackmerken zet. 40px is geen smaak maar de gedocumenteerde bodem van KNM's merk; op 19px liepen molen, mens en tulp in elkaar, en dát was destijds de reden om in de zijbalk op de categorievariant terug te vallen.
+**Lesson:** Een merk dat te klein wordt, vervang je niet door een ander merk maar door meer ruimte — anders krijgt dezelfde module twee gezichten op twee schermen.
+**Nagekomen:** De rij *Overzicht* kreeg dezelfde maat mee (`.side-row.lead`: tegel 40px, 15px/600), en de modulerijen gingen van 14 naar 15px. Het overzicht is een bestemming van dezelfde orde als een module; een kleinere tegel erboven las als een bijschrift bij de lijst in plaats van als de ingang. De onderbalk op mobiel ging mee: merken van 21 naar 26px en het label van 10,5 naar 11,5px. Daar bleef `CategoryMark` staan en niet `ExamMark` — die balk noemt de onderdelen, niet de trajecten. Een `text-overflow: ellipsis` erbij was fout: hij maakte van "Luisteren A2" "Luisteren…" en haalde juist het niveau weg dat A2 Lezen van B1 Lezen onderscheidt. Twee regels is daar het goede gedrag. Ook de voet van de zijbalk (Mijn account, Contact, Uitloggen, en de twee gastrijen) staat nu op 40px/15px: het zijn bestemmingen, geen bijschrift onder de navigatie.

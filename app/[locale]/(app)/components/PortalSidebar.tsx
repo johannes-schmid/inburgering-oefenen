@@ -6,7 +6,7 @@ import { ChevronRight, LayoutDashboard, LogOut, Mail, Plus, UserPlus } from 'luc
 import { createClient } from '@/lib/supabase/client';
 import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
 import LogoMark from '@/components/site/LogoMark';
-import CategoryMark from '@/components/horizon/CategoryMark';
+import ExamMark, { type Track } from '@/components/horizon/ExamMark';
 import { KNM_SLUG, LEVELS } from '@/data/skills';
 import { FEATURES } from '@/lib/features';
 import type { PortalMenu, PortalMenuGroup } from '@/lib/portal-menu';
@@ -116,9 +116,12 @@ export default function PortalSidebar({
         <a
           href={`/${locale}/dashboard`}
           aria-current={active === 'overview' ? 'page' : undefined}
-          className={`side-row${active === 'overview' ? ' on' : ''}`}
+          className={`side-row lead${active === 'overview' ? ' on' : ''}`}
         >
-          <span className="side-ic"><LayoutDashboard size={16} strokeWidth={2.1} /></span>
+          {/* `lead`: dezelfde tegelmaat en hetzelfde gewicht als de modulerijen eronder. Het
+              overzicht is een bestemming van dezelfde orde als een module, en een kleinere
+              tegel erboven leest als een bijschrift bij de lijst in plaats van als de ingang. */}
+          <span className="side-ic"><LayoutDashboard size={22} strokeWidth={2.1} /></span>
           <span className="side-lb">{t('nav_overview')}</span>
         </a>
 
@@ -144,9 +147,15 @@ export default function PortalSidebar({
                   aria-current={onModule ? 'page' : undefined}
                   className="side-mod-link"
                 >
-                  {group.badge
-                    ? <span className="side-badge">{group.badge}</span>
-                    : <span className="side-badge mark"><CategoryMark category="knm" size={19} tone="dark" /></span>}
+                  {/* Het officiële trackmerk (§7): dezelfde tegel als op het overzicht, want
+                      deze rij benoemt een module — iets dat je koopt en waarin je examen doet.
+                      Hier stond "A2" als tekstbadge en voor KNM de colonnade uit `CategoryMark`;
+                      dat waren drie tekens voor één laag, en de colonnade benoemt het ónderdeel.
+                      `onDark` is de enige toegestane vorm op de navy zijbalk, en 40px is de
+                      bodem van KNM's merk — daaronder lopen molen, mens en tulp in elkaar. */}
+                  <span className="side-badge mark">
+                    <ExamMark track={(group.level ?? KNM_SLUG) as Track} size={40} onDark />
+                  </span>
                   <span className="side-lb">
                     {group.level ? t('level_section', { level: group.badge ?? '' }) : group.label}
                   </span>
@@ -227,11 +236,10 @@ export default function PortalSidebar({
             een groep in `lib/portal-menu.ts` en verdwijnt dit blok. */}
         <span className="side-mod soon" aria-disabled="true">
           <span className="side-mod-link">
-            {/* Het kompas uit `CategoryMark`, niet `ExamMark`: op 19px valt het A2/B1-label in de
-                trackmerken weg, dus de zijbalk draagt overal de categorie-variant. Hier stond een
-                met de hand getekende koffer-SVG — precies wat COMPONENTS.md §Icons verbiedt. */}
+            {/* `muted`: aangekondigd, niets erachter. Dat tekent de studio expres als eigen
+                staat — een vervaagde navy tegel leest nog steeds als beschikbaar. */}
             <span className="side-badge mark">
-              <CategoryMark category="ona" size={19} tone="dark" />
+              <ExamMark track="ona" size={40} muted onDark />
             </span>
             {/* Niet vertaald: ONA is een eigennaam, DUO's eigen afkorting. */}
             <span className="side-lb">ONA</span>
@@ -251,11 +259,11 @@ export default function PortalSidebar({
         {isGuest ? (
           <>
             <a href={`/${locale}/register`} className="side-row accent">
-              <span className="side-ic"><UserPlus size={15} strokeWidth={2.1} /></span>
+              <span className="side-ic"><UserPlus size={20} strokeWidth={2.1} /></span>
               <span className="side-lb">{t('guest_create_account')}</span>
             </a>
             <a href={`/${locale}/login`} className="side-row">
-              <span className="side-ic"><LogOut size={15} strokeWidth={2} style={{ transform: 'scaleX(-1)' }} /></span>
+              <span className="side-ic"><LogOut size={20} strokeWidth={2} style={{ transform: 'scaleX(-1)' }} /></span>
               <span className="side-lb">{t('guest_login')}</span>
             </a>
           </>
@@ -268,10 +276,10 @@ export default function PortalSidebar({
               title={email}
             >
               <span className="side-ic bare">
-                <Avatar className="h-6 w-6">
+                <Avatar className="h-8 w-8">
                   <AvatarImage src={avatarUrl} alt="" referrerPolicy="no-referrer" />
                   <AvatarFallback
-                    className="text-[9px] font-bold"
+                    className="text-[11px] font-bold"
                     style={{ background: 'rgba(255,255,255,0.20)', color: '#fff' }}
                   >
                     {email.slice(0, 2).toUpperCase()}
@@ -281,11 +289,11 @@ export default function PortalSidebar({
               <span className="side-lb">{t('nav_profile')}</span>
             </a>
             <a href={`/${locale}/contact?from=dashboard`} className="side-row">
-              <span className="side-ic"><Mail size={15} strokeWidth={2} /></span>
+              <span className="side-ic"><Mail size={20} strokeWidth={2} /></span>
               <span className="side-lb">{t('nav_contact')}</span>
             </a>
             <button onClick={handleLogout} type="button" className="side-row">
-              <span className="side-ic"><LogOut size={15} strokeWidth={2} /></span>
+              <span className="side-ic"><LogOut size={20} strokeWidth={2} /></span>
               <span className="side-lb">{t('btn_logout')}</span>
             </button>
           </>

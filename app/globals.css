@@ -4479,12 +4479,17 @@ a.tcard:focus-visible { outline:none; box-shadow:var(--ring-selected); }
    tonale vlak, de regel van de docent met de twee uitgangen, en de zwakste concepten. De
    kolommen worden gescheiden door dat tonale vlak en door ruimte, nooit door een 1px-lijn (§2).
    Zie `_components/SkillStatBar.tsx`.                                                        */
+/* Vlak 3B, maar krapper ingesteld dan het ontwerp (eigenaar, 14-09): daar is de kaart 30/32px
+   rondom, hier 16/18 — de kaart staat in een portaal met een zijbalk, niet op een vel papier. */
 .statbar {
-  margin-bottom: 16px; padding: 16px 16px 16px; border-radius: 18px;
+  margin-bottom: 16px; padding: 16px 18px 18px; border-radius: 20px;
   background: var(--color-surface-container-lowest); box-shadow: var(--shadow-ambient);
 }
 
+/* Het merk staat naast de naam en niet in de regel eronder: `baseline` zou de tegel op de
+   schreefhoogte van de kop zetten, dus hij lijnt op het midden van de kop uit. */
 .sb-id { display: flex; flex-wrap: wrap; align-items: baseline; gap: 3px 13px; margin: 2px 6px 12px; }
+.sb-id > :first-child { flex: none; align-self: center; }
 .sb-id h1 {
   font-family: var(--font-headline); font-size: clamp(1.5rem, 3.4vw, 2rem); font-weight: 800;
   letter-spacing: -0.035em; color: var(--color-primary);
@@ -4493,30 +4498,41 @@ a.tcard:focus-visible { outline:none; box-shadow:var(--ring-selected); }
 
 .sb-body { display: grid; grid-template-columns: 1fr; gap: 12px; }
 @media (min-width: 860px) {
-  .sb-body { grid-template-columns: 232px minmax(0, 1fr); gap: 16px; align-items: stretch; }
+  /* `start` en niet `stretch`: de twee kolommen lopen sinds 14-09 sterk uiteen in hoogte. Bij een
+     onderdeel zonder cijfers is het paneel een quote plus een link, en `stretch` rekte dat tot de
+     hoogte van de meter — met `margin-top: auto` op de knoppenrij gaf dat een gat van honderd
+     pixels tussen de regel van de docent en de uitgang. */
+  /* De meter krijgt meer lucht dan hij nodig heeft: hij is het enige beeld op deze kaart, en
+     ingeklemd naast de lijst leest hij als een icoontje bij een tabel (eigenaar, 14-09). */
+  /* `start`, niet `center`: de kop van de lijst hoort op dezelfde hoogte te beginnen als de
+     bovenste bandnaam van de ring. Gecentreerd zakte de lijst een paar pixels weg en had de kaart
+     twee beginhoogtes naast elkaar. De paar pixels verschil zet `.sb-panel` erbij — dat is de
+     afstand van de rand van de svg tot waar "REDELIJK" staat. */
+  .sb-body { grid-template-columns: 262px minmax(0, 1fr); gap: 24px; align-items: start; }
+  .sb-panel { padding-top: 3px; }
 }
 
 /* De meter van KNM, `bare`, met een plafond: hij schaalt op breedte en zou anders de hele kaart
-   hoog maken. Compact gehouden — deze kop mag niet meer dan een derde van het scherm kosten. */
-.sb-gaugecol { display: flex; flex-direction: column; justify-content: center; }
-.sb-gauge { width: 100%; max-width: 184px; margin: 0 auto; }
-.sb-note { margin-top: 2px; font-size: 0.72rem; line-height: 1.5; text-align: center; color: var(--color-outline); }
+   hoog maken. Compact gehouden — deze kop mag niet meer dan een derde van het scherm kosten.
 
-.sb-panel {
-  min-width: 0; display: flex; flex-direction: column; gap: 12px; padding: 14px 16px;
-  border-radius: 14px; background: var(--color-surface-container-low);
+   Bovenaan uitgelijnd en niet gecentreerd: sinds de vaardigheden ernaast staan (14-09) is de
+   rechterkolom een paar honderd pixels hoog, en een gecentreerde meter zweeft dan halverwege een
+   lege kolom terwijl hij bij de regel van de docent hoort te beginnen. */
+.sb-gaugecol { display: flex; flex-direction: column; justify-content: flex-start; }
+.sb-gauge { width: 100%; max-width: 208px; margin: 0 auto; }
+@media (min-width: 860px) {
+  /* De rechterkolom is sinds de compacte rijen een stuk korter, en dan staat een meter van 184px
+     in een kolom van 232 met lucht eronder. Hij mag de kolom nu vullen. */
+  .sb-gauge { max-width: 236px; }
 }
-.sb-quote { display: flex; align-items: flex-start; gap: 10px; }
-.sb-photo {
-  position: relative; width: 32px; height: 32px; flex: none; border-radius: 999px;
-  overflow: hidden; background: var(--color-surface-container-high);
-}
-.sb-line { min-width: 0; font-size: 0.86rem; line-height: 1.55; color: var(--color-on-surface); }
-.sb-line b { color: #a24000; }
+.sb-note { margin-top: 4px; font-size: 0.72rem; line-height: 1.5; text-align: center; color: var(--color-outline); }
 
-.sb-diag { min-width: 0; }
+/* Het paneel heeft geen eigen vlak meer: in 3B staan de ring en de uitsplitsing op hetzelfde wit
+   en doen de getinte rijen de scheiding. Een tweede vlak eromheen gaf drie tinten over elkaar. */
+.sb-panel { min-width: 0; display: flex; flex-direction: column; }
+
 .sb-kick {
-  display: block; margin-bottom: 8px; font-size: 0.6rem; font-weight: 800; letter-spacing: 0.13em;
+  display: block; margin-bottom: 2px; font-size: 0.6rem; font-weight: 800; letter-spacing: 0.13em;
   text-transform: uppercase; color: var(--color-outline);
 }
 .sb-rows { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 9px; }
@@ -4530,26 +4546,6 @@ a.tcard:focus-visible { outline:none; box-shadow:var(--ring-selected); }
 }
 .sb-bar { display: block; margin-top: 4px; height: 7px; border-radius: 999px; background: rgba(0,43,109,0.10); overflow: hidden; }
 .sb-bar > i { display: block; height: 100%; border-radius: 999px; background: var(--color-secondary-container); }
-
-.sb-acts { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 16px; margin-top: auto; }
-/* De ene knop wijst naar je zwakke plek, de andere naar een lijst — dus een zachte pil tegen een
-   link, niet twee knoppen. Het oranje is de tint en niet het verloop: de startknop van het
-   oefenexamen verderop is de enige volle oranje CTA (§8, één zonneschijf per compositie). */
-.sb-cta {
-  display: inline-flex; align-items: center; gap: 6px; padding: 8px 14px; border-radius: 11px;
-  font-size: 0.82rem; font-weight: 800; color: #a24000; background: rgba(254,118,44,0.14);
-  text-decoration: none; transition: background .2s ease;
-}
-.sb-cta:hover { background: rgba(254,118,44,0.24); }
-.sb-cta:focus-visible { outline: none; box-shadow: var(--ring-selected); }
-.sb-link {
-  display: inline-flex; align-items: center; gap: 6px; font-size: 0.82rem; font-weight: 800;
-  color: var(--color-primary); text-decoration: none;
-}
-.sb-link:hover { text-decoration: underline; }
-.sb-link:focus-visible { outline: none; box-shadow: var(--ring-selected); border-radius: 8px; }
-
-@media (prefers-reduced-motion: reduce) { .sb-cta { transition: none; } }
 
 /* Drie op een rij: de leerroute is drie stappen en de volgorde is dragend, dus ze horen naast
    elkaar te staan en niet in een 2×2 waarin stap 3 onder stap 1 belandt. */
@@ -4684,3 +4680,84 @@ a.tcard:focus-visible { outline:none; box-shadow:var(--ring-selected); }
   color: var(--color-on-surface);
 }
 .exam-rich th { background: rgba(0, 43, 109, 0.05); font-weight: 700; }
+
+/* ── Je vaardigheden — de balken rechts in de kopkaart ───────────────────────
+   `components/exam/SkillWeakness.tsx`, gerenderd binnen `.sb-panel` van `SkillStatBar`. Het was
+   een eigen kaart tot 14-09; sindsdien staat het in de kopkaart en heeft het dus geen eigen
+   achtergrond, kop of schaduw meer — die zijn van de kaart eromheen.
+
+   De scheiding tussen de rijen is ruimte, geen lijn (§8), en de sub-rijen staan een trap hoger
+   dan het paneel: dat paneel is `surface-container-low`, dus een uitgang erop moet lichter zijn
+   om naar voren te komen, niet donkerder. */
+/* Twee regels per rij (zie de kop van de component): alles wat een getal is op één regel, de balk
+   eronder. `baseline` houdt naam, bewijs en score op dezelfde schrijflijn, ook al verschillen ze
+   sterk in korpsgrootte. */
+/*
+ * Eén regel per vaardigheid: naam, balk, bewijs, verloop, score — naast elkaar.
+ *
+ * De balk staat middenin en krijgt de rek (`flex: 1`), want hij is het enige element zonder eigen
+ * maat; de tekst eromheen is zo lang als hij is. De naam mag afbreken met een ellips, het bewijs
+ * en de score nooit: dat zijn de twee dingen die je komt lezen.
+ */
+.sw-list { list-style: none; margin: 0.5rem 0 0; padding: 0; display: flex; flex-direction: column; gap: 0.22rem; }
+.sw-row {
+  display: grid; grid-template-columns: minmax(0, 1fr) 260px 2.6rem;
+  align-items: center; gap: 0.7rem;
+  padding: 0.5rem 0.6rem; border-radius: 0.65rem;
+}
+/* Getint = hier moet je kijken. De uitgang staat onder de kaart, niet in deze lijst. */
+.sw-row-weak { background: var(--color-surface-container-low); }
+
+.sw-name { min-width: 0; display: flex; align-items: center; gap: 0.4rem; }
+.sw-label {
+  min-width: 0; font-size: 0.82rem; font-weight: 700; color: var(--color-on-surface);
+  overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+}
+.sw-bar { height: 7px; border-radius: 4px; background: #e6e8ea; overflow: hidden; }
+/* "Nog te weinig gegevens" is geen lege balk maar een onderbroken baan — hij zegt dat er niets
+   gemeten is, waar een balk op 0% als een oordeel leest (ontwerp 3B). */
+.sw-bar-empty { background: repeating-linear-gradient(90deg, #e6e8ea 0 8px, transparent 8px 14px); }
+/*
+ * De kleur van de balk komt uit `lib/slaagkans-kleur.ts` en staat als twee variabelen op het
+ * element: van klei-oranje bij het begin naar de kleur van de stand zelf. Dezelfde schaal als de
+ * slaagkansring ernaast, dus 58% heeft in de balk dezelfde temperatuur als 58% in de ring.
+ */
+.sw-bar-fill {
+  display: block; height: 100%; border-radius: 4px;
+  background: linear-gradient(90deg, var(--sw-a, #a24000), var(--sw-b, #fe762c));
+}
+/*
+ * Het oranje van een rij onder de 40% beweegt langzaam heen en weer — de "sheen" uit vlak 3B.
+ * Het verloop is twee keer zo breed als de balk en alleen de positie schuift, dus er beweegt geen
+ * pixel geometrie: de balk blijft exact even lang als het percentage.
+ */
+.sw-row-weak .sw-bar-fill {
+  background-size: 220% 100%;
+  animation: sw-sheen 9s cubic-bezier(0.45, 0, 0.55, 1) infinite;
+}
+@keyframes sw-sheen {
+  0%, 100% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+}
+
+.sw-up, .sw-down, .sw-flat {
+  flex: none; display: inline-flex; align-items: center; gap: 0.2rem; font-size: 0.7rem;
+  white-space: nowrap;
+}
+.sw-up { color: var(--color-secondary); font-weight: 700; }
+.sw-down { color: var(--color-error); font-weight: 700; }
+.sw-flat { color: var(--color-outline); }
+.sw-score {
+  text-align: end; font-family: var(--font-headline);
+  font-size: 0.88rem; font-weight: 800; color: var(--color-primary); font-variant-numeric: tabular-nums;
+}
+.sw-score small { font-size: 0.68rem; font-weight: 600; color: var(--color-outline); }
+
+/* Smal scherm: de balk krimpt mee, maar houdt op elke rij dezelfde maat. */
+@media (max-width: 620px) {
+  .sw-row { grid-template-columns: minmax(0, 1fr) 88px 2.4rem; gap: 0.5rem; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .sw-row-weak .sw-bar-fill { animation: none; }
+}

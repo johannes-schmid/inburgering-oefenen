@@ -1,11 +1,9 @@
-import Image from 'next/image';
-import { ArrowRight } from 'lucide-react';
 import { getTranslations } from 'next-intl/server';
-import { spoorPath } from '@/lib/lessons/sporen';
-import type { Level, SkillSlug } from '@/data/skills';
+import { CategoryMark, type Category } from '@/components/horizon';
 import type { SlaagkansBand } from '@/lib/exam-readiness';
 import SlaagkansGauge from '../components/SlaagkansGauge';
-import type { SwRow } from './StrengthWeakness';
+import SkillWeakness from '@/components/exam/SkillWeakness';
+import type { SkillWeakness as WeaknessData } from '@/lib/vaardigheden-server';
 
 /**
  * De kop van een onderdeelpagina: wie je bent, hoe je ervoor staat, en wat de docent zegt.
@@ -20,36 +18,51 @@ import type { SwRow } from './StrengthWeakness';
  * bij het getal is wat een kandidaat komt halen ("is 54% veel?"). Een tweede ring ernaast
  * ontwerpen zou dezelfde vraag met minder woorden beantwoorden.
  *
+ * **De opbouw is vlak 3B van het ontwerp** (Claude Design, "Lezen Overzicht", 14-09): de ring en
+ * de uitsplitsing naast elkaar op één wit vlak, en dááronder de regel van de docent met de
+ * uitgang ernaast. De regel stond eerst bóven de rijen, naast de meter — daar las hij als het
+ * bijschrift van die ene kolom, terwijl hij over de hele diagnose gaat.
+ *
  * **De lagen worden gescheiden door een kleurwissel, niet door een lijn** (§2): de voet staat op
  * `surface-container-low`. Ook tussen de drie kolommen erboven staat geen streep — daar doet de
  * ruimte het werk.
  *
- * **De regel van de docent is regelgebaseerd, geen model** — vier gevallen, eerste match wint.
- * Dat hoort ook zo: de USP is dat er een docent achter staat, en een gegenereerde aanmoediging is
- * precies wat we niet verkopen. De logica komt uit `DocentPanel`, dat hierin is opgegaan.
+ * **De regel van de docent is eruit** (eigenaar, 14-09). Hij was regelgebaseerd en zei in woorden
+ * wat de rij eronder in cijfers zegt; twee stemmen over dezelfde vaardigheid maken de kaart langer
+ * zonder hem iets te laten zeggen. De foto en de aanhaling zijn daarmee ook weg.
  *
- * **Maximaal drie rijen, oplopend op zwakte, en alleen met bewijs** (`seen > 0`): een concept
- * waar nog geen opgave over gemaakt is, is geen zwakte maar de hele cursus.
+ * **Rechts staan de vaardigheden, niet meer drie losse concepten** (eigenaar, 14-09). Die
+ * stonden hier eerst als top-3 uit `user_concept_mastery`, terwijl "Je vaardigheden" als eigen
+ * kaart lager op dezelfde pagina dezelfde vraag beantwoordde uit ander bewijs. Twee diagnoses op
+ * één scherm met verschillende getallen is precies waar dit portaal al eerder op stukliep, dus is
+ * de kaart hierin opgegaan en is dit de enige plek waar staat waar je zakt.
+ *
+ * **De voetregel is eruit tot er een foutenscherm is** (eigenaar, 14-09). Daar stonden "Naar de
+ * les" en "Alle regels van dit onderdeel"; de eerste wees naar de les achter je zwakste
+ * vaardigheid, en dat is precies de vraag die het inzichtscherm met de foutenwachtrij gaat
+ * beantwoorden. Eén uitgang die half doet wat dat scherm straks heel doet, is een tweede antwoord
+ * op dezelfde vraag — dus wacht hij daarop. De leerroute eronder op dezelfde pagina blijft de weg
+ * naar de lessen.
+ *
+ * De lijst zelf is `components/exam/SkillWeakness.tsx`, ongewijzigd van vorm — hij rendert alleen
+ * de rijen, want de kaart eromheen is deze.
  */
 export default async function SkillStatBar({
-  locale,
-  level,
-  skill,
+  category,
   title,
   tagline,
-  rows,
+  weakness,
   slaagkans,
   band,
   examsCount,
   avgScore,
 }: {
-  locale: string;
-  level: Level;
-  skill: SkillSlug;
+  /** Het onderdeel, als categoriemerk naast de naam. */
+  category: Category;
   title: string;
   tagline: string;
-  /** Alle concepten van dit onderdeel, al gesorteerd op zwakte. */
-  rows: SwRow[];
+  /** De vaardigheden van dit onderdeel, zwakste eerst. `null` als er nog niets te zeggen valt. */
+  weakness: WeaknessData | null;
   slaagkans: number;
   band: SlaagkansBand;
   /** 0 betekent: nog niets gemeten. De meter zet dan een streepje in plaats van 0%. */
@@ -58,34 +71,22 @@ export default async function SkillStatBar({
 }) {
   const t = await getTranslations('portal');
 
-  const seen = rows
-    .filter(r => r.mastery && r.mastery.seen > 0)
-    .sort((a, b) => a.mastery!.mastery_pct - b.mastery!.mastery_pct);
-  const shown = seen.slice(0, 3);
-  const weakest = shown[0];
-  const weak = weakest && weakest.mastery!.mastery_pct < 60 ? weakest : null;
-  const allStrong = seen.length >= 3 && seen.every(r => r.mastery!.mastery_pct >= 70);
-
-  const line = weak
-    ? t('docent_line_weak', { concept: weak.concept.name_nl })
-    : allStrong
-      ? t('docent_line_strong')
-      : seen.length > 0
-        ? t('docent_line_going')
-        : t('docent_line_start');
-
   return (
     <section className="statbar">
       {/* De kop blijft een eigen regel boven de kaart-inhoud: het is de titel van de pagina, en
           in een kolom naast de meter leest hij als het label van die meter. */}
       <div className="sb-id">
+        {/* Het officiële merk van het onderdeel (§7): `CategoryMark` op de lichte tegel, want dit
+            benoemt wat er ín een traject zit. Geen lucide-glyph en geen eigen tekening — dezelfde
+            Lezen die in de zijbalk en op de homepage staat. */}
+        <CategoryMark category={category} size={38} />
         <h1>{title}</h1>
         <p>{tagline}</p>
       </div>
 
       <div className="sb-body">
-        {/* Links de meter met waar hij op gebaseerd is, rechts wat je ermee moet doen — dezelfde
-            tweedeling als het KNM-portaal op productie. */}
+        {/* Links de meter met waar hij op gebaseerd is, rechts waar je zakt — het vlak van 3B:
+            twee kolommen op één wit vlak, en de scheiding is de tint van de rijen, geen lijn. */}
         <div className="sb-gaugecol">
           <div className="sb-gauge">
             <SlaagkansGauge
@@ -103,61 +104,17 @@ export default async function SkillStatBar({
           </p>
         </div>
 
-        {/* Het paneel staat op het tonale vlak: dat is de scheiding tussen de twee helften, geen
-            lijn (§2). De volgorde is die van het gesprek — eerst wat de docent ziet, dan waar je
-            zakt, dan de uitgang. */}
-        <div className="sb-panel">
-          <div className="sb-quote">
-            <span className="sb-photo">
-              <Image
-                src="/images/marieke-schipper.jpg"
-                alt={t('docent_name')}
-                fill
-                sizes="34px"
-                style={{ objectFit: 'cover', objectPosition: '65% 30%' }}
-              />
-            </span>
-            <p className="sb-line">
-              <b>{t('docent_name')}:</b> &ldquo;{line}&rdquo;
-            </p>
+        {/* Geen kop zonder lijst. In productie is `question_concepts` nog leeg — de tagger heeft
+            er nooit gedraaid — dus `weakness` is daar `null`, en een kopregel "waar je nu zakt"
+            boven niets is een belofte die het scherm niet waarmaakt. */}
+        {weakness && (
+          <div className="sb-panel">
+            <span className="sb-kick">{t('weak_head')}</span>
+            <SkillWeakness data={weakness} />
           </div>
-
-          {shown.length > 0 && (
-            <div className="sb-diag">
-              <span className="sb-kick">{t('weak_head')}</span>
-              <ul className="sb-rows">
-                {shown.map(({ concept, mastery }) => (
-                  <li key={concept.id}>
-                    <span className="sb-row">
-                      <span className="sb-nm">{concept.name_nl}</span>
-                      <span className="sb-pct">{mastery!.mastery_pct}%</span>
-                    </span>
-                    <span className="sb-bar" aria-hidden>
-                      <i style={{ width: `${Math.max(mastery!.mastery_pct, 2)}%` }} />
-                    </span>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          )}
-
-          <div className="sb-acts">
-            {weak?.lessonHref && (
-              <a href={`/${locale}${weak.lessonHref}`} className="sb-cta">
-                {t('sw_to_lesson_short')}
-                <ArrowRight size={13} strokeWidth={2.6} className="rtl-flip" />
-              </a>
-            )}
-            {/* Naar stap 2 van déze cursus, en niet naar een niveaubrede bibliotheek: die is
-                op 10-09 vervallen. Alle regels die dit examen vraagt staan daar, en dit is de
-                plek waar je iets met een zwakte kunt doen. */}
-            <a href={`/${locale}${spoorPath(level, skill, 'taalregels')}`} className="sb-link">
-              {t('sw_all_rules')}
-              <ArrowRight size={13} strokeWidth={2.4} className="rtl-flip" />
-            </a>
-          </div>
-        </div>
+        )}
       </div>
+
     </section>
   );
 }

@@ -135,6 +135,12 @@ export default function AppShell({
         .side-ic { width:20px; height:20px; border-radius:7px; flex-shrink:0; display:flex; align-items:center; justify-content:center; background:rgba(255,255,255,0.12); }
         /* Een category mark tekent zijn eigen tegel, dus de wikkel mag er geen tweede tekenen. */
         .side-ic.bare { background:none; }
+        .side-row.lead { font-size:15px; font-weight:600; color:rgba(255,255,255,0.9); }
+        .side-row.lead .side-ic { width:40px; height:40px; border-radius:12px; }
+        /* De voetrijen dragen dezelfde maat als de menurijen erboven: het zijn bestemmingen,
+           geen bijschrift onder de navigatie. */
+        .side-foot .side-row { font-size:15px; font-weight:600; }
+        .side-foot .side-ic { width:40px; height:40px; border-radius:12px; }
         .side-tag { font-size:9.5px; font-weight:800; letter-spacing:0.09em; text-transform:uppercase; color:rgba(255,255,255,0.42); flex-shrink:0; }
         /* De voortgangsrail: hoe ver door de tien oefenexamens, en niets anders. Eén as in de
            chrome — een gemiddelde erbij zou een cijfer zijn waar je niet vanaf komt. */
@@ -149,10 +155,10 @@ export default function AppShell({
            module gemarkeerd — het enige wat het nesten te zeggen heeft. */
         .side-mod.within { background:rgba(255,255,255,0.08); }
         .side-mod.on { background:rgba(255,255,255,0.15); box-shadow:inset 0 0 0 1px rgba(255,255,255,0.12); }
-        .side-mod-link { flex:1; min-width:0; display:flex; align-items:center; gap:12px; padding:10px 4px 10px 12px; color:inherit; text-decoration:none; font-size:14px; font-weight:600; letter-spacing:0; }
+        .side-mod-link { flex:1; min-width:0; display:flex; align-items:center; gap:12px; padding:10px 4px 10px 12px; color:inherit; text-decoration:none; font-size:15px; font-weight:600; letter-spacing:0; }
         .side-mod-link:focus-visible { outline:2px solid #fe762c; outline-offset:2px; border-radius:10px; }
         .side-badge { width:22px; height:22px; border-radius:7px; flex-shrink:0; display:flex; align-items:center; justify-content:center; background:rgba(255,255,255,0.16); font-family:var(--font-headline); font-weight:800; font-size:11.5px; letter-spacing:0.01em; }
-        .side-badge.mark { background:none; }
+        .side-badge.mark { width:40px; height:40px; background:none; border-radius:0; }
         .side-chev { display:flex; align-items:center; justify-content:center; width:28px; height:32px; margin-right:4px; border:none; background:none; color:rgba(255,255,255,0.55); cursor:pointer; border-radius:8px; transition:transform .18s cubic-bezier(0.22,1,0.36,1), color .15s ease; }
         .side-chev:hover { color:#fff; background:rgba(255,255,255,0.10); }
         .side-chev:focus-visible { outline:2px solid #fe762c; outline-offset:2px; }
@@ -172,7 +178,7 @@ export default function AppShell({
 
         /* ── Het lespaneel: alleen binnen een cursus of de conceptenbibliotheek ────────── */
         #dash-panel { width:260px; flex-shrink:0; height:100vh; position:sticky; top:0; display:flex; flex-direction:column; padding:18px 12px 14px; background:var(--color-surface,#fff); box-shadow:1px 0 0 rgba(0,43,109,0.08); overflow-y:auto; }
-        .lp-back { display:flex; align-items:center; gap:6px; padding:0 8px; font-size:11.5px; font-weight:700; color:#6b7683; text-decoration:none; }
+        .lp-back { display:flex; align-items:center; gap:6px; padding:0 8px; font-size:11.5px; font-weight:700; line-height:1.25; text-align:center; color:#6b7683; text-decoration:none; }
         .lp-back:hover { color:#002b6d; }
         .lp-title { font-family:var(--font-headline); font-weight:700; font-size:15.5px; letter-spacing:-0.02em; color:#191c1e; line-height:1.3; padding:6px 8px 10px; }
         .lp-nav { display:flex; flex-direction:column; gap:4px; }
@@ -243,7 +249,9 @@ export default function AppShell({
         #dash-main { flex:1; min-width:0; overflow-y:auto; height:100vh; background:#f0f3f8; }
         #app-mobile-header { display:none; }
         #dash-bottom-bar { display:none; position:fixed; bottom:0; left:0; right:0; z-index:100; background:linear-gradient(180deg,#002266 0%,#001d4e 100%); border-top:1px solid rgba(255,255,255,0.08); box-shadow:0 -4px 20px rgba(0,27,78,0.3); padding-bottom:env(safe-area-inset-bottom); }
-        .tab-item { flex:1; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:3px; padding:10px 2px 8px; background:none; border:none; cursor:pointer; color:rgba(255,255,255,0.45); font-size:10.5px; font-weight:700; font-family:inherit; text-decoration:none; transition:color .15s ease; }
+        /* Het label mag over twee regels: "Luisteren A2" past niet op 65px, en afkappen tot
+           "Luisteren…" haalt juist het niveau weg dat A2 Lezen van B1 Lezen onderscheidt. */
+        .tab-item { flex:1; min-width:0; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:4px; padding:9px 2px 7px; background:none; border:none; cursor:pointer; color:rgba(255,255,255,0.45); font-size:11.5px; font-weight:700; line-height:1.25; text-align:center; font-family:inherit; text-decoration:none; transition:color .15s ease; }
         .tab-item.active { color:#fe762c; }
         .tab-item.active svg { color:#fe762c !important; }
         /* The category marks draw their own tile and cannot be recoloured, so the current tab
@@ -337,7 +345,7 @@ export default function AppShell({
           href={`/${locale}/dashboard`}
           className={`tab-item${active === 'overview' || active === 'overview-module' ? ' active' : ''}`}
         >
-          <LayoutDashboard size={21} strokeWidth={active === 'overview' ? 2.5 : 1.8} />
+          <LayoutDashboard size={26} strokeWidth={active === 'overview' ? 2.5 : 1.8} />
           <span>{t('nav_overview_short')}</span>
         </a>
 
@@ -348,7 +356,7 @@ export default function AppShell({
             aria-current={tab.active ? 'page' : undefined}
             className={`tab-item${tab.active ? ' active' : ''}`}
           >
-            <CategoryMark category={tab.slug} size={21} tone="dark" />
+            <CategoryMark category={tab.slug} size={26} tone="dark" />
             <span>{tab.label}</span>
           </a>
         ))}

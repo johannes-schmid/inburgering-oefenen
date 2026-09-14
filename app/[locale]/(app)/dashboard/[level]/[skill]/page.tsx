@@ -5,8 +5,7 @@ import { createClient } from '@/lib/supabase/server';
 import { ownsModule } from '@/lib/entitlements';
 import { emptyLevelledProgress, fetchPortalProgress, fetchPublishedExamNumbers } from '@/lib/portal-progress';
 import { getSkillAtLevel, isLevel } from '@/data/skills';
-import CriterionProgress from '@/components/exam/CriterionProgress';
-import { fetchCriterionSeries } from '@/lib/criterion-progress';
+import { fetchSkillWeakness } from '@/lib/vaardigheden-server';
 import { fetchCourse } from '@/lib/lessons/lessons-server';
 import { fetchConcepts, fetchMastery, fetchTeachersForCourse } from '@/lib/lessons/concepts-server';
 import { readiness } from '@/lib/lessons/readiness';
@@ -16,8 +15,7 @@ import { wordsPath } from '@/lib/lessons/words';
 import { calculateSlaagkans } from '@/lib/exam-readiness';
 import SkillStatBar from '../../_components/SkillStatBar';
 import TrackCard from '../../_components/TrackCard';
-import { type SwRow } from '../../_components/StrengthWeakness';
-import { blockProgress, lessonPath, type ConceptKind } from '@/lib/lessons/lessons';
+import { blockProgress, lessonPath, masteryPct, type ConceptKind } from '@/lib/lessons/lessons';
 import { spoorPath, type SpoorSlug } from '@/lib/lessons/sporen';
 import { skillTrail } from '@/lib/portal-crumbs';
 import PortalCrumbs from '../../../components/PortalCrumbs';
@@ -99,12 +97,17 @@ export default async function SkillExamsPage({ params }: Props) {
   const pub = published[level][skill.slug];
   const isRubric = skill.scoring === 'open';
 
-  // Only the two rubric skills have criteria to chart. `fetchCriterionSeries` returns [] until the
-  // candidate has a graded answer, and CriterionProgress renders nothing for an empty series — so
-  // this is quiet rather than an empty-state box on a page the candidate has just opened.
-  const criterionSeries = isRubric && user
-    ? await fetchCriterionSeries(user.id, skill.slug as 'schrijven' | 'spreken')
-    : [];
+  /**
+   * "Je vaardigheden": dezelfde kaart voor alle vier de onderdelen.
+   *
+   * Schrijven en Spreken lezen hun rubriekcriteria, Lezen en Luisteren de concepten achter hun
+   * foute antwoorden — zie `lib/vaardigheden-server.ts`. Dit gaf eerst alleen bij de twee
+   * rubriekonderdelen iets terug; nu bij alle vier, zodra de items van een examen getagd zijn.
+   *
+   * `null` tot er iets te zeggen valt, zodat er geen lege-staatblok staat op een pagina die de
+   * kandidaat net heeft geopend.
+   */
+  const weakness = await fetchSkillWeakness(user?.id ?? null, level, skill.slug);
 
   const menu = await fetchPortalMenu();
 
@@ -130,23 +133,16 @@ export default async function SkillExamsPage({ params }: Props) {
   });
 
   /**
-   * Sterk & zwak, per concept van dit onderdeel.
+   * De concepten van dit onderdeel, met hun beheersing en hun les.
    *
-   * Alleen concepten die in dít onderdeel voorkomen (`fetchConcepts` filtert op
-   * `concept_onderdelen`), want "signaalwoorden" beheersen in Lezen zegt niets over Schrijven
-   * — daar moet je ze maken. De zwakste eerst, dan wat nog geen data heeft; `DocentPanel`
-   * beslist zelf hoeveel rijen het paneel draagt.
+   * Dit voedde ook de top-3 in de kopkaart; sinds 14-09 toont die de vaardigheden uit
+   * `fetchSkillWeakness` en is dit alleen nog de invoer van de leerroute. Alleen concepten die in
+   * dít onderdeel voorkomen (`fetchConcepts` filtert op `concept_onderdelen`), want
+   * "signaalwoorden" beheersen in Lezen zegt niets over Schrijven — daar moet je ze maken.
    */
   const concepts = user ? await fetchConcepts(level, skill.slug) : [];
   const mastery = await fetchMastery(user?.id ?? null, concepts.map(c => c.id));
   const teachers = await fetchTeachersForCourse(level, skill.slug, concepts.map(c => c.id));
-  const swRows: SwRow[] = concepts
-    .map(c => ({
-      concept: c,
-      mastery: mastery.get(c.id) ?? null,
-      lessonHref: teachers.has(c.id) ? lessonPath(level, skill.slug, teachers.get(c.id)!.slug) : null,
-    }))
-    .sort((a, b) => (a.mastery?.mastery_pct ?? 101) - (b.mastery?.mastery_pct ?? 101));
 
   /**
    * De leerroute: woordenschat → grammatica → examentraining.
@@ -221,12 +217,10 @@ export default async function SkillExamsPage({ params }: Props) {
               Dat vervangt zowel de losse kop als de zijkolom van deze pagina — die zeiden dit,
               maar in twee blokken en met de diagnose onder de fold. */}
           <SkillStatBar
-            locale={locale}
-            level={level}
-            skill={skill.slug}
+            category={skill.slug as Category}
             title={tSkills(`${skill.key}.name`)}
             tagline={tSkills(`${skill.key}.tagline`)}
-            rows={swRows}
+            weakness={weakness}
             slaagkans={kans.slaagkans}
             band={kans.band}
             examsCount={examScores.length}
@@ -304,7 +298,6 @@ export default async function SkillExamsPage({ params }: Props) {
               </div>
             </section>
 
-            {criterionSeries.length > 0 && <CriterionProgress series={criterionSeries} className="mb-6" />}
 
             <ExamStrip
               locale={locale}
