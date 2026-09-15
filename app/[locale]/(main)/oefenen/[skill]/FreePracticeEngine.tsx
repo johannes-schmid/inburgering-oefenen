@@ -21,6 +21,7 @@ import {
 import { ArrowRight, Check, Headphones, Mail, Star, UserRoundCheck } from 'lucide-react';
 import { DEV_FLOW_PARAM, devToolsEnabled, tasterFlow } from '@/lib/dev-tools';
 import { projectSlaagkans } from '@/lib/practice-result';
+import { localeHref } from '@/i18n/paths';
 
 const PASS_PCT = 70;
 
@@ -79,7 +80,7 @@ export default function FreePracticeEngine({ skill, skillName, items, locale, le
   /** The first question clip — the sample that unlocks autoplay for the whole sitting. */
   const sampleUrl = items.find(i => i.questionAudioSrc)?.questionAudioSrc ?? null;
   /** KNM's URLs carry no level segment — see `level` above. */
-  const examsHref = `/${locale}/oefenexamen/${level === null ? '' : `${level}/`}${skill}`;
+  const examsHref = localeHref(locale, `oefenexamen/${level === null ? '' : `${level}/`}${skill}`);
   const total = items.length;
   const score = log.filter(a => a.isCorrect).length;
   const pct = total ? Math.round((score / total) * 100) : 0;
@@ -258,7 +259,7 @@ export default function FreePracticeEngine({ skill, skillName, items, locale, le
           <div className="flex items-center gap-3 mb-6 rounded-2xl p-3" style={{ background: 'var(--color-surface-container-low)' }}>
             <div className="w-11 h-11 rounded-xl overflow-hidden border border-outline-variant/30 flex-shrink-0">
               {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src="/images/marieke-schipper.jpg" alt="Marieke Schipper" width={44} height={44} className="w-full h-full object-cover object-top" />
+              <img src="/images/marieke-schipper.webp" alt="Marieke Schipper" width={44} height={44} className="w-full h-full object-cover object-top" />
             </div>
             <div className="min-w-0">
               <p className="text-sm font-bold text-on-surface">Marieke Schipper</p>
@@ -275,7 +276,7 @@ export default function FreePracticeEngine({ skill, skillName, items, locale, le
               {t('start_btn')}
               <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M4 8h8M8 4l4 4-4 4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" /></svg>
             </button>
-            <a href={`/${locale}/oefenen`} className="inline-flex items-center px-5 py-3.5 bg-surface-container text-on-surface-variant font-semibold rounded-xl hover:bg-surface-container-high transition-colors text-sm no-underline">
+            <a href={localeHref(locale, `oefenen`)} className="inline-flex items-center px-5 py-3.5 bg-surface-container text-on-surface-variant font-semibold rounded-xl hover:bg-surface-container-high transition-colors text-sm no-underline">
               {t('switch_skill')}
             </a>
           </div>

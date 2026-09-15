@@ -46,6 +46,52 @@ const nextConfig: NextConfig = {
   // non-public names. The browser client reads NEXT_PUBLIC_SUPABASE_URL and
   // NEXT_PUBLIC_SUPABASE_ANON_KEY directly; set those, and nothing else.
 
+  /* Security response headers.
+   *
+   * Until 15-09 the only one Vercel sent was `strict-transport-security`. Everything below was
+   * absent on every response, including the routes that carry a session and a payment return
+   * (`/dashboard`, `/betaling-gelukt`) — the site had no explicit clickjacking or MIME-sniffing
+   * protection at all and relied on browser defaults.
+   *
+   * **There is deliberately no `content-security-policy` here.** A CSP on this site has to cover
+   * GTM, the Facebook Pixel, Supabase, Mollie's redirect flow and Next's own inline bootstrap
+   * script; a policy written blind would either be so loose it states nothing or would break
+   * checkout in production without failing any local build. It is worth doing properly, with
+   * `Content-Security-Policy-Report-Only` first and a nonce on Next's inline script, and that is
+   * its own task — not a line added alongside four headers that cannot break anything.
+   *
+   * `unsafe-none` is not set for COEP either: it would isolate the page from the payment iframe. */
+  async headers() {
+    return [
+      {
+        source: '/:path*',
+        headers: [
+          // Trust the declared Content-Type. Without it a browser may sniff an uploaded file as
+          // something executable — and `/api/admin/upload-image` accepts uploads.
+          { key: 'X-Content-Type-Options', value: 'nosniff' },
+          // No surface here is ever meant to be framed, so this is DENY rather than SAMEORIGIN.
+          { key: 'X-Frame-Options', value: 'DENY' },
+          // Modern equivalent of the line above; both are sent because older browsers read only
+          // the first and `frame-ancestors` is the one that is actually specified behaviour.
+          { key: 'Content-Security-Policy', value: "frame-ancestors 'none'" },
+          // Send the full URL same-origin, only the origin cross-origin. The default varies by
+          // browser, and exam URLs carry the onderdeel and the exam number.
+          { key: 'Referrer-Policy', value: 'strict-origin-when-cross-origin' },
+          // Nothing on the site asks for any of these; the mic is the one to watch if Spreken
+          // ever records in-browser rather than by upload.
+          { key: 'Permissions-Policy', value: 'camera=(), microphone=(), geolocation=(), interest-cohort=()' },
+          /* HSTS gained `includeSubDomains; preload` on 15-09. It was two years of max-age with
+           * neither, which protects the apex and nothing under it.
+           *
+           * **`preload` is a claim, not a request** — submitting to hstspreload.org is a separate,
+           * deliberately hard-to-reverse step, and every subdomain must be able to serve HTTPS
+           * before it is taken. Leave the submission alone until that is true. */
+          { key: 'Strict-Transport-Security', value: 'max-age=63072000; includeSubDomains; preload' },
+        ],
+      },
+    ];
+  },
+
   async redirects() {
     return [
       // www → apex
@@ -68,7 +114,9 @@ const nextConfig: NextConfig = {
        * carried a second `PASS_THRESHOLD_PCT`, and was reachable and crawlable while nothing on
        * the site linked to it. The free funnel it duplicated is `/oefenen`, so that is where
        * anything still holding the old URL — an old e-mail, an index entry — lands. */
-      { source: '/:locale(nl|en|ar)/proefexamen', destination: '/:locale/oefenen', permanent: true },
+      { source: '/nl/proefexamen', destination: '/nl/oefenen', permanent: true },
+      { source: '/en/proefexamen', destination: '/en/practice', permanent: true },
+      { source: '/ar/proefexamen', destination: '/ar/%D8%AA%D8%AF%D8%B1%D8%A8', permanent: true },
       { source: '/proefexamen', destination: '/nl/oefenen', permanent: true },
 
       // ── A2-implicit URLs → the levelled shape ────────────────────────────
@@ -90,16 +138,33 @@ const nextConfig: NextConfig = {
       // what is being preserved — and a fifth onderdeel can never accidentally match it.
       // Redirects are matched *before* the App Router, so a static `knm` segment shadowing
       // `[level]` does not save these; the pattern has to be right here.
-      {
-        source: '/:locale(nl|en|ar)/oefenexamen/:skill(lezen|luisteren|schrijven|spreken)',
-        destination: '/:locale/oefenexamen/a2/:skill',
-        permanent: true,
-      },
-      {
-        source: '/:locale(nl|en|ar)/oefenexamen/:skill(lezen|luisteren|schrijven|spreken)/:number(\\d+)',
-        destination: '/:locale/oefenexamen/a2/:skill/:number',
-        permanent: true,
-      },
+      //
+      // **Het doelpad staat per taal uitgeschreven, en dat is sinds 15-09 nodig.** `oefenexamen`
+      // heet in het Engels `practice-exam` en in het Arabisch `امتحان-تجريبي` (`i18n/routing.ts`).
+      // Met één `/:locale/oefenexamen/a2/:skill` als bestemming zou een Engelse legacy-URL eerst
+      // hierheen 301'en en dan door next-intl worden ge-308't naar de vertaalde slug — een keten
+      // op precies de URL's die dit blok in stand houdt.
+      //
+      // De onderdeelnaam blijft hier wél Nederlands. Die staat zo in de bron-URL, en de pagina
+      // zelf zet hem met één 308 op de vertaalde variant (`isCanonicalSkillParam` in
+      // `oefenexamen/[level]/[skill]/page.tsx`). Hem hier al vertalen zou de tabel uit
+      // `i18n/skill-slugs.ts` in dit bestand overtypen, en dat is de drift die deze opmerking
+      // hierboven nu juist beschrijft.
+      ...(['nl', 'en', 'ar'] as const).flatMap(locale => {
+        const examens = { nl: 'oefenexamen', en: 'practice-exam', ar: '%D8%A7%D9%85%D8%AA%D8%AD%D8%A7%D9%86-%D8%AA%D8%AC%D8%B1%D9%8A%D8%A8%D9%8A' }[locale];
+        return [
+          {
+            source: `/${locale}/oefenexamen/:skill(lezen|luisteren|schrijven|spreken)`,
+            destination: `/${locale}/${examens}/a2/:skill`,
+            permanent: true,
+          },
+          {
+            source: `/${locale}/oefenexamen/:skill(lezen|luisteren|schrijven|spreken)/:number(\\d+)`,
+            destination: `/${locale}/${examens}/a2/:skill/:number`,
+            permanent: true,
+          },
+        ];
+      }),
       {
         source: '/:locale(nl|en|ar)/dashboard/:skill(lezen|luisteren|schrijven|spreken)',
         destination: '/:locale/dashboard/a2/:skill',

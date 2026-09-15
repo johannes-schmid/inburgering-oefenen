@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import { getTranslations } from 'next-intl/server';
 import { routing } from '@/i18n/routing';
+import { absUrl, alternatesFor } from '@/lib/schema';
 
 type Props = { params: Promise<{ locale: string }> };
 
@@ -15,15 +16,10 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     title: t('meta_title'),
     description: t('meta_description'),
     robots: { index: false, follow: true },
-    alternates: {
-      canonical: `https://inburgeringoefenen.nl/nl/gebruiksvoorwaarden`,
-      languages: {
-        nl: 'https://inburgeringoefenen.nl/nl/gebruiksvoorwaarden',
-        en: 'https://inburgeringoefenen.nl/en/gebruiksvoorwaarden',
-        ar: 'https://inburgeringoefenen.nl/ar/gebruiksvoorwaarden',
-        'x-default': 'https://inburgeringoefenen.nl/nl/gebruiksvoorwaarden',
-      },
-    },
+    /* De canonical wees in alle drie de talen naar `/nl/...` — dezelfde fout die `/docent` en
+     * `/premium` eerder rechtzetten: dat vertelt Google dat de Engelse en Arabische pagina geen
+     * eigen pagina zijn. `alternatesFor` leidt hem nu af uit `routing.ts`. */
+    alternates: alternatesFor(locale, 'gebruiksvoorwaarden'),
   };
 }
 

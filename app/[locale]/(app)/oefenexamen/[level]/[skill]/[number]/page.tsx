@@ -1,12 +1,14 @@
 import type { Metadata } from 'next';
 import { notFound, redirect } from 'next/navigation';
 import { getSkillAtLevel, isLevel } from '@/data/skills';
+import { parseSkillParam } from '@/i18n/skill-slugs';
 import { fetchExamContent } from '@/lib/exam-content';
 import { createClient } from '@/lib/supabase/server';
 import { canSeeExplanations, ownsModule, planFromMetadata } from '@/lib/entitlements';
 import AppShell from '../../../../components/AppShell';
 import ExamShell from '@/components/exam/ExamShell';
 import { fetchPortalMenu } from '@/lib/portal-menu';
+import { localeHref } from '@/i18n/paths';
 
 type Props = {
   params: Promise<{ locale: string; level: string; skill: string; number: string }>;
@@ -26,10 +28,10 @@ export const metadata: Metadata = {
 };
 
 export default async function ExamPage({ params }: Props) {
-  const { locale, level: rawLevel, skill: slug, number: raw } = await params;
+  const { locale, level: rawLevel, skill: rawSkill, number: raw } = await params;
   if (!isLevel(rawLevel)) notFound();
   const level = rawLevel;
-  const skill = getSkillAtLevel(level, slug);
+  const skill = getSkillAtLevel(level, parseSkillParam(rawSkill) ?? '');
   const number = parseInt(raw, 10);
   if (!skill || !Number.isInteger(number) || number < 1 || number > skill.examCount) notFound();
 
@@ -49,7 +51,7 @@ export default async function ExamPage({ params }: Props) {
   // player disagreed, so a paid customer saw "unlocked" and then got the upsell. `ownsModule` still
   // returns true for the legacy all-access plans, so nothing that used to open has closed.
   if (!content.exam.is_free && !ownsModule(user.user_metadata, level, skill.slug)) {
-    redirect(`/${locale}/premium?vanaf=oefenexamen-${level}-${skill.slug}-${number}`);
+    redirect(localeHref(locale, `premium?vanaf=oefenexamen-${level}-${skill.slug}-${number}`));
   }
 
   const menu = await fetchPortalMenu();

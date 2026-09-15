@@ -7,11 +7,10 @@ import { fetchDbFreePractice, hasDbFreePractice } from '@/lib/free-practice-db';
 import FreePracticeEngine from '../[skill]/FreePracticeEngine';
 import JsonLd from '@/components/JsonLd';
 import { langTag } from '@/lib/site';
-import { absUrl, breadcrumbs, PROVIDER_REF } from '@/lib/schema';
+import {PROVIDER_REF, absUrl, alternatesFor, breadcrumbs} from '@/lib/schema';
 
 type Props = { params: Promise<{ locale: string }> };
 
-const BASE = 'https://inburgeringoefenen.nl';
 const PATH = 'oefenen/knm';
 
 /**
@@ -59,20 +58,12 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     title: titles[locale] ?? titles.nl,
     description: descriptions[locale] ?? descriptions.nl,
     robots: { index: true, follow: true },
-    alternates: {
-      canonical: `${BASE}/${locale}/${PATH}`,
-      languages: {
-        nl: `${BASE}/nl/${PATH}`,
-        en: `${BASE}/en/${PATH}`,
-        ar: `${BASE}/ar/${PATH}`,
-        'x-default': `${BASE}/nl/${PATH}`,
-      },
-    },
+    alternates: alternatesFor(locale, PATH),
     openGraph: {
       title: titles[locale] ?? titles.nl,
       description: descriptions[locale] ?? descriptions.nl,
       type: 'website',
-      url: `${BASE}/${locale}/${PATH}`,
+      url: absUrl(locale, PATH),
       siteName: 'Inburgering Oefenen',
     },
   };

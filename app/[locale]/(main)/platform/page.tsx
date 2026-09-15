@@ -29,6 +29,7 @@ import JsonLd from '@/components/JsonLd';
 import { HorizonBanner } from '@/components/horizon';
 import { FeatureCard, SectionHeader, SkillCard, CTABanner } from '@/components/site';
 import { DEFAULT_LEVEL, formatCount, skillsAtLevel } from '@/data/skills';
+import { localeHref } from '@/i18n/paths';
 
 type Props = { params: Promise<{ locale: string }> };
 
@@ -139,7 +140,7 @@ export default async function PlatformPage({ params }: Props) {
           </p>
           <div className="flex flex-wrap items-center justify-center gap-3 mt-7">
             <a
-              href={`/${locale}/oefenen`}
+              href={localeHref(locale, `oefenen`)}
               className="inline-flex items-center gap-2 bg-secondary-container px-6 py-3 rounded-full font-bold text-sm button-inner-glow no-underline"
               style={{ color: '#ffffff' }}
             >
@@ -167,7 +168,7 @@ export default async function PlatformPage({ params }: Props) {
                 key={skill.slug}
                 skill={skill}
                 index={i}
-                href={`/${locale}/oefenexamen/${DEFAULT_LEVEL}/${skill.slug}`}
+                href={localeHref(locale, `oefenexamen/${DEFAULT_LEVEL}/${skill.slug}`)}
                 name={tSkills(`${skill.key}.name`)}
                 tagline={tSkills(`${skill.key}.tagline`)}
                 examsLabel={t('label_exams', { count: skill.examCount })}

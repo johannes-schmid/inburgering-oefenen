@@ -5,6 +5,7 @@ import { Link } from '@/i18n/navigation';
 import { getSortedPosts, getPostLocale, getPostSlug } from '@/data/blog-posts';
 import { Breadcrumb, GradientHero, CTABanner, TeacherCard } from '@/components/site';
 import { SITE_URL, ORG_ID, langTag } from '@/lib/site';
+import { absUrl, alternatesFor, PROVIDER_REF } from '@/lib/schema';
 
 type Props = { params: Promise<{ locale: string }> };
 
@@ -18,15 +19,9 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   return {
     title: t('meta_title'),
     description: t('meta_description'),
-    alternates: {
-      canonical: `${SITE_URL}/${locale}/blog`,
-      languages: {
-        nl: `${SITE_URL}/nl/blog`,
-        en: `${SITE_URL}/en/blog`,
-        ar: `${SITE_URL}/ar/blog`,
-        'x-default': `${SITE_URL}/nl/blog`,
-      },
-    },
+    /* `alternatesFor` leidt canonical én hreflang af uit `routing.ts`, zodat ze de vertaalde
+     * slug van deze taal krijgen in plaats van de taalcode vóór het Nederlandse pad. */
+    alternates: alternatesFor(locale, 'blog'),
     openGraph: {
       type: 'website',
       title: t('meta_title'),
@@ -61,7 +56,7 @@ export default async function BlogIndexPage({ params }: Props) {
         description: t('meta_description'),
         url: `${SITE_URL}/${locale}/blog`,
         inLanguage: langTag(locale),
-        publisher: { '@id': ORG_ID },
+        publisher: PROVIDER_REF,
       },
       {
         '@type': 'ItemList',
@@ -119,7 +114,7 @@ export default async function BlogIndexPage({ params }: Props) {
                   <div className="flex items-center justify-between mt-1">
                     <div className="flex items-center gap-2">
                       <div className="w-7 h-7 rounded-lg overflow-hidden flex-shrink-0" style={{ border: '1px solid rgba(196,198,210,0.3)' }}>
-                        <img src="/images/marieke-schipper.jpg" alt="Marieke Schipper" width={28} height={28} className="w-full h-full object-cover object-top" />
+                        <img src="/images/marieke-schipper.webp" alt="Marieke Schipper" width={28} height={28} className="w-full h-full object-cover object-top" />
                       </div>
                       <span className="text-xs text-on-surface-variant">{t('post_by', { date: post.dateLabel })}</span>
                     </div>

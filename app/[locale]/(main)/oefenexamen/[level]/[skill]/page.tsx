@@ -2,6 +2,8 @@ import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import { getTranslations } from 'next-intl/server';
 import { routing } from '@/i18n/routing';
+import { localeHref } from '@/i18n/paths';
+import { parseSkillParam, skillParam } from '@/i18n/skill-slugs';
 import { Link } from '@/i18n/navigation';
 import { SectionHeader } from '@/components/site';
 import { CategoryMark, DotField, HorizonBand, HorizonHero, ValidationChip } from '@/components/horizon';
@@ -18,23 +20,21 @@ import {
 import { fetchExamsForSkill } from '@/lib/exams';
 import JsonLd from '@/components/JsonLd';
 import { langTag, TEACHER_ID } from '@/lib/site';
-import { absUrl, breadcrumbs, courseId, omitEmpty, PROVIDER_REF } from '@/lib/schema';
+import {PROVIDER_REF, absUrl, alternatesFor, breadcrumbs, courseId, omitEmpty} from '@/lib/schema';
 
 type Props = { params: Promise<{ locale: string; level: string; skill: string }> };
 
-const BASE = 'https://inburgeringoefenen.nl';
-
 export async function generateStaticParams() {
   return routing.locales.flatMap(locale =>
-    LEVELS.flatMap(level => SKILLS.map(skill => ({ locale, level, skill: skill.slug })))
+    LEVELS.flatMap(level => SKILLS.map(skill => ({ locale, level, skill: skillParam(skill.slug, locale) })))
   );
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
-  const { locale, level: rawLevel, skill: slug } = await params;
+  const { locale, level: rawLevel, skill: raw } = await params;
   if (!isLevel(rawLevel)) return {};
   const level = rawLevel;
-  const skill = getSkillAtLevel(level, slug);
+  const skill = getSkillAtLevel(level, parseSkillParam(raw) ?? '');
   if (!skill) return {};
 
   const t = await getTranslations({ locale, namespace: 'oefenexamen' });
@@ -61,31 +61,24 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
      * counts and the content arrive together or not at all.
      */
     robots: { index: skill.itemCount !== null, follow: true },
-    alternates: {
-      canonical: `${BASE}/${locale}/${path}`,
-      languages: {
-        nl: `${BASE}/nl/${path}`,
-        en: `${BASE}/en/${path}`,
-        ar: `${BASE}/ar/${path}`,
-        'x-default': `${BASE}/nl/${path}`,
-      },
-    },
+    alternates: alternatesFor(locale, path),
     openGraph: {
       title: t('meta_title', vars),
       description: t('meta_description', vars),
       type: 'website',
-      url: `${BASE}/${locale}/${path}`,
+      url: absUrl(locale, path),
       siteName: 'Inburgering Oefenen',
     },
   };
 }
 
 export default async function SkillOverviewPage({ params }: Props) {
-  const { locale, level: rawLevel, skill: slug } = await params;
+  const { locale, level: rawLevel, skill: raw } = await params;
   if (!isLevel(rawLevel)) notFound();
   const level = rawLevel;
-  const skill = getSkillAtLevel(level, slug);
+  const skill = getSkillAtLevel(level, parseSkillParam(raw) ?? '');
   if (!skill) notFound();
+
 
   const t = await getTranslations({ locale, namespace: 'oefenexamen' });
   const tSkills = await getTranslations({ locale, namespace: 'skills' });
@@ -233,7 +226,7 @@ export default async function SkillOverviewPage({ params }: Props) {
                 <li key={number}>
                   {available ? (
                     <a
-                      href={`/${locale}/oefenexamen/${level}/${skill.slug}/${number}`}
+                      href={localeHref(locale, `oefenexamen/${level}/${skill.slug}/${number}`)}
                       className={`exam-card${free ? '' : ' locked'} relative flex flex-col gap-3 p-6 pb-7 rounded-2xl bg-surface-container-lowest overflow-hidden no-underline`}
                       style={{ boxShadow: 'var(--shadow-ambient)' }}
                     >
@@ -296,7 +289,7 @@ export default async function SkillOverviewPage({ params }: Props) {
               </p>
             </div>
             <a
-              href={`/${locale}/premium`}
+              href={localeHref(locale, `premium`)}
               className="inline-flex items-center gap-2 px-6 py-3 font-bold rounded-xl text-sm no-underline flex-shrink-0"
               style={{ background: '#fe762c', color: '#5f2200', boxShadow: 'var(--shadow-btn-orange)' }}
             >
@@ -315,7 +308,7 @@ export default async function SkillOverviewPage({ params }: Props) {
             {SKILLS.filter(s => s.slug !== skill.slug).map(other => (
               <a
                 key={other.slug}
-                href={`/${locale}/oefenexamen/${level}/${other.slug}`}
+                href={localeHref(locale, `oefenexamen/${level}/${other.slug}`)}
                 className="exam-card flex items-center gap-4 p-5 rounded-2xl bg-surface-container-lowest no-underline"
                 style={{ boxShadow: 'var(--shadow-card)' }}
               >

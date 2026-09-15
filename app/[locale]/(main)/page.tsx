@@ -14,6 +14,7 @@ import { getPostBySlug, getPostLocale, getPostSlug } from '@/data/blog-posts';
 import { HorizonBand, DotField, Skyline, SunDisc, SectionTransition } from '@/components/horizon';
 import { courseId } from '@/lib/schema';
 import { TEACHER_ID } from '@/lib/site';
+import { localeHref, localizedPath } from '@/i18n/paths';
 
 type Props = { params: Promise<{ locale: string }> };
 
@@ -237,7 +238,10 @@ export default async function HomePage({ params }: Props) {
       group: t('kb_group_inburgering'),
       title: g.heroTitle,
       desc: g.description,
-      href: `/${locale}${route.pathname.replace('[slug]', guide.slug).replace('[thema]', guide.slug)}`,
+      /* `route.pathname` is de interne routenaam ('/inburgering/[slug]'); `localizedPath` vult
+       * de parameter in én pakt de slug van deze taal. Zelf `/${locale}` ervoor plakken gaf
+       * `/en/inburgering/…`, wat een 307 is naar `/en/civic-integration/…`. */
+      href: localizedPath(route.pathname, locale, { slug: guide.slug, thema: guide.slug }),
     };
   });
 
@@ -255,7 +259,7 @@ export default async function HomePage({ params }: Props) {
         group: t(group),
         title: lp.heroTitle,
         desc: lp.description,
-        href: `/${locale}/blog/${getPostSlug(post, locale)}`,
+        href: localeHref(locale, `blog/${getPostSlug(post, locale)}`),
       };
       return card;
     })
@@ -344,7 +348,7 @@ export default async function HomePage({ params }: Props) {
           </p>
 
           <a
-            href={`/${locale}/oefenen`}
+            href={localeHref(locale, `oefenen`)}
             className="hero-cta-primary inline-flex items-center gap-2 px-7 py-3.5 font-bold rounded-xl no-underline font-headline text-base"
             style={{ background: 'var(--color-primary)', color: '#fff', boxShadow: '0 12px 28px rgba(0,43,109,0.22)' }}
           >
@@ -454,7 +458,7 @@ export default async function HomePage({ params }: Props) {
                   {A2_CHIPS.map(chip => (
                     <li key={chip.slug}>
                       <a
-                        href={`/${locale}/oefenexamen/${DEFAULT_LEVEL}/${chip.slug}`}
+                        href={localeHref(locale, `oefenexamen/${DEFAULT_LEVEL}/${chip.slug}`)}
                         className="block-chip inline-flex rounded-full px-2.5 py-1 text-[0.6875rem] font-semibold text-white/90 bg-white/12 no-underline"
                       >
                         {chip.name}
@@ -464,7 +468,7 @@ export default async function HomePage({ params }: Props) {
                 </ul>
 
                 <a
-                  href={`/${locale}/oefenen`}
+                  href={localeHref(locale, `oefenen`)}
                   className="block-cta mt-auto inline-flex items-center justify-center gap-2 rounded-full px-5 py-2.5 no-underline font-headline font-bold text-sm"
                   style={{ background: '#fff', color: 'var(--color-primary)' }}
                 >
@@ -497,7 +501,7 @@ export default async function HomePage({ params }: Props) {
                   {B1_CHIPS.map(chip => (
                     <li key={chip.slug}>
                       <a
-                        href={`/${locale}/oefenexamen/b1/${chip.slug}`}
+                        href={localeHref(locale, `oefenexamen/b1/${chip.slug}`)}
                         className="block-chip inline-flex rounded-full px-2.5 py-1 text-[0.6875rem] font-semibold text-white/90 bg-white/12 no-underline"
                       >
                         {chip.name}
@@ -518,7 +522,7 @@ export default async function HomePage({ params }: Props) {
                     language levels looking alike is the honest outcome rather than a hierarchy
                     problem: the titles and chips are what separate them. */}
                 <a
-                  href={`/${locale}/oefenen/b1/lezen`}
+                  href={localeHref(locale, `oefenen/b1/lezen`)}
                   className="block-cta mt-auto inline-flex items-center justify-center gap-2 rounded-full px-5 py-2.5 no-underline font-headline font-bold text-sm"
                   style={{ background: '#fff', color: 'var(--color-primary)' }}
                 >
@@ -568,7 +572,7 @@ export default async function HomePage({ params }: Props) {
                   {t('blocks_knm_note')}
                 </p>
                 <a
-                  href={`/${locale}/oefenexamen/knm`}
+                  href={localeHref(locale, `oefenexamen/knm`)}
                   className="block-cta mt-auto inline-flex items-center justify-center gap-2 rounded-full px-5 py-2.5 no-underline font-headline font-bold text-sm text-white bg-white/22"
                 >
                   {t('blocks_knm_cta')}
@@ -582,7 +586,7 @@ export default async function HomePage({ params }: Props) {
               desc={t('blocks_ona_desc')}
               soonLabel={t('pkg_soon')}
               notifyLabel={t('blocks_notify')}
-              href={`/${locale}/contact`}
+              href={localeHref(locale, `contact`)}
               background="var(--color-on-secondary-container)"
               minHeight="lg:min-h-[21.5rem]"
               houses={7}
@@ -720,7 +724,7 @@ export default async function HomePage({ params }: Props) {
               {/* The ringed portrait: peach halo, orange ring, her photograph. Rings are outer
                   box-shadows so the image itself stays a clean circle at any size. */}
               <img
-                src="/images/marieke-schipper.jpg"
+                src="/images/marieke-schipper.webp"
                 alt={t('teacher_name')}
                 width={132}
                 height={132}
@@ -755,7 +759,7 @@ export default async function HomePage({ params }: Props) {
               </ul>
 
               <a
-                href={`/${locale}/docent`}
+                href={localeHref(locale, `docent`)}
                 className="block-cta inline-flex items-center gap-2 rounded-full px-5 py-2.5 mt-5 no-underline font-headline font-bold text-sm"
                 style={{ background: 'var(--color-primary)', color: '#fff' }}
               >
@@ -785,7 +789,7 @@ export default async function HomePage({ params }: Props) {
                   ))}
                 </ul>
                 <a
-                  href={`/${locale}/docent`}
+                  href={localeHref(locale, `docent`)}
                   className="block-cta mt-6 self-start inline-flex items-center gap-2 rounded-full px-5 py-2.5 no-underline font-headline font-bold text-sm"
                   style={{ background: '#fff', color: 'var(--color-primary)' }}
                 >
@@ -891,7 +895,7 @@ export default async function HomePage({ params }: Props) {
               {t('closing_sub')}
             </p>
             <a
-              href={`/${locale}/oefenen`}
+              href={localeHref(locale, `oefenen`)}
               className="hero-cta-primary mt-2 inline-flex items-center gap-2 px-7 py-3.5 rounded-full no-underline font-semibold text-base"
               style={{ background: '#fff', color: 'var(--color-primary)' }}
             >

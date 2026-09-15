@@ -11,6 +11,7 @@ import { KNM_SLUG, LEVELS } from '@/data/skills';
 import { FEATURES } from '@/lib/features';
 import type { PortalMenu, PortalMenuGroup } from '@/lib/portal-menu';
 import type { PortalNav } from './nav';
+import { localeHref } from '@/i18n/paths';
 
 /**
  * De portaalzijbalk: **één navy kolom, met de modules uitklapbaar.**
@@ -288,7 +289,7 @@ export default function PortalSidebar({
               </span>
               <span className="side-lb">{t('nav_profile')}</span>
             </a>
-            <a href={`/${locale}/contact?from=dashboard`} className="side-row">
+            <a href={localeHref(locale, `contact?from=dashboard`)} className="side-row">
               <span className="side-ic"><Mail size={20} strokeWidth={2} /></span>
               <span className="side-lb">{t('nav_contact')}</span>
             </a>

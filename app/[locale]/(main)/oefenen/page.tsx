@@ -11,11 +11,10 @@ import FreePracticeChooser, { type ChooserPart, type ChooserTrack } from './_com
 import { ArrowRight } from 'lucide-react';
 import JsonLd from '@/components/JsonLd';
 import { langTag, WEBSITE_ID } from '@/lib/site';
-import { absUrl, breadcrumbs, PROVIDER_REF } from '@/lib/schema';
+import {PROVIDER_REF, absUrl, alternatesFor, breadcrumbs} from '@/lib/schema';
+import { localeHref } from '@/i18n/paths';
 
 type Props = { params: Promise<{ locale: string }> };
-
-const BASE = 'https://inburgeringoefenen.nl';
 
 export async function generateStaticParams() {
   return routing.locales.map(locale => ({ locale }));
@@ -28,20 +27,12 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     title: t('meta_title'),
     description: t('meta_description'),
     robots: { index: true, follow: true },
-    alternates: {
-      canonical: `${BASE}/${locale}/oefenen`,
-      languages: {
-        nl: `${BASE}/nl/oefenen`,
-        en: `${BASE}/en/oefenen`,
-        ar: `${BASE}/ar/oefenen`,
-        'x-default': `${BASE}/nl/oefenen`,
-      },
-    },
+    alternates: alternatesFor(locale, 'oefenen'),
     openGraph: {
       title: t('meta_title'),
       description: t('meta_description'),
       type: 'website',
-      url: `${BASE}/${locale}/oefenen`,
+      url: absUrl(locale, 'oefenen'),
       siteName: 'Inburgering Oefenen',
     },
   };
@@ -87,7 +78,7 @@ export default async function OefenenPickerPage({ params }: Props) {
           slug: skill.slug,
           name,
           note: t('row_free'),
-          href: level === DEFAULT_LEVEL ? `/${locale}/oefenen/${skill.slug}` : `/${locale}/oefenen/b1/${skill.slug}`,
+          href: level === DEFAULT_LEVEL ? localeHref(locale, `oefenen/${skill.slug}`) : localeHref(locale, `oefenen/b1/${skill.slug}`),
           needsAccount: false,
         }];
       }
@@ -96,7 +87,7 @@ export default async function OefenenPickerPage({ params }: Props) {
           slug: skill.slug,
           name,
           note: t('row_account'),
-          href: `/${locale}/oefenexamen/${level}/${skill.slug}/1`,
+          href: localeHref(locale, `oefenexamen/${level}/${skill.slug}/1`),
           needsAccount: true,
         }];
       }
@@ -113,7 +104,7 @@ export default async function OefenenPickerPage({ params }: Props) {
       subtitle: t('track_themes', { count: 8 }),
       blurb: t('knm_sub'),
       parts: hasDbFreePractice(null, KNM_SLUG)
-        ? [{ slug: KNM_SLUG, name: tSkills('knm.name'), note: t('row_free'), href: `/${locale}/oefenen/knm`, needsAccount: false }]
+        ? [{ slug: KNM_SLUG, name: tSkills('knm.name'), note: t('row_free'), href: localeHref(locale, `oefenen/knm`), needsAccount: false }]
         : [],
     },
     {
@@ -211,7 +202,7 @@ export default async function OefenenPickerPage({ params }: Props) {
 
           <p className="text-center text-sm text-on-surface-variant mt-8 leading-relaxed">
             {t('pick_footer')}{' '}
-            <a href={`/${locale}/oefenexamen/${DEFAULT_LEVEL}/lezen`} className="inline-flex items-center gap-1 font-semibold" style={{ color: '#a24000' }}>
+            <a href={localeHref(locale, `oefenexamen/${DEFAULT_LEVEL}/lezen`)} className="inline-flex items-center gap-1 font-semibold" style={{ color: '#a24000' }}>
               {t('pick_footer_link')}
               <ArrowRight size={14} strokeWidth={2.2} aria-hidden="true" />
             </a>

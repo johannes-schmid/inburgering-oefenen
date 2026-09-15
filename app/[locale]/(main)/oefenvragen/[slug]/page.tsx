@@ -6,6 +6,7 @@ import { routing } from '@/i18n/routing';
 import TOPICS, { getTopicBySlug } from '@/data/oefenvragen-topics';
 import QuizWidget from './QuizWidget';
 import { Breadcrumb, GradientHero, EyebrowBadge, Card } from '@/components/site';
+import { absUrl, alternatesFor } from '@/lib/schema';
 
 type Props = { params: Promise<{ locale: string; slug: string }> };
 
@@ -22,15 +23,9 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   return {
     title: `KNM Oefenvragen ${topic.name} — Oefen gericht op dit thema | Inburgering Oefenen`,
     description: `Oefen KNM-vragen over ${topic.name}: ${topic.sublabel}. ${topic.questions.length} vragen met uitleg van een gecertificeerde NT2-docent.`,
-    alternates: {
-      canonical: `https://inburgeringoefenen.nl/${locale}/oefenvragen/${slug}`,
-      languages: {
-        nl: `https://inburgeringoefenen.nl/nl/oefenvragen/${slug}`,
-        en: `https://inburgeringoefenen.nl/en/oefenvragen/${slug}`,
-        ar: `https://inburgeringoefenen.nl/ar/oefenvragen/${slug}`,
-        'x-default': `https://inburgeringoefenen.nl/nl/oefenvragen/${slug}`,
-      },
-    },
+    /* `alternatesFor` leidt canonical én hreflang af uit `routing.ts`, zodat ze de vertaalde
+     * slug van deze taal krijgen in plaats van de taalcode vóór het Nederlandse pad. */
+    alternates: alternatesFor(locale, `oefenvragen/${slug}`),
   };
 }
 

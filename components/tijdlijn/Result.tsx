@@ -49,6 +49,15 @@ import { AT_THE_GEMEENTE } from '@/lib/tijdlijn/agenda';
 type Risk = 'ok' | 'amber' | 'red';
 import { ProgressMatrix } from './Wizard';
 import { Chip, EstimateBadge, Panel, PanelTitle, SourceBadge, Stepper } from './ui';
+import { parseSkillParam, skillParam } from '@/i18n/skill-slugs';
+
+/* Een `ComponentId` is hier altijd een van de vier taalonderdelen — alleen die krijgen een
+ * `practiceHref` — maar het type zegt dat niet, dus de omzetting gaat door `parseSkillParam`.
+ * Vertalen moet, want next-intl laat de parameterwaarde van een route ongemoeid. */
+function skillHref(id: string, locale: string): string {
+  const slug = parseSkillParam(id);
+  return slug ? skillParam(slug, locale) : id;
+}
 
 type Props = {
   timeline: Timeline;
@@ -282,7 +291,7 @@ function Verdict({
                 {t('next_step_body', { component: tc(nextPlan.id) })}
               </p>
               <Link
-                href={{ pathname: '/oefenen/[skill]', params: { skill: nextPlan.id } }}
+                href={{ pathname: '/oefenen/[skill]', params: { skill: skillHref(nextPlan.id, locale) } }}
                 className="mt-4 inline-flex min-h-11 items-center gap-2 rounded-lg px-4 font-headline text-sm font-bold text-on-primary shadow-[var(--shadow-btn-orange)] transition-[transform,box-shadow] duration-200 [background:var(--gradient-btn-orange)] [transition-timing-function:cubic-bezier(0.22,1,0.36,1)] hover:-translate-y-0.5 hover:shadow-[var(--shadow-btn-orange-hover)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-secondary-container focus-visible:ring-offset-2"
               >
                 {t('next_step_cta')}
@@ -475,7 +484,7 @@ function Node({
 
       {plan.practiceHref && !plan.done && (
         <Link
-          href={{ pathname: '/oefenen/[skill]', params: { skill: plan.id } }}
+          href={{ pathname: '/oefenen/[skill]', params: { skill: skillHref(plan.id, locale) } }}
           className="tl-no-print mt-3 inline-flex min-h-11 items-center gap-2 rounded-lg border border-primary/30 px-3 text-[13px] font-bold text-primary transition-colors duration-150 hover:bg-[var(--tl-tint-1)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-secondary-container"
         >
           {t('node_practice')}

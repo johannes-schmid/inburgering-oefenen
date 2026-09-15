@@ -9,6 +9,7 @@ import { KNM, KNM_THEMES, formatCount, isFreeKnmExam } from '@/data/skills';
 import AppShell from '../../components/AppShell';
 import ExamListStyles from '../_components/ExamListStyles';
 import { fetchPortalMenu } from '@/lib/portal-menu';
+import { localeHref } from '@/i18n/paths';
 
 /**
  * KNM's ten oefenexamens inside the portal — the level-less twin of
@@ -112,7 +113,7 @@ export default async function KnmExamsPage({ params }: Props) {
                 const openable = isPublished && !isGuest && (free || owns);
 
                 const href = openable
-                  ? `/${locale}/oefenexamen/knm/${n}`
+                  ? localeHref(locale, `oefenexamen/knm/${n}`)
                   : isGuest && isPublished
                     ? `/${locale}/register?next=/oefenexamen/knm/${n}`
                   : isPublished

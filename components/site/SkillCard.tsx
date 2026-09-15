@@ -21,7 +21,7 @@ type Props = {
    *
    * The default is locale-less and survives only because the i18n middleware redirects it — which
    * costs every card on the page a redirect hop, and `tests/public.spec.js` cannot see the link at
-   * all when it asserts against the rendered href. New callers pass `/${locale}/oefenexamen/…`.
+   * all when it asserts against the rendered href. New callers pass `localeHref(locale, 'oefenexamen/…')`.
    */
   href?: string;
 };

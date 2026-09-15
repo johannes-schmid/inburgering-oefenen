@@ -1,4 +1,6 @@
 import type { MetadataRoute } from 'next';
+import { absUrl } from '@/lib/schema';
+import { routing } from '@/i18n/routing';
 import { DEFAULT_LEVEL, KNM, KNM_SLUG, LEVELS, SKILLS, getFormat } from '@/data/skills';
 import { hasFreePractice } from '@/data/free-practice';
 import { b1TasterSkills } from '@/lib/free-practice-b1';
@@ -7,23 +9,29 @@ import { FEATURES } from '@/lib/features';
 import { getSortedPosts, getPostSlug, hasTranslation } from '@/data/blog-posts';
 import { publishedGuides, hasTranslation as guideHasTranslation } from '@/data/guides/helpers';
 
-const BASE = 'https://inburgeringoefenen.nl';
-const LOCALES = ['nl', 'en', 'ar'] as const;
+const LOCALES = routing.locales;
 
 /**
- * `/docent`, `/premium` and `/contact` have translated Arabic slugs (`i18n/routing.ts`);
- * everything else keeps the Dutch one at every locale.
+ * De publieke pagina's zonder eigen lus hieronder, in het **Nederlands** — dat is de interne
+ * naam van de route. `absUrl` zoekt de slug van elke taal op in `i18n/routing.ts`.
  *
- * The Arabic contact URL listed here was a 404 until 2026-08-19: the slug was right, but
- * `routing.ts` had no per-locale mapping for `/contact`, so nothing served it. The router now
- * defines it. If an entry here ever needs a slug the router does not know, the bug is the
- * missing route — do not "fix" it by listing the Dutch path instead.
+ * Tot 15-09 stond hier één lijst per taal, met de vertaalde slugs met de hand overgetypt. Dat
+ * is precies hoe de Arabische contact-URL van 19-08 een 404 werd: de sitemap kende een slug
+ * die de router niet had. Eén Nederlandse lijst kan dat niet meer, want de sitemap en de router
+ * lezen nu hetzelfde bestand. Een pad dat de router niet kent komt er onvertaald uit — wat
+ * betekent dat de route ontbreekt, en dat is de bug die je dan moet repareren.
  */
-const STATIC_PATHS: Record<typeof LOCALES[number], string[]> = {
-  nl: ['', 'platform', 'gidsen', 'premium', 'docent', 'contact', 'privacybeleid', 'gebruiksvoorwaarden', 'terugbetalingsbeleid'],
-  en: ['', 'platform', 'gidsen', 'premium', 'teacher', 'contact', 'privacybeleid', 'gebruiksvoorwaarden', 'terugbetalingsbeleid'],
-  ar: ['', 'platform', 'gidsen', 'الباقة-المميزة', 'المعلمة', 'تواصل-معنا', 'privacybeleid', 'gebruiksvoorwaarden', 'terugbetalingsbeleid'],
-};
+const STATIC_PATHS = [
+  '',
+  'platform',
+  'gidsen',
+  'premium',
+  'docent',
+  'contact',
+  'privacybeleid',
+  'gebruiksvoorwaarden',
+  'terugbetalingsbeleid',
+] as const;
 
 const TODAY = new Date().toISOString().split('T')[0];
 
@@ -31,9 +39,8 @@ export default function sitemap(): MetadataRoute.Sitemap {
   const entries: MetadataRoute.Sitemap = [];
 
   for (const locale of LOCALES) {
-    for (const path of STATIC_PATHS[locale]) {
-      const url = path ? `${BASE}/${locale}/${path}` : `${BASE}/${locale}`;
-      entries.push({ url, changeFrequency: 'monthly', priority: path === '' ? 1.0 : 0.8, lastModified: TODAY });
+    for (const path of STATIC_PATHS) {
+      entries.push({ url: absUrl(locale, path), changeFrequency: 'monthly', priority: path === '' ? 1.0 : 0.8, lastModified: TODAY });
     }
   }
 
@@ -48,11 +55,11 @@ export default function sitemap(): MetadataRoute.Sitemap {
    * tells Google to ignore it.
    */
   for (const locale of LOCALES) {
-    entries.push({ url: `${BASE}/${locale}/oefenen`, changeFrequency: 'weekly', priority: 0.9, lastModified: TODAY });
+    entries.push({ url: absUrl(locale, 'oefenen'), changeFrequency: 'weekly', priority: 0.9, lastModified: TODAY });
     for (const skill of SKILLS) {
       if (!hasFreePractice(skill.slug)) continue;
       entries.push({
-        url: `${BASE}/${locale}/oefenen/${skill.slug}`,
+        url: absUrl(locale, `oefenen/${skill.slug}`),
         changeFrequency: 'monthly',
         priority: 0.8,
         lastModified: TODAY,
@@ -63,7 +70,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
        `generateStaticParams` uses, so the sitemap cannot advertise a URL that does not build. */
     for (const skill of b1TasterSkills()) {
       entries.push({
-        url: `${BASE}/${locale}/oefenen/b1/${skill}`,
+        url: absUrl(locale, `oefenen/b1/${skill}`),
         changeFrequency: 'monthly',
         priority: 0.8,
         lastModified: TODAY,
@@ -73,7 +80,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
        `hasDbFreePractice` its route's `generateStaticParams` reads. */
     if (hasDbFreePractice(null, KNM_SLUG)) {
       entries.push({
-        url: `${BASE}/${locale}/oefenen/knm`,
+        url: absUrl(locale, 'oefenen/knm'),
         changeFrequency: 'monthly',
         priority: 0.8,
         lastModified: TODAY,
@@ -100,7 +107,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
       if (getFormat(level, skill.slug).itemCount === null) continue;
       for (const locale of LOCALES) {
         entries.push({
-          url: `${BASE}/${locale}/oefenexamen/${level}/${skill.slug}`,
+          url: absUrl(locale, `oefenexamen/${level}/${skill.slug}`),
           changeFrequency: 'weekly',
           priority: level === DEFAULT_LEVEL ? 0.9 : 0.8,
           lastModified: TODAY,
@@ -120,7 +127,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
   if (KNM.itemCount !== null) {
     for (const locale of LOCALES) {
       entries.push({
-        url: `${BASE}/${locale}/oefenexamen/knm`,
+        url: absUrl(locale, 'oefenexamen/knm'),
         changeFrequency: 'weekly',
         priority: 0.9,
         lastModified: TODAY,
@@ -131,7 +138,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
   if (FEATURES.blog) {
     for (const locale of LOCALES) {
       entries.push({
-        url: `${BASE}/${locale}/blog`,
+        url: absUrl(locale, 'blog'),
         changeFrequency: 'weekly',
         priority: 0.7,
         lastModified: TODAY,
@@ -144,7 +151,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
       for (const locale of LOCALES) {
         if (!hasTranslation(post, locale)) continue;
         entries.push({
-          url: `${BASE}/${locale}/blog/${getPostSlug(post, locale)}`,
+          url: absUrl(locale, `blog/${getPostSlug(post, locale)}`),
           changeFrequency: 'monthly',
           priority: 0.7,
           lastModified: post.dateModified,
@@ -165,7 +172,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
   for (const section of ['inburgering', 'knm', 'taalexamens'] as const) {
     for (const locale of LOCALES) {
       entries.push({
-        url: `${BASE}/${locale}/${section}`,
+        url: absUrl(locale, `${section}`),
         changeFrequency: 'weekly',
         priority: 0.9,
         lastModified: TODAY,
@@ -177,7 +184,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     for (const locale of LOCALES) {
       if (!guideHasTranslation(guide, locale)) continue;
       entries.push({
-        url: `${BASE}/${locale}/${guide.section}/${guide.slug}`,
+        url: absUrl(locale, `${guide.section}/${guide.slug}`),
         changeFrequency: 'monthly',
         priority: 0.8,
         lastModified: guide.dateModified,
@@ -190,7 +197,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
    * wizard is `noindex`. `weekly` because the rules file changes under it, not the copy. */
   for (const locale of LOCALES) {
     entries.push({
-      url: `${BASE}/${locale}/inburgering/tools/tijdlijn`,
+      url: absUrl(locale, 'inburgering/tools/tijdlijn'),
       changeFrequency: 'weekly',
       priority: 0.9,
       lastModified: TODAY,

@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import { getTranslations } from 'next-intl/server';
 import { routing } from '@/i18n/routing';
+import { absUrl, alternatesFor } from '@/lib/schema';
 
 type Props = { params: Promise<{ locale: string }> };
 
@@ -17,15 +18,9 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     title: t('meta_title'),
     description: t('meta_description'),
     robots: { index: false, follow: true },
-    alternates: {
-      canonical: `https://inburgeringoefenen.nl/${locale}/privacybeleid`,
-      languages: {
-        nl: 'https://inburgeringoefenen.nl/nl/privacybeleid',
-        en: 'https://inburgeringoefenen.nl/en/privacybeleid',
-        ar: 'https://inburgeringoefenen.nl/ar/privacybeleid',
-        'x-default': 'https://inburgeringoefenen.nl/nl/privacybeleid',
-      },
-    },
+    /* `alternatesFor` leidt canonical én hreflang af uit `routing.ts`, zodat ze de vertaalde
+     * slug van deze taal krijgen in plaats van de taalcode vóór het Nederlandse pad. */
+    alternates: alternatesFor(locale, 'privacybeleid'),
   };
 }
 

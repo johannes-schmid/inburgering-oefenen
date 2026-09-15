@@ -7,6 +7,7 @@ import { canSeeExplanations, ownsKnm, planFromMetadata } from '@/lib/entitlement
 import AppShell from '../../../components/AppShell';
 import ExamShell from '@/components/exam/ExamShell';
 import { fetchPortalMenu } from '@/lib/portal-menu';
+import { localeHref } from '@/i18n/paths';
 
 /**
  * The KNM player. A static sibling of `[level]/[skill]/[number]`, for the same reason the
@@ -42,7 +43,7 @@ export default async function KnmExamPage({ params }: Props) {
   // `ownsKnm`, not `ownsModule(…, 'a2', …)`: KNM is sold as its own level-less module, so an
   // A2 customer does not have it and a KNM customer is not an A2 one.
   if (!content.exam.is_free && !ownsKnm(user.user_metadata)) {
-    redirect(`/${locale}/premium?vanaf=oefenexamen-knm-${number}`);
+    redirect(localeHref(locale, `premium?vanaf=oefenexamen-knm-${number}`));
   }
 
   const menu = await fetchPortalMenu();
