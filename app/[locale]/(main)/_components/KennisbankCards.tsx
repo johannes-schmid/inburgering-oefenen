@@ -41,7 +41,9 @@ const TONES = [
      about 2.2:1 — below AA for body text *and* below the 3:1 large-text floor, so the card that
      shouts loudest would be the one nobody can read. `on_secondary_container` on the same orange
      is ~5:1 and is the pairing `@theme` names for exactly this. */
-  { bg: 'var(--color-secondary-container)', ink: 'var(--color-on-secondary-container)', dim: 'rgba(95,34,0,0.88)', veil: 'rgba(255,255,255,0.30)' },
+  /* `dim` is hier dekkend en donkerder dan de andere tonen: op de oranje container haalde
+     rgba(95,34,0,0.88) 3,77:1 en dat is onder de 4,5 die WCAG AA vraagt voor deze tekstgrootte. */
+  { bg: 'var(--color-secondary-container)', ink: 'var(--color-on-secondary-container)', dim: '#3d1600', veil: 'rgba(255,255,255,0.30)' },
   { bg: 'var(--color-primary-container)', ink: '#ffffff', dim: 'rgba(255,255,255,0.75)', veil: 'rgba(255,255,255,0.12)' },
   { bg: 'rgba(254,118,44,0.32)', ink: 'var(--color-primary)', dim: 'var(--color-on-secondary-container)', veil: 'rgba(255,255,255,0.34)' },
 ];

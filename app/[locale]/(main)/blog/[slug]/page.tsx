@@ -138,7 +138,7 @@ export default async function BlogPostPage({ params }: Props) {
           <span className="text-outline">›</span>
           <Link href="/blog" className="hover:text-primary transition-colors">{t('breadcrumb_blog')}</Link>
           <span className="text-outline">›</span>
-          <span className="text-on-surface font-medium">{post.breadcrumb}</span>
+          <span className="text-on-surface font-medium">{lp.breadcrumb}</span>
         </div>
       </div>
 
@@ -164,7 +164,7 @@ export default async function BlogPostPage({ params }: Props) {
                   <Link href="/docent" className="text-white no-underline hover:opacity-80 transition-opacity">Marieke Schipper</Link>
                 </p>
                 <p className="text-xs" style={{ color: 'rgba(255,255,255,0.5)' }}>
-                  NT2-docent · {post.dateLabel} · {t('reading_time', { minutes: post.readingMinutes })}
+                  NT2-docent · {lp.dateLabel} · {t('reading_time', { minutes: post.readingMinutes })}
                 </p>
               </div>
             </div>
@@ -178,7 +178,7 @@ export default async function BlogPostPage({ params }: Props) {
           <div className="bg-surface-container-lowest rounded-2xl p-8 md:p-10" style={{ boxShadow: '0 2px 32px rgba(0,43,109,0.06)' }}>
             <img
               src={post.image}
-              alt={post.imageAlt}
+              alt={lp.imageAlt}
               width={1200}
               height={630}
               className="w-full rounded-xl mb-8"
@@ -195,7 +195,11 @@ export default async function BlogPostPage({ params }: Props) {
                 <div className="info-box mb-6">
                   <p>
                     {t('not_translated')}{' '}
-                    <Link href={{ pathname: '/blog/[slug]', params: { slug: post.slug } }}>
+                    {/* `locale="nl"` hoort erbij: zonder die prop blijft de link in de huidige taal en wijst
+                        "lees in het Nederlands" naar de pagina waar de lezer al staat. Met de vertaalde
+                        slug van 15-09 werd dat bovendien een 308 naar zichzelf. `post.slug` is hier de
+                        Nederlandse slug, en dat is precies wat de Nederlandse route wil. */}
+                    <Link href={{ pathname: '/blog/[slug]', params: { slug: post.slug } }} locale="nl">
                       {t('read_in_dutch')}
                     </Link>
                   </p>
@@ -265,11 +269,11 @@ export default async function BlogPostPage({ params }: Props) {
             )}
 
             {/* Related posts */}
-            {post.relatedPosts.length > 0 && (
+            {lp.relatedPosts.length > 0 && (
               <div className="bg-surface-container-lowest rounded-2xl p-6" style={{ boxShadow: '0 2px 16px rgba(0,43,109,0.06)' }}>
                 <h2 className="text-xs font-bold uppercase tracking-widest text-on-surface-variant mb-4">{t('related_title')}</h2>
                 <div className="flex flex-col gap-4">
-                  {post.relatedPosts.map((r, i) => (
+                  {lp.relatedPosts.map((r, i) => (
                     <div key={r.slug}>
                       {i > 0 && <div className="h-px bg-surface-container mb-4" />}
                       <Link

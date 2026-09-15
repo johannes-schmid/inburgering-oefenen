@@ -68,6 +68,11 @@ export const metadata: Metadata = {
   twitter: { card: 'summary_large_image' },
 };
 
+/**
+ * De enige regel die niet mag wachten op `globals.css`. Zie de toelichting in de `<head>`.
+ */
+const CRITICAL_CSS = '.section-transition{height:76px}@media(min-width:640px){.section-transition{height:112px}}';
+
 export default async function LocaleLayout({ children, params }: Props) {
   const { locale } = await params;
 
@@ -84,6 +89,31 @@ export default async function LocaleLayout({ children, params }: Props) {
       dir={isRtl ? 'rtl' : 'ltr'}
       className={`${manrope.variable} ${publicSans.variable} ${notoArabic.variable}`}
     >
+      <head>
+        {/* Kritieke CSS, bewust hier en niet in `globals.css`.
+          *
+          * `SectionTransition` ontleent zijn hoogte (76px, 112px vanaf `sm`) uitsluitend aan
+          * `globals.css`, en die stylesheet is 62 KB en render-blocking. Tot hij binnen is heeft
+          * het blok geen hoogtebeperking en neemt het zijn intrinsieke maat aan: **1215px in
+          * plaats van 76px**. Zodra de stylesheet landt klapt het in, en omdat elke pagina op de
+          * footer eindigt schuift dáár de hele footer mee omhoog. Dat was 0,616 CLS op élke
+          * pagina van de site — in Lighthouse (mobiel, 4x CPU, traag 4G) veruit de grootste post,
+          * en lokaal onzichtbaar omdat de stylesheet daar meteen binnen is.
+          *
+          * Een inline `style` op het element zelf lost het niet op: een inline hoogte wint van
+          * `sm:h-[112px]` en bevriest het blok op de mobiele maat. Deze regel moet dus een
+          * stylesheet zijn, en hij moet vóór de body geparsed zijn — vandaar hier.
+          *
+          * Blijft in sync met `components/horizon/SectionTransition.tsx` via
+          * `tests-unit/critical-css.test.ts`. */}
+        <style>{CRITICAL_CSS}</style>
+        {/* De vier herkomsten van de analytics-tags. Ze laden pas na idle of eerste interactie
+          * (zie `AnalyticsProviders`), maar de verbinding mag alvast staan. */}
+        <link rel="preconnect" href="https://www.googletagmanager.com" />
+        <link rel="preconnect" href="https://scripts.clarity.ms" />
+        <link rel="preconnect" href="https://connect.facebook.net" />
+        <link rel="preconnect" href="https://region1.google-analytics.com" />
+      </head>
       <body>
         <NextIntlClientProvider messages={messages}>
           {children}

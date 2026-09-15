@@ -236,7 +236,7 @@ export default async function GidsenIndexPage({ params }: Props) {
                           `compact` drops the street, which at 56px is a smudge anyway; the field
                           colour and the glyph still do the identifying work. */}
                       <Link
-                        href={guideHref({ section: guide.section, slug: guide.slug })}
+                        href={guideHref({ section: guide.section, slug: guide.slug }, locale)}
                         className="flex items-center gap-3 text-sm font-semibold no-underline leading-snug"
                         style={{ color: '#002b6d', textDecoration: 'none' }}
                       >

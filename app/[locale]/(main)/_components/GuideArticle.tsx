@@ -312,7 +312,7 @@ export default async function GuideArticle({
                     <div className="info-box mb-6">
                       <p>
                         {t('not_translated')}{' '}
-                        <Link href={guideHref(guide)} locale="nl">
+                        <Link href={guideHref(guide, 'nl')} locale="nl">
                           {t('read_in_dutch')}
                         </Link>
                       </p>
@@ -431,7 +431,7 @@ export default async function GuideArticle({
                             <div key={g.slug}>
                               {i > 0 && <div className="h-px bg-surface-container mb-4" />}
                               <Link
-                                href={guideHref(g)}
+                                href={guideHref(g, locale)}
                                 className="flex gap-3 no-underline group"
                                 style={{ textDecoration: 'none' }}
                               >
@@ -515,7 +515,7 @@ export default async function GuideArticle({
                       <p>
                         {t('not_translated')}{' '}
                         <Link
-                          href={guideHref(guide)}
+                          href={guideHref(guide, locale)}
                           locale="nl"
                         >
                           {t('read_in_dutch')}
@@ -634,7 +634,7 @@ export default async function GuideArticle({
                           <div key={g.slug}>
                             {i > 0 && <div className="h-px bg-surface-container mb-4" />}
                             <Link
-                              href={guideHref(g)}
+                              href={guideHref(g, locale)}
                               className="flex gap-3 no-underline group"
                               style={{ textDecoration: 'none' }}
                             >

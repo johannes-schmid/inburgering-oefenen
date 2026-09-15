@@ -1,7 +1,7 @@
 import createMiddleware from 'next-intl/middleware';
 import { NextResponse, type NextRequest } from 'next/server';
 import { routing } from './i18n/routing';
-import { canonicalSkillPath } from './i18n/paths';
+import { canonicalContentPath, canonicalSkillPath } from './i18n/paths';
 
 // In Next.js 16 this file is called proxy.ts (renamed from middleware.ts).
 // next-intl's createMiddleware handles:
@@ -20,7 +20,11 @@ export default function proxy(request: NextRequest) {
    * Dit moet hier gebeuren en niet op de pagina. De overzichtspagina wordt statisch gerenderd,
    * en een `permanentRedirect()` in een statische render levert een 200 met de omleiding ín de
    * pagina in plaats van een 308. Zie `canonicalSkillPath` in `i18n/paths.ts`. */
-  const canonical = canonicalSkillPath(request.nextUrl.pathname);
+  /* Dezelfde redenering geldt voor de gids- en blogslug, die sinds 15-09 óók per taal
+   * verschilt: `/en/civic-integration/wonen` is een werkende URL naast
+   * `/en/civic-integration/housing`. Zie `canonicalContentPath`. */
+  const canonical =
+    canonicalSkillPath(request.nextUrl.pathname) ?? canonicalContentPath(request.nextUrl.pathname);
   if (canonical) {
     const url = new URL(request.nextUrl);
     url.pathname = canonical;

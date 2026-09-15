@@ -4533,3 +4533,42 @@ sitemap-URL's 200, 360 interne links zonder redirect-hop.
 **Lesson:** een bewering in een codecommentaar over wat *niet kan* is een hypothese tot er een
 test onder ligt — en bij i18n loopt de scheidslijn altijd tussen het statische segment en de
 parameterwaarde.
+
+## 2026-09-15 — Vertaalde gids- en blogslugs, plus de vier ontbrekende Arabische blogbodies
+**Changed:** nieuw `i18n/content-slugs.ts` (28 slugs × en/ar) met `contentSlugParam`/`parseContentSlug`;
+`fill()` in `i18n/paths.ts` vertaalt nu `[slug]` en `[thema]`; nieuwe `canonicalContentPath` +
+aanroep in `proxy.ts` (308 vanaf de oude Nederlandse slug onder `/en` en `/ar`); `guideHref()` kreeg
+een verplichte `locale`; `translateParams()` in `components/Nav.tsx`; `getGuideBySlug`,
+`getAllGuideParams`, `getPostBySlug`, `getPostSlug`, `getAllPostParams` lopen via de tabel;
+`PostLocale` kreeg `breadcrumb`, `dateLabel`, `imageAlt` en `relatedPosts` en verloor `slug`;
+vier Arabische blogbodies erbij; `tests-unit/content-slugs.test.ts`.
+**Outcome:** SUCCESS — `tsc` schoon, `next build` schoon, 584 unit tests groen, 308/200 gecontroleerd
+met curl op nl/en/ar, sitemap toont alle vijf de Arabische posts.
+
+**What worked / went wrong:**
+- **De tabel staat náást de inhoud, niet erin.** Een `slug` op `GuideLocale`/`PostLocale` zou
+  logischer staan, maar `i18n/paths.ts` wordt geïmporteerd door `Nav.tsx` — een client component —
+  en een import van `data/guides/index.ts` daarin trekt 23 gidsen aan `articleHtml` de
+  browserbundel in. De prijs van die scheiding is dat de twee kunnen gaan drijven, en die prijs
+  wordt betaald door `tests-unit/content-slugs.test.ts`: geen gids zonder rij, geen rij zonder gids,
+  geen dubbele vertaalde slug.
+- **`guideHref(guide, locale)` moest een verplichte parameter krijgen, niet een optionele.** Bij een
+  optionele bleef elke interne link stil de Nederlandse slug invullen — werkend, maar met een 308 per
+  klik. Dat is precies het crawl-signaal dat de vertaling moest winnen. Verplicht maakte er acht
+  compilefouten van in plaats van acht stille hops.
+- **Twee aanroepen in `RouteReader.tsx` gaven `hash` als tweede argument door.** Die werden door de
+  nieuwe signatuur als `locale` gelezen en TypeScript zag er niets van — twee strings. Dit is het
+  gevaar van een parameter tussenvoegen in plaats van erachter; bij een volgende keer eerst grepen
+  op álle aanroepen, niet vertrouwen op wat `tsc` rood maakt.
+- **De hardgecodeerde `href="/en/blog/<nl-slug>"` in de artikelteksten.** Elf links in
+  `blog-posts.ts` en `inburgering-stappenplan.ts` wezen absoluut naar een taalpad. `/en/oefenen` en
+  `/ar/blog/…` waren al vóór deze sessie een 308 — de vertaalde statische segmenten van 15-09 hadden
+  ze al gebroken zonder dat iets faalde. Alle elf staan nu op hun canonieke URL.
+- **De gidsen waren níét onvertaald.** Vier van de 23 (`inburgering-stappenplan`,
+  `moet-ik-inburgeren`, `wat-kost-inburgeren`, `welke-wet-en-welke-route`) houden hun vertaling
+  **inline** in het gidsbestand in plaats van in `translations/`, dus een controle op het bestáán
+  van `translations/<slug>.<locale>.ts` las ze als gat. `node scripts/translate-guides.mjs plan` is
+  het antwoord op die vraag, niet `ls`.
+
+**Lesson:** een bestandsnaam is geen dekkingscontrole. Vraag het aan het script dat de dekking al
+kent, en leg de uitkomst daarna vast in een test in plaats van in een aanname.

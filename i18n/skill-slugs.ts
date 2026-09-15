@@ -56,28 +56,6 @@ export function isCanonicalSkillParam(value: string, slug: SkillSlug, locale: st
   return safeDecode(value) === skillParam(slug, locale);
 }
 
-/**
- * Het volledige pad van een route in één taal, mét de vertaalde slug én de vertaalde
- * parameterwaarden. Dit is wat een canonical, een hreflang en de sitemap nodig hebben —
- * `routing.pathnames` kent de statische segmenten, niet de waarden erin.
- */
-export function localizedPath(
-  route: keyof typeof routing.pathnames,
-  locale: string,
-  params: Record<string, string> = {},
-): string {
-  const entry = routing.pathnames[route] as string | Record<string, string>;
-  const template = typeof entry === 'string' ? entry : entry[locale as Locale] ?? entry.nl;
-
-  const filled = Object.entries(params).reduce(
-    (path, [name, value]) =>
-      path.replace(`[${name}]`, name === 'skill' && isSkillSlug(value) ? skillParam(value, locale) : value),
-    template,
-  );
-
-  return `/${locale}${filled}`;
-}
-
 function safeDecode(value: string): string {
   try {
     return decodeURIComponent(value);

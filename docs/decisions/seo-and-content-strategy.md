@@ -106,7 +106,14 @@ The IA, the guide pipeline and the repositioning, shipped **before** the guides 
   hub, absent from the sitemap, absent from every `related` list and carries **no JSON-LD at all** —
   but is reachable by URL, which is what makes it reviewable. `tests-unit/guides.test.ts` refuses
   a `reviewed` guide with no `reviewedBy`/`reviewedOn`.
-- **Guide slugs are identical across locales, and must stay that way.** See the switcher bug below.
+- **Guide and blog slugs are translated per locale** (owner's decision, 2026-09-15), and the table
+  is `i18n/content-slugs.ts` — not a `slug` field on `GuideLocale`/`PostLocale`, because
+  `i18n/paths.ts` is imported by the client-side `Nav.tsx` and a `data/guides/index.ts` import
+  there would ship 23 guides' `articleHtml` to the browser. The switcher bug below is what made
+  this look impossible; it is fixed in `translateParams()` in `Nav.tsx`, which maps every
+  parameter value back to its internal name before filling in the target locale. Old
+  Dutch-slug `/en` and `/ar` URLs keep working and get a 308 from `canonicalContentPath` in
+  `proxy.ts`.
 - **`getGuideBySlug` is section-scoped**, so `/knm/<an-inburgering-slug>` 404s instead of serving
   one guide under two URLs — a duplicate of our own making.
 - **The hubs are one component.** `_components/GuideHub.tsx` renders both `/inburgering` and

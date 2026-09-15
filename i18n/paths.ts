@@ -1,6 +1,7 @@
 import { isSkillSlug } from '@/data/skills';
 import { routing, type Locale } from './routing';
 import { parseSkillParam, skillParam } from './skill-slugs';
+import { contentSlugParam, parseContentSlug } from './content-slugs';
 
 /**
  * Van een Nederlands pad naar het pad van een andere taal.
@@ -46,17 +47,26 @@ export function localizedPath(
   return `/${locale}${fill(template, params, locale)}`;
 }
 
+/**
+ * Twee parameterwaarden worden vertaald: de onderdeelnaam (`[skill]`) en de slug van een gids
+ * of blogartikel (`[slug]`, en `[thema]` voor de KNM-route, die om historische redenen anders
+ * heet maar dezelfde gids-slug draagt).
+ *
+ * Alle andere blijven staan. `[level]` is 'a2'/'b1' en `[n]` is een examennummer — namen die
+ * DUO voert of die de kandidaat op zijn uitslag ziet; een vertaling daarvan is geen betere
+ * URL, alleen een onherkenbare.
+ */
 function fill(template: string, params: Record<string, string>, locale: string): string {
   return Object.entries(params).reduce(
-    (path, [name, value]) =>
-      path.replace(
-        `[${name}]`,
-        /* Alleen de onderdeelnaam is een vertáálde parameterwaarde. Een gids-slug en een
-         * blogslug zijn in elke taal gelijk — zie de kop van `routing.ts`. */
-        name === 'skill' && isSkillSlug(value) ? skillParam(value, locale) : value,
-      ),
+    (path, [name, value]) => path.replace(`[${name}]`, paramValue(name, value, locale)),
     template,
   );
+}
+
+function paramValue(name: string, value: string, locale: string): string {
+  if (name === 'skill' && isSkillSlug(value)) return skillParam(value, locale);
+  if (name === 'slug' || name === 'thema') return contentSlugParam(value, locale);
+  return value;
 }
 
 type Match = { route: keyof typeof routing.pathnames; params: Record<string, string> };
@@ -166,4 +176,58 @@ function funnelHeads(locale: string): Set<string> {
 
 function safeDecode(value: string): string {
   try { return decodeURIComponent(value); } catch { return value; }
+}
+
+/**
+ * Het canonieke pad voor een gids- of blog-URL die de slug in de verkeerde taal draagt, of
+ * `undefined` als er niets mis is.
+ *
+ * Tot deze wijziging was elke slug in elke taal gelijk, dus `/en/civic-integration/wonen`
+ * stond in de index, in verstuurde mails en in links van buiten. Die URL's blijven werken en
+ * krijgen hier een 308 naar `/en/civic-integration/housing`.
+ *
+ * Dit hoort in `proxy.ts` en niet op de pagina, om dezelfde reden als `canonicalSkillPath`
+ * hierboven: een `permanentRedirect()` in een statisch gerenderde route levert een 200 met de
+ * omleiding ín de pagina in plaats van een 308.
+ *
+ * De vier routes hieronder zijn de enige die een gids- of blogslug dragen. `/knm/woordenlijst`
+ * en de andere gereserveerde statische kinderen passen wel op de vorm maar niet op de tabel:
+ * `parseContentSlug` geeft er `undefined` op terug en het pad blijft onaangeraakt.
+ */
+const SLUG_ROUTES = [
+  '/inburgering/[slug]',
+  '/knm/[thema]',
+  '/taalexamens/[slug]',
+  '/blog/[slug]',
+] as const;
+
+export function canonicalContentPath(pathname: string): string | undefined {
+  const segments = pathname.split('/').filter(Boolean).map(safeDecode);
+  const [locale, ...rest] = segments;
+  if (!routing.locales.includes(locale as Locale) || rest.length === 0) return undefined;
+
+  for (const route of SLUG_ROUTES) {
+    const entry = routing.pathnames[route] as string | Record<string, string>;
+    const template = (typeof entry === 'string' ? entry : entry[locale as Locale] ?? entry.nl)
+      .split('/')
+      .filter(Boolean);
+    if (template.length !== rest.length) continue;
+
+    let value: string | undefined;
+    let ok = true;
+    for (const [i, part] of template.entries()) {
+      if (part.startsWith('[')) value = rest[i];
+      else if (part !== rest[i]) { ok = false; break; }
+    }
+    if (!ok || !value) continue;
+
+    const nlSlug = parseContentSlug(value);
+    if (!nlSlug) return undefined;
+    const want = contentSlugParam(nlSlug, locale);
+    if (want === value) return undefined;
+
+    return `/${[locale, ...rest.map(s => (s === value ? want : s))].join('/')}`;
+  }
+
+  return undefined;
 }

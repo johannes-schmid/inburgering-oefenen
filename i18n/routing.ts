@@ -24,14 +24,20 @@ export const routing = defineRouting({
    *     interne routenaam terug ('/gidsen'), niet de zichtbare slug, dus de taalwissel in
    *     `components/Nav.tsx` zoekt zelf de goede slug op. Een bezoeker die de Nederlandse slug
    *     in een andere taal opvraagt krijgt een 308 naar de vertaalde variant — geen 404.
-   *   - Een PARAMETERWAARDE mag dat niet. `[slug]` van een gids of blogpost komt uit
-   *     `useParams()` en wordt letterlijk in de andere taal ingevuld; die waarden blijven dus
-   *     in elke taal gelijk. Zie `data/guides/types.ts`.
+   *   - Een PARAMETERWAARDE vertaalt next-intl níét mee. `[slug]` van een gids of blogpost komt
+   *     uit `useParams()` en wordt letterlijk in de andere taal ingevuld. Tot 15-09 was dat de
+   *     reden om die waarden overal gelijk te houden; sindsdien vertalen we ze zelf, aan de
+   *     rand, en is de taalwissel in `Nav.tsx` wat ze terugrekent (`translateParams`).
    *
-   * De onderdeelnamen in `/oefenen/[skill]` en `/oefenexamen/[level]/[skill]` zijn de ene
-   * uitzondering op die tweede regel: ze staan in `i18n/skill-slugs.ts` met een vertaling per
-   * taal, en de routes rekenen ze aan de rand om naar de interne `SkillSlug`. Het niveau
-   * (`a2`, `b1`) en `knm` zijn eigennamen van DUO en blijven onvertaald.
+   * Er zijn dus twee vertáálde parameterwaarden, elk met hun eigen tabel:
+   *   - de gids- en blogslug — `i18n/content-slugs.ts`
+   *   - de onderdeelnaam in `/oefenen/[skill]` en `/oefenexamen/[level]/[skill]` —
+   *     `i18n/skill-slugs.ts`
+   *
+   * Beide worden uitgaand ingevuld door `fill()` in `paths.ts` en binnenkomend teruggerekend
+   * door de route; een URL met de waarde in een andere taal blijft werken en krijgt een 308 uit
+   * `proxy.ts`. Het niveau (`a2`, `b1`), `knm` en een examennummer zijn eigennamen van DUO of
+   * getallen en blijven onvertaald.
    *
    * Nederlands verandert nergens: die URL's zijn geïndexeerd en ranken. */
   pathnames: {
@@ -100,8 +106,9 @@ export const routing = defineRouting({
     },
 
     // ── Kennisgidsen ─────────────────────────────────────────────────────────
-    /* De sectie-slug is vertaald, de gids-slug erachter niet: die is een parameterwaarde.
-     * Zie de kop van dit blok. */
+    /* Sectie-slug én gids-slug zijn vertaald. De tweede is een parameterwaarde, en die
+     * vertaalt next-intl niet mee — dat doet `contentSlugParam` in `i18n/content-slugs.ts`,
+     * aangeroepen vanuit `fill()` in `paths.ts` en vanuit `guideHref()`. */
     '/gidsen': {
       nl: '/gidsen',
       en: '/guides',

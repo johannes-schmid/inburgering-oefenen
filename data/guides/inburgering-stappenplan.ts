@@ -695,7 +695,7 @@ ${figure(
     ${factIn('en', "KNM covers 8 themes: work and income · manners, values and norms · housing · health and healthcare · history and geography · public bodies · the constitution and the rule of law · education and raising children.", 'Regeling inburgering 2021 — eindtermen KNM (Stcrt. 2024, 15802)', SRC_KNM, CHECKED)}
     <div class="guide-cta-inline">
       <p><strong>Test where you stand, for free</strong>Want to know how good your Dutch already is? Take a free practice exam. No account needed.</p>
-      <a class="guide-cta-btn" href="/en/oefenen">Start for free ${I_ARROW}</a>
+      <a class="guide-cta-btn" href="/en/practice">Start for free ${I_ARROW}</a>
     </div>
   </div>
 </div>
@@ -724,9 +724,9 @@ ${figure(
     ${factIn('en', 'You sit the knowledge exams and the A2 language exams at one of six exam locations: Amsterdam, Eindhoven, Rijswijk, Rotterdam, Utrecht or Zwolle. Exams at B1 or B2 are the staatsexamen NT2, which has its own locations.', 'inburgeren.nl — Examenplaatsen', SRC_LOCATIES, CHECKED)}
     ${docentIn('en', 'In my lessons I see that most students find Reading and Listening easiest. Writing and Speaking they often find harder. So start with Reading or Listening, and divide your time well. Try not to plan several exams on one day — that way you keep enough energy.')}
     <p>Want to know exactly what each language part looks like? Read:
-    <a href="/en/blog/inburgeringsexamen-a2-uitleg">Inburgeringsexamen A2: the 4 language parts explained</a>.
+    <a href="/en/blog/a2-integration-exam-explained">Inburgeringsexamen A2: the 4 language parts explained</a>.
     Unsure about the level? Read:
-    <a href="/en/blog/taalniveaus-a1-a2-b1-nederlands">the difference between A1, A2 and B1</a>.</p>
+    <a href="/en/blog/dutch-language-levels-a1-a2-b1">the difference between A1, A2 and B1</a>.</p>
   </div>
 </div>
 
@@ -741,7 +741,7 @@ ${figure(
     ${factIn('en', 'The result of a knowledge exam or an A2 language exam normally arrives within 8 weeks. For Writing A2 and Speaking A2 DUO is currently taking longer: up to 16 weeks (notice of 31 July 2026). If that puts your deadline at risk, you automatically get 6 months extra.', 'inburgeren.nl — nieuwsbericht 31-07-2026', SRC_UITSLAG, CHECKED)}
     <p><strong>Failed a part?</strong> That is not the end. You only resit that part; what you have
     already passed stays. Read what to arrange here:
-    <a href="/en/blog/inburgeringsexamen-zakken-herkansen">Failed the integration exam? Here is what happens now</a>.</p>
+    <a href="/en/blog/failing-and-retaking-the-integration-exam">Failed the integration exam? Here is what happens now</a>.</p>
   </div>
 </div>
 
@@ -1039,7 +1039,7 @@ ${figure(
     ${factIn('ar', 'يتناول KNM ثمانية محاور: العمل والدخل · آداب التعامل والقيم والأعراف · السكن · الصحة والرعاية الصحية · التاريخ والجغرافيا · المؤسسات · نظام الدولة وسيادة القانون · التعليم والتربية.', 'Regeling inburgering 2021 — eindtermen KNM (Stcrt. 2024, 15802)', SRC_KNM, CHECKED)}
     <div class="guide-cta-inline">
       <p><strong>اختبر مستواك مجانًا</strong>هل تريد معرفة مستواك في الهولندية؟ قم بامتحان تجريبي مجاني. بدون حساب.</p>
-      <a class="guide-cta-btn" href="/ar/oefenen">ابدأ مجانًا ${I_ARROW}</a>
+      <a class="guide-cta-btn" href="/ar/تدرب">ابدأ مجانًا ${I_ARROW}</a>
     </div>
   </div>
 </div>
@@ -1068,9 +1068,9 @@ ${figure(
     ${factIn('ar', 'تؤدّي امتحانات المعرفة والامتحانات اللغوية على مستوى A2 في واحد من ستة مراكز امتحان: أمستردام أو آيندهوفن أو رايسفايك أو روتردام أو أوتريخت أو زفوله. أما امتحانات B1 أو B2 فهي staatsexamen NT2 ولها مراكزها الخاصة.', 'inburgeren.nl — Examenplaatsen', SRC_LOCATIES, CHECKED)}
     ${docentIn('ar', 'ألاحظ في دروسي أن معظم الدارسين يجدون القراءة والاستماع أسهل، بينما تكون الكتابة والمحادثة أصعب عليهم غالبًا. لذا ابدأ بالقراءة أو الاستماع، ووزّع وقتك جيدًا. ويُفضَّل ألا تحدّد أكثر من امتحان في يوم واحد — هكذا تحافظ على طاقتك.')}
     <p>هل تريد معرفة شكل كل جزء لغوي بالضبط؟ اقرأ:
-    <a href="/ar/blog/inburgeringsexamen-a2-uitleg">امتحان الاندماج A2: شرح الأجزاء اللغوية الأربعة</a>.
+    <a href="/ar/المدونة/شرح-امتحان-الاندماج-a2">امتحان الاندماج A2: شرح الأجزاء اللغوية الأربعة</a>.
     وهل أنت متردّد بشأن المستوى؟ اقرأ:
-    <a href="/ar/blog/taalniveaus-a1-a2-b1-nederlands">الفرق بين A1 وA2 وB1</a>.</p>
+    <a href="/ar/المدونة/مستويات-اللغة-الهولندية-a1-a2-b1">الفرق بين A1 وA2 وB1</a>.</p>
   </div>
 </div>
 
@@ -1084,7 +1084,7 @@ ${figure(
     ${factIn('ar', 'تصل نتيجة امتحان المعرفة أو الامتحان اللغوي على مستوى A2 عادةً خلال ٨ أسابيع. أما الكتابة A2 والمحادثة A2 فتستغرق DUO حاليًا وقتًا أطول: حتى ١٦ أسبوعًا (إشعار بتاريخ ٣١ يوليو ٢٠٢٦). وإذا عرّضك ذلك لضيق الوقت في مدتك، تحصل تلقائيًا على ٦ أشهر إضافية.', 'inburgeren.nl — nieuwsbericht 31-07-2026', SRC_UITSLAG, CHECKED)}
     <p><strong>رسبت في جزء؟</strong> ليست هذه النهاية. تعيد ذلك الجزء وحده؛ وما اجتزته يبقى
     محفوظًا. اقرأ هنا ما عليك ترتيبه:
-    <a href="/ar/blog/inburgeringsexamen-zakken-herkansen">رسبت في امتحان الاندماج؟ إليك ما يحدث الآن</a>.</p>
+    <a href="/ar/المدونة/الرسوب-وإعادة-امتحان-الاندماج">رسبت في امتحان الاندماج؟ إليك ما يحدث الآن</a>.</p>
   </div>
 </div>
 

@@ -211,7 +211,7 @@ export default async function GuideHub({
                   return (
                     <Link
                       key={guide.slug}
-                      href={guideHref(guide)}
+                      href={guideHref(guide, locale)}
                       className="bg-surface-container-lowest rounded-2xl overflow-hidden flex flex-col no-underline shadow-sm post-card focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2"
                       style={{ textDecoration: 'none' }}
                     >

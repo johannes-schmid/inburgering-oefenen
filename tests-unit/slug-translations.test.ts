@@ -66,10 +66,21 @@ describe('vertaalde slugs', () => {
    * hoort te winnen, net als in de App Router zelf. */
   it('laat een statisch segment winnen van een parameter', () => {
     expect(translateDutchPath('knm/woordenlijst', 'en')).toBe('knm/glossary');
-    expect(translateDutchPath('knm/wonen', 'en')).toBe('knm/wonen');
+    /* `wonen` is een bestaande gids, dus hij wordt als parameterwaarde vertaald — het punt
+     * hier is dat `woordenlijst` hierboven níét als gids-slug wordt gelezen. */
+    expect(translateDutchPath('knm/wonen', 'en')).toBe('knm/housing');
   });
 
-  it('laat een gids-slug en een blogslug met rust', () => {
+  /* Sinds 15-09 vertaald, zie `i18n/content-slugs.ts`. Een slug die niet in die tabel staat —
+   * een gids die nog geschreven moet worden — blijft staan zoals hij is. */
+  it('vertaalt een gids-slug en een blogslug die in de tabel staan', () => {
+    expect(translateDutchPath('inburgering/wat-kost-inburgeren', 'en'))
+      .toBe('civic-integration/what-does-integration-cost');
+    expect(translateDutchPath('blog/taalniveaus-a1-a2-b1-nederlands', 'en'))
+      .toBe('blog/dutch-language-levels-a1-a2-b1');
+  });
+
+  it('laat een slug die niet in de tabel staat met rust', () => {
     expect(translateDutchPath('inburgering/inburgeringsexamen-2026', 'en'))
       .toBe('civic-integration/inburgeringsexamen-2026');
   });

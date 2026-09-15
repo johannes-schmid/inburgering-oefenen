@@ -13,12 +13,28 @@
  * thin duplicate of the Dutch body — see `hasTranslation()`.
  */
 
-/** Per-locale content. Anything omitted falls back to the Dutch fields on BlogPost. */
+import { contentSlugParam, parseContentSlug } from '@/i18n/content-slugs';
+
+/**
+ * Per-locale content. Anything omitted falls back to the Dutch fields on BlogPost.
+ *
+ * **Geen `slug`.** Die stond hier tot 15-09 wel, maar werd door geen enkele post gevuld; de
+ * vertaalde slug staat nu in `i18n/content-slugs.ts`, samen met die van de gidsen en buiten
+ * het bereik van de browserbundel. Zie de kop van dat bestand.
+ *
+ * `breadcrumb`, `dateLabel`, `imageAlt` en `relatedPosts` zijn op 15-09 toegevoegd. Ze stonden
+ * alleen op `BlogPost` en werden dus onvertaald gerenderd: een Engelse pagina toonde een
+ * Nederlandse kruimel, "12 augustus 2026" onder de kop, Nederlandse alt-tekst en drie
+ * Nederlandse kaarten onderaan. `GuideLocale` had deze drie al — dit is diezelfde vorm.
+ */
 type PostLocale = {
   heroTitle: string;
   description: string;
   category: string;
-  slug?: string;
+  breadcrumb?: string;
+  dateLabel?: string;
+  imageAlt?: string;
+  relatedPosts?: { slug: string; title: string; desc: string }[];
   heroSubtitle?: string;
   articleHtml?: string;
   sidebarHtml?: string;
@@ -79,6 +95,10 @@ export type ResolvedPost = {
   ctaDesc: string;
   ctaLabel: string;
   faq: FaqItem[];
+  breadcrumb: string;
+  dateLabel: string;
+  imageAlt: string;
+  relatedPosts: { slug: string; title: string; desc: string }[];
 };
 
 /**
@@ -355,6 +375,14 @@ ${fact('"Hebt u een kennisexamen gedaan? Of een taalexamen op niveau A2? Dan kri
         heroTitle: 'The A2 integration exam: all four language parts explained',
         description: 'What to know about the Dutch A2 integration exam: which four parts you sit, how long each takes and how many questions you get.',
         category: 'Guide & Information',
+        breadcrumb: 'A2 integration exam',
+        dateLabel: '8 July 2026',
+        imageAlt: 'Woman studying Dutch for the A2 integration exam at a table with books and a laptop',
+        relatedPosts: [
+          { slug: 'lezen-examen-inburgering-a2', title: 'The Reading exam A2', desc: '25 questions in 65 minutes — how to approach it' },
+          { slug: 'luisteren-examen-inburgering-a2', title: 'The Listening exam A2', desc: 'The part that is most often underestimated' },
+          { slug: 'inburgeringsexamen-zakken-herkansen', title: 'Failed? Here is what happens now', desc: 'Retaking, costs and your result' },
+        ],
         heroSubtitle: 'Four parts, four separate exams. Here is exactly what each one gives you — with the DUO source next to every figure.',
         ctaTitle: 'Practise with the real exam format',
         ctaDesc: 'DUO gives you 3 or 4 practice exams per part. We give you 10 — written by a certified NT2 teacher.',
@@ -523,7 +551,7 @@ ${factEn('"Hebt u een kennisexamen gedaan? Of een taalexamen op niveau A2? Dan k
   <p>Two practical tips from DUO itself: take the practice exams on a <strong>computer</strong>, not a phone. And DUO\'s Speaking practice exam <strong>does not work in Safari</strong>.</p>
 </div>
 
-<p>Want to start now? <a href="/en/oefenen">Take a free practice exam</a> and see where you stand.</p>
+<p>Want to start now? <a href="/en/practice">Take a free practice exam</a> and see where you stand.</p>
 `,
         sidebarHtml: `<div class="bg-surface-container-lowest rounded-2xl p-6" style="box-shadow: 0 2px 16px rgba(0,43,109,0.06)">
   <h3 class="text-xs font-bold uppercase tracking-widest text-on-surface-variant mb-4">The four parts</h3>
@@ -539,6 +567,14 @@ ${factEn('"Hebt u een kennisexamen gedaan? Of een taalexamen op niveau A2? Dan k
         heroTitle: 'امتحان الاندماج A2: شرح الأجزاء اللغوية الأربعة',
         description: 'ما تحتاج معرفته عن امتحان الاندماج الهولندي A2: الأجزاء الأربعة، ومدة كل جزء، وعدد الأسئلة التي ستحصل عليها.',
         category: 'دليل ومعلومات',
+        breadcrumb: 'امتحان الاندماج A2',
+        dateLabel: '8 يوليو 2026',
+        imageAlt: 'امرأة تدرس الهولندية استعدادًا لامتحان الاندماج A2 على طاولة عليها كتب وحاسوب محمول',
+        relatedPosts: [
+          { slug: 'lezen-examen-inburgering-a2', title: 'امتحان القراءة A2', desc: '25 سؤالاً في 65 دقيقة — هكذا تتعامل معه' },
+          { slug: 'luisteren-examen-inburgering-a2', title: 'امتحان الاستماع A2', desc: 'الجزء الذي يُستهان به أكثر من غيره' },
+          { slug: 'inburgeringsexamen-zakken-herkansen', title: 'رسبت؟ إليك ما يحدث الآن', desc: 'إعادة الامتحان والتكاليف ونتيجتك' },
+        ],
         heroSubtitle: 'أربعة أجزاء، وأربعة امتحانات منفصلة. هنا تجد بالتحديد ما يحتويه كل امتحان — مع مصدر من DUO لكل رقم.',
         ctaTitle: 'تدرّب على صيغة الامتحان الحقيقية',
         ctaDesc: 'تقدّم DUO 3 أو 4 امتحانات تدريبية لكل جزء. نحن نقدّم 10 — من إعداد معلمة NT2 معتمدة.',
@@ -701,7 +737,7 @@ ${factAr('«Hebt u een kennisexamen gedaan? Of een taalexamen op niveau A2? Dan 
   <p>نصيحتان عمليتان من DUO نفسها: أدِّ الامتحانات التدريبية على <strong>حاسوب</strong> لا على الهاتف. وامتحان التحدث التدريبي من DUO <strong>لا يعمل في Safari</strong>.</p>
 </div>
 
-<p>هل تريد البدء الآن؟ <a href="/ar/oefenen">أدِّ امتحانًا تدريبيًا مجانيًا</a> واعرف مستواك.</p>
+<p>هل تريد البدء الآن؟ <a href="/ar/تدرب">أدِّ امتحانًا تدريبيًا مجانيًا</a> واعرف مستواك.</p>
 `,
         sidebarHtml: `<div class="bg-surface-container-lowest rounded-2xl p-6" style="box-shadow: 0 2px 16px rgba(0,43,109,0.06)">
   <h3 class="text-xs font-bold uppercase tracking-widest text-on-surface-variant mb-4">الأجزاء الأربعة</h3>
@@ -949,6 +985,14 @@ ${fact('DUO biedt 4 online oefenexamens Lezen A2 aan. Voor Luisteren en Spreken 
         heroTitle: 'Reading exam A2 (Lezen): format, timing and tips',
         description: 'The A2 Reading exam takes 65 minutes. Here is what it looks like, how much time you get per question, and the mistakes to avoid.',
         category: 'Tips & Preparation',
+        breadcrumb: 'Reading exam A2',
+        dateLabel: '14 July 2026',
+        imageAlt: 'Student reading a Dutch text on a laptop while practising for the A2 Reading exam',
+        relatedPosts: [
+          { slug: 'inburgeringsexamen-a2-uitleg', title: 'All four parts', desc: 'Reading, Listening, Writing and Speaking explained' },
+          { slug: 'luisteren-examen-inburgering-a2', title: 'The Listening exam A2', desc: 'Same number of questions, 20 minutes less' },
+          { slug: 'inburgeringsexamen-zakken-herkansen', title: 'Failed? Here is what happens now', desc: 'Retaking, costs and your result' },
+        ],
         heroSubtitle: '65 minutes, 25 questions, texts from everyday life. The hard part is not the language — it is the clock.',
         ctaTitle: 'Practise Reading against the clock',
         ctaDesc: 'DUO gives you 4 Reading practice exams. We give you 10 — with an explanation for every question.',
@@ -1086,7 +1130,7 @@ ${factEn('"De zak-slaaggrens wordt uitgedrukt in een cesuur, vastgesteld door de
 
 <p>Start with DUO’s <strong>4 free Reading practice exams</strong> — real format, real clock. Four is a good start but too few to master a format, which is why we have 10, written by a certified NT2 teacher rather than generated by a model. With a language exam that difference matters: a question that is subtly wrong teaches you the wrong thing.</p>
 
-<p>Read on: <a href="/en/blog/inburgeringsexamen-a2-uitleg">all four parts explained</a>, or <a href="/en/oefenen">take a free practice exam</a>.</p>
+<p>Read on: <a href="/en/blog/a2-integration-exam-explained">all four parts explained</a>, or <a href="/en/practice">take a free practice exam</a>.</p>
 `,
         sidebarHtml: `<div class="bg-surface-container-lowest rounded-2xl p-6" style="box-shadow: 0 2px 16px rgba(0,43,109,0.06)">
   <h3 class="text-xs font-bold uppercase tracking-widest text-on-surface-variant mb-4">Reading A2 in numbers</h3>
@@ -1096,6 +1140,168 @@ ${factEn('"De zak-slaaggrens wordt uitgedrukt in een cesuur, vastgesteld door de
     <tr><td>Per question</td><td>±2.5 min</td></tr>
     <tr><td>Format</td><td>computer</td></tr>
     <tr><td>Marking</td><td>automated</td></tr>
+  </table>
+</div>`,
+      },
+      ar: {
+        heroTitle: 'امتحان القراءة A2 (Lezen): الشكل والتوقيت والنصائح',
+        description: 'امتحان القراءة A2 مدته 65 دقيقة. إليك شكله، وكم من الوقت لديك لكل سؤال، والأخطاء التي عليك تجنّبها.',
+        category: 'نصائح وتحضير',
+        breadcrumb: 'امتحان القراءة A2',
+        dateLabel: '14 يوليو 2026',
+        imageAlt: 'دارس يقرأ نصًا هولنديًا على حاسوب محمول أثناء التدرّب على امتحان القراءة A2',
+        relatedPosts: [
+          { slug: 'inburgeringsexamen-a2-uitleg', title: 'الأجزاء الأربعة كلها', desc: 'شرح القراءة والاستماع والكتابة والتحدث' },
+          { slug: 'luisteren-examen-inburgering-a2', title: 'امتحان الاستماع A2', desc: 'نفس عدد الأسئلة، و20 دقيقة أقل' },
+          { slug: 'inburgeringsexamen-zakken-herkansen', title: 'رسبت؟ إليك ما يحدث الآن', desc: 'إعادة الامتحان والتكاليف ونتيجتك' },
+        ],
+        heroSubtitle: '65 دقيقة، و25 سؤالاً، ونصوص من الحياة اليومية. الصعوبة ليست في اللغة — بل في الساعة.',
+        ctaTitle: 'تدرّب على القراءة والساعة أمامك',
+        ctaDesc: 'تمنحك DUO 4 امتحانات تجريبية للقراءة. ونحن نمنحك 10 — مع شرح بعد كل سؤال.',
+        ctaLabel: 'ابدأ امتحانًا تجريبيًا مجانيًا',
+        faq: [
+          { q: 'كم يستغرق امتحان القراءة A2؟', a: '65 دقيقة — وهو الأطول بين أجزاء اللغة الأربعة. كما تحصل على 15 دقيقة من الشرح قبل بدء الامتحان، وهذه لا تُحتسب من وقت امتحانك.' },
+          { q: 'كم عدد الأسئلة في امتحان القراءة؟', a: 'في الامتحانات التجريبية الرسمية الأربعة من DUO يوجد 25 سؤالاً. ولا تنشر DUO عدد أسئلة الامتحان الحقيقي، لذا اعتبر الرقم 25 مؤشرًا لا رقمًا دقيقًا.' },
+          { q: 'ما نوع النصوص التي تحصل عليها؟', a: 'نصوص يومية: رسالة من المدرسة أو من البلدية، أو إعلان، أو بريد إلكتروني من العمل، أو نشرة دواء، أو لافتة في متجر. لا أدب ولا مقالات إخبارية صعبة.' },
+          { q: 'كم من الوقت لديك لكل سؤال؟', a: 'حوالي 2.5 دقيقة — لكن عليك قراءة النص ضمن هذا الوقت أيضًا. ولهذا فإن الإيقاع في هذا الجزء لا يقل أهمية عن المفردات.' },
+          { q: 'هل يمكن استخدام قاموس في امتحان القراءة؟', a: 'لا. بموجب لائحة الامتحانات تُوضع هاتفك وحقيبتك وأغراضك في خزانة. وأي وسيلة مساعدة غير مسموح بها صراحةً تُعدّ غشًا في الامتحان.' },
+          { q: 'كم سؤالاً يجب أن تجيب عنه بشكل صحيح؟', a: 'لا تنشر DUO ذلك. وتنص اللائحة على أن حدّ النجاح هو «cesuur» يحدده الوزير. أما الأرقام المتداولة على الإنترنت مثل 18 أو 19 من 25 فهي ليست من DUO.' },
+          { q: 'هل يصحّح إنسان امتحان القراءة؟', a: 'لا. تُصحَّح القراءة آليًا، مثل الاستماع وKNM. أما الكتابة والتحدث فيراجعهما (جزئيًا) مصحّحون معتمدون.' },
+        ],
+        articleHtml: `
+<p><strong>امتحان القراءة A2</strong> (Lezen) ضمن امتحان الاندماج الهولندي مدته <strong>65 دقيقة</strong> وتؤديه على حاسوب. تقرأ نصوصًا يومية وتجيب عن أسئلة عنها. وفي الامتحانات التجريبية الرسمية من DUO يعني ذلك 25 سؤالاً. ويُصحَّح آليًا.</p>
+
+<p>تمنحك القراءة أكبر قدر من الوقت بين الأجزاء الأربعة. ومع ذلك يتعثّر كثيرون هنا — لا لأن النصوص صعبة أكثر من اللازم، بل لأنهم يقرؤونها بالطريقة الخطأ.</p>
+
+<div class="article-toc">
+  <p class="article-toc-title">في هذا المقال</p>
+  <ol>
+    <li><a href="#format">الشكل: 65 دقيقة</a></li>
+    <li><a href="#texts">أي نصوص تحصل عليها</a></li>
+    <li><a href="#question-types">أنواع الأسئلة</a></li>
+    <li><a href="#pace">المشكلة الحقيقية: الإيقاع</a></li>
+    <li><a href="#strategy">الاستراتيجية: السؤال أولاً</a></li>
+    <li><a href="#example">جرّب سؤالاً</a></li>
+    <li><a href="#mistakes">خمسة أخطاء يمكن تجنّبها</a></li>
+    <li><a href="#passing">كم تحتاج من الإجابات الصحيحة؟</a></li>
+  </ol>
+</div>
+
+<h2 id="format">الشكل: 65 دقيقة</h2>
+
+<p>تصف DUO الأمر باختصار: تؤديه على حاسوب، وتقرأ نصوصًا، وتجيب عن أسئلة.</p>
+
+${factAr('امتحان القراءة A2 مدته 65 دقيقة ويُؤدى على حاسوب.', 'inburgeren.nl — محتوى امتحانات اللغة', SRC_INHOUD)}
+
+<p>أما عن عدد الأسئلة فلا تقول DUO شيئًا. لكن امتحاناتها التجريبية الرسمية تقول: شاشة البدء في الامتحانات التجريبية الأربعة للقراءة A2 تنص على «U moet in dit examen 25 vragen beantwoorden».</p>
+
+${factAr('تحتوي الامتحانات التجريبية الرسمية الأربعة للقراءة A2 من DUO على 25 سؤالاً ومدتها 65 دقيقة.', 'inburgeren.nl — الامتحانات التجريبية', SRC_OEFENEN)}
+
+<p>الأسئلة من نوع الاختيار من متعدد. ولست مضطرًا أبدًا إلى كتابة شيء بنفسك، وهذا ما يجعل القراءة مختلفة جوهريًا عن الكتابة والتحدث.</p>
+
+<h2 id="texts">أي نصوص تحصل عليها</h2>
+
+<p>النصوص مأخوذة من الحياة العادية في هولندا:</p>
+
+<ul>
+  <li>رسالة من مدرسة طفلك؛</li>
+  <li>بريد إلكتروني من العمل عن نوبات عملك؛</li>
+  <li>إعلان أو عرض خاص؛</li>
+  <li>لافتة في متجر أو في المحطة؛</li>
+  <li>معلومات عن دواء؛</li>
+  <li>رسالة من البلدية أو من DUO.</li>
+</ul>
+
+<p>وهذا خبر جيد. فالامتحان لا يختبر قدرتك على قراءة الأدب. بل يختبر قدرتك على العثور على معلومات تحتاجها فعلاً هنا.</p>
+
+<h3>ما لا تحتاج إليه</h3>
+
+<p>لا مقالات إخبارية سياسية. ولا أدب. ولا مصطلحات مهنية. ولا تقارير طويلة. إن كنت تستطيع فهم رسالة من البلدية، فأنت على الطريق الصحيح.</p>
+
+<h2 id="question-types">أنواع الأسئلة</h2>
+
+<p>تبدو الأسئلة متنوعة لكنها تعود إلى عدد قليل من الأنواع. تعرّف على النوع وستعرف أين تبحث.</p>
+
+<div class="article-table-wrap">
+<table>
+  <thead>
+    <tr><th>النوع</th><th>ما المطلوب</th><th>أين تبحث</th></tr>
+  </thead>
+  <tbody>
+    <tr><td><strong>تفصيل</strong></td><td>وقت أو سعر أو تاريخ أو عنوان</td><td>عن الأرقام في النص</td></tr>
+    <tr><td><strong>الفكرة الرئيسية</strong></td><td>عمّ يتحدث هذا النص؟</td><td>العنوان والأسطر الأولى</td></tr>
+    <tr><td><strong>الغرض</strong></td><td>لماذا كُتب؟</td><td>من أرسله، وإلى من</td></tr>
+    <tr><td><strong>الإجراء المطلوب</strong></td><td>ماذا عليك أن تفعل؟</td><td>أفعال مثل «bel» و«stuur» و«kom»</td></tr>
+    <tr><td><strong>الشرط</strong></td><td>على من ينطبق هذا؟</td><td>كلمات مثل «alleen» و«als» و«of hoger»</td></tr>
+  </tbody>
+</table>
+</div>
+
+<p>النوع الأخير هو أكثر ما يكلّف درجات. فنصٌّ يقول إن شيئًا ينطبق فقط «vanaf de 4e verdieping» (من الطابق الرابع فما فوق). إن فاتتك هذه الكلمات اخترت الإجابة الخطأ — حتى لو فهمت النص كله.</p>
+
+<h2 id="pace">المشكلة الحقيقية: الإيقاع</h2>
+
+<p>25 سؤالاً في 65 دقيقة تعني نحو <strong>2.5 دقيقة لكل سؤال</strong>، وعليك قراءة النص ضمن هذا الوقت أيضًا.</p>
+
+<p>وهنا يخسر دارسيّ الدرجات. يقرؤون كل نص من أول كلمة إلى آخرها ويبحثون عن كل كلمة غير مألوفة. وعند السؤال الخامس عشر يكون الوقت قد نفد.</p>
+
+<p><strong>لست بحاجة إلى فهم كل كلمة.</strong> أنت بحاجة إلى العثور على الإجابة. وهذا نوع من القراءة مختلف تمامًا عمّا تعلّمه معظم الناس في المدرسة.</p>
+
+<h2 id="strategy">الاستراتيجية: السؤال أولاً</h2>
+
+<ol>
+  <li><strong>اقرأ السؤال.</strong> ما المطلوب بالضبط — وقت؟ سعر؟ سبب؟</li>
+  <li><strong>امسح النص بسرعة</strong> حتى تجد ذلك الجزء.</li>
+  <li><strong>اقرأ ذلك الجزء وحده بتمعّن.</strong> جملتان أو ثلاث تكفي عادةً.</li>
+  <li><strong>اختر وانتقل إلى التالي.</strong></li>
+</ol>
+
+<p>لا تعرف إجابةً ما؟ اختر شيئًا وتابع. فإجابة مثالية عن السؤال الثامن لا قيمة لها إن لم تصل أبدًا إلى الأسئلة من 20 إلى 25.</p>
+
+<div class="info-box info-box-green">
+  <p><strong>انتبه للأرقام.</strong> الأوقات والأسعار والتواريخ وأرقام المنازل هي المقصودة دائمًا تقريبًا. فإن كان السؤال عن وقت، امسح النص بحثًا عن الأرقام — أسرع بكثير من قراءة الكلمات.</p>
+</div>
+
+<h2 id="example">جرّب سؤالاً</h2>
+
+<div class="blog-quiz-card">
+  <p class="blog-quiz-q">لافتة بجانب المصعد تقول: «De lift is kapot. Maandag komt de monteur. Woont u op de 4e verdieping of hoger en kunt u niet traplopen? Bel de beheerder: 020 555 1234.» ماذا عليك أن تفعل إن كنت تسكن في الطابق الثاني؟</p>
+  <div class="blog-quiz-opts">
+    <button type="button" class="blog-quiz-opt"><span class="blog-quiz-letter">A</span><span>الاتصال بمدير المبنى</span></button>
+    <button type="button" class="blog-quiz-opt"><span class="blog-quiz-letter">B</span><span>انتظار الفنّي يوم الاثنين</span></button>
+    <button type="button" class="blog-quiz-opt" data-answer="correct"><span class="blog-quiz-letter">C</span><span>لا شيء — استخدم الدرج</span></button>
+  </div>
+  <div class="blog-quiz-ans">الإجابة الصحيحة هي <strong>C</strong>. فاللافتة تطلب منك الاتصال فقط إن كنت تسكن في <strong>الطابق الرابع أو أعلى</strong> ولا تستطيع استخدام الدرج. وفي الطابق الثاني لا ينطبق عليك هذا الشرط. لاحظ كم يتوقف الأمر على «of hoger» — وهذا بالضبط ما يختبره هذا الامتحان.</div>
+</div>
+
+<h2 id="mistakes">خمسة أخطاء يمكن تجنّبها</h2>
+
+<div class="tip-card"><div class="tip-number">1</div><div><p><strong>قراءة النص كاملاً.</strong> ابحث بدل ذلك. اقرأ ما تحتاجه فقط.</p></div></div>
+<div class="tip-card"><div class="tip-number">2</div><div><p><strong>التدرّب بدون ساعة.</strong> إن لم تحسب وقتك أبدًا، فلن تعرف كيف تبدو الـ65 دقيقة.</p></div></div>
+<div class="tip-card"><div class="tip-number">3</div><div><p><strong>التدرّب على الهاتف.</strong> الامتحان الحقيقي على حاسوب بشاشة كبيرة — وDUO تنصح بالشيء نفسه.</p></div></div>
+<div class="tip-card"><div class="tip-number">4</div><div><p><strong>ترك أسئلة فارغة.</strong> لا عقوبة على الإجابة الخاطئة. املأ شيئًا دائمًا.</p></div></div>
+<div class="tip-card"><div class="tip-number">5</div><div><p><strong>تعلّم المفردات وحدها.</strong> الكلمات تساعد، لكن هذا الامتحان يختبر مهارة، والمهارات تأتي من التدريب.</p></div></div>
+
+<h2 id="passing">كم تحتاج من الإجابات الصحيحة؟</h2>
+
+<p>الجواب المختصر: <strong>لا أحد خارج DUO يعرف</strong>. ستقرأ على الإنترنت «18 من 25» أو «19 من 25». وهذه الأرقام لا ترد في أي صفحة رسمية وهي متناقضة فيما بينها. أما الرسمي فهو التالي:</p>
+
+${factAr('«De zak-slaaggrens wordt uitgedrukt in een cesuur, vastgesteld door de Minister.» — حدّ النجاح والرسوب هو عتبة يحددها الوزير، وDUO لا تنشرها.', 'لائحة امتحانات DUO، المادة 10 الفقرة 5', SRC_REGLEMENT)}
+
+<p>تحصل على درجة لكل جزء إضافة إلى نجاح أو رسوب، ويشير الملخص المبسّط للائحة إلى أنه ليس من الضروري أن تكون كل الإجابات صحيحة. وعمليًا: لا تستهدف الحد الأدنى. تدرّب حتى تصيب الغالبية العظمى من الأسئلة.</p>
+
+<p>ابدأ بامتحانات DUO التجريبية <strong>الأربعة المجانية للقراءة</strong> — شكل حقيقي وساعة حقيقية. أربعة بداية جيدة لكنها قليلة جدًا لإتقان شكل الامتحان، ولهذا لدينا 10، كتبها مدرّس NT2 معتمد بدل أن يولّدها نموذج. ومع امتحان لغة يُحدث هذا الفرق فارقًا: فالسؤال الخاطئ بشكل خفي يعلّمك الشيء الخطأ.</p>
+
+<p>تابع القراءة: <a href="/ar/المدونة/شرح-امتحان-الاندماج-a2">شرح الأجزاء الأربعة</a>، أو <a href="/ar/تدرب">قدّم امتحانًا تجريبيًا مجانيًا</a>.</p>
+`,
+        sidebarHtml: `<div class="bg-surface-container-lowest rounded-2xl p-6" style="box-shadow: 0 2px 16px rgba(0,43,109,0.06)">
+  <h3 class="text-xs font-bold uppercase tracking-widest text-on-surface-variant mb-4">القراءة A2 بالأرقام</h3>
+  <table class="facts-table">
+    <tr><td>الوقت</td><td>65 دقيقة</td></tr>
+    <tr><td>الأسئلة (تجريبي)</td><td>25</td></tr>
+    <tr><td>لكل سؤال</td><td>±2.5 دقيقة</td></tr>
+    <tr><td>الشكل</td><td>حاسوب</td></tr>
+    <tr><td>التصحيح</td><td>آلي</td></tr>
   </table>
 </div>`,
       },
@@ -1343,6 +1549,14 @@ ${fact('"De zak-slaaggrens wordt uitgedrukt in een cesuur, vastgesteld door de M
         heroTitle: 'Listening exam A2 (Luisteren): format and tips',
         description: 'The A2 Listening exam takes 45 minutes and you cannot rewind. Here is the format and how to avoid the mistakes that cost most people marks.',
         category: 'Tips & Preparation',
+        breadcrumb: 'Listening exam A2',
+        dateLabel: '20 July 2026',
+        imageAlt: 'Student practising with headphones for the Listening part of the A2 integration exam',
+        relatedPosts: [
+          { slug: 'inburgeringsexamen-a2-uitleg', title: 'All four parts', desc: 'Reading, Listening, Writing and Speaking explained' },
+          { slug: 'lezen-examen-inburgering-a2', title: 'The Reading exam A2', desc: '25 questions in 65 minutes' },
+          { slug: 'inburgeringsexamen-zakken-herkansen', title: 'Failed? Here is what happens now', desc: 'Retaking, costs and your result' },
+        ],
         heroSubtitle: 'The same number of questions as Reading, 20 minutes less time — and you cannot replay a fragment.',
         ctaTitle: 'Practise Listening with real audio',
         ctaDesc: 'DUO gives you 3 Listening practice exams. We give you 10 — with an explanation for every question.',
@@ -1484,11 +1698,11 @@ ${factEn('All three official DUO A2 Listening practice exams contain 25 question
 
 ${factEn('You must be present 30 minutes before the exam. You get 15 minutes of explanation before it starts. Without valid ID you may not sit the exam.', 'DUO exam regulations', SRC_REGLEMENT)}
 
-<p>As with every part, DUO does not publish how much you need correct: the pass mark is a cesuur set by the Minister. If you fail Listening, you retake <strong>only</strong> that part — see <a href="/en/blog/inburgeringsexamen-zakken-herkansen">failing and retaking</a>.</p>
+<p>As with every part, DUO does not publish how much you need correct: the pass mark is a cesuur set by the Minister. If you fail Listening, you retake <strong>only</strong> that part — see <a href="/en/blog/failing-and-retaking-the-integration-exam">failing and retaking</a>.</p>
 
 <p>DUO has <strong>3 free Listening practice exams</strong>. Do them, then get more volume: we have 10, with real audio and an explanation per question, recorded and checked by a certified NT2 teacher.</p>
 
-<p>Read on: <a href="/en/blog/inburgeringsexamen-a2-uitleg">all four parts explained</a>, or <a href="/en/oefenen">start a free practice exam</a>.</p>
+<p>Read on: <a href="/en/blog/a2-integration-exam-explained">all four parts explained</a>, or <a href="/en/practice">start a free practice exam</a>.</p>
 `,
         sidebarHtml: `<div class="bg-surface-container-lowest rounded-2xl p-6" style="box-shadow: 0 2px 16px rgba(0,43,109,0.06)">
   <h3 class="text-xs font-bold uppercase tracking-widest text-on-surface-variant mb-4">Listening A2 in numbers</h3>
@@ -1498,6 +1712,176 @@ ${factEn('You must be present 30 minutes before the exam. You get 15 minutes of 
     <tr><td>Per question</td><td>±1.8 min</td></tr>
     <tr><td>Rewind</td><td>no</td></tr>
     <tr><td>Marking</td><td>automated</td></tr>
+  </table>
+</div>`,
+      },
+      ar: {
+        heroTitle: 'امتحان الاستماع A2 (Luisteren): الشكل والنصائح',
+        description: 'امتحان الاستماع A2 مدته 45 دقيقة ولا يمكنك إعادة التشغيل. إليك شكله وكيف تتجنّب الأخطاء التي تكلّف معظم الناس درجاتهم.',
+        category: 'نصائح وتحضير',
+        breadcrumb: 'امتحان الاستماع A2',
+        dateLabel: '20 يوليو 2026',
+        imageAlt: 'دارس يتدرّب بسماعات رأس على جزء الاستماع من امتحان الاندماج A2',
+        relatedPosts: [
+          { slug: 'inburgeringsexamen-a2-uitleg', title: 'الأجزاء الأربعة كلها', desc: 'شرح القراءة والاستماع والكتابة والتحدث' },
+          { slug: 'lezen-examen-inburgering-a2', title: 'امتحان القراءة A2', desc: '25 سؤالاً في 65 دقيقة' },
+          { slug: 'inburgeringsexamen-zakken-herkansen', title: 'رسبت؟ إليك ما يحدث الآن', desc: 'إعادة الامتحان والتكاليف ونتيجتك' },
+        ],
+        heroSubtitle: 'نفس عدد أسئلة القراءة، ووقت أقل بـ20 دقيقة — ولا يمكنك إعادة تشغيل المقطع.',
+        ctaTitle: 'تدرّب على الاستماع بمقاطع صوتية حقيقية',
+        ctaDesc: 'تمنحك DUO 3 امتحانات تجريبية للاستماع. ونحن نمنحك 10 — مع شرح بعد كل سؤال.',
+        ctaLabel: 'ابدأ امتحانًا تجريبيًا مجانيًا',
+        faq: [
+          { q: 'كم يستغرق امتحان الاستماع A2؟', a: '45 دقيقة، على حاسوب. كما تحصل على 15 دقيقة من الشرح قبل بدء الامتحان، فوق وقت الامتحان.' },
+          { q: 'كم عدد الأسئلة في امتحان الاستماع؟', a: 'في الامتحانات التجريبية الرسمية الثلاثة من DUO يوجد 25 سؤالاً — مثل القراءة، لكن بوقت أقل بـ20 دقيقة. ولا تنشر DUO عددًا رسميًا للامتحان الحقيقي.' },
+          { q: 'هل يمكن إعادة تشغيل المقطع؟', a: 'لا تعتمد على ذلك. فالصوت يمر، وخلافًا للنص لا يمكنك النظر مرة أخرى. لذا تدرّب دائمًا وكأنك تسمع كل مقطع مرة واحدة.' },
+          { q: 'ما المواقف التي تسمعها؟', a: 'مواقف يومية: حديث عند الطبيب، أو إعلان في المحطة، أو زميل يسأل شيئًا، أو مكالمة هاتفية من المدرسة. وتقول DUO إنك تجيب عن أسئلة حول مقاطع فيديو قصيرة وتستمع إلى نصوص.' },
+          { q: 'لماذا الاستماع أصعب من القراءة؟', a: 'لثلاثة أسباب: وقت أقل لكل سؤال، وأنت لا تتحكم في السرعة، ولا يمكنك العودة إلى الوراء. فمع النص يمكنك إعادة قراءة جملة صعبة ثلاث مرات. أما مع الصوت فقد ذهبت.' },
+          { q: 'هل يمكن تدوين ملاحظات أثناء امتحان الاستماع؟', a: 'لا يمكنك استخدام أغراضك الخاصة — فبموجب لائحة الامتحانات تُوضع في خزانة. اسأل في مركز الامتحان عمّا هو مسموح؛ والقواعد الأساسية موجودة أيضًا في رسالة الاستدعاء.' },
+          { q: 'كيف يُصحَّح امتحان الاستماع؟', a: 'آليًا. فبموجب المادة 10 من لائحة الامتحانات تُصحَّح أجزاء الاستماع والقراءة وKNM آليًا. ولا يراجع إجاباتك إنسان.' },
+        ],
+        articleHtml: `
+<p><strong>امتحان الاستماع A2</strong> (Luisteren) مدته <strong>45 دقيقة</strong> على حاسوب. تشاهد مقاطع فيديو قصيرة، وتستمع إلى نصوص، وتجيب عن أسئلة عنها. وفي الامتحانات التجريبية الرسمية من DUO يعني ذلك 25 سؤالاً، تُصحَّح آليًا.</p>
+
+<p>على الورق يبدو الاستماع مثل القراءة: العدد نفسه من الأسئلة، والمواضيع اليومية نفسها. أما عمليًا فهو الجزء الذي يُستهان به أكثر من غيره. إليك السبب، وما العمل حياله.</p>
+
+<div class="article-toc">
+  <p class="article-toc-title">في هذا المقال</p>
+  <ol>
+    <li><a href="#format">الشكل: 45 دقيقة</a></li>
+    <li><a href="#why-harder">لماذا الاستماع أصعب من القراءة</a></li>
+    <li><a href="#situations">أي مواقف تسمعها</a></li>
+    <li><a href="#question-types">أنواع الأسئلة</a></li>
+    <li><a href="#strategy">الاستراتيجية: اقرأ مسبقًا</a></li>
+    <li><a href="#example">جرّب سؤالاً</a></li>
+    <li><a href="#understand-everything">الخطأ الأكبر</a></li>
+    <li><a href="#practise">كيف تتدرّب في البيت</a></li>
+  </ol>
+</div>
+
+<h2 id="format">الشكل: 45 دقيقة</h2>
+
+${factAr('امتحان الاستماع A2 مدته 45 دقيقة ويُؤدى على حاسوب.', 'inburgeren.nl — محتوى امتحانات اللغة', SRC_INHOUD)}
+
+<p>لا تنشر DUO عدد الأسئلة، لكن شاشة البدء في الامتحانات التجريبية الرسمية الثلاثة للاستماع A2 تنص على «U moet in dit examen 25 vragen beantwoorden».</p>
+
+${factAr('تحتوي الامتحانات التجريبية الرسمية الثلاثة للاستماع A2 من DUO على 25 سؤالاً ومدتها 45 دقيقة.', 'inburgeren.nl — الامتحانات التجريبية', SRC_OEFENEN)}
+
+<h2 id="why-harder">لماذا الاستماع أصعب من القراءة</h2>
+
+<div class="article-table-wrap">
+<table>
+  <thead>
+    <tr><th></th><th>القراءة</th><th>الاستماع</th></tr>
+  </thead>
+  <tbody>
+    <tr><td>الأسئلة (تجريبي)</td><td>25</td><td>25</td></tr>
+    <tr><td>الوقت</td><td>65 دقيقة</td><td><strong>45 دقيقة</strong></td></tr>
+    <tr><td>لكل سؤال</td><td>±2.5 دقيقة</td><td><strong>±1.8 دقيقة</strong></td></tr>
+    <tr><td>هل يمكن العودة؟</td><td>نعم</td><td><strong>لا</strong></td></tr>
+    <tr><td>من يحدد السرعة؟</td><td>أنت</td><td><strong>الامتحان</strong></td></tr>
+  </tbody>
+</table>
+</div>
+
+<p>ثلاثة أمور تصنع الفرق: وقت أقل بنحو دقيقة لكل سؤال، ولا تحكّم في السرعة، ولا طريق للعودة. فإن فاتك رقم لا تستطيع أن تقلب صفحة إلى الوراء.</p>
+
+<p>ولهذا فإن عادة واحدة بعينها هي الأهم: <strong>تدرّب وكأنك تسمع كل مقطع مرة واحدة فقط</strong>. فإن أعدت التشغيل في البيت، فأنت تدرّب نفسك على شيء لن يمنحك الامتحان إياه.</p>
+
+<h2 id="situations">أي مواقف تسمعها</h2>
+
+<ul>
+  <li>حديث عند الطبيب أو في المستشفى؛</li>
+  <li>إعلان في محطة أو في متجر؛</li>
+  <li>زميل أو مدير يسأل شيئًا؛</li>
+  <li>مكالمة هاتفية من مدرسة طفلك؛</li>
+  <li>شخص يرشدك إلى الطريق أو يحجز موعدًا.</li>
+</ul>
+
+<p>وهذا خبر جيد فعلاً. لا نشرات سياسية. إنها الهولندية التي تسمعها من حولك كل يوم — ويمكنك التدرّب عليها في أي مكان.</p>
+
+<h2 id="question-types">أنواع الأسئلة</h2>
+
+<div class="article-table-wrap">
+<table>
+  <thead>
+    <tr><th>النوع</th><th>ما المطلوب</th><th>إلى ماذا تستمع</th></tr>
+  </thead>
+  <tbody>
+    <tr><td><strong>تفصيل</strong></td><td>وقت أو سعر أو يوم أو رقم</td><td>الأرقام — وهي المقصودة دائمًا تقريبًا</td></tr>
+    <tr><td><strong>الفكرة الأساسية</strong></td><td>عمّ يدور هذا؟</td><td>الجمل الافتتاحية</td></tr>
+    <tr><td><strong>السبب</strong></td><td>لماذا يحدث شيء ما؟</td><td>«omdat» و«want» و«daarom»</td></tr>
+    <tr><td><strong>الإجراء المطلوب</strong></td><td>ماذا عليك أن تفعل؟</td><td>«bel» و«kom» و«neem» و«stuur»</td></tr>
+    <tr><td><strong>الموقف</strong></td><td>كيف يتفاعل شخص ما؟</td><td>نبرة الصوت، وكلمات مثل «helaas»</td></tr>
+  </tbody>
+</table>
+</div>
+
+<p>وهناك فخّ في أسئلة التفصيل: كثيرًا ما تذكر المحادثات <strong>رقمين</strong> — موعدًا قديمًا وآخر جديدًا، أو سعرًا بخصم وبدونه. والسؤال يدور دائمًا تقريبًا حول الثاني.</p>
+
+<h2 id="strategy">الاستراتيجية: اقرأ مسبقًا</h2>
+
+<p>في الاستماع، يحدث العمل المهم <strong>قبل</strong> أن يبدأ الصوت.</p>
+
+<ol>
+  <li><strong>اقرأ السؤال ما دمت تستطيع.</strong> اعرف إلى ماذا ستستمع.</li>
+  <li><strong>حدّد نوع المعلومة التي تحتاجها.</strong> وقت؟ سعر؟ اسم؟</li>
+  <li><strong>استمع بحثًا عنها.</strong> لست بحاجة إلى الباقي.</li>
+  <li><strong>فاتتك؟ اختر وانتقل.</strong> فالتوقف عندها يكلّفك المقطع التالي أيضًا.</li>
+</ol>
+
+<div class="info-box info-box-green">
+  <p><strong>الأرقام هي السؤال عادةً.</strong> درّب نفسك على الأعداد الهولندية تحديدًا — «veertien uur twintig» و«half drie» و«twee euro vijftig». كثيرون يعرفون الكلمات لكنهم لم يضطروا قط إلى التقاطها بسرعة.</p>
+</div>
+
+<h2 id="example">جرّب سؤالاً</h2>
+
+<div class="blog-quiz-card">
+  <p class="blog-quiz-q">عند طبيب الأسنان تسمع: «Uw afspraak van donderdag half elf kan helaas niet doorgaan. Kunt u vrijdag om kwart over negen? Anders is de eerstvolgende mogelijkheid maandag.» أي موعد جديد يقترحه طبيب الأسنان؟</p>
+  <div class="blog-quiz-opts">
+    <button type="button" class="blog-quiz-opt"><span class="blog-quiz-letter">A</span><span>الخميس الساعة 10:30</span></button>
+    <button type="button" class="blog-quiz-opt" data-answer="correct"><span class="blog-quiz-letter">B</span><span>الجمعة الساعة 9:15</span></button>
+    <button type="button" class="blog-quiz-opt"><span class="blog-quiz-letter">C</span><span>الاثنين الساعة 9:15</span></button>
+  </div>
+  <div class="blog-quiz-ans">الإجابة الصحيحة هي <strong>B</strong>. فـ«kwart over negen» تعني 9:15، وهي يوم الجمعة. أما الخميس «half elf» (10:30) فكان الموعد <em>القديم</em>، والاثنين مجرد بديل احتياطي. لاحظ كم من المعلومات تحملها جملتان — وهذا بالضبط سبب قراءتك للسؤال أولاً.</div>
+</div>
+
+<h2 id="understand-everything">الخطأ الأكبر: محاولة فهم كل شيء</h2>
+
+<p>تظهر كلمة لا تعرفها. فتبدأ بالتفكير فيها. وبينما تفكر يستمر الصوت — فتفوتك الجملتان التاليتان، حيث كانت الإجابة.</p>
+
+<p>كلمة واحدة مجهولة تكلّفك ثلاث جمل. ومن الأفضل دائمًا تقريبًا أن تترك الكلمة وتواصل الاستماع.</p>
+
+<div class="info-box info-box-green">
+  <p><strong>درّب نفسك على هذا عمدًا.</strong> استمع إلى شيء أصعب قليلًا مما تحتمل واتفق مع نفسك: لا توقّف، ولا إعادة تشغيل، ولا بحث عن أي شيء. واصل الاستماع فقط. سيبدو الأمر غير مريح، وهو بالضبط المهارة التي يجري اختبارها.</p>
+</div>
+
+<p>وتذكّر: لست بحاجة إلى أن تكون كل إجاباتك صحيحة لتنجح. وهذا مذكور في ملخص DUO المبسّط للائحة الامتحانات.</p>
+
+<h2 id="practise">كيف تتدرّب في البيت</h2>
+
+<div class="tip-card"><div class="tip-number">1</div><div><p><strong>تلفزيون هولندي بترجمة هولندية.</strong> لا بترجمة إلى لغتك — فعندها تكون تقرأ لا تستمع.</p></div></div>
+<div class="tip-card"><div class="tip-number">2</div><div><p><strong>الراديو أثناء الطبخ أو القيادة.</strong> لا حاجة لأن تفهم كل شيء؛ فأذنك تتأقلم مع السرعة.</p></div></div>
+<div class="tip-card"><div class="tip-number">3</div><div><p><strong>تدرّب بدون إعادة تشغيل.</strong> اسمعه مرة واحدة ثم أجب — كما يعمل الامتحان.</p></div></div>
+<div class="tip-card"><div class="tip-number">4</div><div><p><strong>درّب الأرقام على حدة.</strong> اطلب من أحدهم أن يقرأ عليك أوقاتًا وأسعارًا.</p></div></div>
+<div class="tip-card"><div class="tip-number">5</div><div><p><strong>استخدم سماعة رأس.</strong> ستستخدمها في الامتحان. فتدرّب في الظروف نفسها.</p></div></div>
+
+${factAr('عليك الحضور قبل الامتحان بـ30 دقيقة. وتحصل على 15 دقيقة من الشرح قبل بدئه. وبدون هوية سارية لا يُسمح لك بأداء الامتحان.', 'لائحة امتحانات DUO', SRC_REGLEMENT)}
+
+<p>كما في كل جزء، لا تنشر DUO كم تحتاج من الإجابات الصحيحة: فحدّ النجاح عتبة يحددها الوزير. وإن رسبت في الاستماع فإنك تعيد <strong>هذا الجزء وحده</strong> — انظر <a href="/ar/المدونة/الرسوب-وإعادة-امتحان-الاندماج">الرسوب وإعادة الامتحان</a>.</p>
+
+<p>لدى DUO <strong>3 امتحانات تجريبية مجانية للاستماع</strong>. أدِّها، ثم احصل على كمّ أكبر: لدينا 10، بمقاطع صوتية حقيقية وشرح بعد كل سؤال، سجّلها وراجعها مدرّس NT2 معتمد.</p>
+
+<p>تابع القراءة: <a href="/ar/المدونة/شرح-امتحان-الاندماج-a2">شرح الأجزاء الأربعة</a>، أو <a href="/ar/تدرب">ابدأ امتحانًا تجريبيًا مجانيًا</a>.</p>
+`,
+        sidebarHtml: `<div class="bg-surface-container-lowest rounded-2xl p-6" style="box-shadow: 0 2px 16px rgba(0,43,109,0.06)">
+  <h3 class="text-xs font-bold uppercase tracking-widest text-on-surface-variant mb-4">الاستماع A2 بالأرقام</h3>
+  <table class="facts-table">
+    <tr><td>الوقت</td><td>45 دقيقة</td></tr>
+    <tr><td>الأسئلة (تجريبي)</td><td>25</td></tr>
+    <tr><td>لكل سؤال</td><td>±1.8 دقيقة</td></tr>
+    <tr><td>إعادة التشغيل</td><td>لا</td></tr>
+    <tr><td>التصحيح</td><td>آلي</td></tr>
   </table>
 </div>`,
       },
@@ -1692,6 +2076,14 @@ ${fact('"Het afgelegde en beoordeelde examen kan niet worden ingezien door de ka
         heroTitle: 'Failed the integration exam? Here is what happens now',
         description: 'Failed one part of the Dutch integration exam? You only retake that part. How retakes work, what they cost and when your result arrives.',
         category: 'Guide & Information',
+        breadcrumb: 'Failing and retaking',
+        dateLabel: '25 July 2026',
+        imageAlt: 'Person reading a letter with the result of the integration exam at a kitchen table',
+        relatedPosts: [
+          { slug: 'inburgeringsexamen-a2-uitleg', title: 'All four parts', desc: 'Reading, Listening, Writing and Speaking explained' },
+          { slug: 'lezen-examen-inburgering-a2', title: 'The Reading exam A2', desc: '25 questions in 65 minutes' },
+          { slug: 'luisteren-examen-inburgering-a2', title: 'The Listening exam A2', desc: 'The part that is most often underestimated' },
+        ],
         heroSubtitle: 'Failing one part is not a disaster. You retake only that part — everything you passed still counts.',
         ctaTitle: 'Prepare your retake properly',
         ctaDesc: 'Practise with 10 exams per part, each with an explanation — so you know why an answer was wrong.',
@@ -1765,7 +2157,7 @@ ${factEn('"Het afgelegde en beoordeelde examen kan niet worden ingezien door de 
 
 <p>That feels unfair, and I understand why. But it has a practical consequence: <strong>you have to work out for yourself where it went wrong</strong>. The grade tells you how close you were, not why.</p>
 
-<p>And how much you needed correct? DUO does not publish it — the boundary is a cesuur set by the Minister. The figures you find online do not come from DUO and contradict each other. More on that in <a href="/en/blog/inburgeringsexamen-a2-uitleg">the explanation of the four parts</a>.</p>
+<p>And how much you needed correct? DUO does not publish it — the boundary is a cesuur set by the Minister. The figures you find online do not come from DUO and contradict each other. More on that in <a href="/en/blog/a2-integration-exam-explained">the explanation of the four parts</a>.</p>
 
 <h2 id="why">Why people fail</h2>
 
@@ -1801,7 +2193,7 @@ ${factEn('"Het afgelegde en beoordeelde examen kan niet worden ingezien door de 
 
 <p>Plan backwards from your end date: how many attempts still fit, allowing 8 weeks for each result?</p>
 
-<p>Ready for the next attempt? <a href="/en/oefenen">Take a free practice exam</a> and see where you stand.</p>
+<p>Ready for the next attempt? <a href="/en/practice">Take a free practice exam</a> and see where you stand.</p>
 `,
         sidebarHtml: `<div class="bg-surface-container-lowest rounded-2xl p-6" style="box-shadow: 0 2px 16px rgba(0,43,109,0.06)">
   <h3 class="text-xs font-bold uppercase tracking-widest text-on-surface-variant mb-4">In short</h3>
@@ -1811,6 +2203,140 @@ ${factEn('"Het afgelegde en beoordeelde examen kan niet worden ingezien door de 
     <tr><td>Cost per part</td><td>€50</td></tr>
     <tr><td>Free attempts</td><td>2 (status holders)</td></tr>
     <tr><td>Result</td><td>within 8 weeks</td></tr>
+  </table>
+</div>`,
+      },
+      ar: {
+        heroTitle: 'رسبت في امتحان الاندماج؟ إليك ما يحدث الآن',
+        description: 'رسبت في جزء واحد من امتحان الاندماج الهولندي؟ تعيد ذلك الجزء وحده. كيف تسير الإعادة، وكم تكلّف، ومتى تصل نتيجتك.',
+        category: 'دليل ومعلومات',
+        breadcrumb: 'الرسوب وإعادة الامتحان',
+        dateLabel: '25 يوليو 2026',
+        imageAlt: 'شخص يقرأ رسالة تحمل نتيجة امتحان الاندماج على طاولة المطبخ',
+        relatedPosts: [
+          { slug: 'inburgeringsexamen-a2-uitleg', title: 'الأجزاء الأربعة كلها', desc: 'شرح القراءة والاستماع والكتابة والتحدث' },
+          { slug: 'lezen-examen-inburgering-a2', title: 'امتحان القراءة A2', desc: '25 سؤالاً في 65 دقيقة' },
+          { slug: 'luisteren-examen-inburgering-a2', title: 'امتحان الاستماع A2', desc: 'الجزء الذي يُستهان به أكثر من غيره' },
+        ],
+        heroSubtitle: 'الرسوب في جزء واحد ليس كارثة. فأنت تعيد ذلك الجزء وحده — وكل ما نجحت فيه يبقى محسوبًا.',
+        ctaTitle: 'حضّر لإعادتك كما ينبغي',
+        ctaDesc: 'تدرّب مع 10 امتحانات لكل جزء، مع شرح لكل منها — لتعرف لماذا كانت الإجابة خاطئة.',
+        ctaLabel: 'ابدأ امتحانًا تجريبيًا مجانيًا',
+        faq: [
+          { q: 'هل يجب أن أعيد كل شيء إن رسبت في جزء واحد؟', a: 'لا. تعيد فقط الجزء الذي لم تنجح فيه. فكل جزء امتحان مستقل بنتيجة خاصة به، وبالتالي يبقى كل ما نجحت فيه ناجحًا.' },
+          { q: 'كم مرة يمكن إعادة امتحان الاندماج؟', a: 'لا تذكر DUO حدًا أقصى — لا على inburgeren.nl ولا في لائحة الامتحانات. وعمليًا فإن مهلة اندماجك هي الحد. لذا لا تفترض أن العدد غير محدود، ولا تفترض أيضًا أنك تتوقف بعد محاولتين.' },
+          { q: 'كم تكلّف الإعادة؟', a: 'يكلّف جزء الامتحان 50 يورو وقت كتابة هذا المقال. وإن كنت حاصلاً على وضع لجوء، فأول محاولتين في كل امتحان مجانيتان. وما بعدهما تدفعه بنفسك ولا يمكنك الاقتراض من DUO لأجله. تحقّق دائمًا من السعر الحالي لدى DUO.' },
+          { q: 'متى أحصل على نتيجتي؟', a: 'خلال 8 أسابيع من الامتحان، برسالة. وتظهر أيضًا في Mijn Inburgering. وتنطبق مدة الأسابيع الثمانية هذه على امتحانات اللغة A2 وامتحانات المعرفة.' },
+          { q: 'هل يمكنني الاطلاع على امتحاني لأرى أخطائي؟', a: 'لا. تنص لائحة الامتحانات صراحةً على أن الامتحان بعد أدائه وتصحيحه لا يمكن أن يطّلع عليه الممتحَن. لكنك تحصل على درجة لكل جزء.' },
+          { q: 'كم إجابة صحيحة كان ينبغي أن أحقق؟', a: 'لا تنشر DUO ذلك. فحدّ النجاح عتبة يحددها الوزير ولا يُعلن عنها. أما أرقام مثل «18 من 25» فليست من DUO وهي متناقضة فيما بينها.' },
+          { q: 'ماذا لو لم أتمكن من حضور امتحاني؟', a: 'يمكنك تغيير موعد امتحانك حتى 7 أيام قبله. وإن لم تحضر ببساطة، فستدفع من جديد. وفي ظروف استثنائية يمكنك مراسلة DUO خلال 10 أيام من تاريخ الامتحان لطلب امتحان مجاني.' },
+        ],
+        articleHtml: `
+<p>هل <strong>رسبت في امتحان الاندماج</strong>؟ لست مضطرًا إلى إعادة كل شيء. فأنت <strong>تعيد فقط الجزء الذي لم تنجح فيه</strong>. فكل جزء امتحان مستقل بنتيجة خاصة به. فإن نجحت في القراءة والكتابة والتحدث ورسبت في الاستماع وحده، فإنك تعيد الاستماع فقط.</p>
+
+<p>وهذا أهم ما ينبغي أن تعرفه، وهو السؤال الذي يُطرح عليّ أكثر من غيره. وفيما يلي: كيف تسير الإعادة، وكم تكلّف، وماذا تعني رسالة نتيجتك فعليًا.</p>
+
+<div class="article-toc">
+  <p class="article-toc-title">في هذا المقال</p>
+  <ol>
+    <li><a href="#one-part">الجزء الذي رسبت فيه وحده</a></li>
+    <li><a href="#how-often">كم إعادة مسموح بها؟</a></li>
+    <li><a href="#cost">كم تكلّف الإعادة؟</a></li>
+    <li><a href="#result">نتيجتك: ماذا تقول؟</a></li>
+    <li><a href="#why">لماذا يرسب الناس</a></li>
+    <li><a href="#next-time">ما الذي تفعله بشكل مختلف</a></li>
+    <li><a href="#deadline">مهلتك</a></li>
+  </ol>
+</div>
+
+<h2 id="one-part">الجزء الذي رسبت فيه وحده</h2>
+
+<p>امتحان الاندماج ليس امتحانًا واحدًا كبيرًا. بل هو مجموعة امتحانات منفصلة: القراءة والاستماع والكتابة والتحدث وKNM. تسجّل لكل جزء، وتدفع لكل جزء، وتحصل على نتيجة لكل جزء.</p>
+
+<p>والنتيجة: <strong>كل ما نجحت فيه يبقى ناجحًا</strong>. ولن تضطر أبدًا إلى إعادة جزء نجحت فيه لأنك رسبت في جزء آخر.</p>
+
+<div class="info-box info-box-green">
+  <p>وعمليًا يعني ذلك أنك تستطيع توزيع الأجزاء على فترات. كثيرون يؤدون القراءة والاستماع أولاً، ثم الكتابة والتحدث لاحقًا، فيقلّ ما عليهم التحضير له دفعة واحدة.</p>
+</div>
+
+<h2 id="how-often">كم إعادة مسموح بها؟</h2>
+
+<p>هنا عليّ أن أكون صريحًا معك: <strong>DUO لا تذكر حدًا أقصى</strong>. بحثت في inburgeren.nl وفي لائحة الامتحانات كاملةً. ولا يوجد في أي موضع عدد أقصى للمحاولات.</p>
+
+<p>وعلى الإنترنت ستجد الطرفين — «إعادات غير محدودة» و«محاولتان فقط». وليس لأيٍّ منهما مصدر رسمي. أما ما ينطبق فعلاً فهو <strong>مهلة اندماجك</strong>: فبموجب قانون الاندماج لعام 2021 يسمح مسار B1 بمدة أقصاها 3 سنوات. وعمليًا، هذا هو حدّك.</p>
+
+<p>أما ما تذكره DUO بوضوح فيتعلق بالمال، لا بعدد المحاولات:</p>
+
+${factAr('«De eerste 2 pogingen van elk examen zijn gratis» — أول محاولتين في كل امتحان مجانيتان (لحاملي وضع اللجوء). «Hebt u meer dan 2 pogingen nodig? Dan moet u de extra pogingen betalen. U kunt geen geld lenen bij DUO.»', 'inburgeren.nl — تكلفة الاندماج', SRC_BETALEN)}
+
+<p>إذن فالمحاولتان المجانيتان ليستا حدًا لعدد مرات الإعادة المسموح بها. بل هما حدٌّ لما تدفعه DUO.</p>
+
+<h2 id="cost">كم تكلّف الإعادة؟</h2>
+
+<p>يكلّف جزء الامتحان <strong>50 يورو</strong> وقت كتابة هذا المقال. وهذه المبالغ قابلة للتغيير، لذا تحقّق دائمًا من السعر الحالي لدى DUO.</p>
+
+${factAr('50 يورو لكل جزء من الامتحان (القراءة والاستماع والكتابة والتحدث وKNM)، أي 250 يورو إجمالاً بموجب قانون 2021. وبموجب قانون 2013 يُضاف ONA بمبلغ 40 يورو، أي 290 يورو إجمالاً. والأسعار قابلة للتغيير.', 'inburgeren.nl — تكلفة الاندماج', SRC_BETALEN)}
+
+<p>وإن كنت <strong>حاصلاً على وضع لجوء</strong>، فأول محاولتين لك في كل امتحان مجانيتان. وتذكر DUO استثناءً واحدًا: لا ينطبق ذلك إن أدّيت امتحانًا بمستوى أدنى مما تحدده خطة PIP الخاصة بك.</p>
+
+<p>أما المحاولات الإضافية <strong>فلا يمكنك الاقتراض من DUO</strong> لأجلها. وهذا سبب وجيه للتحضير للإعادة كما ينبغي بدل التسرّع إليها.</p>
+
+<h2 id="result">نتيجتك: ماذا تقول؟</h2>
+
+${factAr('«De uitslag wordt schriftelijk, binnen 8 weken na het examen, aan de kandidaat kenbaar gemaakt.» — تُبلَّغ النتيجة كتابةً خلال 8 أسابيع، وتظهر أيضًا في Mijn Inburgering.', 'لائحة امتحانات DUO، المادة 16 الفقرة 3', SRC_REGLEMENT)}
+
+<p>تذكر الرسالة «ناجح» أو «راسب» إضافة إلى <strong>درجة لكل جزء</strong>. أما ما لا تذكره فهو الأسئلة التي أخطأت فيها. ولا يمكنك طلب امتحانك أيضًا:</p>
+
+${factAr('«Het afgelegde en beoordeelde examen kan niet worden ingezien door de kandidaat.» — الامتحان بعد أدائه وتصحيحه لا يمكن أن يطّلع عليه الممتحَن.', 'لائحة امتحانات DUO، المادة 14 الفقرة 3', SRC_REGLEMENT)}
+
+<p>يبدو ذلك غير منصف، وأنا أفهم السبب. لكن له نتيجة عملية: <strong>عليك أن تكتشف بنفسك أين كان الخلل</strong>. فالدرجة تخبرك كم كنت قريبًا، لا لماذا.</p>
+
+<p>وكم كنت تحتاج من الإجابات الصحيحة؟ لا تنشر DUO ذلك — فالحدّ عتبة يحددها الوزير. والأرقام التي تجدها على الإنترنت ليست من DUO وهي متناقضة فيما بينها. المزيد عن ذلك في <a href="/ar/المدونة/شرح-امتحان-الاندماج-a2">شرح الأجزاء الأربعة</a>.</p>
+
+<h2 id="why">لماذا يرسب الناس</h2>
+
+<p>بعد عشر سنوات من التدريس أرى الأسباب نفسها دائمًا تقريبًا. ونادرًا جدًا ما يكون السبب «هولنديّتي ضعيفة».</p>
+
+<div class="tip-card"><div class="tip-number">1</div><div><p><strong>الوقت.</strong> تمنحك القراءة 65 دقيقة لـ25 سؤالاً. فإن قرأت كل نص كاملاً لن تُنهي الامتحان.</p></div></div>
+<div class="tip-card"><div class="tip-number">2</div><div><p><strong>شكل الامتحان كان جديدًا.</strong> إن لم تؤدِّ قط امتحانًا تجريبيًا كاملاً بساعة، فستخسر وقتًا بسبب المفاجأة.</p></div></div>
+<div class="tip-card"><div class="tip-number">3</div><div><p><strong>القلم في الكتابة.</strong> الكتابة بالورقة والقلم لا بلوحة مفاتيح. وكثيرون يكتشفون ذلك يوم الامتحان.</p></div></div>
+<div class="tip-card"><div class="tip-number">4</div><div><p><strong>إعادة التشغيل في الاستماع.</strong> في البيت تعيد التشغيل؛ وفي الامتحان لا تستطيع. وفجأة يبدو كل شيء أسرع بكثير.</p></div></div>
+<div class="tip-card"><div class="tip-number">5</div><div><p><strong>امتحانات تجريبية قليلة جدًا.</strong> تمنحك DUO 3 أو 4 لكل جزء. وهي تكفي لرؤية الشكل، لا لإتقانه.</p></div></div>
+
+<h2 id="next-time">ما الذي تفعله بشكل مختلف</h2>
+
+<p>لديك ميزة كبيرة في الإعادة: فأنت تعرف الآن كيف يبدو الامتحان. استفد منها.</p>
+
+<ol>
+  <li><strong>حدّد الجزء</strong> وتدرّب عليه وحده.</li>
+  <li><strong>أدِّ دائمًا امتحانات تجريبية كاملة</strong>، بوقت محسوب. فالأسئلة المتفرقة ليست الشيء نفسه.</li>
+  <li><strong>تدرّب على حاسوب</strong>، لا على هاتف — وDUO تنصح بذلك بنفسها.</li>
+  <li><strong>راجع الأسئلة التي أخطأت فيها، ولماذا.</strong> وهذا بالضبط ما لا تمنحك DUO إياه، وفيه يكمن التعلّم.</li>
+  <li><strong>انتظر قبل التسجيل</strong> حتى تسير امتحاناتك التجريبية على ما يرام. فالإعادة تكلّف مالاً ووقتًا.</li>
+</ol>
+
+<h2 id="deadline">مهلتك</h2>
+
+<p>ولأن DUO لا تذكر عددًا أقصى للمحاولات، فإن <strong>مهلة اندماجك</strong> هي الحد الحقيقي — بحد أقصى 3 سنوات في مسار B1.</p>
+
+<p>وإن كانت مهلتك تقترب ولم تنجح في كل شيء، فلا تنتظر. اتصل ببلديتك: فهي التي ترافق اندماجك وتضع معك خطة PIP. وتحقّق أيضًا مما إذا كان أحد الإعفاءات ينطبق عليك — فلدى DUO صفحة مخصّصة تغطي المرض أو الإعاقة، أو شهادة تحملها بالفعل، أو تعليمًا هولنديًا تتابعه، أو الإقامة والعمل هنا مدة طويلة.</p>
+
+<div class="info-box">
+  <p>تختلف الشروط اختلافًا كبيرًا من إعفاء إلى آخر ولكل منها صفحته الخاصة لدى DUO. وأنا أتعمّد ألا أذكر هنا أرقامًا أو مددًا: فأنت تريدها من الصفحة الرسمية التي تناسب وضعك، لا من مدوّنة. ابدأ من <a href="https://www.inburgeren.nl/minder-of-geen-examens/" target="_blank" rel="noopener">Minder of geen examens</a> على inburgeren.nl.</p>
+</div>
+
+<p>خطّط بالعدّ التنازلي من تاريخ انتهاء مهلتك: كم محاولة ما زالت تتّسع، مع احتساب 8 أسابيع لكل نتيجة؟</p>
+
+<p>جاهز للمحاولة التالية؟ <a href="/ar/تدرب">قدّم امتحانًا تجريبيًا مجانيًا</a> وانظر أين أنت.</p>
+`,
+        sidebarHtml: `<div class="bg-surface-container-lowest rounded-2xl p-6" style="box-shadow: 0 2px 16px rgba(0,43,109,0.06)">
+  <h3 class="text-xs font-bold uppercase tracking-widest text-on-surface-variant mb-4">باختصار</h3>
+  <table class="facts-table">
+    <tr><td>الإعادة</td><td>ذلك الجزء وحده</td></tr>
+    <tr><td>أقصى عدد محاولات</td><td>غير منشور</td></tr>
+    <tr><td>التكلفة لكل جزء</td><td>50 يورو</td></tr>
+    <tr><td>محاولات مجانية</td><td>2 (لحاملي وضع اللجوء)</td></tr>
+    <tr><td>النتيجة</td><td>خلال 8 أسابيع</td></tr>
   </table>
 </div>`,
       },
@@ -2072,6 +2598,14 @@ ${fact('Lezen 65 minuten, Luisteren 45 minuten, Schrijven 40 minuten (met pen en
         heroTitle: 'The difference between A1 and A2 Dutch (and B1) explained',
         description: 'What is the difference between A1 and A2 Dutch? And between A2 and B1? Explained per skill, with the level you need for integration.',
         category: 'Topic explained',
+        breadcrumb: 'Language levels A1, A2 and B1',
+        dateLabel: '28 July 2026',
+        imageAlt: 'Teacher explaining the Dutch language levels A1, A2 and B1 to a student',
+        relatedPosts: [
+          { slug: 'inburgeringsexamen-a2-uitleg', title: 'All four parts', desc: 'Reading, Listening, Writing and Speaking explained' },
+          { slug: 'lezen-examen-inburgering-a2', title: 'The Reading exam A2', desc: '25 questions in 65 minutes' },
+          { slug: 'inburgeringsexamen-zakken-herkansen', title: 'Failed? Here is what happens now', desc: 'Retaking, costs and your result' },
+        ],
         heroSubtitle: 'A1 is isolated sentences. A2 is everyday life. B1 is following a conversation without anyone slowing down for you.',
         ctaTitle: 'Find out where you stand',
         ctaDesc: 'Take a free practice exam at A2 level. No account needed, with an explanation for every question.',
@@ -2204,7 +2738,7 @@ ${factEn('"De nieuwe Wet Inburgering is in werking getreden op 1 januari 2022." 
   <li><strong>Writing responds best to training.</strong> Targeted practice helps quickest here.</li>
 </ul>
 
-<p>That is why the integration exam tests each part separately, and why a fail means retaking only that one part — see <a href="/en/blog/inburgeringsexamen-zakken-herkansen">failing and retaking</a>.</p>
+<p>That is why the integration exam tests each part separately, and why a fail means retaking only that one part — see <a href="/en/blog/failing-and-retaking-the-integration-exam">failing and retaking</a>.</p>
 
 <h2 id="a2-exam">What A2 means in the exam</h2>
 
@@ -2214,7 +2748,7 @@ ${factEn('Reading 65 minutes, Listening 45 minutes, Writing 40 minutes (pen and 
 
 <p>Which is the main thing to remember: <strong>A2 is not a high level, but it is a real one</strong>. You have to be able to manage in everyday life. And that is precisely what you can practise.</p>
 
-<p>Want to know where you stand? <a href="/en/oefenen">Take a free practice exam at A2 level</a>, or read <a href="/en/blog/inburgeringsexamen-a2-uitleg">the explanation of the four parts</a>.</p>
+<p>Want to know where you stand? <a href="/en/practice">Take a free practice exam at A2 level</a>, or read <a href="/en/blog/a2-integration-exam-explained">the explanation of the four parts</a>.</p>
 `,
         sidebarHtml: `<div class="bg-surface-container-lowest rounded-2xl p-6" style="box-shadow: 0 2px 16px rgba(0,43,109,0.06)">
   <h3 class="text-xs font-bold uppercase tracking-widest text-on-surface-variant mb-4">The levels in brief</h3>
@@ -2223,6 +2757,172 @@ ${factEn('Reading 65 minutes, Listening 45 minutes, Writing 40 minutes (pen and 
     <tr><td>A2</td><td>everyday life</td></tr>
     <tr><td>B1</td><td>normal conversation</td></tr>
     <tr><td>B2</td><td>abstract language too</td></tr>
+  </table>
+</div>`,
+      },
+      ar: {
+        heroTitle: 'الفرق بين المستوى A1 وA2 في الهولندية (وB1) بشرح مبسّط',
+        description: 'ما الفرق بين A1 وA2 في اللغة الهولندية؟ وبين A2 وB1؟ شرح لكل مهارة على حدة، مع المستوى الذي تحتاجه للاندماج.',
+        category: 'شرح موضوع',
+        breadcrumb: 'مستويات اللغة A1 وA2 وB1',
+        dateLabel: '28 يوليو 2026',
+        imageAlt: 'مدرّس يشرح مستويات اللغة الهولندية A1 وA2 وB1 لأحد الدارسين',
+        relatedPosts: [
+          { slug: 'inburgeringsexamen-a2-uitleg', title: 'الأجزاء الأربعة كلها', desc: 'شرح القراءة والاستماع والكتابة والتحدث' },
+          { slug: 'lezen-examen-inburgering-a2', title: 'امتحان القراءة A2', desc: '25 سؤالاً في 65 دقيقة' },
+          { slug: 'inburgeringsexamen-zakken-herkansen', title: 'رسبت؟ إليك ما يحدث الآن', desc: 'إعادة الامتحان والتكاليف ونتيجتك' },
+        ],
+        heroSubtitle: 'المستوى A1 جملٌ منفصلة. والمستوى A2 هو الحياة اليومية. أما B1 فهو أن تتابع حديثًا دون أن يبطئ أحد من أجلك.',
+        ctaTitle: 'اكتشف أين أنت الآن',
+        ctaDesc: 'قدّم امتحانًا تجريبيًا مجانيًا بمستوى A2. بدون حساب، مع شرح مباشر بعد كل سؤال.',
+        ctaLabel: 'ابدأ امتحانًا تجريبيًا مجانيًا',
+        faq: [
+          { q: 'ما الفرق بين A1 وA2 في اللغة الهولندية؟', a: 'في المستوى A1 تفهم كلمات منفصلة وجملًا قصيرة بطيئة عن أمور مألوفة جدًا. وفي المستوى A2 تستطيع إجراء محادثة بسيطة عن الحياة اليومية: عملك، وعائلتك، والتسوّق، وموعد عند الطبيب. المستوى A2 هو أول مستوى تستطيع فيه تدبّر المواقف العادية في هولندا بنفسك.' },
+          { q: 'ما الفرق بين A2 وB1؟', a: 'في المستوى A2 تحتاج إلى مساعدة: يتحدث الناس ببطء أكبر ويكررون كلامهم. وفي المستوى B1 تستطيع متابعة محادثة عادية بسرعة عادية، وإبداء رأي وشرح سببه. الانتقال من A2 إلى B1 خطوة كبيرة وليست صغيرة.' },
+          { q: 'ما المستوى الذي أحتاجه لاندماجي؟', a: 'يعتمد ذلك على مسار التعلّم الخاص بك، وهو محدَّد في خطة الاندماج والمشاركة الشخصية (PIP). مسار B1 يستهدف المستوى B1، ومسار التعليم B1 أو أعلى، ومسار الاعتماد على الذات A1. تقرر البلدية ذلك معك. راجع Mijn Inburgering إن لم تكن متأكدًا.' },
+          { q: 'هل يكفي المستوى A2 للاندماج؟', a: 'بموجب قانون الاندماج القديم لعام 2013 كان يجب أن تكون امتحانات اللغة بمستوى A2 أو أعلى. أما بموجب قانون الاندماج لعام 2021 فيعتمد الأمر على مسار التعلّم الخاص بك؛ والمسار القياسي يستهدف B1. تستطيع أن ترى أي قانون ينطبق عليك في Mijn Inburgering.' },
+          { q: 'ما المستوى الذي أحتاجه للحصول على الجنسية الهولندية؟', a: 'يتطلب التجنّس اجتياز امتحان الاندماج أو شهادة معادِلة له. أما الشروط التي تنطبق بالضبط فتعتمد على وضعك — راجع IND، فهي الجهة التي تبتّ في التجنّس.' },
+          { q: 'ماذا تعني المستويات A1 وA2 وB1 وB2 فعليًا؟', a: 'هي مستويات الإطار الأوروبي المرجعي المشترك للغات (CEFR)، وهو معيار أوروبي للقدرة اللغوية. المستوى A مستخدم مبتدئ، وB مستخدم مستقل، وC مستخدم متمكّن. ويُوصف كل مستوى لكل مهارة على حدة: القراءة والاستماع والكتابة والتحدث.' },
+          { q: 'هل يمكن أن يكون مستواي في القراءة مختلفًا عن مستواي في التحدث؟', a: 'نعم، وهذا أمر طبيعي تمامًا. كثيرون يقرؤون أفضل مما يتحدثون، أو يفهمون أكثر مما يستطيعون كتابته. ولهذا السبب يختبر امتحان الاندماج كل جزء على حدة، بنتيجة خاصة به.' },
+        ],
+        articleHtml: `
+<p><strong>الفرق بين المستوى A1 وA2 في الهولندية</strong> هو التالي: في المستوى <strong>A1</strong> تفهم كلمات منفصلة وجملًا قصيرة حين يتحدث أحدهم ببطء. وفي المستوى <strong>A2</strong> تستطيع إجراء محادثة بسيطة عن حياتك اليومية — العمل، والعائلة، والتسوّق، وحجز موعد عند الطبيب. أما في المستوى <strong>B1</strong> فتستطيع متابعة محادثة عادية بسرعة عادية وشرح سبب رأيك في أمر ما.</p>
+
+<p>المستويات A1 وA2 وB1 وB2 هي مستويات <strong>الإطار الأوروبي المرجعي المشترك للغات (CEFR)</strong>. ستجد أدناه ماذا يعني كل مستوى لكل مهارة، وأي مستوى تحتاجه لاندماجك.</p>
+
+<div class="article-toc">
+  <p class="article-toc-title">في هذا المقال</p>
+  <ol>
+    <li><a href="#cefr">ما هو الإطار الأوروبي المرجعي CEFR؟</a></li>
+    <li><a href="#a1-a2">A1 مقابل A2: الفرق الحقيقي</a></li>
+    <li><a href="#table">كل المستويات، لكل مهارة</a></li>
+    <li><a href="#a2-b1">A2 مقابل B1: خطوة أكبر مما تظن</a></li>
+    <li><a href="#b2-c">وماذا عن B2 وC1 وC2؟</a></li>
+    <li><a href="#which-level">أي مستوى تحتاج؟</a></li>
+    <li><a href="#uneven">لماذا يختلف مستواك من مهارة إلى أخرى</a></li>
+    <li><a href="#a2-exam">ماذا يعني المستوى A2 في الامتحان</a></li>
+  </ol>
+</div>
+
+<h2 id="cefr">ما هو الإطار الأوروبي المرجعي CEFR؟</h2>
+
+<p>الإطار الأوروبي المرجعي المشترك هو معيار أوروبي لوصف القدرة اللغوية. وفيه ستة مستويات موزّعة على ثلاث مجموعات:</p>
+
+<ul>
+  <li><strong>A — مستخدم مبتدئ:</strong> A1 وA2</li>
+  <li><strong>B — مستخدم مستقل:</strong> B1 وB2</li>
+  <li><strong>C — مستخدم متمكّن:</strong> C1 وC2</li>
+</ul>
+
+<p>الفكرة الأساسية: المستوى يصف <strong>ما تستطيع فعله</strong>، لا عدد الكلمات التي تعرفها. «أستطيع حجز موعد عند طبيب الأسنان» وصفُ مستوى. أما «أعرف 1200 كلمة» فليس كذلك.</p>
+
+<p>ويُوصف كل مستوى <strong>لكل مهارة على حدة</strong>: القراءة والاستماع والكتابة والتحدث. وهذا بالضبط سبب احتواء امتحان الاندماج على أربعة أجزاء منفصلة.</p>
+
+<h2 id="a1-a2">A1 مقابل A2: الفرق الحقيقي</h2>
+
+<p>على الورق يبدو A1 وA2 متقاربين. أما عمليًا فبينهما فرق كبير واحد: <strong>في المستوى A2 تستطيع تدبّر أمورك</strong>.</p>
+
+<p>في المستوى A1 تستطيع القيام بأمور منفصلة. أن تقول اسمك، وتعدّ إلى عشرة، وتسأل أين المحطة. لكن إجراء محادثة لا ينجح بعد، وتحتاج إلى شخص يتحدث ببطء شديد.</p>
+
+<p>في المستوى A2 تستطيع إجراء محادثة بسيطة عن أمور قريبة منك. أن تحجز موعدًا. وأن تقول ما الذي يؤلمك عند الطبيب. وأن تشرح ما هو عملك. وأن تكتب رسالة بريد إلكتروني قصيرة إلى زميل. ما زلت تحتاج إلى مساعدة في المواضيع الصعبة، لكن الحياة اليومية تسير.</p>
+
+<div class="info-box info-box-green">
+  <p><strong>باختصار:</strong> المستوى A1 جملٌ منفصلة. والمستوى A2 هو الحياة اليومية. تلك هي القفزة.</p>
+</div>
+
+<h2 id="table">كل المستويات، لكل مهارة</h2>
+
+<p>يمنحك هذا الجدول إحساسًا بكل مهارة. وهي أوصاف بلغة مبسّطة، وليست الصياغة الرسمية للإطار الأوروبي.</p>
+
+<div class="article-table-wrap">
+<table>
+  <thead>
+    <tr><th></th><th>A1</th><th>A2</th><th>B1</th></tr>
+  </thead>
+  <tbody>
+    <tr><td><strong>القراءة</strong></td><td>كلمات منفصلة وأسماء وملاحظات قصيرة جدًا</td><td>نصوص يومية قصيرة: إعلانات ورسائل ونماذج</td><td>نصوص أطول عن مواضيع مألوفة؛ تفهم الفكرة العامة</td></tr>
+    <tr><td><strong>الاستماع</strong></td><td>كلمات منفصلة حين يُنطق بها ببطء شديد</td><td>محادثات بسيطة عن أمور مألوفة، بنطق واضح</td><td>محادثات بسرعة عادية؛ تتابع نشرة أخبار أو شرحًا</td></tr>
+    <tr><td><strong>الكتابة</strong></td><td>نموذج فيه اسمك وعنوانك</td><td>رسالة أو بريد إلكتروني قصير؛ وتعبئة نموذج</td><td>نص مترابط عن شيء عشته أو ترى فيه رأيًا</td></tr>
+    <tr><td><strong>التحدث</strong></td><td>جمل منفصلة عن نفسك، مع توقفات كثيرة</td><td>محادثة بسيطة عن العمل والعائلة والتسوّق والصحة</td><td>إبداء رأي وشرحه؛ والحفاظ على استمرار المحادثة</td></tr>
+  </tbody>
+</table>
+</div>
+
+<h2 id="a2-b1">A2 مقابل B1: خطوة أكبر مما تظن</h2>
+
+<p>يفترض كثيرون أن B1 «أفضل قليلًا من A2». وليس الأمر كذلك. فالخطوة من A2 إلى B1 أكبر من الخطوة من A1 إلى A2.</p>
+
+<p>الفرق يتعلق أساسًا <strong>بالمساعدة</strong>. في المستوى A2 يجوز للطرف الآخر أن يتحدث ببطء، وأن يكرر كلامه، وأن يختار كلمات أسهل. أما في المستوى B1 فيُتوقع منك متابعة محادثة عادية — دون أن يعدّل أحد كلامه من أجلك.</p>
+
+<p>وفوق ذلك، يطلب منك المستوى B1 ألا تكتفي بإعطاء معلومات بل أن تعطي <strong>رأيًا مع سببه</strong>. «أعتقد أن هذه فكرة جيدة، لأن…» وهذا نوع من اللغة مختلف عن «أنا أعمل في مجال الرعاية الصحية».</p>
+
+<h2 id="b2-c">وماذا عن B2 وC1 وC2؟</h2>
+
+<p>لا تحتاج إلى هذه المستويات لاندماجك، لكن من المفيد أن تعرف موقعها.</p>
+
+<ul>
+  <li><strong>B2:</strong> تستطيع أيضًا مناقشة مواضيع مجرّدة ومتابعة نقاش. وكثيرًا ما يُشترط للتعليم العالي.</li>
+  <li><strong>C1:</strong> تستخدم الهولندية بطلاقة ومرونة، بما في ذلك في العمل.</li>
+  <li><strong>C2:</strong> قريب من مستوى الناطق الأصلي.</li>
+</ul>
+
+<p>تُسمّى امتحانات اللغة في المستويين B1 وB2 <strong>امتحان الدولة للهولندية كلغة ثانية (NT2)</strong>. وهو امتحان مختلف عن امتحان الاندماج، وله قواعده ومواعيده الخاصة.</p>
+
+<h2 id="which-level">أي مستوى تحتاج؟</h2>
+
+<p>بموجب <strong>قانون الاندماج لعام 2021</strong> يعتمد مستواك على <strong>مسار التعلّم</strong> الخاص بك، المحدَّد في خطة PIP. وتقرره البلدية معك.</p>
+
+<div class="article-table-wrap">
+<table>
+  <thead>
+    <tr><th>مسار التعلّم</th><th>المستوى</th><th>لمن</th></tr>
+  </thead>
+  <tbody>
+    <tr><td><strong>مسار B1</strong></td><td>B1</td><td>المسار القياسي: اللغة والعمل (التطوعي)، بحد أقصى 3 سنوات</td></tr>
+    <tr><td><strong>مسار التعليم</strong></td><td>B1 أو أعلى</td><td>بشكل أساسي للشباب المتجهين إلى مواصلة الدراسة</td></tr>
+    <tr><td><strong>مسار الاعتماد على الذات</strong></td><td>A1</td><td>حين يكون B1 غير قابل للتحقيق: اللغة والمشاركة</td></tr>
+  </tbody>
+</table>
+</div>
+
+<p>تشمل كل المسارات أيضًا <strong>KNM</strong> (معرفة المجتمع الهولندي).</p>
+
+<p>هل كنت تخضع لقانون الاندماج الأقدم <strong>لعام 2013</strong>؟ عندها كان يجب أن تكون كل امتحانات اللغة بمستوى «A2 أو أعلى». وانتبه إلى تفصيل تخطئ فيه مواقع كثيرة: قانون الاندماج لعام 2021 <strong>دخل حيّز التنفيذ في 1 يناير 2022</strong>. فاسم القانون 2021 لكنه يُطبَّق اعتبارًا من 2022.</p>
+
+${factAr('«دخل قانون الاندماج الجديد حيّز التنفيذ في 1 يناير 2022.» وبموجب قانون 2013 كان يجب أن تكون امتحانات اللغة بمستوى A2 أو أعلى.', 'rijksoverheid.nl — قانون الاندماج الجديد', 'https://www.rijksoverheid.nl/themas/migratie-en-reizen/inburgeren-in-nederland/nieuwe-wet-inburgering')}
+
+<p>إن كنت لا تعرف أي قانون أو مسار ينطبق عليك، فستجده في Mijn Inburgering. لا تخمّن — فهو يحدد أي امتحانات يجب أن تؤديها.</p>
+
+<h2 id="uneven">لماذا يختلف مستواك من مهارة إلى أخرى</h2>
+
+<p>لا يكاد أحد يكون في المستوى نفسه تمامًا في المهارات الأربع. وهذا أمر طبيعي، ويستحق أن تعرفه.</p>
+
+<ul>
+  <li><strong>القراءة تسبق غيرها.</strong> تستطيع أن تأخذ وقتك مع النص، فتتحسن أسرع من غيرها.</li>
+  <li><strong>الاستماع يتأخر.</strong> أنت لا تتحكم في السرعة ولا تستطيع العودة إلى الوراء.</li>
+  <li><strong>التحدث يبدو الأصعب.</strong> لا لأنك لا تستطيع، بل لأنه يحتاج إلى جرأة.</li>
+  <li><strong>الكتابة تستجيب للتدريب أكثر من غيرها.</strong> التدريب المركّز يساعد هنا بأسرع ما يكون.</li>
+</ul>
+
+<p>ولهذا السبب يختبر امتحان الاندماج كل جزء على حدة، ولهذا يعني الرسوب إعادة ذلك الجزء وحده — انظر <a href="/ar/المدونة/الرسوب-وإعادة-امتحان-الاندماج">الرسوب وإعادة الامتحان</a>.</p>
+
+<h2 id="a2-exam">ماذا يعني المستوى A2 في الامتحان</h2>
+
+${factAr('القراءة 65 دقيقة، والاستماع 45 دقيقة، والكتابة 40 دقيقة (بالورقة والقلم، 4 مهام)، والتحدث 35 دقيقة.', 'inburgeren.nl — محتوى امتحانات اللغة', SRC_INHOUD)}
+
+<p>تدور النصوص والمحادثات حول أمور عادية: رسالة من المدرسة، أو حديث عند الطبيب، أو إعلان في المحطة. لا سياسة، ولا أدب، ولا مصطلحات متخصصة.</p>
+
+<p>وهذا هو الأهم الذي ينبغي تذكّره: <strong>المستوى A2 ليس مستوى عاليًا، لكنه مستوى حقيقي</strong>. عليك أن تكون قادرًا على تدبّر أمورك في الحياة اليومية. وهذا بالضبط ما يمكنك التدرّب عليه.</p>
+
+<p>هل تريد أن تعرف أين أنت؟ <a href="/ar/تدرب">قدّم امتحانًا تجريبيًا مجانيًا بمستوى A2</a>، أو اقرأ <a href="/ar/المدونة/شرح-امتحان-الاندماج-a2">شرح الأجزاء الأربعة</a>.</p>
+`,
+        sidebarHtml: `<div class="bg-surface-container-lowest rounded-2xl p-6" style="box-shadow: 0 2px 16px rgba(0,43,109,0.06)">
+  <h3 class="text-xs font-bold uppercase tracking-widest text-on-surface-variant mb-4">المستويات باختصار</h3>
+  <table class="facts-table">
+    <tr><td>A1</td><td>جمل منفصلة</td></tr>
+    <tr><td>A2</td><td>الحياة اليومية</td></tr>
+    <tr><td>B1</td><td>محادثة عادية</td></tr>
+    <tr><td>B2</td><td>واللغة المجرّدة أيضًا</td></tr>
   </table>
 </div>`,
       },
@@ -2243,6 +2943,12 @@ export function getPostLocale(post: BlogPost, locale: string): ResolvedPost {
     ctaDesc: t?.ctaDesc ?? post.ctaDesc,
     ctaLabel: t?.ctaLabel ?? post.ctaLabel,
     faq: t?.faq ?? post.faq,
+    breadcrumb: t?.breadcrumb ?? post.breadcrumb,
+    dateLabel: t?.dateLabel ?? post.dateLabel,
+    imageAlt: t?.imageAlt ?? post.imageAlt,
+    /* De kaarten onderaan. `slug` blijft in elke taal de Nederlandse — dat is de interne naam
+     * waarmee `relatedSlug()` de post opzoekt; alleen `title` en `desc` zijn vertaald. */
+    relatedPosts: t?.relatedPosts ?? post.relatedPosts,
   };
 }
 
@@ -2257,27 +2963,26 @@ export function hasTranslation(post: BlogPost, locale: string): boolean {
 
 /** Returns the URL slug for a post in a given locale */
 export function getPostSlug(post: BlogPost, locale: string): string {
-  return post.translations?.[locale as 'en' | 'ar']?.slug ?? post.slug;
+  return contentSlugParam(post.slug, locale);
 }
 
 /** All (locale, slug) pairs — used in generateStaticParams */
 export function getAllPostParams(): { locale: string; slug: string }[] {
   const params: { locale: string; slug: string }[] = [];
   for (const post of POSTS) {
-    params.push({ locale: 'nl', slug: post.slug });
-    for (const loc of ['en', 'ar'] as const) {
-      params.push({ locale: loc, slug: post.translations?.[loc]?.slug ?? post.slug });
+    for (const locale of ['nl', 'en', 'ar'] as const) {
+      params.push({ locale, slug: contentSlugParam(post.slug, locale) });
     }
   }
   return params;
 }
 
 export function getPostBySlug(slug: string): BlogPost | undefined {
-  return POSTS.find(p =>
-    p.slug === slug ||
-    p.translations?.en?.slug === slug ||
-    p.translations?.ar?.slug === slug
-  );
+  /* Zelfde afspraak als bij de gidsen: de route krijgt de slug binnen in de taal van de URL,
+   * `parseContentSlug` rekent elke taal terug naar de Nederlandse — inclusief de Nederlandse
+   * slug onder `/en` en `/ar`, de URL's van vóór 15-09. */
+  const nlSlug = parseContentSlug(slug) ?? slug;
+  return POSTS.find(p => p.slug === nlSlug);
 }
 
 /** Newest first — the order the index grid renders in. */

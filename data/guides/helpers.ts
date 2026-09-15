@@ -5,6 +5,7 @@
  * the same way. The one addition is the publication gate — `publishedGuides()` and everything
  * built on it are the only sanctioned way to list guides for a reader or a crawler.
  */
+import { contentSlugParam, parseContentSlug } from '@/i18n/content-slugs';
 import { GUIDES } from './index';
 import type { Guide, GuideSection, ResolvedGuide } from './types';
 
@@ -65,7 +66,12 @@ export function guideCount(section: GuideSection): number {
  * rendering the same guide under two URLs — which is a duplicate of our own making.
  */
 export function getGuideBySlug(section: GuideSection, slug: string): Guide | undefined {
-  return GUIDES.find(g => g.section === section && g.slug === slug);
+  /* De route krijgt de slug binnen in de taal van de URL. `parseContentSlug` rekent elke taal
+   * terug naar de Nederlandse slug — de interne naam, en de enige waarop hier wordt gezocht.
+   * Hij accepteert ook de Nederlandse slug onder `/en` en `/ar`: dat zijn de URL's van vóór
+   * 15-09, die `canonicalContentPath` met een 308 doorstuurt maar die wél moeten renderen. */
+  const nlSlug = parseContentSlug(slug) ?? slug;
+  return GUIDES.find(g => g.section === section && g.slug === nlSlug);
 }
 
 /**
@@ -79,7 +85,7 @@ export function getAllGuideParams(section: GuideSection): { locale: string; slug
   for (const guide of GUIDES) {
     if (guide.section !== section) continue;
     for (const locale of ['nl', 'en', 'ar'] as const) {
-      params.push({ locale, slug: guide.slug });
+      params.push({ locale, slug: contentSlugParam(guide.slug, locale) });
     }
   }
   return params;
@@ -114,14 +120,24 @@ export type GuideRoute =
  *
  * The `never` default makes a fourth `GuideSection` a compile error here rather than a wrong URL.
  */
-export function guideHref(guide: Pick<Guide, 'section' | 'slug'>, hash?: string): GuideRoute {
+export function guideHref(
+  guide: Pick<Guide, 'section' | 'slug'>,
+  locale: string,
+  hash?: string,
+): GuideRoute {
+  /* `locale` is verplicht, en dat is het hele punt van deze parameter: next-intl vertaalt in
+   * een `<Link>` alleen de statische segmenten, niet de parameterwaarde. Zonder dit wordt elke
+   * interne gidslink onder `/en` en `/ar` de Nederlandse slug, dus een 308 — precies het
+   * crawl-signaal dat de vertaalde slug moest winnen. Verplicht in plaats van optioneel zodat
+   * een nieuw aanroeppunt een compilefout is en geen stille hop. */
+  const slug = contentSlugParam(guide.slug, locale);
   switch (guide.section) {
     case 'inburgering':
-      return { pathname: '/inburgering/[slug]', params: { slug: guide.slug }, hash };
+      return { pathname: '/inburgering/[slug]', params: { slug }, hash };
     case 'knm':
-      return { pathname: '/knm/[thema]', params: { thema: guide.slug }, hash };
+      return { pathname: '/knm/[thema]', params: { thema: slug }, hash };
     case 'taalexamens':
-      return { pathname: '/taalexamens/[slug]', params: { slug: guide.slug }, hash };
+      return { pathname: '/taalexamens/[slug]', params: { slug }, hash };
     default: {
       const unreachable: never = guide.section;
       throw new Error(`Unhandled guide section: ${unreachable}`);

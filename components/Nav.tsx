@@ -14,6 +14,8 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import { localeHref } from '@/i18n/paths';
+import { contentSlugParam, parseContentSlug } from '@/i18n/content-slugs';
+import { parseSkillParam, skillParam } from '@/i18n/skill-slugs';
 
 /**
  * Flags, drawn as SVG rather than typed as emoji (owner's decision, 2026-08-28).
@@ -59,6 +61,33 @@ const LINKS = [
   { href: '/docent', label: 'sec_over' },
 ] as const;
 
+/**
+ * De parameterwaarden van het huidige pad, omgerekend naar de doeltaal.
+ *
+ * Twee waarden zijn vertaald — de gids-/blogslug (`slug`, en `thema` op de KNM-route) en de
+ * onderdeelnaam (`skill`). Alles wat niet in een van beide tabellen staat, gaat onveranderd
+ * mee: `level` is 'a2'/'b1' en `n` is een examennummer.
+ */
+function translateParams(
+  params: ReturnType<typeof useParams>,
+  locale: string,
+): Record<string, string> {
+  const out: Record<string, string> = {};
+  for (const [name, value] of Object.entries(params)) {
+    if (typeof value !== 'string' || name === 'locale') continue;
+    if (name === 'slug' || name === 'thema') {
+      const nlSlug = parseContentSlug(value);
+      out[name] = nlSlug ? contentSlugParam(nlSlug, locale) : value;
+    } else if (name === 'skill') {
+      const slug = parseSkillParam(value);
+      out[name] = slug ? skillParam(slug, locale) : value;
+    } else {
+      out[name] = value;
+    }
+  }
+  return out;
+}
+
 export default function Nav() {
   const t = useTranslations('nav');
   const locale = useLocale();
@@ -74,11 +103,15 @@ export default function Nav() {
      * 2026-08-19. The typed router wants `{ pathname, params }` for a template, and `useParams()`
      * is where the concrete values are.
      *
-     * Slugs are deliberately identical across locales (see `data/guides/types.ts`): with a
-     * per-locale slug, `params` from the current locale would be substituted into another
-     * locale's route and 404. */
+     * Sinds 15-09 verschilt de slug wél per taal, en dat is precies de val die de oude
+     * opmerking hier beschreef: `useParams()` geeft de waarden van de táál waar de lezer nu
+     * staat, dus `/en/civic-integration/housing` zou onder `/ar` als `housing` worden
+     * ingevuld. `translateParams` rekent elke vertaalde parameterwaarde eerst terug naar zijn
+     * interne naam en daarna naar de doeltaal. Zonder dat leverde de taalwissel een 308 via
+     * `canonicalContentPath` — hij kwam goed uit, maar met een hop, en op een onderdeelnaam
+     * (`/nl/oefenen/reading`) kwam hij helemaal niet goed uit. */
     const target = pathname.includes('[')
-      ? ({ pathname, params } as unknown as Parameters<typeof router.replace>[0])
+      ? ({ pathname, params: translateParams(params, newLocale) } as unknown as Parameters<typeof router.replace>[0])
       : (pathname as Parameters<typeof router.replace>[0]);
     router.replace(target, { locale: newLocale });
     setMobileOpen(false);

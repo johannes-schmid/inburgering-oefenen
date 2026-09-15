@@ -30,7 +30,7 @@ export default function Footer() {
 
         {/* Platform links */}
         <div className="space-y-4">
-          <h5 className="text-xs font-bold uppercase tracking-widest text-white/35">{t('platform')}</h5>
+          <h3 className="text-xs font-bold uppercase tracking-widest text-white/70">{t('platform')}</h3>
           <nav className="flex flex-col gap-3 text-sm" aria-label="Footer navigatie">
             {/* Typed `Link`, not a bare `<a>`: the anchor here had no locale prefix, so every
                 skill link in the footer sent an EN or AR visitor to the Dutch page. */}
@@ -61,7 +61,7 @@ export default function Footer() {
 
         {/* Kennisgidsen */}
         <div className="space-y-4">
-          <h5 className="text-xs font-bold uppercase tracking-widest text-white/35">{t('guides')}</h5>
+          <h3 className="text-xs font-bold uppercase tracking-widest text-white/70">{t('guides')}</h3>
           <nav className="flex flex-col gap-3 text-sm" aria-label="Kennisgidsen">
             <Link href="/gidsen" className="hover:text-white transition-colors no-underline">{t('allGuides')}</Link>
             <Link href="/inburgering" className="hover:text-white transition-colors no-underline">{t('inburgering')}</Link>
@@ -75,7 +75,7 @@ export default function Footer() {
 
         {/* Legal links */}
         <div className="space-y-4">
-          <h5 className="text-xs font-bold uppercase tracking-widest text-white/35">{t('legal')}</h5>
+          <h3 className="text-xs font-bold uppercase tracking-widest text-white/70">{t('legal')}</h3>
           <nav className="flex flex-col gap-3 text-sm" aria-label="Juridische links">
             <Link href="/privacybeleid" className="hover:text-white transition-colors no-underline">{t('privacy')}</Link>
             <Link href="/gebruiksvoorwaarden" className="hover:text-white transition-colors no-underline">{t('terms')}</Link>
@@ -99,7 +99,7 @@ export default function Footer() {
       </div>
 
       <div className="border-t border-white/10 py-6 px-6">
-        <div className="max-w-7xl mx-auto flex flex-wrap justify-between items-center gap-3 text-xs text-white/35">
+        <div className="max-w-7xl mx-auto flex flex-wrap justify-between items-center gap-3 text-xs text-white/70">
           <div className="flex flex-col gap-1">
             <p>{t('copyright')}</p>
             <p>Samen Sterk in Taal · KVK 77533216 · BTW NL003205081B10 · van Naeltwijckstraat 13, 2274 NV Voorburg</p>

@@ -23,7 +23,7 @@
  * guides they link to is what a route per fase would have cost.
  */
 import { useEffect, useMemo, useState } from 'react';
-import { useTranslations } from 'next-intl';
+import { useLocale, useTranslations } from 'next-intl';
 import { ArrowRight } from 'lucide-react';
 import { Link } from '@/i18n/navigation';
 import { SkylineTopper, DocentSeal } from '@/components/horizon';
@@ -64,6 +64,7 @@ export default function RouteReader({
   initialPhase: PhaseId;
 }) {
   const t = useTranslations('inburgering_route');
+  const locale = useLocale();
   const { progress, hydrated } = useReadProgress();
   const [open, setOpen] = useState<PhaseId>(initialPhase);
 
@@ -122,7 +123,7 @@ export default function RouteReader({
               {/* The one deel to open now: the only card with a graphic panel and the only filled
                   button in the view. On a phone it is the whole screen, which is the point. */}
               <Link
-                href={guideHref({ section: current.section, slug: current.slug }, current.id)}
+                href={guideHref({ section: current.section, slug: current.slug }, locale, current.id)}
                 className="grid sm:grid-cols-[220px_1fr] rounded-2xl overflow-hidden no-underline"
                 style={{
                   background: 'var(--color-surface-container-lowest)',
@@ -189,7 +190,7 @@ export default function RouteReader({
                         }}
                       />
                       <Link
-                        href={guideHref({ section: d.section, slug: d.slug }, d.id)}
+                        href={guideHref({ section: d.section, slug: d.slug }, locale, d.id)}
                         className="grid sm:grid-cols-[220px_1fr] rounded-2xl overflow-hidden no-underline step-row"
                         style={{
                           background: 'var(--color-surface-container-lowest)',
@@ -247,7 +248,7 @@ export default function RouteReader({
                   {guides.map(d => (
                     <Link
                       key={d.slug}
-                      href={guideHref({ section: d.section, slug: d.slug })}
+                      href={guideHref({ section: d.section, slug: d.slug }, locale)}
                       className="inline-flex items-center gap-1.5 text-sm font-bold no-underline"
                       style={{ color: '#a24000', textDecoration: 'none' }}
                     >

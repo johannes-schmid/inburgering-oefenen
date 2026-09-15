@@ -22,10 +22,17 @@
  *    `review_status` on exam content, and the same reason: a field that merely documents intent
  *    gets ignored.
  *
- * 2. **Slugs are identical across locales.** `components/Nav.tsx` switches language with
- *    `router.replace(pathname, { locale })`, so a per-locale slug type-checks and then 404s the
- *    moment a reader switches language. `GuideLocale` therefore has no `slug` field, on purpose —
- *    the blog's `PostLocale` does, and that is the shape not to copy here.
+ * 2. **De vertaalde slug staat in `i18n/content-slugs.ts`, niet hier.** Tot 15-09 was de slug
+ *    in elke taal gelijk, met als reden dat `components/Nav.tsx` de taal wisselt via
+ *    `router.replace({ pathname, params }, { locale })`: `params` draagt de waarden van de táál
+ *    waar de lezer staat, dus een per-taal slug type-checkte en 404'de bij de eerste
+ *    taalwissel. Dat is opgelost in `translateParams()` in `Nav.tsx`, niet weggelaten.
+ *
+ *    `GuideLocale` heeft nog steeds geen `slug`, en `PostLocale` nu ook niet meer — maar om een
+ *    andere reden: `i18n/paths.ts` wordt geïmporteerd door `Nav.tsx`, een client component, en
+ *    een import van dit corpus daarin trekt 23 gidsen aan `articleHtml` de browserbundel in.
+ *    De tabel draagt alleen slugs. `tests-unit/content-slugs.test.ts` bewaakt dat er geen gids
+ *    zonder rij bestaat en geen rij zonder gids.
  *
  * Every number in `articleHtml` comes from `SEO/facts.md` and is wrapped in a fact box carrying
  * its source URL and consulted-on date. Nothing from `facts.md` §9 ships at all.

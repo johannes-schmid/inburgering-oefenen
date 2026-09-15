@@ -14,7 +14,13 @@ export default function SectionTransition({ className }: { className?: string })
   return (
     <div
       aria-hidden="true"
-      className={cn('relative overflow-hidden bg-surface-container-lowest h-[76px] sm:h-[112px]', className)}
+      /* `section-transition` is de haak voor de kritieke CSS in `app/[locale]/layout.tsx`: die
+         zet dezelfde twee hoogtes vóórdat `globals.css` binnen is. Zonder die regel neemt dit
+         blok tot dat moment zijn intrinsieke hoogte aan (1215px) en klapt het daarna in — 0,616
+         CLS op elke pagina. De Tailwind-klassen blijven staan als de bron van waarheid; de
+         kritieke regel herhaalt ze alleen eerder. Wijzig je er één, wijzig dan beide —
+         `tests-unit/critical-css.test.ts` faalt als ze uit elkaar lopen. */
+      className={cn('section-transition relative overflow-hidden bg-surface-container-lowest h-[76px] sm:h-[112px]', className)}
     >
       <DotField on="dark" size={18} />
       {/* Two counts behind one breakpoint, for the same reason as `GradientHero`: a house has to

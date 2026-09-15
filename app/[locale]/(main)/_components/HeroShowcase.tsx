@@ -122,7 +122,7 @@ export default function HeroShowcase() {
               <CategoryMark category="lezen" size={30} />
               <span className="flex flex-col">
                 <span className="font-headline font-bold text-primary text-sm leading-tight">Lezen</span>
-                <span className="text-[0.5625rem] font-semibold uppercase tracking-widest text-on-surface-variant">Brief van de gemeente</span>
+                <span className="text-[0.5625rem] font-semibold uppercase tracking-widest text-on-surface">Brief van de gemeente</span>
               </span>
             </div>
             <p className="text-sm text-on-surface leading-snug m-0 mb-3.5">
@@ -140,7 +140,7 @@ export default function HeroShowcase() {
               >
                 MS
               </span>
-              <span className="text-[0.5625rem] font-semibold uppercase tracking-widest text-on-surface-variant leading-tight">
+              <span className="text-[0.5625rem] font-semibold uppercase tracking-widest text-on-surface leading-tight">
                 Feedback van de docent
               </span>
             </div>
@@ -156,7 +156,7 @@ export default function HeroShowcase() {
               being complete rather than saying anything about odds. */}
           <FloatCard x={112} y={80} width={228} under="left" rotate={2}>
             <div className="flex items-center justify-between mb-2">
-              <span className="text-[0.5625rem] font-semibold uppercase tracking-widest text-on-surface-variant">Diploma inburgering</span>
+              <span className="text-[0.5625rem] font-semibold uppercase tracking-widest text-on-surface">Diploma inburgering</span>
               <span className="text-[0.5625rem] font-bold rounded-full px-1.5 py-0.5" style={{ background: 'var(--color-surface-container-high)', color: 'var(--color-primary)' }}>A2</span>
             </div>
             <div className="flex items-center gap-3">

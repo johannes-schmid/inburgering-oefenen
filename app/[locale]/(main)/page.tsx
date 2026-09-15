@@ -237,7 +237,7 @@ export default async function HomePage({ params }: Props) {
    * owning page, so this row must not start competing with `/taalexamens`. */
   const guideCards: KennisbankCard[] = publishedGuides('inburgering').map(guide => {
     const g = getGuideLocale(guide, locale);
-    const route = guideHref(guide);
+    const route = guideHref(guide, locale);
     return {
       id: guide.slug,
       group: t('kb_group_inburgering'),
