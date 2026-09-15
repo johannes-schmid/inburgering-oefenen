@@ -340,8 +340,11 @@ export default async function HomePage({ params }: Props) {
                     : { background: 'var(--color-surface-container-high)', color: 'var(--color-on-surface-variant)' }}
                 >
                   {t(track.key)}
+                  {/* Geen `opacity-70` op deze chip: op 9px vet haalde `on-surface-variant` daarmee
+                      3,64:1 tegen de `surface-container-high` eronder, en WCAG AA vraagt 4,5. De chip
+                      is al een gedempte toon; een tweede demping erbovenop viel onder de norm. */}
                   {!track.live && (
-                    <span className="text-[0.5625rem] font-bold uppercase tracking-widest opacity-70">{t('pkg_soon')}</span>
+                    <span className="text-[0.5625rem] font-bold uppercase tracking-widest">{t('pkg_soon')}</span>
                   )}
                 </span>
               </li>
