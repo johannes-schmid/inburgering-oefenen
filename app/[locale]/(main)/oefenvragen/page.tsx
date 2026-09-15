@@ -20,11 +20,13 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   // empty topic list — an indexable page with no content, which is the exact thing the flag exists
   // to prevent. `data/oefenvragen-topics.ts` is a typed-empty stub until A2 topics are authored.
   //
+  // `encodeURI`: het Arabische pad (`/ar/تدرب`) mag niet rauw in een Location-header — die neemt
+  // alleen Latin-1, en de statische render van `/ar/oefenvragen` brak de build erop.
   // A redirect rather than `notFound()`, for two reasons: `notFound()` here streams a 200 shell and
   // resolves to the not-found page client-side, which is a soft 404 — the worst of both; and any
   // inbound link to this KNM-era URL is better spent on the live funnel than on an error. Flip
   // FEATURES.oefenvragen when the topics exist.
-  if (!FEATURES.oefenvragen) redirect(localeHref(locale, `oefenen`));
+  if (!FEATURES.oefenvragen) redirect(encodeURI(localeHref(locale, `oefenen`)));
 
   const t = await getTranslations({ locale, namespace: 'oefenvragen' });
   return {
@@ -55,7 +57,7 @@ export default async function OefenIndexPage({ params }: Props) {
   // resolves to the not-found page on the client, which is a soft 404 — the worst of both; and any
   // inbound link to this KNM-era URL is better spent on the live funnel than on an error page. Flip
   // FEATURES.oefenvragen when the topics exist.
-  if (!FEATURES.oefenvragen) redirect(localeHref(locale, `oefenen`));
+  if (!FEATURES.oefenvragen) redirect(encodeURI(localeHref(locale, `oefenen`)));
 
   const t = await getTranslations({ locale, namespace: 'oefenvragen' });
 

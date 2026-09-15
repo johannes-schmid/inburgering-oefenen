@@ -1,7 +1,7 @@
 import { existsSync } from 'node:fs';
 import { join } from 'node:path';
 import type { Metadata } from 'next';
-import { getTranslations } from 'next-intl/server';
+import { getTranslations, setRequestLocale } from 'next-intl/server';
 import { routing } from '@/i18n/routing';
 import FaqAccordion from '@/components/FaqAccordion';
 import { SectionHeader } from '@/components/site';
@@ -101,6 +101,7 @@ function SoonBlock({ title, desc, soonLabel, notifyLabel, href, background, minH
 
 export default async function HomePage({ params }: Props) {
   const { locale } = await params;
+  setRequestLocale(locale);
   const t = await getTranslations({ locale, namespace: 'home' });
   const tSkills = await getTranslations({ locale, namespace: 'skills' });
 
@@ -216,7 +217,7 @@ export default async function HomePage({ params }: Props) {
      `scripts/generate-review-avatars.mjs` has run — existence is checked on the server rather than
      guessed, because a broken portrait beside a testimonial is worse than no portrait. */
   const REVIEWS = [1, 2, 3].map(n => {
-    const file = `images/reviews/placeholder-${n}.webp`;
+    const file = `images/reviews/placeholder-${n}-80.webp`;
     return { n, avatar: existsSync(join(process.cwd(), 'public', file)) ? `/${file}` : null };
   });
 
@@ -725,7 +726,7 @@ export default async function HomePage({ params }: Props) {
               {/* The ringed portrait: peach halo, orange ring, her photograph. Rings are outer
                   box-shadows so the image itself stays a clean circle at any size. */}
               <img
-                src="/images/marieke-schipper.webp"
+                src="/images/marieke-schipper-264.webp"
                 alt={t('teacher_name')}
                 width={132}
                 height={132}

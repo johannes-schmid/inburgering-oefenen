@@ -4,35 +4,14 @@ import { useState } from 'react';
 import { useTranslations, useLocale } from 'next-intl';
 import { useParams } from 'next/navigation';
 import { Link, usePathname, useRouter } from '@/i18n/navigation';
-import { Check, ChevronDown } from 'lucide-react';
 import LogoMark from '@/components/site/LogoMark';
 import LocaleFlag from '@/components/site/LocaleFlag';
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu';
+import { LOCALES, LanguageTrigger } from '@/components/LanguageTrigger';
 import { localeHref } from '@/i18n/paths';
 import { contentSlugParam, parseContentSlug } from '@/i18n/content-slugs';
 import { parseSkillParam, skillParam } from '@/i18n/skill-slugs';
 
-/**
- * Flags, drawn as SVG rather than typed as emoji (owner's decision, 2026-08-28).
- *
- * This reverses the 2026-08-20 removal, which took the flags out because they were the last emoji
- * in the site chrome and the project forbids emoji anywhere in the UI. That rule is intact: emoji
- * render per-platform, are absent entirely on Windows, and cannot be colour-matched — inline SVG
- * has none of those problems. See `components/site/LocaleFlag.tsx`.
- *
- * A native `<select>` cannot hold an SVG, which is why the desktop control is a dropdown menu and
- * the mobile one is a list of buttons rather than the two selects that used to be here.
- */
-const LOCALES = [
-  { code: 'nl', labelShort: 'NL', labelLong: 'Nederlands' },
-  { code: 'en', labelShort: 'EN', labelLong: 'English' },
-  { code: 'ar', labelShort: 'AR', labelLong: 'العربية' },
-] as const;
+type LanguageMenuComponent = typeof import('@/components/LanguageMenu').default;
 
 /**
  * The header: **four plain links — Platform · Gidsen · Prijzen · Over ons** (owner's decision,
@@ -95,6 +74,17 @@ export default function Nav() {
   const pathname = usePathname();
   const params = useParams();
   const [mobileOpen, setMobileOpen] = useState(false);
+  /* Het taalmenu laadt pas bij hover, focus of klik — zie `LanguageTrigger` voor het waarom.
+   * Bewust géén `next/dynamic`: die wisselt de knop bij de eerste hover om voor zijn
+   * `loading`-fallback, en de klik die op die hover volgt landt dan op een knop zonder handler.
+   * Hier blijft de statische knop mét handlers staan tot de module er is, en een klik in de
+   * tussentijd wordt onthouden als `open`. */
+  const [LanguageMenu, setLanguageMenu] = useState<LanguageMenuComponent | null>(null);
+  const [langWanted, setLangWanted] = useState<'no' | 'warm' | 'open'>('no');
+  function wantLanguageMenu(open: boolean) {
+    setLangWanted((prev) => (open || prev === 'open' ? 'open' : 'warm'));
+    if (!LanguageMenu) import('@/components/LanguageMenu').then((m) => setLanguageMenu(() => m.default));
+  }
 
   function handleLangChange(newLocale: string) {
     /* `usePathname()` returns the *template* for a dynamic route — '/blog/[slug]', not
@@ -158,31 +148,20 @@ export default function Nav() {
 
         {/* Right: language, login, CTA, hamburger. One filled weight only — the CTA. */}
         <div className="flex items-center gap-3 shrink-0">
-          <DropdownMenu>
-            <DropdownMenuTrigger
-              aria-label={t('langLabel')}
-              className="hidden menu:flex items-center gap-1.5 text-[0.8125rem] font-medium text-on-surface-variant bg-transparent rounded-lg pl-2 pr-1.5 py-1.5 cursor-pointer hover:text-primary hover:bg-surface-container transition-colors focus:outline-none focus:ring-2 focus:ring-primary/30"
-            >
-              <LocaleFlag locale={locale} />
-              {LOCALES.find((l) => l.code === locale)?.labelShort}
-              <ChevronDown className="w-3.5 h-3.5 opacity-60" />
-            </DropdownMenuTrigger>
-            {/* `w-auto` overrides the primitive's default of matching the trigger's width — the
-                trigger is two characters wide and the language names are not. */}
-            <DropdownMenuContent align="end" className="w-auto min-w-44">
-              {LOCALES.map((l) => (
-                <DropdownMenuItem
-                  key={l.code}
-                  onClick={() => handleLangChange(l.code)}
-                  className="gap-2.5 px-2 py-1.5 cursor-pointer"
-                >
-                  <LocaleFlag locale={l.code} />
-                  <span className="flex-1">{l.labelLong}</span>
-                  {l.code === locale && <Check className="w-3.5 h-3.5 text-primary" />}
-                </DropdownMenuItem>
-              ))}
-            </DropdownMenuContent>
-          </DropdownMenu>
+          {LanguageMenu ? (
+            <LanguageMenu
+              locale={locale}
+              label={t('langLabel')}
+              onChange={handleLangChange}
+              defaultOpen={langWanted === 'open'}
+            />
+          ) : (
+            <LanguageTrigger
+              onPointerEnter={() => wantLanguageMenu(false)}
+              onFocus={() => wantLanguageMenu(false)}
+              onClick={() => wantLanguageMenu(true)}
+            />
+          )}
 
           <Link
             href="/login"

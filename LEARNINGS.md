@@ -4620,3 +4620,106 @@ check, niet met een afspraak.
 **Outcome:** SUCCESS
 **What worked / went wrong:** `npx tsc --noEmit` schoon; screenshot toont vier gelijke knoppen op één lijn.
 **Lesson:** Verschillend knopgewicht binnen één rij van gelijkwaardige tegels leest als een defect, niet als hiërarchie — het verschil zit in het label.
+
+## 2026-09-15 — PageSpeed mobiel van 51 naar ~90: statische render, geen Suspense-shell, minder kritieke bytes
+**Changed:** `app/[locale]/layout.tsx` (`setRequestLocale` + `generateStaticParams`, Noto Arabic `preload: false`),
+`app/[locale]/(main)/layout.tsx` (`setRequestLocale`, de Suspense-grens met `BrandLoader` weg, `DevStateBar` achter
+`process.env.NODE_ENV` + `import()`), `app/[locale]/(main)/page.tsx` (`setRequestLocale`, portret en avatars op maat),
+`app/layout.tsx` (ongebruikte `Geist` weg), `app/[locale]/(main)/oefenvragen/page.tsx` (`encodeURI` om de redirect),
+nieuw `components/LanguageTrigger.tsx` + `components/LanguageMenu.tsx` (het taalmenu lazy vanuit `Nav.tsx`),
+`components/AnalyticsProviders.tsx` (de vier tags via `next/dynamic`), nieuwe bestanden
+`public/images/marieke-schipper-264.webp` en `public/images/reviews/placeholder-{1,2,3}-80.webp`.
+**Outcome:** SUCCESS — lokaal op de productiebuild (Lighthouse 12, mobiel, gesimuleerd): Performance 51 → 90,
+LCP 7,5 s → 3,3 s, CLS 0,63 → 0, Accessibility/Best Practices/SEO 100. Homepage-JS 323 → 204 KB brotli.
+**What worked / went wrong:**
+- **De hele site was dynamisch omdat de locale-layout `getMessages()` aanriep zonder `setRequestLocale`.** Dat
+  stond al als opmerking in `blog/[slug]/page.tsx`. Gevolg: `no-store`, een render per request, én de
+  Suspense-grens in de `(main)`-layout streamde nav + loader + footer vóór de pagina — de footer stond eerst
+  bovenin en schoof daarna 8.000 px omlaag. Dát was de 0,6 CLS, niet de `SectionTransition` (die fix stond er al).
+- **Een Suspense-grens met fallback blijft óók in statische HTML staan.** Na de statische render was de footer
+  nog steeds vóór de hero: React schrijft de shell en zet de inhoud met een `$RC`-script aan het einde van het
+  340 KB-document erin. De grens weghalen was de fix, niet de render-modus.
+- **Die Suspense-grens verborg een echte bug.** Zonder grens brak de build op `/ar/oefenvragen`:
+  `redirect()` met een rauw Arabisch pad in een Location-header ("Cannot convert argument to a ByteString").
+  Mét grens werd dat stil een client-fallback. Dezelfde `redirect(localeHref(...))` zonder `encodeURI` staat
+  nog in `(app)/oefenexamen/knm/[number]/page.tsx` en `(main)/oefenen/[skill]/page.tsx` — voor een Arabische
+  bezoeker een 500 zodra die tak loopt. Niet aangeraakt; melden aan de eigenaar.
+- **`git stash` + `next build` voor een nulmeting overschrijft `.next`.** Daarna serveerde `next start` de oude
+  build en leek de fix niet te werken. Eerst opnieuw bouwen, dán meten.
+- **Lighthouse "render delay" op tekst is een simulatie, geen repaint.** Observed FCP = observed LCP = 96 ms;
+  de 5 s kwam uit Lantern, dat álle bytes meetelt die vóór de LCP binnen waren: fonts (Noto Arabic 166 KB
+  preloaded op een Nederlandse pagina, Geist 29 KB voor een const die nergens stond), Supabase (64 KB via de
+  statische import van `DevStateBar`, die nooit rendert), `@base-ui` floating-UI (55 KB voor het taalmenu),
+  de tag-componenten (26 KB, al werden ze pas na idle gemount).
+- **`import()` achter een functieaanroep splitst niet weg.** `devToolsEnabled() ? await import(...) : null` liet
+  de chunk in de layout staan; alleen de letterlijke `process.env.NODE_ENV !== 'production'` vouwt de bundler weg.
+- **`next/dynamic` met een `loading`-fallback breekt hover-dan-klik.** De hover wisselde de knop om voor de
+  fallback zónder handlers en de klik landde in het niets — zeven Playwright-tests rood. Zelf `useState` +
+  `import()` beheren en de statische knop laten staan tot de module er is.
+- **Vooraf-bestaand rood:** `public.spec.js › the sitemap lists the hubs and every translated guide` verwacht
+  `/en/civic-integration/inburgering-stappenplan`; productie en lokaal geven al `integration-step-by-step`.
+**Lesson:** een render-modus fix je één keer in de layout, en daarna kijk je naar de bytes die vóór de LCP
+binnenkomen — niet naar wat er op het scherm gebeurt. En een Suspense-grens rond een hele pagina verbergt
+zowel de volgorde van de HTML als de fouten erin.
+
+## 2026-09-15 — KNM in het portaal krijgt de vorm van een taalonderdeel
+**Changed:** `app/[locale]/(app)/dashboard/knm/page.tsx` herschreven naar dezelfde drie lagen als
+`dashboard/[level]/[skill]`: `SkillStatBar` met de slaagkansmeter, de leerroute als `TrackCard`s
+(woordkaarten + de zeven lesmodules) en `ExamStrip` eronder. `buildExamSlots` en `ExamStrip` nemen
+nu `level: Level | null` en `LevelledSkill | KnmOnderdeel`, `SkillStatBar` kreeg een optionele
+`side`, en `.ov-cards.is-two` + `.sb-facts` staan in `app/portal.css`. Nieuwe sleutel
+`knm.themes_done` in nl/en/ar.
+**Outcome:** SUCCESS
+**What worked / went wrong:** `isFreeExamOf(level, n)` bestond al, dus de gratis-tak hoefde niet
+gedupliceerd te worden; de URL-tak (`oefenexamen/knm/n` zonder niveau) is één `examBase` in
+`buildExamSlots`. KNM heeft geen vaardighedenas, dus `weakness` is hier altijd `null` — op die plek
+staan nu de feiten van de module. Voortgang van de twee leersurfaces komt uit
+`user_word_card_progress` (status `known`) en `user_leren_progress` (`completed`), met `head: true`
+zodat er alleen een telling over de lijn gaat. `tsc`, `next build`, 588 unit tests en beide
+screenshots (390/1440) gecontroleerd.
+**Lesson:** Een niveauloos onderdeel hoeft geen tweede kopie van een scherm: zet `Level | null`
+in de datalaag die de URL's bouwt, en de weergavecomponenten kunnen ongewijzigd mee.
+
+## 2026-09-15 — De uitsplitsing per thema in de KNM-kopkaart
+**Changed:** `fetchKnmThemeWeakness()` in `lib/vaardigheden-server.ts` telt de zeven officiële
+thema's uit `user_question_results` via `questions.section_id → sections.theme_id`, in dezelfde
+`WeaknessRow`-vorm als de taalonderdelen, zodat `components/exam/SkillWeakness` hem ongewijzigd
+tekent. `SkillStatBar` heeft nu één prop `facts` in plaats van `side`: met een uitsplitsing staan
+de feiten onder de meter, zonder staan ze rechts.
+**Outcome:** SUCCESS
+**What worked / went wrong:** De thema-as lag al in de database (`20260824120000_knm_onderdeel.sql`
+gaf `sections.theme_id` en `questions.section_id`), dus dit was een query en geen migratie.
+`latestPerQuestion` en `MIN_ANSWERS` zijn hergebruikt, zodat een herkanst examen hier net zo telt
+als bij Lezen en een thema met vijf antwoorden een streepje krijgt in plaats van een balk.
+Gecontroleerd met veertig tijdelijke antwoordrijen in de lokale stack (daarna verwijderd): zeven
+rijen, zwakste eerst, twee op "—". `tsc`, `next build` en 588 unit tests groen.
+**Lesson:** Een onderdeel met een andere as hoeft geen andere kaart — geef de rijen dezelfde vorm
+en de bestaande component tekent ze, in plaats van een tweede lijst die hetzelfde zegt.
+
+## 2026-09-15 — De feitenlijst onder de KNM-meter weg
+**Changed:** `SkillStatBar` rendert `facts` niet meer onder de meter; ze blijven alleen de
+rechterkolom vullen zolang er géén uitsplitsing is. De bijbehorende regel in `app/portal.css` is
+weg.
+**Outcome:** SUCCESS
+**What worked / went wrong:** Met de thema-uitsplitsing erbij stonden de vier feiten eronder en
+duwden ze de diagnose naar beneden, terwijl de examenstrook dezelfde getallen al noemt. Eigenaar
+vroeg ze weg. `tsc`, `next build` en 588 unit tests groen; screenshot op 1440 en 390 gecontroleerd.
+**Lesson:** Een fallback die op twee plekken kan staan hoort er maar één te hebben — de plek die
+overblijft als de echte inhoud er is, is meestal gewoon overbodig.
+
+## 2026-09-15 — Lege staat voor de uitsplitsing, vóór het eerste examen
+**Changed:** `skeletonRows()` in `lib/vaardigheden-server.ts`: zowel `mcqRows` als
+`fetchKnmThemeWeakness` geven nu alle koppen terug met `pct: null` in plaats van `null`, dus de
+kaart toont de stippellijn met een streepje per vaardigheid of thema. `SkillStatBar` zet de kop op
+`weak_head_empty` ("Waarop je beoordeeld wordt") zodra geen enkele rij een cijfer heeft; sleutel
+toegevoegd in nl/en/ar.
+**Outcome:** SUCCESS
+**What worked / went wrong:** De lege vorm bestond al — `SkillWeakness` tekent `pct === null` als
+stippellijn — dus dit was een kwestie van de server rijen laten teruggeven in plaats van `null`.
+Schrijven en Spreken krijgen géén skelet: hun rijen komen uit de rubriek, en `rubrics` heeft buiten
+admin geen SELECT-policy (§6, invariant 9), dus die koppen zijn daar niet te weten zonder ze te
+verzinnen. Een gast houdt `null`. `tsc`, `next build`, 588 unit tests groen; A2 Lezen en KNM allebei
+gescreenshot.
+**Lesson:** Een kop die een oordeel belooft ("waar je nu zakt · zwakste eerst") hoort mee te
+veranderen met de lege staat — anders zegt de kaart dat er gesorteerd is terwijl er niets gemeten
+is.

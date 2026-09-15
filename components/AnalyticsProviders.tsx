@@ -1,10 +1,16 @@
 'use client';
 
 import { Suspense, useEffect, useState } from 'react';
-import { GoogleAnalytics } from '@next/third-parties/google';
-import GoogleAnalyticsTracker from './GoogleAnalyticsTracker';
-import MicrosoftClarity from './MicrosoftClarity';
-import { MetaPixel } from './MetaPixel';
+import dynamic from 'next/dynamic';
+
+/* Dynamisch, niet statisch geïmporteerd: een statische import zet de code van de vier tags
+ * (26 KB brotli, `@next/third-parties` incluis) in de layout-chunk, die vóór de LCP laadt — ook
+ * al wordt er pas na idle of interactie iets van gerenderd. Nu komt die chunk pas mee op het
+ * moment dat `ready` omslaat. */
+const GoogleAnalytics = dynamic(() => import('@next/third-parties/google').then((m) => m.GoogleAnalytics), { ssr: false });
+const GoogleAnalyticsTracker = dynamic(() => import('./GoogleAnalyticsTracker'), { ssr: false });
+const MicrosoftClarity = dynamic(() => import('./MicrosoftClarity'), { ssr: false });
+const MetaPixel = dynamic(() => import('./MetaPixel').then((m) => m.MetaPixel), { ssr: false });
 
 /**
  * De drie meetscripts, pas geladen ná de eerste interactie of ná idle.

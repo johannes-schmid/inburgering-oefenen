@@ -1,7 +1,7 @@
 import type { Metadata } from 'next';
 import { Manrope, Public_Sans, Noto_Sans_Arabic } from 'next/font/google';
 import { NextIntlClientProvider } from 'next-intl';
-import { getMessages } from 'next-intl/server';
+import { getMessages, setRequestLocale } from 'next-intl/server';
 import { notFound } from 'next/navigation';
 import { routing } from '@/i18n/routing';
 import type { Locale } from '@/i18n/routing';
@@ -27,6 +27,10 @@ const notoArabic = Noto_Sans_Arabic({
   variable: '--font-noto-arabic',
   display: 'swap',
   weight: ['400', '600', '700'],
+  /* Niet preloaden: 166 KB die op elke Nederlandse en Engelse pagina met hoge prioriteit
+   * vóór de LCP binnenkwam. De variabele wordt overigens nergens in een stylesheet gelezen,
+   * dus het bestand wordt zonder preload nooit opgehaald. */
+  preload: false,
 });
 
 export const metadata: Metadata = {
@@ -73,12 +77,23 @@ export const metadata: Metadata = {
  */
 const CRITICAL_CSS = '.section-transition{height:76px}@media(min-width:640px){.section-transition{height:112px}}';
 
+export function generateStaticParams() {
+  return routing.locales.map((locale) => ({ locale }));
+}
+
 export default async function LocaleLayout({ children, params }: Props) {
   const { locale } = await params;
 
   if (!routing.locales.includes(locale as Locale)) {
     notFound();
   }
+
+  /* Zonder deze aanroep leest next-intl de taal uit `headers()`, en dan is deze layout — en
+   * daarmee élke pagina eronder — dynamisch: `no-store`, een render per request, en de
+   * `(main)`-layout streamt nav en footer vóór de pagina-inhoud. Dat was 0,6 CLS en een LCP
+   * van 7,5 s op de homepage. Een pagina die zélf `cookies()` leest (het portaal) blijft
+   * gewoon dynamisch. */
+  setRequestLocale(locale);
 
   const messages = await getMessages();
   const isRtl = locale === 'ar';
