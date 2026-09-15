@@ -4723,3 +4723,80 @@ gescreenshot.
 **Lesson:** Een kop die een oordeel belooft ("waar je nu zakt · zwakste eerst") hoort mee te
 veranderen met de lege staat — anders zegt de kaart dat er gesorteerd is terwijl er niets gemeten
 is.
+
+## 2026-09-15 — Lege staat voor Schrijven en Spreken, en de rubriekregel weg
+**Changed:** `skeletonCriterionRows()` in `lib/vaardigheden-server.ts` bouwt de lege uitsplitsing
+van de twee rubriekonderdelen uit de sleutels van `draftCriteria()` (unie over de opgavesoorten van
+dat onderdeel), met `labelForCriterion` voor de naam — dezelfde naam die de échte rij straks
+draagt. De rubriekregel onder de kopkaart in `dashboard/[level]/[skill]/page.tsx` is weg; die op
+`oefenexamens/page.tsx` blijft.
+**Outcome:** SUCCESS
+**What worked / went wrong:** `rubrics` is buiten admin niet leesbaar (§6, invariant 9), dus de
+koppen moesten uit het sjabloon komen waarmee die rubrieken zijn aangemaakt. Alleen de sleutels,
+nooit de ankers: dit is een inhoudsopgave, geen nakijkmodel. Schrijven toont zeven criteria,
+Spreken negen. `tsc`, `next build` en 588 unit tests groen; beide schermen gescreenshot.
+**Lesson:** Als de echte bron afgeschermd is, leen dan de *namen* uit het sjabloon dat die bron
+heeft gevuld — en label ze met dezelfde functie als de echte rijen, anders heet hetzelfde
+criterium na de eerste beoordeling ineens anders.
+
+## 2026-09-15 — De uitsplitsing in twee kolommen vanaf zeven rijen
+**Changed:** `SkillWeakness` zet `is-dense` op de lijst zodra er meer dan zes rijen zijn; in
+`app/portal.css` wordt die lijst boven 900px `columns: 2` met een smallere balk (92px). De naam
+kreeg een `title`, want in een halve kolom kapt "Gezondheid en Gezondheidszorg" af.
+**Outcome:** SUCCESS
+**What worked / went wrong:** Eerst met `grid-template-columns: repeat(2, …)`, en dat vulde van
+links naar rechts — dan staat de tweede vaardigheid náást de eerste en is de zwakste-eerst-volgorde
+weg. `columns` vult kolom voor kolom en houdt die volgorde. Spreken (negen rijen) ging van ~530px
+naar ~340px kaarthoogte; onder 900px blijft het één kolom, want twee balken van 60px meten niets.
+**Lesson:** Voor een gesorteerde lijst in meerdere kolommen is CSS-multicolumn de juiste vorm, niet
+een grid — een grid vult rijgewijs en gooit de sortering weg zonder dat er iets stukgaat.
+
+## 2026-09-15 — Examens boven de leerroute, en de leerkaarten kaler
+**Changed:** `ExamStrip` staat op beide onderdeelschermen (`dashboard/[level]/[skill]` en
+`dashboard/knm`) nu boven de leerroute. De leerroutekaarten geven `sub={null}` en `meta={[]}`
+mee: `TrackCard` laat de kicker dan weg, slaat de feitenlijst over en zet de voet op `is-solo`,
+waarin de knop de volle breedte vult — dezelfde vorm als `.es-act` op een examenkaartje.
+**Outcome:** SUCCESS
+**What worked / went wrong:** `TrackCard` hoefde niet gesplitst te worden; `sub: string | null`
+plus een lege `meta` dekt beide gezichten, dus de modulekaarten op `/dashboard` en
+`/dashboard/[level]` blijven ongewijzigd. De ongebruikte index in de twee `.map`-aanroepen gaf een
+eslint-waarschuwing — die is meteen weg. `tsc`, `next build` en 588 unit tests groen; A2 Luisteren
+en KNM allebei op 1440 gecontroleerd, inclusief het onderste deel van de pagina.
+**Lesson:** Een volgorde die de kop al uitspreekt ("doe ze in deze volgorde") hoeft niet ook nog
+op elke kaart genummerd te staan; hetzelfde geldt voor een getal dat de balk eronder als breedte
+toont.
+
+## 2026-09-15 — De leerroute in hetzelfde witte paneel als de examenstrook
+**Changed:** De leerroutesectie op `dashboard/[level]/[skill]` en `dashboard/knm` is `section.panel`
+geworden, met `mini-head` erbinnen in plaats van erboven.
+**Outcome:** SUCCESS
+**What worked / went wrong:** `.panel` bestond al in `app/portal.css` en is precies de doos van de
+examenstrook, dus dit kostte geen nieuwe CSS. Eén JSX-fout onderweg: een `{/* … */}`-commentaar
+direct ná `{steps.length > 0 && (` is geen JSX-kind maar een expressie op die plek — het commentaar
+hoort boven de conditie. `tsc`, `next build` en 588 unit tests groen; beide schermen gecontroleerd.
+**Lesson:** Twee blokken met dezelfde rol op één pagina horen dezelfde doos te delen; de klasse
+daarvoor stond er al, dus kijk eerst in `portal.css` voordat je een omhulsel tekent.
+
+## 2026-09-15 — De leerroutekop in de examenletter, en meer lucht tussen de kaarten
+**Changed:** De kop van het leerroutepaneel is `.lr-head` geworden: titel in de kopletter met de
+toelichting ernaast, gelijk aan `.es-title` / `.es-meta` van de examenstrook. Nieuwe sleutels
+`portal.leerroute_title` en `portal.leerroute_sub` in nl/en/ar; `leerroute_head` is verwijderd,
+want niets las hem nog. De tussenruimte van `.ov-cards.is-three` en `.is-two` ging van 12px naar
+1.25rem.
+**Outcome:** SUCCESS
+**What worked / went wrong:** `.es-title` en `.es-meta` staan onder `.exam-strip`, dus ze konden
+niet zomaar hergebruikt worden; `.lr-head` herhaalt dezelfde waarden op één plek in plaats van de
+selector te verbreden. De ruimere gap raakt alleen de twee leerroutevarianten — de modulekaarten op
+`/dashboard` en `/dashboard/[level]` houden hun 12px. `tsc`, `next build` en 588 unit tests groen.
+**Lesson:** Verwijder een locale-sleutel zodra de laatste lezer weg is; een ongebruikte sleutel in
+drie talen is de volgende die per ongeluk terugkomt met andere tekst.
+
+## 2026-09-15 — Gelijke afstand tussen de drie panelen van het onderdeelscherm
+**Changed:** `.exam-strip` krijgt `margin-bottom: 16px` in `app/portal.css`, dezelfde waarde als
+`.statbar` al had.
+**Outcome:** SUCCESS
+**What worked / went wrong:** De strook had geen ondermarge, dus het leerroutepaneel plakte eraan
+vast terwijl er boven de strook wél 16px zat. Eén regel; `tsc`, `next build` en 588 unit tests
+groen, KNM gecontroleerd op 1440.
+**Lesson:** Als drie panelen onder elkaar staan, hoort de afstand bij het paneel erboven — niet bij
+de utility-klasse van het onderste, want dan mist de ruimte precies op de naad ertussen.

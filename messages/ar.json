@@ -1031,13 +1031,15 @@
     "slaagkans_note": "بناءً على {count} امتحانات تدريبية · بمعدل {avg}%",
     "slaagkans_note_empty": "قم بأول امتحان تدريبي لترى فرصتك في النجاح.",
     "weak_head": "حيث تفقد النقاط · الأضعف أولاً",
+    "weak_head_empty": "ما يتم تقييمك عليه",
     "sw_to_lesson_short": "إلى الدرس",
     "docent_name": "ماريكه",
     "docent_line_weak": "ابدأ بـ {concept}. هذا أكبر مكسب لك الآن — فأنت تفقد معظم النقاط هناك.",
     "docent_line_strong": "أنت في وضع جيد. واصل إجراء امتحانات كاملة ضمن الوقت المحدد لتحافظ على ذلك.",
     "docent_line_going": "أنت في الطريق. اتبع الخطوات بالترتيب: الكلمات أولاً، ثم القواعد، ثم الامتحان.",
     "docent_line_start": "ابدأ بالكلمات. عندما تثبت، تصبح القواعد أسرع بكثير.",
-    "leerroute_head": "مسار التعلّم · اتبعها بهذا الترتيب",
+    "leerroute_title": "مسار التعلّم",
+    "leerroute_sub": "اتبعها بهذا الترتيب",
     "leerroute_step": "الخطوة {n}",
     "leerroute_mastery": "الإتقان",
     "leerroute_ring_aria": "الإتقان {pct} من 100",
@@ -1874,7 +1876,8 @@
     "woorden_lede": "الكلمات التي تتكرر في امتحان KNM، مع النطق وجملة مثال وترجمة.",
     "sections_count": "{count} أجزاء",
     "words_count": "{count} كلمة",
-    "open": "افتح"
+    "open": "افتح",
+    "themes_done": "المواضيع المكتملة"
   },
   "lessons": {
     "course_title": "{skill} {level} — الدروس",

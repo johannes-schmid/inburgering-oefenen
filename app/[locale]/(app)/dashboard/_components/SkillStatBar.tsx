@@ -56,6 +56,7 @@ export default async function SkillStatBar({
   band,
   examsCount,
   avgScore,
+  facts = null,
 }: {
   /** Het onderdeel, als categoriemerk naast de naam. */
   category: Category;
@@ -68,6 +69,15 @@ export default async function SkillStatBar({
   /** 0 betekent: nog niets gemeten. De meter zet dan een streepje in plaats van 0%. */
   examsCount: number;
   avgScore: number;
+  /**
+   * De feiten van de module: wat een examen inhoudt en hoeveel je er gemaakt hebt.
+   *
+   * Alleen te zien zolang er géén uitsplitsing is, en dan in de rechterkolom: zonder iets daar
+   * stond de meter in een kolom van 262px met een leeg vlak ernaast. Zodra de uitsplitsing er is
+   * verdwijnen ze (eigenaar, 15-09) — ze stonden toen onder de meter, waar ze de diagnose naar
+   * beneden duwden en vier getallen herhaalden die de kaart en de strook eronder al noemen.
+   */
+  facts?: React.ReactNode;
 }) {
   const t = await getTranslations('portal');
 
@@ -107,12 +117,18 @@ export default async function SkillStatBar({
         {/* Geen kop zonder lijst. In productie is `question_concepts` nog leeg — de tagger heeft
             er nooit gedraaid — dus `weakness` is daar `null`, en een kopregel "waar je nu zakt"
             boven niets is een belofte die het scherm niet waarmaakt. */}
-        {weakness && (
+        {weakness ? (
           <div className="sb-panel">
-            <span className="sb-kick">{t('weak_head')}</span>
+            {/* Zolang er nergens genoeg antwoorden zijn staat er geen enkel cijfer in de
+                lijst, en dan is "waar je nu zakt · zwakste eerst" een belofte die de rijen niet
+                waarmaken — er is niets gesorteerd en niets gemeten. De kop zegt dan wat de lijst
+                wél is: waarop dit onderdeel je beoordeelt. */}
+            <span className="sb-kick">
+              {weakness.rows.some(r => r.pct !== null) ? t('weak_head') : t('weak_head_empty')}
+            </span>
             <SkillWeakness data={weakness} />
           </div>
-        )}
+        ) : facts}
       </div>
 
     </section>

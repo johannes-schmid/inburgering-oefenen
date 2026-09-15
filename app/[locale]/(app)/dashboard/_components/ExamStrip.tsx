@@ -1,7 +1,7 @@
 import { getTranslations } from 'next-intl/server';
 import { ArrowRight } from 'lucide-react';
 import { CarouselItem } from '@/components/ui/carousel';
-import type { Level, LevelledSkill } from '@/data/skills';
+import type { KnmOnderdeel, Level, LevelledSkill } from '@/data/skills';
 import type { SkillProgress } from '@/lib/portal-progress';
 import { buildExamSlots } from './exam-slots';
 import ExamCard from './ExamCard';
@@ -23,8 +23,9 @@ export default async function ExamStrip({
   locale, level, skill, progress, published, isGuest, owns,
 }: {
   locale: string;
-  level: Level;
-  skill: LevelledSkill;
+  /** `null` is KNM: geen niveau in de URL en geen niveau in de module-id. Zie `buildExamSlots`. */
+  level: Level | null;
+  skill: LevelledSkill | KnmOnderdeel;
   progress: SkillProgress;
   published: Set<number>;
   isGuest: boolean;
@@ -37,6 +38,9 @@ export default async function ExamStrip({
     locale, level, skill, progress, published, isGuest, owns,
   });
 
+  /* KNM heeft geen los overzichtsscherm van zijn tien examens — de strook ís het overzicht. */
+  const allHref = level === null ? null : `/${locale}/dashboard/${level}/${skill.slug}/oefenexamens`;
+
   const head = (
     <>
       <h2 className="es-title">{t('stat_exams')}</h2>
@@ -44,13 +48,12 @@ export default async function ExamStrip({
         {t('exams_made', { done: progress.examsDone, total: skill.examCount })}
         {progress.averagePct != null && ` · ${t('card_average', { pct: progress.averagePct })}`}
       </p>
-      <a
-        href={`/${locale}/dashboard/${level}/${skill.slug}/oefenexamens`}
-        className="es-all no-underline"
-      >
-        {t('exams_all')}
-        <ArrowRight size={13} strokeWidth={2.6} className="rtl-flip" />
-      </a>
+      {allHref && (
+        <a href={allHref} className="es-all no-underline">
+          {t('exams_all')}
+          <ArrowRight size={13} strokeWidth={2.6} className="rtl-flip" />
+        </a>
+      )}
     </>
   );
 

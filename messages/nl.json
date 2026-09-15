@@ -1031,13 +1031,15 @@
     "slaagkans_note": "op basis van {count} oefenexamens · gem. {avg}%",
     "slaagkans_note_empty": "Maak je eerste oefenexamen om je slaagkans te zien.",
     "weak_head": "Waar je nu zakt · zwakste eerst",
+    "weak_head_empty": "Waarop je beoordeeld wordt",
     "sw_to_lesson_short": "Naar de les",
     "docent_name": "Marieke",
     "docent_line_weak": "Pak eerst {concept}. Dat is nu je grootste winst — je verliest daar de meeste punten.",
     "docent_line_strong": "Je staat er goed voor. Blijf hele examens op tijd maken, dan houd je het vast.",
     "docent_line_going": "Je bent onderweg. Doe de stappen op volgorde: eerst de woorden, dan de regels, dan het examen.",
     "docent_line_start": "Begin bij de woorden. Als die zitten, gaan de regels een stuk sneller.",
-    "leerroute_head": "Leerroute · doe ze in deze volgorde",
+    "leerroute_title": "Leerroute",
+    "leerroute_sub": "doe ze in deze volgorde",
     "leerroute_step": "Stap {n}",
     "leerroute_mastery": "Beheersing",
     "leerroute_ring_aria": "Beheersing {pct} van 100",
@@ -1874,7 +1876,8 @@
     "woorden_lede": "De woorden die in het KNM-examen terugkomen, met uitspraak, voorbeeldzin en vertaling.",
     "sections_count": "{count} onderdelen",
     "words_count": "{count} woorden",
-    "open": "Openen"
+    "open": "Openen",
+    "themes_done": "Thema’s afgerond"
   },
   "lessons": {
     "course_title": "{skill} {level} — lessen",

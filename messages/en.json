@@ -1031,13 +1031,15 @@
     "slaagkans_note": "based on {count} practice exams · avg. {avg}%",
     "slaagkans_note_empty": "Take your first practice exam to see your chance of passing.",
     "weak_head": "Where you lose points · weakest first",
+    "weak_head_empty": "What you are scored on",
     "sw_to_lesson_short": "To the lesson",
     "docent_name": "Marieke",
     "docent_line_weak": "Start with {concept}. That is your biggest win right now — you lose the most points there.",
     "docent_line_strong": "You are in good shape. Keep doing full exams under time and you will hold on to it.",
     "docent_line_going": "You are on your way. Do the steps in order: words first, then the rules, then the exam.",
     "docent_line_start": "Start with the words. Once those stick, the rules go a lot faster.",
-    "leerroute_head": "Learning route · do them in this order",
+    "leerroute_title": "Learning route",
+    "leerroute_sub": "do them in this order",
     "leerroute_step": "Step {n}",
     "leerroute_mastery": "Mastery",
     "leerroute_ring_aria": "Mastery {pct} out of 100",
@@ -1874,7 +1876,8 @@
     "woorden_lede": "The words that come back in the KNM exam, with pronunciation, an example sentence and a translation.",
     "sections_count": "{count} parts",
     "words_count": "{count} words",
-    "open": "Open"
+    "open": "Open",
+    "themes_done": "Themes completed"
   },
   "lessons": {
     "course_title": "{skill} {level} — lessons",

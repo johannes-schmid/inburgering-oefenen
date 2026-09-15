@@ -66,8 +66,17 @@ export default function SkillWeakness({ data }: { data: Data }) {
   const { rows } = data;
   if (rows.length === 0) return null;
 
+  /*
+   * Zeven of meer koppen worden twee kolommen (eigenaar, 15-09).
+   *
+   * Spreken heeft er negen, en op één rij per stuk werd de kopkaart hoger dan het scherm terwijl
+   * de helft van het paneel leeg stond. Zes of minder blijft één kolom: daar is de hoogte geen
+   * probleem en houdt één baan de vergelijking tussen de balken het makkelijkst.
+   */
+  const dense = rows.length > 6;
+
   return (
-    <ul className="sw-list">
+    <ul className={`sw-list${dense ? ' is-dense' : ''}`}>
         {rows.map(r => {
           // Eén sessie is een meting en geen verloop: "gelijk gebleven" zou suggereren dat we
           // iets hadden om mee te vergelijken.
@@ -83,7 +92,10 @@ export default function SkillWeakness({ data }: { data: Data }) {
               {/* Naam en verloop staan in één cel: alles wat mag meegroeien staat links, zodat de
                   balk en de score op elke rij op dezelfde x beginnen en eindigen. */}
               <span className="sw-name">
-                <span className="sw-label">{r.label}</span>
+                {/* `title` omdat een lange naam in twee kolommen afkapt — "Gezondheid en
+                    Gezondheidszorg" past niet in een halve kolom, en de volledige naam moet
+                    ergens te lezen blijven. */}
+                <span className="sw-label" title={r.label}>{r.label}</span>
                 {trend === 'up' && (
                   <span className="sw-up">
                     <TrendingUp size={12} aria-hidden /> +{r.delta!.toFixed(1)}

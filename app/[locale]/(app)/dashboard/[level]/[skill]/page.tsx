@@ -95,7 +95,6 @@ export default async function SkillExamsPage({ params }: Props) {
 
   const p = progress[level][skill.slug];
   const pub = published[level][skill.slug];
-  const isRubric = skill.scoring === 'open';
 
   /**
    * "Je vaardigheden": dezelfde kaart voor alle vier de onderdelen.
@@ -227,61 +226,63 @@ export default async function SkillExamsPage({ params }: Props) {
             avgScore={kans.avgScore}
           />
 
-          {isRubric && <p className="rubric-note mt-4">{t('rubric_note')}</p>}
+          {/* De rubrieknotitie stond hier onder de kopkaart en is er op 15-09 af gehaald
+              (eigenaar). Hij zei in vier regels wat de uitsplitsing ernaast met criteria toont,
+              en hij stond op élk bezoek, ook bij een kandidaat die zijn tiende opdracht inlevert.
+              Hij blijft wel op `oefenexamens/page.tsx`: dáár kies je een examen zonder de
+              criteria in beeld, en dan is "dit wordt met de hand nagekeken" nieuwe informatie. */}
+
+            {/* De examens staan boven de leerroute (eigenaar, 15-09): de kandidaat komt voor
+                het volgende oefenexamen, en de drie leerkaarten duwden die strook onder de fold
+                op een laptop. De leerroute blijft eronder als het antwoord op "en hoe word ik
+                daar beter in". */}
+            <ExamStrip
+              locale={locale}
+              level={level}
+              skill={skill}
+              progress={p}
+              published={pub}
+              isGuest={isGuest}
+              owns={ownsThisSkill}
+            />
 
             {/* De leerroute. De volgorde is dragend: woorden, dan regels, dan het examen zelf.
                 Elke stap krijgt één getal van 0–100 uit lessen én oefenvragen samen — zie
                 `lib/lessons/leerroute.ts`. Een stap waar de docent nog geen concept van heeft
                 vrijgegeven rendert als lege kaart met een streepje, niet als 0%. */}
-            <section className="mb-7">
-              <h2 className="mini-head">{t('leerroute_head')}</h2>
+            {/* Het witte paneel van de examenstrook eromheen (eigenaar, 15-09): twee blokken
+                die op dezelfde pagina dezelfde rol spelen — een kop met kaarten eronder — horen
+                dezelfde doos te hebben. De kop staat daarom ín het paneel. */}
+            <section className="panel mb-7">
+              {/* Dezelfde kop als de examenstrook: de naam in de kopletter met de toelichting
+                  ernaast, niet het kapitaalkopje. Twee panelen naast elkaar met twee soorten
+                  koppen lezen als twee soorten blokken (eigenaar, 15-09). */}
+              <div className="lr-head">
+                <h2>{t('leerroute_title')}</h2>
+                <p>{t('leerroute_sub')}</p>
+              </div>
               {/* Dezelfde kaart als de modules en de onderdelen, drie op een rij. Het merkteken
                   is de leerroute-mark op het navy paneel, en de voet draagt de feiten van de
                   stap in plaats van een examenstelling — die heeft een leerspoor niet. */}
               <div className={'ov-cards is-three'}>
-                {leerroute.map((m, i) => (
+                {leerroute.map(m => (
                   <TrackCard
                     key={m.kind}
                     layer="onderdeel"
                     mark={<CategoryMark category={LEER_MARK[m.kind]} size={56} tone="dark" />}
-                    sub={t('leerroute_step', { n: i + 1, total: leerroute.length })}
+                    /* Geen "STAP 1": de kop erboven zegt al dat dit een volgorde is, en de
+                       kaarten stáán in die volgorde (eigenaar, 15-09). */
+                    sub={null}
                     title={m.title ?? t(`leerroute_${m.kind}_title`)}
                     state={m.score === null ? 'open' : 'active'}
                     note={m.hasContent ? null : t('leerroute_empty')}
                     pct={m.score}
                     progressLabel={null}
-                    meta={[
-                      /* De woordkaarten zijn het enige harde getal dat Woordenschat heeft zolang
-                         de docent er geen concept van heeft vrijgegeven, dus die staat vooraan. */
-                      ...(m.words
-                        ? [{
-                            icon: 'parts' as const,
-                            label: `${t('leerroute_fact_words')} ${t('leerroute_fact_of', { done: m.words.known, total: m.words.total })}`,
-                          }]
-                        : []),
-                      /* De lessen zodra er lessen zijn, de concepten zodra er concepten zijn —
-                         twee aparte vragen, en ze samen op `conceptCount` hangen liet de
-                         Uitspraak-kaart van Spreken zonder lessentelling staan terwijl er zes
-                         lessen onder zaten. Blok B leunt daar op strategieconcepten, en die
-                         tellen mee in stap 3. Zelfde fout als `hasContent` had. */
-                      ...(m.lessonsTotal > 0
-                        ? [{
-                            icon: 'parts' as const,
-                            label: `${t('leerroute_fact_lessons')} ${t('leerroute_fact_of', { done: m.lessonsDone, total: m.lessonsTotal })}`,
-                          }]
-                        : []),
-                      /* Géén conceptentelling op de regelstap. `conceptCount` telt de regels
-                         van dit onderdeel (20 bij Luisteren), de stap telt lessen (23: vijf
-                         eigen plus achttien regellessen). Twee getallen naast elkaar over
-                         bijna-hetzelfde lezen als een fout, niet als twee feiten — en drie
-                         regels hebben nog geen les, dus ze zullen ook nooit gelijk zijn. */
-                      ...(m.conceptCount > 0 && m.kind !== 'grammatica'
-                        ? [{
-                            icon: 'exams' as const,
-                            label: `${t('leerroute_fact_concepts')} ${t('leerroute_fact_of', { done: m.conceptsStrong, total: m.conceptCount })}`,
-                          }]
-                        : []),
-                    ]}
+                    /* Geen feitenregel meer op de kaart (eigenaar, 15-09). "Woorden gekend
+                       59 / 126" en "Lessen afgerond 2 / 20" zeggen in cijfers wat de balk
+                       eronder als breedte al zegt, en ze staan wél op het scherm waar je
+                       naartoe gaat. De voet draagt nu alleen de knop. */
+                    meta={[]}
                     /* Elke stap wijst naar zijn eigen overzicht, niet naar één les diep erin:
                        daar staat wat er is en waar je verdergaat. */
                     cta={m.kind === 'woordenschat' ? t('leerroute_cta_words') : t('leerroute_cta_modules')}
@@ -299,15 +300,7 @@ export default async function SkillExamsPage({ params }: Props) {
             </section>
 
 
-            <ExamStrip
-              locale={locale}
-              level={level}
-              skill={skill}
-              progress={p}
-              published={pub}
-              isGuest={isGuest}
-              owns={ownsThisSkill}
-            />
+
 
         </div>
       </div>

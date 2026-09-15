@@ -1,28 +1,47 @@
 import type { Metadata } from 'next';
 import { getTranslations } from 'next-intl/server';
-import { ArrowRight, BookText, Check, Clock, Layers, ListChecks, Lock, RotateCcw } from 'lucide-react';
 import { createClient } from '@/lib/supabase/server';
 import { ownsKnm } from '@/lib/entitlements';
 import { emptyLevelledProgress, fetchPortalProgress, fetchPublishedExamNumbers } from '@/lib/portal-progress';
 import { FEATURES } from '@/lib/features';
-import { KNM, KNM_THEMES, formatCount, isFreeKnmExam } from '@/data/skills';
+import { KNM, KNM_THEMES, formatCount } from '@/data/skills';
+import { KNM_WOORDKAARTEN } from '@/data/woordkaarten';
+import { calculateSlaagkans } from '@/lib/exam-readiness';
+import { CategoryMark, type Category } from '@/components/horizon';
 import AppShell from '../../components/AppShell';
-import ExamListStyles from '../_components/ExamListStyles';
+import PortalCrumbs from '../../components/PortalCrumbs';
+import SkillStatBar from '../_components/SkillStatBar';
+import TrackCard from '../_components/TrackCard';
+import ExamStrip from '../_components/ExamStrip';
 import { fetchPortalMenu } from '@/lib/portal-menu';
-import { localeHref } from '@/i18n/paths';
+import { fetchKnmThemeWeakness } from '@/lib/vaardigheden-server';
 
 /**
- * KNM's ten oefenexamens inside the portal — the level-less twin of
- * `dashboard/[level]/[skill]`.
+ * KNM's module in het portaal — de niveauloze tweeling van `dashboard/[level]/[skill]`.
  *
- * A static route, so `/dashboard/knm` is not read as `/dashboard/[level]` with level "knm".
- * (`next.config.ts` redirects `/dashboard/<taalonderdeel>` to its A2 path; that rule names the
- * four slugs explicitly, so `knm` falls through to this page rather than being rewritten.)
+ * Een statische route, zodat `/dashboard/knm` niet als `/dashboard/[level]` met niveau "knm"
+ * wordt gelezen. (`next.config.ts` leidt `/dashboard/<taalonderdeel>` om naar zijn A2-pad; die
+ * regel noemt de vier slugs met naam, dus `knm` valt hierdoorheen naar deze pagina.)
  *
- * It carries two things the levelled page does not, and they are the reason KNM is a module
- * rather than just a set of exams: the seven lesson modules and the woordkaarten. Both are
- * gated behind their feature flags, so an environment with the flags off shows the exams alone
- * rather than two links to nothing.
+ * **De vorm is die van een taalonderdeel, en dat is de wijziging van 15-09** (besluit eigenaar).
+ * Dit scherm was een lijst van tien rijen met een zijkolom ernaast, terwijl elk taalonderdeel
+ * inmiddels dezelfde drie lagen draagt: de diagnose bovenaan (`SkillStatBar`), dan de leerroute
+ * als kaarten, dan de examens als strook. Eén module die zich anders gedraagt dan de andere vijf
+ * laat de kandidaat opnieuw uitzoeken waar hij is.
+ *
+ * Twee dingen verschillen, en ze volgen uit wat KNM ís:
+ *
+ * - **De leerroute is twee stappen, niet drie.** Woorden en de zeven lesmodules; er is geen
+ *   taalregelblok, want KNM toetst kennis en geen grammatica. Een derde kaart erbij verzinnen
+ *   zou een stap beloven die niet bestaat.
+ * - **De uitsplitsing gaat per thema, niet per vaardigheid.** KNM heeft geen concepten, dus
+ *   `fetchSkillWeakness` geeft er niets voor terug; zijn as is het thema
+ *   (`sections.theme_id`), en `fetchKnmThemeWeakness` telt de zeven officiële thema's uit
+ *   dezelfde antwoorden. Zelfde rijvorm, zelfde drempel, zelfde plek op de kaart. Zolang er
+ *   nergens genoeg antwoorden zijn is hij `null` en nemen de feiten van de module die plek in.
+ *
+ * Beide leersurfaces zitten achter hun feature flag, zodat een omgeving met de vlaggen uit de
+ * examens alleen toont in plaats van twee kaarten naar niets.
  */
 type Props = { params: Promise<{ locale: string }> };
 
@@ -30,6 +49,9 @@ export const metadata: Metadata = {
   title: 'KNM oefenexamens | Inburgering Oefenen',
   robots: { index: false, follow: false },
 };
+
+/** De 366 woordkaarten liggen statisch in de repo; dit is hun aantal, niet een query. */
+const WORD_TOTAL = KNM_WOORDKAARTEN.themes.reduce((n, th) => n + th.words.length, 0);
 
 export default async function KnmExamsPage({ params }: Props) {
   const { locale } = await params;
@@ -55,6 +77,60 @@ export default async function KnmExamsPage({ params }: Props) {
 
   const menu = await fetchPortalMenu();
 
+  /*
+   * De voortgang van de twee leersurfaces, allebei uit hun eigen tabel.
+   *
+   * `user_word_card_progress.status` is `'known'` zodra de kandidaat de kaart kent — dezelfde
+   * waarde die `WoordkaartenView` schrijft; `user_leren_progress.completed` is het vinkje van een
+   * thema. Een gast heeft geen van beide, en dan blijft de teller op nul zonder query.
+   */
+  const [wordsKnown, themesDone] = user
+    ? await Promise.all([countWordsKnown(user.id), countThemesDone(user.id)])
+    : [0, 0];
+
+  /**
+   * De slaagkans-meter, dezelfde als bij de taalonderdelen.
+   *
+   * `calculateSlaagkans` weegt het gemiddelde tegen een prior van 50 en wordt pas na vijf examens
+   * volledig zeker — één examen van 90% mag niet als "90% slaagkans" lezen. De scores zijn de
+   * *beste* per examen: een verprutste eerste poging die daarna is rechtgezet hoort de kandidaat
+   * niet te blijven achtervolgen.
+   */
+  const examScores = Object.values(p.exams)
+    .map(e => e.bestPct)
+    .filter((x): x is number => x != null);
+  const kans = calculateSlaagkans(examScores);
+
+  /**
+   * De uitsplitsing per thema — wat bij een taalonderdeel de vaardigheden zijn.
+   *
+   * `null` tot er van minstens één thema genoeg antwoorden zijn; dan neemt de feitenlijst die
+   * kolom in. Zie `fetchKnmThemeWeakness`.
+   */
+  const themeWeakness = await fetchKnmThemeWeakness(user?.id ?? null);
+
+  /** De leerroute van KNM: woorden, dan de thema's. Alleen wat aanstaat komt in de rij. */
+  const steps = [
+    FEATURES.woordkaarten && {
+      key: 'woorden',
+      mark: 'woorden' as const,
+      title: tKnm('woorden_title'),
+      pct: WORD_TOTAL > 0 ? Math.round((wordsKnown / WORD_TOTAL) * 100) : null,
+      cta: t('leerroute_cta_words'),
+      href: `/${locale}/dashboard/woordkaarten`,
+    },
+    FEATURES.leren && {
+      key: 'leren',
+      mark: 'knm' as const,
+      title: tKnm('leren_title'),
+      pct: Math.round((themesDone / KNM_THEMES.length) * 100),
+      cta: t('leerroute_cta_modules'),
+      href: `/${locale}/leren`,
+    },
+  ].filter(Boolean) as {
+    key: string; mark: Category; title: string; pct: number | null; cta: string; href: string;
+  }[];
+
   return (
     <AppShell
       locale={locale}
@@ -68,157 +144,146 @@ export default async function KnmExamsPage({ params }: Props) {
       <div className="px-5 py-7 sm:px-8 sm:py-10">
         <div className="max-w-5xl mx-auto">
 
-          {/* Dezelfde kop als /dashboard en /dashboard/[level]: titel, ondertitel, en de cijfers
-              naar de kolom rechts. Het merkteken en de terugknop zijn eruit — de zijbalk zegt al
-              waar je bent, en een tweede KNM-mark naast de actieve rij is dubbelop. */}
-          <header className="ov-head">
-            <h1>{tSkills('knm.name')}</h1>
-            <p>{tSkills('knm.tagline')}</p>
-          </header>
+          {/* Overzicht › KNM. Geen niveaukruimel ertussen: KNM heeft er geen, en "Niveau KNM"
+              is een categoriefout op het scherm (zie `moduleGroupLabel`). */}
+          <PortalCrumbs
+            trail={[
+              { label: t('crumb_overview'), href: `/${locale}/dashboard` },
+              { label: tSkills('knm.name') },
+            ]}
+          />
 
-          <div className="ov-grid">
-            <div className="ov-rows">
-            {/* ── The study surfaces that come with the module ── */}
-            {(FEATURES.leren || FEATURES.woordkaarten) && (
-              <div className="grid sm:grid-cols-2 gap-2.5 mb-7">
-                {FEATURES.leren && (
-                  <a href={`/${locale}/leren`} className="knm-side no-underline">
-                    <span className="knm-side-icon"><BookText size={18} strokeWidth={1.9} /></span>
-                    <span className="min-w-0">
-                      <span className="knm-side-title">{tKnm('leren_title')}</span>
-                      <span className="knm-side-sub">{tKnm('sections_count', { count: KNM_THEMES.length })}</span>
-                    </span>
-                    <ArrowRight size={16} strokeWidth={2.2} className="ml-auto flex-shrink-0" aria-hidden />
-                  </a>
-                )}
-                {FEATURES.woordkaarten && (
-                  <a href={`/${locale}/dashboard/woordkaarten`} className="knm-side no-underline">
-                    <span className="knm-side-icon"><Layers size={18} strokeWidth={1.9} /></span>
-                    <span className="min-w-0">
-                      <span className="knm-side-title">{tKnm('woorden_title')}</span>
-                      <span className="knm-side-sub">{tKnm('woorden_lede')}</span>
-                    </span>
-                    <ArrowRight size={16} strokeWidth={2.2} className="ml-auto flex-shrink-0" aria-hidden />
-                  </a>
-                )}
-              </div>
-            )}
-
-            <ol className="flex flex-col gap-2.5">
-              {Array.from({ length: KNM.examCount }, (_, i) => i + 1).map(n => {
-                const done = p.exams[n];
-                const isPublished = pub.has(n);
-                const free = isFreeKnmExam(n);
-                // See the same branch in `dashboard/[level]/[skill]` — a guest opens nothing.
-                const openable = isPublished && !isGuest && (free || owns);
-
-                const href = openable
-                  ? localeHref(locale, `oefenexamen/knm/${n}`)
-                  : isGuest && isPublished
-                    ? `/${locale}/register?next=/oefenexamen/knm/${n}`
-                  : isPublished
-                    // The module id is the bare slug — KNM has no level to prefix it with.
-                    ? `/${locale}/dashboard/pakketten?onderdeel=knm&vanaf=oefenexamen-${n}`
-                    : undefined;
-
-                const Row = href ? 'a' : 'div';
-
-                return (
-                  <li key={n}>
-                    <Row
-                      {...(href ? { href } : {})}
-                      className={`exam-row no-underline${openable ? '' : ' is-locked'}`}
-                    >
-                      <span className={`exam-num${done ? (done.passed ? ' passed' : ' sat') : ''}`}>
-                        {done?.passed ? <Check size={16} strokeWidth={3} /> : n}
-                      </span>
-
-                      <span className="min-w-0 flex-1">
-                        <span className="exam-title">
-                          {t('exam_row_title', { number: n })}
-                          {free && <span className="badge badge-free">{tSkills('free_badge')}</span>}
-                        </span>
-                        <span className="exam-sub">
-                          {!isPublished && !done ? (
-                            t('exam_row_unpublished')
-                          ) : done ? (
-                            <>
-                              {done.bestPct != null
-                                ? t('exam_row_best', { pct: done.bestPct })
-                                : t('exam_row_awaiting')}
-                              {done.attempts > 1 && ` · ${t('exam_row_attempts', { count: done.attempts })}`}
-                            </>
-                          ) : (
-                            <>
-                              <ListChecks size={12} strokeWidth={2} className="inline-block mr-1 -mt-px" />
-                              {formatCount(KNM.itemCount)}
-                              <Clock size={12} strokeWidth={2} className="inline-block ml-2.5 mr-1 -mt-px" />
-                              {t('stat_duration_value', { minutes: formatCount(KNM.durationMinutes) })}
-                            </>
-                          )}
-                        </span>
-                      </span>
-
-                      <span className="exam-action" aria-hidden="true">
-                        {!openable ? (
-                          <Lock size={16} strokeWidth={2.1} />
-                        ) : done ? (
-                          <RotateCcw size={16} strokeWidth={2.1} />
-                        ) : (
-                          <ArrowRight size={16} strokeWidth={2.3} />
-                        )}
-                      </span>
-                    </Row>
-                  </li>
-                );
-              })}
-            </ol>
-
-            </div>
-
-            <aside className="ov-side">
-              {/* Het gemiddelde als het ene getal, want dat is wat KNM's tien examens samen
-                  zeggen. Een streepje zolang er niets gemaakt is: 0% zou "je haalt niets" zeggen
-                  waar "nog niet gemeten" bedoeld is. */}
-              <section className="ov-card ov-total">
-                <span className="ov-kick">{t('stat_average')}</span>
-                <div className="ov-total-top">
-                  <b>{p.averagePct != null ? `${p.averagePct}%` : '—'}</b>
-                </div>
-                <span className="ov-rail" aria-hidden><i style={{ width: `${p.averagePct ?? 0}%` }} /></span>
-              </section>
-
-              <section className="ov-card">
-                <dl className="ov-stats">
-                  <div className="ov-stat">
+          {/* Dezelfde kopbalk als elk taalonderdeel: de naam, de slaagkansmeter, en rechts waar
+              je zakt — bij KNM per thema. Zonder die cijfers staan daar de feiten van de
+              module. */}
+          <SkillStatBar
+            category="knm"
+            title={tSkills('knm.name')}
+            tagline={tSkills('knm.tagline')}
+            weakness={themeWeakness}
+            facts={
+              <div className="sb-panel">
+                {/* Geen kicker: de kop van de kaart zegt al KNM, en een tweede keer die naam
+                    boven vier feiten leest als een kolomtitel die er niet is. */}
+                <dl className="sb-facts">
+                  <div>
                     <dt>{t('stat_exams')}</dt>
-                    <dd><b>{t('stat_exams_value', { done: p.examsDone, total: KNM.examCount })}</b></dd>
+                    <dd>{t('stat_exams_value', { done: p.examsDone, total: KNM.examCount })}</dd>
                   </div>
-                  <div className="ov-stat">
+                  <div>
                     <dt>{t('stat_items')}</dt>
-                    <dd><b>{formatCount(KNM.itemCount)}</b></dd>
+                    <dd>{formatCount(KNM.itemCount)}</dd>
                   </div>
-                  <div className="ov-stat">
+                  <div>
                     <dt>{t('stat_duration')}</dt>
-                    <dd><b>{t('stat_duration_value', { minutes: formatCount(KNM.durationMinutes) })}</b></dd>
+                    <dd>{t('stat_duration_value', { minutes: formatCount(KNM.durationMinutes) })}</dd>
+                  </div>
+                  <div>
+                    <dt>{t('stat_average')}</dt>
+                    <dd>{p.averagePct != null ? `${p.averagePct}%` : '—'}</dd>
                   </div>
                 </dl>
-              </section>
-            </aside>
-          </div>
+              </div>
+            }
+            slaagkans={kans.slaagkans}
+            band={kans.band}
+            examsCount={examScores.length}
+            avgScore={kans.avgScore}
+          />
+
+          {/* De examens staan boven de leerroute (eigenaar, 15-09): de kandidaat komt voor
+              het volgende oefenexamen. Zelfde volgorde als bij de taalonderdelen. */}
+          <ExamStrip
+            locale={locale}
+            /* `null` is KNM: geen niveau in de URL en geen niveau in de module-id. */
+            level={null}
+            skill={KNM}
+            progress={p}
+            published={pub}
+            isGuest={isGuest}
+            owns={owns}
+          />
+
+          {/* Het witte paneel van de examenstrook eromheen (eigenaar, 15-09): twee blokken die
+              op dezelfde pagina dezelfde rol spelen — een kop met kaarten eronder — horen
+              dezelfde doos te hebben. De kop staat daarom ín het paneel. */}
+          {steps.length > 0 && (
+            <section className="panel mb-7">
+              {/* Dezelfde kop als de examenstrook: de naam in de kopletter met de toelichting
+                  ernaast, niet het kapitaalkopje. Twee panelen naast elkaar met twee soorten
+                  koppen lezen als twee soorten blokken (eigenaar, 15-09). */}
+              <div className="lr-head">
+                <h2>{t('leerroute_title')}</h2>
+                <p>{t('leerroute_sub')}</p>
+              </div>
+              {/* Twee stappen, dus twee kolommen. `is-three` zou hier een lege derde kolom
+                  laten staan, en een lege plek in een genummerde route leest als een stap die
+                  ontbreekt. */}
+              <div className="ov-cards is-two">
+                {steps.map(s => (
+                  <TrackCard
+                    key={s.key}
+                    layer="onderdeel"
+                    mark={<CategoryMark category={s.mark} size={56} tone="dark" />}
+                    /* Geen "STAP 1": de kop erboven zegt al dat dit een volgorde is. */
+                    sub={null}
+                    title={s.title}
+                    state="active"
+                    note={null}
+                    pct={s.pct}
+                    progressLabel={null}
+                    /* Geen feitenregel: de balk eronder zegt hetzelfde als breedte, en het
+                       getal staat op het scherm waar de knop naartoe gaat. */
+                    meta={[]}
+                    cta={s.cta}
+                    href={s.href}
+                    soonLabel={t('tag_soon')}
+                  />
+                ))}
+              </div>
+            </section>
+          )}
+
+
+
         </div>
       </div>
-
-      <ExamListStyles />
-      <style>{`
-        .knm-side { display:flex; align-items:center; gap:12px; padding:13px 15px; background:#fff; border:1.5px solid var(--color-surface-container-high); border-radius:14px; box-shadow:var(--shadow-card); transition:transform .2s cubic-bezier(0.22,1,0.36,1), box-shadow .2s ease, border-color .2s ease; }
-        .knm-side:hover { transform:translateY(-2px); border-color:#b8cef5; box-shadow:0 8px 22px rgba(0,43,109,0.11); }
-        .knm-side:focus-visible { outline:2px solid var(--color-secondary-container); outline-offset:2px; }
-        .knm-side-icon { display:flex; align-items:center; justify-content:center; flex-shrink:0; width:34px; height:34px; border-radius:11px; background:rgba(0,43,109,0.06); color:var(--color-primary); }
-        .knm-side-title { display:block; font-family:var(--font-headline); font-size:0.9rem; font-weight:700; color:var(--color-on-surface); letter-spacing:-0.01em; }
-        .knm-side-sub { display:block; font-size:0.74rem; color:var(--color-outline); margin-top:1px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
-        @media (prefers-reduced-motion: reduce) { .knm-side { transition:none; } .knm-side:hover { transform:none; } }
-      `}</style>
     </AppShell>
   );
+}
+
+/**
+ * Hoeveel van de 366 woordkaarten de kandidaat kent.
+ *
+ * Een telling, geen rijen: `head: true` haalt alleen `count` op, zodat de 366 kaarten niet door
+ * de pagina reizen voor één getal. Een fout betekent nul — dit is een cijfer op een kaart, geen
+ * reden om het scherm te laten vallen.
+ */
+async function countWordsKnown(userId: string): Promise<number> {
+  try {
+    const supabase = await createClient();
+    const { count } = await supabase
+      .from('user_word_card_progress')
+      .select('word_card_id', { count: 'exact', head: true })
+      .eq('user_id', userId)
+      .eq('status', 'known');
+    return count ?? 0;
+  } catch {
+    return 0;
+  }
+}
+
+/** Hoeveel van de zeven thema's afgerond zijn. Zelfde afweging als hierboven. */
+async function countThemesDone(userId: string): Promise<number> {
+  try {
+    const supabase = await createClient();
+    const { count } = await supabase
+      .from('user_leren_progress')
+      .select('thema_id', { count: 'exact', head: true })
+      .eq('user_id', userId)
+      .eq('completed', true);
+    return count ?? 0;
+  } catch {
+    return 0;
+  }
 }

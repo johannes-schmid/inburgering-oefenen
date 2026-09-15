@@ -2424,6 +2424,11 @@ a.crumb:active { color: var(--color-primary); }
    scrollt horizontaal in zijn eigen container; de pagina zelf schuift nooit mee (§design).
    Geen 1px-randen (§2) — behalve de inset-ring om het examen dat nu aan de beurt is, want dat
    is selectie en dus een inset-schaduw, geen border.                                        */
+/* Dezelfde afstand onder de examenstrook als onder de kopkaart (`.statbar`): de drie panelen van
+   dit scherm staan daarmee op één ritme. Hij stond op nul, dus het leerroutepaneel plakte tegen de
+   strook aan terwijl er boven de strook wél lucht zat (eigenaar, 15-09). */
+.exam-strip { margin-bottom: 16px; }
+
 .exam-strip .es-head {
   display: flex; flex-wrap: wrap; align-items: baseline; gap: 0.3rem 0.8rem; margin-bottom: 0.9rem;
 }
@@ -3032,6 +3037,8 @@ a.tcard:focus-visible { outline:none; box-shadow:var(--ring-selected); }
 /* De voet duwt de knop naar beneden, zodat vier kaarten met verschillende teksten
    dezelfde knoplijn houden. */
 .tcard-cta { flex:none; margin-inline-start:auto; display:inline-flex; align-items:center; gap:6px; padding:8px 14px; border-radius:11px; font-size:0.8rem; font-weight:800; color:var(--color-primary); background:var(--color-surface-container-low); }
+.tcard-foot.is-solo { display:block; }
+.tcard-foot.is-solo .tcard-cta { margin-inline:0; display:flex; width:100%; justify-content:center; padding:9px 12px; }
 .tcard-cta.is-accent { color:#fff; background:var(--gradient-btn-orange); box-shadow:var(--shadow-btn-orange); }
 
 /* Een onderdeel: hetzelfde navy paneel, maar vlak in plaats van het merkverloop. Het verloop is
@@ -3151,6 +3158,18 @@ a.tcard:focus-visible { outline:none; box-shadow:var(--ring-selected); }
      in een kolom van 232 met lucht eronder. Hij mag de kolom nu vullen. */
   .sb-gauge { max-width: 236px; }
 }
+/* De feiten van een module, waar bij een taalonderdeel de vaardigheden staan. Twee kolommen,
+   want vier korte feiten onder elkaar maken de kop hoger dan de meter ernaast. */
+.sb-facts { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px 24px; max-width: 420px; }
+.sb-facts dt {
+  font-size: 0.6rem; font-weight: 800; letter-spacing: 0.13em; text-transform: uppercase;
+  color: var(--color-outline);
+}
+.sb-facts dd {
+  margin-top: 3px; font-family: var(--font-headline); font-size: 1.05rem; font-weight: 800;
+  letter-spacing: -0.02em; color: var(--color-primary); font-variant-numeric: tabular-nums;
+}
+
 .sb-note { margin-top: 4px; font-size: 0.72rem; line-height: 1.5; text-align: center; color: var(--color-outline); }
 
 /* Het paneel heeft geen eigen vlak meer: in 3B staan de ring en de uitsplitsing op hetzelfde wit
@@ -3175,8 +3194,27 @@ a.tcard:focus-visible { outline:none; box-shadow:var(--ring-selected); }
 
 /* Drie op een rij: de leerroute is drie stappen en de volgorde is dragend, dus ze horen naast
    elkaar te staan en niet in een 2×2 waarin stap 3 onder stap 1 belandt. */
+/* De kop van het leerroutepaneel, gelijk aan die van de examenstrook (`.es-title` / `.es-meta`).
+   Eigen klassen omdat die twee onder `.exam-strip` staan; dezelfde waarden, want het is
+   dezelfde kop. */
+.lr-head { display: flex; flex-wrap: wrap; align-items: baseline; gap: 0.15rem 0.6rem; margin-bottom: 1rem; }
+.lr-head h2 {
+  font-family: var(--font-headline); font-weight: 800; font-size: 1.05rem;
+  letter-spacing: -0.02em; color: var(--color-on-surface);
+}
+.lr-head p { font-size: 0.8rem; color: var(--color-on-surface-variant); }
+
 .ov-cards.is-three { grid-template-columns: 1fr; }
 @media (min-width: 720px) { .ov-cards.is-three { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+/* Meer lucht tussen de leerroutekaarten dan tussen de modules op het overzicht: hier staan ze in
+   een paneel, en met 12px raakten de navy vlakken elkaar bijna (eigenaar, 15-09). */
+.ov-cards.is-three, .ov-cards.is-two { gap: 1.25rem; }
+
+/* Twee op een rij: KNM's leerroute is twee stappen (woorden en de zeven thema's), en met
+   `is-three` bleef de derde kolom leeg — een gat in een genummerde route leest als een
+   ontbrekende stap. */
+.ov-cards.is-two { grid-template-columns: 1fr; }
+@media (min-width: 560px) { .ov-cards.is-two { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
 
 /* Hier stonden `.rules-doors`, `.rules-door`, `.ov-rules*` en `.rules-out`: de vier
    sorteerdeuren van de regelbibliotheek, haar kaart in de zijkolom van het niveauscherm en de
@@ -3303,6 +3341,18 @@ a.tcard:focus-visible { outline:none; box-shadow:var(--ring-selected); }
   font-size: 0.88rem; font-weight: 800; color: var(--color-primary); font-variant-numeric: tabular-nums;
 }
 .sw-score small { font-size: 0.68rem; font-weight: 600; color: var(--color-outline); }
+
+/* Twee kolommen zodra er meer dan zes koppen zijn — Spreken heeft er negen. De balk wordt dan
+   smaller, maar op élke rij even smal, dus de vergelijking blijft staan. Onder de 900px valt hij
+   terug op één kolom: twee balken van 60px naast elkaar meten niets meer. */
+@media (min-width: 900px) {
+  /* Meerkoloms en geen grid: de lijst is op zwakste-eerst gesorteerd, en een grid vult van links
+     naar rechts — dan staat de tweede vaardigheid naast de eerste in plaats van eronder en is de
+     volgorde weg. `columns` vult kolom voor kolom, dus boven-links blijft waar je begint. */
+  .sw-list.is-dense { display: block; columns: 2; column-gap: 1.5rem; }
+  .sw-list.is-dense .sw-row { break-inside: avoid; }
+  .sw-list.is-dense .sw-row { grid-template-columns: minmax(0, 1fr) 92px 2rem; gap: 0.5rem; padding: 0.42rem 0.5rem; }
+}
 
 /* Smal scherm: de balk krimpt mee, maar houdt op elke rij dezelfde maat. */
 @media (max-width: 620px) {

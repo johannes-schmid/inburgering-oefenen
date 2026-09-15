@@ -1,5 +1,5 @@
 import { getTranslations } from 'next-intl/server';
-import { isFreeExam, type Level, type LevelledSkill } from '@/data/skills';
+import { isFreeExamOf, type KnmOnderdeel, type Level, type LevelledSkill } from '@/data/skills';
 import type { SkillProgress } from '@/lib/portal-progress';
 import { localeHref } from '@/i18n/paths';
 
@@ -31,8 +31,13 @@ export async function buildExamSlots({
   locale, level, skill, progress, published, isGuest, owns,
 }: {
   locale: string;
-  level: Level;
-  skill: LevelledSkill;
+  /**
+   * `null` is KNM — het onderdeel zonder niveau (`exams.level IS NULL`), dat daarom ook geen
+   * niveau in zijn URL draagt. Dezelfde afspraak als `isFreeExamOf` en `levelFilter()`: één
+   * plek waar die tak leeft, in plaats van een tweede kopie van deze tien slots voor KNM.
+   */
+  level: Level | null;
+  skill: LevelledSkill | KnmOnderdeel;
   progress: SkillProgress;
   published: Set<number>;
   isGuest: boolean;
@@ -40,19 +45,23 @@ export async function buildExamSlots({
 }): Promise<{ cards: ExamCardView[]; factLine: string; nextNumber: number | null }> {
   const t = await getTranslations('portal');
 
+  /* De basis van elke link: met niveau bij een taalonderdeel, zonder bij KNM. */
+  const examBase = level === null ? 'oefenexamen/knm' : `oefenexamen/${level}/${skill.slug}`;
+  const moduleId = level === null ? 'knm' : `${level}:${skill.slug}`;
+
   const slots = Array.from({ length: skill.examCount }, (_, i) => i + 1).map(n => {
     const done = progress.exams[n];
-    const free = isFreeExam(level, n);
+    const free = isFreeExamOf(level, n);
     const isPublished = published.has(n);
     /* Een gast kan niets openen, ook het gratis slot niet: het account aanmaken ís hier de stap
        die verkocht wordt. */
     const openable = isPublished && !isGuest && (free || owns);
     const href = openable
-      ? localeHref(locale, `oefenexamen/${level}/${skill.slug}/${n}`)
+      ? localeHref(locale, `${examBase}/${n}`)
       : isGuest && isPublished
-        ? `/${locale}/register?next=/oefenexamen/${level}/${skill.slug}/${n}`
+        ? `/${locale}/register?next=/${examBase}/${n}`
         : isPublished
-          ? `/${locale}/dashboard/pakketten?onderdeel=${level}:${skill.slug}&vanaf=oefenexamen-${n}`
+          ? `/${locale}/dashboard/pakketten?onderdeel=${moduleId}&vanaf=oefenexamen-${n}`
           : null;
     return { n, done, isPublished, openable, href };
   });

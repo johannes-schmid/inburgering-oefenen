@@ -39,7 +39,14 @@ export default function TrackCard({
   /** `ExamMark` op ware grootte — de icoonlaag van het systeem, nooit een lucide-glyph. */
   mark: React.ReactNode;
   title: string;
-  sub: string;
+  /**
+   * De kicker boven de titel: de module, of "stap 1 van 3".
+   *
+   * `null` laat hem weg. De leerroutekaarten doen dat sinds 15-09 (eigenaar): de kop boven de rij
+   * zegt al "leerroute · doe ze in deze volgorde" en de kaarten stáán in die volgorde, dus
+   * "STAP 1" nummerde wat de plek al zei.
+   */
+  sub: string | null;
   state: 'active' | 'open' | 'locked' | 'soon';
   /** De voet bij `open` en `locked`: waar de module uit bestaat. */
   meta: TrackCardMeta[];
@@ -65,6 +72,9 @@ export default function TrackCard({
    */
   layer?: 'track' | 'onderdeel';
 }) {
+  /** Draagt de voet alleen de knop? Zie de klasse `is-solo` hieronder. */
+  const soloFoot = Boolean(cta) && meta.length === 0 && !(state === 'active' && progressLabel);
+
   const shown = pct == null ? 0 : Math.max(0, Math.min(100, pct));
   /* Een streepje waar niets gemeten is: 0% zegt "je staat op nul", en dat is een ander feit. */
   const pctLabel = pct == null ? '—' : `${shown}%`;
@@ -81,7 +91,7 @@ export default function TrackCard({
       </div>
 
       <div className="tcard-body">
-        <span className="tcard-kick">{sub}</span>
+        {sub && <span className="tcard-kick">{sub}</span>}
         <h3 className="tcard-title">{title}</h3>
 
         {state === 'active' ? (
@@ -102,13 +112,16 @@ export default function TrackCard({
             knop. Onder elkaar kostte dat twee regels hoogte per kaart, en met vier kaarten in
             een 2×2 is dat precies het verschil tussen wel en niet op één scherm. */}
         {(cta || state !== 'soon') && (
-          <div className="tcard-foot">
+          /* Geen feiten en geen telling? Dan draagt de voet alleen de knop, en die vult hem —
+             dezelfde vorm als de knop op een examenkaartje (`.es-act`). Een pil van 120px rechts
+             in een lege regel leest als een restje. */
+          <div className={`tcard-foot${soloFoot ? ' is-solo' : ''}`}>
             {/* Eén regel in de voet, en `progressLabel` gaat voor: een kaart die telt hoe ver je
                 bent zegt dat liever dan waar hij uit bestaat. Zonder telling vallen de feiten
                 terug op hun plek — dat is wat de leerroutekaarten gebruiken. */}
             {state === 'active' && progressLabel
               ? <span className="tcard-progl">{progressLabel}</span>
-              : state !== 'soon' && (
+              : state !== 'soon' && meta.length > 0 && (
                 <ul className="tcard-meta">
                   {meta.map(m => (
                     <li key={m.label}>
