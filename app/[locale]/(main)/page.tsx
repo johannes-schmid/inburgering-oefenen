@@ -89,10 +89,10 @@ function SoonBlock({ title, desc, soonLabel, notifyLabel, href, background, minH
         </span>
         <a
           href={href}
-          className="block-notify mt-auto pt-4 inline-flex items-center gap-1.5 no-underline font-semibold text-sm text-white"
+          className="block-cta mt-auto inline-flex items-center justify-center gap-2 rounded-full px-5 py-2.5 no-underline font-headline font-bold text-sm"
+          style={{ background: '#fff', color: 'var(--color-primary)' }}
         >
           {notifyLabel}
-          <svg width="14" height="14" viewBox="0 0 16 16" fill="none" aria-hidden="true" className="rtl-flip"><path d="M6 3l5 5-5 5" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg>
         </a>
       </div>
     </div>
@@ -395,12 +395,9 @@ export default async function HomePage({ params }: Props) {
           after them is the only order that is a sequence rather than a shuffle, and it matches the
           `TRACKS` chip row in the hero, which must not disagree with the tiles below it.
 
-          **The heights climb left to right and the widest tile is not the biggest offer.** The ramp
-          reads as "there is more of this traject the further you go", which is true of the
-          candidate's journey. It deliberately does *not* claim readiness: A2 is the shipped product
-          and the shortest tile, ONA is the tallest and still carries a "binnenkort" chip. If a
-          future edit makes the tallest tile the most-sold one, the ramp starts lying — the height
-          encodes position in the traject, nothing else.
+          **De vier tegels zijn even hoog.** De oplopende trap die hier stond codeerde de plek in
+          het traject; naast vier gelijke merken las dat als vier formaten van hetzelfde ding.
+          Hoogte zegt hier dus niets meer — wat beschikbaar is, staat in de voet van de tegel.
 
           **De rij staat op één kleurenfamilie** (2026-09-15): `primary` en `primary-container`
           wisselen elkaar af. De klei-tegels van KNM en ONA zijn eruit — vier verschillende kleuren
@@ -433,14 +430,15 @@ export default async function HomePage({ params }: Props) {
             </p>
           </div>
 
-          {/* Bottoms aligned, tops stepping up — so the ramp reads as four blocks standing on one
-              street rather than as four cards someone forgot to make the same size. Below `lg` the
-              stagger is dropped entirely: on a phone the tiles are stacked, and a staircase you can
-              only see one step of at a time is noise. */}
-          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4 lg:items-end">
+          {/* Vier tegels van één hoogte (besluit eigenaar, 15-09). De trapvorm die hier stond —
+              bodems uitgelijnd, toppen oplopend — codeerde de plek in het traject, maar op een rij
+              van vier merken las hij als vier verschillende formaten. Alle vier staan nu op
+              `lg:min-h-[21.5rem]`, de hoogte van de langste (ONA); als een tegel meer tekst krijgt
+              groeit de rij mee, want de grid staat op `items-stretch`. */}
+          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4 lg:items-stretch">
             {/* ── Taal A2 — live, and the shortest step ── */}
             <div
-              className="relative overflow-hidden rounded-2xl p-5 flex flex-col lg:min-h-[17rem]"
+              className="relative overflow-hidden rounded-2xl p-5 flex flex-col lg:min-h-[21.5rem]"
               style={{ background: 'var(--color-primary)', boxShadow: 'var(--shadow-ambient)' }}
             >
               <DotField on="dark" size={22} />
@@ -484,10 +482,9 @@ export default async function HomePage({ params }: Props) {
             {/* ── Taal B1 — live since 2026-08-23, when the docent signed the content off ──
                 It was a `SoonBlock` until then. De markering is het `ExamMark` van B1 — dezelfde
                 trap als A2, één trede hoger, wat vóór het label al zegt dat dit het niveau erboven
-                is. The CTA is `bg-white/22` like KNM's,
-                so A2's white-filled button stays the one strongest call in the row. */}
+                is. */}
             <div
-              className="relative overflow-hidden rounded-2xl p-5 flex flex-col lg:min-h-[18.5rem]"
+              className="relative overflow-hidden rounded-2xl p-5 flex flex-col lg:min-h-[21.5rem]"
               style={{ background: 'var(--color-primary-container)', boxShadow: 'var(--shadow-ambient)' }}
             >
               <DotField on="dark" size={22} />
@@ -545,7 +542,7 @@ export default async function HomePage({ params }: Props) {
                 They point at the kennisgidsen — public, no account — rather than at the lesson
                 modules, which need one. */}
             <div
-              className="relative overflow-hidden rounded-2xl p-5 flex flex-col lg:min-h-[20rem]"
+              className="relative overflow-hidden rounded-2xl p-5 flex flex-col lg:min-h-[21.5rem]"
               style={{ background: 'var(--color-primary)', boxShadow: 'var(--shadow-ambient)' }}
             >
               <DotField on="dark" size={22} />
@@ -575,7 +572,8 @@ export default async function HomePage({ params }: Props) {
                 </p>
                 <a
                   href={localeHref(locale, `oefenexamen/knm`)}
-                  className="block-cta mt-auto inline-flex items-center justify-center gap-2 rounded-full px-5 py-2.5 no-underline font-headline font-bold text-sm text-white bg-white/22"
+                  className="block-cta mt-auto inline-flex items-center justify-center gap-2 rounded-full px-5 py-2.5 no-underline font-headline font-bold text-sm"
+                  style={{ background: '#fff', color: 'var(--color-primary)' }}
                 >
                   {t('blocks_knm_cta')}
                 </a>
@@ -956,7 +954,7 @@ export default async function HomePage({ params }: Props) {
           transform: translateY(0);
           opacity: 0.9;
         }
-        .block-cta:focus-visible, .block-notify:focus-visible {
+        .block-cta:focus-visible {
           outline: 2px solid #fff;
           outline-offset: 2px;
         }
@@ -1003,21 +1001,6 @@ export default async function HomePage({ params }: Props) {
           outline: 2px solid #fff;
           outline-offset: 2px;
         }
-        .block-notify {
-          transition: transform 0.18s cubic-bezier(0.22, 1, 0.36, 1);
-        }
-        .block-notify:hover {
-          text-decoration: underline;
-        }
-        .block-notify:hover svg {
-          transform: translateX(3px);
-        }
-        .block-notify svg {
-          transition: transform 0.18s cubic-bezier(0.22, 1, 0.36, 1);
-        }
-        [dir="rtl"] .block-notify:hover svg {
-          transform: translateX(-3px) scaleX(-1);
-        }
         .hero-cta-primary {
           transition: transform 0.15s ease;
         }
@@ -1031,7 +1014,7 @@ export default async function HomePage({ params }: Props) {
           background: rgba(255,255,255,0.20) !important;
         }
         @media (prefers-reduced-motion: reduce) {
-          .skill-card, .kb-pill, .kb-card, .kb-arrow, .block-cta, .block-chip, .block-notify, .block-notify svg, .hero-cta-primary, .hero-cta-secondary { transition: none; }
+          .skill-card, .kb-pill, .kb-card, .kb-arrow, .block-cta, .block-chip, .hero-cta-primary, .hero-cta-secondary { transition: none; }
         }
       `}</style>
     </div>

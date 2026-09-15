@@ -4608,3 +4608,15 @@ lokaal 9,6 s → 5,6 s, TBT 200 → 150 ms.
 **Lesson:** een render-blocking stylesheet is een gedeelde kostenpost, en een bestand dat met de
 tijd groeit betaalt die kost voor iedereen. Splits op route-groep en bewaak het met een selector-
 check, niet met een afspraak.
+
+## 2026-09-15 — Blokkenrij: vier tegels van gelijke hoogte
+**Changed:** `app/[locale]/(main)/page.tsx` — de trap (17 / 18,5 / 20 / 21,5rem, `lg:items-end`) vervangen door één `lg:min-h-[21.5rem]` op alle vier en `lg:items-stretch`.
+**Outcome:** SUCCESS
+**What worked / went wrong:** `npx tsc --noEmit` schoon; `check-ui.mjs` toont vier tegels met gelijke boven- en onderkant.
+**Lesson:** Hoogteverschil als betekenisdrager werkt alleen zonder concurrerend signaal; zodra elke tegel zijn eigen merk draagt, leest verschil in hoogte als verschil in formaat.
+
+## 2026-09-15 — Blokkenrij: vier identieke CTA's
+**Changed:** `app/[locale]/(main)/page.tsx` — KNM's `bg-white/22`-knop en de tekstlink met pijl in `SoonBlock` vervangen door dezelfde witte pil als A2 en B1.
+**Outcome:** SUCCESS
+**What worked / went wrong:** `npx tsc --noEmit` schoon; screenshot toont vier gelijke knoppen op één lijn.
+**Lesson:** Verschillend knopgewicht binnen één rij van gelijkwaardige tegels leest als een defect, niet als hiërarchie — het verschil zit in het label.
