@@ -77,9 +77,15 @@ const nextConfig: NextConfig = {
           // Send the full URL same-origin, only the origin cross-origin. The default varies by
           // browser, and exam URLs carry the onderdeel and the exam number.
           { key: 'Referrer-Policy', value: 'strict-origin-when-cross-origin' },
-          // Nothing on the site asks for any of these; the mic is the one to watch if Spreken
-          // ever records in-browser rather than by upload.
-          { key: 'Permissions-Policy', value: 'camera=(), microphone=(), geolocation=(), interest-cohort=()' },
+          /* `microphone=(self)` en niet `()`: de speler en de leerlaag némen op in de browser —
+           * `components/exam/SpeakingTask` en `components/lessons/LessonRecorder`, plus de
+           * lessoorten `naspreken` en `opnemen`. Met `()` weigert de browser `getUserMedia()`
+           * zonder dat de gebruiker iets te kiezen krijgt en zonder dat er iets logt.
+           *
+           * `interest-cohort` staat er niet meer in: FLoC is nooit gestandaardiseerd en
+           * ingetrokken, en Chrome logt de regel als onbekende feature — een console-fout die
+           * Lighthouse onder Best Practices meetelt zonder dat hij iets beschermt. */
+          { key: 'Permissions-Policy', value: 'camera=(), microphone=(self), geolocation=()' },
           /* HSTS gained `includeSubDomains; preload` on 15-09. It was two years of max-age with
            * neither, which protects the apex and nothing under it.
            *

@@ -1,3 +1,6 @@
+/* De CSS van het portaal en /admin. Bewust niet in `globals.css`: dan zou elke publieke
+   pagina hem render-blocking meeladen. Zie de kop van `app/portal.css`. */
+import '@/app/portal.css';
 import AnalyticsProviders from '@/components/AnalyticsProviders';
 import DevStateBar from '@/components/dev/DevStateBar';
 import { devToolsEnabled } from '@/lib/dev-tools';

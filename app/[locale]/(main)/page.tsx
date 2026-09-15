@@ -11,7 +11,7 @@ import HeroShowcase from './_components/HeroShowcase';
 import KennisbankCards, { type KennisbankCard } from './_components/KennisbankCards';
 import { publishedGuides, getGuideLocale, guideHref } from '@/data/guides/helpers';
 import { getPostBySlug, getPostLocale, getPostSlug } from '@/data/blog-posts';
-import { HorizonBand, DotField, Skyline, SunDisc, SectionTransition } from '@/components/horizon';
+import { HorizonBand, DotField, Skyline, SectionTransition, ExamMark } from '@/components/horizon';
 import { courseId, TEACHER_REF, ogImageFor } from '@/lib/schema';
 import { localeHref, localizedPath } from '@/i18n/paths';
 
@@ -66,9 +66,9 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
    ones, so the row reads as one platform. That puts the whole weight of the availability claim on
    the chip and the footer link — which is why neither is optional here and why there is no
    variant of this block without them. */
-function SoonBlock({ title, desc, soonLabel, notifyLabel, href, background, minHeight, houses }: {
+function SoonBlock({ title, desc, soonLabel, notifyLabel, href, background, minHeight, houses, track }: {
   title: string; desc: string; soonLabel: string; notifyLabel: string; href: string;
-  background: string; minHeight: string; houses: number;
+  background: string; minHeight: string; houses: number; track: 'a2' | 'b1' | 'knm' | 'ona';
 }) {
   return (
     <div
@@ -78,11 +78,7 @@ function SoonBlock({ title, desc, soonLabel, notifyLabel, href, background, minH
       <DotField on="dark" size={22} />
       <Skyline count={houses} tone="hero" height={72} />
       <div className="relative z-10 flex flex-col h-full">
-        <span
-          aria-hidden="true"
-          className="w-11 h-11 rounded-full mb-4"
-          style={{ boxShadow: 'inset 0 0 0 2px rgba(255,255,255,0.45)' }}
-        />
+        <ExamMark track={track} size={44} muted onDark className="mb-4" />
         <h3 className="font-headline font-extrabold text-white text-[1.375rem] leading-tight m-0 mb-1.5">
           {title}
         </h3>
@@ -406,17 +402,17 @@ export default async function HomePage({ params }: Props) {
           future edit makes the tallest tile the most-sold one, the ramp starts lying — the height
           encodes position in the traject, nothing else.
 
-          **All four are full-colour now** (owner's decision): two blues for the taalonderdelen, two
-          clays for the components DUO examines separately. State is carried by the footer of each
-          tile — a button where you can start, a "binnenkort" chip and a mailing-list link where you
-          cannot — not by draining the colour out of a tile.
+          **De rij staat op één kleurenfamilie** (2026-09-15): `primary` en `primary-container`
+          wisselen elkaar af. De klei-tegels van KNM en ONA zijn eruit — vier verschillende kleuren
+          naast elkaar lazen als vier producten in plaats van één traject, en de klei is in dit
+          systeem de accentkleur, niet een vlak. State wordt gedragen door de voet van de tegel —
+          een knop waar je kunt beginnen, een "binnenkort"-chip en een mailinglijstlink waar niet.
 
-          **The discs are discs, not `CategoryMark`s, and that is a constraint rather than a
-          preference.** A mark's `cut` colour is the tile showing *through* the ink, so it must equal
-          the tile behind it, and there is no mark tone for clay. A track is also not an onderdeel:
-          A2 *contains* the four marks, which the grid below draws one per card. The single orange
-          disc on the A2 tile is the composition's one sun (§7.3); the other three are translucent
-          white, so nothing competes with it. */}
+          **De markering is het officiële `ExamMark`, hetzelfde merk als in het portaal.** Een
+          track-merk hoort op een navy tegel; hier staat het op een navy vlak, dus `onDark` — de
+          enige gesanctioneerde manier om een track-merk op een donker oppervlak te zetten. ONA
+          krijgt `muted`: aangekondigd, niets erachter, en dus geen oranje. Er staat geen `SunDisc`
+          meer in dit blok — het oranje accent binnen de merken is de enige oranje van de sectie. */}
       <section aria-labelledby="blocks-heading" className="px-6 pt-12 pb-14 sm:pt-14 sm:pb-16">
         <div className="max-w-7xl mx-auto">
           <div className="grid lg:grid-cols-[minmax(0,1fr)_minmax(0,24rem)] gap-x-10 gap-y-4 items-start mb-9">
@@ -450,7 +446,7 @@ export default async function HomePage({ params }: Props) {
               <DotField on="dark" size={22} />
               <Skyline count={4} tone="hero" height={64} />
               <div className="relative z-10 flex flex-col h-full">
-                <SunDisc size={44} className="mb-4" />
+                <ExamMark track="a2" size={44} onDark className="mb-4" />
                 <h3 className="font-headline font-extrabold text-white text-[1.375rem] leading-tight m-0 mb-1.5">
                   {t('blocks_a2_title')}
                 </h3>
@@ -486,11 +482,9 @@ export default async function HomePage({ params }: Props) {
             </div>
 
             {/* ── Taal B1 — live since 2026-08-23, when the docent signed the content off ──
-                It was a `SoonBlock` until then. Two details follow the graphic language rather
-                than taste: the marker is a **filled** white disc, because a hollow ring is what
-                `SoonBlock` uses to mean "not built" and KNM's live tile already established the
-                filled one; and there is **no second `SunDisc`**, because the A2 tile beside it
-                carries this composition's single sun (§7.3). The CTA is `bg-white/22` like KNM's,
+                It was a `SoonBlock` until then. De markering is het `ExamMark` van B1 — dezelfde
+                trap als A2, één trede hoger, wat vóór het label al zegt dat dit het niveau erboven
+                is. The CTA is `bg-white/22` like KNM's,
                 so A2's white-filled button stays the one strongest call in the row. */}
             <div
               className="relative overflow-hidden rounded-2xl p-5 flex flex-col lg:min-h-[18.5rem]"
@@ -499,7 +493,7 @@ export default async function HomePage({ params }: Props) {
               <DotField on="dark" size={22} />
               <Skyline count={5} tone="hero" height={72} />
               <div className="relative z-10 flex flex-col h-full">
-                <span aria-hidden="true" className="w-11 h-11 rounded-full mb-4" style={{ background: 'rgba(255,255,255,0.62)' }} />
+                <ExamMark track="b1" size={44} onDark className="mb-4" />
                 <h3 className="font-headline font-extrabold text-white text-[1.375rem] leading-tight m-0 mb-1.5">
                   {t('blocks_b1_title')}
                 </h3>
@@ -552,12 +546,12 @@ export default async function HomePage({ params }: Props) {
                 modules, which need one. */}
             <div
               className="relative overflow-hidden rounded-2xl p-5 flex flex-col lg:min-h-[20rem]"
-              style={{ background: 'var(--color-secondary)', boxShadow: 'var(--shadow-ambient)' }}
+              style={{ background: 'var(--color-primary)', boxShadow: 'var(--shadow-ambient)' }}
             >
               <DotField on="dark" size={22} />
               <Skyline count={6} tone="hero" height={76} />
               <div className="relative z-10 flex flex-col h-full">
-                <span aria-hidden="true" className="w-11 h-11 rounded-full mb-4" style={{ background: 'rgba(255,255,255,0.62)' }} />
+                <ExamMark track="knm" size={44} onDark className="mb-4" />
                 <h3 className="font-headline font-extrabold text-white text-[1.375rem] leading-tight m-0 mb-1.5">
                   {t('blocks_knm_title')}
                 </h3>
@@ -595,9 +589,10 @@ export default async function HomePage({ params }: Props) {
               soonLabel={t('pkg_soon')}
               notifyLabel={t('blocks_notify')}
               href={localeHref(locale, `contact`)}
-              background="var(--color-on-secondary-container)"
+              background="var(--color-primary-container)"
               minHeight="lg:min-h-[21.5rem]"
               houses={7}
+              track="ona"
             />
           </div>
         </div>
@@ -929,7 +924,11 @@ export default async function HomePage({ params }: Props) {
         }
 
         /* §7.2 allows one silhouette handover per page and the closing CTA now owns it.
-           This <style> only ships with the homepage, so the rule is scoped by existing here. */
+           Dit blok wordt alleen met de homepage meegestuurd, dus de regel is gescoped doordat
+           hij hier staat. Schrijf in deze CSS nooit het woord style met punthaken eromheen:
+           React escapet dat op de server als bescherming tegen injectie, de client houdt de
+           onbewerkte tekst aan, en dat verschil is een hydration-mismatch (React #418) die de
+           hele boom opnieuw laat renderen. */
         footer .footer-transition {
           display: none;
         }

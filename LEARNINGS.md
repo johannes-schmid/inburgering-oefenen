@@ -4572,3 +4572,39 @@ met curl op nl/en/ar, sitemap toont alle vijf de Arabische posts.
 
 **Lesson:** een bestandsnaam is geen dekkingscontrole. Vraag het aan het script dat de dekking al
 kent, en leg de uitkomst daarna vast in een test in plaats van in een aanname.
+
+## 2026-09-15 — Homepage-blokkenrij: officiële track-merken, één kleurenfamilie
+**Changed:** `app/[locale]/(main)/page.tsx` — de vier discs in het "Het hele examen, blok voor blok"-blok vervangen door `ExamMark` (`a2`/`b1`/`knm`/`ona`, `onDark`, ONA `muted`); KNM van `--color-secondary` en ONA van `--color-on-secondary-container` naar de navy-familie (`primary` / `primary-container`); `SunDisc` uit dit blok (en uit de import) gehaald.
+**Outcome:** SUCCESS
+**What worked / went wrong:** `npx tsc --noEmit` schoon, `check-ui.mjs` op `/nl` bevestigt de merken en de rustiger rij.
+**Lesson:** Een track-tegel hoort het merk uit `ExamMark` te dragen, niet een eigen vorm; zodra de merken er staan is de `SunDisc` een tweede oranje in dezelfde compositie en moet hij weg.
+
+## 2026-09-15 — Naar 100: contrast, hydration, Permissions-Policy en de CSS-splitsing
+**Changed:** `components/Nav.tsx` (CTA op `text-on-secondary-container` i.p.v. een inline wit),
+`app/[locale]/(main)/page.tsx` (een comment in de inline `<style>` herschreven),
+`next.config.ts` (`microphone=(self)`, `interest-cohort` eruit), en de grote:
+`app/globals.css` gesplitst — regels 1391–4763 zijn `app/portal.css` geworden, geïmporteerd door
+de layouts van `(app)` en `(admin)`.
+**Outcome:** SUCCESS — lokaal op de productiebuild: Accessibility 100, Best Practices 100, SEO 100.
+De publieke render-blocking CSS ging van 368 KB naar 257 KB ruw, 47 KB naar 33 KB brotli; LCP
+lokaal 9,6 s → 5,6 s, TBT 200 → 150 ms.
+**What worked / went wrong:**
+- **React escapet het woord `style` met punthaken binnen een `<style>`-element**, als bescherming
+  tegen injectie, en schrijft `<\73 tyle>` in de HTML. De client houdt de onbewerkte tekst aan,
+  dus dat is een hydration-mismatch. Dat was React #418 op de homepage: één woord in een
+  toelichting, dat de hele boom opnieuw liet renderen. Gevonden door de console van een echte
+  Puppeteer-sessie te lezen, niet door te redeneren.
+- **`Permissions-Policy: microphone=()` blokkeerde `getUserMedia()` sitewide.** De toelichting in
+  `next.config.ts` zei "de mic is de een om op te letten als Spreken ooit in de browser opneemt" —
+  dat is sindsdien gebeurd (`SpeakingTask`, `LessonRecorder`, `naspreken`, `opnemen`). Een header
+  die een feature dichtzet faalt zonder log en zonder keuze voor de gebruiker.
+- **De CTA had een inline `style={{ color: '#ffffff' }}`**, die elke klasse overschreef. Daarom viel
+  2,67:1 niemand op. `--color-on-secondary-container` (#5f2200) bestond al voor precies dit doel en
+  haalt 4,59:1.
+- **Driekwart van `globals.css` was portaal- en leerlaag-CSS** die op élke publieke pagina
+  render-blocking meelaadde. De splitsing is geverifieerd met een Puppeteer-script dat alle 896
+  selectors uit `portal.css` op zestien publieke URL's tegen `querySelector` legt — allemaal schoon.
+  `.exam-rich` was de enige die moest blijven: de gratis taster in `(main)` gebruikt hem.
+**Lesson:** een render-blocking stylesheet is een gedeelde kostenpost, en een bestand dat met de
+tijd groeit betaalt die kost voor iedereen. Splits op route-groep en bewaak het met een selector-
+check, niet met een afspraak.

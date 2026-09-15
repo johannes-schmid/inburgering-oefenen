@@ -191,10 +191,13 @@ export default function Nav() {
             {t('login')}
           </Link>
 
+          {/* Wit op `secondary-container` (#fe762c) haalt 2,67:1 — de knop staat op 14px vet,
+              dus WCAG AA vraagt 4,5. `on-secondary-container` (#5f2200) is het token dat het
+              ontwerpsysteem hier al voor heeft en haalt 4,59:1. Geen inline `style` meer: die
+              overschreef elke klasse en was precies waarom dit niemand opviel. */}
           <a
             href={localeHref(locale, `oefenen`)}
-            className="inline-flex items-center gap-1.5 bg-secondary-container px-3.5 py-2 sm:px-6 sm:py-2.5 rounded-full font-bold text-sm button-inner-glow hover:-translate-y-px transition-transform active:scale-95 no-underline whitespace-nowrap"
-            style={{ color: '#ffffff' }}
+            className="inline-flex items-center gap-1.5 bg-secondary-container text-on-secondary-container px-3.5 py-2 sm:px-6 sm:py-2.5 rounded-full font-bold text-sm button-inner-glow hover:-translate-y-px transition-transform active:scale-95 no-underline whitespace-nowrap"
           >
             <span className="sm:hidden">{t('startMobile')}</span>
             <span className="hidden sm:inline">{t('startDesktop')}</span>
