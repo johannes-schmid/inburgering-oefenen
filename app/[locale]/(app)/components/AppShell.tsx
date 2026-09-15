@@ -5,11 +5,10 @@ import { useTranslations } from 'next-intl';
 import { LayoutDashboard, Plus, User } from 'lucide-react';
 import PortalSidebar from './PortalSidebar';
 import LearnPanel from './LearnPanel';
-import ModulePanel from './ModulePanel';
 import CategoryMark from '@/components/horizon/CategoryMark';
 import LogoMark from '@/components/site/LogoMark';
 import type { PortalMenu } from '@/lib/portal-menu';
-import type { LearnPanelData, ModulePanelData, PortalNav } from './nav';
+import type { LearnPanelData, PortalNav } from './nav';
 
 type Props = {
   locale: string;
@@ -41,14 +40,6 @@ type Props = {
    * Weglaten is de regel: de chrome is één zijbalk. Zie `LearnPanelData` in `nav.ts`.
    */
   learn?: LearnPanelData | null;
-  /**
-   * Dezelfde tweede kolom, maar voor één module van een spoor — zie `ModulePanelData`.
-   *
-   * Naast `learn` en niet in plaats ervan: het zijn twee assen (cursusblokken versus de lessen
-   * van deze module) en een pagina draagt er precies één. Staan ze allebei aan, dan wint deze,
-   * want dan is de module de nauwere plek.
-   */
-  modulePanel?: ModulePanelData | null;
   isGuest?: boolean;
   children: ReactNode;
 };
@@ -73,7 +64,6 @@ export default function AppShell({
   activeGroup = null,
   menu = null,
   learn = null,
-  modulePanel = null,
   isGuest = false,
   children,
 }: Props) {
@@ -106,7 +96,7 @@ export default function AppShell({
         /* De totale breedte van de chrome, gelezen door alles wat ernaast moet staan — de
            vaste onderbalk van de KNM-lespagina is de huidige gebruiker. Hij verandert mee met
            het lespaneel, want dat is er niet altijd. */
-        :root { --portal-chrome-w: ${learn || modulePanel ? '540px' : '280px'}; }
+        :root { --portal-chrome-w: ${learn ? '540px' : '280px'}; }
         body { font-family: var(--font-body); background: #f0f3f8; color: #191c1e; }
         h1,h2,h3,h4 { font-family: var(--font-headline); }
 
@@ -130,7 +120,13 @@ export default function AppShell({
         .side-row.dim:hover { color:rgba(255,255,255,0.78); }
         .side-row.accent { background:rgba(254,118,44,0.20); color:#fe762c; }
         .side-row.accent:hover { background:rgba(254,118,44,0.30); color:#fff; }
-        .side-row.sub { padding:6px 12px; border-radius:8px; font-size:0.8rem; font-weight:500; gap:10px; }
+        /* De onderdeelrijen dragen sinds 15-09 hun categoriemerk (eigenaar), dus ze hebben
+           ruimte nodig: vier kale woorden onder elkaar waren niet te scannen. De tegel is
+           20px — de bodem van de 72-grid is 19 — en de rij groeit mee in plaats van het merk
+           te laten krimpen. */
+        .side-row.sub { padding:7px 10px; border-radius:9px; font-size:0.82rem; font-weight:500; gap:9px; }
+        .side-row.sub .side-ic { width:20px; height:20px; border-radius:6px; }
+        .side-row.sub.on .side-ic { background:rgba(255,255,255,0.20); }
         .side-lb { flex:1; min-width:0; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
         .side-ic { width:20px; height:20px; border-radius:7px; flex-shrink:0; display:flex; align-items:center; justify-content:center; background:rgba(255,255,255,0.12); }
         /* Een category mark tekent zijn eigen tegel, dus de wikkel mag er geen tweede tekenen. */
@@ -166,7 +162,7 @@ export default function AppShell({
         /* De 1px-rail is de enige lijn in de portaalchrome en is bewust: de geen-lijnenregel
            gaat over niet *secties maken* met randen, en een navy zijbalk heeft geen
            achtergrondtrappen om mee te zeggen "deze horen bij de rij hierboven". */
-        .side-sub { display:flex; flex-direction:column; gap:2px; margin:2px 0 4px 26px; padding-left:8px; border-left:1px solid rgba(255,255,255,0.15); }
+        .side-sub { display:flex; flex-direction:column; gap:2px; margin:3px 0 6px 20px; padding-left:7px; border-left:1px solid rgba(255,255,255,0.15); }
         .side-mod.soon { color:rgba(255,255,255,0.3); cursor:default; padding-right:10px; }
         .side-mod.soon:hover { background:none; }
 
@@ -185,11 +181,15 @@ export default function AppShell({
         .lp-sec { display:flex; flex-direction:column; gap:1px; }
         /* Elke sectie klapt uit. Eén lange lijst van vijftig lessen is geen navigatie meer; de
            sectie waar je in zit staat open, de rest is één regel. */
-        .lp-sec-head { display:flex; align-items:center; gap:7px; width:100%; padding:6px 8px; border:none; background:none; font-family:inherit; font-size:10.5px; font-weight:800; letter-spacing:0.11em; text-transform:uppercase; color:#6b7683; cursor:pointer; border-radius:8px; text-align:left; }
+        .lp-sec-head { display:flex; align-items:center; gap:6px; width:100%; padding:7px 6px; border:none; background:none; font-family:inherit; font-size:10.5px; font-weight:800; letter-spacing:0.07em; text-transform:uppercase; color:#6b7683; cursor:pointer; border-radius:8px; text-align:left; }
         .lp-sec-head:hover { background:rgba(0,43,109,0.05); color:#002b6d; }
         .lp-sec-head:focus-visible { outline:2px solid #fe762c; outline-offset:2px; }
         .lp-sec-lb { flex:1; min-width:0; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
         .lp-chev { flex-shrink:0; color:#9aa4b0; transition:transform .18s cubic-bezier(0.22,1,0.36,1); }
+        /* Het glyph van de module. Eigen tint en niet die van het label: de kop is een kapitaal
+           kopje in grijs, en een glyph in datzelfde grijs verdwijnt erin. */
+        .lp-ic { width:18px; height:18px; border-radius:6px; flex-shrink:0; display:flex; align-items:center; justify-content:center; background:rgba(0,43,109,0.07); color:#002b6d; }
+        .lp-sec.open .lp-ic { background:rgba(254,118,44,0.16); color:#a24000; }
         .lp-sec.open .lp-chev { transform:rotate(90deg); }
         .lp-items { display:flex; flex-direction:column; gap:1px; padding-bottom:6px; }
         .lp-letter { display:inline-flex; align-items:center; justify-content:center; width:15px; height:15px; border-radius:5px; margin-right:5px; background:rgba(0,43,109,0.09); color:#002b6d; font-size:9px; }
@@ -203,48 +203,6 @@ export default function AppShell({
         .lp-gap { width:15px; flex-shrink:0; }
         .lp-mark { width:15px; height:15px; border-radius:5px; flex-shrink:0; display:flex; align-items:center; justify-content:center; background:rgba(0,43,109,0.07); color:#a24000; }
         .lp-lb { flex:1; min-width:0; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
-
-        /* ── De modulekolom: één module, zijn lessen, en de switcher ──────────────────── */
-        .mp-switch { position:relative; padding:6px 4px 10px; }
-        .mp-switch-btn { display:flex; align-items:center; gap:8px; width:100%; padding:8px 10px; border:none; border-radius:12px; background:rgba(0,43,109,0.05); font-family:inherit; text-align:left; cursor:pointer; transition:background .15s ease; }
-        .mp-switch-btn:hover { background:rgba(0,43,109,0.09); }
-        .mp-switch-btn:focus-visible { outline:2px solid #fe762c; outline-offset:2px; }
-        .mp-switch-body { flex:1; min-width:0; }
-        .mp-kick { display:block; font-size:9.5px; font-weight:800; letter-spacing:0.13em; text-transform:uppercase; color:#6b7683; }
-        .mp-name { display:block; font-family:var(--font-headline); font-weight:700; font-size:14.5px; letter-spacing:-0.02em; color:#191c1e; line-height:1.3; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
-        .mp-chev { flex-shrink:0; color:#6b7683; }
-        .mp-switch-btn[aria-expanded="true"] .mp-chev { transform:rotate(180deg); }
-        .mp-menu { position:absolute; z-index:40; left:4px; right:4px; top:calc(100% - 4px); display:flex; flex-direction:column; gap:1px; padding:6px; border-radius:12px; background:var(--color-surface,#fff); box-shadow:0 0 32px rgba(0,27,78,0.14); }
-        .mp-menu-row { display:flex; align-items:center; gap:8px; padding:7px 10px; border-radius:8px; font-size:0.84rem; font-weight:500; color:#3f4750; text-decoration:none; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
-        .mp-menu-row:hover { background:rgba(0,43,109,0.06); color:#191c1e; }
-        .mp-menu-row:focus-visible { outline:2px solid #fe762c; outline-offset:-2px; }
-        .mp-menu-row.on { background:rgba(0,43,109,0.08); color:#002b6d; font-weight:700; }
-        .mp-prog { display:flex; align-items:center; gap:8px; padding:0 12px 12px; }
-        .mp-bar { flex:1; height:4px; border-radius:3px; background:rgba(0,43,109,0.10); overflow:hidden; }
-        .mp-bar > i { display:block; height:100%; border-radius:3px; background:#fe762c; }
-        .mp-menu-lb { flex:1; min-width:0; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
-        .mp-menu-bar { flex:0 0 28px; height:4px; border-radius:3px; background:rgba(0,43,109,0.10); overflow:hidden; }
-        .mp-menu-bar > i { display:block; height:100%; border-radius:3px; background:#fe762c; }
-        .mp-menu-pct { flex:none; width:30px; text-align:end; font-size:10px; font-weight:700; color:#6b7683; font-variant-numeric:tabular-nums; }
-        .mp-pct { font-family:var(--font-headline); font-size:11px; font-weight:800; color:#002b6d; font-variant-numeric:tabular-nums; }
-        .mp-count { font-size:10.5px; font-weight:700; color:#6b7683; font-variant-numeric:tabular-nums; }
-        .mp-list { display:flex; flex-direction:column; gap:2px; }
-        .mp-row { display:flex; align-items:center; gap:10px; padding:8px 12px; border-radius:10px; font-size:0.85rem; font-weight:500; color:#3f4750; text-decoration:none; transition:background .15s ease, color .15s ease; }
-        .mp-row:hover { background:rgba(0,43,109,0.05); color:#191c1e; }
-        .mp-row:focus-visible { outline:2px solid #fe762c; outline-offset:2px; }
-        /* De les waar je op staat is de enige donkere rij — dezelfde inversie als "hier ben je"
-           in de zijbalk, zodat de twee kolommen hetzelfde zeggen op dezelfde manier. */
-        .mp-row.on { background:#002b6d; color:#fff; font-weight:700; }
-        .mp-row.on .mp-n { background:rgba(255,255,255,0.18); color:#fff; }
-        .mp-row.dim { color:#8a939e; }
-        .mp-n { width:20px; height:20px; border-radius:7px; flex-shrink:0; display:flex; align-items:center; justify-content:center; background:rgba(0,43,109,0.07); color:#3f4750; font-family:var(--font-headline); font-weight:800; font-size:10.5px; font-variant-numeric:tabular-nums; }
-        .mp-row.is-done .mp-n { background:#fe762c; color:#fff; }
-        .mp-next { margin-top:auto; display:flex; align-items:center; gap:8px; padding:10px 12px; border-radius:12px; background:rgba(0,43,109,0.04); color:#191c1e; text-decoration:none; transition:background .15s ease; }
-        .mp-next:hover { background:rgba(0,43,109,0.08); }
-        .mp-next:focus-visible { outline:2px solid #fe762c; outline-offset:2px; }
-        .mp-next-kick { display:block; font-size:9.5px; font-weight:800; letter-spacing:0.12em; text-transform:uppercase; color:#6b7683; }
-        .mp-next-title { display:block; font-family:var(--font-headline); font-weight:700; font-size:13px; letter-spacing:-0.01em; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
-        .mp-next-go { flex-shrink:0; margin-inline-start:auto; color:#a24000; }
 
         #dash-main { flex:1; min-width:0; overflow-y:auto; height:100vh; background:#f0f3f8; }
         #app-mobile-header { display:none; }
@@ -261,7 +219,7 @@ export default function AppShell({
         .tab-item.active::before { content:''; position:absolute; top:0; left:14px; right:14px; height:2.5px; border-radius:0 0 2px 2px; background:#fe762c; }
         .tab-plus { width:21px; height:21px; border-radius:7px; background:#fe762c; color:#fff; display:flex; align-items:center; justify-content:center; }
         .tab-item:focus-visible { outline:2px solid #fe762c; outline-offset:-2px; }
-        [dir="rtl"] .side-sub { margin:2px 26px 4px 0; padding:0 8px 0 0; border-left:none; border-right:1px solid rgba(255,255,255,0.14); }
+        [dir="rtl"] .side-sub { margin:3px 20px 6px 0; padding:0 7px 0 0; border-left:none; border-right:1px solid rgba(255,255,255,0.14); }
         [dir="rtl"] .side-group.open .side-chev { transform:rotate(90deg) scaleX(-1); }
         [dir="rtl"] .lp-row.on::before { left:auto; right:2px; }
         [dir="rtl"] .lp-sec.open .lp-chev { transform:rotate(90deg) scaleX(-1); }
@@ -318,9 +276,7 @@ export default function AppShell({
           menu={menu}
           isGuest={isGuest}
         />
-        {modulePanel
-          ? <ModulePanel locale={locale} data={modulePanel} />
-          : learn && <LearnPanel locale={locale} data={learn} />}
+        {learn && <LearnPanel locale={locale} data={learn} />}
         <main id="dash-main">{children}</main>
       </div>
 

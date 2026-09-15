@@ -45,9 +45,45 @@ export type LearnPanelItem = {
   locked?: boolean;
 };
 
+/**
+ * Het glyph naast een sectiekop in het lespaneel.
+ *
+ * Een **sleutel** en geen component: alles in `LearnPanelData` gaat als payload naar een client
+ * component en moet JSON-serialiseerbaar zijn. `LearnPanel` zet hem om naar een lucide-glyph.
+ *
+ * **Lucide en geen categoriemerk** (§7). Een conceptgroep — *Zinnen bouwen*, *Werkwoorden &
+ * tijd* — is geen onderdeel, geen track en geen KNM-thema, en dus is er geen officieel merk
+ * voor; er één per groep bijtekenen is precies de eenmalige vorm in één scherm waar §7 tegen
+ * waarschuwt. De glyphs zijn hier navigatie: ze maken zes kapitaalkoppen onder elkaar
+ * scanbaar (eigenaar, 15-09), meer claimen ze niet.
+ */
+export type SectionIcon =
+  | 'zinnen' | 'tijd' | 'soorten' | 'verbuigen' | 'verwijzen' | 'klank'
+  | 'bouwstenen' | 'uitleg' | 'training' | 'toets' | 'woorden' | 'regel';
+
+/**
+ * Van moduleslug naar glyph. De sleutels zijn `concept_groups.slug` plus de blokletters van
+ * het examenspoor; alles wat hier niet in staat valt terug op `bouwstenen` — het eigen blok B
+ * van de cursus (Bouwstenen, Klank en tempo, Uitspraak, Grammatica) is precies dat geval, en
+ * een nieuwe conceptgroep van de docent krijgt zo een glyph in plaats van een gat.
+ */
+const MODULE_ICON: Record<string, SectionIcon> = {
+  'zinnen-bouwen': 'zinnen',
+  'werkwoorden-tijd': 'tijd',
+  'soorten-werkwoorden': 'soorten',
+  'woorden-verbuigen': 'verbuigen',
+  verwijzen: 'verwijzen',
+  'spelling-uitspraak': 'klank',
+  c: 'uitleg',
+  d: 'training',
+  e: 'toets',
+};
+
 export type LearnPanelSection = {
   id: string;
   label: string;
+  /** Het glyph voor de kop. Weglaten geeft geen glyph. */
+  icon?: SectionIcon;
   /** Eén letter voor een blok (A–E); null voor een conceptgroep. */
   letter?: string | null;
   done?: number;
@@ -125,6 +161,7 @@ export function conceptsPanel(
     sections: groups.map(group => ({
       id: group.key,
       label: group.name,
+      icon: MODULE_ICON[group.key] ?? 'regel',
       letter: null,
       total: group.concepts.length,
       items: group.concepts.map(c => ({
@@ -141,100 +178,96 @@ export function conceptsPanel(
 // ---------------------------------------------------------------------------
 
 /**
- * De tweede kolom binnen één module van een spoor — Grammatica of Examentraining.
+ * Het hele spoor als lespaneel: **elke module een sectie, elke les een rij.**
  *
- * Een aparte vorm naast `LearnPanelData`, want de as is een andere: daar is het "welke les van
- * welk blok", hier is het "de zeven lessen van déze module, en welke module je open hebt". Er
- * valt dus niets uit te klappen; de moduleswitcher bovenaan doet wat de secties daar doen.
+ * Dit verving op 15-09 de modulekolom (`ModulePanel`, eigenaar). Die toonde één module met een
+ * switcher erboven, en daarmee stond er precies één ding niet in de chrome: de rest van de
+ * cursus. Het spooroverzicht bestond alleen nog om dát te zeggen — een scherm tussen twee
+ * klikken in — en met alle modules ín de kolom is het overbodig. `spoorPath()` leidt sindsdien
+ * door naar de eerstvolgende les.
  *
- * Waarom hij bestaat: zonder tweede kolom moest je voor "even les 5" eerst terug naar de
- * modulepagina, en dat zijn drie navigatielagen (onderdeel → spoor → module) boven een les die
- * er maar één diep in zit (eigenaar, 03-09). Alles hierin gaat als payload naar een client
- * component en moet JSON-serialiseerbaar zijn.
+ * Dezelfde vorm als `coursePanel` en `conceptsPanel`, en dat is het punt: de tweede kolom zegt
+ * overal "waar in deze verzameling zit je", uitklapbaar, met de sectie waar je in staat open.
+ * De labels komen mee als argument — dit bestand mag geen vertalingen lezen.
  */
-export type ModulePanelItem = {
-  href: string;
-  label: string;
-  done?: boolean;
-  current?: boolean;
-  locked?: boolean;
-};
-
-export type ModulePanelData = {
-  /** "Module" — het kopje boven de switcher. */
-  kicker: string;
-  name: string;
-  /** Waar de terugweg heen gaat: het spoor. Draagt ook de naam van het spoor. */
-  backHref: string;
-  backLabel: string;
-  /** De andere modules van dit spoor, voor de switcher. Inclusief de huidige. */
-  siblings: { href: string; label: string; current: boolean; pct: number; done: number; total: number }[];
-  done: number;
-  total: number;
-  pct: number;
-  lessons: ModulePanelItem[];
-  /** De module hierna, onderaan de kolom. `null` op de laatste. */
-  next: { href: string; label: string; kicker: string } | null;
-};
-
-/**
- * De modulekolom uit een spoor en de module waar je in zit.
- *
- * Hier en niet in de twee pagina's: de modulepagina en de lespagina tonen exact dezelfde
- * kolom, en twee kopieën lopen uiteen. De labels komen mee, want dit bestand mag geen
- * vertalingen lezen.
- */
-export function modulePanel(
+export function spoorPanel(
   spoor: Spoor,
-  moduleSlug: string,
   opts: {
-    kicker: string;
-    spoorTitle: string;
-    spoorHref: string;
-    moduleHref: (slug: string) => string;
+    title: string;
+    backHref: string;
+    backLabel: string;
     lessonHref: (slug: string) => string;
     /** Waar een niet-gekochte les heen wijst — het aanbod, met het onderdeel erin. */
     lockedHref: (slug: string) => string;
-    nextKicker: string;
-    /** De les waar je nu op staat; op de modulepagina zelf is er geen. */
+    /** De les waar je nu op staat. */
     currentLessonId?: number | null;
     owned: boolean;
   },
-): ModulePanelData | null {
-  const index = spoor.modules.findIndex(m => m.slug === moduleSlug);
-  if (index < 0) return null;
-  const mod = spoor.modules[index];
-  const following = spoor.modules[index + 1] ?? null;
-
+): LearnPanelData {
   return {
-    kicker: opts.kicker,
-    name: mod.name,
-    backHref: opts.spoorHref,
-    backLabel: opts.spoorTitle,
-    /* Elke module draagt zijn eigen percentage mee, ook in het keuzemenu: "hoe ver ben ik in
-       de andere modules" is precies de vraag die je stelt op het moment dat je erin kijkt. */
-    siblings: spoor.modules.map(m => ({
-      href: opts.moduleHref(m.slug),
-      label: m.name,
-      current: m.slug === mod.slug,
-      pct: m.pct,
-      done: m.done,
-      total: m.total,
-    })),
-    done: mod.done,
-    total: mod.total,
-    pct: mod.pct,
-    lessons: mod.lessons.map(les => ({
-      href: opts.owned || les.is_free
-        ? opts.lessonHref(les.slug)
-        : opts.lockedHref(les.slug),
-      label: les.title,
-      done: les.progress?.state === 'done',
-      current: les.id === opts.currentLessonId,
-      locked: !opts.owned && !les.is_free,
-    })),
-    next: following
-      ? { href: opts.moduleHref(following.slug), label: following.name, kicker: opts.nextKicker }
-      : null,
+    title: opts.title,
+    backHref: opts.backHref,
+    backLabel: opts.backLabel,
+    sections: spoor.modules
+      .filter(m => m.lessons.length > 0)
+      .map(mod => ({
+        id: mod.slug,
+        label: mod.name,
+        icon: MODULE_ICON[mod.slug] ?? 'bouwstenen',
+        letter: null,
+        done: mod.done,
+        total: mod.total,
+        items: mod.lessons.map(les => ({
+          href: opts.owned || les.is_free ? opts.lessonHref(les.slug) : opts.lockedHref(les.slug),
+          label: les.title,
+          done: les.progress?.state === 'done',
+          current: les.id === opts.currentLessonId,
+          locked: !opts.owned && !les.is_free,
+        })),
+      })),
+  };
+}
+
+/**
+ * Dezelfde kolom voor stap 1, de woordkaarten: één sectie met alle thema's erin.
+ *
+ * Eén sectie en niet één per thema, want een thema *is* hier het blad — de deck erachter is
+ * geen lijst om in te navigeren maar een stapel kaarten. Het themaoverzicht is om dezelfde
+ * reden als het spooroverzicht vervallen (eigenaar, 15-09): wat het zei staat nu naast de deck.
+ *
+ * "Af" is hier `alle woorden gekend`, niet "aangeraakt": een thema waar je één kaart van hebt
+ * omgedraaid is niet af, en een vinkje dat dat wel zegt is het soort stille onwaarheid waar de
+ * voortgangsbalk juist tegen moet beschermen.
+ */
+export function wordsPanel(
+  themes: { slug: string; known: number; words: unknown[] }[],
+  opts: {
+    title: string;
+    backHref: string;
+    backLabel: string;
+    sectionLabel: string;
+    themeHref: (slug: string) => string;
+    themeLabel: (slug: string) => string;
+    currentTheme?: string | null;
+  },
+): LearnPanelData {
+  return {
+    title: opts.title,
+    backHref: opts.backHref,
+    backLabel: opts.backLabel,
+    sections: [{
+      id: 'woorden',
+      label: opts.sectionLabel,
+      icon: 'woorden',
+      letter: null,
+      done: themes.filter(th => th.words.length > 0 && th.known === th.words.length).length,
+      total: themes.length,
+      items: themes.map(th => ({
+        href: opts.themeHref(th.slug),
+        label: opts.themeLabel(th.slug),
+        done: th.words.length > 0 && th.known === th.words.length,
+        current: th.slug === opts.currentTheme,
+      })),
+    }],
   };
 }

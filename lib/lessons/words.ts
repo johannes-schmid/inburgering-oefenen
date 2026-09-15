@@ -122,3 +122,18 @@ export function practiceOrder(words: LessonWord[]): LessonWord[] {
   const pool = open.length > 0 ? open : words;
   return [...pool].sort((a, b) => rank[a.status] - rank[b.status]);
 }
+
+/**
+ * Het thema waar je verdergaat — het eerste dat nog niet helemaal gekend is.
+ *
+ * Dit is wat `wordsPath()` sinds 15-09 opent (eigenaar). Het themaraster is vervallen om
+ * dezelfde reden als het spooroverzicht: alle thema's staan nu in de tweede kolom naast de
+ * deck, en een scherm dat hetzelfde zegt is een tussenstop tussen twee klikken.
+ *
+ * Alles gekend → het eerste thema, zodat "verder" een herhaling opent en geen lege pagina.
+ * Een leeg thema wordt overgeslagen: dat is geen voortgang maar een gat in de inhoud.
+ */
+export function nextTheme(themes: WordTheme[]): WordTheme | null {
+  const filled = themes.filter(t => t.words.length > 0);
+  return filled.find(t => t.known < t.words.length) ?? filled[0] ?? null;
+}

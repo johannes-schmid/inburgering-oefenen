@@ -134,3 +134,23 @@ export function findModule(
   }
   return null;
 }
+
+/**
+ * De les waar je in dít spoor verdergaat — de eerste onafgeronde, over alle modules heen.
+ *
+ * Dit is wat `spoorPath()` sinds 15-09 opent (eigenaar): het spooroverzicht is vervallen, want
+ * de hele cursus staat nu in de tweede kolom en een scherm dat hetzelfde zegt is een tussenstop
+ * tussen twee klikken. Zelfde redenering als bij `/spoor/[spoor]/[module]`, dat op 03-09 al een
+ * doorgang werd.
+ *
+ * `nextInModule` per module en niet één platte lijst: de volgorde van de modules is dragend, en
+ * "de eerste onafgeronde" moet dus module voor module gezocht worden. Alles af → de eerste les,
+ * zodat "verder" een herhaling opent en geen 404.
+ */
+export function nextInSpoor(spoor: Spoor): LessonSummary | null {
+  for (const module of spoor.modules) {
+    const open = module.lessons.find(l => l.progress?.state !== 'done');
+    if (open) return open;
+  }
+  return spoor.modules.flatMap(m => m.lessons)[0] ?? null;
+}

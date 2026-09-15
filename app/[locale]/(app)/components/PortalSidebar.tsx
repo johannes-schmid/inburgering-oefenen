@@ -2,11 +2,12 @@
 
 import { useEffect, useState } from 'react';
 import { useTranslations } from 'next-intl';
-import { ChevronRight, LayoutDashboard, LogOut, Mail, Plus, UserPlus } from 'lucide-react';
+import { BookOpen, ChevronRight, LayersIcon, LayoutDashboard, LogOut, Mail, Plus, UserPlus } from 'lucide-react';
 import { createClient } from '@/lib/supabase/client';
 import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
 import LogoMark from '@/components/site/LogoMark';
 import ExamMark, { type Track } from '@/components/horizon/ExamMark';
+import CategoryMark, { type Category } from '@/components/horizon/CategoryMark';
 import { KNM_SLUG, LEVELS } from '@/data/skills';
 import { FEATURES } from '@/lib/features';
 import type { PortalMenu, PortalMenuGroup } from '@/lib/portal-menu';
@@ -186,6 +187,17 @@ export default function PortalSidebar({
                         aria-current={on ? 'page' : undefined}
                         className={`side-row sub${on ? ' on' : ''}${item.owned ? '' : ' dim'}`}
                       >
+                        {/* Het categoriemerk van het onderdeel (§7): deze rij benoemt wat er
+                            ín een track zit, dus `CategoryMark` en niet `ExamMark` — de navy
+                            tegel erboven is de module die je koopt, deze rijen zijn het
+                            oefenwerk daarbinnen. `tone="dark"` is de enige toegestane vorm op
+                            de navy zijbalk (de `cut` moet gelijk zijn aan de tegel erachter),
+                            en 19px is de bodem van de 72-grid: daaronder vallen de hairlines
+                            onder een device pixel. Tot 15-09 stonden deze rijen kaal en waren
+                            ze vier woorden onder elkaar; het merk is wat ze scanbaar maakt. */}
+                        <span className="side-ic bare" aria-hidden>
+                          <CategoryMark category={item.slug as Category} size={19} tone="dark" />
+                        </span>
                         <span className="side-lb">{tSkills(`${item.messageKey}.name`)}</span>
                         {/* Nul examens betekent hier: dit onderdeel is nog niet gebouwd
                             (B1 Luisteren). Een lege balk zou dat als "nog niets gedaan"
@@ -213,6 +225,10 @@ export default function PortalSidebar({
                       aria-current={active === 'leren' ? 'page' : undefined}
                       className={`side-row sub${active === 'leren' ? ' on' : ''}`}
                     >
+                      {/* lucide en geen categoriemerk: *lesmodules* en *woordkaarten* zijn geen
+                          onderdeel van KNM maar twee manieren om het te oefenen, en een merk
+                          uit de categorielaag zou ze als vijfde onderdeel laten lezen. */}
+                      <span className="side-ic" aria-hidden><LayersIcon size={13} strokeWidth={2.2} /></span>
                       <span className="side-lb">{tNav('knm_leren')}</span>
                     </a>
                   )}
@@ -222,6 +238,7 @@ export default function PortalSidebar({
                       aria-current={active === 'woordkaarten' ? 'page' : undefined}
                       className={`side-row sub${active === 'woordkaarten' ? ' on' : ''}`}
                     >
+                      <span className="side-ic" aria-hidden><BookOpen size={13} strokeWidth={2.2} /></span>
                       <span className="side-lb">{tNav('knm_woordkaarten')}</span>
                     </a>
                   )}

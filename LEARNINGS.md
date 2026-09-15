@@ -4800,3 +4800,37 @@ vast terwijl er boven de strook wél 16px zat. Eén regel; `tsc`, `next build` e
 groen, KNM gecontroleerd op 1440.
 **Lesson:** Als drie panelen onder elkaar staan, hoort de afstand bij het paneel erboven — niet bij
 de utility-klasse van het onderste, want dan mist de ruimte precies op de naad ertussen.
+
+## 2026-09-15 — De leerroute zonder tussenschermen: alles in de tweede kolom
+**Changed:** `/spoor/[spoor]` en `/woorden` zijn doorgangen geworden (redirect naar de
+eerstvolgende les / het eerstvolgende thema, `nextInSpoor` in `lib/lessons/sporen.ts` en
+`nextTheme` in `lib/lessons/words.ts`). Het lespaneel draagt nu het **hele** spoor
+(`spoorPanel` in `(app)/components/nav.ts`) en alle woordthema's (`wordsPanel`); `ModulePanel.tsx`,
+`modulePanel()` en de `mp-*`-CSS in `AppShell` zijn verwijderd. De onderdeelrijen in
+`PortalSidebar` dragen hun `CategoryMark` (19px, `tone="dark"`).
+**Outcome:** SUCCESS
+**What worked / went wrong:** `npx tsc --noEmit`, `next build` en 588 unit tests groen; de vier
+doorgangen geverifieerd met puppeteer (spoor → `b1-getallen-en-tijden`, woorden → `gemeente-en-zorg`).
+Twee dingen die bijna stil kapot gingen: **op mobiel bestaat de tweede kolom niet**, dus het
+verwijderen van de twee overzichtsschermen haalde daar álle module- en themanavigatie weg. Dat is
+opgevangen door zusjes op de module-kruimel en een kruimelpad op de deckpagina — precies wat de
+vervallen moduleswitcher deed. En `curl` is hier waardeloos: een `redirect()` in een
+servercomponent geeft in dev 200 met een lege shell, en `check-ui-auth.mjs` loopt op zo'n pagina
+vast op `networkidle2`. Puppeteer met `domcontentloaded` + `page.url()` is de enige manier om een
+redirect te controleren.
+**Lesson:** een scherm weghalen omdat de chrome het overneemt, is alleen waar op de breedte waar
+die chrome bestaat. Controleer elke verwijdering óók op 390px voordat je hem af noemt.
+
+## 2026-09-15 — Een glyph per module, en alleen de huidige open
+**Changed:** `SectionIcon` + `MODULE_ICON` in `(app)/components/nav.ts` (sleutel, geen component —
+de payload moet serialiseerbaar blijven), de `ICONS`-map en `.lp-ic` in `LearnPanel` /
+`AppShell`. De `localStorage`-persistentie van het lespaneel is eruit.
+**Outcome:** SUCCESS
+**What worked / went wrong:** Twee dingen kwamen pas in de screenshot boven water. (1) De
+opgeslagen uitklapstaat was harmloos toen het paneel één module droeg, maar zodra het het hele
+spoor draagt kwam je binnen met vier modules open en verdronk de module waar je in zat; er is
+niets te onthouden, want de volgende pagina *is* de nieuwe huidige module. (2) Het glyph kostte
+net genoeg breedte om "SOORTEN WERKWOORDEN" te laten afkappen — opgelost met krappere tracking
+(0.11em → 0.07em) en een 18px-tegel, niet met een bredere kolom.
+**Lesson:** een icoon toevoegen aan een rij met een vaste breedte is óók een typografiewijziging.
+Controleer het langste label, niet het eerste.

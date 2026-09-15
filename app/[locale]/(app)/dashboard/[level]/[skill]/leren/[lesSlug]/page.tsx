@@ -22,7 +22,7 @@ import LessonNarration from '@/components/lessons/LessonNarration';
 import { NarrationScope } from '@/components/lessons/NarrationScope';
 import type { LessonItem } from '@/components/lessons/item-helpers';
 import AppShell from '../../../../../components/AppShell';
-import { modulePanel } from '../../../../../components/nav';
+import { spoorPanel } from '../../../../../components/nav';
 
 type Props = { params: Promise<{ locale: string; level: string; skill: string; lesSlug: string }> };
 
@@ -109,23 +109,27 @@ export default async function LessonPage({ params }: Props) {
   const backLabel = here ? here.module.name : t('back_to_course');
 
   /**
-   * De tweede kolom: de lessen van de module waar deze les in zit.
+   * De tweede kolom: **het hele spoor** — elke module een uitklapbare sectie.
+   *
+   * Sinds 15-09 (eigenaar) staat hier niet meer alleen de module waar je in zit. Die kolom zei
+   * met een switcher erboven wat de sectiekoppen nu zelf zeggen, en het enige scherm dat de rest
+   * van de cursus toonde — het spooroverzicht — kon daarmee weg. `spoorPath()` leidt door naar
+   * de eerstvolgende les, dus "Bekijk de modules" zet je in één klik in de les mét de hele
+   * cursus ernaast.
    *
    * `null` voor blok A (Woorden) — die lessen zitten in geen spoor, en dan is er geen tweede
    * as om te tonen. De les valt dan terug op de kale chrome, zoals hij die had.
    */
   const panel = here
-    ? modulePanel(here.spoor, here.module.slug, {
-        kicker: t('module_label'),
-        spoorTitle: tPortal(here.spoor.slug === 'taalregels'
+    ? spoorPanel(here.spoor, {
+        title: tPortal(here.spoor.slug === 'taalregels'
           ? 'leerroute_grammatica_title'
           : 'leerroute_strategie_title'),
-        spoorHref: spoorPath(level, skill.slug, here.spoor.slug),
-        moduleHref: slug => modulePath(level, skill.slug, here.spoor.slug, slug),
+        backHref: `/dashboard/${level}/${skill.slug}`,
+        backLabel: tSkills(`${skill.key}.name`),
         lessonHref: slug => lessonPath(level, skill.slug, slug),
         lockedHref: slug =>
           `/dashboard/pakketten?onderdeel=${level}:${skill.slug}&vanaf=leren-${slug}`,
-        nextKicker: t('module_next'),
         currentLessonId: lesson.id,
         owned,
       })
@@ -219,7 +223,7 @@ export default async function LessonPage({ params }: Props) {
       active={skill.slug}
       activeGroup={level}
       menu={menu}
-      modulePanel={panel}
+      learn={panel}
     >
       <div className="px-5 py-7 sm:px-8 sm:py-10">
         <div className="mx-auto max-w-3xl">
@@ -251,7 +255,20 @@ export default async function LessonPage({ params }: Props) {
                               : 'leerroute_strategie_title'),
                             href: `/${locale}${spoorPath(level, skill.slug, here.spoor.slug)}`,
                           },
-                          { label: here.module.name, href: `/${locale}${backHref}` },
+                          {
+                            label: here.module.name,
+                            href: `/${locale}${backHref}`,
+                            /* De andere modules van dit spoor als zusjes. Op desktop staan ze
+                               in de kolom ernaast, maar die is er op een telefoon niet — en
+                               sinds het spooroverzicht een doorgang is (15-09) was dit kruimeltje
+                               de enige plek waar "een andere module" nog kon staan. Dit is wat
+                               de switcher van de vervallen `ModulePanel` deed. */
+                            siblings: here.spoor.modules.map(m => ({
+                              label: m.name,
+                              href: `/${locale}${modulePath(level, skill.slug, here.spoor.slug, m.slug)}`,
+                              current: m.slug === here.module.slug,
+                            })),
+                          },
                         ]
                       : [{ label: backLabel, href: `/${locale}${backHref}` }]),
                   ],
