@@ -38,7 +38,7 @@ import { ArrowRight } from 'lucide-react';
 import GuideCover from '@/components/horizon/GuideCover';
 import { Link } from '@/i18n/navigation';
 import { routing } from '@/i18n/routing';
-import { absUrl, alternatesFor, breadcrumbs, PROVIDER_REF } from '@/lib/schema';
+import { absUrl, alternatesFor, breadcrumbs, PROVIDER_REF, ogImageFor } from '@/lib/schema';
 import { WEBSITE_ID, langTag } from '@/lib/site';
 import JsonLd from '@/components/JsonLd';
 import { GradientHero, Breadcrumb, SectionHeader, CTABanner } from '@/components/site';
@@ -63,6 +63,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     description: t('meta_description'),
     alternates: alternatesFor(locale, 'gidsen'),
     openGraph: {
+      images: ogImageFor(locale),
       type: 'website',
       title: t('meta_title'),
       description: t('meta_description'),

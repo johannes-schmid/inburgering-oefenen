@@ -20,7 +20,7 @@
 import type { Metadata } from 'next';
 import { getTranslations, setRequestLocale } from 'next-intl/server';
 import { routing } from '@/i18n/routing';
-import { absUrl, alternatesFor, breadcrumbs, PROVIDER_REF } from '@/lib/schema';
+import { absUrl, alternatesFor, breadcrumbs, PROVIDER_REF, ogImageFor } from '@/lib/schema';
 import { langTag, WEBSITE_ID } from '@/lib/site';
 import JsonLd from '@/components/JsonLd';
 import Breadcrumb from '@/components/site/Breadcrumb';
@@ -43,6 +43,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     description: t('meta_description'),
     alternates: alternatesFor(locale, PATH),
     openGraph: {
+      images: ogImageFor(locale),
       type: 'website',
       title: t('meta_title'),
       description: t('meta_description'),

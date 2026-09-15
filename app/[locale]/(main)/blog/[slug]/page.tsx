@@ -6,7 +6,7 @@ import { Link } from '@/i18n/navigation';
 import { getPostBySlug, getPostLocale, getPostSlug, getAllPostParams, hasTranslation } from '@/data/blog-posts';
 import ArticleContent from '@/components/ArticleContent';
 import { SITE_URL, ORG_ID, TEACHER_ID, langTag } from '@/lib/site';
-import { absUrl, PROVIDER_REF } from '@/lib/schema';
+import { absUrl, PROVIDER_REF, TEACHER_REF } from '@/lib/schema';
 
 type Props = { params: Promise<{ locale: string; slug: string }> };
 
@@ -101,7 +101,7 @@ export default async function BlogPostPage({ params }: Props) {
           url: `${SITE_URL}${post.image}`,
         },
         // Both anchors are defined in the homepage @graph — reference, don't redefine.
-        author: { '@id': TEACHER_ID },
+        author: TEACHER_REF,
         publisher: PROVIDER_REF,
       },
       {

@@ -121,7 +121,7 @@ export default async function RegisterPage({ params, searchParams }: Props) {
               >
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img
-                  src="/images/marieke-schipper.jpg"
+                  src="/images/marieke-schipper.webp"
                   alt="Marieke Schipper"
                   width={36}
                   height={36}

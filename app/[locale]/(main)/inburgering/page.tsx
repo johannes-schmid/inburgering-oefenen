@@ -7,7 +7,7 @@
 import type { Metadata } from 'next';
 import { getTranslations, setRequestLocale } from 'next-intl/server';
 import { routing } from '@/i18n/routing';
-import { absUrl, alternatesFor } from '@/lib/schema';
+import { absUrl, alternatesFor, ogImageFor } from '@/lib/schema';
 import GuideHub from '../_components/GuideHub';
 
 /**
@@ -36,6 +36,7 @@ export async function generateMetadata({ params }: Pick<Props, 'params'>): Promi
     description: t('meta_description'),
     alternates: alternatesFor(locale, 'inburgering'),
     openGraph: {
+      images: ogImageFor(locale),
       type: 'website',
       title: t('meta_title'),
       description: t('meta_description'),

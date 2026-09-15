@@ -46,7 +46,7 @@ const I_WORK = svg('<path d="M16 20V4a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/><rect 
 const I_ARROW = svg('<path d="M5 12h14"/><path d="m12 5 7 7-7 7"/>');
 
 const docent = (text: string) =>
-  `<div class="docent-note"><img src="/images/marieke-schipper.jpg" alt="" width="44" height="44" class="docent-note-avatar" loading="lazy" />` +
+  `<div class="docent-note"><img src="/images/marieke-schipper.webp" alt="" width="44" height="44" class="docent-note-avatar" loading="lazy" />` +
   `<div><p class="docent-note-name">Marieke Schipper · NT2-docent</p><p>${text}</p></div></div>`;
 
 const guide: Guide = {

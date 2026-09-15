@@ -5,7 +5,7 @@ import { Link } from '@/i18n/navigation';
 import { getSortedPosts, getPostLocale, getPostSlug } from '@/data/blog-posts';
 import { Breadcrumb, GradientHero, CTABanner, TeacherCard } from '@/components/site';
 import { SITE_URL, ORG_ID, langTag } from '@/lib/site';
-import { absUrl, alternatesFor, PROVIDER_REF } from '@/lib/schema';
+import { absUrl, alternatesFor, PROVIDER_REF, ogImageFor } from '@/lib/schema';
 
 type Props = { params: Promise<{ locale: string }> };
 
@@ -23,6 +23,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
      * slug van deze taal krijgen in plaats van de taalcode vóór het Nederlandse pad. */
     alternates: alternatesFor(locale, 'blog'),
     openGraph: {
+      images: ogImageFor(locale),
       type: 'website',
       title: t('meta_title'),
       description: t('meta_description'),

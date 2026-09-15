@@ -11,7 +11,7 @@
 import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import { setRequestLocale } from 'next-intl/server';
-import { absUrl, alternatesFor } from '@/lib/schema';
+import { absUrl, alternatesFor, ogImageFor } from '@/lib/schema';
 import { getGuideBySlug, getAllGuideParams, getGuideLocale, hasTranslation, indexableLocales } from '@/data/guides/helpers';
 import GuideArticle from '../../_components/GuideArticle';
 
@@ -34,6 +34,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     robots: { index: publishable, follow: true },
     alternates: alternatesFor(locale, `taalexamens/${guide.slug}`, indexableLocales(guide)),
     openGraph: {
+      images: ogImageFor(locale),
       type: 'article',
       title: lg.heroTitle,
       description: lg.description,

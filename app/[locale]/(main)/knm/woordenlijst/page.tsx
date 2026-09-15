@@ -9,7 +9,7 @@
 import type { Metadata } from 'next';
 import { getTranslations, setRequestLocale } from 'next-intl/server';
 import { routing } from '@/i18n/routing';
-import { absUrl, alternatesFor } from '@/lib/schema';
+import { absUrl, alternatesFor, ogImageFor } from '@/lib/schema';
 import { getPlannedSurface } from '@/data/planned-surfaces';
 import PlannedSurface from '../../_components/PlannedSurface';
 
@@ -32,6 +32,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     robots: { index: false, follow: true },
     alternates: alternatesFor(locale, PATH),
     openGraph: {
+      images: ogImageFor(locale),
       type: 'website',
       title: t('meta_title'),
       description: t('meta_description'),

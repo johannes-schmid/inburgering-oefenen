@@ -12,8 +12,7 @@ import KennisbankCards, { type KennisbankCard } from './_components/KennisbankCa
 import { publishedGuides, getGuideLocale, guideHref } from '@/data/guides/helpers';
 import { getPostBySlug, getPostLocale, getPostSlug } from '@/data/blog-posts';
 import { HorizonBand, DotField, Skyline, SunDisc, SectionTransition } from '@/components/horizon';
-import { courseId } from '@/lib/schema';
-import { TEACHER_ID } from '@/lib/site';
+import { courseId, TEACHER_REF, ogImageFor } from '@/lib/schema';
 import { localeHref, localizedPath } from '@/i18n/paths';
 
 type Props = { params: Promise<{ locale: string }> };
@@ -42,6 +41,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       },
     },
     openGraph: {
+      images: ogImageFor(locale),
       title: t('meta_title'),
       description: t('meta_description'),
       type: 'website',
@@ -131,7 +131,12 @@ export default async function HomePage({ params }: Props) {
         educationalLevel: 'A2, B1',
         areaServed: 'NL',
         inLanguage: 'nl-NL',
-        employee: { '@id': TEACHER_ID },
+        /* `logo` hoort bij de organisatie-node en nergens anders — dit is de enige plek waar de
+         * node zelf gedefinieerd wordt, en Google leest hem hiervandaan voor het merkbeeld naast
+         * een resultaat. `icon-512.png` is het bestand dat er al is en ruim boven de 112px-ondergrens
+         * zit die Google noemt. */
+        logo: `${BASE}/icon-512.png`,
+        employee: TEACHER_REF,
       },
       /* The `Person` node lives on `/docent`, not here.
        *

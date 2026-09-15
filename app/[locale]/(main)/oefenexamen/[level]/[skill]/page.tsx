@@ -20,7 +20,7 @@ import {
 import { fetchExamsForSkill } from '@/lib/exams';
 import JsonLd from '@/components/JsonLd';
 import { langTag, TEACHER_ID } from '@/lib/site';
-import {PROVIDER_REF, absUrl, alternatesFor, breadcrumbs, courseId, omitEmpty} from '@/lib/schema';
+import {PROVIDER_REF, TEACHER_REF, absUrl, alternatesFor, breadcrumbs, courseId, omitEmpty, ogImageFor } from '@/lib/schema';
 
 type Props = { params: Promise<{ locale: string; level: string; skill: string }> };
 
@@ -63,6 +63,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     robots: { index: skill.itemCount !== null, follow: true },
     alternates: alternatesFor(locale, path),
     openGraph: {
+      images: ogImageFor(locale),
       title: t('meta_title', vars),
       description: t('meta_description', vars),
       type: 'website',
@@ -125,7 +126,7 @@ export default async function SkillOverviewPage({ params }: Props) {
         name: t('meta_title', vars),
         description: t('meta_description', vars),
         provider: PROVIDER_REF,
-        instructor: { '@id': TEACHER_ID },
+        instructor: TEACHER_REF,
         inLanguage: langTag(locale),
         teaches: 'Nederlands als tweede taal',
         educationalLevel: levelLabel(level),

@@ -188,7 +188,7 @@ export default function RubricFeedback({
           now, her review to follow. */}
       <div className="rf-docent">
         {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img src="/images/marieke-schipper.jpg" alt="" className="rf-docent-face" />
+        <img src="/images/marieke-schipper.webp" alt="" className="rf-docent-face" />
         <p>
           {reviewed ? (
             <>

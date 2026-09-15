@@ -14,7 +14,7 @@
 import type { Metadata } from 'next';
 import { getTranslations, setRequestLocale } from 'next-intl/server';
 import { routing } from '@/i18n/routing';
-import { absUrl, alternatesFor } from '@/lib/schema';
+import { absUrl, alternatesFor, ogImageFor } from '@/lib/schema';
 import GuideHub from '../_components/GuideHub';
 
 type Props = { params: Promise<{ locale: string }> };
@@ -31,6 +31,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     description: t('meta_description'),
     alternates: alternatesFor(locale, 'taalexamens'),
     openGraph: {
+      images: ogImageFor(locale),
       type: 'website',
       title: t('meta_title'),
       description: t('meta_description'),

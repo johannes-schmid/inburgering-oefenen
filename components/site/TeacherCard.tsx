@@ -29,7 +29,7 @@ export default function TeacherCard({
       <div className={cn('flex items-center gap-4 p-4 rounded-xl', className)} style={{ background: 'rgba(255,255,255,0.10)', border: '1px solid rgba(255,255,255,0.10)' }}>
         <div className="w-14 h-14 rounded-full overflow-hidden flex-shrink-0" style={{ border: '2px solid rgba(254,118,44,0.6)' }}>
           {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src="/images/marieke-schipper.jpg" alt={name} className="w-full h-full object-cover object-top" />
+          <img src="/images/marieke-schipper.webp" alt={name} className="w-full h-full object-cover object-top" />
         </div>
         <div>
           <p className="font-headline font-bold text-white text-base leading-tight">{name}</p>
@@ -47,7 +47,7 @@ export default function TeacherCard({
       >
         <div className="relative flex-shrink-0">
           {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src="/images/marieke-schipper.jpg" alt={name} className="w-16 h-16 rounded-full object-cover" style={{ border: '3px solid #fff', boxShadow: '0 2px 12px rgba(0,43,109,0.15)' }} />
+          <img src="/images/marieke-schipper.webp" alt={name} className="w-16 h-16 rounded-full object-cover" style={{ border: '3px solid #fff', boxShadow: '0 2px 12px rgba(0,43,109,0.15)' }} />
           <div className="absolute -bottom-0.5 -right-0.5 w-5 h-5 bg-green-500 rounded-full border-2 border-white flex items-center justify-center">
             <svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="#fff" strokeWidth="3.5" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12" /></svg>
           </div>
@@ -73,7 +73,7 @@ export default function TeacherCard({
       <div className="flex gap-4 items-center mb-5">
         <div className="w-20 h-20 min-w-20 rounded-xl overflow-hidden flex-shrink-0" style={{ border: '2px solid rgba(196,198,210,0.30)' }}>
           {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src="/images/marieke-schipper.jpg" alt={`${name} — gecertificeerde NT2-docent`} width={80} height={80} className="w-full h-full object-cover object-center" />
+          <img src="/images/marieke-schipper.webp" alt={`${name} — gecertificeerde NT2-docent`} width={80} height={80} className="w-full h-full object-cover object-center" />
         </div>
         <div>
           <h3 className="font-headline font-bold text-xl text-on-surface mb-1">{name}</h3>

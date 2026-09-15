@@ -10,7 +10,7 @@ import { fetchA2FreePractice } from '@/lib/free-practice';
 import FreePracticeEngine from './FreePracticeEngine';
 import JsonLd from '@/components/JsonLd';
 import { langTag } from '@/lib/site';
-import { absUrl, alternatesFor, breadcrumbs, courseId, PROVIDER_REF } from '@/lib/schema';
+import { absUrl, alternatesFor, breadcrumbs, courseId, PROVIDER_REF, ogImageFor } from '@/lib/schema';
 import { DEFAULT_LEVEL } from '@/data/skills';
 
 type Props = { params: Promise<{ locale: string; skill: string }> };
@@ -50,6 +50,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     robots: { index: true, follow: true },
     alternates: alternatesFor(locale, `oefenen/${skill.slug}`),
     openGraph: {
+      images: ogImageFor(locale),
       title: titles[locale] ?? titles.nl,
       description: descriptions[locale] ?? descriptions.nl,
       type: 'website',

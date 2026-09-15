@@ -23,7 +23,7 @@ import { getTranslations, setRequestLocale } from 'next-intl/server';
 import { ArrowRight, BadgeCheck, CalendarClock, MessagesSquare, TrendingUp } from 'lucide-react';
 import { Link } from '@/i18n/navigation';
 import { routing } from '@/i18n/routing';
-import { absUrl, alternatesFor, breadcrumbs, PROVIDER_REF } from '@/lib/schema';
+import { absUrl, alternatesFor, breadcrumbs, PROVIDER_REF, ogImageFor } from '@/lib/schema';
 import { WEBSITE_ID, langTag } from '@/lib/site';
 import JsonLd from '@/components/JsonLd';
 import { HorizonBanner } from '@/components/horizon';
@@ -45,6 +45,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     description: t('meta_description'),
     alternates: alternatesFor(locale, 'platform'),
     openGraph: {
+      images: ogImageFor(locale),
       type: 'website',
       title: t('meta_title'),
       description: t('meta_description'),

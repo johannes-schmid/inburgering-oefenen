@@ -24,8 +24,8 @@ import { Link } from '@/i18n/navigation';
 import ArticleContent from '@/components/ArticleContent';
 import JsonLd from '@/components/JsonLd';
 import GuideCover from '@/components/horizon/GuideCover';
-import { absUrl, breadcrumbs } from '@/lib/schema';
-import { ORG_ID, TEACHER_ID, langTag } from '@/lib/site';
+import { absUrl, breadcrumbs, PROVIDER_REF, TEACHER_REF } from '@/lib/schema';
+import { SITE_URL, langTag } from '@/lib/site';
 import { Breadcrumb } from '@/components/site';
 import { FEATURES } from '@/lib/features';
 import { getPostBySlug, getPostLocale, getPostSlug } from '@/data/blog-posts';
@@ -107,8 +107,27 @@ export default async function GuideArticle({
         mainEntityOfPage: { '@type': 'WebPage', '@id': selfUrl },
         inLanguage: langTag(locale),
         wordCount,
-        author: { '@id': TEACHER_ID },
-        publisher: { '@id': ORG_ID },
+        /* `image` alleen als de gids er écht een heeft.
+         *
+         * Google vraagt hem voor het Article-rich-result, en het blogsjabloon zet hem al — dat
+         * verschil tussen de twee sjablonen was geen keuze maar een omissie. Vier van de
+         * vijfentwintig gidsen hebben vandaag een `heroImage`; de rest krijgt hier niets in
+         * plaats van allemaal hetzelfde merkplaatje. Eén generiek plaatje op eenentwintig
+         * artikelen is geen afbeelding ván het artikel, en dat is precies wat het veld beweert.
+         * Wat die eenentwintig nodig hebben is een eigen foto, en dat is redactiewerk.
+         *
+         * Zelfde bestandskeuze als de `<picture>` hieronder: `hasWebp` is niet vanzelfsprekend —
+         * `fetch-guide-images.mjs` gooit de WebP weg als die gróter uitvalt dan de mozjpeg. */
+        ...(guide.heroImage
+          ? {
+              image: {
+                '@type': 'ImageObject',
+                url: `${SITE_URL}/images/guides/${guide.heroImage.base}.${guide.heroImage.hasWebp ? 'webp' : 'jpg'}`,
+              },
+            }
+          : {}),
+        author: TEACHER_REF,
+        publisher: PROVIDER_REF,
       },
       breadcrumbs(
         locale,
@@ -239,7 +258,7 @@ export default async function GuideArticle({
                 style={{ border: '2px solid rgba(255,255,255,0.2)' }}
               >
                 <img
-                  src="/images/marieke-schipper.jpg"
+                  src="/images/marieke-schipper.webp"
                   alt="Marieke Schipper"
                   width={40}
                   height={40}

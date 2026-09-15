@@ -7,7 +7,7 @@ import { fetchDbFreePractice, hasDbFreePractice } from '@/lib/free-practice-db';
 import FreePracticeEngine from '../[skill]/FreePracticeEngine';
 import JsonLd from '@/components/JsonLd';
 import { langTag } from '@/lib/site';
-import {PROVIDER_REF, absUrl, alternatesFor, breadcrumbs} from '@/lib/schema';
+import {PROVIDER_REF, absUrl, alternatesFor, breadcrumbs, ogImageFor } from '@/lib/schema';
 
 type Props = { params: Promise<{ locale: string }> };
 
@@ -60,6 +60,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     robots: { index: true, follow: true },
     alternates: alternatesFor(locale, PATH),
     openGraph: {
+      images: ogImageFor(locale),
       title: titles[locale] ?? titles.nl,
       description: descriptions[locale] ?? descriptions.nl,
       type: 'website',

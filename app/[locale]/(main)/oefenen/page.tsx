@@ -11,7 +11,7 @@ import FreePracticeChooser, { type ChooserPart, type ChooserTrack } from './_com
 import { ArrowRight } from 'lucide-react';
 import JsonLd from '@/components/JsonLd';
 import { langTag, WEBSITE_ID } from '@/lib/site';
-import {PROVIDER_REF, absUrl, alternatesFor, breadcrumbs} from '@/lib/schema';
+import {PROVIDER_REF, absUrl, alternatesFor, breadcrumbs, ogImageFor } from '@/lib/schema';
 import { localeHref } from '@/i18n/paths';
 
 type Props = { params: Promise<{ locale: string }> };
@@ -29,6 +29,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     robots: { index: true, follow: true },
     alternates: alternatesFor(locale, 'oefenen'),
     openGraph: {
+      images: ogImageFor(locale),
       title: t('meta_title'),
       description: t('meta_description'),
       type: 'website',

@@ -5,7 +5,8 @@ import { routing } from '@/i18n/routing';
 import { Link } from '@/i18n/navigation';
 import { Breadcrumb, GradientHero, EyebrowBadge, FeatureCard } from '@/components/site';
 import JsonLd from '@/components/JsonLd';
-import { ORG_ID, SITE_URL, TEACHER_ID } from '@/lib/site';
+import { SITE_URL, TEACHER_ID } from '@/lib/site';
+import { PROVIDER_REF } from '@/lib/schema';
 import { DEFAULT_LEVEL, formatCount, getFormat, getSkillAtLevel } from '@/data/skills';
 
 type Props = { params: Promise<{ locale: string }> };
@@ -46,7 +47,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       // The localised URL, not the locale-less `/docent`, which resolves for nobody.
       url: ALTERNATES[locale as 'nl' | 'en' | 'ar'] ?? ALTERNATES.nl,
       locale: locale === 'nl' ? 'nl_NL' : locale === 'ar' ? 'ar_AR' : 'en_GB',
-      images: [{ url: 'https://inburgeringoefenen.nl/images/marieke-schipper.jpg' }],
+      images: [{ url: 'https://inburgeringoefenen.nl/images/marieke-schipper.webp' }],
     },
   };
 }
@@ -90,7 +91,7 @@ function buildJsonLd(locale: string) {
         name: 'Marieke Schipper',
         jobTitle: 'NT2-docent',
         description: 'Gecertificeerde NT2-docent met meer dan 10 jaar ervaring in het onderwijs, inburgering en de voorbereiding op het inburgeringsexamen en het NT2-staatsexamen.',
-        image: `${SITE_URL}/images/marieke-schipper.jpg`,
+        image: `${SITE_URL}/images/marieke-schipper.webp`,
         knowsAbout: [
           'inburgeringsexamen',
           'KNM — Kennis van de Nederlandse Maatschappij',
@@ -104,7 +105,7 @@ function buildJsonLd(locale: string) {
           credentialCategory: 'Onderwijsbevoegdheid',
           recognizedBy: { '@type': 'Organization', name: 'DUO — Dienst Uitvoering Onderwijs' },
         }],
-        worksFor: { '@id': ORG_ID },
+        worksFor: PROVIDER_REF,
         url,
       },
     ],
@@ -150,7 +151,7 @@ export default async function DocentPage({ params }: Props) {
           <div className="flex-shrink-0">
             <div style={{ position: 'relative', width: '200px', height: '240px', borderRadius: '18px', overflow: 'hidden', border: '2px solid rgba(255,255,255,0.2)', boxShadow: '0 16px 48px rgba(0,0,0,0.3)' }}>
               {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src="/images/marieke-schipper.jpg" alt="Marieke Schipper — gecertificeerde NT2-docent" width={200} height={240} style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'center top' }} />
+              <img src="/images/marieke-schipper.webp" alt="Marieke Schipper — gecertificeerde NT2-docent" width={200} height={240} style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'center top' }} />
               <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to top,rgba(0,43,109,0.3) 0%,transparent 50%)' }} />
             </div>
             <div className="mt-4 flex flex-col gap-2">
@@ -299,7 +300,7 @@ export default async function DocentPage({ params }: Props) {
               </blockquote>
               <div className="flex gap-4 items-center">
                 <div className="w-12 h-12 rounded-xl overflow-hidden flex-shrink-0" style={{ border: '2px solid #eceef0' }}>
-                  <img src="/images/marieke-schipper.jpg" alt="Marieke Schipper" width={48} height={48} style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'center top' }} />
+                  <img src="/images/marieke-schipper.webp" alt="Marieke Schipper" width={48} height={48} style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'center top' }} />
                 </div>
                 <div>
                   <p className="text-sm font-bold text-on-surface font-headline">Marieke Schipper</p>

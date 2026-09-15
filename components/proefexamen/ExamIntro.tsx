@@ -224,7 +224,7 @@ export default function ExamIntro({ questions, sampleUrl, onStart, labels, teach
           style={{ background: '#f8f9fb', border: '1px solid #eef0f2' }}>
           <div className="w-11 h-11 rounded-xl overflow-hidden border border-outline-variant/30 flex-shrink-0">
             {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src="/images/marieke-schipper.jpg" alt="Marieke Schipper" width={44} height={44}
+            <img src="/images/marieke-schipper.webp" alt="Marieke Schipper" width={44} height={44}
               className="w-full h-full object-cover object-top" />
           </div>
           <div className="min-w-0">

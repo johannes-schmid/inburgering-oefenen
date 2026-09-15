@@ -53,10 +53,17 @@ export const metadata: Metadata = {
     shortcut: '/favicon.svg',
     apple: { url: '/apple-touch-icon.png', sizes: '180x180', type: 'image/png' },
   },
+  /* Geen `images:` meer hier — die staat in `opengraph-image.tsx` ernaast.
+   *
+   * Hij stond hier wel, en hij kwam op bijna geen enkele pagina aan: Next vervangt dit hele
+   * `openGraph`-object zodra een pagina er zelf een opgeeft, en 19 van de 22 deden dat zonder
+   * `images`. Bovendien wees hij naar de foto van de docent met `800×800` erbij, terwijl dat
+   * bestand 1376×768 is — de afmetingen die hier stonden waren dus ook niet waar.
+   *
+   * De bestandsconventie heeft dat probleem niet en geldt voor elke route hieronder. */
   openGraph: {
     siteName: 'Inburgering Oefenen',
     type: 'website',
-    images: [{ url: 'https://inburgeringoefenen.nl/images/marieke-schipper.jpg', width: 800, height: 800, alt: 'Inburgering Oefenen — oefenexamens inburgering A2, B1 en KNM van een NT2-docent' }],
   },
   twitter: { card: 'summary_large_image' },
 };

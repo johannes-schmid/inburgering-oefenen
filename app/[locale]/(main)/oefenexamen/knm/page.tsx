@@ -9,7 +9,7 @@ import { KNM, KNM_THEMES, SKILLS, DEFAULT_LEVEL, getFormat, isFreeKnmExam } from
 import { fetchExamsForSkill } from '@/lib/exams';
 import JsonLd from '@/components/JsonLd';
 import { langTag, TEACHER_ID } from '@/lib/site';
-import {PROVIDER_REF, absUrl, alternatesFor, breadcrumbs, omitEmpty} from '@/lib/schema';
+import {PROVIDER_REF, TEACHER_REF, absUrl, alternatesFor, breadcrumbs, omitEmpty, ogImageFor } from '@/lib/schema';
 import { localeHref } from '@/i18n/paths';
 
 /**
@@ -49,6 +49,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     robots: { index: KNM.itemCount !== null, follow: true },
     alternates: alternatesFor(locale, PATH),
     openGraph: {
+      images: ogImageFor(locale),
       title: t('knm_meta_title'),
       description: t('knm_meta_description'),
       type: 'website',
@@ -91,7 +92,7 @@ export default async function KnmOverviewPage({ params }: Props) {
         name: t('knm_meta_title'),
         description: t('knm_meta_description'),
         provider: PROVIDER_REF,
-        instructor: { '@id': TEACHER_ID },
+        instructor: TEACHER_REF,
         inLanguage: langTag(locale),
         teaches: 'Kennis van de Nederlandse Maatschappij',
         timeRequired: `PT${KNM.durationMinutes}M`,

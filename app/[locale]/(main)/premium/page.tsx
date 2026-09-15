@@ -20,8 +20,8 @@ import {
   modulesForLevel,
   totalExamsForLevel,
 } from '@/lib/pricing';
-import { ORG_ID, langTag } from '@/lib/site';
-import { breadcrumbs, courseId } from '@/lib/schema';
+import { langTag } from '@/lib/site';
+import { breadcrumbs, courseId, PROVIDER_REF } from '@/lib/schema';
 import { Lock, Check, Headphones, RefreshCw } from 'lucide-react';
 
 type Props = { params: Promise<{ locale: string }> };
@@ -439,7 +439,7 @@ export default async function PremiumPage({ params }: Props) {
         name: tP('schema_product_name'),
         description: tP('schema_product_description'),
         url: pageUrl,
-        brand: { '@id': ORG_ID },
+        brand: PROVIDER_REF,
         category: 'Educational subscription',
         inLanguage: langTag(locale),
         offers: {

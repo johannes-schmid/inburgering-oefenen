@@ -7,7 +7,7 @@
  *
  * Origins and `@id` anchors come from `lib/site.ts`; this module never restates the URL.
  */
-import { SITE_URL, ORG_ID } from '@/lib/site';
+import { SITE_URL, ORG_ID, TEACHER_ID } from '@/lib/site';
 import type { Level, SkillSlug } from '@/data/skills';
 import { translateDutchPath } from '@/i18n/paths';
 
@@ -99,8 +99,67 @@ export function breadcrumbs(locale: string, home: string, trail: Crumb[], selfUr
   };
 }
 
-/** The provider/publisher reference every educational node on the site shares. */
-export const PROVIDER_REF = { '@id': ORG_ID } as const;
+/**
+ * The provider/publisher reference every educational node on the site shares.
+ *
+ * **`name` en `url` staan erbij, en dat is geen tweede definitie van de node.** Een `@id` wordt
+ * per document opgelost: op `/gidsen` verwijst `publisher: { '@id': ORG_ID }` naar een node die
+ * alleen in de `@graph` van de homepage bestaat, en een crawler die die pagina niet in dezelfde
+ * beurt gelezen heeft, houdt een lege verwijzing over. Daarmee was "wie geeft dit uit" op elke
+ * gids en elk blogartikel feitelijk blanco — precies het signaal waar de docent-op-naam voor
+ * bedoeld is.
+ *
+ * Wat hier bij mag staan, is beperkt tot wat overal identiek is: de naam en het adres. De
+ * velden die per pagina zouden kunnen gaan afwijken — `description`, `teaches`, `logo` — blijven
+ * van de homepage. Dat is dezelfde regel als hiervoor: één eigenaar per node, en verwijzingen
+ * die genoeg zeggen om op zichzelf te staan zonder iets tegen te spreken.
+ */
+export const PROVIDER_REF = {
+  '@id': ORG_ID,
+  '@type': 'EducationalOrganization',
+  name: 'Inburgering Oefenen',
+  url: `${SITE_URL}/`,
+} as const;
+
+/**
+ * Dezelfde afspraak voor de docent: de `Person`-node hoort bij `/docent`, dit is de verwijzing
+ * die elders genoeg zegt om te lezen als een auteur.
+ *
+ * `jobTitle` staat erbij omdat dat het hele punt van de byline is — een auteursverwijzing zonder
+ * beroep is voor een lezer én voor een crawler niet te onderscheiden van een willekeurige naam.
+ * De onderbouwing ervan (`hasCredential`, `knowsAbout`, `description`) blijft op de profielpagina.
+ */
+export const TEACHER_REF = {
+  '@id': TEACHER_ID,
+  '@type': 'Person',
+  name: 'Marieke Schipper',
+  jobTitle: 'NT2-docent',
+  url: `${SITE_URL}/nl/docent`,
+} as const;
+
+/**
+ * Het Open Graph-plaatje van een pagina, als `images` voor `generateMetadata`.
+ *
+ * **Dit moet expliciet in elke `openGraph` die een pagina zélf opgeeft, en dat is geen
+ * dubbelop.** Next voegt het `openGraph`-object van een pagina niet samen met dat van de layout —
+ * het vervángt het. Zolang een pagina een eigen `openGraph` heeft zonder `images`, valt het
+ * plaatje weg, en de bestandsconventie (`app/[locale]/opengraph-image.tsx`) springt daar *niet*
+ * voor in: die vult alleen een pagina aan die zelf geen `openGraph` opgeeft. Op 15-09 was dat
+ * getest en gemeten — `/premium` had een plaatje omdat die géén eigen blok heeft, `/`, `/gidsen`
+ * en `/blog` hadden er geen omdat ze er wél een hebben.
+ *
+ * De URL wijst naar de route die dat bestand oplevert, zonder de hash die Next er in de meta-tag
+ * zelf achter zet: die hash is een cache-buster, geen deel van het adres, en `/[locale]/opengraph-image`
+ * antwoordt zonder hem met dezelfde PNG van 1200×630.
+ */
+export function ogImageFor(locale: string) {
+  return [{
+    url: `${SITE_URL}/${locale}/opengraph-image`,
+    width: 1200,
+    height: 630,
+    alt: 'Inburgering Oefenen — oefenexamens voor het inburgeringsexamen van een NT2-docent',
+  }];
+}
 
 /**
  * Drop keys whose value is `null` or `undefined`.

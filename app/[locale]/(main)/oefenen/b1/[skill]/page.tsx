@@ -9,7 +9,7 @@ import { b1TasterSkills, fetchB1FreePractice, hasB1FreePractice } from '@/lib/fr
 import FreePracticeEngine from '../../[skill]/FreePracticeEngine';
 import JsonLd from '@/components/JsonLd';
 import { langTag } from '@/lib/site';
-import {PROVIDER_REF, absUrl, alternatesFor, breadcrumbs, courseId} from '@/lib/schema';
+import {PROVIDER_REF, absUrl, alternatesFor, breadcrumbs, courseId, ogImageFor } from '@/lib/schema';
 
 type Props = { params: Promise<{ locale: string; skill: string }> };
 
@@ -65,6 +65,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     robots: { index: true, follow: true },
     alternates: alternatesFor(locale, path),
     openGraph: {
+      images: ogImageFor(locale),
       title: titles[locale] ?? titles.nl,
       description: descriptions[locale] ?? descriptions.nl,
       type: 'website',
