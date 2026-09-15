@@ -732,6 +732,10 @@ every credit-spending route 401s).
 
 ## 11. Working agreements
 
+- **Talk to the owner in English, always.** This is a Dutch product with a Dutch codebase, and the
+  two kept bleeding into each other. The split: **chat, explanations and summaries are English**;
+  **code comments, docblocks, UI copy, commit messages and `LEARNINGS.md` stay Dutch**, because
+  those are read by the docent and by whoever maintains this next.
 - **Investigation vs action.** Asked to *investigate / check / look into / diagnose* → report
   findings, change nothing, wait for approval.
 - **Scope control.** Don't create files, pages or migrations beyond what was asked. Multi-file or
