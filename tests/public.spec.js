@@ -463,20 +463,28 @@ test.describe('the kennisgids sections', () => {
      * a locale without its own body is noindex and advertising it would contradict that tag.
      * **That rule still holds.** If a future guide ships Dutch-first, its `en`/`ar` URLs must be
      * absent here, and this list is where that gets caught. */
+    /* De sectie-slug verschilt per taal sinds 15-09 (`i18n/routing.ts`); de gids-slug erachter
+     * niet, want dat is een parameterwaarde. De sitemap moet de vertaalde vorm noemen — de
+     * Nederlandse vorm op een Engelse URL is een 307, en een sitemap hoort geen redirects te
+     * bevatten. */
+    /* De Arabische slug staat onversleuteld in de sitemap, zoals hij daar altijd al stond. */
+    const SECTION = { nl: 'inburgering', en: 'civic-integration', ar: 'الاندماج' };
     for (const slug of [
       'inburgering-stappenplan', 'moet-ik-inburgeren',
       'welke-wet-en-welke-route', 'wat-kost-inburgeren',
     ]) {
       for (const locale of ['nl', 'en', 'ar']) {
-        expect(xml, `${locale}/${slug}`).toContain(`/${locale}/inburgering/${slug}`);
+        expect(xml, `${locale}/${slug}`).toContain(`/${locale}/${SECTION[locale]}/${slug}`);
       }
     }
     // The tijdlijn tool is a real, indexable page and must be advertised.
+    const TOOLS = { nl: 'inburgering/tools/tijdlijn', en: 'civic-integration/tools/timeline', ar: 'الاندماج/أدوات/الجدول-الزمني' };
     for (const locale of ['nl', 'en', 'ar']) {
-      expect(xml, `${locale} tijdlijn`).toContain(`/${locale}/inburgering/tools/tijdlijn`);
+      expect(xml, `${locale} tijdlijn`).toContain(`/${locale}/${TOOLS[locale]}`);
     }
     // The remaining planned surfaces are noindex, so listing them would contradict their meta tag.
-    for (const slug of ['woordenlijst', 'grammatica']) {
+    // Ook in vertaalde vorm niet — anders vangt deze regel het gat alleen nog in het Nederlands.
+    for (const slug of ['woordenlijst', 'grammatica', 'glossary', 'grammar']) {
       expect(xml, `${slug} must not be in the sitemap`).not.toContain(slug);
     }
   });
@@ -490,12 +498,16 @@ test.describe('the language switcher', () => {
   for (const [path, expected] of [
     ['/nl/premium', /\/en\/premium$/],
     ['/nl/blog/inburgeringsexamen-a2-uitleg', /\/en\/blog\/inburgeringsexamen-a2-uitleg$/],
-    ['/nl/oefenexamen/a2/spreken', /\/en\/oefenexamen\/a2\/spreken$/],
-    ['/nl/inburgering/inburgering-stappenplan', /\/en\/inburgering\/inburgering-stappenplan$/],
+    /* Sinds 15-09 verhuist de wissel óók de slug, en bij het examen zelfs de onderdeelnaam:
+     * die is een parameterwaarde die next-intl niet aanraakt, dus `skillParam` doet het aan de
+     * kant van de link en `proxy.ts` aan de kant van de URL. Deze regels legden de ónvertaalde
+     * vorm vast en waren daarmee het bewijs dat er niets vertaald wás. */
+    ['/nl/oefenexamen/a2/spreken', /\/en\/practice-exam\/a2\/speaking$/],
+    ['/nl/inburgering/inburgering-stappenplan', /\/en\/civic-integration\/inburgering-stappenplan$/],
     // The 2026-08-20 routes: a hub, a nested tool, and a static child that shadows a [slug] route.
-    ['/nl/taalexamens', /\/en\/taalexamens$/],
-    ['/nl/inburgering/tools/tijdlijn', /\/en\/inburgering\/tools\/tijdlijn$/],
-    ['/nl/knm/woordenlijst', /\/en\/knm\/woordenlijst$/],
+    ['/nl/taalexamens', /\/en\/language-exams$/],
+    ['/nl/inburgering/tools/tijdlijn', /\/en\/civic-integration\/tools\/timeline$/],
+    ['/nl/knm/woordenlijst', /\/en\/knm\/glossary$/],
   ]) {
     test(`switches locale on ${path}`, async ({ page }) => {
       await page.goto(path);

@@ -1,6 +1,7 @@
 import { getTranslations } from 'next-intl/server';
 import { isFreeExam, type Level, type LevelledSkill } from '@/data/skills';
 import type { SkillProgress } from '@/lib/portal-progress';
+import { localeHref } from '@/i18n/paths';
 
 /**
  * De tien examenslots van één onderdeel, klaar om te tekenen.
@@ -47,7 +48,7 @@ export async function buildExamSlots({
        die verkocht wordt. */
     const openable = isPublished && !isGuest && (free || owns);
     const href = openable
-      ? `/${locale}/oefenexamen/${level}/${skill.slug}/${n}`
+      ? localeHref(locale, `oefenexamen/${level}/${skill.slug}/${n}`)
       : isGuest && isPublished
         ? `/${locale}/register?next=/oefenexamen/${level}/${skill.slug}/${n}`
         : isPublished

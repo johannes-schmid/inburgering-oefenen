@@ -36,6 +36,7 @@ import { guideSections } from '@/lib/guides/sections';
 import RouteReader, { type RoutePhaseView } from '@/components/inburgering/RouteReader';
 import RouteProgress from '@/components/inburgering/RouteProgress';
 import type { GuideSection } from '@/data/guides/types';
+import { skillParam } from '@/i18n/skill-slugs';
 
 /**
  * How many orienting cards a section renders. Copy lives in `guides.<section>.phase_N_*`, so the
@@ -338,9 +339,11 @@ export default async function GuideHub({
               {SKILLS.map(skill => (
                 <Link
                   key={skill.slug}
+                  /* `skillParam`: next-intl vertaalt alleen het statische deel van een route,
+                   * de parameterwaarde geeft het ongewijzigd door. */
                   href={{
                     pathname: '/oefenexamen/[level]/[skill]',
-                    params: { level: DEFAULT_LEVEL, skill: skill.slug },
+                    params: { level: DEFAULT_LEVEL, skill: skillParam(skill.slug, locale) },
                   }}
                   className="bg-surface-container-lowest rounded-2xl p-6 flex items-center gap-3 no-underline shadow-sm post-card focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2"
                   style={{ textDecoration: 'none' }}

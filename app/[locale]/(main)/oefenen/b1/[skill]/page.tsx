@@ -2,16 +2,16 @@ import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import { getTranslations } from 'next-intl/server';
 import { routing } from '@/i18n/routing';
+
+import { parseSkillParam, skillParam } from '@/i18n/skill-slugs';
 import { getSkill } from '@/data/skills';
 import { b1TasterSkills, fetchB1FreePractice, hasB1FreePractice } from '@/lib/free-practice-b1';
 import FreePracticeEngine from '../../[skill]/FreePracticeEngine';
 import JsonLd from '@/components/JsonLd';
 import { langTag } from '@/lib/site';
-import { absUrl, breadcrumbs, courseId, PROVIDER_REF } from '@/lib/schema';
+import {PROVIDER_REF, absUrl, alternatesFor, breadcrumbs, courseId} from '@/lib/schema';
 
 type Props = { params: Promise<{ locale: string; skill: string }> };
-
-const BASE = 'https://inburgeringoefenen.nl';
 
 /**
  * The free B1 taster.
@@ -34,12 +34,14 @@ const BASE = 'https://inburgeringoefenen.nl';
  * ever emits the onderdelen that have a source exam, so the 404 is the unpublished case.
  */
 export async function generateStaticParams() {
-  return routing.locales.flatMap(locale => b1TasterSkills().map(skill => ({ locale, skill })));
+  return routing.locales.flatMap(locale =>
+    b1TasterSkills().map(skill => ({ locale, skill: skillParam(skill, locale) })),
+  );
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
-  const { locale, skill: slug } = await params;
-  const skill = getSkill(slug);
+  const { locale, skill: raw } = await params;
+  const skill = getSkill(parseSkillParam(raw) ?? '');
   if (!skill || !hasB1FreePractice(skill.slug)) return { robots: { index: false, follow: true } };
 
   const tSkills = await getTranslations({ locale, namespace: 'skills' });
@@ -61,29 +63,22 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     title: titles[locale] ?? titles.nl,
     description: descriptions[locale] ?? descriptions.nl,
     robots: { index: true, follow: true },
-    alternates: {
-      canonical: `${BASE}/${locale}/${path}`,
-      languages: {
-        nl: `${BASE}/nl/${path}`,
-        en: `${BASE}/en/${path}`,
-        ar: `${BASE}/ar/${path}`,
-        'x-default': `${BASE}/nl/${path}`,
-      },
-    },
+    alternates: alternatesFor(locale, path),
     openGraph: {
       title: titles[locale] ?? titles.nl,
       description: descriptions[locale] ?? descriptions.nl,
       type: 'website',
-      url: `${BASE}/${locale}/${path}`,
+      url: absUrl(locale, path),
       siteName: 'Inburgering Oefenen',
     },
   };
 }
 
 export default async function B1FreePracticePage({ params }: Props) {
-  const { locale, skill: slug } = await params;
-  const skill = getSkill(slug);
+  const { locale, skill: raw } = await params;
+  const skill = getSkill(parseSkillParam(raw) ?? '');
   if (!skill || !hasB1FreePractice(skill.slug)) notFound();
+
 
   const items = await fetchB1FreePractice(skill.slug);
   if (!items) notFound();

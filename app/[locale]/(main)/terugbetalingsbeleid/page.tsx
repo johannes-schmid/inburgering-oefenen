@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import { routing } from '@/i18n/routing';
+import { alternatesFor } from '@/lib/schema';
 
 type Props = { params: Promise<{ locale: string }> };
 
@@ -7,14 +8,15 @@ export async function generateStaticParams() {
   return routing.locales.map((locale) => ({ locale }));
 }
 
-export async function generateMetadata(): Promise<Metadata> {
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  const { locale } = await params;
   return {
     title: 'Terugbetalingsbeleid | Inburgering Oefenen',
     description: 'Lees ons terugbetalingsbeleid voor aankopen op Inburgering Oefenen.',
     robots: { index: false, follow: true },
-    alternates: {
-      canonical: 'https://inburgeringoefenen.nl/nl/terugbetalingsbeleid',
-    },
+    /* De canonical wees in alle drie de talen naar `/nl/...`, en er stond geen hreflang bij.
+     * `alternatesFor` leidt beide af uit `routing.ts`. */
+    alternates: alternatesFor(locale, 'terugbetalingsbeleid'),
   };
 }
 

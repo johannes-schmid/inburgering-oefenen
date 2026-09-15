@@ -9,10 +9,20 @@
  */
 import { SITE_URL, ORG_ID } from '@/lib/site';
 import type { Level, SkillSlug } from '@/data/skills';
+import { translateDutchPath } from '@/i18n/paths';
 
-/** Absolute URL for a locale-prefixed path. `absUrl('nl', 'oefenen')` → `…/nl/oefenen`. */
+/**
+ * Absolute URL for a locale-prefixed path. `absUrl('nl', 'oefenen')` → `…/nl/oefenen`.
+ *
+ * **Geef altijd het Nederlandse pad door** — dat is de interne naam van de route. Sinds de
+ * publieke slugs per taal verschillen (15-09) vertaalt deze functie het pad zelf:
+ * `absUrl('en', 'oefenexamen/a2/lezen')` → `…/en/practice-exam/a2/reading`. Een aanroeper die
+ * de vertaalde slug al zelf invult, vertaalt hem twee keer en komt op een pad uit dat niet
+ * bestaat. Zie `i18n/paths.ts`.
+ */
 export function absUrl(locale: string, path = ''): string {
-  return path ? `${SITE_URL}/${locale}/${path}` : `${SITE_URL}/${locale}`;
+  const localized = translateDutchPath(path, locale);
+  return localized ? `${SITE_URL}/${locale}/${localized}` : `${SITE_URL}/${locale}`;
 }
 
 /**
@@ -33,9 +43,11 @@ export function courseId(locale: string, level: Level, skill: SkillSlug): string
  * locale plus `x-default`.
  *
  * Fourteen `(main)` pages hand-roll this block today and no helper existed; new routes use this
- * one. It deliberately does not cover the translated-slug pages (`/premium`, `/docent`,
- * `/contact`), whose per-locale paths cannot be derived by interpolating a locale — those keep
- * their literal maps.
+ * one. Sinds 15-09 dekt hij óók de vertaalde slugs: `absUrl` leidt het pad per taal af uit
+ * `routing.ts`, dus `alternatesFor('en', 'gidsen')` levert `/en/guides`. De kop van dit blok
+ * zei tot dan dat dat niet kon; dat was waar zolang `absUrl` de taalcode simpelweg vóór het
+ * Nederlandse pad plakte. `/premium`, `/docent` en `/contact` hoeven hun literalen dus niet
+ * meer te herhalen.
  *
  * `path` carries no leading slash: `alternatesFor('nl', 'inburgering')`.
  *
@@ -75,8 +87,8 @@ export function breadcrumbs(locale: string, home: string, trail: Crumb[], selfUr
   const last = trail[trail.length - 1];
   return {
     '@type': 'BreadcrumbList',
-    // `selfUrl` exists for the pages whose slug is translated (`/premium` is
-    // `/الباقة-المميزة` in Arabic), where the path cannot be derived by interpolating a locale.
+    // `selfUrl` overschrijft de afleiding voor een pagina die haar eigen URL al kent. Sinds
+    // `absUrl` de slug per taal opzoekt is dat zelden nog nodig — geef het Nederlandse pad door.
     '@id': `${selfUrl ?? absUrl(locale, last?.path ?? '')}#breadcrumb`,
     itemListElement: all.map((crumb, i) => ({
       '@type': 'ListItem',

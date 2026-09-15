@@ -3,6 +3,7 @@ import { getTranslations } from 'next-intl/server';
 import { routing } from '@/i18n/routing';
 import { Link } from '@/i18n/navigation';
 import ContactForm from './ContactForm';
+import { alternatesFor } from '@/lib/schema';
 
 type Props = { params: Promise<{ locale: string }> };
 
@@ -16,15 +17,14 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   return {
     title: t('meta_title'),
     description: t('meta_description'),
-    alternates: {
-      canonical: `https://inburgeringoefenen.nl/nl/contact`,
-      languages: {
-        nl: 'https://inburgeringoefenen.nl/nl/contact',
-        en: 'https://inburgeringoefenen.nl/en/contact',
-        ar: 'https://inburgeringoefenen.nl/ar/contact',
-        'x-default': 'https://inburgeringoefenen.nl/nl/contact',
-      },
-    },
+    /* Twee fouten stonden hier tot 15-09, en ze hieven elkaar niet op.
+     *
+     * De canonical wees in alle drie de talen naar `/nl/contact` — dat vertelt Google dat de
+     * Engelse en Arabische pagina geen eigen pagina zijn, precies de fout die `/docent` en
+     * `/premium` eerder al hebben rechtgezet. En de Arabische hreflang wees naar `/ar/contact`,
+     * terwijl de slug daar `/ar/تواصل-معنا` is; die URL 308't, en een hreflang naar een redirect
+     * telt niet mee. `alternatesFor` leidt nu beide af uit `routing.ts`. */
+    alternates: alternatesFor(locale, 'contact'),
   };
 }
 

@@ -2,28 +2,28 @@ import type { Metadata } from 'next';
 import { notFound, redirect } from 'next/navigation';
 import { getTranslations } from 'next-intl/server';
 import { routing } from '@/i18n/routing';
+import { localizedPath } from '@/i18n/paths';
+import { parseSkillParam, skillParam } from '@/i18n/skill-slugs';
 import { SKILLS, getSkill } from '@/data/skills';
 import { hasFreePractice } from '@/data/free-practice';
 import { fetchA2FreePractice } from '@/lib/free-practice';
 import FreePracticeEngine from './FreePracticeEngine';
 import JsonLd from '@/components/JsonLd';
 import { langTag } from '@/lib/site';
-import { absUrl, breadcrumbs, courseId, PROVIDER_REF } from '@/lib/schema';
+import { absUrl, alternatesFor, breadcrumbs, courseId, PROVIDER_REF } from '@/lib/schema';
 import { DEFAULT_LEVEL } from '@/data/skills';
 
 type Props = { params: Promise<{ locale: string; skill: string }> };
 
-const BASE = 'https://inburgeringoefenen.nl';
-
 export async function generateStaticParams() {
   return routing.locales.flatMap(locale =>
-    SKILLS.filter(s => hasFreePractice(s.slug)).map(s => ({ locale, skill: s.slug }))
+    SKILLS.filter(s => hasFreePractice(s.slug)).map(s => ({ locale, skill: skillParam(s.slug, locale) }))
   );
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
-  const { locale, skill: slug } = await params;
-  const skill = getSkill(slug);
+  const { locale, skill: raw } = await params;
+  const skill = getSkill(parseSkillParam(raw) ?? '');
   if (!skill) return {};
 
   // Skills whose taster is not written yet redirect to the picker — keep those
@@ -48,36 +48,30 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     title: titles[locale] ?? titles.nl,
     description: descriptions[locale] ?? descriptions.nl,
     robots: { index: true, follow: true },
-    alternates: {
-      canonical: `${BASE}/${locale}/oefenen/${skill.slug}`,
-      languages: {
-        nl: `${BASE}/nl/oefenen/${skill.slug}`,
-        en: `${BASE}/en/oefenen/${skill.slug}`,
-        ar: `${BASE}/ar/oefenen/${skill.slug}`,
-        'x-default': `${BASE}/nl/oefenen/${skill.slug}`,
-      },
-    },
+    alternates: alternatesFor(locale, `oefenen/${skill.slug}`),
     openGraph: {
       title: titles[locale] ?? titles.nl,
       description: descriptions[locale] ?? descriptions.nl,
       type: 'website',
-      url: `${BASE}/${locale}/oefenen/${skill.slug}`,
+      url: absUrl(locale, `oefenen/${skill.slug}`),
       siteName: 'Inburgering Oefenen',
     },
   };
 }
 
 export default async function FreePracticePage({ params }: Props) {
-  const { locale, skill: slug } = await params;
-  const skill = getSkill(slug);
+  const { locale, skill: raw } = await params;
+  const slug = parseSkillParam(raw);
+  const skill = slug && getSkill(slug);
   if (!skill) notFound();
+
 
   /* The items come from A2 exam 1 of this onderdeel, with the twenty static items in
    * `data/free-practice.ts` as the fallback — see `lib/free-practice.ts` for why the fallback
    * exists. A real exam component with neither (Schrijven / Spreken) sends the visitor back to
    * the picker rather than showing a dead end. */
   const set = await fetchA2FreePractice(skill.slug);
-  if (!set) redirect(`/${locale}/oefenen`);
+  if (!set) redirect(localizedPath('/oefenen', locale));
 
   const tSkills = await getTranslations({ locale, namespace: 'skills' });
   const tB = await getTranslations({ locale, namespace: 'breadcrumbs' });

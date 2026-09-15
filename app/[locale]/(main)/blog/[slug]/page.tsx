@@ -6,6 +6,7 @@ import { Link } from '@/i18n/navigation';
 import { getPostBySlug, getPostLocale, getPostSlug, getAllPostParams, hasTranslation } from '@/data/blog-posts';
 import ArticleContent from '@/components/ArticleContent';
 import { SITE_URL, ORG_ID, TEACHER_ID, langTag } from '@/lib/site';
+import { absUrl, PROVIDER_REF } from '@/lib/schema';
 
 type Props = { params: Promise<{ locale: string; slug: string }> };
 
@@ -27,7 +28,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const nlSlug = post.slug;
   const enSlug = getPostSlug(post, 'en');
   const arSlug = getPostSlug(post, 'ar');
-  const canonicalUrl = `${SITE_URL}/${locale}/blog/${getPostSlug(post, locale)}`;
+  const canonicalUrl = absUrl(locale, `blog/${getPostSlug(post, locale)}`);
   const translated = hasTranslation(post, locale);
 
   return {
@@ -38,10 +39,10 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     alternates: {
       canonical: canonicalUrl,
       languages: {
-        nl: `${SITE_URL}/nl/blog/${nlSlug}`,
-        en: `${SITE_URL}/en/blog/${enSlug}`,
-        ar: `${SITE_URL}/ar/blog/${arSlug}`,
-        'x-default': `${SITE_URL}/nl/blog/${nlSlug}`,
+        nl: absUrl('nl', `blog/${nlSlug}`),
+        en: absUrl('en', `blog/${enSlug}`),
+        ar: absUrl('ar', `blog/${arSlug}`),
+        'x-default': absUrl('nl', `blog/${nlSlug}`),
       },
     },
     openGraph: {
@@ -76,7 +77,7 @@ export default async function BlogPostPage({ params }: Props) {
   const t = await getTranslations({ locale, namespace: 'blog' });
   const lp = getPostLocale(post, locale);
   const translated = hasTranslation(post, locale);
-  const canonicalUrl = `${SITE_URL}/${locale}/blog/${getPostSlug(post, locale)}`;
+  const canonicalUrl = absUrl(locale, `blog/${getPostSlug(post, locale)}`);
 
   // Rough word count off the rendered body — BlogPosting.wordCount wants prose, not markup.
   const wordCount = lp.articleHtml.replace(/<[^>]+>/g, ' ').split(/\s+/).filter(Boolean).length;
@@ -101,14 +102,14 @@ export default async function BlogPostPage({ params }: Props) {
         },
         // Both anchors are defined in the homepage @graph — reference, don't redefine.
         author: { '@id': TEACHER_ID },
-        publisher: { '@id': ORG_ID },
+        publisher: PROVIDER_REF,
       },
       {
         '@type': 'BreadcrumbList',
         '@id': `${canonicalUrl}#breadcrumb`,
         itemListElement: [
           { '@type': 'ListItem', position: 1, name: t('breadcrumb_home'), item: `${SITE_URL}/${locale}` },
-          { '@type': 'ListItem', position: 2, name: t('breadcrumb_blog'), item: `${SITE_URL}/${locale}/blog` },
+          { '@type': 'ListItem', position: 2, name: t('breadcrumb_blog'), item: absUrl(locale, 'blog') },
           { '@type': 'ListItem', position: 3, name: lp.heroTitle },
         ],
       },
@@ -156,7 +157,7 @@ export default async function BlogPostPage({ params }: Props) {
             </p>
             <div className="flex items-center gap-4 pt-6" style={{ borderTop: '1px solid rgba(255,255,255,0.15)' }}>
               <div className="w-10 h-10 rounded-xl overflow-hidden flex-shrink-0" style={{ border: '2px solid rgba(255,255,255,0.2)' }}>
-                <img src="/images/marieke-schipper.jpg" alt="Marieke Schipper" width={40} height={40} style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'center top' }} />
+                <img src="/images/marieke-schipper.webp" alt="Marieke Schipper" width={40} height={40} style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'center top' }} />
               </div>
               <div>
                 <p className="text-sm font-semibold text-white">

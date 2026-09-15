@@ -6,6 +6,7 @@ import { Link } from '@/i18n/navigation';
 import TOPICS from '@/data/oefenvragen-topics';
 import { Breadcrumb, GradientHero, EyebrowBadge, CTABanner } from '@/components/site';
 import { FEATURES } from '@/lib/features';
+import { localeHref } from '@/i18n/paths';
 
 type Props = { params: Promise<{ locale: string }> };
 
@@ -23,7 +24,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   // resolves to the not-found page client-side, which is a soft 404 — the worst of both; and any
   // inbound link to this KNM-era URL is better spent on the live funnel than on an error. Flip
   // FEATURES.oefenvragen when the topics exist.
-  if (!FEATURES.oefenvragen) redirect(`/${locale}/oefenen`);
+  if (!FEATURES.oefenvragen) redirect(localeHref(locale, `oefenen`));
 
   const t = await getTranslations({ locale, namespace: 'oefenvragen' });
   return {
@@ -54,7 +55,7 @@ export default async function OefenIndexPage({ params }: Props) {
   // resolves to the not-found page on the client, which is a soft 404 — the worst of both; and any
   // inbound link to this KNM-era URL is better spent on the live funnel than on an error page. Flip
   // FEATURES.oefenvragen when the topics exist.
-  if (!FEATURES.oefenvragen) redirect(`/${locale}/oefenen`);
+  if (!FEATURES.oefenvragen) redirect(localeHref(locale, `oefenen`));
 
   const t = await getTranslations({ locale, namespace: 'oefenvragen' });
 

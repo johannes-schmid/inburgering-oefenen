@@ -9,7 +9,8 @@ import { KNM, KNM_THEMES, SKILLS, DEFAULT_LEVEL, getFormat, isFreeKnmExam } from
 import { fetchExamsForSkill } from '@/lib/exams';
 import JsonLd from '@/components/JsonLd';
 import { langTag, TEACHER_ID } from '@/lib/site';
-import { absUrl, breadcrumbs, omitEmpty, PROVIDER_REF } from '@/lib/schema';
+import {PROVIDER_REF, absUrl, alternatesFor, breadcrumbs, omitEmpty} from '@/lib/schema';
+import { localeHref } from '@/i18n/paths';
 
 /**
  * The public overview for KNM's ten oefenexamens — the funnel and SEO surface, the same job
@@ -29,7 +30,6 @@ import { absUrl, breadcrumbs, omitEmpty, PROVIDER_REF } from '@/lib/schema';
 
 type Props = { params: Promise<{ locale: string }> };
 
-const BASE = 'https://inburgeringoefenen.nl';
 const PATH = 'oefenexamen/knm';
 
 export async function generateStaticParams() {
@@ -47,20 +47,12 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     // like? KNM's format is filled in (`exam_formats` for (NULL, 'knm')) and its ten exams are
     // published, so the honest answer is yes.
     robots: { index: KNM.itemCount !== null, follow: true },
-    alternates: {
-      canonical: `${BASE}/${locale}/${PATH}`,
-      languages: {
-        nl: `${BASE}/nl/${PATH}`,
-        en: `${BASE}/en/${PATH}`,
-        ar: `${BASE}/ar/${PATH}`,
-        'x-default': `${BASE}/nl/${PATH}`,
-      },
-    },
+    alternates: alternatesFor(locale, PATH),
     openGraph: {
       title: t('knm_meta_title'),
       description: t('knm_meta_description'),
       type: 'website',
-      url: `${BASE}/${locale}/${PATH}`,
+      url: absUrl(locale, PATH),
       siteName: 'Inburgering Oefenen',
     },
   };
@@ -188,7 +180,7 @@ export default async function KnmOverviewPage({ params }: Props) {
                 <li key={number}>
                   {available ? (
                     <a
-                      href={`/${locale}/oefenexamen/knm/${number}`}
+                      href={localeHref(locale, `oefenexamen/knm/${number}`)}
                       className={`exam-card${free ? '' : ' locked'} relative flex flex-col gap-3 p-6 pb-7 rounded-2xl bg-surface-container-lowest overflow-hidden no-underline`}
                       style={{ boxShadow: 'var(--shadow-ambient)' }}
                     >
@@ -245,7 +237,7 @@ export default async function KnmOverviewPage({ params }: Props) {
               </p>
             </div>
             <a
-              href={`/${locale}/premium`}
+              href={localeHref(locale, `premium`)}
               className="inline-flex items-center gap-2 px-6 py-3 font-bold rounded-xl text-sm no-underline flex-shrink-0"
               style={{ background: '#fe762c', color: '#5f2200', boxShadow: 'var(--shadow-btn-orange)' }}
             >
@@ -283,7 +275,7 @@ export default async function KnmOverviewPage({ params }: Props) {
             {SKILLS.map(other => (
               <a
                 key={other.slug}
-                href={`/${locale}/oefenexamen/${DEFAULT_LEVEL}/${other.slug}`}
+                href={localeHref(locale, `oefenexamen/${DEFAULT_LEVEL}/${other.slug}`)}
                 className="exam-card flex items-center gap-4 p-5 rounded-2xl bg-surface-container-lowest no-underline"
                 style={{ boxShadow: 'var(--shadow-card)' }}
               >

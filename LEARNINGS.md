@@ -4483,3 +4483,43 @@ nog ophief. De 429 stond wél in `grades[].error`, maar het scherm toonde hem ne
 uur naast een examen van 16 opdrachten is een limiet die op de tweede poging toeslaat. En een
 mislukte achtergrondstap mag nooit dezelfde tekst krijgen als een wachtrij: "de docent kijkt ernaar"
 terwijl niemand komt, is de duurste zin op het scherm.
+
+## 2026-09-15 — Vertaalde slugs voor alle publieke routes (EN/AR)
+**Changed:** `i18n/routing.ts` (vertaalde `pathnames` + `alternateLinks: false`), nieuw
+`i18n/skill-slugs.ts` en `i18n/paths.ts`, `proxy.ts` (308 op de onderdeelnaam), `lib/schema.ts`
+(`absUrl` vertaalt het pad), `app/sitemap.ts`, `next.config.ts`, ~20 pagina's en
+`components/Footer.tsx` / `Nav.tsx` / `tijdlijn/Result.tsx` / `_components/GuideHub.tsx`.
+Nieuw: `tests-unit/slug-translations.test.ts` (21) en `tests/slugs.spec.js` (24).
+**Outcome:** SUCCESS — tsc schoon, 575 unit, 83 playwright, `next build` compileert, 161/161
+sitemap-URL's 200, 360 interne links zonder redirect-hop.
+
+**What worked / went wrong:**
+- **De opmerking in `routing.ts` was half waar en heeft het vertalen jaren tegengehouden.** Er
+  stond dat een slug per taal 404't zodra de lezer van taal wisselt. Dat geldt voor een
+  *parameterwaarde* (een gids-slug wordt letterlijk in de andere taal ingevuld), niet voor een
+  *statisch segment*: `usePathname()` geeft de interne routenaam terug. `/docent` en `/premium`
+  bewezen dat al. `tests/slugs.spec.js` legt beide helften nu vast.
+- **`permanentRedirect()` in een statisch gerenderde route levert geen 308.** De
+  oefenexamen-overzichtspagina leest geen dynamische API, dus Next bakt de omleiding ín de
+  pagina en antwoordt met 200. De canonical klopte, de status niet — een uur kwijt aan zoeken
+  omdat er niets faalde. Kanonisering hoort in `proxy.ts`.
+- **next-intl vertaalt parameterwaarden niet.** `<Link href={{pathname, params}}>` vertaalt het
+  pad en geeft `params.skill` ongewijzigd door, dus de voettekst linkte naar
+  `/en/practice-exam/a2/lezen`. Vier plekken; `skillParam()` aan de linkkant, `proxy.ts` aan de
+  URL-kant.
+- **next-intl's eigen hreflang-headers spraken die van de pagina tegen.** Het bouwt ze uit
+  `routing.ts` en kent de vertaalde parameterwaarde niet, dus het zette `hreflang="ar"` op een
+  pad met de Nederlandse onderdeelnaam. Uitgezet met `alternateLinks: false`.
+- **Eén fix op `absUrl` repareerde vijftig aanroepplekken.** Ze gaven allemaal al het
+  Nederlandse pad door; de vertaling erin leggen was goedkoper en veiliger dan vijftig
+  canonicals apart bijwerken. Daarbij kwamen drie bestaande fouten boven: `/contact`,
+  `/gebruiksvoorwaarden` en `/terugbetalingsbeleid` zetten hun canonical in álle talen op `/nl`.
+- **Zes bestaande playwright-cases legden de ónvertaalde vorm vast** en faalden dus terecht. Ze
+  zijn bijgewerkt, niet omzeild.
+- **Een cold `.next/dev` met zes gelijktijdige requests geeft 500's die niets met de code te
+  maken hebben.** Dat kostte een verkeerde verdenking; het reproduceerde op een schone tree.
+  Serieel controleren na één warm request.
+
+**Lesson:** een bewering in een codecommentaar over wat *niet kan* is een hypothese tot er een
+test onder ligt — en bij i18n loopt de scheidslijn altijd tussen het statische segment en de
+parameterwaarde.

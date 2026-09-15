@@ -1,11 +1,13 @@
-import { useTranslations } from 'next-intl';
+import { useLocale, useTranslations } from 'next-intl';
 import { Link } from '@/i18n/navigation';
 import { DEFAULT_LEVEL, SKILLS } from '@/data/skills';
 import { FEATURES } from '@/lib/features';
 import LogoMark from '@/components/site/LogoMark';
 import { SectionTransition } from '@/components/horizon';
+import { skillParam } from '@/i18n/skill-slugs';
 
 export default function Footer() {
+  const locale = useLocale();
   const t = useTranslations('footer');
   const tSkills = useTranslations('skills');
 
@@ -35,7 +37,11 @@ export default function Footer() {
             {SKILLS.map(skill => (
               <Link
                 key={skill.slug}
-                href={{ pathname: '/oefenexamen/[level]/[skill]', params: { level: DEFAULT_LEVEL, skill: skill.slug } }}
+                /* `skillParam`, want next-intl vertaalt alleen het statische deel van een
+                 * route — de parameterwaarde geeft het ongewijzigd door. Zonder dit wordt dit
+                 * `/en/practice-exam/a2/lezen`, een 308 naar de vertaalde variant op elke
+                 * interne link in de voettekst. */
+                href={{ pathname: '/oefenexamen/[level]/[skill]', params: { level: DEFAULT_LEVEL, skill: skillParam(skill.slug, locale) } }}
                 className="hover:text-white transition-colors no-underline"
               >
                 {tSkills(`${skill.key}.name`)}

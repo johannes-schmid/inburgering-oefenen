@@ -13,6 +13,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
+import { localeHref } from '@/i18n/paths';
 
 /**
  * Flags, drawn as SVG rather than typed as emoji (owner's decision, 2026-08-28).
@@ -158,7 +159,7 @@ export default function Nav() {
           </Link>
 
           <a
-            href={`/${locale}/oefenen`}
+            href={localeHref(locale, `oefenen`)}
             className="inline-flex items-center gap-1.5 bg-secondary-container px-3.5 py-2 sm:px-6 sm:py-2.5 rounded-full font-bold text-sm button-inner-glow hover:-translate-y-px transition-transform active:scale-95 no-underline whitespace-nowrap"
             style={{ color: '#ffffff' }}
           >
@@ -208,7 +209,7 @@ export default function Nav() {
             </Link>
 
             <a
-              href={`/${locale}/oefenen`}
+              href={localeHref(locale, `oefenen`)}
               onClick={() => setMobileOpen(false)}
               className="mt-3 mb-1 block text-center bg-secondary-container px-4 py-3 rounded-full font-bold text-sm button-inner-glow no-underline"
               style={{ color: '#ffffff' }}
