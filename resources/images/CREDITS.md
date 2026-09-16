@@ -396,3 +396,12 @@ Two findings from the second batch, both caught only by looking at the output:
 - `spreken-10-d2-o5-c` (man mowing lawn with lawnmower in garden) — photo by [Magda Ehlers](https://www.pexels.com/@magda-ehlers-pexels) on Pexels (#4162011)
 - `spreken-10-d2-o7-a` (school canteen counter with fresh salads fruit and sandwiches) — photo by [Yan Krukau](https://www.pexels.com/@yankrukov) on Pexels (#8617523)
 - `spreken-10-d2-o7-b` (canteen counter with fried snacks and candy vending machine) — photo by [Gupta Sahil](https://www.pexels.com/@gupta-sahil-140074270) on Pexels (#19630644)
+
+## Blog — 16-09-2026
+
+| Bestand | Fotograaf | Bron |
+|---|---|---|
+| `blog/veelgemaakte-fouten-schrijven-examen-a2.jpg` | Pavel Mudarra | https://www.pexels.com/photo/student-writing-notes-with-colored-pens-37627847/ |
+| `blog/want-of-omdat.jpg` | Tima Miroshnichenko | https://www.pexels.com/photo/a-person-writing-on-a-notebook-5303510/ |
+| `blog/wederkerende-werkwoorden-nederlands.jpg` | Kari Alfonso | https://www.pexels.com/photo/woman-writing-in-a-classroom-with-sunlight-37865721/ |
+| `blog/spreken-examen-inburgering-tips.jpg` | Mikhail Nilov | https://www.pexels.com/photo/man-in-white-crew-neck-t-shirt-wearing-black-headphones-7681376/ |

@@ -216,12 +216,17 @@ export default async function BlogPostPage({ params }: Props) {
                 <h2 className="font-headline font-bold text-on-surface mb-2" style={{ fontSize: '1.4rem', letterSpacing: '-0.01em' }}>
                   {t('faq_title')}
                 </h2>
-                <div className="article-faq article-body">
+                {/* Uitklapbaar, net als op een gids: een blok van acht open antwoorden duwt de
+                    CTA en de gerelateerde artikelen ver onder de vouw. `<details>` heeft geen
+                    JavaScript nodig en blijft voor een crawler volledig leesbaar. */}
+                <div className="faq-folds mt-4">
                   {lp.faq.map(f => (
-                    <div key={f.q} className="article-faq-item">
-                      <p className="article-faq-q">{f.q}</p>
+                    <details key={f.q} className="faq-fold">
+                      <summary>
+                        <span>{f.q}</span>
+                      </summary>
                       <p>{f.a}</p>
-                    </div>
+                    </details>
                   ))}
                 </div>
               </section>

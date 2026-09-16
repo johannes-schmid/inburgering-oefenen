@@ -131,6 +131,41 @@ function factAr(claim: string, sourceLabel: string, url: string, checked = '28-0
     `<p class="fact-box-source">المصدر: <a href="${url}" target="_blank" rel="noopener">${sourceLabel}</a> — تم الرجوع إليه في ${checked} (بالهولندية)</p></div>`;
 }
 
+/**
+ * De observatie van de docent, in haar eigen woorden. Dit blok is de reden dat deze artikelen
+ * niet na te maken zijn: het is eerstehands materiaal uit haar nakijkwerk, geen modeltekst.
+ * Markup en avatar zijn dezelfde als in `data/guides/kit.ts`.
+ */
+function docentNote(text: string, role = 'NT2-docent'): string {
+  return `<div class="docent-note"><img src="/images/marieke-schipper.webp" alt="" width="44" height="44" class="docent-note-avatar" loading="lazy" />` +
+    `<div><p class="docent-note-name">Marieke Schipper \u00b7 ${role}</p><p>${text}</p></div></div>`;
+}
+
+const ICON_X = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" aria-hidden="true"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>';
+const ICON_CHECK = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>';
+
+/**
+ * Fout naast goed, in twee kolommen. Op een telefoon vallen ze onder elkaar — fout eerst,
+ * want dat is de zin die de lezer herkent. De kruisjes en vinkjes zijn lucide-paden: het
+ * projectverbod op emoji geldt ook binnen een artikel.
+ */
+function foutGoed(fout: string[], goed: string[], labels: [string, string] = ['Fout', 'Goed']): string {
+  const li = (rows: string[], icon: string) => rows.map(r => `<li>${icon}<span>${r}</span></li>`).join('');
+  return `<div class="yesno-grid">` +
+    `<div class="yesno-col no"><p class="yesno-title">${labels[0]}</p><ul>${li(fout, ICON_X)}</ul></div>` +
+    `<div class="yesno-col yes"><p class="yesno-title">${labels[1]}</p><ul>${li(goed, ICON_CHECK)}</ul></div>` +
+    `</div>`;
+}
+
+/**
+ * De voorbeeldzinnen blijven in elke taal Nederlands — je vertaalt "Ik voel me goed" niet, dat
+ * is de zin die geleerd wordt. In het Arabische artikel staat die zin dus LTR in een RTL-regel,
+ * en zonder `dir` zet de bidi-algoritme de punt aan de verkeerde kant. Vandaar deze wrapper.
+ */
+function nlEx(s: string): string {
+  return `<span dir="ltr" lang="nl">${s}</span>`;
+}
+
 const POSTS: BlogPost[] = [
   // ───────────────────────────────────────────────────────────── 1. PILLAR
   {
@@ -2925,6 +2960,1608 @@ ${factAr('القراءة 65 دقيقة، والاستماع 45 دقيقة، وا
     <tr><td>B2</td><td>واللغة المجرّدة أيضًا</td></tr>
   </table>
 </div>`,
+      },
+    },
+  },
+  // ───────────────────────────────────────────────────── 6. SCHRIJVEN — veelgemaakte fouten
+  {
+    slug: 'veelgemaakte-fouten-schrijven-examen-a2',
+    title: 'De 8 fouten die je maakt bij het examen Schrijven A2',
+    description: 'Hoofdletters, komma’s, tijden en ‘u’ of ‘je’: dit zijn de acht fouten die een NT2-docent elke week terugziet bij het examen Schrijven A2.',
+    category: 'Tips & Voorbereiding',
+    categoryKey: 'tips',
+    categoryColor: 'orange',
+    datePublished: '2026-09-16',
+    dateModified: '2026-09-16',
+    dateLabel: '16 september 2026',
+    breadcrumb: 'Fouten bij Schrijven A2',
+    heroTitle: 'De 8 fouten die je maakt bij het examen Schrijven A2',
+    heroSubtitle: 'Je verliest bij Schrijven bijna nooit punten op moeilijke woorden. Je verliest ze op een vergeten hoofdletter en een vergeten punt.',
+    image: '/images/blog/veelgemaakte-fouten-schrijven-examen-a2.jpg',
+    imageAlt: 'Hand schrijft met pen op papier tijdens het oefenen voor het examen Schrijven A2',
+    readingMinutes: 8,
+    faq: [
+      { q: 'Hoeveel schrijfopdrachten krijg ik op het examen Schrijven A2?', a: 'Vier opdrachten, in maximaal 40 minuten. Je maakt dit examen met pen en papier, niet op de computer. Dat staat zo op de pagina van DUO over de inhoud van de taalexamens.' },
+      { q: 'Tellen spelfouten mee bij het examen Schrijven?', a: 'Je tekst wordt door gecertificeerde beoordelaars nagekeken, niet door een computer. Zij kijken naar meerdere dingen tegelijk, waaronder of je boodschap duidelijk is. Eén spelfout is geen ramp. Dezelfde fout in elke zin valt wel op.' },
+      { q: 'Moet ik ‘u’ of ‘je’ schrijven?', a: 'Dat bepaalt de opdracht. Staat er ‘u’ in de vraag, dan schrijf jij ook ‘u’. Staat er ‘je’, dan schrijf jij ‘je’. Wissel niet halverwege je tekst.' },
+      { q: 'Welke fout wordt het vaakst gemaakt?', a: 'De vergeten hoofdletter aan het begin van de zin en de vergeten punt aan het einde. Allebei kosten ze punten en allebei vind je ze terug als je je tekst één keer teruglest.' },
+      { q: 'Mag ik een woordenboek gebruiken op het examen Schrijven?', a: 'Nee. Je mag geen hulpmiddelen gebruiken. Je tas, telefoon en horloge gaan in een kluisje.' },
+      { q: 'Hoeveel tijd heb ik per opdracht?', a: 'Vier opdrachten in 40 minuten is gemiddeld 10 minuten per opdracht. Houd daarvan ongeveer 1 minuut over om terug te lezen.' },
+      { q: 'Hoe oefen ik het beste voor Schrijven?', a: 'Schrijf een hele opdracht met de hand, en loop daarna de controlelijst uit dit artikel af. Dat werkt beter dan losse oefeningen over komma’s, omdat je op het examen ook alles tegelijk moet doen.' },
+    ],
+    articleHtml: `
+<p>Bij het <strong>examen Schrijven A2</strong> verlies je de meeste punten niet aan moeilijke woorden. Je verliest ze aan kleine dingen: een vergeten hoofdletter, een vergeten punt, een komma die er niet staat. Hieronder staan de acht fouten die onze docent elke week terugziet als zij schrijfopdrachten nakijkt. Je hoeft er geen nieuw Nederlands voor te leren. Je moet ze alleen leren zien.</p>
+
+${fact('Het examen Schrijven op niveau A2 maak je met pen en papier. Je krijgt 4 schrijfopdrachten en het examen duurt 40 minuten.', 'inburgeren.nl — inhoud taalexamens', SRC_INHOUD)}
+
+${docentNote('Ik zie bijna nooit iemand zakken omdat hij een woord niet kende. Ik zie mensen punten verliezen op de punt aan het einde van de zin.')}
+
+<div class="article-toc">
+  <p class="article-toc-title">De acht fouten</p>
+  <ol>
+    <li><a href="#hoofdletter">De hoofdletter vergeten</a></li>
+    <li><a href="#punt">De punt vergeten</a></li>
+    <li><a href="#komma-want">Geen komma voor ‘want’ en ‘omdat’</a></li>
+    <li><a href="#komma-brief">Geen komma bij de aanhef en de groet</a></li>
+    <li><a href="#maanden">Maanden en dagen met een hoofdletter</a></li>
+    <li><a href="#tijd">De tijd verkeerd opschrijven</a></li>
+    <li><a href="#u-je">‘u’ en ‘je’ door elkaar</a></li>
+    <li><a href="#teruglezen">Je tekst niet teruglezen</a></li>
+  </ol>
+</div>
+
+<h2 id="hoofdletter">1. De hoofdletter vergeten</h2>
+
+<p>Dit is de fout die het vaakst voorkomt. Een hoofdletter hoort op vier plekken, en die vier zijn genoeg voor A2.</p>
+
+<div class="tip-card"><span class="tip-number">A</span><div><p>Aan het <strong>begin van elke zin</strong>. Ook als de zin maar drie woorden lang is.</p></div></div>
+<div class="tip-card"><span class="tip-number">B</span><div><p>Bij <strong>namen van mensen en dieren</strong>: Fatima, Ahmed, mijn hond Max.</p></div></div>
+<div class="tip-card"><span class="tip-number">C</span><div><p>Bij <strong>plaatsnamen en landen</strong>: Amsterdam, Rotterdam, Nederland, Syrië.</p></div></div>
+<div class="tip-card"><span class="tip-number">D</span><div><p>Bij <strong>rivieren en gebergten</strong>: de Maas, de Rijn, de Alpen.</p></div></div>
+
+${foutGoed(['ik woon in amsterdam met mijn zoon ali.'], ['Ik woon in Amsterdam met mijn zoon Ali.'])}
+
+<h2 id="punt">2. De punt vergeten</h2>
+
+<p>Elke zin eindigt met een punt. Ook de laatste zin van je brief. Ook een korte zin. Dit voelt als een detail, maar een beoordelaar ziet het meteen.</p>
+
+${foutGoed(['Ik kom morgen langs Tot ziens'], ['Ik kom morgen langs. Tot ziens.'])}
+
+<h2 id="komma-want">3. Geen komma voor ‘want’ en ‘omdat’</h2>
+
+<p>Voor de woorden <strong>want</strong> en <strong>omdat</strong> staat een komma. Altijd.</p>
+
+${foutGoed(['Ik kan niet komen want ik moet werken.'], ['Ik kan niet komen, want ik moet werken.', 'Ik kan niet komen, omdat ik moet werken.'])}
+
+<p>Twijfel je tussen <em>want</em> en <em>omdat</em>? Kies dan <em>want</em>. Dat scheelt je een woordvolgordefout, en waarom dat zo is lees je in <a href="/nl/blog/want-of-omdat">Want of omdat: kies bijna altijd ‘want’</a>.</p>
+
+<h2 id="komma-brief">4. Geen komma bij de aanhef en de groet</h2>
+
+<p>Een brief of e-mail begint en eindigt bijna altijd hetzelfde. Op allebei die plekken staat een komma. Je weet van tevoren dat je ze nodig hebt, dus dit zijn de makkelijkste punten van het hele examen.</p>
+
+<div class="article-table-wrap">
+<table>
+  <thead><tr><th>Waar</th><th>Zo schrijf je het</th><th>Let op</th></tr></thead>
+  <tbody>
+    <tr><td>Aanhef</td><td><strong>Beste meneer Jansen,</strong></td><td>komma erachter</td></tr>
+    <tr><td>Aanhef, informeel</td><td><strong>Hoi Sanne,</strong></td><td>komma erachter</td></tr>
+    <tr><td>Groet</td><td><strong>Met vriendelijke groet,</strong></td><td>komma erachter, je naam eronder</td></tr>
+  </tbody>
+</table>
+</div>
+
+<h2 id="maanden">5. Maanden en dagen met een hoofdletter</h2>
+
+<p>In het Nederlands schrijf je de maanden en de dagen <strong>klein</strong>. In het Engels is dat anders, en daarom gaat het zo vaak mis bij mensen die ook Engels spreken.</p>
+
+${foutGoed(['Ik kom op Maandag 3 Maart.'], ['Ik kom op maandag 3 maart.'])}
+
+<div class="note-strip"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg><p>Landen en talen krijgen wél een hoofdletter: Nederland, Nederlands, Marokko, Arabisch. Maanden en dagen niet.</p></div>
+
+<h2 id="tijd">6. De tijd verkeerd opschrijven</h2>
+
+<p>Er zijn twee manieren om een tijd op te schrijven. Kies er één en meng ze niet. Een half-analoge, half-digitale tijd is een fout die een beoordelaar altijd ziet.</p>
+
+<div class="compare-2">
+  <div class="compare-card is-primary">
+    <div class="compare-head"><h3>Analoge tijd</h3><p class="compare-when">Je schrijft het woord ‘uur’</p></div>
+    <div class="compare-rows">
+      <div class="compare-row"><p class="compare-key">Voorbeeld</p><p class="compare-val">1 uur · 9 uur · half tien</p></div>
+      <div class="compare-row"><p class="compare-key">In een zin</p><p class="compare-val">Ik kom om 5 uur langs.</p></div>
+    </div>
+  </div>
+  <div class="compare-card">
+    <div class="compare-head"><h3>Digitale tijd</h3><p class="compare-when">Je schrijft cijfers met een dubbele punt</p></div>
+    <div class="compare-rows">
+      <div class="compare-row"><p class="compare-key">Voorbeeld</p><p class="compare-val">13:00 · 21:00 · 09:30</p></div>
+      <div class="compare-row"><p class="compare-key">In een zin</p><p class="compare-val">Ik kom om 17:00 langs.</p></div>
+    </div>
+  </div>
+</div>
+
+${foutGoed(['Ik kom om 17: uur.', 'De afspraak is om 9:00 uur ’s ochtends om 9.'], ['Ik kom om 17:00.', 'Ik kom om 5 uur.'])}
+
+<h2 id="u-je">7. ‘u’ en ‘je’ door elkaar</h2>
+
+<p>Kijk naar de opdracht. Staat er <strong>u</strong> in de vraag? Dan schrijf jij ook <strong>u</strong>. Staat er <strong>je</strong>? Dan schrijf jij <strong>je</strong>. Kies er één en houd het je hele tekst vol.</p>
+
+${foutGoed(['Beste meneer Jansen, kunt u mij helpen? Ik hoor graag van je.'], ['Beste meneer Jansen, kunt u mij helpen? Ik hoor graag van u.'])}
+
+<p>Dit is geen beleefdheidsregel, het is een consistentieregel. Allebei is goed, door elkaar is fout.</p>
+
+<h2 id="teruglezen">8. Je tekst niet teruglezen</h2>
+
+<p>De zeven fouten hierboven vind je allemaal terug in twee minuten. Plan die twee minuten in. Je hebt 40 minuten voor vier opdrachten, dus ongeveer 10 minuten per opdracht — houd er per opdracht één minuut van over om te controleren.</p>
+
+<div class="info-box info-box-green">
+  <p><strong>Je controlelijst voor de laatste minuut.</strong> Hoofdletter aan het begin van elke zin · punt aan het einde van elke zin · komma voor <em>want</em> en <em>omdat</em> · komma na de aanhef en na de groet · maanden en dagen klein · één soort tijdnotatie · overal <em>u</em> of overal <em>je</em>.</p>
+</div>
+
+<h2 id="oefenen">Waar je dit oefent</h2>
+
+<p>Deze punten leer je niet uit een grammaticaboek. Je leert ze door een hele opdracht te schrijven en daarna gericht terug te kijken — precies zoals op het examen, waar je alles tegelijk moet doen.</p>
+
+<p>Op ons platform schrijf je echte examenopdrachten en krijg je feedback per beoordelingspunt, met modelantwoorden en een beoordelingslijst die door een gecertificeerde NT2-docent zijn geschreven. Niet door een AI. <a href="/nl/oefenexamen/a2/schrijven">Bekijk de oefenexamens Schrijven A2</a>.</p>
+
+<div class="note-strip"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 20h9"/><path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg><p>Schrijf je normaal alles op je telefoon? Oefen dan minstens een paar keer <strong>met een pen op papier</strong>. Veertig minuten met de hand schrijven is zwaarder dan je denkt, en het examen Schrijven is het enige onderdeel dat niet op de computer gaat.</p></div>
+`,
+    sidebarHtml: `<div class="bg-surface-container-lowest rounded-2xl p-6" style="box-shadow: 0 2px 16px rgba(0,43,109,0.06)">
+  <h3 class="text-xs font-bold uppercase tracking-widest text-on-surface-variant mb-4">Schrijven A2 in het kort</h3>
+  <table class="facts-table">
+    <tr><td>Opdrachten</td><td>4</td></tr>
+    <tr><td>Tijd</td><td>40 min</td></tr>
+    <tr><td>Waarop</td><td>pen en papier</td></tr>
+    <tr><td>Nagekeken door</td><td>mensen</td></tr>
+  </table>
+</div>`,
+    relatedPosts: [
+      { slug: 'want-of-omdat', title: 'Want of omdat?', desc: 'Waarom ‘want’ op het examen bijna altijd de slimmere keuze is' },
+      { slug: 'wederkerende-werkwoorden-nederlands', title: 'Wederkerende werkwoorden', desc: 'Me, je, zich — met 20 voorbeelden' },
+      { slug: 'inburgeringsexamen-a2-uitleg', title: 'Alle vier de onderdelen', desc: 'Lezen, Luisteren, Schrijven en Spreken uitgelegd' },
+    ],
+    ctaTitle: 'Oefen Schrijven met echte examenopdrachten',
+    ctaDesc: 'Tien oefenexamens Schrijven A2, met modelantwoorden en feedback per beoordelingspunt — geschreven door een gecertificeerde NT2-docent.',
+    ctaHref: '/oefenen',
+    ctaLabel: 'Gratis oefenen',
+    translations: {
+      en: {
+        heroTitle: 'The 8 mistakes people make on the A2 Writing exam',
+        description: 'Capitals, commas, times and ‘u’ versus ‘je’: the eight mistakes an NT2 teacher sees every week when she marks A2 writing tasks.',
+        category: 'Tips & Preparation',
+        breadcrumb: 'Mistakes on Writing A2',
+        dateLabel: '16 September 2026',
+        imageAlt: 'Hand writing with a pen on paper while practising for the A2 Writing exam',
+        heroSubtitle: 'On Writing you almost never lose points on difficult words. You lose them on a missing capital and a missing full stop.',
+        articleHtml: `
+<p>On the <strong>A2 Writing exam</strong> you rarely lose points because a word was too hard. You lose them on small things: a missing capital, a missing full stop, a comma that is not there. Below are the eight mistakes our teacher sees every week when she marks writing tasks. You do not need to learn any new Dutch for them. You only need to learn to spot them.</p>
+
+${factEn('The Writing exam at level A2 is taken with pen and paper. You get 4 writing tasks and the exam lasts 40 minutes.', 'inburgeren.nl — content of the language exams', SRC_INHOUD)}
+
+${docentNote('I almost never see someone fail because they did not know a word. I see people lose points on the full stop at the end of the sentence.', 'NT2 teacher')}
+
+<div class="article-toc">
+  <p class="article-toc-title">The eight mistakes</p>
+  <ol>
+    <li><a href="#hoofdletter">Forgetting the capital letter</a></li>
+    <li><a href="#punt">Forgetting the full stop</a></li>
+    <li><a href="#komma-want">No comma before ‘want’ and ‘omdat’</a></li>
+    <li><a href="#komma-brief">No comma after the greeting and the sign-off</a></li>
+    <li><a href="#maanden">Months and days with a capital</a></li>
+    <li><a href="#tijd">Writing the time the wrong way</a></li>
+    <li><a href="#u-je">Mixing ‘u’ and ‘je’</a></li>
+    <li><a href="#teruglezen">Not reading your text back</a></li>
+  </ol>
+</div>
+
+<h2 id="hoofdletter">1. Forgetting the capital letter</h2>
+
+<p>This is the most common mistake of all. A capital belongs in four places, and those four are enough for A2.</p>
+
+<div class="tip-card"><span class="tip-number">A</span><div><p>At the <strong>start of every sentence</strong>. Also when the sentence is only three words long.</p></div></div>
+<div class="tip-card"><span class="tip-number">B</span><div><p>For <strong>names of people and animals</strong>: Fatima, Ahmed, my dog Max.</p></div></div>
+<div class="tip-card"><span class="tip-number">C</span><div><p>For <strong>place names and countries</strong>: Amsterdam, Rotterdam, Nederland, Syrië.</p></div></div>
+<div class="tip-card"><span class="tip-number">D</span><div><p>For <strong>rivers and mountain ranges</strong>: de Maas, de Rijn, de Alpen.</p></div></div>
+
+${foutGoed(['ik woon in amsterdam met mijn zoon ali.'], ['Ik woon in Amsterdam met mijn zoon Ali.'], ['Wrong', 'Right'])}
+
+<h2 id="punt">2. Forgetting the full stop</h2>
+
+<p>Every sentence ends with a full stop. Including the last sentence of your letter. Including a short sentence. It feels like a detail, but an assessor notices it immediately.</p>
+
+${foutGoed(['Ik kom morgen langs Tot ziens'], ['Ik kom morgen langs. Tot ziens.'], ['Wrong', 'Right'])}
+
+<h2 id="komma-want">3. No comma before ‘want’ and ‘omdat’</h2>
+
+<p>The words <strong>want</strong> and <strong>omdat</strong> (both meaning ‘because’) always take a comma in front of them.</p>
+
+${foutGoed(['Ik kan niet komen want ik moet werken.'], ['Ik kan niet komen, want ik moet werken.', 'Ik kan niet komen, omdat ik moet werken.'], ['Wrong', 'Right'])}
+
+<p>Not sure whether to use <em>want</em> or <em>omdat</em>? Choose <em>want</em>. It saves you a word-order mistake, and why that is so is explained in <a href="/en/blog/want-or-omdat-dutch">Want or omdat: almost always choose ‘want’</a>.</p>
+
+<h2 id="komma-brief">4. No comma after the greeting and the sign-off</h2>
+
+<p>A letter or e-mail almost always starts and ends the same way, and both of those lines take a comma. You know in advance that you will need them, which makes these the easiest points on the whole exam.</p>
+
+<div class="article-table-wrap">
+<table>
+  <thead><tr><th>Where</th><th>How you write it</th><th>Watch out</th></tr></thead>
+  <tbody>
+    <tr><td>Greeting</td><td><strong>Beste meneer Jansen,</strong></td><td>comma after it</td></tr>
+    <tr><td>Greeting, informal</td><td><strong>Hoi Sanne,</strong></td><td>comma after it</td></tr>
+    <tr><td>Sign-off</td><td><strong>Met vriendelijke groet,</strong></td><td>comma after it, your name below</td></tr>
+  </tbody>
+</table>
+</div>
+
+<h2 id="maanden">5. Months and days with a capital</h2>
+
+<p>In Dutch you write months and days <strong>in lower case</strong>. English does it differently, which is exactly why this goes wrong so often for people who also speak English.</p>
+
+${foutGoed(['Ik kom op Maandag 3 Maart.'], ['Ik kom op maandag 3 maart.'], ['Wrong', 'Right'])}
+
+<div class="note-strip"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg><p>Countries and languages <strong>do</strong> take a capital: Nederland, Nederlands, Marokko, Arabisch. Months and days do not.</p></div>
+
+<h2 id="tijd">6. Writing the time the wrong way</h2>
+
+<p>There are two ways to write a time. Pick one and do not mix them. A half-analogue, half-digital time is a mistake an assessor always spots.</p>
+
+<div class="compare-2">
+  <div class="compare-card is-primary">
+    <div class="compare-head"><h3>Analogue time</h3><p class="compare-when">You write the word ‘uur’</p></div>
+    <div class="compare-rows">
+      <div class="compare-row"><p class="compare-key">Example</p><p class="compare-val">1 uur · 9 uur · half tien</p></div>
+      <div class="compare-row"><p class="compare-key">In a sentence</p><p class="compare-val">Ik kom om 5 uur langs.</p></div>
+    </div>
+  </div>
+  <div class="compare-card">
+    <div class="compare-head"><h3>Digital time</h3><p class="compare-when">You write digits with a colon</p></div>
+    <div class="compare-rows">
+      <div class="compare-row"><p class="compare-key">Example</p><p class="compare-val">13:00 · 21:00 · 09:30</p></div>
+      <div class="compare-row"><p class="compare-key">In a sentence</p><p class="compare-val">Ik kom om 17:00 langs.</p></div>
+    </div>
+  </div>
+</div>
+
+${foutGoed(['Ik kom om 17: uur.'], ['Ik kom om 17:00.', 'Ik kom om 5 uur.'], ['Wrong', 'Right'])}
+
+<h2 id="u-je">7. Mixing ‘u’ and ‘je’</h2>
+
+<p>Look at the task. Does the question use <strong>u</strong>? Then you write <strong>u</strong> too. Does it use <strong>je</strong>? Then you write <strong>je</strong>. Pick one and keep it up through your whole text.</p>
+
+${foutGoed(['Beste meneer Jansen, kunt u mij helpen? Ik hoor graag van je.'], ['Beste meneer Jansen, kunt u mij helpen? Ik hoor graag van u.'], ['Wrong', 'Right'])}
+
+<p>This is not a politeness rule, it is a consistency rule. Either form is fine; mixing them is not.</p>
+
+<h2 id="teruglezen">8. Not reading your text back</h2>
+
+<p>All seven mistakes above can be found again in two minutes. Plan those two minutes. You have 40 minutes for four tasks, so roughly 10 minutes each — keep one of those minutes per task for checking.</p>
+
+<div class="info-box info-box-green">
+  <p><strong>Your checklist for the last minute.</strong> Capital at the start of every sentence · full stop at the end of every sentence · comma before <em>want</em> and <em>omdat</em> · comma after the greeting and the sign-off · months and days in lower case · one kind of time notation · <em>u</em> everywhere or <em>je</em> everywhere.</p>
+</div>
+
+<h2 id="oefenen">Where to practise this</h2>
+
+<p>You do not learn these points from a grammar book. You learn them by writing a whole task and then looking back at it on purpose — exactly as on the exam, where you have to do everything at once.</p>
+
+<p>On our platform you write real exam tasks and get feedback per assessment point, with model answers and a marking rubric written by a certified NT2 teacher. Not by an AI. <a href="/en/practice-exam/a2/writing">See the A2 Writing practice exams</a>.</p>
+
+<div class="note-strip"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 20h9"/><path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg><p>Do you normally write everything on your phone? Then practise at least a few times <strong>with a pen on paper</strong>. Forty minutes of handwriting is heavier than you expect, and Writing is the only part that is not done on a computer.</p></div>
+`,
+        sidebarHtml: `<div class="bg-surface-container-lowest rounded-2xl p-6" style="box-shadow: 0 2px 16px rgba(0,43,109,0.06)">
+  <h3 class="text-xs font-bold uppercase tracking-widest text-on-surface-variant mb-4">Writing A2 in short</h3>
+  <table class="facts-table">
+    <tr><td>Tasks</td><td>4</td></tr>
+    <tr><td>Time</td><td>40 min</td></tr>
+    <tr><td>On</td><td>pen and paper</td></tr>
+    <tr><td>Marked by</td><td>people</td></tr>
+  </table>
+</div>`,
+        faq: [
+          { q: 'How many writing tasks do I get on the A2 Writing exam?', a: 'Four tasks, in a maximum of 40 minutes. You take this exam with pen and paper, not on a computer. That is what DUO states on its page about the content of the language exams.' },
+          { q: 'Do spelling mistakes count on the Writing exam?', a: 'Your text is marked by certified assessors, not by a computer. They look at several things at once, including whether your message is clear. One spelling mistake is not a disaster. The same mistake in every sentence does stand out.' },
+          { q: 'Should I write ‘u’ or ‘je’?', a: 'The task decides. If the question uses ‘u’, you write ‘u’. If it uses ‘je’, you write ‘je’. Do not switch halfway through your text.' },
+          { q: 'Which mistake is made most often?', a: 'The forgotten capital at the start of the sentence and the forgotten full stop at the end. Both cost points, and both are found again if you read your text back once.' },
+          { q: 'May I use a dictionary on the Writing exam?', a: 'No. You may not use any aids. Your bag, phone and watch go into a locker.' },
+          { q: 'How much time do I have per task?', a: 'Four tasks in 40 minutes is an average of 10 minutes per task. Keep about one of those minutes to read the task back.' },
+          { q: 'What is the best way to practise Writing?', a: 'Write a whole task by hand, then work through the checklist in this article. That works better than separate comma exercises, because on the exam you also have to do everything at once.' },
+        ],
+        relatedPosts: [
+          { slug: 'want-of-omdat', title: 'Want or omdat?', desc: 'Why ‘want’ is almost always the smarter choice on the exam' },
+          { slug: 'wederkerende-werkwoorden-nederlands', title: 'Dutch reflexive verbs', desc: 'Me, je, zich — with 20 examples' },
+          { slug: 'inburgeringsexamen-a2-uitleg', title: 'All four parts', desc: 'Reading, Listening, Writing and Speaking explained' },
+        ],
+        ctaTitle: 'Practise Writing with real exam tasks',
+        ctaDesc: 'Ten A2 Writing practice exams, with model answers and feedback per assessment point — written by a certified NT2 teacher.',
+        ctaLabel: 'Practise for free',
+      },
+      ar: {
+        heroTitle: 'الأخطاء الثمانية الأكثر شيوعًا في امتحان الكتابة A2',
+        description: 'الحروف الكبيرة والفواصل وكتابة الوقت واختيار «u» أو «je»: ثمانية أخطاء تراها مدرّسة NT2 كل أسبوع أثناء تصحيح واجبات الكتابة A2.',
+        category: 'نصائح وتحضير',
+        breadcrumb: 'أخطاء امتحان الكتابة A2',
+        dateLabel: '١٦ سبتمبر ٢٠٢٦',
+        imageAlt: 'يد تكتب بقلم على ورقة أثناء التدريب على امتحان الكتابة A2',
+        heroSubtitle: 'في امتحان الكتابة نادرًا ما تخسر نقاطًا بسبب كلمات صعبة. تخسرها بسبب حرف كبير ناقص ونقطة ناقصة.',
+        articleHtml: `
+<p>في <strong>امتحان الكتابة A2</strong> نادرًا ما تخسر النقاط لأن الكلمة كانت صعبة. تخسرها بسبب أمور صغيرة: حرف كبير ناقص، نقطة ناقصة، فاصلة غير موجودة. في ما يلي الأخطاء الثمانية التي تراها مدرّستنا كل أسبوع أثناء تصحيح واجبات الكتابة. لا تحتاج إلى تعلّم هولندية جديدة من أجلها، بل تحتاج فقط إلى أن تتعلّم كيف تراها.</p>
+
+${factAr('يُؤدى امتحان الكتابة في المستوى A2 بالقلم والورق. تحصل على 4 واجبات كتابة ويستغرق الامتحان 40 دقيقة.', 'inburgeren.nl — محتوى امتحانات اللغة', SRC_INHOUD)}
+
+${docentNote('لا أكاد أرى أحدًا يرسب لأنه لم يعرف كلمة. أرى أشخاصًا يخسرون نقاطًا بسبب النقطة في نهاية الجملة.', 'مدرّسة NT2')}
+
+<div class="article-toc">
+  <p class="article-toc-title">الأخطاء الثمانية</p>
+  <ol>
+    <li><a href="#hoofdletter">نسيان الحرف الكبير</a></li>
+    <li><a href="#punt">نسيان النقطة</a></li>
+    <li><a href="#komma-want">لا فاصلة قبل «want» و«omdat»</a></li>
+    <li><a href="#komma-brief">لا فاصلة بعد التحية وبعد الخِتام</a></li>
+    <li><a href="#maanden">كتابة الشهور والأيام بحرف كبير</a></li>
+    <li><a href="#tijd">كتابة الوقت بطريقة خاطئة</a></li>
+    <li><a href="#u-je">الخلط بين «u» و«je»</a></li>
+    <li><a href="#teruglezen">عدم إعادة قراءة نصّك</a></li>
+  </ol>
+</div>
+
+<h2 id="hoofdletter">١. نسيان الحرف الكبير</h2>
+
+<p>هذا هو الخطأ الأكثر شيوعًا. الحرف الكبير يلزم في أربعة مواضع، وهذه الأربعة تكفي في المستوى A2.</p>
+
+<div class="tip-card"><span class="tip-number">A</span><div><p>في <strong>بداية كل جملة</strong>، حتى لو كانت الجملة من ثلاث كلمات.</p></div></div>
+<div class="tip-card"><span class="tip-number">B</span><div><p>في <strong>أسماء الأشخاص والحيوانات</strong>: ${nlEx('Fatima, Ahmed, mijn hond Max')}.</p></div></div>
+<div class="tip-card"><span class="tip-number">C</span><div><p>في <strong>أسماء المدن والبلدان</strong>: ${nlEx('Amsterdam, Rotterdam, Nederland, Syrië')}.</p></div></div>
+<div class="tip-card"><span class="tip-number">D</span><div><p>في <strong>الأنهار والجبال</strong>: ${nlEx('de Maas, de Rijn, de Alpen')}.</p></div></div>
+
+${foutGoed([nlEx('ik woon in amsterdam met mijn zoon ali.')], [nlEx('Ik woon in Amsterdam met mijn zoon Ali.')], ['خطأ', 'صواب'])}
+
+<h2 id="punt">٢. نسيان النقطة</h2>
+
+<p>كل جملة تنتهي بنقطة. وكذلك الجملة الأخيرة في رسالتك، وكذلك الجملة القصيرة. يبدو الأمر تفصيلًا صغيرًا، لكن المصحّح يلاحظه فورًا.</p>
+
+${foutGoed([nlEx('Ik kom morgen langs Tot ziens')], [nlEx('Ik kom morgen langs. Tot ziens.')], ['خطأ', 'صواب'])}
+
+<h2 id="komma-want">٣. لا فاصلة قبل «want» و«omdat»</h2>
+
+<p>قبل كلمتَي <strong>want</strong> و<strong>omdat</strong> (وكلتاهما تعني «لأن») توضع فاصلة دائمًا.</p>
+
+${foutGoed([nlEx('Ik kan niet komen want ik moet werken.')], [nlEx('Ik kan niet komen, want ik moet werken.'), nlEx('Ik kan niet komen, omdat ik moet werken.')], ['خطأ', 'صواب'])}
+
+<p>هل تتردد بين <em>want</em> و<em>omdat</em>؟ اختر <em>want</em>؛ فهذا يوفّر عليك خطأً في ترتيب الكلمات، والسبب مشروح في <a href="/ar/المدونة/want-أم-omdat">want أم omdat</a>.</p>
+
+<h2 id="komma-brief">٤. لا فاصلة بعد التحية وبعد الخِتام</h2>
+
+<p>تبدأ الرسالة أو البريد الإلكتروني وتنتهي دائمًا تقريبًا بالطريقة نفسها، وفي كلا الموضعين توضع فاصلة. أنت تعرف مسبقًا أنك ستحتاج إليهما، ولذلك فهذه أسهل نقاط في الامتحان كله.</p>
+
+<div class="article-table-wrap">
+<table>
+  <thead><tr><th>الموضع</th><th>هكذا تكتبه</th><th>انتبه</th></tr></thead>
+  <tbody>
+    <tr><td>التحية</td><td><strong>${nlEx('Beste meneer Jansen,')}</strong></td><td>فاصلة بعدها</td></tr>
+    <tr><td>التحية غير الرسمية</td><td><strong>${nlEx('Hoi Sanne,')}</strong></td><td>فاصلة بعدها</td></tr>
+    <tr><td>الخِتام</td><td><strong>${nlEx('Met vriendelijke groet,')}</strong></td><td>فاصلة بعدها واسمك تحتها</td></tr>
+  </tbody>
+</table>
+</div>
+
+<h2 id="maanden">٥. كتابة الشهور والأيام بحرف كبير</h2>
+
+<p>في الهولندية تُكتب الشهور والأيام <strong>بحرف صغير</strong>. الإنجليزية تفعل العكس، ولهذا يخطئ كثيرون ممن يتحدثون الإنجليزية أيضًا.</p>
+
+${foutGoed([nlEx('Ik kom op Maandag 3 Maart.')], [nlEx('Ik kom op maandag 3 maart.')], ['خطأ', 'صواب'])}
+
+<div class="note-strip"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg><p>أما البلدان واللغات <strong>فتأخذ</strong> حرفًا كبيرًا: ${nlEx('Nederland, Nederlands, Marokko, Arabisch')}. الشهور والأيام لا تأخذه.</p></div>
+
+<h2 id="tijd">٦. كتابة الوقت بطريقة خاطئة</h2>
+
+<p>هناك طريقتان لكتابة الوقت. اختر واحدة ولا تخلط بينهما؛ فالوقت المكتوب نصفه بالأرقام ونصفه بالكلمات خطأ يلاحظه المصحّح دائمًا.</p>
+
+<div class="compare-2">
+  <div class="compare-card is-primary">
+    <div class="compare-head"><h3>الوقت بالكلمات</h3><p class="compare-when">تكتب كلمة «uur»</p></div>
+    <div class="compare-rows">
+      <div class="compare-row"><p class="compare-key">مثال</p><p class="compare-val">${nlEx('1 uur · 9 uur · half tien')}</p></div>
+      <div class="compare-row"><p class="compare-key">في جملة</p><p class="compare-val">${nlEx('Ik kom om 5 uur langs.')}</p></div>
+    </div>
+  </div>
+  <div class="compare-card">
+    <div class="compare-head"><h3>الوقت بالأرقام</h3><p class="compare-when">تكتب أرقامًا مع نقطتين</p></div>
+    <div class="compare-rows">
+      <div class="compare-row"><p class="compare-key">مثال</p><p class="compare-val">${nlEx('13:00 · 21:00 · 09:30')}</p></div>
+      <div class="compare-row"><p class="compare-key">في جملة</p><p class="compare-val">${nlEx('Ik kom om 17:00 langs.')}</p></div>
+    </div>
+  </div>
+</div>
+
+${foutGoed([nlEx('Ik kom om 17: uur.')], [nlEx('Ik kom om 17:00.'), nlEx('Ik kom om 5 uur.')], ['خطأ', 'صواب'])}
+
+<h2 id="u-je">٧. الخلط بين «u» و«je»</h2>
+
+<p>انظر إلى السؤال. هل يستخدم <strong>u</strong>؟ إذن اكتب أنت <strong>u</strong> أيضًا. هل يستخدم <strong>je</strong>؟ إذن اكتب <strong>je</strong>. اختر واحدة والتزم بها في النص كله.</p>
+
+${foutGoed([nlEx('Beste meneer Jansen, kunt u mij helpen? Ik hoor graag van je.')], [nlEx('Beste meneer Jansen, kunt u mij helpen? Ik hoor graag van u.')], ['خطأ', 'صواب'])}
+
+<p>هذه ليست قاعدة تهذيب بل قاعدة اتّساق: كلتا الصيغتين صحيحة، أما الخلط بينهما فخطأ.</p>
+
+<h2 id="teruglezen">٨. عدم إعادة قراءة نصّك</h2>
+
+<p>الأخطاء السبعة أعلاه يمكنك أن تجدها كلها في دقيقتين. خصّص هاتين الدقيقتين. لديك 40 دقيقة لأربعة واجبات، أي نحو 10 دقائق لكل واجب — احتفظ بدقيقة منها للمراجعة.</p>
+
+<div class="info-box info-box-green">
+  <p><strong>قائمة المراجعة في الدقيقة الأخيرة:</strong> حرف كبير في بداية كل جملة · نقطة في نهاية كل جملة · فاصلة قبل <em>want</em> و<em>omdat</em> · فاصلة بعد التحية وبعد الخِتام · الشهور والأيام بحرف صغير · طريقة واحدة لكتابة الوقت · <em>u</em> في كل مكان أو <em>je</em> في كل مكان.</p>
+</div>
+
+<h2 id="oefenen">أين تتدرّب على هذا</h2>
+
+<p>هذه النقاط لا تتعلّمها من كتاب قواعد، بل بكتابة واجب كامل ثم مراجعته عن قصد — تمامًا كما في الامتحان، حيث عليك أن تفعل كل شيء في الوقت نفسه.</p>
+
+<p>على منصّتنا تكتب واجبات امتحانية حقيقية وتحصل على ملاحظات لكل معيار تقييم، مع إجابات نموذجية وقائمة تقييم كتبتها مدرّسة NT2 معتمدة. لا ذكاء اصطناعي. <a href="/ar/امتحان-تجريبي/a2/الكتابة">اطّلع على امتحانات الكتابة التجريبية A2</a>.</p>
+
+<div class="note-strip"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 20h9"/><path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg><p>هل تكتب عادةً كل شيء على هاتفك؟ إذن تدرّب بضع مرات على الأقل <strong>بالقلم على الورق</strong>. أربعون دقيقة من الكتابة باليد أثقل مما تتوقع، والكتابة هي الجزء الوحيد الذي لا يُؤدى على الحاسوب.</p></div>
+`,
+        sidebarHtml: `<div class="bg-surface-container-lowest rounded-2xl p-6" style="box-shadow: 0 2px 16px rgba(0,43,109,0.06)">
+  <h3 class="text-xs font-bold uppercase tracking-widest text-on-surface-variant mb-4">الكتابة A2 باختصار</h3>
+  <table class="facts-table">
+    <tr><td>الواجبات</td><td>4</td></tr>
+    <tr><td>المدة</td><td>40 دقيقة</td></tr>
+    <tr><td>الوسيلة</td><td>قلم وورق</td></tr>
+    <tr><td>التصحيح</td><td>بشر</td></tr>
+  </table>
+</div>`,
+        faq: [
+          { q: 'كم واجب كتابة أحصل عليه في امتحان الكتابة A2؟', a: 'أربعة واجبات في 40 دقيقة كحد أقصى. وتؤدي هذا الامتحان بالقلم والورق لا على الحاسوب، وهذا ما تذكره DUO في صفحتها عن محتوى امتحانات اللغة.' },
+          { q: 'هل تُحتسب الأخطاء الإملائية في امتحان الكتابة؟', a: 'يصحّح نصّك مصحّحون معتمدون لا حاسوب. وهم ينظرون إلى عدة أمور في آن واحد، منها وضوح رسالتك. خطأ إملائي واحد ليس كارثة، أما تكرار الخطأ نفسه في كل جملة فيلفت الانتباه.' },
+          { q: 'هل أكتب «u» أم «je»؟', a: 'السؤال هو الذي يحدد ذلك. إن استخدم السؤال «u» فاكتب «u»، وإن استخدم «je» فاكتب «je». ولا تبدّل في منتصف النص.' },
+          { q: 'ما الخطأ الأكثر شيوعًا؟', a: 'الحرف الكبير المنسي في بداية الجملة والنقطة المنسية في نهايتها. كلاهما يكلّف نقاطًا، وكلاهما تجده إن أعدت قراءة نصّك مرة واحدة.' },
+          { q: 'هل يُسمح باستخدام قاموس في امتحان الكتابة؟', a: 'لا. لا يُسمح بأي وسائل مساعدة. حقيبتك وهاتفك وساعتك توضع في خزانة.' },
+          { q: 'كم من الوقت لديّ لكل واجب؟', a: 'أربعة واجبات في 40 دقيقة تعني نحو 10 دقائق لكل واجب. احتفظ بدقيقة منها لإعادة القراءة.' },
+          { q: 'ما أفضل طريقة للتدرّب على الكتابة؟', a: 'اكتب واجبًا كاملًا بخط اليد، ثم راجع قائمة هذا المقال. هذا أنفع من تمارين منفصلة على الفواصل، لأنك في الامتحان أيضًا مضطر إلى فعل كل شيء في وقت واحد.' },
+        ],
+        relatedPosts: [
+          { slug: 'want-of-omdat', title: 'want أم omdat؟', desc: 'لماذا يكون «want» الخيار الأذكى في الامتحان غالبًا' },
+          { slug: 'wederkerende-werkwoorden-nederlands', title: 'الأفعال الانعكاسية', desc: 'me وje وzich — مع 20 مثالًا' },
+          { slug: 'inburgeringsexamen-a2-uitleg', title: 'الأجزاء الأربعة كلها', desc: 'شرح القراءة والاستماع والكتابة والتحدث' },
+        ],
+        ctaTitle: 'تدرّب على الكتابة بواجبات امتحانية حقيقية',
+        ctaDesc: 'عشرة امتحانات كتابة تجريبية A2 مع إجابات نموذجية وملاحظات لكل معيار تقييم — من إعداد مدرّسة NT2 معتمدة.',
+        ctaLabel: 'تدرّب مجانًا',
+      },
+    },
+  },
+  // ───────────────────────────────────────────────────── 7. WANT OF OMDAT
+  {
+    slug: 'want-of-omdat',
+    title: 'Want of omdat? Kies bijna altijd ‘want’',
+    description: 'Want en omdat betekenen hetzelfde, maar de woordvolgorde erna is anders. Waarom ‘want’ op het inburgeringsexamen bijna altijd de slimmere keuze is.',
+    category: 'Uitleg & Taal',
+    categoryKey: 'uitleg',
+    categoryColor: 'blue',
+    datePublished: '2026-09-16',
+    dateModified: '2026-09-16',
+    dateLabel: '16 september 2026',
+    breadcrumb: 'Want of omdat',
+    heroTitle: 'Want of omdat? Kies bijna altijd ‘want’',
+    heroSubtitle: 'Ze betekenen hetzelfde. Het verschil zit in wat er daarna met het werkwoord gebeurt — en daar gaat het mis.',
+    image: '/images/blog/want-of-omdat.jpg',
+    imageAlt: 'Cursist oefent Nederlandse zinnen met want en omdat aan een tafel met een schrift',
+    readingMinutes: 6,
+    faq: [
+      { q: 'Betekenen want en omdat hetzelfde?', a: 'Ja. Allebei geven ze een reden. Het verschil is grammaticaal: na ‘want’ blijft de woordvolgorde gewoon, na ‘omdat’ gaat het werkwoord naar het einde van de zin.' },
+      { q: 'Staat er een komma voor want?', a: 'Ja. Voor ‘want’ staat een komma, en voor ‘omdat’ ook. Die komma vergeten is een van de meest gemaakte fouten bij het examen Schrijven.' },
+      { q: 'Mag ik een zin met ‘want’ beginnen?', a: 'Beter niet. Wil je met de reden beginnen, gebruik dan ‘Omdat ...’ en let op de woordvolgorde, of draai de zin om.' },
+      { q: 'Wat is een bijzin?', a: 'Een zin die niet alleen kan staan en waarin het werkwoord naar achteren gaat. ‘Omdat ik ziek ben’ is een bijzin. ‘Ik ben ziek’ is een hoofdzin.' },
+      { q: 'Is ‘want’ minder goed Nederlands dan ‘omdat’?', a: 'Nee. ‘Want’ is gewoon Nederlands en op A2 en B1 volledig correct. Je wordt niet beoordeeld op moeilijke zinnen, maar op correcte en begrijpelijke zinnen.' },
+      { q: 'Wanneer moet ik toch ‘omdat’ gebruiken?', a: 'Als antwoord op een directe waarom-vraag. Op ‘Waarom kom je niet?’ antwoord je ‘Omdat ik ziek ben’, niet ‘Want ik ben ziek’. Die vraag krijg je op het examen Spreken regelmatig.' },
+    ],
+    articleHtml: `
+<p><strong>Want</strong> en <strong>omdat</strong> betekenen hetzelfde: ze geven allebei een reden. Het verschil zit in de <strong>woordvolgorde</strong>. Na <em>want</em> verandert er niets. Na <em>omdat</em> gaat het werkwoord naar het einde van de zin. Daarom is het advies op het examen simpel: twijfel je, kies dan <em>want</em>. Je zegt precies hetzelfde en je kunt geen woordvolgordefout maken.</p>
+
+${docentNote('Als je twee zinnen wilt verbinden, kies dan ‘want’ in plaats van ‘omdat’. Met ‘want’ maak je twee hoofdzinnen en hoef je niets te veranderen. Bij ‘omdat’ moet je de woordvolgorde aanpassen, en daar gaat het mis.')}
+
+<h2 id="voorbeeld">Het verschil in één voorbeeld</h2>
+
+<p>Dezelfde gedachte, drie keer opgeschreven. Kijk alleen naar het werkwoord <em>ben</em> en <em>bent</em>.</p>
+
+<div class="article-table-wrap">
+<table>
+  <thead><tr><th>Manier</th><th>De zin</th><th>Waar staat het werkwoord?</th></tr></thead>
+  <tbody>
+    <tr><td><strong>met want</strong></td><td>Ik zou met de auto gaan, <strong>want</strong> dan <strong>ben</strong> je sneller.</td><td>op plek twee, gewoon</td></tr>
+    <tr><td><strong>twee losse zinnen</strong></td><td>Ik zou met de auto gaan. Je <strong>bent</strong> sneller.</td><td>op plek twee, gewoon</td></tr>
+    <tr><td><strong>met omdat</strong></td><td>Ik zou met de auto gaan, <strong>omdat</strong> je dan sneller <strong>bent</strong>.</td><td>helemaal achteraan</td></tr>
+  </tbody>
+</table>
+</div>
+
+<p>Dat is het hele verschil. Er is geen betekenisverschil dat je op A2 moet kennen. Er is alleen een plek waar het werkwoord heen moet.</p>
+
+<h2 id="hoofdzin">Waarom ‘want’ makkelijker is</h2>
+
+<p>Na <strong>want</strong> komt een <strong>hoofdzin</strong>. Een hoofdzin is een gewone zin: onderwerp, werkwoord, rest. Je hoeft niets te verplaatsen.</p>
+
+<div class="tip-card"><span class="tip-number">1</span><div><p>Ik kom niet, <strong>want</strong> ik <strong>ben</strong> ziek.</p></div></div>
+<div class="tip-card"><span class="tip-number">2</span><div><p>Ik neem de trein, <strong>want</strong> de auto <strong>is</strong> kapot.</p></div></div>
+
+<p>Na <strong>omdat</strong> komt een <strong>bijzin</strong>. In een bijzin gaat het werkwoord naar het einde.</p>
+
+<div class="tip-card"><span class="tip-number">1</span><div><p>Ik kom niet, <strong>omdat</strong> ik ziek <strong>ben</strong>.</p></div></div>
+<div class="tip-card"><span class="tip-number">2</span><div><p>Ik neem de trein, <strong>omdat</strong> de auto kapot <strong>is</strong>.</p></div></div>
+
+<p>Heb je twee werkwoorden, dan gaan ze allebei naar achteren: <em>Ik kom niet, omdat ik moet werken.</em></p>
+
+${foutGoed(['Ik kom niet, omdat ik ben ziek.', 'Ik neem de trein, omdat de auto is kapot.'], ['Ik kom niet, omdat ik ziek ben.', 'Ik kom niet, want ik ben ziek.'])}
+
+<h2 id="drie-zinnen">De derde optie: maak er twee zinnen van</h2>
+
+<p>Je hoeft zinnen helemaal niet te verbinden. Twee korte, correcte zinnen zijn beter dan één lange zin met een fout erin. Op A2 word je beoordeeld op of je begrijpelijk en correct schrijft en spreekt, niet op of je ingewikkelde zinnen maakt.</p>
+
+<div class="info-box info-box-green">
+  <p><strong>Ik zou met de auto naar mijn werk gaan. Je bent sneller.</strong> Twee zinnen, allebei goed, geen enkel risico.</p>
+</div>
+
+<h2 id="uitzondering">Wanneer je ‘omdat’ wél gebruikt</h2>
+
+<p>Op één plek kun je <em>want</em> niet gebruiken: als antwoord op de vraag <strong>waarom?</strong></p>
+
+<div class="compare-2">
+  <div class="compare-card is-primary">
+    <div class="compare-head"><h3>Goed</h3><p class="compare-when">Antwoord op een waarom-vraag</p></div>
+    <div class="compare-rows">
+      <div class="compare-row"><p class="compare-key">Vraag</p><p class="compare-val">Waarom kom je niet?</p></div>
+      <div class="compare-row"><p class="compare-key">Antwoord</p><p class="compare-val">Omdat ik ziek <strong>ben</strong>.</p></div>
+    </div>
+  </div>
+  <div class="compare-card">
+    <div class="compare-head"><h3>Klinkt vreemd</h3><p class="compare-when">Zelfde vraag, met want</p></div>
+    <div class="compare-rows">
+      <div class="compare-row"><p class="compare-key">Vraag</p><p class="compare-val">Waarom kom je niet?</p></div>
+      <div class="compare-row"><p class="compare-key">Antwoord</p><p class="compare-val">Want ik ben ziek.</p></div>
+    </div>
+  </div>
+</div>
+
+<p>Die waarom-vraag krijg je op het examen Spreken regelmatig. Oefen <em>omdat</em> dus wel — maar oefen het apart, en bouw er geen lange zin mee terwijl de klok loopt.</p>
+
+<div class="blog-quiz-card">
+  <p class="blog-quiz-q">Welke zin is goed?</p>
+  <div class="blog-quiz-opts">
+    <button type="button" class="blog-quiz-opt"><span class="blog-quiz-letter">A</span><span>Ik ga naar de dokter, omdat ik heb pijn.</span></button>
+    <button type="button" class="blog-quiz-opt" data-answer="correct"><span class="blog-quiz-letter">B</span><span>Ik ga naar de dokter, want ik heb pijn.</span></button>
+    <button type="button" class="blog-quiz-opt"><span class="blog-quiz-letter">C</span><span>Ik ga naar de dokter want, ik pijn heb.</span></button>
+  </div>
+  <div class="blog-quiz-ans">Het juiste antwoord is <strong>B</strong>. Na <em>want</em> blijft de zin gewoon: <em>ik heb pijn</em>. Met <em>omdat</em> was het geworden: <em>omdat ik pijn heb</em>. En de komma staat altijd vóór <em>want</em>, nooit erna.</div>
+</div>
+
+<h2 id="komma">Vergeet de komma niet</h2>
+
+<p>Voor <em>want</em> en voor <em>omdat</em> staat een komma. Dat vergeten kandidaten vaak, en bij Schrijven kost het punten. Meer van die kleine dingen staan in <a href="/nl/blog/veelgemaakte-fouten-schrijven-examen-a2">de acht fouten bij het examen Schrijven A2</a>.</p>
+
+<h2 id="oefenen">Oefen het hardop</h2>
+
+<p>Woordvolgorde leer je niet uit een tabel. Je leert het door zinnen te maken en terug te horen wat er misgaat. Bij Spreken merk je het verschil het snelst: daar heb je geen tijd om een zin te herstellen.</p>
+
+<p><a href="/nl/oefenexamen/a2/schrijven">Oefenexamens Schrijven A2</a> · <a href="/nl/oefenexamen/a2/spreken">Oefenexamens Spreken A2</a></p>
+`,
+    sidebarHtml: `<div class="bg-surface-container-lowest rounded-2xl p-6" style="box-shadow: 0 2px 16px rgba(0,43,109,0.06)">
+  <h3 class="text-xs font-bold uppercase tracking-widest text-on-surface-variant mb-4">In het kort</h3>
+  <table class="facts-table">
+    <tr><td>want</td><td>werkwoord blijft staan</td></tr>
+    <tr><td>omdat</td><td>werkwoord naar achteren</td></tr>
+    <tr><td>dus</td><td>werkwoord blijft staan</td></tr>
+    <tr><td>komma</td><td>altijd ervoor</td></tr>
+  </table>
+</div>`,
+    relatedPosts: [
+      { slug: 'veelgemaakte-fouten-schrijven-examen-a2', title: 'De 8 fouten bij Schrijven A2', desc: 'Hoofdletters, komma’s, tijden en ‘u’ of ‘je’' },
+      { slug: 'wederkerende-werkwoorden-nederlands', title: 'Wederkerende werkwoorden', desc: 'Me, je, zich — met 20 voorbeelden' },
+      { slug: 'spreken-examen-inburgering-tips', title: 'Examen Spreken A2: 7 tips', desc: 'Onderdeel 1 stelt twee vragen, niet één' },
+    ],
+    ctaTitle: 'Oefen je zinnen op het echte examen',
+    ctaDesc: 'Schrijf- en spreekopdrachten in het format van DUO, met feedback per beoordelingspunt van een gecertificeerde NT2-docent.',
+    ctaHref: '/oefenen',
+    ctaLabel: 'Gratis oefenen',
+    translations: {
+      en: {
+        heroTitle: 'Want or omdat? Almost always choose ‘want’',
+        description: 'Want and omdat mean the same thing, but the word order after them is different. Why ‘want’ is almost always the smarter choice on the integration exam.',
+        category: 'Explained & Language',
+        breadcrumb: 'Want or omdat',
+        dateLabel: '16 September 2026',
+        imageAlt: 'Learner practising Dutch sentences with want and omdat in a notebook',
+        heroSubtitle: 'They mean the same thing. The difference is what happens to the verb afterwards — and that is where it goes wrong.',
+        articleHtml: `
+<p><strong>Want</strong> and <strong>omdat</strong> mean the same thing: both give a reason, like ‘because’. The difference is the <strong>word order</strong>. After <em>want</em> nothing changes. After <em>omdat</em> the verb moves to the end of the sentence. So the advice for the exam is simple: if you are not sure, choose <em>want</em>. You say exactly the same thing and you cannot make a word-order mistake.</p>
+
+${docentNote('If you want to connect two sentences, choose ‘want’ instead of ‘omdat’. With ‘want’ you make two main clauses and you do not have to change anything. With ‘omdat’ you have to adjust the word order, and that is where it goes wrong.', 'NT2 teacher')}
+
+<h2 id="voorbeeld">The difference in one example</h2>
+
+<p>The same thought, written three ways. Look only at the verb <em>ben</em> and <em>bent</em>.</p>
+
+<div class="article-table-wrap">
+<table>
+  <thead><tr><th>Way</th><th>The sentence</th><th>Where is the verb?</th></tr></thead>
+  <tbody>
+    <tr><td><strong>with want</strong></td><td>Ik zou met de auto gaan, <strong>want</strong> dan <strong>ben</strong> je sneller.</td><td>in second place, as normal</td></tr>
+    <tr><td><strong>two separate sentences</strong></td><td>Ik zou met de auto gaan. Je <strong>bent</strong> sneller.</td><td>in second place, as normal</td></tr>
+    <tr><td><strong>with omdat</strong></td><td>Ik zou met de auto gaan, <strong>omdat</strong> je dan sneller <strong>bent</strong>.</td><td>right at the end</td></tr>
+  </tbody>
+</table>
+</div>
+
+<p>That is the whole difference. There is no difference in meaning you need to know at A2. There is only a place the verb has to go.</p>
+
+<h2 id="hoofdzin">Why ‘want’ is easier</h2>
+
+<p>After <strong>want</strong> comes a <strong>main clause</strong>: subject, verb, rest. You move nothing.</p>
+
+<div class="tip-card"><span class="tip-number">1</span><div><p>Ik kom niet, <strong>want</strong> ik <strong>ben</strong> ziek.</p></div></div>
+<div class="tip-card"><span class="tip-number">2</span><div><p>Ik neem de trein, <strong>want</strong> de auto <strong>is</strong> kapot.</p></div></div>
+
+<p>After <strong>omdat</strong> comes a <strong>subordinate clause</strong>, and there the verb goes to the end.</p>
+
+<div class="tip-card"><span class="tip-number">1</span><div><p>Ik kom niet, <strong>omdat</strong> ik ziek <strong>ben</strong>.</p></div></div>
+<div class="tip-card"><span class="tip-number">2</span><div><p>Ik neem de trein, <strong>omdat</strong> de auto kapot <strong>is</strong>.</p></div></div>
+
+<p>With two verbs, both of them move back: <em>Ik kom niet, omdat ik moet werken.</em></p>
+
+${foutGoed(['Ik kom niet, omdat ik ben ziek.', 'Ik neem de trein, omdat de auto is kapot.'], ['Ik kom niet, omdat ik ziek ben.', 'Ik kom niet, want ik ben ziek.'], ['Wrong', 'Right'])}
+
+<h2 id="drie-zinnen">The third option: make it two sentences</h2>
+
+<p>You do not have to connect sentences at all. Two short, correct sentences are better than one long sentence with a mistake in it. At A2 you are assessed on whether you write and speak clearly and correctly, not on whether you build complex sentences.</p>
+
+<div class="info-box info-box-green">
+  <p><strong>Ik zou met de auto naar mijn werk gaan. Je bent sneller.</strong> Two sentences, both correct, no risk at all.</p>
+</div>
+
+<h2 id="uitzondering">When you do use ‘omdat’</h2>
+
+<p>There is one place where <em>want</em> does not work: as the answer to the question <strong>waarom?</strong> (why?).</p>
+
+<div class="compare-2">
+  <div class="compare-card is-primary">
+    <div class="compare-head"><h3>Right</h3><p class="compare-when">Answer to a why-question</p></div>
+    <div class="compare-rows">
+      <div class="compare-row"><p class="compare-key">Question</p><p class="compare-val">Waarom kom je niet?</p></div>
+      <div class="compare-row"><p class="compare-key">Answer</p><p class="compare-val">Omdat ik ziek <strong>ben</strong>.</p></div>
+    </div>
+  </div>
+  <div class="compare-card">
+    <div class="compare-head"><h3>Sounds odd</h3><p class="compare-when">Same question, with want</p></div>
+    <div class="compare-rows">
+      <div class="compare-row"><p class="compare-key">Question</p><p class="compare-val">Waarom kom je niet?</p></div>
+      <div class="compare-row"><p class="compare-key">Answer</p><p class="compare-val">Want ik ben ziek.</p></div>
+    </div>
+  </div>
+</div>
+
+<p>You get that why-question regularly on the Speaking exam. So do practise <em>omdat</em> — but practise it separately, and do not build long sentences with it while the clock is running.</p>
+
+<div class="blog-quiz-card">
+  <p class="blog-quiz-q">Which sentence is correct?</p>
+  <div class="blog-quiz-opts">
+    <button type="button" class="blog-quiz-opt"><span class="blog-quiz-letter">A</span><span>Ik ga naar de dokter, omdat ik heb pijn.</span></button>
+    <button type="button" class="blog-quiz-opt" data-answer="correct"><span class="blog-quiz-letter">B</span><span>Ik ga naar de dokter, want ik heb pijn.</span></button>
+    <button type="button" class="blog-quiz-opt"><span class="blog-quiz-letter">C</span><span>Ik ga naar de dokter want, ik pijn heb.</span></button>
+  </div>
+  <div class="blog-quiz-ans">The correct answer is <strong>B</strong>. After <em>want</em> the sentence stays normal: <em>ik heb pijn</em>. With <em>omdat</em> it would have been <em>omdat ik pijn heb</em>. And the comma always goes <em>before</em> <em>want</em>, never after it.</div>
+</div>
+
+<h2 id="komma">Do not forget the comma</h2>
+
+<p>A comma goes before <em>want</em> and before <em>omdat</em>. Candidates forget it often, and on the Writing exam it costs points. More of those small things are in <a href="/en/blog/common-mistakes-writing-exam-a2">the eight mistakes on the A2 Writing exam</a>.</p>
+
+<h2 id="oefenen">Practise it out loud</h2>
+
+<p>You do not learn word order from a table. You learn it by making sentences and hearing what goes wrong. On Speaking you notice the difference fastest: there you have no time to repair a sentence.</p>
+
+<p><a href="/en/practice-exam/a2/writing">A2 Writing practice exams</a> · <a href="/en/practice-exam/a2/speaking">A2 Speaking practice exams</a></p>
+`,
+        sidebarHtml: `<div class="bg-surface-container-lowest rounded-2xl p-6" style="box-shadow: 0 2px 16px rgba(0,43,109,0.06)">
+  <h3 class="text-xs font-bold uppercase tracking-widest text-on-surface-variant mb-4">In short</h3>
+  <table class="facts-table">
+    <tr><td>want</td><td>verb stays put</td></tr>
+    <tr><td>omdat</td><td>verb moves back</td></tr>
+    <tr><td>dus</td><td>verb stays put</td></tr>
+    <tr><td>comma</td><td>always before it</td></tr>
+  </table>
+</div>`,
+        faq: [
+          { q: 'Do want and omdat mean the same thing?', a: 'Yes. Both give a reason. The difference is grammatical: after ‘want’ the word order stays normal, after ‘omdat’ the verb moves to the end of the clause.' },
+          { q: 'Is there a comma before want?', a: 'Yes. A comma goes before ‘want’, and before ‘omdat’ too. Forgetting it is one of the most common mistakes on the Writing exam.' },
+          { q: 'Can I start a sentence with ‘want’?', a: 'Better not. If you want to start with the reason, use ‘Omdat ...’ and mind the word order, or turn the sentence around.' },
+          { q: 'What is a subordinate clause?', a: 'A clause that cannot stand on its own and in which the verb moves to the end. ‘Omdat ik ziek ben’ is a subordinate clause. ‘Ik ben ziek’ is a main clause.' },
+          { q: 'Is ‘want’ worse Dutch than ‘omdat’?', a: 'No. ‘Want’ is ordinary Dutch and completely correct at A2 and B1. You are not assessed on difficult sentences, but on correct and understandable ones.' },
+          { q: 'When do I have to use ‘omdat’ anyway?', a: 'As the answer to a direct why-question. To ‘Waarom kom je niet?’ you answer ‘Omdat ik ziek ben’, not ‘Want ik ben ziek’. You get that question regularly on the Speaking exam.' },
+        ],
+        relatedPosts: [
+          { slug: 'veelgemaakte-fouten-schrijven-examen-a2', title: 'The 8 mistakes on Writing A2', desc: 'Capitals, commas, times and ‘u’ versus ‘je’' },
+          { slug: 'wederkerende-werkwoorden-nederlands', title: 'Dutch reflexive verbs', desc: 'Me, je, zich — with 20 examples' },
+          { slug: 'spreken-examen-inburgering-tips', title: 'A2 Speaking: 7 tips', desc: 'Part 1 asks two questions, not one' },
+        ],
+        ctaTitle: 'Practise your sentences on the real exam',
+        ctaDesc: 'Writing and speaking tasks in DUO’s format, with feedback per assessment point from a certified NT2 teacher.',
+        ctaLabel: 'Practise for free',
+      },
+      ar: {
+        heroTitle: 'want أم omdat؟ اختر «want» في أغلب الأحيان',
+        description: 'تعني want وomdat الشيء نفسه، لكن ترتيب الكلمات بعدهما مختلف. لماذا يكون «want» الخيار الأذكى في امتحان الاندماج غالبًا.',
+        category: 'شرح ولغة',
+        breadcrumb: 'want أم omdat',
+        dateLabel: '١٦ سبتمبر ٢٠٢٦',
+        imageAlt: 'متعلّم يتدرب على جمل هولندية باستخدام want وomdat في دفتر',
+        heroSubtitle: 'المعنى واحد. الفرق في ما يحدث للفعل بعدهما — وهناك تقع الأخطاء.',
+        articleHtml: `
+<p><strong>want</strong> و<strong>omdat</strong> تعنيان الشيء نفسه: كلتاهما تعطي سببًا، أي «لأن». الفرق في <strong>ترتيب الكلمات</strong>. فبعد <em>want</em> لا يتغير شيء، وبعد <em>omdat</em> ينتقل الفعل إلى آخر الجملة. لذلك فالنصيحة في الامتحان بسيطة: إن ترددت فاختر <em>want</em>. تقول المعنى نفسه تمامًا، ولا يمكن أن تخطئ في ترتيب الكلمات.</p>
+
+${docentNote('إن أردت وصل جملتين فاختر «want» بدل «omdat». مع «want» تصنع جملتين رئيسيتين ولا تحتاج إلى تغيير شيء. أما مع «omdat» فعليك تعديل ترتيب الكلمات، وهناك يقع الخطأ.', 'مدرّسة NT2')}
+
+<h2 id="voorbeeld">الفرق في مثال واحد</h2>
+
+<p>الفكرة نفسها مكتوبة بثلاث طرق. انظر فقط إلى الفعل <em>ben</em> و<em>bent</em>.</p>
+
+<div class="article-table-wrap">
+<table>
+  <thead><tr><th>الطريقة</th><th>الجملة</th><th>أين الفعل؟</th></tr></thead>
+  <tbody>
+    <tr><td><strong>مع want</strong></td><td>${nlEx('Ik zou met de auto gaan, <strong>want</strong> dan <strong>ben</strong> je sneller.')}</td><td>في الموضع الثاني، كالمعتاد</td></tr>
+    <tr><td><strong>جملتان منفصلتان</strong></td><td>${nlEx('Ik zou met de auto gaan. Je <strong>bent</strong> sneller.')}</td><td>في الموضع الثاني، كالمعتاد</td></tr>
+    <tr><td><strong>مع omdat</strong></td><td>${nlEx('Ik zou met de auto gaan, <strong>omdat</strong> je dan sneller <strong>bent</strong>.')}</td><td>في آخر الجملة</td></tr>
+  </tbody>
+</table>
+</div>
+
+<p>هذا هو الفرق كله. ليس هناك فرق في المعنى تحتاج إلى معرفته في المستوى A2، بل موضع واحد يجب أن يذهب إليه الفعل.</p>
+
+<h2 id="hoofdzin">لماذا «want» أسهل</h2>
+
+<p>بعد <strong>want</strong> تأتي <strong>جملة رئيسية</strong>: فاعل ثم فعل ثم بقية الجملة. لا تنقل شيئًا.</p>
+
+<div class="tip-card"><span class="tip-number">1</span><div><p>${nlEx('Ik kom niet, <strong>want</strong> ik <strong>ben</strong> ziek.')}</p></div></div>
+<div class="tip-card"><span class="tip-number">2</span><div><p>${nlEx('Ik neem de trein, <strong>want</strong> de auto <strong>is</strong> kapot.')}</p></div></div>
+
+<p>وبعد <strong>omdat</strong> تأتي <strong>جملة تابعة</strong>، وفيها ينتقل الفعل إلى النهاية.</p>
+
+<div class="tip-card"><span class="tip-number">1</span><div><p>${nlEx('Ik kom niet, <strong>omdat</strong> ik ziek <strong>ben</strong>.')}</p></div></div>
+<div class="tip-card"><span class="tip-number">2</span><div><p>${nlEx('Ik neem de trein, <strong>omdat</strong> de auto kapot <strong>is</strong>.')}</p></div></div>
+
+<p>وإن كان في الجملة فعلان انتقلا معًا إلى الآخر: ${nlEx('Ik kom niet, omdat ik moet werken.')}</p>
+
+${foutGoed([nlEx('Ik kom niet, omdat ik ben ziek.'), nlEx('Ik neem de trein, omdat de auto is kapot.')], [nlEx('Ik kom niet, omdat ik ziek ben.'), nlEx('Ik kom niet, want ik ben ziek.')], ['خطأ', 'صواب'])}
+
+<h2 id="drie-zinnen">الخيار الثالث: اجعلها جملتين</h2>
+
+<p>لست مضطرًا إلى وصل الجمل أصلًا. جملتان قصيرتان صحيحتان خير من جملة طويلة فيها خطأ. في المستوى A2 يُقيَّم مدى وضوحك وصحتك في الكتابة والكلام، لا قدرتك على بناء جمل معقّدة.</p>
+
+<div class="info-box info-box-green">
+  <p><strong>${nlEx('Ik zou met de auto naar mijn werk gaan. Je bent sneller.')}</strong> جملتان، كلتاهما صحيحة، وبلا أي مخاطرة.</p>
+</div>
+
+<h2 id="uitzondering">متى تستخدم «omdat» فعلًا</h2>
+
+<p>هناك موضع واحد لا تصلح فيه <em>want</em>: حين تجيب عن سؤال <strong>waarom؟</strong> أي «لماذا؟».</p>
+
+<div class="compare-2">
+  <div class="compare-card is-primary">
+    <div class="compare-head"><h3>صواب</h3><p class="compare-when">إجابة عن سؤال «لماذا»</p></div>
+    <div class="compare-rows">
+      <div class="compare-row"><p class="compare-key">السؤال</p><p class="compare-val">${nlEx('Waarom kom je niet?')}</p></div>
+      <div class="compare-row"><p class="compare-key">الجواب</p><p class="compare-val">${nlEx('Omdat ik ziek <strong>ben</strong>.')}</p></div>
+    </div>
+  </div>
+  <div class="compare-card">
+    <div class="compare-head"><h3>يبدو غريبًا</h3><p class="compare-when">السؤال نفسه مع want</p></div>
+    <div class="compare-rows">
+      <div class="compare-row"><p class="compare-key">السؤال</p><p class="compare-val">${nlEx('Waarom kom je niet?')}</p></div>
+      <div class="compare-row"><p class="compare-key">الجواب</p><p class="compare-val">${nlEx('Want ik ben ziek.')}</p></div>
+    </div>
+  </div>
+</div>
+
+<p>هذا السؤال يتكرر في امتحان التحدث. فتدرّب على <em>omdat</em> — لكن تدرّب عليها على حدة، ولا تبنِ بها جملًا طويلة والوقت يجري.</p>
+
+<div class="blog-quiz-card">
+  <p class="blog-quiz-q">أي جملة صحيحة؟</p>
+  <div class="blog-quiz-opts">
+    <button type="button" class="blog-quiz-opt"><span class="blog-quiz-letter">A</span><span dir="ltr" lang="nl">Ik ga naar de dokter, omdat ik heb pijn.</span></button>
+    <button type="button" class="blog-quiz-opt" data-answer="correct"><span class="blog-quiz-letter">B</span><span dir="ltr" lang="nl">Ik ga naar de dokter, want ik heb pijn.</span></button>
+    <button type="button" class="blog-quiz-opt"><span class="blog-quiz-letter">C</span><span dir="ltr" lang="nl">Ik ga naar de dokter want, ik pijn heb.</span></button>
+  </div>
+  <div class="blog-quiz-ans">الجواب الصحيح هو <strong>B</strong>. بعد <em>want</em> تبقى الجملة كما هي: ${nlEx('ik heb pijn')}. ومع <em>omdat</em> كانت ستصير ${nlEx('omdat ik pijn heb')}. والفاصلة توضع دائمًا <em>قبل</em> want لا بعدها.</div>
+</div>
+
+<h2 id="komma">لا تنسَ الفاصلة</h2>
+
+<p>توضع فاصلة قبل <em>want</em> وقبل <em>omdat</em>. كثيرون ينسونها، وفي امتحان الكتابة يكلّف ذلك نقاطًا. ومزيد من هذه التفاصيل الصغيرة في <a href="/ar/المدونة/أخطاء-شائعة-امتحان-الكتابة-a2">الأخطاء الثمانية في امتحان الكتابة A2</a>.</p>
+
+<h2 id="oefenen">تدرّب بصوت مرتفع</h2>
+
+<p>ترتيب الكلمات لا يُتعلَّم من جدول، بل بصنع الجمل وسماع ما يقع فيه الخطأ. وفي التحدث تلاحظ الفرق أسرع، لأن لا وقت لديك لإصلاح الجملة.</p>
+
+<p><a href="/ar/امتحان-تجريبي/a2/الكتابة">امتحانات الكتابة التجريبية A2</a> · <a href="/ar/امتحان-تجريبي/a2/التحدث">امتحانات التحدث التجريبية A2</a></p>
+`,
+        sidebarHtml: `<div class="bg-surface-container-lowest rounded-2xl p-6" style="box-shadow: 0 2px 16px rgba(0,43,109,0.06)">
+  <h3 class="text-xs font-bold uppercase tracking-widest text-on-surface-variant mb-4">باختصار</h3>
+  <table class="facts-table">
+    <tr><td>want</td><td>الفعل يبقى مكانه</td></tr>
+    <tr><td>omdat</td><td>الفعل ينتقل للآخر</td></tr>
+    <tr><td>dus</td><td>الفعل يبقى مكانه</td></tr>
+    <tr><td>الفاصلة</td><td>دائمًا قبلها</td></tr>
+  </table>
+</div>`,
+        faq: [
+          { q: 'هل تعني want وomdat الشيء نفسه؟', a: 'نعم، كلتاهما تعطي سببًا. والفرق نحوي: بعد «want» يبقى ترتيب الكلمات عاديًا، وبعد «omdat» ينتقل الفعل إلى آخر الجملة.' },
+          { q: 'هل توضع فاصلة قبل want؟', a: 'نعم. توضع فاصلة قبل «want» وقبل «omdat» أيضًا. ونسيانها من أكثر الأخطاء شيوعًا في امتحان الكتابة.' },
+          { q: 'هل يمكنني أن أبدأ الجملة بـ«want»؟', a: 'يُفضَّل ألا تفعل. إن أردت البدء بالسبب فاستخدم «Omdat ...» وانتبه لترتيب الكلمات، أو اقلب الجملة.' },
+          { q: 'ما الجملة التابعة؟', a: 'جملة لا تقوم بنفسها وينتقل فيها الفعل إلى النهاية. «Omdat ik ziek ben» جملة تابعة، و«Ik ben ziek» جملة رئيسية.' },
+          { q: 'هل «want» هولندية أضعف من «omdat»؟', a: 'لا. «want» هولندية عادية وصحيحة تمامًا في A2 وB1. أنت لا تُقيَّم على الجمل الصعبة بل على الجمل الصحيحة المفهومة.' },
+          { q: 'متى يجب أن أستخدم «omdat» رغم ذلك؟', a: 'حين تجيب عن سؤال «لماذا» مباشرة. فعلى «Waarom kom je niet?» تجيب «Omdat ik ziek ben» لا «Want ik ben ziek». وهذا السؤال يتكرر في امتحان التحدث.' },
+        ],
+        relatedPosts: [
+          { slug: 'veelgemaakte-fouten-schrijven-examen-a2', title: 'الأخطاء الثمانية في الكتابة A2', desc: 'الحروف الكبيرة والفواصل والوقت و«u» أو «je»' },
+          { slug: 'wederkerende-werkwoorden-nederlands', title: 'الأفعال الانعكاسية', desc: 'me وje وzich — مع 20 مثالًا' },
+          { slug: 'spreken-examen-inburgering-tips', title: 'التحدث A2: سبع نصائح', desc: 'الجزء الأول يطرح سؤالين لا سؤالًا واحدًا' },
+        ],
+        ctaTitle: 'تدرّب على جملك في الامتحان الحقيقي',
+        ctaDesc: 'واجبات كتابة وتحدث بصيغة DUO، مع ملاحظات لكل معيار تقييم من مدرّسة NT2 معتمدة.',
+        ctaLabel: 'تدرّب مجانًا',
+      },
+    },
+  },
+  // ───────────────────────────────────────────────────── 8. WEDERKERENDE WERKWOORDEN
+  {
+    slug: 'wederkerende-werkwoorden-nederlands',
+    title: 'Wederkerende werkwoorden: me, je, zich (20 voorbeelden)',
+    description: '‘Ik kan beter concentreren’ is fout — het is ‘ik kan me beter concentreren’. Zo werken wederkerende werkwoorden, met een tabel en 20 voorbeelden.',
+    category: 'Uitleg & Taal',
+    categoryKey: 'uitleg',
+    categoryColor: 'blue',
+    datePublished: '2026-09-16',
+    dateModified: '2026-09-16',
+    dateLabel: '16 september 2026',
+    breadcrumb: 'Wederkerende werkwoorden',
+    heroTitle: 'Wederkerende werkwoorden: me, je, zich',
+    heroSubtitle: 'Sommige werkwoorden hebben altijd een extra woordje nodig. Laat je het weg, dan is de zin fout — ook als iedereen je begrijpt.',
+    image: '/images/blog/wederkerende-werkwoorden-nederlands.jpg',
+    imageAlt: 'Cursist bereidt zich voor op het inburgeringsexamen met een schrift vol Nederlandse werkwoorden',
+    readingMinutes: 7,
+    faq: [
+      { q: 'Wat is een wederkerend werkwoord?', a: 'Een werkwoord dat altijd ‘me’, ‘je’, ‘zich’ of ‘ons’ bij zich heeft. In het woordenboek staat het met ‘zich’: zich voelen, zich concentreren, zich voorbereiden.' },
+      { q: 'Wanneer gebruik ik ‘me’ en wanneer ‘zich’?', a: '‘Me’ bij ik, ‘je’ bij jij en jullie, ‘zich’ bij u, hij, zij en zij-meervoud, ‘ons’ bij wij. Let op: bij ‘u’ hoort ‘zich’, niet ‘je’.' },
+      { q: 'Mag ik ‘mij’ zeggen in plaats van ‘me’?', a: 'Ja, allebei is goed. ‘Me’ klinkt gewoner in spreektaal, ‘mij’ is iets nadrukkelijker.' },
+      { q: 'Waarom staat er twee keer ‘je’ in ‘voel je je goed?’', a: 'De eerste ‘je’ hoort bij jij, de tweede hoort bij het werkwoord zich voelen. Het klinkt raar, maar het is correct Nederlands.' },
+      { q: 'Komen deze werkwoorden op het inburgeringsexamen?', a: 'Ja, vooral bij Spreken en Schrijven, waar je zelf zinnen maakt. Bij Lezen en Luisteren hoef je ze alleen te herkennen.' },
+      { q: 'Hoeveel wederkerende werkwoorden moet ik kennen?', a: 'De twintig in dit artikel zijn ruim voldoende voor niveau A2. Leer eerst de werkwoorden die je bij een instantie nodig hebt: zich inschrijven, zich melden, zich aanmelden.' },
+    ],
+    articleHtml: `
+<p>Sommige Nederlandse werkwoorden hebben altijd een extra woordje nodig: <strong>me, je, zich, ons</strong>. Dat heet een <strong>wederkerend werkwoord</strong>. Laat je dat woordje weg, dan is de zin fout — ook als iedereen begrijpt wat je bedoelt. Dit is een van de fouten die het langst blijft hangen, ook bij mensen die verder goed Nederlands spreken.</p>
+
+${docentNote('“Ik kan beter concentreren” — dat hoor ik heel vaak. Het moet zijn: “ik kan me beter concentreren”. Het werkwoord is zich concentreren, en dat woordje verdwijnt niet.')}
+
+<h2 id="tabel">De regel in één tabel</h2>
+
+<p>Het woordje verandert mee met de persoon. Meer hoef je niet te onthouden.</p>
+
+<div class="article-table-wrap">
+<table>
+  <thead><tr><th>Persoon</th><th>Woordje</th><th>Voorbeeld</th></tr></thead>
+  <tbody>
+    <tr><td>ik</td><td><strong>me</strong></td><td>Ik voel <strong>me</strong> goed.</td></tr>
+    <tr><td>jij</td><td><strong>je</strong></td><td>Voel je <strong>je</strong> goed?</td></tr>
+    <tr><td>u</td><td><strong>zich</strong></td><td>Voelt u <strong>zich</strong> goed?</td></tr>
+    <tr><td>hij / zij</td><td><strong>zich</strong></td><td>Hij voelt <strong>zich</strong> goed.</td></tr>
+    <tr><td>wij</td><td><strong>ons</strong></td><td>Wij voelen <strong>ons</strong> goed.</td></tr>
+    <tr><td>jullie</td><td><strong>je</strong></td><td>Voelen jullie <strong>je</strong> goed?</td></tr>
+    <tr><td>zij (meervoud)</td><td><strong>zich</strong></td><td>Zij voelen <strong>zich</strong> goed.</td></tr>
+  </tbody>
+</table>
+</div>
+
+<div class="note-strip"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1 0-5H20"/></svg><p>In het woordenboek staat het werkwoord altijd met <strong>zich</strong>: <em>zich voelen</em>, <em>zich concentreren</em>. Dat is je signaal dat dit werkwoord het woordje nodig heeft.</p></div>
+
+<h2 id="plek">Waar staat het woordje in de zin?</h2>
+
+<div class="tip-card"><span class="tip-number">1</span><div><p><strong>In een gewone zin:</strong> direct na het werkwoord. — Ik bereid <strong>me</strong> voor op het examen.</p></div></div>
+<div class="tip-card"><span class="tip-number">2</span><div><p><strong>Met twee werkwoorden:</strong> na het eerste werkwoord. — Ik kan <strong>me</strong> beter concentreren als het rustig is.</p></div></div>
+<div class="tip-card"><span class="tip-number">3</span><div><p><strong>In een vraag:</strong> na het onderwerp. — Voel je <strong>je</strong> beter?</p></div></div>
+
+${foutGoed(['Ik me bereid voor op het examen.', 'Ik kan beter me concentreren.'], ['Ik bereid me voor op het examen.', 'Ik kan me beter concentreren.'])}
+
+<h2 id="twintig">20 werkwoorden die je op A2 nodig hebt</h2>
+
+<p>Dit zijn de werkwoorden die in examenopdrachten en in gesprekken met instanties het vaakst voorkomen.</p>
+
+<div class="article-table-wrap">
+<table>
+  <thead><tr><th>Werkwoord</th><th>Voorbeeldzin</th></tr></thead>
+  <tbody>
+    <tr><td>zich voelen</td><td>Ik voel <strong>me</strong> vandaag beter.</td></tr>
+    <tr><td>zich concentreren</td><td>Ik kan <strong>me</strong> beter concentreren als het rustig is.</td></tr>
+    <tr><td>zich voorbereiden</td><td>Ik bereid <strong>me</strong> goed voor op het examen.</td></tr>
+    <tr><td>zich herinneren</td><td>Ik herinner <strong>me</strong> dat ik vroeger veel buiten speelde.</td></tr>
+    <tr><td>zich ergeren aan</td><td>Ik erger <strong>me</strong> aan mensen die te laat komen.</td></tr>
+    <tr><td>zich vergissen</td><td>Sorry, ik vergis <strong>me</strong>.</td></tr>
+    <tr><td>zich haasten</td><td>Ik moet <strong>me</strong> haasten, anders mis ik de bus.</td></tr>
+    <tr><td>zich wassen</td><td>Ik was <strong>me</strong> elke ochtend.</td></tr>
+    <tr><td>zich aankleden</td><td>De kinderen kleden <strong>zich</strong> zelf aan.</td></tr>
+    <tr><td>zich schamen</td><td>Ik schaam <strong>me</strong> een beetje.</td></tr>
+    <tr><td>zich vervelen</td><td>Mijn zoon verveelt <strong>zich</strong> in de vakantie.</td></tr>
+    <tr><td>zich voorstellen</td><td>Mag ik <strong>me</strong> even voorstellen?</td></tr>
+    <tr><td>zich afvragen</td><td>Ik vraag <strong>me</strong> af of de bus nog komt.</td></tr>
+    <tr><td>zich zorgen maken</td><td>Maak <strong>je</strong> geen zorgen.</td></tr>
+    <tr><td>zich interesseren voor</td><td>Hij interesseert <strong>zich</strong> voor politiek.</td></tr>
+    <tr><td>zich verheugen op</td><td>Wij verheugen <strong>ons</strong> op de zomer.</td></tr>
+    <tr><td>zich verbazen over</td><td>Ik verbaas <strong>me</strong> over de prijzen.</td></tr>
+    <tr><td>zich inschrijven</td><td>Ik schrijf <strong>me</strong> in bij de gemeente.</td></tr>
+    <tr><td>zich melden</td><td>U moet <strong>zich</strong> melden bij de balie.</td></tr>
+    <tr><td>zich aanmelden</td><td>Ik meld <strong>me</strong> aan voor het examen.</td></tr>
+  </tbody>
+</table>
+</div>
+
+<div class="info-box info-box-green">
+  <p><strong>Begin met de laatste vier.</strong> <em>Zich inschrijven, zich melden, zich aanmelden</em> en <em>zich voorbereiden</em> heb je nodig bij de gemeente, bij DUO en in brieven aan een instantie. Die komen bij KNM èn bij Schrijven terug.</p>
+</div>
+
+<h2 id="fouten">Drie fouten die het vaakst voorkomen</h2>
+
+<div class="tip-card"><span class="tip-number">1</span><div><p><strong>Het woordje weglaten.</strong> Ik kan beter concentreren → Ik kan <strong>me</strong> beter concentreren.</p></div></div>
+<div class="tip-card"><span class="tip-number">2</span><div><p><strong>Het verkeerde woordje bij ‘u’.</strong> Voelt u je goed? → Voelt u <strong>zich</strong> goed?</p></div></div>
+<div class="tip-card"><span class="tip-number">3</span><div><p><strong>Het woordje op de verkeerde plek.</strong> Ik me bereid voor → Ik bereid <strong>me</strong> voor.</p></div></div>
+
+<div class="blog-quiz-card">
+  <p class="blog-quiz-q">Welke zin is goed?</p>
+  <div class="blog-quiz-opts">
+    <button type="button" class="blog-quiz-opt"><span class="blog-quiz-letter">A</span><span>Voelt u je vandaag beter?</span></button>
+    <button type="button" class="blog-quiz-opt"><span class="blog-quiz-letter">B</span><span>Voelt u beter vandaag?</span></button>
+    <button type="button" class="blog-quiz-opt" data-answer="correct"><span class="blog-quiz-letter">C</span><span>Voelt u zich vandaag beter?</span></button>
+  </div>
+  <div class="blog-quiz-ans">Het juiste antwoord is <strong>C</strong>. Bij <em>u</em> hoort <em>zich</em>, niet <em>je</em>. En weglaten mag niet: <em>zich voelen</em> heeft het woordje altijd nodig.</div>
+</div>
+
+<h2 id="oefenen">Waar je dit oefent</h2>
+
+<p>Dit leer je pas af door het te zeggen en jezelf terug te horen. Bij Spreken hoor je je eigen weglatingen sneller dan je denkt, en bij Schrijven zie je ze als je je tekst één keer teruglest.</p>
+
+<p><a href="/nl/oefenexamen/a2/spreken">Oefenexamens Spreken A2</a> · <a href="/nl/oefenexamen/a2/schrijven">Oefenexamens Schrijven A2</a> · <a href="/nl/blog/veelgemaakte-fouten-schrijven-examen-a2">De acht fouten bij Schrijven</a></p>
+`,
+    sidebarHtml: `<div class="bg-surface-container-lowest rounded-2xl p-6" style="box-shadow: 0 2px 16px rgba(0,43,109,0.06)">
+  <h3 class="text-xs font-bold uppercase tracking-widest text-on-surface-variant mb-4">Welk woordje?</h3>
+  <table class="facts-table">
+    <tr><td>ik</td><td>me</td></tr>
+    <tr><td>jij / jullie</td><td>je</td></tr>
+    <tr><td>u / hij / zij</td><td>zich</td></tr>
+    <tr><td>wij</td><td>ons</td></tr>
+  </table>
+</div>`,
+    relatedPosts: [
+      { slug: 'want-of-omdat', title: 'Want of omdat?', desc: 'Waarom ‘want’ bijna altijd de slimmere keuze is' },
+      { slug: 'veelgemaakte-fouten-schrijven-examen-a2', title: 'De 8 fouten bij Schrijven A2', desc: 'Hoofdletters, komma’s, tijden en ‘u’ of ‘je’' },
+      { slug: 'spreken-examen-inburgering-tips', title: 'Examen Spreken A2: 7 tips', desc: 'Onderdeel 1 stelt twee vragen, niet één' },
+    ],
+    ctaTitle: 'Hoor je eigen fouten terug',
+    ctaDesc: 'Neem je antwoord op bij de oefenexamens Spreken en schrijf echte examenopdrachten — met feedback van een gecertificeerde NT2-docent.',
+    ctaHref: '/oefenen',
+    ctaLabel: 'Gratis oefenen',
+    translations: {
+      en: {
+        heroTitle: 'Dutch reflexive verbs: me, je, zich',
+        description: '‘Ik kan beter concentreren’ is wrong — it is ‘ik kan me beter concentreren’. How Dutch reflexive verbs work, with a table and 20 examples.',
+        category: 'Explained & Language',
+        breadcrumb: 'Reflexive verbs',
+        dateLabel: '16 September 2026',
+        imageAlt: 'Learner preparing for the integration exam with a notebook full of Dutch verbs',
+        heroSubtitle: 'Some verbs always need a small extra word. Leave it out and the sentence is wrong — even when everyone understands you.',
+        articleHtml: `
+<p>Some Dutch verbs always need an extra little word: <strong>me, je, zich, ons</strong>. That is called a <strong>reflexive verb</strong>. Leave that word out and the sentence is wrong — even when everyone understands what you mean. This is one of the mistakes that sticks around longest, also with people whose Dutch is otherwise good.</p>
+
+${docentNote('“Ik kan beter concentreren” — I hear that a lot. It has to be “ik kan me beter concentreren”. The verb is zich concentreren, and that little word does not disappear.', 'NT2 teacher')}
+
+<h2 id="tabel">The rule in one table</h2>
+
+<p>The word changes with the person. That is all you have to remember.</p>
+
+<div class="article-table-wrap">
+<table>
+  <thead><tr><th>Person</th><th>Word</th><th>Example</th></tr></thead>
+  <tbody>
+    <tr><td>ik (I)</td><td><strong>me</strong></td><td>Ik voel <strong>me</strong> goed.</td></tr>
+    <tr><td>jij (you)</td><td><strong>je</strong></td><td>Voel je <strong>je</strong> goed?</td></tr>
+    <tr><td>u (you, formal)</td><td><strong>zich</strong></td><td>Voelt u <strong>zich</strong> goed?</td></tr>
+    <tr><td>hij / zij (he / she)</td><td><strong>zich</strong></td><td>Hij voelt <strong>zich</strong> goed.</td></tr>
+    <tr><td>wij (we)</td><td><strong>ons</strong></td><td>Wij voelen <strong>ons</strong> goed.</td></tr>
+    <tr><td>jullie (you, plural)</td><td><strong>je</strong></td><td>Voelen jullie <strong>je</strong> goed?</td></tr>
+    <tr><td>zij (they)</td><td><strong>zich</strong></td><td>Zij voelen <strong>zich</strong> goed.</td></tr>
+  </tbody>
+</table>
+</div>
+
+<div class="note-strip"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1 0-5H20"/></svg><p>In the dictionary the verb is always listed with <strong>zich</strong>: <em>zich voelen</em>, <em>zich concentreren</em>. That is your signal that this verb needs the extra word.</p></div>
+
+<h2 id="plek">Where does the word go?</h2>
+
+<div class="tip-card"><span class="tip-number">1</span><div><p><strong>In a normal sentence:</strong> straight after the verb. — Ik bereid <strong>me</strong> voor op het examen.</p></div></div>
+<div class="tip-card"><span class="tip-number">2</span><div><p><strong>With two verbs:</strong> after the first verb. — Ik kan <strong>me</strong> beter concentreren als het rustig is.</p></div></div>
+<div class="tip-card"><span class="tip-number">3</span><div><p><strong>In a question:</strong> after the subject. — Voel je <strong>je</strong> beter?</p></div></div>
+
+${foutGoed(['Ik me bereid voor op het examen.', 'Ik kan beter me concentreren.'], ['Ik bereid me voor op het examen.', 'Ik kan me beter concentreren.'], ['Wrong', 'Right'])}
+
+<h2 id="twintig">20 verbs you need at A2</h2>
+
+<p>These are the ones that come up most often in exam tasks and in conversations with Dutch institutions.</p>
+
+<div class="article-table-wrap">
+<table>
+  <thead><tr><th>Verb</th><th>Example sentence</th></tr></thead>
+  <tbody>
+    <tr><td>zich voelen — to feel</td><td>Ik voel <strong>me</strong> vandaag beter.</td></tr>
+    <tr><td>zich concentreren — to concentrate</td><td>Ik kan <strong>me</strong> beter concentreren als het rustig is.</td></tr>
+    <tr><td>zich voorbereiden — to prepare</td><td>Ik bereid <strong>me</strong> goed voor op het examen.</td></tr>
+    <tr><td>zich herinneren — to remember</td><td>Ik herinner <strong>me</strong> dat ik vroeger veel buiten speelde.</td></tr>
+    <tr><td>zich ergeren aan — to be annoyed by</td><td>Ik erger <strong>me</strong> aan mensen die te laat komen.</td></tr>
+    <tr><td>zich vergissen — to be mistaken</td><td>Sorry, ik vergis <strong>me</strong>.</td></tr>
+    <tr><td>zich haasten — to hurry</td><td>Ik moet <strong>me</strong> haasten, anders mis ik de bus.</td></tr>
+    <tr><td>zich wassen — to wash</td><td>Ik was <strong>me</strong> elke ochtend.</td></tr>
+    <tr><td>zich aankleden — to get dressed</td><td>De kinderen kleden <strong>zich</strong> zelf aan.</td></tr>
+    <tr><td>zich schamen — to be ashamed</td><td>Ik schaam <strong>me</strong> een beetje.</td></tr>
+    <tr><td>zich vervelen — to be bored</td><td>Mijn zoon verveelt <strong>zich</strong> in de vakantie.</td></tr>
+    <tr><td>zich voorstellen — to introduce oneself</td><td>Mag ik <strong>me</strong> even voorstellen?</td></tr>
+    <tr><td>zich afvragen — to wonder</td><td>Ik vraag <strong>me</strong> af of de bus nog komt.</td></tr>
+    <tr><td>zich zorgen maken — to worry</td><td>Maak <strong>je</strong> geen zorgen.</td></tr>
+    <tr><td>zich interesseren voor — to be interested in</td><td>Hij interesseert <strong>zich</strong> voor politiek.</td></tr>
+    <tr><td>zich verheugen op — to look forward to</td><td>Wij verheugen <strong>ons</strong> op de zomer.</td></tr>
+    <tr><td>zich verbazen over — to be surprised at</td><td>Ik verbaas <strong>me</strong> over de prijzen.</td></tr>
+    <tr><td>zich inschrijven — to register</td><td>Ik schrijf <strong>me</strong> in bij de gemeente.</td></tr>
+    <tr><td>zich melden — to report, check in</td><td>U moet <strong>zich</strong> melden bij de balie.</td></tr>
+    <tr><td>zich aanmelden — to sign up</td><td>Ik meld <strong>me</strong> aan voor het examen.</td></tr>
+  </tbody>
+</table>
+</div>
+
+<div class="info-box info-box-green">
+  <p><strong>Start with the last four.</strong> <em>Zich inschrijven, zich melden, zich aanmelden</em> and <em>zich voorbereiden</em> are what you need at the municipality, at DUO and in letters to an institution. They come back in KNM as well as in Writing.</p>
+</div>
+
+<h2 id="fouten">The three most common mistakes</h2>
+
+<div class="tip-card"><span class="tip-number">1</span><div><p><strong>Leaving the word out.</strong> Ik kan beter concentreren → Ik kan <strong>me</strong> beter concentreren.</p></div></div>
+<div class="tip-card"><span class="tip-number">2</span><div><p><strong>The wrong word with ‘u’.</strong> Voelt u je goed? → Voelt u <strong>zich</strong> goed?</p></div></div>
+<div class="tip-card"><span class="tip-number">3</span><div><p><strong>The word in the wrong place.</strong> Ik me bereid voor → Ik bereid <strong>me</strong> voor.</p></div></div>
+
+<div class="blog-quiz-card">
+  <p class="blog-quiz-q">Which sentence is correct?</p>
+  <div class="blog-quiz-opts">
+    <button type="button" class="blog-quiz-opt"><span class="blog-quiz-letter">A</span><span>Voelt u je vandaag beter?</span></button>
+    <button type="button" class="blog-quiz-opt"><span class="blog-quiz-letter">B</span><span>Voelt u beter vandaag?</span></button>
+    <button type="button" class="blog-quiz-opt" data-answer="correct"><span class="blog-quiz-letter">C</span><span>Voelt u zich vandaag beter?</span></button>
+  </div>
+  <div class="blog-quiz-ans">The correct answer is <strong>C</strong>. With <em>u</em> you use <em>zich</em>, not <em>je</em>. And you cannot leave it out: <em>zich voelen</em> always needs the word.</div>
+</div>
+
+<h2 id="oefenen">Where to practise this</h2>
+
+<p>You only unlearn this by saying it and hearing yourself back. On Speaking you hear your own omissions faster than you expect, and on Writing you see them if you read your text back once.</p>
+
+<p><a href="/en/practice-exam/a2/speaking">A2 Speaking practice exams</a> · <a href="/en/practice-exam/a2/writing">A2 Writing practice exams</a> · <a href="/en/blog/common-mistakes-writing-exam-a2">The eight mistakes on Writing</a></p>
+`,
+        sidebarHtml: `<div class="bg-surface-container-lowest rounded-2xl p-6" style="box-shadow: 0 2px 16px rgba(0,43,109,0.06)">
+  <h3 class="text-xs font-bold uppercase tracking-widest text-on-surface-variant mb-4">Which word?</h3>
+  <table class="facts-table">
+    <tr><td>ik</td><td>me</td></tr>
+    <tr><td>jij / jullie</td><td>je</td></tr>
+    <tr><td>u / hij / zij</td><td>zich</td></tr>
+    <tr><td>wij</td><td>ons</td></tr>
+  </table>
+</div>`,
+        faq: [
+          { q: 'What is a reflexive verb?', a: 'A verb that always carries ‘me’, ‘je’, ‘zich’ or ‘ons’. In the dictionary it is listed with ‘zich’: zich voelen, zich concentreren, zich voorbereiden.' },
+          { q: 'When do I use ‘me’ and when ‘zich’?', a: '‘Me’ with ik, ‘je’ with jij and jullie, ‘zich’ with u, hij, zij and they, ‘ons’ with wij. Note that ‘u’ takes ‘zich’, not ‘je’.' },
+          { q: 'Can I say ‘mij’ instead of ‘me’?', a: 'Yes, both are correct. ‘Me’ sounds more ordinary in speech, ‘mij’ is slightly more emphatic.' },
+          { q: 'Why is there a double ‘je’ in ‘voel je je goed?’', a: 'The first ‘je’ belongs to the subject jij, the second belongs to the verb zich voelen. It sounds odd, but it is correct Dutch.' },
+          { q: 'Do these verbs come up on the integration exam?', a: 'Yes, mainly on Speaking and Writing, where you build sentences yourself. On Reading and Listening you only have to recognise them.' },
+          { q: 'How many reflexive verbs do I need to know?', a: 'The twenty in this article are more than enough for A2. Learn the ones you need at an institution first: zich inschrijven, zich melden, zich aanmelden.' },
+        ],
+        relatedPosts: [
+          { slug: 'want-of-omdat', title: 'Want or omdat?', desc: 'Why ‘want’ is almost always the smarter choice' },
+          { slug: 'veelgemaakte-fouten-schrijven-examen-a2', title: 'The 8 mistakes on Writing A2', desc: 'Capitals, commas, times and ‘u’ versus ‘je’' },
+          { slug: 'spreken-examen-inburgering-tips', title: 'A2 Speaking: 7 tips', desc: 'Part 1 asks two questions, not one' },
+        ],
+        ctaTitle: 'Hear your own mistakes back',
+        ctaDesc: 'Record your answer on the Speaking practice exams and write real exam tasks — with feedback from a certified NT2 teacher.',
+        ctaLabel: 'Practise for free',
+      },
+      ar: {
+        heroTitle: 'الأفعال الانعكاسية الهولندية: me وje وzich',
+        description: '«Ik kan beter concentreren» خطأ، والصواب «ik kan me beter concentreren». هكذا تعمل الأفعال الانعكاسية، مع جدول وعشرين مثالًا.',
+        category: 'شرح ولغة',
+        breadcrumb: 'الأفعال الانعكاسية',
+        dateLabel: '١٦ سبتمبر ٢٠٢٦',
+        imageAlt: 'متعلّمة تستعد لامتحان الاندماج بدفتر مليء بالأفعال الهولندية',
+        heroSubtitle: 'بعض الأفعال تحتاج دائمًا إلى كلمة صغيرة إضافية. إن حذفتها صارت الجملة خاطئة — حتى لو فهمك الجميع.',
+        articleHtml: `
+<p>بعض الأفعال الهولندية تحتاج دائمًا إلى كلمة صغيرة إضافية: <strong>me</strong> أو <strong>je</strong> أو <strong>zich</strong> أو <strong>ons</strong>. ويسمى هذا <strong>الفعل الانعكاسي</strong>. وإن حذفت تلك الكلمة صارت الجملة خاطئة، حتى لو فهم الجميع ما تقصد. وهذا من الأخطاء التي تدوم أطول، حتى عند من لغتهم الهولندية جيدة في ما عدا ذلك.</p>
+
+${docentNote('«Ik kan beter concentreren» — أسمعها كثيرًا. والصواب «ik kan me beter concentreren». الفعل هو zich concentreren، وتلك الكلمة لا تختفي.', 'مدرّسة NT2')}
+
+<h2 id="tabel">القاعدة في جدول واحد</h2>
+
+<p>تتغير الكلمة بحسب الشخص. وهذا كل ما عليك حفظه.</p>
+
+<div class="article-table-wrap">
+<table>
+  <thead><tr><th>الضمير</th><th>الكلمة</th><th>مثال</th></tr></thead>
+  <tbody>
+    <tr><td>ik (أنا)</td><td><strong>me</strong></td><td>${nlEx('Ik voel <strong>me</strong> goed.')}</td></tr>
+    <tr><td>jij (أنت)</td><td><strong>je</strong></td><td>${nlEx('Voel je <strong>je</strong> goed?')}</td></tr>
+    <tr><td>u (حضرتك)</td><td><strong>zich</strong></td><td>${nlEx('Voelt u <strong>zich</strong> goed?')}</td></tr>
+    <tr><td>hij / zij (هو / هي)</td><td><strong>zich</strong></td><td>${nlEx('Hij voelt <strong>zich</strong> goed.')}</td></tr>
+    <tr><td>wij (نحن)</td><td><strong>ons</strong></td><td>${nlEx('Wij voelen <strong>ons</strong> goed.')}</td></tr>
+    <tr><td>jullie (أنتم)</td><td><strong>je</strong></td><td>${nlEx('Voelen jullie <strong>je</strong> goed?')}</td></tr>
+    <tr><td>zij (هم)</td><td><strong>zich</strong></td><td>${nlEx('Zij voelen <strong>zich</strong> goed.')}</td></tr>
+  </tbody>
+</table>
+</div>
+
+<div class="note-strip"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1 0-5H20"/></svg><p>في القاموس يُذكر الفعل دائمًا مع <strong>zich</strong>: ${nlEx('zich voelen')}، ${nlEx('zich concentreren')}. وهذه إشارتك إلى أن الفعل يحتاج إلى الكلمة الإضافية.</p></div>
+
+<h2 id="plek">أين تقع الكلمة في الجملة؟</h2>
+
+<div class="tip-card"><span class="tip-number">1</span><div><p><strong>في جملة عادية:</strong> مباشرة بعد الفعل. ${nlEx('Ik bereid <strong>me</strong> voor op het examen.')}</p></div></div>
+<div class="tip-card"><span class="tip-number">2</span><div><p><strong>مع فعلين:</strong> بعد الفعل الأول. ${nlEx('Ik kan <strong>me</strong> beter concentreren als het rustig is.')}</p></div></div>
+<div class="tip-card"><span class="tip-number">3</span><div><p><strong>في السؤال:</strong> بعد الفاعل. ${nlEx('Voel je <strong>je</strong> beter?')}</p></div></div>
+
+${foutGoed([nlEx('Ik me bereid voor op het examen.'), nlEx('Ik kan beter me concentreren.')], [nlEx('Ik bereid me voor op het examen.'), nlEx('Ik kan me beter concentreren.')], ['خطأ', 'صواب'])}
+
+<h2 id="twintig">20 فعلًا تحتاجها في المستوى A2</h2>
+
+<p>هذه هي الأفعال الأكثر ورودًا في واجبات الامتحان وفي التعامل مع المؤسسات الهولندية.</p>
+
+<div class="article-table-wrap">
+<table>
+  <thead><tr><th>الفعل</th><th>جملة مثال</th></tr></thead>
+  <tbody>
+    <tr><td>zich voelen — يشعر</td><td>${nlEx('Ik voel <strong>me</strong> vandaag beter.')}</td></tr>
+    <tr><td>zich concentreren — يركّز</td><td>${nlEx('Ik kan <strong>me</strong> beter concentreren als het rustig is.')}</td></tr>
+    <tr><td>zich voorbereiden — يستعد</td><td>${nlEx('Ik bereid <strong>me</strong> goed voor op het examen.')}</td></tr>
+    <tr><td>zich herinneren — يتذكّر</td><td>${nlEx('Ik herinner <strong>me</strong> dat ik vroeger veel buiten speelde.')}</td></tr>
+    <tr><td>zich ergeren aan — ينزعج من</td><td>${nlEx('Ik erger <strong>me</strong> aan mensen die te laat komen.')}</td></tr>
+    <tr><td>zich vergissen — يخطئ</td><td>${nlEx('Sorry, ik vergis <strong>me</strong>.')}</td></tr>
+    <tr><td>zich haasten — يستعجل</td><td>${nlEx('Ik moet <strong>me</strong> haasten, anders mis ik de bus.')}</td></tr>
+    <tr><td>zich wassen — يغتسل</td><td>${nlEx('Ik was <strong>me</strong> elke ochtend.')}</td></tr>
+    <tr><td>zich aankleden — يرتدي ملابسه</td><td>${nlEx('De kinderen kleden <strong>zich</strong> zelf aan.')}</td></tr>
+    <tr><td>zich schamen — يخجل</td><td>${nlEx('Ik schaam <strong>me</strong> een beetje.')}</td></tr>
+    <tr><td>zich vervelen — يشعر بالملل</td><td>${nlEx('Mijn zoon verveelt <strong>zich</strong> in de vakantie.')}</td></tr>
+    <tr><td>zich voorstellen — يعرّف بنفسه</td><td>${nlEx('Mag ik <strong>me</strong> even voorstellen?')}</td></tr>
+    <tr><td>zich afvragen — يتساءل</td><td>${nlEx('Ik vraag <strong>me</strong> af of de bus nog komt.')}</td></tr>
+    <tr><td>zich zorgen maken — يقلق</td><td>${nlEx('Maak <strong>je</strong> geen zorgen.')}</td></tr>
+    <tr><td>zich interesseren voor — يهتم بـ</td><td>${nlEx('Hij interesseert <strong>zich</strong> voor politiek.')}</td></tr>
+    <tr><td>zich verheugen op — يتطلّع إلى</td><td>${nlEx('Wij verheugen <strong>ons</strong> op de zomer.')}</td></tr>
+    <tr><td>zich verbazen over — يستغرب من</td><td>${nlEx('Ik verbaas <strong>me</strong> over de prijzen.')}</td></tr>
+    <tr><td>zich inschrijven — يسجّل نفسه</td><td>${nlEx('Ik schrijf <strong>me</strong> in bij de gemeente.')}</td></tr>
+    <tr><td>zich melden — يراجع، يبلّغ عن حضوره</td><td>${nlEx('U moet <strong>zich</strong> melden bij de balie.')}</td></tr>
+    <tr><td>zich aanmelden — يتقدّم بطلب</td><td>${nlEx('Ik meld <strong>me</strong> aan voor het examen.')}</td></tr>
+  </tbody>
+</table>
+</div>
+
+<div class="info-box info-box-green">
+  <p><strong>ابدأ بالأربعة الأخيرة.</strong> ${nlEx('zich inschrijven, zich melden, zich aanmelden')} و${nlEx('zich voorbereiden')} هي ما تحتاجه في البلدية وفي DUO وفي الرسائل إلى المؤسسات، وهي تعود في KNM وفي الكتابة معًا.</p>
+</div>
+
+<h2 id="fouten">الأخطاء الثلاثة الأكثر شيوعًا</h2>
+
+<div class="tip-card"><span class="tip-number">1</span><div><p><strong>حذف الكلمة.</strong> ${nlEx('Ik kan beter concentreren')} ← ${nlEx('Ik kan <strong>me</strong> beter concentreren')}.</p></div></div>
+<div class="tip-card"><span class="tip-number">2</span><div><p><strong>الكلمة الخطأ مع «u».</strong> ${nlEx('Voelt u je goed?')} ← ${nlEx('Voelt u <strong>zich</strong> goed?')}</p></div></div>
+<div class="tip-card"><span class="tip-number">3</span><div><p><strong>الكلمة في الموضع الخطأ.</strong> ${nlEx('Ik me bereid voor')} ← ${nlEx('Ik bereid <strong>me</strong> voor')}.</p></div></div>
+
+<div class="blog-quiz-card">
+  <p class="blog-quiz-q">أي جملة صحيحة؟</p>
+  <div class="blog-quiz-opts">
+    <button type="button" class="blog-quiz-opt"><span class="blog-quiz-letter">A</span><span dir="ltr" lang="nl">Voelt u je vandaag beter?</span></button>
+    <button type="button" class="blog-quiz-opt"><span class="blog-quiz-letter">B</span><span dir="ltr" lang="nl">Voelt u beter vandaag?</span></button>
+    <button type="button" class="blog-quiz-opt" data-answer="correct"><span class="blog-quiz-letter">C</span><span dir="ltr" lang="nl">Voelt u zich vandaag beter?</span></button>
+  </div>
+  <div class="blog-quiz-ans">الجواب الصحيح هو <strong>C</strong>. مع <em>u</em> تُستخدم <em>zich</em> لا <em>je</em>. ولا يجوز حذفها: ${nlEx('zich voelen')} يحتاج الكلمة دائمًا.</div>
+</div>
+
+<h2 id="oefenen">أين تتدرّب على هذا</h2>
+
+<p>لن تتخلّص من هذا الخطأ إلا بأن تنطقه وتسمع نفسك. في التحدث تسمع حذفك للكلمة أسرع مما تتوقع، وفي الكتابة تراه إن أعدت قراءة نصّك مرة واحدة.</p>
+
+<p><a href="/ar/امتحان-تجريبي/a2/التحدث">امتحانات التحدث التجريبية A2</a> · <a href="/ar/امتحان-تجريبي/a2/الكتابة">امتحانات الكتابة التجريبية A2</a> · <a href="/ar/المدونة/أخطاء-شائعة-امتحان-الكتابة-a2">الأخطاء الثمانية في الكتابة</a></p>
+`,
+        sidebarHtml: `<div class="bg-surface-container-lowest rounded-2xl p-6" style="box-shadow: 0 2px 16px rgba(0,43,109,0.06)">
+  <h3 class="text-xs font-bold uppercase tracking-widest text-on-surface-variant mb-4">أي كلمة؟</h3>
+  <table class="facts-table">
+    <tr><td>ik</td><td>me</td></tr>
+    <tr><td>jij / jullie</td><td>je</td></tr>
+    <tr><td>u / hij / zij</td><td>zich</td></tr>
+    <tr><td>wij</td><td>ons</td></tr>
+  </table>
+</div>`,
+        faq: [
+          { q: 'ما الفعل الانعكاسي؟', a: 'فعل يحمل دائمًا «me» أو «je» أو «zich» أو «ons». وفي القاموس يُذكر مع «zich»: zich voelen وzich concentreren وzich voorbereiden.' },
+          { q: 'متى أستخدم «me» ومتى «zich»؟', a: '«me» مع ik، و«je» مع jij وjullie، و«zich» مع u وhij وzij وهم، و«ons» مع wij. وانتبه: مع «u» تُستخدم «zich» لا «je».' },
+          { q: 'هل يمكنني قول «mij» بدل «me»؟', a: 'نعم، كلتاهما صحيحة. «me» أقرب إلى لغة الكلام، و«mij» أكثر تأكيدًا قليلًا.' },
+          { q: 'لماذا تتكرر «je» مرتين في «voel je je goed?»', a: 'الأولى تعود إلى الفاعل jij، والثانية تعود إلى الفعل zich voelen. يبدو الأمر غريبًا لكنه هولندية صحيحة.' },
+          { q: 'هل ترد هذه الأفعال في امتحان الاندماج؟', a: 'نعم، خصوصًا في التحدث والكتابة حيث تبني الجمل بنفسك. أما في القراءة والاستماع فيكفي أن تتعرّف عليها.' },
+          { q: 'كم فعلًا انعكاسيًا يلزمني؟', a: 'العشرون الواردة في هذا المقال تكفي وتزيد للمستوى A2. وابدأ بما تحتاجه عند المؤسسات: zich inschrijven وzich melden وzich aanmelden.' },
+        ],
+        relatedPosts: [
+          { slug: 'want-of-omdat', title: 'want أم omdat؟', desc: 'لماذا يكون «want» الخيار الأذكى غالبًا' },
+          { slug: 'veelgemaakte-fouten-schrijven-examen-a2', title: 'الأخطاء الثمانية في الكتابة A2', desc: 'الحروف الكبيرة والفواصل والوقت و«u» أو «je»' },
+          { slug: 'spreken-examen-inburgering-tips', title: 'التحدث A2: سبع نصائح', desc: 'الجزء الأول يطرح سؤالين لا سؤالًا واحدًا' },
+        ],
+        ctaTitle: 'اسمع أخطاءك بنفسك',
+        ctaDesc: 'سجّل إجابتك في امتحانات التحدث التجريبية واكتب واجبات امتحانية حقيقية — مع ملاحظات من مدرّسة NT2 معتمدة.',
+        ctaLabel: 'تدرّب مجانًا',
+      },
+    },
+  },
+  // ───────────────────────────────────────────────────── 9. SPREKEN — tips
+  {
+    slug: 'spreken-examen-inburgering-tips',
+    title: 'Examen Spreken A2: 7 tips van een NT2-docent',
+    description: 'Bij onderdeel 1 worden vaak twee vragen gesteld, niet één. Dat en zes andere tips voor het examen Spreken A2, van een gecertificeerde NT2-docent.',
+    category: 'Tips & Voorbereiding',
+    categoryKey: 'tips',
+    categoryColor: 'orange',
+    datePublished: '2026-09-16',
+    dateModified: '2026-09-16',
+    dateLabel: '16 september 2026',
+    breadcrumb: 'Tips voor Spreken A2',
+    heroTitle: 'Examen Spreken A2: 7 tips van een NT2-docent',
+    heroSubtitle: 'De belangrijkste tip staat nergens op internet: bij onderdeel 1 zitten er vaak twee vragen in één vraag.',
+    image: '/images/blog/spreken-examen-inburgering-tips.jpg',
+    imageAlt: 'Cursist met koptelefoon spreekt een antwoord in achter een computer tijdens het oefenen van het examen Spreken',
+    readingMinutes: 8,
+    faq: [
+      { q: 'Hoeveel vragen krijg ik bij het examen Spreken A2?', a: 'In de officiële oefenexamens van DUO krijg je 16 vragen. Het examen duurt maximaal 35 minuten en je doet het op de computer met een koptelefoon.' },
+      { q: 'Worden er echt twee vragen tegelijk gesteld?', a: 'Bij onderdeel 1 komt dat regelmatig voor. Bijvoorbeeld: “Waar doe jij je boodschappen? En hoe vaak per week?” Dat zijn twee dingen die allebei in je antwoord moeten.' },
+      { q: 'Wat doe ik als ik het antwoord niet weet?', a: 'Zeg iets. Een kort en eenvoudig antwoord levert punten op, stilte niet. Je mag ook zeggen dat je iets niet vaak doet of niet weet, als je dat in het Nederlands doet.' },
+      { q: 'Mag ik mezelf verbeteren tijdens het spreken?', a: 'Ja. Jezelf verbeteren is normaal spreken en wordt niet afgestraft. Verbeter in één keer en praat door — helemaal opnieuw beginnen kost tijd die je niet hebt.' },
+      { q: 'Hoe wordt het examen Spreken nagekeken?', a: 'Deels automatisch en deels door gecertificeerde beoordelaars. Dat staat in het examenreglement van DUO, artikel 10.' },
+      { q: 'Moet ik snel praten?', a: 'Nee. Rustig en verstaanbaar levert meer op dan snel en onduidelijk. Je wordt beoordeeld op of je begrijpelijk bent, niet op tempo.' },
+      { q: 'Wat is de beste manier om Spreken te oefenen?', a: 'Hardop, met een opname, en daarna terugluisteren. Antwoorden bedenken in je hoofd voelt goed en traint bijna niets, omdat je je eigen fouten dan niet hoort.' },
+    ],
+    articleHtml: `
+<p>De belangrijkste tip voor het <strong>examen Spreken A2</strong> staat bijna nergens op internet, en hij kost kandidaten elk jaar punten: bij onderdeel 1 worden vaak <strong>twee vragen tegelijk gesteld, niet één</strong>. Wie alleen de eerste vraag beantwoordt, geeft een half antwoord — en dat telt ook als een half antwoord.</p>
+
+${fact('Het examen Spreken op niveau A2 doe je op de computer en duurt 35 minuten. Het wordt deels automatisch en deels door gecertificeerde beoordelaars nagekeken.', 'inburgeren.nl — inhoud taalexamens', SRC_INHOUD)}
+
+<div class="article-toc">
+  <p class="article-toc-title">De zeven tips</p>
+  <ol>
+    <li><a href="#twee-vragen">Luister naar de héle vraag</a></li>
+    <li><a href="#want">Kies ‘want’, niet ‘omdat’</a></li>
+    <li><a href="#kort">Twee korte zinnen boven één lange</a></li>
+    <li><a href="#me">Vergeet ‘me’ en ‘zich’ niet</a></li>
+    <li><a href="#doorpraten">Blijf praten tot de tijd om is</a></li>
+    <li><a href="#fout">Praat door na een fout</a></li>
+    <li><a href="#hardop">Oefen hardop, niet in je hoofd</a></li>
+  </ol>
+</div>
+
+<h2 id="twee-vragen">1. Luister naar de héle vraag — er zitten er vaak twee in</h2>
+
+${docentNote('Onderdeel 1: luister heel goed naar de vraagstelling. Er worden twee vragen gesteld, niet één. Bijvoorbeeld: “Ik doe mijn boodschappen bij Albert Heijn. Waar doe jij je boodschappen? En hoe vaak per week?”')}
+
+<p>In dat voorbeeld zijn er twee dingen die je moet zeggen: <strong>waar</strong> je boodschappen doet en <strong>hoe vaak</strong>. Antwoord je alleen “Bij de Lidl”, dan mis je de helft van de vraag.</p>
+
+<p>Wat je traint: luister tot het einde vóórdat je bedenkt wat je gaat zeggen. Tel in je hoofd de vraagwoorden — <em>waar</em>, <em>hoe vaak</em>, <em>waarom</em>, <em>wanneer</em>. Elk vraagwoord is één ding dat in je antwoord moet.</p>
+
+${foutGoed(['Bij de Lidl.'], ['Ik doe mijn boodschappen bij de Lidl. Ik ga twee keer per week.'])}
+
+<p>Twee korte zinnen, allebei de vragen beantwoord. Klaar. Je hoeft niet meer te zeggen dan dat.</p>
+
+<h2 id="want">2. Kies ‘want’, niet ‘omdat’</h2>
+
+<p>Bij spreken heb je geen tijd om een zin te herstellen. <em>Want</em> laat de woordvolgorde met rust; <em>omdat</em> stuurt het werkwoord naar het einde van de zin, en onder tijdsdruk gaat dat mis.</p>
+
+<div class="compare-2">
+  <div class="compare-card is-primary">
+    <div class="compare-head"><h3>Met want</h3><p class="compare-when">Geen risico</p></div>
+    <div class="compare-rows">
+      <div class="compare-row"><p class="compare-key">Zin</p><p class="compare-val">Ik ga met de fiets, <strong>want</strong> het <strong>is</strong> dichtbij.</p></div>
+      <div class="compare-row"><p class="compare-key">Wat je moet doen</p><p class="compare-val">Niets. De zin blijft gewoon.</p></div>
+    </div>
+  </div>
+  <div class="compare-card">
+    <div class="compare-head"><h3>Met omdat</h3><p class="compare-when">Moeilijker onder druk</p></div>
+    <div class="compare-rows">
+      <div class="compare-row"><p class="compare-key">Zin</p><p class="compare-val">Ik ga met de fiets, <strong>omdat</strong> het dichtbij <strong>is</strong>.</p></div>
+      <div class="compare-row"><p class="compare-key">Wat je moet doen</p><p class="compare-val">Het werkwoord naar achteren verplaatsen.</p></div>
+    </div>
+  </div>
+</div>
+
+<p>De uitzondering: op een directe <em>waarom</em>-vraag antwoord je wél met <em>omdat</em>. De hele uitleg staat in <a href="/nl/blog/want-of-omdat">Want of omdat</a>.</p>
+
+<h2 id="kort">3. Twee korte zinnen zijn beter dan één lange</h2>
+
+<p>Op A2 word je beoordeeld op of je begrijpelijk en correct spreekt, niet op of je ingewikkelde zinnen maakt. Een lange zin die halverwege instort levert minder op dan twee zinnen die kloppen.</p>
+
+<h2 id="me">4. Vergeet ‘me’ en ‘zich’ niet</h2>
+
+<p>Ik voel <strong>me</strong> goed. Ik bereid <strong>me</strong> voor. Ik kan <strong>me</strong> concentreren. Het weglaten van dat woordje is een van de meest hoorbare fouten, en bij spreken valt het meer op dan op papier. De twintig werkwoorden die je op A2 nodig hebt, staan in <a href="/nl/blog/wederkerende-werkwoorden-nederlands">wederkerende werkwoorden</a>.</p>
+
+<h2 id="doorpraten">5. Blijf praten tot de tijd om is</h2>
+
+<p>Stilte levert geen punten op. Heb je je antwoord gegeven en is er nog tijd? Voeg één zin toe: een voorbeeld, een reden of een detail.</p>
+
+<div class="info-box info-box-green">
+  <p><strong>Ik doe boodschappen bij de Lidl. Ik ga twee keer per week. Het is dichtbij mijn huis.</strong> Die derde zin kost je niets en laat meer Nederlands horen.</p>
+</div>
+
+<h2 id="fout">6. Praat gewoon door na een fout</h2>
+
+<p>Je zegt iets fout en je hoort het zelf. Verbeter het in één keer en ga verder: “Ik ga... ik ben naar de dokter geweest.” Dat is normaal spreken en het wordt niet afgestraft. Helemaal opnieuw beginnen kost tijd die je niet hebt.</p>
+
+<h2 id="hardop">7. Oefen hardop, niet in je hoofd</h2>
+
+<p>Spreken is het enige onderdeel waarbij je je eigen stem moet hóren om beter te worden. Antwoorden bedenken in je hoofd voelt goed en traint bijna niets: je hoort je eigen weglatingen niet, en je merkt niet dat je halverwege een zin vastloopt.</p>
+
+<div class="note-strip"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 19v3"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><rect x="9" y="2" width="6" height="13" rx="3"/></svg><p>Neem jezelf op met je telefoon en luister terug. De eerste keer is ongemakkelijk. Daarna hoor je in één minuut wat je in een week oefenen niet had gemerkt.</p></div>
+
+<h2 id="oefenen">Waar je dit oefent</h2>
+
+<p>Op ons platform krijg je examenvragen met beeld en geluid in het format van DUO, neem je je antwoord op, en krijg je feedback op basis van een beoordelingslijst die door een gecertificeerde NT2-docent is geschreven. <a href="/nl/oefenexamen/a2/spreken">Bekijk de oefenexamens Spreken A2</a>.</p>
+`,
+    sidebarHtml: `<div class="bg-surface-container-lowest rounded-2xl p-6" style="box-shadow: 0 2px 16px rgba(0,43,109,0.06)">
+  <h3 class="text-xs font-bold uppercase tracking-widest text-on-surface-variant mb-4">Spreken A2 in het kort</h3>
+  <table class="facts-table">
+    <tr><td>Vragen</td><td>16</td></tr>
+    <tr><td>Tijd</td><td>35 min</td></tr>
+    <tr><td>Waarop</td><td>computer</td></tr>
+    <tr><td>Nagekeken door</td><td>deels mensen</td></tr>
+  </table>
+</div>`,
+    relatedPosts: [
+      { slug: 'want-of-omdat', title: 'Want of omdat?', desc: 'Waarom ‘want’ bij spreken de veiligere keuze is' },
+      { slug: 'wederkerende-werkwoorden-nederlands', title: 'Wederkerende werkwoorden', desc: 'Me, je, zich — met 20 voorbeelden' },
+      { slug: 'veelgemaakte-fouten-schrijven-examen-a2', title: 'De 8 fouten bij Schrijven A2', desc: 'Hoofdletters, komma’s, tijden en ‘u’ of ‘je’' },
+    ],
+    ctaTitle: 'Oefen Spreken met je eigen stem',
+    ctaDesc: 'Tien oefenexamens Spreken A2 in het format van DUO — met opname, modelantwoorden en feedback van een gecertificeerde NT2-docent.',
+    ctaHref: '/oefenen',
+    ctaLabel: 'Gratis oefenen',
+    translations: {
+      en: {
+        heroTitle: 'A2 Speaking exam: 7 tips from an NT2 teacher',
+        description: 'Part 1 often asks two questions, not one. That and six other tips for the A2 Speaking exam, from a certified NT2 teacher.',
+        category: 'Tips & Preparation',
+        breadcrumb: 'Tips for Speaking A2',
+        dateLabel: '16 September 2026',
+        imageAlt: 'Learner with headphones recording an answer at a computer while practising the Speaking exam',
+        heroSubtitle: 'The most important tip is almost nowhere online: in part 1 there are often two questions inside one question.',
+        articleHtml: `
+<p>The most important tip for the <strong>A2 Speaking exam</strong> is almost nowhere to be found online, and it costs candidates points every year: in part 1 you are often asked <strong>two questions at once, not one</strong>. Answer only the first and you give half an answer — and it counts as half an answer.</p>
+
+${factEn('The Speaking exam at level A2 is taken on a computer and lasts 35 minutes. It is marked partly automatically and partly by certified assessors.', 'inburgeren.nl — content of the language exams', SRC_INHOUD)}
+
+<div class="article-toc">
+  <p class="article-toc-title">The seven tips</p>
+  <ol>
+    <li><a href="#twee-vragen">Listen to the whole question</a></li>
+    <li><a href="#want">Choose ‘want’, not ‘omdat’</a></li>
+    <li><a href="#kort">Two short sentences beat one long one</a></li>
+    <li><a href="#me">Do not forget ‘me’ and ‘zich’</a></li>
+    <li><a href="#doorpraten">Keep talking until time is up</a></li>
+    <li><a href="#fout">Carry on after a mistake</a></li>
+    <li><a href="#hardop">Practise out loud, not in your head</a></li>
+  </ol>
+</div>
+
+<h2 id="twee-vragen">1. Listen to the whole question — there are often two in it</h2>
+
+${docentNote('Part 1: listen very carefully to the question. Two questions are asked, not one. For example: “Ik doe mijn boodschappen bij Albert Heijn. Waar doe jij je boodschappen? En hoe vaak per week?”', 'NT2 teacher')}
+
+<p>In that example there are two things you have to say: <strong>where</strong> you do your shopping and <strong>how often</strong>. If you answer only “Bij de Lidl”, you miss half the question.</p>
+
+<p>What to train: listen to the end <em>before</em> you start thinking about your answer. Count the question words in your head — <em>waar</em>, <em>hoe vaak</em>, <em>waarom</em>, <em>wanneer</em>. Every question word is one thing that has to be in your answer.</p>
+
+${foutGoed(['Bij de Lidl.'], ['Ik doe mijn boodschappen bij de Lidl. Ik ga twee keer per week.'], ['Half an answer', 'Complete answer'])}
+
+<p>Two short sentences, both questions answered. Done. You do not need to say more than that.</p>
+
+<h2 id="want">2. Choose ‘want’, not ‘omdat’</h2>
+
+<p>When speaking you have no time to repair a sentence. <em>Want</em> leaves the word order alone; <em>omdat</em> sends the verb to the end of the clause, and under time pressure that goes wrong.</p>
+
+<div class="compare-2">
+  <div class="compare-card is-primary">
+    <div class="compare-head"><h3>With want</h3><p class="compare-when">No risk</p></div>
+    <div class="compare-rows">
+      <div class="compare-row"><p class="compare-key">Sentence</p><p class="compare-val">Ik ga met de fiets, <strong>want</strong> het <strong>is</strong> dichtbij.</p></div>
+      <div class="compare-row"><p class="compare-key">What you must do</p><p class="compare-val">Nothing. The sentence stays normal.</p></div>
+    </div>
+  </div>
+  <div class="compare-card">
+    <div class="compare-head"><h3>With omdat</h3><p class="compare-when">Harder under pressure</p></div>
+    <div class="compare-rows">
+      <div class="compare-row"><p class="compare-key">Sentence</p><p class="compare-val">Ik ga met de fiets, <strong>omdat</strong> het dichtbij <strong>is</strong>.</p></div>
+      <div class="compare-row"><p class="compare-key">What you must do</p><p class="compare-val">Move the verb to the end.</p></div>
+    </div>
+  </div>
+</div>
+
+<p>The exception: to a direct <em>waarom</em> question you do answer with <em>omdat</em>. The full explanation is in <a href="/en/blog/want-or-omdat-dutch">Want or omdat</a>.</p>
+
+<h2 id="kort">3. Two short sentences are better than one long one</h2>
+
+<p>At A2 you are assessed on whether you speak clearly and correctly, not on whether you build complex sentences. A long sentence that collapses halfway scores less than two sentences that are right.</p>
+
+<h2 id="me">4. Do not forget ‘me’ and ‘zich’</h2>
+
+<p>Ik voel <strong>me</strong> goed. Ik bereid <strong>me</strong> voor. Ik kan <strong>me</strong> concentreren. Dropping that little word is one of the most audible mistakes, and in speech it stands out more than on paper. The twenty verbs you need at A2 are in <a href="/en/blog/dutch-reflexive-verbs">Dutch reflexive verbs</a>.</p>
+
+<h2 id="doorpraten">5. Keep talking until time is up</h2>
+
+<p>Silence scores nothing. Given your answer and still have time? Add one sentence: an example, a reason or a detail.</p>
+
+<div class="info-box info-box-green">
+  <p><strong>Ik doe boodschappen bij de Lidl. Ik ga twee keer per week. Het is dichtbij mijn huis.</strong> That third sentence costs you nothing and lets you show more Dutch.</p>
+</div>
+
+<h2 id="fout">6. Carry on after a mistake</h2>
+
+<p>You say something wrong and you hear it yourself. Correct it once and move on: “Ik ga... ik ben naar de dokter geweest.” That is normal speech and it is not penalised. Starting over completely costs time you do not have.</p>
+
+<h2 id="hardop">7. Practise out loud, not in your head</h2>
+
+<p>Speaking is the only part where you have to <em>hear</em> your own voice to improve. Thinking up answers in your head feels productive and trains almost nothing: you do not hear your own omissions, and you do not notice that you stall halfway through a sentence.</p>
+
+<div class="note-strip"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 19v3"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><rect x="9" y="2" width="6" height="13" rx="3"/></svg><p>Record yourself on your phone and listen back. The first time is uncomfortable. After that you hear in one minute what a week of practice had not shown you.</p></div>
+
+<h2 id="oefenen">Where to practise this</h2>
+
+<p>On our platform you get exam questions with images and audio in DUO’s format, you record your answer, and you get feedback based on a marking rubric written by a certified NT2 teacher. <a href="/en/practice-exam/a2/speaking">See the A2 Speaking practice exams</a>.</p>
+`,
+        sidebarHtml: `<div class="bg-surface-container-lowest rounded-2xl p-6" style="box-shadow: 0 2px 16px rgba(0,43,109,0.06)">
+  <h3 class="text-xs font-bold uppercase tracking-widest text-on-surface-variant mb-4">Speaking A2 in short</h3>
+  <table class="facts-table">
+    <tr><td>Questions</td><td>16</td></tr>
+    <tr><td>Time</td><td>35 min</td></tr>
+    <tr><td>On</td><td>computer</td></tr>
+    <tr><td>Marked by</td><td>partly people</td></tr>
+  </table>
+</div>`,
+        faq: [
+          { q: 'How many questions do I get on the A2 Speaking exam?', a: 'In DUO’s official practice exams you get 16 questions. The exam lasts a maximum of 35 minutes and you take it on a computer with a headset.' },
+          { q: 'Are two questions really asked at once?', a: 'In part 1 that happens regularly. For example: “Waar doe jij je boodschappen? En hoe vaak per week?” Those are two things that both have to be in your answer.' },
+          { q: 'What do I do if I do not know the answer?', a: 'Say something. A short, simple answer scores points; silence does not. You may also say that you do not do something often or do not know, as long as you say it in Dutch.' },
+          { q: 'May I correct myself while speaking?', a: 'Yes. Correcting yourself is normal speech and is not penalised. Correct it once and carry on — starting over completely costs time you do not have.' },
+          { q: 'How is the Speaking exam marked?', a: 'Partly automatically and partly by certified assessors. That is stated in DUO’s exam regulations, article 10.' },
+          { q: 'Do I have to speak fast?', a: 'No. Calm and intelligible scores more than fast and unclear. You are assessed on whether you are understandable, not on speed.' },
+          { q: 'What is the best way to practise Speaking?', a: 'Out loud, with a recording, and then listening back. Thinking up answers in your head feels good and trains almost nothing, because you do not hear your own mistakes.' },
+        ],
+        relatedPosts: [
+          { slug: 'want-of-omdat', title: 'Want or omdat?', desc: 'Why ‘want’ is the safer choice when speaking' },
+          { slug: 'wederkerende-werkwoorden-nederlands', title: 'Dutch reflexive verbs', desc: 'Me, je, zich — with 20 examples' },
+          { slug: 'veelgemaakte-fouten-schrijven-examen-a2', title: 'The 8 mistakes on Writing A2', desc: 'Capitals, commas, times and ‘u’ versus ‘je’' },
+        ],
+        ctaTitle: 'Practise Speaking with your own voice',
+        ctaDesc: 'Ten A2 Speaking practice exams in DUO’s format — with recording, model answers and feedback from a certified NT2 teacher.',
+        ctaLabel: 'Practise for free',
+      },
+      ar: {
+        heroTitle: 'امتحان التحدث A2: سبع نصائح من مدرّسة NT2',
+        description: 'في الجزء الأول يُطرح سؤالان لا سؤال واحد. هذه النصيحة وست غيرها لامتحان التحدث A2، من مدرّسة NT2 معتمدة.',
+        category: 'نصائح وتحضير',
+        breadcrumb: 'نصائح للتحدث A2',
+        dateLabel: '١٦ سبتمبر ٢٠٢٦',
+        imageAlt: 'متعلّم يرتدي سماعات ويسجّل إجابته على الحاسوب أثناء التدرب على امتحان التحدث',
+        heroSubtitle: 'أهم نصيحة لا تكاد تجدها على الإنترنت: في الجزء الأول يختبئ سؤالان داخل سؤال واحد.',
+        articleHtml: `
+<p>أهم نصيحة في <strong>امتحان التحدث A2</strong> لا تكاد تجدها على الإنترنت، وهي تكلّف المتقدمين نقاطًا كل عام: في الجزء الأول يُطرح غالبًا <strong>سؤالان معًا لا سؤال واحد</strong>. ومن يجيب عن الأول فقط يقدّم نصف إجابة — وتُحتسب نصف إجابة.</p>
+
+${factAr('يُؤدى امتحان التحدث في المستوى A2 على الحاسوب ويستغرق 35 دقيقة. ويُصحَّح جزئيًا بشكل آلي وجزئيًا على يد مصحّحين معتمدين.', 'inburgeren.nl — محتوى امتحانات اللغة', SRC_INHOUD)}
+
+<div class="article-toc">
+  <p class="article-toc-title">النصائح السبع</p>
+  <ol>
+    <li><a href="#twee-vragen">استمع إلى السؤال كاملًا</a></li>
+    <li><a href="#want">اختر «want» لا «omdat»</a></li>
+    <li><a href="#kort">جملتان قصيرتان خير من جملة طويلة</a></li>
+    <li><a href="#me">لا تنسَ «me» و«zich»</a></li>
+    <li><a href="#doorpraten">استمر في الكلام حتى ينتهي الوقت</a></li>
+    <li><a href="#fout">تابع بعد الخطأ</a></li>
+    <li><a href="#hardop">تدرّب بصوت مرتفع لا في رأسك</a></li>
+  </ol>
+</div>
+
+<h2 id="twee-vragen">١. استمع إلى السؤال كاملًا — ففيه سؤالان غالبًا</h2>
+
+${docentNote('الجزء الأول: استمع جيدًا إلى صيغة السؤال. يُطرح سؤالان لا سؤال واحد. مثال: «Ik doe mijn boodschappen bij Albert Heijn. Waar doe jij je boodschappen? En hoe vaak per week?»', 'مدرّسة NT2')}
+
+<p>في هذا المثال عليك أن تقول شيئين: <strong>أين</strong> تتسوّق و<strong>كم مرة</strong>. فإن أجبت ${nlEx('Bij de Lidl')} فقط، فاتك نصف السؤال.</p>
+
+<p>ما تتدرّب عليه: استمع حتى النهاية <em>قبل</em> أن تفكر في إجابتك. وعُدّ في رأسك أدوات الاستفهام — ${nlEx('waar')}، ${nlEx('hoe vaak')}، ${nlEx('waarom')}، ${nlEx('wanneer')}. كل أداة استفهام تعني شيئًا يجب أن يرد في جوابك.</p>
+
+${foutGoed([nlEx('Bij de Lidl.')], [nlEx('Ik doe mijn boodschappen bij de Lidl. Ik ga twee keer per week.')], ['نصف إجابة', 'إجابة كاملة'])}
+
+<p>جملتان قصيرتان، وأُجيب عن السؤالين. انتهى الأمر، ولا يلزمك أكثر من ذلك.</p>
+
+<h2 id="want">٢. اختر «want» لا «omdat»</h2>
+
+<p>في الكلام لا وقت لديك لإصلاح الجملة. <em>want</em> تترك ترتيب الكلمات كما هو، أما <em>omdat</em> فترسل الفعل إلى آخر الجملة، وتحت ضغط الوقت يقع الخطأ.</p>
+
+<div class="compare-2">
+  <div class="compare-card is-primary">
+    <div class="compare-head"><h3>مع want</h3><p class="compare-when">بلا مخاطرة</p></div>
+    <div class="compare-rows">
+      <div class="compare-row"><p class="compare-key">الجملة</p><p class="compare-val">${nlEx('Ik ga met de fiets, <strong>want</strong> het <strong>is</strong> dichtbij.')}</p></div>
+      <div class="compare-row"><p class="compare-key">ما عليك فعله</p><p class="compare-val">لا شيء. تبقى الجملة كما هي.</p></div>
+    </div>
+  </div>
+  <div class="compare-card">
+    <div class="compare-head"><h3>مع omdat</h3><p class="compare-when">أصعب تحت الضغط</p></div>
+    <div class="compare-rows">
+      <div class="compare-row"><p class="compare-key">الجملة</p><p class="compare-val">${nlEx('Ik ga met de fiets, <strong>omdat</strong> het dichtbij <strong>is</strong>.')}</p></div>
+      <div class="compare-row"><p class="compare-key">ما عليك فعله</p><p class="compare-val">نقل الفعل إلى آخر الجملة.</p></div>
+    </div>
+  </div>
+</div>
+
+<p>والاستثناء: عند سؤال <em>waarom</em> المباشر تجيب فعلًا بـ<em>omdat</em>. والشرح الكامل في <a href="/ar/المدونة/want-أم-omdat">want أم omdat</a>.</p>
+
+<h2 id="kort">٣. جملتان قصيرتان خير من جملة طويلة</h2>
+
+<p>في المستوى A2 يُقيَّم مدى وضوحك وصحتك في الكلام، لا قدرتك على بناء جمل معقّدة. والجملة الطويلة التي تنهار في منتصفها تعطي أقل من جملتين صحيحتين.</p>
+
+<h2 id="me">٤. لا تنسَ «me» و«zich»</h2>
+
+<p>${nlEx('Ik voel <strong>me</strong> goed. Ik bereid <strong>me</strong> voor. Ik kan <strong>me</strong> concentreren.')} حذف هذه الكلمة من أكثر الأخطاء وضوحًا للأذن، وفي الكلام يلفت الانتباه أكثر مما في الورق. والأفعال العشرون التي تحتاجها في A2 في <a href="/ar/المدونة/الأفعال-الانعكاسية-الهولندية">الأفعال الانعكاسية</a>.</p>
+
+<h2 id="doorpraten">٥. استمر في الكلام حتى ينتهي الوقت</h2>
+
+<p>الصمت لا يعطي نقاطًا. أعطيت جوابك وبقي وقت؟ أضف جملة واحدة: مثالًا أو سببًا أو تفصيلًا.</p>
+
+<div class="info-box info-box-green">
+  <p><strong>${nlEx('Ik doe boodschappen bij de Lidl. Ik ga twee keer per week. Het is dichtbij mijn huis.')}</strong> هذه الجملة الثالثة لا تكلّفك شيئًا وتُظهر هولندية أكثر.</p>
+</div>
+
+<h2 id="fout">٦. تابع الكلام بعد الخطأ</h2>
+
+<p>تقول شيئًا خطأً وتسمعه بنفسك. صحّحه مرة واحدة وتابع: ${nlEx('“Ik ga... ik ben naar de dokter geweest.”')} هذا كلام طبيعي ولا يُعاقَب عليه. أما البدء من جديد تمامًا فيكلّفك وقتًا لا تملكه.</p>
+
+<h2 id="hardop">٧. تدرّب بصوت مرتفع لا في رأسك</h2>
+
+<p>التحدث هو الجزء الوحيد الذي يجب أن تسمع فيه صوتك لتتحسّن. وصياغة الإجابات في رأسك تبدو مفيدة لكنها لا تدرّب شيئًا تقريبًا: لا تسمع ما تحذفه، ولا تلاحظ أنك تتعثّر في منتصف الجملة.</p>
+
+<div class="note-strip"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 19v3"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><rect x="9" y="2" width="6" height="13" rx="3"/></svg><p>سجّل نفسك بهاتفك واستمع إلى التسجيل. المرة الأولى غير مريحة، لكنك بعدها تسمع في دقيقة واحدة ما لم يُظهره لك أسبوع من التدريب.</p></div>
+
+<h2 id="oefenen">أين تتدرّب على هذا</h2>
+
+<p>على منصّتنا تحصل على أسئلة امتحانية بالصورة والصوت بصيغة DUO، وتسجّل إجابتك، وتتلقى ملاحظات مبنية على قائمة تقييم كتبتها مدرّسة NT2 معتمدة. <a href="/ar/امتحان-تجريبي/a2/التحدث">اطّلع على امتحانات التحدث التجريبية A2</a>.</p>
+`,
+        sidebarHtml: `<div class="bg-surface-container-lowest rounded-2xl p-6" style="box-shadow: 0 2px 16px rgba(0,43,109,0.06)">
+  <h3 class="text-xs font-bold uppercase tracking-widest text-on-surface-variant mb-4">التحدث A2 باختصار</h3>
+  <table class="facts-table">
+    <tr><td>الأسئلة</td><td>16</td></tr>
+    <tr><td>المدة</td><td>35 دقيقة</td></tr>
+    <tr><td>الوسيلة</td><td>حاسوب</td></tr>
+    <tr><td>التصحيح</td><td>جزئيًا بشر</td></tr>
+  </table>
+</div>`,
+        faq: [
+          { q: 'كم سؤالًا أحصل عليه في امتحان التحدث A2؟', a: 'في الامتحانات التجريبية الرسمية من DUO تحصل على 16 سؤالًا. ويستغرق الامتحان 35 دقيقة كحد أقصى وتؤديه على الحاسوب بسماعة رأس.' },
+          { q: 'هل يُطرح سؤالان معًا فعلًا؟', a: 'في الجزء الأول يحدث ذلك كثيرًا. مثال: «Waar doe jij je boodschappen? En hoe vaak per week?» وهما أمران يجب أن يردا في جوابك معًا.' },
+          { q: 'ماذا أفعل إن لم أعرف الإجابة؟', a: 'قل شيئًا. الإجابة القصيرة البسيطة تعطي نقاطًا، والصمت لا يعطي شيئًا. ويمكنك أن تقول إنك لا تفعل ذلك كثيرًا أو لا تعرف، ما دمت تقولها بالهولندية.' },
+          { q: 'هل يجوز أن أصحّح نفسي أثناء الكلام؟', a: 'نعم. تصحيح النفس كلام طبيعي ولا يُعاقَب عليه. صحّح مرة واحدة وتابع، فالبدء من جديد يكلّفك وقتًا لا تملكه.' },
+          { q: 'كيف يُصحَّح امتحان التحدث؟', a: 'جزئيًا بشكل آلي وجزئيًا على يد مصحّحين معتمدين، وهذا منصوص عليه في لائحة امتحانات DUO، المادة 10.' },
+          { q: 'هل يجب أن أتكلم بسرعة؟', a: 'لا. الكلام الهادئ المفهوم أفضل من السريع غير الواضح. أنت تُقيَّم على مدى وضوحك لا على سرعتك.' },
+          { q: 'ما أفضل طريقة للتدرّب على التحدث؟', a: 'بصوت مرتفع، مع التسجيل، ثم الاستماع إلى ما سجّلته. فصياغة الإجابات في الرأس مريحة لكنها لا تدرّب شيئًا تقريبًا، لأنك لا تسمع أخطاءك.' },
+        ],
+        relatedPosts: [
+          { slug: 'want-of-omdat', title: 'want أم omdat؟', desc: 'لماذا «want» أأمن في الكلام' },
+          { slug: 'wederkerende-werkwoorden-nederlands', title: 'الأفعال الانعكاسية', desc: 'me وje وzich — مع 20 مثالًا' },
+          { slug: 'veelgemaakte-fouten-schrijven-examen-a2', title: 'الأخطاء الثمانية في الكتابة A2', desc: 'الحروف الكبيرة والفواصل والوقت و«u» أو «je»' },
+        ],
+        ctaTitle: 'تدرّب على التحدث بصوتك أنت',
+        ctaDesc: 'عشرة امتحانات تحدث تجريبية A2 بصيغة DUO — مع التسجيل وإجابات نموذجية وملاحظات من مدرّسة NT2 معتمدة.',
+        ctaLabel: 'تدرّب مجانًا',
       },
     },
   },

@@ -4850,3 +4850,38 @@ een stap tijdelijk dichtzetten een vlag en geen verbouwing. Maar "alles van soor
 scope zolang niet is nagegaan wélke van die X al klaar zijn — hier was dat precies de oudste.
 De woordkaarten blijven open, en de lespagina's zelf blijven bereikbaar op hun URL: dit haalt
 alleen de weg ernaartoe weg.
+
+## 2026-09-16 — Vier blogartikelen uit het foutenlogboek van de docent
+**Changed:** vier posts in `data/blog-posts.ts` (`veelgemaakte-fouten-schrijven-examen-a2`,
+`want-of-omdat`, `wederkerende-werkwoorden-nederlands`, `spreken-examen-inburgering-tips`),
+plus de helpers `docentNote()` en `foutGoed()` in datzelfde bestand, vier rijen in
+`i18n/content-slugs.ts`, vier hero's in `public/images/blog/` met credits, en vier rijen in
+`SEO/used-keywords.md`.
+**Outcome:** SUCCESS — `npx tsc --noEmit` schoon, 588 unit tests groen, alle vier de routes 200.
+**What worked / went wrong:** de bron was Mariekes eigen foutenlogboek (PDF), niet een model.
+Elke post draagt haar observatie als `docent-note` — dat is het enige blok op de pagina dat een
+concurrent niet kan kopiëren. `foutGoed()` hergebruikt `.yesno-grid` (rode kruisjes / groene
+vinkjes, lucide-paden) in plaats van een nieuw blok te tekenen; `tip-card`, `compare-2`,
+`blog-quiz-card` en `note-strip` waren er ook al.
+**Lesson:** de KNM-helft van datzelfde logboek is níét geschreven — 1863/1873, Keti Koti, 150/75
+zetels en het schoolsysteem staan niet in `SEO/facts.md` en mogen dus niet gepubliceerd worden.
+Eerst de bronnen in `facts.md`, dan pas de KNM-hub. Een foutenlogboek van een docent is content,
+maar een jaartal erin is nog steeds een claim.
+
+## 2026-09-16 — De vier nieuwe posts vertaald, en de FAQ uitklapbaar
+**Changed:** `translations.en` en `translations.ar` op alle vier de nieuwe posts in
+`data/blog-posts.ts`; `docentNote()` en `foutGoed()` kregen een taalparameter en er kwam
+`nlEx()` bij; de FAQ in `app/[locale]/(main)/blog/[slug]/page.tsx` is `faq-folds` in plaats van
+een open lijst.
+**Outcome:** SUCCESS — `npx tsc --noEmit` schoon, 588 tests groen, `next build` compleet, alle
+twaalf de route-varianten 200 en indexeerbaar.
+**What worked / went wrong:** twee dingen gingen bijna stil fout. (1) De interne links in een
+vertaalde body moeten de vertáálde pathnames gebruiken: `/en/practice-exam/a2/writing` en
+`/ar/امتحان-تجريبي/a2/الكتابة`, niet de Nederlandse. `i18n/routing.ts` plus `skill-slugs.ts`
+zijn de bron. (2) De voorbeeldzinnen blijven Nederlands — je vertaalt "Ik voel me goed" niet —
+en in een Arabische regel zet de bidi-afhandeling dan de punt aan de verkeerde kant. Vandaar
+`nlEx()`, dat elke Nederlandse voorbeeldzin in `dir="ltr" lang="nl"` zet.
+**Lesson:** invoegen op slug-tekst is niet veilig: `s.index("slug: 'want-of-omdat'")` raakte
+eerst de `relatedPosts`-rij van een ándere post, waardoor het vertaalblok in het verkeerde
+artikel belandde — tsc ving het met TS1117 (dubbele property). Anker op `\n    slug: '...',`
+met de inspringing van het veld zelf.

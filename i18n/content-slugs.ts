@@ -64,6 +64,10 @@ const POST_SLUGS: Record<string, Translated> = {
   'luisteren-examen-inburgering-a2':     { en: 'listening-exam-a2-integration',           ar: 'امتحان-الاستماع-الاندماج-a2' },
   'inburgeringsexamen-zakken-herkansen': { en: 'failing-and-retaking-the-integration-exam', ar: 'الرسوب-وإعادة-امتحان-الاندماج' },
   'taalniveaus-a1-a2-b1-nederlands':     { en: 'dutch-language-levels-a1-a2-b1',          ar: 'مستويات-اللغة-الهولندية-a1-a2-b1' },
+  'veelgemaakte-fouten-schrijven-examen-a2': { en: 'common-mistakes-writing-exam-a2',        ar: 'أخطاء-شائعة-امتحان-الكتابة-a2' },
+  'want-of-omdat':                       { en: 'want-or-omdat-dutch',                     ar: 'want-أم-omdat' },
+  'wederkerende-werkwoorden-nederlands': { en: 'dutch-reflexive-verbs',                   ar: 'الأفعال-الانعكاسية-الهولندية' },
+  'spreken-examen-inburgering-tips':     { en: 'speaking-exam-a2-tips',                   ar: 'نصائح-امتحان-التحدث-a2' },
 };
 
 /**
