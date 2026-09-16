@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import { useTranslations } from 'next-intl';
-import { BookOpen, ChevronRight, LayersIcon, LayoutDashboard, LogOut, Mail, Plus, UserPlus } from 'lucide-react';
+import { BookOpen, ChevronRight, ClipboardList, LayersIcon, LayoutDashboard, LogOut, Mail, Plus, UserPlus } from 'lucide-react';
 import { createClient } from '@/lib/supabase/client';
 import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
 import LogoMark from '@/components/site/LogoMark';
@@ -219,6 +219,26 @@ export default function PortalSidebar({
                       telling. De regels van een examen staan nu in stap 2 van die cursus, en
                       de naslag per regel hangt aan de les die hem uitlegt. */}
 
+                  {/* KNM's drie rijen. Een niveau zet hier zijn vier onderdelen neer; KNM heeft
+                      er geen, dus de drie manieren waarop je KNM oefent nemen die plek in
+                      (eigenaar, 16-09). **Ze heten hier niet "KNM ..."** — ze hangen zichtbaar
+                      onder de KNM-tegel, en de module in de naam van elk kind herhalen is wat
+                      geen enkel niveau doet ("Lezen", niet "A2 Lezen").
+
+                      De eerste wijst naar `/dashboard/knm` zelf: KNM heeft geen los
+                      examenoverzicht — de strook óp dat scherm ís het overzicht (zie
+                      `allHref` in `ExamStrip`). Vandaar dezelfde `active`-stand als de
+                      moduletegel erboven. */}
+                  {isKnm && (
+                    <a
+                      href={`/${locale}/dashboard/knm`}
+                      aria-current={active === 'overview-module' ? 'page' : undefined}
+                      className={`side-row sub${active === 'overview-module' ? ' on' : ''}`}
+                    >
+                      <span className="side-ic" aria-hidden><ClipboardList size={13} strokeWidth={2.2} /></span>
+                      <span className="side-lb">{tNav('knm_oefenexamens')}</span>
+                    </a>
+                  )}
                   {isKnm && FEATURES.leren && (
                     <a
                       href={`/${locale}/leren`}

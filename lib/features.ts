@@ -38,3 +38,22 @@ export function isEnabled(key: FeatureKey): boolean {
  * to open everything up again for testing.
  * ═══════════════════════════════════════════════════════════════════════════ */
 export const UNGATE_PAID_FEATURES = false;
+
+/* ═══════════════════════════════════════════════════════════════════════════
+ * `LESSONS_COMING_SOON` — de leermodules staan op "Binnenkort"
+ *
+ * Aangezet 16-09 (eigenaar): de lesstof van de taalonderdelen is er wel, maar is
+ * nog niet klaar om getoond te worden. De twee leerroutekaarten die daarnaar
+ * wijzen — de taalregels en de examentraining — renderen daarom als `soon`,
+ * zonder link.
+ *
+ * **Twee dingen vallen hier buiten, en allebei bewust.** De woordkaarten zijn
+ * klaar. En **de lesmodules van KNM zijn de enige leerstof die wél af is** —
+ * die kwamen in augustus mee van knmoefenen.nl, geschreven en nagekeken op dat
+ * platform, en staan onder `FEATURES.leren`. Deze vlag raakt `dashboard/knm`
+ * daarom niet; zet hem daar nooit "voor de consistentie" alsnog op.
+ *
+ * De lespagina's zelf blijven bereikbaar op hun URL; dit haalt alleen de weg
+ * ernaartoe weg. Zet hem op `false` om de modules weer vrij te geven.
+ * ═══════════════════════════════════════════════════════════════════════════ */
+export const LESSONS_COMING_SOON = true;

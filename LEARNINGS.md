@@ -4834,3 +4834,19 @@ net genoeg breedte om "SOORTEN WERKWOORDEN" te laten afkappen — opgelost met k
 (0.11em → 0.07em) en een 18px-tegel, niet met een bredere kolom.
 **Lesson:** een icoon toevoegen aan een rij met een vaste breedte is óók een typografiewijziging.
 Controleer het langste label, niet het eerste.
+
+## 2026-09-16 — De leermodules op "Binnenkort"
+**Changed:** `LESSONS_COMING_SOON` in `lib/features.ts`; de leerroutekaarten van
+`dashboard/[level]/[skill]/page.tsx` (Taalregels, Examentraining) renderen als `soon`, zonder
+link; `leerroute_soon` in nl/en/ar.
+**Outcome:** SUCCESS — tsc, `next build` en 588 unit tests groen; kaarten nagekeken op 390 en 1440.
+**What worked:** `TrackCard` had de `soon`-stand al (ONA gebruikt hem), dus dit is één vlag en drie
+props per kaart, geen nieuwe component en geen nieuwe vorm op het scherm.
+**What went wrong:** de vlag stond eerst ook op de lesmodulekaart van `dashboard/knm`, omdat
+"alle leermodules" als één verzameling las. Fout: **de KNM-lesmodules zijn juist de enige leerstof
+die af is** — ze kwamen in augustus mee van knmoefenen.nl. Teruggedraaid door de eigenaar.
+**Lesson:** een "binnenkort"-stand hoort in de kaart te zitten die het ding toch al toont; dan is
+een stap tijdelijk dichtzetten een vlag en geen verbouwing. Maar "alles van soort X" is geen
+scope zolang niet is nagegaan wélke van die X al klaar zijn — hier was dat precies de oudste.
+De woordkaarten blijven open, en de lespagina's zelf blijven bereikbaar op hun URL: dit haalt
+alleen de weg ernaartoe weg.

@@ -13,6 +13,7 @@ import { buildLeerroute } from '@/lib/lessons/leerroute';
 import { fetchWordCounts } from '@/lib/lessons/words-server';
 import { wordsPath } from '@/lib/lessons/words';
 import { calculateSlaagkans } from '@/lib/exam-readiness';
+import { LESSONS_COMING_SOON } from '@/lib/features';
 import SkillStatBar from '../../_components/SkillStatBar';
 import TrackCard from '../../_components/TrackCard';
 import { blockProgress, lessonPath, masteryPct, type ConceptKind } from '@/lib/lessons/lessons';
@@ -265,7 +266,11 @@ export default async function SkillExamsPage({ params }: Props) {
                   is de leerroute-mark op het navy paneel, en de voet draagt de feiten van de
                   stap in plaats van een examenstelling — die heeft een leerspoor niet. */}
               <div className={'ov-cards is-three'}>
-                {leerroute.map(m => (
+                {leerroute.map(m => {
+                  /* De lesstappen staan op "Binnenkort" zolang `LESSONS_COMING_SOON` aanstaat —
+                     zie lib/features.ts. De woordenstap valt erbuiten: die is wél klaar. */
+                  const soon = LESSONS_COMING_SOON && m.kind !== 'woordenschat';
+                  return (
                   <TrackCard
                     key={m.kind}
                     layer="onderdeel"
@@ -274,9 +279,9 @@ export default async function SkillExamsPage({ params }: Props) {
                        kaarten stáán in die volgorde (eigenaar, 15-09). */
                     sub={null}
                     title={m.title ?? t(`leerroute_${m.kind}_title`)}
-                    state={m.score === null ? 'open' : 'active'}
-                    note={m.hasContent ? null : t('leerroute_empty')}
-                    pct={m.score}
+                    state={soon ? 'soon' : m.score === null ? 'open' : 'active'}
+                    note={soon ? t('leerroute_soon') : m.hasContent ? null : t('leerroute_empty')}
+                    pct={soon ? null : m.score}
                     progressLabel={null}
                     /* Geen feitenregel meer op de kaart (eigenaar, 15-09). "Woorden gekend
                        59 / 126" en "Lessen afgerond 2 / 20" zeggen in cijfers wat de balk
@@ -285,9 +290,9 @@ export default async function SkillExamsPage({ params }: Props) {
                     meta={[]}
                     /* Elke stap wijst naar zijn eigen overzicht, niet naar één les diep erin:
                        daar staat wat er is en waar je verdergaat. */
-                    cta={m.kind === 'woordenschat' ? t('leerroute_cta_words') : t('leerroute_cta_modules')}
+                    cta={soon ? null : m.kind === 'woordenschat' ? t('leerroute_cta_words') : t('leerroute_cta_modules')}
                     href={
-                      !m.hasContent
+                      soon || !m.hasContent
                         ? null
                         : m.kind === 'woordenschat'
                           ? `/${locale}${wordsPath(level, skill.slug)}`
@@ -295,7 +300,8 @@ export default async function SkillExamsPage({ params }: Props) {
                     }
                     soonLabel={t('tag_soon')}
                   />
-                ))}
+                  );
+                })}
               </div>
             </section>
 
