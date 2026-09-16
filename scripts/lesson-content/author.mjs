@@ -842,9 +842,10 @@ function parts(value) {
  * eigenaar, maar als het gebeurt hoort hij hier meteen mee te doen in plaats van in een lijst
  * te ontbreken die niemand meer nakijkt. Nooit een ElevenLabs-id hier — alleen sleutels.
  */
+const CASTABLE = Object.keys(VOICES).filter(k => VOICES[k].role !== 'narrator');
 const VOICE_POOL = {
-  female: Object.keys(VOICES).filter(k => VOICES[k].gender === 'female'),
-  male: Object.keys(VOICES).filter(k => VOICES[k].gender === 'male'),
+  female: CASTABLE.filter(k => VOICES[k].gender === 'female'),
+  male: CASTABLE.filter(k => VOICES[k].gender === 'male'),
 };
 
 /**

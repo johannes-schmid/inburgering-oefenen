@@ -153,6 +153,9 @@ function toStimulusItem(d: StimulusDraft): StimulusItem {
     section_id: d.section_id,
     kind: d.kind,
     intro: d.intro.trim() || null,
+    // De beheerdersvoorbeeldweergave toont één fragment, nooit het introscherm ervoor.
+    intro_audio_url: null,
+    intro_audio_seconds: null,
     title: d.title.trim() || null,
     body_html: d.body_html || null,
     image_url: d.image_url.trim() || null,

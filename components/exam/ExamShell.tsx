@@ -4,6 +4,7 @@ import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { ArrowLeft, ArrowRight, Check, Clock, FileCheck2, X } from 'lucide-react';
 import { HorizonBanner } from '@/components/horizon';
 import { AudioPrefRow } from './ReadAloud';
+import AudioPlayer from './AudioPlayer';
 import { Link } from '@/i18n/navigation';
 import { createClient } from '@/lib/supabase/client';
 import { completeExamAttempt, startExamAttempt } from '@/lib/attempts';
@@ -38,7 +39,27 @@ import { DEV_FLOW_PARAM, devToolsEnabled, examFlow } from '@/lib/dev-tools';
  * score terug zolang één beantwoorde opdracht niet is nagekeken — en had geen enkele reden om te
  * blijven wachten. Nu is het wachten zelf een scherm, met een teller erbij.
  */
-type Phase = 'intro' | 'part' | 'exam' | 'grading' | 'results';
+type Phase = 'intro' | 'instructie' | 'part' | 'tekstintro' | 'exam' | 'grading' | 'results';
+
+/**
+ * De leestijd vóór een luisterfragment, in seconden, en de speelregel die eraan vastzit.
+ *
+ * DUO's eigen instructie: "U krijgt eerst 25 seconden de tijd om de opgave goed door te lezen.
+ * Daarna start de tekst vanzelf" en "U kunt de tekst maar één keer beluisteren."
+ *
+ * **Bewust alleen B1.** A2 Luisteren heeft veertig gepubliceerde examens en klanten die er nu in
+ * zitten; die halverwege strenger maken verandert stil hun examen. Wil de eigenaar het daar ook,
+ * dan is dit de ene plek: haal `level === 'b1'` weg.
+ */
+const LUISTEREN_LEESTIJD_SECONDEN = 25;
+
+/**
+ * De gesproken uitleg op het instructiescherm. Eén bestand in `public/`, niet in Storage: hij is
+ * voor elk luisterexamen hetzelfde en verandert alleen als de instructie zelf verandert — dan
+ * hoort hij ook in dezelfde commit als de tekst, en dat is precies wat een bestand in de repo
+ * afdwingt en een rij in Storage niet.
+ */
+const LUISTEREN_INSTRUCTIE_AUDIO = '/audio/exam/b1-luisteren-instructie.mp3';
 
 /** Hoeveel opdrachten tegelijk worden nagekeken bij het inleveren. */
 const GRADE_CONCURRENCY = 3;
@@ -155,6 +176,8 @@ export default function ExamShell({ content, canSeeExplanations }: Props) {
   const { exam, parts, stimuli, standalone, tasks, sectionNames } = content;
   const supabase = useMemo(() => createClient(), []);
   const isOpenSkill = exam.skill === 'schrijven' || exam.skill === 'spreken';
+  /** Zie `LUISTEREN_LEESTIJD_SECONDEN`: de examenstand is er voorlopig alleen voor B1. */
+  const strengLuisteren = exam.skill === 'luisteren' && exam.level === 'b1';
   // Terug naar het onderdeel waar dit examen bij hoort, niet naar het hoofddashboard.
   const dashboardHref = exam.level
     ? ({ pathname: '/dashboard/[level]/[skill]', params: { level: exam.level, skill: exam.skill } } as const)
@@ -328,7 +351,7 @@ export default function ExamShell({ content, canSeeExplanations }: Props) {
     secondsRef.current = exam.duration_seconds;
     setSecondsLeft(exam.duration_seconds);
     setIdx(0);
-    setPhase(firstPartFor(0) ? 'part' : 'exam');
+    setPhase(phaseFor(0));
 
     stopTimer();
     timerRef.current = setInterval(() => {
@@ -360,10 +383,38 @@ export default function ExamShell({ content, canSeeExplanations }: Props) {
     return part?.show_instruction ? part : null;
   }
 
+  /**
+   * De luistertekst waarvan stap `i` het eerste fragment is, als die een ingesproken intro heeft.
+   *
+   * DUO zet vóór elke tekst een introtrack: de verteller leest de titel en het scenario voor en
+   * daarna hoor je het begin van het gesprek, zonder dat er al een vraag bij hoort. Dat is hier
+   * een **scherm** en geen stap, net als het instructiescherm van een `exam_part`: `totalItems`
+   * telt de vragen, en een examen van 39 vragen moet er 39 blijven tellen ook al zie je zes
+   * schermen extra.
+   *
+   * Er is geen aparte rij per gesprek — `intro_audio_url` staat alleen op het eerste fragment,
+   * dus "heeft deze stimulus een intro" ís de groepering. Zie de migratie
+   * `20260916160000_stimuli_intro_audio` voor waarom dat geen zevende stimulus is.
+   */
+  function firstIntroFor(i: number): StimulusItem | null {
+    const step = steps[i];
+    if (step?.kind !== 'mcq' || !step.stimulus?.intro_audio_url) return null;
+    const prev = i > 0 ? steps[i - 1] : null;
+    const prevId = prev?.kind === 'mcq' ? prev.stimulus?.id : null;
+    return prevId === step.stimulus.id ? null : step.stimulus;
+  }
+
+  /** Het instructiescherm van een deel gaat vóór de tekstintro — het kadert de hele deeltoets. */
+  function phaseFor(i: number): Phase {
+    if (firstPartFor(i)) return 'part';
+    if (firstIntroFor(i)) return 'tekstintro';
+    return 'exam';
+  }
+
   function goTo(next: number) {
     if (next < 0 || next >= totalItems) return;
     setIdx(next);
-    setPhase(firstPartFor(next) ? 'part' : 'exam');
+    setPhase(phaseFor(next));
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }
 
@@ -645,9 +696,15 @@ export default function ExamShell({ content, canSeeExplanations }: Props) {
         readAloudSample={exam.skill === 'knm' ? (content.standalone.find(q => q.prompt_audio_url)?.prompt_audio_url ?? null) : null}
         feedbackMode={feedbackMode}
         onFeedbackModeChange={setFeedbackMode}
-        onStart={() => void startExam()}
+        /* Het instructiescherm gaat vóór `startExam`, niet erna: daar begint de klok van 90
+           minuten, en de uitleg lezen hoort de kandidaat geen examentijd te kosten. */
+        onStart={() => (strengLuisteren ? setPhase('instructie') : void startExam())}
       />
     );
+  }
+
+  if (phase === 'instructie') {
+    return <LuisterInstructie onStart={() => void startExam()} />;
   }
 
   if (phase === 'part') {
@@ -673,6 +730,39 @@ export default function ExamShell({ content, canSeeExplanations }: Props) {
           <style>{`
             .exam-task-prompt { font-size: 0.95rem; line-height: 1.7; }
           `}</style>
+        </div>
+        <button
+          type="button"
+          onClick={() => setPhase(firstIntroFor(idx) ? 'tekstintro' : 'exam')}
+          className="exam-primary-btn inline-flex items-center justify-center gap-2 rounded-xl font-bold text-sm border-0 cursor-pointer self-start"
+          style={{ padding: '0.8rem 1.5rem', background: '#fe762c', color: '#5f2200', boxShadow: 'var(--shadow-btn-orange)' }}
+        >
+          Verder
+          <ArrowRight size={16} strokeWidth={2.5} aria-hidden />
+        </button>
+        <PrimaryBtnStyles />
+      </div>
+    );
+  }
+
+  if (phase === 'tekstintro') {
+    const s = firstIntroFor(idx);
+    return (
+      <div className="max-w-2xl mx-auto flex flex-col gap-5">
+        <span className="text-[0.65rem] font-bold uppercase tracking-widest text-on-surface-variant/70">
+          {sectionNames[s?.section_id ?? -1] ?? 'Luisteren'}
+        </span>
+        <div
+          className="rounded-2xl bg-surface-container-lowest flex flex-col gap-4"
+          style={{ padding: '1.5rem 1.625rem', boxShadow: 'var(--shadow-card-md)' }}
+        >
+          {s?.title && (
+            <h2 className="font-headline text-xl font-bold tracking-tight text-on-surface m-0">{s.title}</h2>
+          )}
+          {s?.intro && (
+            <p className="text-sm leading-relaxed text-on-surface-variant m-0">{s.intro}</p>
+          )}
+          {s?.intro_audio_url && <AudioPlayer src={s.intro_audio_url} label="Introductie" />}
         </div>
         <button
           type="button"
@@ -730,13 +820,16 @@ export default function ExamShell({ content, canSeeExplanations }: Props) {
                     re-scroll while the candidate works through its questions;
                   · Luisteren keys on stimulus+question, so the fragment remounts and the audio
                     plays again from 0:00 for every question, the way DUO presents it (owner's
-                    decision, 2026-08-07). Replay stays unlimited within a question.
+                    decision, 2026-08-07). Die remount is bij B1 ook wat elke vraag zijn eigen
+                    25 seconden leestijd geeft — zie `LUISTEREN_LEESTIJD_SECONDEN`. Bij A2 blijft
+                    herhalen onbeperkt.
                 Changing this back would silently change what the exam tests. */}
             <StimulusPane
               key={exam.skill === 'luisteren'
                 ? `${step.stimulus!.id}:${step.question.id}`
                 : step.stimulus!.id}
               stimulus={step.stimulus!}
+              examenAudio={strengLuisteren ? { readSeconds: LUISTEREN_LEESTIJD_SECONDEN } : undefined}
             />
             <McqQuestion
               question={step.question}
@@ -821,6 +914,14 @@ export default function ExamShell({ content, canSeeExplanations }: Props) {
         {/* Per-answer feedback, Oefenmodus only. In Examenmodus the candidate gets nothing until
             submit, which is what makes that sitting's score comparable to a real exam. */}
         <div className="exam-nav flex items-center justify-between gap-3 flex-wrap">
+          {/* Bij streng luisteren is er geen weg terug, en dat is geen strengheid om de
+              strengheid: `StimulusPane` remount per vraag, dus "Vorige" zou het fragment
+              opnieuw starten en de kandidaat een tweede luisterbeurt geven — precies wat de
+              instructie zegt dat er niet is. DUO's luisterexamen loopt om dezelfde reden
+              alleen vooruit. De lege `span` houdt `justify-between` heel. */}
+          {strengLuisteren ? (
+            <span aria-hidden />
+          ) : (
           <button
             type="button"
             onClick={() => goTo(idx - 1)}
@@ -831,6 +932,7 @@ export default function ExamShell({ content, canSeeExplanations }: Props) {
             <ArrowLeft size={15} strokeWidth={2.4} aria-hidden />
             Vorige
           </button>
+          )}
 
           {idx < totalItems - 1 ? (
             <button
@@ -1199,6 +1301,92 @@ export default function ExamShell({ content, canSeeExplanations }: Props) {
 
 /* ── Sub-views ── */
 
+/**
+ * Het instructiescherm van B1 Luisteren: hoe dit examen werkt, voordat de klok loopt.
+ *
+ * ## Waarom dit scherm er is
+ * Twee dingen aan dit onderdeel verrassen je als niemand ze vertelt: de audio start uit zichzelf
+ * na 25 seconden, en je hoort elk fragment maar één keer. Een kandidaat die dat ontdekt tijdens
+ * vraag 1 is vraag 1 kwijt. DUO zet er daarom een instructiescherm vóór, met gesproken uitleg.
+ *
+ * ## Waarom de tekst van ons is en niet van DUO
+ * Het referentiemateriaal is auteursrechtelijk beschermd en wordt alleen voor de *vorm* gebruikt
+ * (CLAUDE.md §9). Bovendien zou letterlijk overnemen hier onwaar worden: DUO zegt "drie of vier
+ * antwoordmogelijkheden" en "klik op Volgende", en bij ons zijn het er altijd drie. Dezelfde
+ * feiten, onze woorden, en gecontroleerd tegen wat de speler echt doet.
+ *
+ * ## Het afspelen is ook het gebaar
+ * De browser blokkeert programmatisch afspelen tot de gebruiker één keer iets heeft aangeklikt.
+ * Wie hier de uitleg beluistert, deblokkeert daarmee de autostart van vraag 1. Wie dat niet doet
+ * krijgt bij de eerste vraag een startknop in plaats van een autostart — `AudioPlayer` vangt het
+ * geblokkeerde `play()` op en laat de knop staan.
+ */
+function LuisterInstructie({ onStart }: { onStart: () => void }) {
+  const regels = [
+    'Je maakt een luisterexamen. De opgaven horen bij zes verschillende gesprekken.',
+    'Bij elk gesprek hoor je eerst een introductie: waar het gesprek over gaat, en hoe het begint. Daar hoort nog geen vraag bij.',
+    'Daarna hoor je steeds een stukje van het gesprek. Bij elk stukje hoort één vraag.',
+    'Je krijgt eerst 25 seconden om de vraag en de antwoorden te lezen. Daarna start het fragment vanzelf.',
+    'Je hoort elk fragment één keer. Je kunt niet pauzeren, terugspoelen of opnieuw luisteren.',
+    'Bij elke vraag staan drie antwoorden. Klik het goede antwoord aan.',
+    'Je mag je antwoord veranderen zolang je bij de vraag bent. Het laatste antwoord telt.',
+    'Klik op ‘Volgende’ om naar de volgende vraag te gaan. Terug naar een vraag die je gehad hebt kan niet.',
+    'Je hebt 90 minuten voor het hele examen. De tijd begint zodra je op ‘Start het examen’ klikt.',
+  ];
+
+  return (
+    <div className="max-w-2xl mx-auto flex flex-col gap-5">
+      <div
+        className="rounded-3xl relative overflow-hidden"
+        style={{ background: 'var(--gradient-brand)', padding: '2rem 1.875rem 2.25rem' }}
+      >
+        <p className="text-[0.65rem] font-bold uppercase tracking-widest m-0 mb-2" style={{ color: 'rgba(255,255,255,0.65)' }}>
+          Voordat je begint
+        </p>
+        <h1 className="font-headline text-2xl sm:text-3xl font-bold m-0 mb-4" style={{ color: '#fff', letterSpacing: '-0.02em' }}>
+          Zo werkt het luisterexamen
+        </h1>
+        <p className="text-sm leading-relaxed m-0 mb-5" style={{ color: 'rgba(255,255,255,0.8)' }}>
+          Luister naar de uitleg of lees hem hieronder. Dit examen werkt net als het echte
+          examen van DUO.
+        </p>
+        <AudioPlayer src={LUISTEREN_INSTRUCTIE_AUDIO} label="Gesproken uitleg" />
+      </div>
+
+      <div className="rounded-2xl bg-surface-container-lowest" style={{ padding: '1.5rem 1.625rem', boxShadow: 'var(--shadow-card-md)' }}>
+        <ul className="flex flex-col gap-3.5 m-0 p-0" style={{ listStyle: 'none' }}>
+          {regels.map((r, i) => (
+            <li key={i} className="flex gap-3 items-start">
+              <span
+                className="flex-shrink-0 inline-flex items-center justify-center rounded-full font-bold"
+                style={{
+                  width: 22, height: 22, marginTop: 1,
+                  background: 'rgba(0,43,109,0.08)',
+                  color: 'var(--color-primary)',
+                  fontSize: '0.7rem',
+                }}
+              >
+                {i + 1}
+              </span>
+              <span className="text-sm leading-relaxed text-on-surface">{r}</span>
+            </li>
+          ))}
+        </ul>
+      </div>
+
+      <button
+        type="button"
+        onClick={onStart}
+        className="exam-primary-btn inline-flex items-center justify-center gap-2 rounded-xl font-bold border-0 cursor-pointer self-start"
+        style={{ padding: '0.9rem 1.75rem', background: '#fe762c', color: '#5f2200', boxShadow: 'var(--shadow-btn-orange)' }}
+      >
+        Start het examen
+        <ArrowRight size={17} strokeWidth={2.5} aria-hidden className="rtl-flip" />
+      </button>
+    </div>
+  );
+}
+
 function ExamIntroScreen({
   content,
   totalItems,
@@ -1226,6 +1414,8 @@ function ExamIntroScreen({
 }) {
   const { exam } = content;
   const empty = totalItems === 0;
+  /* Zelfde regel als in de shell; zie `LUISTEREN_LEESTIJD_SECONDEN`. */
+  const strengLuisteren = exam.skill === 'luisteren' && exam.level === 'b1';
 
   return (
     <div className="max-w-2xl mx-auto flex flex-col gap-5">
@@ -1259,10 +1449,23 @@ function ExamIntroScreen({
         className="rounded-2xl bg-surface-container-lowest"
         style={{ padding: '1.375rem 1.5rem', boxShadow: 'var(--shadow-ambient)' }}
       >
+        {/* Bij streng luisteren gaat "heen en terug" niet op — daar loopt het examen alleen
+            vooruit. Eén zin die niet klopt over hoe de navigatie werkt kost de kandidaat een
+            vraag voordat hij doorheeft dat het anders is. */}
         <p className="text-sm leading-relaxed text-on-surface-variant m-0">
-          De klok loopt zodra je begint. Je kunt heen en terug tussen de vragen en je antwoord
-          nog aanpassen tot je inlevert. Alle opgaven zijn gemaakt en nagekeken door een
-          NT2-docent.
+          {strengLuisteren ? (
+            <>
+              De klok loopt zodra je begint. Je hoort elk fragment één keer en gaat steeds
+              vooruit; teruggaan naar een vraag kan niet. Op het volgende scherm staat de
+              volledige uitleg. Alle opgaven zijn gemaakt en nagekeken door een NT2-docent.
+            </>
+          ) : (
+            <>
+              De klok loopt zodra je begint. Je kunt heen en terug tussen de vragen en je antwoord
+              nog aanpassen tot je inlevert. Alle opgaven zijn gemaakt en nagekeken door een
+              NT2-docent.
+            </>
+          )}
         </p>
       </div>
 

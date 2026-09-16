@@ -27,12 +27,13 @@
  * before changing anything here: the plan is what stops thirty exams being one exam thirty times.
  */
 import { loadEnv } from './a2-content/lib.mjs';
-import { createAuthor, lezenUnit, schrijvenCompletionUnit, schrijvenLongUnit, sprekenUnit } from './b1-content/author.mjs';
+import { createAuthor, lezenUnit, luisterenUnit, schrijvenCompletionUnit, schrijvenLongUnit, sprekenUnit } from './b1-content/author.mjs';
 import { writeExam, readExam } from './b1-content/dataset.mjs';
 import { EXAM_COUNT, SKILLS, FORMAT } from './b1-content/rules.mjs';
 import {
   LEZEN_GENRES, LEZEN_TOPICS, LEZEN_SPLITS,
   SCHRIJVEN_COMPLETIONS, SCHRIJVEN_LONG, SPREKEN_PLAN,
+  LUISTEREN_GENRES, LUISTEREN_TOPICS, LUISTEREN_SPLITS, LUISTEREN_CAST,
 } from './b1-content/plan.mjs';
 
 /* ── flags ───────────────────────────────────────────────────────────────── */
@@ -87,6 +88,19 @@ function unitsFor(skill, n) {
       })
     );
   }
+  if (skill === 'luisteren') {
+    return LUISTEREN_GENRES.map((g, slot) =>
+      luisterenUnit({
+        examNumber: n,
+        slot,
+        genre: g.genre,
+        section: g.section,
+        topic: LUISTEREN_TOPICS[i][slot],
+        cast: LUISTEREN_CAST[i][slot],
+        fragmentCount: LUISTEREN_SPLITS[i][slot],
+      })
+    );
+  }
   if (skill === 'schrijven') {
     return [
       schrijvenCompletionUnit({ examNumber: n, plan: SCHRIJVEN_COMPLETIONS[i] }),
@@ -103,6 +117,7 @@ function unitsFor(skill, n) {
 /** Units → the shape `scripts/b1-content/index.mjs` validates and the seeder writes. */
 function assemble(skill, results) {
   if (skill === 'lezen') return results;                 // six stimuli, in order
+  if (skill === 'luisteren') return results;             // zes gesprekken, in volgorde
   // The first unit returns the eight completions as an array; the next four each return one task.
   if (skill === 'schrijven') return [...results[0], ...results.slice(1)];
   return results;                                        // two delen
@@ -121,6 +136,7 @@ if (command === 'plan') {
   console.log(`\n${units} model calls in total.`);
   const items =
     (wanted.includes('lezen') ? FORMAT.lezen.itemCount * examNumbers.length : 0) +
+    (wanted.includes('luisteren') ? FORMAT.luisteren.itemCount * examNumbers.length : 0) +
     (wanted.includes('schrijven') ? FORMAT.schrijven.itemCount * examNumbers.length : 0) +
     (wanted.includes('spreken') ? FORMAT.spreken.itemCount * examNumbers.length : 0);
   console.log(`${items} items across ${wanted.length * examNumbers.length} exams.`);

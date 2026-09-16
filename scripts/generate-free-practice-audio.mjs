@@ -103,11 +103,21 @@ const DIALOGUE_ENDPOINT = 'https://api.elevenlabs.io/v1/text-to-dialogue';
 const SETTINGS = { stability: 0.5, use_speaker_boost: true };
 
 // v3 offers no pacing control: no `speed`, and it ignores <break time> tags outright (two
-// renders differing only in breaks came back byte-identical). Delivery therefore lands near
-// 150 wpm against the ~110 wpm the multilingual_v2 pipeline reached and DUO's 57% speech
-// ratio. Accepted deliberately in exchange for natural conversational flow. If it proves too
-// fast for A2 candidates, the only remaining lever is POST_ATEMPO below — a pitch-preserving
-// ffmpeg time-stretch. Set it to e.g. 0.88 to slow the finished file; null leaves it alone.
+// renders differing only in breaks came back byte-identical). The only remaining lever is
+// POST_ATEMPO — a pitch-preserving ffmpeg time-stretch, where 0.88 slows the finished file.
+//
+// It stays null, and that is now a measured decision rather than a default (16-09).
+//
+// DUO's own B1 Luisteren fragments were transcribed with Scribe and measured: 148-187 wpm,
+// weighted mean 162 over six fragments of the 2025 openbaar examen. Our unstretched v3 renders
+// land at 170-217 wpm, so we are at or slightly above the top of that band — not the runaway
+// gap an earlier reading suggested. That reading compared against DUO's *narrator* tracks
+// (114-132 wpm), which read printed instructions and are a different register entirely.
+//
+// Stretching to the measured mean was tried across the four new voices and rejected by the
+// owner: the audible cost rises sharply with the stretch. At 0.96 nothing is heard; at 0.76
+// the voice is plainly damaged. Since a fragment needing heavy correction is really a fragment
+// whose *script* is too long for its slot, the lever belongs in the word budget, not here.
 const POST_ATEMPO = null;
 
 // Measured off the official DUO listening audio: -20.5 LUFS integrated, very tight 3.7 LU

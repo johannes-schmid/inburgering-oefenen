@@ -3,6 +3,77 @@
 Append-only log of successes and failures from each working session.
 Read this at the start of every session and apply lessons before writing code.
 
+## 2026-09-16 — Een instructiescherm voor B1 Luisteren, en 25 seconden leestijd die echt aftellen
+**Changed:** `components/exam/AudioPlayer.tsx` (`examenAudio`-stand), `components/exam/StimulusPane.tsx`,
+`components/exam/ExamShell.tsx` (fase `instructie`, `LUISTEREN_LEESTIJD_SECONDEN`, geen "Vorige" meer
+bij streng luisteren), `scripts/exam-content/narration/b1-luisteren-instructie.txt`,
+`scripts/generate-exam-instructie-audio.mjs`, `public/audio/exam/b1-luisteren-instructie.mp3`.
+Eerder deze sessie: `scripts/seed-b1-content.mjs:100` (de `--partial`/`--production`-poort versmald).
+**Outcome:** SUCCESS
+**What worked / went wrong:**
+- DUO's instructietekst beschrijft vier dingen die onze speler niet deed: 25 seconden leestijd met
+  autostart, één luisterbeurt, "drie of vier" antwoorden (bij ons altijd drie) en een knop die
+  anders heet. Letterlijk overnemen zou de kandidaat dus iets onwaars over ónze speler vertellen,
+  los van het auteursrecht op het referentiemateriaal. Zelf geschreven, per regel gecontroleerd
+  tegen wat de code doet.
+- **De "Vorige"-knop was een gat in de nieuwe regel.** `StimulusPane` remount per vraag, dus
+  teruglopen zou het fragment opnieuw starten en een tweede luisterbeurt geven — precies wat de
+  instructie zegt dat er niet is. Bij streng luisteren staat die knop er daarom niet meer. Dit was
+  niet te zien aan een test of aan het typecheck; het viel op bij het lezen van de navigatie.
+- **Ook de introtekst op het startscherm loog mee**: "Je kunt heen en terug tussen de vragen".
+  Eén zin die niet klopt over de navigatie kost de kandidaat een vraag voordat hij doorheeft dat
+  het anders werkt.
+- De autostart heeft een gebruikersgebaar nodig. In de praktijk is dat er altijd — de kandidaat
+  klikt "Start het examen" en "Verder" voor hij bij vraag 1 is — maar de examenstand verbergt het
+  transport, dus een geweigerde `play()` zou een fragment opleveren dat nooit begint en géén knop
+  om het te starten. Er is nu een vangnetknop voor dat geval.
+- Bewust alleen B1: A2 Luisteren heeft veertig gepubliceerde examens met klanten die er nu in
+  zitten, en die halverwege strenger maken verandert stil hun examen.
+**Lesson:** Een instructiescherm is een bewering over je eigen code. Schrijf hem regel voor regel
+naast de component die hem waar moet maken, en controleer ook de schermen ernáást — de zin die het
+tegensprak stond op een ander scherm dan het scherm dat ik aan het schrijven was.
+
+## 2026-09-16 — De verteller, een eigen introstap, en een seconde stilte achter elk fragment
+**Changed:** `data/tts-voices.json` (negende stem `narrator`, `role: 'narrator'`), `lib/tts-voices.ts`
+(`castableVoices()`, `LUISTEREN_NARRATOR`), `supabase/migrations/20260916160000_stimuli_intro_audio.sql`,
+`lib/exam-content.ts`, `components/exam/ExamShell.tsx` (fase `tekstintro`),
+`scripts/seed-b1-content.mjs` (`joinAudio`, introtrack per gesprek),
+`scripts/a2-content/lib.mjs` (`TAIL_SECONDS` + `apad` in de loudnorm-pass). B1 Luisteren examen 2
+geschreven en geseed.
+**Outcome:** SUCCESS
+**What worked / went wrong:**
+- DUO heeft per tekst een aparte introtrack: de verteller leest titel, scenario en woorduitleg, en
+  daarna speelt het begin van het gesprek in dezelfde track. Scribe telt er drie sprekers in.
+  Nagebouwd als een eigen schermfase vóór vraag 1, met twee additieve kolommen op `stimuli` —
+  `exam_publish_issues()` is niet aangeraakt, want die functie is al twee keer een fix kwijtgeraakt.
+- Een `role: 'narrator'`-veld houdt de verteller uit elke casting. `castableVoices()` is nu de
+  enige lijst waar een gesprek uit gecast wordt; `Object.keys(VOICES)` op drie admin-schermen was
+  precies de plek waar de verteller anders als personage was opgedoken.
+- De audio klonk alsof hij midden in een zin afkapte. Scribe bewees dat er géén woord verdwijnt:
+  `eleven_v3` levert gewoon nul staart, −29 dB in de laatste 200 ms. Eén `apad=pad_dur=1.0` achter
+  de bestaande loudnorm-filter lost het op, zonder tweede ffmpeg-ronde. Gemeten na het seeden:
+  laatste 0,26 s op −91 dB, echte stilte.
+- `/v1/text-to-dialogue` accepteert alléén `eleven_v3`. De 0,5×-modellen (`flash_v2_5`,
+  `turbo_v2_5`, `v3_conversational`) geven `400 unsupported_model` en zijn alleen bereikbaar via
+  per-beurt renderen plus stitchen — dus met verlies van de prosodie tussen sprekers. Eigenaar koos
+  na vergelijking de v3-dialoog mét staart; de halvering gaat niet door.
+- De seeder valideert de héle dataset, dus een los examen seeden vraagt `--partial`. Zonder die vlag
+  faalt hij op examens 3–10 die nog niet bestaan, en dat leest als een fout in examen 2.
+**Lesson:** Als audio "afgekapt" klinkt, meet eerst of er een wóórd weg is. Ontbrekende stilte en
+ontbrekende spraak klinken hetzelfde en hebben totaal verschillende oplossingen.
+
+## 2026-09-16 — Acht stemmen, en B1 Luisteren van "geen vorm" naar een geseed examen 1
+
+**Changed:** (1) `data/tts-voices.json` van vier naar acht stemmen: Roos (`woman_roos`), Noa (`woman_noa`), Eric Sijbesma (`man_eric`) en Richard (`man_richard`) erbij, alle vier aangedragen door de eigenaar. De vier bestaande sleutels heten nog naar hun rol, de nieuwe naar hun persoon — hernoemen zou elke `voice_cast` in de database moeten meeverhuizen. `lib/tts-voices.ts` legt dat uit, plus waarom er op deze stemmen niets versneld wordt. (2) `scripts/b1-content/rules.mjs`: `FORMAT.luisteren` (39 vragen, 5400s, 39 stimuli, 1 vraag elk, 3 opties, 35–95s) en `LUISTEREN_SECTION_SLUGS`; `luisteren` toegevoegd aan `SKILLS`. (3) `plan.mjs`: `LUISTEREN_GENRES`, `_TOPICS` (60 onderwerpen), `_SPLITS` en `_CAST`. (4) `luisterenUnit` in `author.mjs`, `checkLuisteren` in `index.mjs`, nieuw `luisteren.mjs`, `seedLuisteren` in `seed-b1-content.mjs`. (5) Migratie `20260916150000_b1_luisteren_format.sql` — lokaal toegepast met psql. (6) `tests-unit/b1-luisteren-plan.test.ts`, 11 tests.
+
+**Outcome:** `SUCCESS` (tsc clean, 599/599 vitest groen, `checkLuisteren` zonder problemen, examen 1 compleet op 39 vragen over zes gesprekken)
+
+**What worked:** De casting is *gepland* en niet overgelaten aan de generator. DUO zet dertien stemmen in per examen en hergebruikt geen spreker tussen de teksten; wij hebben er acht, dus hergebruik moet — maar `LUISTEREN_CAST` legt vast welk paar welk gesprek doet, onder drie regels die de test afdwingt (zes verschillende paren per examen, geen stem in twee opeenvolgende gesprekken, één of twee paren van gelijk geslacht). Mijn eigen eerste versie overtrad die regels in drie van de tien examens; de test ving het, niet ik. Verder sorteert `finish()` de opties alfabetisch en verplaatst `correct` mee, in plaats van het model op zijn woord te geloven — een model dat de regel negen van de tien keer volgt levert anders één examen met een stille afwijking.
+
+**What went wrong:** Gesprek 3 van examen 1 liep vijf keer vast op de directe Anthropic-API. Geen foutmelding, geen time-out: de stream opende een `thinking`-blok en stuurde daarna niets meer, met de verbinding open — ook de SDK-time-out ging niet af. Ik heb er veel te lang over gedaan om dat te vinden, omdat ik eerst twee verkeerde hypotheses najoeg (het ónderwerp, daarna het aantal fragmenten) en beide "controles" óók vastliepen, waardoor ze niets bewezen. Wat het wél uitwees was kale `curl`: exact hetzelfde beeld, dus niet de SDK. Met `thinking: {type:'disabled'}` liep dezelfde prompt in één keer door. `ask()` accepteert nu een `thinking` per unit en `luisterenUnit` zet hem uit.
+
+**Lesson:** Een hangende stream is geen trage stream — kijk naar het láátste event, niet naar de klok. Twee SSE-events en dan stilte zegt precies waar het misgaat, en dat had ik in vijf minuten kunnen zien in plaats van in een uur. En: een controle-experiment dat óók vastloopt weerlegt je hypothese niet, het maakt hem alleen onmeetbaar; ga dan een laag lager (curl in plaats van de SDK) in plaats van nog een variant te proberen. Bijvangst: `effort: 'high'` op de directe route liep op dezelfde manier vast waar `medium` doorliep, en de Gateway liet dat nooit zien omdat die het veld helemaal negeert.
+
 ## 2026-09-15 — SEO-audit opgevolgd: avatar, security headers, og:image en de @id-verwijzingen
 
 **Changed:** (1) `public/images/marieke-schipper.jpg` (1,9 MB) was een PNG met een `.jpg`-naam, 1376x768 met alpha, en werd op zestien plekken als avatar van hooguit 200px getoond — opnieuw gecodeerd als `marieke-schipper.webp` (64 KB, zelfde afmetingen en alpha) en alle verwijzingen in veertien bestanden omgezet, inclusief `data/guides/kit.ts` en `inburgering-stappenplan.ts`. (2) `next.config.ts` heeft een `headers()`-blok: `X-Content-Type-Options`, `X-Frame-Options`, `Content-Security-Policy: frame-ancestors 'none'`, `Referrer-Policy`, `Permissions-Policy`, en HSTS met `includeSubDomains; preload`. Bewust géén volledige CSP. (3) Nieuw `app/[locale]/opengraph-image.tsx` (1200x630, merkgradiënt, Nederlands en onvertaald) plus `ogImageFor()` in `lib/schema.ts`, in twintig `generateMetadata`-blokken gezet; `app/[locale]/layout.tsx` levert zijn eigen `images` in. (4) `PROVIDER_REF` en nieuw `TEACHER_REF` in `lib/schema.ts` dragen nu `name`/`url` (en `jobTitle`), en vervangen de kale `{ '@id': ... }` op gidsen, blog, oefenexamen, premium en docent. (5) `logo` toegevoegd aan de organisatie-node op de homepage. (6) `Article` op een gids krijgt `image`, maar alleen als de gids een `heroImage` heeft — vier van de vijfentwintig.

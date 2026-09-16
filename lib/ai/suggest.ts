@@ -32,7 +32,7 @@ import { formatRules, formatRange, isSkillSlug, type Level } from '@/data/skills
 import {
   SPEECH_WPM, lengthTarget, targetSentence, type LengthField,
 } from '@/lib/admin/length-targets';
-import { VOICES, type VoiceKey } from '@/lib/tts-voices';
+import { VOICES, castableVoices, type VoiceKey } from '@/lib/tts-voices';
 import type { SuggestExamples } from './suggest-examples';
 
 export const SUGGEST_MODEL = process.env.AI_AUTHOR_MODEL || GRADER_TEXT;
@@ -50,7 +50,7 @@ const SUGGEST_TEMPERATURE = 0.9;
 
 export type StimulusKind = 'text' | 'audio' | 'image';
 
-const VOICE_KEYS = Object.keys(VOICES) as VoiceKey[];
+const VOICE_KEYS = castableVoices();
 
 const stimulusSchema = z.object({
   intro: z

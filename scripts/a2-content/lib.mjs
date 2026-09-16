@@ -146,9 +146,28 @@ export const VOICES = JSON.parse(
 );
 export const VOICE_KEYS = Object.keys(VOICES);
 
+/**
+ * De stem die nooit een personage speelt — afgeleid uit `role` in tts-voices.json en niet hier
+ * herhaald, want een `voice_id` hoort maar op één plek te staan. Spiegelt `LUISTEREN_NARRATOR`
+ * in `lib/tts-voices.ts`; die twee lezen hetzelfde bestand.
+ */
+export const NARRATOR_KEY = VOICE_KEYS.find(k => VOICES[k].role === 'narrator') ?? null;
+
+/** Elke stem die wél een personage mag spelen. De castingpools gebruiken deze lijst. */
+export const CASTABLE_VOICE_KEYS = VOICE_KEYS.filter(k => VOICES[k].role !== 'narrator');
+
 const DIALOGUE_ENDPOINT = 'https://api.elevenlabs.io/v1/text-to-dialogue';
 const TTS_ENDPOINT = 'https://api.elevenlabs.io/v1/text-to-speech';
 const LOUDNESS = { i: -20, tp: -2, lra: 4 };
+
+/**
+ * Een seconde stilte achter elk fragment. `eleven_v3` levert audio die exact op de laatste
+ * medeklinker ophoudt — er is nul staart, gemeten −29 dB in de laatste 200 ms — en dat klinkt alsof
+ * de speler midden in een zin afkapt. Scribe bewijst dat er geen woord verdwijnt; het is puur
+ * padding die ontbreekt. Eén `apad` in de bestaande loudnorm-pass lost het op zonder een tweede
+ * ffmpeg-ronde en zonder de meting te vertroebelen (de meetpass draait vóór de padding).
+ */
+const TAIL_SECONDS = 1.0;
 
 export function haveFfmpeg() {
   return spawnSync('ffmpeg', ['-version'], { encoding: 'utf8' }).status === 0;
@@ -181,7 +200,7 @@ export function loudnorm(buf) {
       : `loudnorm=I=${LOUDNESS.i}:TP=${LOUDNESS.tp}:LRA=${LOUDNESS.lra}`;
     execFileSync(
       'ffmpeg',
-      ['-y', '-i', src, '-af', filter, '-c:a', 'libmp3lame', '-b:a', '128k', out],
+      ['-y', '-i', src, '-af', `${filter},apad=pad_dur=${TAIL_SECONDS}`, '-c:a', 'libmp3lame', '-b:a', '128k', out],
       { stdio: 'ignore' }
     );
     return fs.readFileSync(out);

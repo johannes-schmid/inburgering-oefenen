@@ -4,7 +4,7 @@ import { useCallback, useState } from 'react';
 import { AudioLines, Check, Loader2, X } from 'lucide-react';
 import { createClient } from '@/lib/supabase/client';
 import type { AdminStimulus } from '@/lib/admin/stimuli';
-import { VOICES, type VoiceKey } from '@/lib/tts-voices';
+import { VOICES, castableVoices, type VoiceKey } from '@/lib/tts-voices';
 import { speakersInScript } from '@/lib/tts-dialogue';
 import { formatRange, formatRules, isSkillSlug, type Level } from '@/data/skills';
 import MagicFill from './MagicFill';
@@ -664,7 +664,7 @@ function VoiceCasting({
               className="field"
             >
               <option value="">Kies een stem…</option>
-              {(Object.keys(VOICES) as VoiceKey[]).map(k => (
+              {castableVoices().map(k => (
                 <option key={k} value={k}>
                   {VOICES[k].gender === 'female' ? 'vrouw' : 'man'} · {VOICES[k].age === 'young' ? 'jonger' : 'ouder'}
                 </option>

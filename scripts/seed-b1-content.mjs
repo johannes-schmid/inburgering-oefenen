@@ -38,11 +38,14 @@ import {
   createStorage,
   createTts,
   haveFfmpeg,
+  mp3DurationSeconds,
+  NARRATOR_KEY,
   AUDIO_BUCKET,
 } from './a2-content/lib.mjs';
 import { createImages } from './a2-content/images.mjs';
 import {
   LEZEN_EXAMS,
+  LUISTEREN_EXAMS,
   SCHRIJVEN_EXAMS,
   SPREKEN_EXAMS,
   FORMAT,
@@ -51,6 +54,10 @@ import {
   validateDataset,
 } from './b1-content/index.mjs';
 import { draftCriteria, DRAFT_MARKER } from './b1-content/rubrics.mjs';
+import { spawnSync } from 'node:child_process';
+import fsx from 'node:fs';
+import osx from 'node:os';
+import pathx from 'node:path';
 
 const LEVEL = 'b1';
 
@@ -88,10 +95,16 @@ if (ONLY_EXAM !== null && (!Number.isInteger(ONLY_EXAM) || ONLY_EXAM < 1 || ONLY
 
 /* ── validate before anything costs money ────────────────────────────────── */
 
-// `--partial` is an authoring convenience and is refused against production: shipping nine of
-// ten oefenexamens as if they were ten is the sort of thing nobody notices until a customer does.
-if (PARTIAL && PRODUCTION) {
-  console.error('--partial cannot be combined with --production.');
+// `--partial` is an authoring convenience en wordt tegen productie geweigerd: negen van de tien
+// oefenexamens naar buiten duwen alsof het er tien zijn is precies het soort ding dat niemand
+// merkt tot een klant het merkt.
+//
+// Met `--exam N` erbij vervalt dat bezwaar. Dan noemt de opdracht één examen, en `--partial` zegt
+// alleen nog dat de nóg niet geschreven examens leeg zijn in plaats van kapot — wat waar is. Wat
+// geweigerd blijft is de combinatie zónder `--exam`, want dat is wél de hele set met gaten erin.
+// (Toestemming eigenaar, 16-09, voor B1 Luisteren 1 en 2.)
+if (PARTIAL && PRODUCTION && ONLY_EXAM === null) {
+  console.error('--partial cannot be combined with --production unless --exam N names one exam.');
   process.exit(1);
 }
 
@@ -343,7 +356,208 @@ async function seedLezen(number) {
   return { teksten: stimuli.length, vragen: questions, ...report };
 }
 
+/**
+ * Twee opnames achter elkaar plakken, met een korte stilte ertussen.
+ *
+ * Niet met `concat:` op de mp3-bestanden zelf: dat plakt de bytes aan elkaar en laat twee
+ * headers in één bestand achter, waar sommige spelers de duur van alleen het eerste deel uit
+ * lezen. Opnieuw coderen via het concat-filter levert één schoon bestand met één header.
+ *
+ * De stilte van 1,2 seconde is geen opmaak. De verteller zegt "U hoort nu eerst het begin van
+ * het gesprek" en daarna begint een ánder gesprek; zonder pauze klinkt dat als één spreker die
+ * zichzelf onderbreekt.
+ */
+function joinAudio(buffers) {
+  const dir = fsx.mkdtempSync(pathx.join(osx.tmpdir(), 'b1-intro-'));
+  try {
+    const files = buffers.map((b, i) => {
+      const f = pathx.join(dir, `${i}.mp3`);
+      fsx.writeFileSync(f, b);
+      return f;
+    });
+    const out = pathx.join(dir, 'out.mp3');
+    const args = ['-y'];
+    for (const f of files) args.push('-i', f);
+    args.push('-f', 'lavfi', '-t', '0.6', '-i', 'anullsrc=r=44100:cl=stereo');
+    // De stilte is de láátste input, dus hij wordt tussen de twee opnames in gemonteerd door
+    // de volgorde in het filter — niet door de volgorde van de -i vlaggen.
+    const stilte = files.length;
+    const volgorde = [0, stilte, 1].map(i => `[${i}:a]`).join('');
+    args.push(
+      '-filter_complex', `${volgorde}concat=n=3:v=0:a=1[out]`,
+      '-map', '[out]', '-c:a', 'libmp3lame', '-b:a', '128k', out
+    );
+    const r = spawnSync('ffmpeg', args, { stdio: 'ignore' });
+    if (r.status !== 0) throw new Error('ffmpeg kon de introtrack niet samenvoegen');
+    return fsx.readFileSync(out);
+  } finally {
+    fsx.rmSync(dir, { recursive: true, force: true });
+  }
+}
+
+/* ── Luisteren ───────────────────────────────────────────────────────────── */
+
+/**
+ * Zes gesprekken worden 39 stimuli.
+ *
+ * Een gesprek is een groep in de authoring, geen rij in de database: elk **fragment** is één
+ * `stimuli`-rij met precies één vraag eronder, want dat is wat de kandidaat hoort en
+ * beantwoordt. Wat het gesprek bij elkaar houdt is `sort_order` — de fragmenten van gesprek 2
+ * staan achter die van gesprek 1 — plus de `intro`, die op het eerste fragment van elk gesprek
+ * staat en daarna niet meer. Zo leest de speler hem één keer voor, precies zoals DUO doet.
+ *
+ * De `opening` — het begin zonder vraag — wordt vóór het script van het eerste fragment
+ * geplakt in plaats van een eigen rij te krijgen. Een stimulus zonder vraag kan niet: elke
+ * `stimuli`-rij draagt er minstens één, en een rij met een lege vragenlijst zou in de speler
+ * een leeg scherm zijn.
+ */
+async function seedLuisteren(number) {
+  const examId = await examRow('luisteren', number);
+  await db.remove('stimuli', `exam_id=eq.${examId}`);
+
+  const teksten = LUISTEREN_EXAMS[number - 1];
+  let questions = 0;
+  let order = 0;
+  const lengths = [];
+
+  for (const [ti, t] of teksten.entries()) {
+    for (const [fi, fragment] of t.fragments.entries()) {
+      order++;
+      const script = fragment.script;
+
+      // Een audio-stimulus moet een audio_url dragen (`stimuli_payload_matches_kind`), dus het
+      // bestand moet er zijn vóór de rij. Zonder audio valt hij terug op een tekststimulus met
+      // het transcript — een halve audio-stimulus toont een leeg paneel en lijkt een bug.
+      let audioUrl = null;
+      let audioSeconds = null;
+      let introUrl = null;
+      let introSeconds = null;
+
+      // De ingesproken introductie, alleen op het eerste fragment van een gesprek: de verteller
+      // leest titel en scenario voor, en daarna hoor je het begin van het gesprek. Precies de
+      // vorm van DUO's eigen "Track N_intro".
+      if (AUDIO_ON && fi === 0) {
+        const introPath = `b1/luisteren-${number}/intro-${ti + 1}.mp3`;
+        const already = FORCE_AUDIO ? null : await storage.existing(AUDIO_BUCKET, introPath);
+        if (already) {
+          introUrl = already;
+          const head = await fetch(already);
+          introSeconds = mp3DurationSeconds(Buffer.from(await head.arrayBuffer()));
+        } else {
+          process.stdout.write(`    intro ${ti + 1}/6 — ${t.title}… `);
+          try {
+            const gesproken = `${t.title}. ${t.intro} U hoort nu eerst het begin van het gesprek. Hierbij is nog geen opgave.`;
+            const verteld = await tts.narratorAudio(gesproken, NARRATOR_KEY, 1.0);
+            const opening = await tts.dialogueAudio(
+              t.opening.split('\n').map(l => l.trim()).filter(Boolean)
+                .map(l => [l[0], l.replace(/^[AB]\s*:\s*/, '')]),
+              t.cast
+            );
+            const buf = joinAudio([verteld, opening]);
+            introUrl = await storage.upload(AUDIO_BUCKET, introPath, buf, 'audio/mpeg');
+            introSeconds = mp3DurationSeconds(buf);
+            console.log(`${introSeconds ?? '?'}s, ${(buf.length / 1024).toFixed(0)} KB`);
+          } catch (err) {
+            console.log(`MISLUKT (${err.message})`);
+          }
+        }
+      }
+
+      if (AUDIO_ON) {
+        const objectPath = `b1/luisteren-${number}/fragment-${order}.mp3`;
+        const already = FORCE_AUDIO ? null : await storage.existing(AUDIO_BUCKET, objectPath);
+        if (already) {
+          audioUrl = already;
+          const head = await fetch(already);
+          audioSeconds = mp3DurationSeconds(Buffer.from(await head.arrayBuffer()));
+        } else {
+          process.stdout.write(`    audio ${order}/39 — ${t.title} ${fi + 1}… `);
+          try {
+            const lines = script
+              .split('\n')
+              .map(l => l.trim())
+              .filter(Boolean)
+              .map(l => [l[0], l.replace(/^[AB]\s*:\s*/, '')]);
+            const buf = await tts.dialogueAudio(lines, t.cast);
+            audioUrl = await storage.upload(AUDIO_BUCKET, objectPath, buf, 'audio/mpeg');
+            audioSeconds = mp3DurationSeconds(buf);
+            console.log(`${audioSeconds ?? '?'}s, ${(buf.length / 1024).toFixed(0)} KB`);
+          } catch (err) {
+            console.log(`MISLUKT (${err.message})`);
+          }
+        }
+        if (audioSeconds) lengths.push({ title: `${t.title} ${fi + 1}`, seconds: audioSeconds });
+      }
+
+      const stimulusId = await db.insertOne('stimuli', {
+        exam_id: examId,
+        skill: 'luisteren',
+        sort_order: order,
+        section_id: await sectionId('luisteren', t.section),
+        kind: audioUrl ? 'audio' : 'text',
+        title: `${t.title} (${fi + 1})`,
+        // De intro staat alleen op het eerste fragment van een gesprek.
+        intro: fi === 0 ? (t.intro ?? null) : null,
+        audio_url: audioUrl,
+        audio_seconds: audioSeconds,
+        intro_audio_url: introUrl,
+        intro_audio_seconds: introSeconds,
+        script,
+        voice_cast: t.cast,
+        body_html: audioUrl
+          ? null
+          : `<p><em>Transcript:</em></p>${script
+              .split('\n')
+              .filter(Boolean)
+              .map(l => `<p>${l}</p>`)
+              .join('')}`,
+        ...REVIEWED,
+      });
+
+      const questionId = await db.insertOne('questions', {
+        stimulus_id: stimulusId,
+        exam_id: examId,
+        sort_order: 1,
+        prompt: fragment.prompt,
+        explanation: fragment.explanation,
+        option_layout: 'text',
+        ...REVIEWED,
+      });
+      await db.insert(
+        'question_options',
+        fragment.options.map((body, k) => ({
+          question_id: questionId,
+          label: LABELS[k],
+          sort_order: k + 1,
+          body,
+          is_correct: false,
+        }))
+      );
+      await db.patch(
+        'question_options',
+        `question_id=eq.${questionId}&label=eq.${LABELS[fragment.correct]}`,
+        { is_correct: true }
+      );
+      questions++;
+    }
+  }
+
+  const [lo, hi] = FORMAT.luisteren.seconds;
+  const outside = lengths.filter(l => l.seconds < lo || l.seconds > hi);
+  const report = await publish(
+    examId,
+    `Luisteren B1 — oefenexamen ${number}`,
+    FORMAT.luisteren.durationSeconds
+  );
+  if (outside.length > 0) {
+    console.log(`    ! ${outside.length} fragment(en) buiten ${lo}–${hi}s:`);
+    for (const o of outside) console.log(`        ${o.seconds}s — ${o.title}`);
+  }
+  return { gesprekken: teksten.length, fragmenten: order, vragen: questions, ...report };
+}
+
 /* ── Schrijven ───────────────────────────────────────────────────────────── */
+
 
 async function seedSchrijven(number) {
   const examId = await examRow('schrijven', number);
@@ -470,7 +684,7 @@ async function seedSpreken(number) {
 
 /* ── main ────────────────────────────────────────────────────────────────── */
 
-const SEEDERS = { lezen: seedLezen, schrijven: seedSchrijven, spreken: seedSpreken };
+const SEEDERS = { lezen: seedLezen, luisteren: seedLuisteren, schrijven: seedSchrijven, spreken: seedSpreken };
 
 async function main() {
   let blocked = 0;

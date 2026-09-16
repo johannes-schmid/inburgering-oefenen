@@ -10,11 +10,12 @@
  * set by `supabase/migrations/20260821090000_b1_exam_structure.sql`, and `RULES` / `TASK_RULES`
  * in `data/skills.ts`. Those four mirrors must change in one commit — the rule CLAUDE.md sets.
  *
- * ## Three onderdelen, not four
- * **Luisteren is absent on purpose, not unfinished.** There is no B1 Luisteren reference
- * material, so `exam_formats(b1, luisteren)` is still all-NULL and its ten exam slots stay
- * empty and unpublished. A generated B1 Luisteren exam would be a guess at DUO's format wearing
- * a published exam's clothes.
+ * ## Vier onderdelen sinds 16-09
+ * **Luisteren stond hier lang als "bewust afwezig".** Dat gold zolang er geen referentie was:
+ * een gegenereerd B1-Luisterenexamen zou een gok naar DUO's vorm zijn in de kleren van een
+ * gepubliceerd examen. Sinds de openbare examens Luisteren I van 2023, 2024 en 2025 zijn
+ * geteld, is de vorm geen gok meer — 39 vragen over zes gesprekken, één vraag per fragment.
+ * Zie `FORMAT.luisteren` in `rules.mjs` voor wat er precies geteld is.
  *
  * ## What B1 changes about the shapes
  *   - Lezen is six long teksten (400–600 woorden, numbered alinea's) with 35 vragen over them.
@@ -25,16 +26,18 @@
  *     deel as it does at A2. DUO's B1 deel 1 mixes plaatje-less opgaven with ones that show a
  *     picture and speak to the candidate; the delen differ in spreektijd, not in picture rule.
  */
+import { VOICES } from '../a2-content/lib.mjs';
 import { LEZEN_EXAMS } from './lezen.mjs';
+import { LUISTEREN_EXAMS } from './luisteren.mjs';
 import { SCHRIJVEN_EXAMS } from './schrijven.mjs';
 import { SPREKEN_EXAMS } from './spreken.mjs';
 
-export { LEZEN_EXAMS, SCHRIJVEN_EXAMS, SPREKEN_EXAMS };
+export { LEZEN_EXAMS, LUISTEREN_EXAMS, SCHRIJVEN_EXAMS, SPREKEN_EXAMS };
 
 export * from './rules.mjs';
 import {
   EXAM_COUNT, FORMAT, TASK_RULES, LONG_CATEGORIES, SPREKEN_IMAGES, SPREKEN_QUOTA,
-  SECTION_SLUGS, SKILLS,
+  SECTION_SLUGS, LUISTEREN_SECTION_SLUGS, SKILLS,
 } from './rules.mjs';
 
 /**
@@ -306,8 +309,98 @@ function checkEscapes(problems) {
     }
   };
   LEZEN_EXAMS.forEach((e, i) => e.length && scan(`lezen ${i + 1}`, e));
+  LUISTEREN_EXAMS.forEach((e, i) => e.length && scan(`luisteren ${i + 1}`, e));
   SCHRIJVEN_EXAMS.forEach((e, i) => e.length && scan(`schrijven ${i + 1}`, e));
   SPREKEN_EXAMS.forEach((e, i) => e.length && scan(`spreken ${i + 1}`, e));
+}
+
+
+/**
+ * Luisteren: zes gesprekken, samen 39 fragmenten, elk fragment precies één vraag.
+ *
+ * Twee dingen worden hier gecontroleerd die nergens anders opvallen. De **casting** moet naar
+ * bestaande stemsleutels wijzen en de twee sprekers van één gesprek moeten verschillende
+ * stemmen hebben — `validateCast()` gooit daar later op, maar dan is het gesprek al geschreven.
+ * En de **opties staan alfabetisch**, wat een regel van het examen is en geen opmaak: een
+ * kandidaat mag uit de volgorde niets kunnen afleiden.
+ */
+function checkLuisteren(problems) {
+  const f = FORMAT.luisteren;
+  if (LUISTEREN_EXAMS.length !== EXAM_COUNT) {
+    problems.push(`luisteren: ${LUISTEREN_EXAMS.length} exams, expected ${EXAM_COUNT}`);
+  }
+
+  LUISTEREN_EXAMS.forEach((teksten, ei) => {
+    const where = `luisteren ${ei + 1}`;
+    if (SKIP_EMPTY && teksten.length === 0) return;
+
+    const total = teksten.reduce((a, t) => a + (t.fragments?.length ?? 0), 0);
+    if (total !== f.itemCount) problems.push(`${where}: ${total} vragen, expected ${f.itemCount}`);
+    if (teksten.length !== f.textCount) {
+      problems.push(`${where}: ${teksten.length} gesprekken, expected ${f.textCount}`);
+    }
+
+    const seenTitles = new Set();
+    teksten.forEach((t, ti) => {
+      const at = `${where} · gesprek ${ti + 1} (${t.title ?? 'zonder titel'})`;
+      if (!t.title) problems.push(`${at}: geen titel`);
+      if (seenTitles.has(t.title)) problems.push(`${at}: dubbele titel binnen het examen`);
+      seenTitles.add(t.title);
+
+      if (!t.section) problems.push(`${at}: geen section slug`);
+      else if (!LUISTEREN_SECTION_SLUGS.includes(t.section)) {
+        problems.push(`${at}: onbekende section slug "${t.section}"`);
+      }
+      if (!t.intro) problems.push(`${at}: geen intro — DUO zegt altijd wie er praten`);
+      if (!t.opening) problems.push(`${at}: geen opening — het begin zonder vraag ontbreekt`);
+
+      const cast = t.cast ?? {};
+      for (const rol of ['A', 'B']) {
+        if (!cast[rol]) problems.push(`${at}: spreker ${rol} heeft geen stem`);
+        else if (!(cast[rol] in VOICES)) {
+          problems.push(`${at}: onbekende stem "${cast[rol]}" voor spreker ${rol}`);
+        }
+      }
+      if (cast.A && cast.A === cast.B) {
+        problems.push(`${at}: beide sprekers hebben stem "${cast.A}"`);
+      }
+      // De verteller leest het scenario van álle zes gesprekken voor. Speelt ze óók een
+      // personage, dan is ze in dat gesprek niet meer de derde stem die DUO's introtrack heeft.
+      for (const rol of ['A', 'B']) {
+        if (cast[rol] && VOICES[cast[rol]]?.role === 'narrator') {
+          problems.push(`${at}: "${cast[rol]}" is de verteller en speelt geen personage`);
+        }
+      }
+
+      const fr = t.fragments ?? [];
+      const [fLo, fHi] = f.fragmentsPerText;
+      if (fr.length < fLo || fr.length > fHi) {
+        problems.push(`${at}: ${fr.length} fragmenten, de regel is ${fLo}–${fHi}`);
+      }
+
+      fr.forEach((x, xi) => {
+        const fat = `${at} · fragment ${xi + 1}`;
+        const w = (x.script ?? '').replace(/(^|\n)\s*[AB]\s*:/g, ' ').trim().split(/\s+/).filter(Boolean).length;
+        const [wLo, wHi] = f.words;
+        if (w < wLo || w > wHi) problems.push(`${fat}: ${w} woorden — de regel is ${wLo}–${wHi}`);
+        if (!x.prompt) problems.push(`${fat}: geen vraag`);
+
+        const o = x.options ?? [];
+        const [oLo, oHi] = f.options;
+        if (o.length < oLo || o.length > oHi) {
+          problems.push(`${fat}: ${o.length} opties, de regel is ${oLo}`);
+        }
+        const sorted = [...o].sort((a, b) => a.localeCompare(b, 'nl'));
+        if (o.some((y, k) => y !== sorted[k])) {
+          problems.push(`${fat}: de opties staan niet alfabetisch — DUO ordent ze zo`);
+        }
+        if (typeof x.correct !== 'number' || x.correct < 0 || x.correct >= o.length) {
+          problems.push(`${fat}: correct=${x.correct} valt buiten de opties`);
+        }
+        if (!x.explanation) problems.push(`${fat}: geen uitleg`);
+      });
+    });
+  });
 }
 
 export function validateDataset(skills = SKILLS, { partial = false } = {}) {
@@ -318,6 +411,7 @@ export function validateDataset(skills = SKILLS, { partial = false } = {}) {
   SKIP_EMPTY = partial;
   const problems = [];
   if (skills.includes('lezen')) checkLezen(problems);
+  if (skills.includes('luisteren')) checkLuisteren(problems);
   if (skills.includes('schrijven')) checkSchrijven(problems);
   if (skills.includes('spreken')) checkSpreken(problems);
   checkSlotKeys(problems);

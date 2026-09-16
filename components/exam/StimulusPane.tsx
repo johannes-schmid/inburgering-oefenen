@@ -19,9 +19,17 @@ import type { StimulusItem } from '@/lib/exam-content';
  *     and the owner's decision (2026-08-07) is to match it. This deliberately reverses the
  *     earlier behaviour, where playback continued across the questions of one fragment.
  *
- * Replay stays unlimited either way; see `AudioPlayer`.
+ * `examenAudio` geeft die remount zijn tweede helft: 25 seconden leestijd, dan start het fragment
+ * vanzelf en je hoort het één keer. Zie de kop van `AudioPlayer` voor waarom dat de eerdere
+ * "replay is unlimited" omkeert.
  */
-function StimulusPane({ stimulus }: { stimulus: StimulusItem }) {
+function StimulusPane({
+  stimulus,
+  examenAudio,
+}: {
+  stimulus: StimulusItem;
+  examenAudio?: { readSeconds: number };
+}) {
   const s = stimulus;
 
   return (
@@ -32,7 +40,7 @@ function StimulusPane({ stimulus }: { stimulus: StimulusItem }) {
 
       {s.kind === 'audio' && s.audio_url && (
         <>
-          <AudioPlayer src={s.audio_url} label="Fragment" />
+          <AudioPlayer src={s.audio_url} label="Fragment" examenAudio={examenAudio} />
           {s.image_url && <StimulusImage src={s.image_url} alt={s.image_alt} />}
         </>
       )}
@@ -84,7 +92,12 @@ function StimulusImage({ src, alt }: { src: string; alt: string | null }) {
   );
 }
 
-export default memo(StimulusPane, (prev, next) => prev.stimulus.id === next.stimulus.id);
+export default memo(
+  StimulusPane,
+  (prev, next) =>
+    prev.stimulus.id === next.stimulus.id &&
+    prev.examenAudio?.readSeconds === next.examenAudio?.readSeconds
+);
 
 /**
  * The same pane, without the id-only memo.

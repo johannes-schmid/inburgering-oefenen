@@ -485,3 +485,181 @@ export const SPREKEN_PLAN = [
     ['choose', 'adviseer welke van twee kantines gezonder eten aanbiedt'],
     ['none', 'vertel wat jij over vijf jaar wilt doen']]],
 ];
+
+/* ── Luisteren ───────────────────────────────────────────────────────────── */
+
+/**
+ * Zes teksten per examen, in een vaste volgorde van tekstsoort.
+ *
+ * Een "tekst" is bij Luisteren geen tekst maar **één heel gesprek tussen twee mensen**, dat in
+ * losse fragmenten wordt geknipt; elk fragment draagt precies één vraag. Dat is de vorm die
+ * DUO gebruikt en het is wat B1 van A2 onderscheidt: bij A2 staat elk fragment op zichzelf,
+ * bij B1 loopt één gesprek door zes tot negen vragen heen en moet de kandidaat de draad
+ * vasthouden.
+ *
+ * `intro` is de regel die DUO boven elke tekst afdrukt én inspreekt ("U gaat luisteren naar een
+ * gesprek met…"). Hij wordt per slot geschreven, want hij vertelt de kandidaat wie er praten —
+ * zonder die namen is een vraag over "de vrouw" niet te beantwoorden.
+ *
+ * De verdeling over de vier tekstsoorten is 3 informatief, 1 beschouwend, 1 persuasief,
+ * 1 instructief. Informatief is oververtegenwoordigd omdat het beroepsportret — iemand die
+ * over zijn werk of opleiding vertelt — DUO's meest gebruikte vorm is.
+ */
+export const LUISTEREN_GENRES = [
+  { section: 'informatief',  genre: 'een interview waarin iemand vertelt hoe zijn of haar werk eruitziet' },
+  { section: 'beschouwend',  genre: 'een gesprek waarin iemand terugkijkt en afweegt hoe iets is gelopen' },
+  { section: 'informatief',  genre: 'een gesprek waarin iemand uitlegt hoe een dienst of regeling werkt' },
+  { section: 'persuasief',   genre: 'een gesprek waarin iemand de ander van een keuze probeert te overtuigen' },
+  { section: 'instructief',  genre: 'een gesprek waarin iemand stap voor stap uitlegt hoe je iets aanpakt' },
+  { section: 'informatief',  genre: 'een interview over een opleiding, een stage of een overstap naar ander werk' },
+];
+
+/**
+ * Tien examens × zes gesprekken. Elke regel is het onderwerp van één gesprek, in het slot
+ * waarvan het de tekstsoort draagt. Zelfde bron als `LEZEN_TOPICS`: de Wi2021-domeinen van het
+ * volwassen leven — werk, opleiding, zorg, wonen, geld en meedoen — en niets ervan komt uit
+ * DUO's boekjes.
+ */
+export const LUISTEREN_TOPICS = [
+  // examen 1
+  ['een wijkverpleegkundige over een werkdag die nooit loopt zoals hij gepland is',
+   'een monteur die na twintig jaar overstapte op elektrische auto’s en terugkijkt',
+   'een medewerker van het UWV legt uit hoe een WW-aanvraag stap voor stap verloopt',
+   'een fietsenwinkel probeert klanten aan een onderhoudsabonnement te helpen',
+   'een kok legt uit hoe je een keuken inricht zodat je veilig en snel werkt',
+   'een onderwijsassistente over haar opleiding naast haar baan'],
+  // examen 2
+  ['een buschauffeuse over de nachtdienst en wat dat met je ritme doet',
+   'een ondernemer kijkt terug op het eerste jaar van zijn eigen zaak',
+   'een woningcorporatie legt uit hoe de wachtlijst voor een sociale huurwoning werkt',
+   'een sportschool probeert een twijfelende klant aan een proefperiode te helpen',
+   'een tuinman legt uit hoe je een kleine achtertuin onderhoudt door het jaar heen',
+   'een verzorgende IG over de overstap van de horeca naar de zorg'],
+  // examen 3
+  ['een apothekersassistent over wat er allemaal achter de balie gebeurt',
+   'een leidinggevende kijkt terug op een reorganisatie op zijn afdeling',
+   'een medewerker van de gemeente legt uit hoe je bijzondere bijstand aanvraagt',
+   'een energiecoach probeert een bewoner tot isoleren te bewegen',
+   'een fietsenmaker legt uit hoe je zelf een band plakt en wat je nodig hebt',
+   'een installateur over een leerbaan: vier dagen werken, één dag school'],
+  // examen 4
+  ['een conducteur over de drukste uren en de gesprekken die hij voert',
+   'een docent kijkt terug op twee jaar lesgeven aan volwassenen',
+   'een medewerker van de bibliotheek legt uit wat een lidmaatschap allemaal geeft',
+   'een makelaar probeert een huurder aan het idee van kopen te laten wennen',
+   'een schilder legt uit hoe je een kamer voorbereidt voordat je verft',
+   'een laborant over het hbo-traject dat zij deeltijd volgde'],
+  // examen 5
+  ['een pakketbezorger over de route, de tijdsdruk en de klanten',
+   'een vrijwilliger kijkt terug op tien jaar werk bij de voedselbank',
+   'een medewerker van de belastingdienst legt uit wat huurtoeslag is en wie het krijgt',
+   'een buurtinitiatief probeert bewoners aan een gezamenlijke moestuin te helpen',
+   'een kapper legt uit hoe je thuis je haar verzorgt tussen afspraken door',
+   'een beveiliger over het diploma dat je nodig hebt en hoe je het haalt'],
+  // examen 6
+  ['een doktersassistente over de telefoon, de triage en de drukke ochtenden',
+   'een teamleider kijkt terug op de overstap naar thuiswerken',
+   'een medewerker van DigiD legt uit hoe je veilig inlogt bij de overheid',
+   'een kringloopwinkel probeert klanten tot tweedehands kopen te overtuigen',
+   'een elektricien legt uit hoe je een stekkerdoos veilig gebruikt',
+   'een pedagogisch medewerker over de bbl-opleiding in de kinderopvang'],
+  // examen 7
+  ['een heftruckchauffeur over het magazijn, de piekweken en de veiligheid',
+   'een ouder kijkt terug op de zoektocht naar kinderopvang',
+   'een medewerker van het CJG legt uit welke hulp er voor gezinnen is',
+   'een werkgever probeert een medewerker aan een cursus Nederlands te helpen',
+   'een naaister legt uit hoe je een broek zelf korter maakt',
+   'een schoonmaker over de stap naar teamleider en de cursus die daarbij hoorde'],
+  // examen 8
+  ['een gastvrouw in een verzorgingshuis over haar dag en de bewoners',
+   'een sporter kijkt terug op een blessure en de weg terug',
+   'een medewerker van de ANWB legt uit wat je doet bij pech onderweg',
+   'een gemeente probeert bewoners tot afval scheiden te bewegen',
+   'een imker legt uit hoe je begint met bijen houden in een stadstuin',
+   'een ict-medewerker over een zij-instroomtraject van acht maanden'],
+  // examen 9
+  ['een marktkoopman over de opbouw, het weer en het vaste klantenbestand',
+   'een mantelzorger kijkt terug op het jaar waarin haar moeder ziek werd',
+   'een medewerker van het waterschap legt uit waar de waterschapsbelasting heen gaat',
+   'een fysiotherapeut probeert een patiënt aan dagelijkse oefeningen te krijgen',
+   'een bakker legt uit hoe je thuis brood bakt met weinig gereedschap',
+   'een verkeersregelaar over de cursus en de dagen dat hij wordt ingezet'],
+  // examen 10
+  ['een dierenartsassistente over spoedgevallen en gesprekken met baasjes',
+   'een student kijkt terug op een studie die hij halverwege heeft omgegooid',
+   'een medewerker van de woonbond legt uit wat je rechten zijn als huurder',
+   'een vervoerbedrijf probeert reizigers aan de ov-chipkaart-app te helpen',
+   'een hovenier legt uit hoe je een tuin winterklaar maakt',
+   'een administratief medewerker over een certificaat dat zij in avonduren haalde'],
+];
+
+/**
+ * Hoeveel vragen elk van de zes gesprekken draagt. Elke regel telt op tot 39 en elke waarde
+ * valt binnen `FORMAT.luisteren.fragmentsPerText` (5–9).
+ *
+ * Net als bij `LEZEN_SPLITS` verschillen de regels expres: DUO's boekjes van 2024 en 2025
+ * splitsten 6,9,6,8,9 en 5,7,9,6,6,6, dus een vaste verdeling zou een patroon zijn dat het
+ * echte examen niet heeft.
+ */
+export const LUISTEREN_SPLITS = [
+  [7, 6, 7, 6, 7, 6],
+  [6, 7, 5, 7, 6, 8],
+  [8, 6, 6, 5, 7, 7],
+  [5, 7, 7, 6, 8, 6],
+  [7, 5, 6, 8, 6, 7],
+  [6, 8, 7, 5, 6, 7],
+  [7, 7, 6, 6, 5, 8],
+  [6, 6, 8, 7, 7, 5],
+  [8, 7, 5, 6, 7, 6],
+  [5, 6, 7, 7, 8, 6],
+];
+
+/**
+ * Welke twee stemmen elk gesprek spreken — spreker A en spreker B, als sleutels uit
+ * `data/tts-voices.json`.
+ *
+ * **Waarom dit in het plan staat en niet in de generator.** DUO zet dertien stemmen in per
+ * examen en hergebruikt geen enkele spreker tussen de teksten (geteld op 2025: zes losse
+ * Cito-opnames). Wij hebben er acht, dus hergebruik is onvermijdelijk — maar het mag niet
+ * toevallig zijn. Deze tabel zorgt voor drie dingen, bewaakt door `checkLuisteren`:
+ *
+ *   1. binnen één examen is elk paar anders, dus geen twee gesprekken klinken hetzelfde;
+ *   2. geen stem staat in twee gesprekken die op elkaar volgen;
+ *   3. één of twee van de zes paren zijn twee mannen of twee vrouwen, zoals bij DUO —
+ *      een examen waarin elk gesprek man-vrouw is, is te makkelijk uit elkaar te houden.
+ *
+ * Wie van de twee de interviewer is, bepaalt de generator niet: `LUISTEREN_GENRES` zegt het en
+ * de gegenereerde `intro` noemt de namen.
+ */
+export const LUISTEREN_CAST = [
+  // examen 1
+  [['man_eric', 'man_young'], ['woman_roos', 'man_older'], ['woman_noa', 'woman_older'],
+   ['man_richard', 'woman_young'], ['woman_roos', 'man_eric'], ['man_young', 'woman_noa']],
+  // examen 2
+  [['woman_young', 'man_older'], ['man_eric', 'woman_noa'], ['man_richard', 'man_young'],
+   ['woman_older', 'man_eric'], ['woman_roos', 'woman_noa'], ['woman_older', 'man_richard']],
+  // examen 3
+  [['woman_noa', 'man_richard'], ['woman_older', 'woman_roos'], ['man_young', 'man_eric'],
+   ['woman_noa', 'man_older'], ['man_richard', 'woman_young'], ['woman_roos', 'man_young']],
+  // examen 4
+  [['man_older', 'woman_roos'], ['woman_young', 'man_eric'], ['man_richard', 'woman_noa'],
+   ['woman_older', 'man_young'], ['man_eric', 'man_older'], ['woman_roos', 'woman_young']],
+  // examen 5
+  [['woman_older', 'man_eric'], ['man_young', 'woman_roos'], ['woman_noa', 'man_richard'],
+   ['woman_older', 'woman_roos'], ['woman_young', 'man_young'], ['man_eric', 'woman_noa']],
+  // examen 6
+  [['man_young', 'woman_noa'], ['woman_roos', 'man_richard'], ['man_older', 'woman_young'],
+   ['woman_noa', 'woman_roos'], ['man_eric', 'man_richard'], ['woman_older', 'man_older']],
+  // examen 7
+  [['woman_roos', 'man_older'], ['man_eric', 'woman_older'], ['woman_young', 'man_young'],
+   ['man_richard', 'woman_noa'], ['woman_older', 'woman_young'], ['man_older', 'man_eric']],
+  // examen 8
+  [['man_richard', 'woman_young'], ['woman_noa', 'man_older'], ['man_eric', 'woman_roos'],
+   ['woman_older', 'man_richard'], ['man_young', 'man_older'], ['woman_roos', 'woman_noa']],
+  // examen 9
+  [['woman_noa', 'man_young'], ['man_older', 'woman_roos'], ['woman_older', 'man_eric'],
+   ['man_richard', 'man_young'], ['woman_roos', 'woman_older'], ['man_eric', 'woman_young']],
+  // examen 10
+  [['man_older', 'woman_older'], ['woman_young', 'man_richard'], ['man_eric', 'man_young'],
+   ['woman_roos', 'woman_young'], ['man_older', 'woman_noa'], ['man_richard', 'woman_roos']],
+];

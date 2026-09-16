@@ -1,6 +1,13 @@
 {
-  "woman_young": { "id": "g1BnPf5p6fv5zKMcrpTY", "name": "Female Voice 1 — younger woman", "gender": "female", "age": "young" },
-  "woman_older": { "id": "ULmkhRyAInKrnTGbI1tP", "name": "Female Voice 2 — older woman",   "gender": "female", "age": "older" },
-  "man_young":   { "id": "OpT3f686GHWDhFJ6mQc0", "name": "Male Voice 1 — younger man",     "gender": "male",   "age": "young" },
-  "man_older":   { "id": "KrIPnHYMx3oBz9wPeJuW", "name": "Male Voice 2 — older man",       "gender": "male",   "age": "older" }
+  "woman_young":  { "id": "SXBL9NbvTrjsJQYay2kT", "name": "Melanie — jongere vrouw",  "gender": "female", "age": "young" },
+  "woman_older":  { "id": "OlBRrVAItyi00MuGMbna", "name": "Emma — oudere vrouw",      "gender": "female", "age": "older" },
+  "man_young":    { "id": "vojvEumHZHcjlpEPNZKW", "name": "Jan — jongere man",        "gender": "male",   "age": "young" },
+  "man_older":    { "id": "0qLmDzgqulxcvv0yf3kg", "name": "Remko — oudere man",       "gender": "male",   "age": "older" },
+
+  "woman_roos":   { "id": "7qdUFMklKPaaAVMsBTBt", "name": "Roos — jongere vrouw",     "gender": "female", "age": "young" },
+  "woman_noa":    { "id": "94W4cf0CMSgymY1uoRiX", "name": "Noa — jongere vrouw",      "gender": "female", "age": "young" },
+  "man_eric":     { "id": "AVIlLDn2TVmdaDycgbo3", "name": "Eric — oudere man",        "gender": "male",   "age": "older" },
+  "man_richard":  { "id": "eQIVHCAcQuAFeJps0K5l", "name": "Richard — oudere man",     "gender": "male",   "age": "older" },
+
+  "narrator":     { "id": "ULmkhRyAInKrnTGbI1tP", "name": "De verteller",              "gender": "female", "age": "older", "role": "narrator" }
 }

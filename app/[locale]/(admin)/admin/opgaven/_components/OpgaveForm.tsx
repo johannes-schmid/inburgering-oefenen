@@ -8,7 +8,7 @@ import {
   Plus, Save, Trash2, TriangleAlert, Volume2,
 } from 'lucide-react';
 import { createClient } from '@/lib/supabase/client';
-import { NARRATOR, VOICES, type VoiceKey } from '@/lib/tts-voices';
+import { NARRATOR, VOICES, castableVoices, type VoiceKey } from '@/lib/tts-voices';
 import { categoryLabel, rubricCategory } from '@/lib/rubrics';
 import { levelLabel, type Level } from '@/data/skills';
 import type { ExamChoice, OpgaveNav, PartChoice, RubricChoice, SectionChoice } from '@/lib/admin/open-tasks';
@@ -626,7 +626,7 @@ export default function OpgaveForm({
             hint="De stem moet passen bij de persoon op het plaatje — een vrouw krijgt een vrouwenstem."
           >
             <div className="grid gap-2 sm:grid-cols-2">
-              {(Object.keys(VOICES) as VoiceKey[]).map(key => {
+              {castableVoices().map(key => {
                 const selected = (form.prompt_voice ?? NARRATOR) === key;
                 return (
                   <div

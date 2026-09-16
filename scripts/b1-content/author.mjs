@@ -160,7 +160,7 @@ export function createAuthor({ apiKey, gatewayKey, effort = 'high', verbose = tr
    * One structured call. Streamed, because a six-hundred-word tekst with 35 vragen behind it
    * runs long enough to hit the SDK's non-streaming HTTP timeout.
    */
-  async function ask({ system, prompt, schema, maxTokens = 16000 }) {
+  async function ask({ system, prompt, schema, maxTokens = 16000, thinking = { type: 'adaptive' } }) {
     // Twee manieren om een schema af te dwingen, en welke het is hangt af van de route.
     //
     // De directe Anthropic-API neemt `output_config.format` — het nieuwste en strakste
@@ -178,7 +178,7 @@ export function createAuthor({ apiKey, gatewayKey, effort = 'high', verbose = tr
     const request = {
       model,
       max_tokens: maxTokens,
-      thinking: { type: 'adaptive' },
+      thinking,
       system,
       messages: [{ role: 'user', content: prompt }],
     };
@@ -231,7 +231,7 @@ export function createAuthor({ apiKey, gatewayKey, effort = 'high', verbose = tr
    * de regel is 3 of 4" is a fixable instruction, and an unqualified retry mostly reproduces
    * the same mistake at the same cost.
    */
-  async function askValidated({ key, system, prompt, schema, validate, maxTokens }) {
+  async function askValidated({ key, system, prompt, schema, validate, maxTokens, thinking }) {
     const cachePath = path.join(cacheDir, `${key}.json`);
     if (fs.existsSync(cachePath)) {
       const cached = JSON.parse(fs.readFileSync(cachePath, 'utf8'));
@@ -246,7 +246,7 @@ export function createAuthor({ apiKey, gatewayKey, effort = 'high', verbose = tr
     let extra = '';
     while (attempt < 3) {
       attempt++;
-      const result = await ask({ system, prompt: prompt + extra, schema, maxTokens });
+      const result = await ask({ system, prompt: prompt + extra, schema, maxTokens, thinking });
       lastProblems = validate(result);
       if (lastProblems.length === 0) {
         fs.writeFileSync(cachePath, `${JSON.stringify(result, null, 2)}\n`);
@@ -949,6 +949,239 @@ Een opgave met te weinig image_queries wordt afgekeurd, ook als de tekst goed is
             variant: k,
           })),
         };
+      }),
+    }),
+  };
+}
+
+/* ── Luisteren: één heel gesprek, geknipt in fragmenten ──────────────────── */
+
+const LUISTEREN_SCHEMA = {
+  type: 'object',
+  additionalProperties: false,
+  required: ['title', 'intro', 'speaker_a', 'speaker_b', 'opening', 'fragments'],
+  properties: {
+    title: { type: 'string', description: 'De titel van het gesprek. Geen aanhalingstekens.' },
+    intro: {
+      type: 'string',
+      description:
+        'Wat DUO boven de tekst afdrukt én inspreekt. Begint met "U gaat luisteren naar" en ' +
+        'noemt de namen van beide sprekers en wat ze doen. Twee of drie zinnen.',
+    },
+    speaker_a: { type: 'string', description: 'De naam van spreker A, precies zoals in de intro.' },
+    speaker_b: { type: 'string', description: 'De naam van spreker B, precies zoals in de intro.' },
+    opening: {
+      type: 'string',
+      description:
+        'Het begin van het gesprek, waar nog geen vraag bij hoort: de begroeting en de eerste ' +
+        'twee of drie beurten. Zelfde "A: … B: …"-vorm als een fragment.',
+    },
+    fragments: {
+      type: 'array',
+      items: {
+        type: 'object',
+        additionalProperties: false,
+        required: ['script', 'prompt', 'options', 'correct', 'explanation'],
+        properties: {
+          script: {
+            type: 'string',
+            description: 'Het fragment, als regels "A: …" en "B: …", beurt om beurt.',
+          },
+          prompt: { type: 'string' },
+          options: { type: 'array', items: { type: 'string' } },
+          correct: { type: 'integer', description: 'De index in options: 0 = A, 1 = B, 2 = C.' },
+          explanation: { type: 'string' },
+        },
+      },
+    },
+  },
+};
+
+/** De woorden die daadwerkelijk worden ingesproken — de sprekerlabels tellen niet mee. */
+function spokenWords(script) {
+  return (script ?? '')
+    .replace(/(^|\n)\s*[AB]\s*:/g, ' ')
+    .trim()
+    .split(/\s+/)
+    .filter(Boolean).length;
+}
+
+/**
+ * Eén gesprek met zijn vragen.
+ *
+ * ## Waarom één call per gesprek en niet één per vraag
+ * Dit is precies andersom dan bij Lezen, en met opzet. Bij Lezen is elke tekst zelfstandig, dus
+ * zes calls geven zes onafhankelijke teksten. Bij Luisteren is het hele punt dat de zes tot
+ * negen fragmenten **één doorlopend gesprek** zijn: dezelfde twee mensen, één verhaallijn, en
+ * een antwoord in fragment 6 dat leunt op wat in fragment 2 is gezegd. Dat laat zich niet per
+ * fragment bestellen — losse calls leveren zeven losse gesprekjes met dezelfde namen erboven,
+ * wat exact de A2-vorm is die B1 juist niet heeft.
+ *
+ * ## De opties staan alfabetisch
+ * DUO ordent de drie opties alfabetisch, niet op inhoud. Dat is geen opmaak maar een regel van
+ * het examen: de kandidaat mag uit de volgorde niets kunnen afleiden. Het model krijgt die eis
+ * wél te horen, maar `finish` sorteert alsnog en verplaatst `correct` mee — een model dat de
+ * regel in negen van de tien gevallen volgt, levert anders één examen met een stille afwijking.
+ */
+export function luisterenUnit({ examNumber, slot, genre, section, topic, cast, fragmentCount }) {
+  const f = FORMAT.luisteren;
+  const [lo, hi] = f.words;
+  const [secLo, secHi] = f.seconds;
+  const key = `luisteren-${String(examNumber).padStart(2, '0')}-t${slot + 1}`;
+
+  const prompt = `
+Schrijf één luistergesprek met ${fragmentCount} meerkeuzevragen voor oefenexamen ${examNumber}
+van het onderdeel Luisteren, niveau B1.
+
+TEKSTSOORT: ${genre}
+ONDERWERP: ${topic}
+
+Het gesprek
+- Twee sprekers, A en B, die het hele gesprek dezelfde twee mensen blijven. Geef ze allebei een
+  Nederlandse naam en zet die in 'speaker_a' en 'speaker_b'.
+- Het is één doorlopend gesprek, geen ${fragmentCount} losse gesprekjes. De vragen komen in de
+  volgorde waarin het gesprek verloopt, en later in het gesprek mag worden teruggegrepen op wat
+  eerder is gezegd.
+- 'opening' is het begin: de begroeting en de eerste twee of drie beurten. Hier hoort géén vraag
+  bij — DUO laat de kandidaat eerst even wennen aan de stemmen.
+- Daarna ${fragmentCount} fragmenten. Elk fragment is ${lo + 20} tot ${hi - 40} woorden, wat bij
+  ons spreektempo ongeveer ${secLo + 5} tot ${secHi - 15} seconden audio is.
+- Elk fragment heeft minstens drie beurten en beide sprekers komen erin aan het woord.
+- Schrijf elke beurt als een eigen regel die met "A: " of "B: " begint. Gebruik geen andere
+  labels en geen namen als label.
+- Dit is gesproken Nederlands, geen voorgelezen artikel: aarzelingen ("nou", "ja, kijk"),
+  halve zinnen, de ander die instemt of doorvraagt. Maar wel verzorgd — geen dialect, geen
+  krachttermen, geen door elkaar heen praten.
+- Geen opsommingen die alleen op papier werken. Wat gezegd wordt, moet te volgen zijn met
+  alleen je oren.
+- Er zit echte inhoud in: bedragen, termijnen, voorwaarden, een uitzondering, een tegenwerping,
+  iets wat tegenviel. Uit een gesprek zonder inhoud zijn geen ${fragmentCount} vragen te maken.
+
+De vragen
+- Precies één vraag per fragment, dus ${fragmentCount} vragen, en de vraag gaat alleen over
+  het fragment waar hij bij staat.
+- De vraag wordt NIET ingesproken. Hij staat gedrukt. Schrijf hem dus niet in het script.
+- Precies drie opties. Zet ze ALFABETISCH: vergelijk de opties als tekst en zet ze op
+  alfabetische volgorde, ongeacht welke de goede is. Zo doet DUO het ook.
+- 'correct' is de index in 'options' ná die alfabetische ordening, dus 0 = A.
+- Varieer de vraagtypen. Gebruik meerdere van deze:
+  · wat iemand over een onderwerp zegt
+  · waarom iemand iets doet of gedaan heeft
+  · wat iemand van iets vindt, of hoe hij erover denkt
+  · een detail dat je moet onthouden (een bedrag, een termijn, een aantal)
+  · wat iemand met een opmerking bedoelt
+  · waar de ander het gesprek naartoe stuurt
+- Elke vraag is te beantwoorden uit het fragment alleen. Geen wereldkennis, geen mening.
+- De foute opties zijn plausibel: ze gaan over iets wat wél in het fragment voorkomt maar
+  antwoorden niet op de vraag, of ze zeggen het net te sterk of net te algemeen.
+- Geen enkele optie is letterlijk een zin uit het gesprek.
+- Alle opties van één vraag zijn ongeveer even lang. Het goede antwoord is niet de langste.
+- Spreid het goede antwoord over A, B en C. Niet steeds dezelfde plek.
+- De uitleg is één of twee zinnen, in het Nederlands, en zegt wat er in het fragment gezegd
+  wordt waardoor het antwoord goed is. Hij legt ook uit waarom de aantrekkelijkste foute optie
+  fout is.
+`.trim();
+
+  function validate(u) {
+    const p = [];
+    if (!u.title?.trim()) p.push('title ontbreekt');
+    if (!u.intro?.trim()) p.push('intro ontbreekt');
+    else if (!/^U gaat luisteren naar/i.test(u.intro)) {
+      p.push('intro moet met "U gaat luisteren naar" beginnen');
+    }
+    if (!u.speaker_a?.trim()) p.push('speaker_a ontbreekt');
+    if (!u.speaker_b?.trim()) p.push('speaker_b ontbreekt');
+    if (u.speaker_a && u.speaker_a === u.speaker_b) p.push('beide sprekers heten hetzelfde');
+    for (const naam of [u.speaker_a, u.speaker_b]) {
+      if (naam && u.intro && !u.intro.includes(naam)) {
+        p.push(`de intro noemt "${naam}" niet, terwijl de vragen die naam gebruiken`);
+      }
+    }
+
+    const checkScript = (label, script) => {
+      const lines = (script ?? '').split('\n').map(l => l.trim()).filter(Boolean);
+      if (lines.length < 3) p.push(`${label}: ${lines.length} beurten, het moeten er minstens 3 zijn`);
+      const bad = lines.filter(l => !/^[AB]\s*:/.test(l));
+      if (bad.length > 0) p.push(`${label}: regel zonder "A:" of "B:" (${bad[0].slice(0, 40)}…)`);
+      const who = new Set(lines.map(l => l[0]));
+      if (!who.has('A') || !who.has('B')) p.push(`${label}: maar één spreker aan het woord`);
+    };
+
+    checkScript('opening', u.opening);
+    const n = spokenWords(u.opening ?? '');
+    if (n > 90) p.push(`opening: ${n} woorden — het begin is kort, hoogstens 90`);
+
+    const fr = u.fragments ?? [];
+    if (fr.length !== fragmentCount) {
+      p.push(`er zijn ${fr.length} fragmenten, het moeten er ${fragmentCount} zijn`);
+    }
+    fr.forEach((x, i) => {
+      const at = `fragment ${i + 1}`;
+      checkScript(at, x.script);
+      const w = spokenWords(x.script ?? '');
+      if (w < lo || w > hi) p.push(`${at}: ${w} woorden, het moet ${lo}–${hi} zijn`);
+      if (!x.prompt?.trim()) p.push(`${at}: geen vraag`);
+      if (/\bA\s*:|\bB\s*:/.test(x.prompt ?? '')) p.push(`${at}: de vraag hoort niet in het script`);
+      if (!x.explanation?.trim()) p.push(`${at}: geen uitleg`);
+      const o = x.options ?? [];
+      if (o.length !== 3) p.push(`${at}: ${o.length} opties, het moeten er 3 zijn`);
+      if (new Set(o).size !== o.length) p.push(`${at}: twee opties zijn hetzelfde`);
+      if (o.some(y => !y?.trim())) p.push(`${at}: een lege optie`);
+      if (typeof x.correct !== 'number' || x.correct < 0 || x.correct >= o.length) {
+        p.push(`${at}: correct=${x.correct} valt buiten de opties`);
+      }
+    });
+
+    const counts = {};
+    for (const x of fr) counts[x.correct] = (counts[x.correct] ?? 0) + 1;
+    const worst = Math.max(0, ...Object.values(counts));
+    if (fr.length >= 4 && worst > Math.ceil(fr.length * 0.6)) {
+      p.push(`${worst} van de ${fr.length} goede antwoorden staan op dezelfde plek — spreid ze`);
+    }
+    return p;
+  }
+
+  return {
+    key,
+    system: B1_REGISTER,
+    prompt,
+    schema: LUISTEREN_SCHEMA,
+    validate,
+    maxTokens: 24000,
+    /**
+     * Geen extended thinking, en dit is de enige unit die dat uitzet.
+     *
+     * Met `thinking: adaptive` loopt deze prompt vast op de directe Anthropic-API: de stream
+     * opent een `thinking`-blok en stuurt daarna niets meer. Geen foutmelding, geen time-out —
+     * ook de SDK-time-out gaat niet af, want de verbinding blijft gewoon open. Vastgesteld op
+     * 16-09 op gesprek 3 van examen 1: vijf pogingen, drie verschillende aanroepvormen
+     * (streaming met `output_config`, niet-streaming met een tool, streaming met een tool), en
+     * met kale `curl` precies hetzelfde beeld — dus het ligt niet aan de SDK. Dezelfde prompt
+     * met `thinking: disabled` liep in één keer door.
+     *
+     * Waarom juist hier: een gesprek is de langste unit die dit bestand kent — zeven fragmenten
+     * van rond de 150 woorden plus zeven vragen in één antwoord. Lezen levert één tekst, en de
+     * andere onderdelen nog minder.
+     *
+     * Het kost niets aan kwaliteit: de regels staan in de prompt en `validate()` keurt af wat
+     * er niet aan voldoet, dus de denkstap voegde hier weinig toe. Zet dit niet terug op
+     * adaptive zonder een lange run over meerdere examens.
+     */
+    thinking: { type: 'disabled' },
+    /**
+     * De vaste feiten uit het plan terugvouwen, en de opties alsnog alfabetisch zetten.
+     * `correct` verhuist mee door eerst het góede antwoord vast te houden en na het sorteren
+     * zijn nieuwe index op te zoeken — niet door de index mee te sorteren, want dan schuift hij
+     * naar het verkeerde antwoord zodra twee opties van plaats wisselen.
+     */
+    finish: u => ({
+      section,
+      cast: { A: cast[0], B: cast[1] },
+      ...u,
+      fragments: (u.fragments ?? []).map(x => {
+        const goed = x.options?.[x.correct];
+        const options = [...(x.options ?? [])].sort((a, b) => a.localeCompare(b, 'nl'));
+        return { ...x, options, correct: Math.max(0, options.indexOf(goed)) };
       }),
     }),
   };

@@ -55,6 +55,13 @@ export type StimulusItem = {
   image_url: string | null;
   image_alt: string | null;
   audio_url: string | null;
+  /**
+   * De ingesproken introductie van een luistertekst, en alleen gevuld op het **eerste**
+   * fragment ervan. Dat is wat de speler gebruikt om een introscherm vóór de vraag te zetten —
+   * er is geen aparte rij per gesprek, zie de migratie `20260916160000_stimuli_intro_audio`.
+   */
+  intro_audio_url: string | null;
+  intro_audio_seconds: number | null;
   questions: QuestionItem[];
 };
 
@@ -155,7 +162,7 @@ const QUESTION_COLS =
   `question_options(${OPTION_COLS})`;
 const STIMULUS_COLS =
   `id, part_id, sort_order, section_id, kind, intro, title, body_html, image_url, ` +
-  `image_alt, audio_url, questions(${QUESTION_COLS})`;
+  `image_alt, audio_url, intro_audio_url, intro_audio_seconds, questions(${QUESTION_COLS})`;
 const TASK_COLS =
   `id, part_id, sort_order, section_id, task_type, title, prompt_html, bullet_points, ` +
   `email_to, email_cc, email_subject, greeting, closing, min_sentences, form_schema, ` +
