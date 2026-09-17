@@ -22,6 +22,8 @@
  * so the six are spread across each exam rather than clustered.
  */
 
+import { spreadAnswers } from './lib.mjs';
+
 /** DUO's fixed left-pane instruction, after the scenario line. */
 const READ_FIRST = 'Lees eerst de vraag. Lees daarna de tekst.';
 const intro = scenario => `${scenario} ${READ_FIRST}`;
@@ -3553,7 +3555,7 @@ const EXAM_10 = [
   },
 ];
 
-export const LEZEN_EXAMS = [
+export const LEZEN_EXAMS = spreadAnswers([
   EXAM_1, EXAM_2, EXAM_3, EXAM_4, EXAM_5,
   EXAM_6, EXAM_7, EXAM_8, EXAM_9, EXAM_10,
-];
+]);

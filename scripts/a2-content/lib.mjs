@@ -346,3 +346,36 @@ export function validateCast(lines, cast) {
   }
   return problems;
 }
+
+/**
+ * Spreid het goede antwoord over de posities A/B/C(/D).
+ *
+ * Bij het schrijven belandde het juiste antwoord vrijwel altijd op positie A — 248 van de 250
+ * Luisteren-vragen. Dat is geen opmaakfoutje: een kandidaat die dat doorheeft oefent niet meer op
+ * luisteren maar op het herkennen van de bovenste optie, en het examengevoel is weg.
+ *
+ * De verschuiving is een **rotatie**, dus een eventuele natuurlijke volgorde (tijden, bedragen)
+ * blijft cyclisch intact, en hij is **deterministisch**: dezelfde vraag levert bij elke run
+ * dezelfde volgorde. Zonder dat zou elke re-seed de opties opnieuw door elkaar gooien en zouden de
+ * antwoorden van eerdere kandidaten naar een andere tekst wijzen.
+ */
+export function spreadAnswers(exams) {
+  return exams.map(stimuli => {
+    // Rondgaand per examen in plaats van willekeurig: een hash spreidt gemiddeld, maar liet in
+    // examen 8 alsnog dertien van de vijfentwintig antwoorden op dezelfde plek belanden. Deze
+    // teller houdt elk afzonderlijk examen gelijkmatig.
+    let seat = 0;
+    return stimuli.map(s => ({
+      ...s,
+      questions: s.questions.map(q => {
+        const n = q.options.length;
+        const target = seat++ % n;
+        const shift = (target - q.correct + n) % n;
+        if (shift === 0) return q;
+        const options = new Array(n);
+        q.options.forEach((opt, i) => { options[(i + shift) % n] = opt; });
+        return { ...q, options, correct: target };
+      }),
+    }));
+  });
+}

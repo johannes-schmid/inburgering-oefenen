@@ -29,6 +29,8 @@
  * instructie.
  */
 
+import { spreadAnswers } from './lib.mjs';
+
 const LISTEN_FIRST = 'Lees eerst de vraag. Luister daarna naar de tekst.';
 const intro = scenario => `${scenario} ${LISTEN_FIRST}`;
 
@@ -4149,7 +4151,7 @@ const EXAM_10 = [
   },
 ];
 
-export const LUISTEREN_EXAMS = [
+export const LUISTEREN_EXAMS = spreadAnswers([
   EXAM_1, EXAM_2, EXAM_3, EXAM_4, EXAM_5,
   EXAM_6, EXAM_7, EXAM_8, EXAM_9, EXAM_10,
-];
+]);

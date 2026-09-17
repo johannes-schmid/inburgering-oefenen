@@ -127,10 +127,28 @@ function checkMcq(skill, exams, problems) {
         if (typeof q.correct !== 'number' || q.correct < 0 || q.correct >= q.options.length) {
           problems.push(`${qat}: correct=${q.correct} is out of range`);
         }
+        // Een optie en een uitleg worden als platte tekst gerenderd; React escapet ze, dus een
+        // HTML-entiteit komt letterlijk in beeld ("&euro; 340"). Alleen body_html mag markup.
+        for (const [field, text] of [['prompt', q.prompt], ['explanation', q.explanation],
+          ...q.options.map((o, k) => [`optie ${k + 1}`, o])]) {
+          if (ENTITY.test(text ?? '')) problems.push(`${qat}: HTML-entiteit in ${field}`);
+        }
       });
     });
+
+    // Een sleutel die altijd A is, is te raden zonder te luisteren. `spreadAnswers()` verdeelt hem;
+    // deze regel bewaakt dat een nieuwe reeks vragen die stap niet overslaat.
+    const counts = {};
+    for (const s of stimuli) for (const q of s.questions) counts[q.correct] = (counts[q.correct] ?? 0) + 1;
+    const worst = Math.max(...Object.values(counts));
+    if (worst > questions * 0.5) {
+      problems.push(`${where}: ${worst} van de ${questions} antwoorden staan op dezelfde plek`);
+    }
   });
 }
+
+/** Een HTML-entiteit in een veld dat als platte tekst wordt gerenderd. */
+const ENTITY = /&[a-zA-Z]+;|&#\d+;/;
 
 function checkSchrijven(problems) {
   if (SCHRIJVEN_EXAMS.length !== EXAM_COUNT) {

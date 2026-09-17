@@ -13,7 +13,7 @@
           "Het is een groep volwassenen met verschillende plannen."
         ],
         "correct": 2,
-        "explanation": "In alinea I staat dat een deel wil doorgroeien bij de eigen werkgever en dat anderen van sector willen wisselen. Optie B noemt maar &eacute;&eacute;n van die twee groepen en is daarom te beperkt."
+        "explanation": "In alinea I staat dat een deel wil doorgroeien bij de eigen werkgever en dat anderen van sector willen wisselen. Optie B noemt maar één van die twee groepen en is daarom te beperkt."
       },
       {
         "prompt": "Meneer Yilmaz werkt in een verpleeghuis en gaat de avondopleiding verzorgende volgen. Wat geldt volgens alinea II voor hem?",
@@ -28,13 +28,13 @@
       {
         "prompt": "Mevrouw De Wit (45) begint aan een opleiding op niveau 2. Hoeveel betaalt zij per jaar aan cursusgeld?",
         "options": [
-          "&euro; 340",
-          "&euro; 620",
-          "&euro; 960",
-          "&euro; 1.400"
+          "€ 340",
+          "€ 620",
+          "€ 960",
+          "€ 1.400"
         ],
         "correct": 1,
-        "explanation": "In alinea III staat dat het cursusgeld voor niveau 2 &euro; 620 per jaar is. Het bedrag van &euro; 1.400 hoort bij niveau 3 en 4, en &euro; 340 zijn de kosten voor boeken en werkkleding."
+        "explanation": "In alinea III staat dat het cursusgeld voor niveau 2 € 620 per jaar is. Het bedrag van € 1.400 hoort bij niveau 3 en 4, en € 340 zijn de kosten voor boeken en werkkleding."
       },
       {
         "prompt": "Iemand heeft vroeger al een jaar van dezelfde opleiding gedaan en wil weten of hij een deel niet hoeft over te doen. In welke alinea vindt hij het antwoord?",

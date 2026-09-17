@@ -1427,8 +1427,12 @@
    what separates one kopje's section from the previous one in a fragment of five or six. */
 .exam-rich * + :is(h1, h2, h3, h4, h5, h6) { margin-top: 1.5rem; }
 .exam-rich :is(h1, h2, h3, h4, h5, h6) + * { margin-top: 0.35rem; }
-/* An empty paragraph is a keystroke in the editor, not a blank line the candidate should see. */
-.exam-rich p:empty { display: none; }
+/* Een lege alinea is de witregel die de docent in /admin heeft getypt, en die hoort de kandidaat
+   te zien — een brief met een witregel voor de aanhef leest anders dan een blok van twintig
+   regels. Ze werd eerder verborgen ("een toetsaanslag, geen witregel"); dat bleek precies andersom
+   te werken: de enters die in de editor stonden kwamen in de speler niet aan. Een lege alinea
+   heeft zelf geen hoogte, dus die wordt hier gezet; de marge van `> * + *` komt er bovenop. */
+.exam-rich p:empty { height: 1em; }
 
 .exam-rich ul { padding-left: 1.35rem; margin: 0; list-style: disc; }
 .exam-rich ol { padding-left: 1.35rem; margin: 0; list-style: decimal; }

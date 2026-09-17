@@ -111,6 +111,12 @@ function checkLezen(problems) {
         if (typeof q.correct !== 'number' || q.correct < 0 || q.correct >= q.options.length) {
           problems.push(`${qat}: correct=${q.correct} is out of range`);
         }
+        // Een optie en een uitleg worden als platte tekst gerenderd; React escapet ze, dus een
+        // HTML-entiteit komt letterlijk in beeld ("&euro; 340"). Alleen body_html mag markup.
+        for (const [field, text] of [['prompt', q.prompt], ['explanation', q.explanation],
+          ...q.options.map((o, k) => [`optie ${k + 1}`, o])]) {
+          if (/&[a-zA-Z]+;|&#\d+;/.test(text ?? '')) problems.push(`${qat}: HTML-entiteit in ${field}`);
+        }
       });
     });
 

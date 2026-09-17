@@ -96,12 +96,12 @@
           "Na de eerste periode moet het bureau u een vast contract aanbieden."
         ],
         "correct": 1,
-        "explanation": "In alinea II staat dat het uitzendbureau in de eerste 52 gewerkte weken het contract per direct mag be&euml;indigen (het uitzendbeding). Optie A is fout, want uw werkgever is het bureau en niet de inlener."
+        "explanation": "In alinea II staat dat het uitzendbureau in de eerste 52 gewerkte weken het contract per direct mag beëindigen (het uitzendbeding). Optie A is fout, want uw werkgever is het bureau en niet de inlener."
       },
       {
         "prompt": "Youssef werkt via een uitzendbureau in een fabriek. Hij hoort dat een vaste medewerker van de fabriek meer per uur verdient voor precies hetzelfde werk. Welk argument kan Youssef gebruiken?",
         "options": [
-          "Het uitzendbureau mag zijn contract niet per direct be&euml;indigen.",
+          "Het uitzendbureau mag zijn contract niet per direct beëindigen.",
           "Na 52 gewerkte weken krijgt hij een contract van de fabriek zelf.",
           "Hij heeft recht op hetzelfde loon als de vaste collega's van de inlener."
         ],
@@ -123,11 +123,11 @@
         "prompt": "Hoe lang mag de proeftijd volgens de tekst maximaal duren bij een contract voor onbepaalde tijd?",
         "options": [
           "Twee maanden.",
-          "E&eacute;n maand.",
+          "Eén maand.",
           "Drie maanden."
         ],
         "correct": 0,
-        "explanation": "In alinea IV staat dat de proeftijd bij een contract voor onbepaalde tijd maximaal twee maanden is. E&eacute;n maand is de opzegtermijn voor de werknemer, dus optie B antwoordt niet op deze vraag."
+        "explanation": "In alinea IV staat dat de proeftijd bij een contract voor onbepaalde tijd maximaal twee maanden is. Eén maand is de opzegtermijn voor de werknemer, dus optie B antwoordt niet op deze vraag."
       },
       {
         "prompt": "Wat betekent \"op de loonlijst van een detacheringsbureau staan\" (alinea III)?",

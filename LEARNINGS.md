@@ -4956,3 +4956,27 @@ en in een Arabische regel zet de bidi-afhandeling dan de punt aan de verkeerde k
 eerst de `relatedPosts`-rij van een ándere post, waardoor het vertaalblok in het verkeerde
 artikel belandde — tsc ving het met TS1117 (dubbele property). Anker op `\n    slug: '...',`
 met de inspringing van het veld zelf.
+
+## 2026-09-17 — Drie productiefouten in de examens: witregels, entiteiten, antwoord altijd A
+**Changed:** `app/globals.css` (`.exam-rich p:empty` toont nu een witregel in plaats van `display:none`);
+`scripts/a2-content/lib.mjs` (`spreadAnswers()`), toegepast in `luisteren.mjs` en `lezen.mjs`;
+entiteit- en spreidingscontrole in `scripts/a2-content/index.mjs` en `scripts/b1-content/index.mjs`;
+`&euro;`/`&eacute;` gedecodeerd in `scripts/b1-content/generated/lezen-0{1,8}.json`;
+nieuw `scripts/fix-exam-options.mjs` om dezelfde twee correcties op bestaande rijen toe te passen.
+**Outcome:** SUCCESS (lokaal; productie is nog niet aangeraakt)
+**What worked / went wrong:**
+- De "enters ontbreken"-melding was géén datafout. De docent typt in /admin een witregel, TipTap
+  slaat `<p></p>` op, en `.exam-rich p:empty { display: none }` gooide die weg. Bewezen door de
+  gepubliceerde HTML van `/nl/oefenen/b1/lezen` te curlen — daar staat letterlijk `<p></p>`. De
+  regel was ooit bedoeld om een losse toetsaanslag te onderdrukken en werkte precies averechts.
+- `&euro; 340` stond in de database: opties en uitleg worden als platte tekst gerenderd, dus React
+  escapet de entiteit. Alleen `body_html` mag markup; de generator zette hem overal neer.
+- Het goede antwoord stond bij Luisteren A2 in 248 van de 250 vragen op A, bij Lezen A2 in 190 van
+  de 250. Een hash-gebaseerde spreiding was niet genoeg (examen 8 hield 13 van de 25 op één plek);
+  een rondgaande teller per examen verdeelt wél gelijkmatig en blijft deterministisch.
+- Lokaal viel niets te repeteren: de lokale stack heeft geen A2 Luisteren en de A2 Lezen-rijen zijn
+  testdata met `sort_order` 900+. Het script telt nu expliciet wat het overslaat in plaats van stil
+  door te lopen — anders leest een no-op als een geslaagde run.
+**Lesson:** een renderregel die "opruimt" wat de auteur intypte, is een bug in vermomming; en een
+reparatiescript op gepubliceerde examens werkt op `question_options.body`, nooit via een re-seed —
+die verwijdert de stimuli en daarmee de antwoorden van kandidaten.
