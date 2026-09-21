@@ -9,9 +9,13 @@ import { DEFAULT_LEVEL, KNM_THEMES, SKILLS, getFormat } from '@/data/skills';
 import JsonLd from '@/components/JsonLd';
 import HeroShowcase from './_components/HeroShowcase';
 import KennisbankCards, { type KennisbankCard } from './_components/KennisbankCards';
+import FeatureCarousel from './_components/FeatureCarousel';
 import { publishedGuides, getGuideLocale, guideHref } from '@/data/guides/helpers';
 import { getPostBySlug, getPostLocale, getPostSlug } from '@/data/blog-posts';
-import { HorizonBand, DotField, Skyline, SectionTransition, ExamMark } from '@/components/horizon';
+import TrustpilotScore from '@/components/site/TrustpilotScore';
+import { HorizonBand, DotField, Skyline, SectionTransition, ExamMark, GlassChip, AvatarCluster, HERO_GRADIENT } from '@/components/horizon';
+import { Link } from '@/i18n/navigation';
+import { ArrowUpRight } from 'lucide-react';
 import { courseId, TEACHER_REF, ogImageFor } from '@/lib/schema';
 import { localeHref, localizedPath } from '@/i18n/paths';
 
@@ -279,109 +283,249 @@ export default async function HomePage({ params }: Props) {
     ...postCards,
   ];
 
+  /* De quotes van echte cursisten. **Leeg tot de eigenaar ze aanlevert** — een quote hier is een
+     uitspraak van een bestaand persoon, dus hij wordt geplakt, niet geschreven (§2: nooit
+     verzonnen social proof). Vorm: { text, author }, met de auteur als voornaam of als soort
+     cursist, nooit een verzonnen volledige naam. De rij rendert niet zolang dit leeg is. */
+  const QUOTES: { text: string; author: string }[] = [];
+
   const faqs = [1, 2, 3, 4, 5, 6].map(n => ({ q: `faq_q${n}`, a: `faq_a${n}`, link: n === 1 }));
 
   return (
     <div className="dot-page">
       <JsonLd data={jsonLd} />
 
-      {/* ── HERO — centred, on a light surface ──
-          Rebuilt to the owner's mockup, 2026-08-22. This replaces the split navy hero (copy left,
-          graphic panel right) that replaced the photograph, and the reason is positioning rather
-          than taste: the split panel could hold one product card comfortably, and the claim this
-          page now has to make is that **the whole traject is here** — A2, B1, KNM, ONA. A centred
-          headline over a collage of six surfaces says "all of it in one place" in one glance; a
-          two-column hero says "here is one thing".
+      {/* ── HERO — volvlaks horizonscène, onder de zwevende kop door ──
+          Herbouwd 21-09 naar het voorbeeld van clay.com, dat de eigenaar als richting koos. Drie
+          dingen zijn overgenomen en één bewust niet.
 
-          Light, not navy, and that is what the collage buys. Six white cards need a surface to sit
-          on; over `primary` they become the whole composition and the graphic language disappears
-          under them. The dot field, the street and the closing band still carry it. */}
+          **Overgenomen (1): de scène loopt van de bovenrand af.** De `-mt-[var(--nav-h)]` stond er
+          al, maar de sectie was licht, dus je zág de pil niet zweven — hij hing boven een strook
+          van dezelfde kleur als de pagina. Op navy is het verschil er wel, en dát is wat de
+          zwevende kop van 21-09 nodig had om te werken. Verander je dit terug naar een lichte
+          hero, dan verliest `components/Nav.tsx` zijn achtergrond.
+
+          **Overgenomen (2): de kunst bóven de kop.** Clay zet het toneel op de heuvels en de tekst
+          eronder. Hier is `HeroShowcase` het toneel. De maskering onderaan is de heuvellijn: de
+          collage dooft in het navy in plaats van te worden afgesneden — de oude versie rekende op
+          de sectierand als crop, en die is er nu niet meer omdat er tekst onder staat.
+
+          **Overgenomen (3): kop links, belofte plus knoppen rechts.** Eén regel tekst per kolom,
+          niets ertussen.
+
+          **Níet overgenomen: de 3D-illustratie.** §8 verbiedt tekeningen; de scène is de vier
+          CSS-primitieven — luchtverloop, zonneschijf, puntenraster, skyline — plus een echte
+          productcollage. Dat is waar `components/horizon/` voor bestaat.
+
+          De chiprij blijft staan en is niet decoratief: de kop mag "alle examenonderdelen" zeggen
+          omdat die rij per track zegt wat er wél en niet achter zit. Zie de opmerking bij `TRACKS`. */}
       <section
         id="hero"
-        className="relative overflow-hidden -mt-[var(--nav-h)]"
-        style={{ paddingTop: 'calc(var(--nav-h) + 2.25rem)' }}
+        className="relative overflow-hidden -mt-[var(--nav-h)] text-on-primary"
+        style={{ background: HERO_GRADIENT, paddingTop: 'calc(var(--nav-h) + 1.5rem)' }}
       >
+        <DotField on="light" />
 
-        <div className="max-w-3xl mx-auto px-6 relative z-10 flex flex-col items-center text-center gap-4">
-          <span className="inline-flex items-center gap-2.5 px-4 py-2 rounded-full" style={{ background: 'var(--color-surface-container-high)' }}>
-            {/* The badge's disc is a 6px bullet, not the composition's sun — §7.3 counts one sun
-                per view and on this hero there is deliberately none, because a centred layout has
-                no flank for an accent that is not either behind the copy or on top of a card. */}
-            <span aria-hidden="true" className="w-3.5 h-3.5 rounded-full flex items-center justify-center" style={{ background: 'var(--color-primary)' }}>
-              <span className="w-1.5 h-1.5 rounded-full" style={{ background: 'var(--color-secondary-container)' }} />
-            </span>
-            <span className="text-primary font-semibold text-xs uppercase tracking-widest">{t('hero_badge')}</span>
-          </span>
+        {/* Hier stond een `SunDisc`. Hij is eruit: gedempt over navy wordt het oranje bruin en
+            leest de schijf als een veeg in plaats van als een lichtbron. Een schijf moet bedekt
+            worden door iets dat ervóór staat, nooit door zijn eigen container. */}
 
-          <h1
-            className="font-headline font-extrabold text-primary tracking-tight m-0"
-            style={{ fontSize: 'clamp(1.75rem, 4.2vw, 2.875rem)', lineHeight: 1.05, letterSpacing: '-0.03em' }}
+        {/* De straat op de horizon, achter alles. Twee tellingen achter één breekpunt (§7.1). */}
+        <div className="absolute left-0 right-0 bottom-0 sm:hidden">
+          <Skyline count={7} tone="hero" height={96} />
+        </div>
+        <div className="absolute left-0 right-0 bottom-0 hidden sm:block">
+          <Skyline count={14} tone="hero" height={150} />
+        </div>
+
+        {/* De uitdoving naar de pagina (clay.com, eigenaar 21-09). De scène wordt niet afgesneden
+            op de sectierand maar lost op in de paginakleur, zodat de verbindende kaart eronder in
+            een veld staat in plaats van tegen een harde rand. Het verloop staat vóór de skyline —
+            de huizen doven dus mee — en onder de tekstkolom (`z-10`), zodat het nooit over de kop
+            of de knoppen heen valt. Letterlijke rgba() van `--color-surface`, want `color-mix()`
+            rendert solide in de screenshotbrowser. */}
+        <div
+          aria-hidden="true"
+          className="absolute left-0 right-0 bottom-0 h-28 sm:h-40 z-[5] pointer-events-none"
+          style={{ background: 'linear-gradient(to bottom, rgba(248,249,251,0) 0%, rgba(248,249,251,0.55) 58%, rgb(248,249,251) 100%)' }}
+        />
+
+        <div className="relative z-10 max-w-7xl mx-auto px-6">
+          {/* Het toneel. De maskering dooft de collage in de lucht — Clay's heuvellijn, hier als
+              verloop. `-webkit-mask-image` staat erbij omdat Safari de ongeprefixte nog niet
+              overal pakt; zonder masker is dit een rechte afsnijding door de onderste kaart. */}
+          <div
+            className="hidden sm:block pointer-events-none"
+            style={{
+              maskImage: 'linear-gradient(to bottom, #000 72%, transparent 100%)',
+              WebkitMaskImage: 'linear-gradient(to bottom, #000 72%, transparent 100%)',
+            }}
           >
-            {t('hero_line1')}
-          </h1>
+            <HeroShowcase />
+          </div>
 
-          {/* The four parts of the traject, each carrying its own state.
-              **This row is why the headline is allowed to say "alles".** Naming A2 · B1 · KNM · ONA
-              as a bare list would advertise four things and deliver one: B1's thirty exams exist
-              but are `noindex` behind the docent's review gate, and KNM and ONA are not built at
-              all. A chip that says "binnenkort" makes the same scope claim honestly, and it is the
-              one place on the page where the roadmap is stated — so when a part goes live, this is
-              the row to change. */}
-          <ul className="flex flex-wrap items-center justify-center gap-2 list-none p-0 m-0">
-            {TRACKS.map(track => (
-              <li key={track.key}>
-                <span
-                  className="inline-flex items-center gap-2 rounded-full px-3 py-1 text-[0.8125rem] font-semibold"
-                  style={track.live
-                    ? { background: 'var(--color-primary)', color: '#fff' }
-                    : { background: 'var(--color-surface-container-high)', color: 'var(--color-on-surface-variant)' }}
-                >
-                  {t(track.key)}
-                  {/* Geen `opacity-70` op deze chip: op 9px vet haalde `on-surface-variant` daarmee
-                      3,64:1 tegen de `surface-container-high` eronder, en WCAG AA vraagt 4,5. De chip
-                      is al een gedempte toon; een tweede demping erbovenop viel onder de norm. */}
-                  {!track.live && (
-                    <span className="text-[0.5625rem] font-bold uppercase tracking-widest">{t('pkg_soon')}</span>
-                  )}
+          <div className="grid lg:grid-cols-[minmax(0,1.1fr)_minmax(0,0.9fr)] gap-8 lg:gap-16 items-end pt-8 sm:pt-4 pb-16 lg:pb-24">
+            <div className="flex flex-col items-start gap-5">
+              <GlassChip>
+                <span aria-hidden="true" className="w-3.5 h-3.5 rounded-full flex items-center justify-center bg-white">
+                  <span className="w-1.5 h-1.5 rounded-full" style={{ background: 'var(--color-secondary-container)' }} />
                 </span>
-              </li>
-            ))}
-          </ul>
+                <span className="uppercase tracking-widest">{t('hero_badge')}</span>
+              </GlassChip>
 
-          <p className="text-base sm:text-[1.0625rem] leading-relaxed text-on-surface-variant m-0 max-w-xl">
-            {t('hero_subheading')}
-          </p>
+              <h1
+                className="font-headline font-extrabold m-0"
+                style={{ fontSize: 'clamp(2rem, 4.4vw, 3.25rem)', lineHeight: 1.02, letterSpacing: '-0.035em', textWrap: 'balance' }}
+              >
+                {t('hero_line1')}
+              </h1>
 
-          <a
-            href={localeHref(locale, `oefenen`)}
-            className="hero-cta-primary inline-flex items-center gap-2 px-7 py-3.5 font-bold rounded-xl no-underline font-headline text-base"
-            style={{ background: 'var(--color-primary)', color: '#fff', boxShadow: '0 12px 28px rgba(0,43,109,0.22)' }}
-          >
-            {t('cta_primary')}
-            <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true" className="rtl-flip"><path d="M6 3l5 5-5 5" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg>
-          </a>
+              {/* De vier delen van het traject, elk met zijn eigen stand. Zonder deze rij zou de
+                  kop vier dingen adverteren en er één leveren. */}
+              <ul className="flex flex-wrap items-center gap-2 list-none p-0 m-0">
+                {TRACKS.map(track => (
+                  <li key={track.key}>
+                    <span
+                      className="inline-flex items-center gap-2 rounded-full px-3.5 py-1.5 text-[0.8125rem] font-semibold"
+                      style={track.live
+                        ? { background: 'rgba(255,255,255,0.18)', color: '#ffffff' }
+                        : { background: 'rgba(255,255,255,0.08)', color: 'rgba(255,255,255,0.72)' }}
+                    >
+                      {t(track.key)}
+                      {!track.live && (
+                        <span className="text-[0.5625rem] font-bold uppercase tracking-widest">{t('pkg_soon')}</span>
+                      )}
+                    </span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+
+            <div className="flex flex-col gap-6 lg:pb-3">
+              <p className="text-lg sm:text-xl leading-relaxed m-0" style={{ color: 'rgba(255,255,255,0.82)' }}>
+                {t('hero_subheading')}
+              </p>
+
+              <div className="flex flex-wrap items-center gap-3">
+                <a
+                  href={localeHref(locale, `oefenen`)}
+                  className="hero-cta-primary inline-flex items-center gap-2 px-7 py-3.5 font-bold rounded-xl no-underline font-headline text-base bg-secondary-container text-on-secondary-container button-inner-glow"
+                >
+                  {t('cta_primary')}
+                  <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true" className="rtl-flip"><path d="M6 3l5 5-5 5" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg>
+                </a>
+                <Link
+                  href="/platform"
+                  className="inline-flex items-center gap-2 px-7 py-3.5 font-bold rounded-xl no-underline font-headline text-base text-primary"
+                  style={{ background: '#ffffff' }}
+                >
+                  {t('cta_secondary')}
+                  <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true" className="rtl-flip"><path d="M6 3l5 5-5 5" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg>
+                </Link>
+              </div>
+            </div>
+          </div>
         </div>
+      </section>
 
-        {/* The collage sits *over* the street rather than above it, which is what makes the two
-            read as one composition instead of a graphic strip bolted under a hero. There is no
-            negative bottom margin: the section's own edge is the crop, and a 40px overhang cut the
-            phone through the middle of its third answer option — a crop that reads as a rendering
-            bug rather than as a composition. */}
-        <div className="relative z-10 mt-8 px-6 pb-2">
-          <HeroShowcase />
-        </div>
+      {/* ── DE VERBINDENDE KAART — het element dat de hero aan de pagina vastzet ──
+          Clay's grijze kaart die over de onderrand van de hero heen valt, met dezelfde taak: de
+          scène stopt niet, hij wordt overgenomen. De negatieve marge is het hele punt — zonder de
+          overlap is dit een sectie ná de hero in plaats van een scharnier tussen twee.
 
-        {/* The street, faint, on the neutral ramp — a light-surface skyline, so it sits behind the
-            cards rather than competing with them. Two counts behind one breakpoint (§7.1). */}
-        <div className="sm:hidden">
-          <Skyline count={6} tone="light" height={84} />
-        </div>
-        <div className="hidden sm:block">
-          <Skyline count={14} tone="light" height={112} />
-        </div>
+          **Drie panelen, elk één bewijsstuk: het cijfer, het aantal, de docent.** Er stonden eerst
+          ook vier cijfertegels (10 oefenexamens / 129 lessen / 366 woordkaarten / 4 × 2) en die
+          zijn eruit op verzoek van de eigenaar (21-09): ze zeggen iets over de omvang van de
+          catalogus en niets over vertrouwen, en ze maakten de kaart twee keer zo hoog.
 
-        {/* The horizon band closes the hero the way it closes every other header on the site. */}
-        <HorizonBand className="absolute left-0 right-0 bottom-0 z-20" />
+          **De twee cijfers komen van knmoefenen.nl** — zie `SEO/facts.md` §12 — en de eigenaar
+          heeft op 21-09 besloten die herkomst niet meer in de copy te zetten omdat hij het hele
+          platform onder één naam trekt. De bronlink naar het Trustpilot-profiel blijft daarom
+          staan: dat is wat het cijfer nog controleerbaar maakt. Er hoort nog steeds **geen
+          `AggregateRating`** bij in de structured data van dit domein.
+
+          Wat hier nooit mag komen: een gebruikersaantal dat niet uit de database of uit
+          `facts.md` komt, en een getal dat per deploy verschuift (het aantal gepubliceerde
+          examens is er zo één — lokaal 22, productie meer). */}
+      <section aria-labelledby="proof-heading" className="relative z-20 -mt-12 sm:-mt-16 px-4 sm:px-6">
+        <div
+          className="max-w-6xl mx-auto rounded-[28px] sm:rounded-[36px] px-5 sm:px-8 py-7 sm:py-9"
+          style={{ background: 'var(--color-surface-container-lowest)', boxShadow: '0 24px 60px -28px rgba(0,8,27,0.28), var(--shadow-ambient)' }}
+        >
+          <h2 id="proof-heading" className="sr-only">{t('proof_line')}</h2>
+
+          <div className="grid gap-3 sm:gap-4 lg:grid-cols-3">
+
+            {/* 1 — Trustpilot. Het cijfer staat in `SEO/facts.md` §12 en nergens anders; zie de
+                kop van `TrustpilotScore.tsx` voor waarom er geen woordlabel bij staat. */}
+            <div className="rounded-2xl px-5 py-5 flex flex-col gap-3" style={{ background: 'var(--color-surface-container-low)' }}>
+              <TrustpilotScore score={4.4} />
+              <p className="m-0 text-[0.8125rem] leading-snug text-on-surface-variant">
+                <span className="font-headline font-extrabold text-primary text-[1.75rem] leading-none tracking-tight align-middle mr-1.5">4,4</span>
+                {t('proof_trustpilot_label')}{' '}
+                <a
+                  href="https://nl.trustpilot.com/review/knmoefenen.nl"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-0.5 font-semibold whitespace-nowrap"
+                  style={{ color: '#a24000' }}
+                >
+                  {t('proof_source')}
+                  <ArrowUpRight className="size-3 rtl-flip" />
+                </a>
+              </p>
+            </div>
+
+            {/* 2 — het aantal cursisten. De avatars stellen niemand voor; zie de kop van
+                `components/horizon/AvatarCluster.tsx`. */}
+            <div className="rounded-2xl px-5 py-5 flex flex-col gap-3" style={{ background: 'var(--color-surface-container-low)' }}>
+              <div className="flex items-center gap-1.5">
+                <AvatarCluster count={5} size={36} />
+                <span
+                  className="h-9 px-3 rounded-full flex items-center font-headline font-bold text-[0.8125rem] text-primary"
+                  style={{ background: 'var(--color-surface-container-high)' }}
+                >
+                  +995
+                </span>
+              </div>
+              <p className="m-0 text-[0.8125rem] leading-snug text-on-surface-variant">
+                <span className="font-headline font-extrabold text-primary text-[1.75rem] leading-none tracking-tight align-middle mr-1.5">1.000+</span>
+                {t('proof_students_label')}
+              </p>
+            </div>
+
+            {/* 3 — de docent. De enige claim die over dít platform gaat, en de enige echte persoon
+                op deze kaart. De docentclaim staat één keer per pagina (§7). */}
+            <div className="rounded-2xl px-5 py-5 flex items-start gap-4" style={{ background: 'var(--color-surface-container-low)' }}>
+              <img
+                src="/images/marieke-schipper-264.webp"
+                alt="Marieke Schipper"
+                width={56}
+                height={56}
+                className="w-14 h-14 rounded-full object-cover object-top shrink-0"
+                style={{ boxShadow: '0 0 0 3px var(--color-secondary-container)' }}
+              />
+              <p className="m-0 text-[0.8125rem] leading-snug text-on-surface-variant">
+                <span className="block font-headline font-bold text-primary text-[1rem] leading-tight">Marieke Schipper</span>
+                {t('proof_teacher_role')}
+                <span className="block mt-1">{t('proof_seal_short')}</span>
+              </p>
+            </div>
+          </div>
+
+          {/* De quotes. Zie `QUOTES` boven de return: leeg tot er échte reacties zijn, en dan
+              geplakt en niet geschreven. */}
+          {QUOTES.length > 0 && (
+            <ul className="grid gap-3 sm:gap-4 sm:grid-cols-3 mt-3 sm:mt-4 list-none p-0 mb-0">
+              {QUOTES.map(q => (
+                <li key={q.author + q.text.slice(0, 12)} className="rounded-2xl px-5 py-5" style={{ background: 'var(--color-surface-container-low)' }}>
+                  <blockquote className="m-0 text-[0.875rem] leading-relaxed text-on-surface">{`“${q.text}”`}</blockquote>
+                  <p className="m-0 mt-3 text-[0.75rem] font-semibold text-on-surface-variant">{q.author}</p>
+                </li>
+              ))}
+            </ul>
+          )}
+        </div>
       </section>
 
       {/* ── DE BLOKKEN — het hele traject als trap, in DUO's eigen volgorde ──
@@ -596,6 +740,14 @@ export default async function HomePage({ params }: Props) {
           </div>
         </div>
       </section>
+
+      {/* ── DE VITRINE — vijf schermen die er al zijn ──
+          Clay's tabrij met een productbeeld eronder (eigenaar, 21-09), hier als draaiende
+          carrousel. Hij staat ná de blokken en niet ervóór: die zeggen *wat* je kunt kopen, deze
+          sectie zegt *hoe het eruitziet*, en die volgorde is de enige die niet twee keer hetzelfde
+          vraagt. Zie de kop van `FeatureCarousel.tsx` voor de regel dat elke dia een werkende
+          route achter zich moet hebben. */}
+      <FeatureCarousel />
 
       {/* ── SOCIAL PROOF — placeholders, and they say so ──
           To the owner's mockup §6 (2026-08-22), whose own annotation reads *"Quotes zijn

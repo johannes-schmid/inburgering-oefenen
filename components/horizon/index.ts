@@ -19,3 +19,4 @@ export { SunDisc, HorizonBand, DotField, LensRing, GlassChip } from './primitive
 export { C as HORIZON_COLORS, HERO_GRADIENT, HORIZON_GRADIENT, SUN_GRADIENT, dotField } from './tokens';
 export { default as CategoryMark, type Category } from './CategoryMark';
 export { default as ExamMark, type Track } from './ExamMark';
+export { default as AvatarCluster } from './AvatarCluster';

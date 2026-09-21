@@ -387,3 +387,39 @@ euro figure here: write "op dit moment" with the DUO link beside it.
 5. **"Onderwijsroute duurt ongeveer 1,5 jaar"** — niet te bronnen, geschrapt.
 6. **Wet 2013 "3 jaar"** — niet geverifieerd voor die cohorten; de gidsen verwijzen naar de brief.
 7. **MAP zit niet in de onderwijsroute** (§10, Wet art. 8 lid 3).
+
+## 12. Eigen cijfers — herkomst knmoefenen.nl, VERIFIED 2026-09-21
+
+Deze twee getallen zijn de énige social proof die de homepage toont. Ze zijn **niet op
+inburgeringoefenen.nl verdiend**: ze komen van **knmoefenen.nl**, het KNM-platform waar dit product
+uit is gevorkt en dat nog live staat.
+
+**De eigenaar heeft op 21-09 besloten die herkomst niet meer in de copy te zetten**, omdat hij het
+hele aanbod onder de naam Inburgering Oefenen trekt en knmoefenen.nl daarin opgaat. Zolang die
+overzetting niet rond is, is dit een bewuste afweging van hem en niet van dit bestand. Wat blijft
+staan als ondergrens:
+
+- **De bronlink naar het Trustpilot-profiel blijft op de tegel**, want dat is het enige dat het
+  cijfer nog controleerbaar maakt. Haal je die weg, dan staat er een cijfer zonder herkomst.
+- **Nog steeds geen `AggregateRating` in de structured data van dit domein.** Beoordelingen van een
+  ander domein aan dít domein hangen is precies de fabricage die bij de fork is weggehaald. Alleen
+  zichtbare tekst met bronlink.
+- **Geen woordlabel bij het cijfer** ("Uitstekend" / "Geweldig"). De twee Trustpilot-domeinen gaven
+  verschillende labels bij hetzelfde cijfer, en Trustpilot herrekent de drempels; het getal is
+  eenduidig, het label niet.
+
+De feiten zelf:
+
+- **Trustpilot: 4,4 van 5 uit 10 beoordelingen** — https://nl.trustpilot.com/review/knmoefenen.nl
+  (geraadpleegd 21-09-2026, bevestigd op zowel `trustpilot.com` als `nl.trustpilot.com`).
+  ⚠️ Tien beoordelingen is weinig — het cijfer kan bij één nieuwe review zichtbaar verschuiven.
+  Controleer het voordat je het ergens anders herhaalt.
+- **Meer dan 1.000 cursisten geholpen** — opgave van de eigenaar (21-09-2026). Niet extern te
+  verifiëren; daarom staat er "meer dan 1.000" en nooit een preciezer getal.
+
+ℹ️ Het Trustpilot-merkteken (groene sterren + wordmark) is nagetekend in
+`components/site/TrustpilotScore.tsx`. Dat mag zolang het een échte score toont met een link naar
+het profiel; zodra het officiële SVG-bestand er is, vervangt dat de tekening.
+
+❌ **De avatars bij "1.000+" stellen niemand voor** en mogen nooit foto's van mensen worden zolang
+er geen échte portretten mét toestemming zijn. Zie `components/horizon/AvatarCluster.tsx`.

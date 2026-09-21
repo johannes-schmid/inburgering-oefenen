@@ -1465,3 +1465,21 @@
   color: var(--color-on-surface);
 }
 .exam-rich th { background: rgba(0, 43, 109, 0.05); font-weight: 700; }
+
+/* ── De vitrine op de homepage ──
+   Twee animaties, allebei alleen `transform` en `opacity` (§8): de voortgangsbalk op de actieve
+   tab, en het inkomen van een nieuw beeld. De ontsnapping voor `prefers-reduced-motion` staat
+   eronder en is niet optioneel. */
+@keyframes vitrine-fill {
+  from { transform: scaleX(0); }
+  to { transform: scaleX(1); }
+}
+
+@keyframes vitrine-in {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: none; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  [style*='vitrine-in'], [style*='vitrine-fill'] { animation: none !important; }
+}

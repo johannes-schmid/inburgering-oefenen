@@ -109,19 +109,33 @@ export default function Nav() {
 
   return (
     <header
-      /* Light (owner's decision, 2026-08-22, over the navy bar of the same day). The homepage hero
-         is light with the page-wide dot grid, and there the navy bar was a stack of two headers;
-         on `surface` with a ghost border the bar and the grid are one field. The 1px edge stays,
-         and stays 1px, because `--nav-h` includes it and the row is sized
-         `calc(var(--nav-h) - 1px)` — removing it puts a stripe of page background under the bar. */
-      className="fixed top-0 w-full z-50"
-      style={{
-        background: 'var(--color-surface)',
-        borderBottom: '1px solid var(--ghost-border)',
-      }}
+      /* Een zwevende glazen pil, niet een balk over de volle breedte (besluit eigenaar, 21-09,
+         naar het voorbeeld van pilotentest.training). De balk van 22-08 was licht mét een
+         ghost-border; die rand viel onder de no-line-regel alleen weg omdat hij de rand van een
+         vlak wás. Nu is er geen vlak meer: de pil hangt vrij, en wat hem van de pagina scheidt is
+         de onscherpte plus de ambient-schaduw — géén 1px-lijn.
+
+         **De pil heeft een donkere hero nodig om te wérken.** Boven een strook van dezelfde kleur
+         als de pagina zie je hem niet zweven; dat is waarom de homepage-hero op 21-09 navy werd.
+         Zet je die terug naar licht, dan verliest deze kop zijn achtergrond.
+
+         `--nav-h` (73px) blijft wat de `(main)`-layout reserveert en wat `scroll-margin-top`
+         rekent: 10px lucht boven + 60px rij + 3px lucht onder. Verander je de rijhoogte, verander
+         dan `--nav-h` mee, anders schuift elke ankerlink. */
+      className="fixed top-[10px] left-0 right-0 z-50 px-3 sm:px-5"
       aria-label={t('ariaMain')}
     >
-      <div className="flex justify-between items-center max-w-7xl mx-auto px-6 h-[calc(var(--nav-h)_-_1px)]">
+      <div
+        className="flex justify-between items-center max-w-7xl mx-auto pl-4 pr-3 sm:pl-6 sm:pr-4 h-[60px] rounded-[18px]"
+        style={{
+          /* Een letterlijke rgba() van `--color-surface` (#f8f9fb) — `color-mix()` rendert in de
+             screenshotbrowser solide, en `bg-surface/80` wordt in sommige bundles volledig dekkend. */
+          background: 'rgba(248, 249, 251, 0.82)',
+          backdropFilter: 'blur(26px) saturate(1.7)',
+          WebkitBackdropFilter: 'blur(26px) saturate(1.7)',
+          boxShadow: '0 16px 40px -14px rgba(0, 8, 27, 0.18), 0 2px 8px rgba(0, 8, 27, 0.05)',
+        }}
+      >
         <Link href="/" className="flex items-center gap-2 no-underline shrink-0">
           <LogoMark size={32} surface="light" className="w-6 h-6 sm:w-8 sm:h-8" />
           <span className="text-sm sm:text-xl font-extrabold tracking-tight text-primary font-headline whitespace-nowrap">
@@ -199,8 +213,15 @@ export default function Nav() {
           bottom where the thumb is. */}
       {mobileOpen && (
         <div
-          className="menu:hidden border-t border-outline-variant/25 max-h-[calc(100dvh-4.5rem)] overflow-y-auto"
-          style={{ background: '#f8f9fb' }}
+          className="menu:hidden mt-2 max-w-7xl mx-auto rounded-[18px] max-h-[calc(100dvh-5.5rem)] overflow-y-auto"
+          style={{
+            /* Een tweede zwevende kaart onder de pil, niet een uitschuif ván de pil: dekkend,
+               want er staat tekst op die leesbaar moet blijven boven wat er ook onder ligt. */
+            background: 'rgba(248, 249, 251, 1)',
+            backdropFilter: 'blur(26px) saturate(1.7)',
+            WebkitBackdropFilter: 'blur(26px) saturate(1.7)',
+            boxShadow: '0 16px 40px -14px rgba(0, 8, 27, 0.18), 0 2px 8px rgba(0, 8, 27, 0.05)',
+          }}
           aria-label={t('ariaMobile')}
         >
           <nav className="flex flex-col px-4 py-2">

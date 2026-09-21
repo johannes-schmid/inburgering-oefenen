@@ -4980,3 +4980,45 @@ nieuw `scripts/fix-exam-options.mjs` om dezelfde twee correcties op bestaande ri
 **Lesson:** een renderregel die "opruimt" wat de auteur intypte, is een bug in vermomming; en een
 reparatiescript op gepubliceerde examens werkt op `question_options.body`, nooit via een re-seed —
 die verwijdert de stimuli en daarmee de antwoorden van kandidaten.
+
+## 2026-09-21 — /gidsen als catalogus, en de gidspagina zonder zijstapel
+**Changed:** `app/[locale]/(main)/gidsen/_components/GuideIndex.tsx` (nieuw, client: filterbalk + één kaartraster), `gidsen/page.tsx` (drie duimnagelkolommen eruit), `gidsen/_components/ModuleOverview.tsx` (startgidsbanner + `routeStats` eruit, vier smalle kaarten op één rij), `_components/GuideArticle.tsx` (zijbalk = delenlijst + één CTA; `sidebarHtml`, verwante gidsen en blogartikelen naar onder het artikel; `SituationCheck` van de gidspagina af), `messages/{nl,en,ar}.json` (`gidsen.filter_all`, `filter_label`; `modules.start_*` weg).
+**Outcome:** SUCCESS
+**What worked / went wrong:** Referentie van de eigenaar was clay.com/guides: filter met tellingen boven gelijke kaarten, en een artikel met één kolom. Het filter verbergt met `hidden` en unmount niet — `tests/public.spec.js` eist zichtbare links naar vier Inburgering-gidsen op deze pagina. `guideHref` moet op de server draaien (vertaalde slug), dus de `href` gaat als prop mee in plaats van dat de client hem samenstelt. Drie Playwright-failures (sitemap, taalwissel op twee pagina's) waren er al vóór deze wijziging; op een schone boom faalden er zelfs vier.
+**Lesson:** Een hub is een catalogus: filter plus gelijke kaarten. Drie kolommen van vijf items zijn drie lijstjes die geen lijst zijn, en een zijbalk met zes blokken naast één deel tekst duwt de enige knop die iets oplevert onder de vouw.
+
+## 2026-09-21 — `git stash` in een repo waar een tweede sessie meeschrijft
+**Changed:** niets blijvends; `app/[locale]/(main)/page.tsx` kreeg wel de ontbrekende `locale` in `guideHref(guide, locale)`.
+**Outcome:** FAILURE (en hersteld)
+**What worked / went wrong:** Om te controleren of drie rode Playwright-tests al bestonden heb ik de hele boom gestasht. Tijdens die run schreef een andere sessie `messages/*.json` en `components/horizon/index.ts` opnieuw, waarna `git stash pop` weigerde. Herstel: alles behalve `messages/*.json` uit de stash terugzetten en mijn sleutels opnieuw aanbrengen — en dat moest twee keer, want de andere sessie schreef het bestand er tussendoor nog eens overheen.
+**Lesson:** Nooit `git stash` gebruiken om een baseline te meten als er nog een sessie in dezelfde working tree zit. Meet in een `git worktree` of op een kopie, en controleer na elke JSON-bewerking dat de sleutel er ook echt nog in staat.
+
+## 2026-09-21 — De homepage naar het voorbeeld van Clay: hero, verbindende kaart, vitrine
+**Changed:** `components/Nav.tsx` (zwevende glazen pil), de hero in
+`app/[locale]/(main)/page.tsx` (volvlaks navy horizonscène met uitdoving naar de pagina), de
+verbindende kaart eronder (Trustpilot-score, cursistenaantal, docent),
+`app/[locale]/(main)/_components/FeatureCarousel.tsx` (vijf echte schermen, automatisch
+doorschuivend), `components/site/TrustpilotScore.tsx` en `components/horizon/AvatarCluster.tsx`
+(nieuw), `app/globals.css` (`vitrine-*`-keyframes), `SEO/facts.md` §12, `messages/{nl,en,ar}.json`.
+**Outcome:** SUCCESS
+**What worked / went wrong:** Twee keer een `SunDisc` weggehaald — over navy wordt gedempt oranje
+bruin, en in een `overflow-hidden`-container wordt hij tot een baksteen geknipt. Doorschijnende
+avatarschijven die elkaar overlappen gaven maansikkels; dekkende kleuren opgelost. De cijfers in
+de kaart zijn geen totalen uit de database, want lokaal en productie tellen anders.
+**Lesson:** Een schijf moet bedekt worden door iets dat ervóór staat, nooit door zijn eigen
+container. En een avatarrij bij een cursistenaantal is social proof, geen decoratie: een
+gegenereerd gezicht naast "1.000+ cursisten" is de fabricage die §2 verbiedt.
+
+## 2026-09-21 — De werkmap werd onder handen weggehaald door een tweede sessie
+**Changed:** niets inhoudelijks; herstel van `page.tsx`, `Nav.tsx`, `globals.css`, `SEO/facts.md`
+en de drie `messages/*.json` na een `git stash` uit een parallelle Claude-sessie in dezelfde map.
+**Outcome:** FAILURE, daarna hersteld
+**What worked / went wrong:** Een tweede sessie stashte de hele werkmap (`stash@{0} clay-guides-wip`)
+en nam daarmee een halve dag homepagewerk mee. De stash bleek ouder dan het werk, dus terugzetten
+hielp niet. Het herstel kwam uit twee bronnen: de JSX stond nog compleet in de dev-chunk van
+Turbopack (`.next/dev/server/chunks/ssr/*.js`, mét bestandsnamen en regelnummers), en de exacte
+teksten van de drie talen stonden in het sessietranscript (`~/.claude/projects/<project>/<id>.jsonl`).
+Eerst een kopie van beide in de scratchpad zetten, dáárna pas iets terugzetten.
+**Lesson:** Twee Claude-sessies in dezelfde werkmap is één werkmap te weinig. Draai een tweede
+sessie in een aparte git-worktree. En `.next/dev` plus het sessietranscript zijn samen een
+volwaardige back-up van niet-gecommit werk — zolang je ze pakt vóórdat de dev-server ze overschrijft.
