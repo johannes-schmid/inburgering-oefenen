@@ -1502,19 +1502,22 @@
 
 /* Het bewegende licht van `components/horizon/HeroAurora.tsx`. Drie velden, drie duren zonder
    gemeenschappelijke deler, elk met zijn eigen richting — samen leest dat als lucht die verschuift
-   in plaats van als een lus. De uitslagen zijn klein (hooguit een tiende van de sectie): dit moet
-   je merken als je de pagina een halve minuut open hebt, niet bij het laden. */
+   in plaats van als een lus. De uitslagen zijn ruim genomen (eigenaar vroeg 21-09 om méér, na een
+   eerste versie op een tiende van deze amplitude): de velden leggen ruim een achtste van de sectie
+   af en hun dekking halveert onderweg, zodat het zwaartepunt van het licht echt verplaatst. De
+   bovengrens blijft het punt waarop je een ránd van een veld ziet — dan is het een vorm geworden
+   in plaats van licht, en dat is precies wat §8 verbiedt. */
 @keyframes hero-aurora-a {
-  0%   { transform: translate3d(-4%, -3%, 0) scale(1);    opacity: 0.75; }
-  100% { transform: translate3d(5%, 4%, 0) scale(1.14);   opacity: 1; }
+  0%   { transform: translate3d(-11%, -8%, 0) scale(0.92); opacity: 0.5; }
+  100% { transform: translate3d(13%, 10%, 0) scale(1.32);  opacity: 1; }
 }
 @keyframes hero-aurora-b {
-  0%   { transform: translate3d(4%, 3%, 0) scale(1.1);    opacity: 1; }
-  100% { transform: translate3d(-5%, -2%, 0) scale(1);    opacity: 0.7; }
+  0%   { transform: translate3d(11%, 7%, 0) scale(1.26);   opacity: 1; }
+  100% { transform: translate3d(-13%, -6%, 0) scale(0.94); opacity: 0.45; }
 }
 @keyframes hero-aurora-c {
-  0%   { transform: translate3d(3%, -2%, 0) scale(1.05);  opacity: 0.6; }
-  100% { transform: translate3d(-6%, 3%, 0) scale(1.2);   opacity: 1; }
+  0%   { transform: translate3d(9%, -5%, 0) scale(1);      opacity: 0.35; }
+  100% { transform: translate3d(-15%, 8%, 0) scale(1.4);   opacity: 1; }
 }
 
 /* Het puntenraster schuift één cel op en begint dan opnieuw. Eén cel is precies de periode van

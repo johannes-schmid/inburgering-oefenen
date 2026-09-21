@@ -347,7 +347,7 @@ export default async function HomePage({ params }: Props) {
         >
           <div
             className="absolute -inset-8"
-            style={{ animation: 'hero-dot-drift 34s linear infinite', willChange: 'transform' }}
+            style={{ animation: 'hero-dot-drift 24s linear infinite', willChange: 'transform' }}
           >
             <DotField on="light" />
           </div>

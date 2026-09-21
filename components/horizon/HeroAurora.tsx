@@ -13,7 +13,7 @@ import { cn } from '@/lib/utils';
  * **Drie regels die niet mogen schuiven:**
  * - **Alleen `transform` en `opacity` bewegen** (§8), nooit een achtergrondpositie of een kleur:
  *   die laatste twee hertekenen elk frame de hele sectie. Vandaar ook `will-change` per laag.
- * - **De drie duren zijn onderling ondeelbaar** (38s, 47s, 61s). Delen ze een deler, dan komen de
+ * - **De drie duren zijn onderling ondeelbaar** (26s, 31s, 43s). Delen ze een deler, dan komen de
  *   lagen periodiek terug op dezelfde stand en ziet het oog een maat in wat willekeurig moet
  *   lijken.
  * - **Het warme veld is geen zonneschijf.** Het is te groot en te zwak om een schijf te zijn, dus
@@ -31,8 +31,8 @@ export default function HeroAurora({ className }: { className?: string }) {
       <div
         className="absolute inset-0"
         style={{
-          background: 'radial-gradient(42% 48% at 22% 18%, rgba(120,170,255,0.22) 0%, rgba(120,170,255,0) 68%)',
-          animation: 'hero-aurora-a 38s cubic-bezier(0.45, 0, 0.55, 1) infinite alternate',
+          background: 'radial-gradient(46% 54% at 22% 18%, rgba(120,170,255,0.34) 0%, rgba(120,170,255,0) 70%)',
+          animation: 'hero-aurora-a 26s cubic-bezier(0.45, 0, 0.55, 1) infinite alternate',
           willChange: 'transform, opacity',
         }}
       />
@@ -41,8 +41,8 @@ export default function HeroAurora({ className }: { className?: string }) {
       <div
         className="absolute inset-0"
         style={{
-          background: 'radial-gradient(48% 52% at 82% 72%, rgba(0,20,58,0.4) 0%, rgba(0,20,58,0) 70%)',
-          animation: 'hero-aurora-b 47s cubic-bezier(0.45, 0, 0.55, 1) infinite alternate',
+          background: 'radial-gradient(54% 58% at 82% 72%, rgba(0,20,58,0.58) 0%, rgba(0,20,58,0) 72%)',
+          animation: 'hero-aurora-b 31s cubic-bezier(0.45, 0, 0.55, 1) infinite alternate',
           willChange: 'transform, opacity',
         }}
       />
@@ -50,8 +50,8 @@ export default function HeroAurora({ className }: { className?: string }) {
       <div
         className="absolute inset-0"
         style={{
-          background: 'radial-gradient(38% 44% at 76% 6%, rgba(254,118,44,0.1) 0%, rgba(254,118,44,0) 64%)',
-          animation: 'hero-aurora-c 61s cubic-bezier(0.45, 0, 0.55, 1) infinite alternate',
+          background: 'radial-gradient(42% 50% at 76% 6%, rgba(254,118,44,0.12) 0%, rgba(254,118,44,0) 66%)',
+          animation: 'hero-aurora-c 43s cubic-bezier(0.45, 0, 0.55, 1) infinite alternate',
           willChange: 'transform, opacity',
         }}
       />
