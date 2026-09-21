@@ -1483,3 +1483,19 @@
 @media (prefers-reduced-motion: reduce) {
   [style*='vitrine-in'], [style*='vitrine-fill'] { animation: none !important; }
 }
+
+/* De uitdoving onder de hero ademt. Twee lagen witte gloed schuiven traag langs elkaar heen, zodat
+   de overgang naar de pagina leeft in plaats van als één vlak stil te staan. Alleen `transform` en
+   `opacity` bewegen (§8), en de amplitude is expres klein: dit moet je pas zien als je blijft
+   kijken. De ontsnapping voor `prefers-reduced-motion` zet beide lagen stil op hun middenstand. */
+@keyframes hero-fade-drift-a {
+  0%   { transform: translate3d(-7%, 0, 0) scale(1.08); opacity: 0.45; }
+  100% { transform: translate3d(7%, 0, 0) scale(1.18);  opacity: 0.8; }
+}
+@keyframes hero-fade-drift-b {
+  0%   { transform: translate3d(8%, 0, 0) scale(1.14);  opacity: 0.7; }
+  100% { transform: translate3d(-8%, 0, 0) scale(1.04); opacity: 0.35; }
+}
+@media (prefers-reduced-motion: reduce) {
+  [style*='hero-fade-drift'] { animation: none !important; transform: none !important; }
+}

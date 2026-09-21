@@ -376,6 +376,36 @@ export default async function HomePage({ params }: Props) {
           }}
         />
 
+        {/* De twee gloedlagen die de uitdoving laten ademen. Ze staan ónder het verloop (`z-[4]`),
+            dus ze kleuren het navy net boven de overgang op en raken de kop nooit. Het masker is
+            hetzelfde verloop: zo begint de gloed precies waar de uitdoving begint en zie je hem
+            aan de bovenkant niet als een vlek eindigen. `will-change` houdt ze op hun eigen laag,
+            anders hertekent de browser de hele hero per frame. Keyframes: `app/globals.css`. */}
+        <div
+          aria-hidden="true"
+          className="absolute left-0 right-0 bottom-0 h-56 sm:h-80 z-[4] pointer-events-none overflow-hidden"
+          style={{ maskImage: FADE_MASK, WebkitMaskImage: FADE_MASK }}
+        >
+          <div
+            className="absolute inset-0"
+            style={{
+              background:
+                'radial-gradient(60% 120% at 28% 100%, rgba(248,249,251,0.5) 0%, rgba(248,249,251,0) 70%)',
+              animation: 'hero-fade-drift-a 26s cubic-bezier(0.45, 0, 0.55, 1) infinite alternate',
+              willChange: 'transform, opacity',
+            }}
+          />
+          <div
+            className="absolute inset-0"
+            style={{
+              background:
+                'radial-gradient(55% 110% at 74% 100%, rgba(248,249,251,0.42) 0%, rgba(248,249,251,0) 70%)',
+              animation: 'hero-fade-drift-b 34s cubic-bezier(0.45, 0, 0.55, 1) infinite alternate',
+              willChange: 'transform, opacity',
+            }}
+          />
+        </div>
+
         <div className="relative z-10 max-w-7xl mx-auto px-6">
           {/* Het toneel. De maskering dooft de collage in de lucht — Clay's heuvellijn, hier als
               verloop. `-webkit-mask-image` staat erbij omdat Safari de ongeprefixte nog niet

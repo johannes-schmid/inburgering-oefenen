@@ -421,5 +421,17 @@ De feiten zelf:
 `components/site/TrustpilotScore.tsx`. Dat mag zolang het een échte score toont met een link naar
 het profiel; zodra het officiële SVG-bestand er is, vervangt dat de tekening.
 
-❌ **De avatars bij "1.000+" stellen niemand voor** en mogen nooit foto's van mensen worden zolang
-er geen échte portretten mét toestemming zijn. Zie `components/horizon/AvatarCluster.tsx`.
+⚠️ **De avatars bij "1.000+" zijn stockportretten van Pexels en géén cursisten** (besluit
+eigenaar, 21-09; hiervóór waren het getekende schijven). De grens die daarbij hoort, en die geen
+latere wijziging mag oprekken: **een gezicht mag bij een aantál staan, nooit bij een uitspraak of
+een naam.** Een portret naast een quote zegt "dit heeft deze persoon gezegd" en is dan verzonnen
+social proof — precies wat er op 02-09 van deze site af is gehaald. Een rij gezichten naast
+"1.000+ cursisten" zegt "hier zitten mensen achter" en noemt niemand. Daarom draagt de rij geen
+namen, geen citaten en geen `alt` die iemand tot cursist bestempelt; hij is `aria-hidden`.
+
+Herkomst per bestand staat in `public/images/avatars/CREDITS.json` (Pexels-id, fotograaf, pagina).
+De Pexels-licentie staat commercieel gebruik toe en eist geen bronvermelding, maar het bestand
+blijft staan: zonder dat is over een half jaar niet meer na te gaan dat dit stock is en geen
+cursisten. Reverse image search vindt deze foto's — dat is het risico dat de eigenaar aanvaardt.
+Komen er échte portretten mét toestemming, dan vervangen die de map in één keer.
+Zie `components/horizon/AvatarCluster.tsx`.
