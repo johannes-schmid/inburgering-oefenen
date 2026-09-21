@@ -85,6 +85,21 @@ export default function FreePracticeEngine({ skill, skillName, items, locale, le
   const sampleUrl = items.find(i => i.questionAudioSrc)?.questionAudioSrc ?? null;
   /** KNM's URLs carry no level segment — see `level` above. */
   const examsHref = localeHref(locale, `oefenexamen/${level === null ? '' : `${level}/`}${skill}`);
+  /**
+   * De uitgang naar het portaal, op het onderdeel dat net geoefend is.
+   *
+   * Niet `/dashboard`: wie tien vragen Luisteren A2 heeft gemaakt en op de catalogus van alle
+   * modules landt, moet zijn eigen onderdeel terugzoeken op het moment dat hij er juist mee
+   * bezig was. KNM heeft zijn eigen scherm zonder niveausegment — dezelfde splitsing als
+   * `examsHref` hierboven, en om dezelfde reden.
+   *
+   * **Met de hand samengesteld, niet via `localeHref`.** Het portaal heeft geen vertaalde
+   * onderdeelslug — zie de noot bij `canonicalSkillPath` in `i18n/paths.ts` — dus zou dat
+   * pad er in het Engels als `/en/dashboard/a2/reading` uitkomen, en die route bestaat niet.
+   */
+  const platformHref = level === null
+    ? `/${locale}/dashboard/knm`
+    : `/${locale}/dashboard/${level}/${skill}`;
   const total = items.length;
   const score = log.filter(a => a.isCorrect).length;
   const pct = total ? Math.round((score / total) * 100) : 0;
@@ -502,8 +517,8 @@ export default function FreePracticeEngine({ skill, skillName, items, locale, le
       {revealed && (
         <section className="rounded-2xl p-6 sm:p-7 bg-surface-container-lowest" style={{ boxShadow: 'var(--shadow-ambient)' }}>
           <a
-            href={`/${locale}/dashboard`}
-            onClick={() => track('free_practice_platform_click', { skill, pct })}
+            href={platformHref}
+            onClick={() => track('free_practice_platform_click', { skill, level, pct })}
             className="w-full inline-flex items-center justify-center gap-2 text-white font-black no-underline hover:-translate-y-0.5 transition-transform active:scale-[.99]"
             style={{ fontSize: 17, padding: '17px 16px', borderRadius: 14, background: 'linear-gradient(135deg,#fe762c 0%,#d94f00 100%)', boxShadow: '0 8px 22px rgba(254,118,44,.38)' }}
           >

@@ -59,9 +59,11 @@ test.describe('lezen taster', () => {
   test('ends on a route into the paid exams', async ({ page }) => {
     for (let i = 0; i < 10; i += 1) await answerAndAdvance(page);
 
-    // The exit is the portal itself: an anonymous visitor may browse it, and the account is
-    // asked for at the oefenexamen. Scoped to `main` — the chrome links the exams anyway.
-    await expect(page.locator('main a[href$="/dashboard"]').first()).toBeVisible();
+    // The exit is the portal itself, on the onderdeel just practised rather than on the
+    // catalogue of every module — landing on /dashboard makes the visitor find their own
+    // onderdeel back at the moment they were busy with it. An anonymous visitor may browse
+    // the portal; the account is asked for at the player.
+    await expect(page.locator('main a[href="/nl/dashboard/a2/lezen"]').first()).toBeVisible();
   });
 });
 

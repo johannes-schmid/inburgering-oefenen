@@ -53,6 +53,18 @@ test.describe('redirects', () => {
     }
   });
 
+  test('a guest may sit the free exam itself, and is not bounced to /register', async ({ page }) => {
+    // Sinds 21-09 is de conversiegrens een overlay in de speler in plaats van een omleiding:
+    // een gast maakt de eerste `GUEST_PREVIEW_QUESTIONS` vragen van een gratis examen echt en
+    // krijgt `GuestSignupOverlay` pas als hij door wil. Een betaald examen blijft dicht.
+    await page.goto(FREE);
+    await expect(page).not.toHaveURL(/\/register/);
+    await expect(page.locator('main')).toContainText(/oefenexamen/i);
+
+    await page.goto(PAID);
+    await expect(page).toHaveURL(/\/register/);
+  });
+
   test('the pre-B1 dashboard path still resolves', async ({ page, context }) => {
     // next.config.ts 308s `/dashboard/lezen` → `/dashboard/a2/lezen`. Signed in, because the
     // redirect is upstream of the auth check and an anonymous visit would only prove the login hop.

@@ -57,3 +57,20 @@ export const UNGATE_PAID_FEATURES = false;
  * ernaartoe weg. Zet hem op `false` om de modules weer vrij te geven.
  * ═══════════════════════════════════════════════════════════════════════════ */
 export const LESSONS_COMING_SOON = true;
+
+/* ═══════════════════════════════════════════════════════════════════════════
+ * `GUEST_PREVIEW_QUESTIONS` — hoeveel vragen een gast van een gratis examen krijgt
+ *
+ * Besluit eigenaar, 21-09, naar het voorbeeld van KNM Oefenen. Daarvóór stuurde
+ * de speler een gast meteen naar `/register`: een leeg formulier, gevraagd vóór
+ * er iets te zien was. Nu maakt hij de eerste vijf vragen van oefenexamen 1 echt
+ * en komt de aanmeldkaart als overlay over het examen heen — `GuestSignupOverlay`.
+ *
+ * **Alleen op een gratis examen.** Een betaald examen blijft een omleiding naar
+ * `/register`: daar is de rekening het onderwerp en niet het account.
+ *
+ * Er wordt voor een gast niets weggeschreven — elke schrijfactie in `ExamShell`
+ * hangt aan `userId`. De vijf antwoorden staan in `sessionStorage` en worden na
+ * het inloggen teruggezet.
+ * ═══════════════════════════════════════════════════════════════════════════ */
+export const GUEST_PREVIEW_QUESTIONS = 5;

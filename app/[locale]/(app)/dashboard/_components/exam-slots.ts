@@ -53,9 +53,11 @@ export async function buildExamSlots({
     const done = progress.exams[n];
     const free = isFreeExamOf(level, n);
     const isPublished = published.has(n);
-    /* Een gast kan niets openen, ook het gratis slot niet: het account aanmaken ís hier de stap
-       die verkocht wordt. */
-    const openable = isPublished && !isGuest && (free || owns);
+    /* Een gast mag het gratis slot wél openen — sinds 21-09 krijgt hij daar de eerste
+       `GUEST_PREVIEW_QUESTIONS` vragen en pas daarna de aanmeldkaart, over het examen heen.
+       Een betaald slot blijft voor hem dicht: daar is het account niet de stap die verkocht
+       wordt maar de rekening. */
+    const openable = isPublished && (free || (!isGuest && owns));
     const href = openable
       ? localeHref(locale, `${examBase}/${n}`)
       : isGuest && isPublished

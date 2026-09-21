@@ -7,6 +7,7 @@ import { canSeeExplanations, ownsKnm, planFromMetadata } from '@/lib/entitlement
 import AppShell from '../../../components/AppShell';
 import ExamShell from '@/components/exam/ExamShell';
 import { fetchPortalMenu } from '@/lib/portal-menu';
+import { GUEST_PREVIEW_QUESTIONS } from '@/lib/features';
 import { localeHref } from '@/i18n/paths';
 
 /**
@@ -32,12 +33,29 @@ export default async function KnmExamPage({ params }: Props) {
 
   const supabase = await createClient();
   const { data: { user } } = await supabase.auth.getUser();
-  // The conversion wall: an anonymous visitor may browse the portal, but sitting an
-  // oefenexamen — the free one included — needs an account.
-  if (!user) redirect(`/${locale}/register?next=/oefenexamen/knm/${number}`);
+  const path = `/oefenexamen/knm/${number}`;
 
   const content = await fetchExamContent(null, 'knm', number);
   if (!content) notFound();
+
+  /** Dezelfde gastgrens als bij de taalonderdelen — zie de noot daar en `GUEST_PREVIEW_QUESTIONS`. */
+  if (!user) {
+    if (!content.exam.is_free) redirect(`/${locale}/register?next=${path}`);
+    const guestMenu = await fetchPortalMenu();
+    return (
+      <AppShell locale={locale} email="" active="knm" activeGroup="knm" menu={guestMenu} isGuest>
+        <div className="px-5 py-7 sm:px-8">
+          <div className="max-w-6xl mx-auto">
+            <ExamShell
+              content={content}
+              canSeeExplanations={false}
+              guest={{ limit: GUEST_PREVIEW_QUESTIONS, locale, returnTo: path }}
+            />
+          </div>
+        </div>
+      </AppShell>
+    );
+  }
 
   const plan = planFromMetadata(user.user_metadata);
   // `ownsKnm`, not `ownsModule(…, 'a2', …)`: KNM is sold as its own level-less module, so an

@@ -19,6 +19,7 @@ import {
   type RubricCriterion,
 } from '@/lib/rubrics';
 import type { ExamContent, OpenTaskItem, OptionItem, QuestionItem, StimulusItem } from '@/lib/exam-content';
+import GuestSignupOverlay from './GuestSignupOverlay';
 import StimulusPane from './StimulusPane';
 import McqQuestion from './McqQuestion';
 import ConceptAdvice from '@/components/lessons/ConceptAdvice';
@@ -154,6 +155,15 @@ type Props = {
   content: ExamContent;
   /** Compleet plan — per-question explanations in the MCQ review. */
   canSeeExplanations: boolean;
+  /**
+   * Gezet als er géén account achter deze zitting zit: de gast mag `limit` vragen maken en
+   * krijgt daarna `GuestSignupOverlay`. Weglaten is de normale, ingelogde zitting.
+   *
+   * Er wordt voor een gast niets weggeschreven — elke schrijfactie in dit bestand hangt al aan
+   * `userId`, dat zonder sessie `null` blijft. De antwoorden gaan naar `sessionStorage` en
+   * worden na het inloggen teruggezet; dat is wat "voortgang bewaard" op de kaart waarmaakt.
+   */
+  guest?: { limit: number; locale: string; returnTo: string } | null;
 };
 
 /**
@@ -172,7 +182,7 @@ const RUBRIC_FEEDBACK_IS_GATED = false;
 
 const RECORDING_BUCKET = 'speaking-submissions';
 
-export default function ExamShell({ content, canSeeExplanations }: Props) {
+export default function ExamShell({ content, canSeeExplanations, guest = null }: Props) {
   const { exam, parts, stimuli, standalone, tasks, sectionNames } = content;
   const supabase = useMemo(() => createClient(), []);
   const isOpenSkill = exam.skill === 'schrijven' || exam.skill === 'spreken';
@@ -215,6 +225,8 @@ export default function ExamShell({ content, canSeeExplanations }: Props) {
   /** De teller van het nakijkscherm: hoeveel van hoeveel zijn klaar. */
   const [gradingProgress, setGradingProgress] = useState({ done: 0, total: 0 });
   const [regrading, setRegrading] = useState(false);
+  /** Staat de aanmeldkaart over het examen? Alleen een gast kan hem krijgen. */
+  const [wall, setWall] = useState(false);
 
   const secondsRef = useRef(exam.duration_seconds);
   const timerRef = useRef<ReturnType<typeof setInterval> | null>(null);
@@ -299,6 +311,65 @@ export default function ExamShell({ content, canSeeExplanations }: Props) {
       setPhase('results');
     }
   }, [steps, tasks]);
+
+  /**
+   * De sleutel waaronder de antwoorden van een gast tussen twee pagina's blijven staan.
+   *
+   * `sessionStorage` en niet de database: er is geen account om ze aan te hangen, en een
+   * gastzitting hoort geen rij in `exam_attempts` te maken die bij niemand hoort. Per examen,
+   * zodat twee tabbladen elkaars werk niet overschrijven.
+   */
+  const resumeKey = `exam-resume:${exam.id}`;
+
+  // Bewaren zolang hij gast is.
+  useEffect(() => {
+    if (!guest) return;
+    try {
+      const ids: Record<number, number> = {};
+      for (const [qid, option] of Object.entries(chosen)) ids[Number(qid)] = option.id;
+      sessionStorage.setItem(resumeKey, JSON.stringify(ids));
+    } catch {
+      // Private mode, volle opslag: de zitting mag hier niet op stuklopen.
+    }
+  }, [guest, chosen, resumeKey]);
+
+  /**
+   * Terugzetten zodra hij géén gast meer is — dat is de terugkeer van Google.
+   *
+   * Eenmalig, en de sleutel wordt meteen opgeruimd: anders zou een tweede zitting van hetzelfde
+   * examen beginnen met de antwoorden van de vorige, en dat is geen hervatten maar spoken.
+   */
+  const resumedRef = useRef(false);
+  useEffect(() => {
+    if (guest || resumedRef.current || steps.length === 0) return;
+    resumedRef.current = true;
+    let raw: string | null = null;
+    try {
+      raw = sessionStorage.getItem(resumeKey);
+      if (raw) sessionStorage.removeItem(resumeKey);
+    } catch {
+      return;
+    }
+    if (!raw) return;
+
+    let ids: Record<string, number>;
+    try { ids = JSON.parse(raw) as Record<string, number>; } catch { return; }
+
+    const picks: Record<number, OptionItem> = {};
+    for (const step of steps) {
+      if (step.kind !== 'mcq') continue;
+      const optionId = ids[String(step.question.id)];
+      const option = step.question.options.find(o => o.id === optionId);
+      if (option) picks[step.question.id] = option;
+    }
+    const count = Object.keys(picks).length;
+    if (count === 0) return;
+
+    setChosen(picks);
+    void startExam().then(() => goTo(Math.min(count, steps.length - 1)));
+    track('exam_guest_resumed', { skill: exam.skill, exam_number: exam.number, answered: count });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [guest, steps, resumeKey]);
 
   const stopTimer = useCallback(() => {
     if (timerRef.current) { clearInterval(timerRef.current); timerRef.current = null; }
@@ -413,6 +484,13 @@ export default function ExamShell({ content, canSeeExplanations }: Props) {
 
   function goTo(next: number) {
     if (next < 0 || next >= totalItems) return;
+    // De grens van de gast. Vooruit is de vraag die hij niet meer gratis krijgt; terug mag
+    // altijd, anders zou de kaart ook zijn eigen antwoorden afsluiten.
+    if (guest && next > idx && next >= guest.limit) {
+      setWall(true);
+      track('exam_guest_wall', { skill: exam.skill, exam_number: exam.number, answered: Object.keys(chosen).length });
+      return;
+    }
     setIdx(next);
     setPhase(phaseFor(next));
     window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -977,6 +1055,16 @@ export default function ExamShell({ content, canSeeExplanations }: Props) {
           @media (prefers-reduced-motion: reduce) { .exam-ghost-btn { transition: none; } }
         `}</style>
         <PrimaryBtnStyles />
+
+        {/* De gastgrens. Het examen blijft eronder staan — zie `GuestSignupOverlay`. */}
+        {wall && guest && (
+          <GuestSignupOverlay
+            answered={Object.keys(chosen).length}
+            nextNumber={Math.min(guest.limit + 1, totalItems)}
+            locale={guest.locale}
+            returnTo={guest.returnTo}
+          />
+        )}
       </div>
     );
   }
