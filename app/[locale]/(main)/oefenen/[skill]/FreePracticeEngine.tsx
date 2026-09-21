@@ -61,11 +61,15 @@ export default function FreePracticeEngine({ skill, skillName, items, locale, le
   /**
    * Whether the score itself is on screen.
    *
-   * The result renders behind a blur until the visitor hands over an e-mail address or takes
-   * the skip link. Withholding it outright with no way out is coercive and mostly yields junk
-   * addresses — the skip link is deliberate and is pinned by `tests/free-practice.spec.js`.
+   * Staat meteen aan, zoals op KNM Oefenen (besluit eigenaar, 21-09): de bezoeker ziet zijn
+   * uitslag en de kaart naar het platform direct, en het e-mailadres is een aanbod ("liever je
+   * rapport ook per e-mail?") in plaats van een poort. Een uitslag achterhouden die iemand net
+   * zelf verdiend heeft levert vooral wegwerpadressen op.
+   *
+   * De poort zelf is niet gesloopt: `?flow=gate` (alleen lokaal, `devToolsEnabled()`) zet hem
+   * terug op `false` en toont de geblurde variant.
    */
-  const [revealed, setRevealed] = useState(false);
+  const [revealed, setRevealed] = useState(true);
 
   const isListening = skill === 'luisteren';
   /**
@@ -107,7 +111,7 @@ export default function FreePracticeEngine({ skill, skillName, items, locale, le
     setIdx(items.length - 1);
     // The "e-mail verstuurd" confirmation lives on the result screen, not on the gate.
     if (flow === 'email_sent') setEmailCaptured(true);
-    if (flow !== 'gate') setRevealed(true);
+    setRevealed(flow !== 'gate');
     setPhase('results');
   }, [items]);
 
@@ -116,7 +120,7 @@ export default function FreePracticeEngine({ skill, skillName, items, locale, le
     setLog([]);
     setIdx(0);
     setSelected(null);
-    setRevealed(false);
+    setRevealed(true);
     setPhase('quiz');
     track('free_practice_started', { skill, count: total });
     window.scrollTo({ top: 0, behavior: 'smooth' });

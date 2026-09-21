@@ -7,8 +7,8 @@ import { test, expect } from '@playwright/test';
  *
  * Content is static (`data/free-practice.ts`) precisely so this renders with no database, which is
  * also what makes it testable without fixtures. The three things worth pinning are the ones that
- * are product decisions rather than implementation: feedback per question, the score withheld until
- * the e-mail step, and the skip link that must survive.
+ * are product decisions rather than implementation: feedback per question, the score shown straight
+ * away with the e-mail as an offer beside it, and the route into the platform underneath.
  */
 
 /** Answer the visible question by clicking the first option, then advance. */
@@ -36,23 +36,15 @@ test.describe('lezen taster', () => {
     await expect(page.locator('main')).toContainText(/goed|fout|uitleg/i, { timeout: 5000 });
   });
 
-  test('withholds the score behind the e-mail step, and lets the visitor past it', async ({ page }) => {
+  test('shows the score straight away, with the e-mail as an offer beside it', async ({ page }) => {
     for (let i = 0; i < 10; i += 1) await answerAndAdvance(page);
 
-    // The gate. The score renders behind a blur rather than being withheld from the DOM, so
-    // what is asserted is that it is *unreadable and unreachable* — `.fp-locked` carries the
-    // blur, `pointer-events: none` and `aria-hidden`, and losing any of those hands the number
-    // to a cursor, a caret or a screen reader while the design still looks gated.
-    const gate = page.locator('#fp-email');
-    await expect(gate).toBeVisible({ timeout: 10000 });
-    await expect(page.locator('.fp-gauge')).toHaveClass(/fp-locked/);
-    await expect(page.locator('.fp-head')).toHaveAttribute('aria-hidden', 'true');
-
-    // The skip link is deliberate and documented: withholding a result the visitor earned, with no
-    // way out, is coercive and mostly harvests junk addresses. Do not delete this test to make a
-    // "stronger" gate pass — that decision belongs to the owner.
-    await page.getByRole('button', { name: /zonder e-mail|liever niet/i }).click();
+    // Owner's decision (21-09), matching KNM Oefenen: the result a visitor just earned is theirs
+    // on arrival. The e-mail field stays — it offers the report — but it no longer gates anything,
+    // so nothing on this card may carry `.fp-locked`.
+    await expect(page.locator('#fp-email')).toBeVisible({ timeout: 10000 });
     await expect(page.locator('.fp-gauge')).not.toHaveClass(/fp-locked/);
+    await expect(page.locator('.fp-head')).not.toHaveAttribute('aria-hidden', 'true');
     await expect(page.locator('main')).toContainText('%');
   });
 
@@ -62,13 +54,10 @@ test.describe('lezen taster', () => {
     await page.locator('#fp-email').fill('not-an-email');
     await page.locator('form button[type="submit"]').click();
     await expect(page.locator('#fp-email-error')).toBeVisible();
-    // Still gated: a failed submit must not reveal the score as a side effect.
-    await expect(page.locator('.fp-gauge')).toHaveClass(/fp-locked/);
   });
 
   test('ends on a route into the paid exams', async ({ page }) => {
     for (let i = 0; i < 10; i += 1) await answerAndAdvance(page);
-    await page.getByRole('button', { name: /zonder e-mail|liever niet/i }).click();
 
     // The exit is the portal itself: an anonymous visitor may browse it, and the account is
     // asked for at the oefenexamen. Scoped to `main` — the chrome links the exams anyway.

@@ -5066,3 +5066,9 @@ gezichten niet in beeld — bij portretfoto's is `position: 'top'` betrouwbaarde
 alle zes naast elkaar is de enige manier om dat in één blik te controleren.
 **Lesson:** Als een besluit een regel uit `CLAUDE.md` oprekt, leg dan in dezelfde commit vast wáár
 de nieuwe grens ligt. Anders leest de volgende sessie alleen de uitzondering en niet de regel.
+
+## 2026-09-21 — De taster toont de uitslag meteen, zoals KNM Oefenen
+**Changed:** `revealed` start op `true` in `app/[locale]/(main)/oefenen/[skill]/FreePracticeEngine.tsx`; `tests/free-practice.spec.js` pint nu de open uitslag in plaats van de poort.
+**Outcome:** SUCCESS
+**What worked / went wrong:** De hele KNM-opmaak stond er al — score, gauge, `email_cta_after` ("Liever je rapport ook per e-mail?") en de platformkaart. Alleen de beginstand van één boolean verschilde, dus er hoefde geen markup bij. De blur-machinerie is blijven staan en is nog bereikbaar via `?devFlow=gate` lokaal.
+**Lesson:** Voordat je een scherm nabouwt naar een ander product: kijk of het verschil niet één state-default is. En: dit draait CLAUDE.md §9 ("nooit een score vóór de e-mailstap") om — dat is een besluit van de eigenaar en hoort in de regel zelf, niet alleen in de code.
