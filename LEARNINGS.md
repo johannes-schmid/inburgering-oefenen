@@ -5037,3 +5037,32 @@ een band — met zes stops langs een ease-in-curve is de rand weg.
 begint als een rand. En de zwevende kop was alleen op de homepage een pil over navy: de
 `(main)`-layout reserveert `--nav-h`, dus elke kop die die marge niet terugneemt hangt boven een
 witte strook. Dat hoort in de gedeelde headercomponent te zitten, niet per pagina.
+
+## 2026-09-21 — De hero ademt: licht over de hele sectie
+**Changed:** `components/horizon/HeroAurora.tsx` (nieuw, geëxporteerd via `index.ts`), drie
+`hero-aurora-*`-keyframes plus `hero-dot-drift` in `app/globals.css`, en de hero in
+`app/[locale]/(main)/page.tsx` die het licht achter alles zet en het puntenraster één cel laat
+meeschuiven.
+**Outcome:** SUCCESS
+**What worked / went wrong:** De eigenaar leverde een component aan dat `--hue1`/`--hue2` via
+`@property` 360° door de kleurcirkel draait (`linear-gradient(in oklch longer hue)`). Dat is hier
+twee keer fout: het levert een regenboog op een navy-oranje merk, en `@property` plus
+oklch-interpolatie rendert niet in de screenshotbrowser (Chromium 101) noch in Safari < 16.4 — het
+zou stil niets doen. Vervangen door drie radiale lichtvelden in merkkleuren die alleen `transform`
+en `opacity` bewegen. Twee schermafdrukken op t=1s en t=23s laten zien dát het schuift; zonder die
+tweede afdruk is een trage animatie niet te verifiëren.
+**Lesson:** Een aangeleverd component is een *richting*, niet een implementatie. Controleer eerst
+of de CSS erin überhaupt in de verificatiebrowser draait, en of de kleurlogica bij het palet past —
+een animatie die je niet kúnt fotograferen, kun je ook niet opleveren.
+
+## 2026-09-21 — De avatars zijn gezichten geworden
+**Changed:** `components/horizon/AvatarCluster.tsx` toont zes Pexels-portretten uit
+`public/images/avatars/` (met `CREDITS.json`); `SEO/facts.md` §12 herschreven.
+**Outcome:** SUCCESS
+**What worked / went wrong:** Dit draait §2 ("nooit verzonnen social proof") gedeeltelijk terug,
+dus de grens is opgeschreven in plaats van weggelaten: een gezicht mag bij een aantál staan, nooit
+bij een naam of een uitspraak. Eerste poging aan de crop: `sharp.strategy.attention` zette de
+gezichten niet in beeld — bij portretfoto's is `position: 'top'` betrouwbaarder. Een montage van
+alle zes naast elkaar is de enige manier om dat in één blik te controleren.
+**Lesson:** Als een besluit een regel uit `CLAUDE.md` oprekt, leg dan in dezelfde commit vast wáár
+de nieuwe grens ligt. Anders leest de volgende sessie alleen de uitzondering en niet de regel.

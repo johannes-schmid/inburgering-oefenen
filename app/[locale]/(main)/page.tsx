@@ -13,7 +13,7 @@ import FeatureCarousel from './_components/FeatureCarousel';
 import { publishedGuides, getGuideLocale, guideHref } from '@/data/guides/helpers';
 import { getPostBySlug, getPostLocale, getPostSlug } from '@/data/blog-posts';
 import TrustpilotScore from '@/components/site/TrustpilotScore';
-import { HorizonBand, DotField, Skyline, SectionTransition, ExamMark, GlassChip, AvatarCluster, HERO_GRADIENT } from '@/components/horizon';
+import { HorizonBand, DotField, Skyline, SectionTransition, ExamMark, GlassChip, AvatarCluster, HeroAurora, HERO_GRADIENT } from '@/components/horizon';
 import { Link } from '@/i18n/navigation';
 import { ArrowUpRight } from 'lucide-react';
 import { courseId, TEACHER_REF, ogImageFor } from '@/lib/schema';
@@ -329,7 +329,29 @@ export default async function HomePage({ params }: Props) {
         className="relative overflow-hidden -mt-[var(--nav-h)] text-on-primary"
         style={{ background: HERO_GRADIENT, paddingTop: 'calc(var(--nav-h) + 1.5rem)' }}
       >
-        <DotField on="light" />
+        {/* Het bewegende licht over de hele sectie — zie `components/horizon/HeroAurora.tsx`.
+            Het staat achter álles: het puntenraster, de skyline, de collage en de tekst liggen er
+            allemaal overheen, want dit is de lucht en niet een laag ín de scène. */}
+        <HeroAurora />
+
+        {/* Het raster schuift één cel mee met het licht. Eén cel is de periode van het raster, dus
+            de terugsprong is onzichtbaar; het masker houdt het weg bij de rand, waar de beweging
+            anders als een schuivende rand zichtbaar wordt. */}
+        <div
+          aria-hidden="true"
+          className="absolute inset-0 overflow-hidden pointer-events-none"
+          style={{
+            maskImage: 'radial-gradient(120% 100% at 50% 40%, #000 45%, transparent 100%)',
+            WebkitMaskImage: 'radial-gradient(120% 100% at 50% 40%, #000 45%, transparent 100%)',
+          }}
+        >
+          <div
+            className="absolute -inset-8"
+            style={{ animation: 'hero-dot-drift 34s linear infinite', willChange: 'transform' }}
+          >
+            <DotField on="light" />
+          </div>
+        </div>
 
         {/* Hier stond een `SunDisc`. Hij is eruit: gedempt over navy wordt het oranje bruin en
             leest de schijf als een veeg in plaats van als een lichtbron. Een schijf moet bedekt

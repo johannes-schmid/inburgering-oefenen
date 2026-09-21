@@ -1499,3 +1499,31 @@
 @media (prefers-reduced-motion: reduce) {
   [style*='hero-fade-drift'] { animation: none !important; transform: none !important; }
 }
+
+/* Het bewegende licht van `components/horizon/HeroAurora.tsx`. Drie velden, drie duren zonder
+   gemeenschappelijke deler, elk met zijn eigen richting — samen leest dat als lucht die verschuift
+   in plaats van als een lus. De uitslagen zijn klein (hooguit een tiende van de sectie): dit moet
+   je merken als je de pagina een halve minuut open hebt, niet bij het laden. */
+@keyframes hero-aurora-a {
+  0%   { transform: translate3d(-4%, -3%, 0) scale(1);    opacity: 0.75; }
+  100% { transform: translate3d(5%, 4%, 0) scale(1.14);   opacity: 1; }
+}
+@keyframes hero-aurora-b {
+  0%   { transform: translate3d(4%, 3%, 0) scale(1.1);    opacity: 1; }
+  100% { transform: translate3d(-5%, -2%, 0) scale(1);    opacity: 0.7; }
+}
+@keyframes hero-aurora-c {
+  0%   { transform: translate3d(3%, -2%, 0) scale(1.05);  opacity: 0.6; }
+  100% { transform: translate3d(-6%, 3%, 0) scale(1.2);   opacity: 1; }
+}
+
+/* Het puntenraster schuift één cel op en begint dan opnieuw. Eén cel is precies de periode van
+   het raster, dus de sprong terug is onzichtbaar — vandaar `infinite` zonder `alternate`. */
+@keyframes hero-dot-drift {
+  from { transform: translate3d(0, 0, 0); }
+  to   { transform: translate3d(22px, 22px, 0); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  [style*='hero-aurora'], [style*='hero-dot-drift'] { animation: none !important; transform: none !important; }
+}

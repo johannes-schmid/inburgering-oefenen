@@ -20,3 +20,4 @@ export { C as HORIZON_COLORS, HERO_GRADIENT, HORIZON_GRADIENT, SUN_GRADIENT, dot
 export { default as CategoryMark, type Category } from './CategoryMark';
 export { default as ExamMark, type Track } from './ExamMark';
 export { default as AvatarCluster } from './AvatarCluster';
+export { default as HeroAurora } from './HeroAurora';
