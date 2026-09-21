@@ -5022,3 +5022,18 @@ Eerst een kopie van beide in de scratchpad zetten, dáárna pas iets terugzetten
 **Lesson:** Twee Claude-sessies in dezelfde werkmap is één werkmap te weinig. Draai een tweede
 sessie in een aparte git-worktree. En `.next/dev` plus het sessietranscript zijn samen een
 volwaardige back-up van niet-gecommit werk — zolang je ze pakt vóórdat de dev-server ze overschrijft.
+
+## 2026-09-21 — De uitdoving van de hero, en één kop over de hele site
+**Changed:** de hero-uitdoving in `app/[locale]/(main)/page.tsx` (hoger, zes stops, en de skyline
+staat erbóven met een eigen masker), plus `-mt-[var(--nav-h)]` in `components/site/GradientHero.tsx`,
+`components/horizon/HorizonHero.tsx`, `app/[locale]/(main)/premium/page.tsx` en
+`app/[locale]/(main)/platform/page.tsx`.
+**Outcome:** SUCCESS
+**What worked / went wrong:** De skyline stond op `bottom-0` en liep dus dwars door het verloop:
+de huizen bleven als bleke blokken in het wit staan en maakten de uitdoving ongedaan. Optillen tot
+boven het verloop plus een eigen masker loste het op. De eerste uitdoving had drie stops en las als
+een band — met zes stops langs een ease-in-curve is de rand weg.
+**Lesson:** Een verloop met drie stops is lineair, en het oog ziet de plek waar een lineair verloop
+begint als een rand. En de zwevende kop was alleen op de homepage een pil over navy: de
+`(main)`-layout reserveert `--nav-h`, dus elke kop die die marge niet terugneemt hangt boven een
+witte strook. Dat hoort in de gedeelde headercomponent te zitten, niet per pagina.

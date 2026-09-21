@@ -23,6 +23,11 @@ type Props = { params: Promise<{ locale: string }> };
 
 const BASE = 'https://inburgeringoefenen.nl';
 
+/* Het masker waarmee de skyline in de hero oplost. Hij staat net boven de uitdoving, dus hij moet
+   aan zijn eigen onderkant al doorzichtig zijn — anders zie je de daklijn als een harde rand in
+   het verloop staan. `-webkit-` erbij omdat Safari de ongeprefixte nog niet overal pakt. */
+const FADE_MASK = 'linear-gradient(to bottom, #000 0%, rgba(0,0,0,0.35) 70%, transparent 100%)';
+
 export async function generateStaticParams() {
   return routing.locales.map((locale) => ({ locale }));
 }
@@ -330,11 +335,25 @@ export default async function HomePage({ params }: Props) {
             leest de schijf als een veeg in plaats van als een lichtbron. Een schijf moet bedekt
             worden door iets dat ervóór staat, nooit door zijn eigen container. */}
 
-        {/* De straat op de horizon, achter alles. Twee tellingen achter één breekpunt (§7.1). */}
-        <div className="absolute left-0 right-0 bottom-0 sm:hidden">
+        {/* De straat op de horizon, achter alles. Twee tellingen achter één breekpunt (§7.1).
+
+            **De skyline stopt bóven de uitdoving** (eigenaar, 21-09). Hij stond eerst op
+            `bottom-0` en liep dus dwars door het verloop heen: de huizen bleven als bleke blokken
+            in het wit staan, wat de uitdoving juist ongedaan maakt. Nu staan ze op de hoogte waar
+            het verloop begint, met hun eigen masker eroverheen, zodat de straat oplost vóórdat
+            het navy dat doet. De twee waarden moeten gelijk blijven aan de hoogte van de
+            uitdoving hieronder: de straat staat op driekwart van de hoogte van het verloop, zodat
+            hij al opgelost is voordat het navy dat is. */}
+        <div
+          className="absolute left-0 right-0 bottom-36 sm:hidden"
+          style={{ maskImage: FADE_MASK, WebkitMaskImage: FADE_MASK }}
+        >
           <Skyline count={7} tone="hero" height={96} />
         </div>
-        <div className="absolute left-0 right-0 bottom-0 hidden sm:block">
+        <div
+          className="absolute left-0 right-0 bottom-56 hidden sm:block"
+          style={{ maskImage: FADE_MASK, WebkitMaskImage: FADE_MASK }}
+        >
           <Skyline count={14} tone="hero" height={150} />
         </div>
 
@@ -346,8 +365,15 @@ export default async function HomePage({ params }: Props) {
             rendert solide in de screenshotbrowser. */}
         <div
           aria-hidden="true"
-          className="absolute left-0 right-0 bottom-0 h-28 sm:h-40 z-[5] pointer-events-none"
-          style={{ background: 'linear-gradient(to bottom, rgba(248,249,251,0) 0%, rgba(248,249,251,0.55) 58%, rgb(248,249,251) 100%)' }}
+          className="absolute left-0 right-0 bottom-0 h-48 sm:h-72 z-[5] pointer-events-none"
+          style={{
+            /* Zes stops in plaats van drie. Met drie loopt een verloop lineair en ziet het oog de
+               plek waar het begint als een rand — precies wat een uitdoving niet moet doen. Deze
+               stops volgen een ease-in-curve: de eerste helft geeft nauwelijks dekking weg, de
+               laatste derde doet het meeste werk. */
+            background:
+              'linear-gradient(to bottom, rgba(248,249,251,0) 0%, rgba(248,249,251,0.06) 22%, rgba(248,249,251,0.2) 42%, rgba(248,249,251,0.45) 60%, rgba(248,249,251,0.75) 78%, rgba(248,249,251,0.94) 91%, rgb(248,249,251) 100%)',
+          }}
         />
 
         <div className="relative z-10 max-w-7xl mx-auto px-6">
@@ -364,7 +390,7 @@ export default async function HomePage({ params }: Props) {
             <HeroShowcase />
           </div>
 
-          <div className="grid lg:grid-cols-[minmax(0,1.1fr)_minmax(0,0.9fr)] gap-8 lg:gap-16 items-end pt-8 sm:pt-4 pb-16 lg:pb-24">
+          <div className="grid lg:grid-cols-[minmax(0,1.1fr)_minmax(0,0.9fr)] gap-8 lg:gap-16 items-end pt-8 sm:pt-4 pb-28 lg:pb-40">
             <div className="flex flex-col items-start gap-5">
               <GlassChip>
                 <span aria-hidden="true" className="w-3.5 h-3.5 rounded-full flex items-center justify-center bg-white">

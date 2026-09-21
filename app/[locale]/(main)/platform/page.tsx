@@ -119,7 +119,12 @@ export default async function PlatformPage({ params }: Props) {
     <main className="bg-surface min-h-screen">
       <JsonLd data={jsonLd} />
 
-      <section className="relative overflow-hidden px-6 pt-14 pb-16" style={{ background: 'var(--gradient-brand)' }}>
+      {/* Loopt ónder de zwevende kop door, net als elke andere `(main)`-kop — zie de opmerking in
+          `components/site/GradientHero.tsx`. */}
+      <section
+        className="relative overflow-hidden px-6 -mt-[var(--nav-h)] pb-16"
+        style={{ background: 'var(--gradient-brand)', paddingTop: 'calc(var(--nav-h) + 3.5rem)' }}
+      >
         {/* No sun disc: the header is centred, so there is no empty flank for the accent and it
             would land on the headline (§7.3). */}
         <HorizonBanner seed={3} sun={false} />

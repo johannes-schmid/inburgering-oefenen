@@ -467,8 +467,11 @@ export default async function PremiumPage({ params }: Props) {
       <PricingViewTracker />
       {/* ── 1. HERO ─────────────────────────────────────────────────────── */}
       <section
-        className="relative overflow-hidden px-6 py-20 md:py-28"
-        style={{ background: HERO_GRADIENT }}
+        /* Loopt ónder de zwevende kop door, net als elke andere `(main)`-kop — zie de opmerking in
+           `components/site/GradientHero.tsx`. Deze pagina tekent zijn eigen band in plaats van die
+           component te gebruiken, dus de marge en de padding staan hier met de hand. */
+        className="relative overflow-hidden px-6 -mt-[var(--nav-h)] pb-20 md:pb-28"
+        style={{ background: HERO_GRADIENT, paddingTop: 'calc(var(--nav-h) + 5rem)' }}
       >
         {/* Was two large orange radial washes. §7.3: exactly one sun disc per composition, and
             the orange is a pointer, never a texture — two soft glows made the whole header read

@@ -27,8 +27,13 @@ export default function GradientHero({
 }) {
   return (
     <div
-      style={{ background: HERO_GRADIENT }}
-      className={cn('relative overflow-hidden py-12', className)}
+      /* De band loopt ónder de zwevende kop door (besluit eigenaar, 21-09). De `(main)`-layout
+         reserveert `--nav-h` bovenaan; zonder deze negatieve marge begint het navy daarónder en
+         hangt de glazen pil boven een witte strook — op de homepage wél over navy, hier niet, en
+         dat verschil zag je per pagina. De paddingTop geeft de ruimte terug die de marge weghaalt,
+         plus de `py-12` die deze band altijd al had. */
+      style={{ background: HERO_GRADIENT, paddingTop: 'calc(var(--nav-h) + 3rem)' }}
+      className={cn('relative overflow-hidden -mt-[var(--nav-h)] pb-12', className)}
     >
       <HorizonBanner desktopHouses={16} desktopHeight={80} mobileHouses={6} mobileHeight={56} />
 

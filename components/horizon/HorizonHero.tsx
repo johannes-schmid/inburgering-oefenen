@@ -55,7 +55,13 @@ export default function HorizonHero({
   const background = tone === 'gradient' ? HERO_GRADIENT : tone === 'inverted' ? C.primary : '#f2f4f6';
 
   return (
-    <div className={cn('relative overflow-hidden', className)} style={{ background }}>
+    <div
+      /* Loopt ónder de zwevende kop door — zie de opmerking in `components/site/GradientHero.tsx`.
+         De `(main)`-layout reserveert `--nav-h`; die marge wordt hier teruggenomen en als padding
+         weer toegevoegd, zodat de kop over de scène zweeft in plaats van boven een witte strook. */
+      className={cn('relative overflow-hidden -mt-[var(--nav-h)]', className)}
+      style={{ background, paddingTop: 'var(--nav-h)' }}
+    >
       <DotField on={dark ? 'light' : 'dark'} />
       <Skyline
         count={houses}
