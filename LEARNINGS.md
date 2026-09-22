@@ -5096,3 +5096,54 @@ de nieuwe grens ligt. Anders leest de volgende sessie alleen de uitzondering en 
 **Outcome:** SUCCESS
 **What worked / went wrong:** De KNM-regel was een telling en mocht weg; de B1-regel is de beschikbaarheidsclaim ("Luisteren B1 komt eraan") en is daarom verplaatst in plaats van geschrapt — §2 zegt dat de tegel die B1 verkoopt ook zegt welk onderdeel ontbreekt.
 **Lesson:** Bij een puur visuele opschoning eerst per tekstregel vragen of hij decoratie of claim is; een claim verhuist, een telling mag vallen.
+
+## 2026-09-22 — homepage herordend naar clay.com, en de kop van /platform herbouwd
+**Changed:** `app/[locale]/(main)/page.tsx` — alles ná `FeatureCarousel` vervangen door twee
+verdiepingssecties met dezelfde vorm (`DeepDive`, lokaal in de pagina) plus één bewijssectie die de
+oude quotes, het docentpaneel en de vergelijking samenvoegt; `platform/page.tsx` — de kop is nu een
+compositie met het portaal in het midden, vier satellietkaarten eromheen en een KNM-kaart eronder
+(`OnderdeelCard`, lokaal). 31 + 7 sleutels in `messages/{nl,en,ar}.json`. Nieuw asset:
+`public/images/platform/knm-speler.jpg`, een uitsnede van `knm.jpg`.
+**Outcome:** SUCCESS
+**What worked / went wrong:**
+- De pagina had drie bewijseilanden (verbindende kaart, quotes, docentpaneel) en twee secties die
+  allebei "wat zit erin" beantwoordden. Clay heeft twee bewijsmomenten op de hele pagina en één
+  herhaald ritme: overzicht → N verdiepingen in dezelfde vorm. Dat ritme overnemen was de hele fix;
+  er is niets nieuws aan inhoud bij gekomen behalve de leerlaag, die alleen als carrouseldia bestond.
+- **`sips --cropOffset` wordt genegeerd** — `sips -c H W` snijdt altijd uit het mídden. Elke crop
+  die ik van een volle-paginascreenshot maakte was dus een middencrop, niet de regio die ik vroeg.
+  Voor het beoordelen van een specifieke sectie: een eigen puppeteer-shot met een vaste viewport
+  (`setViewport` + `page.screenshot`) laat zien wat je bedoelt. `sharp` zit niet als los pakket in
+  `node_modules`; `ffmpeg` wel (`/usr/local/bin/ffmpeg`) en die kan `-vf crop=w:h:x:y`.
+- **`object-position` doet niets als het vak breder is dan de foto hoog is.** `object-cover` schaalt
+  dan op breedte en snijdt verticaal; de zijbalk links uit een schermafdruk krijg je er zo niet af.
+  Inzoomen met `transform: scale()` werkt alleen als de container `overflow-hidden` heeft — zonder
+  dat liep de afbeelding over de tekstkolom ernaast heen. De schone oplossing was één uitsnede als
+  eigen bestand.
+- Een JSX-commentaar afsluiten met `*/` in plaats van `*/}` geeft `TS1005: '}' expected` op de
+  regel eróna, niet op het commentaar zelf, en de pagina rendert als een leeg wit scherm.
+**Lesson:** Structuur op een landingspagina is niet "minder secties", het is één vorm die zich
+herhaalt plus bewijs op één plek. En: controleer waar je screenshot-crop écht naar kijkt voordat je
+hem als verificatie opschrijft.
+
+## 2026-09-22 — Bento-kennisbank, KNM als vijfde kaart, en de uitleglaag op /platform
+**Changed:** `_components/KennisbankCards.tsx` is een bento op zes kolommen met de artikelfoto in de
+tegel; `(main)/page.tsx` geeft die foto's mee (gids-hero of `post.image`). Vier gidsen kregen een
+hero via `scripts/fetch-guide-images.mjs` (nieuwe `PICK`-regels) plus een `heroImage`-blok.
+`platform/page.tsx`: de KNM-kaart in de kop is nu dezelfde satellietkaart als de vier
+taalonderdelen, en er staat een nieuwe uitleglaag van zes stapelende blokken onder de kop.
+**Outcome:** SUCCESS
+**What worked / went wrong:**
+- Een backtick in een JSX-commentaar *binnen* `<style>{`…`}`</style>` sluit de template literal en
+  geeft `TS1005` op een regel verderop. Dezelfde val als het `*/` zonder `}` van gisteren: de
+  foutregel wijst nooit naar de oorzaak.
+- `fullPage`-screenshots laten lui geladen `next/image` leeg, dus de bento leek zes egale
+  navyblokken. Pas een eigen puppeteer-helper die eerst door de pagina scrollt liet de foto's zien.
+  Conclusie eerst controleren vóór je de sluier gaat bijstellen.
+- `page.$(selector)` in de puppeteer van dit project kent `:has()` niet (Chromium 101) en
+  `ElementHandle.scrollIntoView` bestaat er niet — `evaluateHandle` + `el.evaluate(e =>
+  e.scrollIntoView())` werkt wel.
+- Een elementscreenshot van een `position: sticky`-blok fotografeert altijd de gestapelde eindstand.
+  Of sticky werkt controleer je met `getComputedStyle`, niet met een plaatje.
+**Lesson:** een stapelende scrollsectie hoeft geen scriptlaag te zijn — `position: sticky` met een
+oplopende `top` per index doet het, en de `prefers-reduced-motion`-uitweg is dan één regel.

@@ -71,6 +71,13 @@ const guide: Guide = {
   heroTitle: 'Het ONA-examen',
   heroSubtitle:
     'Oriëntatie op de Nederlandse Arbeidsmarkt. Geen toets die je op een ochtend doet, maar een portfolio dat je zelf opbouwt — en waar de meeste mensen te laat aan beginnen.',
+  heroImage: {
+    base: 'ona-examen',
+    hasWebp: true,
+    alt: 'Twee mensen geven elkaar een hand boven een tafel',
+    position: 'center 50%',
+    credit: 'Ron Lach (Pexels)',
+  },
   readingMinutes: 9,
 
   articleHtml: `

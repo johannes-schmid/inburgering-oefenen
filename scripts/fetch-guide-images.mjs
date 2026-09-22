@@ -41,6 +41,13 @@ const PICK = {
   /* Result 2: result 0 is a calculator shot cropped so tight that the hero shows four keys. A hero
      is 1800×760 of a 4000px photo, so a close-up subject arrives closer still. */
   'wat-kost-inburgeren': ['euro banknotes coins calculator desk', 2],
+  /* De vier gidsen van de inburgeringssectie die nog geen hero hadden (22-09). Zelfde maatstaf
+     als hierboven: een onderwerp dat overleeft dat de linkerhelft onder de navy sluier verdwijnt,
+     en iets dat over déze gids gaat in plaats van een algemene studiefoto. */
+  'boete-en-termijn': ['calendar page deadline circled date', 0],
+  'ona-examen': ['job interview office handshake table', 0],
+  'pvt-map-en-ona': ['people workshop table talking group', 0],
+  'vrijstelling-en-ontheffing': ['stamp document paperwork desk approval', 0],
 };
 
 function apiKey() {

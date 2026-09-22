@@ -15,7 +15,7 @@ import { getPostBySlug, getPostLocale, getPostSlug } from '@/data/blog-posts';
 import TrustpilotScore from '@/components/site/TrustpilotScore';
 import { HorizonBand, DotField, Skyline, SectionTransition, ExamMark, GlassChip, AvatarCluster, HeroAurora, HERO_GRADIENT } from '@/components/horizon';
 import { Link } from '@/i18n/navigation';
-import { ArrowUpRight } from 'lucide-react';
+import { ArrowUpRight, ArrowRight } from 'lucide-react';
 import { courseId, TEACHER_REF, ogImageFor } from '@/lib/schema';
 import { localeHref, localizedPath } from '@/i18n/paths';
 
@@ -184,6 +184,85 @@ function BlockTile({
   );
 }
 
+/* ── De verdiepingssectie ──
+   Clay's §7–11: na de tabrij komt niet nóg een overzicht, maar per pijler één sectie met
+   dezelfde vorm — een vaste linkerkolom met de belofte, en rechts drie kaarten die hem met
+   een hard gegeven onderbouwen. Dat de vorm zich herhaalt is het hele punt: de lezer weet na
+   de eerste wat de tweede gaat doen, en dat is wat "structuur" op een landingspagina betekent.
+
+   Clay zet op die kaarten een klantlogo met een cijfer erbij. Wij hebben geen klantlogo's, dus
+   de kaart leidt met het getal zelf. Een `CategoryMark` hoort hier niet: die benoemt een
+   onderdeel, en "10 oefenexamens" is geen onderdeel (§7, de iconenverdeling).
+
+   De twee secties staan op verschillende oppervlaktelagen. Dat is de scheiding tussen de
+   blokken — geen lijn, een tintverschil (§8, de no-line-regel). */
+function DeepDive({
+  id, eyebrow, heading, body, linkLabel, href, cards, tone,
+}: {
+  id: string;
+  eyebrow: string;
+  heading: string;
+  body: string;
+  linkLabel: string;
+  href: string;
+  cards: { key: string; stat: string; label: string; body: string }[];
+  /** 'base' staat op de paginakleur, 'raised' een laag hoger — zo scheiden de twee zich. */
+  tone: 'base' | 'raised';
+}) {
+  return (
+    <section
+      aria-labelledby={`${id}-heading`}
+      className="px-6 py-16 sm:py-20"
+      style={tone === 'raised' ? { background: 'var(--color-surface-container-low)' } : undefined}
+    >
+      <div className="max-w-7xl mx-auto grid lg:grid-cols-[minmax(0,25rem)_minmax(0,1fr)] gap-10 lg:gap-16 items-start">
+        <div className="lg:sticky lg:top-28">
+          <p className="text-secondary font-semibold text-[0.6875rem] uppercase tracking-widest m-0 mb-3">
+            {eyebrow}
+          </p>
+          <h2
+            id={`${id}-heading`}
+            className="font-headline font-extrabold text-primary tracking-tight m-0"
+            style={{ fontSize: 'clamp(1.75rem, 3.6vw, 2.5rem)', lineHeight: 1.05, letterSpacing: '-0.03em', textWrap: 'balance' }}
+          >
+            {heading}
+          </h2>
+          <p className="text-[0.9375rem] leading-relaxed text-on-surface-variant m-0 mt-4 max-w-md">{body}</p>
+          <a
+            href={href}
+            className="dd-link inline-flex items-center gap-2 mt-5 no-underline font-headline font-bold text-sm"
+            style={{ color: '#a24000' }}
+          >
+            {linkLabel}
+            <ArrowRight className="dd-arrow size-4 rtl-flip" />
+          </a>
+        </div>
+
+        <ul className="grid sm:grid-cols-3 gap-4 list-none p-0 m-0">
+          {cards.map(card => (
+            <li
+              key={card.key}
+              className="dd-card rounded-2xl p-6 flex flex-col"
+              style={{ background: 'var(--color-surface-container-lowest)', boxShadow: 'var(--shadow-ambient)' }}
+            >
+              <span
+                className="font-headline font-extrabold text-primary"
+                style={{ fontSize: 'clamp(1.75rem, 3vw, 2.375rem)', lineHeight: 1, letterSpacing: '-0.03em' }}
+              >
+                {card.stat}
+              </span>
+              <span className="mt-2.5 text-[0.6875rem] uppercase tracking-widest font-bold text-secondary">
+                {card.label}
+              </span>
+              <p className="mt-3 text-[0.9375rem] leading-relaxed text-on-surface-variant m-0">{card.body}</p>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </section>
+  );
+}
+
 export default async function HomePage({ params }: Props) {
   const { locale } = await params;
   setRequestLocale(locale);
@@ -325,6 +404,11 @@ export default async function HomePage({ params }: Props) {
       group: t('kb_group_inburgering'),
       title: g.heroTitle,
       desc: g.description,
+      /* Dezelfde foto als de hero van de gids zelf, en bewust niet een tweede snede: de tegel is
+         de vooruitblik op díe pagina. `hasWebp` slaat op de hero-variant; hier staat de `.jpg`,
+         want `next/image` maakt er zelf een moderne encode van. */
+      image: guide.heroImage ? `/images/guides/${guide.heroImage.base}.jpg` : undefined,
+      imageAlt: g.heroImageAlt || guide.heroImage?.alt,
       /* `route.pathname` is de interne routenaam ('/inburgering/[slug]'); `localizedPath` vult
        * de parameter in én pakt de slug van deze taal. Zelf `/${locale}` ervoor plakken gaf
        * `/en/inburgering/…`, wat een 307 is naar `/en/civic-integration/…`. */
@@ -346,14 +430,24 @@ export default async function HomePage({ params }: Props) {
         group: t(group),
         title: lp.heroTitle,
         desc: lp.description,
+        image: post.image,
+        imageAlt: lp.heroTitle,
         href: localeHref(locale, `blog/${getPostSlug(post, locale)}`),
       };
       return card;
     })
     .filter((c): c is KennisbankCard => c !== null);
 
+  /* **Zes kaarten, en dat is het patroon van de bento precies één keer**: de grote tegel, twee
+     halve ernaast, en een rij van drie eronder. Een zevende kaart begint het patroon opnieuw en
+     zet er een tweede blok van dezelfde vorm onder — dan leest de rij als een archief in plaats
+     van als een greep uit de kennisbank, en daar staat `/gidsen` al voor.
+
+     De verdeling is vier gidsen, de KNM-hub en één blogpost, zodat elke filterpil ook echt iets
+     te tonen heeft: de pillen worden uit de kaarten afgeleid, dus een rij van zes gidsen zou
+     één pil overhouden. */
   const KENNISBANK: KennisbankCard[] = [
-    ...guideCards,
+    ...guideCards.slice(0, 4),
     {
       id: 'knm-hub',
       group: t('kb_group_knm'),
@@ -361,7 +455,7 @@ export default async function HomePage({ params }: Props) {
       desc: t('kb_knm_desc'),
       href: `/${locale}/knm`,
     },
-    ...postCards,
+    ...postCards.slice(0, 1),
   ];
 
   /* De quotes van echte cursisten. **Leeg tot de eigenaar ze aanlevert** — een quote hier is een
@@ -369,6 +463,10 @@ export default async function HomePage({ params }: Props) {
      verzonnen social proof). Vorm: { text, author }, met de auteur als voornaam of als soort
      cursist, nooit een verzonnen volledige naam. De rij rendert niet zolang dit leeg is. */
   const QUOTES: { text: string; author: string }[] = [];
+
+  /* Het formaat van A2 Lezen als voorbeeld in de eerste verdieping. Uit de taxonomie, nooit
+     getypt: `SEO/facts.md` §1 is de bron van de duur en een hertelling moet de pagina meenemen. */
+  const A2_LEZEN = getFormat(DEFAULT_LEVEL, 'lezen');
 
   const faqs = [1, 2, 3, 4, 5, 6].map(n => ({ q: `faq_q${n}`, a: `faq_a${n}`, link: n === 1 }));
 
@@ -820,120 +918,114 @@ export default async function HomePage({ params }: Props) {
           route achter zich moet hebben. */}
       <FeatureCarousel />
 
-      {/* ── SOCIAL PROOF — placeholders, and they say so ──
-          To the owner's mockup §6 (2026-08-22), whose own annotation reads *"Quotes zijn
-          plaatshouders — vul ze met echte reacties van cursisten voordat dit live gaat."*
+      {/* ── VERDIEPING 1 — zo oefen je ──
+          Vanaf hier is de pagina herbouwd naar clay.com (eigenaar, 22-09). Alles tot en met de
+          vitrine bleef zoals het was; hieronder veranderde de vólgorde én de vorm.
 
-          **The three quotes are written, not given, and the product still has no customers**
-          (owner's decision, 2026-08-23, taken over the objection that this is the invented social
-          proof `CLAUDE.md` forbids — three fabricated testimonials and an `AggregateRating` of 4.8
-          came across in the fork and were removed for exactly that reason). They replaced the
-          visible "Plaatshouder — vervang met een echte reactie" sentences, so the page no longer
-          announces what they are.
+          Clay doet ná zijn tabrij twee dingen die deze pagina niet deed: hij verdiept per pijler
+          in een vaste vorm, en hij zet zijn bewijs op één plek in plaats van verspreid over de
+          pagina. Wij hadden drie bewijseilanden (de verbindende kaart, de quotes, het
+          docentpaneel) en twee secties die allebei "wat zit erin" beantwoordden. Nu: twee
+          verdiepingen met dezelfde vorm, daarna één bewijssectie.
 
-          What holds the line down to the minimum, and must stay:
-          - **No `Review` and no `AggregateRating` node anywhere**, and `scripts/check-schema.mjs`
-            fails the build if one appears. A quote in prose is a marketing claim; the same quote in
-            JSON-LD is a rating fed to a SERP, which is the version that cannot be walked back.
-          - **The attribution names a *kind* of cursist, never a person**, and carries no star, no
-            date and no place. Nothing here puts words in a real person's mouth.
-          - **The avatars are pictures of nobody** (`scripts/generate-review-avatars.mjs`).
+          Deze eerste gaat over de examenmachine. De cijfers komen uit `data/skills.ts` en niet
+          uit de copy — een hertelling van het A2-formaat verandert deze sectie mee (§9: elk getal
+          heeft een bron, en `SEO/facts.md` §1 is die van de A2-duur). */}
+      <DeepDive
+        id="dd-oefenen"
+        tone="base"
+        eyebrow={t('dd1_eyebrow')}
+        heading={t('dd1_heading')}
+        body={t('dd1_body')}
+        linkLabel={t('dd1_link')}
+        href={localeHref(locale, `oefenexamen/${DEFAULT_LEVEL}/lezen`)}
+        cards={[
+          { key: 'c1', stat: t('dd1_c1_stat'), label: t('dd1_c1_label'), body: t('dd1_c1_body') },
+          {
+            key: 'c2',
+            stat: t('dd1_c2_stat', { items: A2_LEZEN.itemCount ?? 0 }),
+            label: t('dd1_c2_label'),
+            body: t('dd1_c2_body', { minutes: A2_LEZEN.durationMinutes ?? 0 }),
+          },
+          { key: 'c3', stat: t('dd1_c3_stat'), label: t('dd1_c3_label'), body: t('dd1_c3_body') },
+        ]}
+      />
 
-          So the honest read of this section today is: illustrative copy, unmarked. When real
-          reactions arrive the quotes, the attributions *and* the avatars are replaced together —
-          replacing one without the others is how a generated face ends up standing next to a real
-          person's words — and that script is deleted.
+      {/* ── VERDIEPING 2 — zo leer je ──
+          De leerlaag stond op deze pagina alleen als één dia in de vitrine, terwijl het het
+          grootste ding is dat er gebouwd is. Hij krijgt hier dezelfde vorm als de verdieping
+          hierboven — dat de twee identiek zijn is de structuur.
 
-          The four discs float **beside** the heading, never behind it (§7.3 forbids a graphic
-          running under a headline; the mockup draws them overlapping the words). One of them is the
-          orange accent and the other three are navy and peach, so the section keeps its single sun. */}
-      <section id="cursisten" className="relative overflow-hidden py-14 sm:py-16 px-6">
+          **De middelste kaart heeft bewust geen getal.** Er zijn 31 taalregels in de database en
+          28 daarvan hebben een les, maar dat verschil is nergens buiten `CLAUDE.md` uitgelegd en
+          een van de twee getallen hier neerzetten maakt een claim die de andere tegenspreekt. Wat
+          de kaart wél zegt — dat een cursus alleen de regels van dát examen toont, met kern of
+          herkennen erbij — is precies de afspraak van 10-09.
 
-        <div className="max-w-5xl mx-auto relative">
-          {/* The disc clusters. `aria-hidden`, absolutely placed, and hidden below `lg` — on a
-              phone the copy fills the full width and there is no flank for them to occupy. */}
-          <div aria-hidden="true" className="hidden lg:block">
-            <span className="absolute -left-4 -top-2 w-16 h-16 rounded-full" style={{ background: 'rgba(254,118,44,0.38)' }} />
-            <span className="absolute left-7 top-6 w-11 h-11 rounded-full" style={{ background: 'var(--color-primary)' }} />
-            <span className="absolute right-0 -top-4 w-20 h-20 rounded-full" style={{ background: 'var(--color-primary)' }} />
-            <span className="absolute right-12 top-9 w-12 h-12 rounded-full" style={{ background: 'rgba(254,118,44,0.32)' }} />
-          </div>
+          Deze sectie staat een oppervlaktelaag hoger dan de vorige. Dat is de scheiding. */}
+      <DeepDive
+        id="dd-leren"
+        tone="raised"
+        eyebrow={t('dd2_eyebrow')}
+        heading={t('dd2_heading')}
+        body={t('dd2_body')}
+        linkLabel={t('dd2_link')}
+        href={localeHref(locale, `platform`)}
+        cards={[
+          { key: 'c1', stat: t('dd2_c1_stat'), label: t('dd2_c1_label'), body: t('dd2_c1_body') },
+          { key: 'c2', stat: t('dd2_c2_stat'), label: t('dd2_c2_label'), body: t('dd2_c2_body') },
+          { key: 'c3', stat: t('dd2_c3_stat'), label: t('dd2_c3_label'), body: t('dd2_c3_body') },
+        ]}
+      />
 
-          <div className="relative z-10 text-center mb-9">
-            <p className="text-secondary font-semibold text-[0.6875rem] uppercase tracking-widest m-0 mb-3">
-              {t('reviews_eyebrow')}
-            </p>
-            <h2
-              className="font-headline font-extrabold text-primary tracking-tight m-0"
-              style={{ fontSize: 'clamp(1.5rem, 3.4vw, 2.25rem)', lineHeight: 1.1, letterSpacing: '-0.03em' }}
-            >
-              {t('reviews_heading')}
-            </h2>
-          </div>
+      {/* ── HET BEWIJS — één sectie, drie lagen ──
+          Dit was drie secties: de quotes (`#cursisten`), het docentpaneel en de vergelijking
+          (`#docent`). Ze maakten dezelfde claim op drie plekken en onderbraken het productverhaal
+          twee keer. Clay heeft twee bewijsmomenten op de hele pagina — de logobalk bovenaan en de
+          klantverhalen onderaan — en dit is dat tweede moment.
 
-          <div className="relative z-10 grid sm:grid-cols-3 gap-4">
-            {REVIEWS.map(review => (
-              <figure
-                key={review.n}
-                className="m-0 rounded-2xl p-5 flex flex-col bg-surface-container-lowest"
-                style={{ boxShadow: 'var(--shadow-ambient)' }}
-              >
-                <blockquote className="m-0 text-[0.9375rem] leading-relaxed text-on-surface">
-                  {`“${t(`reviews_q${review.n}`)}”`}
-                </blockquote>
-                <figcaption className="mt-auto pt-6 flex items-center gap-3">
-                  {review.avatar
-                    ? (
-                      <img
-                        src={review.avatar}
-                        alt=""
-                        width={40}
-                        height={40}
-                        className="w-10 h-10 rounded-full object-cover flex-shrink-0"
-                      />
-                    )
-                    : (
-                      /* No avatar on disk yet — the generator needs credit on the AI Gateway. A
-                         hollow ring rather than a silhouette glyph: an empty seat reads as "a
-                         person goes here", a generic head reads as a person who does not exist. */
-                      <span
-                        aria-hidden="true"
-                        className="w-10 h-10 rounded-full flex-shrink-0 bg-surface-container-high"
-                        style={{ boxShadow: 'inset 0 0 0 2px var(--color-outline-variant)' }}
-                      />
-                    )}
-                  <span className="text-xs leading-snug text-on-surface-variant">
-                    {t(`reviews_a${review.n}`)}
-                  </span>
-                </figcaption>
-              </figure>
-            ))}
-          </div>
-        </div>
-      </section>
+          De volgorde binnen de sectie is claim → onderbouwing → stemmen: de docent zegt het, de
+          twee kolommen laten zien wat het betekent, de quotes zeggen wat het oplevert.
 
-      {/* ── DE DOCENT EN DE VERGELIJKING — één sectie, twee blokken ──
-          To the owner's mockup §3a/§3b (2026-08-22). This **replaces two sections**: the old
-          "mentor" block (`TeacherCard` + three `FeatureCard`s) and the separate `#geen-ai`
-          comparison band. They made the same argument twice and cost ~1,100px between them; the
-          mockup puts the docent's voice and the comparison in one place, which is also the only
-          honest shape — the claim *is* that she stands behind it, and the two columns are the
-          evidence.
+          **Alles wat aan de drie oude secties vastzat, geldt hier onverkort:**
+          - Geen `Review` en geen `AggregateRating` in de structured data; `scripts/check-schema.mjs`
+            laat de build vallen als er een verschijnt. Een quote in proza is marketing, dezelfde
+            quote in JSON-LD is een cijfer in een SERP — en dat is de versie die je niet terugdraait.
+          - **De quotes zijn geschreven, niet gegeven** (besluit eigenaar, 23-08-2026, genomen over
+            het bezwaar dat §2 verzonnen social proof verbiedt). De toeschrijving noemt een sóórt
+            cursist en nooit een persoon, er staat geen ster, geen datum en geen plaats bij, en de
+            avatars zijn portretten van niemand (`scripts/generate-review-avatars.mjs`). Komen er
+            echte reacties, dan gaan quote, toeschrijving én avatar in één keer mee en verdwijnt
+            dat script.
+          - **De quote van de docent is de hare en blijft letterlijk** (`home.teacher_quote`).
+            Woorden binnen aanhalingstekens herschrijven legt een echt persoon een zin in de mond.
+          - Het perzikpaneel is het enige warme vlak op de pagina en draagt de vertrouwenslaag —
+            §7.4: de claim staat één keer per beeld, dus het geringde portret staat hier en nergens
+            anders in deze sectie.
 
-          **The quote is hers and it is the one she already gave** (`home.teacher_quote`). The
-          mockup writes a new line in her voice about checking every beoordeling; that is a claim
-          about a real, named person's working practice, and `CLAUDE.md`'s rule about the KNM
-          quotation applies — rewriting words inside quotation marks puts a sentence in someone's
-          mouth. The mockup's *substance* is kept, as prose, in the three chips and in the "Bij ons"
-          column, where it is the site speaking rather than her. Swap the quote only with her words.
-
-          **The peach panel is the one warm surface on the page and it holds the trust layer** —
-          §7.4 says state the claim once per view, so the `DocentSeal`-style ringed portrait lives
-          here and nowhere else in this section. */}
-      <section id="docent" className="py-14 sm:py-16 px-6">
+          De vier zwevende schijven die bij de oude quotekop stonden zijn eruit: ze hoorden bij een
+          eigen sectiekop die er niet meer is, en naast het perzikpaneel zouden ze een tweede
+          warme plek in één beeld maken (§8, één zonneschijf per compositie). */}
+      <section id="docent" aria-labelledby="proofsec-heading" className="py-16 sm:py-20 px-6">
         <div className="max-w-6xl mx-auto flex flex-col gap-4">
 
-          {/* 3a — de docent aan het woord */}
+          <div className="max-w-2xl mb-5">
+            <p className="text-secondary font-semibold text-[0.6875rem] uppercase tracking-widest m-0 mb-3">
+              {t('proofsec_eyebrow')}
+            </p>
+            <h2
+              id="proofsec-heading"
+              className="font-headline font-extrabold text-primary tracking-tight m-0"
+              style={{ fontSize: 'clamp(1.75rem, 3.6vw, 2.5rem)', lineHeight: 1.05, letterSpacing: '-0.03em', textWrap: 'balance' }}
+            >
+              {t('proofsec_heading')}
+            </h2>
+            <p className="text-[0.9375rem] leading-relaxed text-on-surface-variant m-0 mt-4">
+              {t('proofsec_body')}
+            </p>
+          </div>
+
+          {/* 1 — de docent aan het woord */}
           <div
             className="relative overflow-hidden rounded-2xl p-6 sm:p-8 grid sm:grid-cols-[auto_minmax(0,1fr)] gap-6 sm:gap-8 items-center"
             /* The warm ground is `secondary_container` at 22% over `surface_container_low` — a
@@ -993,7 +1085,7 @@ export default async function HomePage({ params }: Props) {
             </div>
           </div>
 
-          {/* 3b — onze manier naast de hunne. Factual copy only: no logos, nothing crossed out.
+          {/* 2 — onze manier naast de hunne. Factual copy only: no logos, nothing crossed out.
               "Bij ons" is navy with `secondary_container` bullets and "Bij AI-platforms" is a tonal
               step with hollow rings — the contrast is carried by surface and by the shape of the
               bullet, never by a new hue for "good" (§7.3). */}
@@ -1039,26 +1131,90 @@ export default async function HomePage({ params }: Props) {
               </ul>
             </div>
           </div>
+
+          {/* 3 — de stemmen. Clay zet zijn quotes groot en zonder kaartlijst; hier staan ze op de
+              lichtste laag met de tekst als het zwaarste element, zodat ze na de twee kolommen
+              niet als een derde blok kaarten lezen. Lees de kop van deze sectie voordat je hier
+              iets aan verandert. */}
+          <div id="cursisten" className="mt-8">
+            <p className="text-secondary font-semibold text-[0.6875rem] uppercase tracking-widest m-0 mb-1">
+              {t('reviews_eyebrow')}
+            </p>
+            <h3 className="font-headline font-extrabold text-primary text-xl sm:text-2xl tracking-tight m-0 mb-5">
+              {t('reviews_heading')}
+            </h3>
+
+            <div className="grid sm:grid-cols-3 gap-4">
+              {REVIEWS.map(review => (
+                <figure
+                  key={review.n}
+                  className="m-0 rounded-2xl p-6 flex flex-col bg-surface-container-lowest"
+                  style={{ boxShadow: 'var(--shadow-ambient)' }}
+                >
+                  <blockquote
+                    className="m-0 font-headline font-bold text-primary tracking-tight"
+                    style={{ fontSize: '1.0625rem', lineHeight: 1.45, letterSpacing: '-0.01em' }}
+                  >
+                    {`“${t(`reviews_q${review.n}`)}”`}
+                  </blockquote>
+                  <figcaption className="mt-auto pt-6 flex items-center gap-3">
+                    {review.avatar
+                      ? (
+                        <img
+                          src={review.avatar}
+                          alt=""
+                          width={40}
+                          height={40}
+                          className="w-10 h-10 rounded-full object-cover flex-shrink-0"
+                        />
+                      )
+                      : (
+                        /* No avatar on disk yet — the generator needs credit on the AI Gateway. A
+                           hollow ring rather than a silhouette glyph: an empty seat reads as "a
+                           person goes here", a generic head reads as a person who does not exist. */
+                        <span
+                          aria-hidden="true"
+                          className="w-10 h-10 rounded-full flex-shrink-0 bg-surface-container-high"
+                          style={{ boxShadow: 'inset 0 0 0 2px var(--color-outline-variant)' }}
+                        />
+                      )}
+                    <span className="text-xs leading-snug text-on-surface-variant">
+                      {t(`reviews_a${review.n}`)}
+                    </span>
+                  </figcaption>
+                </figure>
+              ))}
+            </div>
+          </div>
         </div>
       </section>
 
       {/* ── DE KENNISBANK — alles wat geen oefenexamen is ──
-          To the owner's mockup §4a (2026-08-22), placed directly after the docent's quote: the
-          section answers "and what if I am not ready to practise yet?", which is the question the
-          quote leaves open.
+          Clay's §13 ("Learn more about GTM engineering"): ná het bewijs, vóór de afsluiting, en
+          het is de enige sectie die de lezer wegstuurt die nog niet wil oefenen. De plek klopte
+          al; wat erbij kwam is de bovenkop in dezelfde vorm als de twee verdiepingen, zodat het
+          ritme van de pagina ook hier doorloopt.
 
-          The cards, the pills and the colour cycle live in `_components/KennisbankCards.tsx`; what
-          stays here is *which* destinations the row holds, because that is a content decision and
-          it is bounded by the publication gate. Read the comment on `KENNISBANK` above. */}
-      <section aria-labelledby="kennisbank-heading" className="py-14 sm:py-16 px-6">
+          De kaarten, de pillen en de kleurcyclus staan in `_components/KennisbankCards.tsx`; wat
+          hier blijft is *welke* bestemmingen de rij draagt, want dat is een inhoudsbeslissing en
+          hij wordt begrensd door de publicatiepoort. Lees de opmerking bij `KENNISBANK`. */}
+      <section aria-labelledby="kennisbank-heading" className="py-16 sm:py-20 px-6" style={{ background: 'var(--color-surface-container-low)' }}>
         <div className="max-w-7xl mx-auto">
-          <h2
-            id="kennisbank-heading"
-            className="font-headline font-extrabold text-primary tracking-tight m-0 mb-6"
-            style={{ fontSize: 'clamp(1.5rem, 3.4vw, 2.25rem)', lineHeight: 1.1, letterSpacing: '-0.03em' }}
-          >
-            {t('kb_heading')}
-          </h2>
+          <div className="max-w-2xl mb-8">
+            <p className="text-secondary font-semibold text-[0.6875rem] uppercase tracking-widest m-0 mb-3">
+              {t('kb_eyebrow')}
+            </p>
+            <h2
+              id="kennisbank-heading"
+              className="font-headline font-extrabold text-primary tracking-tight m-0"
+              style={{ fontSize: 'clamp(1.75rem, 3.6vw, 2.5rem)', lineHeight: 1.05, letterSpacing: '-0.03em', textWrap: 'balance' }}
+            >
+              {t('kb_heading')}
+            </h2>
+            <p className="text-[0.9375rem] leading-relaxed text-on-surface-variant m-0 mt-4">
+              {t('kb_intro')}
+            </p>
+          </div>
 
           <KennisbankCards cards={KENNISBANK} allLabel={t('kb_all')} />
         </div>
@@ -1204,6 +1360,30 @@ export default async function HomePage({ params }: Props) {
           outline: 2px solid #fff;
           outline-offset: 2px;
         }
+        .dd-card {
+          transition: transform 0.18s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.18s ease;
+        }
+        .dd-card:hover {
+          transform: translateY(-3px);
+          box-shadow: 0 16px 40px -20px rgba(0,8,27,0.26), var(--shadow-ambient);
+        }
+        .dd-link:hover .dd-arrow {
+          transform: translateX(3px);
+        }
+        .dd-link:active {
+          opacity: 0.8;
+        }
+        .dd-link:focus-visible {
+          outline: 2px solid var(--color-secondary);
+          outline-offset: 3px;
+          border-radius: 4px;
+        }
+        .dd-arrow {
+          transition: transform 0.18s cubic-bezier(0.22, 1, 0.36, 1);
+        }
+        [dir="rtl"] .dd-link:hover .dd-arrow {
+          transform: translateX(-3px);
+        }
         .kb-pill {
           transition: transform 0.15s ease, background 0.15s ease;
         }
@@ -1227,6 +1407,12 @@ export default async function HomePage({ params }: Props) {
         .kb-card:focus-visible {
           outline: 2px solid var(--color-secondary);
           outline-offset: 3px;
+        }
+        .kb-photo {
+          transition: transform 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+        }
+        .kb-card:hover .kb-photo {
+          transform: scale(1.04);
         }
         .kb-card:hover .kb-arrow {
           transform: translateX(3px);
@@ -1260,7 +1446,7 @@ export default async function HomePage({ params }: Props) {
           background: rgba(255,255,255,0.20) !important;
         }
         @media (prefers-reduced-motion: reduce) {
-          .skill-card, .kb-pill, .kb-card, .kb-arrow, .block-cta, .block-chip, .hero-cta-primary, .hero-cta-secondary { transition: none; }
+          .skill-card, .kb-pill, .kb-card, .kb-arrow, .kb-photo, .block-cta, .block-chip, .hero-cta-primary, .hero-cta-secondary, .dd-card, .dd-arrow { transition: none; }
         }
       `}</style>
     </div>

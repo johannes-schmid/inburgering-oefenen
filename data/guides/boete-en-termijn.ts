@@ -58,6 +58,13 @@ const guide: Guide = {
   heroTitle: 'Je termijn en de boete',
   heroSubtitle:
     'Drie jaar klinkt als veel tijd. Maar tussen aanmelden en uitslag zitten maanden, en die tellen mee. Hier staat hoe je termijn echt werkt — en wat er gebeurt als het niet lukt.',
+  heroImage: {
+    base: 'boete-en-termijn',
+    hasWebp: true,
+    alt: 'Een hand wijst met een pen een datum aan op een kalender',
+    position: 'center 50%',
+    credit: 'Towfiqu barbhuiya (Pexels)',
+  },
   readingMinutes: 7,
 
   articleHtml: `

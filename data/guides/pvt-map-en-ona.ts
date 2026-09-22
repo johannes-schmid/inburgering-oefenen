@@ -57,6 +57,13 @@ const guide: Guide = {
   heroTitle: 'PVT, MAP en ONA',
   heroSubtitle:
     'Naast de taalexamens en KNM zijn er onderdelen die geen toets zijn maar een traject. Welke je moet doen, hangt af van je wet en je leerroute. Hier staat welke van jou is.',
+  heroImage: {
+    base: 'pvt-map-en-ona',
+    hasWebp: true,
+    alt: 'Een groep mensen staat samen rond een tafel te praten',
+    position: 'center 50%',
+    credit: 'Pavel Danilyuk (Pexels)',
+  },
   readingMinutes: 8,
 
   articleHtml: `

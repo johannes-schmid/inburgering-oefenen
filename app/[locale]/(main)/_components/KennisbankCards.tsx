@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import Image from 'next/image';
 import { ArrowRight } from 'lucide-react';
 
 /**
@@ -29,7 +30,33 @@ export type KennisbankCard = {
   title: string;
   desc: string;
   href: string;
+  /** Het heldere pad naar de foto van het artikel, als die er is. Zonder foto valt de tegel terug
+      op de kleurcyclus hieronder — dat is geen tweederangsvorm maar de vorm die de hub-tegels
+      (zoals KNM) altijd al hadden. */
+  image?: string;
+  imageAlt?: string;
 };
+
+/* ── De bento ──
+   Zes tegelmaten die zich per zes herhalen, op een raster van zes kolommen:
+
+     i%6 = 0  →  3 kolommen × 2 rijen   (de grote, met de foto groot in beeld)
+     i%6 = 1  →  3 × 1
+     i%6 = 2  →  3 × 1                  (die twee vullen samen de rechterhelft naast de grote)
+     i%6 = 3..5 → 2 × 1                 (een rij van drie eronder)
+
+   De reeks sluit dus precies op drie rijen per zes kaarten, en `grid-auto-flow: dense` vult de
+   gaten die overblijven als de filterpil de rij inkort. De maat hangt aan de plek in de
+   *gefilterde* rij, net als de kleur eronder: een gefilterde rij die de oude maten aanhoudt komt
+   terug als losse blokken met gaten ertussen, en dat leest als een renderfout. */
+const SPANS = [
+  'md:col-span-3 md:row-span-2',
+  'md:col-span-3',
+  'md:col-span-3',
+  'md:col-span-2',
+  'md:col-span-2',
+  'md:col-span-2',
+];
 
 /* Navy → orange → mid-navy → peach, cycled by index. Two of the four are tints of
    `secondary_container`; none is a hue outside `@theme` (§7.3 forbids a new one). `ink` is the
@@ -75,38 +102,83 @@ export default function KennisbankCards({ cards, allLabel }: { cards: Kennisbank
         })}
       </div>
 
-      <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
+      <div
+        className="grid grid-cols-1 md:grid-cols-6 gap-4 md:auto-rows-[13rem]"
+        style={{ gridAutoFlow: 'dense' }}
+      >
         {shown.map((card, i) => {
           /* Tone by position in the *filtered* row, not by the card's index in the full list — a
              filtered row that keeps the original colours comes back as three navy cards in a
              sequence, which reads as a rendering fault rather than as a filter. */
           const tone = TONES[i % TONES.length];
+          const span = SPANS[i % SPANS.length];
+          const big = i % SPANS.length === 0;
           return (
             <a
               key={card.id}
               href={card.href}
-              className="kb-card relative overflow-hidden rounded-2xl p-5 pb-16 flex flex-col no-underline min-h-[13.5rem]"
-              style={{ background: tone.bg, color: tone.ink }}
+              className={`kb-card group relative overflow-hidden rounded-2xl flex flex-col justify-end no-underline min-h-[13.5rem] md:min-h-0 ${span}`}
+              style={card.image
+                ? { background: 'var(--color-primary)', color: '#ffffff' }
+                : { background: tone.bg, color: tone.ink }}
             >
-              <span aria-hidden="true" className="absolute right-[-2.5rem] bottom-[-3.5rem] w-44 h-44 rounded-full" style={{ background: tone.veil }} />
+              {card.image ? (
+                <>
+                  {/* `alt=""` en niet de bijschrifttekst: de kop eronder staat er al als tekst, dus
+                      een schermlezer zou de kaart twee keer voorlezen. `imageAlt` blijft in het
+                      type staan voor de plekken waar de foto wél alleen staat. */}
+                  <Image
+                    src={card.image}
+                    alt=""
+                    fill
+                    sizes="(max-width: 768px) 100vw, (max-width: 1280px) 50vw, 33vw"
+                    className="kb-photo object-cover"
+                  />
+                  {/* De sluier is de leesbaarheid, niet een effect: zonder hem staat witte tekst op
+                      een willekeurige foto. Navy naar doorzichtig van onder naar boven, dezelfde
+                      richting als de gidshero. */}
+                  <span
+                    aria-hidden="true"
+                    className="absolute inset-0"
+                    style={{ background: 'linear-gradient(to top, rgba(0,43,109,0.94) 0%, rgba(0,43,109,0.74) 30%, rgba(0,43,109,0.18) 64%, rgba(0,43,109,0) 100%)' }}
+                  />
+                </>
+              ) : (
+                <span aria-hidden="true" className="absolute right-[-2.5rem] bottom-[-3.5rem] w-44 h-44 rounded-full" style={{ background: tone.veil }} />
+              )}
 
-              <span className="relative z-10 text-[0.625rem] uppercase tracking-widest font-bold mb-2" style={{ color: tone.dim }}>
-                {card.group}
-              </span>
-              <span
-                className="relative z-10 font-headline font-extrabold text-[1.125rem] leading-tight mb-2"
-                style={{ letterSpacing: '-0.02em' }}
-              >
-                {card.title}
-              </span>
-              <span className="relative z-10 text-[0.8125rem] leading-relaxed line-clamp-3" style={{ color: tone.dim }}>
-                {card.desc}
-              </span>
+              <div className="relative z-10 p-5 pb-16">
+                <span
+                  className="block text-[0.625rem] uppercase tracking-widest font-bold mb-2"
+                  style={{ color: card.image ? 'rgba(255,255,255,0.78)' : tone.dim }}
+                >
+                  {card.group}
+                </span>
+                <span
+                  className={`block font-headline font-extrabold leading-tight mb-2 ${big ? 'text-[1.375rem]' : 'text-[1.0625rem]'}`}
+                  style={{ letterSpacing: '-0.02em' }}
+                >
+                  {card.title}
+                </span>
+                {/* Alleen de grote tegel krijgt de samenvatting. Op een tegel van één rij hoog
+                    duwt hij de kop uit beeld, en dan staat er drie regels lopende tekst waar een
+                    titel had moeten staan. */}
+                {big && (
+                  <span
+                    className="block text-[0.8125rem] leading-relaxed line-clamp-3"
+                    style={{ color: card.image ? 'rgba(255,255,255,0.82)' : tone.dim }}
+                  >
+                    {card.desc}
+                  </span>
+                )}
+              </div>
 
               <span
                 aria-hidden="true"
                 className="kb-arrow absolute left-5 bottom-5 z-10 w-9 h-9 rounded-full flex items-center justify-center"
-                style={{ background: tone.veil, color: tone.ink }}
+                style={card.image
+                  ? { background: 'rgba(255,255,255,0.18)', color: '#ffffff' }
+                  : { background: tone.veil, color: tone.ink }}
               >
                 <ArrowRight size={16} className="rtl-flip" />
               </span>

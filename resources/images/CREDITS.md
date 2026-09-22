@@ -405,3 +405,7 @@ Two findings from the second batch, both caught only by looking at the output:
 | `blog/want-of-omdat.jpg` | Tima Miroshnichenko | https://www.pexels.com/photo/a-person-writing-on-a-notebook-5303510/ |
 | `blog/wederkerende-werkwoorden-nederlands.jpg` | Kari Alfonso | https://www.pexels.com/photo/woman-writing-in-a-classroom-with-sunlight-37865721/ |
 | `blog/spreken-examen-inburgering-tips.jpg` | Mikhail Nilov | https://www.pexels.com/photo/man-in-white-crew-neck-t-shirt-wearing-black-headphones-7681376/ |
+- `public/images/guides/boete-en-termijn.{jpg,webp}` — Photo by Towfiqu barbhuiya on Pexels (https://www.pexels.com/photo/a-person-holding-black-pen-pointing-on-calendar-11773871/)
+- `public/images/guides/ona-examen.{jpg,webp}` — Photo by Ron Lach on Pexels (https://www.pexels.com/photo/unrecognizable-hands-handshaking-over-table-9870223/)
+- `public/images/guides/pvt-map-en-ona.{jpg,webp}` — Photo by Pavel Danilyuk on Pexels (https://www.pexels.com/photo/people-standing-at-the-table-8761647/)
+- `public/images/guides/vrijstelling-en-ontheffing.{jpg,webp}` — Photo by Markus Spiske on Pexels (https://www.pexels.com/photo/wooden-stamp-on-an-open-book-9858904/)

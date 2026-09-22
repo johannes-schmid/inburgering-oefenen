@@ -58,6 +58,13 @@ const guide: Guide = {
   heroTitle: 'Vrijstelling of ontheffing',
   heroSubtitle:
     'Soms hoef je niet in te burgeren, of niet alle examens te doen. Maar dat gebeurt niet vanzelf: je moet het aanvragen, en de regels zijn strikter dan veel sites suggereren.',
+  heroImage: {
+    base: 'vrijstelling-en-ontheffing',
+    hasWebp: true,
+    alt: 'Een houten stempel op een opengeslagen document',
+    position: 'center 50%',
+    credit: 'Markus Spiske (Pexels)',
+  },
   readingMinutes: 7,
 
   articleHtml: `
