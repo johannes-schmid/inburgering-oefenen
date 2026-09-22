@@ -66,43 +66,119 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   };
 }
 
-/* The two tracks nobody can open yet — B1 (authored, awaiting the docent's review) and ONA (not
-   built). The difference between those two is real but it is not one the visitor can act on, so
-   the tile does not draw it: both carry the "binnenkort" chip and both send to `/contact`, the
-   only surface on the site that can take "laat het me weten".
+/* ── De tegel van een track ──
+   Eén vorm voor alle vier de blokken (A2, B1, KNM, ONA), in drie banden: een kop met het
+   track-merk en een pijl, een romp met titel, uitleg en de chips, en een voet met de
+   catalogusregel en de knop. De scheiding tussen romp en voet is een lichtere laag over het
+   navy — geen lijn, conform de no-line-regel — en de skyline loopt er doorheen, want de voet is
+   doorschijnend.
 
-   They are full-colour tiles like A2 and KNM (owner's decision, 2026-08-22) rather than grey
-   ones, so the row reads as one platform. That puts the whole weight of the availability claim on
-   the chip and the footer link — which is why neither is optional here and why there is no
-   variant of this block without them. */
-function SoonBlock({ title, desc, soonLabel, notifyLabel, href, background, minHeight, houses, track }: {
-  title: string; desc: string; soonLabel: string; notifyLabel: string; href: string;
-  background: string; minHeight: string; houses: number; track: 'a2' | 'b1' | 'knm' | 'ona';
+   De pijl rechtsboven is decoratief (`aria-hidden`): de chips zijn zelf links, dus de tegel kan
+   geen anker zijn. Hij schuift mee op hover van de hele tegel, samen met de knop.
+
+   B1 en ONA zijn niet allebei "nog niet af": B1 is live en mist één onderdeel (dat staat in de
+   voetregel), ONA is aangekondigd en heeft daarom `muted` en de "binnenkort"-chip in plaats van
+   een chiprij. Beschikbaarheid wordt gedragen door de voet, nooit door de kleur. */
+function BlockTile({
+  track, title, desc, chips, note, soonLabel, ctaLabel, href, background, glow, muted,
+}: {
+  track: 'a2' | 'b1' | 'knm' | 'ona';
+  title: string;
+  desc: string;
+  chips?: { key: string | number; name: string; href: string }[];
+  note?: string;
+  soonLabel?: string;
+  ctaLabel: string;
+  href: string;
+  background: string;
+  /** De zachte lichtplek rechtsboven — de enige diepte in de tegel, zie de kop hierboven. */
+  glow: string;
+  muted?: boolean;
 }) {
   return (
     <div
-      className={`relative overflow-hidden rounded-2xl p-5 flex flex-col ${minHeight}`}
+      className="block-tile relative overflow-hidden rounded-2xl flex flex-col lg:min-h-[21.5rem]"
       style={{ background, boxShadow: 'var(--shadow-ambient)' }}
     >
       <DotField on="dark" size={22} />
-      <Skyline count={houses} tone="hero" height={72} />
-      <div className="relative z-10 flex flex-col h-full">
-        <ExamMark track={track} size={44} muted onDark className="mb-4" />
-        <h3 className="font-headline font-extrabold text-white text-[1.375rem] leading-tight m-0 mb-1.5">
-          {title}
-        </h3>
-        <p className="text-sm leading-relaxed text-white/75 m-0">{desc}</p>
+      {/* Geen skyline meer onderin: vier straatjes naast elkaar vulden de onderkant van de rij en
+          duwden de voet omhoog. De diepte komt nu van één zachte lichtplek rechtsboven — een
+          radiaal verloop, geen slagschaduw — en van de lichtere voetband eronder. */}
+      <div
+        aria-hidden="true"
+        className="absolute -top-16 -right-16 size-56 rounded-full pointer-events-none"
+        style={{ background: `radial-gradient(circle, ${glow} 0%, rgba(255,255,255,0) 70%)` }}
+      />
 
-        <span className="self-start text-[0.5625rem] uppercase tracking-widest font-bold text-white/80 rounded-full px-2.5 py-1 mt-5 bg-white/15">
-          {soonLabel}
-        </span>
-        <a
-          href={href}
-          className="block-cta mt-auto inline-flex items-center justify-center gap-2 rounded-full px-5 py-2.5 no-underline font-headline font-bold text-sm"
-          style={{ background: '#fff', color: 'var(--color-primary)' }}
-        >
-          {notifyLabel}
-        </a>
+      <div className="relative z-10 flex flex-col h-full">
+        <div className="flex items-start justify-between gap-3 px-5 pt-5">
+          <ExamMark track={track} size={44} onDark muted={muted} />
+          <span
+            aria-hidden="true"
+            className="block-arrow flex items-center justify-center rounded-full size-8 text-white/80"
+            style={{ background: 'rgba(255,255,255,0.12)' }}
+          >
+            <ArrowUpRight className="size-4 rtl-flip" strokeWidth={2.25} />
+          </span>
+        </div>
+
+        <div className="px-5 pt-4 pb-5">
+          <h3 className="font-headline font-extrabold text-white text-[1.375rem] leading-tight m-0 mb-1.5">
+            {title}
+          </h3>
+          <p className="text-sm leading-relaxed text-white/75 m-0">{desc}</p>
+
+          {/* **Deze chips zijn links, en dat is een productregel.** `CLAUDE.md`: alle vier de
+              taalonderdelen moeten op de landingspagina zichtbaar blijven, en
+              `tests/public.spec.js` eist per onderdeel een `/oefenexamen/a2/<skill>`-link. Sinds
+              de kaartenrij hieronder weg is, dragen deze chips dat alleen. */}
+          {chips && (
+            <ul className="flex flex-wrap gap-1.5 list-none p-0 m-0 mt-4">
+              {chips.map(chip => (
+                <li key={chip.key}>
+                  <a
+                    href={chip.href}
+                    className="block-chip inline-flex rounded-full px-2.5 py-1 text-[0.6875rem] font-semibold text-white/90 no-underline"
+                    style={{ background: 'rgba(255,255,255,0.12)' }}
+                  >
+                    {chip.name}
+                  </a>
+                </li>
+              ))}
+            </ul>
+          )}
+
+          {soonLabel && (
+            <span
+              className="inline-flex mt-4 text-[0.5625rem] uppercase tracking-widest font-bold text-white/80 rounded-full px-2.5 py-1"
+              style={{ background: 'rgba(255,255,255,0.15)' }}
+            >
+              {soonLabel}
+            </span>
+          )}
+
+          {/* De catalogus en het merk staan op elke pagina apart genoemd — dus de tegel die B1
+              verkoopt, is ook de tegel die zegt welk onderdeel er nog niet is. Die regel stond in
+              een eigen voetband; die band is weg (de tegel is één kleur), dus de regel staat nu
+              onder de chips waar hij over gaat. Weglaten mag niet. */}
+          {note && (
+            <p className="text-[0.625rem] uppercase tracking-widest font-bold text-white/70 m-0 mt-3">
+              {note}
+            </p>
+          )}
+        </div>
+
+        <div className="mt-auto px-5 pb-5">
+          {/* Vol wit, niet `bg-white/22`: op `primary-container` is die zo doorzichtig dat de tegel
+              er doorheen leest en de knop als een vlek oogt. */}
+          <a
+            href={href}
+            className="block-cta flex items-center justify-center gap-2 rounded-full px-5 py-2.5 no-underline font-headline font-bold text-sm"
+            style={{ background: '#fff', color: 'var(--color-primary)' }}
+          >
+            {ctaLabel}
+          </a>
+        </div>
       </div>
     </div>
   );
@@ -659,161 +735,78 @@ export default async function HomePage({ params }: Props) {
               `lg:min-h-[21.5rem]`, de hoogte van de langste (ONA); als een tegel meer tekst krijgt
               groeit de rij mee, want de grid staat op `items-stretch`. */}
           <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4 lg:items-stretch">
-            {/* ── Taal A2 — live, and the shortest step ── */}
-            <div
-              className="relative overflow-hidden rounded-2xl p-5 flex flex-col lg:min-h-[21.5rem]"
-              style={{ background: 'var(--color-primary)', boxShadow: 'var(--shadow-ambient)' }}
-            >
-              <DotField on="dark" size={22} />
-              <Skyline count={4} tone="hero" height={64} />
-              <div className="relative z-10 flex flex-col h-full">
-                <ExamMark track="a2" size={44} onDark className="mb-4" />
-                <h3 className="font-headline font-extrabold text-white text-[1.375rem] leading-tight m-0 mb-1.5">
-                  {t('blocks_a2_title')}
-                </h3>
-                <p className="text-sm leading-relaxed text-white/75 m-0">{t('blocks_a2_desc')}</p>
+            {/* ── Taal A2 — live ── */}
+            <BlockTile
+              track="a2"
+              title={t('blocks_a2_title')}
+              desc={t('blocks_a2_desc')}
+              chips={A2_CHIPS.map(chip => ({
+                key: chip.slug,
+                name: chip.name,
+                href: localeHref(locale, `oefenexamen/${DEFAULT_LEVEL}/${chip.slug}`),
+              }))}
+              ctaLabel={t('blocks_a2_cta')}
+              href={localeHref(locale, `oefenen`)}
+              background="var(--color-primary)"
+              glow="rgba(255,255,255,0.16)"
+            />
 
-                {/* **These four chips are links, and that is a product rule rather than a
-                    nicety.** `CLAUDE.md`: all four taalonderdelen must stay visible on the landing
-                    page — dropping one is how the fork first went wrong — and
-                    `tests/public.spec.js` asserts a `/oefenexamen/a2/<skill>` link per onderdeel.
-                    When the four-card grid below this row was removed, these chips became the only
-                    thing carrying that, so they must stay anchors. */}
-                <ul className="flex flex-wrap gap-1.5 list-none p-0 m-0 mt-4 mb-4">
-                  {A2_CHIPS.map(chip => (
-                    <li key={chip.slug}>
-                      <a
-                        href={localeHref(locale, `oefenexamen/${DEFAULT_LEVEL}/${chip.slug}`)}
-                        className="block-chip inline-flex rounded-full px-2.5 py-1 text-[0.6875rem] font-semibold text-white/90 bg-white/12 no-underline"
-                      >
-                        {chip.name}
-                      </a>
-                    </li>
-                  ))}
-                </ul>
+            {/* ── Taal B1 — live sinds 23-08-2026, toen de docent de inhoud aftekende ──
+                Tot dan was dit een "binnenkort"-tegel. */}
+            <BlockTile
+              track="b1"
+              title={t('blocks_b1_title')}
+              desc={t('blocks_b1_desc')}
+              chips={B1_CHIPS.map(chip => ({
+                key: chip.slug,
+                name: chip.name,
+                href: localeHref(locale, `oefenexamen/b1/${chip.slug}`),
+              }))}
+              note={t('blocks_b1_note')}
+              ctaLabel={t('blocks_b1_cta')}
+              href={localeHref(locale, `oefenen/b1/lezen`)}
+              background="var(--color-primary-container)"
+              glow="rgba(255,255,255,0.14)"
+            />
 
-                <a
-                  href={localeHref(locale, `oefenen`)}
-                  className="block-cta mt-auto inline-flex items-center justify-center gap-2 rounded-full px-5 py-2.5 no-underline font-headline font-bold text-sm"
-                  style={{ background: '#fff', color: 'var(--color-primary)' }}
-                >
-                  {t('blocks_a2_cta')}
-                </a>
-              </div>
-            </div>
+            {/* ── KNM — het vijfde onderdeel, hier live sinds 24-08-2026 ──
+                De CTA wees vroeger naar knmoefenen.nl, want daar stond de inhoud. Die staat nu
+                hier, dus de link is intern. knmoefenen.nl blijft bewust staan en wordt **niet**
+                omgeleid — `CLAUDE.md` houdt hem als ranking-asset tot KNM hier rankt.
 
-            {/* ── Taal B1 — live since 2026-08-23, when the docent signed the content off ──
-                It was a `SoonBlock` until then. De markering is het `ExamMark` van B1 — dezelfde
-                trap als A2, één trede hoger, wat vóór het label al zegt dat dit het niveau erboven
-                is. */}
-            <div
-              className="relative overflow-hidden rounded-2xl p-5 flex flex-col lg:min-h-[21.5rem]"
-              style={{ background: 'var(--color-primary-container)', boxShadow: 'var(--shadow-ambient)' }}
-            >
-              <DotField on="dark" size={22} />
-              <Skyline count={5} tone="hero" height={72} />
-              <div className="relative z-10 flex flex-col h-full">
-                <ExamMark track="b1" size={44} onDark className="mb-4" />
-                <h3 className="font-headline font-extrabold text-white text-[1.375rem] leading-tight m-0 mb-1.5">
-                  {t('blocks_b1_title')}
-                </h3>
-                <p className="text-sm leading-relaxed text-white/75 m-0">{t('blocks_b1_desc')}</p>
+                De chips volgen de regel van A2: afgeleid uit `KNM_THEMES`, nooit getypt, zodat een
+                hernoemd thema geen verouderde tekst kan achterlaten op de meest gelinkte pagina van
+                de site. Ze wijzen naar de kennisgidsen — publiek, zonder account. */}
+            <BlockTile
+              track="knm"
+              title={t('blocks_knm_title')}
+              desc={t('blocks_knm_desc')}
+              chips={KNM_THEMES.map(theme => ({
+                key: theme.id,
+                name: theme.title,
+                href: `/${locale}/knm/${theme.guideSlug}`,
+              }))}
+              ctaLabel={t('blocks_knm_cta')}
+              href={localeHref(locale, `oefenexamen/knm`)}
+              background="var(--color-primary)"
+              glow="rgba(255,255,255,0.16)"
+            />
 
-                <ul className="flex flex-wrap gap-1.5 list-none p-0 m-0 mt-4 mb-2">
-                  {B1_CHIPS.map(chip => (
-                    <li key={chip.slug}>
-                      <a
-                        href={localeHref(locale, `oefenexamen/b1/${chip.slug}`)}
-                        className="block-chip inline-flex rounded-full px-2.5 py-1 text-[0.6875rem] font-semibold text-white/90 bg-white/12 no-underline"
-                      >
-                        {chip.name}
-                      </a>
-                    </li>
-                  ))}
-                </ul>
-
-                {/* The catalogue and the brand are stated separately on every surface — so the
-                    tile that sells B1 is also the tile that says which onderdeel is missing. */}
-                <p className="text-[0.625rem] uppercase tracking-widest font-bold text-white/80 m-0 mb-2">
-                  {t('blocks_b1_note')}
-                </p>
-                {/* Solid white, not `bg-white/22` like KNM's. That opacity reads fine on KNM's dark
-                    `secondary` and is nearly invisible on `primary-container`, which is a much
-                    lighter blue — worse, the skyline's houses showed straight through the button and
-                    made it look like a rendering fault. So B1's CTA matches A2's, and the two live
-                    language levels looking alike is the honest outcome rather than a hierarchy
-                    problem: the titles and chips are what separate them. */}
-                <a
-                  href={localeHref(locale, `oefenen/b1/lezen`)}
-                  className="block-cta mt-auto inline-flex items-center justify-center gap-2 rounded-full px-5 py-2.5 no-underline font-headline font-bold text-sm"
-                  style={{ background: '#fff', color: 'var(--color-primary)' }}
-                >
-                  {t('blocks_b1_cta')}
-                </a>
-              </div>
-            </div>
-
-            {/* ── KNM — the fifth onderdeel, live here since 2026-08-24 ──
-                The CTA used to leave the site for knmoefenen.nl, because that was where the
-                content was. It is here now, so the link is internal and the note states the
-                catalogue instead of an address. knmoefenen.nl is deliberately still up and is
-                **not** redirected — CLAUDE.md keeps it as a ranking asset until KNM's rankings
-                hold on this domain.
-
-                The chips follow A2's rule: derived from `KNM_THEMES`, never typed, so a renamed
-                or added thema cannot leave a stale string on the most-linked page on the site.
-                They point at the kennisgidsen — public, no account — rather than at the lesson
-                modules, which need one. */}
-            <div
-              className="relative overflow-hidden rounded-2xl p-5 flex flex-col lg:min-h-[21.5rem]"
-              style={{ background: 'var(--color-primary)', boxShadow: 'var(--shadow-ambient)' }}
-            >
-              <DotField on="dark" size={22} />
-              <Skyline count={6} tone="hero" height={76} />
-              <div className="relative z-10 flex flex-col h-full">
-                <ExamMark track="knm" size={44} onDark className="mb-4" />
-                <h3 className="font-headline font-extrabold text-white text-[1.375rem] leading-tight m-0 mb-1.5">
-                  {t('blocks_knm_title')}
-                </h3>
-                <p className="text-sm leading-relaxed text-white/75 m-0">{t('blocks_knm_desc')}</p>
-
-                <ul className="flex flex-wrap gap-1.5 list-none p-0 m-0 mt-4 mb-2">
-                  {KNM_THEMES.map(theme => (
-                    <li key={theme.id}>
-                      <a
-                        href={`/${locale}/knm/${theme.guideSlug}`}
-                        className="block-chip inline-flex rounded-full px-2.5 py-1 text-[0.6875rem] font-semibold text-white/90 bg-white/12 no-underline"
-                      >
-                        {theme.title}
-                      </a>
-                    </li>
-                  ))}
-                </ul>
-
-                <p className="text-[0.625rem] uppercase tracking-widest font-bold text-white/80 m-0 mt-3 mb-2">
-                  {t('blocks_knm_note')}
-                </p>
-                <a
-                  href={localeHref(locale, `oefenexamen/knm`)}
-                  className="block-cta mt-auto inline-flex items-center justify-center gap-2 rounded-full px-5 py-2.5 no-underline font-headline font-bold text-sm"
-                  style={{ background: '#fff', color: 'var(--color-primary)' }}
-                >
-                  {t('blocks_knm_cta')}
-                </a>
-              </div>
-            </div>
-
-            {/* ── ONA — the last step of the traject and the tallest tile, and nothing is built ── */}
-            <SoonBlock
+            {/* ── ONA — de laatste stap van het traject, en er is niets gebouwd ──
+                Volle kleur zoals de andere drie (besluit eigenaar, 22-08-2026), zodat de rij als
+                één platform leest; het hele gewicht van de beschikbaarheidsclaim ligt daarom op de
+                chip en de knop, en die zijn hier niet optioneel. `/contact` is de enige plek op de
+                site die "laat het me weten" kan aannemen. */}
+            <BlockTile
+              track="ona"
               title={t('blocks_ona_title')}
               desc={t('blocks_ona_desc')}
               soonLabel={t('pkg_soon')}
-              notifyLabel={t('blocks_notify')}
+              ctaLabel={t('blocks_notify')}
               href={localeHref(locale, `contact`)}
               background="var(--color-primary-container)"
-              minHeight="lg:min-h-[21.5rem]"
-              houses={7}
-              track="ona"
+              glow="rgba(255,255,255,0.14)"
+              muted
             />
           </div>
         </div>
@@ -1174,6 +1167,28 @@ export default async function HomePage({ params }: Props) {
         }
         .skill-card:hover .skill-card-cta {
           text-decoration: underline;
+        }
+        .block-tile {
+          transition: transform 0.2s cubic-bezier(0.22, 1, 0.36, 1);
+        }
+        .block-tile:hover {
+          transform: translateY(-3px);
+        }
+        .block-arrow {
+          transition: transform 0.2s cubic-bezier(0.22, 1, 0.36, 1);
+        }
+        .block-tile:hover .block-arrow {
+          transform: translate(2px, -2px);
+        }
+        .block-chip {
+          transition: opacity 0.15s ease, transform 0.15s ease;
+        }
+        .block-chip:hover {
+          opacity: 0.8;
+        }
+        .block-chip:focus-visible {
+          outline: 2px solid #fff;
+          outline-offset: 2px;
         }
         .block-cta {
           transition: transform 0.18s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.18s ease;

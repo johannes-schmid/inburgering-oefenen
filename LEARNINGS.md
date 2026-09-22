@@ -5078,3 +5078,21 @@ de nieuwe grens ligt. Anders leest de volgende sessie alleen de uitzondering en 
 **Outcome:** SUCCESS
 **What worked / went wrong:** Drie dingen die tijd kostten. (1) `localeHref()` mocht hier níét: het portaal heeft geen vertaalde onderdeelslug, dus `/en/dashboard/a2/reading` zou eruit komen en die route bestaat niet — het pad wordt met de hand samengesteld. (2) `AppShell` heeft een `isGuest`-prop die ik eerst vergat, waardoor een gast "Uitloggen" in de zijbalk kreeg. (3) Het lokale DEV FLOWS-knopje ligt precies over "Volgende" heen, dus een Puppeteer-klik landde op het badge en het examen leek niet vooruit te gaan; klikken via `element.click()` in `page.evaluate` gaat eromheen. Verder hoefde er niets aan de schrijfpaden te gebeuren: elke schrijfactie in `ExamShell` hangt al aan `userId`, dus een gast schrijft vanzelf niets weg.
 **Lesson:** Voordat je een portaalpad bouwt: kijk of die route een vertaalde slug heeft. En als een browserautomatisering "niets doet", controleer eerst of er een ander element bovenop ligt — de klik slaagt dan wél, alleen ergens anders.
+
+## 2026-09-22 — De vier track-tegels op de homepage zijn één kaartvorm geworden
+**Changed:** `app/[locale]/(main)/page.tsx` — `SoonBlock` vervangen door één `BlockTile` voor A2, B1, KNM en ONA: kop (track-merk + pijl), romp (titel, uitleg, chips) en een aparte voet (catalogusregel + knop) op een lichtere laag over het navy; `.block-tile` / `.block-arrow` / `.block-chip` hover- en focusregels erbij.
+**Outcome:** SUCCESS
+**What worked / went wrong:** De voet is `rgba(255,255,255,0.10)` in plaats van een lijn, dus de skyline loopt er doorheen en de no-line-regel blijft staan. De chips blijven links (`tests/public.spec.js` eist per onderdeel een `/oefenexamen/...`-link). Bij het scripten van de vervanging stopte de zoek-naar-`}`-lus te vroeg, waardoor de oude `SoonBlock`-body als losse regels bleef staan — `tsc` ving dat op regel 205.
+**Lesson:** Een functie uit een bestand knippen met "de eerste regel die met `}` begint" klopt niet zodra er JSX met geneste blokken in staat; begrens op de volgende top-level `function`/`export` en laat `tsc` het bevestigen.
+
+## 2026-09-22 — De skyline is uit de track-tegels, er staat nu een lichtplek
+**Changed:** `app/[locale]/(main)/page.tsx` — `Skyline` uit `BlockTile` gehaald; in plaats daarvan één radiaal wit verloop rechtsboven (`glow`-prop per tegel, literal `rgba()`), de `houses`-prop is weg.
+**Outcome:** SUCCESS
+**What worked / went wrong:** Vier straatjes naast elkaar vulden de onderkant van de rij en concurreerden met de voetband. Het verloop eindigt op `rgba(255,255,255,0)` en niet op `transparent` — dat laatste interpoleert in sRGB via zwart en geeft een vuile rand.
+**Lesson:** Een skyline is een signatuurvorm voor één compositie; vier ernaast maken er behang van. Diepte in een kleine tegel komt van een verloop plus een laagwissel, niet van de illustratie.
+
+## 2026-09-22 — De voetband van de track-tegels is weg, de tegel is één kleur
+**Changed:** `app/[locale]/(main)/page.tsx` — de lichtere voetband onder de knop verwijderd; de KNM-catalogusregel (`blocks_knm_note`) is eruit, de B1-regel (`blocks_b1_note`) is verhuisd naar onder de chips.
+**Outcome:** SUCCESS
+**What worked / went wrong:** De KNM-regel was een telling en mocht weg; de B1-regel is de beschikbaarheidsclaim ("Luisteren B1 komt eraan") en is daarom verplaatst in plaats van geschrapt — §2 zegt dat de tegel die B1 verkoopt ook zegt welk onderdeel ontbreekt.
+**Lesson:** Bij een puur visuele opschoning eerst per tekstregel vragen of hij decoratie of claim is; een claim verhuist, een telling mag vallen.
