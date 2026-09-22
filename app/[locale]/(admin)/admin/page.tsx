@@ -5,7 +5,14 @@ import { CategoryRadarChart } from './_components/CategoryRadarChart';
 import { RevenueDashboard } from './_components/RevenueDashboard';
 import { AiCostCard } from './_components/AiCostCard';
 import { ConversionDashboard, type WeekPoint } from './_components/ConversionDashboard';
+import { MrrCard } from './_components/MrrCard';
+import { MrrMovementChart } from './_components/MrrMovementChart';
 import { fetchAiSpend } from '@/lib/admin/ai-spend';
+import { fetchAll } from '@/lib/admin/fetch-all';
+import {
+  buildMrrMovements, summariseSubscriptions,
+  type MovementPayment, type SubscriptionUser,
+} from '@/lib/admin/mrr';
 
 export default async function AdminDashboard() {
   const supabase = createAdminClient();
@@ -38,6 +45,7 @@ export default async function AdminDashboard() {
     { data: paymentsYesterday },
     { data: paymentsLastWeek },
     { data: paymentsChart },
+    paymentsByUserRows,
   ] = await Promise.all([
     supabase.from('questions').select('*', { count: 'exact', head: true }),
     supabase.from('word_cards').select('*', { count: 'exact', head: true }),
@@ -62,6 +70,14 @@ export default async function AdminDashboard() {
       .lt('created_at', weekStart.toISOString()),
     // Last 3 months daily for chart
     supabase.from('payments').select('amount_cents, created_at').eq('status', 'paid').gte('created_at', since),
+    // Alle betalingen met hun klant: de MRR-beweging moet de *eerste* betaling van iemand kunnen
+    // herkennen, en dat kan alleen tegen zijn hele historie — een venster van zes maanden zou een
+    // klant van vorig jaar als nieuw tellen. Via `fetchAll`, want een kale select stopt stil bij
+    // 1.000 rijen en dan zou de oudste betaling van een klant kunnen ontbreken: hij telt dan
+    // opnieuw als nieuw.
+    fetchAll<MovementPayment>((from, to) =>
+      supabase.from('payments').select('user_id, amount_cents, created_at').eq('status', 'paid')
+        .order('created_at', { ascending: true }).range(from, to)),
   ]);
 
   // Aggregate both series by date (YYYY-MM-DD)
@@ -153,15 +169,24 @@ export default async function AdminDashboard() {
    * is the end of the list. Payments are counted, not summed: the question this panel answers is
    * "how many of the people who signed up this week paid", not what they paid.
    */
-  const signupUsers: { created_at: string }[] = [];
+  const signupUsers: (SubscriptionUser & { email?: string | null })[] = [];
   let userPage = 1;
   while (true) {
     const { data: usersPage } = await supabase.auth.admin.listUsers({ page: userPage, perPage: 1000 });
     if (!usersPage?.users?.length) break;
-    signupUsers.push(...usersPage.users.map(u => ({ created_at: u.created_at })));
+    signupUsers.push(...usersPage.users.map(u => ({
+      id: u.id,
+      created_at: u.created_at,
+      email: u.email ?? null,
+      user_metadata: u.user_metadata ?? null,
+    })));
     if (usersPage.users.length < 1000) break;
     userPage++;
   }
+
+  // Dezelfde lijst draagt de MRR: het abonnement staat in `user_metadata`, niet in een tabel.
+  const mrr = summariseSubscriptions(signupUsers);
+  const mrrMovements = buildMrrMovements(signupUsers, paymentsByUserRows, mrr.mrrCents);
 
   const WEEKS = 12;
   // The Monday (UTC) of the week an ISO timestamp falls in — the bucket key for both series.
@@ -234,6 +259,10 @@ export default async function AdminDashboard() {
       <p className="text-on-surface-variant text-sm mb-6">Welkom terug. Beheer hier vragen, lessen en woordkaarten.</p>
 
       <RevenueDashboard data={revenueData} />
+
+      <MrrCard data={mrr} />
+
+      <MrrMovementChart data={mrrMovements} />
 
       <ConversionDashboard data={conversionData} />
 
