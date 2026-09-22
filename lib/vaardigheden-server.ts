@@ -64,20 +64,22 @@ export type SkillWeakness = {
  * eigenaar vroeg, en hij is eerlijker dan een verdwenen paneel — hij laat zien *waarop* je
  * straks beoordeeld wordt.
  *
- * `null` blijft over voor de twee gevallen waarin er geen koppen zijn: een gast, en Schrijven en
- * Spreken vóór hun eerste beoordeling. Die twee lezen hun rijen uit de rubriek, en die staat in
- * `rubrics` — een tabel zonder SELECT-policy buiten admin (§6, invariant 9). Een skeletlijst zou
- * daar dus verzonnen moeten worden.
+ * **Ook een gast krijgt de lege staat** (eigenaar, 22-09). Hij had er tot dan `null`, en dat was
+ * de reden dat een onderdeelpagina op productie een halve kaart toonde: de meter links en niets
+ * ernaast. Een gast mag het portaal bekijken (§4), en juist hij komt kijken *waarop* hij straks
+ * beoordeeld wordt. Er lekt niets: de skeletrijen staan allemaal op `pct: null` en komen uit
+ * `data/vaardigheden.ts` en `draftCriteria` — geen enkele query draait zonder `userId`.
+ *
+ * `null` blijft over voor het geval waarin er geen koppen zijn: een onderdeel zonder
+ * vaardigheden in `data/vaardigheden.ts`.
  */
 export async function fetchSkillWeakness(
   userId: string | null,
   level: Level,
   onderdeel: OnderdeelSlug,
 ): Promise<SkillWeakness | null> {
-  if (!userId) return null;
-
   if (onderdeel === 'schrijven' || onderdeel === 'spreken') {
-    const rows = await rubricRows(userId, onderdeel);
+    const rows = userId ? await rubricRows(userId, onderdeel) : [];
     // `open_task_concepts` wordt nog door niets gevuld, dus hier is er geen conceptbewijs uit de
     // examens. Het paneel valt dan terug op de beheersing uit de lessen — zie `page.tsx`.
     return {
@@ -134,7 +136,7 @@ function skeletonRows(items: { key: string; label: string; one_liner: string | n
   }));
 }
 
-async function mcqRows(userId: string, level: Level, onderdeel: OnderdeelSlug): Promise<McqResult> {
+async function mcqRows(userId: string | null, level: Level, onderdeel: OnderdeelSlug): Promise<McqResult> {
   const vaardigheden = vaardighedenFor(onderdeel);
   if (vaardigheden.length === 0) return EMPTY;
 
@@ -143,6 +145,10 @@ async function mcqRows(userId: string, level: Level, onderdeel: OnderdeelSlug): 
     rows: skeletonRows(vaardigheden.map(v => ({ key: v.slug, label: v.name_nl, one_liner: v.one_liner }))),
     conceptStats: new Map(),
   };
+
+  /* Een gast heeft geen antwoorden; de koppen kent hij wél. Geen query, dus ook geen RLS-rondje
+     dat gegarandeerd nul rijen teruggeeft. */
+  if (!userId) return blank;
 
   try {
     const supabase = await createClient();
@@ -321,11 +327,10 @@ function skeletonCriterionRows(skill: 'schrijven' | 'spreken'): WeaknessRow[] {
  *
  * **Zonder cijfers komt de lijst er wél**, met alle zeven thema's op een streepje (15-09,
  * eigenaar): geen gemaakt examen en overal te weinig antwoorden geven dezelfde lege staat als bij
- * de taalonderdelen. Alleen een gast krijgt `null` — die heeft geen antwoorden om te tonen en
- * ziet het paneel niet.
+ * de taalonderdelen. **Ook een gast krijgt ze** (eigenaar, 22-09): hij mag het portaal bekijken,
+ * en waarop KNM hem straks toetst is precies wat hij komt halen.
  */
 export async function fetchKnmThemeWeakness(userId: string | null): Promise<SkillWeakness | null> {
-  if (!userId) return null;
 
   /* De zeven koppen, ook als er nog niets gemeten is — en ook als de query faalt. Zie
      `skeletonRows`. */
@@ -334,6 +339,10 @@ export async function fetchKnmThemeWeakness(userId: string | null): Promise<Skil
     rows: skeletonRows(KNM_THEMES.map(th => ({ key: `thema-${th.id}`, label: th.title, one_liner: null }))),
     conceptStats: new Map(),
   };
+
+  /* Een gast heeft geen antwoorden; de koppen kent hij wél. Geen query, dus ook geen RLS-rondje
+     dat gegarandeerd nul rijen teruggeeft. */
+  if (!userId) return blank;
 
   try {
     const supabase = await createClient();

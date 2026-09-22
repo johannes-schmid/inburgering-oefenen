@@ -5147,3 +5147,9 @@ taalonderdelen, en er staat een nieuwe uitleglaag van zes stapelende blokken ond
   Of sticky werkt controleer je met `getComputedStyle`, niet met een plaatje.
 **Lesson:** een stapelende scrollsectie hoeft geen scriptlaag te zijn — `position: sticky` met een
 oplopende `top` per index doet het, en de `prefers-reduced-motion`-uitweg is dan één regel.
+
+## 2026-09-22 — De uitsplitsing heeft ook voor een gast een lege staat
+**Changed:** `fetchSkillWeakness` en `fetchKnmThemeWeakness` in `lib/vaardigheden-server.ts` geven een gast niet langer `null` maar dezelfde skeletrijen (alles op `pct: null`); `mcqRows` accepteert `userId: null` en slaat de query over.
+**Outcome:** SUCCESS
+**What worked / went wrong:** Op productie leek dit een rechtenprobleem ("account zonder pakket"), maar de zijbalk verried het: "Account aanmaken" betekent `isGuest`. De vroege `if (!userId) return null` liet `SkillStatBar` terugvallen op `facts`, en de onderdeelpagina geeft die niet mee — dus een halve kaart met een leeg vlak naast de meter. De koppen zelf staan in `data/vaardigheden.ts`, `KNM_THEMES` en `draftCriteria`, dus er hoeft geen query te draaien en er lekt niets.
+**Lesson:** Een lege staat die aan `userId` hangt is een lege staat die de meest voorkomende bezoeker niet ziet. Controleer bij een "het werkt niet op productie"-melding eerst of de sessie ingelogd is — de zijbalkvoet zegt het.
