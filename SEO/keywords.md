@@ -1,4 +1,48 @@
-# Keyword research — inburgeringsexamen A2
+# Keyword research — inburgeringsexamen
+
+**Semrush export, nl database, 2026-09-25** — `SEO/semrush/keywords-nl-2026-09-25.csv` (107 rijen).
+The tables below are real volume and KD; everything under the rule further down is the
+2026-07-28 SERP inspection with its `[EST]` guesses and stays as history.
+
+## The map: one primary keyword per URL
+
+| URL | Primary (vol / KD) | Secondary | Status 25-09 |
+|---|---|---|---|
+| `/nl` | inburgering examen oefenen (1.900 / 35) | inburgeringsexamen oefenen 1.300/32 · inburgering oefenen 1.300/34 · inburgering oefenexamen 720/34 · examen oefenen inburgering 880/29 | title + H1 retitled |
+| `/nl/oefenexamen/a2` | inburgering examen oefenen a2 (880 / 23) | oefenen examen a2 1.300/18 · inburgering examen a2 1.300/34 · examen a2 260/13 · a2 examen oefenen 260/32 | **new page** |
+| `/nl/oefenexamen/b1` | inburgeringsexamen oefenen b1 (170 / 27) | inburgeringsexamen b1 90/29 · b1 inburgering 50/23 | **new page** |
+| `/nl/oefenexamen/a2/lezen` | inburgering examen oefenen lezen a2 (170 / 14) | lezen examen a2 110/7 | retitled + copy |
+| `/nl/oefenexamen/a2/luisteren` | inburgering examen oefenen luisteren a2 (170 / 26) | | retitled + copy |
+| `/nl/oefenexamen/a2/schrijven` | schrijven examen a2 (170 / 12) | inburgering examen oefenen schrijven a2 140/17 | retitled + copy |
+| `/nl/oefenexamen/a2/spreken` | spreken examen a2 (140 / 19) | spreken examen a2 oefenen 140/22 | retitled + copy |
+| `/nl/oefenen` | oefenen voor inburgering (880 / 18) | oefen inburgering examen 50/23 | retitled |
+| `/nl/oefenexamen/knm` | inburgering examen oefenen knm (390 / 20) | knm inburgering 140/27 · inburgering knm 110/19 | retitled |
+| `/en` | inburgering practice exam (880 / 25) | inburgering practice exams 720/27 · inburgering exam practice 480/23 | retitled |
+| `/en/practice-exam/a2` | dutch a2 exam (210 / 21) | inburgering exam a2 210/28 · a2 dutch exam 140/22 · dutch a2 exam practice 70/9 | **new page** |
+| `/en/practice-exam/a2/reading` | dutch a2 reading exam practice (50 / 4) | | via title template |
+| `/en/practice` | inburgering practice exam free (110 / 18) | inburgeren practice exams 390/24 | retitled |
+| `/nl/taalexamens/taalexamens-a2-b1` | inburgeringsexamen (8.100 / 40) | wat is inburgering 90/19 | retitled; needs links |
+| `/nl/inburgering/welke-wet-en-welke-route` | wet inburgering 2021 (480 / 16) | nieuwe wet inburgering 140/22 · wet inburgering 320/30 · z route inburgering 260/11 · b1 route inburgering 90/10 | retitled |
+| `/nl/inburgering/pvt-map-en-ona` | map inburgering (210 / 23) | | retitled |
+| `/nl/inburgering/moet-ik-inburgeren` | inburgering verplicht (110 / 24) | wie moeten inburgeren 70/19 · verplicht inburgeren 90/23 | retitled |
+| `/nl/blog/inburgeringsexamen-a2-uitleg` | inburgeringsexamen a2 (170 / 32) | a2 inburgeringsexamen 90/22 | unchanged (spoke) |
+
+**Not targeted, on purpose:** `inburgering` 33.100/49 and `duo inburgering` 6.600/38 are
+navigational (DUO); `inburgering online` 3.600/46 is a course-provider SERP; everything with `a1`
+is out of product scope (`Level` is `'a2' | 'b1'`).
+
+**Open, owner's call:** `basisexamen inburgering buitenland` 260/25 + `basisexamen inburgering`
+170/27 + `inburgeringsexamen buitenland` 110/27 + `inburgeringsexamen a1` 480/32 ≈ 1.100/month,
+informational, no product behind it — one guide that says plainly we do not sell A1.
+`fraude inburgeringsexamen` 590/19 is a news spike. `duo inburgering examen oefenen` 320/26 is
+answered in the FAQ of the level pages.
+
+**Cannibalisation rules:** `/oefenen/*` owns "gratis … oefenen" wording, `/oefenexamen/*` owns
+"inburgeringsexamen … oefenen". The blog keeps "tips" phrasing, the guides keep "uitgelegd".
+
+---
+
+## History — 2026-07-28 SERP inspection (estimates)
 
 Researched **2026-07-28** by live SERP inspection on Google.nl.
 

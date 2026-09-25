@@ -635,21 +635,35 @@ export default async function HomePage({ params }: Props) {
               {/* De vier delen van het traject, elk met zijn eigen stand. Zonder deze rij zou de
                   kop vier dingen adverteren en er één leveren. */}
               <ul className="flex flex-wrap items-center gap-2 list-none p-0 m-0">
-                {TRACKS.map(track => (
-                  <li key={track.key}>
-                    <span
-                      className="inline-flex items-center gap-2 rounded-full px-3.5 py-1.5 text-[0.8125rem] font-semibold"
-                      style={track.live
-                        ? { background: 'rgba(255,255,255,0.18)', color: '#ffffff' }
-                        : { background: 'rgba(255,255,255,0.08)', color: 'rgba(255,255,255,0.72)' }}
-                    >
-                      {t(track.key)}
-                      {!track.live && (
-                        <span className="text-[0.5625rem] font-bold uppercase tracking-widest">{t('pkg_soon')}</span>
+                {TRACKS.map(track => {
+                  /* De twee niveauchips zijn links naar het niveau-overzicht (25-09): dat is de
+                     pagina voor "inburgering examen oefenen a2", en de hero is de meest gelinkte
+                     plek van de site om hem vanaf te bereiken. KNM en ONA blijven een label —
+                     KNM heeft zijn eigen tegel eronder, ONA bestaat niet. */
+                  const levelHref = track.key === 'track_a2' ? localeHref(locale, 'oefenexamen/a2')
+                    : track.key === 'track_b1' ? localeHref(locale, 'oefenexamen/b1')
+                    : null;
+                  const chipClass = 'inline-flex items-center gap-2 rounded-full px-3.5 py-1.5 text-[0.8125rem] font-semibold no-underline';
+                  const chipStyle = track.live
+                    ? { background: 'rgba(255,255,255,0.18)', color: '#ffffff' }
+                    : { background: 'rgba(255,255,255,0.08)', color: 'rgba(255,255,255,0.72)' };
+                  return (
+                    <li key={track.key}>
+                      {levelHref ? (
+                        <a href={levelHref} className={`${chipClass} hero-chip`} style={chipStyle}>
+                          {t(track.key)}
+                        </a>
+                      ) : (
+                        <span className={chipClass} style={chipStyle}>
+                          {t(track.key)}
+                          {!track.live && (
+                            <span className="text-[0.5625rem] font-bold uppercase tracking-widest">{t('pkg_soon')}</span>
+                          )}
+                        </span>
                       )}
-                    </span>
-                  </li>
-                ))}
+                    </li>
+                  );
+                })}
               </ul>
             </div>
 

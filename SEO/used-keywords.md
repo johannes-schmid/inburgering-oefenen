@@ -15,6 +15,26 @@ cannibalise each other and both lose.
 | wederkerende werkwoorden | `wederkerende-werkwoorden-nederlands` | 2026-09-16 |
 | spreken examen inburgering tips | `spreken-examen-inburgering-tips` | 2026-09-16 |
 
+## Page-level primaries (2026-09-25, Semrush)
+
+Not blog posts, but the same rule holds: one primary per URL, never reused. The full map with
+volumes is the top of `SEO/keywords.md`.
+
+| Primary keyword | URL |
+|---|---|
+| inburgering examen oefenen | `/nl` |
+| inburgering examen oefenen a2 | `/nl/oefenexamen/a2` |
+| inburgeringsexamen oefenen b1 | `/nl/oefenexamen/b1` |
+| inburgering examen oefenen {lezen,luisteren,schrijven,spreken} a2 | `/nl/oefenexamen/a2/<skill>` |
+| oefenen voor inburgering | `/nl/oefenen` |
+| inburgering examen oefenen knm | `/nl/oefenexamen/knm` |
+| inburgering practice exam | `/en` |
+| dutch a2 exam | `/en/practice-exam/a2` |
+| inburgeringsexamen | `/nl/taalexamens/taalexamens-a2-b1` |
+| wet inburgering 2021 | `/nl/inburgering/welke-wet-en-welke-route` |
+| map inburgering | `/nl/inburgering/pvt-map-en-ona` |
+| inburgering verplicht | `/nl/inburgering/moet-ik-inburgeren` |
+
 ## Translation status (2026-09-16)
 
 | Post | NL | EN | AR |

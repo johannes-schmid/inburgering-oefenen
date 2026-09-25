@@ -77,7 +77,7 @@ export default async function ExamPage({ params }: Props) {
   // player disagreed, so a paid customer saw "unlocked" and then got the upsell. `ownsModule` still
   // returns true for the legacy all-access plans, so nothing that used to open has closed.
   if (!content.exam.is_free && !ownsModule(user.user_metadata, level, skill.slug)) {
-    redirect(localeHref(locale, `premium?vanaf=oefenexamen-${level}-${skill.slug}-${number}`));
+    redirect(encodeURI(localeHref(locale, `premium?vanaf=oefenexamen-${level}-${skill.slug}-${number}`)));
   }
 
   const menu = await fetchPortalMenu();

@@ -63,9 +63,9 @@ const guide: Guide = {
   pillar: false,
   coverGlyph: 'fork',
 
-  title: 'Moet ik inburgeren? Check je situatie',
+  title: 'Moet ik inburgeren? Wie is inburgeringsplichtig',
   description:
-    'Niet iedereen moet inburgeren. Check in één minuut of de inburgeringsplicht voor jou geldt, wanneer je vrijstelling krijgt en welke wet voor jou geldt.',
+    'Inburgering is niet voor iedereen verplicht. Check in één minuut wie moet inburgeren, of de plicht voor jou geldt en wanneer je vrijstelling krijgt.',
 
   datePublished: '2026-08-20',
   dateModified: '2026-08-21',
@@ -316,7 +316,7 @@ ${inlineCta('Kijk vast waar je nu staat', 'Tien vragen per onderdeel, met uitleg
    * name is Dutch whichever locale links to it. */
   translations: {
     en: {
-      title: 'Do I have to do inburgering? Check your situation',
+      title: 'Do I have to do inburgering? Who is obliged to integrate',
       breadcrumb: 'Do I have to?',
       dateLabel: '21 August 2026',
       eyebrow: 'Integration duty',

@@ -36,6 +36,11 @@ const PAGES = [
   { path: '/nl/oefenen',                expect: ['CollectionPage', 'BreadcrumbList'] },
   { path: '/nl/oefenen/lezen',          expect: ['Quiz', 'BreadcrumbList'] },
   { path: '/nl/oefenen/luisteren',      expect: ['Quiz', 'BreadcrumbList'] },
+  // Het niveau-overzicht (25-09) verwijst naar de Course-nodes van de onderdeelpagina's en
+  // definieert er zelf geen — twee volledige Course-nodes voor één url is de tegenspraak die
+  // de onderdeelpagina hierboven al beschrijft.
+  { path: '/nl/oefenexamen/a2',         expect: ['CollectionPage', 'ItemList', 'FAQPage', 'BreadcrumbList'], forbid: ['Course', 'Offer'] },
+  { path: '/nl/oefenexamen/b1',         expect: ['CollectionPage', 'ItemList', 'FAQPage', 'BreadcrumbList'], forbid: ['Course', 'Offer'] },
   { path: '/nl/oefenexamen/a2/lezen',   expect: ['Course', 'BreadcrumbList'] },
   { path: '/nl/oefenexamen/a2/spreken', expect: ['Course', 'BreadcrumbList'] },
   // KNM's overview owns its own `Course`, one segment shallower because KNM is not levelled.

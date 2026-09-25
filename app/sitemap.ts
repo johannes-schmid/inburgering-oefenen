@@ -28,19 +28,21 @@ const STATIC_PATHS = [
   'premium',
   'docent',
   'contact',
-  'privacybeleid',
-  'gebruiksvoorwaarden',
-  'terugbetalingsbeleid',
+  /* De drie juridische pagina's staan hier niet meer (25-09): ze zijn `noindex`, en een
+     sitemap-vermelding voor een noindex-URL is precies de tegenspraak die dit bestand overal
+     elders vermijdt. Ze blijven bereikbaar via de voettekst. */
 ] as const;
 
-const TODAY = new Date().toISOString().split('T')[0];
+/* Geen `lastModified` op de statische pagina's. Er stond de bouwdatum, dus elke deploy zette
+ * élke URL op "vandaag gewijzigd" — en een lastmod die altijd vandaag is, is er een die Google
+ * leert te negeren, ook op de blog en de gidsen waar hij wél klopt. Alleen die twee houden hem. */
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const entries: MetadataRoute.Sitemap = [];
 
   for (const locale of LOCALES) {
     for (const path of STATIC_PATHS) {
-      entries.push({ url: absUrl(locale, path), changeFrequency: 'monthly', priority: path === '' ? 1.0 : 0.8, lastModified: TODAY });
+      entries.push({ url: absUrl(locale, path), changeFrequency: 'monthly', priority: path === '' ? 1.0 : 0.8 });
     }
   }
 
@@ -55,14 +57,13 @@ export default function sitemap(): MetadataRoute.Sitemap {
    * tells Google to ignore it.
    */
   for (const locale of LOCALES) {
-    entries.push({ url: absUrl(locale, 'oefenen'), changeFrequency: 'weekly', priority: 0.9, lastModified: TODAY });
+    entries.push({ url: absUrl(locale, 'oefenen'), changeFrequency: 'weekly', priority: 0.9 });
     for (const skill of SKILLS) {
       if (!hasFreePractice(skill.slug)) continue;
       entries.push({
         url: absUrl(locale, `oefenen/${skill.slug}`),
         changeFrequency: 'monthly',
-        priority: 0.8,
-        lastModified: TODAY,
+        priority: 0.8
       });
     }
     /* The B1 tasters, nested under their level. Only the onderdelen that have a source exam —
@@ -72,8 +73,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
       entries.push({
         url: absUrl(locale, `oefenen/b1/${skill}`),
         changeFrequency: 'monthly',
-        priority: 0.8,
-        lastModified: TODAY,
+        priority: 0.8
       });
     }
     /* KNM's taster, level-less like the rest of that onderdeel and gated on the same
@@ -82,8 +82,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
       entries.push({
         url: absUrl(locale, 'oefenen/knm'),
         changeFrequency: 'monthly',
-        priority: 0.8,
-        lastModified: TODAY,
+        priority: 0.8
       });
     }
   }
@@ -102,6 +101,19 @@ export default function sitemap(): MetadataRoute.Sitemap {
    * page is `noindex`, so listing it here would be the contradiction this block exists to
    * avoid. Gating on the same fact rather than on a second hand-kept list is what stops the two
    * drifting. */
+  /* Het niveau-overzicht per niveau — de pagina voor "inburgering examen oefenen a2" (25-09).
+     Altijd geïndexeerd: het niveau heeft altijd minstens drie onderdelen met een geteld
+     formaat, en de pagina zegt zelf welk onderdeel nog leeg is. */
+  for (const level of LEVELS) {
+    for (const locale of LOCALES) {
+      entries.push({
+        url: absUrl(locale, `oefenexamen/${level}`),
+        changeFrequency: 'weekly',
+        priority: level === DEFAULT_LEVEL ? 0.9 : 0.8,
+      });
+    }
+  }
+
   for (const skill of SKILLS) {
     for (const level of LEVELS) {
       if (getFormat(level, skill.slug).itemCount === null) continue;
@@ -109,8 +121,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
         entries.push({
           url: absUrl(locale, `oefenexamen/${level}/${skill.slug}`),
           changeFrequency: 'weekly',
-          priority: level === DEFAULT_LEVEL ? 0.9 : 0.8,
-          lastModified: TODAY,
+          priority: level === DEFAULT_LEVEL ? 0.9 : 0.8
         });
       }
     }
@@ -129,8 +140,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
       entries.push({
         url: absUrl(locale, 'oefenexamen/knm'),
         changeFrequency: 'weekly',
-        priority: 0.9,
-        lastModified: TODAY,
+        priority: 0.9
       });
     }
   }
@@ -140,8 +150,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
       entries.push({
         url: absUrl(locale, 'blog'),
         changeFrequency: 'weekly',
-        priority: 0.7,
-        lastModified: TODAY,
+        priority: 0.7
       });
     }
 
@@ -174,8 +183,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
       entries.push({
         url: absUrl(locale, `${section}`),
         changeFrequency: 'weekly',
-        priority: 0.9,
-        lastModified: TODAY,
+        priority: 0.9
       });
     }
   }
@@ -199,8 +207,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     entries.push({
       url: absUrl(locale, 'inburgering/tools/tijdlijn'),
       changeFrequency: 'weekly',
-      priority: 0.9,
-      lastModified: TODAY,
+      priority: 0.9
     });
   }
 

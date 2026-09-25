@@ -15,8 +15,8 @@ import { I_BOOK, I_CHECK, I_HEADPHONES, I_MIC, I_PEN, I_X, docentIn, factIn, fac
 import { CHECKED, SRC_KOSTEN, SRC_OEFENEN, SRC_PLAATSEN, SRC_REGLEMENT, SRC_ROUTES, SRC_TAALEXAMENS, SRC_UITSLAG, card } from '../taalexamens-a2-b1';
 
 const translation: GuideLocale = {
-  title: 'Language exams A2 and B1: reading, listening, writing',
-  description: 'Four language parts, two levels. What you do in reading, listening, writing and speaking, how long each exam takes and how A2 differs from B1.',
+  title: 'The inburgering exam: the A2 and B1 language exams explained',
+  description: 'The inburgering exam is four language exams, KNM and sometimes ONA. What you do in reading, listening, writing and speaking, how long each takes, A2 or B1.',
   breadcrumb: 'The language exams',
   dateLabel: '23 August 2026',
   eyebrow: 'Language exams',
@@ -27,6 +27,12 @@ const translation: GuideLocale = {
   ctaLabel: 'Start a free practice exam',
 
   articleHtml: `
+<p>The <strong>inburgering exam</strong> is not one exam but a series: four language exams
+(Lezen, Luisteren, Schrijven and Spreken) at A2 or B1, the <a href="/en/knm/knm-exam">KNM</a> exam
+about Dutch society, and under the old act also <a href="/en/civic-integration/ona-exam">ONA</a>.
+This guide covers the four language exams. Which parts <em>you</em> have to take is in the
+<a href="/en/civic-integration/inburgering-step-by-step">step-by-step guide</a>.</p>
+
 <h2 id="vier-onderdelen">Four parts, four separate exams</h2>
 
 <p>Your language exam is not one exam. There are four of them, and you take them at four

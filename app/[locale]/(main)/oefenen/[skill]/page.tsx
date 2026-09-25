@@ -72,7 +72,9 @@ export default async function FreePracticePage({ params }: Props) {
    * exists. A real exam component with neither (Schrijven / Spreken) sends the visitor back to
    * the picker rather than showing a dead end. */
   const set = await fetchA2FreePractice(skill.slug);
-  if (!set) redirect(localizedPath('/oefenen', locale));
+  /* `encodeURI`: het Arabische pad is niet ASCII, en een rauwe Location-header met Arabisch
+   * erin gooit een 500 in plaats van een 307. */
+  if (!set) redirect(encodeURI(localizedPath('/oefenen', locale)));
 
   const tSkills = await getTranslations({ locale, namespace: 'skills' });
   const tB = await getTranslations({ locale, namespace: 'breadcrumbs' });

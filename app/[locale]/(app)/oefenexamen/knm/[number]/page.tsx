@@ -61,7 +61,7 @@ export default async function KnmExamPage({ params }: Props) {
   // `ownsKnm`, not `ownsModule(…, 'a2', …)`: KNM is sold as its own level-less module, so an
   // A2 customer does not have it and a KNM customer is not an A2 one.
   if (!content.exam.is_free && !ownsKnm(user.user_metadata)) {
-    redirect(localeHref(locale, `premium?vanaf=oefenexamen-knm-${number}`));
+    redirect(encodeURI(localeHref(locale, `premium?vanaf=oefenexamen-knm-${number}`)));
   }
 
   const menu = await fetchPortalMenu();

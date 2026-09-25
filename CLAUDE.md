@@ -350,6 +350,7 @@ layout's redirect loops. Admin routes are **not** in `i18n/routing.ts` and need 
                               10-question taster, no account, feedback per question
                               └─ result: one card, score behind a blur until the e-mail step
                                  (the SKIP LINK stays), then the platform card
+/oefenexamen/[level]                PUBLIC level overview — the page for "inburgering examen oefenen a2"
 /oefenexamen/[level]/[skill]        PUBLIC overview — 10 slots, the SEO + funnel surface
   └─ /oefenexamen/[level]/[skill]/[n]   THE PLAYER, in (app): a guest is sent to /register
        exam 1 of every published onderdeel is free with an account; the rest → /premium

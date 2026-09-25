@@ -48,9 +48,9 @@ const guide: Guide = {
   pillar: true,
   coverGlyph: 'quad',
 
-  title: 'Taalexamens A2 en B1: lezen, luisteren, schrijven, spreken',
+  title: 'Het inburgeringsexamen: de taalexamens A2 en B1 uitgelegd',
   description:
-    'Vier taalonderdelen, twee niveaus. Wat je doet bij lezen, luisteren, schrijven en spreken, hoe lang elk examen duurt en wat het verschil is tussen A2 en B1.',
+    'Het inburgeringsexamen bestaat uit vier taalexamens, KNM en soms ONA. Wat je doet bij lezen, luisteren, schrijven en spreken, hoe lang elk duurt en A2 of B1.',
 
   datePublished: '2026-08-23',
   dateModified: '2026-08-23',
@@ -64,6 +64,12 @@ const guide: Guide = {
   readingMinutes: 8,
 
   articleHtml: `
+<p>Het <strong>inburgeringsexamen</strong> is niet &eacute;&eacute;n examen maar een reeks: vier
+taalexamens (Lezen, Luisteren, Schrijven en Spreken) op A2 of B1, het examen <a href="/nl/knm/knm-examen">KNM</a>
+over de Nederlandse samenleving, en onder de oude wet ook <a href="/nl/inburgering/ona-examen">ONA</a>.
+Deze gids gaat over de vier taalexamens. Welke onderdelen j&iacute;j moet doen, staat in het
+<a href="/nl/inburgering/inburgering-stappenplan">stappenplan</a>.</p>
+
 <h2 id="vier-onderdelen">Vier onderdelen, vier aparte examens</h2>
 
 <p>Je taalexamen is niet &eacute;&eacute;n examen. Het zijn er vier, en je doet ze op vier

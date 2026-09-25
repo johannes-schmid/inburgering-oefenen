@@ -90,7 +90,8 @@
     "oefenexamen": "Practice exams",
     "inburgering": "Integration",
     "knm": "KNM",
-    "taalexamens": "Language exams"
+    "taalexamens": "Language exams",
+    "level": "Inburgering exam {level}"
   },
   "footer": {
     "copyright": "© 2026 Inburgering Oefenen",
@@ -110,7 +111,9 @@
     "knm": "KNM explained",
     "taalexamens": "Language exams",
     "platformOverview": "Overview",
-    "allGuides": "All guides"
+    "allGuides": "All guides",
+    "level_a2": "Inburgering exam A2",
+    "level_b1": "Inburgering exam B1"
   },
   "terms": {
     "meta_title": "Terms of Use | Inburgering Oefenen",
@@ -197,10 +200,10 @@
     "quiz_proef": "Start practice exam"
   },
   "home": {
-    "meta_title": "Practise your inburgering exam — A2, B1, KNM and ONA in one platform",
+    "meta_title": "Inburgering practice exam — A2, B1 and KNM, free to start",
     "meta_description": "Practise your whole inburgering in one place: the four language parts at A2 and B1, plus KNM and ONA. Every task from a certified NT2 teacher.",
     "hero_badge": "Checked by a certified NT2 teacher",
-    "hero_line1": "Every exam component in one platform",
+    "hero_line1": "Inburgering practice exams — A2, B1 and KNM",
     "hero_subheading": "The same structure, timing and question types as DUO. On exam day, nothing will surprise you — every exercise is by a certified NT2 teacher.",
     "cta_primary": "Start for free",
     "hero_docent_name": "Marieke Schipper",
@@ -387,11 +390,11 @@
     "proof_seal_short": "Writes and checks every exercise herself. No AI-generated exam content."
   },
   "oefenen": {
-    "meta_title": "Practise for free — 10 questions at A2, B1 and KNM | Inburgering Oefenen",
-    "meta_description": "Practise for free for the Dutch integration exam: ten questions with instant explanations for Reading and Listening at A2, B1 and KNM. No account.",
+    "meta_title": "Free inburgering practice exam — 10 questions per part",
+    "meta_description": "Free inburgering exam practice with no account: ten questions with an explanation for Reading and Listening at A2, Reading at B1 and KNM. By an NT2 teacher.",
     "breadcrumb": "Free practice",
     "pick_eyebrow": "Practise for free",
-    "pick_heading": "Pick your exam and practise for free",
+    "pick_heading": "Practise for your inburgering exam, free",
     "pick_sub": "Pick your exam first, then a component. Ten real tasks per set, with an explanation after every question.",
     "pick_cta": "Start 10 questions",
     "pick_soon": "Coming soon",
@@ -899,9 +902,9 @@
     }
   },
   "oefenexamen": {
-    "meta_title": "{skill} {level} practice — 10 practice exams from an NT2 teacher",
+    "meta_title": "Dutch {level} {skill_lower} exam practice — 10 inburgering exams",
     "meta_description": "Practise {skill_lower} for the Dutch {level} integration exam with 10 full practice exams. Same structure and timing as DUO, written and reviewed by a certified NT2 teacher.",
-    "heading": "Practise {skill_lower} {level}",
+    "heading": "Dutch {level} {skill_lower} exam practice",
     "exam_label": "Practice exam {number}",
     "free": "Free",
     "locked": "In the package",
@@ -915,15 +918,104 @@
     "not_ready_title": "These practice exams are on the way",
     "not_ready_body": "The teacher is writing the practice exams for this part right now. Practice exam 1 appears here as soon as it has been reviewed.",
     "guide_link": "How does integrating in the Netherlands work? Read the steps",
-    "knm_meta_title": "KNM practice exam — 10 full mock exams | Inburgering Oefenen",
+    "knm_meta_title": "KNM practice exam for inburgering — 10 full mock exams",
     "knm_meta_description": "Practise the KNM exam with ten full mock exams of 40 questions. With an explanation for every answer, written and checked by a certified NT2 teacher.",
-    "knm_heading": "KNM practice exams",
+    "knm_heading": "KNM practice for your inburgering",
     "knm_no_level": "KNM is not examined per language level — this exam is the same for A2 and B1.",
     "knm_themes_title": "The seven themes",
     "knm_lessons_cta": "Read the explanation per theme",
     "knm_words_cta": "Practise the words",
     "knm_unlock_title": "Unlock all ten KNM practice exams",
-    "knm_unlock_body": "Practice exam 1 is free with an account. The KNM module gives you all ten practice exams, the seven lesson modules and the word cards."
+    "knm_unlock_body": "Practice exam 1 is free with an account. The KNM module gives you all ten practice exams, the seven lesson modules and the word cards.",
+    "all_of_level": "Every part of the {level} exam",
+    "how_ours_title": "How you practise here",
+    "faq_title": "Frequently asked questions",
+    "how": {
+      "lezen": {
+        "p1": "In the Lezen (reading) exam you read short everyday texts: an advertisement, a letter from the gemeente, a notice at school, a leaflet or a set of rules. Each text comes with one to three multiple-choice questions. You take this exam on a computer.",
+        "p_counts": "DUO's own practice exams for {level} have {items} questions in {minutes} minutes. DUO does not publish an official question count; this is what the start screen of their practice exams shows.",
+        "p3": "Our ten Lezen {level} practice exams follow the same structure: the same text types, the same number of questions, the same time. After every question you see straight away whether you were right, with a short explanation from the teacher, so you learn where in the text you should have looked.",
+        "q1": "How many reading practice exams does DUO have?",
+        "a1": "DUO has four free Lezen A2 practice exams on inburgeren.nl. They are good for learning the format. We have ten per level, with an explanation for every question.",
+        "q2": "Is practice exam 1 really free?",
+        "a2": "Yes. With a free account you take practice exam 1 of every part in full, with explanations. Practice exams 2 to 10 are in the Lezen module.",
+        "q3": "How many questions do I need to get right?",
+        "a3": "DUO does not publish that. The pass mark is set per exam by the minister and is nowhere stated as a fixed number. Be careful with sites that quote one."
+      },
+      "luisteren": {
+        "p1": "In the Luisteren (listening) exam you watch short videos and listen to conversations and announcements: at the doctor, at work, on the phone. Each fragment comes with two or three multiple-choice questions. You hear a fragment once, so you have to listen carefully the first time.",
+        "p_counts": "DUO's own practice exams for {level} have {items} questions in {minutes} minutes. DUO does not publish an official count; this is what the start screen of their practice exams shows.",
+        "p3": "Our ten Luisteren {level} practice exams are recorded by different voices at the pace of the real exam. After every question you get the teacher's explanation, and you can replay the fragment to hear what you missed.",
+        "q1": "Can I replay a fragment in the real exam?",
+        "a1": "No, in DUO's exam you hear every fragment once. Our practice exams work the same way during the exam; after you answer, you may listen again.",
+        "q2": "Is practice exam 1 really free?",
+        "a2": "Yes. With a free account you take practice exam 1 in full, with explanations. Practice exams 2 to 10 are in the Luisteren module.",
+        "q3": "Do I need headphones?",
+        "a3": "They help. The conversations have background noise, and headphones make the details easier to catch. In the real exam you get headphones too."
+      },
+      "schrijven": {
+        "p1": "In the Schrijven (writing) exam you write short texts you really need in the Netherlands: an e-mail to a colleague, a note for the neighbours, a short piece for the neighbourhood paper, and you fill in a form. It is about being understood, not about elegant sentences.",
+        "p_counts": "DUO's own practice exams for {level} have {items} tasks, and you get {minutes} minutes.",
+        "p_a2_only": "At A2 you take this exam with pen and paper. That surprises many people who have only practised on a keyboard, so write by hand a few times during your preparation.",
+        "p3": "Our ten Schrijven {level} practice exams have the same kinds of tasks. Your answer is marked against the teacher's rubric: you see per criterion what went well and what could be better, and you compare your text with a model answer.",
+        "q1": "Who marks my text?",
+        "a1": "The teacher wrote a rubric and a model answer for every kind of task. Your feedback follows that rubric, and the teacher reviews the markings and adjusts the rubric.",
+        "q2": "Is practice exam 1 really free?",
+        "a2": "Yes. With a free account you take practice exam 1 in full, with feedback. Practice exams 2 to 10 are in the Schrijven module.",
+        "q3": "Does spelling count?",
+        "a3": "Yes, but not only spelling. DUO's exam looks at whether your text is understandable, whether you wrote everything that was asked, and whether your words and sentences are correct."
+      },
+      "spreken": {
+        "p1": "In the Spreken (speaking) exam you talk to the computer. You see a video or a picture, hear a question and answer out loud. You say what someone is doing, what you would do, or you explain something. Your answer is recorded.",
+        "p_counts": "DUO's own practice exams for {level} have {items} questions in {minutes} minutes.",
+        "p_a2_only": "At A2 there are four kinds of questions: with a video, with one picture, with two pictures you choose from, and with three pictures you use all of. You have sixty seconds per answer.",
+        "p3": "Our ten Spreken {level} practice exams work exactly like that: you record your answer in the browser. Then you get feedback against the teacher's rubric and listen to a model answer, so you hear what a good answer sounds like.",
+        "q1": "Do I have to speak perfect Dutch?",
+        "a1": "No. At A2 what counts is that you can be understood and that you answer the question. A verb mistake does not cost you the question; no answer at all does.",
+        "q2": "Is practice exam 1 really free?",
+        "a2": "Yes. With a free account you take practice exam 1 in full, with feedback. Practice exams 2 to 10 are in the Spreken module.",
+        "q3": "Does recording work on my phone?",
+        "a3": "Yes, in the browser of your phone, tablet or computer. Nothing to install. Do practise on a laptop at least once: the real exam is taken on a computer."
+      }
+    },
+    "level": {
+      "meta_title": "Dutch {level} exam practice — free inburgering practice exams",
+      "meta_description": "Practise the {level} inburgering exam: reading, listening, writing and speaking, ten practice exams per part. Exam 1 is free. Everything by a certified NT2 teacher.",
+      "eyebrow": "Inburgering {level}",
+      "heading": "Inburgering exam {level} practice",
+      "sub": "Four language parts, ten practice exams per part. The same structure and timing as DUO, and practice exam 1 of every part is free.",
+      "breadcrumb": "Inburgering exam {level}",
+      "parts_title": "The four parts of the {level} exam",
+      "part_meta": "{items} questions · {minutes} minutes",
+      "part_meta_tasks": "{items} tasks · {minutes} minutes",
+      "part_soon": "No practice exams yet",
+      "part_cta": "See the practice exams",
+      "free_chip": "Exam 1 free",
+      "what_title": "What is the Dutch {level} inburgering exam?",
+      "what_p1_a2": "The inburgering exam at A2 consists of four language exams: Lezen (reading), Luisteren (listening), Schrijven (writing) and Spreken (speaking). You take them separately, often on different days, and you pass them separately. On top of that you take KNM, the exam about Dutch society. At the time of writing each part costs 50 euros at DUO.",
+      "what_p1_b1": "Under the Wet inburgering 2021, B1 is the level of the B1-route. The B1 language exam has the same four parts as A2: reading, listening, writing and speaking. The texts are longer, the tasks ask more of you, and you get more time. On top of that you take KNM.",
+      "what_p2": "DUO publishes how long each part takes, but not the number of questions and not how many you need to get right. The numbers below come from the start screens of DUO's own practice exams. The guide on the language exams explains the format in more detail.",
+      "how_title": "How you practise for the {level} exam here",
+      "how_p1": "For every part there are ten practice exams with the same structure, the same number of tasks and the same time as DUO. In reading and listening you see after every question whether you were right, with an explanation. In writing and speaking you get feedback against the teacher's rubric and a model answer.",
+      "how_p2": "Every task was written or reviewed by a certified NT2 teacher. Nothing is invented by AI: the teacher decides what goes into an exam and whether it resembles what DUO asks.",
+      "free_title": "Start for free",
+      "free_p": "DUO gives you three or four practice exams per part. Here you take practice exam 1 of every part for free, with an account. Want to look first without an account? Try the free ten-question practice session.",
+      "free_cta": "Practise 10 questions without an account",
+      "guides_title": "Read more about the {level} exam",
+      "guide_taalexamens": "The A2 and B1 language exams explained",
+      "guide_b1": "The language exam at B1",
+      "guide_stappenplan": "The complete inburgering step-by-step guide",
+      "b1_luisteren_note": "There are no practice exams for Luisteren B1 yet. DUO publishes no practice material for it, and we do not put anything online whose format we do not know.",
+      "faq_title": "Frequently asked questions about the {level} exam",
+      "q1": "Can I also practise with DUO's own practice exams?",
+      "a1": "Yes, and we recommend it. inburgeren.nl has three or four free practice exams per part. Ours have the same format; the difference is that you get ten per part and an explanation for every question.",
+      "q2": "Do I have to take all four parts at once?",
+      "a2": "No. You register per part with DUO and pass them independently. If you fail one part, you only retake that part.",
+      "q3": "How many questions do I need to get right to pass?",
+      "a3": "DUO does not publish that. The pass mark is set per exam and is nowhere stated as a fixed number. Sites that quote a number have no source for it.",
+      "q4": "What does the inburgering exam cost?",
+      "a4": "At the time of writing, 50 euros per part at DUO. Check the current price on inburgeren.nl. Practising here costs 9.95 euros a month per part, and practice exam 1 is free."
+    }
   },
   "portal": {
     "sidebar_subtitle": "Practice portal",

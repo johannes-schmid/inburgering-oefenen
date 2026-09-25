@@ -92,6 +92,22 @@ export default async function SkillOverviewPage({ params }: Props) {
   // translation of the same sentence — three copies of a claim is three places it can drift.
   const tHome = await getTranslations({ locale, namespace: 'home' });
 
+  /* De uitleg onder het rooster (25-09). De pagina had 270 woorden en geen "inburgering" in
+     de titel, terwijl knmoefenen.nl met 500–650 woorden uitleg per landingspagina rankt. De
+     tekst komt uit `messages/*.json` onder `oefenexamen.how.<onderdeel>`; de getallen erin
+     uit `data/skills.ts`, nooit uit de copy zelf. `p_counts` valt weg zolang het formaat
+     ongeteld is (B1 Luisteren) en `p_a2_only` beschrijft wat alleen voor A2 is geverifieerd
+     (`SEO/facts.md` §1: pen en papier, de vier vraagsoorten van Spreken). */
+  const tHow = await getTranslations({ locale, namespace: `oefenexamen.how.${skill.slug}` });
+  const howVars = { level: levelLabel(level), items: skill.itemCount ?? 0, minutes: skill.durationMinutes ?? 0 };
+  const paragraphs = [
+    tHow('p1'),
+    ...(skill.itemCount !== null && skill.durationMinutes !== null ? [tHow('p_counts', howVars)] : []),
+    ...(level === 'a2' && tHow.has('p_a2_only') ? [tHow('p_a2_only')] : []),
+  ];
+  const ours = tHow('p3', howVars);
+  const faq = ([1, 2, 3] as const).map(n => ({ q: tHow(`q${n}`), a: tHow(`a${n}`) }));
+
   const exams = await fetchExamsForSkill(level, skill.slug);
   const publishedByNumber = new Map(exams.map(e => [e.number, e]));
   const slots = Array.from({ length: skill.examCount }, (_, i) => i + 1);
@@ -151,8 +167,18 @@ export default async function SkillOverviewPage({ params }: Props) {
       }),
       breadcrumbs(locale, tB('home'), [
         { name: tB('oefenexamen'), path: 'oefenen' },
+        { name: tB('level', { level: levelLabel(level) }), path: `oefenexamen/${level}` },
         { name, path },
       ]),
+      ...(faq.length ? [{
+        '@type': 'FAQPage',
+        '@id': `${url}#faq`,
+        mainEntity: faq.map(f => ({
+          '@type': 'Question',
+          name: f.q,
+          acceptedAnswer: { '@type': 'Answer', text: f.a },
+        })),
+      }] : []),
     ],
   };
 
@@ -301,8 +327,34 @@ export default async function SkillOverviewPage({ params }: Props) {
         </div>
       </section>
 
-      {/* ── CROSS-LINKS ── */}
+      {/* ── DE UITLEG — wat het examen is, hoe je hier oefent, veelgestelde vragen ── */}
       <section className="py-16 px-6 bg-surface-container-low">
+        <div className="max-w-3xl mx-auto">
+          <h2 className="font-headline font-extrabold text-on-surface tracking-tight mb-4" style={{ fontSize: 'clamp(1.5rem, 2.6vw, 2rem)', letterSpacing: '-0.02em' }}>
+            {t('how_title', { skill: name, skill_lower: name.toLowerCase() })}
+          </h2>
+          {paragraphs.map((p, i) => (
+            <p key={i} className="text-base leading-[1.7] text-on-surface-variant mb-4">{p}</p>
+          ))}
+          <h2 className="font-headline font-extrabold text-on-surface tracking-tight mt-10 mb-4" style={{ fontSize: 'clamp(1.5rem, 2.6vw, 2rem)', letterSpacing: '-0.02em' }}>
+            {t('how_ours_title')}
+          </h2>
+          <p className="text-base leading-[1.7] text-on-surface-variant mb-10">{ours}</p>
+
+          <SectionHeader eyebrow="" title={t('faq_title')} subtitle="" mb="mb-6" />
+          <div className="faq-folds">
+            {faq.map(f => (
+              <details key={f.q} className="faq-fold">
+                <summary>{f.q}</summary>
+                <p className="text-sm leading-relaxed text-on-surface-variant m-0 pt-2">{f.a}</p>
+              </details>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ── CROSS-LINKS ── */}
+      <section className="py-16 px-6 bg-surface">
         <div className="max-w-5xl mx-auto">
           <SectionHeader eyebrow="" title={t('other_skills')} subtitle="" mb="mb-8" />
           <div className="grid sm:grid-cols-3 gap-4">
@@ -324,7 +376,14 @@ export default async function SkillOverviewPage({ params }: Props) {
 
           {/* Into the TOFU section. The overviews are the site's strongest pages; the kennisgidsen
               need the link far more than these pages need the outbound one. */}
+          {/* Omhoog naar het niveau-overzicht (25-09) — de pagina voor "inburgering examen
+              oefenen a2", die zonder deze link alleen uit de voettekst bereikbaar is. */}
           <p className="mt-8 text-sm">
+            <a href={localeHref(locale, `oefenexamen/${level}`)} className="font-semibold" style={{ color: '#a24000' }}>
+              {t('all_of_level', { level: levelLabel(level) })} →
+            </a>
+          </p>
+          <p className="mt-3 text-sm">
             <Link href="/inburgering" className="font-semibold" style={{ color: '#a24000' }}>
               {t('guide_link')} →
             </Link>

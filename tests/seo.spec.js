@@ -12,6 +12,8 @@ import { test, expect } from '@playwright/test';
 const PAGES = [
   '/nl',
   '/nl/oefenen',
+  '/nl/oefenexamen/a2',
+  '/nl/oefenexamen/b1',
   '/nl/oefenexamen/a2/lezen',
   '/nl/oefenexamen/a2/luisteren',
   '/nl/oefenexamen/a2/schrijven',

@@ -44,9 +44,9 @@ const guide: Guide = {
   pillar: false,
   coverGlyph: 'sign',
 
-  title: 'PVT, MAP en ONA: de onderdelen die geen examen zijn',
+  title: 'MAP, PVT en ONA bij inburgering: wat je moet doen',
   description:
-    'De participatieverklaring, de Module Arbeidsmarkt en Participatie en het ONA-examen. Wie welk onderdeel moet doen, hoe het werkt en welke termijnen erbij horen.',
+    'De MAP (Module Arbeidsmarkt en Participatie), de participatieverklaring (PVT) en het ONA-examen. Wie welk onderdeel moet doen, hoe het werkt en de termijnen.',
 
   datePublished: '2026-08-23',
   dateModified: '2026-08-23',

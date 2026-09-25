@@ -47,9 +47,9 @@ const guide: Guide = {
   pillar: false,
   coverGlyph: 'route',
 
-  title: 'Welke inburgeringswet en welke route geldt voor jou?',
+  title: 'Wet inburgering 2021 of 2013: welke route geldt voor jou?',
   description:
-    'Wet inburgering 2013 of 2021? Eén datum bepaalt het. Zie het verschil, de drie leerroutes, wanneer je van B1 naar A2 mag en hoeveel tijd je hebt.',
+    'Wet inburgering 2021 of 2013? Eén datum bepaalt het. Het verschil, de B1-route, de onderwijsroute en de Z-route, afschalen naar A2 en hoeveel tijd je hebt.',
 
   datePublished: '2026-08-20',
   dateModified: '2026-08-20',
@@ -294,7 +294,7 @@ ${fact('De inburgeringstermijn is 3 jaar en begint op de dag na de dagtekening v
    * is no English word a caseworker will recognise, and the reader has to be able to say it. */
   translations: {
     en: {
-      title: 'Which integration act and which route applies to you?',
+      title: 'Wet inburgering 2021 or 2013: which route applies to you?',
       breadcrumb: 'Which law and route',
       dateLabel: '20 August 2026',
       eyebrow: 'Act and learning route',

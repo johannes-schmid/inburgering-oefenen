@@ -15,7 +15,7 @@ import { I_CLIPBOARD, docentIn, factIn, factTwoIn, inlineCta, note } from '../ki
 import { CHECKED, SRC_BESLUIT31, SRC_KENNIS, SRC_ONA_PDF, SRC_WET8, card, row } from '../pvt-map-en-ona';
 
 const translation: GuideLocale = {
-  title: 'PVT, MAP and ONA: the parts that are not exams',
+  title: 'MAP, PVT and ONA in inburgering: what you have to do',
   description: 'The participatieverklaring, the Module Arbeidsmarkt en Participatie and the ONA exam. Who does which part, how it works and which deadlines apply.',
   breadcrumb: 'PVT, MAP and ONA',
   dateLabel: '23 August 2026',

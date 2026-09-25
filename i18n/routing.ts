@@ -218,6 +218,14 @@ export const routing = defineRouting({
       en: '/practice/knm',
       ar: '/تدرب/knm',
     },
+    /* Het niveau-overzicht (25-09): de pagina voor "inburgering examen oefenen a2" — de
+       zoekterm zit tussen de homepage en de vier onderdeelpagina's in, en had geen URL. De
+       statische `knm`-broer schaduwt `[level]`, dus `/oefenexamen/knm` blijft van KNM. */
+    '/oefenexamen/[level]': {
+      nl: '/oefenexamen/[level]',
+      en: '/practice-exam/[level]',
+      ar: '/امتحان-تجريبي/[level]',
+    },
     // The level is part of the path at both levels, including A2 — see the redirects in
     // next.config.ts that 301 the old A2-implicit URLs onto these.
     '/oefenexamen/[level]/[skill]': {

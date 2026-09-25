@@ -1,6 +1,6 @@
 import { useLocale, useTranslations } from 'next-intl';
 import { Link } from '@/i18n/navigation';
-import { DEFAULT_LEVEL, SKILLS } from '@/data/skills';
+import { DEFAULT_LEVEL, LEVELS, SKILLS } from '@/data/skills';
 import { FEATURES } from '@/lib/features';
 import LogoMark from '@/components/site/LogoMark';
 import { SectionTransition } from '@/components/horizon';
@@ -34,6 +34,17 @@ export default function Footer() {
           <nav className="flex flex-col gap-3 text-sm" aria-label="Footer navigatie">
             {/* Typed `Link`, not a bare `<a>`: the anchor here had no locale prefix, so every
                 skill link in the footer sent an EN or AR visitor to the Dutch page. */}
+            {/* De twee niveau-overzichten bovenaan (25-09): dat zijn de pagina's voor
+                "inburgering examen oefenen a2/b1", en de voettekst is de enige site-brede link. */}
+            {LEVELS.map(level => (
+              <Link
+                key={level}
+                href={{ pathname: '/oefenexamen/[level]', params: { level } }}
+                className="hover:text-white transition-colors no-underline"
+              >
+                {t(`level_${level}`)}
+              </Link>
+            ))}
             {SKILLS.map(skill => (
               <Link
                 key={skill.slug}
