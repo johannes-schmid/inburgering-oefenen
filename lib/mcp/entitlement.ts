@@ -33,8 +33,14 @@ export function canOpenExam(tier: Tier, isFree: boolean): boolean {
   return false;
 }
 
+/**
+ * De publieke site. `BASE_URL` als hij er is; anders de origin van `MCP_RESOURCE_URL`, want die
+ * staat op Vercel gegarandeerd goed (ChatGPT faalt anders al vóór deze code). Op productie stond
+ * `BASE_URL` niet en ging een poortlink naar localhost — zie LEARNINGS 04-10.
+ */
 export function siteUrl(): string {
-  return (process.env.BASE_URL ?? 'http://localhost:3001').replace(/\/$/, '');
+  const base = process.env.BASE_URL || (process.env.MCP_RESOURCE_URL ? new URL(process.env.MCP_RESOURCE_URL).origin : 'http://localhost:3001');
+  return base.replace(/\/$/, '');
 }
 
 const UTM = 'utm_source=chatgpt&utm_medium=app';
