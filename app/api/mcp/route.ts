@@ -28,10 +28,13 @@ const handler = createMcpHandler(
   },
 );
 
+// `resourceUrl` is hier de órigin, niet het MCP-pad: mcp-handler plakt `resourceMetadataPath` er
+// direct achter voor de `resource_metadata`-URL in de 401. Met het volledige pad wees die naar
+// `/api/mcp/.well-known/...` (404) en kon ChatGPT de autorisatieserver niet vinden.
 const authed = withMcpAuth(handler, verifyForMcpHandler, {
   required: false,
   resourceMetadataPath: '/.well-known/oauth-protected-resource',
-  resourceUrl: mcpResourceUrl(),
+  resourceUrl: new URL(mcpResourceUrl()).origin,
 });
 
 export { authed as GET, authed as POST, authed as DELETE };

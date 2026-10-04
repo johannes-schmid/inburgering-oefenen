@@ -28,6 +28,19 @@ Vier dingen die bij de audit voor de MCP-laag naar boven kwamen en bewust zijn b
   het antwoord), terwijl de kop van het bestand zegt dat de ankers op de server blijven. De MCP-laag
   stuurt alleen naam, score en feedback door.
 
+## Te doen voor de ChatGPT-app (besluit eigenaar 04-10)
+
+De eerste negatieve testcase voor de OpenAI-review ("Hoe meld ik me aan bij DUO en hoelang heb ik
+om te slagen?") beschreef iets wat de app nú niet doet maar de eigenaar er later wél in wil:
+
+- **Procedurele vragen over het inburgeringstraject beantwoorden vanuit de eigen gidsen** —
+  aanmelden bij DUO, de inburgeringstermijn, de onderdelen, lenen bij DUO. Bron: `data/guides/`
+  en `SEO/facts.md` (nooit een getal dat daar niet in staat, zie CLAUDE.md §9). Vorm: een
+  `get_inburgering_info`-tool die de gids-secties doorzoekt en met bronvermelding antwoordt, plus
+  de tijdlijn-rekenregels uit `lib/tijdlijn/` voor "hoeveel tijd heb ik nog?".
+- Pas daarna de negatieve testcases in de OpenAI-listing bijwerken: wat de app wél doet mag daar
+  niet als "mag niet triggeren" staan.
+
 ## Outstanding work (see `~/.claude/plans/` for the full plan)
 
 **The current roadmap is the milestone plan in `docs/MILESTONES.html` (M0–M6, 2026-08-19)** —
