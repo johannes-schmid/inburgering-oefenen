@@ -15,7 +15,9 @@
     "test:unit:watch": "vitest",
     "build:icons": "node scripts/build-icons.mjs",
     "design": "python3 -m http.server 3010 --bind 127.0.0.1 --directory design",
-    "walkthrough": "node scripts/walkthrough/record.mjs"
+    "walkthrough": "node scripts/walkthrough/record.mjs",
+    "build:widget": "vite build --config widgets/vite.config.mts",
+    "prebuild": "npm run build:widget"
   },
   "dependencies": {
     "@base-ui/react": "^1.5.0",
@@ -23,6 +25,8 @@
     "@dnd-kit/modifiers": "^9.0.0",
     "@dnd-kit/sortable": "^10.0.0",
     "@dnd-kit/utilities": "^3.2.2",
+    "@modelcontextprotocol/ext-apps": "^2.0.3",
+    "@modelcontextprotocol/server": "^2.3.0",
     "@mollie/api-client": "^4.5.0",
     "@next/third-parties": "^16.2.7",
     "@supabase/ssr": "^0.10.3",
@@ -36,7 +40,9 @@
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "embla-carousel-react": "^8.6.0",
+    "jose": "^6.2.12",
     "lucide-react": "^1.17.0",
+    "mcp-handler": "^2.2.0",
     "next": "16.2.6",
     "next-intl": "^4.13.0",
     "react": "19.2.4",

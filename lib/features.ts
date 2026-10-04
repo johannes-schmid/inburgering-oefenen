@@ -74,3 +74,12 @@ export const LESSONS_COMING_SOON = true;
  * het inloggen teruggezet.
  * ═══════════════════════════════════════════════════════════════════════════ */
 export const GUEST_PREVIEW_QUESTIONS = 5;
+
+/* ═══════════════════════════════════════════════════════════════════════════
+ * `MCP_SPREKEN` — Spreken via de ChatGPT-app
+ *
+ * Spreken vraagt een opname in de browser. Of de microfoon binnen het widget-frame van ChatGPT
+ * beschikbaar is, is niet bewezen; tot dat zo is geeft de app voor Spreken één antwoord: oefen dit
+ * op de website. De tool bestaat wel, zodat het model het onderdeel kent en netjes doorverwijst.
+ * ═══════════════════════════════════════════════════════════════════════════ */
+export const MCP_SPREKEN = false;

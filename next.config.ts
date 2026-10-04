@@ -32,6 +32,10 @@ const nextConfig: NextConfig = {
    * Local development never sees any of this — macOS resolves its own darwin pair from
    * `node_modules` with no bundling involved. */
   outputFileTracingIncludes: {
+    // Het ChatGPT-widget: `lib/mcp/widget.ts` leest de bundel van schijf bij de eerste aanvraag.
+    // Vite bouwt hem in `prebuild`; zonder deze regel ziet de file tracing hem niet en staat hij
+    // niet in de serverless functie op Vercel.
+    '/api/mcp': ['./widgets/dist/**'],
     '/api/admin/upload-image': [
       './node_modules/@img/sharp-linux-x64/**',
       './node_modules/@img/sharp-libvips-linux-x64/**',

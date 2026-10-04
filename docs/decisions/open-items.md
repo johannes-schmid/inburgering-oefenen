@@ -7,6 +7,27 @@ Kept for the still-open items inside them; the roadmap itself is docs/MILESTONES
 > The rules that must hold at all times live in `CLAUDE.md`; this file is why they hold.
 
 
+## Gevonden bij de bouw van de ChatGPT-app (2026-10-04), niet opgelost
+
+Vier dingen die bij de audit voor de MCP-laag naar boven kwamen en bewust zijn blijven liggen
+(besluit eigenaar 04-10 voor het eerste punt; de andere drie waren buiten de opdracht):
+
+- **`user_metadata` is door de gebruiker zelf te wijzigen.** `supabase.auth.updateUser({ data })`
+  met de anon-sleutel schrijft `user_metadata`, en dáár staan `plan`, `modules` en `modules_until` —
+  de bron van `ownsModule()`. Een ingelogde bezoeker kan zichzelf in de browserconsole een module
+  geven. Er is geen trigger of hook die dat tegenhoudt. Oplossing: een `before-user-updated`-hook of
+  een trigger op `auth.users` die wijzigingen aan die drie sleutels weigert tenzij ze van de
+  service-rol komen, plus een test dat de Mollie-webhook nog door kan. De ChatGPT-app leest hetzelfde
+  veld en erft dus hetzelfde gat.
+- **`lib/xp.ts:41` schrijft een kolom `points`, maar `user_xp_events` heeft `xp`** (baseline:943).
+  De fout wordt ingeslikt; XP-toekenning faalt waarschijnlijk stil. Alleen tegen de migraties
+  gecontroleerd, niet op productie.
+- **`CRON_SECRET` is optioneel in de cron-routes** (`reconcile-payments`, `send-campaign-emails`):
+  staat hij niet, dan zijn beide routes open.
+- **`/api/grade-open` geeft de rubriekcriteria mét ankers terug aan de client** (`rubric.criteria` in
+  het antwoord), terwijl de kop van het bestand zegt dat de ankers op de server blijven. De MCP-laag
+  stuurt alleen naam, score en feedback door.
+
 ## Outstanding work (see `~/.claude/plans/` for the full plan)
 
 **The current roadmap is the milestone plan in `docs/MILESTONES.html` (M0–M6, 2026-08-19)** —

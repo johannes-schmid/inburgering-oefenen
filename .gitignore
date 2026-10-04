@@ -56,3 +56,6 @@ temporary_walkthroughs/
 
 # De fotozoektermen van backfill-word-media.mjs — een cache, geen bron.
 .word-image-queries.json
+
+# ChatGPT-widget: gebouwd door `npm run build:widget` (prebuild)
+widgets/dist/

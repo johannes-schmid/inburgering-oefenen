@@ -73,6 +73,9 @@ export const routing = defineRouting({
 
     // ── Portaal en auth — geen SEO-oppervlak, dus onvertaald (besluit 15-09) ──
     '/login': '/login',
+    // De toestemmingspagina van de OAuth-server (ChatGPT-app). Supabase stuurt hier altijd naar
+    // het Nederlandse pad, dus de slug is in elke taal gelijk.
+    '/oauth/consent': '/oauth/consent',
     '/dashboard': '/dashboard',
     '/dashboard/[level]/[skill]': '/dashboard/[level]/[skill]',
     // KNM's portal pages carry no level segment — see the KNM section in data/skills.ts.

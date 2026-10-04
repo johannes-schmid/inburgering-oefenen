@@ -75,6 +75,12 @@ export default async function PrivacybeleidPage({ params }: Props) {
           <ul>
             <li><strong>Je e-mailadres</strong>, als je het invult om je resultaat te bekijken. Je kunt deze stap overslaan.</li>
             <li><strong>Je score</strong> op de gratis oefenvragen.</li>
+            <li>
+              <strong>Oefen je via ChatGPT zonder account</strong>, dan ontvangen wij van OpenAI een
+              geanonimiseerd kenmerk van jouw ChatGPT-account. Wij bewaren daarvan alleen een versleutelde
+              afgeleide, om bij te houden welke van de tien gratis proefvragen je al hebt gehad. Wij kunnen
+              daaruit niet herleiden wie je bent.
+            </li>
           </ul>
           <p><strong>Als je een account maakt:</strong></p>
           <ul>
@@ -83,6 +89,12 @@ export default async function PrivacybeleidPage({ params }: Props) {
             <li><strong>Je antwoorden op open opdrachten:</strong> de teksten die je schrijft bij Schrijven.</li>
             <li><strong>Je spreekopnames.</strong> Bij Spreken neem je je antwoord op. Die opname wordt bewaard in een niet-openbare opslag, samen met de uitgeschreven tekst en de beoordeling.</li>
             <li><strong>Betaalgegevens:</strong> welke modules je hebt, tot wanneer, en de klant- en abonnementsnummers van onze betaaldienst. Je rekeningnummer en je kaartgegevens komen niet bij ons terecht: die verwerkt de betaaldienst zelf.</li>
+            <li>
+              <strong>Koppel je je account aan ChatGPT</strong>, dan geef je de ChatGPT-app van Inburgering
+              Oefenen toestemming om namens jou oefenvragen op te halen, je antwoorden na te kijken en je
+              voortgang bij te werken. Dat zijn dezelfde gegevens als hierboven; er komt geen tweede account
+              bij. Je kunt de koppeling in ChatGPT weer verwijderen.
+            </li>
           </ul>
           <p>
             Wij vragen <strong>geen</strong> bijzondere persoonsgegevens zoals nationaliteit, religie of
@@ -137,6 +149,11 @@ export default async function PrivacybeleidPage({ params }: Props) {
               <strong>Vercel AI Gateway</strong> — bij Schrijven en Spreken wordt je antwoord (bij Spreken:
               ook de geluidsopname) naar een taalmodel gestuurd, dat de beoordelingscriteria van de docent
               toepast. Je naam en e-mailadres gaan daarbij niet mee.
+            </li>
+            <li>
+              <strong>OpenAI (ChatGPT)</strong> — alleen als je de ChatGPT-app van Inburgering Oefenen gebruikt.
+              De oefenvragen, jouw gekozen antwoorden en de uitleg gaan dan via ChatGPT; wat je in ChatGPT
+              typt valt onder het privacybeleid van OpenAI. Wij bewaren geen gespreksinhoud.
             </li>
             <li><strong>Microsoft Clarity</strong> — inzicht in hoe de website gebruikt wordt, inclusief opnames van muisbewegingen en kliks.</li>
             <li><strong>Meta</strong> — meten van het resultaat van onze advertenties.</li>

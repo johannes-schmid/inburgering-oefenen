@@ -311,6 +311,7 @@ Four traps this taxonomy sets, all of which have bitten:
 | **Study portal** | `app/[locale]/(app)/` | `PlatformSidebar` + mobile tabs, no public nav | candidates |
 | **Auth** | `app/[locale]/(auth)/` | minimal shell | login/register/activate |
 | **Admin** | `app/[locale]/(admin)/` | admin shell, `admin_users` allowlist | internal only |
+| **ChatGPT-app** | `app/api/mcp/` + `lib/mcp/` + `widgets/` | geen layout — MCP-tools en een widget in een iframe van ChatGPT | ChatGPT-gebruikers; zie `docs/chatgpt-app/` |
 
 **Rule:** needs the sidebar → `(app)`. Needs the public nav → `(main)`. Auth → `(auth)`. Internal
 content management → `(admin)`. `/admin-login` lives in `(auth)`, not `(admin)`, or the admin
@@ -399,6 +400,8 @@ whole table must go through `lib/admin/fetch-all.ts`.
 │   ├── free-practice.ts # the 20 static taster items
 │   └── tts-voices.json  woordkaarten.ts blog-posts.ts tijdlijn/ leren/
 ├── lib/
+│   ├── mcp/             # ★ de ChatGPT-app: auth, context, entitlement, exercises, answers, writing, progress, tools/
+│   ├── grading/         # grade-submission.ts — de kern van /api/grade-open, gedeeld met lib/mcp/writing.ts
 │   ├── pricing.ts entitlements.ts features.ts        # ★ money and access
 │   ├── exams.ts exam-content.ts portal-progress.ts portal-traject.ts
 │   ├── ai/ (gateway, grade, transcribe, usage)  rubrics.ts grading-limits.ts
@@ -409,6 +412,8 @@ whole table must go through `lib/admin/fetch-all.ts`.
 ├── docs/tijdlijn/       # the five source documents for the tijdlijn engine
 ├── scripts/             # a2-content/ b1-content/ knm-content/ + generators, build-icons
 ├── supabase/migrations/ # + legacy-knm-migrations/ (archived, NOT applied)
+├── widgets/             # exercise/ (React, Vite) → dist/exercise.js, inline in de ui://-resource van /api/mcp
+├── docs/chatgpt-app/    # DEVELOPER.md (architectuur, auth, tools, deploy) + PRODUCT.md (de ervaring)
 ├── tests/ tests-unit/   # playwright | vitest
 ├── SEO/                 # README (process), facts.md (★ every number), keywords, voice
 └── check-ui.mjs check-ui-auth.mjs   # screenshot harnesses
@@ -422,7 +427,9 @@ a session, append to it at the end.
 
 | Route | Purpose |
 |---|---|
-| `grade-open` | the one grading endpoint: rubric + model, capped and idempotent |
+| `grade-open` | the one grading endpoint: rubric + model, capped and idempotent — HTTP-glue around `lib/grading/grade-submission.ts` |
+| `mcp` | **de ChatGPT-app** (Streamable HTTP MCP, 7 tools + widget). Auth optioneel: Supabase OAuth 2.1-token → `lib/mcp/auth.ts`. Zie `docs/chatgpt-app/DEVELOPER.md` |
+| `/.well-known/oauth-protected-resource` | RFC 9728: wijst ChatGPT naar Supabase Auth als autorisatieserver; `resource` = `MCP_RESOURCE_URL` |
 | `stt-token` | mints a single-use ElevenLabs realtime token; the key never reaches the browser |
 | `generate-stimulus-audio` | two-voice Luisteren audio from `script` + `voice_cast` |
 | `generate-question-audio` / `generate-wordcard-audio` / `admin/generate-lesson-audio` | other TTS surfaces |
@@ -768,6 +775,15 @@ gids → gratis proefexamen → module.
 
 Next up: the six remaining M2 spokes (start each from `SEO/facts.md` §10), the EN top-3, the
 diagnostic quiz inside the tijdlijn nodes, and the `.ics` export.
+
+**De ChatGPT-app (04-10) staat lokaal compleet en wacht op drie dashboardstappen van de eigenaar** —
+OAuth Server aan in het gehoste Supabase-project, `MCP_RESOURCE_URL` + `MCP_SUBJECT_SALT` op Vercel, en
+de verbinding in ChatGPT Developer Mode; de stappen staan in `docs/chatgpt-app/DEVELOPER.md` §8. Vier
+regels die stil fout gaan: **`MCP_RESOURCE_URL` moet exact de publieke URL zijn** (RFC 9728
+`resource`); **zonder account precies tien proefvragen per onderdeel, altijd dezelfde, één keer**
+(`mcp_anonymous_usage`, geen dagquotum); **een poort linkt naar een informatiepagina, nooit naar een
+afrekenlink** (OpenAI-beleid); en **`is_correct`/`explanation`/`model_answer` komen nooit in een
+`Exercise`** — het oordeel komt uit `submit_answer`.
 
 **Still open, with the detail in `docs/decisions/open-items.md`:**
 
