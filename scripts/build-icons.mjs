@@ -10,6 +10,7 @@
  *   public/apple-touch-icon.png 180×180, FULL SQUARE (see below)
  *   app/favicon.ico             16 + 32 + 48, PNG-encoded ICO
  *   public/images/logo-email.png 160×160, the DARK variant — the mail header is navy
+ *   public/chatgpt-icon-512.png  512×512, FULL SQUARE — the ChatGPT-directory applies its own mask
  *
  * **The mark lives in `MARK` here and in `components/site/LogoMark.tsx`, and nowhere else.**
  * Those two are the only copies and they must be changed together — the reason this script exists
@@ -110,5 +111,10 @@ console.log(`app/favicon.ico ${sizes.join(' + ')}`);
    email. */
 writeFileSync(join(ROOT, 'public/images/logo-email.png'), await render(page, MARK({ surface: 'dark' }), 160));
 console.log('public/images/logo-email.png 160×160 (dark variant)');
+
+/* De ChatGPT-directory (OpenAI Plugins) vraagt een vierkant logo van minstens 48×48 en maskeert het
+   zelf, net als iOS — dus net als de apple-touch-icon zónder eigen afronding. */
+writeFileSync(join(ROOT, 'public/chatgpt-icon-512.png'), await render(page, MARK({ radius: 0 }), 512));
+console.log('public/chatgpt-icon-512.png 512×512 (square — the directory masks it itself)');
 
 await browser.close();
