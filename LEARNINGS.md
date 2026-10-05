@@ -5240,3 +5240,9 @@ oplopende `top` per index doet het, en de `prefers-reduced-motion`-uitweg is dan
 **What worked / went wrong:** Eén component voor drie hubs betekende dat de verbouwing van `/inburgering` meteen ook `/knm` en `/taalexamens` meenam — precies waarvoor hij zo gebouwd is. `publishedGuides` sorteert op dataorde, niet op leesvolgorde; de fasen uit `phases.ts` waren de enige plek waar die volgorde al stond.
 **Lesson:** Als een hub "de route" is, is de kaartvolgorde de route — sorteer hem expliciet, laat hem niet uit de bestandsvolgorde vallen.
 
+
+## 2026-10-05 — De sleutel van `outputFileTracingIncludes` is een glob, geen routepad
+**Changed:** `next.config.ts`: de sleutel voor de gids-PDF van `/api/guide-pdf/[section]/[slug]` naar `/api/guide-pdf/**`.
+**Outcome:** SUCCESS
+**What worked / went wrong:** Productie gaf `The input directory "/var/task/node_modules/@sparticuz/chromium/bin" does not exist`, terwijl de include-regel er al stond. Turbopack past de includes zelf toe en leest `[section]` als een tekenklasse (één letter uit s,e,c,t,i,o,n), dus de sleutel paste op geen enkele route en `route.js.nft.json` had nul `bin/`-bestanden — lokaal controleerbaar met `tr ',' '\n' | grep chromium/bin` op dat bestand. De JS-stap in `collect-build-traces.js` (die een letterlijke match wél accepteert) draait onder Turbopack niet; instrumenteren ervan logde niets.
+**Lesson:** Een route met dynamische segmenten krijgt in `outputFileTracingIncludes` altijd een `**`-sleutel. Controleer een include nooit op de config maar op het `.nft.json` van de route na `next build`.

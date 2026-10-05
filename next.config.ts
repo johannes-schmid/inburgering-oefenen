@@ -39,7 +39,12 @@ const nextConfig: NextConfig = {
     // De gids-PDF: `@sparticuz/chromium` pakt zijn Chromium bij de eerste aanvraag uit `bin/`
     // (brotli-archieven die de code nooit met een statische import noemt). Zonder deze regel
     // staan ze niet in de functie en faalt `executablePath()` met een 500 vóór er iets logt.
-    '/api/guide-pdf/[section]/[slug]': ['./node_modules/@sparticuz/chromium/bin/**'],
+    //
+    // De sleutel is een glob en géén routepad: `/api/guide-pdf/[section]/[slug]` leest
+    // Turbopack als tekenklassen (`[section]` = één letter uit s,e,c,t,i,o,n), dus die sleutel
+    // paste op niets en de archieven kwamen nooit mee — "The input directory …/bin does not
+    // exist" in productie. Voor een route met dynamische segmenten dus altijd `**`.
+    '/api/guide-pdf/**': ['./node_modules/@sparticuz/chromium/bin/**'],
     '/api/admin/upload-image': [
       './node_modules/@img/sharp-linux-x64/**',
       './node_modules/@img/sharp-libvips-linux-x64/**',
