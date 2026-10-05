@@ -1,0 +1,13 @@
+{
+  "week": "2026-W41",
+  "generated_at": "2026-10-05T18:06:24.497Z",
+  "sources": {
+    "gsc": "ok (3s)",
+    "bing": "skipped: BING_API_KEY ontbreekt",
+    "posthog": "skipped: POSTHOG_PERSONAL_API_KEY ontbreekt",
+    "health": "ok (32s)",
+    "competitors": "skipped: FIRECRAWL_API_KEY ontbreekt",
+    "geo": "skipped: oneven week (2026-W41); GEO draait in even weken"
+  },
+  "geo_due": false
+}
