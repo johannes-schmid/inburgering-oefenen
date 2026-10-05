@@ -34,10 +34,13 @@ async function launch() {
   const puppeteer = (await import('puppeteer-core')).default;
   if (process.env.VERCEL) {
     const chromium = (await import('@sparticuz/chromium')).default;
+    /* `chromium.headless` en niet `true`: het pakket levert de headless *shell*, en puppeteers
+       "nieuwe" headless-modus start die binary niet. */
     return puppeteer.launch({
       args: chromium.args,
+      defaultViewport: chromium.defaultViewport,
       executablePath: await chromium.executablePath(),
-      headless: true,
+      headless: chromium.headless,
     });
   }
   return puppeteer.launch({
