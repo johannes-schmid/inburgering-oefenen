@@ -22,14 +22,13 @@ export default function BetalingGeluktPage() {
         localStorage.setItem('io_premium', 'true');
         const plan = data.plan === 'premium_plus' ? 'premium_plus' : 'premium';
         localStorage.setItem('io_plan', plan);
-        trackMetaEvent('Purchase', {
-          value: plan === 'premium_plus' ? 19.95 : 9.95,
-          currency: 'EUR',
-          content_name: plan === 'premium_plus' ? 'Compleet Pakket' : 'Professioneel Pakket',
-        });
+        // Het bedrag komt van /api/payment-status (Mollie), niet uit een vaste tabel: de prijs
+        // is per module en de oude 9,95/19,95 klopte sinds de modulebundel niet meer.
+        const value = typeof data.amount === 'number' ? data.amount : 0;
+        trackMetaEvent('Purchase', { value, currency: 'EUR', content_name: plan });
         let abVariant = 'control';
         try { abVariant = localStorage.getItem('io_ab_variant') ?? 'control'; } catch {}
-        track('payment_success_viewed', { plan, value: plan === 'premium_plus' ? 19.95 : 9.95, currency: 'EUR', ab_variant: abVariant });
+        track('payment_success_viewed', { plan, value, currency: 'EUR', ab_variant: abVariant });
         setState('success');
         setTimeout(() => { window.location.href = '/dashboard'; }, 3000);
         return;

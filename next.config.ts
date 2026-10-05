@@ -6,6 +6,16 @@ const withNextIntl = createNextIntlPlugin('./i18n/request.ts');
 const nextConfig: NextConfig = {
   skipTrailingSlashRedirect: true,
 
+  /* PostHog via een reverse proxy op het eigen domein, zodat adblockers de events niet
+   * tegenhouden. Zelfde opzet als knm-website; beide sites schrijven naar één project. */
+  async rewrites() {
+    return [
+      { source: '/ingest/static/:path*', destination: 'https://us-assets.i.posthog.com/static/:path*' },
+      { source: '/ingest/array/:path*',  destination: 'https://us-assets.i.posthog.com/array/:path*' },
+      { source: '/ingest/:path*',        destination: 'https://us.i.posthog.com/:path*' },
+    ];
+  },
+
   /* `sharp` is a native module and must stay outside the server bundle.
    *
    * It is on Next's own default external list, and that was not enough: on production

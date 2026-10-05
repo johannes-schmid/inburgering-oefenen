@@ -11,6 +11,7 @@ const GoogleAnalytics = dynamic(() => import('@next/third-parties/google').then(
 const GoogleAnalyticsTracker = dynamic(() => import('./GoogleAnalyticsTracker'), { ssr: false });
 const MicrosoftClarity = dynamic(() => import('./MicrosoftClarity'), { ssr: false });
 const MetaPixel = dynamic(() => import('./MetaPixel').then((m) => m.MetaPixel), { ssr: false });
+const PostHogIdentifier = dynamic(() => import('./PostHogIdentifier'), { ssr: false });
 
 /**
  * De drie meetscripts, pas geladen ná de eerste interactie of ná idle.
@@ -77,6 +78,7 @@ export default function AnalyticsProviders() {
       </Suspense>
       <MicrosoftClarity />
       <MetaPixel />
+      <PostHogIdentifier />
     </>
   );
 }

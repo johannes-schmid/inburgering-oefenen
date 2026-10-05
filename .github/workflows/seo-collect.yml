@@ -1,0 +1,62 @@
+name: SEO snapshot (vrijdagavond)
+
+# Laag 1 van de SEO-lus: data ophalen en als JSON in seo-agent/data/<week>/ committen.
+# Laag 2 (het oordeel) is de Claude-routine op zaterdagochtend, die alleen de repo leest.
+# 21:00 UTC = 23:00 Amsterdam in de zomertijd, 22:00 in de wintertijd; allebei vóór zaterdag 06:00.
+on:
+  schedule:
+    - cron: '0 21 * * 5'
+  workflow_dispatch:
+    inputs:
+      backfill:
+        description: 'Ook 16 maanden GSC-dagtotalen ophalen (eenmalig)'
+        type: boolean
+        default: false
+      force_geo:
+        description: 'GEO ook in een oneven week'
+        type: boolean
+        default: false
+
+permissions:
+  contents: write
+
+concurrency:
+  group: seo-collect
+  cancel-in-progress: false
+
+jobs:
+  collect:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci --ignore-scripts
+      - name: Snapshot
+        env:
+          GSC_SA_JSON: ${{ secrets.GSC_SA_JSON }}
+          BING_API_KEY: ${{ secrets.BING_API_KEY }}
+          POSTHOG_PERSONAL_API_KEY: ${{ secrets.POSTHOG_PERSONAL_API_KEY }}
+          POSTHOG_PROJECT_ID: ${{ secrets.POSTHOG_PROJECT_ID }}
+          FIRECRAWL_API_KEY: ${{ secrets.FIRECRAWL_API_KEY }}
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          PERPLEXITY_API_KEY: ${{ secrets.PERPLEXITY_API_KEY }}
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          CRUX_API_KEY: ${{ secrets.CRUX_API_KEY }}
+        run: |
+          node scripts/seo-agent/collect.mjs \
+            ${{ inputs.backfill && '--backfill' || '' }} \
+            ${{ inputs.force_geo && '--force-geo' || '' }}
+      - name: Commit
+        run: |
+          git config user.name "seo-agent"
+          git config user.email "seo-agent@users.noreply.github.com"
+          git add seo-agent/data
+          if git diff --cached --quiet; then echo "niets veranderd"; exit 0; fi
+          WEEK=$(node -e "import('./scripts/seo-agent/lib/dates.mjs').then(m => console.log(m.isoWeek()))")
+          git commit -m "chore(seo): snapshot $WEEK"
+          git pull --rebase origin main
+          git push

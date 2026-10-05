@@ -1,0 +1,96 @@
+{
+  "$comment": "De vaste feiten van de SEO-lus. Lees seo-agent/README.md voor de regels; dit bestand is de enige plek waar domeinen, concurrenten, prompts en limieten staan.",
+  "sites": {
+    "inburgering": {
+      "domain": "inburgeringoefenen.nl",
+      "gsc_property": "sc-domain:inburgeringoefenen.nl",
+      "bing_site_url": "https://inburgeringoefenen.nl/",
+      "sitemap": "https://inburgeringoefenen.nl/sitemap.xml",
+      "brand_terms": ["inburgering oefenen", "inburgeringoefenen"],
+      "in_this_repo": true
+    },
+    "knm": {
+      "domain": "knmoefenen.nl",
+      "gsc_property": "sc-domain:knmoefenen.nl",
+      "bing_site_url": "https://knmoefenen.nl/",
+      "sitemap": "https://knmoefenen.nl/sitemap.xml",
+      "brand_terms": ["knm oefenen", "knmoefenen"],
+      "in_this_repo": false
+    }
+  },
+  "posthog": {
+    "host": "https://us.posthog.com",
+    "project_id": "@current",
+    "funnel_events": [
+      "free_practice_started",
+      "email_captured",
+      "signup_completed",
+      "checkout_initiated",
+      "payment_completed"
+    ]
+  },
+  "competitors": [
+    "inburgering.org",
+    "inburgeren.nl",
+    "nedles.nl",
+    "denieuwenederlanders.nl",
+    "oefenexamensinburgering.nl",
+    "nt2taalmenu.nl",
+    "leernederlands.online",
+    "adappel.nl",
+    "dutchexams.com",
+    "dutchreview.com"
+  ],
+  "geo": {
+    "cadence": "even-iso-weeks",
+    "engines": ["openai", "perplexity", "anthropic"],
+    "country": "NL",
+    "prompts": [
+      { "id": "nl-oefenen", "lang": "nl", "text": "Waar kan ik gratis oefenen voor het inburgeringsexamen A2?" },
+      { "id": "nl-oefenexamen-a2", "lang": "nl", "text": "Welke website heeft goede oefenexamens voor inburgering A2?" },
+      { "id": "nl-knm", "lang": "nl", "text": "Hoe kan ik oefenen voor het KNM-examen (Kennis van de Nederlandse Maatschappij)?" },
+      { "id": "nl-lezen", "lang": "nl", "text": "Hoe oefen ik het onderdeel Lezen van het inburgeringsexamen A2?" },
+      { "id": "nl-luisteren", "lang": "nl", "text": "Waar vind ik oefenmateriaal voor Luisteren A2 inburgering?" },
+      { "id": "nl-schrijven", "lang": "nl", "text": "Hoe bereid ik me voor op Schrijven A2 van het inburgeringsexamen?" },
+      { "id": "nl-spreken", "lang": "nl", "text": "Tips om te oefenen voor Spreken A2 inburgering?" },
+      { "id": "nl-b1", "lang": "nl", "text": "Waar kan ik oefenen voor het inburgeringsexamen op B1-niveau?" },
+      { "id": "nl-kosten", "lang": "nl", "text": "Wat kost het inburgeringsexamen per onderdeel?" },
+      { "id": "nl-wet2021", "lang": "nl", "text": "Wat is het verschil tussen de Wet inburgering 2021 en 2013?" },
+      { "id": "nl-stappenplan", "lang": "nl", "text": "Welke stappen moet ik doorlopen om in te burgeren in Nederland?" },
+      { "id": "nl-docent", "lang": "nl", "text": "Welke oefenplatforms voor inburgering zijn gemaakt of gecontroleerd door een NT2-docent?" },
+      { "id": "en-practice", "lang": "en", "text": "Where can I practice for the Dutch inburgering exam A2 online?" },
+      { "id": "en-knm", "lang": "en", "text": "How do I prepare for the KNM exam in the Netherlands?" },
+      { "id": "en-exam-guide", "lang": "en", "text": "What is the Dutch civic integration (inburgering) exam and how do I pass it?" }
+    ]
+  },
+  "rules": {
+    "cooldown_days": 42,
+    "weekly_pr_cap": 3,
+    "monthly_pr_cap": 2,
+    "window_days": 28,
+    "striking_distance": { "position_min": 8, "position_max": 15, "min_impressions": 50 },
+    "decay_threshold_pct": -30,
+    "verdict_after_days": 35
+  },
+  "protected_paths": [
+    "SEO/facts.md",
+    "data/free-practice.ts",
+    "lib/pricing.ts",
+    "data/guides/translations/**",
+    "supabase/**",
+    "messages/**/translated_note",
+    "scripts/**"
+  ],
+  "protected_fields": {
+    "data/guides/*.ts": ["articleHtml", "faq", "status", "reviewedBy", "reviewedOn"],
+    "data/blog-posts.ts": ["articleHtml", "sidebarHtml", "faq"]
+  },
+  "editable_surfaces": [
+    "messages/nl.json, en.json, ar.json — alleen de sleutels meta_title / meta_description",
+    "data/blog-posts.ts — title, description, relatedPosts",
+    "data/guides/*.ts — title, description, dateModified, interne links in articleHtml (alleen <a href>)",
+    "lib/schema.ts en components/JsonLd.tsx — structured data",
+    "app/sitemap.ts, app/robots.txt/route.ts, lib/llms.ts",
+    "SEO/keywords.md en SEO/used-keywords.md — alleen toevoegen"
+  ]
+}

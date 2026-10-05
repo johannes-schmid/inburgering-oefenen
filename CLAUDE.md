@@ -382,9 +382,22 @@ whole table must go through `lib/admin/fetch-all.ts`.
 - **ElevenLabs** — TTS (`eleven_v3` dialogue, `eleven_multilingual_v2` single voice) and Scribe STT
 - **Vercel AI Gateway** — rubric grading and the B1 authoring runs. Note the global instruction
   against using the Gateway does **not** apply here: it is load-bearing and documented.
-- **GA4** analytics. **PostHog was removed** — don't reintroduce it; `track()` sends to GA only.
+- **GA4** + **PostHog** analytics. `track()` in `lib/analytics.ts` sends to both. PostHog is **one project
+  shared with knmoefenen.nl** (the free plan allows one), split by `$host`; it loads lazily via
+  `lib/posthog-client.ts`, never from `instrumentation-client.ts`. Server events (`signup_completed`,
+  `checkout_created`, `payment_completed`) go through `lib/posthog-server.ts`.
 - **Vitest** (`tests-unit/`), **Playwright** (`tests/`, targets localhost:3001), **Puppeteer** via
   `check-ui.mjs` / `check-ui-auth.mjs`
+
+### De SEO/GEO-lus
+
+**`seo-agent/README.md` is de regel; `seo-agent/config.json` zijn de feiten.** Vrijdagavond schrijft
+`.github/workflows/seo-collect.yml` snapshots naar `seo-agent/data/<ISO-week>/`; zaterdag leest de
+cloud-routine `/seo-weekly` (`.claude/skills/seo-weekly/`) die snapshots, beoordeelt
+`seo-agent/ledger.json` en opent hooguit drie PR's. Drie dingen die stil fout gaan: een snapshot met
+`skipped` is **onbekend, nooit nul**; een pagina in de ledger binnen `cooldown_days` krijgt geen
+nieuw voorstel; en de agent raakt nooit kopij, feiten of vertalingen aan — dat wordt een brief in
+`seo-agent/briefs/` voor de docent.
 
 ### Directory map
 
@@ -419,6 +432,8 @@ whole table must go through `lib/admin/fetch-all.ts`.
 ├── docs/chatgpt-app/    # DEVELOPER.md (architectuur, auth, tools, deploy) + PRODUCT.md (de ervaring)
 ├── tests/ tests-unit/   # playwright | vitest
 ├── SEO/                 # README (process), facts.md (★ every number), keywords, voice
+├── seo-agent/                 # ★ de SEO/GEO-lus: config.json, ledger.json, data/<week>/, reports/, briefs/ — zie seo-agent/README.md
+├── .github/workflows/   # seo-collect.yml — de vrijdagavond-snapshot (laag 1 van de lus)
 └── check-ui.mjs check-ui-auth.mjs   # screenshot harnesses
 ```
 
