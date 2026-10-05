@@ -1,12 +1,12 @@
 {
   "week": "2026-W41",
-  "generated_at": "2026-10-05T18:07:50.713Z",
+  "generated_at": "2026-10-05T18:20:54.717Z",
   "sources": {
-    "gsc": "ok (2s)",
-    "bing": "skipped: BING_API_KEY ontbreekt",
-    "posthog": "skipped: POSTHOG_PERSONAL_API_KEY ontbreekt",
-    "health": "ok (20s)",
-    "competitors": "skipped: FIRECRAWL_API_KEY ontbreekt",
+    "gsc": "ok (3s)",
+    "bing": "ok (3s)",
+    "posthog": "ok (2s)",
+    "health": "ok (27s)",
+    "competitors": "ok (148s)",
     "geo": "skipped: oneven week (2026-W41); GEO draait in even weken"
   },
   "geo_due": false
