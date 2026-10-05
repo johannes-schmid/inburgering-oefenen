@@ -6,6 +6,7 @@ import { fulfilModulePayment, isModulePayment } from '@/lib/mollie-modules';
 import { activationEmail, activationSubject } from '@/lib/email/templates/activation';
 import { upgradeEmail, upgradeSubject } from '@/lib/email/templates/upgrade';
 import { type EmailLocale } from '@/lib/email/i18n';
+import { captureServerEvent } from '@/lib/posthog-server';
 
 export async function GET(request: Request): Promise<Response> {
   const { searchParams } = new URL(request.url);
@@ -87,6 +88,20 @@ export async function GET(request: Request): Promise<Response> {
             .eq('activation_email_sent', false)
             .select('id');
           const shouldSendEmail = (claimRows?.length ?? 0) > 0;
+
+          // Dezelfde claim als de activatiemail, dus precies één keer per betaling — ook al
+          // komen de webhook en de statuspoll allebei langs.
+          if (shouldSendEmail) {
+            await captureServerEvent(userId, 'payment_completed', {
+              plan: grantedPlan,
+              modules: Array.isArray((meta as { modules?: unknown } | undefined)?.modules) ? ((meta as { modules: string[] }).modules).join(',') : undefined,
+              value: Number(payment.amount.value),
+              currency: 'EUR',
+              payment_id: paymentId,
+              locale,
+              source: 'payment-status',
+            });
+          }
 
           if (shouldSendEmail) {
             try {

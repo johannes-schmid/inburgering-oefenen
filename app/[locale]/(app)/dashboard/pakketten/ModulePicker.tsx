@@ -14,6 +14,7 @@ import {
   savingForSelection,
   type ModuleSlug,
 } from '@/lib/pricing';
+import { track } from '@/lib/analytics';
 
 export type PickerModule = {
   /** The full `level:skill` module id — what gets posted to checkout. */
@@ -94,6 +95,7 @@ export default function ModulePicker({
     if (selected.length === 0) return;
     setBusy(true);
     setError(null);
+    track('checkout_initiated', { modules: selected.join(','), module_count: selected.length, amount_cents: total });
     try {
       const res = await fetch('/api/checkout-modules', {
         method: 'POST',

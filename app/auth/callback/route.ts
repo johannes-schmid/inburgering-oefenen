@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { createServerClient } from '@supabase/ssr';
 import { cookies } from 'next/headers';
 import { routing } from '@/i18n/routing';
+import { captureServerEvent } from '@/lib/posthog-server';
 
 /**
  * Where every auth flow lands — Google OAuth, e-mail confirmation and password recovery.
@@ -47,10 +48,20 @@ export async function GET(request: NextRequest) {
     }
   );
 
-  const { error } = await supabase.auth.exchangeCodeForSession(code);
+  const { data, error } = await supabase.auth.exchangeCodeForSession(code);
   if (error) {
     console.error('[auth/callback] exchange failed:', error.message);
     return NextResponse.redirect(`${loginUrl}?error=${encodeURIComponent(error.message)}`);
+  }
+
+  // Een account dat zojuist is aangemaakt: Supabase heeft geen apart signup-event voor OAuth,
+  // dus `created_at` binnen twee minuten van nu is de registratie. Alles daarna is een login.
+  const user = data?.user;
+  if (user && Date.now() - new Date(user.created_at).getTime() < 2 * 60_000) {
+    await captureServerEvent(user.id, 'signup_completed', {
+      provider: user.app_metadata?.provider ?? 'google',
+      $set: { email: user.email },
+    });
   }
 
   return NextResponse.redirect(`${origin}${next}`);

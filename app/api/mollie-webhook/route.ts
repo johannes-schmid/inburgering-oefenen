@@ -7,6 +7,7 @@ import { activationEmail, activationSubject } from '@/lib/email/templates/activa
 import { upgradeEmail, upgradeSubject } from '@/lib/email/templates/upgrade';
 import { feedbackEmail, feedbackSubject } from '@/lib/email/templates/feedback';
 import { type EmailLocale } from '@/lib/email/i18n';
+import { captureServerEvent } from '@/lib/posthog-server';
 
 export async function POST(request: Request): Promise<Response> {
   const text = await request.text();
@@ -122,6 +123,20 @@ export async function POST(request: Request): Promise<Response> {
             .eq('activation_email_sent', false)
             .select('id');
           const shouldSendEmail = (claimRows?.length ?? 0) > 0;
+
+          // Dezelfde claim als de activatiemail, dus precies één keer per betaling — ook al
+          // komen de webhook en de statuspoll allebei langs.
+          if (shouldSendEmail) {
+            await captureServerEvent(userId, 'payment_completed', {
+              plan: finalPlan,
+              modules: Array.isArray((meta as { modules?: unknown } | undefined)?.modules) ? ((meta as { modules: string[] }).modules).join(',') : undefined,
+              value: Number(payment.amount.value),
+              currency: 'EUR',
+              payment_id: paymentId,
+              locale,
+              source: 'webhook',
+            });
+          }
 
           if (shouldSendEmail && isUpgrade) {
             try {

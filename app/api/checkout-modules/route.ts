@@ -4,6 +4,7 @@ import { createClient } from '@/lib/supabase/server';
 import { createAdminClient } from '@/lib/supabase/admin';
 import { euro, parseSelection, priceForSelection } from '@/lib/pricing';
 import { TABLE, PAYMENT_STATUS } from '@/lib/api-constants';
+import { captureServerEvent } from '@/lib/posthog-server';
 
 /**
  * Start payment for a set of modules — **the only checkout in the product.**
@@ -134,6 +135,15 @@ export async function POST(request: Request) {
       locale,
     });
     if (insertError) console.error('[checkout-modules] payments insert failed:', insertError.message);
+
+    await captureServerEvent(user.id, 'checkout_created', {
+      modules: modules.join(','),
+      module_count: modules.length,
+      value: amountCents / 100,
+      currency: 'EUR',
+      payment_id: payment.id,
+      locale,
+    });
 
     return NextResponse.json({
       checkoutUrl: payment.getCheckoutUrl(),

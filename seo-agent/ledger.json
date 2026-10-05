@@ -1,0 +1,41 @@
+{
+  "$comment": "Het experimentenlogboek. Eén rij per samengevoegde wijziging; verdict wordt na verdict_after_days ingevuld door de weekrun. Nooit rijen verwijderen.",
+  "entries": [
+    {
+      "id": "2026-09-21-homepage-hero-h1",
+      "date": "2026-09-21",
+      "site": "inburgering",
+      "page": "/nl",
+      "change": "Hero verbouwd; de zoekwoord-eerste H1 van 28-07 stil vervangen door 'Alle examenonderdelen in één platform'",
+      "hypothesis": "Geen (onbedoeld). Verwacht effect: verlies van vertoningen op query's met 'inburgering'",
+      "metric": "impressions:inburgering*",
+      "source": "LEARNINGS 2026-09-25",
+      "window_end": "2026-10-26",
+      "verdict": null
+    },
+    {
+      "id": "2026-09-25-money-pages-keyword-first",
+      "date": "2026-09-25",
+      "site": "inburgering",
+      "page": "/nl, /nl/oefenexamen/a2, /nl/oefenexamen/a2/*, /nl/oefenen, /nl/oefenexamen/knm, /en, /en/practice-exam/a2",
+      "change": "Titels en H1's zoekwoord-eerst; niveau-overzicht /oefenexamen/[level] toegevoegd",
+      "hypothesis": "Het woord 'inburgering' in titel en H1 geeft vertoningen op de 1.900/880-query's uit SEO/keywords.md",
+      "metric": "impressions+clicks on 'inburgering examen oefenen*'",
+      "source": "LEARNINGS 2026-09-25, SEO/keywords.md kaart",
+      "window_end": "2026-10-30",
+      "verdict": null
+    },
+    {
+      "id": "2026-10-05-privacy-index",
+      "date": "2026-10-05",
+      "site": "inburgering",
+      "page": "/nl/privacybeleid",
+      "change": "noindex verwijderd (nodig voor de OpenAI-review)",
+      "hypothesis": "Geen rankingeffect verwacht; controle dat de pagina niet op merkquery's gaat kannibaliseren",
+      "metric": "indexed + clicks on /privacybeleid",
+      "source": "LEARNINGS 2026-10-05",
+      "window_end": "2026-11-09",
+      "verdict": null
+    }
+  ]
+}
