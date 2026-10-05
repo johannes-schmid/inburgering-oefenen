@@ -1,12 +1,12 @@
 {
   "week": "2026-W41",
-  "generated_at": "2026-10-05T18:20:54.717Z",
+  "generated_at": "2026-10-05T18:23:21.239Z",
   "sources": {
-    "gsc": "ok (3s)",
-    "bing": "ok (3s)",
-    "posthog": "ok (2s)",
+    "gsc": "ok (2s)",
+    "bing": "ok (4s)",
+    "posthog": "ok (0s)",
     "health": "ok (27s)",
-    "competitors": "ok (148s)",
+    "competitors": "ok (20s)",
     "geo": "skipped: oneven week (2026-W41); GEO draait in even weken"
   },
   "geo_due": false

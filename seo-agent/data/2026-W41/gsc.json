@@ -1,6 +1,6 @@
 {
   "week": "2026-W41",
-  "generated_at": "2026-10-05T18:17:54.483Z",
+  "generated_at": "2026-10-05T18:22:30.292Z",
   "sites": {
     "inburgering": {
       "property": "sc-domain:inburgeringoefenen.nl",
@@ -14819,16 +14819,16 @@
       ],
       "totals": {
         "current": {
-          "clicks": 3,
-          "impressions": 677,
-          "ctr": 0.004431314623338257,
-          "position": 25.382570162481535
+          "clicks": 59,
+          "impressions": 3625,
+          "ctr": 0.016275862068965516,
+          "position": 11.099310344827586
         },
         "previous": {
-          "clicks": 2,
-          "impressions": 1419,
-          "ctr": 0.0014094432699083862,
-          "position": 39.91895701198027
+          "clicks": 59,
+          "impressions": 5660,
+          "ctr": 0.010424028268551237,
+          "position": 20.248233215547703
         }
       },
       "non_brand": {
