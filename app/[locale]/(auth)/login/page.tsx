@@ -13,12 +13,15 @@ export const metadata: Metadata = {
 
 type Props = {
   params: Promise<{ locale: string }>;
-  searchParams: Promise<{ next?: string; error?: string }>;
+  searchParams: Promise<{ next?: string; error?: string; reviewer?: string }>;
 };
 
 export default async function LoginPage({ params, searchParams }: Props) {
   const { locale } = await params;
-  const { next, error } = await searchParams;
+  const { next, error, reviewer } = await searchParams;
+  // Het wachtwoordformulier voor de OpenAI-reviewer: alleen met ?reviewer=1 én de env-vlag aan.
+  // De echte grens zit in de Auth-hook (zie AuthPanel); dit bepaalt alleen wat zichtbaar is.
+  const showReviewerForm = reviewer === '1' && process.env.REVIEWER_LOGIN_ENABLED === 'true';
 
   // Redirecting an already-signed-in visitor server-side rather than from a `useEffect`
   // avoids the flash of the login card that the KNM version showed on every visit.
@@ -39,7 +42,13 @@ export default async function LoginPage({ params, searchParams }: Props) {
         </>
       }
     >
-      <AuthPanel mode="login" locale={locale} next={next ?? null} initialError={authErrorMessage(error)} />
+      <AuthPanel
+        mode="login"
+        locale={locale}
+        next={next ?? null}
+        initialError={authErrorMessage(error)}
+        reviewer={showReviewerForm}
+      />
       <p className="text-xs text-on-surface-variant text-center mt-5 leading-relaxed">
         Door in te loggen ga je akkoord met onze{' '}
         <Link href="/gebruiksvoorwaarden" className="text-primary hover:underline no-underline">

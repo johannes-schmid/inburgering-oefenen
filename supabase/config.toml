@@ -59,6 +59,16 @@ enable_confirmations = false
 [auth.sms]
 enable_signup = false
 
+# Wachtwoord-login alleen voor het reviewer-account van de OpenAI-review; zie de migratie
+# 20261005090000_reviewer_login.sql. Op het gehoste project staat dezelfde hook in het dashboard.
+[auth.hook.custom_access_token]
+enabled = true
+uri = "pg-functions://postgres/public/hook_reviewer_claims"
+
+[auth.hook.before_user_created]
+enabled = true
+uri = "pg-functions://postgres/public/hook_google_only_signup"
+
 [auth.external.google]
 enabled = true
 client_id = "env(GOOGLE_CLIENT_ID)"

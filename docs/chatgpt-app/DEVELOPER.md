@@ -202,6 +202,48 @@ oefeningen, gekoppelde accounts (`chatgpt_account_connected` is af te leiden uit
 aanroep per `user_id`), getoonde poorten en meest gebruikte tools. Kliks op "upgrade" en conversie
 lopen via `utm_source=chatgpt` in GA4 op de website.
 
+## 9a. Het reviewer-account voor de OpenAI-review
+
+De review eist een testaccount dat "direct werkt, zonder MFA, e-mailcode of magic link". Een
+Google-login vanaf het netwerk van OpenAI krijgt vrijwel zeker Googles "Verify it's you"-uitdaging,
+die op geen enkel accounttype uit te zetten is. Daarom bestaat er precies één wachtwoordaccount,
+met drie sloten (migratie `20261005090000_reviewer_login.sql`, besluit eigenaar 05-10):
+
+| Slot | Waar | Wat het doet |
+|---|---|---|
+| Auth-hook `custom_access_token` → `hook_reviewer_claims` | Supabase | weigert elk token dat met een wachtwoord is verkregen tenzij `app_metadata.reviewer = true` (de *Password verification*-hook met slot is Team-plan-only; bruteforce vangt Supabase's rate-limit per IP + een wachtwoord van 32 tekens) |
+| Auth-hook `before_user_created` → `hook_google_only_signup` | Supabase | weigert `signUp` met e-mail; alleen de admin-API (service-sleutel, met `reviewer: true`) mag een e-mailaccount maken |
+| `REVIEWER_LOGIN_ENABLED=true` + `/login?reviewer=1` | Vercel + `AuthPanel` | toont het formulier; verbergen na de review is één env-var |
+
+`app_metadata` is alleen met de service-sleutel te schrijven, dus niemand kan zichzelf reviewer
+maken. Google-accounts hebben geen wachtwoord. Het formulier is daarmee alleen zichtbaarheid; de
+server beslist.
+
+**Aanzetten op het gehoste project (eigenaar):**
+
+1. Authentication → Sign In / Providers → Email: *Enable Email provider* aan. *Confirm email* mag aan
+   blijven; het reviewer-account wordt met `email_confirm: true` aangemaakt.
+2. Authentication → Hooks → *Customize Access Token (JWT) Claims* → Postgres → `public.hook_reviewer_claims`.
+3. Authentication → Hooks → *Before user created* → Postgres → `public.hook_google_only_signup`.
+4. Vercel → `REVIEWER_LOGIN_ENABLED=true` (Production) → redeploy.
+5. `node scripts/create-reviewer-account.mjs reviewer@inburgeringoefenen.nl --production` — drukt het
+   wachtwoord één keer af. Zet het in het OpenAI-dashboard onder *Review details*, nergens anders.
+   Login-URL: `https://inburgeringoefenen.nl/en/login?reviewer=1`.
+
+Na de review: `REVIEWER_LOGIN_ENABLED` leeg, of het account verwijderen in Authentication → Users.
+De hooks mogen blijven staan: ze weigeren dan alles.
+
+Controle (lokaal of productie, met de anon-sleutel):
+
+```bash
+# reviewer met goed wachtwoord → access_token; elk ander e-mailaccount → "Inloggen met een wachtwoord is niet mogelijk"
+curl -s -X POST "$SUPABASE_URL/auth/v1/token?grant_type=password" -H "apikey: $ANON" \
+  -H 'Content-Type: application/json' -d '{"email":"...","password":"..."}'
+# signUp met e-mail → 403 "Een account maak je aan met Inloggen met Google."
+curl -s -X POST "$SUPABASE_URL/auth/v1/signup" -H "apikey: $ANON" \
+  -H 'Content-Type: application/json' -d '{"email":"x@test.local","password":"CorrectHorse1234"}'
+```
+
 ## 10. Uitbreiden
 
 - **Een nieuw onderdeel of niveau** is geen code: `get_practice_exercise` leest `data/skills.ts`,

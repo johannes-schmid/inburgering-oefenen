@@ -342,7 +342,10 @@ layout's redirect loops. Admin routes are **not** in `i18n/routing.ts` and need 
 - **Admin access is not a separate credential.** Everyone signs in with Google through
   `components/auth/AuthPanel.tsx` — the only place that calls Supabase Auth — and the `(admin)`
   layout then checks the allowlist. There is deliberately no e-mail + password, hence no
-  password-reset flow.
+  password-reset flow. **The one exception is the OpenAI reviewer account** (05-10): a password
+  form behind `/login?reviewer=1` + `REVIEWER_LOGIN_ENABLED`, fenced server-side by two Supabase
+  Auth hooks that refuse every other password login and every e-mail signup — see
+  `docs/chatgpt-app/DEVELOPER.md` §9a. Never widen that to a general e-mail login.
 
 ### The funnel, in one picture
 

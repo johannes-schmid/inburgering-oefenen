@@ -1,0 +1,152 @@
+{
+  "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
+  "name": "inburgering-oefenen",
+  "version": "1.0.0",
+  "description": "Practice the Dutch inburgeringsexamen in ChatGPT with exam items reviewed by an NT2 teacher.",
+  "author": {
+    "name": "Inburgering Oefenen",
+    "email": "info@inburgeringoefenen.nl",
+    "url": "https://inburgeringoefenen.nl"
+  },
+  "homepage": "https://inburgeringoefenen.nl/nl",
+  "license": "UNLICENSED",
+  "keywords": [
+    "inburgering",
+    "inburgeringsexamen",
+    "KNM",
+    "NT2",
+    "Dutch",
+    "A2",
+    "B1"
+  ],
+  "extensions": {
+    "com.openai": {
+      "interface": {
+        "displayName": "Inburgering Oefenen",
+        "shortDescription": "Oefen het inburgeringsexamen",
+        "longDescription": "Inburgering Oefenen is an exam-practice app for the Dutch civic integration exam (inburgeringsexamen). It serves practice items for Lezen, Luisteren and Schrijven at A2 and B1 and for Kennis van de Nederlandse Maatschappij (KNM), written and reviewed by an NT2 teacher. ChatGPT shows an exercise in a card, you answer, and the Inburgering Oefenen server checks the answer and returns the teacher's explanation. Connect your Inburgering Oefenen account to save your answers to your learning progress, see your weak points and get a suggested next step, and to have writing tasks reviewed against the teacher's rubric.",
+        "developerName": "Inburgering Oefenen",
+        "category": "Education & Research",
+        "capabilities": [
+          "Practice exercises",
+          "Answer checking",
+          "Learning progress"
+        ],
+        "websiteURL": "https://inburgeringoefenen.nl/nl",
+        "supportURL": "https://inburgeringoefenen.nl/nl/contact",
+        "privacyPolicyURL": "https://inburgeringoefenen.nl/en/privacy-policy",
+        "termsOfServiceURL": "https://inburgeringoefenen.nl/nl/gebruiksvoorwaarden",
+        "defaultPrompt": [
+          "Give me one KNM practice question.",
+          "Give me an A2 reading exercise for the inburgeringsexamen.",
+          "Show my learning progress."
+        ],
+        "brandColor": "#002b6d",
+        "brandColorDark": "#fe762c",
+        "composerIcon": "./assets/icon.png",
+        "logo": "./assets/logo.png"
+      },
+      "review": {
+        "test_cases": {
+          "positive": [
+            {
+              "description": "Get a KNM practice question",
+              "prompt": "Use Inburgering Oefenen to give me one KNM practice question.",
+              "tools_triggered": "get_practice_exercise",
+              "expected_behavior": "A real KNM question with options A-D appears in the exercise card. ChatGPT does not invent a question of its own."
+            },
+            {
+              "description": "Answer a question",
+              "prompt": "My answer is B",
+              "tools_triggered": "submit_answer",
+              "expected_behavior": "The server verdict (correct or wrong), the correct option and the teacher's explanation are shown. The verdict comes from the tool, not from ChatGPT."
+            },
+            {
+              "description": "Ask why an answer is correct",
+              "prompt": "Explain why that answer is correct",
+              "tools_triggered": "explain_answer",
+              "expected_behavior": "The teacher-written explanation for that question is returned, with a link to the related grammar lesson when one exists."
+            },
+            {
+              "description": "Show learning progress (connected account)",
+              "prompt": "Show my learning progress",
+              "tools_triggered": "get_learning_progress",
+              "expected_behavior": "With a connected account: a summary per exam part, weak points and a suggested next step. Without one: a gate asking to connect the account, with a link to the website."
+            },
+            {
+              "description": "Writing task graded against the rubric (connected account)",
+              "prompt": "Give me an A2 writing task",
+              "tools_triggered": "get_practice_exercise, submit_writing_answer",
+              "expected_behavior": "A writing task appears; after the user types a short Dutch answer, the server grades it against the teacher's rubric and returns per-criterion feedback."
+            }
+          ],
+          "negative": [
+            {
+              "description": "Vocabulary list, not exam practice",
+              "prompt": "Make me a list of 20 useful Dutch words about the supermarket with English translations."
+            },
+            {
+              "description": "Translation of the user's own text",
+              "prompt": "Can you translate this to Dutch: I would like to make an appointment with the doctor for next week."
+            },
+            {
+              "description": "Writing an official letter for the user",
+              "prompt": "Write a formal Dutch letter to my landlord complaining about a broken heater."
+            }
+          ]
+        },
+        "demo_recording_url": "https://drive.google.com/file/d/12QVswMwQnWA_LVVERnOb3BVEuVJpy0Tg/view?usp=drive_link",
+        "commerce": false,
+        "commerce_description": "This plugin does not sell products or process payments."
+      },
+      "publication": {
+        "countries": [
+          "NL",
+          "BE",
+          "DE",
+          "GB",
+          "US",
+          "TR",
+          "MA",
+          "SY",
+          "IQ",
+          "IR",
+          "AF",
+          "ER",
+          "SO",
+          "PH",
+          "ID",
+          "IN",
+          "PK",
+          "BR",
+          "PL",
+          "UA",
+          "RU",
+          "CN",
+          "ES",
+          "IT",
+          "FR"
+        ],
+        "release_notes": "Eerste versie: oefenvragen voor Lezen, Luisteren en Schrijven (A2 en B1) en KNM, nakijken met de uitleg van de docent, en voortgang met een gekoppeld account.",
+        "translations": {
+          "nl-NL": {
+            "subtitle": "Oefen het inburgeringsexamen",
+            "description": "Oefen het inburgeringsexamen in ChatGPT met vragen van een NT2-docent: Lezen, Luisteren en Schrijven op A2 en B1, en KNM. ChatGPT toont de vraag, jij antwoordt, de server van Inburgering Oefenen kijkt na en geeft de uitleg van de docent. Koppel je account van Inburgering Oefenen om je antwoorden in je voortgang op te slaan en schrijfopdrachten te laten nakijken."
+          },
+          "en-US": {
+            "subtitle": "Practice the Dutch civic exam",
+            "description": "Practice the Dutch inburgeringsexamen in ChatGPT with items reviewed by an NT2 teacher: reading, listening and writing at A2 and B1, plus KNM. ChatGPT shows the question, you answer, the Inburgering Oefenen server checks it and returns the teacher's explanation. Connect your Inburgering Oefenen account to save your progress and have writing tasks reviewed."
+          },
+          "ar-SA": {
+            "subtitle": "تدرّب على امتحان الاندماج",
+            "description": "تدرّب على امتحان الاندماج الهولندي (inburgeringsexamen) داخل ChatGPT بأسئلة راجعها مدرّس NT2: القراءة والاستماع والكتابة في المستويين A2 وB1، إضافة إلى KNM. يعرض ChatGPT السؤال، وتجيب أنت، ويتحقق خادم Inburgering Oefenen من إجابتك ويعيد شرح المدرّس. اربط حسابك في Inburgering Oefenen لحفظ تقدمك ولمراجعة مهام الكتابة."
+          },
+          "tr-TR": {
+            "subtitle": "Entegrasyon sınavına çalış",
+            "description": "Hollanda entegrasyon sınavına (inburgeringsexamen) ChatGPT içinde, bir NT2 öğretmeni tarafından gözden geçirilmiş sorularla çalışın: A2 ve B1 seviyelerinde okuma, dinleme ve yazma, ayrıca KNM. ChatGPT soruyu gösterir, siz cevaplarsınız, Inburgering Oefenen sunucusu cevabı kontrol eder ve öğretmenin açıklamasını döndürür. İlerlemenizi kaydetmek ve yazma görevlerinizi değerlendirtmek için Inburgering Oefenen hesabınızı bağlayın."
+          }
+        }
+      }
+    }
+  }
+}

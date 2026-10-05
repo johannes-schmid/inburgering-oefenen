@@ -15,6 +15,15 @@ import { safeNext } from '@/lib/auth-redirect';
  * offering it. E-mail + wachtwoord is deliberately not offered either, which is why there is
  * no password-reset flow to maintain.
  *
+ * **The one exception is the reviewer form** (`reviewer` prop), and it is fenced on three
+ * sides. The login page renders it only for `?reviewer=1` *and* `REVIEWER_LOGIN_ENABLED=true`
+ * on the server, so it can be switched off after the OpenAI review without a deploy. And the
+ * form is cosmetic as far as security goes: the Supabase Auth hook
+ * `hook_reviewer_claims` (migration 20261005090000) refuses every token obtained with a
+ * password unless the account carries `app_metadata.reviewer = true`, a field only the
+ * service key can write, and a second hook refuses e-mail signups altogether. Hiding the
+ * form therefore hides nothing that was open; the server decides.
+ *
  * `next` is threaded through the OAuth `redirectTo` so a visitor sent here from a locked exam
  * lands back on that exam rather than generically on the dashboard. It is validated as a
  * same-site path first: an attacker-supplied absolute URL in `?next=` would otherwise turn
@@ -43,15 +52,20 @@ export default function AuthPanel({
   locale,
   next,
   initialError = '',
+  reviewer = false,
 }: {
   mode: AuthMode;
   locale: string;
   next?: string | null;
   initialError?: string;
+  /** Toont het wachtwoordformulier voor het reviewer-account. Zie het docblock hierboven. */
+  reviewer?: boolean;
 }) {
   const supabase = createClient();
   const [error, setError] = useState(initialError);
   const [busy, setBusy] = useState(false);
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
 
   const fallback = mode === 'admin' ? `/${locale}/admin` : `/${locale}/dashboard`;
   const target = safeNext(next, fallback);
@@ -72,6 +86,21 @@ export default function AuthPanel({
       setError('Inloggen met Google lukt nu niet. Probeer het over een moment opnieuw.');
     }
     // On success the browser navigates to Google, so `busy` is intentionally left set.
+  }
+
+  async function withPassword(e: React.FormEvent) {
+    e.preventDefault();
+    setError('');
+    setBusy(true);
+    track('login_initiated', { provider: 'reviewer_password' });
+    const { error: err } = await supabase.auth.signInWithPassword({ email, password });
+    if (err) {
+      setBusy(false);
+      // De hook geeft zijn eigen Nederlandse tekst mee bij een weigering; die laten we staan.
+      setError(err.message || 'Inloggen lukt niet. Controleer het e-mailadres en wachtwoord.');
+      return;
+    }
+    window.location.assign(target);
   }
 
   return (
@@ -97,15 +126,52 @@ export default function AuthPanel({
         <span>{busy ? 'Bezig…' : LABEL[mode]}</span>
       </button>
 
-      <p className="text-xs text-on-surface-variant text-center leading-relaxed m-0">
-        Inloggen gaat via je Google-account. Andere manieren van inloggen komen later.
-      </p>
+      {reviewer ? (
+        <form onSubmit={withPassword} className="space-y-3 pt-2" aria-label="Reviewer login">
+          <p className="text-xs text-on-surface-variant text-center leading-relaxed m-0">
+            Reviewer account
+          </p>
+          <input
+            type="email"
+            name="email"
+            autoComplete="username"
+            required
+            placeholder="E-mail"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            className="auth-input w-full rounded-xl px-4 py-3 text-sm bg-surface-container-lowest text-on-surface"
+          />
+          <input
+            type="password"
+            name="password"
+            autoComplete="current-password"
+            required
+            placeholder="Wachtwoord"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            className="auth-input w-full rounded-xl px-4 py-3 text-sm bg-surface-container-lowest text-on-surface"
+          />
+          <button
+            type="submit"
+            disabled={busy}
+            className="auth-btn w-full rounded-xl px-5 py-3 text-sm font-semibold text-on-primary bg-primary disabled:opacity-60 cursor-pointer"
+          >
+            {busy ? 'Bezig…' : 'Sign in'}
+          </button>
+        </form>
+      ) : (
+        <p className="text-xs text-on-surface-variant text-center leading-relaxed m-0">
+          Inloggen gaat via je Google-account. Andere manieren van inloggen komen later.
+        </p>
+      )}
 
       <style>{`
         .auth-btn { transition: transform .16s cubic-bezier(0.22,1,0.36,1), opacity .16s ease; }
         .auth-btn:not(:disabled):hover { transform: translateY(-1px); }
         .auth-btn:not(:disabled):active { transform: translateY(0) scale(0.99); }
         .auth-btn:focus-visible { outline: 3px solid var(--color-secondary); outline-offset: 2px; }
+        .auth-input { box-shadow: inset 0 0 0 1.5px var(--color-outline-variant); }
+        .auth-input:focus-visible { outline: none; box-shadow: var(--ring-selected, inset 0 0 0 2px var(--color-primary)); }
         @media (prefers-reduced-motion: reduce) { .auth-btn { transition: none; } }
       `}</style>
     </div>
