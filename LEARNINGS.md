@@ -5270,3 +5270,9 @@ oplopende `top` per index doet het, en de `prefers-reduced-motion`-uitweg is dan
 **Outcome:** SUCCESS (tsc, next build, 647 unittests groen; `health` draait zonder sleutel tegen beide live sites)
 **What worked / went wrong:** De eerste map heette `seo/` — en macOS is hoofdletterongevoelig, dus `seo/README.md` overschreef stil `SEO/README.md` en `git status` toonde `SEO/README.md` als gewijzigd zonder dat er iets faalde. Hersteld met `git checkout` en de lus verhuisd naar `seo-agent/`. De healthcheck gaf eerst valse wezen en canonical-afwijkingen op Arabische URL's: de sitemap heeft ze gedecodeerd, href en canonical gecodeerd — `decodeURI` op beide kanten loste het op. Cron kan "eerste zaterdag" niet uitdrukken (`1-7` én `6` is een OF), dus de maandroutine draait elke zaterdag en controleert zelf de datum.
 **Lesson:** Een nieuwe map mag op macOS alleen in hoofdletters verschillen van een bestaande als je wilt dat ze dezelfde map zijn. En een snapshot zonder sleutel schrijft `skipped`, nooit een leeg object: de agent moet "onbekend" van "nul" kunnen onderscheiden.
+
+## 2026-10-05 — PostHog kwam nooit aan: de i18n-proxy zette /nl vóór /ingest
+**Changed:** `proxy.ts` — `ingest` toegevoegd aan de uitsluitingen van de matcher.
+**Outcome:** FAILURE → fix (eerste deploy); `curl -I https://inburgeringoefenen.nl/ingest/decide/` gaf `307 → /nl/ingest/decide`.
+**What worked / went wrong:** De rewrites in `next.config.ts` waren goed, maar de next-intl-proxy draait vóór de rewrites en behandelt elk pad zonder taalprefix als een pagina. Lokaal viel het niet op: `tsc` en `next build` zeggen niets over routing, en in de browser faalt een geredirecte POST stil.
+**Lesson:** Elk pad dat géén pagina is (API, proxy, webhooks) moet expliciet in de matcher-uitsluiting van `proxy.ts` staan. Controleer een nieuwe proxy-route met één `curl -I` op productie, niet met de build.

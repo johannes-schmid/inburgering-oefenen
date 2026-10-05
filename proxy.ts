@@ -36,5 +36,8 @@ export default function proxy(request: NextRequest) {
 
 export const config = {
   // Run on all paths except API routes, Next.js internals and static assets
-  matcher: ['/((?!api|_next|_vercel|auth/callback|.*\\..*).*)'],
+  // `ingest` is de PostHog-proxy (rewrites in next.config.ts). Zonder deze uitzondering zet
+  // next-intl er een taalprefix voor — /ingest/decide werd een 307 naar /nl/ingest/decide — en
+  // komt er geen enkel event aan, zonder dat er iets logt.
+  matcher: ['/((?!api|ingest|_next|_vercel|auth/callback|.*\\..*).*)'],
 };
