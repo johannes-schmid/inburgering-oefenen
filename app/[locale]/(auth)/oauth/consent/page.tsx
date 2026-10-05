@@ -47,7 +47,14 @@ export default async function OAuthConsentPage({ params, searchParams }: Props) 
         intro="Een app wil toegang tot je oefenvoortgang. Log in met het account dat je op Inburgering Oefenen gebruikt."
         showHeaderCta={false}
       >
-        <AuthPanel mode="login" locale={locale} next={next} />
+        {/* De reviewer van OpenAI komt hier binnen vanuit ChatGPT, niet via /login?reviewer=1;
+            zolang de env-vlag aan staat toont ook deze pagina het wachtwoordformulier. */}
+        <AuthPanel
+          mode="login"
+          locale={locale}
+          next={next}
+          reviewer={process.env.REVIEWER_LOGIN_ENABLED === 'true'}
+        />
       </AuthShell>
     );
   }
