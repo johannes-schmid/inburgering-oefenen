@@ -5,6 +5,7 @@ import { day2Email, day2Subject } from '@/lib/email/templates/day2';
 import { day2NoScoreEmail, day2NoScoreSubject } from '@/lib/email/templates/day2NoScore';
 import { day7Email, day7Subject } from '@/lib/email/templates/day7';
 import { abandonEmail, abandonSubject } from '@/lib/email/templates/abandon';
+import { guideDay2Email, guideDay2Subject, guideDay7Email, guideDay7Subject } from '@/lib/email/templates/guide';
 import { timelineReminderEmail, timelineReminderSubject } from '@/lib/email/templates/timeline';
 import { buildTimelineEmailPayload } from '@/lib/tijdlijn/email-payload';
 import { pd } from '@/lib/tijdlijn/engine/dates';
@@ -63,7 +64,15 @@ export async function GET(request: Request): Promise<Response> {
       let html: string;
       let subject: string;
 
-      if (row.campaign_type === CAMPAIGN.DAY2) {
+      /* Een gidsdownload zit in dezelfde reeks met eigen tekst — zie templates/guide.ts. */
+      const fromGuide = row.payload?.source === 'guide';
+      if (fromGuide && row.campaign_type === CAMPAIGN.DAY2) {
+        html = guideDay2Email(row.payload, firstName, locale, unsubscribeUrl);
+        subject = guideDay2Subject(row.payload, locale);
+      } else if (fromGuide && row.campaign_type === CAMPAIGN.DAY7) {
+        html = guideDay7Email(row.payload, firstName, locale, unsubscribeUrl);
+        subject = guideDay7Subject(row.payload, locale);
+      } else if (row.campaign_type === CAMPAIGN.DAY2) {
         const hasScore = row.payload?.pct != null;
         if (hasScore) {
           html = day2Email(row.payload, firstName, locale, unsubscribeUrl);

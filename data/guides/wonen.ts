@@ -50,6 +50,12 @@ const guide: Guide = {
   heroTitle: 'Wonen',
   heroSubtitle:
     'Een woning vinden is in Nederland moeilijk, en er komt veel bij kijken: inschrijven, huurcontract, energie, verzekering, afval. Dit thema zet het op een rij.',
+  heroImage: {
+    base: 'wonen',
+    hasWebp: false,
+    alt: 'Fietsen voor een rij Nederlandse huizen aan het water',
+    credit: 'Laura vg (Pexels)',
+  },
   readingMinutes: 8,
 
   articleHtml: `

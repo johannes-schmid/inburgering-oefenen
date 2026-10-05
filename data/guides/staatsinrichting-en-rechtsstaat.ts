@@ -54,6 +54,12 @@ const guide: Guide = {
   heroTitle: 'Staatsinrichting en rechtsstaat',
   heroSubtitle:
     'Wie maakt de wetten, wie bestuurt het land, en wie controleert dat? Dit thema legt uit hoe de Nederlandse democratie in elkaar zit — en waarom niemand boven de wet staat.',
+  heroImage: {
+    base: 'staatsinrichting-en-rechtsstaat',
+    hasWebp: true,
+    alt: 'De Hofvijver en het Binnenhof in Den Haag',
+    credit: 'Márton Novák (Pexels)',
+  },
   readingMinutes: 8,
 
   articleHtml: `

@@ -49,6 +49,12 @@ const guide: Guide = {
   heroTitle: 'Het examen Schrijven',
   heroSubtitle:
     'Vier opdrachten, veertig minuten, en op A2 met pen en papier. Dit is het onderdeel waar planning meer oplevert dan taalkennis — en waar de uitslag het langst duurt.',
+  heroImage: {
+    base: 'schrijven-examen',
+    hasWebp: true,
+    alt: 'Een hand schrijft met een pen op papier',
+    credit: 'Anna Tarazevich (Pexels)',
+  },
   readingMinutes: 8,
 
   articleHtml: `

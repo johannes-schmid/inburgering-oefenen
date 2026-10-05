@@ -1,6 +1,11 @@
 /**
  * The hub of a kennisgids section — `/inburgering`, `/knm` and `/taalexamens` all render this.
  *
+ * **Herontwerp 05-10-2026 (eigenaar):** dezelfde opzet als `/gidsen` en de gidspagina — een navy
+ * band met het kruimelpad erin, dan de gidsen als fotokaarten, dan de oriëntatie als rijen (kop
+ * links, tekst rechts). De delen-lezer (`RouteReader`) en de fasevoortgang zijn van deze pagina
+ * af: de route is nu de lijst gidsen zelf, in leesvolgorde.
+ *
  * One component, three sections, because hubs that drift apart is a mistake this repo has made
  * before (`sections` versus `task_type`). The section supplies its own copy through the
  * `guides.<section>` message namespace; nothing about any hub is hardcoded here. The two
@@ -24,17 +29,14 @@ import { Link } from '@/i18n/navigation';
 import JsonLd from '@/components/JsonLd';
 import { absUrl, breadcrumbs, PROVIDER_REF } from '@/lib/schema';
 import { WEBSITE_ID, langTag } from '@/lib/site';
-import { GradientHero, Breadcrumb, SectionHeader, CTABanner } from '@/components/site';
+import { ArrowRight } from 'lucide-react';
+import { Breadcrumb, CTABanner } from '@/components/site';
 import CategoryMark from '@/components/horizon/CategoryMark';
-import GuideCover from '@/components/horizon/GuideCover';
 import { DEFAULT_LEVEL, SKILLS } from '@/data/skills';
 import { FEATURES } from '@/lib/features';
 import { getPostBySlug, getPostLocale, getPostSlug } from '@/data/blog-posts';
 import { publishedGuides, getGuideLocale, guideHref } from '@/data/guides/helpers';
-import { PHASES, phaseFromParam } from '@/data/guides/phases';
-import { guideSections } from '@/lib/guides/sections';
-import RouteReader, { type RoutePhaseView } from '@/components/inburgering/RouteReader';
-import RouteProgress from '@/components/inburgering/RouteProgress';
+import { PHASES } from '@/data/guides/phases';
 import type { GuideSection } from '@/data/guides/types';
 import { skillParam } from '@/i18n/skill-slugs';
 
@@ -87,49 +89,20 @@ export default async function GuideHub({
    */
   fase?: string;
 }) {
+  void fase;
   const t = await getTranslations({ locale, namespace: 'guides' });
   const tS = await getTranslations({ locale, namespace: `guides.${section}` });
   const tB = await getTranslations({ locale, namespace: 'breadcrumbs' });
   const tSkills = await getTranslations({ locale, namespace: 'skills' });
   const tR = await getTranslations({ locale, namespace: 'inburgering_route' });
 
-  const guides = publishedGuides(section);
+  /* Leesvolgorde: op Inburgering de volgorde van de drie fasen (`PHASES`), wat daar niet in staat
+     erachter; de andere hubs houden de dataorde. */
+  const phaseOrder = section === 'inburgering' ? PHASES.flatMap(p => p.guides) : [];
+  const rank = (slug: string) => { const i = phaseOrder.indexOf(slug); return i === -1 ? Infinity : i; };
+  const guides = [...publishedGuides(section)].sort((a, b) => rank(a.slug) - rank(b.slug));
   const cards = Array.from({ length: SECTION_CARDS[section] }, (_, i) => i + 1);
 
-  /* The Inburgering route. Built here rather than in the client component because the step titles
-     are the guides' own `<h2>`s, which means reading `articleHtml` — and `articleHtml` must never
-     cross into the browser bundle: the four bodies together are ~90 kB of prose that the hub does
-     not render. So the server extracts `{ id, title, minutes }` per section and ships only that.
-     A phase whose guides are all unpublished is dropped, so an unreviewed guide cannot put an
-     empty card at the top of the funnel. */
-  const phaseViews: RoutePhaseView[] =
-    section === 'inburgering'
-      ? PHASES.map(p => ({
-          id: p.id,
-          number: p.number,
-          /* A fase's delen are its guides' `<h2>` sections, concatenated in reading order. The
-             extraction reads `articleHtml`, which is why it happens here: the four bodies are ~90 kB
-             of prose the hub does not render and which must never reach the browser bundle. */
-          delen: p.guides.flatMap(slug => {
-            const g = guides.find(x => x.slug === slug);
-            if (!g) return [];
-            const lg = getGuideLocale(g, locale);
-            return guideSections(lg.articleHtml).map(sec => ({
-              id: sec.id,
-              title: sec.title,
-              minutes: sec.minutes,
-              slug: g.slug,
-              section: g.section,
-              guideTitle: lg.heroTitle,
-              /* Carried per deel rather than looked up in the client: `RouteReader` never sees a
-                 `Guide`, and shipping one to it would drag `articleHtml` into the bundle. */
-              coverGlyph: g.coverGlyph,
-              pillar: g.pillar,
-            }));
-          }),
-        })).filter(p => p.delen.length > 0)
-      : [];
-  const showRoute = phaseViews.length > 0;
   const posts = FEATURES.blog
     ? HUB_POSTS[section].map(slug => getPostBySlug(slug)).filter(Boolean)
     : [];
@@ -177,140 +150,128 @@ export default async function GuideHub({
     <>
       <JsonLd data={jsonLd} />
 
-      <GradientHero className="pb-16">
-        <div className="max-w-3xl">
-          <span className="inline-block px-3 py-1 rounded-full font-bold text-xs uppercase tracking-widest mb-5 bg-secondary-container text-on-secondary-container">
-            {tS('eyebrow')}
-          </span>
+      <header className="bg-primary text-white -mt-[var(--nav-h)]" style={{ paddingTop: 'calc(var(--nav-h) + 1rem)' }}>
+        <div className="max-w-6xl mx-auto px-6 pb-12 sm:pb-14">
+          <Breadcrumb tone="onDark" className="-mx-6 mb-6" items={[{ label: tB('home'), href: '/' }, { label: tB(section) }]} />
           <h1
-            className="font-headline font-bold text-white tracking-tight mb-6 leading-tight"
-            style={{ fontSize: 'clamp(2rem,4vw,3rem)' }}
+            className="font-headline font-extrabold text-white m-0 mb-4 max-w-3xl"
+            style={{ fontSize: 'clamp(2rem,4.2vw,3rem)', letterSpacing: '-0.02em', lineHeight: 1.1, textWrap: 'balance' }}
           >
             {tS('heading')}
           </h1>
-          {/* Where the reader is in the route. Renders nothing until localStorage has been read —
-              see `RouteProgress`. */}
-          <RouteProgress phases={phaseViews} />
-          <p className="text-lg leading-relaxed" style={{ color: 'rgba(255,255,255,0.72)' }}>
+          <p className="text-lg leading-relaxed m-0 max-w-2xl" style={{ color: 'rgba(255,255,255,0.8)' }}>
             {tS('subheading')}
           </p>
         </div>
-      </GradientHero>
-
-      <Breadcrumb items={[{ label: tB('home'), href: '/' }, { label: tB(section) }]} />
+      </header>
 
       <main className="bg-surface">
-        {/* The guides themselves — only once one has been reviewed. */}
-        {guides.length > 0 && !showRoute && (
-          <section className="py-16 px-6">
-            <div className="max-w-7xl mx-auto">
-              <SectionHeader title={t('guides_title')} />
-              <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
-                {guides.map(guide => {
+        {/* De gidsen, in leesvolgorde (`publishedGuides` sorteert op `order`). Eén kaart per gids
+            met de foto erboven — dezelfde kaart als "Begin hier" op `/gidsen`. */}
+        {guides.length > 0 && (
+          <section className="px-6 py-14 sm:py-16">
+            <div className="max-w-6xl mx-auto">
+              <h2
+                className="font-headline font-extrabold m-0 mb-8"
+                style={{ color: '#002b6d', fontSize: 'clamp(1.6rem,3vw,2.1rem)', letterSpacing: '-0.02em' }}
+              >
+                {t('guides_title')}
+              </h2>
+              <ol className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5 list-none p-0 m-0">
+                {guides.map((guide, i) => {
                   const lg = getGuideLocale(guide, locale);
+                  const img = guide.heroImage;
                   return (
-                    <Link
-                      key={guide.slug}
-                      href={guideHref(guide, locale)}
-                      className="bg-surface-container-lowest rounded-2xl overflow-hidden flex flex-col no-underline shadow-sm post-card focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2"
-                      style={{ textDecoration: 'none' }}
-                    >
-                      {/* The cover carries the eyebrow's job visually — the field says which cluster
-                          and the sun says whether this is the pillar — so the chip stays for the
-                          words and the two do not compete. See `components/horizon/GuideCover.tsx`. */}
-                      <GuideCover
-                        slug={guide.slug}
-                        field={guide.section}
-                        glyph={guide.coverGlyph}
-                        pillar={guide.pillar}
-                        className="rounded-none"
-                      />
-                      <div className="p-7 flex flex-col gap-3">
-                        <span
-                          className="inline-block px-3 py-1 font-bold text-xs uppercase tracking-widest rounded-full w-fit"
-                          style={{ background: 'rgba(0,43,109,0.06)', color: '#002b6d' }}
-                        >
-                          {lg.eyebrow}
+                    <li key={guide.slug}>
+                      <Link
+                        href={guideHref(guide, locale)}
+                        className="guide-card-link flex h-full flex-col rounded-2xl overflow-hidden no-underline bg-surface-container-lowest hover:-translate-y-0.5 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2"
+                        style={{ boxShadow: 'var(--shadow-ambient)' }}
+                      >
+                        {img ? (
+                          <picture className="block">
+                            {img.hasWebp && <source srcSet={`/images/guides/${img.base}.webp`} type="image/webp" />}
+                            <img
+                              src={`/images/guides/${img.base}.jpg`}
+                              alt=""
+                              width={1800}
+                              height={760}
+                              loading="lazy"
+                              decoding="async"
+                              className="w-full h-44 object-cover"
+                              style={{ objectPosition: img.position ?? 'center 45%' }}
+                            />
+                          </picture>
+                        ) : (
+                          <div className="h-44 bg-surface-container-low flex items-center justify-center">
+                            <CategoryMark category="gidsen" size={40} />
+                          </div>
+                        )}
+                        <span className="flex flex-col flex-1 p-6">
+                          <span className="text-[11px] font-bold uppercase tracking-widest text-on-surface-variant">
+                            {String(i + 1).padStart(2, '0')} · {t('reading_time', { minutes: guide.readingMinutes })} · PDF
+                          </span>
+                          <span className="block font-headline font-bold text-lg leading-snug mt-3" style={{ color: '#002b6d', textWrap: 'balance' }}>
+                            {lg.heroTitle}
+                          </span>
+                          <span className="block text-sm text-on-surface-variant leading-relaxed mt-2">{lg.description}</span>
+                          <span className="inline-flex items-center gap-1.5 text-sm font-bold mt-auto pt-5" style={{ color: '#a24000' }}>
+                            {t('read_guide')}
+                            <ArrowRight size={14} className="rtl-flip" aria-hidden="true" />
+                          </span>
                         </span>
-                        <h2 className="font-headline font-bold text-lg text-on-surface leading-snug">
-                          {lg.heroTitle}
-                        </h2>
-                        <p className="text-on-surface-variant text-sm leading-relaxed">{lg.description}</p>
-                      </div>
-                    </Link>
+                      </Link>
+                    </li>
                   );
                 })}
-              </div>
+              </ol>
             </div>
           </section>
         )}
 
-        {/* The route — Inburgering only. It is the page's spine, so it sits directly under the
-            hero, above the orientation prose: a reader who knows what inburgering is should not
-            have to scroll past a definition of it to find where to start. `SectionHeader` carries
-            the same copy the fasen cards used to introduce. */}
-        {showRoute && (
-          <section className="py-14 px-6">
-            <div className="max-w-7xl mx-auto">
-              {/* No `SectionHeader` above the route: the open fase already prints its own eyebrow
-                  and title, and two headings stacked read as one of them being a subtitle of the
-                  other (owner's mockup, 2026-08-23). */}
-              <RouteReader phases={phaseViews} initialPhase={phaseFromParam(fase)} />
-            </div>
-          </section>
-        )}
-
-        {/* Orientation. Always rendered: with no guides it is the page, with guides it is context. */}
-        <section className={guides.length > 0 ? 'pb-16 px-6' : 'py-16 px-6'}>
-          <div className="max-w-7xl mx-auto">
-            <div
-              className="bg-surface-container-lowest rounded-2xl p-8 md:p-10 mb-10"
-              style={{ boxShadow: '0 2px 32px rgba(0,43,109,0.06)' }}
-            >
-              <h2
-                className="font-headline font-bold text-on-surface mb-4"
-                style={{ fontSize: '1.5rem', letterSpacing: '-0.01em' }}
-              >
+        {/* Oriëntatie als rijen, zoals de secties van een gids: kop links, tekst rechts. Zonder
+            gidsen is dit de pagina, met gidsen is het context. */}
+        <section className="px-6 py-14 sm:py-16 bg-surface-container-low">
+          <div className="max-w-6xl mx-auto">
+            <div className="guide-row" style={{ paddingTop: 0 }}>
+              <h2 className="guide-section-title font-headline" style={{ fontSize: '1.75rem', fontWeight: 800, letterSpacing: '-0.025em', lineHeight: 1.15, color: '#002b6d', margin: 0 }}>
                 {tS('intro_title')}
               </h2>
-              <p className="text-on-surface-variant leading-relaxed max-w-3xl" style={{ lineHeight: 1.7 }}>
+              <p className="text-on-surface m-0 max-w-[72ch]" style={{ fontSize: '1.1rem', lineHeight: 1.8 }}>
                 {tS('intro_body')}
               </p>
             </div>
-
-            {/* The five traject cards. On Inburgering the fasen above now carry the "where do I
-                start" job, and these are the DUO process end to end — kept, because they answer a
-                different question, but demoted below the route rather than competing with it. */}
-            <SectionHeader title={tS('phases_title')} />
-            <ol className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6 list-none p-0">
-              {cards.map(n => (
-                <li
-                  key={n}
-                  className="bg-surface-container-lowest rounded-2xl p-6"
-                  style={{ boxShadow: '0 2px 16px rgba(0,43,109,0.06)' }}
-                >
-                  <span
-                    className="inline-flex items-center justify-center w-8 h-8 rounded-lg font-headline font-bold text-sm mb-4"
-                    style={{ background: 'rgba(254,118,44,0.12)', color: '#a24000' }}
-                    aria-hidden="true"
-                  >
-                    {n}
-                  </span>
-                  <h3 className="font-headline font-bold text-on-surface mb-2 leading-snug">
-                    {tS(`phase_${n}_title`)}
-                  </h3>
-                  <p className="text-sm text-on-surface-variant leading-relaxed">{tS(`phase_${n}_body`)}</p>
-                </li>
-              ))}
-            </ol>
+            <div className="guide-row" style={{ paddingBottom: 0 }}>
+              <h2 className="guide-section-title font-headline" style={{ fontSize: '1.75rem', fontWeight: 800, letterSpacing: '-0.025em', lineHeight: 1.15, color: '#002b6d', margin: 0 }}>
+                {tS('phases_title')}
+              </h2>
+              <ol className="list-none p-0 m-0 flex flex-col gap-7 max-w-[72ch]">
+                {cards.map(n => (
+                  <li key={n} className="flex gap-5">
+                    <span
+                      className="inline-flex items-center justify-center w-10 h-10 rounded-[11px] font-headline font-extrabold text-white flex-shrink-0"
+                      style={{ background: '#002b6d' }}
+                      aria-hidden="true"
+                    >
+                      {n}
+                    </span>
+                    <span className="flex flex-col gap-1 pt-1.5">
+                      <span className="font-headline font-bold text-lg leading-snug" style={{ color: '#002b6d' }}>{tS(`phase_${n}_title`)}</span>
+                      <span className="text-on-surface-variant leading-relaxed" style={{ fontSize: '1.05rem' }}>{tS(`phase_${n}_body`)}</span>
+                    </span>
+                  </li>
+                ))}
+              </ol>
+            </div>
           </div>
         </section>
 
         {/* The blog posts that already cover part of this ground. */}
         {posts.length > 0 && (
-          <section className="pb-16 px-6">
-            <div className="max-w-7xl mx-auto">
-              <SectionHeader title={t('blog_title')} subtitle={t('blog_desc')} />
+          <section className="px-6 py-14 sm:py-16">
+            <div className="max-w-6xl mx-auto">
+              <h2 className="font-headline font-extrabold m-0 mb-2" style={{ color: '#002b6d', fontSize: 'clamp(1.6rem,3vw,2.1rem)', letterSpacing: '-0.02em' }}>{t('blog_title')}</h2>
+              <p className="text-base text-on-surface-variant m-0 mb-8">{t('blog_desc')}</p>
               <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
                 {posts.map(post => {
                   const lp = getPostLocale(post!, locale);
@@ -318,8 +279,8 @@ export default async function GuideHub({
                     <Link
                       key={post!.slug}
                       href={{ pathname: '/blog/[slug]', params: { slug: getPostSlug(post!, locale) } }}
-                      className="bg-surface-container-lowest rounded-2xl p-7 flex flex-col gap-3 no-underline shadow-sm post-card focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2"
-                      style={{ textDecoration: 'none' }}
+                      className="guide-card-link bg-surface-container-lowest rounded-2xl p-7 flex flex-col gap-3 no-underline hover:-translate-y-0.5 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2"
+                      style={{ boxShadow: 'var(--shadow-ambient)' }}
                     >
                       <h3 className="font-headline font-bold text-on-surface leading-snug">{lp.heroTitle}</h3>
                       <p className="text-on-surface-variant text-sm leading-relaxed">{lp.description}</p>
@@ -332,9 +293,10 @@ export default async function GuideHub({
         )}
 
         {/* Into the funnel: the four onderdelen, one click away from every hub. */}
-        <section className="pb-16 px-6">
-          <div className="max-w-7xl mx-auto">
-            <SectionHeader title={t('exams_title')} subtitle={t('exams_desc')} />
+        <section className="px-6 pb-16">
+          <div className="max-w-6xl mx-auto">
+            <h2 className="font-headline font-extrabold m-0 mb-2" style={{ color: '#002b6d', fontSize: 'clamp(1.6rem,3vw,2.1rem)', letterSpacing: '-0.02em' }}>{t('exams_title')}</h2>
+            <p className="text-base text-on-surface-variant m-0 mb-8">{t('exams_desc')}</p>
             <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-12">
               {SKILLS.map(skill => (
                 <Link
@@ -345,8 +307,8 @@ export default async function GuideHub({
                     pathname: '/oefenexamen/[level]/[skill]',
                     params: { level: DEFAULT_LEVEL, skill: skillParam(skill.slug, locale) },
                   }}
-                  className="bg-surface-container-lowest rounded-2xl p-6 flex items-center gap-3 no-underline shadow-sm post-card focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2"
-                  style={{ textDecoration: 'none' }}
+                  className="guide-card-link bg-surface-container-lowest rounded-2xl p-6 flex items-center gap-3 no-underline hover:-translate-y-0.5 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2"
+                  style={{ boxShadow: 'var(--shadow-ambient)' }}
                 >
                   <CategoryMark category={skill.slug} size={32} />
                   <span className="font-headline font-bold text-on-surface">

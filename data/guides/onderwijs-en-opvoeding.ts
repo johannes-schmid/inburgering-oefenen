@@ -53,6 +53,12 @@ const guide: Guide = {
   heroTitle: 'Onderwijs en opvoeding',
   heroSubtitle:
     'Hoe werkt school in Nederland, wat wordt er van ouders verwacht, en wat mag en moet er in de opvoeding? Dit thema gaat over je kinderen — en over jouw rol daarin.',
+  heroImage: {
+    base: 'onderwijs-en-opvoeding',
+    hasWebp: true,
+    alt: 'Kinderen luisteren naar een juf in de klas',
+    credit: 'Pavel Danilyuk (Pexels)',
+  },
   readingMinutes: 9,
 
   articleHtml: `

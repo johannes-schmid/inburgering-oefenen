@@ -54,6 +54,12 @@ const guide: Guide = {
   heroTitle: 'Werk en inkomen',
   heroSubtitle:
     'Hoe vind je werk in Nederland, wat staat er in een contract, en wat doe je als je oneerlijk behandeld wordt? Dit thema gaat over werken en over het geld dat je ermee verdient.',
+  heroImage: {
+    base: 'werk-en-inkomen',
+    hasWebp: true,
+    alt: 'Collega’s werken samen achter een laptop op kantoor',
+    credit: 'Pavel Danilyuk (Pexels)',
+  },
   readingMinutes: 8,
 
   articleHtml: `

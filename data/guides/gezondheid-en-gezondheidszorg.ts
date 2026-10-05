@@ -55,6 +55,12 @@ const guide: Guide = {
   heroTitle: 'Gezondheid en gezondheidszorg',
   heroSubtitle:
     'De Nederlandse zorg werkt anders dan in veel andere landen: bijna alles begint bij de huisarts. Hier lees je hoe het in elkaar zit, en wat je doet bij spoed.',
+  heroImage: {
+    base: 'gezondheid-en-gezondheidszorg',
+    hasWebp: true,
+    alt: 'Een huisarts in gesprek met een oudere patiënt',
+    credit: 'Vitaly Gariev (Pexels)',
+  },
   readingMinutes: 9,
 
   articleHtml: `

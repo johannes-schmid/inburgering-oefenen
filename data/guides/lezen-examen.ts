@@ -48,6 +48,12 @@ const guide: Guide = {
   heroTitle: 'Het examen Lezen',
   heroSubtitle:
     'Teksten lezen en vragen beantwoorden, op de computer. Het lijkt het makkelijkste onderdeel, en het is het onderdeel waar de meeste mensen door de tijd heen schieten.',
+  heroImage: {
+    base: 'lezen-examen',
+    hasWebp: true,
+    alt: 'Een vrouw leest een boek bij het raam',
+    credit: 'Rahul Shah (Pexels)',
+  },
   readingMinutes: 7,
 
   articleHtml: `

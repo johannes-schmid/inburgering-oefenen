@@ -279,6 +279,10 @@ test.describe('the kennisgids sections', () => {
 
       // Gidsen: every published guide, the three hubs and the blog.
       await page.goto('/nl/gidsen');
+      /* The grid shows six guides and folds the rest behind one button (05-10); every link is
+       * in the DOM for the crawler, but "visible" to a reader means after that click. */
+      const more = page.locator('main button[aria-expanded="false"]');
+      if (await more.count()) await more.first().click();
       for (const href of [
         '/nl/inburgering/moet-ik-inburgeren', '/nl/inburgering/welke-wet-en-welke-route',
         '/nl/inburgering/inburgering-stappenplan', '/nl/inburgering/wat-kost-inburgeren',
@@ -432,16 +436,24 @@ test.describe('the kennisgids sections', () => {
     await expect(page.locator('[role="tab"][aria-selected="true"]')).toHaveCount(1);
   });
 
-  test('a guide shows its own sections and its place in the route', async ({ page }) => {
-    /* The article side of the redesign. The outline in the sidebar is derived from the guide's own
-     * `<h2 id>`s, so this pins that the derivation actually produced links and that each one points
-     * at a heading that exists — a jump to a missing anchor is silent in the browser. */
+  test('a guide shows its own sections and a PDF download', async ({ page }) => {
+    /* The table of contents beside the article is derived from the guide's own `<h2 id>`s, so
+     * this pins that the derivation actually produced links and that each one points at a heading
+     * that exists — a jump to a missing anchor is silent in the browser. The fase strip is gone
+     * since 05-10-2026: the guide is one article again, and the route lives on `/inburgering`. */
     await page.goto('/nl/inburgering/moet-ik-inburgeren');
 
-    // The compact fase strip marks exactly one fase as the current step.
-    await expect(page.locator('[aria-current="step"]')).toHaveCount(1);
+    /* The PDF sits behind an e-mail address (05-10): a button opens the dialog, and the route
+     * itself refuses a bare request — the download URL comes back from the request endpoint. */
+    await page.locator('button[data-pdf-gate]').first().click();
+    const dialog = page.locator('dialog.pdf-dialog[open]');
+    await expect(dialog).toBeVisible();
+    await expect(dialog.locator('input[type="email"]')).toBeVisible();
+    await page.keyboard.press('Escape');
+    await expect(dialog).toHaveCount(0);
 
-    const nav = page.locator('nav[aria-label="De stappen in deze gids"]');
+    /* The outline floats bottom-left (05-10), open by default. */
+    const nav = page.locator('nav[aria-label="In deze gids"]');
     await expect(nav).toBeVisible();
     const links = nav.locator('a[href^="#"]');
     const count = await links.count();

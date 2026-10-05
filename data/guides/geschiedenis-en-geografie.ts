@@ -55,6 +55,12 @@ const guide: Guide = {
   heroTitle: 'Geschiedenis en geografie',
   heroSubtitle:
     'Waar ligt wat, en hoe is Nederland geworden wat het is? Dit thema vraagt geen jaartallenlijst, maar wel dat je de grote lijnen kent en de kaart kunt lezen.',
+  heroImage: {
+    base: 'geschiedenis-en-geografie',
+    hasWebp: true,
+    alt: 'De Oosterscheldekering met windmolens in Zeeland',
+    credit: 'Igor Passchier (Pexels)',
+  },
   readingMinutes: 8,
 
   articleHtml: `

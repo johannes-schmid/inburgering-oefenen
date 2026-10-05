@@ -5211,3 +5211,32 @@ oplopende `top` per index doet het, en de `prefers-reduced-motion`-uitweg is dan
 **Outcome:** SUCCESS (deploy geverifieerd; uitslag van de check volgt bij de volgende submit)
 **What worked / went wrong:** "We couldn't complete an automated assessment of your privacy policy" terwijl de pagina 200 gaf, server-side gerenderd was en OpenAI/ChatGPT al noemde. Het enige dat een geautomatiseerde lezer tegenhield was de `noindex`-meta.
 **Lesson:** Een privacy-URL die je aan een externe reviewer geeft moet indexeerbaar zijn; `noindex` leest een beoordelaar als "niet lezen".
+
+## 2026-10-05 — Bronnen: het gidsenoverzicht en de gidspagina opnieuw, met PDF en foto's
+**Changed:** `app/[locale]/(main)/gidsen/page.tsx` (navy band + zoekveld, *Begin hier* met drie fotokaarten, *Kies een onderwerp* als vijf tegels, het raster), `gidsen/_components/GuideIndex.tsx` (`GuideFilterProvider` + `GuideSearch` + raster; `ModuleOverview.tsx` verwijderd), `_components/GuideArticle.tsx` (één leeskolom, hero met fototegel, `components/guides/GuideToc.tsx` plakkend ernaast, samenvatting bovenaan; `GuideReader`/`PhaseStrip`/`GuideSectionNav` niet meer op de gidspagina), `app/api/guide-pdf/[section]/[slug]/route.ts` (puppeteer-core + `@sparticuz/chromium`, print-CSS in `globals.css`), 15 nieuwe hero's via `scripts/fetch-guide-images.mjs` + `heroImage` in 15 gidsbestanden, `messages/*.json` (nav *Gidsen* → *Bronnen*/*Resources*/*المصادر*, nieuwe sleutels), `tests/public.spec.js`.
+**Outcome:** SUCCESS lokaal — tsc clean, `next build` clean, 637 vitest, public+seo e2e groen op de eigen test (vier rode zijn pre-existing: speler-gate, sitemap, twee taalwissels — ook rood op een schone tree). PDF lokaal: 200, ~2,6 MB (EN) tot 4,4 MB (NL, met figuren).
+**What worked / went wrong:**
+- **De PDF is de pagina zelf, geprint.** Geen tweede sjabloon: `@media print` haalt chrome, inhoudsopgave, knoppen en verwante stukken weg (`.no-print`, `header:not(.guide-hero)`), en de route zet elke `<details>` open vóór `page.pdf()` — een dichte vouw print zijn antwoord niet. Twee Chromiums: lokaal het Mac-Chrome (`PDF_CHROME_PATH`), op Vercel `@sparticuz/chromium`; beide in `serverExternalPackages`. **Op Vercel nog niet geverifieerd** — eerste deploy moet de route één keer curl'en.
+- Zoekveld in de hero en raster eronder delen hun toestand via een React-context in één clientbestand; de pagina blijft een servercomponent. Het filter verbergt met `hidden`, zodat `public.spec.js` elke gids zichtbaar vindt.
+- `check-ui.mjs` fotografeert vóór lazy figuren laden: de witte vlakken op de gidsfoto zijn geen bug (de `.webp` geeft 200).
+- Pexels: drie van vijftien eerste resultaten waren fout (kinderen bij een volwassenenexamen, een hoofdloos leesportret, een filmploeg in beeld). Eén contactvel van alle hero's vóór je ze in de gidsbestanden zet scheelt drie losse rondes.
+**Lesson:** Een download is een tweede uitgave van dezelfde tekst; bouw hem uit de pagina met print-CSS, anders heb je twee bronnen die de docent allebei moet nakijken.
+
+## 2026-10-05 — Bronnen, ronde 2: zes gidsen plus knop, navy tot de rand, PDF achter e-mail, rustiger gids
+**Changed:** `gidsen/_components/GuideIndex.tsx` (zes kaarten, "Toon alle N gidsen"); `gidsen/page.tsx` en `_components/GuideArticle.tsx` (`-mt-[var(--nav-h)]` zodat het navy achter de zwevende pil doorloopt); `components/guides/PdfGate.tsx` + `app/api/guide-pdf-request/route.ts` + `lib/guides/pdf-token.ts` (e-mailadres in ruil voor de PDF, HMAC-bewijs van een uur, `/api/guide-pdf` geeft 403 zonder); `lib/email/templates/guide.ts` + branch in `send-campaign-emails` (dag-2/dag-7 met gidstekst, `payload.source = 'guide'`); `app/globals.css` (`.guide-prose`-overrides: één zachte tint, geen randen, geen gradiënten, feiten als tekst); `messages/*.json`; `tests/public.spec.js`.
+**Outcome:** SUCCESS
+**What worked / went wrong:** De eerste screenshots toonden de oude gidsstijl terwijl de CSS op schijf stond — de Turbopack-chunk was oud (grep op een nieuwe klasse in de geserveerde chunk gaf 0). `rm -rf .next/dev` + herstart loste het op; de eerste herstart crashte omdat het oude proces nog leefde en zijn manifest kwijt was. De e2e-test die elke gids "zichtbaar" wil, viel over de ingeklapte lijst; de test klikt nu eerst de knop.
+**Lesson:** Een CSS-wijziging die niet in de screenshot staat is éérst een chunk-vraag, pas daarna een specificiteitsvraag — grep de geserveerde chunk vóór je aan de regels sleutelt. En een "load more" verandert wat "zichtbaar" betekent voor Playwright: ook de test moet die klik doen.
+
+## 2026-10-05 — Bronnen, ronde 3: de gids als rijen (kop links, tekst rechts) met zwevende inhoudsopgave
+**Changed:** `_components/GuideArticle.tsx` splitst het artikel met `guideParts()` in H2-rijen (`.guide-row`, kop plakkend links, tekst in een 72ch-kolom rechts, referentie deel.com-landgids); `components/guides/GuideToc.tsx` is een melkglazen paneel linksonder (ingeklapt: huidige sectie, open: de lijst); `app/globals.css`: stappen en kaarten terug met hun navy tegel en zachte vulling, alleen ruimer; `tests/public.spec.js` klikt de inhoudsopgave open.
+**Outcome:** SUCCESS
+**What worked / went wrong:** Ronde 2 had te veel weggehaald (eigenaar: "de stappen waren juist goed"). Het verschil tussen rustig en kaal zit niet in het aantal blokken maar in de ruimte eromheen en de breedte die je gebruikt. De inhoudsopgave stond even twee keer in de DOM (mobiel + desktop apart gemonteerd) en liet de strict-mode-locator van Playwright struikelen.
+**Lesson:** "Minimalistischer" lezen als "meer lucht, minder chroom", niet als "minder elementen". En een component dat zelf al desktop/mobiel schakelt, één keer monteren.
+
+## 2026-10-05 — Bronnen, ronde 4: de drie hubs in dezelfde opzet
+**Changed:** `_components/GuideHub.tsx` (`/inburgering`, `/knm`, `/taalexamens`): navy band met kruimelpad erin, de gidsen als fotokaarten in leesvolgorde (`PHASES` op Inburgering), de oriëntatie als `.guide-row`-rijen; `RouteReader`, `RouteProgress`, `GradientHero` en `GuideCover` van deze pagina af.
+**Outcome:** SUCCESS
+**What worked / went wrong:** Eén component voor drie hubs betekende dat de verbouwing van `/inburgering` meteen ook `/knm` en `/taalexamens` meenam — precies waarvoor hij zo gebouwd is. `publishedGuides` sorteert op dataorde, niet op leesvolgorde; de fasen uit `phases.ts` waren de enige plek waar die volgorde al stond.
+**Lesson:** Als een hub "de route" is, is de kaartvolgorde de route — sorteer hem expliciet, laat hem niet uit de bestandsvolgorde vallen.
+

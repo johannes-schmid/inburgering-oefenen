@@ -16,7 +16,7 @@ const nextConfig: NextConfig = {
    *
    * Listing it explicitly is the documented fix and costs nothing. If an image upload ever 500s
    * again, check this line before anything in the route. */
-  serverExternalPackages: ['sharp'],
+  serverExternalPackages: ['sharp', '@sparticuz/chromium', 'puppeteer-core'],
 
   /* …and the native binary has to be *copied into* the function, which is a second problem.
    *

@@ -319,7 +319,7 @@ layout's redirect loops. Admin routes are **not** in `i18n/routing.ts` and need 
 
 - **The public site** sells: homepage, `/platform`, `/gidsen`, the three gids hubs, the free tasters,
   the per-onderdeel `/oefenexamen/[level]/[skill]` overviews, `/premium`. The header is four plain
-  links (Platform · Gidsen · Prijzen · Over ons) with no dropdowns — the cost of that is paid on
+  links (Platform · Bronnen · Prijzen · Over ons) with no dropdowns — the cost of that is paid on
   `/platform` and `/gidsen`, which **must** list everything the chrome no longer links.
 - **The study portal** is what a candidate logged in for: `/dashboard` (the catalogue, one card per
   module, "wat nu?" beside it), `/dashboard/[level]`, `/dashboard/[level]/[skill]`, `/dashboard/knm`,

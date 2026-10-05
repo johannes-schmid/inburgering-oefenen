@@ -75,6 +75,12 @@ const guide: Guide = {
   heroTitle: 'Het taalexamen op niveau B1',
   heroSubtitle:
     'B1 is niet hetzelfde examen als A2, een maatje groter. Het is een ander examen, bij een andere afdeling, op andere locaties. Hier staat wat dat voor jou betekent.',
+  heroImage: {
+    base: 'b1-examen',
+    hasWebp: true,
+    alt: 'Een student zoekt een boek in een bibliotheek',
+    credit: 'Jatin Chaudhary (Pexels)',
+  },
   readingMinutes: 8,
 
   articleHtml: `

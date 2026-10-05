@@ -5,10 +5,17 @@
  * It used to decide them inline, three times, as `section === 'inburgering' ? … : '/knm'` — which
  * compiles perfectly against a third section and silently serves it under `/knm/[thema]`.
  *
- * Shaped after `blog/[slug]/page.tsx`, which is the only page on the site with real long-form
- * prose and already solves the hard parts: `.article-layout`, the `ArticleContent` body renderer,
- * the untranslated-locale fallback forced to LTR, and the FAQ block that mirrors the `FAQPage`
- * JSON-LD. What differs is deliberate:
+ * **Herontwerp 05-10-2026 (eigenaar, referentie deel.com/hire-in-germany).** De gids is weer één
+ * doorlopend artikel: een hero met de foto als tegel rechts, daaronder een plakkende
+ * inhoudsopgave links (`GuideToc`) en één leeskolom van ±68 tekens rechts, met de samenvatting
+ * van de docent *bovenaan* in plaats van onderaan. De delen-weergave (`GuideReader`), de
+ * fasestrook en de zijbalknavigatie zijn van deze pagina af: een A2-lezer op een telefoon kreeg
+ * vier schermen chrome vóór hij tekst zag, en de route staat op `/inburgering` zelf.
+ *
+ * **De gids is als PDF te downloaden** (`/api/guide-pdf/[section]/[slug]`), in de taal van de
+ * pagina, achter een e-mailadres (`PdfGate`, 05-10): de download zet de lezer in dezelfde
+ * dag-2/dag-7-reeks als een oefentoets, met gidstekst. Een vertaalde PDF draagt dezelfde `translated_note` als de pagina — de docent las het
+ * Nederlands, niet deze vertaling, en dat voorbehoud mag een download niet kwijtraken.
  *
  * - **The draft notice.** A `draft` guide renders with a banner saying so. It is reachable so the
  *   docent can review it, and `noindex` plus its absence from the hub and the sitemap are what
@@ -19,24 +26,23 @@
  *   from `dateModified`, which any edit moves.
  */
 import { getTranslations } from 'next-intl/server';
-import { PenLine } from 'lucide-react';
+import { ArrowRight } from 'lucide-react';
 import { Link } from '@/i18n/navigation';
 import ArticleContent from '@/components/ArticleContent';
 import JsonLd from '@/components/JsonLd';
-import GuideCover from '@/components/horizon/GuideCover';
 import { absUrl, breadcrumbs, PROVIDER_REF, TEACHER_REF } from '@/lib/schema';
 import { SITE_URL, langTag } from '@/lib/site';
 import { Breadcrumb } from '@/components/site';
 import { FEATURES } from '@/lib/features';
 import { getPostBySlug, getPostLocale, getPostSlug } from '@/data/blog-posts';
 import { getGuideLocale, hasTranslation, relatedGuides, guideHref, hubHref } from '@/data/guides/helpers';
-import { phaseOfGuide } from '@/data/guides/phases';
-import { guideParts, guideSections } from '@/lib/guides/sections';
-import PhaseStrip from '@/components/inburgering/PhaseStrip';
-import GuideSectionNav from '@/components/inburgering/GuideSectionNav';
-import GuideReader from '@/components/guides/GuideReader';
-import SituationCheck from '@/components/inburgering/SituationCheck';
+import { guideSections, guideParts } from '@/lib/guides/sections';
+import GuideToc from '@/components/guides/GuideToc';
+import { PdfGateProvider, PdfButton } from '@/components/guides/PdfGate';
 import type { Guide } from '@/data/guides/types';
+
+const CTA_BUTTON =
+  'inline-flex items-center justify-center gap-2 rounded-xl px-5 py-3 font-bold text-sm no-underline transition-transform hover:-translate-y-0.5 active:scale-[0.98] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2';
 
 export default async function GuideArticle({
   guide,
@@ -47,7 +53,6 @@ export default async function GuideArticle({
 }) {
   const t = await getTranslations({ locale, namespace: 'guides' });
   const tB = await getTranslations({ locale, namespace: 'breadcrumbs' });
-  const tR = await getTranslations({ locale, namespace: 'inburgering_route' });
 
   const lg = getGuideLocale(guide, locale);
   const translated = hasTranslation(guide, locale);
@@ -57,32 +62,8 @@ export default async function GuideArticle({
     : [];
 
   const hub = hubHref(guide.section);
-
-  /* The fase this guide sits in, and its own `<h2>` outline.
-   *
-   * Both are `undefined`/empty outside the Inburgering route, and every consumer below is gated on
-   * that rather than on `section === 'inburgering'` — a KNM or Taalexamens guide gets the plain
-   * article it has today, and a *new* Inburgering guide that nobody added to `phases.ts` gets the
-   * plain article too rather than a strip claiming it is in fase 1. `phaseOfGuide` returning
-   * nothing is the honest state, not a bug to paper over with a default.
-   *
-   * The outline is extracted from the resolved locale's body, so the visible titles are translated
-   * while the ids — and therefore the recorded progress — are shared across nl/en/ar. */
-  const phase = phaseOfGuide(guide.slug);
-  const sections = phase ? guideSections(lg.articleHtml) : [];
-
-  /* The guide as **delen** — one `<h2>` section per view (`GuideReader`, owner's mockups of
-     2026-08-23). Every guide reads this way now, not only the Inburgering ones, so the split is on
-     "does the body have at least two `<h2 id>`s" — a fact about the text rather than about the
-     section. A one-heading guide keeps the plain article: a reading view with a single deel is
-     chrome around nothing.
-     `phaseLabel` is the only route-specific thing that reaches the reader, and it is absent outside
-     `phases.ts` rather than defaulted — a guide in no fase claims no place in the route. */
+  const sections = guideSections(lg.articleHtml);
   const { intro, parts } = guideParts(lg.articleHtml);
-  const paged = parts.length > 1;
-  const phaseLabel = phase
-    ? tR('phase_eyebrow', { number: phase.number, label: tR(`phase.${phase.id}.label`) })
-    : undefined;
 
   /* `Article`, deliberately not `BlogPosting`: a kennisgids is a maintained reference page, not a
    * dated post, and the type is the honest one. `author` and `publisher` are references to the
@@ -92,6 +73,9 @@ export default async function GuideArticle({
    * own meta tag, which is exactly the rule that keeps B1 free of a Course node. */
   const selfUrl = absUrl(locale, `${guide.section}/${guide.slug}`);
   const wordCount = lg.articleHtml.replace(/<[^>]+>/g, ' ').split(/\s+/).filter(Boolean).length;
+  const heroSrc = guide.heroImage
+    ? `/images/guides/${guide.heroImage.base}.${guide.heroImage.hasWebp ? 'webp' : 'jpg'}`
+    : null;
 
   const jsonLd = guide.status !== 'reviewed' || !translated ? null : {
     '@context': 'https://schema.org',
@@ -107,25 +91,9 @@ export default async function GuideArticle({
         mainEntityOfPage: { '@type': 'WebPage', '@id': selfUrl },
         inLanguage: langTag(locale),
         wordCount,
-        /* `image` alleen als de gids er écht een heeft.
-         *
-         * Google vraagt hem voor het Article-rich-result, en het blogsjabloon zet hem al — dat
-         * verschil tussen de twee sjablonen was geen keuze maar een omissie. Vier van de
-         * vijfentwintig gidsen hebben vandaag een `heroImage`; de rest krijgt hier niets in
-         * plaats van allemaal hetzelfde merkplaatje. Eén generiek plaatje op eenentwintig
-         * artikelen is geen afbeelding ván het artikel, en dat is precies wat het veld beweert.
-         * Wat die eenentwintig nodig hebben is een eigen foto, en dat is redactiewerk.
-         *
-         * Zelfde bestandskeuze als de `<picture>` hieronder: `hasWebp` is niet vanzelfsprekend —
-         * `fetch-guide-images.mjs` gooit de WebP weg als die gróter uitvalt dan de mozjpeg. */
-        ...(guide.heroImage
-          ? {
-              image: {
-                '@type': 'ImageObject',
-                url: `${SITE_URL}/images/guides/${guide.heroImage.base}.${guide.heroImage.hasWebp ? 'webp' : 'jpg'}`,
-              },
-            }
-          : {}),
+        /* `image` alleen als de gids er écht een heeft — één generiek merkplaatje op elk artikel
+           is geen afbeelding ván het artikel, en dat is precies wat het veld beweert. */
+        ...(heroSrc ? { image: { '@type': 'ImageObject', url: `${SITE_URL}${heroSrc}` } } : {}),
         author: TEACHER_REF,
         publisher: PROVIDER_REF,
       },
@@ -149,553 +117,258 @@ export default async function GuideArticle({
     ],
   };
 
+  const reviewedLine =
+    guide.status === 'reviewed' && guide.reviewedBy && guide.reviewedOn
+      ? t('reviewed_by', {
+          name: guide.reviewedBy,
+          date: new Date(guide.reviewedOn).toLocaleDateString(langTag(locale), {
+            day: 'numeric',
+            month: 'long',
+            year: 'numeric',
+          }),
+        }) + (locale !== 'nl' ? ` ${t('translated_note')}` : '')
+      : null;
+
   return (
-    <>
+    <PdfGateProvider section={guide.section} slug={guide.slug} locale={locale} title={lg.heroTitle}>
       {jsonLd && <JsonLd data={jsonLd} />}
 
-      {/* Without a hero photo the trail is the usual grey band above the hero. With one it moves
-          *inside* the hero, over the photograph: the band between a white nav and a full-bleed
-          photo reads as a gap in the page rather than as navigation. Same items either way, so
-          the BreadcrumbList JSON-LD and the visible trail cannot drift apart. */}
-      {!guide.heroImage && (
-        <Breadcrumb
-          items={[
-            { label: tB('home'), href: '/' },
-            { label: tB(guide.section), href: hub },
-            { label: lg.breadcrumb },
-          ]}
-        />
+      {/* Hero: navy band, copy left, the photo as a tile on the right. The trail sits inside the
+          band — a grey breadcrumb bar between the white nav and a navy block reads as a gap. */}
+      {heroSrc && (
+        <link rel="preload" as="image" href={heroSrc} fetchPriority="high" />
       )}
-
-      {/* Hero.
-          With a `heroImage` the photo runs full-bleed and a navy scrim fades left-to-right over
-          it — the same treatment as the homepage hero, and for the same reason: the copy needs
-          an opaque ground while the photograph stays a photograph on the right. Without one the
-          hero is the flat brand gradient, so a guide with no picked photo still looks finished.
-
-          The photo is decorative-adjacent but not decorative: it is the page's largest element,
-          so it carries real alt text (`heroImageAlt`, localisable) rather than `alt=""`. It is
-          also the LCP element, hence the preload and `fetchPriority`. */}
-      {guide.heroImage && (
-        <link
-          rel="preload"
-          as="image"
-          href={`/images/guides/${guide.heroImage.base}.${guide.heroImage.hasWebp ? 'webp' : 'jpg'}`}
-          type={guide.heroImage.hasWebp ? 'image/webp' : 'image/jpeg'}
-          fetchPriority="high"
-        />
-      )}
-      <div
-        style={guide.heroImage ? undefined : { background: 'var(--gradient-brand)' }}
-        className={`pt-12 pb-12 ${guide.heroImage ? 'relative overflow-hidden' : ''}`}
-      >
-        {guide.heroImage && (
-          <>
-            <picture>
-              {guide.heroImage.hasWebp && (
-                <source srcSet={`/images/guides/${guide.heroImage.base}.webp`} type="image/webp" />
-              )}
-              <img
-                src={`/images/guides/${guide.heroImage.base}.jpg`}
-                alt={lg.heroImageAlt}
-                width={1800}
-                height={760}
-                className="absolute inset-0 w-full h-full object-cover"
-                style={{ objectPosition: guide.heroImage.position ?? 'center 45%' }}
-                fetchPriority="high"
-                decoding="async"
-              />
-            </picture>
-            {/* Opaque behind the copy, clearing to the right. Mirrors the homepage's 100deg ramp. */}
-            <div
-              className="absolute inset-0 pointer-events-none"
-              style={{ background: 'linear-gradient(100deg, #002B6D 0%, #002B6D 32%, rgba(0,43,109,0.92) 45%, rgba(0,43,109,0.68) 58%, rgba(0,43,109,0.34) 74%, rgba(0,43,109,0.12) 90%, rgba(0,43,109,0.06) 100%)' }}
-            />
-            {/* Below `lg` the copy sits over the whole photo, so darken it further — the same
-                mobile fallback the homepage needs, not a separate design. */}
-            <div
-              className="absolute inset-0 lg:hidden pointer-events-none"
-              style={{ background: 'rgba(0,43,109,0.55)' }}
-            />
-          </>
-        )}
-        <div className={`max-w-7xl mx-auto px-6 ${guide.heroImage ? 'relative z-10' : ''}`}>
-          {guide.heroImage && (
-            <Breadcrumb
-              tone="onDark"
-              className="-mx-6 -mt-4 mb-4"
-              items={[
-                { label: tB('home'), href: '/' },
-                { label: tB(guide.section), href: hub },
-                { label: lg.breadcrumb },
-              ]}
-            />
-          )}
-          <div className="max-w-3xl">
-            <div
-              className="inline-flex items-center gap-2 mb-5"
-              style={{ background: 'rgba(255,255,255,0.12)', borderRadius: '9999px', padding: '4px 12px' }}
-            >
-              <span
-                className="text-xs font-bold tracking-widest uppercase"
-                style={{ color: 'rgba(255,255,255,0.8)' }}
+      <header className="guide-hero bg-primary text-white -mt-[var(--nav-h)]" style={{ paddingTop: 'calc(var(--nav-h) + 1rem)' }}>
+        <div className="max-w-7xl mx-auto px-6 pb-12 lg:pb-14">
+          <Breadcrumb
+            tone="onDark"
+            className="-mx-6 mb-6"
+            items={[
+              { label: tB('home'), href: '/' },
+              { label: tB(guide.section), href: hub },
+              { label: lg.breadcrumb },
+            ]}
+          />
+          <div className={`grid gap-10 items-center print:block ${heroSrc ? 'lg:grid-cols-[minmax(0,1fr)_420px]' : ''}`}>
+            <div className="max-w-2xl">
+              <h1
+                className="font-headline font-extrabold text-white m-0 mb-4"
+                style={{ fontSize: 'clamp(2rem,4.2vw,3rem)', letterSpacing: '-0.02em', lineHeight: 1.1, textWrap: 'balance' }}
               >
-                {lg.eyebrow}
-              </span>
-            </div>
-            <h1
-              className="font-headline font-extrabold text-white mb-5"
-              style={{ fontSize: 'clamp(1.8rem,4vw,2.8rem)', letterSpacing: '-0.02em', lineHeight: 1.15 }}
-            >
-              {lg.heroTitle}
-            </h1>
-            <p className="text-lg mb-8 leading-relaxed max-w-xl" style={{ color: 'rgba(255,255,255,0.7)' }}>
-              {lg.heroSubtitle}
-            </p>
-            <div className="flex items-center gap-4 pt-6" style={{ borderTop: '1px solid rgba(255,255,255,0.15)' }}>
-              <div
-                className="w-10 h-10 rounded-xl overflow-hidden flex-shrink-0"
-                style={{ border: '2px solid rgba(255,255,255,0.2)' }}
-              >
+                {lg.heroTitle}
+              </h1>
+              <p className="text-lg leading-relaxed m-0 mb-7 max-w-xl" style={{ color: 'rgba(255,255,255,0.8)' }}>
+                {lg.heroSubtitle}
+              </p>
+              <div className="no-print flex flex-wrap gap-3 mb-8">
+                <PdfButton className={`${CTA_BUTTON} bg-secondary-container text-on-secondary-container border-0 cursor-pointer`}>
+                  {t('pdf_button')}
+                </PdfButton>
+                <Link
+                  href="/oefenen"
+                  className={`${CTA_BUTTON} text-white`}
+                  style={{ background: 'rgba(255,255,255,0.14)' }}
+                >
+                  {t('check_button')}
+                  <ArrowRight size={16} className="rtl-flip" aria-hidden="true" />
+                </Link>
+              </div>
+              <div className="flex items-center gap-3 text-sm" style={{ color: 'rgba(255,255,255,0.75)' }}>
                 <img
                   src="/images/marieke-schipper.webp"
-                  alt="Marieke Schipper"
-                  width={40}
-                  height={40}
-                  style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'center top' }}
+                  alt=""
+                  width={36}
+                  height={36}
+                  className="w-9 h-9 rounded-[10px] object-cover object-top flex-shrink-0"
                 />
-              </div>
-              <div>
-                <p className="text-sm font-semibold text-white">
-                  <Link href="/docent" className="text-white no-underline hover:opacity-80 transition-opacity">
+                <span>
+                  <Link href="/docent" className="text-white font-semibold no-underline hover:opacity-80">
                     Marieke Schipper
                   </Link>
-                </p>
-                <p className="text-xs" style={{ color: 'rgba(255,255,255,0.5)' }}>
-                  {t('author_role')} · {lg.dateLabel} · {t('reading_time', { minutes: guide.readingMinutes })}
-                </p>
+                  , {t('author_role')} · {lg.dateLabel} · {t('reading_time', { minutes: guide.readingMinutes })}
+                </span>
               </div>
             </div>
+            {heroSrc && guide.heroImage && (
+              <picture className="no-print block">
+                {guide.heroImage.hasWebp && (
+                  <source srcSet={`/images/guides/${guide.heroImage.base}.webp`} type="image/webp" />
+                )}
+                <img
+                  src={`/images/guides/${guide.heroImage.base}.jpg`}
+                  alt={lg.heroImageAlt}
+                  width={1800}
+                  height={760}
+                  className="w-full h-56 sm:h-64 lg:h-72 object-cover rounded-2xl"
+                  style={{ objectPosition: guide.heroImage.position ?? 'center 45%' }}
+                  fetchPriority="high"
+                  decoding="async"
+                />
+              </picture>
+            )}
           </div>
         </div>
-      </div>
-
-      {/* Where this page sits in the route, compressed to one line. Below the hero and above the
-          body, because it orients rather than navigates — see `PhaseStrip`. */}
-      {phase && <PhaseStrip current={phase.id} locale={locale} />}
+      </header>
 
       <main className="bg-surface">
-        {/* Two shapes, one decision (see `paged` above): delen, or the plain article. The reader
-            renders **both** grid children — the white card and the aside — because the delen list
-            and the reading view share one piece of state. */}
-        <div className="article-layout">
-          {paged ? (
-            <GuideReader
-              slug={guide.slug}
-              section={guide.section}
-              guideTitle={lg.heroTitle}
-              intro={intro}
-              parts={parts}
-              phaseLabel={phaseLabel}
-              bodyDir={translated ? undefined : 'ltr'}
-              notices={<>
-                  {/* An unreviewed guide says so, on the page, in every locale. */}
-                  {guide.status === 'draft' && (
-                    <div className="info-box mb-6">
-                      <p>{t('draft_notice')}</p>
-                    </div>
-                  )}
-                  {/* An untranslated locale reads the Dutch body, and the reader is told so. The
-                      delen themselves are forced LTR through `bodyDir` — inside the Arabic layout
-                      Dutch text renders with its punctuation on the wrong side. */}
-                  {!translated && (
-                    <div className="info-box mb-6">
-                      <p>
-                        {t('not_translated')}{' '}
-                        <Link href={guideHref(guide, 'nl')} locale="nl">
-                          {t('read_in_dutch')}
-                        </Link>
-                      </p>
-                    </div>
-                  )}
-                </>}
-              trailing={
-                <>
-                  {/* The FAQ folds. Expanded it was a third of the pillar's length, below a
-                      reading view whose whole point is one thing at a time (owner, 2026-08-23).
-                      `<details>` and not the client `FaqAccordion`: the answers stay in the DOM
-                      collapsed, so the `FAQPage` JSON-LD above still describes text that is on the
-                      page, it needs no JavaScript, and no `max-height` can clip a long answer. */}
-                  {lg.faq.length > 0 && (
-                    <section
-                      className="bg-surface-container-lowest rounded-2xl p-6 sm:p-8 md:p-10"
-                      style={{ boxShadow: '0 2px 32px rgba(0,43,109,0.06)' }}
-                    >
-                      <h2
-                        className="font-headline font-bold text-on-surface mb-4"
-                        style={{ fontSize: '1.4rem', letterSpacing: '-0.01em' }}
-                      >
-                        {t('faq_title')}
-                      </h2>
-                      <div className="faq-folds">
-                        {lg.faq.map(f => (
-                          <details key={f.q} className="faq-fold">
-                            <summary>
-                              <span>{f.q}</span>
-                            </summary>
-                            <p>{f.a}</p>
-                          </details>
-                        ))}
-                      </div>
-                    </section>
-                  )}
+        {/* Eén brede kolom (eigenaar, 05-10, referentie deel.com "quickstart guide"): elke
+            H2-sectie is een rij met de kop links en de tekst rechts, zodat de breedte van het
+            scherm wordt gebruikt en de lezer per kop weet waar hij is. De inhoudsopgave zweeft
+            links onderin (`GuideToc`) en staat niet meer in een zijbalk. */}
+        <div className="max-w-6xl mx-auto px-6 pt-10 pb-20">
+          <div className="mb-8 lg:mb-0">
+            <GuideToc sections={sections} />
+          </div>
 
-                  {/* Only a reviewed guide can make the claim, because only it has the fields. On a
-                      translated page the claim is narrowed in the same sentence: the docent read the
-                      Dutch, not this rendering of it. Dropping that clause would let a machine
-                      translation inherit a human review it never had — the one thing the site's
-                      only claim cannot survive. */}
-                  {guide.status === 'reviewed' && guide.reviewedBy && guide.reviewedOn && (
-                    <p className="text-sm text-on-surface-variant px-2 m-0">
-                      {t('reviewed_by', {
-                        name: guide.reviewedBy,
-                        date: new Date(guide.reviewedOn).toLocaleDateString(langTag(locale), {
-                          day: 'numeric',
-                          month: 'long',
-                          year: 'numeric',
-                        }),
-                      })}
-                      {locale !== 'nl' && ` ${t('translated_note')}`}
-                    </p>
-                  )}
-
-                  <div className="rounded-2xl p-8 text-center" style={{ background: 'var(--gradient-brand)' }}>
-                    <p className="font-headline font-bold text-white text-xl mb-3">{lg.ctaTitle}</p>
-                    <p className="mb-6 text-sm" style={{ color: 'rgba(255,255,255,0.6)' }}>
-                      {lg.ctaDesc}
-                    </p>
-                    <Link
-                      href={guide.ctaHref}
-                      className="inline-flex items-center gap-2 bg-secondary-container text-on-secondary-container px-6 py-3 rounded-xl font-bold text-sm no-underline hover:opacity-90 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 active:scale-[0.98] transition-opacity"
-                      style={{ boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.1)', textDecoration: 'none' }}
-                    >
-                      {lg.ctaLabel}
-                      <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">
-                        <path
-                          d="M3 7h8M7 3l4 4-4 4"
-                          stroke="currentColor"
-                          strokeWidth="1.5"
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                        />
-                      </svg>
-                    </Link>
-                  </div>
-                </>
-              }
-              sidebar={
-                <>
-                  {phase && <SituationCheck variant="compact" />}
-
-                  <div className="rounded-2xl p-6 text-center" style={{ background: 'var(--gradient-brand)' }}>
-                    <div className="flex justify-center mb-3">
-                      <PenLine className="w-7 h-7" style={{ color: 'rgba(255,255,255,0.85)' }} aria-hidden="true" />
-                    </div>
-                    <h2 className="font-headline font-bold text-white text-lg mb-2">{t('sidebar_cta_title')}</h2>
-                    <p className="text-sm mb-5 leading-relaxed" style={{ color: 'rgba(255,255,255,0.6)' }}>
-                      {t('sidebar_cta_desc')}
-                    </p>
-                    <Link
-                      href="/oefenen"
-                      className="block bg-secondary-container text-on-secondary-container px-4 py-2.5 rounded-xl font-bold text-sm text-center no-underline hover:opacity-90 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 active:scale-[0.98] transition-opacity"
-                      style={{ boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.1)', textDecoration: 'none' }}
-                    >
-                      {t('sidebar_cta_btn')}
-                    </Link>
-                  </div>
-
-                  {lg.sidebarHtml && <div dangerouslySetInnerHTML={{ __html: lg.sidebarHtml }} />}
-
-                  {siblings.length > 0 && (
-                    <div
-                      className="bg-surface-container-lowest rounded-2xl p-6"
-                      style={{ boxShadow: '0 2px 16px rgba(0,43,109,0.06)' }}
-                    >
-                      <h2 className="text-xs font-bold uppercase tracking-widest text-on-surface-variant mb-4">
-                        {t('related_title')}
-                      </h2>
-                      <div className="flex flex-col gap-4">
-                        {siblings.map((g, i) => {
-                          const sl = getGuideLocale(g, locale);
-                          return (
-                            <div key={g.slug}>
-                              {i > 0 && <div className="h-px bg-surface-container mb-4" />}
-                              <Link
-                                href={guideHref(g, locale)}
-                                className="flex gap-3 no-underline group"
-                                style={{ textDecoration: 'none' }}
-                              >
-                                {/* `compact`: the sidebar runs ~270px inside its padding, so a thumbnail is about 64px
-                                    wide and eleven houses stop reading at that size. Field and glyph still identify it. */}
-                                <GuideCover
-                                  slug={g.slug}
-                                  field={g.section}
-                                  glyph={g.coverGlyph}
-                                  pillar={g.pillar}
-                                  compact
-                                  className="w-16 shrink-0"
-                                />
-                                <span className="block min-w-0">
-                                  <span className="block text-sm text-on-surface font-semibold leading-snug mb-1 group-hover:text-primary transition-colors">
-                                    {sl.heroTitle}
-                                  </span>
-                                  <span className="block text-xs text-on-surface-variant">{sl.description}</span>
-                                </span>
-                              </Link>
-                            </div>
-                          );
-                        })}
-                      </div>
-                    </div>
-                  )}
-
-                  {posts.length > 0 && (
-                    <div
-                      className="bg-surface-container-lowest rounded-2xl p-6"
-                      style={{ boxShadow: '0 2px 16px rgba(0,43,109,0.06)' }}
-                    >
-                      <h2 className="text-xs font-bold uppercase tracking-widest text-on-surface-variant mb-4">
-                        {t('related_posts_title')}
-                      </h2>
-                      <div className="flex flex-col gap-4">
-                        {posts.map((post, i) => {
-                          const lp = getPostLocale(post!, locale);
-                          return (
-                            <div key={post!.slug}>
-                              {i > 0 && <div className="h-px bg-surface-container mb-4" />}
-                              <Link
-                                href={{ pathname: '/blog/[slug]', params: { slug: getPostSlug(post!, locale) } }}
-                                className="block no-underline group"
-                                style={{ textDecoration: 'none' }}
-                              >
-                                <p className="text-sm text-on-surface font-semibold leading-snug mb-1 group-hover:text-primary transition-colors">
-                                  {lp.heroTitle}
-                                </p>
-                              </Link>
-                            </div>
-                          );
-                        })}
-                      </div>
-                    </div>
-                  )}
-                </>
-              }
-            />
-          ) : (
-            <>
-              <div
-                className="bg-surface-container-lowest rounded-2xl p-8 md:p-10"
-                style={{ boxShadow: '0 2px 32px rgba(0,43,109,0.06)' }}
-              >
-                {/* An unreviewed guide says so, on the page, in every locale. */}
-                {guide.status === 'draft' && (
-                  <div className="info-box mb-6">
-                    <p>{t('draft_notice')}</p>
-                  </div>
-                )}
-
-                {/* An untranslated locale falls back to the Dutch body, forced LTR: inside the Arabic
-                    layout (dir="rtl") Dutch text renders with its punctuation on the wrong side. The
-                    page is noindex in this state. Same handling as a blog post. */}
-                {translated ? (
-                  <ArticleContent html={lg.articleHtml} />
-                ) : (
-                  <>
-                    <div className="info-box mb-6">
-                      <p>
-                        {t('not_translated')}{' '}
-                        <Link
-                          href={guideHref(guide, locale)}
-                          locale="nl"
-                        >
-                          {t('read_in_dutch')}
-                        </Link>
-                      </p>
-                    </div>
-                    <div dir="ltr" lang="nl">
-                      <ArticleContent html={lg.articleHtml} />
-                    </div>
-                  </>
-                )}
-
-                {lg.faq.length > 0 && (
-                  <section className="mt-12">
-                    <h2
-                      className="font-headline font-bold text-on-surface mb-2"
-                      style={{ fontSize: '1.4rem', letterSpacing: '-0.01em' }}
-                    >
-                      {t('faq_title')}
-                    </h2>
-                    <div className="article-faq article-body">
-                      {lg.faq.map(f => (
-                        <div key={f.q} className="article-faq-item">
-                          <p className="article-faq-q">{f.q}</p>
-                          <p>{f.a}</p>
-                        </div>
-                      ))}
-                    </div>
-                  </section>
-                )}
-
-                {/* Only a reviewed guide can make the claim, because only it has the fields. */}
-                {guide.status === 'reviewed' && guide.reviewedBy && guide.reviewedOn && (
-                  <p
-                    className="mt-10 pt-6 text-sm text-on-surface-variant"
-                    style={{ borderTop: '1px solid rgba(196,198,210,0.3)' }}
-                  >
-                    {t('reviewed_by', {
-                      name: guide.reviewedBy,
-                      date: new Date(guide.reviewedOn).toLocaleDateString(langTag(locale), {
-                        day: 'numeric',
-                        month: 'long',
-                        year: 'numeric',
-                      }),
-                    })}
-                    {locale !== 'nl' && ` ${t('translated_note')}`}
-                  </p>
-                )}
-
-                <div className="mt-8 rounded-2xl p-8 text-center" style={{ background: 'var(--gradient-brand)' }}>
-                  <p className="font-headline font-bold text-white text-xl mb-3">{lg.ctaTitle}</p>
-                  <p className="mb-6 text-sm" style={{ color: 'rgba(255,255,255,0.6)' }}>
-                    {lg.ctaDesc}
-                  </p>
-                  <Link
-                    href={guide.ctaHref}
-                    className="inline-flex items-center gap-2 bg-secondary-container text-on-secondary-container px-6 py-3 rounded-xl font-bold text-sm no-underline hover:opacity-90 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 active:scale-[0.98] transition-opacity"
-                    style={{ boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.1)', textDecoration: 'none' }}
-                  >
-                    {lg.ctaLabel}
-                    <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">
-                      <path
-                        d="M3 7h8M7 3l4 4-4 4"
-                        stroke="currentColor"
-                        strokeWidth="1.5"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                      />
-                    </svg>
-                  </Link>
-                </div>
+          <article className="guide-prose min-w-0">
+            {/* An unreviewed guide says so, on the page, in every locale. */}
+            {guide.status === 'draft' && (
+              <div className="info-box mb-6">
+                <p>{t('draft_notice')}</p>
               </div>
+            )}
+            {/* An untranslated locale reads the Dutch body, forced LTR: inside the Arabic layout
+                Dutch text renders with its punctuation on the wrong side. The page is noindex in
+                this state. */}
+            {!translated && (
+              <div className="info-box mb-6">
+                <p>
+                  {t('not_translated')}{' '}
+                  <Link href={guideHref(guide, 'nl')} locale="nl">
+                    {t('read_in_dutch')}
+                  </Link>
+                </p>
+              </div>
+            )}
 
-              <aside className="sidebar">
-                {phase && sections.length > 1 && (
-                  <GuideSectionNav
-                    slug={guide.slug}
-                    guideTitle={lg.heroTitle}
-                    sections={sections}
-                    phase={phase.id}
+            <div className="guide-row" dir={translated ? undefined : 'ltr'} lang={translated ? undefined : 'nl'}>
+              <div />
+              <div className="guide-col">
+                {/* The docent's summary, first. It is the answer the reader came for; everything
+                    below it is the reasoning. The `sidebarHtml` carries its own "In het kort" lead. */}
+                {lg.sidebarHtml && (
+                  <section
+                    className="guide-summary article-body rounded-2xl px-7 py-6 mb-10 bg-surface-container-low"
+                    dangerouslySetInnerHTML={{ __html: lg.sidebarHtml }}
                   />
                 )}
-                {phase && <SituationCheck variant="compact" />}
+                {intro.trim() && <ArticleContent html={intro} />}
+              </div>
+            </div>
 
-                <div className="rounded-2xl p-6 text-center" style={{ background: 'var(--gradient-brand)' }}>
-                  <div className="flex justify-center mb-3">
-                    <PenLine className="w-7 h-7" style={{ color: 'rgba(255,255,255,0.85)' }} aria-hidden="true" />
-                  </div>
-                  <h2 className="font-headline font-bold text-white text-lg mb-2">{t('sidebar_cta_title')}</h2>
-                  <p className="text-sm mb-5 leading-relaxed" style={{ color: 'rgba(255,255,255,0.6)' }}>
-                    {t('sidebar_cta_desc')}
-                  </p>
-                  <Link
-                    href="/oefenen"
-                    className="block bg-secondary-container text-on-secondary-container px-4 py-2.5 rounded-xl font-bold text-sm text-center no-underline hover:opacity-90 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 active:scale-[0.98] transition-opacity"
-                    style={{ boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.1)', textDecoration: 'none' }}
-                  >
-                    {t('sidebar_cta_btn')}
-                  </Link>
+            {parts.map(part => (
+              <section key={part.id} className="guide-row guide-section" dir={translated ? undefined : 'ltr'} lang={translated ? undefined : 'nl'}>
+                <h2 id={part.id} className="guide-section-title">{part.title}</h2>
+                <div className="guide-col">
+                  <ArticleContent html={part.html} />
                 </div>
+              </section>
+            ))}
 
-                {lg.sidebarHtml && <div dangerouslySetInnerHTML={{ __html: lg.sidebarHtml }} />}
+            <div className="guide-row">
+              <div />
+              <div className="guide-col">
+            {/* The FAQ folds: `<details>` and not a client accordion, so the answers stay in the
+                DOM for the `FAQPage` JSON-LD and need no JavaScript. */}
+            {lg.faq.length > 0 && (
+              <section className="mt-14">
+                <h2
+                  className="font-headline font-bold text-on-surface mb-4"
+                  style={{ fontSize: '1.5rem', letterSpacing: '-0.01em' }}
+                >
+                  {t('faq_title')}
+                </h2>
+                <div className="faq-folds">
+                  {lg.faq.map(f => (
+                    <details key={f.q} className="faq-fold">
+                      <summary>
+                        <span>{f.q}</span>
+                      </summary>
+                      <p>{f.a}</p>
+                    </details>
+                  ))}
+                </div>
+              </section>
+            )}
 
+            {/* Only a reviewed guide can make the claim, because only it has the fields. On a
+                translated page the claim is narrowed in the same sentence: the docent read the
+                Dutch, not this rendering of it. */}
+            {reviewedLine && (
+              <p className="mt-10 text-sm text-on-surface-variant m-0">{reviewedLine}</p>
+            )}
+
+            <div className="no-print mt-10 rounded-2xl p-7 sm:p-8 bg-primary text-white">
+              <p className="font-headline font-bold text-xl m-0 mb-2" style={{ letterSpacing: '-0.01em' }}>{lg.ctaTitle}</p>
+              <p className="m-0 mb-6 text-sm" style={{ color: 'rgba(255,255,255,0.75)' }}>
+                {lg.ctaDesc}
+              </p>
+              <div className="flex flex-wrap gap-3">
+                <Link
+                  href={guide.ctaHref}
+                  className={`${CTA_BUTTON} bg-secondary-container text-on-secondary-container`}
+                >
+                  {lg.ctaLabel}
+                  <ArrowRight size={16} className="rtl-flip" aria-hidden="true" />
+                </Link>
+                <PdfButton className={`${CTA_BUTTON} text-white border-0 cursor-pointer`} style={{ background: 'rgba(255,255,255,0.14)' }}>
+                  {t('pdf_button')}
+                </PdfButton>
+              </div>
+            </div>
+
+            {(siblings.length > 0 || posts.length > 0) && (
+              <section className="no-print mt-12 grid gap-8 sm:grid-cols-2">
                 {siblings.length > 0 && (
-                  <div
-                    className="bg-surface-container-lowest rounded-2xl p-6"
-                    style={{ boxShadow: '0 2px 16px rgba(0,43,109,0.06)' }}
-                  >
-                    <h2 className="text-xs font-bold uppercase tracking-widest text-on-surface-variant mb-4">
+                  <div>
+                    <h2 className="text-xs font-bold uppercase tracking-widest text-on-surface-variant m-0 mb-4">
                       {t('related_title')}
                     </h2>
-                    <div className="flex flex-col gap-4">
-                      {siblings.map((g, i) => {
+                    <ul className="list-none p-0 m-0 flex flex-col gap-3">
+                      {siblings.map(g => {
                         const sl = getGuideLocale(g, locale);
                         return (
-                          <div key={g.slug}>
-                            {i > 0 && <div className="h-px bg-surface-container mb-4" />}
+                          <li key={g.slug}>
                             <Link
                               href={guideHref(g, locale)}
-                              className="flex gap-3 no-underline group"
-                              style={{ textDecoration: 'none' }}
+                              className="block text-sm font-semibold leading-snug no-underline hover:opacity-80"
+                              style={{ color: '#002b6d' }}
                             >
-                              {/* `compact`: the sidebar runs ~270px inside its padding, so a thumbnail is about 64px
-                                  wide and eleven houses stop reading at that size. Field and glyph still identify it. */}
-                              <GuideCover
-                                slug={g.slug}
-                                field={g.section}
-                                glyph={g.coverGlyph}
-                                pillar={g.pillar}
-                                compact
-                                className="w-16 shrink-0"
-                              />
-                              <span className="block min-w-0">
-                                <span className="block text-sm text-on-surface font-semibold leading-snug mb-1 group-hover:text-primary transition-colors">
-                                  {sl.heroTitle}
-                                </span>
-                                <span className="block text-xs text-on-surface-variant">{sl.description}</span>
-                              </span>
+                              {sl.heroTitle}
                             </Link>
-                          </div>
+                          </li>
                         );
                       })}
-                    </div>
+                    </ul>
                   </div>
                 )}
-
                 {posts.length > 0 && (
-                  <div
-                    className="bg-surface-container-lowest rounded-2xl p-6"
-                    style={{ boxShadow: '0 2px 16px rgba(0,43,109,0.06)' }}
-                  >
-                    <h2 className="text-xs font-bold uppercase tracking-widest text-on-surface-variant mb-4">
+                  <div>
+                    <h2 className="text-xs font-bold uppercase tracking-widest text-on-surface-variant m-0 mb-4">
                       {t('related_posts_title')}
                     </h2>
-                    <div className="flex flex-col gap-4">
-                      {posts.map((post, i) => {
-                        const lp = getPostLocale(post!, locale);
-                        return (
-                          <div key={post!.slug}>
-                            {i > 0 && <div className="h-px bg-surface-container mb-4" />}
-                            <Link
-                              href={{ pathname: '/blog/[slug]', params: { slug: getPostSlug(post!, locale) } }}
-                              className="block no-underline group"
-                              style={{ textDecoration: 'none' }}
-                            >
-                              <p className="text-sm text-on-surface font-semibold leading-snug mb-1 group-hover:text-primary transition-colors">
-                                {lp.heroTitle}
-                              </p>
-                            </Link>
-                          </div>
-                        );
-                      })}
-                    </div>
+                    <ul className="list-none p-0 m-0 flex flex-col gap-3">
+                      {posts.map(post => (
+                        <li key={post!.slug}>
+                          <Link
+                            href={{ pathname: '/blog/[slug]', params: { slug: getPostSlug(post!, locale) } }}
+                            className="block text-sm font-semibold leading-snug no-underline hover:opacity-80"
+                            style={{ color: '#002b6d' }}
+                          >
+                            {getPostLocale(post!, locale).heroTitle}
+                          </Link>
+                        </li>
+                      ))}
+                    </ul>
                   </div>
                 )}
-              </aside>
-            </>
-          )}
+              </section>
+            )}
+              </div>
+            </div>
+          </article>
         </div>
       </main>
-    </>
+    </PdfGateProvider>
   );
 }

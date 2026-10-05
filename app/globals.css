@@ -1530,3 +1530,179 @@
 @media (prefers-reduced-motion: reduce) {
   [style*='hero-aurora'], [style*='hero-dot-drift'] { animation: none !important; transform: none !important; }
 }
+
+/* ── De gidspagina als één leeskolom (05-10-2026) ──
+   Een A2-lezer, vaak op een telefoon: iets grotere letter dan de blog, een kop die onder de
+   plakkende navigatie uitkomt bij een ankerklik, en de samenvatting als eigen blok. */
+.guide-prose .article-body p,
+.guide-prose .article-body ul li { font-size: 1.05rem; line-height: 1.75; }
+.guide-prose .article-body h2 { font-size: 1.6rem; scroll-margin-top: 96px; }
+.guide-summary p { margin-bottom: 8px; }
+.guide-summary p strong { color: #a24000; font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.1em; }
+.guide-summary ul { gap: 6px; margin-bottom: 0; }
+.guide-summary ul li { font-size: 1rem; }
+.guide-toc-link { transition: color 160ms ease, background-color 160ms ease; }
+.guide-toc-link:hover { color: #002b6d; }
+.guide-toc-link:focus-visible { outline: 2px solid #002b6d; outline-offset: 2px; }
+.guide-toc-fold > summary::-webkit-details-marker { display: none; }
+
+/* ── Print / de PDF van een gids (`/api/guide-pdf`) ──
+   Weg: de sitechrome, de inhoudsopgave, de knoppen en de verwante stukken. Over: hero, samenvatting,
+   artikel, FAQ en de nagekeken-door-regel. */
+@media print {
+  header:not(.guide-hero), footer, aside, .no-print, .faq-fold > summary::after { display: none !important; }
+  .pt-\[var\(--nav-h\)\] { padding-top: 0 !important; }
+  body { background: #fff; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  [data-dev-state-bar] { display: none !important; }
+  .guide-prose { max-width: none; }
+  .faq-fold { break-inside: avoid; }
+  .article-body h2 { break-after: avoid; }
+  a { color: inherit; text-decoration: none; }
+}
+
+/* ── /gidsen (Bronnen): zoekveld, tegels en kaarten ── */
+.guide-search { box-shadow: var(--shadow-ambient); transition: box-shadow 160ms ease; }
+.guide-search:focus { box-shadow: var(--shadow-ambient), var(--ring-selected); }
+.guide-search::placeholder { color: #5c6170; }
+.guide-chip { transition: background-color 160ms ease, color 160ms ease, transform 120ms ease; }
+.guide-card-link, .featured-card, .topic-tile { transition: transform 200ms cubic-bezier(0.22, 1, 0.36, 1); }
+@media (prefers-reduced-motion: reduce) {
+  .guide-card-link, .featured-card, .topic-tile { transition: none; }
+}
+
+/* ── De gids, ruim (05-10-2026) ──
+   Referentie: de deel.com-landgids. De eigenaar: de stappen en de kaarten waren goed, alleen te
+   dicht op elkaar; wat weg moet zijn randen, gradiënten en het zijbalkje. Alles hieronder is
+   gescoped op `.guide-prose`, zodat de blog en de hubs hun stijl houden. Elke H2-sectie is een
+   rij: kop links (plakkend), tekst rechts — `.guide-row`. */
+.guide-row { display: grid; gap: 1.5rem; padding: 2rem 0; }
+.guide-section + .guide-section { border-top: 0; }
+@media (min-width: 1024px) {
+  .guide-row { grid-template-columns: minmax(200px, 280px) minmax(0, 1fr); column-gap: 5rem; padding: 3rem 0; }
+  .guide-section-title { position: sticky; top: calc(var(--nav-h) + 1.5rem); }
+}
+.guide-col { max-width: 72ch; min-width: 0; }
+.guide-prose .guide-section-title {
+  font-family: var(--font-headline); font-size: 1.75rem; font-weight: 800; letter-spacing: -0.025em;
+  line-height: 1.15; color: #002b6d; margin: 0; scroll-margin-top: calc(var(--nav-h) + 1.5rem);
+}
+.guide-prose .article-body p,
+.guide-prose .article-body ul li,
+.guide-prose .article-body ol li { font-size: 1.1rem; line-height: 1.8; color: #2b2f3a; }
+.guide-prose .article-body p { margin-bottom: 1.3em; }
+.guide-prose .article-body > :first-child { margin-top: 0; }
+.guide-prose .article-body h3 { font-size: 1.25rem; margin: 2.4rem 0 0.8rem; color: #002b6d; }
+.guide-prose .article-body ul { gap: 0.6em; margin-bottom: 1.5em; }
+.guide-prose .article-body strong { color: #191c1e; }
+
+/* Stappen: de navy tegel blijft, met meer lucht ertussen. */
+.guide-prose .guide-steps { margin: 2rem 0 1rem; }
+.guide-prose .guide-step { gap: 1.4rem; padding-bottom: 2.6rem; }
+.guide-prose .guide-step-num { width: 40px; height: 40px; font-size: 1rem; }
+.guide-prose .guide-step::before { left: 19px; top: 48px; }
+.guide-prose .article-body .guide-step-body h3 { margin-top: 6px; font-size: 1.25rem; }
+
+/* Kaarten en ja/nee: de zachte vulling blijft, de rand gaat, de padding groeit. */
+.guide-prose .guide-cards, .guide-prose .yesno-grid { gap: 1.25rem; margin: 2rem 0; }
+.guide-prose .guide-card, .guide-prose .yesno-col.no { background: var(--color-surface-container-low); border: 0; padding: 1.6rem; border-radius: 18px; }
+.guide-prose .yesno-col.yes { border: 0; padding: 1.6rem; border-radius: 18px; }
+.guide-prose .guide-card p, .guide-prose .yesno-col ul li { font-size: 1rem !important; line-height: 1.7; }
+
+/* Vergelijkingen, routes, prijzen en de rest: één zachte tint, geen randen, geen gradiënten. */
+.guide-prose .compare-card, .guide-prose .route-card, .guide-prose .price-list,
+.guide-prose .termijn, .guide-prose .verdict, .guide-prose .theme-section, .guide-prose .tip-card {
+  border: 0; background: var(--color-surface-container-low); border-radius: 18px;
+}
+.guide-prose .compare-2, .guide-prose .route-grid { gap: 1.25rem; margin: 2rem 0; }
+.guide-prose .compare-head { background: none; border-bottom: 0; padding: 1.4rem 1.6rem 0; }
+.guide-prose .compare-card.is-primary .compare-head { background: none; }
+.guide-prose .compare-rows, .guide-prose .route-rows { padding: 0.4rem 1.6rem 1.4rem; }
+.guide-prose .compare-row { border-bottom: 0; padding: 0.65rem 0; }
+.guide-prose .compare-val { font-size: 1rem !important; }
+.guide-prose .route-accent { display: none; }
+.guide-prose .price-row { background: none; border-bottom: 0; padding: 0.8rem 1.6rem; }
+.guide-prose .price-row.is-total { background: rgba(0,43,109,0.06); }
+.guide-prose .termijn { padding: 1.6rem; }
+.guide-prose .termijn-seg { background: #002b6d; }
+.guide-prose .termijn-seg.s2 { background: #1d428a; }
+.guide-prose .termijn-seg.s3 { background: #2f5aa8; }
+.guide-prose .tip-card { padding: 1.4rem 1.6rem; }
+.guide-prose .tip-number { background: #002b6d; }
+
+/* De oude springlijst ín het artikel is dubbelop met de zwevende inhoudsopgave. */
+.guide-prose .article-toc { display: none; }
+
+/* Info en feiten: tekst, geen kader. */
+.guide-prose .info-box { background: none; padding: 0; margin: 1.5rem 0; }
+.guide-prose .fact-box { background: none; border: 0; border-radius: 0; padding: 0; margin: 1.75rem 0; }
+.guide-prose .fact-box-claim { font-size: 1.1rem; }
+
+/* De docentnoot blijft oranje, zonder rand om de foto. */
+.guide-prose .docent-note { border-radius: 18px; padding: 1.5rem 1.6rem; margin: 2.5rem 0; }
+.guide-prose .docent-note-avatar { border: 0; }
+.guide-prose .docent-note p { font-size: 1rem !important; }
+
+/* De tussen-CTA: vlak navy. */
+.guide-prose .guide-cta-inline { background: #002b6d; border-radius: 18px; margin: 2.5rem 0; padding: 1.6rem 1.75rem; }
+
+/* De samenvatting bovenaan. */
+.guide-summary p strong { color: #002b6d; }
+.guide-summary ul li { font-size: 1.05rem !important; }
+
+/* ── De zwevende inhoudsopgave ── */
+.guide-float-toc {
+  position: fixed; left: 1.5rem; bottom: 1.5rem; z-index: 40; max-width: 320px;
+  border-radius: 18px;
+  background: rgba(255, 255, 255, 0.72);
+  backdrop-filter: blur(18px) saturate(1.6); -webkit-backdrop-filter: blur(18px) saturate(1.6);
+  box-shadow: 0 16px 40px -14px rgba(0, 8, 27, 0.25), 0 2px 8px rgba(0, 8, 27, 0.06);
+}
+.guide-float-toc-toggle {
+  display: flex; align-items: center; gap: 0.75rem; width: 100%;
+  padding: 0.75rem 0.9rem 0.75rem 1rem; border: 0; background: transparent; cursor: pointer;
+  color: var(--color-on-surface-variant); text-align: start; border-radius: 18px;
+}
+.guide-float-toc-toggle:focus-visible { outline: 2px solid var(--color-primary); outline-offset: 2px; }
+.guide-float-toc-chevron { margin-inline-start: auto; flex-shrink: 0; transition: transform 200ms cubic-bezier(0.22, 1, 0.36, 1); }
+.guide-float-toc[data-open] .guide-float-toc-chevron { transform: rotate(180deg); }
+.guide-float-toc-list {
+  padding: 0 0.6rem 0.7rem; max-height: 60vh; overflow-y: auto;
+  animation: guide-toc-in 200ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+@keyframes guide-toc-in { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
+@media (prefers-reduced-motion: reduce) {
+  .guide-float-toc-list { animation: none; }
+  .guide-float-toc-chevron { transition: none; }
+}
+
+/* ── De PDF-poort ── */
+.pdf-dialog {
+  border: 0; padding: 0; background: transparent; max-width: min(92vw, 30rem); width: 100%;
+  margin: auto; overflow: visible;
+}
+.pdf-dialog::backdrop { background: rgba(0, 8, 27, 0.55); backdrop-filter: blur(4px); }
+.pdf-dialog-panel {
+  position: relative; background: var(--color-surface-container-lowest); border-radius: 22px;
+  padding: 2rem 1.75rem 1.75rem; box-shadow: var(--shadow-ambient), 0 24px 60px -20px rgba(0, 8, 27, 0.35);
+}
+.pdf-dialog[open] .pdf-dialog-panel { animation: pdf-dialog-in 220ms cubic-bezier(0.22, 1, 0.36, 1); }
+@keyframes pdf-dialog-in {
+  from { opacity: 0; transform: translateY(8px) scale(0.97); }
+  to { opacity: 1; transform: none; }
+}
+.pdf-dialog-close {
+  position: absolute; top: 0.9rem; inset-inline-end: 0.9rem; width: 2.25rem; height: 2.25rem;
+  border: 0; border-radius: 999px; background: transparent; color: var(--color-on-surface-variant);
+  display: inline-flex; align-items: center; justify-content: center; cursor: pointer;
+  transition: background-color 150ms ease;
+}
+.pdf-dialog-close:hover { background: var(--color-surface-container); }
+.pdf-dialog-close:focus-visible { outline: 2px solid var(--color-primary); outline-offset: 2px; }
+.pdf-dialog-input { border: 0; box-shadow: none; transition: box-shadow 150ms ease; }
+.pdf-dialog-input:focus { box-shadow: var(--ring-selected); }
+.pdf-dialog-submit { transition: transform 160ms cubic-bezier(0.22, 1, 0.36, 1); }
+.pdf-dialog-submit:hover:not(:disabled) { transform: translateY(-1px); }
+@media (prefers-reduced-motion: reduce) {
+  .pdf-dialog[open] .pdf-dialog-panel { animation: none; }
+  .pdf-dialog-submit { transition: none; }
+}

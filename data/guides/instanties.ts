@@ -59,6 +59,12 @@ const guide: Guide = {
   heroTitle: 'Instanties',
   heroSubtitle:
     'Nederland regelt veel via organisaties met afkortingen. Welke gaat waarover? Dit thema is het adresboek van je nieuwe leven — en het komt in bijna elke examenvraag terug.',
+  heroImage: {
+    base: 'instanties',
+    hasWebp: true,
+    alt: 'Het stadhuis van Delft',
+    credit: 'Igor Passchier (Pexels)',
+  },
   readingMinutes: 9,
 
   articleHtml: `

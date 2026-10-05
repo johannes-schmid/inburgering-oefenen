@@ -46,6 +46,12 @@ const guide: Guide = {
   heroTitle: 'Het examen Luisteren',
   heroSubtitle:
     'Je hoort gesprekken en mededelingen en beantwoordt daar vragen over. Het gaat snel, en je kunt niet terug in de tijd — daarom is dit het onderdeel waar voorbereiding het meest oplevert.',
+  heroImage: {
+    base: 'luisteren-examen',
+    hasWebp: true,
+    alt: 'Iemand werkt met een koptelefoon achter een laptop',
+    credit: 'Pavel Danilyuk (Pexels)',
+  },
   readingMinutes: 7,
 
   articleHtml: `

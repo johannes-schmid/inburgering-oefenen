@@ -60,6 +60,12 @@ const guide: Guide = {
   heroTitle: 'Het KNM-examen',
   heroSubtitle:
     'KNM staat voor Kennis van de Nederlandse Maatschappij. Het is geen taalexamen: het gaat over hoe Nederland werkt. Hier lees je wat erin zit en hoe je je voorbereidt.',
+  heroImage: {
+    base: 'knm-examen',
+    hasWebp: true,
+    alt: 'Molens bij de Zaanse Schans',
+    credit: 'Vinicius A. Nascimento (Pexels)',
+  },
   readingMinutes: 7,
 
   articleHtml: `

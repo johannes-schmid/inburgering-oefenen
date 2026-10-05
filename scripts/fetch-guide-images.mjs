@@ -48,6 +48,23 @@ const PICK = {
   'ona-examen': ['job interview office handshake table', 0],
   'pvt-map-en-ona': ['people workshop table talking group', 0],
   'vrijstelling-en-ontheffing': ['stamp document paperwork desk approval', 0],
+  /* De vijftien gidsen van Taalexamens en KNM (05-10, herontwerp naar één leescolumn met een
+     fototegel rechts in de hero). Dezelfde maatstaf: iets dat over déze gids gaat. */
+  'taalexamens-a2-b1': ['adult woman writing exam desk classroom', 0],
+  'lezen-examen': ['woman reading book window daylight', 0],
+  'luisteren-examen': ['headphones listening laptop desk', 0],
+  'schrijven-examen': ['writing letter pen paper hand', 0],
+  'spreken-examen': ['woman talking headset computer', 0],
+  'b1-examen': ['student library studying books', 0],
+  'knm-examen': ['dutch windmill countryside', 0],
+  'wonen': ['dutch houses street bicycles', 0],
+  'werk-en-inkomen': ['office colleagues working desk', 0],
+  'gezondheid-en-gezondheidszorg': ['doctor patient consultation', 0],
+  'onderwijs-en-opvoeding': ['children classroom school teacher', 0],
+  'instanties': ['town hall building netherlands', 0],
+  'omgangsvormen-waarden-en-normen': ['neighbours talking doorstep smiling', 0],
+  'geschiedenis-en-geografie': ['netherlands dike water landscape', 0],
+  'staatsinrichting-en-rechtsstaat': ['the hague binnenhof parliament', 0],
 };
 
 function apiKey() {

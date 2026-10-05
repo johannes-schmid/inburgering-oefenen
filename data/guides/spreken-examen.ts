@@ -50,6 +50,12 @@ const guide: Guide = {
   heroTitle: 'Het examen Spreken',
   heroSubtitle:
     'Je praat tegen een computer, niet tegen een mens. Dat maakt het vreemd en voor veel mensen spannend — en het is precies de reden dat hardop oefenen zo veel oplevert.',
+  heroImage: {
+    base: 'spreken-examen',
+    hasWebp: true,
+    alt: 'Een vrouw spreekt in een headset achter een computer',
+    credit: 'MART PRODUCTION (Pexels)',
+  },
   readingMinutes: 8,
 
   articleHtml: `

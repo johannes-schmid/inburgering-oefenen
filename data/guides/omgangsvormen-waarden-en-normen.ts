@@ -49,6 +49,12 @@ const guide: Guide = {
   heroTitle: 'Omgangsvormen, waarden en normen',
   heroSubtitle:
     'Dit thema gaat over hoe mensen hier met elkaar omgaan: wat gewoon is, wat mag, en wat de wet erover zegt. En over hoe je zelf contact maakt.',
+  heroImage: {
+    base: 'omgangsvormen-waarden-en-normen',
+    hasWebp: true,
+    alt: 'Twee buren praten lachend op de stoep van een huis',
+    credit: 'Ketut Subiyanto (Pexels)',
+  },
   readingMinutes: 7,
 
   articleHtml: `

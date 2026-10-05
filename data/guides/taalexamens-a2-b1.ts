@@ -61,6 +61,12 @@ const guide: Guide = {
   heroTitle: 'De taalexamens A2 en B1',
   heroSubtitle:
     'Vier onderdelen: lezen, luisteren, schrijven en spreken. Ze zijn alle vier anders van vorm, en je bereidt je er ook anders op voor. Hier staat hoe ze werken.',
+  heroImage: {
+    base: 'taalexamens-a2-b1',
+    hasWebp: true,
+    alt: 'Volwassen cursisten maken een toets in een klaslokaal',
+    credit: 'Kari Alfonso (Pexels)',
+  },
   readingMinutes: 8,
 
   articleHtml: `
