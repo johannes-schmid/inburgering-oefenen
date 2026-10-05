@@ -82,7 +82,10 @@ export async function collectGsc(config, { today = new Date() } = {}) {
         out.previous[name] = await query(client, site.gsc_property, win.previous, dims);
       }
       out.daily = await daily(client, site.gsc_property, { start: win.previous.start, end: win.current.end });
-      out.totals = { current: totals(out.current.query), previous: totals(out.previous.query) };
+      // Totalen uit de pagina-rijen, niet de query-rijen: Google laat zeldzame (geanonimiseerde)
+      // query's weg, dus de som over query's is lager dan het echte totaal. Non-brand kan alleen
+      // over query's, en is daarmee een ondergrens.
+      out.totals = { current: totals(out.current.page), previous: totals(out.previous.page) };
       const brand = new RegExp(site.brand_terms.map(t => t.replace(/\s+/g, '\\s*')).join('|'), 'i');
       out.non_brand = {
         current: totals(out.current.query.filter(r => !brand.test(r.keys[0]))),
