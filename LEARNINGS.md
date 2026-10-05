@@ -5205,3 +5205,9 @@ oplopende `top` per index doet het, en de `prefers-reduced-motion`-uitweg is dan
 **Outcome:** SUCCESS (tsc groen; scanresultaat volgt na deploy)
 **What worked / went wrong:** "Scan tools" gaf `server_instructions: These server instructions need further review.` De Nederlandse tekst noemde gratis account, module en betalen op de website — dezelfde woorden die de listing-review al afkeurde — en stuurde het model naar een link.
 **Lesson:** Alles wat de scanner leest (instructies én toolbeschrijvingen) is listing-tekst: Engels, feitelijk, over hoe de tools werken, zonder prijs-, tier- of linktaal. De toegangsregels horen in de `gate`-objecten, niet in de prompt.
+
+## 2026-10-05 — De automatische privacy-check van OpenAI en noindex
+**Changed:** `robots.index` op `app/[locale]/(main)/privacybeleid/page.tsx` van `false` naar `true`.
+**Outcome:** SUCCESS (deploy geverifieerd; uitslag van de check volgt bij de volgende submit)
+**What worked / went wrong:** "We couldn't complete an automated assessment of your privacy policy" terwijl de pagina 200 gaf, server-side gerenderd was en OpenAI/ChatGPT al noemde. Het enige dat een geautomatiseerde lezer tegenhield was de `noindex`-meta.
+**Lesson:** Een privacy-URL die je aan een externe reviewer geeft moet indexeerbaar zijn; `noindex` leest een beoordelaar als "niet lezen".

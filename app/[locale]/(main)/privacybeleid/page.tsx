@@ -17,7 +17,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   return {
     title: t('meta_title'),
     description: t('meta_description'),
-    robots: { index: false, follow: true },
+    robots: { index: true, follow: true },
     /* `alternatesFor` leidt canonical én hreflang af uit `routing.ts`, zodat ze de vertaalde
      * slug van deze taal krijgen in plaats van de taalcode vóór het Nederlandse pad. */
     alternates: alternatesFor(locale, 'privacybeleid'),
@@ -54,7 +54,7 @@ export default async function PrivacybeleidPage({ params }: Props) {
           className="bg-surface-container-lowest rounded-2xl p-8 md:p-10 prose"
           style={{ boxShadow: '0 2px 24px rgba(0,43,109,0.06)' }}
         >
-          {/* Content is Dutch — this page is noindex and the legal text doesn't require translation */}
+          {/* Content is Dutch — the legal text doesn't require translation. Indexeerbaar sinds 05-10: de automatische privacy-check van OpenAI leest geen noindex-pagina. */}
           <p>
             Inburgering Oefenen (&quot;wij&quot;, &quot;ons&quot;) respecteert jouw privacy en verwerkt persoonsgegevens
             zorgvuldig en veilig. In dit privacybeleid leggen wij uit welke gegevens wij verzamelen, waarom
