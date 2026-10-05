@@ -66,7 +66,14 @@ export async function GET(
   const path = `/${locale}/${translateDutchPath(section, locale)}/${contentSlugParam(guide.slug, locale)}`;
   const target = new URL(path, req.nextUrl.origin).toString();
 
-  const browser = await launch();
+  let browser: Awaited<ReturnType<typeof launch>>;
+  try {
+    browser = await launch();
+  } catch (err) {
+    /* De enige plek waar Vercel het verschil tussen "geen Chromium" en "geen pagina" laat zien. */
+    console.error('guide-pdf: Chromium start niet', err);
+    return new NextResponse('PDF unavailable', { status: 500 });
+  }
   try {
     const page = await browser.newPage();
     await page.goto(target, { waitUntil: 'networkidle0', timeout: 45_000 });

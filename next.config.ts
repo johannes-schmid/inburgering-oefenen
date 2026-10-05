@@ -36,6 +36,10 @@ const nextConfig: NextConfig = {
     // Vite bouwt hem in `prebuild`; zonder deze regel ziet de file tracing hem niet en staat hij
     // niet in de serverless functie op Vercel.
     '/api/mcp': ['./widgets/dist/**'],
+    // De gids-PDF: `@sparticuz/chromium` pakt zijn Chromium bij de eerste aanvraag uit `bin/`
+    // (brotli-archieven die de code nooit met een statische import noemt). Zonder deze regel
+    // staan ze niet in de functie en faalt `executablePath()` met een 500 vóór er iets logt.
+    '/api/guide-pdf/[section]/[slug]': ['./node_modules/@sparticuz/chromium/bin/**'],
     '/api/admin/upload-image': [
       './node_modules/@img/sharp-linux-x64/**',
       './node_modules/@img/sharp-libvips-linux-x64/**',
