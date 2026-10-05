@@ -96,13 +96,12 @@ export function registerTools(server: McpServer, widgetHtml: () => string): void
         'Geeft één echte oefenvraag voor het Nederlandse inburgeringsexamen uit de vragenbank van Inburgering Oefenen, ' +
         'geschreven en gecontroleerd door een NT2-docent. Gebruik dit als de gebruiker wil oefenen voor inburgering, ' +
         'bijvoorbeeld "geef me een A2 leesoefening", "ik wil lezen oefenen voor het inburgeringsexamen", "nog een KNM-vraag", ' +
-        '"practice Dutch A2 reading", of een luister- of schrijfopdracht wil. Zonder gekoppeld account: tien proefvragen per ' +
-        'onderdeel. Met een gratis account: oefenexamen 1. Met de module: alle examens en oefenen op zwakke punten (mode adaptive). ' +
+        '"practice Dutch A2 reading", of een luister- of schrijfopdracht wil. Werkt ook zonder gekoppeld account. ' +
         'Verzin nooit zelf examenvragen; toon de vraag uit het resultaat en wacht op het antwoord van de gebruiker.',
       inputSchema: z.object({
         onderdeel: ONDERDEEL,
         level: LEVEL,
-        mode: z.enum(['next', 'adaptive']).optional().describe('next = de volgende vraag; adaptive = oefen op zwakke punten (alleen met module).'),
+        mode: z.enum(['next', 'adaptive']).optional().describe('next = de volgende vraag; adaptive = oefen op zwakke punten.'),
         examNumber: z.number().int().min(1).max(10).optional().describe('Een specifiek oefenexamen (1–10). Weglaten voor de volgende passende vraag.'),
       }),
       annotations: { readOnlyHint: false, destructiveHint: false, openWorldHint: false, idempotentHint: false },
@@ -198,8 +197,7 @@ export function registerTools(server: McpServer, widgetHtml: () => string): void
       title: 'Schrijfopdracht laten nakijken',
       description:
         'Levert de geschreven tekst voor een Schrijven-opdracht in en laat die nakijken met de rubriek van de docent. ' +
-        'Gebruik dit na get_practice_exercise met onderdeel schrijven, zodra de gebruiker de tekst af heeft. Vereist een gekoppeld account; ' +
-        'zonder module zijn tien nagekeken opdrachten per onderdeel gratis.',
+        'Gebruik dit na get_practice_exercise met onderdeel schrijven, zodra de gebruiker de tekst af heeft. Vereist een gekoppeld account.',
       inputSchema: z.object({
         taskId: z.number().int().positive().describe('Het taskId uit get_practice_exercise.'),
         text: z.string().min(1).max(4000).describe('De tekst van de gebruiker, letterlijk.'),
@@ -279,8 +277,8 @@ export function registerTools(server: McpServer, widgetHtml: () => string): void
     {
       title: 'Toegang en modules',
       description:
-        'Of het gekoppelde account van Inburgering Oefenen een betaalde module heeft en welke. Gebruik dit als de gebruiker vraagt wat hij kan doen ' +
-        'of waarom iets niet beschikbaar is. Betalen gebeurt altijd op de website, niet in ChatGPT. Vereist een gekoppeld account.',
+        'Welke onderdelen en oefenexamens het gekoppelde account van Inburgering Oefenen kan openen. Gebruik dit als de gebruiker vraagt ' +
+        'wat hij kan doen of waarom iets niet beschikbaar is. Vereist een gekoppeld account.',
       inputSchema: z.object({}),
       annotations: { readOnlyHint: true, destructiveHint: false, openWorldHint: false, idempotentHint: true },
       _meta: { securitySchemes: [{ type: 'oauth2', scopes: [] }] },

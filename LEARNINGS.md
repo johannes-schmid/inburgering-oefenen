@@ -5199,3 +5199,9 @@ oplopende `top` per index doet het, en de `prefers-reduced-motion`-uitweg is dan
 - **supabase-js trekt realtime-js mee en dat gooit op Node 20** ("without native WebSocket support"). Het script spreekt de Auth admin-REST-API daarom direct aan met `fetch`.
 - Hooks uit `config.toml` laden pas na `supabase stop && supabase start` (plain).
 **Lesson:** Een uitzondering op een auth-regel hoort op de server te wonen, in een vorm die alleen de service-rol kan toekennen; de UI mag hoogstens kiezen wat ze laat zien. En test de uitzondering met de anon-sleutel langs de UI heen, want dat is hoe een aanvaller het probeert.
+
+## 2026-10-05 — De OpenAI-toolscan: de serverinstructies
+**Changed:** `instructions` in `app/api/mcp/route.ts` herschreven: Engels, alleen gebruiksaanwijzing voor de tools, geen tiers/betaaltaal, geen "noem de link".
+**Outcome:** SUCCESS (tsc groen; scanresultaat volgt na deploy)
+**What worked / went wrong:** "Scan tools" gaf `server_instructions: These server instructions need further review.` De Nederlandse tekst noemde gratis account, module en betalen op de website — dezelfde woorden die de listing-review al afkeurde — en stuurde het model naar een link.
+**Lesson:** Alles wat de scanner leest (instructies én toolbeschrijvingen) is listing-tekst: Engels, feitelijk, over hoe de tools werken, zonder prijs-, tier- of linktaal. De toegangsregels horen in de `gate`-objecten, niet in de prompt.

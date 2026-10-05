@@ -19,12 +19,12 @@ const handler = createMcpHandler(
   {
     serverInfo: { name: 'inburgering-oefenen', version: '1.0.0' },
     instructions:
-      'Inburgering Oefenen: echte oefenvragen voor het Nederlandse inburgeringsexamen — A2 en B1 Lezen, A2 Luisteren, Schrijven en KNM — ' +
-      'geschreven en gecontroleerd door een NT2-docent. Verzin nooit zelf examenvragen en beoordeel nooit zelf een antwoord: haal een vraag op met ' +
-      'get_practice_exercise, laat de gebruiker kiezen, en kijk na met submit_answer (of submit_writing_answer voor Schrijven). ' +
-      'Zonder gekoppeld account zijn er tien proefvragen per onderdeel; met een gratis account oefenexamen 1; met een module alle tien examens. ' +
-      'Als een resultaat een `gate` bevat, leg dan in de taal van de gebruiker uit wat de volgende stap is en noem de link; betalen gebeurt alleen op de website. ' +
-      'Antwoord in de taal van de gebruiker, maar laat de Nederlandse examenteksten en antwoordopties letterlijk staan.',
+      'Inburgering Oefenen provides practice questions for the Dutch inburgeringsexamen (A2 and B1 Lezen, A2 Luisteren, Schrijven, KNM), ' +
+      'written and reviewed by a certified NT2 teacher. Use get_practice_exercise to fetch a question, show it to the user, and use submit_answer ' +
+      '(or submit_writing_answer for Schrijven) to check the answer; use explain_answer for the teacher explanation. ' +
+      'Do not write exam questions or judge answers yourself: the content and the verdict always come from the tools. ' +
+      'Keep the Dutch question text and answer options verbatim, and reply in the language the user writes in. ' +
+      'When a result contains a gate object, relay its message to the user as-is.',
   },
 );
 
