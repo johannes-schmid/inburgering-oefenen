@@ -10,7 +10,7 @@ import { MrrMovementChart } from './_components/MrrMovementChart';
 import { fetchAiSpend } from '@/lib/admin/ai-spend';
 import { fetchAll } from '@/lib/admin/fetch-all';
 import {
-  buildMrrMovements, summariseSubscriptions,
+  buildMrrMovements, mrrFromMovements, summariseSubscriptions,
   type MovementPayment, type SubscriptionUser,
 } from '@/lib/admin/mrr';
 
@@ -185,8 +185,8 @@ export default async function AdminDashboard() {
   }
 
   // Dezelfde lijst draagt de MRR: het abonnement staat in `user_metadata`, niet in een tabel.
-  const mrr = summariseSubscriptions(signupUsers);
-  const mrrMovements = buildMrrMovements(signupUsers, paymentsByUserRows, mrr.mrrCents);
+  const mrrMovements = buildMrrMovements(signupUsers, paymentsByUserRows);
+  const mrr = mrrFromMovements(summariseSubscriptions(signupUsers), mrrMovements);
 
   const WEEKS = 12;
   // The Monday (UTC) of the week an ISO timestamp falls in — the bucket key for both series.

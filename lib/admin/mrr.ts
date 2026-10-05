@@ -152,10 +152,13 @@ export function summariseSubscriptions(users: WithEmail[], now = Date.now()): Mr
  * - **`reactivationCents`** is een betaling van iemand die eerder had opgezegd. Metadata bewaart maar
  *   één opzegdatum, dus een klant die twee keer terugkomt telt de eerste keer als nieuw.
  *
- * De MRR-lijn wordt **terug**gerekend vanaf de MRR van vandaag: `mrrCents` van de laatste maand is
- * wat de tegel zegt, en elke maand ervoor is de volgende maand minus zijn netto beweging. Zo kan de
- * lijn nooit iets anders eindigen dan het getal dat erboven staat — een grafiek die een andere MRR
- * beweert dan de tegel ernaast is erger dan geen grafiek.
+ * De MRR-lijn is de **optelsom van de bewegingen**, vooruit gerekend vanaf de allereerste betaling:
+ * de MRR van een maand is die van de maand ervoor plus zijn netto beweging, en de tegel toont de
+ * laatste waarde van die lijn (`mrrFromMovements`). Tot 05-10 ging het andersom — de lijn werd
+ * terúggerekend vanaf een MRR uit `user_metadata.modules` — en dat lekte: modules die ooit zonder
+ * betaling zijn toegekend (legacy-accounts, handmatige toekenningen) stonden wél in de metadata
+ * maar nooit in `payments`, dus de lijn begon in de oudste maand op een bedrag dat uit niets kwam.
+ * Nu kan een euro alleen in de MRR staan als er een betaling of een opzegging achter zit.
  */
 export type MrrMonth = {
   /** `YYYY-MM`. */
@@ -199,14 +202,19 @@ function lastMonths(count: number, now: number): string[] {
 export function buildMrrMovements(
   users: WithEmail[],
   payments: MovementPayment[],
-  currentMrrCents: number,
   months = 6,
   now = Date.now(),
 ): MrrMonth[] {
   const keys = lastMonths(months, now);
   const empty = () => ({ newCents: 0, expansionCents: 0, reactivationCents: 0, contractionCents: 0, churnCents: 0 });
+  // Alle maanden tot en met nu krijgen een emmer, ook vóór het venster: de lijn telt vanaf de
+  // eerste betaling en toont alleen de laatste `months`.
   const buckets: Record<string, ReturnType<typeof empty>> = {};
-  for (const k of keys) buckets[k] = empty();
+  const bucket = (k: string) => {
+    if (k > keys[keys.length - 1]) return null;
+    return (buckets[k] ??= empty());
+  };
+  for (const k of keys) bucket(k);
 
   // Wanneer iemand voor het eerst opzegde — nodig om een latere betaling als reactivatie te lezen.
   const canceledAtByUser = new Map<string, number>();
@@ -229,12 +237,12 @@ export function buildMrrMovements(
     list.sort((a, b) => a.created_at.localeCompare(b.created_at));
     const canceled = canceledAtByUser.get(userId);
     list.forEach((p, i) => {
-      const k = monthKey(p.created_at);
-      if (!buckets[k]) return;
-      if (i === 0) buckets[k].newCents += p.amount_cents;
+      const b = bucket(monthKey(p.created_at));
+      if (!b) return;
+      if (i === 0) b.newCents += p.amount_cents;
       else if (canceled !== undefined && Date.parse(p.created_at) > canceled) {
-        buckets[k].reactivationCents += p.amount_cents;
-      } else buckets[k].expansionCents += p.amount_cents;
+        b.reactivationCents += p.amount_cents;
+      } else b.expansionCents += p.amount_cents;
     });
   }
 
@@ -246,23 +254,33 @@ export function buildMrrMovements(
     if (modules.length === 0) continue;
     // De incasso valt weg aan het eind van de betaalde periode; ontbreekt die datum, dan is de
     // opzegdatum het beste dat we hebben.
-    const k = monthKey(str(meta?.modules_until) ?? canceledAt);
-    if (!buckets[k]) continue;
-    buckets[k].churnCents -= priceForSelection(modules);
+    const b = bucket(monthKey(str(meta?.modules_until) ?? canceledAt));
+    if (!b) continue;
+    b.churnCents -= priceForSelection(modules);
   }
 
-  // Terugrekenen vanaf de MRR van vandaag, zodat de lijn eindigt op wat de tegel zegt.
-  const rows: MrrMonth[] = keys.map(month => {
+  // Vooruit optellen vanaf de oudste maand; wat vóór het venster ligt wordt het startpunt.
+  let running = 0;
+  const rows: MrrMonth[] = [];
+  for (const month of Object.keys(buckets).sort()) {
     const b = buckets[month];
     const netCents = b.newCents + b.expansionCents + b.reactivationCents + b.contractionCents + b.churnCents;
-    return { month, label: monthLabel(month), ...b, netCents, mrrCents: 0 };
-  });
-
-  let running = currentMrrCents;
-  for (let i = rows.length - 1; i >= 0; i--) {
-    rows[i].mrrCents = running;
-    running -= rows[i].netCents;
+    running += netCents;
+    if (month >= keys[0]) rows.push({ month, label: monthLabel(month), ...b, netCents, mrrCents: running });
   }
 
   return rows;
+}
+
+/**
+ * De tegel leest de MRR van de grafiek — de laatste waarde van de lijn — en niet die uit de
+ * metadata. Het aantal abonnees en de gemiddelde opbrengst volgen mee.
+ */
+export function mrrFromMovements(summary: MrrSummary, rows: MrrMonth[]): MrrSummary {
+  const mrrCents = rows.length > 0 ? rows[rows.length - 1].mrrCents : 0;
+  return {
+    ...summary,
+    mrrCents,
+    arpuCents: summary.activeSubscribers > 0 ? Math.round(mrrCents / summary.activeSubscribers) : 0,
+  };
 }

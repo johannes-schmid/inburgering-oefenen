@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { buildMrrMovements, summariseSubscriptions } from '@/lib/admin/mrr';
+import { buildMrrMovements, summariseSubscriptions, mrrFromMovements } from '@/lib/admin/mrr';
 
 const NOW = Date.parse('2026-09-22T12:00:00Z');
 const user = (meta: Record<string, unknown> | null, email = 'a@b.nl') => ({
@@ -71,7 +71,6 @@ describe('buildMrrMovements', () => {
         { user_id: 'u1', amount_cents: 995, created_at: '2026-07-04T00:00:00Z' },
         { user_id: 'u1', amount_cents: 995, created_at: '2026-08-04T00:00:00Z' },
       ],
-      1990,
       6,
       NOW_M,
     );
@@ -93,7 +92,6 @@ describe('buildMrrMovements', () => {
         },
       }],
       [{ user_id: 'u1', amount_cents: 995, created_at: '2026-05-04T00:00:00Z' }],
-      0,
       6,
       NOW_M,
     );
@@ -101,16 +99,38 @@ describe('buildMrrMovements', () => {
     expect(rows.find(r => r.month === '2026-09')!.churnCents).toBe(-995);
   });
 
-  it('eindigt de lijn op de MRR van vandaag en rekent terug via netto', () => {
+  it('telt de lijn vooruit op uit de staven en negeert modules zonder betaling', () => {
     const rows = buildMrrMovements(
-      [{ id: 'u1', created_at: '2026-08-01T00:00:00Z', email: 'a@b.nl', user_metadata: { modules: ['a2:lezen'] } }],
+      [
+        { id: 'u1', created_at: '2026-08-01T00:00:00Z', email: 'a@b.nl', user_metadata: { modules: ['a2:lezen'] } },
+        // Legacy: modules in de metadata, nooit een rij in `payments`. Telt niet.
+        { id: 'u2', created_at: '2025-01-01T00:00:00Z', email: 'l@b.nl', user_metadata: { modules: ['knm'] } },
+      ],
       [{ user_id: 'u1', amount_cents: 995, created_at: '2026-09-04T00:00:00Z' }],
-      995,
       6,
       NOW_M,
     );
     expect(rows).toHaveLength(6);
     expect(rows[5].mrrCents).toBe(995);
     expect(rows[4].mrrCents).toBe(0);
+    expect(rows[0].mrrCents).toBe(0);
+  });
+
+  it('neemt betalingen van vóór het venster mee als startpunt van de lijn', () => {
+    const rows = buildMrrMovements(
+      [{ id: 'u1', created_at: '2025-11-01T00:00:00Z', email: 'a@b.nl', user_metadata: { modules: ['a2:lezen'] } }],
+      [{ user_id: 'u1', amount_cents: 995, created_at: '2025-11-04T00:00:00Z' }],
+      6,
+      NOW_M,
+    );
+    expect(rows).toHaveLength(6);
+    expect(rows[0].mrrCents).toBe(995);
+    expect(rows[0].newCents).toBe(0);
+    const summary = mrrFromMovements(
+      summariseSubscriptions([{ created_at: '2025-11-01T00:00:00Z', user_metadata: { modules: ['a2:lezen'] } }], NOW_M),
+      rows,
+    );
+    expect(summary.mrrCents).toBe(995);
+    expect(summary.arpuCents).toBe(995);
   });
 });

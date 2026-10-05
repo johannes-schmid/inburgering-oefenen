@@ -117,7 +117,7 @@ export function MrrMovementChart({ data }: { data: MrrMonth[] }) {
         </ul>
 
         <p className="mt-4 text-xs text-muted-foreground">
-          De lijn is de MRR, teruggerekend vanaf vandaag. Afbouw is vandaag altijd nul: opzeggen is
+          De lijn is de MRR: de optelsom van de staven, vanaf de eerste betaling. Afbouw is vandaag altijd nul: opzeggen is
           alles-of-niets, er is geen deel-opzegging. Een opzegging telt in de maand waarin de laatste
           betaalde periode afloopt, niet in de maand van de opzegging zelf.
         </p>

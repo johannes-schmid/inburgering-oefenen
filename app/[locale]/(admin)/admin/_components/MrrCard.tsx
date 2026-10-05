@@ -28,7 +28,7 @@ export function MrrCard({ data }: { data: MrrSummary }) {
           <p className="text-on-surface-variant text-xs">
             {data.activeSubscribers} {data.activeSubscribers === 1 ? 'abonnee' : 'abonnees'} · {formatEur(data.arpuCents)} gemiddeld
           </p>
-          <p className="text-on-surface-variant/60 text-xs mt-0.5">zonder eenmalige legacy-pakketten</p>
+          <p className="text-on-surface-variant/60 text-xs mt-0.5">de som van de MRR-beweging hieronder</p>
         </div>
 
         <div className="p-6">

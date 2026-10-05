@@ -5246,3 +5246,9 @@ oplopende `top` per index doet het, en de `prefers-reduced-motion`-uitweg is dan
 **Outcome:** SUCCESS
 **What worked / went wrong:** Productie gaf `The input directory "/var/task/node_modules/@sparticuz/chromium/bin" does not exist`, terwijl de include-regel er al stond. Turbopack past de includes zelf toe en leest `[section]` als een tekenklasse (één letter uit s,e,c,t,i,o,n), dus de sleutel paste op geen enkele route en `route.js.nft.json` had nul `bin/`-bestanden — lokaal controleerbaar met `tr ',' '\n' | grep chromium/bin` op dat bestand. De JS-stap in `collect-build-traces.js` (die een letterlijke match wél accepteert) draait onder Turbopack niet; instrumenteren ervan logde niets.
 **Lesson:** Een route met dynamische segmenten krijgt in `outputFileTracingIncludes` altijd een `**`-sleutel. Controleer een include nooit op de config maar op het `.nft.json` van de route na `next build`.
+
+## 2026-10-05 — De MRR-tegel leest de grafiek, niet de metadata
+**Changed:** `lib/admin/mrr.ts` (`buildMrrMovements` telt vooruit vanaf de eerste betaling en verliest de parameter `currentMrrCents`; nieuw `mrrFromMovements`), `admin/page.tsx`, de twee copyregels in `MrrCard.tsx` en `MrrMovementChart.tsx`, `tests-unit/mrr.test.ts`.
+**Outcome:** SUCCESS
+**What worked / went wrong:** De tegel zei €209,35 bij staven die samen €70 opleverden. De lijn werd terúggerekend vanaf een MRR uit `user_metadata.modules`, en modules die ooit zonder betaling zijn toegekend staan wél in de metadata maar nooit in `payments` — het verschil belandde als startbedrag in de oudste maand (€10 in mei).
+**Lesson:** Eén bron per getal. Als een lijn en een tegel hetzelfde moeten zeggen, laat de tegel de lijn lezen; twee reconstructies "gelijk laten eindigen" verstopt het verschil in plaats van het te tonen.
