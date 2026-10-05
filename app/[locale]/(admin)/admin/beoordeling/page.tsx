@@ -1,4 +1,7 @@
 import { createClient } from '@/lib/supabase/server';
+import { createAdminClient } from '@/lib/supabase/admin';
+import { modulesFromMetadata, planFromMetadata, type ModuleId } from '@/lib/entitlements';
+import { levelLabel } from '@/data/skills';
 import { rubricCategory, type CriterionScore, type RubricCriterion } from '@/lib/rubrics';
 import GradingInbox from './_components/GradingInbox';
 
@@ -45,7 +48,28 @@ export type InboxRow = {
   rubric_version: number | null;
   criteria: RubricCriterion[];
   scores: CriterionScore[];
+  /** Wie dit heeft ingeleverd; `null` als het account inmiddels weg is. */
+  user_email: string | null;
+  /** Het pakket van die kandidaat, als korte labels ("A2 Schrijven", "KNM"); leeg = gratis. */
+  user_modules: string[];
 };
+
+/**
+ * Het pakket van een account als leesbare labels.
+ *
+ * Een legacy all-access `plan` is één label, anders de losse modules uit `user_metadata.modules`
+ * (verlopen pakketten tellen niet mee — `modulesFromMetadata` doet die check). Een lege lijst is
+ * dus "gratis account", en dat is precies wat de docent wil weten: heeft deze inzending betaald
+ * voor nakijken, of oefent iemand op examen 1?
+ */
+function moduleLabels(meta: Record<string, unknown> | undefined): string[] {
+  if (planFromMetadata(meta) !== 'free') return ['Alles (legacy)'];
+  return modulesFromMetadata(meta).map((id: ModuleId) => {
+    if (id === 'knm') return 'KNM';
+    const [level, skill] = id.split(':') as ['a2' | 'b1', string];
+    return `${levelLabel(level)} ${skill.charAt(0).toUpperCase()}${skill.slice(1)}`;
+  });
+}
 
 /**
  * The docent's review inbox.
@@ -68,7 +92,7 @@ export default async function BeoordelingPage({
   const { data } = await supabase
     .from('open_submissions')
     .select(
-      'id, created_at, status, grade_error, task_id, answer_text, answer_json, audio_url, ' +
+      'id, created_at, status, grade_error, task_id, user_id, answer_text, answer_json, audio_url, ' +
         'transcript, audio_seconds, speech_signals, ai_result, teacher_notes, rubric_version, ' +
         'open_tasks!inner(id, skill, task_type, title, prompt_html, bullet_points, email_to, ' +
         'email_subject, greeting, closing, min_sentences, image_usage, max_record_seconds, ' +
@@ -86,6 +110,7 @@ export default async function BeoordelingPage({
     status: InboxRow['status'];
     grade_error: string | null;
     task_id: number;
+    user_id: string;
     answer_text: string | null;
     answer_json: Record<string, unknown> | null;
     audio_url: string | null;
@@ -158,6 +183,22 @@ export default async function BeoordelingPage({
     });
   }
 
+  // Eén lookup per uniek account, via de service-rol: `auth.users` is niet via PostgREST te lezen.
+  const admin = createAdminClient();
+  const userIds = [...new Set(raw.map(r => r.user_id))];
+  const userById = new Map<string, { email: string | null; modules: string[] }>();
+  await Promise.all(
+    userIds.map(async id => {
+      const { data } = await admin.auth.admin.getUserById(id);
+      if (data?.user) {
+        userById.set(id, {
+          email: data.user.email ?? null,
+          modules: moduleLabels(data.user.user_metadata),
+        });
+      }
+    })
+  );
+
   const rows: InboxRow[] = raw.map(r => {
     const t = r.open_tasks;
     const category = rubricCategory({ task_type: t.task_type, image_usage: t.image_usage });
@@ -207,6 +248,8 @@ export default async function BeoordelingPage({
         feedback: s.feedback,
         source: s.source,
       })),
+      user_email: userById.get(r.user_id)?.email ?? null,
+      user_modules: userById.get(r.user_id)?.modules ?? [],
     };
   });
 

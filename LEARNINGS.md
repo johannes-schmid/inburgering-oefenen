@@ -5252,3 +5252,9 @@ oplopende `top` per index doet het, en de `prefers-reduced-motion`-uitweg is dan
 **Outcome:** SUCCESS
 **What worked / went wrong:** De tegel zei €209,35 bij staven die samen €70 opleverden. De lijn werd terúggerekend vanaf een MRR uit `user_metadata.modules`, en modules die ooit zonder betaling zijn toegekend staan wél in de metadata maar nooit in `payments` — het verschil belandde als startbedrag in de oudste maand (€10 in mei).
 **Lesson:** Eén bron per getal. Als een lijn en een tegel hetzelfde moeten zeggen, laat de tegel de lijn lezen; twee reconstructies "gelijk laten eindigen" verstopt het verschil in plaats van het te tonen.
+
+## 2026-10-05 — Kandidaat en pakket in de beoordelingswachtrij
+**Changed:** `app/[locale]/(admin)/admin/beoordeling/page.tsx` haalt per uniek `user_id` het account op via `auth.admin.getUserById` (service-rol) en zet `user_email` + `user_modules` op `InboxRow`; `GradingInbox.tsx` toont een kolom *Kandidaat* (e-mail + pakket, "Gratis" als leeg), dezelfde regel in de kop van de lade, en zoekt ook op e-mail.
+**Outcome:** SUCCESS (kolom gezien in screenshot; lade alleen via tsc + build, want lokaal staan er nul `open_tasks`).
+**What worked / went wrong:** `tests/helpers/session.mjs` kan sinds de reviewer-hook van 05-10 geen admin-sessie meer minten: elke wachtwoord-login wordt geweigerd tenzij `app_metadata.reviewer = true`. Omweg voor een screenshot: een wegwerpaccount met die vlag via de admin-API plus een rij in `admin_users`, daarna beide weer weg. `tests/admin.spec.js` zal om dezelfde reden rood zijn.
+**Lesson:** Het pakket komt uit `modulesFromMetadata`/`planFromMetadata`, nooit uit een losse `plan`-kolom — zie CLAUDE.md §2. En `auth.users` is niet via PostgREST te lezen; een admin-pagina die accounts nodig heeft gaat via `createAdminClient().auth.admin`.

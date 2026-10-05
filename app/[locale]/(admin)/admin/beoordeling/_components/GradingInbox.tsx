@@ -119,6 +119,7 @@ export default function GradingInbox({ rows, locale }: { rows: InboxRow[]; local
         const q = search.toLowerCase();
         return (
           (r.task_title ?? '').toLowerCase().includes(q) ||
+          (r.user_email ?? '').toLowerCase().includes(q) ||
           categoryLabel(r.category).toLowerCase().includes(q) ||
           (r.answer_text ?? '').toLowerCase().includes(q) ||
           (r.transcript ?? '').toLowerCase().includes(q)
@@ -163,6 +164,23 @@ export default function GradingInbox({ rows, locale }: { rows: InboxRow[]; local
           <span className="text-sm">{categoryLabel(row.original.category)}</span>
         ),
         size: 210,
+      },
+      {
+        accessorKey: 'user_email',
+        header: ({ column }) => (
+          <DataGridColumnHeader title="Kandidaat" column={column} className={HEADER_CLS} />
+        ),
+        cell: ({ row }) => (
+          <div className="min-w-0">
+            <span className="block text-sm truncate">
+              {row.original.user_email ?? '(account verwijderd)'}
+            </span>
+            <span className="block text-xs text-on-surface-variant truncate">
+              {row.original.user_modules.length > 0 ? row.original.user_modules.join(' · ') : 'Gratis'}
+            </span>
+          </div>
+        ),
+        size: 220,
       },
       {
         id: 'answer',
@@ -489,6 +507,11 @@ function SubmissionDrawer({
                 {row.skill} {row.exam_number ? `· examen ${row.exam_number}` : ''} ·{' '}
                 {fmtDateTime(row.created_at)}
                 {row.rubric_version != null && ` · rubriek v${row.rubric_version}`}
+              </p>
+              <p className="text-xs text-on-surface-variant mt-1 truncate">
+                <span className="text-on-surface">{row.user_email ?? '(account verwijderd)'}</span>
+                {' · '}
+                {row.user_modules.length > 0 ? row.user_modules.join(' · ') : 'Gratis account'}
               </p>
             </div>
             <button
