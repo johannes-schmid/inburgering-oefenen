@@ -5276,3 +5276,9 @@ oplopende `top` per index doet het, en de `prefers-reduced-motion`-uitweg is dan
 **Outcome:** FAILURE → fix (eerste deploy); `curl -I https://inburgeringoefenen.nl/ingest/decide/` gaf `307 → /nl/ingest/decide`.
 **What worked / went wrong:** De rewrites in `next.config.ts` waren goed, maar de next-intl-proxy draait vóór de rewrites en behandelt elk pad zonder taalprefix als een pagina. Lokaal viel het niet op: `tsc` en `next build` zeggen niets over routing, en in de browser faalt een geredirecte POST stil.
 **Lesson:** Elk pad dat géén pagina is (API, proxy, webhooks) moet expliciet in de matcher-uitsluiting van `proxy.ts` staan. Controleer een nieuwe proxy-route met één `curl -I` op productie, niet met de build.
+
+## 2026-10-06 — Privacybeleid in het Engels voor de OpenAI-review
+**Changed:** `app/[locale]/(main)/privacybeleid/page.tsx` — `PolicyNl` (ongewijzigde tekst) en `PolicyEn` (getrouwe vertaling, met "de Nederlandse versie is leidend"); `/en` en `/ar` tonen de Engelse. Elke `<li>` heeft één `<span>` om de inhoud.
+**Outcome:** SUCCESS (lokaal; nog niet gedeployd)
+**What worked / went wrong:** Na het weghalen van `noindex` bleef "We couldn't complete an automated assessment" staan. `/en/privacy-policy` gaf een Engelse kop boven een volledig Nederlandse tekst — de automatische check kon de inhoud niet beoordelen. Bij het screenshotten bleek ook dat `.prose ul li { display:flex }` élke `<li>` met een vetgedrukte aanloop in twee kolommen splitste, ook op de live Nederlandse pagina.
+**Lesson:** Een URL die je aan een externe beoordelaar geeft moet in de taal van die beoordelaar zijn, niet alleen de chrome eromheen. En onder `.prose ul li` hoort de inhoud in één element.
