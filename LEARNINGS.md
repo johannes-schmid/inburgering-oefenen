@@ -5288,3 +5288,9 @@ oplopende `top` per index doet het, en de `prefers-reduced-motion`-uitweg is dan
 **Outcome:** SUCCESS (tsc, next build, 656 unittests; screenshots desktop + mobiel)
 **What worked / went wrong:** GA4 werkte meteen met het bestaande `claude-seo-reader`-account (Viewer op property 547503294). Twee valkuilen: met nul betalers geeft "huidige conversie" oneindig veel benodigde bezoekers, dus een stap die nul of onbekend meet rekent met zijn streefwaarde en zegt dat; en een zin "haal deze stap naar streef" gaf dan twee keer hetzelfde getal. De chartgrid liep op mobiel horizontaal over (recharts in een grid-item zonder `min-w-0`). In de volle-paginashot van `check-ui-auth.mjs` stond een grafiek leeg terwijl hij bij een echte viewport van 390 px vier staven had — de resize van de full-page capture laat ResponsiveContainer opnieuw meten.
 **Lesson:** Een funnelstap die nul meet is geen rekengetal maar een meetgat of de bottleneck zelf — reken hem nooit door als deler. En een lege recharts-grafiek in een full-page shot eerst op de echte viewport controleren voordat je de grafiek gaat repareren.
+
+## 2026-10-07 — /admin/doelen crashte op productie: GA4_SA_JSON met aanhalingstekens
+**Changed:** `lib/admin/ga4.ts` (`parseCreds` haalt omringende `'…'` weg; een onleesbare sleutel wordt `{ error }` in plaats van een throw), `tests-unit/goal-model.test.ts`.
+**Outcome:** FAILURE → fix
+**What worked / went wrong:** De waarde was uit `.env.local` naar Vercel gekopieerd mét de enkele aanhalingstekens; dotenv haalt die weg, Vercel bewaart ze letterlijk. `JSON.parse` gooide buiten de try/catch van `fetchGa4`, dus de hele pagina viel om in plaats van "onbekend" te tonen.
+**Lesson:** Een env var die JSON bevat wordt defensief geparset en binnen dezelfde foutafhandeling als de API-call — een kapotte sleutel moet hetzelfde opleveren als een ontbrekende.

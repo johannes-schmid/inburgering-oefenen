@@ -75,3 +75,14 @@ describe('goal model', () => {
     expect(last30).toBe(2);
   });
 });
+
+describe('ga4-sleutel', () => {
+  it('een onleesbare GA4_SA_JSON wordt een fout op de pagina, geen crash', async () => {
+    const before = process.env.GA4_SA_JSON;
+    process.env.GA4_SA_JSON = `'{"type": "service_account", kapot`;
+    const { fetchGa4 } = await import('@/lib/admin/ga4');
+    const res = await fetchGa4();
+    expect('error' in res && res.error).toMatch(/geen geldige JSON/);
+    if (before === undefined) delete process.env.GA4_SA_JSON; else process.env.GA4_SA_JSON = before;
+  });
+});

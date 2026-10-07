@@ -20,10 +20,24 @@ export type Ga4Snapshot = {
   visitorsByMonth: { month: string; users: number }[];
 } | { error: string };
 
+/**
+ * De sleutel komt als JSON-tekst uit een env var. Wie hem uit `.env.local` naar Vercel kopieert,
+ * neemt de enkele aanhalingstekens mee — Vercel bewaart die letterlijk — dus die gaan er hier af.
+ * Een sleutel die dan nog geen JSON is, is een fout op de pagina, geen crash van de pagina.
+ */
+function parseCreds(raw: string): { client_email: string; private_key: string } {
+  const trimmed = raw.trim().replace(/^'([\s\S]*)'$/, '$1');
+  try {
+    return JSON.parse(trimmed);
+  } catch {
+    throw new Error('GA4_SA_JSON is geen geldige JSON — plak de inhoud van het sleutelbestand zonder aanhalingstekens eromheen');
+  }
+}
+
 function client() {
   const raw = process.env.GA4_SA_JSON ?? process.env.GSC_SA_JSON;
   if (!raw) return null;
-  const creds = JSON.parse(raw);
+  const creds = parseCreds(raw);
   const auth = new google.auth.JWT({
     email: creds.client_email,
     key: creds.private_key,
@@ -35,7 +49,12 @@ function client() {
 const num = (v: string | null | undefined) => Number(v ?? 0) || 0;
 
 export async function fetchGa4(months = 6): Promise<Ga4Snapshot> {
-  const ga = client();
+  let ga: ReturnType<typeof client>;
+  try {
+    ga = client();
+  } catch (err) {
+    return { error: err instanceof Error ? err.message : 'GA4_SA_JSON onleesbaar' };
+  }
   if (!ga) return { error: 'GA4_SA_JSON ontbreekt' };
 
   const now = new Date();
