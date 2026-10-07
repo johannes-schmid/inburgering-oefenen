@@ -1,5 +1,6 @@
 import { BUNDLE_PRICE_CENTS, MODULE_PRICE_CENTS } from '@/lib/pricing';
 import { KNM_MODULE_ID, normaliseModule, purchasedModules } from '@/lib/entitlements';
+import { SKILLS } from '@/data/skills';
 
 /**
  * Het doelmodel voor de Nederlandse markt — `/admin/doelen`.
@@ -8,18 +9,17 @@ import { KNM_MODULE_ID, normaliseModule, purchasedModules } from '@/lib/entitlem
  * afwijkingen die hij zelf vroeg: alleen NL (de DE-rijen vallen weg), taal gesplitst in A2 en B1,
  * en een gemiddelde looptijd van **twee maanden** voor elk product in plaats van 3 / 1,5.
  *
- * **Elk getal in `GOAL_ASSUMPTIONS` is een aanname, geen meting.** De pagina zet ze naast de
- * gemeten cijfers en zegt welke welke is. Vervang ze door echte cijfers zodra er twee à drie
- * maanden betalingen zijn — de spreadsheet zegt hetzelfde.
+ * **Elk getal in `GOAL_ASSUMPTIONS` is een aanname, geen meting.** Vervang ze door echte cijfers
+ * zodra er twee à drie maanden betalingen zijn — de spreadsheet zegt hetzelfde.
  *
- * Omzet is overal **excl. btw en na betaalkosten**, net als het doel in de spreadsheet. De MRR uit
- * `lib/admin/mrr.ts` is incl. btw; `netMonthlyEur` rekent hem om voordat hij naast een mijlpaal
- * staat.
+ * Omzet is overal **excl. btw en na betaalkosten**, net als in de spreadsheet. De MRR uit
+ * `lib/admin/mrr.ts` is incl. btw; `netMonthlyEur` rekent hem om voordat hij naast een doel staat.
  */
 
 export type Track = 'a2' | 'b1' | 'knm';
 export type ScenarioKey = 'conservative' | 'base' | 'optimistic';
 export type FunnelStepKey = 'visitors' | 'practicing' | 'signups' | 'paid';
+export type PeriodKey = 'day' | 'week' | 'month';
 
 export const TRACKS: { key: Track; label: string }[] = [
   { key: 'a2', label: 'Taal A2' },
@@ -33,9 +33,14 @@ export const SCENARIOS: { key: ScenarioKey; label: string }[] = [
   { key: 'optimistic', label: 'Optimistisch' },
 ];
 
+/** Een maand is hier 30 dagen, zodat dag × 30 en maand altijd hetzelfde doel geven. */
+export const PERIODS: { key: PeriodKey; label: string; days: number }[] = [
+  { key: 'day', label: 'Vandaag', days: 1 },
+  { key: 'week', label: '7 dagen', days: 7 },
+  { key: 'month', label: '30 dagen', days: 30 },
+];
+
 export const GOAL_ASSUMPTIONS = {
-  /** Omzet per maand excl. btw — €6k netto per maand als zzp'er plus ~€1k kosten. */
-  targetEurPerMonth: 12_500,
   /** Mollie plus overige transactiekosten, als deel van de omzet. */
   feesPct: 0.03,
   vatRate: 0.21,
@@ -48,10 +53,7 @@ export const GOAL_ASSUMPTIONS = {
   /** Nieuwe taalabonnees per maand (A2 + B1 samen), uit de spreadsheet. */
   languageNewPerMonth: { conservative: 40, base: 70, optimistic: 130 },
   knmNewPerMonth: { conservative: 50, base: 75, optimistic: 110 },
-  /**
-   * Streefconversie per stap — waar de funnel naartoe moet. Hiermee wordt de bottleneck bepaald:
-   * de stap die het verst onder zijn streefwaarde zit.
-   */
+  /** Streefconversie per stap, van de vorige stap naar deze. Hieruit volgt het doel per stap. */
   targetStepRates: { practicing: 0.3, signups: 0.35, paid: 0.08 } as Record<Exclude<FunnelStepKey, 'visitors'>, number>,
 };
 
@@ -67,157 +69,121 @@ export function arpuEur(track: Track, a: Assumptions = GOAL_ASSUMPTIONS): number
   return exVat(BUNDLE_PRICE_CENTS, a) * bundle + 2 * single * two + single * one;
 }
 
-/** Een maandbedrag incl. btw (centen) als omzet excl. btw en na kosten. */
+/** Een bedrag incl. btw (centen) als omzet excl. btw en na kosten. */
 export function netMonthlyEur(cents: number, a: Assumptions = GOAL_ASSUMPTIONS): number {
   return exVat(cents, a) * (1 - a.feesPct);
 }
 
-export type TrackPlan = { track: Track; newPerMonth: number; active: number; revenueEur: number };
-
-export type Milestone = {
-  key: ScenarioKey | 'target';
+export type Scenario = {
+  key: ScenarioKey;
   label: string;
-  /** Stabiele maandomzet, excl. btw en na kosten, zodra instroom en uitstroom in evenwicht zijn. */
-  revenueEur: number;
+  /** Stabiele maandomzet (MRR), excl. btw en na kosten, zodra instroom en uitstroom in evenwicht zijn. */
+  mrrEur: number;
   newPerMonth: number;
-  active: number;
-  tracks: TrackPlan[];
+  newByTrack: Record<Track, number>;
 };
 
-function plan(newByTrack: Record<Track, number>, lifetime: number, a: Assumptions): TrackPlan[] {
-  return TRACKS.map(({ key }) => {
-    const newPerMonth = newByTrack[key];
-    const active = newPerMonth * lifetime;
-    return { track: key, newPerMonth, active, revenueEur: active * arpuEur(key, a) * (1 - a.feesPct) };
+export function scenarios(a: Assumptions = GOAL_ASSUMPTIONS): Scenario[] {
+  return SCENARIOS.map(({ key, label }) => {
+    const lang = a.languageNewPerMonth[key];
+    const newByTrack = { a2: lang * a.a2ShareOfLanguage, b1: lang * (1 - a.a2ShareOfLanguage), knm: a.knmNewPerMonth[key] };
+    const mrrEur = TRACKS.reduce((s, t) => s + newByTrack[t.key] * a.lifetimeMonths * arpuEur(t.key, a), 0) * (1 - a.feesPct);
+    return { key, label, mrrEur, newPerMonth: lang + a.knmNewPerMonth[key], newByTrack };
   });
 }
 
-function scenarioNew(key: ScenarioKey, a: Assumptions): Record<Track, number> {
-  const lang = a.languageNewPerMonth[key];
+export type PeriodGoal = {
+  /** Omzet die in deze periode binnen moet komen, nieuw plus verlengingen, excl. btw na kosten. */
+  revenueEur: number;
+  byTrack: Record<Track, number>;
+  funnel: Record<FunnelStepKey, number>;
+};
+
+/** Het doel voor `days` dagen: een dertigste van de maand per dag, terug door de funnel gerekend. */
+export function periodGoal(s: Scenario, days: number, a: Assumptions = GOAL_ASSUMPTIONS): PeriodGoal {
+  const f = days / 30;
+  const r = a.targetStepRates;
+  const paid = s.newPerMonth * f;
+  const signups = paid / r.paid;
+  const practicing = signups / r.signups;
   return {
-    a2: lang * a.a2ShareOfLanguage,
-    b1: lang * (1 - a.a2ShareOfLanguage),
-    knm: a.knmNewPerMonth[key],
+    revenueEur: s.mrrEur * f,
+    byTrack: { a2: s.newByTrack.a2 * f, b1: s.newByTrack.b1 * f, knm: s.newByTrack.knm * f },
+    funnel: { visitors: practicing / r.practicing, practicing, signups, paid },
   };
-}
-
-function milestone(key: Milestone['key'], label: string, tracks: TrackPlan[]): Milestone {
-  return {
-    key,
-    label,
-    tracks,
-    revenueEur: tracks.reduce((s, t) => s + t.revenueEur, 0),
-    newPerMonth: tracks.reduce((s, t) => s + t.newPerMonth, 0),
-    active: tracks.reduce((s, t) => s + t.active, 0),
-  };
-}
-
-/**
- * De drie scenario's plus het doel, oplopend in omzet.
- *
- * Het doel heeft geen eigen instroom in de spreadsheet; hier is het het basisscenario, opgeschaald
- * tot de omzet het doel raakt. Zo houdt het dezelfde verhouding A2 : B1 : KNM.
- */
-export function milestones(lifetime = GOAL_ASSUMPTIONS.lifetimeMonths, a: Assumptions = GOAL_ASSUMPTIONS): Milestone[] {
-  const list = SCENARIOS.map(s => milestone(s.key, s.label, plan(scenarioNew(s.key, a), lifetime, a)));
-  const base = list.find(m => m.key === 'base')!;
-  const factor = base.revenueEur > 0 ? a.targetEurPerMonth / base.revenueEur : 0;
-  const scaled = Object.fromEntries(base.tracks.map(t => [t.track, t.newPerMonth * factor])) as Record<Track, number>;
-  list.push(milestone('target', 'Doel', plan(scaled, lifetime, a)));
-  return list.sort((x, y) => x.revenueEur - y.revenueEur);
-}
-
-/** De eerste mijlpaal boven de huidige omzet; `null` als alles gehaald is. */
-export function nextMilestone(list: Milestone[], currentEur: number): Milestone | null {
-  return list.find(m => m.revenueEur > currentEur) ?? null;
 }
 
 /* ── De funnel ─────────────────────────────────────────────────────────────── */
 
-/**
- * Wat er in een venster van 30 dagen gemeten is. `null` betekent **onbekend** (GA4 niet
- * geconfigureerd of de vraag faalde), nooit nul.
- */
+/** `null` betekent **onbekend** (GA4 niet gekoppeld of de vraag faalde), nooit nul. */
 export type FunnelActuals = Record<FunnelStepKey, number | null>;
 
 export const FUNNEL_STEPS: { key: FunnelStepKey; label: string; source: string }[] = [
   { key: 'visitors', label: 'Bezoekers', source: 'GA4 · gebruikers' },
-  { key: 'practicing', label: 'Begint te oefenen', source: 'GA4 · proefvragen of examen gestart' },
-  { key: 'signups', label: 'Maakt account', source: 'Supabase · nieuwe accounts' },
-  { key: 'paid', label: 'Betaalt', source: 'Supabase · eerste betaling' },
+  { key: 'practicing', label: 'Start oefenen', source: 'GA4 · proefvragen of examen gestart' },
+  { key: 'signups', label: 'Account', source: 'Supabase · nieuwe accounts' },
+  { key: 'paid', label: 'Betaling', source: 'Supabase · eerste betaling' },
 ];
 
-export type StepRate = {
-  key: Exclude<FunnelStepKey, 'visitors'>;
-  /** Gemeten conversie van de vorige stap naar deze; `null` als een van beide onbekend of 0 is. */
-  current: number | null;
-  target: number;
-  /** De conversie waarmee gerekend wordt: gemeten als die er is, anders de streefwaarde. */
-  used: number;
-  assumed: boolean;
-  /** Gemeten ÷ streef. Onder 1 = achter op streef. */
-  attainment: number | null;
+/** Gemeten conversie van de vorige stap naar deze; `null` als de vorige stap onbekend of 0 is. */
+export function conversion(actuals: FunnelActuals, key: FunnelStepKey): number | null {
+  const i = FUNNEL_STEPS.findIndex(s => s.key === key);
+  if (i <= 0) return null;
+  const prev = actuals[FUNNEL_STEPS[i - 1].key];
+  const cur = actuals[key];
+  return prev && cur !== null ? Math.min(cur / prev, 1) : null;
+}
+
+export type Focus = {
+  step: FunnelStepKey;
+  /** `traffic`: er komen te weinig bezoekers. `conversion`: deze stap haalt zijn streefconversie niet. */
+  kind: 'traffic' | 'conversion';
+  /** Gemeten ÷ doel; onder 1 is achter. */
+  attainment: number;
 };
-
-export function stepRates(actuals: FunnelActuals, a: Assumptions = GOAL_ASSUMPTIONS): StepRate[] {
-  return FUNNEL_STEPS.slice(1).map((step, i) => {
-    const key = step.key as StepRate['key'];
-    const prev = actuals[FUNNEL_STEPS[i].key];
-    const cur = actuals[key];
-    const target = a.targetStepRates[key];
-    const current = prev && cur !== null ? Math.min(cur / prev, 1) : null;
-    const usable = current !== null && current > 0;
-    return {
-      key,
-      current,
-      target,
-      used: usable ? current : target,
-      assumed: !usable,
-      attainment: current === null ? null : current / target,
-    };
-  });
-}
-
-/** Hoeveel er per maand in elke stap moet zitten om `paidPerMonth` betalers te halen. */
-export function requiredFunnel(paidPerMonth: number, rates: { key: StepRate['key']; rate: number }[]): Record<FunnelStepKey, number> {
-  const r = Object.fromEntries(rates.map(x => [x.key, x.rate])) as Record<StepRate['key'], number>;
-  const paid = paidPerMonth;
-  const signups = paid / r.paid;
-  const practicing = signups / r.signups;
-  const visitors = practicing / r.practicing;
-  return { visitors, practicing, signups, paid };
-}
 
 /**
- * De stap waar de funnel vastzit: de laagste gemeten-÷-streef. Een stap zonder meting telt niet
- * mee — "onbekend" is geen bottleneck, het is een meetgat, en dat zegt de pagina apart.
+ * Waar de funnel het meest achterloopt. Verkeer telt als bezoekers ÷ doel, elke andere stap als
+ * gemeten conversie ÷ streefconversie — beide zijn "hoeveel van wat nodig is", dus vergelijkbaar.
+ * Een onbekende stap telt niet mee: dat is een meetgat, geen bottleneck.
  */
-export function bottleneck(rates: StepRate[]): StepRate | null {
-  const measured = rates.filter(r => r.attainment !== null && r.attainment < 1);
-  if (measured.length === 0) return null;
-  return measured.reduce((worst, r) => (r.attainment! < worst.attainment! ? r : worst));
+export function focusStep(actuals: FunnelActuals, goal: PeriodGoal, a: Assumptions = GOAL_ASSUMPTIONS): Focus | null {
+  const candidates: Focus[] = [];
+  if (actuals.visitors !== null) {
+    candidates.push({ step: 'visitors', kind: 'traffic', attainment: actuals.visitors / goal.funnel.visitors });
+  }
+  for (const step of FUNNEL_STEPS.slice(1)) {
+    const rate = conversion(actuals, step.key);
+    if (rate === null) continue;
+    const key = step.key as Exclude<FunnelStepKey, 'visitors'>;
+    candidates.push({ step: key, kind: 'conversion', attainment: rate / a.targetStepRates[key] });
+  }
+  const behind = candidates.filter(c => c.attainment < 1);
+  if (behind.length === 0) return null;
+  return behind.reduce((worst, c) => (c.attainment < worst.attainment ? c : worst));
 }
 
-export type MilestoneNeed = {
-  milestone: Milestone;
-  /** Bij de huidige conversie per stap (streefwaarde waar niets gemeten is). */
-  atCurrent: Record<FunnelStepKey, number>;
-  /** Als elke stap zijn streefwaarde haalt. */
-  atTarget: Record<FunnelStepKey, number>;
-};
-
-export function needsFor(list: Milestone[], rates: StepRate[]): MilestoneNeed[] {
-  return list.map(m => ({
-    milestone: m,
-    atCurrent: requiredFunnel(m.newPerMonth, rates.map(r => ({ key: r.key, rate: r.used }))),
-    atTarget: requiredFunnel(m.newPerMonth, rates.map(r => ({ key: r.key, rate: Math.max(r.used, r.target) }))),
-  }));
-}
-
-/* ── Gemeten: abonnees en nieuwe klanten per spoor ─────────────────────────── */
+/* ── Gemeten: per periode ─────────────────────────────────────────────────── */
 
 export type GoalUser = { id?: string; created_at: string; user_metadata?: Record<string, unknown> | null };
-export type GoalPayment = { user_id: string | null; product: string | null; created_at: string };
+export type GoalPayment = { user_id: string | null; product: string | null; amount_cents: number; created_at: string };
+
+const TZ = 'Europe/Amsterdam';
+
+/** Middernacht in Amsterdam, `days - 1` dagen terug — dezelfde grens als GA4 (property in Europe/Amsterdam). */
+export function periodStart(days: number, now = Date.now()): Date {
+  const [y, m, d] = new Intl.DateTimeFormat('en-CA', { timeZone: TZ }).format(new Date(now)).split('-').map(Number);
+  const utcMidnight = Date.UTC(y, m - 1, d - (days - 1));
+  const offset = new Intl.DateTimeFormat('en-US', { timeZone: TZ, timeZoneName: 'longOffset' })
+    .formatToParts(new Date(utcMidnight)).find(p => p.type === 'timeZoneName')?.value ?? 'GMT';
+  const match = offset.match(/([+-])(\d{2}):(\d{2})/);
+  const minutes = match ? (match[1] === '-' ? -1 : 1) * (Number(match[2]) * 60 + Number(match[3])) : 0;
+  return new Date(utcMidnight - minutes * 60000);
+}
+
+function modulesOf(product: string | null): string[] {
+  return product?.startsWith('modules:') ? product.slice(8).split(',') : [];
+}
 
 function tracksOf(modules: string[]): Set<Track> {
   const out = new Set<Track>();
@@ -229,31 +195,33 @@ function tracksOf(modules: string[]): Set<Track> {
   return out;
 }
 
-/**
- * Lopende abonnees per spoor — dezelfde definitie als de MRR in `lib/admin/mrr.ts`: modules gekocht
- * en niet opgezegd. Wie A2 en KNM heeft telt bij allebei; `total` telt mensen.
- */
-export function activeByTrack(users: GoalUser[]): Record<Track, number> & { total: number } {
-  const out = { a2: 0, b1: 0, knm: 0, total: 0 };
-  for (const u of users) {
-    const meta = u.user_metadata ?? null;
-    if (typeof meta?.subscription_canceled_at === 'string') continue;
-    const tracks = tracksOf(purchasedModules(meta));
-    if (tracks.size === 0) continue;
-    out.total++;
-    for (const t of tracks) out[t]++;
+/** De producten in één betaling: een heel niveau is de bundel, anders elke module apart. */
+export function productLabels(product: string | null): string[] {
+  const ids = modulesOf(product).map(normaliseModule).filter((x): x is NonNullable<typeof x> => x !== null);
+  const out: string[] = [];
+  if (ids.includes(KNM_MODULE_ID)) out.push('KNM');
+  for (const level of ['a2', 'b1']) {
+    const skills = ids.filter(id => id.startsWith(`${level}:`)).map(id => id.split(':')[1]);
+    if (skills.length === 0) continue;
+    const name = `Taal ${level.toUpperCase()}`;
+    if (SKILLS.every(s => skills.includes(s.slug))) { out.push(`${name} · bundel`); continue; }
+    for (const s of skills) out.push(`${name} · ${s[0].toUpperCase()}${s.slice(1)}`);
   }
   return out;
 }
 
-export type MonthNew = { month: string; label: string } & Record<Track, number>;
+export type PeriodActuals = {
+  revenueEur: number;
+  /** Nieuwe betalende klanten: iemands eerste betaling valt in de periode. */
+  sales: number;
+  byTrack: Record<Track, number>;
+  signups: number;
+  /** Verkochte producten in de periode, nieuw en verlengd, meest verkocht eerst. */
+  products: { label: string; count: number }[];
+};
 
-/**
- * Nieuwe betalende klanten per maand en per spoor: de **eerste** betaling van iemand. Het spoor
- * komt uit `payments.product` (`modules:a2:lezen,knm`), zoals `/api/checkout-modules` hem schrijft.
- * Een eenmalige legacy-betaling zonder modules telt als klant maar bij geen spoor.
- */
-export function newCustomers(payments: GoalPayment[], months = 6, now = Date.now()) {
+export function periodActuals(users: GoalUser[], payments: GoalPayment[], start: Date): PeriodActuals {
+  const since = start.getTime();
   const first = new Map<string, GoalPayment>();
   for (const p of payments) {
     if (!p.user_id) continue;
@@ -261,23 +229,35 @@ export function newCustomers(payments: GoalPayment[], months = 6, now = Date.now
     if (!seen || p.created_at < seen.created_at) first.set(p.user_id, p);
   }
 
-  const d = new Date(now);
-  const keys = Array.from({ length: months }, (_, i) =>
-    new Date(Date.UTC(d.getUTCFullYear(), d.getUTCMonth() - (months - 1 - i), 1)).toISOString().slice(0, 7));
-  const byMonth = new Map<string, MonthNew>(keys.map(k => [k, {
-    month: k,
-    label: new Date(`${k}-01T00:00:00Z`).toLocaleString('nl-NL', { month: 'short', timeZone: 'UTC' }),
-    a2: 0, b1: 0, knm: 0,
-  }]));
-
-  const since30 = now - 30 * 86400000;
-  let last30 = 0;
+  const byTrack: Record<Track, number> = { a2: 0, b1: 0, knm: 0 };
+  let sales = 0;
   for (const p of first.values()) {
-    if (Date.parse(p.created_at) >= since30) last30++;
-    const row = byMonth.get(p.created_at.slice(0, 7));
-    if (!row) continue;
-    const modules = p.product?.startsWith('modules:') ? p.product.slice(8).split(',') : [];
-    for (const t of tracksOf(modules)) row[t]++;
+    if (Date.parse(p.created_at) < since) continue;
+    sales++;
+    for (const t of tracksOf(modulesOf(p.product))) byTrack[t]++;
   }
-  return { byMonth: [...byMonth.values()], last30 };
+
+  let cents = 0;
+  const counts = new Map<string, number>();
+  for (const p of payments) {
+    if (Date.parse(p.created_at) < since) continue;
+    cents += p.amount_cents;
+    for (const label of productLabels(p.product)) counts.set(label, (counts.get(label) ?? 0) + 1);
+  }
+
+  return {
+    revenueEur: netMonthlyEur(cents),
+    sales,
+    byTrack,
+    signups: users.filter(u => Date.parse(u.created_at) >= since).length,
+    products: [...counts].map(([label, count]) => ({ label, count })).sort((x, y) => y.count - x.count),
+  };
+}
+
+/** Lopende abonnees: modules gekocht en niet opgezegd — dezelfde definitie als de MRR. */
+export function activeSubscribers(users: GoalUser[]): number {
+  return users.filter(u => {
+    const meta = u.user_metadata ?? null;
+    return typeof meta?.subscription_canceled_at !== 'string' && purchasedModules(meta).length > 0;
+  }).length;
 }

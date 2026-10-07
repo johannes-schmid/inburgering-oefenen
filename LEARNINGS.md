@@ -5294,3 +5294,9 @@ oplopende `top` per index doet het, en de `prefers-reduced-motion`-uitweg is dan
 **Outcome:** FAILURE → fix
 **What worked / went wrong:** De waarde was uit `.env.local` naar Vercel gekopieerd mét de enkele aanhalingstekens; dotenv haalt die weg, Vercel bewaart ze letterlijk. `JSON.parse` gooide buiten de try/catch van `fetchGa4`, dus de hele pagina viel om in plaats van "onbekend" te tonen.
 **Lesson:** Een env var die JSON bevat wordt defensief geparset en binnen dezelfde foutafhandeling als de API-call — een kapotte sleutel moet hetzelfde opleveren als een ontbrekende.
+
+## 2026-10-07 — /admin/doelen vereenvoudigd tot één overzicht
+**Changed:** `/admin/doelen` is één scherm met scenariokeuze (start conservatief) en dag/week/maand, zeven kaarten: MRR met verkopen per periode, funnel met focusstap, doel per product + meest verkocht, en vier stapkaarten (`DoelenDashboard.tsx`, `lib/admin/goal-model.ts`, `lib/admin/ga4.ts`).
+**Outcome:** SUCCESS
+**What worked / went wrong:** GA4 geeft met benoemde `dateRanges` (day/week/month) alle drie de periodes in één vraag terug; de property rekent in Europe/Amsterdam, dus Supabase-vensters beginnen ook om middernacht Amsterdam (`periodStart`). Verkeer en conversie zijn vergelijkbaar gemaakt als "gemeten ÷ doel", zodat de focus één antwoord geeft: te weinig bezoekers óf een lekkende stap.
+**Lesson:** een doel per dag is maand ÷ 30, terug door de funnel gerekend; laat dag × 30 altijd exact de maand geven, anders lopen de drie weergaven uiteen.

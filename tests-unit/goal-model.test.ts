@@ -1,7 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import {
-  GOAL_ASSUMPTIONS, activeByTrack, arpuEur, bottleneck, milestones, needsFor, netMonthlyEur, newCustomers,
-  nextMilestone, stepRates,
+  GOAL_ASSUMPTIONS, arpuEur, focusStep, netMonthlyEur, periodActuals, periodGoal, periodStart, productLabels, scenarios,
 } from '@/lib/admin/goal-model';
 
 describe('goal model', () => {
@@ -10,69 +9,76 @@ describe('goal model', () => {
     expect(arpuEur('a2')).toBeCloseTo((29.95 * 0.45 + 2 * 9.95 * 0.15 + 9.95 * 0.4) / 1.21, 4);
   });
 
-  it('zet mijlpalen oplopend en schaalt het doel exact op de doelomzet', () => {
-    const list = milestones(2);
-    expect(list.map(m => m.key)).toEqual(['conservative', 'base', 'optimistic', 'target']);
-    expect(list[3].revenueEur).toBeCloseTo(GOAL_ASSUMPTIONS.targetEurPerMonth, 6);
-    // Basis: 70 taal (42 A2 + 28 B1) en 75 KNM, twee maanden, 3% kosten.
-    const base = list[1];
-    expect(base.newPerMonth).toBeCloseTo(145, 6);
-    expect(base.revenueEur).toBeCloseTo((70 * arpuEur('a2') + 75 * arpuEur('knm')) * 2 * 0.97, 6);
+  it('drie scenario’s, oplopend, met MRR = instroom × looptijd × opbrengst na kosten', () => {
+    const list = scenarios();
+    expect(list.map(s => s.key)).toEqual(['conservative', 'base', 'optimistic']);
+    const c = list[0];
+    expect(c.newPerMonth).toBe(90);
+    expect(c.mrrEur).toBeCloseTo((40 * arpuEur('a2') + 50 * arpuEur('knm')) * 2 * 0.97, 6);
+    expect(list[1].mrrEur).toBeGreaterThan(c.mrrEur);
   });
 
-  it('een langere looptijd verhoogt de omzet maar niet de benodigde instroom voor het doel lineair', () => {
-    const two = milestones(2), four = milestones(4);
-    expect(four[0].revenueEur).toBeCloseTo(two[0].revenueEur * 2, 6);
-    expect(four[3].newPerMonth).toBeCloseTo(two[3].newPerMonth / 2, 6);
+  it('het doel per dag is een dertigste van de maand, terug door de funnel', () => {
+    const c = scenarios()[0];
+    const day = periodGoal(c, 1), month = periodGoal(c, 30);
+    expect(day.funnel.paid).toBeCloseTo(3, 6);
+    expect(day.revenueEur * 30).toBeCloseTo(month.revenueEur, 6);
+    const r = GOAL_ASSUMPTIONS.targetStepRates;
+    expect(day.funnel.visitors).toBeCloseTo(3 / r.paid / r.signups / r.practicing, 6);
+    expect(day.byTrack.a2 + day.byTrack.b1 + day.byTrack.knm).toBeCloseTo(3, 6);
   });
 
-  it('kiest de volgende mijlpaal boven de huidige omzet', () => {
-    const list = milestones(2);
-    expect(nextMilestone(list, 0)?.key).toBe('conservative');
-    expect(nextMilestone(list, 1e9)).toBeNull();
-  });
-
-  it('netto MRR haalt btw en kosten eraf', () => {
+  it('netto haalt btw en kosten eraf', () => {
     expect(netMonthlyEur(12100)).toBeCloseTo(97, 6);
   });
 
-  it('onbekend is geen nul: zonder GA4 geen conversie en geen bottleneck op die stappen', () => {
-    const rates = stepRates({ visitors: null, practicing: null, signups: 40, paid: 2 });
-    expect(rates[0].current).toBeNull();
-    expect(rates[0].assumed).toBe(true);
-    expect(rates[2].current).toBeCloseTo(0.05);
-    expect(bottleneck(rates)?.key).toBe('paid');
+  it('focus: te weinig verkeer wint als de conversies op streef zitten', () => {
+    const goal = periodGoal(scenarios()[0], 1);
+    const f = focusStep({ visitors: 100, practicing: 30, signups: 11, paid: 1 }, goal);
+    expect(f).toMatchObject({ step: 'visitors', kind: 'traffic' });
   });
 
-  it('de bottleneck is de laagste gemeten ÷ streef', () => {
-    const rates = stepRates({ visitors: 1000, practicing: 100, signups: 30, paid: 2 });
-    // 10% vs 30% (0,33) · 30% vs 35% (0,86) · 6,7% vs 8% (0,83)
-    expect(bottleneck(rates)?.key).toBe('practicing');
+  it('focus: een lekkende stap wint als het verkeer op schema is', () => {
+    const goal = periodGoal(scenarios()[0], 1);
+    const f = focusStep({ visitors: 400, practicing: 120, signups: 40, paid: 0 }, goal);
+    expect(f).toMatchObject({ step: 'paid', kind: 'conversion', attainment: 0 });
   });
 
-  it('nul betalers rekent met de streefwaarde in plaats van oneindig verkeer', () => {
-    const rates = stepRates({ visitors: 500, practicing: 150, signups: 50, paid: 0 });
-    const need = needsFor(milestones(2), rates)[0].atCurrent;
-    expect(Number.isFinite(need.visitors)).toBe(true);
-    expect(bottleneck(rates)?.key).toBe('paid');
+  it('onbekend is geen nul: zonder GA4 alleen de gemeten stappen', () => {
+    const goal = periodGoal(scenarios()[0], 30);
+    expect(focusStep({ visitors: null, practicing: null, signups: 0, paid: 0 }, goal)).toBeNull();
+    expect(focusStep({ visitors: null, practicing: null, signups: 40, paid: 1 }, goal)?.step).toBe('paid');
   });
 
-  it('telt lopende abonnees per spoor en nieuwe klanten bij hun eerste betaling', () => {
-    const users = [
-      { created_at: '2026-09-01', user_metadata: { modules: ['a2:lezen', 'knm'] } },
-      { created_at: '2026-09-01', user_metadata: { modules: ['b1:lezen'], subscription_canceled_at: '2026-09-20' } },
-      { created_at: '2026-09-01', user_metadata: {} },
-    ];
-    expect(activeByTrack(users)).toEqual({ a2: 1, b1: 0, knm: 1, total: 1 });
-
+  it('een periode begint om middernacht in Amsterdam', () => {
     const now = Date.parse('2026-10-07T12:00:00Z');
-    const { byMonth, last30 } = newCustomers([
-      { user_id: 'u1', product: 'modules:a2:lezen,a2:luisteren', created_at: '2026-09-15T10:00:00Z' },
-      { user_id: 'u1', product: 'modules:knm', created_at: '2026-10-01T10:00:00Z' },
-      { user_id: 'u2', product: 'modules:knm', created_at: '2026-10-02T10:00:00Z' },
-    ], 2, now);
-    expect(byMonth.map(m => [m.month, m.a2, m.b1, m.knm])).toEqual([['2026-09', 1, 0, 0], ['2026-10', 0, 0, 1]]);
-    expect(last30).toBe(2);
+    expect(periodStart(1, now).toISOString()).toBe('2026-10-06T22:00:00.000Z');
+    expect(periodStart(7, now).toISOString()).toBe('2026-09-30T22:00:00.000Z');
+    expect(periodStart(1, Date.parse('2026-12-01T12:00:00Z')).toISOString()).toBe('2026-11-30T23:00:00.000Z');
+  });
+
+  it('een heel niveau is de bundel, anders elke module apart', () => {
+    expect(productLabels('modules:a2:lezen,a2:luisteren,a2:schrijven,a2:spreken,knm')).toEqual(['KNM', 'Taal A2 · bundel']);
+    expect(productLabels('modules:b1:lezen')).toEqual(['Taal B1 · Lezen']);
+    expect(productLabels('legacy')).toEqual([]);
+  });
+
+  it('telt nieuwe klanten bij hun eerste betaling en omzet over alle betalingen in de periode', () => {
+    const start = new Date('2026-10-01T00:00:00Z');
+    const a = periodActuals(
+      [{ created_at: '2026-10-02T10:00:00Z' }, { created_at: '2026-09-02T10:00:00Z' }],
+      [
+        { user_id: 'u1', product: 'modules:a2:lezen', amount_cents: 995, created_at: '2026-09-15T10:00:00Z' },
+        { user_id: 'u1', product: 'modules:a2:lezen', amount_cents: 995, created_at: '2026-10-15T10:00:00Z' },
+        { user_id: 'u2', product: 'modules:knm', amount_cents: 995, created_at: '2026-10-02T10:00:00+00:00' },
+      ],
+      start,
+    );
+    expect(a.sales).toBe(1);
+    expect(a.byTrack).toEqual({ a2: 0, b1: 0, knm: 1 });
+    expect(a.signups).toBe(1);
+    expect(a.revenueEur).toBeCloseTo(netMonthlyEur(1990), 6);
+    expect(a.products).toEqual([{ label: 'Taal A2 · Lezen', count: 1 }, { label: 'KNM', count: 1 }]);
   });
 });
 

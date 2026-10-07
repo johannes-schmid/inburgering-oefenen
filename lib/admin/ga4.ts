@@ -13,12 +13,17 @@ const PROPERTY = `properties/${process.env.GA4_PROPERTY_ID ?? '547503294'}`;
 /** De events die betekenen dat iemand echt begint te oefenen. */
 const PRACTICE_EVENTS = ['free_practice_started', 'exam_started'];
 
-export type Ga4Snapshot = {
-  visitors30d: number;
-  practicing30d: number;
-  /** `YYYY-MM` → gebruikers, oudste eerst. */
-  visitorsByMonth: { month: string; users: number }[];
-} | { error: string };
+export type PeriodCounts = { day: number; week: number; month: number };
+
+/** Bezoekers en oefenaars per periode: vandaag, 7 dagen en 30 dagen, tot en met vandaag. */
+export type Ga4Snapshot = { visitors: PeriodCounts; practicing: PeriodCounts } | { error: string };
+
+/** Dezelfde vensters als `PERIODS` in `goal-model.ts`; GA4 rekent in de tijdzone van de property. */
+const RANGES = [
+  { name: 'day', startDate: 'today', endDate: 'today' },
+  { name: 'week', startDate: '6daysAgo', endDate: 'today' },
+  { name: 'month', startDate: '29daysAgo', endDate: 'today' },
+];
 
 /**
  * De sleutel komt als JSON-tekst uit een env var. Wie hem uit `.env.local` naar Vercel kopieert,
@@ -48,7 +53,17 @@ function client() {
 
 const num = (v: string | null | undefined) => Number(v ?? 0) || 0;
 
-export async function fetchGa4(months = 6): Promise<Ga4Snapshot> {
+/** Een periode zonder rij had nul gebruikers — de vraag zelf slaagde. */
+function byRange(rows: { dimensionValues?: { value?: string | null }[] | null; metricValues?: { value?: string | null }[] | null }[] | undefined): PeriodCounts {
+  const out: PeriodCounts = { day: 0, week: 0, month: 0 };
+  for (const r of rows ?? []) {
+    const key = r.dimensionValues?.[0]?.value as keyof PeriodCounts | undefined;
+    if (key && key in out) out[key] = num(r.metricValues?.[0]?.value);
+  }
+  return out;
+}
+
+export async function fetchGa4(): Promise<Ga4Snapshot> {
   let ga: ReturnType<typeof client>;
   try {
     ga = client();
@@ -57,40 +72,19 @@ export async function fetchGa4(months = 6): Promise<Ga4Snapshot> {
   }
   if (!ga) return { error: 'GA4_SA_JSON ontbreekt' };
 
-  const now = new Date();
-  const start = new Date(Date.UTC(now.getUTCFullYear(), now.getUTCMonth() - (months - 1), 1)).toISOString().slice(0, 10);
-  const last30 = [{ startDate: '29daysAgo', endDate: 'today' }];
-
   try {
-    const [visitors, practicing, monthly] = await Promise.all([
-      ga.properties.runReport({ property: PROPERTY, requestBody: { dateRanges: last30, metrics: [{ name: 'totalUsers' }] } }),
+    const [visitors, practicing] = await Promise.all([
+      ga.properties.runReport({ property: PROPERTY, requestBody: { dateRanges: RANGES, metrics: [{ name: 'totalUsers' }] } }),
       ga.properties.runReport({
         property: PROPERTY,
         requestBody: {
-          dateRanges: last30,
+          dateRanges: RANGES,
           metrics: [{ name: 'totalUsers' }],
           dimensionFilter: { filter: { fieldName: 'eventName', inListFilter: { values: PRACTICE_EVENTS } } },
         },
       }),
-      ga.properties.runReport({
-        property: PROPERTY,
-        requestBody: {
-          dateRanges: [{ startDate: start, endDate: 'today' }],
-          dimensions: [{ name: 'yearMonth' }],
-          metrics: [{ name: 'totalUsers' }],
-          orderBys: [{ dimension: { dimensionName: 'yearMonth' } }],
-        },
-      }),
     ]);
-
-    return {
-      visitors30d: num(visitors.data.rows?.[0]?.metricValues?.[0]?.value),
-      practicing30d: num(practicing.data.rows?.[0]?.metricValues?.[0]?.value),
-      visitorsByMonth: (monthly.data.rows ?? []).map(r => {
-        const ym = r.dimensionValues?.[0]?.value ?? '';
-        return { month: `${ym.slice(0, 4)}-${ym.slice(4, 6)}`, users: num(r.metricValues?.[0]?.value) };
-      }),
-    };
+    return { visitors: byRange(visitors.data.rows), practicing: byRange(practicing.data.rows) };
   } catch (err) {
     return { error: err instanceof Error ? err.message : 'GA4-vraag mislukt' };
   }
