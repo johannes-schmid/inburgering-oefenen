@@ -228,6 +228,7 @@ function FunnelCard({ data, goal, focus, periodLabel, ga4Error }: {
           const actual = data.funnel[step.key];
           const target = goal.funnel[step.key];
           const isFocus = focus?.step === step.key;
+          const rate = conversion(data.funnel, step.key);
           return (
             <li key={step.key} className="min-w-0 text-center">
               <p className="text-base font-headline font-bold text-on-surface tabular-nums sm:text-lg">
@@ -248,6 +249,18 @@ function FunnelCard({ data, goal, focus, periodLabel, ga4Error }: {
               </div>
               <p className="mt-2 text-[11px] leading-tight font-semibold text-balance text-on-surface sm:text-xs">{step.label}</p>
               <p className="truncate text-[11px] text-on-surface-variant tabular-nums">doel {num(target)}</p>
+              {step.key === 'visitors' ? (
+                <span className="mt-2 inline-block rounded-full bg-surface-container px-2 py-0.5 text-[11px] text-on-surface-variant">start</span>
+              ) : (
+                <span
+                  title={`Conversie vanaf ${FUNNEL_STEPS[FUNNEL_STEPS.findIndex(s => s.key === step.key) - 1].label.toLowerCase()} · streef ${pct(targetRate(step.key)!)}`}
+                  className={`mt-2 inline-block rounded-full px-2 py-0.5 text-[11px] font-semibold tabular-nums ${
+                    isFocus ? 'bg-[#fcecdd] text-[#a24000]' : 'bg-[rgba(0,43,109,0.08)] text-primary'
+                  }`}
+                >
+                  {rate === null ? '—' : pct(rate)}
+                </span>
+              )}
               {isFocus && <div className="mt-1.5"><FocusChip /></div>}
             </li>
           );
