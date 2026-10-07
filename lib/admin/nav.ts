@@ -56,7 +56,13 @@ export type AdminNavItem = {
 export type AdminNavSection = { title: string | null; items: AdminNavItem[] };
 
 export const ADMIN_NAV_SECTIONS: AdminNavSection[] = [
-  { title: null, items: [{ path: '', icon: 'dashboard', label: 'Dashboard' }] },
+  {
+    title: null,
+    items: [
+      { path: '', icon: 'dashboard', label: 'Dashboard' },
+      { path: '/doelen', icon: 'flag', label: 'Doelen' },
+    ],
+  },
   {
     title: 'Toetsen',
     items: [

@@ -805,6 +805,10 @@ afrekenlink** (OpenAI-beleid); en **`is_correct`/`explanation`/`model_answer` ko
 
 **Still open, with the detail in `docs/decisions/open-items.md`:**
 
+- **`/admin/doelen` toont op productie "onbekend" voor bezoekers tot `GA4_SA_JSON`** (de JSON van
+  het serviceaccount `claude-seo-reader`) als env var op Vercel staat. De aannames van het
+  doelmodel staan in `GOAL_ASSUMPTIONS` in `lib/admin/goal-model.ts`.
+
 - **De seeder mag `review_status` van een bestaande rij niet meer overschrijven** —
   `upsertKeepingReview()` in `seed.mjs`. Dit is er op 09-09 bij gekomen nadat één re-seed van
   a2:lezen 51 vrijgegeven lessen en 36 vrijgegeven concepten stil terugzette op `pending`, waarmee
