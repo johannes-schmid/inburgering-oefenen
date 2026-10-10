@@ -1,6 +1,6 @@
 {
   "week": "2026-W41",
-  "generated_at": "2026-10-05T18:22:34.645Z",
+  "generated_at": "2026-10-10T00:27:54.502Z",
   "queries": {
     "events_by_host_28d": {
       "columns": [
@@ -13,14 +13,14 @@
         [
           "knmoefenen.nl",
           "checkout_initiated",
-          127,
-          89
+          129,
+          88
         ],
         [
           "knmoefenen.nl",
           "signup_completed",
-          994,
-          397
+          959,
+          429
         ],
         [
           "localhost:3007",
@@ -53,14 +53,14 @@
         [
           "knmoefenen.nl",
           "checkout_initiated",
-          181,
-          122
+          168,
+          110
         ],
         [
           "knmoefenen.nl",
           "signup_completed",
-          1082,
-          446
+          1093,
+          427
         ],
         [
           "localhost:3007",
@@ -71,8 +71,8 @@
         [
           null,
           "payment_completed",
-          77,
-          74
+          73,
+          70
         ]
       ]
     },
@@ -86,9 +86,15 @@
       "results": [
         [
           "knmoefenen.nl",
-          25834,
-          6901,
-          3904
+          25250,
+          6836,
+          3975
+        ],
+        [
+          "www.knmoefenen.nl",
+          1,
+          1,
+          1
         ],
         [
           "localhost:3007",
@@ -97,9 +103,9 @@
           3
         ],
         [
-          "www.knmoefenen.nl",
-          1,
-          1,
+          "localhost:3001",
+          62,
+          4,
           1
         ]
       ]
@@ -119,267 +125,187 @@
         [
           "knmoefenen.nl",
           "/nl",
-          2077,
+          2101,
           0,
           0,
-          178,
-          30,
+          168,
+          31,
           0
         ],
         [
           "knmoefenen.nl",
           "/ar",
-          1436,
+          1230,
           0,
           0,
-          91,
-          16,
+          66,
+          9,
           0
         ],
         [
           "knmoefenen.nl",
           "/nl/dashboard",
-          1175,
+          1091,
           0,
           0,
-          319,
-          26,
+          293,
+          28,
           0
         ],
         [
           "knmoefenen.nl",
           "/en/knm-exam-english",
-          431,
+          452,
           0,
           0,
-          74,
-          7,
+          85,
+          8,
           0
         ],
         [
           "knmoefenen.nl",
           "/nl/proefexamen",
-          343,
+          410,
           0,
           0,
-          32,
+          40,
           4,
           0
         ],
         [
           "knmoefenen.nl",
-          "/nl/inburgering-knm-oefenen",
-          246,
+          "/nl/oefenen",
+          264,
           0,
           0,
-          39,
+          11,
           2,
           0
         ],
         [
           "knmoefenen.nl",
-          "/nl/oefenen",
-          241,
+          "/nl/inburgering-knm-oefenen",
+          248,
           0,
           0,
-          10,
-          1,
+          48,
+          2,
           0
         ],
         [
           "knmoefenen.nl",
           "/en/dashboard",
-          142,
+          153,
           0,
           0,
-          37,
-          0,
-          0
-        ],
-        [
-          "knmoefenen.nl",
-          "/ar/oefenen",
-          125,
-          0,
-          0,
-          11,
-          3,
-          0
-        ],
-        [
-          "knmoefenen.nl",
-          "/nl/admin",
-          122,
-          0,
-          0,
-          1,
-          1,
-          0
-        ],
-        [
-          "knmoefenen.nl",
-          "/nl/oefenvragen",
-          105,
-          0,
-          0,
-          12,
-          1,
-          0
-        ],
-        [
-          "knmoefenen.nl",
-          "/nl/activate",
-          103,
-          0,
-          0,
-          8,
-          6,
-          0
-        ],
-        [
-          "knmoefenen.nl",
-          "/nl/login",
-          99,
-          0,
-          0,
-          21,
-          1,
-          0
-        ],
-        [
-          "knmoefenen.nl",
-          "/nl/premium",
-          91,
-          0,
-          0,
-          12,
-          5,
-          0
-        ],
-        [
-          "knmoefenen.nl",
-          "/ar/dashboard",
-          88,
-          0,
-          0,
-          23,
+          43,
           1,
           0
         ],
         [
           "knmoefenen.nl",
           "/en/admin",
+          120,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          "knmoefenen.nl",
+          "/nl/admin",
+          119,
+          0,
+          0,
+          1,
+          1,
+          0
+        ],
+        [
+          "knmoefenen.nl",
+          "/nl/activate",
+          115,
+          0,
+          0,
+          11,
+          8,
+          0
+        ],
+        [
+          "knmoefenen.nl",
+          "/nl/oefenvragen",
+          107,
+          0,
+          0,
+          10,
+          0,
+          0
+        ],
+        [
+          "knmoefenen.nl",
+          "/ar/oefenen",
+          104,
+          0,
+          0,
+          7,
+          2,
+          0
+        ],
+        [
+          "knmoefenen.nl",
+          "/nl/login",
+          97,
+          0,
+          0,
+          25,
+          1,
+          0
+        ],
+        [
+          "knmoefenen.nl",
+          "/nl/premium",
           84,
           0,
           0,
+          8,
+          5,
+          0
+        ],
+        [
+          "knmoefenen.nl",
+          "/ar/dashboard",
+          77,
           0,
           0,
+          17,
+          1,
           0
         ],
         [
           "knmoefenen.nl",
           "/en/proefexamen",
-          70,
+          71,
           0,
           0,
           3,
-          0,
-          0
-        ],
-        [
-          "knmoefenen.nl",
-          "/ar/login",
-          61,
-          0,
-          0,
-          43,
-          0,
-          0
-        ],
-        [
-          "knmoefenen.nl",
-          "/nl/hoe-werkt-het-knm-examen",
-          59,
-          0,
-          0,
-          4,
           0,
           0
         ],
         [
           "knmoefenen.nl",
           "/en/inburgering-knm-oefenen",
-          59,
+          64,
           0,
           0,
-          14,
-          0,
-          0
-        ],
-        [
-          "knmoefenen.nl",
-          "/en/activate",
-          49,
-          0,
-          0,
-          0,
-          3,
-          0
-        ],
-        [
-          "knmoefenen.nl",
-          "/en/login",
-          43,
-          0,
-          0,
-          1,
+          11,
           0,
           0
         ],
         [
           "knmoefenen.nl",
-          "/en",
-          42,
-          0,
-          0,
-          1,
-          0,
-          0
-        ],
-        [
-          "knmoefenen.nl",
-          "/nl/knm-exam-english",
-          36,
-          0,
-          0,
-          2,
-          1,
-          0
-        ],
-        [
-          "knmoefenen.nl",
-          "/en/oefenen",
-          31,
-          0,
-          0,
-          2,
-          0,
-          0
-        ],
-        [
-          "knmoefenen.nl",
-          "/nl/oefenvragen/werk-en-inkomen",
-          31,
-          0,
-          0,
-          1,
-          0,
-          0
-        ],
-        [
-          "knmoefenen.nl",
-          "/en/oefenvragen",
-          31,
+          "/nl/hoe-werkt-het-knm-examen",
+          58,
           0,
           0,
           4,
@@ -388,8 +314,38 @@
         ],
         [
           "knmoefenen.nl",
-          "/en/uitschrijven",
-          29,
+          "/ar/login",
+          55,
+          0,
+          0,
+          38,
+          0,
+          0
+        ],
+        [
+          "knmoefenen.nl",
+          "/en/activate",
+          52,
+          0,
+          0,
+          0,
+          3,
+          0
+        ],
+        [
+          "knmoefenen.nl",
+          "/en",
+          50,
+          0,
+          0,
+          3,
+          0,
+          0
+        ],
+        [
+          "knmoefenen.nl",
+          "/en/login",
+          40,
           0,
           0,
           0,
@@ -398,18 +354,18 @@
         ],
         [
           "knmoefenen.nl",
-          "/nl/blog/knm-examen-2026",
-          25,
+          "/nl/knm-exam-english",
+          35,
           0,
           0,
-          2,
-          0,
+          5,
+          1,
           0
         ],
         [
           "knmoefenen.nl",
-          "/en/oefenvragen/werk-en-inkomen",
-          23,
+          "/en/oefenen",
+          34,
           0,
           0,
           3,
@@ -418,8 +374,78 @@
         ],
         [
           "knmoefenen.nl",
+          "/en/oefenvragen",
+          33,
+          0,
+          0,
+          3,
+          0,
+          0
+        ],
+        [
+          "knmoefenen.nl",
+          "/nl/oefenvragen/werk-en-inkomen",
+          33,
+          0,
+          0,
+          2,
+          0,
+          0
+        ],
+        [
+          "knmoefenen.nl",
+          "/en/uitschrijven",
+          32,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          "knmoefenen.nl",
+          "/en/oefenvragen/werk-en-inkomen",
+          30,
+          0,
+          0,
+          3,
+          1,
+          0
+        ],
+        [
+          "knmoefenen.nl",
+          "/nl/blog/knm-examen-2026",
+          27,
+          0,
+          0,
+          2,
+          0,
+          0
+        ],
+        [
+          "knmoefenen.nl",
+          "/nl/oefenvragen/wonen-en-samenleven",
+          27,
+          0,
+          0,
+          4,
+          1,
+          0
+        ],
+        [
+          "knmoefenen.nl",
+          "/nl/docent",
+          22,
+          0,
+          0,
+          4,
+          0,
+          0
+        ],
+        [
+          "knmoefenen.nl",
           "/ar/activate",
-          23,
+          22,
           0,
           0,
           5,
@@ -428,48 +454,28 @@
         ],
         [
           "knmoefenen.nl",
-          "/nl/oefenvragen/wonen-en-samenleven",
-          23,
-          0,
-          0,
-          4,
-          1,
-          0
-        ],
-        [
-          "knmoefenen.nl",
           "/nl/register",
-          20,
+          21,
           0,
           0,
-          1,
-          0,
-          0
-        ],
-        [
-          "knmoefenen.nl",
-          "/nl/docent",
-          18,
-          0,
-          0,
-          4,
+          2,
           0,
           0
         ],
         [
           "knmoefenen.nl",
           "/en/hoe-werkt-het-knm-examen",
-          17,
+          18,
           0,
           0,
-          2,
+          0,
           0,
           0
         ],
         [
           "knmoefenen.nl",
           "/nl/admin/users",
-          17,
+          16,
           0,
           0,
           0,
@@ -478,12 +484,32 @@
         ],
         [
           "knmoefenen.nl",
-          "/ar/%D8%A7%D9%84%D8%A8%D8%A7%D9%82%D8%A9-%D8%A7%D9%84%D9%85%D9%85%D9%8A%D8%B2%D8%A9",
-          17,
+          "/nl/betaling-gelukt",
+          16,
           0,
           0,
           5,
+          1,
+          0
+        ],
+        [
+          "knmoefenen.nl",
+          "/ar/%D8%A7%D9%84%D8%A8%D8%A7%D9%82%D8%A9-%D8%A7%D9%84%D9%85%D9%85%D9%8A%D8%B2%D8%A9",
+          14,
+          0,
+          0,
+          4,
+          1,
+          0
+        ],
+        [
+          "knmoefenen.nl",
+          "/en/premium",
+          14,
+          0,
+          0,
           2,
+          0,
           0
         ],
         [
@@ -492,17 +518,7 @@
           13,
           0,
           0,
-          7,
-          0,
-          0
-        ],
-        [
-          "knmoefenen.nl",
-          "/en/premium",
-          12,
-          0,
-          0,
-          2,
+          8,
           0,
           0
         ],
@@ -512,7 +528,27 @@
           12,
           0,
           0,
+          3,
+          0,
+          0
+        ],
+        [
+          "knmoefenen.nl",
+          "/nl/uitschrijven",
+          11,
+          0,
+          0,
           2,
+          0,
+          0
+        ],
+        [
+          "knmoefenen.nl",
+          "/en/oefenvragen/gezondheid",
+          11,
+          0,
+          0,
+          0,
           0,
           0
         ],
@@ -528,37 +564,7 @@
         ],
         [
           "knmoefenen.nl",
-          "/nl/betaling-gelukt",
-          11,
-          0,
-          0,
-          4,
-          0,
-          0
-        ],
-        [
-          "knmoefenen.nl",
           "/nl/oefenvragen/politiek-en-instellingen",
-          11,
-          0,
-          0,
-          0,
-          0,
-          0
-        ],
-        [
-          "knmoefenen.nl",
-          "/ar/register",
-          10,
-          0,
-          0,
-          1,
-          0,
-          0
-        ],
-        [
-          "knmoefenen.nl",
-          "/nl/dashbord",
           10,
           0,
           0,
@@ -578,31 +584,21 @@
         ],
         [
           "knmoefenen.nl",
-          "/en/admin-login",
-          9,
-          0,
-          0,
-          0,
-          1,
-          0
-        ],
-        [
-          "knmoefenen.nl",
-          "/nl/uitschrijven",
-          8,
-          0,
-          0,
-          2,
-          0,
-          0
-        ],
-        [
-          "knmoefenen.nl",
           "/nl/blog/knm-gezakt",
           8,
           0,
           0,
           0,
+          0,
+          0
+        ],
+        [
+          "knmoefenen.nl",
+          "/nl/blog/how-to-pass-knm-exam",
+          8,
+          0,
+          0,
+          1,
           0,
           0
         ],
@@ -618,48 +614,8 @@
         ],
         [
           "knmoefenen.nl",
-          "/nl/dashboard/fouten",
-          8,
-          0,
-          0,
-          0,
-          0,
-          0
-        ],
-        [
-          "knmoefenen.nl",
-          "/en/oefenvragen/gezondheid",
-          8,
-          0,
-          0,
-          0,
-          0,
-          0
-        ],
-        [
-          "knmoefenen.nl",
-          "/ar/oefenvragen/overheid-en-regels",
-          8,
-          0,
-          0,
-          2,
-          2,
-          0
-        ],
-        [
-          "knmoefenen.nl",
           "/en/oefenvragen/geschiedenis-herdenking",
-          7,
-          0,
-          0,
-          1,
-          0,
-          0
-        ],
-        [
-          "knmoefenen.nl",
-          "/ar/%D8%A7%D8%AE%D8%AA%D8%A8%D8%A7%D8%B1-%D8%AA%D8%AC%D8%B1%D9%8A%D8%A8%D9%8A",
-          7,
+          8,
           0,
           0,
           0,
@@ -668,28 +624,8 @@
         ],
         [
           "knmoefenen.nl",
-          "/ar/oefenvragen/werk-en-inkomen",
-          7,
-          0,
-          0,
-          2,
-          0,
-          0
-        ],
-        [
-          "knmoefenen.nl",
-          "/en/blog/knm-exam-2026-questions-score-preparation",
-          6,
-          0,
-          0,
-          0,
-          0,
-          0
-        ],
-        [
-          "knmoefenen.nl",
-          "/ar/%D8%AA%D9%88%D8%A7%D8%B5%D9%84-%D9%85%D8%B9%D9%86%D8%A7",
-          6,
+          "/en/oefenvragen/wonen-en-samenleven",
+          8,
           0,
           0,
           0,
@@ -699,11 +635,101 @@
         [
           "knmoefenen.nl",
           "/nl/dashboard/beloning",
+          7,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          "knmoefenen.nl",
+          "/en/oefenvragen/onderwijs-en-kinderen",
+          7,
+          0,
+          0,
+          1,
+          0,
+          0
+        ],
+        [
+          "knmoefenen.nl",
+          "/en/blog/knm-exam-2026-questions-score-preparation",
+          7,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          "knmoefenen.nl",
+          "/nl/dashboard/analyse",
+          7,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          "knmoefenen.nl",
+          "/ar/%D8%A7%D8%AE%D8%AA%D8%A8%D8%A7%D8%B1-%D8%AA%D8%AC%D8%B1%D9%8A%D8%A8%D9%8A",
           6,
           0,
           0,
           0,
           0,
+          0
+        ],
+        [
+          "knmoefenen.nl",
+          "/ar/register",
+          6,
+          0,
+          0,
+          1,
+          0,
+          0
+        ],
+        [
+          "knmoefenen.nl",
+          "/ar/oefenvragen/overheid-en-regels",
+          6,
+          0,
+          0,
+          2,
+          2,
+          0
+        ],
+        [
+          "knmoefenen.nl",
+          "/nl/dashbord",
+          6,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          "knmoefenen.nl",
+          "/en/admin-login",
+          6,
+          0,
+          0,
+          0,
+          1,
+          0
+        ],
+        [
+          "knmoefenen.nl",
+          "/nl/oefenvragen/onderwijs-en-kinderen",
+          6,
+          0,
+          0,
+          1,
+          2,
           0
         ],
         [
@@ -718,77 +744,17 @@
         ],
         [
           "knmoefenen.nl",
-          "/nl/admin-login",
-          6,
-          0,
-          0,
-          0,
-          1,
-          0
-        ],
-        [
-          "knmoefenen.nl",
-          "/en/contact",
-          6,
-          0,
-          0,
-          0,
-          0,
-          0
-        ],
-        [
-          "knmoefenen.nl",
-          "/nl/dashboard/analyse",
-          6,
-          0,
-          0,
-          0,
-          0,
-          0
-        ],
-        [
-          "knmoefenen.nl",
-          "/nl/blog/knm-onderwerpen",
+          "/ar/oefenvragen/werk-en-inkomen",
           5,
           0,
           0,
-          0,
+          2,
           0,
           0
         ],
         [
           "knmoefenen.nl",
           "/en/oefenvragen/politiek-en-instellingen",
-          5,
-          0,
-          0,
-          0,
-          0,
-          0
-        ],
-        [
-          "knmoefenen.nl",
-          "/nl/contact",
-          5,
-          0,
-          0,
-          0,
-          0,
-          0
-        ],
-        [
-          "knmoefenen.nl",
-          "/nl/blog/how-to-pass-knm-exam",
-          5,
-          0,
-          0,
-          0,
-          0,
-          0
-        ],
-        [
-          "knmoefenen.nl",
-          "/nl/leren/thema-5-werk",
           5,
           0,
           0,
@@ -807,6 +773,26 @@
           0
         ],
         [
+          "knmoefenen.nl",
+          "/nl/dashboard/fouten",
+          5,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          "knmoefenen.nl",
+          "/en/contact",
+          5,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
           "localhost:3007",
           "/nl/activate",
           5,
@@ -814,16 +800,6 @@
           0,
           1,
           2,
-          0
-        ],
-        [
-          "knmoefenen.nl",
-          "/en/oefenvragen/wonen-en-samenleven",
-          5,
-          0,
-          0,
-          0,
-          0,
           0
         ]
       ]
@@ -840,103 +816,103 @@
           "knmoefenen.nl",
           "/nl",
           "www.google.com",
-          827
+          832
         ],
         [
           "knmoefenen.nl",
           "/en/knm-exam-english",
           "www.google.com",
-          383
+          404
         ],
         [
           "knmoefenen.nl",
-          "/nl/inburgering-knm-oefenen",
-          "www.google.com",
-          127
+          "/nl/proefexamen",
+          "www.bing.com",
+          142
         ],
         [
           "knmoefenen.nl",
           "/nl",
           "www.bing.com",
-          123
+          141
         ],
         [
           "knmoefenen.nl",
-          "/nl/proefexamen",
-          "www.bing.com",
-          111
-        ],
-        [
-          "knmoefenen.nl",
-          "/nl/dashboard",
+          "/nl/inburgering-knm-oefenen",
           "www.google.com",
-          55
+          134
         ],
         [
           "knmoefenen.nl",
           "/en/inburgering-knm-oefenen",
           "www.google.com",
-          50
+          56
+        ],
+        [
+          "knmoefenen.nl",
+          "/nl/dashboard",
+          "www.google.com",
+          51
         ],
         [
           "knmoefenen.nl",
           "/nl/inburgering-knm-oefenen",
           "www.bing.com",
-          36
-        ],
-        [
-          "knmoefenen.nl",
-          "/nl/hoe-werkt-het-knm-examen",
-          "www.google.com",
-          33
+          47
         ],
         [
           "knmoefenen.nl",
           "/nl/oefenvragen",
           "www.google.com",
-          32
-        ],
-        [
-          "knmoefenen.nl",
-          "/nl/knm-exam-english",
-          "www.google.com",
-          27
-        ],
-        [
-          "knmoefenen.nl",
-          "/ar",
-          "www.google.com",
-          26
-        ],
-        [
-          "knmoefenen.nl",
-          "/en",
-          "www.google.com",
-          20
-        ],
-        [
-          "knmoefenen.nl",
-          "/en/proefexamen",
-          "www.bing.com",
-          19
+          34
         ],
         [
           "knmoefenen.nl",
           "/nl/proefexamen",
           "www.google.com",
-          19
+          33
         ],
         [
           "knmoefenen.nl",
-          "/nl/oefenen",
+          "/nl/knm-exam-english",
           "www.google.com",
-          18
+          30
+        ],
+        [
+          "knmoefenen.nl",
+          "/nl/hoe-werkt-het-knm-examen",
+          "www.google.com",
+          30
+        ],
+        [
+          "knmoefenen.nl",
+          "/ar",
+          "www.google.com",
+          29
         ],
         [
           "knmoefenen.nl",
           "/en/dashboard",
           "www.google.com",
-          16
+          25
+        ],
+        [
+          "knmoefenen.nl",
+          "/en",
+          "www.google.com",
+          24
+        ],
+        [
+          "knmoefenen.nl",
+          "/nl/oefenen",
+          "www.google.com",
+          19
+        ],
+        [
+          "knmoefenen.nl",
+          "/en/proefexamen",
+          "www.bing.com",
+          18
         ],
         [
           "knmoefenen.nl",
@@ -946,15 +922,39 @@
         ],
         [
           "knmoefenen.nl",
-          "/en/hoe-werkt-het-knm-examen",
-          "www.google.com",
-          15
+          "/nl/dashboard",
+          "www.bing.com",
+          13
         ],
         [
           "knmoefenen.nl",
-          "/nl/dashboard",
+          "/en/hoe-werkt-het-knm-examen",
+          "www.google.com",
+          13
+        ],
+        [
+          "knmoefenen.nl",
+          "/nl/proefexamen",
+          "duckduckgo.com",
+          13
+        ],
+        [
+          "knmoefenen.nl",
+          "/nl/blog/knm-examen-2026",
+          "www.google.com",
+          13
+        ],
+        [
+          "knmoefenen.nl",
+          "/en/knm-exam-english",
           "www.bing.com",
-          14
+          11
+        ],
+        [
+          "knmoefenen.nl",
+          "/ar/knm-exam-english",
+          "www.google.com",
+          11
         ],
         [
           "knmoefenen.nl",
@@ -970,37 +970,43 @@
         ],
         [
           "knmoefenen.nl",
-          "/nl/proefexamen",
-          "duckduckgo.com",
-          11
-        ],
-        [
-          "knmoefenen.nl",
-          "/ar/knm-exam-english",
-          "www.google.com",
-          10
-        ],
-        [
-          "knmoefenen.nl",
-          "/nl/inburgering-knm-oefenen",
-          "duckduckgo.com",
-          10
-        ],
-        [
-          "knmoefenen.nl",
-          "/nl/blog/knm-examen-2026",
-          "www.google.com",
-          10
-        ],
-        [
-          "knmoefenen.nl",
           "/nl/oefenvragen/werk-en-inkomen",
+          "www.google.com",
+          9
+        ],
+        [
+          "knmoefenen.nl",
+          "/en/oefenvragen/werk-en-inkomen",
           "www.google.com",
           8
         ],
         [
           "knmoefenen.nl",
+          "/nl/oefenvragen/wonen-en-samenleven",
+          "www.bing.com",
+          8
+        ],
+        [
+          "knmoefenen.nl",
+          "/nl/dashboard",
+          "duckduckgo.com",
+          7
+        ],
+        [
+          "knmoefenen.nl",
           "/nl/premium",
+          "www.google.com",
+          7
+        ],
+        [
+          "knmoefenen.nl",
+          "/nl/inburgering-knm-oefenen",
+          "duckduckgo.com",
+          7
+        ],
+        [
+          "knmoefenen.nl",
+          "/en/premium",
           "www.google.com",
           7
         ],
@@ -1012,68 +1018,44 @@
         ],
         [
           "knmoefenen.nl",
-          "/nl/oefenvragen",
-          "www.bing.com",
-          7
-        ],
-        [
-          "knmoefenen.nl",
-          "/en/knm-exam-english",
-          "www.bing.com",
-          7
-        ],
-        [
-          "knmoefenen.nl",
-          "/nl/oefenvragen/wonen-en-samenleven",
-          "www.bing.com",
-          6
-        ],
-        [
-          "knmoefenen.nl",
-          "/en/premium",
+          "/nl/register",
           "www.google.com",
           6
         ],
         [
           "knmoefenen.nl",
-          "/en/oefenvragen/werk-en-inkomen",
-          "www.google.com",
-          6
-        ],
-        [
-          "knmoefenen.nl",
-          "/nl/dashboard",
-          "duckduckgo.com",
+          "/nl/hoe-werkt-het-knm-examen",
+          "www.bing.com",
           6
         ],
         [
           "knmoefenen.nl",
           "/ar/dashboard",
           "www.google.com",
-          5
+          6
         ],
         [
           "knmoefenen.nl",
-          "/nl/dashboard",
-          "chatgpt.com",
-          4
+          "/en/proefexamen",
+          "www.google.com",
+          6
+        ],
+        [
+          "knmoefenen.nl",
+          "/nl/oefenvragen",
+          "www.bing.com",
+          5
         ],
         [
           "knmoefenen.nl",
           "/nl/oefenvragen/werk-en-inkomen",
           "www.bing.com",
-          4
+          5
         ],
         [
           "knmoefenen.nl",
-          "/nl/dashboard/fouten",
-          "www.google.com",
-          4
-        ],
-        [
-          "knmoefenen.nl",
-          "/nl/register",
-          "www.google.com",
+          "/nl/oefenen",
+          "www.bing.com",
           4
         ],
         [
@@ -1084,61 +1066,13 @@
         ],
         [
           "knmoefenen.nl",
+          "/nl/docent",
+          "www.google.com",
+          3
+        ],
+        [
+          "knmoefenen.nl",
           "/en/oefenen",
-          "www.google.com",
-          4
-        ],
-        [
-          "knmoefenen.nl",
-          "/en/blog/knm-exam-2026",
-          "www.google.com",
-          4
-        ],
-        [
-          "knmoefenen.nl",
-          "/nl/oefenvragen",
-          "chatgpt.com",
-          3
-        ],
-        [
-          "knmoefenen.nl",
-          "/nl/hoe-werkt-het-knm-examen",
-          "www.bing.com",
-          3
-        ],
-        [
-          "knmoefenen.nl",
-          "/nl/blog/knm-examen-2026",
-          "www.bing.com",
-          3
-        ],
-        [
-          "knmoefenen.nl",
-          "/ar/activate",
-          "www.google.com",
-          3
-        ],
-        [
-          "knmoefenen.nl",
-          "/en/blog/knm-exam-2026-questions-score-preparation",
-          "www.google.com",
-          3
-        ],
-        [
-          "knmoefenen.nl",
-          "/nl/blog/how-to-become-dutch-citizen",
-          "www.bing.com",
-          3
-        ],
-        [
-          "knmoefenen.nl",
-          "/nl/inburgering-knm-oefenen",
-          "chatgpt.com",
-          3
-        ],
-        [
-          "knmoefenen.nl",
-          "/en/oefenvragen/geschiedenis-herdenking",
           "www.google.com",
           3
         ],
@@ -1156,26 +1090,26 @@
         ],
         [
           "knmoefenen.nl",
-          "/en/proefexamen",
+          "/en/blog/knm-exam-2026-questions-score-preparation",
+          "www.bing.com",
+          3
+        ],
+        [
+          "knmoefenen.nl",
+          "/en/blog/knm-exam-2026-questions-score-preparation",
           "www.google.com",
           3
         ],
         [
           "knmoefenen.nl",
-          "/nl/proefexamen",
+          "/nl/blog/how-to-become-dutch-citizen",
+          "www.bing.com",
+          3
+        ],
+        [
+          "knmoefenen.nl",
+          "/nl/oefenvragen",
           "chatgpt.com",
-          2
-        ],
-        [
-          "knmoefenen.nl",
-          "/ar/oefenvragen/werk-en-inkomen",
-          "www.google.com",
-          2
-        ],
-        [
-          "knmoefenen.nl",
-          "/en/oefenvragen/gezondheid",
-          "www.google.com",
           2
         ],
         [
@@ -1186,13 +1120,7 @@
         ],
         [
           "knmoefenen.nl",
-          "/nl/dashboard/analyse",
-          "www.bing.com",
-          2
-        ],
-        [
-          "knmoefenen.nl",
-          "/ar/blog/knm-examen-2026",
+          "/en/blog/knm-oefenvragen-gratis",
           "www.google.com",
           2
         ],
@@ -1204,55 +1132,31 @@
         ],
         [
           "knmoefenen.nl",
-          "/nl",
+          "/ar/oefenvragen/werk-en-inkomen",
+          "www.google.com",
+          2
+        ],
+        [
+          "knmoefenen.nl",
+          "/nl/blog/knm-oefenvragen-gratis",
+          "www.google.com",
+          2
+        ],
+        [
+          "knmoefenen.nl",
+          "/nl/dashboard",
           "chatgpt.com",
           2
         ],
         [
           "knmoefenen.nl",
-          "/en/proefexamen",
-          "duckduckgo.com",
-          2
-        ],
-        [
-          "knmoefenen.nl",
-          "/nl/leren/thema-2-wonen",
-          "www.google.com",
-          2
-        ],
-        [
-          "knmoefenen.nl",
-          "/nl/oefenvragen/werk-en-inkomen",
-          "chatgpt.com",
-          2
-        ],
-        [
-          "knmoefenen.nl",
-          "/nl/blog/knm-werk-inkomen",
+          "/nl/blog/knm-examen-2026",
           "www.bing.com",
           2
         ],
         [
           "knmoefenen.nl",
-          "/en/blog/knm-exam-day",
-          "www.google.com",
-          2
-        ],
-        [
-          "knmoefenen.nl",
-          "/nl/login",
-          "www.bing.com",
-          2
-        ],
-        [
-          "knmoefenen.nl",
-          "/nl/docent",
-          "www.google.com",
-          2
-        ],
-        [
-          "knmoefenen.nl",
-          "/en/blog/knm-exam-2026-questions-score-preparation",
+          "/nl/blog/knm-gezakt",
           "www.bing.com",
           2
         ],
@@ -1264,25 +1168,67 @@
         ],
         [
           "knmoefenen.nl",
-          "/nl/blog/knm-gezakt",
-          "www.bing.com",
-          2
-        ],
-        [
-          "knmoefenen.nl",
-          "/nl/blog/knm-oefenvragen-gratis",
+          "/nl/dashboard/fouten",
           "www.google.com",
           2
         ],
         [
           "knmoefenen.nl",
-          "/en/oefenvragen/werk-en-inkomen",
+          "/nl/blog/how-to-pass-knm-exam",
+          "duckduckgo.com",
+          2
+        ],
+        [
+          "knmoefenen.nl",
+          "/ar/activate",
+          "www.google.com",
+          2
+        ],
+        [
+          "knmoefenen.nl",
+          "/ar/blog/knm-examen-2026",
+          "www.google.com",
+          2
+        ],
+        [
+          "knmoefenen.nl",
+          "/nl/login",
           "www.bing.com",
           2
         ],
         [
           "knmoefenen.nl",
-          "/nl/oefenen",
+          "/en/oefenvragen/geschiedenis-herdenking",
+          "www.google.com",
+          2
+        ],
+        [
+          "knmoefenen.nl",
+          "/en/proefexamen",
+          "duckduckgo.com",
+          2
+        ],
+        [
+          "knmoefenen.nl",
+          "/en/blog/what-is-knm-exam",
+          "www.bing.com",
+          2
+        ],
+        [
+          "knmoefenen.nl",
+          "/nl/proefexamen",
+          "chatgpt.com",
+          2
+        ],
+        [
+          "knmoefenen.nl",
+          "/en/oefenvragen/onderwijs-en-kinderen",
+          "www.google.com",
+          2
+        ],
+        [
+          "knmoefenen.nl",
+          "/nl/dashboard/analyse",
           "www.bing.com",
           2
         ],
@@ -1294,62 +1240,50 @@
         ],
         [
           "knmoefenen.nl",
-          "/nl/admin",
-          "www.google.com",
-          1
-        ],
-        [
-          "knmoefenen.nl",
-          "/nl/blog/knm-onderwerpen",
-          "duckduckgo.com",
-          1
-        ],
-        [
-          "knmoefenen.nl",
-          "/en/oefenvragen/wonen-en-samenleven",
+          "/en/oefenvragen/werk-en-inkomen",
           "www.bing.com",
-          1
+          2
         ],
         [
           "knmoefenen.nl",
-          "/ar/%D8%A7%D9%84%D8%A8%D8%A7%D9%82%D8%A9-%D8%A7%D9%84%D9%85%D9%85%D9%8A%D8%B2%D8%A9",
-          "www.google.com",
-          1
-        ],
-        [
-          "knmoefenen.nl",
-          "/en/blog/what-is-knm-exam",
+          "/nl/blog/knm-werk-inkomen",
           "www.bing.com",
-          1
+          2
         ],
         [
           "knmoefenen.nl",
-          "/en/oefenvragen/onderwijs-en-kinderen",
+          "/en/oefenvragen/gezondheid",
           "www.google.com",
-          1
+          2
         ],
         [
           "knmoefenen.nl",
-          "/en/blog/knm-oefenvragen-gratis",
-          "www.google.com",
-          1
+          "/nl/oefenvragen/werk-en-inkomen",
+          "chatgpt.com",
+          2
         ],
         [
           "knmoefenen.nl",
-          "/en/activate",
+          "/nl/leren/thema-2-wonen",
           "www.google.com",
-          1
-        ],
-        [
-          "knmoefenen.nl",
-          "/en/login",
-          "www.google.com",
-          1
+          2
         ],
         [
           "knmoefenen.nl",
           "/nl/blog/knm-oefenvragen-gratis",
           "www.bing.com",
+          1
+        ],
+        [
+          "knmoefenen.nl",
+          "/en/blog/new-knm-exam-2025-what-has-changed",
+          "www.bing.com",
+          1
+        ],
+        [
+          "knmoefenen.nl",
+          "/en/blog/knm-exam-2026",
+          "www.google.com",
           1
         ],
         [
@@ -1360,44 +1294,20 @@
         ],
         [
           "knmoefenen.nl",
-          "/nl/activate",
-          "www.bing.com",
-          1
-        ],
-        [
-          "knmoefenen.nl",
-          "/nl/activate",
+          "/en/activate",
           "www.google.com",
           1
         ],
         [
           "knmoefenen.nl",
-          "/ar/login",
+          "/nl",
+          "chatgpt.com",
+          1
+        ],
+        [
+          "knmoefenen.nl",
+          "/ar/%D8%A7%D9%84%D8%A8%D8%A7%D9%82%D8%A9-%D8%A7%D9%84%D9%85%D9%85%D9%8A%D8%B2%D8%A9",
           "www.google.com",
-          1
-        ],
-        [
-          "knmoefenen.nl",
-          "/en/oefenvragen/overheid-en-regels",
-          "www.google.com",
-          1
-        ],
-        [
-          "knmoefenen.nl",
-          "/nl/blog/knm-examen-dag",
-          "www.google.com",
-          1
-        ],
-        [
-          "knmoefenen.nl",
-          "/nl/oefenvragen/politiek-en-instellingen",
-          "www.bing.com",
-          1
-        ],
-        [
-          "knmoefenen.nl",
-          "/nl/blog/knm-examen-oefenen-2026",
-          "www.bing.com",
           1
         ],
         [
@@ -1408,14 +1318,8 @@
         ],
         [
           "knmoefenen.nl",
-          "/en/blog/failed-knm-exam",
-          "www.google.com",
-          1
-        ],
-        [
-          "knmoefenen.nl",
-          "/nl/oefenvragen/politiek-en-instellingen",
-          "duckduckgo.com",
+          "/nl/inburgering-knm-oefenen",
+          "chatgpt.com",
           1
         ],
         [
@@ -1426,14 +1330,86 @@
         ],
         [
           "knmoefenen.nl",
-          "/nl/dashboard/beloning",
+          "/nl/blog/knm-onderwerpen",
+          "duckduckgo.com",
+          1
+        ],
+        [
+          "knmoefenen.nl",
+          "/ar/hoe-werkt-het-knm-examen",
           "www.google.com",
           1
         ],
         [
           "knmoefenen.nl",
-          "/nl/blog/knm-onderwerpen",
+          "/nl/admin",
           "www.google.com",
+          1
+        ],
+        [
+          "knmoefenen.nl",
+          "/nl/blog/knm-examen-dag",
+          "www.bing.com",
+          1
+        ],
+        [
+          "knmoefenen.nl",
+          "/nl/activate",
+          "www.bing.com",
+          1
+        ],
+        [
+          "knmoefenen.nl",
+          "/en/blog/knm-exam-day",
+          "www.google.com",
+          1
+        ],
+        [
+          "knmoefenen.nl",
+          "/nl/activate",
+          "www.google.com",
+          1
+        ],
+        [
+          "knmoefenen.nl",
+          "/nl/oefenvragen/onderwijs-en-kinderen",
+          "duckduckgo.com",
+          1
+        ],
+        [
+          "knmoefenen.nl",
+          "/nl/oefenvragen/politiek-en-instellingen",
+          "www.bing.com",
+          1
+        ],
+        [
+          "knmoefenen.nl",
+          "/nl/blog/wat-is-het-knm-examen",
+          "www.bing.com",
+          1
+        ],
+        [
+          "knmoefenen.nl",
+          "/en/register",
+          "www.google.com",
+          1
+        ],
+        [
+          "knmoefenen.nl",
+          "/nl/leren/thema-1-geschiedenis-en-geografie",
+          "www.google.com",
+          1
+        ],
+        [
+          "knmoefenen.nl",
+          "/nl/oefenvragen/politiek-en-instellingen",
+          "www.google.com",
+          1
+        ],
+        [
+          "knmoefenen.nl",
+          "/en/blog/how-to-become-dutch-citizen",
+          "duckduckgo.com",
           1
         ]
       ]
@@ -1448,7 +1424,7 @@
         [
           null,
           53,
-          645.3499999999999
+          685.3499999999999
         ]
       ]
     }
