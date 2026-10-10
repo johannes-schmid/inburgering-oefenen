@@ -1,0 +1,294 @@
+{
+  "items": [
+    {
+      "kind": "uitleg",
+      "tier": null,
+      "explanation": null,
+      "payload": {
+        "body_html": "<p>Een bijvoegljk naamwoord (een woord dat iets zegt over een ding, zoals <em>oud</em> of <em>nieuw</em>) krijgt meestal een <strong>-e</strong>.</p><p>Na <em>de</em>, <em>het</em>, <em>deze</em>, <em>die</em>, <em>mijn</em> en <em>onze</em> komt er altijd een -e. Ook bij meervoud komt er een -e.</p><p>Eén geval valt op: bij een <strong>het-woord</strong> met <em>een</em>, <em>geen</em> of zonder lidwoord komt er <strong>geen</strong> -e.</p>",
+        "cards": [
+          {
+            "label": "WEL -e",
+            "example_html": "Ik woon in <mark>het oude huis</mark> aan de gracht."
+          },
+          {
+            "label": "GEEN -e",
+            "example_html": "Zij zoekt <mark>een oud huis</mark> met een grote tuin."
+          }
+        ]
+      }
+    },
+    {
+      "kind": "uitleg",
+      "tier": null,
+      "explanation": null,
+      "payload": {
+        "body_html": "<p>Na <em>iets</em>, <em>niets</em>, <em>veel</em> en <em>weinig</em> krijgt het bijvoeglijk naamwoord een <strong>-s</strong>.</p><p>Je gebruikt deze vorm vaak in een mening of een nieuwsbericht: <em>Er is weinig nieuws te melden.</em></p><p>Een paar woorden krijgen nooit een -e: stofnamen op <strong>-en</strong>, zoals <em>houten</em>, <em>gouden</em> en <em>ijzeren</em>.</p>",
+        "cards": [
+          {
+            "label": "-s NA IETS",
+            "example_html": "De gemeente wil <mark>iets nieuws</mark> doen voor de buurt."
+          },
+          {
+            "label": "NOOIT -e",
+            "example_html": "Op tafel ligt <mark>een houten blad</mark> met de post."
+          }
+        ]
+      }
+    },
+    {
+      "kind": "uitleg",
+      "tier": null,
+      "explanation": null,
+      "payload": {
+        "body_html": "<p>Als je een -e toevoegt, verandert soms de spelling van het woord.</p><p>Heeft het woord een <strong>korte klinker</strong>, dan verdubbel je de medeklinker: <em>wit</em> wordt <em>witte</em>.</p><p>Heeft het woord een <strong>lange klinker</strong> met twee letters, dan verdwijnt er één letter: <em>groot</em> wordt <em>grote</em>.</p>",
+        "cards": [
+          {
+            "label": "KORTE KLINKER",
+            "example_html": "De brief zit in <mark>de witte envelop</mark> op de kast."
+          },
+          {
+            "label": "LANGE KLINKER",
+            "example_html": "Wij wachten in <mark>de grote hal</mark> van het gemeentehuis."
+          }
+        ]
+      }
+    },
+    {
+      "kind": "voorbeeld",
+      "tier": null,
+      "explanation": null,
+      "payload": {
+        "sentence_html": "In <mark>deze oude wijk</mark> staan veel woningen uit 1920."
+      }
+    },
+    {
+      "kind": "voorbeeld",
+      "tier": null,
+      "explanation": null,
+      "payload": {
+        "sentence_html": "De directeur vertelde <mark>iets belangrijks</mark> over de nieuwe werktijden."
+      }
+    },
+    {
+      "kind": "mcq",
+      "tier": 0,
+      "explanation": "Na <em>iets</em> komt er altijd een -s, dus <em>iets vervelends</em>.",
+      "options": [
+        {
+          "label": "A",
+          "body": "Er is iets vervelend gebeurd op kantoor.",
+          "is_correct": false
+        },
+        {
+          "label": "B",
+          "body": "Er is iets vervelends gebeurd op kantoor.",
+          "is_correct": true
+        },
+        {
+          "label": "C",
+          "body": "Er is iets vervelende gebeurd op kantoor.",
+          "is_correct": false
+        }
+      ],
+      "payload": {
+        "prompt": "Welke zin is goed geschreven?"
+      }
+    },
+    {
+      "kind": "mcq",
+      "tier": 0,
+      "explanation": "<em>Huis</em> is een het-woord. Na <em>een</em> krijgt een het-woord geen -e, dus <em>een oud huis</em>.",
+      "options": [
+        {
+          "label": "A",
+          "body": "Mijn collega heeft een oude huis gekocht in Zwolle.",
+          "is_correct": false
+        },
+        {
+          "label": "B",
+          "body": "Mijn collega heeft een oud huis gekocht in Zwolle.",
+          "is_correct": true
+        },
+        {
+          "label": "C",
+          "body": "Mijn collega heeft een ouds huis gekocht in Zwolle.",
+          "is_correct": false
+        }
+      ],
+      "payload": {
+        "prompt": "Welke zin is goed geschreven?"
+      }
+    },
+    {
+      "kind": "mcq",
+      "tier": 0,
+      "explanation": "Stofnamen op -en, zoals <em>gouden</em>, krijgen nooit een extra -e.",
+      "options": [
+        {
+          "label": "A",
+          "body": "Zij draagt een goudene ring van haar oma.",
+          "is_correct": false
+        },
+        {
+          "label": "B",
+          "body": "Zij draagt een gouden ring van haar oma.",
+          "is_correct": true
+        },
+        {
+          "label": "C",
+          "body": "Zij draagt een goudens ring van haar oma.",
+          "is_correct": false
+        }
+      ],
+      "payload": {
+        "prompt": "Welke zin is goed geschreven?"
+      }
+    },
+    {
+      "kind": "gap_choice",
+      "tier": 1,
+      "explanation": "Na <em>het</em> krijgt het bijvoeglijk naamwoord altijd een -e. <em>Groot</em> heeft een lange klinker, dus één o verdwijnt: <em>grote</em>.",
+      "payload": {
+        "sentence": "U kunt zich melden bij de balie in het ___ kantoor aan de Marktstraat.",
+        "choices": [
+          "groot",
+          "grote",
+          "groots"
+        ],
+        "answer": "grote"
+      }
+    },
+    {
+      "kind": "gap_choice",
+      "tier": 1,
+      "explanation": "<em>Formulier</em> is een het-woord met <em>een</em>, dus er komt geen -e achter <em>nieuw</em>.",
+      "payload": {
+        "sentence": "De gemeente stuurt u binnenkort een ___ formulier voor de aanvraag.",
+        "choices": [
+          "nieuw",
+          "nieuwe",
+          "nieuws"
+        ],
+        "answer": "nieuw"
+      }
+    },
+    {
+      "kind": "gap_choice",
+      "tier": 1,
+      "explanation": "Na <em>niets</em> komt er een -s: <em>niets bijzonders</em>.",
+      "payload": {
+        "sentence": "In het verslag van de vergadering staat niets ___ over de verhuizing.",
+        "choices": [
+          "bijzonder",
+          "bijzondere",
+          "bijzonders"
+        ],
+        "answer": "bijzonders"
+      }
+    },
+    {
+      "kind": "gap_choice",
+      "tier": 1,
+      "explanation": "Na <em>de</em> komt een -e. <em>Wit</em> heeft een korte klinker, dus je verdubbelt de t: <em>witte</em>.",
+      "payload": {
+        "sentence": "Lever de ___ kaart in bij de receptie als u weggaat.",
+        "choices": [
+          "wit",
+          "wite",
+          "witte"
+        ],
+        "answer": "witte"
+      }
+    },
+    {
+      "kind": "matchen",
+      "tier": 1,
+      "explanation": "Na <em>de</em>, <em>deze</em> en <em>mijn</em> komt een -e; bij een het-woord met <em>een</em> niet, en na <em>veel</em> komt een -s.",
+      "payload": {
+        "instruction": "Welke vorm hoort bij welk begin? Verbind de twee delen.",
+        "pairs": [
+          {
+            "left": "de ... straat",
+            "right": "drukke"
+          },
+          {
+            "left": "een ... plein",
+            "right": "druk"
+          },
+          {
+            "left": "veel ...",
+            "right": "drukker"
+          },
+          {
+            "left": "deze ... buurt",
+            "right": "rustige"
+          },
+          {
+            "left": "mijn ... adres",
+            "right": "oude"
+          }
+        ]
+      }
+    },
+    {
+      "kind": "gap_type",
+      "tier": 2,
+      "explanation": "Na <em>het</em> komt een -e, en bij de lange klinker van <em>groot</em> verdwijnt één o: <em>grote</em>.",
+      "payload": {
+        "sentence": "Het ___ probleem van de huurders is het vocht in de muren. (groot)",
+        "answer": "grote"
+      }
+    },
+    {
+      "kind": "gap_type",
+      "tier": 2,
+      "explanation": "Na <em>iets</em> krijgt het bijvoeglijk naamwoord een -s: <em>iets praktisch</em>.",
+      "payload": {
+        "sentence": "Wij zoeken voor de kinderen iets ___ en goedkoops. (praktisch)",
+        "answer": "praktisch"
+      }
+    },
+    {
+      "kind": "woordorde",
+      "tier": 2,
+      "explanation": "<em>Huis</em> is een het-woord, dus na <em>het</em> komt wel een -e: <em>het oude huis</em>.",
+      "payload": {
+        "instruction": "Maak een goede zin van deze woorden.",
+        "tokens": [
+          "huis",
+          "wordt",
+          "oude",
+          "gesloopt",
+          "het",
+          "volgend",
+          "jaar"
+        ],
+        "answer": [
+          "het",
+          "oude",
+          "huis",
+          "wordt",
+          "volgend",
+          "jaar",
+          "gesloopt"
+        ]
+      }
+    },
+    {
+      "kind": "open_zin",
+      "tier": 2,
+      "explanation": "Je gebruikt na <em>iets</em> een -s en na <em>de</em> of <em>het</em> een -e, met de juiste spelling.",
+      "payload": {
+        "prompt": "Schrijf twee zinnen over je woning. Gebruik in de eerste zin 'iets' met een bijvoeglijk naamwoord, en in de tweede zin 'het' met een bijvoeglijk naamwoord.",
+        "model_answer": "Ik wil iets groters huren, want mijn woning is te klein. Het kleine balkon aan de achterkant vind ik wel prettig.",
+        "checklist": [
+          "Na 'iets' staat een -s achter het bijvoeglijk naamwoord.",
+          "Na 'het' staat een -e achter het bijvoeglijk naamwoord.",
+          "De spelling klopt: korte klinker verdubbelt, lange klinker verliest een letter."
+        ]
+      }
+    }
+  ],
+  "what_you_learn": "Je leert wanneer een bijvoeglijk naamwoord een -e krijgt en wanneer niet, bijvoorbeeld in 'het oude huis' tegenover 'een oud huis'. Je leert ook dat er na iets, niets, veel en weinig een -s komt, zoals in 'iets leuks'. Daarnaast let je op de spelling: wit wordt witte, groot wordt grote."
+}

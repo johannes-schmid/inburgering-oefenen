@@ -1,0 +1,253 @@
+{
+  "items": [
+    {
+      "kind": "uitleg",
+      "tier": null,
+      "explanation": null,
+      "payload": {
+        "body_html": "<p>Aan de vorm van het werkwoord zie en hoor je wanneer iets gebeurde. Soms gaat het om iets wat af is, soms om iets wat nog moet komen. In teksten van de gemeente, in het nieuws en op je werk wisselen die tijden elkaar snel af. Als je de tijden herkent, begrijp je ook de volgorde van de gebeurtenissen.</p>",
+        "cards": [
+          {
+            "label": "VERLEDEN",
+            "example_html": "Vorige week <mark>stuurde</mark> de gemeente een brief. Ik <mark>heb</mark> het formulier al <mark>ingevuld</mark>."
+          },
+          {
+            "label": "NOG VERDER TERUG",
+            "example_html": "Toen ik thuiskwam, <mark>was</mark> de monteur al <mark>vertrokken</mark>."
+          },
+          {
+            "label": "TOEKOMST",
+            "example_html": "Het <mark>zal</mark> volgende week druk <mark>worden</mark> bij het loket."
+          }
+        ]
+      }
+    },
+    {
+      "kind": "uitleg",
+      "tier": null,
+      "explanation": null,
+      "payload": {
+        "body_html": "<p>Het imperfectum (ik werkte, hij ging) gebruik je voor een verhaal in het verleden. Het perfectum (ik heb gewerkt) gebruik je vooral als je iets meldt dat af is. Het plusquamperfectum (was vertrokken, had gegeten) laat zien dat iets nog eerder gebeurde dan de rest van het verhaal. Met <em>zullen</em> kijk je vooruit: het zal wel lukken.</p>",
+        "cards": [
+          {
+            "label": "BEZIG IN HET VERLEDEN",
+            "example_html": "Ik <mark>was aan het koken</mark> toen je belde."
+          },
+          {
+            "label": "EERST DIT, DAARNA DAT",
+            "example_html": "De vergadering <mark>was</mark> al <mark>begonnen</mark> toen hij binnenkwam."
+          }
+        ]
+      }
+    },
+    {
+      "kind": "voorbeeld",
+      "tier": null,
+      "explanation": null,
+      "payload": {
+        "sentence_html": "<p>De woningbouwvereniging meldt dat de lift <mark>volgende maand vervangen zal worden</mark>.</p>"
+      }
+    },
+    {
+      "kind": "voorbeeld",
+      "tier": null,
+      "explanation": null,
+      "payload": {
+        "sentence_html": "<p>Ik <mark>was net aan het bellen</mark> met de huisarts toen mijn buurvrouw aanklopte.</p>"
+      }
+    },
+    {
+      "kind": "mcq",
+      "tier": 0,
+      "explanation": "In <em>had betaald</em> staat een vorm van <em>hebben</em> in het verleden plus een deelwoord; dat is het plusquamperfectum en wijst op iets dat nog eerder gebeurde.",
+      "payload": {
+        "prompt": "Lees: \"Toen de aanmaning kwam, had ik de rekening al betaald.\" Welke tijd staat er in <em>had ik de rekening al betaald</em>?"
+      },
+      "options": [
+        {
+          "label": "A",
+          "body": "Perfectum (ik heb betaald)",
+          "is_correct": false
+        },
+        {
+          "label": "B",
+          "body": "Plusquamperfectum (ik had betaald)",
+          "is_correct": true
+        },
+        {
+          "label": "C",
+          "body": "Futurum met zullen (ik zal betalen)",
+          "is_correct": false
+        }
+      ]
+    },
+    {
+      "kind": "mcq",
+      "tier": 0,
+      "explanation": "<em>Was aan het opruimen</em> betekent dat je op dat moment in het verleden bezig was; het is geen afgeronde handeling.",
+      "payload": {
+        "prompt": "Lees: \"Ik was mijn bureau aan het opruimen toen de chef binnenkwam.\" Wat betekent <em>was aan het opruimen</em>?"
+      },
+      "options": [
+        {
+          "label": "A",
+          "body": "Ik was op dat moment bezig met opruimen.",
+          "is_correct": true
+        },
+        {
+          "label": "B",
+          "body": "Ik had het opruimen al helemaal afgemaakt.",
+          "is_correct": false
+        },
+        {
+          "label": "C",
+          "body": "Ik ga straks nog opruimen.",
+          "is_correct": false
+        }
+      ]
+    },
+    {
+      "kind": "mcq",
+      "tier": 0,
+      "explanation": "De vergadering begon eerder; dat zie je aan het plusquamperfectum <em>was begonnen</em>, terwijl <em>kwam binnen</em> het latere moment is.",
+      "payload": {
+        "prompt": "Lees: \"De vergadering was al begonnen toen meneer De Wit binnenkwam.\" Wat gebeurde er eerst?"
+      },
+      "options": [
+        {
+          "label": "A",
+          "body": "Meneer De Wit kwam binnen.",
+          "is_correct": false
+        },
+        {
+          "label": "B",
+          "body": "De vergadering begon.",
+          "is_correct": true
+        },
+        {
+          "label": "C",
+          "body": "Allebei precies tegelijk.",
+          "is_correct": false
+        }
+      ]
+    },
+    {
+      "kind": "gap_choice",
+      "tier": 1,
+      "explanation": "De brief kijkt vooruit naar iets dat nog moet gebeuren; daarom gebruik je het futurum met <em>zal</em>.",
+      "payload": {
+        "sentence": "In de brief staat: \"Uw aanvraag ___ binnen vier weken behandeld worden.\"",
+        "choices": [
+          "zal",
+          "was",
+          "werd"
+        ],
+        "answer": "zal"
+      }
+    },
+    {
+      "kind": "gap_choice",
+      "tier": 1,
+      "explanation": "Je was op dat moment bezig met werken, dus past <em>was aan het werken</em>; <em>heb gewerkt</em> zou een afgeronde handeling zijn.",
+      "payload": {
+        "sentence": "Ik ___ in de tuin toen de postbode het pakket bracht.",
+        "choices": [
+          "was aan het werken",
+          "heb gewerkt",
+          "zal werken"
+        ],
+        "answer": "was aan het werken"
+      }
+    },
+    {
+      "kind": "gap_choice",
+      "tier": 1,
+      "explanation": "Het sollicitatiegesprek gebeurde vóór het telefoontje, dus gebruik je het plusquamperfectum <em>had gesproken</em>.",
+      "payload": {
+        "sentence": "Toen het bedrijf belde, ___ ik al met drie andere werkgevers gesproken.",
+        "choices": [
+          "had",
+          "heb",
+          "zal"
+        ],
+        "answer": "had"
+      }
+    },
+    {
+      "kind": "matchen",
+      "tier": 1,
+      "explanation": "Elke werkwoordsvorm hoort bij één tijd: een deelwoord met <em>heb</em> is perfectum, met <em>was</em> plusquamperfectum, en <em>zullen</em> wijst vooruit.",
+      "payload": {
+        "instruction": "Zet elke zin bij de juiste tijd.",
+        "pairs": [
+          {
+            "left": "Vorig jaar woonde ik nog in Zwolle.",
+            "right": "imperfectum (verleden verhaal)"
+          },
+          {
+            "left": "Ik heb het formulier gisteren opgestuurd.",
+            "right": "perfectum (af)"
+          },
+          {
+            "left": "De bus was al vertrokken toen ik aankwam.",
+            "right": "plusquamperfectum (nog eerder)"
+          },
+          {
+            "left": "Het zal morgen wel rustig zijn bij het loket.",
+            "right": "futurum met zullen (toekomst)"
+          }
+        ]
+      }
+    },
+    {
+      "kind": "gap_type",
+      "tier": 2,
+      "explanation": "Het ongeval gebeurde eerder dan het moment waarop de politie kwam, dus schrijf je het plusquamperfectum met <em>had</em>.",
+      "payload": {
+        "sentence": "Toen de politie arriveerde, ___ de automobilist het ongeval al gemeld.",
+        "answer": "had"
+      }
+    },
+    {
+      "kind": "woordorde",
+      "tier": 2,
+      "explanation": "In een hoofdzin staat de persoonsvorm <em>zal</em> op de tweede plaats en gaan de andere werkwoorden naar het eind.",
+      "payload": {
+        "instruction": "Maak van deze woorden een goede zin over de toekomst.",
+        "tokens": [
+          "verbouwd",
+          "het",
+          "worden",
+          "volgend",
+          "zal",
+          "jaar",
+          "gemeentehuis"
+        ],
+        "answer": [
+          "het",
+          "gemeentehuis",
+          "zal",
+          "volgend",
+          "jaar",
+          "verbouwd",
+          "worden"
+        ]
+      }
+    },
+    {
+      "kind": "open_zin",
+      "tier": 2,
+      "explanation": "Je laat met <em>was aan het</em> zien dat je bezig was, en met het imperfectum of plusquamperfectum wat er daarna of daarvoor gebeurde.",
+      "payload": {
+        "prompt": "Schrijf twee zinnen over een telefoontje dat je kreeg terwijl je ergens mee bezig was. Gebruik <em>was aan het</em> en één keer een vorm met <em>had</em> of <em>was</em> + deelwoord.",
+        "model_answer": "Ik was aan het stofzuigen toen mijn werkgever belde. Hij had mijn bericht al gelezen, dus het gesprek duurde maar kort.",
+        "checklist": [
+          "Je hebt <em>was aan het</em> met een hele werkwoordsvorm gebruikt.",
+          "Je hebt één zin met <em>had</em> of <em>was</em> plus een deelwoord geschreven.",
+          "Uit je zinnen blijkt duidelijk wat er eerst gebeurde."
+        ]
+      }
+    }
+  ],
+  "what_you_learn": "Na deze les herken je in een tekst of iets eerder gebeurde, net is afgerond of nog moet komen. Je ziet aan het werkwoord het verschil tussen ik werkte, ik heb gewerkt, ik had gewerkt en ik zal werken. Ook gebruik je 'was aan het' om te laten zien dat je in het verleden ergens mee bezig was."
+}

@@ -33,7 +33,7 @@ import { EXAM_COUNT, SKILLS, FORMAT } from './b1-content/rules.mjs';
 import {
   LEZEN_GENRES, LEZEN_TOPICS, LEZEN_SPLITS,
   SCHRIJVEN_COMPLETIONS, SCHRIJVEN_LONG, SPREKEN_PLAN,
-  LUISTEREN_GENRES, LUISTEREN_TOPICS, LUISTEREN_SPLITS, LUISTEREN_CAST,
+  LUISTEREN_GENRES, LUISTEREN_TOPICS, LUISTEREN_SPLITS, LUISTEREN_CAST, luisterenNamen,
 } from './b1-content/plan.mjs';
 
 /* ── flags ───────────────────────────────────────────────────────────────── */
@@ -89,6 +89,7 @@ function unitsFor(skill, n) {
     );
   }
   if (skill === 'luisteren') {
+    const namen = luisterenNamen(i);
     return LUISTEREN_GENRES.map((g, slot) =>
       luisterenUnit({
         examNumber: n,
@@ -97,6 +98,7 @@ function unitsFor(skill, n) {
         section: g.section,
         topic: LUISTEREN_TOPICS[i][slot],
         cast: LUISTEREN_CAST[i][slot],
+        names: namen[slot],
         fragmentCount: LUISTEREN_SPLITS[i][slot],
       })
     );

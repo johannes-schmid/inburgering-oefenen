@@ -1,6 +1,6 @@
 'use client';
 
-import { createContext, useContext, useMemo, useState } from 'react';
+import { createContext, useContext, useEffect, useMemo, useState } from 'react';
 
 /**
  * Wat er van deze les al gedaan is, gedeeld tussen de kop en de stroom.
@@ -37,10 +37,24 @@ const NOOP: Ctx = { seenLearn: false, listened: false, done: 0, total: 0, report
 
 const LessonProgressContext = createContext<Ctx>(NOOP);
 
-export function LessonProgressScope({ children }: { children: React.ReactNode }) {
+export function LessonProgressScope({
+  children, onChange,
+}: {
+  children: React.ReactNode;
+  /**
+   * Meldt elke verandering naar buiten. Voor het grammaticaonderwerp, dat meerdere lessen
+   * onder elkaar zet — elk met een eigen scope, zodat hun tellingen elkaar niet overschrijven —
+   * en zelf de som toont in zijn kaart "Deze les".
+   */
+  onChange?: (progress: LessonProgress) => void;
+}) {
   const [state, setState] = useState<LessonProgress>({
     seenLearn: false, listened: false, done: 0, total: 0,
   });
+
+  useEffect(() => {
+    onChange?.(state);
+  }, [state, onChange]);
 
   const value = useMemo<Ctx>(() => ({
     ...state,

@@ -81,6 +81,20 @@ const PRODUCTIEF = ['schrijven', 'spreken'];
  * 101 rijen in `concept_onderdelen`, waar het er 118 waren. De tellingen staan vast in
  * `tests-unit/lesson-syllabus.test.ts`, dus een hertagging door de docent is een bewuste
  * testwijziging en geen cijfer dat stil verschuift.
+ *
+ * ── DE ACHT REGELS VAN OKTOBER 2026 ──────────────────────────────────────────
+ * De grammaticasyllabus van de eigenaar (`data/grammar-syllabus.ts`) vroeg om acht regels die
+ * er nog niet waren. Hun `onderdelen` is precies de lijst cursussen waarvan een onderwerp naar
+ * de les wijst — niet breder: `betrekkelijk-vnw` staat alleen in Lezen, `er-is-er-zijn` alleen
+ * in Spreken. `kern` volgt dezelfde maatstaf als hierboven: `lijdende-vorm` is kern bij Lezen
+ * omdat "uw pas wordt opgestuurd" de vraag beslist (moet ík iets doen?), `betrekkelijk-vnw`
+ * is herkennen omdat de zin ook zonder het die-stuk te begrijpen is.
+ *
+ * Nu: Lezen 26 regels (14 kern), Luisteren 23 (11), Schrijven 33 (24), Spreken 34 (25) —
+ * 116 rijen.
+ *
+ * `lesson_note` is optioneel en gaat alleen naar de auteursprompt (`author.mjs`, de brief
+ * `grammatica`): wat de les wel en niet behandelt. De seeder leest hem niet.
  */
 
 // Waar de regel in voorkomt.
@@ -100,7 +114,7 @@ const KERN_KLANK     = ['luisteren', 'spreken'];
 const GEEN_KERN      = [];                           // herkennen is genoeg
 
 /**
- * De 31 concepten.
+ * De 39 concepten (31 uit september, 8 uit de syllabus van oktober 2026).
  *
  * `one_liner` is de regel onder de kaarttitel: kort, in A2-Nederlands, `je` en niet `u`.
  * `example_html` is het voorbeeldzinnetje op de kaart, met `<mark>` om precies het fragment
@@ -149,6 +163,19 @@ export const A2_CONCEPTS = [
     kind: 'grammatica', onderdelen: IN_LUISTER_P, kern: KERN_P_LUISTER, sort_order: 70,
     one_liner: 'Met een vraagwoord, of met het werkwoord vooraan.',
     example_html: '<mark>Waar woont</mark> u? — <mark>Woont u</mark> in Utrecht?',
+  },
+  {
+    slug: 'ontkenning', name_nl: 'niet, geen, nooit, niemand, niets', group: 'zinnen-bouwen',
+    kind: 'grammatica', onderdelen: IN_ALLE, kern: KERN_ALLE, sort_order: 80,
+    one_liner: 'Eén klein woord maakt van ja nee. Geen hoort bij een ding, niet bij de rest.',
+    example_html: 'Ik heb <mark>geen</mark> tijd. Ik kom <mark>niet</mark>.',
+    lesson_note:
+      'Behandel: geen bij een zelfstandig naamwoord zonder de/het (geen auto, geen tijd); niet ' +
+      'bij de rest (Ik kom niet. Het is niet duur.). Daarnaast nooit, niemand en niets als ' +
+      'woorden die zelf al nee betekenen. En de plaats van niet: aan het eind van een korte zin ' +
+      '(Ik werk vandaag niet), maar vóór een bijvoeglijk naamwoord, een voorzetsel of het ' +
+      'tweede werkwoord (Ik kan morgen niet komen). Laat in een opgave zien dat de ontkenning ' +
+      'de betekenis van de hele zin omdraait — dat is wat een examenvraag toetst.',
   },
 
   // ── Werkwoorden & tijd ────────────────────────────────────────────────────
@@ -200,6 +227,19 @@ export const A2_CONCEPTS = [
     one_liner: 'Een opdracht of instructie: het werkwoord staat vooraan.',
     example_html: '<mark>Vul</mark> hier uw naam in.',
   },
+  {
+    slug: 'tijdsaanduidingen', name_nl: 'geleden, sinds, straks', group: 'werkwoorden-tijd',
+    kind: 'grammatica', onderdelen: RECEPTIEF, kern: KERN_RECEPTIEF, sort_order: 190,
+    one_liner: 'Wanneer gebeurt het? Al gebeurd, nu bezig of nog niet.',
+    example_html: 'Ik woon hier <mark>sinds</mark> 2023. Ik ben <mark>twee jaar geleden</mark> verhuisd.',
+    lesson_note:
+      'Behandel woorden die zeggen wanneer iets gebeurt: geleden (twee weken geleden = in het ' +
+      'verleden), sinds (vanaf toen tot nu), tot (tot vrijdag = daarna niet meer), binnen twee ' +
+      'weken (niet later dan), over tien minuten (straks, in de toekomst), straks, zo meteen, ' +
+      'vorige week, volgende maand. Zet in de uitleg verleden tegenover toekomst: "twee dagen ' +
+      'geleden" tegenover "over twee dagen". Gebruik situaties uit brieven, afspraken en ' +
+      'omroepberichten, met een datum of tijd die de cursist moet uitrekenen.',
+  },
 
   // ── Soorten werkwoorden ───────────────────────────────────────────────────
   {
@@ -232,6 +272,20 @@ export const A2_CONCEPTS = [
     one_liner: 'Sommige werkwoorden hebben altijd hetzelfde voorzetsel.',
     example_html: 'Ik <mark>wacht op</mark> de uitslag.',
   },
+  {
+    slug: 'lijdende-vorm', name_nl: 'De brief wordt verstuurd', group: 'soorten-werkwoorden',
+    kind: 'grammatica', onderdelen: ['lezen'], kern: KERN_LEZEN, sort_order: 260,
+    one_liner: 'wordt of worden plus een voltooid deelwoord: er gebeurt iets, maar wie doet het?',
+    example_html: 'Uw nieuwe pas <mark>wordt opgestuurd</mark>.',
+    lesson_note:
+      'Alleen herkennen en begrijpen, op A2-niveau: wordt/worden + voltooid deelwoord in ' +
+      'brieven van de gemeente, de school of de verhuurder (Uw pas wordt opgestuurd. De ' +
+      'vuilnis wordt op dinsdag opgehaald.). De vraag die de cursist moet kunnen beantwoorden: ' +
+      'wie doet het, en moet ík iets doen? (Uw pas wordt opgestuurd = de gemeente stuurt hem, ' +
+      'jij hoeft niets te doen.) Geen verleden tijd van de lijdende vorm (werd, is ... ' +
+      'geworden) en geen zinnen met door. Een tier-2-opgave mag een korte actieve zin laten ' +
+      'omzetten of laten zeggen wie het doet, maar houd het eenvoudig.',
+  },
 
   // ── Woorden verbuigen ─────────────────────────────────────────────────────
   {
@@ -251,6 +305,12 @@ export const A2_CONCEPTS = [
     group: 'woorden-verbuigen', kind: 'grammatica', onderdelen: IN_P, kern: KERN_P, sort_order: 330,
     one_liner: 'Wanneer krijgt het woord een -e en wanneer niet?',
     example_html: 'een <mark>mooie</mark> tas — een <mark>mooi</mark> huis',
+    lesson_note:
+      'De regel: het bijvoeglijk naamwoord vóór het zelfstandig naamwoord krijgt een -e (een ' +
+      'mooie dag, de mooie dag, het mooie huis, mooie huizen), behalve bij een het-woord met ' +
+      'een, geen of zonder lidwoord (een mooi huis, geen groot probleem). Na het werkwoord ' +
+      'nooit een -e (Het huis is mooi). Let op de spelling: groot → grote, wit → witte. Geen ' +
+      'iets/niets + -s (dat is B1).',
   },
   {
     slug: 'vergrotende-trap', name_nl: 'groter, kleiner', group: 'woorden-verbuigen',
@@ -279,16 +339,76 @@ export const A2_CONCEPTS = [
     example_html: 'Tim helpt <mark>mij</mark> met het formulier.',
   },
   {
+    slug: 'bezittelijk-vnw', name_nl: 'mijn, jouw, zijn, haar, ons', group: 'verwijzen',
+    kind: 'grammatica', onderdelen: IN_P, kern: KERN_P, sort_order: 425,
+    one_liner: 'Van wie is het? Ons huis, maar onze auto.',
+    example_html: 'Dat is <mark>mijn</mark> fiets en dat is <mark>haar</mark> tas.',
+    lesson_note:
+      'Behandel mijn, jouw/je, uw, zijn, haar, ons/onze, jullie, hun. Twee punten waar het ' +
+      'misgaat: ons bij een het-woord (ons huis) en onze bij een de-woord of meervoud (onze ' +
+      'auto, onze kinderen); en zijn (van een man) tegenover haar (van een vrouw). Gebruik ' +
+      'situaties waarin de cursist over zichzelf en zijn gezin praat of schrijft.',
+  },
+  {
+    slug: 'verwijswoorden', name_nl: 'hij, daar, deze, dit, die, dat', group: 'verwijzen',
+    kind: 'grammatica', onderdelen: ['lezen', 'schrijven'], kern: ['lezen', 'schrijven'], sort_order: 426,
+    one_liner: 'Een klein woord wijst terug naar iets wat al gezegd is. Naar wie of wat?',
+    example_html: 'De bibliotheek is nieuw. <mark>Daar</mark> kun je gratis lezen.',
+    lesson_note:
+      'Twee delen. Eén: verwijswoorden die terugwijzen in een tekst — hij, ze, het, die, dat ' +
+      'en daar wijzen naar iets uit een vorige zin, en de cursist moet zien naar wát. Twee: ' +
+      'aanwijzende voornaamwoorden — deze en die bij een de-woord of meervoud (deze tafel, die ' +
+      'stoelen), dit en dat bij een het-woord (dit huis, dat boek); deze/dit is dichtbij, ' +
+      'die/dat is verder weg. Laat de koppeling met de en het zien. Zet in de opgaven korte ' +
+      'teksten van twee of drie zinnen en vraag waar een woord naar verwijst.',
+  },
+  {
+    slug: 'betrekkelijk-vnw', name_nl: 'de man die…, het huis dat…', group: 'verwijzen',
+    kind: 'grammatica', onderdelen: ['lezen'], kern: GEEN_KERN, sort_order: 427,
+    one_liner: 'die of dat vertelt iets meer over het woord ervoor.',
+    example_html: 'De man <mark>die</mark> naast mij woont, heet Ahmed.',
+    lesson_note:
+      'Alleen die en dat als betrekkelijk voornaamwoord, op A2-niveau en vooral om te begrijpen: ' +
+      'die na een de-woord of meervoud (de man die daar woont, de kinderen die buiten spelen), ' +
+      'dat na een het-woord (het huis dat te koop is). Het werkwoord staat achteraan in dat ' +
+      'stukje zin. De vraag die de cursist moet kunnen beantwoorden: over wie of wat gaat het ' +
+      'stukje met die/dat? Geen wie, wat, waar of waarin — dat is B1.',
+  },
+  {
     slug: 'voorzetsels-plaats', name_nl: 'in, op, naast, langs', group: 'verwijzen',
     kind: 'grammatica', onderdelen: IN_ALLE, kern: GEEN_KERN, sort_order: 430,
     one_liner: 'Waar is het? Deze woordjes wijzen de plek of de route aan.',
     example_html: 'De vergaderzaal is <mark>naast</mark> de kantine.',
   },
   {
+    slug: 'er-is-er-zijn', name_nl: 'er is, er zijn', group: 'verwijzen',
+    kind: 'grammatica', onderdelen: ['spreken'], kern: ['spreken'], sort_order: 435,
+    one_liner: 'Zeggen dat iets er is, en waar: er is een winkel naast het station.',
+    example_html: '<mark>Er is</mark> een bakker in mijn straat. <mark>Er zijn</mark> twee scholen.',
+    lesson_note:
+      'Behandel er is (één ding) en er zijn (meer dingen), samen met een plaats: naast, bij, ' +
+      'in, op, tegenover. Bijvoorbeeld: Er is een supermarkt naast het station. Er zijn veel ' +
+      'bomen in het park. Ook de vraag: Is er een apotheek in de buurt? Gebruik situaties waarin ' +
+      'de cursist zijn buurt, zijn huis of een plaatje beschrijft. De productieve opgaven zijn ' +
+      'zinnen die de cursist zelf zou zeggen.',
+  },
+  {
     slug: 'frequentie', name_nl: 'altijd, vaak, soms, nooit', group: 'verwijzen',
     kind: 'grammatica', onderdelen: IN_ALLE, kern: KERN_RECEPTIEF, sort_order: 440,
     one_liner: 'Hoe vaak gebeurt het? Klein woord, groot verschil in betekenis.',
     example_html: 'De bus rijdt <mark>nooit</mark> op zondag.',
+  },
+  {
+    slug: 'hoeveelheden', name_nl: 'minstens, maximaal, ongeveer', group: 'verwijzen',
+    kind: 'grammatica', onderdelen: RECEPTIEF, kern: KERN_RECEPTIEF, sort_order: 450,
+    one_liner: 'Hoeveel is het precies? Minstens tien is iets anders dan maximaal tien.',
+    example_html: 'Je mag <mark>maximaal</mark> twee tassen meenemen.',
+    lesson_note:
+      'Behandel woorden die een hoeveelheid preciezer maken: minstens / minimaal (niet minder), ' +
+      'maximaal / hoogstens (niet meer), ongeveer (bijna precies), allebei (de twee samen), de ' +
+      'helft, meer / minder / evenveel. Zet minstens en maximaal naast elkaar met hetzelfde ' +
+      'getal. Gebruik regels, prijzen en openingstijden uit folders en mededelingen, zodat de ' +
+      'cursist moet uitrekenen of iets mag of niet.',
   },
 
   // ── Spelling & uitspraak ──────────────────────────────────────────────────
@@ -310,21 +430,51 @@ export const A2_CONCEPTS = [
  * Welke concepten horen bij dit onderdeel?
  *
  * Dit is de *leeslijst* van één onderdeel: welke regels die cursus vraagt. Bewust niet "alle
- * 31" — zie de afweging bij `IN_ALLE` hierboven.
+ * 39" — zie de afweging bij `IN_ALLE` hierboven.
  */
 export function conceptsFor(onderdeel) {
   return A2_CONCEPTS.filter(c => c.onderdelen.includes(onderdeel));
 }
 
 /**
- * De drie regels waar nog géén les voor geschreven is.
+ * De twee regels waar nog géén les voor geschreven is.
  *
  * Ze staan wél in de bibliotheek als concept en ze zijn kern bij de onderdelen waar ze horen,
  * maar blok B heeft er geen les voor — de conceptgroep `spelling-uitspraak` is überhaupt leeg.
  * Een kernregel zonder les is een gat, en dit is de plek waar dat gat staat opgeschreven in
- * plaats van dat het uit een filter valt.
+ * plaats van dat het uit een filter valt. `bijvoeglijk-naamwoord` stond hier tot oktober 2026;
+ * hij is nu les b37.
  */
-export const RULES_WITHOUT_LESSON = ['bijvoeglijk-naamwoord', 'klemtoon', 'lange-korte-klank'];
+export const RULES_WITHOUT_LESSON = ['klemtoon', 'lange-korte-klank'];
+
+/**
+ * De volgorde van blok B van A2 Lezen — en dus de lesslugs `b1-…` tot `b37-…`.
+ *
+ * ── WAAROM DIT EEN LIJST IS EN GEEN AFGELEIDE VOLGORDE ───────────────────────
+ * Tot oktober 2026 was blok B gewoon `A2_CONCEPTS` min de regels zonder les, en kwam het
+ * nummer in de slug uit de plaats in die lijst. Dat werkte zolang er niets bij kwam. Maar
+ * voortgang, `review_status`, de narratie (`narration/<slug>.txt`) en de lesplaatjes
+ * (`data/lesson-visuals.ts`) hangen aan die slugs: een nieuw concept middenin de bibliotheek
+ * zou `b23-vergrotende-trap` stil hernummeren tot `b24-…`, en dat is in de database een nieuwe
+ * les naast de oude, met de voortgang van de cursist op de verkeerde.
+ *
+ * Dus: de eerste 28 staan in hun oude volgorde en schuiven nooit, nieuwe regels komen
+ * achteraan. De leesvolgorde in de cursus komt uit `data/grammar-syllabus.ts`, niet uit dit
+ * nummer.
+ */
+export const RULES_HOME_ORDER = [
+  // De oorspronkelijke 28 (september 2026). Niet verplaatsen.
+  'hoofdzin-woordorde', 'inversie', 'voegwoorden-hoofdzin', 'bijzin-omdat-als', 'bijzin-dat-of',
+  'om-te', 'vragen-maken', 'tegenwoordige-tijd', 'onregelmatige-tegenwoordige-tijd',
+  'perfectum-regelmatig', 'perfectum-onregelmatig', 'hebben-of-zijn', 'verleden-tijd',
+  'toekomende-tijd', 'gebiedende-wijs', 'scheidbare-werkwoorden', 'werkwoorden-zonder-ge',
+  'modale-werkwoorden', 'wederkerende-werkwoorden', 'vaste-voorzetsels', 'lidwoorden',
+  'meervoud', 'vergrotende-trap', 'overtreffende-trap', 'persoonlijk-vnw-onderwerp',
+  'persoonlijk-vnw-lijdend', 'voorzetsels-plaats', 'frequentie',
+  // De syllabus van oktober 2026 (`data/grammar-syllabus.ts`): b29 tot b37.
+  'verwijswoorden', 'ontkenning', 'hoeveelheden', 'tijdsaanduidingen', 'betrekkelijk-vnw',
+  'lijdende-vorm', 'bezittelijk-vnw', 'er-is-er-zijn', 'bijvoeglijk-naamwoord',
+];
 
 /**
  * De regels die als les in blok B van Lezen staan — het fysieke huis van álle taalregels.
@@ -336,10 +486,21 @@ export const RULES_WITHOUT_LESSON = ['bijvoeglijk-naamwoord', 'klemtoon', 'lange
  * er is er maar één van elk. Eén cursus smaller maken mag de gedeelde voorraad niet slopen.
  *
  * Lidmaatschap is een keuze bij het *lezen* (`fetchRuleModules` per onderdeel), niet bij het
- * schrijven. Hier staat wat er ligt; daar staat wie het krijgt.
+ * schrijven. Hier staat wat er ligt; daar staat wie het krijgt. De volgorde is
+ * `RULES_HOME_ORDER`, en een grammaticaregel die daar niet in staat en ook niet in
+ * `RULES_WITHOUT_LESSON` is een fout — luid, want anders valt hij stil uit blok B.
  */
 export function rulesHomeConcepts() {
-  return A2_CONCEPTS.filter(
-    c => c.kind === 'grammatica' && !RULES_WITHOUT_LESSON.includes(c.slug),
-  );
+  const bySlug = new Map(A2_CONCEPTS.map(c => [c.slug, c]));
+  for (const c of A2_CONCEPTS) {
+    if (c.kind !== 'grammatica' || RULES_WITHOUT_LESSON.includes(c.slug)) continue;
+    if (!RULES_HOME_ORDER.includes(c.slug)) {
+      throw new Error(`regel "${c.slug}" staat niet in RULES_HOME_ORDER en niet in RULES_WITHOUT_LESSON`);
+    }
+  }
+  return RULES_HOME_ORDER.map(slug => {
+    const c = bySlug.get(slug);
+    if (!c) throw new Error(`RULES_HOME_ORDER noemt "${slug}", maar dat concept bestaat niet`);
+    return c;
+  });
 }

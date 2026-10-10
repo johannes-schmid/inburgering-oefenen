@@ -10,10 +10,14 @@
  * Dat maakt een hertagging door de docent een bewuste testwijziging in plaats van een getal dat
  * verschuift — dezelfde afspraak als bij `lesson-syllabus.test.ts`.
  */
+import { readFileSync } from 'node:fs';
 import { describe, expect, it } from 'vitest';
 import voices from '@/data/tts-voices.json';
 // @ts-ignore — het plan is een .mjs zonder types, met opzet: het is authoring, geen runtime.
-import { LUISTEREN_CAST, LUISTEREN_GENRES, LUISTEREN_SPLITS, LUISTEREN_TOPICS } from '@/scripts/b1-content/plan.mjs';
+import {
+  LUISTEREN_CAST, LUISTEREN_GENRES, LUISTEREN_NAMEN, LUISTEREN_SPLITS, LUISTEREN_TOPICS,
+  geslachtVanVoornaam, luisterenNamen,
+} from '@/scripts/b1-content/plan.mjs';
 // @ts-ignore — idem.
 import { FORMAT, LUISTEREN_SECTION_SLUGS } from '@/scripts/b1-content/rules.mjs';
 
@@ -23,6 +27,8 @@ const cast = LUISTEREN_CAST as string[][][];
 const topics = LUISTEREN_TOPICS as string[][];
 const genres = LUISTEREN_GENRES as { section: string; genre: string }[];
 const V = voices as Record<string, { gender: string }>;
+
+type Speaker = { speaker_a: string; speaker_b: string };
 
 describe('B1 Luisteren — de zes gesprekken', () => {
   it('heeft zes slots met een bekende tekstsoort', () => {
@@ -116,12 +122,90 @@ describe('B1 Luisteren — de casting', () => {
     }
   });
 
-  /** Een examen waarin elk gesprek man-vrouw is, is te makkelijk uit elkaar te houden. */
-  it('heeft per examen één of twee paren van gelijk geslacht', () => {
-    for (const exam of cast) {
+  /**
+   * Een examen waarin elk gesprek man-vrouw is, is te makkelijk uit elkaar te houden.
+   *
+   * Vanaf examen 3, en dat is geen willekeurige grens. Examen 1 en 2 zijn geschreven vóór de
+   * namen uit het plan kwamen, dus hun sprekers heten wat het model verzon — en dat waren
+   * twaalf keer een man en een vrouw. Hun casting is op 17-09 naar die namen toe rechtgezet;
+   * de enige manier om er alsnog een gelijk paar in te krijgen was een spreker hernoemen in een
+   * gesprek dat al geseed is. Zie de noot boven `LUISTEREN_CAST`.
+   */
+  it('heeft vanaf examen 3 één of twee paren van gelijk geslacht', () => {
+    for (const exam of cast.slice(2)) {
       const same = exam.filter(([a, b]) => V[a].gender === V[b].gender).length;
       expect(same).toBeGreaterThanOrEqual(1);
       expect(same).toBeLessThanOrEqual(2);
     }
+  });
+
+  /**
+   * De casting van examen 1 en 2 is met de hand rechtgezet en komt dus niet uit
+   * `luisterenNamen()`. Deze test bewaakt dat wat er wél geldt: de stemmen passen bij de namen
+   * die in `generated/luisteren-01.json` en `-02.json` staan. Valt dat om, dan spreekt er weer
+   * een vrouw met een mannenstem, en dat hoort de kandidaat.
+   */
+  it('houdt examen 1 en 2 kloppend met de namen die al geschreven zijn', () => {
+    for (const ei of [0, 1]) {
+      const file = `scripts/b1-content/generated/luisteren-0${ei + 1}.json`;
+      const data = JSON.parse(readFileSync(file, 'utf8')) as Record<string, Speaker>;
+      Object.values(data).forEach((u, slot) => {
+        expect(geslachtVanVoornaam(u.speaker_a)).toBe(V[cast[ei][slot][0]].gender);
+        expect(geslachtVanVoornaam(u.speaker_b)).toBe(V[cast[ei][slot][1]].gender);
+      });
+    }
+  });
+});
+
+/**
+ * De naam hoort bij de stem, en dat is geen stijlregel.
+ *
+ * In examen 1 en 2 sprak Sanne met een mannenstem en Bram met een vrouwenstem — zes van de
+ * vierentwintig sprekers zaten fout. De oorzaak was dat `LUISTEREN_CAST` een stem aan de plék A
+ * of B hangt en de generator daarna zelf een naam verzon. Er ging niets stuk; je moest ernaar
+ * luisteren om het te zien. Sinds die reparatie komt de naam als paar met de stem uit
+ * `luisterenNamen()`, en deze tests zijn wat dat paar bij elkaar houdt.
+ */
+describe('B1 Luisteren — de naam hoort bij de stem', () => {
+  const namen = LUISTEREN_NAMEN as Record<string, string[]>;
+
+  it('kent evenveel mannen- als vrouwennamen, genoeg voor twaalf sprekers per examen', () => {
+    expect(namen.female.length).toBeGreaterThanOrEqual(12);
+    expect(namen.male.length).toBeGreaterThanOrEqual(12);
+  });
+
+  it('gebruikt elke naam maar één keer in de lijst', () => {
+    const all = [...namen.female, ...namen.male];
+    expect(new Set(all).size).toBe(all.length);
+  });
+
+  it('geeft geen voornaam twee geslachten', () => {
+    const voor = (n: string) => n.split(' ')[0].toLowerCase();
+    const v = new Set(namen.female.map(voor));
+    for (const n of namen.male) expect(v.has(voor(n))).toBe(false);
+  });
+
+  it('geeft elke spreker van elk examen een naam van het juiste geslacht', () => {
+    for (let ei = 0; ei < EXAMS; ei++) {
+      const paren = (luisterenNamen as (i: number) => string[][])(ei);
+      expect(paren).toHaveLength(6);
+      paren.forEach((paar, slot) => {
+        paar.forEach((naam, rol) => {
+          expect(geslachtVanVoornaam(naam)).toBe(V[cast[ei][slot][rol]].gender);
+        });
+      });
+    }
+  });
+
+  it('herhaalt binnen één examen geen naam', () => {
+    for (let ei = 0; ei < EXAMS; ei++) {
+      const all = (luisterenNamen as (i: number) => string[][])(ei).flat();
+      expect(new Set(all).size).toBe(all.length);
+    }
+  });
+
+  it('is deterministisch — dezelfde run geeft dezelfde mensen', () => {
+    const f = luisterenNamen as (i: number) => string[][];
+    expect(f(3)).toEqual(f(3));
   });
 });

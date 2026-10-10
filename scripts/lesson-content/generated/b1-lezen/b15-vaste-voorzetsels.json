@@ -1,0 +1,243 @@
+{
+  "items": [
+    {
+      "kind": "uitleg",
+      "tier": null,
+      "explanation": null,
+      "payload": {
+        "body_html": "<p>Bij veel Nederlandse werkwoorden hoort altijd hetzelfde voorzetsel, bijvoorbeeld <strong>wachten op</strong> of <strong>denken aan</strong>.</p><p>Dat voorzetsel kun je niet zelf kiezen; je leert het samen met het werkwoord, als één geheel.</p><p>Sommige werkwoorden hebben ook nog <em>zich</em> erbij, zoals <strong>zich ergeren aan</strong> en <strong>zich voorbereiden op</strong>. Ook uitdrukkingen met <em>zijn</em> hebben een vast voorzetsel: <strong>bang zijn voor</strong>, <strong>het eens zijn met</strong>.</p>",
+        "cards": [
+          {
+            "label": "WERKWOORD + VOORZETSEL",
+            "example_html": "De gemeente <mark>reageert op</mark> uw brief binnen drie weken."
+          },
+          {
+            "label": "WERKWOORD MET ZICH + VOORZETSEL",
+            "example_html": "Veel bewoners <mark>ergeren zich aan</mark> het lawaai van de bouw."
+          }
+        ]
+      }
+    },
+    {
+      "kind": "voorbeeld",
+      "tier": null,
+      "explanation": null,
+      "payload": {
+        "sentence_html": "Mijn collega <mark>zorgt voor</mark> de post, terwijl ik de telefoon aanneem."
+      }
+    },
+    {
+      "kind": "voorbeeld",
+      "tier": null,
+      "explanation": null,
+      "payload": {
+        "sentence_html": "Wij <mark>kijken uit naar</mark> uw antwoord en hopen op een goede oplossing."
+      }
+    },
+    {
+      "kind": "uitleg",
+      "tier": null,
+      "explanation": null,
+      "payload": {
+        "body_html": "<p>Het vaste voorzetsel blijft altijd bij het werkwoord horen, ook als de zin een vraag of een bijzin is.</p><p>In een vraag kan het voorzetsel vooraan staan: <em>Waarop wacht u nog?</em> In spreektaal zeg je meestal: <em>Waar wacht u nog op?</em></p><p>Als je het ding niet herhaalt, gebruik je <strong>er</strong> of <strong>daar</strong> plus het voorzetsel: <em>Ik wacht erop.</em> Dat doe je niet bij personen; dan zeg je <em>Ik wacht op hem.</em></p>",
+        "cards": [
+          {
+            "label": "IN EEN BIJZIN",
+            "example_html": "Ik weet niet <mark>waar hij zich zo aan ergert</mark>."
+          },
+          {
+            "label": "MET ER OF DAAR",
+            "example_html": "U krijgt een brief; ik reken <mark>erop</mark> dat u die bewaart."
+          }
+        ]
+      }
+    },
+    {
+      "kind": "mcq",
+      "tier": 0,
+      "explanation": "Bij het werkwoord 'zorgen' hoort het vaste voorzetsel 'voor'. Dat leer je als vast paar: zorgen voor.",
+      "options": [
+        {
+          "label": "A",
+          "body": "zorgen aan",
+          "is_correct": false
+        },
+        {
+          "label": "B",
+          "body": "zorgen voor",
+          "is_correct": true
+        },
+        {
+          "label": "C",
+          "body": "zorgen op",
+          "is_correct": false
+        },
+        {
+          "label": "D",
+          "body": "zorgen met",
+          "is_correct": false
+        }
+      ],
+      "payload": {
+        "prompt": "In deze zin uit een personeelsbrief staat een werkwoord met een vast voorzetsel: 'De afdeling zorgt voor een vervanger tijdens uw verlof.' Welke combinatie is juist?"
+      }
+    },
+    {
+      "kind": "mcq",
+      "tier": 0,
+      "explanation": "Je zegt 'reageren op' een bericht, en 'het eens zijn met' iemand. De andere zinnen gebruiken een voorzetsel dat niet bij het werkwoord hoort.",
+      "options": [
+        {
+          "label": "A",
+          "body": "De directeur reageert aan de klacht van de buurt.",
+          "is_correct": false
+        },
+        {
+          "label": "B",
+          "body": "Ik ben het eens met het voorstel van de gemeente.",
+          "is_correct": true
+        },
+        {
+          "label": "C",
+          "body": "Zij bereidt zich voor aan het inburgeringsexamen.",
+          "is_correct": false
+        },
+        {
+          "label": "D",
+          "body": "Veel ouders zijn bang van de nieuwe regels.",
+          "is_correct": false
+        }
+      ],
+      "payload": {
+        "prompt": "In welke zin staat het juiste vaste voorzetsel?"
+      }
+    },
+    {
+      "kind": "gap_choice",
+      "tier": 1,
+      "explanation": "Bij 'wachten' hoort altijd 'op'. Het voorzetsel verandert niet, ook niet in een formele brief.",
+      "payload": {
+        "sentence": "Wij wachten nog ___ uw ondertekende formulier van 12 maart.",
+        "choices": [
+          "op",
+          "aan",
+          "naar"
+        ],
+        "answer": "op"
+      }
+    },
+    {
+      "kind": "gap_choice",
+      "tier": 1,
+      "explanation": "Bij 'zich ergeren' hoort 'aan'. Let op: het voorzetsel blijft hetzelfde, ook in een bijzin met 'dat'.",
+      "payload": {
+        "sentence": "De buren schrijven dat zij zich ___ het geluid van de ventilator ergeren.",
+        "choices": [
+          "aan",
+          "over",
+          "voor"
+        ],
+        "answer": "aan"
+      }
+    },
+    {
+      "kind": "gap_choice",
+      "tier": 1,
+      "explanation": "Je verwijst met 'er' plus het vaste voorzetsel 'op' naar een ding, hier de uitslag. Bij personen zou je 'op hem' of 'op haar' zeggen.",
+      "payload": {
+        "sentence": "De uitslag komt volgende week; ik wacht ___ met enige spanning.",
+        "choices": [
+          "erop",
+          "eraan",
+          "ernaar",
+          "daarmee"
+        ],
+        "answer": "erop"
+      }
+    },
+    {
+      "kind": "matchen",
+      "tier": 1,
+      "explanation": "Elk werkwoord heeft één vast voorzetsel dat je uit je hoofd leert: houden van, denken aan, uitkijken naar, bang zijn voor, het eens zijn met.",
+      "payload": {
+        "instruction": "Welk vast voorzetsel hoort bij welk werkwoord? Maak de juiste paren.",
+        "pairs": [
+          {
+            "left": "houden",
+            "right": "van"
+          },
+          {
+            "left": "denken",
+            "right": "aan"
+          },
+          {
+            "left": "uitkijken",
+            "right": "naar"
+          },
+          {
+            "left": "bang zijn",
+            "right": "voor"
+          },
+          {
+            "left": "het eens zijn",
+            "right": "met"
+          },
+          {
+            "left": "zich voorbereiden",
+            "right": "op"
+          }
+        ]
+      }
+    },
+    {
+      "kind": "gap_type",
+      "tier": 2,
+      "explanation": "Bij 'zich voorbereiden' hoort altijd 'op'. In deze bijzin staat het voorzetsel vlak voor het lijdend voorwerp.",
+      "payload": {
+        "sentence": "De manager zei dat het team zich goed ___ het gesprek met de klant moet voorbereiden.",
+        "answer": "op"
+      }
+    },
+    {
+      "kind": "woordorde",
+      "tier": 2,
+      "explanation": "In een bijzin met 'omdat' staat de persoonsvorm achteraan, maar het vaste voorzetsel 'voor' blijft gewoon bij 'bang zijn' horen.",
+      "payload": {
+        "instruction": "Zet de woorden in de juiste volgorde. Het is een bijzin.",
+        "tokens": [
+          "omdat",
+          "bang",
+          "de",
+          "kosten",
+          "hij",
+          "voor",
+          "is"
+        ],
+        "answer": [
+          "omdat",
+          "hij",
+          "bang",
+          "is",
+          "voor",
+          "de",
+          "kosten"
+        ]
+      }
+    },
+    {
+      "kind": "open_zin",
+      "tier": 2,
+      "explanation": "Je gebruikt 'er' plus het vaste voorzetsel van het werkwoord, omdat je het ding zelf niet herhaalt.",
+      "payload": {
+        "prompt": "Je krijgt een brief van de woningcorporatie over een reparatie. Schrijf twee zinnen: in de eerste zin gebruik je 'wachten op' met het onderwerp erbij, in de tweede zin verwijs je met 'er' plus het voorzetsel naar die reparatie.",
+        "model_answer": "Ik wacht al drie weken op de reparatie van de verwarming. Ik reken erop dat de monteur deze week langskomt.",
+        "checklist": [
+          "Staat in de eerste zin het voorzetsel 'op' direct na 'wacht'?",
+          "Heb je in de tweede zin 'erop' gebruikt in plaats van het ding te herhalen?",
+          "Staat de persoonsvorm in beide zinnen op de tweede plaats?"
+        ]
+      }
+    }
+  ],
+  "what_you_learn": "Na deze les weet je dat bij veel werkwoorden altijd hetzelfde voorzetsel hoort, zoals wachten op, denken aan en zorgen voor. Je herkent ook combinaties met zich (zich ergeren aan, zich voorbereiden op) en met zijn (bang zijn voor, het eens zijn met). Je houdt het voorzetsel vast in een vraag of bijzin, en je gebruikt er of daar plus voorzetsel als je het ding niet herhaalt."
+}

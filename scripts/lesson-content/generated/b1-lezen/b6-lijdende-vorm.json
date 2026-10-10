@@ -1,0 +1,290 @@
+{
+  "items": [
+    {
+      "kind": "uitleg",
+      "tier": null,
+      "explanation": null,
+      "payload": {
+        "body_html": "<p>In formele teksten is vaak niet belangrijk wie iets doet, maar wat er gebeurt. Dan gebruik je de lijdende vorm: een vorm van <strong>worden</strong> plus het voltooid deelwoord (het woord met ge-). De doener verdwijnt, of komt achteraan met <strong>door</strong>. Zo klinkt een brief van een instantie zakelijk en afstandelijk.</p>",
+        "cards": [
+          {
+            "label": "ACTIEF (wie doet het?)",
+            "example_html": "De gemeente <mark>verstuurt</mark> de brief volgende week."
+          },
+          {
+            "label": "LIJDEND (wat gebeurt er?)",
+            "example_html": "De brief <mark>wordt</mark> volgende week <mark>verstuurd</mark>."
+          }
+        ]
+      }
+    },
+    {
+      "kind": "uitleg",
+      "tier": null,
+      "explanation": null,
+      "payload": {
+        "body_html": "<p>De lijdende vorm heeft ook een verleden tijd en een voltooide tijd. In het verleden gebruik je <strong>werd</strong> of <strong>werden</strong>. Voor iets wat al klaar is, gebruik je <strong>is</strong> of <strong>zijn</strong> plus het voltooid deelwoord, zonder worden. Bij een modaal werkwoord zoals moeten of kunnen komt <strong>worden</strong> als laatste of voorlaatste woord in de zin.</p>",
+        "cards": [
+          {
+            "label": "VERLEDEN",
+            "example_html": "Het gemeentehuis <mark>werd</mark> in 1928 <mark>gebouwd</mark>."
+          },
+          {
+            "label": "VOLTOOID",
+            "example_html": "Het pakket <mark>is</mark> gisteren al <mark>bezorgd</mark>."
+          },
+          {
+            "label": "MET MODAAL",
+            "example_html": "Het formulier <mark>moet</mark> met zwarte pen <mark>worden ingevuld</mark>."
+          }
+        ]
+      }
+    },
+    {
+      "kind": "uitleg",
+      "tier": null,
+      "explanation": null,
+      "payload": {
+        "body_html": "<p>Soms begint een lijdende zin met <strong>er</strong>, omdat er geen duidelijk onderwerp is. Je zegt dan wat er gebeurt, zonder te noemen wie het doet. Die vorm hoor je vaak bij een loket of in een nieuwsbericht. Wil je de doener toch noemen, dan zet je die erachter met <strong>door</strong>.</p>",
+        "cards": [
+          {
+            "label": "ER WORDT …",
+            "example_html": "<mark>Er wordt</mark> nog naar uw klacht <mark>gekeken</mark>."
+          },
+          {
+            "label": "MET DOOR",
+            "example_html": "De woning wordt <mark>door de verhuurder</mark> gecontroleerd."
+          }
+        ]
+      }
+    },
+    {
+      "kind": "voorbeeld",
+      "tier": null,
+      "explanation": null,
+      "payload": {
+        "sentence_html": "<p>Uw aanvraag <mark>wordt binnen drie weken behandeld</mark> door een medewerker van de afdeling Zorg.</p>"
+      }
+    },
+    {
+      "kind": "voorbeeld",
+      "tier": null,
+      "explanation": null,
+      "payload": {
+        "sentence_html": "<p>Het oude zwembad aan de Kerkstraat <mark>werd</mark> vorig jaar <mark>gesloopt</mark>, omdat het te duur was om te verwarmen.</p>"
+      }
+    },
+    {
+      "kind": "mcq",
+      "tier": 0,
+      "explanation": "In optie B staat 'wordt' plus het voltooid deelwoord 'gecontroleerd': dat is de lijdende vorm. In de andere zinnen doet het onderwerp zelf iets.",
+      "options": [
+        {
+          "label": "A",
+          "body": "De inspecteur controleert morgen alle meters in het gebouw.",
+          "is_correct": false
+        },
+        {
+          "label": "B",
+          "body": "De meterstand wordt morgen door de inspecteur gecontroleerd.",
+          "is_correct": true
+        },
+        {
+          "label": "C",
+          "body": "De bewoners hebben de meterstand zelf doorgegeven.",
+          "is_correct": false
+        }
+      ],
+      "payload": {
+        "prompt": "In welke zin staat de lijdende vorm?"
+      }
+    },
+    {
+      "kind": "mcq",
+      "tier": 0,
+      "explanation": "'is verstuurd' is de voltooide lijdende vorm: iets is al gebeurd en wie het deed, blijft weg.",
+      "options": [
+        {
+          "label": "A",
+          "body": "De beslissing is vrijdag per post verstuurd.",
+          "is_correct": true
+        },
+        {
+          "label": "B",
+          "body": "De beslissing komt vrijdag per post.",
+          "is_correct": false
+        },
+        {
+          "label": "C",
+          "body": "Wij versturen de beslissing vrijdag per post.",
+          "is_correct": false
+        },
+        {
+          "label": "D",
+          "body": "Je moet de beslissing vrijdag versturen.",
+          "is_correct": false
+        }
+      ],
+      "payload": {
+        "prompt": "In welke zin staat een lijdende vorm die al voltooid is (iets is klaar)?"
+      }
+    },
+    {
+      "kind": "mcq",
+      "tier": 0,
+      "explanation": "Na een modaal werkwoord blijft 'worden' in de hele vorm staan: moet worden ingeleverd. 'wordt ingeleverd' kan niet samen met 'moet'.",
+      "options": [
+        {
+          "label": "A",
+          "body": "Het formulier moet voor 1 maart wordt ingeleverd.",
+          "is_correct": false
+        },
+        {
+          "label": "B",
+          "body": "Het formulier moet voor 1 maart worden ingeleverd.",
+          "is_correct": true
+        },
+        {
+          "label": "C",
+          "body": "Het formulier moet voor 1 maart is ingeleverd.",
+          "is_correct": false
+        }
+      ],
+      "payload": {
+        "prompt": "Welke zin is correct?"
+      }
+    },
+    {
+      "kind": "gap_choice",
+      "tier": 1,
+      "explanation": "Het gaat om iets wat nu nog loopt en 'de klacht' is enkelvoud, dus kies 'wordt'.",
+      "payload": {
+        "sentence": "Uw klacht ___ op dit moment nog onderzocht door onze afdeling.",
+        "choices": [
+          "wordt",
+          "werd",
+          "is"
+        ],
+        "answer": "wordt"
+      }
+    },
+    {
+      "kind": "gap_choice",
+      "tier": 1,
+      "explanation": "Het jaartal 1920 wijst op het verleden, en 'de brug' is enkelvoud: dan gebruik je 'werd'.",
+      "payload": {
+        "sentence": "De brug over het kanaal ___ in 1920 gebouwd.",
+        "choices": [
+          "wordt",
+          "werd",
+          "werden"
+        ],
+        "answer": "werd"
+      }
+    },
+    {
+      "kind": "gap_choice",
+      "tier": 1,
+      "explanation": "Iets dat gisteren al klaar was, krijgt 'is' plus het voltooid deelwoord, niet 'wordt'.",
+      "payload": {
+        "sentence": "Het pakket ___ gisteren bij uw buren bezorgd.",
+        "choices": [
+          "wordt",
+          "is",
+          "werd gebracht"
+        ],
+        "answer": "is"
+      }
+    },
+    {
+      "kind": "gap_choice",
+      "tier": 1,
+      "explanation": "Bij 'er wordt …' noem je niet wie het doet; 'er is gekeken' zou betekenen dat het al klaar is.",
+      "payload": {
+        "sentence": "___ nog naar uw bezwaar gekeken, dus u ontvangt later bericht.",
+        "choices": [
+          "Er wordt",
+          "Er is",
+          "Er worden"
+        ],
+        "answer": "Er wordt"
+      }
+    },
+    {
+      "kind": "matchen",
+      "tier": 1,
+      "explanation": "De vorm van worden hangt af van de tijd: nu (wordt/worden), verleden (werd/werden) of voltooid (is/zijn).",
+      "payload": {
+        "instruction": "Zet elke zin bij de juiste tijd.",
+        "pairs": [
+          {
+            "left": "De huur wordt elke maand geïnd.",
+            "right": "nu"
+          },
+          {
+            "left": "De woningen werden in 1965 opgeleverd.",
+            "right": "verleden tijd"
+          },
+          {
+            "left": "De aanvraag is vorige week goedgekeurd.",
+            "right": "voltooid"
+          },
+          {
+            "left": "De dossiers moeten vandaag worden gearchiveerd.",
+            "right": "met een modaal werkwoord"
+          }
+        ]
+      }
+    },
+    {
+      "kind": "gap_type",
+      "tier": 2,
+      "explanation": "Meerdere straten in het verleden: dan hoort het meervoud 'werden' bij het voltooid deelwoord 'afgesloten'.",
+      "payload": {
+        "sentence": "Tijdens de storm ___ drie straten in het centrum afgesloten.",
+        "answer": "werden"
+      }
+    },
+    {
+      "kind": "woordorde",
+      "tier": 2,
+      "explanation": "Na het modale werkwoord 'moet' komt de hele vorm achteraan: moet worden ondertekend. De doener met 'door' staat daarvoor.",
+      "payload": {
+        "instruction": "Maak een correcte zin van deze woorden.",
+        "tokens": [
+          "ondertekend",
+          "het",
+          "door",
+          "u",
+          "moet",
+          "contract",
+          "worden"
+        ],
+        "answer": [
+          "het",
+          "contract",
+          "moet",
+          "door",
+          "u",
+          "worden",
+          "ondertekend"
+        ]
+      }
+    },
+    {
+      "kind": "open_zin",
+      "tier": 2,
+      "explanation": "Je gebruikt 'wordt' of 'worden' plus het voltooid deelwoord, en je noemt de doener met 'door'.",
+      "payload": {
+        "prompt": "Schrijf deze zin in de lijdende vorm: 'De gemeente verwerkt uw aanvraag binnen zes weken.'",
+        "model_answer": "Uw aanvraag wordt binnen zes weken door de gemeente verwerkt.",
+        "checklist": [
+          "Je zin heeft een vorm van worden: wordt of worden.",
+          "Het voltooid deelwoord (verwerkt) staat achteraan.",
+          "De doener staat achter 'door' of je laat hem weg."
+        ]
+      }
+    }
+  ],
+  "what_you_learn": "Je leert de lijdende vorm herkennen in formele teksten, zoals brieven van een instantie, regels en nieuwsberichten. Je ziet het verschil tussen wordt verstuurd, werd gebouwd, is bezorgd en moet worden ingevuld. Ook leer je zinnen met 'er wordt …' en met 'door' plus de doener zelf maken."
+}

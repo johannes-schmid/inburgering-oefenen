@@ -1,0 +1,248 @@
+{
+  "items": [
+    {
+      "kind": "uitleg",
+      "tier": null,
+      "explanation": null,
+      "payload": {
+        "body_html": "<p>Als je over vroeger vertelt, gebruik je twee verleden tijden door elkaar. Met het <strong>imperfectum</strong> (de vorm zonder <em>ge-</em>, zoals <em>was</em>, <em>kwam</em>, <em>woonde</em>) beschrijf je de situatie of de achtergrond: hoe het toen was.</p><p>Met het <strong>perfectum</strong> (<em>heb</em> of <em>ben</em> plus het woord met <em>ge-</em>) noem je een afgerond feit: iets wat je gedaan hebt en wat klaar is.</p><p>In één verhaal wissel je dus af: eerst de achtergrond in het imperfectum, daarna wat je gedaan hebt in het perfectum.</p>",
+        "cards": [
+          {
+            "label": "ACHTERGROND (IMPERFECTUM)",
+            "example_html": "Toen ik in Nederland <mark>kwam</mark>, <mark>sprak</mark> ik nog geen Nederlands."
+          },
+          {
+            "label": "AFGEROND FEIT (PERFECTUM)",
+            "example_html": "Ik <mark>heb</mark> toen een cursus Nederlands <mark>gedaan</mark>."
+          }
+        ]
+      },
+      "options": []
+    },
+    {
+      "kind": "uitleg",
+      "tier": null,
+      "explanation": null,
+      "payload": {
+        "body_html": "<p>Na <strong>toen</strong> komt een bijzin, en in die bijzin staat het werkwoord achteraan. In zo'n bijzin over vroeger gebruik je bijna altijd het imperfectum, niet het perfectum.</p><p>Een paar onregelmatige vormen heb je steeds nodig: <em>ik kwam, ik sprak, ik was, ik had, ik ging</em>. Leer ze als een vast rijtje, want ze komen in elk verhaal terug.</p><p>Let op het verschil met <strong>dan</strong>: <em>toen</em> gaat over het verleden, <em>dan</em> over nu of later.</p>",
+        "cards": [
+          {
+            "label": "TOEN + IMPERFECTUM",
+            "example_html": "<mark>Toen ik achttien was</mark>, ging ik in een fabriek werken."
+          },
+          {
+            "label": "GEEN PERFECTUM NA TOEN",
+            "example_html": "Niet: Toen ik achttien <mark>ben geweest</mark>, ging ik werken."
+          }
+        ]
+      },
+      "options": []
+    },
+    {
+      "kind": "voorbeeld",
+      "tier": null,
+      "explanation": null,
+      "payload": {
+        "sentence_html": "<p>In 2016 <mark>woonde ik nog in een klein dorp</mark>, en ik heb daar vijf jaar in een bakkerij gewerkt.</p>"
+      },
+      "options": []
+    },
+    {
+      "kind": "voorbeeld",
+      "tier": null,
+      "explanation": null,
+      "payload": {
+        "sentence_html": "<p>Mijn buurvrouw had geen werk, maar ze <mark>heeft zich bij de gemeente aangemeld</mark> voor een opleiding.</p>"
+      },
+      "options": []
+    },
+    {
+      "kind": "mcq",
+      "tier": 0,
+      "explanation": "De vorm <em>was</em> is imperfectum en beschrijft hoe de situatie toen was; <em>heb gevonden</em> is perfectum en noemt een afgerond feit.",
+      "payload": {
+        "prompt": "<p>Lees deze twee zinnen uit een verhaal:</p><p><em>Toen ik hier pas was, kende ik bijna niemand. Later heb ik via het buurthuis vrienden gevonden.</em></p><p>Welke uitspraak is juist?</p>"
+      },
+      "options": [
+        {
+          "label": "A",
+          "body": "<em>was</em> en <em>kende</em> geven de achtergrond; <em>heb gevonden</em> geeft een afgerond feit.",
+          "is_correct": true
+        },
+        {
+          "label": "B",
+          "body": "<em>was</em> en <em>kende</em> geven afgeronde feiten; <em>heb gevonden</em> geeft de achtergrond.",
+          "is_correct": false
+        },
+        {
+          "label": "C",
+          "body": "Alle drie de vormen geven de achtergrond van het verhaal.",
+          "is_correct": false
+        },
+        {
+          "label": "D",
+          "body": "Alle drie de vormen geven een afgerond feit in het verleden.",
+          "is_correct": false
+        }
+      ]
+    },
+    {
+      "kind": "mcq",
+      "tier": 0,
+      "explanation": "Na <em>toen</em> staat een bijzin met het imperfectum, en het werkwoord komt achteraan: <em>toen ik in Rotterdam aankwam</em>.",
+      "payload": {
+        "prompt": "<p>In welke zin is de bijzin met <strong>toen</strong> correct gebouwd?</p>"
+      },
+      "options": [
+        {
+          "label": "A",
+          "body": "Toen ik in Rotterdam aankwam, had ik nog geen woning.",
+          "is_correct": true
+        },
+        {
+          "label": "B",
+          "body": "Toen ik ben in Rotterdam aangekomen, had ik nog geen woning.",
+          "is_correct": false
+        },
+        {
+          "label": "C",
+          "body": "Toen kwam ik in Rotterdam aan, had ik nog geen woning.",
+          "is_correct": false
+        }
+      ]
+    },
+    {
+      "kind": "gap_choice",
+      "tier": 1,
+      "explanation": "Na <em>toen</em> gebruik je in de bijzin het imperfectum, dus <em>kwam</em> en niet het perfectum.",
+      "payload": {
+        "sentence": "Toen mijn zoon in Nederland ___, was hij nog maar zes jaar oud.",
+        "choices": [
+          "kwam",
+          "is gekomen",
+          "komt"
+        ],
+        "answer": "kwam"
+      },
+      "options": []
+    },
+    {
+      "kind": "gap_choice",
+      "tier": 1,
+      "explanation": "Hier noem je een afgerond feit uit je eigen verleden, dus kies je het perfectum met <em>heb</em> plus het woord met <em>ge-</em>.",
+      "payload": {
+        "sentence": "In die jaren had ik weinig geld, maar ik ___ elke maand iets gespaard.",
+        "choices": [
+          "heb",
+          "spaarde",
+          "had"
+        ],
+        "answer": "heb"
+      },
+      "options": []
+    },
+    {
+      "kind": "gap_choice",
+      "tier": 1,
+      "explanation": "De zin beschrijft de situatie van toen, dus gebruik je het imperfectum <em>ging</em>; <em>ben gegaan</em> zou een los, afgerond feit zijn.",
+      "payload": {
+        "sentence": "Ik werkte in die tijd in een restaurant en ___ elke avond met de bus naar huis.",
+        "choices": [
+          "ging",
+          "ben gegaan",
+          "ga"
+        ],
+        "answer": "ging"
+      },
+      "options": []
+    },
+    {
+      "kind": "matchen",
+      "tier": 1,
+      "explanation": "Van elke onregelmatige vorm hoort het imperfectum bij de achtergrond en het voltooid deelwoord bij het afgeronde feit; zo zie je de twee vormen naast elkaar.",
+      "payload": {
+        "instruction": "Zet elk werkwoord bij de juiste vorm uit het verleden.",
+        "pairs": [
+          {
+            "left": "komen",
+            "right": "ik kwam / ik ben gekomen"
+          },
+          {
+            "left": "spreken",
+            "right": "ik sprak / ik heb gesproken"
+          },
+          {
+            "left": "gaan",
+            "right": "ik ging / ik ben gegaan"
+          },
+          {
+            "left": "hebben",
+            "right": "ik had / ik heb gehad"
+          },
+          {
+            "left": "zijn",
+            "right": "ik was / ik ben geweest"
+          }
+        ]
+      },
+      "options": []
+    },
+    {
+      "kind": "gap_type",
+      "tier": 2,
+      "explanation": "Na <em>toen</em> hoort het imperfectum van <em>spreken</em>, en dat is <em>sprak</em>.",
+      "payload": {
+        "sentence": "Toen ik voor het eerst bij de gemeente kwam, ___ ik nog bijna geen Nederlands.",
+        "answer": "sprak"
+      },
+      "options": []
+    },
+    {
+      "kind": "woordorde",
+      "tier": 2,
+      "explanation": "Na <em>toen</em> staat het werkwoord achteraan in de bijzin, daarna volgt de hoofdzin met het imperfectum <em>had</em>.",
+      "payload": {
+        "instruction": "Maak van deze woorden één correcte zin over vroeger.",
+        "tokens": [
+          "ik",
+          "toen",
+          "had",
+          "geen",
+          "werk",
+          "zocht",
+          "ik",
+          "een",
+          "cursus"
+        ],
+        "answer": [
+          "toen",
+          "ik",
+          "geen",
+          "werk",
+          "had",
+          "zocht",
+          "ik",
+          "een",
+          "cursus"
+        ]
+      },
+      "options": []
+    },
+    {
+      "kind": "open_zin",
+      "tier": 2,
+      "explanation": "Je begint met de achtergrond in het imperfectum en noemt daarna in het perfectum wat je gedaan hebt; zo wissel je binnen één verhaal correct af.",
+      "payload": {
+        "prompt": "<p>Schrijf twee of drie zinnen over je eerste jaar in Nederland. Beschrijf eerst de situatie in het imperfectum (<em>was, had, kende, woonde</em>) en noem daarna in het perfectum wat je gedaan hebt.</p>",
+        "model_answer": "Toen ik in Nederland aankwam, woonde ik bij mijn broer in Almere. Ik had geen werk en ik kende de stad nog niet. In dat jaar heb ik een taalcursus gevolgd en ik heb mijn eerste baan gevonden.",
+        "checklist": [
+          "In de zin met <em>toen</em> staat een imperfectum, en het werkwoord staat achteraan.",
+          "De achtergrond staat in het imperfectum, bijvoorbeeld <em>was</em>, <em>had</em>, <em>woonde</em>.",
+          "Wat je gedaan hebt, staat in het perfectum met <em>heb</em> of <em>ben</em> plus het woord met <em>ge-</em>."
+        ]
+      },
+      "options": []
+    }
+  ],
+  "what_you_learn": "Je leert hoe je in een verhaal over vroeger twee verleden tijden combineert. Je gebruikt het imperfectum (was, had, kwam, ging, sprak) voor de situatie en achtergrond, en het perfectum voor een afgerond feit. Ook weet je dat na \"toen\" een bijzin met het imperfectum komt, met het werkwoord achteraan."
+}

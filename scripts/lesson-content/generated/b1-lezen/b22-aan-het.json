@@ -1,0 +1,211 @@
+{
+  "items": [
+    {
+      "kind": "uitleg",
+      "tier": null,
+      "explanation": null,
+      "payload": {
+        "body_html": "<p>Met <strong>zijn + aan het + het hele werkwoord</strong> laat je zien dat je ergens middenin zit. Je zegt dus niet alleen wát je doet, maar dat je er op dat moment mee bezig bent.</p><p>In het heden gebruik je <em>ben, bent, is, zijn</em>. In het verleden gebruik je <em>was</em> of <em>waren</em>, vaak in een zin met <em>toen</em>.</p><p>Staat er een lijdend voorwerp bij (het ding waar je mee bezig bent), dan zet je dat tussen <em>aan het</em> en het werkwoord niet in: het komt ervóór.</p>",
+        "cards": [
+          {
+            "label": "NU BEZIG",
+            "example_html": "De monteur <mark>is</mark> de verwarming <mark>aan het repareren</mark>."
+          },
+          {
+            "label": "TOEN BEZIG",
+            "example_html": "Ik <mark>was aan het werken</mark> toen de gemeente belde."
+          }
+        ]
+      }
+    },
+    {
+      "kind": "voorbeeld",
+      "tier": null,
+      "explanation": null,
+      "payload": {
+        "sentence_html": "<p>Mijn collega kan de telefoon niet opnemen, want hij <mark>is met een klant aan het praten</mark>.</p>"
+      }
+    },
+    {
+      "kind": "voorbeeld",
+      "tier": null,
+      "explanation": null,
+      "payload": {
+        "sentence_html": "<p>Wij <mark>waren het formulier aan het invullen</mark> toen de medewerker binnenkwam.</p>"
+      }
+    },
+    {
+      "kind": "mcq",
+      "tier": 0,
+      "explanation": "In optie B staat de volledige vorm: <em>is</em> + <em>aan het</em> + het hele werkwoord <em>verbouwen</em>. De andere zinnen missen <em>aan het</em> of het werkwoord van <em>zijn</em>.",
+      "payload": {
+        "prompt": "<p>In welke zin staat de vorm <strong>zijn + aan het + het hele werkwoord</strong> correct en compleet?</p>"
+      },
+      "options": [
+        {
+          "label": "A",
+          "body": "De woningbouw repareert op dit moment het dak van ons gebouw.",
+          "is_correct": false
+        },
+        {
+          "label": "B",
+          "body": "De woningbouw is op dit moment het dak aan het verbouwen.",
+          "is_correct": true
+        },
+        {
+          "label": "C",
+          "body": "De woningbouw op dit moment aan het dak verbouwen.",
+          "is_correct": false
+        }
+      ]
+    },
+    {
+      "kind": "mcq",
+      "tier": 0,
+      "explanation": "De zin speelt zich in het verleden af: je was er toen mee bezig, dus hoort er <em>waren aan het voorbereiden</em>. Dat is de verledentijdsvorm van <em>zijn aan het</em>.",
+      "payload": {
+        "prompt": "<p>Lees de zin: <em>Mijn teamleider en ik waren de vergadering aan het voorbereiden toen de directeur binnenliep.</em><br>Wat klopt er over deze zin?</p>"
+      },
+      "options": [
+        {
+          "label": "A",
+          "body": "De zin beschrijft iets waar ze op dat moment in het verleden middenin zaten.",
+          "is_correct": true
+        },
+        {
+          "label": "B",
+          "body": "De zin beschrijft een gewoonte die elke week terugkomt.",
+          "is_correct": false
+        },
+        {
+          "label": "C",
+          "body": "De zin beschrijft iets wat ze nu, op dit moment, doen.",
+          "is_correct": false
+        },
+        {
+          "label": "D",
+          "body": "De zin beschrijft iets wat ze morgen gaan doen.",
+          "is_correct": false
+        }
+      ]
+    },
+    {
+      "kind": "gap_choice",
+      "tier": 1,
+      "explanation": "Het onderwerp is <em>ik</em>, dus je gebruikt <em>ben</em>. <em>Bent</em> hoort bij <em>je</em> of <em>u</em>, en <em>is</em> hoort bij <em>hij</em> of <em>zij</em>.",
+      "payload": {
+        "sentence": "Belt u straks nog eens terug? Ik ___ op dit moment een klant aan het helpen.",
+        "choices": [
+          "ben",
+          "bent",
+          "is"
+        ],
+        "answer": "ben"
+      }
+    },
+    {
+      "kind": "gap_choice",
+      "tier": 1,
+      "explanation": "Met <em>toen</em> kijk je terug naar het verleden, dus hoort hier <em>was</em> en niet de tegenwoordige vorm <em>ben</em>.",
+      "payload": {
+        "sentence": "Ik ___ de brief van de Belastingdienst aan het lezen toen mijn buurvrouw aanbelde.",
+        "choices": [
+          "ben",
+          "was",
+          "zijn"
+        ],
+        "answer": "was"
+      }
+    },
+    {
+      "kind": "gap_choice",
+      "tier": 1,
+      "explanation": "Na <em>aan het</em> komt altijd het hele werkwoord, dus <em>doen</em>. Een voltooid deelwoord (<em>gedaan</em>) of een vervoegde vorm (<em>doet</em>) kan hier niet staan.",
+      "payload": {
+        "sentence": "Zij is de administratie van de vereniging aan het ___ .",
+        "choices": [
+          "doet",
+          "gedaan",
+          "doen"
+        ],
+        "answer": "doen"
+      }
+    },
+    {
+      "kind": "matchen",
+      "tier": 1,
+      "explanation": "Je kiest de vorm van <em>zijn</em> die bij het onderwerp past: <em>ik ben</em>, <em>u bent</em>, <em>hij is</em>, <em>wij waren</em> in het verleden.",
+      "payload": {
+        "instruction": "Welke vorm van 'zijn' hoort bij welk onderwerp? Maak de goede paren.",
+        "pairs": [
+          {
+            "left": "Ik ___ aan het solliciteren.",
+            "right": "ben"
+          },
+          {
+            "left": "U ___ aan het wachten, meneer.",
+            "right": "bent"
+          },
+          {
+            "left": "De gemeente ___ de straat aan het opknappen.",
+            "right": "is"
+          },
+          {
+            "left": "Wij ___ gisteren aan het verhuizen.",
+            "right": "waren"
+          }
+        ]
+      }
+    },
+    {
+      "kind": "gap_type",
+      "tier": 2,
+      "explanation": "Het onderwerp <em>mijn collega's</em> is meervoud en de zin gaat over het verleden met <em>toen</em>, dus schrijf je <em>waren</em>.",
+      "payload": {
+        "sentence": "Mijn collega's ___ de bestelling aan het inpakken toen de vrachtwagen aankwam.",
+        "answer": "waren"
+      }
+    },
+    {
+      "kind": "woordorde",
+      "tier": 2,
+      "explanation": "Het lijdend voorwerp (<em>de keuken</em>) staat vóór <em>aan het</em>, en het hele werkwoord <em>schoonmaken</em> komt helemaal achteraan.",
+      "payload": {
+        "instruction": "Zet de woorden in de juiste volgorde. Maak een zin over iets waar je nu middenin zit.",
+        "tokens": [
+          "aan",
+          "schoonmaken",
+          "ik",
+          "de",
+          "het",
+          "ben",
+          "keuken"
+        ],
+        "answer": [
+          "ik",
+          "ben",
+          "de",
+          "keuken",
+          "aan",
+          "het",
+          "schoonmaken"
+        ]
+      }
+    },
+    {
+      "kind": "open_zin",
+      "tier": 2,
+      "explanation": "Je laat zien dat je met <em>was/waren aan het</em> iets beschrijft waar je middenin zat, en met <em>toen</em> het moment dat erdoorheen kwam.",
+      "payload": {
+        "prompt": "<p>Je baas vraagt waarom je zijn telefoontje van gisteren hebt gemist. Schrijf één zin met <strong>was aan het</strong> en <strong>toen</strong>.</p>",
+        "model_answer": "Ik was een vergadering aan het voorbereiden toen u mij gisteren belde.",
+        "checklist": [
+          "Er staat een vorm van 'zijn' in het verleden: was of waren.",
+          "Na 'aan het' staat het hele werkwoord, zonder uitgang zoals -t of ge-.",
+          "De zin bevat 'toen' met daarachter het onderbrekende moment."
+        ]
+      }
+    }
+  ],
+  "what_you_learn": "Je leert zeggen dat je ergens middenin zit: zijn + aan het + het hele werkwoord. Je gebruikt dit in het heden (ik ben aan het koken) en in het verleden (ik was aan het werken toen je belde), ook met een lijdend voorwerp ervoor. Je merkt daarbij het verschil met de gewone tegenwoordige tijd."
+}

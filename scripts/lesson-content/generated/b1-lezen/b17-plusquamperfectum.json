@@ -1,0 +1,212 @@
+{
+  "items": [
+    {
+      "kind": "uitleg",
+      "tier": null,
+      "explanation": null,
+      "payload": {
+        "body_html": "<p>Soms vertel je over twee dingen in het verleden. Het ene gebeurde eerder dan het andere.</p><p>Voor het ding dat <strong>eerder</strong> gebeurde, gebruik je <strong>had</strong> of <strong>was</strong> plus het voltooid deelwoord (het woord met ge-, of bijvoorbeeld <em>vertrokken</em>, <em>opgestuurd</em>).</p><p>Je kiest <strong>had</strong> of <strong>was</strong> op dezelfde manier als in de voltooide tijd: werkwoorden met <em>hebben</em> krijgen <strong>had</strong>, werkwoorden van beweging en verandering krijgen <strong>was</strong>.</p>",
+        "cards": [
+          {
+            "label": "MET HAD",
+            "example_html": "Ik <mark>had</mark> het formulier al <mark>opgestuurd</mark> toen de brief kwam."
+          },
+          {
+            "label": "MET WAS",
+            "example_html": "Toen ik op het perron aankwam, <mark>was</mark> de trein al <mark>vertrokken</mark>."
+          }
+        ]
+      }
+    },
+    {
+      "kind": "voorbeeld",
+      "tier": null,
+      "explanation": null,
+      "payload": {
+        "sentence_html": "Nadat de gemeente mijn aanvraag <mark>had ontvangen</mark>, kreeg ik binnen een week antwoord."
+      }
+    },
+    {
+      "kind": "voorbeeld",
+      "tier": null,
+      "explanation": null,
+      "payload": {
+        "sentence_html": "Toen de arts mij belde, <mark>was</mark> ik al naar de apotheek <mark>gegaan</mark>."
+      }
+    },
+    {
+      "kind": "mcq",
+      "tier": 0,
+      "explanation": "In <em>had ik mijn paspoort al verlengd</em> staat <strong>had</strong> plus het voltooid deelwoord <em>verlengd</em>. Dat is de vorm voor iets dat eerder gebeurde.",
+      "payload": {
+        "prompt": "<p>Lees de zin uit een brief van de gemeente.</p><p><em>Gelukkig had ik mijn paspoort al verlengd toen ik de uitnodiging kreeg.</em></p><p>Welk deel vertelt wat <strong>het eerst</strong> gebeurde?</p>"
+      },
+      "options": [
+        {
+          "label": "A",
+          "body": "had ik mijn paspoort al verlengd",
+          "is_correct": true
+        },
+        {
+          "label": "B",
+          "body": "toen ik de uitnodiging kreeg",
+          "is_correct": false
+        },
+        {
+          "label": "C",
+          "body": "Gelukkig",
+          "is_correct": false
+        }
+      ]
+    },
+    {
+      "kind": "mcq",
+      "tier": 0,
+      "explanation": "Het werkwoord <em>opstaan</em> is een verandering van houding en krijgt <strong>zijn</strong>. Daarom hoort hier <em>was opgestaan</em> en niet <em>had opgestaan</em>.",
+      "payload": {
+        "prompt": "<p>Welke zin is goed geschreven?</p>"
+      },
+      "options": [
+        {
+          "label": "A",
+          "body": "Toen mijn collega binnenkwam, had ik al opgestaan.",
+          "is_correct": false
+        },
+        {
+          "label": "B",
+          "body": "Toen mijn collega binnenkwam, was ik al opgestaan.",
+          "is_correct": true
+        },
+        {
+          "label": "C",
+          "body": "Toen mijn collega binnenkwam, was ik al opstond.",
+          "is_correct": false
+        }
+      ]
+    },
+    {
+      "kind": "gap_choice",
+      "tier": 1,
+      "explanation": "<em>Betalen</em> gaat met <em>hebben</em>, dus in het verre verleden wordt het <strong>had betaald</strong>.",
+      "payload": {
+        "sentence": "Toen de herinnering op de mat lag, ___ ik de rekening allang betaald.",
+        "choices": [
+          "had",
+          "was",
+          "heb"
+        ],
+        "answer": "had"
+      }
+    },
+    {
+      "kind": "gap_choice",
+      "tier": 1,
+      "explanation": "<em>Vertrekken</em> is een beweging en gaat met <em>zijn</em>. In het verre verleden wordt dat <strong>was vertrokken</strong>.",
+      "payload": {
+        "sentence": "Nadat de laatste bus ___ vertrokken, nam ik een taxi naar huis.",
+        "choices": [
+          "had",
+          "was",
+          "is"
+        ],
+        "answer": "was"
+      }
+    },
+    {
+      "kind": "gap_choice",
+      "tier": 1,
+      "explanation": "Na <em>nadat</em> staat wat het eerst gebeurde: <strong>had ingevuld</strong>. De vorm <em>invulde</em> zegt niet dat het eerder was.",
+      "payload": {
+        "sentence": "Nadat ik het formulier ___, stuurde ik het meteen naar de woningcorporatie.",
+        "choices": [
+          "had ingevuld",
+          "invulde",
+          "heb ingevuld"
+        ],
+        "answer": "had ingevuld"
+      }
+    },
+    {
+      "kind": "matchen",
+      "tier": 1,
+      "explanation": "Werkwoorden van beweging en verandering (gaan, vallen, verhuizen) krijgen <strong>was</strong>. De andere werkwoorden krijgen <strong>had</strong>.",
+      "payload": {
+        "instruction": "Welk hulpwerkwoord hoort bij het voltooid deelwoord? Kies had of was.",
+        "pairs": [
+          {
+            "left": "verhuisd",
+            "right": "was"
+          },
+          {
+            "left": "gebeld",
+            "right": "had"
+          },
+          {
+            "left": "gevallen",
+            "right": "was"
+          },
+          {
+            "left": "ingeleverd",
+            "right": "had"
+          },
+          {
+            "left": "gestegen",
+            "right": "was"
+          },
+          {
+            "left": "besproken",
+            "right": "had"
+          }
+        ]
+      }
+    },
+    {
+      "kind": "gap_type",
+      "tier": 2,
+      "explanation": "<em>Sluiten</em> gaat met <em>hebben</em>, dus je schrijft <strong>had</strong> plus het voltooid deelwoord <em>gesloten</em>.",
+      "payload": {
+        "sentence": "Toen ik bij het loket kwam, ___ de medewerker de balie al gesloten.",
+        "answer": "had"
+      }
+    },
+    {
+      "kind": "woordorde",
+      "tier": 2,
+      "explanation": "Na <em>nadat</em> komen eerst de andere woorden en dan de werkwoorden achteraan: <strong>was verhuisd</strong>.",
+      "payload": {
+        "instruction": "Maak een goede zin van deze woorden.",
+        "tokens": [
+          "verhuisd",
+          "nadat",
+          "naar",
+          "Zwolle",
+          "was",
+          "hij"
+        ],
+        "answer": [
+          "nadat",
+          "hij",
+          "naar",
+          "Zwolle",
+          "was",
+          "verhuisd"
+        ]
+      }
+    },
+    {
+      "kind": "open_zin",
+      "tier": 2,
+      "explanation": "Je laat zien dat je het eerdere moment met <strong>had</strong> of <strong>was</strong> plus voltooid deelwoord beschrijft, en het latere moment met het imperfectum.",
+      "payload": {
+        "prompt": "Schrijf twee zinnen over een keer dat je te laat was voor een afspraak. Vertel wat er al gebeurd was voordat je aankwam. Gebruik minstens één keer <em>had</em> of <em>was</em> plus een voltooid deelwoord.",
+        "model_answer": "Ik had een afspraak bij de huisarts om half tien. Toen ik binnenkwam, was de dokter al aan de volgende patiënt begonnen, omdat ik mijn wekker niet had gehoord.",
+        "checklist": [
+          "Er staat minstens één keer had of was met een voltooid deelwoord.",
+          "Het eerdere moment staat in die vorm, het latere in het imperfectum (kwam, ging, belde).",
+          "Je hebt had of was goed gekozen: beweging en verandering krijgen was."
+        ]
+      }
+    }
+  ],
+  "what_you_learn": "Je leert hoe je in het Nederlands vertelt dat iets al eerder gebeurd was dan iets anders in het verleden. Je gebruikt daarvoor had of was met een voltooid deelwoord, bijvoorbeeld: ik had het formulier al opgestuurd. Je oefent ook met zinnen met toen en nadat, en je leert wanneer je had kiest en wanneer was."
+}

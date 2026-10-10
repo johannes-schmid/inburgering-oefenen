@@ -1,3 +1,5 @@
+import type { Level } from '@/data/skills';
+
 /**
  * Launch feature flags.
  *
@@ -57,6 +59,26 @@ export const UNGATE_PAID_FEATURES = false;
  * ernaartoe weg. Zet hem op `false` om de modules weer vrij te geven.
  * ═══════════════════════════════════════════════════════════════════════════ */
 export const LESSONS_COMING_SOON = true;
+
+/**
+ * Lesstappen die al wél open staan terwijl `LESSONS_COMING_SOON` aanstaat, per niveau.
+ *
+ * 08-10 (eigenaar): de grammaticastap van A2 staat open in alle vier de onderdelen — de
+ * nieuwe opzet uit `data/grammar-syllabus.ts`.
+ * 10-10 (eigenaar): open waar de lesstof er is en Marieke hem heeft nagekeken — de
+ * examentraining van A2 (blok D en E) en de grammatica van B1 (het regelhuis b1:lezen:B). De
+ * examentraining van B1 heeft geen lessen en blijft "Binnenkort".
+ * `grammatica` is de conceptsoort van de taalregelstap, niet het woord op het scherm.
+ */
+export const LESSON_STEPS_OPEN: Partial<Record<Level, ('grammatica' | 'strategie')[]>> = {
+  a2: ['grammatica', 'strategie'],
+  b1: ['grammatica'],
+};
+
+export function lessonStepSoon(level: Level, kind: 'woordenschat' | 'grammatica' | 'strategie'): boolean {
+  if (!LESSONS_COMING_SOON || kind === 'woordenschat') return false;
+  return !(LESSON_STEPS_OPEN[level] ?? []).includes(kind);
+}
 
 /* ═══════════════════════════════════════════════════════════════════════════
  * `GUEST_PREVIEW_QUESTIONS` — hoeveel vragen een gast van een gratis examen krijgt

@@ -1,0 +1,214 @@
+{
+  "items": [
+    {
+      "kind": "uitleg",
+      "tier": null,
+      "explanation": null,
+      "payload": {
+        "body_html": "<p>Met één klein woord maak je van ja nee. Dat heet een ontkenning.</p><p>Gebruik <strong>geen</strong> voor een ding zonder <em>de</em>, <em>het</em> of <em>een</em>: geen tijd, geen auto. Gebruik <strong>niet</strong> bij al het andere: bij een werkwoord, bij een bijvoeglijk naamwoord (een woord als duur of ziek) en bij een naam.</p><p>De woorden <strong>nooit</strong>, <strong>niemand</strong> en <strong>niets</strong> betekenen zelf al nee. Je zet er geen <em>niet</em> bij.</p>",
+        "cards": [
+          {
+            "label": "GEEN (bij een ding)",
+            "example_html": "Ik heb <mark>geen</mark> tijd vandaag."
+          },
+          {
+            "label": "NIET (bij de rest)",
+            "example_html": "De jas is <mark>niet</mark> duur."
+          }
+        ]
+      }
+    },
+    {
+      "kind": "voorbeeld",
+      "tier": null,
+      "explanation": null,
+      "payload": {
+        "sentence_html": "Ik werk vandaag <mark>niet</mark>."
+      }
+    },
+    {
+      "kind": "voorbeeld",
+      "tier": null,
+      "explanation": null,
+      "payload": {
+        "sentence_html": "Ik kan morgen <mark>niet komen</mark>."
+      }
+    },
+    {
+      "kind": "voorbeeld",
+      "tier": null,
+      "explanation": null,
+      "payload": {
+        "sentence_html": "Er is <mark>niemand</mark> thuis in de woning."
+      }
+    },
+    {
+      "kind": "mcq",
+      "tier": 0,
+      "explanation": "Je zegt 'geen werk', want werk is een ding zonder de of het. Bij 'niet' hoort geen zelfstandig naamwoord.",
+      "options": [
+        {
+          "label": "A",
+          "body": "Mijn buurman heeft geen werk.",
+          "is_correct": true
+        },
+        {
+          "label": "B",
+          "body": "Mijn buurman heeft niet werk.",
+          "is_correct": false
+        },
+        {
+          "label": "C",
+          "body": "Mijn buurman heeft nooit werk niet.",
+          "is_correct": false
+        }
+      ],
+      "payload": {
+        "prompt": "Welke zin is goed?"
+      }
+    },
+    {
+      "kind": "mcq",
+      "tier": 0,
+      "explanation": "'Ik ga niet naar de dokter' betekent: je blijft thuis. De ontkenning draait de betekenis van de hele zin om.",
+      "options": [
+        {
+          "label": "A",
+          "body": "Je gaat wel naar de dokter.",
+          "is_correct": false
+        },
+        {
+          "label": "B",
+          "body": "Je gaat niet naar de dokter.",
+          "is_correct": true
+        },
+        {
+          "label": "C",
+          "body": "Je gaat later naar de dokter.",
+          "is_correct": false
+        }
+      ],
+      "payload": {
+        "prompt": "Lees: 'Ik ga morgen niet naar de dokter.' Wat betekent deze zin?"
+      }
+    },
+    {
+      "kind": "gap_choice",
+      "tier": 1,
+      "explanation": "Na 'heb' komt het ding 'geld' zonder de of het. Dan gebruik je geen.",
+      "payload": {
+        "sentence": "Ik heb deze week ___ geld voor een nieuwe fiets.",
+        "choices": [
+          "niet",
+          "geen",
+          "niets"
+        ],
+        "answer": "geen"
+      }
+    },
+    {
+      "kind": "gap_choice",
+      "tier": 1,
+      "explanation": "'Duur' is een bijvoeglijk naamwoord. Daar staat niet vóór.",
+      "payload": {
+        "sentence": "De huur van die kamer is ___ duur.",
+        "choices": [
+          "geen",
+          "niet",
+          "niemand"
+        ],
+        "answer": "niet"
+      }
+    },
+    {
+      "kind": "gap_choice",
+      "tier": 1,
+      "explanation": "Je bedoelt: op geen enkel moment. Dan gebruik je nooit, en niet erbij hoeft niet.",
+      "payload": {
+        "sentence": "Mijn zoon komt ___ te laat op school.",
+        "choices": [
+          "nooit",
+          "geen",
+          "niets"
+        ],
+        "answer": "nooit"
+      }
+    },
+    {
+      "kind": "matchen",
+      "tier": 1,
+      "explanation": "Bij een ding zonder de of het hoort geen. Bij een werkwoord of een bijvoeglijk naamwoord hoort niet. Nooit, niemand en niets betekenen zelf al nee.",
+      "payload": {
+        "instruction": "Welk woord hoort bij welke zin? Maak de goede paren.",
+        "pairs": [
+          {
+            "left": "Ik heb ___ auto.",
+            "right": "geen"
+          },
+          {
+            "left": "Het formulier is ___ moeilijk.",
+            "right": "niet"
+          },
+          {
+            "left": "Ik ben ___ in Groningen geweest.",
+            "right": "nooit"
+          },
+          {
+            "left": "Er zit ___ in de envelop.",
+            "right": "niets"
+          },
+          {
+            "left": "Ik zie ___ bij de balie.",
+            "right": "niemand"
+          }
+        ]
+      }
+    },
+    {
+      "kind": "gap_type",
+      "tier": 2,
+      "explanation": "In een korte zin met één werkwoord staat niet achteraan. Je ontkent hier het hele werken.",
+      "payload": {
+        "sentence": "Ik werk op zaterdag ___.",
+        "answer": "niet"
+      }
+    },
+    {
+      "kind": "woordorde",
+      "tier": 2,
+      "explanation": "Niet staat vóór het tweede werkwoord: 'kan vrijdag niet werken'.",
+      "payload": {
+        "instruction": "Zet de woorden in de goede volgorde.",
+        "tokens": [
+          "werken",
+          "niet",
+          "ik",
+          "vrijdag",
+          "kan"
+        ],
+        "answer": [
+          "ik",
+          "kan",
+          "vrijdag",
+          "niet",
+          "werken"
+        ]
+      }
+    },
+    {
+      "kind": "open_zin",
+      "tier": 2,
+      "explanation": "Je schrijft zelf een ontkenning. Kies geen bij een ding en niet bij de rest.",
+      "payload": {
+        "prompt": "Schrijf twee zinnen over jezelf: één zin met geen en één zin met niet.",
+        "model_answer": "Ik heb geen auto. Ik woon niet in Amsterdam.",
+        "checklist": [
+          "Na geen staat een ding zonder de of het.",
+          "Niet staat aan het eind of vóór een bijvoeglijk naamwoord.",
+          "Je gebruikt maar één ontkenning per zin."
+        ]
+      }
+    }
+  ],
+  "what_you_learn": "Na deze les weet je wanneer je geen gebruikt en wanneer niet. Je kent ook de woorden nooit, niemand en niets, die zelf al nee betekenen. En je ziet in een tekst meteen dat zo'n klein woord de betekenis van de hele zin omdraait."
+}

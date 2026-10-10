@@ -209,9 +209,16 @@ const nextConfig: NextConfig = {
          Hier en niet met `redirect()` in de pagina: die kwam ná het streamen van de <head> en
          leverde een 200 met een clientside sprong, waar een bezoeker een laadscherm van maakt.
          Een regel hier is een echte omleiding vóór het renderen. */
+      /* ── EN SINDS OKTOBER 2026 IS STAP 2 DE GRAMMATICASYLLABUS ─────────────────
+         De conceptgroepmodules van `/spoor/taalregels/<groep>` bestaan niet meer: stap 2 komt
+         uit `data/grammar-syllabus.ts` en woont op `/grammatica/[n]`. Beide oude slugs gaan
+         rechtstreeks naar de stap (die doorleidt naar het onderwerp waar je verdergaat), zodat
+         er geen keten van twee omleidingen ontstaat. Een module-URL heeft geen één-op-één
+         onderwerp — een groep als *Werkwoorden & tijd* is vijf onderwerpen — dus hij landt op
+         de stap en niet op een gok. */
       {
-        source: '/:locale/dashboard/:level/:skill/spoor/grammatica/:module*',
-        destination: '/:locale/dashboard/:level/:skill/spoor/taalregels/:module*',
+        source: '/:locale/dashboard/:level/:skill/spoor/:spoor(grammatica|taalregels)/:module*',
+        destination: '/:locale/dashboard/:level/:skill/grammatica',
         permanent: false,
       },
 

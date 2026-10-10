@@ -1,0 +1,515 @@
+[
+  {
+    "section": "informatief",
+    "cast": {
+      "A": "man_older",
+      "B": "woman_roos"
+    },
+    "title": "Werken als conducteur",
+    "intro": "U gaat luisteren naar een gesprek tussen Redouan Amrani en Miriam van Dijk. Redouan Amrani werkt als conducteur op de trein. Miriam van Dijk maakt een reeks interviews over beroepen in het openbaar vervoer en stelt hem vragen over zijn werkdag.",
+    "speaker_a": "Redouan Amrani",
+    "speaker_b": "Miriam van Dijk",
+    "opening": "B: Goedemiddag, meneer Amrani. Fijn dat u tijd heeft, want ik begrijp dat u straks weer een dienst heeft.\nA: Ja, klopt, om kwart over vier moet ik weer op het perron staan. Maar tot die tijd heb ik rust.\nB: U bent conducteur. Kunt u om te beginnen vertellen hoe lang u dit werk al doet?\nA: Nou, ik zit nu in mijn achtste jaar. Daarvoor werkte ik in een distributiecentrum, maar ik wilde graag met mensen werken.",
+    "fragments": [
+      {
+        "script": "B: En hoe ziet zo'n dag er dan uit? Ik denk dat veel mensen denken: u loopt door de trein en controleert kaartjes.\nA: Ja, kijk, dat is wel het beeld. Maar het controleren is misschien een derde van mijn werk. Het grootste deel gaat over informatie geven en zorgen dat het veilig is.\nB: Veilig, in welke zin?\nA: Nou, ik moet bijvoorbeeld altijd controleren of de deuren vrij zijn voordat de trein vertrekt. Als er iemand tussen de deuren staat, mag de trein niet weg. En bij een storing moet ik de reizigers uitleggen wat er gebeurt, ook als ik het zelf nog niet precies weet.\nB: Dat laatste lijkt me het moeilijkst.\nA: Dat is het ook. Mensen willen een duidelijk antwoord, en soms heb ik dat gewoon niet. Dan zeg ik eerlijk: ik weet het nog niet, ik kom over vijf minuten terug met meer nieuws. En dan moet ik ook echt terugkomen, want anders vertrouwen ze je niet meer.",
+        "prompt": "Wat zegt Redouan Amrani over zijn werk?",
+        "options": [
+          "Het controleren van kaartjes is maar een deel van zijn taken.",
+          "Hij vindt het controleren van de deuren het zwaarste onderdeel.",
+          "Reizigers stellen hem vooral vragen over de veiligheid."
+        ],
+        "correct": 0,
+        "explanation": "Hij zegt dat controleren ongeveer een derde van zijn werk is en dat informatie geven en veiligheid het grootste deel vormen. Het moeilijkst vindt hij uitleg geven bij een storing, niet het controleren van de deuren."
+      },
+      {
+        "script": "B: U rijdt ook in de spits. Wanneer is het bij u het drukst?\nA: De ochtendspits is het zwaarst, echt tussen half acht en half negen. Dan zit de trein vol en staan er ook mensen in het gangpad. Ik kom er soms nauwelijks langs.\nB: Controleert u dan nog wel?\nA: Beperkt. Ik loop wel door de trein, maar ik ga geen rij mensen laten opstaan om bij iemand in het hoekje te komen. Dat levert alleen irritatie op.\nB: En 's middags?\nA: De middagspits is drukker in aantal reizigers, maar rustiger van sfeer. 's Ochtends is iedereen gespannen, want mensen moeten op tijd op hun werk zijn. Aan het eind van de dag maakt een paar minuten vertraging veel minder uit. Dan zijn mensen ook eerder bereid om even op te schuiven voor iemand anders.\nB: Dus druk en lastig zijn niet hetzelfde.\nA: Precies dat. Het aantal mensen zegt weinig. Het gaat om de haast.",
+        "prompt": "Waarom vindt Redouan Amrani de ochtendspits zwaarder dan de middagspits?",
+        "options": [
+          "In de ochtend controleert hij meer kaartjes dan 's middags.",
+          "In de ochtend zijn er duidelijk meer reizigers in de trein.",
+          "In de ochtend zijn reizigers gespannen omdat ze op tijd moeten zijn."
+        ],
+        "correct": 2,
+        "explanation": "Hij legt uit dat mensen 's ochtends gespannen zijn door de haast, terwijl vertraging aan het eind van de dag minder uitmaakt. Meer reizigers zijn er juist in de middagspits, zegt hij zelf."
+      },
+      {
+        "script": "B: U voert de hele dag korte gesprekken met onbekende mensen. Wat voor gesprekken zijn dat?\nA: Heel verschillend. De meeste gaan over een overstap of over hoe je bij een bepaald adres komt. Maar er zit ook een groep reizigers die eigenlijk vooral even wil praten.\nB: Kunt u daar een voorbeeld van geven?\nA: Ja, ik heb bijvoorbeeld een oudere mevrouw die elke dinsdag met dezelfde trein naar haar zus reist. Die wacht tot ik langskom en vertelt dan hoe het thuis gaat. Dat kost mij twee minuten en het is het mooiste deel van mijn dienst.\nB: Hoort dat bij uw werk, denkt u?\nA: Formeel staat het niet in mijn taken. Maar ik vind van wel. Sommige reizigers spreken op een dag bijna niemand, en dan ben ik degene die goedemiddag zegt. Ik merk trouwens ook dat het helpt als er later iets misgaat. Wie een praatje met je heeft gehad, gaat niet meteen schreeuwen bij vertraging.",
+        "prompt": "Wat bedoelt Redouan Amrani met zijn laatste opmerking?",
+        "options": [
+          "Een kort praatje zorgt ervoor dat reizigers zich rustiger gedragen bij problemen.",
+          "Hij maakt liever een praatje dan dat hij vragen over overstappen beantwoordt.",
+          "Reizigers klagen minder over vertraging als de conducteur alles goed uitlegt."
+        ],
+        "correct": 0,
+        "explanation": "Hij zegt dat wie een praatje met hem heeft gehad niet meteen begint te schreeuwen als er vertraging is. Het gaat dus om het contact, niet om de uitleg over de vertraging zelf."
+      },
+      {
+        "script": "B: En de moeilijke gesprekken? Iemand zonder geldig vervoerbewijs, bijvoorbeeld.\nA: Dat gebeurt meerdere keren per dienst. Dan leg ik uit dat de reiziger een boete krijgt. Dat bedrag is vijftig euro, plus de prijs van de rit die niet is betaald.\nB: Vijftig euro. Reageren mensen daar heftig op?\nA: Sommigen wel. Er zijn mensen die zeggen: ik had geen geld voor een kaartje, dus hoe moet ik dan die boete betalen? Dat is een terecht punt, maar ik mag daar niets aan veranderen. Wat ik wel kan doen, is uitleggen dat ze binnen veertien dagen bezwaar kunnen maken en dat er een betalingsregeling mogelijk is.\nB: Maakt u zelf ook een uitzondering?\nA: Eén, en die is officieel toegestaan: als iemand echt per ongeluk in de verkeerde trein zit, bijvoorbeeld een toerist die de aankondiging niet begreep, dan mag ik het oplossen zonder boete. Maar iemand die zegt dat hij zijn kaart is vergeten, moet gewoon betalen. Anders ben ik niet eerlijk tegenover de rest.",
+        "prompt": "Wat is het boetebedrag dat Redouan Amrani noemt?",
+        "options": [
+          "Veertien euro, plus de prijs van de rit",
+          "Vijftien euro, plus de prijs van de rit",
+          "Vijftig euro, plus de prijs van de rit"
+        ],
+        "correct": 2,
+        "explanation": "Hij zegt dat de boete vijftig euro is, plus de prijs van de niet betaalde rit. Veertien is het aantal dagen waarin iemand bezwaar kan maken."
+      },
+      {
+        "script": "B: Tot slot: wat viel u tegen toen u hiermee begon?\nA: De onregelmatige diensten. Dat wist ik wel, maar ik had niet ingeschat wat het thuis doet. Ik werk in wisselende diensten, dus soms begin ik om vijf uur 's ochtends en soms kom ik na middernacht thuis. Mijn kinderen zien mij daardoor een paar dagen per week nauwelijks.\nB: Heeft u geprobeerd daar iets aan te veranderen?\nA: Ja, ik heb vorig jaar gevraagd om minder late diensten. Dat kon deels, maar ik lever er wel een toeslag voor in. Dat scheelt behoorlijk in het maandsalaris.\nB: En toch blijft u dit werk doen.\nA: Zeker. Ik zou niet terug willen naar een plek waar ik de hele dag dezelfde vier muren zie. Maar ik zeg tegen nieuwe collega's altijd: praat er thuis eerst goed over. Het werk zelf leer je in een paar maanden; leren leven met die uren duurt veel langer.",
+        "prompt": "Wat is het gevolg voor Redouan Amrani van zijn verzoek om minder late diensten?",
+        "options": [
+          "Hij heeft nu een lager maandsalaris dan eerst.",
+          "Hij moet nu vaker om vijf uur 's ochtends beginnen.",
+          "Zijn verzoek is uiteindelijk niet toegekend."
+        ],
+        "correct": 0,
+        "explanation": "Hij zegt dat het deels kon, maar dat hij een toeslag inlevert die behoorlijk scheelt in zijn maandsalaris. Het verzoek is dus wel gedeeltelijk toegekend."
+      }
+    ]
+  },
+  {
+    "section": "beschouwend",
+    "cast": {
+      "A": "woman_young",
+      "B": "man_eric"
+    },
+    "title": "Twee jaar voor de klas bij volwassenen",
+    "intro": "U gaat luisteren naar een gesprek tussen Joke Hendriks en Gerben Sikkema. Joke Hendriks maakt gesprekken voor het personeelsblad van een opleidingscentrum. Gerben Sikkema geeft les aan volwassenen en kijkt terug op zijn eerste twee jaar als docent.",
+    "speaker_a": "Joke Hendriks",
+    "speaker_b": "Gerben Sikkema",
+    "opening": "A: Gerben, fijn dat je even tijd hebt. Ik zag dat je deze maand precies twee jaar bij ons werkt.\nB: Ja, twee jaar en een week, als je het precies wilt weten. Dat gaat snel, hè.\nA: En ik wil met je terugkijken. Niet alleen naar wat goed ging, ook naar wat je anders zou doen.\nB: Nou, daar kan ik wel even over praten. Ga zitten.",
+    "fragments": [
+      {
+        "script": "A: Laten we bij het begin beginnen. Hoe ben je eigenlijk in dit vak terechtgekomen?\nB: Ja, kijk, dat was niet echt een plan. Ik werkte twaalf jaar in een fabriek, in de planning. Dat liep goed, maar op een gegeven moment wist ik precies wat ik de hele dag zou doen.\nA: En dat ging je vervelen.\nB: Het ging me vooral opvallen. Ik merkte dat ik het leukste vond wat er eigenlijk niet bij hoorde: nieuwe mensen inwerken. Dat deed ik er altijd bij, en dat vond ik het aardigste deel van mijn week.\nA: Dus toen dacht je: dan doe ik dat voortaan de hele week.\nB: Zo ongeveer. Ik heb eerst een jaar in de avond een opleiding gedaan, naast mijn werk, en daarna heb ik gesolliciteerd. Mensen zeiden: je gaat er financieel op achteruit, weet je dat wel? En dat was waar. Maar ik had het gevoel dat ik het anders op mijn vijftigste nog steeds zou willen.",
+        "prompt": "Waarom besloot Gerben Sikkema docent te worden?",
+        "options": [
+          "Hij kon in de fabriek geen hogere functie meer krijgen",
+          "Hij merkte dat hij het inwerken van nieuwe mensen het leukst vond",
+          "Hij wilde in de avonduren een opleiding gaan volgen"
+        ],
+        "correct": 1,
+        "explanation": "Hij zegt dat hij het aardigste deel van zijn week het inwerken van nieuwe mensen vond, iets wat niet bij zijn functie hoorde. De avondopleiding was pas het gevolg van dat besluit, niet de reden ervoor."
+      },
+      {
+        "script": "A: Je eerste jaar. Wat is daarvan blijven hangen?\nB: Dat ik veel te veel wilde. Ik had lessen voorbereid tot in detail. Alles stond vast: eerst dit, dan dat, en om kwart over acht moesten we bij het volgende onderdeel zijn.\nA: En dat lukte niet.\nB: Dat lukte niet, nee. Want ik had volwassenen voor me. Iemand kwam binnen en zei: mijn dochter is ziek, ik heb vannacht niet geslapen. Dan kun je niet doen alsof dat er niet is.\nA: Nee.\nB: Ik heb in dat eerste jaar geleerd dat mijn planning niet het belangrijkste is. Niet dat je zonder plan moet werken, dat vind ik ook weer niks. Maar je moet ruimte houden.\nA: Hoeveel ruimte, ongeveer?\nB: Ik bereid nu ongeveer twee derde van de les voor. Het laatste deel houd ik open, en dat vul ik in met wat er die avond nodig is. In het begin dacht ik dat dat slordig was. Nu weet ik dat het werkt.",
+        "prompt": "Wat zegt Gerben Sikkema over zijn manier van lesvoorbereiding?",
+        "options": [
+          "Hij bereidt nu een deel van de les voor en houdt de rest open",
+          "Hij bereidt zijn lessen nu even nauwkeurig voor als eerst",
+          "Hij vindt voorbereiden achteraf eigenlijk niet meer nodig"
+        ],
+        "correct": 0,
+        "explanation": "Hij vertelt dat hij ongeveer twee derde voorbereidt en de rest openhoudt voor wat die avond nodig is. Werken zonder plan vindt hij juist niets, dus optie C is te sterk."
+      },
+      {
+        "script": "A: Je werkt met een vaste groep, of wisselt dat?\nB: Het wisselt. Ik heb twee avondgroepen en één groep op vrijdagochtend. De avondgroepen zijn het grootst, achttien mensen.\nA: Dat is veel.\nB: Het is veel, maar het valt in de praktijk mee, want er is bijna nooit iedereen. Gemiddeld zitten er twaalf, dertien. Dat komt door ploegendiensten en door de kinderen.\nA: En stoort dat je, dat wisselen?\nB: Dat vond ik in het begin heel lastig, ja. Ik dacht: hoe bouw je iets op als de helft er de ene week is en de andere week niet? Ik heb toen een systeem gemaakt waarbij elke les op zichzelf staat. Je kunt instappen zonder dat je de vorige keer gemist hebt.\nA: Dat kost je wel wat.\nB: Dat kost me wat diepgang, dat geef ik toe. Je komt minder ver. Maar het alternatief is dat mensen afhaken omdat ze het niet meer kunnen volgen, en dan kom je nergens.",
+        "prompt": "Hoeveel mensen zijn er gemiddeld aanwezig in een avondgroep?",
+        "options": [
+          "Achttien",
+          "Twaalf of dertien",
+          "Vijftien"
+        ],
+        "correct": 1,
+        "explanation": "Hij zegt dat de groepen achttien mensen groot zijn, maar dat er gemiddeld twaalf of dertien komen. Achttien is het aantal ingeschreven cursisten, niet het gemiddelde aantal aanwezigen."
+      },
+      {
+        "script": "A: Je noemde afhaken. Hoeveel mensen stoppen er bij jou tussentijds?\nB: In mijn eerste jaar waren dat er vijf op achttien. Dat vond ik heel pijnlijk, en ik heb dat ook lang aan mezelf toegerekend.\nA: Terecht?\nB: Gedeeltelijk. Ik heb met een paar van hen later nog gesproken. Eén vrouw stopte omdat haar contract veranderde en ze op dinsdagavond ging werken. Daar kon ik niets aan doen.\nA: Nee, dat is overmacht.\nB: Maar er was ook iemand die zei: ik durfde niet te zeggen dat ik het niet meer volgde. En dat raakte me, want dat had ik moeten zien.\nA: Wat doe je daar nu aan?\nB: Ik spreek elke cursist één keer per periode kort apart. Vijf minuten, in de pauze of na de les. Niet over de stof, maar over hoe het gaat. Dat kost me per groep bijna twee avonden aan pauzes, maar het levert meer op dan een extra les.",
+        "prompt": "Wat vindt Gerben Sikkema van het afhaken in zijn eerste jaar?",
+        "options": [
+          "Hij denkt dat het volledig aan de omstandigheden van de cursisten lag",
+          "Hij vindt dat hij als beginner daar niets aan had kunnen doen",
+          "Hij vindt dat hij bij één cursist had moeten merken dat het niet ging"
+        ],
+        "correct": 2,
+        "explanation": "Hij zegt over de cursist die niet durfde te zeggen dat hij het niet volgde: dat had ik moeten zien. Bij één vrouw was het wél overmacht, maar hij legt het niet volledig buiten zichzelf."
+      },
+      {
+        "script": "A: Je zei net dat je er financieel op achteruit bent gegaan. Klopt dat nog steeds?\nB: Minder dan eerst. Ik ben begonnen in een lagere schaal, en na mijn proeftijd van twee maanden ben ik in de gewone schaal gekomen. Daarna gaat het per jaar een stapje omhoog.\nA: Dus het loopt in.\nB: Het loopt in, maar ik zit nog niet op wat ik in de fabriek verdiende. Ik denk dat ik er per maand ongeveer honderdvijftig euro onder zit, netto.\nA: En hoe kijk je daarnaar?\nB: Eerlijk? Er zijn maanden waarin ik dat voel. Als de auto stuk is, bijvoorbeeld. Mijn vrouw en ik hebben daar vooraf over gesproken en we hebben gezegd: we proberen het drie jaar.\nA: En dan?\nB: Dan kijken we opnieuw. Maar ik weet nu al dat ik niet terugga voor honderdvijftig euro. Ik slaap beter, ik ben op zondagavond niet meer somber. Dat is voor mij ook geld, alleen staat het niet op het loonstrookje.",
+        "prompt": "Wat zegt Gerben Sikkema over zijn inkomen?",
+        "options": [
+          "Hij verdient nu ongeveer hetzelfde als vroeger in de fabriek",
+          "Hij verdient per maand ongeveer honderdvijftig euro minder dan vroeger",
+          "Hij verwacht na drie jaar hetzelfde te verdienen als in de fabriek"
+        ],
+        "correct": 1,
+        "explanation": "Hij zegt dat hij er netto ongeveer honderdvijftig euro per maand onder zit. Het verschil is wel kleiner geworden, maar hij zit nog niet op het oude niveau."
+      },
+      {
+        "script": "A: Is er iets wat je echt hebt onderschat?\nB: Het vergaderen en het papierwerk. Dat had ik niet zien aankomen. Ik dacht: ik geef les, en daarnaast nakijken. Maar er is een werkgroep, er is overleg met de afdeling, er zijn voortgangsformulieren.\nA: En dat vind je onzin?\nB: Nee, dat zeg ik niet. Kijk, ik zit zelf in de medezeggenschapsraad, dus ik kan moeilijk klagen over vergaderen. Dat is het orgaan waarin personeel meebeslist over het beleid, en ik vind het belangrijk dat daar ook iemand zit die pas kort meeloopt.\nA: Waarom juist iemand die kort meeloopt?\nB: Omdat je dan nog vraagt waarom iets zo gaat. Na tien jaar weet je het antwoord al en vraag je niet meer.\nA: Maar het kost tijd.\nB: Het kost me een halve dag per twee weken. En dat is precies het punt: die tijd komt niet uit de lucht vallen. Die haal ik van mijn nakijkwerk af, en dat merken de cursisten.",
+        "prompt": "Wat bedoelt Gerben Sikkema als hij zegt dat die tijd niet uit de lucht komt vallen?",
+        "options": [
+          "Dat de organisatie hem te weinig uren voor overleg geeft",
+          "Dat hij die tijd weghaalt bij ander werk, zoals nakijken",
+          "Dat hij het overleg liever in de avonduren zou doen"
+        ],
+        "correct": 1,
+        "explanation": "Hij legt direct uit dat hij de tijd voor de medezeggenschapsraad van zijn nakijkwerk afhaalt en dat cursisten dat merken. Hij klaagt niet over het aantal uren dat hij krijgt."
+      },
+      {
+        "script": "A: Als je nu, na twee jaar, een collega zou adviseren die net begint. Wat zeg je dan?\nB: Één ding: ga uit van wat mensen al kunnen. Ik zag in het begin vooral wat er nog niet was. Fouten, gaten in de kennis. Maar iemand van vijfenveertig die na een lange dag om zeven uur in mijn lokaal zit, heeft al iets bewezen voordat de les begint.\nA: Mooi gezegd. En ga je zelf door?\nB: Ik denk het wel. We hadden het over drie jaar, thuis, en dat jaar is nog niet om. Maar ik merk dat ik nu dingen wil die ik twee jaar geleden niet aandurfde. Een groep begeleiden die examen doet, bijvoorbeeld.\nA: Dus je wilt eigenlijk meer.\nB: Ik wil er iets bij. Dat is niet hetzelfde als weg.\nA: Nee, dat is waar. Gerben, dank je wel voor je openheid.\nB: Graag gedaan. En zet erin dat ik het nog steeds leuk vind, want dat is het belangrijkste.",
+        "prompt": "Waar stuurt Joke Hendriks het gesprek aan het eind naartoe?",
+        "options": [
+          "Naar de vraag hoe Gerben Sikkema over zijn toekomst denkt",
+          "Naar de vraag of Gerben Sikkema fouten van cursisten aanpakt",
+          "Naar de vraag welke opleiding een beginnende collega moet doen"
+        ],
+        "correct": 0,
+        "explanation": "Na het advies vraagt ze of hij zelf doorgaat, en daarna of hij eigenlijk meer wil; het gesprek gaat dus naar zijn plannen. Over een opleiding voor beginnende collega's wordt niet gesproken."
+      }
+    ]
+  },
+  {
+    "section": "informatief",
+    "cast": {
+      "A": "man_richard",
+      "B": "woman_noa"
+    },
+    "title": "Wat je met een bibliotheekpas kunt doen",
+    "intro": "U gaat luisteren naar een gesprek tussen Bram Kooistra en Karima Boulahfa. Bram Kooistra werkt bij de bibliotheek in Nieuwveen en geeft informatie aan nieuwe leden. Karima Boulahfa wil zich inschrijven en stelt vragen over het lidmaatschap.",
+    "speaker_a": "Bram Kooistra",
+    "speaker_b": "Karima Boulahfa",
+    "opening": "A: Goedemiddag, komt u binnen. Kan ik u helpen?\nB: Ja, goedemiddag. Ik ben net verhuisd naar deze wijk en ik wil eigenlijk lid worden van de bibliotheek. Maar ik weet niet goed hoe dat werkt.\nA: Dat kan ik u uitleggen. Gaat u even zitten, dan pak ik er een formulier bij. Mag ik uw naam?\nB: Karima Boulahfa. En mijn zoon van tien wil ook graag lid worden, als dat kan.",
+    "fragments": [
+      {
+        "script": "A: Dat kan zeker. Nou, kijk, voor kinderen tot en met achttien jaar is het lidmaatschap helemaal gratis. Dat geldt voor de hele provincie, dus daar hoeft u niets voor te betalen.\nB: O, dat is mooi. En voor mijzelf?\nA: Voor volwassenen hebben we drie soorten abonnementen. Het goedkoopste kost achtentwintig euro per jaar, maar daarmee mag u maar drie boeken tegelijk lenen. Het middelste abonnement kost tweeënveertig euro en dan mag u tien boeken meenemen.\nB: En het duurste?\nA: Dat is vijfenzestig euro. Daar zit dan ook het lenen van films en luisterboeken bij, en u mag langer over het inleveren doen. Ja, in de praktijk kiezen de meeste mensen voor het middelste. Dat is voor een gezin vaak genoeg.\nB: Ik denk dat ik ook dat neem. Ik lees wel veel, maar films leen ik toch niet.",
+        "prompt": "Wat zegt Bram Kooistra over het middelste abonnement?",
+        "options": [
+          "Daarmee kan Karima Boulahfa tien boeken tegelijk lenen.",
+          "Daarmee mag Karima Boulahfa ook films meenemen.",
+          "Het is het abonnement dat het minste geld kost."
+        ],
+        "correct": 0,
+        "explanation": "Bram Kooistra zegt dat het middelste abonnement tweeënveertig euro kost en dat je dan tien boeken mag meenemen. Films horen bij het duurste abonnement van vijfenzestig euro, niet bij het middelste."
+      },
+      {
+        "script": "B: En moet ik dat bedrag nu meteen betalen?\nA: Nee, dat gaat via een automatische betaling van uw rekening. U betaalt één keer per jaar, op de datum waarop u lid geworden bent. Maar let op: u kunt niet halverwege het jaar stoppen en geld terugvragen.\nB: Dus als ik na drie maanden weer verhuis, ben ik mijn geld kwijt?\nA: Ja, in principe wel. Alleen als u buiten de regio gaat wonen, maken we een uitzondering. Dan krijgt u het deel van het jaar dat nog niet gebruikt is terug. Daarvoor moet u wel kunnen aantonen dat u echt verhuisd bent.\nB: Met een brief van de gemeente, bijvoorbeeld?\nA: Precies, zoiets. En u moet het binnen een maand na de verhuizing doorgeven. Daarna kan het niet meer, en dat is voor sommige mensen een teleurstelling.",
+        "prompt": "Wanneer krijgt een lid een deel van het geld terug?",
+        "options": [
+          "Als het lid bewijst dat hij buiten de regio is gaan wonen.",
+          "Als het lid binnen een maand opzegt na de inschrijving.",
+          "Als het lid halverwege het jaar met het lidmaatschap stopt."
+        ],
+        "correct": 0,
+        "explanation": "Bram Kooistra noemt één uitzondering: wie buiten de regio gaat wonen en dat kan aantonen, krijgt het ongebruikte deel terug. Gewoon halverwege het jaar stoppen levert geen geld op."
+      },
+      {
+        "script": "B: En hoe lang mag ik een boek houden?\nA: Drie weken. Daarna kunt u twee keer verlengen, dus in totaal negen weken. Dat gaat het makkelijkst via de app, want die stuurt u ook een bericht als de datum bijna om is.\nB: Ja, kijk, dat is handig. Ik vergeet dat soort dingen namelijk altijd.\nA: De meeste mensen wel, hoor. Daarom raden we die berichten echt aan. Als u te laat inlevert, betaalt u vijftien cent per boek per dag. Dat lijkt weinig, maar met vier boeken loopt dat aan.\nB: En als ik een boek kwijt ben?\nA: Dan rekenen we de prijs van het boek, plus vijf euro voor de administratie. Maar dat komt niet vaak voor. Wat vaker gebeurt, is dat mensen een boek terugbrengen met waterschade of een gescheurde bladzijde. Ook dan vragen we een vergoeding, hoewel we daar wel redelijk in zijn.",
+        "prompt": "Waarom raadt Bram Kooistra de app aan?",
+        "options": [
+          "Omdat je boeken daarmee vaker kunt verlengen.",
+          "Omdat je het boek dan niet zelf hoeft in te leveren.",
+          "Omdat je zo een waarschuwing krijgt over de datum."
+        ],
+        "correct": 2,
+        "explanation": "Bram Kooistra zegt dat de app een bericht stuurt als de inleverdatum bijna verstreken is, en dat helpt tegen te laat inleveren. Het aantal keren verlengen staat vast op twee en verandert niet door de app."
+      },
+      {
+        "script": "B: Ik zag buiten staan dat er ook cursussen zijn. Zit dat bij het lidmaatschap?\nA: Deels. We hebben een taalcafé op woensdagavond, en dat is voor iedereen gratis, ook voor mensen zonder pas. U komt gewoon binnen en gaat aan een tafel zitten met een vrijwilliger.\nB: Dat zou ik wel willen. Mijn Nederlands is redelijk, maar spreken vind ik moeilijk.\nA: Dan is dat echt iets voor u. Er komen elke week zo'n dertig mensen. Verder geven we cursussen computervaardigheden, en daar vragen we wel een kleine bijdrage voor, tien euro voor zes bijeenkomsten. Voor leden, wel te verstaan. Zonder pas betaalt u het dubbele.\nB: En kan ik me daar vandaag voor opgeven?\nA: Voor de cursus in het najaar wel, maar die begint pas in oktober. De groep van dit voorjaar is al vol, dus daar kan ik u helaas niet meer bij zetten.",
+        "prompt": "Wat zegt Bram Kooistra over het taalcafé?",
+        "options": [
+          "Er kunnen ongeveer dertig mensen worden ingeschreven.",
+          "Het is ook toegankelijk voor mensen zonder bibliotheekpas.",
+          "Je betaalt er een kleine bijdrage van tien euro voor."
+        ],
+        "correct": 1,
+        "explanation": "Bram Kooistra zegt dat het taalcafé gratis is voor iedereen, ook voor mensen zonder pas. De bijdrage van tien euro hoort bij de computercursus, niet bij het taalcafé."
+      },
+      {
+        "script": "B: Mag ik ook boeken lenen uit een andere bibliotheek? In mijn oude wijk hadden ze veel kookboeken.\nA: Ja, dat kan. Met uw pas kunt u in heel Nederland bij aangesloten bibliotheken terecht. En als een boek hier niet staat, kunnen wij het voor u aanvragen.\nB: O, dus dan hoef ik er niet zelf naartoe?\nA: Nee. Wij laten het hierheen komen en u krijgt een bericht als het klaarligt. Daar rekenen we wel een bedrag voor: drieënhalve euro per aanvraag. Dat is om de kosten van het vervoer te dekken.\nB: Hm, dat is niet niks als je er vier wil.\nA: Nee, dat ben ik met u eens. Daarom zeg ik altijd: kijk eerst in de catalogus of het boek ergens in de buurt staat. Vaak heeft de bibliotheek twee straten verderop het ook, en dan kunt u het daar zo van de plank halen. Dat kost u niets.",
+        "prompt": "Wat bedoelt Karima Boulahfa met haar opmerking dat het \"niet niks\" is?",
+        "options": [
+          "Ze had verwacht dat aanvragen helemaal gratis zou zijn.",
+          "Ze vindt dat aanvragen bij meer boeken duur wordt.",
+          "Ze wil liever zelf naar de andere bibliotheek toe gaan."
+        ],
+        "correct": 1,
+        "explanation": "Karima Boulahfa reageert op de drieënhalve euro per aanvraag en zegt dat het bij vier boeken flink oploopt; ze vindt het dus duur worden. Ze zegt niet dat ze zelf naar de andere vestiging wil gaan."
+      },
+      {
+        "script": "A: En dan is er nog iets wat veel mensen niet weten. U kunt met uw pas thuis gratis gebruikmaken van digitale kranten en tijdschriften.\nB: Echt? Ik heb nu een abonnement op een tijdschrift over tuinieren. Dat kost me vier euro per maand.\nA: Nou, kijk, dan zou ik eerst even kijken of dat blad erbij zit. We hebben er ongeveer honderd, van nieuws tot koken en wonen. U logt in met uw pasnummer en dan kunt u lezen op uw telefoon of uw tablet.\nB: En hoe lang blijft zo'n nummer beschikbaar?\nA: Daar zit wel een beperking aan: alleen de laatste drie nummers staan erop. Oudere jaargangen kunnen we niet aanbieden vanwege de afspraken met de uitgevers.\nB: Dat is voor mij niet zo'n probleem. Ik lees toch vooral het nieuwste nummer.\nA: Precies. En het scheelt u misschien dat abonnement.",
+        "prompt": "Wat is een beperking van de digitale tijdschriften?",
+        "options": [
+          "Alleen de drie meest recente nummers zijn te lezen.",
+          "Er zijn maar ongeveer honderd tijdschriften over tuinieren.",
+          "Je kunt ze alleen op een tablet en niet op de telefoon lezen."
+        ],
+        "correct": 0,
+        "explanation": "Bram Kooistra zegt dat alleen de laatste drie nummers beschikbaar zijn, omdat afspraken met uitgevers oudere jaargangen niet toestaan. De honderd titels gaan over allerlei onderwerpen, niet alleen over tuinieren."
+      },
+      {
+        "script": "B: Goed, dan schrijf ik me in. Wat heeft u van mij nodig?\nA: Een geldig identiteitsbewijs en uw rekeningnummer. Dat laatste voor de betaling die we net bespraken.\nB: Mijn paspoort heb ik bij me. En voor mijn zoon?\nA: Voor hem hoeft u geen bewijs mee te nemen, maar u moet als ouder wel meetekenen. Dat kunt u nu meteen doen. Zijn pas maak ik er direct bij.\nB: Fijn. En hij mag dus alles lenen?\nA: Boeken en luisterboeken, ja. Alleen bij films letten we op de leeftijd, dus daar kan het zijn dat iets niet meegaat. Verder krijgt hij dezelfde rechten als u, en hij kan ook meedoen aan de voorleesochtenden op zaterdag.\nB: Daar zal hij blij mee zijn. En dan kom ik woensdag naar het taalcafé.\nA: Doet u dat. U bent dan van harte welkom.",
+        "prompt": "Wat is nodig om de zoon van Karima Boulahfa in te schrijven?",
+        "options": [
+          "Een handtekening van zijn moeder.",
+          "Een identiteitsbewijs van de zoon.",
+          "Een tweede rekeningnummer."
+        ],
+        "correct": 0,
+        "explanation": "Bram Kooistra zegt dat er voor de zoon geen identiteitsbewijs nodig is, maar dat de ouder wel moet meetekenen. Het identiteitsbewijs is alleen voor Karima Boulahfa zelf vereist."
+      }
+    ]
+  },
+  {
+    "section": "persuasief",
+    "cast": {
+      "A": "woman_older",
+      "B": "man_young"
+    },
+    "title": "Huren of toch kopen?",
+    "intro": "U gaat luisteren naar een gesprek tussen Sanne Vermeer en Karim el Haddaoui. Sanne Vermeer werkt als makelaar bij een klein kantoor in Zwolle. Karim el Haddaoui huurt nu een appartement en komt langs voor informatie over het kopen van een woning.",
+    "speaker_a": "Sanne Vermeer",
+    "speaker_b": "Karim el Haddaoui",
+    "opening": "A: Meneer El Haddaoui, komt u binnen. Wilt u een kopje koffie?\nB: Graag, ja. En zegt u maar Karim, hoor.\nA: Prima, Karim. U had gebeld over uw huurwoning, begreep ik van mijn collega.\nB: Ja, nou, eerlijk gezegd bel ik vooral omdat mijn zus me heeft gepusht. Zij heeft vorig jaar gekocht en die roept nu dat ik geld weggooi.\nA: Dat hoor ik vaker. En u zit zelf nog te twijfelen?\nB: Ik twijfel niet, ik dacht eigenlijk: ik kom even horen waarom het niet kan. Dan kan ik het thuis afsluiten.",
+    "fragments": [
+      {
+        "script": "A: Dat is in elk geval een duidelijk uitgangspunt. Mag ik vragen wat u nu aan huur betaalt?\nB: Achthonderdveertig euro, plus servicekosten. Dat appartement is niet groot, twee kamers, maar het is netjes en ik zit er al zes jaar.\nA: En de huur gaat elk jaar omhoog, neem ik aan.\nB: Elk jaar in juli. Dit jaar kwam er weer bijna dertig euro bij. Dat voel je, want mijn salaris gaat niet zo hard.\nA: Kijk, en dat is precies het punt waar ik meestal begin. Bij huren weet u niet wat u over tien jaar betaalt. Bij een hypotheek met een rente die tien jaar vaststaat, weet u dat wel.\nB: Ja, maar dan zit ik ook tien jaar vast aan die woning. Dat vind ik nou juist eng.\nA: Dat begrijp ik. Alleen: vastzitten aan een hypotheek is iets anders dan vastzitten aan een huis. Verkopen kan altijd.\nB: Hm. Zo had ik er nog niet naar gekeken.",
+        "prompt": "Waarom begint Sanne Vermeer over de jaarlijkse huurverhoging?",
+        "options": [
+          "Om aan te geven dat Karim el Haddaoui te veel huur betaalt voor zijn appartement",
+          "Om duidelijk te maken dat hij bij huren niet weet wat hij later kwijt is",
+          "Om hem te laten inzien dat zijn salaris te weinig stijgt"
+        ],
+        "correct": 1,
+        "explanation": "Sanne zegt dat je bij huren niet weet wat je over tien jaar betaalt, terwijl een vaste hypotheekrente wel zekerheid geeft. Dat zijn salaris weinig stijgt zegt Karim zelf; dat is niet haar argument."
+      },
+      {
+        "script": "B: Maar goed, kopen kan toch alleen als je spaargeld hebt? Ik heb wel wat, maar geen bergen.\nA: Hoeveel is wel wat, als u dat wilt zeggen?\nB: Een kleine veertienduizend. Dat heb ik in zes jaar bij elkaar gespaard.\nA: Nou, kijk, dat is meer dan veel mensen die hier aan tafel zitten. U kunt in Nederland maximaal honderd procent van de waarde van de woning lenen. Dus de woning zelf financiert u helemaal met de hypotheek.\nB: O? Ik dacht dat je altijd tien procent zelf moest meebrengen.\nA: Nee, dat is een verhaal dat blijft rondzingen. Maar er is wel een addertje onder het gras: de kosten voor de notaris, de overdrachtsbelasting en mijn eigen honorarium kunt u niet meelenen. Die betaalt u uit uw eigen zak.\nB: En hoeveel is dat dan bij elkaar?\nA: Reken op ongeveer vijf procent van de koopprijs. Bij een woning van driehonderdduizend euro is dat dus rond de vijftienduizend.\nB: Dan kom ik dus net tekort. Fijn.\nA: Bij die prijs wel, ja. Maar u bent ook nog geen vijfendertig.",
+        "prompt": "Wat zegt Sanne Vermeer over de bijkomende kosten bij een koopwoning?",
+        "options": [
+          "Die kosten mag hij bij de hypotheek optellen als hij genoeg verdient",
+          "Die kosten moet hij met eigen geld betalen, ongeveer vijf procent",
+          "Die kosten vallen weg omdat hij honderd procent kan lenen"
+        ],
+        "correct": 1,
+        "explanation": "Sanne legt uit dat notaris, overdrachtsbelasting en haar honorarium niet meegeleend kunnen worden en dat je moet rekenen op ongeveer vijf procent van de koopprijs. De honderd procent geldt alleen voor de waarde van de woning zelf."
+      },
+      {
+        "script": "B: Wat heeft mijn leeftijd daarmee te maken?\nA: Bent u onder de vijfendertig en koopt u een woning van maximaal vijfhonderdvijfentwintigduizend euro, dan betaalt u geen overdrachtsbelasting. Die vrijstelling geldt één keer.\nB: Eén keer in je leven?\nA: Eén keer, ja. En u moet er zelf in gaan wonen. Bij die driehonderdduizend euro scheelt dat u ongeveer zesduizend euro.\nB: Zesduizend. Dat is bijna een halfjaar huur.\nA: Precies. Dan blijft u dus rond de negenduizend euro aan kosten over, en dat past binnen uw veertienduizend.\nB: Ja, maar dan is mijn spaarrekening leeg. En als de kraan dan lekt, of de verwarming valt uit?\nA: Dat is een terechte zorg, en die neem ik serieus. Ik zou nooit iemand adviseren om tot de laatste euro te gaan. Daarom kijk ik met u liever naar iets onder de driehonderd.\nB: Bestaat dat nog, hier in de stad?\nA: Weinig. Maar in Hasselt en Genemuiden staat af en toe iets. Dat is vijftien minuten rijden.",
+        "prompt": "Wat bedoelt Karim el Haddaoui als hij zegt: \"Dat is bijna een halfjaar huur\"?",
+        "options": [
+          "Dat hij de vrijstelling pas over een halfjaar kan aanvragen",
+          "Dat hij een halfjaar zou moeten sparen voor die kosten",
+          "Dat hij het voordeel van de vrijstelling opvallend groot vindt"
+        ],
+        "correct": 2,
+        "explanation": "Hij vergelijkt de zesduizend euro met zijn huur om te laten zien hoe groot dat bedrag voor hem is. Over sparen of een aanvraagtermijn zegt hij niets."
+      },
+      {
+        "script": "B: Vijftien minuten rijden, zegt u dat zo. Ik heb geen auto.\nA: Ah. Dat is wel relevant, ja.\nB: En mijn werk is in Zwolle, in de zorg, met wisselende diensten. Als ik om half zes 's ochtends moet beginnen, rijdt er geen bus.\nA: Dan valt Genemuiden inderdaad af. Dat had ik moeten vragen, sorry. Maar dan blijven we in Zwolle, en dan wordt het krap.\nB: Dus eigenlijk zegt u nu zelf dat het niet kan.\nA: Nee, dat zeg ik niet. Ik zeg dat het met uw huidige spaargeld krap is. Er zijn twee wegen: of u wacht nog een jaar en spaart door, of u kijkt naar een appartement in plaats van een huis.\nB: Een appartement heb ik nu ook.\nA: Klopt, maar nu betaalt u huur aan iemand anders. Bij een koopappartement lost u af, en dat geld is van u. Alleen betaalt u daar wel servicekosten voor de vereniging van eigenaren.\nB: Die heb ik nu ook. Dat is dan in elk geval niet nieuw.",
+        "prompt": "Waarom valt een woning in Genemuiden voor Karim el Haddaoui af?",
+        "options": [
+          "Omdat hij door zijn werktijden niet zonder auto kan reizen",
+          "Omdat in Genemuiden bijna geen woningen te koop staan",
+          "Omdat zijn werkgever in Zwolle een auto niet vergoedt"
+        ],
+        "correct": 0,
+        "explanation": "Karim heeft geen auto en moet soms om half zes beginnen, en dan rijdt er geen bus. Dat er weinig aanbod is, zei Sanne over Zwolle, niet als reden om Genemuiden af te wijzen."
+      },
+      {
+        "script": "A: Mag ik u een rekensommetje voorleggen? Niet om u over te halen, maar om een gevoel te geven.\nB: Gaat uw gang.\nA: Stel, u koopt een appartement van tweehonderdzeventigduizend euro. Met de rente van vandaag en een looptijd van dertig jaar komt u netto op ongeveer negenhonderdvijftig euro per maand, dus na teruggave van de belasting.\nB: Dat is meer dan mijn huur nu.\nA: Ruim honderd euro meer, ja. Maar in die negenhonderdvijftig zit ongeveer driehonderd euro aflossing. Dat bedrag verdwijnt niet, dat wordt uw eigendom.\nB: Ja, kijk, dat snap ik op papier. Maar ik moet die honderd euro wél elke maand ophoesten. En bij een lekkend dak komt er nog een rekening bij.\nA: Volkomen waar. Daarom adviseer ik altijd om naast de hypotheek maandelijks iets apart te zetten voor onderhoud. Bij een appartement is dat vaak al geregeld via de vereniging.\nB: En als de rente na tien jaar verdubbelt?\nA: Dan gaat uw maandlast omhoog, dat verzwijg ik niet. Maar u heeft dan al tien jaar afgelost, dus u leent over een kleiner bedrag.",
+        "prompt": "Wat zegt Sanne Vermeer over het verschil tussen de huur en de maandlast?",
+        "options": [
+          "Dat de maandlast lager uitvalt zodra de belasting is teruggegeven",
+          "Dat de maandlast ruim honderd euro hoger is, maar deels aflossing",
+          "Dat het verschil van honderd euro wegvalt tegen het onderhoud"
+        ],
+        "correct": 1,
+        "explanation": "Zij bevestigt dat het ruim honderd euro meer is dan de huur, maar wijst erop dat er ongeveer driehonderd euro aflossing in zit die eigendom wordt. Het bedrag van negenhonderdvijftig euro is al na belastingteruggave."
+      },
+      {
+        "script": "B: U bent eerlijker dan ik had verwacht, moet ik zeggen.\nA: Dat is uiteindelijk ook mijn belang. Iemand die over twee jaar zijn hypotheek niet kan betalen, stuurt geen nieuwe klanten naar mij toe.\nB: Fair. Maar ik ga vandaag geen huis kopen, dat weet u.\nA: Dat verwacht ik ook helemaal niet. Zal ik u zeggen wat ik u zou aanraden? Maak een gratis afspraak bij een hypotheekadviseur en vraag alleen om een berekening van wat u kunt lenen. Zonder dat u iets belooft.\nB: En dan?\nA: Dan weet u een getal. Nu praat u over kopen als iets vaags, en straks weet u of het tweehonderdvijftig of driehonderdtwintig is. Daarna kunt u nog altijd besluiten om te blijven huren.\nB: En dan gaat u mij bellen.\nA: Nee, dan belt u mij. Ik stuur u wel een mailtje met twee namen van adviseurs. Kijkt u er over een week nog eens naar.\nB: Goed. Ik beloof niets, maar die berekening laat ik wel maken.\nA: Meer vraag ik niet.",
+        "prompt": "Waar stuurt Sanne Vermeer het gesprek aan het eind naartoe?",
+        "options": [
+          "Naar een afspraak waarbij zij samen woningen gaan bekijken",
+          "Naar een gesprek met een adviseur over zijn leenmogelijkheden",
+          "Naar een keuze tussen huren en kopen die hij nu moet maken"
+        ],
+        "correct": 1,
+        "explanation": "Ze raadt hem aan om bij een hypotheekadviseur alleen een berekening te laten maken, zonder verplichting. Ze zegt juist dat hij vandaag niets hoeft te kiezen en dat hij haar zelf mag bellen."
+      }
+    ]
+  },
+  {
+    "section": "instructief",
+    "cast": {
+      "A": "man_eric",
+      "B": "man_older"
+    },
+    "title": "Een kamer klaarmaken voor de verf",
+    "intro": "U gaat luisteren naar een gesprek tussen Wouter Snijders en Ramon Veldkamp. Wouter Snijders wil zijn woonkamer zelf schilderen. Ramon Veldkamp is schilder en legt uit hoe je een kamer stap voor stap voorbereidt.",
+    "speaker_a": "Wouter Snijders",
+    "speaker_b": "Ramon Veldkamp",
+    "opening": "A: Ha Ramon, fijn dat je even tijd hebt. Ik wil volgende maand mijn woonkamer zelf schilderen.\nB: Leuk, dat is goed te doen hoor. Heb je het al eens eerder gedaan?\nA: Nou, één keer, in mijn vorige huis. Maar eerlijk gezegd zag het er daarna niet uit.\nB: Dan weet ik meestal genoeg. Negen van de tien keer ligt dat niet aan het verven zelf, maar aan wat je ervóór doet.",
+    "fragments": [
+      {
+        "script": "A: Hoe bedoel je dat precies, aan wat je ervóór doet?\nB: Ja, kijk, mensen denken: ik koop een pot verf, een roller, en dan begin ik. Maar het voorwerk is eigenlijk het echte werk.\nA: En dat is dan schuren en zo?\nB: Onder andere. Ik reken zelf altijd zo: van de tijd die een kamer kost, gaat ongeveer zeventig procent naar voorbereiding en dertig procent naar de verf op de muur.\nA: Zeventig procent? Dat meen je niet.\nB: Echt waar. Bij een gemiddelde woonkamer ben ik twee dagen bezig met leeghalen, plakken, plamuren en schuren, en dan een dag met schilderen.\nA: Dat had ik dus totaal verkeerd ingeschat.\nB: De meesten wel. En het vervelende is: als het voorwerk slecht is, zie je dat terug in de verf. Elk oneffen plekje komt er juist door de verf sterker uit.\nA: Dus dat gekke vlekkerige effect dat ik had…\nB: Waarschijnlijk geen slechte verf, maar een muur die niet goed was voorbereid.",
+        "prompt": "Wat zegt Ramon over de verhouding tussen voorbereiding en schilderen?",
+        "options": [
+          "Het grootste deel van de tijd gaat naar het voorwerk",
+          "Het schilderen zelf kost de meeste tijd en aandacht",
+          "Voorbereiden en schilderen kosten ongeveer evenveel tijd"
+        ],
+        "correct": 0,
+        "explanation": "Ramon zegt dat ongeveer zeventig procent van de tijd naar de voorbereiding gaat en dertig procent naar het verven. De optie dat het schilderen het meeste tijd kost, is juist het misverstand dat hij wil rechtzetten."
+      },
+      {
+        "script": "A: Oké, waar begin ik dan?\nB: Met leeghalen. En dan bedoel ik echt leeg. Niet alles in het midden schuiven en er een doek overheen.\nA: Maar mijn bank kan nergens heen. Ik heb geen schuur.\nB: Dan zet je hem wel in het midden, maar haal je in elk geval alle kleine spullen weg: lampen, gordijnen, schilderijen, planken.\nA: De gordijnroede ook?\nB: Ja, en de schroeven eruit. Anders schilder je om alles heen en dat zie je later.\nA: Hm, dat kost wel een avond.\nB: Reken op een avond, ja. En let op: als je iets van de muur haalt, schrijf dan op welke schroef waar hoort. Dat klinkt overdreven, maar bij het terughangen ben je anders een uur kwijt.\nA: Slim. Ik doe dat altijd uit mijn hoofd.\nB: Uit je hoofd gaat prima tot je drie weken later terugkomt. Ik gebruik zakjes met een briefje erbij, per muur één zakje.",
+        "prompt": "Waarom raadt Ramon aan om bij de schroeven een briefje te doen?",
+        "options": [
+          "Omdat je anders vergeet hoeveel schroeven je hebt",
+          "Omdat je dan later minder tijd kwijt bent met terughangen",
+          "Omdat schroeven anders roesten door de verf"
+        ],
+        "correct": 1,
+        "explanation": "Ramon zegt dat je bij het terughangen anders een uur kwijt bent, omdat je na drie weken niet meer weet wat waar hoort. Over roest of het aantal schroeven zegt hij niets."
+      },
+      {
+        "script": "A: En dan afplakken?\nB: Nog niet. Eerst schoonmaken. Een muur die vet of stoffig is, neemt de verf niet goed aan.\nA: Schoonmaken met water?\nB: Met een sopje, lauw water met een beetje allesreiniger. En boven de radiator en in de keukenhoek extra goed, want daar zit meestal een vettig laagje.\nA: Daar had ik nooit aan gedacht.\nB: Nee, en dat is precies waar de verf later loslaat. Ik zie het vaak boven het fornuis: daar bladdert het na een jaar af.\nA: En daarna meteen verven?\nB: Nee, goed laten drogen. Minimaal een dag, en in de winter langer, omdat het dan langer vochtig blijft in huis.\nA: Een dag alleen maar wachten.\nB: Dat is geen verloren tijd, want ondertussen kun je al plamuren. Kleine gaatjes van pluggen, scheurtjes bij de deurpost, dat werk.\nA: Oké, dus schoonmaken en plamuren lopen door elkaar heen.\nB: Precies, zolang je maar niet op een natte muur gaat plamuren.",
+        "prompt": "Waarom moet je volgens Ramon boven de radiator en in de keukenhoek extra goed schoonmaken?",
+        "options": [
+          "Daar hecht de verf slecht doordat er vet zit",
+          "Daar is de muur vaak beschadigd door de warmte",
+          "Daar wordt het stof door de lucht rondgeblazen"
+        ],
+        "correct": 0,
+        "explanation": "Ramon zegt dat daar een vettig laagje zit en dat de verf op die plekken later loslaat of afbladdert. Beschadiging door warmte noemt hij niet."
+      },
+      {
+        "script": "A: Plamuren vind ik lastig. Ik krijg het nooit glad.\nB: De meeste mensen brengen te veel in één keer aan. Dun werken, twee of drie keer, en tussendoor laten drogen.\nA: En dan schuren.\nB: Schuren, ja. Met korrel honderdtwintig voor het grove en daarna honderdtachtig om het glad te maken. Hoe hoger het getal, hoe fijner het schuurpapier.\nA: Honderdtwintig en honderdtachtig, dat onthoud ik.\nB: En werk met een schuurblok of een steel, niet met je blote hand. Met je hand druk je ongelijk, en dan krijg je juist kuiltjes.\nA: Wordt dat niet ontzettend stoffig?\nB: Jazeker. Doe een stofmasker op en zet ramen open. Er bestaat ook een schuurmachine met een afzuiging erop, die kun je huren voor ongeveer vijfentwintig euro per dag.\nA: Vijfentwintig euro, dat valt mee eigenlijk.\nB: Voor één kamer twijfel ik. Voor een heel huis zou ik het zeker doen, want dan bespaar je uren en heb je veel minder stof in je woning.",
+        "prompt": "Wat vindt Ramon van het huren van een schuurmachine met afzuiging?",
+        "options": [
+          "Bij één kamer is het bedrag de moeite niet waard",
+          "Hij vindt het vooral zinvol als je een heel huis doet",
+          "Hij zou het altijd doen vanwege het stof in huis"
+        ],
+        "correct": 1,
+        "explanation": "Ramon zegt dat hij bij één kamer twijfelt, maar dat hij het bij een heel huis zeker zou doen. Hij zegt niet dat het bij één kamer het geld niet waard is, alleen dat hij twijfelt."
+      },
+      {
+        "script": "A: Dan het afplakken. Ik gebruik altijd gewoon tape uit de bouwmarkt.\nB: Welke soort?\nA: Geen idee, de goedkoopste rol meestal.\nB: Daar gaat het vaak mis. Neem echt schilderstape, die is minder plakkerig en laat geen lijm achter.\nA: Die is wel duurder.\nB: Een euro of vijf per rol, tegenover twee euro voor de goedkope. Maar als je bij het weghalen de verflaag van je kozijn meetrekt, ben je een uur extra bezig.\nA: Dat is me een keer gebeurd, inderdaad.\nB: En nog iets belangrijks: druk de rand van de tape goed aan, met je duim of een plamuurmes. Anders kruipt de verf eronder.\nA: En hoelang mag die tape blijven zitten?\nB: Haal hem er dezelfde dag af, liefst als de verf nog net niet helemaal droog is. Blijft hij een week zitten, dan bakt hij vast en scheurt hij in stukjes.\nA: Dat verklaart veel.",
+        "prompt": "Wat is volgens Ramon het voordeel van echte schilderstape?",
+        "options": [
+          "Hij is per rol ongeveer twee euro goedkoper",
+          "Hij laat bij het verwijderen geen lijmresten achter",
+          "Hij plakt beter vast op een stoffige ondergrond"
+        ],
+        "correct": 1,
+        "explanation": "Ramon zegt dat schilderstape minder plakkerig is en geen lijm achterlaat. Schilderstape is juist duurder, ongeveer vijf euro tegenover twee euro."
+      },
+      {
+        "script": "A: En de vloer? Ik heb een houten vloer die er nog goed uitziet.\nB: Dan zou ik geen plastic gebruiken.\nA: Huh, waarom niet? Plastic houdt toch alles tegen?\nB: Het houdt alles tegen, maar spetters blijven er nat op liggen en dan loop je ze door de hele kamer. Bovendien glijdt plastic weg onder je voeten, en dat is op een trap of ladder niet handig.\nA: Wat dan wel?\nB: Een stoffen afdekzeil, of karton. Dat zuigt de druppels op en blijft liggen.\nA: Is dat niet duur?\nB: Een goed stoffen zeil kost rond de dertig euro, maar dat gaat jaren mee. Ik heb er een die ik al zeven jaar gebruik.\nA: En langs de plinten?\nB: Daar plak je smal plastic met tape eraan vast, dat bestaat kant-en-klaar. Dus stof op de vloer, en plastic alleen op de plek waar je echt spetters verwacht.\nA: Duidelijk, een combinatie dus.",
+        "prompt": "Waarom raadt Ramon plastic op de hele vloer af?",
+        "options": [
+          "Je loopt de natte spetters ermee door de kamer",
+          "Plastic beschermt een houten vloer onvoldoende",
+          "Plastic scheurt snel onder een ladder of trap"
+        ],
+        "correct": 0,
+        "explanation": "Ramon zegt dat spetters nat op plastic blijven liggen, waardoor je ze door de kamer loopt, en dat plastic wegglijdt. Dat plastic scheurt, zegt hij niet."
+      },
+      {
+        "script": "A: Moet ik nog iets doen aan de muur zelf voordat ik verf?\nB: Ja, voorstrijken. Dat is een dunne, doorzichtige laag die de muur minder zuigend maakt.\nA: Bij elke muur?\nB: Niet altijd. Er is een simpele test: gooi wat water op de muur met een kwast. Trekt het meteen in, dan is de muur zuigend en moet je voorstrijken.\nA: En als het water blijft staan?\nB: Dan hoeft het niet. Bij pas geplamuurde plekken moet je het wel altijd doen, want plamuur zuigt enorm.\nA: Anders krijg ik dus doffe plekken?\nB: Precies, dat zie je bij zijlicht heel duidelijk.\nA: Hoelang moet dat drogen?\nB: Op de bus staat vier uur, maar ik wacht liever tot de volgende ochtend. Dat scheelt weinig en het resultaat is beter.\nA: Je bent wel geduldig.\nB: Nou, dat is niet mijn karakter hoor. Ik heb gewoon te vaak een kamer over moeten doen.",
+        "prompt": "Wat bedoelt Ramon met zijn laatste opmerking?",
+        "options": [
+          "Hij heeft door slechte ervaringen geleerd te wachten",
+          "Hij vindt zichzelf van nature een rustige werker",
+          "Hij werkt liever langzaam dan dat hij fouten maakt"
+        ],
+        "correct": 0,
+        "explanation": "Ramon zegt dat geduld niet zijn karakter is, maar dat hij te vaak een kamer opnieuw heeft moeten doen. Hij ontkent juist dat hij van nature rustig of geduldig is."
+      },
+      {
+        "script": "A: Ik schrik nu een beetje van hoeveel werk het is.\nB: Reken op vier avonden voorbereiding en één zaterdag schilderen. Dan heb je een mooi resultaat.\nA: En als ik het uitbesteed, wat kost dat dan?\nB: Voor een woonkamer van een normale grootte zit je bij mij rond de negenhonderd euro, inclusief materiaal. Maar dan haal ik de kamer niet leeg, dat doe je zelf.\nA: Dus dat leeghalen blijft sowieso mijn werk.\nB: Bij vrijwel elke schilder wel, ja. Anders reken ik uren voor sjouwen en dat wil niemand betalen.\nA: Ik denk dat ik het toch zelf ga doen. Maar dan met jouw stappenplan.\nB: Goed plan. En weet je wat ik je vooral aanraad? Begin niet op vrijdagavond na je werk. Dan ga je haasten, en haasten is precies waar het misgaat.\nA: Ik begin zaterdagochtend.\nB: Mooi. En bel gerust als je twijfelt over die voorstrijk, dat scheelt je een hoop ellende.",
+        "prompt": "Wat hoort volgens Ramon niet bij zijn prijs van negenhonderd euro?",
+        "options": [
+          "De verf en het overige materiaal",
+          "Het legen van de kamer door de bewoner",
+          "Het voorstrijken van de gepla­muurde plekken"
+        ],
+        "correct": 1,
+        "explanation": "Ramon zegt dat de prijs inclusief materiaal is, maar dat hij de kamer niet leeghaalt; dat doet de klant zelf. De verf zit er dus juist wél bij."
+      }
+    ]
+  },
+  {
+    "section": "informatief",
+    "cast": {
+      "A": "woman_roos",
+      "B": "woman_young"
+    },
+    "title": "Deeltijd naar het hbo als laborant",
+    "intro": "U gaat luisteren naar een gesprek tussen Ingrid Veenstra en Fatima el Idrissi. Ingrid Veenstra maakt interviews voor het personeelsblad van een laboratorium. Fatima el Idrissi werkt daar als laborant en vertelt over de hbo-opleiding die zij in deeltijd volgde.",
+    "speaker_a": "Ingrid Veenstra",
+    "speaker_b": "Fatima el Idrissi",
+    "opening": "A: Fatima, fijn dat je even tijd hebt. Ik zit hier met mijn opnameapparaat, dus zeg het maar als je iets liever niet in het blad ziet.\nB: Nee hoor, dat is prima. Ik vind het juist leuk om erover te vertellen.\nA: Je werkt hier nu, hoelang, een jaar of acht?\nB: Negen jaar inmiddels. Ik ben hier binnengekomen als mbo-laborant, meteen na mijn opleiding.",
+    "fragments": [
+      {
+        "script": "A: En op een gegeven moment besloot je om er een hbo-opleiding bij te gaan doen. Hoe kwam dat?\nB: Nou, kijk, dat is niet van de ene op de andere dag gegaan. Ik deed mijn werk goed, dat zei mijn leidinggevende ook. Maar ik merkte dat ik bij overleggen steeds vaker alleen maar uitvoerde wat anderen bedacht hadden.\nA: Je wilde meer meedenken.\nB: Ja, precies dat. Er kwam een nieuw onderzoeksproject en daar mocht ik niet aan meewerken, omdat ze daar iemand met hbo-niveau voor zochten. Dat vond ik op dat moment vooral jammer, niet oneerlijk of zo. Maar het bleef wel hangen.\nA: En toen?\nB: Toen heb ik een paar maanden later zelf een gesprek aangevraagd. Ik zei: ik wil graag verder, wat zijn mijn mogelijkheden? En mijn leidinggevende kwam toen met dat deeltijdtraject. Dat bestond al, maar niemand had het mij ooit verteld.",
+        "prompt": "Waarom besloot Fatima el Idrissi een hbo-opleiding te gaan doen?",
+        "options": [
+          "Omdat haar leidinggevende haar dat had aangeraden",
+          "Omdat ze inhoudelijk te weinig kon meedenken",
+          "Omdat ze niet tevreden was over haar salaris"
+        ],
+        "correct": 1,
+        "explanation": "Ze vertelt dat ze bij overleggen vooral uitvoerde wat anderen bedachten en dat ze meer wilde meedenken. Haar leidinggevende noemde het traject pas nadat zij er zelf om had gevraagd, dus die heeft het haar niet aangeraden."
+      },
+      {
+        "script": "A: Kun je iets vertellen over hoe zo'n deeltijdtraject er dan uitziet?\nB: Ja. Het is een opleiding van vier jaar, maar ik heb vrijstellingen gekregen voor een deel van het eerste jaar, waardoor ik het in drieënhalf jaar heb gedaan.\nA: Vrijstellingen op grond van je mbo-diploma?\nB: Deels, maar vooral op grond van werkervaring. Daar moest ik wel een dossier voor aanleveren, met voorbeelden van wat ik in het lab allemaal zelfstandig doe. Dat kostte me een week of zes, in de avonduren.\nA: Pittig begin.\nB: Zeker, en ik moet eerlijk zeggen: ik had niet verwacht dat het zoveel schrijfwerk zou zijn. Ik dacht, ik lever mijn diploma in en klaar. Zo werkt het dus niet.\nA: En de lesdagen?\nB: Eén vaste dag in de week naar school, op donderdag. En daarnaast reken je op ongeveer twaalf uur zelfstudie per week. Dat is echt een schatting van de opleiding zelf, en die klopte aardig.",
+        "prompt": "Wat zegt Fatima el Idrissi over de vrijstellingen?",
+        "options": [
+          "Ze kreeg ze uitsluitend op basis van haar mbo-diploma",
+          "Ze kreeg ze vooral vanwege haar ervaring in het lab",
+          "Ze kreeg ze zonder dat ze er iets voor hoefde te doen"
+        ],
+        "correct": 1,
+        "explanation": "Ze zegt dat de vrijstellingen deels op haar diploma berustten, maar vooral op werkervaring. Ze moest daar bovendien zes weken aan een dossier werken, dus het ging niet vanzelf."
+      },
+      {
+        "script": "A: En wie betaalde dat allemaal? Zo'n opleiding is niet goedkoop.\nB: Nee. Het collegegeld was ongeveer tweeduizend euro per jaar. De werkgever betaalde daarvan tachtig procent, dus ik legde zelf zo'n vierhonderd euro per jaar bij.\nA: Dat valt mee, eigenlijk.\nB: Het collegegeld wel, ja. Maar de boeken en de reiskosten kwamen er nog bovenop, en die vergoeden ze hier niet. Dat was bij elkaar toch nog een paar honderd euro extra per jaar.\nA: Zat er een voorwaarde aan die vergoeding?\nB: Ja, er stond in de studieovereenkomst dat ik na mijn diploma nog twee jaar moest blijven. Ga je eerder weg, dan betaal je een deel terug.\nA: Vond je dat bezwaarlijk?\nB: Nou, in het begin dacht ik: word ik hier nu vastgezet? Maar ik wilde helemaal niet weg. Dus achteraf is het voor mij geen probleem geweest. Ik snap ook wel dat een werkgever daar iets voor terug wil.",
+        "prompt": "Hoeveel collegegeld betaalde Fatima el Idrissi zelf per jaar?",
+        "options": [
+          "Ongeveer tachtig euro",
+          "Ongeveer tweeduizend euro",
+          "Ongeveer vierhonderd euro"
+        ],
+        "correct": 2,
+        "explanation": "Het collegegeld was tweeduizend euro per jaar en de werkgever betaalde daarvan tachtig procent, waardoor zij zelf ongeveer vierhonderd euro bijlegde. Tweeduizend euro is het totaalbedrag, niet haar eigen bijdrage."
+      },
+      {
+        "script": "A: Hoe ging het thuis, met die donderdagen en die zelfstudie?\nB: Het eerste jaar ging eigenlijk verrassend goed. Ik was gemotiveerd, ik vond de vakken leuk, en mijn man nam de dinsdag- en donderdagavond voor zijn rekening.\nA: En daarna?\nB: In het tweede jaar liep ik vast. Er kwam een blok statistiek waar ik echt niets van begreep. Ik had dat op het mbo nauwelijks gehad, en op het hbo gingen ze ervan uit dat je de basis kende.\nA: Wat heb je toen gedaan?\nB: Ik heb eerst een tijd doorgemodderd, dat was niet slim. Ik dacht: als ik maar hard genoeg werk. Uiteindelijk heb ik me gemeld bij de studiebegeleider, en die wist meteen dat er bijlessen waren voor precies deze groep.\nA: Die waren er dus gewoon.\nB: Ja, en dat wist ik niet. Dat is wel iets wat ik andere mensen zou willen meegeven: wacht niet tot je het tentamen twee keer hebt verprutst. Vraag eerder om hulp dan ik deed.",
+        "prompt": "Wat bedoelt Fatima el Idrissi als zij zegt dat ze eerst een tijd heeft doorgemodderd?",
+        "options": [
+          "Dat ze het probleem te lang alleen probeerde op te lossen",
+          "Dat ze in die periode minder tijd aan haar studie besteedde",
+          "Dat ze overwoog om met de hele opleiding te stoppen"
+        ],
+        "correct": 0,
+        "explanation": "Ze legt uit dat ze dacht dat hard werken genoeg zou zijn en dat ze pas laat naar de studiebegeleider ging. Ze werkte juist hard, dus van minder tijd besteden was geen sprake."
+      },
+      {
+        "script": "A: Je zei net dat de opleiding uitging van een bepaalde basis. Zijn er meer dingen die tegenvielen?\nB: Ja, het samenwerken in groepen. Wij waren allemaal werkende mensen, uit verschillende bedrijven en uit het hele land. Een groepsopdracht plannen is dan echt een ramp.\nA: Dat kan ik me voorstellen.\nB: We deden het meestal digitaal, 's avonds om negen uur, als de kinderen sliepen. Dat werkte, maar je bouwt zo minder makkelijk iets op met elkaar. Op de lesdag zelf zat je vooral te luisteren.\nA: En de inhoud, viel die ook tegen?\nB: Nee, juist niet. Ik had eerlijk gezegd verwacht dat veel stof een herhaling zou zijn van het mbo, omdat ik al negen jaar in de praktijk sta. Dat was helemaal niet zo. Het ging veel meer over waaróm je een methode kiest, en over hoe je een onderzoek opzet. Daar heb ik in mijn werk nu elke week iets aan.\nA: Dus dat was een positieve verrassing.\nB: Zeker.",
+        "prompt": "Wat vond Fatima el Idrissi tegenvallen aan de opleiding?",
+        "options": [
+          "De inhoud van de vakken",
+          "De kwaliteit van de lesdagen",
+          "Het samenwerken met medestudenten"
+        ],
+        "correct": 2,
+        "explanation": "Ze noemt het plannen van groepsopdrachten met werkende studenten uit het hele land een ramp. Over de inhoud is ze juist positief verrast, omdat het geen herhaling van het mbo bleek te zijn."
+      },
+      {
+        "script": "A: En nu ben je klaar. Wat is er veranderd?\nB: Ik heb sinds januari een andere functie, ik ben nu onderzoeksmedewerker. Dat betekent dat ik zelf meedenk over de opzet van proeven, en dat ik resultaten mag interpreteren.\nA: Ging dat automatisch, na je diploma?\nB: Nee, en dat wil ik wel benadrukken. Er stond nergens dat ik na mijn diploma recht had op een andere functie. Ik heb gewoon moeten solliciteren toen er een plek vrijkwam, net als iedereen.\nA: En het salaris?\nB: Dat is een schaal omhooggegaan. Niet spectaculair, maar het is er wel.\nA: Zou je het iemand aanraden?\nB: Ja, maar niet iedereen. Als je het alleen doet omdat het goed staat, ga je het niet volhouden, denk ik. Je moet echt iets willen met die kennis. En bespreek het thuis, want je bent er drieënhalf jaar bijna elke avond mee bezig.\nA: Fatima, dank je wel.\nB: Graag gedaan.",
+        "prompt": "Wat benadrukt Fatima el Idrissi over haar nieuwe functie?",
+        "options": [
+          "Dat het diploma haar die functie heeft opgeleverd",
+          "Dat ze er flink meer door is gaan verdienen",
+          "Dat ze er gewoon naar heeft moeten solliciteren"
+        ],
+        "correct": 2,
+        "explanation": "Ze zegt nadrukkelijk dat nergens stond dat ze recht had op een andere functie en dat ze net als iedereen moest solliciteren. Het salaris ging wel omhoog, maar volgens haar niet spectaculair, en dat is niet wat ze benadrukt."
+      }
+    ]
+  }
+]

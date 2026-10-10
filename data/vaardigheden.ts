@@ -8,7 +8,7 @@
  *
  * Lezen en Luisteren hadden die opsplitsing niet. Hun enige as was de tekstsoort ("Brief
  * 2/4"), en dat is geen leerdoel — je bent niet slecht in *brieven*. De concepten zijn dat
- * wél, maar er zijn er 25 bij Lezen en 33 bij Luisteren, en 33 rijen is geen kaart maar een
+ * wél, maar er zijn er 31 bij Lezen en 36 bij Luisteren, en 36 rijen is geen kaart maar een
  * inventaris. Dus: vier tot vijf vaardigheden als kop, de concepten eronder als detail.
  *
  * ── HET IS EEN LEZING, GEEN NIEUWE RIJ ───────────────────────────────────────
@@ -76,6 +76,8 @@ const LEZEN: Vaardigheid[] = [
       'vergrotende-trap',
       'overtreffende-trap',
       'frequentie',
+      'ontkenning',
+      'hoeveelheden',
     ],
   },
   {
@@ -96,6 +98,8 @@ const LEZEN: Vaardigheid[] = [
       'om-te',
       'persoonlijk-vnw-onderwerp',
       'persoonlijk-vnw-lijdend',
+      'verwijswoorden',
+      'betrekkelijk-vnw',
     ],
   },
   {
@@ -110,6 +114,8 @@ const LEZEN: Vaardigheid[] = [
       'toekomende-tijd',
       'gebiedende-wijs',
       'scheidbare-werkwoorden',
+      'tijdsaanduidingen',
+      'lijdende-vorm',
     ],
   },
 ];
@@ -156,6 +162,8 @@ const LUISTEREN: Vaardigheid[] = [
       'frequentie',
       'vergrotende-trap',
       'overtreffende-trap',
+      'ontkenning',
+      'hoeveelheden',
     ],
   },
   {
@@ -185,6 +193,7 @@ const LUISTEREN: Vaardigheid[] = [
       'gebiedende-wijs',
       'scheidbare-werkwoorden',
       'voorzetsels-plaats',
+      'tijdsaanduidingen',
     ],
   },
 ];

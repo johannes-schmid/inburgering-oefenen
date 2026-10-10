@@ -34,7 +34,7 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import Anthropic from '@anthropic-ai/sdk';
-import { ROOT } from '../a2-content/lib.mjs';
+import { ROOT, VOICES } from '../a2-content/lib.mjs';
 import { FORMAT, SPREKEN_IMAGES } from './rules.mjs';
 
 /**
@@ -956,6 +956,9 @@ Een opgave met te weinig image_queries wordt afgekeurd, ook als de tekst goed is
 
 /* ── Luisteren: één heel gesprek, geknipt in fragmenten ──────────────────── */
 
+/** Hoe de prompt het geslacht van een stem benoemt. */
+const GESLACHT = { female: 'vrouw', male: 'man' };
+
 const LUISTEREN_SCHEMA = {
   type: 'object',
   additionalProperties: false,
@@ -1023,7 +1026,7 @@ function spokenWords(script) {
  * wél te horen, maar `finish` sorteert alsnog en verplaatst `correct` mee — een model dat de
  * regel in negen van de tien gevallen volgt, levert anders één examen met een stille afwijking.
  */
-export function luisterenUnit({ examNumber, slot, genre, section, topic, cast, fragmentCount }) {
+export function luisterenUnit({ examNumber, slot, genre, section, topic, cast, names, fragmentCount }) {
   const f = FORMAT.luisteren;
   const [lo, hi] = f.words;
   const [secLo, secHi] = f.seconds;
@@ -1037,8 +1040,14 @@ TEKSTSOORT: ${genre}
 ONDERWERP: ${topic}
 
 Het gesprek
-- Twee sprekers, A en B, die het hele gesprek dezelfde twee mensen blijven. Geef ze allebei een
-  Nederlandse naam en zet die in 'speaker_a' en 'speaker_b'.
+- Twee sprekers, A en B, die het hele gesprek dezelfde twee mensen blijven. Hun namen liggen
+  vast en je verzint ze niet zelf:
+    · spreker A heet ${names[0]} en is een ${GESLACHT[VOICES[cast[0]].gender]}
+    · spreker B heet ${names[1]} en is een ${GESLACHT[VOICES[cast[1]].gender]}
+  Zet die namen letterlijk in 'speaker_a' en 'speaker_b' en noem ze zo in de intro. Elke
+  verwijzing naar een spreker — hij of zij, meneer of mevrouw, zijn of haar — moet bij dat
+  geslacht passen. Deze twee mensen worden door een echte stem ingesproken; een vrouw die met
+  een mannenstem praat is een fout die de kandidaat meteen hoort.
 - Het is één doorlopend gesprek, geen ${fragmentCount} losse gesprekjes. De vragen komen in de
   volgorde waarin het gesprek verloopt, en later in het gesprek mag worden teruggegrepen op wat
   eerder is gezegd.
@@ -1089,9 +1098,15 @@ De vragen
     else if (!/^U gaat luisteren naar/i.test(u.intro)) {
       p.push('intro moet met "U gaat luisteren naar" beginnen');
     }
-    if (!u.speaker_a?.trim()) p.push('speaker_a ontbreekt');
-    if (!u.speaker_b?.trim()) p.push('speaker_b ontbreekt');
-    if (u.speaker_a && u.speaker_a === u.speaker_b) p.push('beide sprekers heten hetzelfde');
+    // De namen komen uit het plan en horen bij de stem; zie `LUISTEREN_NAMEN` in plan.mjs voor
+    // waarom dat geen prompt-instructie mag blijven. Wijkt het model af, dan is het gesprek fout
+    // gecast en gaat het terug in de herkansing in plaats van naar de TTS.
+    if (u.speaker_a !== names[0]) {
+      p.push(`speaker_a is "${u.speaker_a}", maar spreker A heet ${names[0]}`);
+    }
+    if (u.speaker_b !== names[1]) {
+      p.push(`speaker_b is "${u.speaker_b}", maar spreker B heet ${names[1]}`);
+    }
     for (const naam of [u.speaker_a, u.speaker_b]) {
       if (naam && u.intro && !u.intro.includes(naam)) {
         p.push(`de intro noemt "${naam}" niet, terwijl de vragen die naam gebruiken`);

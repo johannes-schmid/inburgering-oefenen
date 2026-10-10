@@ -3,7 +3,7 @@
 import { createContext, Fragment, useCallback, useContext, useEffect, useMemo, useRef, useState } from 'react';
 import { playCorrectChime } from '@/lib/answer-chime';
 import WordPass from '@/components/exam/WordPass';
-import { ArrowLeft, ArrowRight, Lightbulb, Check, X, RotateCcw, Eye } from 'lucide-react';
+import { ArrowLeft, ArrowRight, Lightbulb, Check, X, RotateCcw, Eye, ChevronDown, PencilLine, Quote } from 'lucide-react';
 import {
   GAP, isExerciseKind, matchesTyped, normaliseTyped, tierChipOf,
   type LessonItem, type Tier,
@@ -13,6 +13,7 @@ import { useLessonProgress } from './LessonProgressScope';
 import LessonVisual, { type VisualLabels } from './LessonVisual';
 import LessonRecorder, { type RecorderLabels } from './LessonRecorder';
 import type { LessonVisual as VisualSpec } from '@/data/lesson-visuals';
+import VideoEmbed, { type VideoLabels } from './VideoEmbed';
 
 /**
  * De lesstroom: uitleg boven, opgaven eronder, op één pagina.
@@ -69,8 +70,29 @@ type Props = {
   withLead?: boolean;
   /** Alleen-lezen: geen voortgang, geen beheersing. Voor de preview in `/admin/lessen`. */
   preview?: boolean;
+  /**
+   * Welk deel van de les deze stroom toont. `all` (standaard) is de lespagina zoals hij was.
+   *
+   * De andere drie tonen één deel zonder sectiekoppen. Ze waren er voor de tabbladen van het
+   * grammaticaonderwerp; sinds 10-10 staat dat onderwerp op één pagina en gebruikt het `all`.
+   * In `uitleg` staat de regel over de volle breedte, zonder de voorbeelden ernaast.
+   */
+  part?: StreamPart;
+  /**
+   * Of de opgavensectie `id="oefenen"` krijgt. Een grammaticaonderwerp zet meerdere stromen
+   * onder elkaar en geeft het anker alleen aan de eerste: twee keer `#oefenen` is ongeldig.
+   */
+  anchor?: boolean;
+  /**
+   * `topic`: de opmaak van het grammaticaonderwerp (10-10). De sectiekoppen krijgen een
+   * icoon, en de voorbeelden staan niet naast de regel maar in een uitklapbalk eronder — op
+   * één pagina met video en opgaven is een tweede kolom naast de regel te veel tegelijk.
+   */
+  layout?: 'page' | 'topic';
   labels: StreamLabels;
 };
+
+export type StreamPart = 'all' | 'uitleg' | 'voorbeelden' | 'oefenen';
 
 export type StreamLabels = {
   check: string;
@@ -86,6 +108,8 @@ export type StreamLabels = {
   /** De kopjes van de twee secties en van de drie trappen — zie de kop van dit bestand. */
   ruleKick: string;
   demoKick: string;
+  /** "{n} voorbeeldzinnen" — de uitklapbalk van het grammaticaonderwerp. */
+  demoCount?: string;
   /** De twee sectiekoppen: "Uitleg" en "Oefenen". Zie de kop van dit bestand. */
   learnHead: string;
   learnSub: string;
@@ -110,6 +134,8 @@ export type StreamLabels = {
   sayAfter: string;
   sayFocus: string;
   audioTodo: string;
+  /** De videoplek van een `video`-item. Zie `VideoEmbed.tsx`. Weglaten valt terug op Nederlands. */
+  video?: VideoLabels;
 };
 
 /**
@@ -151,8 +177,13 @@ function Narrated({
 }
 
 export default function LessonStream({
-  lessonId, items, visual = null, preview = false, withLead = true, labels,
+  lessonId, items, visual = null, preview = false, withLead = true, part = 'all', anchor = true, layout = 'page', labels,
 }: Props) {
+  const showLearn = part === 'all' || part === 'uitleg';
+  const showDemos = part === 'all' || part === 'voorbeelden';
+  const showPractice = part === 'all' || part === 'oefenen';
+  const headed = part === 'all';
+  const topic = layout === 'topic';
   const [verdicts, setVerdicts] = useState<Record<number, Verdict>>({});
   const exercises = useMemo(() => items.filter(i => isExerciseKind(i.kind)), [items]);
   /** Welke opgave in beeld staat. De pager houdt er precies één open — zie de sectie onderaan. */
@@ -171,7 +202,8 @@ export default function LessonStream({
     const blocks = items.filter(i => !isExerciseKind(i.kind));
     const firstUitleg = blocks.find(i => i.kind === 'uitleg') as
       Extract<LessonItem, { kind: 'uitleg' }> | undefined;
-    const voorbeelden = firstUitleg
+    /* In een tabblad (`part`) gaan de voorbeelden altijd naar hun eigen tab, ook zonder regel. */
+    const voorbeelden = firstUitleg || part !== 'all'
       ? (blocks.filter(i => i.kind === 'voorbeeld') as Extract<LessonItem, { kind: 'voorbeeld' }>[])
       : [];
     const hoisted = new Set<number>([
@@ -179,7 +211,8 @@ export default function LessonStream({
       ...voorbeelden.map(v => v.id),
     ]);
     return { lead: firstUitleg, demos: voorbeelden, rest: blocks.filter(i => !hoisted.has(i.id)) };
-  }, [items]);
+  }, [items, part]);
+  const besideRule = showDemos && demos.length > 0 && !topic;
 
   /**
    * De opgaven per trap, plus één doorlopende nummering.
@@ -204,6 +237,33 @@ export default function LessonStream({
     return [...byTier, ...exercises.filter(e => e.tier == null)];
   }, [exercises]);
   const current = ordered[Math.min(at, ordered.length - 1)] ?? null;
+
+  /**
+   * Het bronmateriaal per opgave: het fragment, de tekst of de lijst waar hij over gaat.
+   *
+   * In `sort_order` staat het materiaal vóór de opgaven die erbij horen, en een les met twee
+   * fragmenten zet het tweede halverwege neer met zijn eigen vragen. Elke opgave krijgt dus de
+   * reeks materiaal die direct vóór hem begon; nieuw materiaal na een opgave begint een nieuwe
+   * reeks. Alleen in `topic`: daar staat de uitleg in een pop-up en zou een luistervraag zonder
+   * zijn fragment onmaakbaar zijn (eigenaar, 10-10).
+   */
+  const sourcesOf = useMemo(() => {
+    const map = new Map<number, LessonItem[]>();
+    if (!topic) return map;
+    let run: LessonItem[] = [];
+    let afterExercise = false;
+    for (const item of [...items].sort((a, b) => a.sort_order - b.sort_order)) {
+      if (SOURCE_KINDS.has(item.kind)) {
+        if (afterExercise) { run = []; afterExercise = false; }
+        run = [...run, item];
+      } else if (isExerciseKind(item.kind)) {
+        afterExercise = true;
+        if (run.length > 0) map.set(item.id, run);
+      }
+    }
+    return map;
+  }, [items, topic]);
+  const sources = current ? sourcesOf.get(current.id) ?? [] : [];
 
   /**
    * Melden aan de kaart "Deze les" in de kop: hoeveel opgaven nagekeken zijn, en of de uitleg
@@ -268,40 +328,43 @@ export default function LessonStream({
     });
   }, []);
 
-  return (
-    <div className="lesson-stream">
-      {/* ── de uitleg ──
-          De eerste `uitleg` draagt de regel; de `voorbeeld`-items eromheen worden het navy
-          paneel ernaast. Die worden dus uit `sort_order` gehaald en dat is de bedoeling: los
-          onder elkaar waren het drie losse regels tekst, naast de regel zijn ze het bewijs
-          erbij. Zonder voorbeeld staat de regel over de volle breedte in plaats van naast een
-          leeg vak. */}
-      {/* ── Twee benoemde secties ──
-          De uitleg en de opgaven stonden al onder elkaar, maar niets zei waar de een ophield
-          en de ander begon: één doorlopende kolom kaarten leest als één brok. De kop is dus
-          geen versiering maar de enige scheiding die er is — de geen-lijnenregel laat een
-          streep niet toe, en een tweede achtergrondtrap zou de kaarten eronder platslaan. */}
-      {((withLead && lead) || rest.length > 0) && (
-        <div className="les-sec">
-          <h2>{labels.learnHead}</h2>
-          <p>{labels.learnSub}</p>
-        </div>
-      )}
-
+  const hasLearn = (withLead && !!lead) || rest.length > 0;
+  /* De uitleg zelf: in `topic` staat hij in een uitklapsectie, op de lespagina los. */
+  const learnBody = (
+    <>
       {/* ── het lesplaatje ──
           Bóven de regel, en dat is de hele opzet: eerst zie je welke vorm de zin heeft, daarna
           lees je de woorden erbij. Andersom — tekst eerst — werkt alleen voor wie de regel al
           kent, en dat is precies niet wie hier zit. */}
-      {withLead && visual && <LessonVisual spec={visual} labels={labels.visual} />}
+      {showLearn && withLead && visual && <LessonVisual spec={visual} labels={labels.visual} />}
 
-      {withLead && lead && (
+      {/* Alleen de voorbeelden: het tabblad Voorbeelden van een grammaticaonderwerp. Hetzelfde
+          navy paneel als naast de regel, maar op zichzelf. */}
+      {part === 'voorbeelden' && demos.length > 0 && (
+        <div className="demo-panel">
+          <span className="dp-kick">{labels.demoKick}</span>
+          {demos.map((d, i) => (
+            <Narrated key={d.id} id={`demo-${i}`} className="dp-item">
+              <p className="dp-sent" dangerouslySetInnerHTML={{ __html: d.payload.sentence_html }} />
+              {d.payload.note && (
+                <p className="dp-note">
+                  <ArrowRight size={13} strokeWidth={2.4} className="rtl-flip" />
+                  {d.payload.note}
+                </p>
+              )}
+            </Narrated>
+          ))}
+        </div>
+      )}
+
+      {showLearn && withLead && lead && (
         <>
-          <div className={demos.length > 0 ? 'les-split' : ''} style={demos.length > 0 ? undefined : { marginBottom: '0.875rem' }}>
+          <div className={besideRule ? 'les-split' : ''} style={besideRule ? undefined : { marginBottom: '0.875rem' }}>
             <Narrated id="rule" className="rule-panel">
               <span className="rp-kick">{labels.ruleKick}</span>
               <div dangerouslySetInnerHTML={{ __html: lead.payload.body_html }} />
             </Narrated>
-            {demos.length > 0 && (
+            {besideRule && (
               <div className="demo-panel">
                 <span className="dp-kick">{labels.demoKick}</span>
                 {demos.map((d, i) => (
@@ -329,12 +392,16 @@ export default function LessonStream({
               ))}
             </div>
           )}
+
+          {topic && demos.length > 0 && (
+            <DemoFold demos={demos} kick={labels.demoKick} count={labels.demoCount} />
+          )}
         </>
       )}
 
       {/* De rest van het materiaal — leestekst, woordenlijst, zinnenbank, audio, een tweede
           uitleg — met de renderers die er al waren, in `sort_order`. */}
-      {rest.length > 0 && (
+      {showLearn && rest.length > 0 && (
         <ol className="stream-list">
           {rest.map(item => (
             <li key={item.id} className="stream-block">
@@ -349,13 +416,71 @@ export default function LessonStream({
           ))}
         </ol>
       )}
+    </>
+  );
 
-      {/* ── de opgaven, per trap ── */}
-      {exercises.length > 0 && (
-        <section id="oefenen" ref={practiceRef} style={{ marginTop: '2rem' }}>
-          <div className="les-sec">
-            <h2>{labels.practiceHead}</h2>
-          </div>
+  return (
+    <div className="lesson-stream">
+      {/* ── de uitleg ──
+          De eerste `uitleg` draagt de regel; de `voorbeeld`-items eromheen worden het navy
+          paneel ernaast. Die worden dus uit `sort_order` gehaald en dat is de bedoeling: los
+          onder elkaar waren het drie losse regels tekst, naast de regel zijn ze het bewijs
+          erbij. Zonder voorbeeld staat de regel over de volle breedte in plaats van naast een
+          leeg vak. */}
+      {/* ── Twee benoemde secties ──
+          De uitleg en de opgaven stonden al onder elkaar, maar niets zei waar de een ophield
+          en de ander begon: één doorlopende kolom kaarten leest als één brok. De kop is dus
+          geen versiering maar de enige scheiding die er is — de geen-lijnenregel laat een
+          streep niet toe, en een tweede achtergrondtrap zou de kaarten eronder platslaan. */}
+      {headed && hasLearn && (
+        topic
+          ? (
+            <details className="tsec tsec-fold">
+              <summary>
+                <span className="ls-ic" aria-hidden><Lightbulb size={17} strokeWidth={2.2} /></span>
+                <span className="tsec-label">
+                  <b>{labels.learnHead}</b>
+                  <span>{labels.learnSub}</span>
+                </span>
+                <ChevronDown size={18} strokeWidth={2.4} className="tsec-chev" aria-hidden />
+              </summary>
+              <div className="tsec-body">{learnBody}</div>
+            </details>
+          )
+          : (
+            <div className="les-sec">
+              <h2>{labels.learnHead}</h2>
+              <p>{labels.learnSub}</p>
+            </div>
+          )
+      )}
+
+      {!(headed && hasLearn && topic) && learnBody}
+
+      {/* ── de opgaven, per trap ──
+          De `id` alleen met `anchor`: een grammaticaonderwerp zet meerdere stromen onder
+          elkaar, en twee keer `#oefenen` is een ongeldige pagina. */}
+      {showPractice && exercises.length > 0 && (
+        <section
+          id={headed && anchor ? 'oefenen' : undefined}
+          ref={practiceRef}
+          className={topic && headed ? 'tsec' : undefined}
+          style={topic && headed ? undefined : { marginTop: headed ? '2rem' : 0 }}
+        >
+          {headed && (
+            topic
+              ? (
+                <div className="les-sec is-topic">
+                  <span className="ls-ic is-practice" aria-hidden><PencilLine size={17} strokeWidth={2.2} /></span>
+                  <div><h2>{labels.practiceHead}</h2></div>
+                </div>
+              )
+              : (
+                <div className="les-sec">
+                  <h2>{labels.practiceHead}</h2>
+                </div>
+              )
+          )}
 
           {/* ── de pager ──
               Eén opgave per keer, met de nummers erboven (mockup van de eigenaar, 08-09). Dat
@@ -411,6 +536,21 @@ export default function LessonStream({
             </div>
           </Narrated>
 
+          {sources.length > 0 && (
+            <div className="exq-src">
+              {sources.map(src => (
+                <ItemView
+                  key={src.id}
+                  item={src}
+                  verdict={null}
+                  onSettle={() => {}}
+                  onReset={() => {}}
+                  labels={labels}
+                />
+              ))}
+            </div>
+          )}
+
           {current && (
             <PagerNext.Provider
               value={at < ordered.length - 1
@@ -443,6 +583,9 @@ export default function LessonStream({
   );
 }
 
+/** Materiaal waar een opgave over gaat — zie `sourcesOf`. Uitleg en voorbeelden horen er niet bij. */
+const SOURCE_KINDS: ReadonlySet<string> = new Set(['audio', 'leestekst', 'woordenlijst', 'zinnenbank']);
+
 /* ── de renderers ────────────────────────────────────────────────────────── */
 
 type ViewProps = {
@@ -470,7 +613,7 @@ function ItemView(props: ViewProps) {
     case 'voorbeeld':    return <Voorbeeld item={item} />;
     case 'leestekst':    return <Leestekst item={item} />;
     case 'audio':        return <AudioBlock item={item} labels={props.labels} />;
-    case 'video':        return <VideoBlock item={item} />;
+    case 'video':        return <VideoBlock item={item} labels={props.labels} />;
     case 'woordenlijst': return <Woordenlijst item={item} />;
     case 'zinnenbank':   return <Zinnenbank item={item} />;
     case 'mcq':          return <Mcq {...props} item={item} />;
@@ -490,6 +633,51 @@ function ItemView(props: ViewProps) {
 }
 
 /* ── uitleg en materiaal ─────────────────────────────────────────────────── */
+
+/**
+ * De voorbeelden als uitklapbalk — alleen in het grammaticaonderwerp.
+ *
+ * Een native `<details>`: toetsenbord, schermlezer en "open bij zoeken" werken vanzelf, en er
+ * is geen state die bij een her-render terugspringt. Dicht is het één navy balk met de
+ * telling; open schuift dezelfde navy kaart de zinnen erbij. Alleen opacity en transform
+ * bewegen, nooit de hoogte.
+ */
+function DemoFold({
+  demos, kick, count,
+}: {
+  demos: Extract<LessonItem, { kind: 'voorbeeld' }>[];
+  kick: string;
+  count?: string;
+}) {
+  return (
+    <details className="demo-fold">
+      <summary>
+        <span className="df-ic" aria-hidden><Quote size={16} strokeWidth={2.4} /></span>
+        <span className="df-label">
+          <b>{kick}</b>
+          {count && <span>{count.replace('{n}', String(demos.length))}</span>}
+        </span>
+        <ChevronDown size={18} strokeWidth={2.4} className="df-chev" aria-hidden />
+      </summary>
+      <div className="df-list">
+        {demos.map((d, i) => (
+          <Narrated key={d.id} id={`demo-${i}`} className="df-item">
+            <span className="df-n" aria-hidden>{i + 1}</span>
+            <div className="min-w-0">
+              <p className="dp-sent" dangerouslySetInnerHTML={{ __html: d.payload.sentence_html }} />
+              {d.payload.note && (
+                <p className="dp-note">
+                  <ArrowRight size={13} strokeWidth={2.4} className="rtl-flip" />
+                  {d.payload.note}
+                </p>
+              )}
+            </div>
+          </Narrated>
+        ))}
+      </div>
+    </details>
+  );
+}
 
 function Uitleg({ item }: { item: Extract<LessonItem, { kind: 'uitleg' }> }) {
   return (
@@ -567,11 +755,20 @@ function AudioBlock({ item, labels }: { item: Extract<LessonItem, { kind: 'audio
   );
 }
 
-function VideoBlock({ item }: { item: Extract<LessonItem, { kind: 'video' }> }) {
+/**
+ * Een video in de les. Via `VideoEmbed`, zodat een YouTube- of Drive-link als speler in beeld
+ * komt in plaats van als een `<video>` die een webpagina probeert af te spelen — dat was wat
+ * hier stond, en het werkte alleen met een kaal `.mp4`.
+ */
+function VideoBlock({ item, labels }: { item: Extract<LessonItem, { kind: 'video' }>; labels: StreamLabels }) {
   return (
     <div className="blk blk-video">
-      <video controls preload="none" poster={item.payload.poster_url ?? undefined}
-             src={item.payload.video_url} />
+      <VideoEmbed
+        url={item.payload.video_url}
+        title={item.payload.label ?? ''}
+        poster={item.payload.poster_url ?? null}
+        labels={labels.video ?? { play: 'Video afspelen', soon: 'Video volgt', soonSub: null }}
+      />
       {item.payload.label && <p className="vb-note">{item.payload.label}</p>}
     </div>
   );

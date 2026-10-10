@@ -9,6 +9,7 @@ import { fetchPortalMenu } from '@/lib/portal-menu';
 import { fetchCourse } from '@/lib/lessons/lessons-server';
 import { blockProgress, courseProgressPct, lessonPath, nextLesson } from '@/lib/lessons/lessons';
 import { spoorPath, type SpoorSlug } from '@/lib/lessons/sporen';
+import { grammarStepPath } from '@/lib/lessons/grammar';
 import AppShell from '../../../../components/AppShell';
 
 type Props = { params: Promise<{ locale: string; level: string; skill: string }> };
@@ -133,7 +134,9 @@ export default async function CoursePage({ params }: Props) {
                         geen: dat zijn de woordkaartenthema's. */}
                     {SPOOR_OF_BLOCK[block.letter] && (
                       <a
-                        href={`/${locale}${spoorPath(level, skill.slug, SPOOR_OF_BLOCK[block.letter]!)}`}
+                        href={block.letter === 'B'
+                          ? `/${locale}${grammarStepPath(level, skill.slug)}`
+                          : `/${locale}${spoorPath(level, skill.slug, SPOOR_OF_BLOCK[block.letter]!)}`}
                         className="cb-spoor"
                       >
                         {tPortal('leerroute_cta_modules')}

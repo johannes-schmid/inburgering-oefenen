@@ -1,0 +1,279 @@
+{
+  "items": [
+    {
+      "kind": "uitleg",
+      "tier": null,
+      "explanation": null,
+      "payload": {
+        "body_html": "<p>In het Nederlands hoor je het verschil tussen <strong>d</strong> en <strong>t</strong> aan het eind van een woord vaak niet. Toch moet je het goed schrijven, zeker in een brief of een verslag voor je werk. Het gaat om twee dingen: de persoonsvorm in de tegenwoordige tijd (<em>hij wordt</em>) en de verleden tijd of het voltooid deelwoord (<em>ik wachtte</em>, <em>ik heb gewacht</em>). Als je de stam van het werkwoord kent, kun je elke vorm afleiden.</p>",
+        "cards": [
+          {
+            "label": "NU (tegenwoordige tijd)",
+            "example_html": "Hij <mark>wordt</mark> volgende week opgeroepen, maar ik <mark>word</mark> pas in maart verwacht."
+          },
+          {
+            "label": "TOEN (verleden tijd)",
+            "example_html": "Ik <mark>wachtte</mark> een uur, terwijl hij meteen <mark>antwoordde</mark>."
+          }
+        ]
+      }
+    },
+    {
+      "kind": "uitleg",
+      "tier": null,
+      "explanation": null,
+      "payload": {
+        "body_html": "<p>De stam is het hele werkwoord zonder <strong>-en</strong>: <em>worden</em> wordt <em>word</em>, <em>vinden</em> wordt <em>vind</em>. Bij <strong>ik</strong> schrijf je alleen de stam. Bij <strong>hij, zij, het</strong> en bij <strong>jij</strong> schrijf je stam + t, ook als de stam al op een d eindigt: <em>hij wordt</em>, <em>jij vindt</em>. Staat <strong>jij</strong> achter het werkwoord, dan valt die t weg: <em>vind jij</em>, <em>word jij</em>.</p>",
+        "cards": [
+          {
+            "label": "JIJ VOOR HET WERKWOORD",
+            "example_html": "<mark>Jij vindt</mark> de regeling onduidelijk, schrijft de klant."
+          },
+          {
+            "label": "JIJ ACHTER HET WERKWOORD",
+            "example_html": "<mark>Vind jij</mark> de regeling ook onduidelijk?"
+          }
+        ]
+      }
+    },
+    {
+      "kind": "voorbeeld",
+      "tier": null,
+      "explanation": null,
+      "payload": {
+        "sentence_html": "In de brief staat dat uw aanvraag binnen zes weken <mark>wordt</mark> behandeld."
+      }
+    },
+    {
+      "kind": "voorbeeld",
+      "tier": null,
+      "explanation": null,
+      "payload": {
+        "sentence_html": "Als er niets <mark>gebeurt</mark>, kunt u een klacht indienen bij de gemeente."
+      }
+    },
+    {
+      "kind": "uitleg",
+      "tier": null,
+      "explanation": null,
+      "payload": {
+        "body_html": "<p>Bij regelmatige werkwoorden kies je in de verleden tijd tussen <strong>-te(n)</strong> en <strong>-de(n)</strong>. Eindigt de stam op een klank uit <strong>'t kofschip</strong> (t, k, f, s, ch, p), dan schrijf je <em>-te</em>: <em>ik werkte</em>, <em>hij wachtte</em>. In alle andere gevallen schrijf je <em>-de</em>: <em>hij antwoordde</em>, <em>ik belde</em>. Dezelfde regel geldt voor het voltooid deelwoord (het woord met ge-): <em>gewerkt</em> met t, <em>gebeld</em> met d.</p>",
+        "cards": [
+          {
+            "label": "'T KOFSCHIP: -TE EN -T",
+            "example_html": "De medewerker <mark>wachtte</mark> op antwoord en heeft daarna <mark>gewerkt</mark> aan het dossier."
+          },
+          {
+            "label": "NIET IN 'T KOFSCHIP: -DE EN -D",
+            "example_html": "Zij <mark>antwoordde</mark> snel en heeft mij ook nog <mark>gebeld</mark>."
+          }
+        ]
+      }
+    },
+    {
+      "kind": "uitleg",
+      "tier": null,
+      "explanation": null,
+      "payload": {
+        "body_html": "<p>Veel werkwoorden zijn onregelmatig: die vormen moet je uit je hoofd leren. In de verleden tijd verandert dan de klinker, en er komt geen -te of -de achter. Denk aan <em>vinden – ik vond</em>, <em>gaan – hij ging</em>, <em>worden – het werd</em>. Een handige controle: past de vorm in de zin met <em>gisteren</em>? Dan is het verleden tijd en twijfel je niet meer tussen d en t.</p>",
+        "cards": [
+          {
+            "label": "REGELMATIG",
+            "example_html": "Gisteren <mark>belde</mark> de woningbouw over de lekkage."
+          },
+          {
+            "label": "ONREGELMATIG",
+            "example_html": "Gisteren <mark>vond</mark> ik de brief pas onder in de la."
+          }
+        ]
+      }
+    },
+    {
+      "kind": "mcq",
+      "tier": 0,
+      "explanation": "Na 'hij' schrijf je de stam plus t: word + t = wordt.",
+      "payload": {
+        "prompt": "In welke zin is het werkwoord goed geschreven?"
+      },
+      "options": [
+        {
+          "label": "A",
+          "body": "Hij word volgende maand uitgenodigd voor een gesprek.",
+          "is_correct": false
+        },
+        {
+          "label": "B",
+          "body": "Hij wordt volgende maand uitgenodigd voor een gesprek.",
+          "is_correct": true
+        },
+        {
+          "label": "C",
+          "body": "Hij word't volgende maand uitgenodigd voor een gesprek.",
+          "is_correct": false
+        }
+      ]
+    },
+    {
+      "kind": "mcq",
+      "tier": 0,
+      "explanation": "De stam van 'wachten' eindigt op t, een letter uit 't kofschip, dus de verleden tijd krijgt -te: wachtte.",
+      "payload": {
+        "prompt": "Welke zin heeft de juiste verleden tijd?"
+      },
+      "options": [
+        {
+          "label": "A",
+          "body": "De klant wachtte drie weken op een reactie van de verzekeraar.",
+          "is_correct": true
+        },
+        {
+          "label": "B",
+          "body": "De klant wachtde drie weken op een reactie van de verzekeraar.",
+          "is_correct": false
+        },
+        {
+          "label": "C",
+          "body": "De klant wacht de drie weken op een reactie van de verzekeraar.",
+          "is_correct": false
+        }
+      ]
+    },
+    {
+      "kind": "gap_choice",
+      "tier": 1,
+      "explanation": "Staat 'jij' achter het werkwoord, dan valt de t weg: vind jij.",
+      "payload": {
+        "sentence": "___ jij het logisch dat de huur elk jaar omhooggaat?",
+        "choices": [
+          "Vind",
+          "Vindt",
+          "Vond"
+        ],
+        "answer": "Vind"
+      }
+    },
+    {
+      "kind": "gap_choice",
+      "tier": 1,
+      "explanation": "Hier staat 'je' vóór het werkwoord, dus komt er wel een t achter de stam: je wordt.",
+      "payload": {
+        "sentence": "Als je je niet op tijd afmeldt, ___ je toch verwacht op de cursus.",
+        "choices": [
+          "word",
+          "wordt",
+          "werd"
+        ],
+        "answer": "wordt"
+      }
+    },
+    {
+      "kind": "gap_choice",
+      "tier": 1,
+      "explanation": "De stam van 'antwoorden' eindigt op d, geen letter uit 't kofschip, dus de verleden tijd is antwoordde met -de.",
+      "payload": {
+        "sentence": "De manager ___ pas na een week op mijn mail.",
+        "choices": [
+          "antwoordte",
+          "antwoordde",
+          "antwoord"
+        ],
+        "answer": "antwoordde"
+      }
+    },
+    {
+      "kind": "matchen",
+      "tier": 1,
+      "explanation": "Eindigt de stam op t, k, f, s, ch of p ('t kofschip), dan krijgt het voltooid deelwoord een t; anders een d.",
+      "payload": {
+        "instruction": "Welk voltooid deelwoord (het woord met ge-) hoort bij het werkwoord?",
+        "pairs": [
+          {
+            "left": "werken",
+            "right": "gewerkt"
+          },
+          {
+            "left": "bellen",
+            "right": "gebeld"
+          },
+          {
+            "left": "missen",
+            "right": "gemist"
+          },
+          {
+            "left": "verhuizen",
+            "right": "verhuisd"
+          }
+        ]
+      }
+    },
+    {
+      "kind": "gap_choice",
+      "tier": 1,
+      "explanation": "'Vinden' is onregelmatig: in de verleden tijd verandert de klinker en wordt het vond, zonder extra t.",
+      "payload": {
+        "sentence": "Vorig jaar ___ de commissie de klacht terecht.",
+        "choices": [
+          "vindt",
+          "vond",
+          "vindte"
+        ],
+        "answer": "vond"
+      }
+    },
+    {
+      "kind": "gap_type",
+      "tier": 2,
+      "explanation": "Er is nog niets gebeurd op dit moment, dus je hebt de tegenwoordige tijd nodig: stam gebeur + t = gebeurt.",
+      "payload": {
+        "sentence": "Zolang u niets hoort, ___ er nog niets met uw aanvraag. (gebeuren, tegenwoordige tijd)",
+        "answer": "gebeurt"
+      }
+    },
+    {
+      "kind": "gap_type",
+      "tier": 2,
+      "explanation": "Het is al afgerond, dus je gebruikt het voltooid deelwoord; de stam eindigt op d, dus: gebeurd.",
+      "payload": {
+        "sentence": "Volgens de brief is er een fout ___ bij de berekening van de toeslag. (gebeuren, voltooid deelwoord)",
+        "answer": "gebeurd"
+      }
+    },
+    {
+      "kind": "woordorde",
+      "tier": 2,
+      "explanation": "Na 'hij' krijgt de stam een t: hij vindt. Het werkwoord staat op de tweede plaats in de zin.",
+      "payload": {
+        "instruction": "Maak een correcte zin van deze woorden.",
+        "tokens": [
+          "onduidelijk",
+          "vindt",
+          "de",
+          "hij",
+          "brief"
+        ],
+        "answer": [
+          "hij",
+          "vindt",
+          "de",
+          "brief",
+          "onduidelijk"
+        ]
+      }
+    },
+    {
+      "kind": "open_zin",
+      "tier": 2,
+      "explanation": "Je gebruikt een verleden tijd met -te of -de volgens 't kofschip, of een onregelmatige vorm zonder die uitgang.",
+      "payload": {
+        "prompt": "Schrijf twee zinnen over een keer dat je op een antwoord van een instantie moest wachten. Gebruik in de eerste zin 'wachtte' of 'belde' en in de tweede zin 'vond' of 'ging'.",
+        "model_answer": "Ik wachtte zes weken op een brief van de gemeente over mijn aanvraag. Toen ik eindelijk belde, vond ik de uitleg van de medewerker erg onduidelijk.",
+        "checklist": [
+          "Eindigt de stam op t, k, f, s, ch of p? Dan schreef je -te, anders -de.",
+          "Heb je bij 'vond' of 'ging' geen extra t of d gezet?",
+          "Staat het werkwoord op de tweede plaats in de hoofdzin?"
+        ]
+      }
+    }
+  ],
+  "what_you_learn": "Je leert wanneer je een werkwoord met d, met t of met dt schrijft. Je kunt 'hij wordt' en 'vind jij' uit elkaar houden, en je kiest in de verleden tijd zelf tussen -te en -de met behulp van 't kofschip. Ook herken je onregelmatige vormen als 'vond' en 'ging' en schrijf je 'gebeurt' en 'gebeurd' op de juiste plek."
+}

@@ -344,7 +344,7 @@ export async function fetchLesson(
 // Voortgang
 // ---------------------------------------------------------------------------
 
-async function fetchLessonProgress(
+export async function fetchLessonProgress(
   userId: string,
   lessonIds: number[],
 ): Promise<Map<number, LessonSummary['progress']>> {

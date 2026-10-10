@@ -1,0 +1,204 @@
+{
+  "items": [
+    {
+      "kind": "uitleg",
+      "tier": null,
+      "explanation": null,
+      "payload": {
+        "body_html": "<p>Je gebruikt <strong>er is</strong> en <strong>er zijn</strong> om te zeggen dat iets bestaat of ergens staat. Bij <strong>één</strong> ding zeg je <strong>er is</strong>. Bij <strong>meer</strong> dingen zeg je <strong>er zijn</strong>. Daarna noem je vaak de plaats: naast, bij, in, op of tegenover.</p>",
+        "cards": [
+          {
+            "label": "ÉÉN DING",
+            "example_html": "<mark>Er is</mark> een supermarkt naast het station."
+          },
+          {
+            "label": "MEER DINGEN",
+            "example_html": "<mark>Er zijn</mark> veel bomen in het park."
+          }
+        ]
+      }
+    },
+    {
+      "kind": "voorbeeld",
+      "tier": null,
+      "explanation": null,
+      "payload": {
+        "sentence_html": "<mark>Er is</mark> een apotheek tegenover de school."
+      }
+    },
+    {
+      "kind": "voorbeeld",
+      "tier": null,
+      "explanation": null,
+      "payload": {
+        "sentence_html": "<mark>Er zijn</mark> twee bankjes bij de ingang van het park."
+      }
+    },
+    {
+      "kind": "mcq",
+      "tier": 0,
+      "explanation": "Het woord 'speeltuin' is één ding, dus hoort hier 'er is'.",
+      "payload": {
+        "prompt": "Welke zin is goed?"
+      },
+      "options": [
+        {
+          "label": "A",
+          "body": "Er is een speeltuin achter mijn huis.",
+          "is_correct": true
+        },
+        {
+          "label": "B",
+          "body": "Er zijn een speeltuin achter mijn huis.",
+          "is_correct": false
+        },
+        {
+          "label": "C",
+          "body": "Er is speeltuinen achter mijn huis.",
+          "is_correct": false
+        }
+      ]
+    },
+    {
+      "kind": "mcq",
+      "tier": 0,
+      "explanation": "'Drie winkels' zijn meer dingen, dus gebruik je 'er zijn'.",
+      "payload": {
+        "prompt": "Welke zin is goed?"
+      },
+      "options": [
+        {
+          "label": "A",
+          "body": "Er is drie winkels in mijn straat.",
+          "is_correct": false
+        },
+        {
+          "label": "B",
+          "body": "Er zijn drie winkels in mijn straat.",
+          "is_correct": true
+        },
+        {
+          "label": "C",
+          "body": "Er zijn een winkel in mijn straat.",
+          "is_correct": false
+        }
+      ]
+    },
+    {
+      "kind": "gap_choice",
+      "tier": 1,
+      "explanation": "'Een bakker' is één ding, dus je zegt 'er is'.",
+      "payload": {
+        "sentence": "___ een bakker naast de apotheek.",
+        "choices": [
+          "Er is",
+          "Er zijn"
+        ],
+        "answer": "Er is"
+      }
+    },
+    {
+      "kind": "gap_choice",
+      "tier": 1,
+      "explanation": "'Veel kinderen' zijn meer dingen, dus je zegt 'er zijn'.",
+      "payload": {
+        "sentence": "___ veel kinderen op het schoolplein.",
+        "choices": [
+          "Er is",
+          "Er zijn"
+        ],
+        "answer": "Er zijn"
+      }
+    },
+    {
+      "kind": "gap_choice",
+      "tier": 1,
+      "explanation": "In een vraag staat het werkwoord vooraan: 'Is er ...?' bij één ding.",
+      "payload": {
+        "sentence": "___ een pinautomaat in de buurt?",
+        "choices": [
+          "Is er",
+          "Zijn er",
+          "Er is"
+        ],
+        "answer": "Is er"
+      }
+    },
+    {
+      "kind": "matchen",
+      "tier": 1,
+      "explanation": "Bij één ding past 'er is', bij meer dingen past 'er zijn'.",
+      "payload": {
+        "instruction": "Welke vorm hoort bij het woord? Maak de paren.",
+        "pairs": [
+          {
+            "left": "een supermarkt",
+            "right": "er is"
+          },
+          {
+            "left": "twee scholen",
+            "right": "er zijn"
+          },
+          {
+            "left": "veel bomen",
+            "right": "er zijn"
+          },
+          {
+            "left": "een bushalte",
+            "right": "er is"
+          }
+        ]
+      }
+    },
+    {
+      "kind": "gap_type",
+      "tier": 2,
+      "explanation": "'Drie stoelen' zijn meer dingen, dus typ je 'er zijn'.",
+      "payload": {
+        "sentence": "___ drie stoelen in de wachtkamer.",
+        "answer": "Er zijn"
+      }
+    },
+    {
+      "kind": "woordorde",
+      "tier": 2,
+      "explanation": "Je begint met 'Er is' en daarna komt het ding en de plaats.",
+      "payload": {
+        "instruction": "Maak een goede zin.",
+        "tokens": [
+          "is",
+          "het",
+          "Er",
+          "een",
+          "naast",
+          "postkantoor",
+          "station"
+        ],
+        "answer": [
+          "Er",
+          "is",
+          "een",
+          "postkantoor",
+          "naast",
+          "het",
+          "station"
+        ]
+      }
+    },
+    {
+      "kind": "open_zin",
+      "tier": 2,
+      "explanation": "Je noemt één ding met 'er is' of meer dingen met 'er zijn', en daarna de plaats.",
+      "payload": {
+        "prompt": "Schrijf twee zinnen over jouw buurt. Gebruik één keer 'er is' en één keer 'er zijn'.",
+        "model_answer": "Er is een moskee naast de supermarkt. Er zijn twee scholen in mijn wijk.",
+        "checklist": [
+          "Bij één ding schrijf ik 'er is'.",
+          "Bij meer dingen schrijf ik 'er zijn'.",
+          "Ik noem ook een plaats: naast, bij, in, op of tegenover."
+        ]
+      }
+    }
+  ],
+  "what_you_learn": "Je leert zeggen dat iets er is: er is een winkel naast het station. Je kiest 'er is' bij één ding en 'er zijn' bij meer dingen. Ook leer je vragen: Is er een apotheek in de buurt?"
+}

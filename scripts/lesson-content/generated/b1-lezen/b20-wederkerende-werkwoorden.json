@@ -1,0 +1,275 @@
+{
+  "items": [
+    {
+      "kind": "uitleg",
+      "tier": null,
+      "explanation": null,
+      "payload": {
+        "body_html": "<p>Sommige werkwoorden hebben altijd een extra woordje bij zich: <strong>me, je, zich, ons</strong>. Dat woordje verwijst terug naar de persoon die de handeling doet, en je mag het nooit weglaten. Je ziet deze werkwoorden vaak in teksten over gevoelens, herinneringen en voorbereiding, bijvoorbeeld in een brief van een instantie. In het woordenboek staat zo'n werkwoord met <em>zich</em> ervoor: <em>zich herinneren</em>, <em>zich voorbereiden op</em>.</p>",
+        "cards": [
+          {
+            "label": "IK EN WIJ",
+            "example_html": "Ik herinner <mark>me</mark> die brief nog goed, en wij herinneren <mark>ons</mark> ook het gesprek."
+          },
+          {
+            "label": "U, HIJ, ZIJ EN ZE",
+            "example_html": "Hij ergert <mark>zich</mark> aan het lawaai, en u vergist <mark>zich</mark> in de datum."
+          }
+        ]
+      }
+    },
+    {
+      "kind": "uitleg",
+      "tier": null,
+      "explanation": null,
+      "payload": {
+        "body_html": "<p>De vorm hangt af van de persoon: ik → <strong>me</strong>, jij → <strong>je</strong>, u → <strong>zich</strong>, hij/zij/het → <strong>zich</strong>, wij → <strong>ons</strong>, jullie → <strong>je</strong>, zij (meervoud) → <strong>zich</strong>. Let op: bij <em>u</em> gebruik je in een formele tekst altijd <strong>zich</strong>, ook al is het één persoon. Veelgebruikte werkwoorden zijn <em>zich voelen</em>, <em>zich zorgen maken</em>, <em>zich ergeren aan</em> en <em>zich vergissen</em>.</p>",
+        "cards": [
+          {
+            "label": "FORMEEL (u)",
+            "example_html": "Kunt u <mark>zich</mark> voorbereiden op het gesprek van 14 maart?"
+          },
+          {
+            "label": "JULLIE",
+            "example_html": "Maken jullie <mark>je</mark> zorgen over de nieuwe regels van de organisatie?"
+          }
+        ]
+      }
+    },
+    {
+      "kind": "uitleg",
+      "tier": null,
+      "explanation": null,
+      "payload": {
+        "body_html": "<p>Het woordje <strong>me, je, zich</strong> of <strong>ons</strong> komt meestal direct na de persoonsvorm, dus na het werkwoord dat verandert. Begint de zin met een ander woord, bijvoorbeeld met een tijd, dan staat het werkwoord vooraan en komt het onderwerp erna: <em>Gisteren voelde ik me beter.</em> In een bijzin staat het werkwoord achteraan, maar <strong>me</strong> of <strong>zich</strong> blijft bij het onderwerp staan: <em>…dat ik me erger aan het geluid.</em></p>",
+        "cards": [
+          {
+            "label": "INVERSIE",
+            "example_html": "Gisteren <mark>voelde ik me</mark> nog niet goed genoeg om te werken."
+          },
+          {
+            "label": "BIJZIN",
+            "example_html": "De buurman schrijft <mark>dat hij zich ergert</mark> aan de muziek na tien uur."
+          }
+        ]
+      }
+    },
+    {
+      "kind": "voorbeeld",
+      "tier": null,
+      "explanation": null,
+      "payload": {
+        "sentence_html": "In de brief van de gemeente staat dat u <mark>zich</mark> moet voorbereiden op het gesprek met de consulent."
+      }
+    },
+    {
+      "kind": "voorbeeld",
+      "tier": null,
+      "explanation": null,
+      "payload": {
+        "sentence_html": "Sinds de verhuizing maken wij <mark>ons</mark> zorgen over de hoge kosten van de energie."
+      }
+    },
+    {
+      "kind": "mcq",
+      "tier": 0,
+      "explanation": "Bij het onderwerp <em>wij</em> hoort altijd <em>ons</em>; <em>zich</em> hoort bij hij, zij, u of zij-meervoud.",
+      "options": [
+        {
+          "label": "A",
+          "body": "Wij herinneren zich het gesprek met de woningcorporatie nog goed.",
+          "is_correct": false
+        },
+        {
+          "label": "B",
+          "body": "Wij herinneren ons het gesprek met de woningcorporatie nog goed.",
+          "is_correct": true
+        },
+        {
+          "label": "C",
+          "body": "Wij herinneren het gesprek met de woningcorporatie nog goed.",
+          "is_correct": false
+        }
+      ],
+      "payload": {
+        "prompt": "In welke zin is de vorm van het wederkerend voornaamwoord (het woordje me, je, zich of ons) juist?"
+      }
+    },
+    {
+      "kind": "mcq",
+      "tier": 0,
+      "explanation": "Na <em>dat</em> blijft het woordje direct achter het onderwerp staan: <em>dat ik me erger</em>; de persoonsvorm schuift naar het einde van de bijzin.",
+      "options": [
+        {
+          "label": "A",
+          "body": "Ik schrijf deze klacht omdat ik me erger aan het lawaai op de bouwplaats.",
+          "is_correct": true
+        },
+        {
+          "label": "B",
+          "body": "Ik schrijf deze klacht omdat ik erger me aan het lawaai op de bouwplaats.",
+          "is_correct": false
+        },
+        {
+          "label": "C",
+          "body": "Ik schrijf deze klacht omdat me ik erger aan het lawaai op de bouwplaats.",
+          "is_correct": false
+        },
+        {
+          "label": "D",
+          "body": "Ik schrijf deze klacht omdat ik erger aan het lawaai me op de bouwplaats.",
+          "is_correct": false
+        }
+      ],
+      "payload": {
+        "prompt": "In welke zin staat het woordje <em>me</em> op de juiste plek in de bijzin?"
+      }
+    },
+    {
+      "kind": "gap_choice",
+      "tier": 1,
+      "explanation": "Het onderwerp is <em>u</em>, en bij <em>u</em> gebruik je in een formele tekst altijd <em>zich</em>.",
+      "payload": {
+        "sentence": "Wij verzoeken u ___ goed voor te bereiden op het gesprek van 9 april.",
+        "choices": [
+          "u",
+          "zich",
+          "je"
+        ],
+        "answer": "zich"
+      }
+    },
+    {
+      "kind": "gap_choice",
+      "tier": 1,
+      "explanation": "Bij <em>jullie</em> hoort de vorm <em>je</em>, niet <em>zich</em> en niet <em>jullie</em>.",
+      "payload": {
+        "sentence": "Maken jullie ___ zorgen over de nieuwe openingstijden van het loket?",
+        "choices": [
+          "zich",
+          "je",
+          "jullie"
+        ],
+        "answer": "je"
+      }
+    },
+    {
+      "kind": "gap_choice",
+      "tier": 1,
+      "explanation": "De zin begint met een tijd, dus komt het werkwoord vooraan en daarna het onderwerp <em>ik</em>; bij <em>ik</em> hoort <em>me</em>.",
+      "payload": {
+        "sentence": "Gisteren voelde ik ___ te ziek om naar mijn werk te gaan.",
+        "choices": [
+          "me",
+          "mij zelf",
+          "zich"
+        ],
+        "answer": "me"
+      }
+    },
+    {
+      "kind": "matchen",
+      "tier": 1,
+      "explanation": "Elk onderwerp heeft één vaste vorm: ik → me, jij → je, hij/u/zij-meervoud → zich, wij → ons.",
+      "payload": {
+        "instruction": "Welk woordje hoort bij welk onderwerp? Maak de goede paren.",
+        "pairs": [
+          {
+            "left": "Ik vergis … in de datum.",
+            "right": "me"
+          },
+          {
+            "left": "Hij bereidt … voor op het examen.",
+            "right": "zich"
+          },
+          {
+            "left": "Wij ergeren … aan de drukte.",
+            "right": "ons"
+          },
+          {
+            "left": "Jij herinnert … die brief nog.",
+            "right": "je"
+          },
+          {
+            "left": "De leden melden … bij de secretaris.",
+            "right": "zich"
+          }
+        ]
+      }
+    },
+    {
+      "kind": "gap_type",
+      "tier": 2,
+      "explanation": "Het onderwerp is <em>ik</em>, dus gebruik je <em>me</em>, en dat woordje staat direct na de persoonsvorm <em>herinner</em>.",
+      "payload": {
+        "sentence": "Ik herinner ___ nog goed dat de huur vorig jaar met twintig euro steeg.",
+        "answer": "me"
+      }
+    },
+    {
+      "kind": "woordorde",
+      "tier": 2,
+      "explanation": "De zin begint met de tijd, dus volgt eerst de persoonsvorm <em>voelde</em> en daarna het onderwerp met <em>me</em>: Gisteren voelde ik me niet goed.",
+      "payload": {
+        "instruction": "Zet de woorden in de juiste volgorde. Begin met het woord met een hoofdletter.",
+        "tokens": [
+          "me",
+          "voelde",
+          "goed",
+          "Gisteren",
+          "niet",
+          "ik"
+        ],
+        "answer": [
+          "Gisteren",
+          "voelde",
+          "ik",
+          "me",
+          "niet",
+          "goed"
+        ]
+      }
+    },
+    {
+      "kind": "woordorde",
+      "tier": 2,
+      "explanation": "Na <em>dat</em> komt het onderwerp met het woordje <em>zich</em>, en de persoonsvorm <em>ergert</em> staat achteraan in de bijzin.",
+      "payload": {
+        "instruction": "Maak van deze woorden een bijzin die begint met <em>dat</em>.",
+        "tokens": [
+          "ergert",
+          "dat",
+          "zich",
+          "hij",
+          "aan",
+          "de",
+          "rommel"
+        ],
+        "answer": [
+          "dat",
+          "hij",
+          "zich",
+          "ergert",
+          "aan",
+          "de",
+          "rommel"
+        ]
+      }
+    },
+    {
+      "kind": "open_zin",
+      "tier": 2,
+      "explanation": "Je gebruikt een werkwoord met <em>me</em> of <em>ons</em> en zet dat woordje direct na de persoonsvorm.",
+      "payload": {
+        "prompt": "Schrijf twee zinnen over een brief die je ooit van een instantie kreeg. Gebruik in de eerste zin <em>zich herinneren</em> en in de tweede zin <em>zich zorgen maken</em>.",
+        "model_answer": "Ik herinner me nog goed de brief van de Belastingdienst over mijn toeslag. Toen maakte ik me zorgen, omdat ik driehonderd euro moest terugbetalen.",
+        "checklist": [
+          "Staat er in de eerste zin <em>Ik herinner me</em> (en niet <em>Ik herinner</em>)?",
+          "Staat het woordje <em>me</em> of <em>ons</em> direct na de persoonsvorm?",
+          "Past de vorm bij het onderwerp: ik → me, wij → ons?"
+        ]
+      }
+    }
+  ],
+  "what_you_learn": "Je leert werkwoorden gebruiken die een extra woordje bij zich hebben: me, je, zich, ons, zoals zich herinneren, zich ergeren aan, zich voorbereiden op en zich zorgen maken. Je kiest de vorm die bij het onderwerp past, ook in formele teksten met 'u'. En je weet waar dat woordje staat: direct na de persoonsvorm, ook als de zin met een ander woord begint of als het om een bijzin gaat."
+}

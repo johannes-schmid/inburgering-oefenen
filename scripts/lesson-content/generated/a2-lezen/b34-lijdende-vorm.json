@@ -1,0 +1,202 @@
+{
+  "items": [
+    {
+      "kind": "uitleg",
+      "tier": null,
+      "explanation": null,
+      "payload": {
+        "body_html": "<p>In brieven van de gemeente, de school of de verhuurder lees je vaak <strong>wordt</strong> of <strong>worden</strong> met een woord met <strong>ge-</strong>, zoals <em>opgestuurd</em> of <em>opgehaald</em>. Dan gebeurt er iets, maar de brief zegt niet wie het doet. Meestal doet de instantie het zelf: jij hoeft niets te doen. Is het één ding, dan staat er <strong>wordt</strong>. Zijn het meer dingen, dan staat er <strong>worden</strong>.</p>",
+        "cards": [
+          {
+            "label": "ÉÉN DING: WORDT",
+            "example_html": "Uw pas <mark>wordt opgestuurd</mark>."
+          },
+          {
+            "label": "MEER DINGEN: WORDEN",
+            "example_html": "De formulieren <mark>worden bewaard</mark>."
+          }
+        ]
+      }
+    },
+    {
+      "kind": "voorbeeld",
+      "tier": null,
+      "explanation": null,
+      "payload": {
+        "sentence_html": "De vuilnis <mark>wordt opgehaald</mark> op dinsdagmorgen."
+      }
+    },
+    {
+      "kind": "voorbeeld",
+      "tier": null,
+      "explanation": null,
+      "payload": {
+        "sentence_html": "De nieuwe sleutels <mark>worden klaargelegd</mark> bij de balie."
+      }
+    },
+    {
+      "kind": "mcq",
+      "tier": 0,
+      "explanation": "In de zin staat \"wordt\" met het woord \"gerepareerd\" (een woord met ge-). Dat is de vorm waar de brief niet zegt wie het doet.",
+      "options": [
+        {
+          "label": "A",
+          "body": "De monteur repareert de lift morgen.",
+          "is_correct": false
+        },
+        {
+          "label": "B",
+          "body": "De lift wordt morgen gerepareerd.",
+          "is_correct": true
+        },
+        {
+          "label": "C",
+          "body": "Wij moeten de lift zelf repareren.",
+          "is_correct": false
+        }
+      ],
+      "payload": {
+        "prompt": "In welke zin staat <strong>wordt</strong> of <strong>worden</strong> met een woord met ge-?"
+      }
+    },
+    {
+      "kind": "mcq",
+      "tier": 0,
+      "explanation": "\"Uw paspoort wordt thuisbezorgd\" betekent: de gemeente doet het. Je hoeft zelf niets te halen of te sturen.",
+      "options": [
+        {
+          "label": "A",
+          "body": "Je moet je paspoort zelf ophalen.",
+          "is_correct": false
+        },
+        {
+          "label": "B",
+          "body": "Je moet een brief terugsturen.",
+          "is_correct": false
+        },
+        {
+          "label": "C",
+          "body": "De gemeente brengt het paspoort naar je huis.",
+          "is_correct": true
+        }
+      ],
+      "payload": {
+        "prompt": "In een brief van de gemeente staat: <em>Uw paspoort wordt volgende week thuisbezorgd.</em> Wat betekent dat?"
+      }
+    },
+    {
+      "kind": "gap_choice",
+      "tier": 1,
+      "explanation": "\"De brief\" is één ding, dus je gebruikt \"wordt\".",
+      "payload": {
+        "sentence": "De brief ___ vandaag verstuurd.",
+        "choices": [
+          "wordt",
+          "worden"
+        ],
+        "answer": "wordt"
+      }
+    },
+    {
+      "kind": "gap_choice",
+      "tier": 1,
+      "explanation": "\"De containers\" zijn meer dingen, dus je gebruikt \"worden\".",
+      "payload": {
+        "sentence": "De containers ___ elke week geleegd.",
+        "choices": [
+          "wordt",
+          "worden"
+        ],
+        "answer": "worden"
+      }
+    },
+    {
+      "kind": "gap_choice",
+      "tier": 1,
+      "explanation": "\"Uw aanvraag\" is één ding, dus \"wordt\". Daarna komt het woord met ge-: gecontroleerd.",
+      "payload": {
+        "sentence": "Uw aanvraag ___ binnen drie weken gecontroleerd.",
+        "choices": [
+          "wordt",
+          "worden",
+          "word"
+        ],
+        "answer": "wordt"
+      }
+    },
+    {
+      "kind": "matchen",
+      "tier": 1,
+      "explanation": "Bij één ding hoort \"wordt\" en bij meer dingen hoort \"worden\". Je kijkt dus naar het woord vooraan de zin.",
+      "payload": {
+        "instruction": "Welke vorm hoort bij het woord? Kies wordt of worden.",
+        "pairs": [
+          {
+            "left": "de rekening",
+            "right": "wordt betaald"
+          },
+          {
+            "left": "de rekeningen",
+            "right": "worden betaald"
+          },
+          {
+            "left": "het rapport",
+            "right": "wordt besproken"
+          },
+          {
+            "left": "de rapporten",
+            "right": "worden besproken"
+          }
+        ]
+      }
+    },
+    {
+      "kind": "gap_type",
+      "tier": 2,
+      "explanation": "\"De vuilnis\" is één ding, dus je typt \"wordt\". Daarna staat het woord met ge-: opgehaald.",
+      "payload": {
+        "sentence": "De vuilnis ___ op dinsdag opgehaald.",
+        "answer": "wordt"
+      }
+    },
+    {
+      "kind": "woordorde",
+      "tier": 2,
+      "explanation": "Eerst het onderwerp \"de klas\", dan \"wordt\", en het woord met ge- komt achteraan: schoongemaakt.",
+      "payload": {
+        "instruction": "Maak een goede zin van deze woorden.",
+        "tokens": [
+          "schoongemaakt",
+          "wordt",
+          "de",
+          "klas",
+          "elke",
+          "dag"
+        ],
+        "answer": [
+          "de",
+          "klas",
+          "wordt",
+          "elke",
+          "dag",
+          "schoongemaakt"
+        ]
+      }
+    },
+    {
+      "kind": "open_zin",
+      "tier": 2,
+      "explanation": "Je zegt zelf wie het doet. In de brief staat alleen \"wordt opgestuurd\", maar de gemeente stuurt de pas op.",
+      "payload": {
+        "prompt": "In een brief staat: <em>Uw pas wordt opgestuurd.</em> Schrijf één zin: wie doet het, en moet jij iets doen?",
+        "model_answer": "De gemeente stuurt de pas op. Ik hoef niets te doen, ik wacht op de post.",
+        "checklist": [
+          "Je noemt wie het doet, bijvoorbeeld de gemeente.",
+          "Je schrijft of je zelf iets moet doen.",
+          "Je zin heeft een werkwoord."
+        ]
+      }
+    }
+  ],
+  "what_you_learn": "Je leert zinnen met wordt of worden en een woord met ge- herkennen, zoals \"Uw pas wordt opgestuurd\". Je begrijpt dat de gemeente, de school of de verhuurder het dan doet en dat jij vaak niets hoeft te doen. Ook kies je zelf tussen wordt en worden."
+}

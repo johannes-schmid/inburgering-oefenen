@@ -1,0 +1,188 @@
+{
+  "items": [
+    {
+      "kind": "uitleg",
+      "tier": null,
+      "explanation": null,
+      "payload": {
+        "body_html": "<p>In een tekst komt vaak een klein woord dat terugwijst naar iets wat je al gelezen hebt. Bij een <strong>de</strong>-woord gebruik je <em>hij, deze</em> of <em>die</em>. Bij een <strong>het</strong>-woord gebruik je <em>het, dit</em> of <em>dat</em>. Voor een plaats gebruik je <em>daar</em>.</p><p>Met <em>deze</em> en <em>dit</em> wijs je naar iets dichtbij. Met <em>die</em> en <em>dat</em> wijs je naar iets verder weg.</p>",
+        "cards": [
+          {
+            "label": "DE-WOORD",
+            "example_html": "De brief ligt op tafel. <mark>Die</mark> is van de gemeente."
+          },
+          {
+            "label": "HET-WOORD",
+            "example_html": "Het formulier is nieuw. <mark>Dat</mark> moet je invullen."
+          }
+        ]
+      }
+    },
+    {
+      "kind": "voorbeeld",
+      "tier": null,
+      "explanation": null,
+      "payload": {
+        "sentence_html": "De huisarts is verhuisd. <mark>Hij</mark> werkt nu in de Tulpstraat."
+      }
+    },
+    {
+      "kind": "voorbeeld",
+      "tier": null,
+      "explanation": null,
+      "payload": {
+        "sentence_html": "Ik werk bij een bakker in Zwolle. <mark>Daar</mark> begin ik om zes uur."
+      }
+    },
+    {
+      "kind": "mcq",
+      "tier": 0,
+      "explanation": "Het woord <em>die</em> staat vlak na <em>de rekening</em> en wijst daarnaar terug.",
+      "payload": {
+        "prompt": "Lees: \"De rekening van het ziekenhuis kwam gisteren. Die moet ik voor 1 maart betalen.\" Naar wie of wat wijst <em>die</em>?"
+      },
+      "options": [
+        {
+          "label": "A",
+          "body": "de rekening",
+          "is_correct": true
+        },
+        {
+          "label": "B",
+          "body": "het ziekenhuis",
+          "is_correct": false
+        },
+        {
+          "label": "C",
+          "body": "1 maart",
+          "is_correct": false
+        }
+      ]
+    },
+    {
+      "kind": "mcq",
+      "tier": 0,
+      "explanation": "<em>Daar</em> wijst altijd naar een plaats. De plaats in de eerste zin is het gemeentehuis.",
+      "payload": {
+        "prompt": "Lees: \"Mijn buurvrouw gaat naar het gemeentehuis. Daar haalt ze een nieuw paspoort.\" Naar wie of wat wijst <em>daar</em>?"
+      },
+      "options": [
+        {
+          "label": "A",
+          "body": "mijn buurvrouw",
+          "is_correct": false
+        },
+        {
+          "label": "B",
+          "body": "het gemeentehuis",
+          "is_correct": true
+        },
+        {
+          "label": "C",
+          "body": "een nieuw paspoort",
+          "is_correct": false
+        }
+      ]
+    },
+    {
+      "kind": "gap_choice",
+      "tier": 1,
+      "explanation": "<em>Woning</em> is een de-woord, dus kies je <em>deze</em>. Het gaat over de woning waar je nu staat, dus dichtbij.",
+      "payload": {
+        "sentence": "Ik sta in de woonkamer van de woning. ___ woning is groot genoeg voor ons.",
+        "choices": [
+          "Deze",
+          "Dit",
+          "Dat"
+        ],
+        "answer": "Deze"
+      }
+    },
+    {
+      "kind": "gap_choice",
+      "tier": 1,
+      "explanation": "<em>Formulier</em> is een het-woord. Bij een het-woord dat verder weg is, gebruik je <em>dat</em>.",
+      "payload": {
+        "sentence": "Op de balie liggen twee papieren. ___ formulier daar is voor de huurtoeslag.",
+        "choices": [
+          "Die",
+          "Dat",
+          "Deze"
+        ],
+        "answer": "Dat"
+      }
+    },
+    {
+      "kind": "gap_choice",
+      "tier": 1,
+      "explanation": "<em>Ze</em> wijst terug naar de medewerkster uit de eerste zin.",
+      "payload": {
+        "sentence": "De medewerkster van de bibliotheek helpt mij altijd. ___ spreekt heel langzaam.",
+        "choices": [
+          "Hij",
+          "Ze",
+          "Het"
+        ],
+        "answer": "Ze"
+      }
+    },
+    {
+      "kind": "matchen",
+      "tier": 1,
+      "explanation": "Bij een de-woord of een meervoud past <em>die</em>. Bij een het-woord past <em>dat</em>.",
+      "payload": {
+        "instruction": "Welk aanwijzend woord past bij het woord? Maak de juiste paren.",
+        "pairs": [
+          {
+            "left": "de rekening",
+            "right": "die"
+          },
+          {
+            "left": "het paspoort",
+            "right": "dat"
+          },
+          {
+            "left": "de kinderen",
+            "right": "die"
+          },
+          {
+            "left": "het pakket",
+            "right": "dat"
+          }
+        ]
+      }
+    },
+    {
+      "kind": "gap_type",
+      "tier": 2,
+      "explanation": "<em>Boek</em> is een het-woord en het ligt dichtbij, dus schrijf je <em>dit</em>.",
+      "payload": {
+        "sentence": "Ik heb een boek in mijn hand. ___ boek is van de school.",
+        "answer": "dit"
+      }
+    },
+    {
+      "kind": "woordorde",
+      "tier": 2,
+      "explanation": "Je begint met <em>die</em>, want dat woord wijst terug naar de bus uit de vorige zin.",
+      "payload": {
+        "instruction": "Maak een goede zin. De zin hiervoor is: \"De bus van tien uur is weg.\"",
+        "tokens": [
+          "die",
+          "te",
+          "was",
+          "vroeg",
+          "al"
+        ],
+        "answer": [
+          "die",
+          "was",
+          "al",
+          "te",
+          "vroeg"
+        ]
+      }
+    }
+  ],
+  "what_you_learn": "Je leert zien naar wie of wat een klein woord in een tekst terugwijst, zoals hij, ze, het, die, dat en daar. Je leert ook kiezen tussen deze en die bij een de-woord, en tussen dit en dat bij een het-woord. Zo begrijp je korte teksten en brieven beter."
+}

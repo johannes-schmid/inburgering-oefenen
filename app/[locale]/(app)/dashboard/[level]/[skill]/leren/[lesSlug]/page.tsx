@@ -16,13 +16,16 @@ import { fetchNarration, narrationCueNames } from '@/lib/lessons/narration';
 import { stepCount, visualFor } from '@/data/lesson-visuals';
 import { conceptPath, coursePath, lessonPath } from '@/lib/lessons/lessons';
 import { sporenFromBlocks } from '@/lib/lessons/sporen-server';
+import { fetchGrammarStep } from '@/lib/lessons/grammar-server';
+import { grammarStepPath, topicCode, topicOfLesson, topicPath } from '@/lib/lessons/grammar';
+import { lessonStreamLabels } from '@/lib/lessons/stream-labels';
 import { findModule, modulePath, spoorPath } from '@/lib/lessons/sporen';
 import LessonStream from '@/components/lessons/LessonStream';
 import LessonNarration from '@/components/lessons/LessonNarration';
 import { NarrationScope } from '@/components/lessons/NarrationScope';
 import type { LessonItem } from '@/components/lessons/item-helpers';
 import AppShell from '../../../../../components/AppShell';
-import { spoorPanel } from '../../../../../components/nav';
+import { grammarPanel, spoorPanel, type LearnPanelData } from '../../../../../components/nav';
 
 type Props = { params: Promise<{ locale: string; level: string; skill: string; lesSlug: string }> };
 
@@ -74,12 +77,15 @@ export default async function LessonPage({ params }: Props) {
     redirect(`/${locale}/dashboard/pakketten?onderdeel=${level}:${skill.slug}&vanaf=leren-${lesSlug}`);
   }
 
-  const [blocks, wordsByItem, menu, narration] = await Promise.all([
+  const [blocks, wordsByItem, menu, narration, grammar, labels] = await Promise.all([
     fetchCourse(level, skill.slug, user.id),
     fetchLessonWords(lesson.items),
     fetchPortalMenu(),
     fetchNarration(lesson.id),
+    fetchGrammarStep(level, skill.slug, user.id),
+    lessonStreamLabels(),
   ]);
+  const tGrammar = await getTranslations('grammar');
 
   // De woorden op hun item hangen, zodat de renderer één databron heeft. Zie `item-helpers.ts`.
   const items: LessonItem[] = lesson.items.map(item =>
@@ -96,7 +102,22 @@ export default async function LessonPage({ params }: Props) {
   /* Zonder naam geen taalregelmodule, en dat is hier ook niet nodig: deze aanroep dient de
      terugknop van de les, en een regelles vindt zijn weg terug via de bibliotheek. */
   const sporen = await sporenFromBlocks(blocks, level, skill.slug, user?.id ?? null);
-  const here = findModule(sporen, lesson.id);
+
+  /**
+   * Staat deze les in stap 2 — in een grammaticaonderwerp of in de extra reeks? Dan is dát
+   * zijn plek (oktober 2026): de kolom ernaast toont de onderwerpen, "terug" gaat naar het
+   * onderwerp en "hierna" naar de volgende les van dat onderwerp, of anders het volgende
+   * onderwerp. De taalregelmodules van `concept_groups` bestaan in deze rol niet meer.
+   */
+  const gTopic = topicOfLesson(grammar, lesson.id);
+  const gExtras = grammar.extras?.lessons.some(l => l.id === lesson.id) ? grammar.extras : null;
+  const inGrammar = gTopic !== null || gExtras !== null;
+  const gLessons = (gTopic?.lessons ?? gExtras?.lessons ?? []).filter(l => l.id !== null);
+  const gIndex = gLessons.findIndex(l => l.id === lesson.id);
+  const gNextLesson = gIndex >= 0 ? gLessons[gIndex + 1] ?? null : null;
+  const gNextTopic = gTopic ? grammar.topics.find(x => x.n === gTopic.n + 1) ?? null : null;
+
+  const here = inGrammar ? null : findModule(sporen, lesson.id);
   const inModule = here
     ? here.module.lessons.findIndex(l => l.id === lesson.id)
     : -1;
@@ -120,7 +141,19 @@ export default async function LessonPage({ params }: Props) {
    * `null` voor blok A (Woorden) — die lessen zitten in geen spoor, en dan is er geen tweede
    * as om te tonen. De les valt dan terug op de kale chrome, zoals hij die had.
    */
-  const panel = here
+  const panel: LearnPanelData | null = inGrammar
+    ? grammarPanel(grammar, {
+        title: tGrammar('step_label'),
+        sectionLabel: tGrammar('step_label'),
+        backHref: `/dashboard/${level}/${skill.slug}`,
+        backLabel: tSkills(`${skill.key}.name`),
+        topicHref: n => topicPath(level, skill.slug, n),
+        lessonHref: slug => lessonPath(level, skill.slug, slug),
+        lockedHref: what => `/dashboard/pakketten?onderdeel=${level}:${skill.slug}&vanaf=${what}`,
+        currentLessonId: lesson.id,
+        owned,
+      })
+    : here
     ? spoorPanel(here.spoor, {
         title: tPortal(here.spoor.slug === 'taalregels'
           ? 'leerroute_grammatica_title'
@@ -135,61 +168,6 @@ export default async function LessonPage({ params }: Props) {
       })
     : null;
 
-  const labels = {
-    check: t('check'),
-    correct: t('correct'),
-    wrong: t('wrong'),
-    why: t('why'),
-    again: t('again'),
-    showAnswer: t('show_answer'),
-    modelAnswer: t('model_answer'),
-    compare: t('compare'),
-    // `t.raw` en niet `t`: deze string draagt {done} en {total}, en die getallen zijn pas
-    // in de client bekend. next-intl weigert een bericht met onopgevulde placeholders en gaf
-    // de sleutel in kapitalen terug ("LESSONS.STREAM_PROGRESS") midden op de pagina. De
-    // client vult ze met `.replace()`.
-    progress: t.raw('stream_progress') as string,
-    yourAnswer: t('mark_pick'),
-    ruleKick: t('rule_kick'),
-    demoKick: t('demo_kick'),
-    learnHead: t('section_learn'),
-    learnSub: t('section_learn_sub'),
-    practiceHead: t('section_practice'),
-    exHead: t('ex_head'),
-    exSub: t('ex_sub'),
-    /* `t.raw` waar {n}/{total} pas in de client bekend zijn — zelfde reden als bij
-       `stream_progress` hierboven. */
-    exOf: t.raw('ex_of') as string,
-    exGoto: t.raw('ex_goto') as string,
-    exPrev: t('ex_prev'),
-    exNext: t('ex_next'),
-    exNextItem: t('ex_next_item'),
-    exSkip: t('ex_skip'),
-    tierHeads: [t('tier_0_head'), t('tier_1_head'), t('tier_2_head')] as [string, string, string],
-    tierSubs: [t('tier_0_sub'), t('tier_1_sub'), t('tier_2_sub')] as [string, string, string],
-    tierOther: t('tier_other_head'),
-    visual: {
-      kicker: t('visual_kicker'),
-      walk: t('visual_walk'),
-      walkStop: t('visual_walk_stop'),
-      step: t.raw('visual_step') as string,
-    },
-    /* De microfoon van `naspreken` en `opnemen`. Zie `LessonRecorder.tsx`. */
-    recorder: {
-      record: t('rec_record'),
-      stop: t('rec_stop'),
-      again: t('rec_again'),
-      recording: t('rec_recording'),
-      heard: t('rec_heard'),
-      heardNote: t('rec_heard_note'),
-      noMic: t('rec_no_mic'),
-      noRecorder: t('rec_no_recorder'),
-      seconds: t('rec_seconds'),
-    },
-    sayAfter: t('say_after'),
-    sayFocus: t('say_focus'),
-    audioTodo: t('audio_todo'),
-  };
 
   /**
    * Het lesplaatje van deze les, en hoeveel stappen het heeft.
@@ -247,7 +225,20 @@ export default async function LessonPage({ params }: Props) {
                       overviewLabel: tPortal('crumb_overview'),
                       skillName: slug => tSkills(`${slug}.name`),
                     }),
-                    ...(here
+                    ...(inGrammar
+                      ? [
+                          {
+                            label: tGrammar('step_label'),
+                            href: `/${locale}${grammarStepPath(level, skill.slug)}`,
+                          },
+                          gTopic
+                            ? {
+                                label: `${topicCode(gTopic.n)} · ${gTopic.title}`,
+                                href: `/${locale}${topicPath(level, skill.slug, gTopic.n)}`,
+                              }
+                            : { label: gExtras!.title },
+                        ]
+                      : here
                       ? [
                           {
                             label: tPortal(here.spoor.slug === 'taalregels'
@@ -287,14 +278,17 @@ export default async function LessonPage({ params }: Props) {
                   ernaast. Klein en niet over het lesblok, want dat blok laat vóór het spelen
                   al zien wát er straks met de stem meeverspringt. */}
               <div className="les-card">
-                {inModule >= 0 && (
+                {!inGrammar && inModule >= 0 && (
                   <span className="lc-tile" aria-hidden>
                     <span className="lc-n">{inModule + 1}</span>
                   </span>
                 )}
                 <span className="min-w-0">
-                  {inModule >= 0 && (
+                  {!inGrammar && inModule >= 0 && (
                     <span className="lc-kick">{t('lesson_no', { n: inModule + 1 })}</span>
+                  )}
+                  {gTopic && (
+                    <span className="lc-kick">{`${topicCode(gTopic.n)} · ${gTopic.title}`}</span>
                   )}
                   <h1>{lesson.title}</h1>
                 </span>
@@ -418,6 +412,30 @@ export default async function LessonPage({ params }: Props) {
               withLead={narration === null}
               labels={labels}
             />
+
+            {/* Binnen stap 2: de volgende les van dit onderwerp, en anders het volgende
+                onderwerp — niet de volgende regel in het regelhuis, want die hoort misschien
+                niet eens bij deze cursus. */}
+            {inGrammar && (gNextLesson || gNextTopic || gTopic) && (
+              <a
+                href={gNextLesson
+                  ? `/${locale}${lessonPath(level, skill.slug, gNextLesson.slug)}`
+                  : `/${locale}${topicPath(level, skill.slug, gNextTopic?.n ?? gTopic!.n)}`}
+                className="mod-cont mod-next"
+              >
+                <span className="min-w-0">
+                  <span className="mod-cont-kick">
+                    {gNextLesson ? t('next_lesson') : gNextTopic ? tGrammar('next_topic') : tGrammar('step_label')}
+                  </span>
+                  <span className="mod-cont-title">
+                    {gNextLesson
+                      ? gNextLesson.title
+                      : `${topicCode((gNextTopic ?? gTopic!).n)} · ${(gNextTopic ?? gTopic!).title}`}
+                  </span>
+                </span>
+                <ArrowRight size={18} strokeWidth={2.5} className="ms-auto shrink-0 text-secondary rtl-flip" />
+              </a>
+            )}
 
             {following && (
               <a

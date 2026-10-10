@@ -13,8 +13,9 @@
  *   E Toets jezelf     de can-do-lijst en een diagnose die concepten benoemt
  *
  * ── BLOK B IS PER ONDERDEEL IETS ANDERS, EN DAT IS DE HELE KEUZE ─────────────
- * Bij **Lezen** is blok B de grammatica: 28 lessen die `conceptsFor('lezen')` uit
- * `concepts-a2.mjs` leest, zodat het perfectum één keer in de database staat.
+ * Bij **Lezen** is blok B de grammatica: 37 lessen uit `rulesHomeConcepts()` in
+ * `concepts-a2.mjs`, zodat het perfectum één keer in de database staat (28 sinds september,
+ * b29–b37 sinds de syllabus van oktober 2026).
  *
  * Bij **Luisteren, Schrijven en Spreken wordt die grammatica niet opnieuw onderwezen**
  * (besluit van de eigenaar, 08-09). De 28 regels staan in blok B van Lezen en worden
@@ -57,7 +58,8 @@
  * huis gaan, en het woord hoort bij het onderwerp, niet bij de vorm.
  */
 
-import { conceptsFor, rulesHomeConcepts } from './concepts-a2.mjs';
+import { conceptsFor, rulesHomeConcepts, A2_GROUPS, A2_CONCEPTS } from './concepts-a2.mjs';
+import { B1_GROUPS, B1_CONCEPTS, b1RulesHomeConcepts } from './concepts-b1.mjs';
 
 /**
  * De thema's van blok A, per onderdeel. `words` is het streefaantal per thema.
@@ -385,6 +387,16 @@ function strategyOf(onderdeel, slug) {
  * heeft zijn eigen vormregel en een retry die de ene repareert breekt de andere.
  */
 export function coursePlan(level, onderdeel) {
+  if (level === 'b1') {
+    /* B1 heeft alleen het regelhuis (b1, lezen, B) — zie `B1_RULES_HOME_ONLY`. Woorden,
+       examenuitleg, training en toets van B1 zijn niet uitgewerkt en vallen buiten deze stap;
+       de andere drie B1-onderdelen hebben dus géén cursusopbouw en gooien, net als voorheen. */
+    if (onderdeel !== 'lezen') {
+      throw new Error(`B1 heeft alleen het regelhuis (b1:lezen, blok B); ${level}:${onderdeel} ` +
+        'vraagt zijn eigen conceptenbibliotheek en is niet uitgewerkt.');
+    }
+    return withOrder(B1_RULES_HOME());
+  }
   if (level !== 'a2') {
     throw new Error(`Alleen A2 is uitgewerkt; ${level} vraagt zijn eigen conceptenbibliotheek — ` +
       'B1 is niet A2 met zwaardere voorbeelden.');
@@ -431,11 +443,12 @@ function toetsBlock(first, second) {
 
 const COURSES = {
   /**
-   * A2 Lezen — 53 lessen, en de enige cursus met een grammaticablok.
+   * A2 Lezen — 62 lessen, en de enige cursus met een grammaticablok (37 regellessen).
    *
-   * Onveranderd: deze lessen staan geschreven in `generated/a2-lezen/` en gevalideerd in de
-   * database. Een gewijzigde slug of volgorde hier is een nieuwe les die naast de oude komt te
-   * staan, niet een aanpassing van de bestaande.
+   * Deze lessen staan geschreven in `generated/a2-lezen/` en gevalideerd in de database. Een
+   * gewijzigde slug of volgorde hier is een nieuwe les die naast de oude komt te staan, niet
+   * een aanpassing van de bestaande — daarom komt het nummer in `b<n>-` uit
+   * `RULES_HOME_ORDER`, waar nieuwe regels alleen achteraan bij mogen.
    */
   lezen: () => {
     /* Álle taalregels met een les, en niet alleen die van Lezen: dit blok is `RULES_HOME`,
@@ -731,6 +744,52 @@ const COURSES = {
  * conceptenbibliotheek nodig, en B1 Luisteren heeft nog geen inhoud en geen vastgesteld format.
  */
 export const BUILT = ['a2:lezen', 'a2:luisteren', 'a2:schrijven', 'a2:spreken'];
+
+/**
+ * Cursussen waarvan alleen het regelhuis (blok B) bestaat: geen woorden, geen examenuitleg,
+ * geen training, geen toets.
+ *
+ * Een aparte lijst en niet in `BUILT`, omdat `BUILT` "hele cursus" betekent:
+ * `tag-questions.mjs` tagt op `BUILT` examenvragen met A2-concepten, en `generate.mjs plan`
+ * toont het als cursus. Alleen `generate.mjs` en `seed.mjs` lezen `BUILDABLE`.
+ */
+export const B1_RULES_HOME_ONLY = ['b1:lezen'];
+
+/** Wat `generate.mjs` en `seed.mjs` mogen schrijven. */
+export const BUILDABLE = [...BUILT, ...B1_RULES_HOME_ONLY];
+
+/**
+ * De conceptenbibliotheek van een niveau: groepen en concepten. Eén plek, zodat de seeder en
+ * de generator nooit stil de A2-bibliotheek gebruiken voor een B1-run.
+ */
+export function conceptLibrary(level) {
+  if (level === 'a2') return { groups: A2_GROUPS, concepts: A2_CONCEPTS };
+  if (level === 'b1') return { groups: B1_GROUPS, concepts: B1_CONCEPTS };
+  throw new Error(`geen conceptenbibliotheek voor niveau "${level}"`);
+}
+
+/**
+ * De strategieconcepten van een cursus. Alleen A2 heeft ze: het B1-regelhuis heeft geen blok
+ * C, en de A2-strategieën op niveau b1 seeden zou concepten opleveren zonder les.
+ */
+export function strategyConcepts(level, onderdeel) {
+  return level === 'a2' ? (STRATEGY_CONCEPTS[onderdeel] ?? []) : [];
+}
+
+/**
+ * Het B1-regelhuis: blok B van (b1, lezen), 24 lessen, b1 … b24 in de volgorde van
+ * `B1_CONCEPTS` — gelijk aan de `B1`-constante in `data/grammar-syllabus.ts`.
+ */
+function B1_RULES_HOME() {
+  return [{
+    letter: 'B', name_nl: 'Grammatica',
+    intro: 'De grammatica die je nodig hebt voor het B1-examen. Elke les legt één onderwerp uit en laat je het meteen oefenen.',
+    lessons: b1RulesHomeConcepts().map((c, i) => ({
+      kind: 'grammatica', slug: `b${i + 1}-${c.slug}`, title: c.name_nl,
+      concept: c.slug, minutes: 12,
+    })),
+  }];
+}
 
 export function parseTarget(arg) {
   const [level, onderdeel] = String(arg).split(':');

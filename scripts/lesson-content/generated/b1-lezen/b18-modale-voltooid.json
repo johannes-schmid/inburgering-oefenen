@@ -1,0 +1,204 @@
+{
+  "items": [
+    {
+      "kind": "uitleg",
+      "tier": null,
+      "explanation": null,
+      "payload": {
+        "body_html": "<p>Bij <strong>kunnen, moeten, willen, mogen</strong> en <strong>hoeven</strong> gebruik je in de voltooide tijd géén voltooid deelwoord (het woord met ge-). Je zet het modale werkwoord in de infinitief, dus in de hele vorm: <em>heb kunnen komen</em>. Alleen als er geen ander werkwoord bij staat, mag <em>gekund</em> of <em>gemoeten</em> wel. In een formele brief zie je deze vorm vaak terug, bijvoorbeeld: <em>Wij hebben uw aanvraag niet kunnen behandelen.</em></p>",
+        "cards": [
+          {
+            "label": "ER STAAT EEN ANDER WERKWOORD BIJ",
+            "example_html": "Ik <mark>heb niet kunnen komen</mark>, want mijn trein was uitgevallen."
+          },
+          {
+            "label": "ER STAAT GEEN ANDER WERKWOORD BIJ",
+            "example_html": "Ik wilde naar de bijeenkomst, maar ik <mark>heb het niet gekund</mark>."
+          }
+        ]
+      }
+    },
+    {
+      "kind": "voorbeeld",
+      "tier": null,
+      "explanation": null,
+      "payload": {
+        "sentence_html": "<p>Omdat mijn dochter ziek was, <mark>heb ik vorige week niet kunnen werken</mark>.</p>"
+      }
+    },
+    {
+      "kind": "voorbeeld",
+      "tier": null,
+      "explanation": null,
+      "payload": {
+        "sentence_html": "<p>Ik <mark>had u eerder willen bellen</mark>, maar uw nummer stond niet in de brief.</p>"
+      }
+    },
+    {
+      "kind": "mcq",
+      "tier": 0,
+      "explanation": "Na <em>heb</em> komt het modale werkwoord in de hele vorm: kunnen. Een voltooid deelwoord als <em>gekund</em> kan hier niet, omdat er nog een werkwoord (afmaken) bij staat.",
+      "payload": {
+        "prompt": "<p>Welke zin is correct?</p>"
+      },
+      "options": [
+        {
+          "label": "A",
+          "body": "Ik heb de cursus niet gekund afmaken.",
+          "is_correct": false
+        },
+        {
+          "label": "B",
+          "body": "Ik heb de cursus niet kunnen afmaken.",
+          "is_correct": true
+        },
+        {
+          "label": "C",
+          "body": "Ik heb de cursus niet afgemaakt kunnen.",
+          "is_correct": false
+        }
+      ]
+    },
+    {
+      "kind": "mcq",
+      "tier": 0,
+      "explanation": "In zin B staat er geen tweede werkwoord bij <em>moeten</em>, dus daar is <em>gemoeten</em> juist. In de andere zinnen hoort de hele vorm <em>moeten</em>, want er staat nog een werkwoord bij.",
+      "payload": {
+        "prompt": "<p>In welke zin is het voltooid deelwoord (het woord met ge-) <strong>wel</strong> juist?</p>"
+      },
+      "options": [
+        {
+          "label": "A",
+          "body": "De bewoners hebben de huur per bank gemoeten betalen.",
+          "is_correct": false
+        },
+        {
+          "label": "B",
+          "body": "Ik wilde niet naar de keuring, maar het heeft gemoeten.",
+          "is_correct": true
+        },
+        {
+          "label": "C",
+          "body": "Wij hebben het formulier opnieuw gemoeten invullen.",
+          "is_correct": false
+        }
+      ]
+    },
+    {
+      "kind": "gap_choice",
+      "tier": 1,
+      "explanation": "Er staat nog een werkwoord bij (<em>reageren</em>), dus gebruik je de hele vorm <em>kunnen</em> en niet <em>gekund</em>.",
+      "payload": {
+        "sentence": "Geachte heer De Wit, wij hebben helaas niet eerder op uw klacht ___ reageren.",
+        "choices": [
+          "kunnen",
+          "gekund",
+          "konden"
+        ],
+        "answer": "kunnen"
+      }
+    },
+    {
+      "kind": "gap_choice",
+      "tier": 1,
+      "explanation": "Met <em>had … willen</em> zeg je dat iets niet gebeurd is: je wilde wel, maar het gebeurde niet. Na <em>had</em> komt de hele vorm <em>willen</em>.",
+      "payload": {
+        "sentence": "Ik ___ eerder willen doorgeven dat ik verhuisd ben, maar ik was het vergeten.",
+        "choices": [
+          "heb",
+          "had",
+          "ben"
+        ],
+        "answer": "had"
+      }
+    },
+    {
+      "kind": "gap_choice",
+      "tier": 1,
+      "explanation": "In een bijzin met <em>omdat</em> staan alle werkwoorden achteraan: <em>heb kunnen komen</em>. Het modale werkwoord blijft een hele vorm.",
+      "payload": {
+        "sentence": "Mijn leidinggevende weet dat ik maandag niet ___ komen.",
+        "choices": [
+          "heb kunnen",
+          "heb gekund",
+          "kunnen heb"
+        ],
+        "answer": "heb kunnen"
+      }
+    },
+    {
+      "kind": "matchen",
+      "tier": 1,
+      "explanation": "Staat er nog een werkwoord bij het modale werkwoord, dan gebruik je de hele vorm; staat het alleen, dan gebruik je het deelwoord met ge-.",
+      "payload": {
+        "instruction": "Zet elke zin bij de juiste regel: hele vorm of vorm met ge-.",
+        "pairs": [
+          {
+            "left": "Ik heb de hele dag ___ werken.",
+            "right": "moeten (hele vorm)"
+          },
+          {
+            "left": "Het was zwaar, maar het heeft ___.",
+            "right": "gemoeten (met ge-)"
+          },
+          {
+            "left": "Wij hebben u niet ___ bereiken.",
+            "right": "kunnen (hele vorm)"
+          },
+          {
+            "left": "Hij wilde het alleen doen en het heeft ___.",
+            "right": "gekund (met ge-)"
+          }
+        ]
+      }
+    },
+    {
+      "kind": "gap_type",
+      "tier": 2,
+      "explanation": "Na <em>hebben</em> komt het modale werkwoord in de hele vorm, dus <em>kunnen</em>; het hoofdwerkwoord <em>afgeven</em> staat erachter.",
+      "payload": {
+        "sentence": "De bewoners hebben hun formulier niet op tijd ___ afgeven, want het loket was dicht.",
+        "answer": "kunnen"
+      }
+    },
+    {
+      "kind": "woordorde",
+      "tier": 2,
+      "explanation": "In een bijzin met <em>omdat</em> gaan alle werkwoorden naar het eind: <em>heb kunnen komen</em>, met het modale werkwoord als hele vorm.",
+      "payload": {
+        "instruction": "Maak een correcte bijzin van deze woorden.",
+        "tokens": [
+          "komen",
+          "omdat",
+          "heb",
+          "niet",
+          "kunnen",
+          "ik"
+        ],
+        "answer": [
+          "omdat",
+          "ik",
+          "niet",
+          "heb",
+          "kunnen",
+          "komen"
+        ]
+      }
+    },
+    {
+      "kind": "open_zin",
+      "tier": 2,
+      "explanation": "Gebruik <em>had … willen</em> voor iets wat je wel wilde, maar wat niet gebeurd is; het modale werkwoord blijft een hele vorm.",
+      "payload": {
+        "prompt": "<p>Schrijf één zin aan de gemeente over een afspraak die je gemist hebt. Gebruik <strong>had … willen</strong> of <strong>heb … kunnen</strong>.</p>",
+        "model_answer": "Ik had graag willen komen, maar ik heb de afspraak van 12 maart niet kunnen halen omdat ik moest werken.",
+        "checklist": [
+          "Na had of heb staat het modale werkwoord in de hele vorm (willen, kunnen).",
+          "Er staat geen gewild of gekund in je zin als er nog een werkwoord bij staat.",
+          "Het hoofdwerkwoord staat achter het modale werkwoord."
+        ]
+      }
+    }
+  ],
+  "what_you_learn": "Je leert hoe je in de voltooide tijd over kunnen, moeten en willen praat: na heb of had blijft het modale werkwoord een hele vorm, zoals in \"Ik heb niet kunnen komen\". Je ziet ook wanneer gekund of gemoeten wél juist is, namelijk als er geen ander werkwoord bij staat. Daarnaast oefen je deze vorm in een bijzin met omdat en in een formele zin aan een instantie."
+}

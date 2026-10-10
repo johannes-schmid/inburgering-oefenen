@@ -1,0 +1,227 @@
+{
+  "items": [
+    {
+      "kind": "uitleg",
+      "tier": null,
+      "explanation": null,
+      "payload": {
+        "body_html": "<p>Signaalwoorden laten zien hoe een tekst in elkaar zit. Ze geven aan of er een <strong>opsomming</strong>, een <strong>gevolg</strong>, een <strong>tegenstelling</strong> of een <strong>conclusie</strong> komt. Als je deze woorden herkent, begrijp je sneller wat de schrijver bedoelt. Let op: na <em>daarom, daardoor, toch</em> en <em>bovendien</em> aan het begin van de zin komt eerst het werkwoord en daarna pas het onderwerp.</p>",
+        "cards": [
+          {
+            "label": "GEWONE VOLGORDE",
+            "example_html": "De huur stijgt, <mark>daarom schrijf ik</mark> een bezwaarbrief."
+          },
+          {
+            "label": "NA EEN SIGNAALWOORD",
+            "example_html": "<mark>Bovendien is</mark> de woning slecht onderhouden."
+          }
+        ]
+      }
+    },
+    {
+      "kind": "voorbeeld",
+      "tier": null,
+      "explanation": null,
+      "payload": {
+        "sentence_html": "De gemeente heeft het plan goedgekeurd. <mark>Daardoor begint</mark> het werk aan de brug al in maart."
+      }
+    },
+    {
+      "kind": "voorbeeld",
+      "tier": null,
+      "explanation": null,
+      "payload": {
+        "sentence_html": "Het werk is zwaar en de uren zijn lang. <mark>Kortom</mark>, deze baan past niet bij mij."
+      }
+    },
+    {
+      "kind": "mcq",
+      "tier": 0,
+      "explanation": "Het woord 'echter' geeft een tegenstelling aan: wat daarna komt, gaat in tegen de vorige zin.",
+      "payload": {
+        "prompt": "Lees: 'De cursus is gratis. Er zijn echter nog maar vijf plaatsen vrij.' Wat doet het woord <strong>echter</strong> hier?"
+      },
+      "options": [
+        {
+          "label": "A",
+          "body": "Het geeft een tegenstelling aan.",
+          "is_correct": true
+        },
+        {
+          "label": "B",
+          "body": "Het geeft een reden aan.",
+          "is_correct": false
+        },
+        {
+          "label": "C",
+          "body": "Het geeft een conclusie aan.",
+          "is_correct": false
+        },
+        {
+          "label": "D",
+          "body": "Het geeft een volgorde aan.",
+          "is_correct": false
+        }
+      ]
+    },
+    {
+      "kind": "mcq",
+      "tier": 0,
+      "explanation": "Na 'Daarom' aan het begin van de zin komt eerst het werkwoord ('moet') en daarna pas het onderwerp ('u').",
+      "payload": {
+        "prompt": "Welke zin heeft de juiste woordvolgorde?"
+      },
+      "options": [
+        {
+          "label": "A",
+          "body": "Daarom u moet het formulier voor 1 mei opsturen.",
+          "is_correct": false
+        },
+        {
+          "label": "B",
+          "body": "Daarom moet u het formulier voor 1 mei opsturen.",
+          "is_correct": true
+        },
+        {
+          "label": "C",
+          "body": "Daarom het formulier u moet voor 1 mei opsturen.",
+          "is_correct": false
+        }
+      ]
+    },
+    {
+      "kind": "matchen",
+      "tier": 1,
+      "explanation": "Elk signaalwoord hoort bij één functie in de tekst: opsomming, gevolg, tegenstelling of conclusie.",
+      "payload": {
+        "instruction": "Welk signaalwoord hoort bij welke functie? Maak de paren.",
+        "pairs": [
+          {
+            "left": "bovendien",
+            "right": "opsomming: er komt nog iets bij"
+          },
+          {
+            "left": "daardoor",
+            "right": "gevolg: dit is het resultaat"
+          },
+          {
+            "left": "echter",
+            "right": "tegenstelling: het gaat juist anders"
+          },
+          {
+            "left": "kortom",
+            "right": "conclusie: de hele tekst samengevat"
+          },
+          {
+            "left": "ten eerste",
+            "right": "volgorde: het eerste punt"
+          }
+        ]
+      }
+    },
+    {
+      "kind": "gap_choice",
+      "tier": 1,
+      "explanation": "De tweede zin is het gevolg van de eerste: de trein rijdt niet, dus komt hij te laat. 'Daardoor' geeft een gevolg aan.",
+      "payload": {
+        "sentence": "Er lag een boom op het spoor. ___ reed er een uur lang geen trein naar Zwolle.",
+        "choices": [
+          "Daardoor",
+          "Bovendien",
+          "Echter"
+        ],
+        "answer": "Daardoor"
+      }
+    },
+    {
+      "kind": "gap_choice",
+      "tier": 1,
+      "explanation": "Na de eerste klacht komt er nog een tweede klacht bij. 'Bovendien' voegt iets toe aan wat er al staat.",
+      "payload": {
+        "sentence": "De verwarming doet het al drie weken niet. ___ lekt de kraan in de keuken.",
+        "choices": [
+          "Kortom",
+          "Bovendien",
+          "Daarom"
+        ],
+        "answer": "Bovendien"
+      }
+    },
+    {
+      "kind": "gap_choice",
+      "tier": 1,
+      "explanation": "De tweede zin gaat in tegen de verwachting uit de eerste zin. 'Toch' geeft die tegenstelling aan.",
+      "payload": {
+        "sentence": "Ik had het formulier op tijd ingeleverd. ___ kreeg ik een brief dat mijn aanvraag te laat was.",
+        "choices": [
+          "Toch",
+          "Daarom",
+          "Daarna"
+        ],
+        "answer": "Toch"
+      }
+    },
+    {
+      "kind": "gap_choice",
+      "tier": 1,
+      "explanation": "Na alle argumenten volgt de samenvatting van het hele verhaal. 'Kortom' leidt een conclusie in.",
+      "payload": {
+        "sentence": "De zaal is te klein, de huur is te hoog en er is geen parkeerplaats. ___, wij zoeken een andere locatie.",
+        "choices": [
+          "Echter",
+          "Kortom",
+          "Ten eerste"
+        ],
+        "answer": "Kortom"
+      }
+    },
+    {
+      "kind": "gap_type",
+      "tier": 2,
+      "explanation": "De tweede zin noemt het gevolg van de eerste. Je schrijft 'Daarom' en zet daarna eerst het werkwoord, dan het onderwerp.",
+      "payload": {
+        "sentence": "Mijn inkomen is dit jaar gedaald. ___ vraag ik u de huurverhoging nog eens te bekijken.",
+        "answer": "Daarom"
+      }
+    },
+    {
+      "kind": "woordorde",
+      "tier": 2,
+      "explanation": "Na 'Bovendien' aan het begin komt eerst het werkwoord 'zijn' en daarna het onderwerp 'de kosten'.",
+      "payload": {
+        "instruction": "Zet de woorden in de juiste volgorde. Begin met 'Bovendien'.",
+        "tokens": [
+          "de",
+          "Bovendien",
+          "gestegen",
+          "kosten",
+          "zijn",
+          "flink"
+        ],
+        "answer": [
+          "Bovendien",
+          "zijn",
+          "de",
+          "kosten",
+          "flink",
+          "gestegen"
+        ]
+      }
+    },
+    {
+      "kind": "open_zin",
+      "tier": 2,
+      "explanation": "Je bouwt een argument op: eerst een punt, dan een extra punt, dan een tegenstelling en tot slot een conclusie.",
+      "payload": {
+        "prompt": "Je schrijft een korte reactie aan het bestuur van je sportvereniging over de nieuwe openingstijden. Gebruik in drie of vier zinnen de woorden <strong>ten eerste</strong>, <strong>bovendien</strong>, <strong>echter</strong> en <strong>kortom</strong>.",
+        "model_answer": "Ten eerste sluit de zaal nu al om negen uur, terwijl veel leden pas na hun werk komen. Bovendien is er op zaterdag geen begeleiding meer aanwezig. Ik begrijp dat u op de kosten moet letten; echter, op deze manier haken veel leden af. Kortom, ik verzoek u de openingstijden opnieuw te bekijken.",
+        "checklist": [
+          "Alle vier de signaalwoorden staan in je tekst.",
+          "Na 'bovendien' en 'echter' aan het begin van de zin staat eerst het werkwoord.",
+          "Je laatste zin is echt een conclusie en geen nieuw argument."
+        ]
+      }
+    }
+  ],
+  "what_you_learn": "Je leert signaalwoorden herkennen die laten zien hoe een tekst is opgebouwd: opsomming (ten eerste, daarna, bovendien), gevolg (daarom, daardoor), tegenstelling (echter, toch, maar) en conclusie (kortom). Je ziet daardoor sneller waar een brief of nieuwsbericht naartoe werkt. Ook oefen je de woordvolgorde: na daarom, daardoor, toch en bovendien aan het begin van de zin komt eerst het werkwoord en dan pas het onderwerp."
+}

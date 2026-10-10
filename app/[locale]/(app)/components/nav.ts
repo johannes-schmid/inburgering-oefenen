@@ -271,3 +271,77 @@ export function wordsPanel(
     }],
   };
 }
+
+// ---------------------------------------------------------------------------
+// De tweede kolom binnen stap 2, de grammatica
+// ---------------------------------------------------------------------------
+
+/**
+ * Stap 2 als lespaneel: de onderwerpen van de grammaticasyllabus, en de extra reeks eronder.
+ *
+ * Vervangt sinds oktober 2026 het taalregelspoor in `spoorPanel`: een les die in een onderwerp
+ * staat toont in de kolom ernaast de onderwerpen — "B3 · Vragen bij een brief" — en niet meer
+ * de conceptgroepen. Een rij wijst naar het onderwerpscherm, want dáár staat de les met zijn
+ * video, voorbeelden en oefeningen; de lespagina is de les op zichzelf.
+ */
+export function grammarPanel(
+  step: {
+    topics: { n: number; title: string; done: boolean; lessons: { id: number | null }[] }[];
+    extras: { title: string; lessons: { id: number | null; slug: string; title: string | null; done: boolean; is_free: boolean }[] } | null;
+    done: number;
+    total: number;
+  },
+  opts: {
+    title: string;
+    sectionLabel: string;
+    backHref: string;
+    backLabel: string;
+    topicHref: (n: number) => string;
+    lessonHref: (slug: string) => string;
+    lockedHref: (what: string) => string;
+    currentLessonId: number;
+    owned: boolean;
+  },
+): LearnPanelData {
+  const currentTopic = step.topics.find(t => t.lessons.some(l => l.id === opts.currentLessonId))?.n ?? null;
+  const extras = (step.extras?.lessons ?? []).filter(l => l.id !== null);
+  return {
+    title: opts.title,
+    backHref: opts.backHref,
+    backLabel: opts.backLabel,
+    sections: [
+      {
+        id: 'grammatica',
+        label: opts.sectionLabel,
+        icon: 'regel',
+        letter: null,
+        done: step.done,
+        total: step.total,
+        items: step.topics.map(t => ({
+          href: opts.owned || t.n === 1 ? opts.topicHref(t.n) : opts.lockedHref(`grammatica-${t.n}`),
+          label: `B${t.n} · ${t.title}`,
+          done: t.done,
+          current: t.n === currentTopic,
+          locked: !opts.owned && t.n !== 1,
+        })),
+      },
+      ...(step.extras && extras.length > 0
+        ? [{
+            id: 'grammatica-extra',
+            label: step.extras.title,
+            icon: 'klank' as const,
+            letter: null,
+            done: extras.filter(l => l.done).length,
+            total: extras.length,
+            items: extras.map(l => ({
+              href: opts.owned || l.is_free ? opts.lessonHref(l.slug) : opts.lockedHref(`leren-${l.slug}`),
+              label: l.title ?? l.slug,
+              done: l.done,
+              current: l.id === opts.currentLessonId,
+              locked: !opts.owned && !l.is_free,
+            })),
+          }]
+        : []),
+    ],
+  };
+}

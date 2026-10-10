@@ -1,0 +1,213 @@
+{
+  "items": [
+    {
+      "kind": "uitleg",
+      "tier": null,
+      "explanation": null,
+      "payload": {
+        "body_html": "<p>Met <strong>zullen</strong> beloof je iets of spreek je een verwachting uit, vaak over iets wat je nog niet zeker weet. Met <strong>gaan + infinitief</strong> zeg je wat je van plan bent of wat al geregeld is. Voor een voorstel gebruik je <strong>zullen we …?</strong> aan het begin van de zin. En als er al een tijdwoord in de zin staat, zoals <em>morgen</em> of <em>volgende week</em>, mag je gewoon de tegenwoordige tijd gebruiken.</p>",
+        "cards": [
+          {
+            "label": "ZULLEN: BELOFTE OF VERWACHTING",
+            "example_html": "Ik <mark>zal</mark> uw klacht morgen doorsturen. Het <mark>zal</mark> wel meevallen."
+          },
+          {
+            "label": "GAAN: EEN PLAN",
+            "example_html": "Wij <mark>gaan</mark> volgend jaar <mark>verhuizen</mark> naar Almere."
+          },
+          {
+            "label": "VOORSTEL OF TIJDWOORD",
+            "example_html": "<mark>Zullen we</mark> het gesprek verzetten? <mark>Morgen bel ik</mark> de gemeente."
+          }
+        ]
+      }
+    },
+    {
+      "kind": "voorbeeld",
+      "tier": null,
+      "explanation": null,
+      "payload": {
+        "sentence_html": "<p>In de brief van de woningstichting staat: <mark>Wij zullen uw verzoek binnen drie weken beantwoorden</mark>.</p>"
+      }
+    },
+    {
+      "kind": "voorbeeld",
+      "tier": null,
+      "explanation": null,
+      "payload": {
+        "sentence_html": "<p>Mijn collega vertelde dat hij <mark>in september gaat solliciteren</mark> bij een ander bedrijf.</p>"
+      }
+    },
+    {
+      "kind": "mcq",
+      "tier": 0,
+      "explanation": "De spreker belooft iets wat hij zeker doet; dat is de betekenis van 'zullen' in deze zin. Het is geen plan dat al vastligt en geen voorstel.",
+      "options": [
+        {
+          "label": "A",
+          "body": "Een belofte",
+          "is_correct": true
+        },
+        {
+          "label": "B",
+          "body": "Een voorstel aan iemand anders",
+          "is_correct": false
+        },
+        {
+          "label": "C",
+          "body": "Een plan dat al geregeld is",
+          "is_correct": false
+        }
+      ],
+      "payload": {
+        "prompt": "Lees deze regel uit een zakelijke mail: \"Ik zal het contract vandaag nog naar u opsturen.\" Wat doet de schrijver hier?"
+      }
+    },
+    {
+      "kind": "mcq",
+      "tier": 0,
+      "explanation": "Met 'zal wel' zeg je dat je iets verwacht, maar niet zeker weet. 'Wel' maakt de verwachting zachter.",
+      "options": [
+        {
+          "label": "A",
+          "body": "Hij weet zeker dat de bus om acht uur vertrekt.",
+          "is_correct": false
+        },
+        {
+          "label": "B",
+          "body": "Hij verwacht dat het niet zo erg is, maar weet het niet zeker.",
+          "is_correct": true
+        },
+        {
+          "label": "C",
+          "body": "Hij stelt voor om samen te wachten.",
+          "is_correct": false
+        },
+        {
+          "label": "D",
+          "body": "Hij belooft dat hij de vertraging oplost.",
+          "is_correct": false
+        }
+      ],
+      "payload": {
+        "prompt": "Op het station zegt een reiziger: \"Die vertraging zal wel meevallen.\" Wat bedoelt hij?"
+      }
+    },
+    {
+      "kind": "gap_choice",
+      "tier": 1,
+      "explanation": "Het gaat om een plan dat al vastligt, dus gebruik je 'gaat' met een infinitief: 'gaat verhuizen'.",
+      "payload": {
+        "sentence": "Mijn buurvrouw heeft het huurcontract al ondertekend; ze ___ in maart verhuizen.",
+        "choices": [
+          "gaat",
+          "zal wel",
+          "zullen we"
+        ],
+        "answer": "gaat"
+      }
+    },
+    {
+      "kind": "gap_choice",
+      "tier": 1,
+      "explanation": "De gemeente belooft hier iets aan de lezer, en dat doe je in een formele brief met 'zullen'.",
+      "payload": {
+        "sentence": "De gemeente schrijft: \"Wij ___ u binnen tien werkdagen schriftelijk informeren.\"",
+        "choices": [
+          "zullen",
+          "gaan te",
+          "zouden wel"
+        ],
+        "answer": "zullen"
+      }
+    },
+    {
+      "kind": "gap_choice",
+      "tier": 1,
+      "explanation": "Een voorstel begint met 'Zullen we' en de persoonsvorm vooraan. 'Gaan we' klinkt als een vraag over een bestaand plan, niet als een uitnodiging.",
+      "payload": {
+        "sentence": "___ de vergadering een uur later beginnen, zodat iedereen er kan zijn?",
+        "choices": [
+          "Zullen we",
+          "Gaan we",
+          "Wij zullen"
+        ],
+        "answer": "Zullen we"
+      }
+    },
+    {
+      "kind": "matchen",
+      "tier": 1,
+      "explanation": "Je kijkt naar de functie van de zin: een belofte en een verwachting horen bij 'zullen', een vastgelegd plan bij 'gaan', en een voorstel bij 'zullen we'.",
+      "payload": {
+        "instruction": "Zet elke zin bij de juiste functie.",
+        "pairs": [
+          {
+            "left": "Ik zal het probleem morgen met mijn leidinggevende bespreken.",
+            "right": "belofte"
+          },
+          {
+            "left": "Het zal wel druk zijn bij de huisarts op maandag.",
+            "right": "verwachting"
+          },
+          {
+            "left": "Wij gaan in juni een nieuwe keuken laten plaatsen.",
+            "right": "plan"
+          },
+          {
+            "left": "Zullen we de klacht samen op papier zetten?",
+            "right": "voorstel"
+          }
+        ]
+      }
+    },
+    {
+      "kind": "gap_type",
+      "tier": 2,
+      "explanation": "Er staat al een tijdwoord in de zin ('morgen'), dus je kunt gewoon de tegenwoordige tijd gebruiken: 'bel ik'. Na 'morgen' komt eerst de persoonsvorm.",
+      "payload": {
+        "sentence": "Morgen ___ ik de klantenservice over de rekening van 85 euro.",
+        "answer": "bel"
+      }
+    },
+    {
+      "kind": "woordorde",
+      "tier": 2,
+      "explanation": "Een voorstel begint met 'Zullen we'; daarna komen de rest van de zin en achteraan de infinitief 'invullen'.",
+      "payload": {
+        "instruction": "Maak een voorstel van deze woorden.",
+        "tokens": [
+          "invullen",
+          "we",
+          "samen",
+          "het",
+          "zullen",
+          "formulier"
+        ],
+        "answer": [
+          "zullen",
+          "we",
+          "het",
+          "formulier",
+          "samen",
+          "invullen"
+        ]
+      }
+    },
+    {
+      "kind": "open_zin",
+      "tier": 2,
+      "explanation": "In je antwoord beloof je iets met 'zullen' en noem je daarnaast een plan met 'gaan + infinitief'. Zo laat je het verschil tussen de twee vormen zien.",
+      "payload": {
+        "prompt": "Je hebt een brief gekregen over een achterstand bij je energieleverancier. Schrijf twee zinnen terug: één belofte met 'zullen' en één plan met 'gaan'.",
+        "model_answer": "Ik zal het openstaande bedrag van 120 euro voor 1 maart overmaken. Daarnaast ga ik volgende week een afspraak maken om een betalingsregeling te bespreken.",
+        "checklist": [
+          "In de eerste zin staat 'zal' of 'zullen' met een belofte.",
+          "In de tweede zin staat 'ga' of 'gaan' met een infinitief achteraan.",
+          "Beide zinnen hebben een werkwoord op de juiste plaats."
+        ]
+      }
+    }
+  ],
+  "what_you_learn": "Na deze les weet je wanneer je 'zullen' gebruikt en wanneer 'gaan'. Je herkent in een brief of gesprek of iemand iets belooft, iets verwacht, een plan noemt of een voorstel doet. Je kunt zelf zinnen maken met 'zullen', met 'gaan + infinitief' en met een tijdwoord in de tegenwoordige tijd."
+}

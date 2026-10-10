@@ -1,0 +1,206 @@
+{
+  "items": [
+    {
+      "kind": "uitleg",
+      "tier": null,
+      "explanation": null,
+      "payload": {
+        "body_html": "<p>Als je je mening geeft, kun je twee soorten zinnen gebruiken. Bij <strong>Ik vind dat…</strong>, <strong>Ik denk dat…</strong> en <strong>omdat</strong> begint een bijzin: het werkwoord gaat helemaal naar achteren. Bij <strong>Volgens mij…</strong>, <strong>Daarom…</strong> en andere woorden vooraan komt het werkwoord meteen daarna, vóór het onderwerp. Dat heet omdraaien (inversie).</p><p>Met <strong>want</strong> verandert de volgorde niet: daarna komt een gewone hoofdzin.</p>",
+        "cards": [
+          {
+            "label": "WERKWOORD ACHTERAAN (na dat / omdat)",
+            "example_html": "Ik vind dat de gemeente te laat <mark>reageert</mark>."
+          },
+          {
+            "label": "OMDRAAIEN (na volgens mij / daarom)",
+            "example_html": "Volgens mij <mark>is</mark> de brief niet duidelijk."
+          }
+        ]
+      }
+    },
+    {
+      "kind": "voorbeeld",
+      "tier": null,
+      "explanation": null,
+      "payload": {
+        "sentence_html": "Ik ben het niet met u eens, <mark>omdat de regels op de website anders staan</mark>."
+      }
+    },
+    {
+      "kind": "voorbeeld",
+      "tier": null,
+      "explanation": null,
+      "payload": {
+        "sentence_html": "De huur stijgt elk jaar; <mark>daarom vind ik</mark> dat de verhuurder beter moet onderhouden."
+      }
+    },
+    {
+      "kind": "mcq",
+      "tier": 0,
+      "explanation": "Na <em>volgens mij</em> draai je om: eerst het werkwoord, dan het onderwerp. Daarom is <em>Volgens mij is deze regel oneerlijk</em> juist.",
+      "options": [
+        {
+          "label": "A",
+          "body": "Volgens mij deze regel is oneerlijk.",
+          "is_correct": false
+        },
+        {
+          "label": "B",
+          "body": "Volgens mij is deze regel oneerlijk.",
+          "is_correct": true
+        },
+        {
+          "label": "C",
+          "body": "Volgens mij deze regel oneerlijk is.",
+          "is_correct": false
+        }
+      ],
+      "payload": {
+        "prompt": "In welke zin staat het werkwoord op de juiste plaats?"
+      }
+    },
+    {
+      "kind": "mcq",
+      "tier": 0,
+      "explanation": "Na <em>dat</em> begint een bijzin en gaat het werkwoord naar het eind: <em>…dat de brief te moeilijk is</em>.",
+      "options": [
+        {
+          "label": "A",
+          "body": "Ik denk dat de brief is te moeilijk.",
+          "is_correct": false
+        },
+        {
+          "label": "B",
+          "body": "Ik denk dat is de brief te moeilijk.",
+          "is_correct": false
+        },
+        {
+          "label": "C",
+          "body": "Ik denk dat de brief te moeilijk is.",
+          "is_correct": true
+        }
+      ],
+      "payload": {
+        "prompt": "Welke zin is correct geschreven in een klachtbrief?"
+      }
+    },
+    {
+      "kind": "gap_choice",
+      "tier": 1,
+      "explanation": "Na een komma volgt hier een hele zin met een onderwerp en een persoonsvorm, dus gebruik je <em>want</em>. Na <em>omdat</em> zou het werkwoord achteraan moeten staan.",
+      "payload": {
+        "sentence": "Ik ben het niet met het voorstel eens, ___ de kosten worden te hoog voor de huurders.",
+        "choices": [
+          "omdat",
+          "want",
+          "daarom"
+        ],
+        "answer": "want"
+      }
+    },
+    {
+      "kind": "gap_choice",
+      "tier": 1,
+      "explanation": "<em>Omdat</em> stuurt het werkwoord naar achteren: <em>…omdat ik geen antwoord heb gekregen</em>. Met <em>want</em> zou de volgorde anders zijn.",
+      "payload": {
+        "sentence": "Ik dien een klacht in, ___ ik geen antwoord heb gekregen.",
+        "choices": [
+          "want",
+          "omdat",
+          "daarom"
+        ],
+        "answer": "omdat"
+      }
+    },
+    {
+      "kind": "gap_choice",
+      "tier": 1,
+      "explanation": "Na <em>daarom</em> komt eerst het werkwoord en dan het onderwerp: <em>Daarom vind ik…</em>.",
+      "payload": {
+        "sentence": "De bus rijdt maar twee keer per uur. ___ dat de gemeente moet ingrijpen.",
+        "choices": [
+          "Daarom ik vind",
+          "Daarom vind ik",
+          "Daarom ik vind dat"
+        ],
+        "answer": "Daarom vind ik"
+      }
+    },
+    {
+      "kind": "matchen",
+      "tier": 1,
+      "explanation": "Je kiest per situatie de passende reactie: eens, oneens of deels eens. Let op de vaste woorden in elke uitdrukking.",
+      "payload": {
+        "instruction": "Koppel de reactie aan de betekenis.",
+        "pairs": [
+          {
+            "left": "Daar ben ik het helemaal mee eens.",
+            "right": "Je bent het volledig eens met de ander."
+          },
+          {
+            "left": "Dat klopt, maar ik zie ook een nadeel.",
+            "right": "Je bent het deels eens."
+          },
+          {
+            "left": "Ik ben het niet met je eens.",
+            "right": "Je bent het oneens met de ander."
+          },
+          {
+            "left": "Volgens mij ligt dat anders.",
+            "right": "Je geeft voorzichtig een andere mening."
+          }
+        ]
+      }
+    },
+    {
+      "kind": "gap_type",
+      "tier": 2,
+      "explanation": "Na <em>dat</em> staat het werkwoord achteraan, dus de persoonsvorm <em>moet</em> komt na <em>eerlijker</em>.",
+      "payload": {
+        "sentence": "Ik vind dat de werkgever de roosters eerlijker ___ verdelen.",
+        "answer": "moet"
+      }
+    },
+    {
+      "kind": "woordorde",
+      "tier": 2,
+      "explanation": "Na <em>omdat</em> gaat het werkwoord naar het eind: <em>…omdat de uitleg in de brief ontbreekt</em>.",
+      "payload": {
+        "instruction": "Maak een correcte zin met een reden.",
+        "tokens": [
+          "ontbreekt",
+          "omdat",
+          "de",
+          "in",
+          "uitleg",
+          "brief",
+          "de"
+        ],
+        "answer": [
+          "omdat",
+          "de",
+          "uitleg",
+          "in",
+          "de",
+          "brief",
+          "ontbreekt"
+        ]
+      }
+    },
+    {
+      "kind": "open_zin",
+      "tier": 2,
+      "explanation": "Je geeft eerst je mening met <em>Ik vind dat…</em> (werkwoord achteraan) en daarna een reden met <em>omdat</em> of <em>want</em>.",
+      "payload": {
+        "prompt": "Een collega zegt: 'Iedereen moet voortaan op zaterdag werken.' Reageer in twee zinnen: geef je mening en een reden.",
+        "model_answer": "Ik ben het daar niet mee eens, want veel collega's hebben in het weekend zorgtaken. Ik vind dat we de zaterdagen eerlijk moeten verdelen.",
+        "checklist": [
+          "Je gebruikt een reactie, zoals 'Ik ben het (niet) mee eens' of 'Dat klopt, maar…'.",
+          "Je geeft een reden met 'omdat', 'want' of 'daarom'.",
+          "Na 'dat' en 'omdat' staat het werkwoord achteraan; na 'daarom' draai je om."
+        ]
+      }
+    }
+  ],
+  "what_you_learn": "Je leert hoe je in een gesprek of brief duidelijk zegt wat je vindt, met Ik vind dat…, Volgens mij… en Ik denk dat…. Je leert reageren op de mening van een ander en je mening onderbouwen met omdat, want en daarom. Ook let je op de woordvolgorde: het werkwoord achteraan na dat en omdat, en omdraaien na volgens mij en daarom."
+}

@@ -1,0 +1,294 @@
+{
+  "items": [
+    {
+      "kind": "uitleg",
+      "tier": null,
+      "explanation": null,
+      "payload": {
+        "body_html": "<p>Woorden als <strong>hoewel, zodat, doordat, nadat, voordat</strong> en <strong>tenzij</strong> beginnen een bijzin. In een bijzin staan de werkwoorden <strong>achteraan</strong>. Elk woord geeft een ander verband: een tegenstelling, een gevolg, een oorzaak, een tijdsvolgorde of een voorwaarde. Als de bijzin vooraan staat, draaien het onderwerp en het werkwoord in de hoofdzin om.</p>",
+        "cards": [
+          {
+            "label": "WERKWOORD ACHTERAAN",
+            "example_html": "De gemeente stuurt een brief, <mark>zodat u op tijd kunt reageren</mark>."
+          },
+          {
+            "label": "BIJZIN VOORAAN",
+            "example_html": "<mark>Hoewel hij ziek was, ging</mark> hij toch naar zijn werk."
+          }
+        ]
+      }
+    },
+    {
+      "kind": "uitleg",
+      "tier": null,
+      "explanation": null,
+      "payload": {
+        "body_html": "<p><strong>Hoewel</strong> geeft een tegenstelling: er gebeurt iets anders dan je verwacht. <strong>Zodat</strong> geeft een gevolg of een doel. <strong>Doordat</strong> geeft een oorzaak zonder schuld of reden: er is iets gebeurd waardoor iets anders volgt. <strong>Omdat</strong> geeft een reden of verklaring, en kan antwoord geven op de vraag <em>waarom</em>.</p><p>Let op: na <em>doordat</em> en <em>omdat</em> volgt de oorzaak, na <em>zodat</em> volgt het gevolg.</p>",
+        "cards": [
+          {
+            "label": "OORZAAK (doordat)",
+            "example_html": "<mark>Doordat de trein uitviel</mark>, kwam ik te laat op het werk."
+          },
+          {
+            "label": "REDEN (omdat)",
+            "example_html": "Ik kom niet naar de bijeenkomst, <mark>omdat ik geen oppas heb</mark>."
+          },
+          {
+            "label": "GEVOLG (zodat)",
+            "example_html": "Ik vertrek een uur eerder, <mark>zodat ik rustig kan reizen</mark>."
+          }
+        ]
+      }
+    },
+    {
+      "kind": "uitleg",
+      "tier": null,
+      "explanation": null,
+      "payload": {
+        "body_html": "<p><strong>Nadat</strong> en <strong>voordat</strong> geven de volgorde in de tijd aan. Na <em>nadat</em> gebruik je meestal een voltooide tijd (het werkwoord met <em>ge-</em> plus <em>heb</em> of <em>ben</em>). <strong>Tenzij</strong> geeft een voorwaarde: het geldt alleen níet als er iets anders gebeurt. Je kunt <em>tenzij</em> vervangen door <em>behalve als</em>.</p>",
+        "cards": [
+          {
+            "label": "TIJD",
+            "example_html": "Ik bel u <mark>nadat ik de brief heb gelezen</mark>."
+          },
+          {
+            "label": "TIJD",
+            "example_html": "<mark>Voordat u het formulier opstuurt</mark>, zet u uw handtekening eronder."
+          },
+          {
+            "label": "VOORWAARDE",
+            "example_html": "De markt gaat gewoon door, <mark>tenzij het hard regent</mark>."
+          }
+        ]
+      }
+    },
+    {
+      "kind": "voorbeeld",
+      "tier": null,
+      "explanation": null,
+      "payload": {
+        "sentence_html": "<p>Uw aanvraag is afgewezen, <mark>doordat een belangrijk document ontbrak</mark>.</p>"
+      }
+    },
+    {
+      "kind": "voorbeeld",
+      "tier": null,
+      "explanation": null,
+      "payload": {
+        "sentence_html": "<p><mark>Hoewel de wachttijd lang was</mark>, bleef de klant vriendelijk aan de balie.</p>"
+      }
+    },
+    {
+      "kind": "mcq",
+      "tier": 0,
+      "explanation": "Na <em>hoewel</em> begint een bijzin, dus het werkwoord <em>is</em> staat helemaal achteraan.",
+      "options": [
+        {
+          "label": "A",
+          "body": "Hoewel de huur hoog is, blijft zij in de woning.",
+          "is_correct": true
+        },
+        {
+          "label": "B",
+          "body": "Hoewel de huur is hoog, blijft zij in de woning.",
+          "is_correct": false
+        },
+        {
+          "label": "C",
+          "body": "Hoewel is de huur hoog, blijft zij in de woning.",
+          "is_correct": false
+        }
+      ],
+      "payload": {
+        "prompt": "Welke zin is goed?"
+      }
+    },
+    {
+      "kind": "mcq",
+      "tier": 0,
+      "explanation": "De bijzin met <em>nadat</em> staat vooraan, dus in de hoofdzin komt eerst het werkwoord <em>ontvangt</em> en daarna het onderwerp <em>u</em>.",
+      "options": [
+        {
+          "label": "A",
+          "body": "Nadat wij uw brief hebben gelezen, u ontvangt een reactie.",
+          "is_correct": false
+        },
+        {
+          "label": "B",
+          "body": "Nadat wij uw brief hebben gelezen, ontvangt u een reactie.",
+          "is_correct": true
+        },
+        {
+          "label": "C",
+          "body": "Nadat wij hebben uw brief gelezen, ontvangt u een reactie.",
+          "is_correct": false
+        }
+      ],
+      "payload": {
+        "prompt": "In welke zin staat alles op de juiste plaats?"
+      }
+    },
+    {
+      "kind": "gap_choice",
+      "tier": 1,
+      "explanation": "Het tweede deel is het gevolg van het eerste deel: daarom gebruik je <em>zodat</em>.",
+      "payload": {
+        "sentence": "De gemeente verstuurt de uitnodiging twee weken van tevoren, ___ iedereen zich op tijd kan aanmelden.",
+        "choices": [
+          "zodat",
+          "doordat",
+          "hoewel"
+        ],
+        "answer": "zodat"
+      }
+    },
+    {
+      "kind": "gap_choice",
+      "tier": 1,
+      "explanation": "Er is sprake van een tegenstelling: je verwacht dat hij blijft zitten, maar hij werkt door. Dan gebruik je <em>hoewel</em>.",
+      "payload": {
+        "sentence": "___ hij al twee dagen koorts had, werkte hij gewoon door.",
+        "choices": [
+          "Hoewel",
+          "Zodat",
+          "Voordat"
+        ],
+        "answer": "Hoewel"
+      }
+    },
+    {
+      "kind": "gap_choice",
+      "tier": 1,
+      "explanation": "Hier noem je een oorzaak die vanzelf gebeurt, zonder reden of schuld. Bij zo'n oorzaak past <em>doordat</em> beter dan <em>omdat</em>.",
+      "payload": {
+        "sentence": "___ de computers in het stadskantoor uitvielen, konden wij niemand helpen.",
+        "choices": [
+          "Doordat",
+          "Zodat",
+          "Tenzij"
+        ],
+        "answer": "Doordat"
+      }
+    },
+    {
+      "kind": "gap_choice",
+      "tier": 1,
+      "explanation": "De les gaat alleen door als het níet regent. <em>Tenzij</em> betekent hier 'behalve als'.",
+      "payload": {
+        "sentence": "De buitenles begint om half tien, ___ het hard regent.",
+        "choices": [
+          "tenzij",
+          "nadat",
+          "zodat"
+        ],
+        "answer": "tenzij"
+      }
+    },
+    {
+      "kind": "matchen",
+      "tier": 1,
+      "explanation": "Elk verbindingswoord hoort bij één verband: tegenstelling, gevolg, oorzaak, voorwaarde of tijd.",
+      "payload": {
+        "instruction": "Welk verband hoort bij welk woord?",
+        "pairs": [
+          {
+            "left": "hoewel",
+            "right": "tegenstelling"
+          },
+          {
+            "left": "zodat",
+            "right": "gevolg of doel"
+          },
+          {
+            "left": "doordat",
+            "right": "oorzaak"
+          },
+          {
+            "left": "tenzij",
+            "right": "voorwaarde"
+          },
+          {
+            "left": "voordat",
+            "right": "eerder in de tijd"
+          }
+        ]
+      }
+    },
+    {
+      "kind": "gap_type",
+      "tier": 2,
+      "explanation": "Je leest eerst de brief en belt daarna. Het bellen gebeurt ná het lezen, dus gebruik je <em>nadat</em>.",
+      "payload": {
+        "sentence": "Ik bel u ___ ik uw brief rustig heb gelezen.",
+        "answer": "nadat"
+      }
+    },
+    {
+      "kind": "woordorde",
+      "tier": 2,
+      "explanation": "Na <em>voordat</em> staan de werkwoorden achteraan: <em>ondertekent</em> sluit de bijzin af.",
+      "payload": {
+        "instruction": "Maak een goede bijzin van deze woorden.",
+        "tokens": [
+          "ondertekent",
+          "het",
+          "voordat",
+          "u",
+          "contract"
+        ],
+        "answer": [
+          "voordat",
+          "u",
+          "het",
+          "contract",
+          "ondertekent"
+        ]
+      }
+    },
+    {
+      "kind": "woordorde",
+      "tier": 2,
+      "explanation": "De bijzin met <em>hoewel</em> staat vooraan, dus daarna komt eerst het werkwoord <em>stuurde</em> en pas dan het onderwerp <em>hij</em>.",
+      "payload": {
+        "instruction": "Zet de woorden in de juiste volgorde.",
+        "tokens": [
+          "was",
+          "hoewel",
+          "stuurde",
+          "hij",
+          "klacht",
+          "boos",
+          "een",
+          "rustige",
+          "hij"
+        ],
+        "answer": [
+          "hoewel",
+          "hij",
+          "boos",
+          "was",
+          "stuurde",
+          "hij",
+          "een",
+          "rustige",
+          "klacht"
+        ]
+      }
+    },
+    {
+      "kind": "open_zin",
+      "tier": 2,
+      "explanation": "Je oefent met <em>doordat</em> voor een oorzaak en met het werkwoord achteraan in de bijzin.",
+      "payload": {
+        "prompt": "Schrijf één zin over een keer dat je te laat kwam. Gebruik <strong>doordat</strong> en zet het werkwoord achteraan.",
+        "model_answer": "Doordat de bus twintig minuten vertraging had, kwam ik te laat op mijn afspraak.",
+        "checklist": [
+          "Er staat een bijzin met doordat in mijn zin.",
+          "Het werkwoord staat achteraan in de bijzin.",
+          "Als de bijzin vooraan staat, komt in de hoofdzin eerst het werkwoord."
+        ]
+      }
+    }
+  ],
+  "what_you_learn": "Je leert bijzinnen lezen die beginnen met hoewel, zodat, doordat, nadat, voordat of tenzij. Je herkent welk verband elk woord aangeeft: een tegenstelling, een gevolg, een oorzaak, een volgorde in de tijd of een voorwaarde. Ook zie je dat het werkwoord achteraan staat en dat de hoofdzin omdraait als de bijzin vooraan begint."
+}

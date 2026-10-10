@@ -10,7 +10,6 @@
 import { createClient } from '@/lib/supabase/server';
 import type { Level, OnderdeelSlug } from '@/data/skills';
 import { fetchCourse } from './lessons-server';
-import { fetchConcepts, fetchTeachersForCourse } from './concepts-server';
 import type { LessonBlock, LessonSummary } from './lessons';
 import { type Spoor, type SpoorModule, type SpoorSlug, tally } from './sporen';
 import { RULES_HOME } from './taalregels';
@@ -44,110 +43,24 @@ export async function fetchSporen(
   return sporenFromBlocks(blocks, level, onderdeel, userId);
 }
 
-/** Alleen de blokken die al gelezen zijn — voor een aanroeper die `fetchCourse` al deed. */
+/**
+ * Alleen de blokken die al gelezen zijn — voor een aanroeper die `fetchCourse` al deed.
+ *
+ * ── DE TAALREGELS ZIJN HIER WEG (oktober 2026) ───────────────────────────────
+ * Tot oktober voegde deze functie de regelmodules van `concept_groups` aan het middelste spoor
+ * toe (`fetchRuleModules`). Stap 2 komt nu uit de grammaticasyllabus van de eigenaar —
+ * `data/grammar-syllabus.ts`, gelezen door `fetchGrammarStep` — en die dekt ook het eigen blok B
+ * van Luisteren, Schrijven en Spreken (de onderwerpen plus `GRAMMAR_EXTRAS`). Wat hier van het
+ * middelste spoor overblijft is alleen nog een vangnet voor `findModule` op een les die in
+ * geen onderwerp staat; de lespagina kijkt eerst in de grammaticastap.
+ */
 export async function sporenFromBlocks(
   blocks: LessonBlock[],
-  level: Level,
+  _level: Level,
   onderdeel: OnderdeelSlug,
-  userId: string | null,
+  _userId: string | null,
 ): Promise<Spoor[]> {
-  const sporen = buildSporen(blocks, await fetchLessonGroups(blocks), onderdeel);
-  const ruleModules = await fetchRuleModules(level, onderdeel, userId);
-  if (ruleModules.length === 0) return sporen;
-
-  /**
-   * De taalregels zijn stap 2, en niet een tweede kaart ernaast (besluit eigenaar, 10-09).
-   *
-   * Eerst wat deze cursus zélf leert — Klank en tempo, Bouwstenen, Uitspraak — en dan de
-   * regelmodules die dít examen vraagt. Bij Lezen is er geen eigen blok B (dát blok ís het
-   * regelhuis), dus daar bestaat de stap alleen uit regelmodules.
-   *
-   * `name` en `intro` gaan expliciet op `null`. Ze kwamen uit `lesson_blocks` van dit ene blok
-   * — "Klank en tempo", en een inleiding over waarom je een woord soms niet hoort — en dat
-   * was waar toen dat blok de hele stap wás. Nu is het één module van zes, en zijn kop boven
-   * de andere vijf zetten zou de stap smaller maken dan hij is. De pagina valt terug op de
-   * vertaalde titel: Taalregels.
-   */
-  return sporen.map(s => {
-    if (s.slug !== 'taalregels') return s;
-    const modules = [...s.modules, ...ruleModules];
-    return { ...s, modules, name: null, intro: null, ...tally(modules.flatMap(m => m.lessons)) };
-  });
-}
-
-/**
- * De regelmodules van één onderdeel: elke conceptgroep één module, de zwaarste eerst.
- *
- * ── WAAROM HIER GEEN GEWICHTSFILTER MEER STAAT ───────────────────────────────
- * Tot 10-09 filterde deze functie op `weight === 'kern'` terwijl de bibliotheekpagina op
- * hetzelfde gewicht alleen *sorteerde*. Eén kolom, twee lezingen, en dus twee verschillende
- * totalen voor dezelfde rijen: de bibliotheek zei "28 lessen voor Luisteren" en stap 2 zei
- * "8 lessen". Er ging niets stuk en er logde niets — het stond alleen op twee schermen anders.
- *
- * Nu beslist het *lidmaatschap* wat een cursus bevat (`concept_onderdelen`, per regel
- * afgewogen: Lezen 20 regels, Luisteren 20, Schrijven 30, Spreken 31) en beslist `weight`
- * alleen de volgorde en het label op de kaart. Wat in dit onderdeel staat, staat hier ook —
- * er zit geen filter meer tussen.
- *
- * De lessen komen uit blok B van Lezen (`RULES_HOME`) met de voortgang van deze kandidaat
- * erin, dus een regel die je via Schrijven deed staat bij Lezen ook als gedaan. Eén les, één
- * voortgang, vier plekken waar hij opduikt — en `fetchLesson` valt terug op dit blok zodat de
- * les ook echt opent vanuit de cursus waar je hem aanklikt.
- *
- * **Een regel zonder les komt hier niet in, en dat is zichtbaar bedoeld:** drie hebben er geen
- * (`bijvoeglijk-naamwoord`, `klemtoon`, `lange-korte-klank`), dus Schrijven toont 28 lessen op
- * 30 regels. Dat gat is precies wat het wegen aan het licht bracht.
- */
-export async function fetchRuleModules(
-  level: Level,
-  onderdeel: OnderdeelSlug,
-  userId: string | null,
-): Promise<SpoorModule[]> {
-  const [concepts, blocks] = await Promise.all([
-    fetchConcepts(level, onderdeel),
-    fetchCourse(level, RULES_HOME.onderdeel, userId),
-  ]);
-  const rules = concepts.filter(c => c.kind === 'grammatica');
-  if (rules.length === 0) return [];
-
-  const teachers = await fetchTeachersForCourse(level, RULES_HOME.onderdeel, rules.map(c => c.id));
-  const byLesson = new Map<string, (typeof rules)[number]>();
-  for (const c of rules) {
-    const teacher = teachers.get(c.id);
-    if (teacher) byLesson.set(teacher.slug, c);
-  }
-
-  /* In cursusvolgorde en niet in conceptvolgorde: de lessen van blok B bouwen op elkaar voort,
-     en een selectie die door elkaar staat leest als een lijst in plaats van als een route. */
-  const lessons = blocks
-    .filter(b => b.letter === RULES_HOME.letter)
-    .flatMap(b => b.lessons)
-    .filter(l => byLesson.has(l.slug));
-
-  type Bucket = { name: string; rank: number; lessons: LessonSummary[]; kern: number };
-  const byGroup = new Map<string, Bucket>();
-  for (const les of lessons) {
-    const concept = byLesson.get(les.slug);
-    if (!concept) continue;
-    const key = concept.group?.slug ?? 'overig';
-    const bucket = byGroup.get(key) ?? {
-      name: concept.group?.name_nl ?? 'Overig',
-      rank: concept.group?.sort_order ?? 9999,
-      lessons: [],
-      kern: 0,
-    };
-    bucket.lessons.push(les);
-    if (concept.weight === 'kern') bucket.kern += 1;
-    byGroup.set(key, bucket);
-  }
-
-  /* Zwaarste module eerst, en bij gelijk gewicht de leesvolgorde van de docent. Dat is de enige
-     taak die `weight` nog heeft: sorteren en het label op de kaart. Nooit meer filteren. */
-  return [...byGroup.entries()]
-    .sort((a, b) => b[1].kern - a[1].kern || a[1].rank - b[1].rank)
-    .map(([slug, b]) => ({
-      slug, name: b.name, intro: null, lessons: b.lessons, kern: b.kern, ...tally(b.lessons),
-    }));
+  return buildSporen(blocks, await fetchLessonGroups(blocks), onderdeel);
 }
 
 type Group = { slug: string; name: string; rank: number };

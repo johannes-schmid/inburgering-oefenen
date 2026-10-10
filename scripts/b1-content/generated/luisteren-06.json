@@ -1,0 +1,515 @@
+[
+  {
+    "section": "informatief",
+    "cast": {
+      "A": "man_young",
+      "B": "woman_noa"
+    },
+    "title": "Aan de telefoon bij de huisarts",
+    "intro": "U gaat luisteren naar een gesprek tussen Samir Oudkerk en Karin Bosveld. Samir Oudkerk maakt interviews over beroepen in de zorg. Karin Bosveld werkt als doktersassistente en vertelt over haar werk aan de telefoon.",
+    "speaker_a": "Samir Oudkerk",
+    "speaker_b": "Karin Bosveld",
+    "opening": "A: Goedemorgen, mevrouw Bosveld. Fijn dat u tijd voor me heeft.\nB: Graag gedaan, hoor. Maar noem me maar Karin, dat is makkelijker.\nA: Dat doe ik. Karin, u werkt als doktersassistente. Hoe lang al?\nB: Nou, inmiddels elf jaar. Eerst in een klein dorp, en sinds vier jaar hier in een grote praktijk met drie huisartsen.\nA: En u zit vooral aan de telefoon, begreep ik.\nB: Ja, kijk, dat is een groot deel van mijn werk. Maar niet het enige.",
+    "fragments": [
+      {
+        "script": "A: Kunt u eens vertellen wat u op een gewone ochtend doet?\nB: Ja. Om acht uur gaat de lijn open, en dan staan er meteen twintig mensen in de wachtrij. Dat klinkt erger dan het is, want de meeste gesprekken duren maar twee of drie minuten.\nA: Twintig mensen tegelijk?\nB: Ongeveer, ja. Tussen acht en tien uur bellen de meeste patiënten, omdat ze denken dat ze anders geen plek meer krijgen die dag. Dat is niet waar, hoor. We houden altijd ruimte vrij voor de middag.\nA: Maar u moet snel werken.\nB: Snel, en toch rustig blijven praten. Dat is het moeilijkste. Want als ik gehaast klink, gaat de patiënt ook haasten, en dan mis ik informatie die ik nodig heb. Dus ik dwing mezelf om gewoon normaal te ademen en normaal te praten, ook als ik zie dat er nog achttien mensen wachten.",
+        "prompt": "Wat is volgens Karin Bosveld het moeilijkste aan de drukke ochtend?",
+        "options": [
+          "dat patiënten te weinig informatie geven",
+          "dat ze ondanks de drukte kalm moet blijven klinken",
+          "dat ze veel gesprekken van twee minuten heeft"
+        ],
+        "correct": 1,
+        "explanation": "Ze zegt dat snel werken en toch rustig blijven praten het moeilijkste is, omdat een gehaaste stem de patiënt ook laat haasten. Dat patiënten te weinig informatie geven is een gevolg van haar eigen haast, niet het probleem zelf."
+      },
+      {
+        "script": "A: U bepaalt ook wie er snel gezien moet worden, toch?\nB: Klopt, dat noemen we triage. Ik stel vragen en schat in hoe dringend het is. Daar hebben we vaste lijsten voor, met vragen per klacht.\nA: Dus u werkt met een soort schema?\nB: Ja, maar het is geen invuloefening. Ik moet ook horen hoe iemand klinkt. Iemand kan zeggen: het gaat wel, maar als ik merk dat hij tussen de woorden naar lucht hapt, dan is het niet oké.\nA: En dan?\nB: Dan zet ik zo iemand bovenaan, of ik bel meteen de dokter erbij. Bij pijn op de borst wachten we niet, dan gaat er direct een ambulance naartoe. Dat is een vaste afspraak. Het gaat er niet om of ik het zelf ernstig vind; die regel geldt altijd.\nA: Een duidelijke grens.\nB: Heel duidelijk. En dat is prettig, want het haalt de twijfel weg.",
+        "prompt": "Waarom is Karin Bosveld tevreden met de afspraak over pijn op de borst?",
+        "options": [
+          "Omdat de ambulance dan sneller ter plaatse is.",
+          "Omdat ze dan niet met de vragenlijst werkt.",
+          "Omdat ze dan niet zelf hoeft af te wegen."
+        ],
+        "correct": 2,
+        "explanation": "Ze noemt de vaste regel prettig omdat die de twijfel wegneemt; ze hoeft dus niet zelf te beslissen of het ernstig is. Over de snelheid van de ambulance zegt ze niets als reden voor haar tevredenheid."
+      },
+      {
+        "script": "A: Snappen patiënten dat u die vragen stelt?\nB: De meesten wel. Maar er zijn er ook die zeggen: u bent de dokter niet, dus waarom wilt u dat weten? Dat hoor ik echt elke week.\nA: Hoe reageert u daarop?\nB: Ik leg het uit. Ik zeg: ik vraag dit zodat u bij de juiste persoon terechtkomt, en zodat u niet voor niets naar de praktijk komt. Meestal is dat genoeg. Soms niet, en dan blijft iemand boos.\nA: Dat lijkt me onaangenaam.\nB: Nou, in het begin nam ik dat mee naar huis. Echt, ik lag er 's avonds over te denken. Inmiddels weet ik: die boosheid gaat niet over mij. Die gaat over pijn, of over angst. Mensen bellen niet omdat ze het gezellig vinden.\nA: U kijkt er nu dus anders naar.\nB: Ja, en dat scheelt enorm. Ik ben er niet minder aardig door geworden, maar wel minder bang voor een lastig gesprek.",
+        "prompt": "Wat zegt Karin Bosveld over boze patiënten?",
+        "options": [
+          "Dat ze begrijpt dat hun boosheid uit ongerustheid komt.",
+          "Dat ze er nog steeds slecht van gaat slapen.",
+          "Dat ze meestal na haar uitleg alsnog boos blijven."
+        ],
+        "correct": 0,
+        "explanation": "Ze zegt dat de boosheid niet over haar gaat, maar over pijn of angst. Slecht slapen deed ze alleen in het begin, en boos blijven gebeurt volgens haar juist soms, niet meestal."
+      },
+      {
+        "script": "A: Wat doet u nog, naast de telefoon?\nB: Een heleboel. Ik doe uitstrijkjes, ik meet bloeddruk, ik verbind wonden, ik haal hechtingen eruit. En ik heb een eigen spreekuur van drie kwartier per dag.\nA: Drie kwartier, dat is niet veel.\nB: Nee, dat is te kort, vind ik. Maar de praktijk is vol, dus meer zit er nu niet in. We hebben wel afgesproken dat het volgend jaar naar anderhalf uur gaat, als de vierde huisarts begint.\nA: En dan komt er ook een assistente bij?\nB: Daar hoop ik op. We zijn nu vier assistentes voor bijna zevenduizend patiënten. Dat is aan de krappe kant. Een collega van mij werkt in een praktijk met drieduizend patiënten en drie assistentes, en die heeft het merkbaar ruimer.\nA: Dus u ziet het verschil.\nB: Ja, en daar praat ik ook over in het werkoverleg. Niet klagen, maar wel benoemen.",
+        "prompt": "Hoeveel tijd krijgt Karin Bosveld volgend jaar voor haar eigen spreekuur?",
+        "options": [
+          "anderhalf uur per dag",
+          "drie kwartier per dag",
+          "drie uur per dag"
+        ],
+        "correct": 0,
+        "explanation": "Er is afgesproken dat het spreekuur volgend jaar naar anderhalf uur per dag gaat, als de vierde huisarts begint. Drie kwartier is de huidige situatie."
+      },
+      {
+        "script": "A: Is er iets in het werk dat u tegenviel toen u begon?\nB: Ja, zeker. Ik dacht: ik ga mensen helpen, dus mensen zullen blij zijn. Dat viel tegen. Ik ben ook de deur, hè. Ik moet soms nee zeggen tegen iemand die graag vandaag nog komt.\nA: U bedoelt dat u mensen tegenhoudt?\nB: Ik houd niemand tegen die het nodig heeft. Maar ik zorg wel dat de artsen tijd houden voor de patiënten die echt niet kunnen wachten. Dat betekent dat een ander soms tot morgen moet wachten. Dat voelde in het begin verkeerd.\nA: En nu?\nB: Nu weet ik dat het juist eerlijk is. Als iedereen die het hardst roept meteen aan de beurt komt, dan komt de stille oudere mevrouw met echte klachten nooit aan de beurt. Dus mijn nee is ook een ja tegen iemand anders. Zo zie ik het.",
+        "prompt": "Wat bedoelt Karin Bosveld met de opmerking dat zij ook de deur is?",
+        "options": [
+          "dat de artsen van haar afhankelijk zijn",
+          "dat ze bepaalt wie er wanneer aan de beurt komt",
+          "dat ze veel patiënten bij de balie ontvangt"
+        ],
+        "correct": 1,
+        "explanation": "Ze legt uit dat ze soms nee moet zeggen en zo de tijd van de artsen verdeelt over de patiënten die het meest nodig hebben. Over ontvangen bij de balie gaat de beeldspraak niet."
+      },
+      {
+        "script": "A: Zou u dit werk iemand aanraden?\nB: Ja, maar wel met een waarschuwing. Je moet kunnen schakelen. Het ene moment een kind met koorts, het volgende moment iemand die net slecht nieuws heeft gehad. Als je daar last van hebt, is dit geen goede baan.\nA: En de opleiding?\nB: Die duurt bij ons twee jaar, in deeltijd, met één dag school. Je werkt dus meteen mee. Dat vind ik het beste van die opleiding, want je leert het echt in de praktijk.\nA: Krijgt u salaris tijdens die opleiding?\nB: Ja, je hebt een gewone arbeidsovereenkomst en je valt onder de cao. Dat betekent dat je loon vastligt en dat er ook een regeling is voor bijscholing. We moeten namelijk elk jaar onze triagekennis bijhouden.\nA: Karin, dank u wel voor uw tijd.\nB: Graag gedaan. En bel gerust nog eens, maar dan niet tussen acht en tien.",
+        "prompt": "Wat vindt Karin Bosveld het beste aan de opleiding?",
+        "options": [
+          "dat het loon in de cao is vastgelegd",
+          "dat je elk jaar bijscholing krijgt",
+          "dat je vanaf het begin in de praktijk werkt"
+        ],
+        "correct": 2,
+        "explanation": "Ze noemt expliciet dat je meteen meewerkt en het in de praktijk leert als het beste van de opleiding. Het loon in de cao en de jaarlijkse bijscholing noemt ze wel, maar niet als het beste punt."
+      }
+    ]
+  },
+  {
+    "section": "beschouwend",
+    "cast": {
+      "A": "woman_roos",
+      "B": "man_richard"
+    },
+    "title": "Terugkijken op thuiswerken",
+    "intro": "U gaat luisteren naar een gesprek tussen Hanneke Prins en Ruud Vermeulen. Hanneke Prins werkt bij een organisatie die advies geeft over werkplekken. Ruud Vermeulen is teamleider en kijkt terug op de overstap naar thuiswerken in zijn team.",
+    "speaker_a": "Hanneke Prins",
+    "speaker_b": "Ruud Vermeulen",
+    "opening": "A: Meneer Vermeulen, fijn dat u tijd heeft. Ik zit klaar met mijn aantekeningen.\nB: Ja, graag. Zegt u maar Ruud, hoor. Dat werkt makkelijker.\nA: Goed, dan doe ik dat. Ik wil vooral weten hoe het bij jullie gelopen is, dus niet alleen de mooie kant.\nB: Nou, dan bent u bij mij aan het juiste adres. Er is bij ons echt een heleboel misgegaan in het begin, en dat mag u opschrijven.",
+    "fragments": [
+      {
+        "script": "A: Laten we bij het begin beginnen. Hoe zag jouw team eruit toen jullie overstapten?\nB: Ik geef leiding aan veertien mensen op de afdeling klantenservice. Daarvan zaten er twaalf altijd op kantoor, en twee werkten al een dag per week thuis. Dus we hadden bijna geen ervaring.\nA: En de beslissing om over te stappen, wie nam die?\nB: Ja, kijk, dat is het punt. Die beslissing hebben wij niet genomen, die werd genomen. De directie liet in mei weten dat het gebouw kleiner werd, en dat de helft van de bureaus zou verdwijnen. Wij moesten dat dan maar organiseren.\nA: Dus jullie hadden geen keus.\nB: Nee. En dat heeft veel gedaan met de sfeer, denk ik. Als je zelf kiest om thuis te werken, is het iets anders dan wanneer je bureau er op een dag simpelweg niet meer staat. Dat heb ik onderschat.",
+        "prompt": "Waarom ging het team van Ruud Vermeulen thuiswerken?",
+        "options": [
+          "Er waren te weinig werkplekken beschikbaar op kantoor.",
+          "Het team had zelf gevraagd om meer dagen thuis te werken.",
+          "Twee medewerkers deden het al en dat beviel goed."
+        ],
+        "correct": 0,
+        "explanation": "Ruud vertelt dat de directie besloot dat het gebouw kleiner werd en de helft van de bureaus zou verdwijnen. Dat het team er zelf om vroeg is juist niet zo: hij zegt duidelijk dat ze geen keus hadden."
+      },
+      {
+        "script": "A: Hoe hebben jullie het praktisch aangepakt, die eerste weken?\nB: Veel te snel, eerlijk gezegd. We hadden drie weken en toen moest iedereen thuis kunnen werken. Er waren zeven laptops te weinig, dus een paar mensen namen gewoon hun eigen computer. Dat leverde problemen op met de inlog.\nA: En de inrichting van de werkplek thuis?\nB: Daar hebben we een regeling voor gemaakt, maar pas later. Iedereen kreeg een bedrag van driehonderd euro om een bureaustoel of een goede lamp te kopen. Wie al een stoel had, mocht er een tweede beeldscherm van nemen.\nA: Driehonderd euro. Was dat genoeg?\nB: Voor de meeste mensen wel, maar niet voor iedereen. Eén collega woont op een kamer van achttien vierkante meter. Die heeft gewoon geen plek voor een bureau, en daar los je met geld niets op. Zij komt nu vier dagen naar kantoor, als uitzondering.",
+        "prompt": "Wat vertelt Ruud Vermeulen over het bedrag van driehonderd euro?",
+        "options": [
+          "Het bleek voor bijna alle medewerkers te laag.",
+          "Het hielp niet in elke woonsituatie.",
+          "Het mocht alleen aan een bureaustoel worden besteed."
+        ],
+        "correct": 1,
+        "explanation": "Ruud zegt dat het bedrag voor de meeste mensen genoeg was, maar dat een collega met een kleine kamer geen plek heeft voor een bureau. Niet het bedrag zelf was het probleem, dus 'te laag voor bijna iedereen' is te sterk."
+      },
+      {
+        "script": "A: Je zei net dat je de sfeer had onderschat. Wat merkte je daarvan?\nB: Nou, in het begin ging het juist goed. Mensen vonden het rustig, ze hoefden niet meer in de trein te staan. Maar na een paar maanden kwamen de klachten.\nA: Wat voor klachten?\nB: Niet over het werk, want de cijfers waren prima. Het ging over het gevoel er niet meer bij te horen. Nieuwe collega's vooral. We hadden er drie aangenomen die hun team nauwelijks kenden, want je ziet elkaar alleen in een vergadering van een half uur.\nA: En daar hebben jullie iets mee gedaan?\nB: Uiteindelijk wel, maar te laat. Ik dacht eerst: dit gaat over. Ik heb dus maanden afgewacht terwijl ik best signalen kreeg. Als ik het opnieuw zou doen, zou ik meteen na zes weken met iedereen apart gaan zitten. Dat kost tijd, maar het kost minder dan een collega die vertrekt.",
+        "prompt": "Wat vindt Ruud Vermeulen dat hij verkeerd heeft gedaan?",
+        "options": [
+          "Hij had de nieuwe collega's niet moeten aannemen.",
+          "Hij heeft te lang gewacht met persoonlijke gesprekken.",
+          "Hij heeft te veel op de cijfers van het werk gelet."
+        ],
+        "correct": 1,
+        "explanation": "Ruud zegt dat hij maanden afwachtte en dat hij nu na zes weken met iedereen apart zou gaan zitten. Dat hij te veel op de cijfers lette, zegt hij niet; de cijfers waren gewoon goed."
+      },
+      {
+        "script": "A: Je noemde de vergadering van een half uur. Hoe hebben jullie het overleg geregeld?\nB: We zijn begonnen met elke ochtend een videogesprek van een half uur. Iedereen erbij, veertien mensen. Dat werkte niet.\nA: Waarom niet?\nB: Omdat er in zo'n gesprek altijd dezelfde vier mensen praten en de rest zit te kijken. En het duurde ook nooit een half uur, het liep altijd uit naar drie kwartier. Dan zit je dus elke week bijna vier uur te vergaderen zonder dat er iets beslist wordt.\nA: En wat doen jullie nu?\nB: Nu hebben we twee keer per week overleg in kleine groepen van vier of vijf, en één keer per maand komt de hele afdeling bij elkaar op kantoor. Dat maandelijkse overleg is trouwens verplicht, dat is het enige moment waarvan we zeggen: je moet er zijn. De rest mag je zelf indelen.",
+        "prompt": "Waarom stopten ze met het dagelijkse videogesprek?",
+        "options": [
+          "Het duurde te kort om beslissingen te kunnen nemen.",
+          "Het was voor de nieuwe collega's te ingewikkeld.",
+          "Steeds dezelfde mensen zeiden er iets en het leverde weinig op."
+        ],
+        "correct": 2,
+        "explanation": "Ruud legt uit dat altijd dezelfde vier mensen praatten en dat er veel tijd in ging zonder dat er iets werd beslist. Het probleem was niet dat het te kort duurde; het liep juist steeds uit."
+      },
+      {
+        "script": "A: En jouw eigen rol als teamleider, is die veranderd?\nB: Enorm. Vroeger liep ik gewoon langs een bureau en zag ik in twee seconden of iemand ergens mee zat. Dat kan nu niet meer, dus ik moet vragen. En vragen voelt al snel als controleren.\nA: Hoe ga je daarmee om?\nB: Ik ben er heel open over. Ik zeg gewoon: ik bel je niet om te kijken of je achter je laptop zit, ik bel omdat ik het anders niet weet. Dat moest ik een paar keer uitleggen, maar nu snappen ze het.\nA: Zijn er mensen die dat toch als wantrouwen zien?\nB: In het begin twee, ja. Die dachten dat ik hun tijd bijhield. Dat deed ik niet, en dat kon ik ook aantonen, want wij registreren helemaal niets van inlogtijden. Toen dat duidelijk werd, is het weggeëbd. Maar het heeft me wel geleerd dat je alles moet uitleggen, ook wat je níet doet.",
+        "prompt": "Wat bedoelt Ruud Vermeulen als hij zegt dat hij moet uitleggen wat hij niet doet?",
+        "options": [
+          "Dat hij niet alle taken van vroeger nog kan uitvoeren.",
+          "Dat hij zijn medewerkers minder vaak durft te bellen.",
+          "Dat medewerkers snel denken dat hij hen in de gaten houdt."
+        ],
+        "correct": 2,
+        "explanation": "Twee medewerkers dachten dat hij hun tijd bijhield, terwijl er niets geregistreerd wordt; daarom moet hij ook benoemen wat hij juist níet controleert. Hij belt wel, alleen legt hij uit waarom."
+      },
+      {
+        "script": "A: Is er ook iets waarvan je zegt: dit is echt beter geworden?\nB: Ja, twee dingen. Het ziekteverzuim is gedaald. We zaten op ruim zes procent en nu zitten we rond de vier. Dat komt denk ik doordat mensen met een verkoudheid nu gewoon thuis een paar uurtjes werken in plaats van zich helemaal ziek te melden.\nA: En het tweede?\nB: We kunnen mensen aannemen uit een veel grotere omgeving. Vroeger zochten we binnen een halfuur reizen, want anders kwam niemand. Nu hebben we iemand in dienst die in Groningen woont en die één keer per maand hierheen komt.\nA: Dat scheelt in de kosten van het gebouw ook, neem ik aan.\nB: Dat zal wel, maar daar ga ik niet over. Dat is het verhaal van de directie. Voor mij weegt zwaarder dat ik nu echt kan kiezen uit goede kandidaten, want dat was jarenlang het lastigste deel van mijn werk.",
+        "prompt": "Wat noemt Ruud Vermeulen voor zichzelf de belangrijkste winst?",
+        "options": [
+          "De lagere kosten van het gebouw.",
+          "Het lagere ziekteverzuim in zijn team.",
+          "Meer keuze bij het aannemen van personeel."
+        ],
+        "correct": 2,
+        "explanation": "Ruud zegt dat voor hem zwaarder weegt dat hij nu echt uit goede kandidaten kan kiezen. Het lagere verzuim noemt hij ook als verbetering, maar niet als het belangrijkste voor hemzelf."
+      },
+      {
+        "script": "A: Zijn er afspraken op papier gezet, in een regeling of in de cao?\nB: Er is een thuiswerkregeling gekomen, ja. Daarin staat dat je maximaal drie dagen per week thuis mag werken en dat je per thuiswerkdag een vergoeding krijgt van twee euro vijfendertig voor koffie en elektriciteit.\nA: En wie bepaalt welke dagen?\nB: Het team bepaalt dat samen, maar er is één harde voorwaarde: er moeten elke dag minstens vier mensen op kantoor zijn voor de telefoon. Dus je kunt niet allemaal de maandag kiezen.\nA: Werkt dat in de praktijk?\nB: Meestal. Wat ik vervelend vind, is dat het regelen bij één iemand terechtkomt. Bij ons doet een collega dat erbij, zonder dat daar uren voor staan. Dat vind ik niet goed geregeld, en ik heb dat ook gemeld. Er is nog geen antwoord, maar ik blijf het vragen.",
+        "prompt": "Welke voorwaarde staat er in de regeling van het team?",
+        "options": [
+          "Er moeten dagelijks vier medewerkers aanwezig zijn.",
+          "Iedereen mag zelf de maandag als thuiswerkdag kiezen.",
+          "Thuiswerkdagen moeten door de teamleider worden goedgekeurd."
+        ],
+        "correct": 0,
+        "explanation": "Ruud noemt als harde voorwaarde dat er elke dag minstens vier mensen op kantoor zijn voor de telefoon. Juist daarom kan niet iedereen de maandag kiezen."
+      },
+      {
+        "script": "A: Tot slot: als een andere teamleider je om advies vraagt, wat zeg je dan?\nB: Begin niet met de techniek. Wij hebben weken gepraat over laptops en schermen, en veel te weinig over hoe mensen met elkaar contact houden. Dat tweede is moeilijker, dus je stelt het uit.\nA: En zou je het opnieuw doen?\nB: Nou, ik zou het anders doen. Niet alles op drie weken, maar in stappen. Eerst een klein groepje van vier, drie maanden proberen, en dan pas de rest. Dan weet je waar het vastloopt voordat veertien mensen ermee zitten.\nA: Dus niet: liever helemaal niet.\nB: Nee, zeker niet. Terug naar vijf dagen kantoor wil bij ons bijna niemand meer, ook ik niet. Maar het is geen kleine verandering die je even tussendoor regelt. Dat dacht ik in mei, en daar heb ik een jaar lang de gevolgen van gemerkt.",
+        "prompt": "Wat is het advies van Ruud Vermeulen aan andere teamleiders?",
+        "options": [
+          "Begin met een kleine groep en breid daarna uit.",
+          "Kies voor thuiswerken alleen als het team dat zelf wil.",
+          "Zorg eerst dat de laptops en schermen op orde zijn."
+        ],
+        "correct": 0,
+        "explanation": "Hij zegt dat hij het in stappen zou doen: eerst een groepje van vier, drie maanden proberen en dan de rest. De techniek noemt hij juist als iets waar ze te veel tijd aan besteedden."
+      }
+    ]
+  },
+  {
+    "section": "informatief",
+    "cast": {
+      "A": "man_older",
+      "B": "woman_young"
+    },
+    "title": "Veilig inloggen bij de overheid",
+    "intro": "U gaat luisteren naar een gesprek tussen Mustafa Kaya en Soraya Doekhie. Mustafa Kaya werkt bij een buurtcentrum en geeft daar hulp met computers. Soraya Doekhie is medewerker bij de organisatie achter DigiD en legt uit hoe mensen veilig kunnen inloggen bij de overheid.",
+    "speaker_a": "Mustafa Kaya",
+    "speaker_b": "Soraya Doekhie",
+    "opening": "A: Mevrouw Doekhie, welkom in ons buurtcentrum. Fijn dat u tijd had om te komen.\nB: Graag gedaan, meneer Kaya. Ik kom vaker op zulke plekken, want hier komen juist de mensen die vragen hebben.\nA: Ja, dat merken wij ook. Wij houden hier elke woensdagmiddag een computerhulpuur, en negen van de tien vragen gaan over inloggen bij de overheid.\nB: Dat verbaast me niet. Nou, dan ben ik precies bij de juiste groep.",
+    "fragments": [
+      {
+        "script": "A: Misschien kunt u eerst even uitleggen wat DigiD nu eigenlijk is. Veel bezoekers hier denken dat het een soort pas is die je in je portemonnee hebt.\nB: Ja, kijk, dat is een begrijpelijke verwarring. DigiD is geen pasje, maar een digitaal legitimatiebewijs. Het is de manier waarop de overheid online controleert of u echt bent wie u zegt dat u bent.\nA: Dus eigenlijk een soort sleutel.\nB: Zo kunt u het zeggen. Met die ene sleutel komt u bij heel veel deuren: bij de gemeente, bij uw zorgverzekering, bij de Belastingdienst, bij een school die met de overheid samenwerkt. U hoeft dus niet voor elke organisatie een nieuw wachtwoord te verzinnen.\nA: En dat is nou juist waar mensen bang voor zijn, denk ik. Eén sleutel voor alles.\nB: Dat begrijp ik. Maar in de praktijk is één goed beveiligde sleutel veiliger dan twintig slechte wachtwoorden die u allemaal op een papiertje schrijft.",
+        "prompt": "Wat zegt Soraya Doekhie over DigiD?",
+        "options": [
+          "Het is een bewijs waarmee de overheid uw identiteit online controleert.",
+          "Het is een pas die u bij de gemeente moet ophalen en bewaren.",
+          "Het is een wachtwoord dat per organisatie verschillend moet zijn."
+        ],
+        "correct": 0,
+        "explanation": "Zij legt uit dat DigiD een digitaal legitimatiebewijs is waarmee de overheid controleert of u bent wie u zegt te zijn. Een pasje is juist wat het níet is; dat noemt Mustafa Kaya als misverstand van bezoekers."
+      },
+      {
+        "script": "A: Nu krijg ik vaak de vraag: is alleen een gebruikersnaam met een wachtwoord genoeg?\nB: Nee, en dat is een belangrijk punt. Voor veel diensten is dat niet meer toegestaan. Er zijn drie niveaus van inloggen. Het laagste niveau is gebruikersnaam en wachtwoord. Daarboven zit het inloggen met de DigiD-app of met een sms-controle. En het hoogste niveau werkt met uw identiteitskaart of paspoort.\nA: Waarom zijn er dan drie? Dat maakt het voor onze bezoekers wel verwarrend.\nB: Dat snap ik, maar het hangt af van de gegevens. Wilt u alleen even kijken hoeveel huurverlaging u krijgt, dan is het middelste niveau genoeg. Gaat het om uw medisch dossier, dan wil de overheid zeker weten dat u het bent, en dan is dat hoogste niveau nodig.\nA: Dus hoe gevoeliger de informatie, hoe zwaarder de controle.\nB: Precies. En doordat de zorg steeds meer online gaat, gebruiken meer mensen dat hoogste niveau dan vijf jaar geleden.",
+        "prompt": "Waarom bestaan er volgens Soraya Doekhie drie inlogniveaus?",
+        "options": [
+          "Omdat de app nog niet op alle telefoons goed werkt.",
+          "Omdat er per soort gegevens een andere mate van zekerheid nodig is.",
+          "Omdat oudere gebruikers moeite hebben met een identiteitskaart."
+        ],
+        "correct": 1,
+        "explanation": "Zij zegt dat het van de gegevens afhangt: voor huurverlaging is een lager niveau genoeg, voor een medisch dossier het hoogste. De verwarring bij bezoekers noemt Mustafa Kaya wel, maar dat is niet de reden voor de drie niveaus."
+      },
+      {
+        "script": "A: Die DigiD-app, daar hoor ik veel over. Wat raadt u mensen aan?\nB: Ik raad de app aan, ja. U hoeft dan geen wachtwoord meer te typen, u kiest een pincode van vijf cijfers en die gebruikt u elke keer.\nA: Vijf cijfers, niet vier?\nB: Vijf. Dat is bewust, want vier cijfers worden te makkelijk geraden. En kies dan niet uw geboortejaar, dat is echt het eerste wat iemand probeert.\nA: En als je die pincode vergeet?\nB: Dan moet u de app opnieuw activeren. Dat kunt u meestal zelf doen, maar er komt wel een brief aan te pas en die is een paar dagen onderweg. Dus schrijf hem niet op, maar verzin iets wat u onthoudt.\nA: Nou, sommige bezoekers hier hebben helemaal geen smartphone. Wat dan?\nB: Dan blijft sms een goed alternatief. We horen soms dat de app verplicht wordt, maar dat is niet zo. Er moet altijd een weg overblijven voor mensen zonder telefoon met internet.",
+        "prompt": "Wat vertelt Soraya Doekhie over de pincode van de DigiD-app?",
+        "options": [
+          "Hij bestaat uit vier cijfers en mag geen geboortejaar zijn.",
+          "Hij bestaat uit vijf cijfers en u moet hem niet opschrijven.",
+          "Hij bestaat uit vijf cijfers en wordt elk jaar vernieuwd."
+        ],
+        "correct": 1,
+        "explanation": "Zij zegt dat de pincode vijf cijfers heeft en dat je hem beter niet opschrijft, maar iets moet verzinnen wat je onthoudt. Vier cijfers noemt ze juist als te onveilig."
+      },
+      {
+        "script": "A: Ik wil het even over de gevaren hebben. Vorige maand kwam hier een mevrouw die geld had overgemaakt na een bericht dat van de overheid leek.\nB: Helaas hoor ik dat vaak. Dat heet phishing: iemand doet zich voor als een bekende organisatie om uw inloggegevens te krijgen.\nA: En hoe zie je het verschil?\nB: Onthoud één regel: wij vragen nooit per e-mail of telefoon om uw wachtwoord of uw pincode. Nooit. Dus wie dat wel vraagt, is niet van ons, hoe echt het bericht er ook uitziet.\nA: Die mevrouw zei dat er een logo in stond en haar naam erboven.\nB: Ja, en daar schrikken mensen van, want het lijkt zo persoonlijk. Maar een logo kopiëren kost iemand een halve minuut. Kijk daarom niet naar het plaatje, maar naar de vraag die gesteld wordt.\nA: Dus niet de vorm, maar de inhoud.\nB: Zo is het. En bij twijfel: sluit het bericht af en ga zelf naar de website die u kent.",
+        "prompt": "Wat bedoelt Soraya Doekhie met haar opmerking over het logo?",
+        "options": [
+          "Dat een echt bericht altijd de naam van de ontvanger bevat.",
+          "Dat een logo makkelijk na te maken is en dus niets bewijst.",
+          "Dat organisaties hun logo te weinig goed beveiligen."
+        ],
+        "correct": 1,
+        "explanation": "Zij zegt dat een logo kopiëren een halve minuut kost en dat je niet naar het plaatje maar naar de gestelde vraag moet kijken. De naam erboven maakt het bericht juist misleidend persoonlijk, geen bewijs van echtheid."
+      },
+      {
+        "script": "A: Stel nu dat het toch misgaat. Iemand heeft zijn gegevens gegeven en beseft het een uur later.\nB: Dan is snelheid alles. U blokkeert uw DigiD zelf via de website, of u belt de telefonische hulplijn. Die is van maandag tot en met vrijdag bereikbaar, van acht uur 's ochtends tot acht uur 's avonds.\nA: En in het weekend?\nB: In het weekend niet, nee, maar blokkeren via internet kan dag en nacht. Dat werkt eigenlijk sneller dan bellen.\nA: Goed om te weten. En daarna?\nB: Daarna vraagt u een nieuwe DigiD aan. Dat duurt drie werkdagen, want u krijgt een activeringscode per post. En doe ook aangifte bij de politie als er echt iets met uw gegevens is gedaan.\nA: Kost dat blokkeren iets?\nB: Nee, blokkeren en opnieuw aanvragen zijn gratis. Wel jammer is dat mensen soms wachten tot maandag omdat ze denken dat er niemand is. Terwijl die website het hele weekend open is.",
+        "prompt": "Welk detail noemt Soraya Doekhie over het aanvragen van een nieuwe DigiD?",
+        "options": [
+          "Dat u daarna zelf een pincode van vijf cijfers per post krijgt.",
+          "Dat u daarvoor een klein bedrag aan administratiekosten betaalt.",
+          "Dat u drie werkdagen moet wachten op een code per post."
+        ],
+        "correct": 2,
+        "explanation": "Zij zegt dat het aanvragen drie werkdagen duurt omdat de activeringscode per post komt. Dat er kosten aan verbonden zijn, klopt niet: blokkeren en opnieuw aanvragen zijn volgens haar gratis."
+      },
+      {
+        "script": "A: Er is nog een ding waar ik hier veel mee te maken heb. Mensen die hun zoon of dochter vragen om in te loggen.\nB: Ja, dat is een moeilijk punt. Officieel mag u uw DigiD niet uitlenen, ook niet aan familie. Het is namelijk uw legitimatiebewijs, en dat geeft u ook niet mee aan iemand anders.\nA: Maar in de praktijk gebeurt het natuurlijk wel.\nB: Dat weet ik, en daarom bestaat er een nette oplossing: machtigen. U geeft dan officieel toestemming dat iemand anders bepaalde zaken voor u regelt, bijvoorbeeld uw belastingaangifte.\nA: Hoe werkt dat dan?\nB: U regelt het online of met een formulier, en u kiest zelf waarvoor de machtiging geldt. U kunt hem ook weer intrekken. Het mooie is dat alles wordt vastgelegd, dus u weet wie wat gedaan heeft.\nA: Dat is toch anders dan gewoon je pincode doorgeven.\nB: Heel anders. Bij uitlenen bent u zelf aansprakelijk voor alles. Bij machtigen staat zwart op wit wat u hebt afgesproken.",
+        "prompt": "Waarom vindt Soraya Doekhie machtigen beter dan je DigiD uitlenen?",
+        "options": [
+          "Omdat een machtiging niet kan worden ingetrokken door de ander.",
+          "Omdat familieleden dan geen formulier meer hoeven invullen.",
+          "Omdat vastligt wat is afgesproken en wie iets heeft gedaan."
+        ],
+        "correct": 2,
+        "explanation": "Zij zegt dat bij machtigen alles wordt vastgelegd, zodat duidelijk is wie wat gedaan heeft, terwijl je bij uitlenen zelf aansprakelijk bent. Intrekken kan juist wél, en dat doet de houder zelf."
+      },
+      {
+        "script": "A: We gaan afronden. Wat zou u onze bezoekers als laatste willen meegeven?\nB: Twee dingen. Eén: zet in de app de meldingen aan, zodat u een bericht krijgt zodra er met uw DigiD wordt ingelogd. Twee: kijk af en toe in het overzicht waar u hebt ingelogd. Dat staat op uw persoonlijke pagina.\nA: En als daar iets tussen staat wat je niet kent?\nB: Dan blokkeert u meteen, precies zoals we eerder bespraken. Niet eerst rondvragen bij de buren, maar blokkeren en dan bellen.\nA: Helder. Zou u hier vaker langs willen komen? Ik denk aan een vaste middag, misschien eens per kwartaal.\nB: Daar zeg ik geen nee tegen, maar ik doe het liever anders. Ik zou uw vrijwilligers een korte training willen geven, zodat zij het elke week kunnen uitleggen. Dan bereiken we meer mensen dan wanneer ik vier keer per jaar kom praten.\nA: Nou, dat vind ik een beter plan dan mijn eigen voorstel. Ik stuur u deze week de namen.",
+        "prompt": "Wat stelt Soraya Doekhie aan het einde van het gesprek voor?",
+        "options": [
+          "De vrijwilligers van het buurtcentrum opleiden.",
+          "Elk kwartaal zelf een middag langskomen.",
+          "Voor bezoekers een nieuw overzicht maken."
+        ],
+        "correct": 0,
+        "explanation": "Zij zegt dat ze liever de vrijwilligers een korte training geeft, omdat die het dan elke week kunnen uitleggen. Het voorstel om eens per kwartaal te komen kwam van Mustafa Kaya, en dat vindt zij minder effectief."
+      }
+    ]
+  },
+  {
+    "section": "persuasief",
+    "cast": {
+      "A": "woman_noa",
+      "B": "woman_roos"
+    },
+    "title": "Tweedehands of nieuw?",
+    "intro": "U gaat luisteren naar een gesprek tussen Marleen Otten en Naima Boulahfa. Marleen Otten werkt bij een kringloopwinkel en staat op een markt in de wijk. Naima Boulahfa zoekt meubels voor haar nieuwe woning en blijft even bij het kraampje staan.",
+    "speaker_a": "Marleen Otten",
+    "speaker_b": "Naima Boulahfa",
+    "opening": "A: Goedemiddag! Mag ik u even een kaartje geven van onze kringloopwinkel?\nB: Ja, dat mag. Ik ben eigenlijk wel op zoek naar meubels, want ik heb net een andere woning gekregen.\nA: Dan bent u bij mij aan het juiste adres. Ik ben Marleen, ik werk bij de kringloop aan de Grevelingenstraat.\nB: Naima. Ik moet eerlijk zeggen dat ik nog nooit in een kringloopwinkel ben geweest. Ik koop meestal nieuw, online.",
+    "fragments": [
+      {
+        "script": "A: Dat hoor ik vaak. Mag ik vragen waarom u liever nieuw koopt?\nB: Nou, ik denk gewoon dat tweedehands spullen snel kapot zijn. En je weet niet wat er eerder mee gebeurd is.\nA: Dat begrijp ik, maar wij controleren alles voordat het in de winkel komt. Elektrische apparaten worden door een vakman getest, en wat kapot is, gaat niet in de verkoop.\nB: Oké. Maar een bank of een tafel, daar zit toch altijd wel een kras op?\nA: Soms wel, ja. Ik ga niet beweren dat alles er als nieuw uitziet. Maar juist oudere meubels zijn vaak van stevig hout gemaakt, terwijl veel nieuwe meubels van heel dun materiaal zijn.\nB: Daar heb ik nooit zo over nagedacht.\nA: Ik zeg altijd: een eettafel van dertig jaar oud staat er over dertig jaar nog. Bij een tafel van tachtig euro uit een doos weet ik dat niet zo zeker.",
+        "prompt": "Wat zegt Marleen Otten over de kwaliteit van tweedehands meubels?",
+        "options": [
+          "Ze geeft toe dat meubels beschadigd kunnen zijn, maar noemt het hout sterker",
+          "Ze vindt dat oude meubels er net zo mooi uitzien als nieuwe meubels",
+          "Ze zegt dat alle meubels in de winkel eerst gerepareerd worden"
+        ],
+        "correct": 0,
+        "explanation": "Marleen zegt dat er soms een kras op zit en dat niet alles als nieuw is, maar dat oudere meubels vaak van stevig hout zijn, terwijl nieuwe meubels van dun materiaal zijn. Ze beweert juist niet dat alles er als nieuw uitziet, en het testen door een vakman gaat alleen over elektrische apparaten."
+      },
+      {
+        "script": "B: En de prijzen dan? Ik hoor van mensen dat kringloopwinkels ook duur zijn geworden.\nA: Voor sommige dingen klopt dat wel. Merkkleding en oude platen zijn in prijs gestegen, omdat daar veel vraag naar is. Maar voor huisraad valt het echt mee.\nB: Kunt u een voorbeeld geven?\nA: Een complete eettafel met vier stoelen kost bij ons tussen de veertig en negentig euro. Een bank begint bij vijfenzeventig euro. En borden, pannen en glazen kosten meestal minder dan twee euro per stuk.\nB: Dat is wel een groot verschil met de winkel, ja.\nA: En let op: op donderdag hebben wij een kortingsdag. Dan gaat er twintig procent van de meubelprijs af. Alleen niet van de kleding, want die is al heel goedkoop.\nB: Dus donderdag is de beste dag om te komen.\nA: Voor meubels wel. Maar kom liever in de ochtend, want tegen sluitingstijd is het mooiste vaak al weg.",
+        "prompt": "Wat is er op donderdag anders in de winkel?",
+        "options": [
+          "Dan is er twintig procent korting op meubels",
+          "Dan komen er 's ochtends de meeste nieuwe spullen binnen",
+          "Dan zijn de kleding en de meubels goedkoper"
+        ],
+        "correct": 0,
+        "explanation": "Marleen zegt dat er op de kortingsdag donderdag twintig procent van de meubelprijs af gaat, maar dat kleding daarvan is uitgezonderd omdat die al goedkoop is. Daarom is het antwoord over kleding én meubels fout."
+      },
+      {
+        "script": "B: Ik heb wel een probleem. Ik heb geen auto en ook geen rijbewijs. Hoe krijg ik een bank thuis?\nA: Daar hebben wij een oplossing voor. Wij bezorgen binnen de gemeente voor vijftien euro, ongeacht hoeveel u koopt.\nB: Vijftien euro voor alles bij elkaar?\nA: Ja, per bezorging. Als u een tafel, vier stoelen en een kast koopt, betaalt u dus één keer vijftien euro. Onze mannen brengen het ook naar boven, tot de derde verdieping.\nB: Ik woon op vier hoog.\nA: Hm, dan wordt het iets anders. Vanaf de vierde verdieping vragen wij tien euro extra, want dat is zwaar werk. Is er een lift?\nB: Nee, helaas niet.\nA: Dan komt u op vijfentwintig euro uit. Nog altijd minder dan wanneer u een busje moet huren.\nB: Dat is waar. En hoe snel wordt het gebracht?\nA: Wij bezorgen op dinsdag en vrijdag. Koopt u zaterdag iets, dan staat het dinsdag bij u binnen.",
+        "prompt": "Hoeveel moet Naima Boulahfa voor de bezorging betalen?",
+        "options": [
+          "Tien euro per keer, omdat er geen lift is",
+          "Vijfentwintig euro, vanwege de hoge verdieping",
+          "Vijftien euro voor elk meubelstuk apart"
+        ],
+        "correct": 1,
+        "explanation": "De bezorging kost vijftien euro per keer, maar boven de derde verdieping komt er tien euro bij, dus samen vijfentwintig euro. Vijftien euro geldt voor de hele bezorging en niet per meubelstuk."
+      },
+      {
+        "script": "B: Toch twijfel ik nog. Bij een nieuwe bank heb ik garantie. Bij u niet, denk ik?\nA: Kijk, dat is een eerlijke vraag. Wij geven geen garantie zoals een gewone winkel, dat kan ik niet mooier maken dan het is.\nB: Dus als hij na een week doorzakt, heb ik pech.\nA: Nee, zo werkt het bij ons niet. U mag alles binnen veertien dagen terugbrengen als het niet bevalt, met de kassabon. Dan krijgt u uw geld terug, of u kiest iets anders uit.\nB: Ook een bank? Die moet ik dan weer laten ophalen.\nA: Bij grote meubels halen wij het zelf op, zonder kosten. Bij elektrische apparaten geven we zelfs drie maanden: als een koelkast het binnen die tijd begeeft, ruilen wij hem om.\nB: Dat vind ik eerlijk gezegd beter dan ik dacht.\nA: Wij willen nu eenmaal dat mensen terugkomen. Een klant die met een kapotte stofzuiger thuiszit, komt nooit meer.",
+        "prompt": "Wat bedoelt Marleen Otten met haar laatste opmerking?",
+        "options": [
+          "Dat de winkel geen stofzuigers meer wil verkopen",
+          "Dat een tevreden klant belangrijker is dan één verkoop",
+          "Dat klanten vaak te laat klagen over een apparaat"
+        ],
+        "correct": 1,
+        "explanation": "Marleen legt uit dat de winkel wil dat mensen terugkomen en dat iemand met een kapot apparaat nooit meer komt; daarom zijn ruilen en terugbrengen mogelijk. Het gaat dus niet om klagen of om het stoppen met verkopen van stofzuigers."
+      },
+      {
+        "script": "A: En er is nog iets. Weet u dat wij met vrijwilligers werken?\nB: O, dus u wordt niet betaald?\nA: Ik wel, ik ben coördinator. Maar wij hebben achttien vrijwilligers, en een deel van hen werkt bij ons om weer aan het arbeidsleven te wennen. Sommigen stromen daarna door naar een betaalde baan.\nB: Dat is mooi werk.\nA: Ja, en de winst gaat naar een buurtproject voor kinderen. Dus wat u bij ons besteedt, blijft eigenlijk in de wijk.\nB: Weet u wat, ik kom zaterdag langs. Ik heb een tafel nodig, twee stoelen en een lamp.\nA: Prima. Vraagt u bij de kassa maar naar mij, dan loop ik een rondje met u mee. En neem een rolmaat mee, want dat vergeten mensen altijd.\nB: Goed idee. Mijn kamer is klein, dus dat moet precies passen.\nA: Dan meet u thuis eerst de ruimte op. Anders staat u zaterdag te gokken.",
+        "prompt": "Waarom vertelt Marleen Otten over de vrijwilligers en het buurtproject?",
+        "options": [
+          "Om duidelijk te maken dat het personeel geen loon krijgt",
+          "Om Naima Boulahfa te vragen zelf vrijwilliger te worden",
+          "Om te laten zien dat kopen bij de winkel anderen helpt"
+        ],
+        "correct": 2,
+        "explanation": "Marleen vertelt dat vrijwilligers zo weer aan werken wennen en dat de winst naar een buurtproject gaat, zodat het geld in de wijk blijft: een extra reden om bij haar te kopen. Zij wordt zelf wel betaald, dus het klopt niet dat niemand loon krijgt."
+      }
+    ]
+  },
+  {
+    "section": "instructief",
+    "cast": {
+      "A": "man_eric",
+      "B": "man_richard"
+    },
+    "title": "Veilig omgaan met een stekkerdoos",
+    "intro": "U gaat luisteren naar een gesprek tussen Jeroen Alberts en Abdel Bouazza. Jeroen Alberts is elektricien en legt uit hoe je een stekkerdoos veilig gebruikt. Abdel Bouazza heeft net een nieuwe kamer ingericht en stelt hem vragen.",
+    "speaker_a": "Jeroen Alberts",
+    "speaker_b": "Abdel Bouazza",
+    "opening": "A: Zo, Abdel, je wilde me iets vragen over die stekkerdozen van je?\nB: Ja, kijk, ik heb sinds vorige week een nieuwe kamer en daar zit maar één stopcontact in.\nA: Eén stopcontact voor de hele kamer? Dat hoor ik vaker, vooral in oudere huizen.\nB: Precies. En nu heb ik dus een stekkerdoos gekocht, maar mijn buurvrouw zei dat dat gevaarlijk kan zijn. Daar werd ik een beetje onrustig van.\nA: Nou, gevaarlijk hoeft het niet te zijn. Maar er zijn wel een paar dingen die je moet weten.",
+    "fragments": [
+      {
+        "script": "B: Waar begin ik dan? Bij het kopen?\nA: Ja, eigenlijk wel. Kijk, het eerste wat ik altijd zeg: let op het maximale vermogen. Dat staat op de doos of op een stickertje aan de kabel. Meestal is dat 3500 watt.\nB: Drieduizend vijfhonderd. En als ik daarboven kom?\nA: Dan wordt de kabel warm. En een warme kabel is het begin van de problemen. Dus je moet weten wat je apparaten gebruiken.\nB: Maar ik heb geen idee hoeveel mijn spullen gebruiken, eerlijk gezegd.\nA: Dat hoeft ook niet precies. Het gaat vooral om apparaten die warmte maken. Een waterkoker, een straalkachel, een strijkijzer, zo'n klein elektrisch kacheltje. Die trekken alleen al tussen de tweeduizend en drieduizend watt.\nB: Oei. En mijn laptop?\nA: Die kost bijna niks, een paar tientjes watt. Een telefoonlader ook. Dus als je alleen laptop, lamp en telefoon in de stekkerdoos hebt, zit je ruim onder de grens.",
+        "prompt": "Wat zegt Jeroen Alberts over het maximale vermogen van een stekkerdoos?",
+        "options": [
+          "Apparaten die warmte maken, gebruiken daar het meeste van",
+          "Je moet van elk apparaat het aantal watt precies opzoeken",
+          "Laptops en telefoonladers komen er samen snel boven"
+        ],
+        "correct": 0,
+        "explanation": "Jeroen zegt dat het vooral gaat om apparaten die warmte maken, zoals een waterkoker of kacheltje, omdat die tussen de tweeduizend en drieduizend watt gebruiken. Precies opzoeken hoeft juist niet, zegt hij letterlijk."
+      },
+      {
+        "script": "B: En dan die kabel. Ik heb er een gekocht van vijf meter, want mijn bureau staat aan de andere kant van de kamer.\nA: Vijf meter kan, maar dan moet je hem wel helemaal uitrollen.\nB: Uitrollen? Ik had hem juist opgerold achter het bureau gelegd, netjes.\nA: Ja, dat is logisch bedacht, maar het werkt tegen je. Een opgerolde kabel kan zijn warmte niet kwijt, doordat hij zichzelf insluit. Bij een zware belasting wordt hij dan van binnenuit heet.\nB: Dat wist ik niet. Dus netjes is hier niet veilig.\nA: Zo zou ik het wel zeggen, ja. En hetzelfde geldt voor onder een kleed leggen of achter een gordijn wegwerken. Ik kom regelmatig bij mensen waar de kabel onder de vloerbedekking ligt, en dan is die op één plek bruin geworden.\nB: Bruin?\nA: Verkleurd door de hitte. Dat is een waarschuwing. Zo'n kabel moet er dan uit, ook al werkt alles nog gewoon.",
+        "prompt": "Waarom moet je volgens Jeroen Alberts de kabel helemaal uitrollen?",
+        "options": [
+          "Anders blijft de warmte in de kabel zitten",
+          "Anders kun je de kabel niet goed controleren",
+          "Anders past de kabel niet achter het bureau"
+        ],
+        "correct": 0,
+        "explanation": "Jeroen legt uit dat een opgerolde kabel zijn warmte niet kwijt kan en van binnenuit heet wordt. Het controleren van de kabel komt wel aan de orde (de bruine plek), maar dat is niet de reden om hem uit te rollen."
+      },
+      {
+        "script": "B: Mag ik twee stekkerdozen achter elkaar zetten? Mijn vriend doet dat.\nA: Dat is nou precies wat je niet moet doen. Doorschakelen noemen we dat. Het lijkt handig, maar alle stroom gaat dan door één kabel en één stekker.\nB: Ook als ik er weinig in stop?\nA: Ook dan raad ik het af, want je verliest het overzicht. Voor je het weet hangt er een waterkoker achteraan en dan zit je in één keer over de grens.\nB: Wat moet ik dan doen? Ik heb echt te weinig plaatsen.\nA: Neem dan één stekkerdoos met meer contacten, bijvoorbeeld zes of acht. Dat kost misschien vijftien tot vijfentwintig euro, maar dan heb je één kabel en één beveiliging.\nB: Vijfentwintig euro vind ik best veel voor een verlengsnoer.\nA: Dat snap ik. Maar de goedkoopste van vier euro, daar zit vaak geen schakelaar op en dun kabelwerk. Op de lange termijn ben je met een degelijke doos beter uit.\nB: Oké, dat is een eerlijk verhaal.",
+        "prompt": "Wat is het bezwaar van Jeroen Alberts tegen twee stekkerdozen achter elkaar?",
+        "options": [
+          "Dat kost uiteindelijk meer geld dan één grote doos",
+          "Je weet niet meer hoeveel er in totaal aan hangt",
+          "Zulke stekkerdozen hebben geen eigen schakelaar"
+        ],
+        "correct": 1,
+        "explanation": "Jeroen zegt dat je bij doorschakelen het overzicht verliest en zo ongemerkt boven de grens komt. De schakelaar noemt hij later, maar dan als nadeel van de héél goedkope stekkerdozen."
+      },
+      {
+        "script": "A: En dan is er nog iets waar bijna niemand aan denkt: de plek waar je hem legt.\nB: Op de grond is niet goed?\nA: Op de grond kan, als het droog is en er niet iedere dag iemand overheen stapt. Maar in de keuken of in de badkamer wordt het anders. Water en stroom, dat is geen goede combinatie.\nB: Ik heb hem nu wel bij de gootsteen liggen, want daar staat de waterkoker.\nA: Dat zou ik veranderen. Een spatje water is al genoeg. En let ook op stof: een stekkerdoos die jaren achter een kast ligt, zit vol met stof en pluizen.\nB: Is stof dan gevaarlijk?\nA: Stof geleidt niet, maar het houdt warmte vast en het kan gaan branden als er vonken komen. Dus ik zeg altijd: haal hem twee keer per jaar even naar voren en maak hem schoon met een droge doek.\nB: Droog, niet nat.\nA: Nooit nat, en altijd eerst de stekker eruit.",
+        "prompt": "Wat raadt Jeroen Alberts Abdel Bouazza aan over de plek van zijn stekkerdoos?",
+        "options": [
+          "Hem nooit los op de vloer van de kamer laten liggen",
+          "Hem twee keer per jaar met een vochtige doek schoonmaken",
+          "Hem van de keukenkant weghalen bij de waterkoker"
+        ],
+        "correct": 2,
+        "explanation": "Abdel zegt dat de stekkerdoos bij de gootsteen ligt en Jeroen antwoordt dat hij dat zou veranderen, omdat een spatje water al genoeg is. Op de grond mag wel, als het droog is, en schoonmaken moet juist met een droge doek."
+      },
+      {
+        "script": "B: Ik heb er een gekocht met een knopje erop, met zo'n lampje.\nA: Dat is een schakelaar. Handig, want dan kun je apparaten echt uitzetten zonder de stekkers eruit te trekken.\nB: Scheelt dat in de energierekening?\nA: Een beetje. Apparaten die op stand-by staan, verbruiken samen misschien twintig tot dertig euro per jaar. Niet enorm, maar het is meegenomen.\nB: En zo'n doos met overspanningsbeveiliging, was dat iets voor mij? Dat werd in de winkel aangeboden.\nA: Nou, kijk. Die beschermt je apparaten tegen een plotselinge piek in de spanning, bijvoorbeeld bij onweer. Dat kost een paar tientjes extra.\nB: Is dat nodig?\nA: Nodig is een groot woord. Voor een lamp hoeft het niet. Maar als je een duurdere computer hebt met werk erop, dan vind ik het verstandig. Ik heb het zelf ook, moet ik zeggen, omdat ik één keer een modem heb verloren bij een onweersbui. Dat was zonde.\nB: Dan denk ik er nog even over.",
+        "prompt": "Wat vindt Jeroen Alberts van een stekkerdoos met overspanningsbeveiliging?",
+        "options": [
+          "Die is voor iedereen met een computer eigenlijk verplicht",
+          "Die is vooral zinvol als je waardevolle apparatuur gebruikt",
+          "Die verdient zich terug door een lagere energierekening"
+        ],
+        "correct": 1,
+        "explanation": "Jeroen zegt dat het voor een lamp niet hoeft, maar dat hij het verstandig vindt bij een duurdere computer met werk erop. Verplicht noemt hij het niet; de energiebesparing hoort bij de schakelaar, niet bij de beveiliging."
+      },
+      {
+        "script": "B: Even kijken of ik het goed heb. Uitrollen, niet doorschakelen, weg bij het water en af en toe schoonmaken.\nA: Dat is de kern, ja. En nog één ding: vertrouw op wat je ruikt en voelt. Als een stekker warm aanvoelt of als je iets ruikt dat naar plastic lijkt, trek hem er dan uit en gebruik hem niet meer.\nB: Ook als hij het nog doet?\nA: Ook dan. Zo'n doos heeft van binnen schade, dat zie je niet. Weggooien en een nieuwe kopen, dat is vijftien euro. En breng de oude naar de winkel of de milieustraat, niet bij het gewone afval.\nB: Helder. En als ik écht meer stopcontacten wil in die kamer?\nA: Dan kun je er een laten bijmaken. Voor één extra stopcontact ben ik ongeveer twee uur bezig, dus reken op honderd tot honderdvijftig euro. Maar dat moet je wel eerst met je verhuurder overleggen, want je mag niet zomaar in de muren werken.\nB: Ik zal het hem vragen. Bedankt, Jeroen, ik weet nu wat ik moet doen.",
+        "prompt": "Waar stuurt Abdel Bouazza het gesprek aan het eind naartoe?",
+        "options": [
+          "Naar de mogelijkheid om een stopcontact te laten plaatsen",
+          "Naar de regels voor het weggooien van oude apparaten",
+          "Naar de vraag hoeveel een nieuwe stekkerdoos kost"
+        ],
+        "correct": 0,
+        "explanation": "Abdel vraagt wat hij kan doen als hij echt meer stopcontacten in de kamer wil, waarna Jeroen over het bijplaatsen en de kosten praat. Het weggooien en de prijs van een nieuwe doos noemt Jeroen zelf, vóór die vraag."
+      }
+    ]
+  },
+  {
+    "section": "informatief",
+    "cast": {
+      "A": "woman_older",
+      "B": "man_older"
+    },
+    "title": "Werken en leren in de kinderopvang",
+    "intro": "U gaat luisteren naar een gesprek tussen Ilse Terhorst en Tom Wagenaar. Ilse Terhorst maakt gesprekken voor het personeelsblad van een kinderopvangorganisatie. Tom Wagenaar werkt als pedagogisch medewerker en volgt daarnaast een bbl-opleiding.",
+    "speaker_a": "Ilse Terhorst",
+    "speaker_b": "Tom Wagenaar",
+    "opening": "A: Tom, fijn dat je even tijd hebt. Je bent net klaar met je dienst, hè?\nB: Ja, klopt. De laatste kinderen zijn om half zes opgehaald, dus nu is het rustig.\nA: Mooi. Ik wil het met je hebben over je opleiding, want je doet een bbl-traject.\nB: Dat klopt, ja. Ik werk vier dagen op de groep en één dag zit ik in de schoolbanken.\nA: En dat bevalt?\nB: Nou, over het algemeen wel. Maar het is zwaarder dan ik van tevoren dacht, dat moet ik er eerlijk bij zeggen.",
+    "fragments": [
+      {
+        "script": "A: Laten we bij het begin beginnen. Wat deed je voordat je hier kwam werken?\nB: Ik werkte zes jaar in een supermarkt, als afdelingsmanager. Prima werk hoor, ik verdiende niet slecht.\nA: Maar toch ben je overgestapt.\nB: Ja, kijk, het punt was dit: ik wist precies hoe mijn dag eruit zou zien. Elke dag hetzelfde. En dat gaf me een onrustig gevoel, want ik ben pas achtentwintig.\nA: Dus je zocht iets met meer afwisseling?\nB: Dat speelde mee, maar het belangrijkste was iets anders. Mijn zus heeft een zoontje met een taalachterstand, en ik zag wat de juffen op zijn opvang met hem deden. Hoe geduldig dat ging. Toen dacht ik: dát wil ik ook kunnen.\nA: Dus eigenlijk was het een voorbeeld dat je over de streep trok.\nB: Precies. Anders had ik het misschien nooit gedurfd, want ik had geen enkele ervaring met kleine kinderen.",
+        "prompt": "Waarom besloot Tom Wagenaar ander werk te gaan zoeken?",
+        "options": [
+          "Doordat hij bij zijn neefje zag wat pedagogisch medewerkers kunnen betekenen",
+          "Omdat hij als afdelingsmanager te veel verantwoordelijkheid had",
+          "Omdat hij in de supermarkt te weinig verdiende voor zijn leeftijd"
+        ],
+        "correct": 0,
+        "explanation": "Tom noemt de afwisseling wel, maar zegt erbij dat het belangrijkste het voorbeeld van zijn neefje en de juffen was. Dat hij te weinig verdiende klopt niet: hij zegt juist dat hij niet slecht verdiende."
+      },
+      {
+        "script": "A: En hoe kwam je dan bij een bbl-opleiding terecht?\nB: Ik ben eerst naar een open dag geweest van het regionale opleidingscentrum. Daar legden ze uit dat je twee wegen hebt. Of je gaat voltijd naar school en je loopt stage, of je doet bbl.\nA: En bbl betekent dan precies wat?\nB: Beroepsbegeleidende leerweg. Je hebt een echte baan met een echt contract, en je gaat één dag per week naar school. Je krijgt dus salaris, geen stagevergoeding.\nA: Dat scheelt nogal, denk ik.\nB: Dat was voor mij doorslaggevend. Ik heb een huurwoning en een auto die ik moet afbetalen. Ik kon het me gewoon niet permitteren om twee jaar op een stagevergoeding te leven.\nA: Was er verder nog een verschil dat je aansprak?\nB: Ja, ik leer beter door te doen dan door te lezen. Op school had ik daar vroeger al moeite mee. Maar eerlijk is eerlijk: het geld gaf de doorslag.",
+        "prompt": "Waarom koos Tom voor de beroepsbegeleidende leerweg?",
+        "options": [
+          "Omdat hij dan meteen een vast contract kreeg aangeboden",
+          "Omdat hij dan salaris kreeg en zijn vaste lasten kon betalen",
+          "Omdat hij liever leert door dingen zelf te doen"
+        ],
+        "correct": 1,
+        "explanation": "Tom zegt dat het geld doorslaggevend was, omdat hij huur en een auto moet betalen. Dat hij beter leert door te doen noemt hij wel, maar dat was niet de belangrijkste reden."
+      },
+      {
+        "script": "A: Hoe ben je toen aan deze baan gekomen?\nB: Ik heb een brief gestuurd en ben uitgenodigd voor een gesprek. Dat viel me niet mee, hoor.\nA: Hoezo?\nB: Nou, ik dacht: ik ben achtentwintig, ik heb leidinggegeven, dat wordt niks. Maar de eerste vraag was: kunt u vertellen hoe u reageert als een kind van twee een half uur lang huilt? Daar had ik geen antwoord op.\nA: En toch ben je aangenomen.\nB: Ja, ze zeiden achteraf dat ze het juist goed vonden dat ik eerlijk zei dat ik het niet wist. Ze zoeken mensen die willen leren, niet mensen die doen alsof ze alles kunnen.\nA: Wat voor contract heb je gekregen?\nB: Een leerarbeidsovereenkomst voor de duur van de opleiding, dus drie jaar. Met een proeftijd van twee maanden. En daarin staat ook: als ik de opleiding niet afmaak, stopt het contract.\nA: Dat is best een harde voorwaarde.\nB: Ja, maar wel logisch, vind ik. Ze investeren ook in mij.",
+        "prompt": "Waarom werd Tom volgens hem aangenomen?",
+        "options": [
+          "Omdat hij eerder had leidinggegeven aan een team",
+          "Omdat hij goed antwoord gaf op de vragen over kinderen",
+          "Omdat hij open toegaf dat hij iets nog niet wist"
+        ],
+        "correct": 2,
+        "explanation": "Tom zegt dat ze het juist goed vonden dat hij eerlijk toegaf dat hij geen antwoord had. Zijn ervaring als leidinggevende noemt hij alleen als reden waarom hij dacht dat het niets zou worden."
+      },
+      {
+        "script": "A: Laten we het eens over de praktijk hebben. Hoe ziet zo'n week er nu uit?\nB: Maandag tot en met donderdag sta ik op de babygroep, van half acht tot half zes. Vrijdag heb ik school, van negen tot vier.\nA: Dat is een volle week.\nB: Zeker. En dan komt het huiswerk er nog bij. Ik moet opdrachten maken die over mijn eigen werk gaan, dus ik moet situaties opschrijven en daarop terugkijken.\nA: Hoeveel tijd kost dat ongeveer?\nB: Ze zeggen zes uur per week. Bij mij is het eerder acht of negen, want ik schrijf traag. Dus mijn zaterdagochtend is vast bezet.\nA: Hoe gaat je vriendin daarmee om?\nB: Die is er wel klaar mee soms, ja. We hebben afgesproken dat de zondag echt vrij is, wat er ook gebeurt. Anders houd je het niet vol, denk ik. Dat is wel iets wat ze op de open dag niet zo duidelijk vertellen.",
+        "prompt": "Hoeveel tijd is Tom per week aan huiswerk kwijt?",
+        "options": [
+          "Minder dan de school aangeeft",
+          "Ongeveer zes uur",
+          "Twee tot drie uur meer dan gezegd wordt"
+        ],
+        "correct": 2,
+        "explanation": "De school rekent op zes uur, maar Tom zegt dat het bij hem eerder acht of negen uur is. Zes uur is dus de norm van de school, niet zijn eigen tijd."
+      },
+      {
+        "script": "A: En het salaris? Mag ik daarnaar vragen?\nB: Ja hoor, daar doe ik niet geheimzinnig over. Ik zit in de cao kinderopvang, in een aparte schaal voor leerlingen. Ik begon met ongeveer veertienhonderd euro bruto per maand.\nA: Dat is minder dan in de supermarkt.\nB: Veel minder, ja. Ik ging er zo'n vijfhonderd euro op achteruit. Dat was even slikken.\nA: Hoe heb je dat opgevangen?\nB: We hebben de auto kleiner gemaakt en we gaan nu één keer per jaar weg in plaats van twee keer. En ik betaal mijn boeken zelf, dat is ongeveer driehonderd euro per jaar.\nA: Betaalt de werkgever dat niet?\nB: Het lesgeld wel, de boeken niet. Dat staat in de regeling. Maar het salaris gaat elk leerjaar omhoog, en als ik straks gediplomeerd ben, kom ik in de gewone schaal. Dan zit ik er ongeveer weer op het oude niveau.\nA: Dus je hebt vooral geduld nodig.\nB: Dat is precies het woord.",
+        "prompt": "Wat betaalt Tom zelf?",
+        "options": [
+          "Het lesgeld van de opleiding",
+          "Zijn boeken én een deel van het lesgeld",
+          "Zijn boeken, ongeveer driehonderd euro per jaar"
+        ],
+        "correct": 2,
+        "explanation": "Tom zegt dat de werkgever het lesgeld betaalt, maar de boeken niet; die kosten hem ongeveer driehonderd euro per jaar."
+      },
+      {
+        "script": "A: Is er ook iets echt tegengevallen?\nB: Ja. De combinatie van leren en werken op dezelfde plek. Op school zeggen ze: je moet een kind de ruimte geven om zelf een oplossing te zoeken. En op de groep staan er acht baby's en gaat de bel.\nA: Dus de theorie past niet altijd bij de praktijk.\nB: Zo bedoel ik het niet helemaal. De theorie klopt wel, maar je hebt er tijd voor nodig. En die tijd is er niet altijd. In het begin maakte me dat onzeker, want ik dacht: doe ik het dan verkeerd?\nA: Heb je dat besproken?\nB: Met mijn werkbegeleider, ja. Zij zei: kies één moment per dag uit waarop je het wél op die manier doet. Niet de hele dag, één moment. Dat hielp enorm.\nA: Dat klinkt als een verstandig advies.\nB: Het haalde de druk eraf. Je hoeft niet meteen perfect te zijn, je moet vooruitgaan.",
+        "prompt": "Wat bedoelt Tom als hij zegt dat de theorie wel klopt?",
+        "options": [
+          "Dat de opleiding te weinig aandacht besteedt aan de praktijk",
+          "Dat hij het geleerde niet altijd meteen kan toepassen door tijdgebrek",
+          "Dat wat hij op school leert in de praktijk niet werkt"
+        ],
+        "correct": 1,
+        "explanation": "Tom corrigeert de interviewer: hij vindt de theorie juist goed, maar er is op de groep niet altijd tijd voor. Dat de theorie niet werkt, zegt hij dus uitdrukkelijk niet."
+      },
+      {
+        "script": "A: We zijn bijna rond. Wat zou je zeggen tegen iemand die hetzelfde overweegt?\nB: Ga eerst een dag meelopen. Echt, een hele dag, van 's ochtends vroeg tot het eind. Niet twee uurtjes.\nA: Waarom is dat zo belangrijk?\nB: Omdat je dan de rommelige momenten meemaakt. Het ophalen, de conflicten, een kind dat overgeeft. Als je alleen komt kijken tijdens het buitenspelen, zie je het mooie plaatje. Dat zegt niks.\nA: En als iemand dan nog steeds enthousiast is?\nB: Dan zou ik zeggen: doe het. Maar reken erop dat je de eerste twee jaar weinig vrije tijd hebt. Dat is de eerlijke boodschap. Ik ben blij dat ik het doe, maar ik ben het niet gaan doen omdat het makkelijk leek.\nA: Zou je zelf dezelfde keuze weer maken?\nB: Ja. Alleen zou ik eerder beginnen. Ik heb zes jaar getwijfeld, en dat was zonde.",
+        "prompt": "Wat raadt Tom anderen vooral aan?",
+        "options": [
+          "Een volledige werkdag meelopen voordat je kiest",
+          "Niet te lang wachten met het nemen van een besluit",
+          "Vooraf goed nadenken over je vrije tijd"
+        ],
+        "correct": 0,
+        "explanation": "Op de vraag wat hij anderen zou zeggen, noemt Tom als eerste en belangrijkste tip: loop eerst een hele dag mee. Dat hij eerder had willen beginnen zegt hij pas aan het eind over zichzelf."
+      }
+    ]
+  }
+]

@@ -1,0 +1,230 @@
+{
+  "items": [
+    {
+      "kind": "uitleg",
+      "tier": null,
+      "explanation": null,
+      "payload": {
+        "body_html": "<p>Met een betrekkelijk voornaamwoord zeg je meer over een persoon of een ding dat je net genoemd hebt. Je kiest <strong>die</strong> bij de-woorden en bij meervoud, en <strong>dat</strong> bij het-woorden. Het werkwoord komt in zo'n bijzin altijd achteraan. Let goed op: het woord vlak vóór <em>die</em> of <em>dat</em> vertelt je naar wie of wat de zin verwijst.</p>",
+        "cards": [
+          {
+            "label": "DE-WOORD EN MEERVOUD",
+            "example_html": "De brief <mark>die</mark> ik gisteren kreeg, komt van de gemeente."
+          },
+          {
+            "label": "HET-WOORD",
+            "example_html": "Het formulier <mark>dat</mark> u invult, moet voor 1 maart binnen zijn."
+          }
+        ]
+      }
+    },
+    {
+      "kind": "uitleg",
+      "tier": null,
+      "explanation": null,
+      "payload": {
+        "body_html": "<p>Soms hoort er een voorzetsel bij, bijvoorbeeld <em>met</em>, <em>over</em> of <em>voor</em>. Gaat het over een <strong>persoon</strong>, dan gebruik je het voorzetsel plus <strong>wie</strong>. Gaat het over een <strong>ding</strong>, dan plak je het voorzetsel vast aan <strong>waar</strong>: waarover, waarmee, waarvoor. Na <em>alles</em>, <em>iets</em>, <em>niets</em> en <em>het enige</em> gebruik je <strong>wat</strong>.</p>",
+        "cards": [
+          {
+            "label": "PERSOON",
+            "example_html": "De medewerker <mark>met wie</mark> ik sprak, beloofde mij een antwoord."
+          },
+          {
+            "label": "DING",
+            "example_html": "Het product <mark>waarover</mark> ik klaag, is al twee keer kapotgegaan."
+          },
+          {
+            "label": "NA ALLES, IETS, NIETS",
+            "example_html": "Alles <mark>wat</mark> je nodig hebt, staat op onze website."
+          }
+        ]
+      }
+    },
+    {
+      "kind": "voorbeeld",
+      "tier": null,
+      "explanation": null,
+      "payload": {
+        "sentence_html": "De buurvrouw <mark>die naast mij woont</mark>, heeft een klacht over de lift ingediend."
+      }
+    },
+    {
+      "kind": "voorbeeld",
+      "tier": null,
+      "explanation": null,
+      "payload": {
+        "sentence_html": "Het besluit <mark>waartegen u bezwaar maakt</mark>, is op 12 april verstuurd."
+      }
+    },
+    {
+      "kind": "mcq",
+      "tier": 0,
+      "explanation": "Het woord vóór 'dat' is 'het rapport', een het-woord. Bij een het-woord hoort 'dat'.",
+      "options": [
+        {
+          "label": "A",
+          "body": "de directeur",
+          "is_correct": false
+        },
+        {
+          "label": "B",
+          "body": "het rapport",
+          "is_correct": true
+        },
+        {
+          "label": "C",
+          "body": "de collega's",
+          "is_correct": false
+        }
+      ],
+      "payload": {
+        "prompt": "Lees de zin: 'De directeur besprak met de collega's het rapport dat vorige week verscheen.' Naar welk woord verwijst <strong>dat</strong>?"
+      }
+    },
+    {
+      "kind": "mcq",
+      "tier": 0,
+      "explanation": "Het gaat om een persoon (de arts), dus gebruik je voorzetsel + wie: 'bij wie'. 'Waarbij' hoort bij dingen.",
+      "options": [
+        {
+          "label": "A",
+          "body": "De arts waarbij ik onder behandeling ben, werkt in het ziekenhuis.",
+          "is_correct": false
+        },
+        {
+          "label": "B",
+          "body": "De arts bij wie ik onder behandeling ben, werkt in het ziekenhuis.",
+          "is_correct": true
+        },
+        {
+          "label": "C",
+          "body": "De arts dat ik onder behandeling ben, werkt in het ziekenhuis.",
+          "is_correct": false
+        }
+      ],
+      "payload": {
+        "prompt": "Welke zin is correct geschreven?"
+      }
+    },
+    {
+      "kind": "gap_choice",
+      "tier": 1,
+      "explanation": "'De regeling' is een de-woord, dus kies je 'die'. Het werkwoord 'geldt' staat netjes achteraan in de bijzin.",
+      "payload": {
+        "sentence": "De regeling ___ sinds januari geldt, is bedoeld voor huurders met een laag inkomen.",
+        "choices": [
+          "die",
+          "dat",
+          "wat"
+        ],
+        "answer": "die"
+      }
+    },
+    {
+      "kind": "gap_choice",
+      "tier": 1,
+      "explanation": "Na 'alles', 'iets' en 'niets' gebruik je 'wat', nooit 'dat'.",
+      "payload": {
+        "sentence": "Alles ___ u in het formulier invult, blijft vertrouwelijk.",
+        "choices": [
+          "dat",
+          "wat",
+          "die"
+        ],
+        "answer": "wat"
+      }
+    },
+    {
+      "kind": "gap_choice",
+      "tier": 1,
+      "explanation": "Het gaat over een ding (het apparaat), dus plak je het voorzetsel aan 'waar': waarmee. 'Met wie' gebruik je alleen bij personen.",
+      "payload": {
+        "sentence": "Het apparaat ___ ik de meterstand opneem, is kapot.",
+        "choices": [
+          "met wie",
+          "waarmee",
+          "dat"
+        ],
+        "answer": "waarmee"
+      }
+    },
+    {
+      "kind": "matchen",
+      "tier": 1,
+      "explanation": "Je kijkt eerst of het een de-woord, een het-woord, een persoon of een ding is; daarna kies je de vorm.",
+      "payload": {
+        "instruction": "Welk betrekkelijk voornaamwoord hoort bij dit begin van de zin?",
+        "pairs": [
+          {
+            "left": "het contract ___ ik tekende",
+            "right": "dat"
+          },
+          {
+            "left": "de ambtenaar aan ___ ik het vroeg",
+            "right": "wie"
+          },
+          {
+            "left": "niets ___ hij zei",
+            "right": "wat"
+          },
+          {
+            "left": "de formulieren ___ zijn opgestuurd",
+            "right": "die"
+          },
+          {
+            "left": "de subsidie ___ wij recht op hebben",
+            "right": "waar (waarop)"
+          }
+        ]
+      }
+    },
+    {
+      "kind": "gap_type",
+      "tier": 2,
+      "explanation": "'De medewerkers' is meervoud, dus gebruik je 'die'. Bij meervoud kies je nooit 'dat'.",
+      "payload": {
+        "sentence": "De medewerkers ___ 's avonds werken, krijgen een extra toeslag.",
+        "answer": "die"
+      }
+    },
+    {
+      "kind": "woordorde",
+      "tier": 2,
+      "explanation": "Na 'de brief' volgt 'die' en daarna de bijzin, met het werkwoord 'ontving' helemaal achteraan.",
+      "payload": {
+        "instruction": "Zet de woorden in de juiste volgorde. Begin met 'De brief'.",
+        "tokens": [
+          "ontving",
+          "De",
+          "die",
+          "brief",
+          "gisteren",
+          "ik"
+        ],
+        "answer": [
+          "De",
+          "brief",
+          "die",
+          "ik",
+          "gisteren",
+          "ontving"
+        ]
+      }
+    },
+    {
+      "kind": "open_zin",
+      "tier": 2,
+      "explanation": "Je oefent met voorzetsel + wie bij een persoon en zet het werkwoord achteraan in de bijzin.",
+      "payload": {
+        "prompt": "Je schrijft een klacht aan een organisatie. Maak één zin over de medewerker die jou te woord stond. Gebruik 'met wie'.",
+        "model_answer": "De medewerker met wie ik op 3 oktober sprak, beloofde mij binnen een week een reactie.",
+        "checklist": [
+          "Er staat 'met wie', niet 'waarmee' of 'die'.",
+          "Het werkwoord van de bijzin staat achteraan, vóór de komma.",
+          "De zin gaat over één persoon."
+        ]
+      }
+    }
+  ],
+  "what_you_learn": "Na deze les begrijp je zinnen waarin met die, dat, wie, wat of waar iets extra's over een persoon of ding wordt gezegd. Je kiest zelf de juiste vorm: die bij de-woorden en meervoud, dat bij het-woorden, voorzetsel + wie bij personen en waar + voorzetsel bij dingen. Ook zie je snel naar wie of wat de bijzin verwijst, en je zet het werkwoord achteraan."
+}

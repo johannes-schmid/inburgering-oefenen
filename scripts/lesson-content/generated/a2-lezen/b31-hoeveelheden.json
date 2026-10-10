@@ -1,0 +1,231 @@
+{
+  "items": [
+    {
+      "kind": "uitleg",
+      "tier": null,
+      "explanation": null,
+      "payload": {
+        "body_html": "<p>In folders en mededelingen staan woorden die een getal preciezer maken. <strong>Minstens</strong> (of <strong>minimaal</strong>) betekent: niet minder. Het mag wel meer zijn. <strong>Maximaal</strong> (of <strong>hoogstens</strong>) betekent: niet meer. Het mag wel minder zijn.</p><p>Let goed op: <em>minstens tien</em> is iets heel anders dan <em>maximaal tien</em>.</p>",
+        "cards": [
+          {
+            "label": "MINSTENS = NIET MINDER",
+            "example_html": "Je moet <mark>minstens</mark> 10 euro betalen. Dus 10, 12 of 20 euro is goed. 8 euro is te weinig."
+          },
+          {
+            "label": "MAXIMAAL = NIET MEER",
+            "example_html": "Je mag <mark>maximaal</mark> 10 euro betalen. Dus 10, 8 of 5 euro is goed. 12 euro is te veel."
+          }
+        ]
+      }
+    },
+    {
+      "kind": "uitleg",
+      "tier": null,
+      "explanation": null,
+      "payload": {
+        "body_html": "<p>Andere woorden over hoeveelheid kom je ook vaak tegen. <strong>Ongeveer</strong> betekent: bijna precies, een beetje meer of minder. <strong>Allebei</strong> betekent: de twee samen. <strong>De helft</strong> is de ene van twee gelijke delen.</p><p>Vergelijk je twee dingen, dan gebruik je <strong>meer</strong>, <strong>minder</strong> of <strong>evenveel</strong>.</p>",
+        "cards": [
+          {
+            "label": "ONGEVEER",
+            "example_html": "De bus komt <mark>ongeveer</mark> om 9 uur. Dus 8.55 uur of 9.05 uur."
+          },
+          {
+            "label": "DE HELFT",
+            "example_html": "De jas kost 40 euro. Nu betaal je <mark>de helft</mark>: 20 euro."
+          }
+        ]
+      }
+    },
+    {
+      "kind": "voorbeeld",
+      "tier": null,
+      "explanation": null,
+      "payload": {
+        "sentence_html": "Je moet <mark>minstens</mark> 18 jaar zijn om deze cursus te volgen."
+      }
+    },
+    {
+      "kind": "voorbeeld",
+      "tier": null,
+      "explanation": null,
+      "payload": {
+        "sentence_html": "In de wachtkamer mogen <mark>maximaal</mark> acht mensen zitten."
+      }
+    },
+    {
+      "kind": "mcq",
+      "tier": 0,
+      "explanation": "Minstens betekent: niet minder. Vier personen is te weinig, want er moeten er vijf of meer zijn.",
+      "options": [
+        {
+          "label": "A",
+          "body": "Er mogen hoogstens vijf personen mee.",
+          "is_correct": false
+        },
+        {
+          "label": "B",
+          "body": "Er moeten vijf personen of meer zijn.",
+          "is_correct": true
+        },
+        {
+          "label": "C",
+          "body": "Er mogen precies vier personen mee.",
+          "is_correct": false
+        }
+      ],
+      "payload": {
+        "prompt": "In een folder staat: \"Een groepskaart geldt voor minstens vijf personen.\" Wat betekent dat?"
+      }
+    },
+    {
+      "kind": "mcq",
+      "tier": 0,
+      "explanation": "Maximaal betekent: niet meer. Twee weken mag wel, want dat is minder dan drie weken.",
+      "options": [
+        {
+          "label": "A",
+          "body": "Je moet het boek drie weken houden.",
+          "is_correct": false
+        },
+        {
+          "label": "B",
+          "body": "Je mag het boek drie weken of langer houden.",
+          "is_correct": false
+        },
+        {
+          "label": "C",
+          "body": "Je mag het boek niet langer dan drie weken houden.",
+          "is_correct": true
+        },
+        {
+          "label": "D",
+          "body": "Je mag het boek maar één dag houden.",
+          "is_correct": false
+        }
+      ],
+      "payload": {
+        "prompt": "In de bibliotheek staat: \"U mag een boek maximaal drie weken lenen.\" Wat betekent dat?"
+      }
+    },
+    {
+      "kind": "gap_choice",
+      "tier": 1,
+      "explanation": "Er mogen niet meer dan twee kinderen bij, dus je gebruikt maximaal.",
+      "payload": {
+        "sentence": "Op de speelmiddag mogen er ___ twee kinderen per ouder mee. Drie kinderen is te veel.",
+        "choices": [
+          "minstens",
+          "maximaal",
+          "ongeveer"
+        ],
+        "answer": "maximaal"
+      }
+    },
+    {
+      "kind": "gap_choice",
+      "tier": 1,
+      "explanation": "Minder dan 25 euro mag niet, dus je moet minstens 25 euro uitgeven.",
+      "payload": {
+        "sentence": "Bij bestellingen betaal je geen verzendkosten als je ___ 25 euro uitgeeft.",
+        "choices": [
+          "maximaal",
+          "hoogstens",
+          "minstens"
+        ],
+        "answer": "minstens"
+      }
+    },
+    {
+      "kind": "gap_choice",
+      "tier": 1,
+      "explanation": "Het getal is niet precies: het kan een beetje meer of minder zijn. Dan gebruik je ongeveer.",
+      "payload": {
+        "sentence": "Het gesprek bij de gemeente duurt ___ twintig minuten, soms iets korter.",
+        "choices": [
+          "ongeveer",
+          "minimaal",
+          "evenveel"
+        ],
+        "answer": "ongeveer"
+      }
+    },
+    {
+      "kind": "matchen",
+      "tier": 1,
+      "explanation": "Elk woord geeft een andere grens aan: niet minder, niet meer, bijna precies, de twee samen of de helft van het bedrag.",
+      "payload": {
+        "instruction": "Zoek bij elk woord de juiste uitleg.",
+        "pairs": [
+          {
+            "left": "minimaal 4 uur",
+            "right": "niet minder dan 4 uur"
+          },
+          {
+            "left": "hoogstens 4 uur",
+            "right": "niet meer dan 4 uur"
+          },
+          {
+            "left": "ongeveer 4 uur",
+            "right": "bijna 4 uur, iets meer of minder"
+          },
+          {
+            "left": "allebei de formulieren",
+            "right": "de twee formulieren samen"
+          },
+          {
+            "left": "de helft van 40 euro",
+            "right": "20 euro"
+          }
+        ]
+      }
+    },
+    {
+      "kind": "gap_type",
+      "tier": 2,
+      "explanation": "Je mag niet meer dan één uur parkeren, dus je vult maximaal in (hoogstens mag ook).",
+      "payload": {
+        "sentence": "Op dit plein mag je ___ één uur parkeren. Na één uur krijg je een boete.",
+        "answer": "maximaal"
+      }
+    },
+    {
+      "kind": "woordorde",
+      "tier": 2,
+      "explanation": "De zin begint met het onderwerp, daarna het werkwoord, en minstens staat vlak voor het getal.",
+      "payload": {
+        "instruction": "Zet de woorden in de goede volgorde.",
+        "tokens": [
+          "minstens",
+          "je",
+          "drie",
+          "moet",
+          "dagen",
+          "wachten"
+        ],
+        "answer": [
+          "je",
+          "moet",
+          "minstens",
+          "drie",
+          "dagen",
+          "wachten"
+        ]
+      }
+    },
+    {
+      "kind": "open_zin",
+      "tier": 2,
+      "explanation": "Je laat zien dat je het verschil kent: bij minstens mag het meer zijn, bij maximaal mag het minder zijn.",
+      "payload": {
+        "prompt": "In een folder van de sportschool staat: \"U betaalt minstens 20 euro per maand.\" In een andere folder staat: \"U betaalt maximaal 20 euro per maand.\" Leg in twee zinnen uit wat het verschil is.",
+        "model_answer": "Bij minstens 20 euro betaal je 20 euro of meer, bijvoorbeeld 25 euro. Bij maximaal 20 euro betaal je 20 euro of minder, bijvoorbeeld 15 euro.",
+        "checklist": [
+          "Ik schrijf bij minstens dat het meer mag zijn.",
+          "Ik schrijf bij maximaal dat het minder mag zijn.",
+          "Ik gebruik in allebei de zinnen een bedrag in euro's."
+        ]
+      }
+    }
+  ],
+  "what_you_learn": "Je leert woorden begrijpen die een hoeveelheid preciezer maken, zoals minstens, minimaal, maximaal, hoogstens en ongeveer. Je ziet het verschil tussen minstens tien en maximaal tien. Zo weet je bij een folder of mededeling of iets mag of niet mag."
+}

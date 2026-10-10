@@ -1,0 +1,210 @@
+{
+  "items": [
+    {
+      "kind": "uitleg",
+      "tier": null,
+      "explanation": null,
+      "payload": {
+        "body_html": "<p>Sommige werkwoorden bestaan uit twee delen, bijvoorbeeld <strong>terugbellen</strong>, <strong>opbellen</strong> en <strong>invullen</strong>. In een hoofdzin laat je die delen los van elkaar: het eerste deel (<em>terug</em>, <em>op</em>, <em>in</em>) schuift helemaal naar achteren. Daardoor staat het soms ver van het vervoegde werkwoord, met tijd- en plaatswoorden ertussen. In een bijzin, en ook na <em>willen</em>, <em>kunnen</em> of <em>moeten</em>, staan de twee delen weer netjes aan elkaar.</p>",
+        "cards": [
+          {
+            "label": "HOOFDZIN: VER UIT ELKAAR",
+            "example_html": "Ik <mark>bel</mark> u morgen na de vergadering even <mark>terug</mark>."
+          },
+          {
+            "label": "BIJZIN: AAN ELKAAR",
+            "example_html": "De medewerker zegt dat hij u morgen even <mark>terugbelt</mark>."
+          },
+          {
+            "label": "MET WILLEN/KUNNEN/MOETEN: AAN ELKAAR",
+            "example_html": "Ik <mark>wil</mark> u morgen graag <mark>terugbellen</mark>."
+          }
+        ]
+      }
+    },
+    {
+      "kind": "voorbeeld",
+      "tier": null,
+      "explanation": null,
+      "payload": {
+        "sentence_html": "De gemeente <mark>stuurt</mark> uw aanvraag binnen tien werkdagen <mark>door</mark> naar de afdeling Werk en Inkomen."
+      }
+    },
+    {
+      "kind": "voorbeeld",
+      "tier": null,
+      "explanation": null,
+      "payload": {
+        "sentence_html": "In de brief staat dat de gemeente uw aanvraag binnen tien werkdagen <mark>doorstuurt</mark>."
+      }
+    },
+    {
+      "kind": "mcq",
+      "tier": 0,
+      "explanation": "De delen 'neemt' en 'op' horen bij één werkwoord: opnemen. In de hoofdzin staan ze ver uit elkaar, met tijd en plaats ertussen.",
+      "options": [
+        {
+          "label": "A",
+          "body": "nemen",
+          "is_correct": false
+        },
+        {
+          "label": "B",
+          "body": "opnemen",
+          "is_correct": true
+        },
+        {
+          "label": "C",
+          "body": "aannemen",
+          "is_correct": false
+        }
+      ],
+      "payload": {
+        "prompt": "Welk werkwoord staat er in deze zin? <br><em>De afdeling neemt uw klacht volgende week in de vergadering op.</em>"
+      }
+    },
+    {
+      "kind": "mcq",
+      "tier": 0,
+      "explanation": "In een bijzin die met 'omdat' begint, staan de twee delen weer aan elkaar: 'afzegt'. De losse vorm hoort alleen in een hoofdzin.",
+      "options": [
+        {
+          "label": "A",
+          "body": "Ik kom niet, omdat ik de afspraak zeg af.",
+          "is_correct": false
+        },
+        {
+          "label": "B",
+          "body": "Ik kom niet, omdat ik de afspraak afzeg.",
+          "is_correct": true
+        },
+        {
+          "label": "C",
+          "body": "Ik kom niet, omdat ik af de afspraak zeg.",
+          "is_correct": false
+        }
+      ],
+      "payload": {
+        "prompt": "In welke zin is het scheidbare werkwoord correct gebruikt?"
+      }
+    },
+    {
+      "kind": "gap_choice",
+      "tier": 1,
+      "explanation": "Na 'dat' volgt een bijzin, en dan plakken de delen weer aan elkaar: doorgeeft.",
+      "payload": {
+        "sentence": "De consulent belooft dat hij mijn nieuwe adres vandaag nog aan de afdeling ___.",
+        "choices": [
+          "geeft door",
+          "doorgeeft",
+          "door geeft"
+        ],
+        "answer": "doorgeeft"
+      }
+    },
+    {
+      "kind": "gap_choice",
+      "tier": 1,
+      "explanation": "Na 'wil' staat het hele werkwoord achteraan, als één woord: terugbellen.",
+      "payload": {
+        "sentence": "De mevrouw van het loket zei dat ze u na de pauze graag wil ___.",
+        "choices": [
+          "terugbellen",
+          "terug bellen",
+          "belt terug"
+        ],
+        "answer": "terugbellen"
+      }
+    },
+    {
+      "kind": "gap_choice",
+      "tier": 1,
+      "explanation": "Dit is een hoofdzin, dus het eerste deel 'in' gaat helemaal naar achteren: 'vult ... in'.",
+      "payload": {
+        "sentence": "U ___ het formulier het beste samen met een medewerker in.",
+        "choices": [
+          "invult",
+          "vult",
+          "vult in"
+        ],
+        "answer": "vult"
+      }
+    },
+    {
+      "kind": "matchen",
+      "tier": 1,
+      "explanation": "Het eerste deel verandert de betekenis van het werkwoord: 'op-', 'terug-' en 'door-' betekenen elk iets anders.",
+      "payload": {
+        "instruction": "Welke betekenis past bij welk werkwoord?",
+        "pairs": [
+          {
+            "left": "opbellen",
+            "right": "iemand voor het eerst aan de telefoon vragen"
+          },
+          {
+            "left": "terugbellen",
+            "right": "iemand opnieuw bellen die jou eerder belde"
+          },
+          {
+            "left": "doorverbinden",
+            "right": "iemand aan een andere medewerker geven"
+          },
+          {
+            "left": "aannemen",
+            "right": "de telefoon opnemen als die gaat"
+          }
+        ]
+      }
+    },
+    {
+      "kind": "gap_type",
+      "tier": 2,
+      "explanation": "Na 'dat' begint een bijzin, dus schrijf de twee delen als één woord: doorverbindt.",
+      "payload": {
+        "sentence": "De receptionist vraagt of hij u met de afdeling Zorg ___.",
+        "answer": "doorverbindt"
+      }
+    },
+    {
+      "kind": "woordorde",
+      "tier": 2,
+      "explanation": "In de hoofdzin staat het vervoegde werkwoord 'belt' op plaats twee en gaat 'terug' helemaal naar het einde.",
+      "payload": {
+        "instruction": "Maak een correcte hoofdzin van deze woorden.",
+        "tokens": [
+          "terug",
+          "de",
+          "morgen",
+          "belt",
+          "u",
+          "consulent",
+          "even"
+        ],
+        "answer": [
+          "de",
+          "consulent",
+          "belt",
+          "u",
+          "morgen",
+          "even",
+          "terug"
+        ]
+      }
+    },
+    {
+      "kind": "open_zin",
+      "tier": 2,
+      "explanation": "Je oefent hier het verschil: in de hoofdzin staan de delen los en ver uit elkaar, in de bijzin na 'omdat' weer aan elkaar.",
+      "payload": {
+        "prompt": "Schrijf twee zinnen met het werkwoord 'opsturen'. Zin 1 is een hoofdzin. Zin 2 begint met 'Ik vraag dat na, omdat ...'.",
+        "model_answer": "Ik stuur de kopie van mijn paspoort morgen met de post op. Ik vraag dat na, omdat de gemeente de brief nog niet opstuurt.",
+        "checklist": [
+          "In de hoofdzin staat 'stuur' vooraan en 'op' helemaal achteraan.",
+          "In de bijzin na 'omdat' staan de delen aan elkaar: 'opstuurt'.",
+          "Het werkwoord is in beide zinnen correct vervoegd."
+        ]
+      }
+    }
+  ],
+  "what_you_learn": "Je leert hoe scheidbare werkwoorden zoals terugbellen, doorsturen en invullen zich gedragen in een zin. In een hoofdzin herken je het werkwoord ook als de twee delen ver uit elkaar staan, en in een bijzin of na willen, kunnen en moeten schrijf je ze weer aan elkaar. Daarnaast let je op de betekenis die het eerste deel geeft: opbellen is iets anders dan terugbellen."
+}

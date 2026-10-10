@@ -1,0 +1,201 @@
+{
+  "items": [
+    {
+      "kind": "uitleg",
+      "tier": null,
+      "explanation": null,
+      "payload": {
+        "body_html": "<p>Een woord dat iets zegt over een ding (groot, mooi, wit) krijgt vaak een <strong>-e</strong>. Dat gebeurt bij de-woorden en bij meer dingen: <em>een grote kast, de witte muur, mooie huizen</em>.</p><p>Er is één geval zonder -e: een het-woord met <strong>een</strong>, <strong>geen</strong> of zonder lidwoord. Dan schrijf je <em>een groot huis, geen groot probleem</em>.</p><p>Staat het woord ná het werkwoord? Dan nooit een -e: <em>Het huis is groot.</em></p>",
+        "cards": [
+          {
+            "label": "MET -E",
+            "example_html": "Ik koop <mark>een grote kast</mark> voor de slaapkamer."
+          },
+          {
+            "label": "ZONDER -E",
+            "example_html": "Wij huren <mark>een groot huis</mark> in Zwolle."
+          }
+        ]
+      },
+      "options": []
+    },
+    {
+      "kind": "voorbeeld",
+      "tier": null,
+      "explanation": null,
+      "payload": {
+        "sentence_html": "In de keuken staat <mark>een witte tafel</mark> en <mark>een wit fornuis</mark>."
+      }
+    },
+    {
+      "kind": "voorbeeld",
+      "tier": null,
+      "explanation": null,
+      "payload": {
+        "sentence_html": "De tuin achter het huis <mark>is klein</mark>, maar het licht is mooi."
+      }
+    },
+    {
+      "kind": "mcq",
+      "tier": 0,
+      "explanation": "Fiets is een de-woord, dus het woord ervoor krijgt een -e: een oude fiets.",
+      "payload": {
+        "prompt": "Welke zin is goed?"
+      },
+      "options": [
+        {
+          "label": "A",
+          "body": "Ik heb een oud fiets gekocht.",
+          "is_correct": false
+        },
+        {
+          "label": "B",
+          "body": "Ik heb een oude fiets gekocht.",
+          "is_correct": true
+        },
+        {
+          "label": "C",
+          "body": "Ik heb een ouder fiets gekocht.",
+          "is_correct": false
+        }
+      ]
+    },
+    {
+      "kind": "mcq",
+      "tier": 0,
+      "explanation": "Formulier is een het-woord met 'een'. Dan krijgt het woord ervoor geen -e: een lang formulier.",
+      "payload": {
+        "prompt": "Welke zin is goed?"
+      },
+      "options": [
+        {
+          "label": "A",
+          "body": "De gemeente stuurt een lang formulier.",
+          "is_correct": true
+        },
+        {
+          "label": "B",
+          "body": "De gemeente stuurt een lange formulier.",
+          "is_correct": false
+        },
+        {
+          "label": "C",
+          "body": "De gemeente stuurt een langes formulier.",
+          "is_correct": false
+        }
+      ]
+    },
+    {
+      "kind": "gap_choice",
+      "tier": 1,
+      "explanation": "Na 'het' krijgt het woord altijd een -e, ook bij een het-woord.",
+      "payload": {
+        "sentence": "Wij wachten in ___ wachtkamer van de huisarts.",
+        "choices": [
+          "de kleine",
+          "de klein"
+        ],
+        "answer": "de kleine"
+      }
+    },
+    {
+      "kind": "gap_choice",
+      "tier": 1,
+      "explanation": "Probleem is een het-woord met 'geen'. Daarom geen -e: geen groot probleem.",
+      "payload": {
+        "sentence": "Dat is ___ probleem, hoor.",
+        "choices": [
+          "geen groot",
+          "geen grote"
+        ],
+        "answer": "geen groot"
+      }
+    },
+    {
+      "kind": "gap_choice",
+      "tier": 1,
+      "explanation": "Het woord staat na het werkwoord 'is'. Dan krijgt het nooit een -e.",
+      "payload": {
+        "sentence": "Onze woonkamer ___ en licht.",
+        "choices": [
+          "is grote",
+          "is groot",
+          "is grotes"
+        ],
+        "answer": "is groot"
+      }
+    },
+    {
+      "kind": "matchen",
+      "tier": 1,
+      "explanation": "Bij de-woorden en bij meer dingen komt er een -e bij. Bij een het-woord met 'een' niet.",
+      "payload": {
+        "instruction": "Zet de goede vorm bij elk woord.",
+        "pairs": [
+          {
+            "left": "een ___ kamer (groot)",
+            "right": "een grote kamer"
+          },
+          {
+            "left": "een ___ huis (groot)",
+            "right": "een groot huis"
+          },
+          {
+            "left": "het ___ raam (wit)",
+            "right": "het witte raam"
+          },
+          {
+            "left": "___ gordijnen (wit)",
+            "right": "witte gordijnen"
+          }
+        ]
+      }
+    },
+    {
+      "kind": "gap_type",
+      "tier": 2,
+      "explanation": "Kast is een de-woord, dus je schrijft 'grote'. Let op de spelling: groot wordt grote met één o.",
+      "payload": {
+        "sentence": "In de gang staat een ___ kast met jassen.",
+        "answer": "grote"
+      }
+    },
+    {
+      "kind": "woordorde",
+      "tier": 2,
+      "explanation": "Fornuis is een het-woord met 'een', dus 'nieuw' blijft zonder -e.",
+      "payload": {
+        "instruction": "Maak een goede zin van deze woorden.",
+        "tokens": [
+          "nieuw",
+          "een",
+          "fornuis",
+          "wij",
+          "kopen"
+        ],
+        "answer": [
+          "wij",
+          "kopen",
+          "een",
+          "nieuw",
+          "fornuis"
+        ]
+      }
+    },
+    {
+      "kind": "open_zin",
+      "tier": 2,
+      "explanation": "Je gebruikt één keer een vorm met -e bij een de-woord en één keer een vorm zonder -e bij een het-woord met 'een'.",
+      "payload": {
+        "prompt": "Schrijf twee zinnen over je woning. Gebruik in de eerste zin 'een ... kamer' en in de tweede zin 'een ... huis'.",
+        "model_answer": "Ik heb een kleine kamer met één raam. Wij wonen in een oud huis in Almere.",
+        "checklist": [
+          "Bij 'kamer' staat er een -e achter het woord ervoor.",
+          "Bij 'een ... huis' staat er geen -e.",
+          "Elke zin heeft een werkwoord."
+        ]
+      }
+    }
+  ],
+  "what_you_learn": "Je leert wanneer een woord als groot, mooi of wit een -e krijgt. Je ziet het verschil tussen 'een grote kast' en 'een groot huis'. Je kunt de juiste vorm kiezen en zelf zinnen maken."
+}

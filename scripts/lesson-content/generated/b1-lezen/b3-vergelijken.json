@@ -1,0 +1,257 @@
+{
+  "items": [
+    {
+      "kind": "uitleg",
+      "tier": null,
+      "explanation": null,
+      "payload": {
+        "body_html": "<p>Als je twee dingen vergelijkt, kun je zeggen dat ze <strong>gelijk</strong> zijn of juist <strong>verschillend</strong>. Voor gelijk gebruik je <strong>net zo … als</strong>: het bijvoeglijk naamwoord blijft onveranderd. Voor minder gebruik je <strong>minder … dan</strong>, en voor meer de vergrotende trap met <strong>dan</strong>. Let op: na <em>net zo</em> volgt altijd <em>als</em>, na een vergrotende trap volgt <em>dan</em>.</p>",
+        "cards": [
+          {
+            "label": "GELIJK",
+            "example_html": "De nieuwe woning is <mark>net zo duur als</mark> de oude."
+          },
+          {
+            "label": "MINDER",
+            "example_html": "Deze verzekering is <mark>minder duur dan</mark> de vorige."
+          }
+        ]
+      }
+    },
+    {
+      "kind": "uitleg",
+      "tier": null,
+      "explanation": null,
+      "payload": {
+        "body_html": "<p>Wil je zeggen dat iets blijft groeien, dan gebruik je <strong>steeds meer</strong> of <strong>steeds</strong> met een vergrotende trap, bijvoorbeeld <em>steeds drukker</em>. Twee ontwikkelingen die samen gaan, verbind je met <strong>hoe … hoe …</strong>, zoals in <em>hoe eerder hoe beter</em>. Zeg je wat je voorkeur heeft, dan gebruik je <strong>liever … dan</strong>, want <em>liever</em> is al een vergrotende trap.</p>",
+        "cards": [
+          {
+            "label": "ONTWIKKELING",
+            "example_html": "Er melden zich <mark>steeds meer</mark> bewoners voor het overleg."
+          },
+          {
+            "label": "TWEE SAMEN",
+            "example_html": "<mark>Hoe eerder</mark> u reageert, <mark>hoe sneller</mark> wij uw aanvraag behandelen."
+          },
+          {
+            "label": "VOORKEUR",
+            "example_html": "Ik werk <mark>liever</mark> in de ochtend <mark>dan</mark> in de avond."
+          }
+        ]
+      }
+    },
+    {
+      "kind": "uitleg",
+      "tier": null,
+      "explanation": null,
+      "payload": {
+        "body_html": "<p>De overtreffende trap van een bijvoeglijk naamwoord krijgt meestal <strong>-st</strong>: <em>het belangrijkst</em>, <em>het snelst</em>. Bij lange woorden en bij woorden uit een andere taal gebruik je <strong>het meest</strong> met het hele woord erachter: <em>het meest geschikt</em>, <em>het meest gebruikt</em>. Je ziet deze vorm vaak in formele teksten van een instantie of een werkgever.</p>",
+        "cards": [
+          {
+            "label": "MET -ST",
+            "example_html": "Een vaste baan vindt hij <mark>het belangrijkst</mark>."
+          },
+          {
+            "label": "MET HET MEEST",
+            "example_html": "Deze kandidaat lijkt ons <mark>het meest geschikt</mark> voor de functie."
+          }
+        ]
+      }
+    },
+    {
+      "kind": "voorbeeld",
+      "tier": null,
+      "explanation": null,
+      "payload": {
+        "sentence_html": "De huur van dit appartement is <mark>net zo hoog als</mark> de huur van uw vorige woning."
+      }
+    },
+    {
+      "kind": "voorbeeld",
+      "tier": null,
+      "explanation": null,
+      "payload": {
+        "sentence_html": "<mark>Hoe vaker</mark> u de cursus bezoekt, <mark>hoe beter</mark> uw resultaat wordt."
+      }
+    },
+    {
+      "kind": "mcq",
+      "tier": 0,
+      "explanation": "Na <em>net zo</em> hoort altijd <em>als</em>, en het bijvoeglijk naamwoord blijft in de gewone vorm staan.",
+      "payload": {
+        "prompt": "In welke zin staat de vergelijking goed?"
+      },
+      "options": [
+        {
+          "label": "A",
+          "body": "Het nieuwe formulier is net zo lang dan het oude.",
+          "is_correct": false
+        },
+        {
+          "label": "B",
+          "body": "Het nieuwe formulier is net zo lang als het oude.",
+          "is_correct": true
+        },
+        {
+          "label": "C",
+          "body": "Het nieuwe formulier is net zo langer als het oude.",
+          "is_correct": false
+        }
+      ]
+    },
+    {
+      "kind": "mcq",
+      "tier": 0,
+      "explanation": "Bij een lang bijvoeglijk naamwoord als <em>geschikt</em> in formele taal gebruik je <em>het meest geschikt</em>; <em>geschiktst</em> is geen gebruikelijke vorm.",
+      "payload": {
+        "prompt": "Welke zin uit een brief van een werkgever is correct?"
+      },
+      "options": [
+        {
+          "label": "A",
+          "body": "Wij vinden mevrouw Bakker het meest geschikt voor deze functie.",
+          "is_correct": true
+        },
+        {
+          "label": "B",
+          "body": "Wij vinden mevrouw Bakker het geschiktst voor deze functie.",
+          "is_correct": false
+        },
+        {
+          "label": "C",
+          "body": "Wij vinden mevrouw Bakker meest geschikter voor deze functie.",
+          "is_correct": false
+        },
+        {
+          "label": "D",
+          "body": "Wij vinden mevrouw Bakker het meer geschikt voor deze functie.",
+          "is_correct": false
+        }
+      ]
+    },
+    {
+      "kind": "gap_choice",
+      "tier": 1,
+      "explanation": "Na <em>minder</em> hoort <em>dan</em>, want het is een vergelijking met verschil, geen gelijkheid.",
+      "payload": {
+        "sentence": "Het openbaar vervoer is in dit dorp minder betrouwbaar ___ in de stad.",
+        "choices": [
+          "als",
+          "dan",
+          "hoe"
+        ],
+        "answer": "dan"
+      }
+    },
+    {
+      "kind": "gap_choice",
+      "tier": 1,
+      "explanation": "<em>Steeds</em> staat voor een vergrotende trap om een ontwikkeling aan te geven: het wordt elke week drukker.",
+      "payload": {
+        "sentence": "Het spreekuur van de gemeente wordt ___ drukker.",
+        "choices": [
+          "steeds",
+          "net zo",
+          "het meest"
+        ],
+        "answer": "steeds"
+      }
+    },
+    {
+      "kind": "gap_choice",
+      "tier": 1,
+      "explanation": "In de constructie <em>hoe … hoe …</em> staat in beide delen <em>hoe</em> met een vergrotende trap.",
+      "payload": {
+        "sentence": "Hoe eerder u bezwaar maakt, ___ beter wij u kunnen helpen.",
+        "choices": [
+          "hoe",
+          "des",
+          "als"
+        ],
+        "answer": "hoe"
+      }
+    },
+    {
+      "kind": "matchen",
+      "tier": 1,
+      "explanation": "Elke vergelijking heeft een vast tweede woord: <em>net zo</em> en <em>liever</em> horen bij hun eigen partner, en <em>steeds</em> bij een ontwikkeling.",
+      "payload": {
+        "instruction": "Welk tweede deel hoort bij welk eerste deel?",
+        "pairs": [
+          {
+            "left": "Deze cursus is net zo nuttig …",
+            "right": "als de vorige cursus."
+          },
+          {
+            "left": "Ik werk liever met kinderen …",
+            "right": "dan met machines."
+          },
+          {
+            "left": "Er komen steeds …",
+            "right": "meer klachten binnen."
+          },
+          {
+            "left": "Hoe langer u wacht, …",
+            "right": "hoe duurder de reparatie wordt."
+          }
+        ]
+      }
+    },
+    {
+      "kind": "gap_type",
+      "tier": 2,
+      "explanation": "Bij een voorkeur gebruik je <em>liever … dan</em>; <em>liever</em> is al een vergrotende trap, dus er komt geen <em>als</em> achter.",
+      "payload": {
+        "sentence": "Ik woon ___ in de stad dan in een klein dorp.",
+        "answer": "liever"
+      }
+    },
+    {
+      "kind": "woordorde",
+      "tier": 2,
+      "explanation": "Na <em>net zo</em> komt het bijvoeglijk naamwoord en daarna <em>als</em> met het tweede deel van de vergelijking.",
+      "payload": {
+        "instruction": "Maak een correcte zin van deze woorden.",
+        "tokens": [
+          "als",
+          "is",
+          "net",
+          "de",
+          "oude",
+          "de",
+          "zo",
+          "nieuwe",
+          "regeling",
+          "ingewikkeld"
+        ],
+        "answer": [
+          "de",
+          "nieuwe",
+          "regeling",
+          "is",
+          "net",
+          "zo",
+          "ingewikkeld",
+          "als",
+          "de",
+          "oude"
+        ]
+      }
+    },
+    {
+      "kind": "open_zin",
+      "tier": 2,
+      "explanation": "Je laat zien dat je <em>het belangrijkst</em> of <em>het meest</em> met een bijvoeglijk naamwoord correct gebruikt in een hele zin.",
+      "payload": {
+        "prompt": "Schrijf twee zinnen over een baan die je zoekt. Gebruik in de eerste zin 'het belangrijkst' en in de tweede zin 'het meest' met een bijvoeglijk naamwoord.",
+        "model_answer": "Een vast contract vind ik het belangrijkst. Werk in de zorg lijkt mij het meest geschikt, omdat ik graag met mensen werk.",
+        "checklist": [
+          "Staat er 'het belangrijkst' zonder extra -e in je eerste zin?",
+          "Staat er na 'het meest' een heel bijvoeglijk naamwoord, bijvoorbeeld 'geschikt' of 'interessant'?",
+          "Zijn het twee volledige zinnen met een werkwoord?"
+        ]
+      }
+    }
+  ],
+  "what_you_learn": "Na deze les kun je in teksten en gesprekken precies vergelijken. Je gebruikt 'net zo … als' voor gelijkheid, 'minder … dan' voor verschil en 'liever … dan' voor een voorkeur. Ook schrijf je 'steeds meer', 'hoe eerder hoe beter' en overtreffende trappen als 'het belangrijkst' en 'het meest geschikt' correct."
+}

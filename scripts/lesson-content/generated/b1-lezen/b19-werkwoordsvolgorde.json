@@ -1,0 +1,238 @@
+{
+  "items": [
+    {
+      "kind": "uitleg",
+      "tier": null,
+      "explanation": null,
+      "payload": {
+        "body_html": "<p>In een Nederlandse zin kunnen twee of drie werkwoorden bij elkaar staan. Dat heet een werkwoordgroep.</p><p>In de hoofdzin staat de persoonsvorm (het werkwoord dat verandert met ik, jij, hij) op plaats twee. De andere werkwoorden gaan samen naar het einde van de zin.</p><p>In een bijzin, bijvoorbeeld na <em>omdat</em>, <em>dat</em> of <em>of</em>, staan alle werkwoorden achteraan, dus ook de persoonsvorm.</p>",
+        "cards": [
+          {
+            "label": "HOOFDZIN",
+            "example_html": "Ik <mark>had</mark> u gisteren eerder <mark>willen bellen</mark>."
+          },
+          {
+            "label": "BIJZIN",
+            "example_html": "Ik bel u, omdat ik gisteren niet <mark>heb kunnen komen</mark>."
+          }
+        ]
+      }
+    },
+    {
+      "kind": "uitleg",
+      "tier": null,
+      "explanation": null,
+      "payload": {
+        "body_html": "<p>De gewone volgorde in de groep achteraan is: eerst het hulpwerkwoord of modaal werkwoord (<em>kunnen, willen, moeten, mogen, zullen</em>), daarna het hoofdwerkwoord.</p><p>Staat er <em>te</em> bij, dan blijft <em>te + infinitief</em> (het hele werkwoord) helemaal achteraan staan.</p><p>Een scheidbaar werkwoord zoals <em>opbellen</em> of <em>meenemen</em> blijft in zo'n groep aan elkaar vastzitten.</p>",
+        "cards": [
+          {
+            "label": "TE + INFINITIEF",
+            "example_html": "De gemeente vraagt u het formulier binnen tien dagen <mark>terug te sturen</mark>."
+          },
+          {
+            "label": "SCHEIDBAAR IN DE GROEP",
+            "example_html": "Ik schrijf u, omdat ik u meerdere keren <mark>heb willen opbellen</mark>."
+          }
+        ]
+      }
+    },
+    {
+      "kind": "voorbeeld",
+      "tier": null,
+      "explanation": null,
+      "payload": {
+        "sentence_html": "Mijn leidinggevende <strong>zou</strong> de nieuwe regels volgende week <mark>willen bespreken</mark>."
+      }
+    },
+    {
+      "kind": "voorbeeld",
+      "tier": null,
+      "explanation": null,
+      "payload": {
+        "sentence_html": "De verhuurder schrijft dat hij de lekkage nog niet <mark>heeft laten repareren</mark>."
+      }
+    },
+    {
+      "kind": "mcq",
+      "tier": 0,
+      "explanation": "In een hoofdzin staat de persoonsvorm op plaats twee; de rest van de werkwoorden staat als groep achteraan.",
+      "options": [
+        {
+          "label": "A",
+          "body": "Ik heb de brief gisteren niet kunnen lezen.",
+          "is_correct": true
+        },
+        {
+          "label": "B",
+          "body": "Ik heb kunnen lezen de brief gisteren niet.",
+          "is_correct": false
+        },
+        {
+          "label": "C",
+          "body": "Ik de brief gisteren niet heb kunnen lezen.",
+          "is_correct": false
+        }
+      ],
+      "payload": {
+        "prompt": "Welke hoofdzin heeft de juiste volgorde van de werkwoorden?"
+      }
+    },
+    {
+      "kind": "mcq",
+      "tier": 0,
+      "explanation": "Na 'omdat' begint een bijzin, en dan gaan alle werkwoorden samen naar het einde, ook de persoonsvorm 'heb'.",
+      "options": [
+        {
+          "label": "A",
+          "body": "De klant klaagt, omdat hij niemand heeft kunnen bereiken.",
+          "is_correct": true
+        },
+        {
+          "label": "B",
+          "body": "De klant klaagt, omdat hij heeft niemand kunnen bereiken.",
+          "is_correct": false
+        },
+        {
+          "label": "C",
+          "body": "De klant klaagt, omdat hij niemand kunnen bereiken heeft.",
+          "is_correct": false
+        }
+      ],
+      "payload": {
+        "prompt": "In welke zin staan alle werkwoorden van de bijzin correct achteraan?"
+      }
+    },
+    {
+      "kind": "gap_choice",
+      "tier": 1,
+      "explanation": "Eerst het modale werkwoord 'willen', daarna het hoofdwerkwoord 'maken': de gewone volgorde in de groep achteraan.",
+      "payload": {
+        "sentence": "Ik had een afspraak met de arts ___, maar de lijn was steeds bezet.",
+        "choices": [
+          "willen maken",
+          "maken willen",
+          "gewild maken"
+        ],
+        "answer": "willen maken"
+      }
+    },
+    {
+      "kind": "gap_choice",
+      "tier": 1,
+      "explanation": "In de bijzin na 'dat' gaan alle werkwoorden achteraan: eerst 'heeft', dan 'moeten', dan het hoofdwerkwoord 'wachten'.",
+      "payload": {
+        "sentence": "De gemeente erkent dat u te lang op een antwoord ___.",
+        "choices": [
+          "heeft moeten wachten",
+          "moeten wachten heeft",
+          "heeft gemoeten wachten"
+        ],
+        "answer": "heeft moeten wachten"
+      }
+    },
+    {
+      "kind": "gap_choice",
+      "tier": 1,
+      "explanation": "Bij 'te' blijft 'te + het hele werkwoord' helemaal achteraan staan.",
+      "payload": {
+        "sentence": "Wij verzoeken u het bedrag voor 1 maart ___.",
+        "choices": [
+          "over te maken",
+          "te overmaken maken",
+          "over maken te"
+        ],
+        "answer": "over te maken"
+      }
+    },
+    {
+      "kind": "matchen",
+      "tier": 1,
+      "explanation": "In een hoofdzin staat de persoonsvorm vooraan in de zin; in een bijzin staat hij bij de andere werkwoorden achteraan.",
+      "payload": {
+        "instruction": "Zoek bij elk zinsbegin het juiste einde.",
+        "pairs": [
+          {
+            "left": "Ik heb hem drie keer",
+            "right": "willen opbellen."
+          },
+          {
+            "left": "Hij zegt dat hij mij drie keer",
+            "right": "heeft willen opbellen."
+          },
+          {
+            "left": "De werkgever zou het contract",
+            "right": "kunnen verlengen."
+          },
+          {
+            "left": "Het is jammer dat hij niet",
+            "right": "heeft kunnen komen."
+          }
+        ]
+      }
+    },
+    {
+      "kind": "gap_choice",
+      "tier": 1,
+      "explanation": "Een scheidbaar werkwoord als 'meenemen' blijft in de werkwoordgroep aan elkaar vast, achter het modale werkwoord.",
+      "payload": {
+        "sentence": "Op de uitnodiging staat dat u uw identiteitsbewijs ___.",
+        "choices": [
+          "moet meenemen",
+          "mee moet nemen hem",
+          "meenemen moet"
+        ],
+        "answer": "moet meenemen"
+      }
+    },
+    {
+      "kind": "gap_type",
+      "tier": 2,
+      "explanation": "Na 'omdat' staan alle werkwoorden achteraan: de persoonsvorm 'heb', dan 'kunnen', dan het hoofdwerkwoord 'reageren'.",
+      "payload": {
+        "sentence": "Ik bied mijn excuses aan, omdat ik niet eerder op uw brief ___ reageren.",
+        "answer": "heb kunnen"
+      }
+    },
+    {
+      "kind": "woordorde",
+      "tier": 2,
+      "explanation": "Het is een bijzin na 'dat', dus alle werkwoorden staan achteraan: eerst 'heeft', dan 'laten', dan het hoofdwerkwoord 'weten'.",
+      "payload": {
+        "instruction": "Zet de woorden in de juiste volgorde. Begin met 'dat'.",
+        "tokens": [
+          "laten",
+          "dat",
+          "niets",
+          "weten",
+          "de",
+          "heeft",
+          "buurvrouw"
+        ],
+        "answer": [
+          "dat",
+          "de",
+          "buurvrouw",
+          "niets",
+          "heeft",
+          "laten",
+          "weten"
+        ]
+      }
+    },
+    {
+      "kind": "open_zin",
+      "tier": 2,
+      "explanation": "Je oefent een hoofdzin met drie werkwoorden: de persoonsvorm op plaats twee en de andere werkwoorden netjes als groep achteraan.",
+      "payload": {
+        "prompt": "Schrijf één zin voor een klacht bij een webwinkel. Gebruik 'had', 'willen' en een hoofdwerkwoord, bijvoorbeeld 'ruilen' of 'terugsturen'.",
+        "model_answer": "Ik had het pakket binnen veertien dagen willen terugsturen, maar uw klantenservice reageerde niet.",
+        "checklist": [
+          "De persoonsvorm 'had' staat op plaats twee in de zin.",
+          "'willen' en het hoofdwerkwoord staan samen achteraan.",
+          "Het hoofdwerkwoord is een heel werkwoord (eindigt op -en)."
+        ]
+      }
+    }
+  ],
+  "what_you_learn": "Je leert in welke volgorde twee of drie werkwoorden achteraan in de zin staan. Je ziet het verschil tussen een hoofdzin, waar de persoonsvorm op plaats twee blijft, en een bijzin, waar alle werkwoorden achteraan gaan. Ook leer je wat er gebeurt met 'te + werkwoord' en met een scheidbaar werkwoord zoals 'opbellen'."
+}

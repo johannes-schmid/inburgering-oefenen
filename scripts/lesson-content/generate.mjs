@@ -30,8 +30,9 @@ import path from 'node:path';
 import { ROOT } from '../a2-content/lib.mjs';
 import { loadItemRules } from './load-items.mjs';
 import { createLessonAuthor, normalisePayloads, kindProblems, audioProblems } from './author.mjs';
-import { coursePlan, parseTarget, BUILT, wordThemes, STRATEGY_CONCEPTS } from './plan.mjs';
-import { A2_CONCEPTS } from './concepts-a2.mjs';
+import {
+  coursePlan, parseTarget, BUILDABLE, wordThemes, conceptLibrary, strategyConcepts,
+} from './plan.mjs';
 import { createWordAuthor } from './words.mjs';
 
 const GEN_DIR = path.join(ROOT, 'scripts', 'lesson-content', 'generated');
@@ -61,14 +62,17 @@ async function main() {
   if (!target || target === 'plan') return showPlan();
 
   const { level, onderdeel } = parseTarget(target);
-  if (!BUILT.includes(`${level}:${onderdeel}`)) {
-    console.error(`${level}:${onderdeel} is nog niet uitgewerkt. Gebouwd: ${BUILT.join(', ')}`);
+  if (!BUILDABLE.includes(`${level}:${onderdeel}`)) {
+    console.error(`${level}:${onderdeel} is nog niet uitgewerkt. Gebouwd: ${BUILDABLE.join(', ')}`);
     process.exit(1);
   }
 
   const rules = await loadItemRules();
   const blocks = coursePlan(level, onderdeel);
-  const themes = wordThemes(onderdeel);
+  /* Geen blok A (het B1-regelhuis): dan ook geen woordenlijst. Anders schrijft de generator
+     B1-woorden voor Lezen die geen les gebruikt en die de seeder in `lesson_words` zou zetten. */
+  const hasWords = blocks.some(b => b.letter === 'A');
+  const themes = hasWords ? wordThemes(onderdeel) : [];
   const outDir = path.join(GEN_DIR, `${level}-${onderdeel}`);
   fs.mkdirSync(outDir, { recursive: true });
 
@@ -86,7 +90,9 @@ async function main() {
   const wordsPath = path.join(outDir, '_words.json');
   let words = fs.existsSync(wordsPath) ? JSON.parse(fs.readFileSync(wordsPath, 'utf8')) : null;
 
-  if (!words) {
+  if (!hasWords) {
+    words = {};
+  } else if (!words) {
     console.log(`\nWoordenlijsten voor ${level}:${onderdeel} — ${themes.length} thema's`);
     const wordAuthor = createWordAuthor({ apiKey, gatewayKey });
     words = {};
@@ -139,7 +145,7 @@ async function main() {
       try {
         const unit = await author.writeLesson({
           level, onderdeel, block, lesson,
-          context: contextFor({ lesson, onderdeel, words }),
+          context: contextFor({ level, lesson, onderdeel, words }),
           validateItems: rules.validateItems,
         });
         fs.writeFileSync(file, `${JSON.stringify(unit, null, 2)}\n`);
@@ -168,7 +174,7 @@ async function main() {
  * Per lessoort iets anders, en het is bewust hier gebundeld in plaats van in de prompt: welk
  * concept een les uitlegt is een feit uit `plan.mjs`, niet iets wat het model mag kiezen.
  */
-function contextFor({ lesson, onderdeel, words }) {
+function contextFor({ level, lesson, onderdeel, words }) {
   /* De lessoorten die één concept uitleggen, en waar dat concept vandaan komt. Blok B en C van
      de drie nieuwe cursussen leunen allemaal op `STRATEGY_CONCEPTS` — daar ís de mechaniek een
      aanpak en geen grammaticaregel. */
@@ -179,7 +185,7 @@ function contextFor({ lesson, onderdeel, words }) {
   const TRAINING_KINDS = new Set(['luistertraining', 'schrijftraining', 'spreektraining']);
 
   if (STRATEGY_KINDS.has(lesson.kind)) {
-    const concept = (STRATEGY_CONCEPTS[onderdeel] ?? [])
+    const concept = strategyConcepts(level, onderdeel)
       .find(c => c.slug === lesson.strategyConcept);
     if (!concept) {
       throw new Error(`strategieconcept "${lesson.strategyConcept}" bestaat niet voor ${onderdeel}`);
@@ -203,8 +209,8 @@ function contextFor({ lesson, onderdeel, words }) {
     case 'zinnen':
       return { words: words[lesson.theme] ?? [], onderdeel };
     case 'grammatica': {
-      const concept = A2_CONCEPTS.find(c => c.slug === lesson.concept);
-      if (!concept) throw new Error(`concept "${lesson.concept}" bestaat niet in concepts-a2.mjs`);
+      const concept = conceptLibrary(level).concepts.find(c => c.slug === lesson.concept);
+      if (!concept) throw new Error(`concept "${lesson.concept}" bestaat niet voor niveau ${level}`);
       return { concept, onderdeel };
     }
     case 'tekstsoort':
@@ -215,7 +221,7 @@ function contextFor({ lesson, onderdeel, words }) {
     case 'toets':
     case 'luistertoets':
     case 'spreektoets':
-      return { concepts: toetsConcepts(onderdeel, lesson), onderdeel };
+      return { concepts: toetsConcepts(level, onderdeel, lesson), onderdeel };
     default:
       throw new Error(`onbekende lessoort "${lesson.kind}"`);
   }
@@ -231,15 +237,15 @@ function contextFor({ lesson, onderdeel, words }) {
  * toetsen op iets wat hij in deze cursus nooit heeft gezien. Daar gaat e1 dus over de eigen
  * mechaniek: de concepten van blok B en C van dit onderdeel.
  */
-function toetsConcepts(onderdeel, lesson) {
+function toetsConcepts(level, onderdeel, lesson) {
   const first = lesson.slug.startsWith('e1');
   if (onderdeel === 'lezen') {
-    return A2_CONCEPTS
+    return conceptLibrary(level).concepts
       .filter(c => c.onderdelen.includes(onderdeel))
       .filter((_, i) => i % 3 === (first ? 0 : 1))
       .slice(0, 8);
   }
-  const own = STRATEGY_CONCEPTS[onderdeel] ?? [];
+  const own = strategyConcepts(level, onderdeel);
   return own.filter((_, i) => (first ? i % 2 === 0 : i % 2 === 1)).slice(0, 8);
 }
 
@@ -292,7 +298,7 @@ function checkOnDisk(outDir, blocks, rules, only) {
 }
 
 function showPlan() {
-  for (const target of BUILT) {
+  for (const target of BUILDABLE) {
     const { level, onderdeel } = parseTarget(target);
     const blocks = coursePlan(level, onderdeel);
     const total = blocks.reduce((n, b) => n + b.lessons.length, 0);

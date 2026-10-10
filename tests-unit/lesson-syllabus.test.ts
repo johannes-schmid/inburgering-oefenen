@@ -9,8 +9,15 @@
  */
 
 import { describe, it, expect } from 'vitest';
-import { A2_GROUPS, A2_CONCEPTS, conceptsFor, rulesHomeConcepts } from '../scripts/lesson-content/concepts-a2.mjs';
-import { coursePlan, wordThemes, BLOCK_C_SECTIONS, STRATEGY_CONCEPTS, BUILT } from '../scripts/lesson-content/plan.mjs';
+import {
+  A2_GROUPS, A2_CONCEPTS, conceptsFor, rulesHomeConcepts, RULES_WITHOUT_LESSON,
+} from '../scripts/lesson-content/concepts-a2.mjs';
+import {
+  coursePlan, wordThemes, BLOCK_C_SECTIONS, STRATEGY_CONCEPTS, BUILT, BUILDABLE, B1_RULES_HOME_ONLY,
+  conceptLibrary, strategyConcepts,
+} from '../scripts/lesson-content/plan.mjs';
+import { B1_GROUPS, B1_CONCEPTS } from '../scripts/lesson-content/concepts-b1.mjs';
+import { GRAMMAR_SYLLABUS, parseLessonRef } from '@/data/grammar-syllabus';
 
 type Concept = {
   slug: string; name_nl: string; group: string; kind: string;
@@ -22,11 +29,13 @@ const GROUPS = A2_GROUPS as { slug: string; name_nl: string; sort_order: number 
 const ONDERDELEN = ['lezen', 'luisteren', 'schrijven', 'spreken'];
 
 describe('de A2-conceptenbibliotheek', () => {
-  it('heeft 31 concepten in 6 groepen', () => {
+  it('heeft 39 concepten in 6 groepen', () => {
     // Het aantal is een beslissing (eigenaar, 27-08): de 46 boekingangen zijn teruggebracht tot
     // 31 door de negen `Herhaling:`-passages een tweede oefenronde te maken in plaats van een
-    // tweede rij. Verandert dit getal, dan is dat een inhoudelijke keuze en geen ongelukje.
-    expect(CONCEPTS).toHaveLength(31);
+    // tweede rij. In oktober 2026 kwamen er acht bij uit de grammaticasyllabus van de eigenaar
+    // (`data/grammar-syllabus.ts`). Verandert dit getal, dan is dat een inhoudelijke keuze en
+    // geen ongelukje.
+    expect(CONCEPTS).toHaveLength(39);
     expect(GROUPS).toHaveLength(6);
   });
 
@@ -169,14 +178,23 @@ describe('de cursusopbouw', () => {
   });
 
   it('een niveau zonder eigen bibliotheek wordt geweigerd', () => {
-    // B1 is niet A2 met zwaardere voorbeelden: `lib/ai/level-register.ts` is de enige plek waar
-    // een niveauregister staat, en cross-niveau-besmetting is de stilste fout in dit systeem.
-    // Liever luid falen dan stil A2-stof onder een B1-vlag seeden.
-    expect(() => coursePlan('b1', 'lezen')).toThrow(/eigen conceptenbibliotheek/);
+    // B1 is niet A2 met zwaardere voorbeelden: cross-niveau-besmetting is de stilste fout in
+    // dit systeem. Sinds oktober 2026 heeft B1 een eigen bibliotheek (`concepts-b1.mjs`), maar
+    // alleen voor het regelhuis: b1:lezen geeft blok B en niets anders, de andere drie
+    // B1-onderdelen hebben geen cursusopbouw en blijven luid falen.
+    const b1 = coursePlan('b1', 'lezen') as { letter: string }[];
+    expect(b1.map(b => b.letter)).toEqual(['B']);
+    expect(() => coursePlan('b1', 'luisteren')).toThrow(/eigen conceptenbibliotheek/);
+    expect(() => coursePlan('b1', 'schrijven')).toThrow(/eigen conceptenbibliotheek/);
+    expect(() => coursePlan('b1', 'spreken')).toThrow(/eigen conceptenbibliotheek/);
   });
 
   it('BUILT noemt alleen wat echt is uitgewerkt', () => {
+    // `BUILT` betekent "hele cursus" en blijft A2; het B1-regelhuis staat apart, zodat
+    // `tag-questions.mjs` (dat op `BUILT` leest) geen B1-examenvragen met A2-concepten tagt.
     expect(BUILT).toEqual(['a2:lezen', 'a2:luisteren', 'a2:schrijven', 'a2:spreken']);
+    expect(B1_RULES_HOME_ONLY).toEqual(['b1:lezen']);
+    expect(BUILDABLE).toEqual([...BUILT, ...B1_RULES_HOME_ONLY]);
   });
 
   it('een onderdeel zonder cursusopbouw wordt geweigerd', () => {
@@ -206,13 +224,14 @@ describe('de vier cursussen', () => {
   ) as Record<string, Block[]>;
 
   const EXPECTED_SIZE: Record<string, number> = {
-    lezen: 53, luisteren: 26, schrijven: 24, spreken: 26,
+    lezen: 62, luisteren: 26, schrijven: 24, spreken: 26,
   };
 
   it('elke cursus heeft de afgesproken omvang', () => {
     // De getallen komen uit docs/decisions/leerlaag-a2-master-plan.html en zijn een
-    // inhoudelijke afspraak: 76 nieuwe lessen naast de 53 die er al stonden. Verandert er één,
-    // dan is dat een besluit en geen ongelukje.
+    // inhoudelijke afspraak: 76 nieuwe lessen naast de 53 die er al stonden. Lezen ging in
+    // oktober 2026 naar 62: negen regellessen (b29–b37) voor de grammaticasyllabus. Verandert er
+    // één, dan is dat een besluit en geen ongelukje.
     for (const [onderdeel, blocks] of Object.entries(courses)) {
       const total = blocks.reduce((n, b) => n + b.lessons.length, 0);
       expect(total, `${onderdeel} heeft ${total} lessen`).toBe(EXPECTED_SIZE[onderdeel]);
@@ -364,30 +383,33 @@ describe('taalregels: kern tegenover herkennen', () => {
     // Dit is de hele afweging in vier getallen. A2 Lezen en Luisteren zijn meerkeuze: een
     // verkeerde werkwoordsuitgang kost daar niets, maar een gemiste `omdat`, `hoeft niet` of
     // `het goedkoopst` kost de vraag. Bij Schrijven en Spreken bouw jij de zin.
-    expect(inOnderdeel('lezen')).toBe(20);
-    expect(inOnderdeel('luisteren')).toBe(20);
-    expect(inOnderdeel('schrijven')).toBe(30);
-    expect(inOnderdeel('spreken')).toBe(31);
+    // Oktober 2026: +6 Lezen, +3 Luisteren, +3 Schrijven, +3 Spreken — precies de cursussen
+    // die in `data/grammar-syllabus.ts` naar de nieuwe lessen wijzen.
+    expect(inOnderdeel('lezen')).toBe(26);
+    expect(inOnderdeel('luisteren')).toBe(23);
+    expect(inOnderdeel('schrijven')).toBe(33);
+    expect(inOnderdeel('spreken')).toBe(34);
   });
 
   it('en binnen dat lidmaatschap weegt het gewicht dezelfde kant op', () => {
-    expect(kernIn('lezen')).toBe(9);
-    expect(kernIn('luisteren')).toBe(8);
-    expect(kernIn('schrijven')).toBe(21);
-    // Spreken heeft de eenentwintig van Schrijven plus de klemtoon: die is van het oor en
-    // telt bij Lezen en Schrijven niet mee.
-    expect(kernIn('spreken')).toBe(22);
+    expect(kernIn('lezen')).toBe(14);
+    expect(kernIn('luisteren')).toBe(11);
+    expect(kernIn('schrijven')).toBe(24);
+    // Spreken heeft de kern van Schrijven min `verwijswoorden`, plus de klemtoon (van het oor)
+    // en `er-is-er-zijn` (alleen Spreken vraagt erom).
+    expect(kernIn('spreken')).toBe(25);
   });
 
-  it('101 rijen in concept_onderdelen, en dat is er 17 minder dan alles-op-alle-vier', () => {
+  it('116 rijen in concept_onderdelen, en ruim minder dan alles-op-alle-vier', () => {
     // ── DE REGRESSIE DIE DEZE TEST TEGENHOUDT ────────────────────────────────
     // Tot 10-09 stond 27 van de 31 regels op `ALL`, en dus hing élke regel aan élk onderdeel:
     // 118 rijen. Daardoor ging `herkennen` twee dingen betekenen — "begrijpen is genoeg" én
     // "hoort hier eigenlijk niet" — en droeg Lezen regels als `lidwoorden` die aan de
     // betekenis van een tekst niets veranderen. Zakt dit getal terug naar 4 × 31, dan is de
-    // afweging weggevallen en staat er weer een bibliotheek in elke cursus.
+    // afweging weggevallen en staat er weer een bibliotheek in elke cursus. 101 werd 116 met de
+    // acht regels van oktober 2026 (15 koppelingen, tegen 32 als ze op alle vier stonden).
     const rijen = GRAMMAR.reduce((n, c) => n + c.onderdelen.length, 0);
-    expect(rijen).toBe(101);
+    expect(rijen).toBe(116);
     expect(rijen).toBeLessThan(GRAMMAR.length * 4);
   });
 
@@ -397,7 +419,7 @@ describe('taalregels: kern tegenover herkennen', () => {
     }
   });
 
-  it('geen onderdeel draagt alle 31 regels, en geen enkel onderdeel is alleen maar kern', () => {
+  it('geen onderdeel draagt alle regels, en geen enkel onderdeel is alleen maar kern', () => {
     // Het lidmaatschap beslist wat een cursus bevat, het gewicht alleen de volgorde en het
     // label. Twee dingen moeten daarvoor waar blijven: een cursus mag niet de hele
     // bibliotheek zijn (anders is de afweging weg), en binnen een cursus moet er iets te
@@ -406,8 +428,141 @@ describe('taalregels: kern tegenover herkennen', () => {
       expect(kernIn(o), `${o} kern`).toBeGreaterThan(0);
       expect(kernIn(o), `${o} kern <= lidmaatschap`).toBeLessThanOrEqual(inOnderdeel(o));
     }
-    // Spreken is het enige onderdeel dat álle regels draagt — daar is niets uitgesloten.
-    expect(inOnderdeel('lezen')).toBeLessThan(GRAMMAR.length);
-    expect(inOnderdeel('luisteren')).toBeLessThan(GRAMMAR.length);
+    // Sinds oktober 2026 draagt ook Spreken niet meer alles: `betrekkelijk-vnw` en
+    // `hoeveelheden` vraagt dat examen niet.
+    for (const o of ONDERDELEN) expect(inOnderdeel(o), o).toBeLessThan(GRAMMAR.length);
+  });
+});
+
+/**
+ * Het A2-regelhuis (a2, lezen, B) en de grammaticasyllabus van oktober 2026.
+ *
+ * Twee dingen die stil fout gaan. Eén: een `a2:lezen:`-verwijzing in `data/grammar-syllabus.ts`
+ * zonder les is een onderwerp dat in het portaal naar niets wijst. Twee: de slugs b1–b28
+ * dragen voortgang, `review_status`, narratie en lesplaatjes; een nieuw concept middenin de
+ * bibliotheek mocht ze vroeger stil hernummeren. Nu komt het nummer uit `RULES_HOME_ORDER`.
+ */
+describe('het A2-regelhuis', () => {
+  type A2Concept = Concept & { kern?: string[] };
+  const A2 = A2_CONCEPTS as A2Concept[];
+  const blokB = (coursePlan('a2', 'lezen') as {
+    letter: string; lessons: { slug: string; concept?: string }[];
+  }[]).find(b => b.letter === 'B')!;
+
+  const a2Refs = Object.entries(GRAMMAR_SYLLABUS.a2).flatMap(([onderdeel, topics]) =>
+    topics.flatMap(t => t.lessons.map(ref => ({ onderdeel, ref }))));
+  const homeRefs = a2Refs.filter(r => r.ref.startsWith('a2:lezen:b'));
+
+  it('elke a2:lezen-verwijzing in de syllabus heeft een les in blok B', () => {
+    const slugs = new Set(blokB.lessons.map(l => l.slug));
+    expect(homeRefs.length).toBeGreaterThan(0);
+    for (const { ref } of homeRefs) {
+      expect(slugs.has(parseLessonRef(ref).slug), `${ref} heeft geen les`).toBe(true);
+    }
+  });
+
+  it('b1–b28 houden hun slug, en b29–b37 staan in de volgorde van de syllabus', () => {
+    const LEGACY = [
+      'hoofdzin-woordorde', 'inversie', 'voegwoorden-hoofdzin', 'bijzin-omdat-als', 'bijzin-dat-of',
+      'om-te', 'vragen-maken', 'tegenwoordige-tijd', 'onregelmatige-tegenwoordige-tijd',
+      'perfectum-regelmatig', 'perfectum-onregelmatig', 'hebben-of-zijn', 'verleden-tijd',
+      'toekomende-tijd', 'gebiedende-wijs', 'scheidbare-werkwoorden', 'werkwoorden-zonder-ge',
+      'modale-werkwoorden', 'wederkerende-werkwoorden', 'vaste-voorzetsels', 'lidwoorden',
+      'meervoud', 'vergrotende-trap', 'overtreffende-trap', 'persoonlijk-vnw-onderwerp',
+      'persoonlijk-vnw-lijdend', 'voorzetsels-plaats', 'frequentie',
+    ];
+    const NEW = [
+      'verwijswoorden', 'ontkenning', 'hoeveelheden', 'tijdsaanduidingen', 'betrekkelijk-vnw',
+      'lijdende-vorm', 'bezittelijk-vnw', 'er-is-er-zijn', 'bijvoeglijk-naamwoord',
+    ];
+    expect(blokB.lessons.map(l => l.slug)).toEqual(
+      [...LEGACY, ...NEW].map((c, i) => `b${i + 1}-${c}`));
+    expect(RULES_WITHOUT_LESSON).toEqual(['klemtoon', 'lange-korte-klank']);
+  });
+
+  it('de acht nieuwe regels staan precies in de cursussen die naar hun les wijzen', () => {
+    // De oudere 31 zijn op 10-09 per examenvorm afgewogen en volgen de syllabus niet één op
+    // één; voor de acht van oktober 2026 ís de syllabus de afweging.
+    const NEW = ['verwijswoorden', 'ontkenning', 'hoeveelheden', 'tijdsaanduidingen',
+      'betrekkelijk-vnw', 'lijdende-vorm', 'bezittelijk-vnw', 'er-is-er-zijn'];
+    for (const slug of NEW) {
+      const c = A2.find(x => x.slug === slug)!;
+      const lesSlug = blokB.lessons.find(l => l.concept === slug)!.slug;
+      const fromSyllabus = [...new Set(homeRefs
+        .filter(r => parseLessonRef(r.ref).slug === lesSlug)
+        .map(r => r.onderdeel))].sort();
+      expect([...c.onderdelen].sort(), slug).toEqual(fromSyllabus);
+    }
+  });
+});
+
+/**
+ * Het B1-regelhuis (b1, lezen, B): 24 lessen uit `concepts-b1.mjs`, waar de B1-onderwerpen van
+ * `data/grammar-syllabus.ts` naar wijzen.
+ *
+ * De syllabus is TypeScript en de scripts zijn `.mjs`, dus ze kunnen elkaar niet importeren;
+ * deze test is de brug. Een verwijzing in de syllabus zonder les is een onderwerp dat in het
+ * portaal naar niets wijst — er faalt niets, er staat alleen een lege plek.
+ */
+describe('het B1-regelhuis', () => {
+  type B1Concept = Concept & { kern: string[]; lesson_note?: string };
+  const B1 = B1_CONCEPTS as B1Concept[];
+  const blocks = coursePlan('b1', 'lezen') as {
+    letter: string; lessons: { slug: string; kind: string; concept?: string; is_free?: boolean }[];
+  }[];
+  const lessons = blocks[0].lessons;
+
+  const b1Refs = Object.entries(GRAMMAR_SYLLABUS.b1).flatMap(([onderdeel, topics]) =>
+    topics.flatMap(t => t.lessons.map(ref => ({ onderdeel, ref }))));
+  const homeRefs = b1Refs.filter(r => r.ref.startsWith('b1:lezen:'));
+
+  it('elke b1:lezen-verwijzing in de syllabus heeft een les in het B1-plan', () => {
+    const slugs = new Set(lessons.map(l => l.slug));
+    expect(homeRefs.length).toBeGreaterThan(0);
+    for (const { ref } of homeRefs) {
+      expect(slugs.has(parseLessonRef(ref).slug), `${ref} heeft geen les`).toBe(true);
+    }
+  });
+
+  it('is precies blok B met 24 grammaticalessen, b1 … b24, en elke les wordt gebruikt', () => {
+    expect(blocks.map(b => b.letter)).toEqual(['B']);
+    expect(lessons).toHaveLength(24);
+    lessons.forEach((l, i) => {
+      expect(l.kind).toBe('grammatica');
+      expect(l.slug).toBe(`b${i + 1}-${l.concept}`);
+    });
+    const referenced = new Set(homeRefs.map(r => parseLessonRef(r.ref).slug));
+    for (const l of lessons) expect(referenced.has(l.slug), `${l.slug} wordt nergens gebruikt`).toBe(true);
+  });
+
+  it('onderdelen per concept zijn precies de B1-cursussen die naar de les wijzen', () => {
+    for (const l of lessons) {
+      const c = B1.find(x => x.slug === l.concept)!;
+      const fromSyllabus = [...new Set(homeRefs
+        .filter(r => parseLessonRef(r.ref).slug === l.slug)
+        .map(r => r.onderdeel))].sort();
+      expect([...c.onderdelen].sort(), c.slug).toEqual(fromSyllabus);
+    }
+  });
+
+  it('elk concept heeft een groep, een lesnotitie en kern binnen zijn onderdelen', () => {
+    const groups = new Set((B1_GROUPS as { slug: string }[]).map(g => g.slug));
+    for (const c of B1) {
+      expect(groups.has(c.group), `${c.slug}: groep ${c.group}`).toBe(true);
+      expect(c.lesson_note?.trim(), `${c.slug}: lesson_note`).toBeTruthy();
+      expect(c.example_html).toMatch(/<mark>/);
+      for (const o of c.kern) expect(c.onderdelen, `${c.slug} kern ${o}`).toContain(o);
+    }
+  });
+
+  it('een B1-run leest nooit de A2-bibliotheek of de A2-strategieën', () => {
+    expect(conceptLibrary('b1').concepts).toBe(B1_CONCEPTS);
+    expect(conceptLibrary('a2').concepts).toBe(A2_CONCEPTS);
+    expect(strategyConcepts('b1', 'lezen')).toEqual([]);
+    expect(() => conceptLibrary('b2')).toThrow();
+  });
+
+  it('precies één gratis les', () => {
+    expect(lessons.filter(l => l.is_free).map(l => l.slug)).toEqual(['b1-er-daar-waar']);
   });
 });

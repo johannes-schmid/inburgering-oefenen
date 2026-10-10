@@ -75,6 +75,34 @@ Wat je NOOIT doet:
 /** De tags die de lescomponenten daadwerkelijk stylen. Al het andere rendert kaal. */
 const ALLOWED_HTML = '<p>, <br>, <strong>, <em>, <mark>, <ul>, <ol>, <li>';
 
+/**
+ * De B1-aanvulling op `A2_REGISTER`, voor het B1-regelhuis (b1, lezen, B).
+ *
+ * Een aanvulling en geen tweede register: de NOOIT-regels, `je` in de uitleg en de woordhulp
+ * gelden ongewijzigd. Wat verschuift is de zinslengte, het register van de voorbeelden en de
+ * omvang van een les — een B1-regel als `bijzinnen` dekt zes voegwoorden, en met de A2-opbouw
+ * (één uitleg, 6–8 opgaven) schrijft het model een les over de eerste twee. De lessoort blijft
+ * `grammatica`, dus dezelfde item-soorten (`KINDS_PER_LESSON`).
+ */
+const B1_LEVEL_NOTE = `
+LET OP: deze les is op niveau B1, niet A2. Waar dit afwijkt van wat hierboven of in de
+opbouw van de les staat, gaat dit voor. Wat dat verandert:
+- De uitleg blijft helder en spreekt de cursist aan met 'je', maar zinnen mogen langer zijn
+  (gemiddeld 12 tot 18 woorden) en een bijzin bevatten.
+- Voorbeelden en opgaven gebruiken B1-situaties: een formele brief van een instantie, een
+  nieuwsbericht, regels van een organisatie, een gesprek op het werk, een klacht, een mening.
+  Bij de lijdende vorm, zou/zouden en formele verzoeken: gebruik ook het formele register ('u').
+- De les behandelt ALLE vormen die onder "Wat deze les behandelt" staan. Elke vorm komt in de
+  uitleg terug én in minstens één opgave.
+- Opbouw: per deelonderwerp één "uitleg" (maximaal drie cards) met meteen daarna opgaven.
+  In totaal 8 tot 12 opgaven, oplopend van tier 0 (herkennen) via tier 1 (kiezen) naar tier 2
+  (zelf maken). Minstens twee opgaven op tier 2.
+- Afleiders zijn B1-afleiders: de bijna-goede vorm (niet meer / nog niet, doordat / omdat,
+  heb gekund / heb kunnen komen), niet een vorm die niemand zou kiezen.
+- Bij "woordorde" staan de tokens door elkaar, nooit al in de juiste volgorde: de speler
+  schudt ze niet, dus een lijst in de goede volgorde verklapt het antwoord.
+`.trim();
+
 /* ── het schema dat elke les teruggeeft ──────────────────────────────────── */
 
 /**
@@ -510,7 +538,11 @@ const BRIEFS = {
       `  - eerst 2 op tier 0 ("mcq" of "markeren"): herken de vorm\n` +
       `  - dan 3 of 4 op tier 1 ("gap_choice", "matchen"): kies de juiste vorm\n` +
       `  - dan 2 op tier 2 ("gap_type", "woordorde" of "open_zin"): maak het zelf\n\n` +
-      `Alle voorbeelden en opgaven gaan over dit ene concept. Verzin geen tweede regel erbij.`,
+      `Alle voorbeelden en opgaven gaan over dit ene concept. Verzin geen tweede regel erbij.` +
+      /* `lesson_note` uit `concepts-a2.mjs`: wat de les wel en niet behandelt, waar de
+         one-liner te kort voor is. Alleen de regels van oktober 2026 hebben er een; de 28
+         oudere lessen zijn zonder geschreven en worden niet opnieuw gegenereerd. */
+      (concept.lesson_note ? `\n\nWat deze les behandelt: ${concept.lesson_note}` : ''),
   }),
 
   strategie: ({ concept }) => ({
@@ -780,6 +812,7 @@ export function createLessonAuthor({ apiKey, gatewayKey, effort = 'high', verbos
 
     const system = [
       A2_REGISTER,
+      ...(level === 'b1' ? ['', B1_LEVEL_NOTE] : []),
       '',
       `Je schrijft één les voor de cursus ${onderdeel.toUpperCase()} op niveau ${level.toUpperCase()}, ` +
       `in blok ${block.letter} (${block.name_nl}).`,

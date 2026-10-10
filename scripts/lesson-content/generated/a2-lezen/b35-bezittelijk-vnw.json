@@ -1,0 +1,186 @@
+{
+  "items": [
+    {
+      "kind": "uitleg",
+      "tier": null,
+      "explanation": null,
+      "payload": {
+        "body_html": "<p>Met <strong>bezittelijke woorden</strong> (woorden die zeggen van wie iets is) vertel je van wie iets is: <em>mijn, jouw/je, uw, zijn, haar, ons/onze, jullie, hun</em>.</p><p>Bijna alle vormen blijven hetzelfde. Alleen <strong>ons</strong> verandert: <em>ons</em> bij een het-woord, <em>onze</em> bij een de-woord en bij meervoud.</p><p>Let ook op het verschil tussen <strong>zijn</strong> (van een man of jongen) en <strong>haar</strong> (van een vrouw of meisje).</p>",
+        "cards": [
+          {
+            "label": "ONS OF ONZE",
+            "example_html": "<mark>Ons huis</mark> is klein, maar <mark>onze tuin</mark> is groot."
+          },
+          {
+            "label": "ZIJN OF HAAR",
+            "example_html": "Karim zoekt <mark>zijn</mark> jas. Fatima zoekt <mark>haar</mark> tas."
+          }
+        ]
+      }
+    },
+    {
+      "kind": "voorbeeld",
+      "tier": null,
+      "explanation": null,
+      "payload": {
+        "sentence_html": "Wij wonen in Zwolle en <mark>ons appartement</mark> heeft drie kamers."
+      }
+    },
+    {
+      "kind": "voorbeeld",
+      "tier": null,
+      "explanation": null,
+      "payload": {
+        "sentence_html": "Mijn dochter is ziek, dus ik bel <mark>haar</mark> school."
+      }
+    },
+    {
+      "kind": "mcq",
+      "tier": 0,
+      "explanation": "Kind is een het-woord (het kind). Bij een het-woord gebruik je ons, niet onze.",
+      "payload": {
+        "prompt": "Welke zin is goed?"
+      },
+      "options": [
+        {
+          "label": "A",
+          "body": "Onze kind gaat naar de basisschool.",
+          "is_correct": false
+        },
+        {
+          "label": "B",
+          "body": "Ons kind gaat naar de basisschool.",
+          "is_correct": true
+        },
+        {
+          "label": "C",
+          "body": "Ons kinderen gaan naar de basisschool.",
+          "is_correct": false
+        }
+      ]
+    },
+    {
+      "kind": "mcq",
+      "tier": 0,
+      "explanation": "Je praat over Youssef, een man. Van een man zeg je zijn.",
+      "payload": {
+        "prompt": "Youssef werkt bij een bakkerij. Welke zin is goed?"
+      },
+      "options": [
+        {
+          "label": "A",
+          "body": "Youssef vergeet haar telefoon op het werk.",
+          "is_correct": false
+        },
+        {
+          "label": "B",
+          "body": "Youssef vergeet zijn telefoon op het werk.",
+          "is_correct": true
+        },
+        {
+          "label": "C",
+          "body": "Youssef vergeet hun telefoon op het werk.",
+          "is_correct": false
+        }
+      ]
+    },
+    {
+      "kind": "gap_choice",
+      "tier": 1,
+      "explanation": "Auto is een de-woord (de auto). Bij een de-woord gebruik je onze.",
+      "payload": {
+        "sentence": "Wij halen ___ auto op bij de garage.",
+        "choices": [
+          "ons",
+          "onze"
+        ],
+        "answer": "onze"
+      }
+    },
+    {
+      "kind": "gap_choice",
+      "tier": 1,
+      "explanation": "Formulier is een het-woord (het formulier), dus ons.",
+      "payload": {
+        "sentence": "Wij sturen ___ formulier naar de gemeente.",
+        "choices": [
+          "ons",
+          "onze"
+        ],
+        "answer": "ons"
+      }
+    },
+    {
+      "kind": "gap_choice",
+      "tier": 1,
+      "explanation": "Je praat over Amira, een vrouw. Van een vrouw zeg je haar.",
+      "payload": {
+        "sentence": "Amira zoekt werk en schrijft ___ brief aan het uitzendbureau.",
+        "choices": [
+          "zijn",
+          "haar",
+          "hun"
+        ],
+        "answer": "haar"
+      }
+    },
+    {
+      "kind": "matchen",
+      "tier": 1,
+      "explanation": "Je kiest ons bij een het-woord en onze bij een de-woord of bij meervoud.",
+      "payload": {
+        "instruction": "Welke vorm hoort bij het woord? Maak de goede paren.",
+        "pairs": [
+          {
+            "left": "huis",
+            "right": "ons huis"
+          },
+          {
+            "left": "keuken",
+            "right": "onze keuken"
+          },
+          {
+            "left": "kinderen",
+            "right": "onze kinderen"
+          },
+          {
+            "left": "adres",
+            "right": "ons adres"
+          }
+        ]
+      }
+    },
+    {
+      "kind": "gap_type",
+      "tier": 2,
+      "explanation": "Buren is meervoud, dus gebruik je onze.",
+      "payload": {
+        "sentence": "Wij hebben nieuwe buren. ___ buren komen uit Polen.",
+        "answer": "Onze"
+      }
+    },
+    {
+      "kind": "woordorde",
+      "tier": 2,
+      "explanation": "Je praat over mijn broer, een man, dus zijn fiets. De zin begint met het onderwerp en daarna het werkwoord.",
+      "payload": {
+        "instruction": "Maak een goede zin van deze woorden.",
+        "tokens": [
+          "fiets",
+          "broer",
+          "zijn",
+          "mijn",
+          "repareert"
+        ],
+        "answer": [
+          "mijn",
+          "broer",
+          "repareert",
+          "zijn",
+          "fiets"
+        ]
+      }
+    }
+  ],
+  "what_you_learn": "Na deze les weet je hoe je zegt van wie iets is. Je gebruikt mijn, jouw, zijn, haar, ons, onze, jullie en hun op de goede plaats. Je let op ons huis tegenover onze auto, en op zijn voor een man en haar voor een vrouw."
+}

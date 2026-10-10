@@ -1,0 +1,189 @@
+{
+  "items": [
+    {
+      "kind": "uitleg",
+      "tier": null,
+      "explanation": null,
+      "payload": {
+        "body_html": "<p>Met <strong>die</strong> en <strong>dat</strong> vertel je iets meer over een woord dat ervoor staat.</p><p>Na een <strong>de</strong>-woord of een meervoud gebruik je <strong>die</strong>. Na een <strong>het</strong>-woord gebruik je <strong>dat</strong>.</p><p>In dat extra stukje zin staat het werkwoord achteraan.</p>",
+        "cards": [
+          {
+            "label": "NA EEN DE-WOORD OF MEERVOUD",
+            "example_html": "De man <mark>die</mark> hiernaast woont, is aardig."
+          },
+          {
+            "label": "NA EEN HET-WOORD",
+            "example_html": "Het huis <mark>dat</mark> te koop staat, is oud."
+          }
+        ]
+      }
+    },
+    {
+      "kind": "voorbeeld",
+      "tier": null,
+      "explanation": null,
+      "payload": {
+        "sentence_html": "De kinderen <mark>die buiten spelen</mark> wonen in onze straat."
+      }
+    },
+    {
+      "kind": "voorbeeld",
+      "tier": null,
+      "explanation": null,
+      "payload": {
+        "sentence_html": "Het formulier <mark>dat je moet invullen</mark> ligt op tafel."
+      }
+    },
+    {
+      "kind": "mcq",
+      "tier": 0,
+      "explanation": "Het stukje met die/dat vertelt iets over het woord dat er vlak voor staat: de brief.",
+      "payload": {
+        "prompt": "Lees de zin: \"De brief die vanmorgen kwam, is van de gemeente.\" Over wie of wat gaat het stukje met die?"
+      },
+      "options": [
+        {
+          "label": "A",
+          "body": "over de brief",
+          "is_correct": true
+        },
+        {
+          "label": "B",
+          "body": "over de gemeente",
+          "is_correct": false
+        },
+        {
+          "label": "C",
+          "body": "over vanmorgen",
+          "is_correct": false
+        }
+      ]
+    },
+    {
+      "kind": "mcq",
+      "tier": 0,
+      "explanation": "Na het het-woord 'het kind' hoort dat; in de andere zinnen staat een de-woord of een meervoud.",
+      "payload": {
+        "prompt": "In welke zin staat dat goed gebruikt?"
+      },
+      "options": [
+        {
+          "label": "A",
+          "body": "De buurman dat naast ons woont, is ziek.",
+          "is_correct": false
+        },
+        {
+          "label": "B",
+          "body": "Het kind dat daar fietst, is mijn zoon.",
+          "is_correct": true
+        },
+        {
+          "label": "C",
+          "body": "De collega's dat vandaag werken, zijn nieuw.",
+          "is_correct": false
+        }
+      ]
+    },
+    {
+      "kind": "gap_choice",
+      "tier": 1,
+      "explanation": "'De vrouw' is een de-woord, dus je gebruikt die.",
+      "payload": {
+        "sentence": "De vrouw ___ in de winkel werkt, heet Saida.",
+        "choices": [
+          "die",
+          "dat"
+        ],
+        "answer": "die"
+      }
+    },
+    {
+      "kind": "gap_choice",
+      "tier": 1,
+      "explanation": "'Het pakje' is een het-woord, dus je gebruikt dat.",
+      "payload": {
+        "sentence": "Het pakje ___ gisteren kwam, is voor mijn dochter.",
+        "choices": [
+          "die",
+          "dat"
+        ],
+        "answer": "dat"
+      }
+    },
+    {
+      "kind": "gap_choice",
+      "tier": 1,
+      "explanation": "'De buren' is meervoud, en na een meervoud gebruik je altijd die.",
+      "payload": {
+        "sentence": "De buren ___ boven ons wonen, zijn heel rustig.",
+        "choices": [
+          "die",
+          "dat"
+        ],
+        "answer": "die"
+      }
+    },
+    {
+      "kind": "matchen",
+      "tier": 1,
+      "explanation": "Bij een de-woord en bij meervoud hoort die; bij een het-woord hoort dat.",
+      "payload": {
+        "instruction": "Welk woord hoort erbij: die of dat?",
+        "pairs": [
+          {
+            "left": "de dokter",
+            "right": "die"
+          },
+          {
+            "left": "het ziekenhuis",
+            "right": "dat"
+          },
+          {
+            "left": "de medicijnen",
+            "right": "die"
+          },
+          {
+            "left": "het recept",
+            "right": "dat"
+          }
+        ]
+      }
+    },
+    {
+      "kind": "gap_type",
+      "tier": 2,
+      "explanation": "'Het huis' is een het-woord, dus na dit woord schrijf je dat.",
+      "payload": {
+        "sentence": "Het huis ___ wij huren, heeft een kleine tuin.",
+        "answer": "dat"
+      }
+    },
+    {
+      "kind": "woordorde",
+      "tier": 2,
+      "explanation": "Na het de-woord 'de man' komt die, en het werkwoord 'belde' staat achteraan in dat stukje.",
+      "payload": {
+        "instruction": "Maak een goede zin van deze woorden.",
+        "tokens": [
+          "de",
+          "man",
+          "die",
+          "gisteren",
+          "belde",
+          "komt",
+          "vandaag"
+        ],
+        "answer": [
+          "de",
+          "man",
+          "die",
+          "gisteren",
+          "belde",
+          "komt",
+          "vandaag"
+        ]
+      }
+    }
+  ],
+  "what_you_learn": "Je leert wanneer je die gebruikt en wanneer dat. Je ziet dat die hoort bij een de-woord of een meervoud, en dat bij een het-woord. Ook leer je zien over wie of wat het stukje met die of dat gaat."
+}

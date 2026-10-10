@@ -39,6 +39,7 @@ import {
   EXAM_COUNT, FORMAT, TASK_RULES, LONG_CATEGORIES, SPREKEN_IMAGES, SPREKEN_QUOTA,
   SECTION_SLUGS, LUISTEREN_SECTION_SLUGS, SKILLS,
 } from './rules.mjs';
+import { geslachtVanVoornaam } from './plan.mjs';
 
 /**
  * Set by `validateDataset` for the duration of one call. A module-level flag rather than a
@@ -370,6 +371,27 @@ function checkLuisteren(problems) {
       if (cast.A && cast.A === cast.B) {
         problems.push(`${at}: beide sprekers hebben stem "${cast.A}"`);
       }
+      // De naam moet bij het geslacht van de stem passen. Dit is de derde en laatste controle
+      // op de fout uit examen 1 en 2 (zie `LUISTEREN_NAMEN` in plan.mjs): de prompt schrijft de
+      // naam voor en `validate()` keurt af wat afwijkt, maar allebei die sloten zitten aan de
+      // generatiekant. Wordt een naam later met de hand veranderd, dan is dit de enige plek die
+      // het nog ziet — en horen doe je het pas als de mp3 al betaald is.
+      for (const [rol, naam] of [['A', t.speaker_a], ['B', t.speaker_b]]) {
+        const gender = VOICES[cast[rol]]?.gender;
+        const naamGeslacht = geslachtVanVoornaam(naam);
+        if (!naam) problems.push(`${at}: spreker ${rol} heeft geen naam`);
+        else if (gender && naamGeslacht && naamGeslacht !== gender) {
+          problems.push(
+            `${at}: spreker ${rol} heet "${naam}" `
+            + `(${naamGeslacht === 'female' ? 'vrouw' : 'man'}) maar krijgt stem "${cast[rol]}" `
+            + `(${gender === 'female' ? 'vrouw' : 'man'})`
+          );
+        }
+      }
+      if (t.speaker_a && t.speaker_a === t.speaker_b) {
+        problems.push(`${at}: beide sprekers heten "${t.speaker_a}"`);
+      }
+
       // De verteller leest het scenario van álle zes gesprekken voor. Speelt ze óók een
       // personage, dan is ze in dat gesprek niet meer de derde stem die DUO's introtrack heeft.
       for (const rol of ['A', 'B']) {

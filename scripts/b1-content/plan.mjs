@@ -26,6 +26,8 @@
  * teksten, 35 vragen, this genre mix, this length band.
  */
 
+import { VOICES } from '../a2-content/lib.mjs';
+
 /* ── Lezen ───────────────────────────────────────────────────────────────── */
 
 /**
@@ -631,13 +633,23 @@ export const LUISTEREN_SPLITS = [
  * Wie van de twee de interviewer is, bepaalt de generator niet: `LUISTEREN_GENRES` zegt het en
  * de gegenereerde `intro` noemt de namen.
  */
+/**
+ * Examen 1 en 2 hebben géén paar van gelijk geslacht, en dat is een uitzondering met een datum.
+ *
+ * Ze zijn geschreven vóór de reparatie hierboven, dus hun namen zijn door het model verzonnen —
+ * en het model koos twaalf van de twaalf keer een man en een vrouw. De casting is op 17-09
+ * rechtgezet naar wat de namen zeggen, want een vrouwennaam met een mannenstem hoort de
+ * kandidaat meteen; de gelijk-geslachtseis was daarnaast alleen haalbaar door een spreker in een
+ * al geseed gesprek te hernoemen, en dat is een inhoudelijke wijziging voor een regel over
+ * moeilijkheidsgraad. De eis geldt daarom vanaf examen 3, waar de namen uit het plan komen.
+ */
 export const LUISTEREN_CAST = [
-  // examen 1
-  [['man_eric', 'man_young'], ['woman_roos', 'man_older'], ['woman_noa', 'woman_older'],
+  // examen 1 — hergecast op 17-09, zie de noot onder deze tabel
+  [['woman_young', 'man_young'], ['woman_roos', 'man_older'], ['man_eric', 'woman_older'],
    ['man_richard', 'woman_young'], ['woman_roos', 'man_eric'], ['man_young', 'woman_noa']],
-  // examen 2
-  [['woman_young', 'man_older'], ['man_eric', 'woman_noa'], ['man_richard', 'man_young'],
-   ['woman_older', 'man_eric'], ['woman_roos', 'woman_noa'], ['woman_older', 'man_richard']],
+  // examen 2 — idem
+  [['man_young', 'woman_young'], ['man_eric', 'woman_noa'], ['man_richard', 'woman_young'],
+   ['woman_older', 'man_eric'], ['woman_roos', 'man_young'], ['woman_older', 'man_richard']],
   // examen 3
   [['woman_noa', 'man_richard'], ['woman_older', 'woman_roos'], ['man_young', 'man_eric'],
    ['woman_noa', 'man_older'], ['man_richard', 'woman_young'], ['woman_roos', 'man_young']],
@@ -663,3 +675,80 @@ export const LUISTEREN_CAST = [
   [['man_older', 'woman_older'], ['woman_young', 'man_richard'], ['man_eric', 'man_young'],
    ['woman_roos', 'woman_young'], ['man_older', 'woman_noa'], ['man_richard', 'woman_roos']],
 ];
+
+/**
+ * De voornamen die de sprekers mogen dragen, per geslacht.
+ *
+ * ## Waarom de naam uit het plan komt en niet uit de generator
+ * Dit is de reparatie van een fout die in examen 1 en 2 zeven van de vierentwintig sprekers
+ * raakte. `LUISTEREN_CAST` wijst een stem toe aan de *plek* A of B; de generator verzon daarna
+ * zelf een naam voor die plek, zonder te weten wie hij hoorde te zijn. Dus sprak Sanne met de
+ * stem van een man en Bram met die van een vrouw. Er ging niets stuk en er logde niets: alleen
+ * wie luistert, hoort het.
+ *
+ * Een prompt die het geslacht alleen *noemt* lost dat niet op — dan hangt het nog steeds aan
+ * een model dat zich eraan houdt, en dat is precies wat hier faalde. Door de naam vast te
+ * koppelen aan de stem kán de combinatie niet meer verkeerd zijn: hij komt als paar uit dit
+ * bestand, staat als eis in de prompt en wordt in `checkLuisteren` teruggerekend naar het
+ * geslacht van de stem. Drie sloten op dezelfde deur, waarvan de laatste ook dichtblijft als
+ * iemand de naam later in /admin aanpast.
+ *
+ * ## Waarom deze namen
+ * Dezelfde mengeling die DUO's opnames hebben — Nederlandse namen naast Marokkaans-,
+ * Turks- en Surinaams-Nederlandse — want de kandidaat oefent voor een land waar de
+ * huisartsassistent Fatima heet. Per geslacht zijn het er twintig, ruim genoeg om binnen één
+ * examen twaalf keer te trekken zonder herhaling.
+ */
+export const LUISTEREN_NAMEN = {
+  female: [
+    'Sanne Vermeer', 'Ingrid Veenstra', 'Fatima el Idrissi', 'Els Verhoeven', 'Nadia Bouzid',
+    'Lianne de Groot', 'Ineke Bakker', 'Ayşe Yıldırım', 'Bianca Willems', 'Karin Bosveld',
+    'Hanneke Prins', 'Soraya Doekhie', 'Marleen Otten', 'Naima Boulahfa', 'Ilse Terhorst',
+    'Wilma Dijkstra', 'Esra Demir', 'Chantal Roozendaal', 'Miriam van Dijk', 'Joke Hendriks',
+    'Karima Boulahfa',
+  ],
+  male: [
+    'Bram Kooistra', 'Karim el Haddaoui', 'Wouter Snijders', 'Ramon Veldkamp', 'Youssef Bakkali',
+    'Sander Bekkers', 'Hakan Yalçın', 'Dennis Molenaar', 'Anil Ramdin', 'Pieter Hoogland',
+    'Samir Oudkerk', 'Ruud Vermeulen', 'Mustafa Kaya', 'Jeroen Alberts', 'Abdel Bouazza',
+    'Tom Wagenaar', 'Erik Doornbos', 'Marco Teeuwen', 'Redouan Amrani', 'Gerben Sikkema',
+  ],
+};
+
+/**
+ * De twaalf namen van één luisterexamen, in dezelfde volgorde als `LUISTEREN_CAST[examIndex]`.
+ *
+ * Deterministisch: hetzelfde examennummer geeft altijd dezelfde namen, dus een her-generatie
+ * levert dezelfde mensen. De offset schuift per examen op zodat examen 3 niet dezelfde twaalf
+ * namen gebruikt als examen 1, en binnen één examen wordt elke naam maar één keer getrokken.
+ */
+export function luisterenNamen(examIndex) {
+  const gebruikt = { female: 0, male: 0 };
+  return LUISTEREN_CAST[examIndex].map(paar =>
+    paar.map(stem => {
+      const g = VOICES[stem].gender;
+      const pool = LUISTEREN_NAMEN[g];
+      // De offset is examIndex * 6 zodat de tien examens elkaars namen niet overlappen zolang
+      // de pool groot genoeg is, en er daarna netjes omheen loopt.
+      return pool[(examIndex * 6 + gebruikt[g]++) % pool.length];
+    })
+  );
+}
+
+/**
+ * Het geslacht dat bij een voornaam hoort, of `null` als we het niet weten.
+ *
+ * Alleen de voornaam telt: de achternaam varieert per gesprek ("Karim el Haddaoui",
+ * "Karim Bouazza") terwijl het geslacht aan de voornaam hangt. Onbekend is bewust géén fout —
+ * dit is de achtervang voor met de hand aangepaste namen, niet de hoofdcontrole. Die zit in
+ * `luisterenUnit`, waar de naam letterlijk moet matchen met wat hierboven staat.
+ */
+const VOORNAAM_GESLACHT = new Map(
+  Object.entries(LUISTEREN_NAMEN).flatMap(([geslacht, namen]) =>
+    namen.map(n => [n.split(' ')[0].toLowerCase(), geslacht])
+  )
+);
+
+export function geslachtVanVoornaam(naam) {
+  return VOORNAAM_GESLACHT.get((naam ?? '').trim().split(' ')[0].toLowerCase()) ?? null;
+}

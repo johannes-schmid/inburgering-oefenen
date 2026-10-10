@@ -1,0 +1,236 @@
+{
+  "items": [
+    {
+      "kind": "uitleg",
+      "tier": null,
+      "explanation": null,
+      "payload": {
+        "body_html": "<p>Soms vertel je na wat iemand gezegd of gevraagd heeft. Je gebruikt dan een verbindingswoord: <strong>dat</strong> na zeggen en <strong>of</strong> na een ja/nee-vraag.</p><p>Let op: in het tweede deel van de zin gaat het werkwoord naar achteren. Dat tweede deel heet een bijzin.</p><p>Is er een vraagwoord (waar, wanneer, hoe, waarom)? Dan gebruikt dat vraagwoord de verbinding, en ook dan staat het werkwoord achteraan.</p>",
+        "cards": [
+          {
+            "label": "ZEGGEN: DAT",
+            "example_html": "De dokter zegt <mark>dat ik twee dagen moet rusten</mark>."
+          },
+          {
+            "label": "VRAGEN (ja/nee): OF",
+            "example_html": "De medewerker vroeg <mark>of ik mijn paspoort bij me had</mark>."
+          },
+          {
+            "label": "VRAAGWOORD",
+            "example_html": "Weet u <mark>waar het station is</mark>?"
+          }
+        ]
+      }
+    },
+    {
+      "kind": "voorbeeld",
+      "tier": null,
+      "explanation": null,
+      "payload": {
+        "sentence_html": "Mijn leidinggevende zei <mark>dat de vergadering een uur later begint</mark>."
+      }
+    },
+    {
+      "kind": "voorbeeld",
+      "tier": null,
+      "explanation": null,
+      "payload": {
+        "sentence_html": "Ik wil graag weten <mark>of ik het formulier ook digitaal mag opsturen</mark>."
+      }
+    },
+    {
+      "kind": "uitleg",
+      "tier": null,
+      "explanation": null,
+      "payload": {
+        "body_html": "<p>Vertel je na wat iemand <strong>in het verleden</strong> zei? Dan verandert de tijd vaak mee: <em>heb</em> wordt <em>had</em>, <em>kan</em> wordt <em>kon</em>, <em>is</em> wordt <em>was</em>.</p><p>Ook het persoonlijk voornaamwoord verandert mee. Zegt je buurman &quot;ik&quot;, dan vertel jij het na met &quot;hij&quot;.</p><p>In een beleefd verzoek gebruik je vaak: <em>Ik wil graag weten of…</em> of <em>Kunt u mij vertellen waar…</em>. Dat klinkt vriendelijker dan een directe vraag.</p>",
+        "cards": [
+          {
+            "label": "DIRECT",
+            "example_html": "Mijn buurman: &quot;<mark>Ik heb</mark> vandaag geen tijd.&quot;"
+          },
+          {
+            "label": "NAVERTELD",
+            "example_html": "Mijn buurman zei dat <mark>hij</mark> die dag geen tijd <mark>had</mark>."
+          },
+          {
+            "label": "BELEEFD",
+            "example_html": "<mark>Ik wil graag weten of</mark> u mijn brief ontvangen hebt."
+          }
+        ]
+      }
+    },
+    {
+      "kind": "mcq",
+      "tier": 0,
+      "explanation": "Na een ja/nee-vraag die je navertelt, gebruik je <strong>of</strong>. Na <em>zeggen</em> zou <em>dat</em> staan, maar hier wordt een vraag nagevertel.",
+      "payload": {
+        "prompt": "Welke zin vertelt een ja/nee-vraag correct na?"
+      },
+      "options": [
+        {
+          "label": "A",
+          "body": "De consulent vroeg dat ik al werk had.",
+          "is_correct": false
+        },
+        {
+          "label": "B",
+          "body": "De consulent vroeg of ik al werk had.",
+          "is_correct": true
+        },
+        {
+          "label": "C",
+          "body": "De consulent vroeg of had ik al werk.",
+          "is_correct": false
+        }
+      ]
+    },
+    {
+      "kind": "mcq",
+      "tier": 0,
+      "explanation": "In de bijzin na <em>dat</em> staat het werkwoord achteraan: <em>…dat de huur in januari omhooggaat</em>.",
+      "payload": {
+        "prompt": "Welke zin heeft het werkwoord op de juiste plaats?"
+      },
+      "options": [
+        {
+          "label": "A",
+          "body": "De verhuurder schrijft dat de huur gaat in januari omhoog.",
+          "is_correct": false
+        },
+        {
+          "label": "B",
+          "body": "De verhuurder schrijft dat gaat de huur in januari omhoog.",
+          "is_correct": false
+        },
+        {
+          "label": "C",
+          "body": "De verhuurder schrijft dat de huur in januari omhooggaat.",
+          "is_correct": true
+        }
+      ]
+    },
+    {
+      "kind": "gap_choice",
+      "tier": 1,
+      "explanation": "Er staat al een vraagwoord (<em>waar</em>) in de nagevertelde vraag; dan heb je geen <em>of</em> of <em>dat</em> nodig.",
+      "payload": {
+        "sentence": "Kunt u mij vertellen ___ ik het aanvraagformulier kan ophalen?",
+        "choices": [
+          "dat",
+          "of",
+          "waar"
+        ],
+        "answer": "waar"
+      }
+    },
+    {
+      "kind": "gap_choice",
+      "tier": 1,
+      "explanation": "Na <em>zeggen</em> met een mededeling gebruik je <strong>dat</strong>, niet <em>of</em>.",
+      "payload": {
+        "sentence": "De huisarts zei ___ de uitslag binnen een week komt.",
+        "choices": [
+          "of",
+          "dat",
+          "wanneer"
+        ],
+        "answer": "dat"
+      }
+    },
+    {
+      "kind": "gap_choice",
+      "tier": 1,
+      "explanation": "Je vertelt na wat iemand in het verleden zei, dus de tijd verandert mee: <em>heb</em> wordt <em>had</em>.",
+      "payload": {
+        "sentence": "Mijn collega zei dat hij die ochtend geen tijd ___ voor het overleg.",
+        "choices": [
+          "heeft",
+          "had",
+          "hebben"
+        ],
+        "answer": "had"
+      }
+    },
+    {
+      "kind": "matchen",
+      "tier": 1,
+      "explanation": "Na <em>zeggen</em> en <em>schrijven</em> komt <em>dat</em>, na een ja/nee-vraag komt <em>of</em>, en bij een vraagwoord gebruik je dat vraagwoord zelf.",
+      "payload": {
+        "instruction": "Welk verbindingswoord hoort bij welk begin? Verbind.",
+        "pairs": [
+          {
+            "left": "De gemeente schrijft … de aanvraag is goedgekeurd.",
+            "right": "dat"
+          },
+          {
+            "left": "De baliemedewerker vroeg … ik een afspraak had.",
+            "right": "of"
+          },
+          {
+            "left": "Weet jij … de bijeenkomst begint?",
+            "right": "hoe laat"
+          },
+          {
+            "left": "Ik wil graag weten … de cursus nog plaats heeft.",
+            "right": "of"
+          }
+        ]
+      }
+    },
+    {
+      "kind": "gap_type",
+      "tier": 2,
+      "explanation": "Je vertelt na wat je buurvrouw zei in het verleden, dus <em>kan</em> wordt <em>kon</em> en het werkwoord staat achteraan.",
+      "payload": {
+        "sentence": "Mijn buurvrouw: \"Ik kan morgen niet komen.\" — Mijn buurvrouw zei dat ze morgen niet ___ komen.",
+        "answer": "kon"
+      }
+    },
+    {
+      "kind": "woordorde",
+      "tier": 2,
+      "explanation": "Na <em>of</em> volgt een bijzin: eerst het onderwerp, daarna de rest, en de werkwoorden staan achteraan.",
+      "payload": {
+        "instruction": "Maak een beleefde vraag. Zet de woorden in de juiste volgorde.",
+        "tokens": [
+          "of",
+          "weten",
+          "ik",
+          "ik",
+          "wil",
+          "graag",
+          "mag",
+          "parkeren",
+          "hier"
+        ],
+        "answer": [
+          "ik",
+          "wil",
+          "graag",
+          "weten",
+          "of",
+          "ik",
+          "hier",
+          "mag",
+          "parkeren"
+        ]
+      }
+    },
+    {
+      "kind": "open_zin",
+      "tier": 2,
+      "explanation": "Je gebruikt <em>dat</em> na zeggen, zet het werkwoord achteraan en past de tijd en het voornaamwoord aan.",
+      "payload": {
+        "prompt": "Je leidinggevende zei tegen jou: \"Ik ben volgende week op vakantie.\" Vertel dit na in één zin, in de verleden tijd.",
+        "model_answer": "Mijn leidinggevende zei dat hij volgende week op vakantie was.",
+        "checklist": [
+          "Je zin heeft het verbindingswoord dat.",
+          "Het werkwoord staat achteraan in de bijzin.",
+          "Je gebruikt hij of zij in plaats van ik, en was in plaats van ben."
+        ]
+      }
+    }
+  ],
+  "what_you_learn": "Je leert navertellen wat iemand gezegd of gevraagd heeft. Je kiest het juiste verbindingswoord: dat na zeggen, of bij een ja/nee-vraag, en een vraagwoord bij een indirecte vraag. Je zet het werkwoord achteraan en past de tijd en het voornaamwoord aan, ook in beleefde zinnen zoals \"Ik wil graag weten of…\"."
+}

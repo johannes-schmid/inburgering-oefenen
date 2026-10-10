@@ -1,0 +1,208 @@
+{
+  "items": [
+    {
+      "kind": "uitleg",
+      "tier": null,
+      "explanation": null,
+      "payload": {
+        "body_html": "<p>Met <strong>er</strong>, <strong>daar</strong> en <strong>waar</strong> verwijs je terug naar iets wat al genoemd is, zodat je het woord niet hoeft te herhalen. Na <em>er</em> en <em>daar</em> komt vaak een voorzetsel: <em>erover</em>, <em>eraan</em>, <em>ermee</em>, <em>daarmee</em>. In een bijzin gebruik je <strong>waar</strong> + voorzetsel: <em>het formulier waarop je naam staat</em>. Dingen verwijs je nooit aan met <em>over het</em> of <em>met het</em>, maar met deze vormen.</p>",
+        "cards": [
+          {
+            "label": "ER (neutraal, midden in de zin)",
+            "example_html": "Ik denk <mark>er</mark>nog <mark>over</mark> na."
+          },
+          {
+            "label": "DAAR (met nadruk, vooraan de zin)",
+            "example_html": "<mark>Daar</mark> ben ik het niet <mark>mee</mark> eens."
+          },
+          {
+            "label": "WAAR (in een bijzin)",
+            "example_html": "Dit is de brief <mark>waarin</mark> de gemeente het uitlegt."
+          }
+        ]
+      }
+    },
+    {
+      "kind": "voorbeeld",
+      "tier": null,
+      "explanation": null,
+      "payload": {
+        "sentence_html": "<p>Hoeveel vakantiedagen heb je nog? Ik heb <mark>er</mark> nog vier.</p>"
+      }
+    },
+    {
+      "kind": "voorbeeld",
+      "tier": null,
+      "explanation": null,
+      "payload": {
+        "sentence_html": "<p>De regeling verandert, maar wij zijn <mark>er</mark> op tijd <mark>over</mark> geïnformeerd.</p>"
+      }
+    },
+    {
+      "kind": "mcq",
+      "tier": 0,
+      "explanation": "Na een getal zoals 'drie' gebruik je 'er' om het zelfstandig naamwoord niet te herhalen; het telwoord blijft staan.",
+      "payload": {
+        "prompt": "Welke zin is goed? De collega vraagt: 'Hoeveel formulieren heb je ingevuld?'"
+      },
+      "options": [
+        {
+          "label": "A",
+          "body": "Ik heb er drie ingevuld.",
+          "is_correct": true
+        },
+        {
+          "label": "B",
+          "body": "Ik heb drie ingevuld er.",
+          "is_correct": false
+        },
+        {
+          "label": "C",
+          "body": "Ik heb daar drie ingevuld.",
+          "is_correct": false
+        }
+      ]
+    },
+    {
+      "kind": "mcq",
+      "tier": 0,
+      "explanation": "In een bijzin die iets beschrijft gebruik je 'waar' + voorzetsel: 'waarin' verwijst naar de brief.",
+      "payload": {
+        "prompt": "Welke zin uit een klachtbrief is correct?"
+      },
+      "options": [
+        {
+          "label": "A",
+          "body": "Dit is de brief waarin u mijn klacht kunt lezen.",
+          "is_correct": false
+        },
+        {
+          "label": "B",
+          "body": "Dit is de brief waarin u mijn klacht kunt lezen, maar u reageerde niet.",
+          "is_correct": true
+        },
+        {
+          "label": "C",
+          "body": "Dit is de brief in die u mijn klacht kunt lezen, maar u reageerde niet.",
+          "is_correct": false
+        }
+      ]
+    },
+    {
+      "kind": "gap_choice",
+      "tier": 1,
+      "explanation": "Vooraan de zin, met nadruk, gebruik je 'daar' en niet 'er'; het voorzetsel 'mee' schuift naar het eind.",
+      "payload": {
+        "sentence": "___ ben ik het helemaal mee eens, meneer De Wit.",
+        "choices": [
+          "Daar",
+          "Er",
+          "Waar"
+        ],
+        "answer": "Daar"
+      }
+    },
+    {
+      "kind": "gap_choice",
+      "tier": 1,
+      "explanation": "'Denken aan' heeft het voorzetsel 'aan'; samen met 'er' wordt dat 'eraan'.",
+      "payload": {
+        "sentence": "Ik moet de huur overmaken, maar ik denk er steeds niet ___.",
+        "choices": [
+          "aan",
+          "over",
+          "mee"
+        ],
+        "answer": "aan"
+      }
+    },
+    {
+      "kind": "gap_choice",
+      "tier": 1,
+      "explanation": "In een bijzin verwijst 'waarmee' naar het middel: de pas waarmee je korting krijgt.",
+      "payload": {
+        "sentence": "Dit is de pas ___ u korting krijgt op het openbaar vervoer.",
+        "choices": [
+          "waarmee",
+          "daarmee",
+          "ermee"
+        ],
+        "answer": "waarmee"
+      }
+    },
+    {
+      "kind": "matchen",
+      "tier": 1,
+      "explanation": "Elk werkwoord hoort bij een vast voorzetsel; dat voorzetsel plak je achter 'er'.",
+      "payload": {
+        "instruction": "Welke vorm met 'er' hoort bij welk werkwoord?",
+        "pairs": [
+          {
+            "left": "nadenken over een voorstel",
+            "right": "Ik denk erover na."
+          },
+          {
+            "left": "wachten op een antwoord",
+            "right": "Ik wacht erop."
+          },
+          {
+            "left": "twijfelen aan de uitslag",
+            "right": "Ik twijfel eraan."
+          },
+          {
+            "left": "beginnen met het werk",
+            "right": "Ik begin ermee."
+          }
+        ]
+      }
+    },
+    {
+      "kind": "gap_type",
+      "tier": 2,
+      "explanation": "Het voorzetsel splitst af en gaat naar het eind van de zin; na 'er ... over' hoort hier 'over'.",
+      "payload": {
+        "sentence": "De gemeente stuurt een nieuw plan. Wij praten er volgende week ___.",
+        "answer": "over"
+      }
+    },
+    {
+      "kind": "woordorde",
+      "tier": 2,
+      "explanation": "'Daar' staat vooraan met nadruk, daarna de persoonsvorm, en het voorzetsel 'in' komt helemaal achteraan.",
+      "payload": {
+        "instruction": "Maak een nette zin.",
+        "tokens": [
+          "geen",
+          "heb",
+          "Daar",
+          "in",
+          "ik",
+          "zin"
+        ],
+        "answer": [
+          "Daar",
+          "heb",
+          "ik",
+          "geen",
+          "zin",
+          "in"
+        ]
+      }
+    },
+    {
+      "kind": "open_zin",
+      "tier": 2,
+      "explanation": "Je gebruikt 'waarin' of 'waarmee' om in een bijzin naar een ding terug te verwijzen, zonder het woord te herhalen.",
+      "payload": {
+        "prompt": "Schrijf één zin over een brief van een instantie. Gebruik 'waarin' of 'waarmee'.",
+        "model_answer": "Ik heb een brief van het waterschap gekregen waarin staat dat mijn aanslag te hoog was.",
+        "checklist": [
+          "Je zin bevat 'waarin' of 'waarmee'.",
+          "Na 'waarin' of 'waarmee' staat een bijzin met het werkwoord achteraan.",
+          "Het woord waarnaar je verwijst, herhaal je niet."
+        ]
+      }
+    }
+  ],
+  "what_you_learn": "Na deze les herken je hoe je met er, daar en waar terugverwijst naar iets wat al genoemd is. Je kunt er bij een getal gebruiken en de vormen erover, eraan en ermee goed vormen. Ook zet je daar vooraan de zin met het voorzetsel achteraan, en gebruik je waar + voorzetsel in een bijzin."
+}

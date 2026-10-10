@@ -2,8 +2,8 @@
   {
     "section": "informatief",
     "cast": {
-      "A": "woman_young",
-      "B": "man_older"
+      "A": "man_young",
+      "B": "woman_young"
     },
     "title": "Nachtdienst achter het stuur",
     "intro": "U gaat luisteren naar een interview met Ingrid Veenstra. Zij is buschauffeuse bij een regionaal vervoerbedrijf en rijdt vooral in de nacht. Interviewer Bram Kooistra vraagt haar hoe haar werk eruitziet en wat de nachtdienst met haar ritme doet.",
@@ -174,7 +174,7 @@
     "section": "informatief",
     "cast": {
       "A": "man_richard",
-      "B": "man_young"
+      "B": "woman_young"
     },
     "title": "Hoe werkt de wachtlijst voor een sociale huurwoning?",
     "intro": "U gaat luisteren naar een gesprek tussen Karim Boulahfa en Ineke Verhoeven. Karim zoekt een sociale huurwoning en heeft een afspraak bij woningcorporatie De Brugpoort. Ineke werkt daar als woonconsulent en legt uit hoe de wachtlijst werkt.",
@@ -334,7 +334,7 @@
     "section": "instructief",
     "cast": {
       "A": "woman_roos",
-      "B": "woman_noa"
+      "B": "man_young"
     },
     "title": "Een kleine achtertuin door het jaar heen",
     "intro": "U gaat luisteren naar een gesprek tussen Karima Boulahfa en Wouter Snijders. Karima heeft een klein huis met een achtertuin gehuurd en weet niet goed hoe ze die moet onderhouden. Wouter is hovenier en legt haar stap voor stap uit wat ze per seizoen kan doen.",

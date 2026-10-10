@@ -1,0 +1,231 @@
+{
+  "items": [
+    {
+      "kind": "uitleg",
+      "tier": null,
+      "explanation": null,
+      "payload": {
+        "body_html": "<p>Met <strong>moeten</strong>, <strong>mogen</strong> en <strong>hoeven</strong> geef je aan of iets verplicht, toegestaan of juist niet nodig is. Het tweede werkwoord staat altijd achteraan in de zin, in de hele vorm (het hele werkwoord). Na <strong>hoeven</strong> komt er altijd <strong>te</strong> voor dat tweede werkwoord. En let op: <strong>hoeven</strong> gebruik je bijna alleen in een zin met <em>niet</em>, <em>geen</em> of <em>alleen</em>.</p>",
+        "cards": [
+          {
+            "label": "MOETEN EN MOGEN",
+            "example_html": "U <mark>moet</mark> het formulier voor 1 maart <mark>opsturen</mark>. / U <mark>mag</mark> hier niet <mark>fietsen</mark>."
+          },
+          {
+            "label": "NIET HOEVEN … TE",
+            "example_html": "U <mark>hoeft</mark> geen afspraak <mark>te maken</mark>. / Je <mark>hoeft</mark> morgen niet <mark>te komen</mark>."
+          }
+        ]
+      }
+    },
+    {
+      "kind": "uitleg",
+      "tier": null,
+      "explanation": null,
+      "payload": {
+        "body_html": "<p>Het verschil tussen <strong>moet niet</strong>, <strong>mag niet</strong> en <strong>hoeft niet</strong> is groot, ook al lijken de zinnen op elkaar. <strong>Mag niet</strong> betekent dat iets verboden is: iemand anders heeft het bepaald. <strong>Hoeft niet te</strong> betekent dat iets niet nodig is: je mág het wel, maar het is niet verplicht. <strong>Moet niet</strong> gebruiken Nederlanders meestal als een waarschuwing of een advies, bijvoorbeeld: <em>Je moet niet zo hard werken.</em></p>",
+        "cards": [
+          {
+            "label": "VERBODEN",
+            "example_html": "Je <mark>mag</mark> in deze straat <mark>niet</mark> parkeren. De politie geeft een boete."
+          },
+          {
+            "label": "NIET NODIG",
+            "example_html": "Je <mark>hoeft</mark> hier <mark>niet te</mark> betalen. Parkeren is in deze straat gratis."
+          },
+          {
+            "label": "WAARSCHUWING",
+            "example_html": "Je <mark>moet niet</mark> vergeten je pas mee te nemen."
+          }
+        ]
+      }
+    },
+    {
+      "kind": "voorbeeld",
+      "tier": null,
+      "explanation": null,
+      "payload": {
+        "sentence_html": "In de brief van de gemeente staat dat u <mark>uw inkomen voor 15 april moet doorgeven</mark>."
+      }
+    },
+    {
+      "kind": "voorbeeld",
+      "tier": null,
+      "explanation": null,
+      "payload": {
+        "sentence_html": "Bij de huisarts <mark>hoeft u geen papieren in te vullen</mark>, want alles staat al in de computer."
+      }
+    },
+    {
+      "kind": "mcq",
+      "tier": 0,
+      "explanation": "In de zin staat dat iets niet nodig is, maar wel mag. Dat is precies de betekenis van 'hoeft niet te'.",
+      "payload": {
+        "prompt": "Lees deze regel uit een brief van de woningcorporatie: 'U hoeft de oude vloer niet te verwijderen.' Wat betekent dat voor u?"
+      },
+      "options": [
+        {
+          "label": "A",
+          "body": "Het is verboden om de vloer te verwijderen.",
+          "is_correct": false
+        },
+        {
+          "label": "B",
+          "body": "Het is niet nodig om de vloer te verwijderen, maar het mag wel.",
+          "is_correct": true
+        },
+        {
+          "label": "C",
+          "body": "U bent verplicht de vloer te verwijderen voor u vertrekt.",
+          "is_correct": false
+        }
+      ]
+    },
+    {
+      "kind": "mcq",
+      "tier": 0,
+      "explanation": "Na 'hoeven' komt altijd 'te' voor het tweede werkwoord, en dat werkwoord staat achteraan in de zin.",
+      "payload": {
+        "prompt": "Welke zin is correct geschreven?"
+      },
+      "options": [
+        {
+          "label": "A",
+          "body": "U hoeft het bedrag niet vandaag overmaken.",
+          "is_correct": false
+        },
+        {
+          "label": "B",
+          "body": "U hoeft niet het bedrag te vandaag overmaken.",
+          "is_correct": false
+        },
+        {
+          "label": "C",
+          "body": "U hoeft het bedrag niet vandaag over te maken.",
+          "is_correct": true
+        },
+        {
+          "label": "D",
+          "body": "U hoeft het bedrag vandaag over te maken.",
+          "is_correct": false
+        }
+      ]
+    },
+    {
+      "kind": "gap_choice",
+      "tier": 1,
+      "explanation": "Op een station is roken verboden, en voor een verbod gebruik je 'mag niet'. 'Hoeft niet' zou betekenen dat het ook mag.",
+      "payload": {
+        "sentence": "Op het perron ___ u niet roken; buiten het station staan speciale plekken.",
+        "choices": [
+          "mag",
+          "hoeft",
+          "moet"
+        ],
+        "answer": "mag"
+      }
+    },
+    {
+      "kind": "gap_choice",
+      "tier": 1,
+      "explanation": "Er staat 'geen' in de zin en vlak voor het werkwoord staat 'te'. Dat hoort bij 'hoeven': iets is niet nodig.",
+      "payload": {
+        "sentence": "U ___ geen kopie van uw paspoort mee te sturen, want die hebben wij al.",
+        "choices": [
+          "moet",
+          "hoeft",
+          "mag"
+        ],
+        "answer": "hoeft"
+      }
+    },
+    {
+      "kind": "gap_choice",
+      "tier": 1,
+      "explanation": "De werkgever legt een verplichting op, dus je gebruikt 'moeten'. Het tweede werkwoord 'melden' staat achteraan.",
+      "payload": {
+        "sentence": "Ben je ziek? Dan ___ je dat voor negen uur bij je leidinggevende melden.",
+        "choices": [
+          "hoef",
+          "moet",
+          "mag"
+        ],
+        "answer": "moet"
+      }
+    },
+    {
+      "kind": "matchen",
+      "tier": 1,
+      "explanation": "Elke vorm heeft een eigen betekenis: 'moeten' is verplicht, 'mogen' is toegestaan, 'niet mogen' is verboden en 'niet hoeven te' is niet nodig.",
+      "payload": {
+        "instruction": "Welke betekenis hoort bij welke zin uit een brief van de gemeente?",
+        "pairs": [
+          {
+            "left": "U moet het formulier ondertekenen.",
+            "right": "verplicht"
+          },
+          {
+            "left": "U mag het formulier ook per post sturen.",
+            "right": "toegestaan, u kiest zelf"
+          },
+          {
+            "left": "U mag niet zonder afspraak langskomen.",
+            "right": "verboden"
+          },
+          {
+            "left": "U hoeft de bijlage niet mee te sturen.",
+            "right": "niet nodig"
+          }
+        ]
+      }
+    },
+    {
+      "kind": "gap_type",
+      "tier": 2,
+      "explanation": "Na 'hoeven' komt altijd 'te' voor het hele werkwoord; bij een werkwoord met een los stukje ervoor staat 'te' er middenin: 'in te vullen'.",
+      "payload": {
+        "sentence": "Je hoeft de vragen op de achterkant niet ___ te vullen.",
+        "answer": "in"
+      }
+    },
+    {
+      "kind": "woordorde",
+      "tier": 2,
+      "explanation": "Het tweede werkwoord staat achteraan, en na 'hoeven' komt 'te': 'hoeft ... niet te betalen'.",
+      "payload": {
+        "instruction": "Maak een correcte zin van deze woorden.",
+        "tokens": [
+          "betalen",
+          "hoeft",
+          "te",
+          "u",
+          "borg",
+          "geen"
+        ],
+        "answer": [
+          "u",
+          "hoeft",
+          "geen",
+          "borg",
+          "te",
+          "betalen"
+        ]
+      }
+    },
+    {
+      "kind": "open_zin",
+      "tier": 2,
+      "explanation": "In je antwoord laat je het verschil zien tussen een verbod ('mag niet') en iets wat niet nodig is ('hoeft niet te'), met het tweede werkwoord achteraan.",
+      "payload": {
+        "prompt": "Je werkt in een kantoor. Leg aan een nieuwe collega twee regels uit: iets wat verboden is en iets wat niet nodig is. Schrijf twee zinnen, één met 'mag niet' en één met 'hoeft niet te'.",
+        "model_answer": "Je mag in het gebouw niet eten achter je bureau. Je hoeft je pauze niet door te geven aan de leidinggevende.",
+        "checklist": [
+          "In de eerste zin staat 'mag niet' en het tweede werkwoord staat achteraan.",
+          "In de tweede zin staat 'hoeft' samen met 'niet' en met 'te' voor het werkwoord.",
+          "Beide zinnen gaan over een regel op het werk."
+        ]
+      }
+    }
+  ],
+  "what_you_learn": "Je leert het verschil tussen moeten, mogen en hoeven in teksten van instanties en op het werk. Je ziet meteen of iets verplicht, verboden of gewoon niet nodig is. Ook weet je dat na hoeven altijd te komt en dat het tweede werkwoord achteraan de zin staat."
+}

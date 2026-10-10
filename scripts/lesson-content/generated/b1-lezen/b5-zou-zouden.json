@@ -1,0 +1,220 @@
+{
+  "items": [
+    {
+      "kind": "uitleg",
+      "tier": null,
+      "explanation": null,
+      "payload": {
+        "body_html": "<p>Met <strong>zou</strong> en <strong>zouden</strong> praat je niet over iets dat echt gebeurt. Je geeft er advies mee, je vraagt er beleefd iets mee, of je noemt een wens. Je gebruikt <strong>zou</strong> bij ik, jij, u, hij en zij (één persoon). Je gebruikt <strong>zouden</strong> bij wij, jullie en zij (meer personen). Het andere werkwoord staat altijd achteraan in de zin, in de hele vorm (het hele werkwoord, zoals <em>bellen</em> of <em>wachten</em>).</p>",
+        "cards": [
+          {
+            "label": "ADVIES EN WENS",
+            "example_html": "Je <mark>zou</mark> eerst de gemeente <mark>moeten bellen</mark>."
+          },
+          {
+            "label": "BELEEFD VRAGEN",
+            "example_html": "<mark>Zou</mark> u mij morgen <mark>willen laten</mark> weten of het lukt?"
+          }
+        ]
+      }
+    },
+    {
+      "kind": "voorbeeld",
+      "tier": null,
+      "explanation": null,
+      "payload": {
+        "sentence_html": "<p>Als ik meer tijd had, <mark>zou ik</mark> die cursus Nederlands <mark>volgen</mark>.</p>"
+      }
+    },
+    {
+      "kind": "voorbeeld",
+      "tier": null,
+      "explanation": null,
+      "payload": {
+        "sentence_html": "<p>Als ik had geweten dat u ziek was, <mark>zou ik u eerder gebeld hebben</mark>.</p>"
+      }
+    },
+    {
+      "kind": "uitleg",
+      "tier": null,
+      "explanation": null,
+      "payload": {
+        "body_html": "<p>Je gebruikt <strong>zou</strong> ook voor een situatie die niet echt is. Die zin begint vaak met <em>als</em>: <em>Als ik rijk was, zou ik een huis kopen.</em> Gaat het over het verleden dat niet gebeurd is, dan zet je er een voltooid deelwoord (het woord met ge-) bij: <em>zou ik gebeld hebben</em>. In een beleefd verzoek staat <strong>zou</strong> vooraan: <em>Zou u even kunnen wachten?</em></p>",
+        "cards": [
+          {
+            "label": "NU NIET ECHT",
+            "example_html": "Als ik dichterbij woonde, <mark>zou ik met de fiets komen</mark>."
+          },
+          {
+            "label": "VROEGER NIET GEBEURD",
+            "example_html": "Als wij het bericht hadden gelezen, <mark>zouden wij gereageerd hebben</mark>."
+          }
+        ]
+      }
+    },
+    {
+      "kind": "mcq",
+      "tier": 0,
+      "explanation": "Bij 'u' hoort de vorm zou; bij 'wij' of 'zij' (meer personen) hoort zouden.",
+      "options": [
+        {
+          "label": "A",
+          "body": "Zou u mij even willen helpen met dit formulier?",
+          "is_correct": true
+        },
+        {
+          "label": "B",
+          "body": "Zouden u mij even willen helpen met dit formulier?",
+          "is_correct": false
+        },
+        {
+          "label": "C",
+          "body": "Zou u mij even helpt met dit formulier?",
+          "is_correct": false
+        }
+      ],
+      "payload": {
+        "prompt": "Welke zin is een correct beleefd verzoek?"
+      }
+    },
+    {
+      "kind": "mcq",
+      "tier": 0,
+      "explanation": "Bij advies gebruik je 'zou' samen met 'moeten', en het hele werkwoord staat achteraan.",
+      "options": [
+        {
+          "label": "A",
+          "body": "Je zou moeten bezwaar maken eerst.",
+          "is_correct": false
+        },
+        {
+          "label": "B",
+          "body": "Je zou eerst bezwaar moeten maken tegen de beslissing.",
+          "is_correct": true
+        },
+        {
+          "label": "C",
+          "body": "Je zou eerst maakt bezwaar tegen de beslissing.",
+          "is_correct": false
+        }
+      ],
+      "payload": {
+        "prompt": "In welke zin geeft de schrijver correct advies?"
+      }
+    },
+    {
+      "kind": "gap_choice",
+      "tier": 1,
+      "explanation": "Het onderwerp is 'mijn collega's' (meer personen), dus je gebruikt zouden.",
+      "payload": {
+        "sentence": "Mijn collega's ___ graag een vast contract willen krijgen.",
+        "choices": [
+          "zou",
+          "zouden",
+          "zoudt"
+        ],
+        "answer": "zouden"
+      }
+    },
+    {
+      "kind": "gap_choice",
+      "tier": 1,
+      "explanation": "Na 'zou' staat het hele werkwoord achteraan, dus 'kunnen laten' en niet een vervoegde vorm.",
+      "payload": {
+        "sentence": "Zou u mij voor vrijdag ___ weten of de afspraak doorgaat?",
+        "choices": [
+          "kunt laten",
+          "kunnen laten",
+          "kon laat"
+        ],
+        "answer": "kunnen laten"
+      }
+    },
+    {
+      "kind": "gap_choice",
+      "tier": 1,
+      "explanation": "De situatie is niet echt: bij 'als ik ... had' hoort 'zou ik ... komen'.",
+      "payload": {
+        "sentence": "Als ik vanmiddag vrij had, ___ ik naar de informatieavond komen.",
+        "choices": [
+          "zal",
+          "zou",
+          "zouden"
+        ],
+        "answer": "zou"
+      }
+    },
+    {
+      "kind": "matchen",
+      "tier": 1,
+      "explanation": "Elke zin met zou heeft een eigen functie: advies, beleefd verzoek, wens of iets dat niet echt is.",
+      "payload": {
+        "instruction": "Zet elke zin bij de juiste functie van 'zou' of 'zouden'.",
+        "pairs": [
+          {
+            "left": "Je zou die brief echt moeten bewaren.",
+            "right": "advies"
+          },
+          {
+            "left": "Zou u de deur even willen sluiten?",
+            "right": "beleefd verzoek"
+          },
+          {
+            "left": "Ik zou graag een afspraak maken.",
+            "right": "wens"
+          },
+          {
+            "left": "Als ik Nederlands sprak, zou ik zelf bellen.",
+            "right": "situatie die niet echt is"
+          }
+        ]
+      }
+    },
+    {
+      "kind": "gap_type",
+      "tier": 2,
+      "explanation": "Het gaat om het verleden dat niet gebeurd is: na 'zou ik' komt het voltooid deelwoord met 'hebben'.",
+      "payload": {
+        "sentence": "Als ik het op tijd had geweten, zou ik u meteen ___ hebben.",
+        "answer": "gebeld"
+      }
+    },
+    {
+      "kind": "woordorde",
+      "tier": 2,
+      "explanation": "In een beleefd verzoek staat 'Zou' vooraan en staan de hele werkwoorden achteraan.",
+      "payload": {
+        "instruction": "Maak van deze woorden een beleefd verzoek.",
+        "tokens": [
+          "willen",
+          "Zou",
+          "wachten",
+          "u",
+          "even"
+        ],
+        "answer": [
+          "Zou",
+          "u",
+          "even",
+          "willen",
+          "wachten"
+        ]
+      }
+    },
+    {
+      "kind": "open_zin",
+      "tier": 2,
+      "explanation": "Je geeft advies met 'je zou ... moeten' en zet het hele werkwoord achteraan de zin.",
+      "payload": {
+        "prompt": "Een buurman klaagt dat zijn huur veel te hoog is. Geef hem advies in twee zinnen met 'je zou ... moeten'.",
+        "model_answer": "Je zou eerst een brief aan de verhuurder moeten schrijven. Als dat niet helpt, zou je contact met de huurcommissie moeten opnemen.",
+        "checklist": [
+          "Ik heb 'zou' gebruikt met 'moeten'.",
+          "Het hele werkwoord staat achteraan de zin.",
+          "Mijn advies past bij het probleem van de buurman."
+        ]
+      }
+    }
+  ],
+  "what_you_learn": "Je leert wanneer je zou en zouden gebruikt: bij advies, bij een beleefd verzoek, bij een wens en bij een situatie die niet echt is. Je herkent het verschil tussen zou en zouden en weet dat het andere werkwoord achteraan staat. Daarna maak je zelf zinnen met zou, ook over iets in het verleden dat niet gebeurd is."
+}

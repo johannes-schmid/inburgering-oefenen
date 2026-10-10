@@ -34,8 +34,9 @@ import path from 'node:path';
 import { ROOT } from '../a2-content/lib.mjs';
 import { loadItemRules } from './load-items.mjs';
 import { normalisePayloads, kindProblems, audioProblems } from './author.mjs';
-import { coursePlan, parseTarget, BUILT, wordThemes, STRATEGY_CONCEPTS } from './plan.mjs';
-import { A2_GROUPS, A2_CONCEPTS } from './concepts-a2.mjs';
+import {
+  coursePlan, parseTarget, BUILDABLE, wordThemes, conceptLibrary, strategyConcepts,
+} from './plan.mjs';
 
 const GEN_DIR = path.join(ROOT, 'scripts', 'lesson-content', 'generated');
 
@@ -168,20 +169,26 @@ async function main() {
   }
 
   const { level, onderdeel } = parseTarget(target);
-  if (!BUILT.includes(`${level}:${onderdeel}`)) {
-    console.error(`${level}:${onderdeel} is nog niet uitgewerkt. Gebouwd: ${BUILT.join(', ')}`);
+  if (!BUILDABLE.includes(`${level}:${onderdeel}`)) {
+    console.error(`${level}:${onderdeel} is nog niet uitgewerkt. Gebouwd: ${BUILDABLE.join(', ')}`);
     process.exit(1);
   }
 
   const rules = await loadItemRules();
   const blocks = coursePlan(level, onderdeel);
-  const themes = wordThemes(onderdeel);
+  /* De bibliotheek van dít niveau. Tot oktober 2026 stond hier een harde import van de
+     A2-bibliotheek; een B1-run had dan A2-concepten op niveau b1 gezet. */
+  const { groups: GROUPS, concepts: CONCEPTS } = conceptLibrary(level);
+  const STRATEGY = strategyConcepts(level, onderdeel);
+  /* Het B1-regelhuis heeft geen blok A en dus geen woorden en geen `_words.json`. */
+  const hasWords = blocks.some(b => b.letter === 'A');
+  const themes = hasWords ? wordThemes(onderdeel) : [];
   const dir = path.join(GEN_DIR, `${level}-${onderdeel}`);
 
   // ── 1. alles van schijf lezen en valideren vóór één netwerkcall ──────────
   const wordsPath = path.join(dir, '_words.json');
-  if (!fs.existsSync(wordsPath)) throw new Error(`${wordsPath} ontbreekt — run eerst generate.mjs`);
-  const wordsByTheme = JSON.parse(fs.readFileSync(wordsPath, 'utf8'));
+  if (hasWords && !fs.existsSync(wordsPath)) throw new Error(`${wordsPath} ontbreekt — run eerst generate.mjs`);
+  const wordsByTheme = hasWords ? JSON.parse(fs.readFileSync(wordsPath, 'utf8')) : {};
 
   const units = new Map();
   const problems = [];
@@ -220,8 +227,8 @@ async function main() {
   console.log(`\n${level}:${onderdeel}`);
   console.log(`  ${blocks.length} blokken · ${units.size} lessen · ${totalItems} items ` +
               `(${totalExercises} opgaven) · ${totalWords} woorden`);
-  console.log(`  ${A2_GROUPS.length} conceptgroepen · ${A2_CONCEPTS.length} concepten ` +
-              `· ${(STRATEGY_CONCEPTS[onderdeel] ?? []).length} strategieconcepten`);
+  console.log(`  ${GROUPS.length} conceptgroepen · ${CONCEPTS.length} concepten ` +
+              `· ${STRATEGY.length} strategieconcepten`);
 
   if (problems.length) {
     console.error(`\n${problems.length} probleem(en) — er wordt niets geschreven:`);
@@ -240,16 +247,17 @@ async function main() {
     return;
   }
 
-  const rest = createRest(resolveTarget(production));
+  const dest = resolveTarget(production);
+  const rest = createRest(dest);
   console.log(`\nSchrijven naar ${production ? 'PRODUCTIE' : 'de lokale stack'}…\n`);
 
   // ── 2. conceptgroepen en concepten ───────────────────────────────────────
   const groupRows = await rest.upsert('concept_groups',
-    A2_GROUPS.map(g => ({ level, ...g })), 'level,slug');
+    GROUPS.map(g => ({ level, ...g })), 'level,slug');
   const groupId = new Map(groupRows.map(g => [g.slug, g.id]));
   console.log(`  concept_groups      ${groupRows.length}`);
 
-  const strategy = (STRATEGY_CONCEPTS[onderdeel] ?? []).map((c, i) => ({
+  const strategy = STRATEGY.map((c, i) => ({
     level,
     group_id: null,
     slug: c.slug,
@@ -263,7 +271,7 @@ async function main() {
   }));
 
   const conceptRows = await upsertKeepingReview(rest, 'concepts', [
-    ...A2_CONCEPTS.map(c => ({
+    ...CONCEPTS.map(c => ({
       level,
       group_id: groupId.get(c.group) ?? null,
       slug: c.slug,
@@ -288,7 +296,7 @@ async function main() {
   // uitgeschreven. Een strategieconcept is altijd kern — het hangt aan precies één onderdeel en
   // is daar de vaardigheid zelf.
   const chips = [
-    ...A2_CONCEPTS.flatMap(c =>
+    ...CONCEPTS.flatMap(c =>
       c.onderdelen.map(o => ({
         concept_id: conceptId.get(c.slug),
         onderdeel: o,
@@ -377,7 +385,7 @@ async function main() {
       // terugzette op `pending` (09-09).
     }));
   }
-  const savedWords = await upsertKeepingReview(
+  const savedWords = wordRows.length === 0 ? [] : await upsertKeepingReview(
     rest, 'lesson_words', wordRows, 'level,onderdeel,dutch',
     r => r.dutch, `level=eq.${level}&onderdeel=eq.${onderdeel}`,
   );
@@ -465,7 +473,7 @@ async function main() {
         sort_order: it.sort_order,
         kind: it.kind,
         tier: it.tier,
-        payload: stripWordIds(it, wordIdByTheme),
+        payload: retargetStorage(stripWordIds(it, wordIdByTheme), dest.url),
         explanation: it.explanation,
         section_id: sectionId,
       })));
@@ -567,6 +575,18 @@ function stripWordIds(item, wordIdByTheme) {
   if (item.kind !== 'woordenlijst') return item.payload;
   const theme = item.payload?.theme;
   return { ...item.payload, word_ids: wordIdByTheme.get(theme) ?? [] };
+}
+
+/**
+ * Een audio-URL in `generated/` wijst naar de lokale Storage: daar draaide de TTS-run. Op
+ * productie bestaat 127.0.0.1 niet, dus zonder deze stap speelt geen enkel fragment af — zo
+ * stonden de 55 fragmenten van Luisteren en Spreken tot 10-10 op productie. De bestanden zelf
+ * moeten op dezelfde paden in de `leren-audio`-bucket van het doel staan.
+ */
+const LOCAL_STORAGE = 'http://127.0.0.1:54421/storage/';
+function retargetStorage(payload, url) {
+  if (url.includes('127.0.0.1')) return payload;
+  return JSON.parse(JSON.stringify(payload).replaceAll(LOCAL_STORAGE, `${url}/storage/`));
 }
 
 main().catch(e => { console.error(`\n${e.message}`); process.exit(1); });

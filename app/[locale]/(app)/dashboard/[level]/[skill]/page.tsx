@@ -13,7 +13,7 @@ import { buildLeerroute } from '@/lib/lessons/leerroute';
 import { fetchWordCounts } from '@/lib/lessons/words-server';
 import { wordsPath } from '@/lib/lessons/words';
 import { calculateSlaagkans } from '@/lib/exam-readiness';
-import { LESSONS_COMING_SOON } from '@/lib/features';
+import { lessonStepSoon } from '@/lib/features';
 import SkillStatBar from '../../_components/SkillStatBar';
 import TrackCard from '../../_components/TrackCard';
 import { blockProgress, lessonPath, masteryPct, type ConceptKind } from '@/lib/lessons/lessons';
@@ -21,6 +21,8 @@ import { spoorPath, type SpoorSlug } from '@/lib/lessons/sporen';
 import { skillTrail } from '@/lib/portal-crumbs';
 import PortalCrumbs from '../../../components/PortalCrumbs';
 import { sporenFromBlocks } from '@/lib/lessons/sporen-server';
+import { fetchGrammarStep } from '@/lib/lessons/grammar-server';
+import { grammarStepPath } from '@/lib/lessons/grammar';
 import { CategoryMark, type Category } from '@/components/horizon';
 import AppShell from '../../../components/AppShell';
 import ExamStrip from '../../_components/ExamStrip';
@@ -154,11 +156,16 @@ export default async function SkillExamsPage({ params }: Props) {
   const wordCounts = await fetchWordCounts(level, skill.slug, user?.id ?? null);
   /* De lessentelling komt uit de sporen en niet uit de `teaches`-relatie, zodat de kaart
      hetzelfde getal noemt als het spoorscherm waar hij naartoe wijst. */
-  const sporen = await sporenFromBlocks(blocks, level, skill.slug, user?.id ?? null);
+  const [sporen, grammar] = await Promise.all([
+    sporenFromBlocks(blocks, level, skill.slug, user?.id ?? null),
+    fetchGrammarStep(level, skill.slug, user?.id ?? null),
+  ]);
   const leerroute = buildLeerroute({
     concepts, mastery, teachers, blocks, examPractice: r.practice, wordCounts,
     spoorLessons: {
-      grammatica: sporen.find(s => s.slug === 'taalregels'),
+      /* Stap 2 telt onderwerpen uit de grammaticasyllabus (oktober 2026), niet lessen: dat is
+         wat het onderwerpscherm ernaast ook telt. Zie `lib/lessons/grammar.ts`. */
+      grammatica: { done: grammar.done, total: grammar.total },
       strategie: sporen.find(s => s.slug === 'examentraining'),
     },
     /* De middelste stap heet in élke cursus Taalregels: zie `Spoor.name`. */
@@ -178,7 +185,7 @@ export default async function SkillExamsPage({ params }: Props) {
    * Woorden → de taalregels die dit examen vraagt → het examen zelf. Er stonden hier eerst een
    * vierde kaart *Alle taalregels* en daarna een bibliotheek als eigen menu-item; beide zijn
    * vervallen. Alle regels van dít onderdeel staan nu ín stap 2, als eigen modules — zie
-   * `fetchRuleModules`. Een verzameling om in te grasduinen is navigatie, geen stap in een
+   * `fetchGrammarStep` (sinds oktober 2026). Een verzameling om in te grasduinen is navigatie, geen stap in een
    * genummerde route, en naast een genummerde route wordt hij als stap gelezen.
    */
 
@@ -267,9 +274,9 @@ export default async function SkillExamsPage({ params }: Props) {
                   stap in plaats van een examenstelling — die heeft een leerspoor niet. */}
               <div className={'ov-cards is-three'}>
                 {leerroute.map(m => {
-                  /* De lesstappen staan op "Binnenkort" zolang `LESSONS_COMING_SOON` aanstaat —
-                     zie lib/features.ts. De woordenstap valt erbuiten: die is wél klaar. */
-                  const soon = LESSONS_COMING_SOON && m.kind !== 'woordenschat';
+                  /* De lesstappen staan op "Binnenkort" zolang `LESSONS_COMING_SOON` aanstaat,
+                     behalve wat `LESSON_STEPS_OPEN` per niveau vrijgeeft — zie lib/features.ts. */
+                  const soon = lessonStepSoon(level, m.kind);
                   return (
                   <TrackCard
                     key={m.kind}
@@ -296,7 +303,9 @@ export default async function SkillExamsPage({ params }: Props) {
                         ? null
                         : m.kind === 'woordenschat'
                           ? `/${locale}${wordsPath(level, skill.slug)}`
-                          : `/${locale}${spoorPath(level, skill.slug, SPOOR_OF_KIND[m.kind])}`
+                          : m.kind === 'grammatica'
+                            ? `/${locale}${grammarStepPath(level, skill.slug)}`
+                            : `/${locale}${spoorPath(level, skill.slug, SPOOR_OF_KIND[m.kind])}`
                     }
                     soonLabel={t('tag_soon')}
                   />

@@ -1,0 +1,287 @@
+{
+  "items": [
+    {
+      "kind": "uitleg",
+      "tier": null,
+      "explanation": null,
+      "payload": {
+        "body_html": "<p><strong>Nog niet</strong> betekent: het is er nu niet, maar het komt later wel. <strong>Niet meer</strong> betekent: vroeger was het er wel, nu niet.</p><p>De tegenstelling zit dus in de tijd: <em>nog niet</em> kijkt vooruit, <em>niet meer</em> kijkt terug. Let bij het lezen goed op dit kleine verschil, want het draait de betekenis helemaal om.</p>",
+        "cards": [
+          {
+            "label": "NOG NIET (komt later wel)",
+            "example_html": "De gemeente heeft mijn aanvraag <mark>nog niet</mark> behandeld, maar u krijgt binnen drie weken bericht."
+          },
+          {
+            "label": "NIET MEER (vroeger wel, nu niet)",
+            "example_html": "Mijn collega werkt hier <mark>niet meer</mark>, want zij heeft een andere baan gevonden."
+          }
+        ]
+      }
+    },
+    {
+      "kind": "uitleg",
+      "tier": null,
+      "explanation": null,
+      "payload": {
+        "body_html": "<p>Staat er een zelfstandig naamwoord zonder <em>de</em> of <em>het</em>, dan gebruik je <strong>nog geen</strong> of <strong>geen … meer</strong>.</p><p>Je zegt dus niet 'nog niet antwoord', maar <em>nog geen antwoord</em>. En niet 'niet meer plek', maar <em>geen plek meer</em>. Het woordje <em>meer</em> komt achter het zelfstandig naamwoord.</p>",
+        "cards": [
+          {
+            "label": "NOG GEEN (komt later wel)",
+            "example_html": "Ik heb <mark>nog geen</mark> antwoord van de woningbouwvereniging gekregen."
+          },
+          {
+            "label": "GEEN … MEER (vroeger wel, nu op)",
+            "example_html": "Er is <mark>geen plek meer</mark> in de cursus van donderdagavond."
+          }
+        ]
+      }
+    },
+    {
+      "kind": "uitleg",
+      "tier": null,
+      "explanation": null,
+      "payload": {
+        "body_html": "<p><strong>Pas</strong> gebruik je bij een tijd die later is dan je zou verwachten. De schrijver vindt het dus laat.</p><p>Vergelijk: 'De winkel gaat <em>al</em> om zeven uur open' klinkt vroeg, maar 'De winkel gaat <em>pas</em> om tien uur open' klinkt laat. In een snelle zin hoor of lees je dit verschil alleen aan dat ene woordje.</p>",
+        "cards": [
+          {
+            "label": "PAS (later dan verwacht)",
+            "example_html": "Het spreekuur begint <mark>pas</mark> om half elf, dus u moet nog even wachten."
+          },
+          {
+            "label": "AL (eerder dan verwacht)",
+            "example_html": "De uitslag was er <mark>al</mark> na twee dagen, veel sneller dan beloofd."
+          }
+        ]
+      }
+    },
+    {
+      "kind": "voorbeeld",
+      "tier": null,
+      "explanation": null,
+      "payload": {
+        "sentence_html": "Wij hebben uw formulier ontvangen, maar de aanvraag is <mark>nog niet</mark> goedgekeurd."
+      }
+    },
+    {
+      "kind": "voorbeeld",
+      "tier": null,
+      "explanation": null,
+      "payload": {
+        "sentence_html": "Deze pas is sinds 1 januari <mark>niet meer</mark> geldig in het openbaar vervoer."
+      }
+    },
+    {
+      "kind": "mcq",
+      "tier": 0,
+      "explanation": "Vroeger woonde hij in Almere, nu niet. Dat is precies de betekenis van 'niet meer'.",
+      "payload": {
+        "prompt": "Lees: 'Meneer De Groot woont niet meer in Almere.' Wat klopt?"
+      },
+      "options": [
+        {
+          "label": "A",
+          "body": "Hij woonde vroeger in Almere en nu ergens anders.",
+          "is_correct": true
+        },
+        {
+          "label": "B",
+          "body": "Hij gaat binnenkort in Almere wonen.",
+          "is_correct": false
+        },
+        {
+          "label": "C",
+          "body": "Hij woont al heel lang in Almere.",
+          "is_correct": false
+        }
+      ]
+    },
+    {
+      "kind": "mcq",
+      "tier": 0,
+      "explanation": "'Pas om elf uur' betekent dat de tijd later is dan je zou verwachten; de brief komt later dan gewoonlijk.",
+      "payload": {
+        "prompt": "Lees: 'De post komt vandaag pas om elf uur.' Wat bedoelt de schrijver?"
+      },
+      "options": [
+        {
+          "label": "A",
+          "body": "De post is er eerder dan normaal.",
+          "is_correct": false
+        },
+        {
+          "label": "B",
+          "body": "De post is er later dan normaal.",
+          "is_correct": true
+        },
+        {
+          "label": "C",
+          "body": "De post komt vandaag helemaal niet.",
+          "is_correct": false
+        }
+      ]
+    },
+    {
+      "kind": "mcq",
+      "tier": 0,
+      "explanation": "Na een zelfstandig naamwoord zonder lidwoord gebruik je 'geen … meer': de plekken zijn op.",
+      "payload": {
+        "prompt": "In welke zin staat dat iets op is, terwijl het er eerst wel was?"
+      },
+      "options": [
+        {
+          "label": "A",
+          "body": "Er zijn nog geen plekken vrij voor de cursus.",
+          "is_correct": false
+        },
+        {
+          "label": "B",
+          "body": "Er zijn geen plekken meer vrij voor de cursus.",
+          "is_correct": true
+        },
+        {
+          "label": "C",
+          "body": "Er zijn pas plekken vrij voor de cursus.",
+          "is_correct": false
+        }
+      ]
+    },
+    {
+      "kind": "gap_choice",
+      "tier": 1,
+      "explanation": "De brief zegt dat het geld later komt: eerst volgende week. 'Nog niet' past, want het gebeurt later wel.",
+      "payload": {
+        "sentence": "Wij hebben uw toeslag ___ overgemaakt; het bedrag staat volgende week op uw rekening.",
+        "choices": [
+          "nog niet",
+          "niet meer",
+          "pas"
+        ],
+        "answer": "nog niet"
+      }
+    },
+    {
+      "kind": "gap_choice",
+      "tier": 1,
+      "explanation": "Voor een zelfstandig naamwoord zonder lidwoord gebruik je 'nog geen'. Het antwoord komt later wel.",
+      "payload": {
+        "sentence": "Ik heb ___ antwoord op mijn bezwaarschrift, maar ik wacht rustig af.",
+        "choices": [
+          "nog geen",
+          "nog niet",
+          "geen meer"
+        ],
+        "answer": "nog geen"
+      }
+    },
+    {
+      "kind": "gap_choice",
+      "tier": 1,
+      "explanation": "Het loket was vroeger open en is nu gesloten: dat is 'niet meer'.",
+      "payload": {
+        "sentence": "Het loket in het oude stadhuis is sinds de verhuizing ___ open.",
+        "choices": [
+          "niet meer",
+          "nog niet",
+          "pas"
+        ],
+        "answer": "niet meer"
+      }
+    },
+    {
+      "kind": "gap_choice",
+      "tier": 1,
+      "explanation": "Half tien is later dan de bezoeker hoopte; bij zo'n late tijd gebruik je 'pas'.",
+      "payload": {
+        "sentence": "De balie gaat ___ om half tien open, dus u kunt beter later terugkomen.",
+        "choices": [
+          "pas",
+          "al",
+          "nog niet"
+        ],
+        "answer": "pas"
+      }
+    },
+    {
+      "kind": "matchen",
+      "tier": 1,
+      "explanation": "Je kijkt per zin of iets later nog komt, of juist voorbij is, of op een laat tijdstip gebeurt.",
+      "payload": {
+        "instruction": "Koppel elke zin aan de juiste betekenis.",
+        "pairs": [
+          {
+            "left": "Mijn paspoort is nog niet klaar.",
+            "right": "Het komt later wel."
+          },
+          {
+            "left": "Mijn paspoort is niet meer geldig.",
+            "right": "Vroeger wel, nu niet."
+          },
+          {
+            "left": "Mijn paspoort is pas over drie weken klaar.",
+            "right": "Later dan ik had gehoopt."
+          },
+          {
+            "left": "Ik heb nog geen bericht gekregen.",
+            "right": "Het bericht moet nog komen."
+          },
+          {
+            "left": "Er is geen ruimte meer in de wachtkamer.",
+            "right": "De ruimte is op."
+          }
+        ]
+      }
+    },
+    {
+      "kind": "gap_type",
+      "tier": 2,
+      "explanation": "Na een zelfstandig naamwoord zonder lidwoord zeg je 'geen … meer'; de folders zijn op.",
+      "payload": {
+        "sentence": "We hebben helaas geen folders ___ , want alle exemplaren zijn vanochtend meegenomen.",
+        "answer": "meer"
+      }
+    },
+    {
+      "kind": "woordorde",
+      "tier": 2,
+      "explanation": "Na 'dat' komt de persoonsvorm achteraan; 'nog niet' staat vlak voor het voltooid deelwoord 'betaald'.",
+      "payload": {
+        "instruction": "Maak een nette zin voor een formele brief.",
+        "tokens": [
+          "betaald",
+          "heb",
+          "niet",
+          "nog",
+          "rekening",
+          "de",
+          "ik",
+          "dat"
+        ],
+        "answer": [
+          "dat",
+          "ik",
+          "de",
+          "rekening",
+          "nog",
+          "niet",
+          "heb",
+          "betaald"
+        ]
+      }
+    },
+    {
+      "kind": "open_zin",
+      "tier": 2,
+      "explanation": "Je laat zien dat je 'pas' gebruikt voor een tijdstip dat later is dan verwacht, en 'niet meer' voor iets wat voorbij is.",
+      "payload": {
+        "prompt": "Schrijf twee zinnen over een afspraak bij de gemeente. Gebruik in de eerste zin 'pas' en in de tweede zin 'niet meer'.",
+        "model_answer": "Ik kan pas volgende maand bij de gemeente terecht, want alle afspraken zijn volgeboekt. Mijn oude afspraak staat niet meer in het systeem, omdat ik die zelf heb afgezegd.",
+        "checklist": [
+          "In zin 1 staat 'pas' bij een tijdstip dat later is dan je wilde.",
+          "In zin 2 betekent 'niet meer' dat iets vroeger wel zo was.",
+          "Beide zinnen hebben een werkwoord op de juiste plaats."
+        ]
+      }
+    }
+  ],
+  "what_you_learn": "Je leert het verschil tussen nog niet, niet meer en pas, en je ziet meteen waarom dat verschil belangrijk is bij het lezen van brieven en berichten. Je weet wanneer je nog geen of geen … meer gebruikt in plaats van nog niet of niet meer. Ook in een snelle zin herken je of iets later nog komt, al voorbij is, of later gebeurt dan je verwacht."
+}

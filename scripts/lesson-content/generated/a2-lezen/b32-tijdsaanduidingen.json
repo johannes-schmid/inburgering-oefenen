@@ -1,0 +1,208 @@
+{
+  "items": [
+    {
+      "kind": "uitleg",
+      "tier": null,
+      "explanation": null,
+      "payload": {
+        "body_html": "<p>Sommige woorden zeggen <strong>wanneer</strong> iets gebeurt. Is het al gebeurd, of nog niet?</p><p><strong>Geleden</strong> kijkt terug: twee dagen geleden is in het verleden. <strong>Over</strong> kijkt vooruit: over twee dagen is in de toekomst.</p><p><strong>Sinds</strong> betekent: vanaf toen tot nu. <strong>Tot</strong> betekent: daarna niet meer.</p>",
+        "cards": [
+          {
+            "label": "AL GEBEURD",
+            "example_html": "Ik kreeg de brief <mark>twee dagen geleden</mark>."
+          },
+          {
+            "label": "NOG NIET GEBEURD",
+            "example_html": "De bus komt <mark>over tien minuten</mark>."
+          }
+        ]
+      }
+    },
+    {
+      "kind": "voorbeeld",
+      "tier": null,
+      "explanation": null,
+      "payload": {
+        "sentence_html": "Ik woon <mark>sinds maart</mark> in Zwolle."
+      }
+    },
+    {
+      "kind": "voorbeeld",
+      "tier": null,
+      "explanation": null,
+      "payload": {
+        "sentence_html": "Betaal de rekening <mark>binnen twee weken</mark>."
+      }
+    },
+    {
+      "kind": "mcq",
+      "tier": 0,
+      "explanation": "Bij 'geleden' kijk je terug in de tijd. De afspraak was dus al.",
+      "payload": {
+        "prompt": "Lees: 'Mijn afspraak bij de huisarts was drie dagen geleden.' Wanneer was de afspraak?"
+      },
+      "options": [
+        {
+          "label": "A",
+          "body": "De afspraak is al geweest.",
+          "is_correct": true
+        },
+        {
+          "label": "B",
+          "body": "De afspraak is vandaag.",
+          "is_correct": false
+        },
+        {
+          "label": "C",
+          "body": "De afspraak komt nog.",
+          "is_correct": false
+        }
+      ]
+    },
+    {
+      "kind": "mcq",
+      "tier": 0,
+      "explanation": "'Over twintig minuten' betekent: straks, in de toekomst. De trein is er nu nog niet.",
+      "payload": {
+        "prompt": "Je hoort op het station: 'De trein naar Apeldoorn vertrekt over twintig minuten.' Wat klopt?"
+      },
+      "options": [
+        {
+          "label": "A",
+          "body": "De trein is al vertrokken.",
+          "is_correct": false
+        },
+        {
+          "label": "B",
+          "body": "De trein vertrekt straks.",
+          "is_correct": true
+        },
+        {
+          "label": "C",
+          "body": "De trein vertrok twintig minuten geleden.",
+          "is_correct": false
+        }
+      ]
+    },
+    {
+      "kind": "gap_choice",
+      "tier": 1,
+      "explanation": "Je werkt vanaf januari tot nu. Dan gebruik je 'sinds'.",
+      "payload": {
+        "sentence": "Ik werk ___ januari bij een schoonmaakbedrijf.",
+        "choices": [
+          "sinds",
+          "geleden",
+          "over"
+        ],
+        "answer": "sinds"
+      }
+    },
+    {
+      "kind": "gap_choice",
+      "tier": 1,
+      "explanation": "Het is al gebeurd en je kijkt terug: dan staat 'geleden' achter de tijd.",
+      "payload": {
+        "sentence": "De gemeente stuurde de brief twee weken ___.",
+        "choices": [
+          "geleden",
+          "straks",
+          "binnen"
+        ],
+        "answer": "geleden"
+      }
+    },
+    {
+      "kind": "gap_choice",
+      "tier": 1,
+      "explanation": "'Tot' zegt wanneer iets stopt: na vrijdag kan het niet meer.",
+      "payload": {
+        "sentence": "Je kunt het formulier ___ vrijdag 14 maart opsturen.",
+        "choices": [
+          "tot",
+          "sinds",
+          "geleden"
+        ],
+        "answer": "tot"
+      }
+    },
+    {
+      "kind": "matchen",
+      "tier": 1,
+      "explanation": "Kijk steeds of het woord terugkijkt (verleden) of vooruitkijkt (toekomst).",
+      "payload": {
+        "instruction": "Zet elk woord bij de juiste tijd: verleden, nu of toekomst.",
+        "pairs": [
+          {
+            "left": "drie dagen geleden",
+            "right": "verleden"
+          },
+          {
+            "left": "vorige week",
+            "right": "verleden"
+          },
+          {
+            "left": "sinds 2019 tot nu",
+            "right": "nu nog"
+          },
+          {
+            "left": "over een uur",
+            "right": "toekomst"
+          },
+          {
+            "left": "volgende maand",
+            "right": "toekomst"
+          }
+        ]
+      }
+    },
+    {
+      "kind": "gap_type",
+      "tier": 2,
+      "explanation": "Je kijkt vooruit naar een moment in de toekomst, dus schrijf je 'over' vóór de tijd.",
+      "payload": {
+        "sentence": "Het is nu 13.00 uur. De dokter roept je ___ een half uur, dus om 13.30 uur.",
+        "answer": "over"
+      }
+    },
+    {
+      "kind": "woordorde",
+      "tier": 2,
+      "explanation": "'Binnen tien dagen' betekent: niet later dan tien dagen. De tijd staat achter het werkwoord en het lijdend voorwerp.",
+      "payload": {
+        "instruction": "Maak een goede zin van deze woorden.",
+        "tokens": [
+          "betaal",
+          "de",
+          "rekening",
+          "binnen",
+          "tien",
+          "dagen"
+        ],
+        "answer": [
+          "betaal",
+          "de",
+          "rekening",
+          "binnen",
+          "tien",
+          "dagen"
+        ]
+      }
+    },
+    {
+      "kind": "open_zin",
+      "tier": 2,
+      "explanation": "Je gebruikt 'geleden' voor het verleden en 'over' voor de toekomst.",
+      "payload": {
+        "prompt": "Schrijf twee zinnen over jezelf. In de eerste zin gebruik je 'geleden'. In de tweede zin gebruik je 'over'.",
+        "model_answer": "Ik kwam twee jaar geleden in Nederland wonen. Over drie dagen heb ik een afspraak bij de gemeente.",
+        "checklist": [
+          "In zin 1 staat 'geleden' achter een tijd, bijvoorbeeld 'twee jaar geleden'.",
+          "In zin 2 staat 'over' vóór een tijd, bijvoorbeeld 'over drie dagen'.",
+          "Zin 1 gaat over het verleden en zin 2 over de toekomst."
+        ]
+      }
+    }
+  ],
+  "what_you_learn": "Na deze les zie je in een zin of iets al gebeurd is of nog moet komen. Je snapt het verschil tussen 'twee dagen geleden' en 'over twee dagen'. Ook gebruik je 'sinds', 'tot', 'binnen' en 'straks' goed in brieven en afspraken."
+}

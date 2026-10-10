@@ -1,0 +1,252 @@
+{
+  "items": [
+    {
+      "kind": "uitleg",
+      "tier": null,
+      "explanation": null,
+      "payload": {
+        "body_html": "<p>Heel vaak staat er in een zin een tweede werkwoord met <strong>te</strong> ervoor. Dat werkwoord blijft in de hele vorm staan en komt meestal achteraan.</p><p>Met <strong>om … te</strong> geef je een <em>doel</em> aan: waarom doe je iets? Met <strong>zonder … te</strong> zeg je wat er juist <em>niet</em> gebeurt. Met <strong>door … te</strong> geef je de <em>manier</em> aan: hoe bereik je iets?</p>",
+        "cards": [
+          {
+            "label": "DOEL (om … te)",
+            "example_html": "Ik schrijf u <mark>om</mark> informatie <mark>te</mark> vragen over de huurtoeslag."
+          },
+          {
+            "label": "NIET GEBEURD (zonder … te)",
+            "example_html": "De klant vertrok <mark>zonder te</mark> betalen."
+          },
+          {
+            "label": "MANIER (door … te)",
+            "example_html": "<mark>Door</mark> elke dag een half uur <mark>te</mark> lezen, leer je snel nieuwe woorden."
+          }
+        ]
+      }
+    },
+    {
+      "kind": "uitleg",
+      "tier": null,
+      "explanation": null,
+      "payload": {
+        "body_html": "<p>Na sommige werkwoorden komt <strong>te</strong> zonder om, zonder of door. Dat gebeurt onder andere na <em>proberen</em>, <em>van plan zijn</em>, <em>beginnen</em>, <em>vergeten</em> en <em>hopen</em>.</p><p>Na een woord als <em>moeilijk</em>, <em>belangrijk</em> of <em>verboden</em> gebruik je meestal <strong>het is … om … te</strong>.</p><p>Bij een scheidbaar werkwoord (een werkwoord met een los stukje ervoor, zoals <em>uitleggen</em> of <em>meenemen</em>) zet je <strong>te</strong> in het midden: <em>uit te leggen</em>, <em>mee te nemen</em>.</p>",
+        "cards": [
+          {
+            "label": "NA EEN WERKWOORD",
+            "example_html": "De gemeente is van plan de regels <mark>te</mark> veranderen."
+          },
+          {
+            "label": "HET IS … OM … TE",
+            "example_html": "Het is lastig <mark>om</mark> een afspraak <mark>te</mark> maken bij de huisarts."
+          },
+          {
+            "label": "SCHEIDBAAR WERKWOORD",
+            "example_html": "De medewerker beloofde de brief nog eens <mark>uit te leggen</mark>."
+          }
+        ]
+      }
+    },
+    {
+      "kind": "voorbeeld",
+      "tier": null,
+      "explanation": null,
+      "payload": {
+        "sentence_html": "<p>Ik neem contact met u op <mark>om een nieuwe afspraak te maken</mark>.</p>"
+      }
+    },
+    {
+      "kind": "voorbeeld",
+      "tier": null,
+      "explanation": null,
+      "payload": {
+        "sentence_html": "<p>De buren hebben de verbouwing gestart <mark>zonder een vergunning aan te vragen</mark>.</p>"
+      }
+    },
+    {
+      "kind": "mcq",
+      "tier": 0,
+      "explanation": "Door … te geeft de manier aan: hoe heeft hij geld bespaard? Door te vergelijken. Om … te zou een doel zijn, en dat past hier niet.",
+      "payload": {
+        "prompt": "<p>Lees de zin: <em>Door de prijzen goed te vergelijken, heeft hij veel geld bespaard.</em></p><p>Wat doet het stukje <strong>door … te</strong> in deze zin?</p>"
+      },
+      "options": [
+        {
+          "label": "A",
+          "body": "Het geeft de manier aan waarop hij geld bespaarde.",
+          "is_correct": true
+        },
+        {
+          "label": "B",
+          "body": "Het geeft het doel aan van het vergelijken.",
+          "is_correct": false
+        },
+        {
+          "label": "C",
+          "body": "Het zegt dat hij de prijzen juist niet vergeleek.",
+          "is_correct": false
+        }
+      ]
+    },
+    {
+      "kind": "mcq",
+      "tier": 0,
+      "explanation": "In 'zonder iets te zeggen' staat te voor het hele werkwoord zeggen, met zonder ervoor. De andere zinnen hebben een werkwoord zonder te.",
+      "payload": {
+        "prompt": "<p>In welke zin staat een werkwoord met <strong>te</strong> ervoor?</p>"
+      },
+      "options": [
+        {
+          "label": "A",
+          "body": "De leidinggevende verliet de vergadering zonder iets te zeggen.",
+          "is_correct": true
+        },
+        {
+          "label": "B",
+          "body": "De leidinggevende zei niets tijdens de vergadering.",
+          "is_correct": false
+        },
+        {
+          "label": "C",
+          "body": "De leidinggevende kan morgen niet komen.",
+          "is_correct": false
+        },
+        {
+          "label": "D",
+          "body": "De leidinggevende heeft de vergadering verzet.",
+          "is_correct": false
+        }
+      ]
+    },
+    {
+      "kind": "gap_choice",
+      "tier": 1,
+      "explanation": "Je noemt de reden waarom je schrijft: dat is een doel, dus gebruik je om … te. Door zou de manier aangeven en dat klopt hier niet.",
+      "payload": {
+        "sentence": "Ik schrijf u ___ bezwaar te maken tegen de hoge afrekening.",
+        "choices": [
+          "om",
+          "door",
+          "zonder"
+        ],
+        "answer": "om"
+      }
+    },
+    {
+      "kind": "gap_choice",
+      "tier": 1,
+      "explanation": "Na 'van plan zijn' volgt alleen te plus het hele werkwoord; er hoort geen om, door of zonder bij.",
+      "payload": {
+        "sentence": "De woningcorporatie is van plan de flat volgend jaar ___ renoveren.",
+        "choices": [
+          "te",
+          "om",
+          "door te"
+        ],
+        "answer": "te"
+      }
+    },
+    {
+      "kind": "gap_choice",
+      "tier": 1,
+      "explanation": "Uitleggen is een scheidbaar werkwoord: het losse stukje uit komt vooraan en te staat ertussen, dus uit te leggen.",
+      "payload": {
+        "sentence": "Zou u zo vriendelijk willen zijn om de beslissing nog eens ___?",
+        "choices": [
+          "uit te leggen",
+          "te uitleggen",
+          "uitleggen te"
+        ],
+        "answer": "uit te leggen"
+      }
+    },
+    {
+      "kind": "matchen",
+      "tier": 1,
+      "explanation": "Om geeft het doel, zonder zegt wat niet gebeurde, door geeft de manier, en na proberen staat alleen te.",
+      "payload": {
+        "instruction": "Welk woord hoort bij welke betekenis? Koppel het linker woord aan de juiste uitleg.",
+        "pairs": [
+          {
+            "left": "om … te",
+            "right": "het doel: waarom je iets doet"
+          },
+          {
+            "left": "zonder … te",
+            "right": "iets wat juist niet gebeurt"
+          },
+          {
+            "left": "door … te",
+            "right": "de manier: hoe je iets bereikt"
+          },
+          {
+            "left": "proberen + te",
+            "right": "werkwoord dat altijd te krijgt, zonder om"
+          }
+        ]
+      }
+    },
+    {
+      "kind": "gap_type",
+      "tier": 2,
+      "explanation": "Na 'het is belangrijk' gebruik je om … te; het ontbrekende woord voor het hele werkwoord is te.",
+      "payload": {
+        "sentence": "Het is belangrijk om de brief binnen twee weken ___ beantwoorden.",
+        "answer": "te"
+      }
+    },
+    {
+      "kind": "woordorde",
+      "tier": 2,
+      "explanation": "Het doel staat achteraan: om + de rest + te + het hele werkwoord, dus 'om een klacht in te dienen' met te in het scheidbare werkwoord indienen.",
+      "payload": {
+        "instruction": "Maak van deze woorden een goede zin.",
+        "tokens": [
+          "bel",
+          "klacht",
+          "in",
+          "om",
+          "te",
+          "ik",
+          "een",
+          "dienen"
+        ],
+        "answer": [
+          "ik",
+          "bel",
+          "om",
+          "een",
+          "klacht",
+          "in",
+          "te",
+          "dienen"
+        ]
+      }
+    },
+    {
+      "kind": "open_zin",
+      "tier": 2,
+      "explanation": "Je oefent zelf met door … te voor de manier: eerst door, dan de rest, en achteraan te plus het hele werkwoord.",
+      "payload": {
+        "prompt": "<p>Hoe houd jij je Nederlands bij? Schrijf één zin die begint met <strong>Door</strong> en waarin <strong>te</strong> plus een heel werkwoord staat.</p>",
+        "model_answer": "Door elke avond het nieuws te lezen, begrijp ik steeds meer moeilijke woorden.",
+        "checklist": [
+          "De zin begint met Door.",
+          "Er staat te vlak voor het hele werkwoord.",
+          "Het werkwoord staat aan het eind van het eerste deel."
+        ]
+      }
+    },
+    {
+      "kind": "open_zin",
+      "tier": 2,
+      "explanation": "Na vergeten volgt te plus het hele werkwoord; bij een scheidbaar werkwoord zet je te in het midden, zoals in mee te nemen.",
+      "payload": {
+        "prompt": "<p>Schrijf één zin over iets wat je wel eens vergeet. Gebruik <strong>vergeten</strong> met <strong>te</strong> erachter.</p>",
+        "model_answer": "Ik vergeet vaak mijn identiteitsbewijs mee te nemen naar de afspraak bij de gemeente.",
+        "checklist": [
+          "Na vergeten staat te plus het hele werkwoord.",
+          "Bij een scheidbaar werkwoord staat te in het midden, bijvoorbeeld mee te nemen."
+        ]
+      }
+    }
+  ],
+  "what_you_learn": "Je leert wanneer je <em>om … te</em>, <em>zonder … te</em> en <em>door … te</em> gebruikt in formele en alledaagse zinnen. Ook zie je dat werkwoorden als proberen, van plan zijn, beginnen en vergeten altijd <em>te</em> bij zich krijgen. Daarnaast oefen je met zinnen als \"Het is moeilijk om …\" en met scheidbare werkwoorden waar <em>te</em> in het midden staat, zoals <em>uit te leggen</em>."
+}
