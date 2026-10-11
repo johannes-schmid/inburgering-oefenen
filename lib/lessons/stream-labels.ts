@@ -25,7 +25,7 @@ export async function lessonStreamLabels(): Promise<StreamLabels> {
     modelAnswer: t('model_answer'),
     compare: t('compare'),
     progress: t.raw('stream_progress') as string,
-    yourAnswer: t('mark_pick'),
+    mark: { hint: t('mark_hint'), clear: t('mark_clear'), empty: t('mark_empty') },
     ruleKick: t('rule_kick'),
     demoKick: t('demo_kick'),
     demoCount: t.raw('demo_count') as string,

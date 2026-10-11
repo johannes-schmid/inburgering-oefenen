@@ -3,15 +3,15 @@ import { notFound, redirect } from 'next/navigation';
 import { getTranslations } from 'next-intl/server';
 import { createClient } from '@/lib/supabase/server';
 import { ownsModule } from '@/lib/entitlements';
-import { getSkillAtLevel, isLevel } from '@/data/skills';
+import { getSkillAtLevel, isLevel, levelLabel, LEVELS, SKILLS } from '@/data/skills';
 import { themeLabel } from '@/data/lesson-themes';
 import { fetchWordThemes } from '@/lib/lessons/words-server';
-import { wordThemePath } from '@/lib/lessons/words';
+import { wordThemePath, wordsPath } from '@/lib/lessons/words';
 import { fetchPortalMenu } from '@/lib/portal-menu';
+import WordSideNav, { WordProgressCard, type WordSideTheme } from '@/components/lessons/WordSideNav';
 import AppShell from '../../../../../components/AppShell';
 import WordDeck from '../../../../_components/WordDeck';
-import { wordsPanel } from '../../../../../components/nav';
-import { closeTrail, skillTrail } from '@/lib/portal-crumbs';
+import { closeTrail } from '@/lib/portal-crumbs';
 import PortalCrumbs from '../../../../../components/PortalCrumbs';
 
 type Props = { params: Promise<{ locale: string; level: string; skill: string; theme: string }> };
@@ -55,23 +55,23 @@ export default async function WoordThemaPage({ params }: Props) {
   ]);
   const wordTheme = themes.find(th => th.slug === theme);
   if (!wordTheme || wordTheme.words.length === 0) notFound();
+  const tGrammar = await getTranslations('grammar');
+  const shown = themes.filter(th => th.words.length > 0);
+  const skillName = tSkills(`${skill.key}.name`);
 
   /**
-   * De tweede kolom: álle thema's van dit onderdeel.
-   *
-   * Hiermee verviel het themaraster (eigenaar, 15-09) — zie `wordsPanel`. Alle thema's worden
-   * hier in één keer gelezen in plaats van alleen dit ene; dat is dezelfde query die het raster
-   * deed, alleen staat hij nu naast de deck in plaats van ervoor.
+   * De tweede kolom gaat over de woorden zelf (eigenaar, 11-10): hoeveel je er in dit onderdeel
+   * kent en per thema hoe ver je bent. De cursusblokken staan op de les- en regelpagina's; hier
+   * zouden ze lessen tellen naast een deck die woorden telt.
    */
-  const panel = wordsPanel(themes.filter(th => th.words.length > 0), {
-    title: t('leerroute_woordenschat_title'),
-    backHref: `/dashboard/${level}/${skill.slug}`,
-    backLabel: tSkills(`${skill.key}.name`),
-    sectionLabel: t('words_head'),
-    themeHref: slug => wordThemePath(level, skill.slug, slug),
-    themeLabel,
-    currentTheme: wordTheme.slug,
-  });
+  const sideThemes: WordSideTheme[] = shown.map(th => ({
+    slug: th.slug,
+    label: themeLabel(th.slug),
+    href: `/${locale}${wordThemePath(level, skill.slug, th.slug)}`,
+    known: th.known,
+    total: th.words.length,
+    now: th.slug === wordTheme.slug,
+  }));
 
   /* Terug is het onderdeelscherm: het themaoverzicht bestaat niet meer, de kolom ernaast is
      wat het zei. */
@@ -85,44 +85,75 @@ export default async function WoordThemaPage({ params }: Props) {
       active={skill.slug}
       activeGroup={level}
       menu={menu}
-      learn={panel}
       isGuest={false}
     >
-      <div className="px-5 py-7 sm:px-8 sm:py-10">
-        <div className="max-w-3xl mx-auto">
-          {/* Het kruimelpad draagt de andere thema's als zusjes. Op desktop staan ze in de
-              kolom ernaast, maar die is er op een telefoon niet — en sinds het themaraster een
-              doorgang is (15-09) was dit anders de enige deck waar je nog uit kon. */}
-          <PortalCrumbs
-            trail={closeTrail(
-              skillTrail({
-                locale, level, skill: skill.slug,
-                overviewLabel: t('crumb_overview'),
-                skillName: slug => tSkills(`${slug}.name`),
-              }),
-              {
-                label: themeLabel(wordTheme.slug),
-                siblings: themes
-                  .filter(th => th.words.length > 0)
-                  .map(th => ({
-                    label: themeLabel(th.slug),
-                    href: `/${locale}${wordThemePath(level, skill.slug, th.slug)}`,
-                    current: th.slug === wordTheme.slug,
-                  })),
-              },
-            )}
-          />
+      <div className="px-5 py-6 sm:px-8 sm:py-8">
+        <div className="gt-page">
+          <div className="gt-grid">
+          <aside className="gt-side-nav">
+            <WordSideNav
+              levels={LEVELS.map(l => ({
+                key: l,
+                label: t('level_section', { level: levelLabel(l) }),
+                href: `/${locale}${wordsPath(l, skill.slug)}`,
+                on: l === level,
+              }))}
+              skills={SKILLS.map(s => ({
+                key: s.slug,
+                label: tSkills(`${s.key}.short`),
+                href: `/${locale}${wordsPath(level, s.slug)}`,
+                on: s.slug === skill.slug,
+              }))}
+              themes={sideThemes}
+              courseHref={back}
+              labels={{ levelsAria: tGrammar('levels_aria'), skillsAria: tGrammar('skills_aria') }}
+            />
+          </aside>
 
-          <header className="skill-head wd-head">
-            <p className="wd-kicker">{t('words_head')}</p>
-            <h1>{themeLabel(wordTheme.slug)}</h1>
-          </header>
+          <main className="min-w-0">
+            <section className="gh is-solo">
+              <div className="gh-copy">
+                {/* Het kruimelpad draagt de andere thema's als zusjes: op een telefoon is de
+                    kolom ernaast er niet, en dan is dit de enige weg naar een ander thema. */}
+                <div className="gh-crumbs">
+                  <PortalCrumbs
+                    trail={closeTrail(
+                      [
+                        { label: `${levelLabel(level)} ${skillName}`, href: back },
+                      ],
+                      {
+                        label: themeLabel(wordTheme.slug),
+                        siblings: shown.map(th => ({
+                          label: themeLabel(th.slug),
+                          href: `/${locale}${wordThemePath(level, skill.slug, th.slug)}`,
+                          current: th.slug === wordTheme.slug,
+                        })),
+                      },
+                    )}
+                  />
+                </div>
+                <p className="gh-kick">{t('words_head')}</p>
+                <h1 className="gh-title">{themeLabel(wordTheme.slug)}</h1>
+                <p className="gh-learn">
+                  {t('words_theme_count', { n: wordTheme.words.length })}
+                </p>
+              </div>
+            </section>
 
-          <WordDeck
-            words={wordTheme.words}
-            userId={user.id}
-            backHref={back}
-          />
+            <div className="wd-stage">
+              <WordDeck
+                words={wordTheme.words}
+                userId={user.id}
+                backHref={back}
+              />
+            </div>
+            {/* Op een telefoon staat de kolom er niet: de voortgang komt ná de kaarten, want die
+                zijn waarvoor je hier bent. */}
+            <div className="gt-mobile-course wd-mobile-prog">
+              <WordProgressCard themes={sideThemes} />
+            </div>
+          </main>
+          </div>
         </div>
       </div>
     </AppShell>

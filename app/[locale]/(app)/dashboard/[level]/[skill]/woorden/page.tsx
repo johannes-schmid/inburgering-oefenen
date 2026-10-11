@@ -18,7 +18,7 @@ export const metadata: Metadata = {
  * thema.
  *
  * Tot 15-09 stond hier een raster themakaarten met een totaalbalk erboven. Sinds het lespaneel
- * álle thema's draagt (zie `wordsPanel`) zei dat scherm hetzelfde als de kolom die ernaast
+ * álle thema's draagt (zie `courseSideBlocks`) zei dat scherm hetzelfde als de kolom die ernaast
  * staat zodra je een deck opent, en dan is het een tussenstop tussen twee klikken (beslissing
  * eigenaar). Dezelfde stap als bij `/spoor/[spoor]` en `/spoor/[spoor]/[module]`.
  *

@@ -11,17 +11,13 @@ import { fetchPortalMenu } from '@/lib/portal-menu';
 import { closeTrail } from '@/lib/portal-crumbs';
 import { fetchCourse, fetchLesson, fetchLessonWords } from '@/lib/lessons/lessons-server';
 import { fetchGrammarStep } from '@/lib/lessons/grammar-server';
-import {
-  courseOutline, isFreeTopic, grammarStepPath, topicCode, topicPath,
-  type TopicLesson,
-} from '@/lib/lessons/grammar';
-import { exerciseCount, lessonPath } from '@/lib/lessons/lessons';
-import { modulePath } from '@/lib/lessons/sporen';
-import { wordsPath } from '@/lib/lessons/words';
+import { courseOutline, isFreeTopic, grammarStepPath, topicCode, topicPath } from '@/lib/lessons/grammar';
+import { exerciseCount } from '@/lib/lessons/lessons';
+import { courseSideBlocks } from '@/lib/lessons/course-side';
 import { lessonStreamLabels } from '@/lib/lessons/stream-labels';
 import type { LessonItem } from '@/components/lessons/item-helpers';
 import GrammarTopicView, { type TopicPart } from '@/components/lessons/GrammarTopicView';
-import GrammarCourseSide, { type SideBlock, type SideItem } from '@/components/lessons/GrammarCourseSide';
+import GrammarCourseSide from '@/components/lessons/GrammarCourseSide';
 import GrammarSideNav from '@/components/lessons/GrammarSideNav';
 import type { Category } from '@/components/horizon';
 import AppShell from '../../../../../components/AppShell';
@@ -115,50 +111,14 @@ export default async function GrammarTopicPage({ params }: Props) {
   const outline = courseOutline(blocks, step);
   const skillName = tSkills(`${skill.key}.name`);
 
-  /* ── de zijkaart ── */
   const itemHref = (topicN: number) =>
     owned || isFreeTopic(topicN)
       ? `/${locale}${topicPath(level, skill.slug, topicN)}`
       : `/${locale}/dashboard/pakketten?onderdeel=${level}:${skill.slug}&vanaf=grammatica-${topicN}`;
-  const topicItems: SideItem[] = step.topics.map(x => ({
-    key: `t${x.n}`,
-    code: topicCode(x.n),
-    label: x.title,
-    href: itemHref(x.n),
-    done: x.done,
-    now: x.n === n,
-    locked: !owned && !isFreeTopic(x.n),
-  }));
-  const extraItems: SideItem[] = (step.extras?.lessons ?? [])
-    .filter((l): l is TopicLesson & { id: number } => l.id !== null)
-    .map(l => ({
-      key: l.ref,
-      code: null,
-      label: l.title ?? l.slug,
-      href: owned || l.is_free
-        ? `/${locale}${lessonPath(level, skill.slug, l.slug)}`
-        : `/${locale}/dashboard/pakketten?onderdeel=${level}:${skill.slug}&vanaf=leren-${l.slug}`,
-      done: l.done,
-      now: false,
-      locked: !owned && !l.is_free,
-    }));
-  const sideBlocks: SideBlock[] = outline.blocks.map(b => ({
-    letter: b.letter,
-    name: b.name ?? t('step_label'),
-    done: b.done,
-    total: b.total,
-    complete: b.complete,
-    href: b.letter === 'A'
-      ? `/${locale}${wordsPath(level, skill.slug)}`
-      : b.letter === 'B'
-        ? null
-        : `/${locale}${modulePath(level, skill.slug, 'examentraining', b.letter.toLowerCase())}`,
-    open: b.letter === 'B',
-    items: b.letter === 'B' ? topicItems : [],
-    extras: b.letter === 'B' && step.extras && extraItems.length > 0
-      ? { title: step.extras.title, items: extraItems }
-      : null,
-  }));
+  const sideBlocks = courseSideBlocks({
+    locale, level, skill: skill.slug, owned, blocks, step, outline,
+    open: 'B', currentTopicN: n, grammarName: t('step_label'),
+  });
 
   const following = step.topics[index + 1] ?? null;
 
@@ -253,7 +213,6 @@ export default async function GrammarTopicPage({ params }: Props) {
               notWritten: t('not_written'),
               notWrittenSub: t('not_written_sub'),
               pending: t('pending_hero'),
-              noExercises: t('no_exercises'),
               videoPlay: t('video_play'),
               videoSoon: t('video_soon'),
               videoSoonSub: t('video_soon_sub'),

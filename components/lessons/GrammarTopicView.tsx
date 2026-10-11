@@ -26,7 +26,6 @@ export type TopicViewLabels = {
   notWritten: string;
   notWrittenSub: string;
   pending: string;
-  noExercises: string;
   videoPlay: string;
   videoSoon: string;
   videoSoonSub: string;
@@ -73,14 +72,20 @@ function exampleParts(line: string): { sentences: boolean; parts: string[] } {
  * half ingevulde opgave verdwijnt niet als je even naar de andere les kijkt.
  */
 export default function GrammarTopicView({
-  crumbs, title, learn, examples, video, parts, next, streamLabels, labels,
+  crumbs, kicker = null, title, learn, examples = '', links = [], video, before = null, parts, next, streamLabels, labels,
 }: {
   crumbs: React.ReactNode;
+  /** Een regel boven de titel, zoals "Examentraining · les 4 van 6" op de lespagina. */
+  kicker?: string | null;
   title: string;
   learn: string;
-  examples: string;
+  examples?: string;
+  /** Sleutelwoorden die ergens heen wijzen — de taalregels van een les. */
+  links?: { label: string; href: string }[];
   /** `null`: dit onderwerp heeft geen video. Een video zonder URL is `{ url: null }`. */
   video: { url: string | null; title: string; duration: string } | null;
+  /** Tussen de kop en de opgaven: de ingesproken uitleg van een les. */
+  before?: React.ReactNode;
   parts: TopicPart[];
   next: { href: string; title: string };
   streamLabels: StreamLabels;
@@ -91,21 +96,30 @@ export default function GrammarTopicView({
   const pending = parts.some(p => p.lessonId !== null && p.pending);
   const current = parts[at] ?? parts[0];
   const ex = exampleParts(examples);
+  /* Een les zonder opgaven is alleen uitleg: die staat dan in de kaart zelf, niet achter een
+     pop-up naast een lege kaart. */
+  const uitlegInline = current.lessonId !== null && current.exercises === 0;
 
   return (
     <div className="gt-view">
       <section className={`gh${video ? '' : ' is-solo'}`}>
         <div className="gh-copy">
           <div className="gh-crumbs">{crumbs}</div>
+          {kicker && <p className="gh-kick">{kicker}</p>}
           <h1 className="gh-title">{title}</h1>
-          <p className="gh-learn">{learn}</p>
-          {ex.sentences
+          {learn && <p className="gh-learn">{learn}</p>}
+          {ex.parts.length > 0 && (ex.sentences
             ? <p className="gh-sents">{ex.parts.join(' ')}</p>
             : (
               <ul className="gh-chips">
                 {ex.parts.map((w, i) => <li key={i}>{w}</li>)}
               </ul>
-            )}
+            ))}
+          {links.length > 0 && (
+            <ul className="gh-chips">
+              {links.map(l => <li key={l.href}><a href={l.href}>{l.label}</a></li>)}
+            </ul>
+          )}
           {pending && (
             <p className="gh-pending"><i aria-hidden />{labels.pending}</p>
           )}
@@ -126,6 +140,8 @@ export default function GrammarTopicView({
         )}
       </section>
 
+      {before}
+
       {many && (
         <div className="gp-tabs" role="tablist" aria-label={labels.partsAria}>
           {parts.map((p, i) => (
@@ -145,7 +161,7 @@ export default function GrammarTopicView({
       )}
 
       <div className="gx-grid">
-        {current.lessonId !== null && (
+        {current.lessonId !== null && !uitlegInline && (
           <UitlegCard part={current} streamLabels={streamLabels} labels={labels} />
         )}
 
@@ -163,7 +179,20 @@ export default function GrammarTopicView({
                   </div>
                 )
                 : p.exercises === 0
-                  ? <p className="gt-empty">{labels.noExercises}</p>
+                  ? (
+                    <div className="gx-card gx-card-uitleg">
+                      <LessonProgressScope>
+                        <LessonStream
+                          lessonId={p.lessonId}
+                          items={p.items}
+                          visual={p.visual}
+                          part="uitleg"
+                          layout="topic"
+                          labels={streamLabels}
+                        />
+                      </LessonProgressScope>
+                    </div>
+                  )
                   : (
                     <div className="gx-card">
                       <LessonProgressScope>

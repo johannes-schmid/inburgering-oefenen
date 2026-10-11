@@ -12,7 +12,7 @@
 import { describe, it, expect } from 'vitest';
 import {
   ITEM_KINDS, EXERCISE_KINDS, PAYLOAD_SCHEMAS, GAP,
-  isExerciseKind, tierBucket, normaliseTyped, matchesTyped,
+  isExerciseKind, tierBucket, normaliseTyped, matchesTyped, markTokens, matchesMarked,
   validateItem, validateItems,
 } from '@/lib/lessons/items';
 
@@ -322,5 +322,36 @@ describe('audio wordt geschreven vóór het is ingesproken', () => {
     // vorm een map van spreker naar string is, zodat die check iets heeft om te lezen.
     const parsed = PAYLOAD_SCHEMAS.audio.parse(audio.payload);
     expect(parsed.voice_cast).toEqual({ A: 'woman_young' });
+  });
+});
+
+describe('markeren: woorden aantikken', () => {
+  it('knipt alleen tekst, en laat de opmaak staan', () => {
+    const { html, words } = markTokens('<p>Woningstichting De Beemd<br>Postbus 214, Amersfoort</p>');
+    expect(words).toEqual(['Woningstichting', 'De', 'Beemd', 'Postbus', '214,', 'Amersfoort']);
+    expect(html).toContain('<br>');
+    expect(html.match(/data-w=/g)).toHaveLength(6);
+  });
+
+  it('lost entiteiten op in de woorden', () => {
+    expect(markTokens('<p>Jan &amp; Piet</p>').words).toEqual(['Jan', '&', 'Piet']);
+  });
+
+  it('keurt het precieze stuk goed, ook met een komma of punt erbij', () => {
+    expect(matchesMarked('Woningstichting De Beemd', 'Woningstichting De Beemd')).toBe(true);
+    expect(matchesMarked('maart.', 'maart')).toBe(true);
+    expect(matchesMarked('030 - 555 21 40.', '030 - 555 21 40')).toBe(true);
+  });
+
+  it('staat een woord te weinig of een paar te veel toe', () => {
+    expect(matchesMarked('zaterdag 14 maart', 'op zaterdag 14 maart')).toBe(true);
+    expect(matchesMarked('opent op maandag 6 januari', 'maandag 6 januari')).toBe(true);
+  });
+
+  it('keurt iets anders, of de halve zin, af', () => {
+    expect(matchesMarked('Postbus 214', 'Woningstichting De Beemd')).toBe(false);
+    expect(matchesMarked('14', 'op zaterdag 14 maart')).toBe(false);
+    expect(matchesMarked('De blauwe container komt op zaterdag 14 maart bij u thuis', 'op zaterdag 14 maart')).toBe(false);
+    expect(matchesMarked('', 'maart')).toBe(false);
   });
 });

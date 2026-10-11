@@ -13,6 +13,8 @@ export {
   GAP,
   isExerciseKind,
   matchesTyped,
+  markTokens,
+  matchesMarked,
   normaliseTyped,
   tierBucket,
   TIER_LABEL,

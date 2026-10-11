@@ -5,7 +5,7 @@ import { playCorrectChime } from '@/lib/answer-chime';
 import WordPass from '@/components/exam/WordPass';
 import { ArrowLeft, ArrowRight, Lightbulb, Check, X, RotateCcw, Eye, ChevronDown, PencilLine, Quote } from 'lucide-react';
 import {
-  GAP, isExerciseKind, matchesTyped, normaliseTyped, tierChipOf,
+  GAP, isExerciseKind, markTokens, matchesMarked, matchesTyped, normaliseTyped, tierChipOf,
   type LessonItem, type Tier,
 } from './item-helpers';
 import { useNarrated } from './NarrationScope';
@@ -104,7 +104,8 @@ export type StreamLabels = {
   modelAnswer: string;
   compare: string;
   progress: string;
-  yourAnswer: string;
+  /** De markeeropgave: uitleg bij de tekst, de wisknop, en een leeg vakje. */
+  mark: { hint: string; clear: string; empty: string };
   /** De kopjes van de twee secties en van de drie trappen — zie de kop van dit bestand. */
   ruleKick: string;
   demoKick: string;
@@ -1266,31 +1267,92 @@ function Opnemen({ item, verdict, onSettle, onReset, labels, num }: ViewProps & 
 
 function Markeren({ item, verdict, onSettle, onReset, labels, num }: ViewProps & { item: Extract<LessonItem, { kind: 'markeren' }> }) {
   const { instruction, body_html, targets } = item.payload;
-  const [picked, setPicked] = useState<Record<string, string>>({});
+  const tokens = useMemo(() => markTokens(body_html), [body_html]);
+  const [ranges, setRanges] = useState<Record<string, [number, number]>>({});
+  const [active, setActive] = useState(0);
+  const [anchor, setAnchor] = useState<number | null>(null);
+  const [cursor, setCursor] = useState(0);
   const bodyRef = useRef<HTMLDivElement>(null);
 
   /**
-   * "Markeren" is hier *aanwijzen door te selecteren*, niet slepen.
+   * Markeren is **woorden aantikken**: het eerste en het laatste woord, of slepen.
    *
-   * De cursist selecteert een stuk tekst en kiest welk label het is. Een echte
-   * markeer-interactie op woordniveau vraagt om het opsplitsen van de HTML in klikbare tokens,
-   * en dat breekt bij elke `<strong>` of `<br>` in de tekst. Selectie werkt met de tekst zoals
-   * hij is, ook op een telefoon, en is met een `<select>` per label ook zonder muis te doen.
+   * Tot 11-10 was het selecteren met de muis en dan op "Selectie gebruiken" drukken. Dat werkte
+   * niet: Safari wist de selectie zodra je de knop indrukt, op een telefoon is een precies stuk
+   * selecteren gepriegel, en niets op de tekst zei dat je hem kón aanraken. Nu is elk woord een
+   * doel met een hoverstaat; de eerste tik zet het begin, de tweede het eind. Slepen werkt nog
+   * steeds en wordt bij het loslaten omgezet naar woorden. Met het toetsenbord: pijltjes en
+   * Enter. Nakijken gebeurt met `matchesMarked`, die een woord te veel of te weinig toestaat.
    */
-  const capture = (label: string) => {
-    const sel = typeof window !== 'undefined' ? window.getSelection() : null;
-    const text = sel?.toString().trim() ?? '';
-    if (!text) return;
-    setPicked(p => ({ ...p, [label]: text }));
-    sel?.removeAllRanges();
+  const label = targets[active]?.label ?? targets[0].label;
+  const textOf = (r: [number, number]) => tokens.words.slice(r[0], r[1] + 1).join(' ');
+
+  const dragged = useRef(false);
+
+  const commit = (r: [number, number]) => {
+    const next = { ...ranges, [label]: r };
+    setRanges(next);
+    const open = targets.findIndex(t => !next[t.label]);
+    if (open >= 0) setActive(open);
   };
 
-  const done = targets.every(t => picked[t.label]);
-  const ok = () => targets.every(t => normaliseTyped(picked[t.label] ?? '') === normaliseTyped(t.text));
+  const tap = (i: number) => {
+    if (verdict) return;
+    setCursor(i);
+    if (anchor === null) {
+      setAnchor(i);
+      setRanges(prev => ({ ...prev, [label]: [i, i] }));
+    } else {
+      setAnchor(null);
+      commit([Math.min(anchor, i), Math.max(anchor, i)]);
+    }
+  };
+
+  const onPointerUp = () => {
+    const sel = window.getSelection();
+    if (!sel || sel.isCollapsed || !bodyRef.current) return;
+    const hit = [...bodyRef.current.querySelectorAll<HTMLElement>('[data-w]')]
+      .filter(el => sel.containsNode(el, true))
+      .map(el => Number(el.dataset.w));
+    sel.removeAllRanges();
+    if (hit.length === 0 || verdict) return;
+    dragged.current = true;
+    setAnchor(null);
+    commit([Math.min(...hit), Math.max(...hit)]);
+  };
+
+  const onKeyDown = (e: React.KeyboardEvent) => {
+    const last = tokens.words.length - 1;
+    if (e.key === 'ArrowRight' || e.key === 'ArrowDown') { e.preventDefault(); setCursor(c => Math.min(last, c + 1)); }
+    else if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') { e.preventDefault(); setCursor(c => Math.max(0, c - 1)); }
+    else if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); tap(cursor); }
+  };
+
+  /* De markeringen als klassen in de HTML: geen DOM-mutatie achter React om. */
+  const html = useMemo(() => {
+    const cls = new Map<number, string>();
+    targets.forEach((t, ti) => {
+      const r = ranges[t.label];
+      if (!r) return;
+      for (let i = r[0]; i <= r[1]; i++) {
+        cls.set(i, [ti === active ? 'is-on' : 'is-other', i < r[1] && 'is-cont', i > r[0] && 'is-mid'].filter(Boolean).join(' '));
+      }
+    });
+    return tokens.html.replace(/<span class="mw" data-w="(\d+)"/g, (m, n) => {
+      const i = Number(n);
+      const c = [cls.get(i), i === anchor && 'is-anchor', i === cursor && 'is-cursor'].filter(Boolean).join(' ');
+      return c ? `<span class="mw ${c}" data-w="${n}"` : m;
+    });
+  }, [tokens.html, ranges, targets, active, anchor, cursor]);
+
+  const picked = Object.fromEntries(targets.flatMap(t => ranges[t.label] ? [[t.label, textOf(ranges[t.label])]] : []));
+  const done = targets.every(t => ranges[t.label]);
+  const ok = () => targets.every(t => matchesMarked(picked[t.label] ?? '', t.text));
+  const reset = () => { setRanges({}); setAnchor(null); setActive(0); };
 
   return (
     <ExFrame
-      item={item} verdict={verdict} labels={labels} num={num} onReset={() => { onReset(); setPicked({}); }}
+      item={item} verdict={verdict} labels={labels} num={num} onReset={() => { onReset(); reset(); }}
       canCheck={done}
       onCheck={() => onSettle(ok(), picked)}
       extra={verdict && !verdict.correct
@@ -1304,19 +1366,55 @@ function Markeren({ item, verdict, onSettle, onReset, labels, num }: ViewProps &
         : undefined}
     >
       <p className="ex-prompt" dangerouslySetInnerHTML={{ __html: instruction }} />
-      <div ref={bodyRef} className="mark-body" dangerouslySetInnerHTML={{ __html: body_html }} />
+      {!verdict && <p className="mark-hint">{labels.mark.hint}</p>}
+      <div
+        ref={bodyRef}
+        className={`mark-body${verdict ? ' is-locked' : ''}`}
+        role="listbox"
+        aria-multiselectable="true"
+        aria-label={labels.mark.hint}
+        aria-activedescendant={`mw-${cursor}`}
+        tabIndex={verdict ? -1 : 0}
+        onClick={e => {
+          if (dragged.current) { dragged.current = false; return; }
+          const w = (e.target as HTMLElement).closest<HTMLElement>('[data-w]');
+          if (w) tap(Number(w.dataset.w));
+        }}
+        onPointerUp={onPointerUp}
+        onKeyDown={onKeyDown}
+        dangerouslySetInnerHTML={{ __html: html }}
+      />
       <div className="mark-picks">
-        {targets.map(t => (
-          <div key={t.label} className="mark-pick">
-            <span className="mini-label">{t.label}</span>
-            <output>{picked[t.label] ?? '—'}</output>
-            {!verdict && (
-              <button type="button" onClick={() => capture(t.label)}>
-                {labels.yourAnswer}
+        {targets.map((t, ti) => {
+          const r = ranges[t.label];
+          const on = ti === active && !verdict;
+          return (
+            <div key={t.label} className={`mark-pick${on ? ' is-on' : ''}`}>
+              <button
+                type="button"
+                className="mark-pick-btn"
+                aria-pressed={targets.length > 1 ? on : undefined}
+                disabled={!!verdict || targets.length === 1}
+                onClick={() => { setActive(ti); setAnchor(null); }}
+              >
+                <span className="mini-label">{t.label}</span>
+                <output className={r ? undefined : 'is-empty'}>{r ? textOf(r) : labels.mark.empty}</output>
               </button>
-            )}
-          </div>
-        ))}
+              {r && !verdict && (
+                <button
+                  type="button"
+                  className="mark-clear"
+                  onClick={() => {
+                    setRanges(prev => { const n = { ...prev }; delete n[t.label]; return n; });
+                    setActive(ti); setAnchor(null);
+                  }}
+                >
+                  {labels.mark.clear}
+                </button>
+              )}
+            </div>
+          );
+        })}
       </div>
     </ExFrame>
   );

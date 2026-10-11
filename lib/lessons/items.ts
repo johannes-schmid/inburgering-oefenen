@@ -565,3 +565,59 @@ export function matchesTyped(given: string, answer: string, accept: string[] = [
   const g = normaliseTyped(given);
   return g.length > 0 && [answer, ...accept].some(a => normaliseTyped(a) === g);
 }
+
+// ---------------------------------------------------------------------------
+// Markeren: de tekst als losse woorden
+// ---------------------------------------------------------------------------
+
+const ENTITIES: Record<string, string> = { amp: '&', nbsp: ' ', lt: '<', gt: '>', quot: '"', '#39': "'", apos: "'" };
+
+/**
+ * Knip `body_html` op in woorden die je kunt aantikken, met de opmaak eromheen intact.
+ *
+ * Alleen tekst tussen tags wordt geknipt; `<p>`, `<br>` en `<strong>` blijven staan. Elk woord
+ * wordt `<span data-w="i">`, en `words[i]` is de leesbare tekst ervan (entiteiten opgelost).
+ * Zo hoeft de opgave geen tekstselectie van de browser — die verdween in Safari zodra je op
+ * een knop drukte, en een telefoon selecteert maar moeizaam een precies stuk.
+ */
+export function markTokens(html: string): { html: string; words: string[] } {
+  const words: string[] = [];
+  const out = html.split(/(<[^>]+>)/).map(part => {
+    if (part.startsWith('<')) return part;
+    return part.split(/(\s+)/).map(chunk => {
+      if (!chunk || /^\s+$/.test(chunk)) return chunk;
+      const i = words.length;
+      words.push(chunk.replace(/&(#?\w+);/g, (m, e) => ENTITIES[e] ?? m));
+      return `<span class="mw" data-w="${i}" id="mw-${i}" role="option">${chunk}</span>`;
+    }).join('');
+  }).join('');
+  return { html: out, words };
+}
+
+const markWords = (s: string) =>
+  normaliseTyped(s).replace(/[.,;:!?()"“”]/g, ' ').split(/\s+/).filter(Boolean);
+
+/**
+ * Is dit gemarkeerde stuk goed? Ruimer dan `matchesTyped`, want markeren is aanwijzen en geen
+ * spellen: "zaterdag 14 maart" is goed als het antwoord "op zaterdag 14 maart" is.
+ *
+ * Het langste gedeelde stuk achter elkaar telt. Er mogen hooguit twee woorden te veel bij, en
+ * bij een antwoord van drie woorden of meer mag een kwart (minstens één) ontbreken.
+ */
+export function matchesMarked(given: string, target: string): boolean {
+  const g = markWords(given);
+  const t = markWords(target);
+  if (g.length === 0 || t.length === 0) return false;
+  let common = 0;
+  for (let i = 0; i < g.length; i++) {
+    for (let j = 0; j < t.length; j++) {
+      let k = 0;
+      while (i + k < g.length && j + k < t.length && g[i + k] === t[j + k]) k++;
+      if (k > common) common = k;
+    }
+  }
+  const missing = t.length - common;
+  const extra = g.length - common;
+  const allowedMissing = t.length >= 3 ? Math.max(1, Math.floor(t.length / 4)) : 0;
+  return missing <= allowedMissing && extra <= 2;
+}

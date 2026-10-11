@@ -25,22 +25,7 @@ export default function GrammarSideNav({
 }) {
   return (
     <div className="gsn">
-      <nav className="gsn-levels" aria-label={labels.levelsAria}>
-        {levels.map(l => (
-          <a key={l.key} href={l.href} className={l.on ? 'is-on' : undefined} aria-current={l.on ? 'page' : undefined}>
-            {l.label}
-          </a>
-        ))}
-      </nav>
-
-      <nav className="gsn-skills" aria-label={labels.skillsAria}>
-        {skills.map(s => (
-          <a key={s.key} href={s.href} className={s.on ? 'is-on' : undefined} aria-current={s.on ? 'page' : undefined}>
-            <CategoryMark category={s.key as Category} size={24} />
-            <span className="gsn-skill-lb">{s.label}</span>
-          </a>
-        ))}
-      </nav>
+      <SideSwitchers levels={levels} skills={skills} labels={labels} />
 
       <p className="gsn-label">
         <span>{lessonsLabel}</span>
@@ -84,6 +69,36 @@ export default function GrammarSideNav({
         </ol>
       </nav>
     </div>
+  );
+}
+
+/** Niveau en onderdeel bovenaan de tweede kolom — gedeeld met de woordkaarten (`WordSideNav`). */
+export function SideSwitchers({
+  levels, skills, labels,
+}: {
+  levels: SideLevel[];
+  skills: SideSkill[];
+  labels: { levelsAria: string; skillsAria: string };
+}) {
+  return (
+    <>
+      <nav className="gsn-levels" aria-label={labels.levelsAria}>
+        {levels.map(l => (
+          <a key={l.key} href={l.href} className={l.on ? 'is-on' : undefined} aria-current={l.on ? 'page' : undefined}>
+            {l.label}
+          </a>
+        ))}
+      </nav>
+
+      <nav className="gsn-skills" aria-label={labels.skillsAria}>
+        {skills.map(s => (
+          <a key={s.key} href={s.href} className={s.on ? 'is-on' : undefined} aria-current={s.on ? 'page' : undefined}>
+            <CategoryMark category={s.key as Category} size={24} />
+            <span className="gsn-skill-lb">{s.label}</span>
+          </a>
+        ))}
+      </nav>
+    </>
   );
 }
 

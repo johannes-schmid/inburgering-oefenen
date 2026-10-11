@@ -4,6 +4,7 @@ import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useTranslations } from 'next-intl';
 import { ArrowLeft, ArrowRight, Check, RotateCcw, RefreshCw, X } from 'lucide-react';
 import { createClient } from '@/lib/supabase/client';
+import { WORD_KNOWN_EVENT, type WordKnownDetail } from '@/components/lessons/WordSideNav';
 import {
   practiceOrder,
   WORD_CARD_LANGS,
@@ -89,6 +90,13 @@ export default function WordDeck({
 
   const card = deck[idx];
   const known = Object.values(statuses).filter(s => s === 'known').length;
+
+  /* De woordkolom naast de deck telt mee zonder herladen (`WordSideNav`). */
+  const theme = words[0]?.theme;
+  useEffect(() => {
+    if (!theme) return;
+    window.dispatchEvent(new CustomEvent<WordKnownDetail>(WORD_KNOWN_EVENT, { detail: { theme, known } }));
+  }, [theme, known]);
 
   const save = useCallback(
     async (wordId: number, status: WordStatus) => {
