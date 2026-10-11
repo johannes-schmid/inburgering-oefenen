@@ -119,6 +119,26 @@ export function localeHref(locale: string, path: string): string {
   return `/${locale}${localized ? `/${localized}` : ''}${rest}`;
 }
 
+/**
+ * Het canonieke pad voor een Nederlands gevormd pad onder een andere taal —
+ * `/en/inburgering/inburgering-stappenplan` — of `undefined` als er niets mis is.
+ *
+ * Zonder dit liep zo'n oude URL drie hops: next-intl vertaalde het statische segment met een
+ * **307** (tijdelijk, dus Google houdt de oude URL in de index), daarna vertaalde
+ * `canonicalContentPath` de slug met een 308. Op 11-10 stonden in Search Console nog steeds
+ * de oude `/en/inburgering/*`-URL's. Eén 308 rechtstreeks naar het eindpad lost beide op.
+ */
+export function canonicalLocalePath(pathname: string): string | undefined {
+  const segments = pathname.split('/').filter(Boolean).map(safeDecode);
+  const [locale, ...rest] = segments;
+  if (locale === routing.defaultLocale || !routing.locales.includes(locale as Locale)) return undefined;
+  if (rest.length === 0) return undefined;
+
+  const current = rest.join('/');
+  const want = translateDutchPath(current, locale);
+  return want && want !== current ? `/${locale}/${want}` : undefined;
+}
+
 function splitOnce(path: string): [string, string] {
   const at = path.search(/[?#]/);
   return at === -1 ? [path, ''] : [path.slice(0, at), path.slice(at)];

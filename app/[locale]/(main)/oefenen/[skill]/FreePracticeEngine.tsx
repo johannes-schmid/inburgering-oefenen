@@ -278,10 +278,10 @@ export default function FreePracticeEngine({ skill, skillName, items, locale, le
           <div className="flex items-center gap-3 mb-6 rounded-2xl p-3" style={{ background: 'var(--color-surface-container-low)' }}>
             <div className="w-11 h-11 rounded-xl overflow-hidden border border-outline-variant/30 flex-shrink-0">
               {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src="/images/marieke-schipper.webp" alt="Marieke Schipper" width={44} height={44} className="w-full h-full object-cover object-top" />
+              <img src="/images/amber-van-der-zalm-264.webp" alt="Amber van der Zalm" width={44} height={44} className="w-full h-full object-cover object-top" />
             </div>
             <div className="min-w-0">
-              <p className="text-sm font-bold text-on-surface">Marieke Schipper</p>
+              <p className="text-sm font-bold text-on-surface">Amber van der Zalm</p>
               <p className="text-xs text-on-surface-variant leading-snug">{t('teacher_title')}</p>
             </div>
           </div>

@@ -42,7 +42,7 @@ const guide: Guide = {
   section: 'inburgering',
 
   status: 'reviewed',
-  reviewedBy: 'Marieke Schipper',
+  reviewedBy: 'Amber van der Zalm',
   reviewedOn: '2026-08-20',
   pillar: false,
   coverGlyph: 'route',

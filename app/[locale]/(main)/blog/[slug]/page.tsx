@@ -157,17 +157,25 @@ export default async function BlogPostPage({ params }: Props) {
             </p>
             <div className="flex items-center gap-4 pt-6" style={{ borderTop: '1px solid rgba(255,255,255,0.15)' }}>
               <div className="w-10 h-10 rounded-xl overflow-hidden flex-shrink-0" style={{ border: '2px solid rgba(255,255,255,0.2)' }}>
-                <img src="/images/marieke-schipper.webp" alt="Marieke Schipper" width={40} height={40} style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'center top' }} />
+                <img src="/images/amber-van-der-zalm-264.webp" alt="Amber van der Zalm" width={40} height={40} style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'center top' }} />
               </div>
               <div>
                 <p className="text-sm font-semibold text-white">
-                  <Link href="/docent" className="text-white no-underline hover:opacity-80 transition-opacity">Marieke Schipper</Link>
+                  <Link href="/docent" className="text-white no-underline hover:opacity-80 transition-opacity">Amber van der Zalm</Link>
                 </p>
                 <p className="text-xs" style={{ color: 'rgba(255,255,255,0.5)' }}>
                   NT2-docent · {lp.dateLabel} · {t('reading_time', { minutes: post.readingMinutes })}
                 </p>
               </div>
             </div>
+            {/* Melding vóór de eerste regel tekst (AI-verordening art. 50 lid 4 en 5): een
+                machinevertaling zonder menselijke controle valt niet onder de uitzondering voor
+                nagekeken tekst. */}
+            {translated && locale !== 'nl' && (
+              <p className="m-0 mt-5 rounded-xl px-4 py-3 text-sm leading-relaxed" style={{ background: 'rgba(255,255,255,0.1)', color: 'rgba(255,255,255,0.88)' }}>
+                {t('mt_notice')}
+              </p>
+            )}
           </div>
         </div>
       </div>

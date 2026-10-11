@@ -175,7 +175,7 @@ export default async function GuideArticle({
               </div>
               <div className="flex items-center gap-3 text-sm" style={{ color: 'rgba(255,255,255,0.75)' }}>
                 <img
-                  src="/images/marieke-schipper.webp"
+                  src="/images/amber-van-der-zalm-264.webp"
                   alt=""
                   width={36}
                   height={36}
@@ -183,11 +183,22 @@ export default async function GuideArticle({
                 />
                 <span>
                   <Link href="/docent" className="text-white font-semibold no-underline hover:opacity-80">
-                    Marieke Schipper
+                    Amber van der Zalm
                   </Link>
-                  , {t('author_role')} · {lg.dateLabel} · {t('reading_time', { minutes: guide.readingMinutes })}
+                  , {t('author_role')} · {lg.dateLabel} · {t('reading_time', { minutes: guide.readingMinutes })} ·{' '}
+                  <Link href="/redactie" className="text-white/90 underline underline-offset-2 decoration-white/40 hover:decoration-white">
+                    {t('how_made')}
+                  </Link>
                 </span>
               </div>
+              {/* Melding vóór de eerste regel tekst (AI-verordening art. 50 lid 4 en 5): de EN/AR-
+                  gidsen zijn machinevertalingen zonder menselijke controle. Onderaan staat dezelfde
+                  zin nog in de reviewregel; die kwam pas ná het lezen. */}
+              {locale !== 'nl' && (
+                <p className="m-0 mt-5 rounded-xl px-4 py-3 text-sm leading-relaxed" style={{ background: 'rgba(255,255,255,0.1)', color: 'rgba(255,255,255,0.88)' }}>
+                  {t('mt_notice')}
+                </p>
+              )}
             </div>
             {heroSrc && guide.heroImage && (
               <picture className="no-print block">

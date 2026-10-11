@@ -57,7 +57,7 @@ const guide: Guide = {
   section: 'taalexamens',
 
   status: 'reviewed',
-  reviewedBy: 'Marieke Schipper',
+  reviewedBy: 'Amber van der Zalm',
   reviewedOn: '2026-08-24',
   pillar: false,
   coverGlyph: 'ladder',

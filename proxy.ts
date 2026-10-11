@@ -1,7 +1,7 @@
 import createMiddleware from 'next-intl/middleware';
 import { NextResponse, type NextRequest } from 'next/server';
 import { routing } from './i18n/routing';
-import { canonicalContentPath, canonicalSkillPath } from './i18n/paths';
+import { canonicalContentPath, canonicalLocalePath, canonicalSkillPath } from './i18n/paths';
 
 // In Next.js 16 this file is called proxy.ts (renamed from middleware.ts).
 // next-intl's createMiddleware handles:
@@ -23,8 +23,11 @@ export default function proxy(request: NextRequest) {
   /* Dezelfde redenering geldt voor de gids- en blogslug, die sinds 15-09 óók per taal
    * verschilt: `/en/civic-integration/wonen` is een werkende URL naast
    * `/en/civic-integration/housing`. Zie `canonicalContentPath`. */
+  /* Een Nederlands gevormd pad onder /en of /ar gaat in één 308 naar het eindpad; anders
+   * maakt next-intl er eerst een 307 van. Zie `canonicalLocalePath`. */
+  const { pathname } = request.nextUrl;
   const canonical =
-    canonicalSkillPath(request.nextUrl.pathname) ?? canonicalContentPath(request.nextUrl.pathname);
+    canonicalLocalePath(pathname) ?? canonicalSkillPath(pathname) ?? canonicalContentPath(pathname);
   if (canonical) {
     const url = new URL(request.nextUrl);
     url.pathname = canonical;

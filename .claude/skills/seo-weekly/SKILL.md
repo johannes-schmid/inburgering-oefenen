@@ -36,6 +36,15 @@ en code-opmerkingen zijn Nederlands (CLAUDE.md §11).
      geciteerd)
    Elke regel in dit blok verwijst naar het snapshotbestand waar het getal vandaan komt.
 
+3a. **Instortingscheck, vóór alles anders in het rapport.** Een venster van 28 dagen middelt een
+   val weg: de W41-run noemde de val van 30-09 "laag-rankende long-tail die wegvalt". Lees de
+   dagcijfers (`gsc.json → daily` en `seo-agent/data/history/gsc-daily-*.json`). Zijn de
+   vertoningen op een dag **meer dan 70% lager** dan het gemiddelde van de zeven dagen ervoor,
+   of ligt het weekgemiddelde meer dan 70% onder dat van de week ervoor, dan opent het rapport
+   met een rode regel: de datum, de getallen, de Google-updates die op dat moment liepen
+   (Search Status Dashboard) en de deploys in dat venster (`git log`). Vergelijk met Bing: valt
+   Bing niet mee, dan ligt het aan Google en niet aan de site.
+
 4. **Technische gezondheid.** Alles in `health.json → problems` met status ≠ 200, `noindex in
    sitemap`, `canonical wijkt af` of `ongeldig JSON-LD` is een fout en krijgt **één** PR,
    buiten de cap en buiten de cooldown. Te lange titels/descriptions zijn geen fout maar input
@@ -54,7 +63,7 @@ en code-opmerkingen zijn Nederlands (CLAUDE.md §11).
 6. **Rapport.** Schrijf `seo-agent/reports/<week>.md` met: samenvatting in vijf regels, het KPI-blok,
    de ledger-oordelen van deze week, de geopende PR's (link + hypothese), GEO (even weken),
    wat onbekend was en waarom, en één aanbeveling voor de eigenaar die geen PR kan zijn
-   (bijvoorbeeld een onderwerp voor Marieke). Commit rapport + ledger op branch
+   (bijvoorbeeld een onderwerp voor Amber). Commit rapport + ledger op branch
    `claude/seo-<week>-report` en open daar een PR voor.
 
 7. **Mail.** Stuur met de Gmail-connector de samenvatting (de eerste ~40 regels van het

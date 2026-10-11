@@ -129,12 +129,25 @@ export const PROVIDER_REF = {
  * beroep is voor een lezer én voor een crawler niet te onderscheiden van een willekeurige naam.
  * De onderbouwing ervan (`hasCredential`, `knowsAbout`, `description`) blijft op de profielpagina.
  */
+/**
+ * Waar de docent búiten deze site terug te vinden is. Dit is de helft van de byline die Google
+ * kan controleren: een naam met een beroep is een bewering, een naam met een LinkedIn-profiel en
+ * een eigen bedrijf is een persoon. Tot 11-10 stond hier een schuilnaam met een foto van iemand
+ * anders — precies het "fabricated creator profile" dat Google sinds 01-10 een laag-kwaliteit
+ * signaal noemt.
+ */
+export const TEACHER_SAME_AS = [
+  'https://www.linkedin.com/in/amber-van-der-zalm-549009121/',
+  'https://sites.google.com/view/samensterkintaal/home',
+] as const;
+
 export const TEACHER_REF = {
   '@id': TEACHER_ID,
   '@type': 'Person',
-  name: 'Marieke Schipper',
+  name: 'Amber van der Zalm',
   jobTitle: 'NT2-docent',
   url: `${SITE_URL}/nl/docent`,
+  sameAs: TEACHER_SAME_AS,
 } as const;
 
 /**

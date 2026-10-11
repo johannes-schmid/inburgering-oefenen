@@ -94,20 +94,31 @@ sections for a level nobody has authored an item at.
 
 ### The USP, and what it constrains
 
-**"Echt door een docent gevalideerd, geen AI."** Competitors generate exercises with AI; at least
-one disclaims accuracy in its own terms. That is the wedge, and it is a constraint on the code:
+**"Door een NT2-gecertificeerde docent gemaakt en volledig nagekeken. AI helpt, zij beslist."**
+Competitors publish whatever AI generates; at least one disclaims accuracy in its own terms. Our
+wedge is that a named, real teacher — Amber van der Zalm — checks everything. **It is not "no AI":
+items, lessons and guides are AI-drafted.** "Geen AI" was literally false and was removed
+site-wide on 2026-10-11 (ACM: misleading claim). See `docs/decisions/ai-compliance.md`.
 
-- **No AI-generated exam content.** Every item is written or reviewed by a certified NT2 docent.
-  The claim covers exam content and grading framing, at every level and in every onderdeel.
+- **Never write "geen AI", "niet door AI" or "niet door een algoritme"** on any surface. The claim
+  is about who checks and decides, never that no AI was involved.
+- **Nothing publishes without the docent's review.** AI-drafted items, lessons and guides go live
+  only after she has checked and corrected them. `/redactie` states this and names her as
+  eindredactie — that is also the AI Act art. 50(4) exception for reviewed text.
 - **Schrijven/Spreken feedback is rubric-driven**: the docent authors the rubric and the model
-  answers, a model applies them, the docent reviews the gradings. Never frame or build it as
-  "de AI beoordeelt je antwoord" — that inverts the product's only claim.
-- **Informational gidsen and blog posts may be machine-drafted**, but publish only after the docent
-  has reviewed them. The **guide translations (EN/AR) are machine-produced and unreviewed**, and
-  `guides.translated_note` says so in the reader's own language — never drop that clause to tidy a
-  layout.
-- **Never ship invented social proof.** Three fabricated testimonials and an `AggregateRating` came
-  across in the fork and were removed. The product has no customers yet.
+  answers, a model applies them, the docent reviews the gradings. Say plainly that a model applies
+  her rubric, and that a score is practice feedback, not an official DUO result. Keep the "wat nu?"
+  routing rule-based — AI-score-driven steering moves the product towards AI Act high-risk.
+- **The guide and blog translations (EN/AR) are machine-produced and unreviewed**, and say so at
+  the **top** of the page (`guides.mt_notice`, `blog.mt_notice`) as well as in
+  `guides.translated_note` — AI Act art. 50(4)/(5). Never drop either to tidy a layout.
+- **The teacher is a real, verifiable person.** Name, photo and credentials come from her LinkedIn
+  and company site (`TEACHER_SAME_AS` in `lib/schema.ts`); nothing about her that is not there.
+  "Marieke Schipper" was a pseudonym with someone else's photo and was removed on 2026-10-11.
+- **Never ship invented social proof.** Fabricated testimonials, AI-generated avatars and stock
+  faces next to user counts have all been removed. The homepage quotes are real Trustpilot reviews
+  of **knmoefenen.nl**, verbatim and labelled as the sister site's; reviews by anyone connected to
+  the business are never shown (`SEO/facts.md` §12).
 
 ### Who pays, and what it costs
 
@@ -829,7 +840,7 @@ afrekenlink** (OpenAI-beleid); en **`is_correct`/`explanation`/`model_answer` ko
 - **`/api/generate-question-audio`, `generate-wordcard-audio` and `admin/generate-lesson-audio` have
   no admin guard** — reachable by anyone who knows the path, and each spends ElevenLabs credits.
   `requireAdmin()` in `lib/admin/guard.ts` is how a route handler checks the allowlist.
-- **`notFound()` inside a `[locale]/…/[slug]` route returns HTTP 200** — a soft 404, project-wide.
+- ~~Soft 404s~~ — verified 11-10 on production: unknown paths and unknown guide/blog slugs return a real 404.
 - **Marketing/legal copy still says KNM or "Professioneel Pakket"** in `betaling-gelukt` and parts of
   the legal pages. These are factual claims about the product and a real person, so they need the
   owner's wording, not a search-and-replace.

@@ -171,14 +171,60 @@ function PolicyNl() {
       </ul>
       <p>Wij verkopen jouw gegevens nooit aan derden.</p>
 
-      <h2>7. Beveiliging</h2>
+      <h2>7. Kunstmatige intelligentie (AI)</h2>
+      <p>
+        Wij gebruiken AI op een paar plekken. Hier staat waar, welke gegevens daarbij gebruikt worden
+        en wat dat voor jou betekent. Een volledig overzicht van hoe wij onze inhoud maken staat op
+        de pagina <a href="/nl/redactie">Zo maken we onze inhoud</a>.
+      </p>
+      <ul>
+        <li><span>
+          <strong>Beoordeling van Schrijven en Spreken.</strong> Je geschreven antwoord, of bij Spreken
+          je opname en de uitgeschreven tekst daarvan, gaat via de Vercel AI Gateway naar een taalmodel
+          (nu Gemini van Google). Dat model past het beoordelingsschema van onze NT2-docent toe en geeft
+          per criterium een score met uitleg. Je naam en e-mailadres gaan niet mee. De docent controleert
+          de beoordelingen achteraf. Rechtsgrond: uitvoering van de overeenkomst (art. 6 lid 1 onder b AVG).
+        </span></li>
+        <li><span>
+          <strong>Uitschrijven van je opname.</strong> ElevenLabs zet je gesproken antwoord om in tekst
+          (Scribe). De opname wordt daarvoor alleen verwerkt, niet gebruikt om je te herkennen.
+        </span></li>
+        <li><span>
+          <strong>Geen besluit met rechtsgevolg.</strong> Een beoordeling is oefenfeedback. Het is geen
+          officiële uitslag van DUO en er hangt geen besluit aan over toelating, een diploma of geld.
+          Er is dus geen sprake van geautomatiseerde besluitvorming in de zin van artikel 22 AVG. Ben je
+          het niet eens met een beoordeling, laat het ons weten via <a href="/nl/contact">contact</a>;
+          de docent kijkt er dan zelf naar.
+        </span></li>
+        <li><span>
+          <strong>Geen training.</strong> Wij gebruiken jouw antwoorden niet om AI-modellen te trainen,
+          en de aanbieders die wij gebruiken verwerken je gegevens alleen om de beoordeling te maken.
+        </span></li>
+        <li><span>
+          <strong>Doorgifte buiten de EU.</strong> Vercel, Google en ElevenLabs kunnen gegevens in de
+          Verenigde Staten verwerken. Dat gebeurt op basis van het EU-VS Data Privacy Framework of de
+          standaardcontractbepalingen van de Europese Commissie.
+        </span></li>
+        <li><span>
+          <strong>Bewaren.</strong> Je antwoorden, opnames, de uitgeschreven tekst en de beoordeling
+          bewaren wij zolang je account bestaat, zodat je je voortgang kunt zien. Verwijder je je
+          account, dan verwijderen wij ze ook.
+        </span></li>
+        <li><span>
+          <strong>Ook met AI gemaakt, maar zonder jouw gegevens:</strong> de eerste versie van oefenopgaven
+          en gidsen (daarna nagekeken door onze docent), de Engelse en Arabische vertalingen van de gidsen
+          (niet nagekeken; dat staat op elke vertaalde pagina) en de stemmen in de luisterfragmenten.
+        </span></li>
+      </ul>
+
+      <h2>8. Beveiliging</h2>
       <p>
         Wij nemen passende technische en organisatorische maatregelen om jouw persoonsgegevens te
         beveiligen tegen verlies, diefstal of ongeautoriseerde toegang. De website maakt gebruik van
         HTTPS-versleuteling.
       </p>
 
-      <h2>8. Jouw rechten</h2>
+      <h2>9. Jouw rechten</h2>
       <p>Op grond van de AVG heb je de volgende rechten:</p>
       <ul>
         <li><span><strong>Recht op inzage</strong> — je kunt opvragen welke gegevens wij van je hebben</span></li>
@@ -193,7 +239,7 @@ function PolicyNl() {
         <a href="mailto:contact@inburgeringoefenen.nl">contact@inburgeringoefenen.nl</a>. Wij reageren binnen 30 dagen.
       </p>
 
-      <h2>9. Klacht indienen</h2>
+      <h2>10. Klacht indienen</h2>
       <p>
         Als je van mening bent dat wij jouw privacyrechten schenden, kun je een klacht indienen bij de{' '}
         <strong>Autoriteit Persoonsgegevens</strong>:{' '}
@@ -203,7 +249,7 @@ function PolicyNl() {
         .
       </p>
 
-      <h2>10. Cookies</h2>
+      <h2>11. Cookies</h2>
       <p>Deze website gebruikt twee soorten cookies en vergelijkbare technieken.</p>
       <ul>
         <li><span>
@@ -220,14 +266,14 @@ function PolicyNl() {
         noodzakelijke cookies, dan kun je niet inloggen.
       </p>
 
-      <h2>11. Wijzigingen</h2>
+      <h2>12. Wijzigingen</h2>
       <p>
         Wij kunnen dit privacybeleid van tijd tot tijd aanpassen. De datum &quot;Laatste update&quot; bovenaan
         de pagina geeft aan wanneer de meest recente versie gepubliceerd is. Wij raden je aan dit beleid
         periodiek te raadplegen.
       </p>
 
-      <h2>12. Contact</h2>
+      <h2>13. Contact</h2>
       <p>
         Voor vragen of verzoeken over dit privacybeleid of de verwerking van jouw gegevens, neem contact
         op via: <a href="mailto:contact@inburgeringoefenen.nl">contact@inburgeringoefenen.nl</a>.
@@ -350,13 +396,57 @@ function PolicyEn() {
       </ul>
       <p>We never sell your data to third parties.</p>
 
-      <h2>7. Security</h2>
+      <h2>7. Artificial intelligence (AI)</h2>
+      <p>
+        We use AI in a few places. This section explains where, which data is involved and what that
+        means for you. A full description of how we make our content is on the page{' '}
+        <a href="/en/editorial-policy">How we make our content</a>.
+      </p>
+      <ul>
+        <li><span>
+          <strong>Grading of Writing and Speaking.</strong> Your written answer, or for Speaking your
+          recording and its transcript, is sent through the Vercel AI Gateway to a language model
+          (currently Google&apos;s Gemini). The model applies our NT2 teacher&apos;s marking scheme and gives
+          a score with an explanation per criterion. Your name and e-mail address are not included. The
+          teacher reviews the gradings afterwards. Legal basis: performance of the contract (Art. 6(1)(b) GDPR).
+        </span></li>
+        <li><span>
+          <strong>Transcribing your recording.</strong> ElevenLabs turns your spoken answer into text
+          (Scribe). The recording is processed only for that purpose, never to identify you.
+        </span></li>
+        <li><span>
+          <strong>No decision with legal effect.</strong> A grading is practice feedback. It is not an
+          official DUO result and no decision about admission, a diploma or money depends on it, so there
+          is no automated decision-making within the meaning of Article 22 GDPR. If you disagree with a
+          grading, let us know via <a href="/en/contact">contact</a> and the teacher will look at it herself.
+        </span></li>
+        <li><span>
+          <strong>No training.</strong> We do not use your answers to train AI models, and the providers
+          we use process your data only to produce the grading.
+        </span></li>
+        <li><span>
+          <strong>Transfers outside the EU.</strong> Vercel, Google and ElevenLabs may process data in the
+          United States, on the basis of the EU-US Data Privacy Framework or the European Commission&apos;s
+          standard contractual clauses.
+        </span></li>
+        <li><span>
+          <strong>Retention.</strong> We keep your answers, recordings, transcripts and gradings for as long
+          as your account exists, so you can see your progress. If you delete your account, we delete them too.
+        </span></li>
+        <li><span>
+          <strong>Also made with AI, but without your data:</strong> the first drafts of practice exercises
+          and guides (then checked by our teacher), the English and Arabic translations of the guides (not
+          reviewed; every translated page says so) and the voices in the listening fragments.
+        </span></li>
+      </ul>
+
+      <h2>8. Security</h2>
       <p>
         We take appropriate technical and organisational measures to protect your personal data against loss,
         theft or unauthorised access. The website uses HTTPS encryption.
       </p>
 
-      <h2>8. Your rights</h2>
+      <h2>9. Your rights</h2>
       <p>Under the GDPR you have the following rights:</p>
       <ul>
         <li><span><strong>Right of access</strong> — you can ask which data we hold about you</span></li>
@@ -371,7 +461,7 @@ function PolicyEn() {
         <a href="mailto:contact@inburgeringoefenen.nl">contact@inburgeringoefenen.nl</a>. We respond within 30 days.
       </p>
 
-      <h2>9. Filing a complaint</h2>
+      <h2>10. Filing a complaint</h2>
       <p>
         If you believe we are violating your privacy rights, you can file a complaint with the Dutch Data
         Protection Authority (<strong>Autoriteit Persoonsgegevens</strong>):{' '}
@@ -381,7 +471,7 @@ function PolicyEn() {
         .
       </p>
 
-      <h2>10. Cookies</h2>
+      <h2>11. Cookies</h2>
       <p>This website uses two kinds of cookies and similar technologies.</p>
       <ul>
         <li><span>
@@ -398,14 +488,14 @@ function PolicyEn() {
         you cannot sign in.
       </p>
 
-      <h2>11. Changes</h2>
+      <h2>12. Changes</h2>
       <p>
         We may change this privacy policy from time to time. The &quot;Last updated&quot; date at the top of the
         page shows when the most recent version was published. We recommend that you check this policy
         periodically.
       </p>
 
-      <h2>12. Contact</h2>
+      <h2>13. Contact</h2>
       <p>
         For questions or requests about this privacy policy or the processing of your data, contact us at:{' '}
         <a href="mailto:contact@inburgeringoefenen.nl">contact@inburgeringoefenen.nl</a>.

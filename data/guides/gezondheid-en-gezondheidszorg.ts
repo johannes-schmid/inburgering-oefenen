@@ -37,7 +37,7 @@ const guide: Guide = {
   section: 'knm',
 
   status: 'reviewed',
-  reviewedBy: 'Marieke Schipper',
+  reviewedBy: 'Amber van der Zalm',
   reviewedOn: '2026-08-23',
   pillar: false,
   coverGlyph: 'cross',

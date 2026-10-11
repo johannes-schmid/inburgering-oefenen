@@ -1,13 +1,12 @@
 import type { Metadata } from 'next';
 import { getTranslations } from 'next-intl/server';
-import { GraduationCap, ClipboardList, School, PenLine } from 'lucide-react';
+import { ArrowRight, ArrowUpRight, PenLine } from 'lucide-react';
 import { routing } from '@/i18n/routing';
 import { Link } from '@/i18n/navigation';
-import { Breadcrumb, GradientHero, EyebrowBadge, FeatureCard } from '@/components/site';
+import { Breadcrumb, GradientHero, SectionHeader } from '@/components/site';
 import JsonLd from '@/components/JsonLd';
 import { SITE_URL, TEACHER_ID } from '@/lib/site';
-import { PROVIDER_REF } from '@/lib/schema';
-import { DEFAULT_LEVEL, formatCount, getFormat, getSkillAtLevel } from '@/data/skills';
+import { PROVIDER_REF, TEACHER_SAME_AS } from '@/lib/schema';
 
 type Props = { params: Promise<{ locale: string }> };
 
@@ -30,6 +29,9 @@ const ALTERNATES = {
   'x-default': 'https://inburgeringoefenen.nl/nl/docent',
 } as const;
 
+const PORTRAIT = '/images/amber-van-der-zalm.webp';
+const [LINKEDIN_URL, COMPANY_URL] = TEACHER_SAME_AS;
+
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { locale } = await params;
   const t = await getTranslations({ locale, namespace: 'docent' });
@@ -44,25 +46,22 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       title: t('meta_title'),
       description: t('meta_description'),
       type: 'profile',
-      // The localised URL, not the locale-less `/docent`, which resolves for nobody.
       url: ALTERNATES[locale as 'nl' | 'en' | 'ar'] ?? ALTERNATES.nl,
       locale: locale === 'nl' ? 'nl_NL' : locale === 'ar' ? 'ar_AR' : 'en_GB',
-      images: [{ url: 'https://inburgeringoefenen.nl/images/marieke-schipper.webp' }],
+      images: [{ url: `${SITE_URL}${PORTRAIT}` }],
     },
   };
 }
 
 /**
- * **This page owns the `Person` node.** It used to *redefine* both `#teacher` and
- * `#organization`, which the homepage also defines — and it disagreed with itself: the
- * organisation was called "KNM Oefenvragen" here and "Inburgering Oefenen" there. Two
- * definitions of one `@id` is a contradiction no validator reports; a search engine settles it
- * by picking one, so which facts win is luck.
+ * **Deze pagina is de `Person`-node van de docent.** De rest van de site verwijst ernaar met
+ * `TEACHER_REF`; hier staat de onderbouwing.
  *
- * So: the docent page defines the docent (it is the profile page for her, and the homepage now
- * references `TEACHER_ID`), and the organisation is referenced, never restated.
- *
- * Built per locale rather than as a module constant, because the URLs are localised.
+ * Tot 11-10 stond hier "Marieke Schipper": een schuilnaam, een foto van iemand anders, een
+ * "NT2-bevoegdheid erkend door DUO" (DUO erkent geen NT2-bevoegdheden) en een loopbaan die niet
+ * klopte. Alles hieronder komt uit het LinkedIn-profiel en de bedrijfssite in `TEACHER_SAME_AS`,
+ * en `sameAs` wijst daarnaar, zodat Google het zelf kan nagaan. Het NT2-certificaat krijgt een
+ * eigen `hasCredential` zodra de naam en het jaar bekend zijn — niet eerder.
  */
 function buildJsonLd(locale: string) {
   const url = ALTERNATES[locale as 'nl' | 'en' | 'ar'] ?? ALTERNATES.nl;
@@ -73,7 +72,7 @@ function buildJsonLd(locale: string) {
         '@type': 'ProfilePage',
         '@id': `${url}#profilepage`,
         url,
-        name: 'Marieke Schipper — NT2-docent',
+        name: 'Amber van der Zalm — NT2-docent',
         inLanguage: locale === 'nl' ? 'nl-NL' : locale === 'ar' ? 'ar' : 'en',
         mainEntity: { '@id': TEACHER_ID },
         breadcrumb: {
@@ -81,250 +80,224 @@ function buildJsonLd(locale: string) {
           '@id': `${url}#breadcrumb`,
           itemListElement: [
             { '@type': 'ListItem', position: 1, name: 'Home', item: `${SITE_URL}/${locale}` },
-            { '@type': 'ListItem', position: 2, name: 'Over de docent' },
+            { '@type': 'ListItem', position: 2, name: 'Amber van der Zalm' },
           ],
         },
       },
       {
         '@type': 'Person',
         '@id': TEACHER_ID,
-        name: 'Marieke Schipper',
+        name: 'Amber van der Zalm',
         jobTitle: 'NT2-docent',
-        description: 'Gecertificeerde NT2-docent met meer dan 10 jaar ervaring in het onderwijs, inburgering en de voorbereiding op het inburgeringsexamen en het NT2-staatsexamen.',
-        image: `${SITE_URL}/images/marieke-schipper.webp`,
+        description:
+          'NT2-gecertificeerd docent en bevoegd leerkracht basisonderwijs. Ruim tien jaar in het onderwijs; sinds 2024 geeft ze met haar bedrijf Samen Sterk in Taal online NT2-les aan inburgeraars en kandidaten voor het staatsexamen.',
+        image: `${SITE_URL}${PORTRAIT}`,
+        sameAs: TEACHER_SAME_AS,
+        alumniOf: { '@type': 'CollegeOrUniversity', name: 'Hogeschool Leiden' },
+        hasCredential: [{
+          '@type': 'EducationalOccupationalCredential',
+          name: 'Bevoegdheid leraar basisonderwijs (pabo)',
+          credentialCategory: 'degree',
+          recognizedBy: { '@type': 'CollegeOrUniversity', name: 'Hogeschool Leiden' },
+        }],
         knowsAbout: [
           'inburgeringsexamen',
           'KNM — Kennis van de Nederlandse Maatschappij',
           'NT2 — Nederlands als tweede taal',
           'NT2 staatsexamen',
-          'Inburgering Nederland',
         ],
-        hasCredential: [{
-          '@type': 'EducationalOccupationalCredential',
-          name: 'NT2-bevoegdheid',
-          credentialCategory: 'Onderwijsbevoegdheid',
-          recognizedBy: { '@type': 'Organization', name: 'DUO — Dienst Uitvoering Onderwijs' },
-        }],
-        worksFor: PROVIDER_REF,
+        worksFor: [
+          PROVIDER_REF,
+          { '@type': 'Organization', name: 'Samen Sterk in Taal', url: COMPANY_URL },
+        ],
         url,
       },
     ],
   };
 }
 
+const FACTS = ['education', 'qualification', 'experience', 'students', 'company', 'location'] as const;
+const CAREER = [
+  { year: '2016', key: 1 },
+  { year: '2023', key: 2 },
+  { year: '2024', key: 3 },
+] as const;
+
+const PRESS = 'transition-transform duration-150 ease-[cubic-bezier(0.22,1,0.36,1)] active:scale-[0.97] motion-reduce:transition-none focus-visible:outline-2 focus-visible:outline-offset-2';
+
 export default async function DocentPage({ params }: Props) {
   const { locale } = await params;
-  const lezen = getSkillAtLevel(DEFAULT_LEVEL, 'lezen')!;
-  const luisteren = getSkillAtLevel(DEFAULT_LEVEL, 'luisteren')!;
-  const schrijven = getSkillAtLevel(DEFAULT_LEVEL, 'schrijven')!;
-  const spreken = getSkillAtLevel(DEFAULT_LEVEL, 'spreken')!;
+  const t = await getTranslations({ locale, namespace: 'docent' });
 
   return (
     <>
       <JsonLd data={buildJsonLd(locale)} />
 
-      <Breadcrumb items={[{ label: 'Home', href: '/' }, { label: 'Over de docent' }]} />
+      <Breadcrumb items={[{ label: 'Home', href: '/' }, { label: t('breadcrumb') }]} />
 
-      <GradientHero className="pb-16">
-        <div className="flex flex-col md:flex-row gap-16 items-start">
-          <div className="flex-1">
-            <EyebrowBadge tone="dark" className="mb-5">Gecertificeerde NT2-docent</EyebrowBadge>
-            <h1 className="font-headline font-extrabold text-white mb-5" style={{ fontSize: 'clamp(1.9rem,4vw,3rem)', letterSpacing: '-0.02em', lineHeight: '1.15' }}>
-              <span className="block">Marieke Schipper —</span>
-              <span style={{ color: '#fe762c' }}>NT2-docent</span>
+      <GradientHero className="pb-20">
+        <div className="grid md:grid-cols-[minmax(0,1fr)_auto] gap-10 md:gap-16 items-center">
+          <div className="max-w-2xl">
+            <h1
+              className="font-headline font-extrabold text-white m-0"
+              style={{ fontSize: 'clamp(2.1rem, 4.6vw, 3.4rem)', letterSpacing: '-0.03em', lineHeight: 1.05, textWrap: 'balance' }}
+            >
+              Amber van der Zalm
             </h1>
-            <p className="text-white/70 text-lg mb-8 leading-relaxed max-w-xl">
-              Meer dan 10 jaar begeleidt Marieke inburgeraars door het Nederlandse onderwijs- en examenstelsel. De oefenexamens op dit platform zijn gebaseerd op directe ervaring in de klas — niet op theorie.
+            <p className="font-headline font-bold m-0 mt-2" style={{ color: '#fe762c', fontSize: 'clamp(1.1rem, 2vw, 1.35rem)', letterSpacing: '-0.01em' }}>
+              {t('role')}
             </p>
-            <div className="flex gap-3 flex-wrap">
-              <Link href="/oefenen" className="inline-flex items-center gap-2 bg-secondary-container text-on-secondary-container px-6 py-3 rounded-xl font-bold text-sm hover:-translate-y-px transition-transform active:scale-95 no-underline" style={{ boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.1)' }}>
-                <span>Begin met oefenen</span>
-                <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M3 7h8M7 3l4 4-4 4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/></svg>
+            <p className="text-white/75 text-[1.0625rem] leading-[1.7] m-0 mt-5 max-w-[60ch]" style={{ textWrap: 'pretty' }}>
+              {t('lede')}
+            </p>
+            <div className="flex gap-3 flex-wrap mt-8">
+              <Link
+                href="/oefenen"
+                className={`inline-flex items-center gap-2 bg-secondary-container text-on-secondary-container px-6 py-3 rounded-xl font-bold text-sm no-underline hover:brightness-105 ${PRESS}`}
+              >
+                {t('cta_practice')}
+                <ArrowRight className="size-4 rtl-flip" aria-hidden />
               </Link>
-              <Link href="/contact" className="inline-flex items-center gap-2 px-6 py-3 rounded-xl font-semibold text-sm text-white/80 hover:text-white hover:bg-white/10 transition-colors no-underline" style={{ border: '1px solid rgba(255,255,255,0.2)' }}>
-                Contact opnemen
-              </Link>
+              <a
+                href={LINKEDIN_URL}
+                target="_blank"
+                rel="noopener noreferrer me"
+                className={`inline-flex items-center gap-2 px-6 py-3 rounded-xl font-semibold text-sm text-white no-underline bg-white/10 hover:bg-white/[0.16] ${PRESS}`}
+              >
+                {t('cta_linkedin')}
+                <ArrowUpRight className="size-4 rtl-flip" aria-hidden />
+              </a>
             </div>
           </div>
 
-          {/* Teacher photo */}
-          <div className="flex-shrink-0">
-            <div style={{ position: 'relative', width: '200px', height: '240px', borderRadius: '18px', overflow: 'hidden', border: '2px solid rgba(255,255,255,0.2)', boxShadow: '0 16px 48px rgba(0,0,0,0.3)' }}>
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src="/images/marieke-schipper.webp" alt="Marieke Schipper — gecertificeerde NT2-docent" width={200} height={240} style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'center top' }} />
-              <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to top,rgba(0,43,109,0.3) 0%,transparent 50%)' }} />
-            </div>
-            <div className="mt-4 flex flex-col gap-2">
-              <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-semibold" style={{ background: 'rgba(255,255,255,0.12)', color: 'rgba(255,255,255,0.85)' }}>✓ NT2-gecertificeerd</span>
-              <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-semibold" style={{ background: 'rgba(255,255,255,0.12)', color: 'rgba(255,255,255,0.85)' }}>✓ 10+ jaar ervaring</span>
-              <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-semibold" style={{ background: 'rgba(254,118,44,0.25)', color: '#fe762c' }}>✓ Inburgering &amp; NT2</span>
-            </div>
-          </div>
+          <figure className="m-0 justify-self-center md:justify-self-end">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src={PORTRAIT}
+              alt={t('photo_alt')}
+              width={480}
+              height={600}
+              className="block w-[220px] sm:w-[260px] md:w-[280px] h-auto rounded-[22px] object-cover"
+              style={{ boxShadow: '0 28px 60px -24px rgba(0,8,27,0.55)' }}
+            />
+          </figure>
         </div>
       </GradientHero>
 
-      {/* Stats */}
-      <div className="bg-surface-container-low py-10">
-        <div className="max-w-7xl mx-auto px-6">
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-            {[
-              { value: '10+', label: 'Jaar docentervaring' },
-              { value: '100+', label: 'Studenten geholpen' },
-              // Was "108 KNM-oefenvragen ontwikkeld". Nothing in the product substantiates
-              // that number any more, and SEO/facts.md's rule is that an unsourceable figure is
-              // cut rather than replaced with a guess. This one is read off the taxonomy.
-              { value: String(getFormat(DEFAULT_LEVEL, 'lezen').examCount), label: 'Oefenexamens per onderdeel' },
-            ].map((s) => (
-              <div key={s.label} className="bg-surface-container-lowest rounded-2xl p-7 text-center" style={{ boxShadow: 'var(--shadow-card-md)' }}>
-                <div className="font-headline font-extrabold text-primary mb-1" style={{ fontSize: '2.4rem', letterSpacing: '-0.04em', lineHeight: 1 }}>{s.value}</div>
-                <div className="text-sm text-on-surface-variant">{s.label}</div>
+      {/* De feiten — een controleerbaar overzicht in plaats van grote cijfertegels. Elke regel staat
+          ook op haar LinkedIn of de site van Samen Sterk in Taal, en de twee links eronder sturen
+          de lezer er direct heen. */}
+      <section className="py-16 sm:py-20 bg-surface">
+        <div className="max-w-6xl mx-auto px-6">
+          <SectionHeader align="left" title={t('facts_title')} subtitle={t('facts_sub')} />
+          <dl className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3 m-0">
+            {FACTS.map(key => (
+              <div key={key} className="rounded-2xl px-5 py-4 bg-surface-container-low">
+                <dt className="text-xs font-semibold text-on-surface-variant">{t(`fact_${key}_label`)}</dt>
+                <dd className="m-0 mt-1 font-headline font-bold text-primary text-[1rem] leading-snug">{t(`fact_${key}`)}</dd>
               </div>
             ))}
-          </div>
+          </dl>
+          <p className="flex flex-wrap gap-x-6 gap-y-2 m-0 mt-6 text-sm">
+            {[
+              { href: LINKEDIN_URL, label: 'LinkedIn' },
+              { href: COMPANY_URL, label: 'Samen Sterk in Taal' },
+            ].map(l => (
+              <a
+                key={l.href}
+                href={l.href}
+                target="_blank"
+                rel="noopener noreferrer me"
+                className="inline-flex items-center gap-1 font-semibold no-underline rounded-sm hover:opacity-75 active:opacity-60 focus-visible:outline-2 focus-visible:outline-offset-2"
+                style={{ color: '#a24000' }}
+              >
+                {l.label}
+                <ArrowUpRight className="size-3.5 rtl-flip" aria-hidden />
+              </a>
+            ))}
+          </p>
         </div>
-      </div>
+      </section>
 
-      {/* About + Timeline */}
-      <section className="py-20 bg-surface">
-        <div className="max-w-7xl mx-auto px-6">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-16 items-start">
-            <div>
-              <EyebrowBadge tone="primary" className="mb-5">Achtergrond &amp; expertise</EyebrowBadge>
-              <h2 className="font-headline font-bold text-on-surface mb-5" style={{ fontSize: 'clamp(1.5rem,2.5vw,2rem)', letterSpacing: '-0.01em' }}>
-                Van de klas naar het oefenplatform
-              </h2>
-              <div className="flex flex-col gap-4 text-on-surface-variant text-sm leading-relaxed">
-                <p>Marieke begon haar loopbaan in het basisonderwijs en stapte later over naar het voortgezet onderwijs. Haar passie voor taalontwikkeling bracht haar uiteindelijk naar het vakgebied van NT2 — Nederlands als tweede taal — en inburgering.</p>
-                <p>In haar dagelijkse werk begeleidt ze mensen die de Nederlandse taal leren als volwassene. Ze ziet dagelijks welke vragen inburgeraars lastig vinden, waar de examens op focussen, en hoe je het beste kunt oefenen. Dat inzicht vertaalt ze naar dit platform.</p>
-                {/* Deliberately not a quotation. The sentence this replaces was a quote about the
-                    KNM exam attributed to a real person; rewriting words inside quotation marks
-                    puts a claim in her mouth that she never made. As prose it is the platform
-                    speaking, which is what it always was. */}
-                <p>Het inburgeringsexamen valt of staat bij bekendheid met het formaat. Wie weet hoe een tekst bij een vraag hoort, hoe lang een fragment duurt en wat er bij Schrijven en Spreken van je gevraagd wordt, verliest geen tijd meer aan de vorm en kan zich op de taal concentreren.</p>
-              </div>
-            </div>
-
-            {/* Timeline */}
-            <div>
-              <h3 className="font-headline font-bold text-on-surface text-base mb-6">Loopbaanlijn</h3>
-              <div className="flex flex-col gap-0">
-                {[
-                  { year: '2014', title: 'Start in het basisonderwijs', desc: 'Eerste jaren als leerkracht, focus op taalontwikkeling bij jonge leerlingen.' },
-                  { year: '2016', title: 'NT2-bevoegdheid behaald', desc: 'Certificering als NT2-docent via erkende opleiding — toegang tot werken met volwassen anderstaligen.' },
-                  { year: '2018', title: 'Inburgering & NT2-focus', desc: 'Start begeleiding van inburgeraars, gericht op het inburgeringsexamen en het NT2-staatsexamen.' },
-                  { year: '2024', title: 'Oefenplatform inburgering', desc: 'Opzet van dit platform: oefenexamens voor de vier taalonderdelen en gidsen over het hele inburgeringstraject.' },
-                ].map((item, i, arr) => (
-                  <div key={item.year} className="grid pb-8" style={{ gridTemplateColumns: '80px 1fr', gap: '20px', position: 'relative' }}>
-                    {i < arr.length - 1 && (
-                      <div style={{ position: 'absolute', left: '89px', top: '8px', bottom: 0, width: '1px', background: 'linear-gradient(to bottom,#c4c6d2,transparent)' }} />
-                    )}
-                    {/* paddingRight clears the timeline dot, which is absolutely positioned at left:-26px in
-                        the next column and was painting over the year's last digit — every year read
-                        "201" at both breakpoints. */}
-                    <div className="text-xs font-bold text-secondary text-right pt-0.5" style={{ letterSpacing: '0.04em', paddingRight: '10px' }}>{item.year}</div>
-                    <div style={{ position: 'relative' }}>
-                      <div style={{ position: 'absolute', left: '-26px', top: '6px', width: '12px', height: '12px', borderRadius: '50%', background: '#fe762c', boxShadow: '0 0 0 3px rgba(254,118,44,0.15)' }} />
-                      <h3 className="text-sm font-bold text-on-surface mb-1 font-headline">{item.title}</h3>
-                      <p className="text-xs text-on-surface-variant leading-relaxed">{item.desc}</p>
-                    </div>
+      <section className="py-16 sm:py-20 bg-surface-container-low">
+        <div className="max-w-6xl mx-auto px-6 grid md:grid-cols-2 gap-14 md:gap-16 items-start">
+          <div>
+            <SectionHeader align="left" title={t('career_title')} />
+            <ol className="list-none m-0 p-0 flex flex-col">
+              {CAREER.map((item, i) => (
+                <li key={item.year} className="grid grid-cols-[3.5rem_minmax(0,1fr)] gap-4 relative pb-8 last:pb-0">
+                  {i < CAREER.length - 1 && (
+                    <span aria-hidden className="absolute top-3 bottom-0 w-0.5 rounded-full start-[4.75rem]" style={{ background: 'rgba(0,43,109,0.14)' }} />
+                  )}
+                  <time dateTime={item.year} className="text-sm font-bold text-secondary tabular-nums pt-0.5">{item.year}</time>
+                  <div className="relative ps-5">
+                    <span aria-hidden className="absolute start-0 top-[0.45rem] size-2.5 rounded-full bg-primary" />
+                    <h3 className="m-0 font-headline font-bold text-on-surface text-[1rem]">{t(`career_${item.key}_title`)}</h3>
+                    <p className="m-0 mt-1 text-sm text-on-surface-variant leading-relaxed">{t(`career_${item.key}_desc`)}</p>
                   </div>
-                ))}
-              </div>
-            </div>
+                </li>
+              ))}
+            </ol>
+          </div>
+
+          {/* Wie wat maakt. Dit is de eerlijke versie van de claim "door een docent gemaakt": waar
+              een model meedoet en wat niet is nagekeken, staat er gewoon bij. */}
+          <div>
+            <SectionHeader align="left" title={t('role_title')} subtitle={t('role_sub')} />
+            <ul className="list-none m-0 p-0 flex flex-col gap-3">
+              {[1, 2, 3].map(n => (
+                <li key={n} className="rounded-2xl px-5 py-4 bg-surface-container-lowest" style={{ boxShadow: 'var(--shadow-ambient)' }}>
+                  <h3 className="m-0 font-headline font-bold text-primary text-[1rem]">{t(`role_${n}_title`)}</h3>
+                  <p className="m-0 mt-1 text-sm text-on-surface-variant leading-relaxed">{t(`role_${n}_desc`)}</p>
+                </li>
+              ))}
+            </ul>
           </div>
         </div>
       </section>
 
-      {/* Credentials */}
-      <section className="py-20 bg-surface-container-low">
-        <div className="max-w-7xl mx-auto px-6">
-          <div className="text-center mb-12">
-            <EyebrowBadge tone="primary" className="mb-4">Certificeringen &amp; bevoegdheden</EyebrowBadge>
-            <h2 className="font-headline font-bold text-on-surface mt-4" style={{ fontSize: 'clamp(1.5rem,2.5vw,2rem)', letterSpacing: '-0.01em' }}>Erkende kwalificaties</h2>
+      {/* Les bij Amber. Haar eigen lespraktijk en dit platform concurreren niet: wie hier merkt dat
+          Schrijven of Spreken persoonlijke hulp nodig heeft, is precies haar cursist. */}
+      <section className="py-16 sm:py-20 bg-surface px-6">
+        <div
+          className="max-w-6xl mx-auto rounded-2xl p-6 sm:p-10 grid sm:grid-cols-[minmax(0,1fr)_auto] gap-6 items-center"
+          style={{ background: 'rgba(254,118,44,0.22)' }}
+        >
+          <div className="max-w-2xl">
+            <h2 className="m-0 font-headline font-extrabold text-primary" style={{ fontSize: 'clamp(1.35rem, 2.6vw, 1.75rem)', letterSpacing: '-0.02em', textWrap: 'balance' }}>
+              {t('lessons_title')}
+            </h2>
+            <p className="m-0 mt-2 text-[0.9375rem] leading-relaxed text-on-secondary-container" style={{ textWrap: 'pretty' }}>
+              {t('lessons_body')}
+            </p>
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
-            <FeatureCard
-              icon={GraduationCap}
-              title="NT2-bevoegdheid"
-              description="Erkende bevoegdheid voor lesgeven in Nederlands als tweede taal aan volwassenen, uitgegeven via DUO."
-            />
-            {/* The counts and durations come from data/skills.ts, and are attributed to DUO's own
-                practice exams rather than stated as an official norm — DUO publishes no item
-                count anywhere. See SEO/facts.md §1. */}
-            <FeatureCard
-              icon={ClipboardList}
-              title="Kennis van het examenformaat"
-              description={`Kent het formaat van alle vier de taalonderdelen: Lezen ${formatCount(lezen.itemCount)} vragen in ${formatCount(lezen.durationMinutes)} minuten, Luisteren ${formatCount(luisteren.itemCount)} in ${formatCount(luisteren.durationMinutes)}, Schrijven ${formatCount(schrijven.itemCount)} opdrachten in ${formatCount(schrijven.durationMinutes)} en Spreken ${formatCount(spreken.itemCount)} vragen in ${formatCount(spreken.durationMinutes)} — zoals in DUO's eigen oefenexamens.`}
-            />
-            <FeatureCard
-              icon={School}
-              title="Bevoegd basisonderwijs & VO"
-              description="Volledig bevoegde leerkracht voor basis- en voortgezet onderwijs. Brede didactische achtergrond."
-            />
-          </div>
+          <a
+            href={COMPANY_URL}
+            target="_blank"
+            rel="noopener noreferrer"
+            className={`inline-flex items-center justify-center gap-2 bg-primary text-white px-6 py-3 rounded-xl font-bold text-sm no-underline hover:brightness-110 ${PRESS}`}
+          >
+            {t('lessons_cta')}
+            <ArrowUpRight className="size-4 rtl-flip" aria-hidden />
+          </a>
         </div>
       </section>
 
-      {/* ── Approach section ── */}
-      <section className="py-20 bg-surface">
-        <div className="max-w-7xl mx-auto px-6">
-          <div className="grid md:grid-cols-2 gap-16 items-center">
-            <div>
-              <EyebrowBadge tone="primary" className="mb-5">Aanpak &amp; methode</EyebrowBadge>
-              <h2 className="font-headline font-bold text-on-surface mb-5 mt-4" style={{ fontSize: 'clamp(1.5rem,2.5vw,2rem)', letterSpacing: '-0.01em' }}>
-                Zo bereid je je voor op het inburgeringsexamen
-              </h2>
-              <p className="text-on-surface-variant mb-6 leading-relaxed text-sm">
-                Marieke&apos;s aanpak is gebaseerd op drie pijlers: <strong className="text-on-surface">herhaling</strong>, <strong className="text-on-surface">begrip</strong> en <strong className="text-on-surface">situationeel denken</strong>. Het examen test niet of je losse woordjes kent — het test of je Nederlands begrijpt en gebruikt in alledaagse situaties.
-              </p>
-              <div className="flex flex-col gap-4">
-                {[
-                  { n: 1, title: 'Oefen met echte examenvragen', desc: 'Gebruik vragen die qua formaat en moeilijkheidsgraad overeenkomen met het echte examen.' },
-                  { n: 2, title: 'Leer van je fouten', desc: 'Na elk fout antwoord lees je de uitleg. Begrijpen waarom het fout is, voorkomt herhaling.' },
-                  { n: 3, title: 'Focus op je zwakste onderdeel', desc: 'Je portaal laat per onderdeel zien hoe je ervoor staat. Oefen het onderdeel waar je het minst scoort, niet het onderdeel dat je het leukst vindt.' },
-                ].map(s => (
-                  <div key={s.n} className="flex gap-4 items-start">
-                    <div className="flex items-center justify-center text-white font-headline font-extrabold text-xs flex-shrink-0 mt-0.5" style={{ width: 28, height: 28, minWidth: 28, background: '#002b6d', borderRadius: 7 }}>{s.n}</div>
-                    <div>
-                      <p className="text-sm font-bold text-on-surface mb-1 font-headline">{s.title}</p>
-                      <p className="text-sm text-on-surface-variant">{s.desc}</p>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
-
-            <div className="bg-white rounded-2xl p-8" style={{ boxShadow: 'var(--shadow-card-lg)' }}>
-              <blockquote className="font-headline font-semibold text-on-surface mb-6" style={{ fontSize: '1.1rem', lineHeight: 1.65, letterSpacing: '-0.01em' }}>
-                &ldquo;Taal leren is niet alleen een leerproces — het is een persoonlijke en verrijkende ervaring. Ik help inburgeraars met geduld en een persoonlijke aanpak om zelfverzekerd hun examen te halen.&rdquo;
-              </blockquote>
-              <div className="flex gap-4 items-center">
-                <div className="w-12 h-12 rounded-xl overflow-hidden flex-shrink-0" style={{ border: '2px solid #eceef0' }}>
-                  <img src="/images/marieke-schipper.webp" alt="Marieke Schipper" width={48} height={48} style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'center top' }} />
-                </div>
-                <div>
-                  <p className="text-sm font-bold text-on-surface font-headline">Marieke Schipper</p>
-                  <p className="text-xs text-on-surface-variant">NT2-docent</p>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* CTA */}
       <div style={{ background: 'var(--gradient-brand)' }} className="py-20">
         <div className="max-w-7xl mx-auto px-6 text-center">
           <PenLine size={44} strokeWidth={1.6} className="mx-auto mb-5 text-white" aria-hidden="true" />
-          <h2 className="font-headline font-extrabold text-white mb-4" style={{ fontSize: 'clamp(1.8rem,3vw,2.4rem)', letterSpacing: '-0.02em' }}>
-            Oefen nu met Marieke&apos;s vragen
+          <h2 className="font-headline font-extrabold text-white mb-4" style={{ fontSize: 'clamp(1.8rem,3vw,2.4rem)', letterSpacing: '-0.02em', textWrap: 'balance' }}>
+            {t('cta_title')}
           </h2>
-          <p className="text-white/60 max-w-md mx-auto mb-8 leading-relaxed">
-            Tien gratis oefenvragen Lezen en tien Luisteren, met uitleg bij elke vraag. Geen account nodig.
+          <p className="text-white/70 max-w-md mx-auto mb-8 leading-relaxed">
+            {t('cta_body')}
           </p>
-          <Link href="/oefenen" className="inline-flex items-center gap-2 bg-secondary-container text-on-secondary-container px-8 py-4 rounded-xl font-bold hover:-translate-y-px transition-transform active:scale-95 no-underline" style={{ boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.1)' }}>
-            <span>Start gratis oefenen</span>
-            <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/></svg>
+          <Link
+            href="/oefenen"
+            className={`inline-flex items-center gap-2 bg-secondary-container text-on-secondary-container px-8 py-4 rounded-xl font-bold no-underline hover:brightness-105 ${PRESS}`}
+          >
+            {t('cta_button')}
+            <ArrowRight className="size-4 rtl-flip" aria-hidden />
           </Link>
         </div>
       </div>

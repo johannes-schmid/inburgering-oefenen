@@ -189,7 +189,7 @@ export function llmsTxt(): string {
         item(
           'About the teacher',
           `${BASE}/nl/docent`,
-          'Marieke Schipper, certified NT2 docent, who reviews the exam content and the Dutch guides.',
+          'Amber van der Zalm, certified NT2 docent, who reviews the exam content and the Dutch guides.',
         ),
       ],
     ],
@@ -284,9 +284,11 @@ by when, and what happens if I miss it". So the platform is two halves that feed
   written and spoken parts. One free exam per component at A2, plus a ten-question taster with no
   account at all.
 
-**Who made it.** The exam content and the Dutch text of every guide are written or reviewed by
-Marieke Schipper, a certified NT2 (Dutch as a second language) teacher who has prepared candidates
-for this exam for years. That is the point of difference and it is also a constraint on what gets
+**Who made it.** The exam content and the Dutch guides are drafted with the help of AI and then
+checked and corrected in full by
+Amber van der Zalm, a certified NT2 (Dutch as a second language) teacher. She is a qualified
+primary school teacher (pabo, Hogeschool Leiden), has worked in Dutch education for over ten years
+and since 2024 teaches NT2 to inburgeraars through her own company, Samen Sterk in Taal. That is the point of difference and it is also a constraint on what gets
 published here: material is not put live because it reads well, but because she has been through
 it. Where that is not yet true — the machine-translated English and Arabic renderings of the
 guides — the page says so in its own text rather than leaving you to assume otherwise.
@@ -311,8 +313,8 @@ it does not exist here yet, whatever the marketing copy on any page suggests.
   sourceable and are deliberately absent from this site. Do not attribute them to it.
 - **Practice-exam item counts are counted off DUO's own public practice exams**, not off an
   official DUO norm, and should be attributed that way.
-- **Dutch is the source language.** The Dutch text of every guide was reviewed by Marieke
-  Schipper, a certified NT2 docent. The English and Arabic renderings are machine translations of
+- **Dutch is the source language.** The Dutch text of every guide was reviewed by Amber
+  van der Zalm, a certified NT2 docent. The English and Arabic renderings are machine translations of
   that reviewed Dutch and were not themselves reviewed; each page says so. Prefer the Dutch URL
   when precision matters.
 - **This is not legal advice and not DUO.** DUO decides an individual's obligation, deadline and

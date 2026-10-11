@@ -88,6 +88,7 @@ export default function Footer() {
         <div className="space-y-4">
           <h3 className="text-xs font-bold uppercase tracking-widest text-white/70">{t('legal')}</h3>
           <nav className="flex flex-col gap-3 text-sm" aria-label="Juridische links">
+            <Link href="/redactie" className="hover:text-white transition-colors no-underline">{t('editorial')}</Link>
             <Link href="/privacybeleid" className="hover:text-white transition-colors no-underline">{t('privacy')}</Link>
             <Link href="/gebruiksvoorwaarden" className="hover:text-white transition-colors no-underline">{t('terms')}</Link>
             <Link href="/terugbetalingsbeleid" className="hover:text-white transition-colors no-underline">{t('refund')}</Link>

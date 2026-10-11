@@ -27,6 +27,7 @@ const STATIC_PATHS = [
   'gidsen',
   'premium',
   'docent',
+  'redactie',
   'contact',
   /* De drie juridische pagina's staan hier niet meer (25-09): ze zijn `noindex`, en een
      sitemap-vermelding voor een noindex-URL is precies de tegenspraak die dit bestand overal

@@ -97,6 +97,11 @@ export const routing = defineRouting({
       en: '/teacher',
       ar: '/المعلمة',
     },
+    '/redactie': {
+      nl: '/redactie',
+      en: '/editorial-policy',
+      ar: '/سياسة-التحرير',
+    },
     '/premium': {
       nl: '/premium',
       en: '/premium',

@@ -38,8 +38,8 @@ export const I_ROUTE = svg('<circle cx="6" cy="19" r="3"/><path d="M9 19h8.5a3.5
 /** The docent's voice. Same photo the hero uses; the name is a real person, so never paraphrase
  *  a quotation of hers — write new prose instead. */
 export const docent = (text: string) =>
-  `<div class="docent-note"><img src="/images/marieke-schipper.webp" alt="" width="44" height="44" class="docent-note-avatar" loading="lazy" />` +
-  `<div><p class="docent-note-name">Marieke Schipper · NT2-docent</p><p>${text}</p></div></div>`;
+  `<div class="docent-note"><img src="/images/amber-van-der-zalm-264.webp" alt="" width="44" height="44" class="docent-note-avatar" loading="lazy" />` +
+  `<div><p class="docent-note-name">Amber van der Zalm · NT2-docent</p><p>${text}</p></div></div>`;
 
 /** A caveat that must not read as body text. */
 export const note = (text: string) =>
@@ -84,15 +84,15 @@ export const factIn = (
 };
 
 const DOCENT_ROLE: Record<BodyLocale, string> = {
-  en: 'Marieke Schipper · NT2 teacher',
+  en: 'Amber van der Zalm · NT2 teacher',
   /* Her name stays in Latin script: it is a real person's name, it is how she is credited
      everywhere else on the site, and a transliteration would not match the byline above it. */
-  ar: 'Marieke Schipper · مُدرِّسة NT2 معتمدة',
+  ar: 'Amber van der Zalm · مُدرِّسة NT2 معتمدة',
 };
 
 /** The docent note, with her role line in the body's own language. Her name never changes. */
 export const docentIn = (locale: BodyLocale, text: string) =>
-  `<div class="docent-note"><img src="/images/marieke-schipper.webp" alt="" width="44" height="44" class="docent-note-avatar" loading="lazy" />` +
+  `<div class="docent-note"><img src="/images/amber-van-der-zalm-264.webp" alt="" width="44" height="44" class="docent-note-avatar" loading="lazy" />` +
   `<div><p class="docent-note-name">${DOCENT_ROLE[locale]}</p><p>${text}</p></div></div>`;
 
 /**

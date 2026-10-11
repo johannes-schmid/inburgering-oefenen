@@ -188,16 +188,18 @@ export default function RubricFeedback({
           now, her review to follow. */}
       <div className="rf-docent">
         {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img src="/images/marieke-schipper.webp" alt="" className="rf-docent-face" />
+        <img src="/images/amber-van-der-zalm-264.webp" alt="" className="rf-docent-face" />
         <p>
           {reviewed ? (
             <>
-              <strong>Nagekeken door Marieke Schipper</strong>, gecertificeerde NT2-docent.
+              <strong>Nagekeken door Amber van der Zalm</strong>, gecertificeerde NT2-docent. Oefenfeedback,
+              geen officiële uitslag van DUO.
             </>
           ) : (
             <>
-              Beoordeeld met de criteria van <strong>Marieke Schipper</strong>, gecertificeerde
-              NT2-docent. Zij controleert deze beoordeling na.
+              Een taalmodel beoordeelde dit met de criteria van <strong>Amber van der Zalm</strong>,
+              gecertificeerde NT2-docent. Zij controleert deze beoordeling na. Oefenfeedback, geen
+              officiële uitslag van DUO.
             </>
           )}
         </p>

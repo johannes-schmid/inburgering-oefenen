@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import { routing } from '@/i18n/routing';
-import { canonicalSkillPath, localeHref, localizedPath, translateDutchPath } from '@/i18n/paths';
+import { canonicalLocalePath, canonicalSkillPath, localeHref, localizedPath, translateDutchPath } from '@/i18n/paths';
 import { isCanonicalSkillParam, parseSkillParam, skillParam } from '@/i18n/skill-slugs';
 import { SKILLS } from '@/data/skills';
 import { absUrl } from '@/lib/schema';
@@ -182,5 +182,28 @@ describe('canonicalSkillPath', () => {
   it('negeert wat geen taalcode is', () => {
     expect(canonicalSkillPath('/api/grade-open')).toBeUndefined();
     expect(canonicalSkillPath('/')).toBeUndefined();
+  });
+});
+
+/* Een oude, Nederlands gevormde URL onder /en of /ar moet in één 308 op het eindpad landen.
+ * Tot 11-10 deed next-intl er eerst een 307 van, en bleven de oude URL's in de index staan. */
+describe('canonicalLocalePath', () => {
+  it('vertaalt segment én slug in één keer', () => {
+    expect(canonicalLocalePath('/en/inburgering/inburgering-stappenplan'))
+      .toBe('/en/civic-integration/integration-step-by-step');
+    expect(canonicalLocalePath('/en/oefenen')).toBe('/en/practice');
+  });
+
+  it('laat een pad dat al klopt, het Nederlands en het portaal staan', () => {
+    expect(canonicalLocalePath('/en/civic-integration/integration-step-by-step')).toBeUndefined();
+    expect(canonicalLocalePath('/nl/inburgering/inburgering-stappenplan')).toBeUndefined();
+    expect(canonicalLocalePath('/en/dashboard')).toBeUndefined();
+    expect(canonicalLocalePath('/en')).toBeUndefined();
+  });
+
+  it('decodeert Arabisch voordat het vergelijkt', () => {
+    const want = canonicalLocalePath('/ar/inburgering/boete-en-termijn');
+    expect(want).toBeDefined();
+    expect(canonicalLocalePath(encodeURI(want!))).toBeUndefined();
   });
 });

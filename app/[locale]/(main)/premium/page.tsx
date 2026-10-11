@@ -727,8 +727,8 @@ export default async function PremiumPage({ params }: Props) {
           <div className="grid lg:grid-cols-[1fr_360px] gap-6 items-start">
             <TeacherCard
               variant="compact"
-              quote="Alle opgaven zijn door mij persoonlijk geschreven of gecontroleerd. Geen AI-gegenereerde content. De beoordelingsrubric voor Schrijven en Spreken komt ook van mij — ik controleer de beoordelingen en stuur bij waar nodig."
-              stats={[{ value: '10+', label: 'jaar ervaring' }, { value: String(totalExams), label: 'oefenexamens' }]}
+              quote="AI helpt bij het opstellen, maar elke opgave gaat eerst langs mij. De beoordelingsrubric voor Schrijven en Spreken komt ook van mij, en ik controleer de beoordelingen."
+              stats={[{ value: '10', label: 'jaar in het onderwijs' }, { value: String(totalExams), label: 'oefenexamens' }]}
             />
             <div className="bg-surface-container-lowest rounded-2xl overflow-hidden" style={{ boxShadow:'var(--shadow-ambient)' }}>
               <RubricMockup />

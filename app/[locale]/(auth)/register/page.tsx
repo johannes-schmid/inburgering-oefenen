@@ -121,8 +121,8 @@ export default async function RegisterPage({ params, searchParams }: Props) {
               >
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img
-                  src="/images/marieke-schipper.webp"
-                  alt="Marieke Schipper"
+                  src="/images/amber-van-der-zalm-264.webp"
+                  alt="Amber van der Zalm"
                   width={36}
                   height={36}
                   className="w-full h-full object-cover object-top"
@@ -131,7 +131,7 @@ export default async function RegisterPage({ params, searchParams }: Props) {
               <span style={{ color: 'rgba(255,255,255,0.7)', fontSize: '0.82rem' }}>
                 Opgaven gemaakt en nagekeken door{' '}
                 <Link href="/docent" className="font-bold text-white no-underline hover:underline">
-                  Marieke Schipper
+                  Amber van der Zalm
                 </Link>
               </span>
             </div>

@@ -388,50 +388,37 @@ euro figure here: write "op dit moment" with the DUO link beside it.
 6. **Wet 2013 "3 jaar"** — niet geverifieerd voor die cohorten; de gidsen verwijzen naar de brief.
 7. **MAP zit niet in de onderwijsroute** (§10, Wet art. 8 lid 3).
 
-## 12. Eigen cijfers — herkomst knmoefenen.nl, VERIFIED 2026-09-21
+## 12. Eigen cijfers — herzien 2026-10-11
 
-Deze twee getallen zijn de énige social proof die de homepage toont. Ze zijn **niet op
-inburgeringoefenen.nl verdiend**: ze komen van **knmoefenen.nl**, het KNM-platform waar dit product
-uit is gevorkt en dat nog live staat.
+De homepage toont twee getallen. Sinds 11-10 staat bij elk getal van wie het is.
 
-**De eigenaar heeft op 21-09 besloten die herkomst niet meer in de copy te zetten**, omdat hij het
-hele aanbod onder de naam Inburgering Oefenen trekt en knmoefenen.nl daarin opgaat. Zolang die
-overzetting niet rond is, is dit een bewuste afweging van hem en niet van dit bestand. Wat blijft
-staan als ondergrens:
+**Waarom dit veranderde.** Op 21-09 besloot de eigenaar de herkomst knmoefenen.nl uit de copy te
+laten. Na de verkeersval van 30-09 en de aangescherpte Google-richtlijn van 01-10 (misleidende
+auteursinformatie en geleend vertrouwen als laag-kwaliteitsignaal) is dat teruggedraaid. Een score
+van een ander domein zonder bron is geleend vertrouwen.
 
-- **De bronlink naar het Trustpilot-profiel blijft op de tegel**, want dat is het enige dat het
-  cijfer nog controleerbaar maakt. Haal je die weg, dan staat er een cijfer zonder herkomst.
-- **Nog steeds geen `AggregateRating` in de structured data van dit domein.** Beoordelingen van een
-  ander domein aan dít domein hangen is precies de fabricage die bij de fork is weggehaald. Alleen
-  zichtbare tekst met bronlink.
-- **Geen woordlabel bij het cijfer** ("Uitstekend" / "Geweldig"). De twee Trustpilot-domeinen gaven
-  verschillende labels bij hetzelfde cijfer, en Trustpilot herrekent de drempels; het getal is
-  eenduidig, het label niet.
+- **Trustpilot: 4,4 van 5 uit 11 beoordelingen, voor knmoefenen.nl** —
+  https://nl.trustpilot.com/review/knmoefenen.nl (geraadpleegd 11-10-2026). De tegel zegt "voor
+  onze zustersite knmoefenen.nl" en linkt naar het profiel. ⚠️ Tien beoordelingen is weinig;
+  controleer het cijfer voordat je het ergens herhaalt.
+- **Ruim 1.000 leerlingen en cursisten** — het aantal van de docent, Amber van der Zalm, in tien
+  jaar onderwijs (basisonderwijs, vmbo en eigen NT2-les). Opgave van de eigenaar (11-10-2026). Niet
+  extern te verifiëren; daarom "ruim 1.000" en nooit "duizenden" of een preciezer getal. Hoe het
+  geteld is, vraagt het feitenblad in `seo-agent/briefs/2026-10-11-feitenblad-docent.md`.
 
-De feiten zelf:
+**Reviews op de homepage** (`REVIEWS` in `app/[locale]/(main)/page.tsx`): drie Trustpilot-reviews
+van knmoefenen.nl, letterlijk, met datum, door de eigenaar bevestigd als echte en onafhankelijke
+klanten (11-10-2026). ⚠️ Twee reviews op dat profiel zijn van mensen die aan het bedrijf verbonden
+zijn ("Amber" en "ingrid van der zalm", augustus 2026) en mogen nergens getoond worden; het advies
+aan de eigenaar is ze te laten verwijderen. Dan verschuift de 4,4 en moet dit getal mee.
 
-- **Trustpilot: 4,4 van 5 uit 10 beoordelingen** — https://nl.trustpilot.com/review/knmoefenen.nl
-  (geraadpleegd 21-09-2026, bevestigd op zowel `trustpilot.com` als `nl.trustpilot.com`).
-  ⚠️ Tien beoordelingen is weinig — het cijfer kan bij één nieuwe review zichtbaar verschuiven.
-  Controleer het voordat je het ergens anders herhaalt.
-- **Meer dan 1.000 cursisten geholpen** — opgave van de eigenaar (21-09-2026). Niet extern te
-  verifiëren; daarom staat er "meer dan 1.000" en nooit een preciezer getal.
+Wat blijft staan als ondergrens:
 
-ℹ️ Het Trustpilot-merkteken (groene sterren + wordmark) is nagetekend in
-`components/site/TrustpilotScore.tsx`. Dat mag zolang het een échte score toont met een link naar
-het profiel; zodra het officiële SVG-bestand er is, vervangt dat de tekening.
+- **Geen `AggregateRating` in de structured data van dit domein.** Alleen zichtbare tekst met
+  bronlink.
+- **Geen woordlabel bij het cijfer** ("Uitstekend" / "Geweldig"); Trustpilot herrekent de drempels.
+- **Geen stockportretten bij een getal over echte mensen.** De Pexels-avatars en "+995" naast
+  "1.000+" zijn op 11-10 weggehaald. Een gezicht staat alleen bij een echte persoon met naam.
 
-⚠️ **De avatars bij "1.000+" zijn stockportretten van Pexels en géén cursisten** (besluit
-eigenaar, 21-09; hiervóór waren het getekende schijven). De grens die daarbij hoort, en die geen
-latere wijziging mag oprekken: **een gezicht mag bij een aantál staan, nooit bij een uitspraak of
-een naam.** Een portret naast een quote zegt "dit heeft deze persoon gezegd" en is dan verzonnen
-social proof — precies wat er op 02-09 van deze site af is gehaald. Een rij gezichten naast
-"1.000+ cursisten" zegt "hier zitten mensen achter" en noemt niemand. Daarom draagt de rij geen
-namen, geen citaten en geen `alt` die iemand tot cursist bestempelt; hij is `aria-hidden`.
-
-Herkomst per bestand staat in `public/images/avatars/CREDITS.json` (Pexels-id, fotograaf, pagina).
-De Pexels-licentie staat commercieel gebruik toe en eist geen bronvermelding, maar het bestand
-blijft staan: zonder dat is over een half jaar niet meer na te gaan dat dit stock is en geen
-cursisten. Reverse image search vindt deze foto's — dat is het risico dat de eigenaar aanvaardt.
-Komen er échte portretten mét toestemming, dan vervangen die de map in één keer.
-Zie `components/horizon/AvatarCluster.tsx`.
+`components/horizon/AvatarCluster.tsx` en `public/images/avatars/` staan nog in de repo maar
+worden nergens meer getoond.

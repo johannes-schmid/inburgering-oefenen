@@ -36,10 +36,10 @@ export default function MariekeFeedback({ message, topicProgress, hasMistakes }:
       {/* Marieke quote */}
       <div style={{ display: 'flex', gap: 13, alignItems: 'flex-start' }}>
         <div style={{ flex: 'none', width: 42, height: 42, borderRadius: '50%', overflow: 'hidden', position: 'relative', border: '2px solid #e6eaf1' }}>
-          <Image src="/images/marieke-schipper.webp" alt="Marieke" fill sizes="42px" style={{ objectFit: 'cover', objectPosition: '65% 30%' }} />
+          <Image src="/images/amber-van-der-zalm-264.webp" alt="Amber" fill sizes="42px" style={{ objectFit: 'cover', objectPosition: 'center' }} />
         </div>
         <div style={{ fontSize: 14.5, color: '#26324a', lineHeight: 1.55, paddingTop: 1 }}>
-          <b style={{ color: '#d94f00' }}>Marieke:</b>{' '}
+          <b style={{ color: '#d94f00' }}>Amber:</b>{' '}
           &ldquo;{message.topic
             ? t.rich(msgKey, {
                 ...message.params,

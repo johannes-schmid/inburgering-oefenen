@@ -19,9 +19,9 @@ import { cn } from '@/lib/utils';
  */
 const TP_GREEN = '#00b67a';
 
-function Star({ fill }: { fill: number }) {
+function Star({ fill, small }: { fill: number; small?: boolean }) {
   return (
-    <span className="relative block w-6 h-6 sm:w-7 sm:h-7 rounded-[3px] overflow-hidden" style={{ background: 'rgba(0,8,27,0.12)' }}>
+    <span className={cn('relative block rounded-[3px] overflow-hidden', small ? 'w-[1.125rem] h-[1.125rem]' : 'w-6 h-6 sm:w-7 sm:h-7')} style={{ background: 'rgba(0,8,27,0.12)' }}>
       <span className="absolute inset-0" style={{ background: TP_GREEN, clipPath: `inset(0 ${(1 - fill) * 100}% 0 0)` }} />
       <svg viewBox="0 0 24 24" className="relative w-full h-full" aria-hidden="true">
         <path
@@ -33,16 +33,28 @@ function Star({ fill }: { fill: number }) {
   );
 }
 
+/** `compact`: alleen de sterren, klein — voor een rij waar het merk al in de tekst staat. */
 export default function TrustpilotScore({
   score,
   outOf = 5,
+  compact = false,
   className,
 }: {
   score: number;
   outOf?: number;
+  compact?: boolean;
   className?: string;
 }) {
   const stars = Array.from({ length: outOf }, (_, i) => Math.min(1, Math.max(0, score - i)));
+  if (compact) {
+    return (
+      <div className={cn('flex items-center gap-[3px]', className)} aria-hidden="true">
+        {stars.map((fill, i) => (
+          <Star key={i} fill={fill} small />
+        ))}
+      </div>
+    );
+  }
   return (
     <div className={cn('flex flex-col items-start gap-2', className)}>
       <div className="flex items-center gap-1.5" aria-hidden="true">

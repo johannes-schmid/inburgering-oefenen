@@ -1,5 +1,3 @@
-import { existsSync } from 'node:fs';
-import { join } from 'node:path';
 import type { Metadata } from 'next';
 import { getTranslations, setRequestLocale } from 'next-intl/server';
 import { routing } from '@/i18n/routing';
@@ -13,7 +11,7 @@ import FeatureCarousel from './_components/FeatureCarousel';
 import { publishedGuides, getGuideLocale, guideHref } from '@/data/guides/helpers';
 import { getPostBySlug, getPostLocale, getPostSlug } from '@/data/blog-posts';
 import TrustpilotScore from '@/components/site/TrustpilotScore';
-import { HorizonBand, DotField, Skyline, SectionTransition, ExamMark, GlassChip, AvatarCluster, HeroAurora, HERO_GRADIENT } from '@/components/horizon';
+import { HorizonBand, DotField, Skyline, SectionTransition, ExamMark, GlassChip, HeroAurora, HERO_GRADIENT } from '@/components/horizon';
 import { Link } from '@/i18n/navigation';
 import { ArrowUpRight, ArrowRight } from 'lucide-react';
 import { courseId, TEACHER_REF, ogImageFor } from '@/lib/schema';
@@ -377,13 +375,36 @@ export default async function HomePage({ params }: Props) {
     .filter(s => getFormat('b1', s.slug).itemCount !== null)
     .map(s => ({ slug: s.slug, name: tSkills(`${s.key}.name`) }));
 
-  /* The three placeholder quote cards. The avatar is `null` until
-     `scripts/generate-review-avatars.mjs` has run — existence is checked on the server rather than
-     guessed, because a broken portrait beside a testimonial is worse than no portrait. */
-  const REVIEWS = [1, 2, 3].map(n => {
-    const file = `images/reviews/placeholder-${n}-80.webp`;
-    return { n, avatar: existsSync(join(process.cwd(), 'public', file)) ? `/${file}` : null };
-  });
+  /* Echte reviews van **knmoefenen.nl** op Trustpilot, letterlijk overgenomen (11-10-2026) en in
+     hun eigen taal: een vertaalde quote is niet meer wat iemand schreef. Een eventuele weglating is
+     gemarkeerd met […]. De naam staat zoals Trustpilot hem toont, ingekort tot voornaam en
+     initiaal; er is geen foto, want de reviewers hebben er op Trustpilot geen.
+
+     **Wat hier niet mag komen:** een review van iemand die aan het bedrijf verbonden is. "Amber"
+     en "ingrid van der zalm" (beide augustus 2026) staan daarom niet in deze lijst; zie
+     `SEO/facts.md` §12. Elke nieuwe review hier: eerst de eigenaar laten bevestigen dat het een
+     echte, onafhankelijke klant is. */
+  const REVIEWS = [
+    {
+      name: 'Francesca G.',
+      date: '2026-08-09',
+      lang: 'en',
+      text: 'The practice exams are extremely helpful. I completed 10 practice exams and passed with a 9!',
+    },
+    {
+      name: 'Anne',
+      date: '2026-08-10',
+      lang: 'en',
+      text: "I used KNMoefenen for about six weeks while preparing for my inburgering exam, and it made a real difference in how I studied. […] The free flashcards are a real bonus, so don't skip it!",
+    },
+    {
+      name: 'Raghda Z.',
+      date: '2026-09-23',
+      lang: 'nl',
+      text: 'Dank u voor deze prachtige aanmelding, het heeft mijn studie van het boek in korte tijd verkort',
+    },
+  ] as const;
+  const reviewDate = new Intl.DateTimeFormat(locale === 'ar' ? 'ar' : locale === 'en' ? 'en-GB' : 'nl-NL', { day: 'numeric', month: 'short', year: 'numeric' });
 
   /* The kennisbank row. Everything a reader can *read* rather than practise, in one grid.
    *
@@ -704,10 +725,10 @@ export default async function HomePage({ params }: Props) {
           zijn eruit op verzoek van de eigenaar (21-09): ze zeggen iets over de omvang van de
           catalogus en niets over vertrouwen, en ze maakten de kaart twee keer zo hoog.
 
-          **De twee cijfers komen van knmoefenen.nl** — zie `SEO/facts.md` §12 — en de eigenaar
-          heeft op 21-09 besloten die herkomst niet meer in de copy te zetten omdat hij het hele
-          platform onder één naam trekt. De bronlink naar het Trustpilot-profiel blijft daarom
-          staan: dat is wat het cijfer nog controleerbaar maakt. Er hoort nog steeds **geen
+          **De Trustpilot-score is van knmoefenen.nl en dat staat er sinds 11-10 weer bij** (het
+          besluit van 21-09 om de herkomst weg te laten is teruggedraaid: een score van een ander
+          domein zonder bron is geleend vertrouwen). Het getal 1.000+ is dat van de docent zelf,
+          leerlingen en cursisten in tien jaar onderwijs, opgegeven door de eigenaar. Er hoort nog steeds **geen
           `AggregateRating`** bij in de structured data van dit domein.
 
           Wat hier nooit mag komen: een gebruikersaantal dat niet uit de database of uit
@@ -715,67 +736,71 @@ export default async function HomePage({ params }: Props) {
           examens is er zo één — lokaal 22, productie meer). */}
       <section aria-labelledby="proof-heading" className="relative z-20 -mt-12 sm:-mt-16 px-4 sm:px-6">
         <div
-          className="max-w-6xl mx-auto rounded-[28px] sm:rounded-[36px] px-5 sm:px-8 py-7 sm:py-9"
+          className="max-w-6xl mx-auto rounded-[24px] sm:rounded-[28px] p-3 sm:p-4"
           style={{ background: 'var(--color-surface-container-lowest)', boxShadow: '0 24px 60px -28px rgba(0,8,27,0.28), var(--shadow-ambient)' }}
         >
           <h2 id="proof-heading" className="sr-only">{t('proof_line')}</h2>
 
-          <div className="grid gap-3 sm:gap-4 lg:grid-cols-3">
+          {/* Drie tegels van één regel hoog: links het bewijs (cijfer of portret), rechts één korte
+              regel tekst. Eerst stonden de sterren, het merk en een zin van twee regels onder
+              elkaar, en was de kaart bijna twee keer zo hoog als wat hij zegt. */}
+          <div className="grid gap-2 sm:gap-3 lg:grid-cols-3">
 
             {/* 1 — Trustpilot. Het cijfer staat in `SEO/facts.md` §12 en nergens anders; zie de
                 kop van `TrustpilotScore.tsx` voor waarom er geen woordlabel bij staat. */}
-            <div className="rounded-2xl px-5 py-5 flex flex-col gap-3" style={{ background: 'var(--color-surface-container-low)' }}>
-              <TrustpilotScore score={4.4} />
-              <p className="m-0 text-[0.8125rem] leading-snug text-on-surface-variant">
-                <span className="font-headline font-extrabold text-primary text-[1.75rem] leading-none tracking-tight align-middle mr-1.5">4,4</span>
-                {t('proof_trustpilot_label')}{' '}
-                <a
-                  href="https://nl.trustpilot.com/review/knmoefenen.nl"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center gap-0.5 font-semibold whitespace-nowrap"
-                  style={{ color: '#a24000' }}
-                >
-                  {t('proof_source')}
-                  <ArrowUpRight className="size-3 rtl-flip" />
-                </a>
-              </p>
-            </div>
-
-            {/* 2 — het aantal cursisten. De avatars stellen niemand voor; zie de kop van
-                `components/horizon/AvatarCluster.tsx`. */}
-            <div className="rounded-2xl px-5 py-5 flex flex-col gap-3" style={{ background: 'var(--color-surface-container-low)' }}>
-              <div className="flex items-center gap-1.5">
-                <AvatarCluster count={5} size={36} />
-                <span
-                  className="h-9 px-3 rounded-full flex items-center font-headline font-bold text-[0.8125rem] text-primary"
-                  style={{ background: 'var(--color-surface-container-high)' }}
-                >
-                  +995
-                </span>
+            <div className="rounded-2xl px-4 py-3 flex items-center gap-3" style={{ background: 'var(--color-surface-container-low)' }}>
+              <span className="font-headline font-extrabold text-primary text-[1.75rem] leading-none tracking-tight tabular-nums shrink-0">4,4</span>
+              <div className="min-w-0">
+                <TrustpilotScore score={4.4} compact />
+                <p className="m-0 mt-1 text-[0.75rem] leading-snug text-on-surface-variant">
+                  {t('proof_trustpilot_label')}{' '}
+                  <a
+                    href="https://nl.trustpilot.com/review/knmoefenen.nl"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-0.5 font-semibold whitespace-nowrap rounded-sm hover:opacity-75 active:opacity-60 focus-visible:outline-2 focus-visible:outline-offset-2"
+                    style={{ color: '#a24000' }}
+                  >
+                    {t('proof_source')}
+                    <ArrowUpRight className="size-3 rtl-flip" aria-hidden />
+                  </a>
+                </p>
               </div>
-              <p className="m-0 text-[0.8125rem] leading-snug text-on-surface-variant">
-                <span className="font-headline font-extrabold text-primary text-[1.75rem] leading-none tracking-tight align-middle mr-1.5">1.000+</span>
-                {t('proof_students_label')}
-              </p>
             </div>
 
-            {/* 3 — de docent. De enige claim die over dít platform gaat, en de enige echte persoon
-                op deze kaart. De docentclaim staat één keer per pagina (§7). */}
-            <div className="rounded-2xl px-5 py-5 flex items-start gap-4" style={{ background: 'var(--color-surface-container-low)' }}>
+            {/* 2 — het aantal leerlingen en cursisten van de docent, in tien jaar onderwijs
+                (opgave eigenaar, 11-10). Hier stonden eerst stockportretten met "+995": gezichten
+                van niemand naast een getal over echte mensen. */}
+            <div className="rounded-2xl px-4 py-3 flex items-center gap-3" style={{ background: 'var(--color-surface-container-low)' }}>
+              <span className="font-headline font-extrabold text-primary text-[1.75rem] leading-none tracking-tight tabular-nums shrink-0">1.000+</span>
+              <p className="m-0 text-[0.75rem] leading-snug text-on-surface-variant">{t('proof_students_label')}</p>
+            </div>
+
+            {/* 3 — de docent. De enige echte persoon op deze kaart; de docentclaim staat één keer
+                per pagina (§7). */}
+            <div className="rounded-2xl px-4 py-3 flex items-center gap-3" style={{ background: 'var(--color-surface-container-low)' }}>
               <img
-                src="/images/marieke-schipper-264.webp"
-                alt="Marieke Schipper"
-                width={56}
-                height={56}
-                className="w-14 h-14 rounded-full object-cover object-top shrink-0"
-                style={{ boxShadow: '0 0 0 3px var(--color-secondary-container)' }}
+                src="/images/amber-van-der-zalm-264.webp"
+                alt={t('teacher_name')}
+                width={44}
+                height={44}
+                className="w-11 h-11 rounded-full object-cover object-top shrink-0"
+                style={{ boxShadow: '0 0 0 2px var(--color-secondary-container)' }}
               />
-              <p className="m-0 text-[0.8125rem] leading-snug text-on-surface-variant">
-                <span className="block font-headline font-bold text-primary text-[1rem] leading-tight">Marieke Schipper</span>
-                {t('proof_teacher_role')}
-                <span className="block mt-1">{t('proof_seal_short')}</span>
-              </p>
+              <div className="min-w-0 text-[0.75rem] leading-snug text-on-surface-variant">
+                <p className="m-0 font-headline font-bold text-primary text-[0.9375rem] leading-tight">{t('teacher_name')}</p>
+                <p className="m-0 mt-0.5">
+                  {t('proof_teacher_role')}{' · '}
+                  <Link
+                    href="/docent"
+                    className="inline-flex items-center gap-0.5 font-semibold whitespace-nowrap no-underline rounded-sm hover:opacity-75 active:opacity-60 focus-visible:outline-2 focus-visible:outline-offset-2"
+                    style={{ color: '#a24000' }}
+                  >
+                    {t('proof_teacher_link')}
+                    <ArrowRight className="size-3 rtl-flip" aria-hidden />
+                  </Link>
+                </p>
+              </div>
             </div>
           </div>
 
@@ -1005,14 +1030,11 @@ export default async function HomePage({ params }: Props) {
           - Geen `Review` en geen `AggregateRating` in de structured data; `scripts/check-schema.mjs`
             laat de build vallen als er een verschijnt. Een quote in proza is marketing, dezelfde
             quote in JSON-LD is een cijfer in een SERP — en dat is de versie die je niet terugdraait.
-          - **De quotes zijn geschreven, niet gegeven** (besluit eigenaar, 23-08-2026, genomen over
-            het bezwaar dat §2 verzonnen social proof verbiedt). De toeschrijving noemt een sóórt
-            cursist en nooit een persoon, er staat geen ster, geen datum en geen plaats bij, en de
-            avatars zijn portretten van niemand (`scripts/generate-review-avatars.mjs`). Komen er
-            echte reacties, dan gaan quote, toeschrijving én avatar in één keer mee en verdwijnt
-            dat script.
-          - **De quote van de docent is de hare en blijft letterlijk** (`home.teacher_quote`).
-            Woorden binnen aanhalingstekens herschrijven legt een echt persoon een zin in de mond.
+          - **De quotes zijn echte Trustpilot-reviews van knmoefenen.nl**, letterlijk en met datum
+            (sinds 11-10; daarvoor stonden hier zelfgeschreven quotes met AI-portretten). Zie `REVIEWS`
+            boven de return voor wat er wel en niet in mag.
+          - **Naast het portret staat een uitspraak, geen citaat** (`home.docent_line`). Een
+            quote toeschrijven aan een echte persoon mag alleen met haar eigen, letterlijke woorden.
           - Het perzikpaneel is het enige warme vlak op de pagina en draagt de vertrouwenslaag —
             §7.4: de claim staat één keer per beeld, dus het geringde portret staat hier en nergens
             anders in deze sectie.
@@ -1055,7 +1077,7 @@ export default async function HomePage({ params }: Props) {
               {/* The ringed portrait: peach halo, orange ring, her photograph. Rings are outer
                   box-shadows so the image itself stays a clean circle at any size. */}
               <img
-                src="/images/marieke-schipper-264.webp"
+                src="/images/amber-van-der-zalm-264.webp"
                 alt={t('teacher_name')}
                 width={132}
                 height={132}
@@ -1072,12 +1094,18 @@ export default async function HomePage({ params }: Props) {
               <p className="text-secondary font-semibold text-[0.6875rem] uppercase tracking-widest m-0 mb-3">
                 {t('docent_eyebrow')}
               </p>
-              <blockquote
+              {/* Een uitspraak van het platform, geen citaat: er staan geen aanhalingstekens omheen,
+                  dus er wordt niemand een zin in de mond gelegd. Hier stond tot 11-10 een quote die
+                  aan een schuilnaam werd toegeschreven. */}
+              <p
                 className="m-0 font-headline font-extrabold text-primary tracking-tight"
-                style={{ fontSize: 'clamp(1.125rem, 2.2vw, 1.5rem)', lineHeight: 1.25, letterSpacing: '-0.02em' }}
+                style={{ fontSize: 'clamp(1.25rem, 2.4vw, 1.625rem)', lineHeight: 1.2, letterSpacing: '-0.02em', textWrap: 'balance' }}
               >
-                {t('teacher_quote')}
-              </blockquote>
+                {t('docent_line')}
+              </p>
+              <p className="m-0 mt-3 text-[0.9375rem] leading-relaxed text-on-secondary-container" style={{ textWrap: 'pretty' }}>
+                {t('docent_line_sub')}
+              </p>
 
               <ul className="flex flex-wrap gap-2 list-none p-0 m-0 mt-5">
                 {[1, 2, 3].map(n => (
@@ -1161,44 +1189,45 @@ export default async function HomePage({ params }: Props) {
             <div className="grid sm:grid-cols-3 gap-4">
               {REVIEWS.map(review => (
                 <figure
-                  key={review.n}
+                  key={review.name}
                   className="m-0 rounded-2xl p-6 flex flex-col bg-surface-container-lowest"
                   style={{ boxShadow: 'var(--shadow-ambient)' }}
                 >
                   <blockquote
+                    lang={review.lang}
                     className="m-0 font-headline font-bold text-primary tracking-tight"
                     style={{ fontSize: '1.0625rem', lineHeight: 1.45, letterSpacing: '-0.01em' }}
                   >
-                    {`“${t(`reviews_q${review.n}`)}”`}
+                    {`“${review.text}”`}
                   </blockquote>
                   <figcaption className="mt-auto pt-6 flex items-center gap-3">
-                    {review.avatar
-                      ? (
-                        <img
-                          src={review.avatar}
-                          alt=""
-                          width={40}
-                          height={40}
-                          className="w-10 h-10 rounded-full object-cover flex-shrink-0"
-                        />
-                      )
-                      : (
-                        /* No avatar on disk yet — the generator needs credit on the AI Gateway. A
-                           hollow ring rather than a silhouette glyph: an empty seat reads as "a
-                           person goes here", a generic head reads as a person who does not exist. */
-                        <span
-                          aria-hidden="true"
-                          className="w-10 h-10 rounded-full flex-shrink-0 bg-surface-container-high"
-                          style={{ boxShadow: 'inset 0 0 0 2px var(--color-outline-variant)' }}
-                        />
-                      )}
+                    <span
+                      aria-hidden="true"
+                      className="w-10 h-10 rounded-full flex-shrink-0 flex items-center justify-center font-headline font-bold text-sm text-primary bg-surface-container-high"
+                    >
+                      {review.name.charAt(0)}
+                    </span>
                     <span className="text-xs leading-snug text-on-surface-variant">
-                      {t(`reviews_a${review.n}`)}
+                      <span className="block font-semibold text-on-surface">{review.name}</span>
+                      Trustpilot · <time dateTime={review.date}>{reviewDate.format(new Date(review.date))}</time>
                     </span>
                   </figcaption>
                 </figure>
               ))}
             </div>
+            <p className="m-0 mt-4 text-xs leading-relaxed text-on-surface-variant">
+              {t('reviews_source')}{' '}
+              <a
+                href="https://nl.trustpilot.com/review/knmoefenen.nl"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-0.5 font-semibold whitespace-nowrap rounded-sm hover:opacity-75 active:opacity-60 focus-visible:outline-2 focus-visible:outline-offset-2"
+                style={{ color: '#a24000' }}
+              >
+                {t('reviews_source_link')}
+                <ArrowUpRight className="size-3 rtl-flip" aria-hidden />
+              </a>
+            </p>
           </div>
         </div>
       </section>

@@ -349,7 +349,7 @@ export default function LessonNarration({
           in het midden, de tijd en de twee schakelaars rechts, en de hoofdstukken op een eigen
           regel. Compact gebleven — het is één rij plus die regel, niet een tweede blok.
 
-          Wat er níet in staat is de chip "door Marieke": de stem is een ingesproken uitleg
+          Wat er níet in staat is de chip "door Amber": de stem is een ingesproken uitleg
           (ElevenLabs), niet de docent zelf. Haar naam op een stem zetten die niet van haar is,
           is precies de claim die dit product niet mag doen. De tekst is van haar, en dat zegt
           de les al. */}

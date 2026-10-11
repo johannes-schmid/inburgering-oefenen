@@ -115,7 +115,7 @@ export default async function BlogIndexPage({ params }: Props) {
                   <div className="flex items-center justify-between mt-1">
                     <div className="flex items-center gap-2">
                       <div className="w-7 h-7 rounded-lg overflow-hidden flex-shrink-0" style={{ border: '1px solid rgba(196,198,210,0.3)' }}>
-                        <img src="/images/marieke-schipper.webp" alt="Marieke Schipper" width={28} height={28} className="w-full h-full object-cover object-top" />
+                        <img src="/images/amber-van-der-zalm-264.webp" alt="Amber van der Zalm" width={28} height={28} className="w-full h-full object-cover object-top" />
                       </div>
                       <span className="text-xs text-on-surface-variant">{t('post_by', { date: post.dateLabel })}</span>
                     </div>

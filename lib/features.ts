@@ -65,7 +65,7 @@ export const LESSONS_COMING_SOON = true;
  *
  * 08-10 (eigenaar): de grammaticastap van A2 staat open in alle vier de onderdelen — de
  * nieuwe opzet uit `data/grammar-syllabus.ts`.
- * 10-10 (eigenaar): open waar de lesstof er is en Marieke hem heeft nagekeken — de
+ * 10-10 (eigenaar): open waar de lesstof er is en Amber hem heeft nagekeken — de
  * examentraining van A2 (blok D en E) en de grammatica van B1 (het regelhuis b1:lezen:B). De
  * examentraining van B1 heeft geen lessen en blijft "Binnenkort".
  * `grammatica` is de conceptsoort van de taalregelstap, niet het woord op het scherm.
