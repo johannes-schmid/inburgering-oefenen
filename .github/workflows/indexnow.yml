@@ -1,0 +1,60 @@
+name: IndexNow (na productiedeploy)
+
+# Vercel meldt elke deploy als GitHub-deployment; na een geslaagde productiedeploy melden we de
+# URL's die nieuw zijn in de sitemap bij IndexNow. De lijst van de vorige keer staat in de
+# actions-cache en niet in de repo: een commit vanuit deze workflow zou zelf weer een deploy starten.
+on:
+  deployment_status:
+  workflow_dispatch:
+    inputs:
+      urls:
+        description: "Paden of URL's, gescheiden door spaties (leeg = alleen nieuwe URL's)"
+        type: string
+        default: ''
+      all:
+        description: 'De hele sitemap (alleen eenmalig, of na een grote verbouwing)'
+        type: boolean
+        default: false
+
+concurrency:
+  group: indexnow
+  cancel-in-progress: false
+
+jobs:
+  submit:
+    if: >-
+      github.event_name == 'workflow_dispatch' ||
+      (github.event.deployment_status.state == 'success' &&
+       github.event.deployment.environment == 'Production')
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          sparse-checkout: scripts/indexnow.mjs
+          sparse-checkout-cone-mode: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - uses: actions/cache/restore@v4
+        with:
+          path: indexnow-state.json
+          key: indexnow-${{ github.run_id }}
+          restore-keys: indexnow-
+      - name: Melden
+        env:
+          URLS: ${{ inputs.urls }}
+          ALL: ${{ inputs.all }}
+        run: |
+          if [ -n "$URLS" ]; then
+            node scripts/indexnow.mjs $URLS
+          elif [ "$ALL" = "true" ]; then
+            node scripts/indexnow.mjs --all --state indexnow-state.json
+          else
+            node scripts/indexnow.mjs --new --state indexnow-state.json
+          fi
+      - uses: actions/cache/save@v4
+        if: hashFiles('indexnow-state.json') != ''
+        with:
+          path: indexnow-state.json
+          key: indexnow-${{ github.run_id }}

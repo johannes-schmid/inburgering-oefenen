@@ -5423,3 +5423,9 @@ oplopende `top` per index doet het, en de `prefers-reduced-motion`-uitweg is dan
 **Outcome:** SUCCESS
 **What worked / went wrong:** `docs/decisions/content-pipelines.md` zei het al: A2 is "machine-authored and was published before the docent reviewed it", B1 is met Claude geschreven. "Geen AI" stond dus overal terwijl het niet waar was, en de nieuwe homepageregel "niet door een algoritme" had dezelfde fout. De pagina-audit telde eerst de vertoningen van oude URL's niet mee bij hun opvolger; daardoor leken vertalingen met echte vraag kandidaat voor noindex.
 **Lesson:** Lees de pijplijndocumentatie voordat je een claim over de inhoud schrijft — de bron van een bewering staat vaak al in de repo. En tel bij een URL-audit altijd de oude URL's mee die nu doorverwijzen.
+
+## 2026-10-13 — IndexNow voor Bing
+**Changed:** sleutelbestand `public/ac4ba7bff5fd6a412d4731314edbb869.txt`, `scripts/indexnow.mjs` (`--all`, `--new --state`, losse URL's, `--dry-run`) en `.github/workflows/indexnow.yml` (op `deployment_status` van Vercel, environment `Production`, plus handmatig).
+**Outcome:** SUCCESS (dry-run lokaal; live pas na push)
+**What worked / went wrong:** Bing Webmaster meldde "IndexNow niet ingesteld" als High. De sitemap heeft geen `<lastmod>`, dus het enige wijzigingssignaal is "nieuw in de sitemap"; de vorige lijst staat in de actions-cache, niet in de repo, omdat een commit vanuit de workflow zelf weer een deploy start. Zonder cache legt `--new` alleen een nulmeting vast, zodat een verlopen cache nooit stil de hele sitemap opnieuw indient.
+**Lesson:** IndexNow is voor gewijzigde URL's; de hele sitemap één keer (`workflow_dispatch` met `all`), daarna alleen nieuwe of met de hand genoemde. Vercel's Git-integratie maakt GitHub-deployments aan — `on: deployment_status` is de schone haak voor "na productiedeploy".
