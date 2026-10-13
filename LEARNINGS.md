@@ -5429,3 +5429,9 @@ oplopende `top` per index doet het, en de `prefers-reduced-motion`-uitweg is dan
 **Outcome:** SUCCESS (dry-run lokaal; live pas na push)
 **What worked / went wrong:** Bing Webmaster meldde "IndexNow niet ingesteld" als High. De sitemap heeft geen `<lastmod>`, dus het enige wijzigingssignaal is "nieuw in de sitemap"; de vorige lijst staat in de actions-cache, niet in de repo, omdat een commit vanuit de workflow zelf weer een deploy start. Zonder cache legt `--new` alleen een nulmeting vast, zodat een verlopen cache nooit stil de hele sitemap opnieuw indient.
 **Lesson:** IndexNow is voor gewijzigde URL's; de hele sitemap één keer (`workflow_dispatch` met `all`), daarna alleen nieuwe of met de hand genoemde. Vercel's Git-integratie maakt GitHub-deployments aan — `on: deployment_status` is de schone haak voor "na productiedeploy".
+
+## 2026-10-13 — IndexNow-workflow op `deployment_status` kon zijn state niet bewaren
+**Changed:** `.github/workflows/indexnow.yml` van `on: deployment_status` naar `on: push` (main) met een stap die wacht tot Vercels productiedeploy van `github.sha` op `success` staat.
+**Outcome:** FAILURE → gerepareerd
+**What worked / went wrong:** De eerste run slaagde groen, maar `actions/cache` gaf "Event Validation Error: The event type deployment_status is not supported because it's not tied to a branch or tag ref" als waarschuwing en las noch schreef iets. Elke run zou dus een nulmeting zijn en nooit iets melden — groen, en stil nutteloos.
+**Lesson:** `actions/cache` werkt alleen op events met een ref. Lees bij een nieuwe workflow de log van de eerste run, niet alleen het groene vinkje.

@@ -1,10 +1,13 @@
 name: IndexNow (na productiedeploy)
 
-# Vercel meldt elke deploy als GitHub-deployment; na een geslaagde productiedeploy melden we de
-# URL's die nieuw zijn in de sitemap bij IndexNow. De lijst van de vorige keer staat in de
-# actions-cache en niet in de repo: een commit vanuit deze workflow zou zelf weer een deploy starten.
+# Na een push naar main wachten we op Vercels productiedeploy van die commit (Vercel meldt hem als
+# GitHub-deployment) en melden dan de URL's die nieuw zijn in de sitemap bij IndexNow. De lijst van
+# de vorige keer staat in de actions-cache en niet in de repo: een commit vanuit deze workflow zou
+# zelf weer een deploy starten. Niet `on: deployment_status` — dat event hangt niet aan een ref,
+# en dan weigert actions/cache te lezen én te schrijven.
 on:
-  deployment_status:
+  push:
+    branches: [main]
   workflow_dispatch:
     inputs:
       urls:
@@ -16,19 +19,38 @@ on:
         type: boolean
         default: false
 
+permissions:
+  contents: read
+  deployments: read
+
 concurrency:
   group: indexnow
   cancel-in-progress: false
 
 jobs:
   submit:
-    if: >-
-      github.event_name == 'workflow_dispatch' ||
-      (github.event.deployment_status.state == 'success' &&
-       github.event.deployment.environment == 'Production')
     runs-on: ubuntu-latest
-    timeout-minutes: 5
+    timeout-minutes: 20
     steps:
+      - name: Wachten op de productiedeploy
+        if: github.event_name == 'push'
+        env:
+          GH_TOKEN: ${{ github.token }}
+          SHA: ${{ github.sha }}
+        run: |
+          for i in $(seq 1 90); do
+            ID=$(gh api "repos/$GITHUB_REPOSITORY/deployments?sha=$SHA&environment=Production" --jq '.[0].id // empty')
+            if [ -n "$ID" ]; then
+              STATE=$(gh api "repos/$GITHUB_REPOSITORY/deployments/$ID/statuses" --jq '.[0].state // empty')
+              echo "deploy $ID: ${STATE:-nog geen status}"
+              case "$STATE" in
+                success) exit 0 ;;
+                failure|error|inactive) echo "productiedeploy niet gelukt"; exit 1 ;;
+              esac
+            fi
+            sleep 10
+          done
+          echo "geen productiedeploy binnen 15 minuten"; exit 1
       - uses: actions/checkout@v4
         with:
           sparse-checkout: scripts/indexnow.mjs
