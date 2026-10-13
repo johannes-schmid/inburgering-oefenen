@@ -53,6 +53,7 @@ export type UserRow = {
 
 function moduleLabel(id: ModuleId): string {
   if (id === 'knm') return 'KNM';
+  if (id === 'ona') return 'ONA';
   const [level, skill] = id.split(':') as [Level, string];
   return `${levelLabel(level)} ${skill.charAt(0).toUpperCase()}${skill.slice(1)}`;
 }

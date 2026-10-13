@@ -3,6 +3,8 @@ import createMollieClient, { SequenceType, type PaymentCreateParams } from '@mol
 import { createClient } from '@/lib/supabase/server';
 import { createAdminClient } from '@/lib/supabase/admin';
 import { euro, parseSelection, priceForSelection } from '@/lib/pricing';
+import { ONA_MODULE_ID } from '@/lib/entitlements';
+import { isOnaAvailable } from '@/lib/ona/access';
 import { TABLE, PAYMENT_STATUS } from '@/lib/api-constants';
 import { captureServerEvent } from '@/lib/posthog-server';
 
@@ -56,6 +58,11 @@ export async function POST(request: Request) {
   }
 
   const modules = parseSelection(body.modules);
+  // ONA staat in de catalogus maar is pas te koop als de docent de inhoud heeft nagekeken. Een
+  // geposte `ona` vóór die tijd zou een abonnement op een module zijn die nergens open staat.
+  if (modules.includes(ONA_MODULE_ID) && !isOnaAvailable()) {
+    return NextResponse.json({ error: 'ONA is nog niet beschikbaar.', code: 'not_available' }, { status: 400 });
+  }
   if (modules.length === 0) {
     return NextResponse.json({ error: 'Kies minstens één onderdeel.', code: 'empty' }, { status: 400 });
   }

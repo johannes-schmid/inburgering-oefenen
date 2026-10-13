@@ -17,7 +17,11 @@ export type PortalNav =
   | 'leren'
   | 'woordkaarten'
   /** De lescursus van één taalonderdeel op `/dashboard/[level]/[skill]/leren`. */
-  | 'lessen';
+  | 'lessen'
+  /** ONA: een kaart schrijven, het eindgesprek oefenen, inleveren. Het overzicht is `overview-module`. */
+  | 'ona-portfolio'
+  | 'ona-eindgesprek'
+  | 'ona-inleveren';
 
 /**
  * De tweede kolom — en die verschijnt alleen binnen een lesmodule.

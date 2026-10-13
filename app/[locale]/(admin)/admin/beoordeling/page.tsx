@@ -66,6 +66,7 @@ function moduleLabels(meta: Record<string, unknown> | undefined): string[] {
   if (planFromMetadata(meta) !== 'free') return ['Alles (legacy)'];
   return modulesFromMetadata(meta).map((id: ModuleId) => {
     if (id === 'knm') return 'KNM';
+    if (id === 'ona') return 'ONA';
     const [level, skill] = id.split(':') as ['a2' | 'b1', string];
     return `${levelLabel(level)} ${skill.charAt(0).toUpperCase()}${skill.slice(1)}`;
   });

@@ -439,6 +439,23 @@ export type KnmSlug = typeof KNM_SLUG;
 export type OnderdeelSlug = SkillSlug | KnmSlug;
 
 /**
+ * ONA — een module, géén onderdeel.
+ *
+ * ONA heeft geen vragen, geen examens en geen score: het is een portfolio van acht
+ * resultaatkaarten dat de kandidaat zelf invult en bij DUO inlevert. Daarom staat het bewust
+ * **niet** in `OnderdeelSlug` en niet in de `skills`-tabel — elke plek die een onderdeel
+ * verwacht (de speler, `getOnderdeel`, de examenstrook) zou het anders als examen proberen te
+ * tonen. Het leeft alleen op de module-as (`lib/entitlements.ts`, `lib/pricing.ts`) en in
+ * `data/ona/` + `lib/ona/`. Zie `supabase/migrations/20261013120000_ona_portfolio.sql`.
+ */
+export const ONA_SLUG = 'ona' as const;
+export type OnaSlug = typeof ONA_SLUG;
+
+export function isOna(x: unknown): x is OnaSlug {
+  return x === ONA_SLUG;
+}
+
+/**
  * KNM's identity and format in one object, because there is only one of it.
  *
  * `isLevelled: false` and `requiresStimulus: false` mirror its `skills` row: a KNM question

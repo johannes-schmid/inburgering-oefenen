@@ -1,5 +1,5 @@
 import { BUNDLE_PRICE_CENTS, MODULE_PRICE_CENTS } from '@/lib/pricing';
-import { KNM_MODULE_ID, normaliseModule, purchasedModules } from '@/lib/entitlements';
+import { KNM_MODULE_ID, ONA_MODULE_ID, normaliseModule, purchasedModules } from '@/lib/entitlements';
 import { SKILLS } from '@/data/skills';
 
 /**
@@ -190,6 +190,9 @@ function tracksOf(modules: string[]): Set<Track> {
   for (const raw of modules) {
     const id = normaliseModule(raw);
     if (!id) continue;
+    // ONA is geen track in het doelmodel; zonder deze regel werd `'ona'.split(':')[0]` stil een
+    // track met de naam "ona" die nergens in `TRACKS` staat.
+    if (id === ONA_MODULE_ID) continue;
     out.add(id === KNM_MODULE_ID ? 'knm' : (id.split(':')[0] as Track));
   }
   return out;
@@ -200,6 +203,7 @@ export function productLabels(product: string | null): string[] {
   const ids = modulesOf(product).map(normaliseModule).filter((x): x is NonNullable<typeof x> => x !== null);
   const out: string[] = [];
   if (ids.includes(KNM_MODULE_ID)) out.push('KNM');
+  if (ids.includes(ONA_MODULE_ID)) out.push('ONA');
   for (const level of ['a2', 'b1']) {
     const skills = ids.filter(id => id.startsWith(`${level}:`)).map(id => id.split(':')[1]);
     if (skills.length === 0) continue;

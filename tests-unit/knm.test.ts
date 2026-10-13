@@ -141,7 +141,9 @@ describe('pricing', () => {
     expect(priceForSelection(parseSelection(['knm']))).toBeGreaterThan(0);
   });
 
-  it('has exactly one level-less module', () => {
-    expect(MODULES.filter(m => m.level === null)).toHaveLength(1);
+  // Sinds 13-10 zijn het er twee: KNM en ONA. Allebei bij naam, zodat een derde niet stil
+  // binnenkomt en buiten de bundelrekening valt.
+  it('has exactly the level-less modules KNM and ONA', () => {
+    expect(MODULES.filter(m => m.level === null).map(m => m.slug)).toEqual(['knm', 'ona']);
   });
 });

@@ -1,5 +1,6 @@
 import { createClient } from './supabase/server';
-import { ownsKnm, ownsModule } from './entitlements';
+import { ownsKnm, ownsModule, ownsOna } from './entitlements';
+import { isOnaAvailable } from './ona/access';
 import { emptyLevelledProgress, fetchPortalProgress, type AllPortalProgress } from './portal-progress';
 import {
   KNM, KNM_SLUG, LEVELS, SKILLS, getFormat, moduleGroupLabel,
@@ -74,6 +75,12 @@ export type PortalMenu = {
   available: PortalMenuGroup[];
   /** True when nothing is owned — the sidebar then leads with the offer. */
   isEmpty: boolean;
+  /**
+   * ONA staat buiten de groepen: het heeft geen onderdelen met examens, maar drie eigen rijen
+   * (portfolio, eindgesprek, inleveren). `available` is false tot de docent de inhoud heeft
+   * nagekeken; dan blijft de zijbalk "roadmap" tonen.
+   */
+  ona: { available: boolean; owned: boolean };
 };
 
 function skillItem(
@@ -119,7 +126,7 @@ function knmItem(meta: Meta, progress: AllPortalProgress): PortalMenuItem {
  * `examCount` rather than by omitting the row.
  */
 export async function fetchPortalMenu(): Promise<PortalMenu> {
-  const empty: PortalMenu = { owned: [], available: [], isEmpty: true };
+  const empty: PortalMenu = { owned: [], available: [], isEmpty: true, ona: { available: isOnaAvailable(), owned: false } };
 
   try {
     const supabase = await createClient();
@@ -178,5 +185,6 @@ export function buildPortalMenu(
     owned,
     available: groups.filter(g => !g.owned),
     isEmpty: owned.length === 0,
+    ona: { available: isOnaAvailable(), owned: ownsOna(meta) },
   };
 }

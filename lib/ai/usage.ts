@@ -26,7 +26,7 @@ export type AiCallUsage = {
 };
 
 export type RecordUsageInput = {
-  kind: 'grade_text' | 'grade_audio' | 'transcribe';
+  kind: 'grade_text' | 'grade_audio' | 'transcribe' | 'ona_check' | 'ona_gesprek';
   provider: string;
   model: string;
   requestId: string;

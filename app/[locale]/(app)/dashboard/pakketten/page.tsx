@@ -2,10 +2,12 @@ import type { Metadata } from 'next';
 import { redirect } from 'next/navigation';
 import { Check } from 'lucide-react';
 import { createClient } from '@/lib/supabase/server';
-import { ownsKnm, ownsModule, planFromMetadata } from '@/lib/entitlements';
+import { ownsKnm, ownsModule, ownsOna, planFromMetadata } from '@/lib/entitlements';
+import { isOnaAvailable } from '@/lib/ona/access';
+import { ONA_CARD_COUNT } from '@/data/ona/cards';
 import { FREE_GRADED_PER_SKILL } from '@/lib/grading-limits';
 import { MODULES } from '@/lib/pricing';
-import { DEFAULT_LEVEL, getOnderdeel, moduleGroupLabel, type SkillSlug } from '@/data/skills';
+import { DEFAULT_LEVEL, getOnderdeel, isOna, moduleGroupLabel, type SkillSlug } from '@/data/skills';
 import { fetchPublishedExamNumbers } from '@/lib/portal-progress';
 import AppShell from '../../components/AppShell';
 import ModulePicker from './ModulePicker';
@@ -57,9 +59,12 @@ export default async function PakkettenPage({
    */
   const published = await fetchPublishedExamNumbers();
   const sellable = MODULES.filter(m =>
+    // ONA heeft geen examens; hij staat te koop zodra de docent de inhoud heeft nagekeken.
+    isOna(m.skill)
+      ? isOnaAvailable()
     // KNM earns its place the same way B1 does — by having published exams. It has no level
     // to index, so it is matched before the per-level lookup rather than inside it.
-    m.level === null
+    : m.level === null
       ? published.knm.size > 0
       : m.level === DEFAULT_LEVEL || published[m.level][m.skill as SkillSlug].size > 0,
   );
@@ -102,6 +107,21 @@ export default async function PakkettenPage({
             locale={locale}
             initialSelection={focus ? [focus] : []}
             modules={sellable.map(mod => {
+              if (isOna(mod.skill)) {
+                return {
+                  slug: mod.slug,
+                  level: null,
+                  levelLabel: 'ONA',
+                  skill: mod.skill,
+                  label: 'ONA',
+                  examCount: 0,
+                  itemCount: null,
+                  itemNoun: '',
+                  hasRubricFeedback: false,
+                  metaLine: `${ONA_CARD_COUNT} resultaatkaarten · eindgesprek oefenen`,
+                  owned: ownsOna(meta),
+                };
+              }
               const skill = getOnderdeel(mod.skill)!;
               return {
                 slug: mod.slug,

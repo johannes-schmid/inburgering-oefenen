@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import { useTranslations } from 'next-intl';
-import { BookOpen, ChevronRight, ClipboardList, LayersIcon, LayoutDashboard, LogOut, Mail, Plus, UserPlus } from 'lucide-react';
+import { BookOpen, ChevronRight, ClipboardList, LayersIcon, LayoutDashboard, LogOut, Mail, MessageSquare, Plus, Send, UserPlus } from 'lucide-react';
 import { createClient } from '@/lib/supabase/client';
 import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
 import LogoMark from '@/components/site/LogoMark';
@@ -268,22 +268,69 @@ export default function PortalSidebar({
           );
         })}
 
-        {/* ONA is aangekondigd en er is niets gebouwd. Het staat er zodat de zijbalk het hele
-            traject noemt dat het merk claimt — en het is nadrukkelijk geen link en zichtbaar
-            doffer, zodat het geen pagina belooft die niet bestaat. Zodra het er is wordt het
-            een groep in `lib/portal-menu.ts` en verdwijnt dit blok. */}
-        <span className="side-mod soon" aria-disabled="true">
-          <span className="side-mod-link">
-            {/* `muted`: aangekondigd, niets erachter. Dat tekent de studio expres als eigen
-                staat — een vervaagde navy tegel leest nog steeds als beschikbaar. */}
-            <span className="side-badge mark">
-              <ExamMark track="ona" size={40} muted onDark />
+        {menu?.ona.available ? (
+          /* ONA als eigen groep, in dezelfde vorm als KNM: de moduletegel linkt naar het
+             overzicht, de chevron klapt de drie rijen uit. Geen `PortalMenuGroup`, want die
+             draagt onderdelen met examens en ONA heeft er geen. */
+          <div className={`side-group${open.includes('ona') ? ' open' : ''}`}>
+            <div className={`side-mod${activeGroup === 'ona' ? ' within' : ''}${activeGroup === 'ona' && active === 'overview-module' ? ' on' : ''}`}>
+              <a
+                href={`/${locale}/dashboard/ona`}
+                aria-current={activeGroup === 'ona' && active === 'overview-module' ? 'page' : undefined}
+                className={`side-mod-link${menu.ona.owned ? '' : ' dim'}`}
+              >
+                <span className="side-badge mark">
+                  <ExamMark track="ona" size={40} onDark />
+                </span>
+                {/* Niet vertaald: ONA is een eigennaam, DUO's eigen afkorting. */}
+                <span className="side-lb">ONA</span>
+              </a>
+              <button
+                type="button"
+                onClick={() => toggle('ona')}
+                aria-expanded={open.includes('ona')}
+                aria-label="ONA"
+                className="side-chev"
+              >
+                <ChevronRight size={15} strokeWidth={2.4} />
+              </button>
+            </div>
+            {open.includes('ona') && (
+              <div className="side-sub">
+                {([
+                  ['ona-portfolio', '/dashboard/ona', 'ona_portfolio', ClipboardList],
+                  ['ona-eindgesprek', '/dashboard/ona/eindgesprek', 'ona_eindgesprek', MessageSquare],
+                  ['ona-inleveren', '/dashboard/ona/inleveren', 'ona_inleveren', Send],
+                ] as const).map(([key, href, label, Icon]) => {
+                  const on = activeGroup === 'ona' && active === key;
+                  return (
+                    <a
+                      key={key}
+                      href={`/${locale}${href}`}
+                      aria-current={on ? 'page' : undefined}
+                      className={`side-row sub${on ? ' on' : ''}`}
+                    >
+                      <span className="side-ic" aria-hidden><Icon size={13} strokeWidth={2.2} /></span>
+                      <span className="side-lb">{tNav(label)}</span>
+                    </a>
+                  );
+                })}
+              </div>
+            )}
+          </div>
+        ) : (
+          /* ONA wacht op de review van de docent (`isOnaAvailable`). Tot dan: geen link en
+             zichtbaar doffer, zodat het geen pagina belooft die er nog niet mag zijn. */
+          <span className="side-mod soon" aria-disabled="true">
+            <span className="side-mod-link">
+              <span className="side-badge mark">
+                <ExamMark track="ona" size={40} muted onDark />
+              </span>
+              <span className="side-lb">ONA</span>
             </span>
-            {/* Niet vertaald: ONA is een eigennaam, DUO's eigen afkorting. */}
-            <span className="side-lb">ONA</span>
+            <span className="side-tag">{t('tag_roadmap')}</span>
           </span>
-          <span className="side-tag">{t('tag_roadmap')}</span>
-        </span>
+        )}
 
         {showExtend && (
           <a href={`/${locale}/dashboard/pakketten?vanaf=sidebar`} className="side-cta">

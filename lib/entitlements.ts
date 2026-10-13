@@ -9,8 +9,8 @@
  */
 import { UNGATE_PAID_FEATURES } from './features';
 import {
-  DEFAULT_LEVEL, KNM_SLUG, isKnm, isLevel, isSkillSlug,
-  type KnmSlug, type Level, type SkillSlug,
+  DEFAULT_LEVEL, KNM_SLUG, ONA_SLUG, isKnm, isLevel, isOna, isSkillSlug,
+  type KnmSlug, type Level, type OnaSlug, type SkillSlug,
 } from '@/data/skills';
 
 export type Plan = 'free' | 'premium' | 'premium_plus';
@@ -62,13 +62,16 @@ export type LevelledModuleId = `${Level}:${SkillSlug}`;
  * inside the A2 bundle — which is priced as "the four taalonderdelen of one level" and does
  * not include it (owner's decision, 2026-08-24).
  */
-export type ModuleId = LevelledModuleId | KnmSlug;
+export type ModuleId = LevelledModuleId | KnmSlug | OnaSlug;
 
 export function moduleId(level: Level, skill: SkillSlug): LevelledModuleId {
   return `${level}:${skill}`;
 }
 
 export const KNM_MODULE_ID: KnmSlug = KNM_SLUG;
+
+/** ONA's module-id: net als KNM een kale slug, want ONA heeft ook geen niveau. */
+export const ONA_MODULE_ID: OnaSlug = ONA_SLUG;
 
 export function parseModuleId(raw: string): { level: Level | null; skill: SkillSlug | KnmSlug } | null {
   if (isKnm(raw)) return { level: null, skill: KNM_SLUG };
@@ -92,6 +95,8 @@ export function normaliseModule(raw: string): ModuleId | null {
   // Checked before the bare-slug branch: `knm` is not a `SkillSlug`, so it would otherwise
   // fall through to `parseModuleId` and be rejected — silently voiding a real purchase.
   if (isKnm(raw)) return KNM_MODULE_ID;
+  // Zelfde val als bij KNM: `ona` is geen `SkillSlug` en zou anders als ongeldig wegvallen.
+  if (isOna(raw)) return ONA_MODULE_ID;
   if (isSkillSlug(raw)) return moduleId(DEFAULT_LEVEL, raw);
   return parseModuleId(raw) ? (raw as ModuleId) : null;
 }
@@ -171,4 +176,15 @@ export function ownsModule(meta: Meta, level: Level, skill: SkillSlug): boolean 
 export function ownsKnm(meta: Meta): boolean {
   if (planFromMetadata(meta) !== 'free') return true;
   return modulesFromMetadata(meta).includes(KNM_MODULE_ID);
+}
+
+/**
+ * Heeft dit account de ONA-module?
+ *
+ * Eigen functie om dezelfde reden als `ownsKnm`. De legacy all-access-`plan` opent ONA níet:
+ * die accounts kochten "alle oefenexamens", en ONA heeft geen oefenexamens — het is een
+ * portfoliomodule die toen niet bestond en ook niet zo omschreven werd.
+ */
+export function ownsOna(meta: Meta): boolean {
+  return modulesFromMetadata(meta).includes(ONA_MODULE_ID);
 }

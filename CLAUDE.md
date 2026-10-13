@@ -83,7 +83,7 @@ content spends exactly that credibility.
 | **Taal A2** | live — 40 oefenexamens published | available, by name |
 | **Taal B1** | live — Lezen/Schrijven/Spreken published and indexed; **Luisteren empty** | available, by name |
 | **KNM** | live — 10 oefenexamens, 7 lesmodules, 366 woordkaarten | available, by name |
-| **ONA** | announced only; covered by the tijdlijn tool and the gidsen | *binnenkort* |
+| **ONA** | **built, not live** — portfolio module (8 kaarten, check, eindgesprek oefenen) behind `isOnaAvailable()`; opens when all of `data/ona/` is `reviewed` | *binnenkort* until then |
 
 `TRACKS` in `app/[locale]/(main)/page.tsx` is that table as code. **When a track goes live, `TRACKS`,
 `data/skills.ts` and the copy move in one commit.**
@@ -815,6 +815,14 @@ afrekenlink** (OpenAI-beleid); en **`is_correct`/`explanation`/`model_answer` ko
 `Exercise`** — het oordeel komt uit `submit_answer`.
 
 **Still open, with the detail in `docs/decisions/open-items.md`:**
+
+- **ONA wacht op Amber en op productie.** De module staat lokaal compleet (`dashboard/ona/`,
+  `lib/ona/`, `data/ona/`) maar is alleen in `next dev` zichtbaar: `isOnaAvailable()` opent hem pas
+  als alle acht kaarten en de vragenbank op `reviewed` staan. Daarvoor nodig: (1) Amber kijkt
+  `data/ona/cards.ts` en `data/ona/eindgesprek.ts` na; (2) migratie
+  `20261013120000_ona_portfolio.sql` op productie; (3) de go-live-commit verplaatst `TRACKS`,
+  `/platform`, `/oefenen`, `/premium`, `lib/llms.ts` en de sitemap samen. ONA is geen
+  `OnderdeelSlug` en staat niet in `skills` — dat is bewust, zie de kop van de migratie.
 
 - **`/admin/doelen` toont op productie "onbekend" voor bezoekers tot `GA4_SA_JSON`** (de JSON van
   het serviceaccount `claude-seo-reader`) als env var op Vercel staat. De aannames van het

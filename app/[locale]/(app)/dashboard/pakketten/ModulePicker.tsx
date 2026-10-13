@@ -3,7 +3,7 @@
 import { useMemo, useState } from 'react';
 import { ArrowRight, Check, Loader2, Lock, Sparkles, TriangleAlert } from 'lucide-react';
 import CategoryMark from '@/components/horizon/CategoryMark';
-import type { Level, OnderdeelSlug } from '@/data/skills';
+import type { Level, OnaSlug, OnderdeelSlug } from '@/data/skills';
 import {
   BUNDLE_LIST_PRICE_CENTS,
   BUNDLE_PRICE_CENTS,
@@ -24,13 +24,18 @@ export type PickerModule = {
   /** `'A2'`, or `'KNM'` for the onderdeel that has no level. For the group heading. */
   levelLabel: string;
   /** The bare onderdeel, for the icon (which keys on that, not on the module id). */
-  skill: OnderdeelSlug;
+  skill: OnderdeelSlug | OnaSlug;
   label: string;
   examCount: number;
   /** `null` where DUO's format for this level is unverified. */
   itemCount: number | null;
   itemNoun: string;
   hasRubricFeedback: boolean;
+  /**
+   * Vervangt de regel "N oefenexamens · M vragen". Voor ONA, dat geen oefenexamens heeft:
+   * "0 oefenexamens" op een prijskaart is waar en zegt toch het verkeerde.
+   */
+  metaLine?: string;
   /** Already paid for — shown as owned and excluded from the total. */
   owned: boolean;
 };
@@ -74,7 +79,9 @@ export default function ModulePicker({
   const groups = useMemo(() => {
     const out: { level: Level | null; levelLabel: string; mods: PickerModule[] }[] = [];
     for (const m of modules) {
-      const g = out.find(x => x.level === m.level);
+      // Op het label en niet op `level`: KNM en ONA hebben allebei geen niveau, en op `level`
+      // zouden ze samen onder het kopje "KNM" vallen.
+      const g = out.find(x => x.levelLabel === m.levelLabel);
       if (g) g.mods.push(m);
       else out.push({ level: m.level, levelLabel: m.levelLabel, mods: [m] });
     }
@@ -120,7 +127,7 @@ export default function ModulePicker({
   return (
     <div className="mp">
       {groups.map(group => (
-      <section key={group.level ?? 'knm'} className="mp-group">
+      <section key={group.levelLabel} className="mp-group">
         {/* Only labelled when there is more than one level to tell apart. */}
         {groups.length > 1 && (
           <h2 className="mp-group-title">
@@ -156,8 +163,12 @@ export default function ModulePicker({
                     {/* The item count is dropped rather than shown as "—" when DUO's format
                         for this level is unverified: a dash on a price card reads as a
                         broken template, and the exam count alone is still true. */}
-                    {mod.examCount} oefenexamens
-                    {mod.itemCount !== null && ` · ${mod.itemCount} ${mod.itemNoun}`}
+                    {mod.metaLine ?? (
+                      <>
+                        {mod.examCount} oefenexamens
+                        {mod.itemCount !== null && ` · ${mod.itemCount} ${mod.itemNoun}`}
+                      </>
+                    )}
                   </span>
                 </span>
               </span>

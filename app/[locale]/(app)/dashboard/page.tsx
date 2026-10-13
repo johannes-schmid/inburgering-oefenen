@@ -2,7 +2,11 @@ import type { Metadata } from 'next';
 import { getTranslations } from 'next-intl/server';
 import { ArrowRight } from 'lucide-react';
 import { createClient } from '@/lib/supabase/server';
-import { modulesFromMetadata, ownsKnm, ownsModule, planFromMetadata } from '@/lib/entitlements';
+import { modulesFromMetadata, ownsKnm, ownsModule, ownsOna, planFromMetadata } from '@/lib/entitlements';
+import { isOnaAvailable } from '@/lib/ona/access';
+import { fetchOnaState } from '@/lib/ona/server';
+import { cardProgress } from '@/lib/ona/rules';
+import { ONA_CARDS, ONA_CARD_COUNT } from '@/data/ona/cards';
 import { emptyLevelledProgress, fetchPortalProgress } from '@/lib/portal-progress';
 import { KNM, LEVELS, SKILLS, levelLabel, isSkillSlug, skillsAtLevel, type Level } from '@/data/skills';
 import { totalExamsForLevel } from '@/lib/pricing';
@@ -65,6 +69,9 @@ export default async function DashboardPage({ params }: { params: Promise<{ loca
     fetchNextLessons(user?.id ?? null),
     fetchWeek(user?.id ?? null),
   ]);
+  const tOna = await getTranslations('ona');
+  const onaLive = isOnaAvailable();
+  const onaState = onaLive ? await fetchOnaState(user?.id ?? null) : null;
 
   const pct = (done: number, total: number) => (total > 0 ? Math.round((done / total) * 100) : 0);
 
@@ -78,7 +85,8 @@ export default async function DashboardPage({ params }: { params: Promise<{ loca
      dat dit platform belooft, en het weglaten zou "3 van 3" opleveren voor iemand die nog niet
      alles heeft. */
   const ownedTracks =
-    LEVELS.filter(l => SKILLS.some(s => ownsModule(meta, l, s.slug))).length + (ownsKnm(meta) ? 1 : 0);
+    LEVELS.filter(l => SKILLS.some(s => ownsModule(meta, l, s.slug))).length + (ownsKnm(meta) ? 1 : 0)
+    + (ownsOna(meta) ? 1 : 0);
   const catalogueSize = LEVELS.length + 2;
 
   const firstName = String(meta.full_name ?? meta.name ?? '').trim().split(' ')[0];
@@ -206,20 +214,48 @@ export default async function DashboardPage({ params }: { params: Promise<{ loca
                   />
                 ))}
 
-                {/* ONA is aangekondigd en niet gebouwd: geen link, geen prijs, geen slot. */}
-                <TrackCard
-                  mark={<ExamMark track="ona" size={56} onDark muted />}
-                  title={t('mod_ona_title')}
-                  sub={t('mod_ona_sub')}
-                  state="soon"
-                  meta={[]}
-                  note={t('mod_soon_body')}
-                  pct={null}
-                  progressLabel={null}
-                  cta={null}
-                  href={null}
-                  soonLabel={t('tag_soon')}
-                />
+                {onaLive ? (() => {
+                  /* ONA telt kaarten, geen examens. Bezig = een beroep gekozen; dan zegt de balk
+                     hoeveel van de acht kaarten klaar zijn. Kaart 1 is gratis, dus zonder module
+                     is de kaart `open` en niet `locked`: er valt iets te beginnen. */
+                  const entries = onaState?.entries ?? [];
+                  const byNo = new Map(entries.map(e => [e.cardNo, e]));
+                  const klaar = ONA_CARDS.filter(c => cardProgress(c, byNo.get(c.number)).status === 'klaar').length;
+                  const started = Boolean(onaState?.portfolio);
+                  return (
+                    <TrackCard
+                      mark={<ExamMark track="ona" size={56} onDark />}
+                      title={t('mod_ona_title')}
+                      sub={t('mod_ona_sub')}
+                      state={started ? 'active' : 'open'}
+                      meta={started ? [] : [
+                        { icon: 'parts', label: tOna('mod_cards', { n: ONA_CARD_COUNT }) },
+                        { icon: 'exams', label: tOna('mod_practice') },
+                      ]}
+                      note={null}
+                      pct={started ? pct(klaar, ONA_CARD_COUNT) : null}
+                      progressLabel={started ? tOna('progress', { done: klaar, total: ONA_CARD_COUNT }) : null}
+                      cta={started ? t('mod_continue') : t('card_start')}
+                      href={`/${locale}/dashboard/ona`}
+                      soonLabel={t('tag_soon')}
+                    />
+                  );
+                })() : (
+                  /* ONA staat tot de review van de docent op "binnenkort": geen link, geen prijs. */
+                  <TrackCard
+                    mark={<ExamMark track="ona" size={56} onDark muted />}
+                    title={t('mod_ona_title')}
+                    sub={t('mod_ona_sub')}
+                    state="soon"
+                    meta={[]}
+                    note={t('mod_soon_body')}
+                    pct={null}
+                    progressLabel={null}
+                    cta={null}
+                    href={null}
+                    soonLabel={t('tag_soon')}
+                  />
+                )}
               </div>
 
             </div>

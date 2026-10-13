@@ -14,10 +14,10 @@
  * now only read to describe *historic* one-off payments — nothing sells those tiers any more.
  */
 import {
-  KNM, KNM_SLUG, LEVELS, SKILLS, getFormat, isKnm,
-  type KnmSlug, type Level, type SkillSlug,
+  KNM, KNM_SLUG, LEVELS, ONA_SLUG, SKILLS, getFormat, isKnm, isOna,
+  type KnmSlug, type Level, type OnaSlug, type SkillSlug,
 } from '@/data/skills';
-import { KNM_MODULE_ID, moduleId, type ModuleId } from './entitlements';
+import { KNM_MODULE_ID, ONA_MODULE_ID, moduleId, type ModuleId } from './entitlements';
 
 /** Price of a single module, per month, in cents. */
 export const MODULE_PRICE_CENTS = 995;
@@ -65,7 +65,7 @@ export type ModuleOffer = {
    * plus KNM price as a full bundle.
    */
   level: Level | null;
-  skill: SkillSlug | KnmSlug;
+  skill: SkillSlug | KnmSlug | OnaSlug;
   priceCents: number;
   /** Practice exams included — all of them for this skill at this level. */
   examCount: number;
@@ -112,7 +112,24 @@ const KNM_MODULE: ModuleOffer = {
   hasRubricFeedback: false,
 };
 
-export const MODULES: ModuleOffer[] = [...LEVELLED_MODULES, KNM_MODULE];
+/**
+ * ONA, als eigen module voor de gewone moduleprijs en buiten de niveaubundels (besluit
+ * eigenaar, 13-10) — dezelfde redenering als KNM.
+ *
+ * `examCount: 0` is waar, geen gat: ONA heeft geen oefenexamens maar een portfolio van acht
+ * kaarten. Of hij te koop staat beslist `isOnaLive()` in `lib/ona/access.ts`, niet deze lijst.
+ */
+const ONA_MODULE: ModuleOffer = {
+  slug: ONA_MODULE_ID,
+  level: null,
+  skill: ONA_SLUG,
+  priceCents: MODULE_PRICE_CENTS,
+  examCount: 0,
+  itemCount: null,
+  hasRubricFeedback: false,
+};
+
+export const MODULES: ModuleOffer[] = [...LEVELLED_MODULES, KNM_MODULE, ONA_MODULE];
 
 export function getModule(slug: string): ModuleOffer | undefined {
   return MODULES.find(m => m.slug === slug);
@@ -134,6 +151,11 @@ export function modulesForLevel(level: Level): LevelledModuleOffer[] {
 /** The KNM module. Its own accessor so no caller has to know its id is a bare slug. */
 export function knmModule(): ModuleOffer {
   return KNM_MODULE;
+}
+
+/** De ONA-module. */
+export function onaModule(): ModuleOffer {
+  return ONA_MODULE;
 }
 
 /** Every practice exam at one level — what "alle oefenexamens" means in that level's copy. */
@@ -184,6 +206,8 @@ export function priceForSelection(selection: ModuleSelection): number {
   // and added *explicitly*, because a module the loop silently skips would be a module the
   // customer gets for nothing.
   if (unique.includes(KNM_MODULE_ID)) total += MODULE_PRICE_CENTS;
+  // ONA idem: geen niveau, dus expliciet erbij, anders zit hij gratis in het mandje.
+  if (unique.includes(ONA_MODULE_ID)) total += MODULE_PRICE_CENTS;
   return total;
 }
 
@@ -217,6 +241,8 @@ export function parseSelection(raw: unknown): ModuleSelection {
     // which matches nothing and prices to zero.
     const candidate = (isKnm(x)
       ? KNM_MODULE_ID
+      : isOna(x)
+        ? ONA_MODULE_ID
       : SKILL_SLUG_SET.has(x)
         ? moduleId('a2', x as SkillSlug)
         : x) as ModuleSlug;

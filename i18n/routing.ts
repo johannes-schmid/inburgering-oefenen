@@ -80,6 +80,12 @@ export const routing = defineRouting({
     '/dashboard/[level]/[skill]': '/dashboard/[level]/[skill]',
     // KNM's portal pages carry no level segment — see the KNM section in data/skills.ts.
     '/dashboard/knm': '/dashboard/knm',
+    // ONA: geen niveau, net als KNM. Zie `lib/ona/` en `data/ona/`.
+    '/dashboard/ona': '/dashboard/ona',
+    '/dashboard/ona/start': '/dashboard/ona/start',
+    '/dashboard/ona/kaart/[n]': '/dashboard/ona/kaart/[n]',
+    '/dashboard/ona/eindgesprek': '/dashboard/ona/eindgesprek',
+    '/dashboard/ona/inleveren': '/dashboard/ona/inleveren',
     '/dashboard/woordkaarten': '/dashboard/woordkaarten',
     '/dashboard/profiel': '/dashboard/profiel',
     '/dashboard/pakketten': '/dashboard/pakketten',
