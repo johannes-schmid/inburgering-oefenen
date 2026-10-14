@@ -1,6 +1,7 @@
 'use client';
 
-import { ArrowUp, Check, Info, Lock, Loader2, RefreshCw, TriangleAlert } from 'lucide-react';
+import { useEffect, useRef, useState } from 'react';
+import { ArrowUp, Check, Lock, RefreshCw, TriangleAlert, X } from 'lucide-react';
 import {
   effectiveScores,
   isTeacherReviewed,
@@ -11,22 +12,28 @@ import {
   type CriterionScore,
   type RubricCriterion,
 } from '@/lib/rubrics';
+import './glas-player.css';
 
 /**
- * One rubric result, rendered the same way everywhere it appears: inline in the player, on the
- * results screen, and beside the docent's own scores in `/admin/beoordeling`.
+ * One rubric result, rendered the same way everywhere it appears: inline in the player and on the
+ * results screen.
  *
  * ## Two rules this component exists to enforce
  * 1. **The docent's score wins.** Both her rows and the model's live in `open_criterion_scores`
  *    (`UNIQUE (submission_id, criterion_key, source)`) because that pairing is the eval dataset —
  *    but the candidate sees one number per criterion, and where the docent has entered one, it is
  *    hers. `effectiveScores()` does the collapsing; the provenance line changes with it.
- * 2. **Never "de AI beoordeelt je antwoord".** The model applies the docent's criteria; that is
- *    the product's whole claim ("echt door een docent gevalideerd, geen AI") and the wording here
- *    is not decoration. See CLAUDE.md.
+ * 2. **Never "de AI beoordeelt je antwoord".** A model applies the docent's criteria, and the
+ *    attribution line says exactly that, plus that this is practice feedback and no DUO result.
+ *    See CLAUDE.md §2.
  *
- * Below Compleet the criteria text is withheld and only the band shows — the feedback itself is
+ * Below Compleet the criteria text is withheld and only the scores show — the feedback itself is
  * what the tier buys. The score is never hidden, because the candidate earned it.
+ *
+ * ## Glas (§10 "Nakijken · terwijl het gebeurt")
+ * Wat je ziet is wat er gebeurt: tijdens het nakijken gaat er een lichtstreep over de tekst (of
+ * loopt de golf van de opname), dan vallen de criteria één voor één op hun plek, en pas daarna
+ * komt het totaal. Met "beweging verminderen" staat meteen de uitslag.
  */
 
 export type RubricFeedbackState = 'idle' | 'grading' | 'graded' | 'error';
@@ -48,7 +55,7 @@ type Props = {
   answerText?: string | null;
   highlights?: FeedbackHighlight[];
   state?: RubricFeedbackState;
-  /** Compleet sees the per-criterion feedback; lower tiers see the band and an upsell. */
+  /** Compleet sees the per-criterion feedback; lower tiers see the scores and an upsell. */
   canSeeDetail?: boolean;
   premiumHref?: string;
   errorMessage?: string | null;
@@ -56,14 +63,14 @@ type Props = {
   /** The grader's forward-looking advice, listed under "wat kan beter" in the wide layout. */
   tips?: string[];
   passThresholdPct?: number;
-  /** Admin drawer: show every score with its source instead of collapsing to one per criterion. */
+  /** Show every score with its source instead of collapsing to one per criterion. */
   showSources?: boolean;
   /**
    * Set when the surrounding surface already shows the answer with its marks — Spreken annotates
    * the transcript in place, and a second annotated copy in this card is just duplication.
    */
   answerShownElsewhere?: boolean;
-  /** Denser type and spacing, for the in-exam card that now sits beside the question. */
+  /** Denser type and spacing, for the in-exam card that sits beside the question. */
   compact?: boolean;
   /**
    * `wide` spreads the criteria across a grid and splits the notes into "wat ging goed" and "wat
@@ -72,6 +79,12 @@ type Props = {
    */
   layout?: 'stack' | 'wide';
   className?: string;
+  /** Wat er tijdens het nakijken onder de lichtstreep ligt: de geschreven tekst. */
+  pendingText?: string | null;
+  /** Spreken laat de opname "uitschrijven" in plaats van een tekst te scannen. */
+  medium?: 'tekst' | 'opname';
+  /** De monoregel linksboven, bijv. "Opdracht 2 · E-mail aan je buurvrouw". */
+  title?: string;
 };
 
 /** "a", "a en b", "a, b en c" — Dutch joins the final item with "en", not a comma. */
@@ -86,6 +99,83 @@ const BAND_LABEL: Record<string, string> = {
   bijna: 'Bijna voldoende',
   onvoldoende: 'Nog niet voldoende',
 };
+
+/** Hoe lang één criterium erover doet om op zijn plek te vallen (glas.html §10). */
+const STEP_MS = 650;
+/** De lichtstreep over de tekst, vóór de criteria. */
+const SCAN_MS = 1200;
+
+/** Vaste golfhoogtes voor Spreken: de opname wordt "uitgeschreven". */
+const WVR = Array.from({ length: 64 }, (_, i) => 6 + Math.round(Math.abs(Math.sin(i * 0.42) * Math.cos(i * 0.17)) * 32));
+
+type Phase = 'scan' | 'resolve' | 'done';
+
+/**
+ * De nakijkvolgorde, één keer, zodra de kaart in beeld komt. Timers in plaats van CSS-vertraging,
+ * omdat de statusregel ("Criteria van de docent" → "Nagekeken") mee moet lopen.
+ */
+function useReveal(active: boolean, count: number, withScan: boolean) {
+  const ref = useRef<HTMLDivElement | null>(null);
+  const [phase, setPhase] = useState<Phase>('scan');
+  const [resolved, setResolved] = useState(0);
+  const ran = useRef(false);
+
+  useEffect(() => {
+    if (!active || ran.current) return;
+    const el = ref.current;
+    const timers: ReturnType<typeof setTimeout>[] = [];
+    const run = () => {
+      if (ran.current) return;
+      ran.current = true;
+      if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+        setResolved(count);
+        setPhase('done');
+        return;
+      }
+      const t0 = withScan ? SCAN_MS : 0;
+      timers.push(setTimeout(() => setPhase('resolve'), t0));
+      for (let i = 0; i < count; i++) {
+        timers.push(setTimeout(() => setResolved(i + 1), t0 + 400 + i * STEP_MS));
+      }
+      timers.push(setTimeout(() => setPhase('done'), t0 + 400 + count * STEP_MS));
+    };
+    if (!el || typeof IntersectionObserver === 'undefined') {
+      run();
+      return () => timers.forEach(clearTimeout);
+    }
+    const io = new IntersectionObserver(
+      es => { if (es.some(e => e.isIntersecting)) { io.disconnect(); run(); } },
+      { threshold: 0.2 },
+    );
+    io.observe(el);
+    return () => { io.disconnect(); timers.forEach(clearTimeout); };
+  }, [active, count, withScan]);
+
+  return { ref, phase, resolved };
+}
+
+function Who({ reviewed }: { reviewed: boolean }) {
+  return (
+    <div className="g-xrv-who">
+      {/* eslint-disable-next-line @next/next/no-img-element */}
+      <img src="/images/amber-van-der-zalm-264.webp" alt="" />
+      <span>
+        {reviewed ? (
+          <>
+            <b>Nagekeken door Amber van der Zalm</b>, gecertificeerde NT2-docent. Oefenfeedback,
+            geen officiële uitslag van DUO.
+          </>
+        ) : (
+          <>
+            Een taalmodel beoordeelde dit met de criteria van <b>Amber van der Zalm</b>,
+            gecertificeerde NT2-docent. Zij controleert deze beoordeling na. Oefenfeedback, geen
+            officiële uitslag van DUO.
+          </>
+        )}
+      </span>
+    </div>
+  );
+}
 
 export default function RubricFeedback({
   criteria,
@@ -104,44 +194,77 @@ export default function RubricFeedback({
   compact = false,
   layout = 'stack',
   className = '',
+  pendingText = null,
+  medium = 'tekst',
+  title,
 }: Props) {
-  if (state === 'grading') {
-    return (
-      <div className={`rf ${className}`}>
-        <p className="rf-status">
-          <Loader2 size={15} className="animate-spin" aria-hidden />
-          Je antwoord wordt nagekeken met de criteria van de docent…
-        </p>
-      </div>
-    );
-  }
+  const pct = state === 'graded' ? pctFromCriteria(effectiveScores(scores), criteria) : null;
+  const graded = state === 'graded' && pct != null;
+  const showDoc = canSeeDetail && !answerShownElsewhere && Boolean(answerText?.trim()) && highlights.length > 0;
+  const shown = showSources ? scores : effectiveScores(scores);
+  const rowCount = criteria.reduce((n, c) => n + shown.filter(s => s.criterion_key === c.key).length, 0);
+  const { ref, phase, resolved } = useReveal(graded, rowCount, showDoc);
+
+  const wide = layout === 'wide';
+  const cls = `g-xrv${compact ? ' g-xrv-compact' : ''}${wide ? ' g-xrv-wide' : ''} ${className}`;
+  const head = title ?? 'Beoordeling';
 
   if (state === 'error') {
     return (
-      <div className={`rf rf-error ${className}`}>
-        <p className="rf-status">
-          <TriangleAlert size={15} aria-hidden />
+      <div className={cls} data-phase="done">
+        <p className="g-xrv-err">
+          <TriangleAlert aria-hidden />
           {errorMessage || 'Nakijken is niet gelukt. Je antwoord is wel opgeslagen.'}
         </p>
         {onRetry && (
-          <button type="button" onClick={onRetry} className="rf-retry">
-            <RefreshCw size={13} aria-hidden />
+          <button type="button" onClick={onRetry} className="g-btn g-btn-ghost g-btn-sm" style={{ alignSelf: 'flex-start' }}>
+            <RefreshCw aria-hidden />
             Opnieuw proberen
           </button>
         )}
-        <style>{CSS}</style>
       </div>
     );
   }
 
-  const shown = showSources ? scores : effectiveScores(scores);
-  const pct = pctFromCriteria(effectiveScores(scores), criteria);
+  /* Tijdens het nakijken: de lichtstreep gaat over je tekst (of de golf van je opname loopt), de
+     criteriumrijen glanzen nog leeg, het totaal is er nog niet. Geen draaiend wieltje zonder uitleg. */
+  if (state === 'grading') {
+    return (
+      <div className={cls} data-phase="scan" aria-busy="true">
+        <div className="g-xrv-hd">
+          <span className="g-mono">{head}</span>
+          <span className="g-xrv-status">
+            <span className="g-xrv-orb" aria-hidden />
+            <span>{medium === 'opname' ? 'Wordt beluisterd' : 'Wordt nagekeken'}</span>
+          </span>
+        </div>
+        <p className="g-xintro-line" role="status">
+          Je antwoord wordt nagekeken met de criteria van de docent…
+        </p>
+        {medium === 'opname' ? (
+          <div className="g-xrv-wvr" aria-hidden>
+            {WVR.map((h, i) => (
+              <b key={i} style={{ height: h, ['--i' as string]: i } as React.CSSProperties} />
+            ))}
+          </div>
+        ) : pendingText?.trim() ? (
+          <div className="g-xrv-doc" aria-hidden>{pendingText}</div>
+        ) : null}
+        <div className="g-xrv-crits" aria-hidden>
+          {[0, 1, 2].map(i => (
+            <div key={i} className="g-xrv-cr"><span className="g-xrv-cr-sk" /></div>
+          ))}
+        </div>
+        <div className="g-xrv-tot" aria-hidden><div><b>&nbsp;</b></div></div>
+        <Who reviewed={false} />
+      </div>
+    );
+  }
+
+  if (!graded || pct == null) return null;
+
   const reviewed = isTeacherReviewed(scores);
-
-  if (pct == null) return null;
-
   const band = scoreBand(pct, passThresholdPct);
-  const wide = layout === 'wide';
   const points = pointsFromCriteria(effectiveScores(scores), criteria);
 
   // A criterion the rubric defines but nobody scored is a grading bug, and it silently shrinks
@@ -167,58 +290,90 @@ export default function RubricFeedback({
     ...tips,
   ];
 
+  const passedBand = band === 'goed' || band === 'voldoende';
+  const statusText =
+    phase === 'done' ? 'Nagekeken' : phase === 'resolve' ? 'Criteria van de docent' : medium === 'opname' ? 'Wordt beluisterd' : 'Wordt nagekeken';
+  let row = 0;
+
   return (
-    <div className={`rf${compact ? ' rf-compact' : ''}${wide ? ' rf-wide' : ''} ${className}`}>
-      <div className="rf-head">
-        <div>
-          <span className={`rf-band rf-band-${band}`}>{BAND_LABEL[band]}</span>
-          <span className="rf-pct">{pct}%</span>
-          {points && (
-            <span className="rf-points">
-              {points.earned} van {points.max} punten
-            </span>
-          )}
-        </div>
+    <div ref={ref} className={cls} data-phase={phase}>
+      <div className="g-xrv-hd">
+        <span className="g-mono">{head}</span>
+        <span className="g-xrv-status">
+          <span className="g-xrv-orb" aria-hidden><Check strokeWidth={3} /></span>
+          <span>{statusText}</span>
+        </span>
       </div>
 
-      {/* Whose criteria these are, with a face.
-          The product's claim is that a certified NT2 docent stands behind every assessment, and an
-          unattributed percentage reads exactly like the AI grading this product exists to be
-          distinguished from. Wording stays honest about the order of events: her criteria applied
-          now, her review to follow. */}
-      <div className="rf-docent">
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img src="/images/amber-van-der-zalm-264.webp" alt="" className="rf-docent-face" />
-        <p>
-          {reviewed ? (
-            <>
-              <strong>Nagekeken door Amber van der Zalm</strong>, gecertificeerde NT2-docent. Oefenfeedback,
-              geen officiële uitslag van DUO.
-            </>
-          ) : (
-            <>
-              Een taalmodel beoordeelde dit met de criteria van <strong>Amber van der Zalm</strong>,
-              gecertificeerde NT2-docent. Zij controleert deze beoordeling na. Oefenfeedback, geen
-              officiële uitslag van DUO.
-            </>
-          )}
-        </p>
-        {reviewed && <Check size={14} strokeWidth={3} className="rf-docent-check" aria-hidden />}
-      </div>
+      {showDoc && answerText && (
+        <AnnotatedAnswer text={answerText} highlights={highlights} criteria={criteria} />
+      )}
 
       {missing.length > 0 && (
-        <p className="rf-status rf-warn">
-          <TriangleAlert size={14} aria-hidden />
-          {missing.length === 1
-            ? `Eén criterium ("${missing[0].criterion}") is nog niet beoordeeld.`
-            : `${missing.length} criteria zijn nog niet beoordeeld.`}{' '}
-          Het percentage gaat alleen over wat wél beoordeeld is.
+        <p className="g-xrv-focus">
+          <TriangleAlert aria-hidden />
+          <span>
+            {missing.length === 1
+              ? `Eén criterium ("${missing[0].criterion}") is nog niet beoordeeld.`
+              : `${missing.length} criteria zijn nog niet beoordeeld.`}{' '}
+            Het percentage gaat alleen over wat wél beoordeeld is.
+          </span>
         </p>
       )}
 
-      {canSeeDetail && weak.length > 0 && (
-        <p className="rf-focus">
-          <TriangleAlert size={14} strokeWidth={2.4} aria-hidden />
+      <div className="g-xrv-crits">
+        {criteria.flatMap(c => {
+          const rows = shown.filter(s => s.criterion_key === c.key);
+          if (rows.length === 0) return [];
+          const spans = highlights.filter(h => h.criterion_key === c.key);
+          return rows.map(s => {
+            const ok = phase === 'done' || row++ < resolved;
+            return (
+              <div
+                key={`${c.key}-${s.source}`}
+                className={`g-xrv-cr${ok ? ' ok' : ''}${weakKeys.has(c.key) ? ' g-xrv-weak' : ''}`}
+              >
+                <b>
+                  {c.criterion}
+                  {showSources && (
+                    <span className="g-xbdg" style={{ height: 22, marginInlineStart: 8 }}>
+                      {s.source === 'teacher' ? 'docent' : 'model'}
+                    </span>
+                  )}
+                </b>
+                <span className="g-xrv-pp" role="img" aria-label={`${s.score} van ${MAX_CRITERION_SCORE}`}>
+                  {Array.from({ length: MAX_CRITERION_SCORE }, (_, i) => (
+                    <i key={i} className={i < s.score ? 'on' : undefined} />
+                  ))}
+                  <em aria-hidden>{s.score}/{MAX_CRITERION_SCORE}</em>
+                </span>
+                {canSeeDetail && (s.feedback || (!wide && spans.length > 0)) && (
+                  <div className="g-xrv-cr-body">
+                    {s.feedback && <p>{s.feedback}</p>}
+                    {/* The spans this specific criterion was judged on. Without them a score is an
+                        assertion; with them the candidate can see which of their own words it is
+                        about. */}
+                    {!wide && spans.length > 0 && (
+                      <ul className="g-xrv-spans">
+                        {spans.map((h, i) => (
+                          <li key={i}>
+                            <q>{h.quote}</q>
+                            {h.note}
+                          </li>
+                        ))}
+                      </ul>
+                    )}
+                  </div>
+                )}
+              </div>
+            );
+          });
+        })}
+      </div>
+
+      {canSeeDetail && weak.length > 0 && phase === 'done' && (
+        <p className="g-xrv-focus">
+          <TriangleAlert strokeWidth={2.4} aria-hidden />
           {/* Naming the weak criteria only helps while they are the minority. Once everything lost
               points there is nothing to single out, and a list of all five reads as a scolding. */}
           {weak.length === criteria.length ? (
@@ -232,115 +387,51 @@ export default function RubricFeedback({
         </p>
       )}
 
-      {canSeeDetail && !answerShownElsewhere && answerText?.trim() && highlights.length > 0 && (
-        <AnnotatedAnswer
-          text={answerText}
-          highlights={highlights}
-          criteria={criteria}
-        />
-      )}
-
-      {canSeeDetail && wide && (
-        <p className="rf-section-label">Beoordeling per onderdeel</p>
-      )}
-
-      {canSeeDetail ? (
-        <ul className={`rf-list${weak.length > 0 ? ' rf-has-weak' : ''}`}>
-          {criteria.flatMap(c => {
-            const rows = shown.filter(s => s.criterion_key === c.key);
-            if (rows.length === 0) return [];
-            const spans = highlights.filter(h => h.criterion_key === c.key);
-            return rows.map(s => (
-              <li
-                key={`${c.key}-${s.source}`}
-                className={`rf-item${weakKeys.has(c.key) ? ' rf-item-weak' : ''}`}
-              >
-                <div className="rf-item-head">
-                  <span className="rf-crit">{c.criterion}</span>
-                  {showSources && (
-                    <span className={`rf-src rf-src-${s.source}`}>
-                      {s.source === 'teacher' ? 'docent' : 'model'}
-                    </span>
-                  )}
-                  <span className="rf-score">
-                    {s.score}
-                    <span className="rf-score-max">/{MAX_CRITERION_SCORE}</span>
-                  </span>
-                </div>
-                <div
-                  className="rf-bar"
-                  role="img"
-                  aria-label={`${s.score} van ${MAX_CRITERION_SCORE}`}
-                >
-                  {Array.from({ length: MAX_CRITERION_SCORE }, (_, i) => (
-                    <span key={i} className={i < s.score ? 'on' : ''} />
-                  ))}
-                </div>
-                {s.feedback && <p className="rf-fb">{s.feedback}</p>}
-                {/* The spans this specific criterion was judged on. Without them a score is an
-                    assertion; with them the candidate can see which of their own words it is
-                    about. */}
-                {!wide && spans.length > 0 && (
-                  <ul className="rf-spans">
-                    {spans.map((h, i) => (
-                      <li key={i} className={`rf-span rf-span-${h.kind}`}>
-                        <span className="rf-span-quote">&ldquo;{h.quote}&rdquo;</span>
-                        <span className="rf-span-note">{h.note}</span>
-                      </li>
-                    ))}
-                  </ul>
-                )}
-              </li>
-            ));
-          })}
-        </ul>
-      ) : (
-        <div className="rf-locked">
-          <p>
-            <Lock size={14} aria-hidden />
-            <strong>Wat er goed ging en wat beter kan</strong> staat per onderdeel klaar in
-            Compleet.
-          </p>
+      {!canSeeDetail && (
+        <div className="g-xrv-locked">
+          <Lock size={14} aria-hidden style={{ display: 'inline', verticalAlign: '-2px', marginInlineEnd: 6 }} />
+          <strong>Wat er goed ging en wat beter kan</strong> staat per onderdeel klaar in Compleet.
           {premiumHref && (
-            <a href={premiumHref} className="rf-cta">
-              Bekijk Compleet — €19,95
-            </a>
+            <>
+              <br />
+              <a href={premiumHref} className="g-tlink">Bekijk Compleet — €19,95</a>
+            </>
           )}
         </div>
       )}
 
-      {canSeeDetail && wide && (good.length > 0 || better.length > 0) && (
-        <div className="rf-cols">
+      {canSeeDetail && wide && (good.length > 0 || better.length > 0) && phase === 'done' && (
+        <div className="g-xrv-cols">
           {good.length > 0 && (
-            <section className="rf-col rf-col-good">
-              <h4>
-                <Check size={14} strokeWidth={3} aria-hidden />
-                Wat ging goed
-              </h4>
-              <ul>
-                {good.map((t, i) => (
-                  <li key={i}>{t}</li>
-                ))}
-              </ul>
+            <section className="g-xrv-col">
+              <h4><Check strokeWidth={3} aria-hidden style={{ color: 'var(--goed)' }} />Wat ging goed</h4>
+              <ul>{good.map((t, i) => <li key={i}>{t}</li>)}</ul>
             </section>
           )}
           {better.length > 0 && (
-            <section className="rf-col rf-col-better">
-              <h4>
-                <ArrowUp size={14} strokeWidth={3} aria-hidden />
-                Wat kan beter
-              </h4>
-              <ul>
-                {better.map((t, i) => (
-                  <li key={i}>{t}</li>
-                ))}
-              </ul>
+            <section className="g-xrv-col">
+              <h4><ArrowUp strokeWidth={3} aria-hidden style={{ color: 'var(--klei)' }} />Wat kan beter</h4>
+              <ul>{better.map((t, i) => <li key={i}>{t}</li>)}</ul>
             </section>
           )}
         </div>
       )}
 
-      <style>{CSS}</style>
+      <div className="g-xrv-tot">
+        <div>
+          <b>{points ? `${points.earned} van ${points.max} punten` : `${pct}%`}</b>
+          <small>{points ? `${pct}% · ` : ''}{BAND_LABEL[band]}</small>
+        </div>
+        <span
+          className={`g-xbdg ${passedBand ? 'g-xbdg-goed' : band === 'bijna' ? 'g-xbdg-grijs' : 'g-xbdg-fout'}`}
+          style={{ height: 32, fontSize: 13.5 }}
+        >
+          {passedBand ? <Check strokeWidth={3} aria-hidden /> : band === 'onvoldoende' ? <X strokeWidth={3} aria-hidden /> : null}
+          {BAND_LABEL[band]}
+        </span>
+      </div>
+
+      <Who reviewed={reviewed} />
     </div>
   );
 }
@@ -364,17 +455,17 @@ function AnnotatedAnswer({
 }) {
   const label = (key: string) => criteria.find(c => c.key === key)?.criterion ?? key;
 
-  // Walk the text once, emitting plain runs and marked runs in order. The spans are sorted and
-  // non-overlapping by construction.
   const parts: React.ReactNode[] = [];
   let cursor = 0;
   for (const [i, h] of highlights.entries()) {
     if (h.start > cursor) parts.push(text.slice(cursor, h.start));
     parts.push(
-      <mark key={i} className={`rf-mark rf-mark-${h.kind}`}>
+      <mark key={i} className={`g-xmark g-xmark-${h.kind}`} tabIndex={0}>
         {text.slice(h.start, h.end)}
-        <span className="rf-mark-note" role="note">
-          <strong>{label(h.criterion_key)}</strong>
+        <span className="g-xmark-note" role="note">
+          <strong style={{ display: 'block', fontSize: 11, letterSpacing: '0.08em', textTransform: 'uppercase', opacity: 0.72 }}>
+            {label(h.criterion_key)}
+          </strong>
           {h.note}
         </span>
       </mark>
@@ -386,141 +477,19 @@ function AnnotatedAnswer({
   const improve = highlights.filter(h => h.kind === 'improve').length;
 
   return (
-    <div className="rf-annotated">
-      <p className="rf-annotated-head">
-        Jouw antwoord
+    <div>
+      <div className="g-xqhead" style={{ justifyContent: 'space-between', marginBottom: 8 }}>
+        <span className="g-mono">Jouw antwoord</span>
         {improve > 0 && (
-          <span className="rf-annotated-count">
+          <span className="g-xbdg g-xbdg-klei">
             {improve} {improve === 1 ? 'aandachtspunt' : 'aandachtspunten'}
           </span>
         )}
-      </p>
-      <p className="rf-annotated-body">{parts}</p>
-      {/* No note list here in the stacked layout: the same spans are listed under the criterion they
-          belong to, which is
+      </div>
+      {/* No note list here: the same spans are listed under the criterion they belong to, which is
           both the accessible route (a hover tooltip is unreachable by touch and keyboard) and the
-          answer to "how does this score relate to what I said". Repeating them twice on one card
-          was noise. */}
+          answer to "how does this score relate to what I said". */}
+      <p className="g-xrv-doc" style={{ margin: 0 }}>{parts}</p>
     </div>
   );
 }
-
-const CSS = `
-  .rf { border:1.5px solid var(--color-outline-variant); border-radius:16px; background:#fff; padding:16px; box-shadow:var(--shadow-card); }
-  .rf-error { border-color:color-mix(in srgb, var(--color-error) 30%, transparent); }
-  .rf-status { display:flex; align-items:center; gap:8px; font-size:0.82rem; color:var(--color-on-surface-variant); line-height:1.6; }
-  .rf-warn { margin-top:10px; color:var(--color-secondary); }
-  .rf-retry { display:inline-flex; align-items:center; gap:6px; margin-top:10px; font-size:0.78rem; font-weight:700; color:var(--color-primary); background:none; border:none; padding:0; cursor:pointer; }
-  .rf-retry:hover { text-decoration:underline; }
-
-  .rf-head { display:flex; flex-wrap:wrap; align-items:baseline; gap:8px; padding-bottom:12px; border-bottom:1px solid var(--color-surface-container-high); }
-  .rf-band { font-family:var(--font-body); font-size:0.66rem; font-weight:800; letter-spacing:0.08em; text-transform:uppercase; padding:3px 8px; border-radius:7px; margin-right:9px; }
-  .rf-band-goed, .rf-band-voldoende { background:rgba(0,43,109,0.09); color:var(--color-primary); }
-  .rf-band-bijna { background:rgba(254,118,44,0.13); color:var(--color-secondary); }
-  .rf-band-onvoldoende { background:color-mix(in srgb, var(--color-error) 11%, transparent); color:var(--color-error); }
-  .rf-pct { font-family:var(--font-headline); font-size:1.4rem; font-weight:800; letter-spacing:-0.03em; color:var(--color-primary); font-variant-numeric:tabular-nums; }
-  .rf-prov { display:flex; align-items:center; gap:5px; font-size:0.72rem; color:var(--color-outline); line-height:1.5; max-width:34ch; }
-
-  .rf-docent { display:flex; align-items:center; gap:10px; margin-top:12px; padding:10px 12px; border-radius:12px; background:var(--color-surface-container-low); }
-  .rf-docent-face { width:34px; height:34px; border-radius:999px; object-fit:cover; object-position:65% 30%; flex-shrink:0; }
-  .rf-docent p { margin:0; font-size:0.75rem; line-height:1.5; color:var(--color-on-surface-variant); }
-  .rf-docent strong { font-weight:800; color:var(--color-on-surface); }
-  .rf-docent-check { color:var(--color-primary); flex-shrink:0; }
-
-  /* Compact: the card now shares the column with the question, so it trades air for fit. */
-  .rf-compact { padding:14px; }
-  .rf-compact .rf-pct { font-size:1.2rem; }
-  .rf-compact .rf-list { gap:10px; margin-top:12px; }
-  .rf-compact .rf-crit { font-size:0.8rem; }
-  .rf-compact .rf-fb { font-size:0.74rem; margin-top:4px; }
-  .rf-compact .rf-bar span { height:4px; }
-  .rf-compact .rf-focus { font-size:0.8rem; padding:9px 11px; margin-top:12px; }
-  .rf-compact .rf-docent { margin-top:10px; padding:8px 10px; }
-  .rf-compact .rf-docent-face { width:30px; height:30px; }
-  .rf-compact .rf-spans { gap:5px; }
-  .rf-compact .rf-span-quote { font-size:0.74rem; }
-  .rf-compact .rf-span-note { font-size:0.71rem; }
-
-  .rf-points { font-size:0.78rem; font-weight:700; color:var(--color-outline); margin-left:9px; }
-  .rf-section-label { margin:14px 0 0; font-size:0.66rem; font-weight:800; letter-spacing:0.11em; text-transform:uppercase; color:var(--color-outline); }
-
-  /* Wide: criteria side by side so a five-criterion rubric is one band of the page, not five. */
-  .rf-wide .rf-list { display:grid; gap:16px 22px; grid-template-columns:1fr; align-items:start; }
-  /* auto-fit rather than a fixed count: the docent decides how many criteria a rubric has, and
-     four columns strand a fifth on a row of its own. */
-  @media (min-width:700px) { .rf-wide .rf-list { grid-template-columns:repeat(auto-fit,minmax(215px,1fr)); } }
-
-  .rf-cols { display:grid; grid-template-columns:1fr; gap:12px; margin-top:16px; }
-  @media (min-width:700px) { .rf-cols { grid-template-columns:repeat(2,1fr); } }
-  .rf-col { padding:13px 15px; border-radius:14px; }
-  .rf-col h4 { display:flex; align-items:center; gap:7px; margin:0 0 8px; font-family:var(--font-headline); font-size:0.85rem; font-weight:800; }
-  .rf-col ul { list-style:none; margin:0; padding:0; display:flex; flex-direction:column; gap:6px; }
-  .rf-col li { position:relative; padding-left:15px; font-size:0.8rem; line-height:1.55; color:var(--color-on-surface-variant); }
-  .rf-col li::before { position:absolute; left:0; top:0; font-weight:800; }
-  /* §7.2b: teacher feedback is **never** colour-coded red/green — hierarchy comes from order and
-     weight. So "goed" and "beter" are the same tonal surface family and are told apart by their
-     position, their heading and their marker, not by a hue that says pass/fail. The ✓/→ glyphs are
-     gone too: a disc and an arrow are the system's own marks. */
-  .rf-col-good { background:var(--color-surface-container-low); }
-  .rf-col-good h4 { color:var(--color-primary); }
-  .rf-col-good li::before { content:'•'; color:var(--color-primary); }
-  .rf-col-better { background:rgba(254,118,44,0.09); }
-  .rf-col-better h4 { color:var(--color-secondary); }
-  .rf-col-better li::before { content:'→'; color:var(--color-secondary-container); }
-
-  .rf-focus { display:flex; align-items:flex-start; gap:8px; margin:14px 0 0; padding:11px 13px; border-radius:12px; background:rgba(254,118,44,0.1); border-left:3px solid var(--color-secondary-container); font-size:0.85rem; line-height:1.55; color:var(--color-on-secondary-container); }
-  .rf-focus svg { flex-shrink:0; margin-top:2px; }
-  .rf-focus strong { font-weight:800; }
-
-  .rf-has-weak .rf-item { opacity:0.62; }
-  .rf-has-weak .rf-item-weak { opacity:1; }
-  .rf-item-weak .rf-crit { color:var(--color-on-surface); }
-  .rf-item-weak .rf-bar span.on { background:linear-gradient(90deg,#fe762c,#a24000); }
-  .rf-item-weak .rf-score { color:var(--color-secondary); }
-
-  .rf-spans { list-style:none; margin:8px 0 0; padding:0; display:flex; flex-direction:column; gap:6px; }
-  .rf-span { padding-left:10px; border-left:2px solid var(--color-outline-variant); }
-  .rf-span-improve { border-left-color:var(--color-secondary-container); }
-  .rf-span-good { border-left-color:var(--color-primary); }
-  .rf-span-quote { display:block; font-size:0.78rem; font-style:italic; color:var(--color-on-surface); }
-  .rf-span-note { display:block; font-size:0.74rem; line-height:1.5; color:var(--color-on-surface-variant); }
-
-  .rf-list { list-style:none; margin:0; padding:0; display:flex; flex-direction:column; gap:14px; margin-top:14px; }
-  .rf-item-head { display:flex; align-items:baseline; gap:8px; }
-  .rf-crit { font-family:var(--font-headline); font-size:0.86rem; font-weight:700; color:var(--color-on-surface); flex:1; min-width:0; }
-  .rf-src { font-size:0.6rem; font-weight:800; letter-spacing:0.07em; text-transform:uppercase; padding:2px 6px; border-radius:5px; }
-  .rf-src-ai { background:var(--color-surface-container-high); color:var(--color-on-surface-variant); }
-  .rf-src-teacher { background:rgba(0,43,109,0.1); color:var(--color-primary); }
-  .rf-score { font-family:var(--font-headline); font-size:0.86rem; font-weight:800; color:var(--color-primary); font-variant-numeric:tabular-nums; }
-  .rf-score-max { font-weight:600; color:var(--color-outline); }
-  .rf-bar { display:flex; gap:3px; margin-top:5px; }
-  .rf-bar span { flex:1; height:5px; border-radius:3px; background:var(--color-surface-container-high); }
-  .rf-bar span.on { background:linear-gradient(90deg,#1d428a,#002b6d); }
-  .rf-fb { font-size:0.79rem; line-height:1.65; color:var(--color-on-surface-variant); margin-top:6px; }
-
-  .rf-annotated { margin-top:14px; padding:14px; border-radius:14px; background:var(--color-surface-container-low); }
-  .rf-annotated-head { display:flex; align-items:baseline; justify-content:space-between; gap:10px; font-size:0.68rem; font-weight:800; letter-spacing:0.1em; text-transform:uppercase; color:var(--color-outline); margin:0 0 8px; }
-  .rf-annotated-count { font-size:0.65rem; letter-spacing:0.04em; text-transform:none; font-weight:700; color:var(--color-secondary); }
-  .rf-annotated-body { margin:0; font-size:0.95rem; line-height:1.9; color:var(--color-on-surface); }
-
-  .rf-mark { position:relative; background:none; color:inherit; padding:1px 0; border-radius:3px; cursor:help; }
-  .rf-mark-improve { box-shadow:inset 0 -0.42em 0 rgba(254,118,44,0.28); }
-  .rf-mark-good { box-shadow:inset 0 -0.42em 0 rgba(0,43,109,0.13); }
-  .rf-mark-note { position:absolute; left:0; bottom:calc(100% + 8px); z-index:5; width:max-content; max-width:270px; padding:8px 10px; border-radius:10px; background:var(--color-on-surface); color:#fff; font-size:0.75rem; line-height:1.5; opacity:0; pointer-events:none; transition:opacity .14s ease; }
-  .rf-mark-note strong { display:block; font-size:0.62rem; letter-spacing:0.08em; text-transform:uppercase; opacity:0.72; margin-bottom:2px; }
-  .rf-mark:hover .rf-mark-note, .rf-mark:focus-visible .rf-mark-note { opacity:1; }
-
-  .rf-notes { list-style:none; margin:12px 0 0; padding:0; display:flex; flex-direction:column; gap:8px; }
-  .rf-note { display:flex; flex-direction:column; gap:2px; padding-left:11px; border-left:3px solid var(--color-outline-variant); }
-  .rf-note-improve { border-left-color:var(--color-secondary-container); }
-  .rf-note-good { border-left-color:var(--color-primary); }
-  .rf-note-quote { font-size:0.82rem; font-style:italic; color:var(--color-on-surface); }
-  .rf-note-body { font-size:0.78rem; line-height:1.55; color:var(--color-on-surface-variant); }
-  .rf-note-body strong { font-weight:800; color:var(--color-on-surface); }
-
-  .rf-locked { margin-top:14px; padding:14px; border-radius:12px; background:var(--color-surface-container-low); border:1px dashed var(--color-outline-variant); }
-  .rf-locked p { display:flex; align-items:center; gap:7px; font-size:0.8rem; line-height:1.6; color:var(--color-on-surface-variant); }
-  .rf-locked strong { color:var(--color-on-surface); font-weight:700; }
-  .rf-cta { display:inline-block; margin-top:10px; font-size:0.8rem; font-weight:800; color:var(--color-primary); text-decoration:none; }
-  .rf-cta:hover { text-decoration:underline; }
-`;

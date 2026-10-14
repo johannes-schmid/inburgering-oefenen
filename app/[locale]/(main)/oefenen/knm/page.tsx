@@ -111,9 +111,9 @@ export default async function KnmFreePracticePage({ params }: Props) {
   };
 
   return (
-    <main className="bg-surface min-h-screen">
+    <main className="bg-mist min-h-screen">
       <JsonLd data={jsonLd} />
-      <div className="max-w-5xl mx-auto px-4 sm:px-6 pt-8 pb-24">
+      <div className="g-wrap pt-8 pb-24">
         <FreePracticeEngine
           skill={KNM_SLUG}
           skillName={name}

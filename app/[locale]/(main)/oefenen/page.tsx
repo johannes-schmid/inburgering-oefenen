@@ -1,7 +1,8 @@
 import type { Metadata } from 'next';
 import { getTranslations } from 'next-intl/server';
 import { isOnaAvailable } from '@/lib/ona/access';
-import { HorizonBanner, ValidationChip } from '@/components/horizon';
+import { PageField, SectionHeading } from '@/components/glas';
+import '@/components/exam/glas-player.css';
 import { routing } from '@/i18n/routing';
 import { KNM, KNM_SLUG, SKILLS, type Level } from '@/data/skills';
 import { DEFAULT_LEVEL } from '@/data/skills';
@@ -174,64 +175,37 @@ export default async function OefenenPickerPage({ params }: Props) {
     ],
   };
 
+  /* Glas: een Dageraad-kop (de ene gloed van deze pagina) met de kop en de lead op de sluier,
+     daaronder op mist de kiezer. Geen kicker boven de kop. */
   return (
-    <main className="bg-surface min-h-screen">
+    <main className="bg-mist min-h-screen">
       <JsonLd data={jsonLd} />
-      {/* Header */}
-      <section className="relative overflow-hidden px-6 pt-14 pb-16" style={{ background: 'var(--gradient-brand)' }}>
-        {/* No sun: the header is centred, so there is no empty flank for the accent to live in
-            and it would land on the copy. */}
-        <HorizonBanner seed={6} sun={false} />
-        <div className="relative max-w-4xl mx-auto text-center">
-          <span
-            className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-bold uppercase tracking-widest mb-5"
-            style={{ background: 'rgba(255,255,255,0.15)', color: 'rgba(255,255,255,0.9)' }}
-          >
-            {t('pick_eyebrow')}
-          </span>
-          <h1
-            className="font-headline font-extrabold text-white mb-4"
-            style={{ fontSize: 'clamp(1.9rem, 4vw, 2.8rem)', letterSpacing: '-0.02em', lineHeight: 1.06, textWrap: 'balance' }}
-          >
-            {t('pick_heading')}
-          </h1>
-          <p className="text-base sm:text-lg leading-relaxed max-w-2xl mx-auto" style={{ color: 'rgba(255,255,255,0.85)' }}>
-            {t('pick_sub')}
-          </p>
-        </div>
-      </section>
+      <PageField variant="dageraad">
+        <SectionHeading as="h1" size="h1" title={t('pick_heading')} onField />
+        <p className="g-lead" style={{ marginTop: 16 }}>{t('pick_sub')}</p>
+      </PageField>
 
       {/* The picker itself. Two flows out of one data set — see FreePracticeChooser. */}
-      <section className="px-6 py-14">
-        <div className="max-w-4xl mx-auto">
-          <FreePracticeChooser tracks={tracks} locale={locale} />
+      <section className="g-wrap" style={{ paddingBlock: '40px 72px' }}>
+        <FreePracticeChooser tracks={tracks} locale={locale} />
 
-          <div className="mt-8 flex justify-center">
-            <ValidationChip>{t('docent_note')}</ValidationChip>
-          </div>
-
-          <p className="text-center text-sm text-on-surface-variant mt-8 leading-relaxed">
-            {t('pick_footer')}{' '}
-            <a href={localeHref(locale, `oefenexamen/${DEFAULT_LEVEL}/lezen`)} className="inline-flex items-center gap-1 font-semibold" style={{ color: '#a24000' }}>
-              {t('pick_footer_link')}
-              <ArrowRight size={14} strokeWidth={2.2} aria-hidden="true" />
-            </a>
-          </p>
+        <div style={{ marginTop: 28, display: 'flex', justifyContent: 'center' }}>
+          {/* Het vertrouwensmerk, één keer op deze pagina (glas.html §07). */}
+          <span className="g-xseal g-glass">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src="/images/amber-van-der-zalm-264.webp" alt="" />
+            <b>{t('docent_note')}</b>
+          </span>
         </div>
-      </section>
 
-      <style>{`
-        .track-tile, .part-row {
-          transition: transform 0.2s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.2s ease, background-color 0.2s ease;
-        }
-        .part-row:hover { transform: translateY(-2px); box-shadow: 0 12px 32px rgba(0,43,109,0.10) !important; }
-        .track-tile:hover { transform: translateY(-2px); }
-        .track-tile:active, .part-row:active { transform: translateY(0); }
-        @media (prefers-reduced-motion: reduce) {
-          .track-tile, .part-row { transition: none; }
-          .track-tile:hover, .part-row:hover { transform: none; }
-        }
-      `}</style>
+        <p className="g-xintro-line" style={{ textAlign: 'center', marginTop: 24 }}>
+          {t('pick_footer')}{' '}
+          <a href={localeHref(locale, `oefenexamen/${DEFAULT_LEVEL}/lezen`)} className="g-tlink" style={{ fontSize: 14.5 }}>
+            {t('pick_footer_link')}
+            <ArrowRight size={14} strokeWidth={2.2} className="rtl-flip" aria-hidden="true" />
+          </a>
+        </p>
+      </section>
     </main>
   );
 }
