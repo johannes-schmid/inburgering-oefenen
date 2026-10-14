@@ -30,8 +30,11 @@ import JsonLd from '@/components/JsonLd';
 import { absUrl, breadcrumbs, PROVIDER_REF } from '@/lib/schema';
 import { WEBSITE_ID, langTag } from '@/lib/site';
 import { ArrowRight } from 'lucide-react';
-import { Breadcrumb, CTABanner } from '@/components/site';
 import CategoryMark from '@/components/horizon/CategoryMark';
+import Field from '@/components/glas/Field';
+import SectionHeading from '@/components/glas/SectionHeading';
+import { glasButton } from '@/components/glas/Button';
+import Crumbs from './glas/Crumbs';
 import { DEFAULT_LEVEL, SKILLS } from '@/data/skills';
 import { FEATURES } from '@/lib/features';
 import { getPostBySlug, getPostLocale, getPostSlug } from '@/data/blog-posts';
@@ -94,7 +97,6 @@ export default async function GuideHub({
   const tS = await getTranslations({ locale, namespace: `guides.${section}` });
   const tB = await getTranslations({ locale, namespace: 'breadcrumbs' });
   const tSkills = await getTranslations({ locale, namespace: 'skills' });
-  const tR = await getTranslations({ locale, namespace: 'inburgering_route' });
 
   /* Leesvolgorde: op Inburgering de volgorde van de drie fasen (`PHASES`), wat daar niet in staat
      erachter; de andere hubs houden de dataorde. */
@@ -150,182 +152,154 @@ export default async function GuideHub({
     <>
       <JsonLd data={jsonLd} />
 
-      <header className="bg-primary text-white -mt-[var(--nav-h)]" style={{ paddingTop: 'calc(var(--nav-h) + 1rem)' }}>
-        <div className="max-w-6xl mx-auto px-6 pb-12 sm:pb-14">
-          <Breadcrumb tone="onDark" className="-mx-6 mb-6" items={[{ label: tB('home'), href: '/' }, { label: tB(section) }]} />
-          <h1
-            className="font-headline font-extrabold text-white m-0 mb-4 max-w-3xl"
-            style={{ fontSize: 'clamp(2rem,4.2vw,3rem)', letterSpacing: '-0.02em', lineHeight: 1.1, textWrap: 'balance' }}
-          >
-            {tS('heading')}
-          </h1>
-          <p className="text-lg leading-relaxed m-0 max-w-2xl" style={{ color: 'rgba(255,255,255,0.8)' }}>
-            {tS('subheading')}
-          </p>
+      {/* De kop: Nevel, het leesveld (glas.html §14), onder de pil door, met het kruimelpad erin. */}
+      <Field as="header" variant="nevel" veil className="g-readhead">
+        <div className="g-wrap">
+          <Crumbs items={[{ label: tB('home'), href: '/' }, { label: tB(section) }]} />
+          <h1>{tS('heading')}</h1>
+          <p className="g-lead">{tS('subheading')}</p>
         </div>
-      </header>
+      </Field>
 
-      <main className="bg-surface">
-        {/* De gidsen, in leesvolgorde (`publishedGuides` sorteert op `order`). Eén kaart per gids
-            met de foto erboven — dezelfde kaart als "Begin hier" op `/gidsen`. */}
-        {guides.length > 0 && (
-          <section className="px-6 py-14 sm:py-16">
-            <div className="max-w-6xl mx-auto">
-              <h2
-                className="font-headline font-extrabold m-0 mb-8"
-                style={{ color: '#002b6d', fontSize: 'clamp(1.6rem,3vw,2.1rem)', letterSpacing: '-0.02em' }}
-              >
-                {t('guides_title')}
-              </h2>
-              <ol className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5 list-none p-0 m-0">
-                {guides.map((guide, i) => {
-                  const lg = getGuideLocale(guide, locale);
-                  const img = guide.heroImage;
-                  return (
-                    <li key={guide.slug}>
-                      <Link
-                        href={guideHref(guide, locale)}
-                        className="guide-card-link flex h-full flex-col rounded-2xl overflow-hidden no-underline bg-surface-container-lowest hover:-translate-y-0.5 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2"
-                        style={{ boxShadow: 'var(--shadow-ambient)' }}
-                      >
-                        {img ? (
-                          <picture className="block">
-                            {img.hasWebp && <source srcSet={`/images/guides/${img.base}.webp`} type="image/webp" />}
-                            <img
-                              src={`/images/guides/${img.base}.jpg`}
-                              alt=""
-                              width={1800}
-                              height={760}
-                              loading="lazy"
-                              decoding="async"
-                              className="w-full h-44 object-cover"
-                              style={{ objectPosition: img.position ?? 'center 45%' }}
-                            />
-                          </picture>
-                        ) : (
-                          <div className="h-44 bg-surface-container-low flex items-center justify-center">
-                            <CategoryMark category="gidsen" size={40} />
-                          </div>
-                        )}
-                        <span className="flex flex-col flex-1 p-6">
-                          <span className="text-[11px] font-bold uppercase tracking-widest text-on-surface-variant">
-                            {String(i + 1).padStart(2, '0')} · {t('reading_time', { minutes: guide.readingMinutes })} · PDF
-                          </span>
-                          <span className="block font-headline font-bold text-lg leading-snug mt-3" style={{ color: '#002b6d', textWrap: 'balance' }}>
-                            {lg.heroTitle}
-                          </span>
-                          <span className="block text-sm text-on-surface-variant leading-relaxed mt-2">{lg.description}</span>
-                          <span className="inline-flex items-center gap-1.5 text-sm font-bold mt-auto pt-5" style={{ color: '#a24000' }}>
-                            {t('read_guide')}
-                            <ArrowRight size={14} className="rtl-flip" aria-hidden="true" />
-                          </span>
+      {/* De gidsen, in leesvolgorde. Een gids met een eigen kopfoto krijgt het glazen bijschrift
+          (glas.html §14), een gids zonder foto de gidskaart met het categoriemerk — nooit een
+          verzonnen beeld. */}
+      {guides.length > 0 && (
+        <section className="g-sec" aria-labelledby="hub-guides">
+          <div className="g-wrap">
+            <SectionHeading id="hub-guides" title={t('guides_title')} size="h1" className="mb-8" />
+            <ol className="g-gcards list-none p-0 m-0">
+              {guides.map((guide, i) => {
+                const lg = getGuideLocale(guide, locale);
+                const img = guide.heroImage;
+                const meta = `${String(i + 1).padStart(2, '0')} · ${t('reading_time', { minutes: guide.readingMinutes })} · PDF`;
+                return (
+                  <li key={guide.slug} className="flex">
+                    {img ? (
+                      <Link href={guideHref(guide, locale)} className="g-gcard w-full">
+                        <picture>
+                          {img.hasWebp && <source srcSet={`/images/guides/${img.base}.webp`} type="image/webp" />}
+                          <img
+                            src={`/images/guides/${img.base}.jpg`}
+                            alt=""
+                            width={1800}
+                            height={760}
+                            loading="lazy"
+                            decoding="async"
+                            style={{ objectPosition: img.position ?? 'center 45%' }}
+                          />
+                        </picture>
+                        <div className="g-glass">
+                          <span className="g-mono">{meta}</span>
+                          <h3>{lg.heroTitle}</h3>
+                          <p className="m-0 mt-1.5 text-[0.8125rem] leading-relaxed text-ink-2 line-clamp-2">{lg.description}</p>
+                        </div>
+                      </Link>
+                    ) : (
+                      <Link href={guideHref(guide, locale)} className="g-gids w-full">
+                        <CategoryMark category="gidsen" size={44} />
+                        <span className="g-mono">{meta}</span>
+                        <h3>{lg.heroTitle}</h3>
+                        <p>{lg.description}</p>
+                        <span className="g-gids-ft">
+                          <span>{t('read_guide')}</span>
+                          <ArrowRight aria-hidden="true" className="rtl-flip" />
                         </span>
                       </Link>
-                    </li>
-                  );
-                })}
-              </ol>
-            </div>
-          </section>
-        )}
-
-        {/* Oriëntatie als rijen, zoals de secties van een gids: kop links, tekst rechts. Zonder
-            gidsen is dit de pagina, met gidsen is het context. */}
-        <section className="px-6 py-14 sm:py-16 bg-surface-container-low">
-          <div className="max-w-6xl mx-auto">
-            <div className="guide-row" style={{ paddingTop: 0 }}>
-              <h2 className="guide-section-title font-headline" style={{ fontSize: '1.75rem', fontWeight: 800, letterSpacing: '-0.025em', lineHeight: 1.15, color: '#002b6d', margin: 0 }}>
-                {tS('intro_title')}
-              </h2>
-              <p className="text-on-surface m-0 max-w-[72ch]" style={{ fontSize: '1.1rem', lineHeight: 1.8 }}>
-                {tS('intro_body')}
-              </p>
-            </div>
-            <div className="guide-row" style={{ paddingBottom: 0 }}>
-              <h2 className="guide-section-title font-headline" style={{ fontSize: '1.75rem', fontWeight: 800, letterSpacing: '-0.025em', lineHeight: 1.15, color: '#002b6d', margin: 0 }}>
-                {tS('phases_title')}
-              </h2>
-              <ol className="list-none p-0 m-0 flex flex-col gap-7 max-w-[72ch]">
-                {cards.map(n => (
-                  <li key={n} className="flex gap-5">
-                    <span
-                      className="inline-flex items-center justify-center w-10 h-10 rounded-[11px] font-headline font-extrabold text-white flex-shrink-0"
-                      style={{ background: '#002b6d' }}
-                      aria-hidden="true"
-                    >
-                      {n}
-                    </span>
-                    <span className="flex flex-col gap-1 pt-1.5">
-                      <span className="font-headline font-bold text-lg leading-snug" style={{ color: '#002b6d' }}>{tS(`phase_${n}_title`)}</span>
-                      <span className="text-on-surface-variant leading-relaxed" style={{ fontSize: '1.05rem' }}>{tS(`phase_${n}_body`)}</span>
-                    </span>
+                    )}
                   </li>
-                ))}
-              </ol>
-            </div>
+                );
+              })}
+            </ol>
           </div>
         </section>
+      )}
 
-        {/* The blog posts that already cover part of this ground. */}
-        {posts.length > 0 && (
-          <section className="px-6 py-14 sm:py-16">
-            <div className="max-w-6xl mx-auto">
-              <h2 className="font-headline font-extrabold m-0 mb-2" style={{ color: '#002b6d', fontSize: 'clamp(1.6rem,3vw,2.1rem)', letterSpacing: '-0.02em' }}>{t('blog_title')}</h2>
-              <p className="text-base text-on-surface-variant m-0 mb-8">{t('blog_desc')}</p>
-              <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
-                {posts.map(post => {
-                  const lp = getPostLocale(post!, locale);
-                  return (
-                    <Link
-                      key={post!.slug}
-                      href={{ pathname: '/blog/[slug]', params: { slug: getPostSlug(post!, locale) } }}
-                      className="guide-card-link bg-surface-container-lowest rounded-2xl p-7 flex flex-col gap-3 no-underline hover:-translate-y-0.5 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2"
-                      style={{ boxShadow: 'var(--shadow-ambient)' }}
-                    >
-                      <h3 className="font-headline font-bold text-on-surface leading-snug">{lp.heroTitle}</h3>
-                      <p className="text-on-surface-variant text-sm leading-relaxed">{lp.description}</p>
-                    </Link>
-                  );
-                })}
-              </div>
-            </div>
-          </section>
-        )}
-
-        {/* Into the funnel: the four onderdelen, one click away from every hub. */}
-        <section className="px-6 pb-16">
-          <div className="max-w-6xl mx-auto">
-            <h2 className="font-headline font-extrabold m-0 mb-2" style={{ color: '#002b6d', fontSize: 'clamp(1.6rem,3vw,2.1rem)', letterSpacing: '-0.02em' }}>{t('exams_title')}</h2>
-            <p className="text-base text-on-surface-variant m-0 mb-8">{t('exams_desc')}</p>
-            <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-12">
-              {SKILLS.map(skill => (
-                <Link
-                  key={skill.slug}
-                  /* `skillParam`: next-intl vertaalt alleen het statische deel van een route,
-                   * de parameterwaarde geeft het ongewijzigd door. */
-                  href={{
-                    pathname: '/oefenexamen/[level]/[skill]',
-                    params: { level: DEFAULT_LEVEL, skill: skillParam(skill.slug, locale) },
-                  }}
-                  className="guide-card-link bg-surface-container-lowest rounded-2xl p-6 flex items-center gap-3 no-underline hover:-translate-y-0.5 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2"
-                  style={{ boxShadow: 'var(--shadow-ambient)' }}
-                >
-                  <CategoryMark category={skill.slug} size={32} />
-                  <span className="font-headline font-bold text-on-surface">
-                    {tSkills(`${skill.key}.name`)}
-                  </span>
-                </Link>
+      {/* Oriëntatie: wat het is, en de fasen als stappen. Zonder gidsen is dit de pagina, met
+          gidsen is het context. Een trede hoger dan de gidsen; dat is de scheiding. */}
+      <section className="g-sec g-sec-tier" aria-labelledby="hub-intro">
+        <div className="g-wrap grid gap-10 lg:grid-cols-[minmax(0,0.85fr)_minmax(0,1.15fr)] lg:gap-16 items-start">
+          <div className="lg:sticky lg:top-[calc(var(--nav-h)+24px)]">
+            <SectionHeading id="hub-intro" title={tS('intro_title')} size="h1" />
+            <p className="g-body mt-4">{tS('intro_body')}</p>
+          </div>
+          <div className="bg-wit rounded-g-xl p-6 sm:p-8">
+            <h2 className="g-head g-head-3 mb-6">{tS('phases_title')}</h2>
+            <ol className="g-gsteps">
+              {cards.map(n => (
+                <li key={n} className="g-gstep">
+                  <span className="g-gstep-n" aria-hidden="true">{n}</span>
+                  <div>
+                    <b>{tS(`phase_${n}_title`)}</b>
+                    <p>{tS(`phase_${n}_body`)}</p>
+                  </div>
+                </li>
               ))}
-            </div>
+            </ol>
+          </div>
+        </div>
+      </section>
 
-            <CTABanner
-              title={t('sidebar_cta_title')}
-              description={t('sidebar_cta_desc')}
-              button={{ label: t('sidebar_cta_btn'), href: '/oefenen' }}
-            />
+      {/* De blogposts die een deel van dit onderwerp al dekken. */}
+      {posts.length > 0 && (
+        <section className="g-sec" aria-labelledby="hub-blog">
+          <div className="g-wrap">
+            <SectionHeading id="hub-blog" title={t('blog_title')} aside={t('blog_desc')} size="h1" className="mb-8" />
+            <div className="g-grid3">
+              {posts.map(post => {
+                const lp = getPostLocale(post!, locale);
+                return (
+                  <Link
+                    key={post!.slug}
+                    href={{ pathname: '/blog/[slug]', params: { slug: getPostSlug(post!, locale) } }}
+                    className="g-textcard"
+                  >
+                    <b>{lp.heroTitle}</b>
+                    <span>{lp.description}</span>
+                  </Link>
+                );
+              })}
+            </div>
           </div>
         </section>
-      </main>
+      )}
+
+      {/* De trechter in: de vier onderdelen, één klik van elke hub. */}
+      <section className={posts.length > 0 ? 'g-sec g-sec-tier' : 'g-sec'} aria-labelledby="hub-exams">
+        <div className="g-wrap">
+          <SectionHeading id="hub-exams" title={t('exams_title')} aside={t('exams_desc')} size="h1" className="mb-8" />
+          <div className="g-subjects g-subjects-4">
+            {SKILLS.map(skill => (
+              <Link
+                key={skill.slug}
+                /* `skillParam`: next-intl vertaalt alleen het statische deel van een route,
+                 * de parameterwaarde geeft het ongewijzigd door. */
+                href={{
+                  pathname: '/oefenexamen/[level]/[skill]',
+                  params: { level: DEFAULT_LEVEL, skill: skillParam(skill.slug, locale) },
+                }}
+                className="g-subject g-subject-row"
+              >
+                <CategoryMark category={skill.slug} size={40} />
+                <b>{tSkills(`${skill.key}.name`)}</b>
+                <ArrowRight aria-hidden="true" className="rtl-flip size-4 text-navy shrink-0" />
+              </Link>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* De afsluiter: Nevel met één oranje knop, dus geen gloed (glas.html §13). */}
+      <div className="g-closing">
+        <Field as="section" variant="nevel" className="g-block g-cta-band" aria-labelledby="hub-cta">
+          <h2 id="hub-cta">{t('sidebar_cta_title')}</h2>
+          <p>{t('sidebar_cta_desc')}</p>
+          <Link href="/oefenen" className={glasButton({ variant: 'oranje', size: 'lg', className: 'mt-2' })}>
+            {t('sidebar_cta_btn')}
+            <ArrowRight className="rtl-flip" aria-hidden="true" />
+          </Link>
+        </Field>
+      </div>
     </>
   );
 }
