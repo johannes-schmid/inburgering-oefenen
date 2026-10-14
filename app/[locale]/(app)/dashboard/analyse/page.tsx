@@ -6,7 +6,8 @@ import { ChevronDown, ChevronRight, RotateCcw, BookOpen, Target, CheckCircle2 } 
 import { createClient } from '@/lib/supabase/client';
 import AppShell from '../../components/AppShell';
 import BackLink from '../../components/BackLink';
-import LoadingSpinner from '@/components/LoadingSpinner';
+import { LogoLoader, PassChanceLabel } from '@/components/glas';
+import { passChanceLevel } from '../_components/pass-chance';
 import {
   calculateSlaagkans,
   buildSectionProgress,
@@ -109,7 +110,7 @@ export default function AnalysePage({ params }: { params: Promise<{ locale: stri
     load();
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
-  if (loading) return <LoadingSpinner label={t('loading')} />;
+  if (loading) return <LogoLoader fullPage label={t('loading')} />;
 
   const { slaagkans, band } = calculateSlaagkans(scores);
   const bandLabel = t(`slaagkans_band_${band}`);
@@ -128,60 +129,49 @@ export default function AnalysePage({ params }: { params: Promise<{ locale: stri
 
   return (
     <AppShell locale={locale} email={email} active="overview">
-      <div style={{ maxWidth: 720, margin: '0 auto', padding: '24px 20px 80px' }}>
+      <div className="g-page g-page-narrow">
         <BackLink fallbackHref={`/${locale}/dashboard`} />
-        <div style={{ marginBottom: 18 }}>
-          <h1 className="font-headline" style={{ fontSize: 24, fontWeight: 800, color: '#002b6d', letterSpacing: '-0.02em' }}>{t('analyse_title')}</h1>
-          <p style={{ fontSize: 14, color: '#5a6078', marginTop: 2 }}>{t('analyse_subtitle')}</p>
-        </div>
+        <header className="g-ph">
+          <h1>{t('analyse_title')}</h1>
+          <p>{t('analyse_subtitle')}</p>
+        </header>
 
-        {/* Score + progress */}
-        <div style={{ background: '#fff', border: '1px solid #e6e9f0', borderRadius: 20, padding: 20 }}>
-          <div style={{ display: 'flex', alignItems: 'baseline', gap: 10 }}>
-            <span style={{ fontFamily: 'Georgia, serif', fontSize: 40, fontWeight: 400, color: '#191c1e', lineHeight: 1 }}>{scores.length > 0 ? `${slaagkans}%` : '—'}</span>
-            <span style={{ fontSize: 13, fontWeight: 700, color: '#5a6078' }}>
-              {t('slaagkans_label')}{scores.length > 0 && <span style={{ color: '#d94f00' }}> · {bandLabel}</span>}
-            </span>
+        {/* Slaagkans + verloop. De wijzer staat op dezelfde vijf standen als overal (§G5). */}
+        <section className="g-card">
+          <div className="flex flex-wrap items-center gap-4">
+            <PassChanceLabel
+              level={passChanceLevel(scores.length, band)}
+              word={scores.length > 0 ? `${slaagkans}%` : '—'}
+              sub={scores.length > 0 ? `${t('slaagkans_label')} · ${bandLabel}` : t('slaagkans_label')}
+            />
           </div>
-          <div style={{ position: 'relative', height: 10, borderRadius: 6, background: scores.length > 0 ? 'linear-gradient(90deg,#d94f00 0%,#fe762c 45%,#1d428a 100%)' : '#edeef3', marginTop: 12 }}>
-            {scores.length > 0 && (
-              <div style={{ position: 'absolute', top: '50%', left: `${slaagkans}%`, transform: 'translate(-50%,-50%)', width: 16, height: 16, borderRadius: '50%', background: '#fff', border: '3px solid #002b6d', boxShadow: '0 1px 4px rgba(0,0,0,0.25)' }} />
-            )}
-          </div>
-
-          <hr style={{ border: 0, borderTop: '1px solid #edeef3', margin: '18px 0 14px' }} />
-
-          <div style={{ marginBottom: 6 }}>
-            <span style={{ fontSize: 14, fontWeight: 800, color: '#002b6d', fontFamily: 'var(--font-manrope), Manrope, sans-serif' }}>{t('progress_title')}</span>
-            <span style={{ fontSize: 12, color: '#8a8fa0', marginLeft: 8 }}>· {t('progress_sub')}</span>
+          <div className="g-card-h">
+            <h2>{t('progress_title')}</h2>
+            <small>{t('progress_sub')}</small>
           </div>
           <ProgressionChart points={progression} locale={locale} />
-        </div>
+        </section>
 
-        {/* General mistakes queue */}
+        {/* De algemene foutenwachtrij: de ene oranje knop van dit scherm. */}
         {totalMistakes > 0 && (
-          <a
-            href={`/${locale}/dashboard/fouten`}
-            style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 9, marginTop: 16, borderRadius: 14, padding: '14px 18px', fontSize: 15, fontWeight: 700, color: '#fff', textDecoration: 'none', background: 'linear-gradient(135deg,#fe762c,#d94f00)', boxShadow: '0 6px 16px rgba(217,79,0,0.3)' }}
-          >
-            <RotateCcw size={18} strokeWidth={2.2} />
+          <a href={`/${locale}/dashboard/fouten`} className="g-btn g-btn-oranje mt-4 w-full">
+            <RotateCcw aria-hidden />
             {t('analyse_fix_all', { count: totalMistakes })}
           </a>
         )}
 
-        {/* Topics with per-topic step queue */}
-        <div style={{ fontWeight: 800, fontSize: 14, color: '#002b6d', margin: '24px 0 10px' }}>
-          {t('topics_title')} <span style={{ fontWeight: 500, color: '#8a8fa0', fontSize: 12 }}>· {t('topics_weakest_first')}</span>
+        <div className="g-card-h mt-7 mb-3">
+          <h2>{t('topics_title')}</h2>
+          <small>{t('topics_weakest_first')}</small>
         </div>
 
-        <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
+        <div className="flex flex-col gap-2.5">
           {topics.map(topic => {
             const isOpen = openTopic === topic.title;
             const notStarted = topic.attempted === 0;
             const secs = sectionProgress[topic.title] ?? [];
             const wrongSecs = secs.filter(s => s.reviewing > 0);
             const slug = slugForTopic(topic.title);
-            // Deep-link to the specific lesson section with the most mistakes; fall back to the thema.
             const worstSec = [...wrongSecs].sort((a, b) => b.reviewing - a.reviewing)[0];
             const secLink = worstSec ? lerenLinkForSectionSlug(sectionSlugById[worstSec.id]) : null;
             const learnHref = secLink
@@ -189,68 +179,64 @@ export default function AnalysePage({ params }: { params: Promise<{ locale: stri
               : slug ? `/${locale}/leren/${slug}` : `/${locale}/dashboard?view=leren`;
 
             const steps: { icon: React.ReactNode; label: string; href: string }[] = [
-              { icon: <BookOpen size={15} strokeWidth={2.2} />, label: t('analyse_step_learn'), href: learnHref },
+              { icon: <BookOpen aria-hidden />, label: t('analyse_step_learn'), href: learnHref },
             ];
             if (topic.mistakes > 0) {
-              steps.push({ icon: <RotateCcw size={15} strokeWidth={2.2} />, label: t('analyse_step_repeat', { count: topic.mistakes }), href: `/${locale}/dashboard/fouten?topic=${encodeURIComponent(topic.title)}` });
+              steps.push({ icon: <RotateCcw aria-hidden />, label: t('analyse_step_repeat', { count: topic.mistakes }), href: `/${locale}/dashboard/fouten?topic=${encodeURIComponent(topic.title)}` });
             } else if (notStarted) {
-              steps.push({ icon: <Target size={15} strokeWidth={2.2} />, label: t('btn_practice_topic'), href: `/${locale}/dashboard?view=exams&openTopic=${encodeURIComponent(topic.title)}` });
+              steps.push({ icon: <Target aria-hidden />, label: t('btn_practice_topic'), href: `/${locale}/dashboard?view=exams&openTopic=${encodeURIComponent(topic.title)}` });
             }
+            /* In orde = groen (§G3), aandacht = oranje/klei, nog niet begonnen = grijs. */
+            const tone = notStarted ? '' : topic.pct >= 70 ? ' g-good' : ' g-weak';
 
             return (
-              <div
-                key={topic.title}
-                style={{ background: '#fff', border: isOpen ? '1px solid #f0c9ab' : '1px solid #e6e9f0', borderRadius: 16, padding: 15, boxShadow: isOpen ? '0 2px 10px rgba(254,118,44,0.08)' : undefined }}
-              >
-                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', cursor: 'pointer' }} onClick={() => setOpenTopic(isOpen ? null : topic.title)}>
-                  <span style={{ fontWeight: 700, fontSize: 14, color: '#191c1e' }}>{topic.title}</span>
-                  <span style={{ display: 'inline-flex', alignItems: 'center', gap: 5, color: notStarted ? '#8a8fa0' : topic.pct >= 70 ? '#1a7a3c' : '#d94f00', fontWeight: 800, fontSize: 13 }}>
-                    {notStarted ? t('topics_not_started') : `${topic.pct}%`}
-                    {isOpen ? <ChevronDown size={16} strokeWidth={2.4} /> : <ChevronRight size={16} strokeWidth={2.4} />}
+              <div key={topic.title} className={`g-topic${isOpen ? ' g-open' : ''}`}>
+                <button
+                  type="button"
+                  className="g-topic-h"
+                  aria-expanded={isOpen}
+                  onClick={() => setOpenTopic(isOpen ? null : topic.title)}
+                >
+                  <span className="g-topic-row">
+                    <b>{topic.title}</b>
+                    <span className={`g-topic-pct${tone}`}>
+                      {notStarted ? t('topics_not_started') : `${topic.pct}%`}
+                      {isOpen ? <ChevronDown aria-hidden /> : <ChevronRight className="rtl-flip" aria-hidden />}
+                    </span>
                   </span>
-                </div>
-                <div style={{ height: 7, borderRadius: 4, background: '#edeef3', marginTop: 9 }}>
-                  <div style={{ width: `${notStarted ? 4 : topic.pct}%`, height: '100%', borderRadius: 4, background: notStarted ? '#c4c6d2' : topic.pct >= 70 ? '#1d428a' : '#fe762c' }} />
-                </div>
+                  <span className="g-prog" aria-hidden>
+                    <i className={tone.trim() || 'g-none'} style={{ width: `${notStarted ? 4 : topic.pct}%` }} />
+                  </span>
+                </button>
 
                 {isOpen && (
-                  <div style={{ marginTop: 16 }}>
-                    {/* What went wrong */}
+                  <div className="g-topic-body">
                     {topic.mistakes > 0 ? (
                       <>
-                        <div style={{ fontSize: 11, fontWeight: 700, letterSpacing: '.1em', textTransform: 'uppercase', color: '#8a8fa0', marginBottom: 8 }}>{t('analyse_whatswrong')}</div>
-                        <div style={{ display: 'flex', flexDirection: 'column', gap: 6, fontSize: 13, color: '#434651' }}>
-                          {wrongSecs.map(s => (
-                            <div key={s.id} style={{ display: 'flex', justifyContent: 'space-between', gap: 10 }}>
-                              <span>{s.name}</span>
-                              <span style={{ color: '#d94f00', fontWeight: 700, flexShrink: 0 }}>{t('section_mistakes', { count: s.reviewing })}</span>
-                            </div>
-                          ))}
-                        </div>
+                        <span className="g-mono">{t('analyse_whatswrong')}</span>
+                        {wrongSecs.map(s => (
+                          <div key={s.id} className="g-mistake">
+                            <span>{s.name}</span>
+                            <b>{t('section_mistakes', { count: s.reviewing })}</b>
+                          </div>
+                        ))}
                       </>
                     ) : !notStarted ? (
-                      <div style={{ display: 'flex', alignItems: 'center', gap: 8, fontSize: 13, color: '#1a7a3c', fontWeight: 600 }}>
-                        <CheckCircle2 size={16} strokeWidth={2.2} />
+                      <p className="g-topic-pct g-good m-0">
+                        <CheckCircle2 aria-hidden />
                         {t('analyse_topic_mastered')}
-                      </div>
+                      </p>
                     ) : null}
 
-                    {/* Step queue */}
-                    <div style={{ fontSize: 11, fontWeight: 700, letterSpacing: '.1em', textTransform: 'uppercase', color: '#8a8fa0', margin: '16px 0 8px' }}>{t('analyse_steps_title')}</div>
-                    <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
-                      {steps.map((step, i) => (
-                        <a
-                          key={i}
-                          href={step.href}
-                          style={{ display: 'flex', alignItems: 'center', gap: 11, padding: '11px 13px', borderRadius: 12, border: '1px solid #e6e9f0', background: '#f8f9fb', textDecoration: 'none' }}
-                        >
-                          <span style={{ flex: 'none', width: 24, height: 24, borderRadius: '50%', background: '#002b6d', color: '#fff', fontSize: 12.5, fontWeight: 700, display: 'inline-flex', alignItems: 'center', justifyContent: 'center' }}>{i + 1}</span>
-                          <span style={{ flex: 'none', color: '#d94f00', display: 'inline-flex' }}>{step.icon}</span>
-                          <span style={{ flex: 1, fontSize: 13.5, fontWeight: 700, color: '#26324a' }}>{step.label}</span>
-                          <ChevronRight size={16} strokeWidth={2.2} color="#8a8fa0" />
-                        </a>
-                      ))}
-                    </div>
+                    <span className="g-mono">{t('analyse_steps_title')}</span>
+                    {steps.map((step, i) => (
+                      <a key={i} href={step.href} className="g-steprow">
+                        <span className="g-steprow-n">{i + 1}</span>
+                        {step.icon}
+                        <span className="g-steprow-lb">{step.label}</span>
+                        <ChevronRight className="rtl-flip" aria-hidden />
+                      </a>
+                    ))}
                   </div>
                 )}
               </div>

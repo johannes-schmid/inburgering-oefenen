@@ -38,51 +38,54 @@ export default function CancelSubscription({ accessHint }: { accessHint: string 
   }
 
   if (done) {
-    return <p className="cancel-done">{done}</p>;
+    return <p className="g-cancel-q" role="status">{done}</p>;
   }
 
   return (
-    <div className="cancel-wrap">
+    <div className="g-cancel">
       {!confirming ? (
-        <button type="button" className="cancel-link" onClick={() => setConfirming(true)}>
+        <button type="button" className="g-btn g-btn-fout g-btn-sm" onClick={() => setConfirming(true)}>
           Abonnement opzeggen
         </button>
       ) : (
-        <div className="cancel-confirm">
-          <p className="cancel-q">
-            Weet je het zeker?
-            {accessHint && ` Je houdt toegang tot ${accessHint}.`}
-          </p>
-          <div className="cancel-actions">
-            <button type="button" className="cancel-yes" onClick={cancel} disabled={busy}>
-              {busy ? (
-                <>
-                  <Loader2 size={14} className="cancel-spin" aria-hidden /> Bezig…
-                </>
-              ) : (
-                'Ja, opzeggen'
-              )}
-            </button>
-            <button
-              type="button"
-              className="cancel-no"
-              onClick={() => setConfirming(false)}
-              disabled={busy}
-            >
-              Nee, behouden
-            </button>
+        <div className="g-cancel g-notice g-notice-fout">
+          <div className="g-cancel">
+            <p className="g-cancel-q">
+              Weet je het zeker?
+              {accessHint && ` Je houdt toegang tot ${accessHint}.`}
+            </p>
+            <div className="g-cancel-actions">
+              <button type="button" className="g-btn g-btn-navy g-btn-sm" onClick={cancel} disabled={busy}>
+                {busy ? (
+                  <>
+                    <Loader2 className="g-spin" aria-hidden /> Bezig…
+                  </>
+                ) : (
+                  'Ja, opzeggen'
+                )}
+              </button>
+              <button
+                type="button"
+                className="g-btn g-btn-ghost g-btn-sm"
+                onClick={() => setConfirming(false)}
+                disabled={busy}
+              >
+                Nee, behouden
+              </button>
+            </div>
           </div>
         </div>
       )}
 
       {error && (
-        <p className="cancel-error">
-          <TriangleAlert size={14} aria-hidden /> {error}
+        <p className="g-mp-error" role="alert">
+          <TriangleAlert aria-hidden /> {error}
         </p>
       )}
     </div>
   );
 }
+
 
 /** `2026-08-31` → `31 augustus 2026`. Mollie returns plain dates, so no timezone shifting. */
 function formatDate(iso: string): string {

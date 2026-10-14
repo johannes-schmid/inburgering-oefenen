@@ -4,72 +4,59 @@ import { getTranslations } from 'next-intl/server';
 import { createClient } from '@/lib/supabase/server';
 import { ownsModule } from '@/lib/entitlements';
 import { emptyLevelledProgress, fetchPortalProgress, fetchPublishedExamNumbers } from '@/lib/portal-progress';
-import { getSkillAtLevel, isLevel } from '@/data/skills';
+import { getSkillAtLevel, isFreeExamOf, isLevel, levelLabel } from '@/data/skills';
 import { fetchSkillWeakness } from '@/lib/vaardigheden-server';
 import { fetchCourse } from '@/lib/lessons/lessons-server';
-import { fetchConcepts, fetchMastery, fetchTeachersForCourse } from '@/lib/lessons/concepts-server';
-import { readiness } from '@/lib/lessons/readiness';
-import { buildLeerroute } from '@/lib/lessons/leerroute';
-import { fetchWordCounts } from '@/lib/lessons/words-server';
 import { wordsPath } from '@/lib/lessons/words';
 import { calculateSlaagkans } from '@/lib/exam-readiness';
 import { lessonStepSoon } from '@/lib/features';
-import SkillStatBar from '../../_components/SkillStatBar';
-import TrackCard from '../../_components/TrackCard';
-import { blockProgress, lessonPath, masteryPct, type ConceptKind } from '@/lib/lessons/lessons';
-import { spoorPath, type SpoorSlug } from '@/lib/lessons/sporen';
+import { blockProgress, lessonPath, nextLesson } from '@/lib/lessons/lessons';
+import { spoorPath } from '@/lib/lessons/sporen';
 import { skillTrail } from '@/lib/portal-crumbs';
-import PortalCrumbs from '../../../components/PortalCrumbs';
-import { sporenFromBlocks } from '@/lib/lessons/sporen-server';
 import { fetchGrammarStep } from '@/lib/lessons/grammar-server';
 import { grammarStepPath } from '@/lib/lessons/grammar';
-import { CategoryMark, type Category } from '@/components/horizon';
-import AppShell from '../../../components/AppShell';
-import ExamStrip from '../../_components/ExamStrip';
+import { euro, MODULE_PRICE_CENTS } from '@/lib/pricing';
 import { fetchPortalMenu } from '@/lib/portal-menu';
+import PortalCrumbs from '../../../components/PortalCrumbs';
+import AppShell from '../../../components/AppShell';
+import { buildExamSlots } from '../../_components/exam-slots';
+import {
+  ExamLane, Lanes, LearnLane, SkillHead, UnlockCard, WeaknessCard, passChanceLevel, type LearnRow,
+} from '../../_components/GlasSkill';
 
 type Props = { params: Promise<{ locale: string; level: string; skill: string }> };
-
-/**
- * De mark per stap van de leerroute.
- *
- * `ConceptKind` heet `strategie` in de database en **Examentraining** op het scherm: de eerste
- * is wat het is, de tweede is wat je erin doet. Deze map is de enige plek waar die twee namen
- * aan elkaar zitten, zodat een naamswijziging op het scherm geen migratie is.
- */
-/**
- * Van conceptsoort naar leerspoor.
- *
- * `strategie` heet in de URL en op het scherm `examentraining`: het eerste is het woord van de
- * database, het tweede dat van de kandidaat. Deze regel is de enige plek waar ze elkaar raken.
- */
-const SPOOR_OF_KIND = {
-  grammatica: 'taalregels',
-  strategie: 'examentraining',
-} as const satisfies Record<Exclude<ConceptKind, 'woordenschat'>, SpoorSlug>;
-
-const LEER_MARK = {
-  woordenschat: 'woorden',
-  grammatica: 'grammatica',
-  strategie: 'examentraining',
-} as const satisfies Record<ConceptKind, Category>;
 
 export const metadata: Metadata = {
   title: 'Oefenexamens | Inburgering Oefenen',
   robots: { index: false, follow: false },
 };
 
+/** Welke stap van de leerroute een blok is — voor `lessonStepSoon` (lib/features.ts). */
+const KIND_OF_BLOCK = {
+  A: 'woordenschat',
+  B: 'grammatica',
+  C: 'strategie',
+  D: 'strategie',
+  E: 'strategie',
+} as const;
+const LETTERS = ['A', 'B', 'C', 'D', 'E'] as const;
+
 /**
- * The ten oefenexamens of one onderdeel, inside the portal.
+ * De onderdeelpagina, in Glas: **"S1 · twee banen"** (DESIGN_SYSTEM §G5, glas.html §09b).
  *
- * This is the logged-in twin of the public `(main)/oefenexamen/[skill]` overview. They are not
- * duplicates by accident: the public page is the SEO and funnel surface and must render for
- * anonymous visitors, while this one shows scores, attempt counts and lock state, all of which
- * require a session.
+ * Kop met de grote slaagkanskaart; daaronder *1 Leren* (de blokken A–E) → *2 Oefenexamens* (tien
+ * vierkantjes en één oranje kaart om te ontgrendelen). Daaronder, als er iets te zeggen valt,
+ * waar je punten laat liggen.
  *
- * A slot has three reasons it may not be openable, and they are deliberately distinct in the
- * UI: no content authored yet, or paid-plan-only, or already passed (still re-sittable). A
- * single "locked" state for all three tells the candidate nothing.
+ * **Blok B is hier "Taalregels", niet de eigen naam van het blok.** De taalregels van een examen
+ * staan één keer in de database (blok B van A2 Lezen, `RULES_HOME`) en worden per onderdeel
+ * gelezen; de grammaticastap (`fetchGrammarStep`) telt ze voor dít onderdeel. Rij B wijst
+ * daarom naar die stap en draagt zijn telling — zo blijft de route woorden → de regels die dit
+ * examen vraagt → examentraining, zoals de eigenaar op 10-09 besloot, alleen nu als vijf blokken.
+ *
+ * Een slot heeft drie redenen om niet open te gaan — niet gepubliceerd, niet in je pakket, al
+ * gehaald — en die blijven drie vormen (`ExamLane`). Een gast mag dit scherm bekijken; de muur
+ * staat bij de speler.
  */
 export default async function SkillExamsPage({ params }: Props) {
   const { locale, level: rawLevel, skill: slug } = await params;
@@ -87,112 +74,126 @@ export default async function SkillExamsPage({ params }: Props) {
   const isGuest = !user;
   const meta = user?.user_metadata ?? {};
 
-  // Per-onderdeel ownership, not "has any paid plan". The dashboard overview already read it this
-  // way, so the two screens disagreed: the card said the module was owned and its ten slots all
-  // showed locked.
+  // Per-onderdeel ownership, not "has any paid plan".
   const ownsThisSkill = ownsModule(meta, level, skill.slug);
-  const [progress, published] = await Promise.all([
+  const [progress, published, menu, blocks, grammar, weakness] = await Promise.all([
     user ? fetchPortalProgress(user.id) : Promise.resolve(emptyLevelledProgress()),
     fetchPublishedExamNumbers(),
+    fetchPortalMenu(),
+    fetchCourse(level, skill.slug, user?.id ?? null),
+    fetchGrammarStep(level, skill.slug, user?.id ?? null),
+    /* `null` tot er iets te zeggen valt — zie `lib/vaardigheden-server.ts`. */
+    fetchSkillWeakness(user?.id ?? null, level, skill.slug),
   ]);
 
   const p = progress[level][skill.slug];
   const pub = published[level][skill.slug];
 
   /**
-   * "Je vaardigheden": dezelfde kaart voor alle vier de onderdelen.
-   *
-   * Schrijven en Spreken lezen hun rubriekcriteria, Lezen en Luisteren de concepten achter hun
-   * foute antwoorden — zie `lib/vaardigheden-server.ts`. Dit gaf eerst alleen bij de twee
-   * rubriekonderdelen iets terug; nu bij alle vier, zodra de items van een examen getagd zijn.
-   *
-   * `null` tot er iets te zeggen valt, zodat er geen lege-staatblok staat op een pagina die de
-   * kandidaat net heeft geopend.
+   * De slaagkans: `calculateSlaagkans` weegt het gemiddelde tegen een prior van 50 en wordt pas
+   * na vijf examens volledig zeker. De scores zijn de *beste* per examen.
    */
-  const weakness = await fetchSkillWeakness(user?.id ?? null, level, skill.slug);
-
-  const menu = await fetchPortalMenu();
-
-  // De lescursus van dit onderdeel. Een leeg resultaat betekent dat de docent nog niets heeft
-  // vrijgegeven; dan komt er geen kaart in plaats van een kaart die naar een 404 wijst.
-  const blocks = await fetchCourse(level, skill.slug, user?.id ?? null);
-  const lessonsDone = blocks.reduce((n, b) => n + blockProgress(b).done, 0);
-  const lessonsTotal = blocks.reduce((n, b) => n + b.lessons.length, 0);
-
-  /**
-   * Examenklaar: één getal uit de twee assen die dit scherm draagt.
-   *
-   * Zie `lib/lessons/readiness.ts` — het is ONS getal, geen slaagkans, en de kop zegt dat
-   * erbij. Het staat hier omdat dit de pagina is waar de kandidaat beslist of hij nog een les
-   * doet of het examen aandurft.
-   */
-  const r = readiness({
-    lessonsDone,
-    lessonsTotal,
-    examsDone: p.examsDone,
-    examCount: skill.examCount,
-    averagePct: p.averagePct,
-  });
-
-  /**
-   * De concepten van dit onderdeel, met hun beheersing en hun les.
-   *
-   * Dit voedde ook de top-3 in de kopkaart; sinds 14-09 toont die de vaardigheden uit
-   * `fetchSkillWeakness` en is dit alleen nog de invoer van de leerroute. Alleen concepten die in
-   * dít onderdeel voorkomen (`fetchConcepts` filtert op `concept_onderdelen`), want
-   * "signaalwoorden" beheersen in Lezen zegt niets over Schrijven — daar moet je ze maken.
-   */
-  const concepts = user ? await fetchConcepts(level, skill.slug) : [];
-  const mastery = await fetchMastery(user?.id ?? null, concepts.map(c => c.id));
-  const teachers = await fetchTeachersForCourse(level, skill.slug, concepts.map(c => c.id));
-
-  /**
-   * De leerroute: woordenschat → grammatica → examentraining.
-   *
-   * De drie stappen zijn `ConceptKind`, niet een indeling die hier wordt verzonnen — zie
-   * `lib/lessons/leerroute.ts`. De oefenhelft van de derde stap is de `practice`-helft van
-   * `readiness()`, zodat er één formule voor "hoe goed sta je op de tien examens" bestaat.
-   */
-  const wordCounts = await fetchWordCounts(level, skill.slug, user?.id ?? null);
-  /* De lessentelling komt uit de sporen en niet uit de `teaches`-relatie, zodat de kaart
-     hetzelfde getal noemt als het spoorscherm waar hij naartoe wijst. */
-  const [sporen, grammar] = await Promise.all([
-    sporenFromBlocks(blocks, level, skill.slug, user?.id ?? null),
-    fetchGrammarStep(level, skill.slug, user?.id ?? null),
-  ]);
-  const leerroute = buildLeerroute({
-    concepts, mastery, teachers, blocks, examPractice: r.practice, wordCounts,
-    spoorLessons: {
-      /* Stap 2 telt onderwerpen uit de grammaticasyllabus (oktober 2026), niet lessen: dat is
-         wat het onderwerpscherm ernaast ook telt. Zie `lib/lessons/grammar.ts`. */
-      grammatica: { done: grammar.done, total: grammar.total },
-      strategie: sporen.find(s => s.slug === 'examentraining'),
-    },
-    /* De middelste stap heet in élke cursus Taalregels: zie `Spoor.name`. */
-  });
-
-  /**
-   * De slaagkans-meter, dezelfde als op KNM.
-   *
-   * `calculateSlaagkans` weegt het gemiddelde tegen een prior van 50 en wordt pas na vijf
-   * examens volledig zeker — één examen van 90% mag niet als "90% slaagkans" lezen. De scores
-   * zijn de *beste* score per examen, want dat is wat de kandidaat aankan; een verprutste
-   * eerste poging die hij daarna heeft rechtgezet hoort hem niet te blijven achtervolgen.
-   */
-  /**
-   * De leerroute is drie kaarten, en er komt niets naast (besluit eigenaar, 10-09).
-   *
-   * Woorden → de taalregels die dit examen vraagt → het examen zelf. Er stonden hier eerst een
-   * vierde kaart *Alle taalregels* en daarna een bibliotheek als eigen menu-item; beide zijn
-   * vervallen. Alle regels van dít onderdeel staan nu ín stap 2, als eigen modules — zie
-   * `fetchGrammarStep` (sinds oktober 2026). Een verzameling om in te grasduinen is navigatie, geen stap in een
-   * genummerde route, en naast een genummerde route wordt hij als stap gelezen.
-   */
-
   const examScores = Object.values(p.exams)
     .map(e => e.bestPct)
     .filter((x): x is number => x != null);
   const kans = calculateSlaagkans(examScores);
+  const kansLevel = passChanceLevel(examScores.length, kans.band);
+
+  /* ── 1 Leren: de blokken A–E ─────────────────────────────────────────────────────────── */
+  const next = nextLesson(blocks);
+  const byLetter = new Map(blocks.map(b => [b.letter, b]));
+  const learnRows: LearnRow[] = LETTERS.flatMap(letter => {
+    const block = byLetter.get(letter);
+    const isRules = letter === 'B';
+    if (isRules ? !block && grammar.total === 0 : !block || block.lessons.length === 0) return [];
+
+    const tally = isRules
+      ? { done: grammar.done, total: grammar.total }
+      : blockProgress(block!);
+    const soon = lessonStepSoon(level, KIND_OF_BLOCK[letter]);
+    /* `withOrder()` zet `is_free` op de eerste les van A, B en C: dat is de etalage. */
+    const free = block?.lessons.some(l => l.is_free) ?? false;
+    const isNext = next?.block.letter === letter;
+    const stepHref = letter === 'A'
+      ? wordsPath(level, skill.slug)
+      : isRules
+        ? grammarStepPath(level, skill.slug)
+        : spoorPath(level, skill.slug, 'examentraining');
+
+    const state: LearnRow['state'] = soon
+      ? 'soon'
+      : tally.total > 0 && tally.done >= tally.total
+        ? 'd'
+        : isNext
+          ? 'c'
+          : !ownsThisSkill && !free
+            ? 'lk'
+            : 'open';
+
+    const sub =
+      state === 'soon' ? t('tag_soon')
+        : state === 'd' ? t('glas.block_done')
+          : state === 'c' ? t('ov_next', { lesson: next!.lesson.title })
+            : state === 'lk' ? t('words_locked')
+              : !ownsThisSkill && free ? t('glas.block_first_free')
+                : tally.done === 0 ? t('glas.block_not_started')
+                  : t('mod_lessons', { done: tally.done, total: tally.total });
+
+    /* De huidige rij gaat meteen naar de les waar je verdergaat, als je die mag openen; de
+       andere naar het overzicht van hun stap. */
+    const continueHref = state === 'c' && (ownsThisSkill || next!.lesson.is_free)
+      ? lessonPath(level, skill.slug, next!.lesson.slug)
+      : stepHref;
+
+    return [{
+      key: letter,
+      letter,
+      title: isRules ? t('leerroute_grammatica_title') : block!.name_nl,
+      sub,
+      count: tally.total > 0 ? `${tally.done}/${tally.total}` : null,
+      href: state === 'soon' ? null : `/${locale}${continueHref}`,
+      state,
+    }];
+  });
+  const allSoon = learnRows.length > 0 && learnRows.every(r => r.state === 'soon');
+
+  /* ── 2 Oefenexamens ──────────────────────────────────────────────────────────────────── */
+  const { cards, factLine } = await buildExamSlots({
+    locale, level, skill, progress: p, published: pub, isGuest, owns: ownsThisSkill,
+  });
+  const freeNumbers = new Set(
+    Array.from({ length: skill.examCount }, (_, i) => i + 1).filter(n => isFreeExamOf(level, n)),
+  );
+  const skillName = tSkills(`${skill.key}.name`);
+  const moduleName = `${skillName} ${levelLabel(level)}`;
+
+  /* De ene oranje kaart: voor een gast het account, voor wie het onderdeel niet heeft de
+     module. Wie hem heeft, krijgt hier niets — het donkere vierkantje wijst al het volgende
+     examen aan. */
+  const upsell = isGuest
+    ? (
+      <UnlockCard
+        title={t('guest_upsell_title')}
+        sub={t('guest_upsell_body')}
+        cta={t('guest_create_account')}
+        href={`/${locale}/register?next=/dashboard/${level}/${skill.slug}`}
+      />
+    )
+    : !ownsThisSkill && pub.size > 0
+      ? (
+        <UnlockCard
+          title={t('glas.unlock_title')}
+          sub={t('glas.unlock_sub', { module: moduleName, price: euro(MODULE_PRICE_CENTS) })}
+          cta={t('glas.unlock_cta', { skill: skillName })}
+          href={`/${locale}/dashboard/pakketten?onderdeel=${level}:${skill.slug}&vanaf=onderdeel`}
+        />
+      )
+      : null;
+
+  const examsSub = [
+    t('exams_made', { done: p.examsDone, total: skill.examCount }),
+    p.averagePct != null ? t('card_average', { pct: p.averagePct }) : null,
+  ].filter(Boolean).join(' · ');
 
   return (
     <AppShell
@@ -204,122 +205,66 @@ export default async function SkillExamsPage({ params }: Props) {
       menu={menu}
       isGuest={isGuest}
     >
-      <div className="px-5 py-7 sm:px-8 sm:py-10">
-        <div className="max-w-5xl mx-auto">
+      <div className="g-page">
+        <PortalCrumbs
+          glas
+          trail={skillTrail({
+            locale, level, skill: skill.slug, last: true,
+            overviewLabel: t('crumb_overview'),
+            skillName: s => tSkills(`${s}.name`),
+          })}
+        />
 
-          {/* De kop is één regel. De navy paginakop is er op 02-09 af gehaald (besluit van
-              de eigenaar): op dit scherm staat de diagnose bovenaan, en een kop met tegels
-              die dezelfde cijfers nog eens noemt duwde die diagnose onder de fold. De
-              zijbalk vertelt al waar je bent, dus de terugknop is hier ook weg. */}
-          <PortalCrumbs
-            trail={skillTrail({
-              locale, level, skill: skill.slug, last: true,
-              overviewLabel: t('crumb_overview'),
-              skillName: slug => tSkills(`${slug}.name`),
-            })}
-          />
-
-          {/* De kop is één balk over de volle breedte: links de naam, rechts de slaagkans en de
-              drie concepten waar je nu het meeste laat liggen (mockup van de eigenaar, 08-09).
-              Dat vervangt zowel de losse kop als de zijkolom van deze pagina — die zeiden dit,
-              maar in twee blokken en met de diagnose onder de fold. */}
-          <SkillStatBar
-            category={skill.slug as Category}
-            title={tSkills(`${skill.key}.name`)}
+        <div className="g-sk">
+          <SkillHead
+            category={skill.slug}
+            title={skillName}
             tagline={tSkills(`${skill.key}.tagline`)}
-            weakness={weakness}
-            slaagkans={kans.slaagkans}
-            band={kans.band}
-            examsCount={examScores.length}
-            avgScore={kans.avgScore}
+            facts={[t('level_section', { level: levelLabel(level) }), factLine].filter(Boolean).join(' · ')}
+            kans={{
+              level: kansLevel,
+              label: t('glas.kans_label'),
+              word: t(`glas.kans_${kansLevel}`),
+              line: examScores.length > 0
+                ? t('slaagkans_note', { count: examScores.length, avg: kans.avgScore })
+                : t('slaagkans_note_empty'),
+              scale: [t('glas.kans_1'), t('glas.kans_2'), t('glas.kans_3'), t('glas.kans_4')],
+            }}
           />
 
-          {/* De rubrieknotitie stond hier onder de kopkaart en is er op 15-09 af gehaald
-              (eigenaar). Hij zei in vier regels wat de uitsplitsing ernaast met criteria toont,
-              en hij stond op élk bezoek, ook bij een kandidaat die zijn tiende opdracht inlevert.
-              Hij blijft wel op `oefenexamens/page.tsx`: dáár kies je een examen zonder de
-              criteria in beeld, en dan is "dit wordt met de hand nagekeken" nieuwe informatie. */}
-
-            {/* De examens staan boven de leerroute (eigenaar, 15-09): de kandidaat komt voor
-                het volgende oefenexamen, en de drie leerkaarten duwden die strook onder de fold
-                op een laptop. De leerroute blijft eronder als het antwoord op "en hoe word ik
-                daar beter in". */}
-            <ExamStrip
-              locale={locale}
-              level={level}
-              skill={skill}
-              progress={p}
-              published={pub}
-              isGuest={isGuest}
-              owns={ownsThisSkill}
+          <Lanes>
+            <LearnLane
+              title={t('mod_learn')}
+              sub={t('leerroute_sub')}
+              rows={learnRows}
+              empty={allSoon ? t('leerroute_soon') : t('leerroute_empty')}
+              continueLabel={t('mod_continue')}
             />
+            <ExamLane
+              title={t('stat_exams')}
+              sub={examsSub}
+              cards={cards}
+              freeNumbers={freeNumbers}
+              owns={ownsThisSkill}
+              allHref={`/${locale}/dashboard/${level}/${skill.slug}/oefenexamens`}
+              allLabel={t('exams_all')}
+              labels={{
+                free: t('glas.free'),
+                now: t('exams_now'),
+                slot: (n, state) => `${t('exam_row_title', { number: n })} · ${state}`,
+              }}
+              upsell={upsell}
+            />
+          </Lanes>
 
-            {/* De leerroute. De volgorde is dragend: woorden, dan regels, dan het examen zelf.
-                Elke stap krijgt één getal van 0–100 uit lessen én oefenvragen samen — zie
-                `lib/lessons/leerroute.ts`. Een stap waar de docent nog geen concept van heeft
-                vrijgegeven rendert als lege kaart met een streepje, niet als 0%. */}
-            {/* Het witte paneel van de examenstrook eromheen (eigenaar, 15-09): twee blokken
-                die op dezelfde pagina dezelfde rol spelen — een kop met kaarten eronder — horen
-                dezelfde doos te hebben. De kop staat daarom ín het paneel. */}
-            <section className="panel mb-7">
-              {/* Dezelfde kop als de examenstrook: de naam in de kopletter met de toelichting
-                  ernaast, niet het kapitaalkopje. Twee panelen naast elkaar met twee soorten
-                  koppen lezen als twee soorten blokken (eigenaar, 15-09). */}
-              <div className="lr-head">
-                <h2>{t('leerroute_title')}</h2>
-                <p>{t('leerroute_sub')}</p>
-              </div>
-              {/* Dezelfde kaart als de modules en de onderdelen, drie op een rij. Het merkteken
-                  is de leerroute-mark op het navy paneel, en de voet draagt de feiten van de
-                  stap in plaats van een examenstelling — die heeft een leerspoor niet. */}
-              <div className={'ov-cards is-three'}>
-                {leerroute.map(m => {
-                  /* De lesstappen staan op "Binnenkort" zolang `LESSONS_COMING_SOON` aanstaat,
-                     behalve wat `LESSON_STEPS_OPEN` per niveau vrijgeeft — zie lib/features.ts. */
-                  const soon = lessonStepSoon(level, m.kind);
-                  return (
-                  <TrackCard
-                    key={m.kind}
-                    layer="onderdeel"
-                    mark={<CategoryMark category={LEER_MARK[m.kind]} size={56} tone="dark" />}
-                    /* Geen "STAP 1": de kop erboven zegt al dat dit een volgorde is, en de
-                       kaarten stáán in die volgorde (eigenaar, 15-09). */
-                    sub={null}
-                    title={m.title ?? t(`leerroute_${m.kind}_title`)}
-                    state={soon ? 'soon' : m.score === null ? 'open' : 'active'}
-                    note={soon ? t('leerroute_soon') : m.hasContent ? null : t('leerroute_empty')}
-                    pct={soon ? null : m.score}
-                    progressLabel={null}
-                    /* Geen feitenregel meer op de kaart (eigenaar, 15-09). "Woorden gekend
-                       59 / 126" en "Lessen afgerond 2 / 20" zeggen in cijfers wat de balk
-                       eronder als breedte al zegt, en ze staan wél op het scherm waar je
-                       naartoe gaat. De voet draagt nu alleen de knop. */
-                    meta={[]}
-                    /* Elke stap wijst naar zijn eigen overzicht, niet naar één les diep erin:
-                       daar staat wat er is en waar je verdergaat. */
-                    cta={soon ? null : m.kind === 'woordenschat' ? t('leerroute_cta_words') : t('leerroute_cta_modules')}
-                    href={
-                      soon || !m.hasContent
-                        ? null
-                        : m.kind === 'woordenschat'
-                          ? `/${locale}${wordsPath(level, skill.slug)}`
-                          : m.kind === 'grammatica'
-                            ? `/${locale}${grammarStepPath(level, skill.slug)}`
-                            : `/${locale}${spoorPath(level, skill.slug, SPOOR_OF_KIND[m.kind])}`
-                    }
-                    soonLabel={t('tag_soon')}
-                  />
-                  );
-                })}
-              </div>
-            </section>
-
-
-
-
+          {weakness && (
+            <WeaknessCard
+              title={weakness.rows.some(r => r.pct !== null) ? t('weak_head') : t('weak_head_empty')}
+              data={weakness}
+            />
+          )}
         </div>
       </div>
-
     </AppShell>
   );
 }

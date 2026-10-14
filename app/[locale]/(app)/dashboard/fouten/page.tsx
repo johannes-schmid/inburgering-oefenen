@@ -7,7 +7,7 @@ import { RotateCcw, CheckCircle2 } from 'lucide-react';
 import { createClient } from '@/lib/supabase/client';
 import AppShell from '../../components/AppShell';
 import BackLink from '../../components/BackLink';
-import LoadingSpinner from '@/components/LoadingSpinner';
+import { LogoLoader } from '@/components/glas';
 import InlineQuiz from '../components/InlineQuiz';
 import LearningQueue, { type QueueItem } from '../components/LearningQueue';
 import type { KnmQuestion } from '@/data/questions';
@@ -118,7 +118,7 @@ export default function FoutenPage({ params }: { params: Promise<{ locale: strin
 
   useEffect(() => { load(); }, [load]);
 
-  if (loading) return <LoadingSpinner label={t('loading')} />;
+  if (loading) return <LogoLoader fullPage label={t('loading')} />;
 
   const startPractice = (ids: number[], scope: 'all' | 'section' = 'all') => {
     const subset = ids.map(id => questionsById[id]).filter(Boolean) as KnmQuestion[];
@@ -133,7 +133,7 @@ export default function FoutenPage({ params }: { params: Promise<{ locale: strin
   if (practice) {
     return (
       <AppShell locale={locale} email={email} active="overview">
-        <div style={{ maxWidth: 760, margin: '0 auto', padding: '24px 20px 80px' }}>
+        <div className="g-page g-page-narrow">
           <InlineQuiz
             questions={practice}
             examNum={null}
@@ -155,31 +155,32 @@ export default function FoutenPage({ params }: { params: Promise<{ locale: strin
 
   return (
     <AppShell locale={locale} email={email} active="overview">
-      <div style={{ maxWidth: 680, margin: '0 auto', padding: '24px 20px 80px' }}>
+      <div className="g-page g-page-narrow">
         <BackLink fallbackHref={`/${locale}/dashboard`} />
-        <h1 className="font-headline" style={{ fontSize: 24, fontWeight: 800, color: '#002b6d', letterSpacing: '-0.02em' }}>{t('leerwachtrij_title')}</h1>
-        {topicFilter && <p style={{ fontSize: 13, color: '#d94f00', fontWeight: 700, marginTop: 4 }}>{t('fouten_topic_note', { topic: topicFilter })}</p>}
+        <header className="g-ph">
+          <h1>{t('leerwachtrij_title')}</h1>
+          {topicFilter && <p className="text-klei font-semibold">{t('fouten_topic_note', { topic: topicFilter })}</p>}
+          {total > 0 && <p>{t('leerwachtrij_subtitle', { count: total })}</p>}
+        </header>
 
         {total === 0 ? (
-          <div style={{ background: '#fff', border: '1px solid #e6e9f0', borderRadius: 20, padding: '36px 24px', textAlign: 'center', marginTop: 18 }}>
-            <div style={{ width: 56, height: 56, borderRadius: '50%', background: '#e8f5ee', display: 'inline-flex', alignItems: 'center', justifyContent: 'center', marginBottom: 14 }}>
-              <CheckCircle2 size={28} strokeWidth={2.2} color="#1a7a3c" />
-            </div>
-            <h2 className="font-headline" style={{ fontSize: 18, fontWeight: 800, color: '#191c1e', margin: '0 0 6px' }}>{t('fouten_empty_title')}</h2>
-            <p style={{ fontSize: 14, color: '#5a6078', lineHeight: 1.55, maxWidth: 380, margin: '0 auto 18px' }}>{t('fouten_empty_desc')}</p>
-            <a href={`/${locale}/dashboard`} style={{ display: 'inline-flex', alignItems: 'center', gap: 8, background: 'linear-gradient(135deg,#fe762c,#d94f00)', color: '#fff', borderRadius: 12, padding: '11px 20px', fontSize: 14, fontWeight: 700, textDecoration: 'none', boxShadow: '0 6px 16px rgba(217,79,0,0.3)' }}>
+          <section className="g-card g-empty">
+            <span className="g-empty-ic"><CheckCircle2 aria-hidden /></span>
+            <h2>{t('fouten_empty_title')}</h2>
+            <p>{t('fouten_empty_desc')}</p>
+            <a href={`/${locale}/dashboard`} className="g-btn g-btn-navy">
               {t('fouten_to_exams')}
             </a>
-          </div>
+          </section>
         ) : (
           <>
-            <p style={{ fontSize: 14, color: '#5a6078', marginTop: 2 }}>{t('leerwachtrij_subtitle', { count: total })}</p>
-
+            {/* De ene oranje knop: alles herhalen, tot twintig vragen. */}
             <button
+              type="button"
               onClick={() => startPractice(mistakeIds.slice(0, PRACTICE_CAP), 'all')}
-              style={{ width: '100%', marginTop: 16, marginBottom: 20, display: 'inline-flex', alignItems: 'center', justifyContent: 'center', gap: 9, borderRadius: 14, padding: '14px 18px', fontSize: 15, fontWeight: 700, border: 0, color: '#fff', background: 'linear-gradient(135deg,#fe762c,#d94f00)', boxShadow: '0 6px 16px rgba(217,79,0,0.3)', cursor: 'pointer' }}
+              className="g-btn g-btn-oranje w-full mb-5"
             >
-              <RotateCcw size={18} strokeWidth={2.2} />
+              <RotateCcw aria-hidden />
               {t('fouten_practice_all', { count: Math.min(total, PRACTICE_CAP) })}
             </button>
 
