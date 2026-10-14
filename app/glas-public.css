@@ -13,6 +13,8 @@
   .g-track h3, .g-gcard h3, .g-gcard h4, .g-gids h3, .g-gids h4, .g-post h3, .g-feat h2, .g-feat h3, .g-compare h3,
   .g-ap-hero h1, .g-cta-band h2, .g-flow h3, .g-photo-card h3, .g-photo-card h4, .g-hero h1 { font-weight: 700; }
   .g-hero h1 span { font-weight: 500; }
+  /* Arabisch heeft geen hoofdletters en verbonden letters: spatiëring breekt de woorden uit elkaar. */
+  :lang(ar) .g-mono, :lang(ar) .g-slot-nr small, :lang(ar) .g-bdg-mono, :lang(ar) .g-track-meta { letter-spacing: 0; }
   /* Een chip op een mist-ondergrond: wit, anders verdwijnt hij in de pagina. */
   .g-chip.g-chip-wit { background: #fff; }
   .g-chip.g-chip-wit:hover { background: #f7f9fd; }

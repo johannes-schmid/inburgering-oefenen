@@ -1,12 +1,17 @@
 import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import { getTranslations } from 'next-intl/server';
+import { ArrowRight, Clock } from 'lucide-react';
 import { routing } from '@/i18n/routing';
 import { localeHref } from '@/i18n/paths';
 import { parseSkillParam, skillParam } from '@/i18n/skill-slugs';
 import { Link } from '@/i18n/navigation';
-import { SectionHeader } from '@/components/site';
-import { CategoryMark, DotField, HorizonBand, HorizonHero, ValidationChip } from '@/components/horizon';
+import ExamSlotCard from '@/components/glas/ExamSlotCard';
+import SectionHeading from '@/components/glas/SectionHeading';
+import ExamMark from '@/components/horizon/ExamMark';
+import CategoryMark from '@/components/horizon/CategoryMark';
+import FaqList from '../../../_components/glas/FaqList';
+import { OxCrumbs, OxHeader, OxLink, OxTextLink, OxUnlockBand } from '../../_glas/parts';
 import {
   LEVELS,
   SKILLS,
@@ -19,7 +24,7 @@ import {
 } from '@/data/skills';
 import { fetchExamsForSkill } from '@/lib/exams';
 import JsonLd from '@/components/JsonLd';
-import { langTag, TEACHER_ID } from '@/lib/site';
+import { langTag } from '@/lib/site';
 import {PROVIDER_REF, TEACHER_REF, absUrl, alternatesFor, breadcrumbs, courseId, omitEmpty, ogImageFor } from '@/lib/schema';
 
 type Props = { params: Promise<{ locale: string; level: string; skill: string }> };
@@ -182,226 +187,143 @@ export default async function SkillOverviewPage({ params }: Props) {
     ],
   };
 
+  /* "Oefenexamen" zonder nummer, voor linksboven op de slotkaart: de vertaling van `exam_label`
+     met een leeg nummer, zodat er geen vierde sleutel voor hetzelfde woord bij komt. */
+  const examWord = t('exam_label', { number: '' }).trim();
+  const playerHref = (n: number) => ({
+    pathname: '/oefenexamen/[level]/[skill]/[number]' as const,
+    params: { level, skill: skillParam(skill.slug, locale), number: String(n) },
+  });
+
   return (
     <>
       {jsonLd && <JsonLd data={jsonLd} />}
-      {/* ── HEADER ── */}
-      {/* The exam-set header. `HorizonHero` in children mode rather than the structured form,
-          because this one carries its own stats list under the lede. */}
-      <HorizonHero houses={14} skylineHeight={84} containerClass="max-w-5xl pt-16 pb-16">
-        <div>
-          <span className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-bold uppercase tracking-widest text-white/85 mb-5" style={{ background: 'rgba(255,255,255,0.15)' }}>
-            <CategoryMark category={skill.slug} size={22} tone="dark" />
-            {tSkills('exams_count', { count: skill.examCount })}
-          </span>
-          <h1 className="font-headline font-extrabold text-white tracking-tight mb-4" style={{ fontSize: 'clamp(2rem, 4vw, 3rem)', letterSpacing: '-0.03em' }}>
-            {t('heading', vars)}
-          </h1>
-          <p className="text-lg leading-relaxed max-w-2xl" style={{ color: 'rgba(255,255,255,0.85)' }}>
-            {tSkills(`${skill.key}.tagline`)}
-          </p>
 
-          {/* Dropped entirely where DUO's format for this level is unverified. Two em dashes
-              under "VRAGEN" and "MINUTEN" is honest but reads as a broken template, and the
-              stats return by themselves once exam_formats has real numbers. */}
-          {(skill.itemCount !== null || skill.durationMinutes !== null) && (
-            <dl className="flex flex-wrap gap-8 mt-8">
-              {skill.itemCount !== null && (
-                <div className="border-l-2 pl-4" style={{ borderColor: 'rgba(255,255,255,0.40)' }}>
-                  <dd className="text-white font-extrabold text-xl font-headline tracking-tight">{skill.itemCount}</dd>
-                  <dt className="text-xs uppercase tracking-wider font-semibold" style={{ color: 'rgba(255,255,255,0.65)' }}>
-                    {tSkills('items_label')}
-                  </dt>
-                </div>
-              )}
-              {skill.durationMinutes !== null && (
-                <div className="border-l-2 pl-4" style={{ borderColor: 'rgba(255,255,255,0.40)' }}>
-                  <dd className="text-white font-extrabold text-xl font-headline tracking-tight">{skill.durationMinutes}</dd>
-                  <dt className="text-xs uppercase tracking-wider font-semibold" style={{ color: 'rgba(255,255,255,0.65)' }}>
-                    {tSkills('duration_label')}
-                  </dt>
-                </div>
-              )}
-            </dl>
-          )}
-        </div>
-      </HorizonHero>
+      {/* ── KOP ── Gracht met sluier, onder de pil door. Track-merk en onderdeelmerk naast elkaar:
+          dit is "dit onderdeel op dit niveau". De feiten vallen weg waar DUO's formaat op dit niveau
+          ongeteld is (B1 Luisteren) — een 0 zou een claim zijn. De docentregel staat hier één keer:
+          dit is de pagina waar de bezoeker gevraagd wordt te vertrouwen vóór hij betaalt. */}
+      <OxHeader
+        crumbs={
+          <OxCrumbs
+            label={tB('home')}
+            items={[
+              { label: tB('home'), href: localeHref(locale, '') },
+              { label: tB('oefenexamen'), href: localeHref(locale, 'oefenen') },
+              { label: tB('level', { level: levelLabel(level) }), href: localeHref(locale, `oefenexamen/${level}`) },
+              { label: name },
+            ]}
+          />
+        }
+        marks={<><ExamMark track={level} size={56} /><CategoryMark category={skill.slug} size={56} /></>}
+        title={t('heading', vars)}
+        lead={tSkills(`${skill.key}.tagline`)}
+        facts={{
+          exams: tSkills('exams_count', { count: skill.examCount }),
+          items: skill.itemCount,
+          minutes: skill.durationMinutes,
+          itemsLabel: tSkills('items_label'),
+          minutesLabel: tSkills('duration_label'),
+        }}
+        trust={tHome('hero_badge')}
+      />
 
-      {/* ── EXAM GRID ── */}
-      <section className="py-16 px-6 bg-surface">
-        <div className="max-w-5xl mx-auto">
-          {/* §7.4: the validation chip sits on every exam-set header. This is the page where the
-              claim is load-bearing — it is what the visitor is being asked to trust before paying. */}
-          <div className="mb-8">
-            <ValidationChip>{tHome('hero_badge')}</ValidationChip>
-          </div>
+      {/* ── HET ROOSTER ── één `ExamSlotCard` per slot (glas.html §07, §12 "Publiek slotraster").
+          De publieke pagina kent drie standen en ze blijven visueel verschillend:
+          niet gepubliceerd → `nog` (klok, gestippeld, géén link) · gepubliceerd en gratis met een
+          account → `gratis` · gepubliceerd en alleen in de module → `pakket` (slot). Er is hier geen
+          gebruiker, dus geen `gehaald`/`bezig`: dat is het portaalraster. Een slot linkt naar de
+          speler; die stuurt een gast naar /register en een niet-koper naar /premium. */}
+      <section aria-labelledby="slots-heading" className="g-sec">
+        <div className="g-wrap">
+          <SectionHeading id="slots-heading" title={tSkills('exams_count', { count: skill.examCount })} size="h2" className="mb-6" />
 
           {!anyPublished && (
-            <div className="rounded-2xl p-7 mb-8 bg-surface-container-lowest" style={{ boxShadow: 'var(--shadow-card-md)', borderLeft: '3px solid var(--color-secondary-container)' }}>
-              <h2 className="font-headline font-bold text-on-surface text-base mb-1.5">{t('not_ready_title')}</h2>
-              <p className="text-sm text-on-surface-variant leading-relaxed">{t('not_ready_body')}</p>
+            <div className="g-ox-empty mb-6">
+              <Clock aria-hidden="true" />
+              <div>
+                <h2>{t('not_ready_title')}</h2>
+                <p>{t('not_ready_body')}</p>
+              </div>
             </div>
           )}
 
-          <ul className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4 list-none p-0 m-0">
+          <div className="g-slots">
             {slots.map(number => {
               const exam = publishedByNumber.get(number);
               const free = isFreeExam(level, number);
-              const available = Boolean(exam);
-
+              if (!exam) {
+                return <ExamSlotCard key={number} number={number} state="nog" numberLabel={examWord} title={tSkills('coming_soon')} />;
+              }
               return (
-                <li key={number}>
-                  {available ? (
-                    <a
-                      href={localeHref(locale, `oefenexamen/${level}/${skill.slug}/${number}`)}
-                      className={`exam-card${free ? '' : ' locked'} relative flex flex-col gap-3 p-6 pb-7 rounded-2xl bg-surface-container-lowest overflow-hidden no-underline`}
-                      style={{ boxShadow: 'var(--shadow-ambient)' }}
-                    >
-                      <div className="flex items-center justify-between gap-2">
-                        <span className="text-xs font-bold uppercase tracking-widest text-on-surface-variant/70">
-                          {t('exam_label', { number })}
-                        </span>
-                        <span
-                          className="text-[0.68rem] font-bold uppercase tracking-widest px-2.5 py-1 rounded-full"
-                          style={free
-                            ? { background: 'rgba(254,118,44,0.16)', color: 'var(--color-secondary)' }
-                            : { background: 'var(--color-surface-container)', color: 'var(--color-on-surface-variant)' }}
-                        >
-                          {free ? t('free') : t('locked')}
-                        </span>
-                      </div>
-                      <p className="font-headline font-bold text-on-surface text-base leading-snug">
-                        {exam?.title || `${name} ${number}`}
-                      </p>
-                      <span className="text-sm font-semibold mt-auto" style={{ color: '#a24000' }}>
-                        {free ? `${t('start')} →` : `${t('unlock')} →`}
-                      </span>
-                      {/* The band marks the one slot that is open to everyone. Three
-                          not-openable reasons have to stay visually distinct (unpublished /
-                          paid-only / free-and-open), so the distinction is carried by the band and
-                          the chip together, never by one signal doing both jobs. */}
-                      {free && <HorizonBand height={3} className="absolute left-0 right-0 bottom-0" />}
-                    </a>
-                  ) : (
-                    /* §7.2b: never grey a not-yet-shipped surface out with `opacity` — it makes
-                       the text fail contrast and reads as broken rather than as forthcoming. The
-                       whole tile drops to the neutral ramp instead, and the dot field says
-                       "nothing here yet" the way it does in every other empty state. */
-                    <div className="relative flex flex-col gap-3 p-6 rounded-2xl bg-surface-container-low overflow-hidden">
-                      <DotField on="dark" size={14} />
-                      <div className="flex items-center justify-between gap-2">
-                        <span className="text-xs font-bold uppercase tracking-widest text-on-surface-variant/60">
-                          {t('exam_label', { number })}
-                        </span>
-                      </div>
-                      <p className="relative font-headline font-bold text-on-surface-variant text-base leading-snug">
-                        {tSkills('coming_soon')}
-                      </p>
-                    </div>
-                  )}
-                </li>
+                <ExamSlotCard
+                  key={number}
+                  number={number}
+                  state={free ? 'gratis' : 'pakket'}
+                  numberLabel={examWord}
+                  pillLabel={t('free')}
+                  title={exam.title || `${name} ${number}`}
+                  sub={free ? t('start') : t('locked')}
+                  href={playerHref(number)}
+                  ariaLabel={`${t('exam_label', { number })} · ${free ? t('free') : t('locked')}`}
+                />
               );
             })}
-          </ul>
+          </div>
 
-          {/* Upsell */}
-          <div
-            className="flex items-center justify-between flex-wrap gap-6 p-8 rounded-2xl mt-10"
-            style={{ background: '#002b6d' }}
-          >
-            <div>
-              <p className="font-headline font-bold text-lg text-white mb-1">{t('unlock_all_title')}</p>
-              <p className="text-sm leading-relaxed max-w-xl" style={{ color: 'rgba(255,255,255,0.70)' }}>
-                {t('unlock_all_body')}
-              </p>
-            </div>
-            <a
+          <div className="mt-8">
+            <OxUnlockBand
+              title={t('unlock_all_title')}
+              body={t('unlock_all_body')}
+              cta={t('unlock_all_cta')}
               href={localeHref(locale, `premium`)}
-              className="inline-flex items-center gap-2 px-6 py-3 font-bold rounded-xl text-sm no-underline flex-shrink-0"
-              style={{ background: '#fe762c', color: '#5f2200', boxShadow: 'var(--shadow-btn-orange)' }}
-            >
-              {t('unlock_all_cta')}
-              <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M6 3l5 5-5 5" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg>
-            </a>
+            />
           </div>
         </div>
       </section>
 
       {/* ── DE UITLEG — wat het examen is, hoe je hier oefent, veelgestelde vragen ── */}
-      <section className="py-16 px-6 bg-surface-container-low">
-        <div className="max-w-3xl mx-auto">
-          <h2 className="font-headline font-extrabold text-on-surface tracking-tight mb-4" style={{ fontSize: 'clamp(1.5rem, 2.6vw, 2rem)', letterSpacing: '-0.02em' }}>
-            {t('how_title', { skill: name, skill_lower: name.toLowerCase() })}
-          </h2>
-          {paragraphs.map((p, i) => (
-            <p key={i} className="text-base leading-[1.7] text-on-surface-variant mb-4">{p}</p>
-          ))}
-          <h2 className="font-headline font-extrabold text-on-surface tracking-tight mt-10 mb-4" style={{ fontSize: 'clamp(1.5rem, 2.6vw, 2rem)', letterSpacing: '-0.02em' }}>
-            {t('how_ours_title')}
-          </h2>
-          <p className="text-base leading-[1.7] text-on-surface-variant mb-10">{ours}</p>
-
-          <SectionHeader eyebrow="" title={t('faq_title')} subtitle="" mb="mb-6" />
-          <div className="faq-folds">
-            {faq.map(f => (
-              <details key={f.q} className="faq-fold">
-                <summary>{f.q}</summary>
-                <p className="text-sm leading-relaxed text-on-surface-variant m-0 pt-2">{f.a}</p>
-              </details>
-            ))}
+      <section className="g-sec g-sec-tier">
+        <div className="g-wrap grid gap-10 lg:grid-cols-[minmax(0,1.15fr)_minmax(0,0.85fr)] lg:gap-12 items-start">
+          <article className="g-ox-read">
+            <h2>{t('how_title', { skill: name, skill_lower: name.toLowerCase() })}</h2>
+            {paragraphs.map((p, i) => <p key={i}>{p}</p>)}
+            <h2>{t('how_ours_title')}</h2>
+            <p>{ours}</p>
+          </article>
+          <div>
+            <SectionHeading title={t('faq_title')} size="h2" className="mb-5" />
+            <FaqList items={faq.map(f => ({ question: f.q, answer: f.a }))} />
           </div>
         </div>
       </section>
 
-      {/* ── CROSS-LINKS ── */}
-      <section className="py-16 px-6 bg-surface">
-        <div className="max-w-5xl mx-auto">
-          <SectionHeader eyebrow="" title={t('other_skills')} subtitle="" mb="mb-8" />
-          <div className="grid sm:grid-cols-3 gap-4">
+      {/* ── VERWIJZINGEN ── de andere onderdelen, omhoog naar het niveau, en de kennisbank in. */}
+      <section aria-labelledby="other-heading" className="g-sec">
+        <div className="g-wrap">
+          <SectionHeading id="other-heading" title={t('other_skills')} size="h2" className="mb-6" />
+          <ul className="g-ox-links">
             {SKILLS.filter(s => s.slug !== skill.slug).map(other => (
-              <a
-                key={other.slug}
-                href={localeHref(locale, `oefenexamen/${level}/${other.slug}`)}
-                className="exam-card flex items-center gap-4 p-5 rounded-2xl bg-surface-container-lowest no-underline"
-                style={{ boxShadow: 'var(--shadow-card)' }}
-              >
-                <CategoryMark category={other.slug} size={44} />
-                <div>
-                  <p className="font-headline font-semibold text-on-surface text-sm">{tSkills(`${other.key}.name`)}</p>
-                  <p className="text-xs text-on-surface-variant">{tSkills('exams_count', { count: getFormat(level, other.slug).examCount })}</p>
-                </div>
-              </a>
+              <li key={other.slug}>
+                <OxLink
+                  href={localeHref(locale, `oefenexamen/${level}/${other.slug}`)}
+                  category={other.slug}
+                  title={tSkills(`${other.key}.name`)}
+                  sub={tSkills('exams_count', { count: getFormat(level, other.slug).examCount })}
+                />
+              </li>
             ))}
-          </div>
-
-          {/* Into the TOFU section. The overviews are the site's strongest pages; the kennisgidsen
-              need the link far more than these pages need the outbound one. */}
-          {/* Omhoog naar het niveau-overzicht (25-09) — de pagina voor "inburgering examen
-              oefenen a2", die zonder deze link alleen uit de voettekst bereikbaar is. */}
-          <p className="mt-8 text-sm">
-            <a href={localeHref(locale, `oefenexamen/${level}`)} className="font-semibold" style={{ color: '#a24000' }}>
-              {t('all_of_level', { level: levelLabel(level) })} →
-            </a>
-          </p>
-          <p className="mt-3 text-sm">
-            <Link href="/inburgering" className="font-semibold" style={{ color: '#a24000' }}>
-              {t('guide_link')} →
+          </ul>
+          <div className="g-ox-more">
+            {/* Omhoog naar het niveau-overzicht (25-09) — zonder deze link alleen uit de voettekst bereikbaar. */}
+            <OxTextLink href={localeHref(locale, `oefenexamen/${level}`)}>{t('all_of_level', { level: levelLabel(level) })}</OxTextLink>
+            <Link href="/inburgering" className="g-tlink">
+              {t('guide_link')}
+              <ArrowRight className="rtl-flip" aria-hidden="true" />
             </Link>
-          </p>
+          </div>
         </div>
       </section>
-
-      <style>{`
-        .exam-card {
-          transition: transform 0.2s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.2s ease;
-        }
-        .exam-card:hover {
-          transform: translateY(-3px);
-          box-shadow: 0 10px 28px rgba(0,43,109,0.12) !important;
-        }
-        .exam-card:active { transform: translateY(-1px); }
-        @media (prefers-reduced-motion: reduce) { .exam-card { transition: none; } }
-      `}</style>
     </>
   );
 }

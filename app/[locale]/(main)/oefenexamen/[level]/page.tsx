@@ -1,13 +1,18 @@
 import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import { getTranslations } from 'next-intl/server';
-import { ArrowRight } from 'lucide-react';
+import { ArrowRight, Clock } from 'lucide-react';
 import { routing } from '@/i18n/routing';
 import { localeHref } from '@/i18n/paths';
 import { Link } from '@/i18n/navigation';
-import { SectionHeader } from '@/components/site';
-import { CategoryMark, DotField, ExamMark, HorizonHero, ValidationChip } from '@/components/horizon';
-import { LEVELS, SKILLS, isLevel, levelLabel, skillsAtLevel, type Level } from '@/data/skills';
+import Field from '@/components/glas/Field';
+import SectionHeading from '@/components/glas/SectionHeading';
+import { glasButton } from '@/components/glas/Button';
+import ExamMark from '@/components/horizon/ExamMark';
+import CategoryMark from '@/components/horizon/CategoryMark';
+import FaqList from '../../_components/glas/FaqList';
+import { OxCrumbs, OxHeader, OxTextLink } from '../_glas/parts';
+import { LEVELS, isLevel, levelLabel, skillsAtLevel, type Level } from '@/data/skills';
 import { guideHref } from '@/data/guides/helpers';
 import JsonLd from '@/components/JsonLd';
 import { langTag, WEBSITE_ID } from '@/lib/site';
@@ -131,32 +136,30 @@ export default async function LevelOverviewPage({ params }: Props) {
     <>
       <JsonLd data={jsonLd} />
 
-      {/* ── HEADER ── */}
-      <HorizonHero houses={14} skylineHeight={84} containerClass="max-w-5xl pt-16 pb-16">
-        <div>
-          <span className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-bold uppercase tracking-widest text-white/85 mb-5" style={{ background: 'rgba(255,255,255,0.15)' }}>
-            <ExamMark track={level} size={22} onDark />
-            {t('eyebrow', vars)}
-          </span>
-          <h1 className="font-headline font-extrabold text-white tracking-tight mb-4" style={{ fontSize: 'clamp(2rem, 4vw, 3rem)', letterSpacing: '-0.03em' }}>
-            {t('heading', vars)}
-          </h1>
-          <p className="text-lg leading-relaxed max-w-2xl" style={{ color: 'rgba(255,255,255,0.85)' }}>
-            {t('sub')}
-          </p>
-        </div>
-      </HorizonHero>
+      {/* ── KOP ── Gracht met sluier; het track-merk groot, want dit is de pagina van het niveau. */}
+      <OxHeader
+        crumbs={
+          <OxCrumbs
+            label={tB('home')}
+            items={[
+              { label: tB('home'), href: localeHref(locale, '') },
+              { label: tB('oefenexamen'), href: localeHref(locale, 'oefenen') },
+              { label: tB('level', vars) },
+            ]}
+          />
+        }
+        marks={<ExamMark track={level} size={72} />}
+        title={t('heading', vars)}
+        lead={t('sub')}
+        trust={tHome('hero_badge')}
+      />
 
-      {/* ── DE VIER ONDERDELEN ── */}
-      <section className="py-16 px-6 bg-surface">
-        <div className="max-w-5xl mx-auto">
-          <div className="mb-8">
-            <ValidationChip>{tHome('hero_badge')}</ValidationChip>
-          </div>
-
-          <SectionHeader eyebrow="" title={t('parts_title', vars)} subtitle="" mb="mb-8" />
-
-          <ul className="grid sm:grid-cols-2 gap-4 list-none p-0 m-0">
+      {/* ── DE ONDERDELEN ── één kaart per onderdeel. Een onderdeel zonder geteld formaat
+          (B1 Luisteren) is gestippeld, linkt nergens heen en zegt waarom. */}
+      <section aria-labelledby="parts-heading" className="g-sec">
+        <div className="g-wrap">
+          <SectionHeading id="parts-heading" title={t('parts_title', vars)} size="h1" className="mb-8" />
+          <ul className="g-ox-parts">
             {parts.map(part => {
               const name = tSkills(`${part.key}.name`);
               const known = part.itemCount !== null && part.durationMinutes !== null;
@@ -164,37 +167,32 @@ export default async function LevelOverviewPage({ params }: Props) {
               return (
                 <li key={part.slug}>
                   {known ? (
-                    <a
-                      href={localeHref(locale, `oefenexamen/${level}/${part.slug}`)}
-                      className="exam-card relative flex items-start gap-4 p-6 pb-7 rounded-2xl bg-surface-container-lowest no-underline overflow-hidden"
-                      style={{ boxShadow: 'var(--shadow-ambient)' }}
-                    >
-                      <CategoryMark category={part.slug} size={48} />
+                    <a href={localeHref(locale, `oefenexamen/${level}/${part.slug}`)} className="g-ox-part">
+                      <CategoryMark category={part.slug} size={52} />
                       <div className="flex-1 min-w-0">
-                        <div className="flex items-center justify-between gap-2">
-                          <p className="font-headline font-bold text-on-surface text-lg m-0">{name} {label}</p>
-                          <span className="text-[0.68rem] font-bold uppercase tracking-widest px-2.5 py-1 rounded-full" style={{ background: 'rgba(254,118,44,0.16)', color: 'var(--color-secondary)' }}>
-                            {t('free_chip')}
-                          </span>
+                        <div className="g-ox-part-top">
+                          <h3>{name} {label}</h3>
+                          <span className="g-bdg g-bdg-zacht">{t('free_chip')}</span>
                         </div>
-                        <p className="text-sm text-on-surface-variant mt-1 mb-3">
+                        <p className="g-ox-part-meta g-tnum">
                           {t(metaKey, { items: part.itemCount as number, minutes: part.durationMinutes as number })} · {tSkills('exams_count', { count: part.examCount })}
                         </p>
-                        <p className="text-sm text-on-surface-variant leading-relaxed m-0">{tSkills(`${part.key}.tagline`)}</p>
-                        <span className="inline-flex items-center gap-1 text-sm font-semibold mt-4" style={{ color: '#a24000' }}>
+                        <p className="g-ox-part-tag">{tSkills(`${part.key}.tagline`)}</p>
+                        <span className="g-ox-part-cta">
                           {t('part_cta')}
-                          <ArrowRight size={14} strokeWidth={2.2} aria-hidden="true" className="rtl-flip" />
+                          <ArrowRight aria-hidden="true" className="rtl-flip" />
                         </span>
                       </div>
                     </a>
                   ) : (
-                    <div className="relative flex items-start gap-4 p-6 rounded-2xl bg-surface-container-low overflow-hidden">
-                      <DotField on="dark" size={14} />
-                      <CategoryMark category={part.slug} size={48} />
-                      <div className="relative flex-1 min-w-0">
-                        <p className="font-headline font-bold text-on-surface-variant text-lg m-0">{name} {label}</p>
-                        <p className="text-xs font-bold uppercase tracking-widest text-on-surface-variant/70 mt-1 mb-3">{t('part_soon')}</p>
-                        <p className="text-sm text-on-surface-variant leading-relaxed m-0">{t('b1_luisteren_note')}</p>
+                    <div className="g-ox-part g-ox-part-nog">
+                      <CategoryMark category={part.slug} size={52} />
+                      <div className="flex-1 min-w-0">
+                        <div className="g-ox-part-top">
+                          <h3>{name} {label}</h3>
+                          <span className="g-bdg g-bdg-grijs"><Clock aria-hidden="true" />{t('part_soon')}</span>
+                        </div>
+                        <p className="g-ox-part-tag mt-2.5">{t('b1_luisteren_note')}</p>
                       </div>
                     </div>
                   )}
@@ -206,87 +204,65 @@ export default async function LevelOverviewPage({ params }: Props) {
       </section>
 
       {/* ── DE UITLEG — wat is het, hoe oefen je, gratis beginnen ── */}
-      <section className="py-16 px-6 bg-surface-container-low">
-        <div className="max-w-3xl mx-auto">
-          <h2 className="font-headline font-extrabold text-on-surface tracking-tight mb-4" style={{ fontSize: 'clamp(1.5rem, 2.6vw, 2rem)', letterSpacing: '-0.02em' }}>
-            {t('what_title', vars)}
-          </h2>
-          <p className="text-base leading-[1.7] text-on-surface-variant mb-4">{t(`what_p1_${level}`)}</p>
-          <p className="text-base leading-[1.7] text-on-surface-variant mb-10">{t('what_p2')}</p>
-
-          <h2 className="font-headline font-extrabold text-on-surface tracking-tight mb-4" style={{ fontSize: 'clamp(1.5rem, 2.6vw, 2rem)', letterSpacing: '-0.02em' }}>
-            {t('how_title', vars)}
-          </h2>
-          <p className="text-base leading-[1.7] text-on-surface-variant mb-4">{t('how_p1')}</p>
-          <p className="text-base leading-[1.7] text-on-surface-variant mb-10">{t('how_p2')}</p>
-
-          <div className="rounded-2xl p-8" style={{ background: '#002b6d' }}>
-            <p className="font-headline font-bold text-lg text-white mb-2">{t('free_title')}</p>
-            <p className="text-sm leading-relaxed mb-5" style={{ color: 'rgba(255,255,255,0.75)' }}>{t('free_p')}</p>
-            <a
-              href={localeHref(locale, 'oefenen')}
-              className="inline-flex items-center gap-2 px-6 py-3 font-bold rounded-xl text-sm no-underline"
-              style={{ background: '#fe762c', color: '#5f2200', boxShadow: 'var(--shadow-btn-orange)' }}
-            >
+      <section className="g-sec g-sec-tier">
+        <div className="g-wrap grid gap-10 lg:grid-cols-[minmax(0,1.15fr)_minmax(0,0.85fr)] lg:gap-12 items-start">
+          <article className="g-ox-read">
+            <h2>{t('what_title', vars)}</h2>
+            <p>{t(`what_p1_${level}`)}</p>
+            <p>{t('what_p2')}</p>
+            <h2>{t('how_title', vars)}</h2>
+            <p>{t('how_p1')}</p>
+            <p>{t('how_p2')}</p>
+          </article>
+          {/* Gratis beginnen: Nevel, de ene oranje knop van deze view. */}
+          <Field variant="nevel" className="g-block p-7 sm:p-9 lg:sticky lg:top-[calc(var(--nav-h)+24px)]">
+            <h2 className="g-head g-head-2">{t('free_title')}</h2>
+            <p className="g-body mt-3">{t('free_p')}</p>
+            <a href={localeHref(locale, 'oefenen')} className={glasButton({ variant: 'oranje', size: 'lg', className: 'mt-6' })}>
               {t('free_cta')}
-              <ArrowRight size={16} strokeWidth={2.2} aria-hidden="true" className="rtl-flip" />
+              <ArrowRight aria-hidden="true" className="rtl-flip" />
             </a>
-          </div>
+          </Field>
         </div>
       </section>
 
-      {/* ── FAQ ── */}
-      <section className="py-16 px-6 bg-surface">
-        <div className="max-w-3xl mx-auto">
-          <SectionHeader eyebrow="" title={t('faq_title', vars)} subtitle="" mb="mb-6" />
-          <div className="faq-folds">
-            {faq.map(f => (
-              <details key={f.q} className="faq-fold">
-                <summary>{f.q}</summary>
-                <p className="text-sm leading-relaxed text-on-surface-variant m-0 pt-2">{f.a}</p>
-              </details>
-            ))}
-          </div>
-
-          {/* Naar de kennisbank. De overzichten zijn de sterkste pagina's van de site; de gidsen
-              hebben deze link harder nodig dan andersom. */}
-          <SectionHeader eyebrow="" title={t('guides_title', vars)} subtitle="" mb="mb-4" className="mt-14" />
-          <ul className="list-none p-0 m-0 flex flex-col gap-2 text-sm">
-            <li>
-              <Link href={guideHref({ section: 'taalexamens', slug: 'taalexamens-a2-b1' }, locale)} className="font-semibold" style={{ color: '#a24000' }}>{t('guide_taalexamens')} →</Link>
-            </li>
-            {level === 'b1' && (
+      {/* ── FAQ en de weg de kennisbank in ── */}
+      <section className="g-sec">
+        <div className="g-wrap grid gap-10 lg:grid-cols-[minmax(0,0.85fr)_minmax(0,1.15fr)] lg:gap-14 items-start">
+          <div>
+            <SectionHeading title={t('faq_title', vars)} size="h1" />
+            {/* Naar de kennisbank. De overzichten zijn de sterkste pagina's van de site; de gidsen
+                hebben deze link harder nodig dan andersom. */}
+            <h2 className="g-head g-head-3 mt-10">{t('guides_title', vars)}</h2>
+            <ul className="g-ox-more !mt-4">
               <li>
-                <Link href={guideHref({ section: 'taalexamens', slug: 'b1-examen' }, locale)} className="font-semibold" style={{ color: '#a24000' }}>{t('guide_b1')} →</Link>
+                <Link href={guideHref({ section: 'taalexamens', slug: 'taalexamens-a2-b1' }, locale)} className="g-tlink">
+                  {t('guide_taalexamens')}<ArrowRight aria-hidden="true" className="rtl-flip" />
+                </Link>
               </li>
-            )}
-            <li>
-              <Link href={guideHref({ section: 'inburgering', slug: 'inburgering-stappenplan' }, locale)} className="font-semibold" style={{ color: '#a24000' }}>{t('guide_stappenplan')} →</Link>
-            </li>
-          </ul>
-
-          {/* Het andere niveau — één link, geen tweede rij tegels. */}
-          <p className="mt-8 text-sm text-on-surface-variant">
-            {LEVELS.filter(l => l !== level).map(other => (
-              <a key={other} href={localeHref(locale, `oefenexamen/${other}`)} className="font-semibold" style={{ color: '#a24000' }}>
-                {t('heading', { level: levelLabel(other) })} →
-              </a>
-            ))}
-          </p>
+              {level === 'b1' && (
+                <li>
+                  <Link href={guideHref({ section: 'taalexamens', slug: 'b1-examen' }, locale)} className="g-tlink">
+                    {t('guide_b1')}<ArrowRight aria-hidden="true" className="rtl-flip" />
+                  </Link>
+                </li>
+              )}
+              <li>
+                <Link href={guideHref({ section: 'inburgering', slug: 'inburgering-stappenplan' }, locale)} className="g-tlink">
+                  {t('guide_stappenplan')}<ArrowRight aria-hidden="true" className="rtl-flip" />
+                </Link>
+              </li>
+              {/* Het andere niveau — één link, geen tweede rij tegels. */}
+              {LEVELS.filter(l => l !== level).map(other => (
+                <li key={other}>
+                  <OxTextLink href={localeHref(locale, `oefenexamen/${other}`)}>{t('heading', { level: levelLabel(other) })}</OxTextLink>
+                </li>
+              ))}
+            </ul>
+          </div>
+          <FaqList items={faq.map(f => ({ question: f.q, answer: f.a }))} />
         </div>
       </section>
-
-      <style>{`
-        .exam-card {
-          transition: transform 0.2s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.2s ease;
-        }
-        .exam-card:hover {
-          transform: translateY(-3px);
-          box-shadow: 0 10px 28px rgba(0,43,109,0.12) !important;
-        }
-        .exam-card:active { transform: translateY(-1px); }
-        @media (prefers-reduced-motion: reduce) { .exam-card { transition: none; } }
-      `}</style>
     </>
   );
 }
