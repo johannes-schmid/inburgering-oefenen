@@ -1,8 +1,11 @@
 'use client';
 
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import { ArrowLeft, ArrowRight, Check, Clock, FileCheck2, X } from 'lucide-react';
-import { HorizonBanner } from '@/components/horizon';
+import { ArrowLeft, ArrowRight, Check, ChevronRight, Clock, FileCheck2, Info, RotateCcw, TriangleAlert, X } from 'lucide-react';
+import { AnimatedNumber, CategoryMark, Field, PassChanceCard, ScoreRing, glasButton, type Category, type PassChanceLevel } from '@/components/glas';
+import { calculateSlaagkans } from '@/lib/exam-readiness';
+import PassBurst from './PassBurst';
+import './glas-player.css';
 import { AudioPrefRow } from './ReadAloud';
 import AudioPlayer from './AudioPlayer';
 import { Link } from '@/i18n/navigation';
@@ -208,6 +211,33 @@ export default function ExamShell({ content, canSeeExplanations, guest = null }:
     ];
   }, [isOpenSkill, stimuli, standalone, tasks]);
 
+  /**
+   * De groepen van de voortgangsbalk (glas.html §10): één segment per tekstdeel, niet per vraag.
+   * Een deeltoets (`part`) of een stimulus is een groep; losse vragen (KNM) en losse opdrachten
+   * worden in blokjes van acht gezet, zodat veertig vragen geen veertig streepjes worden.
+   */
+  const groups = useMemo(() => {
+    const keys = steps.map((s, i) => {
+      if (s.partId) return `p${s.partId}`;
+      if (s.kind === 'mcq' && s.stimulus) return `s${s.stimulus.id}`;
+      return `c${Math.floor(i / 8)}`;
+    });
+    const out: { start: number; size: number }[] = [];
+    keys.forEach((k, i) => {
+      if (i > 0 && keys[i - 1] === k) out[out.length - 1].size++;
+      else out.push({ start: i, size: 1 });
+    });
+    // Te veel kleine groepen leest als ruis: terugvallen op tien gelijke blokken.
+    if (out.length > 14) {
+      const per = Math.ceil(steps.length / 10);
+      return Array.from({ length: Math.ceil(steps.length / per) }, (_, g) => ({
+        start: g * per,
+        size: Math.min(per, steps.length - g * per),
+      }));
+    }
+    return out;
+  }, [steps]);
+
   const [phase, setPhase] = useState<Phase>('intro');
   const [idx, setIdx] = useState(0);
   const [secondsLeft, setSecondsLeft] = useState(exam.duration_seconds);
@@ -227,6 +257,10 @@ export default function ExamShell({ content, canSeeExplanations, guest = null }:
   const [regrading, setRegrading] = useState(false);
   /** Staat de aanmeldkaart over het examen? Alleen een gast kan hem krijgen. */
   const [wall, setWall] = useState(false);
+  /** Het kruisje in de glazen balk vraagt eerst of je echt wilt stoppen. */
+  const [closing, setClosing] = useState(false);
+  /** Lezen op een smal scherm: tekst of vraag in beeld, per stimulus onthouden. */
+  const [paneFor, setPaneFor] = useState<{ id: number | null; v: 'tekst' | 'vragen' }>({ id: null, v: 'tekst' });
 
   const secondsRef = useRef(exam.duration_seconds);
   const timerRef = useRef<ReturnType<typeof setInterval> | null>(null);
@@ -785,98 +819,105 @@ export default function ExamShell({ content, canSeeExplanations, guest = null }:
     return <LuisterInstructie onStart={() => void startExam()} />;
   }
 
+  const answeredCount = isOpenSkill
+    ? tasks.filter(t => written[t.id]?.text?.trim() || written[t.id]?.json || spoken[t.id]?.blob).length
+    : Object.keys(chosen).length;
+
+  const isDone = (st: Step) =>
+    st.kind === 'mcq' ? Boolean(chosen[st.question.id]) : hasAnswer(written[st.task.id], spoken[st.task.id]);
+  const segments: Segment[] = groups.map(g => ({
+    size: g.size,
+    done: steps.slice(g.start, g.start + g.size).filter(isDone).length,
+    current: idx >= g.start && idx < g.start + g.size,
+  }));
+
+  /** The glass bar above every in-sitting screen: close, segmented progress, the clock. */
+  const bar = (
+    <ExamBar
+      skill={exam.skill}
+      segments={segments}
+      step={idx + 1}
+      steps={totalItems}
+      secondsLeft={secondsLeft}
+      onClose={() => setClosing(true)}
+    />
+  );
+  const closeDialog = closing && (
+    <CloseDialog href={dashboardHref} onStay={() => setClosing(false)} />
+  );
+
   if (phase === 'part') {
     const part = firstPartFor(idx);
     return (
-      <div className="max-w-2xl mx-auto flex flex-col gap-5">
-        <span className="text-[0.65rem] font-bold uppercase tracking-widest text-on-surface-variant/70">
-          {part?.title}
-        </span>
-        <div
-          className="rounded-2xl bg-surface-container-lowest"
-          style={{ padding: '1.5rem 1.625rem', boxShadow: 'var(--shadow-card-md)' }}
-        >
+      <ExamFrame skill={exam.skill}>
+        {bar}
+        <div className="g-xbody" style={{ maxWidth: 760, width: '100%', marginInline: 'auto' }}>
+          <span className="g-mono">{part?.title}</span>
           {part?.instruction_html ? (
+            /* Tag-level rules live in .exam-rich in app/globals.css — see the note there. */
             <div
-              className="exam-task-prompt exam-rich exam-rich-scroll text-on-surface"
+              className="g-xprompt exam-rich exam-rich-scroll"
+              style={{ marginTop: 12 }}
               dangerouslySetInnerHTML={{ __html: part.instruction_html }}
             />
           ) : (
-            <p className="text-sm text-on-surface-variant m-0">Lees de opdracht goed door.</p>
+            <p className="g-xintro-line" style={{ marginTop: 12 }}>Lees de opdracht goed door.</p>
           )}
-          {/* Tag-level rules live in .exam-rich in app/globals.css — see the note there. */}
-          <style>{`
-            .exam-task-prompt { font-size: 0.95rem; line-height: 1.7; }
-          `}</style>
         </div>
-        <button
-          type="button"
-          onClick={() => setPhase(firstIntroFor(idx) ? 'tekstintro' : 'exam')}
-          className="exam-primary-btn inline-flex items-center justify-center gap-2 rounded-xl font-bold text-sm border-0 cursor-pointer self-start"
-          style={{ padding: '0.8rem 1.5rem', background: '#fe762c', color: '#5f2200', boxShadow: 'var(--shadow-btn-orange)' }}
-        >
-          Verder
-          <ArrowRight size={16} strokeWidth={2.5} aria-hidden />
-        </button>
-        <PrimaryBtnStyles />
-      </div>
+        <div className="g-xfoot g-glass">
+          <span className="g-xfoot-sp" />
+          <button
+            type="button"
+            onClick={() => setPhase(firstIntroFor(idx) ? 'tekstintro' : 'exam')}
+            className="g-btn g-btn-navy g-btn-sm"
+          >
+            Verder
+            <ArrowRight className="rtl-flip" aria-hidden />
+          </button>
+        </div>
+        {closeDialog}
+      </ExamFrame>
     );
   }
 
   if (phase === 'tekstintro') {
     const s = firstIntroFor(idx);
     return (
-      <div className="max-w-2xl mx-auto flex flex-col gap-5">
-        <span className="text-[0.65rem] font-bold uppercase tracking-widest text-on-surface-variant/70">
-          {sectionNames[s?.section_id ?? -1] ?? 'Luisteren'}
-        </span>
-        <div
-          className="rounded-2xl bg-surface-container-lowest flex flex-col gap-4"
-          style={{ padding: '1.5rem 1.625rem', boxShadow: 'var(--shadow-card-md)' }}
-        >
-          {s?.title && (
-            <h2 className="font-headline text-xl font-bold tracking-tight text-on-surface m-0">{s.title}</h2>
-          )}
-          {s?.intro && (
-            <p className="text-sm leading-relaxed text-on-surface-variant m-0">{s.intro}</p>
-          )}
+      <ExamFrame skill={exam.skill}>
+        {bar}
+        <div className="g-xbody" style={{ maxWidth: 760, width: '100%', marginInline: 'auto', display: 'flex', flexDirection: 'column', gap: 14 }}>
+          <span className="g-mono">{sectionNames[s?.section_id ?? -1] ?? 'Luisteren'}</span>
+          {s?.title && <h2 className="g-xtitle" style={{ margin: 0 }}>{s.title}</h2>}
+          {s?.intro && <p className="g-xintro-line">{s.intro}</p>}
           {s?.intro_audio_url && <AudioPlayer src={s.intro_audio_url} label="Introductie" />}
         </div>
-        <button
-          type="button"
-          onClick={() => setPhase('exam')}
-          className="exam-primary-btn inline-flex items-center justify-center gap-2 rounded-xl font-bold text-sm border-0 cursor-pointer self-start"
-          style={{ padding: '0.8rem 1.5rem', background: '#fe762c', color: '#5f2200', boxShadow: 'var(--shadow-btn-orange)' }}
-        >
-          Verder
-          <ArrowRight size={16} strokeWidth={2.5} aria-hidden />
-        </button>
-        <PrimaryBtnStyles />
-      </div>
+        <div className="g-xfoot g-glass">
+          <span className="g-xfoot-sp" />
+          <button type="button" onClick={() => setPhase('exam')} className="g-btn g-btn-navy g-btn-sm">
+            Verder
+            <ArrowRight className="rtl-flip" aria-hidden />
+          </button>
+        </div>
+        {closeDialog}
+      </ExamFrame>
     );
   }
 
   if (phase === 'exam') {
     const step = steps[idx];
     if (!step) return null;
-    const answeredCount = isOpenSkill
-      ? tasks.filter(t => written[t.id]?.text?.trim() || written[t.id]?.json || spoken[t.id]?.blob).length
-      : Object.keys(chosen).length;
+    const isTextStimulus = step.kind === 'mcq' && step.stimulus?.kind === 'text';
+    const stimId = step.kind === 'mcq' ? step.stimulus?.id ?? null : null;
+    const pane = paneFor.id === stimId ? paneFor.v : 'tekst';
 
     return (
-      <div className="flex flex-col gap-5">
-        <TimerBar
-          secondsLeft={secondsLeft}
-          total={exam.duration_seconds}
-          step={idx + 1}
-          steps={totalItems}
-          answered={answeredCount}
-        />
+      <ExamFrame skill={exam.skill}>
+        {bar}
 
         {step.kind === 'mcq' && step.stimulus === null ? (
           // Standalone question (KNM): one column, centred to a readable measure rather than
           // stretched across the grid's full width, which would leave a 1,200px line length.
-          <div className="max-w-2xl w-full mx-auto">
+          <div style={{ maxWidth: 760, width: '100%', marginInline: 'auto' }}>
             <McqQuestion
               question={step.question}
               questionNumber={idx + 1}
@@ -891,34 +932,59 @@ export default function ExamShell({ content, canSeeExplanations, guest = null }:
             />
           </div>
         ) : step.kind === 'mcq' ? (
-          <div className="grid gap-5 lg:grid-cols-2 items-start">
-            {/* The key decides whether the pane survives moving between two questions on one
-                stimulus, and the two skills want opposite things:
-                  · Lezen keys on the stimulus, so the text stays mounted and does not
-                    re-scroll while the candidate works through its questions;
-                  · Luisteren keys on stimulus+question, so the fragment remounts and the audio
-                    plays again from 0:00 for every question, the way DUO presents it (owner's
-                    decision, 2026-08-07). Die remount is bij B1 ook wat elke vraag zijn eigen
-                    25 seconden leestijd geeft — zie `LUISTEREN_LEESTIJD_SECONDEN`. Bij A2 blijft
-                    herhalen onbeperkt.
-                Changing this back would silently change what the exam tests. */}
-            <StimulusPane
-              key={exam.skill === 'luisteren'
-                ? `${step.stimulus!.id}:${step.question.id}`
-                : step.stimulus!.id}
-              stimulus={step.stimulus!}
-              examenAudio={strengLuisteren ? { readSeconds: LUISTEREN_LEESTIJD_SECONDEN } : undefined}
-            />
-            <McqQuestion
-              question={step.question}
-              questionNumber={idx + 1}
-              total={totalItems}
-              chosenId={chosen[step.question.id]?.id ?? null}
-              onSelect={o => setChosen(prev => ({ ...prev, [step.question.id]: o }))}
-              showFeedback={false}
-              sectionName={step.stimulus!.section_id ? sectionNames[step.stimulus!.section_id] : undefined}
-            />
-          </div>
+          <>
+            {/* Glas §10: op een smal scherm staan tekst en vragen niet onder elkaar maar achter
+                een schakelaar — een DUO-tekst is langer dan één scherm, en de vraag eronder
+                verdwijnt dan uit beeld. Alleen bij een tekst; bij luisteren horen de capsule en de
+                vraag juist samen in beeld. */}
+            {isTextStimulus && (
+              <div className="g-xswitch" role="tablist" aria-label="Weergave">
+                {(['tekst', 'vragen'] as const).map(v => (
+                  <button
+                    key={v}
+                    type="button"
+                    role="tab"
+                    aria-selected={pane === v}
+                    onClick={() => setPaneFor({ id: stimId, v })}
+                  >
+                    {v === 'tekst' ? 'Tekst' : 'Vraag'}
+                  </button>
+                ))}
+              </div>
+            )}
+            <div className="g-xlezen" data-pane={isTextStimulus ? pane : undefined}>
+              {/* The key decides whether the pane survives moving between two questions on one
+                  stimulus, and the two skills want opposite things:
+                    · Lezen keys on the stimulus, so the text stays mounted and does not
+                      re-scroll while the candidate works through its questions;
+                    · Luisteren keys on stimulus+question, so the fragment remounts and the audio
+                      plays again from 0:00 for every question, the way DUO presents it (owner's
+                      decision, 2026-08-07). Die remount is bij B1 ook wat elke vraag zijn eigen
+                      25 seconden leestijd geeft — zie `LUISTEREN_LEESTIJD_SECONDEN`. Bij A2 blijft
+                      herhalen onbeperkt.
+                  Changing this back would silently change what the exam tests. */}
+              <div className="g-xlezen-text">
+                <StimulusPane
+                  key={exam.skill === 'luisteren'
+                    ? `${step.stimulus!.id}:${step.question.id}`
+                    : step.stimulus!.id}
+                  stimulus={step.stimulus!}
+                  examenAudio={strengLuisteren ? { readSeconds: LUISTEREN_LEESTIJD_SECONDEN } : undefined}
+                />
+              </div>
+              <div className="g-xlezen-q">
+                <McqQuestion
+                  question={step.question}
+                  questionNumber={idx + 1}
+                  total={totalItems}
+                  chosenId={chosen[step.question.id]?.id ?? null}
+                  onSelect={o => setChosen(prev => ({ ...prev, [step.question.id]: o }))}
+                  showFeedback={false}
+                  sectionName={step.stimulus!.section_id ? sectionNames[step.stimulus!.section_id] : undefined}
+                />
+              </div>
+            </div>
+          </>
         ) : step.task.task_type === 'speaking' ? (
           <SpeakingTask
             task={step.task}
@@ -938,6 +1004,7 @@ export default function ExamShell({ content, canSeeExplanations, guest = null }:
                   canSeeDetail={!RUBRIC_FEEDBACK_IS_GATED || canSeeExplanations}
                   passThresholdPct={exam.pass_threshold_pct}
                   onGrade={() => void gradeTask(step.task)}
+                  title={`Opdracht ${idx + 1} · beoordeling`}
                   hideAction
                   compact
                 />
@@ -981,6 +1048,8 @@ export default function ExamShell({ content, canSeeExplanations, guest = null }:
                   canSeeDetail={!RUBRIC_FEEDBACK_IS_GATED || canSeeExplanations}
                   passThresholdPct={exam.pass_threshold_pct}
                   onGrade={() => void gradeTask(step.task)}
+                  pendingText={written[step.task.id]?.text ?? null}
+                  title={`Opdracht ${idx + 1}${step.task.title ? ` · ${step.task.title}` : ''}`}
                   hideAction
                   layout="wide"
                 />
@@ -989,72 +1058,48 @@ export default function ExamShell({ content, canSeeExplanations, guest = null }:
           />
         )}
 
-        {/* Per-answer feedback, Oefenmodus only. In Examenmodus the candidate gets nothing until
-            submit, which is what makes that sitting's score comparable to a real exam. */}
-        <div className="exam-nav flex items-center justify-between gap-3 flex-wrap">
+        {/* The step controls ride in a glass pill at the foot of the shell (sticky, so they stay
+            in reach under several screens of feedback). In Examenmodus the candidate gets nothing
+            until submit, which is what makes that sitting's score comparable to a real exam. */}
+        <div className="g-xfoot g-glass exam-nav">
           {/* Bij streng luisteren is er geen weg terug, en dat is geen strengheid om de
               strengheid: `StimulusPane` remount per vraag, dus "Vorige" zou het fragment
               opnieuw starten en de kandidaat een tweede luisterbeurt geven — precies wat de
               instructie zegt dat er niet is. DUO's luisterexamen loopt om dezelfde reden
-              alleen vooruit. De lege `span` houdt `justify-between` heel. */}
-          {strengLuisteren ? (
-            <span aria-hidden />
-          ) : (
-          <button
-            type="button"
-            onClick={() => goTo(idx - 1)}
-            disabled={idx === 0}
-            className="exam-ghost-btn inline-flex items-center gap-2 rounded-xl font-semibold text-sm cursor-pointer bg-surface-container text-on-surface-variant"
-            style={{ padding: '0.7rem 1.1rem', border: 0 }}
-          >
-            <ArrowLeft size={15} strokeWidth={2.4} aria-hidden />
-            Vorige
-          </button>
-          )}
-
-          {idx < totalItems - 1 ? (
+              alleen vooruit. */}
+          {!strengLuisteren && (
             <button
               type="button"
-              onClick={() => goTo(idx + 1)}
-              className="exam-primary-btn inline-flex items-center gap-2 rounded-xl font-bold text-sm border-0 cursor-pointer"
-              style={{ padding: '0.8rem 1.5rem', background: '#fe762c', color: '#5f2200', boxShadow: 'var(--shadow-btn-orange)' }}
+              onClick={() => goTo(idx - 1)}
+              disabled={idx === 0}
+              className="g-btn g-btn-ghost g-btn-sm"
             >
+              <ArrowLeft className="rtl-flip" aria-hidden />
+              Vorige
+            </button>
+          )}
+          <span className="g-xfoot-sp" />
+          <span className="g-xfoot-meta">{answeredCount} beantwoord</span>
+
+          {idx < totalItems - 1 ? (
+            <button type="button" onClick={() => goTo(idx + 1)} className="g-btn g-btn-navy g-btn-sm">
               Volgende
-              <ArrowRight size={16} strokeWidth={2.5} aria-hidden />
+              <ArrowRight className="rtl-flip" aria-hidden />
             </button>
           ) : (
             <button
               type="button"
               onClick={() => void submitExam()}
               disabled={submitting}
-              className="exam-primary-btn inline-flex items-center gap-2 rounded-xl font-bold text-sm border-0 cursor-pointer text-white disabled:opacity-60"
-              style={{ padding: '0.8rem 1.5rem', background: '#002b6d', boxShadow: 'var(--shadow-card-md)' }}
+              className="g-btn g-btn-navy g-btn-sm"
             >
-              <FileCheck2 size={16} strokeWidth={2.4} aria-hidden />
+              <FileCheck2 aria-hidden />
               {submitting ? 'Inleveren…' : 'Examen inleveren'}
             </button>
           )}
         </div>
 
-        <style>{`
-          /* Feedback makes this page several screens long. Pinning the step controls means the
-             candidate never has to scroll past their own assessment to continue — the reason the
-             next action felt lost. Sticky rather than fixed, so it stays in flow and does not cover
-             the last line of content. */
-          .exam-nav {
-            position: sticky; bottom: 0; z-index: 20;
-            margin: 0 -0.75rem -0.5rem; padding: 0.75rem;
-            background: linear-gradient(to top, var(--color-surface) 72%, transparent);
-            backdrop-filter: blur(4px);
-          }
-          @media (max-width: 768px) { .exam-nav { bottom: 78px; } }
-          .exam-ghost-btn { transition: background-color .16s ease, transform .16s ease; }
-          .exam-ghost-btn:not(:disabled):hover { background: var(--color-surface-container-high); transform: translateY(-1px); }
-          .exam-ghost-btn:disabled { opacity: 0.45; cursor: default; }
-          .exam-ghost-btn:focus-visible { outline: 3px solid var(--color-secondary); outline-offset: 2px; }
-          @media (prefers-reduced-motion: reduce) { .exam-ghost-btn { transition: none; } }
-        `}</style>
-        <PrimaryBtnStyles />
+        {closeDialog}
 
         {/* De gastgrens. Het examen blijft eronder staan — zie `GuestSignupOverlay`. */}
         {wall && guest && (
@@ -1065,7 +1110,7 @@ export default function ExamShell({ content, canSeeExplanations, guest = null }:
             returnTo={guest.returnTo}
           />
         )}
-      </div>
+      </ExamFrame>
     );
   }
 
@@ -1073,6 +1118,9 @@ export default function ExamShell({ content, canSeeExplanations, guest = null }:
 
   const pct = totalItems > 0 ? Math.round((score / totalItems) * 100) : 0;
   const passed = pct >= exam.pass_threshold_pct;
+  const examLabel = `${skillLabel(exam.skill, exam.level)} · examen ${exam.number}`;
+  const usedMin = Math.max(0, Math.round((exam.duration_seconds - secondsLeft) / 60));
+  const totalMin = Math.round(exam.duration_seconds / 60);
 
   if (isOpenSkill) {
     const open = openResultFrom(tasks, written, spoken, grades, exam.pass_threshold_pct);
@@ -1083,54 +1131,66 @@ export default function ExamShell({ content, canSeeExplanations, guest = null }:
     // wachtrij las en de kandidaat bleef wachten op een uitslag die nooit kwam.
     const failed = answeredTasks.filter(t => grades[t.id]?.state === 'error');
     const failedReason = failed.map(t => grades[t.id]?.error).find(Boolean) ?? null;
+    // Eén segment per opdracht: gevuld = die opdracht haalde de oefengrens.
+    const taskResults = tasks.map(t => {
+      const g = grades[t.id];
+      if (!g || g.state !== 'graded') return false;
+      const tp = pctFromCriteria(g.scores, g.criteria);
+      return tp != null && tp >= exam.pass_threshold_pct;
+    });
 
     return (
-      <div className="max-w-2xl mx-auto flex flex-col gap-5">
-        <div
-          className="rounded-3xl"
-          style={{
-            background:
-              open.passed === true
-                // §7.2 scene states: a pass is the *primary* surface with the sun high, not a
-                // green one. Green is in no token file, and "passed" in this system reads as
-                // "official", which is what the navy says.
-                ? 'var(--gradient-brand)'
-                : open.pct == null
-                  ? 'var(--gradient-brand)'
-                  : 'linear-gradient(135deg,#5f2200 0%,#a24000 55%,#fe762c 100%)',
-            padding: '2rem 1.875rem',
-          }}
-        >
-          <p className="text-[0.65rem] font-bold uppercase tracking-widest m-0 mb-2" style={{ color: 'rgba(255,255,255,0.7)' }}>
-            {open.pct == null ? 'Ingeleverd' : open.passed ? 'Gehaald' : 'Nog niet gehaald'}
-          </p>
-          <h1
-            className="font-headline font-extrabold text-white m-0 mb-2"
-            style={{ fontSize: '1.6rem', letterSpacing: '-0.03em', textWrap: 'balance' }}
-          >
-            {open.pct == null ? 'Je antwoorden zijn opgeslagen' : `${open.pct}%`}
-          </h1>
-          <p className="text-sm leading-relaxed m-0" style={{ color: 'rgba(255,255,255,0.8)' }}>
-            {open.pct == null
-              ? 'De docent kijkt je antwoorden na. Je ziet je beoordeling terug in je dashboard.'
-              : 'Voorbeoordeling met de beoordelingscriteria van de docent. Zij controleert je beoordeling; je ziet het in je dashboard zodra dat gebeurd is.'}
-          </p>
-          {answeredTasks.length < tasks.length && (
-            <p className="text-sm leading-relaxed m-0 mt-2" style={{ color: 'rgba(255,255,255,0.72)' }}>
-              Je hebt {tasks.length - answeredTasks.length} van de {tasks.length} opdrachten
-              overgeslagen. Die tellen als 0 mee.
+      <ResultsFrame>
+        <section className="g-xres">
+          <div className="g-xres-ring">
+            <ScoreRing
+              results={taskResults}
+              passPct={exam.pass_threshold_pct}
+              size={176}
+              label={open.pct == null ? 'Nog niet nagekeken' : `${open.pct}% van de punten`}
+            >
+              <b>{open.pct == null ? '—' : <AnimatedNumber value={open.pct} suffix="%" locales="nl" />}</b>
+              <small>{open.pct == null ? 'ingeleverd' : 'van de punten'}</small>
+            </ScoreRing>
+          </div>
+          <div style={{ minWidth: 0 }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: 14, flexWrap: 'wrap' }}>
+              {open.passed === true && <PassBurst label="Gehaald" />}
+              <span className={`g-xbdg ${open.pct == null ? '' : open.passed ? 'g-xbdg-goed' : 'g-xbdg-fout'}`}>
+                {open.pct == null ? null : open.passed ? <Check strokeWidth={3} aria-hidden /> : <X strokeWidth={3} aria-hidden />}
+                {open.pct == null ? 'Ingeleverd' : open.passed ? 'Gehaald' : 'Nog niet gehaald'}
+              </span>
+            </div>
+            <h1>{open.pct == null ? 'Je antwoorden zijn opgeslagen' : examLabel}</h1>
+            <p>
+              {open.pct == null
+                ? 'De docent kijkt je antwoorden na. Je ziet je beoordeling terug in je dashboard.'
+                : 'Een taalmodel beoordeelde je antwoorden met de criteria van de docent. Zij controleert die beoordeling; je ziet het in je dashboard zodra dat gebeurd is. Dit is oefenfeedback, geen uitslag van DUO.'}
             </p>
-          )}
-          {feedbackMode === 'practice' && (
-            <p className="text-xs leading-relaxed m-0 mt-3" style={{ color: 'rgba(255,255,255,0.6)' }}>
-              Dit was een oefensessie met feedback tijdens het examen. Wil je weten of je er klaar
-              voor bent, doe het dan nog eens in de examenmodus.
-            </p>
-          )}
-        </div>
+            {answeredTasks.length < tasks.length && (
+              <p>
+                Je hebt {tasks.length - answeredTasks.length} van de {tasks.length} opdrachten
+                overgeslagen. Die tellen als 0 mee.
+              </p>
+            )}
+            {feedbackMode === 'practice' && (
+              <p className="g-xnotice" style={{ fontSize: 13.5 }}>
+                <Info aria-hidden />
+                <span>
+                  Dit was een oefensessie met feedback tijdens het examen. Wil je weten of je er klaar
+                  voor bent, doe het dan nog eens in de examenmodus.
+                </span>
+              </p>
+            )}
+          </div>
+        </section>
+
+        {open.pct != null && (
+          <PassChance pct={open.pct} />
+        )}
 
         {ungraded.length - failed.length > 0 && (
-          <p className="text-sm text-on-surface-variant m-0">
+          <p className="g-xintro-line">
             {ungraded.length - failed.length === 1
               ? 'Eén opdracht wordt nog nagekeken.'
               : `${ungraded.length - failed.length} opdrachten worden nog nagekeken.`}
@@ -1138,30 +1198,25 @@ export default function ExamShell({ content, canSeeExplanations, guest = null }:
         )}
 
         {failed.length > 0 && (
-          <div
-            className="rounded-2xl flex flex-col gap-2"
-            style={{ background: '#fcecdd', padding: '1rem 1.15rem' }}
-          >
-            <p className="text-sm font-bold m-0" style={{ color: '#a24000' }}>
+          <div className="g-xcard" style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
+            <p className="g-xrv-err" style={{ fontWeight: 700 }}>
+              <TriangleAlert aria-hidden />
               {failed.length === 1
                 ? 'Eén opdracht kon niet worden nagekeken.'
                 : `${failed.length} opdrachten konden niet worden nagekeken.`}
             </p>
-            {failedReason && (
-              <p className="text-sm leading-relaxed m-0" style={{ color: '#a24000' }}>
-                {failedReason}
-              </p>
-            )}
-            <p className="text-sm leading-relaxed m-0" style={{ color: '#a24000' }}>
+            {failedReason && <p className="g-xintro-line">{failedReason}</p>}
+            <p className="g-xintro-line">
               Je antwoorden zijn bewaard. Probeer het opnieuw — je verliest je werk niet.
             </p>
             <button
               type="button"
               onClick={() => void regradeFailed()}
               disabled={regrading}
-              className="exam-primary-btn inline-flex items-center justify-center gap-2 rounded-xl font-bold text-sm self-start disabled:opacity-60"
-              style={{ padding: '0.7rem 1.2rem', background: '#fe762c', color: '#5f2200', boxShadow: 'var(--shadow-btn-orange)' }}
+              className="g-btn g-btn-navy g-btn-sm"
+              style={{ alignSelf: 'flex-start' }}
             >
+              <RotateCcw aria-hidden />
               {regrading ? 'Bezig met nakijken…' : 'Opnieuw laten nakijken'}
             </button>
           </div>
@@ -1172,14 +1227,7 @@ export default function ExamShell({ content, canSeeExplanations, guest = null }:
           const g = grades[task.id];
           if (!g || g.state !== 'graded') return null;
           return (
-            <section key={task.id} className="flex flex-col gap-2">
-              <h2
-                className="font-headline font-bold text-on-surface m-0"
-                style={{ fontSize: '1rem', letterSpacing: '-0.01em' }}
-              >
-                Opdracht {i + 1}
-                {task.title ? ` — ${task.title}` : ''}
-              </h2>
+            <section key={task.id} className="g-xstack" style={{ gap: 8 }}>
               <RubricFeedback
                 criteria={g.criteria}
                 scores={g.scores}
@@ -1188,206 +1236,290 @@ export default function ExamShell({ content, canSeeExplanations, guest = null }:
                 canSeeDetail={!RUBRIC_FEEDBACK_IS_GATED || canSeeExplanations}
                 premiumHref="/dashboard/pakketten?vanaf=rubriek-feedback"
                 passThresholdPct={exam.pass_threshold_pct}
+                medium={exam.skill === 'spreken' ? 'opname' : 'tekst'}
+                title={`Opdracht ${i + 1}${task.title ? ` · ${task.title}` : ''}`}
               />
               {canSeeExplanations && g.overall && (
-                <p className="text-sm leading-relaxed text-on-surface-variant m-0">{g.overall}</p>
+                <p className="g-xintro-line" style={{ paddingInline: 4 }}>{g.overall}</p>
               )}
             </section>
           );
         })}
 
-        <Link
-          href={dashboardHref}
-          className="exam-primary-btn inline-flex items-center justify-center gap-2 rounded-xl font-bold text-sm no-underline self-start"
-          style={{ padding: '0.8rem 1.5rem', background: '#fe762c', color: '#5f2200', boxShadow: 'var(--shadow-btn-orange)' }}
-        >
-          Naar je dashboard
-          <ArrowRight size={16} strokeWidth={2.5} aria-hidden />
-        </Link>
-        <PrimaryBtnStyles />
-      </div>
+        <div className="g-xrow-act">
+          <Link href={dashboardHref} className={glasButton({ variant: 'navy' })}>
+            Naar je dashboard
+            <ArrowRight className="rtl-flip" aria-hidden />
+          </Link>
+        </div>
+      </ResultsFrame>
     );
   }
 
+  const ringResults = steps.flatMap(s => (s.kind === 'mcq' ? [Boolean(chosen[s.question.id]?.is_correct)] : []));
+  const wrong = ringResults.filter(r => !r).length;
+
   return (
-    <div className="flex flex-col gap-5">
-      <div
-        className="rounded-3xl flex items-center justify-between gap-6 flex-wrap"
-        style={{
-          background: passed
-            ? 'var(--gradient-brand)'
-            : 'linear-gradient(135deg,#5f2200 0%,#a24000 55%,#fe762c 100%)',
-          padding: '2rem 1.875rem',
-        }}
-      >
+    <ResultsFrame>
+      <section className="g-xres">
+        <div className="g-xres-ring">
+          <ScoreRing results={ringResults} passPct={exam.pass_threshold_pct} size={176} label={`${score} van ${totalItems} goed`}>
+            <b><AnimatedNumber value={score} locales="nl" /><span>/{totalItems}</span></b>
+            <small>{pct}% goed</small>
+          </ScoreRing>
+        </div>
         <div style={{ minWidth: 0 }}>
-          <p className="text-[0.65rem] font-bold uppercase tracking-widest m-0 mb-2" style={{ color: 'rgba(255,255,255,0.7)' }}>
-            {passed ? 'Gehaald' : 'Nog niet gehaald'}
+          <div style={{ display: 'flex', alignItems: 'center', gap: 14, flexWrap: 'wrap' }}>
+            {passed && <PassBurst label="Gehaald" />}
+            <span className={`g-xbdg ${passed ? 'g-xbdg-goed' : 'g-xbdg-fout'}`}>
+              {passed ? <Check strokeWidth={3} aria-hidden /> : <X strokeWidth={3} aria-hidden />}
+              {passed ? 'Gehaald' : 'Nog niet gehaald'}
+            </span>
+          </div>
+          <h1>{examLabel}</h1>
+          <p>
+            Elke streep is een vraag: gevuld is goed, leeg is fout. Het oranje streepje is onze
+            oefengrens van {exam.pass_threshold_pct}%. DUO maakt zijn eigen cesuur niet openbaar.
           </p>
-          <h1
-            className="font-headline font-extrabold text-white m-0 mb-2"
-            style={{ fontSize: '1.6rem', letterSpacing: '-0.03em', textWrap: 'balance' }}
-          >
-            {score} van {totalItems} goed
-          </h1>
-          <p className="text-sm m-0" style={{ color: 'rgba(255,255,255,0.75)' }}>
-            Onze oefengrens is {exam.pass_threshold_pct}%. DUO maakt zijn eigen cesuur niet openbaar.
-          </p>
+          <div className="g-xkpis">
+            <div className="g-xkpi g-xkpi-g"><b><Check strokeWidth={3} aria-hidden />{score}</b><small>goed</small></div>
+            <div className="g-xkpi g-xkpi-f"><b><X strokeWidth={3} aria-hidden />{wrong}</b><small>fout of open</small></div>
+            <div className="g-xkpi"><b><Clock aria-hidden />{usedMin}</b><small>van {totalMin} min</small></div>
+          </div>
         </div>
-        <div
-          className="font-headline font-extrabold text-white flex-shrink-0"
-          style={{ fontSize: '3rem', letterSpacing: '-0.04em', fontVariantNumeric: 'tabular-nums' }}
-        >
-          {pct}%
+      </section>
+
+      <div className="g-xres-cols">
+        <div className="g-xstack">
+          {Object.keys(catScores).length > 0 && (
+            <div className="g-xcard">
+              <span className="g-mono">Resultaat per tekstsoort</span>
+              {Object.entries(catScores).map(([name, cs]) => {
+                const cp = cs.total ? cs.correct / cs.total : 0;
+                // Navy where it went well, clay where there is something to win — never a new hue
+                // for a status, and the number beside the bar carries the meaning.
+                const col = cp >= 0.7 ? 'var(--navy)' : 'var(--klei)';
+                return (
+                  <div key={name} className="g-xttrow">
+                    <span>{name}</span>
+                    <span className="g-xbar2"><i style={{ background: col, transform: `scaleX(${cp})` }} /></span>
+                    <span className="g-mono g-tnum">{cs.correct}/{cs.total}</span>
+                  </div>
+                );
+              })}
+            </div>
+          )}
+
+          {/* Van fout antwoord naar de les die het uitlegt.
+              Naast de tekstsoort-uitsplitsing hierboven en niet in plaats daarvan: die zegt waar
+              het misging, dit zegt wat je eraan doet. Rendert niets als de items van dit examen nog
+              niet aan concepten hangen — zie `ConceptAdvice`. */}
+          {exam.level && (
+            <ConceptAdvice
+              level={exam.level}
+              onderdeel={exam.skill}
+              wrongQuestionIds={wrongQuestionIds}
+              variant="glas"
+              labels={{
+                head: 'Dit verklaart je fouten',
+                misses: '{n}x fout in dit examen',
+                lesson: 'les beschikbaar',
+              }}
+            />
+          )}
+
+          <PassChance pct={pct} />
+        </div>
+
+        <div className="g-xstack">
+          <div className="g-xcard" style={{ paddingBottom: 8 }}>
+            <span className="g-mono">Jouw antwoorden</span>
+            <ol className="g-xanslist" style={{ padding: 0 }}>
+              {steps.map((s, i) => {
+                if (s.kind !== 'mcq') return null;
+                const pick = chosen[s.question.id];
+                const right = pick?.is_correct ?? false;
+                const correct = s.question.options.find(o => o.is_correct);
+                return (
+                  <li key={s.question.id} className="g-xansrow">
+                    <span className={`g-xmk ${right ? 'g-xmk-g' : pick ? 'g-xmk-f' : 'g-xmk-o'}`}>
+                      {right ? <Check strokeWidth={3} aria-label="Goed" /> : <X strokeWidth={3} aria-label={pick ? 'Fout' : 'Niet beantwoord'} />}
+                    </span>
+                    <div style={{ minWidth: 0 }}>
+                      <b>Vraag {i + 1}</b>
+                      <small>{s.question.prompt}</small>
+                      <small>
+                        {pick
+                          ? <>Jouw antwoord: <strong>{pick.label}</strong></>
+                          : <>Niet beantwoord</>}
+                        {!right && correct && <> · juist: <strong>{correct.label}</strong></>}
+                      </small>
+                      {canSeeExplanations && !right && s.question.explanation && (
+                        <small style={{ marginTop: 4 }}>{s.question.explanation}</small>
+                      )}
+                    </div>
+                  </li>
+                );
+              })}
+            </ol>
+
+            {!canSeeExplanations && (
+              <div className="g-xupsell">
+                <span>Uitleg per vraag zit in het Compleet-pakket.</span>
+                <Link href="/premium" className="g-tlink" style={{ color: 'var(--klei)', fontSize: 14 }}>
+                  Bekijk de pakketten
+                  <ArrowRight className="rtl-flip" size={15} aria-hidden />
+                </Link>
+              </div>
+            )}
+          </div>
         </div>
       </div>
 
-      {Object.keys(catScores).length > 0 && (
-        <div
-          className="rounded-2xl bg-surface-container-lowest"
-          style={{ padding: '1.375rem 1.5rem', boxShadow: 'var(--shadow-ambient)' }}
-        >
-          <p className="text-[0.65rem] font-bold uppercase tracking-widest text-on-surface-variant/70 m-0 mb-3">
-            Resultaat per tekstsoort
-          </p>
-          <div className="flex flex-col gap-2">
-            {Object.entries(catScores).map(([name, cs]) => {
-              const cp = cs.total ? Math.round((cs.correct / cs.total) * 100) : 0;
-              // Three bands, all from the palette. The greens are gone: the system's only
-              // "attention" colour is clay and its only "wrong" colour is the `error` token
-              // (§7.3 — never introduce a new hue to carry a status).
-              const col = cp >= 70 ? '#002b6d' : cp >= 40 ? '#a24000' : '#ba1a1a';
-              return (
-                <div
-                  key={name}
-                  className="flex items-center justify-between gap-3 rounded-xl bg-surface-container"
-                  style={{ padding: '0.6rem 0.95rem' }}
-                >
-                  <span className="text-sm text-on-surface">{name}</span>
-                  <span
-                    className="text-sm font-bold whitespace-nowrap"
-                    style={{ color: col, fontVariantNumeric: 'tabular-nums' }}
-                  >
-                    {cs.correct}/{cs.total} · {cp}%
-                  </span>
-                </div>
-              );
-            })}
-          </div>
-        </div>
-      )}
-
-      {/* Van fout antwoord naar de les die het uitlegt.
-          Naast de tekstsoort-uitsplitsing hierboven en niet in plaats daarvan: die zegt waar
-          het misging, dit zegt wat je eraan doet. Rendert niets als de items van dit examen nog
-          niet aan concepten hangen — zie `ConceptAdvice`. */}
-      {exam.level && (
-        <ConceptAdvice
-          level={exam.level}
-          onderdeel={exam.skill}
-          wrongQuestionIds={wrongQuestionIds}
-          labels={{
-            head: 'Dit verklaart je fouten',
-            misses: '{n}x fout in dit examen',
-            lesson: 'les beschikbaar',
-          }}
-        />
-      )}
-
-      <div
-        className="rounded-2xl bg-surface-container-lowest"
-        style={{ padding: '1.375rem 1.5rem', boxShadow: 'var(--shadow-ambient)' }}
-      >
-        <p className="text-[0.65rem] font-bold uppercase tracking-widest text-on-surface-variant/70 m-0 mb-3">
-          Jouw antwoorden
-        </p>
-        <ol className="list-none m-0 p-0 flex flex-col gap-2.5">
-          {steps.map((s, i) => {
-            if (s.kind !== 'mcq') return null;
-            const pick = chosen[s.question.id];
-            const right = pick?.is_correct ?? false;
-            const correct = s.question.options.find(o => o.is_correct);
-            return (
-              <li key={s.question.id} className="flex gap-3">
-                <span
-                  className="inline-flex items-center justify-center rounded-lg flex-shrink-0"
-                  style={{
-                    width: 26, height: 26, marginTop: 1,
-                    background: right ? 'rgba(254,118,44,0.16)' : 'rgba(186,26,26,0.10)',
-                    color: right ? '#a24000' : '#ba1a1a',
-                  }}
-                >
-                  {right
-                    ? <Check size={14} strokeWidth={3} aria-hidden />
-                    : <X size={14} strokeWidth={3} aria-hidden />}
-                </span>
-                <div style={{ minWidth: 0 }}>
-                  <p className="text-sm font-semibold text-on-surface m-0 mb-0.5">
-                    {i + 1}. {s.question.prompt}
-                  </p>
-                  <p className="text-xs text-on-surface-variant m-0">
-                    {pick
-                      ? <>Jouw antwoord: <strong>{pick.label}</strong></>
-                      : <>Niet beantwoord</>}
-                    {!right && correct && <> · juist: <strong>{correct.label}</strong></>}
-                  </p>
-                  {canSeeExplanations && !right && s.question.explanation && (
-                    <p className="text-xs text-on-surface-variant mt-1 mb-0" style={{ lineHeight: 1.6 }}>
-                      {s.question.explanation}
-                    </p>
-                  )}
-                </div>
-              </li>
-            );
-          })}
-        </ol>
-
-        {!canSeeExplanations && (
-          <div
-            className="mt-4 rounded-xl flex items-center justify-between gap-4 flex-wrap"
-            style={{ padding: '0.9rem 1.1rem', background: '#fff6ec', border: '1px solid #f5cba6' }}
-          >
-            <p className="text-sm m-0" style={{ color: '#a24000' }}>
-              Uitleg per vraag zit in het Compleet-pakket.
-            </p>
-            <Link
-              href="/premium"
-              className="text-sm font-bold no-underline whitespace-nowrap"
-              style={{ color: '#a24000' }}
-            >
-              Bekijk de pakketten →
-            </Link>
-          </div>
-        )}
-      </div>
-
-      <div className="flex flex-wrap gap-3">
-        <Link
-          href={dashboardHref}
-          className="exam-ghost-btn inline-flex items-center gap-2 rounded-xl font-semibold text-sm no-underline bg-surface-container text-on-surface-variant"
-          style={{ padding: '0.7rem 1.1rem' }}
-        >
-          <ArrowLeft size={15} strokeWidth={2.4} aria-hidden />
+      <div className="g-xrow-act">
+        <Link href={dashboardHref} className={glasButton({ variant: 'ghost' })}>
+          <ArrowLeft className="rtl-flip" aria-hidden />
           Alle examens
         </Link>
+        {attemptId === null && userId && (
+          <p className="g-xintro-line" style={{ fontSize: 13 }}>
+            Deze poging kon niet worden opgeslagen. Probeer het later opnieuw.
+          </p>
+        )}
       </div>
-      {attemptId === null && userId && (
-        <p className="text-xs text-on-surface-variant m-0">
-          Deze poging kon niet worden opgeslagen. Probeer het later opnieuw.
-        </p>
-      )}
-      <style>{`
-        .exam-ghost-btn { transition: background-color .16s ease, transform .16s ease; }
-        .exam-ghost-btn:hover { background: var(--color-surface-container-high); transform: translateY(-1px); }
-        .exam-ghost-btn:focus-visible { outline: 3px solid var(--color-secondary); outline-offset: 2px; }
-        @media (prefers-reduced-motion: reduce) { .exam-ghost-btn { transition: none; } }
-      `}</style>
-      <PrimaryBtnStyles />
-    </div>
+    </ResultsFrame>
   );
 }
 
 /* ── Sub-views ── */
+
+const SKILL_NAME: Record<string, string> = {
+  lezen: 'Lezen', luisteren: 'Luisteren', schrijven: 'Schrijven', spreken: 'Spreken', knm: 'KNM',
+};
+
+function skillLabel(skill: string, level: string | null): string {
+  const name = SKILL_NAME[skill] ?? skill;
+  return level ? `${name} ${level.toUpperCase()}` : name;
+}
+
+/** Een segment van de voortgangsbalk: hoeveel stappen erin zitten en hoeveel daarvan af zijn. */
+type Segment = { size: number; done: number; current: boolean };
+
+/**
+ * De schil van glas.html §10: een veld áchter de schil (Nevel bij lezen, Gracht bij de rest), met
+ * daarop de glazen balk, de vraag op wit en de glazen actiebalk. Het veld is een eigen laag en
+ * niet de schil zelf, anders knipt het en plakt de balk nergens meer aan.
+ */
+function ExamFrame({ skill, children }: { skill: string; children: React.ReactNode }) {
+  return (
+    <div className="g-xshell" dir="ltr" lang="nl">
+      <Field variant={skill === 'lezen' ? 'nevel' : 'gracht'} className="g-xshell-bg" aria-hidden />
+      {children}
+    </div>
+  );
+}
+
+/** De uitslag: dezelfde ondergrond als de schil, zonder balk — de klok is gestopt. */
+function ResultsFrame({ children }: { children: React.ReactNode }) {
+  return (
+    <div className="g-xshell" style={{ gap: 14 }} dir="ltr" lang="nl">
+      <Field variant="licht" className="g-xshell-bg" aria-hidden />
+      {children}
+    </div>
+  );
+}
+
+function ExamBar({
+  skill,
+  segments,
+  step,
+  steps,
+  secondsLeft,
+  onClose,
+}: {
+  skill: string;
+  segments: Segment[];
+  step: number;
+  steps: number;
+  secondsLeft: number;
+  onClose: () => void;
+}) {
+  const warn = secondsLeft <= 300;
+  const m = Math.floor(Math.max(secondsLeft, 0) / 60);
+  const sec = Math.max(secondsLeft, 0) % 60;
+  return (
+    <div className="g-xbar g-glass">
+      <button type="button" className="g-xbar-x" onClick={onClose} aria-label="Examen sluiten">
+        <X aria-hidden />
+      </button>
+      <span className="g-xbar-mark"><CategoryMark category={skill as Category} size={28} /></span>
+      {/* Eén segment per tekstdeel (of per deeltoets), niet per vraag: zo deelt DUO het examen op. */}
+      <div
+        className="g-xsegs"
+        role="progressbar"
+        aria-valuemin={0}
+        aria-valuemax={steps}
+        aria-valuenow={step}
+        aria-label={`Vraag ${step} van ${steps}`}
+      >
+        {segments.map((sg, i) => (
+          <span key={i} className="g-xseg" style={sg.current ? { background: 'rgba(0,43,109,.18)' } : undefined}>
+            <b style={{ transform: `scaleX(${sg.size ? sg.done / sg.size : 0})` }} />
+          </span>
+        ))}
+      </div>
+      <span className="g-xbar-step">{step}/{steps}</span>
+      <span className={`g-xtimer${warn ? ' g-xtimer-warn' : ''}`} role="timer" aria-label={`Nog ${m} minuten en ${sec} seconden`}>
+        <Clock aria-hidden />
+        {m}:{sec < 10 ? '0' : ''}{sec}
+      </span>
+    </div>
+  );
+}
+
+/** Stoppen gaat niet per ongeluk: het kruisje vraagt het eerst. */
+function CloseDialog({ href, onStay }: { href: React.ComponentProps<typeof Link>['href']; onStay: () => void }) {
+  useEffect(() => {
+    const onKey = (e: KeyboardEvent) => { if (e.key === 'Escape') onStay(); };
+    window.addEventListener('keydown', onKey);
+    return () => window.removeEventListener('keydown', onKey);
+  }, [onStay]);
+  return (
+    <div className="g-xdialog-stage" role="dialog" aria-modal="true" aria-labelledby="exam-close-title" onClick={onStay}>
+      <div className="g-xdialog" onClick={e => e.stopPropagation()}>
+        <h2 id="exam-close-title">Stoppen met dit examen?</h2>
+        <p>Je antwoorden worden niet ingeleverd. Je kunt het examen later opnieuw beginnen.</p>
+        <div className="g-xdialog-act">
+          <button type="button" className="g-btn g-btn-navy g-btn-sm" onClick={onStay} autoFocus>
+            Verder met het examen
+          </button>
+          <Link href={href} className={glasButton({ variant: 'ghost', size: 'sm' })}>
+            Stoppen
+          </Link>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+/**
+ * De slaagkans na dit examen, uit de bestaande regel (`calculateSlaagkans`): met één examen weegt
+ * de 50%-aanname nog zwaar mee, en dat is eerlijk — één examen zegt weinig. Geen AI-oordeel.
+ */
+function PassChance({ pct }: { pct: number }) {
+  const { band } = calculateSlaagkans([pct]);
+  const level = (band === 'high' ? 4 : band === 'good' ? 3 : band === 'fair' ? 2 : 1) as PassChanceLevel;
+  const word = ['', 'Nog niet', 'Bijna', 'Goed', 'Sterk'][level];
+  return (
+    <PassChanceCard
+      level={level}
+      label="Slaagkans na dit examen"
+      word={word}
+      line="Eén examen zegt nog weinig. Elk examen dat je erbij maakt, maakt dit preciezer."
+      scaleLabels={['Nog niet', 'Bijna', 'Goed', 'Sterk']}
+    />
+  );
+}
 
 /**
  * Het instructiescherm van B1 Luisteren: hoe dit examen werkt, voordat de klok loopt.
@@ -1423,55 +1555,31 @@ function LuisterInstructie({ onStart }: { onStart: () => void }) {
   ];
 
   return (
-    <div className="max-w-2xl mx-auto flex flex-col gap-5">
-      <div
-        className="rounded-3xl relative overflow-hidden"
-        style={{ background: 'var(--gradient-brand)', padding: '2rem 1.875rem 2.25rem' }}
-      >
-        <p className="text-[0.65rem] font-bold uppercase tracking-widest m-0 mb-2" style={{ color: 'rgba(255,255,255,0.65)' }}>
-          Voordat je begint
-        </p>
-        <h1 className="font-headline text-2xl sm:text-3xl font-bold m-0 mb-4" style={{ color: '#fff', letterSpacing: '-0.02em' }}>
-          Zo werkt het luisterexamen
-        </h1>
-        <p className="text-sm leading-relaxed m-0 mb-5" style={{ color: 'rgba(255,255,255,0.8)' }}>
+    <article className="g-xintro" dir="ltr" lang="nl">
+      <Field variant="nacht" className="g-xintro-hd">
+        <span className="g-xcrumb">Luisteren B1 <ChevronRight className="rtl-flip" aria-hidden /> <b>Voordat je begint</b></span>
+        <h1>Zo werkt het luisterexamen</h1>
+        <p style={{ color: 'rgba(255,255,255,.75)', fontSize: 15, lineHeight: 1.6, margin: '10px 0 0', maxWidth: '52ch' }}>
           Luister naar de uitleg of lees hem hieronder. Dit examen werkt net als het echte
           examen van DUO.
         </p>
+      </Field>
+      <div className="g-xintro-bd">
         <AudioPlayer src={LUISTEREN_INSTRUCTIE_AUDIO} label="Gesproken uitleg" />
-      </div>
-
-      <div className="rounded-2xl bg-surface-container-lowest" style={{ padding: '1.5rem 1.625rem', boxShadow: 'var(--shadow-card-md)' }}>
-        <ul className="flex flex-col gap-3.5 m-0 p-0" style={{ listStyle: 'none' }}>
+        <ol className="g-xrules">
           {regels.map((r, i) => (
-            <li key={i} className="flex gap-3 items-start">
-              <span
-                className="flex-shrink-0 inline-flex items-center justify-center rounded-full font-bold"
-                style={{
-                  width: 22, height: 22, marginTop: 1,
-                  background: 'rgba(0,43,109,0.08)',
-                  color: 'var(--color-primary)',
-                  fontSize: '0.7rem',
-                }}
-              >
-                {i + 1}
-              </span>
-              <span className="text-sm leading-relaxed text-on-surface">{r}</span>
+            <li key={i}>
+              <span className="n">{i + 1}</span>
+              <span>{r}</span>
             </li>
           ))}
-        </ul>
+        </ol>
+        <button type="button" onClick={onStart} className="g-btn g-btn-navy g-btn-lg" style={{ alignSelf: 'flex-start' }}>
+          Start het examen
+          <ArrowRight className="rtl-flip" aria-hidden />
+        </button>
       </div>
-
-      <button
-        type="button"
-        onClick={onStart}
-        className="exam-primary-btn inline-flex items-center justify-center gap-2 rounded-xl font-bold border-0 cursor-pointer self-start"
-        style={{ padding: '0.9rem 1.75rem', background: '#fe762c', color: '#5f2200', boxShadow: 'var(--shadow-btn-orange)' }}
-      >
-        Start het examen
-        <ArrowRight size={17} strokeWidth={2.5} aria-hidden className="rtl-flip" />
-      </button>
-    </div>
+    </article>
   );
 }
 
@@ -1505,42 +1613,29 @@ function ExamIntroScreen({
   /* Zelfde regel als in de shell; zie `LUISTEREN_LEESTIJD_SECONDEN`. */
   const strengLuisteren = exam.skill === 'luisteren' && exam.level === 'b1';
 
+  /* Glas §10 "Intro": een Nacht-kop met kruimelpad, titel en drie getallen; daaronder op wit de
+     uitleg, de keuze en één navy startknop. */
   return (
-    <div className="max-w-2xl mx-auto flex flex-col gap-5">
-      {/* The exam-set header is the same Dutch Horizon banner as every page header on the public
-          site, so a candidate arriving from `/oefenexamen/...` lands on a surface that looks like
-          the one they clicked from. No sun disc: the card is only ~200px tall and the stats run to
-          the right edge, so there is no empty flank the accent could occupy without landing on
-          copy (§7.3). */}
-      <div
-        className="rounded-3xl relative overflow-hidden"
-        style={{ background: 'var(--gradient-brand)', padding: '2rem 1.875rem 2.25rem' }}
-      >
-        <HorizonBanner desktopHouses={11} desktopHeight={56} mobileHouses={5} mobileHeight={40} seed={7} sun={false} />
-        <p className="relative text-[0.65rem] font-bold uppercase tracking-widest m-0 mb-2" style={{ color: 'rgba(255,255,255,0.65)' }}>
-          Oefenexamen {exam.number}
-        </p>
-        <h1
-          className="relative font-headline font-extrabold text-white m-0 mb-4"
-          style={{ fontSize: '1.7rem', letterSpacing: '-0.02em', textWrap: 'balance' }}
-        >
-          {exam.title || `Oefenexamen ${exam.skill} ${exam.number}`}
-        </h1>
-        <dl className="relative flex flex-wrap gap-7 m-0">
-          <Stat value={String(totalItems)} label={exam.skill === 'spreken' || exam.skill === 'schrijven' ? 'opdrachten' : 'vragen'} />
-          <Stat value={String(Math.round(exam.duration_seconds / 60))} label="minuten" />
-          <Stat value={`${exam.pass_threshold_pct}%`} label="oefengrens" />
+    <article className="g-xintro" dir="ltr" lang="nl">
+      <Field variant="nacht" className="g-xintro-hd">
+        <span className="g-xcrumb">
+          {skillLabel(exam.skill, exam.level)}
+          <ChevronRight className="rtl-flip" aria-hidden />
+          <b>Oefenexamen {exam.number}</b>
+        </span>
+        <h1>{exam.title || `Oefenexamen ${exam.skill} ${exam.number}`}</h1>
+        <dl className="g-xstats3">
+          <div><dd>{totalItems}</dd><dt>{exam.skill === 'spreken' || exam.skill === 'schrijven' ? 'opdrachten' : 'vragen'}</dt></div>
+          <div><dd>{Math.round(exam.duration_seconds / 60)}</dd><dt>minuten</dt></div>
+          <div><dd>{exam.pass_threshold_pct}%</dd><dt>oefengrens</dt></div>
         </dl>
-      </div>
+      </Field>
 
-      <div
-        className="rounded-2xl bg-surface-container-lowest"
-        style={{ padding: '1.375rem 1.5rem', boxShadow: 'var(--shadow-ambient)' }}
-      >
+      <div className="g-xintro-bd">
         {/* Bij streng luisteren gaat "heen en terug" niet op — daar loopt het examen alleen
             vooruit. Eén zin die niet klopt over hoe de navigatie werkt kost de kandidaat een
             vraag voordat hij doorheeft dat het anders is. */}
-        <p className="text-sm leading-relaxed text-on-surface-variant m-0">
+        <p>
           {strengLuisteren ? (
             <>
               De klok loopt zodra je begint. Je hoort elk fragment één keer en gaat steeds
@@ -1555,87 +1650,64 @@ function ExamIntroScreen({
             </>
           )}
         </p>
+
+        {readAloudSample && !empty && (
+          <AudioPrefRow
+            sampleUrl={readAloudSample}
+            labels={{
+              heading: 'Vragen voorlezen',
+              onDesc: 'Elke vraag en elk antwoord wordt automatisch voorgelezen.',
+              offDesc: 'Zet dit aan om elke vraag te laten voorlezen.',
+              playSample: 'Beluister',
+              stopSample: 'Stop',
+              turnOn: 'Voorlezen aanzetten',
+              turnOff: 'Voorlezen uitzetten',
+            }}
+          />
+        )}
+
+        {isOpenSkill && !empty && (
+          <>
+            <p className="g-xintro-q" id="exam-mode-q">Hoe wil je oefenen?</p>
+            <fieldset className="g-xmode" aria-labelledby="exam-mode-q">
+              {([
+                {
+                  value: 'practice' as const,
+                  title: 'Oefenmodus',
+                  body: 'Je krijgt na elke opdracht feedback en kunt je antwoord aanpassen. Zo leer je het snelst.',
+                },
+                {
+                  value: 'exam' as const,
+                  title: 'Examenmodus',
+                  body: 'Je krijgt je beoordeling pas na het inleveren, zoals bij het echte examen. Alleen zo weet je of je er klaar voor bent.',
+                },
+              ]).map(opt => (
+                <label key={opt.value} className={feedbackMode === opt.value ? 'on' : undefined}>
+                  <input
+                    type="radio"
+                    name="feedback-mode"
+                    value={opt.value}
+                    checked={feedbackMode === opt.value}
+                    onChange={() => onFeedbackModeChange(opt.value)}
+                  />
+                  <b><span className="rd" aria-hidden />{opt.title}</b>
+                  {opt.body}
+                </label>
+              ))}
+            </fieldset>
+          </>
+        )}
+
+        {empty ? (
+          <p>Dit examen heeft nog geen opgaven. Kom binnenkort terug.</p>
+        ) : (
+          <button type="button" onClick={onStart} className="g-btn g-btn-navy g-btn-lg" style={{ alignSelf: 'flex-start' }}>
+            Start het examen
+            <ArrowRight className="rtl-flip" aria-hidden />
+          </button>
+        )}
       </div>
-
-      {readAloudSample && !empty && (
-        <AudioPrefRow
-          sampleUrl={readAloudSample}
-          labels={{
-            heading: 'Vragen voorlezen',
-            onDesc: 'Elke vraag en elk antwoord wordt automatisch voorgelezen.',
-            offDesc: 'Zet dit aan om elke vraag te laten voorlezen.',
-            playSample: 'Beluister',
-            stopSample: 'Stop',
-            turnOn: 'Voorlezen aanzetten',
-            turnOff: 'Voorlezen uitzetten',
-          }}
-        />
-      )}
-
-      {isOpenSkill && !empty && (
-        <fieldset className="rounded-2xl bg-surface-container-lowest border-0 m-0" style={{ padding: '1.375rem 1.5rem', boxShadow: 'var(--shadow-ambient)' }}>
-          <legend className="text-[0.65rem] font-bold uppercase tracking-widest text-on-surface-variant/70 p-0 mb-3">
-            Hoe wil je oefenen?
-          </legend>
-          <div className="flex flex-col gap-2.5">
-            {([
-              {
-                value: 'practice' as const,
-                title: 'Oefenmodus',
-                body: 'Je krijgt na elke opdracht feedback en kunt je antwoord aanpassen. Zo leer je het snelst.',
-              },
-              {
-                value: 'exam' as const,
-                title: 'Examenmodus',
-                body: 'Je krijgt je beoordeling pas na het inleveren, zoals bij het echte examen. Alleen zo weet je of je er klaar voor bent.',
-              },
-            ]).map(opt => (
-              <label
-                key={opt.value}
-                className="flex items-start gap-3 rounded-xl cursor-pointer"
-                style={{
-                  padding: '0.85rem 1rem',
-                  border: `1.5px solid ${feedbackMode === opt.value ? 'var(--color-primary)' : 'var(--color-outline-variant)'}`,
-                  background: feedbackMode === opt.value ? 'rgba(0,43,109,0.04)' : 'transparent',
-                }}
-              >
-                <input
-                  type="radio"
-                  name="feedback-mode"
-                  value={opt.value}
-                  checked={feedbackMode === opt.value}
-                  onChange={() => onFeedbackModeChange(opt.value)}
-                  style={{ marginTop: 3, accentColor: 'var(--color-primary)' }}
-                />
-                <span>
-                  <span className="block text-sm font-bold text-on-surface">{opt.title}</span>
-                  <span className="block text-xs leading-relaxed text-on-surface-variant mt-0.5">
-                    {opt.body}
-                  </span>
-                </span>
-              </label>
-            ))}
-          </div>
-        </fieldset>
-      )}
-
-      {empty ? (
-        <p className="text-sm text-on-surface-variant m-0">
-          Dit examen heeft nog geen opgaven. Kom binnenkort terug.
-        </p>
-      ) : (
-        <button
-          type="button"
-          onClick={onStart}
-          className="exam-primary-btn inline-flex items-center justify-center gap-2 rounded-xl font-bold text-sm border-0 cursor-pointer self-start"
-          style={{ padding: '0.85rem 1.6rem', background: '#fe762c', color: '#5f2200', boxShadow: 'var(--shadow-btn-orange)' }}
-        >
-          Start het examen
-          <ArrowRight size={16} strokeWidth={2.5} aria-hidden />
-        </button>
-      )}
-      <PrimaryBtnStyles />
-    </div>
+    </article>
   );
 }
 
@@ -1656,6 +1728,8 @@ function TaskReview({
   hideAction = false,
   compact = false,
   layout = 'stack',
+  pendingText = null,
+  title,
 }: {
   task: OpenTaskItem;
   grade: TaskGrade;
@@ -1667,12 +1741,14 @@ function TaskReview({
   hideAction?: boolean;
   compact?: boolean;
   layout?: 'stack' | 'wide';
+  pendingText?: string | null;
+  title?: string;
 }) {
   const busy = grade.state === 'grading';
   const graded = grade.state === 'graded';
 
   return (
-    <div className="flex flex-col gap-3">
+    <div className="g-xstack" style={{ gap: 12 }}>
       {grade.state !== 'idle' && (
         <RubricFeedback
           criteria={grade.criteria}
@@ -1689,22 +1765,17 @@ function TaskReview({
           errorMessage={grade.error}
           passThresholdPct={passThresholdPct}
           onRetry={onGrade}
+          pendingText={pendingText}
+          medium={task.task_type === 'speaking' ? 'opname' : 'tekst'}
+          title={title}
         />
       )}
 
       {graded && grade.overall && canSeeDetail && layout !== 'wide' && (
-        <div
-          className="rounded-2xl bg-surface-container-lowest"
-          style={{
-            padding: compact ? '0.8rem 0.9rem' : '1rem 1.125rem',
-            boxShadow: 'var(--shadow-card)',
-          }}
-        >
-          <p className={`${compact ? 'text-xs' : 'text-sm'} leading-relaxed text-on-surface m-0`}>
-            {grade.overall}
-          </p>
+        <div className="g-xcard" style={{ padding: compact ? '14px 16px' : undefined }}>
+          <p className="g-xintro-line" style={{ color: 'var(--ink)' }}>{grade.overall}</p>
           {grade.tips.length > 0 && (
-            <ul className={`${compact ? 'text-xs' : 'text-sm'} leading-relaxed text-on-surface-variant mt-2 mb-0 pl-5`}>
+            <ul className="g-xintro-line" style={{ margin: '8px 0 0', paddingInlineStart: 20 }}>
               {grade.tips.map((t, i) => (
                 <li key={i}>{t}</li>
               ))}
@@ -1714,24 +1785,18 @@ function TaskReview({
       )}
 
       {!hideAction && (
-        <div className="flex items-center gap-3 flex-wrap">
+        <div className="g-xactions">
           <button
             type="button"
             onClick={onGrade}
             disabled={busy || !hasAnswer}
-            className="exam-ghost-btn inline-flex items-center gap-2 rounded-xl font-bold text-sm cursor-pointer"
-            style={{
-              padding: '0.7rem 1.15rem',
-              border: '1.5px solid var(--color-primary)',
-              background: 'transparent',
-              color: 'var(--color-primary)',
-            }}
+            className="g-btn g-btn-ghost g-btn-sm"
           >
-            <Check size={15} strokeWidth={2.6} aria-hidden />
+            <Check strokeWidth={2.6} aria-hidden />
             {busy ? 'Nakijken…' : graded ? 'Opnieuw nakijken' : 'Nakijken'}
           </button>
           {!hasAnswer && (
-            <span className="text-xs text-on-surface-variant">
+            <span className="g-xfoot-meta">
               {task.task_type === 'speaking'
                 ? 'Neem eerst je antwoord op.'
                 : 'Schrijf eerst je antwoord.'}
@@ -1743,164 +1808,37 @@ function TaskReview({
   );
 }
 
-function Stat({ value, label }: { value: string; label: string }) {
-  return (
-    <div className="border-l-2 pl-3.5" style={{ borderColor: 'rgba(255,255,255,0.4)' }}>
-      <dd
-        className="font-headline font-extrabold text-white m-0"
-        style={{ fontSize: '1.25rem', letterSpacing: '-0.02em', fontVariantNumeric: 'tabular-nums' }}
-      >
-        {value}
-      </dd>
-      <dt className="text-xs uppercase tracking-wider font-semibold" style={{ color: 'rgba(255,255,255,0.65)' }}>
-        {label}
-      </dt>
-    </div>
-  );
-}
-
-function TimerBar({
-  secondsLeft,
-  total,
-  step,
-  steps,
-  answered,
-}: {
-  secondsLeft: number;
-  total: number;
-  step: number;
-  steps: number;
-  answered: number;
-}) {
-  const pct = total > 0 ? (secondsLeft / total) * 100 : 0;
-  const warn = secondsLeft <= 300;
-  const m = Math.floor(Math.max(secondsLeft, 0) / 60);
-  const s = Math.max(secondsLeft, 0) % 60;
-
-  return (
-    <div
-      className="rounded-2xl bg-surface-container-lowest flex items-center gap-4 flex-wrap"
-      style={{ padding: '0.75rem 1.1rem', boxShadow: 'var(--shadow-card)' }}
-    >
-      <span className="text-xs font-bold uppercase tracking-wider text-on-surface-variant whitespace-nowrap">
-        {step} / {steps}
-      </span>
-      <div className="flex-1 rounded-full overflow-hidden" style={{ height: 4, minWidth: 80, background: '#e0e3e5' }}>
-        <div
-          className="h-full rounded-full"
-          style={{
-            width: `${pct}%`,
-            background: warn ? 'var(--color-error)' : 'linear-gradient(to right,#a24000,#fe762c)',
-            transition: 'width 1s linear',
-          }}
-        />
-      </div>
-      <span className="text-xs font-semibold text-on-surface-variant whitespace-nowrap">
-        {answered} beantwoord
-      </span>
-      <span
-        className="inline-flex items-center gap-1.5 font-headline font-bold text-sm whitespace-nowrap"
-        style={{ color: warn ? 'var(--color-error)' : '#a24000', fontVariantNumeric: 'tabular-nums' }}
-      >
-        <Clock size={14} strokeWidth={2.5} aria-hidden />
-        {m}:{s < 10 ? '0' : ''}{s}
-      </span>
-    </div>
-  );
-}
-
 /**
  * Het wachtscherm tussen inleveren en de uitslag.
  *
  * Eén scherm met een teller, want het nakijken duurt bij Spreken echt even: per opdracht een
  * transcriptie plus een modelcall. De beweging is `transform` en `opacity` — de balk schaalt, de
- * drie stippen pulsen — en bij `prefers-reduced-motion` blijft alleen de teller over, die het
+ * drie stippen springen — en bij `prefers-reduced-motion` blijft alleen de teller over, die het
  * eigenlijke antwoord op "gebeurt er nog iets?" is.
  */
 function GradingScreen({ done, total }: { done: number; total: number }) {
-  const pct = total > 0 ? Math.round((done / total) * 100) : 0;
   return (
-    <div className="max-w-2xl mx-auto flex flex-col gap-5">
+    <Field variant="nevel" className="g-xgrading" dir="ltr" lang="nl">
+      <span className="g-mono">Ingeleverd</span>
+      <h1>We kijken je opdrachten na</h1>
+      <span className="g-xdots" aria-hidden><i /><i /><i /></span>
       <div
-        className="rounded-3xl"
-        style={{ background: 'var(--gradient-brand)', padding: '2.5rem 1.875rem' }}
+        className="g-xprog"
+        role="progressbar"
+        aria-valuemin={0}
+        aria-valuemax={total}
+        aria-valuenow={done}
+        aria-label="Opdrachten nagekeken"
       >
-        <p
-          className="text-[0.65rem] font-bold uppercase tracking-widest m-0 mb-2"
-          style={{ color: 'rgba(255,255,255,0.7)' }}
-        >
-          Ingeleverd
-        </p>
-        <h1
-          className="font-headline font-extrabold text-white m-0 mb-2"
-          style={{ fontSize: '1.6rem', letterSpacing: '-0.03em', textWrap: 'balance' }}
-        >
-          We kijken je opdrachten na
-        </h1>
-        <p className="text-sm leading-relaxed m-0" style={{ color: 'rgba(255,255,255,0.8)' }}>
-          Blijf even op deze pagina. Je krijgt je beoordeling zodra alle opdrachten klaar zijn.
-        </p>
-
-        <div
-          className="mt-6 rounded-full overflow-hidden"
-          style={{ height: '6px', background: 'rgba(255,255,255,0.22)' }}
-          role="progressbar"
-          aria-valuemin={0}
-          aria-valuemax={total}
-          aria-valuenow={done}
-          aria-label="Opdrachten nagekeken"
-        >
-          <div
-            className="exam-grade-bar h-full w-full origin-left"
-            style={{ background: '#fe762c', transform: `scaleX(${total > 0 ? done / total : 0})` }}
-          />
-        </div>
-
-        <div className="mt-3 flex items-center gap-3">
-          <p className="text-sm font-bold text-white m-0" aria-live="polite">
-            {done} van de {total} nagekeken
-            <span className="font-normal" style={{ color: 'rgba(255,255,255,0.7)' }}> · {pct}%</span>
-          </p>
-          <span className="exam-grade-dots inline-flex gap-1" aria-hidden>
-            <i /><i /><i />
-          </span>
-        </div>
+        <i style={{ transform: `scaleX(${total > 0 ? done / total : 0})` }} />
       </div>
-      <GradingScreenStyles />
-    </div>
-  );
-}
-
-function GradingScreenStyles() {
-  return (
-    <style>{`
-      .exam-grade-bar { transition: transform .5s cubic-bezier(0.22,1,0.36,1); }
-      .exam-grade-dots i {
-        width: 6px; height: 6px; border-radius: 9999px; background: rgba(255,255,255,0.75);
-        animation: exam-grade-pulse 1.2s cubic-bezier(0.22,1,0.36,1) infinite;
-      }
-      .exam-grade-dots i:nth-child(2) { animation-delay: .15s; }
-      .exam-grade-dots i:nth-child(3) { animation-delay: .3s; }
-      @keyframes exam-grade-pulse {
-        0%, 100% { opacity: .35; transform: scale(0.8); }
-        50% { opacity: 1; transform: scale(1); }
-      }
-      @media (prefers-reduced-motion: reduce) {
-        .exam-grade-bar { transition: none; }
-        .exam-grade-dots { display: none; }
-      }
-    `}</style>
-  );
-}
-
-function PrimaryBtnStyles() {
-  return (
-    <style>{`
-      .exam-primary-btn { transition: transform .18s cubic-bezier(0.22,1,0.36,1), box-shadow .18s ease; }
-      .exam-primary-btn:not(:disabled):hover { transform: translateY(-2px); box-shadow: var(--shadow-btn-orange-hover); }
-      .exam-primary-btn:not(:disabled):active { transform: translateY(0) scale(0.98); }
-      .exam-primary-btn:focus-visible { outline: 3px solid var(--color-primary); outline-offset: 2px; }
-      @media (prefers-reduced-motion: reduce) { .exam-primary-btn { transition: none; } }
-    `}</style>
+      <p aria-live="polite" style={{ color: 'var(--ink)', fontWeight: 600 }}>
+        {done} van de {total} opdrachten nagekeken
+      </p>
+      <p>
+        Een taalmodel past de criteria van de docent toe. Blijf even op deze pagina; je krijgt je
+        beoordeling zodra alle opdrachten klaar zijn.
+      </p>
+    </Field>
   );
 }

@@ -3,8 +3,8 @@
 import { useState } from 'react';
 import { useTranslations } from 'next-intl';
 import { ArrowLeft, ArrowRight } from 'lucide-react';
-import { CategoryMark, ExamMark } from '@/components/horizon';
-import type { Category } from '@/components/horizon';
+import { CategoryMark, ChoiceTile, ChoiceTileGroup, FilterChip, type Category } from '@/components/glas';
+import '@/components/exam/glas-player.css';
 import type { Level, OnderdeelSlug } from '@/data/skills';
 
 /**
@@ -68,25 +68,35 @@ export default function FreePracticeChooser({ tracks }: Props) {
   const desktopTrack = tracks.find(tr => tr.id === (selected ?? 'a2')) ?? openable[0];
   const mobileTrack = selected === null ? null : tracks.find(tr => tr.id === selected) ?? null;
 
+  /* Glas §06 "Keuzes": de vier examens als keuzetegels met het track-merk (gekozen = wit + navy
+     ring + vinkje), daaronder het open paneel met de onderdelen als witte rijen. */
+  const tiles = (activeId: ChooserTrack['id'] | undefined) => (
+    <ChoiceTileGroup label={t('choose_exam')} className="g-xtracks">
+      {tracks.map(track => {
+        const soon = track.parts.length === 0;
+        return (
+          <ChoiceTile
+            key={track.id}
+            track={track.id}
+            checked={!soon && activeId === track.id}
+            title={track.name}
+            sub={soon ? t('track_soon') : track.subtitle}
+            /* An unbuilt track is not a control the visitor failed to use, it is a statement about
+               the roadmap — the kit's "off" state (dashed, not clickable). */
+            disabled={soon}
+            onClick={() => setSelected(track.id)}
+          />
+        );
+      })}
+    </ChoiceTileGroup>
+  );
+
   return (
     <>
       {/* ── Desktop: the row and the open panel on one screen ─────────────── */}
       <div className="hidden md:block">
-        <p className="text-xs font-extrabold text-on-surface-variant uppercase mb-3" style={{ letterSpacing: '0.14em' }}>
-          {t('choose_exam')}
-        </p>
-        <ul className="grid grid-cols-2 lg:grid-cols-4 gap-3.5 list-none p-0 m-0">
-          {tracks.map(track => (
-            <li key={track.id}>
-              <TrackTile
-                track={track}
-                active={desktopTrack?.id === track.id}
-                onSelect={() => setSelected(track.id)}
-                soonLabel={t('track_soon')}
-              />
-            </li>
-          ))}
-        </ul>
+        <span className="g-mono" style={{ display: 'block', marginBottom: 12 }}>{t('choose_exam')}</span>
+        {tiles(desktopTrack?.id)}
 
         {/* Every track's panel is rendered and the closed ones get `hidden`.
             **Not** `selected === track.id && <Panel/>`: with only the open panel in the DOM, the
@@ -96,18 +106,12 @@ export default function FreePracticeChooser({ tracks }: Props) {
             build and every screenshot were clean both times, and only a look at the served HTML
             found it. */}
         {openable.map(track => (
-          <div
-            key={track.id}
-            hidden={track.id !== desktopTrack?.id}
-            className="mt-5 rounded-3xl p-6 lg:p-7 bg-surface-container-low"
-          >
-            <div className="flex flex-wrap items-baseline gap-x-3.5 gap-y-1 mb-5">
-              <h2 className="font-headline font-extrabold text-on-surface text-xl tracking-tight m-0">
-                {t('panel_heading', { track: track.name })}
-              </h2>
-              <p className="text-sm text-on-surface-variant m-0">{track.blurb}</p>
+          <div key={track.id} hidden={track.id !== desktopTrack?.id} className="g-xpanel-w">
+            <div style={{ display: 'flex', flexWrap: 'wrap', alignItems: 'baseline', gap: '4px 14px', marginBottom: 16 }}>
+              <h2 className="g-head g-head-3">{t('panel_heading', { track: track.name })}</h2>
+              <p className="g-xintro-line">{track.blurb}</p>
             </div>
-            <ul className="grid lg:grid-cols-2 gap-3.5 list-none p-0 m-0">
+            <ul className="g-xparts">
               {track.parts.map(part => (
                 <li key={part.slug}>
                   <PartRow part={part} accountLabel={t('row_account_badge')} />
@@ -120,66 +124,41 @@ export default function FreePracticeChooser({ tracks }: Props) {
 
       {/* ── Mobile step 1: which examen ───────────────────────────────────── */}
       <div className={mobileTrack ? 'hidden' : 'md:hidden'}>
-        <p className="text-xs font-extrabold text-on-surface-variant uppercase mb-3" style={{ letterSpacing: '0.14em' }}>
-          {t('choose_exam')}
-        </p>
-        <ul className="grid grid-cols-2 gap-3 list-none p-0 m-0">
-          {tracks.map(track => (
-            <li key={track.id}>
-              <TrackTile
-                track={track}
-                stacked
-                active={false}
-                onSelect={() => setSelected(track.id)}
-                soonLabel={t('track_soon')}
-              />
-            </li>
-          ))}
-        </ul>
+        <span className="g-mono" style={{ display: 'block', marginBottom: 12 }}>{t('choose_exam')}</span>
+        {tiles(undefined)}
       </div>
 
       {/* ── Mobile step 2: which onderdeel ────────────────────────────────── */}
       {mobileTrack && (
         <div className="md:hidden">
-          <div className="flex items-center gap-3 mb-4">
-            <button
-              type="button"
-              onClick={() => setSelected(null)}
-              className="inline-flex items-center gap-1.5 px-3 py-2 rounded-xl bg-surface-container text-sm font-semibold text-primary border-0 cursor-pointer"
-            >
-              <ArrowLeft size={15} strokeWidth={2.2} className="rtl-flip" aria-hidden="true" />
+          <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 14 }}>
+            <button type="button" onClick={() => setSelected(null)} className="g-btn g-btn-ghost g-btn-sm">
+              <ArrowLeft className="rtl-flip" aria-hidden />
               {t('choose_exam')}
             </button>
-            <span className="text-xs text-on-surface-variant ms-auto">{t('step_two')}</span>
+            <span className="g-mono" style={{ marginInlineStart: 'auto' }}>{t('step_two')}</span>
           </div>
 
           {/* The other examens stay one tap away — the back control is the way *up*, these are
               the way *across*, and without them switching level is two taps and a re-read. */}
-          <div className="flex gap-2 overflow-x-auto pb-1 -mx-1 px-1">
-            {openable.map(track => {
-              const on = track.id === mobileTrack.id;
-              return (
-                <button
-                  key={track.id}
-                  type="button"
-                  onClick={() => setSelected(track.id)}
-                  aria-current={on ? 'true' : undefined}
-                  className={`flex-none px-4 py-2 rounded-full text-sm font-semibold border-0 cursor-pointer ${
-                    on ? 'bg-primary text-white' : 'bg-surface-container-low text-on-surface-variant'
-                  }`}
-                >
-                  {track.name}
-                </button>
-              );
-            })}
+          <div className="g-chips" style={{ flexWrap: 'nowrap', overflowX: 'auto', paddingBottom: 4 }}>
+            {openable.map(track => (
+              <FilterChip
+                key={track.id}
+                pressed={track.id === mobileTrack.id}
+                onClick={() => setSelected(track.id)}
+                aria-current={track.id === mobileTrack.id ? 'true' : undefined}
+                style={{ flex: 'none' }}
+              >
+                {track.name}
+              </FilterChip>
+            ))}
           </div>
 
-          <h2 className="font-headline font-extrabold text-on-surface text-2xl tracking-tight mt-4 mb-2">
-            {t('choose_part')}
-          </h2>
-          <p className="text-sm text-on-surface-variant leading-relaxed mb-4">{mobileTrack.blurb}</p>
+          <h2 className="g-head g-head-2" style={{ marginTop: 18 }}>{t('choose_part')}</h2>
+          <p className="g-xintro-line" style={{ margin: '6px 0 14px' }}>{mobileTrack.blurb}</p>
 
-          <ul className="flex flex-col gap-2.5 list-none p-0 m-0">
+          <ul className="g-xparts">
             {mobileTrack.parts.map(part => (
               <li key={part.slug}>
                 <PartRow part={part} accountLabel={t('row_account_badge')} />
@@ -192,98 +171,19 @@ export default function FreePracticeChooser({ tracks }: Props) {
   );
 }
 
-/** The examen tile. `stacked` is the phone's 2×2 shape: mark above the label rather than beside. */
-function TrackTile({
-  track, active, stacked = false, onSelect, soonLabel,
-}: {
-  track: ChooserTrack;
-  active: boolean;
-  stacked?: boolean;
-  onSelect: () => void;
-  soonLabel: string;
-}) {
-  const soon = track.parts.length === 0;
-
-  const body = (
-    <>
-      <TrackMark id={track.id} size={stacked ? 48 : 52} onDark={active} muted={soon} />
-      <span className={`flex flex-col gap-0.5 ${stacked ? '' : 'min-w-0'}`}>
-        <span
-          className="font-headline font-extrabold text-lg tracking-tight"
-          style={{ color: active ? '#fff' : soon ? 'var(--color-on-surface-variant)' : 'var(--color-on-surface)' }}
-        >
-          {track.name}
-        </span>
-        {soon ? (
-          <span className="self-start text-[0.62rem] font-bold uppercase tracking-widest px-2 py-0.5 rounded-full bg-surface-container text-on-surface-variant whitespace-nowrap">
-            {soonLabel}
-          </span>
-        ) : (
-          <span className="text-[0.8rem]" style={{ color: active ? 'rgba(255,255,255,0.72)' : 'var(--color-on-surface-variant)' }}>
-            {track.subtitle}
-          </span>
-        )}
-      </span>
-    </>
-  );
-
-  const shape = `w-full text-start rounded-2xl p-4 flex ${
-    stacked ? 'flex-col items-start gap-3' : 'items-center gap-3.5'
-  }`;
-
-  /* An unbuilt track is a `<div>`, not a disabled button: it is not a control the visitor failed
-     to use, it is a statement about the roadmap. Same call the homepage's tile row makes. */
-  if (soon) {
-    return <div className={`${shape} bg-surface-container-low`}>{body}</div>;
-  }
-
-  return (
-    <button
-      type="button"
-      onClick={onSelect}
-      aria-pressed={active}
-      className={`track-tile ${shape} border-0 cursor-pointer ${active ? 'bg-primary' : 'bg-surface-container-low'}`}
-    >
-      {body}
-    </button>
-  );
-}
-
-/**
- * The four tracks in the chooser, all from one family.
- *
- * This used to mix three drawings — `LevelMark`'s gauge for A2/B1, a category mark for KNM and a
- * hand-rolled hollow ring for ONA — which made a row of four peers look like four unrelated
- * things. `ExamMark` is the studio's own set (§04b) and covers all four including the greyed
- * "binnenkort" state, so the "not built" signal is still carried by the mark and is now drawn
- * rather than improvised — it follows `parts.length === 0`, the same condition as the chip. `tone` is gone with it: a track mark is always the inverted navy tile.
- */
-function TrackMark({ id, size, onDark, muted }: { id: ChooserTrack['id']; size: number; onDark: boolean; muted: boolean }) {
-  return <ExamMark track={id} size={size} muted={muted} onDark={onDark} />;
-}
-
 /** One onderdeel: the same row on both flows, so the phone and the desktop cannot drift. */
 function PartRow({ part, accountLabel }: { part: ChooserPart; accountLabel: string }) {
   return (
-    <a
-      href={part.href}
-      className="part-row h-full flex items-center gap-3.5 p-4 rounded-2xl bg-surface-container-lowest no-underline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-secondary-container"
-      style={{ boxShadow: 'var(--shadow-ambient)', minHeight: 72 }}
-    >
+    <a href={part.href} className="g-xpart">
       <CategoryMark category={part.slug as Category} size={48} />
-      <span className="flex flex-col gap-0.5 min-w-0">
-        <span className="font-headline font-extrabold text-on-surface text-[1.05rem] tracking-tight">{part.name}</span>
-        <span className="text-[0.8rem] text-on-surface-variant leading-snug">{part.note}</span>
+      <span className="g-xpart-t">
+        <b>{part.name}</b>
+        <small>{part.note}</small>
       </span>
       {part.needsAccount ? (
-        <span
-          className="ms-auto flex-none text-[0.62rem] font-bold uppercase tracking-widest px-2.5 py-1 rounded-full whitespace-nowrap"
-          style={{ background: '#eef4ff', color: '#002b6d' }}
-        >
-          {accountLabel}
-        </span>
+        <span className="g-xbdg" style={{ marginInlineStart: 'auto', flex: 'none' }}>{accountLabel}</span>
       ) : (
-        <ArrowRight size={18} strokeWidth={2.4} className="ms-auto flex-none rtl-flip" style={{ color: '#a24000' }} aria-hidden="true" />
+        <span className="g-xpart-end"><ArrowRight className="rtl-flip" aria-hidden /></span>
       )}
     </a>
   );

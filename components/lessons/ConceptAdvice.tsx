@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import { useLocale } from 'next-intl';
 import { ArrowRight } from 'lucide-react';
 import type { Level, OnderdeelSlug } from '@/data/skills';
+import CategoryMark from '@/components/horizon/CategoryMark';
 
 /**
  * "Dit verklaart je fouten" — de brug van een gezakt examen naar de les die het repareert.
@@ -38,9 +39,11 @@ type Props = {
   onderdeel: OnderdeelSlug;
   wrongQuestionIds: number[];
   labels: { head: string; misses: string; lesson: string };
+  /** `glas` voor oppervlakken die al in Glas v1.0 zijn herbouwd (de examenspeler). */
+  variant?: 'glas';
 };
 
-export default function ConceptAdvice({ level, onderdeel, wrongQuestionIds, labels }: Props) {
+export default function ConceptAdvice({ level, onderdeel, wrongQuestionIds, labels, variant }: Props) {
   // De locale uit de context in plaats van als prop: `ExamShell` heeft er geen en hem daar
   // doorheen rijgen raakt vier componenten voor één string.
   const locale = useLocale();
@@ -72,6 +75,30 @@ export default function ConceptAdvice({ level, onderdeel, wrongQuestionIds, labe
   }, [level, onderdeel, wrongQuestionIds]);
 
   if (!advice?.length) return null;
+
+  /* Glas (glas.html §10 "Uitslag", `.advice`): per concept een witte kaart met het
+     taalregel-merk, de mono-kop en één navy pijlknop. Alleen de examenspeler zet deze variant. */
+  if (variant === 'glas') {
+    return (
+      <ul className="list-none m-0 p-0 flex flex-col gap-2.5">
+        {advice.map(a => (
+          <li key={a.slug}>
+            <a href={`/${locale}${a.href}`} className="g-xadvice">
+              <CategoryMark category="taalregels" size={44} />
+              <span className="min-w-0 flex-1">
+                <span className="g-mono block">{labels.head}</span>
+                <b>{a.name} · {labels.misses.replace('{n}', String(a.misses))}</b>
+                <small>{a.one_liner}{a.lessonTitle && <> · {labels.lesson}</>}</small>
+              </span>
+              <span className="g-btn g-btn-navy g-btn-sm g-btn-icon" aria-hidden>
+                <ArrowRight className="rtl-flip" />
+              </span>
+            </a>
+          </li>
+        ))}
+      </ul>
+    );
+  }
 
   return (
     <div
