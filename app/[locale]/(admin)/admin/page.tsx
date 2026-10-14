@@ -1,4 +1,5 @@
 import { createAdminClient } from '@/lib/supabase/admin';
+import { BookOpen, Layers, SquarePen, TriangleAlert } from 'lucide-react';
 import { QuestionsDonutChart } from './_components/QuestionsDonutChart';
 import { ActivityLineChart } from './_components/ActivityLineChart';
 import { CategoryRadarChart } from './_components/CategoryRadarChart';
@@ -248,9 +249,9 @@ export default async function AdminDashboard() {
   const aiSpend = await fetchAiSpend();
 
   const stats = [
-    { label: 'Vragen', value: questionCount ?? 0, icon: 'quiz', href: 'admin/questions', color: 'bg-primary/10 text-primary' },
-    { label: 'Woordkaarten', value: wordCardCount ?? 0, icon: 'style', href: 'admin/woordkaarten', color: 'bg-secondary/10 text-secondary' },
-    { label: 'Les-secties', value: lerenCount ?? 0, icon: 'menu_book', href: 'admin/leren', color: 'bg-emerald-50 text-emerald-700' },
+    { label: 'Vragen', value: questionCount ?? 0, icon: SquarePen, href: 'admin/questions' },
+    { label: 'Woordkaarten', value: wordCardCount ?? 0, icon: Layers, href: 'admin/woordkaarten' },
+    { label: 'Les-secties', value: lerenCount ?? 0, icon: BookOpen, href: 'admin/leren' },
   ];
 
   return (
@@ -268,20 +269,23 @@ export default async function AdminDashboard() {
 
       <AiCostCard spend={aiSpend} />
 
-      <div className="bg-amber-50 border border-amber-200 rounded-2xl px-5 py-4 mb-8">
-        <p className="text-sm font-bold text-amber-800 mb-1">Let op</p>
-        <p className="text-sm text-amber-900">
+      <div className="bg-klei-tint rounded-g-lg px-5 py-4 mb-8 flex gap-3">
+        <TriangleAlert size={18} className="text-klei mt-0.5 shrink-0" aria-hidden />
+        <div>
+        <p className="text-sm font-bold text-klei mb-1">Let op</p>
+        <p className="text-sm text-ink">
           Wijzigingen die je hier opslaat verschijnen direct op de live website voor alle gebruikers. Controleer altijd de preview-link na het opslaan en wees voorzichtig met het verwijderen of aanpassen van vragen die al aan examens zijn gekoppeld. Neem bij twijfel eerst een screenshot of notitie van de huidige staat voordat je wijzigingen doorvoert.
         </p>
+        </div>
       </div>
 
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 md:gap-6 mb-8 md:mb-10">
         {stats.map(s => (
-          <a key={s.label} href={s.href} className="bg-white rounded-2xl p-6 shadow-[var(--shadow-card-md)] hover:shadow-[var(--shadow-card-lg)] transition-shadow">
-            <div className={`w-10 h-10 rounded-xl flex items-center justify-center mb-4 ${s.color}`}>
-              <span className="material-symbols-outlined text-[20px]">{s.icon}</span>
+          <a key={s.label} href={s.href} className="admin-stat group bg-white rounded-g-lg p-6 no-underline">
+            <div className="w-10 h-10 rounded-g-sm flex items-center justify-center mb-4 bg-mist text-navy">
+              <s.icon size={18} aria-hidden />
             </div>
-            <p className="text-3xl font-headline font-bold text-on-surface">{s.value}</p>
+            <p className="text-3xl font-headline font-bold tracking-[-0.03em] text-navy tabular-nums">{s.value}</p>
             <p className="text-on-surface-variant text-sm mt-1">{s.label}</p>
           </a>
         ))}

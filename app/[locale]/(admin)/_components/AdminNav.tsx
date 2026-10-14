@@ -12,6 +12,44 @@ import {
   type AdminNavItem,
 } from '@/lib/admin/nav';
 import { isKnm, isLevel } from '@/data/skills';
+import {
+  ChevronDown,
+  ClipboardList,
+  Flag,
+  GraduationCap,
+  Languages,
+  LayoutGrid,
+  ListChecks,
+  MessageSquareText,
+  SquarePen,
+  Users,
+  type LucideIcon,
+} from 'lucide-react';
+
+/**
+ * De Material-namen uit `lib/admin/nav.ts` → lucide (G4: functionele iconen zijn lucide). De
+ * namen blijven in nav.ts staan, zodat die definitie niet van de icoonset afhangt.
+ */
+const ICONS: Record<string, LucideIcon> = {
+  dashboard: LayoutGrid,
+  flag: Flag,
+  assignment: ClipboardList,
+  quiz: SquarePen,
+  school: GraduationCap,
+  translate: Languages,
+  checklist: ListChecks,
+  rate_review: MessageSquareText,
+  group: Users,
+};
+
+function NavIcon({ name }: { name: string }) {
+  const Icon = ICONS[name] ?? LayoutGrid;
+  return (
+    <span className="admin-navi-ico" aria-hidden>
+      <Icon size={16} strokeWidth={2} />
+    </span>
+  );
+}
 
 /**
  * The admin nav, shared by the desktop sidebar and the mobile drawer.
@@ -37,15 +75,13 @@ export default function AdminNav({ locale, onNavigate }: { locale: string; onNav
     isKnm(rawLevel) ? null : isLevel(rawLevel) ? rawLevel : undefined;
 
   return (
-    <nav className="flex-1 p-4">
-      {ADMIN_NAV_SECTIONS.map((section, i) => (
-        <div key={section.title ?? 'top'} className={i === 0 ? 'space-y-1' : 'mt-5 space-y-1'}>
+    <nav className="flex-1 overflow-y-auto px-3 pb-4">
+      {ADMIN_NAV_SECTIONS.map(section => (
+        <div key={section.title ?? 'top'} className="flex flex-col gap-0.5">
           {/* Een kop en geen streep: de scheiding komt van de ruimte en het label, niet van een
               lijn — dezelfde regel als op de publieke kant. */}
           {section.title && (
-            <p className="px-3 pb-1 text-[0.68rem] font-semibold uppercase tracking-[0.09em] text-white/40">
-              {section.title}
-            </p>
+            <p className="admin-grp">{section.title}</p>
           )}
           {section.items.map(item => (
             <NavEntry
@@ -88,8 +124,14 @@ function NavEntry({
 
   if (!item.levelled) {
     return (
-      <Link href={base} onClick={onNavigate} className={rowClass(active)}>
-        <span className="material-symbols-outlined text-[20px]">{item.icon}</span>
+      <Link
+        href={base}
+        onClick={onNavigate}
+        className="admin-navi"
+        data-on={active}
+        aria-current={active ? 'page' : undefined}
+      >
+        <NavIcon name={item.icon} />
         {item.label}
       </Link>
     );
@@ -101,21 +143,16 @@ function NavEntry({
         type="button"
         onClick={() => setOpen(v => !v)}
         aria-expanded={open}
-        className={`${rowClass(active)} w-full text-left`}
+        className="admin-navi w-full"
+        data-on={active ? (open ? 'soft' : 'true') : 'false'}
       >
-        <span className="material-symbols-outlined text-[20px]">{item.icon}</span>
+        <NavIcon name={item.icon} />
         <span className="flex-1">{item.label}</span>
-        <span
-          className="material-symbols-outlined text-[18px] opacity-60 transition-transform duration-150 motion-reduce:transition-none"
-          style={{ transform: open ? 'rotate(180deg)' : 'none' }}
-          aria-hidden
-        >
-          expand_more
-        </span>
+        <ChevronDown size={16} className="admin-chev" aria-hidden />
       </button>
 
       {open && (
-        <ul className="mt-0.5 mb-1 ml-[26px] list-none space-y-0.5 border-l border-white/15 p-0 pl-2">
+        <ul className="admin-sub">
           {navLevelsFor(item).map(({ level, label, param }) => {
             // Only marked current when this section is the one being viewed — otherwise every
             // expanded section would show an A2 child highlighted.
@@ -126,11 +163,6 @@ function NavEntry({
                   href={adminHref(locale, item.path, level)}
                   onClick={onNavigate}
                   aria-current={current ? 'page' : undefined}
-                  className={`block rounded-lg px-3 py-1.5 text-[0.8rem] font-medium transition-colors ${
-                    current
-                      ? 'bg-white/15 text-white'
-                      : 'text-white/55 hover:bg-white/10 hover:text-white'
-                  }`}
                 >
                   {label}
                 </Link>
@@ -147,11 +179,6 @@ function NavEntry({
                   href={href}
                   onClick={onNavigate}
                   aria-current={current ? 'page' : undefined}
-                  className={`block rounded-lg px-3 py-1.5 text-[0.8rem] font-medium transition-colors ${
-                    current
-                      ? 'bg-white/15 text-white'
-                      : 'text-white/55 hover:bg-white/10 hover:text-white'
-                  }`}
                 >
                   {extra.label}
                 </Link>
@@ -162,10 +189,4 @@ function NavEntry({
       )}
     </div>
   );
-}
-
-function rowClass(active: boolean) {
-  return `flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium transition-colors ${
-    active ? 'bg-white/10 text-white' : 'text-white/70 hover:bg-white/10 hover:text-white'
-  }`;
 }

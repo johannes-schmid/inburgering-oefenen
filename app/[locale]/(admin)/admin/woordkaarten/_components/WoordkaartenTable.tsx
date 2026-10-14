@@ -30,7 +30,7 @@ import { Button } from '@/components/ui/button';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Label } from '@/components/ui/label';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
-import { SearchIcon, XIcon, FunnelIcon } from 'lucide-react';
+import { SearchIcon, XIcon, FunnelIcon , AudioLines, CircleCheck, CirclePlay, Image as ImageIcon, Loader2, Pause, Pencil, Play, Plus, RefreshCw, Save, Square, Trash2, VolumeOff } from 'lucide-react';
 
 type WordCard = {
   id: number;
@@ -223,7 +223,7 @@ export default function WoordkaartenTable({ cards }: Props) {
           className="p-1 rounded-lg text-on-surface-variant hover:text-on-surface hover:bg-surface-container transition-colors"
           aria-label="Bewerken"
         >
-          <span className="material-symbols-outlined text-[16px]">edit</span>
+          <Pencil size={15} aria-hidden />
         </button>
       ),
       size: 44,
@@ -242,7 +242,7 @@ export default function WoordkaartenTable({ cards }: Props) {
       id: 'theme_id',
       header: ({ column }) => <DataGridColumnHeader title="Thema" column={column} className={HEADER_CLS} />,
       cell: ({ row }) => (
-        <span className="w-6 h-6 rounded-full bg-primary/10 text-primary text-xs font-bold flex items-center justify-center">
+        <span className="w-6 h-6 rounded-full bg-[rgba(0,43,109,0.1)] text-primary text-xs font-bold flex items-center justify-center">
           {row.original.theme_id}
         </span>
       ),
@@ -282,7 +282,7 @@ export default function WoordkaartenTable({ cards }: Props) {
       id: 'audio',
       header: ({ column }) => <DataGridColumnHeader title="Audio" column={column} className={HEADER_CLS} />,
       cell: ({ row }) => row.original.audio_dutch_word
-        ? <span className="inline-flex items-center justify-center w-6 h-6 rounded-full bg-blue-100 text-blue-700"><span className="material-symbols-outlined text-[14px]">graphic_eq</span></span>
+        ? <span className="inline-flex items-center justify-center w-6 h-6 rounded-full bg-mist text-navy"><AudioLines size={13} aria-label="Audio" /></span>
         : <span className="text-xs text-on-surface-variant">—</span>,
       size: 60,
       enableSorting: false,
@@ -317,7 +317,7 @@ export default function WoordkaartenTable({ cards }: Props) {
   const hasFilters = !!searchQuery || selectedThemes.length > 0 || imageFilter !== 'all' || audioFilter !== 'all';
 
   return (
-    <div className={`flex flex-col h-full overflow-hidden transition-all duration-300 ${selected ? 'pr-[540px]' : ''}`}>
+    <div className={`flex flex-col h-full overflow-hidden ${selected ? 'pr-[540px]' : ''}`}>
       <div className="flex items-center justify-between mb-5">
         <div>
           <h1 className="text-2xl font-headline font-bold text-on-surface">Woordkaarten</h1>
@@ -329,13 +329,13 @@ export default function WoordkaartenTable({ cards }: Props) {
           onClick={() => router.push(`${pathname}/new`)}
           className="flex items-center gap-2 bg-primary text-white px-4 py-2 rounded-xl text-sm font-medium hover:bg-primary-container transition-colors"
         >
-          <span className="material-symbols-outlined text-[18px]">add</span>
+          <Plus size={17} aria-hidden />
           Nieuwe kaart
         </button>
       </div>
 
       {selectedCount > 0 && (
-        <div className="flex items-center gap-3 mb-3 px-4 py-2.5 bg-primary/5 border border-primary/20 rounded-xl">
+        <div className="flex items-center gap-3 mb-3 px-4 py-2.5 bg-[rgba(0,43,109,0.05)] border border-[rgba(0,43,109,0.2)] rounded-xl">
           <span className="text-sm text-on-surface font-medium">{selectedCount} geselecteerd</span>
           <button
             onClick={() => setRowSelection({})}
@@ -493,7 +493,7 @@ export default function WoordkaartenTable({ cards }: Props) {
         <div className="flex-1 overflow-y-auto px-6 py-5 space-y-4">
           {form && (
             <>
-              {error && <div className="bg-error/10 border border-error/20 rounded-xl p-3 text-sm text-error">{error}</div>}
+              {error && <div className="bg-[rgba(186,26,26,0.1)] border border-[rgba(186,26,26,0.2)] rounded-xl p-3 text-sm text-error">{error}</div>}
 
               <div className="grid grid-cols-2 gap-3">
                 <PanelField label="Thema">
@@ -550,9 +550,7 @@ export default function WoordkaartenTable({ cards }: Props) {
                         title="Audio opnieuw genereren"
                         className="flex items-center gap-1 px-2 py-1 rounded-lg text-[11px] font-medium border border-outline-variant text-on-surface-variant hover:bg-surface-container hover:text-on-surface transition-colors disabled:opacity-50"
                       >
-                        <span className={`material-symbols-outlined text-[14px] ${generatingAudio ? 'animate-spin' : ''}`}>
-                          {generatingAudio ? 'autorenew' : 'refresh'}
-                        </span>
+                        {generatingAudio ? <Loader2 size={13} className="animate-spin" aria-hidden /> : <RefreshCw size={13} aria-hidden />}
                         {generatingAudio ? 'Bezig…' : 'Opnieuw'}
                       </button>
                     </div>
@@ -560,20 +558,18 @@ export default function WoordkaartenTable({ cards }: Props) {
                 </div>
 
                 {!form.audio_dutch_word && (
-                  <div className="flex items-center gap-3 px-3 py-2.5 bg-amber-50 border border-amber-200 rounded-xl">
-                    <span className="material-symbols-outlined text-amber-500 text-[18px] shrink-0">volume_off</span>
-                    <span className="text-xs text-amber-800 flex-1">
+                  <div className="flex items-center gap-3 px-3 py-2.5 bg-klei-tint rounded-xl">
+                    <VolumeOff size={17} className="text-klei shrink-0" aria-hidden />
+                    <span className="text-xs text-klei flex-1">
                       Nog geen audio gegenereerd voor woord en zin.
                     </span>
                     <button
                       type="button"
                       onClick={handleGenerateAudio}
                       disabled={generatingAudio}
-                      className="flex items-center gap-1.5 bg-amber-500 text-white px-3 py-1.5 rounded-lg text-xs font-medium hover:bg-amber-600 transition-colors disabled:opacity-50 disabled:cursor-not-allowed shrink-0"
+                      className="flex items-center gap-1.5 bg-klei text-white px-3 py-1.5 rounded-full text-xs font-semibold hover:bg-[#8a3600] transition-colors disabled:opacity-50 disabled:cursor-not-allowed shrink-0"
                     >
-                      <span className={`material-symbols-outlined text-[14px] ${generatingAudio ? 'animate-spin' : ''}`}>
-                        {generatingAudio ? 'autorenew' : 'graphic_eq'}
-                      </span>
+                      {generatingAudio ? <Loader2 size={13} className="animate-spin" aria-hidden /> : <AudioLines size={13} aria-hidden />}
                       {generatingAudio ? 'Genereren…' : 'Genereer audio'}
                     </button>
                   </div>
@@ -629,11 +625,11 @@ export default function WoordkaartenTable({ cards }: Props) {
             className="flex items-center gap-2 bg-primary text-white px-5 py-2.5 rounded-xl text-sm font-medium hover:bg-primary-container transition-colors disabled:opacity-50"
           >
             {saving ? (
-              <><span className="material-symbols-outlined text-[16px] animate-spin">autorenew</span>Opslaan…</>
+              <><Loader2 size={15} className="animate-spin" aria-hidden />Opslaan…</>
             ) : saved ? (
-              <><span className="material-symbols-outlined text-[16px]">check_circle</span>Opgeslagen ✓</>
+              <><CircleCheck size={15} aria-hidden />Opgeslagen</>
             ) : (
-              <><span className="material-symbols-outlined text-[16px]">save</span>Opslaan</>
+              <><Save size={15} aria-hidden />Opslaan</>
             )}
           </button>
 
@@ -641,9 +637,9 @@ export default function WoordkaartenTable({ cards }: Props) {
             <button
               onClick={handleDelete}
               disabled={saving}
-              className={`flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm font-medium transition-colors ${confirmDelete ? 'bg-error text-white' : 'border border-error/30 text-error hover:bg-error/5'}`}
+              className={`flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm font-medium transition-colors ${confirmDelete ? 'bg-error text-white' : 'border border-[rgba(186,26,26,0.3)] text-error hover:bg-[rgba(186,26,26,0.05)]'}`}
             >
-              <span className="material-symbols-outlined text-[16px]">delete</span>
+              <Trash2 size={15} aria-hidden />
               {confirmDelete ? 'Zeker?' : 'Verwijderen'}
             </button>
           )}
@@ -670,7 +666,7 @@ function AudioPlayer({ src, label }: { src: string; label: string }) {
   }
 
   return (
-    <div className="flex items-center gap-2 mt-1 px-2.5 py-1.5 bg-primary/5 border border-primary/15 rounded-lg">
+    <div className="flex items-center gap-2 mt-1 px-2.5 py-1.5 bg-[rgba(0,43,109,0.05)] border border-[rgba(0,43,109,0.15)] rounded-lg">
       <audio
         key={src}
         ref={audioRef}
@@ -686,12 +682,12 @@ function AudioPlayer({ src, label }: { src: string; label: string }) {
       <button
         type="button"
         onClick={toggle}
-        className="h-6 w-6 shrink-0 flex items-center justify-center rounded-md text-primary hover:bg-primary/10 transition-colors"
+        className="h-6 w-6 shrink-0 flex items-center justify-center rounded-md text-primary hover:bg-[rgba(0,43,109,0.1)] transition-colors"
       >
-        <span className="material-symbols-outlined text-[16px]">{playing ? 'pause' : 'play_arrow'}</span>
+        {playing ? <Pause size={15} aria-hidden /> : <Play size={15} aria-hidden />}
       </button>
-      <div className="flex-1 h-1 bg-primary/15 rounded-full overflow-hidden">
-        <div className="h-full bg-primary rounded-full transition-all" style={{ width: `${progress * 100}%` }} />
+      <div className="flex-1 h-1 bg-[rgba(0,43,109,0.15)] rounded-full overflow-hidden">
+        <div className="h-full bg-primary rounded-full" style={{ width: `${progress * 100}%` }} />
       </div>
       <span className="text-[10px] text-on-surface-variant shrink-0">{label}</span>
     </div>
@@ -722,9 +718,9 @@ function PlayAllButton({ tracks }: { tracks: string[] }) {
     <button
       type="button"
       onClick={handlePlay}
-      className="flex items-center gap-1 px-2 py-1 rounded-lg text-[11px] font-medium border border-primary/30 text-primary hover:bg-primary/5 transition-colors"
+      className="flex items-center gap-1 px-2 py-1 rounded-lg text-[11px] font-medium border border-[rgba(0,43,109,0.3)] text-primary hover:bg-[rgba(0,43,109,0.05)] transition-colors"
     >
-      <span className="material-symbols-outlined text-[14px]">{playing ? 'stop' : 'play_circle'}</span>
+      {playing ? <Square size={13} aria-hidden /> : <CirclePlay size={13} aria-hidden />}
       {playing ? 'Stop' : 'Alles afspelen'}
     </button>
   );
@@ -751,7 +747,7 @@ function ImageStatusCell({ url }: { url: string | null }) {
   }, [url]);
   if (valid === null) return <span className="text-xs text-on-surface-variant opacity-50">…</span>;
   if (!valid) return <span className="text-xs text-on-surface-variant">—</span>;
-  return <span className="inline-flex items-center justify-center w-6 h-6 rounded-full bg-emerald-100 text-emerald-700"><span className="material-symbols-outlined text-[14px]">image</span></span>;
+  return <span className="inline-flex items-center justify-center w-6 h-6 rounded-full bg-mist text-navy"><ImageIcon size={13} aria-label="Afbeelding" /></span>;
 }
 
 /**

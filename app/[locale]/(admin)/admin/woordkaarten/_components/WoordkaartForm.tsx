@@ -1,5 +1,6 @@
 'use client';
 
+import { CircleCheck, Loader2, Save, Trash2 } from 'lucide-react';
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { createClient } from '@/lib/supabase/client';
@@ -108,7 +109,7 @@ export default function WoordkaartForm({
   return (
     <form onSubmit={handleSave} className="max-w-2xl space-y-6">
       {error && (
-        <div className="bg-error/10 border border-error/20 rounded-xl p-3 text-sm text-error">{error}</div>
+        <div className="bg-[rgba(186,26,26,0.1)] border border-[rgba(186,26,26,0.2)] rounded-xl p-3 text-sm text-error">{error}</div>
       )}
 
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -188,11 +189,11 @@ export default function WoordkaartForm({
           className="flex items-center gap-2 bg-primary text-white px-5 py-2.5 rounded-xl text-sm font-medium hover:bg-primary-container transition-colors disabled:opacity-50"
         >
           {saving ? (
-            <><span className="material-symbols-outlined text-[18px] animate-spin">autorenew</span>Opslaan…</>
+            <><Loader2 size={17} className="animate-spin" aria-hidden />Opslaan…</>
           ) : saved ? (
-            <><span className="material-symbols-outlined text-[18px]">check_circle</span>Opgeslagen ✓</>
+            <><CircleCheck size={17} aria-hidden />Opgeslagen</>
           ) : (
-            <><span className="material-symbols-outlined text-[18px]">save</span>Opslaan</>
+            <><Save size={17} aria-hidden />Opslaan</>
           )}
         </button>
 
@@ -202,10 +203,10 @@ export default function WoordkaartForm({
             onClick={handleDelete}
             disabled={saving}
             className={`flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm font-medium transition-colors ${
-              confirmDelete ? 'bg-error text-white' : 'border border-error/30 text-error hover:bg-error/10'
+              confirmDelete ? 'bg-error text-white' : 'border border-[rgba(186,26,26,0.3)] text-error hover:bg-[rgba(186,26,26,0.1)]'
             }`}
           >
-            <span className="material-symbols-outlined text-[18px]">delete</span>
+            <Trash2 size={17} aria-hidden />
             {confirmDelete ? 'Zeker verwijderen?' : 'Verwijderen'}
           </button>
         )}

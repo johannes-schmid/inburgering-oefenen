@@ -372,7 +372,7 @@ export default function OpgaveForm({
       </header>
 
       {error && (
-        <div className="bg-error/10 border border-error/20 rounded-xl p-3 text-sm text-error">
+        <div className="bg-[rgba(186,26,26,0.1)] border border-[rgba(186,26,26,0.2)] rounded-xl p-3 text-sm text-error">
           {error}
         </div>
       )}
@@ -524,7 +524,7 @@ export default function OpgaveForm({
               <button
                 type="button"
                 onClick={() => patch({ bullet_points: form.bullet_points.filter((_, j) => j !== i) })}
-                className="text-error/70 hover:text-error"
+                className="text-[rgba(186,26,26,0.7)] hover:text-error"
                 aria-label="Punt verwijderen"
               >
                 <Trash2 size={15} aria-hidden />
@@ -752,7 +752,7 @@ export default function OpgaveForm({
               <button
                 type="button"
                 onClick={() => patch({ images: form.images.filter((_, j) => j !== i) })}
-                className="text-error/70 hover:text-error mt-1"
+                className="text-[rgba(186,26,26,0.7)] hover:text-error mt-1"
                 aria-label="Plaatje verwijderen"
               >
                 <Trash2 size={15} aria-hidden />
@@ -839,7 +839,7 @@ export default function OpgaveForm({
       </label>
 
       {warns.length > 0 && (
-        <div className="rounded-xl border border-secondary-container/40 bg-secondary-container/10 p-3">
+        <div className="rounded-xl border border-[rgba(254,118,44,0.4)] bg-[rgba(254,118,44,0.1)] p-3">
           <p className="text-sm font-semibold text-on-surface flex items-center gap-2">
             <TriangleAlert size={15} className="text-secondary" aria-hidden />
             Nog te doen voordat dit examen gepubliceerd kan worden
@@ -861,7 +861,7 @@ export default function OpgaveForm({
             onClick={handleDelete}
             disabled={saving}
             className={`inline-flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm font-medium transition-colors ${
-              confirmDelete ? 'bg-error text-white' : 'border border-error/30 text-error hover:bg-error/10'
+              confirmDelete ? 'bg-error text-white' : 'border border-[rgba(186,26,26,0.3)] text-error hover:bg-[rgba(186,26,26,0.1)]'
             }`}
           >
             <Trash2 size={16} aria-hidden />
@@ -994,7 +994,7 @@ function FormSchemaEditor({
             <button
               type="button"
               onClick={() => onChange(sections.filter((_, j) => j !== i))}
-              className="text-error/70 hover:text-error"
+              className="text-[rgba(186,26,26,0.7)] hover:text-error"
               aria-label="Sectie verwijderen"
             >
               <Trash2 size={15} aria-hidden />
@@ -1044,7 +1044,7 @@ function FormSchemaEditor({
               <button
                 type="button"
                 onClick={() => patchSection(i, { fields: s.fields.filter((_, m) => m !== k) })}
-                className="text-error/70 hover:text-error mt-2"
+                className="text-[rgba(186,26,26,0.7)] hover:text-error mt-2"
                 aria-label="Veld verwijderen"
               >
                 <Trash2 size={14} aria-hidden />

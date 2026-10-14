@@ -30,7 +30,7 @@ function TrendBadge({ pct }: { pct: number }) {
   return (
     <span
       className={`inline-flex items-center gap-1 text-xs font-semibold px-2 py-0.5 rounded-full ${
-        up ? 'bg-emerald-50 text-emerald-600' : 'bg-red-50 text-red-500'
+        up ? 'bg-goed-tint text-goed-ink' : 'bg-fout-tint text-fout'
       }`}
     >
       {up ? '↑' : '↓'} {up ? '+' : ''}{pct}%

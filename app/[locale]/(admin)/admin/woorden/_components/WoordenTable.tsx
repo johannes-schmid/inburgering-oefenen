@@ -22,7 +22,7 @@ import { Button } from '@/components/ui/button';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Label } from '@/components/ui/label';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
-import { FunnelIcon, SearchIcon, XIcon } from 'lucide-react';
+import { FunnelIcon, SearchIcon, XIcon , AudioLines, CircleCheck, Loader2, Pencil, Plus, RefreshCw, Save, Trash2 } from 'lucide-react';
 import type { Level, SkillSlug } from '@/data/skills';
 import type { AdminWord } from '@/lib/admin/words';
 
@@ -42,7 +42,7 @@ import type { AdminWord } from '@/lib/admin/words';
  * ── DRIE VALLEN DIE HIER AL EENS ZIJN GESPRONGEN ─────────────────────────────
  * 1. **Een door RLS geweigerde UPDATE geeft 200 met nul rijen** en ziet er identiek uit aan een
  *    geslaagde save. Elke schrijfactie hier leest daarom `select('id')` terug en klaagt bij nul.
- * 2. **`bg-primary/10` rendert in de adminbundle volledig dekkend.** De themachip op
+ * 2. **`bg-[rgba(0,43,109,0.1)]` rendert in de adminbundle volledig dekkend.** De themachip op
  *    `/admin/woordkaarten` is daardoor een massief marineblauw bolletje met een onzichtbaar cijfer
  *    erin. Deze chip gebruikt daarom een letterlijke `rgba()`, zoals §8 voorschrijft.
  * 3. **`usage` en `review_status` zijn CHECK-kolommen.** Ze staan hier als `select` en niet als
@@ -271,7 +271,7 @@ export default function WoordenTable({
           className="rounded-lg p-1 text-on-surface-variant transition-colors hover:bg-surface-container hover:text-on-surface"
           aria-label="Bewerken"
         >
-          <span className="material-symbols-outlined text-[16px]">edit</span>
+          <Pencil size={15} aria-hidden />
         </button>
       ),
       size: 44,
@@ -291,7 +291,7 @@ export default function WoordenTable({
       cell: ({ row }) => (
         <span
           className="inline-block max-w-[10rem] truncate rounded-full px-2 py-0.5 text-xs font-bold text-primary"
-          // Letterlijke rgba: `bg-primary/10` rendert in deze bundle dekkend, en dan staat er
+          // Letterlijke rgba: `bg-[rgba(0,43,109,0.1)]` rendert in deze bundle dekkend, en dan staat er
           // marineblauw op marineblauw.
           style={{ background: 'rgba(0, 43, 109, 0.08)' }}
           title={row.original.theme}
@@ -411,7 +411,7 @@ export default function WoordenTable({
     || statusFilter !== 'all';
 
   return (
-    <div className={`flex flex-1 flex-col overflow-hidden transition-all duration-300 ${form ? 'pr-[500px]' : ''}`}>
+    <div className={`flex flex-1 flex-col overflow-hidden ${form ? 'pr-[500px]' : ''}`}>
       <div className="mb-3 flex items-center justify-between">
         <p className="text-sm text-on-surface-variant">
           {filtered.length}{hasFilters ? ` van ${words.length}` : ''} woorden
@@ -421,7 +421,7 @@ export default function WoordenTable({
           onClick={openNew}
           className="flex items-center gap-2 rounded-xl bg-primary px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-primary-container"
         >
-          <span className="material-symbols-outlined text-[18px]">add</span>
+          <Plus size={17} aria-hidden />
           Nieuw woord
         </button>
       </div>
@@ -714,9 +714,7 @@ export default function WoordenTable({
                     className="flex items-center gap-1.5 rounded-lg px-2.5 py-1 text-[11px] font-medium text-primary transition-colors disabled:opacity-50"
                     style={{ background: 'rgba(0, 43, 109, 0.08)' }}
                   >
-                    <span className={`material-symbols-outlined text-[14px] ${generatingAudio ? 'animate-spin' : ''}`}>
-                      {generatingAudio ? 'autorenew' : form.audio_url ? 'refresh' : 'graphic_eq'}
-                    </span>
+                    {generatingAudio ? <Loader2 size={13} className="animate-spin" aria-hidden /> : form.audio_url ? <RefreshCw size={13} aria-hidden /> : <AudioLines size={13} aria-hidden />}
                     {generatingAudio ? 'Bezig…' : form.audio_url ? 'Opnieuw inspreken' : 'Spreek in'}
                   </button>
                 </div>
@@ -768,9 +766,7 @@ export default function WoordenTable({
             disabled={saving}
             className="flex items-center gap-2 rounded-xl bg-primary px-5 py-2.5 text-sm font-medium text-white transition-colors hover:bg-primary-container disabled:opacity-50"
           >
-            <span className={`material-symbols-outlined text-[16px] ${saving ? 'animate-spin' : ''}`}>
-              {saving ? 'autorenew' : saved ? 'check_circle' : 'save'}
-            </span>
+            {saving ? <Loader2 size={15} className="animate-spin" aria-hidden /> : saved ? <CircleCheck size={15} aria-hidden /> : <Save size={15} aria-hidden />}
             {saving ? 'Opslaan…' : saved ? 'Opgeslagen' : 'Opslaan'}
           </button>
 
@@ -782,7 +778,7 @@ export default function WoordenTable({
                 confirmDelete ? 'bg-error text-white' : 'text-error hover:bg-surface-container'
               }`}
             >
-              <span className="material-symbols-outlined text-[16px]">delete</span>
+              <Trash2 size={15} aria-hidden />
               {confirmDelete ? 'Zeker?' : 'Verwijderen'}
             </button>
           )}

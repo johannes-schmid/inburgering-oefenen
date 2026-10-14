@@ -280,7 +280,7 @@ export default function StimulusEditor({
   }
 
   return (
-    <div className={embedded ? 'space-y-5' : 'rounded-2xl border border-primary/40 p-4 space-y-5'}>
+    <div className={embedded ? 'space-y-5' : 'rounded-2xl border border-[rgba(0,43,109,0.4)] p-4 space-y-5'}>
       {!embedded && (
         <div className="flex items-center justify-between">
           <h3 className="text-sm font-headline font-bold text-on-surface m-0">
@@ -298,7 +298,7 @@ export default function StimulusEditor({
       )}
 
       {error && (
-        <div className="bg-error/10 border border-error/20 rounded-xl p-3 text-sm text-error">{error}</div>
+        <div className="bg-[rgba(186,26,26,0.1)] border border-[rgba(186,26,26,0.2)] rounded-xl p-3 text-sm text-error">{error}</div>
       )}
 
       <MagicFill

@@ -1,0 +1,86 @@
+/**
+ * De auth-schermen in Glas v1.0 (/login, /register, /admin-login, /oauth/consent).
+ *
+ * Eén rustig veld achter de hele pagina, het formulier op sterk glas (regel 06: ≥86% wit onder
+ * tekst), en de knoppen als pill. Port van glas.html: `.google` (§12, AuthPanel), `.fld .box`
+ * (§06 velden). Alleen geladen door de `(auth)`-layout, dus niet render-blocking voor de rest.
+ * Geen Tailwind-directieven; `@layer components` is de laag die Tailwind al declareert, zodat een
+ * utility op het element blijft winnen.
+ */
+@layer components {
+  .auth-g-page { min-height: 100vh; min-height: 100dvh; display: flex; flex-direction: column; }
+
+  .auth-g-brand {
+    display: inline-flex; align-items: center; gap: 10px; font-family: var(--font-headline); font-weight: 800;
+    font-size: 16.5px; letter-spacing: -0.02em; color: var(--navy); text-decoration: none; outline: none;
+    border-radius: 10px;
+  }
+  .auth-g-brand:focus-visible { box-shadow: var(--glas-focus); }
+  .auth-g-on-dark .auth-g-brand { color: #fff; }
+  /* Op een smal scherm alleen het merkteken, zodat de link rechts op één regel past. */
+  @media (max-width: 420px) {
+    .auth-g-brand-name {
+      position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden;
+      clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0;
+    }
+  }
+
+  .auth-g-card { border-radius: var(--r-xl); padding: 28px; }
+  @media (min-width: 560px) { .auth-g-card { padding: 34px; } }
+
+  .auth-g-title {
+    font-family: var(--font-headline); font-weight: 700; color: var(--navy); font-size: 30px; line-height: 1.12;
+    letter-spacing: -0.03em; text-wrap: balance; margin: 0 0 8px;
+  }
+  .auth-g-intro { font-size: 15px; line-height: 1.6; color: var(--ink-2); margin: 0 0 24px; text-wrap: pretty; }
+  .auth-g-note { font-size: 12.5px; line-height: 1.6; color: var(--ink-2); text-align: center; margin: 0; text-wrap: pretty; }
+  .auth-g-note a, .auth-g-link {
+    color: var(--navy); font-weight: 600; text-decoration: underline; text-decoration-color: rgba(0, 43, 109, 0.3);
+    text-underline-offset: 3px; outline: none; border-radius: 4px;
+    transition: text-decoration-color 160ms ease;
+  }
+  .auth-g-note a:hover, .auth-g-link:hover { text-decoration-color: var(--navy); }
+  .auth-g-note a:focus-visible, .auth-g-link:focus-visible { box-shadow: var(--glas-focus); }
+  .auth-g-note a:active, .auth-g-link:active { opacity: 0.8; }
+
+  /* glas.html `.google`: witte pill, zachte navy binnenring. */
+  .auth-g-google {
+    display: flex; align-items: center; justify-content: center; gap: 10px; width: 100%; height: 52px;
+    border: 0; border-radius: var(--r-pill); background: #fff; color: var(--ink); cursor: pointer;
+    font-family: var(--font-headline); font-weight: 700; font-size: 15px; outline: none;
+    box-shadow: inset 0 0 0 1px rgba(0, 43, 109, 0.14), 0 10px 24px -16px rgba(0, 27, 80, 0.35);
+    transition: transform 160ms var(--ease-out-glas), background-color 160ms ease, box-shadow 160ms ease;
+  }
+  .auth-g-google:hover:not(:disabled) { background: var(--mist); }
+  .auth-g-google:active:not(:disabled) { transform: scale(0.97); }
+  .auth-g-google:focus-visible { box-shadow: var(--glas-focus); }
+  .auth-g-google:disabled { cursor: progress; color: var(--ink-2); }
+
+  /* glas.html `.fld .box`: mist, wit met navy inset-ring bij focus. */
+  .auth-g-box {
+    display: flex; align-items: center; gap: 10px; height: 52px; padding: 0 14px 0 16px; border-radius: var(--r-md);
+    background: var(--mist); color: var(--ink-3); cursor: text;
+    transition: box-shadow 160ms ease, background-color 160ms ease;
+  }
+  .auth-g-box:hover { background: #e8edf5; }
+  .auth-g-box:focus-within { background: #fff; box-shadow: inset 0 0 0 2px var(--navy); color: var(--navy); }
+  .auth-g-box input {
+    all: unset; flex: 1; min-width: 0; color: var(--ink); font: inherit; font-size: 15.5px; caret-color: var(--navy);
+  }
+  .auth-g-box input::placeholder { color: #7e8aa3; }
+
+  .auth-g-alert {
+    display: flex; gap: 10px; align-items: flex-start; padding: 12px 14px; border-radius: var(--r-md);
+    background: var(--fout-tint); color: var(--fout); font-size: 14px; font-weight: 500; line-height: 1.5;
+  }
+
+  .auth-g-foot { font-size: 12.5px; color: var(--ink-2); text-align: center; padding: 24px 16px 28px; }
+  .auth-g-on-dark .auth-g-foot { color: rgba(255, 255, 255, 0.6); }
+
+  /* Toestemming (OAuth): de twee keuzes naast elkaar, als pill. */
+  .auth-g-who { border-radius: var(--r-md); background: var(--mist); padding: 16px; font-size: 14px; line-height: 1.6; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .auth-g-google, .auth-g-box, .auth-g-note a, .auth-g-link { transition: none; }
+}
