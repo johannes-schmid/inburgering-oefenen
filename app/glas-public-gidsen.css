@@ -1,0 +1,109 @@
+/* Glas · publieke site · gidsen — aanvullingen op app/glas-public.css voor /gidsen, de drie hubs,
+   de kennisgids (leesweergave) en de aangekondigde oppervlakken (PlannedSurface).
+   De opmaak van de artikeltekst zelf (`.article-body` en zijn blokken) staat in app/globals.css,
+   omdat die regels ongelaagd zijn en een gelaagde regel hier altijd zou verliezen. */
+
+@layer components {
+  /* Een kopfoto als <picture> (webp met jpg-terugval) in de foto-kaarten van glas-public.css. */
+  .g-feat > picture, .g-post-th > picture, .g-gcard > picture, .g-ap-hero > picture { position: absolute; inset: 0; }
+  .g-feat > picture { z-index: -1; }
+  .g-gcard > picture, .g-ap-hero > picture { z-index: -1; }
+  .g-feat > picture img, .g-post-th > picture img, .g-gcard > picture img, .g-ap-hero > picture img { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .g-post-th > picture img { transition: transform 600ms var(--ease-out-glas); }
+  .g-post:hover .g-post-th > picture img { transform: scale(1.04); }
+  .g-gcard > picture img { transition: transform 700ms var(--ease-out-glas); }
+  .g-gcard:hover > picture img { transform: scale(1.04); }
+  /* De kop van een leespagina (glas.html §14 "Artikel"): Nevel, onder de pil door. */
+  .g-readhead { margin-top: calc(var(--nav-h) * -1); padding-top: calc(var(--nav-h) + 28px); padding-bottom: 40px; }
+  @media (min-width: 860px) { .g-readhead { padding-top: calc(var(--nav-h) + 44px); padding-bottom: 56px; } }
+  .g-readhead h1 {
+    font-family: var(--font-headline); font-weight: 700; color: var(--navy); margin: 18px 0 0;
+    font-size: clamp(32px, 4.6vw, 58px); line-height: 1.04; letter-spacing: -0.045em; max-width: 22ch; text-wrap: balance;
+  }
+  .g-readhead .g-lead { margin-top: 18px; max-width: 58ch; }
+  /* In de beeldkop staat de titel op glas en is hij kleiner (glas.html §14 "Artikelpagina"). */
+  .g-readhead .g-ap-hero h1 { font-size: clamp(26px, 3.4vw, 42px); margin-top: 8px; max-width: none; letter-spacing: -0.04em; }
+  .g-readhead .g-ap-hero + .g-lead, .g-readhead .g-ap-hero + .g-notice + .g-lead { margin-top: 22px; }
+  @media (max-width: 640px) { .g-readhead .g-ap-hero { padding-top: 150px; } }
+
+  /* Zoekveld op glas in de kop van /gidsen. */
+  .g-search { position: relative; max-width: 560px; }
+  .g-search svg { color: var(--ink-2); position: absolute; z-index: 1; top: 50%; inset-inline-start: 18px; width: 18px; height: 18px; transform: translateY(-50%); pointer-events: none; }
+  .g-search input {
+    width: 100%; height: 56px; border: 0; border-radius: var(--r-pill); padding-inline: 48px 20px; font-size: 16px; color: var(--ink);
+    background: rgba(255, 255, 255, 0.86); -webkit-backdrop-filter: blur(24px) saturate(1.5); backdrop-filter: blur(24px) saturate(1.5);
+    box-shadow: var(--glas-rand), var(--zweef); outline: none; transition: box-shadow 160ms ease;
+  }
+  .g-search input::placeholder { color: var(--ink-3); }
+  .g-search input:focus-visible { box-shadow: var(--glas-rand), var(--zweef), inset 0 0 0 2px var(--navy); }
+
+  /* Een compacte onderwerptegel (de vijf ingangen op /gidsen, de vier onderdelen op een hub). */
+  .g-subject {
+    display: flex; flex-direction: column; align-items: flex-start; gap: 10px; padding: 18px; border-radius: var(--r-lg);
+    background: #fff; color: inherit; text-decoration: none; outline: none;
+    transition: transform 220ms var(--ease-out-glas), box-shadow 220ms ease;
+  }
+  .g-subject:hover { transform: translateY(-3px); box-shadow: var(--zweef); }
+  .g-subject:active { transform: translateY(-1px) scale(0.99); }
+  .g-subject:focus-visible { box-shadow: var(--glas-focus); }
+  .g-subject b { font-family: var(--font-headline); font-weight: 700; font-size: 15px; color: var(--navy); line-height: 1.3; }
+  .g-subject small { font-size: 12.5px; color: var(--ink-2); margin-top: -6px; }
+  .g-subject-row { flex-direction: row; align-items: center; gap: 12px; }
+  .g-subject-row b { flex: 1; }
+  .g-subjects { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 12px; }
+  @media (max-width: 1080px) { .g-subjects { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+  @media (max-width: 640px) { .g-subjects { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+  .g-subjects-4 { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+  @media (max-width: 860px) { .g-subjects-4 { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+
+  /* Een tekstkaart zonder beeld: blogpost of verwante link. */
+  .g-textcard {
+    display: flex; flex-direction: column; gap: 8px; height: 100%; padding: 20px 22px; border-radius: var(--r-lg); background: #fff;
+    color: inherit; text-decoration: none; outline: none; transition: transform 220ms var(--ease-out-glas), box-shadow 220ms ease;
+  }
+  .g-textcard:hover { transform: translateY(-3px); box-shadow: var(--zweef); }
+  .g-textcard:active { transform: translateY(-1px) scale(0.99); }
+  .g-textcard:focus-visible { box-shadow: var(--glas-focus); }
+  .g-textcard b { font-family: var(--font-headline); font-weight: 700; font-size: 17px; line-height: 1.3; color: var(--navy); letter-spacing: -0.01em; }
+  .g-textcard span { font-size: 14px; line-height: 1.6; color: var(--ink-2); }
+
+  /* De leesweergave: de inhoudsopgave plakt in de linkerkolom van de witte kaart. */
+  .g-guide-toc { position: sticky; top: calc(var(--nav-h) + 24px); align-self: start; }
+  @media (max-width: 860px) { .g-guide-toc { display: none; } }
+  .g-guide-toc ol { list-style: none; margin: 8px 0 0; padding: 0; display: flex; flex-direction: column; gap: 2px; }
+  .g-guide-toc a {
+    display: flex; gap: 8px; text-decoration: none; color: var(--ink-2); padding: 7px 12px; border-radius: 10px; font-size: 13.5px;
+    line-height: 1.4; outline: none; transition: background-color 160ms ease, color 160ms ease;
+  }
+  .g-guide-toc a:hover { background: var(--mist); color: var(--navy); }
+  .g-guide-toc a:focus-visible { box-shadow: var(--glas-focus); }
+  .g-guide-toc a[aria-current="location"] { background: var(--mist); color: var(--navy); font-weight: 600; box-shadow: inset 3px 0 0 var(--navy); }
+  [dir="rtl"] .g-guide-toc a[aria-current="location"] { box-shadow: inset -3px 0 0 var(--navy); }
+  .g-guide-toc a span { font-family: var(--glas-mono); font-size: 11px; opacity: 0.6; padding-top: 2px; }
+  .g-guide-tocfold { display: none; border-radius: var(--r-md); background: var(--mist); padding: 2px 14px; margin-bottom: 8px; }
+  @media (max-width: 860px) { .g-guide-tocfold { display: block; } }
+  .g-guide-tocfold summary {
+    list-style: none; cursor: pointer; padding: 12px 0; font-family: var(--font-headline); font-weight: 700; font-size: 14.5px;
+    color: var(--navy); display: flex; justify-content: space-between; align-items: center; border-radius: 8px; outline: none;
+  }
+  .g-guide-tocfold summary::-webkit-details-marker { display: none; }
+  .g-guide-tocfold summary:focus-visible { box-shadow: var(--glas-focus); }
+  .g-guide-tocfold summary svg { width: 16px; height: 16px; transition: transform 200ms var(--ease-out-glas); }
+  .g-guide-tocfold[open] summary svg { transform: rotate(180deg); }
+  .g-guide-tocfold ol { list-style: none; margin: 0; padding: 0 0 10px; display: flex; flex-direction: column; gap: 2px; }
+  .g-guide-tocfold a { display: flex; gap: 8px; padding: 7px 4px; color: var(--ink-2); text-decoration: none; font-size: 14px; border-radius: 8px; outline: none; }
+  .g-guide-tocfold a:hover, .g-guide-tocfold a[aria-current="location"] { color: var(--navy); }
+  .g-guide-tocfold a:focus-visible { box-shadow: var(--glas-focus); }
+  .g-guide-tocfold a span { font-family: var(--glas-mono); font-size: 11px; opacity: 0.6; padding-top: 3px; }
+
+  /* De FAQ binnen de witte leeskaart: dezelfde vorm als op de homepage, op mist. */
+  .g-faq.g-faq-mist { background: var(--mist); }
+  .g-faq.g-faq-mist details + details { box-shadow: inset 0 1px 0 #fff; }
+  .g-faq.g-faq-mist .g-faq-pm { background: #fff; }
+  .g-faq.g-faq-mist details[open] .g-faq-pm { background: var(--navy); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .g-post-th > picture img, .g-gcard > picture img, .g-search input, .g-subject, .g-textcard, .g-guide-toc a, .g-guide-tocfold summary svg { transition-duration: 0ms; }
+  .g-post:hover .g-post-th > picture img, .g-gcard:hover > picture img, .g-subject:hover, .g-subject:active, .g-textcard:hover, .g-textcard:active { transform: none; }
+}

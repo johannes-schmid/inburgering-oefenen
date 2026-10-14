@@ -57,6 +57,7 @@ import type {
 } from '@/lib/tijdlijn/engine/types';
 import { Chip, OptionCard, Panel, Stepper } from './ui';
 import TimelineChart from './TimelineChart';
+import { glasButton } from '@/components/glas/Button';
 
 /** Q1's answer shapes the rest of the wizard and the result mode. It is not stored on the input. */
 export type Stage = 'abroad' | 'arrived' | 'letter' | 'busy' | 'over' | 'passport';
@@ -123,14 +124,14 @@ export default function Wizard({ input, onChange, stage, onStageChange, onFinish
         {step === 7 && <Q7 input={input} set={set} today={today} />}
         {step === 8 && <QResidence input={input} set={set} today={today} locale={locale} />}
 
-        <div className="mt-7 flex items-center justify-between gap-3 border-t border-outline-variant pt-5">
+        <div className="mt-7 flex items-center justify-between gap-3 g-tl-sep pt-5">
           <button
             type="button"
             onClick={() => (index === 0 ? undefined : setIndex(index - 1))}
             disabled={index === 0}
-            className="inline-flex min-h-11 items-center gap-2 rounded-lg px-3 text-sm font-semibold text-on-surface-variant transition-colors duration-150 hover:text-on-surface disabled:opacity-40 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-secondary-container"
+            className={glasButton({ variant: 'ghost', size: 'sm' })}
           >
-            <ArrowLeft className="size-4 rtl:rotate-180" aria-hidden="true" />
+            <ArrowLeft className="size-4 rtl-flip" aria-hidden="true" />
             {t('back')}
           </button>
 
@@ -141,7 +142,7 @@ export default function Wizard({ input, onChange, stage, onStageChange, onFinish
               <button
                 type="button"
                 onClick={() => setIndex(index + 1)}
-                className="min-h-11 rounded-lg px-3 text-sm text-on-surface-variant underline decoration-outline-variant underline-offset-4 transition-colors duration-150 hover:text-on-surface focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-secondary-container"
+                className="g-tl-link !font-semibold !text-ink-2 hover:!text-ink"
               >
                 {t('skip')}
               </button>
@@ -149,10 +150,10 @@ export default function Wizard({ input, onChange, stage, onStageChange, onFinish
             <button
               type="button"
               onClick={() => (isLast ? onFinish() : setIndex(index + 1))}
-              className="inline-flex min-h-11 items-center gap-2 rounded-lg px-5 font-headline text-sm font-bold text-on-primary shadow-[var(--shadow-btn-orange)] transition-[transform,box-shadow] duration-200 [background:var(--gradient-btn-orange)] [transition-timing-function:cubic-bezier(0.22,1,0.36,1)] hover:-translate-y-0.5 hover:shadow-[var(--shadow-btn-orange-hover)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-secondary-container focus-visible:ring-offset-2"
+              className={glasButton({ variant: 'navy' })}
             >
               {isLast ? t('finish') : t('next')}
-              <ArrowRight className="size-4 rtl:rotate-180" aria-hidden="true" />
+              <ArrowRight className="size-4 rtl-flip" aria-hidden="true" />
             </button>
           </div>
         </div>
@@ -163,9 +164,9 @@ export default function Wizard({ input, onChange, stage, onStageChange, onFinish
       {/* The chart is the wizard's other half, not its reward. It is `sticky` on desktop so it stays
           in view while the questions scroll, and it sits *below* the question on mobile — where a
           chart above the fold would push the answer buttons off it. */}
-      <Panel className="p-5 sm:p-6 lg:sticky lg:top-24">
+      <Panel className="p-5 sm:p-6 lg:sticky lg:top-[calc(var(--nav-h)+24px)]">
         <TimelineChart timeline={timeline} input={input} today={today} locale={locale} compact />
-        <p className="mt-3 text-[12px] leading-relaxed text-on-surface-variant">{t('preview_hint')}</p>
+        <p className="mt-3 text-[12px] leading-relaxed text-ink-2">{t('preview_hint')}</p>
       </Panel>
     </div>
   );
@@ -223,7 +224,7 @@ function QResidence({
         </div>
       )}
 
-      <div className="mt-5 border-t border-outline-variant pt-4">
+      <div className="mt-5 g-tl-sep pt-4">
         <OptionCard
           compact
           label={t('unknown')}
@@ -246,13 +247,11 @@ function monthLabel(m: number, locale: UiLocale): string {
 function Progress({ index, total, label }: { index: number; total: number; label: string }) {
   return (
     <div>
-      <div className="h-1 w-full overflow-hidden rounded-full bg-surface-container-high" role="presentation">
-        <div
-          className="h-full rounded-full bg-primary transition-[width] duration-300 [transition-timing-function:cubic-bezier(0.22,1,0.36,1)]"
-          style={{ width: `${((index + 1) / total) * 100}%` }}
-        />
+      {/* Een schaal (`scaleX`), geen breedte: Glas animeert alleen transform en opacity. */}
+      <div className="g-tl-progress" role="presentation">
+        <i style={{ transform: `scaleX(${(index + 1) / total})` }} />
       </div>
-      <p className="mt-2 text-[13px] font-semibold text-on-surface-variant">{label}</p>
+      <p className="mt-2 g-mono !text-ink">{label}</p>
     </div>
   );
 }
@@ -260,10 +259,8 @@ function Progress({ index, total, label }: { index: number; total: number; label
 function Head({ title, sub }: { title: string; sub?: string }) {
   return (
     <header className="mb-5">
-      <h2 className="font-headline text-[22px] font-extrabold leading-tight tracking-[-0.02em] text-on-surface">
-        {title}
-      </h2>
-      {sub && <p className="mt-2 text-sm leading-relaxed text-on-surface-variant">{sub}</p>}
+      <h2 className="g-head g-head-3 !text-navy">{title}</h2>
+      {sub && <p className="mt-2 text-sm leading-relaxed text-ink-2">{sub}</p>}
     </header>
   );
 }
@@ -349,7 +346,7 @@ function Q2({
     <div>
       <Head title={t('title')} sub={t('sub')} />
 
-      <p className="mb-2.5 text-[13px] font-semibold text-on-surface">{t('which_paper')}</p>
+      <p className="mb-2.5 text-[13px] font-semibold text-ink">{t('which_paper')}</p>
       <div className="grid gap-2.5">
         <OptionCard icon={FileText} label={t('pip')} note={t('pip_note')} selected={kind === 'pip'} onSelect={() => setKind('pip')} />
         <OptionCard
@@ -369,15 +366,15 @@ function Q2({
       </div>
 
       {kind && (
-        <div className="mt-6 border-t border-outline-variant pt-5">
-          <p className="mb-2.5 text-[13px] font-semibold text-on-surface">{t('year')}</p>
+        <div className="mt-6 g-tl-sep pt-5">
+          <p className="mb-2.5 text-[13px] font-semibold text-ink">{t('year')}</p>
           <div className="flex flex-wrap gap-2">
             {years.map(y => (
               <Chip key={y} label={String(y)} selected={chosen?.y === y} onSelect={() => setYm(y, chosen?.m ?? 1)} />
             ))}
           </div>
 
-          <p className="mb-2.5 mt-5 text-[13px] font-semibold text-on-surface">{t('month')}</p>
+          <p className="mb-2.5 mt-5 text-[13px] font-semibold text-ink">{t('month')}</p>
           <div className="grid grid-cols-3 gap-2 sm:grid-cols-4">
             {months.map(m => (
               <Chip
@@ -390,7 +387,7 @@ function Q2({
           </div>
 
           {chosen && (
-            <p className="mt-4 text-sm font-semibold text-primary">{t('chosen', { date: fmtMonth(chosen, locale) })}</p>
+            <p className="mt-4 text-sm font-semibold text-navy">{t('chosen', { date: fmtMonth(chosen, locale) })}</p>
           )}
         </div>
       )}
@@ -400,32 +397,32 @@ function Q2({
           type="button"
           onClick={() => setHelpOpen(!helpOpen)}
           aria-expanded={helpOpen}
-          className="inline-flex min-h-11 items-center gap-2 text-sm font-semibold text-primary underline decoration-primary/30 underline-offset-4 transition-colors duration-150 hover:decoration-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-secondary-container"
+          className="g-tl-link !text-sm !font-semibold"
         >
           <Info className="size-4" aria-hidden="true" />
           {tw('help_toggle')}
         </button>
         {helpOpen && (
-          <div className="mt-3 rounded-xl border border-outline-variant bg-surface-container-low p-4">
-            <p className="font-headline text-sm font-bold text-on-surface">{t('help_title')}</p>
-            <p className="mt-1.5 text-sm leading-relaxed text-on-surface-variant">{t('help_body')}</p>
+          <div className="mt-3 rounded-g-md bg-mist p-4">
+            <p className="font-headline text-sm font-bold text-ink">{t('help_title')}</p>
+            <p className="mt-1.5 text-sm leading-relaxed text-ink-2">{t('help_body')}</p>
             {/* A schematic of the letter with the field ringed. Deliberately a diagram and not a
                 photograph: a photo of a real DUO letter would carry somebody's actual data. */}
-            <div className="mt-4 rounded-lg border border-outline-variant bg-surface-container-lowest p-3" aria-hidden="true">
+            <div className="mt-4 rounded-g-sm bg-mist p-3" aria-hidden="true">
               <div className="flex items-start justify-between gap-4">
                 <div className="space-y-1.5">
-                  <div className="h-2 w-16 rounded bg-surface-container-high" />
-                  <div className="h-2 w-24 rounded bg-surface-container-high" />
+                  <div className="h-2 w-16 rounded-g-xs bg-mist-2" />
+                  <div className="h-2 w-24 rounded-g-xs bg-mist-2" />
                 </div>
-                <div className="rounded border-2 border-dashed border-secondary-container px-2 py-1">
-                  <div className="h-2 w-14 rounded bg-secondary-container/50" />
-                  <p className="mt-1 text-[9px] font-bold uppercase tracking-wider text-secondary">dagtekening</p>
+                <div className="rounded-g-xs border-2 border-dashed border-oranje px-2 py-1">
+                  <div className="h-2 w-14 rounded-g-xs bg-oranje-zacht" />
+                  <p className="mt-1 text-[9px] font-bold uppercase tracking-wider text-klei">dagtekening</p>
                 </div>
               </div>
               <div className="mt-3 space-y-1.5">
-                <div className="h-2 w-full rounded bg-surface-container-high" />
-                <div className="h-2 w-5/6 rounded bg-surface-container-high" />
-                <div className="h-2 w-2/3 rounded bg-surface-container-high" />
+                <div className="h-2 w-full rounded-g-xs bg-mist-2" />
+                <div className="h-2 w-5/6 rounded-g-xs bg-mist-2" />
+                <div className="h-2 w-2/3 rounded-g-xs bg-mist-2" />
               </div>
             </div>
           </div>
@@ -501,10 +498,10 @@ export function ProgressMatrix({
     });
 
   return (
-    <ul className="divide-y divide-outline-variant">
+    <ul className="g-tl-divide">
       {ids.map(id => (
         <li key={id} className="flex flex-wrap items-center gap-3 py-3">
-          <span className="w-28 shrink-0 font-headline text-sm font-bold text-on-surface">{tc(id)}</span>
+          <span className="w-28 shrink-0 font-headline text-sm font-bold text-ink">{tc(id)}</span>
           <div className="flex flex-wrap gap-2">
             {MATRIX_STATES.map(s => (
               <Chip
@@ -553,12 +550,12 @@ function Q6({ input, set }: { input: TimelineInput; set: (p: Partial<TimelineInp
         <Stepper label={t('course')} value={input.courseHoursPerWeek} onChange={n => set({ courseHoursPerWeek: n })} />
         <Stepper label={t('self')} value={input.selfStudyHoursPerWeek} onChange={n => set({ selfStudyHoursPerWeek: n })} />
       </div>
-      <div className="mt-4 rounded-xl border border-outline-variant bg-surface-container-low p-4">
-        <p className="font-headline text-sm font-bold text-on-surface">{t('effective', { n: eff })}</p>
-        <p className="mt-1 text-[13px] leading-relaxed text-on-surface-variant">{t('effective_note')}</p>
+      <div className="mt-4 rounded-g-md bg-mist p-4">
+        <p className="font-headline text-sm font-bold text-ink">{t('effective', { n: eff })}</p>
+        <p className="mt-1 text-[13px] leading-relaxed text-ink-2">{t('effective_note')}</p>
       </div>
 
-      <p className="mb-2.5 mt-6 text-[13px] font-semibold text-on-surface">{t('level_title')}</p>
+      <p className="mb-2.5 mt-6 text-[13px] font-semibold text-ink">{t('level_title')}</p>
       <div className="grid gap-2.5">
         {LEVELS.map(l => (
           <OptionCard
@@ -612,16 +609,16 @@ function Q7({ input, set, today }: { input: TimelineInput; set: (p: Partial<Time
     <div>
       <Head title={t('title')} sub={t('sub')} />
 
-      <p className="mb-2.5 text-[13px] font-semibold text-on-surface">{t('passport_title')}</p>
+      <p className="mb-2.5 text-[13px] font-semibold text-ink">{t('passport_title')}</p>
       <div className="flex flex-wrap gap-2">
         <Chip label={t('passport_yes')} selected={input.wantsNaturalisation} onSelect={() => set({ wantsNaturalisation: true })} />
         <Chip label={t('passport_no')} selected={!input.wantsNaturalisation} onSelect={() => set({ wantsNaturalisation: false, residenceStart: undefined })} />
       </div>
-      <p className="mt-2 text-[13px] leading-relaxed text-on-surface-variant">{t('passport_note')}</p>
+      <p className="mt-2 text-[13px] leading-relaxed text-ink-2">{t('passport_note')}</p>
 
       {input.wantsNaturalisation && (
         <div className="mt-5">
-          <p className="mb-2.5 text-[13px] font-semibold text-on-surface">{t('residence_title')}</p>
+          <p className="mb-2.5 text-[13px] font-semibold text-ink">{t('residence_title')}</p>
           <div className="flex flex-wrap gap-2">
             {years.map(y => (
               <Chip
@@ -635,9 +632,9 @@ function Q7({ input, set, today }: { input: TimelineInput; set: (p: Partial<Time
         </div>
       )}
 
-      <div className="mt-7 border-t border-outline-variant pt-5">
-        <p className="text-[13px] font-semibold text-on-surface">{t('signals_title')}</p>
-        <p className="mb-3 mt-1 text-[13px] leading-relaxed text-on-surface-variant">{t('signals_note')}</p>
+      <div className="mt-7 g-tl-sep pt-5">
+        <p className="text-[13px] font-semibold text-ink">{t('signals_title')}</p>
+        <p className="mb-3 mt-1 text-[13px] leading-relaxed text-ink-2">{t('signals_note')}</p>
         <div className="grid gap-2.5">
           {SIGNALS.map(s => (
             <OptionCard
@@ -658,8 +655,8 @@ function Q7({ input, set, today }: { input: TimelineInput; set: (p: Partial<Time
         </div>
       </div>
 
-      <div className="mt-7 border-t border-outline-variant pt-5">
-        <p className="mb-2.5 text-[13px] font-semibold text-on-surface">{t('extension_title')}</p>
+      <div className="mt-7 g-tl-sep pt-5">
+        <p className="mb-2.5 text-[13px] font-semibold text-ink">{t('extension_title')}</p>
         <div className="flex flex-wrap gap-2">
           <Chip label={t('extension_none')} selected={input.grantedExtensionMonths === 0} onSelect={() => set({ grantedExtensionMonths: 0 })} />
           {[6, 12, 18, 24].map(m => (
@@ -680,7 +677,7 @@ function Q7({ input, set, today }: { input: TimelineInput; set: (p: Partial<Time
 function DontKnow({ onSelect, selected }: { onSelect: () => void; selected: boolean }) {
   const t = useTranslations('tijdlijn.wizard');
   return (
-    <div className="mt-5 border-t border-outline-variant pt-4">
+    <div className="mt-5 g-tl-sep pt-4">
       <OptionCard compact label={t('dont_know')} note={t('dont_know_hint')} selected={selected} onSelect={onSelect} />
     </div>
   );

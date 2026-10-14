@@ -6,6 +6,8 @@ import { useParams } from 'next/navigation';
 import { Link, usePathname, useRouter } from '@/i18n/navigation';
 import LogoMark from '@/components/site/LogoMark';
 import LocaleFlag from '@/components/site/LocaleFlag';
+import { ArrowRight } from 'lucide-react';
+import { glasButton } from '@/components/glas/Button';
 import { LOCALES, LanguageTrigger } from '@/components/LanguageTrigger';
 import { localeHref } from '@/i18n/paths';
 import { contentSlugParam, parseContentSlug } from '@/i18n/content-slugs';
@@ -107,61 +109,48 @@ export default function Nav() {
     setMobileOpen(false);
   }
 
+  /* De actieve link: de bovenste laag van het pad. "Bronnen" staat ook voor de drie gids-hubs en
+   * de blog, "Over ons" ook voor de redactie en contact. */
+  const section = pathname === '/' ? '' : (pathname.split('/')[1] ?? '');
+  const isActive = (href: string) => {
+    const top = href.slice(1);
+    if (top === 'gidsen') return ['gidsen', 'inburgering', 'knm', 'taalexamens', 'blog', 'oefenvragen'].includes(section);
+    if (top === 'docent') return ['docent', 'redactie', 'contact'].includes(section);
+    return section === top;
+  };
+  /* De korte CTA-tekst draagt in de vertaling een pijlteken; in Glas is een pijl altijd lucide. */
+  const startShort = t('startMobile').replace(/\s*[→←]\s*$/, '');
+
   return (
-    <header
-      /* Een zwevende glazen pil, niet een balk over de volle breedte (besluit eigenaar, 21-09,
-         naar het voorbeeld van pilotentest.training). De balk van 22-08 was licht mét een
-         ghost-border; die rand viel onder de no-line-regel alleen weg omdat hij de rand van een
-         vlak wás. Nu is er geen vlak meer: de pil hangt vrij, en wat hem van de pagina scheidt is
-         de onscherpte plus de ambient-schaduw — géén 1px-lijn.
+    /* De Glas-pil (glas.html §08 "Navigatie"): een zwevende glazen pil op het veld van de kop van
+       elke pagina. Wat hem van de pagina scheidt is het glas zelf — onscherpte, witte rand, de
+       zweefschaduw — en nooit een 1px-lijn. **De pil heeft een veld nodig om te zweven**: elke
+       herbouwde pagina begint daarom met een `PageField` of de hero, die onder de pil door loopt.
 
-         **De pil heeft een donkere hero nodig om te wérken.** Boven een strook van dezelfde kleur
-         als de pagina zie je hem niet zweven; dat is waarom de homepage-hero op 21-09 navy werd.
-         Zet je die terug naar licht, dan verliest deze kop zijn achtergrond.
+       `--nav-h` (73px) blijft wat de `(main)`-layout reserveert en wat `scroll-margin-top`
+       rekent: 10px lucht boven + 60px pil + 3px lucht onder. Verander je de pilhoogte, verander
+       dan `--nav-h` mee, anders schuift elke ankerlink.
 
-         `--nav-h` (73px) blijft wat de `(main)`-layout reserveert en wat `scroll-margin-top`
-         rekent: 10px lucht boven + 60px rij + 3px lucht onder. Verander je de rijhoogte, verander
-         dan `--nav-h` mee, anders schuift elke ankerlink. */
-      className="fixed top-[10px] left-0 right-0 z-50 px-3 sm:px-5"
-      aria-label={t('ariaMain')}
-    >
-      <div
-        className="flex justify-between items-center max-w-7xl mx-auto pl-4 pr-3 sm:pl-6 sm:pr-4 h-[60px] rounded-[18px]"
-        style={{
-          /* Een letterlijke rgba() van `--color-surface` (#f8f9fb) — `color-mix()` rendert in de
-             screenshotbrowser solide, en `bg-surface/80` wordt in sommige bundles volledig dekkend. */
-          background: 'rgba(248, 249, 251, 0.82)',
-          backdropFilter: 'blur(26px) saturate(1.7)',
-          WebkitBackdropFilter: 'blur(26px) saturate(1.7)',
-          boxShadow: '0 16px 40px -14px rgba(0, 8, 27, 0.18), 0 2px 8px rgba(0, 8, 27, 0.05)',
-        }}
-      >
-        <Link href="/" className="flex items-center gap-2 no-underline shrink-0">
-          <LogoMark size={32} surface="light" className="w-6 h-6 sm:w-8 sm:h-8" />
-          <span className="text-sm sm:text-xl font-extrabold tracking-tight text-primary font-headline whitespace-nowrap">
-            Inburgering Oefenen
-          </span>
+       De CTA is navy, niet oranje: de kop van elke pagina is een veld, en op de homepage draagt dat
+       veld de gloed — één wijzer per view (G1 regel 3). */
+    <header className="g-nav" aria-label={t('ariaMain')}>
+      <div className="g-navpill g-glass">
+        <Link href="/" className="g-nav-logo">
+          <LogoMark size={32} surface="light" className="w-7 h-7 sm:w-8 sm:h-8" />
+          Inburgering Oefenen
         </Link>
 
-        {/* `menu:` (1152px, defined in globals.css) not `md:` — measured, not guessed, back when
-            the bar carried five items and a 386px right-hand cluster. Four short links need far
-            less, so there is slack now; the breakpoint stays because what actually crowds a laptop
-            is the logo plus the CTA, and that has not changed.
-            **Re-measure before adding a fifth item or lengthening the CTA.** */}
-        <nav className="hidden menu:flex items-center gap-7 text-[0.9375rem] font-medium" aria-label={t('ariaDesktop')}>
+        {/* Vanaf 1152px — gemeten toen de balk vijf items had; wat een laptop vol zet is het logo
+            plus de CTA. **Meet opnieuw voor je een vijfde item toevoegt.** */}
+        <nav className="g-nav-links" aria-label={t('ariaDesktop')}>
           {LINKS.map(link => (
-            <Link
-              key={link.href}
-              href={link.href}
-              className="text-on-surface hover:text-primary transition-colors no-underline whitespace-nowrap"
-            >
+            <Link key={link.href} href={link.href} aria-current={isActive(link.href) ? 'page' : undefined}>
               {t(link.label)}
             </Link>
           ))}
         </nav>
 
-        {/* Right: language, login, CTA, hamburger. One filled weight only — the CTA. */}
-        <div className="flex items-center gap-3 shrink-0">
+        <div className="g-nav-right">
           {LanguageMenu ? (
             <LanguageMenu
               locale={locale}
@@ -177,101 +166,63 @@ export default function Nav() {
             />
           )}
 
-          <Link
-            href="/login"
-            className="hidden menu:block text-on-surface hover:text-primary font-medium text-[0.9375rem] transition-colors no-underline whitespace-nowrap"
-          >
+          <Link href="/login" className="g-nav-plain">
             {t('login')}
           </Link>
 
-          {/* Wit op `secondary-container` (#fe762c) haalt 2,67:1 — de knop staat op 14px vet,
-              dus WCAG AA vraagt 4,5. `on-secondary-container` (#5f2200) is het token dat het
-              ontwerpsysteem hier al voor heeft en haalt 4,59:1. Geen inline `style` meer: die
-              overschreef elke klasse en was precies waarom dit niemand opviel. */}
-          <a
-            href={localeHref(locale, `oefenen`)}
-            className="inline-flex items-center gap-1.5 bg-secondary-container text-on-secondary-container px-3.5 py-2 sm:px-6 sm:py-2.5 rounded-full font-bold text-sm button-inner-glow hover:-translate-y-px transition-transform active:scale-95 no-underline whitespace-nowrap"
-          >
-            <span className="sm:hidden">{t('startMobile')}</span>
+          <a href={localeHref(locale, `oefenen`)} className={glasButton({ variant: 'navy', size: 'sm' })}>
+            <span className="sm:hidden">{startShort}</span>
             <span className="hidden sm:inline">{t('startDesktop')}</span>
           </a>
 
           <button
+            type="button"
             onClick={() => setMobileOpen((o) => !o)}
-            className="menu:hidden flex flex-col justify-center items-center w-10 h-10 -mr-1 rounded-xl hover:bg-surface-container transition-colors"
+            className="g-nav-burger"
             aria-label={mobileOpen ? t('menuClose') : t('menuOpen')}
             aria-expanded={mobileOpen}
+            aria-controls="g-nav-sheet"
           >
-            <span className="w-5 h-[2px] bg-primary rounded-full block" />
-            <span className="w-5 h-[2px] bg-primary rounded-full block my-[5px]" />
-            <span className="w-5 h-[2px] bg-primary rounded-full block" />
+            <i /><i /><i />
           </button>
         </div>
       </div>
 
-      {/* Mobile — the same four links, with no accordion left to open. The orange CTA sits at the
-          bottom where the thumb is. */}
+      {/* Mobiel: een tweede glazen kaart onder de pil, dekkend genoeg om op te lezen boven wat er ook
+          onder ligt. Dezelfde vier links, inloggen, en de talen als drie knoppen met vlag. */}
       {mobileOpen && (
-        <div
-          className="menu:hidden mt-2 max-w-7xl mx-auto rounded-[18px] max-h-[calc(100dvh-5.5rem)] overflow-y-auto"
-          style={{
-            /* Een tweede zwevende kaart onder de pil, niet een uitschuif ván de pil: dekkend,
-               want er staat tekst op die leesbaar moet blijven boven wat er ook onder ligt. */
-            background: 'rgba(248, 249, 251, 1)',
-            backdropFilter: 'blur(26px) saturate(1.7)',
-            WebkitBackdropFilter: 'blur(26px) saturate(1.7)',
-            boxShadow: '0 16px 40px -14px rgba(0, 8, 27, 0.18), 0 2px 8px rgba(0, 8, 27, 0.05)',
-          }}
-          aria-label={t('ariaMobile')}
-        >
-          <nav className="flex flex-col px-4 py-2">
+        <div id="g-nav-sheet" className="g-nav-sheet g-glass" aria-label={t('ariaMobile')}>
+          <nav>
             {LINKS.map(link => (
               <Link
                 key={link.href}
                 href={link.href}
                 onClick={() => setMobileOpen(false)}
-                className="border-b border-outline-variant/20 px-3 py-3.5 text-base font-semibold text-on-surface no-underline"
+                className="g-nav-row"
+                aria-current={isActive(link.href) ? 'page' : undefined}
               >
                 {t(link.label)}
+                <ArrowRight aria-hidden="true" className="rtl-flip" />
               </Link>
             ))}
-
-            <Link
-              href="/login"
-              onClick={() => setMobileOpen(false)}
-              className="border-b border-outline-variant/20 px-3 py-3.5 text-base font-semibold text-primary no-underline"
-            >
+            <Link href="/login" onClick={() => setMobileOpen(false)} className="g-nav-row">
               {t('login')}
+              <ArrowRight aria-hidden="true" className="rtl-flip" />
             </Link>
 
-            <a
-              href={localeHref(locale, `oefenen`)}
-              onClick={() => setMobileOpen(false)}
-              className="mt-3 mb-1 block text-center bg-secondary-container px-4 py-3 rounded-full font-bold text-sm button-inner-glow no-underline"
-              style={{ color: '#ffffff' }}
-            >
-              {t('startDesktop')}
-            </a>
-
-            <div className="pt-2 pb-3">
-              {/* A row of buttons rather than a select: it is what lets all three flags show at
-                  once, and it gives a bigger touch target. The current one is marked with the
-                  inset selection ring, never a border (§2, the no-line rule). */}
-              <div role="group" aria-label={t('langLabel')} className="flex gap-2" onClick={(e) => e.stopPropagation()}>
-                {LOCALES.map((l) => (
-                  <button
-                    key={l.code}
-                    type="button"
-                    onClick={() => handleLangChange(l.code)}
-                    aria-current={l.code === locale ? 'true' : undefined}
-                    className="flex-1 flex flex-col items-center gap-1.5 rounded-xl bg-surface-container-low px-2 py-2.5 text-xs font-semibold text-on-surface-variant cursor-pointer transition-colors hover:text-primary focus:outline-none focus:ring-2 focus:ring-primary/30"
-                    style={l.code === locale ? { boxShadow: 'var(--ring-selected)', color: 'var(--color-primary)' } : undefined}
-                  >
-                    <LocaleFlag locale={l.code} className="w-7 h-[18px]" />
-                    {l.labelLong}
-                  </button>
-                ))}
-              </div>
+            <div role="group" aria-label={t('langLabel')} className="g-nav-langs" onClick={(e) => e.stopPropagation()}>
+              {LOCALES.map((l) => (
+                <button
+                  key={l.code}
+                  type="button"
+                  onClick={() => handleLangChange(l.code)}
+                  aria-current={l.code === locale ? 'true' : undefined}
+                  className="g-nav-lang"
+                >
+                  <LocaleFlag locale={l.code} className="w-7 h-[18px]" />
+                  {l.labelLong}
+                </button>
+              ))}
             </div>
           </nav>
         </div>

@@ -1,14 +1,17 @@
 import type { Metadata } from 'next';
 import { getTranslations } from 'next-intl/server';
+import { ArrowRight, Clock } from 'lucide-react';
 import { routing } from '@/i18n/routing';
 import { Link } from '@/i18n/navigation';
-import { SectionHeader } from '@/components/site';
-import { DotField, HorizonBand, HorizonHero, ValidationChip } from '@/components/horizon';
+import ExamSlotCard from '@/components/glas/ExamSlotCard';
+import SectionHeading from '@/components/glas/SectionHeading';
+import ExamMark from '@/components/horizon/ExamMark';
 import CategoryMark from '@/components/horizon/CategoryMark';
+import { OxCrumbs, OxHeader, OxLink, OxUnlockBand } from '../_glas/parts';
 import { KNM, KNM_THEMES, SKILLS, DEFAULT_LEVEL, getFormat, isFreeKnmExam } from '@/data/skills';
 import { fetchExamsForSkill } from '@/lib/exams';
 import JsonLd from '@/components/JsonLd';
-import { langTag, TEACHER_ID } from '@/lib/site';
+import { langTag } from '@/lib/site';
 import {PROVIDER_REF, TEACHER_REF, absUrl, alternatesFor, breadcrumbs, omitEmpty, ogImageFor } from '@/lib/schema';
 import { localeHref } from '@/i18n/paths';
 
@@ -118,190 +121,125 @@ export default async function KnmOverviewPage({ params }: Props) {
     ],
   };
 
+  const examWord = t('exam_label', { number: '' }).trim();
+
   return (
     <>
       <JsonLd data={jsonLd} />
 
-      <HorizonHero houses={14} skylineHeight={84} containerClass="max-w-5xl pt-16 pb-16">
-        <div>
-          <span className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-bold uppercase tracking-widest text-white/85 mb-5" style={{ background: 'rgba(255,255,255,0.15)' }}>
-            <CategoryMark category="knm" size={22} tone="dark" />
-            {tSkills('exams_count', { count: KNM.examCount })}
-          </span>
-          <h1 className="font-headline font-extrabold text-white tracking-tight mb-4" style={{ fontSize: 'clamp(2rem, 4vw, 3rem)', letterSpacing: '-0.03em' }}>
-            {t('knm_heading')}
-          </h1>
-          <p className="text-lg leading-relaxed max-w-2xl" style={{ color: 'rgba(255,255,255,0.85)' }}>
-            {tSkills('knm.tagline')}
-          </p>
-          {/* Stated up front, because it is the question a candidate arriving from an A2 or B1
-              page actually has. Everywhere else on this site an exam belongs to a level. */}
-          <p className="text-sm leading-relaxed max-w-2xl mt-3" style={{ color: 'rgba(255,255,255,0.65)' }}>
-            {t('knm_no_level')}
-          </p>
+      {/* ── KOP ── KNM heeft geen niveau; dat staat vooraan, want het is de vraag die iemand van
+          een A2- of B1-pagina meebrengt. */}
+      <OxHeader
+        crumbs={
+          <OxCrumbs
+            label={tB('home')}
+            items={[
+              { label: tB('home'), href: localeHref(locale, '') },
+              { label: tB('oefenexamen'), href: localeHref(locale, 'oefenen') },
+              { label: name },
+            ]}
+          />
+        }
+        marks={<ExamMark track="knm" size={72} />}
+        title={t('knm_heading')}
+        lead={tSkills('knm.tagline')}
+        note={t('knm_no_level')}
+        facts={{
+          exams: tSkills('exams_count', { count: KNM.examCount }),
+          items: KNM.itemCount,
+          minutes: KNM.durationMinutes,
+          itemsLabel: tSkills('items_label'),
+          minutesLabel: tSkills('duration_label'),
+        }}
+        trust={tHome('hero_badge')}
+      />
 
-          <dl className="flex flex-wrap gap-8 mt-8">
-            <div className="border-l-2 pl-4" style={{ borderColor: 'rgba(255,255,255,0.40)' }}>
-              <dd className="text-white font-extrabold text-xl font-headline tracking-tight">{KNM.itemCount}</dd>
-              <dt className="text-xs uppercase tracking-wider font-semibold" style={{ color: 'rgba(255,255,255,0.65)' }}>
-                {tSkills('items_label')}
-              </dt>
-            </div>
-            <div className="border-l-2 pl-4" style={{ borderColor: 'rgba(255,255,255,0.40)' }}>
-              <dd className="text-white font-extrabold text-xl font-headline tracking-tight">{KNM.durationMinutes}</dd>
-              <dt className="text-xs uppercase tracking-wider font-semibold" style={{ color: 'rgba(255,255,255,0.65)' }}>
-                {tSkills('duration_label')}
-              </dt>
-            </div>
-          </dl>
-        </div>
-      </HorizonHero>
-
-      {/* ── EXAM GRID ── */}
-      <section className="py-16 px-6 bg-surface">
-        <div className="max-w-5xl mx-auto">
-          <div className="mb-8">
-            <ValidationChip>{tHome('hero_badge')}</ValidationChip>
-          </div>
+      {/* ── HET ROOSTER ── dezelfde drie publieke standen als bij de taalonderdelen:
+          `nog` (niet gepubliceerd, geen link) · `gratis` (examen 1, met een account) · `pakket`. */}
+      <section aria-labelledby="slots-heading" className="g-sec">
+        <div className="g-wrap">
+          <SectionHeading id="slots-heading" title={tSkills('exams_count', { count: KNM.examCount })} size="h2" className="mb-6" />
 
           {!anyPublished && (
-            <div className="rounded-2xl p-7 mb-8 bg-surface-container-lowest" style={{ boxShadow: 'var(--shadow-card-md)', borderLeft: '3px solid var(--color-secondary-container)' }}>
-              <h2 className="font-headline font-bold text-on-surface text-base mb-1.5">{t('not_ready_title')}</h2>
-              <p className="text-sm text-on-surface-variant leading-relaxed">{t('not_ready_body')}</p>
+            <div className="g-ox-empty mb-6">
+              <Clock aria-hidden="true" />
+              <div>
+                <h2>{t('not_ready_title')}</h2>
+                <p>{t('not_ready_body')}</p>
+              </div>
             </div>
           )}
 
-          <ul className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4 list-none p-0 m-0">
+          <div className="g-slots">
             {slots.map(number => {
               const exam = publishedByNumber.get(number);
               const free = isFreeKnmExam(number);
-              const available = Boolean(exam);
-
+              if (!exam) {
+                return <ExamSlotCard key={number} number={number} state="nog" numberLabel={examWord} title={tSkills('coming_soon')} />;
+              }
               return (
-                <li key={number}>
-                  {available ? (
-                    <a
-                      href={localeHref(locale, `oefenexamen/knm/${number}`)}
-                      className={`exam-card${free ? '' : ' locked'} relative flex flex-col gap-3 p-6 pb-7 rounded-2xl bg-surface-container-lowest overflow-hidden no-underline`}
-                      style={{ boxShadow: 'var(--shadow-ambient)' }}
-                    >
-                      <div className="flex items-center justify-between gap-2">
-                        <span className="text-xs font-bold uppercase tracking-widest text-on-surface-variant/70">
-                          {t('exam_label', { number })}
-                        </span>
-                        <span
-                          className="text-[0.68rem] font-bold uppercase tracking-widest px-2.5 py-1 rounded-full"
-                          style={free
-                            ? { background: 'rgba(254,118,44,0.16)', color: 'var(--color-secondary)' }
-                            : { background: 'var(--color-surface-container)', color: 'var(--color-on-surface-variant)' }}
-                        >
-                          {free ? t('free') : t('locked')}
-                        </span>
-                      </div>
-                      <p className="font-headline font-bold text-on-surface text-base leading-snug">
-                        {exam?.title || `${name} ${number}`}
-                      </p>
-                      <span className="text-sm font-semibold mt-auto" style={{ color: '#a24000' }}>
-                        {free ? `${t('start')} →` : `${t('unlock')} →`}
-                      </span>
-                      {free && <HorizonBand height={3} className="absolute left-0 right-0 bottom-0" />}
-                    </a>
-                  ) : (
-                    <div className="relative flex flex-col gap-3 p-6 rounded-2xl bg-surface-container-low overflow-hidden">
-                      <DotField on="dark" size={14} />
-                      <div className="flex items-center justify-between gap-2">
-                        <span className="text-xs font-bold uppercase tracking-widest text-on-surface-variant/60">
-                          {t('exam_label', { number })}
-                        </span>
-                      </div>
-                      <p className="relative font-headline font-bold text-on-surface-variant text-base leading-snug">
-                        {tSkills('coming_soon')}
-                      </p>
-                    </div>
-                  )}
-                </li>
+                <ExamSlotCard
+                  key={number}
+                  number={number}
+                  state={free ? 'gratis' : 'pakket'}
+                  numberLabel={examWord}
+                  pillLabel={t('free')}
+                  title={exam.title || `${name} ${number}`}
+                  sub={free ? t('start') : t('locked')}
+                  href={{ pathname: '/oefenexamen/knm/[number]', params: { number: String(number) } }}
+                  ariaLabel={`${t('exam_label', { number })} · ${free ? t('free') : t('locked')}`}
+                />
               );
             })}
-          </ul>
+          </div>
 
-          <div
-            className="flex items-center justify-between flex-wrap gap-6 p-8 rounded-2xl mt-10"
-            style={{ background: '#002b6d' }}
-          >
-            <div>
-              {/* KNM's own strings, not the shared `unlock_all_*`. Those say "alle 40
-                  oefenexamens", which is a *level's* catalogue and does not include KNM, and
-                  they still name the retired "Professioneel Pakket". */}
-              <p className="font-headline font-bold text-lg text-white mb-1">{t('knm_unlock_title')}</p>
-              <p className="text-sm leading-relaxed max-w-xl" style={{ color: 'rgba(255,255,255,0.70)' }}>
-                {t('knm_unlock_body')}
-              </p>
-            </div>
-            <a
+          <div className="mt-8">
+            {/* KNM's eigen strings, niet de gedeelde `unlock_all_*`: die zeggen "alle 40
+                oefenexamens", de catalogus van een níveau, en daar zit KNM niet in. */}
+            <OxUnlockBand
+              title={t('knm_unlock_title')}
+              body={t('knm_unlock_body')}
+              cta={t('unlock_all_cta')}
               href={localeHref(locale, `premium`)}
-              className="inline-flex items-center gap-2 px-6 py-3 font-bold rounded-xl text-sm no-underline flex-shrink-0"
-              style={{ background: '#fe762c', color: '#5f2200', boxShadow: 'var(--shadow-btn-orange)' }}
-            >
-              {t('unlock_all_cta')}
-              <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M6 3l5 5-5 5" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg>
-            </a>
+            />
           </div>
         </div>
       </section>
 
-      {/* ── THE SEVEN THEMES ── */}
-      {/* The exam's own table of contents, and the internal-link surface the kennisgidsen and
-          the lesson modules need. A KNM exam draws from all seven, so naming them is the most
-          useful thing this page can say after the ten slots themselves. */}
-      <section className="py-16 px-6 bg-surface-container-low">
-        <div className="max-w-5xl mx-auto">
-          <SectionHeader eyebrow="" title={t('knm_themes_title')} subtitle="" mb="mb-8" />
-          <ul className="grid sm:grid-cols-2 lg:grid-cols-3 gap-3 list-none p-0 m-0">
+      {/* ── DE THEMA'S ── de inhoudsopgave van het examen en de weg naar de kennisgidsen. */}
+      <section aria-labelledby="themes-heading" className="g-sec g-sec-tier">
+        <div className="g-wrap">
+          <SectionHeading id="themes-heading" title={t('knm_themes_title')} size="h2" className="mb-6" />
+          <ul className="g-ox-links">
             {KNM_THEMES.map(theme => (
               <li key={theme.id}>
                 <Link
                   href={{ pathname: '/knm/[thema]', params: { thema: theme.guideSlug } }}
-                  className="exam-card flex items-center gap-3 p-4 rounded-2xl bg-surface-container-lowest no-underline"
-                  style={{ boxShadow: 'var(--shadow-card)' }}
+                  className="g-ox-link"
                 >
-                  <CategoryMark category="knm" size={32} />
-                  <span className="font-headline font-semibold text-on-surface text-sm">{theme.title}</span>
+                  <CategoryMark category="knm" size={44} />
+                  <span className="min-w-0 flex-1"><b>{theme.title}</b></span>
+                  <ArrowRight aria-hidden="true" className="g-ox-link-go rtl-flip" />
                 </Link>
               </li>
             ))}
           </ul>
 
-          <SectionHeader eyebrow="" title={t('other_skills')} subtitle="" mb="mb-8" className="mt-14" />
-          <div className="grid sm:grid-cols-4 gap-4">
+          <SectionHeading title={t('other_skills')} size="h2" className="mt-14 mb-6" />
+          <ul className="g-ox-links g-ox-links-4">
             {SKILLS.map(other => (
-              <a
-                key={other.slug}
-                href={localeHref(locale, `oefenexamen/${DEFAULT_LEVEL}/${other.slug}`)}
-                className="exam-card flex items-center gap-4 p-5 rounded-2xl bg-surface-container-lowest no-underline"
-                style={{ boxShadow: 'var(--shadow-card)' }}
-              >
-                <CategoryMark category={other.slug} size={44} />
-                <div>
-                  <p className="font-headline font-semibold text-on-surface text-sm">{tSkills(`${other.key}.name`)}</p>
-                  <p className="text-xs text-on-surface-variant">{tSkills('exams_count', { count: getFormat(DEFAULT_LEVEL, other.slug).examCount })}</p>
-                </div>
-              </a>
+              <li key={other.slug}>
+                <OxLink
+                  href={localeHref(locale, `oefenexamen/${DEFAULT_LEVEL}/${other.slug}`)}
+                  category={other.slug}
+                  title={tSkills(`${other.key}.name`)}
+                  sub={tSkills('exams_count', { count: getFormat(DEFAULT_LEVEL, other.slug).examCount })}
+                />
+              </li>
             ))}
-          </div>
+          </ul>
         </div>
       </section>
-
-      <style>{`
-        .exam-card {
-          transition: transform 0.2s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.2s ease;
-        }
-        .exam-card:hover {
-          transform: translateY(-3px);
-          box-shadow: 0 10px 28px rgba(0,43,109,0.12) !important;
-        }
-        .exam-card:active { transform: translateY(-1px); }
-        @media (prefers-reduced-motion: reduce) { .exam-card { transition: none; } }
-      `}</style>
     </>
   );
 }

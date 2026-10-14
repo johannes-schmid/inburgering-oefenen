@@ -23,7 +23,8 @@ import { routing } from '@/i18n/routing';
 import { absUrl, alternatesFor, breadcrumbs, PROVIDER_REF, ogImageFor } from '@/lib/schema';
 import { langTag, WEBSITE_ID } from '@/lib/site';
 import JsonLd from '@/components/JsonLd';
-import Breadcrumb from '@/components/site/Breadcrumb';
+import Field from '@/components/glas/Field';
+import Crumbs from '@/app/[locale]/(main)/_components/glas/Crumbs';
 import TijdlijnApp from '@/components/tijdlijn/TijdlijnApp';
 import { RULES } from '@/lib/tijdlijn/rules';
 
@@ -94,20 +95,25 @@ export default async function TijdlijnToolPage({ params }: Props) {
   return (
     <>
       <JsonLd data={jsonLd} />
-      <Breadcrumb
-        items={[
-          { label: tB('home'), href: '/' },
-          { label: tB('inburgering'), href: '/inburgering' },
-          { label: t('breadcrumb') },
-        ]}
-      />
       {/* `<main>` is here rather than inside the client component so the landmark exists in the
-          static HTML — a screen reader must not depend on hydration to find the page's content. */}
-      <main className="bg-surface px-4 py-8 sm:px-6 sm:py-12">
-        <div className="mx-auto max-w-6xl">
+          static HTML — a screen reader must not depend on hydration to find the page's content.
+
+          Glas: het hele gereedschap staat op één veld (Gracht, met sluier aan de tekstkant) dat
+          onder de zwevende navigatiepil door loopt. De vragen, de grafiek en de uitslag staan op
+          witte panelen óp dat veld — wit staat, glas zweeft. */}
+      <Field as="main" variant="gracht" veil className="g-tl g-tl-head">
+        <div className="g-wrap">
+          <Crumbs
+            className="mb-6 sm:mb-8"
+            items={[
+              { label: tB('home'), href: '/' },
+              { label: tB('inburgering'), href: '/inburgering' },
+              { label: t('breadcrumb') },
+            ]}
+          />
           <TijdlijnApp />
         </div>
-      </main>
+      </Field>
     </>
   );
 }

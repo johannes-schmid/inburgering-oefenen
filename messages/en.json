@@ -677,6 +677,8 @@
     "feature4_title": "Feedback on Writing and Speaking",
     "feature4_desc": "Your e-mail or recording gets a score per criterion with an explanation, using the teacher's marking rubric — with the model answer next to it.",
     "cell_partial": "your part",
+    "cell_yes": "Included",
+    "cell_no": "Not included",
     "schema_product_name": "Practice modules for the Dutch integration exam (A2)",
     "schema_product_description": "Monthly subscription per component of the Dutch integration exam at A2 level: ten practice exams in DUO format, written by a certified NT2 teacher. One component or all four.",
     "schema_offer_module": "{skill} A2 module — per month",

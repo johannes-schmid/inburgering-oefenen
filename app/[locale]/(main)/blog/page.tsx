@@ -3,9 +3,15 @@ import { getTranslations, setRequestLocale } from 'next-intl/server';
 import { routing } from '@/i18n/routing';
 import { Link } from '@/i18n/navigation';
 import { getSortedPosts, getPostLocale, getPostSlug } from '@/data/blog-posts';
-import { Breadcrumb, GradientHero, CTABanner, TeacherCard } from '@/components/site';
-import { SITE_URL, ORG_ID, langTag } from '@/lib/site';
-import { absUrl, alternatesFor, PROVIDER_REF, ogImageFor } from '@/lib/schema';
+import { ArrowRight } from 'lucide-react';
+import PageField from '@/components/glas/PageField';
+import Field from '@/components/glas/Field';
+import SectionHeading from '@/components/glas/SectionHeading';
+import { glasButton } from '@/components/glas/Button';
+import Crumbs from '../_components/glas/Crumbs';
+import BlogIndex, { type BlogCard } from './BlogIndex';
+import { SITE_URL, langTag } from '@/lib/site';
+import { alternatesFor, PROVIDER_REF, ogImageFor } from '@/lib/schema';
 
 type Props = { params: Promise<{ locale: string }> };
 
@@ -33,19 +39,27 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   };
 }
 
-/** Keyed on `categoryKey`, not on the translated category label. */
-const CAT_STYLES: Record<string, { bg: string; color: string }> = {
-  gids: { bg: 'rgba(0,43,109,0.06)', color: '#002b6d' },
-  tips: { bg: 'rgba(162,64,0,0.06)', color: '#a24000' },
-  uitleg: { bg: 'rgba(44,130,83,0.06)', color: '#2d7a52' },
-};
-
 export default async function BlogIndexPage({ params }: Props) {
   const { locale } = await params;
   // See the note in blog/[slug]/page.tsx — this is what makes the route statically rendered.
   setRequestLocale(locale);
   const t = await getTranslations({ locale, namespace: 'blog' });
   const posts = getSortedPosts();
+  const tHome = await getTranslations({ locale, namespace: 'home' });
+  const [headLead, headMuted] = t('heading').split('\n');
+  const cards: BlogCard[] = posts.map(post => {
+    const lp = getPostLocale(post, locale);
+    return {
+      key: post.slug,
+      slug: getPostSlug(post, locale),
+      title: lp.heroTitle,
+      desc: lp.description,
+      category: lp.category,
+      image: post.image,
+      dateLabel: lp.dateLabel,
+      readingLabel: t('reading_time', { minutes: post.readingMinutes }),
+    };
+  });
 
   const jsonLd = {
     '@context': 'https://schema.org',
@@ -76,65 +90,40 @@ export default async function BlogIndexPage({ params }: Props) {
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
 
-      <GradientHero className="pb-16">
-        <div className="grid lg:grid-cols-2 gap-10 items-center">
-          <div>
-            <span className="inline-block px-3 py-1 rounded-full font-bold text-xs uppercase tracking-widest mb-5 bg-secondary-container text-on-secondary-container">
-              {t('eyebrow')}
-            </span>
-            <h1 className="font-headline font-bold text-white tracking-tight mb-6 leading-tight" style={{ fontSize: 'clamp(2rem,4vw,3rem)' }}>
-              {t('heading').split('\n').map((line, i, arr) => (
-                <span key={i}>{line}{i < arr.length - 1 && <br />}</span>
-              ))}
-            </h1>
-            <TeacherCard variant="chip" experience={t('author_bio')} />
-          </div>
-        </div>
-      </GradientHero>
+      {/* De kop op Nevel (glas.html §14: "de blog krijgt het veld Nevel, bijna wit, met een zweem").
+          Kruimelpad op het veld, geen eigen grijze band. De auteur staat als zegel onder de kop:
+          een echte, controleerbare docent (CLAUDE.md §2), geen kicker. */}
+      <PageField variant="nevel" className="-mt-[var(--nav-h)] !pt-[calc(var(--nav-h)+40px)] sm:!pt-[calc(var(--nav-h)+64px)]">
+        <Crumbs items={[{ label: t('breadcrumb_home'), href: '/' }, { label: t('breadcrumb_blog') }]} className="mb-6" />
+        <SectionHeading as="h1" size="section" title={headLead} muted={headMuted} onField />
+        <span className="g-seal g-glass g-glass-strong mt-7 !items-start !rounded-g-lg !py-2.5 !pe-4 max-w-xl">
+          <img src="/images/amber-van-der-zalm-264.webp" alt="" width={30} height={30} className="!size-10 !rounded-g-sm" />
+          <span>
+            <b>
+              <Link href="/docent" className="g-ilink !no-underline hover:!underline">Amber van der Zalm</Link>
+            </b>
+            <small className="block text-[12.5px] leading-snug text-ink-2 mt-0.5">{t('author_bio')}</small>
+          </span>
+        </span>
+      </PageField>
 
-      <Breadcrumb items={[{ label: t('breadcrumb_home'), href: '/' }, { label: t('breadcrumb_blog') }]} />
-
-      <main className="py-16 px-6 bg-surface">
-        <div className="max-w-7xl mx-auto">
-          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-16">
-            {posts.map(post => {
-              const lp = getPostLocale(post, locale);
-              const cat = CAT_STYLES[post.categoryKey] ?? CAT_STYLES.gids;
-              return (
-                <Link
-                  key={post.slug}
-                  href={{ pathname: '/blog/[slug]', params: { slug: getPostSlug(post, locale) } }}
-                  className="bg-surface-container-lowest rounded-2xl p-7 flex flex-col gap-4 no-underline shadow-sm post-card focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2"
-                  style={{ textDecoration: 'none' }}
-                >
-                  <span className="inline-block px-3 py-1 font-bold text-xs uppercase tracking-widest rounded-full w-fit" style={{ background: cat.bg, color: cat.color }}>
-                    {lp.category}
-                  </span>
-                  <h2 className="font-headline font-bold text-lg text-on-surface leading-snug">{lp.heroTitle}</h2>
-                  <p className="text-on-surface-variant text-sm leading-relaxed flex-grow">{lp.description}</p>
-                  <div className="flex items-center justify-between mt-1">
-                    <div className="flex items-center gap-2">
-                      <div className="w-7 h-7 rounded-lg overflow-hidden flex-shrink-0" style={{ border: '1px solid rgba(196,198,210,0.3)' }}>
-                        <img src="/images/amber-van-der-zalm-264.webp" alt="Amber van der Zalm" width={28} height={28} className="w-full h-full object-cover object-top" />
-                      </div>
-                      <span className="text-xs text-on-surface-variant">{t('post_by', { date: post.dateLabel })}</span>
-                    </div>
-                    <svg width="16" height="16" viewBox="0 0 16 16" fill="none" className="flex-shrink-0" style={{ color: '#a24000' }} aria-hidden="true">
-                      <path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-                    </svg>
-                  </div>
-                </Link>
-              );
-            })}
-          </div>
-
-          <CTABanner
-            title={t('cta_title')}
-            description={t('cta_desc')}
-            button={{ label: t('cta_btn'), href: '/oefenen' }}
-          />
+      <main className="g-sec !pt-10">
+        <div className="g-wrap">
+          <BlogIndex cards={cards} allLabel={tHome('kb_all')} authorName="Amber van der Zalm" />
         </div>
       </main>
+
+      {/* Afsluiter vlak boven de footer: Nevel met de ene oranje knop van deze view. */}
+      <div className="g-closing">
+        <Field as="section" variant="nevel" aria-labelledby="blog-cta-heading" className="g-block g-cta-band">
+          <h2 id="blog-cta-heading">{t('cta_title')}</h2>
+          <p>{t('cta_desc')}</p>
+          <Link href="/oefenen" className={glasButton({ variant: 'oranje', size: 'lg', className: 'mt-2' })}>
+            {t('cta_btn')}
+            <ArrowRight className="rtl-flip" aria-hidden="true" />
+          </Link>
+        </Field>
+      </div>
     </>
   );
 }

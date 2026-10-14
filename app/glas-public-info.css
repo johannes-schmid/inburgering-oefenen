@@ -1,0 +1,98 @@
+/* Glas · publieke site · info — aanvullingen op app/glas-public.css voor /platform en /premium. */
+
+@layer components {
+  /* De paginakop loopt onder de zwevende pil door: dezelfde afspraak als `.g-hero` op de homepage.
+     Zonder deze marge staat de pil boven een strook mist in plaats van boven het veld. */
+  .g-pagefield.g-under-nav { margin-top: calc(var(--nav-h) * -1); padding-top: calc(var(--nav-h) + 40px); }
+  @media (min-width: 860px) { .g-pagefield.g-under-nav { padding-top: calc(var(--nav-h) + 72px); } }
+
+  /* ---------- /platform · de compositie in de kop ---------- */
+  .g-pf-comp { display: grid; gap: 14px; margin-top: 48px; }
+  @media (min-width: 1024px) {
+    .g-pf-comp { grid-template-columns: minmax(0, 15rem) minmax(0, 1fr) minmax(0, 15rem); align-items: center; gap: 18px; margin-top: 64px; }
+  }
+  .g-pf-col { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; margin: 0; padding: 0; list-style: none; }
+  @media (min-width: 1024px) { .g-pf-col { grid-template-columns: minmax(0, 1fr); gap: 14px; } }
+  @media (max-width: 1023px) { .g-pf-shot { order: -1; } }
+  .g-pf-sat { position: relative; padding: 16px; }
+  .g-pf-sat-arrow { display: none; position: absolute; width: 24px; height: 24px; align-items: center; justify-content: center; color: var(--ink-3); }
+  .g-pf-sat-arrow svg { width: 16px; height: 16px; }
+  @media (min-width: 1024px) {
+    .g-pf-sat-arrow { display: flex; top: 50%; transform: translateY(-50%); }
+    .g-pf-sat-left .g-pf-sat-arrow { inset-inline-end: -21px; }
+    .g-pf-sat-right .g-pf-sat-arrow { inset-inline-start: -21px; }
+    .g-pf-sat-below .g-pf-sat-arrow { top: -21px; left: 50%; transform: translateX(-50%); }
+  }
+  .g-pf-shot { margin: 0; border-radius: var(--r-lg); overflow: hidden; box-shadow: var(--zweef); background: #fff; }
+  .g-pf-shot-bar { display: flex; align-items: center; gap: 10px; padding: 11px 16px; background: var(--navy); color: #fff; font-family: var(--font-headline); font-weight: 700; font-size: 13px; letter-spacing: -0.01em; }
+  .g-pf-shot-bar i { width: 8px; height: 8px; border-radius: 50%; background: var(--oranje); }
+  .g-pf-chips { display: flex; flex-wrap: wrap; gap: 6px; list-style: none; margin: 12px 0 0; padding: 0; }
+  .g-pf-chips li { display: inline-flex; align-items: center; height: 26px; padding: 0 10px; border-radius: var(--r-pill); background: var(--mist); font-size: 12px; font-weight: 600; color: var(--ink-2); }
+
+  /* ---------- /platform · de uitleglaag (sticky stapel) ---------- */
+  .g-pf-flow { list-style: none; display: flex; flex-direction: column; gap: 18px; margin: 0; padding: 0; }
+  .g-pf-flowblock { border-radius: var(--r-xl); overflow: hidden; background: #fff; display: grid; box-shadow: 0 1px 0 rgba(0, 43, 109, 0.04); }
+  @media (min-width: 1024px) {
+    .g-pf-flowblock { position: sticky; grid-template-columns: minmax(0, 1.05fr) minmax(0, 1fr); align-items: stretch; box-shadow: var(--zweef); }
+  }
+  .g-pf-flowtext { padding: 26px; display: flex; flex-direction: column; justify-content: center; }
+  @media (min-width: 640px) { .g-pf-flowtext { padding: 36px; } }
+  .g-pf-flowtext h3 { font-family: var(--font-headline); font-weight: 700; font-size: clamp(22px, 2.4vw, 28px); letter-spacing: -0.03em; line-height: 1.12; color: var(--navy); margin: 10px 0 0; text-wrap: balance; }
+  .g-pf-flowtext p { color: var(--ink-2); margin: 12px 0 0; line-height: 1.7; font-size: 15.5px; }
+  .g-pf-flowvis { min-height: 15rem; display: flex; align-items: center; justify-content: center; padding: 22px; position: relative; }
+  @media (min-width: 1024px) { .g-pf-flowvis { min-height: 22rem; } }
+  @media (max-width: 1023px) { .g-pf-flowvis { order: -1; } }
+  .g-pf-flowshot { position: absolute; inset: 0; }
+
+  /* De kaarten die naar een pagina leiden (onderdelen, tracks, tools). */
+  .g-pf-cards { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 14px; }
+  @media (max-width: 1080px) { .g-pf-cards { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+  @media (max-width: 560px) { .g-pf-cards { grid-template-columns: minmax(0, 1fr); } }
+  .g-pf-soon { border-radius: var(--r-lg); padding: 20px; display: flex; flex-direction: column; gap: 12px; min-height: 180px; background: rgba(255, 255, 255, 0.5); box-shadow: inset 0 0 0 1.5px rgba(111, 128, 168, 0.28); }
+  .g-pf-soon h3 { font-family: var(--font-headline); font-weight: 700; font-size: 19px; letter-spacing: -0.02em; color: var(--ink-2); margin: 0; }
+  .g-pf-soon p { font-size: 14px; color: var(--ink-2); margin: 0; line-height: 1.6; }
+  .g-pf-ico { width: 48px; height: 48px; border-radius: 14px; background: var(--tegel); color: var(--navy); display: flex; align-items: center; justify-content: center; flex: none; }
+  .g-pf-ico svg { width: 22px; height: 22px; }
+  .g-pf-why { border-radius: var(--r-lg); background: #fff; padding: 22px; display: flex; flex-direction: column; gap: 12px; }
+  .g-pf-why h3 { font-family: var(--font-headline); font-weight: 700; font-size: 18px; letter-spacing: -0.02em; color: var(--navy); margin: 0; }
+  .g-pf-why p { font-size: 14.5px; color: var(--ink-2); margin: 0; line-height: 1.65; }
+
+  /* ---------- /premium ---------- */
+  .g-pm-mods { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 14px; }
+  @media (max-width: 1080px) { .g-pm-mods { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+  @media (max-width: 560px) { .g-pm-mods { grid-template-columns: minmax(0, 1fr); } }
+  .g-pm-mod { background: #fff; padding: 22px; }
+  .g-pm-mod .g-price-amt { font-size: 40px; }
+  .g-pm-mod h3 { font-family: var(--font-headline); font-weight: 700; font-size: 20px; letter-spacing: -0.02em; color: var(--navy); margin: 0; }
+  .g-pm-mod > p { font-size: 13.5px; color: var(--ink-2); margin: 0; line-height: 1.55; min-height: 2.6rem; }
+  .g-pm-mod .g-btn { margin-top: auto; width: 100%; }
+  .g-pm-pair { display: grid; grid-template-columns: minmax(0, 1.6fr) minmax(0, 1fr); gap: 14px; margin-top: 14px; }
+  @media (max-width: 960px) { .g-pm-pair { grid-template-columns: minmax(0, 1fr); } }
+  .g-pm-bundle-f { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 9px 22px; }
+  @media (max-width: 640px) { .g-pm-bundle-f { grid-template-columns: minmax(0, 1fr); } }
+  .g-pm-soon { display: inline-flex; vertical-align: middle; margin-inline-start: 6px; height: 20px; padding: 0 7px; align-items: center; border-radius: var(--r-pill); background: var(--mist-2); color: var(--ink-2); font-size: 10.5px; font-weight: 700; letter-spacing: 0.04em; text-transform: uppercase; }
+  .g-pm-partial { display: inline-flex; padding: 3px 8px; border-radius: var(--r-pill); background: rgba(0, 43, 109, 0.08); color: var(--navy); font-size: 11px; font-weight: 700; line-height: 1.3; }
+  .g-ptab .g-hl .g-pm-partial { background: rgba(0, 43, 109, 0.12); }
+  .g-pm-feats { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; }
+  @media (max-width: 860px) { .g-pm-feats { grid-template-columns: minmax(0, 1fr); } }
+  .g-pm-feat { border-radius: var(--r-xl); background: #fff; overflow: hidden; display: flex; flex-direction: column; }
+  .g-pm-feat-vis { min-height: 230px; padding: 20px; display: flex; align-items: center; justify-content: center; }
+  .g-pm-feat-tx { padding: 20px 22px 24px; }
+  .g-pm-feat-tx h3 { font-family: var(--font-headline); font-weight: 700; font-size: 19px; letter-spacing: -0.02em; color: var(--navy); margin: 0; line-height: 1.25; }
+  .g-pm-feat-tx p { font-size: 14.5px; color: var(--ink-2); margin: 8px 0 0; line-height: 1.65; }
+  .g-pm-mock { width: 100%; max-width: 340px; padding: 16px; }
+  .g-pm-row { display: flex; align-items: center; justify-content: space-between; gap: 10px; padding: 10px 12px; border-radius: var(--r-sm); background: #fff; }
+  .g-pm-row + .g-pm-row { margin-top: 8px; }
+  .g-pm-row b { font-family: var(--font-headline); font-size: 13px; color: var(--ink); display: block; }
+  .g-pm-row small { font-size: 11.5px; color: var(--ink-2); }
+  .g-pm-row .g-score-v { font-family: var(--font-headline); font-weight: 800; font-size: 18px; color: var(--navy); letter-spacing: -0.03em; }
+  .g-pm-hero-card { padding: 22px; display: grid; gap: 12px; }
+  .g-pm-hero-row { display: flex; align-items: center; gap: 14px; padding: 14px; border-radius: var(--r-md); background: rgba(255, 255, 255, 0.7); }
+  .g-pm-hero-row b { font-family: var(--font-headline); font-weight: 800; font-size: 30px; letter-spacing: -0.04em; color: var(--navy); line-height: 1; }
+  .g-pm-hero-row small { display: block; font-size: 13px; color: var(--ink-2); margin-top: 4px; }
+  .g-pm-marks { display: flex; gap: 6px; flex-wrap: wrap; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .g-pf-flowblock { position: static !important; }
+}

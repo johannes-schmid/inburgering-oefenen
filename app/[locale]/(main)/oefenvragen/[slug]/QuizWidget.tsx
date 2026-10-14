@@ -6,8 +6,14 @@ import { track } from '@/lib/analytics';
 import { playCorrectChime } from '@/lib/answer-chime';
 import WordPass from '@/components/exam/WordPass';
 import type { Question } from '@/data/oefenvragen-topics';
-import { cn } from '@/lib/utils';
-import { buttonVariants } from '@/components/ui/button';
+import { ArrowRight, Check, RotateCcw, X } from 'lucide-react';
+import AnswerRow, { AnswerGroup, type AnswerState } from '@/components/glas/AnswerRow';
+import ScoreRing from '@/components/glas/ScoreRing';
+import { Link } from '@/i18n/navigation';
+import { glasButton } from '@/components/glas/Button';
+
+const LETTERS = ['A', 'B', 'C'] as const;
+type Letter = (typeof LETTERS)[number];
 
 type QuizStrings = {
   question: string;
@@ -70,121 +76,122 @@ export default function QuizWidget({ questions, topicTotal, strings, slug }: Pro
 
   if (done) {
     const finalPct = Math.round((score / total) * 100);
-    const color = finalPct >= 80 ? '#4CAF7A' : finalPct >= 60 ? '#E8A03A' : '#E85A3A';
     const msg = finalPct >= 80 ? 'Uitstekend! Je beheerst dit onderwerp goed.' : finalPct >= 60 ? 'Goed gedaan! Oefen nog een keer voor meer zekerheid.' : 'Herhaal dit onderwerp en probeer het nog eens.';
 
     return (
-      <div className="results-card">
-        <div className="score-ring" style={{ '--pct': finalPct + '%' } as React.CSSProperties}>
-          <div className="score-inner">
-            <span className="font-headline font-bold" style={{ fontSize: '1.2rem', color }}>{finalPct}%</span>
-          </div>
-        </div>
-        <p className="font-headline font-bold text-on-surface mb-2" style={{ fontSize: '1.6rem' }}>{strings.scoreTitle}</p>
-        <p className="text-on-surface-variant text-base mb-1"
-          dangerouslySetInnerHTML={{
-            __html: interpolate(strings.scoreDesc, { score, total })
-              .replace(String(score), `<strong class="text-on-surface font-bold" style="font-size:1.4rem">${score}</strong>`)
-              .replace(String(total), `<strong class="text-on-surface font-bold" style="font-size:1.4rem">${total}</strong>`),
-          }}
-        />
-        <p className="text-on-surface-variant text-sm mt-2 mb-6">{msg}</p>
-
-        <div className="mb-6 rounded-2xl p-5 text-left" style={{ background: 'linear-gradient(135deg,rgba(254,118,44,0.09),rgba(162,64,0,0.04))', border: '1.5px solid rgba(254,118,44,0.28)' }}>
-          <p className="text-xs font-bold uppercase tracking-widest mb-1" style={{ color: '#a24000' }}>Meer oefenen?</p>
-          <p className="font-headline font-bold text-on-surface mb-2" style={{ fontSize: '1.05rem' }}>
-            Er wachten nog <span style={{ color: '#a24000' }}>{topicTotal} vragen</span> over dit onderwerp
+      <div className="g-quiz">
+        <div className="flex flex-col items-center text-center">
+          <ScoreRing correct={score} total={total} size={150} label={interpolate(strings.scoreDesc, { score, total })}>
+            <b className="g-head g-tnum text-[30px] font-extrabold tracking-[-0.04em]">{finalPct}%</b>
+          </ScoreRing>
+          <h2 className="g-head g-head-2 mt-5">{strings.scoreTitle}</h2>
+          <p className="m-0 mt-2 text-ink-2">
+            {strings.scoreDesc.split(/(\{score\}|\{total\})/).map((part, i) =>
+              part === '{score}' ? <b key={i} className="text-ink g-tnum">{score}</b>
+                : part === '{total}' ? <b key={i} className="text-ink g-tnum">{total}</b>
+                : part,
+            )}
           </p>
-          <p className="text-sm text-on-surface-variant leading-relaxed mb-4">Meld je gratis aan voor het studieportaal en oefen alle gevalideerde KNM-vragen met directe feedback van een gecertificeerde NT2-docent.</p>
-          <a href="/register" className={cn(buttonVariants({ variant: 'orange', size: 'cta' }), 'text-sm px-5 py-3')}>
-            Gratis aanmelden
-            <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M3 7h8M7 3l4 4-4 4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/></svg>
-          </a>
+          <p className="m-0 mt-1 text-sm text-ink-2">{msg}</p>
         </div>
 
-        <div className="flex flex-wrap gap-3 justify-center mb-7">
-          <button onClick={restart} className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl text-sm font-semibold text-primary bg-surface-container-low hover:bg-surface-container transition-colors">
+        <div className="mt-7 rounded-g-lg bg-klei-tint p-5">
+          <p className="m-0 g-head text-[1.0625rem] font-bold text-ink">
+            Er wachten nog <span className="text-klei">{topicTotal} vragen</span> over dit onderwerp
+          </p>
+          <p className="m-0 mt-2 text-sm leading-relaxed text-ink-2">Meld je gratis aan voor het studieportaal en oefen alle gevalideerde KNM-vragen met directe feedback van een gecertificeerde NT2-docent.</p>
+          <Link href="/register" className={glasButton({ variant: 'navy', size: 'sm', className: 'mt-4' })}>
+            Gratis aanmelden
+            <ArrowRight className="rtl-flip" aria-hidden="true" />
+          </Link>
+        </div>
+
+        <div className="flex flex-wrap gap-2.5 justify-center mt-6">
+          <button type="button" onClick={restart} className={glasButton({ variant: 'ghost' })}>
+            <RotateCcw aria-hidden="true" />
             {strings.retry}
           </button>
-          <a href="/oefenvragen" className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl text-sm font-semibold text-primary bg-surface-container-low hover:bg-surface-container transition-colors">
-            Ander onderwerp
-          </a>
-          <a href="/dashboard" className={cn(buttonVariants({ variant: 'orange', size: 'cta' }), 'text-sm px-5 py-2.5')}>
+          <Link href="/oefenvragen" className={glasButton({ variant: 'ghost' })}>Ander onderwerp</Link>
+          <Link href="/dashboard" className={glasButton({ variant: 'oranje' })}>
             {strings.proef}
-            <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M3 7h8M7 3l4 4-4 4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/></svg>
-          </a>
+            <ArrowRight className="rtl-flip" aria-hidden="true" />
+          </Link>
         </div>
 
-        <div className="bg-surface-container-low rounded-2xl p-5 text-left">
-          <p className="text-xs font-bold uppercase tracking-widest text-on-surface-variant mb-2">Gecertificeerde docent</p>
-          <p className="text-sm text-on-surface-variant leading-relaxed">
+        <div className="mt-6 rounded-g-lg bg-mist p-5 flex gap-3.5 items-start">
+          <img src="/images/amber-van-der-zalm-264.webp" alt="" width={40} height={40} className="size-10 rounded-g-sm object-cover object-top shrink-0" />
+          <p className="m-0 text-sm leading-relaxed text-ink-2">
             Deze vragen zijn samengesteld door Amber van der Zalm, gecertificeerde NT2-docent.{' '}
-            <a href="/docent" className="text-secondary underline hover:opacity-80">Lees meer over de docent →</a>
+            <Link href="/docent" className="g-ilink inline-flex items-center gap-1">
+              Lees meer over de docent
+              <ArrowRight className="size-3.5 rtl-flip" aria-hidden="true" />
+            </Link>
           </p>
         </div>
       </div>
     );
   }
 
-  const progress = (idx / total) * 100;
+  const label = interpolate(strings.question, { n: idx + 1, total });
+  const answered = selected !== null;
+  const right = answered && selected === q.correct;
+
+  const stateFor = (lbl: Letter): AnswerState => {
+    if (!answered) return 'idle';
+    if (lbl === q.correct) return 'correct';
+    if (lbl === selected) return 'wrong';
+    return 'dim';
+  };
 
   return (
-    <>
-      <div className="flex items-center justify-between mb-2">
-        <span className="text-xs font-bold uppercase tracking-wider text-on-surface-variant">
-          {interpolate(strings.question, { n: idx + 1, total })}
-        </span>
-        <span className="text-xs text-on-surface-variant">Score: {score} / {total}</span>
+    <div className="g-quiz">
+      <div className="flex items-center justify-between gap-3">
+        <span className="g-mono">{label}</span>
+        <span className="g-mono g-tnum">Score: {score} / {total}</span>
       </div>
-      <div className="progress-bar-track">
-        <div className="progress-bar-fill" style={{ width: progress + '%' }} />
+      {/* Eén segment per vraag: gemaakt = navy. Een rij vakjes, geen balk die in breedte groeit. */}
+      <div className="g-quiz-bar" aria-hidden="true">
+        {questions.map((_, i) => <i key={i} className={i < idx + (answered ? 1 : 0) ? 'g-on' : undefined} />)}
       </div>
 
-      <div className="question-card">
-        <p className="q-label">{interpolate(strings.question, { n: idx + 1, total })}</p>
-        <p className="q-text">{q.question}</p>
+      <p className="g-quiz-q">{q.question}</p>
 
-        <div className="options">
-          {(['A', 'B', 'C'] as const).map((lbl) => {
-            const text = lbl === 'A' ? q.optionA : lbl === 'B' ? q.optionB : q.optionC;
-            let cls = 'opt-btn';
-            if (selected !== null) {
-              if (lbl === q.correct) cls += ' correct answer-correct';
-              else if (lbl === selected) cls += ' incorrect';
-            }
-            return (
-              <button key={lbl} className={cls} disabled={selected !== null} onClick={() => selectAnswer(lbl)}>
-                <span className="opt-label">{lbl}</span>
-                <span className="opt-text">
-                  <WordPass text={text} active={selected !== null && lbl === q.correct} />
-                </span>
-              </button>
-            );
-          })}
-        </div>
-
-        {selected !== null && (
-          <div className={`feedback answer-verdict ${selected === q.correct ? 'correct' : 'incorrect'}`} style={{ display: 'block' }}>
-            {selected === q.correct
-              ? <><strong>✓ Correct!</strong> {q.explanation}</>
-              : <><strong>✗ Niet correct.</strong> Het juiste antwoord is <strong>{q.correct}</strong>. {q.explanation}</>
-            }
-          </div>
-        )}
-
-        {selected !== null && (
-          <div className="next-btn-wrap" style={{ display: 'block' }}>
-            <button
-              className="bg-secondary-container text-on-secondary-container px-6 py-3 rounded-xl font-bold text-sm inline-flex items-center gap-2"
-              style={{ boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.1)' }}
-              onClick={next}
+      <AnswerGroup label={label}>
+        {LETTERS.map(lbl => {
+          const text = lbl === 'A' ? q.optionA : lbl === 'B' ? q.optionB : q.optionC;
+          return (
+            <AnswerRow
+              key={lbl}
+              letter={lbl}
+              state={stateFor(lbl)}
+              reward={answered && right && lbl === q.correct}
+              correctLabel="Juist"
+              wrongLabel="Jouw antwoord"
+              onSelect={() => selectAnswer(lbl)}
             >
-              {idx + 1 >= total ? strings.finish : strings.next}
-              <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M3 7h8M7 3l4 4-4 4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/></svg>
-            </button>
-          </div>
-        )}
-      </div>
-    </>
+              <WordPass text={text} active={answered && lbl === q.correct} />
+            </AnswerRow>
+          );
+        })}
+      </AnswerGroup>
+
+      {answered && (
+        <div className={`g-quiz-fb ${right ? 'g-ok' : 'g-nok'}`} role="status">
+          {right ? <Check aria-hidden="true" /> : <X aria-hidden="true" />}
+          <span>
+            {right
+              ? <><b>Correct.</b> {q.explanation}</>
+              : <><b>Niet correct.</b> Het juiste antwoord is <b>{q.correct}</b>. {q.explanation}</>}
+          </span>
+        </div>
+      )}
+
+      {answered && (
+        <button type="button" className={glasButton({ variant: 'navy', className: 'mt-5' })} onClick={next}>
+          {idx + 1 >= total ? strings.finish : strings.next}
+          <ArrowRight className="rtl-flip" aria-hidden="true" />
+        </button>
+      )}
+    </div>
   );
 }
