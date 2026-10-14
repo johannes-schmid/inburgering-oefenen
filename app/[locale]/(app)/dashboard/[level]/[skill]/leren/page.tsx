@@ -1,7 +1,7 @@
 import type { Metadata } from 'next';
 import { notFound, redirect } from 'next/navigation';
 import { getTranslations } from 'next-intl/server';
-import { ArrowRight, Check, Lock } from 'lucide-react';
+import { ArrowLeft, ArrowRight, Check, Lock } from 'lucide-react';
 import { createClient } from '@/lib/supabase/server';
 import { ownsModule } from '@/lib/entitlements';
 import { getSkillAtLevel, isLevel, levelLabel } from '@/data/skills';
@@ -11,6 +11,8 @@ import { blockProgress, courseProgressPct, lessonPath, nextLesson } from '@/lib/
 import { spoorPath, type SpoorSlug } from '@/lib/lessons/sporen';
 import { grammarStepPath } from '@/lib/lessons/grammar';
 import AppShell from '../../../../components/AppShell';
+import CategoryMark, { type Category } from '@/components/horizon/CategoryMark';
+import '@/app/glas-leerlaag.css';
 
 type Props = { params: Promise<{ locale: string; level: string; skill: string }> };
 
@@ -79,142 +81,123 @@ export default async function CoursePage({ params }: Props) {
       activeGroup={level}
       menu={menu}
     >
-      <div className="px-5 py-7 sm:px-8 sm:py-10">
-        <div className="max-w-5xl mx-auto">
+      <div className="g-leer gl-shell">
+        <div className="gl-course">
 
-          {/* Dezelfde kop als de rest van het portaal: titel en ondertitel, de cijfers rechts.
-              De terugknop blijft hier wél staan — dit is de enige portaalpagina zonder eigen rij
-              in de zijbalk, dus zonder die link is de weg terug naar het onderdeel weg. */}
-          <a href={`/${locale}/dashboard/${level}/${skill.slug}`} className="ov-back">
-            ← {tSkills(`${skill.key}.name`)}
+          {/* De terugknop blijft: dit is de enige portaalpagina zonder eigen rij in de zijbalk,
+              dus zonder die link is de weg terug naar het onderdeel weg. */}
+          <a href={`/${locale}/dashboard/${level}/${skill.slug}`} className="gl-back">
+            <ArrowLeft size={15} strokeWidth={2.4} className="rtl-flip" aria-hidden />
+            {tSkills(`${skill.key}.name`)}
           </a>
 
-          <header className="ov-head">
-            <h1>{t('course_title', { skill: tSkills(`${skill.key}.name`), level: levelLabel(level) })}</h1>
-            <p>{t('course_lede')}</p>
+          <header className="gl-course-head">
+            <div className="gl-course-title">
+              <CategoryMark category={skill.slug as Category} size={64} />
+              <div>
+                <h1 className="g-head gl-title">{t('course_title', { skill: tSkills(`${skill.key}.name`), level: levelLabel(level) })}</h1>
+                <p className="gl-learn">{t('course_lede')}</p>
+              </div>
+            </div>
+            <section className="gl-total" aria-label={tPortal('mod_learn')}>
+              <span className="g-mono">{tPortal('mod_learn')}</span>
+              <b className="g-tnum">{pct}<small>%</small></b>
+              <span className="gl-rail" aria-hidden><i style={{ transform: `scaleX(${pct / 100})` }} /></span>
+              <p>
+                {t('course_progress', {
+                  done: blocks.reduce((n, b) => n + blockProgress(b).done, 0),
+                  total: blocks.reduce((n, b) => n + b.lessons.length, 0),
+                })}
+              </p>
+            </section>
           </header>
 
-          <div className="ov-grid">
-            <div className="ov-rows">
-            {next && (
-              <a
-                href={`/${locale}${lessonPath(level, skill.slug, next.lesson.slug)}`}
-                className="mb-6 flex items-center gap-3 rounded-2xl px-4 py-3.5 no-underline"
-                style={{
-                  background: 'var(--color-surface-container-lowest)',
-                  boxShadow: 'var(--shadow-ambient)',
-                }}
-              >
-                <span className="cb-letter">{next.block.letter}</span>
-                <span className="min-w-0">
-                  <span className="block text-xs font-bold uppercase tracking-wider text-on-surface-variant">
-                    {t('continue')}
-                  </span>
-                  <span className="block font-extrabold text-on-surface truncate">{next.lesson.title}</span>
-                </span>
-                <ArrowRight size={18} strokeWidth={2.5} className="ms-auto shrink-0 text-secondary rtl-flip" />
-              </a>
-            )}
+          {next && (
+            <a href={`/${locale}${lessonPath(level, skill.slug, next.lesson.slug)}`} className="gl-next gl-continue">
+              <span className="gl-L">{next.block.letter}</span>
+              <span className="gl-next-copy">
+                <span className="g-mono">{t('continue')}</span>
+                <b>{next.lesson.title}</b>
+              </span>
+              <span className="gl-next-go" aria-hidden><ArrowRight size={18} strokeWidth={2.4} className="rtl-flip" /></span>
+            </a>
+          )}
 
-            <ol className="flex flex-col gap-3 list-none p-0 m-0">
-              {blocks.map(block => {
-                const bp = blockProgress(block);
-                return (
-                  <li key={block.id} className="course-block">
-                    <div className="cb-head">
-                      <span className="cb-letter">{block.letter}</span>
-                      <h2 className="cb-title">{block.name_nl}</h2>
-                      <span className="cb-count">
-                        {t('block_count', { done: bp.done, total: bp.total })}
-                      </span>
-                    </div>
-                    {block.intro && <p className="cb-intro">{block.intro}</p>}
+          <ol className="gl-blocks">
+            {blocks.map(block => {
+              const bp = blockProgress(block);
+              const complete = bp.total > 0 && bp.done === bp.total;
+              return (
+                <li key={block.id} className="gl-block">
+                  <div className="gl-block-head">
+                    <span className={`gl-L${complete ? ' is-done' : ''}`}>{block.letter}</span>
+                    <h2>{block.name_nl}</h2>
+                    <span className="g-mono g-tnum">{t('block_count', { done: bp.done, total: bp.total })}</span>
+                  </div>
+                  {block.intro && <p className="gl-block-intro">{block.intro}</p>}
 
-                    {/* Naar het spoor waar dit blok in modules is opgedeeld. Blok A heeft er
-                        geen: dat zijn de woordkaartenthema's. */}
-                    {SPOOR_OF_BLOCK[block.letter] && (
-                      <a
-                        href={block.letter === 'B'
-                          ? `/${locale}${grammarStepPath(level, skill.slug)}`
-                          : `/${locale}${spoorPath(level, skill.slug, SPOOR_OF_BLOCK[block.letter]!)}`}
-                        className="cb-spoor"
-                      >
-                        {tPortal('leerroute_cta_modules')}
-                        <ArrowRight size={14} strokeWidth={2.4} className="rtl-flip" />
-                      </a>
-                    )}
+                  {/* Naar het spoor waar dit blok in modules is opgedeeld. Blok A heeft er
+                      geen: dat zijn de woordkaartenthema's. */}
+                  {SPOOR_OF_BLOCK[block.letter] && (
+                    <a
+                      href={block.letter === 'B'
+                        ? `/${locale}${grammarStepPath(level, skill.slug)}`
+                        : `/${locale}${spoorPath(level, skill.slug, SPOOR_OF_BLOCK[block.letter]!)}`}
+                      className="g-tlink gl-block-link"
+                    >
+                      {tPortal('leerroute_cta_modules')}
+                      <ArrowRight size={14} strokeWidth={2.4} className="rtl-flip" aria-hidden />
+                    </a>
+                  )}
 
-                    {block.lessons.length === 0
-                      ? <p className="cb-intro m-0">{t('block_empty')}</p>
-                      : (
-                        <ul className="cb-lessons">
-                          {block.lessons.map(les => {
-                            // Gratis lessen zijn de etalage; de rest zit achter de module. Een
-                            // niet-gekochte les wordt gerenderd als aanbod en niet weggelaten —
-                            // anders lijkt de cursus korter dan hij is.
-                            const openable = owned || les.is_free;
-                            const href = openable
-                              ? `/${locale}${lessonPath(level, skill.slug, les.slug)}`
-                              : `/${locale}/dashboard/pakketten?onderdeel=${level}:${skill.slug}&vanaf=leren-${les.slug}`;
-                            const done = les.progress?.state === 'done';
-                            return (
-                              <li key={les.id}>
-                                <a href={href} className="les-row">
+                  {block.lessons.length === 0
+                    ? <p className="gl-block-intro">{t('block_empty')}</p>
+                    : (
+                      <ul className="gl-lessons">
+                        {block.lessons.map(les => {
+                          // Gratis lessen zijn de etalage; de rest zit achter de module. Een
+                          // niet-gekochte les wordt gerenderd als aanbod en niet weggelaten —
+                          // anders lijkt de cursus korter dan hij is.
+                          const openable = owned || les.is_free;
+                          const href = openable
+                            ? `/${locale}${lessonPath(level, skill.slug, les.slug)}`
+                            : `/${locale}/dashboard/pakketten?onderdeel=${level}:${skill.slug}&vanaf=leren-${les.slug}`;
+                          const done = les.progress?.state === 'done';
+                          return (
+                            <li key={les.id}>
+                              <a href={href} className={`gl-les${done ? ' is-done' : ''}${openable ? '' : ' is-locked'}`}>
+                                <span className="gl-les-ic" aria-hidden>
                                   {done
-                                    ? <Check size={15} strokeWidth={3} className="les-done" />
-                                    : !openable
-                                      ? <Lock size={13} strokeWidth={2.5} className="text-outline shrink-0" />
-                                      : <span className="w-[15px] shrink-0" aria-hidden />}
-                                  <span className="truncate">{les.title}</span>
-                                  {les.minutes != null && (
-                                    <span className="les-min">{t('minutes', { n: les.minutes })}</span>
-                                  )}
-                                </a>
-                              </li>
-                            );
-                          })}
-                        </ul>
-                      )}
-
-                    {block.outcomes.length > 0 && (
-                      <div className="outcomes">
-                        <span className="mini-label">{t('outcomes_head')}</span>
-                        <ul>
-                          {block.outcomes.map((o, i) => (
-                            <li key={i}><Check size={14} strokeWidth={3} /> {o.text}</li>
-                          ))}
-                        </ul>
-                      </div>
+                                    ? <Check size={12} strokeWidth={3} />
+                                    : !openable ? <Lock size={12} strokeWidth={2.5} /> : null}
+                                </span>
+                                <span className="gl-les-t">{les.title}</span>
+                                {les.minutes != null && (
+                                  <span className="g-mono gl-les-m">{t('minutes', { n: les.minutes })}</span>
+                                )}
+                              </a>
+                            </li>
+                          );
+                        })}
+                      </ul>
                     )}
-                  </li>
-                );
-              })}
-            </ol>
 
-            {!owned && (
-              <p className="mt-6 text-sm text-on-surface-variant" style={{ lineHeight: 1.65 }}>
-                {tPortal('locked_note')}
-              </p>
-            )}
+                  {block.outcomes.length > 0 && (
+                    <div className="gl-outcomes">
+                      <span className="g-mono">{t('outcomes_head')}</span>
+                      <ul>
+                        {block.outcomes.map((o, i) => (
+                          <li key={i}><Check size={14} strokeWidth={3} aria-hidden /> {o.text}</li>
+                        ))}
+                      </ul>
+                    </div>
+                  )}
+                </li>
+              );
+            })}
+          </ol>
 
-            </div>
-
-            <aside className="ov-side">
-              <section className="ov-card ov-total">
-                <span className="ov-kick">{tPortal('mod_learn')}</span>
-                <div className="ov-total-top">
-                  <b>{pct}%</b>
-                </div>
-                <span className="ov-rail" aria-hidden><i style={{ width: `${pct}%` }} /></span>
-                <p className="ov-note">
-                  {t('course_progress', {
-                    done: blocks.reduce((n, b) => n + blockProgress(b).done, 0),
-                    total: blocks.reduce((n, b) => n + b.lessons.length, 0),
-                  })}
-                </p>
-              </section>
-            </aside>
-          </div>
+          {!owned && <p className="gl-note">{tPortal('locked_note')}</p>}
         </div>
       </div>
     </AppShell>

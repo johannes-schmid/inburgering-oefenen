@@ -21,5 +21,6 @@ export { PassChanceDial, PassChanceLabel, PassChanceCard, type PassChanceLevel }
 export { default as StatTile } from './StatTile';
 export { default as AnimatedNumber } from './AnimatedNumber';
 export { default as LogoLoader } from './LogoLoader';
+export { default as ValidationSeal } from './ValidationSeal';
 export { default as ExamMark, type Track } from '@/components/horizon/ExamMark';
 export { default as CategoryMark, type Category } from '@/components/horizon/CategoryMark';

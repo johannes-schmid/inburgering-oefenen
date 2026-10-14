@@ -15,6 +15,7 @@ import type { StreamLabels } from '@/components/lessons/LessonStream';
 export async function lessonStreamLabels(): Promise<StreamLabels> {
   const t = await getTranslations('lessons');
   const tg = await getTranslations('grammar');
+  const to = await getTranslations('oefenen');
   return {
     check: t('check'),
     correct: t('correct'),
@@ -59,6 +60,8 @@ export async function lessonStreamLabels(): Promise<StreamLabels> {
       noMic: t('rec_no_mic'),
       noRecorder: t('rec_no_recorder'),
       seconds: t('rec_seconds'),
+      play: t('rec_play'),
+      pause: t('rec_pause'),
     },
     sayAfter: t('say_after'),
     sayFocus: t('say_focus'),
@@ -68,5 +71,6 @@ export async function lessonStreamLabels(): Promise<StreamLabels> {
       soon: tg('video_soon'),
       soonSub: null,
     },
+    yourAnswer: to('review_your_answer'),
   };
 }

@@ -1,7 +1,7 @@
 'use client';
 
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import { Mic, Square, RotateCcw } from 'lucide-react';
+import { Mic, Pause, Play, RotateCcw } from 'lucide-react';
 import { WavRecorder, canRecordWav } from '@/lib/wav-recorder';
 import {
   RealtimeTranscriber,
@@ -48,6 +48,9 @@ export type RecorderLabels = {
   noMic: string;
   noRecorder: string;
   seconds: string;
+  /** De knop van je eigen opname. Weglaten valt terug op Nederlands. */
+  play?: string;
+  pause?: string;
 };
 
 type Props = {
@@ -63,6 +66,9 @@ export default function LessonRecorder({ limit, labels, onRecorded, disabled }: 
   const [recording, setRecording] = useState(false);
   const [elapsed, setElapsed] = useState(0);
   const [level, setLevel] = useState(0);
+  /** De laatste vijftien niveaus, voor de staafjes in de knop. Een ref en geen state: `level`
+      rendert al per frame. */
+  const levels = useRef<number[]>(Array(15).fill(0));
   const [blob, setBlob] = useState<Blob | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [transcript, setTranscript] = useState('');
@@ -140,7 +146,9 @@ export default function LessonRecorder({ limit, labels, onRecorded, disabled }: 
           transcriberRef.current?.pushPcm(frame);
           let sum = 0;
           for (let i = 0; i < frame.length; i++) sum += frame[i] * frame[i];
-          setLevel(Math.min(1, Math.sqrt(sum / frame.length) * 4));
+          const lv = Math.min(1, Math.sqrt(sum / frame.length) * 4);
+          levels.current = [...levels.current.slice(1), lv];
+          setLevel(lv);
         },
       });
     } catch {
@@ -163,43 +171,60 @@ export default function LessonRecorder({ limit, labels, onRecorded, disabled }: 
   }
 
   const remaining = Math.max(limit - elapsed, 0);
+  /* De ring in de knop loopt vol over de toegestane tijd. 2πr bij r=20. */
+  const C = 125.66;
+  const filled = Math.min(1, elapsed / Math.max(1, limit)) * C;
 
+  /**
+   * Glas §10/§11 "rustig, met één duidelijke knop": één grote navy pil "Start opname". Tijdens
+   * het opnemen blijft hij op dezelfde plek staan, wordt wit, en toont de tijd in de ring en het
+   * niveau in de staafjes. Geen puls en geen oranje vlak; alleen het kleine oranje stipje zegt
+   * dat er opgenomen wordt. Daarna: zelf terugluisteren en eventueel opnieuw. Er wordt niets
+   * nagekeken en niets verstuurd — zie de kop van dit bestand.
+   */
   return (
     <div className="rec">
-      <div className="rec-row">
-        {recording ? (
-          <button type="button" className="rec-btn is-live" onClick={() => void stop()}>
-            <Square size={13} strokeWidth={3} /> {labels.stop}
-          </button>
-        ) : (
-          <button type="button" className="rec-btn" onClick={() => void start()} disabled={disabled}>
-            {blob
-              ? <><RotateCcw size={14} strokeWidth={2.5} /> {labels.again}</>
-              : <><Mic size={14} strokeWidth={2.5} /> {labels.record}</>}
-          </button>
+      {!previewUrl || recording
+        ? (
+          <div className="rec-stage">
+            {recording ? (
+              <button type="button" className="rec-big is-live" onClick={() => void stop()} aria-label={labels.stop}>
+                <span className="rec-big-mc" aria-hidden>
+                  <svg width="44" height="44" viewBox="0 0 44 44">
+                    <circle cx="22" cy="22" r="20" fill="none" stroke="rgba(0,43,109,.12)" strokeWidth="3" />
+                    <circle
+                      cx="22" cy="22" r="20" fill="none" stroke="#002b6d" strokeWidth="3" strokeLinecap="round"
+                      strokeDasharray={`${filled.toFixed(1)} ${C}`}
+                    />
+                  </svg>
+                  <i />
+                </span>
+                <span className="rec-dot" aria-hidden />
+                <span className="rec-big-time g-tnum">{remaining} {labels.seconds}</span>
+                <span className="rec-big-lv" aria-hidden>
+                  {levels.current.map((v, i) => <i key={i} style={{ transform: `scaleY(${Math.max(0.12, v).toFixed(2)})` }} />)}
+                </span>
+                <span className="rec-big-stop">{labels.stop}</span>
+              </button>
+            ) : (
+              <button type="button" className="rec-big" onClick={() => void start()} disabled={disabled}>
+                <span className="rec-big-mc" aria-hidden><Mic size={20} strokeWidth={2.4} /></span>
+                {labels.record}
+              </button>
+            )}
+            {recording && <span className="sr-only" aria-live="polite">{labels.recording}</span>}
+          </div>
+        )
+        : (
+          <div className="rec-stage">
+            <RecPlayback src={previewUrl} play={labels.play ?? 'Opname afspelen'} pause={labels.pause ?? 'Pauzeren'} />
+            <button type="button" className="g-btn g-btn-ghost g-btn-sm" onClick={() => void start()} disabled={disabled}>
+              <RotateCcw size={14} strokeWidth={2.5} aria-hidden /> {labels.again}
+            </button>
+          </div>
         )}
 
-        {recording && (
-          <>
-            {/* De niveaumeter komt uit de frames die de recorder tóch al maakt, dus hij toont
-                de audio die daadwerkelijk wordt opgenomen en niet de mening van een tweede
-                analyser. `transform` en niet `width`: alleen transform en opacity mogen
-                animeren. */}
-            <span className="rec-meter" aria-hidden="true">
-              <i style={{ transform: `scaleX(${Math.max(0.04, level)})` }} />
-            </span>
-            <span className="rec-time">
-              {labels.recording} · {remaining} {labels.seconds}
-            </span>
-          </>
-        )}
-
-        {!recording && previewUrl && (
-          <audio className="rec-play" controls preload="metadata" src={previewUrl} />
-        )}
-      </div>
-
-      {error && <p className="rec-error">{error}</p>}
+      {error && <p className="rec-error" role="alert">{error}</p>}
 
       {(transcript || (recording && sttState === 'listening')) && (
         <div className="rec-heard">
@@ -209,6 +234,48 @@ export default function LessonRecorder({ limit, labels, onRecorded, disabled }: 
         </div>
       )}
 
+    </div>
+  );
+}
+
+/**
+ * Je eigen opname terughoren: één ronde knop en een balk die volloopt. De blob blijft in het
+ * tabblad (`URL.createObjectURL`); dit is een gewoon `<audio>`-element zonder eigen chrome.
+ */
+function RecPlayback({ src, play, pause }: { src: string; play: string; pause: string }) {
+  const ref = useRef<HTMLAudioElement>(null);
+  const [playing, setPlaying] = useState(false);
+  const [pct, setPct] = useState(0);
+  const [dur, setDur] = useState(0);
+  return (
+    <div className="rec-play-row">
+      <button
+        type="button"
+        className="rec-pb"
+        aria-label={playing ? pause : play}
+        onClick={() => {
+          const a = ref.current;
+          if (!a) return;
+          if (a.paused) void a.play(); else a.pause();
+        }}
+      >
+        {playing ? <Pause size={18} strokeWidth={2.4} aria-hidden /> : <Play size={18} strokeWidth={2.4} aria-hidden />}
+      </button>
+      <span className="rec-play-bar" aria-hidden><i style={{ transform: `scaleX(${pct})` }} /></span>
+      <span className="rec-play-t g-mono g-tnum">{dur > 0 ? `${Math.floor(Math.round(dur) / 60)}:${String(Math.round(dur) % 60).padStart(2, '0')}` : ''}</span>
+      <audio
+        ref={ref}
+        src={src}
+        preload="metadata"
+        onPlay={() => setPlaying(true)}
+        onPause={() => setPlaying(false)}
+        onEnded={() => { setPlaying(false); setPct(0); }}
+        onTimeUpdate={e => {
+          const a = e.currentTarget;
+          if (Number.isFinite(a.duration) && a.duration > 0) setPct(a.currentTime / a.duration);
+        }}
+        onLoadedMetadata={e => { if (Number.isFinite(e.currentTarget.duration)) setDur(e.currentTarget.duration); }}
+      />
     </div>
   );
 }

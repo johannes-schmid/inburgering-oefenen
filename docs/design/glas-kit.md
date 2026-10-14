@@ -184,6 +184,12 @@ wonen gezondheid werk` (+ aliassen `grammatica`, `examentraining`).
 - Alleen voor het laden van een hele pagina (`loading.tsx`); een knop of kaart krijgt een skelet.
 - Eigen reduced-motion-regel: dan een stil, compleet logo.
 
+### `ValidationSeal` — glas.html §07 `.seal`
+`<ValidationSeal sub="NT2-gecertificeerd docent">Nagekeken door …</ValidationSeal>` (`glass` op een veld)
+- Pil met een schildje in klei-tint en de bewering vet in navy. Vervangt `ValidationChip` op herbouwde schermen.
+- **Eén keer per pagina.** Tekst via i18n of uit de database; altijd wie nakeek, nooit "geen AI".
+- Niet voor ONA zolang `isOnaReviewed()` onwaar is (dan staat er `ona.draft_notice`).
+
 ## Footer
 
 `components/Footer.tsx` is **F1 "licht glas"** (glas.html §13): `Field variant="licht"` met een
