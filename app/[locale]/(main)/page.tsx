@@ -360,7 +360,7 @@ export default async function HomePage({ params }: Props) {
             </ul>
           </div>
 
-          <div className="g-scene" aria-hidden="true">
+          <div className="g-scene" aria-hidden="true" dir="ltr" lang="nl">
             <div className="g-glass g-glass-strong" style={{ insetInlineStart: 0, top: 6, width: '78%', padding: 18 }}>
               <div className="flex items-center justify-between">
                 <span className="g-mono">Lezen A2 · vraag 4</span>
@@ -383,7 +383,7 @@ export default async function HomePage({ params }: Props) {
             </div>
             <div className="g-glass g-glass-strong flex items-center gap-3" style={{ insetInlineStart: '6%', top: 352, width: '62%', padding: '12px 14px' }}>
               <span className="size-[38px] rounded-full bg-navy text-white flex items-center justify-center shrink-0">
-                <Play className="size-4 rtl-flip" fill="currentColor" />
+                <Play className="size-4" fill="currentColor" />
               </span>
               <span className="flex items-center gap-[3px] h-7 flex-1 overflow-hidden">
                 {WAVE.map((h, i) => (

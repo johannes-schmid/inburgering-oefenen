@@ -332,6 +332,8 @@
   .g-block { border-radius: var(--r-xl); overflow: hidden; }
   .g-hero { padding-top: calc(var(--nav-h) + 40px); padding-bottom: 72px; margin-top: calc(var(--nav-h) * -1); }
   @media (min-width: 860px) { .g-hero { padding-top: calc(var(--nav-h) + 72px); padding-bottom: 120px; } }
+  /* De gloed staat aan de kant tegenover de tekst; in RTL spiegelt het veld mee met de sluier. */
+  [dir="rtl"] .g-hero.g-field::before { transform: scaleX(-1); }
   .g-hero-grid { display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr); gap: 40px; align-items: center; }
   @media (max-width: 960px) { .g-hero-grid { grid-template-columns: minmax(0, 1fr); } }
   .g-hero h1 { font-family: var(--font-headline); font-size: clamp(38px, 5vw, 64px); line-height: 1.02; letter-spacing: -0.05em; font-weight: 700; color: var(--navy); margin: 22px 0 0; text-wrap: balance; }
