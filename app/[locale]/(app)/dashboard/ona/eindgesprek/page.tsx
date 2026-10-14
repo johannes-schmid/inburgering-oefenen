@@ -10,6 +10,7 @@ import { fetchOnaState } from '@/lib/ona/server';
 import { isAnswered } from '@/lib/ona/rules';
 import { fetchPortalMenu } from '@/lib/portal-menu';
 import AppShell from '../../../components/AppShell';
+import '@/app/glas-leerlaag.css';
 import PortalCrumbs from '../../../components/PortalCrumbs';
 import Practice from './Practice';
 
@@ -56,7 +57,7 @@ export default async function OnaPracticePage({ params }: Props) {
       activeGroup="ona"
       menu={menu}
     >
-      <div className="px-5 py-7 sm:px-8 sm:py-10">
+      <div className="g-leer gl-shell">
         <div className="max-w-6xl mx-auto ona">
           <PortalCrumbs
             trail={[
@@ -67,7 +68,7 @@ export default async function OnaPracticePage({ params }: Props) {
           />
           {!isOnaReviewed() && <p className="ona-notice" role="note">{t('draft_notice')}</p>}
           <header>
-            <h1 style={{ fontFamily: 'var(--font-headline)', fontWeight: 800, fontSize: 'clamp(1.75rem, 3.4vw, 2.35rem)', lineHeight: 1.1, letterSpacing: '-0.02em', color: 'var(--color-primary)', margin: 0 }}>
+            <h1 className="g-head gl-ona-h1">
               {t('gesprek_title')}
             </h1>
             <p className="ona-body" style={{ marginTop: 8, maxWidth: '62ch', color: 'var(--color-on-surface-variant)' }}>

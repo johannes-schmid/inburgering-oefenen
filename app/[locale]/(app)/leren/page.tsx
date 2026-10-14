@@ -9,6 +9,7 @@ import { THEMAS } from '@/data/leren';
 import CategoryMark from '@/components/horizon/CategoryMark';
 import AppShell from '../components/AppShell';
 import { fetchPortalMenu } from '@/lib/portal-menu';
+import '@/app/glas-leerlaag.css';
 
 /**
  * The index of KNM's seven lesson modules.
@@ -51,21 +52,17 @@ export default async function LerenIndexPage({ params }: Props) {
       activeGroup="knm"
       menu={menu}
     >
-      <div className="px-5 py-7 sm:px-8 sm:py-10">
-        <div className="max-w-3xl mx-auto">
-          <header className="mb-7">
-            <h1
-              className="font-headline font-extrabold text-on-surface"
-              style={{ fontSize: 'clamp(1.5rem,3.2vw,1.95rem)', letterSpacing: '-0.03em' }}
-            >
-              {t('leren_title')}
-            </h1>
-            <p className="text-sm text-on-surface-variant mt-1.5" style={{ lineHeight: 1.65, maxWidth: '58ch' }}>
-              {t('leren_lede')}
-            </p>
+      <div className="g-leer gl-shell">
+        <div className="gl-course gl-narrow">
+          <header className="gl-course-title">
+            <CategoryMark category="knm" size={64} />
+            <div>
+              <h1 className="g-head gl-title">{t('leren_title')}</h1>
+              <p className="gl-learn">{t('leren_lede')}</p>
+            </div>
           </header>
 
-          <ol className="flex flex-col gap-2.5 list-none p-0 m-0">
+          <ol className="gl-themes">
             {THEMAS.map((thema, i) => {
               /**
                * Thema 1 is open to everyone with an account — the same shape as exam 1 being
@@ -80,14 +77,14 @@ export default async function LerenIndexPage({ params }: Props) {
 
               return (
                 <li key={thema.slug}>
-                  <a href={href} className={`leren-row no-underline${openable ? '' : ' is-locked'}`}>
-                    <CategoryMark category="knm" size={34} />
-                    <span className="min-w-0 flex-1">
-                      <span className="leren-title">{thema.title}</span>
-                      <span className="leren-sub">{t('sections_count', { count: thema.sections.length })}</span>
+                  <a href={href} className={`gl-next gl-theme${openable ? '' : ' is-locked'}`}>
+                    <span className="gl-L">{i + 1}</span>
+                    <span className="gl-next-copy">
+                      <b>{thema.title}</b>
+                      <span className="gl-theme-sub">{t('sections_count', { count: thema.sections.length })}</span>
                     </span>
-                    <span className="leren-action" aria-hidden="true">
-                      {openable ? <ArrowRight size={16} strokeWidth={2.3} /> : <Lock size={16} strokeWidth={2.1} />}
+                    <span className="gl-next-go" aria-hidden>
+                      {openable ? <ArrowRight size={17} strokeWidth={2.4} className="rtl-flip" /> : <Lock size={15} strokeWidth={2.3} />}
                     </span>
                   </a>
                 </li>
@@ -96,19 +93,6 @@ export default async function LerenIndexPage({ params }: Props) {
           </ol>
         </div>
       </div>
-
-      <style>{`
-        .leren-row { display:flex; align-items:center; gap:14px; padding:14px 16px; background:#fff; border:1.5px solid var(--color-surface-container-high); border-radius:14px; box-shadow:var(--shadow-card); transition:transform .2s cubic-bezier(0.22,1,0.36,1), box-shadow .2s ease, border-color .2s ease; }
-        .leren-row:hover { transform:translateY(-2px); border-color:#b8cef5; box-shadow:0 8px 22px rgba(0,43,109,0.11); }
-        .leren-row:focus-visible { outline:2px solid var(--color-secondary-container); outline-offset:2px; }
-        .leren-row.is-locked { background:var(--color-surface-container-low); }
-        .leren-row.is-locked:hover { border-color:#fdc9a3; box-shadow:0 8px 22px rgba(254,118,44,0.14); }
-        .leren-title { display:block; font-family:var(--font-headline); font-size:0.94rem; font-weight:700; color:var(--color-on-surface); letter-spacing:-0.01em; }
-        .leren-sub { display:block; font-size:0.76rem; color:var(--color-outline); margin-top:2px; }
-        .leren-action { display:flex; align-items:center; justify-content:center; flex-shrink:0; min-width:34px; height:34px; color:var(--color-primary); }
-        .leren-row.is-locked .leren-action { color:var(--color-outline); }
-        @media (prefers-reduced-motion: reduce) { .leren-row { transition:none; } .leren-row:hover { transform:none; } }
-      `}</style>
     </AppShell>
   );
 }

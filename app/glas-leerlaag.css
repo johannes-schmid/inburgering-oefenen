@@ -579,6 +579,7 @@
 @media (min-width: 860px) { .gl-course-head { grid-template-columns: minmax(0, 1fr) 17rem; } }
 .gl-course-title { display: flex; gap: 16px; align-items: flex-start; padding: 22px; border-radius: var(--r-xl); background: #fff; }
 .gl-course-title .gl-learn { margin-top: 8px; font-size: 15px; }
+@media (max-width: 560px) { .gl-course-title { flex-direction: column; gap: 12px; } }
 .gl-total { display: flex; flex-direction: column; gap: 6px; padding: 18px 20px; border-radius: var(--r-xl); background: var(--nacht); color: #fff; }
 .gl-total .g-mono { color: rgba(255, 255, 255, 0.62); }
 .gl-total b { font-family: var(--font-headline); font-weight: 800; font-size: 44px; letter-spacing: -0.05em; line-height: 1; }
@@ -657,9 +658,172 @@
 .gl-mastery-dl dt { color: var(--ink-2); }
 .gl-mastery-dl dd { margin: 0; font-weight: 700; color: var(--ink); }
 
+/* ── woordkaarten van de leerlaag (WordDeck · glas.html §11 .wcard) ───────────────────────────── */
+.gl-wordhead { flex-direction: row; align-items: center; gap: 14px; padding-top: 14px; }
+.gl-wordhead .gl-title { margin: 0 0 4px; font-size: clamp(26px, 3vw, 34px); }
+.g-leer .wd-stage { margin-top: 14px; padding: 18px; border-radius: var(--r-xl); background: #fff; }
+@media (min-width: 640px) { .g-leer .wd-stage { padding: 22px 24px; } }
+.g-leer .wd-keys { font-size: 12.5px; color: var(--ink-3); }
+.g-leer .wd-count, .g-leer .wd-known, .g-leer .wd-status {
+  font-family: var(--glas-mono); font-size: 11.5px; font-weight: 500; letter-spacing: 0.08em; text-transform: uppercase;
+}
+.g-leer .wd-close { width: 34px; height: 34px; border-radius: 50%; align-items: center; justify-content: center; background: var(--mist); color: var(--navy); }
+.g-leer .wd-close:hover { background: var(--mist-2); }
+.g-leer .wd-close:focus-visible { outline: none; box-shadow: var(--glas-focus); }
+.g-leer .wd-bar { background: rgba(0, 43, 109, 0.09); }
+.g-leer .wd-bar > span { background: var(--navy); }
+.g-leer .wd-card {
+  border-radius: var(--r-xl); background: var(--g-nevel); box-shadow: none;
+  transition: transform 180ms var(--ease-out-glas);
+}
+.g-leer .wd-card:hover { transform: translateY(-2px); box-shadow: none; }
+.g-leer .wd-card:active { transform: scale(0.99); }
+.g-leer .wd-card:focus-visible { outline: none; box-shadow: var(--glas-focus); }
+.g-leer .wd-card.is-back { background: var(--mist); }
+.g-leer .wd-pane-img { background: var(--mist-2); }
+.g-leer .wd-chip { font-family: var(--glas-mono); font-weight: 500; }
+.g-leer .wd-chip-art { font-family: var(--font-headline); font-weight: 700; background: rgba(255, 255, 255, 0.7); color: var(--ink-3); }
+.g-leer .wd-receptief { background: rgba(0, 43, 109, 0.08); color: var(--navy); }
+.g-leer .wd-productief { background: var(--klei-tint); color: var(--klei); }
+.g-leer .wd-word { font-size: clamp(32px, 4.6vw, 44px); letter-spacing: -0.04em; color: var(--navy); }
+.g-leer .wd-flip-pill { background: rgba(255, 255, 255, 0.7); color: var(--navy); }
+.g-leer .wd-speed { background: rgba(255, 255, 255, 0.7); }
+.g-leer .wd-speed.is-on { background: var(--navy); color: #fff; }
+.g-leer .wd-eq { box-shadow: none; }
+.g-leer .wd-eq:focus-visible, .g-leer .wd-speed:focus-visible, .g-leer .wd-toggle:focus-visible,
+.g-leer .wd-lang:focus-visible, .g-leer .wd-arrow:focus-visible, .g-leer .wd-btn:focus-visible { outline: none; box-shadow: var(--glas-focus); }
+.g-leer .wd-trans { background: linear-gradient(rgba(0, 43, 109, 0.1), rgba(0, 43, 109, 0.1)) top / 100% 1px no-repeat; }
+.g-leer .wd-marks { gap: 10px; margin-top: 12px; }
+.g-leer .wd-btn {
+  height: 48px; padding: 0 22px; border-radius: var(--r-pill); font-family: var(--font-headline); font-weight: 700; font-size: 15px;
+  transition: transform 160ms var(--ease-out-glas), background-color 160ms ease;
+}
+.g-leer .wd-btn:active { transform: scale(0.97); }
+.g-leer .wd-btn-learn { background: #fff; color: var(--navy); box-shadow: inset 0 0 0 1.5px rgba(0, 43, 109, 0.22); }
+.g-leer .wd-btn-learn:hover { background: var(--mist); }
+.g-leer .wd-btn-known { background: var(--navy); color: #fff; }
+.g-leer .wd-btn-known:hover { background: var(--navy-2); }
+.g-leer .wd-btn-p { background: var(--navy); color: #fff; box-shadow: none; }
+.g-leer .wd-arrow { border-radius: 50%; background: var(--mist); color: var(--navy); }
+.g-leer .wd-arrow:hover:not(:disabled) { background: var(--mist-2); }
+.g-leer .wd-status-known { color: var(--goed-ink); }
+.g-leer .wd-status-learning { color: var(--fout); }
+.g-leer .wd-toggle, .g-leer .wd-lang { background: var(--mist); color: var(--navy); }
+.g-leer .wd-toggle.is-on { background: var(--navy); color: #fff; }
+.g-leer .wd-done { border-radius: var(--r-xl); background: var(--mist); }
+.g-leer .wd-done-h { color: var(--navy); }
+.g-leer .wd-link { color: var(--navy); }
+
+/* De voortgang per thema (WordSideNav). */
+.g-leer .wsn-prog { background: var(--mist); border-radius: var(--r-lg); }
+.g-leer .gt-mobile-course .wsn-prog { background: #fff; }
+.g-leer .wsn-prog-title { font-family: var(--glas-mono); font-weight: 500; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-2); }
+.g-leer .wsn-prog-num b { color: var(--navy); }
+.g-leer .wsn-prog .gt-rail > i { background: var(--navy); }
+.g-leer .wsn-bar { background: rgba(0, 43, 109, 0.09); }
+.g-leer .wsn-bar > i { background: var(--navy); }
+.g-leer .wsn-course { color: var(--navy); border-radius: var(--r-pill); }
+.g-leer .wsn-course:focus-visible { outline: none; box-shadow: var(--glas-focus); }
+
+/* ── ONA · portfolio (glas.html §11 "ONA") ─────────────────────────────────────────────────────
+   De markup en de klassen blijven (`ona-*`, portal.css); hier krijgen ze het Glas-uiterlijk. De
+   conceptmelding (`ona.draft_notice`) is het klei-vlak bovenaan; zolang `isOnaReviewed()` onwaar
+   is staat er géén docentzegel. */
+.g-leer .ona { gap: 14px; }
+.g-leer .gl-ona-h1 {
+  margin: 0; font-family: var(--font-headline); font-weight: 700; font-size: clamp(28px, 3.4vw, 40px);
+  line-height: 1.08; letter-spacing: -0.035em; color: var(--ink); text-wrap: balance;
+}
+.g-leer .ona-panel { border-radius: var(--r-xl); background: #fff; }
+.g-leer .ona-panel.tier { background: var(--mist-2); }
+.g-leer .ona-panel.gl-ona-guest { background: #fff; }
+.g-leer .ona-pair .ona-checks .ok { color: var(--navy); }
+.g-leer .ona-h2 { font-weight: 700; font-size: 20px; letter-spacing: -0.02em; color: var(--ink); }
+.g-leer .ona-h3 { font-weight: 700; color: var(--ink); }
+.g-leer .ona-sub, .g-leer .ona-muted { color: var(--ink-2); }
+.g-leer .ona-title h1 { font-weight: 700; letter-spacing: -0.035em; color: var(--ink); }
+.g-leer .ona-facts { border-radius: var(--r-md); background: var(--mist); }
+.g-leer .ona-facts dt { font-family: var(--glas-mono); font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-2); }
+.g-leer .ona-facts dd { color: var(--navy); }
+.g-leer .ona-progress-row strong { color: var(--ink); }
+.g-leer .ona-segs { gap: 4px; }
+.g-leer .ona-segs > span { height: 10px; border-radius: 5px; background: rgba(0, 43, 109, 0.1); }
+.g-leer .ona-segs > span[data-s='klaar'] { background: var(--navy); }
+.g-leer .ona-segs > span[data-s='concept'] { background: repeating-linear-gradient(135deg, var(--navy) 0 4px, rgba(0, 43, 109, 0.35) 4px 8px); }
+.g-leer .ona-step { border-radius: var(--r-lg); background: var(--mist); }
+.g-leer .ona-num { background: var(--navy); }
+.g-leer .ona-checks .ok { color: var(--goed); }
+.g-leer .ona-checks .no { color: var(--fout); }
+.g-leer .ona-btn {
+  min-height: 48px; padding: 0 22px; border-radius: var(--r-pill); font-family: var(--font-headline); font-weight: 700;
+  transition: transform 160ms var(--ease-out-glas), background-color 160ms ease;
+}
+.g-leer .ona-btn.primary { background: var(--navy); color: #fff; box-shadow: none; }
+.g-leer .ona-btn.primary:hover { background: var(--navy-2); box-shadow: none; }
+.g-leer .ona-btn.secondary { background: #fff; color: var(--navy); box-shadow: inset 0 0 0 1.5px rgba(0, 43, 109, 0.22); }
+.g-leer .ona-step .ona-btn.secondary { background: #fff; }
+.g-leer .ona-btn.secondary:hover { background: var(--mist-2); }
+.g-leer .ona-btn:focus-visible, .g-leer .ona-card:focus-visible, .g-leer .ona-icon-btn:focus-visible,
+.g-leer .ona-chip:focus-visible, .g-leer .ona-option:focus-within { box-shadow: var(--glas-focus); }
+.g-leer .ona-icon-btn { border-radius: 50%; background: var(--mist); }
+.g-leer .ona-icon-btn:hover { background: var(--mist-2); }
+.g-leer .ona-grid { gap: 12px; }
+.g-leer .ona-card { border-radius: var(--r-lg); background: #fff; min-height: 150px; }
+.g-leer .ona-card.is-next { box-shadow: var(--glas-ring); }
+.g-leer .ona-card.is-locked { background: rgba(255, 255, 255, 0.55); }
+.g-leer .ona-card.is-locked h3 { color: var(--ink-2); }
+@media (hover: hover) and (pointer: fine) {
+  .g-leer .ona-card:hover { box-shadow: none; }
+  .g-leer .ona-card.is-next:hover { box-shadow: var(--glas-ring); }
+}
+.g-leer .ona-tile { border-radius: var(--r-xs); background: var(--tegel); color: var(--navy); }
+.g-leer .ona-card h3 { color: var(--ink); }
+.g-leer .ona-status { height: 28px; padding: 0 11px; font-size: 12.5px; font-weight: 600; }
+.g-leer .ona-status[data-s='klaar'] { background: var(--navy); color: #fff; }
+.g-leer .ona-status[data-s='concept'] { background: rgba(0, 43, 109, 0.08); color: var(--navy); }
+.g-leer .ona-status[data-s='leeg'] { background: var(--mist-2); color: var(--ink-2); }
+.g-leer .ona-status[data-s='locked'] { background: rgba(0, 43, 109, 0.08); color: var(--navy); }
+.g-leer .ona-links a { color: var(--navy); }
+.g-leer .ona-notice { border-radius: var(--r-md); background: var(--klei-tint); color: var(--klei); font-weight: 500; }
+.g-leer .ona-notice.info { background: rgba(0, 43, 109, 0.06); color: var(--navy); }
+.g-leer .ona-textarea, .g-leer .ona-input { border-radius: var(--r-md); background: var(--mist); color: var(--ink); }
+.g-leer .ona-textarea:hover { background: var(--mist-2); }
+.g-leer .ona-textarea:focus, .g-leer .ona-input:focus { background: #fff; box-shadow: inset 0 0 0 2px var(--navy); }
+.g-leer .ona-textarea[readonly] { background: var(--mist); }
+.g-leer .ona-flag { border-radius: var(--r-md); background: rgba(0, 43, 109, 0.06); }
+.g-leer .ona-flag svg, .g-leer .ona-flag strong { color: var(--navy); }
+.g-leer .ona-noflag { color: var(--goed-ink); }
+.g-leer .ona-option { border-radius: var(--r-md); background: var(--mist); }
+.g-leer .ona-option:hover { background: var(--mist-2); }
+.g-leer .ona-option.on { background: #fff; box-shadow: var(--glas-ring); }
+.g-leer .ona-bar { border-radius: var(--r-lg); background: var(--mist); }
+.g-leer .ona-msg .who { font-family: var(--glas-mono); font-weight: 500; font-size: 10.5px; letter-spacing: 0.06em; text-transform: uppercase; }
+.g-leer .ona-msg .bubble { background: var(--mist); border-radius: 18px 18px 18px 6px; font-size: 15px; }
+[dir="rtl"] .g-leer .ona-msg .bubble { border-radius: 18px 18px 6px 18px; }
+.g-leer .ona-msg.me .bubble { background: var(--navy); color: #fff; border-radius: 18px 18px 6px 18px; }
+[dir="rtl"] .g-leer .ona-msg.me .bubble { border-radius: 18px 18px 18px 6px; }
+.g-leer .ona-avatar { background: var(--navy); }
+.g-leer .ona-chip { border-radius: var(--r-pill); background: var(--mist); }
+.g-leer .ona-chip:hover { background: var(--mist-2); }
+.g-leer .ona-chip[aria-pressed='true'] { background: #fff; color: var(--navy); box-shadow: var(--glas-ring); }
+.g-leer .ona-fb li { border-radius: var(--r-md); background: var(--mist); }
+@media print {
+  .g-leer.gl-shell { padding: 0; }
+  .g-leer .ona-panel { background: #fff; }
+}
+
+/* ── KNM: lesmodules en woordkaarten (geërfde KNM-componenten; tokens hierboven doen het meeste) ── */
+.gl-narrow { max-width: 48rem; }
+.gl-themes { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 8px; }
+.gl-theme .gl-next-copy b { color: var(--ink); }
+.gl-theme-sub { font-size: 13px; color: var(--ink-2); }
+.gl-theme.is-locked { background: rgba(255, 255, 255, 0.55); }
+.gl-theme.is-locked .gl-L { background: var(--mist-2); color: var(--ink-2); }
+.gl-theme.is-locked:hover .gl-next-go { background: var(--mist-2); color: var(--navy); }
+
 /* ── reduced motion: alles op zijn eindstand ─────────────────────────────────────────────────── */
 @media (prefers-reduced-motion: reduce) {
-  .gl-back, .gl-les,
+  .g-leer .ona-btn, .gl-back, .gl-les, .g-leer .wd-card, .g-leer .wd-btn,
   .gl-dlg, .gl-dlg-bd, .gl-next, .gl-next-go, .gl-parts button, .gl-keys li > a, .gl-fold-chev,
   .g-leer .chip, .g-leer .exq-steps button, .g-leer .exq-nav button, .rec-big, .rec-pb, .rec-big-lv i,
   .rec-big.is-live .rec-big-mc svg circle:last-child, .g-leer .gap-input, .g-leer .open-input { transition: none; }
@@ -667,4 +831,13 @@
   .gl-verdict, .rec-dot { animation: none; }
   .gl-back:active, .gl-next:active, .rec-big:active, .rec-pb:active, .g-leer .chip:active:not(:disabled) { transform: none; }
   .g-leer .gl-next:hover .gl-next-go { transform: none; }
+}
+
+/* Arabisch: geen spatiëring tussen letters — die breekt het verbonden schrift. */
+[dir="rtl"] .g-leer .g-mono, [dir="rtl"] .g-leer .mini-label, [dir="rtl"] .g-leer .rp-kick, [dir="rtl"] .g-leer .dp-kick,
+[dir="rtl"] .g-leer .fc-label, [dir="rtl"] .g-leer .lv-kicker, [dir="rtl"] .g-leer .ex-tier, [dir="rtl"] .g-leer .exq-head span,
+[dir="rtl"] .g-leer .nar-kicker, [dir="rtl"] .g-leer .nc-lab, [dir="rtl"] .g-leer .gsn-label, [dir="rtl"] .g-leer .stg-name,
+[dir="rtl"] .g-leer .wd-count, [dir="rtl"] .g-leer .wd-known, [dir="rtl"] .g-leer .wd-status, [dir="rtl"] .g-leer .ona-facts dt,
+[dir="rtl"] .gl-dlg .g-mono, [dir="rtl"] .gl-dlg .ex-tier, [dir="rtl"] .gl-dlg .exq-head span {
+  letter-spacing: 0; font-family: var(--font-body);
 }

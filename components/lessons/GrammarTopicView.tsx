@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useMemo, useRef, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { Dialog } from '@base-ui/react/dialog';
 import { ArrowRight, ChevronDown, PenLine, X } from 'lucide-react';
 import CategoryMark, { type Category } from '@/components/horizon/CategoryMark';
@@ -308,12 +308,11 @@ function PracticeDialog({
   const [open, setOpen] = useState(false);
   /* Toetsenbord opent en sluit zonder beweging (G6). */
   const [instant, setInstant] = useState(false);
-  const opened = useRef(false);
 
   useEffect(() => {
-    if (opened.current) return;
-    opened.current = true;
-    if (window.location.hash === '#oefenen') { setInstant(true); setOpen(true); }
+    if (window.location.hash !== '#oefenen') return;
+    const id = window.setTimeout(() => { setInstant(true); setOpen(true); }, 0);
+    return () => window.clearTimeout(id);
   }, []);
 
   const sub = labels.practiceCtaSub.replace('{n}', String(part.exercises));

@@ -3,12 +3,13 @@ import { notFound, redirect } from 'next/navigation';
 import { getTranslations } from 'next-intl/server';
 import { ArrowRight, ChevronLeft, ChevronRight, ExternalLink, Lock } from 'lucide-react';
 import { createClient } from '@/lib/supabase/server';
-import { ValidationChip } from '@/components/horizon';
+import ValidationSeal from '@/components/glas/ValidationSeal';
 import { ONA_CARD_COUNT, getOnaCard } from '@/data/ona/cards';
 import { canOpenOnaCard, isOnaAvailable, isOnaReviewed } from '@/lib/ona/access';
 import { fetchOnaEntry, fetchOnaPortfolio } from '@/lib/ona/server';
 import { fetchPortalMenu } from '@/lib/portal-menu';
 import AppShell from '../../../../components/AppShell';
+import '@/app/glas-leerlaag.css';
 import PortalCrumbs from '../../../../components/PortalCrumbs';
 import CardEditor from './CardEditor';
 
@@ -61,7 +62,7 @@ export default async function OnaCardPage({ params }: Props) {
       activeGroup="ona"
       menu={menu}
     >
-      <div className="px-5 py-7 sm:px-8 sm:py-10">
+      <div className="g-leer gl-shell">
         <div className="max-w-6xl mx-auto ona">
           <PortalCrumbs
             trail={[
@@ -80,7 +81,7 @@ export default async function OnaCardPage({ params }: Props) {
                 <p className="ona-sub" style={{ margin: 0 }}>
                   {t('card_of', { n: card.number, total: ONA_CARD_COUNT, beroep: portfolio.beroep })}
                 </p>
-                <h1 style={{ fontFamily: 'var(--font-headline)', fontWeight: 800, fontSize: 'clamp(1.75rem, 3.4vw, 2.35rem)', lineHeight: 1.1, letterSpacing: '-0.02em', color: 'var(--color-primary)', margin: '2px 0 0' }}>
+                <h1 className="g-head gl-ona-h1">
                   {card.title}
                 </h1>
               </div>
@@ -116,7 +117,7 @@ export default async function OnaCardPage({ params }: Props) {
                       {t('duo_pdf')}
                       <ExternalLink size={14} strokeWidth={2.2} aria-hidden />
                     </a>
-                    {isOnaReviewed() && <ValidationChip className="self-start">{t('validation')}</ValidationChip>}
+                    {isOnaReviewed() && <ValidationSeal className="self-start">{t('validation')}</ValidationSeal>}
                   </section>
                 </>
               }

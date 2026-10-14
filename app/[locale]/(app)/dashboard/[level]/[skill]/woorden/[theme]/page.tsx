@@ -13,6 +13,8 @@ import AppShell from '../../../../../components/AppShell';
 import WordDeck from '../../../../_components/WordDeck';
 import { closeTrail } from '@/lib/portal-crumbs';
 import PortalCrumbs from '../../../../../components/PortalCrumbs';
+import CategoryMark from '@/components/horizon/CategoryMark';
+import '@/app/glas-leerlaag.css';
 
 type Props = { params: Promise<{ locale: string; level: string; skill: string; theme: string }> };
 
@@ -87,7 +89,7 @@ export default async function WoordThemaPage({ params }: Props) {
       menu={menu}
       isGuest={false}
     >
-      <div className="px-5 py-6 sm:px-8 sm:py-8">
+      <div className="g-leer gl-shell">
         <div className="gt-page">
           <div className="gt-grid">
           <aside className="gt-side-nav">
@@ -111,11 +113,11 @@ export default async function WoordThemaPage({ params }: Props) {
           </aside>
 
           <main className="min-w-0">
-            <section className="gh is-solo">
-              <div className="gh-copy">
-                {/* Het kruimelpad draagt de andere thema's als zusjes: op een telefoon is de
-                    kolom ernaast er niet, en dan is dit de enige weg naar een ander thema. */}
-                <div className="gh-crumbs">
+            <section className="gl-page">
+              {/* Het kruimelpad draagt de andere thema's als zusjes: op een telefoon is de
+                  kolom ernaast er niet, en dan is dit de enige weg naar een ander thema. */}
+              <div className="gl-bar">
+                <div className="gl-crumbs">
                   <PortalCrumbs
                     trail={closeTrail(
                       [
@@ -132,11 +134,13 @@ export default async function WoordThemaPage({ params }: Props) {
                     )}
                   />
                 </div>
-                <p className="gh-kick">{t('words_head')}</p>
-                <h1 className="gh-title">{themeLabel(wordTheme.slug)}</h1>
-                <p className="gh-learn">
-                  {t('words_theme_count', { n: wordTheme.words.length })}
-                </p>
+              </div>
+              <div className="gl-in gl-wordhead">
+                <CategoryMark category="woorden" size={44} />
+                <div>
+                  <h1 className="g-head gl-title">{themeLabel(wordTheme.slug)}</h1>
+                  <p className="g-mono">{t('words_head')} · {t('words_theme_count', { n: wordTheme.words.length })}</p>
+                </div>
               </div>
             </section>
 

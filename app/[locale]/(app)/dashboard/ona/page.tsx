@@ -4,7 +4,8 @@ import { getTranslations } from 'next-intl/server';
 import { ArrowRight, Check, ExternalLink, Pencil, Printer, X } from 'lucide-react';
 import { createClient } from '@/lib/supabase/server';
 import { ownsOna } from '@/lib/entitlements';
-import { ExamMark, ValidationChip } from '@/components/horizon';
+import { ExamMark } from '@/components/horizon';
+import ValidationSeal from '@/components/glas/ValidationSeal';
 import { ONA_CARDS, ONA_CARD_COUNT, ONA_INFO_URL } from '@/data/ona/cards';
 import { canOpenOnaCard, isOnaAvailable, isOnaReviewed } from '@/lib/ona/access';
 import { fetchOnaState } from '@/lib/ona/server';
@@ -12,6 +13,7 @@ import { cardProgress, duoCheck, nextCardNo } from '@/lib/ona/rules';
 import { fetchTraject } from '@/lib/portal-traject';
 import { fetchPortalMenu } from '@/lib/portal-menu';
 import AppShell from '../../components/AppShell';
+import '@/app/glas-leerlaag.css';
 import PortalCrumbs from '../../components/PortalCrumbs';
 
 /**
@@ -73,7 +75,7 @@ export default async function OnaOverviewPage({ params }: Props) {
       menu={menu}
       isGuest={isGuest}
     >
-      <div className="px-5 py-7 sm:px-8 sm:py-10">
+      <div className="g-leer gl-shell">
         <div className="max-w-5xl mx-auto ona">
           <PortalCrumbs
             trail={[
@@ -131,7 +133,7 @@ export default async function OnaOverviewPage({ params }: Props) {
           </section>
 
           {isGuest ? (
-            <section className="ona-panel ona-step" style={{ background: 'var(--color-surface-container-lowest)' }}>
+            <section className="ona-panel ona-step gl-ona-guest">
               <h2 className="ona-h2">{t('guest_title')}</h2>
               <p className="ona-body">{t('guest_body')}</p>
               <div>
@@ -265,7 +267,7 @@ export default async function OnaOverviewPage({ params }: Props) {
                 <li><Check size={18} strokeWidth={2.4} className="ok" aria-hidden /><span>{t('help_2')}</span></li>
                 <li><X size={18} strokeWidth={2.4} className="hint" aria-hidden /><span>{t('help_3')}</span></li>
               </ul>
-              {reviewed && <ValidationChip className="self-start">{t('validation')}</ValidationChip>}
+              {reviewed && <ValidationSeal className="self-start">{t('validation')}</ValidationSeal>}
             </div>
             <div className="ona-panel tier">
               <h2 className="ona-h3">{t('duo_title')}</h2>

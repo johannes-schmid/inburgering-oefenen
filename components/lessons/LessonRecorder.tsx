@@ -65,10 +65,8 @@ type Props = {
 export default function LessonRecorder({ limit, labels, onRecorded, disabled }: Props) {
   const [recording, setRecording] = useState(false);
   const [elapsed, setElapsed] = useState(0);
-  const [level, setLevel] = useState(0);
-  /** De laatste vijftien niveaus, voor de staafjes in de knop. Een ref en geen state: `level`
-      rendert al per frame. */
-  const levels = useRef<number[]>(Array(15).fill(0));
+  /** De laatste vijftien niveaus, voor de staafjes in de knop. */
+  const [levels, setLevels] = useState<number[]>(() => Array(15).fill(0));
   const [blob, setBlob] = useState<Blob | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [transcript, setTranscript] = useState('');
@@ -94,7 +92,7 @@ export default function LessonRecorder({ limit, labels, onRecorded, disabled }: 
     const recorder = recorderRef.current;
     if (!recorder?.active) return;
     recorderRef.current = null;
-    setLevel(0);
+    setLevels(Array(15).fill(0));
     try {
       const { blob: out } = await recorder.stop();
       setRecording(false);
@@ -147,8 +145,7 @@ export default function LessonRecorder({ limit, labels, onRecorded, disabled }: 
           let sum = 0;
           for (let i = 0; i < frame.length; i++) sum += frame[i] * frame[i];
           const lv = Math.min(1, Math.sqrt(sum / frame.length) * 4);
-          levels.current = [...levels.current.slice(1), lv];
-          setLevel(lv);
+          setLevels(prev => [...prev.slice(1), lv]);
         },
       });
     } catch {
@@ -202,7 +199,7 @@ export default function LessonRecorder({ limit, labels, onRecorded, disabled }: 
                 <span className="rec-dot" aria-hidden />
                 <span className="rec-big-time g-tnum">{remaining} {labels.seconds}</span>
                 <span className="rec-big-lv" aria-hidden>
-                  {levels.current.map((v, i) => <i key={i} style={{ transform: `scaleY(${Math.max(0.12, v).toFixed(2)})` }} />)}
+                  {levels.map((v, i) => <i key={i} style={{ transform: `scaleY(${Math.max(0.12, v).toFixed(2)})` }} />)}
                 </span>
                 <span className="rec-big-stop">{labels.stop}</span>
               </button>
