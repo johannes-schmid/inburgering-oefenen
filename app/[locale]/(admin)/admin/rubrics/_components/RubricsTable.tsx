@@ -92,7 +92,7 @@ export default function RubricsTable({
       </header>
 
       {missing > 0 && (
-        <div className="flex items-start gap-3 rounded-xl border border-secondary-container/40 bg-secondary-container/10 p-4">
+        <div className="flex items-start gap-3 rounded-xl border border-[rgba(254,118,44,0.4)] bg-[rgba(254,118,44,0.1)] p-4">
           <AlertTriangle size={18} className="text-secondary shrink-0 mt-0.5" aria-hidden />
           <p className="text-sm text-on-surface leading-relaxed">
             <strong className="font-semibold">

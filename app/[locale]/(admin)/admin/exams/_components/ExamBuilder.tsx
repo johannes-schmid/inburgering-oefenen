@@ -281,7 +281,7 @@ export default function ExamBuilder({
   return (
     <div className="space-y-6 max-w-4xl">
       {error && (
-        <div className="bg-error/10 border border-error/20 rounded-xl p-3 text-sm text-error">{error}</div>
+        <div className="bg-[rgba(186,26,26,0.1)] border border-[rgba(186,26,26,0.2)] rounded-xl p-3 text-sm text-error">{error}</div>
       )}
 
       {/* ── Opbouw: how the exam is spread across the tekstsoorten ──

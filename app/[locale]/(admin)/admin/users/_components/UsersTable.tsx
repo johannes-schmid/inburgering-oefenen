@@ -43,7 +43,7 @@ const FILTER_LABELS: Record<Filter, string> = {
   paid_ever: 'Ooit betaald',
 };
 
-/** Een module-chip in het merkblauw. `bg-primary/10` rendert dekkend in de admin-bundel, vandaar de rgba. */
+/** Een module-chip in het merkblauw. `bg-[rgba(0,43,109,0.1)]` rendert dekkend in de admin-bundel, vandaar de rgba. */
 function ModuleChip({ children, size }: { children: React.ReactNode; size: 'sm' | 'default' }) {
   return (
     <span

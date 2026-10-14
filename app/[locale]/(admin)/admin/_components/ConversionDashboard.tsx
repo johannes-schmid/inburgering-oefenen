@@ -38,7 +38,7 @@ function TrendBadge({ current, previous, unit = '' }: { current: number; previou
   return (
     <span
       className={`inline-flex items-center gap-1 text-xs font-semibold px-2 py-0.5 rounded-full ${
-        up ? 'bg-emerald-50 text-emerald-600' : 'bg-red-50 text-red-500'
+        up ? 'bg-goed-tint text-goed-ink' : 'bg-fout-tint text-fout'
       }`}
     >
       {up ? '↑' : '↓'} {unit === 'pp' ? `${up ? '+' : ''}${diff.toFixed(1)} pp` : `${up ? '+' : ''}${pct}%`}
@@ -150,9 +150,9 @@ export function ConversionDashboard({ data }: { data: ConversionData }) {
                 yAxisId="right"
                 type="monotone"
                 dataKey="conversionPct"
-                stroke="#0f9d76"
+                stroke="#2b7a5c"
                 strokeWidth={2}
-                dot={{ r: 2, fill: '#0f9d76' }}
+                dot={{ r: 2, fill: '#2b7a5c' }}
               />
             </ComposedChart>
           </ResponsiveContainer>
@@ -161,7 +161,7 @@ export function ConversionDashboard({ data }: { data: ConversionData }) {
         <div className="flex flex-wrap items-center gap-4 mt-4 text-xs text-on-surface-variant">
           <span className="inline-flex items-center gap-1.5"><span className="w-3 h-3 rounded-sm" style={{ background: 'rgba(0,43,109,0.18)' }} /> Aanmeldingen</span>
           <span className="inline-flex items-center gap-1.5"><span className="w-3 h-3 rounded-sm" style={{ background: '#002b6d' }} /> Betalingen</span>
-          <span className="inline-flex items-center gap-1.5"><span className="w-3 h-0.5 rounded-sm" style={{ background: '#0f9d76' }} /> Conversie %</span>
+          <span className="inline-flex items-center gap-1.5"><span className="w-3 h-0.5 rounded-sm" style={{ background: '#2b7a5c' }} /> Conversie %</span>
         </div>
       </div>
     </div>

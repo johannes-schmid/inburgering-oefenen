@@ -1,0 +1,378 @@
+/**
+ * /admin in Glas v1.0 — de stille werkhuid.
+ *
+ * /admin is intern en dicht: geen velden, geen gloed, geen glas op de werkvlakken. Wat Glas hier
+ * doet is de ondergrond en de tokens: mist als basis, wit voor wat staat, mist-2 als tier, navy
+ * voor gewicht, de Glas-radii, pills voor de primaire actie, en de Glas-statuskleuren. De ReUI-
+ * datagrid blijft een tabel (§G5 is voor kandidaten, niet voor de docent).
+ *
+ * **Waarom een herdefinitie van tokens en geen klassen per pagina.** /admin is 23 routes en
+ * ruim 18.000 regels die de Civic-Authority-tokens lezen (`bg-surface`, `text-on-surface`,
+ * `rounded-xl`, shadcn's `--border`). Tailwind 4 zet die utilities als `var(--…)` neer, dus één
+ * scope die de variabelen omzet herverft het hele beheer, zonder één schrijfpad, server action
+ * of selectie aan te raken.
+ *
+ * **Twee selectors voor dezelfde scope.** `.admin-glas` staat op de schil (eerste render, server).
+ * `html[data-surface="admin"]` zet `AdminSurface` op <html>, omdat lades, popovers en selects van
+ * base-ui naar <body> porten — buiten de schil — en anders in de oude huid zouden openen.
+ *
+ * Geen Tailwind-directieven in dit bestand (zie de kop van portal.css). `@layer components` hieronder
+ * is de gewone CSS-cascadelaag die Tailwind al declareert, zodat utilities blijven winnen.
+ */
+
+.admin-glas,
+html[data-surface="admin"] {
+  /* Civic Authority → Glas */
+  --color-surface: var(--mist);
+  --color-surface-container-lowest: #ffffff;
+  --color-surface-container-low: #f4f7fb;
+  --color-surface-container: var(--mist-2);
+  --color-surface-container-high: #dae2ef;
+  --color-surface-container-highest: #d0d9e9;
+  --color-on-surface: var(--ink);
+  --color-on-surface-variant: var(--ink-2);
+  --color-outline: var(--ink-3);
+  --color-outline-variant: #d6deea;
+  --color-primary-container: var(--navy-2);
+  --color-error: var(--fout);
+  --color-correct: var(--goed);
+  --color-on-correct-container: var(--goed-ink);
+  --color-correct-container: var(--goed-tint);
+  --shadow-ambient: 0 1px 2px rgba(0, 27, 80, 0.04), 0 16px 32px -24px rgba(0, 27, 80, 0.28);
+  --shadow-card: 0 1px 2px rgba(0, 27, 80, 0.04), 0 16px 32px -24px rgba(0, 27, 80, 0.28);
+  --shadow-card-lg: var(--zweef);
+  --ring-selected: inset 0 0 0 2px var(--navy);
+
+  /* shadcn → Glas */
+  --background: var(--mist);
+  --foreground: var(--ink);
+  --card: #ffffff;
+  --card-foreground: var(--ink);
+  --popover: #ffffff;
+  --popover-foreground: var(--ink);
+  --muted: var(--mist);
+  --muted-foreground: var(--ink-2);
+  --accent: var(--mist);
+  --accent-foreground: var(--navy);
+  --border: #dfe5ef;
+  --input: #d3dbe8;
+  --ring: var(--navy);
+  --destructive: var(--fout);
+  --destructive-foreground: var(--fout);
+  /* ReUI-badges: goed = Glas-groen, let op = klei, info = navy (G3). Nooit Tailwind-groen/geel. */
+  --success: var(--goed);
+  --success-foreground: var(--goed-ink);
+  --warning: var(--klei);
+  --warning-foreground: var(--klei);
+  --info: var(--navy-2);
+  --info-foreground: var(--navy);
+  --invert: var(--nacht);
+  /* rounded-lg 12 · rounded-xl ≈16 · rounded-2xl ≈22 — de Glas-trap 12/16/22. */
+  --radius: 0.75rem;
+  --chart-1: var(--navy);
+  --chart-2: var(--hemel);
+  --chart-3: var(--waas);
+  --chart-4: var(--klei);
+  --chart-5: var(--ink-3);
+
+  background-color: var(--mist);
+  color: var(--ink);
+}
+
+/* Zwakke basisregels in `@layer components`, zodat elke utility op het element wint. */
+@layer components {
+  /* Tekstselectie en het caret horen bij het palet, ook in een formulier. */
+  .admin-glas ::selection { background: rgba(0, 43, 109, 0.16); }
+  .admin-glas :where(input, textarea) { caret-color: var(--navy); }
+  .admin-glas :where(.tabular-nums, td) { font-variant-numeric: tabular-nums; }
+
+  /* Koppen in Manrope met de strakke Glas-tracking; de dichte UI-tekst blijft Public Sans. */
+  .admin-glas :where(h1, h2) { font-family: var(--font-headline); color: var(--navy); letter-spacing: -0.03em; }
+  .admin-glas :where(h3) { font-family: var(--font-headline); letter-spacing: -0.015em; }
+}
+
+/* Wat hieronder staat is bewust ongelaagd: het moet de utilities van gedeelde shadcn-onderdelen
+   overstemmen, en is daarom op data-slot gescoped. */
+/* ── Kaarten: wit op mist, geen lijn ──
+   shadcn's Card tekent een `ring-foreground/10`; Glas kent geen omlijnde kaart (wit staat). */
+:is(.admin-glas, html[data-surface="admin"]) [data-slot="card"] {
+  box-shadow: var(--shadow-ambient);
+  border-radius: var(--r-lg);
+}
+:is(.admin-glas, html[data-surface="admin"]) [data-slot="frame"] {
+  --frame-panel-border-color: transparent;
+}
+
+/* ── Knoppen: de primaire actie is een pill ──
+   Alleen de gevulde navy-knop; outline/ghost blijven dicht en rechthoekig, want in een tabelrij
+   is een rij pills ruis. */
+:is(.admin-glas, html[data-surface="admin"]) [data-slot="button"].bg-primary {
+  border-radius: var(--r-pill);
+  font-family: var(--font-headline);
+  font-weight: 700;
+}
+:is(.admin-glas, html[data-surface="admin"]) [data-slot="button"]:focus-visible {
+  box-shadow: var(--glas-focus);
+}
+
+/* ── Lade (Sheet): wit paneel over een navy waas ── */
+html[data-surface="admin"] [data-slot="sheet-overlay"] {
+  background: rgba(0, 18, 46, 0.32);
+  -webkit-backdrop-filter: blur(4px);
+  backdrop-filter: blur(4px);
+}
+html[data-surface="admin"] [data-slot="sheet-content"] {
+  border: 0;
+  box-shadow: 0 40px 80px -30px rgba(0, 18, 46, 0.5);
+}
+html[data-surface="admin"] [data-slot="sheet-content"][data-side="right"] {
+  border-start-start-radius: var(--r-lg);
+  border-end-start-radius: var(--r-lg);
+}
+html[data-surface="admin"] [data-slot="popover-content"],
+html[data-surface="admin"] [data-slot="select-content"] {
+  border-radius: var(--r-md);
+  box-shadow: 0 0 0 1px rgba(0, 43, 109, 0.06), 0 24px 48px -24px rgba(0, 27, 80, 0.4);
+}
+
+/* ── Velden: mist, wit met navy inset-ring bij focus (glas.html `.fld`) ── */
+:is(.admin-glas, html[data-surface="admin"]) :is(input:not([type="checkbox"]):not([type="radio"]):not([type="file"]):not([type="range"]), textarea, select):focus-visible {
+  outline: none;
+  box-shadow: inset 0 0 0 2px var(--navy);
+  border-color: transparent;
+}
+
+/* ── De ReUI-datagrid blijft een tabel ──
+   Kop in mono-hoofdletters (glas.html `.mtable`), rijen gescheiden door een zachte lijn: de
+   no-line-regel geldt voor secties, en een tabel van 40 rijen zonder rijgrens leest niet. */
+:is(.admin-glas, html[data-surface="admin"]) [data-slot="data-grid-table"] thead th {
+  font-family: var(--glas-mono);
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  font-weight: 500;
+  color: var(--ink-2);
+}
+:is(.admin-glas, html[data-surface="admin"]) [data-slot="data-grid-table"] tbody tr {
+  transition: background-color 120ms ease;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :is(.admin-glas, html[data-surface="admin"]) [data-slot="data-grid-table"] tbody tr { transition: none; }
+}
+
+/* ── De schil: witte zijbalk op mist (glas.html `.side` / `.navi`) ──
+   Wit en niet glas: de zijbalk ligt op mist, en glas op mist is een grijze kaart (G1 regel 2).
+   Gekozen = navy pill; het icoon zit in een mist-tegeltje dat op navy 14% wit wordt. */
+@layer components {
+  .admin-side { background: #fff; }
+  .admin-brand {
+    display: flex; align-items: center; gap: 10px; font-family: var(--font-headline); font-weight: 800;
+    font-size: 15px; letter-spacing: -0.02em; color: var(--navy); text-decoration: none;
+  }
+  .admin-who { font-size: 12px; color: var(--ink-3); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .admin-grp {
+    font-family: var(--glas-mono); font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase;
+    color: var(--ink-3); padding: 14px 10px 6px; margin: 0;
+  }
+  .admin-navi {
+    display: flex; align-items: center; gap: 10px; padding: 6px 10px 6px 6px; border-radius: 14px;
+    font-weight: 600; font-size: 14px; color: var(--ink); text-decoration: none; text-align: start;
+    background: transparent; border: 0; cursor: pointer; outline: none;
+    transition: background-color 160ms ease, color 160ms ease, transform 160ms var(--ease-out-glas);
+  }
+  .admin-navi:hover { background: rgba(0, 43, 109, 0.06); }
+  .admin-navi:active { transform: scale(0.98); }
+  .admin-navi:focus-visible { box-shadow: 0 0 0 2px #fff, 0 0 0 4px var(--navy); }
+  .admin-navi[data-on="true"] { background: var(--navy); color: #fff; }
+  .admin-navi-ico {
+    width: 30px; height: 30px; border-radius: 10px; display: flex; align-items: center; justify-content: center;
+    flex: none; color: var(--navy); background: var(--mist);
+    transition: background-color 160ms ease, color 160ms ease;
+  }
+  .admin-navi[data-on="true"] .admin-navi-ico { background: rgba(255, 255, 255, 0.14); color: #fff; }
+  /* Open sectie waar je in zit: het kind draagt de ring, de ouder alleen een navy tegel. */
+  .admin-navi[data-on="soft"] { color: var(--navy); }
+  .admin-navi[data-on="soft"] .admin-navi-ico { background: var(--navy); color: #fff; }
+  .admin-navi-quiet { padding: 8px 10px; font-size: 13.5px; color: var(--ink-2); font-weight: 500; }
+  .admin-navi-quiet:hover { color: var(--navy); }
+  .admin-chev { margin-inline-start: auto; opacity: 0.55; transition: transform 160ms var(--ease-out-glas); }
+  .admin-navi[aria-expanded="true"] .admin-chev { transform: rotate(180deg); }
+  .admin-sub { list-style: none; margin: 2px 0 6px; padding: 0 0 0 46px; display: flex; flex-direction: column; gap: 1px; }
+  .admin-sub a {
+    display: block; padding: 6px 10px; border-radius: 10px; font-size: 13px; font-weight: 600; color: var(--ink-2);
+    text-decoration: none; outline: none; transition: background-color 160ms ease, color 160ms ease;
+  }
+  .admin-sub a:hover { background: rgba(0, 43, 109, 0.06); color: var(--navy); }
+  .admin-sub a:focus-visible { box-shadow: 0 0 0 2px var(--navy); }
+  .admin-sub a:active { opacity: 0.8; }
+  .admin-sub a[aria-current="page"] { background: #fff; color: var(--navy); box-shadow: inset 0 0 0 2px var(--navy); }
+  .admin-sub a[aria-current="page"]:focus-visible { box-shadow: inset 0 0 0 2px var(--navy), 0 0 0 2px #fff, 0 0 0 4px var(--navy); }
+
+  /* Mobiele balk en lade. */
+  .admin-topbar {
+    background: rgba(255, 255, 255, 0.86);
+    -webkit-backdrop-filter: blur(24px) saturate(1.5);
+    backdrop-filter: blur(24px) saturate(1.5);
+    box-shadow: 0 1px 0 rgba(0, 43, 109, 0.06);
+  }
+  .admin-iconbtn {
+    width: 38px; height: 38px; border-radius: 999px; display: inline-flex; align-items: center; justify-content: center;
+    color: var(--navy); background: transparent; border: 0; cursor: pointer; outline: none;
+    transition: background-color 160ms ease, transform 160ms var(--ease-out-glas);
+  }
+  .admin-iconbtn:hover { background: rgba(0, 43, 109, 0.06); }
+  .admin-iconbtn:active { transform: scale(0.94); }
+  .admin-iconbtn:focus-visible { box-shadow: var(--glas-focus); }
+  /* `transform` en geen Tailwind-`translate-x`: die zet de losse `translate`-eigenschap, die de
+     screenshotbrowser (Chromium 101) niet kent — de lade stond daar altijd open. */
+  .admin-drawer { transition: transform 260ms var(--ease-out-glas); box-shadow: 0 40px 80px -30px rgba(0, 18, 46, 0.5); }
+  .admin-drawer[data-open="false"] { transform: translateX(-100%); box-shadow: none; }
+  .admin-scrim { background: rgba(0, 18, 46, 0.32); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .admin-navi, .admin-chev, .admin-drawer, .admin-iconbtn { transition: none; }
+}
+
+@layer components {
+  /* Een tegel die naar een lijst leidt: witte kaart; hover tilt alleen de schaduw. */
+  .admin-stat {
+    box-shadow: var(--shadow-ambient); outline: none;
+    transition: box-shadow 200ms ease, transform 160ms var(--ease-out-glas);
+  }
+  .admin-stat:hover { box-shadow: 0 1px 2px rgba(0, 27, 80, 0.04), 0 24px 44px -24px rgba(0, 27, 80, 0.4); }
+  .admin-stat:active { transform: scale(0.99); }
+  .admin-stat:focus-visible { box-shadow: var(--glas-focus); }
+}
+
+/* ── Panelen: de no-line-regel op sectieniveau ──
+   Een `rounded-2xl` met een lijn eromheen is in /admin een sectiepaneel (examen-opbouw, publicatie,
+   formulierblokken). In Glas staat zo iets als wit vlak op mist, zonder lijn; de lijn verdwijnt en
+   een paneel zonder eigen achtergrond wordt wit. Kleinere `rounded-xl`-vakken binnen een paneel
+   houden hun zachte lijn: daar is de grens dichtheid, geen sectie. Gestippeld blijft gestippeld
+   (dat is een lege staat).
+   Ongelaagd, omdat de lijn een utility op het element zelf is. */
+:is(.admin-glas, html[data-surface="admin"]) .rounded-2xl.border:not(.border-dashed):is(.border-outline-variant, [class*="border-black"]) {
+  border-color: transparent;
+  box-shadow: var(--shadow-ambient);
+}
+:is(.admin-glas, html[data-surface="admin"]) .rounded-2xl.border:not(.border-dashed):is(.border-outline-variant, [class*="border-black"]):not([class*=" bg-"]):not([class^="bg-"]) {
+  background-color: #fff;
+}
+
+/* Secundaire knoppen (een omlijnde rounded-xl-knop) worden de Glas-ghostpill: wit, zachte navy
+   binnenring, geen lijn. */
+:is(.admin-glas, html[data-surface="admin"]) :is(button, a).inline-flex.rounded-xl.border.border-outline-variant {
+  border-color: transparent;
+  border-radius: var(--r-pill);
+  background-color: #fff;
+  box-shadow: inset 0 0 0 1px rgba(0, 43, 109, 0.14);
+  font-family: var(--font-headline);
+  font-weight: 700;
+  color: var(--navy);
+  transition: background-color 160ms ease, transform 160ms var(--ease-out-glas);
+}
+:is(.admin-glas, html[data-surface="admin"]) :is(button, a).inline-flex.rounded-xl.border.border-outline-variant:hover:not(:disabled) { background-color: var(--mist); }
+:is(.admin-glas, html[data-surface="admin"]) :is(button, a).inline-flex.rounded-xl.border.border-outline-variant:focus-visible { outline: none; box-shadow: var(--glas-focus); }
+:is(.admin-glas, html[data-surface="admin"]) :is(button, a).inline-flex.rounded-xl.border.border-outline-variant:active:not(:disabled) { transform: scale(0.97); }
+
+/* De kop van de datagrid: ook de sorteerknop in de th krijgt de mono-kop. */
+:is(.admin-glas, html[data-surface="admin"]) [data-slot="data-grid-table"] thead th :is(button, span, div) {
+  font: inherit; letter-spacing: inherit; text-transform: inherit; color: inherit;
+}
+
+/* Paginatitels: één maat en kleur voor alle 23 routes (navy, Manrope 700, strakke tracking).
+   Ongelaagd, omdat elke pagina zijn eigen `text-on-surface`-h1 meebrengt. */
+.admin-glas main h1 {
+  color: var(--navy);
+  font-family: var(--font-headline);
+  font-weight: 700;
+  font-size: 28px;
+  line-height: 1.15;
+  letter-spacing: -0.03em;
+  text-wrap: balance;
+}
+
+/* De AI-acties (Magisch invullen, Herschrijf) houden hun oranje als vaste markering, maar als pill. */
+:is(.admin-glas, html[data-surface="admin"]) :is(button, a).rounded-xl.bg-secondary-container {
+  border-radius: var(--r-pill);
+  font-family: var(--font-headline);
+  font-weight: 700;
+}
+
+@layer components {
+  /* Een klikbare tegel in een raster (examenslots): wit op mist; hover = zachte navy binnenring. */
+  .admin-tile {
+    box-shadow: 0 1px 2px rgba(0, 27, 80, 0.04); outline: none;
+    transition: box-shadow 160ms ease, transform 160ms var(--ease-out-glas);
+  }
+  .admin-tile:hover { box-shadow: inset 0 0 0 1.5px rgba(0, 43, 109, 0.35), 0 12px 24px -18px rgba(0, 27, 80, 0.35); }
+  .admin-tile:active { transform: scale(0.98); }
+  .admin-tile:focus-visible { box-shadow: var(--glas-focus); }
+}
+@media (prefers-reduced-motion: reduce) { .admin-tile, .admin-stat { transition: none; } }
+
+/* ── Formuliervelden: glas.html `.fld .box` in dichte maat ──
+   De velden hadden vijf eigen definities (`.field` in zes <style>-blokken, `.admin-field`, `.wdn-field`,
+   `.qfield`) en `.field` bestond alleen zolang één van die componenten
+   gemount was: de Opzet-lade van /admin/exams toonde daardoor kale invoer. Dit is de ene Glas-look
+   ervoor: wit met een zachte navy binnenring (geen border), 2px navy bij focus. Niet mist zoals
+   glas.html `.fld`: in /admin staat een veld op wit, op mist én op mist-tier panelen, en alleen een
+   wit veld met ring blijft op alle drie zichtbaar. Twee klassen diep, zodat hij de
+   ongelaagde <style>-blokken overstemt; maat en lettertype laten we aan die blokken. */
+@layer components {
+  :is(.admin-glas, html[data-surface="admin"]) :is(.field, .admin-field, .wdn-field, .qfield, .lei-input) {
+    width: 100%; padding: 0.5rem 0.75rem; font-size: 0.875rem;
+  }
+}
+:is(.admin-glas, html[data-surface="admin"]) :is(.field, .admin-field, .wdn-field, .qfield, .lei-input) {
+  border-color: transparent;
+  border-radius: var(--r-sm);
+  background-color: #fff;
+  box-shadow: inset 0 0 0 1px rgba(0, 43, 109, 0.16);
+  color: var(--ink);
+  caret-color: var(--navy);
+  transition: background-color 160ms ease, box-shadow 160ms ease;
+}
+:is(.admin-glas, html[data-surface="admin"]) :is(.field, .admin-field, .wdn-field, .qfield, .lei-input):hover:not(:focus):not(:disabled) {
+  box-shadow: inset 0 0 0 1px rgba(0, 43, 109, 0.32);
+}
+:is(.admin-glas, html[data-surface="admin"]) :is(.field, .admin-field, .wdn-field, .qfield, .lei-input):focus {
+  outline: none;
+  border-color: transparent;
+  background-color: #fff;
+  box-shadow: inset 0 0 0 2px var(--navy);
+}
+:is(.admin-glas, html[data-surface="admin"]) :is(.field, .admin-field, .wdn-field, .qfield, .lei-input):disabled {
+  background-color: var(--mist-2); color: var(--ink-2);
+}
+:is(.admin-glas, html[data-surface="admin"]) :is(.field, .admin-field, .wdn-field, .qfield, .lei-input)::placeholder { color: #7e8aa3; }
+
+/* `.btn-primary` / `.btn-secondary` werden gebruikt maar nergens gedefinieerd. Glas: navy pill en
+   ghost pill. */
+:is(.admin-glas, html[data-surface="admin"]) :is(.btn-primary, .btn-secondary) {
+  display: inline-flex; align-items: center; justify-content: center; gap: 6px; border: 0;
+  border-radius: var(--r-pill); font-family: var(--font-headline); font-weight: 700; cursor: pointer; outline: none;
+  transition: transform 160ms var(--ease-out-glas), background-color 160ms ease;
+}
+:is(.admin-glas, html[data-surface="admin"]) .btn-primary { background: var(--navy); color: #fff; }
+:is(.admin-glas, html[data-surface="admin"]) .btn-primary:hover:not(:disabled) { background: var(--navy-2); }
+:is(.admin-glas, html[data-surface="admin"]) .btn-secondary { background: #fff; color: var(--navy); box-shadow: inset 0 0 0 1px rgba(0, 43, 109, 0.14); }
+:is(.admin-glas, html[data-surface="admin"]) .btn-secondary:hover:not(:disabled) { background: var(--mist); }
+:is(.admin-glas, html[data-surface="admin"]) :is(.btn-primary, .btn-secondary):active:not(:disabled) { transform: scale(0.97); }
+:is(.admin-glas, html[data-surface="admin"]) :is(.btn-primary, .btn-secondary):focus-visible { box-shadow: var(--glas-focus); }
+
+@media (prefers-reduced-motion: reduce) {
+  :is(.admin-glas, html[data-surface="admin"]) :is(.field, .admin-field, .wdn-field, .qfield, .lei-input, .btn-primary, .btn-secondary) { transition: none; }
+}
+
+/* Leerlaag-editor: een opgave droeg een oranje streep links (3px), een probleem een rode. Glas kent
+   geen gekleurde zijlijn en één oranje per view; de soort zit nu in het nummer (klei-tint = opgave)
+   en een probleem is een rode binnenring, zoals een fout veld (glas.html `.fld .box.err`). */
+:is(.admin-glas, html[data-surface="admin"]) .lei-item.is-exercise { box-shadow: none; }
+:is(.admin-glas, html[data-surface="admin"]) .lei-item.is-exercise .lei-num {
+  background: var(--klei-tint); color: var(--klei); border-radius: var(--r-pill);
+  height: 1.6rem; line-height: 1.6rem;
+}
+:is(.admin-glas, html[data-surface="admin"]) .lei-item.has-problem { box-shadow: inset 0 0 0 1.5px rgba(186, 26, 26, 0.5); }

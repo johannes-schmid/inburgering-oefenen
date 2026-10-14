@@ -89,7 +89,7 @@ export default async function EvalsPage({
         className={`rounded-xl border p-4 text-sm leading-relaxed ${
           confidence.level === 'good'
             ? 'border-outline-variant bg-surface-container-low text-on-surface-variant'
-            : 'border-secondary-container/40 bg-secondary-container/10 text-on-surface'
+            : 'border-[rgba(254,118,44,0.4)] bg-[rgba(254,118,44,0.1)] text-on-surface'
         }`}
       >
         {confidence.text}

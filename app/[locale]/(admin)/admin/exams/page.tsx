@@ -145,7 +145,7 @@ export default async function ExamsPage({
                   {backlog && (
                     <Link
                       href={`/${locale}/admin/exams/${backlog.id}`}
-                      className="ml-3 inline-flex items-center gap-1.5 rounded-full border border-outline-variant px-2.5 py-0.5 align-middle text-[0.7rem] font-semibold normal-case text-on-surface-variant no-underline transition-colors hover:border-primary/50 hover:text-on-surface"
+                      className="ml-3 inline-flex items-center gap-1.5 rounded-full border border-outline-variant px-2.5 py-0.5 align-middle text-[0.7rem] font-semibold normal-case text-on-surface-variant no-underline transition-colors hover:border-[rgba(0,43,109,0.5)] hover:text-on-surface"
                     >
                       Backlog
                       <span className="tabular-nums opacity-70">{backlogItems}</span>
@@ -173,14 +173,14 @@ export default async function ExamsPage({
                     <li key={exam.id}>
                       <Link
                         href={`/${locale}/admin/exams/${exam.id}`}
-                        className="block rounded-xl border border-outline-variant p-3.5 no-underline hover:border-primary/50 hover:bg-surface-container-low transition-colors"
+                        className="admin-tile block rounded-g-md bg-white p-3.5 no-underline"
                       >
                         <div className="flex items-center justify-between gap-2 mb-2">
                           <span className="text-sm font-bold text-on-surface">#{exam.number}</span>
                           <span
                             className={`text-[0.6rem] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full ${
                               exam.published
-                                ? 'bg-success/15 text-success'
+                                ? 'bg-goed-tint text-goed-ink'
                                 : 'bg-surface-container text-on-surface-variant'
                             }`}
                           >
