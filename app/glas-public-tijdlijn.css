@@ -1,1 +1,113 @@
-/* Glas · publieke site · tijdlijn — aanvullingen op app/glas-public.css voor deze schermen. */
+/* Glas · publieke site · tijdlijn — aanvullingen op app/glas-public.css voor deze schermen.
+   De tijdlijn-maker op /inburgering/tools/tijdlijn (components/tijdlijn/*). De grafiek zelf (`.tl-bar`,
+   `.tl-wall`, de arcering, de printregels) staat nog in app/globals.css; hier worden zijn tokens binnen
+   `.g-tl` op Glas gezet, zodat dezelfde regels de Glas-kleuren tekenen. */
+
+/* De risicotinten in Glas: oranje-bruin (klei) is aandacht, rood is alleen "je haalt het niet".
+   Navy is de studie, de arcering blijft de wachttijd van DUO — dat verschil (wat jij doet versus
+   waar je op wacht, en wettelijk versus geschat) is een productregel en mag nooit wegvallen. */
+.g-tl {
+  --risk-amber: var(--klei);
+  --risk-amber-tint: var(--klei-tint);
+  --risk-red: var(--fout);
+  --risk-red-tint: var(--fout-tint);
+  --tl-hatch-navy: repeating-linear-gradient(135deg, #a9bbdd 0 3px, #dbe4f4 3px 7px);
+  --tl-hatch-amber: repeating-linear-gradient(135deg, #e3b590 0 3px, #f8e4d3 3px 7px);
+  --tl-hatch-red: repeating-linear-gradient(135deg, #e0a4a4 0 3px, #f7dfdf 3px 7px);
+  --tl-tint-1: rgba(0, 43, 109, 0.05);
+  --tl-tint-2: rgba(0, 43, 109, 0.08);
+  --tl-tint-3: rgba(0, 43, 109, 0.12);
+}
+/* De oude breedte-overgang animeerde `flex-basis` (layout). Glas animeert alleen transform en
+   opacity: de balk springt naar zijn nieuwe lengte; de groei bij het laden (`tl-grow-in`, een
+   scaleX) blijft. */
+.g-tl .tl-animate-width { transition: none; }
+
+@layer components {
+  /* Kop: het veld loopt onder de zwevende navigatiepil door. */
+  .g-tl-head { margin-top: calc(var(--nav-h) * -1); padding-top: calc(var(--nav-h) + 40px); padding-bottom: 40px; }
+  @media (min-width: 860px) { .g-tl-head { padding-top: calc(var(--nav-h) + 56px); padding-bottom: 56px; } }
+
+  .g-tl-panel { background: var(--wit); border-radius: var(--r-xl); }
+  /* Scheiding binnen een paneel: een binnenlijn in mist, geen 1px-rand (de no-line-regel). */
+  .g-tl-sep { box-shadow: inset 0 1px 0 var(--mist-2); }
+  .g-tl-divide > * + * { box-shadow: inset 0 1px 0 var(--mist-2); }
+  .g-tl-deadline { box-shadow: inset 0 3px 0 var(--navy); }
+
+  /* Antwoordkaart in een wit paneel: mist, gekozen wit met navy ring (glas.html §12 `.opcard`). */
+  .g-tl-opcard { background: var(--mist); }
+  .g-tl-opcard:hover { background: #e6ecf6; }
+  .g-tl-opcard[aria-pressed="true"] { background: #fff; }
+
+  .g-tl-chip {
+    all: unset; box-sizing: border-box; cursor: pointer; display: inline-flex; align-items: center; justify-content: center; gap: 6px;
+    min-height: 44px; padding: 0 14px; border-radius: var(--r-pill); background: var(--mist); color: var(--ink-2);
+    font-size: 13px; font-weight: 600; text-align: center;
+    transition: background-color 160ms ease, box-shadow 160ms ease, color 160ms ease, transform 160ms var(--ease-out-glas);
+  }
+  .g-tl-chip:hover { background: #e6ecf6; color: var(--ink); }
+  .g-tl-chip:active { transform: scale(0.97); }
+  .g-tl-chip:focus-visible { box-shadow: var(--glas-focus); }
+  .g-tl-chip[aria-pressed="true"] { background: var(--navy); color: #fff; }
+  .g-tl-chip[aria-pressed="true"][data-tone="good"] { background: var(--goed-tint); color: var(--goed-ink); box-shadow: inset 0 0 0 2px var(--goed); }
+  .g-tl-chip[aria-pressed="true"][data-tone="warn"] { background: var(--klei-tint); color: var(--klei); box-shadow: inset 0 0 0 2px var(--klei); }
+  .g-tl-chip[aria-pressed="true"]:focus-visible { box-shadow: var(--glas-focus); }
+
+  /* "Volgens DUO" (vol, navy) en "onze schatting" (gestippeld, grijs) mogen nooit op elkaar lijken. */
+  .g-tl-src, .g-tl-est {
+    display: inline-flex; align-items: center; gap: 6px; height: 22px; padding: 0 8px; border-radius: var(--r-pill);
+    font-family: var(--glas-mono); font-size: 10px; font-weight: 500; letter-spacing: 0.08em; text-transform: uppercase; white-space: nowrap;
+  }
+  .g-tl-src { background: rgba(0, 43, 109, 0.08); color: var(--navy); }
+  .g-tl-src-link { text-decoration: none; outline: none; transition: background-color 160ms ease, transform 160ms var(--ease-out-glas); }
+  .g-tl-src-link:hover { background: rgba(0, 43, 109, 0.14); }
+  .g-tl-src-link:active { transform: scale(0.97); }
+  .g-tl-src-link:focus-visible { box-shadow: var(--glas-focus); }
+  .g-tl-est { background: transparent; color: var(--ink-2); box-shadow: inset 0 0 0 1px transparent; outline: 1px dashed var(--ink-3); outline-offset: -1px; }
+
+  .g-tl-input {
+    height: 44px; border-radius: var(--r-sm); background: var(--mist); color: var(--ink); border: 0; outline: none; padding-inline: 12px;
+    font-size: 15px; transition: box-shadow 160ms ease, background-color 160ms ease;
+  }
+  .g-tl-input:hover { background: #e6ecf6; }
+  .g-tl-input:focus-visible { background: #fff; box-shadow: var(--glas-ring), 0 0 0 3px rgba(0, 43, 109, 0.12); }
+  .g-tl-step {
+    all: unset; box-sizing: border-box; cursor: pointer; width: 44px; height: 44px; border-radius: 50%; display: flex; align-items: center;
+    justify-content: center; background: var(--mist); color: var(--navy);
+    transition: background-color 160ms ease, transform 160ms var(--ease-out-glas);
+  }
+  .g-tl-step:hover { background: #e6ecf6; }
+  .g-tl-step:active { transform: scale(0.94); }
+  .g-tl-step:focus-visible { box-shadow: var(--glas-focus); }
+  .g-tl-step:disabled { opacity: 0.4; cursor: not-allowed; }
+  .g-tl-step:disabled:active { transform: none; }
+
+  /* De voortgangslijn van de wizard: een schaal, geen breedte-animatie. */
+  .g-tl-progress { height: 6px; border-radius: var(--r-pill); background: rgba(0, 43, 109, 0.1); overflow: hidden; }
+  .g-tl-progress > i {
+    display: block; height: 100%; width: 100%; border-radius: inherit; background: var(--navy); transform-origin: left center;
+    transition: transform 280ms var(--ease-out-glas);
+  }
+  [dir="rtl"] .g-tl-progress > i { transform-origin: right center; }
+
+  /* Het bereik-element (uren per week) in Glas-kleuren. */
+  .g-tl-range { accent-color: var(--navy); }
+
+  .g-tl-link {
+    display: inline-flex; align-items: center; gap: 8px; min-height: 44px; font-size: 13px; font-weight: 700; color: var(--navy);
+    text-decoration: underline; text-decoration-color: rgba(0, 43, 109, 0.3); text-underline-offset: 4px; border-radius: 6px; outline: none;
+    transition: text-decoration-color 160ms ease;
+  }
+  .g-tl-link:hover { text-decoration-color: var(--navy); }
+  .g-tl-link:active { opacity: 0.75; }
+  .g-tl-link:focus-visible { box-shadow: var(--glas-focus); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .g-tl-chip, .g-tl-src-link, .g-tl-step, .g-tl-input, .g-tl-progress > i, .g-tl-link { transition-duration: 0ms; }
+  .g-tl-chip:active, .g-tl-src-link:active, .g-tl-step:active { transform: none; }
+}
+
+/* Arabisch is een lopend schrift: spatiëring tussen letters breekt de verbindingen. In RTL krijgen
+   de mono-labels en de bronlabels van de tijdlijn daarom geen letterspatiëring en de body-letter. */
+[dir="rtl"] .g-tl .g-mono, [dir="rtl"] .g-tl .g-tl-src, [dir="rtl"] .g-tl .g-tl-est { letter-spacing: 0; font-family: var(--font-body); }
