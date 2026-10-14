@@ -1,0 +1,129 @@
+/* Glas · publieke site · docent, redactie, contact, juridisch, 404 — aanvullingen op app/glas-public.css. */
+
+@layer components {
+  /* De paginakop loopt onder de zwevende pil door: de pil heeft een veld nodig om te zweven. */
+  .g-pagehead { margin-top: calc(var(--nav-h) * -1); padding-top: calc(var(--nav-h) + 32px); }
+  @media (min-width: 860px) { .g-pagehead { padding-top: calc(var(--nav-h) + 56px); } }
+  .g-pagehead .g-crumb { margin-bottom: 28px; }
+  .g-pagehead-meta { margin-top: 14px; font-size: 13.5px; color: var(--ink-2); }
+
+  /* /docent — kop met portret, feitenlijst, loopbaan. */
+  .g-docent-head { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 48px; align-items: center; }
+  @media (max-width: 860px) { .g-docent-head { grid-template-columns: minmax(0, 1fr); gap: 32px; } }
+  .g-docent-role { margin: 12px 0 0; font-family: var(--font-headline); font-weight: 700; font-size: clamp(18px, 2vw, 22px); letter-spacing: -0.015em; color: var(--klei); }
+  .g-portrait { margin: 0; justify-self: center; }
+  .g-portrait img { display: block; width: 280px; max-width: 72vw; height: auto; border-radius: var(--r-xl); object-fit: cover; box-shadow: var(--zweef); }
+  @media (min-width: 860px) { .g-portrait { justify-self: end; } }
+
+  .g-factlist { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; margin: 0; }
+  @media (max-width: 1080px) { .g-factlist { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+  @media (max-width: 560px) { .g-factlist { grid-template-columns: minmax(0, 1fr); } }
+  .g-factlist > div { border-radius: var(--r-lg); background: #fff; padding: 16px 20px; }
+  .g-factlist dt { font-family: var(--glas-mono); font-size: 11.5px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-2); }
+  .g-factlist dd { margin: 6px 0 0; font-family: var(--font-headline); font-weight: 700; font-size: 16px; line-height: 1.4; color: var(--navy); }
+
+  .g-sec-tier .g-gstep::before { background: rgba(0, 43, 109, 0.14); }
+  .g-extlinks { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 18px; }
+
+  .g-cardlist { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 10px; }
+  .g-cardlist > li, .g-cardlist > div { border-radius: var(--r-lg); background: #fff; padding: 18px 20px; }
+  .g-cardlist h3, .g-cardlist dt { margin: 0; font-family: var(--font-headline); font-weight: 700; font-size: 16.5px; color: var(--navy); letter-spacing: -0.01em; }
+  .g-cardlist p, .g-cardlist dd { margin: 6px 0 0; font-size: 14.5px; line-height: 1.65; color: var(--ink-2); }
+
+  .g-dotlist { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 12px; }
+  .g-dotlist li { position: relative; padding-inline-start: 22px; font-size: 16px; line-height: 1.7; color: var(--ink-2); max-width: 65ch; }
+  .g-dotlist li::before { content: ""; position: absolute; inset-inline-start: 2px; top: 0.72em; width: 8px; height: 8px; border-radius: 50%; background: var(--navy); }
+
+  .g-split { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 48px; align-items: start; }
+  @media (max-width: 860px) { .g-split { grid-template-columns: minmax(0, 1fr); gap: 56px; } }
+  .g-narrow { max-width: 760px; }
+
+  /* Een klei-kader voor "fout gezien?" en "liever persoonlijke les?": aandacht, geen status. */
+  .g-callout { border-radius: var(--r-xl); padding: 28px; background: var(--klei-tint); display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 20px 32px; align-items: center; }
+  @media (max-width: 760px) { .g-callout { grid-template-columns: minmax(0, 1fr); padding: 22px; } }
+  .g-callout h2 { margin: 0; font-family: var(--font-headline); font-weight: 700; font-size: clamp(20px, 2.4vw, 26px); letter-spacing: -0.025em; color: var(--navy); text-wrap: balance; }
+  .g-callout p { margin: 8px 0 0; font-size: 15px; line-height: 1.65; color: #5a2a06; max-width: 62ch; }
+
+  /* Arabisch schrift breekt op spatiëring en kapitalen: de mono-labels worden daar gewone tekst. */
+  [dir="rtl"] .g-factlist dt { font-family: inherit; letter-spacing: 0; text-transform: none; font-size: 13px; }
+
+  /* Juridische tekst: Read-modus in een witte kaart, zo breed als de leesmaat plus marge. */
+  .g-legal-card { max-width: 880px; }
+  .g-legal { font-size: 16px; line-height: 1.75; color: var(--ink-2); }
+  .g-legal > * + * { margin-top: 14px; }
+  .g-legal h2 { font-family: var(--font-headline); font-size: 20px; font-weight: 700; letter-spacing: -0.02em; color: var(--navy); margin-top: 40px; scroll-margin-top: calc(var(--nav-h) + 24px); }
+  .g-legal h2:first-child { margin-top: 0; }
+  .g-legal h3 { font-family: var(--font-headline); font-size: 17px; font-weight: 700; color: var(--ink); margin-top: 28px; }
+  .g-legal ul, .g-legal ol { list-style: none; padding: 0; display: flex; flex-direction: column; gap: 8px; }
+  .g-legal ul li { position: relative; padding-inline-start: 20px; }
+  .g-legal ul li::before { content: ""; position: absolute; inset-inline-start: 2px; top: 0.75em; width: 6px; height: 6px; border-radius: 50%; background: var(--navy); opacity: 0.55; }
+  .g-legal ol { counter-reset: g-legal; }
+  .g-legal ol li { counter-increment: g-legal; position: relative; padding-inline-start: 26px; }
+  .g-legal ol li::before { content: counter(g-legal) "."; position: absolute; inset-inline-start: 0; font-weight: 700; color: var(--navy); }
+  .g-legal strong { color: var(--ink); font-weight: 600; }
+  .g-legal a { color: var(--navy); font-weight: 600; text-decoration: underline; text-decoration-color: rgba(0, 43, 109, 0.35); text-underline-offset: 3px; text-decoration-thickness: 1.5px; border-radius: 4px; outline: none; transition: text-decoration-color 160ms ease; }
+  .g-legal a:hover { text-decoration-color: var(--navy); }
+  .g-legal a:active { opacity: 0.75; }
+  .g-legal a:focus-visible { box-shadow: var(--glas-focus); }
+  .g-legal table { width: 100%; border-collapse: collapse; font-size: 14px; border-radius: var(--r-md); overflow: hidden; }
+  .g-legal th, .g-legal td { text-align: start; padding: 10px 14px; vertical-align: top; }
+  .g-legal thead th { background: var(--navy); color: #fff; font-family: var(--font-headline); }
+  .g-legal tbody tr:nth-child(even) { background: var(--mist); }
+
+  /* Formulier: wit veld op een witte kaart is onzichtbaar, dus het veld is mist met een navy ring bij focus. */
+  .g-form { display: flex; flex-direction: column; gap: 18px; }
+  .g-label { display: block; font-family: var(--font-headline); font-weight: 700; font-size: 14px; color: var(--ink); margin-bottom: 7px; }
+  .g-input {
+    display: block; width: 100%; box-sizing: border-box; min-height: 50px; padding: 12px 16px; border: 0; border-radius: var(--r-md);
+    background: var(--mist); color: var(--ink); font: inherit; font-size: 16px; line-height: 1.5; outline: none; appearance: none;
+    transition: box-shadow 160ms ease, background-color 160ms ease;
+  }
+  .g-input::placeholder { color: var(--ink-3); }
+  .g-input:hover { background: #e7ecf5; }
+  .g-input:focus, .g-input:focus-visible { background: #fff; box-shadow: inset 0 0 0 2px var(--navy); }
+  .g-input[aria-invalid="true"] { background: var(--fout-tint); box-shadow: inset 0 0 0 2px var(--fout); }
+  select.g-input {
+    padding-inline-end: 44px; cursor: pointer;
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23002b6d' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'><path d='m6 9 6 6 6-6'/></svg>");
+    background-repeat: no-repeat; background-position: right 16px center;
+  }
+  [dir="rtl"] select.g-input { background-position: left 16px center; }
+  textarea.g-input { min-height: 140px; resize: vertical; }
+  .g-formerr { display: flex; gap: 10px; align-items: flex-start; padding: 12px 14px; border-radius: var(--r-md); background: var(--fout-tint); color: #7a1010; font-size: 14px; font-weight: 600; line-height: 1.5; }
+  .g-formerr svg { width: 18px; height: 18px; flex: none; color: var(--fout); margin-top: 1px; }
+
+  /* Een gecentreerde statuskaart (uitschrijven, verstuurd, 404). */
+  .g-statecard { max-width: 460px; margin-inline: auto; border-radius: var(--r-xl); background: #fff; padding: 36px 28px; text-align: center; display: flex; flex-direction: column; align-items: center; gap: 12px; }
+  .g-statecard h1, .g-statecard h2 { margin: 6px 0 0; font-family: var(--font-headline); font-weight: 700; font-size: clamp(24px, 3vw, 30px); letter-spacing: -0.03em; color: var(--navy); text-wrap: balance; }
+  .g-statecard p { margin: 0; color: var(--ink-2); font-size: 15px; line-height: 1.65; max-width: 40ch; }
+  .g-stateicon { width: 56px; height: 56px; border-radius: 50%; display: flex; align-items: center; justify-content: center; background: var(--tegel); color: var(--navy); }
+  .g-stateicon svg { width: 26px; height: 26px; }
+  .g-stateicon-goed { background: var(--goed-tint); color: var(--goed); }
+  .g-stateicon-fout { background: var(--fout-tint); color: var(--fout); }
+  .g-mailchip { display: inline-flex; align-items: center; min-height: 36px; padding: 6px 14px; border-radius: var(--r-pill); background: var(--mist); color: var(--ink); font-weight: 600; font-size: 14px; word-break: break-all; }
+  .g-textbtn {
+    all: unset; box-sizing: border-box; cursor: pointer; display: inline-flex; align-items: center; gap: 6px; padding: 6px 10px; border-radius: var(--r-pill);
+    font-size: 14px; font-weight: 600; color: var(--ink-2); transition: color 160ms ease, background-color 160ms ease, transform 160ms var(--ease-out-glas);
+  }
+  .g-textbtn svg { width: 15px; height: 15px; }
+  .g-textbtn:hover { color: var(--navy); background: rgba(0, 43, 109, 0.06); }
+  .g-textbtn:active { transform: scale(0.97); }
+  .g-textbtn:focus-visible { box-shadow: var(--glas-focus); }
+
+  .g-404-links { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; width: 100%; max-width: 720px; margin: 28px auto 0; }
+  @media (max-width: 640px) { .g-404-links { grid-template-columns: minmax(0, 1fr); } }
+  .g-404-links a {
+    display: flex; align-items: center; gap: 12px; padding: 14px 16px; border-radius: var(--r-lg); background: #fff; color: var(--ink); text-decoration: none;
+    font-family: var(--font-headline); font-weight: 700; font-size: 15px; outline: none; transition: transform 200ms var(--ease-out-glas), box-shadow 200ms ease;
+  }
+  .g-404-links a:hover { transform: translateY(-2px); box-shadow: var(--zweef); color: var(--navy); }
+  .g-404-links a:active { transform: scale(0.98); }
+  .g-404-links a:focus-visible { box-shadow: var(--glas-focus); }
+  .g-404-links a > svg:last-child { width: 16px; height: 16px; margin-inline-start: auto; color: var(--navy); }
+  .g-404-code { font-family: var(--font-headline); font-weight: 800; font-size: clamp(72px, 12vw, 128px); letter-spacing: -0.06em; line-height: 0.9; color: var(--navy); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .g-input, .g-legal a, .g-textbtn, .g-404-links a { transition-duration: 0ms; }
+  .g-textbtn:active, .g-404-links a:hover, .g-404-links a:active { transform: none; }
+}

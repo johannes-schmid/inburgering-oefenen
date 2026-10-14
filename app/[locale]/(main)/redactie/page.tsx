@@ -3,7 +3,10 @@ import { getTranslations } from 'next-intl/server';
 import { ArrowRight } from 'lucide-react';
 import { routing } from '@/i18n/routing';
 import { Link } from '@/i18n/navigation';
-import { Breadcrumb, GradientHero, SectionHeader } from '@/components/site';
+import PageField from '@/components/glas/PageField';
+import SectionHeading from '@/components/glas/SectionHeading';
+import { glasButton } from '@/components/glas/Button';
+import Crumbs from '../_components/glas/Crumbs';
 import { alternatesFor } from '@/lib/schema';
 
 type Props = { params: Promise<{ locale: string }> };
@@ -40,79 +43,68 @@ export default async function RedactiePage({ params }: Props) {
   const { locale } = await params;
   const t = await getTranslations({ locale, namespace: 'redactie' });
 
-  const LINK = 'inline-flex items-center gap-1 font-semibold no-underline rounded-sm hover:opacity-75 active:opacity-60 focus-visible:outline-2 focus-visible:outline-offset-2';
-
   return (
     <>
-      <Breadcrumb items={[{ label: 'Home', href: '/' }, { label: t('breadcrumb') }]} />
-
-      <GradientHero className="pb-20">
-        <div className="max-w-3xl">
-          <h1
-            className="font-headline font-extrabold text-white m-0"
-            style={{ fontSize: 'clamp(2rem, 4.4vw, 3.1rem)', letterSpacing: '-0.03em', lineHeight: 1.05, textWrap: 'balance' }}
-          >
-            {t('heading')}
-          </h1>
-          <p className="text-white/75 text-[1.0625rem] leading-[1.7] m-0 mt-5 max-w-[60ch]" style={{ textWrap: 'pretty' }}>
-            {t('lede')}
-          </p>
-          <p className="text-white/55 text-sm m-0 mt-4">{t('updated')}</p>
+      <PageField variant="gracht" className="g-pagehead">
+        <Crumbs items={[{ label: 'Home', href: '/' }, { label: t('breadcrumb') }]} />
+        <div className="g-narrow">
+          <SectionHeading as="h1" size="h1" title={t('heading')} onField />
+          <p className="g-lead mt-5">{t('lede')}</p>
+          <p className="g-pagehead-meta">{t('updated')}</p>
         </div>
-      </GradientHero>
+      </PageField>
 
-      <section className="py-16 sm:py-20 bg-surface">
-        <div className="max-w-3xl mx-auto px-6">
-          <SectionHeader align="left" title={t('resp_title')} />
-          <p className="m-0 text-[0.9375rem] leading-[1.7] text-on-surface-variant max-w-[65ch]">{t('resp_body')}</p>
-          <Link href="/docent" className={`${LINK} mt-3 text-sm`} style={{ color: '#a24000' }}>
+      <section className="g-sec" aria-labelledby="redactie-resp">
+        <div className="g-wrap"><div className="g-narrow">
+          <SectionHeading id="redactie-resp" title={t('resp_title')} size="h2" />
+          <p className="g-body mt-4">{t('resp_body')}</p>
+          <Link href="/docent" className="g-tlink mt-4">
             {t('resp_link')}
-            <ArrowRight className="size-3.5 rtl-flip" aria-hidden />
+            <ArrowRight className="rtl-flip" aria-hidden />
           </Link>
-        </div>
+        </div></div>
       </section>
 
-      <section className="py-16 sm:py-20 bg-surface-container-low">
-        <div className="max-w-3xl mx-auto px-6">
-          <SectionHeader align="left" title={t('ai_title')} />
-          <dl className="m-0 flex flex-col gap-3">
+      <section className="g-sec g-sec-tier" aria-labelledby="redactie-ai">
+        <div className="g-wrap"><div className="g-narrow">
+          <SectionHeading id="redactie-ai" title={t('ai_title')} size="h2" className="mb-6" />
+          <dl className="g-cardlist m-0">
             {[1, 2, 3, 4, 5, 6].map(n => (
-              <div key={n} className="rounded-2xl px-5 py-4 bg-surface-container-lowest" style={{ boxShadow: 'var(--shadow-ambient)' }}>
-                <dt className="font-headline font-bold text-primary text-[1rem]">{t(`ai_${n}_title`)}</dt>
-                <dd className="m-0 mt-1 text-sm leading-relaxed text-on-surface-variant">{t(`ai_${n}_body`)}</dd>
+              <div key={n}>
+                <dt>{t(`ai_${n}_title`)}</dt>
+                <dd>{t(`ai_${n}_body`)}</dd>
               </div>
             ))}
           </dl>
-          <p className="m-0 mt-5 text-sm text-on-surface-variant">
+          <p className="m-0 mt-5 text-sm text-ink-2">
             {t('privacy_note')}{' '}
-            <Link href="/privacybeleid" className={LINK} style={{ color: '#a24000' }}>{t('privacy_link')}</Link>
+            <Link href="/privacybeleid" className="g-ilink">{t('privacy_link')}</Link>
           </p>
-        </div>
+        </div></div>
       </section>
 
-      <section className="py-16 sm:py-20 bg-surface">
-        <div className="max-w-3xl mx-auto px-6">
-          <SectionHeader align="left" title={t('notdo_title')} />
-          <ul className="m-0 p-0 list-none flex flex-col gap-3">
+      <section className="g-sec" aria-labelledby="redactie-notdo">
+        <div className="g-wrap"><div className="g-narrow">
+          <SectionHeading id="redactie-notdo" title={t('notdo_title')} size="h2" className="mb-6" />
+          <ul className="g-dotlist">
             {[1, 2, 3].map(n => (
-              <li key={n} className="text-[0.9375rem] leading-[1.7] text-on-surface-variant ps-5 relative max-w-[65ch]">
-                <span aria-hidden className="absolute start-0 top-[0.7rem] size-2 rounded-full bg-primary" />
-                {t(`notdo_${n}`)}
-              </li>
+              <li key={n}>{t(`notdo_${n}`)}</li>
             ))}
           </ul>
 
-          <div className="mt-12 rounded-2xl p-6 sm:p-8" style={{ background: 'rgba(254,118,44,0.22)' }}>
-            <h2 className="m-0 font-headline font-extrabold text-primary text-xl tracking-tight">{t('errors_title')}</h2>
-            <p className="m-0 mt-2 text-[0.9375rem] leading-relaxed text-on-secondary-container">{t('errors_body')}</p>
-            <Link href="/contact" className={`${LINK} mt-3 text-sm text-primary`}>
+          <div className="g-callout mt-12">
+            <div>
+              <h2>{t('errors_title')}</h2>
+              <p>{t('errors_body')}</p>
+            </div>
+            <Link href="/contact" className={glasButton({ variant: 'navy' })}>
               {t('errors_link')}
-              <ArrowRight className="size-3.5 rtl-flip" aria-hidden />
+              <ArrowRight className="rtl-flip" aria-hidden />
             </Link>
           </div>
 
-          <p className="m-0 mt-8 text-xs text-on-surface-variant">{t('eu_note')}</p>
-        </div>
+          <p className="m-0 mt-8 text-xs leading-relaxed text-ink-2">{t('eu_note')}</p>
+        </div></div>
       </section>
     </>
   );
