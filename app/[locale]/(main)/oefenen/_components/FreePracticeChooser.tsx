@@ -38,7 +38,8 @@ import type { Level, OnderdeelSlug } from '@/data/skills';
  */
 
 export type ChooserPart = {
-  slug: OnderdeelSlug;
+  /** `'ona'` is geen `OnderdeelSlug` (zie `data/skills.ts`), maar wel een `CategoryMark`. */
+  slug: OnderdeelSlug | 'ona';
   name: string;
   /** One line under the name — what the visitor gets, not what the onderdeel is. */
   note: string;
@@ -205,7 +206,7 @@ function TrackTile({
 
   const body = (
     <>
-      <TrackMark id={track.id} size={stacked ? 48 : 52} onDark={active} />
+      <TrackMark id={track.id} size={stacked ? 48 : 52} onDark={active} muted={soon} />
       <span className={`flex flex-col gap-0.5 ${stacked ? '' : 'min-w-0'}`}>
         <span
           className="font-headline font-extrabold text-lg tracking-tight"
@@ -255,10 +256,10 @@ function TrackTile({
  * hand-rolled hollow ring for ONA — which made a row of four peers look like four unrelated
  * things. `ExamMark` is the studio's own set (§04b) and covers all four including the greyed
  * "binnenkort" state, so the "not built" signal is still carried by the mark and is now drawn
- * rather than improvised. `tone` is gone with it: a track mark is always the inverted navy tile.
+ * rather than improvised — it follows `parts.length === 0`, the same condition as the chip. `tone` is gone with it: a track mark is always the inverted navy tile.
  */
-function TrackMark({ id, size, onDark }: { id: ChooserTrack['id']; size: number; onDark: boolean }) {
-  return <ExamMark track={id} size={size} muted={id === 'ona'} onDark={onDark} />;
+function TrackMark({ id, size, onDark, muted }: { id: ChooserTrack['id']; size: number; onDark: boolean; muted: boolean }) {
+  return <ExamMark track={id} size={size} muted={muted} onDark={onDark} />;
 }
 
 /** One onderdeel: the same row on both flows, so the phone and the desktop cannot drift. */

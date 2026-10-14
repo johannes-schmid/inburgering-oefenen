@@ -37,6 +37,7 @@ import { SKILLS } from '@/data/skills';
 import { getSortedPosts, getPostLocale, getPostSlug } from '@/data/blog-posts';
 import { publishedGuides, getGuideBySlug, getGuideLocale, guideHref } from '@/data/guides/helpers';
 import type { GuideSection } from '@/data/guides/types';
+import { isOnaAvailable } from '@/lib/ona/access';
 
 type Props = { params: Promise<{ locale: string }> };
 
@@ -95,6 +96,7 @@ export default async function GidsenIndexPage({ params }: Props) {
   const t = await getTranslations({ locale, namespace: 'gidsen' });
   const tG = await getTranslations({ locale, namespace: 'guides' });
   const tB = await getTranslations({ locale, namespace: 'breadcrumbs' });
+  const onaLive = isOnaAvailable();
 
   const guides = SECTIONS.flatMap(s =>
     publishedGuides(s.id).map(g => {
@@ -286,9 +288,9 @@ export default async function GidsenIndexPage({ params }: Props) {
                 <span className="text-xs text-on-surface-variant -mt-2">{t('count_themas', { count: KNM_THEMES })}</span>
               </Link>
               <Link href={{ pathname: '/inburgering/[slug]', params: { slug: 'ona-examen' } }} className={TILE} style={{ boxShadow: 'var(--shadow-ambient)' }}>
-                <ExamMark track="ona" size={40} muted />
+                <ExamMark track="ona" size={40} muted={!onaLive} />
                 <span className="font-headline font-bold text-sm text-on-surface">{t('topic_ona')}</span>
-                <span className="text-xs text-on-surface-variant -mt-2">{t('topic_soon')}</span>
+                <span className="text-xs text-on-surface-variant -mt-2">{onaLive ? t('topic_ona_live') : t('topic_soon')}</span>
               </Link>
             </div>
           </div>

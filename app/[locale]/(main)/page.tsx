@@ -16,6 +16,7 @@ import { Link } from '@/i18n/navigation';
 import { ArrowUpRight, ArrowRight } from 'lucide-react';
 import { courseId, TEACHER_REF, ogImageFor } from '@/lib/schema';
 import { localeHref, localizedPath } from '@/i18n/paths';
+import { isOnaAvailable } from '@/lib/ona/access';
 
 type Props = { params: Promise<{ locale: string }> };
 
@@ -355,7 +356,8 @@ export default async function HomePage({ params }: Props) {
        `app/sitemap.ts` and `lib/llms.ts`, and the table at the top of `CLAUDE.md` are one
        decision in six places and move together. */
     { key: 'track_knm', live: true },
-    { key: 'track_ona', live: false },
+    /* ONA volgt `isOnaAvailable()` — dezelfde vlag als het portaal, het menu en de checkout. */
+    { key: 'track_ona', live: isOnaAvailable() },
   ] as const;
 
 
@@ -929,22 +931,33 @@ export default async function HomePage({ params }: Props) {
               glow="rgba(255,255,255,0.16)"
             />
 
-            {/* ── ONA — de laatste stap van het traject, en er is niets gebouwd ──
-                Volle kleur zoals de andere drie (besluit eigenaar, 22-08-2026), zodat de rij als
-                één platform leest; het hele gewicht van de beschikbaarheidsclaim ligt daarom op de
-                chip en de knop, en die zijn hier niet optioneel. `/contact` is de enige plek op de
-                site die "laat het me weten" kan aannemen. */}
-            <BlockTile
-              track="ona"
-              title={t('blocks_ona_title')}
-              desc={t('blocks_ona_desc')}
-              soonLabel={t('pkg_soon')}
-              ctaLabel={t('blocks_notify')}
-              href={localeHref(locale, `contact`)}
-              background="var(--color-primary-container)"
-              glow="rgba(255,255,255,0.14)"
-              muted
-            />
+            {/* ── ONA — live als portfoliomodule sinds 14-10-2026 ──
+                Zolang `isOnaAvailable()` false is, blijft dit de aankondiging: gedempt merk,
+                "binnenkort" en `/contact` als enige plek die "laat het me weten" aanneemt. Live
+                wijst de knop naar het portaal, waar een gast de kaarten kan bekijken. */}
+            {isOnaAvailable() ? (
+              <BlockTile
+                track="ona"
+                title={t('blocks_ona_title')}
+                desc={t('blocks_ona_desc')}
+                ctaLabel={t('blocks_ona_cta')}
+                href={localeHref(locale, `dashboard/ona`)}
+                background="var(--color-primary-container)"
+                glow="rgba(255,255,255,0.14)"
+              />
+            ) : (
+              <BlockTile
+                track="ona"
+                title={t('blocks_ona_title')}
+                desc={t('blocks_ona_desc')}
+                soonLabel={t('pkg_soon')}
+                ctaLabel={t('blocks_notify')}
+                href={localeHref(locale, `contact`)}
+                background="var(--color-primary-container)"
+                glow="rgba(255,255,255,0.14)"
+                muted
+              />
+            )}
           </div>
         </div>
       </section>

@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import { getTranslations } from 'next-intl/server';
+import { isOnaAvailable } from '@/lib/ona/access';
 import { HorizonBanner, ValidationChip } from '@/components/horizon';
 import { routing } from '@/i18n/routing';
 import { KNM, KNM_SLUG, SKILLS, type Level } from '@/data/skills';
@@ -65,8 +66,8 @@ export default async function OefenenPickerPage({ params }: Props) {
    *    Omitted rather than shown as "binnenkort": a card would advertise a level of an onderdeel
    *    nobody has authored a single item at.
    *
-   * ONA carries no parts at all, which is what makes its tile the roadmap statement instead of a
-   * control — one condition, not a second flag to keep in step.
+   * ONA follows `isOnaAvailable()`. Without it ONA carries no parts at all, which is what makes its
+   * tile the roadmap statement instead of a control — one condition, not a second flag to keep in step.
    */
   const b1Tasters = b1TasterSkills();
 
@@ -122,7 +123,15 @@ export default async function OefenenPickerPage({ params }: Props) {
       blurb: t('track_blurb_open'),
       parts: partsAt('b1'),
     },
-    { id: 'ona', name: t('track_ona'), subtitle: '', blurb: '', parts: [] },
+    isOnaAvailable()
+      ? {
+          id: 'ona',
+          name: t('track_ona'),
+          subtitle: t('ona_subtitle'),
+          blurb: t('ona_blurb'),
+          parts: [{ slug: 'ona', name: t('ona_part'), note: t('ona_part_note'), href: localeHref(locale, `dashboard/ona`), needsAccount: true }],
+        }
+      : { id: 'ona', name: t('track_ona'), subtitle: '', blurb: '', parts: [] },
   ];
 
   /* ── Structured data ──────────────────────────────────────────────────────

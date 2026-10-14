@@ -2,7 +2,7 @@ import { describe, expect, it } from 'vitest';
 import { MODULE_PRICE_CENTS, MODULES, parseSelection, priceForSelection } from '@/lib/pricing';
 import { modulesFromMetadata, normaliseModule, ownsKnm, ownsOna } from '@/lib/entitlements';
 import { ONA_CARDS, ONA_FREE_CARD, getOnaCard } from '@/data/ona/cards';
-import { ONA_GESPREK_BANK } from '@/data/ona/eindgesprek';
+import { ONA_GESPREK_BANK, ONA_GESPREK_STATUS } from '@/data/ona/eindgesprek';
 import { canOpenOnaCard, canStartOnaPractice, isOnaAvailable, isOnaReviewed } from '@/lib/ona/access';
 import {
   cardProgress, duoCheck, keepFlag, nextCardNo, sanitiseAnswers, sanitiseEvidence, type OnaEntry,
@@ -145,9 +145,14 @@ describe('de gratis laag', () => {
   });
 });
 
-describe('live pas na de review', () => {
-  it('buiten `next dev` staat ONA alleen open als alle inhoud nagekeken is', () => {
+describe('vrijgegeven door de eigenaar, de review blijft een eigen feit', () => {
+  it('ONA staat ook buiten `next dev` open (besluit eigenaar, 14-10-2026)', () => {
     expect(process.env.NODE_ENV).not.toBe('development');
-    expect(isOnaAvailable()).toBe(isOnaReviewed());
+    expect(isOnaAvailable()).toBe(true);
+  });
+
+  it('de vrijgave zet de review niet op waar: dat doen alleen de kaarten zelf', () => {
+    const allReviewed = ONA_CARDS.every(c => c.status === 'reviewed') && ONA_GESPREK_STATUS === 'reviewed';
+    expect(isOnaReviewed()).toBe(allReviewed);
   });
 });

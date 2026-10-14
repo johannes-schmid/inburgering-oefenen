@@ -141,7 +141,7 @@ function examLines(): string[] {
  * rows read the same `itemCount !== null` fact that `robots` and the sitemap gate on, and flip on
  * their own. KNM and ONA are named from `TRACKS`'s roadmap rather than from a format table,
  * because neither had one. KNM gained both on 2026-08-24 and its row now states the real
- * catalogue; ONA still has neither.
+ * catalogue; ONA went live on 2026-10-14 as a portfolio module, not as practice exams.
  */
 function catalogueLines(): string {
   const rows: string[] = [];
@@ -167,7 +167,9 @@ function catalogueLines(): string {
       "by kennisgidsen. KNM is not examined per CEFR level: one exam serves A2 and B1 candidates.",
   );
   rows.push(
-    '- **ONA** — covered by the kennisgidsen and the tijdlijn planner. No ONA practice exams yet.',
+    '- **ONA** — live as a portfolio module: the eight result cards filled in step by step, a check ' +
+      "against DUO's requirements, and a practice final interview. Card 1 and one practice interview " +
+      'are free with an account. Also covered by the kennisgidsen and the tijdlijn planner.',
   );
   return rows.join('\n');
 }

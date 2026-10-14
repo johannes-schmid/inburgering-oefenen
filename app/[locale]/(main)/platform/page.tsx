@@ -32,6 +32,7 @@ import { HorizonBanner, CategoryMark, type Category } from '@/components/horizon
 import { FeatureCard, SectionHeader, SkillCard, CTABanner } from '@/components/site';
 import { DEFAULT_LEVEL, KNM, formatCount, skillsAtLevel } from '@/data/skills';
 import { localeHref } from '@/i18n/paths';
+import { isOnaAvailable } from '@/lib/ona/access';
 
 type Props = { params: Promise<{ locale: string }> };
 
@@ -67,7 +68,10 @@ const TRACKS = [
   /* KNM went live 2026-08-24 and links to its own overview rather than to `/taalexamens`,
      which is the hub for the four *taalonderdelen* and does not describe it. */
   { key: 'knm', live: true, href: '/oefenexamen/knm' as const },
-  { key: 'ona', live: false },
+  /* ONA volgt `isOnaAvailable()`; live linkt hij naar het portaal, waar een gast kan kijken. */
+  ...(isOnaAvailable()
+    ? [{ key: 'ona', live: true, href: '/dashboard/ona' } as const]
+    : [{ key: 'ona', live: false } as const]),
 ] as const;
 
 const BENEFITS = [

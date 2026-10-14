@@ -16,8 +16,17 @@ export function isOnaReviewed(): boolean {
   return ONA_CARDS.every(c => c.status === 'reviewed') && ONA_GESPREK_STATUS === 'reviewed';
 }
 
+/**
+ * **Vrijgegeven door de eigenaar op 14-10-2026, vóór de review van de docent.** De kaarten en de
+ * vragenbank blijven op `concept` staan, want die status is het verslag van háár nakijken en mag
+ * niets beweren wat niet gebeurd is. Zolang `isOnaReviewed()` false is, toont het portaal daarom
+ * `ona.draft_notice` en géén `ValidationChip`. Zet de kaarten op `reviewed` zodra Amber ze heeft
+ * nagekeken; deze vlag kan dan weg.
+ */
+const ONA_RELEASED_BY_OWNER = true;
+
 export function isOnaAvailable(): boolean {
-  return isOnaReviewed() || process.env.NODE_ENV === 'development';
+  return ONA_RELEASED_BY_OWNER || isOnaReviewed() || process.env.NODE_ENV === 'development';
 }
 
 type Meta = Parameters<typeof ownsOna>[0];
