@@ -27,12 +27,14 @@ import type { Crumb } from '@/lib/portal-crumbs';
  * werken. De items in het menu zijn óók echte links, zodat middelklik en "open in nieuw
  * tabblad" doen wat ze horen te doen — `router.push` in een `onClick` breekt dat stil.
  */
-export default function PortalCrumbs({ trail }: { trail: Crumb[] }) {
+export default function PortalCrumbs({ trail, glas = false }: { trail: Crumb[]; glas?: boolean }) {
   const router = useRouter();
   if (trail.length === 0) return null;
 
+  /* `glas`: de vorm voor een scherm dat in Glas is herbouwd (`app/glas-portal.css`). De
+     leerlaagschermen die nog niet zijn omgezet houden de oude `.crumbs`. */
   return (
-    <nav className="crumbs" aria-label="Kruimelpad">
+    <nav className={glas ? 'g-crumbs' : 'crumbs'} aria-label="Kruimelpad">
       <ol>
         {trail.map((crumb, i) => {
           const siblings = crumb.siblings ?? [];

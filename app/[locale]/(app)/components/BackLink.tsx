@@ -6,6 +6,7 @@ import { ArrowLeft } from 'lucide-react';
 
 type Props = { fallbackHref: string; label?: string };
 
+/** "Terug" in Glas-vorm (`.g-lp-back`), voor de twee KNM-schermen analyse en fouten. */
 export default function BackLink({ fallbackHref, label }: Props) {
   const router = useRouter();
   const t = useTranslations('dashboard');
@@ -16,15 +17,8 @@ export default function BackLink({ fallbackHref, label }: Props) {
   };
 
   return (
-    <button
-      type="button"
-      onClick={goBack}
-      className="hidden md:inline-flex items-center gap-1.5"
-      style={{ background: 'none', border: 0, padding: 0, cursor: 'pointer', color: '#5a6078', fontSize: 13, fontWeight: 700, fontFamily: 'inherit', marginBottom: 14 }}
-      onMouseEnter={e => (e.currentTarget.style.color = '#002b6d')}
-      onMouseLeave={e => (e.currentTarget.style.color = '#5a6078')}
-    >
-      <ArrowLeft size={16} strokeWidth={2.4} />
+    <button type="button" onClick={goBack} className="g-lp-back g-back">
+      <ArrowLeft strokeWidth={2.4} className="rtl-flip" aria-hidden />
       {label ?? t('btn_go_back')}
     </button>
   );

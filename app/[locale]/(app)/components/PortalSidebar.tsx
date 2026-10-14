@@ -2,12 +2,11 @@
 
 import { useEffect, useState } from 'react';
 import { useTranslations } from 'next-intl';
-import { BookOpen, ChevronRight, ClipboardList, LayersIcon, LayoutDashboard, LogOut, Mail, MessageSquare, Plus, Send, UserPlus } from 'lucide-react';
+import { BookOpen, ChevronRight, ClipboardList, LayersIcon, LayoutDashboard, Lock, LogIn, LogOut, Mail, MessageSquare, Plus, Send, UserPlus } from 'lucide-react';
 import { createClient } from '@/lib/supabase/client';
 import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
 import LogoMark from '@/components/site/LogoMark';
 import ExamMark, { type Track } from '@/components/horizon/ExamMark';
-import CategoryMark, { type Category } from '@/components/horizon/CategoryMark';
 import { KNM_SLUG, LEVELS } from '@/data/skills';
 import { FEATURES } from '@/lib/features';
 import type { PortalMenu, PortalMenuGroup } from '@/lib/portal-menu';
@@ -15,7 +14,9 @@ import type { PortalNav } from './nav';
 import { localeHref } from '@/i18n/paths';
 
 /**
- * De portaalzijbalk: **één navy kolom, met de modules uitklapbaar.**
+ * De portaalzijbalk: **één glazen kolom (Glas, glas.html §09b), met de modules uitklapbaar.**
+ * Onderdeelrijen zijn sinds Glas tekst — met een slotje als ze niet in je pakket zitten — en
+ * de modulerijen dragen het trackmerk op 32px.
  *
  * Dit vervangt het rail+paneel van 27-08 (beslissing eigenaar, 29-08, naar de mockup
  * "Studieportaal Navigatie Opties"). Die twee vaste kolommen droegen twee assen — welke module
@@ -106,28 +107,26 @@ export default function PortalSidebar({
 
   const showExtend = (menu?.available.length ?? 1) > 0
     || groups.some(g => g.items.some(i => !i.owned));
+  const onaOn = activeGroup === 'ona' && active === 'overview-module';
 
   return (
     <aside id="dash-side" aria-label={t('nav_aria')}>
-      <a href={`/${locale}/dashboard`} className="side-logo" aria-label="Inburgering Oefenen">
-        <LogoMark size={34} surface="dark" />
+      <a href={`/${locale}/dashboard`} className="g-side-logo" aria-label="Inburgering Oefenen">
+        <LogoMark size={34} />
         <span>Inburgering<br />Oefenen</span>
       </a>
 
-      <div className="side-scroll">
+      <div className="g-side-scroll">
         <a
           href={`/${locale}/dashboard`}
           aria-current={active === 'overview' ? 'page' : undefined}
-          className={`side-row lead${active === 'overview' ? ' on' : ''}`}
+          className={`g-navi${active === 'overview' ? ' g-on' : ''}`}
         >
-          {/* `lead`: dezelfde tegelmaat en hetzelfde gewicht als de modulerijen eronder. Het
-              overzicht is een bestemming van dezelfde orde als een module, en een kleinere
-              tegel erboven leest als een bijschrift bij de lijst in plaats van als de ingang. */}
-          <span className="side-ic"><LayoutDashboard size={22} strokeWidth={2.1} /></span>
-          <span className="side-lb">{t('nav_overview')}</span>
+          <span className="g-navi-ic" aria-hidden><LayoutDashboard strokeWidth={2.1} /></span>
+          <span className="g-navi-lb">{t('nav_overview')}</span>
         </a>
 
-        <p className="side-label">{t('nav_modules')}</p>
+        <p className="g-side-grp">{t('nav_modules')}</p>
 
         {groups.map(group => {
           const expanded = open.includes(group.id);
@@ -139,26 +138,22 @@ export default function PortalSidebar({
           const onModule = inGroup && active === 'overview-module';
 
           return (
-            <div key={group.id} className={`side-group${expanded ? ' open' : ''}`}>
+            <div key={group.id} className={`g-sgroup${expanded ? ' g-open' : ''}`}>
               {/* De rij is een link en de chevron een aparte trigger — shadcns
-                  `SidebarMenuAction`-vorm. De hele rij tot toggle maken is nettere markup en
-                  neemt je de modulepagina af, en dát is de pagina waar de rij voor bestaat. */}
-              <div className={`side-mod${inGroup ? ' within' : ''}${onModule ? ' on' : ''}`}>
+                  `SidebarMenuAction`-vorm. De hele rij tot toggle maken neemt je de
+                  modulepagina af, en dát is de pagina waar de rij voor bestaat. */}
+              <div className={`g-smod${inGroup ? ' g-within' : ''}${onModule ? ' g-on' : ''}`}>
                 <a
                   href={`/${locale}${group.href}`}
                   aria-current={onModule ? 'page' : undefined}
-                  className="side-mod-link"
+                  className="g-navi"
                 >
-                  {/* Het officiële trackmerk (§7): dezelfde tegel als op het overzicht, want
-                      deze rij benoemt een module — iets dat je koopt en waarin je examen doet.
-                      Hier stond "A2" als tekstbadge en voor KNM de colonnade uit `CategoryMark`;
-                      dat waren drie tekens voor één laag, en de colonnade benoemt het ónderdeel.
-                      `onDark` is de enige toegestane vorm op de navy zijbalk, en 40px is de
-                      bodem van KNM's merk — daaronder lopen molen, mens en tulp in elkaar. */}
-                  <span className="side-badge mark">
-                    <ExamMark track={(group.level ?? KNM_SLUG) as Track} size={40} onDark />
+                  {/* Het trackmerk (§7, G4): deze rij benoemt een module — iets dat je koopt.
+                      Op de navy "hier ben je"-rij de `onDark`-vorm, anders verdwijnt de tegel. */}
+                  <span className="g-navi-ic g-navi-ic-bare" aria-hidden>
+                    <ExamMark track={(group.level ?? KNM_SLUG) as Track} size={32} onDark={onModule} />
                   </span>
-                  <span className="side-lb">
+                  <span className="g-navi-lb">
                     {group.level ? t('level_section', { level: group.badge ?? '' }) : group.label}
                   </span>
                 </a>
@@ -167,99 +162,72 @@ export default function PortalSidebar({
                   onClick={() => toggle(group.id)}
                   aria-expanded={expanded}
                   aria-label={group.label}
-                  className="side-chev"
+                  className="g-schev"
                 >
-                  <ChevronRight size={15} strokeWidth={2.4} />
+                  <ChevronRight strokeWidth={2.4} aria-hidden />
                 </button>
               </div>
 
               {expanded && (
-                <div className="side-sub">
+                <div className="g-ssub">
                   {items.map(item => {
                     const on = inGroup && active === item.slug;
-                    const pct = item.examCount > 0
-                      ? Math.round((item.examsDone / item.examCount) * 100)
-                      : 0;
                     return (
                       <a
                         key={`${group.id}-${item.slug}`}
                         href={`/${locale}${item.href}`}
                         aria-current={on ? 'page' : undefined}
-                        className={`side-row sub${on ? ' on' : ''}${item.owned ? '' : ' dim'}`}
+                        className={[on && 'g-on', !item.owned && 'g-dim'].filter(Boolean).join(' ') || undefined}
                       >
-                        {/* Het categoriemerk van het onderdeel (§7): deze rij benoemt wat er
-                            ín een track zit, dus `CategoryMark` en niet `ExamMark` — de navy
-                            tegel erboven is de module die je koopt, deze rijen zijn het
-                            oefenwerk daarbinnen. `tone="dark"` is de enige toegestane vorm op
-                            de navy zijbalk (de `cut` moet gelijk zijn aan de tegel erachter),
-                            en 19px is de bodem van de 72-grid: daaronder vallen de hairlines
-                            onder een device pixel. Tot 15-09 stonden deze rijen kaal en waren
-                            ze vier woorden onder elkaar; het merk is wat ze scanbaar maakt. */}
-                        <span className="side-ic bare" aria-hidden>
-                          <CategoryMark category={item.slug as Category} size={19} tone="dark" />
-                        </span>
-                        <span className="side-lb">{tSkills(`${item.messageKey}.name`)}</span>
-                        {/* Nul examens betekent hier: dit onderdeel is nog niet gebouwd
-                            (B1 Luisteren). Een lege balk zou dat als "nog niets gedaan"
-                            tonen, wat iets heel anders is. */}
+                        <span className="g-navi-lb">{tSkills(`${item.messageKey}.name`)}</span>
+                        {/* Nul examens betekent: dit onderdeel is nog niet gebouwd (B1
+                            Luisteren). Niet in je pakket draagt een slotje, nooit alleen grijs. */}
                         {item.examCount === 0
-                          ? <span className="side-tag">{t('tag_soon')}</span>
-                          : (
-                            <span className="side-rail" aria-hidden>
-                              <span style={{ width: `${pct}%` }} />
+                          ? <span className="g-ssub-tag">{t('tag_soon')}</span>
+                          : !item.owned && (
+                            <span className="g-ssub-end" title={t('mod_not_in_package')}>
+                              <Lock strokeWidth={2.4} aria-hidden />
+                              <span className="sr-only">{t('mod_not_in_package')}</span>
                             </span>
                           )}
                       </a>
                     );
                   })}
 
-                  {/* Onder een niveau staan de vier onderdelen en niets anders (besluit
-                      eigenaar, 10-09). Hier stonden *Taalregels* en *Concepten*: twee rijen
-                      naar twee bibliotheken over dezelfde 31 regels, met elk een eigen
-                      telling. De regels van een examen staan nu in stap 2 van die cursus, en
-                      de naslag per regel hangt aan de les die hem uitlegt. */}
-
-                  {/* KNM's drie rijen. Een niveau zet hier zijn vier onderdelen neer; KNM heeft
-                      er geen, dus de drie manieren waarop je KNM oefent nemen die plek in
-                      (eigenaar, 16-09). **Ze heten hier niet "KNM ..."** — ze hangen zichtbaar
-                      onder de KNM-tegel, en de module in de naam van elk kind herhalen is wat
-                      geen enkel niveau doet ("Lezen", niet "A2 Lezen").
-
-                      De eerste wijst naar `/dashboard/knm` zelf: KNM heeft geen los
-                      examenoverzicht — de strook óp dat scherm ís het overzicht (zie
-                      `allHref` in `ExamStrip`). Vandaar dezelfde `active`-stand als de
-                      moduletegel erboven. */}
+                  {/* KNM's drie rijen: de drie manieren waarop je KNM oefent (eigenaar, 16-09).
+                      Ze heten hier niet "KNM …": ze hangen zichtbaar onder de KNM-tegel. De
+                      eerste wijst naar `/dashboard/knm` zelf — de strook óp dat scherm ís het
+                      examenoverzicht — vandaar dezelfde `active`-stand als de moduletegel. */}
                   {isKnm && (
                     <a
                       href={`/${locale}/dashboard/knm`}
                       aria-current={active === 'overview-module' ? 'page' : undefined}
-                      className={`side-row sub${active === 'overview-module' ? ' on' : ''}`}
+                      className={active === 'overview-module' ? 'g-on' : undefined}
                     >
-                      <span className="side-ic" aria-hidden><ClipboardList size={13} strokeWidth={2.2} /></span>
-                      <span className="side-lb">{tNav('knm_oefenexamens')}</span>
+                      <span className="g-ssub-ic" aria-hidden><ClipboardList strokeWidth={2.2} /></span>
+                      <span className="g-navi-lb">{tNav('knm_oefenexamens')}</span>
                     </a>
                   )}
                   {isKnm && FEATURES.leren && (
                     <a
                       href={`/${locale}/leren`}
                       aria-current={active === 'leren' ? 'page' : undefined}
-                      className={`side-row sub${active === 'leren' ? ' on' : ''}`}
+                      className={active === 'leren' ? 'g-on' : undefined}
                     >
-                      {/* lucide en geen categoriemerk: *lesmodules* en *woordkaarten* zijn geen
-                          onderdeel van KNM maar twee manieren om het te oefenen, en een merk
-                          uit de categorielaag zou ze als vijfde onderdeel laten lezen. */}
-                      <span className="side-ic" aria-hidden><LayersIcon size={13} strokeWidth={2.2} /></span>
-                      <span className="side-lb">{tNav('knm_leren')}</span>
+                      {/* lucide en geen categoriemerk: lesmodules en woordkaarten zijn geen
+                          onderdeel van KNM maar twee manieren om het te oefenen. */}
+                      <span className="g-ssub-ic" aria-hidden><LayersIcon strokeWidth={2.2} /></span>
+                      <span className="g-navi-lb">{tNav('knm_leren')}</span>
                     </a>
                   )}
                   {isKnm && FEATURES.woordkaarten && (
                     <a
                       href={`/${locale}/dashboard/woordkaarten`}
                       aria-current={active === 'woordkaarten' ? 'page' : undefined}
-                      className={`side-row sub${active === 'woordkaarten' ? ' on' : ''}`}
+                      className={active === 'woordkaarten' ? 'g-on' : undefined}
                     >
-                      <span className="side-ic" aria-hidden><BookOpen size={13} strokeWidth={2.2} /></span>
-                      <span className="side-lb">{tNav('knm_woordkaarten')}</span>
+                      <span className="g-ssub-ic" aria-hidden><BookOpen strokeWidth={2.2} /></span>
+                      <span className="g-navi-lb">{tNav('knm_woordkaarten')}</span>
                     </a>
                   )}
                 </div>
@@ -272,31 +240,31 @@ export default function PortalSidebar({
           /* ONA als eigen groep, in dezelfde vorm als KNM: de moduletegel linkt naar het
              overzicht, de chevron klapt de drie rijen uit. Geen `PortalMenuGroup`, want die
              draagt onderdelen met examens en ONA heeft er geen. */
-          <div className={`side-group${open.includes('ona') ? ' open' : ''}`}>
-            <div className={`side-mod${activeGroup === 'ona' ? ' within' : ''}${activeGroup === 'ona' && active === 'overview-module' ? ' on' : ''}`}>
+          <div className={`g-sgroup${open.includes('ona') ? ' g-open' : ''}`}>
+            <div className={`g-smod${activeGroup === 'ona' ? ' g-within' : ''}${onaOn ? ' g-on' : ''}`}>
               <a
                 href={`/${locale}/dashboard/ona`}
-                aria-current={activeGroup === 'ona' && active === 'overview-module' ? 'page' : undefined}
-                className={`side-mod-link${menu.ona.owned ? '' : ' dim'}`}
+                aria-current={onaOn ? 'page' : undefined}
+                className="g-navi"
               >
-                <span className="side-badge mark">
-                  <ExamMark track="ona" size={40} onDark />
+                <span className="g-navi-ic g-navi-ic-bare" aria-hidden>
+                  <ExamMark track="ona" size={32} onDark={onaOn} />
                 </span>
                 {/* Niet vertaald: ONA is een eigennaam, DUO's eigen afkorting. */}
-                <span className="side-lb">ONA</span>
+                <span className="g-navi-lb">ONA</span>
               </a>
               <button
                 type="button"
                 onClick={() => toggle('ona')}
                 aria-expanded={open.includes('ona')}
                 aria-label="ONA"
-                className="side-chev"
+                className="g-schev"
               >
-                <ChevronRight size={15} strokeWidth={2.4} />
+                <ChevronRight strokeWidth={2.4} aria-hidden />
               </button>
             </div>
             {open.includes('ona') && (
-              <div className="side-sub">
+              <div className="g-ssub">
                 {([
                   ['ona-portfolio', '/dashboard/ona', 'ona_portfolio', ClipboardList],
                   ['ona-eindgesprek', '/dashboard/ona/eindgesprek', 'ona_eindgesprek', MessageSquare],
@@ -308,10 +276,10 @@ export default function PortalSidebar({
                       key={key}
                       href={`/${locale}${href}`}
                       aria-current={on ? 'page' : undefined}
-                      className={`side-row sub${on ? ' on' : ''}`}
+                      className={on ? 'g-on' : undefined}
                     >
-                      <span className="side-ic" aria-hidden><Icon size={13} strokeWidth={2.2} /></span>
-                      <span className="side-lb">{tNav(label)}</span>
+                      <span className="g-ssub-ic" aria-hidden><Icon strokeWidth={2.2} /></span>
+                      <span className="g-navi-lb">{tNav(label)}</span>
                     </a>
                   );
                 })}
@@ -319,37 +287,35 @@ export default function PortalSidebar({
             )}
           </div>
         ) : (
-          /* ONA wacht op de review van de docent (`isOnaAvailable`). Tot dan: geen link en
-             zichtbaar doffer, zodat het geen pagina belooft die er nog niet mag zijn. */
-          <span className="side-mod soon" aria-disabled="true">
-            <span className="side-mod-link">
-              <span className="side-badge mark">
-                <ExamMark track="ona" size={40} muted onDark />
-              </span>
-              <span className="side-lb">ONA</span>
+          /* ONA wacht op de docent (`isOnaAvailable`). Tot dan: geen link en zichtbaar doffer,
+             zodat het geen pagina belooft die er nog niet mag zijn. */
+          <span className="g-navi" aria-disabled="true">
+            <span className="g-navi-ic g-navi-ic-bare" aria-hidden>
+              <ExamMark track="ona" size={32} muted />
             </span>
-            <span className="side-tag">{t('tag_roadmap')}</span>
+            <span className="g-navi-lb">ONA</span>
+            <span className="g-ssub-tag">{t('tag_roadmap')}</span>
           </span>
         )}
 
         {showExtend && (
-          <a href={`/${locale}/dashboard/pakketten?vanaf=sidebar`} className="side-cta">
-            <span className="side-plus" aria-hidden><Plus size={13} strokeWidth={3.2} /></span>
-            <span>{t('nav_extend_course')}</span>
+          <a href={`/${locale}/dashboard/pakketten?vanaf=sidebar`} className="g-navi">
+            <span className="g-navi-ic g-navi-plus" aria-hidden><Plus strokeWidth={2.6} /></span>
+            <span className="g-navi-lb">{t('nav_extend_course')}</span>
           </a>
         )}
       </div>
 
-      <div className="side-foot">
+      <div className="g-side-foot">
         {isGuest ? (
           <>
-            <a href={`/${locale}/register`} className="side-row accent">
-              <span className="side-ic"><UserPlus size={20} strokeWidth={2.1} /></span>
-              <span className="side-lb">{t('guest_create_account')}</span>
+            <a href={`/${locale}/register`} className="g-navi">
+              <span className="g-navi-ic g-navi-ic-navy" aria-hidden><UserPlus strokeWidth={2.1} /></span>
+              <span className="g-navi-lb">{t('guest_create_account')}</span>
             </a>
-            <a href={`/${locale}/login`} className="side-row">
-              <span className="side-ic"><LogOut size={20} strokeWidth={2} style={{ transform: 'scaleX(-1)' }} /></span>
-              <span className="side-lb">{t('guest_login')}</span>
+            <a href={`/${locale}/login`} className="g-navi">
+              <span className="g-navi-ic" aria-hidden><LogIn strokeWidth={2} className="rtl-flip" /></span>
+              <span className="g-navi-lb">{t('guest_login')}</span>
             </a>
           </>
         ) : (
@@ -357,29 +323,31 @@ export default function PortalSidebar({
             <a
               href={`/${locale}/dashboard/profiel`}
               aria-current={active === 'profile' ? 'page' : undefined}
-              className={`side-row${active === 'profile' ? ' on' : ''}`}
+              className={`g-navi${active === 'profile' ? ' g-on' : ''}`}
               title={email}
             >
-              <span className="side-ic bare">
+              <span className="g-navi-ic g-navi-ic-bare">
                 <Avatar className="h-8 w-8">
                   <AvatarImage src={avatarUrl} alt="" referrerPolicy="no-referrer" />
                   <AvatarFallback
                     className="text-[11px] font-bold"
-                    style={{ background: 'rgba(255,255,255,0.20)', color: '#fff' }}
+                    style={active === 'profile'
+                      ? { background: 'rgba(255,255,255,0.18)', color: '#fff' }
+                      : { background: 'var(--mist)', color: 'var(--navy)' }}
                   >
                     {email.slice(0, 2).toUpperCase()}
                   </AvatarFallback>
                 </Avatar>
               </span>
-              <span className="side-lb">{t('nav_profile')}</span>
+              <span className="g-navi-lb">{t('nav_profile')}</span>
             </a>
-            <a href={localeHref(locale, `contact?from=dashboard`)} className="side-row">
-              <span className="side-ic"><Mail size={20} strokeWidth={2} /></span>
-              <span className="side-lb">{t('nav_contact')}</span>
+            <a href={localeHref(locale, `contact?from=dashboard`)} className="g-navi">
+              <span className="g-navi-ic" aria-hidden><Mail strokeWidth={2} /></span>
+              <span className="g-navi-lb">{t('nav_contact')}</span>
             </a>
-            <button onClick={handleLogout} type="button" className="side-row">
-              <span className="side-ic"><LogOut size={20} strokeWidth={2} /></span>
-              <span className="side-lb">{t('btn_logout')}</span>
+            <button onClick={handleLogout} type="button" className="g-navi">
+              <span className="g-navi-ic" aria-hidden><LogOut strokeWidth={2} className="rtl-flip" /></span>
+              <span className="g-navi-lb">{t('btn_logout')}</span>
             </button>
           </>
         )}
