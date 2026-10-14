@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import { Loader2, Check, X } from 'lucide-react';
 import { createClient } from '@/lib/supabase/client';
 import { track } from '@/lib/analytics';
+import { glasButton } from '@/components/glas';
 
 type Details = { clientName: string; scope: string };
 
@@ -55,7 +56,7 @@ export default function ConsentPanel({ authorizationId, email }: { authorization
 
   if (error) {
     return (
-      <div role="alert" className="px-4 py-3 rounded-xl text-sm font-medium leading-relaxed" style={{ background: 'rgba(186,26,26,0.07)', color: '#ba1a1a' }}>
+      <div role="alert" className="auth-g-alert">
         {error}
       </div>
     );
@@ -63,7 +64,7 @@ export default function ConsentPanel({ authorizationId, email }: { authorization
 
   if (!details) {
     return (
-      <div className="flex items-center justify-center py-6 text-on-surface-variant" aria-busy>
+      <div className="flex items-center justify-center py-6 text-ink-2" aria-busy>
         <Loader2 size={20} className="animate-spin" aria-hidden />
       </div>
     );
@@ -71,10 +72,10 @@ export default function ConsentPanel({ authorizationId, email }: { authorization
 
   return (
     <div className="space-y-5">
-      <div className="rounded-xl p-4 bg-surface-container text-sm leading-relaxed">
-        <p className="m-0 font-semibold text-on-surface">{details.clientName}</p>
-        <p className="m-0 mt-1 text-on-surface-variant">
-          wil namens <span className="font-medium text-on-surface">{email}</span> oefenvragen ophalen, je antwoorden
+      <div className="auth-g-who">
+        <p className="m-0 font-headline font-bold text-navy">{details.clientName}</p>
+        <p className="m-0 mt-1 text-ink-2">
+          wil namens <span className="font-semibold text-ink">{email}</span> oefenvragen ophalen, je antwoorden
           nakijken en je voortgang bijhouden.
         </p>
       </div>
@@ -84,8 +85,7 @@ export default function ConsentPanel({ authorizationId, email }: { authorization
           type="button"
           onClick={() => decide('deny')}
           disabled={busy !== null}
-          className="consent-btn flex items-center justify-center gap-2 rounded-xl px-3 py-3 text-sm font-semibold text-on-surface bg-surface-container-lowest disabled:opacity-60 cursor-pointer whitespace-nowrap"
-          style={{ boxShadow: 'var(--shadow-card)' }}
+          className={glasButton({ variant: 'ghost', className: 'w-full px-3' })}
         >
           {busy === 'deny' ? <Loader2 size={16} className="animate-spin" aria-hidden /> : <X size={16} aria-hidden />}
           Weigeren
@@ -94,24 +94,17 @@ export default function ConsentPanel({ authorizationId, email }: { authorization
           type="button"
           onClick={() => decide('approve')}
           disabled={busy !== null}
-          className="consent-btn flex items-center justify-center gap-2 rounded-xl px-3 py-3 text-sm font-semibold text-white bg-primary disabled:opacity-60 cursor-pointer whitespace-nowrap"
+          className={glasButton({ variant: 'navy', className: 'w-full px-3' })}
         >
           {busy === 'approve' ? <Loader2 size={16} className="animate-spin" aria-hidden /> : <Check size={16} aria-hidden />}
           Toegang geven
         </button>
       </div>
 
-      <p className="text-xs text-on-surface-variant text-center leading-relaxed m-0">
+      <p className="auth-g-note">
         Je kunt de koppeling later in de app weer verwijderen. Betalen en pakketten regel je altijd op Inburgering Oefenen zelf.
       </p>
 
-      <style>{`
-        .consent-btn { transition: transform .16s cubic-bezier(0.22,1,0.36,1), opacity .16s ease; }
-        .consent-btn:not(:disabled):hover { transform: translateY(-1px); }
-        .consent-btn:not(:disabled):active { transform: translateY(0) scale(0.99); }
-        .consent-btn:focus-visible { outline: 3px solid var(--color-secondary); outline-offset: 2px; }
-        @media (prefers-reduced-motion: reduce) { .consent-btn { transition: none; } }
-      `}</style>
     </div>
   );
 }

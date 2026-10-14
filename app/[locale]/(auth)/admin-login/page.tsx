@@ -38,6 +38,7 @@ export default async function AdminLoginPage({
         locale={locale}
         next={`/${locale}/admin`}
         initialError={authErrorMessage(error)}
+        glas
       />
     </AuthShell>
   );

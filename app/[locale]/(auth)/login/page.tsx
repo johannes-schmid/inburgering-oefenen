@@ -36,7 +36,7 @@ export default async function LoginPage({ params, searchParams }: Props) {
       footer={
         <>
           Nog geen account?{' '}
-          <Link href="/register" className="text-primary font-semibold hover:underline no-underline">
+          <Link href="/register" className="auth-g-link">
             Maak er een aan
           </Link>
         </>
@@ -48,10 +48,11 @@ export default async function LoginPage({ params, searchParams }: Props) {
         next={next ?? null}
         initialError={authErrorMessage(error)}
         reviewer={showReviewerForm}
+        glas
       />
-      <p className="text-xs text-on-surface-variant text-center mt-5 leading-relaxed">
+      <p className="auth-g-note mt-5">
         Door in te loggen ga je akkoord met onze{' '}
-        <Link href="/gebruiksvoorwaarden" className="text-primary hover:underline no-underline">
+        <Link href="/gebruiksvoorwaarden">
           gebruiksvoorwaarden
         </Link>
         .
