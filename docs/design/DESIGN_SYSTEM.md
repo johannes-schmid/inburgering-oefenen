@@ -8,7 +8,115 @@
   and the code is the bug.
 -->
 
+# Glas v1.0 — approved 2026-10-14
+
+**Status: approved by the owner, migration not started.** Glas is the successor to "The Civic
+Authority" below. Its reference implementation is **`public/design/glas.html`** (served at
+`/design/glas.html`, `noindex`) — every token, element and block on that page is the spec, with
+working states and motion. **Rule for the migration period:** a surface that has been rebuilt in
+Glas follows this section; a surface that has not yet been rebuilt keeps following The Civic
+Authority. Mixing the two inside one surface is the bug.
+
+Built in six review rounds with the owner on 2026-10-14, starting from the "Nachtzug" style of the
+sister project deutschtest-ueben.de. The reasoning per round is in `docs/decisions/design-history.md`.
+
+## G1. Principles
+1. **The product is the image** — a real question, countdown or audio player on glass; no stock, no drawings.
+2. **Glass floats, white stands** — glass only where something lies over something else.
+3. **One glow per view** — the orange is a pointer: one glow in a field, or one orange button.
+4. **Deep blue carries weight** — Nacht and Diep mark what matters (today, the price, the exam day).
+5. **The track is the anchor** — A2, B1, KNM, ONA each have a fixed mark, shown large where you choose or buy.
+6. **Readability beats atmosphere (overrides 1–5)** — text never sits on the busy part of a field;
+   at least 4.5:1 measured against the *darkest* point underneath. Dark blue may stay in a field;
+   put a `.veil` (soft mist, fading from the text side) or ≥86% glass under the text instead.
+
+## G2. Tokens
+| Token | Value | Use |
+|---|---|---|
+| `--nacht` | `#00122e` | darkest surface: price band, "today", dark doors |
+| `--diep` | `#001a4a` | glass-on-dark base |
+| `--navy` | `#002b6d` | primary: headings, buttons, track tiles (unchanged) |
+| `--navy-2` | `#1d428a` | hover, fields |
+| `--hemel` / `--waas` / `--nevel` | `#5d7fd6` / `#9db8ff` / `#c9d6f2` | field tones; waas = focus on dark |
+| `--mist` / `--mist-2` | `#eef2f8` / `#e3e9f3` | page base / section tier (replaces `#f8f9fb`) |
+| `--oranje` / `--klei` / `--klei-tint` | `#fe762c` / `#a24000` / `#fcecdd` | pointer / orange as text, tips, attention |
+| **`--goed` / `--goed-ink` / `--goed-tint`** | `#2b7a5c` / `#1c5a42` / `#e2f1e9` | **correct, passed, in order** (new) |
+| `--fout` / `--fout-tint` | `#ba1a1a` / `#fbe9e9` | wrong only |
+| Radius | pill 999 · 28 · 22 · 16 · 12 · 8 | inner = outer − padding; buttons are pills |
+| Glass | `rgba(255,255,255,.72)` + `blur(24px) saturate(1.5)` + 1px white top rim + tinted float shadow | never glass on glass; fallback 92% white |
+
+Fields (`--g` gradients): **Dageraad** (with the orange glow, one per page), **Gracht** (cool),
+**Nevel** (near white, reading), **Nacht** / **Nacht stil** (dark, with / without orange), **Licht**
+(portal backgrounds). Type stays Manrope (headings, display up to 96px, −0.05em) and Public Sans
+(body, 1.7). Second line of a heading is muted and weight 500 — `ink-3` on mist/white, `ink-2` on a field.
+
+## G3. Status colour — reverses the old "no green" rule
+Correct / passed is **green** (`--goed`), wrong is **red** (`--fout`), always with a check or a cross.
+Clay no longer means "correct"; it is tips and attention only. "Not included" in a comparison is a
+grey dash, never a red cross. `/admin`'s answer key may keep its own colours.
+
+## G4. Marks and icons
+- **Track marks (ExamMark): "label + trede".** Flat navy tile (25% radius, no gradient, no gloss),
+  label top-left in Manrope 800, one line underneath with exactly one orange part:
+  A2 = three steps, second orange · B1 = third orange · KNM = three canal-house gables, the middle
+  one orange · ONA = a small thin compass with an orange needle on a faint line. Minimum 28px.
+  `onDark` = 12% white tile; `muted` = grey tile with a white accent.
+- **Category marks (CategoryMark): Phosphor Icons, "fill" weight**, navy on the light tile
+  `#e9eef6` (dark tone: white on 12% white). Mapping: lezen `book-open-text`, luisteren
+  `headphones`, schrijven `pencil-simple-line`, spreken `chat-circle-dots`, knm `bank`, gidsen
+  `signpost`, ona `compass`, woorden `cards`, taalregels `puzzle-piece`, examen `exam`, wonen
+  `house-line`, gezondheid `first-aid`, werk `briefcase`. In code `@phosphor-icons/react` behind
+  the one tile component — never a raw Phosphor glyph inline.
+- **Functional icons stay lucide.** The three-layer split and the tile inversion are unchanged.
+- **LogoMark is unchanged.** Its loading state is animation **L2 "opbouw"** (bar grows, sun springs
+  in, ~1.9s loop) on the same SVG; shown only for whole-page loads longer than 400ms.
+
+## G5. Components decided
+- **Choices:** choice tiles with the track mark; tab with counts (white thumb); filter chips with the
+  category mark; settings as one grouped list. Selected = white fill + navy inset ring.
+- **Exam card = slot:** one card everywhere — number top-left, one round state icon top-right
+  (arrow start · ring continue · check passed · cross not passed · lock in a package · clock later).
+  No underline bar. Seven states, the three "not openable" reasons stay visually distinct.
+- **Answer options: variant A "rij"** — the whole row is the button, letter in a circle; selected =
+  navy ring + navy letter; graded = green row with "Juist", red row with "Jouw antwoord".
+- **Score:** a ring with one segment per question (filled = correct, empty = wrong) and an orange
+  tick at our 60% practice line. Pass chance is a dial label (5 levels) and, large, a card with a
+  64px dial, one word, one line and a 4-step scale.
+- **Dashboard:** greeting, the four modules as cards (one line where you are, one button; only the
+  last-used module gets the orange button) and two widgets (exam date, this week). Nothing else.
+- **Skill page: "S1 · twee banen"** — header with the large pass-chance card; two numbered columns
+  "1 Leren" (blocks A–E) → "2 Oefenexamens" (10 squares + one orange unlock card).
+- **Lesson:** learn first, then practise in a separate dialog over the lesson (Coursera pattern).
+- **Exam player:** glass bar (close, segmented progress, timer) above, question on white. Listening
+  = the **glass capsule** on Gracht (B1 strict mode too). Speaking = calm recorder with one large
+  navy "Start opname" pill that stays in place while recording. Grading = animated review: scan
+  line, Amber's criteria resolving one by one, then the total.
+- **Pricing comparison:** three plan columns, recommended column as one navy band, green check /
+  grey dash.
+- **Blog:** featured + stack + **glass-caption grid**; article page **"beeldkop"** (photo header,
+  title on glass). Guides also ship as a downloadable A4 PDF brochure plus a plain-text version.
+- **Footer: F1 "licht glas"** — glass card on a light field, the four track marks under the logo.
+  The skyline is retired.
+
+## G6. Motion
+`transform`/`opacity` only, ease-out `cubic-bezier(.23,1,.32,1)`, UI feedback ≤300ms, every
+animation has a reduced-motion end state, keyboard actions never animate. Libraries:
+**Motion** (`motion/react`) as the one JS animation library, **NumberFlow** for numbers, CSS /
+`tw-animate-css` for the simple cases, the **View Transitions API** for in-page transitions with a
+no-animation fallback; AutoAnimate optional for lists; GSAP only if a scroll story is ever built;
+**no Lottie or Rive** (drawn animation breaks the no-illustration rule). Reward moments: a small
+sparkle on a correct answer, the larger "gehaald" burst only for a passed exam.
+
+## G7. Still open
+Homepage hero (keeps today's structure with the new elements) · Reddit Mono as a third font or not ·
+whether the PDF brochure sits behind the e-mail gate.
+
+---
+
 # Design System Specification: The Civic Authority
+
+> **Superseded per surface by Glas v1.0 above.** Everything from here down is what surfaces that
+> have not yet been rebuilt still implement.
 
 **Product:** inburgeringoefenen.nl — an all-in-one Dutch civic integration (inburgering) platform that brings every exam component together in one place instead of sending users across separate tools.
 

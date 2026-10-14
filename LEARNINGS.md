@@ -5447,3 +5447,51 @@ oplopende `top` per index doet het, en de `prefers-reduced-motion`-uitweg is dan
 **Outcome:** SUCCESS (lokaal geverifieerd: tsc, 704 unit-tests, next build, screenshots)
 **What worked / went wrong:** Het portaal, de checkout en de API's hingen al aan één vlag; alleen de publieke pagina's hadden "binnenkort" met de hand. De kaarten zijn bewust op `concept` gebleven — die status is het verslag van Ambers review en mag geen review claimen die niet gebeurd is; de vrijgave is een aparte vlag. Productie bleek de ONA-tabellen al te hebben terwijl `supabase migration list` ze als niet toegepast toonde; daarom één migratie gecontroleerd in plaats van `db push`, dat ook vier andere ongeregistreerde migraties had gedraaid.
 **Lesson:** Vrijgeven en nakijken zijn twee feiten — geef ze twee velden. En lees bij een "niet toegepaste" migratie eerst het schema op productie (`supabase db query --linked`), niet alleen de historie.
+
+## 2026-10-14 — Glas: voorstel voor een nieuw design system als statische reviewpagina
+**Changed:** nieuw `public/design/glas.html` (noindex), los van de app: tokens, materialen, alle merken, controls, staten, portaal, examenspeler per onderdeel, leerlaag, ONA, prijzen, funnel, gidsen en een tabel van wat uit deutschtest üben (Nachtzug) is overgenomen. Geen app-code gewijzigd.
+**Outcome:** SUCCESS (desktop- en mobiele screenshots per sectie, geen horizontale scroll op 390px)
+**What worked / went wrong:** Drie Explore-agents tegelijk (Nachtzug, portaal/examens, publieke site) gaven een volledige inventaris in ~4 min. ExamMark en CategoryMark zijn letterlijk naar JS geport, zodat de merken op de pagina dezelfde geometrie hebben als in de app. Inline `grid-template-columns` in specimens overleefde de mobiele media query niet — een `!important` op `.c-1-2` was nodig. De inventaris vond twee kopijfouten op live pagina's: "één module gratis" op /premium (klopt niet met lib/pricing.ts) en "geen account nodig" naast "met een account" voor het gratis examen.
+**Lesson:** Een design system dat de bestaande elementen moet vervangen begint met een inventaris van de code, niet van het ontwerp — de echte staten (zes per examenkaart, drie ONA-statussen) stonden nergens in DESIGN_SYSTEM.md.
+
+## 2026-10-14 — Glas v0.2: leesbaarheid, nieuwe merken, dashboard met twee deuren
+**Changed:** `public/design/glas.html` — regel 06 (leesbaarheid), velden met de donkere vlek rechts, ExamMark/CategoryMark v2 als SVG op een glazen tegel, keuzetegels, één examenkaart voor slot en portaal, twee varianten antwoordopties, score als streep-per-vraag, stat-tegels, slaagkanslabel met mini-wijzer, dashboard (oefenen | leren), eenvoudiger onderdeelpagina, audiocapsule en een rustige recorder.
+**Outcome:** SUCCESS
+**What worked / went wrong:** Twee klassen botsten stil (`.st` voor een veldicoon én voor een stat-tegel) en een tekst in een navy ring erfde navy kleur; beide alleen zichtbaar op de screenshot. Een veld met een blur-laag krijgt lichte randen tenzij het element zelf een achtergrondkleur heeft.
+**Lesson:** Op een kleurveld geldt contrast tegen het donkerste punt onder de tekst; leg de donkere vlek waar geen tekst staat. En in één statische pagina met honderden klassen: grep een korte klassenaam voor je hem hergebruikt.
+
+## 2026-10-14 — Glas v0.3: kiezen op de pagina, groen = goed, rustiger portaal
+**Changed:** `public/design/glas.html` — donkerblauwe velden terug met een `.veil` onder tekst; drie vlakke track-merken en vier sets categorie-iconen (Phosphor duotone/gevuld/lijn + eigen), live te wisselen; groen (#2b7a5c) voor goed/gehaald; nakijk-animatie voor Schrijven en Spreken; dashboard = vier modules + twee widgets; onderdeelpagina met Leren (1) en Oefenexamens (2) naast elkaar; les met oefening in een `<dialog>`; nieuwe prijsvergelijking; drie blogkaart- en twee artikelopties; PDF-brochure van een gids; een "Jouw keuzes"-paneel dat keuzes kopieert voor de chat.
+**Outcome:** SUCCESS
+**What worked / went wrong:** Phosphor's stylesheet claimt de klassenaam `.ph` (font-family); mijn tabelkop met class "ph" renderde daardoor als icoontjes. Een generieke klasse `.pic` uit de speler gaf een blogfoto een 4:3-verhouding. Een grid zonder `minmax(0,1fr)` rond een horizontale schuifrij maakte de pagina op mobiel 932px breed.
+**Lesson:** Een externe icon-CSS reserveert korte klassenamen — prefix eigen klassen of grep eerst. Elke grid die een scroller bevat, krijgt `minmax(0,1fr)`.
+
+## 2026-10-14 — Glas v0.4: keuzes van de eigenaar vastgelegd
+**Changed:** `public/design/glas.html` — de keuzes uit v0.3 zijn nu de standaard op de pagina: categorie-iconen **Phosphor gevuld**, track-merken **C · Label + trede**, luisteren **C · Glas** (ook in examenmodus B1 en de kleine speler), blogkaarten **1 · Raster**, artikelpagina **1 · Beeldkop**. Nieuw ter keuze: drie tekens voor KNM en ONA binnen variant C (huizen en route · acht thema's/kaarten · klein symbool) en drie varianten van de onderdeelpagina (twee banen · route · volgende stap eerst), allemaal met een grotere slaagkans (wijzer 64px + schaal van vier).
+**Outcome:** SUCCESS
+**What worked / went wrong:** Standaardkeuzes staan in `DEFAULTS` in het script en worden aangevuld met wat de bezoeker in localStorage koos; zo toont de pagina de beslissing ook in een schone browser.
+**Lesson:** Een beslissing van de eigenaar hoort in de bron van de pagina, niet alleen in iemands browseropslag.
+
+## 2026-10-14 — Glas v0.5: merken vastgelegd, opgeruimd, footers, animaties
+**Changed:** `public/design/glas.html` — track-merken definitief "label + trede" (KNM: drie grachtenpanden; ONA: een klein, dun kompas met oranje naald op de lijn); alle niet-gekozen varianten weggehaald (merken A/B, KNM-ONA K2/K3, iconensets, was-en-wordt, luisteren A/B, blogkaarten 2/3, artikelpagina 2, de ronde-1-portaaldelen, TrackCard); skyline-footer vervangen door drie opties; nieuwe sectie met animatiebibliotheken (advies: Motion + NumberFlow, CSS/tw-animate-css, View Transitions; AutoAnimate klein; GSAP later; geen Lottie/Rive) en negen demo's met WAAPI.
+**Outcome:** SUCCESS
+**What worked / went wrong:** In de screenshot-test speelden de demo's niet af: `scrollIntoView` met `html{scroll-behavior:smooth}` was na 1,5s nog niet bij een sectie op 36.000px, dus de IntersectionObserver vuurde nooit. In de browser zelf werkt het; de test moet `behavior:'instant'` gebruiken.
+**Lesson:** Test scroll-getriggerde animaties met een directe scroll, anders meet je de testopstelling in plaats van de pagina.
+
+## 2026-10-14 — Glas v0.6: footer en onderdeelpagina vast, laadlogo
+**Changed:** `public/design/glas.html` — footer **F1 · Licht glas** en onderdeelpagina **S1 · Twee banen** vastgelegd (F2/F3 en S2/S3 weg); drie uitwerkingen van twee banen ter keuze (kop per baan · voortgang en volgende stap · stappenbalk); drie laadanimaties voor het logo (zon komt op · opbouw · ademen), pure CSS op de SVG van LogoMark, stil bij "beweging verminderen"; review van de demo's: de goed-antwoord-pop gebruikt nu ease-out zonder doorschieten.
+**Outcome:** SUCCESS
+**What worked / went wrong:** SVG-onderdelen animeren met `transform-box: fill-box` zodat schaal en oorsprong per vorm kloppen; een lus die eindigt met de zon onder de rand zou bij `animation-duration:0` een leeg logo tonen, daarom zet reduced-motion de animatie expliciet uit.
+**Lesson:** Een herhalende laadanimatie heeft een eigen reduced-motion-regel nodig; de globale "duur 0"-regel laat hem op zijn laatste frame staan, en dat is niet altijd het logo.
+
+## 2026-10-14 — Glas v0.6b: laadlogo vast, vonkje bij goed antwoord
+**Changed:** `public/design/glas.html` — laadlogo **L2 · Opbouw** vastgelegd (L1/L3 en hun keyframes weg); de demo "Goed antwoord" kreeg een klein beloningsmoment: letter veert op, lichtstreep over de rij, zeven vonkjes uit het vinkje (700ms totaal, kleiner dan "Gehaald").
+**Outcome:** SUCCESS
+**What worked / went wrong:** Element-screenshots missen korte animaties (de opname zelf duurt ~100ms); `getAnimations()` en de berekende opacity bewezen dat de vonkjes liepen.
+**Lesson:** Verifieer een animatie onder 1s met `getAnimations()`, niet met screenshots.
+
+## 2026-10-14 — Glas v1.0 vastgelegd
+**Changed:** `public/design/glas.html` is v1.0 (antwoordopties A · rij, onderdeelpagina S1 · twee banen, alle kiesknoppen en het kiespaneel weg, sectie 17 = vastgelegde keuzes); Glas v1.0 staat bovenaan `docs/design/DESIGN_SYSTEM.md` (§G1–G7), de geschiedenis in `docs/decisions/design-history.md`, en CLAUDE.md §7/§8 zeggen hoe de twee systemen naast elkaar bestaan tot de migratie klaar is.
+**Outcome:** SUCCESS
+**What worked / went wrong:** Kiezen in de browser met een "Kies"-knop en een kopieerbare samenvatting werkte: zes rondes zonder misverstand over wat er gekozen was.
+**Lesson:** Bij een stijlwissel die niet in één keer gebouwd wordt: schrijf de overgangsregel expliciet op (per scherm, nooit gemengd), anders wordt elke oude component "de bug".

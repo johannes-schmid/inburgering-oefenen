@@ -7,6 +7,39 @@ Horizon, the category marks, the homepage compositions, the logo generator and t
 > The rules that must hold at all times live in `CLAUDE.md`; this file is why they hold.
 
 
+## Glas v1.0 replaces The Civic Authority (2026-10-14)
+
+The owner asked for a restyle borrowing the "Nachtzug" glass style of deutschtest-ueben.de. Three
+directions were shown (Glas, Schemer, Redactie); Glas won, and was then built out in six review
+rounds as one static page, `public/design/glas.html`, with a "Kies" button on every variant so the
+owner could pick in the browser and paste the picks back. The decisions are in
+`docs/design/DESIGN_SYSTEM.md` §G1–G7; what was re-decided along the way, and why:
+
+- **Readability became principle 06, above the other five.** Round 1 put navy text on a navy blob
+  in the hero. Moving the dark blue out of the gradients was rejected by the owner ("I liked the
+  darker blue better"); the answer is a `.veil` under the text side of a field, or glass under the
+  text, never removing the blue.
+- **Green is correct.** The old rule "no new hue for a status; correct is clay" was reversed: the
+  owner found clay-as-passed read as yellow and odd, and red/green is what candidates already know.
+  The green is a slightly blue-leaning `#2b7a5c` so it sits in the palette, and an icon still carries
+  the meaning.
+- **The marks went flat.** A glass-gradient ExamMark (round 2) was "too much"; three flat variants
+  were shown and "label + trede" won. KNM got canal-house gables; ONA kept a compass, made small and
+  thin so it supports the label.
+- **The category marks are no longer drawn by us.** A redrawn set (round 2) was rejected; Phosphor
+  Icons (MIT) in the "fill" weight won over duotone and line. Every future onderdeel or thema now has
+  an icon in the same style without anyone drawing one.
+- **The dashboard was simplified twice.** "Two doors" (practise | learn) plus stats and a module
+  table was "way too much"; the approved version is the four modules plus two widgets.
+- **The skill page shows learning and exams side by side** so a candidate sees both exist and in
+  which order (learn first), with locked items visible and one unlock button — a deliberate push
+  towards buying.
+- **The skyline footer was retired** — it no longer fit the glass language.
+
+Two classes of bug cost time on the page and will recur in the migration: Phosphor's stylesheet
+claims the class names `.ph` / `.ph-*` (a table header called `ph` rendered as icon glyphs), and a
+CSS grid that contains a horizontal scroller needs `minmax(0,1fr)` or the page overflows on mobile.
+
 ## Design rules
 
 ### The design system is a document, and it lives in `docs/design/`
