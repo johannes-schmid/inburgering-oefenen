@@ -50,7 +50,7 @@ function Block({
       <p className="mt-1 font-headline text-3xl font-bold tracking-[-0.03em] text-on-surface">
         {value}
       </p>
-      {/* The track is an inline rgba, not `bg-primary/10`: in this admin bundle the opacity
+      {/* The track is an inline rgba, not `bg-[rgba(0,43,109,0.1)]`: in this admin bundle the opacity
           modifier on the brand tokens is dropped and the class renders **fully opaque** navy — so
           an almost-empty meter looked completely full. Same trap as the stat tiles above. */}
       <div

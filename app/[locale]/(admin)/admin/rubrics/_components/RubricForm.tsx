@@ -208,7 +208,7 @@ export default function RubricForm({
   return (
     <form onSubmit={handleSave} className="space-y-6 max-w-3xl">
       {error && (
-        <div className="bg-error/10 border border-error/20 rounded-xl p-3 text-sm text-error">
+        <div className="bg-[rgba(186,26,26,0.1)] border border-[rgba(186,26,26,0.2)] rounded-xl p-3 text-sm text-error">
           {error}
         </div>
       )}
@@ -387,7 +387,7 @@ export default function RubricForm({
               <button
                 type="button"
                 onClick={() => patch({ criteria: form.criteria.filter((_, j) => j !== i) })}
-                className="text-error/70 hover:text-error pt-7"
+                className="text-[rgba(186,26,26,0.7)] hover:text-error pt-7"
                 aria-label="Criterium verwijderen"
               >
                 <Trash2 size={16} aria-hidden />
@@ -410,7 +410,7 @@ export default function RubricForm({
               </p>
               {ANCHOR_KEYS.map(level => (
                 <div key={level} className="flex items-start gap-2">
-                  <span className="mt-2 flex h-6 w-6 shrink-0 items-center justify-center rounded-lg bg-primary/8 text-xs font-extrabold text-primary tabular-nums">
+                  <span className="mt-2 flex h-6 w-6 shrink-0 items-center justify-center rounded-lg bg-[rgba(0,43,109,0.08)] text-xs font-extrabold text-primary tabular-nums">
                     {level}
                   </span>
                   <textarea

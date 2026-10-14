@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import { ExternalLink, Menu, X } from 'lucide-react';
 import LogoMark from '@/components/site/LogoMark';
 import LogoutButton from './LogoutButton';
 import AdminNav from './AdminNav';
@@ -16,56 +17,55 @@ export function AdminMobileNav({ locale, userEmail }: Props) {
   return (
     <>
       {/* Mobile top bar */}
-      <header className="lg:hidden fixed top-0 left-0 right-0 z-30 h-14 bg-primary flex items-center px-4 gap-3">
+      <header className="admin-topbar lg:hidden fixed top-0 left-0 right-0 z-30 h-14 flex items-center px-3 gap-2">
         <button
+          type="button"
           onClick={() => setOpen(true)}
-          className="text-white/70 hover:text-white p-1 -ml-1"
+          className="admin-iconbtn"
           aria-label="Menu openen"
+          aria-expanded={open}
         >
-          <span className="material-symbols-outlined text-[24px]">menu</span>
+          <Menu size={20} aria-hidden />
         </button>
-        <div className="flex items-center gap-2">
-          <LogoMark size={22} surface="dark" />
-          <span className="font-headline font-bold text-white text-sm">Admin</span>
+        <div className="admin-brand">
+          <LogoMark size={24} />
+          Beheer
         </div>
       </header>
 
       {/* Overlay */}
       {open && (
         <div
-          className="lg:hidden fixed inset-0 z-40 bg-black/50"
+          className="admin-scrim lg:hidden fixed inset-0 z-40"
           onClick={() => setOpen(false)}
         />
       )}
 
       {/* Slide-out drawer */}
       <aside
-        className={`lg:hidden fixed top-0 left-0 h-full w-64 bg-primary flex flex-col z-50 transition-transform duration-200 ${
-          open ? 'translate-x-0' : '-translate-x-full'
-        }`}
+        className={`admin-side admin-drawer lg:hidden fixed top-0 left-0 h-full w-72 max-w-[85vw] flex flex-col z-50 rounded-e-g-lg`}
+        data-open={open}
+        aria-hidden={!open}
+        inert={!open}
       >
-        <div className="p-6 border-b border-white/10 flex items-center justify-between">
-          <div>
-            <div className="flex items-center gap-2 mb-1">
-              <LogoMark size={24} surface="dark" />
-              <span className="font-headline font-bold text-white text-sm">Admin</span>
+        <div className="px-5 pt-5 pb-3 flex items-start justify-between gap-2">
+          <div className="min-w-0">
+            <div className="admin-brand">
+              <LogoMark size={28} />
+              Beheer
             </div>
-            <p className="text-white/50 text-xs truncate">{userEmail}</p>
+            <p className="admin-who mt-2 mb-0">{userEmail}</p>
           </div>
-          <button onClick={() => setOpen(false)} className="text-white/50 hover:text-white">
-            <span className="material-symbols-outlined text-[20px]">close</span>
+          <button type="button" onClick={() => setOpen(false)} className="admin-iconbtn -mr-1" aria-label="Menu sluiten">
+            <X size={18} aria-hidden />
           </button>
         </div>
 
         <AdminNav locale={locale} onNavigate={() => setOpen(false)} />
 
-        <div className="p-4 border-t border-white/10 space-y-1">
-          <a
-            href={`/${locale}`}
-            target="_blank"
-            className="flex items-center gap-2 text-white/60 hover:text-white text-sm transition-colors px-3 py-2 rounded-xl hover:bg-white/10"
-          >
-            <span className="material-symbols-outlined text-[18px]">open_in_new</span>
+        <div className="px-3 pb-4 pt-2 flex flex-col gap-0.5 bg-surface-container-low">
+          <a href={`/${locale}`} target="_blank" className="admin-navi admin-navi-quiet">
+            <ExternalLink size={16} aria-hidden />
             Bekijk site
           </a>
           <LogoutButton locale={locale} />

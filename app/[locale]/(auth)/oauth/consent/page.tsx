@@ -31,7 +31,7 @@ export default async function OAuthConsentPage({ params, searchParams }: Props) 
   if (!authorizationId) {
     return (
       <AuthShell title="Deze link is niet compleet" intro="Begin de koppeling opnieuw vanuit de app die toegang vroeg." showHeaderCta={false}>
-        <p className="text-sm text-on-surface-variant m-0">Er ontbreekt een autorisatie-id in de link.</p>
+        <p className="text-sm text-ink-2 m-0">Er ontbreekt een autorisatie-id in de link.</p>
       </AuthShell>
     );
   }
@@ -54,6 +54,7 @@ export default async function OAuthConsentPage({ params, searchParams }: Props) 
           locale={locale}
           next={next}
           reviewer={process.env.REVIEWER_LOGIN_ENABLED === 'true'}
+          glas
         />
       </AuthShell>
     );

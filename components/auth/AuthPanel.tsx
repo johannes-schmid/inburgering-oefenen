@@ -1,7 +1,8 @@
 'use client';
 
 import { useState } from 'react';
-import { Loader2 } from 'lucide-react';
+import { CircleAlert, Loader2, LockKeyhole, Mail } from 'lucide-react';
+import { glasButton } from '@/components/glas';
 import { createClient } from '@/lib/supabase/client';
 import { track } from '@/lib/analytics';
 import { safeNext } from '@/lib/auth-redirect';
@@ -53,6 +54,7 @@ export default function AuthPanel({
   next,
   initialError = '',
   reviewer = false,
+  glas = false,
 }: {
   mode: AuthMode;
   locale: string;
@@ -60,6 +62,12 @@ export default function AuthPanel({
   initialError?: string;
   /** Toont het wachtwoordformulier voor het reviewer-account. Zie het docblock hierboven. */
   reviewer?: boolean;
+  /**
+   * Glas v1.0-huid (de auth-schermen). Standaard uit, omdat `GuestSignupOverlay` in de speler dit
+   * paneel ook gebruikt en die speler nog niet naar Glas is gemigreerd — één oppervlak mag de twee
+   * stijlen niet mengen. Alleen de klassen verschillen; het gedrag is hetzelfde.
+   */
+  glas?: boolean;
 }) {
   const supabase = createClient();
   const [error, setError] = useState(initialError);
@@ -101,6 +109,63 @@ export default function AuthPanel({
       return;
     }
     window.location.assign(target);
+  }
+
+  if (glas) {
+    return (
+      <div className="flex flex-col gap-4">
+        {error && (
+          <div role="alert" className="auth-g-alert">
+            <CircleAlert size={18} aria-hidden className="shrink-0 mt-0.5" />
+            <span>{error}</span>
+          </div>
+        )}
+
+        <button type="button" onClick={withGoogle} disabled={busy} className="auth-g-google">
+          {busy ? <Loader2 size={18} className="animate-spin" aria-hidden /> : <GoogleIcon />}
+          <span>{busy ? 'Bezig…' : LABEL[mode]}</span>
+        </button>
+
+        {reviewer ? (
+          <form onSubmit={withPassword} className="flex flex-col gap-3 pt-1" aria-label="Reviewer login">
+            <p className="auth-g-note">Reviewer account</p>
+            <label className="auth-g-box">
+              <span className="sr-only">E-mail</span>
+              <Mail size={17} aria-hidden />
+              <input
+                type="email"
+                name="email"
+                autoComplete="username"
+                required
+                placeholder="E-mail"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+              />
+            </label>
+            <label className="auth-g-box">
+              <span className="sr-only">Wachtwoord</span>
+              <LockKeyhole size={17} aria-hidden />
+              <input
+                type="password"
+                name="password"
+                autoComplete="current-password"
+                required
+                placeholder="Wachtwoord"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+              />
+            </label>
+            <button type="submit" disabled={busy} className={glasButton({ variant: 'navy', className: 'w-full' })}>
+              {busy ? 'Bezig…' : 'Sign in'}
+            </button>
+          </form>
+        ) : (
+          <p className="auth-g-note">
+            Inloggen gaat via je Google-account. Andere manieren van inloggen komen later.
+          </p>
+        )}
+      </div>
+    );
   }
 
   return (

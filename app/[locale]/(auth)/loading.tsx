@@ -1,4 +1,5 @@
-import BrandLoader from '@/components/BrandLoader';
+import { LogoLoader } from '@/components/glas';
+
 export default function Loading() {
-  return <BrandLoader />;
+  return <LogoLoader label="Laden" fullPage />;
 }

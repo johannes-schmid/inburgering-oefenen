@@ -1,3 +1,4 @@
+import { ArrowLeft } from 'lucide-react';
 import { createClient } from '@/lib/supabase/server';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
@@ -21,7 +22,7 @@ export default async function EditWoordkaartPage({ params }: { params: Promise<{
     <div>
       <div className="flex items-center gap-3 mb-6">
         <Link href={`/${locale}/admin/woordkaarten`} className="text-on-surface-variant hover:text-on-surface transition-colors">
-          <span className="material-symbols-outlined text-[20px]">arrow_back</span>
+          <ArrowLeft size={19} className="rtl-flip" aria-label="Terug" />
         </Link>
         <h1 className="text-2xl font-headline font-bold text-on-surface">
           {card.article && <span className="text-on-surface-variant mr-1">{card.article}</span>}

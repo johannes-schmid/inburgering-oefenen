@@ -2,7 +2,9 @@ import type { Metadata } from 'next';
 import { redirect } from 'next/navigation';
 import { Link } from '@/i18n/navigation';
 import { createClient } from '@/lib/supabase/server';
+import { ArrowRight } from 'lucide-react';
 import LogoMark from '@/components/site/LogoMark';
+import { Field, GlassCard, SectionHeading } from '@/components/glas';
 import AuthPanel from '@/components/auth/AuthPanel';
 import { authErrorMessage, safeNext } from '@/lib/auth-redirect';
 import { KNM, SKILLS, getFormat } from '@/data/skills';
@@ -47,139 +49,88 @@ export default async function RegisterPage({ params, searchParams }: Props) {
   ];
 
   return (
-    <div
-      className="min-h-screen flex flex-col relative overflow-hidden"
-      style={{ background: 'linear-gradient(150deg,#002b6d 0%,#001844 55%,#001030 100%)' }}
-    >
-      <div
-        aria-hidden
-        className="absolute inset-0 pointer-events-none"
-        style={{ background: 'radial-gradient(70% 55% at 88% 4%, rgba(254,118,44,0.20), transparent 55%)' }}
-      />
-
-      <header className="relative" style={{ borderBottom: '1px solid rgba(255,255,255,0.1)' }}>
-        <div className="max-w-6xl mx-auto px-6 py-4 flex items-center justify-between gap-4">
-          <Link href="/" className="flex items-center gap-2 no-underline">
-            <LogoMark size={30} surface="dark" />
-            <span className="text-lg font-extrabold tracking-tight text-white font-headline">
-              Inburgering Oefenen
-            </span>
-          </Link>
-          <Link
-            href="/login"
-            className="text-sm font-semibold text-white/90 hover:text-white transition-colors no-underline"
-          >
-            Al een account? Inloggen →
-          </Link>
-        </div>
+    <Field variant="gracht" veil className="auth-g-page">
+      <header className="g-wrap w-full flex items-center justify-between gap-4 py-5">
+        <Link href="/" className="auth-g-brand">
+          <LogoMark size={32} />
+          <span className="auth-g-brand-name">Inburgering Oefenen</span>
+        </Link>
+        <Link href="/login" className="g-tlink text-sm whitespace-nowrap">
+          Al een account? Inloggen
+          <ArrowRight size={16} className="rtl-flip" aria-hidden />
+        </Link>
       </header>
 
-      <main className="relative flex-1 flex items-center justify-center px-5 py-12 sm:py-16">
-        <div className="w-full max-w-5xl grid lg:grid-cols-[1fr_400px] gap-10 lg:gap-14 items-center">
+      <main className="flex-1 flex items-center px-4 py-10 sm:py-16">
+        <div className="g-wrap w-full grid lg:grid-cols-[minmax(0,1fr)_420px] gap-10 lg:gap-16 items-center">
           <div>
-            <span
-              className="inline-block text-xs font-extrabold uppercase mb-3"
-              style={{ color: '#fe762c', letterSpacing: '0.14em' }}
-            >
-              Gratis beginnen
-            </span>
-            <h1
-              className="font-headline font-extrabold text-white mb-3.5"
-              style={{ fontSize: 'clamp(1.9rem,4.5vw,2.6rem)', lineHeight: 1.08, letterSpacing: '-0.02em', textWrap: 'balance' }}
-            >
-              Oefen je hele inburgering met opgaven van een NT2-docent.
-            </h1>
-            <p className="text-sm sm:text-base leading-relaxed mb-7 max-w-[46ch]" style={{ color: 'rgba(255,255,255,0.68)' }}>
+            {/* "Gratis beginnen" was een kicker boven de kop; Glas kent geen kicker, dus het is de
+                eerste helft van de kop geworden en de belofte de stille tweede regel. */}
+            <SectionHeading
+              as="h1"
+              size="h1"
+              onField
+              title="Gratis beginnen."
+              muted="Oefen je hele inburgering met opgaven van een NT2-docent."
+            />
+            <p className="g-lead mt-5 mb-8">
               Maak een account en begin meteen met oefenexamen 1 van lezen, luisteren, schrijven,
               spreken en KNM — gratis, en met je voortgang per onderdeel. Daarna oefen je verder
               op A2 en op B1.
             </p>
 
-            <div className="flex gap-5 sm:gap-7 mb-7">
-              {stats.map((s, i) => (
-                <div key={s.label} className="flex items-stretch gap-5 sm:gap-7">
-                  {i > 0 && <span className="w-px" style={{ background: 'rgba(255,255,255,0.15)' }} aria-hidden />}
-                  <div>
-                    <div
-                      className="font-headline font-extrabold text-white"
-                      style={{ fontSize: 'clamp(1.4rem,3vw,1.7rem)', fontVariantNumeric: 'tabular-nums' }}
-                    >
-                      {s.val}
-                    </div>
-                    <div className="uppercase" style={{ color: 'rgba(255,255,255,0.55)', fontSize: '0.68rem', letterSpacing: '0.08em' }}>
-                      {s.label}
-                    </div>
-                  </div>
+            <dl className="flex flex-wrap gap-x-10 gap-y-4 mb-8 m-0">
+              {stats.map(s => (
+                <div key={s.label} className="flex flex-col-reverse gap-1">
+                  <dt className="g-mono">{s.label}</dt>
+                  <dd className="m-0 font-headline font-bold text-navy text-[34px] leading-none tracking-[-0.04em] tabular-nums">
+                    {s.val}
+                  </dd>
                 </div>
               ))}
-            </div>
+            </dl>
 
-            <div className="flex items-center gap-2.5">
-              <span
-                className="w-9 h-9 rounded-[10px] overflow-hidden flex-shrink-0"
-                style={{ border: '1px solid rgba(255,255,255,0.15)', background: 'linear-gradient(135deg,#1d428a,#002b6d)' }}
-              >
+            <div className="flex items-center gap-3">
+              <span className="w-10 h-10 rounded-g-sm overflow-hidden flex-shrink-0 bg-navy">
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img
                   src="/images/amber-van-der-zalm-264.webp"
                   alt="Amber van der Zalm"
-                  width={36}
-                  height={36}
+                  width={40}
+                  height={40}
                   className="w-full h-full object-cover object-top"
                 />
               </span>
-              <span style={{ color: 'rgba(255,255,255,0.7)', fontSize: '0.82rem' }}>
+              <span className="text-sm text-ink-2">
                 Opgaven gemaakt en nagekeken door{' '}
-                <Link href="/docent" className="font-bold text-white no-underline hover:underline">
+                <Link href="/docent" className="auth-g-link">
                   Amber van der Zalm
                 </Link>
               </span>
             </div>
           </div>
 
-          <div
-            className="bg-surface-container-lowest rounded-[22px] p-7 sm:p-8"
-            style={{ boxShadow: '0 30px 70px rgba(0,0,0,0.40),0 2px 8px rgba(0,0,0,0.12)' }}
-          >
-            <h2
-              className="font-headline font-extrabold text-on-surface mb-1.5"
-              style={{ fontSize: '1.25rem', letterSpacing: '-0.015em' }}
-            >
-              Maak je account
-            </h2>
-            <p className="text-sm text-on-surface-variant mb-6 leading-relaxed">
-              Geen betaalgegevens nodig om te beginnen.
-            </p>
+          <GlassCard strong className="auth-g-card">
+            <h2 className="auth-g-title">Maak je account</h2>
+            <p className="auth-g-intro">Geen betaalgegevens nodig om te beginnen.</p>
 
-            <AuthPanel mode="register" locale={locale} next={next ?? null} initialError={authErrorMessage(error)} />
+            <AuthPanel mode="register" locale={locale} next={next ?? null} initialError={authErrorMessage(error)} glas />
 
-            <p className="text-xs text-on-surface-variant text-center mt-5 leading-relaxed">
+            <p className="auth-g-note mt-5">
               Door een account te maken ga je akkoord met onze{' '}
-              <Link href="/gebruiksvoorwaarden" className="text-primary hover:underline no-underline">
-                gebruiksvoorwaarden
-              </Link>{' '}
-              en ons{' '}
-              <Link href="/privacybeleid" className="text-primary hover:underline no-underline">
-                privacybeleid
-              </Link>
-              .
+              <Link href="/gebruiksvoorwaarden">gebruiksvoorwaarden</Link> en ons{' '}
+              <Link href="/privacybeleid">privacybeleid</Link>.
             </p>
-          </div>
+          </GlassCard>
         </div>
       </main>
 
-      <footer
-        className="relative text-center py-6 text-xs"
-        style={{ color: 'rgba(255,255,255,0.55)', borderTop: '1px solid rgba(255,255,255,0.1)' }}
-      >
+      <footer className="auth-g-foot">
         © 2026 Inburgering Oefenen ·{' '}
-        <a
-          href="mailto:contact@inburgeringoefenen.nl"
-          className="hover:text-white no-underline transition-colors"
-        >
+        <a href="mailto:contact@inburgeringoefenen.nl" className="auth-g-link font-normal">
           contact@inburgeringoefenen.nl
         </a>
       </footer>
-    </div>
+    </Field>
   );
 }
