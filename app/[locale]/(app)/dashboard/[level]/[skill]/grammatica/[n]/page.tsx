@@ -21,6 +21,7 @@ import GrammarCourseSide from '@/components/lessons/GrammarCourseSide';
 import GrammarSideNav from '@/components/lessons/GrammarSideNav';
 import type { Category } from '@/components/horizon';
 import AppShell from '../../../../../components/AppShell';
+import '@/app/glas-leerlaag.css';
 import PortalCrumbs from '../../../../../components/PortalCrumbs';
 
 type Props = {
@@ -73,6 +74,7 @@ export default async function GrammarTopicPage({ params }: Props) {
   }
 
   const t = await getTranslations('grammar');
+  const tLessons = await getTranslations('lessons');
   const tPortal = await getTranslations('portal');
   const tSkills = await getTranslations('skills');
 
@@ -178,7 +180,7 @@ export default async function GrammarTopicPage({ params }: Props) {
       activeGroup={level}
       menu={menu}
     >
-      <div className="px-5 py-6 sm:px-8 sm:py-8">
+      <div className="g-leer gl-shell">
         <div className="gt-page">
           <div className="gt-grid">
           <aside className="gt-side-nav">{sideNav}</aside>
@@ -218,9 +220,12 @@ export default async function GrammarTopicPage({ params }: Props) {
               videoSoonSub: t('video_soon_sub'),
               uitlegHead: streamLabels.learnHead,
               uitlegSub: streamLabels.learnSub,
-              openUitleg: t('open_uitleg'),
               close: t('close'),
               nextKick: following ? t('next_topic') : t('step_done'),
+              practiceHead: streamLabels.practiceHead,
+              practiceCtaHead: tLessons('practice_cta_head'),
+              practiceCtaSub: tLessons.raw('practice_cta_sub') as string,
+              practiceStart: tLessons('practice_start'),
             }}
           />
           </main>

@@ -2252,7 +2252,7 @@
     "mark_hint": "Tik op het eerste en het laatste woord. Je kunt ook over de tekst slepen.",
     "mark_clear": "Opnieuw",
     "mark_empty": "nog niet gemarkeerd",
-    "rec_record": "Opnemen",
+    "rec_record": "Start opname",
     "rec_stop": "Stoppen",
     "rec_again": "Nog eens opnemen",
     "rec_recording": "Aan het opnemen",
@@ -2358,10 +2358,15 @@
     "rules_group_core": "{n} van {total} zijn kern",
     "rules_group_recognise": "alleen herkennen",
     "rules_panel_title": "Taalregels {level}",
-    "spoor_taalregels_intro": "De regels die dit examen van je vraagt, per onderwerp. De modules die je zélf goed moet doen staan bovenaan."
+    "spoor_taalregels_intro": "De regels die dit examen van je vraagt, per onderwerp. De modules die je zélf goed moet doen staan bovenaan.",
+    "practice_cta_head": "Oefen wat je net leerde",
+    "practice_cta_sub": "{n} opgaven",
+    "practice_start": "Start oefening",
+    "rec_play": "Je opname afspelen",
+    "rec_pause": "Opname pauzeren"
   },
   "grammar": {
-    "step_label": "Grammatica",
+    "step_label": "Taalregels",
     "eyebrow": "Blok B · les {n} van {total}",
     "part": "Deel {n} · {title}",
     "not_written": "Deze les wordt nog geschreven",

@@ -501,3 +501,19 @@
   .g-ll .g-ll-bar, .g-ll .g-ll-sun { animation: none; opacity: 1; transform: none; }
   .g-ll-wait { animation-duration: 0ms; }
 }
+
+/* ---------- 07 · het docentzegel (`.seal`) — components/glas/ValidationSeal.tsx ---------- */
+@layer components {
+  .g-seal {
+    display: inline-flex; align-items: center; gap: 10px; padding: 7px 16px 7px 7px; border-radius: var(--r-pill);
+    background: #fff; max-width: 100%;
+  }
+  [dir="rtl"] .g-seal { padding: 7px 7px 7px 16px; }
+  .g-seal.g-glass { border-radius: var(--r-pill); }
+  .g-seal-ic {
+    flex: none; width: 32px; height: 32px; border-radius: 50%; display: grid; place-items: center;
+    background: var(--klei-tint); color: var(--klei);
+  }
+  .g-seal b { font-family: var(--font-headline); font-size: 13.5px; font-weight: 700; color: var(--navy); display: block; line-height: 1.25; }
+  .g-seal small { font-size: 12px; color: var(--ink-2); display: block; line-height: 1.3; }
+}

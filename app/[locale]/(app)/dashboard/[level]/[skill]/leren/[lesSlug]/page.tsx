@@ -27,6 +27,7 @@ import GrammarSideNav from '@/components/lessons/GrammarSideNav';
 import type { Category } from '@/components/horizon';
 import type { LessonItem } from '@/components/lessons/item-helpers';
 import AppShell from '../../../../../components/AppShell';
+import '@/app/glas-leerlaag.css';
 
 type Props = { params: Promise<{ locale: string; level: string; skill: string; lesSlug: string }> };
 
@@ -240,7 +241,7 @@ export default async function LessonPage({ params }: Props) {
       activeGroup={level}
       menu={menu}
     >
-      <div className="px-5 py-6 sm:px-8 sm:py-8">
+      <div className="g-leer gl-shell">
         <div className="gt-page">
           <div className="gt-grid">
           <aside className="gt-side-nav">{sideNav}</aside>
@@ -263,6 +264,7 @@ export default async function LessonPage({ params }: Props) {
           <GrammarTopicView
             crumbs={crumbs}
             kicker={ownBlock && !inGrammar ? `${ownBlock.letter}${atInBlock + 1} · ${ownBlock.name_nl}` : null}
+            category={inGrammar || ownBlock?.letter === 'B' ? 'taalregels' : ownBlock?.letter === 'A' ? 'woorden' : 'examen'}
             title={lesson.title}
             learn={lesson.what_you_learn ?? ''}
             links={lesson.concepts
@@ -324,9 +326,12 @@ export default async function LessonPage({ params }: Props) {
               videoSoonSub: tGrammar('video_soon_sub'),
               uitlegHead: labels.learnHead,
               uitlegSub: labels.learnSub,
-              openUitleg: tGrammar('open_uitleg'),
               close: tGrammar('close'),
               nextKick: next.kick,
+              practiceHead: labels.practiceHead,
+              practiceCtaHead: t('practice_cta_head'),
+              practiceCtaSub: t.raw('practice_cta_sub') as string,
+              practiceStart: t('practice_start'),
             }}
           />
           </LessonProgressScope>

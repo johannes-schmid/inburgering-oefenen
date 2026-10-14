@@ -2,7 +2,7 @@
 
 import { createContext, Fragment, useCallback, useContext, useEffect, useMemo, useRef, useState } from 'react';
 import { playCorrectChime } from '@/lib/answer-chime';
-import WordPass from '@/components/exam/WordPass';
+import { AnswerGroup, AnswerRow, type AnswerState } from '@/components/glas';
 import { ArrowLeft, ArrowRight, Lightbulb, Check, X, RotateCcw, Eye, ChevronDown, PencilLine, Quote } from 'lucide-react';
 import {
   GAP, isExerciseKind, markTokens, matchesMarked, matchesTyped, normaliseTyped, tierChipOf,
@@ -137,6 +137,8 @@ export type StreamLabels = {
   audioTodo: string;
   /** De videoplek van een `video`-item. Zie `VideoEmbed.tsx`. Weglaten valt terug op Nederlands. */
   video?: VideoLabels;
+  /** De tag op je eigen foute keuze in een meerkeuzevraag ("Jouw antwoord"). */
+  yourAnswer?: string;
 };
 
 /**
@@ -146,7 +148,8 @@ export type StreamLabels = {
  * die zouden alle acht een knop moeten doorgeven die alleen de pager kent. In de mockup staat
  * "Overslaan →" náást "Nakijken", dus het hoort in díe voet en niet in een tweede regel eronder.
  */
-const PagerNext = createContext<React.ReactNode>(null);
+type PagerNextCtx = { label: string; go: () => void } | null;
+const PagerNext = createContext<PagerNextCtx>(null);
 
 /** Wat er van één opgave bekend is nadat de cursist hem heeft nagekeken. */
 type Verdict = { correct: boolean } | null;
@@ -465,7 +468,7 @@ export default function LessonStream({
         <section
           id={headed && anchor ? 'oefenen' : undefined}
           ref={practiceRef}
-          className={topic && headed ? 'tsec' : undefined}
+          className={[topic && headed ? 'tsec' : '', sources.length > 0 ? 'exq-has-src' : ''].filter(Boolean).join(' ') || undefined}
           style={topic && headed ? undefined : { marginTop: headed ? '2rem' : 0 }}
         >
           {headed && (
@@ -555,12 +558,7 @@ export default function LessonStream({
           {current && (
             <PagerNext.Provider
               value={at < ordered.length - 1
-                ? (
-                  <button type="button" className="exq-skip" onClick={() => setAt(n => n + 1)}>
-                    {verdicts[current.id] ? labels.exNextItem : labels.exSkip}
-                    <ArrowRight size={13} strokeWidth={2.6} className="rtl-flip" aria-hidden />
-                  </button>
-                )
+                ? { label: verdicts[current.id] ? labels.exNextItem : labels.exSkip, go: () => setAt(n => n + 1) }
                 : null}
             >
             <div className="exq-card">
@@ -859,57 +857,86 @@ function ExFrame({
     /* De reisgroene rand op de opgavekaart, niet op de optie: elke opgavesoort in de leerlaag
        eindigt in deze kaart, dus zo krijgt invullen dezelfde beloning als meerkeuze — en één
        lijst met één rand, in plaats van twee die om de aandacht vechten. */
-    <div className={`ex${verdict ? (verdict.correct ? ' is-right answer-correct' : ' is-wrong') : ''}`}>
-      {/* Nummer, trap en uitslag op één regel. Het nummer loopt door over de drie trappen,
-          zodat "opgave 7" hetzelfde ding betekent als in de voortgangsregel erboven. */}
-      <div className="ex-head">
-        {num != null && <span className="ex-num">{num}</span>}
-        {/* De trap-chip alleen buiten een trapgroep: staat de opgave ín "Invullen", dan zegt
-            de kop dat al en is de chip een tweede keer hetzelfde woord. `num` is er alleen
-            binnen een groep, dus dat is ook precies de vraag die hier gesteld wordt. */}
-        {chip && num == null && <span className="ex-tier">{chip}</span>}
-        {verdict && (
-          <span className={`ex-ok${verdict.correct ? '' : ' is-wrong'}`}>
-            {verdict.correct
-              ? <><Check size={13} strokeWidth={3} /> {labels.correct}</>
-              : <><X size={13} strokeWidth={3} /> {labels.wrong}</>}
-          </span>
-        )}
-      </div>
-      {children}
-
-      {verdict && (
-        <div className="ex-fb answer-verdict">
-          <p className="fb-head">
-            {verdict.correct
-              ? <><Check size={17} strokeWidth={3} /> {labels.correct}</>
-              : <><X size={17} strokeWidth={3} /> {labels.wrong}</>}
-          </p>
-          {extra}
-          {item.explanation && (
-            <div className="fb-why">
-              <span className="mini-label">{labels.why}</span>
-              {/* Als HTML — zie `explanation` in `lib/lessons/items.ts`. */}
-              <p dangerouslySetInnerHTML={{ __html: item.explanation }} />
-            </div>
-          )}
+    <div className={`ex${verdict ? (verdict.correct ? ' is-right' : ' is-wrong') : ''}`}>
+      {/* De trap als label en het nummer, op één regel. Het nummer loopt door over de drie
+          trappen, zodat "opgave 7" hetzelfde ding betekent als in de voortgangsregel erboven. */}
+      {(num != null || (chip && num == null)) && (
+        <div className="ex-head">
+          {num != null && <span className="ex-num">{num}</span>}
+          {/* De trap-chip alleen buiten een trapgroep — zie de kop van deze functie. */}
+          {chip && num == null && <span className="ex-tier">{chip}</span>}
         </div>
       )}
-      <div className="ex-foot">
-        {verdict
-          ? (
-            <button type="button" className="ex-again" onClick={onReset}>
-              <RotateCcw size={14} strokeWidth={2.5} /> {labels.again}
-            </button>
-          )
-          : (
-            <button type="button" className="ex-check-quiet" onClick={onCheck} disabled={!canCheck}>
-              <Check size={13} strokeWidth={2.6} /> {labels.check}
-            </button>
-          )}
-        {useContext(PagerNext)}
-      </div>
+      {children}
 
+      {/* Het oordeel als één vlak (Glas §11): groen met een vinkje, rood met een kruis, en
+          meteen eronder wat je kunt leren. Het icoon draagt de betekenis voor wie de twee
+          tinten niet kan scheiden. */}
+      {verdict && (
+        <div className={`ex-fb gl-verdict${verdict.correct ? ' is-ok' : ' is-nok'}`} role="status">
+          <span className="gl-verdict-ic" aria-hidden>
+            {verdict.correct ? <Check size={15} strokeWidth={3} /> : <X size={15} strokeWidth={3} />}
+          </span>
+          <div className="gl-verdict-body">
+            <b>{verdict.correct ? labels.correct : labels.wrong}</b>
+            {extra}
+            {item.explanation && (
+              <div className="fb-why">
+                <span className="mini-label">{labels.why}</span>
+                {/* Als HTML — zie `explanation` in `lib/lessons/items.ts`. */}
+                <p dangerouslySetInnerHTML={{ __html: item.explanation }} />
+              </div>
+            )}
+          </div>
+        </div>
+      )}
+      <ExFoot verdict={verdict} canCheck={canCheck} onCheck={onCheck} onReset={onReset} labels={labels} />
+    </div>
+  );
+}
+
+/**
+ * De voet van een opgave: één navy hoofdactie en één stille ernaast (Glas §11 "pager").
+ * Vóór het nakijken: Nakijken + Overslaan. Erna: Volgende + Opnieuw.
+ */
+function ExFoot({
+  verdict, canCheck, onCheck, onReset, labels,
+}: {
+  verdict: Verdict;
+  canCheck: boolean;
+  onCheck: () => void;
+  onReset: () => void;
+  labels: StreamLabels;
+}) {
+  const next = useContext(PagerNext);
+  return (
+    <div className="ex-foot">
+      {verdict
+        ? (
+          <>
+            <button type="button" className="g-btn g-btn-ghost g-btn-sm" onClick={onReset}>
+              <RotateCcw size={14} strokeWidth={2.5} aria-hidden /> {labels.again}
+            </button>
+            {next && (
+              <button type="button" className="g-btn g-btn-navy g-btn-sm" onClick={next.go}>
+                {next.label}
+                <ArrowRight size={14} strokeWidth={2.6} className="rtl-flip" aria-hidden />
+              </button>
+            )}
+          </>
+        )
+        : (
+          <>
+            {next && (
+              <button type="button" className="g-btn g-btn-ghost g-btn-sm" onClick={next.go}>
+                {next.label}
+              </button>
+            )}
+            <button type="button" className="g-btn g-btn-navy g-btn-sm" onClick={onCheck} disabled={!canCheck}>
+              <Check size={14} strokeWidth={2.6} aria-hidden /> {labels.check}
+            </button>
+          </>
+        )}
     </div>
   );
 }
@@ -928,29 +955,30 @@ function Mcq({ item, verdict, onSettle, onReset, labels, num }: ViewProps & { it
       {/* Als HTML: `prompt` mag cursief dragen om een aangehaald woord aan te wijzen, en dat
           kwam hiervoor met tags en al in beeld. Zie `promptHtml` in `lib/lessons/items.ts`. */}
       <p className="ex-prompt" dangerouslySetInnerHTML={{ __html: item.payload.prompt }} />
-      <div className={`opts${item.payload.layout === 'text' ? '' : ' opts-grid'}`} role="radiogroup">
+      {/* De rij is de knop (Glas §G5, variant A): na het nakijken groen met "Goed" op het
+          juiste antwoord, rood met "Jouw antwoord" op een foute keuze, de rest gedimd. De
+          beloning speelt alleen op de rij die jij koos en die goed was. */}
+      <AnswerGroup label={item.payload.prompt.replace(/<[^>]+>/g, '')}>
         {item.options.map(o => {
           const isPicked = picked === o.label;
-          const reveal = answered && o.is_correct;
-          const wrongPick = answered && isPicked && !o.is_correct;
+          const state: AnswerState = !answered
+            ? (isPicked ? 'selected' : 'idle')
+            : o.is_correct ? 'correct' : isPicked ? 'wrong' : 'dim';
           return (
-            <button
+            <AnswerRow
               key={o.label}
-              type="button"
-              role="radio"
-              aria-checked={isPicked}
-              disabled={answered}
-              onClick={() => setPicked(o.label)}
-              className={`opt${isPicked ? ' picked' : ''}${reveal ? ' right' : ''}${wrongPick ? ' wrong' : ''}`}
+              letter={o.label}
+              state={state}
+              reward={isPicked && o.is_correct}
+              onSelect={() => setPicked(o.label)}
+              correctLabel={labels.correct}
+              wrongLabel={labels.yourAnswer ?? labels.wrong}
             >
-              <span className="opt-l">{o.label}</span>
-              <span className="opt-b"><WordPass text={o.body ?? ''} active={reveal} /></span>
-              {reveal && <Check size={16} strokeWidth={3} className="opt-i" />}
-              {wrongPick && <X size={16} strokeWidth={3} className="opt-i" />}
-            </button>
+              {o.body ?? ''}
+            </AnswerRow>
           );
         })}
-      </div>
+      </AnswerGroup>
     </ExFrame>
   );
 }

@@ -63,7 +63,7 @@ export default function StartForm({
     <>
       <section className="ona-panel flex flex-col gap-5">
         <div>
-          <h1 className="ona-h2" style={{ fontSize: 'clamp(1.6rem, 3vw, 2rem)', fontWeight: 800, color: 'var(--color-primary)' }}>
+          <h1 className="g-head gl-ona-h1">
             {t('start_title')}
           </h1>
           <p className="ona-body" style={{ marginTop: 6, color: 'var(--color-on-surface-variant)' }}>{t('start_body')}</p>

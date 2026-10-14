@@ -156,7 +156,7 @@ export default function Practice({
             {feedback.map(item => (
               <li key={item.vraag}>
                 <span className="ona-sub" lang="nl">{questions[item.vraag]?.text}</span>
-                <strong style={{ color: item.uitgelegd === 'ja' ? 'var(--color-secondary)' : 'var(--color-primary)', display: 'inline-flex', alignItems: 'center', gap: 6 }}>
+                <strong style={{ color: item.uitgelegd === 'ja' ? 'var(--goed-ink)' : 'var(--navy)', display: 'inline-flex', alignItems: 'center', gap: 6 }}>
                   {item.uitgelegd === 'ja' && <Check size={16} strokeWidth={2.6} aria-hidden />}
                   {t(`fb_${item.uitgelegd}`)}
                 </strong>

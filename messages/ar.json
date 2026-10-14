@@ -2252,7 +2252,7 @@
     "mark_hint": "اضغط على الكلمة الأولى ثم على الكلمة الأخيرة. يمكنك أيضًا السحب فوق النص.",
     "mark_clear": "مسح",
     "mark_empty": "لم يتم التحديد بعد",
-    "rec_record": "تسجيل",
+    "rec_record": "ابدأ التسجيل",
     "rec_stop": "إيقاف",
     "rec_again": "سجّل مرة أخرى",
     "rec_recording": "جارٍ التسجيل",
@@ -2358,10 +2358,15 @@
     "rules_group_core": "{n} من {total} أساسية",
     "rules_group_recognise": "للفهم فقط",
     "rules_panel_title": "قواعد اللغة {level}",
-    "spoor_taalregels_intro": "القواعد التي يطلبها هذا الامتحان، حسب الموضوع. الوحدات التي يجب أن تتقنها بنفسك تأتي أولاً."
+    "spoor_taalregels_intro": "القواعد التي يطلبها هذا الامتحان، حسب الموضوع. الوحدات التي يجب أن تتقنها بنفسك تأتي أولاً.",
+    "practice_cta_head": "تدرّب على ما تعلّمته للتو",
+    "practice_cta_sub": "{n} تمارين",
+    "practice_start": "ابدأ التمرين",
+    "rec_play": "شغّل تسجيلك",
+    "rec_pause": "أوقف التسجيل مؤقتًا"
   },
   "grammar": {
-    "step_label": "القواعد",
+    "step_label": "قواعد اللغة",
     "eyebrow": "الوحدة B · الدرس {n} من {total}",
     "part": "الجزء {n} · {title}",
     "not_written": "هذا الدرس قيد الكتابة",

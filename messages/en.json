@@ -2252,7 +2252,7 @@
     "mark_hint": "Tap the first and the last word. You can also drag across the text.",
     "mark_clear": "Clear",
     "mark_empty": "not marked yet",
-    "rec_record": "Record",
+    "rec_record": "Start recording",
     "rec_stop": "Stop",
     "rec_again": "Record again",
     "rec_recording": "Recording",
@@ -2358,10 +2358,15 @@
     "rules_group_core": "{n} of {total} are core",
     "rules_group_recognise": "recognise only",
     "rules_panel_title": "Language rules {level}",
-    "spoor_taalregels_intro": "The rules this exam asks of you, by topic. The modules you must get right yourself come first."
+    "spoor_taalregels_intro": "The rules this exam asks of you, by topic. The modules you must get right yourself come first.",
+    "practice_cta_head": "Practise what you just learned",
+    "practice_cta_sub": "{n} exercises",
+    "practice_start": "Start practising",
+    "rec_play": "Play your recording",
+    "rec_pause": "Pause recording"
   },
   "grammar": {
-    "step_label": "Grammar",
+    "step_label": "Language rules",
     "eyebrow": "Block B · lesson {n} of {total}",
     "part": "Part {n} · {title}",
     "not_written": "This lesson is still being written",
