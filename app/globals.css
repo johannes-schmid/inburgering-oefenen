@@ -2,6 +2,12 @@
 @import "tw-animate-css";
 @import "shadcn/tailwind.css";
 @import "./glas-components.css";
+@import "./glas-public.css";
+@import "./glas-public-info.css";
+@import "./glas-public-gidsen.css";
+@import "./glas-public-tijdlijn.css";
+@import "./glas-public-blog.css";
+@import "./glas-public-oefenexamen.css";
 
 @source "../data/**/*.ts";
 @source "../components/**/*.tsx";
