@@ -5495,3 +5495,9 @@ oplopende `top` per index doet het, en de `prefers-reduced-motion`-uitweg is dan
 **Outcome:** SUCCESS
 **What worked / went wrong:** Kiezen in de browser met een "Kies"-knop en een kopieerbare samenvatting werkte: zes rondes zonder misverstand over wat er gekozen was.
 **Lesson:** Bij een stijlwissel die niet in één keer gebouwd wordt: schrijf de overgangsregel expliciet op (per scherm, nooit gemengd), anders wordt elke oude component "de bug".
+
+## 2026-10-14 — Glas-referentiepagina uit public/ gehaald
+**Changed:** `public/design/glas.html` → `docs/design/glas.html`; afbeeldingen via `../../public/images/…`, verwijzingen in CLAUDE.md, DESIGN_SYSTEM.md en design-history bijgewerkt.
+**Outcome:** SUCCESS
+**What worked / went wrong:** Alles in `public/` gaat mee met elke deploy; `noindex` houdt zoekmachines weg, niet bezoekers. Vanaf schijf (file://) laden alle 18 afbeeldingen, en de dev-server geeft nu 404.
+**Lesson:** Een interne referentiepagina hoort in `docs/`, niet in `public/` — "niet geïndexeerd" is iets anders dan "niet live".

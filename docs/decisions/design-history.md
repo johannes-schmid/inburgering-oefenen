@@ -11,7 +11,7 @@ Horizon, the category marks, the homepage compositions, the logo generator and t
 
 The owner asked for a restyle borrowing the "Nachtzug" glass style of deutschtest-ueben.de. Three
 directions were shown (Glas, Schemer, Redactie); Glas won, and was then built out in six review
-rounds as one static page, `public/design/glas.html`, with a "Kies" button on every variant so the
+rounds as one static page, now `docs/design/glas.html` (local only, never deployed), with a "Kies" button on every variant so the
 owner could pick in the browser and paste the picks back. The decisions are in
 `docs/design/DESIGN_SYSTEM.md` §G1–G7; what was re-decided along the way, and why:
 

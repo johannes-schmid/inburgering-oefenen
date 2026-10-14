@@ -604,7 +604,7 @@ the rule down** — a one-off shape in one page is how a design system turns bac
 ## 8. Design rules
 
 **The spec is `docs/design/DESIGN_SYSTEM.md`.** Since 2026-10-14 it opens with **Glas v1.0**
-(approved, migration not started), whose reference implementation is `public/design/glas.html`;
+(approved, migration not started), whose reference implementation is `docs/design/glas.html` (local only — open the file; it is never deployed);
 a surface rebuilt in Glas follows Glas, a surface not yet rebuilt still follows "The Civic Authority"
 (`docs/design/horizon-element-library.html`). Never mix the two inside one surface. Open the
 reference page in a browser before designing a new surface. **When the spec and the code disagree, the spec wins and the code is

@@ -11,8 +11,8 @@
 # Glas v1.0 — approved 2026-10-14
 
 **Status: approved by the owner, migration not started.** Glas is the successor to "The Civic
-Authority" below. Its reference implementation is **`public/design/glas.html`** (served at
-`/design/glas.html`, `noindex`) — every token, element and block on that page is the spec, with
+Authority" below. Its reference implementation is **`docs/design/glas.html`** — a local page,
+opened straight from disk (`open docs/design/glas.html`), never deployed — every token, element and block on that page is the spec, with
 working states and motion. **Rule for the migration period:** a surface that has been rebuilt in
 Glas follows this section; a surface that has not yet been rebuilt keeps following The Civic
 Authority. Mixing the two inside one surface is the bug.
