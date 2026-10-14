@@ -1,12 +1,17 @@
+import { Fragment } from 'react';
 import type { Metadata } from 'next';
 import { getTranslations } from 'next-intl/server';
+import { ArrowDown, ArrowRight, Check, Headphones, Info, Play, X } from 'lucide-react';
 import { routing } from '@/i18n/routing';
 import { Link } from '@/i18n/navigation';
-import { cn } from '@/lib/utils';
-import { HorizonBanner, SkylineTopper, HERO_GRADIENT } from '@/components/horizon';
-import { buttonVariants } from '@/components/ui/button';
-import { TeacherCard } from '@/components/site';
 import CategoryMark from '@/components/horizon/CategoryMark';
+import ExamMark from '@/components/horizon/ExamMark';
+import Field from '@/components/glas/Field';
+import PageField from '@/components/glas/PageField';
+import SectionHeading from '@/components/glas/SectionHeading';
+import { glasButton } from '@/components/glas/Button';
+import PayBadges from '../_components/glas/PayBadges';
+import FaqList from '../_components/glas/FaqList';
 import PricingViewTracker from '@/components/PricingViewTracker';
 import JsonLd from '@/components/JsonLd';
 import { DEFAULT_LEVEL, SKILLS, formatCount, getSkill, getSkillAtLevel } from '@/data/skills';
@@ -22,7 +27,6 @@ import {
 } from '@/lib/pricing';
 import { langTag } from '@/lib/site';
 import { breadcrumbs, courseId, PROVIDER_REF } from '@/lib/schema';
-import { Lock, Check, Headphones, RefreshCw } from 'lucide-react';
 
 type Props = { params: Promise<{ locale: string }> };
 
@@ -58,196 +62,72 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   };
 }
 
-/* ─── icons ──────────────────────────────────────────────────────────────── */
-const CheckGreen = () => (
-  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#a24000" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className="flex-shrink-0 mt-0.5"><polyline points="20 6 9 17 4 12"/></svg>
-);
-const XGray = () => (
-  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#c4c6d2" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className="flex-shrink-0 mt-0.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
-);
-
-/* ─── Browser / Dashboard mockup (hero right column) ───────────────────── */
-function BrowserMockup() {
-  return (
-    <div style={{ background:'#fff', borderRadius:'12px', overflow:'hidden', boxShadow:'0 2px 0 rgba(0,0,0,0.08),0 20px 56px rgba(0,43,109,0.22),0 6px 18px rgba(0,43,109,0.10)', border:'1px solid rgba(0,0,0,0.08)' }}>
-      <div style={{ background:'#f2f2f2', borderBottom:'1px solid #e0e0e0', padding:'9px 12px', display:'flex', alignItems:'center', gap:'7px' }}>
-        <span style={{ width:9,height:9,borderRadius:'50%',background:'#ff5f57',flexShrink:0,display:'block' }}/>
-        <span style={{ width:9,height:9,borderRadius:'50%',background:'#febc2e',flexShrink:0,display:'block' }}/>
-        <span style={{ width:9,height:9,borderRadius:'50%',background:'#28c840',flexShrink:0,display:'block' }}/>
-        <span style={{ flex:1,background:'#fff',borderRadius:'5px',padding:'3px 10px',fontSize:'11px',color:'#747782',fontFamily:'monospace',border:'1px solid #e0e0e0' }}>inburgeringoefenen.nl/dashboard</span>
-      </div>
-      <div style={{ display:'flex', height:'370px', overflow:'hidden' }}>
-        <div style={{ width:'168px',minWidth:'168px',background:'#fff',borderRight:'1px solid #e6e8ea',display:'flex',flexDirection:'column' }}>
-          <div style={{ padding:'16px 16px 12px', borderBottom:'1px solid #eceef0' }}>
-            <div style={{ display:'flex',alignItems:'center',gap:'6px' }}>
-              <span style={{ width:'4px',height:'16px',background:'#fe762c',borderRadius:'2px',display:'block' }}/>
-              <span style={{ fontFamily:'var(--font-headline)',fontWeight:800,color:'#002b6d',fontSize:'12px' }}>Inburgering Oefenen</span>
-            </div>
-            <p style={{ fontSize:'9px',color:'#747782',marginTop:'2px',paddingLeft:'10px' }}>Mijn modules</p>
-          </div>
-          <nav style={{ padding:'8px',display:'flex',flexDirection:'column',gap:'2px' }}>
-            {([
-              { slug:'lezen',     label:'Lezen',     active:true,  on:true },
-              { slug:'luisteren', label:'Luisteren', active:false, on:true },
-              { slug:'schrijven', label:'Schrijven', active:false, on:true },
-              { slug:'spreken',   label:'Spreken',   active:false, on:false },
-            ] as const).map(item => (
-              <div key={item.slug} style={{ display:'flex',alignItems:'center',gap:'7px',padding:'7px 10px',borderRadius:'6px',fontSize:'11px',fontWeight:item.active?700:500,color:item.active?'#002b6d':(item.on?'#434651':'#a0a3ad'),background:item.active?'#EEF2FF':undefined }}>
-                <CategoryMark category={item.slug} size={22} />
-                {item.label}
-                {!item.on && <Lock size={9} strokeWidth={2.2} style={{ marginLeft:'auto' }} aria-hidden="true" />}
-              </div>
-            ))}
-          </nav>
-          <div style={{ marginTop:'auto',padding:'8px' }}>
-            <div style={{ background:'linear-gradient(135deg,#fe762c,#d94f00)',color:'#fff',fontSize:'10px',fontWeight:700,borderRadius:'8px',padding:'8px 10px',textAlign:'center' }}>Spreken toevoegen</div>
-          </div>
-        </div>
-        <div style={{ flex:1,background:'#f8f9fb',padding:'16px',overflow:'hidden' }}>
-          <div style={{ background:'#fff',borderRadius:'12px',border:'1px solid #eceef0',padding:'14px',marginBottom:'12px',display:'flex',alignItems:'center',gap:'12px',boxShadow:'0 2px 8px rgba(0,43,109,0.06)' }}>
-            <svg width="58" height="58" viewBox="0 0 110 110" style={{ flexShrink:0 }}>
-              <circle cx="55" cy="55" r="46" fill="none" stroke="#e0e3e5" strokeWidth="10"/>
-              <circle cx="55" cy="55" r="46" fill="none" stroke="#fe762c" strokeWidth="10" strokeLinecap="round" strokeDasharray="289.03" strokeDashoffset="100" transform="rotate(-90 55 55)"/>
-              <text x="55" y="50" textAnchor="middle" fontSize="22" fontWeight="800" fill="#002b6d" fontFamily="Manrope,sans-serif">65%</text>
-              <text x="55" y="66" textAnchor="middle" fontSize="10" fill="#747782" fontFamily="Arial,sans-serif">gereed</text>
-            </svg>
-            <div>
-              <p style={{ fontFamily:'var(--font-headline)',fontWeight:700,color:'#002b6d',fontSize:'12px',lineHeight:1.3 }}>Module Lezen</p>
-              <p style={{ fontSize:'10px',color:'#747782',marginTop:'3px' }}>6 van 10 oefenexamens gedaan. Goed bezig!</p>
-              <div style={{ display:'flex',gap:'6px',marginTop:'6px',flexWrap:'wrap' }}>
-                <span style={{ fontSize:'9px',fontWeight:600,background:'#f2f4f6',color:'#434651',padding:'2px 6px',borderRadius:'99px' }}>25 vragen per examen</span>
-                <span style={{ fontSize:'9px',fontWeight:700,background:'rgba(254,118,44,0.16)',color:'#a24000',padding:'2px 6px',borderRadius:'99px' }}>Gem. 79%</span>
-              </div>
-            </div>
-          </div>
-          <p style={{ fontSize:'10px',fontWeight:700,color:'#191c1e',marginBottom:'8px',display:'flex',alignItems:'center',gap:'4px' }}>
-            <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#002b6d" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
-            Oefenexamens Lezen
-            <span style={{ color:'#747782',fontWeight:400,marginLeft:'auto' }}>10 EXAMENS</span>
-          </p>
-          <div style={{ display:'grid',gridTemplateColumns:'repeat(3,1fr)',gap:'8px' }}>
-            {[
-              { n:1, s:'84%', pass:true },
-              { n:2, s:'76%', pass:true },
-              { n:3, s:'91%', pass:true },
-            ].map(ex => (
-              <div key={ex.n} style={{ background:'#fff',border:'1px solid #eceef0',borderRadius:'8px',padding:'10px' }}>
-                <div style={{ display:'flex',alignItems:'center',justifyContent:'space-between',marginBottom:'6px' }}>
-                  <span style={{ fontSize:'9px',fontWeight:700,color:'#191c1e' }}>Examen {ex.n}</span>
-                  <span style={{ fontSize:'8px',fontWeight:700,color:'#a24000',background:'rgba(254,118,44,0.16)',padding:'2px 5px',borderRadius:'99px',display:'inline-flex',alignItems:'center',gap:'2px' }}><Check size={8} strokeWidth={3} aria-hidden="true" />Gesl.</span>
-                </div>
-                <div style={{ fontFamily:'var(--font-headline)',fontWeight:800,fontSize:'18px',color:'#002b6d',lineHeight:1 }}>{ex.s}</div>
-                <div style={{ height:'4px',background:'#f2f4f6',borderRadius:'99px',marginTop:'6px',overflow:'hidden' }}><div style={{ height:'100%',background:'linear-gradient(90deg,#a24000,#fe762c)',borderRadius:'99px',width:ex.s }}/></div>
-              </div>
-            ))}
-          </div>
-          <div style={{ marginTop:'12px',background:'#fff',border:'1px solid #eceef0',borderRadius:'8px',padding:'12px' }}>
-            <div style={{ display:'flex',alignItems:'center',justifyContent:'space-between',marginBottom:'8px' }}>
-              <span style={{ fontSize:'10px',fontWeight:700,color:'#191c1e' }}>Woordenlijst Lezen</span>
-              <span style={{ fontSize:'8px',fontWeight:700,color:'#002b6d',background:'var(--color-surface-container-high)',padding:'2px 6px',borderRadius:'99px' }}>hoort bij je module</span>
-            </div>
-            <div style={{ display:'flex',alignItems:'center',gap:'8px' }}>
-              <div style={{ flex:1,height:'6px',background:'#f2f4f6',borderRadius:'99px',overflow:'hidden' }}>
-                <div style={{ height:'100%',width:'58%',borderRadius:'99px',background:'linear-gradient(90deg,#002b6d,#fe762c)' }}/>
-              </div>
-              <span style={{ fontSize:'10px',fontWeight:800,color:'#002b6d',fontFamily:'var(--font-headline)' }}>58%</span>
-            </div>
-            <p style={{ fontSize:'9px',color:'#747782',marginTop:'6px' }}>Woorden uit advertenties, brieven en formulieren</p>
-          </div>
-        </div>
-      </div>
-    </div>
-  );
-}
-
-/* ─── Feature mockups ───────────────────────────────────────────────────── */
+/* ─── De paneeltjes bij "wat er in een module zit" ───────────────────────────────────────────────
+   Glas (§04): glas óp een veld, met de echte componentvormen van het portaal — de antwoordrij, de
+   criteriumbalk, de woordkaart. Ze staan achter `aria-hidden`: het is een plaatje van het product,
+   wat iemand moet weten staat in de tekst eronder. Elk getal is illustratieve schermstand. */
 function ExamensMockup() {
   const lezen = getSkillAtLevel(DEFAULT_LEVEL, 'lezen')!;
   return (
-    <div style={{ padding:'20px', background:'#f8f9fb', borderBottom:'1px solid #eceef0' }}>
-      <div className="space-y-2">
-        {[
-          { n:1, s:'84%' },
-          { n:2, s:'91%' },
-          { n:3, s:null },
-        ].map(ex => (
-          <div key={ex.n} style={{ background:'#fff',border:'1px solid #eceef0',borderRadius:'12px',padding:'12px 14px',display:'flex',alignItems:'center',justifyContent:'space-between' }}>
-            <div>
-              <p style={{ fontSize:'12px',fontWeight:700,color:'#191c1e' }}>Lezen · oefenexamen {ex.n}</p>
-              <p style={{ fontSize:'10px',color:'#747782' }}>{formatCount(lezen.itemCount)} vragen · {formatCount(lezen.durationMinutes)} min</p>
-            </div>
-            <div style={{ textAlign:'right' }}>
-              {ex.s ? <>
-                <p style={{ fontFamily:'var(--font-headline)',fontWeight:800,fontSize:'18px',color:'#002b6d',lineHeight:1 }}>{ex.s}</p>
-                <span style={{ fontSize:'9px',fontWeight:700,color:'#a24000',background:'rgba(254,118,44,0.16)',padding:'2px 6px',borderRadius:'99px',display:'inline-flex',alignItems:'center',gap:'3px' }}><Check size={9} strokeWidth={3} aria-hidden="true" />Geslaagd</span>
-              </> : (
-                <span style={{ fontSize:'10px',fontWeight:600,color:'#a24000',background:'rgba(254,118,44,0.10)',padding:'4px 8px',borderRadius:'99px' }}>Nu doen →</span>
-              )}
-            </div>
+    <div dir="ltr" lang="nl" className="g-glass g-glass-strong g-pm-mock">
+      {[
+        { n: 1, s: '84%' },
+        { n: 2, s: '91%' },
+        { n: 3, s: null },
+      ].map(ex => (
+        <div key={ex.n} className="g-pm-row">
+          <div>
+            <b>Lezen · oefenexamen {ex.n}</b>
+            <small>{formatCount(lezen.itemCount)} vragen · {formatCount(lezen.durationMinutes)} min</small>
           </div>
-        ))}
-      </div>
+          {ex.s ? (
+            <span className="flex items-center gap-2">
+              <span className="g-score-v g-tnum">{ex.s}</span>
+              <span className="g-bdg g-bdg-goed !h-6 !px-2"><Check /></span>
+            </span>
+          ) : (
+            <span className="size-8 rounded-full bg-navy text-white flex items-center justify-center"><ArrowRight className="size-4 rtl-flip" /></span>
+          )}
+        </div>
+      ))}
     </div>
   );
 }
 
 function LessonMockup() {
   return (
-    <div style={{ padding:'20px', background:'#f8f9fb', borderBottom:'1px solid #eceef0' }}>
-      <div style={{ background: HERO_GRADIENT,borderRadius:'12px',padding:'12px 14px',marginBottom:'10px',display:'flex',alignItems:'center',gap:'10px' }}>
-        <Headphones size={18} strokeWidth={1.9} style={{ color:'#fff',flexShrink:0 }} aria-hidden="true" />
-        <div>
-          <p style={{ fontSize:'8px',fontWeight:700,color:'rgba(255,255,255,0.55)',textTransform:'uppercase',letterSpacing:'0.06em' }}>Les · module Luisteren</p>
-          <p style={{ fontSize:'11px',fontWeight:800,color:'#fff',lineHeight:1.2 }}>Een gesprek bij de balie</p>
-        </div>
+    <div dir="ltr" lang="nl" className="g-glass g-glass-strong g-pm-mock">
+      <span className="g-mono">Les · module Luisteren</span>
+      <div className="g-head text-[15px] font-bold mt-1.5">Een gesprek bij de balie</div>
+      <div className="g-pm-row mt-3 !justify-start">
+        <span className="size-9 rounded-full bg-navy text-white flex items-center justify-center shrink-0"><Play className="size-4 rtl-flip" fill="currentColor" /></span>
+        <span className="flex-1 min-w-0">
+          <b>Twee stemmen, net als in het examen</b>
+          <span className="block h-1.5 rounded-full bg-mist-2 mt-2 overflow-hidden"><span className="block h-full w-[42%] bg-navy rounded-full" /></span>
+        </span>
+        <span className="g-tnum text-xs text-ink-2">2:34</span>
       </div>
-      <div style={{ background:'#fff',borderRadius:'12px',border:'1px solid #eceef0',overflow:'hidden' }}>
-        <div style={{ padding:'10px 14px 8px',borderBottom:'1px solid #eceef0' }}>
-          <p style={{ fontSize:'8px',fontWeight:700,color:'#fe762c',textTransform:'uppercase',letterSpacing:'0.06em',marginBottom:'1px' }}>Uitleg van de docent</p>
-          <p style={{ fontSize:'11px',fontWeight:700,color:'#191c1e' }}>Waar moet je op letten?</p>
-        </div>
-        <div style={{ padding:'10px 14px 12px' }}>
-          <div style={{ display:'flex',alignItems:'center',gap:'10px',marginBottom:'8px' }}>
-            <div style={{ width:'32px',height:'32px',borderRadius:'50%',background:'#fe762c',display:'flex',alignItems:'center',justifyContent:'center',flexShrink:0 }}>
-              <svg width="12" height="12" viewBox="0 0 24 24" fill="#fff"><polygon points="5 3 19 12 5 21 5 3"/></svg>
-            </div>
-            <div style={{ flex:1 }}>
-              <p style={{ fontSize:'10px',fontWeight:600,color:'#191c1e',marginBottom:'2px' }}>Speelt…</p>
-              <p style={{ fontSize:'9px',color:'#747782' }}>Twee stemmen, net als in het examen</p>
-            </div>
-            <span style={{ fontSize:'10px',color:'#747782',fontVariantNumeric:'tabular-nums' }}>2:34</span>
-          </div>
-          <div style={{ height:'6px',background:'#f2f4f6',borderRadius:'99px',overflow:'hidden',marginBottom:'8px' }}>
-            <div style={{ height:'100%',width:'42%',background:'#fe762c',borderRadius:'99px' }}/>
-          </div>
-          <div style={{ background:'#f8f9fb',borderRadius:'8px',padding:'8px 10px' }}>
-            <p style={{ fontSize:'9px',color:'#434651',lineHeight:1.5 }}>
-              &ldquo;In dit soort gesprekken hoor je bijna altijd eerst een <strong>tijd</strong> of een <strong>dag</strong>. Schrijf die meteen op — daar gaat de vraag vaak over.&rdquo;
-            </p>
-          </div>
-        </div>
-      </div>
+      <p className="m-0 mt-3 rounded-g-sm bg-klei-tint px-3 py-2 text-[12px] leading-relaxed text-ink">
+        <b className="block text-klei g-head text-[12px]">Uitleg van de docent</b>
+        &ldquo;In dit soort gesprekken hoor je bijna altijd eerst een <strong>tijd</strong>{' '}of een <strong>dag</strong>. Schrijf die meteen op — daar gaat de vraag vaak over.&rdquo;
+      </p>
     </div>
   );
 }
 
 function WoordenlijstMockup() {
   return (
-    <div style={{ padding:'20px', background:'#f8f9fb', borderBottom:'1px solid #eceef0' }}>
-      <div style={{ background:'#fff',borderRadius:'12px',border:'1px solid #eceef0',padding:'16px',marginBottom:'10px',textAlign:'center' }}>
-        <p style={{ fontSize:'8px',fontWeight:700,color:'#747782',textTransform:'uppercase',letterSpacing:'0.06em',marginBottom:'8px' }}>Woordenlijst · module Lezen</p>
-        <p style={{ fontFamily:'var(--font-headline)',fontWeight:800,fontSize:'20px',color:'#002b6d',lineHeight:1.2 }}>de aanvraag</p>
-        <p style={{ fontSize:'10px',color:'#747782',marginTop:'6px' }}>the application · الطلب</p>
-        <div style={{ display:'flex',alignItems:'center',justifyContent:'center',gap:'6px',marginTop:'10px' }}>
-          <span style={{ display:'inline-flex',alignItems:'center',gap:'4px',fontSize:'9px',fontWeight:700,color:'#002b6d',background:'var(--color-surface-container-high)',padding:'3px 8px',borderRadius:'99px' }}>
-            <Headphones size={9} strokeWidth={2.4} aria-hidden="true" />Beluister
-          </span>
-          <span style={{ fontSize:'9px',color:'#747782' }}>Kaart 7 van 24</span>
-        </div>
+    <div dir="ltr" lang="nl" className="g-glass g-glass-strong g-pm-mock text-center">
+      <span className="g-mono">Woordenlijst · module Lezen</span>
+      <div className="g-head text-[24px] font-extrabold tracking-[-0.03em] mt-3">de aanvraag</div>
+      <p className="m-0 mt-1 text-xs text-ink-2">the application · الطلب</p>
+      <div className="flex items-center justify-center gap-2 mt-3">
+        <span className="g-bdg g-bdg-zacht !h-6"><Headphones />Beluister</span>
+        <span className="text-xs text-ink-2 g-tnum">Kaart 7 van 24</span>
       </div>
-      <div style={{ display:'flex',gap:'6px' }}>
-        <div style={{ flex:1,background:'#fff',border:'1px solid #eceef0',borderRadius:'8px',padding:'8px',textAlign:'center',fontSize:'9px',fontWeight:700,color:'#747782' }}>Nog even oefenen</div>
-        <div style={{ flex:1,background:'rgba(254,118,44,0.12)',borderRadius:'8px',padding:'8px',textAlign:'center',fontSize:'9px',fontWeight:700,color:'#a24000' }}>Ik ken dit woord</div>
+      <div className="grid grid-cols-2 gap-2 mt-4">
+        <span className="rounded-g-sm bg-wit py-2 text-xs font-bold text-ink-2">Nog even oefenen</span>
+        <span className="rounded-g-sm bg-goed-tint py-2 text-xs font-bold text-goed-ink">Ik ken dit woord</span>
       </div>
     </div>
   );
@@ -255,61 +135,42 @@ function WoordenlijstMockup() {
 
 function FeedbackMockup() {
   return (
-    <div style={{ padding:'20px', background:'#f8f9fb', borderBottom:'1px solid #eceef0' }}>
-      <div style={{ background:'#fff',borderRadius:'12px',border:'1px solid #eceef0',padding:'12px',marginBottom:'10px' }}>
-        <p style={{ fontSize:'8px',fontWeight:700,color:'#747782',textTransform:'uppercase',letterSpacing:'0.06em',marginBottom:'6px' }}>Lezen · vraag 8</p>
-        <p style={{ fontSize:'10px',fontWeight:600,color:'#191c1e',marginBottom:'10px',lineHeight:1.4 }}>Wanneer moet je het formulier terugsturen?</p>
-        <div style={{ display:'flex',flexDirection:'column',gap:'6px' }}>
-          <div style={{ display:'flex',alignItems:'center',gap:'8px',padding:'8px',borderRadius:'8px',background:'#f8f9fb',opacity:0.5 }}>
-            <span style={{ width:'20px',height:'20px',background:'#eceef0',color:'#747782',borderRadius:'6px',display:'flex',alignItems:'center',justifyContent:'center',fontSize:'9px',fontWeight:700,flexShrink:0 }}>A</span>
-            <span style={{ fontSize:'10px',color:'#747782' }}>Binnen een week</span>
-          </div>
-          <div style={{ display:'flex',alignItems:'center',gap:'8px',padding:'8px',borderRadius:'8px',boxShadow:'inset 0 0 0 2px rgba(0,43,109,0.40)',background:'rgba(254,118,44,0.10)' }}>
-            <span style={{ width:'20px',height:'20px',background:'rgba(0,43,109,0.10)',color:'#002b6d',borderRadius:'6px',display:'flex',alignItems:'center',justifyContent:'center',fontSize:'9px',fontWeight:700,flexShrink:0 }}>B</span>
-            <span style={{ fontSize:'10px',color:'#a24000',fontWeight:600,display:'inline-flex',alignItems:'center',gap:'4px' }}>Voor 1 maart<Check size={10} strokeWidth={3} aria-hidden="true" /></span>
-          </div>
-          <div style={{ display:'flex',alignItems:'center',gap:'8px',padding:'8px',borderRadius:'8px',background:'rgba(186,26,26,0.06)',boxShadow:'inset 0 0 0 2px rgba(186,26,26,0.20)' }}>
-            <span style={{ width:'20px',height:'20px',background:'rgba(186,26,26,0.10)',color:'#ba1a1a',borderRadius:'6px',display:'flex',alignItems:'center',justifyContent:'center',fontSize:'9px',fontWeight:700,flexShrink:0 }}>C</span>
-            <span style={{ fontSize:'10px',color:'#ba1a1a',textDecoration:'line-through' }}>Na de vakantie</span>
-          </div>
-        </div>
+    <div dir="ltr" lang="nl" className="g-glass g-glass-strong g-pm-mock">
+      <span className="g-mono">Lezen · vraag 8</span>
+      <div className="g-head text-[14px] font-bold text-ink mt-1.5 mb-3">Wanneer moet je het formulier terugsturen?</div>
+      <div className="g-answers">
+        <div className="g-ans g-ans-dim !py-2 !text-[13px]"><span className="g-ans-k !size-6">A</span><span className="g-ans-text">Binnen een week</span></div>
+        <div className="g-ans g-ans-ok !py-2 !text-[13px]"><span className="g-ans-k !size-6">B</span><span className="g-ans-text">Voor 1 maart</span><span className="g-ans-tag"><Check /></span></div>
+        <div className="g-ans g-ans-nok !py-2 !text-[13px]"><span className="g-ans-k !size-6">C</span><span className="g-ans-text">Na de vakantie</span><span className="g-ans-tag"><X /></span></div>
       </div>
-      <div style={{ background:'var(--color-surface-container-high)',borderRadius:'12px',padding:'12px' }}>
-        <p style={{ fontSize:'9px',fontWeight:700,color:'#002b6d',marginBottom:'4px',display:'flex',alignItems:'center',gap:'4px' }}>
-          <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
-          Uitleg van de docent
-        </p>
-        <p style={{ fontSize:'9px',color:'rgba(0,43,109,0.75)',lineHeight:1.5 }}>De datum staat in de laatste regel van de brief: &ldquo;Stuur het formulier terug vóór 1 maart.&rdquo; De week uit antwoord A gaat over iets anders.</p>
-      </div>
+      <p className="m-0 mt-3 flex gap-2 rounded-g-sm bg-mist px-3 py-2 text-[12px] leading-relaxed text-ink-2">
+        <Info className="size-3.5 mt-0.5 shrink-0 text-navy" />
+        De datum staat in de laatste regel van de brief: &ldquo;Stuur het formulier terug vóór 1 maart.&rdquo; De week uit antwoord A gaat over iets anders.
+      </p>
     </div>
   );
 }
 
 function RubricMockup() {
   return (
-    <div style={{ padding:'20px', background:'#f8f9fb', borderBottom:'1px solid #eceef0' }}>
-      <div style={{ background:'#fff',borderRadius:'12px',border:'1px solid #eceef0',padding:'12px',marginBottom:'10px' }}>
-        <p style={{ fontSize:'8px',fontWeight:700,color:'#747782',textTransform:'uppercase',letterSpacing:'0.06em',marginBottom:'8px' }}>Schrijven · opdracht 2</p>
+    <div dir="ltr" lang="nl" className="g-glass g-glass-strong g-pm-mock">
+      <span className="g-mono">Schrijven · opdracht 2</span>
+      <div className="mt-2">
         {[
-          { c:'Inhoud', s:3 },
-          { c:'Woordgebruik', s:2 },
-          { c:'Grammatica', s:2 },
+          { c: 'Inhoud', s: 3 },
+          { c: 'Woordgebruik', s: 2 },
+          { c: 'Grammatica', s: 2 },
         ].map(r => (
-          <div key={r.c} style={{ display:'flex',alignItems:'center',gap:'8px',marginBottom:'7px' }}>
-            <span style={{ fontSize:'10px',color:'#434651',width:'74px',flexShrink:0 }}>{r.c}</span>
-            <div style={{ display:'flex',gap:'3px' }}>
-              {[1,2,3].map(i => (
-                <span key={i} style={{ width:'16px',height:'6px',borderRadius:'99px',background:i <= r.s ? '#fe762c' : '#f2f4f6',display:'block' }}/>
-              ))}
-            </div>
-            <span style={{ fontSize:'10px',fontWeight:800,color:'#002b6d',fontFamily:'var(--font-headline)',marginLeft:'auto' }}>{r.s}/3</span>
+          <div key={r.c} className="g-crit">
+            <b>{r.c}</b>
+            <span className="g-pips">{[1, 2, 3].map(i => <i key={i} className={i <= r.s ? 'g-on' : undefined} />)}<em>{r.s}/3</em></span>
           </div>
         ))}
       </div>
-      <div style={{ background:'#fff7ed',borderRadius:'12px',border:'1px solid rgba(254,118,44,0.25)',padding:'12px' }}>
-        <p style={{ fontSize:'9px',fontWeight:700,color:'#a24000',marginBottom:'4px' }}>Volgens de rubric van de docent</p>
-        <p style={{ fontSize:'9px',color:'rgba(0,43,109,0.75)',lineHeight:1.5 }}>Je e-mail heeft een goede aanhef en afsluiting. Let op het werkwoord: &ldquo;ik <strong>heb</strong> gebeld&rdquo;, niet &ldquo;ik ben gebeld&rdquo;.</p>
-      </div>
+      <p className="m-0 mt-2 rounded-g-sm bg-klei-tint px-3 py-2 text-[12px] leading-relaxed text-ink">
+        <b className="block text-klei g-head text-[12px]">Volgens de rubric van de docent</b>
+        Je e-mail heeft een goede aanhef en afsluiting. Let op het werkwoord: &ldquo;ik <strong>heb</strong>{' '}gebeld&rdquo;, niet &ldquo;ik ben gebeld&rdquo;.
+      </p>
     </div>
   );
 }
@@ -335,11 +196,7 @@ export default async function PremiumPage({ params }: Props) {
      authored yet — `lib/features.ts` still has them off. Mark those rows honestly rather
      than advertising something that does not exist; the tags disappear when the flags flip. */
   const soon = (enabled: boolean) =>
-    enabled ? null : (
-      <span className="ml-1.5 align-middle text-[10px] font-bold uppercase tracking-wider px-1.5 py-0.5 rounded" style={{ background:'rgba(0,43,109,0.07)', color:'#5a6070' }}>
-        {tP('module_soon')}
-      </span>
-    );
+    enabled ? null : <span className="g-pm-soon">{tP('module_soon')}</span>;
 
   /* `'partial'` in the single-module column: true only for the module you actually buy —
      explanations apply to Lezen/Luisteren, rubric feedback to Schrijven/Spreken. A plain
@@ -360,15 +217,12 @@ export default async function PremiumPage({ params }: Props) {
     { label: tP('feat_12'),                         free: false, module: false, bundle: true  },
   ];
 
-  const cell = (state: Cell, dark = false) => {
-    if (state === 'partial') {
-      return (
-        <span className="text-[10px] font-bold uppercase tracking-wider px-1.5 py-1 rounded text-center leading-tight" style={{ background: dark ? 'rgba(255,255,255,0.12)' : 'rgba(0,43,109,0.07)', color: dark ? 'rgba(255,255,255,0.8)' : '#5a6070' }}>
-          {tP('cell_partial')}
-        </span>
-      );
-    }
-    return state ? <CheckGreen /> : <XGray />;
+  /* Groen vinkje of grijs streepje (G3): "niet inbegrepen" is geen fout, dus nooit een rood kruis. */
+  const cell = (state: Cell) => {
+    if (state === 'partial') return <span className="g-pm-partial">{tP('cell_partial')}</span>;
+    return state
+      ? <span className="g-yes" role="img" aria-label={tP('cell_yes')}><Check aria-hidden="true" /></span>
+      : <span className="g-nope" role="img" aria-label={tP('cell_no')} />;
   };
 
   /* ── Structured data ──────────────────────────────────────────────────────
@@ -454,453 +308,285 @@ export default async function PremiumPage({ params }: Props) {
       breadcrumbs(locale, tB('home'), [{ name: tB('premium') }], pageUrl),
     ],
   };
-  const trustLine = (dark = false) => (
-    <p className="text-center text-xs mt-3 flex items-center justify-center gap-1.5" style={{ color: dark ? 'rgba(255,255,255,0.4)' : '#9ba1b0' }}>
-      <RefreshCw size={11} strokeWidth={2.4} aria-hidden="true" />
-      {tP('trust_line')}
-    </p>
-  );
+
+  const portalLabel = tP('hero_ghost').replace(/\s*[→←]\s*$/, '');
+  const moduleFeatures = (mod: (typeof a2Modules)[number]) => [
+    tP('module_exams', { count: mod.examCount }),
+    mod.hasRubricFeedback
+      ? tP('module_items_open', { count: formatCount(mod.itemCount) })
+      : tP('module_items', { count: formatCount(mod.itemCount) }),
+    <>{tP('feat_7')}{soon(FEATURES.leren)}</>,
+    <>{tP('feat_8')}{soon(FEATURES.woordkaarten)}</>,
+    mod.hasRubricFeedback ? tP('module_feedback') : tP('module_explanation'),
+  ];
+
+  /* De drie plankolommen van de vergelijking (glas.html §12). De aanbevolen kolom — alle vier —
+     loopt als één navy baan van boven naar beneden: navy kop, getinte cellen, afgeronde voet. */
+  const lastRow = allFeatures.length - 1;
 
   return (
     <>
       <JsonLd data={jsonLd} />
       <PricingViewTracker />
-      {/* ── 1. HERO ─────────────────────────────────────────────────────── */}
-      <section
-        /* Loopt ónder de zwevende kop door, net als elke andere `(main)`-kop — zie de opmerking in
-           `components/site/GradientHero.tsx`. Deze pagina tekent zijn eigen band in plaats van die
-           component te gebruiken, dus de marge en de padding staan hier met de hand. */
-        className="relative overflow-hidden px-6 -mt-[var(--nav-h)] pb-20 md:pb-28"
-        style={{ background: HERO_GRADIENT, paddingTop: 'calc(var(--nav-h) + 5rem)' }}
-      >
-        {/* Was two large orange radial washes. §7.3: exactly one sun disc per composition, and
-            the orange is a pointer, never a texture — two soft glows made the whole header read
-            orange-tinted, which is the fastest way to cheapen this palette. */}
-        <HorizonBanner desktopHouses={16} desktopHeight={92} seed={1} sun={{ size: 104, right: '8%', top: '12%' }} />
 
-        <div className="max-w-6xl mx-auto relative z-10 grid lg:grid-cols-2 gap-14 items-center">
-          <div className="max-w-xl">
-            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full mb-6" style={{ background:'rgba(254,118,44,0.15)',border:'1px solid rgba(254,118,44,0.35)' }}>
-              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#fe762c" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
-              <span className="text-xs font-bold text-secondary-container uppercase tracking-widest">{tP('hero_badge')}</span>
-            </div>
-
-            <h1 className="font-headline font-extrabold text-white leading-tight mb-5" style={{ fontSize:'clamp(1.95rem,4.5vw,3.2rem)',letterSpacing:'-0.03em' }}>
-              {tP('hero_heading')}
-            </h1>
-
-            <p className="text-white/70 text-lg leading-relaxed mb-8 max-w-lg">
-              {tP('hero_sub', { price })}
-            </p>
-
-            <div className="flex flex-col gap-2.5 mb-10">
-              {([
+      {/* ── 1. DE KOP ──
+          Gracht zonder gloed: de oranje wijzer van deze pagina staat in de vergelijking, op de kolom
+          die we aanraden. Rechts staan de twee prijzen die de pagina verkoopt, uit `lib/pricing.ts`. */}
+      <PageField variant="gracht" className="g-under-nav">
+        <div className="grid gap-10 lg:grid-cols-[minmax(0,1.15fr)_minmax(0,0.85fr)] items-center">
+          <div>
+            <h1 className="g-head g-head-1">{tP('hero_heading')}</h1>
+            <p className="g-lead mt-5">{tP('hero_sub', { price })}</p>
+            <ul className="g-checks flex-col !gap-2.5 mt-6 !text-[0.9375rem] !text-ink">
+              {[
                 tP('hero_bullet1', { price }),
                 tP('hero_bullet2', { exams: examsPerModule }),
                 tP('hero_bullet3'),
                 tP('hero_bullet4', { bundle, list }),
                 tP('hero_bullet5'),
-              ] as string[]).map(b => (
-                <div key={b} className="flex items-start gap-3 text-white/85 text-sm font-medium">
-                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#fe762c" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className="flex-shrink-0 mt-0.5"><polyline points="20 6 9 17 4 12"/></svg>
-                  <span>{b}</span>
-                </div>
+              ].map(b => (
+                <li key={b} className="!items-start"><Check aria-hidden="true" className="mt-1" />{b}</li>
               ))}
-            </div>
-
-            <div className="flex flex-wrap gap-3 items-center">
-              <a href="#modules" className={cn(buttonVariants({ variant: 'orange', size: 'cta' }))}>
-                <span>{tP('hero_cta')}</span>
-                <svg width="15" height="15" viewBox="0 0 16 16" fill="none"><path d="M6 3l5 5-5 5" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg>
+            </ul>
+            <div className="g-ctas">
+              <a href="#modules" className={glasButton({ variant: 'navy', size: 'lg' })}>
+                {tP('hero_cta')}
+                <ArrowDown aria-hidden="true" />
               </a>
-              <Link href="/dashboard" className={cn(buttonVariants({ variant: 'ghostDark', size: 'cta' }))}>
-                {tP('hero_ghost')}
+              <Link href="/dashboard" className={glasButton({ variant: 'ghost', size: 'lg' })}>
+                {portalLabel}
               </Link>
             </div>
-            <p className="text-white/45 text-sm mt-3">{tP('hero_price_note')}</p>
+            <p className="m-0 mt-4 text-sm text-ink-2">{tP('hero_price_note')}</p>
           </div>
 
-          <div className="hidden lg:block">
-            <BrowserMockup />
+          <div className="g-glass g-glass-strong g-pm-hero-card" aria-hidden="true">
+            <div className="g-pm-hero-row">
+              <div className="g-pm-marks">
+                <CategoryMark category="lezen" size={40} />
+              </div>
+              <div>
+                <b className="g-tnum">{price}</b>
+                <small>{tP('col_module')} · {tP('module_price_note')}</small>
+              </div>
+            </div>
+            <div className="g-pm-hero-row">
+              <ExamMark track="a2" size={40} />
+              <div>
+                <b className="g-tnum">{bundle}</b>
+                <small>{tP('bundle_label')} · {tP('bundle_price_note')}</small>
+              </div>
+            </div>
+            <ul className="g-checks !text-[0.8125rem] px-1">
+              <li><Check aria-hidden="true" />{tP('trust_line')}</li>
+            </ul>
           </div>
         </div>
-      </section>
+      </PageField>
 
-      {/* ── 2. MODULES ──────────────────────────────────────────────────── */}
-      {/* Was a wash from `#eef2ff` — Tailwind indigo-50, a hue in no token file and the "standard
-          blue" §6 forbids. A tonal step does the same sectioning job (§2, the no-line rule). */}
-      <section id="modules" className="py-14 px-6 scroll-mt-8 bg-surface-container-low">
-        <div className="max-w-6xl mx-auto">
-          <div className="text-center mb-10">
-            <p className="text-xs font-bold uppercase tracking-widest text-on-surface-variant mb-3">{tP('pricing_eyebrow')}</p>
-            <h2 className="font-headline font-extrabold text-on-surface mb-3" style={{ fontSize:'clamp(1.7rem,3.5vw,2.4rem)',letterSpacing:'-0.025em' }}>{tP('pricing_heading')}</h2>
-            <p className="text-on-surface-variant text-base max-w-lg mx-auto">{tP('pricing_sub', { price })}</p>
-          </div>
+      {/* ── 2. DE MODULES ── vier prijskaarten (§08 "Prijskaart"), daaronder de bundel op Nacht — het
+          ene donkere blok van de pagina — naast de gratis kaart. Onder elke knop naar de checkout
+          staan de betaalmerken. */}
+      <section id="modules" className="g-sec g-sec-tier scroll-mt-24" aria-labelledby="pm-modules-heading">
+        <div className="g-wrap">
+          <SectionHeading id="pm-modules-heading" title={tP('pricing_heading')} aside={tP('pricing_sub', { price })} className="mb-10" />
 
-          {/* four module cards */}
-          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
-            {a2Modules.map((mod, i) => {
+          <div className="g-pm-mods">
+            {a2Modules.map(mod => {
               const skill = getSkill(mod.skill)!;
               return (
-                <div
-                  key={mod.slug}
-                  className="flex flex-col rounded-2xl bg-surface-container-lowest overflow-hidden"
-                  style={{ boxShadow:'var(--shadow-ambient)' }}
-                >
-                  {/* The module card of §7.2, the same one the homepage grid uses — one tint and
-                      one `seed` per module, so four cards are four streets rather than one graphic
-                      repeated four times. */}
-                  <SkylineTopper
-                    height={64}
-                    houses={6}
-                    seed={i * 3}
-                    tint={(['gradient', 'reverse', 'primary', 'container'] as const)[i % 4]}
-                    band={false}
-                  />
-                  <div className="px-5 pt-6 pb-5 flex-1">
-                    <CategoryMark category={mod.skill} size={44} />
-                    <h3 className="font-headline font-extrabold text-on-surface text-lg mt-3.5 mb-1">{tS(`${skill.key}.name`)}</h3>
-                    <p className="text-xs text-on-surface-variant leading-relaxed mb-4 min-h-[2.6rem]">{tS(`${skill.key}.tagline`)}</p>
-
-                    <div className="flex items-end gap-1.5 mb-5">
-                      <span className="font-headline font-extrabold text-4xl text-on-surface leading-none">{euro(mod.priceCents)}</span>
-                      <span className="text-xs text-on-surface-variant mb-1">{tP('module_price_note')}</span>
-                    </div>
-
-                    <div className="space-y-2">
-                      <div className="flex items-start gap-2 text-sm text-on-surface font-medium">
-                        <CheckGreen /><span>{tP('module_exams', { count: mod.examCount })}</span>
-                      </div>
-                      <div className="flex items-start gap-2 text-sm text-on-surface-variant">
-                        <CheckGreen />
-                        <span>{mod.hasRubricFeedback
-                          ? tP('module_items_open', { count: formatCount(mod.itemCount) })
-                          : tP('module_items', { count: formatCount(mod.itemCount) })}</span>
-                      </div>
-                      <div className="flex items-start gap-2 text-sm text-on-surface-variant">
-                        <CheckGreen /><span>{tP('feat_7')}{soon(FEATURES.leren)}</span>
-                      </div>
-                      <div className="flex items-start gap-2 text-sm text-on-surface-variant">
-                        <CheckGreen /><span>{tP('feat_8')}{soon(FEATURES.woordkaarten)}</span>
-                      </div>
-                      <div className="flex items-start gap-2 text-sm text-on-surface-variant">
-                        <CheckGreen /><span>{mod.hasRubricFeedback ? tP('module_feedback') : tP('module_explanation')}</span>
-                      </div>
-                    </div>
-                  </div>
-                  <div className="px-5 pb-5 pt-4 bg-surface-container-low">
-                    <Link
-                      href={{ pathname: '/register', query: { module: mod.slug } }}
-                      className={cn(buttonVariants({ variant: 'ghostLight', size: 'cta' }), 'w-full justify-center text-sm')}
-                    >
-                      {tP('module_cta')}
-                    </Link>
-                  </div>
+                <div key={mod.slug} className="g-price g-pm-mod">
+                  <CategoryMark category={mod.skill} size={44} />
+                  <h3>{tS(`${skill.key}.name`)}</h3>
+                  <p>{tS(`${skill.key}.tagline`)}</p>
+                  <div className="g-price-amt g-tnum">{euro(mod.priceCents)}<small>{tP('module_price_note')}</small></div>
+                  <ul>
+                    {moduleFeatures(mod).map((f, i) => (
+                      <li key={i}><Check aria-hidden="true" /><span>{f}</span></li>
+                    ))}
+                  </ul>
+                  <Link href={{ pathname: '/register', query: { module: mod.slug } }} className={glasButton({ variant: 'ghost' })}>
+                    {tP('module_cta')}
+                  </Link>
+                  <PayBadges />
                 </div>
               );
             })}
           </div>
 
-          {/* bundle + free, side by side */}
-          <div className="grid lg:grid-cols-[1.6fr_1fr] gap-5 items-stretch pt-4">
-            {/* BUNDLE — hero card */}
-            <div className="flex flex-col rounded-2xl relative overflow-visible" style={{ background:'linear-gradient(160deg,#002b6d 0%,#1d428a 100%)', boxShadow:'0 12px 40px rgba(0,43,109,0.30),0 4px 12px rgba(0,43,109,0.18)' }}>
-              <div className="absolute inset-0 rounded-2xl overflow-hidden pointer-events-none">
-                <div style={{ position:'absolute', top:'-60px',right:'-60px',width:'260px',height:'260px',background:'radial-gradient(circle,rgba(254,118,44,0.22) 0%,transparent 65%)' }}/>
-                <div style={{ position:'absolute', bottom:'-40px',left:'-40px',width:'180px',height:'180px',background:'radial-gradient(circle,rgba(59,130,246,0.15) 0%,transparent 65%)' }}/>
+          <div className="g-pm-pair">
+            <Field variant="nacht-stil" className="g-price">
+              <div className="flex items-center justify-between gap-3 flex-wrap">
+                <span className="g-mono !text-white/65">{tP('bundle_label')}</span>
+                <span className="g-ptag">{tP('bundle_badge')}</span>
               </div>
-              <span className="absolute -top-3.5 left-8 text-[10px] font-bold px-3.5 py-1.5 rounded-full whitespace-nowrap uppercase tracking-widest z-10" style={{ background:'linear-gradient(135deg,#fe762c,#d94f00)', color:'#fff', boxShadow:'0 2px 8px rgba(254,118,44,0.5)' }}>
-                {tP('bundle_badge')}
-              </span>
-
-              <div className="px-7 pt-8 pb-6 flex-1 relative z-10">
-                <p className="text-[11px] font-bold uppercase tracking-widest mb-2" style={{ color:'rgba(254,118,44,0.85)' }}>{tP('bundle_label')}</p>
-
-                <div className="flex items-center gap-2 mb-5">
-                  {SKILLS.map(s => <CategoryMark key={s.slug} category={s.slug} size={32} tone="dark" />)}
-                  <span className="text-xs ml-1" style={{ color:'rgba(255,255,255,0.55)' }}>{tP('bundle_scope')}</span>
-                </div>
-
-                <div className="flex items-end gap-2 mb-1 flex-wrap">
-                  <span className="font-headline font-extrabold text-5xl text-white leading-none">{bundle}</span>
-                  <span className="text-sm mb-1" style={{ color:'rgba(255,255,255,0.5)' }}>{tP('bundle_price_note')}</span>
-                  <span className="text-sm mb-1 line-through" style={{ color:'rgba(255,255,255,0.35)' }}>{tP('bundle_was', { list })}</span>
-                </div>
-                <p className="text-xs font-semibold mb-6" style={{ color:'#fe762c' }}>{tP('bundle_saving', { saving })}</p>
-
-                <div className="grid sm:grid-cols-2 gap-x-6 gap-y-2.5">
-                  {[
-                    tP('bundle_f1', { exams: totalExams }),
-                    tP('bundle_f2'),
-                    tP('bundle_f3'),
-                    tP('bundle_f4'),
-                    tP('bundle_f5'),
-                  ].map(f => (
-                    <div key={f} className="flex items-start gap-2.5 text-sm font-medium" style={{ color:'rgba(255,255,255,0.9)' }}>
-                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#fe762c" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className="flex-shrink-0 mt-0.5"><polyline points="20 6 9 17 4 12"/></svg>
-                      <span>{f}</span>
-                    </div>
-                  ))}
-                </div>
+              <div className="flex items-center gap-2 flex-wrap">
+                {SKILLS.map(s => <CategoryMark key={s.slug} category={s.slug} size={36} tone="dark" />)}
+                <span className="text-xs text-white/65 ms-1">{tP('bundle_scope')}</span>
               </div>
-              <div className="relative z-10 px-7 pb-6 pt-4" style={{ borderTop:'1px solid rgba(255,255,255,0.12)' }}>
-                <Link href={{ pathname: '/register', query: { module: 'all' } }} className={cn(buttonVariants({ variant: 'orange', size: 'cta' }), 'w-full justify-center')}>
-                  <span>{tP('bundle_cta')}</span>
-                  <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M6 3l5 5-5 5" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg>
-                </Link>
-                {trustLine(true)}
+              <div className="flex items-end gap-x-3 gap-y-1 flex-wrap">
+                <div className="g-price-amt g-tnum">{bundle}<small>{tP('bundle_price_note')}</small></div>
+                <span className="text-sm text-white/55 line-through mb-1">{tP('bundle_was', { list })}</span>
               </div>
+              <p className="m-0 text-sm font-semibold text-oranje-zacht">{tP('bundle_saving', { saving })}</p>
+              <ul className="g-pm-bundle-f">
+                {[
+                  tP('bundle_f1', { exams: totalExams }),
+                  tP('bundle_f2'),
+                  tP('bundle_f3'),
+                  tP('bundle_f4'),
+                  tP('bundle_f5'),
+                ].map(f => (
+                  <li key={f}><Check aria-hidden="true" /><span>{f}</span></li>
+                ))}
+              </ul>
+              <Link href={{ pathname: '/register', query: { module: 'all' } }} className={glasButton({ variant: 'wit', size: 'lg', className: 'self-start mt-2' })}>
+                {tP('bundle_cta')}
+                <ArrowRight className="rtl-flip" aria-hidden="true" />
+              </Link>
+              <PayBadges label={tP('trust_line')} />
+            </Field>
+
+            <div className="g-price g-solid">
+              <span className="g-mono">{tP('free_label')}</span>
+              <div className="g-price-amt g-tnum">€0<small>{tP('free_price_note')}</small></div>
+              <ul>
+                {[tP('free_f1'), tP('free_f2')].map(f => (
+                  <li key={f}><Check aria-hidden="true" /><span>{f}</span></li>
+                ))}
+                {[tP('free_f3'), tP('free_f4')].map(f => (
+                  <li key={f} className="text-ink-2">
+                    <span className="g-nope shrink-0 mt-[11px]" role="img" aria-label={tP('cell_no')} />
+                    <span>{f}</span>
+                  </li>
+                ))}
+              </ul>
+              <Link href="/oefenen" className={glasButton({ variant: 'ghost', className: 'self-start mt-auto' })}>
+                {tP('compare_free_cta')}
+              </Link>
             </div>
-
-            {/* FREE */}
-            <div className="flex flex-col rounded-2xl bg-surface-container-lowest overflow-hidden" style={{ boxShadow:'var(--shadow-ambient)' }}>
-              <div className="px-6 pt-7 pb-5 flex-1">
-                <p className="text-[11px] font-bold uppercase tracking-widest text-on-surface-variant mb-4">{tP('free_label')}</p>
-                <div className="flex items-end gap-1.5 mb-1">
-                  <span className="font-headline font-extrabold text-5xl text-on-surface leading-none">€0</span>
-                </div>
-                <p className="text-xs text-on-surface-variant mb-6">{tP('free_price_note')}</p>
-                <div className="space-y-2.5">
-                  {[tP('free_f1'), tP('free_f2')].map(f => (
-                    <div key={f} className="flex items-start gap-2.5 text-sm text-on-surface">
-                      <CheckGreen /><span>{f}</span>
-                    </div>
-                  ))}
-                  {[tP('free_f3'), tP('free_f4')].map(f => (
-                    <div key={f} className="flex items-start gap-2.5 text-sm" style={{ color:'#b0b3c1' }}>
-                      <XGray /><span>{f}</span>
-                    </div>
-                  ))}
-                </div>
-              </div>
-              <div className="px-6 pb-6 pt-4 bg-[rgba(255,255,255,0.06)]">
-                <Link href="/oefenen" className={cn(buttonVariants({ variant: 'ghostLight', size: 'cta' }), 'w-full justify-center')}>
-                  {tP('compare_free_cta')}
-                </Link>
-              </div>
-            </div>
-          </div>
-
-          {/* payment badges */}
-          <div className="flex items-center justify-center gap-4 flex-wrap mt-10">
-            <span className="text-xs text-on-surface-variant font-medium">{tP('payment_label')}</span>
-            <svg width="34" height="20" viewBox="0 0 68 42" fill="none"><rect width="68" height="42" rx="4" fill="#fff" stroke="#e0e0e0" strokeWidth="1.5"/><text x="34" y="28" textAnchor="middle" fontSize="14" fontWeight="800" fill="#c2185b" fontFamily="Arial,sans-serif">iDEAL</text></svg>
-            <svg width="34" height="20" viewBox="0 0 52 32" fill="none"><rect width="52" height="32" rx="4" fill="#fff" stroke="#e0e0e0" strokeWidth="1.5"/><circle cx="20" cy="16" r="9" fill="#EB001B" opacity="0.9"/><circle cx="32" cy="16" r="9" fill="#F79E1B" opacity="0.9"/><path d="M26 9.5a9 9 0 0 1 0 13 9 9 0 0 1 0-13z" fill="#FF5F00"/></svg>
-            <svg width="34" height="20" viewBox="0 0 52 32" fill="none"><rect width="52" height="32" rx="4" fill="#fff" stroke="#e0e0e0" strokeWidth="1.5"/><text x="26" y="22" textAnchor="middle" fontSize="13" fontWeight="800" fill="#1A1F71" fontFamily="Arial,sans-serif">VISA</text></svg>
-            <span className="text-xs text-on-surface-variant">{tP('trust_note')}</span>
           </div>
         </div>
       </section>
 
-      {/* ── 3. WHAT IS IN A MODULE ──────────────────────────────────────── */}
-      <section className="py-14 px-6">
-        <div className="max-w-6xl mx-auto">
-          <div className="text-center mb-10">
-            <p className="text-xs font-bold uppercase tracking-widest text-on-surface-variant mb-3">{tP('features_eyebrow')}</p>
-            <h2 className="font-headline font-extrabold text-on-surface mb-4" style={{ fontSize:'clamp(1.7rem,3.5vw,2.6rem)',letterSpacing:'-0.025em' }}>
-              {tP('features_heading')}
-            </h2>
-            <p className="text-on-surface-variant text-lg max-w-xl mx-auto leading-relaxed">
-              {tP('features_sub')}
-            </p>
-          </div>
-
-          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
+      {/* ── 3. WAT ER IN EEN MODULE ZIT ── vier uitlegkaarten met een paneeltje op een veld. Elk getal in
+          de paneeltjes is illustratieve schermstand, geen claim; de formaatgetallen komen uit
+          `data/skills.ts`. */}
+      <section className="g-sec" aria-labelledby="pm-features-heading">
+        <div className="g-wrap">
+          <SectionHeading id="pm-features-heading" title={tP('features_heading')} aside={tP('features_sub')} className="mb-10" />
+          <div className="g-pm-feats">
             {[
               { mockup: <ExamensMockup />,      title: tP('feature1_title'),      desc: tP('feature1_desc'),      soon: false },
               { mockup: <LessonMockup />,       title: tP('feature_audio_title'), desc: tP('feature_audio_desc'), soon: !FEATURES.leren },
               { mockup: <WoordenlijstMockup />, title: tP('feature2_title'),      desc: tP('feature2_desc'),      soon: !FEATURES.woordkaarten },
               { mockup: <FeedbackMockup />,     title: tP('feature3_title'),      desc: tP('feature3_desc'),      soon: false },
+              { mockup: <RubricMockup />,       title: tP('feature4_title'),      desc: tP('feature4_desc'),      soon: false },
             ].map(f => (
-              <div key={f.title} className="bg-surface-container-lowest rounded-2xl overflow-hidden flex flex-col" style={{ boxShadow:'var(--shadow-ambient)' }}>
-                {f.mockup}
-                <div className="p-5 flex-1">
-                  <h3 className="font-headline font-extrabold text-on-surface text-base mb-2 leading-snug">
-                    {f.title}{f.soon ? soon(false) : null}
-                  </h3>
-                  <p className="text-sm text-on-surface-variant leading-relaxed">{f.desc}</p>
+              <div key={f.title} className="g-pm-feat">
+                <Field variant="nevel" className="g-pm-feat-vis" aria-hidden="true">{f.mockup}</Field>
+                <div className="g-pm-feat-tx">
+                  <h3>{f.title}{f.soon ? soon(false) : null}</h3>
+                  <p>{f.desc}</p>
                 </div>
               </div>
             ))}
-          </div>
 
-          <div className="grid lg:grid-cols-[1fr_360px] gap-6 items-start">
-            <TeacherCard
-              variant="compact"
-              quote="AI helpt bij het opstellen, maar elke opgave gaat eerst langs mij. De beoordelingsrubric voor Schrijven en Spreken komt ook van mij, en ik controleer de beoordelingen."
-              stats={[{ value: '10', label: 'jaar in het onderwijs' }, { value: String(totalExams), label: 'oefenexamens' }]}
-            />
-            <div className="bg-surface-container-lowest rounded-2xl overflow-hidden" style={{ boxShadow:'var(--shadow-ambient)' }}>
-              <RubricMockup />
-              <div className="p-5">
-                <h3 className="font-headline font-extrabold text-on-surface text-base mb-2 leading-snug">{tP('feature4_title')}</h3>
-                <p className="text-sm text-on-surface-variant leading-relaxed">{tP('feature4_desc')}</p>
+            {/* De docent achter de opgaven (§08 "Docent"). */}
+            <div className="g-pm-feat">
+              <div className="g-docent !grid-cols-1 sm:!grid-cols-[140px_minmax(0,1fr)] !rounded-none h-full">
+                <img src="/images/amber-van-der-zalm-264.webp" alt="Amber van der Zalm" width={264} height={264} className="!min-h-[200px]" />
+                <div className="g-docent-t" dir="ltr" lang="nl">
+                  <p className="g-docent-line !text-[1.0625rem]">
+                    &ldquo;AI helpt bij het opstellen, maar elke opgave gaat eerst langs mij. De beoordelingsrubric voor Schrijven en Spreken komt ook van mij, en ik controleer de beoordelingen.&rdquo;
+                  </p>
+                  <div className="g-docent-who">
+                    <b>Gemaakt door Amber van der Zalm — gecertificeerde NT2-docent</b>
+                  </div>
+                  <ul className="g-metachips list-none p-0 m-0">
+                    <li className="g-metachip bg-mist">10 jaar in het onderwijs</li>
+                    <li className="g-metachip bg-mist g-tnum">{totalExams} oefenexamens</li>
+                  </ul>
+                </div>
               </div>
             </div>
           </div>
         </div>
       </section>
 
-      {/* ── 4. COMPARISON + FAQ ─────────────────────────────────────────── */}
-      <section className="py-14 px-6">
-        <div className="max-w-5xl mx-auto">
-          <div className="mb-10">
-            <p className="text-xs font-bold uppercase tracking-widest text-on-surface-variant text-center mb-6">{tP('plans_compare')}</p>
-
-            {/* DESKTOP TABLE */}
-            <div className="hidden md:block overflow-x-auto">
-              <div className="bg-surface-container-lowest rounded-2xl overflow-hidden" style={{ boxShadow:'var(--shadow-ambient)' }}>
-                <div className="grid grid-cols-[1fr_110px_140px_160px] border-b border-outline-variant/20 text-center text-xs font-bold uppercase tracking-wider">
-                  <div className="px-5 py-3.5 text-left text-on-surface-variant" />
-                  <div className="px-3 py-3.5 border-l border-outline-variant/20 text-on-surface-variant">{tP('col_free')}</div>
-                  <div className="px-3 py-3.5 border-l border-outline-variant/20" style={{ color:'#002b6d', background:'var(--color-surface-container-high)' }}>
-                    {tP('col_module')}<span className="block font-normal normal-case tracking-normal mt-0.5 text-[11px]">{price}</span>
-                  </div>
-                  <div className="px-3 py-3.5 border-l border-outline-variant/20 text-white" style={{ background:'#002b6d' }}>
-                    {tP('col_bundle')}<span className="block font-normal normal-case tracking-normal mt-0.5 text-[11px] text-white/70">{bundle}</span>
-                  </div>
-                </div>
-                {allFeatures.map((f, i) => (
-                  <div key={f.label} className={cn('grid grid-cols-[1fr_110px_140px_160px]', i % 2 === 0 ? 'bg-white' : 'bg-slate-50/70')}>
-                    <div className="px-5 py-3 text-sm text-on-surface">{f.label}{f.soon ? soon(false) : null}</div>
-                    <div className="px-3 py-3 flex items-center justify-center border-l border-outline-variant/20">
-                      {cell(f.free)}
-                    </div>
-                    <div className="px-3 py-3 flex items-center justify-center border-l border-outline-variant/20" style={{ background: i % 2 === 0 ? 'rgba(240,244,255,0.6)' : 'rgba(240,244,255,0.35)' }}>
-                      {cell(f.module)}
-                    </div>
-                    <div className="px-3 py-3 flex items-center justify-center border-l border-outline-variant/20" style={{ background: i % 2 === 0 ? 'rgba(0,43,109,0.06)' : 'rgba(0,43,109,0.03)' }}>
-                      {cell(f.bundle)}
-                    </div>
-                  </div>
-                ))}
-                <div className="grid grid-cols-[1fr_110px_140px_160px] border-t border-outline-variant/50 bg-white">
-                  <div className="px-5 py-4" />
-                  <div className="px-3 py-4 flex items-center justify-center border-l border-outline-variant/20">
-                    <Link href="/oefenen" className={cn(buttonVariants({ variant: 'ghostLight', size: 'sm' }), 'text-xs whitespace-nowrap')}>
-                      {tP('compare_free_cta')}
-                    </Link>
-                  </div>
-                  <div className="px-3 py-4 flex items-center justify-center border-l border-outline-variant/20" style={{ background:'rgba(240,244,255,0.5)' }}>
-                    <a href="#modules" className={cn(buttonVariants({ variant: 'ghostLight', size: 'sm' }), 'text-xs whitespace-nowrap')}>
-                      {tP('module_cta')}
-                    </a>
-                  </div>
-                  <div className="px-3 py-4 flex items-center justify-center border-l border-outline-variant/20" style={{ background:'rgba(0,43,109,0.05)' }}>
-                    <Link href={{ pathname: '/register', query: { module: 'all' } }} className={cn(buttonVariants({ variant: 'orange', size: 'sm' }), 'text-xs whitespace-nowrap')}>
-                      {tP('bundle_cta')}
-                    </Link>
-                  </div>
-                </div>
+      {/* ── 4. DE VERGELIJKING ── glas.html §12: drie plankolommen, de aanbevolen kolom één navy baan,
+          groen vinkje of grijs streepje — "niet inbegrepen" is geen fout, dus nooit een rood kruis.
+          Op smal schuift de tabel horizontaal; de rijen blijven naast elkaar leesbaar. */}
+      <section className="g-sec g-sec-tier" aria-labelledby="pm-compare-heading">
+        <div className="g-wrap">
+          <SectionHeading id="pm-compare-heading" title={tP('plans_compare')} size="h1" className="mb-8" />
+          <div className="g-ptab-scroll">
+            <div className="g-ptab">
+              <div className="g-phd"><span className="g-sr">{tP('plans_compare')}</span></div>
+              <div className="g-phd g-c">
+                <b>{tP('col_free')}</b>
+                <span className="g-amt g-tnum">€0</span>
+                <Link href="/oefenen" className={glasButton({ variant: 'ghost', size: 'sm' })}>{tP('compare_free_cta')}</Link>
               </div>
-            </div>
-
-            {/* MOBILE ACCORDIONS */}
-            <div className="md:hidden space-y-3">
-              {([
-                {
-                  label: tP('col_free'), priceLabel: '€0', note: '',
-                  color: '#747782', bg: '#fff', borderStyle: '1px solid #e0e3e8',
-                  dark: false,
-                  features: allFeatures.map(f => ({ label: f.label, soon: f.soon, has: f.free })),
-                  cta: <Link href="/oefenen" className={cn(buttonVariants({ variant: 'ghostLight', size: 'cta' }), 'w-full justify-center')}>{tP('compare_free_cta')}</Link>,
-                },
-                {
-                  label: tP('col_module'), priceLabel: price, note: tP('module_price_note'),
-                  color: '#002b6d', bg: '#fff', borderStyle: '2px solid #002b6d',
-                  dark: false,
-                  features: allFeatures.map(f => ({ label: f.label, soon: f.soon, has: f.module })),
-                  cta: <a href="#modules" className={cn(buttonVariants({ variant: 'ghostLight', size: 'cta' }), 'w-full justify-center')}>{tP('module_cta')}</a>,
-                },
-                {
-                  label: tP('col_bundle'), priceLabel: bundle, note: tP('bundle_price_note'),
-                  color: '#fe762c', bg: 'linear-gradient(155deg,#002b6d 0%,#1d428a 100%)', borderStyle: 'none',
-                  dark: true,
-                  features: allFeatures.map(f => ({ label: f.label, soon: f.soon, has: f.bundle })),
-                  cta: <Link href={{ pathname: '/register', query: { module: 'all' } }} className={cn(buttonVariants({ variant: 'orange', size: 'cta' }), 'w-full justify-center')}><span>{tP('bundle_cta')}</span><svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M6 3l5 5-5 5" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg></Link>,
-                },
-              ] as const).map(plan => (
-                <details key={plan.label} className="rounded-2xl overflow-hidden" style={{ background: plan.bg, border: plan.borderStyle, boxShadow:'var(--shadow-ambient)' }}>
-                  <summary className="flex items-center justify-between gap-3 px-5 py-4 cursor-pointer list-none">
-                    <div>
-                      <p className="text-[10px] font-bold uppercase tracking-widest" style={{ color: plan.color }}>{plan.label}</p>
-                      <div className="flex items-end gap-1 mt-0.5">
-                        <span className="font-headline font-extrabold text-2xl leading-none" style={{ color: plan.dark ? '#fff' : '#191c1e' }}>{plan.priceLabel}</span>
-                        {plan.note && <span className="text-xs mb-0.5" style={{ color: plan.dark ? 'rgba(255,255,255,0.5)' : '#747782' }}>{plan.note}</span>}
-                      </div>
+              <div className="g-phd g-c">
+                <b>{tP('col_module')}</b>
+                <span className="g-amt g-tnum">{price}<small>{tP('module_price_note')}</small></span>
+                <a href="#modules" className={glasButton({ variant: 'ghost', size: 'sm' })}>{tP('module_cta')}</a>
+              </div>
+              <div className="g-phd g-c g-hl g-top">
+                <span className="g-bdg g-bdg-glasd !h-6 !text-[11.5px]">{tP('bundle_badge')}</span>
+                <b>{tP('col_bundle')}</b>
+                <span className="g-amt g-tnum">{bundle}<small>{tP('bundle_price_note')}</small></span>
+                <Link href={{ pathname: '/register', query: { module: 'all' } }} className={glasButton({ variant: 'oranje', size: 'sm' })}>
+                  {tP('bundle_cta')}
+                </Link>
+              </div>
+              {allFeatures.map((f, i) => {
+                const r2 = i % 2 === 0 ? ' g-r2' : '';
+                return (
+                  <Fragment key={f.label}>
+                    <div className={`g-f${r2}`}>
+                      <span>{f.label}{f.soon ? soon(false) : null}</span>
                     </div>
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke={plan.dark ? 'rgba(255,255,255,0.5)' : '#747782'} strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
-                  </summary>
-                  <div className="px-5 pb-5 pt-1" style={{ borderTop: plan.dark ? '1px solid rgba(255,255,255,0.1)' : '1px solid #eceef0' }}>
-                    <div className="space-y-2.5 mb-5 pt-4">
-                      {plan.features.map(f => (
-                        <div key={f.label} className="flex items-start gap-2.5 text-sm" style={{ color: f.has ? (plan.dark ? 'rgba(255,255,255,0.9)' : '#191c1e') : (plan.dark ? 'rgba(255,255,255,0.3)' : '#b0b3c1') }}>
-                          {f.has === 'partial'
-                            ? <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke={plan.dark ? '#fe762c' : '#a24000'} strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className="flex-shrink-0 mt-0.5"><polyline points="20 6 9 17 4 12"/></svg>
-                            : f.has
-                              ? <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke={plan.dark ? '#fe762c' : '#a24000'} strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className="flex-shrink-0 mt-0.5"><polyline points="20 6 9 17 4 12"/></svg>
-                              : <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke={plan.dark ? 'rgba(255,255,255,0.25)' : '#c4c6d2'} strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className="flex-shrink-0 mt-0.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
-                          }
-                          <span>
-                            {f.label}
-                            {f.has === 'partial' && (
-                              <span className="ml-1.5 align-middle text-[10px] font-bold uppercase tracking-wider px-1.5 py-0.5 rounded" style={{ background: plan.dark ? 'rgba(255,255,255,0.12)' : 'rgba(0,43,109,0.07)', color: plan.dark ? 'rgba(255,255,255,0.8)' : '#5a6070' }}>
-                                {tP('cell_partial')}
-                              </span>
-                            )}
-                            {f.soon && f.has ? soon(false) : null}
-                          </span>
-                        </div>
-                      ))}
-                    </div>
-                    {plan.cta}
-                  </div>
-                </details>
-              ))}
+                    <div className={`g-c${r2}`}>{cell(f.free)}</div>
+                    <div className={`g-c${r2}`}>{cell(f.module)}</div>
+                    <div className={`g-c g-hl g-e${r2}${i === lastRow ? ' g-bot' : ''}`}>{cell(f.bundle)}</div>
+                  </Fragment>
+                );
+              })}
             </div>
           </div>
+          <PayBadges label={tP('trust_line')} className="mt-4 justify-end" />
+        </div>
+      </section>
 
-          {/* FAQ + final CTA */}
-          <div className="grid lg:grid-cols-[1fr_380px] gap-8 items-start">
-            <div className="space-y-3">
-              {[
-                { q: tP('faq_q1'), a: tP('faq_a1', { price }) },
-                { q: tP('faq_q2'), a: tP('faq_a2', { bundle, list, saving }) },
-                { q: tP('faq_q3'), a: tP('faq_a3') },
-                { q: tP('faq_q4'), a: tP('faq_a4') },
-                { q: tP('faq_q5'), a: tP('faq_a5') },
-                { q: tP('faq_q6'), a: tP('faq_a6') },
-              ].map(faq => (
-                <div key={faq.q} className="bg-surface-container-lowest rounded-2xl overflow-hidden" style={{ boxShadow:'var(--shadow-ambient)' }}>
-                  <details>
-                    <summary className="flex items-center justify-between gap-4 px-5 py-4 cursor-pointer font-semibold text-on-surface text-sm list-none">
-                      <span>{faq.q}</span>
-                      <svg className="flex-shrink-0" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#747782" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
-                    </summary>
-                    <div className="px-5 pb-4 text-sm text-on-surface-variant leading-relaxed border-t border-outline-variant/30 pt-3">
-                      {faq.a}
-                    </div>
-                  </details>
-                </div>
-              ))}
-            </div>
+      {/* ── 5. FAQ EN DE LAATSTE KNOP ── */}
+      <section className="g-sec" aria-labelledby="pm-faq-heading">
+        <div className="g-wrap grid gap-8 lg:grid-cols-[minmax(0,1fr)_380px] items-start">
+          <div>
+            <h2 id="pm-faq-heading" className="g-sr">FAQ</h2>
+            <FaqList
+              items={[
+                { question: tP('faq_q1'), answer: tP('faq_a1', { price }) },
+                { question: tP('faq_q2'), answer: tP('faq_a2', { bundle, list, saving }) },
+                { question: tP('faq_q3'), answer: tP('faq_a3') },
+                { question: tP('faq_q4'), answer: tP('faq_a4') },
+                { question: tP('faq_q5'), answer: tP('faq_a5') },
+                { question: tP('faq_q6'), answer: tP('faq_a6') },
+              ]}
+            />
+          </div>
 
-            <div className="rounded-2xl p-6 text-center" style={{ background: HERO_GRADIENT,boxShadow:'var(--shadow-ambient)' }}>
-              <p className="font-headline font-extrabold text-white text-lg mb-1">{tP('final_cta_heading')}</p>
-              <p className="text-white/65 text-sm mb-5">{tP('final_cta_sub')}</p>
-              <div className="flex flex-col gap-2">
-                <Link href={{ pathname: '/register', query: { module: 'all' } }} className={cn(buttonVariants({ variant: 'orange', size: 'cta' }), 'w-full justify-center')}>
-                  <span>{tP('bundle_cta')} — {bundle}</span>
-                </Link>
-                <a href="#modules" className={cn(buttonVariants({ variant: 'ghostDark', size: 'cta' }), 'w-full justify-center text-sm')}>
-                  {tP('module_cta')} — {price}
-                </a>
-              </div>
-              <p className="text-white/40 text-xs mt-3 flex items-center justify-center gap-1.5">
-                <RefreshCw size={10} strokeWidth={2.4} aria-hidden="true" />
-                {tP('trust_note').replace(/^·\s*/, '')}
-              </p>
-            </div>
+          <div className="g-price g-solid lg:sticky lg:top-[calc(var(--nav-h)+24px)]">
+            <h2 className="g-head g-head-3 !text-navy">{tP('final_cta_heading')}</h2>
+            <p className="m-0 text-sm text-ink-2">{tP('final_cta_sub')}</p>
+            <Link href={{ pathname: '/register', query: { module: 'all' } }} className={glasButton({ variant: 'navy', className: 'w-full' })}>
+              {tP('bundle_cta')} — {bundle}
+            </Link>
+            <a href="#modules" className={glasButton({ variant: 'ghost', className: 'w-full' })}>
+              {tP('module_cta')} — {price}
+            </a>
+            <PayBadges label={tP('trust_note').replace(/^·\s*/, '')} />
           </div>
         </div>
       </section>

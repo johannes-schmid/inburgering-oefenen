@@ -21,15 +21,19 @@
 import type { ReactNode } from 'react';
 import type { Metadata } from 'next';
 import { getTranslations, setRequestLocale } from 'next-intl/server';
-import { ArrowRight, ArrowLeft, ArrowUp, Check, X, BadgeCheck, CalendarClock, MessagesSquare, TrendingUp } from 'lucide-react';
+import { ArrowRight, ArrowLeft, ArrowUp, Check, X, BadgeCheck, CalendarClock, MessagesSquare, TrendingUp, Clock } from 'lucide-react';
 import Image from 'next/image';
 import { Link } from '@/i18n/navigation';
 import { routing } from '@/i18n/routing';
 import { absUrl, alternatesFor, breadcrumbs, PROVIDER_REF, ogImageFor } from '@/lib/schema';
 import { WEBSITE_ID, langTag } from '@/lib/site';
 import JsonLd from '@/components/JsonLd';
-import { HorizonBanner, CategoryMark, type Category } from '@/components/horizon';
-import { FeatureCard, SectionHeader, SkillCard, CTABanner } from '@/components/site';
+import CategoryMark, { type Category } from '@/components/horizon/CategoryMark';
+import ExamMark from '@/components/horizon/ExamMark';
+import Field from '@/components/glas/Field';
+import PageField from '@/components/glas/PageField';
+import SectionHeading from '@/components/glas/SectionHeading';
+import { glasButton } from '@/components/glas/Button';
 import { DEFAULT_LEVEL, KNM, formatCount, skillsAtLevel } from '@/data/skills';
 import { localeHref } from '@/i18n/paths';
 import { isOnaAvailable } from '@/lib/ona/access';
@@ -82,143 +86,85 @@ const BENEFITS = [
 ] as const;
 
 /* ── De satellietkaart in de kop ──
-   Clay's "Centralize your GTM data": een groot productpaneel in het midden, met aan weerszijden
-   kleine kaarten die elk één bron benoemen en er met een pijl naartoe wijzen. De vorm zegt wat
-   een opsomming niet zegt — dat die dingen niet los van elkaar bestaan maar in één ding
-   samenkomen — en dat is precies de belofte van deze pagina.
-
-   Bij Clay wijzen links de bronnen naar binnen en rechts de bestemmingen naar buiten. Hier wijst
-   álles naar binnen: de vier onderdelen zijn geen invoer en uitvoer, ze zitten alle vier ín het
-   portaal. De pijl staat daarom op de binnenrand van de kaart en kijkt naar het midden.
-
-   De chips zijn geen decoratie: ze komen uit `data/skills.ts` via dezelfde `label_*`-sleutels die
-   `SkillCard` verderop op deze pagina gebruikt. Eén hertelling van een formaat verandert de kop
-   mee, en de kop kan nooit iets anders beweren dan de kaarten eronder.
-
-   Het merk is de `CategoryMark` op een lichte tegel — dat is de gesanctioneerde combinatie (§7):
-   een categoriemerk benoemt wat er ín een track zit, en deze kaarten zijn wit, niet navy. */
+   Een groot productpaneel in het midden, met aan weerszijden kleine kaarten die elk één onderdeel
+   benoemen en er met een pijl naartoe wijzen: de vier onderdelen zitten alle vier ín het portaal.
+   Glas (glas.html §04): de kaarten liggen óp het veld van de kop, dus ze zijn glas — 86% wit, want
+   er staat tekst op (regel 06). De chips komen uit `data/skills.ts`, zodat de kop nooit iets
+   anders kan beweren dan de kaarten verderop. Het merk is de `CategoryMark` op een lichte tegel. */
 function OnderdeelCard({
   category, name, chips, side,
 }: {
   category: Category;
   name: string;
   chips: string[];
-  /** Aan welke kant van het midden de kaart staat — bepaalt waar de pijl hangt en welke kant op.
-      `below` is de KNM-kaart: die staat onder het paneel en wijst omhoog. */
+  /** Aan welke kant van het midden de kaart staat — bepaalt waar de pijl hangt en welke kant op. */
   side: 'left' | 'right' | 'below';
 }) {
   const Arrow = side === 'left' ? ArrowRight : side === 'right' ? ArrowLeft : ArrowUp;
   return (
-    <li
-      className="pf-sat relative rounded-2xl p-4 list-none"
-      style={{ background: 'var(--color-surface-container-lowest)', boxShadow: 'var(--shadow-ambient)' }}
-    >
+    <li className={`g-pf-sat g-pf-sat-${side} g-glass g-glass-strong list-none`}>
       <div className="flex items-center gap-2.5">
-        <CategoryMark category={category} size={32} />
-        <span className="font-headline font-bold text-primary text-[0.9375rem] leading-tight">{name}</span>
+        <CategoryMark category={category} size={36} />
+        <span className="g-head text-[0.9375rem] font-bold leading-tight">{name}</span>
       </div>
-      <ul className="flex flex-wrap gap-1.5 list-none p-0 m-0 mt-3">
-        {chips.map(chip => (
-          <li
-            key={chip}
-            className="rounded-full px-2.5 py-1 text-[0.6875rem] font-semibold text-on-surface-variant"
-            style={{ background: 'var(--color-surface-container-high)' }}
-          >
-            {chip}
-          </li>
-        ))}
+      <ul className="g-pf-chips">
+        {chips.map(chip => <li key={chip}>{chip}</li>)}
       </ul>
-
-      {/* De pijl hangt in de kolomgoot (`gap-4` = 1rem, dus -1rem) en bestaat alleen op `lg`,
-          want daaronder staan de kaarten ónder het paneel en wijst "naar binnen" nergens naar. */}
-      <span
-        aria-hidden="true"
-        className={side === 'below'
-          ? 'hidden lg:flex absolute left-1/2 -translate-x-1/2 -top-4 w-6 h-6 items-center justify-center'
-          : `hidden lg:flex absolute top-1/2 -translate-y-1/2 ${side === 'left' ? '-right-4' : '-left-4'} w-6 h-6 items-center justify-center`}
-      >
-        <Arrow className={`size-4 text-white/55 ${side === 'below' ? '' : 'rtl-flip'}`} strokeWidth={2.5} />
+      {/* De pijl hangt in de kolomgoot en bestaat alleen op `lg`: daaronder staan de kaarten ónder
+          het paneel en wijst "naar binnen" nergens naar. */}
+      <span aria-hidden="true" className="g-pf-sat-arrow">
+        <Arrow className={side === 'below' ? '' : 'rtl-flip'} strokeWidth={2.5} />
       </span>
     </li>
   );
 }
 
 /* ── De uitleglaag ──
-   Zes blokken die vertellen wat het platform dóet, in de vorm die Clay voor zijn productuitleg
-   gebruikt: links het beeld, rechts de tekst, en elk blok schuift bij het scrollen óver het
-   vorige heen.
-
-   **Het schuiven is `position: sticky` en geen scrollscript.** Elk blok plakt onder de vaste
-   header, met per blok een paar pixels meer afstand, zodat de rand van het blok eronder zichtbaar
-   blijft als een stapel. Er komt geen scroll-listener, geen IntersectionObserver en geen
-   bibliotheek aan te pas — dus er is niets dat op een trage telefoon achterloopt, en de
-   `prefers-reduced-motion`-uitweg is één regel: dan staat de stapel stil en staan de blokken
-   gewoon onder elkaar.
-
-   Elk blok heeft een dekkende achtergrond. Dat is hier geen smaak maar de voorwaarde: een blok
-   dat er doorheen laat kijken laat het blok eronder meelezen zodra het eroverheen schuift. */
+   Zes blokken die vertellen wat het platform dóet (glas.html §08 "Uitleg-blok"): links de tekst,
+   rechts het beeld op een veld, en op `lg` schuift elk blok bij het scrollen óver het vorige heen.
+   **Het schuiven is `position: sticky` en geen scrollscript** — geen listener, geen observer, en
+   de reduced-motion-uitweg is één regel (dan staan de blokken gewoon onder elkaar). Elk blok is
+   dekkend wit: een blok dat er doorheen laat kijken laat het blok eronder meelezen. */
 function FlowBlock({
-  index, eyebrow, title, body, chips, visual,
+  index, label, title, body, chips, visual, shot,
 }: {
   index: number;
-  eyebrow: string;
+  label: string;
   title: string;
   body: string;
   chips: string[];
   visual: ReactNode;
+  /** Een schermafdruk vult het vak tot de rand; een paneeltje ligt op het veld. */
+  shot?: boolean;
 }) {
   return (
-    <li
-      className="pf-flow list-none rounded-[20px] overflow-hidden"
-      style={{
-        top: `calc(var(--nav-h) + 1.5rem + ${index * 0.5}rem)`,
-        background: 'var(--color-surface-container-lowest)',
-        boxShadow: 'var(--shadow-ambient)',
-      }}
-    >
-      <div className="grid lg:grid-cols-[minmax(0,1.05fr)_minmax(0,1fr)] items-center">
-        <div className="order-2 lg:order-1 p-6 sm:p-9">
-          <span className="block text-[0.625rem] uppercase tracking-widest font-bold text-secondary mb-3">
-            {eyebrow}
-          </span>
-          <h3
-            className="font-headline font-extrabold text-primary m-0 mb-3 leading-tight"
-            style={{ fontSize: 'clamp(1.375rem, 2.4vw, 1.75rem)', letterSpacing: '-0.02em' }}
-          >
-            {title}
-          </h3>
-          <p className="text-[0.9375rem] leading-relaxed text-on-surface-variant m-0">{body}</p>
-          <ul className="flex flex-wrap gap-1.5 list-none p-0 m-0 mt-5">
-            {chips.map(chip => (
-              <li
-                key={chip}
-                className="rounded-full px-3 py-1.5 text-[0.75rem] font-semibold text-on-surface-variant"
-                style={{ background: 'var(--color-surface-container-high)' }}
-              >
-                {chip}
-              </li>
-            ))}
-          </ul>
-        </div>
-
-        {/* Het beeld raakt de rand van het blok — het ís de rechterhelft, geen plaatje met een
-            marge eromheen. Op smal staat het bovenaan, want een uitleg begint bij wat je ziet. */}
-        <div
-          className="order-1 lg:order-2 relative min-h-[14rem] lg:min-h-[21rem] overflow-hidden flex items-center justify-center p-6 lg:p-0"
-          style={{ background: 'var(--color-surface-container-low)' }}
-        >
-          {visual}
-        </div>
+    <li className="g-pf-flowblock" style={{ top: `calc(var(--nav-h) + 1.5rem + ${index * 0.5}rem)` }}>
+      <div className="g-pf-flowtext">
+        <span className="g-mono">{label}</span>
+        <h3>{title}</h3>
+        <p>{body}</p>
+        <ul className="g-metachips list-none p-0 m-0 mt-5">
+          {chips.map(chip => (
+            <li key={chip} className="g-metachip bg-mist">
+              <Check aria-hidden="true" className="!text-goed" />
+              {chip}
+            </li>
+          ))}
+        </ul>
       </div>
+      {shot ? (
+        <div className="g-pf-flowvis bg-mist-2">{visual}</div>
+      ) : (
+        <Field variant="nevel" className="g-pf-flowvis">{visual}</Field>
+      )}
     </li>
   );
 }
 
-/** Een schermafdruk die het vak vult. Vaste maten, want `fill` zou hier een even hoge doos nodig
-    hebben en die is er op `lg` niet: het blok is zo hoog als zijn tekst. */
+/** Een schermafdruk die het vak vult. */
 function FlowShot({ src, alt }: { src: string; alt: string }) {
   return (
-    <div className="relative w-full h-full min-h-[14rem] lg:min-h-[21rem]">
+    <div className="g-pf-flowshot">
       <Image src={src} alt={alt} fill sizes="(max-width: 1024px) 100vw, 620px" className="object-cover object-[78%_0%]" />
     </div>
   );
@@ -233,105 +179,73 @@ export default async function PlatformPage({ params }: Props) {
 
   const skills = skillsAtLevel(DEFAULT_LEVEL);
 
-  /* De twee kanten van de compositie in de kop. De verdeling is de vaardigheid zelf en niet de
-     volgorde van `SKILLS`: links wat je binnenkrijgt (Lezen, Luisteren), rechts wat je zelf
-     produceert (Schrijven, Spreken). Afgeleid uit de taxonomie via `scoring`, zodat een vijfde
-     taalonderdeel niet stil aan één kant verdwijnt — `mcq` is receptief, `rubric` productief. */
+  /* De twee kanten van de compositie in de kop: links wat je binnenkrijgt (`mcq`), rechts wat je
+     zelf produceert (`rubric`). Afgeleid uit de taxonomie, zodat een vijfde taalonderdeel niet
+     stil aan één kant verdwijnt. */
   const receptief = skills.filter(s => s.scoring === 'mcq');
   const productief = skills.filter(s => s.scoring !== 'mcq');
 
-  /* De zes blokken van de uitleglaag. De sleutel is ook de sleutelprefix in `messages/*.json`, en
-     het beeld staat hier omdat drie van de zes een paneeltje zijn dat de vertalingen nodig heeft. */
-  const FLOW: { key: string; visual: ReactNode }[] = [
-    { key: 'examen', visual: <FlowShot src="/images/platform/luisteren.jpg" alt={t('flow_examen_alt')} /> },
+  /* De zes blokken van de uitleglaag. De sleutel is ook de sleutelprefix in `messages/*.json`. */
+  const FLOW: { key: string; visual: ReactNode; shot?: boolean }[] = [
+    { key: 'examen', shot: true, visual: <FlowShot src="/images/platform/luisteren.jpg" alt={t('flow_examen_alt')} /> },
     {
       key: 'beoordeling',
-      /* Geen verzonnen criteria: de criteria staan in `rubrics.criteria` en worden per categorie
-         door de docent geschreven, dus een paneeltje dat er drie verzint laat iets zien wat er
-         niet is. Wat hier staat is de vórm — vier ankers, 0 tot 3 — en die ligt wél vast. */
+      /* Geen verzonnen criteria: die schrijft de docent per categorie in `rubrics.criteria`. Wat
+         hier staat is de vórm — vier ankers, 0 tot 3 — en die ligt wél vast. */
       visual: (
-        <div
-          className="w-full max-w-[19rem] rounded-2xl p-5"
-          style={{ background: 'var(--color-surface-container-lowest)', boxShadow: 'var(--shadow-ambient)' }}
-        >
-          <span className="block text-[0.625rem] uppercase tracking-widest font-bold text-secondary mb-3">
-            {t('flow_rubric_label')}
-          </span>
-          <ul className="list-none p-0 m-0 flex flex-col gap-2">
+        <div className="g-glass g-glass-strong w-full max-w-[20rem] p-5">
+          <span className="g-mono">{t('flow_rubric_label')}</span>
+          <ul className="list-none p-0 m-0 mt-3 flex flex-col gap-2">
             {[0, 1, 2, 3].map(score => (
               <li key={score} className="flex items-center gap-3">
                 <span
-                  className="w-7 h-7 shrink-0 rounded-lg flex items-center justify-center font-headline font-bold text-[0.8125rem]"
-                  style={score === 2
-                    ? { background: 'var(--color-secondary-container)', color: 'var(--color-on-secondary-container)' }
-                    : { background: 'var(--color-surface-container-high)', color: 'var(--color-on-surface-variant)' }}
+                  className={`size-7 shrink-0 rounded-g-xs flex items-center justify-center g-head text-[0.8125rem] font-bold ${score === 2 ? 'bg-navy !text-white' : 'bg-mist text-ink-2'}`}
                 >
                   {score}
                 </span>
-                <span
-                  className="h-2 rounded-full"
-                  style={{ width: `${40 + score * 18}%`, background: score === 2 ? 'var(--color-secondary-container)' : 'var(--color-surface-container-high)' }}
-                />
+                <span className={`h-2 rounded-full ${score === 2 ? 'bg-navy' : 'bg-mist-2'}`} style={{ width: `${40 + score * 18}%` }} />
               </li>
             ))}
           </ul>
-          <p className="text-[0.75rem] leading-relaxed text-on-surface-variant m-0 mt-4">
-            {t('flow_rubric_note')}
-          </p>
+          <p className="text-[0.75rem] leading-relaxed text-ink-2 m-0 mt-4">{t('flow_rubric_note')}</p>
         </div>
       ),
     },
-    { key: 'woorden', visual: <FlowShot src="/images/platform/woordkaarten.jpg" alt={t('flow_woorden_alt')} /> },
+    { key: 'woorden', shot: true, visual: <FlowShot src="/images/platform/woordkaarten.jpg" alt={t('flow_woorden_alt')} /> },
     {
       key: 'route',
-      /* De drie kaarten van de leerroute, in de volgorde die §3 vastlegt: woorden → de taalregels
-         die dít examen vraagt → het examen. Er komt hier geen vierde kaart bij. */
+      /* De drie kaarten van de leerroute (§3): woorden → de taalregels die dít examen vraagt →
+         het examen. Er komt hier geen vierde kaart bij. */
       visual: (
-        <ol className="w-full max-w-[19rem] list-none p-0 m-0 flex flex-col gap-2.5">
+        <ol className="w-full max-w-[20rem] list-none p-0 m-0 flex flex-col gap-2.5">
           {(['words', 'rules', 'exam'] as const).map((step, i) => (
-            <li
-              key={step}
-              className="rounded-xl px-4 py-3 flex items-center gap-3"
-              style={{ background: 'var(--color-surface-container-lowest)', boxShadow: 'var(--shadow-ambient)' }}
-            >
-              <span
-                className="w-6 h-6 shrink-0 rounded-full flex items-center justify-center font-headline font-bold text-[0.75rem]"
-                style={{ background: 'var(--color-primary)', color: '#fff' }}
-              >
+            <li key={step} className="g-glass g-glass-strong rounded-g-md px-4 py-3 flex items-center gap-3">
+              <span className="size-7 shrink-0 rounded-full flex items-center justify-center g-head text-[0.75rem] font-extrabold bg-navy !text-white">
                 {i + 1}
               </span>
-              <span className="font-headline font-bold text-primary text-[0.875rem]">
-                {t(`flow_route_${step}`)}
-              </span>
+              <span className="g-head text-[0.9375rem] font-bold">{t(`flow_route_${step}`)}</span>
             </li>
           ))}
         </ol>
       ),
     },
-    { key: 'tips', visual: <FlowShot src="/images/platform/les.jpg" alt={t('flow_tips_alt')} /> },
+    { key: 'tips', shot: true, visual: <FlowShot src="/images/platform/les.jpg" alt={t('flow_tips_alt')} /> },
     {
       key: 'fouten',
-      /* Eén echte fout uit de lesstof (`want` / `omdat`), niet een verzonnen voorbeeld — dezelfde
-         regel staat als taalregel in de database en als blogpost op de site. */
+      /* Eén echte fout uit de lesstof (`want` / `omdat`), niet een verzonnen voorbeeld. Fout is rood
+         met een kruis, goed is groen met een vinkje (G3). */
       visual: (
-        <div
-          className="w-full max-w-[19rem] rounded-2xl p-5"
-          style={{ background: 'var(--color-surface-container-lowest)', boxShadow: 'var(--shadow-ambient)' }}
-        >
-          <span className="block text-[0.625rem] uppercase tracking-widest font-bold text-secondary mb-3">
-            {t('flow_mistake_label')}
-          </span>
-          <p className="flex items-start gap-2 m-0 mb-2 text-[0.875rem] leading-relaxed text-on-surface-variant">
-            <X className="size-4 mt-0.5 shrink-0" style={{ color: 'var(--color-error)' }} aria-hidden="true" />
+        <div className="g-glass g-glass-strong w-full max-w-[20rem] p-5">
+          <span className="g-mono">{t('flow_mistake_label')}</span>
+          <p className="flex items-start gap-2 m-0 mt-3 mb-2 rounded-g-sm bg-fout-tint px-3 py-2 text-[0.875rem] leading-relaxed text-[#5e0d0d]">
+            <X className="size-4 mt-0.5 shrink-0 text-fout" aria-hidden="true" />
             <span>{t('flow_mistake_wrong')}</span>
           </p>
-          <p className="flex items-start gap-2 m-0 text-[0.875rem] leading-relaxed text-primary font-semibold">
-            <Check className="size-4 mt-0.5 shrink-0" style={{ color: 'var(--color-secondary)' }} aria-hidden="true" />
+          <p className="flex items-start gap-2 m-0 rounded-g-sm bg-goed-tint px-3 py-2 text-[0.875rem] leading-relaxed text-goed-ink font-semibold">
+            <Check className="size-4 mt-0.5 shrink-0 text-goed" aria-hidden="true" />
             <span>{t('flow_mistake_right')}</span>
           </p>
-          <p className="text-[0.75rem] leading-relaxed text-on-surface-variant m-0 mt-4">
-            {t('flow_mistake_note')}
-          </p>
+          <p className="text-[0.75rem] leading-relaxed text-ink-2 m-0 mt-4">{t('flow_mistake_note')}</p>
         </div>
       ),
     },
@@ -369,270 +283,199 @@ export default async function PlatformPage({ params }: Props) {
   };
 
   return (
-    <main className="bg-surface min-h-screen">
+    <>
       <JsonLd data={jsonLd} />
 
       {/* ── DE KOP — het portaal in het midden, de onderdelen eromheen ──
-          Herbouwd 22-09 naar clay.com's "Centralize your GTM data", dat de eigenaar aanwees. De
-          kop was een gecentreerde tekstkop op een navy verloop en verder niets: de pagina die
-          moet laten zien *wat het platform is* liet er niets van zien.
-
-          Wat is overgenomen: de gecentreerde kop, het productpaneel eronder in het midden, en de
-          kleine kaarten links en rechts die met een pijl naar dat paneel wijzen. Wat niet is
-          overgenomen: Clay's oranje veld achter de compositie. Een oranje vlak van dit formaat is
-          het luidste ding op de pagina en leest als een tweede hero — dezelfde afweging als bij
-          de afsluitende CTA op de homepage. Het veld is hier het navy verloop dat er al stond.
-
-          De schermafdruk is echt (`public/images/platform/`, gemaakt met puppeteer tegen de
-          lokale stack) en geen nagebouwd kaartje — zie de kop van `FeatureCarousel.tsx` voor
-          waarom dat de enige versie is die klopt. */}
-      <section
-        className="relative overflow-hidden px-6 -mt-[var(--nav-h)] pb-16 sm:pb-20"
-        style={{ background: 'var(--gradient-brand)', paddingTop: 'calc(var(--nav-h) + 3.5rem)' }}
-      >
-        {/* No sun disc: the header is centred, so there is no empty flank for the accent and it
-            would land on the headline (§7.3). */}
-        <HorizonBanner seed={3} sun={false} />
-        <div className="relative max-w-4xl mx-auto text-center">
-          <span
-            className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-bold uppercase tracking-widest mb-5"
-            style={{ background: 'rgba(255,255,255,0.15)', color: 'rgba(255,255,255,0.9)' }}
-          >
-            {t('eyebrow')}
-          </span>
-          <h1
-            className="font-headline font-extrabold text-white mb-4"
-            style={{ fontSize: 'clamp(1.9rem, 4vw, 2.8rem)', letterSpacing: '-0.02em', lineHeight: 1.06, textWrap: 'balance' }}
-          >
-            {t('heading')}
-          </h1>
-          <p className="text-base sm:text-lg leading-relaxed max-w-2xl mx-auto m-0" style={{ color: 'rgba(255,255,255,0.85)' }}>
-            {t('lede')}
-          </p>
-          <div className="flex flex-wrap items-center justify-center gap-3 mt-7">
-            <a
-              href={localeHref(locale, `oefenen`)}
-              className="inline-flex items-center gap-2 bg-secondary-container px-6 py-3 rounded-full font-bold text-sm button-inner-glow no-underline"
-              style={{ color: '#ffffff' }}
-            >
+          Gracht, zonder gloed: de oranje wijzer van deze pagina is de knop in de afsluiter, dus de
+          kop gebruikt navy en ghost. De schermafdruk is echt (`public/images/platform/`), geen
+          nagebouwd kaartje — zie de kop van `FeatureCarousel.tsx`. */}
+      <PageField variant="gracht" className="g-under-nav">
+        <div className="max-w-3xl">
+          <h1 className="g-head g-head-1">{t('heading')}</h1>
+          <p className="g-lead mt-5">{t('lede')}</p>
+          <div className="g-ctas">
+            <a href={localeHref(locale, `oefenen`)} className={glasButton({ variant: 'navy', size: 'lg' })}>
               {t('cta_primary')}
-              <ArrowRight size={16} className="rtl-flip" aria-hidden="true" />
+              <ArrowRight className="rtl-flip" aria-hidden="true" />
             </a>
-            <Link
-              href="/premium"
-              className="inline-flex items-center px-6 py-3 rounded-full font-bold text-sm no-underline"
-              style={{ background: 'rgba(255,255,255,0.14)', color: '#ffffff' }}
-            >
+            <Link href="/premium" className={glasButton({ variant: 'ghost', size: 'lg' })}>
               {t('cta_secondary')}
             </Link>
           </div>
         </div>
 
-        {/* ── De compositie ──
-            Eén grid die op `lg` drie kolommen is (kaarten · paneel · kaarten) en daaronder één
-            kolom, met het paneel bovenaan en de vier kaarten er in twee rijen van twee onder.
-            `order-*` doet dat zonder de kaarten twee keer te renderen — een tweede kopie voor
-            mobiel is twee plekken waar dezelfde lijst uit elkaar kan lopen. */}
-        <div className="relative max-w-7xl mx-auto mt-12 sm:mt-16">
-          <div className="grid gap-4 lg:grid-cols-[minmax(0,14.5rem)_minmax(0,1fr)_minmax(0,14.5rem)] lg:items-center">
-
-            <ul className="order-2 lg:order-1 grid grid-cols-2 lg:grid-cols-1 gap-3 lg:gap-4 list-none p-0 m-0">
-              {receptief.map(skill => (
-                <OnderdeelCard
-                  key={skill.slug}
-                  side="left"
-                  category={skill.slug as Category}
-                  name={tSkills(`${skill.key}.name`)}
-                  chips={[
-                    t('label_exams', { count: skill.examCount }),
-                    t('label_items', { count: formatCount(skill.itemCount) }),
-                  ]}
-                />
-              ))}
-            </ul>
-
-            {/* Het paneel. De balk erboven is geen nagemaakte browserchrome maar het label van het
-                scherm zelf — drie grijze bolletjes zouden zeggen "dit is een screenshot", en dat
-                is precies wat een productbeeld níet moet zeggen. */}
-            <figure
-              className="order-1 lg:order-2 m-0 rounded-[20px] overflow-hidden"
-              style={{ boxShadow: '0 40px 80px -32px rgba(0,8,27,0.55), 0 8px 24px -12px rgba(0,8,27,0.35)' }}
-            >
-              <div
-                className="flex items-center gap-2.5 px-4 py-3"
-                style={{ background: 'var(--color-primary-container)' }}
-              >
-                <span aria-hidden="true" className="w-2 h-2 rounded-full bg-secondary-container" />
-                <span className="font-headline font-bold text-white text-[0.8125rem] tracking-tight">
-                  {t('hero_portal_label')}
-                </span>
-              </div>
-              <Image
-                src="/images/platform/dashboard.jpg"
-                alt={t('hero_portal_alt')}
-                width={1600}
-                height={1000}
-                sizes="(max-width: 1024px) 100vw, 720px"
-                className="w-full h-auto block"
-                priority
+        {/* Eén grid: op `lg` drie kolommen (kaarten · paneel · kaarten), daaronder het paneel
+            bovenaan en de kaarten in rijen van twee. Geen tweede kopie voor mobiel. */}
+        <div className="g-pf-comp">
+          <ul className="g-pf-col">
+            {receptief.map(skill => (
+              <OnderdeelCard
+                key={skill.slug}
+                side="left"
+                category={skill.slug as Category}
+                name={tSkills(`${skill.key}.name`)}
+                chips={[
+                  t('label_exams', { count: skill.examCount }),
+                  t('label_items', { count: formatCount(skill.itemCount) }),
+                ]}
               />
-            </figure>
+            ))}
+          </ul>
 
-            <ul className="order-3 grid grid-cols-2 lg:grid-cols-1 gap-3 lg:gap-4 list-none p-0 m-0">
-              {productief.map(skill => (
-                <OnderdeelCard
-                  key={skill.slug}
-                  side="right"
-                  category={skill.slug as Category}
-                  name={tSkills(`${skill.key}.name`)}
-                  chips={[
-                    t('label_exams', { count: skill.examCount }),
-                    t('label_duration', { count: formatCount(skill.durationMinutes) }),
-                  ]}
-                />
-              ))}
-            </ul>
-          </div>
+          {/* De balk erboven is het label van het scherm zelf, geen nagemaakte browserchrome. */}
+          <figure className="g-pf-shot">
+            <div className="g-pf-shot-bar">
+              <i aria-hidden="true" />
+              {t('hero_portal_label')}
+            </div>
+            <Image
+              src="/images/platform/dashboard.jpg"
+              alt={t('hero_portal_alt')}
+              width={1600}
+              height={1000}
+              sizes="(max-width: 1024px) 100vw, 720px"
+              className="w-full h-auto block"
+              priority
+            />
+          </figure>
 
-          {/* ── Het vijfde onderdeel ──
-              KNM staat buiten de vier taalonderdelen — het heeft geen niveau en zit buiten beide
-              niveaubundels (§2) — dus het staat niet ín de rij van vier, maar het krijgt wél
-              dezelfde kaart op dezelfde maat: één kaart die groter is dan de andere vier zou
-              beweren dat KNM het hoofdonderdeel is, en dat is precies andersom.
-
-              De chips zijn hier geen tellingen maar wat er ín het onderdeel zit — dat is wat een
-              vijfde kaart op deze plek toevoegt, en de tellingen staan verderop op de pagina al
-              op de `SkillCard`. */}
-          <ul className="mt-4 lg:mt-6 flex justify-center list-none p-0 m-0">
-            <li className="w-full sm:max-w-[14.5rem] list-none">
-              <ul className="list-none p-0 m-0">
-                <OnderdeelCard
-                  side="below"
-                  category="knm"
-                  name={tSkills('knm.name')}
-                  chips={[
-                    t('label_exams', { count: KNM.examCount }),
-                    t('hero_knm_chip_read'),
-                    t('hero_knm_chip_cards', { count: 366 }),
-                  ]}
-                />
-              </ul>
-            </li>
+          <ul className="g-pf-col">
+            {productief.map(skill => (
+              <OnderdeelCard
+                key={skill.slug}
+                side="right"
+                category={skill.slug as Category}
+                name={tSkills(`${skill.key}.name`)}
+                chips={[
+                  t('label_exams', { count: skill.examCount }),
+                  t('label_duration', { count: formatCount(skill.durationMinutes) }),
+                ]}
+              />
+            ))}
           </ul>
         </div>
-      </section>
 
-      {/* ── Hoe het werkt ──
-          Zes blokken op een stapel; de volgorde is die van de voorbereiding zelf: eerst het
-          examen nabootsen, dan de beoordeling, dan de leerstof, dan wat je nog mist, dan wat de
-          docent erover zegt.
+        {/* ── Het vijfde onderdeel ── KNM staat buiten de vier taalonderdelen (geen niveau, buiten
+            beide bundels), dus onder de rij — maar op dezelfde maat: een grotere kaart zou beweren
+            dat KNM het hoofdonderdeel is. */}
+        <ul className="mt-4 lg:mt-6 flex justify-center list-none p-0 m-0">
+          <OnderdeelCardWrap>
+            <OnderdeelCard
+              side="below"
+              category="knm"
+              name={tSkills('knm.name')}
+              chips={[
+                t('label_exams', { count: KNM.examCount }),
+                t('hero_knm_chip_read'),
+                t('hero_knm_chip_cards', { count: 366 }),
+              ]}
+            />
+          </OnderdeelCardWrap>
+        </ul>
+      </PageField>
 
-          Drie van de zes tonen een schermafdruk en drie tonen een paneeltje dat hier gebouwd is.
-          Dat is geen stijlkeuze: voor die drie bestaat geen scherm dat het punt in één beeld
-          maakt, en een schermafdruk van iets anders erbij zetten is een belofte doen die het
-          scherm niet waarmaakt.
-
-          **Wat hier over de beoordeling staat is de volgorde uit §2 en mag niet omgedraaid
-          worden**: de docent schrijft de rubriek en de voorbeeldantwoorden, een model past ze toe,
-          de docent kijkt de beoordelingen na. "De AI beoordeelt je antwoord" is precies de zin die
-          dit product níet verkoopt. */}
-      <section className="px-6 py-14 sm:py-16" aria-labelledby="pf-flow-heading">
-        <div className="max-w-6xl mx-auto">
-          <div className="max-w-2xl mb-10 sm:mb-14">
-            <span className="block text-[0.6875rem] uppercase tracking-widest font-bold text-secondary mb-3">
-              {t('flow_eyebrow')}
-            </span>
-            <h2
-              id="pf-flow-heading"
-              className="font-headline font-extrabold text-primary m-0 mb-4 leading-[1.08]"
-              style={{ fontSize: 'clamp(1.75rem, 4vw, 2.75rem)', letterSpacing: '-0.03em' }}
-            >
-              {t('flow_heading')}
-            </h2>
-            <p className="text-base leading-relaxed text-on-surface-variant m-0">{t('flow_sub')}</p>
-          </div>
-
-          <ul className="list-none p-0 m-0 flex flex-col gap-6">
+      {/* ── Hoe het werkt ── zes blokken op een stapel, in de volgorde van de voorbereiding zelf.
+          **Wat hier over de beoordeling staat is de volgorde uit §2 en mag niet omgedraaid worden**:
+          de docent schrijft de rubriek, een model past ze toe, de docent kijkt de beoordelingen na. */}
+      <section className="g-sec" aria-labelledby="pf-flow-heading">
+        <div className="g-wrap">
+          <SectionHeading id="pf-flow-heading" title={t('flow_heading')} aside={t('flow_sub')} className="mb-10" />
+          <ol className="g-pf-flow">
             {FLOW.map((block, i) => (
               <FlowBlock
                 key={block.key}
                 index={i}
-                eyebrow={t(`flow_${block.key}_eyebrow`)}
+                label={`${String(i + 1).padStart(2, '0')} · ${t(`flow_${block.key}_eyebrow`)}`}
                 title={t(`flow_${block.key}_title`)}
                 body={t(`flow_${block.key}_body`)}
                 chips={[t(`flow_${block.key}_chip1`), t(`flow_${block.key}_chip2`)]}
                 visual={block.visual}
+                shot={block.shot}
               />
+            ))}
+          </ol>
+        </div>
+      </section>
+
+      {/* ── De vier onderdelen ── de route in vanaf de chrome: de header linkt ze niet meer. */}
+      <section className="g-sec g-sec-tier" aria-labelledby="pf-skills-heading">
+        <div className="g-wrap">
+          <SectionHeading id="pf-skills-heading" title={t('skills_heading')} aside={t('skills_sub')} className="mb-10" />
+          <ul className="g-pf-cards list-none p-0 m-0">
+            {skills.map(skill => (
+              <li key={skill.slug} className="flex">
+                <a href={localeHref(locale, `oefenexamen/${DEFAULT_LEVEL}/${skill.slug}`)} className="g-gids flex-1">
+                  <CategoryMark category={skill.slug as Category} size={48} />
+                  <h3>{tSkills(`${skill.key}.name`)}</h3>
+                  <p>{tSkills(`${skill.key}.tagline`)}</p>
+                  <ul className="g-pf-chips !mt-0">
+                    <li>{t('label_exams', { count: skill.examCount })}</li>
+                    <li>{t('label_items', { count: formatCount(skill.itemCount) })}</li>
+                    <li>{t('label_duration', { count: formatCount(skill.durationMinutes) })}</li>
+                  </ul>
+                  <span className="g-bdg g-bdg-goed self-start"><Check aria-hidden="true" />{t('label_free')}</span>
+                  <span className="g-gids-ft">
+                    <span className="g-head text-[0.875rem] font-bold">{t('label_cta')}</span>
+                    <ArrowRight className="rtl-flip" aria-hidden="true" />
+                  </span>
+                </a>
+              </li>
             ))}
           </ul>
         </div>
       </section>
 
-      {/* The four onderdelen — the same module card the homepage and the overviews use. */}
-      <section className="px-6 py-14 sm:py-16">
-        <div className="max-w-6xl mx-auto">
-          <SectionHeader eyebrow={t('skills_eyebrow')} title={t('skills_heading')} subtitle={t('skills_sub')} />
-          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-            {skills.map((skill, i) => (
-              <SkillCard
-                key={skill.slug}
-                skill={skill}
-                index={i}
-                href={localeHref(locale, `oefenexamen/${DEFAULT_LEVEL}/${skill.slug}`)}
-                name={tSkills(`${skill.key}.name`)}
-                tagline={tSkills(`${skill.key}.tagline`)}
-                examsLabel={t('label_exams', { count: skill.examCount })}
-                itemsLabel={t('label_items', { count: formatCount(skill.itemCount) })}
-                durationLabel={t('label_duration', { count: formatCount(skill.durationMinutes) })}
-                freeNote={t('label_free')}
-                cta={t('label_cta')}
-              />
+      {/* ── De catalogus en de roadmap, in één lijst ── een track die nog niet gebouwd is, is een
+          `<li>` en geen grijze link: er is niets om naartoe te gaan, en een uitgeschakeld anker
+          neemt nog steeds focus en belooft nog steeds een bestemming. */}
+      <section className="g-sec" aria-labelledby="pf-tracks-heading">
+        <div className="g-wrap">
+          <SectionHeading id="pf-tracks-heading" title={t('tracks_heading')} aside={t('tracks_sub')} className="mb-10" />
+          <ul className="g-grid2 list-none p-0 m-0">
+            {TRACKS.map(track => (
+              <li key={track.key} className="flex">
+                {'href' in track ? (
+                  <Link href={track.href} className="g-gids flex-1 !min-h-0">
+                    <div className="flex items-center gap-4">
+                      <ExamMark track={track.key} size={56} />
+                      <h3>{t(`track_${track.key}`)}</h3>
+                    </div>
+                    <p>{t(`track_${track.key}_sub`)}</p>
+                    <span className="g-gids-ft">
+                      <span />
+                      <ArrowRight className="rtl-flip" aria-hidden="true" />
+                    </span>
+                  </Link>
+                ) : (
+                  <div className="g-pf-soon flex-1 !min-h-0">
+                    <div className="flex items-center gap-4">
+                      <ExamMark track={track.key} size={56} muted />
+                      <h3>{t(`track_${track.key}`)}</h3>
+                      <span className="g-bdg g-bdg-grijs"><Clock aria-hidden="true" />{t('badge_soon')}</span>
+                    </div>
+                    <p>{t(`track_${track.key}_sub`)}</p>
+                  </div>
+                )}
+              </li>
             ))}
-          </div>
+          </ul>
         </div>
       </section>
 
-      {/* The catalogue and the roadmap. */}
-      <section className="px-6 py-14 sm:py-16 bg-surface-container-low">
-        <div className="max-w-5xl mx-auto">
-          <SectionHeader eyebrow={t('tracks_eyebrow')} title={t('tracks_heading')} subtitle={t('tracks_sub')} />
-          <ul className="grid gap-4 sm:grid-cols-2 list-none p-0 m-0">
-            {TRACKS.map(track => {
-              const body = (
-                <>
-                  <span className="flex items-center gap-2 flex-wrap">
-                    <span className={`font-headline font-bold text-base ${'href' in track ? 'text-on-surface' : 'text-on-surface-variant'}`}>
-                      {t(`track_${track.key}`)}
-                    </span>
-                    {!track.live && (
-                      <span
-                        className="text-[0.6rem] font-bold uppercase tracking-widest px-1.5 py-0.5 rounded-full"
-                        style={{ background: '#fcecdd', color: '#a24000' }}
-                      >
-                        {t('badge_soon')}
-                      </span>
-                    )}
-                  </span>
-                  <span className="block text-sm text-on-surface-variant leading-relaxed mt-1.5">
-                    {t(`track_${track.key}_sub`)}
-                  </span>
-                </>
-              );
-              /* An announced-but-unbuilt track is an `<li>`, not a greyed link: there is nowhere
-                 to go, and a disabled anchor still takes focus and still promises a destination. */
+      {/* ── Waarom hier ── de USP, als wat het product dóet en niet als slogan. Het icoon is een
+          functioneel lucide-teken in een lichte tegel; een onderdeelmerk hoort hier niet (§7). */}
+      <section className="g-sec g-sec-tier" aria-labelledby="pf-why-heading">
+        <div className="g-wrap">
+          <SectionHeading id="pf-why-heading" title={t('why_heading')} aside={t('why_sub')} className="mb-10" />
+          <ul className="g-pf-cards list-none p-0 m-0">
+            {BENEFITS.map(b => {
+              const Icon = b.icon;
               return (
-                <li key={track.key}>
-                  {'href' in track ? (
-                    <Link
-                      href={track.href}
-                      className="block rounded-2xl p-5 no-underline bg-surface-container-lowest transition-transform hover:-translate-y-0.5"
-                      style={{ boxShadow: 'var(--shadow-ambient)' }}
-                    >
-                      {body}
-                    </Link>
-                  ) : (
-                    <div className="rounded-2xl p-5 bg-surface-container">{body}</div>
-                  )}
+                <li key={b.key} className="g-pf-why">
+                  <span className="g-pf-ico"><Icon aria-hidden="true" /></span>
+                  <h3>{t(`why_${b.key}`)}</h3>
+                  <p>{t(`why_${b.key}_sub`)}</p>
                 </li>
               );
             })}
@@ -640,106 +483,52 @@ export default async function PlatformPage({ params }: Props) {
         </div>
       </section>
 
-      {/* Why practise here — the USP, stated as what the product does rather than as a slogan. */}
-      <section className="px-6 py-14 sm:py-16">
-        <div className="max-w-6xl mx-auto">
-          <SectionHeader eyebrow={t('why_eyebrow')} title={t('why_heading')} subtitle={t('why_sub')} />
-          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-            {BENEFITS.map(b => (
-              <FeatureCard
-                key={b.key}
-                icon={b.icon}
-                title={t(`why_${b.key}`)}
-                description={t(`why_${b.key}_sub`)}
-              />
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* The tools. `/inburgering/tools/tijdlijn` is live; the two woordenlijsten are registered
-          placeholders, so they are named and not linked. */}
-      <section className="px-6 py-14 sm:py-16 bg-surface-container-low">
-        <div className="max-w-5xl mx-auto">
-          <SectionHeader eyebrow={t('tools_eyebrow')} title={t('tools_heading')} subtitle={t('tools_sub')} />
-          <div className="grid gap-4 sm:grid-cols-3">
-            <Link
-              href="/inburgering/tools/tijdlijn"
-              className="block rounded-2xl p-5 no-underline bg-surface-container-lowest transition-transform hover:-translate-y-0.5"
-              style={{ boxShadow: 'var(--shadow-ambient)' }}
-            >
-              <span className="font-headline font-bold text-base text-on-surface">{t('tool_tijdlijn')}</span>
-              <span className="block text-sm text-on-surface-variant leading-relaxed mt-1.5">{t('tool_tijdlijn_sub')}</span>
-              <span className="inline-flex items-center gap-1.5 text-sm font-bold mt-3" style={{ color: '#a24000' }}>
-                {t('tool_open')}
-                <ArrowRight size={14} className="rtl-flip" aria-hidden="true" />
+      {/* ── De hulpmiddelen ── `/inburgering/tools/tijdlijn` is live; de twee woordenlijsten zijn
+          geregistreerde plaatshouders, dus ze staan er met naam en zonder link. */}
+      <section className="g-sec" aria-labelledby="pf-tools-heading">
+        <div className="g-wrap">
+          <SectionHeading id="pf-tools-heading" title={t('tools_heading')} aside={t('tools_sub')} className="mb-10" />
+          <div className="g-grid3">
+            <Link href="/inburgering/tools/tijdlijn" className="g-gids">
+              <span className="g-pf-ico"><CalendarClock aria-hidden="true" /></span>
+              <h3>{t('tool_tijdlijn')}</h3>
+              <p>{t('tool_tijdlijn_sub')}</p>
+              <span className="g-gids-ft">
+                <span className="g-head text-[0.875rem] font-bold">{t('tool_open')}</span>
+                <ArrowRight className="rtl-flip" aria-hidden="true" />
               </span>
             </Link>
             {(['woorden', 'grammatica'] as const).map(key => (
-              <div key={key} className="rounded-2xl p-5 bg-surface-container">
-                <span className="flex items-center gap-2 flex-wrap">
-                  <span className="font-headline font-bold text-base text-on-surface-variant">{t(`tool_${key}`)}</span>
-                  <span
-                    className="text-[0.6rem] font-bold uppercase tracking-widest px-1.5 py-0.5 rounded-full"
-                    style={{ background: '#fcecdd', color: '#a24000' }}
-                  >
-                    {t('badge_soon')}
-                  </span>
-                </span>
-                <span className="block text-sm text-on-surface-variant leading-relaxed mt-1.5">{t(`tool_${key}_sub`)}</span>
+              <div key={key} className="g-pf-soon">
+                <span className="g-bdg g-bdg-grijs self-start"><Clock aria-hidden="true" />{t('badge_soon')}</span>
+                <h3>{t(`tool_${key}`)}</h3>
+                <p>{t(`tool_${key}_sub`)}</p>
               </div>
             ))}
           </div>
         </div>
       </section>
 
-      <section className="px-6 pb-16">
-        <div className="max-w-5xl mx-auto">
-          <CTABanner
-            eyebrow={t('cta_eyebrow')}
-            title={t('cta_title')}
-            description={t('cta_desc')}
-            button={{ label: t('cta_primary'), href: '/oefenen' }}
-          />
-        </div>
-      </section>
+      {/* ── De afsluiter (glas.html §13) ── Nevel met de ene oranje knop van deze pagina. */}
+      <div className="g-closing">
+        <Field as="section" variant="nevel" aria-labelledby="pf-closing-heading" className="g-block g-cta-band">
+          <h2 id="pf-closing-heading">{t('cta_title')}</h2>
+          <p>{t('cta_desc')}</p>
+          <Link href="/oefenen" className={glasButton({ variant: 'oranje', size: 'lg', className: 'mt-2' })}>
+            {t('cta_primary')}
+            <ArrowRight className="rtl-flip" aria-hidden="true" />
+          </Link>
+        </Field>
+      </div>
+    </>
+  );
+}
 
-      <style>{`
-        /* De satellietkaarten en de KNM-knop in de kop. Alleen transform en opacity (§8), met
-           een uitgang voor prefers-reduced-motion. */
-        /* De stapel: position sticky per blok, met de eigen top-waarde als inline stijl omdat
-           die per index verschuift. Op smal staat de stapel uit: een blok dat daar plakt neemt bijna het
-           hele scherm in en de rest van de pagina komt niet meer voorbij. */
-        @media (min-width: 1024px) {
-          .pf-flow { position: sticky; }
-        }
-        @media (prefers-reduced-motion: reduce) {
-          .pf-flow { position: static; }
-        }
-        .pf-sat {
-          transition: transform 0.18s cubic-bezier(0.22, 1, 0.36, 1);
-        }
-        .pf-sat:hover {
-          transform: translateY(-2px);
-        }
-        .pf-knm-cta {
-          transition: transform 0.18s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.18s ease;
-        }
-        .pf-knm-cta:hover {
-          transform: translateY(-2px);
-        }
-        .pf-knm-cta:active {
-          transform: translateY(0);
-          opacity: 0.9;
-        }
-        .pf-knm-cta:focus-visible {
-          outline: 2px solid var(--color-secondary);
-          outline-offset: 3px;
-        }
-        @media (prefers-reduced-motion: reduce) {
-          .pf-sat, .pf-knm-cta { transition: none; }
-        }
-      `}</style>
-    </main>
+/** De KNM-kaart staat alleen in de kop, op de maat van de andere vier. */
+function OnderdeelCardWrap({ children }: { children: ReactNode }) {
+  return (
+    <li className="w-full sm:max-w-[15rem] list-none">
+      <ul className="list-none p-0 m-0">{children}</ul>
+    </li>
   );
 }

@@ -677,6 +677,8 @@
     "feature4_title": "Feedback op Schrijven en Spreken",
     "feature4_desc": "Je e-mail of opname krijgt per criterium een score met uitleg, volgens de beoordelingsrubric van de docent — met het voorbeeldantwoord ernaast.",
     "cell_partial": "jouw onderdeel",
+    "cell_yes": "Inbegrepen",
+    "cell_no": "Niet inbegrepen",
     "schema_product_name": "Oefenmodules inburgeringsexamen A2",
     "schema_product_description": "Maandabonnement per onderdeel van het inburgeringsexamen A2: tien oefenexamens in DUO-formaat, samengesteld door een gecertificeerde NT2-docent. Eén onderdeel of alle vier.",
     "schema_offer_module": "Module {skill} A2 — per maand",
