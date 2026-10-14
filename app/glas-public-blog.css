@@ -1,1 +1,80 @@
 /* Glas · publieke site · blog — aanvullingen op app/glas-public.css voor deze schermen. */
+
+@layer components {
+  /* ---------- overzicht ---------- */
+  .g-blog-meta { font-size: 12.5px; color: var(--ink-2); padding: 0 6px; }
+
+  /* ---------- artikel: beeldkop ---------- */
+  .g-blog-hero { min-height: 460px; }
+  @media (max-width: 640px) { .g-blog-hero { min-height: 0; padding-top: 180px; } }
+  .g-blog-author { color: var(--navy); text-decoration: none; border-radius: 4px; outline: none; transition: color 160ms ease; }
+  .g-blog-author:hover { text-decoration: underline; text-underline-offset: 3px; }
+  .g-blog-author:active { opacity: 0.75; }
+  .g-blog-author:focus-visible { box-shadow: var(--glas-focus); }
+
+  /* ---------- artikel: tekst + zijkolom ---------- */
+  .g-blog-grid { display: grid; grid-template-columns: minmax(0, 1fr) 320px; gap: 20px; align-items: start; }
+  @media (max-width: 1020px) { .g-blog-grid { grid-template-columns: minmax(0, 1fr); } }
+  .g-blog-body { background: #fff; border-radius: var(--r-xl); padding: 40px 44px; min-width: 0; }
+  @media (max-width: 860px) { .g-blog-body { padding: 22px; } }
+  .g-blog-body > .article-body { max-width: 68ch; }
+  .g-blog-body .g-inline-cta { margin-top: 28px; }
+  .g-blog-side { position: sticky; top: calc(var(--nav-h) + 24px); display: grid; gap: 14px; }
+  @media (max-width: 1020px) { .g-blog-side { position: static; } }
+  .g-blog-card { background: #fff; border-radius: var(--r-lg); padding: 22px; }
+  /* `sidebarHtml` komt uit de data met oude klassen; hier krijgt het de Glas-kaart. */
+  .g-blog-sidehtml > div { background: #fff !important; border-radius: var(--r-lg) !important; box-shadow: none !important; padding: 22px !important; }
+  .g-blog-sidehtml h3 { font-family: var(--glas-mono); font-size: 12px !important; letter-spacing: 0.08em; font-weight: 500 !important; color: var(--ink-2) !important; }
+  .g-blog-related { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; }
+  .g-blog-related li + li { box-shadow: inset 0 1px 0 var(--mist-2); }
+  .g-blog-related a {
+    display: flex; flex-direction: column; gap: 3px; padding: 12px 8px; margin-inline: -8px; border-radius: var(--r-sm);
+    text-decoration: none; outline: none; transition: background-color 160ms ease;
+  }
+  .g-blog-related a:hover { background: var(--mist); }
+  .g-blog-related a:active { background: var(--mist-2); }
+  .g-blog-related a:focus-visible { box-shadow: var(--glas-focus); }
+  .g-blog-related b { font-family: var(--font-headline); font-size: 14.5px; line-height: 1.3; color: var(--ink); }
+  .g-blog-related a:hover b { color: var(--navy); }
+  .g-blog-related small { font-size: 12.5px; color: var(--ink-2); line-height: 1.45; }
+
+  /* ---------- oefenvragen ---------- */
+  .g-topic {
+    display: flex; align-items: center; gap: 14px; padding: 16px; border-radius: var(--r-lg); background: #fff; text-decoration: none;
+    color: inherit; outline: none; transition: transform 200ms var(--ease-out-glas), box-shadow 200ms ease;
+  }
+  .g-topic:hover { transform: translateY(-2px); box-shadow: var(--zweef); }
+  .g-topic:active { transform: scale(0.99); }
+  .g-topic:focus-visible { box-shadow: var(--glas-focus); }
+  .g-topic b { font-family: var(--font-headline); font-size: 16px; color: var(--ink); display: block; }
+  .g-topic small { font-size: 13px; color: var(--ink-2); display: block; }
+  .g-topic > svg { width: 18px; height: 18px; color: var(--navy); margin-inline-start: auto; flex: none; transition: transform 200ms var(--ease-out-glas); }
+  .g-topic:hover > svg { transform: translateX(3px); }
+  [dir="rtl"] .g-topic:hover > svg { transform: translateX(-3px) scaleX(-1); }
+
+  /* De vraag staat altijd op wit (§G5); de voortgang is een rij segmenten, geen balk die groeit. */
+  .g-quiz { background: #fff; border-radius: var(--r-xl); padding: 28px; }
+  @media (max-width: 640px) { .g-quiz { padding: 18px; } }
+  .g-quiz-bar { display: flex; gap: 4px; margin: 10px 0 22px; }
+  .g-quiz-bar i { flex: 1; height: 6px; border-radius: 3px; background: var(--mist-2); transition: background-color 200ms ease; }
+  .g-quiz-bar i.g-on { background: var(--navy); }
+  .g-quiz-q { font-family: var(--font-headline); font-weight: 700; font-size: clamp(19px, 2vw, 22px); line-height: 1.3; letter-spacing: -0.015em; color: var(--ink); margin: 0 0 18px; }
+  .g-quiz-fb { display: flex; gap: 12px; align-items: flex-start; margin-top: 16px; padding: 14px 16px; border-radius: var(--r-md); font-size: 15px; line-height: 1.6; }
+  .g-quiz-fb > svg { width: 18px; height: 18px; flex: none; margin-top: 3px; }
+  .g-quiz-fb.g-ok { background: var(--goed-tint); color: var(--goed-ink); }
+  .g-quiz-fb.g-nok { background: var(--fout-tint); color: #5e0d0d; }
+  .g-quiz-fb b { font-family: var(--font-headline); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .g-blog-author, .g-blog-related a, .g-topic, .g-topic > svg, .g-quiz-bar i { transition-duration: 0ms; }
+  .g-topic:hover, .g-topic:active, .g-topic:hover > svg { transform: none; }
+}
+
+/* De FAQ op mist (in een witte artikelkaart): het plusje wordt wit, anders verdwijnt zijn cirkel. */
+@layer components {
+  .g-faq.bg-mist .g-faq-pm { background: #fff; }
+  .g-faq.bg-mist details[open] .g-faq-pm { background: var(--navy); }
+  /* Arabisch heeft geen hoofdletters en verbonden letters: de mono-spatiëring breekt de woorden. */
+  [dir="rtl"] :is(.g-blog-hero, .g-feat, .g-post, .g-gcard, .g-blog-card, .g-byline) .g-mono, [dir="rtl"] .g-blog-sidehtml h3 { letter-spacing: 0 !important; font-family: var(--font-body); }
+}

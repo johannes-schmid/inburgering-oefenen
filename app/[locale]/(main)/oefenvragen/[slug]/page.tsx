@@ -5,8 +5,13 @@ import { Link } from '@/i18n/navigation';
 import { routing } from '@/i18n/routing';
 import TOPICS, { getTopicBySlug } from '@/data/oefenvragen-topics';
 import QuizWidget from './QuizWidget';
-import { Breadcrumb, GradientHero, EyebrowBadge, Card } from '@/components/site';
-import { absUrl, alternatesFor } from '@/lib/schema';
+import { ArrowRight } from 'lucide-react';
+import PageField from '@/components/glas/PageField';
+import SectionHeading from '@/components/glas/SectionHeading';
+import { glasButton } from '@/components/glas/Button';
+import CategoryMark, { type Category } from '@/components/horizon/CategoryMark';
+import Crumbs from '../../_components/glas/Crumbs';
+import { alternatesFor } from '@/lib/schema';
 
 type Props = { params: Promise<{ locale: string; slug: string }> };
 
@@ -30,13 +35,13 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 }
 
 const OTHER_TOPICS = [
-  { slug: 'werk-en-inkomen', icon: '💼', label: 'Werk' },
-  { slug: 'wonen-en-samenleven', icon: '🏠', label: 'Wonen' },
-  { slug: 'gezondheid', icon: '🏥', label: 'Gezondheid' },
-  { slug: 'onderwijs-en-kinderen', icon: '🎓', label: 'Onderwijs' },
-  { slug: 'overheid-en-regels', icon: '🏛️', label: 'Instanties' },
-  { slug: 'politiek-en-instellingen', icon: '⚖️', label: 'Politiek' },
-  { slug: 'geschiedenis-herdenking', icon: '📜', label: 'Geschiedenis' },
+  { slug: 'werk-en-inkomen', label: 'Werk' },
+  { slug: 'wonen-en-samenleven', label: 'Wonen' },
+  { slug: 'gezondheid', label: 'Gezondheid' },
+  { slug: 'onderwijs-en-kinderen', label: 'Onderwijs' },
+  { slug: 'overheid-en-regels', label: 'Instanties' },
+  { slug: 'politiek-en-instellingen', label: 'Politiek' },
+  { slug: 'geschiedenis-herdenking', label: 'Geschiedenis' },
 ];
 
 export default async function OefenTopicPage({ params }: Props) {
@@ -76,66 +81,71 @@ export default async function OefenTopicPage({ params }: Props) {
   return (
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(quizJsonLd) }} />
-      <Breadcrumb
-        items={[
-          { label: t('breadcrumb_home'), href: '/' },
-          { label: t('breadcrumb_index'), href: '/oefenvragen' },
-          { label: topic.name },
-        ]}
-      />
 
-      <GradientHero className="pb-10" containerClass="max-w-3xl">
+      {/* De kop op Gracht met het merk van het thema in plaats van een emoji. */}
+      <PageField variant="gracht" className="-mt-[var(--nav-h)] !pt-[calc(var(--nav-h)+40px)] sm:!pt-[calc(var(--nav-h)+56px)]">
+        <Crumbs
+          items={[
+            { label: t('breadcrumb_home'), href: '/' },
+            { label: t('breadcrumb_index'), href: '/oefenvragen' },
+            { label: topic.name },
+          ]}
+          className="mb-6"
+        />
         <div className="flex items-center gap-3 mb-4">
-          <span style={{ fontSize: '2rem' }}>{topic.icon}</span>
-          <EyebrowBadge tone="dark">
-            {t('free_questions', { n: topic.questions.length })}
-          </EyebrowBadge>
+          <CategoryMark category={topicMark(slug)} size={48} />
+          <span className="g-bdg g-bdg-glas">{t('free_questions', { n: topic.questions.length })}</span>
         </div>
-        <h1 className="font-headline font-extrabold text-white mb-3" style={{ fontSize: 'clamp(1.8rem,4vw,2.6rem)', letterSpacing: '-0.02em', lineHeight: 1.15 }}>
-          KNM Oefenvragen {topic.name}
-        </h1>
-        <p className="leading-relaxed max-w-lg" style={{ color: 'rgba(255,255,255,0.7)' }}>
+        <SectionHeading as="h1" size="h1" title="KNM Oefenvragen" muted={topic.name} onField />
+        <p className="g-lead mt-4">
           {t('free_questions', { n: topic.questions.length })} KNM-oefenvragen over {topic.sublabel}.
         </p>
-      </GradientHero>
+      </PageField>
 
-      <main className="bg-surface">
-        {/* Intro card */}
-        <div className="max-w-3xl mx-auto px-6 pt-10 pb-2">
-          <Card shadow="sm" className="border border-outline-variant/30">
-            <h2 className="font-headline font-bold text-lg text-primary mb-2">{t('topic_about')} {topic.name}</h2>
-            <p className="text-sm text-on-surface-variant leading-relaxed">
+      <main className="g-sec !pt-10">
+        <div className="g-wrap max-w-[820px] g-stack">
+          <section className="g-blog-card" aria-labelledby="topic-about">
+            <h2 id="topic-about" className="g-head g-head-3">{t('topic_about')} {topic.name}</h2>
+            <p className="m-0 mt-2 text-[0.9375rem] leading-relaxed text-ink-2">
               {topic.intro} Oefen gericht met de vragen hieronder en lees de uitleg goed door bij elke vraag.
             </p>
-            <p className="text-xs text-on-surface-variant mt-3">
+            <p className="m-0 mt-3 text-sm text-ink-2">
               {t('topic_practice_all')}{' '}
-              <Link href="/dashboard" className="text-secondary underline">{t('topic_practice_exam_link')}</Link>
+              <Link href="/dashboard" className="g-ilink">{t('topic_practice_exam_link')}</Link>
               {' '}{t('topic_practice_or')}{' '}
-              <Link href="/oefenvragen" className="text-secondary underline">{t('topic_practice_all_link')}</Link>.
+              <Link href="/oefenvragen" className="g-ilink">{t('topic_practice_all_link')}</Link>.
             </p>
-          </Card>
-        </div>
+          </section>
 
-        {/* Quiz */}
-        <div id="quiz" className="quiz-wrap">
-          <QuizWidget questions={topic.questions} topicTotal={topic.total} strings={quizStrings} slug={slug} />
+          <div id="quiz">
+            <QuizWidget questions={topic.questions} topicTotal={topic.total} strings={quizStrings} slug={slug} />
+          </div>
 
-          {/* Other topics */}
-          <div className="mt-10 pt-8" style={{ borderTop: '1px solid rgba(196,198,210,0.3)' }}>
-            <p className="text-xs font-bold uppercase tracking-widest text-on-surface-variant mb-4">{t('other_topics')}</p>
-            <div className="flex flex-wrap gap-2">
+          <nav className="mt-6" aria-labelledby="other-topics">
+            <h2 id="other-topics" className="g-mono mb-3">{t('other_topics')}</h2>
+            <div className="g-chips">
               {others.map(ot => (
-                <a key={ot.slug} href={`/oefenvragen/${ot.slug}`} className="inline-flex items-center gap-1.5 px-3 py-2 bg-surface-container-lowest rounded-xl text-sm text-on-surface-variant font-medium hover:bg-surface-container hover:text-on-surface transition-colors" style={{ boxShadow: 'var(--shadow-card)', textDecoration: 'none' }}>
-                  {ot.icon} {ot.label}
+                <a key={ot.slug} href={`/oefenvragen/${ot.slug}`} className="g-chip g-chip-wit !no-underline">
+                  <CategoryMark category={topicMark(ot.slug)} size={28} />
+                  {ot.label}
                 </a>
               ))}
-              <Link href="/dashboard" className="inline-flex items-center gap-1.5 px-3 py-2 rounded-xl text-sm font-bold text-on-secondary-container bg-secondary-container" style={{ boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.1)' }}>
+              <Link href="/dashboard" className={glasButton({ variant: 'navy', size: 'sm' })}>
                 {t('proef_pill')}
+                <ArrowRight className="rtl-flip" aria-hidden="true" />
               </Link>
             </div>
-          </div>
+          </nav>
         </div>
       </main>
     </>
   );
+}
+
+/* Het merk van een KNM-onderwerp: de drie thema's met een eigen merk, anders de KNM-zuilen. */
+function topicMark(slug: string): Category {
+  if (slug.startsWith('werk')) return 'werk';
+  if (slug.startsWith('wonen')) return 'wonen';
+  if (slug.startsWith('gezondheid')) return 'gezondheid';
+  return 'knm';
 }
