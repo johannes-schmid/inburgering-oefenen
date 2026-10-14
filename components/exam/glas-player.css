@@ -660,3 +660,9 @@
   .g-xadvice { transition-duration: 0ms !important; }
   .g-xadvice:hover, .g-xadvice:active { transform: none !important; }
 }
+
+@layer components {
+  /* /oefenen staat op mist: de keuzetegels worden wit, anders verdwijnen ze in de pagina. */
+  .g-xtracks .g-tile { background: #fff; }
+  .g-xtracks .g-tile:hover { background: #f6f8fc; }
+}

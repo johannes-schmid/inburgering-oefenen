@@ -3,6 +3,7 @@
 import { Check } from 'lucide-react';
 import AuthPanel from '@/components/auth/AuthPanel';
 import './glas-player.css';
+import '@/app/auth-glas.css';
 
 /**
  * De aanmeldkaart die over het examen komt zodra een gast zijn gratis vragen op heeft.
@@ -59,7 +60,7 @@ export default function GuestSignupOverlay({
           waar je gebleven bent.
         </p>
 
-        <AuthPanel mode="register" locale={locale} next={returnTo} />
+        <AuthPanel mode="register" locale={locale} next={returnTo} glas />
 
         <p style={{ textAlign: 'center', fontSize: 13, marginTop: 6 }}>
           Gratis · geen creditcard nodig
