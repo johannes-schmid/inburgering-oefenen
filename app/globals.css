@@ -1,6 +1,7 @@
 @import "tailwindcss";
 @import "tw-animate-css";
 @import "shadcn/tailwind.css";
+@import "./glas-components.css";
 
 @source "../data/**/*.ts";
 @source "../components/**/*.tsx";
@@ -1705,4 +1706,112 @@
 @media (prefers-reduced-motion: reduce) {
   .pdf-dialog[open] .pdf-dialog-panel { animation: none; }
   .pdf-dialog-submit { transition: none; }
+}
+
+/* ══════════════════════════════════════════════════════════════════════════════════════════════
+   GLAS v1.0 — tokens (docs/design/DESIGN_SYSTEM.md §G2, waarden letterlijk uit docs/design/glas.html)
+   Toegevoegd, niets vervangen: oppervlakken die nog niet in Glas zijn herbouwd houden de Civic-
+   Authority-tokens hierboven. De componentlaag staat in app/glas-components.css (klassen `g-*`), de React-kit
+   in components/glas/. Tinten zijn letterlijke rgba(), nooit color-mix() of `/10`.
+   `--ring` uit glas.html heet hier `--glas-ring`: shadcn bezit `--ring` al (een kleur).
+   ══════════════════════════════════════════════════════════════════════════════════════════════ */
+:root {
+  --nacht: #00122e;
+  --diep: #001a4a;
+  --navy: #002b6d;
+  --navy-2: #1d428a;
+  --hemel: #5d7fd6;
+  --waas: #9db8ff;
+  --nevel: #c9d6f2;
+  --mist: #eef2f8;
+  --mist-2: #e3e9f3;
+  --tegel: #e9eef6;
+  --wit: #ffffff;
+  --ink: #0b1a3a;
+  --ink-2: #4c5874;
+  --ink-3: #6f80a8;
+  --oranje: #fe762c;
+  --oranje-zacht: #ffcfb0;
+  --klei: #a24000;
+  --klei-tint: #fcecdd;
+  --goed: #2b7a5c;
+  --goed-ink: #1c5a42;
+  --goed-tint: #e2f1e9;
+  --fout: #ba1a1a;
+  --fout-tint: #fbe9e9;
+
+  --glas: rgba(255, 255, 255, 0.72);
+  --glas-fallback: rgba(255, 255, 255, 0.92);
+  --glas-rand: inset 0 1px 0 rgba(255, 255, 255, 0.95), inset 0 0 0 1px rgba(255, 255, 255, 0.5);
+  --glas-d: rgba(255, 255, 255, 0.08);
+  --glas-d-rand: inset 0 1px 0 rgba(255, 255, 255, 0.18), inset 0 0 0 1px rgba(255, 255, 255, 0.08);
+  --zweef: 0 30px 60px -32px rgba(0, 27, 80, 0.42);
+  --zweef-d: 0 30px 60px -30px rgba(0, 0, 0, 0.55);
+  --glas-ring: inset 0 0 0 2px var(--navy);
+  --glas-focus: 0 0 0 3px var(--mist), 0 0 0 5px var(--navy);
+  --glas-focus-d: 0 0 0 3px var(--nacht), 0 0 0 5px var(--waas);
+
+  --r-pill: 999px;
+  --r-xl: 28px;
+  --r-lg: 22px;
+  --r-md: 16px;
+  --r-sm: 12px;
+  --r-xs: 8px;
+
+  --ease-out-glas: cubic-bezier(0.23, 1, 0.32, 1);
+  --ease-io-glas: cubic-bezier(0.77, 0, 0.175, 1);
+  --veer: cubic-bezier(0.22, 1, 0.36, 1);
+
+  /* G7: Reddit Mono als derde lettertype is nog open; tot dan de systeem-mono. */
+  --glas-mono: ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
+
+  /* De velden (`--g`): één veld met gloed per view. */
+  --g-dageraad: radial-gradient(38% 48% at 80% 28%, #fe762c 0, transparent 70%), radial-gradient(55% 60% at 22% 72%, #1d428a 0, transparent 70%), radial-gradient(50% 50% at 62% 92%, #9db8ff 0, transparent 70%), #c9d6f2;
+  --g-gracht: radial-gradient(50% 60% at 20% 20%, #9db8ff 0, transparent 70%), radial-gradient(45% 55% at 85% 75%, #1d428a 0, transparent 70%), #dbe4f6;
+  --g-nevel: radial-gradient(55% 55% at 50% 40%, #c3d3f7 0, transparent 75%), radial-gradient(40% 40% at 88% 86%, #ffcfb0 0, transparent 70%), #eef2fb;
+  --g-nacht: radial-gradient(50% 60% at 25% 25%, #1d428a 0, transparent 72%), radial-gradient(42% 46% at 82% 82%, #5d7fd6 0, transparent 70%), radial-gradient(30% 34% at 70% 100%, rgba(254, 118, 44, 0.55) 0, transparent 70%), #00122e;
+  --g-nacht-stil: radial-gradient(50% 60% at 25% 25%, #1d428a 0, transparent 72%), radial-gradient(42% 46% at 82% 82%, #2a4f9a 0, transparent 70%), #00122e;
+  --g-licht: radial-gradient(45% 60% at 92% 0%, #b9cbf3 0, transparent 70%), radial-gradient(30% 50% at 100% 100%, #c9d6f2 0, transparent 70%), #eaf0fa;
+  --g-hero: radial-gradient(34% 46% at 84% 26%, #fe762c 0, transparent 70%), radial-gradient(40% 55% at 74% 82%, #5d7fd6 0, transparent 70%), radial-gradient(60% 70% at 10% 30%, #e9eef9 0, transparent 75%), #d6e0f5;
+}
+
+/* Tailwind-utilities voor Glas: `bg-nacht`, `text-ink-2`, `rounded-g-lg`, `shadow-zweef`,
+   `ease-glas`, `font-glas-mono`. Let op: `bg-mist` is ónze mist; Tailwinds eigen `mist-50…950`
+   bestaan ernaast en betekenen iets anders. Gebruik `mist-2`, nooit `mist-200`. */
+@theme inline {
+  --color-nacht: var(--nacht);
+  --color-diep: var(--diep);
+  --color-navy: var(--navy);
+  --color-navy-2: var(--navy-2);
+  --color-hemel: var(--hemel);
+  --color-waas: var(--waas);
+  --color-nevel: var(--nevel);
+  --color-mist: var(--mist);
+  --color-mist-2: var(--mist-2);
+  --color-tegel: var(--tegel);
+  --color-wit: var(--wit);
+  --color-ink: var(--ink);
+  --color-ink-2: var(--ink-2);
+  --color-ink-3: var(--ink-3);
+  --color-oranje: var(--oranje);
+  --color-oranje-zacht: var(--oranje-zacht);
+  --color-klei: var(--klei);
+  --color-klei-tint: var(--klei-tint);
+  --color-goed: var(--goed);
+  --color-goed-ink: var(--goed-ink);
+  --color-goed-tint: var(--goed-tint);
+  --color-fout: var(--fout);
+  --color-fout-tint: var(--fout-tint);
+  --radius-g-xs: var(--r-xs);
+  --radius-g-sm: var(--r-sm);
+  --radius-g-md: var(--r-md);
+  --radius-g-lg: var(--r-lg);
+  --radius-g-xl: var(--r-xl);
+  --shadow-zweef: var(--zweef);
+  --shadow-zweef-d: var(--zweef-d);
+  --shadow-glas-ring: var(--glas-ring);
+  --ease-glas: var(--ease-out-glas);
+  --ease-glas-io: var(--ease-io-glas);
+  --ease-veer: var(--veer);
+  --font-glas-mono: var(--glas-mono);
 }
