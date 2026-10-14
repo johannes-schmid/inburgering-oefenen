@@ -30,8 +30,8 @@ const ICONS: Record<SectionIcon, LucideIcon> = {
  * De tweede kolom, en **alleen binnen een lesmodule**.
  *
  * Zie de doc-comment bij `LearnPanelData` in `nav.ts` voor waarom hij een uitzondering is en
- * geen vaste kolom. Hij is licht op de navy zijbalk: die draagt het merk, en een tweede donkere
- * kolom liet de twee assen als één blok lezen.
+ * geen vaste kolom. In Glas is hij een witte kaart naast de glazen zijbalk ("course" in
+ * glas.html §09b): blokken als rijen met een lettertegel, lessen eronder met een rondje.
  *
  * **Elke sectie klapt uit, en alleen de huidige staat open.** Een spoor van dertig lessen
  * achter elkaar is één scrollende lijst en geen navigatie meer, en meer dan één open sectie
@@ -62,63 +62,57 @@ export default function LearnPanel({ locale, data }: { locale: string; data: Lea
 
   return (
     <aside id="dash-panel" aria-label={data.title}>
-      <a href={`/${locale}${data.backHref}`} className="lp-back">
-        <ArrowLeft size={13} strokeWidth={2.4} className="rtl-flip" aria-hidden />
+      <a href={`/${locale}${data.backHref}`} className="g-lp-back">
+        <ArrowLeft strokeWidth={2.4} className="rtl-flip" aria-hidden />
         <span>{data.backLabel}</span>
       </a>
-      <p className="lp-title">{data.title}</p>
+      <p className="g-lp-title">{data.title}</p>
 
-      <nav className="lp-nav">
+      <nav className="g-lp-nav">
         {data.sections.map(section => {
           /* De huidige module wint altijd van een dichtgeklapte: de sectie sluiten waar je
              op dit moment in staat verbergt precies waar je bent. Zelfde regel als bij het
              modulemenu in de zijbalk. */
           const isOpen = section.id === currentSection || (open[section.id] ?? false);
+          const isCurrent = section.id === currentSection;
+          const isDone = typeof section.done === 'number' && typeof section.total === 'number'
+            && section.total > 0 && section.done >= section.total;
           const Glyph = section.icon ? ICONS[section.icon] : null;
           return (
-            <div key={section.id} className={`lp-sec${isOpen ? ' open' : ''}`}>
+            <div key={section.id}>
+              {/* Het blok als rij (glas.html §09b "LearnPanel"): letter in een tegeltje, de naam,
+                  de telling. Geen letter? Dan het glyph van de module in hetzelfde tegeltje. */}
               <button
                 type="button"
-                className="lp-sec-head"
+                className={`g-blk${isCurrent ? ' g-cur' : ''}${isDone ? ' g-done' : ''}`}
                 aria-expanded={isOpen}
                 onClick={() => toggle(section.id, !isOpen)}
               >
-                <ChevronRight size={13} strokeWidth={2.6} className="lp-chev rtl-flip" aria-hidden />
-                {Glyph && (
-                  <span className="lp-ic" aria-hidden>
-                    <Glyph size={13} strokeWidth={2.2} />
-                  </span>
-                )}
-                <span className="lp-sec-lb">
-                  {section.letter && <span className="lp-letter">{section.letter}</span>}
-                  {section.label}
+                <span className="g-blk-L" aria-hidden>
+                  {section.letter ?? (Glyph ? <Glyph strokeWidth={2.2} /> : <ChevronRight strokeWidth={2.4} className="rtl-flip" />)}
                 </span>
+                <span className="g-blk-t">{section.label}</span>
                 {typeof section.done === 'number' && typeof section.total === 'number' && (
-                  <span className="lp-n">{section.done}/{section.total}</span>
+                  <span className="g-blk-end">{section.done}/{section.total}</span>
                 )}
               </button>
               {isOpen && (
-                <div className="lp-items">
+                <div className="g-les-list">
                   {section.items.map(item => (
                     <a
                       key={item.href}
                       href={`/${locale}${item.href}`}
                       aria-current={item.current ? 'page' : undefined}
-                      className={`lp-row${item.current ? ' on' : ''}${item.locked ? ' dim' : ''}`}
+                      className={`g-les${item.done ? ' g-d' : ''}${item.current ? ' g-c' : ''}${item.locked ? ' g-l' : ''}`}
                     >
-                      {/* Alleen een tegel als er iets in staat. Een leeg vierkantje naast elke
-                          nog niet gedane les leest als een uitgevinkt vakje — terwijl "nog niet
-                          gedaan" gewoon de normale toestand is. */}
-                      {item.done || item.locked
-                        ? (
-                          <span className="lp-mark" aria-hidden>
-                            {item.done
-                              ? <Check size={11} strokeWidth={3.2} />
-                              : <Lock size={10} strokeWidth={2.6} />}
-                          </span>
-                        )
-                        : <span className="lp-gap" aria-hidden />}
-                      <span className="lp-lb">{item.label}</span>
+                      {/* Alleen iets in het rondje als er iets te zeggen is: een leeg rondje naast
+                          elke nog niet gedane les leest als een uitgevinkt vakje. */}
+                      <span className="g-les-ic" aria-hidden>
+                        {item.done
+                          ? <Check strokeWidth={3.2} />
+                          : item.locked ? <Lock strokeWidth={2.6} /> : null}
+                      </span>
+                      <span className="g-les-lb">{item.label}</span>
                     </a>
                   ))}
                 </div>

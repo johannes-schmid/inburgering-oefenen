@@ -1,6 +1,8 @@
 /* De CSS van het portaal en /admin. Bewust niet in `globals.css`: dan zou elke publieke
-   pagina hem render-blocking meeladen. Zie de kop van `app/portal.css`. */
+   pagina hem render-blocking meeladen. Zie de kop van `app/portal.css`. `glas-portal.css` is de
+   Glas-chrome en de overzichtsschermen van het portaal — zelfde afweging. */
 import '@/app/portal.css';
+import '@/app/glas-portal.css';
 import AnalyticsProviders from '@/components/AnalyticsProviders';
 import DevStateBar from '@/components/dev/DevStateBar';
 import { devToolsEnabled } from '@/lib/dev-tools';
