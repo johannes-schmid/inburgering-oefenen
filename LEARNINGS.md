@@ -5739,3 +5739,15 @@ oplopende `top` per index doet het, en de `prefers-reduced-motion`-uitweg is dan
 **Outcome:** SUCCESS
 **What worked / went wrong:** Eerst vijf varianten als losse HTML-mockup in de scratchpad, pas na de keuze van de eigenaar in de app. Alle tien examens staan er altijd, ook ongepubliceerde (eigenaar: "laat zien dat ze er allemaal zijn"). Het examenmerk staat als watermerk achter het nummer; op 58% van een 46px-tegel was het onzichtbaar, pas met een `bare`-merk van 68px op 12% dekking leest het. Lokale testaccounts met een wachtwoord worden door `hook_reviewer_claims` geweigerd tot `app_metadata.reviewer = true` (alleen lokaal zetten).
 **Lesson:** "N van 25 goed" kan niet uit `ExamProgress` (alleen `bestPct`, en bij Schrijven/Spreken bestaat "goed" niet) — toon pogingen, nooit een teruggerekend aantal.
+
+## 2026-10-15 — Pakketten: rekening als zijkolom op desktop
+**Changed:** `app/[locale]/(app)/dashboard/pakketten/ModulePicker.tsx` (keuze in `.g-mp-main`, totaal in een `<aside>` met regel per gekozen onderdeel, foutmelding en incasso-toestemming erin) en `app/glas-portal.css` (vanaf 1200px een grid `1fr 320px`, aside sticky bovenaan, tegels in twee kolommen; daaronder blijft de balk onderaan).
+**Outcome:** SUCCESS
+**What worked / went wrong:** De toestemmingstekst staat twee keer in de DOM (kolom op desktop, onder de tegels op mobiel), steeds één met `display: none`, zodat de mobiele balk niet hoog wordt. Het lokale testaccount moest weer `app_metadata.reviewer = true` krijgen voor `mintSession`.
+**Lesson:** Een sticky-balk die over de inhoud schuift is op desktop een noodgreep; als er breedte over is, hoort een lopend totaal in een eigen kolom.
+
+## 2026-10-15 — Pakketten: "alles inbegrepen" per tegel, overzicht in een dialog, KNM + ONA samen
+**Changed:** `dashboard/pakketten/page.tsx` geeft per module een `includes`-lijst mee (vervangt `metaLine`) en zet KNM en ONA onder één groep "Andere modules"; `ModulePicker.tsx` toont die lijst als vinkjes op de tegel, een strook "Alles inbegrepen" met "Bekijk alles", een link in de zijkolom en `IncludedDialog` (native `<dialog>`); CSS `g-mp-inc`, `g-mp-allin`, `g-inc-*` in `app/glas-portal.css`.
+**Outcome:** SUCCESS
+**What worked / went wrong:** Lessen worden alleen beloofd waar de leerlaag bestaat (A2, en KNM's lesmodules); B1 krijgt die regel niet, ook al zegt `/premium` "lessen" per module. Native `<dialog>` + `@starting-style` + `allow-discrete` geeft in- én uitgang zonder JS-staat. Een oneven aantal secties liet een gat; de laatste even sectie overspant nu de hele breedte.
+**Lesson:** Een featurelijst op een prijskaart per module afleiden van wat er voor die module bestaat, niet één lijst voor alles — B1 en A2 verkopen niet hetzelfde.

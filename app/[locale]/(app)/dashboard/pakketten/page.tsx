@@ -13,6 +13,8 @@ import AppShell from '../../components/AppShell';
 import ModulePicker from './ModulePicker';
 import { fetchPortalMenu } from '@/lib/portal-menu';
 
+const OTHER_MODULES = 'Andere modules';
+
 export const metadata: Metadata = {
   title: 'Pakketten | Inburgering Oefenen',
   robots: { index: false, follow: false },
@@ -123,28 +125,42 @@ export default async function PakkettenPage({
               return {
                 slug: mod.slug,
                 level: null,
-                levelLabel: 'ONA',
+                levelLabel: OTHER_MODULES,
                 skill: mod.skill,
                 label: 'ONA',
                 examCount: 0,
                 itemCount: null,
                 itemNoun: '',
                 hasRubricFeedback: false,
-                metaLine: `${ONA_CARD_COUNT} resultaatkaarten · eindgesprek oefenen`,
+                includes: [
+                  `${ONA_CARD_COUNT} resultaatkaarten met uitleg`,
+                  'Check van je portfolio',
+                  'Eindgesprek oefenen',
+                ],
                 owned: ownsOna(meta),
               };
             }
             const skill = getOnderdeel(mod.skill)!;
+            const itemNoun = skill.scoring === 'open' ? 'opdrachten' : 'vragen';
+            const exams = `Alle ${mod.examCount} oefenexamens${mod.itemCount !== null ? ` · ${mod.itemCount} ${itemNoun}` : ''}`;
             return {
               slug: mod.slug,
               level: mod.level,
-              levelLabel: moduleGroupLabel(mod.level),
+              levelLabel: mod.level === null ? OTHER_MODULES : moduleGroupLabel(mod.level),
               skill: mod.skill,
               label: skill.slug,
               examCount: mod.examCount,
               itemCount: mod.itemCount,
-              itemNoun: skill.scoring === 'open' ? 'opdrachten' : 'vragen',
+              itemNoun,
               hasRubricFeedback: mod.hasRubricFeedback,
+              /* Alleen wat er echt in zit: de leerlaag bestaat op A2, KNM heeft eigen lesmodules
+                 en woordkaarten. Op B1 dus geen "lessen" beloven. */
+              includes: [
+                exams,
+                mod.hasRubricFeedback ? 'Onbeperkt nakijken op de criteria van de docent' : 'Uitleg bij elke vraag',
+                ...(mod.level === 'a2' ? ['Lessen en woordenlijst'] : []),
+                ...(mod.level === null ? ['Lesmodules en woordkaarten'] : []),
+              ],
               owned: mod.level === null
                 ? ownsKnm(meta)
                 : ownsModule(meta, mod.level, mod.skill as SkillSlug),
