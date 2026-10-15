@@ -6,12 +6,14 @@ import { createClient } from '@/lib/supabase/server';
 import ValidationSeal from '@/components/glas/ValidationSeal';
 import { ONA_CARD_COUNT, getOnaCard } from '@/data/ona/cards';
 import { canOpenOnaCard, isOnaAvailable, isOnaReviewed } from '@/lib/ona/access';
-import { fetchOnaEntry, fetchOnaPortfolio } from '@/lib/ona/server';
+import { fetchOnaEntry, fetchOnaPortfolio, fetchOnaState } from '@/lib/ona/server';
 import { fetchPortalMenu } from '@/lib/portal-menu';
 import AppShell from '../../../../components/AppShell';
 import '@/app/glas-leerlaag.css';
 import PortalCrumbs from '../../../../components/PortalCrumbs';
 import CardEditor from './CardEditor';
+import CourseRoute from '@/components/lessons/CourseRoute';
+import { onaRoute } from '@/lib/lessons/track-routes';
 
 /**
  * Eén resultaatkaart schrijven.
@@ -44,14 +46,17 @@ export default async function OnaCardPage({ params }: Props) {
   if (!portfolio) redirect(`/${locale}/dashboard/ona/start`);
 
   const open = canOpenOnaCard(meta, card.number);
-  const [entry, menu] = await Promise.all([
+  const [entry, menu, state] = await Promise.all([
     open ? fetchOnaEntry(portfolio.id, card.number) : Promise.resolve(null),
     fetchPortalMenu(),
+    fetchOnaState(user.id),
   ]);
 
   const base = `/${locale}/dashboard/ona`;
   const prev = card.number > 1 ? card.number - 1 : null;
   const next = card.number < ONA_CARD_COUNT ? card.number + 1 : null;
+
+  const route = await onaRoute({ locale, meta, state, open: 'portfolio', currentCard: card.number });
 
   return (
     <AppShell
@@ -61,6 +66,15 @@ export default async function OnaCardPage({ params }: Props) {
       active="ona-portfolio"
       activeGroup="ona"
       menu={menu}
+      course={
+        <CourseRoute
+          courseLabel="ONA"
+          done={route.done}
+          total={route.total}
+          blocks={route.blocks}
+          backHref={base}
+        />
+      }
     >
       <div className="g-leer gl-shell">
         <div className="max-w-6xl mx-auto ona">

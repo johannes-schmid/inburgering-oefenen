@@ -93,7 +93,7 @@ export async function courseRowLabels(): Promise<RowLabels> {
 
 /** De labels van de twee stappen in `GrammarTopicView`, gedeeld door de les- en onderwerppagina. */
 export function stepLabels(
-  t: (key: 'steps_aria' | 'step_back_video' | 'step_back_uitleg' | 'handoff_kick' | 'handoff_start' | 'bar_next') => string,
+  t: (key: 'steps_aria' | 'step_back_video' | 'step_back_uitleg' | 'handoff_kick' | 'handoff_start' | 'bar_next' | 'explain_kick' | 'explain_title') => string,
   rows: RowLabels,
   exercises: number,
 ) {
@@ -108,5 +108,7 @@ export function stepLabels(
     handoffKick: t('handoff_kick'),
     handoffStart: t('handoff_start'),
     barNext: t('bar_next'),
+    explainKick: t('explain_kick'),
+    explainTitle: t('explain_title'),
   };
 }

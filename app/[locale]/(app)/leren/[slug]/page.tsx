@@ -5,6 +5,9 @@ import { FEATURES } from '@/lib/features';
 import { fetchPortalMenu } from '@/lib/portal-menu';
 import AppShell from '../../components/AppShell';
 import LerenThemaClient from './LerenThemaClient';
+import CourseRoute from '@/components/lessons/CourseRoute';
+import { ownsKnm } from '@/lib/entitlements';
+import { knmRoute } from '@/lib/lessons/track-routes';
 
 export const metadata: Metadata = {
   title: 'Lesmodule | Inburgering Oefenen',
@@ -36,6 +39,8 @@ export default async function LerenThemaPage({
   const meta = user.user_metadata ?? {};
   const menu = await fetchPortalMenu();
 
+  const route = await knmRoute({ locale, userId: user.id, owns: ownsKnm(meta), open: 'leren', currentSlug: slug });
+
   return (
     <AppShell
       locale={locale}
@@ -44,6 +49,16 @@ export default async function LerenThemaPage({
       active="leren"
       activeGroup="knm"
       menu={menu}
+      course={
+        <CourseRoute
+          courseLabel="KNM"
+          done={route.done}
+          total={route.total}
+          blocks={route.blocks}
+          backHref={`/${locale}/dashboard/knm`}
+          nextHref={`/${locale}/dashboard/knm`}
+        />
+      }
     >
       <LerenThemaClient locale={locale} slug={slug} />
     </AppShell>

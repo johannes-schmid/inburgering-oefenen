@@ -2,13 +2,12 @@
 
 import { useEffect, useState } from 'react';
 import { useTranslations } from 'next-intl';
-import { ArrowRight, BookOpen, ChevronRight, ClipboardList, LayersIcon, LayoutDashboard, Lock, LogIn, LogOut, Mail, MessageSquare, Send, UserPlus } from 'lucide-react';
+import { ArrowRight, ChevronRight, LayoutDashboard, Lock, LogIn, LogOut, Mail, UserPlus } from 'lucide-react';
 import { createClient } from '@/lib/supabase/client';
 import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
 import LogoMark from '@/components/site/LogoMark';
 import ExamMark, { type Track } from '@/components/horizon/ExamMark';
 import { KNM_SLUG, LEVELS } from '@/data/skills';
-import { FEATURES } from '@/lib/features';
 import type { PortalMenu, PortalMenuGroup } from '@/lib/portal-menu';
 import type { PortalNav } from './nav';
 import { localeHref } from '@/i18n/paths';
@@ -56,7 +55,6 @@ export default function PortalSidebar({
 }: Props) {
   const t = useTranslations('portal');
   const tSkills = useTranslations('skills');
-  const tNav = useTranslations('nav');
   const supabase = createClient();
 
   /**
@@ -110,7 +108,7 @@ export default function PortalSidebar({
   const showPlan = !isGuest && ((menu?.available.length ?? 1) > 0
     || groups.some(g => g.items.some(i => !i.owned)));
   const ownsAny = groups.some(g => g.items.some(i => i.owned));
-  const onaOn = activeGroup === 'ona' && active === 'overview-module';
+  const onaOn = activeGroup === 'ona';
 
   return (
     <aside id="dash-side" aria-label={t('nav_aria')}>
@@ -132,13 +130,14 @@ export default function PortalSidebar({
         <p className="g-side-grp">{t('nav_modules')}</p>
 
         {groups.map(group => {
-          const expanded = open.includes(group.id);
           const inGroup = activeGroup === group.id;
+          /* KNM is één rij zonder uitklap (eigenaar, 15-10): de examens staan op het
+             moduleoverzicht, de lesmodules en woordkaarten in de cursusroute ernaast. De rij
+             is dus "hier ben je" op elke KNM-pagina. */
           const isKnm = group.id === KNM_SLUG;
-          // KNM's enige onderdeel *is* de module, dus zijn rij en de moduleoverzichtsrij zijn
-          // dezelfde URL. Twee rijen naar dezelfde pagina leest als een renderfout.
-          const items = group.items.filter(i => i.href !== group.href);
-          const onModule = inGroup && active === 'overview-module';
+          const items = isKnm ? [] : group.items;
+          const onModule = inGroup && (isKnm || active === 'overview-module');
+          const expanded = !isKnm && open.includes(group.id);
 
           return (
             <div key={group.id} className={`g-sgroup${expanded ? ' g-open' : ''}`}>
@@ -148,7 +147,7 @@ export default function PortalSidebar({
               <div className={`g-smod${inGroup ? ' g-within' : ''}${onModule ? ' g-on' : ''}`}>
                 <a
                   href={`/${locale}${group.href}`}
-                  aria-current={onModule ? 'page' : undefined}
+                  aria-current={inGroup && active === 'overview-module' ? 'page' : undefined}
                   className="g-navi"
                 >
                   {/* Het trackmerk (§7, G4): deze rij benoemt een module — iets dat je koopt.
@@ -160,18 +159,20 @@ export default function PortalSidebar({
                     {group.level ? t('level_section', { level: group.badge ?? '' }) : group.label}
                   </span>
                 </a>
-                <button
-                  type="button"
-                  onClick={() => toggle(group.id)}
-                  aria-expanded={expanded}
-                  aria-label={group.label}
-                  className="g-schev"
-                >
-                  <ChevronRight strokeWidth={2.4} aria-hidden />
-                </button>
+                {!isKnm && (
+                  <button
+                    type="button"
+                    onClick={() => toggle(group.id)}
+                    aria-expanded={expanded}
+                    aria-label={group.label}
+                    className="g-schev"
+                  >
+                    <ChevronRight strokeWidth={2.4} aria-hidden />
+                  </button>
+                )}
               </div>
 
-              {expanded && (
+              {expanded && items.length > 0 && (
                 <div className="g-ssub">
                   {items.map(item => {
                     const on = inGroup && active === item.slug;
@@ -197,42 +198,6 @@ export default function PortalSidebar({
                     );
                   })}
 
-                  {/* KNM's drie rijen: de drie manieren waarop je KNM oefent (eigenaar, 16-09).
-                      Ze heten hier niet "KNM …": ze hangen zichtbaar onder de KNM-tegel. De
-                      eerste wijst naar `/dashboard/knm` zelf — de strook óp dat scherm ís het
-                      examenoverzicht — vandaar dezelfde `active`-stand als de moduletegel. */}
-                  {isKnm && (
-                    <a
-                      href={`/${locale}/dashboard/knm`}
-                      aria-current={active === 'overview-module' ? 'page' : undefined}
-                      className={active === 'overview-module' ? 'g-on' : undefined}
-                    >
-                      <span className="g-ssub-ic" aria-hidden><ClipboardList strokeWidth={2.2} /></span>
-                      <span className="g-navi-lb">{tNav('knm_oefenexamens')}</span>
-                    </a>
-                  )}
-                  {isKnm && FEATURES.leren && (
-                    <a
-                      href={`/${locale}/leren`}
-                      aria-current={active === 'leren' ? 'page' : undefined}
-                      className={active === 'leren' ? 'g-on' : undefined}
-                    >
-                      {/* lucide en geen categoriemerk: lesmodules en woordkaarten zijn geen
-                          onderdeel van KNM maar twee manieren om het te oefenen. */}
-                      <span className="g-ssub-ic" aria-hidden><LayersIcon strokeWidth={2.2} /></span>
-                      <span className="g-navi-lb">{tNav('knm_leren')}</span>
-                    </a>
-                  )}
-                  {isKnm && FEATURES.woordkaarten && (
-                    <a
-                      href={`/${locale}/dashboard/woordkaarten`}
-                      aria-current={active === 'woordkaarten' ? 'page' : undefined}
-                      className={active === 'woordkaarten' ? 'g-on' : undefined}
-                    >
-                      <span className="g-ssub-ic" aria-hidden><BookOpen strokeWidth={2.2} /></span>
-                      <span className="g-navi-lb">{tNav('knm_woordkaarten')}</span>
-                    </a>
-                  )}
                 </div>
               )}
             </div>
@@ -240,14 +205,13 @@ export default function PortalSidebar({
         })}
 
         {menu?.ona.available ? (
-          /* ONA als eigen groep, in dezelfde vorm als KNM: de moduletegel linkt naar het
-             overzicht, de chevron klapt de drie rijen uit. Geen `PortalMenuGroup`, want die
-             draagt onderdelen met examens en ONA heeft er geen. */
-          <div className={`g-sgroup${open.includes('ona') ? ' g-open' : ''}`}>
-            <div className={`g-smod${activeGroup === 'ona' ? ' g-within' : ''}${onaOn ? ' g-on' : ''}`}>
+          /* ONA is één rij, net als KNM (eigenaar, 15-10): portfolio, eindgesprek en inleveren
+             staan in de cursusroute naast de kaart-, gesprek- en inleverpagina. */
+          <div className="g-sgroup">
+            <div className={`g-smod${onaOn ? ' g-on' : ''}`}>
               <a
                 href={`/${locale}/dashboard/ona`}
-                aria-current={onaOn ? 'page' : undefined}
+                aria-current={activeGroup === 'ona' && active === 'overview-module' ? 'page' : undefined}
                 className="g-navi"
               >
                 <span className="g-navi-ic g-navi-ic-bare" aria-hidden>
@@ -256,38 +220,7 @@ export default function PortalSidebar({
                 {/* Niet vertaald: ONA is een eigennaam, DUO's eigen afkorting. */}
                 <span className="g-navi-lb">ONA</span>
               </a>
-              <button
-                type="button"
-                onClick={() => toggle('ona')}
-                aria-expanded={open.includes('ona')}
-                aria-label="ONA"
-                className="g-schev"
-              >
-                <ChevronRight strokeWidth={2.4} aria-hidden />
-              </button>
             </div>
-            {open.includes('ona') && (
-              <div className="g-ssub">
-                {([
-                  ['ona-portfolio', '/dashboard/ona', 'ona_portfolio', ClipboardList],
-                  ['ona-eindgesprek', '/dashboard/ona/eindgesprek', 'ona_eindgesprek', MessageSquare],
-                  ['ona-inleveren', '/dashboard/ona/inleveren', 'ona_inleveren', Send],
-                ] as const).map(([key, href, label, Icon]) => {
-                  const on = activeGroup === 'ona' && active === key;
-                  return (
-                    <a
-                      key={key}
-                      href={`/${locale}${href}`}
-                      aria-current={on ? 'page' : undefined}
-                      className={on ? 'g-on' : undefined}
-                    >
-                      <span className="g-ssub-ic" aria-hidden><Icon strokeWidth={2.2} /></span>
-                      <span className="g-navi-lb">{tNav(label)}</span>
-                    </a>
-                  );
-                })}
-              </div>
-            )}
           </div>
         ) : (
           /* ONA wacht op de docent (`isOnaAvailable`). Tot dan: geen link en zichtbaar doffer,

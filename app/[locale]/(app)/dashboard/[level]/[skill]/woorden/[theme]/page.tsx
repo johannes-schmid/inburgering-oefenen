@@ -3,10 +3,10 @@ import { notFound, redirect } from 'next/navigation';
 import { getTranslations } from 'next-intl/server';
 import { createClient } from '@/lib/supabase/server';
 import { ownsModule } from '@/lib/entitlements';
-import { getSkillAtLevel, isLevel, levelLabel, SKILLS } from '@/data/skills';
+import { getSkillAtLevel, isLevel, levelLabel } from '@/data/skills';
 import { themeLabel } from '@/data/lesson-themes';
 import { fetchWordThemes } from '@/lib/lessons/words-server';
-import { wordThemePath, wordsPath } from '@/lib/lessons/words';
+import { wordThemePath } from '@/lib/lessons/words';
 import { fetchCourse } from '@/lib/lessons/lessons-server';
 import { fetchGrammarStep } from '@/lib/lessons/grammar-server';
 import { courseOutline } from '@/lib/lessons/grammar';
@@ -131,14 +131,9 @@ export default async function WoordThemaPage({ params }: Props) {
           courseLabel={`${levelLabel(level)} ${skillName}`}
           done={outline.done}
           total={outline.total}
-          skills={SKILLS.map(s => ({
-            key: s.slug,
-            label: tSkills(`${s.key}.short`),
-            href: `/${locale}${wordsPath(level, s.slug)}`,
-            on: s.slug === skill.slug,
-          }))}
           blocks={routeBlocks}
-          examsHref={back}
+          backHref={back}
+          nextHref={back}
         />
       }
     >

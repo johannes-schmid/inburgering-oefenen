@@ -1,17 +1,19 @@
 'use client';
 
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useTranslations } from 'next-intl';
 import {
-  ArrowRight, BookOpen, Check, ChevronDown, ClipboardCheck, Info, Layers, ListChecks, Lock, type LucideIcon, Puzzle,
-  SquarePlay, Target,
+  ArrowLeft, ArrowRight, BookOpen, Check, ClipboardCheck, ClipboardList, Info, Layers, ListChecks, Lock, type LucideIcon,
+  MessageSquare, Puzzle, Send, SquarePlay, Target,
 } from 'lucide-react';
 import { WORD_KNOWN_EVENT, type WordKnownDetail } from './WordSideNav';
 import type { SideBlock, SideItem, SideKind } from './GrammarCourseSide';
 
-export type RouteSkill = { key: string; label: string; href: string; on: boolean };
-
-const ICONS: Record<string, LucideIcon> = { A: Layers, B: Puzzle, C: Info, D: Target, E: ClipboardCheck };
+/** Per blokletter, en voor KNM en ONA per station (`SideBlock.icon`). */
+const ICONS: Record<string, LucideIcon> = {
+  A: Layers, B: Puzzle, C: Info, D: Target, E: ClipboardCheck,
+  woorden: Layers, leren: BookOpen, portfolio: ClipboardList, eindgesprek: MessageSquare, inleveren: Send,
+};
 const KIND_ICONS: Record<SideKind, LucideIcon> = { video: SquarePlay, uitleg: BookOpen, opdracht: ListChecks, woorden: Layers };
 
 /**
@@ -19,21 +21,22 @@ const KIND_ICONS: Record<SideKind, LucideIcon> = { video: SquarePlay, uitleg: Bo
  * voortgangsring en het onderdeel, dan de vijf blokken als stations op één lijn, met alleen
  * het blok van deze pagina open. Onder de lijn de weg naar de oefenexamens.
  *
- * Het niveau staat hier niet meer: de zijbalk ernaast zegt al "Niveau A2 › Lezen". Het
- * onderdeel wel, als keuzelijst in de kop, zodat je binnen de leerlaag kunt wisselen.
+ * Bovenaan een knop terug naar het overzicht van de module (eigenaar, 15-10); die verving de
+ * keuzelijst van onderdelen. Dezelfde kolom dient KNM en ONA: hun stations dragen een eigen
+ * `icon` en `sub`, en ONA heeft geen examens, dus geen `nextHref`.
  *
- * Een clientstuk om twee redenen: de keuzelijst sluit bij een klik ernaast, en op de
- * woordkaarten telt een thema mee zodra `WordDeck` een kaart markeert (`WORD_KNOWN_EVENT`).
+ * Een clientstuk omdat op de woordkaarten een thema meetelt zodra `WordDeck` een kaart
+ * markeert (`WORD_KNOWN_EVENT`).
  */
 export default function CourseRoute({
-  courseLabel, done, total, skills, blocks: initial, examsHref,
+  courseLabel, done, total, blocks: initial, backHref, nextHref = null,
 }: {
   courseLabel: string;
   done: number;
   total: number;
-  skills: RouteSkill[];
   blocks: SideBlock[];
-  examsHref: string;
+  backHref: string;
+  nextHref?: string | null;
 }) {
   const t = useTranslations('grammar');
   const blocks = useLiveWords(initial);
@@ -41,6 +44,11 @@ export default function CourseRoute({
 
   return (
     <div className="cr">
+      <a href={backHref} className="cr-back">
+        <ArrowLeft size={15} strokeWidth={2.4} className="rtl-flip" aria-hidden />
+        {t('route_back')}
+      </a>
+
       <div className="cr-head">
         <span className="cr-ring" aria-hidden>
           <svg viewBox="0 0 44 44">
@@ -56,39 +64,41 @@ export default function CourseRoute({
         </span>
         <div className="cr-head-txt">
           <p className="cr-kicker">{t('route_kicker', { done, total })}</p>
-          <SkillSwitch label={courseLabel} skills={skills} aria={t('skills_aria')} />
+          <p className="cr-title">{courseLabel}</p>
         </div>
       </div>
 
       <nav aria-label={t('blocks_aria')} className="cr-nav">
         <ol className="cr-route">
-          {blocks.map(b => <Station key={b.letter} block={b} sub={t(`route_sub_${b.letter}` as 'route_sub_A')} />)}
+          {blocks.map(b => <Station key={b.letter} block={b} sub={b.sub ?? t(`route_sub_${b.letter}` as 'route_sub_A')} />)}
         </ol>
       </nav>
 
-      <a href={examsHref} className="cr-next">
-        <span>
-          <span className="cr-next-k">{t('route_next_kicker')}</span>
-          <span className="cr-next-t">{t('route_next')}</span>
-        </span>
-        <ArrowRight size={17} strokeWidth={2.2} className="rtl-flip" aria-hidden />
-      </a>
+      {nextHref && (
+        <a href={nextHref} className="cr-next">
+          <span>
+            <span className="cr-next-k">{t('route_next_kicker')}</span>
+            <span className="cr-next-t">{t('route_next')}</span>
+          </span>
+          <ArrowRight size={17} strokeWidth={2.2} className="rtl-flip" aria-hidden />
+        </a>
+      )}
     </div>
   );
 }
 
 function Station({ block: b, sub }: { block: SideBlock; sub: string }) {
-  const Icon = ICONS[b.letter] ?? Info;
+  const Icon = ICONS[b.icon ?? b.letter] ?? Info;
   const head = (
     <>
       <span className={`cr-tile${b.open ? ' is-on' : b.complete ? ' is-done' : ''}`} aria-hidden>
-        {b.complete && !b.open ? <Check size={16} strokeWidth={2.8} /> : <Icon size={16} strokeWidth={2.1} />}
+        {b.complete && !b.open ? <Check size={18} strokeWidth={2.8} /> : <Icon size={18} strokeWidth={2.1} />}
       </span>
       <span className="cr-st-txt">
         <span className="cr-st-name"><span className="sr-only">{b.letter} · </span>{b.name}</span>
         <span className="cr-st-sub">{sub}</span>
       </span>
-      <span className="cr-st-count">{b.done}/{b.total}</span>
+      {b.total > 0 && <span className="cr-st-count">{b.done}/{b.total}</span>}
     </>
   );
   return (
@@ -96,7 +106,7 @@ function Station({ block: b, sub }: { block: SideBlock; sub: string }) {
       {b.href && !b.open
         ? <a href={b.href} className="cr-st-row">{head}</a>
         : <div className="cr-st-row" aria-current="step">{head}</div>}
-      {b.open && (
+      {b.open && b.items.length > 0 && (
         <ul className="cr-items">
           {b.items.map(it => <Item key={it.key} item={it} />)}
           {b.extras && b.extras.items.length > 0 && (
@@ -125,7 +135,7 @@ function Item({ item }: { item: SideItem }) {
         className={`cr-item${item.now ? ' is-now' : ''}${item.done ? ' is-done' : ''}${item.locked ? ' is-locked' : ''}`}
         aria-current={item.now ? 'page' : undefined}
       >
-        <span className="cr-kind" aria-hidden><Icon size={14} strokeWidth={2.2} /></span>
+        <span className="cr-kind" aria-hidden><Icon size={13} strokeWidth={2.3} /></span>
         <span className="cr-item-txt">
           <span className="cr-item-lb">
             {item.prefix && <b>{item.prefix}: </b>}
@@ -142,35 +152,6 @@ function Item({ item }: { item: SideItem }) {
               : null}
       </a>
     </li>
-  );
-}
-
-function SkillSwitch({ label, skills, aria }: { label: string; skills: RouteSkill[]; aria: string }) {
-  const ref = useRef<HTMLDetailsElement>(null);
-  useEffect(() => {
-    const close = (e: PointerEvent) => {
-      if (ref.current?.open && !ref.current.contains(e.target as Node)) ref.current.open = false;
-    };
-    document.addEventListener('pointerdown', close);
-    return () => document.removeEventListener('pointerdown', close);
-  }, []);
-  return (
-    <details ref={ref} className="cr-switch">
-      <summary aria-label={`${label} · ${aria}`}>
-        <span>{label}</span>
-        <ChevronDown size={15} strokeWidth={2.6} aria-hidden />
-      </summary>
-      <ul className="cr-menu">
-        {skills.map(s => (
-          <li key={s.key}>
-            <a href={s.href} className={s.on ? 'is-on' : undefined} aria-current={s.on ? 'page' : undefined}>
-              {s.label}
-              {s.on && <Check size={14} strokeWidth={2.6} aria-hidden />}
-            </a>
-          </li>
-        ))}
-      </ul>
-    </details>
   );
 }
 

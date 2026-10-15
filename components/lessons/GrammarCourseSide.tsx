@@ -42,6 +42,9 @@ export type SideBlock = {
   open: boolean;
   items: SideItem[];
   extras: { title: string; items: SideItem[] } | null;
+  /** KNM en ONA: de regel onder de naam en het icoon (`CourseRoute`). Anders volgt die uit `letter`. */
+  sub?: string;
+  icon?: string;
 };
 
 /**

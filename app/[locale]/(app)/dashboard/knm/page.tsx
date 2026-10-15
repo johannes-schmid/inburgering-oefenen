@@ -5,7 +5,7 @@ import { ownsKnm } from '@/lib/entitlements';
 import { emptyLevelledProgress, fetchPortalProgress, fetchPublishedExamNumbers } from '@/lib/portal-progress';
 import { FEATURES } from '@/lib/features';
 import { KNM, KNM_THEMES, isFreeExamOf } from '@/data/skills';
-import { KNM_WOORDKAARTEN } from '@/data/woordkaarten';
+import { KNM_WORD_TOTAL, countWordsKnown, fetchThemesDone } from '@/lib/lessons/track-routes';
 import { calculateSlaagkans } from '@/lib/exam-readiness';
 import AppShell from '../../components/AppShell';
 import PortalCrumbs from '../../components/PortalCrumbs';
@@ -36,8 +36,6 @@ export const metadata: Metadata = {
   robots: { index: false, follow: false },
 };
 
-/** De 366 woordkaarten liggen statisch in de repo; dit is hun aantal, niet een query. */
-const WORD_TOTAL = KNM_WOORDKAARTEN.themes.reduce((n, th) => n + th.words.length, 0);
 
 export default async function KnmExamsPage({ params }: Props) {
   const { locale } = await params;
@@ -59,7 +57,7 @@ export default async function KnmExamsPage({ params }: Props) {
     fetchPortalMenu(),
     fetchKnmThemeWeakness(user?.id ?? null),
     /* Een gast heeft geen voortgang; dan blijft de teller op nul zonder query. */
-    user ? Promise.all([countWordsKnown(user.id), countThemesDone(user.id)]) : Promise.resolve([0, 0] as const),
+    user ? Promise.all([countWordsKnown(user.id), fetchThemesDone(user.id).then(d => d.size)]) : Promise.resolve([0, 0] as const),
   ]);
   const [wordsKnown, themesDone] = counts;
 
@@ -76,7 +74,7 @@ export default async function KnmExamsPage({ params }: Props) {
   /** De leerbaan van KNM: woorden, dan de thema's. Alleen wat aanstaat komt in de rij. */
   const steps: { done: number; total: number; title: string; href: string; mark: LearnRow['mark'] }[] = [
     ...(FEATURES.woordkaarten
-      ? [{ done: wordsKnown, total: WORD_TOTAL, title: tKnm('woorden_title'), href: `/${locale}/dashboard/woordkaarten`, mark: 'woorden' as const }]
+      ? [{ done: wordsKnown, total: KNM_WORD_TOTAL, title: tKnm('woorden_title'), href: `/${locale}/dashboard/woordkaarten`, mark: 'woorden' as const }]
       : []),
     ...(FEATURES.leren
       ? [{ done: themesDone, total: KNM_THEMES.length, title: tKnm('leren_title'), href: `/${locale}/leren`, mark: 'leren' as const }]
@@ -178,41 +176,4 @@ export default async function KnmExamsPage({ params }: Props) {
       </div>
     </AppShell>
   );
-}
-
-
-/**
- * Hoeveel van de 366 woordkaarten de kandidaat kent.
- *
- * Een telling, geen rijen: `head: true` haalt alleen `count` op, zodat de 366 kaarten niet door
- * de pagina reizen voor één getal. Een fout betekent nul — dit is een cijfer op een kaart, geen
- * reden om het scherm te laten vallen.
- */
-async function countWordsKnown(userId: string): Promise<number> {
-  try {
-    const supabase = await createClient();
-    const { count } = await supabase
-      .from('user_word_card_progress')
-      .select('word_card_id', { count: 'exact', head: true })
-      .eq('user_id', userId)
-      .eq('status', 'known');
-    return count ?? 0;
-  } catch {
-    return 0;
-  }
-}
-
-/** Hoeveel van de zeven thema's afgerond zijn. Zelfde afweging als hierboven. */
-async function countThemesDone(userId: string): Promise<number> {
-  try {
-    const supabase = await createClient();
-    const { count } = await supabase
-      .from('user_leren_progress')
-      .select('thema_id', { count: 'exact', head: true })
-      .eq('user_id', userId)
-      .eq('completed', true);
-    return count ?? 0;
-  } catch {
-    return 0;
-  }
 }

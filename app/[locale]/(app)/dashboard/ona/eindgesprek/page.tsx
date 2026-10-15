@@ -13,6 +13,8 @@ import AppShell from '../../../components/AppShell';
 import '@/app/glas-leerlaag.css';
 import PortalCrumbs from '../../../components/PortalCrumbs';
 import Practice from './Practice';
+import CourseRoute from '@/components/lessons/CourseRoute';
+import { onaRoute } from '@/lib/lessons/track-routes';
 
 /**
  * Het eindgesprek oefenen: vragen over wat de kandidaat zelf op zijn kaarten schreef.
@@ -48,6 +50,8 @@ export default async function OnaPracticePage({ params }: Props) {
       && card.prompts.some(p => isAnswered(byNo.get(card.number)?.answers[p.id])),
   }));
 
+  const route = await onaRoute({ locale, meta, state, open: 'eindgesprek' });
+
   return (
     <AppShell
       locale={locale}
@@ -56,6 +60,15 @@ export default async function OnaPracticePage({ params }: Props) {
       active="ona-eindgesprek"
       activeGroup="ona"
       menu={menu}
+      course={
+        <CourseRoute
+          courseLabel="ONA"
+          done={route.done}
+          total={route.total}
+          blocks={route.blocks}
+          backHref={`/${locale}/dashboard/ona`}
+        />
+      }
     >
       <div className="g-leer gl-shell">
         <div className="max-w-6xl mx-auto ona">

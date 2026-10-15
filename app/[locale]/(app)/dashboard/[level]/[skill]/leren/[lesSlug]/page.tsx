@@ -3,7 +3,7 @@ import { notFound, redirect } from 'next/navigation';
 import { getTranslations } from 'next-intl/server';
 import { createClient } from '@/lib/supabase/server';
 import { ownsModule } from '@/lib/entitlements';
-import { getSkillAtLevel, isLevel, levelLabel, SKILLS } from '@/data/skills';
+import { getSkillAtLevel, isLevel, levelLabel } from '@/data/skills';
 import { fetchPortalMenu } from '@/lib/portal-menu';
 import { closeTrail } from '@/lib/portal-crumbs';
 import { LessonProgressScope } from '@/components/lessons/LessonProgressScope';
@@ -145,14 +145,9 @@ export default async function LessonPage({ params, searchParams }: Props) {
       courseLabel={`${levelLabel(level)} ${skillName}`}
       done={outline.done}
       total={outline.total}
-      skills={SKILLS.map(s => ({
-        key: s.slug,
-        label: tSkills(`${s.key}.short`),
-        href: `/${locale}/dashboard/${level}/${s.slug}`,
-        on: s.slug === skill.slug,
-      }))}
       blocks={sideBlocks}
-      examsHref={`/${locale}/dashboard/${level}/${skill.slug}`}
+      backHref={`/${locale}/dashboard/${level}/${skill.slug}`}
+          nextHref={`/${locale}/dashboard/${level}/${skill.slug}`}
     />
   );
 

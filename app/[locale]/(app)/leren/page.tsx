@@ -10,6 +10,8 @@ import CategoryMark from '@/components/horizon/CategoryMark';
 import AppShell from '../components/AppShell';
 import { fetchPortalMenu } from '@/lib/portal-menu';
 import '@/app/glas-leerlaag.css';
+import CourseRoute from '@/components/lessons/CourseRoute';
+import { knmRoute } from '@/lib/lessons/track-routes';
 
 /**
  * The index of KNM's seven lesson modules.
@@ -43,6 +45,8 @@ export default async function LerenIndexPage({ params }: Props) {
 
   const menu = await fetchPortalMenu();
 
+  const route = await knmRoute({ locale, userId: user.id, owns, open: 'leren' });
+
   return (
     <AppShell
       locale={locale}
@@ -51,6 +55,16 @@ export default async function LerenIndexPage({ params }: Props) {
       active="leren"
       activeGroup="knm"
       menu={menu}
+      course={
+        <CourseRoute
+          courseLabel="KNM"
+          done={route.done}
+          total={route.total}
+          blocks={route.blocks}
+          backHref={`/${locale}/dashboard/knm`}
+          nextHref={`/${locale}/dashboard/knm`}
+        />
+      }
     >
       <div className="g-leer gl-shell">
         <div className="gl-course gl-narrow">

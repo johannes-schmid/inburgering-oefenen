@@ -43,6 +43,8 @@ export type TopicViewLabels = {
   backUitleg: string;
   handoffKick: string;
   handoffStart: string;
+  explainKick: string;
+  explainTitle: string;
   barNext: string;
 };
 
@@ -115,6 +117,8 @@ export default function GrammarTopicView({
   const total = parts.reduce((n, p) => n + (p.lessonId === null ? 0 : p.exercises), 0);
   const split = total > 0;
   const onTask = split && step === 'opdracht';
+  /* Onder een video staat onze eigen uitleg als apart deel, met ruimte erboven (eigenaar, 15-10). */
+  const explainHead = !onTask && !!video;
   const taskHref = `${href}?stap=opdracht`;
   const hasVideo = !!video?.url;
   const FirstIcon = hasVideo ? SquarePlay : BookOpen;
@@ -203,6 +207,16 @@ export default function GrammarTopicView({
                 {video.duration && <span className="g-mono">{video.duration}</span>}
               </figcaption>
             </figure>
+          )}
+
+          {explainHead && (
+            <header className="gl-explain-head">
+              <span className="gl-explain-ic" aria-hidden><BookOpen size={17} strokeWidth={2.2} /></span>
+              <span>
+                <small className="g-mono">{labels.explainKick}</small>
+                <h2 className="g-head">{labels.explainTitle}</h2>
+              </span>
+            </header>
           )}
 
           {many && (

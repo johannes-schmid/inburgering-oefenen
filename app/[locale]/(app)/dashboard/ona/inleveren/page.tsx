@@ -12,6 +12,8 @@ import AppShell from '../../../components/AppShell';
 import '@/app/glas-leerlaag.css';
 import PortalCrumbs from '../../../components/PortalCrumbs';
 import PrintButton from './PrintButton';
+import CourseRoute from '@/components/lessons/CourseRoute';
+import { onaRoute } from '@/lib/lessons/track-routes';
 
 /**
  * Inleveren bij DUO: de drie controles van DUO, de stappen in Mijn Inburgering, en een
@@ -45,6 +47,8 @@ export default async function OnaSubmitPage({ params }: Props) {
   const byNo = new Map(state.entries.map(e => [e.cardNo, e]));
   const steps = ['inl_step_1', 'inl_step_2', 'inl_step_3', 'inl_step_4'] as const;
 
+  const route = await onaRoute({ locale, meta, state, open: 'inleveren' });
+
   return (
     <AppShell
       locale={locale}
@@ -53,6 +57,15 @@ export default async function OnaSubmitPage({ params }: Props) {
       active="ona-inleveren"
       activeGroup="ona"
       menu={menu}
+      course={
+        <CourseRoute
+          courseLabel="ONA"
+          done={route.done}
+          total={route.total}
+          blocks={route.blocks}
+          backHref={`/${locale}/dashboard/ona`}
+        />
+      }
     >
       <div className="g-leer gl-shell">
         <div className="max-w-4xl mx-auto ona">

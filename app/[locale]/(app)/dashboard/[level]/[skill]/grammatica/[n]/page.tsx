@@ -3,8 +3,7 @@ import { notFound, redirect } from 'next/navigation';
 import { getTranslations } from 'next-intl/server';
 import { createClient } from '@/lib/supabase/server';
 import { ownsModule } from '@/lib/entitlements';
-import { getSkillAtLevel, isLevel, levelLabel, SKILLS } from '@/data/skills';
-import { lessonStepSoon } from '@/lib/features';
+import { getSkillAtLevel, isLevel, levelLabel } from '@/data/skills';
 import { grammarTopic, parseLessonRef, videoOf } from '@/data/grammar-syllabus';
 import { visualFor } from '@/data/lesson-visuals';
 import { fetchPortalMenu } from '@/lib/portal-menu';
@@ -132,23 +131,14 @@ export default async function GrammarTopicPage({ params, searchParams }: Props) 
   const following = step.topics[index + 1] ?? null;
 
   /* ── de cursusroute naast de zijbalk: het onderdeel en de blokken van deze cursus ── */
-  const stepHref = (s: string) =>
-    lessonStepSoon(level, 'grammatica')
-      ? `/${locale}/dashboard/${level}/${s}`
-      : `/${locale}${grammarStepPath(level, s as typeof skill.slug)}`;
   const sideNav = (
     <CourseRoute
       courseLabel={`${levelLabel(level)} ${skillName}`}
       done={outline.done}
       total={outline.total}
-      skills={SKILLS.map(s => ({
-        key: s.slug,
-        label: tSkills(`${s.key}.short`),
-        href: stepHref(s.slug),
-        on: s.slug === skill.slug,
-      }))}
       blocks={sideBlocks}
-      examsHref={`/${locale}/dashboard/${level}/${skill.slug}`}
+      backHref={`/${locale}/dashboard/${level}/${skill.slug}`}
+          nextHref={`/${locale}/dashboard/${level}/${skill.slug}`}
     />
   );
 
