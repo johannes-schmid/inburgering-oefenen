@@ -1,17 +1,18 @@
 'use client';
 
 import { useState, useRef, useEffect, useCallback, type ReactNode } from 'react';
+import { createPortal } from 'react-dom';
 import { useTranslations } from 'next-intl';
 import { track } from '@/lib/analytics';
 import { optionKeys, optionText, readAloudSegments, type FreePracticeItem, type OptionKey } from '@/data/free-practice';
-import { DEFAULT_LEVEL, type Level, type OnderdeelSlug } from '@/data/skills';
+import { DEFAULT_LEVEL, formatOf, type Level, type OnderdeelSlug } from '@/data/skills';
 import { AnimatedNumber, AnswerGroup, AnswerRow, CategoryMark, Field, PageField, ScoreRing, glasButton, type AnswerState } from '@/components/glas';
 import { useReadAloud } from '@/components/proefexamen/useReadAloud';
 import { useAudioEnabled } from '@/lib/audio-pref';
 import { playCorrectChime } from '@/lib/answer-chime';
 import WordPass from '@/components/exam/WordPass';
 import { AudioPrefRow, EqBars, HighlightedText, ReadAloudPill } from '@/components/exam/ReadAloud';
-import { ArrowRight, Check, Headphones, Mail, Pause, Play, RotateCcw, RotateCw, Star, UserRoundCheck, X } from 'lucide-react';
+import { ArrowRight, Check, Clock, Headphones, Mail, Pause, Play, RotateCcw, RotateCw, Star, UserRoundCheck, X } from 'lucide-react';
 import '@/components/exam/glas-player.css';
 import { DEV_FLOW_PARAM, devToolsEnabled, tasterFlow } from '@/lib/dev-tools';
 import { projectSlaagkans } from '@/lib/practice-result';
@@ -45,20 +46,8 @@ type Props = {
   after?: ReactNode;
 };
 
-/* Naar het begin van de proef in plaats van naar de top van de pagina: boven de proef kan een
-   paginakop staan, en dan viel elke volgende vraag onder de vouw. Zonder anker blijft het top 0. */
 /** `d` = /oefenen/[skill]: startknop in de paginakop. `nacht` = de proeven zonder eigen kop. */
 type IntroVariant = 'nacht' | 'd';
-
-function scrollToEngine() {
-  // Een frame later: de nieuwe fase moet eerst staan, anders klopt de positie niet (variant d haalt
-  // bij de start de knop uit de kop, en dan schuift alles omhoog).
-  requestAnimationFrame(() => {
-    const el = document.getElementById('fp-engine');
-    if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    else window.scrollTo({ top: 0, behavior: 'smooth' });
-  });
-}
 
 export default function FreePracticeEngine({ skill, skillName, items, locale, level = DEFAULT_LEVEL, headingLevel = 1, pageHeader, aside, after }: Props) {
   const Heading = headingLevel === 2 ? 'h2' : 'h1';
@@ -87,6 +76,25 @@ export default function FreePracticeEngine({ skill, skillName, items, locale, le
    * terug op `false` en toont de geblurde variant.
    */
   const [revealed, setRevealed] = useState(true);
+
+  /* Focusmodus (15-10): na "Begin" staan de vragen in een eigen laag over de hele pagina — geen
+     nav, geen footer, geen paginakop. De pagina blijft eronder staan, dus wie stopt komt terug
+     waar hij was. */
+  const focus = phase !== 'intro';
+  const [closing, setClosing] = useState(false);
+  const focusRef = useRef<HTMLDivElement | null>(null);
+
+  /* De klok loopt in het tempo van het echte examen: de DUO-tijd per vraag maal het aantal vragen
+     hier, afgerond op hele minuten. Hij stopt niets af — hij is terugkoppeling — en staat stil
+     zolang de uitleg van de docent open staat, want die is er in het examen niet. */
+  const fmtSpec = formatOf(level, skill);
+  const budgetSec = fmtSpec?.itemCount && fmtSpec.durationMinutes
+    ? Math.max(1, Math.round((items.length * fmtSpec.durationMinutes) / fmtSpec.itemCount)) * 60
+    : null;
+  const clockRef = useRef({ acc: 0, since: 0 });
+  const [elapsed, setElapsed] = useState(0);
+  const [usedSec, setUsedSec] = useState<number | null>(null);
+  const clockRunning = phase === 'quiz' && selected === null && !closing;
 
   const isListening = skill === 'luisteren';
   /**
@@ -147,7 +155,64 @@ export default function FreePracticeEngine({ skill, skillName, items, locale, le
     setPhase('results');
   }, [items]);
 
+  useEffect(() => {
+    if (!clockRunning) return;
+    const c = clockRef.current;
+    c.since = performance.now();
+    const id = setInterval(() => setElapsed(Math.floor((c.acc + performance.now() - c.since) / 1000)), 250);
+    return () => {
+      clearInterval(id);
+      c.acc += performance.now() - c.since;
+    };
+  }, [clockRunning]);
+
+  /* De pagina eronder scrolt niet mee en is niet bereikbaar met Tab: de laag is het hele scherm. */
+  useEffect(() => {
+    if (!focus) return;
+    const root = document.documentElement;
+    const prevOverflow = root.style.overflow;
+    root.style.overflow = 'hidden';
+    const layer = focusRef.current;
+    const silenced = Array.from(document.body.children).filter(el => el !== layer && !el.hasAttribute('inert'));
+    silenced.forEach(el => el.setAttribute('inert', ''));
+    layer?.focus({ preventScroll: true });
+    return () => {
+      root.style.overflow = prevOverflow;
+      silenced.forEach(el => el.removeAttribute('inert'));
+    };
+  }, [focus]);
+
+  useEffect(() => {
+    if (!focus) return;
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key !== 'Escape') return;
+      if (closing) setClosing(false);
+      else requestClose();
+    };
+    window.addEventListener('keydown', onKey);
+    return () => window.removeEventListener('keydown', onKey);
+  });
+
+  function scrollFocusTop() {
+    requestAnimationFrame(() => focusRef.current?.scrollTo({ top: 0, behavior: 'smooth' }));
+  }
+
+  function exitFocus() {
+    setClosing(false);
+    setPhase('intro');
+  }
+
+  /* Tijdens de vragen vraagt het kruisje (en Escape) het altijd eerst; na de uitslag valt er
+     niets meer te verliezen. */
+  function requestClose() {
+    if (phase === 'quiz') setClosing(true);
+    else exitFocus();
+  }
+
   function start() {
+    clockRef.current = { acc: 0, since: 0 };
+    setElapsed(0);
+    setUsedSec(null);
     logRef.current = [];
     setLog([]);
     setIdx(0);
@@ -155,7 +220,7 @@ export default function FreePracticeEngine({ skill, skillName, items, locale, le
     setRevealed(true);
     setPhase('quiz');
     track('free_practice_started', { skill, count: total });
-    scrollToEngine();
+    scrollFocusTop();
   }
 
   function choose(option: OptionKey) {
@@ -171,19 +236,20 @@ export default function FreePracticeEngine({ skill, skillName, items, locale, le
 
   function next() {
     if (idx + 1 >= total) {
+      setUsedSec(Math.round(clockRef.current.acc / 1000));
       setPhase('results');
       track('free_practice_finished', { skill, score: logRef.current.filter(a => a.isCorrect).length, total });
-      scrollToEngine();
+      scrollFocusTop();
     } else {
       setIdx(idx + 1);
       setSelected(null);
-      scrollToEngine();
+      scrollFocusTop();
     }
   }
 
   function revealResults() {
     setRevealed(true);
-    scrollToEngine();
+    scrollFocusTop();
   }
 
   async function submitEmail(e: React.FormEvent) {
@@ -230,8 +296,8 @@ export default function FreePracticeEngine({ skill, skillName, items, locale, le
   );
   const switchHref = localeHref(locale, 'oefenen');
 
-  const content = (() => {
-    if (phase === 'intro') {
+  const render = (p: Phase) => {
+    if (p === 'intro') {
       const genres = Array.from(new Set(items.map(i => i.subSkill)));
       const title = (
         <Heading>
@@ -333,8 +399,14 @@ export default function FreePracticeEngine({ skill, skillName, items, locale, le
       );
     }
 
+    const closeBtn = (
+      <button type="button" onClick={requestClose} className="g-xbar-x" aria-label={t('focus_close')}>
+        <X aria-hidden />
+      </button>
+    );
+
     /* ── QUIZ ─────────────────────────────────────────────────────────────── */
-    if (phase === 'quiz') {
+    if (p === 'quiz') {
       const item = items[idx];
       const done = (idx / total) * 100;
       const isLast = idx === total - 1;
@@ -348,8 +420,9 @@ export default function FreePracticeEngine({ skill, skillName, items, locale, le
       return (
         <div className="g-xshell">
           <Field variant={skill === 'lezen' ? 'nevel' : 'gracht'} className="g-xshell-bg" aria-hidden />
-          {/* De glazen balk van de speler, zonder klok: één segment per vraag, want het zijn er tien. */}
-          <div className="g-xbar g-glass" style={{ top: 'calc(var(--nav-h, 64px) + 10px)', paddingInlineStart: 12 }}>
+          {/* De glazen balk van de speler: stoppen, één segment per vraag, en de klok in examentempo. */}
+          <div className="g-xbar g-glass">
+            {closeBtn}
             <span className="g-xbar-mark"><CategoryMark category={skill} size={28} /></span>
             <div
               className="g-xsegs"
@@ -365,7 +438,13 @@ export default function FreePracticeEngine({ skill, skillName, items, locale, le
                 </span>
               ))}
             </div>
-            <span className="g-xbar-step">{t('q_progress', { current: idx + 1, total })}</span>
+            <span className="g-xbar-step">
+              <span className="g-xstep-long">{t('q_progress', { current: idx + 1, total })}</span>
+              <span className="g-xstep-short" aria-hidden>{idx + 1}/{total}</span>
+            </span>
+            {budgetSec !== null && (
+              <PaceTimer budget={budgetSec} elapsed={elapsed} paused={selected !== null} />
+            )}
           </div>
 
           {/* Two panes, like the DUO player: stimulus left, question right. One pane where the
@@ -381,7 +460,7 @@ export default function FreePracticeEngine({ skill, skillName, items, locale, le
                 the moment an answer is chosen rather than at the foot of the passage. */}
             <div
               className={hasStimulus ? 'lg:sticky lg:overflow-y-auto flex flex-col gap-3' : 'flex flex-col gap-3'}
-              style={hasStimulus ? { top: 'calc(var(--nav-h) + 5rem)', maxHeight: 'calc(100vh - var(--nav-h) - 6rem)' } : undefined}
+              style={hasStimulus ? { top: 76, maxHeight: 'calc(100dvh - 88px)' } : undefined}
             >
               <QuestionPane
                 item={item}
@@ -467,6 +546,14 @@ export default function FreePracticeEngine({ skill, skillName, items, locale, le
     return (
       <div className="g-xshell" style={{ gap: 14 }}>
         <Field variant="licht" className="g-xshell-bg" aria-hidden />
+        <div className="g-xbar g-glass">
+          {closeBtn}
+          <span className="g-xbar-mark"><CategoryMark category={skill} size={28} /></span>
+          <div className="g-xsegs" aria-hidden>
+            {items.map((_, i) => <span key={i} className="g-xseg"><b style={{ transform: 'scaleX(1)' }} /></span>)}
+          </div>
+          <span className="g-xbar-step">{total}/{total}</span>
+        </div>
         <section className="g-xfp" style={{ minHeight: revealed ? undefined : 380 }}>
           <div className={revealed ? undefined : 'g-xfp-locked'} inert={!revealed} aria-hidden={!revealed}>
             <div className="g-xfp-top">
@@ -497,6 +584,18 @@ export default function FreePracticeEngine({ skill, skillName, items, locale, le
                   <span><i style={{ background: 'var(--navy)' }} />{t('legend_now', { pct })}</span>
                   <span><i style={{ background: 'var(--waas)' }} />{t('legend_potential', { pct: potentialPct })}</span>
                 </div>
+                {budgetSec !== null && usedSec !== null && (
+                  <p className={`g-xfp-time${usedSec > budgetSec ? ' is-over' : ''}`}>
+                    <Clock aria-hidden />
+                    <span>
+                      {t(usedSec > budgetSec ? 'time_result_over' : 'time_result_in', {
+                        used: fmt(usedSec),
+                        budget: fmt(budgetSec),
+                        count: total,
+                      })}
+                    </span>
+                  </p>
+                )}
               </div>
             </div>
           </div>
@@ -557,9 +656,40 @@ export default function FreePracticeEngine({ skill, skillName, items, locale, le
         )}
       </div>
     );
-  })();
+  };
 
-  if (!pageHeader) return content;
+  const intro = render('intro');
+  const layer = focus && typeof document !== 'undefined' && createPortal(
+    <div
+      ref={focusRef}
+      className="g-xfocus"
+      role="dialog"
+      aria-modal="true"
+      aria-label={t('heading', { count: total, skill: skillName })}
+      tabIndex={-1}
+    >
+      <div className="g-xfocus-in">{render(phase)}</div>
+      {closing && (
+        <div className="g-xdialog-stage" role="alertdialog" aria-modal="true" aria-labelledby="fp-close-title" onClick={() => setClosing(false)}>
+          <div className="g-xdialog" onClick={e => e.stopPropagation()}>
+            <h2 id="fp-close-title">{t('focus_close_title')}</h2>
+            <p>{t('focus_close_body')}</p>
+            <div className="g-xdialog-act">
+              <button type="button" className={glasButton({ variant: 'navy', size: 'sm' })} onClick={() => setClosing(false)} autoFocus>
+                {t('focus_stay')}
+              </button>
+              <button type="button" className={glasButton({ variant: 'ghost', size: 'sm' })} onClick={exitFocus}>
+                {t('focus_leave')}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+    </div>,
+    document.body,
+  );
+
+  if (!pageHeader) return <>{intro}{layer}</>;
 
   /* Op /oefenen/[skill] tekent de proef ook de paginakop, zodat variant d de startknop ín de kop
      kan zetten — onder de lead, als eerste handeling van de pagina. De feiten en de volgende stap
@@ -568,7 +698,7 @@ export default function FreePracticeEngine({ skill, skillName, items, locale, le
     <>
       <PageField variant="gracht" className="g-under-nav">
         {pageHeader}
-        {phase === 'intro' && introVariant === 'd' && (
+        {introVariant === 'd' && (
           <div className="g-xd-cta">
             <div className="g-xd-row">
               {startBtn}
@@ -584,11 +714,12 @@ export default function FreePracticeEngine({ skill, skillName, items, locale, le
       </PageField>
       <div className="g-wrap g-fpx-body">
         <div className="g-fpx-grid">
-          <div id="fp-engine" className="g-fpx-engine">{content}</div>
+          <div id="fp-engine" className="g-fpx-engine">{intro}</div>
           {aside}
         </div>
         {after}
       </div>
+      {layer}
     </>
   );
 }
@@ -596,10 +727,8 @@ export default function FreePracticeEngine({ skill, skillName, items, locale, le
 /* ── Stimulus pane: reading passage as paper, or the listening capsule ───── */
 function StimulusPane({ item, isListening }: { item: FreePracticeItem; isListening: boolean }) {
   return (
-    <div className="g-xlezen-side">
-      {item.stimulusIntro && (
-        <p className="g-xintro-line" style={{ whiteSpace: 'pre-line' }}>{item.stimulusIntro}</p>
-      )}
+    <div className={isListening ? 'g-xlezen-side g-xsit-card' : 'g-xlezen-side'}>
+      {item.stimulusIntro && <Situation text={item.stimulusIntro} />}
       {isListening && item.audioSrc ? (
         <AudioPlayer src={item.audioSrc} />
       ) : (
@@ -607,6 +736,25 @@ function StimulusPane({ item, isListening }: { item: FreePracticeItem; isListeni
         <article className="g-xpaper">
           <div className="exam-rich exam-rich-scroll" dangerouslySetInnerHTML={{ __html: item.stimulusHtml ?? '' }} />
         </article>
+      )}
+    </div>
+  );
+}
+
+/**
+ * De situatie boven de tekst of het fragment: de eerste regel zegt wáár je bent en is de kop; de
+ * regels daarna zijn de werkvolgorde ("Lees eerst de vraag…") en staan genummerd, want het is een
+ * volgorde. Eén regel zonder volgorde blijft gewoon een kop.
+ */
+function Situation({ text }: { text: string }) {
+  const [scene, ...steps] = text.split('\n').map(l => l.trim()).filter(Boolean);
+  return (
+    <div className="g-xsit">
+      <p className="g-xsit-scene">{scene}</p>
+      {steps.length > 0 && (
+        <ol className="g-xsit-steps">
+          {steps.map((step, i) => <li key={i}><span aria-hidden>{i + 1}</span>{step}</li>)}
+        </ol>
       )}
     </div>
   );
@@ -655,7 +803,7 @@ function AudioPlayer({ src }: { src: string }) {
 
   return (
     <Field variant="gracht" className="g-xlstage">
-      <div className="g-xaud">
+      <div className="g-xaud g-xaud-inline">
         <audio
           ref={ref}
           src={src}
@@ -672,17 +820,17 @@ function AudioPlayer({ src }: { src: string }) {
             <button type="button" onClick={toggle} aria-label={playing ? t('pause_audio') : t('play_audio')} className="g-xap">
               {playing ? <Pause aria-hidden /> : <Play aria-hidden style={{ marginInlineStart: 2 }} />}
             </button>
+            {/* Tijden links en rechts van de golf, niet eronder: dan staan knop, golf en
+                spoelknoppen op één middellijn. */}
             <div className="g-xaud-mid">
+              <span className="g-xtm-t">{fmt(progress)}</span>
               <div className="g-xwv" aria-hidden>
                 {WAVE_HEIGHTS.map((h, i) => (
                   <b key={i} className={frac > 0 && i / WAVE_BARS < frac ? 'on' : undefined} style={{ height: h }} />
                 ))}
                 {frac > 0 && frac < 1 && <span className="g-xwv-ph" style={{ insetInlineStart: `${frac * 100}%` }} />}
               </div>
-              <div className="g-xtm">
-                <span>{fmt(progress)}</span>
-                <span>{fmt(duration)}</span>
-              </div>
+              <span className="g-xtm-t">{fmt(duration)}</span>
             </div>
             <div className="g-xaud-side">
               <button type="button" onClick={() => seek(-10)} aria-label="-10s" className="g-xab"><RotateCcw aria-hidden /></button>
@@ -692,6 +840,45 @@ function AudioPlayer({ src }: { src: string }) {
         )}
       </div>
     </Field>
+  );
+}
+
+/**
+ * De klok in examentempo: een ring die leegloopt en de resterende tijd. Over de tijd heen telt hij
+ * door met een plus en kleurt hij oranje — geen rood, want te langzaam is hier geen fout.
+ */
+function PaceTimer({ budget, elapsed, paused }: { budget: number; elapsed: number; paused: boolean }) {
+  const t = useTranslations('oefenen');
+  const left = budget - elapsed;
+  const over = left < 0;
+  const abs = Math.abs(left);
+  const min = Math.floor(abs / 60);
+  const sec = abs % 60;
+  const R = 8;
+  const C = 2 * Math.PI * R;
+  const frac = over ? 0 : left / budget;
+  return (
+    <span
+      className={`g-xpace${over ? ' is-over' : ''}${paused ? ' is-paused' : ''}`}
+      role="timer"
+      aria-label={t(over ? 'timer_over_aria' : 'timer_aria', { min, sec })}
+      title={paused ? t('timer_paused') : t('timer_label')}
+    >
+      <svg viewBox="0 0 20 20" aria-hidden>
+        <circle cx="10" cy="10" r={R} className="g-xpace-trk" />
+        <circle
+          cx="10"
+          cy="10"
+          r={R}
+          className="g-xpace-val"
+          strokeDasharray={C}
+          strokeDashoffset={C * (1 - frac)}
+          transform="rotate(-90 10 10)"
+        />
+      </svg>
+      <span className="g-xpace-lbl">{t('timer_label')}</span>
+      <b dir="ltr">{over ? '+' : ''}{min}:{String(sec).padStart(2, '0')}</b>
+    </span>
   );
 }
 

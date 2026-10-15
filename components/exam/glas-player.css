@@ -49,6 +49,50 @@
   .g-xtimer > svg { width: 14px; height: 14px; }
   .g-xtimer-warn { background: var(--fout-tint); color: var(--fout); }
 
+  /* ---------- focusmodus van de gratis proef ----------
+     Na "Begin" ligt de proef als eigen laag over de hele pagina (boven de nav, z 50; onder de
+     stopdialoog, z 120). De schil vult het scherm; op desktop met een smalle rand eromheen. */
+  .g-xfocus {
+    position: fixed; inset: 0; z-index: 100; overflow-y: auto; overscroll-behavior: contain;
+    background: var(--mist); outline: none;
+    animation: g-xfade 200ms var(--ease-out-glas) both;
+  }
+  .g-xfocus-in { max-width: 1280px; margin-inline: auto; padding: 12px; animation: g-xfocus-rise 260ms var(--ease-out-glas) both; }
+  .g-xfocus-in > .g-xshell { min-height: calc(100dvh - 24px); }
+  .g-xfocus .g-xfoot { bottom: 10px; }
+  @media (max-width: 640px) {
+    .g-xfocus-in { padding: 0; }
+    .g-xfocus-in > .g-xshell { min-height: 100dvh; margin-inline: 0; border-radius: 0; }
+  }
+  @keyframes g-xfocus-rise { from { transform: translateY(12px); } }
+
+  .g-xstep-short { display: none; }
+  @media (max-width: 640px) { .g-xstep-long { display: none; } .g-xstep-short { display: inline; } }
+
+  /* De klok in examentempo: ring + resterende tijd; over de tijd oranje, nooit rood. */
+  .g-xpace {
+    display: inline-flex; align-items: center; gap: 8px; height: 38px; padding: 0 14px 0 10px; flex: none;
+    border-radius: var(--r-pill); background: var(--navy); color: #fff;
+    transition: background-color 300ms ease, color 300ms ease;
+  }
+  .g-xpace svg { width: 20px; height: 20px; flex: none; }
+  .g-xpace circle { fill: none; stroke-width: 2.6; }
+  .g-xpace-trk { stroke: rgba(255, 255, 255, 0.22); }
+  .g-xpace-val { stroke: #fff; stroke-linecap: round; transition: stroke-dashoffset 250ms linear, opacity 300ms ease; }
+  .g-xpace-lbl { font-size: 12px; font-weight: 600; color: rgba(255, 255, 255, 0.72); white-space: nowrap; }
+  .g-xpace b { font-family: var(--glas-mono); font-size: 14px; font-weight: 600; font-variant-numeric: tabular-nums; min-width: 4.2ch; text-align: end; }
+  .g-xpace.is-paused .g-xpace-val { opacity: 0.45; }
+  .g-xpace.is-paused b { color: rgba(255, 255, 255, 0.72); }
+  .g-xpace.is-over { background: #fcecdd; color: #a24000; }
+  .g-xpace.is-over .g-xpace-trk { stroke: rgba(162, 64, 0, 0.25); }
+  .g-xpace.is-over .g-xpace-lbl { color: #a24000; }
+  .g-xpace.is-over.is-paused b { color: #a24000; }
+  @media (max-width: 760px) { .g-xpace-lbl { display: none; } .g-xpace { padding-inline: 8px 11px; gap: 6px; } }
+
+  .g-xfp-time { display: flex; gap: 8px; align-items: flex-start; margin: 14px 0 0; font-size: 14px; line-height: 1.6; color: var(--ink-2); text-wrap: pretty; }
+  .g-xfp-time > svg { width: 16px; height: 16px; flex: none; margin-top: 3px; color: var(--navy); }
+  .g-xfp-time.is-over > svg { color: #a24000; }
+
   .g-xbody { background: var(--wit); border-radius: var(--r-lg); padding: 22px; min-width: 0; }
   @media (max-width: 640px) { .g-xbody { padding: 18px 16px; } }
 
@@ -193,6 +237,36 @@
   .g-xlockline { display: flex; gap: 10px; align-items: center; font-size: 13.5px; color: var(--ink-2); margin-top: 12px; flex-wrap: wrap; }
   .g-xlockline .g-xbdg { flex: none; }
   .g-xaud-msg { font-size: 13.5px; font-weight: 600; color: var(--ink); margin: 0; }
+
+  /* De capsule van de gratis proef: tijden naast de golf in plaats van eronder, zodat de golf op
+     de middellijn van de speelknop ligt. De speler van het betaalde examen houdt zijn eigen opbouw. */
+  .g-xaud-inline .g-xaud-mid { flex-direction: row; align-items: center; gap: 12px; }
+  .g-xaud-inline .g-xwv { flex: 1; min-width: 0; }
+  .g-xtm-t { flex: none; font-family: var(--glas-mono); font-size: 12px; color: var(--ink-2); font-variant-numeric: tabular-nums; min-width: 4ch; }
+  .g-xtm-t:last-child { text-align: end; }
+  @media (max-width: 420px) { .g-xaud-inline .g-xaud-mid { gap: 8px; } .g-xtm-t { font-size: 11px; min-width: 3.4ch; } }
+
+  /* De situatie boven de stimulus: de plek is de kop, de werkvolgorde staat genummerd. */
+  .g-xsit { display: flex; flex-direction: column; gap: 10px; padding: 2px 2px 4px; }
+  .g-xsit-scene {
+    margin: 0; font-family: var(--font-headline); font-weight: 700; font-size: 19px; line-height: 1.35;
+    letter-spacing: -0.02em; color: var(--ink); text-wrap: balance;
+  }
+  .g-xsit-steps { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 6px 18px; }
+  .g-xsit-steps li { display: inline-flex; align-items: center; gap: 8px; font-size: 14.5px; font-weight: 500; line-height: 1.5; color: var(--ink); }
+  .g-xsit-steps li > span {
+    width: 22px; height: 22px; flex: none; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center;
+    background: rgba(255, 255, 255, 0.78); color: var(--navy); font-family: var(--glas-mono); font-size: 11.5px; font-weight: 600;
+    box-shadow: inset 0 0 0 1px rgba(0, 43, 109, 0.12);
+  }
+  @media (max-width: 640px) { .g-xsit-scene { font-size: 17.5px; } .g-xsit-steps { flex-direction: column; } }
+  /* Bij Luisteren staan situatie en speler samen op een witte kaart, zoals de vraag ernaast: anders
+     zweven ze los op het veld. De speler houdt zijn blauwe podium als ingelegd scherm. */
+  .g-xsit-card { background: var(--wit); border-radius: var(--r-lg); padding: 22px 22px 24px; gap: 22px; }
+  .g-xsit-card .g-xsit { gap: 14px; padding: 0; }
+  .g-xsit-card .g-xsit-steps li > span { background: rgba(0, 43, 109, 0.07); box-shadow: none; }
+  .g-xsit-card .g-xlstage { padding: 18px; }
+  @media (max-width: 640px) { .g-xsit-card { padding: 20px 16px 18px; gap: 18px; } .g-xsit-card .g-xlstage { padding: 12px; } }
 
   /* ---------- KNM: voorlezen ---------- */
   .g-xread {
@@ -647,6 +721,8 @@
   .g-xpart:hover { transform: none !important; }
   .g-xrecdot, .g-xreading span, .g-xspin, .g-xrv-orb, .g-xrv-cr::before, .g-xdots > i, .g-xrv-wvr > b,
   .g-xrv-doc::after, .g-xdialog-stage, .g-xdialog { animation: none !important; }
+  .g-xfocus-in { animation: none; }
+  .g-xpace, .g-xpace-val { transition-duration: 0ms !important; }
 }
 
 @layer components {

@@ -5673,3 +5673,21 @@ oplopende `top` per index doet het, en de `prefers-reduced-motion`-uitweg is dan
 **Outcome:** SUCCESS (tsc, 704 unit-tests, next build, detector schoon; startknop staat nu in de server-HTML)
 **What worked / went wrong:** Zonder URL-keuze rendert de server meteen de goede variant, dus de knop springt niet meer in beeld na het laden.
 **Lesson:** Varianten ter beoordeling zijn tijdelijk: na de keus de schakelaar én de CSS van de verliezers in dezelfde commit weghalen.
+
+## 2026-10-15 — /oefenen: focusmodus met klok in examentempo
+**Changed:** `FreePracticeEngine.tsx` zet de vragen en de uitslag na "Begin" in een eigen laag (`.g-xfocus`, portal naar `body`, z 100 boven de nav) met stopknop, voortgang en `PaceTimer`; de pagina eronder blijft staan, krijgt `inert` en scrolt niet. De klok = DUO-minuten per vraag × aantal vragen (via `formatOf`), afgerond op hele minuten (A2 Lezen 26:00, Luisteren 18:00, KNM 11:00), staat stil tijdens de uitleg en kleurt oranje als je erover gaat. De uitslag noemt je tijd tegen dat tempo. Stoppen tijdens de vragen vraagt het eerst (`g-xdialog`, ook met Escape). CSS in `components/exam/glas-player.css`; keys `oefenen.focus_*`, `timer_*`, `time_result_*` in nl/en/ar.
+**Outcome:** SUCCESS (tsc, 704 unit-tests, next build, detector schoon, Playwright 1440/390 nl + ar + KNM, geen consolefouten, geen horizontale scroll)
+**What worked / went wrong:** De intro blijft altijd achter de laag gerenderd, zodat stoppen terugkeert naar precies dezelfde pagina en scrollpositie. De bevestiging verscheen eerst pas na het eerste antwoord; de eigenaar wil hem bij elk vertrek tijdens de vragen. Lokaal geeft `/nl/oefenen/b1/lezen` een 404 (geen B1-proefset in de lokale stack) — niet door deze wijziging.
+**Lesson:** Een focusmodus over een publieke pagina: portal naar `body`, de rest `inert` en `overflow: hidden` op `html`, en zet sticky-offsets om van `--nav-h` naar de eigen balk.
+
+## 2026-10-15 — Proef: situatie als kop, tijden naast de golf
+**Changed:** `FreePracticeEngine.tsx` — `Situation` splitst `stimulusIntro` in de plek (kop, 19px Manrope, `--ink`) en de werkvolgorde (genummerd); de proefcapsule krijgt `g-xaud-inline` met de tijden links en rechts van de golf. CSS `g-xsit*`, `g-xaud-inline`, `g-xtm-t` in `components/exam/glas-player.css`.
+**Outcome:** SUCCESS (tsc, next build, detector schoon, Playwright 1440/390: speelknop en golf op dezelfde middellijn, gemeten)
+**What worked / went wrong:** De knop centreerde op golf + tijdregel samen, dus de golf stond ~10px te hoog. De betaalde speler (`components/exam/AudioPlayer.tsx`) gebruikt nog de oude opbouw met de tijden eronder.
+**Lesson:** Een rij met een ronde knop naast een gestapelde kolom: centreer op het element dat je ziet (de golf), en zet bijschriften ernaast in plaats van eronder.
+
+## 2026-10-15 — Luisteren-proef: situatie en speler op een witte kaart
+**Changed:** `StimulusPane` krijgt bij Luisteren `.g-xsit-card` (wit, `--r-lg`, 22px binnenruimte, zelfde als de vraagkaart); de blauwe podiumvelden van de speler blijven als ingelegd scherm (`components/exam/glas-player.css`).
+**Outcome:** SUCCESS
+**What worked / went wrong:** kop, stappen en speler zweefden los op het Gracht-veld; op een kaart die even hoog begint als de vraagkaart lezen ze als één paneel, en de koppen links en rechts staan op één lijn.
+**Lesson:** in de focusmodus hoort elke kolom op een eigen vlak; losse tekst direct op het veld leest als iets dat er niet bij hoort.
