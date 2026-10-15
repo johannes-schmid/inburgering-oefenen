@@ -185,7 +185,7 @@ export default function ImagePicker({
                   disabled={storing !== null}
                   onClick={() => void store(p)}
                   title={`© ${p.photographer} via Pexels`}
-                  className="relative rounded-lg overflow-hidden border-2 border-transparent transition-colors hover:border-primary/50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary disabled:opacity-60"
+                  className="relative rounded-lg overflow-hidden border-2 border-transparent transition-colors hover:border-[rgba(0,43,109,0.5)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary disabled:opacity-60"
                   style={{ aspectRatio: '4 / 3' }}
                 >
                   {/* eslint-disable-next-line @next/next/no-img-element */}

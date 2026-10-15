@@ -6,6 +6,7 @@ import { isOnaAvailable } from '@/lib/ona/access';
 import { fetchOnaPortfolio } from '@/lib/ona/server';
 import { fetchPortalMenu } from '@/lib/portal-menu';
 import AppShell from '../../../components/AppShell';
+import '@/app/glas-leerlaag.css';
 import PortalCrumbs from '../../../components/PortalCrumbs';
 import StartForm from './StartForm';
 
@@ -47,7 +48,7 @@ export default async function OnaStartPage({ params }: Props) {
       menu={menu}
       isGuest={!user}
     >
-      <div className="px-5 py-7 sm:px-8 sm:py-10">
+      <div className="g-leer gl-shell">
         <div className="max-w-3xl mx-auto ona">
           <PortalCrumbs
             trail={[

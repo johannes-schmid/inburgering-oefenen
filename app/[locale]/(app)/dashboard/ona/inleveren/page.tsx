@@ -9,8 +9,11 @@ import { fetchOnaState } from '@/lib/ona/server';
 import { duoCheck, isAnswered } from '@/lib/ona/rules';
 import { fetchPortalMenu } from '@/lib/portal-menu';
 import AppShell from '../../../components/AppShell';
+import '@/app/glas-leerlaag.css';
 import PortalCrumbs from '../../../components/PortalCrumbs';
 import PrintButton from './PrintButton';
+import CourseRoute from '@/components/lessons/CourseRoute';
+import { onaRoute } from '@/lib/lessons/track-routes';
 
 /**
  * Inleveren bij DUO: de drie controles van DUO, de stappen in Mijn Inburgering, en een
@@ -44,6 +47,8 @@ export default async function OnaSubmitPage({ params }: Props) {
   const byNo = new Map(state.entries.map(e => [e.cardNo, e]));
   const steps = ['inl_step_1', 'inl_step_2', 'inl_step_3', 'inl_step_4'] as const;
 
+  const route = await onaRoute({ locale, meta, state, open: 'inleveren' });
+
   return (
     <AppShell
       locale={locale}
@@ -52,8 +57,17 @@ export default async function OnaSubmitPage({ params }: Props) {
       active="ona-inleveren"
       activeGroup="ona"
       menu={menu}
+      course={
+        <CourseRoute
+          courseLabel="ONA"
+          done={route.done}
+          total={route.total}
+          blocks={route.blocks}
+          backHref={`/${locale}/dashboard/ona`}
+        />
+      }
     >
-      <div className="px-5 py-7 sm:px-8 sm:py-10">
+      <div className="g-leer gl-shell">
         <div className="max-w-4xl mx-auto ona">
           <PortalCrumbs
             trail={[
@@ -64,7 +78,7 @@ export default async function OnaSubmitPage({ params }: Props) {
           />
 
           <section className="ona-panel flex flex-col gap-4 ona-noprint">
-            <h1 style={{ fontFamily: 'var(--font-headline)', fontWeight: 800, fontSize: 'clamp(1.75rem, 3.4vw, 2.35rem)', lineHeight: 1.1, letterSpacing: '-0.02em', color: 'var(--color-primary)', margin: 0 }}>
+            <h1 className="g-head gl-ona-h1">
               {t('inl_title')}
             </h1>
             <ul className="ona-checks">

@@ -17,12 +17,12 @@ import {
   WORD_STATUSES,
 } from './words';
 
-const WORD_COLS =
+export const WORD_COLS =
   'id, theme, dutch, article, plural, frame, meaning_nl, example, usage, ' +
   'image_url, audio_url, audio_example_url, ' +
   'translation_en, translation_ar, translation_tr, translations_reviewed, sort_order';
 
-type Row = {
+export type WordRow = {
   id: number;
   theme: string;
   dutch: string;
@@ -42,7 +42,7 @@ type Row = {
   sort_order: number | null;
 };
 
-function toWord(r: Row, status: WordStatus): LessonWord {
+export function toWord(r: WordRow, status: WordStatus): LessonWord {
   return {
     id: r.id,
     theme: r.theme,
@@ -90,7 +90,7 @@ export async function fetchWordThemes(
       .eq('onderdeel', onderdeel)
       .order('sort_order');
 
-    const rows = (data ?? []) as unknown as Row[];
+    const rows = (data ?? []) as unknown as WordRow[];
     if (rows.length === 0) return [];
 
     const progress = await fetchWordProgress(userId, rows.map(r => r.id));
@@ -139,7 +139,7 @@ export async function fetchWordTheme(
   return themes.find(t => t.slug === theme) ?? null;
 }
 
-async function fetchWordProgress(
+export async function fetchWordProgress(
   userId: string | null,
   wordIds: number[],
 ): Promise<Map<number, WordStatus>> {

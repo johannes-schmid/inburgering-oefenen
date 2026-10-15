@@ -1,7 +1,11 @@
 import type { Metadata } from 'next';
 import { getTranslations } from 'next-intl/server';
 import { routing } from '@/i18n/routing';
-import { absUrl, alternatesFor } from '@/lib/schema';
+import { Link } from '@/i18n/navigation';
+import PageField from '@/components/glas/PageField';
+import SectionHeading from '@/components/glas/SectionHeading';
+
+import { alternatesFor } from '@/lib/schema';
 
 type Props = { params: Promise<{ locale: string }> };
 
@@ -28,27 +32,18 @@ export default async function GebruiksvoorwaardenPage({ params }: Props) {
   const t = await getTranslations({ locale, namespace: 'terms' });
 
   return (
-    <main className="max-w-3xl mx-auto px-6 py-16 pb-24">
-      <header className="mb-12">
-        <div
-          className="inline-flex items-center gap-2 mb-4"
-          style={{ background: 'rgba(0,43,109,0.06)', borderRadius: '9999px', padding: '4px 12px' }}
-        >
-          <span className="text-xs font-bold tracking-widest uppercase text-primary">{t('eyebrow')}</span>
+    <main>
+      <PageField variant="gracht" className="g-pagehead">
+        <div className="g-narrow">
+          <SectionHeading as="h1" size="h1" title={t('heading')} onField />
+          <p className="g-pagehead-meta">{t('last_updated')}</p>
         </div>
-        <h1
-          className="font-headline font-extrabold text-on-surface mb-3"
-          style={{ fontSize: 'clamp(1.8rem,4vw,2.4rem)', letterSpacing: '-0.02em' }}
-        >
-          {t('heading')}
-        </h1>
-        <p className="text-on-surface-variant text-sm">{t('last_updated')}</p>
-      </header>
+      </PageField>
+      <section className="g-sec !pt-10">
+        <div className="g-wrap">
+          <article className="g-prose g-prose-solo g-legal-card">
 
-      <div
-        className="bg-surface-container-lowest rounded-2xl p-8 md:p-10 prose"
-        style={{ boxShadow: '0 2px 24px rgba(0,43,109,0.06)' }}
-      >
+      <div className="g-prose-body g-legal">
         <p>Door gebruik te maken van de website <strong>inburgeringoefenen.nl</strong> ga je akkoord met de onderstaande gebruiksvoorwaarden. Lees deze zorgvuldig door voordat je het platform gebruikt.</p>
 
         <h2>1. Over Inburgering Oefenen</h2>
@@ -83,7 +78,7 @@ export default async function GebruiksvoorwaardenPage({ params }: Props) {
         <p>Door je e-mailadres in te voeren ga je akkoord met het ontvangen van jouw persoonlijke toetsresultaten en optionele gratis oefenmaterialen van Inburgering Oefenen. Je kunt je op elk moment afmelden via de afmeldlink in onze e-mails of door te mailen naar <a href="mailto:contact@inburgeringoefenen.nl">contact@inburgeringoefenen.nl</a>.</p>
 
         <h2>7. Privacy</h2>
-        <p>Het verzamelen en verwerken van persoonsgegevens is beschreven in ons <a href="/privacybeleid">Privacybeleid</a>, dat onderdeel uitmaakt van deze gebruiksvoorwaarden.</p>
+        <p>Het verzamelen en verwerken van persoonsgegevens is beschreven in ons <Link href="/privacybeleid">Privacybeleid</Link>, dat onderdeel uitmaakt van deze gebruiksvoorwaarden.</p>
 
         <h2>8. Toepasselijk recht</h2>
         <p>Op deze gebruiksvoorwaarden is <strong>Nederlands recht</strong> van toepassing. Eventuele geschillen worden voorgelegd aan de bevoegde Nederlandse rechter.</p>
@@ -94,6 +89,8 @@ export default async function GebruiksvoorwaardenPage({ params }: Props) {
         <h2>10. Contact</h2>
         <p>Voor vragen over deze gebruiksvoorwaarden: <a href="mailto:contact@inburgeringoefenen.nl">contact@inburgeringoefenen.nl</a>.</p>
       </div>
-    </main>
-  );
+          </article>
+        </div>
+      </section>
+    </main>);
 }

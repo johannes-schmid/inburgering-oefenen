@@ -6,12 +6,14 @@ import { ownsKnm, ownsModule, ownsOna, planFromMetadata } from '@/lib/entitlemen
 import { isOnaAvailable } from '@/lib/ona/access';
 import { ONA_CARD_COUNT } from '@/data/ona/cards';
 import { FREE_GRADED_PER_SKILL } from '@/lib/grading-limits';
-import { MODULES } from '@/lib/pricing';
+import { MODULES, parseSelection } from '@/lib/pricing';
 import { DEFAULT_LEVEL, getOnderdeel, isOna, moduleGroupLabel, type SkillSlug } from '@/data/skills';
 import { fetchPublishedExamNumbers } from '@/lib/portal-progress';
 import AppShell from '../../components/AppShell';
 import ModulePicker from './ModulePicker';
 import { fetchPortalMenu } from '@/lib/portal-menu';
+
+const OTHER_MODULES = 'Andere modules';
 
 export const metadata: Metadata = {
   title: 'Pakketten | Inburgering Oefenen',
@@ -38,14 +40,14 @@ export default async function PakkettenPage({
   searchParams,
 }: {
   params: Promise<{ locale: string }>;
-  searchParams: Promise<{ vanaf?: string; onderdeel?: string }>;
+  searchParams: Promise<{ vanaf?: string; onderdeel?: string; kies?: string }>;
 }) {
   const { locale } = await params;
-  const { onderdeel } = await searchParams;
+  const { onderdeel, kies } = await searchParams;
 
   const supabase = await createClient();
   const { data: { user } } = await supabase.auth.getUser();
-  if (!user) redirect(`/${locale}/login?next=/dashboard/pakketten`);
+  if (!user) redirect(`/${locale}/login?next=${encodeURIComponent(`/dashboard/pakketten${kies ? `?kies=${kies}` : ''}`)}`);
 
   const plan = planFromMetadata(user.user_metadata);
   const meta = user.user_metadata ?? {};
@@ -73,6 +75,17 @@ export default async function PakkettenPage({
   // actually need is the one they see first. The param carries a full `level:skill` id.
   const focus = sellable.find(m => m.slug === onderdeel)?.slug ?? null;
 
+  // De keuze uit de configurator op /premium, via `/register?next=…`. Alleen wat hier ook te koop
+  // staat en nog niet van jou is; de prijs rekent de checkout toch opnieuw uit.
+  const owned = (m: (typeof sellable)[number]) =>
+    isOna(m.skill) ? ownsOna(meta)
+    : m.level === null ? ownsKnm(meta)
+    : ownsModule(meta, m.level, m.skill as SkillSlug);
+  const picked = parseSelection(kies?.split(',') ?? []).filter(slug => {
+    const m = sellable.find(x => x.slug === slug);
+    return m !== undefined && !owned(m);
+  });
+
   const menu = await fetchPortalMenu();
 
   return (
@@ -83,113 +96,78 @@ export default async function PakkettenPage({
       active="overview"
       menu={menu}
     >
-      <div className="px-5 py-7 sm:px-8 sm:py-10">
-        <div className="max-w-5xl mx-auto">
-          <header className="mb-7">
-            <p className="pk-eyebrow">Pakketten</p>
-            <h1 className="pk-title">Kies wat je wilt oefenen</h1>
-            <p className="pk-lead">
-              Elk onderdeel is een eigen abonnement. Je betaalt per maand en je kunt maandelijks
-              opzeggen. Zonder abonnement kun je per onderdeel {FREE_GRADED_PER_SKILL} opdrachten
-              laten nakijken.
-            </p>
-          </header>
+      <div className="g-page">
+        <header className="g-ph">
+          <span className="g-mono">Pakketten</span>
+          <h1>Kies wat je wilt oefenen</h1>
+          <p>
+            Elk onderdeel is een eigen abonnement. Je betaalt per maand en je kunt maandelijks
+            opzeggen. Zonder abonnement kun je per onderdeel {FREE_GRADED_PER_SKILL} opdrachten
+            laten nakijken.
+          </p>
+        </header>
 
-          {plan !== 'free' && (
-            <p className="pk-active">
-              <Check size={15} strokeWidth={3} aria-hidden />
+        {plan !== 'free' && (
+          <p className="g-notice g-notice-gap">
+            <Check aria-hidden />
+            <span>
               Je hebt al toegang. Je kunt je abonnement beheren via{' '}
               <a href={`/${locale}/dashboard/profiel`}>Mijn account</a>.
-            </p>
-          )}
+            </span>
+          </p>
+        )}
 
-          <ModulePicker
-            locale={locale}
-            initialSelection={focus ? [focus] : []}
-            modules={sellable.map(mod => {
-              if (isOna(mod.skill)) {
-                return {
-                  slug: mod.slug,
-                  level: null,
-                  levelLabel: 'ONA',
-                  skill: mod.skill,
-                  label: 'ONA',
-                  examCount: 0,
-                  itemCount: null,
-                  itemNoun: '',
-                  hasRubricFeedback: false,
-                  metaLine: `${ONA_CARD_COUNT} resultaatkaarten · eindgesprek oefenen`,
-                  owned: ownsOna(meta),
-                };
-              }
-              const skill = getOnderdeel(mod.skill)!;
+        <ModulePicker
+          locale={locale}
+          initialSelection={picked.length ? picked : focus ? [focus] : []}
+          modules={sellable.map(mod => {
+            if (isOna(mod.skill)) {
               return {
                 slug: mod.slug,
-                level: mod.level,
-                levelLabel: moduleGroupLabel(mod.level),
+                level: null,
+                levelLabel: OTHER_MODULES,
                 skill: mod.skill,
-                label: skill.slug,
-                examCount: mod.examCount,
-                itemCount: mod.itemCount,
-                itemNoun: skill.scoring === 'open' ? 'opdrachten' : 'vragen',
-                hasRubricFeedback: mod.hasRubricFeedback,
-                owned: mod.level === null
-                  ? ownsKnm(meta)
-                  : ownsModule(meta, mod.level, mod.skill as SkillSlug),
+                label: 'ONA',
+                examCount: 0,
+                itemCount: null,
+                itemNoun: '',
+                hasRubricFeedback: false,
+                includes: [
+                  `${ONA_CARD_COUNT} resultaatkaarten met uitleg`,
+                  'Check van je portfolio',
+                  'Eindgesprek oefenen',
+                ],
+                owned: ownsOna(meta),
               };
-            })}
-          />
-
-        </div>
+            }
+            const skill = getOnderdeel(mod.skill)!;
+            const itemNoun = skill.scoring === 'open' ? 'opdrachten' : 'vragen';
+            const exams = `Alle ${mod.examCount} oefenexamens${mod.itemCount !== null ? ` · ${mod.itemCount} ${itemNoun}` : ''}`;
+            return {
+              slug: mod.slug,
+              level: mod.level,
+              levelLabel: mod.level === null ? OTHER_MODULES : moduleGroupLabel(mod.level),
+              skill: mod.skill,
+              label: skill.slug,
+              examCount: mod.examCount,
+              itemCount: mod.itemCount,
+              itemNoun,
+              hasRubricFeedback: mod.hasRubricFeedback,
+              /* Alleen wat er echt in zit: de leerlaag bestaat op A2, KNM heeft eigen lesmodules
+                 en woordkaarten. Op B1 dus geen "lessen" beloven. */
+              includes: [
+                exams,
+                mod.hasRubricFeedback ? 'Onbeperkt nakijken op de criteria van de docent' : 'Uitleg bij elke vraag',
+                ...(mod.level === 'a2' ? ['Lessen en woordenlijst'] : []),
+                ...(mod.level === null ? ['Lesmodules en woordkaarten'] : []),
+              ],
+              owned: mod.level === null
+                ? ownsKnm(meta)
+                : ownsModule(meta, mod.level, mod.skill as SkillSlug),
+            };
+          })}
+        />
       </div>
-
-      <style>{`
-        .pk-eyebrow { font-size:0.65rem; font-weight:800; letter-spacing:0.14em; text-transform:uppercase; color:var(--color-secondary); margin:0 0 8px; }
-        .pk-title { font-family:var(--font-headline); font-size:clamp(1.5rem,3.2vw,2rem); font-weight:800; letter-spacing:-0.03em; color:var(--color-on-surface); margin:0 0 8px; text-wrap:balance; }
-        .pk-lead { font-size:0.95rem; line-height:1.7; color:var(--color-on-surface-variant); margin:0; max-width:60ch; }
-
-        .pk-active { display:flex; align-items:center; gap:8px; margin:0 0 20px; padding:11px 14px; border-radius:12px; background:rgba(0,43,109,0.06); font-size:0.85rem; color:var(--color-primary); }
-        .pk-active a { color:inherit; font-weight:800; }
-
-        .pk-grid { display:grid; grid-template-columns:1fr; gap:14px; }
-        @media (min-width:640px)  { .pk-grid { grid-template-columns:repeat(2,1fr); } }
-        @media (min-width:1024px) { .pk-grid { grid-template-columns:repeat(4,1fr); } }
-
-        .pk-card { display:flex; flex-direction:column; gap:12px; padding:18px; border-radius:18px; background:var(--color-surface-container-lowest); border:1.5px solid var(--color-surface-container-high); box-shadow:var(--shadow-card); }
-        .pk-card-focus { border-color:var(--color-secondary-container); box-shadow:0 10px 30px rgba(254,118,44,0.16); }
-        .pk-card-head { display:flex; align-items:flex-start; gap:10px; }
-        .pk-card-title { font-family:var(--font-headline); font-size:1rem; font-weight:800; color:var(--color-on-surface); margin:0; text-transform:capitalize; }
-        .pk-card-meta { font-size:0.72rem; color:var(--color-outline); margin:2px 0 0; }
-
-        .pk-price { display:flex; align-items:baseline; gap:6px; margin:0; }
-        .pk-price span { font-family:var(--font-headline); font-size:1.6rem; font-weight:800; letter-spacing:-0.03em; color:var(--color-primary); }
-        .pk-price small { font-size:0.72rem; color:var(--color-outline); }
-
-        .pk-list { list-style:none; margin:0; padding:0; display:flex; flex-direction:column; gap:6px; flex:1; }
-        .pk-list li { display:flex; align-items:flex-start; gap:7px; font-size:0.78rem; line-height:1.5; color:var(--color-on-surface-variant); }
-        .pk-list svg { flex-shrink:0; margin-top:3px; color:var(--color-primary); }
-
-        .pk-cta { display:inline-flex; align-items:center; justify-content:center; gap:7px; padding:0.7rem 1rem; border-radius:12px; font-size:0.82rem; font-weight:800; color:#5f2200; background:var(--gradient-btn-orange); box-shadow:var(--shadow-btn-orange); transition:transform .2s cubic-bezier(0.22,1,0.36,1); }
-        .pk-cta:hover { transform:translateY(-2px); }
-        .pk-cta:focus-visible { outline:3px solid var(--color-secondary); outline-offset:2px; }
-
-        .pk-bundle { display:flex; flex-wrap:wrap; align-items:center; justify-content:space-between; gap:16px; margin-top:18px; padding:20px 22px; border-radius:18px; background:linear-gradient(135deg,#001d4e 0%,#002b6d 55%,#003580 100%); box-shadow:0 10px 30px rgba(0,27,78,0.22); }
-        .pk-bundle-eyebrow { font-size:0.65rem; font-weight:800; letter-spacing:0.14em; text-transform:uppercase; color:rgba(255,255,255,0.62); margin:0 0 4px; }
-        .pk-bundle-title { font-family:var(--font-headline); font-size:1.7rem; font-weight:800; letter-spacing:-0.03em; color:#fff; margin:0; }
-        .pk-bundle-title small { font-size:0.8rem; font-weight:600; color:rgba(255,255,255,0.66); }
-        .pk-bundle-note { font-size:0.82rem; line-height:1.6; color:rgba(255,255,255,0.75); margin:6px 0 0; max-width:52ch; }
-        .pk-bundle-cta { display:inline-flex; align-items:center; gap:8px; padding:12px 20px; border-radius:12px; font-size:0.88rem; font-weight:800; color:#5f2200; background:var(--gradient-btn-orange); box-shadow:var(--shadow-btn-orange); transition:transform .2s cubic-bezier(0.22,1,0.36,1); }
-        .pk-bundle-cta:hover { transform:translateY(-2px); }
-        .pk-bundle-cta:focus-visible { outline:3px solid #fff; outline-offset:2px; }
-
-        .pk-cap { text-transform:capitalize; }
-        .pk-foot { display:flex; align-items:center; gap:7px; margin:16px 0 0; font-size:0.75rem; color:var(--color-outline); }
-
-        @media (prefers-reduced-motion: reduce) {
-          .pk-cta, .pk-bundle-cta { transition:none; }
-          .pk-cta:hover, .pk-bundle-cta:hover { transform:none; }
-        }
-      `}</style>
     </AppShell>
   );
 }

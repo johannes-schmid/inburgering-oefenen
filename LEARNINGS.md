@@ -3,6 +3,28 @@
 Append-only log of successes and failures from each working session.
 Read this at the start of every session and apply lessons before writing code.
 
+## 2026-10-13 — B1 Luisteren opnieuw ingesproken met `eleven_v4`, examens 7–10 geschreven
+**Changed:** `createTts({ dialogueModel, speechModel })` in `scripts/a2-content/lib.mjs` (standaard
+ongewijzigd `eleven_v3` / `eleven_multilingual_v2`); `--model <id>` in `scripts/seed-b1-content.mjs`;
+`scripts/b1-content/generated/luisteren-07..10.json` geschreven. Alle B1-Luisterenaudio lokaal
+opnieuw ingesproken met `eleven_v4` (dialoog én verteller); productie examen 1 en 2 in place gepatcht.
+**Outcome:** SUCCESS
+**What worked / went wrong:**
+- Productie had examen 1 en 2 gepubliceerd met 11 resp. 17 fragmenten als tekststimulus: de
+  credits waren op tijdens de productie-seed, níet tijdens de lokale. Lokaal was alles ingesproken.
+  Altijd beide omgevingen tellen voordat je "de audio ontbreekt" aanneemt.
+- **Een gepubliceerd examen opnieuw seeden wist de antwoorden van kandidaten**: `seedLuisteren`
+  verwijdert de stimuli, en `questions → user_question_results` is ON DELETE CASCADE. Voor een live
+  examen dus de mp3's uploaden en de bestaande rijen patchen (`kind`, `audio_url`, `body_html`),
+  met een `?v=v4` op de URL tegen de CDN-cache van het overschreven bestand.
+- `/v1/text-to-dialogue` accepteert `eleven_v4` (en `eleven_v4_turbo`); `eleven_v3` was tot nu
+  toe het enige model dat werkte.
+- Het abonnement staat **5 gelijktijdige requests** toe. Negen examens tegelijk gaf meteen
+  `429 concurrent_limit_exceeded` en tekststimuli; een pool van vijf (`xargs -P 5`) liep schoon.
+  Een herhaalronde zonder `--force-audio` vult alleen de gaten, dus een 429 kost niets dubbel.
+**Lesson:** Een seeder die "vervang de inhoud" doet is op een live examen een delete van
+gebruikersdata. Controleer de cascades van een tabel vóór je hem in productie opnieuw vult.
+
 ## 2026-09-16 — Een instructiescherm voor B1 Luisteren, en 25 seconden leestijd die echt aftellen
 **Changed:** `components/exam/AudioPlayer.tsx` (`examenAudio`-stand), `components/exam/StimulusPane.tsx`,
 `components/exam/ExamShell.tsx` (fase `instructie`, `LUISTEREN_LEESTIJD_SECONDEN`, geen "Vorige" meer
@@ -5447,3 +5469,351 @@ oplopende `top` per index doet het, en de `prefers-reduced-motion`-uitweg is dan
 **Outcome:** SUCCESS (lokaal geverifieerd: tsc, 704 unit-tests, next build, screenshots)
 **What worked / went wrong:** Het portaal, de checkout en de API's hingen al aan één vlag; alleen de publieke pagina's hadden "binnenkort" met de hand. De kaarten zijn bewust op `concept` gebleven — die status is het verslag van Ambers review en mag geen review claimen die niet gebeurd is; de vrijgave is een aparte vlag. Productie bleek de ONA-tabellen al te hebben terwijl `supabase migration list` ze als niet toegepast toonde; daarom één migratie gecontroleerd in plaats van `db push`, dat ook vier andere ongeregistreerde migraties had gedraaid.
 **Lesson:** Vrijgeven en nakijken zijn twee feiten — geef ze twee velden. En lees bij een "niet toegepaste" migratie eerst het schema op productie (`supabase db query --linked`), niet alleen de historie.
+
+## 2026-10-14 — Glas: voorstel voor een nieuw design system als statische reviewpagina
+**Changed:** nieuw `public/design/glas.html` (noindex), los van de app: tokens, materialen, alle merken, controls, staten, portaal, examenspeler per onderdeel, leerlaag, ONA, prijzen, funnel, gidsen en een tabel van wat uit deutschtest üben (Nachtzug) is overgenomen. Geen app-code gewijzigd.
+**Outcome:** SUCCESS (desktop- en mobiele screenshots per sectie, geen horizontale scroll op 390px)
+**What worked / went wrong:** Drie Explore-agents tegelijk (Nachtzug, portaal/examens, publieke site) gaven een volledige inventaris in ~4 min. ExamMark en CategoryMark zijn letterlijk naar JS geport, zodat de merken op de pagina dezelfde geometrie hebben als in de app. Inline `grid-template-columns` in specimens overleefde de mobiele media query niet — een `!important` op `.c-1-2` was nodig. De inventaris vond twee kopijfouten op live pagina's: "één module gratis" op /premium (klopt niet met lib/pricing.ts) en "geen account nodig" naast "met een account" voor het gratis examen.
+**Lesson:** Een design system dat de bestaande elementen moet vervangen begint met een inventaris van de code, niet van het ontwerp — de echte staten (zes per examenkaart, drie ONA-statussen) stonden nergens in DESIGN_SYSTEM.md.
+
+## 2026-10-14 — Glas v0.2: leesbaarheid, nieuwe merken, dashboard met twee deuren
+**Changed:** `public/design/glas.html` — regel 06 (leesbaarheid), velden met de donkere vlek rechts, ExamMark/CategoryMark v2 als SVG op een glazen tegel, keuzetegels, één examenkaart voor slot en portaal, twee varianten antwoordopties, score als streep-per-vraag, stat-tegels, slaagkanslabel met mini-wijzer, dashboard (oefenen | leren), eenvoudiger onderdeelpagina, audiocapsule en een rustige recorder.
+**Outcome:** SUCCESS
+**What worked / went wrong:** Twee klassen botsten stil (`.st` voor een veldicoon én voor een stat-tegel) en een tekst in een navy ring erfde navy kleur; beide alleen zichtbaar op de screenshot. Een veld met een blur-laag krijgt lichte randen tenzij het element zelf een achtergrondkleur heeft.
+**Lesson:** Op een kleurveld geldt contrast tegen het donkerste punt onder de tekst; leg de donkere vlek waar geen tekst staat. En in één statische pagina met honderden klassen: grep een korte klassenaam voor je hem hergebruikt.
+
+## 2026-10-14 — Glas v0.3: kiezen op de pagina, groen = goed, rustiger portaal
+**Changed:** `public/design/glas.html` — donkerblauwe velden terug met een `.veil` onder tekst; drie vlakke track-merken en vier sets categorie-iconen (Phosphor duotone/gevuld/lijn + eigen), live te wisselen; groen (#2b7a5c) voor goed/gehaald; nakijk-animatie voor Schrijven en Spreken; dashboard = vier modules + twee widgets; onderdeelpagina met Leren (1) en Oefenexamens (2) naast elkaar; les met oefening in een `<dialog>`; nieuwe prijsvergelijking; drie blogkaart- en twee artikelopties; PDF-brochure van een gids; een "Jouw keuzes"-paneel dat keuzes kopieert voor de chat.
+**Outcome:** SUCCESS
+**What worked / went wrong:** Phosphor's stylesheet claimt de klassenaam `.ph` (font-family); mijn tabelkop met class "ph" renderde daardoor als icoontjes. Een generieke klasse `.pic` uit de speler gaf een blogfoto een 4:3-verhouding. Een grid zonder `minmax(0,1fr)` rond een horizontale schuifrij maakte de pagina op mobiel 932px breed.
+**Lesson:** Een externe icon-CSS reserveert korte klassenamen — prefix eigen klassen of grep eerst. Elke grid die een scroller bevat, krijgt `minmax(0,1fr)`.
+
+## 2026-10-14 — Glas v0.4: keuzes van de eigenaar vastgelegd
+**Changed:** `public/design/glas.html` — de keuzes uit v0.3 zijn nu de standaard op de pagina: categorie-iconen **Phosphor gevuld**, track-merken **C · Label + trede**, luisteren **C · Glas** (ook in examenmodus B1 en de kleine speler), blogkaarten **1 · Raster**, artikelpagina **1 · Beeldkop**. Nieuw ter keuze: drie tekens voor KNM en ONA binnen variant C (huizen en route · acht thema's/kaarten · klein symbool) en drie varianten van de onderdeelpagina (twee banen · route · volgende stap eerst), allemaal met een grotere slaagkans (wijzer 64px + schaal van vier).
+**Outcome:** SUCCESS
+**What worked / went wrong:** Standaardkeuzes staan in `DEFAULTS` in het script en worden aangevuld met wat de bezoeker in localStorage koos; zo toont de pagina de beslissing ook in een schone browser.
+**Lesson:** Een beslissing van de eigenaar hoort in de bron van de pagina, niet alleen in iemands browseropslag.
+
+## 2026-10-14 — Glas v0.5: merken vastgelegd, opgeruimd, footers, animaties
+**Changed:** `public/design/glas.html` — track-merken definitief "label + trede" (KNM: drie grachtenpanden; ONA: een klein, dun kompas met oranje naald op de lijn); alle niet-gekozen varianten weggehaald (merken A/B, KNM-ONA K2/K3, iconensets, was-en-wordt, luisteren A/B, blogkaarten 2/3, artikelpagina 2, de ronde-1-portaaldelen, TrackCard); skyline-footer vervangen door drie opties; nieuwe sectie met animatiebibliotheken (advies: Motion + NumberFlow, CSS/tw-animate-css, View Transitions; AutoAnimate klein; GSAP later; geen Lottie/Rive) en negen demo's met WAAPI.
+**Outcome:** SUCCESS
+**What worked / went wrong:** In de screenshot-test speelden de demo's niet af: `scrollIntoView` met `html{scroll-behavior:smooth}` was na 1,5s nog niet bij een sectie op 36.000px, dus de IntersectionObserver vuurde nooit. In de browser zelf werkt het; de test moet `behavior:'instant'` gebruiken.
+**Lesson:** Test scroll-getriggerde animaties met een directe scroll, anders meet je de testopstelling in plaats van de pagina.
+
+## 2026-10-14 — Glas v0.6: footer en onderdeelpagina vast, laadlogo
+**Changed:** `public/design/glas.html` — footer **F1 · Licht glas** en onderdeelpagina **S1 · Twee banen** vastgelegd (F2/F3 en S2/S3 weg); drie uitwerkingen van twee banen ter keuze (kop per baan · voortgang en volgende stap · stappenbalk); drie laadanimaties voor het logo (zon komt op · opbouw · ademen), pure CSS op de SVG van LogoMark, stil bij "beweging verminderen"; review van de demo's: de goed-antwoord-pop gebruikt nu ease-out zonder doorschieten.
+**Outcome:** SUCCESS
+**What worked / went wrong:** SVG-onderdelen animeren met `transform-box: fill-box` zodat schaal en oorsprong per vorm kloppen; een lus die eindigt met de zon onder de rand zou bij `animation-duration:0` een leeg logo tonen, daarom zet reduced-motion de animatie expliciet uit.
+**Lesson:** Een herhalende laadanimatie heeft een eigen reduced-motion-regel nodig; de globale "duur 0"-regel laat hem op zijn laatste frame staan, en dat is niet altijd het logo.
+
+## 2026-10-14 — Glas v0.6b: laadlogo vast, vonkje bij goed antwoord
+**Changed:** `public/design/glas.html` — laadlogo **L2 · Opbouw** vastgelegd (L1/L3 en hun keyframes weg); de demo "Goed antwoord" kreeg een klein beloningsmoment: letter veert op, lichtstreep over de rij, zeven vonkjes uit het vinkje (700ms totaal, kleiner dan "Gehaald").
+**Outcome:** SUCCESS
+**What worked / went wrong:** Element-screenshots missen korte animaties (de opname zelf duurt ~100ms); `getAnimations()` en de berekende opacity bewezen dat de vonkjes liepen.
+**Lesson:** Verifieer een animatie onder 1s met `getAnimations()`, niet met screenshots.
+
+## 2026-10-14 — Glas v1.0 vastgelegd
+**Changed:** `public/design/glas.html` is v1.0 (antwoordopties A · rij, onderdeelpagina S1 · twee banen, alle kiesknoppen en het kiespaneel weg, sectie 17 = vastgelegde keuzes); Glas v1.0 staat bovenaan `docs/design/DESIGN_SYSTEM.md` (§G1–G7), de geschiedenis in `docs/decisions/design-history.md`, en CLAUDE.md §7/§8 zeggen hoe de twee systemen naast elkaar bestaan tot de migratie klaar is.
+**Outcome:** SUCCESS
+**What worked / went wrong:** Kiezen in de browser met een "Kies"-knop en een kopieerbare samenvatting werkte: zes rondes zonder misverstand over wat er gekozen was.
+**Lesson:** Bij een stijlwissel die niet in één keer gebouwd wordt: schrijf de overgangsregel expliciet op (per scherm, nooit gemengd), anders wordt elke oude component "de bug".
+
+## 2026-10-14 — Glas-referentiepagina uit public/ gehaald
+**Changed:** `public/design/glas.html` → `docs/design/glas.html`; afbeeldingen via `../../public/images/…`, verwijzingen in CLAUDE.md, DESIGN_SYSTEM.md en design-history bijgewerkt.
+**Outcome:** SUCCESS
+**What worked / went wrong:** Alles in `public/` gaat mee met elke deploy; `noindex` houdt zoekmachines weg, niet bezoekers. Vanaf schijf (file://) laden alle 18 afbeeldingen, en de dev-server geeft nu 404.
+**Lesson:** Een interne referentiepagina hoort in `docs/`, niet in `public/` — "niet geïndexeerd" is iets anders dan "niet live".
+
+## 2026-10-15 — Glas-homepage rustiger: hero vervaagt, geen banden, footer loopt door
+**Changed:** `app/[locale]/(main)/page.tsx` (hero in de opbouw van deutschtest üben: tekstkolom 1.15fr bovenaan, vinkjesrij, rechts één app-scherm met pil; één ondergrond `g-home`, `g-glow`-gloeden i.p.v. `g-sec-tier`, kleiner zegel, hero ±900px, track-kaarten als glas.html §08 met de onderdelen als mono-linkregel in de kop, docent+reviews naast elkaar, melkglas op de getallen, afsluiter zonder vlak), `_components/glas/TrackCard.tsx`, `app/glas-public.css`, `app/glas-components.css` (footer vloeit van boven in), `(main)/layout.tsx` (footer binnen `g-page`), nieuwe schermafdrukken in `public/images/platform/`, vier keys in `messages/{nl,en,ar}.json`.
+**Outcome:** SUCCESS (tsc, 704 unit-tests, next build, homepage-e2e, screenshots 390/1440 van /, /platform, /gidsen, /docent, /premium)
+**What worked / went wrong:** Een masker op `.g-field::before` liet tóch een rand staan: dat pseudo-element steekt 12% buiten de box uit (blur-rand), dus het masker liep buiten beeld door en de zichtbare onderkant was nog half dekkend. `inset` aan die kant op 0 loste het op. De footer hield daarna nog een rand omdat hij buiten `g-page` stond, op het witte `body`; een mist-achtergrond op de footer zelf sneed dan weer de gloed van de afsluiter af. Inloggen voor schermafdrukken: de auth-hook weigert wachtwoordlogins, behalve met `app_metadata.reviewer = true` (alleen via de service-sleutel, lokaal).
+**Lesson:** Wie een veld laat vervagen, moet weten wat eronder ligt — zowel de uitloop van het pseudo-element als de ondergrond van de ouder. Controleer met `getComputedStyle` van de ouder, niet alleen van het element.
+
+## 2026-10-15 — Homepage: bewijskaart onder de hero, sectieritme van deutschtest üben
+**Changed:** `app/[locale]/(main)/page.tsx` (kaart niet meer over de hero, kopmarges gelijkgetrokken naar 48px), `app/glas-public.css` (hero schermhoogte-afhankelijk, `.g-home .g-sec` 96/128px, korte-schermvariant, `.g-proof .g-docent` alleen ≥861px).
+**Outcome:** SUCCESS
+**What worked / went wrong:** Eerst een strook met haarlijnen gebouwd als bij deutschtest üben; eigenaar wilde de kaartvorm houden — alleen plek en maten overnemen. Een vaste hero van 850px duwde de kaart onder de vouw op een laptop; de hoogte van de hero werd daar bepaald door de 4:5-doos rond de telefoon, niet door de tekst. Bijvangst: `.g-proof .g-docent` overschreef het stapelen op mobiel, waardoor de docenttekst in een kolom van één woord stond.
+**Lesson:** "Zelfde hoogte als de zustersite" betekent: bewijs zichtbaar in het eerste scherm. Meet het op 1280×720, 1366×768 en 1440×900, niet op één viewport. Een regel met een extra selector overschrijft de mobiele variant van de basisregel — zet hem in een min-width-query.
+
+## 2026-10-15 — Homepage langs de apple-design-skill: hover alleen bij een muis, spatiëring per grootte, mat glas op verzoek
+**Changed:** `app/glas-public.css` (til-/zoomhovers van track-, gids-, foto- en blogkaarten achter `@media (hover: hover) and (pointer: fine)`; `.g-hero h1`, `.g-cta-band h2` en `.g-numcard b` ruimer gespatieerd, smal -0.03em en breed -0.04em; mobiel menu schaalt vanaf de hamburger i.p.v. het midden), `app/glas-components.css` (`.g-head-display/-section/-1` idem per breakpoint; `prefers-reduced-transparency` en `prefers-contrast: more` maken `.g-glass`/`.g-glass-d` mat, resp. wit met rand).
+**Outcome:** SUCCESS (tsc, next build, screenshots 390/1440)
+**What worked / went wrong:** Eén letter-spacing per klasse (-0.045/-0.05em) was op 58px goed en op 34px te krap: "achter alles" liep in elkaar. Op een touchscherm bleef een kaart na een tik "opgetild" staan omdat `:hover` daar blijft hangen.
+**Lesson:** Spatiëring is een functie van de lettergrootte, niet van de kop-klasse — geef een clamp()-kop ook een breakpoint voor zijn tracking. Elke hover die beweegt hoort achter `(hover: hover) and (pointer: fine)`.
+
+## 2026-10-15 — Homepage variant B ter beoordeling: de opbouw van deutschtest üben
+**Changed:** nieuwe route `app/[locale]/(main)/home-b/page.tsx` (noindex, niet in de sitemap), `_components/glas/HomeDemo.tsx` (vier tabbladen Taal A2 · Taal B1 · KNM · ONA, elk met één werkende opgave), een `g-hb-`-blok onderaan `app/glas-public.css`, namespace `home_b` in `messages/{nl,en,ar}.json`. Volgorde als Nachtzug: hero → strook met de vier blokken → demo → één zin → drie panelen met échte schermafdrukken → drie doelgroepen → belofte (docent) → vragen → afsluiter.
+**Outcome:** SUCCESS (tsc, 704 unit-tests, next build, schermafdrukken 390/1440 en /ar)
+**What worked / went wrong:** Een `<img loading="lazy">` met `z-index:-1` in een `Field` laadde in de headless browser niet (portret bleef leeg); eager laden loste het op. Op /ar draaide de Nederlandse opgave mee naar rechts-links (vraag vóór de tekst) en spatieerde de systeem-mono de Arabische letters uit elkaar — `dir="ltr"` op de opgave en de body-font voor dat label in het Arabisch.
+**Lesson:** Een opgave is Nederlands en leest links-rechts in elke taal; zet `dir="ltr"` op het hele opgaveblok, niet alleen op de tekst. Een mono-label met Arabische tekst krijgt de body-font.
+
+## 2026-10-15 — Homepage-hero: de gloed beweegt
+**Changed:** `app/[locale]/(main)/page.tsx` (`g-hero-live` + `.g-hero-orbs` in de hero), `app/glas-public.css` (oranje en blauwe gloed uit `--g-hero` gehaald en als twee bollen die in 22s/28s langzaam drijven, alleen `transform`; het veld houdt de lichte ondergrond; stil bij "beweging verminderen", gespiegeld in RTL).
+**Outcome:** SUCCESS (tsc, next build, schermafdrukken 1440/390 op t=0 en t=10s, `getAnimations()` = running)
+**What worked / went wrong:** Eerst gecentreerd met de losse `translate`-eigenschap; Chromium 101 van de screenshot-harness kent die niet, dus de bollen stonden buiten beeld en de hero had geen oranje meer. Het centreren zit nu in de `transform` van de keyframes.
+**Lesson:** Gebruik geen losse `translate`/`scale`/`rotate`-eigenschappen — dezelfde categorie als `color-mix()`: de harness rendert ze niet, en een kapotte gloed ziet er dan uit als "rustiger".
+
+## 2026-10-15 — Variant B: glazen demovenster, bewijs onder de hero, reviews
+**Changed:** `HomeDemo.tsx` is nu een glazen venster zoals bij deutschtest üben (vensterbalk met stippen, titel en tijd; navy pil-tabs; voettekst met Terug, stapstippen en Volgende) op een eigen veld met blauw linksboven en zacht oranje onderaan; de strook "Alles voor je inburgering" is weg en vervangen door de bewijskaart (Trustpilot knmoefenen.nl, 1.000+, docent) in glas; nieuwe sectie met de drie Trustpilot-reviews. `REVIEWS` verhuisd van de homepage naar `data/reviews.ts` (één bron voor beide pagina's). Keys `demo_back`/`demo_next` erbij, `strip_label` eruit.
+**Outcome:** SUCCESS (tsc, 704 unit-tests, next build, schermafdrukken 390/1440)
+**What worked / went wrong:** Scheiding binnen het venster met ruimte in plaats van haarlijnen (de referentie gebruikt lijnen; Glas niet) oogt even rustig. Een vaste min-hoogte op het tabpaneel voorkomt springen bij het wisselen, maar te hoog laat een gat boven de voettekst.
+**Lesson:** Echte reviews horen in één databestand zodra twee pagina's ze tonen — anders loopt de lijst met regels over wie er wel en niet in mag uit elkaar.
+
+## 2026-10-15 — Variant B: demo per onderdeel met Luisteren en Spreken, panelen als losse elementen
+**Changed:** `_components/glas/HomeDemo.tsx` (zes tabbladen per onderdeel met `CategoryMark`; Luisteren = proefvraag lu-1 met het echte mp3, golfvorm die meeloopt en drie tijdtegels; transcript pas na het goede antwoord; Spreken = A2-opgave 1.1 uit `spreken.mjs` met echte microfoon via `WavRecorder`, niveaumeter, terugluisteren en voorbeeldantwoord, niets verstuurd), `home-b/page.tsx` (schermafdrukken in de panelen vervangen door `PanelMock`: weekdagen, luisterkaart, taalregel; `g-sep5` tussen de kaarten), `app/glas-public.css`, keys in `messages/{nl,en,ar}.json` (`panel*_alt`, `demo_a2_sub`, `demo_b1_sub`, `demo_a2_parts` eruit).
+**Outcome:** SUCCESS (tsc, 704 unit-tests, next build, detector schoon, schermafdrukken 1440/390 en /ar van elke demo-stand)
+**What worked / went wrong:** De lijststijl van de paneelkaart (`.g-hb-pcard li` met oranje stip) lekte in de weekdagen van het nagebouwde element, dat daardoor verticaal stond — gescoped naar `.g-hb-pcard-t`. Op mobiel was de demo breder dan het scherm: een grid zonder `minmax(0, 1fr)` groeit mee met de min-content van de tegels. Het transcript na een fout antwoord tonen verraadde het goede antwoord.
+**Lesson:** Een generieke `li`-regel op een kaart raakt elk nagebouwd element dat je erin zet — scope hem op de tekstkolom. Een enkelvoudige grid-kolom met knoppen erin krijgt altijd `minmax(0, 1fr)`.
+
+## 2026-10-15 — Variant B: trackband, mono-regel A2, sectieritme naar deutschtest üben
+**Changed:** de trackband is `_components/glas/HomeTracks.tsx` geworden en staat nu op `/` én `/home-b` (na de bewijskaart); `.g-track-meta` 10,5px/0.05em en `.g-track-links` zonder scheidingspunt; in `/home-b` is "Zo bereid je je voor" een band op `--mist-2` en schuift een kale sectie na een kale sectie op (`app/glas-public.css`).
+**Outcome:** SUCCESS
+**What worked / went wrong:** deutschtest gemeten met Puppeteer in plaats van op het oog: de sectiepadding was al gelijk (128/96px). Wat vreemd oogde was (1) "Zo bereid" plakte 70px onder de quote omdat zijn padding-top op 0 stond, (2) de kaarten waren smaller dan de kop erboven, (3) twee kale secties na elkaar gaven 256px leegte zonder grens — deutschtest zet daar een band of haarlijn. De A2-regel brak af met het "·" vooraan de tweede regel.
+**Lesson:** meet de referentie voordat je spacing kopieert — het verschil zat in de grenzen tussen secties, niet in de getallen. Een scheidingsteken als `::before` op `li + li` belandt bij afbreken vooraan een regel; laat de onderstreping scheiden.
+
+## 2026-10-15 — Variant B: herotekst gedeeld, demo/panelen op de maten van deutschtest, levende hero
+**Changed:** herotekstkolom naar `_components/glas/HomeHeroCopy.tsx` (gedeeld door `/` en `/home-b`, met `TRACKS`); `HomeTracks` kreeg `centered`; B kreeg `g-hero-live` + `g-hero-orbs`; demo-venster en panelen in `app/glas-public.css` op de waarden uit `deutsch-test/components/design/variants/nachtzug*.tsx`.
+**Outcome:** SUCCESS
+**What worked / went wrong:** de lokale repo `~/Desktop/Development-Projects/deutsch-test` lezen gaf exacte maten (venster 22px rond, tabs 36px, paneel p-8, kaart 24px + haarlijn #d6dce6, 64px ritme) — beter dan meten op schermafdrukken. Een aangeleverd component (BackgroundGradientAnimation, Tailwind v3-config, paarse standaardkleuren, setState per muisbeweging) bleek overbodig: de homepage had al een transform-only drift in de eigen kleuren. Een gecentreerde kop met `text-wrap: balance` brak nog op "blok / voor blok"; pas `max-width: 12ch` gaf de goede breuk in nl/en/ar.
+**Lesson:** kijk eerst of het gevraagde effect al in de codebase bestaat voordat je een extern component integreert; en een referentiesite met lokale bron lees je, die meet je niet na.
+
+## 2026-10-15 — /platform opnieuw in Glas, naar de featurepagina van settly
+**Changed:** `app/[locale]/(main)/platform/page.tsx` herschreven (donkere kopkaart met portaalvenster en telefoon, zijbalk met ankers en scroll-spy, zes secties met featurekaarten, docentband in Nacht, traject met links per onderdeel, FAQ + FAQPage-JSON-LD); nieuw `platform/FeatureMocks.tsx` (vijftien nagebouwde schermpjes, `aria-hidden`, Nederlands, ltr) en `platform/PlatformNav.tsx` (client, één IntersectionObserver); `g-pf2-*` vervangt `g-pf-*` in `app/glas-public-info.css`; namespace `platform` vernieuwd in `messages/{nl,en,ar}.json`; `tests/public.spec.js` zoekt de kop "Taal B1".
+**Outcome:** SUCCESS (tsc, 704 unit-tests, next build, detector schoon, schermafdrukken 390/1440 en /ar)
+**What worked / went wrong:** Eén klassenaam (`g-pf2-foot`) voor twee dingen — de kaartvoet en een regel in een schermpje — liet de mockregel `margin:0; padding:0` de kaartvoet platdrukken. Een algemene `.g-pf2-amber b { color:#fff }` maakte de tekst in het docentzegel (`<b>` in een witte pil) onzichtbaar. De telefoon over het portaalvenster dekte eerst de modulenamen af; pas compactere modulekaarten plus een "deze week"-rij eronder gaven hem een plek die niets wegneemt. Bijvangst, niet opgelost: de `(main)`-layout rendert op deze branch geen `<main>` meer, waardoor 17 tests in `public.spec.js` falen op `main a[href=…]`.
+**Lesson:** Een selector op een kaal element (`b`, `small`, `li`) in een kaart raakt elk component dat je erin zet — scope op de directe kinderen. En geef een element in een nagebouwd schermpje nooit dezelfde klasse als een deel van de kaart eromheen.
+
+## 2026-10-15 — Gidskop in twee kolommen: tekst links, foto als tegel rechts
+**Changed:** `app/[locale]/(main)/_components/GuideArticle.tsx` (titel niet meer op glas over de foto; crumbs → h1 → lead → auteursregel met scheiding en mono-leestijd → MT-melding → knoppen, foto rechts; het mono-label met de sectienaam boven de titel is weg), `app/glas-public-gidsen.css` (`.g-gh*` vervangt de `.g-readhead .g-ap-hero`-regels: grid 1.25fr/0.75fr vanaf 960px, foto 4:5 op een glazen plaat die 4° gedraaid achter hem ligt, gespiegeld in RTL; op mobiel staat de foto 16:10 boven de titel).
+**Outcome:** SUCCESS (tsc, 704 unit-tests, next build, detector schoon, schermafdrukken 390/1440 en /ar)
+**What worked / went wrong:** De auteursregel brak op mobiel in drie losse regels (avatar alleen, naam eronder, losse scheidingslijn): in een `flex-wrap`-rij breekt een item af op zijn max-content vóór het krimpt. `flex: 1 1 200px` op het tekstblok en de leestijd op een eigen regel onder de naam loste het op.
+**Lesson:** In een wrappende flexrij geef je het tekstblok een kleine `flex-basis`, anders springt het als geheel naar de volgende regel in plaats van af te breken.
+
+## 2026-10-15 — Gidskop: oranje gloed naar linksonder
+**Changed:** `app/glas-public-gidsen.css` — `.guide-hero.g-f-nevel` krijgt een eigen `--g` met de perzik-gloed linksonder (RTL gespiegeld), en `.guide-hero .g-veil` schuift omhoog naar de titel.
+**Outcome:** SUCCESS (schermafdrukken 1440/390)
+**What worked / went wrong:** Alleen de gloed verplaatsen was nauwelijks zichtbaar: de `g-veil` (wit waas achter de tekst, 20% 52%) en het masker onderaan de kop wasten hem weg. Pas sterker van kleur, hoger (72%) en met de sluier omhoog werd hij zichtbaar.
+**Lesson:** Een gloed in een `Field` met `veil` concurreert met die sluier; wie de gloed verplaatst, moet de sluier meeschuiven.
+
+## 2026-10-15 — Gidsen als PDF-brochure: omslag op de kaart, brochure-opmaak in de PDF
+**Changed:** nieuw `components/guides/BrochureCover.tsx` (één omslag in twee maten, alles in em; 1em = breedte/20) + `lib/guides/brochure.ts` (omslaggegevens op één plek); de kaarten in `/gidsen` (`GuideIndex.tsx`, `.g-gbro-*` in `app/glas-public-gidsen.css`) tonen de omslag als brochure met een vel erachter; nieuwe printpagina `app/[locale]/(print)/gids-brochure/[section]/[slug]/` (omslag, "in deze gids" + "in het kort", dezelfde `articleHtml`, FAQ, slot met QR via `qrcode`) en `/api/guide-pdf` print die pagina i.p.v. de gidspagina; keys `guides.brochure_*` in nl/en/ar.
+**Outcome:** SUCCESS (tsc, 704 unit-tests, next build, detector schoon, PDF's nl/en/ar gecontroleerd)
+**What worked / went wrong:** Lightning CSS (Turbopack) weigert `@page { @bottom-left, @bottom-right { … } }` en breekt dan de hele route met een 500; de `@page`-regels staan nu inline in een `<style>`. `break-inside: avoid` op `.guide-step` liet halve pagina's leeg — een stap mag nu breken, alleen kop en nummer blijven bij elkaar. De korrel (`mix-blend-mode: overlay`) op de omslag maakte de PDF 4,5 MB; in print uit gaf 1,5 MB.
+**Lesson:** Margevakken van `@page` horen niet in een gebundeld CSS-bestand. In een PDF is elke mengmodus of blur een gerasterd vlak: zet hem in print uit. Houd in print alleen kleine blokken bijeen, nooit een blok dat langer kan zijn dan een halve pagina.
+
+## 2026-10-15 — Uitlegelementen in Glas, ter beoordeling
+**Changed:** nieuw `components/glas/uitleg/` (Tijdlijn, Beslispad stap/ladder, Scenarios, Pogingen, Stappen, Vergelijker, Termijn, ExamenOpbouw, Onderdelenkaart, KloptHet), `app/glas-uitleg.css` (import in `app/globals.css`), voorbeeldpagina `app/[locale]/(main)/uitleg-elementen/page.tsx` (noindex) met echte inhoud uit `SEO/facts.md`, sectie in `docs/design/glas-kit.md`.
+**Outcome:** SUCCESS (tsc, 704 unit-tests, next build, detector schoon, schermafdrukken 390/1440 en /ar)
+**What worked / went wrong:** De tijdlijn verborg zijn punten tot een `whileInView` vuurde; in een element-screenshot en bij een lange lijst op mobiel bleef hij leeg — en in de PDF-brochure zou hij leeg printen. Nu staat de inhoud standaard zichtbaar en wordt de animatie pas na het laden gewapend als de lijst onder de vouw staat, met een print-regel. NumberFlow-getallen overlapten de tekst ernaast in de harness (Chromium 101) maar niet in Playwright (Chrome 148): harness-artefact. `calc(var(--n) * 1fr)` in `grid-template-columns` is ongeldig en viel stil terug op één kolom. Tailwinds preflight zet `svg { display: block }`, dus een icoon in een tekstregel brak af.
+**Lesson:** Een scroll-animatie mag inhoud nooit standaard verbergen: wapen hem na het laden en alleen buiten beeld. Twijfel je over een render-fout van de harness, controleer in Playwright voordat je de code aanpast. `fr` mag niet in `calc()`. Een inline-icoon in lopende tekst krijgt expliciet `display: inline-block`.
+
+## 2026-10-15 — /premium als configurator (Calendly/Zaro) met telefoon-carrousel (Superpower)
+**Changed:** `app/[locale]/(main)/premium/page.tsx` herschreven; nieuw `premium/PlanBuilder.tsx` (kaarten Gratis · Taal A2 · Taal B1 met aanvinkbare onderdelen, KNM/ONA als schakelaars "Los erbij", plakkende totaalbalk op Nacht, alle bedragen via `priceForSelection`) en `premium/WhatYouGet.tsx` (telefoon met vijf schermen, voortgangsstreepjes, lijst ernaast); `g-pb-*`/`g-wyg-*` vervangen de oude `g-pm-*`-kaarten in `app/glas-public-info.css`; namespace `premium_page` vernieuwd in nl/en/ar; `/dashboard/pakketten` leest `?kies=` en vinkt die modules aan (gefilterd op te koop en niet al van jou).
+**Outcome:** SUCCESS (tsc, 704 unit-tests, next build, detector schoon, schermafdrukken 390/1440, /ar, aangeklikte staat)
+**What worked / went wrong:** `/register?module=…` werd nergens gelezen — een keuze op /premium ging bij het aanmelden verloren; nu reist hij mee als `next=/…/dashboard/pakketten?kies=…`. De totaalbalk plakte niet: `.g-field` heeft `overflow: hidden` en is daardoor een scrollcontainer; `overflow: clip` op dit ene veld lost het op. De autoplay hangt aan `animationend` van het voortgangsstreepje, zodat pauzeren (hover, focus, buiten beeld, knop) één `animation-play-state` is.
+**Lesson:** `position: sticky` in een `Field` werkt pas met `overflow: clip` — `hidden` maakt een scrollcontainer. Een queryparameter die een funnel doorgeeft moet aan de ontvangende kant ook gelezen worden; controleer dat voordat je er een knop op bouwt.
+
+## 2026-10-15 — /premium: "Dit krijg je" als hero, configurator ruimer, tabel daarna
+**Changed:** `app/[locale]/(main)/premium/page.tsx` (volgorde: hero met telefoon en h1 "Dit krijg je in elk onderdeel" op Gracht → "Stel je eigen pakket samen" als eigen sectie met h2 → vergelijkingstabel → FAQ; prijsblok uit de hero, alleen een knop naar #pakket), `WhatYouGet.tsx` (kop als eigen grid-gebied, `footer` optioneel), `app/glas-public-info.css` (`.g-pm-hero`: podium als glas op het veld; slide 6s → 2,6s, overgang 520 → 300ms; configurator: kop 80px boven de kaarten, kaarten 28px uit elkaar en 28px binnenrand, rijen en losse modules ruimer).
+**Outcome:** SUCCESS (tsc, eslint, next build, schermafdrukken 390/1440 in Playwright)
+**What worked / went wrong:** Met `order: -1` op mobiel kwam de lijst van vijf vóór de telefoon, waardoor het beeld uit het eerste scherm viel. Een grid met `grid-template-areas` (kop · telefoon · lijst op mobiel, telefoon links naast kop + lijst op desktop) lost dat op zonder de kop dubbel te renderen.
+**Lesson:** Moet een kop op mobiel boven het beeld en op desktop ernaast staan, maak hem een eigen grid-gebied in plaats van de kolommen te herordenen.
+
+## 2026-10-15 — /premium: configurator compact, scorering loopt door
+**Changed:** `app/glas-public-info.css` (`g-pb-*`: kop 26–34px, kaarten 18px padding en 12px gap, prijs 32px, rijen 7px met meta op één regel, add-ons en totaalbalk 44px hoog, sectie-padding 56/72px); `premium/page.tsx` (`ScoreRing correct={21} total={25} passPct={null}` i.p.v. losse resultaten).
+**Outcome:** SUCCESS (tsc, viewportshot 1440×900: hele configurator in één scherm)
+**What worked / went wrong:** De ring met `results` per vraag zette de vier fouten verspreid rond de cirkel, met het oranje 60%-streepje ertussen — in een klein schermpje leest dat als een kapotte ring. Doorlopend vullen leest als "21 van 25". Een volle-pagina-screenshot zet de plakkende balk midden over de kaarten; voor de echte stand een viewport-shot nemen.
+**Lesson:** In een illustratief schermpje toont de scorering een doorlopende vulling; de verdeling per vraag hoort bij de echte uitslag. Controleer een sticky element altijd met een viewport-shot, nooit met een full-page-shot.
+
+## 2026-10-15 — /premium hero: minder tekst naast de telefoon
+**Changed:** `slide1–5_desc` in `messages/{nl,en,ar}.json` ingekort tot één regel; in `app/glas-public-info.css` toont `.g-wyg-list` de omschrijving alleen bij het actieve item.
+**Outcome:** SUCCESS
+**What worked / went wrong:** de niet-actieve omschrijvingen zijn visueel verborgen (clip-path), niet `display:none` — de telefoon is `aria-hidden`, dus de lijst is de enige tekst voor een schermlezer. De verplichte zinnen (model past rubric toe, geen DUO-uitslag; met AI opgesteld, door de docent nagekeken) bleven staan, alleen korter.
+**Lesson:** bij een carrousel met `aria-hidden` beeld nooit tekst met `display:none` wegsnoeien; verberg hem alleen visueel.
+
+## 2026-10-15 — Variant B is de homepage; variant A is weg
+**Changed:** `app/[locale]/(main)/page.tsx` is nu de inhoud van het oude `home-b/page.tsx`, met de metadata (indexeerbaar, canonical, hreflang) en de JSON-LD van de oude `/`; `home-b/` verwijderd en `/:locale/home-b` → `/:locale` (308) in `next.config.ts`; `KennisbankCards.tsx` en `FeatureCarousel.tsx` weg; 51 ongebruikte `home.*`-keys uit `messages/{nl,en,ar}.json`; de homepage-A-regels `.g-proof*`, `.g-closing-open`, `.g-numcard.g-glass` uit `app/glas-public.css` (de kitcomponenten van §08 blijven staan).
+**Outcome:** SUCCESS (tsc, 704 unit-tests, next build, detector schoon, schermafdrukken 390/1440 en /ar, 308 en `index, follow` met curl gecontroleerd)
+**What worked / went wrong:** De eigenaar had in een eerdere sessie gevraagd B de standaard te maken, maar dat is nooit gebeurd — B stond alleen op `/home-b` en `/` liet A zien. Het portret in "Onze belofte" was leeg in `check-ui.mjs`, maar in Playwright laadt het gewoon (naturalWidth 480): een artefact van de harness. Met A verdween ook de kennisbankrij, en daarmee de interne links van de homepage naar de gidsen.
+**Lesson:** Een variant "ter beoordeling" op een eigen route promoveren is een eigen stap met een eigen commit; leg het besluit vast in LEARNINGS zodra de eigenaar het neemt, anders verdampt het bij een `/clear`. `grep` is hier ugrep: zet `--include` vóór de paden en nooit na `--`.
+
+## 2026-10-15 — /login: levend veld met snellere gloeden
+**Changed:** `AuthShell` kreeg een `live`-prop die drie gloeden (`.auth-g-orbs` in `app/auth-glas.css`) achter het veld zet; alleen `/login` zet hem aan.
+**Outcome:** SUCCESS
+**What worked / went wrong:** Zelfde opzet als de homepage-hero (`.g-hero-orbs`: geblurde radial-gradients, alleen transform), maar 6–8s in plaats van 11–14s, ±35% baan en schaal 0,85–1,3. De bollen staan op z-index -2 ná `::before` in de DOM, dus ze liggen boven de veldkleur en onder de korrel.
+**Lesson:** Een sterkere variant van een bestaande animatie hoort als eigen klasse in de stylesheet van dat oppervlak, niet als override van de hero-klassen — dan blijft de homepage ongemoeid.
+
+## 2026-10-15 — /gidsen: stapel vult de uitgelichte kaart, zoekveld weg
+**Changed:** `.g-post-stack` in `app/glas-public.css` krijgt `grid-auto-rows: 1fr` i.p.v. `align-content: start`; het zoekveld (`GuideSearch`, `GuideFilterProvider`, `.g-search`, drie berichtsleutels) is weg uit `gidsen/page.tsx`, `GuideIndex.tsx`, `glas-public-gidsen.css` en `messages/*.json`.
+**Outcome:** SUCCESS
+**What worked / went wrong:** de twee kaarten naast de uitgelichte gids hingen bovenaan met een gat eronder; nu delen ze de hoogte, ook op /blog dat dezelfde klasse gebruikt. Zonder zoekveld had de filtercontext geen tweede lezer meer, dus de chipstatus staat weer gewoon in `GuideIndex`.
+**Lesson:** een stapel naast een uitgelichte kaart rekt mee (`1fr`-rijen), anders oogt hij als een half gevuld raster.
+
+## 2026-10-15 — Uitlegelementen in de blog
+**Changed:** `<!--uitleg:id-->`-markers in `articleHtml` van acht posts × nl/en/ar (`data/blog-posts.ts`); de blogroute knipt daar en zet `app/[locale]/(main)/blog/[slug]/BlogUitleg.tsx` ertussen (tien elementen: Stappen, ExamenOpbouw ×3, Pogingen, Termijn, Vergelijker, KloptHet ×2, Beslispad); `UitlegShell` kreeg een context voor de bronregel in en/ar; `ExamenOpbouw` verbergt de chips bij één onderdeel; `ArticleContent` neemt een `className`.
+**Outcome:** SUCCESS (tsc, 704 unit-tests, next build, Playwright-shots 1440/390 nl + 390 ar, geen consolefouten)
+**What worked / went wrong:** Het element staat náást `.article-body`, niet erin — anders raken `ul li::before`, `h3` en `p` van het artikel het element. Twee niveaus met dezelfde `level` ('a2') in één ExamenOpbouw gaven een React-sleutelbotsing. De Vergelijker met drie kolommen op 390px liet "Onderwijsroute" over de buurkolom lopen; korte kolomkoppen, de uitleg als `sub` en `hyphens: auto` losten het op. Een Nederlandse zin in Arabische tekst krijgt LRI/PDI (`⁦…⁩`), anders staat de punt vooraan. Vooraf bestaande lintfouten in `Pogingen.tsx` en `Termijn.tsx` niet aangeraakt.
+**Lesson:** Een React-element in HTML-uit-data hoort tussen de HTML-blokken, niet erin geïnjecteerd: zo blijft de artikel-CSS van het element af en blijft de tekst gewoon server-HTML.
+
+## 2026-10-15 — Blogpost in de leesvorm van de gids
+**Changed:** `app/[locale]/(main)/blog/[slug]/page.tsx` gebruikt nu de kop (`.g-readhead .g-gh-photo`) en de leeskaart (`.g-prose.guide-prose` + `GuideToc`) van `GuideArticle`; de zijbalk is weg, `sidebarHtml` staat bovenaan als samenvatting, gerelateerde artikelen onder de kaart. `GuideToc` kreeg een `label`-prop (`blog.toc_title`, nl/en/ar). Oude blogregels uit `app/glas-public-blog.css` verwijderd.
+**Outcome:** SUCCESS
+**What worked / went wrong:** De blog-h2's hebben allemaal een `id`, dus `guideSections()` werkte zonder aanpassing. `.guide-prose` verbergt ook de oude `.article-toc` in 42 posts. Fout onderweg: een Python-splice zocht het einde op `</>\n  );\n}` en vond dat eerst in `ArticleWithUitleg` — de pagina verdubbelde; hersteld. `.g-blog-card` bleek nog in gebruik op `/oefenvragen/[slug]` en is teruggezet.
+**Lesson:** Bij een tekstsplice op een sluitpatroon: zoek vanaf het startpunt, nooit vanaf het begin van het bestand. Grep een klasse in de hele repo voordat je zijn CSS weghaalt.
+
+## 2026-10-15 — /oefenen/[skill]: Glas-paginakop met SEO-h1, examenfeiten naast de proef
+**Changed:** `app/[locale]/(main)/oefenen/[skill]/page.tsx` krijgt de opbouw van `/oefenvragen/[slug]`: `PageField` (Gracht, onder de nav) met kruimelpad, merk, badge, h1 "Lezen/Luisteren oefenen voor het inburgeringsexamen A2" en lead; naast de proefkaart "Zo ziet het examen eruit" (25 vragen, 65/45 min, computer, 3 of 4 keuzes — uit `data/skills.ts`/`SEO/facts.md` §1), daaronder de volgende stap naar `/oefenexamen/a2/[skill]` en chips naar de andere proeven. `FreePracticeEngine` kreeg `headingLevel` (h2 op deze pagina) en scrollt naar `#fp-engine` i.p.v. naar top 0. CSS `g-fpx-*` in `app/glas-public-info.css`; keys `oefenen.skillpage.*` in nl/en/ar.
+**Outcome:** SUCCESS (tsc, 704 unit-tests, next build, detector schoon, Playwright 1440/390 nl/en/ar, één h1, geen horizontale scroll)
+**What worked / went wrong:** De lange knoptekst ("Go to the A2 Reading practice exams") hield de grid op 390px 16px te breed; `minmax(0,1fr)` en een knop die mag afbreken lossen het op. De feitenkolom staat alleen naast de intro (`:has(.g-xintro)`); tijdens de vragen krijgt de speler de volle breedte. Chromium 101 van `check-ui.mjs` kent `:has()` niet, dus de controle liep via Playwright. De twee lintfouten in `FreePracticeEngine.tsx` (setState in effect) bestonden al op HEAD.
+**Lesson:** Komt er een paginakop boven een client-flow die bij elke stap naar top 0 scrollt, laat hem naar zijn eigen anker scrollen — anders valt elke vraag onder de vouw. URL's niet veranderd: `/oefenen/lezen` rankt al en draagt de zoekterm.
+
+## 2026-10-15 — /oefenen/[skill]: examenfeiten onder de proef i.p.v. ernaast
+**Changed:** `app/glas-public-info.css` — de twee kolommen van `.g-fpx-grid` weg; `.g-fpx-about` staat op desktop over de volle breedte onder de proefkaart, met tekst links en de feiten (2×2) rechts.
+**Outcome:** SUCCESS (tsc, Playwright 1440/390, geen horizontale scroll)
+**What worked / went wrong:** De feiten op vier kolommen braken "Op de computer" over twee regels; 2×2 houdt elke waarde op één regel.
+**Lesson:** Een rij korte feitentegels in een halve kaartbreedte: reken de langste waarde mee voordat je naar vier kolommen gaat.
+
+## 2026-10-15 — Proefkaart op /oefenen/[skill]: drie lichte varianten ter beoordeling
+**Changed:** `FreePracticeEngine.tsx` — de intro is opgedeeld in delen (kop, chips, tekstsoorten, audio, docent, knop) en heeft vier opstellingen: `nacht` (KNM/B1, ongewijzigd), `a` lichte kop (standaard op /oefenen/[skill]), `b` compacte kaart met de knop rechts, `c` de knop in de lichte kop. Keuze via `?variant=` (gelezen met `useSyncExternalStore`, server rendert `a`). CSS `g-xintro-a/b/c`, `g-xb-*`, `g-xc-*` in `components/exam/glas-player.css`.
+**Outcome:** SUCCESS (tsc, next build, Playwright 1440/390 per variant, geen horizontale scroll, KNM houdt de Nacht-kop)
+**What worked / went wrong:** De varianten hangen aan `headingLevel === 2`, dus alleen de pagina mét eigen kop kan kiezen. Twee bestaande lintfouten in het bestand niet aangeraakt.
+**Lesson:** Een URL-parameter om varianten te vergelijken op een statische pagina: lees hem in de client met `useSyncExternalStore` in plaats van `searchParams`, anders wordt de SSG-route dynamisch.
+
+## 2026-10-15 — Proefkaart variant d: startknop in de paginakop, kaart eronder vertelt wat je oefent
+**Changed:** `FreePracticeEngine.tsx` neemt op /oefenen/[skill] `pageHeader`/`aside`/`after` aan en tekent de `PageField` zelf, zodat variant `d` de startknop + drie vinkjes onder de lead in de kop kan zetten; de introkaart wordt "Wat je oefent" (tekst, tekstsoorten, docent, audio). De fase-weergave staat in een IIFE (`content`) na alle hooks. `page.tsx` geeft kop, feiten en volgende stap als props door. Keys `oefenen.intro_d_heading`/`intro_d_body` in nl/en/ar; CSS `g-xd-*` in `components/exam/glas-player.css`.
+**Outcome:** SUCCESS (tsc, 704 unit-tests, next build, detector schoon, Playwright 1440/390, geen consolefouten)
+**What worked / went wrong:** JSX die een servercomponent als prop aan een clientcomponent geeft en daar náást ander JSX als kind belandt, gaf "Each child in a list should have a unique key" — een `key` op de doorgegeven elementen lost het op. Na "Begin" scrolde de proef 106px te ver: de positie werd berekend vóórdat de knop uit de kop verdween; `scrollToEngine` wacht nu één frame.
+**Lesson:** Server-JSX als prop naast ander kind in een clientcomponent: geef het een `key`. Scroll naar een element ná de state-wissel die de layout verandert, niet in dezelfde tick.
+
+## 2026-10-15 — Variant d is de proefkaart van /oefenen/[skill]; a, b, c weg
+**Changed:** `FreePracticeEngine.tsx` kiest `d` zodra er een `pageHeader` is en anders de Nacht-kaart (KNM, B1); `?variant=`, `useSyncExternalStore` en de CSS van a/b/c (`g-xintro-a/b/c`, `g-xb-*`, `g-xc-*`) zijn weg.
+**Outcome:** SUCCESS (tsc, 704 unit-tests, next build, detector schoon; startknop staat nu in de server-HTML)
+**What worked / went wrong:** Zonder URL-keuze rendert de server meteen de goede variant, dus de knop springt niet meer in beeld na het laden.
+**Lesson:** Varianten ter beoordeling zijn tijdelijk: na de keus de schakelaar én de CSS van de verliezers in dezelfde commit weghalen.
+
+## 2026-10-15 — /oefenen: focusmodus met klok in examentempo
+**Changed:** `FreePracticeEngine.tsx` zet de vragen en de uitslag na "Begin" in een eigen laag (`.g-xfocus`, portal naar `body`, z 100 boven de nav) met stopknop, voortgang en `PaceTimer`; de pagina eronder blijft staan, krijgt `inert` en scrolt niet. De klok = DUO-minuten per vraag × aantal vragen (via `formatOf`), afgerond op hele minuten (A2 Lezen 26:00, Luisteren 18:00, KNM 11:00), staat stil tijdens de uitleg en kleurt oranje als je erover gaat. De uitslag noemt je tijd tegen dat tempo. Stoppen tijdens de vragen vraagt het eerst (`g-xdialog`, ook met Escape). CSS in `components/exam/glas-player.css`; keys `oefenen.focus_*`, `timer_*`, `time_result_*` in nl/en/ar.
+**Outcome:** SUCCESS (tsc, 704 unit-tests, next build, detector schoon, Playwright 1440/390 nl + ar + KNM, geen consolefouten, geen horizontale scroll)
+**What worked / went wrong:** De intro blijft altijd achter de laag gerenderd, zodat stoppen terugkeert naar precies dezelfde pagina en scrollpositie. De bevestiging verscheen eerst pas na het eerste antwoord; de eigenaar wil hem bij elk vertrek tijdens de vragen. Lokaal geeft `/nl/oefenen/b1/lezen` een 404 (geen B1-proefset in de lokale stack) — niet door deze wijziging.
+**Lesson:** Een focusmodus over een publieke pagina: portal naar `body`, de rest `inert` en `overflow: hidden` op `html`, en zet sticky-offsets om van `--nav-h` naar de eigen balk.
+
+## 2026-10-15 — Proef: situatie als kop, tijden naast de golf
+**Changed:** `FreePracticeEngine.tsx` — `Situation` splitst `stimulusIntro` in de plek (kop, 19px Manrope, `--ink`) en de werkvolgorde (genummerd); de proefcapsule krijgt `g-xaud-inline` met de tijden links en rechts van de golf. CSS `g-xsit*`, `g-xaud-inline`, `g-xtm-t` in `components/exam/glas-player.css`.
+**Outcome:** SUCCESS (tsc, next build, detector schoon, Playwright 1440/390: speelknop en golf op dezelfde middellijn, gemeten)
+**What worked / went wrong:** De knop centreerde op golf + tijdregel samen, dus de golf stond ~10px te hoog. De betaalde speler (`components/exam/AudioPlayer.tsx`) gebruikt nog de oude opbouw met de tijden eronder.
+**Lesson:** Een rij met een ronde knop naast een gestapelde kolom: centreer op het element dat je ziet (de golf), en zet bijschriften ernaast in plaats van eronder.
+
+## 2026-10-15 — Luisteren-proef: situatie en speler op een witte kaart
+**Changed:** `StimulusPane` krijgt bij Luisteren `.g-xsit-card` (wit, `--r-lg`, 22px binnenruimte, zelfde als de vraagkaart); de blauwe podiumvelden van de speler blijven als ingelegd scherm (`components/exam/glas-player.css`).
+**Outcome:** SUCCESS
+**What worked / went wrong:** kop, stappen en speler zweefden los op het Gracht-veld; op een kaart die even hoog begint als de vraagkaart lezen ze als één paneel, en de koppen links en rechts staan op één lijn.
+**Lesson:** in de focusmodus hoort elke kolom op een eigen vlak; losse tekst direct op het veld leest als iets dat er niet bij hoort.
+
+## 2026-10-15 — Proefuitslag: ring aaneengesloten, knoppen navy
+**Changed:** `ScoreRing` op de proefuitslag krijgt `correct`/`total` in plaats van `results`, en de "Bekijk uitslag"- en platformknop zijn `navy` in plaats van `oranje` (`FreePracticeEngine.tsx`).
+**Outcome:** SUCCESS
+**What worked / went wrong:** een segment per vraag op volgorde gaf losse gaten in de ring naast "Nu 60%"; de eigenaar las dat als een kapotte grafiek.
+**Lesson:** naast een percentage moet de ring dat percentage tonen; de volgorde per vraag hoort in het overzicht per vraag, niet in de ring.
+
+## 2026-10-15 — /register: dezelfde levende gloeden
+**Changed:** `app/[locale]/(auth)/register/page.tsx` zet `.auth-g-orbs` in zijn eigen `Field` (gracht + veil); die pagina gebruikt `AuthShell` niet, dus de `live`-prop reikt er niet.
+**Outcome:** SUCCESS
+**What worked / went wrong:** De bollen (z-index -2) liggen onder de `g-veil` (-1), dus de kop en lead links blijven leesbaar zonder extra laag.
+**Lesson:** Controleer of een pagina de gedeelde shell echt gebruikt voordat je een prop toevoegt — /register heeft een eigen tweekoloms opbouw.
+
+## 2026-10-15 — Portaal: geen "Cursus uitbreiden" meer, elke cursus open
+**Changed:** `PortalSidebar.tsx` verliest de oranje "+ Cursus uitbreiden"-rij en krijgt bovenaan de voet één stille regel `g-side-plan` ("Gratis versie / Jouw pakket · Bekijk pakketten →", alleen voor ingelogden zolang er iets te kopen is); `AppShell.tsx` verliest de "Uitbreiden"-tab; de modulekaarten op `/dashboard` linken altijd naar de cursus (zonder module: "Gratis proberen" als examen 1 gratis is) in plaats van naar `/dashboard/pakketten`. CSS in `app/glas-portal.css` (`g-navi-plus`, `g-tab-plus` weg); keys `side_plan_*` en `mod_try` in nl/en/ar, `nav_extend_*` en `mod_add` weg.
+**Outcome:** SUCCESS (tsc, 704 unit-tests, next build, detector schoon, Playwright 1440/390 nl + ar als gratis en als gedeeltelijke gebruiker, geen horizontale scroll)
+**What worked / went wrong:** `plan_free` bestond al in de `portal`-namespace — eerst dubbel toegevoegd, daarna hernoemd naar `side_plan_*`. Lokale testsessies via `mintSession` worden door de reviewer-hook geweigerd; `app_metadata.reviewer = true` op de lokale testgebruiker lost dat op. Een gratis gebruiker heeft op mobiel nu alleen de tab "Overzicht".
+**Lesson:** De verkoop hoort waar je op een slot stuit (unlock-kaart, slotjes, examens), niet als menu-item; het menu toont wat er is. Grep de namespace vóór een nieuwe key — ook een generieke naam als `plan_free`.
+
+## 2026-10-15 — Mobiele tabbalk: de modules als tabs zolang je niets bezit
+**Changed:** `AppShell.tsx` — zonder eigen onderdeel toont de tabbalk naast "Overzicht" de modules A2, B1 en KNM (`trackTabs`, `ExamMark` op 36px, label "Niveau A2"/"KNM"); de moduletab is actief op alles binnen die module, en "Overzicht" alleen nog op `/dashboard`.
+**Outcome:** SUCCESS (tsc, 704 unit-tests, next build, eslint schoon, detector schoon, Playwright 390 nl + ar op vijf pagina's)
+**What worked / went wrong:** Na het weghalen van "Uitbreiden" stond er voor een gratis gebruiker alleen "Overzicht" in de balk. Het label "A2" onder een tegel waar A2 al op staat zei niets; "Niveau A2" past bij de zijbalk.
+**Lesson:** Een tab die een module benoemt draagt het trackmerk, niet het categoriemerk — dezelfde regel als in de zijbalk.
+
+## 2026-10-15 — Dashboard: de termijn-widget wordt de gemiddelde score
+**Changed:** de widget rechtsboven op `/dashboard` is nu de bestaande `StatTile` (gemiddelde score, delta, lijn) in `app/[locale]/(app)/dashboard/page.tsx`, gevoed door het nieuwe `fetchScoreTrend()` in `lib/portal-progress.ts`; `.g-wid-stat` in `app/glas-portal.css`; drie `ov_avg_*`-sleutels in nl/en/ar.
+**Outcome:** SUCCESS
+**What worked / went wrong:** `StatTile` stond in de kit maar werd nergens gebruikt; alleen de afronding en rand moesten op die van `.g-wid` ernaast. De delta (groene pill) verschijnt alleen bij een stijging — de kit heeft geen neutrale variant, en een daling in groen zou liegen. Screenshot-sessie weer via `app_metadata.reviewer = true` op een wegwerpaccount, daarna verwijderd.
+**Lesson:** Kijk in `components/glas/` vóór je een widget bouwt: de kit heeft er vaak al een die alleen nog data nodig heeft.
+
+## 2026-10-15 — Examen-inhoud van productie naar de lokale stack
+**Changed:** lokale `stimuli`, `questions`, `question_options`, `open_tasks`, `open_task_images`, `exam_parts`, `rubrics`, `question_concepts` vervangen door die van productie, plus de vlaggen van `exams`; lokale testpogingen gewist. Eenmalig script in de scratchpad (niet in de repo), back-up van de lokale tabellen vooraf met `pg_dump`.
+**Outcome:** SUCCESS — tellingen gelijk aan productie (1.659 vragen, 480 open taken, 20 rubrieken, 90 gepubliceerde examens); een examen start in de speler; beeld en audio laden van productie-Storage.
+**What worked / went wrong:** `exams.id` verschilt tussen productie en lokaal (andere invoegvolgorde), dus elk `exam_id` moest vertaald worden op (level, skill, number); `section_id` en `concept_id` op hun natuurlijke sleutel. Lezen via REST met de service key, gepagineerd voorbij de 1.000-rijengrens; schrijven met `json_populate_recordset` + `overriding system value` in één transactie, daarna `setval`. Een eerste controle per examen viel stil op die 1.000-grens aan de productiekant.
+**Lesson:** Kopieer nooit id's tussen deze twee databases zonder ze te vertalen — de examen-id's lopen niet gelijk. De leerlaag (lessen, woorden, concepten) was al gelijk; alleen de examen-inhoud liep achter.
+
+## 2026-10-15 — Onderdeelpagina: variant E (examens als rijen, modules met merk)
+**Changed:** `dashboard/_components/GlasSkill.tsx` (`Lanes` zonder pijl, `LearnLane` met merk + balk, `ExamLane` als tien rijen met één knop, `UnlockCard` weg), `exam-slots.ts` (+`attempts`, `pct`), de onderdeel- en KNM-pagina, `CategoryMark` (+`leren` `oefenexamens` `uitleg` `training` `toets`), `glas-portal.css` (`.g-xr*` in plaats van `.g-sq*`/`.g-upsell`/`.g-then`), `portal.glas.*` in nl/en/ar.
+**Outcome:** SUCCESS
+**What worked / went wrong:** Eerst vijf varianten als losse HTML-mockup in de scratchpad, pas na de keuze van de eigenaar in de app. Alle tien examens staan er altijd, ook ongepubliceerde (eigenaar: "laat zien dat ze er allemaal zijn"). Het examenmerk staat als watermerk achter het nummer; op 58% van een 46px-tegel was het onzichtbaar, pas met een `bare`-merk van 68px op 12% dekking leest het. Lokale testaccounts met een wachtwoord worden door `hook_reviewer_claims` geweigerd tot `app_metadata.reviewer = true` (alleen lokaal zetten).
+**Lesson:** "N van 25 goed" kan niet uit `ExamProgress` (alleen `bestPct`, en bij Schrijven/Spreken bestaat "goed" niet) — toon pogingen, nooit een teruggerekend aantal.
+
+## 2026-10-15 — Pakketten: rekening als zijkolom op desktop
+**Changed:** `app/[locale]/(app)/dashboard/pakketten/ModulePicker.tsx` (keuze in `.g-mp-main`, totaal in een `<aside>` met regel per gekozen onderdeel, foutmelding en incasso-toestemming erin) en `app/glas-portal.css` (vanaf 1200px een grid `1fr 320px`, aside sticky bovenaan, tegels in twee kolommen; daaronder blijft de balk onderaan).
+**Outcome:** SUCCESS
+**What worked / went wrong:** De toestemmingstekst staat twee keer in de DOM (kolom op desktop, onder de tegels op mobiel), steeds één met `display: none`, zodat de mobiele balk niet hoog wordt. Het lokale testaccount moest weer `app_metadata.reviewer = true` krijgen voor `mintSession`.
+**Lesson:** Een sticky-balk die over de inhoud schuift is op desktop een noodgreep; als er breedte over is, hoort een lopend totaal in een eigen kolom.
+
+## 2026-10-15 — Pakketten: "alles inbegrepen" per tegel, overzicht in een dialog, KNM + ONA samen
+**Changed:** `dashboard/pakketten/page.tsx` geeft per module een `includes`-lijst mee (vervangt `metaLine`) en zet KNM en ONA onder één groep "Andere modules"; `ModulePicker.tsx` toont die lijst als vinkjes op de tegel, een strook "Alles inbegrepen" met "Bekijk alles", een link in de zijkolom en `IncludedDialog` (native `<dialog>`); CSS `g-mp-inc`, `g-mp-allin`, `g-inc-*` in `app/glas-portal.css`.
+**Outcome:** SUCCESS
+**What worked / went wrong:** Lessen worden alleen beloofd waar de leerlaag bestaat (A2, en KNM's lesmodules); B1 krijgt die regel niet, ook al zegt `/premium` "lessen" per module. Native `<dialog>` + `@starting-style` + `allow-discrete` geeft in- én uitgang zonder JS-staat. Een oneven aantal secties liet een gat; de laatste even sectie overspant nu de hele breedte.
+**Lesson:** Een featurelijst op een prijskaart per module afleiden van wat er voor die module bestaat, niet één lijst voor alles — B1 en A2 verkopen niet hetzelfde.
+
+## 2026-10-15 — Woordenles: kaartendeck in plaats van een lijst, en alleen de woorden
+**Changed:** `WordDeck` verhuist naar `components/lessons/WordDeck.tsx` en krijgt `embedded` (geen sluitknop, toetsen alleen met focus in de deck, geen kolom-event); het `woordenlijst`-item in `LessonStream.tsx` rendert die deck; `fetchLessonWords(items, userId)` haalt nu dezelfde kolommen en voortgang op als de themadeck (`WORD_COLS`/`toWord`/`fetchWordProgress` geëxporteerd uit `words-server.ts`); de lespagina toont bij een blok-A-les alleen titel, één regel (`lessons.words_lesson_learn`), deck en oefenknop; `woordenlijst` is geen bron meer in het oefenvenster; mobiele fixes in `app/glas-leerlaag.css` (status op eigen regel, `hyphens: auto` + `lang="nl"` op het woord, geen toetsenhint op aanraakschermen).
+**Outcome:** SUCCESS (tsc, eslint op de gewijzigde bestanden, 704 unit-tests, next build, detector schoon, Playwright 1440/390)
+**What worked / went wrong:** De pagina bevatte twee decks: de woordenlijst stond als "bron" ook in het verborgen, gemonteerde oefenvenster. Een deck die op `window` naar spatie luistert zou in een les een kaart omdraaien terwijl je verderop iets invult. Eerste mobiele fix kapte de status af tot "N…"; een eigen regel erboven werkt wel. De twee `set-state-in-effect`-lintfouten in `SpeakBlock` bestonden al vóór de verhuizing.
+**Lesson:** Een component die naar `window` luistert hoort die luisteraar te scopen zodra hij in een pagina met andere invoer komt. En materiaal dat in de uitleg staat is niet vanzelf goed materiaal naast een opgave — een woordenlijst geeft daar het antwoord.
+
+## 2026-10-15 — Woordkaart: vaste hoogte, zin bij omdraaien, knoppen pas na omdraaien
+**Changed:** `components/lessons/WordDeck.tsx` zet voor- en achterkant als twee `.wd-face` op één rasterplek (de verborgen kant `aria-hidden` + `inert`), speelt bij omdraaien de voorbeeldzin af (`autoPlay={flipped}`, zonder zinsopname het woord), en toont "Nog leren / Ken ik" pas als de kaart om is (`.wd-marks.is-open`, plek blijft bezet); `app/glas-leerlaag.css` krijgt `.wd-faces`/`.wd-face` en `min-height` 400px (desktop) / 540px (mobiel) op `.wd-card`; de woordenles toont onder de titel geen regel meer (`words_lesson_learn` weer uit nl/en/ar).
+**Outcome:** SUCCESS (tsc, 704 unit-tests, next build, detector schoon; Playwright over alle 24 kaarten: 0 hoogtesprongen bij omdraaien, één kaarthoogte per breedte, zin-mp3 speelt bij omdraaien)
+**What worked / went wrong:** Beide kanten in de DOM met `visibility: hidden` geeft de hoogte van de langste kant zonder te meten in JS. Van woord tot woord verschilde de hoogte nog 41px (desktop) en 26px (mobiel); een `min-height` net boven het hoogste van nu lost dat op.
+**Lesson:** Een kaart die van inhoud wisselt houdt zijn maat als alle toestanden tegelijk in hetzelfde rastervak staan; verberg met `visibility`, niet met conditioneel renderen.
+
+## 2026-10-15 — Cursusroute als tweede glazen kolom naast de zijbalk
+**Changed:** `components/lessons/CourseRoute.tsx` (nieuw) vervangt `GrammarSideNav` (verwijderd) en de kolom van `WordSideNav` op de les-, regel- en woordkaartpagina; `AppShell` kreeg een `course`-slot (`#dash-course`, stijl in `app/glas-portal.css`), de pagina's zijn één kolom (`.gt-solo`); de niveaukiezer is weg.
+**Outcome:** SUCCESS
+**What worked / went wrong:** De kolom in de chrome zetten in plaats van in `.gt-page` haalt het gat tussen zijbalk en menu weg, en `courseSideBlocks` + `extras`/`count` op `SideItem` was genoeg om ook de woordthema's (live via `WORD_KNOWN_EVENT`) te tonen. Een sessie minten met `tests/helpers/session.mjs` faalt lokaal: de Auth-hook weigert wachtwoordlogins. Een magic-link via `admin/generate_link` + `/auth/v1/verify` werkt wel.
+**Lesson:** Een schermcookie voor `check-ui-auth.mjs` mint je via een magic-link-token, niet via een wachtwoord; en een tweede navigatiekolom hoort in de chrome naast de zijbalk, niet in het pagina-grid.
+
+## 2026-10-15 — Woordenles zonder opgaven: af = elk woord gekend
+**Changed:** de woordenles (blok A) toont geen "Oefen wat je net leerde" meer — alleen het `woordenlijst`-item, `exercises: 0` (`leren/[lesSlug]/page.tsx`); merk en titel staan naast elkaar als de kop verder leeg is (`.gl-head.is-row`, `GrammarTopicView.tsx`); nieuwe regel `lessonWordsDone()` in `lib/lessons/words.ts` (+ `tests-unit/lesson-words-done.test.ts`); `WordDeck` krijgt `lessonId` en zet `user_lesson_progress` op `done` zodra elk woord gekend is (`markLessonDone`: update waar nog niet `done`, anders insert met `ignoreDuplicates`).
+**Outcome:** SUCCESS (tsc, 707 unit-tests, next build, detector schoon; Playwright: 24× "Ken ik" → rij `done 24/24`, zijbalk 0/6 → 1/6; één woord terug naar "Nog leren" → les blijft af, `completed_at` ongewijzigd)
+**What worked / went wrong:** Vóór het weghalen gecontroleerd hoe een les af raakt: alleen via `bumpLessonProgress` in `lesson-answer`, dus opgaven weghalen zonder vervanging had blok A voorgoed op 0/6 gezet. De eigenaar koos "elk woord gekend" boven "elke kaart gezien".
+**Lesson:** Wie een stap uit een flow haalt, zoekt eerst wat er aan die stap hangt — hier de afrondingsregel van de les, die stil kapot was gegaan zonder foutmelding.
+
+## 2026-10-15 — Les en onderwerp in twee stappen: Video/Uitleg en Opdracht (naar Coursera)
+**Changed:** `GrammarTopicView.tsx` heeft een `step` (`?stap=opdracht`): de uitlegstap toont video + uitleg + een overstapkaart, de opdrachtstap de opgaven op de pagina (het oefenvenster `PracticeDialog` is weg); `course-side.ts` zet elk onderwerp/elke les van het open blok als twee rijen ("Video: …" / "Opdracht: … · 9 opgaven"), `CourseRoute.tsx` rendert ze plat met type-icoon in de kolom van de bloktegels; nieuw `fetchExerciseCounts()` (`lessons-server.ts`), `TopicLesson.started`, `courseRowLabels()`/`stepLabels()` (`stream-labels.ts`); CSS in `glas-portal.css` (`.cr-item*`) en `glas-leerlaag.css` (`.gl-steps`, `.gl-stepback`, `.gl-handoff`, `.gl-task.is-wide`); `grammar.route_kind_*`/`step_*`/`handoff_*` in nl/en/ar.
+**Outcome:** SUCCESS (tsc, 707 unit-tests, next build, eslint, detector schoon; screenshots 1440/390 van onderwerp, les en woordkaarten)
+**What worked / went wrong:** Eerst drie HTML-varianten; de eigenaar koos A (Coursera). Een boomlijn met ellebogen onder het open blok is op verzoek weer weggehaald — plat oogt rustiger. De nieuwe klasse `.gl-back` botste stil met een bestaande `.gl-back` (achtergrond wit, hoogte 34px); gevonden via de toegepaste regels in de browser, hernoemd naar `.gl-stepback`. `.gl-taskhead` verloor van `.gl-head` omdat die later in het bestand staat.
+**Lesson:** `grep` een klassenaam vóór je hem introduceert in een gedeeld CSS-bestand; en geef een variant op een bestaande klasse een samengestelde selector (`.gl-head.gl-taskhead`) in plaats van op bestandsvolgorde te vertrouwen. "Uitleg gezien" heeft geen eigen opslag: hij telt als gedaan zodra er voortgang op de les staat.
+
+## 2026-10-15 — Cursusroute ook voor KNM en ONA, zijbalk één rij per module, terugknop
+**Changed:** `CourseRoute` kreeg een knop "Terug naar het overzicht" in plaats van de onderdeel-keuzelijst, optionele `nextHref` en per station `icon`/`sub`; `lib/lessons/track-routes.ts` bouwt de stations voor KNM (woordkaarten, lesmodules) en ONA (portfolio, eindgesprek, inleveren); `PortalSidebar` toont KNM en ONA als één rij zonder uitklap. Eerder in deze sessie: het menu als één kaart met rand, sterkere modulerijen en "Onze uitleg" onder de video.
+**Outcome:** SUCCESS
+**What worked / went wrong:** De leerlaag-kolom was generiek genoeg op twee optionele velden na (`SideBlock.icon`, `SideBlock.sub`); `total: 0` verbergt de teller voor stations zonder voortgang. De ONA-pagina's leiden zonder portfolio om naar `/start`, dus voor de screenshots was een tijdelijke portfolio-rij in de lokale stack nodig (daarna verwijderd).
+**Lesson:** Een tweede kolom die per module een andere inhoud heeft, krijgt zijn stations als data (`SideBlock[]`) van de server; het icoon gaat als sleutel mee, want een clientcomponent kan geen componentreferentie als prop krijgen.
+
+## 2026-10-15 — KNM-woordkaarten: thema's in de cursusroute, dezelfde deck als A2/B1
+**Changed:** nieuwe deckpagina `app/[locale]/(app)/dashboard/woordkaarten/[thema]/page.tsx` met `WordDeck store="knm"`; `/dashboard/woordkaarten` en `/leren` zijn doorgangen naar het eerstvolgende thema; `knmRoute` zet de zeven woordthema's als rijen onder Woordkaarten (`fetchKnmWordThemes`, `nextKnmTheme`, `knmThemeOpen` in `lib/lessons/track-routes.ts`); `LessonWord.usage` mag null; `WoordkaartenView` + `WoordkaartenClient` verwijderd; `knm.theme_n` in nl/en/ar; route in `i18n/routing.ts`.
+**Outcome:** SUCCESS (tsc, 707 unit-tests, next build; eslint alleen de twee bestaande `SpeakBlock`-fouten; screenshots 1440/390; Playwright: "Ken ik" → rij in `user_word_card_progress`, zijbalk 0/64 → 1/64)
+**What worked / went wrong:** De oude KNM-weergave schreef `status`, `seen_count` en `last_seen_at` naar `user_word_card_progress`, maar die tabel heeft alleen `known boolean` — de voortgang is nooit opgeslagen (alleen localStorage), en `countWordsKnown` filterde op dezelfde niet-bestaande kolom en gaf altijd 0. Bovendien zijn de id's in `data/woordkaarten.ts` (101, 102, …) niet die van `word_cards` (1, 2, …); de deck leest daarom uit de tabel.
+**Lesson:** Een fout van PostgREST over een onbekende kolom komt als `error` terug en niet als exceptie — wie `error` negeert, ziet een lege toestand en geen fout. Controleer bij geërfde code de kolommen tegen `\d tabel`.
+
+## 2026-10-15 — Opdrachtregel boven de tekst in een kader
+**Changed:** vanaf 1024px is `.g-xlezen-q` sticky onder de balk (`top: 84px`, eigen scroll als de vraag hoger is dan het venster). `components/exam/StimulusPane.tsx` toont `stimulus.intro` als `.g-xbrief` (wit kader, `--shadow-ambient`, lucide `Info`) in plaats van de grijze `.g-xintro-line`; CSS in `components/exam/glas-player.css`.
+**Outcome:** SUCCESS (tsc, eslint, Playwright-screenshots 1440/390 van A2 Lezen examen 1)
+**What worked / went wrong:** `.g-xintro-line` blijft bestaan: hij wordt ook voor feedback- en statusregels in `ExamShell`/`RubricFeedback` gebruikt, dus een eigen klasse in plaats van de gedeelde te wijzigen.
+**Lesson:** Een instructie die gelezen móét worden hoort niet dezelfde stijl te hebben als bijschrift.
+
+## 2026-10-15 — merge-review design/glas-v1: KNM-lesmodules, `<main>`-landmark, e2e bijgewerkt
+**Changed:** KNM-toegang tot `/leren/[slug]` server-side op `ownsKnm` (`app/[locale]/(app)/leren/[slug]/page.tsx`), de `premium_plus`-plancheck uit `LerenThemaClient.tsx` weg; `<main>` terug op GuideHub, /gidsen, /platform, de drie juridische pagina's en /uitschrijven; `tests/free-practice.spec.js` en `tests/public.spec.js` bijgewerkt voor de focuslaag, `ChoiceTile` (`role="radio"`), `.g-slots` en de CTA in de pil.
+**Outcome:** SUCCESS
+**What worked / went wrong:** De Glas-branch stuurde KNM-klanten via de nieuwe `/leren`-doorgang en de cursusroute naar thema 2–7, waar de client op `plan === 'premium_plus'` keek — niemand schrijft `plan`, dus een betalende klant ging naar `/activate`. Bij het herbouwen naar Glas viel `<main>` weg op zeven pagina's (`<>` in plaats van `<main>`); alleen de e2e-suite merkte het. De gratis proef draait sinds de focusmodus in een portal buiten `<main>`, dus alle selectors op `main` vonden niets.
+**Lesson:** Een herbouw van de buitenste wrapper is een wijziging aan de landmark, niet aan de stijl — houd `<main>` aan. En de derde keer: toegang gaat via `ownsKnm`/`ownsModule` op de server, nooit via een plancheck in de client.

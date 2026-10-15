@@ -102,13 +102,15 @@ test.describe('the free picker at /oefenen', () => {
     // `:visible` throughout: both flows are in the DOM at every width and the inactive one is
     // hidden by a media query, so a plain locator matches two nodes and a count assertion would
     // never reach zero.
-    await page.getByRole('button', { name: /Taal B1/ }).first().click();
+    /* The examens are choice tiles (`role="radio"`, Glas §06) and both flows are in the DOM, so
+       the tile is picked among the visible ones. */
+    await page.getByRole('radio', { name: /Taal B1/ }).filter({ visible: true }).first().click();
     await expect(page.locator('a[href="/nl/oefenen/b1/lezen"]:visible')).toHaveCount(1);
     for (const skill of ['schrijven', 'spreken']) {
       await expect(page.locator(`a[href="/nl/oefenexamen/b1/${skill}/1"]:visible`)).toHaveCount(1);
     }
 
-    await page.getByRole('button', { name: /KNM/ }).first().click();
+    await page.getByRole('radio', { name: /KNM/ }).filter({ visible: true }).first().click();
     await expect(page.locator('a[href="/nl/oefenen/knm"]:visible')).toHaveCount(1);
   });
 
@@ -121,7 +123,7 @@ test.describe('the free picker at /oefenen', () => {
 
     const lezen = page.locator('a[href="/nl/oefenen/lezen"]:visible');
     await expect(lezen).toHaveCount(0);
-    await page.getByRole('button', { name: /Taal A2/ }).first().click();
+    await page.getByRole('radio', { name: /Taal A2/ }).filter({ visible: true }).first().click();
     await expect(lezen).toHaveCount(1);
 
     await page.getByRole('button', { name: 'Examen' }).click();
@@ -139,8 +141,10 @@ test.describe('exam overviews', () => {
       // Ten practice exams per (level, skill) — the product's shape, from data/skills.ts. Counted as
       // *slots*, not links: an unpublished exam renders as a dimmed card rather than an anchor, so
       // counting anchors would silently pass with one authored exam and nine holes.
-      await expect(page.locator('ul > li a.exam-card, ul > li > div').first()).toBeVisible();
-      const slots = page.locator('ul').filter({ has: page.locator('.exam-card') }).first().locator('> li');
+      // Glas: one `ExamSlotCard` (`.g-slot`) per slot in the `.g-slots` grid — a link when
+      // published, a plain card when not.
+      const slots = page.locator('.g-slots').first().locator('> .g-slot');
+      await expect(slots.first()).toBeVisible();
       await expect(slots).toHaveCount(10);
     });
   }
@@ -168,7 +172,7 @@ test.describe('exam overviews', () => {
     expect(page.url()).toContain('/nl/oefenexamen/knm');
 
     await expect(page.locator('h1')).toBeVisible();
-    const slots = page.locator('ul').filter({ has: page.locator('.exam-card') }).first().locator('> li');
+    const slots = page.locator('.g-slots').first().locator('> .g-slot');
     await expect(slots).toHaveCount(10);
   });
 
@@ -274,7 +278,7 @@ test.describe('the kennisgids sections', () => {
          the docent's review gate, because a link from here would have handed a crawler exactly
          the pages we told it to ignore. The two genuinely unbuilt tracks are still not links,
          which is the part of this assertion that still has teeth. */
-      await expect(page.getByText('Taalexamens B1')).toBeVisible();
+      await expect(page.getByRole('heading', { name: 'Taal B1' })).toBeVisible();
       await expect(page.locator('main a[href*="/knm/oefenexamen"]')).toHaveCount(0);
 
       // Gidsen: every published guide, the three hubs and the blog.
@@ -303,8 +307,9 @@ test.describe('the kennisgids sections', () => {
     for (const href of ['/nl/platform', '/nl/gidsen', '/nl/premium', '/nl/docent', '/nl/login']) {
       await expect(drawer.locator(`a[href="${href}"]`), href).toHaveCount(1);
     }
-    // The CTA at the bottom, where the thumb is.
-    await expect(drawer.locator('a[href="/nl/oefenen"]').last()).toBeVisible();
+    // The CTA. Since the Glas pill (15-10) it stays in the bar itself, beside the menu button,
+    // so it is on screen whether the drawer is open or not.
+    await expect(page.locator('header a[href="/nl/oefenen"]').filter({ visible: true })).toHaveCount(1);
   });
 
   test('a planned surface is reachable, noindex, and never a dead end', async ({ page }) => {

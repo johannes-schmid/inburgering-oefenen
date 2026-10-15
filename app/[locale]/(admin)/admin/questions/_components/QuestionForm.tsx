@@ -221,7 +221,7 @@ export default function QuestionForm({
   return (
     <form onSubmit={handleSave} className="max-w-2xl space-y-5">
       {error && (
-        <div className="bg-error/10 border border-error/20 rounded-xl p-3 text-sm text-error">{error}</div>
+        <div className="bg-[rgba(186,26,26,0.1)] border border-[rgba(186,26,26,0.2)] rounded-xl p-3 text-sm text-error">{error}</div>
       )}
 
       <div className="grid grid-cols-[1fr_auto] gap-4">
@@ -373,7 +373,7 @@ export default function QuestionForm({
                   onChange={() => setCorrect(o.label)}
                   className="accent-primary w-4 h-4"
                 />
-                <span className="w-6 h-6 rounded-full bg-primary/10 text-primary text-xs font-bold flex items-center justify-center">
+                <span className="w-6 h-6 rounded-full bg-[rgba(0,43,109,0.1)] text-primary text-xs font-bold flex items-center justify-center">
                   {o.label}
                 </span>
               </label>
@@ -461,7 +461,7 @@ export default function QuestionForm({
             onClick={handleDelete}
             disabled={saving}
             className={`inline-flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm font-medium transition-colors ${
-              confirmDelete ? 'bg-error text-white' : 'border border-error/30 text-error hover:bg-error/10'
+              confirmDelete ? 'bg-error text-white' : 'border border-[rgba(186,26,26,0.3)] text-error hover:bg-[rgba(186,26,26,0.1)]'
             }`}
           >
             <Trash2 size={16} aria-hidden />

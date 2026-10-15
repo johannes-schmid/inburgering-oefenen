@@ -1,0 +1,83 @@
+/* De gids als A4-brochure (glas.html "Gids als PDF-brochure"). Alleen voor deze route: de rest
+   van de site laadt dit nooit. De artikelblokken zelf (`.article-body`, stappen, vergelijkingen,
+   feitenkaders) komen ongewijzigd uit app/globals.css — hier staat alleen wat papier anders maakt. */
+
+html:has(.bro-doc), body:has(.bro-doc) {
+  background: #fff;
+  -webkit-print-color-adjust: exact;
+  print-color-adjust: exact;
+}
+body:has(.bro-doc) [data-dev-state-bar], body:has(.bro-doc) nextjs-portal { display: none !important; }
+
+/* De @page-regels (formaat, marges, voetregel) staan inline in page.tsx: Lightning CSS kent de
+   margevakken (@bottom-left) niet en weigert het hele bestand. */
+
+.bro-doc { background: #fff; color: var(--ink); }
+.bro-doc > .bc { break-after: page; }
+/* De korrel van het veld: in een PDF wordt een mengmodus een gerasterd vlak van megabytes. */
+@media print { .bro-doc .bc-field::after { display: none; } }
+
+/* Op het scherm (de preview) ligt de omslag als een vel op mist; in print is hij de pagina. */
+@media screen {
+  body:has(.bro-doc) { background: var(--mist-2); }
+  .bro-doc { background: transparent; padding: 32px 16px 64px; display: flex; flex-direction: column; align-items: center; gap: 24px; }
+  .bro-doc > .bc { box-shadow: var(--zweef); border-radius: 6px; max-width: 100%; }
+  .bro { background: #fff; width: 210mm; max-width: 100%; padding: 17mm; border-radius: 6px; box-shadow: var(--zweef); }
+}
+
+/* De binnenkant: het web-artikel, kleiner gezet. `zoom` schaalt de hele leeskolom in één keer,
+   zodat de verhoudingen van de blokken die van de site blijven. */
+.bro { zoom: 0.8; font-size: 16px; }
+.bro .guide-section { padding-top: 1.6rem; }
+.bro .guide-section-title { font-size: 1.75rem; margin-bottom: 0.9rem; break-after: avoid; }
+.bro .article-body h3 { break-after: avoid; }
+.bro .article-body p, .bro .article-body li { orphans: 3; widows: 3; }
+/* Een stap mag over een pagina lopen: een hele stap bijeenhouden liet halve pagina's leeg. */
+.bro .guide-step-num, .bro .guide-step-body > h3 { break-after: avoid; }
+.bro .fact-box, .bro .guide-card, .bro .compare-card, .bro .compare-row, .bro .yesno-col,
+.bro .verdict, .bro .route-card, .bro .price-list, .bro .docent-note, .bro .note-strip, .bro table,
+.bro .article-table-wrap, .bro figure, .bro .bro-faq dl > div, .bro .bro-cta { break-inside: avoid; }
+.bro a { color: inherit; text-decoration: none; }
+.bro .article-toc, .bro .blog-quiz-card, .bro .guide-cta-inline { display: none !important; }
+
+.bro-notice {
+  margin: 0 0 18px; padding: 12px 16px; border-radius: 12px; background: var(--klei-tint); color: var(--ink);
+  font-size: 14px; line-height: 1.55;
+}
+
+/* Pagina 2 opent zoals de mock: "in deze gids" en "in het kort" naast elkaar boven de tekst. */
+.bro-open { display: grid; grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.2fr); gap: 18px; align-items: start; margin-bottom: 8px; break-inside: avoid; }
+.bro-open:has(> :only-child) { grid-template-columns: minmax(0, 1fr); }
+.bro-toc { border-radius: 16px; background: var(--navy); color: #fff; padding: 20px 22px; }
+.bro-toc b { display: block; font-family: var(--font-headline); font-size: 17px; letter-spacing: -0.01em; margin-bottom: 12px; }
+.bro-toc ol { margin: 0; padding: 0; list-style: none; counter-reset: toc; display: flex; flex-direction: column; gap: 9px; }
+.bro-toc li {
+  counter-increment: toc; display: grid; grid-template-columns: 22px minmax(0, 1fr); gap: 8px;
+  font-size: 13.5px; line-height: 1.4; color: rgba(255, 255, 255, 0.86);
+}
+.bro-toc li::before {
+  content: counter(toc); width: 20px; height: 20px; border-radius: 50%; background: rgba(255, 255, 255, 0.14);
+  display: grid; place-items: center; font-family: var(--font-headline); font-weight: 800; font-size: 10.5px; color: #fff;
+}
+.bro-summary { border-radius: 16px; background: var(--mist); padding: 20px 22px; }
+.bro-summary > :last-child { margin-bottom: 0; }
+
+.bro-faq { padding-top: 1.6rem; }
+.bro-faq dl { margin: 0; display: flex; flex-direction: column; gap: 10px; }
+.bro-faq dl > div { border-radius: 14px; background: var(--mist); padding: 14px 18px; }
+.bro-faq dt { font-family: var(--font-headline); font-weight: 700; color: var(--navy); font-size: 15.5px; line-height: 1.35; margin-bottom: 4px; }
+.bro-faq dd { margin: 0; font-size: 15px; line-height: 1.65; color: var(--ink); }
+
+.bro-end { margin-top: 2.4rem; break-inside: avoid; }
+.bro-cta {
+  display: flex; gap: 22px; align-items: center; border-radius: 18px; padding: 22px 24px;
+  background: radial-gradient(60% 120% at 100% 0%, rgba(254, 118, 44, 0.16) 0, transparent 70%), var(--mist);
+}
+.bro-qr { width: 112px; height: 112px; flex: none; padding: 10px; border-radius: 14px; background: #fff; box-shadow: 0 0 0 1px rgba(0, 43, 109, 0.1); }
+.bro-qr svg { display: block; width: 100%; height: 100%; }
+.bro-cta b { display: block; font-family: var(--font-headline); font-size: 21px; letter-spacing: -0.02em; color: var(--navy); line-height: 1.2; }
+.bro-cta-desc { display: block; margin-top: 6px; font-size: 15px; line-height: 1.55; color: var(--ink-2); }
+.bro-cta small { display: block; margin-top: 10px; font-family: var(--glas-mono); font-size: 11.5px; letter-spacing: 0.04em; color: var(--ink-2); }
+.bro-reviewed { margin: 14px 0 0; font-size: 13px; line-height: 1.6; color: var(--ink-2); }
+
+:lang(ar) .bro-cta small { font-family: var(--font-body); letter-spacing: 0; }

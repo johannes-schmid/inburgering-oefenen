@@ -10,7 +10,7 @@ If you build something genuinely reusable, add it here.
 | Component | File | When to use |
 |---|---|---|
 | `Nav` | `components/Nav.tsx` | Public top nav — only in `(main)/` layout. Never in platform/admin. |
-| `Footer` | `components/Footer.tsx` | Public footer — only in `(main)/` layout. |
+| `Footer` | `components/Footer.tsx` | Public footer — only in `(main)/` layout. **Glas F1 "licht glas"** since 2026-10-14: glass card on the Licht field, the four track marks under the logo, skyline retired. |
 | `KnmLoader` | `components/KnmLoader.tsx` | Full-page branded loading state. Use on any page that waits for auth/data before rendering. |
 | `LoadingSpinner` | `components/LoadingSpinner.tsx` | Inline spinner for buttons, lazy sections. |
 | `GoogleAnalyticsTracker` | `components/GoogleAnalyticsTracker.tsx` | GA4 page-view tracking. Already wired in root layout — do not add again. |
@@ -163,6 +163,37 @@ Audio-synced interactive lessons rendered via `<!-- WIDGET:name -->` markers in 
 | `Sorteerspel` | 2 | Afval sorting game (10 items → 7 bins) + audio-synced bin highlight + statiegeld |
 | `NetherlandsMap`, `OVReisSimulator`, `WaterDefense`, `TradeRoutesMap`, `ColoniesMap`, `WW2Timeline`, `NieuweNederlanders` | 1 | Thema 1 interactive widgets |
 
+## `components/glas/` — Glas v1.0 (de opvolger van The Civic Authority)
+
+**Elk scherm dat in Glas wordt herbouwd, bouwt met deze kit — en alleen daarmee.** Spec:
+`docs/design/DESIGN_SYSTEM.md` §G1–G7; referentie: `docs/design/glas.html` (lokaal openen).
+**Per component (props, wanneer, welke sectie van glas.html): `docs/design/glas-kit.md`.**
+Voortgang van de migratie per pagina: `docs/design/glas-migratie.md`.
+
+| Component | Waarvoor |
+|---|---|
+| `Field` / `PageField` | kleurveld (`dageraad` `gracht` `nevel` `nacht` `nacht-stil` `licht` `hero`) met `veil`; de paginakop |
+| `GlassCard` | glas op een veld of foto — nooit op mist/wit, nooit glas op glas |
+| `SectionHeading` | kop met stille tweede regel (`muted`), optioneel `aside`-alinea |
+| `GlasButton` / `glasButton()` | pill-knoppen `navy` `oranje` `ghost` `wit` `glasd`, maten `sm` `md` `lg` |
+| `ChoiceTile` + `ChoiceTileGroup` | keuzetegel met track-merk (radiogroup) |
+| `TabCounts` | tab met tellingen en witte duim |
+| `FilterChip` | filterchip met categoriemerk |
+| `SettingsList` + `SettingsRow`, `GlasSwitch`, `GlasCheckbox` | instellingen als één gegroepeerde lijst |
+| `ExamSlotCard` | de examenkaart = slot, zeven staten |
+| `AnswerRow` + `AnswerGroup` | antwoordoptie variant A "rij", met beloningsmoment |
+| `ScoreRing` | score: één segment per vraag + oranje streepje op 60% |
+| `PassChanceDial` / `PassChanceLabel` / `PassChanceCard` | slaagkans: wijzer, label, grote kaart |
+| `StatTile` | stat-tegel met klein beeld |
+| `AnimatedNumber` | NumberFlow-getal |
+| `LogoLoader` | laadstaat L2 "opbouw" van het logo, pas na 400ms |
+
+**Niet mengen:** een herbouwd scherm gebruikt geen `HorizonHero`, `HorizonBanner`, `Skyline`,
+`SectionTransition`, `GradientHero` of `SectionHeader` meer; een oud scherm krijgt geen losse
+Glas-onderdelen. De merken (`ExamMark`, `CategoryMark`) zijn de enige gedeelde laag.
+
+---
+
 ## `components/horizon/` — Dutch Horizon graphic language
 
 Reusable, server-safe, image-free. **Check here before drawing anything decorative.** Spec:
@@ -301,14 +332,22 @@ D: geef een gesproken antwoord).
 
 ## Icons — three layers, one job each
 
+> **Glas v1.0 (2026-10-14):** both marks were rebuilt in place, same props. `ExamMark` is now
+> **"label + trede"** (flat navy SVG tile, Manrope 800 label, one line with exactly one orange part;
+> floor **28px** for every track). `CategoryMark` is now **Phosphor *fill*** on the `#e9eef6` tile
+> (`tone="dark"`: white on 12% white), with the keys `taalregels` and `examen` added beside the old
+> `grammatica` / `examentraining`. Where the text below describes the old drawings (stair, molen-mens-
+> tulp, colonnade, `cut` colours, 32/40px floors) it is history; the three-layer split and the tile
+> inversion still hold. Never put a raw Phosphor glyph in a page — only through `CategoryMark`.
+
 Imported from the Claude Design project **Dutch Icon Studio** (§04 category marks, §04b exam
 marks, §06 tiles & states) on 2026-09-02. There is no fourth layer and no per-page exception:
 if a surface names an onderdeel or a track, it uses the mark below and no other drawing.
 
 | Layer | Component | Names | Tile | Sizes it survives |
 |---|---|---|---|---|
-| **Track** | `ExamMark track="a2\|b1\|knm\|ona"` | the thing you buy and sit an exam in | **inverted** — navy tile, white ink | **32–72**, `knm` from 40 |
-| **Onderdeel** | `CategoryMark category="lezen\|luisteren\|schrijven\|spreken\|knm\|gidsen\|ona\|wonen\|gezondheid\|werk\|woorden\|grammatica\|examentraining"` | what is *inside* a track: the onderdelen, the gidsen, the KNM thema's and the three leerroute steps | light — neutral tile, navy ink | **19–72**, 22 in prose |
+| **Track** | `ExamMark track="a2\|b1\|knm\|ona"` | the thing you buy and sit an exam in | **inverted** — navy tile, white ink | **28–120** |
+| **Onderdeel** | `CategoryMark category="lezen\|luisteren\|schrijven\|spreken\|knm\|gidsen\|ona\|wonen\|gezondheid\|werk\|woorden\|taalregels\|examen"` (+ aliases `grammatica`, `examentraining`) | what is *inside* a track: the onderdelen, the gidsen, the KNM thema's and the three leerroute steps | light — neutral tile, navy ink | **19–72**, 22 in prose |
 | **Control** | **lucide-react** | an affordance: chevron, close, lock, arrow, play | none | any |
 
 ### Why the split exists

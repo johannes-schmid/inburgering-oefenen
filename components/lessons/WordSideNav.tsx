@@ -2,8 +2,6 @@
 
 import { useEffect, useState } from 'react';
 import { useTranslations } from 'next-intl';
-import { ArrowRight, Check } from 'lucide-react';
-import { SideSwitchers, type SideLevel, type SideSkill } from './GrammarSideNav';
 
 export type WordSideTheme = { slug: string; label: string; href: string; known: number; total: number; now: boolean };
 
@@ -11,14 +9,13 @@ export type WordSideTheme = { slug: string; label: string; href: string; known: 
 export const WORD_KNOWN_EVENT = 'wd:known';
 export type WordKnownDetail = { theme: string; known: number };
 
-type Labels = { levelsAria: string; skillsAria: string };
-
 /**
- * De tweede kolom van de woordkaarten (eigenaar, 11-10): geen cursusblokken, maar de woorden
- * zelf — hoeveel je er in dit onderdeel kent, en per thema hoe ver je bent.
+ * De woordvoortgang op een telefoon: hoeveel woorden je in dit onderdeel kent, en hoeveel
+ * thema's af zijn. Vanaf 1024px staat dat in de cursusroute (`CourseRoute`), die naar
+ * hetzelfde event luistert.
  *
- * Een clientstuk omdat de deck ernaast per kaart opslaat: zonder het event zou "Ken ik" pas na
- * een herlaadbeurt in de kolom zichtbaar worden. Alleen het huidige thema verandert hier.
+ * Een clientstuk omdat de deck per kaart opslaat: zonder het event zou "Ken ik" pas na een
+ * herlaadbeurt zichtbaar worden.
  */
 function useLiveThemes(initial: WordSideTheme[]) {
   const [themes, setThemes] = useState(initial);
@@ -48,61 +45,6 @@ function WordProgress({ themes }: { themes: WordSideTheme[] }) {
       </p>
       <span className="gt-rail" aria-hidden><i style={{ transform: `scaleX(${pct})` }} /></span>
       <p className="wsn-prog-line">{t('words_side_themes', { done: full, total: themes.length })}</p>
-    </div>
-  );
-}
-
-export default function WordSideNav({
-  levels, skills, themes: initial, courseHref, labels,
-}: {
-  levels: SideLevel[];
-  skills: SideSkill[];
-  themes: WordSideTheme[];
-  courseHref: string;
-  labels: Labels;
-}) {
-  const themes = useLiveThemes(initial);
-  const t = useTranslations('portal');
-  return (
-    <div className="gsn">
-      <SideSwitchers levels={levels} skills={skills} labels={labels} />
-      <WordProgress themes={themes} />
-
-      <p className="gsn-label"><span>{t('words_themes_label')}</span></p>
-      <nav aria-label={t('words_themes_label')}>
-        <ul className="gsn-items">
-          {themes.map(th => {
-            const done = th.total > 0 && th.known === th.total;
-            return (
-              <li key={th.slug}>
-                <a
-                  href={th.href}
-                  className={`gsn-item wsn-item${th.now ? ' is-now' : ''}${done ? ' is-done' : ''}`}
-                  aria-current={th.now ? 'page' : undefined}
-                >
-                  <span className="gsn-dot" aria-hidden>
-                    {done ? <Check size={10} strokeWidth={3.4} /> : null}
-                  </span>
-                  <span className="wsn-body">
-                    <span className="wsn-row">
-                      <span className="gsn-ilabel">{th.label}</span>
-                      <span className="wsn-count">{th.known}/{th.total}</span>
-                    </span>
-                    <span className="wsn-bar" aria-hidden>
-                      <i style={{ transform: `scaleX(${th.total > 0 ? th.known / th.total : 0})` }} />
-                    </span>
-                  </span>
-                </a>
-              </li>
-            );
-          })}
-        </ul>
-      </nav>
-
-      <a href={courseHref} className="wsn-course">
-        {t('words_course_link')}
-        <ArrowRight size={14} strokeWidth={2.4} className="rtl-flip" aria-hidden />
-      </a>
     </div>
   );
 }

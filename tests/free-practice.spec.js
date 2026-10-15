@@ -11,15 +11,20 @@ import { test, expect } from '@playwright/test';
  * away with the e-mail as an offer beside it, and the route into the platform underneath.
  */
 
+/**
+ * The sitting itself. Since the focus mode (15-10) the questions and the result live in one
+ * full-screen layer portalled to `<body>` (`role="dialog"`), outside `<main>`, and the page
+ * underneath is `inert` — so everything after "Begin" is looked up in that layer.
+ */
+const layer = page => page.locator('.g-xfocus[role="dialog"]');
+
 /** Answer the visible question by clicking the first option, then advance. */
 async function answerAndAdvance(page) {
-  const options = page.locator('main button:not([aria-label])');
-  await options.first().click();
+  await layer(page).getByRole('radio').first().click();
 
   // Next is a button whose label changes on the last question, so it is found by position in the
   // card rather than by text — wording here is translated and has already been reworded twice.
-  const next = page.locator('main button').last();
-  await next.click();
+  await layer(page).locator('button').last().click();
 }
 
 test.describe('lezen taster', () => {
@@ -29,11 +34,11 @@ test.describe('lezen taster', () => {
   });
 
   test('gives feedback on the answer before moving on', async ({ page }) => {
-    await page.locator('main button:not([aria-label])').first().click();
+    await layer(page).getByRole('radio').first().click();
 
     // The taster's whole pitch is per-question explanation, and it is what the paid Compleet tier
     // sells inside real exams. If this stops appearing the funnel has no argument left.
-    await expect(page.locator('main')).toContainText(/goed|fout|uitleg/i, { timeout: 5000 });
+    await expect(layer(page)).toContainText(/goed|fout|uitleg/i, { timeout: 5000 });
   });
 
   test('shows the score straight away, with the e-mail as an offer beside it', async ({ page }) => {
@@ -41,18 +46,18 @@ test.describe('lezen taster', () => {
 
     // Owner's decision (21-09), matching KNM Oefenen: the result a visitor just earned is theirs
     // on arrival. The e-mail field stays — it offers the report — but it no longer gates anything,
-    // so nothing on this card may carry `.fp-locked`.
+    // so nothing on this card may be blurred (`.g-xfp-locked`) or hidden from assistive tech.
     await expect(page.locator('#fp-email')).toBeVisible({ timeout: 10000 });
-    await expect(page.locator('.fp-gauge')).not.toHaveClass(/fp-locked/);
-    await expect(page.locator('.fp-head')).not.toHaveAttribute('aria-hidden', 'true');
-    await expect(page.locator('main')).toContainText('%');
+    await expect(layer(page).locator('.g-xfp-locked')).toHaveCount(0);
+    await expect(layer(page).locator('.g-xfp [aria-hidden="true"][inert]')).toHaveCount(0);
+    await expect(layer(page)).toContainText('%');
   });
 
   test('rejects an invalid address rather than sending it', async ({ page }) => {
     for (let i = 0; i < 10; i += 1) await answerAndAdvance(page);
 
     await page.locator('#fp-email').fill('not-an-email');
-    await page.locator('form button[type="submit"]').click();
+    await layer(page).locator('form button[type="submit"]').click();
     await expect(page.locator('#fp-email-error')).toBeVisible();
   });
 
@@ -63,7 +68,7 @@ test.describe('lezen taster', () => {
     // catalogue of every module — landing on /dashboard makes the visitor find their own
     // onderdeel back at the moment they were busy with it. An anonymous visitor may browse
     // the portal; the account is asked for at the player.
-    await expect(page.locator('main a[href="/nl/dashboard/a2/lezen"]').first()).toBeVisible();
+    await expect(layer(page).locator('a[href="/nl/dashboard/a2/lezen"]').first()).toBeVisible();
   });
 });
 

@@ -6,6 +6,8 @@ import { createClient } from '@/lib/supabase/client';
 import { trackMetaEvent } from '@/components/MetaPixel';
 import { track } from '@/lib/analytics';
 import LogoMark from '@/components/site/LogoMark';
+import { ArrowRight, Check, Clock, X } from 'lucide-react';
+import { GlassCard, LogoLoader } from '@/components/glas';
 
 type State = 'loading' | 'success' | 'pending' | 'failed' | 'noid';
 
@@ -66,85 +68,86 @@ export default function BetalingGeluktPage() {
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  /* Glas: het veld "Licht" met één sterke glazen kaart erop (§G1 regel 2 en 6). De tekst is
+     ongewijzigd; alleen de vorm is nieuw. Eén oranje knop per staat. */
   return (
-    <div className="min-h-screen flex flex-col">
-      <header className="sticky top-0 z-50 bg-white border-b border-outline-variant/40" style={{ boxShadow: '0 1px 4px rgba(0,43,109,0.06)' }}>
-        <div className="max-w-5xl mx-auto px-6 py-4 flex items-center justify-center">
-          <div className="flex items-center gap-2">
-            <LogoMark size={28} />
-            <span className="text-lg font-extrabold tracking-tight text-primary font-headline">Inburgering Oefenen</span>
-          </div>
-        </div>
+    <div className="g-portal g-pay">
+      <div className="g-portal-bg" aria-hidden />
+      <header className="g-pay-head">
+        <span className="g-mhead-logo">
+          <LogoMark size={30} />
+          <span>Inburgering Oefenen</span>
+        </span>
       </header>
 
-      <main className="flex-1 max-w-lg mx-auto px-6 py-16 md:py-24 flex flex-col items-center text-center gap-6">
-        {state === 'loading' && (
-          <>
-            <span className="w-12 h-12 border-4 border-outline-variant border-t-primary rounded-full animate-spin" />
-            <div>
-              <h1 className="font-headline font-extrabold text-2xl text-primary mb-2">Betaling verwerken…</h1>
-              <p className="text-on-surface-variant text-sm">Een ogenblik geduld, we controleren je betaling.</p>
-            </div>
-          </>
-        )}
+      <main className="g-pay-main">
+        <GlassCard strong className="g-pay-card">
+          {state === 'loading' && (
+            <>
+              <LogoLoader label="Betaling verwerken…" showLabel={false} size={64} delay={false} />
+              <div>
+                <h1>Betaling verwerken…</h1>
+                <p>Een ogenblik geduld, we controleren je betaling.</p>
+              </div>
+            </>
+          )}
 
-        {state === 'success' && (
-          <>
-            <div className="w-20 h-20 rounded-full flex items-center justify-center" style={{ background: 'rgba(22,163,74,0.1)' }}>
-              <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#a24000" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
-            </div>
-            <div>
-              <h1 className="font-headline font-extrabold text-2xl text-primary mb-2">Betaling geslaagd!</h1>
-              <p className="text-on-surface-variant text-sm leading-relaxed">Je Professioneel Pakket is actief. Je hebt nu toegang tot alle 10 proefexamens, directe feedback en je persoonlijk dashboard.</p>
-            </div>
-            <div className="w-full bg-white rounded-2xl border border-outline-variant/50 p-6" style={{ boxShadow: '0 4px 16px rgba(0,43,109,0.06)' }}>
-              <p className="text-sm text-on-surface-variant mb-4">Je wordt automatisch doorgestuurd naar je dashboard…</p>
-              <a href="/dashboard" className="inline-block px-8 py-3.5 rounded-xl font-extrabold text-white no-underline" style={{ background: 'linear-gradient(135deg,#fe762c 0%,#e05a00 100%)', boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.12),0 4px 0 #b84500,0 6px 20px rgba(254,118,44,0.35)' }}>Naar mijn dashboard →</a>
-            </div>
-          </>
-        )}
+          {state === 'success' && (
+            <>
+              <span className="g-pay-ic g-pay-ok" aria-hidden><Check strokeWidth={2.6} /></span>
+              <div>
+                <h1>Betaling geslaagd!</h1>
+                <p>Je Professioneel Pakket is actief. Je hebt nu toegang tot alle 10 proefexamens, directe feedback en je persoonlijk dashboard.</p>
+              </div>
+              <p className="g-pay-sub">Je wordt automatisch doorgestuurd naar je dashboard…</p>
+              <a href="/dashboard" className="g-btn g-btn-oranje">
+                Naar mijn dashboard <ArrowRight strokeWidth={2.4} className="rtl-flip" aria-hidden />
+              </a>
+            </>
+          )}
 
-        {state === 'pending' && (
-          <>
-            <div className="w-20 h-20 rounded-full flex items-center justify-center" style={{ background: 'rgba(0,43,109,0.07)' }}>
-              <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#002b6d" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
-            </div>
-            <div>
-              <h1 className="font-headline font-extrabold text-2xl text-primary mb-2">Betaling wordt verwerkt</h1>
-              <p className="text-on-surface-variant text-sm leading-relaxed">Je betaling is ontvangen en wordt verwerkt. Dit kan een paar minuten duren.</p>
-            </div>
-            <div className="w-full bg-white rounded-2xl border border-outline-variant/50 p-6" style={{ boxShadow: '0 4px 16px rgba(0,43,109,0.06)' }}>
-              <p className="text-sm text-on-surface-variant mb-4">Ga alvast naar je dashboard — je examens worden ontgrendeld zodra de betaling bevestigd is.</p>
-              <a href="/dashboard" className="inline-block px-8 py-3.5 rounded-xl font-extrabold text-white no-underline" style={{ background: 'linear-gradient(135deg,#fe762c 0%,#e05a00 100%)' }}>Naar mijn dashboard →</a>
-            </div>
-          </>
-        )}
+          {state === 'pending' && (
+            <>
+              <span className="g-pay-ic" aria-hidden><Clock strokeWidth={2.4} /></span>
+              <div>
+                <h1>Betaling wordt verwerkt</h1>
+                <p>Je betaling is ontvangen en wordt verwerkt. Dit kan een paar minuten duren.</p>
+              </div>
+              <p className="g-pay-sub">Ga alvast naar je dashboard — je examens worden ontgrendeld zodra de betaling bevestigd is.</p>
+              <a href="/dashboard" className="g-btn g-btn-oranje">
+                Naar mijn dashboard <ArrowRight strokeWidth={2.4} className="rtl-flip" aria-hidden />
+              </a>
+            </>
+          )}
 
-        {state === 'failed' && (
-          <>
-            <div className="w-20 h-20 rounded-full flex items-center justify-center" style={{ background: 'rgba(220,38,38,0.08)' }}>
-              <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#dc2626" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg>
-            </div>
-            <div>
-              <h1 className="font-headline font-extrabold text-2xl text-primary mb-2">Betaling niet geslaagd</h1>
-              <p className="text-on-surface-variant text-sm leading-relaxed">Je betaling is geannuleerd of mislukt. Er is niets van je rekening afgeschreven. Probeer het opnieuw.</p>
-            </div>
-            <div className="flex flex-col gap-3 w-full">
-              <Link href="/activate" className="flex items-center justify-center px-8 py-3.5 rounded-xl font-extrabold text-white no-underline" style={{ background: 'linear-gradient(135deg,#fe762c 0%,#e05a00 100%)' }}>Opnieuw proberen →</Link>
-              <a href="/dashboard" className="flex items-center justify-center px-6 py-3 rounded-xl font-semibold text-on-surface-variant bg-transparent border border-outline-variant hover:bg-surface-container-low transition-colors no-underline">Terug naar dashboard</a>
-            </div>
-          </>
-        )}
+          {state === 'failed' && (
+            <>
+              <span className="g-pay-ic g-pay-nok" aria-hidden><X strokeWidth={2.6} /></span>
+              <div>
+                <h1>Betaling niet geslaagd</h1>
+                <p>Je betaling is geannuleerd of mislukt. Er is niets van je rekening afgeschreven. Probeer het opnieuw.</p>
+              </div>
+              <div className="g-pay-actions">
+                <Link href="/activate" className="g-btn g-btn-oranje">
+                  Opnieuw proberen <ArrowRight strokeWidth={2.4} className="rtl-flip" aria-hidden />
+                </Link>
+                <a href="/dashboard" className="g-btn g-btn-ghost">Terug naar dashboard</a>
+              </div>
+            </>
+          )}
 
-        {state === 'noid' && (
-          <>
-            <div>
-              <h1 className="font-headline font-extrabold text-2xl text-primary mb-2">Geen betaling gevonden</h1>
-              <p className="text-on-surface-variant text-sm leading-relaxed">We konden je betaling niet terugvinden. Ga naar je dashboard om je status te bekijken.</p>
-            </div>
-            <a href="/dashboard" className="inline-block px-8 py-3.5 rounded-xl font-extrabold text-white no-underline" style={{ background: 'linear-gradient(135deg,#fe762c 0%,#e05a00 100%)' }}>Naar mijn dashboard →</a>
-          </>
-        )}
+          {state === 'noid' && (
+            <>
+              <div>
+                <h1>Geen betaling gevonden</h1>
+                <p>We konden je betaling niet terugvinden. Ga naar je dashboard om je status te bekijken.</p>
+              </div>
+              <a href="/dashboard" className="g-btn g-btn-oranje">
+                Naar mijn dashboard <ArrowRight strokeWidth={2.4} className="rtl-flip" aria-hidden />
+              </a>
+            </>
+          )}
+        </GlassCard>
       </main>
     </div>
   );

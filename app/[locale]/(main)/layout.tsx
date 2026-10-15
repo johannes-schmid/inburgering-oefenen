@@ -31,8 +31,14 @@ export default async function MainLayout({
           dat een LCP van 7,5 s en 0,6 CLS: de footer stond eerst bovenin en schoof daarna weg.
           Een pagina die een eigen laadtoestand wil, zet een `loading.tsx` of een grens rond
           precies het deel dat wacht. */}
-      <div className="pt-[var(--nav-h)]">{children}</div>
-      <Footer />
+      {/* `g-page`: de Glas-ondergrond (mist). Elke pagina begint met een veld dat met een negatieve
+          marge onder de zwevende pil door loopt; de pil heeft dat veld nodig om te zweven.
+          **De footer staat ín die ondergrond**: zijn veld vloeit van boven in, en daaronder moet
+          mist liggen en niet het witte `body` — anders blijft er alsnog een rand staan. */}
+      <div className="g-page pt-[var(--nav-h)]">
+        {children}
+        <Footer />
+      </div>
       {/* Local only — see lib/dev-tools.ts. Excluded from the tree in prod builds. */}
       {DevStateBar && <DevStateBar locale={locale} />}
     </>

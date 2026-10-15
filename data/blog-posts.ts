@@ -356,17 +356,18 @@ ${fact('"De zak-slaaggrens wordt uitgedrukt in een cesuur, vastgesteld door de M
 
 <p>Let op: viel je onder de <strong>oude Wet inburgering 2013</strong>? Dan moesten alle taalexamens op "taalniveau A2 of hoger". De Wet inburgering 2021 is ingegaan op <strong>1 januari 2022</strong> — de wet heet 2021, maar werkt vanaf 2022. Veel websites hebben dat verkeerd.</p>
 
+
+<!--uitleg:a2-opbouw-->
+
 <h2 id="examendag">Op de examendag</h2>
 
 <p>Een paar praktische dingen die bijna niemand opschrijft, maar die wel in het officiële reglement staan.</p>
 
 ${fact('Je krijgt 15 minuten uitleg voordat elk examen begint. Je moet 30 minuten voor het examen aanwezig zijn. Zonder geldig legitimatiebewijs mag je geen examen doen.', 'DUO Examenreglement', SRC_REGLEMENT)}
 
+<!--uitleg:a2-examendag-->
+
 <ul>
-  <li>De 15 minuten uitleg zijn <strong>extra</strong> — ze gaan niet van je examentijd af.</li>
-  <li>Je telefoon, tas en horloge gaan in een kluisje.</li>
-  <li>Naar de wc mag, maar alleen met begeleiding.</li>
-  <li>Het examen is geheim. Geen foto's maken, geen vragen overschrijven. Dat is examenfraude.</li>
   <li>Je kunt je examendatum tot <strong>7 dagen</strong> vooraf veranderen.</li>
   <li>Kom je niet opdagen? Dan moet je opnieuw betalen.</li>
 </ul>
@@ -559,17 +560,18 @@ ${factEn('"De zak-slaaggrens wordt uitgedrukt in een cesuur, vastgesteld door de
 
 <p>Note: under the older Wet inburgering 2013 all language exams had to be at "A2 or higher". The Wet inburgering 2021 took effect on <strong>1 January 2022</strong> — the law is named 2021 but applies from 2022. Many websites get this wrong.</p>
 
+
+<!--uitleg:a2-opbouw-->
+
 <h2 id="exam-day">On exam day</h2>
 
 <p>A few practical things almost nobody writes down, but which are in the official regulations.</p>
 
 ${factEn('You get 15 minutes of explanation before each exam begins. You must be present 30 minutes beforehand. Without valid ID you may not sit the exam.', 'DUO exam regulations', SRC_REGLEMENT)}
 
+<!--uitleg:a2-examendag-->
+
 <ul>
-  <li>Those 15 minutes are <strong>extra</strong> — they do not come off your exam time.</li>
-  <li>Phone, bag and watch go in a locker.</li>
-  <li>You may use the toilet, but only with supervision.</li>
-  <li>The exam is confidential. No photos, no copying questions — that is exam fraud.</li>
   <li>You can change your exam date up to <strong>7 days</strong> beforehand.</li>
   <li>Not showing up means paying again.</li>
 </ul>
@@ -745,17 +747,18 @@ ${factAr('«De zak-slaaggrens wordt uitgedrukt in een cesuur, vastgesteld door d
 
 <p>ملاحظة: في ظل قانون الاندماج 2013 كان على كل امتحانات اللغة أن تكون على «مستوى A2 أو أعلى». وقانون الاندماج 2021 <strong>دخل حيّز التنفيذ في 1 يناير 2022</strong> — أي أن القانون يُسمّى 2021 لكنه يُطبَّق من 2022. وكثير من المواقع يخطئ في ذلك.</p>
 
+
+<!--uitleg:a2-opbouw-->
+
 <h2 id="exam-day">في يوم الامتحان</h2>
 
 <p>بعض الأمور العملية التي يذكرها القليلون، لكنها موجودة في النظام الرسمي.</p>
 
 ${factAr('تحصل على 15 دقيقة من الشرح قبل بدء كل امتحان. وعليك الحضور 30 دقيقة قبل الموعد. وبدون هوية سارية لا يُسمح لك بأداء الامتحان.', 'نظام امتحانات DUO', SRC_REGLEMENT)}
 
+<!--uitleg:a2-examendag-->
+
 <ul>
-  <li>هذه الـ15 دقيقة <strong>إضافية</strong> ولا تُخصم من وقت امتحانك.</li>
-  <li>الهاتف والحقيبة والساعة تُوضع في خزانة.</li>
-  <li>يُسمح بالذهاب إلى الحمام، لكن بمرافقة فقط.</li>
-  <li>الامتحان سرّي: لا صور ولا نسخ للأسئلة. وذلك يُعدّ غشًّا.</li>
   <li>يمكنك تغيير موعد امتحانك حتى <strong>7 أيام</strong> قبله.</li>
   <li>وإذا لم تحضر، فعليك الدفع من جديد.</li>
 </ul>
@@ -866,6 +869,9 @@ ${fact('Het examen Lezen A2 duurt 65 minuten en je doet het op de computer.', 'i
 ${fact('Alle vier de officiële oefenexamens Lezen A2 van DUO bestaan uit 25 vragen en duren 65 minuten.', 'inburgeren.nl — oefenen', SRC_OEFENEN)}
 
 <p>De vragen zijn meerkeuzevragen. Je kiest uit een paar antwoorden; je hoeft zelf niets te schrijven. Dat maakt Lezen anders dan Schrijven en Spreken, waar je zelf taal moet produceren.</p>
+
+
+<!--uitleg:lezen-opbouw-->
 
 <h2 id="teksten">Welke teksten je krijgt</h2>
 
@@ -1072,6 +1078,9 @@ ${factEn('All four official DUO A2 Reading practice exams contain 25 questions a
 
 <p>The questions are multiple choice. You never have to write anything yourself, which makes Reading fundamentally different from Writing and Speaking.</p>
 
+
+<!--uitleg:lezen-opbouw-->
+
 <h2 id="texts">Which texts you get</h2>
 
 <p>The texts come from ordinary life in the Netherlands:</p>
@@ -1233,6 +1242,9 @@ ${factAr('امتحان القراءة A2 مدته 65 دقيقة ويُؤدى ع�
 ${factAr('تحتوي الامتحانات التجريبية الرسمية الأربعة للقراءة A2 من DUO على 25 سؤالاً ومدتها 65 دقيقة.', 'inburgeren.nl — الامتحانات التجريبية', SRC_OEFENEN)}
 
 <p>الأسئلة من نوع الاختيار من متعدد. ولست مضطرًا أبدًا إلى كتابة شيء بنفسك، وهذا ما يجعل القراءة مختلفة جوهريًا عن الكتابة والتحدث.</p>
+
+
+<!--uitleg:lezen-opbouw-->
 
 <h2 id="texts">أي نصوص تحصل عليها</h2>
 
@@ -1425,20 +1437,7 @@ ${fact('De drie officiële oefenexamens Luisteren A2 van DUO bestaan uit 25 vrag
 
 <p>Vergelijk de twee onderdelen even naast elkaar. Dan zie je het probleem meteen.</p>
 
-<div class="article-table-wrap">
-<table>
-  <thead>
-    <tr><th></th><th>Lezen</th><th>Luisteren</th></tr>
-  </thead>
-  <tbody>
-    <tr><td>Vragen (oefenexamen)</td><td>25</td><td>25</td></tr>
-    <tr><td>Tijd</td><td>65 min</td><td><strong>45 min</strong></td></tr>
-    <tr><td>Tijd per vraag</td><td>±2,5 min</td><td><strong>±1,8 min</strong></td></tr>
-    <tr><td>Kun je terug?</td><td>ja</td><td><strong>nee</strong></td></tr>
-    <tr><td>Wie bepaalt het tempo?</td><td>jij</td><td><strong>het examen</strong></td></tr>
-  </tbody>
-</table>
-</div>
+<!--uitleg:luisteren-vs-lezen-->
 
 <p>Drie dingen maken het verschil:</p>
 
@@ -1634,20 +1633,7 @@ ${factEn('All three official DUO A2 Listening practice exams contain 25 question
 
 <h2 id="why-harder">Why Listening is harder than Reading</h2>
 
-<div class="article-table-wrap">
-<table>
-  <thead>
-    <tr><th></th><th>Reading</th><th>Listening</th></tr>
-  </thead>
-  <tbody>
-    <tr><td>Questions (practice)</td><td>25</td><td>25</td></tr>
-    <tr><td>Time</td><td>65 min</td><td><strong>45 min</strong></td></tr>
-    <tr><td>Per question</td><td>±2.5 min</td><td><strong>±1.8 min</strong></td></tr>
-    <tr><td>Can you go back?</td><td>yes</td><td><strong>no</strong></td></tr>
-    <tr><td>Who sets the pace?</td><td>you</td><td><strong>the exam</strong></td></tr>
-  </tbody>
-</table>
-</div>
+<!--uitleg:luisteren-vs-lezen-->
 
 <p>Three things make the difference: nearly a minute less per question, no control over the pace, and no way back. Miss a number and you cannot flip back a page.</p>
 
@@ -1804,20 +1790,7 @@ ${factAr('تحتوي الامتحانات التجريبية الرسمية ال
 
 <h2 id="why-harder">لماذا الاستماع أصعب من القراءة</h2>
 
-<div class="article-table-wrap">
-<table>
-  <thead>
-    <tr><th></th><th>القراءة</th><th>الاستماع</th></tr>
-  </thead>
-  <tbody>
-    <tr><td>الأسئلة (تجريبي)</td><td>25</td><td>25</td></tr>
-    <tr><td>الوقت</td><td>65 دقيقة</td><td><strong>45 دقيقة</strong></td></tr>
-    <tr><td>لكل سؤال</td><td>±2.5 دقيقة</td><td><strong>±1.8 دقيقة</strong></td></tr>
-    <tr><td>هل يمكن العودة؟</td><td>نعم</td><td><strong>لا</strong></td></tr>
-    <tr><td>من يحدد السرعة؟</td><td>أنت</td><td><strong>الامتحان</strong></td></tr>
-  </tbody>
-</table>
-</div>
+<!--uitleg:luisteren-vs-lezen-->
 
 <p>ثلاثة أمور تصنع الفرق: وقت أقل بنحو دقيقة لكل سؤال، ولا تحكّم في السرعة، ولا طريق للعودة. فإن فاتك رقم لا تستطيع أن تقلب صفحة إلى الوراء.</p>
 
@@ -2021,6 +1994,9 @@ ${fact('Per examenonderdeel €50 (Lezen, Luisteren, Schrijven, Spreken en KNM),
 
 <p>Voor extra pogingen kun je <strong>niet lenen bij DUO</strong>. Dat is een reden om een herkansing goed voor te bereiden in plaats van er snel weer in te stappen.</p>
 
+
+<!--uitleg:herkansen-pogingen-->
+
 <h2 id="uitslag">Je uitslag: wat staat er precies?</h2>
 
 <p>Je uitslag komt <strong>binnen 8 weken</strong> na het examen, per brief. Hij staat ook in Mijn Inburgering.</p>
@@ -2060,6 +2036,8 @@ ${fact('"Het afgelegde en beoordeelde examen kan niet worden ingezien door de ka
 <h2 id="termijn">Je termijn en wat als die bijna om is</h2>
 
 <p>Omdat DUO geen maximumaantal pogingen noemt, is je <strong>inburgeringstermijn</strong> in de praktijk de echte grens. Onder de Wet inburgering 2021 is die in de B1-route maximaal 3 jaar.</p>
+
+<!--uitleg:herkansen-termijn-->
 
 <p>Loopt je termijn af en heb je nog niet alles gehaald? Ga dan niet afwachten. Twee dingen zijn dan belangrijk:</p>
 
@@ -2182,6 +2160,9 @@ ${factEn('€50 per exam part (Reading, Listening, Writing, Speaking and KNM), �
 
 <p>For extra attempts you <strong>cannot borrow from DUO</strong>. That is a good reason to prepare a retake properly rather than rushing back in.</p>
 
+
+<!--uitleg:herkansen-pogingen-->
+
 <h2 id="result">Your result: what does it say?</h2>
 
 ${factEn('"De uitslag wordt schriftelijk, binnen 8 weken na het examen, aan de kandidaat kenbaar gemaakt." — the result is sent in writing within 8 weeks, and also appears in Mijn Inburgering.', 'DUO exam regulations, article 16(3)', SRC_REGLEMENT)}
@@ -2219,6 +2200,8 @@ ${factEn('"Het afgelegde en beoordeelde examen kan niet worden ingezien door de 
 <h2 id="deadline">Your deadline</h2>
 
 <p>Because DUO names no maximum number of attempts, your <strong>integration deadline</strong> is the real limit — a maximum of 3 years in the B1 route.</p>
+
+<!--uitleg:herkansen-termijn-->
 
 <p>If your deadline is approaching and you have not passed everything, do not wait. Contact your municipality: they guide your integration and draw up your PIP with you. Also check whether an exemption applies to you — DUO has a dedicated page covering illness or disability, a diploma you already hold, Dutch education you are following, or having lived and worked here for a long time.</p>
 
@@ -2316,6 +2299,9 @@ ${factAr('50 يورو لكل جزء من الامتحان (القراءة وال
 
 <p>أما المحاولات الإضافية <strong>فلا يمكنك الاقتراض من DUO</strong> لأجلها. وهذا سبب وجيه للتحضير للإعادة كما ينبغي بدل التسرّع إليها.</p>
 
+
+<!--uitleg:herkansen-pogingen-->
+
 <h2 id="result">نتيجتك: ماذا تقول؟</h2>
 
 ${factAr('«De uitslag wordt schriftelijk, binnen 8 weken na het examen, aan de kandidaat kenbaar gemaakt.» — تُبلَّغ النتيجة كتابةً خلال 8 أسابيع، وتظهر أيضًا في Mijn Inburgering.', 'لائحة امتحانات DUO، المادة 16 الفقرة 3', SRC_REGLEMENT)}
@@ -2353,6 +2339,8 @@ ${factAr('«Het afgelegde en beoordeelde examen kan niet worden ingezien door de
 <h2 id="deadline">مهلتك</h2>
 
 <p>ولأن DUO لا تذكر عددًا أقصى للمحاولات، فإن <strong>مهلة اندماجك</strong> هي الحد الحقيقي — بحد أقصى 3 سنوات في مسار B1.</p>
+
+<!--uitleg:herkansen-termijn-->
 
 <p>وإن كانت مهلتك تقترب ولم تنجح في كل شيء، فلا تنتظر. اتصل ببلديتك: فهي التي ترافق اندماجك وتضع معك خطة PIP. وتحقّق أيضًا مما إذا كان أحد الإعفاءات ينطبق عليك — فلدى DUO صفحة مخصّصة تغطي المرض أو الإعاقة، أو شهادة تحملها بالفعل، أو تعليمًا هولنديًا تتابعه، أو الإقامة والعمل هنا مدة طويلة.</p>
 
@@ -2534,18 +2522,7 @@ ${factAr('«Het afgelegde en beoordeelde examen kan niet worden ingezien door de
 
 <p>Onder de <strong>Wet inburgering 2021</strong> hangt je niveau af van je <strong>leerroute</strong>. Die staat in je persoonlijk plan inburgering en participatie (PIP), en de gemeente bepaalt hem samen met jou.</p>
 
-<div class="article-table-wrap">
-<table>
-  <thead>
-    <tr><th>Leerroute</th><th>Niveau</th><th>Voor wie</th></tr>
-  </thead>
-  <tbody>
-    <tr><td><strong>B1-route</strong></td><td>B1</td><td>de standaardroute: taal en (vrijwilligers)werk, maximaal 3 jaar</td></tr>
-    <tr><td><strong>Onderwijsroute</strong></td><td>B1 of hoger</td><td>vooral jongeren die naar mbo, hbo of universiteit willen</td></tr>
-    <tr><td><strong>Zelfredzaamheidsroute</strong></td><td>A1</td><td>als B1 niet haalbaar is: taal en meedoen in de samenleving</td></tr>
-  </tbody>
-</table>
-</div>
+<!--uitleg:niveaus-routes-->
 
 <p>Alle routes bevatten daarnaast <strong>KNM</strong> (Kennis van de Nederlandse Maatschappij).</p>
 
@@ -2741,18 +2718,7 @@ ${fact('Lezen 65 minuten, Luisteren 45 minuten, Schrijven 40 minuten (met pen en
 
 <p>Under the <strong>Wet inburgering 2021</strong> your level depends on your <strong>learning route</strong>, set out in your PIP. The municipality decides it with you.</p>
 
-<div class="article-table-wrap">
-<table>
-  <thead>
-    <tr><th>Learning route</th><th>Level</th><th>For whom</th></tr>
-  </thead>
-  <tbody>
-    <tr><td><strong>B1 route</strong></td><td>B1</td><td>the standard route: language and (voluntary) work, maximum 3 years</td></tr>
-    <tr><td><strong>Education route</strong></td><td>B1 or higher</td><td>mainly young people heading for further education</td></tr>
-    <tr><td><strong>Self-reliance route</strong></td><td>A1</td><td>when B1 is not achievable: language and participation</td></tr>
-  </tbody>
-</table>
-</div>
+<!--uitleg:niveaus-routes-->
 
 <p>All routes also include <strong>KNM</strong> (Knowledge of Dutch Society).</p>
 
@@ -2907,18 +2873,7 @@ ${factEn('Reading 65 minutes, Listening 45 minutes, Writing 40 minutes (pen and 
 
 <p>بموجب <strong>قانون الاندماج لعام 2021</strong> يعتمد مستواك على <strong>مسار التعلّم</strong> الخاص بك، المحدَّد في خطة PIP. وتقرره البلدية معك.</p>
 
-<div class="article-table-wrap">
-<table>
-  <thead>
-    <tr><th>مسار التعلّم</th><th>المستوى</th><th>لمن</th></tr>
-  </thead>
-  <tbody>
-    <tr><td><strong>مسار B1</strong></td><td>B1</td><td>المسار القياسي: اللغة والعمل (التطوعي)، بحد أقصى 3 سنوات</td></tr>
-    <tr><td><strong>مسار التعليم</strong></td><td>B1 أو أعلى</td><td>بشكل أساسي للشباب المتجهين إلى مواصلة الدراسة</td></tr>
-    <tr><td><strong>مسار الاعتماد على الذات</strong></td><td>A1</td><td>حين يكون B1 غير قابل للتحقيق: اللغة والمشاركة</td></tr>
-  </tbody>
-</table>
-</div>
+<!--uitleg:niveaus-routes-->
 
 <p>تشمل كل المسارات أيضًا <strong>KNM</strong> (معرفة المجتمع الهولندي).</p>
 
@@ -3097,6 +3052,9 @@ ${foutGoed(['Beste meneer Jansen, kunt u mij helpen? Ik hoor graag van je.'], ['
   <p><strong>Je controlelijst voor de laatste minuut.</strong> Hoofdletter aan het begin van elke zin · punt aan het einde van elke zin · komma voor <em>want</em> en <em>omdat</em> · komma na de aanhef en na de groet · maanden en dagen klein · één soort tijdnotatie · overal <em>u</em> of overal <em>je</em>.</p>
 </div>
 
+
+<!--uitleg:schrijven-klopt-->
+
 <h2 id="oefenen">Waar je dit oefent</h2>
 
 <p>Deze punten leer je niet uit een grammaticaboek. Je leert ze door een hele opdracht te schrijven en daarna gericht terug te kijken — precies zoals op het examen, waar je alles tegelijk moet doen.</p>
@@ -3239,6 +3197,9 @@ ${foutGoed(['Beste meneer Jansen, kunt u mij helpen? Ik hoor graag van je.'], ['
 <div class="info-box info-box-green">
   <p><strong>Your checklist for the last minute.</strong> Capital at the start of every sentence · full stop at the end of every sentence · comma before <em>want</em> and <em>omdat</em> · comma after the greeting and the sign-off · months and days in lower case · one kind of time notation · <em>u</em> everywhere or <em>je</em> everywhere.</p>
 </div>
+
+
+<!--uitleg:schrijven-klopt-->
 
 <h2 id="oefenen">Where to practise this</h2>
 
@@ -3391,6 +3352,9 @@ ${foutGoed([nlEx('Beste meneer Jansen, kunt u mij helpen? Ik hoor graag van je.'
   <p><strong>قائمة المراجعة في الدقيقة الأخيرة:</strong> حرف كبير في بداية كل جملة · نقطة في نهاية كل جملة · فاصلة قبل <em>want</em> و<em>omdat</em> · فاصلة بعد التحية وبعد الخِتام · الشهور والأيام بحرف صغير · طريقة واحدة لكتابة الوقت · <em>u</em> في كل مكان أو <em>je</em> في كل مكان.</p>
 </div>
 
+
+<!--uitleg:schrijven-klopt-->
+
 <h2 id="oefenen">أين تتدرّب على هذا</h2>
 
 <p>هذه النقاط لا تتعلّمها من كتاب قواعد، بل بكتابة واجب كامل ثم مراجعته عن قصد — تمامًا كما في الامتحان، حيث عليك أن تفعل كل شيء في الوقت نفسه.</p>
@@ -3522,6 +3486,8 @@ ${foutGoed(['Ik kom niet, omdat ik ben ziek.', 'Ik neem de trein, omdat de auto 
 
 <p>Die waarom-vraag krijg je op het examen Spreken regelmatig. Oefen <em>omdat</em> dus wel — maar oefen het apart, en bouw er geen lange zin mee terwijl de klok loopt.</p>
 
+<!--uitleg:want-of-omdat-->
+
 <div class="blog-quiz-card">
   <p class="blog-quiz-q">Welke zin is goed?</p>
   <div class="blog-quiz-opts">
@@ -3637,6 +3603,8 @@ ${foutGoed(['Ik kom niet, omdat ik ben ziek.', 'Ik neem de trein, omdat de auto 
 </div>
 
 <p>You get that why-question regularly on the Speaking exam. So do practise <em>omdat</em> — but practise it separately, and do not build long sentences with it while the clock is running.</p>
+
+<!--uitleg:want-of-omdat-->
 
 <div class="blog-quiz-card">
   <p class="blog-quiz-q">Which sentence is correct?</p>
@@ -3760,6 +3728,8 @@ ${foutGoed([nlEx('Ik kom niet, omdat ik ben ziek.'), nlEx('Ik neem de trein, omd
 </div>
 
 <p>هذا السؤال يتكرر في امتحان التحدث. فتدرّب على <em>omdat</em> — لكن تدرّب عليها على حدة، ولا تبنِ بها جملًا طويلة والوقت يجري.</p>
+
+<!--uitleg:want-of-omdat-->
 
 <div class="blog-quiz-card">
   <p class="blog-quiz-q">أي جملة صحيحة؟</p>
@@ -3906,9 +3876,7 @@ ${foutGoed(['Ik me bereid voor op het examen.', 'Ik kan beter me concentreren.']
 
 <h2 id="fouten">Drie fouten die het vaakst voorkomen</h2>
 
-<div class="tip-card"><span class="tip-number">1</span><div><p><strong>Het woordje weglaten.</strong> Ik kan beter concentreren → Ik kan <strong>me</strong> beter concentreren.</p></div></div>
-<div class="tip-card"><span class="tip-number">2</span><div><p><strong>Het verkeerde woordje bij ‘u’.</strong> Voelt u je goed? → Voelt u <strong>zich</strong> goed?</p></div></div>
-<div class="tip-card"><span class="tip-number">3</span><div><p><strong>Het woordje op de verkeerde plek.</strong> Ik me bereid voor → Ik bereid <strong>me</strong> voor.</p></div></div>
+<!--uitleg:wederkerend-klopt-->
 
 <div class="blog-quiz-card">
   <p class="blog-quiz-q">Welke zin is goed?</p>
@@ -4025,9 +3993,7 @@ ${foutGoed(['Ik me bereid voor op het examen.', 'Ik kan beter me concentreren.']
 
 <h2 id="fouten">The three most common mistakes</h2>
 
-<div class="tip-card"><span class="tip-number">1</span><div><p><strong>Leaving the word out.</strong> Ik kan beter concentreren → Ik kan <strong>me</strong> beter concentreren.</p></div></div>
-<div class="tip-card"><span class="tip-number">2</span><div><p><strong>The wrong word with ‘u’.</strong> Voelt u je goed? → Voelt u <strong>zich</strong> goed?</p></div></div>
-<div class="tip-card"><span class="tip-number">3</span><div><p><strong>The word in the wrong place.</strong> Ik me bereid voor → Ik bereid <strong>me</strong> voor.</p></div></div>
+<!--uitleg:wederkerend-klopt-->
 
 <div class="blog-quiz-card">
   <p class="blog-quiz-q">Which sentence is correct?</p>
@@ -4151,9 +4117,7 @@ ${foutGoed([nlEx('Ik me bereid voor op het examen.'), nlEx('Ik kan beter me conc
 
 <h2 id="fouten">الأخطاء الثلاثة الأكثر شيوعًا</h2>
 
-<div class="tip-card"><span class="tip-number">1</span><div><p><strong>حذف الكلمة.</strong> ${nlEx('Ik kan beter concentreren')} ← ${nlEx('Ik kan <strong>me</strong> beter concentreren')}.</p></div></div>
-<div class="tip-card"><span class="tip-number">2</span><div><p><strong>الكلمة الخطأ مع «u».</strong> ${nlEx('Voelt u je goed?')} ← ${nlEx('Voelt u <strong>zich</strong> goed?')}</p></div></div>
-<div class="tip-card"><span class="tip-number">3</span><div><p><strong>الكلمة في الموضع الخطأ.</strong> ${nlEx('Ik me bereid voor')} ← ${nlEx('Ik bereid <strong>me</strong> voor')}.</p></div></div>
+<!--uitleg:wederkerend-klopt-->
 
 <div class="blog-quiz-card">
   <p class="blog-quiz-q">أي جملة صحيحة؟</p>

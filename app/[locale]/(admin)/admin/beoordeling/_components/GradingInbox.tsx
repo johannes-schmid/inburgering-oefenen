@@ -232,7 +232,7 @@ export default function GradingInbox({ rows, locale }: { rows: InboxRow[]; local
 
   return (
     <div
-      className={`flex flex-col h-full overflow-hidden transition-all duration-300 ${
+      className={`flex flex-col h-full overflow-hidden ${
         selected ? 'pr-[560px]' : ''
       }`}
     >
@@ -525,13 +525,13 @@ function SubmissionDrawer({
 
           <div className="flex-1 overflow-y-auto px-6 py-5 space-y-6">
             {error && (
-              <div className="bg-error/10 border border-error/20 rounded-xl p-3 text-sm text-error">
+              <div className="bg-[rgba(186,26,26,0.1)] border border-[rgba(186,26,26,0.2)] rounded-xl p-3 text-sm text-error">
                 {error}
               </div>
             )}
 
             {row.grade_error && (
-              <div className="rounded-xl border border-secondary-container/40 bg-secondary-container/10 p-3 space-y-2">
+              <div className="rounded-xl border border-[rgba(254,118,44,0.4)] bg-[rgba(254,118,44,0.1)] p-3 space-y-2">
                 <p className="text-sm text-on-surface flex items-start gap-2">
                   <TriangleAlert size={15} className="text-secondary shrink-0 mt-0.5" />
                   <span>
@@ -676,7 +676,7 @@ function SubmissionDrawer({
             </Section>
 
             {row.criteria.length === 0 ? (
-              <div className="rounded-xl border border-secondary-container/40 bg-secondary-container/10 p-3 text-sm text-on-surface">
+              <div className="rounded-xl border border-[rgba(254,118,44,0.4)] bg-[rgba(254,118,44,0.1)] p-3 text-sm text-on-surface">
                 Er is geen rubriek voor <strong>{categoryLabel(row.category)}</strong>. Maak er eerst
                 één aan bij Rubrieken — zonder criteria valt er niets te scoren.
               </div>

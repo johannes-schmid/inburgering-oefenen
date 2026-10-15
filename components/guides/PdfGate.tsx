@@ -14,6 +14,8 @@
 import { createContext, useContext, useRef, useState, type CSSProperties, type ReactNode } from 'react';
 import { useTranslations } from 'next-intl';
 import { FileDown, X } from 'lucide-react';
+import CategoryMark from '@/components/horizon/CategoryMark';
+import { glasButton } from '@/components/glas/Button';
 
 type Ctx = { open: () => void };
 const GateContext = createContext<Ctx | null>(null);
@@ -86,29 +88,23 @@ export function PdfGateProvider({
           >
             <X size={18} aria-hidden="true" />
           </button>
-          <p className="text-[11px] font-bold uppercase tracking-widest m-0 mb-3" style={{ color: '#a24000' }}>
-            PDF
-          </p>
-          <h2
-            id="pdf-dialog-title"
-            className="font-headline font-extrabold m-0 mb-2"
-            style={{ color: '#002b6d', fontSize: '1.45rem', letterSpacing: '-0.02em', lineHeight: 1.15 }}
-          >
+          <CategoryMark category="gidsen" size={44} />
+          <h2 id="pdf-dialog-title" className="g-head g-head-3 !text-navy mt-4 mb-2">
             {title}
           </h2>
           {status === 'done' ? (
-            <p className="text-base leading-relaxed m-0 mt-4 text-on-surface">
+            <p className="text-base leading-relaxed m-0 mt-4 text-ink">
               {t('pdf_success')}{' '}
               {url && (
-                <a href={url} className="font-semibold" style={{ color: '#a24000' }}>
+                <a href={url} className="g-ilink">
                   {t('pdf_retry')}
                 </a>
               )}
             </p>
           ) : (
             <form onSubmit={submit} className="mt-2">
-              <p className="text-base leading-relaxed m-0 mb-5 text-on-surface-variant">{t('pdf_modal_desc')}</p>
-              <label htmlFor="pdf-email" className="block text-sm font-semibold mb-1.5 text-on-surface">
+              <p className="text-base leading-relaxed m-0 mb-5 text-ink-2">{t('pdf_modal_desc')}</p>
+              <label htmlFor="pdf-email" className="block text-sm font-semibold mb-1.5 text-ink">
                 {t('pdf_email_label')}
               </label>
               <input
@@ -120,22 +116,22 @@ export function PdfGateProvider({
                 value={email}
                 onChange={e => setEmail(e.target.value)}
                 placeholder={t('pdf_email_placeholder')}
-                className="pdf-dialog-input w-full rounded-xl px-4 py-3 text-base text-on-surface bg-surface-container-low focus:outline-none"
+                className="pdf-dialog-input"
               />
               {status === 'error' && (
-                <p className="text-sm m-0 mt-2" style={{ color: 'var(--color-error)' }}>
+                <p className="text-sm m-0 mt-2 text-fout" role="alert">
                   {t('pdf_error')}
                 </p>
               )}
               <button
                 type="submit"
                 disabled={status === 'sending'}
-                className="pdf-dialog-submit mt-4 w-full inline-flex items-center justify-center gap-2 rounded-xl px-5 py-3 font-bold text-sm bg-secondary-container text-on-secondary-container border-0 cursor-pointer active:scale-[0.98] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 disabled:opacity-60"
+                className={glasButton({ variant: 'navy', className: 'mt-4 w-full' })}
               >
                 <FileDown size={16} aria-hidden="true" />
                 {status === 'sending' ? t('pdf_sending') : t('pdf_submit')}
               </button>
-              <p className="text-xs leading-relaxed m-0 mt-3 text-on-surface-variant">{t('pdf_consent')}</p>
+              <p className="text-xs leading-relaxed m-0 mt-3 text-ink-2">{t('pdf_consent')}</p>
             </form>
           )}
         </div>

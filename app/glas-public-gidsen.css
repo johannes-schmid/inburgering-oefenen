@@ -1,0 +1,265 @@
+/* Glas · publieke site · gidsen — aanvullingen op app/glas-public.css voor /gidsen, de drie hubs,
+   de kennisgids (leesweergave) en de aangekondigde oppervlakken (PlannedSurface).
+   De opmaak van de artikeltekst zelf (`.article-body` en zijn blokken) staat in app/globals.css,
+   omdat die regels ongelaagd zijn en een gelaagde regel hier altijd zou verliezen. */
+
+@layer components {
+  /* Een kopfoto als <picture> (webp met jpg-terugval) in de foto-kaarten van glas-public.css. */
+  .g-feat > picture, .g-post-th > picture, .g-gcard > picture, .g-ap-hero > picture { position: absolute; inset: 0; }
+  .g-feat > picture { z-index: -1; }
+  .g-gcard > picture, .g-ap-hero > picture { z-index: -1; }
+  .g-feat > picture img, .g-post-th > picture img, .g-gcard > picture img, .g-ap-hero > picture img { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .g-post-th > picture img { transition: transform 600ms var(--ease-out-glas); }
+  .g-post:hover .g-post-th > picture img { transform: scale(1.04); }
+  .g-gcard > picture img { transition: transform 700ms var(--ease-out-glas); }
+  .g-gcard:hover > picture img { transform: scale(1.04); }
+  /* De kop van een leespagina (glas.html §14 "Artikel"): Nevel, onder de pil door. */
+  .g-readhead { margin-top: calc(var(--nav-h) * -1); padding-top: calc(var(--nav-h) + 28px); padding-bottom: 40px; }
+  @media (min-width: 860px) { .g-readhead { padding-top: calc(var(--nav-h) + 44px); padding-bottom: 56px; } }
+  .g-readhead h1 {
+    font-family: var(--font-headline); font-weight: 700; color: var(--navy); margin: 18px 0 0;
+    font-size: clamp(32px, 4.6vw, 58px); line-height: 1.04; letter-spacing: -0.045em; max-width: 22ch; text-wrap: balance;
+  }
+  .g-readhead .g-lead { margin-top: 18px; max-width: 58ch; }
+  /* De kop van een gids: tekst links op het veld, de kopfoto rechts als tegel. De tegel staat op
+     een glazen plaat die iets gedraaid achter hem ligt — diepte uit lagen, geen schaduwrand. */
+  /* Nevel met de oranje gloed linksonder: rechtsonder viel hij weg achter de fototegel. */
+  .guide-hero.g-f-nevel { --g: radial-gradient(55% 55% at 50% 40%, #c3d3f7 0, transparent 75%), radial-gradient(50% 58% at 4% 72%, #ffbd94 0, rgba(255, 207, 176, 0.6) 40%, transparent 72%), #eef2fb; }
+  [dir="rtl"] .guide-hero.g-f-nevel { --g: radial-gradient(55% 55% at 50% 40%, #c3d3f7 0, transparent 75%), radial-gradient(50% 58% at 96% 72%, #ffbd94 0, rgba(255, 207, 176, 0.6) 40%, transparent 72%), #eef2fb; }
+  .guide-hero .g-veil { background: radial-gradient(46% 50% at 26% 36%, rgba(238, 242, 248, 0.85) 0, rgba(238, 242, 248, 0.6) 45%, rgba(238, 242, 248, 0) 100%); }
+  [dir="rtl"] .guide-hero .g-veil { background: radial-gradient(46% 50% at 74% 36%, rgba(238, 242, 248, 0.85) 0, rgba(238, 242, 248, 0.6) 45%, rgba(238, 242, 248, 0) 100%); }
+  .g-gh { margin-top: 22px; }
+  .g-gh-photo { display: grid; gap: 28px; }
+  @media (min-width: 960px) {
+    .g-gh { margin-top: 30px; }
+    .g-gh-photo { grid-template-columns: minmax(0, 1.25fr) minmax(0, 0.75fr); gap: 64px; align-items: center; }
+  }
+  .g-gh h1 { margin-top: 0; max-width: 20ch; }
+  .g-gh-photo h1 { font-size: clamp(32px, 4.2vw, 60px); }
+  .g-gh .g-lead { margin-top: 20px; max-width: 54ch; }
+  .g-gh-byline { gap: 12px 16px; }
+  .g-gh-byline .g-mono { white-space: nowrap; }
+  @media (max-width: 639px) {
+    .g-gh-byline > span:nth-child(2) { flex: 1 1 200px; }
+    .g-gh-byline .g-byline-sep { display: none; }
+    .g-gh-byline .g-mono { flex-basis: 100%; padding-inline-start: 62px; }
+  }
+
+  .g-gh-media { position: relative; isolation: isolate; aspect-ratio: 16 / 10; }
+  @media (min-width: 960px) { .g-gh-media { aspect-ratio: 4 / 5; max-height: 520px; margin-inline: 12px 8px; } }
+  .g-gh-media::before {
+    content: ""; position: absolute; inset: 0; z-index: -1; border-radius: var(--r-xl);
+    background: rgba(255, 255, 255, 0.5); -webkit-backdrop-filter: blur(20px) saturate(1.4); backdrop-filter: blur(20px) saturate(1.4);
+    box-shadow: var(--glas-rand); transform: rotate(4deg) translate(10px, 6px);
+  }
+  [dir="rtl"] .g-gh-media::before { transform: rotate(-4deg) translate(-10px, 6px); }
+  .g-gh-media > picture { position: absolute; inset: 0; border-radius: var(--r-xl); overflow: hidden; box-shadow: var(--zweef); }
+  .g-gh-media > picture::after {
+    content: ""; position: absolute; inset: 0; border-radius: inherit; pointer-events: none;
+    box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.6);
+  }
+  .g-gh-media img { width: 100%; height: 100%; object-fit: cover; display: block; }
+  @media (max-width: 959px) {
+    .g-gh-media { order: -1; }
+    .g-gh-media::before { transform: rotate(2deg) translate(6px, 4px); }
+    [dir="rtl"] .g-gh-media::before { transform: rotate(-2deg) translate(-6px, 4px); }
+  }
+
+  /* Een compacte onderwerptegel (de vijf ingangen op /gidsen, de vier onderdelen op een hub). */
+  .g-subject {
+    display: flex; flex-direction: column; align-items: flex-start; gap: 10px; padding: 18px; border-radius: var(--r-lg);
+    background: #fff; color: inherit; text-decoration: none; outline: none;
+    transition: transform 220ms var(--ease-out-glas), box-shadow 220ms ease;
+  }
+  .g-subject:hover { transform: translateY(-3px); box-shadow: var(--zweef); }
+  .g-subject:active { transform: translateY(-1px) scale(0.99); }
+  .g-subject:focus-visible { box-shadow: var(--glas-focus); }
+  .g-subject b { font-family: var(--font-headline); font-weight: 700; font-size: 15px; color: var(--navy); line-height: 1.3; }
+  .g-subject small { font-size: 12.5px; color: var(--ink-2); margin-top: -6px; }
+  .g-subject-row { flex-direction: row; align-items: center; gap: 12px; }
+  .g-subject-row b { flex: 1; }
+  .g-subjects { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 12px; }
+  @media (max-width: 1080px) { .g-subjects { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+  @media (max-width: 640px) { .g-subjects { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+  .g-subjects-4 { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+  @media (max-width: 860px) { .g-subjects-4 { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+
+  /* Een tekstkaart zonder beeld: blogpost of verwante link. */
+  .g-textcard {
+    display: flex; flex-direction: column; gap: 8px; height: 100%; padding: 20px 22px; border-radius: var(--r-lg); background: #fff;
+    color: inherit; text-decoration: none; outline: none; transition: transform 220ms var(--ease-out-glas), box-shadow 220ms ease;
+  }
+  .g-textcard:hover { transform: translateY(-3px); box-shadow: var(--zweef); }
+  .g-textcard:active { transform: translateY(-1px) scale(0.99); }
+  .g-textcard:focus-visible { box-shadow: var(--glas-focus); }
+  .g-textcard b { font-family: var(--font-headline); font-weight: 700; font-size: 17px; line-height: 1.3; color: var(--navy); letter-spacing: -0.01em; }
+  .g-textcard span { font-size: 14px; line-height: 1.6; color: var(--ink-2); }
+
+  /* De leesweergave: de inhoudsopgave plakt in de linkerkolom van de witte kaart. */
+  .g-guide-toc { position: sticky; top: calc(var(--nav-h) + 24px); align-self: start; }
+  @media (max-width: 860px) { .g-guide-toc { display: none; } }
+  .g-guide-toc ol { list-style: none; margin: 8px 0 0; padding: 0; display: flex; flex-direction: column; gap: 2px; }
+  .g-guide-toc a {
+    display: flex; gap: 8px; text-decoration: none; color: var(--ink-2); padding: 7px 12px; border-radius: 10px; font-size: 13.5px;
+    line-height: 1.4; outline: none; transition: background-color 160ms ease, color 160ms ease;
+  }
+  .g-guide-toc a:hover { background: var(--mist); color: var(--navy); }
+  .g-guide-toc a:focus-visible { box-shadow: var(--glas-focus); }
+  .g-guide-toc a[aria-current="location"] { background: var(--mist); color: var(--navy); font-weight: 600; box-shadow: inset 3px 0 0 var(--navy); }
+  [dir="rtl"] .g-guide-toc a[aria-current="location"] { box-shadow: inset -3px 0 0 var(--navy); }
+  .g-guide-toc a span { font-family: var(--glas-mono); font-size: 11px; opacity: 0.6; padding-top: 2px; }
+  .g-guide-tocfold { display: none; border-radius: var(--r-md); background: var(--mist); padding: 2px 14px; margin-bottom: 8px; }
+  @media (max-width: 860px) { .g-guide-tocfold { display: block; } }
+  .g-guide-tocfold summary {
+    list-style: none; cursor: pointer; padding: 12px 0; font-family: var(--font-headline); font-weight: 700; font-size: 14.5px;
+    color: var(--navy); display: flex; justify-content: space-between; align-items: center; border-radius: 8px; outline: none;
+  }
+  .g-guide-tocfold summary::-webkit-details-marker { display: none; }
+  .g-guide-tocfold summary:focus-visible { box-shadow: var(--glas-focus); }
+  .g-guide-tocfold summary svg { width: 16px; height: 16px; transition: transform 200ms var(--ease-out-glas); }
+  .g-guide-tocfold[open] summary svg { transform: rotate(180deg); }
+  .g-guide-tocfold ol { list-style: none; margin: 0; padding: 0 0 10px; display: flex; flex-direction: column; gap: 2px; }
+  .g-guide-tocfold a { display: flex; gap: 8px; padding: 7px 4px; color: var(--ink-2); text-decoration: none; font-size: 14px; border-radius: 8px; outline: none; }
+  .g-guide-tocfold a:hover, .g-guide-tocfold a[aria-current="location"] { color: var(--navy); }
+  .g-guide-tocfold a:focus-visible { box-shadow: var(--glas-focus); }
+  .g-guide-tocfold a span { font-family: var(--glas-mono); font-size: 11px; opacity: 0.6; padding-top: 3px; }
+
+  /* De FAQ binnen de witte leeskaart: dezelfde vorm als op de homepage, op mist. */
+  .g-faq.g-faq-mist { background: var(--mist); }
+  .g-faq.g-faq-mist details + details { box-shadow: inset 0 1px 0 #fff; }
+  .g-faq.g-faq-mist .g-faq-pm { background: #fff; }
+  .g-faq.g-faq-mist details[open] .g-faq-pm { background: var(--navy); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .g-post-th > picture img, .g-gcard > picture img, .g-subject, .g-textcard, .g-guide-toc a, .g-guide-tocfold summary svg { transition-duration: 0ms; }
+  .g-post:hover .g-post-th > picture img, .g-gcard:hover > picture img, .g-subject:hover, .g-subject:active, .g-textcard:hover, .g-textcard:active { transform: none; }
+}
+
+/* ── De gids als brochure: de omslag (`components/guides/BrochureCover.tsx`) ──
+   Eén plaat in twee maten. `--bc-w` is de breedte; 1em is een twintigste daarvan, en alles binnenin
+   staat in em — zo is de kaartminiatuur letterlijk de A4-omslag, verkleind. Het veld is alleen
+   radiale gradiënten zonder `filter: blur`: Chromium rastert een blur in een PDF tot een plaatje. */
+@layer components {
+  .bc {
+    --bc-w: 210mm;
+    --bc-blue: #8aa8f6; --bc-base: #c3d1f1; --bc-top: #e6ecf8;
+    --bc-glow: rgba(255, 196, 160, 0.9); --bc-glow-2: rgba(255, 214, 190, 0.45);
+    --ox: 82%; --oy: 16%; --bx: 18%; --by: 60%;
+    width: var(--bc-w); aspect-ratio: 1 / 1.4142; font-size: calc(var(--bc-w) / 20);
+    display: flex; flex-direction: column; overflow: hidden; background: #fff; color: var(--ink);
+    font-family: var(--font-body); line-height: 1.35; text-align: start;
+  }
+  .bc-a4 { height: 297mm; aspect-ratio: auto; }
+  .bc-card { --bc-w: 160px; border-radius: 5px; }
+  .bc.bc-pillar { --bc-glow: rgba(254, 118, 44, 0.92); --bc-glow-2: rgba(255, 168, 120, 0.5); }
+  .bc-s-knm { --bc-blue: #7f9fe6; --bc-base: #bccbee; --bc-top: #dfe6f6; }
+  .bc-s-taalexamens { --bc-blue: #b3c6fb; --bc-base: #d3ddf4; --bc-top: #eef2fb; }
+  .bc-v-1 { --ox: 16%; --oy: 18%; --bx: 84%; --by: 52%; }
+  .bc-v-2 { --ox: 88%; --oy: 44%; --bx: 12%; --by: 26%; }
+  .bc-v-3 { --ox: 58%; --oy: 6%; --bx: 30%; --by: 70%; }
+
+  .bc-field {
+    position: relative; isolation: isolate; flex: 1; display: flex; flex-direction: column;
+    padding: 1.15em 1.15em 1.2em;
+    background:
+      radial-gradient(40% 30% at var(--ox) var(--oy), var(--bc-glow) 0, var(--bc-glow-2) 42%, transparent 74%),
+      radial-gradient(78% 56% at var(--bx) var(--by), var(--bc-blue) 0, transparent 74%),
+      linear-gradient(180deg, var(--bc-top) 0%, var(--bc-base) 100%);
+  }
+  /* De sluier (regel 06): de tekst staat onderaan, dus de mist komt van onder. */
+  .bc-field::before {
+    content: ""; position: absolute; inset: 0; z-index: -1;
+    background: linear-gradient(0deg, rgba(238, 242, 248, 0.92) 0, rgba(238, 242, 248, 0.6) 34%, rgba(238, 242, 248, 0) 62%);
+  }
+  .bc-field::after {
+    content: ""; position: absolute; inset: 0; z-index: -1; opacity: 0.16; mix-blend-mode: overlay; pointer-events: none;
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='180' height='180'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2' stitchTiles='stitch'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
+  }
+  .bc-brand {
+    display: flex; align-items: center; gap: 0.4em; font-family: var(--font-headline); font-weight: 800;
+    font-size: 0.5em; letter-spacing: -0.01em; color: var(--navy);
+  }
+  .bc-brand svg { width: 2.1em; height: 2.1em; flex: none; }
+  .bc-main { margin-top: auto; display: flex; flex-direction: column; }
+  .bc-kind {
+    font-family: var(--glas-mono); font-size: 0.4em; letter-spacing: 0.1em; text-transform: uppercase;
+    color: var(--ink-2); font-weight: 500; margin-bottom: 1.1em;
+  }
+  :lang(ar) .bc-kind { letter-spacing: 0; font-family: var(--font-body); }
+  .bc-title {
+    margin: 0; font-family: var(--font-headline); font-weight: 700; color: var(--navy);
+    font-size: 1.5em; line-height: 1.04; letter-spacing: -0.035em; text-wrap: balance;
+    display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 4; overflow: hidden;
+  }
+  .bc-sub {
+    margin: 0.75em 0 0; font-size: 0.56em; line-height: 1.45; color: var(--ink-2); max-width: 30em;
+    display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 3; overflow: hidden;
+  }
+  .bc-by { display: flex; align-items: center; gap: 0.7em; margin-top: 1.5em; font-size: 0.46em; line-height: 1.35; color: var(--ink-2); }
+  .bc-by img { width: 2.9em; height: 2.9em; border-radius: 0.8em; object-fit: cover; object-position: top; flex: none; }
+  .bc-by b { display: block; font-family: var(--font-headline); font-weight: 700; color: var(--ink); }
+  .bc-foot {
+    display: flex; justify-content: space-between; gap: 1em; padding: 0.62em 1.15em;
+    font-family: var(--glas-mono); font-size: 0.36em; letter-spacing: 0.09em; text-transform: uppercase; color: var(--ink-2);
+  }
+  .bc-foot > span { white-space: nowrap; }
+  :lang(ar) .bc-foot > span:first-child { letter-spacing: 0; font-family: var(--font-body); }
+  /* De miniatuur heeft geen ruimte voor de onderregel en de docentregel: op 150px breed zijn dat
+     vlekjes. Titel en ondertitel blijven — dat is wat een omslag herkenbaar maakt. */
+  .bc-card .bc-by, .bc-card .bc-sub { display: none; }
+  .bc-card .bc-title { font-size: 1.95em; line-height: 1.02; }
+
+  /* ── De gidskaart in /gidsen: de omslag als brochure op tafel ──
+     De achterste pagina is een wit vel met grijze regels — de binnenkant, niet nagetekend. */
+  .g-gbro {
+    display: flex; flex-direction: column; height: 100%; border-radius: var(--r-lg); background: #fff; padding: 8px;
+    color: inherit; text-decoration: none; outline: none;
+    transition: transform 260ms var(--ease-out-glas), box-shadow 260ms ease;
+  }
+  .g-gbro:focus-visible { box-shadow: var(--glas-focus); }
+  .g-gbro:active { transform: scale(0.99); }
+  .g-gbro-stage {
+    position: relative; height: 276px; border-radius: 16px; overflow: hidden; display: grid; place-items: center;
+    background: radial-gradient(70% 80% at 50% 100%, #d7e1f6 0, transparent 70%), var(--mist);
+  }
+  .g-gbro-stage.is-knm { background: radial-gradient(70% 80% at 50% 100%, #c9d6f2 0, transparent 70%), #e3e9f5; }
+  .g-gbro-stage.is-taalexamens { background: radial-gradient(70% 80% at 50% 100%, #dfe6f7 0, transparent 70%), #f1f4fa; }
+  .g-gbro-sheet, .g-gbro-stage .bc { grid-area: 1 / 1; transition: transform 320ms var(--ease-out-glas); }
+  .g-gbro-sheet {
+    width: 160px; aspect-ratio: 1 / 1.4142; border-radius: 5px; background-color: #fff;
+    background-image:
+      linear-gradient(var(--mist-2), var(--mist-2)),
+      repeating-linear-gradient(180deg, #e6ebf3 0 3px, transparent 3px 9px);
+    background-size: 42% 6px, 74% 62%; background-position: 14px 18px, 14px 36px; background-repeat: no-repeat;
+    transform: translate(26px, 4px) rotate(6deg);
+    box-shadow: 0 18px 30px -18px rgba(0, 27, 80, 0.35);
+  }
+  .g-gbro-stage .bc {
+    transform: translate(-10px, 6px) rotate(-4deg);
+    box-shadow: 0 1px 0 rgba(0, 27, 80, 0.05), 0 26px 40px -20px rgba(0, 27, 80, 0.5);
+  }
+  .g-gbro-tx { display: flex; flex-direction: column; gap: 8px; flex: 1; padding: 16px 12px 10px; }
+  .g-gbro-tx h3 { font-family: var(--font-headline); font-weight: 700; font-size: 19px; letter-spacing: -0.02em; line-height: 1.2; color: var(--navy); margin: 0; text-wrap: balance; }
+  .g-gbro-tx p { margin: 0; font-size: 14px; line-height: 1.6; color: var(--ink-2); display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 2; overflow: hidden; }
+  .g-gbro-ft { margin-top: auto; padding-top: 8px; display: flex; align-items: center; justify-content: space-between; gap: 10px; font-size: 13px; color: var(--ink-2); }
+  .g-gbro-ft svg { width: 16px; height: 16px; color: var(--navy); transition: transform 260ms var(--ease-out-glas); }
+  .g-gbro-pdf {
+    font-family: var(--glas-mono); font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; font-weight: 500;
+    color: var(--klei); background: var(--klei-tint); border-radius: 6px; padding: 2px 6px; margin-inline-end: 8px;
+  }
+  @media (hover: hover) and (pointer: fine) {
+    .g-gbro:hover { transform: translateY(-3px); box-shadow: var(--zweef); }
+    .g-gbro:hover .bc { transform: translate(-16px, -2px) rotate(-6deg); }
+    .g-gbro:hover .g-gbro-sheet { transform: translate(36px, 6px) rotate(9deg); }
+    .g-gbro:hover .g-gbro-ft svg { transform: translateX(3px); }
+    [dir="rtl"] .g-gbro:hover .g-gbro-ft svg { transform: translateX(-3px) scaleX(-1); }
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .g-gbro, .g-gbro-sheet, .g-gbro-stage .bc, .g-gbro-ft svg { transition-duration: 0ms; }
+  .g-gbro:hover { transform: none; }
+  .g-gbro:hover .g-gbro-sheet { transform: translate(26px, 4px) rotate(6deg); }
+  .g-gbro:hover .bc { transform: translate(-10px, 6px) rotate(-4deg); }
+}

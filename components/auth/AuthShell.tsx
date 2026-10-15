@@ -1,11 +1,16 @@
 import type { ReactNode } from 'react';
+import { ArrowRight } from 'lucide-react';
 import { Link } from '@/i18n/navigation';
 import LogoMark from '@/components/site/LogoMark';
+import { Field, GlassCard } from '@/components/glas';
 
 /**
- * The card the three auth screens sit in. One shell so login, register and admin-login
+ * The card the auth screens sit in. One shell so login, admin-login and the OAuth consent
  * cannot drift apart visually, which is exactly what had happened in the fork — the admin
  * screen still said "KNM Admin" above a padlock emoji.
+ *
+ * Glas v1.0: één rustig veld (`licht`, geen gloed — dit scherm heeft geen wijzer nodig) achter de
+ * hele pagina, het formulier op sterk glas (regel 06), geen lijnen om kop of voet.
  */
 export default function AuthShell({
   title,
@@ -13,62 +18,48 @@ export default function AuthShell({
   children,
   footer,
   showHeaderCta = true,
+  live = false,
 }: {
   title: string;
   intro: string;
   children: ReactNode;
   footer?: ReactNode;
   showHeaderCta?: boolean;
+  live?: boolean;
 }) {
   return (
-    <div className="min-h-screen flex flex-col bg-surface">
-      <header className="bg-surface-container-lowest" style={{ borderBottom: '1px solid var(--color-outline-variant)' }}>
-        <div className="max-w-6xl mx-auto px-6 py-4 flex items-center justify-between gap-4">
-          <Link href="/" className="flex items-center gap-2 no-underline">
-            <LogoMark size={30} />
-            <span className="text-lg font-extrabold tracking-tight text-primary font-headline">
-              Inburgering Oefenen
-            </span>
+    <Field variant="licht" className="auth-g-page">
+      {live && <span className="auth-g-orbs" aria-hidden="true"><i /><i /><i /></span>}
+      <header className="g-wrap w-full flex items-center justify-between gap-4 py-5">
+        <Link href="/" className="auth-g-brand">
+          <LogoMark size={32} />
+          <span className="auth-g-brand-name">Inburgering Oefenen</span>
+        </Link>
+        {showHeaderCta && (
+          <Link href="/premium" className="g-tlink text-sm whitespace-nowrap">
+            Bekijk de pakketten
+            <ArrowRight size={16} className="rtl-flip" aria-hidden />
           </Link>
-          {showHeaderCta && (
-            <Link href="/premium" className="text-sm font-semibold text-primary hover:underline no-underline">
-              Bekijk de pakketten →
-            </Link>
-          )}
-        </div>
+        )}
       </header>
 
-      <main className="flex-1 flex items-center justify-center px-4 py-14">
-        <div className="w-full max-w-sm">
-          <div
-            className="bg-surface-container-lowest rounded-2xl p-7"
-            style={{ boxShadow: 'var(--shadow-card-lg)', border: '1px solid var(--color-outline-variant)' }}
-          >
-            <h1
-              className="font-headline font-extrabold text-on-surface mb-1.5"
-              style={{ fontSize: '1.3rem', letterSpacing: '-0.02em', textWrap: 'balance' }}
-            >
-              {title}
-            </h1>
-            <p className="text-sm text-on-surface-variant leading-relaxed mb-6">{intro}</p>
+      <main className="flex-1 flex items-center justify-center px-4 py-10 sm:py-16">
+        <div className="w-full max-w-[420px]">
+          <GlassCard strong className="auth-g-card">
+            <h1 className="auth-g-title">{title}</h1>
+            <p className="auth-g-intro">{intro}</p>
             {children}
-          </div>
-          {footer && <div className="text-center mt-5 text-sm text-on-surface-variant">{footer}</div>}
+          </GlassCard>
+          {footer && <div className="auth-g-note mt-6 text-sm">{footer}</div>}
         </div>
       </main>
 
-      <footer
-        className="text-center py-6 text-xs text-on-surface-variant"
-        style={{ borderTop: '1px solid var(--color-outline-variant)' }}
-      >
+      <footer className="auth-g-foot">
         © 2026 Inburgering Oefenen ·{' '}
-        <a
-          href="mailto:contact@inburgeringoefenen.nl"
-          className="hover:text-primary no-underline transition-colors"
-        >
+        <a href="mailto:contact@inburgeringoefenen.nl" className="auth-g-link font-normal">
           contact@inburgeringoefenen.nl
         </a>
       </footer>
-    </div>
+    </Field>
   );
 }

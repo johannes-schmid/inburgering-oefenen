@@ -11,7 +11,11 @@ import FreePracticeEngine from './FreePracticeEngine';
 import JsonLd from '@/components/JsonLd';
 import { langTag } from '@/lib/site';
 import { absUrl, alternatesFor, breadcrumbs, courseId, PROVIDER_REF, ogImageFor } from '@/lib/schema';
-import { DEFAULT_LEVEL } from '@/data/skills';
+import { DEFAULT_LEVEL, KNM_SLUG, getSkillAtLevel } from '@/data/skills';
+import { SectionHeading, CategoryMark, glasButton } from '@/components/glas';
+import { ArrowRight } from 'lucide-react';
+import { localeHref } from '@/i18n/paths';
+import Crumbs from '../../_components/glas/Crumbs';
 
 type Props = { params: Promise<{ locale: string; skill: string }> };
 
@@ -124,17 +128,106 @@ export default async function FreePracticePage({ params }: Props) {
     ],
   };
 
+  /* ── De pagina om de proef heen (15-10) ──────────────────────────────────
+   * Zelfde opbouw als de KNM-themapagina's (`/oefenvragen/[slug]`): een Gracht-kop met kruimelpad,
+   * merk, h1 en lead, zodat de zoekterm ("lezen oefenen inburgering a2") in de h1 en de eerste
+   * alinea staat in plaats van alleen in de titel van de proefkaart. Die kaart wordt daarom een h2.
+   * Naast de kaart staat wat het examen zelf is — alleen getallen uit `SEO/facts.md` §1, via
+   * `data/skills.ts` — en eronder de volgende stap en de andere proeven. */
+  const sp = await getTranslations({ locale, namespace: 'oefenen.skillpage' });
+  const format = getSkillAtLevel(DEFAULT_LEVEL, skill.slug);
+  const hasCopy = skill.slug === 'lezen' || skill.slug === 'luisteren';
+  const others = SKILLS.filter(s => s.slug !== skill.slug && hasFreePractice(s.slug));
+
   return (
-    <main className="bg-surface min-h-screen">
+    <main className="bg-mist min-h-screen">
       <JsonLd data={jsonLd} />
-      <div className="max-w-5xl mx-auto px-4 sm:px-6 pt-8 pb-24">
-        <FreePracticeEngine
-          skill={skill.slug}
-          skillName={tSkills(`${skill.key}.name`)}
-          items={set.items}
-          locale={locale}
-        />
-      </div>
+
+      <FreePracticeEngine
+        skill={skill.slug}
+        skillName={tSkills(`${skill.key}.name`)}
+        items={set.items}
+        locale={locale}
+        headingLevel={2}
+        pageHeader={
+          <div key="kop">
+            <Crumbs
+              items={[
+                { label: tB('home'), href: '/' },
+                { label: tB('oefenen'), href: '/oefenen' },
+                { label: name },
+              ]}
+              className="mb-6"
+            />
+            <div className="g-fpx-mark">
+              <CategoryMark category={skill.slug} size={48} />
+              <span className="g-bdg g-bdg-glas g-tnum">{sp('badge', { count: set.items.length })}</span>
+            </div>
+            <SectionHeading
+              as="h1"
+              size="h1"
+              title={hasCopy ? sp(`title_${skill.slug}`) : tOefenen('heading', { count: set.items.length, skill: name })}
+              muted={sp('title_muted')}
+              onField
+            />
+            {hasCopy && (
+              <p className="g-lead g-fpx-lead">{sp(`lead_${skill.slug}`, { count: set.items.length })}</p>
+            )}
+          </div>
+        }
+        aside={hasCopy && format?.itemCount && format.durationMinutes ? (
+          <aside key="feiten" className="g-fpx-about" aria-labelledby="fpx-about-h">
+            <h2 id="fpx-about-h" className="g-head g-head-3">{sp(`about_heading_${skill.slug}`)}</h2>
+            <p>{sp(`about_body_${skill.slug}`)}</p>
+            <dl className="g-fpx-facts">
+              <div><dt>{sp('fact_questions')}</dt><dd className="g-tnum">{format.itemCount}</dd></div>
+              <div><dt>{sp('fact_time')}</dt><dd className="g-tnum">{sp('fact_minutes', { n: format.durationMinutes })}</dd></div>
+              <div><dt>{sp('fact_where')}</dt><dd>{sp('fact_computer')}</dd></div>
+              <div><dt>{sp('fact_options')}</dt><dd>{sp('fact_options_value')}</dd></div>
+            </dl>
+            <p className="g-fpx-src">{sp('fact_source')}</p>
+          </aside>
+        ) : null}
+        after={
+          <div key="daarna" className="g-fpx-after">
+            {format?.itemCount && (
+              <section className="g-fpx-next" aria-labelledby="fpx-next-h">
+                <div>
+                  <h2 id="fpx-next-h" className="g-head g-head-3">{sp('next_heading')}</h2>
+                  <p>{sp('next_body', { count: set.items.length, skill: name, total: format.itemCount })}</p>
+                </div>
+                <a
+                  href={localeHref(locale, `oefenexamen/${DEFAULT_LEVEL}/${skill.slug}`)}
+                  className={glasButton({ variant: 'navy', size: 'md' })}
+                >
+                  {sp('next_cta', { skill: name })}
+                  <ArrowRight className="rtl-flip" aria-hidden />
+                </a>
+              </section>
+            )}
+
+            <nav aria-labelledby="fpx-others-h">
+              <h2 id="fpx-others-h" className="g-head g-head-3 g-fpx-others-h">{sp('others_heading')}</h2>
+              <div className="g-chips">
+                {others.map(o => (
+                  <a key={o.slug} href={localeHref(locale, `oefenen/${o.slug}`)} className="g-chip g-chip-wit">
+                    <CategoryMark category={o.slug} size={28} />
+                    {tSkills(`${o.key}.name`)}
+                  </a>
+                ))}
+                <a href={localeHref(locale, `oefenen/${KNM_SLUG}`)} className="g-chip g-chip-wit">
+                  <CategoryMark category="knm" size={28} />
+                  KNM
+                </a>
+                <a href={localeHref(locale, 'oefenen')} className="g-chip g-chip-wit g-fpx-chip-plain">
+                  {sp('others_all')}
+                  <ArrowRight className="rtl-flip" aria-hidden />
+                </a>
+              </div>
+            </nav>
+          </div>
+        }
+      />
     </main>
   );
 }

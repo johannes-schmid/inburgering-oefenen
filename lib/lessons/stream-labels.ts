@@ -1,5 +1,6 @@
 import { getTranslations } from 'next-intl/server';
 import type { StreamLabels } from '@/components/lessons/LessonStream';
+import type { RowLabels } from './course-side';
 
 /**
  * De labels van `LessonStream`, op één plek.
@@ -15,6 +16,7 @@ import type { StreamLabels } from '@/components/lessons/LessonStream';
 export async function lessonStreamLabels(): Promise<StreamLabels> {
   const t = await getTranslations('lessons');
   const tg = await getTranslations('grammar');
+  const to = await getTranslations('oefenen');
   return {
     check: t('check'),
     correct: t('correct'),
@@ -59,6 +61,8 @@ export async function lessonStreamLabels(): Promise<StreamLabels> {
       noMic: t('rec_no_mic'),
       noRecorder: t('rec_no_recorder'),
       seconds: t('rec_seconds'),
+      play: t('rec_play'),
+      pause: t('rec_pause'),
     },
     sayAfter: t('say_after'),
     sayFocus: t('say_focus'),
@@ -68,5 +72,43 @@ export async function lessonStreamLabels(): Promise<StreamLabels> {
       soon: tg('video_soon'),
       soonSub: null,
     },
+    yourAnswer: to('review_your_answer'),
+  };
+}
+
+/** De woorden van de rijen in de cursusroute ("Video:", "8 opgaven"), voor `courseSideBlocks`. */
+export async function courseRowLabels(): Promise<RowLabels> {
+  const t = await getTranslations('grammar');
+  return {
+    kinds: {
+      video: t('route_kind_video'),
+      uitleg: t('route_kind_uitleg'),
+      opdracht: t('route_kind_opdracht'),
+      woorden: t('route_kind_woorden'),
+    },
+    minutes: n => t('route_minutes', { n }),
+    exercises: n => t('route_exercises', { n }),
+  };
+}
+
+/** De labels van de twee stappen in `GrammarTopicView`, gedeeld door de les- en onderwerppagina. */
+export function stepLabels(
+  t: (key: 'steps_aria' | 'step_back_video' | 'step_back_uitleg' | 'handoff_kick' | 'handoff_start' | 'bar_next' | 'explain_kick' | 'explain_title') => string,
+  rows: RowLabels,
+  exercises: number,
+) {
+  return {
+    kindVideo: rows.kinds.video,
+    kindUitleg: rows.kinds.uitleg,
+    kindOpdracht: rows.kinds.opdracht,
+    exercises: rows.exercises(exercises),
+    stepsAria: t('steps_aria'),
+    backVideo: t('step_back_video'),
+    backUitleg: t('step_back_uitleg'),
+    handoffKick: t('handoff_kick'),
+    handoffStart: t('handoff_start'),
+    barNext: t('bar_next'),
+    explainKick: t('explain_kick'),
+    explainTitle: t('explain_title'),
   };
 }

@@ -589,6 +589,8 @@ at another size. The `cut` colour must equal the tile behind it, which is why `t
 on navy use `CategoryMark tone="dark"` / `ExamMark onDark`. One orange accent per mark, and a
 `muted` mark spends none.
 
+**Glas replaces the drawings (2026-10-14):** `ExamMark` becomes "label + trede" and `CategoryMark` becomes Phosphor *fill* on the light tile (`docs/design/DESIGN_SYSTEM.md` §G4). Until those two components are rebuilt, keep using them as they are — never drop a raw Phosphor icon into a page.
+
 **There is no second icon set for the same job.** `components/site/SkillIcon` was one — a lucide
 glyph per onderdeel — and it made the same Lezen a canal house on the homepage and a `BookOpen` in
 the portal. It was deleted on 2026-09-02. The full rule, layer by layer, is **COMPONENTS.md
@@ -601,9 +603,11 @@ the rule down** — a one-off shape in one page is how a design system turns bac
 
 ## 8. Design rules
 
-**The spec is `docs/design/DESIGN_SYSTEM.md`** ("The Civic Authority");
-`docs/design/horizon-element-library.html` is its reference implementation — open it in a browser
-before designing a new surface. **When the spec and the code disagree, the spec wins and the code is
+**The spec is `docs/design/DESIGN_SYSTEM.md`.** Since 2026-10-14 it opens with **Glas v1.0**
+(approved, migration not started), whose reference implementation is `docs/design/glas.html` (local only — open the file; it is never deployed);
+a surface rebuilt in Glas follows Glas, a surface not yet rebuilt still follows "The Civic Authority"
+(`docs/design/horizon-element-library.html`). Never mix the two inside one surface. Open the
+reference page in a browser before designing a new surface. **When the spec and the code disagree, the spec wins and the code is
 the bug.** The history of each surface is `docs/decisions/design-history.md`.
 
 Six rules that constrain code, not taste:
@@ -616,9 +620,10 @@ Six rules that constrain code, not taste:
   fastest way to make this palette look cheap.
 - **No illustrations, mascots or line art.** All decorative imagery is built from the four CSS
   primitives. Functional icons stay lucide — the ban is on *drawn imagery*, not on affordances.
-- **No new hue for a status.** Correct/passed is clay (`secondary`), wrong is `--color-error`, and an
-  icon carries the meaning for anyone who cannot separate the two. The greens were removed from every
-  live surface once already; `/admin`'s answer key is the one documented exception.
+- **Status colour.** In Glas, correct/passed is **green** (`--goed` `#2b7a5c`) and wrong is red,
+  always with a check or a cross (owner's decision 2026-10-14, reversing the old rule). Surfaces not
+  yet rebuilt keep clay for correct until they are migrated — never introduce green into an
+  unmigrated surface piecemeal. Never use a default Tailwind green.
 - **Scale a skyline by dropping houses, never by shrinking every part** — and a house stays roughly
   as wide as it is tall. Every header therefore needs **two counts behind one breakpoint**;
   `HorizonBanner` owns that pair, which is the reason to reach for it.

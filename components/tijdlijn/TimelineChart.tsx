@@ -122,17 +122,17 @@ export default function TimelineChart({
   return (
     <figure className="m-0">
       <figcaption className="mb-3 flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1">
-        <span className="font-headline text-[13px] font-bold uppercase tracking-[0.1em] text-on-surface-variant">
+        <span className="g-mono">
           {t('title')}
         </span>
         {timeline.termijnEnd ? (
-          <span className="font-headline text-[13px] font-bold text-primary">
+          <span className="font-headline text-[13px] font-bold text-navy">
             <time dateTime={toISO(timeline.termijnEnd.date)}>{fmtDate(timeline.termijnEnd.date, locale)}</time>
             {' · '}
             {t('deadline')}
           </span>
         ) : (
-          <span className="text-[13px] text-on-surface-variant">{t('no_deadline_yet')}</span>
+          <span className="text-[13px] text-ink-2">{t('no_deadline_yet')}</span>
         )}
       </figcaption>
 
@@ -159,12 +159,12 @@ export default function TimelineChart({
             />
           )}
           {/* Today: a fact, but not a deadline — a hairline guide, never a wall. */}
-          <div className="absolute inset-y-0 w-px bg-outline-variant" style={{ insetInlineStart: `${x(today)}%` }} />
+          <div className="absolute inset-y-0 w-px bg-[rgba(0,43,109,0.18)]" style={{ insetInlineStart: `${x(today)}%` }} />
         </div>
 
         <ul className="relative space-y-1">
           {lanes.length === 0 && (
-            <li className="py-6 text-center text-[13px] text-on-surface-variant">{t('empty')}</li>
+            <li className="py-6 text-center text-[13px] text-ink-2">{t('empty')}</li>
           )}
           {lanes.map(lane => (
             <Row key={lane.key} lane={lane} x={x} compact={compact} animate={animate} doneLabel={t('done')} />
@@ -173,7 +173,7 @@ export default function TimelineChart({
 
         {/* The axis, with the moments that are points rather than periods pinned to it. */}
         <div className="relative mt-2" style={{ marginInlineStart: 'calc(var(--tl-gutter) + 0.75rem)' }}>
-          <div className="h-px w-full bg-outline-variant" />
+          <div className="h-px w-full bg-[rgba(0,43,109,0.18)]" />
 
           <div className="relative h-3">
             {pins.map(m => (
@@ -183,14 +183,14 @@ export default function TimelineChart({
                 style={{ insetInlineStart: `${x(m.date)}%` }}
               >
                 <span
-                  className={`block size-1.5 rounded-full ${m.kind === 'estimate' ? 'border border-dashed border-outline' : ''}`}
-                  style={{ background: m.kind === 'estimate' ? 'transparent' : 'var(--color-primary)' }}
+                  className={`block size-1.5 rounded-full ${m.kind === 'estimate' ? 'border border-dashed border-ink-3' : ''}`}
+                  style={{ background: m.kind === 'estimate' ? 'transparent' : 'var(--navy)' }}
                 />
               </span>
             ))}
             {/* Today gets the accent colour, and it is the only thing on the axis that does. */}
             <span className="absolute top-[-3px] -translate-x-1/2" style={{ insetInlineStart: `${x(today)}%` }}>
-              <span className="block size-2 rounded-full bg-secondary-container" />
+              <span className="block size-2 rounded-full bg-oranje" />
             </span>
           </div>
 
@@ -198,7 +198,7 @@ export default function TimelineChart({
             {ticks.map(tick => (
               <span
                 key={toISO(tick)}
-                className="absolute top-0 -translate-x-1/2 whitespace-nowrap text-[10px] font-semibold tabular-nums text-on-surface-variant"
+                className="absolute top-0 -translate-x-1/2 whitespace-nowrap text-[10px] font-semibold tabular-nums text-ink-2"
                 style={{ insetInlineStart: `${x(tick)}%` }}
               >
                 {tick.m === 1 ? tick.y : fmtMonth(tick, locale).split(' ')[0].slice(0, 3)}
@@ -212,21 +212,21 @@ export default function TimelineChart({
           columns of "label · date" rather than a paragraph each — the chart is the explanation, this
           is the record. */}
       {milestones.length > 0 && (
-        <ul className="mt-3 grid gap-x-6 gap-y-1 border-t border-outline-variant pt-3 text-[12px] sm:grid-cols-2">
+        <ul className="mt-3 grid gap-x-6 gap-y-1 g-tl-sep pt-3 text-[12px] sm:grid-cols-2">
           {milestones.map(m => (
             <li key={m.id} className="flex items-baseline gap-2">
               <span
                 className={`mt-1 size-2 shrink-0 ${m.shape === 'wall' ? 'rounded-none' : 'rounded-full'} ${
-                  m.kind === 'estimate' ? 'border border-dashed border-outline' : ''
+                  m.kind === 'estimate' ? 'border border-dashed border-ink-3' : ''
                 }`}
                 style={{
                   background:
-                    m.kind === 'estimate' ? undefined : m.tone === 'risk' ? 'var(--risk-red)' : 'var(--color-primary)',
+                    m.kind === 'estimate' ? undefined : m.tone === 'risk' ? 'var(--risk-red)' : 'var(--navy)',
                 }}
                 aria-hidden="true"
               />
-              <span className="font-semibold text-on-surface">{t(`milestone.${m.labelKey}`)}</span>
-              <time dateTime={toISO(m.date)} className="text-on-surface-variant">
+              <span className="font-semibold text-ink">{t(`milestone.${m.labelKey}`)}</span>
+              <time dateTime={toISO(m.date)} className="text-ink-2">
                 {m.kind === 'estimate' ? `${t('about')} ${fmtMonth(m.date, locale)}` : fmtDate(m.date, locale)}
               </time>
             </li>
@@ -237,9 +237,9 @@ export default function TimelineChart({
       {onHoursChange && <HoursSlider input={input} onChange={onHoursChange} />}
 
       {!compact && (
-        <div className="mt-3 flex flex-wrap gap-x-5 gap-y-2 border-t border-outline-variant pt-3 text-[12px] text-on-surface-variant">
+        <div className="mt-3 flex flex-wrap gap-x-5 gap-y-2 g-tl-sep pt-3 text-[12px] text-ink-2">
           <span className="flex items-center gap-2">
-            <span className="block h-2.5 w-6 rounded-full bg-primary" aria-hidden="true" />
+            <span className="block h-2.5 w-6 rounded-full bg-navy" aria-hidden="true" />
             {t('legend_study')}
           </span>
           <span className="flex items-center gap-2">
@@ -402,10 +402,10 @@ function Row({
         style={{
           color:
             lane.done || muted
-              ? 'var(--color-outline)'
+              ? 'var(--ink-3)'
               : lane.tone === 'red'
                 ? 'var(--risk-red)'
-                : 'var(--color-primary)',
+                : 'var(--navy)',
         }}
         title={lane.label}
       >
@@ -415,14 +415,14 @@ function Row({
       <span className={`relative block ${compact ? 'h-3.5' : 'h-4'}`}>
         {lane.empty && (
           <span
-            className="absolute top-1/2 block h-1.5 w-[16%] -translate-y-1/2 rounded-full border border-dashed border-outline"
+            className="absolute top-1/2 block h-1.5 w-[16%] -translate-y-1/2 rounded-full border border-dashed border-ink-3"
             style={{ insetInlineStart: `${start}%` }}
           />
         )}
 
         {lane.done && (
           <span
-            className="absolute top-1/2 block h-1.5 w-[8%] -translate-y-1/2 rounded-full bg-outline-variant"
+            className="absolute top-1/2 block h-1.5 w-[8%] -translate-y-1/2 rounded-full bg-[rgba(0,43,109,0.18)]"
             style={{ insetInlineStart: `${Math.max(0, start - 8)}%` }}
             title={doneLabel}
           />
@@ -455,7 +455,7 @@ function Row({
                     ? 'var(--risk-red)'
                     : lane.tone === 'amber'
                       ? 'var(--risk-amber)'
-                      : 'var(--color-primary)',
+                      : 'var(--navy)',
               }}
             />
             <span className="tl-seg-study" style={{ flexBasis: `${pctOf(studyEnd - start, width)}%`, flexGrow: 0 }} />
@@ -486,12 +486,12 @@ function HoursSlider({ input, onChange }: { input: TimelineInput; onChange: (n: 
   const value = input.courseHoursPerWeek;
 
   return (
-    <div className="tl-no-print mt-4 border-t border-outline-variant pt-4">
+    <div className="tl-no-print mt-4 g-tl-sep pt-4">
       <div className="flex flex-wrap items-baseline justify-between gap-2">
-        <label htmlFor="tl-hours" className="text-[13px] font-semibold text-on-surface">
+        <label htmlFor="tl-hours" className="text-[13px] font-semibold text-ink">
           {t('hours_label')}
         </label>
-        <span className="font-headline text-sm font-extrabold tabular-nums text-primary">
+        <span className="font-headline text-sm font-extrabold tabular-nums text-navy">
           {value > 0 ? value : t('hours_none')}
         </span>
       </div>
@@ -505,7 +505,7 @@ function HoursSlider({ input, onChange }: { input: TimelineInput; onChange: (n: 
           step={1}
           value={value}
           onChange={e => onChange(Number(e.target.value))}
-          className="h-11 min-w-0 flex-1 accent-[color:var(--color-primary)]"
+          className="g-tl-range h-11 min-w-0 flex-1"
         />
         <input
           type="number"
@@ -515,10 +515,10 @@ function HoursSlider({ input, onChange }: { input: TimelineInput; onChange: (n: 
           value={value}
           onChange={e => onChange(Math.max(0, Math.min(40, Number(e.target.value))))}
           aria-label={t('hours_label')}
-          className="h-11 w-16 rounded-lg border border-outline-variant bg-surface-container-lowest text-center font-headline text-sm font-bold text-on-surface focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-secondary-container"
+          className="g-tl-input w-16 text-center font-headline text-sm font-bold g-tnum"
         />
       </div>
-      <p className="mt-1.5 text-[12px] text-on-surface-variant">{t('hours_hint')}</p>
+      <p className="mt-1.5 text-[12px] text-ink-2">{t('hours_hint')}</p>
     </div>
   );
 }

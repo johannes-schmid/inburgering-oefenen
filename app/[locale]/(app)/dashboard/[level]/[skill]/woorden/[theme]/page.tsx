@@ -3,16 +3,24 @@ import { notFound, redirect } from 'next/navigation';
 import { getTranslations } from 'next-intl/server';
 import { createClient } from '@/lib/supabase/server';
 import { ownsModule } from '@/lib/entitlements';
-import { getSkillAtLevel, isLevel, levelLabel, LEVELS, SKILLS } from '@/data/skills';
+import { getSkillAtLevel, isLevel, levelLabel } from '@/data/skills';
 import { themeLabel } from '@/data/lesson-themes';
 import { fetchWordThemes } from '@/lib/lessons/words-server';
-import { wordThemePath, wordsPath } from '@/lib/lessons/words';
+import { wordThemePath } from '@/lib/lessons/words';
+import { fetchCourse } from '@/lib/lessons/lessons-server';
+import { fetchGrammarStep } from '@/lib/lessons/grammar-server';
+import { courseOutline } from '@/lib/lessons/grammar';
+import { courseSideBlocks } from '@/lib/lessons/course-side';
+import { courseRowLabels } from '@/lib/lessons/stream-labels';
 import { fetchPortalMenu } from '@/lib/portal-menu';
-import WordSideNav, { WordProgressCard, type WordSideTheme } from '@/components/lessons/WordSideNav';
+import { WordProgressCard, type WordSideTheme } from '@/components/lessons/WordSideNav';
+import CourseRoute from '@/components/lessons/CourseRoute';
 import AppShell from '../../../../../components/AppShell';
-import WordDeck from '../../../../_components/WordDeck';
+import WordDeck from '@/components/lessons/WordDeck';
 import { closeTrail } from '@/lib/portal-crumbs';
 import PortalCrumbs from '../../../../../components/PortalCrumbs';
+import CategoryMark from '@/components/horizon/CategoryMark';
+import '@/app/glas-leerlaag.css';
 
 type Props = { params: Promise<{ locale: string; level: string; skill: string; theme: string }> };
 
@@ -49,9 +57,11 @@ export default async function WoordThemaPage({ params }: Props) {
     redirect(`/${locale}/dashboard/pakketten?onderdeel=${level}:${skill.slug}&vanaf=woorden-${theme}`);
   }
 
-  const [themes, menu] = await Promise.all([
+  const [themes, menu, blocks, step] = await Promise.all([
     fetchWordThemes(level, skill.slug, user.id),
     fetchPortalMenu(),
+    fetchCourse(level, skill.slug, user.id),
+    fetchGrammarStep(level, skill.slug, user.id),
   ]);
   const wordTheme = themes.find(th => th.slug === theme);
   if (!wordTheme || wordTheme.words.length === 0) notFound();
@@ -73,6 +83,36 @@ export default async function WoordThemaPage({ params }: Props) {
     now: th.slug === wordTheme.slug,
   }));
 
+  /**
+   * De cursusroute naast de zijbalk, met blok A open. Onder Woorden staan hier de thema's met
+   * hun woordtelling in plaats van de lessen: de deck telt woorden, niet lessen (eigenaar, 11-10).
+   */
+  const outline = courseOutline(blocks, step);
+  const routeBlocks = courseSideBlocks({
+    locale, level, skill: skill.slug, owned: true, blocks, step, outline, open: 'A',
+    grammarName: tGrammar('step_label'), rowLabels: await courseRowLabels(),
+  }).map(b => {
+    if (b.letter !== 'A') return b;
+    const full = sideThemes.filter(th => th.total > 0 && th.known === th.total).length;
+    return {
+      ...b,
+      done: full,
+      total: sideThemes.length,
+      complete: full === sideThemes.length,
+      items: sideThemes.map(th => ({
+        key: th.slug,
+        code: null,
+        label: th.label,
+        href: th.href,
+        done: th.total > 0 && th.known === th.total,
+        now: th.now,
+        locked: false,
+        theme: th.slug,
+        count: { known: th.known, total: th.total },
+      })),
+    };
+  });
+
   /* Terug is het onderdeelscherm: het themaoverzicht bestaat niet meer, de kolom ernaast is
      wat het zei. */
   const back = `/${locale}/dashboard/${level}/${skill.slug}`;
@@ -86,36 +126,27 @@ export default async function WoordThemaPage({ params }: Props) {
       activeGroup={level}
       menu={menu}
       isGuest={false}
+      course={
+        <CourseRoute
+          courseLabel={`${levelLabel(level)} ${skillName}`}
+          done={outline.done}
+          total={outline.total}
+          blocks={routeBlocks}
+          backHref={back}
+          nextHref={back}
+        />
+      }
     >
-      <div className="px-5 py-6 sm:px-8 sm:py-8">
+      <div className="g-leer gl-shell">
         <div className="gt-page">
-          <div className="gt-grid">
-          <aside className="gt-side-nav">
-            <WordSideNav
-              levels={LEVELS.map(l => ({
-                key: l,
-                label: t('level_section', { level: levelLabel(l) }),
-                href: `/${locale}${wordsPath(l, skill.slug)}`,
-                on: l === level,
-              }))}
-              skills={SKILLS.map(s => ({
-                key: s.slug,
-                label: tSkills(`${s.key}.short`),
-                href: `/${locale}${wordsPath(level, s.slug)}`,
-                on: s.slug === skill.slug,
-              }))}
-              themes={sideThemes}
-              courseHref={back}
-              labels={{ levelsAria: tGrammar('levels_aria'), skillsAria: tGrammar('skills_aria') }}
-            />
-          </aside>
+          <div className="gt-grid gt-solo">
 
           <main className="min-w-0">
-            <section className="gh is-solo">
-              <div className="gh-copy">
-                {/* Het kruimelpad draagt de andere thema's als zusjes: op een telefoon is de
-                    kolom ernaast er niet, en dan is dit de enige weg naar een ander thema. */}
-                <div className="gh-crumbs">
+            <section className="gl-page">
+              {/* Het kruimelpad draagt de andere thema's als zusjes: op een telefoon is de
+                  kolom ernaast er niet, en dan is dit de enige weg naar een ander thema. */}
+              <div className="gl-bar">
+                <div className="gl-crumbs">
                   <PortalCrumbs
                     trail={closeTrail(
                       [
@@ -132,11 +163,13 @@ export default async function WoordThemaPage({ params }: Props) {
                     )}
                   />
                 </div>
-                <p className="gh-kick">{t('words_head')}</p>
-                <h1 className="gh-title">{themeLabel(wordTheme.slug)}</h1>
-                <p className="gh-learn">
-                  {t('words_theme_count', { n: wordTheme.words.length })}
-                </p>
+              </div>
+              <div className="gl-in gl-wordhead">
+                <CategoryMark category="woorden" size={44} />
+                <div>
+                  <h1 className="g-head gl-title">{themeLabel(wordTheme.slug)}</h1>
+                  <p className="g-mono">{t('words_head')} · {t('words_theme_count', { n: wordTheme.words.length })}</p>
+                </div>
               </div>
             </section>
 

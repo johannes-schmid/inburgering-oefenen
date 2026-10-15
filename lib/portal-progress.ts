@@ -148,6 +148,46 @@ export async function fetchPortalProgress(userId: string): Promise<AllPortalProg
   }
 }
 
+/**
+ * De gemiddelde score over alle oefenexamens, voor de tegel op het dashboard. Elke gemaakte
+ * poging telt — ook een herkansing — zodat de lijn laat zien hoe je examens verliepen, in de
+ * volgorde waarin je ze maakte. Schrijven en Spreken zonder beoordeling hebben nog geen `pct`
+ * en tellen niet mee.
+ *
+ * `delta` is wat je laatste examen met het gemiddelde deed: het gemiddelde nu min het gemiddelde
+ * ervoor. Null tot er twee scores zijn.
+ */
+export type ScoreTrend = { averagePct: number | null; delta: number | null; count: number; points: number[] };
+
+const TREND_POINTS = 8;
+
+export async function fetchScoreTrend(userId: string): Promise<ScoreTrend> {
+  const empty: ScoreTrend = { averagePct: null, delta: null, count: 0, points: [] };
+  try {
+    const supabase = await createClient();
+    const { data, error } = await supabase
+      .from('exam_attempts')
+      .select('pct, completed_at')
+      .eq('user_id', userId)
+      .not('completed_at', 'is', null)
+      .not('pct', 'is', null)
+      .order('completed_at', { ascending: true });
+    if (error || !data?.length) return empty;
+
+    const pcts = data.map(r => r.pct as number);
+    const mean = (xs: number[]) => xs.reduce((a, b) => a + b, 0) / xs.length;
+    const averagePct = Math.round(mean(pcts));
+    return {
+      averagePct,
+      delta: pcts.length > 1 ? averagePct - Math.round(mean(pcts.slice(0, -1))) : null,
+      count: pcts.length,
+      points: pcts.slice(-TREND_POINTS),
+    };
+  } catch {
+    return empty;
+  }
+}
+
 /** Which of the ten slots per (level, skill) actually have published content. */
 export type PublishedExamNumbers = Record<Level, Record<SkillSlug, Set<number>>> & {
   /** KNM's published slots. A flat set: KNM has no level to key on. */

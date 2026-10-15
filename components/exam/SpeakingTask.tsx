@@ -1,9 +1,10 @@
 'use client';
 
 import { useCallback, useEffect, useMemo, useRef, useState, type ReactNode } from 'react';
-import { Check, Info, Loader2, Mic, RotateCcw, Square, TriangleAlert } from 'lucide-react';
+import { Check, Clock, Info, Loader2, Mic, RotateCcw, TriangleAlert } from 'lucide-react';
 import type { FeedbackHighlight, RubricFeedbackState } from './RubricFeedback';
 import AudioPlayer from './AudioPlayer';
+import './glas-player.css';
 import { WavRecorder, canRecordWav } from '@/lib/wav-recorder';
 import {
   RealtimeTranscriber,
@@ -62,7 +63,7 @@ const IMAGE_RULE: Record<OpenTaskItem['image_usage'], string | null> = {
 };
 
 /** Bars in the level meter. Fixed count so the layout never reflows while speaking. */
-const METER_BARS = 28;
+const METER_BARS = 15;
 
 /**
  * One Spreken task, laid out as design option **1a "Split"**: the question prominent on the left,
@@ -213,44 +214,49 @@ export default function SpeakingTask({
   // scored, and it is what the highlight offsets index into.
   const gradedText = graded ? review?.answerText?.trim() || '' : '';
   const shownTranscript = gradedText || transcript || answer.liveTranscript || '';
+  const ringC = 2 * Math.PI * 20;
 
+  /* Glas §10 "Spreken": rust. Eén grote navy pill "Start opname" die tijdens het opnemen op
+     dezelfde plek blijft staan, wit wordt en de tijd in de ring toont. Geen puls, geen oranje vlak;
+     alleen het kleine oranje stipje zegt dat er opgenomen wordt. */
   return (
-    <div className="sp-split">
+    <div className="g-xspeak">
       {/* ── Left: the question ── */}
-      <section className="sp-pane sp-question">
-        <header className="sp-pane-head">
-          <span className="sp-eyebrow">Opdracht {taskNumber} van {total}</span>
-          <span className="sp-limit">Max. {limit} sec.</span>
-        </header>
+      <section className="g-xbody g-xspeak-q">
+        <div className="g-xqhead" style={{ justifyContent: 'space-between' }}>
+          <span className="g-mono g-tnum">Opdracht {taskNumber} van {total}</span>
+          <span className="g-xbdg"><Clock aria-hidden />Max. {limit} sec.</span>
+        </div>
 
-        {task.title && <h2 className="sp-title">{task.title}</h2>}
+        {task.title && <h2 className="g-xtitle">{task.title}</h2>}
 
         {task.prompt_html && (
           <div
-            className="sp-prompt exam-rich exam-rich-scroll"
+            className="g-xprompt exam-rich exam-rich-scroll"
             dangerouslySetInnerHTML={{ __html: task.prompt_html }}
           />
         )}
 
         {rule && (
-          <p className="sp-rule">
-            <Info size={14} strokeWidth={2.4} aria-hidden />
-            {rule}
+          <p className="g-xnotice">
+            <Info strokeWidth={2.4} aria-hidden />
+            <span>{rule}</span>
           </p>
         )}
 
         {task.prompt_audio_url && (
-          <div className="sp-prompt-audio">
+          <div style={{ marginTop: 16 }}>
             <AudioPlayer src={task.prompt_audio_url} label="Vraag beluisteren" compact />
           </div>
         )}
 
         {task.images.length > 0 && (
-          <div className={`sp-images sp-images-${Math.min(task.images.length, 3)}`}>
-            {task.images.map(img => (
-              <figure key={img.id} className="sp-figure">
+          <div className={`g-xpics${task.images.length >= 3 ? ' g-xpics-3' : task.images.length === 2 ? ' g-xpics-2' : ''}`}>
+            {task.images.map((img, i) => (
+              <figure key={img.id}>
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img src={img.image_url} alt={img.alt_text ?? ''} />
+                {task.images.length > 1 && <span className="g-xpics-n" aria-hidden>{i + 1}</span>}
                 {img.caption && <figcaption>{img.caption}</figcaption>}
               </figure>
             ))}
@@ -261,173 +267,157 @@ export default function SpeakingTask({
       {/* The assessment lives in the question column, so on a phone it must fall *after* the
           recorder — you cannot read a score before you have answered. `order` does that without
           duplicating the node. */}
-      {feedback && <div className="sp-feedback">{feedback}</div>}
+      {feedback && <div className="g-xspeak-fb">{feedback}</div>}
 
       {/* ── Right: recording + transcription ── */}
-      <section className="sp-pane sp-record">
-        <div className="sp-stage" data-state={recording ? 'recording' : hasRecording ? 'done' : 'idle'}>
-          {(recording || hasRecording) && (
-          <div className="sp-meter" aria-hidden="true">
-            {Array.from({ length: METER_BARS }, (_, i) => {
-              // A centred, roughly bell-shaped response so the meter reads as a voice rather than a
-              // bar chart. Static at rest instead of animating an idle loop.
-              const distance = Math.abs(i - (METER_BARS - 1) / 2) / ((METER_BARS - 1) / 2);
-              const shape = 1 - distance * 0.75;
-              const height = recording ? Math.max(0.08, level * shape) : 0.08;
-              return (
-                <span key={i} style={{ transform: `scaleY(${height.toFixed(3)})` }} />
-              );
-            })}
-          </div>
-          )}
+      <section className="g-xbody g-xspeak-rec">
+        <div className="g-xrec">
+          <span className="g-mono">Opnemen</span>
 
-          <div className="sp-stage-status">
-            {recording ? (
-              <>
-                <span className="sp-dot" aria-hidden />
-                <span className="sp-count">nog {remaining}s</span>
-              </>
-            ) : hasRecording ? (
-              <>
-                <Check size={15} strokeWidth={2.8} aria-hidden />
-                <span>Opname van {Math.round(answer.seconds)} sec.</span>
-              </>
-            ) : (
-              <>
-                <Mic size={15} strokeWidth={2.4} aria-hidden />
-                <span>Klaar om op te nemen</span>
-              </>
-            )}
-          </div>
-
-          {recording && (
-            <div className="sp-progress">
-              <div style={{ width: `${(elapsed / limit) * 100}%` }} />
-            </div>
-          )}
-
-          <div className="sp-actions">
+          <div className="g-xrstep">
             {!recording ? (
-              <button type="button" onClick={start} className="sp-btn sp-btn-rec">
-                {hasRecording
-                  ? <RotateCcw size={17} strokeWidth={2.4} aria-hidden />
-                  : <Mic size={17} strokeWidth={2.4} aria-hidden />}
+              <button type="button" onClick={start} className="g-xrecbig" aria-label={hasRecording ? 'Opnieuw opnemen' : 'Start opname'}>
+                <span className="g-xrecbig-mc">
+                  {hasRecording ? <RotateCcw aria-hidden /> : <Mic aria-hidden />}
+                </span>
                 {hasRecording ? 'Opnieuw opnemen' : 'Start opname'}
               </button>
             ) : (
-              <button type="button" onClick={() => void stop()} className="sp-btn sp-btn-stop">
-                <Square size={14} strokeWidth={3} aria-hidden />
-                Stop opname
+              <button type="button" onClick={() => void stop()} className="g-xrecbig g-xrecbig-live" aria-label="Stop opname">
+                <span className="g-xrecbig-mc">
+                  <svg className="g-xring" width="44" height="44" viewBox="0 0 44 44" aria-hidden>
+                    <circle cx="22" cy="22" r="20" fill="none" stroke="rgba(0,43,109,.12)" strokeWidth="3" />
+                    <circle
+                      cx="22" cy="22" r="20" fill="none" stroke="#002b6d" strokeWidth="3" strokeLinecap="round"
+                      strokeDasharray={ringC} strokeDashoffset={ringC * (1 - Math.min(elapsed / limit, 1))}
+                    />
+                  </svg>
+                  <i />
+                </span>
+                <span className="g-xrecdot" aria-hidden />
+                <span className="g-tnum" aria-live="off">{Math.floor(elapsed / 60)}:{String(elapsed % 60).padStart(2, '0')}</span>
+                <span className="g-xlv" aria-hidden>
+                  {Array.from({ length: METER_BARS }, (_, i) => {
+                    // A centred, roughly bell-shaped response so the meter reads as a voice rather
+                    // than a bar chart.
+                    const distance = Math.abs(i - (METER_BARS - 1) / 2) / ((METER_BARS - 1) / 2);
+                    const shape = 1 - distance * 0.75;
+                    return <i key={i} style={{ transform: `scaleY(${Math.max(0.12, level * shape).toFixed(3)})` }} />;
+                  })}
+                </span>
+                <span style={{ color: 'var(--ink-2)' }}>Stop</span>
               </button>
             )}
-          </div>
-
-          {error && (
-            <p className="sp-error">
-              <TriangleAlert size={14} aria-hidden />
-              {error}
-            </p>
-          )}
-        </div>
-
-        {previewUrl && !recording && (
-          <div className="sp-playback">
-            <AudioPlayer src={previewUrl} label="Jouw opname" compact />
-          </div>
-        )}
-
-        {/* ── Live transcription ── */}
-        {liveTranscript && (
-          <div className="sp-transcript" data-empty={!shownTranscript}>
-            <div className="sp-transcript-head">
-              <span className="sp-eyebrow">Wat we horen</span>
-              {sttState === 'connecting' && (
-                <span className="sp-tx-state">
-                  <Loader2 size={12} className="sp-spin" aria-hidden /> verbinden…
-                </span>
-              )}
-              {sttState === 'listening' && (
-                <span className="sp-tx-state sp-tx-live">
-                  <span className="sp-dot" aria-hidden /> live
-                </span>
-              )}
-            </div>
-
-            <div className="sp-transcript-body" aria-live="polite">
-              {graded && gradedText && review ? (
-                <MarkedTranscript text={gradedText} highlights={review.highlights} />
-              ) : shownTranscript ? (
-                <p className={grading ? 'sp-reading' : undefined}>
-                  {grading
-                    ? shownTranscript
-                        .split(/(\s+)/)
-                        .map((w, i) =>
-                          /^\s+$/.test(w) ? (
-                            w
-                          ) : (
-                            // Each word lights in turn, so "being read" is legible as a pass over
-                            // the sentence rather than an undifferentiated shimmer.
-                            <span key={i} style={{ animationDelay: `${i * 55}ms` }}>
-                              {w}
-                            </span>
-                          )
-                        )
-                    : (
-                      <>
-                        {transcript.slice(0, transcript.length - partial.length)}
-                        {partial && <span className="sp-partial">{partial}</span>}
-                      </>
-                    )}
-                </p>
-              ) : sttError ? (
-                <p className="sp-tx-muted">
-                  Live meelezen is nu niet beschikbaar. Je opname wordt gewoon opgenomen en
-                  beoordeeld.
-                </p>
-              ) : recording ? (
-                <p className="sp-tx-muted">Begin met praten…</p>
-              ) : (
-                <p className="sp-tx-muted">
-                  Tijdens het opnemen zie je hier wat er van je antwoord wordt herkend.
-                </p>
-              )}
-            </div>
-
-            <p className="sp-transcript-note">
-              {graded
-                ? 'Dit is de tekst waarop je beoordeeld bent. Streepjes zijn plekken uit je antwoord die meetellen — beweeg erover voor de uitleg.'
-                : 'Dit is wat de spraakherkenning live oppikt — een hulpmiddel, niet je beoordeling. Je wordt beoordeeld op je opname zelf.'}
-            </p>
-
-            {review && (
-              <div className="sp-review-action">
-                <button
-                  type="button"
-                  onClick={review.onGrade}
-                  disabled={grading || !hasRecording}
-                  className="sp-btn sp-btn-check"
-                >
-                  {grading ? (
-                    <>
-                      <Loader2 size={16} className="sp-spin" aria-hidden /> Nakijken…
-                    </>
-                  ) : (
-                    <>
-                      <Check size={16} strokeWidth={2.8} aria-hidden />
-                      {graded ? 'Opnieuw nakijken' : 'Nakijken'}
-                    </>
-                  )}
-                </button>
-                {!hasRecording && (
-                  <span className="sp-review-hint">Neem eerst je antwoord op.</span>
-                )}
-              </div>
+            <small aria-live="polite">
+              {recording
+                ? `Nog ${remaining} seconden. Druk op stop als je klaar bent.`
+                : hasRecording
+                  ? `Opname van ${Math.round(answer.seconds)} sec. Luister hem terug, of neem opnieuw op.`
+                  : `Je hebt ${limit} seconden. Daarna kun je terugluisteren.`}
+            </small>
+            {error && (
+              <p className="g-xrec-err">
+                <TriangleAlert aria-hidden />
+                {error}
+              </p>
             )}
           </div>
-        )}
-      </section>
 
-      <style>{CSS}</style>
+          {previewUrl && !recording && (
+            <AudioPlayer src={previewUrl} label="Jouw opname" compact />
+          )}
+
+          {/* ── Live transcription ── */}
+          {liveTranscript && (
+            <div className="g-xtranscript">
+              <div className="g-xtranscript-hd">
+                <span className="g-mono">Wat we horen</span>
+                {sttState === 'connecting' && (
+                  <span className="g-xtranscript-live">
+                    <Loader2 size={12} className="g-xspin" aria-hidden /> verbinden…
+                  </span>
+                )}
+                {sttState === 'listening' && (
+                  <span className="g-xtranscript-live">
+                    <span className="g-xrecdot" aria-hidden /> live
+                  </span>
+                )}
+              </div>
+
+              <div className="g-xtranscript-body" aria-live="polite">
+                {graded && gradedText && review ? (
+                  <MarkedTranscript text={gradedText} highlights={review.highlights} />
+                ) : shownTranscript ? (
+                  <p className={grading ? 'g-xreading' : undefined}>
+                    {grading
+                      ? shownTranscript
+                          .split(/(\s+)/)
+                          .map((w, i) =>
+                            /^\s+$/.test(w) ? (
+                              w
+                            ) : (
+                              // Each word lights in turn, so "being read" is legible as a pass over
+                              // the sentence rather than an undifferentiated shimmer.
+                              <span key={i} style={{ animationDelay: `${i * 55}ms` }}>
+                                {w}
+                              </span>
+                            )
+                          )
+                      : (
+                        <>
+                          {transcript.slice(0, transcript.length - partial.length)}
+                          {partial && <span className="g-xpartial">{partial}</span>}
+                        </>
+                      )}
+                  </p>
+                ) : sttError ? (
+                  <p className="g-xtranscript-muted">
+                    Live meelezen is nu niet beschikbaar. Je opname wordt gewoon opgenomen en
+                    beoordeeld.
+                  </p>
+                ) : recording ? (
+                  <p className="g-xtranscript-muted">Begin met praten…</p>
+                ) : (
+                  <p className="g-xtranscript-muted">
+                    Tijdens het opnemen zie je hier wat er van je antwoord wordt herkend.
+                  </p>
+                )}
+              </div>
+
+              <p className="g-xtranscript-note">
+                {graded
+                  ? 'Dit is de tekst waarop je beoordeeld bent. Gemarkeerde plekken uit je antwoord tellen mee — beweeg erover of tab ernaartoe voor de uitleg.'
+                  : 'Dit is wat de spraakherkenning live oppikt — een hulpmiddel, niet je beoordeling. Je wordt beoordeeld op je opname zelf.'}
+              </p>
+
+              {review && (
+                <div className="g-xtranscript-act">
+                  <button
+                    type="button"
+                    onClick={review.onGrade}
+                    disabled={grading || !hasRecording}
+                    className={`g-btn g-btn-sm ${graded ? 'g-btn-ghost' : 'g-btn-navy'}`}
+                  >
+                    {grading ? (
+                      <>
+                        <Loader2 className="g-xspin" aria-hidden /> Nakijken…
+                      </>
+                    ) : (
+                      <>
+                        {graded ? <RotateCcw aria-hidden /> : <Check strokeWidth={2.8} aria-hidden />}
+                        {graded ? 'Opnieuw nakijken' : 'Nakijken'}
+                      </>
+                    )}
+                  </button>
+                  {!hasRecording && (
+                    <span className="g-xfoot-meta">Neem eerst je antwoord op.</span>
+                  )}
+                </div>
+              )}
+            </div>
+          )}
+        </div>
+      </section>
     </div>
   );
 }
@@ -450,242 +440,13 @@ function MarkedTranscript({
   for (const [i, h] of [...highlights].sort((a, b) => a.start - b.start).entries()) {
     if (h.start > cursor) parts.push(text.slice(cursor, h.start));
     parts.push(
-      <mark key={i} className={`sp-mark sp-mark-${h.kind}`} tabIndex={0}>
+      <mark key={i} className={`g-xmark g-xmark-${h.kind}`} tabIndex={0}>
         {text.slice(h.start, h.end)}
-        <span className="sp-mark-note">{h.note}</span>
+        <span className="g-xmark-note">{h.note}</span>
       </mark>
     );
     cursor = h.end;
   }
   if (cursor < text.length) parts.push(text.slice(cursor));
-  return <p className="sp-marked">{parts}</p>;
+  return <p className="g-xmarked">{parts}</p>;
 }
-
-const CSS = `
-  .sp-split {
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: 18px;
-    align-items: start;
-  }
-  /* Two panes only when the prompt can still hold a readable measure. Below this the question
-     would wrap to ~20 characters a line, and it is the thing the candidate must remember while
-     speaking. */
-  @media (min-width: 900px) {
-    .sp-split { grid-template-columns: minmax(0, 1.05fr) minmax(0, 1fr); gap: 22px; }
-    /* Question and assessment stack in column 1; recorder spans both rows in column 2, so the
-       assessment fills what used to be dead space under a short question. */
-    .sp-question { grid-column: 1; grid-row: 1; }
-    .sp-feedback { grid-column: 1; grid-row: 2; }
-    .sp-record   { grid-column: 2; grid-row: 1 / span 2; }
-  }
-  /* Single column: question → recorder → assessment. */
-  .sp-question { order: 1; }
-  .sp-record { order: 2; }
-  .sp-feedback { order: 3; min-width: 0; }
-
-  .sp-pane {
-    background: var(--color-surface-container-lowest);
-    border-radius: 24px;
-    padding: 22px 24px;
-    box-shadow: 0 12px 40px rgba(0, 43, 109, 0.12);
-    min-width: 0;
-  }
-  @media (max-width: 520px) { .sp-pane { padding: 18px 16px; border-radius: 20px; } }
-
-  .sp-pane-head {
-    display: flex; align-items: center; justify-content: space-between;
-    gap: 10px; flex-wrap: wrap; margin-bottom: 12px;
-  }
-  .sp-eyebrow {
-    font-size: 0.65rem; font-weight: 800; letter-spacing: 0.14em; text-transform: uppercase;
-    color: var(--color-on-surface-variant); opacity: 0.72;
-  }
-  .sp-limit {
-    font-size: 0.65rem; font-weight: 800; padding: 4px 10px; border-radius: 999px;
-    background: #fcecdd; color: #a24000; white-space: nowrap;
-  }
-
-  .sp-title {
-    font-family: var(--font-headline); font-size: 1.3rem; font-weight: 800;
-    letter-spacing: -0.02em; color: var(--color-on-surface); margin: 0 0 10px;
-    text-wrap: balance; line-height: 1.25;
-  }
-  /* Tag-level rules live in .exam-rich in app/globals.css — see the note there. */
-  .sp-prompt { font-size: 1rem; line-height: 1.7; color: var(--color-on-surface); }
-
-  .sp-rule {
-    display: flex; align-items: center; gap: 7px; margin: 14px 0 0;
-    padding: 10px 12px; border-radius: 12px;
-    background: rgba(254, 118, 44, 0.1);
-    border-left: 3px solid var(--color-secondary-container);
-    font-size: 0.85rem; font-weight: 700; color: var(--color-on-secondary-container);
-  }
-  .sp-rule svg { flex-shrink: 0; }
-
-  .sp-prompt-audio { margin-top: 16px; }
-
-  .sp-images { display: grid; gap: 10px; margin-top: 16px; }
-  .sp-images-1 { grid-template-columns: 1fr; }
-  .sp-images-2 { grid-template-columns: repeat(2, 1fr); }
-  .sp-images-3 { grid-template-columns: repeat(3, 1fr); }
-  @media (max-width: 420px) { .sp-images-3 { grid-template-columns: repeat(2, 1fr); } }
-  .sp-figure { margin: 0; }
-  .sp-figure img {
-    width: 100%; aspect-ratio: 4 / 3; object-fit: cover; display: block;
-    border-radius: 14px; background: var(--color-surface-container);
-  }
-  .sp-figure figcaption {
-    font-size: 0.75rem; font-weight: 700; text-align: center; margin-top: 6px;
-    color: var(--color-on-surface-variant);
-  }
-
-  /* ── recorder stage ── */
-  .sp-record { display: flex; flex-direction: column; gap: 14px; }
-  .sp-stage {
-    border-radius: 18px; padding: 18px;
-    background: var(--color-surface-container-low);
-    border: 1.5px solid var(--color-outline-variant);
-    display: flex; flex-direction: column; gap: 14px;
-  }
-  .sp-stage[data-state='recording'] {
-    background: #fff5ee; border-color: #fdc9a3;
-  }
-  .sp-stage[data-state='done'] {
-    background: rgba(0, 43, 109, 0.04); border-color: #b8cef5;
-  }
-
-  .sp-meter {
-    display: flex; align-items: center; justify-content: center; gap: 3px;
-    height: 64px;
-  }
-  .sp-meter span {
-    flex: 1; max-width: 7px; height: 100%; border-radius: 999px;
-    background: var(--color-outline-variant);
-    transform-origin: center;
-    transition: transform 90ms linear, background-color 200ms ease;
-  }
-  .sp-stage[data-state='recording'] .sp-meter span {
-    background: linear-gradient(180deg, #fe762c, #a24000);
-  }
-  .sp-stage[data-state='done'] .sp-meter span {
-    background: linear-gradient(180deg, #1d428a, #002b6d); opacity: 0.5;
-  }
-
-  .sp-stage-status {
-    display: flex; align-items: center; justify-content: center; gap: 8px;
-    font-size: 0.85rem; font-weight: 700; color: var(--color-on-surface-variant);
-  }
-  .sp-stage[data-state='recording'] .sp-stage-status { color: var(--color-error); }
-  .sp-stage[data-state='done'] .sp-stage-status { color: var(--color-primary); }
-  .sp-count { font-variant-numeric: tabular-nums; }
-  .sp-dot {
-    width: 9px; height: 9px; border-radius: 999px; background: currentColor;
-    animation: sp-pulse 1.2s ease-in-out infinite;
-  }
-  @keyframes sp-pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.25; } }
-
-  .sp-progress {
-    height: 5px; border-radius: 999px; overflow: hidden;
-    background: var(--color-surface-container-high);
-  }
-  .sp-progress > div {
-    height: 100%; border-radius: 999px;
-    background: linear-gradient(to right, #a24000, #fe762c);
-    transition: width 1s linear;
-  }
-
-  .sp-actions { display: flex; justify-content: center; }
-  .sp-btn {
-    display: inline-flex; align-items: center; justify-content: center; gap: 9px;
-    padding: 0.8rem 1.35rem; border: 0; border-radius: 14px; cursor: pointer;
-    font-family: inherit; font-size: 0.9rem; font-weight: 800; color: #fff;
-    box-shadow: var(--shadow-card-md);
-    transition: transform 180ms cubic-bezier(0.22, 1, 0.36, 1), box-shadow 180ms ease;
-  }
-  .sp-btn:hover { transform: translateY(-2px); }
-  .sp-btn:active { transform: translateY(0) scale(0.98); }
-  .sp-btn:focus-visible { outline: 3px solid var(--color-secondary); outline-offset: 2px; }
-  .sp-btn-rec { background: #a24000; }
-  .sp-btn-stop { background: var(--color-error); }
-
-  .sp-error {
-    display: flex; align-items: flex-start; gap: 7px; margin: 0;
-    font-size: 0.82rem; line-height: 1.55; color: var(--color-error);
-  }
-  .sp-error svg { flex-shrink: 0; margin-top: 2px; }
-
-  /* ── transcript ── */
-  .sp-transcript {
-    border-radius: 18px; padding: 16px 18px;
-    background: var(--color-surface-container-lowest);
-    border: 1.5px dashed var(--color-outline-variant);
-    display: flex; flex-direction: column; gap: 10px;
-  }
-  .sp-transcript[data-empty='false'] { border-style: solid; }
-  .sp-transcript-head {
-    display: flex; align-items: center; justify-content: space-between; gap: 10px;
-  }
-  .sp-tx-state {
-    display: inline-flex; align-items: center; gap: 5px;
-    font-size: 0.68rem; font-weight: 800; letter-spacing: 0.06em; text-transform: uppercase;
-    color: var(--color-outline);
-  }
-  .sp-tx-live { color: var(--color-error); }
-  .sp-tx-live .sp-dot { width: 7px; height: 7px; }
-  .sp-spin { animation: sp-rotate 900ms linear infinite; }
-  @keyframes sp-rotate { to { transform: rotate(360deg); } }
-
-  .sp-transcript-body { min-height: 76px; }
-  /* A tall empty placeholder costs a phone screen a third of its height for nothing. */
-  @media (max-width: 600px) { .sp-transcript-body { min-height: 44px; } }
-  .sp-transcript-body p {
-    margin: 0; font-size: 0.95rem; line-height: 1.65; color: var(--color-on-surface);
-  }
-  .sp-partial { color: var(--color-outline); }
-  .sp-tx-muted { color: var(--color-outline) !important; font-size: 0.85rem !important; }
-
-  .sp-transcript-note {
-    margin: 0; font-size: 0.7rem; line-height: 1.5; color: var(--color-outline);
-  }
-
-  .sp-review-action {
-    display: flex; align-items: center; gap: 10px; flex-wrap: wrap;
-    padding-top: 12px; border-top: 1px solid var(--color-surface-container-high);
-  }
-  .sp-btn-check {
-    background: var(--color-primary); font-size: 0.85rem; padding: 0.7rem 1.15rem;
-  }
-  .sp-btn-check:disabled { opacity: 0.5; cursor: default; }
-  .sp-btn-check:disabled:hover { transform: none; }
-  .sp-review-hint { font-size: 0.75rem; color: var(--color-outline); }
-
-  /* Word-by-word pass while the answer is being checked. */
-  .sp-reading span { animation: sp-read 1.5s ease-in-out infinite; }
-  @keyframes sp-read {
-    0%, 100% { color: var(--color-on-surface); }
-    50% { color: var(--color-secondary-container); }
-  }
-
-  .sp-marked { margin: 0; font-size: 0.95rem; line-height: 1.95; color: var(--color-on-surface); }
-  .sp-mark {
-    position: relative; background: none; color: inherit; border-radius: 3px; padding: 1px 0;
-    cursor: help;
-  }
-  .sp-mark-improve { box-shadow: inset 0 -0.42em 0 rgba(254,118,44,0.3); }
-  .sp-mark-good { box-shadow: inset 0 -0.42em 0 rgba(0,43,109,0.14); }
-  .sp-mark-note {
-    position: absolute; left: 0; bottom: calc(100% + 8px); z-index: 5;
-    width: max-content; max-width: 240px; padding: 8px 10px; border-radius: 10px;
-    background: var(--color-on-surface); color: #fff; font-size: 0.75rem; line-height: 1.5;
-    opacity: 0; pointer-events: none; transition: opacity 140ms ease;
-  }
-  .sp-mark:hover .sp-mark-note, .sp-mark:focus-visible .sp-mark-note { opacity: 1; }
-
-  @media (prefers-reduced-motion: reduce) {
-    .sp-meter span, .sp-btn, .sp-progress > div { transition: none; }
-    .sp-btn:hover { transform: none; }
-    .sp-dot, .sp-spin { animation: none; }
-    .sp-reading span { animation: none; }
-  }
-`;

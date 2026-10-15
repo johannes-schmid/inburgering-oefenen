@@ -31,7 +31,9 @@ import {
   RefreshCw,
   Link2,
   Mail,
+  Plus,
 } from 'lucide-react';
+import { glasButton } from '@/components/glas/Button';
 import { diffWeeks, toISO, type PlainDate } from '@/lib/tijdlijn/engine/dates';
 import { RULES } from '@/lib/tijdlijn/rules';
 import { fmtDate, fmtMoney, fmtMonth, type UiLocale } from '@/lib/tijdlijn/format';
@@ -123,14 +125,14 @@ export default function Result({
         <button
           type="button"
           onClick={onEditAnswers}
-          className="inline-flex min-h-11 items-center gap-2 rounded-lg border border-outline-variant bg-surface-container-lowest px-4 text-sm font-semibold text-on-surface transition-colors duration-150 hover:border-primary/40 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-secondary-container"
+          className={glasButton({ variant: 'ghost', size: 'sm' })}
         >
           {t('edit_answers')}
         </button>
         <button
           type="button"
           onClick={onReset}
-          className="inline-flex min-h-11 items-center gap-2 rounded-lg px-4 text-sm text-on-surface-variant underline decoration-outline-variant underline-offset-4 transition-colors duration-150 hover:text-on-surface focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-secondary-container"
+          className="g-tl-link !font-semibold !text-ink-2 hover:!text-ink px-2"
         >
           <RefreshCw className="size-4" aria-hidden="true" />
           {t('start_over')}
@@ -169,7 +171,7 @@ function Verdict({
   const weeks = registerBy ? diffWeeks(today, registerBy) : null;
 
   const accent =
-    risk === 'red' ? 'var(--risk-red)' : risk === 'amber' ? 'var(--risk-amber)' : 'var(--color-primary)';
+    risk === 'red' ? 'var(--risk-red)' : risk === 'amber' ? 'var(--risk-amber)' : 'var(--navy)';
   const tint =
     risk === 'red' ? 'var(--risk-red-tint)' : risk === 'amber' ? 'var(--risk-amber-tint)' : 'rgba(0,43,109,0.05)';
 
@@ -214,15 +216,15 @@ function Verdict({
             {t(badgeKey[timeline.mode])}
           </span>
 
-          <h1 className="mt-5 font-headline text-lg font-extrabold leading-snug tracking-[-0.02em] text-on-surface">
+          <h1 className="mt-5 g-head g-head-3 !text-ink">
             {t(verdictKey[timeline.mode])}
           </h1>
 
           {registerBy ? (
             <>
-              <p className="mt-5 text-sm text-on-surface-variant">{t('headline_register_by')}</p>
+              <p className="mt-5 text-sm text-ink-2">{t('headline_register_by')}</p>
               <p
-                className="mt-1 font-headline text-[40px] font-extrabold leading-[1.05] tracking-[-0.04em] sm:text-[52px]"
+                className="mt-1 font-headline g-tnum text-[40px] font-extrabold leading-[1.05] tracking-[-0.045em] sm:text-[52px]"
                 style={{ color: accent }}
               >
                 <time dateTime={toISO(registerBy)}>{fmtDate(registerBy, locale)}</time>
@@ -233,20 +235,20 @@ function Verdict({
                   : t('headline_weeks_past', { n: Math.abs(weeks ?? 0) })}
               </p>
               {binding && (
-                <p className="mt-4 text-sm leading-relaxed text-on-surface-variant">
+                <p className="mt-4 text-sm leading-relaxed text-ink-2">
                   {t('for_component', { component: label(binding.id, binding.level) })}{' '}
                   {timeline.termijnEnd && t('because', { date: fmtDate(timeline.termijnEnd.date, locale) })}
                 </p>
               )}
             </>
           ) : (
-            <p className="mt-5 text-sm leading-relaxed text-on-surface-variant">
+            <p className="mt-5 text-sm leading-relaxed text-ink-2">
               {timeline.mode === 'estimate_mode' ? t('verdict_estimate_sub') : null}
             </p>
           )}
 
           {timeline.mode === 'at_risk' && (
-            <p className="mt-3 text-sm leading-relaxed text-on-surface-variant">{t('verdict_at_risk_sub')}</p>
+            <p className="mt-3 text-sm leading-relaxed text-ink-2">{t('verdict_at_risk_sub')}</p>
           )}
 
           {/* "What do I do now" belongs beside the verdict, not three panels down. */}
@@ -254,7 +256,7 @@ function Verdict({
         </div>
 
         {/* The chart, then the two dates it is drawn from, then the next action — and only one. */}
-        <div className="border-t border-outline-variant bg-surface-container-low p-6 sm:p-8 md:border-s md:border-t-0">
+        <div className="bg-mist p-6 sm:p-8">
           <div className="mb-6">
             <TimelineChart
               timeline={timeline}
@@ -268,15 +270,15 @@ function Verdict({
           {timeline.termijnStart && timeline.termijnEnd && (
             <dl className="mb-6 space-y-3 text-sm">
               <div className="flex items-baseline justify-between gap-4">
-                <dt className="text-on-surface-variant">{t('termijn_start_label')}</dt>
-                <dd className="flex items-center gap-2 font-semibold text-on-surface">
+                <dt className="text-ink-2">{t('termijn_start_label')}</dt>
+                <dd className="flex items-center gap-2 font-semibold text-ink">
                   <time dateTime={toISO(timeline.termijnStart.date)}>{fmtDate(timeline.termijnStart.date, locale)}</time>
                   <SourceBadge label={t('duo_badge')} href={RULES.sources[timeline.termijnStart.sourceId]?.url} />
                 </dd>
               </div>
               <div className="flex items-baseline justify-between gap-4">
-                <dt className="text-on-surface-variant">{t('deadline_label')}</dt>
-                <dd className="flex items-center gap-2 font-semibold text-on-surface">
+                <dt className="text-ink-2">{t('deadline_label')}</dt>
+                <dd className="flex items-center gap-2 font-semibold text-ink">
                   <time dateTime={toISO(timeline.termijnEnd.date)}>{fmtDate(timeline.termijnEnd.date, locale)}</time>
                   <SourceBadge label={t('duo_badge')} href={RULES.sources[timeline.termijnEnd.sourceId]?.url} />
                 </dd>
@@ -285,17 +287,17 @@ function Verdict({
           )}
 
           {nextPlan && (
-            <div className="tl-no-print rounded-xl border border-outline-variant bg-surface-container-lowest p-5">
-              <p className="font-headline text-sm font-bold text-on-surface">{t('next_step_title')}</p>
-              <p className="mt-1.5 text-sm leading-relaxed text-on-surface-variant">
+            <div className="tl-no-print rounded-g-lg bg-wit p-5">
+              <p className="font-headline text-sm font-bold text-ink">{t('next_step_title')}</p>
+              <p className="mt-1.5 text-sm leading-relaxed text-ink-2">
                 {t('next_step_body', { component: tc(nextPlan.id) })}
               </p>
               <Link
                 href={{ pathname: '/oefenen/[skill]', params: { skill: skillHref(nextPlan.id, locale) } }}
-                className="mt-4 inline-flex min-h-11 items-center gap-2 rounded-lg px-4 font-headline text-sm font-bold text-on-primary shadow-[var(--shadow-btn-orange)] transition-[transform,box-shadow] duration-200 [background:var(--gradient-btn-orange)] [transition-timing-function:cubic-bezier(0.22,1,0.36,1)] hover:-translate-y-0.5 hover:shadow-[var(--shadow-btn-orange-hover)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-secondary-container focus-visible:ring-offset-2"
+                className={glasButton({ variant: 'navy', size: 'sm', className: 'mt-4' })}
               >
                 {t('next_step_cta')}
-                <ArrowRight className="size-4 rtl:rotate-180" aria-hidden="true" />
+                <ArrowRight className="size-4 rtl-flip" aria-hidden="true" />
               </Link>
             </div>
           )}
@@ -341,8 +343,8 @@ function TimelineList({
       </ol>
 
       {timeline.termijnEnd && (
-        <div className="mt-5 border-t-[3px] border-primary pt-3">
-          <p className="font-headline text-sm font-extrabold uppercase tracking-[0.08em] text-primary">
+        <div className="mt-5 g-tl-deadline pt-3">
+          <p className="font-headline text-sm font-extrabold uppercase tracking-[0.08em] text-navy">
             <time dateTime={toISO(timeline.termijnEnd.date)}>{fmtDate(timeline.termijnEnd.date, locale)}</time>
             {' · '}
             {te('deadline')}
@@ -380,25 +382,25 @@ function Node({
   const atGemeente = AT_THE_GEMEENTE.includes(plan.id);
 
   return (
-    <div className="rounded-xl border border-outline-variant bg-surface-container-lowest p-4 sm:p-5">
+    <div className="rounded-g-md bg-mist p-4 sm:p-5">
       <div className="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1">
-        <h3 className="font-headline text-[15px] font-extrabold tracking-[-0.01em] text-on-surface">
+        <h3 className="font-headline text-[15px] font-extrabold tracking-[-0.01em] text-ink">
           {label(plan.id, plan.level)}
           {plan.done && (
-            <span className="ms-2 inline-flex items-center gap-1 rounded bg-emerald-50 px-1.5 py-0.5 text-[10px] font-bold uppercase tracking-wider text-emerald-800">
+            <span className="ms-2 inline-flex items-center gap-1 rounded-g-xs bg-goed-tint px-1.5 py-0.5 text-[10px] font-bold uppercase tracking-wider text-goed-ink">
               <BadgeCheck className="size-3" aria-hidden="true" />
               {t('node_done')}
             </span>
           )}
         </h3>
         {!plan.done && !atGemeente && weeks !== null && (
-          <span className="inline-flex items-center gap-2 text-[13px] text-on-surface-variant">
+          <span className="inline-flex items-center gap-2 text-[13px] text-ink-2">
             {t('node_weeks_from_now', { n: Math.max(0, weeks) })}
             <EstimateBadge label={t('estimate_badge')} />
           </span>
         )}
       </div>
-      <p className="mt-0.5 text-[13px] text-on-surface-variant">{ts(plan.id)}</p>
+      <p className="mt-0.5 text-[13px] text-ink-2">{ts(plan.id)}</p>
 
 
       <dl className="mt-2 flex flex-wrap gap-x-6 gap-y-1.5 text-[13px]">
@@ -410,8 +412,8 @@ function Node({
             re-derived from "has no waiting time", which is what got PVT wrong the first time. */}
         {atGemeente && plan.registerBy && !plan.done && (
           <div className="flex items-center gap-1.5">
-            <dt className="text-on-surface-variant">{t('node_register_by')}:</dt>
-            <dd className="flex items-center gap-1.5 font-semibold text-on-surface">
+            <dt className="text-ink-2">{t('node_register_by')}:</dt>
+            <dd className="flex items-center gap-1.5 font-semibold text-ink">
               <time dateTime={toISO(plan.registerBy.date)}>{fmtDate(plan.registerBy.date, locale)}</time>
               <SourceBadge label={t('duo_badge')} href={RULES.sources[plan.registerBy.sourceId]?.url} />
             </dd>
@@ -419,8 +421,8 @@ function Node({
         )}
         {!atGemeente && plan.startStudyingBy && !plan.done && (
           <div className="flex items-center gap-1.5">
-            <dt className="text-on-surface-variant">{t('node_start_studying')}:</dt>
-            <dd className="flex items-center gap-1.5 font-semibold text-on-surface">
+            <dt className="text-ink-2">{t('node_start_studying')}:</dt>
+            <dd className="flex items-center gap-1.5 font-semibold text-ink">
               <time dateTime={toISO(plan.startStudyingBy.latest)}>
                 {t('about')} {fmtMonth(plan.startStudyingBy.latest, locale)}
               </time>
@@ -430,8 +432,8 @@ function Node({
         )}
         {!atGemeente && plan.registerBy && !plan.done && (
           <div className="flex items-center gap-1.5">
-            <dt className="text-on-surface-variant">{t('node_register_by')}:</dt>
-            <dd className="flex items-center gap-1.5 font-semibold text-on-surface">
+            <dt className="text-ink-2">{t('node_register_by')}:</dt>
+            <dd className="flex items-center gap-1.5 font-semibold text-ink">
               <time dateTime={toISO(plan.registerBy.date)}>{fmtDate(plan.registerBy.date, locale)}</time>
               <SourceBadge label={t('duo_badge')} href={RULES.sources[plan.registerBy.sourceId]?.url} />
             </dd>
@@ -439,8 +441,8 @@ function Node({
         )}
         {!atGemeente && plan.examWindow && !plan.done && (
           <div className="flex items-center gap-1.5">
-            <dt className="text-on-surface-variant">{t('node_exam_window')}:</dt>
-            <dd className="font-semibold text-on-surface">
+            <dt className="text-ink-2">{t('node_exam_window')}:</dt>
+            <dd className="font-semibold text-ink">
               <time dateTime={toISO(plan.examWindow.latest)}>
                 {t('about')} {fmtMonth(plan.examWindow.latest, locale)}
               </time>
@@ -449,25 +451,25 @@ function Node({
         )}
         {!atGemeente && plan.resultWindow && !plan.done && (
           <div className="flex items-center gap-1.5">
-            <dt className="text-on-surface-variant">{t('node_result_window')}:</dt>
-            <dd className="font-semibold text-on-surface">
+            <dt className="text-ink-2">{t('node_result_window')}:</dt>
+            <dd className="font-semibold text-ink">
               <time dateTime={toISO(plan.resultWindow.latest)}>
                 {t('about')} {fmtMonth(plan.resultWindow.latest, locale)}
               </time>
-              <span className="ms-1.5 text-on-surface-variant">(+{plan.resultWindowWeeks} w)</span>
+              <span className="ms-1.5 text-ink-2">(+{plan.resultWindowWeeks} w)</span>
             </dd>
           </div>
         )}
         <div className="flex items-center gap-1.5">
-          <dt className="text-on-surface-variant">{t('cost_payer')}:</dt>
-          <dd className="font-semibold text-on-surface">
+          <dt className="text-ink-2">{t('cost_payer')}:</dt>
+          <dd className="font-semibold text-ink">
             {plan.feeCents === 0 ? t('payer_free') : `${fmtMoney(plan.feeCents, locale)} · ${t(`payer_${payerKeyOf(plan)}`)}`}
           </dd>
         </div>
       </dl>
 
       {!atGemeente && plan.studyWeeks && !plan.done && (
-        <p className="mt-2 text-[13px] text-on-surface-variant">
+        <p className="mt-2 text-[13px] text-ink-2">
           {ta('start_hint', { lo: plan.studyWeeks.lo, hi: plan.studyWeeks.hi })}
         </p>
       )}
@@ -477,7 +479,7 @@ function Node({
       )}
 
       {atGemeente && (
-        <p className="mt-2 text-[13px] text-on-surface-variant">
+        <p className="mt-2 text-[13px] text-ink-2">
           {t('node_at_gemeente')} · {t('node_no_queue')}
         </p>
       )}
@@ -485,10 +487,10 @@ function Node({
       {plan.practiceHref && !plan.done && (
         <Link
           href={{ pathname: '/oefenen/[skill]', params: { skill: skillHref(plan.id, locale) } }}
-          className="tl-no-print mt-3 inline-flex min-h-11 items-center gap-2 rounded-lg border border-primary/30 px-3 text-[13px] font-bold text-primary transition-colors duration-150 hover:bg-[var(--tl-tint-1)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-secondary-container"
+          className={glasButton({ variant: 'ghost', size: 'sm', className: 'tl-no-print mt-3' })}
         >
           {t('node_practice')}
-          <ArrowRight className="size-3.5 rtl:rotate-180" aria-hidden="true" />
+          <ArrowRight className="size-3.5 rtl-flip" aria-hidden="true" />
         </Link>
       )}
     </div>
@@ -511,23 +513,23 @@ function CostPanel({ timeline, locale }: { timeline: Timeline; locale: UiLocale 
       <div className="-mx-2 overflow-x-auto">
         <table className="w-full min-w-[30rem] border-collapse text-sm">
           <thead>
-            <tr className="border-b border-outline-variant text-start">
-              <th scope="col" className="px-2 pb-2 text-start font-semibold text-on-surface-variant">{t('cost_component')}</th>
-              <th scope="col" className="px-2 pb-2 text-end font-semibold text-on-surface-variant">{t('cost_best')}</th>
-              <th scope="col" className="px-2 pb-2 text-end font-semibold text-on-surface-variant">{t('cost_expected')}</th>
-              <th scope="col" className="px-2 pb-2 text-start font-semibold text-on-surface-variant">{t('cost_payer')}</th>
+            <tr className="text-start">
+              <th scope="col" className="px-2 pb-2 text-start font-semibold text-ink-2">{t('cost_component')}</th>
+              <th scope="col" className="px-2 pb-2 text-end font-semibold text-ink-2">{t('cost_best')}</th>
+              <th scope="col" className="px-2 pb-2 text-end font-semibold text-ink-2">{t('cost_expected')}</th>
+              <th scope="col" className="px-2 pb-2 text-start font-semibold text-ink-2">{t('cost_payer')}</th>
             </tr>
           </thead>
           <tbody>
             {cost.lines.map(l => (
-              <tr key={l.id} className="border-b border-outline-variant/60">
-                <td className="px-2 py-2.5 font-semibold text-on-surface">{tc(l.id)}</td>
-                <td className="px-2 py-2.5 text-end tabular-nums text-on-surface">{fmtMoney(l.bestCaseCents, locale)}</td>
-                <td className="px-2 py-2.5 text-end tabular-nums text-on-surface">{fmtMoney(l.expectedCents, locale)}</td>
-                <td className="px-2 py-2.5 text-on-surface-variant">
+              <tr key={l.id} className="g-tl-sep">
+                <td className="px-2 py-2.5 font-semibold text-ink">{tc(l.id)}</td>
+                <td className="px-2 py-2.5 text-end tabular-nums text-ink">{fmtMoney(l.bestCaseCents, locale)}</td>
+                <td className="px-2 py-2.5 text-end tabular-nums text-ink">{fmtMoney(l.expectedCents, locale)}</td>
+                <td className="px-2 py-2.5 text-ink-2">
                   {t(`payer_${l.payer === 'loan_possible' ? 'loan' : l.payer === 'gemeente' ? 'gemeente' : l.payer === 'free' ? 'free' : 'self'}`)}
                   {l.freeAttempts > 0 && (
-                    <span className="ms-1.5 rounded bg-emerald-50 px-1.5 py-0.5 text-[11px] font-bold text-emerald-800">
+                    <span className="ms-1.5 rounded-g-xs bg-goed-tint px-1.5 py-0.5 text-[11px] font-bold text-goed-ink">
                       {t('cost_free_attempts', { n: l.freeAttempts })}
                     </span>
                   )}
@@ -536,12 +538,12 @@ function CostPanel({ timeline, locale }: { timeline: Timeline; locale: UiLocale 
             ))}
           </tbody>
           <tfoot>
-            <tr>
-              <th scope="row" className="px-2 pt-3 text-start font-headline font-extrabold text-on-surface">{t('cost_total')}</th>
-              <td className="px-2 pt-3 text-end font-headline font-extrabold tabular-nums text-on-surface">
+            <tr className="g-tl-deadline">
+              <th scope="row" className="px-2 pt-3 text-start font-headline font-extrabold text-ink">{t('cost_total')}</th>
+              <td className="px-2 pt-3 text-end font-headline font-extrabold tabular-nums text-ink">
                 {fmtMoney(cost.bestCaseCents, locale)}
               </td>
-              <td className="px-2 pt-3 text-end font-headline font-extrabold tabular-nums text-on-surface">
+              <td className="px-2 pt-3 text-end font-headline font-extrabold tabular-nums text-ink">
                 {fmtMoney(cost.expectedCents, locale)}
               </td>
               <td />
@@ -550,7 +552,7 @@ function CostPanel({ timeline, locale }: { timeline: Timeline; locale: UiLocale 
         </table>
       </div>
 
-      <ul className="mt-5 space-y-2 text-[13px] leading-relaxed text-on-surface-variant">
+      <ul className="mt-5 space-y-2 text-[13px] leading-relaxed text-ink-2">
         {cost.lines.some(l => l.freeAttempts > 0) && <li>{t('cost_free_attempts_note')}</li>}
         <li>
           {cost.loanNote === 'not_allowed'
@@ -580,14 +582,14 @@ function FinePanel({ timeline, locale }: { timeline: Timeline; locale: UiLocale 
       <PanelTitle>{t('fine_title')}</PanelTitle>
       {/* The first sentence an asielstatushouder reads, before anything else on this panel. */}
       {!f.applies ? (
-        <p className="text-sm leading-relaxed text-on-surface-variant">{t('fine_none_asiel')}</p>
+        <p className="text-sm leading-relaxed text-ink-2">{t('fine_none_asiel')}</p>
       ) : (
-        <div className="space-y-3 text-sm leading-relaxed text-on-surface-variant">
+        <div className="space-y-3 text-sm leading-relaxed text-ink-2">
           {f.leerrouteMaxCents !== null && <p>{t('fine_max', { amount: fmtMoney(f.leerrouteMaxCents, locale) })}</p>}
           {f.pvtMaxCents !== null && <p>{t('fine_pvt', { amount: fmtMoney(f.pvtMaxCents, locale) })}</p>}
           {f.mapMaxCents !== null && <p>{t('fine_map', { amount: fmtMoney(f.mapMaxCents, locale) })}</p>}
           {f.extraTimeMonths !== null && f.newHorizon && (
-            <p className="rounded-xl border border-outline-variant bg-surface-container-low p-4 text-on-surface">
+            <p className="rounded-g-md bg-mist p-4 text-ink">
               {t('fine_extra_time', { n: f.extraTimeMonths, date: fmtDate(f.newHorizon.date, locale) })}
             </p>
           )}
@@ -648,16 +650,16 @@ function ExtensionPanel({ timeline }: { timeline: Timeline }) {
         {timeline.extensions.map(e => {
           const open = e.conditions.filter(c => c.verdict !== 'met').length;
           return (
-            <li key={e.id} className="rounded-xl border border-outline-variant bg-surface-container-low p-5">
+            <li key={e.id} className="rounded-g-md bg-mist p-5">
               <div className="flex flex-wrap items-baseline justify-between gap-2">
-                <h3 className="font-headline text-[15px] font-extrabold text-on-surface">{t(NAME_KEY[e.id] ?? 'ext_other')}</h3>
+                <h3 className="font-headline text-[15px] font-extrabold text-ink">{t(NAME_KEY[e.id] ?? 'ext_other')}</h3>
                 {e.grantMonths > 0 && (
-                  <span className="rounded bg-[var(--tl-tint-2)] px-2 py-1 text-[12px] font-bold text-primary">
+                  <span className="rounded-g-xs bg-[var(--tl-tint-2)] px-2 py-1 text-[12px] font-bold text-navy">
                     {t('extension_months', { n: e.grantMonths })}
                   </span>
                 )}
               </div>
-              <p className="mt-1.5 text-[13px] leading-relaxed text-on-surface-variant">
+              <p className="mt-1.5 text-[13px] leading-relaxed text-ink-2">
                 {e.automatic ? t('extension_automatic') : t('extension_apply', { n: e.decisionWeeks ?? 8 })}
               </p>
 
@@ -667,19 +669,19 @@ function ExtensionPanel({ timeline }: { timeline: Timeline }) {
                     <li key={c.key} className="flex items-start gap-2.5 text-[13px] leading-relaxed">
                       <span
                         className={[
-                          'mt-0.5 flex size-4 shrink-0 items-center justify-center rounded border-2',
+                          'mt-0.5 flex size-4 shrink-0 items-center justify-center rounded-g-xs border-2',
                           c.verdict === 'met'
-                            ? 'border-emerald-600 bg-emerald-600 text-white'
+                            ? 'border-goed bg-goed text-white'
                             : c.verdict === 'not_met'
-                              ? 'border-outline'
-                              : 'border-dashed border-outline',
+                              ? 'border-ink-3'
+                              : 'border-dashed border-ink-3',
                         ].join(' ')}
                         aria-hidden="true"
                       >
                         {c.verdict === 'met' && <Check className="size-2.5" strokeWidth={3} />}
-                        {c.verdict === 'unknown' && <Minus className="size-2.5 text-outline" strokeWidth={3} />}
+                        {c.verdict === 'unknown' && <Minus className="size-2.5 text-ink-3" strokeWidth={3} />}
                       </span>
-                      <span className={c.verdict === 'met' ? 'text-on-surface' : 'text-on-surface-variant'}>
+                      <span className={c.verdict === 'met' ? 'text-ink' : 'text-ink-2'}>
                         {t(CONDITION_KEY[c.key] ?? 'extension_condition_unknown')}
                       </span>
                     </li>
@@ -687,17 +689,17 @@ function ExtensionPanel({ timeline }: { timeline: Timeline }) {
                 </ul>
               )}
 
-              <p className="mt-4 text-[13px] font-semibold text-on-surface">
+              <p className="mt-4 text-[13px] font-semibold text-ink">
                 {open === 0 ? t('extension_all') : t('extension_todo', { n: open })}
               </p>
               <a
                 href={RULES.sources[e.sourceId]?.url}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="tl-no-print mt-2 inline-flex min-h-11 items-center gap-2 text-[13px] font-bold text-primary underline decoration-primary/30 underline-offset-4 transition-colors duration-150 hover:decoration-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-secondary-container"
+                className="g-tl-link tl-no-print mt-2"
               >
                 {t('extension_check_duo')}
-                <ArrowRight className="size-3.5 rtl:rotate-180" aria-hidden="true" />
+                <ArrowRight className="size-3.5 rtl-flip" aria-hidden="true" />
               </a>
             </li>
           );
@@ -716,21 +718,21 @@ function NaturalisationPanel({ timeline, locale }: { timeline: Timeline; locale:
     <Panel className="p-6 sm:p-8">
       <PanelTitle>{t('naturalisation_title')}</PanelTitle>
       <div className="grid gap-4 sm:grid-cols-2">
-        <div className="rounded-xl border border-outline-variant bg-surface-container-low p-5">
-          <p className="font-headline text-sm font-bold text-on-surface">{t('naturalisation_residence')}</p>
+        <div className="rounded-g-md bg-mist p-5">
+          <p className="font-headline text-sm font-bold text-ink">{t('naturalisation_residence')}</p>
           {n.residenceEligibleFrom && (
-            <p className="mt-2 font-headline text-xl font-extrabold tracking-[-0.02em] text-primary">
+            <p className="mt-2 font-headline text-xl font-extrabold tracking-[-0.02em] text-navy">
               <time dateTime={toISO(n.residenceEligibleFrom.date)}>{fmtDate(n.residenceEligibleFrom.date, locale)}</time>
             </p>
           )}
-          <p className="mt-2 text-[13px] text-on-surface-variant">
+          <p className="mt-2 text-[13px] text-ink-2">
             {n.residenceEligibleFrom && t('naturalisation_residence_from', { date: fmtDate(n.residenceEligibleFrom.date, locale) })}
           </p>
         </div>
-        <div className="rounded-xl border border-outline-variant bg-surface-container-low p-5">
-          <p className="font-headline text-sm font-bold text-on-surface">{t('naturalisation_diploma')}</p>
+        <div className="rounded-g-md bg-mist p-5">
+          <p className="font-headline text-sm font-bold text-ink">{t('naturalisation_diploma')}</p>
           {n.diplomaReadyBy && (
-            <p className="mt-2 font-headline text-xl font-extrabold tracking-[-0.02em] text-on-surface">
+            <p className="mt-2 font-headline text-xl font-extrabold tracking-[-0.02em] text-ink">
               {t('about')} {fmtMonth(n.diplomaReadyBy.latest, locale)}
             </p>
           )}
@@ -740,14 +742,14 @@ function NaturalisationPanel({ timeline, locale }: { timeline: Timeline; locale:
         </div>
       </div>
 
-      <div className="mt-5 space-y-3 text-sm leading-relaxed text-on-surface-variant">
-        <p className="font-semibold text-on-surface">
+      <div className="mt-5 space-y-3 text-sm leading-relaxed text-ink-2">
+        <p className="font-semibold text-ink">
           {n.bindingClock === 'residence' ? t('naturalisation_binding_residence') : t('naturalisation_binding_diploma')}
         </p>
         <p>{t('naturalisation_fee', { amount: fmtMoney(n.feeCents, locale) })}</p>
         <p>{t('naturalisation_decision')}</p>
         {n.blockers.includes('z_route_certificate') && (
-          <p className="rounded-xl border border-[color:var(--risk-amber)]/40 bg-[color:var(--risk-amber-tint)] p-4 text-on-surface">
+          <p className="rounded-g-md bg-klei-tint p-4 text-ink">
             {t('naturalisation_z_route')}
           </p>
         )}
@@ -791,19 +793,19 @@ function WhatIf({
         <Stepper label={tw('self')} value={input.selfStudyHoursPerWeek} onChange={n => onChange({ ...input, selfStudyHoursPerWeek: n })} />
       </div>
 
-      <div className="mt-6 border-t border-outline-variant pt-5">
+      <div className="mt-6 g-tl-sep pt-5">
         <ProgressMatrix input={input} set={p => onChange({ ...input, ...p })} ids={ids} />
       </div>
 
-      <div className="mt-6 border-t border-outline-variant pt-5">
-        <p className="font-headline text-sm font-bold text-on-surface">{t('whatif_retake')}</p>
-        <p className="mt-1.5 text-[13px] leading-relaxed text-on-surface-variant">
+      <div className="mt-6 g-tl-sep pt-5">
+        <p className="font-headline text-sm font-bold text-ink">{t('whatif_retake')}</p>
+        <p className="mt-1.5 text-[13px] leading-relaxed text-ink-2">
           {t('whatif_retake_note', { n: retakeWeeks })}
         </p>
       </div>
 
-      <div className="mt-6 border-t border-outline-variant pt-5">
-        <p className="mb-2.5 text-[13px] font-semibold text-on-surface">{t('whatif_extension')}</p>
+      <div className="mt-6 g-tl-sep pt-5">
+        <p className="mb-2.5 text-[13px] font-semibold text-ink">{t('whatif_extension')}</p>
         <div className="flex flex-wrap gap-2">
           {[0, 6, 12, 18, 24].map(m => (
             <Chip
@@ -866,7 +868,7 @@ function SavePanel({
         <button
           type="button"
           onClick={() => window.print()}
-          className="inline-flex min-h-11 items-center gap-2 rounded-lg border border-outline-variant bg-surface-container-lowest px-4 text-sm font-semibold text-on-surface transition-colors duration-150 hover:border-primary/40 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-secondary-container"
+          className={glasButton({ variant: 'ghost', size: 'sm' })}
         >
           <Printer className="size-4" aria-hidden="true" />
           {t('save_pdf')}
@@ -876,7 +878,7 @@ function SavePanel({
           onClick={() => {
             void navigator.clipboard?.writeText(shareUrl).then(() => setCopied(true));
           }}
-          className="inline-flex min-h-11 items-center gap-2 rounded-lg border border-outline-variant bg-surface-container-lowest px-4 text-sm font-semibold text-on-surface transition-colors duration-150 hover:border-primary/40 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-secondary-container"
+          className={glasButton({ variant: 'ghost', size: 'sm' })}
         >
           <Link2 className="size-4" aria-hidden="true" />
           {copied ? t('save_link_copied') : t('save_link')}
@@ -884,13 +886,13 @@ function SavePanel({
       </div>
 
       <form
-        className="mt-6 border-t border-outline-variant pt-5"
+        className="mt-6 g-tl-sep pt-5"
         onSubmit={e => {
           e.preventDefault();
           void send();
         }}
       >
-        <label htmlFor="tl-email" className="mb-2 block text-[13px] font-semibold text-on-surface">
+        <label htmlFor="tl-email" className="mb-2 block text-[13px] font-semibold text-ink">
           {t('save_email_label')}
         </label>
         <div className="flex flex-wrap gap-3">
@@ -900,30 +902,30 @@ function SavePanel({
             required
             value={email}
             onChange={e => setEmail(e.target.value)}
-            className="h-11 min-w-0 flex-1 rounded-lg border border-outline-variant bg-surface-container-lowest px-3 text-sm text-on-surface focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-secondary-container"
+            className="g-tl-input min-w-0 flex-1"
           />
           <button
             type="submit"
             disabled={status === 'sending'}
-            className="inline-flex min-h-11 items-center gap-2 rounded-lg px-5 font-headline text-sm font-bold text-on-primary shadow-[var(--shadow-btn-orange)] transition-[transform,box-shadow] duration-200 [background:var(--gradient-btn-orange)] [transition-timing-function:cubic-bezier(0.22,1,0.36,1)] hover:-translate-y-0.5 disabled:opacity-60 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-secondary-container focus-visible:ring-offset-2"
+            className={glasButton({ variant: 'navy' })}
           >
             <Mail className="size-4" aria-hidden="true" />
             {status === 'sending' ? t('save_email_sending') : t('save_email_cta')}
           </button>
         </div>
 
-        <label className="mt-4 flex items-start gap-2.5 text-[13px] leading-relaxed text-on-surface-variant">
+        <label className="mt-4 flex items-start gap-2.5 text-[13px] leading-relaxed text-ink-2">
           <input
             type="checkbox"
             checked={reminders}
             onChange={e => setReminders(e.target.checked)}
-            className="mt-0.5 size-4 rounded border-outline-variant text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-secondary-container"
+            className="mt-0.5 size-4 shrink-0 accent-[var(--navy)] outline-none focus-visible:shadow-[var(--glas-focus)]"
           />
           {t('save_email_consent')}
         </label>
 
-        <p className="mt-3 text-[13px] text-on-surface-variant">{t('save_email_privacy')}</p>
-        {status === 'done' && <p className="mt-3 text-[13px] font-semibold text-emerald-700">{t('save_email_done')}</p>}
+        <p className="mt-3 text-[13px] text-ink-2">{t('save_email_privacy')}</p>
+        {status === 'done' && <p className="mt-3 text-[13px] font-semibold text-goed-ink">{t('save_email_done')}</p>}
         {status === 'error' && (
           <p className="mt-3 text-[13px] font-semibold text-[color:var(--risk-red)]">{t('save_email_error')}</p>
         )}
@@ -937,15 +939,15 @@ function SavePanel({
 function Warnings({ timeline }: { timeline: Timeline }) {
   const t = useTranslations('tijdlijn.result');
   return (
-    <Panel className="bg-surface-container-low p-6 sm:p-8">
+    <Panel className="!bg-mist-2 p-6 sm:p-8">
       <PanelTitle>{t('warning_title')}</PanelTitle>
       <ul className="space-y-3">
         {timeline.warnings.map(w => (
-          <li key={w.id} className="flex items-start gap-2.5 text-[13px] leading-relaxed text-on-surface-variant">
+          <li key={w.id} className="flex items-start gap-2.5 text-[13px] leading-relaxed text-ink-2">
             {w.severity === 'attention' ? (
-              <CircleDot className="mt-0.5 size-4 shrink-0 text-secondary" aria-hidden="true" />
+              <CircleDot className="mt-0.5 size-4 shrink-0 text-klei" aria-hidden="true" />
             ) : (
-              <Info className="mt-0.5 size-4 shrink-0 text-on-surface-variant" aria-hidden="true" />
+              <Info className="mt-0.5 size-4 shrink-0 text-ink-2" aria-hidden="true" />
             )}
             <span>{t(`w_${w.id}`)}</span>
           </li>
@@ -974,18 +976,18 @@ function Sources() {
         type="button"
         onClick={() => setOpen(!open)}
         aria-expanded={open}
-        className="flex w-full items-baseline justify-between gap-4 text-start focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-secondary-container"
+        className="flex w-full items-baseline justify-between gap-4 text-start outline-none focus-visible:shadow-[var(--glas-focus)]"
       >
         <span>
-          <span className="block font-headline text-xl font-extrabold tracking-[-0.02em] text-on-surface">
+          <span className="block g-head g-head-3 !text-navy">
             {t('sources_title')}
           </span>
-          <span className="mt-1.5 block text-sm leading-relaxed text-on-surface-variant">{t('sources_sub')}</span>
+          <span className="mt-1.5 block text-sm leading-relaxed text-ink-2">{t('sources_sub')}</span>
         </span>
-        <span className="shrink-0 text-sm font-bold text-primary">{open ? '−' : '+'}</span>
+        <span className="g-faq-pm" style={open ? { transform: 'rotate(45deg)', background: 'var(--navy)', color: '#fff' } : undefined} aria-hidden="true"><Plus /></span>
       </button>
 
-      <p className="mt-4 text-[13px] font-semibold text-on-surface-variant">
+      <p className="mt-4 text-[13px] font-semibold text-ink-2">
         {th('rules_checked', { date: RULES.version })}
       </p>
 
@@ -998,11 +1000,11 @@ function Sources() {
                   href={s.url}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="font-semibold text-primary underline decoration-primary/30 underline-offset-4 transition-colors duration-150 hover:decoration-primary"
+                  className="g-ilink"
                 >
                   {s.name}
                 </a>
-                <span className="text-on-surface-variant">
+                <span className="text-ink-2">
                   {' · '}
                   {t('sources_checked', { date: s.checkedOn })}
                   {s.needsPrimaryConfirmation ? ` · ${t('sources_needs_confirmation')}` : ''}
@@ -1010,9 +1012,9 @@ function Sources() {
               </li>
             ))}
           </ul>
-          <div className="mt-6 border-t border-outline-variant pt-5">
-            <p className="font-headline text-sm font-bold text-on-surface">{t('sources_planning_title')}</p>
-            <p className="mt-1.5 text-[13px] leading-relaxed text-on-surface-variant">{t('sources_planning_body')}</p>
+          <div className="mt-6 g-tl-sep pt-5">
+            <p className="font-headline text-sm font-bold text-ink">{t('sources_planning_title')}</p>
+            <p className="mt-1.5 text-[13px] leading-relaxed text-ink-2">{t('sources_planning_body')}</p>
           </div>
         </>
       )}

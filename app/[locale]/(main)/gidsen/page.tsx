@@ -11,7 +11,7 @@
  * gate is the owner's 2026-08-19 decision expressed as a constraint rather than a comment.
  *
  * **Herontwerp 05-10-2026 (eigenaar, referentie deel.com/resources).** Vier blokken, in deze
- * volgorde: een navy band met de titel en een zoekveld; *Begin hier*, drie uitgelichte gidsen met
+ * volgorde: een navy band met de titel; *Begin hier*, drie uitgelichte gidsen met
  * foto (`FEATURED`, met de hand gekozen — de startgids en de twee vragen waar een bezoeker mee
  * binnenkomt); *Kies een onderwerp*, één rij tegels naar de drie hubs, de B1-gids en de ONA-gids;
  * en het raster van alle gidsen met het filter. De vier modulekaarten met chips en de CTA-banner
@@ -25,19 +25,23 @@ import type { Metadata } from 'next';
 import { getTranslations, setRequestLocale } from 'next-intl/server';
 import { ArrowRight } from 'lucide-react';
 import { Link } from '@/i18n/navigation';
+import Field from '@/components/glas/Field';
+import SectionHeading from '@/components/glas/SectionHeading';
+import Crumbs from '../_components/glas/Crumbs';
 import { routing } from '@/i18n/routing';
 import { absUrl, alternatesFor, breadcrumbs, PROVIDER_REF, ogImageFor } from '@/lib/schema';
 import { WEBSITE_ID, langTag } from '@/lib/site';
 import JsonLd from '@/components/JsonLd';
-import { Breadcrumb, SectionHeader } from '@/components/site';
-import { CategoryMark, ExamMark } from '@/components/horizon';
-import GuideIndex, { GuideFilterProvider, GuideSearch } from './_components/GuideIndex';
+import CategoryMark from '@/components/horizon/CategoryMark';
+import ExamMark from '@/components/horizon/ExamMark';
+import GuideIndex from './_components/GuideIndex';
 import { FEATURES } from '@/lib/features';
 import { SKILLS } from '@/data/skills';
 import { getSortedPosts, getPostLocale, getPostSlug } from '@/data/blog-posts';
 import { publishedGuides, getGuideBySlug, getGuideLocale, guideHref } from '@/data/guides/helpers';
 import type { GuideSection } from '@/data/guides/types';
 import { isOnaAvailable } from '@/lib/ona/access';
+import { brochureCover } from '@/lib/guides/brochure';
 
 type Props = { params: Promise<{ locale: string }> };
 
@@ -87,9 +91,6 @@ const KNM_THEMES = 8;
 /** How many blog posts the index shows. The blog's own page holds the rest. */
 const POSTS_SHOWN = 4;
 
-const TILE =
-  'topic-tile flex flex-col items-start gap-3 rounded-2xl p-5 no-underline bg-surface-container-lowest hover:-translate-y-0.5 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2';
-
 export default async function GidsenIndexPage({ params }: Props) {
   const { locale } = await params;
   setRequestLocale(locale);
@@ -98,10 +99,11 @@ export default async function GidsenIndexPage({ params }: Props) {
   const tB = await getTranslations({ locale, namespace: 'breadcrumbs' });
   const onaLive = isOnaAvailable();
 
-  const guides = SECTIONS.flatMap(s =>
-    publishedGuides(s.id).map(g => {
+  const guides = await Promise.all(SECTIONS.flatMap(s =>
+    publishedGuides(s.id).map(async g => {
       const lg = getGuideLocale(g, locale);
       return {
+        cover: await brochureCover(g, locale),
         slug: g.slug,
         section: g.section,
         title: lg.heroTitle,
@@ -113,7 +115,7 @@ export default async function GidsenIndexPage({ params }: Props) {
         url: absUrl(locale, `${s.id}/${g.slug}`),
       };
     }),
-  );
+  ));
   const count = (section: GuideSection) => guides.filter(g => g.section === section).length;
 
   /* Een uitgelichte gids die (nog) niet `reviewed` is valt stil weg — dezelfde poort als de lijst. */
@@ -156,7 +158,7 @@ export default async function GidsenIndexPage({ params }: Props) {
     ],
   };
 
-  const heroImg = (g: (typeof featured)[number]['guide'], className: string) =>
+  const heroImg = (g: (typeof featured)[number]['guide']) =>
     g.heroImage && (
       <picture>
         {g.heroImage.hasWebp && <source srcSet={`/images/guides/${g.heroImage.base}.webp`} type="image/webp" />}
@@ -167,169 +169,117 @@ export default async function GidsenIndexPage({ params }: Props) {
           height={760}
           loading="lazy"
           decoding="async"
-          className={`${className} w-full object-cover`}
           style={{ objectPosition: g.heroImage.position ?? 'center 45%' }}
         />
       </picture>
     );
 
   return (
-    <main className="bg-surface min-h-screen">
+    <main>
       <JsonLd data={jsonLd} />
 
-      <GuideFilterProvider>
-        {/* The band: title, one sentence, the search field. The trail sits inside it. */}
-        {/* De band loopt tot de bovenrand: de layout reserveert `--nav-h` voor de zwevende pil,
-            en die marge wordt hier teruggenomen en als padding gegeven — anders staat er een
-            witte strook tussen de pil en het navy. Zelfde truc als `HorizonHero`. */}
-        <header className="bg-primary text-white -mt-[var(--nav-h)]" style={{ paddingTop: 'calc(var(--nav-h) + 1rem)' }}>
-          <div className="max-w-6xl mx-auto px-6 pb-12 sm:pb-14">
-            <Breadcrumb tone="onDark" className="-mx-6 mb-4" items={[{ label: tB('home'), href: '/' }, { label: t('breadcrumb') }]} />
-            <h1
-              className="font-headline font-extrabold text-white m-0 mb-3"
-              style={{ fontSize: 'clamp(2rem,4.2vw,3rem)', letterSpacing: '-0.02em', lineHeight: 1.1 }}
-            >
-              {t('heading')}
-            </h1>
-            <p className="text-lg leading-relaxed m-0 mb-7 max-w-xl" style={{ color: 'rgba(255,255,255,0.8)' }}>
-              {t('lede')}
-            </p>
-            <GuideSearch />
-          </div>
-        </header>
+      {/* De kop: Nevel, het leesveld (glas.html §14), onder de pil door. Titel en één zin.
+          Het kruimelpad staat erin. */}
+      <Field as="header" variant="nevel" veil className="g-readhead">
+        <div className="g-wrap">
+          <Crumbs items={[{ label: tB('home'), href: '/' }, { label: t('breadcrumb') }]} />
+          <h1>{t('heading')}</h1>
+          <p className="g-lead">{t('lede')}</p>
+        </div>
+      </Field>
 
-        {/* Begin hier: one wide card and two small ones. The only cards on the page with a photo. */}
-        {featured.length === 3 && (
-          <section className="px-6 pt-12 pb-4">
-            <div className="max-w-6xl mx-auto">
-              <h2
-                className="font-headline font-extrabold m-0 mb-6"
-                style={{ color: '#002b6d', fontSize: 'clamp(1.6rem,3vw,2.1rem)', letterSpacing: '-0.02em' }}
-              >
-                {t('featured_title')}
-              </h2>
-              <div className="grid gap-5 lg:grid-cols-2">
-                <Link
-                  href={featured[0].href}
-                  className="featured-card grid sm:grid-cols-2 overflow-hidden rounded-2xl no-underline bg-surface-container-lowest hover:-translate-y-0.5 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2"
-                  style={{ boxShadow: 'var(--shadow-ambient)' }}
-                >
-                  {heroImg(featured[0].guide, 'h-48 sm:h-full')}
-                  <span className="flex flex-col gap-2.5 p-7">
-                    <span className="text-[11px] font-bold uppercase tracking-widest text-on-surface-variant">
-                      {t(`sec_${featured[0].guide.section}`)} · {tG('reading_time', { minutes: featured[0].guide.readingMinutes })} · {t('pdf_tag')}
-                    </span>
-                    <span className="font-headline font-extrabold text-on-surface leading-tight" style={{ fontSize: '1.35rem', letterSpacing: '-0.02em', color: '#002b6d', textWrap: 'balance' }}>
-                      {featured[0].lg.heroTitle}
-                    </span>
-                    <span className="text-sm text-on-surface-variant leading-relaxed">{featured[0].lg.description}</span>
-                    <span className="mt-auto pt-3 inline-flex items-center gap-1.5 text-sm font-bold" style={{ color: '#a24000' }}>
-                      {tG('read_guide')}
-                      <ArrowRight size={14} className="rtl-flip" aria-hidden="true" />
-                    </span>
+      {/* Begin hier: uitgelicht + stapel (glas.html §14 "Overzicht"). De enige kaarten met een
+          foto, en het is de eigen kopfoto van elke gids — geen verzonnen beeld. */}
+      {featured.length === 3 && (
+        <section className="g-sec" aria-labelledby="gidsen-featured">
+          <div className="g-wrap">
+            <SectionHeading id="gidsen-featured" title={t('featured_title')} size="h1" className="mb-8" />
+            <div className="g-posts">
+              <Link href={featured[0].href} className="g-feat">
+                {heroImg(featured[0].guide)}
+                <div className="g-glass g-glass-strong">
+                  <span className="g-mono">
+                    {t(`sec_${featured[0].guide.section}`)} · {tG('reading_time', { minutes: featured[0].guide.readingMinutes })} · {t('pdf_tag')}
                   </span>
-                </Link>
-                <div className="grid gap-5 sm:grid-cols-2">
-                  {featured.slice(1).map(f => (
-                    <Link
-                      key={f.guide.slug}
-                      href={f.href}
-                      className="featured-card flex flex-col overflow-hidden rounded-2xl no-underline bg-surface-container-lowest hover:-translate-y-0.5 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2"
-                      style={{ boxShadow: 'var(--shadow-ambient)' }}
-                    >
-                      {heroImg(f.guide, 'h-36')}
-                      <span className="flex flex-col gap-2 p-5 flex-1">
-                        <span className="text-[11px] font-bold uppercase tracking-widest text-on-surface-variant">
-                          {tG('reading_time', { minutes: f.guide.readingMinutes })} · {t('pdf_tag')}
-                        </span>
-                        <span className="font-headline font-bold text-on-surface leading-snug" style={{ fontSize: '1.05rem', color: '#002b6d' }}>
-                          {f.lg.heroTitle}
-                        </span>
-                        <span className="text-sm text-on-surface-variant leading-relaxed">{f.lg.description}</span>
-                      </span>
-                    </Link>
-                  ))}
+                  <h3>{featured[0].lg.heroTitle}</h3>
+                  <span className="block mt-2 text-[0.9375rem] leading-relaxed text-ink-2">{featured[0].lg.description}</span>
+                  <span className="g-tlink mt-4">
+                    {tG('read_guide')}
+                    <ArrowRight className="rtl-flip" aria-hidden="true" />
+                  </span>
                 </div>
+              </Link>
+              <div className="g-post-stack">
+                {featured.slice(1).map(f => (
+                  <Link key={f.guide.slug} href={f.href} className="g-post">
+                    <span className="g-post-th">{heroImg(f.guide)}</span>
+                    <div className="g-post-tx">
+                      <span className="g-mono">{tG('reading_time', { minutes: f.guide.readingMinutes })} · {t('pdf_tag')}</span>
+                      <h3>{f.lg.heroTitle}</h3>
+                      <span className="px-1.5 text-sm leading-relaxed text-ink-2 line-clamp-2">{f.lg.description}</span>
+                    </div>
+                  </Link>
+                ))}
               </div>
-            </div>
-          </section>
-        )}
-
-        {/* Kies een onderwerp: the three hubs and the two single-guide tracks, as one row of tiles.
-            Track marks on navy, the traject on the light category tile — the icon split in
-            CLAUDE.md §7: a tile names a thing you sit an exam in, a category names what is inside. */}
-        <section className="px-6 pt-10 pb-4">
-          <div className="max-w-6xl mx-auto">
-            <h2
-              className="font-headline font-extrabold m-0 mb-6"
-              style={{ color: '#002b6d', fontSize: 'clamp(1.6rem,3vw,2.1rem)', letterSpacing: '-0.02em' }}
-            >
-              {t('topics_title')}
-            </h2>
-            <div className="grid gap-4 grid-cols-2 md:grid-cols-5">
-              <Link href="/inburgering" className={TILE} style={{ boxShadow: 'var(--shadow-ambient)' }}>
-                <CategoryMark category="gidsen" size={40} />
-                <span className="font-headline font-bold text-sm text-on-surface">{t('topic_traject')}</span>
-                <span className="text-xs text-on-surface-variant -mt-2">{t('count_guides', { count: count('inburgering') })}</span>
-              </Link>
-              <Link href="/taalexamens" className={TILE} style={{ boxShadow: 'var(--shadow-ambient)' }}>
-                <ExamMark track="a2" size={40} />
-                <span className="font-headline font-bold text-sm text-on-surface">{t('topic_a2')}</span>
-                <span className="text-xs text-on-surface-variant -mt-2">{t('count_onderdelen', { count: SKILLS.length })}</span>
-              </Link>
-              <Link href={{ pathname: '/taalexamens/[slug]', params: { slug: 'b1-examen' } }} className={TILE} style={{ boxShadow: 'var(--shadow-ambient)' }}>
-                <ExamMark track="b1" size={40} />
-                <span className="font-headline font-bold text-sm text-on-surface">{t('topic_b1')}</span>
-                <span className="text-xs text-on-surface-variant -mt-2">{t('count_guides', { count: 1 })}</span>
-              </Link>
-              <Link href="/knm" className={TILE} style={{ boxShadow: 'var(--shadow-ambient)' }}>
-                <ExamMark track="knm" size={40} />
-                <span className="font-headline font-bold text-sm text-on-surface">{t('topic_knm')}</span>
-                <span className="text-xs text-on-surface-variant -mt-2">{t('count_themas', { count: KNM_THEMES })}</span>
-              </Link>
-              <Link href={{ pathname: '/inburgering/[slug]', params: { slug: 'ona-examen' } }} className={TILE} style={{ boxShadow: 'var(--shadow-ambient)' }}>
-                <ExamMark track="ona" size={40} muted={!onaLive} />
-                <span className="font-headline font-bold text-sm text-on-surface">{t('topic_ona')}</span>
-                <span className="text-xs text-on-surface-variant -mt-2">{onaLive ? t('topic_ona_live') : t('topic_soon')}</span>
-              </Link>
             </div>
           </div>
         </section>
+      )}
 
-        <div className="pt-8">
-          <GuideIndex guides={guides.map(({ url: _url, ...g }) => g)} sections={SECTIONS} />
+      {/* Kies een onderwerp: de drie hubs en de twee tracks met één gids. Track-merk voor wat je
+          koopt en examen in doet, categoriemerk voor het traject (CLAUDE.md §7). */}
+      <section className={featured.length === 3 ? 'g-sec !pt-0' : 'g-sec'} aria-labelledby="gidsen-topics">
+        <div className="g-wrap">
+          <SectionHeading id="gidsen-topics" title={t('topics_title')} size="h2" className="mb-6" />
+          <div className="g-subjects">
+            <Link href="/inburgering" className="g-subject">
+              <CategoryMark category="gidsen" size={44} />
+              <b>{t('topic_traject')}</b>
+              <small>{t('count_guides', { count: count('inburgering') })}</small>
+            </Link>
+            <Link href="/taalexamens" className="g-subject">
+              <ExamMark track="a2" size={44} />
+              <b>{t('topic_a2')}</b>
+              <small>{t('count_onderdelen', { count: SKILLS.length })}</small>
+            </Link>
+            <Link href={{ pathname: '/taalexamens/[slug]', params: { slug: 'b1-examen' } }} className="g-subject">
+              <ExamMark track="b1" size={44} />
+              <b>{t('topic_b1')}</b>
+              <small>{t('count_guides', { count: 1 })}</small>
+            </Link>
+            <Link href="/knm" className="g-subject">
+              <ExamMark track="knm" size={44} />
+              <b>{t('topic_knm')}</b>
+              <small>{t('count_themas', { count: KNM_THEMES })}</small>
+            </Link>
+            <Link href={{ pathname: '/inburgering/[slug]', params: { slug: 'ona-examen' } }} className="g-subject">
+              <ExamMark track="ona" size={44} muted={!onaLive} />
+              <b>{t('topic_ona')}</b>
+              <small>{onaLive ? t('topic_ona_live') : t('topic_soon')}</small>
+            </Link>
+          </div>
         </div>
-      </GuideFilterProvider>
+      </section>
+
+      <GuideIndex guides={guides.map(({ url: _url, ...g }) => g)} sections={SECTIONS} />
 
       {posts.length > 0 && (
-        <section className="px-6 py-14 sm:py-16">
-          <div className="max-w-6xl mx-auto">
-            <SectionHeader eyebrow={t('blog_eyebrow')} title={t('sec_blog')} subtitle={t('sec_blog_sub')} />
-            <ul className="grid gap-4 sm:grid-cols-2 list-none p-0 m-0 mb-6">
+        <section className="g-sec" aria-labelledby="gidsen-blog">
+          <div className="g-wrap">
+            <SectionHeading id="gidsen-blog" title={t('sec_blog')} aside={t('sec_blog_sub')} size="h1" className="mb-8" />
+            <ul className="g-grid2 list-none p-0 m-0 mb-6">
               {posts.map(post => (
                 <li key={post.slug}>
-                  <Link
-                    href={{ pathname: '/blog/[slug]', params: { slug: post.slug } }}
-                    className="guide-card-link block h-full rounded-2xl p-5 no-underline bg-surface-container-lowest hover:-translate-y-0.5 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2"
-                    style={{ boxShadow: 'var(--shadow-ambient)' }}
-                  >
-                    <span className="block font-headline font-bold text-base text-on-surface leading-snug">
-                      {post.heroTitle}
-                    </span>
-                    <span className="block text-sm text-on-surface-variant leading-relaxed mt-1.5">
-                      {post.description}
-                    </span>
+                  <Link href={{ pathname: '/blog/[slug]', params: { slug: post.slug } }} className="g-textcard">
+                    <b>{post.heroTitle}</b>
+                    <span>{post.description}</span>
                   </Link>
                 </li>
               ))}
             </ul>
-            <Link
-              href="/blog"
-              className="inline-flex items-center gap-1.5 text-sm font-bold no-underline"
-              style={{ color: '#a24000' }}
-            >
+            <Link href="/blog" className="g-tlink">
               {t('sec_blog_hub')}
-              <ArrowRight size={14} className="rtl-flip" aria-hidden="true" />
+              <ArrowRight className="rtl-flip" aria-hidden="true" />
             </Link>
           </div>
         </section>

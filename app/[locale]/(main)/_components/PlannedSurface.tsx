@@ -13,7 +13,9 @@
 import { getTranslations } from 'next-intl/server';
 import { Clock, BookOpen, ArrowRight } from 'lucide-react';
 import { Link } from '@/i18n/navigation';
-import { GradientHero, Breadcrumb, SectionHeader } from '@/components/site';
+import Field from '@/components/glas/Field';
+import SectionHeading from '@/components/glas/SectionHeading';
+import Crumbs from './glas/Crumbs';
 import { hubHref } from '@/data/guides/helpers';
 import type { PlannedSurface as Surface, RelatedHref } from '@/data/planned-surfaces';
 
@@ -46,106 +48,70 @@ export default async function PlannedSurface({
 
   return (
     <>
-      <GradientHero className="pb-14">
-        <div className="max-w-3xl">
-          <span className="inline-block px-3 py-1 rounded-full font-bold text-xs uppercase tracking-widest mb-5 bg-secondary-container text-on-secondary-container">
+      {/* De kop: Gracht, onder de pil door. Het soort pagina (gratis / tool) staat als metachip
+          onder de titel, niet als kicker erboven. */}
+      <Field as="header" variant="gracht" veil className="g-readhead">
+        <div className="g-wrap">
+          <Crumbs
+            items={[
+              { label: tB('home'), href: '/' },
+              { label: tB(surface.section), href: hub },
+              { label: tS('breadcrumb') },
+            ]}
+          />
+          <h1>{tS('title')}</h1>
+          <p className="g-lead">{tS('intro')}</p>
+          <span className="g-metachip g-glass mt-6">
+            <Icon aria-hidden="true" />
             {t(surface.kind === 'tool' ? 'eyebrow_tool' : 'eyebrow_free')}
           </span>
-          <h1
-            className="font-headline font-bold text-white tracking-tight mb-6 leading-tight"
-            style={{ fontSize: 'clamp(1.9rem,4vw,2.8rem)' }}
-          >
-            {tS('title')}
-          </h1>
-          <p className="text-lg leading-relaxed" style={{ color: 'rgba(255,255,255,0.72)' }}>
-            {tS('intro')}
-          </p>
         </div>
-      </GradientHero>
+      </Field>
 
-      <Breadcrumb
-        items={[
-          { label: tB('home'), href: '/' },
-          { label: tB(surface.section), href: hub },
-          { label: tS('breadcrumb') },
-        ]}
-      />
-
-      <main className="bg-surface">
-        <section className="py-14 px-6">
-          <div className="max-w-4xl mx-auto">
-            {/* The status, said plainly and once. */}
-            <div
-              className="rounded-2xl p-6 md:p-7 mb-10 flex gap-4 items-start"
-              style={{ background: '#fcecdd' }}
-            >
-              <Icon className="w-6 h-6 shrink-0 mt-0.5" style={{ color: '#a24000' }} aria-hidden="true" />
-              <div>
-                <p className="font-headline font-bold mb-1" style={{ color: '#a24000' }}>
-                  {t('status_title')}
-                </p>
-                <p className="text-sm leading-relaxed text-on-surface-variant">
-                  {t('status_body', { milestone: surface.milestone })}
-                </p>
-              </div>
+      <main className="g-sec">
+        <div className="g-wrap max-w-[920px] g-stack">
+          {/* De stand, één keer en gewoon gezegd. */}
+          <div className="g-notice g-notice-klei !p-5 sm:!p-6">
+            <Icon aria-hidden="true" />
+            <div>
+              <p className="m-0 mb-1 font-headline font-bold text-klei">{t('status_title')}</p>
+              <p className="m-0 text-ink-2">{t('status_body', { milestone: surface.milestone })}</p>
             </div>
+          </div>
 
-            {/* What it will do — three concrete promises, not a vague pitch. */}
-            <SectionHeader title={t('what_title')} />
-            <ul className="list-none p-0 m-0 grid gap-4 mb-12">
+          {/* Wat het gaat doen — drie concrete beloftes. */}
+          <section className="bg-wit rounded-g-xl p-6 sm:p-8 mt-4" aria-labelledby="planned-what">
+            <SectionHeading id="planned-what" title={t('what_title')} size="h3" className="mb-6" />
+            <ol className="g-gsteps">
               {[1, 2, 3].map(n => (
-                <li
-                  key={n}
-                  className="bg-surface-container-lowest rounded-2xl p-5 flex gap-4 items-start"
-                  style={{ boxShadow: '0 2px 16px rgba(0,43,109,0.06)' }}
-                >
-                  <span
-                    className="inline-flex items-center justify-center w-7 h-7 rounded-lg font-headline font-bold text-xs shrink-0"
-                    style={{ background: 'rgba(0,43,109,0.07)', color: '#002b6d' }}
-                    aria-hidden="true"
-                  >
-                    {n}
-                  </span>
-                  <p className="text-on-surface-variant leading-relaxed text-sm">{tS(`what_${n}`)}</p>
+                <li key={n} className="g-gstep">
+                  <span className="g-gstep-n" aria-hidden="true">{n}</span>
+                  <p className="!mt-2">{tS(`what_${n}`)}</p>
                 </li>
               ))}
-            </ul>
+            </ol>
+          </section>
 
-            {/* Where the content or the rule comes from — the sourcing discipline, visible. */}
-            <div
-              className="bg-surface-container-lowest rounded-2xl p-7 md:p-8 mb-12"
-              style={{ boxShadow: '0 2px 32px rgba(0,43,109,0.06)' }}
-            >
-              <h2
-                className="font-headline font-bold text-on-surface mb-3"
-                style={{ fontSize: '1.15rem', letterSpacing: '-0.01em' }}
-              >
-                {t('built_title')}
-              </h2>
-              <p className="text-on-surface-variant leading-relaxed text-sm" style={{ lineHeight: 1.7 }}>
-                {tS('built_from')}
-              </p>
-            </div>
+          {/* Waar de inhoud of de regel vandaan komt — de bronnendiscipline, zichtbaar. */}
+          <section className="bg-wit rounded-g-xl p-6 sm:p-8" aria-labelledby="planned-built">
+            <SectionHeading id="planned-built" title={t('built_title')} size="h3" className="mb-3" />
+            <p className="g-body m-0">{tS('built_from')}</p>
+          </section>
 
-            {/* Never a dead end. */}
-            <SectionHeader title={t('meanwhile_title')} subtitle={t('meanwhile_desc')} />
-            <div className="grid sm:grid-cols-2 gap-4">
+          {/* Nooit een doodlopende weg. */}
+          <section className="mt-8" aria-labelledby="planned-meanwhile">
+            <SectionHeading id="planned-meanwhile" title={t('meanwhile_title')} size="h2" />
+            <p className="g-body mt-3 mb-6">{t('meanwhile_desc')}</p>
+            <div className="g-grid2">
               {surface.related.map((href, i) => (
-                <Link
-                  key={i}
-                  href={href}
-                  className="bg-surface-container-lowest rounded-2xl p-6 flex items-center justify-between gap-3 no-underline shadow-sm post-card focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2"
-                  style={{ textDecoration: 'none' }}
-                >
-                  <span className="font-headline font-bold text-on-surface text-sm leading-snug">
-                    {t(relatedLabelKey(href))}
-                  </span>
-                  <ArrowRight className="w-4 h-4 shrink-0" style={{ color: '#fe762c' }} aria-hidden="true" />
+                <Link key={i} href={href} className="g-subject g-subject-row">
+                  <b>{t(relatedLabelKey(href))}</b>
+                  <ArrowRight className="rtl-flip size-4 text-navy shrink-0" aria-hidden="true" />
                 </Link>
               ))}
             </div>
-          </div>
-        </section>
+          </section>
+        </div>
       </main>
     </>
   );

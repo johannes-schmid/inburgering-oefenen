@@ -2,17 +2,16 @@ import type { Metadata } from 'next';
 import { notFound, redirect } from 'next/navigation';
 import { getTranslations } from 'next-intl/server';
 import { createClient } from '@/lib/supabase/server';
-import { fetchPortalProgress, fetchPublishedExamNumbers } from '@/lib/portal-progress';
+import { fetchPortalProgress } from '@/lib/portal-progress';
 import { fetchPortalMenu } from '@/lib/portal-menu';
 import { isLevel, levelLabel, skillsAtLevel, type SkillSlug } from '@/data/skills';
 import { totalExamsForLevel } from '@/lib/pricing';
 import { fetchLessonCounts, moduleKey } from '@/lib/lessons/lessons-server';
 import { averageReadiness, readiness } from '@/lib/lessons/readiness';
 import { fetchNextLesson, type NextLesson } from '@/lib/portal-next';
+import { CategoryMark } from '@/components/glas';
 import AppShell from '../../components/AppShell';
-import { ArrowRight } from 'lucide-react';
-import { tally } from '@/lib/lessons/sporen';
-import ModuleSkillGrid from '../_components/ModuleSkillGrid';
+import GlasModuleCard from '../_components/GlasModuleCard';
 
 type Props = { params: Promise<{ locale: string; level: string }> };
 
@@ -22,19 +21,12 @@ export const metadata: Metadata = {
 };
 
 /**
- * Eén niveau: hoe klaar ben je, per onderdeel, en waarom.
+ * Eén niveau: de vier onderdelen ván één module, in dezelfde kaart als de modules op
+ * `/dashboard` (Glas, `.mod`) — de kandidaat die hierheen klikt ziet hetzelfde object een niveau
+ * dieper. Rechts dezelfde rustige widgets: examenklaar, en leren tegen oefenen.
  *
- * Het bestond al als de pagina waar de zijbalk op landt. Het is niet een tweede `/dashboard` —
- * dat toont modules, dit toont de vier onderdelen ván één module.
- *
- * Op 03-09 is het teruggebracht tot de kop en die vier onderdelen. De conceptentabel en het
- * lijstje "wat je nu moet doen" stonden er onder en herhaalden wat de vier regels al zeggen; de
- * concepten hebben hun eigen pagina in de zijbalk, en de volgende stap staat nu op de regel van
- * het onderdeel waar hij bij hoort.
- *
- * De gemiddelde ring in de kop laat onderdelen zonder cijfer weg uit de deler. Spreken dat nog
- * niet bestaat mag A2 niet naar beneden trekken: dat zou onze roadmap presenteren als de
- * voortgang van de kandidaat.
+ * De gemiddelde "examenklaar" laat onderdelen zonder cijfer weg uit de deler: Spreken dat nog
+ * niet bestaat mag A2 niet naar beneden trekken.
  */
 export default async function LevelOverviewPage({ params }: Props) {
   const { locale, level: rawLevel } = await params;
@@ -42,15 +34,15 @@ export default async function LevelOverviewPage({ params }: Props) {
   const level = rawLevel;
 
   const t = await getTranslations('portal');
+  const tSkills = await getTranslations('skills');
 
   const supabase = await createClient();
   const { data: { user } } = await supabase.auth.getUser();
   if (!user) redirect(`/${locale}/login?next=/dashboard/${level}`);
 
   const meta = user.user_metadata ?? {};
-  const [progress, published, menu, lessons] = await Promise.all([
+  const [progress, menu, lessons] = await Promise.all([
     fetchPortalProgress(user.id),
-    fetchPublishedExamNumbers(),
     fetchPortalMenu(),
     fetchLessonCounts(user.id),
   ]);
@@ -64,6 +56,7 @@ export default async function LevelOverviewPage({ params }: Props) {
     const les = lessons.get(moduleKey(level, skill.slug)) ?? { done: 0, total: 0 };
     return {
       skill,
+      les,
       readiness: readiness({
         lessonsDone: les.done,
         lessonsTotal: les.total,
@@ -75,11 +68,8 @@ export default async function LevelOverviewPage({ params }: Props) {
   });
   const average = averageReadiness(perSkill.map(x => x.readiness));
 
-  const levelLessons = skills.reduce(
-    (acc, s) => {
-      const c = lessons.get(moduleKey(level, s.slug)) ?? { done: 0, total: 0 };
-      return { done: acc.done + c.done, total: acc.total + c.total };
-    },
+  const levelLessons = perSkill.reduce(
+    (acc, s) => ({ done: acc.done + s.les.done, total: acc.total + s.les.total }),
     { done: 0, total: 0 },
   );
   const lessonPct = levelLessons.total > 0
@@ -89,10 +79,8 @@ export default async function LevelOverviewPage({ params }: Props) {
     ? t('mod_no_lessons')
     : t('mod_lessons', { done: levelLessons.done, total: levelLessons.total });
 
-  /* De eerstvolgende les per onderdeel — de kaart zegt nu "Volgende: …" en dat is per onderdeel
-     iets anders. Vier keer één module, parallel; `fetchNextLesson` stopt zelf bij een module die
-     niet van de kandidaat is. */
-
+  /* De eerstvolgende les per onderdeel; `fetchNextLesson` stopt zelf bij een module die niet
+     van de kandidaat is. */
   const nextPerSkill = new Map<SkillSlug, NextLesson | null>(
     await Promise.all(
       skills.map(async s => {
@@ -111,70 +99,61 @@ export default async function LevelOverviewPage({ params }: Props) {
       activeGroup={level}
       menu={menu}
     >
-      <div className="px-5 py-7 sm:px-8 sm:py-10">
-        <div className="max-w-5xl mx-auto">
+      <div className="g-page">
+        <header className="g-ph">
+          <h1>{t('module_title', { level: levelLabel(level) })}</h1>
+          <p>{t('module_intro', { done, total })}</p>
+        </header>
 
-          <header className="ov-head">
-            <h1>{t('module_title', { level: levelLabel(level) })}</h1>
-            <p>{t('module_intro', { done, total })}</p>
-          </header>
-
-          <div className="ov-grid">
-            <div className="ov-rows">
-              <ModuleSkillGrid
-                locale={locale}
-                level={level}
-                progress={levelProgress}
-                lessons={lessons}
-                next={nextPerSkill}
-              />
-            </div>
-
-            {/* De cijfers die niet op een onderdeelkaart passen, in dezelfde kolom als op
-                `/dashboard`. De kop met de ring stond hier eerst over de volle breedte; dat was
-                een tweede kop boven een pagina die al een titel heeft, en de drie tegels erin
-                zeiden precies wat hier nu compact staat. */}
-            <aside className="ov-side">
-              <section className="ov-card ov-total">
-                <span className="ov-kick">{t('readiness_label')}</span>
-                {/* Geen tweede label naast het getal: de kop van de pagina noemt het niveau al. */}
-                <div className="ov-total-top">
-                  <b>{average === null ? '—' : `${average}%`}</b>
-                </div>
-                <span className="ov-rail" aria-hidden><i style={{ width: `${average ?? 0}%` }} /></span>
-                {/* Deze regel is een feitelijke claim en gaat nooit weg om een kaart op te
-                    ruimen: het is onze inschatting, geen voorspelling van de DUO-uitslag. */}
-                <p className="ov-note">{t('readiness_note')}</p>
-              </section>
-
-              {/* Hier stond een kaart naar de regelbibliotheek. Vervallen op 10-09: de regels
-                  van een examen staan in stap 2 van díe cursus, en een kaart op het
-                  niveauscherm wees naar een vijfde spoor dat niet meer bestaat. */}
-
-              <section className="ov-card">
-                <dl className="ov-stats">
-                  <div className="ov-stat">
-                    <dt>{t('mod_learn')}</dt>
-                    <dd>
-                      <b>{lessonPct === null ? '—' : `${lessonPct}%`}</b>
-                      <span>{lessonsSub}</span>
-                    </dd>
-                  </div>
-                  <div className="ov-stat">
-                    <dt>{t('mod_practice')}</dt>
-                    <dd>
-                      <b>{Math.round((done / total) * 100)}%</b>
-                      <span>{t('mod_exams', { done, total })}</span>
-                    </dd>
-                  </div>
-                </dl>
-              </section>
-            </aside>
+        <div className="g-dgrid">
+          <div className="g-mods">
+            {perSkill.map(({ skill, les, readiness: r }) => {
+              const p = levelProgress[skill.slug];
+              const step = nextPerSkill.get(skill.slug) ?? null;
+              return (
+                <GlasModuleCard
+                  key={skill.slug}
+                  mark={<CategoryMark category={skill.slug} size={52} />}
+                  title={tSkills(`${skill.key}.name`)}
+                  line={step
+                    ? t('ov_next', { lesson: step.title })
+                    : les.total === 0 ? t('ov_next_empty') : t('ov_next_none')}
+                  /* Gemeten of niet: een balk op 0% bij iemand die nog niets deed leest als
+                     voortgang die hij kwijt is. */
+                  pct={r.pct}
+                  foot={t('mod_exams', { done: p.examsDone, total: skill.examCount })}
+                  cta={t('mod_continue')}
+                  href={`/${locale}/dashboard/${level}/${skill.slug}`}
+                />
+              );
+            })}
           </div>
 
+          <aside>
+            <section className="g-wid" aria-labelledby="wid-ready">
+              <span className="g-mono" id="wid-ready">{t('readiness_label')}</span>
+              <div className="g-wid-big">{average === null ? '—' : <>{average}<span>%</span></>}</div>
+              <span className="g-prog" aria-hidden><i style={{ width: `${average ?? 0}%` }} /></span>
+              {/* Een feitelijke claim die nooit weggaat om een kaart op te ruimen: het is onze
+                  inschatting, geen voorspelling van de DUO-uitslag. */}
+              <p>{t('readiness_note')}</p>
+            </section>
+
+            <section className="g-wid">
+              <dl className="g-kv">
+                <dt>{t('mod_learn')}</dt>
+                <dd>{lessonPct === null ? '—' : `${lessonPct}%`}</dd>
+              </dl>
+              <p>{lessonsSub}</p>
+              <dl className="g-kv">
+                <dt>{t('mod_practice')}</dt>
+                <dd>{total > 0 ? `${Math.round((done / total) * 100)}%` : '—'}</dd>
+              </dl>
+              <p>{t('mod_exams', { done, total })}</p>
+            </section>
+          </aside>
         </div>
       </div>
-
     </AppShell>
   );
 }

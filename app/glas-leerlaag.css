@@ -1,0 +1,945 @@
+/* ══════════════════════════════════════════════════════════════════════════════════════════════
+   GLAS v1.0 — de leerlaag (docs/design/glas.html §11 "Leren is rustiger dan toetsen")
+   Lessen, taalregels, woordkaarten, de KNM-lesmodules en ONA. Alles hangt onder `.g-leer`, de
+   wrapper die alleen de herbouwde leerlaagschermen zetten — zo raakt niets hiervan een scherm dat
+   nog in The Civic Authority staat, ook al delen ze `app/portal.css`.
+
+   Twee lagen:
+   1. **Tokens omzetten.** De componenten die hun markup houden (het lesplaatje, de ingesproken
+      uitleg, de woordkaart) lezen de Civic-tokens. Binnen `.g-leer` wijzen die naar Glas: de
+      tiers worden mist/wit, goed wordt `--goed`, de zachte gloed (`--shadow-ambient`) verdwijnt —
+      wit staat, glas zweeft, en hier ligt niets ergens op.
+   2. **Glas-onderdelen** met het voorvoegsel `gl-` (lespagina, oefenvenster, recorder, ONA) en
+      gerichte regels voor de bestaande klassen van de lesstroom.
+
+   Bewust zonder `@layer`: `app/portal.css` is ook ongelaagd, en deze regels moeten daar boven
+   kunnen. Beweging: transform/opacity, ease-out-glas, ≤300ms, en elke regel heeft een
+   reduced-motion-eindstand (onderaan).
+   ══════════════════════════════════════════════════════════════════════════════════════════════ */
+
+.g-leer {
+  --color-surface: var(--mist);
+  --color-surface-container-lowest: #fff;
+  --color-surface-container-low: var(--mist);
+  --color-surface-container: var(--mist-2);
+  --color-surface-container-high: var(--mist-2);
+  --color-surface-container-highest: var(--mist-2);
+  --color-on-surface: var(--ink);
+  --color-on-surface-variant: var(--ink-2);
+  --color-outline: var(--ink-3);
+  --color-outline-variant: rgba(0, 43, 109, 0.18);
+  --color-correct: var(--goed);
+  --color-correct-container: var(--goed-tint);
+  --color-on-correct-container: var(--goed-ink);
+  --color-error: var(--fout);
+  --shadow-ambient: none;
+  --shadow-card: none;
+  --ring-selected: var(--glas-ring);
+  --ghost-border: rgba(0, 43, 109, 0.14);
+  --gradient-brand: var(--navy);
+  --gradient-btn-orange: var(--oranje);
+  --shadow-btn-orange: none;
+  --shadow-btn-orange-hover: none;
+  color: var(--ink);
+}
+.g-leer ::selection { background: rgba(157, 184, 255, 0.45); }
+
+/* ── het canvas ─────────────────────────────────────────────────────────────────────────────── */
+.g-leer.gl-shell { padding: 20px 16px 40px; }
+@media (min-width: 640px) { .g-leer.gl-shell { padding: 28px 28px 56px; } }
+.g-leer .gt-page { max-width: 78rem; margin: 0 auto; }
+
+.g-leer .g-mono {
+  font-family: var(--glas-mono); font-size: 11.5px; font-weight: 500; letter-spacing: 0.08em;
+  text-transform: uppercase; color: var(--ink-2);
+}
+
+/* ── de lespagina (glas.html §11 .lpage) ──────────────────────────────────────────────────────── */
+.gl-view { display: flex; flex-direction: column; gap: 14px; min-width: 0; }
+.gl-page { background: #fff; border-radius: var(--r-xl); overflow: hidden; display: flex; flex-direction: column; }
+.gl-bar {
+  display: flex; align-items: center; flex-wrap: wrap; gap: 6px 14px; padding: 16px 18px 0; background: #fff;
+}
+@media (min-width: 640px) { .gl-bar { padding: 18px 28px 0; } }
+.gl-crumbs { min-width: 0; flex: 1 1 auto; }
+.g-leer .gl-crumbs .crumbs { margin: 0; }
+.gl-bar-tag { flex: none; }
+/* "Volgende" rechts in de balk: van de uitleg naar de opdracht, van de opdracht verder. */
+.gl-bar-next {
+  flex: none; display: inline-flex; align-items: center; gap: 2px; margin-inline-start: auto; padding: 6px 8px; border-radius: 10px;
+  font-family: var(--font-headline); font-weight: 700; font-size: 14px; color: var(--navy); text-decoration: none;
+  transition: background-color 160ms ease, transform 160ms var(--ease-out-glas);
+}
+.gl-bar-next:active { transform: scale(0.97); }
+.gl-bar-next:focus-visible { outline: none; box-shadow: var(--glas-focus); }
+@media (hover: hover) and (pointer: fine) { .gl-bar-next:hover { background: var(--mist); } }
+
+/* De twee stappen als schakelaar in de pagina — alleen waar de cursusroute niet staat. */
+.gl-steps { display: flex; gap: 4px; padding: 4px; border-radius: 14px; background: var(--mist); align-self: stretch; }
+.gl-steps a {
+  flex: 1; display: inline-flex; align-items: center; justify-content: center; gap: 7px; padding: 9px 12px; border-radius: 10px;
+  font-size: 14px; font-weight: 600; color: var(--ink-2); text-decoration: none; transition: background-color 160ms ease, color 160ms ease;
+}
+.gl-steps a.is-on { background: #fff; color: var(--navy); box-shadow: 0 6px 14px -10px rgba(0, 27, 80, 0.5); }
+.gl-steps a:focus-visible { outline: none; box-shadow: inset 0 0 0 2px var(--navy); }
+@media (min-width: 1024px) { .gl-steps { display: none; } }
+@media (max-width: 1023px) { .gl-stepback { display: none; } }
+
+/* De kop van de opdrachtstap: titel, en terug naar de video. */
+.gl-head.gl-taskhead { flex-direction: row; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: 12px 20px; }
+.gl-taskhead .gl-pending { flex-basis: 100%; }
+.gl-stepback {
+  flex: none; display: inline-flex; align-items: center; gap: 8px; padding: 9px 14px; border-radius: var(--r-pill);
+  background: var(--mist); color: var(--navy); font-weight: 600; font-size: 14px; text-decoration: none;
+  transition: background-color 160ms ease, transform 160ms var(--ease-out-glas);
+}
+.gl-stepback:active { transform: scale(0.97); }
+.gl-stepback:focus-visible { outline: none; box-shadow: var(--glas-focus); }
+@media (hover: hover) and (pointer: fine) { .gl-stepback:hover { background: var(--mist-2); } }
+
+/* De overstap van de uitleg naar de opdracht: Nacht stil, de hele kaart is de link. */
+.gl-handoff { text-decoration: none; transition: transform 160ms var(--ease-out-glas); }
+.gl-handoff:active { transform: scale(0.99); }
+.gl-handoff:focus-visible { outline: none; box-shadow: var(--glas-focus); }
+.gl-handoff .gl-handoff-k { font-size: 10.5px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--waas); }
+.gl-handoff .g-btn > svg { transition: transform 200ms var(--ease-out-glas); }
+@media (hover: hover) and (pointer: fine) {
+  .gl-handoff:hover .g-btn > svg { transform: translateX(3px); }
+  [dir="rtl"] .gl-handoff:hover .g-btn > svg { transform: scaleX(-1) translateX(3px); }
+}
+
+/* De opgaven op de pagina. Met materiaal (tekst, fragment): links de bron, rechts de vraag. */
+@media (min-width: 1200px) {
+  .gl-task.is-wide .exq-has-src { display: grid; grid-template-columns: minmax(0, 1.05fr) minmax(0, 1fr); column-gap: 24px; align-items: start; }
+  .gl-task.is-wide .exq-has-src > .exq { grid-column: 1 / -1; }
+  .gl-task.is-wide .exq-has-src > .exq-src { position: sticky; top: 16px; }
+  .g-leer .gl-task.is-wide .exq-has-src .blk-tekst { grid-template-columns: minmax(0, 1fr); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .gl-bar-next, .gl-stepback, .gl-handoff, .gl-handoff .g-btn > svg, .gl-steps a { transition: none; }
+}
+
+.gl-in { padding: 22px 18px 24px; display: flex; flex-direction: column; gap: 18px; min-width: 0; }
+@media (min-width: 640px) { .gl-in { padding: 26px 28px 30px; gap: 20px; } }
+
+.gl-head { display: flex; flex-direction: column; align-items: flex-start; gap: 10px; }
+.gl-head.is-row { flex-direction: row; align-items: center; gap: 14px; }
+.g-leer .gl-head.is-row .gl-title { margin: 0; }
+.g-leer .gl-title {
+  margin: 4px 0 0; font-family: var(--font-headline); font-weight: 700; font-size: clamp(28px, 3.4vw, 40px); line-height: 1.08; letter-spacing: -0.035em;
+  color: var(--ink); text-wrap: balance;
+}
+.gl-learn { margin: 0; max-width: 64ch; font-size: 16px; line-height: 1.7; color: var(--ink-2); text-wrap: pretty; }
+.gl-sents {
+  margin: 0; padding: 12px 14px; border-radius: var(--r-md); background: var(--mist);
+  font-family: var(--font-headline); font-weight: 600; font-size: 15.5px; line-height: 1.55; color: var(--ink);
+}
+.gl-keys { list-style: none; margin: 2px 0 0; padding: 0; display: flex; flex-wrap: wrap; gap: 8px; }
+.gl-keys li > span, .gl-keys li > a {
+  display: inline-flex; align-items: center; height: 30px; padding: 0 12px; border-radius: var(--r-pill);
+  background: rgba(0, 43, 109, 0.08); color: var(--navy); font-size: 13px; font-weight: 600;
+  text-decoration: none; white-space: nowrap;
+}
+.gl-keys li > a {
+  transition: background-color 160ms ease, transform 160ms var(--ease-out-glas);
+}
+.gl-keys li > a:hover { background: rgba(0, 43, 109, 0.14); }
+.gl-keys li > a:active { transform: scale(0.97); }
+.gl-keys li > a:focus-visible { outline: none; box-shadow: var(--glas-focus); }
+.gl-pending {
+  margin: 2px 0 0; display: inline-flex; align-items: center; min-height: 28px; padding: 4px 12px;
+  border-radius: var(--r-pill); background: var(--klei-tint); color: var(--klei); font-size: 12.5px; font-weight: 600;
+}
+
+.gl-video { margin: 0; display: flex; flex-direction: column; gap: 8px; }
+.g-leer .gl-video .vid-tile { border-radius: var(--r-lg); overflow: hidden; }
+.gl-video figcaption { display: flex; align-items: baseline; justify-content: space-between; gap: 10px; font-size: 14px; }
+.gl-video figcaption b { font-family: var(--font-headline); color: var(--ink); }
+
+/* Onze uitleg onder de video: een eigen deel met een kop, op afstand van de video (eigenaar, 15-10). */
+.gl-explain-head { display: flex; align-items: center; gap: 12px; margin-top: 22px; }
+@media (min-width: 640px) { .gl-explain-head { margin-top: 30px; } }
+.gl-explain-ic {
+  flex: none; width: 38px; height: 38px; border-radius: 12px; display: grid; place-items: center;
+  background: var(--tegel); color: var(--navy);
+}
+.gl-explain-head > span:last-child { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+.gl-explain-head small { font-size: 10.5px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink-3); }
+.gl-explain-head h2 { margin: 0; font-size: 20px; font-weight: 800; letter-spacing: -0.015em; line-height: 1.2; color: var(--ink); }
+
+/* De delen van een onderwerp: één segmentbalk met een witte duim (glas.html §06 "Tab"). */
+.gl-parts {
+  display: flex; flex-wrap: wrap; gap: 4px; padding: 4px; border-radius: var(--r-lg); background: var(--mist);
+}
+.gl-parts button {
+  all: unset; box-sizing: border-box; cursor: pointer; flex: 1 1 12rem; min-width: 0;
+  display: flex; align-items: center; gap: 10px; padding: 9px 14px; border-radius: var(--r-md);
+  font-size: 14px; font-weight: 600; color: var(--ink-2);
+  transition: background-color 160ms ease, color 160ms ease, transform 160ms var(--ease-out-glas);
+}
+.gl-parts button > span:last-child { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.gl-parts button:hover { color: var(--navy); }
+.gl-parts button:active { transform: scale(0.98); }
+.gl-parts button:focus-visible { box-shadow: var(--glas-focus); }
+.gl-parts button[aria-selected="true"] { background: #fff; color: var(--navy); box-shadow: 0 1px 3px rgba(0, 27, 80, 0.1); }
+.gl-parts-n {
+  flex: none; width: 24px; height: 24px; border-radius: 50%; display: grid; place-items: center;
+  background: rgba(0, 43, 109, 0.1); color: var(--navy); font-family: var(--font-headline); font-size: 12px; font-weight: 800;
+}
+.gl-parts button[aria-selected="true"] .gl-parts-n { background: var(--navy); color: #fff; }
+
+/* De geschreven uitleg, ingeklapt onder een ingesproken uitleg. */
+.gl-fold { border-radius: var(--r-lg); background: var(--mist); }
+.gl-fold > summary {
+  list-style: none; cursor: pointer; display: flex; align-items: center; gap: 12px; padding: 14px 18px;
+  border-radius: var(--r-lg); transition: background-color 160ms ease;
+}
+.gl-fold > summary::-webkit-details-marker { display: none; }
+.gl-fold > summary:hover { background: var(--mist-2); }
+.gl-fold > summary:focus-visible { outline: none; box-shadow: var(--glas-focus); }
+.gl-fold > summary > span { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 2px; }
+.gl-fold > summary b { font-family: var(--font-headline); font-size: 15.5px; color: var(--navy); }
+.gl-fold > summary small { font-size: 13px; color: var(--ink-2); }
+.gl-fold-chev { flex: none; color: var(--navy); transition: transform 200ms var(--ease-out-glas); }
+.gl-fold[open] .gl-fold-chev { transform: rotate(180deg); }
+.gl-fold-body { padding: 4px 14px 16px; }
+.g-leer .gl-fold-body .rule-panel, .g-leer .gl-fold-body .fcard { background: #fff; }
+
+/* "Oefen wat je net leerde" — Nacht stil, één witte knop (glas.html §11 .gopractice). */
+.gl-go {
+  margin-top: 4px; border-radius: var(--r-lg); padding: 18px; display: flex; gap: 14px; align-items: center;
+  flex-wrap: wrap; color: #fff;
+}
+.gl-go-copy { flex: 1 1 200px; min-width: 0; display: flex; flex-direction: column; gap: 2px; }
+.gl-go-copy b { font-family: var(--font-headline); font-size: 17px; letter-spacing: -0.01em; }
+.gl-go-copy small { font-size: 13px; color: rgba(255, 255, 255, 0.72); }
+
+.gl-unwritten {
+  display: flex; gap: 12px; align-items: flex-start; padding: 16px 18px; border-radius: var(--r-lg); background: var(--mist);
+}
+.gl-unwritten-ic {
+  flex: none; width: 32px; height: 32px; border-radius: 50%; display: grid; place-items: center; background: #fff; color: var(--navy);
+}
+.gl-unwritten b { display: block; font-family: var(--font-headline); color: var(--ink); }
+.gl-unwritten span span { font-size: 14px; color: var(--ink-2); }
+
+/* "Hierna" — een witte kaart met één pijl. */
+.gl-next {
+  display: flex; align-items: center; gap: 14px; padding: 16px 18px; border-radius: var(--r-lg); background: #fff;
+  text-decoration: none; color: var(--ink);
+  transition: transform 160ms var(--ease-out-glas), background-color 160ms ease;
+}
+.gl-next-copy { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 3px; }
+.gl-next-copy b { font-family: var(--font-headline); font-size: 16px; color: var(--navy); line-height: 1.3; }
+.gl-next-go {
+  flex: none; width: 40px; height: 40px; border-radius: 50%; display: grid; place-items: center;
+  background: var(--mist); color: var(--navy); transition: transform 200ms var(--ease-out-glas), background-color 160ms ease;
+}
+.gl-next:hover .gl-next-go { background: var(--navy); color: #fff; }
+.gl-next:active { transform: scale(0.99); }
+.gl-next:focus-visible { outline: none; box-shadow: var(--glas-focus); }
+@media (hover: hover) and (pointer: fine) {
+  .gl-next:hover .gl-next-go { transform: translateX(3px); }
+  [dir="rtl"] .gl-next:hover .gl-next-go { transform: translateX(-3px); }
+}
+
+/* ── het oefenvenster (glas.html §11 .pmodal / dialog.pdlg) ─────────────────────────────────────── */
+.gl-dlg-bd {
+  position: fixed; inset: 0; z-index: 300; background: rgba(0, 18, 46, 0.55);
+  -webkit-backdrop-filter: blur(4px); backdrop-filter: blur(4px);
+  transition: opacity 220ms var(--ease-out-glas);
+}
+.gl-dlg-bd[data-starting-style], .gl-dlg-bd[data-ending-style] { opacity: 0; }
+.gl-dlg-bd[hidden] { display: none; }
+.gl-dlg {
+  position: fixed; z-index: 301; left: 50%; top: 8px;
+  width: min(680px, calc(100vw - 16px)); max-height: calc(100vh - 16px);
+  transform: translateX(-50%);
+  display: flex; flex-direction: column; overflow: hidden; outline: none;
+  background: #fff; border-radius: var(--r-xl); box-shadow: 0 40px 80px -30px rgba(0, 0, 0, 0.55);
+  transition: opacity 260ms var(--ease-out-glas), transform 260ms var(--ease-out-glas);
+}
+@supports (height: 100dvh) { .gl-dlg { max-height: calc(100dvh - 16px); } }
+/* Bovenaan verankerd, niet in het midden: de opgaven verschillen in hoogte, en een gecentreerd
+   venster sprong bij elke volgende opgave op en neer. */
+@media (min-width: 640px) {
+  .gl-dlg { top: max(24px, 7vh); max-height: calc(100vh - 2 * max(24px, 7vh)); }
+}
+.gl-dlg[data-starting-style] { opacity: 0; transform: translateX(-50%) translateY(10px) scale(0.98); }
+.gl-dlg[data-ending-style] { opacity: 0; transform: translateX(-50%) translateY(6px) scale(0.99); transition-duration: 160ms; }
+.gl-dlg[hidden] { display: none; }
+.gl-dlg.is-instant, .gl-dlg-bd.is-instant { transition: none; }
+@media (min-width: 960px) {
+  .gl-dlg.is-wide { width: min(1120px, calc(100vw - 48px)); }
+  .gl-dlg.is-wide .exq-has-src { display: grid; grid-template-columns: minmax(0, 1.05fr) minmax(0, 1fr); column-gap: 24px; align-items: start; }
+  .gl-dlg.is-wide .exq-has-src > .exq { grid-column: 1 / -1; }
+  .gl-dlg.is-wide .exq-has-src > .exq-src { position: sticky; top: 0; }
+  .g-leer .gl-dlg.is-wide .exq-has-src .blk-tekst { grid-template-columns: minmax(0, 1fr); }
+}
+.gl-dlg-h { flex: none; display: flex; align-items: center; gap: 12px; padding: 12px 12px 12px 16px; background: var(--mist); }
+[dir="rtl"] .gl-dlg-h { padding: 12px 16px 12px 12px; }
+.gl-dlg-t { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 1px; }
+.gl-dlg-title {
+  margin: 0; font-family: var(--font-headline); font-size: 15px; font-weight: 700; line-height: 1.25; color: var(--navy);
+  overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+}
+.gl-dlg-sub { margin: 0; font-size: 12.5px; color: var(--ink-2); }
+.gl-dlg-x { flex: none; background: #fff; }
+.gl-dlg-b { flex: 1 1 auto; min-height: 0; overflow-y: auto; overscroll-behavior: contain; padding: 18px 18px 22px; }
+@media (min-width: 640px) { .gl-dlg-b { padding: 22px 24px 26px; } }
+
+/* ── de uitleg in de stroom ──────────────────────────────────────────────────────────────────── */
+.g-leer .rule-panel {
+  border-radius: var(--r-md); padding: 16px 18px; background: rgba(0, 43, 109, 0.06);
+  box-shadow: inset 3px 0 0 var(--navy);
+}
+[dir="rtl"] .g-leer .rule-panel { box-shadow: inset -3px 0 0 var(--navy); }
+.g-leer .rule-panel .rp-kick, .g-leer .demo-panel .dp-kick, .g-leer .fcard .fc-label, .g-leer .stg-demo .dp-kick {
+  font-family: var(--glas-mono); font-size: 10.5px; font-weight: 500; letter-spacing: 0.08em; color: var(--ink-2);
+}
+.g-leer .rule-panel p, .g-leer .rule-panel li { font-size: 15.5px; line-height: 1.7; color: var(--ink); }
+.g-leer .rule-panel strong { color: var(--navy); }
+.g-leer .rule-panel ol > li::before { background: rgba(0, 43, 109, 0.1); color: var(--navy); border-radius: 50%; }
+.g-leer .rule-panel ul > li::before { background: var(--navy); }
+.g-leer .les-split { gap: 10px; margin-bottom: 10px; }
+.g-leer .demo-panel {
+  background: var(--mist); color: var(--ink); border-radius: var(--r-md); padding: 16px 18px; gap: 10px;
+}
+.g-leer .demo-panel .dp-sent, .g-leer .stg-demo .dp-sent { font-family: var(--font-headline); font-weight: 600; font-size: 17px; color: var(--ink); }
+.g-leer .demo-panel .dp-sent mark, .g-leer .demo-fold .dp-sent mark, .g-leer .stg-demo .dp-sent mark {
+  background: transparent; color: var(--navy); font-weight: 800; padding: 0; box-shadow: inset 0 -0.35em 0 rgba(254, 118, 44, 0.28);
+}
+.g-leer .demo-panel .dp-note, .g-leer .stg-demo .dp-note { color: var(--ink-2); font-size: 13.5px; }
+.g-leer .demo-panel .dp-item { border-radius: var(--r-sm); }
+.g-leer .form-cards { gap: 10px; margin-bottom: 10px; }
+.g-leer .fcard { background: var(--mist); border-radius: var(--r-md); padding: 12px 14px; box-shadow: none; }
+.g-leer .fcard .fc-body { font-size: 15px; color: var(--ink); }
+.g-leer .fcard .fc-body mark, .g-leer .lesson-stream mark, .g-leer .blk mark, .g-leer .ex mark, .g-leer .fb-why mark, .g-leer .cc-example mark {
+  background: rgba(254, 118, 44, 0.2); color: inherit; border-radius: 4px;
+}
+.g-leer .stream-list { gap: 10px; }
+.g-leer .blk { background: var(--mist); border-radius: var(--r-lg); padding: 16px 18px; box-shadow: none; }
+.gl-fold-body .blk, .gl-dlg .blk { background: #fff; }
+.gl-dlg .exq-src .blk { background: var(--mist); }
+.g-leer .blk-voorbeeld { box-shadow: inset 3px 0 0 var(--navy); }
+[dir="rtl"] .g-leer .blk-voorbeeld { box-shadow: inset -3px 0 0 var(--navy); }
+.g-leer .tekst-main h3 { font-family: var(--font-headline); color: var(--navy); letter-spacing: -0.02em; }
+.g-leer .tekst-src, .g-leer .mini-label, .g-leer .wh-head {
+  font-family: var(--glas-mono); font-weight: 500; letter-spacing: 0.08em; color: var(--ink-2);
+}
+.g-leer .woordhulp { background: var(--klei-tint); border-radius: var(--r-md); }
+.g-leer .woordhulp .wh-head { color: var(--klei); }
+.g-leer .woordgroep li { background: #fff; border-radius: var(--r-sm); }
+.g-leer .mini-card { background: #fff; border-radius: var(--r-sm); }
+.g-leer .transcript summary { color: var(--navy); }
+.g-leer .audio-todo, .g-leer .say-focus {
+  display: block; margin: 8px 0 0; padding: 10px 12px; border-radius: var(--r-md);
+  background: rgba(0, 43, 109, 0.06); color: var(--ink); font-size: 13.5px; line-height: 1.55;
+}
+.g-leer .say-focus .mini-label { display: inline; margin: 0 6px 0 0; color: var(--navy); font-weight: 700; }
+.g-leer .blk-audio audio, .g-leer .say-audio { border-radius: var(--r-pill); }
+
+/* Het lesplaatje staat plat in de lespagina (die is al wit): de vakjes zijn mist. */
+.g-leer .les-vis { background: transparent; padding: 0; border-radius: var(--r-md); margin-bottom: 18px; box-shadow: none; }
+.g-leer .les-vis.is-narrating { box-shadow: 0 0 0 6px #fff, 0 0 0 8px var(--oranje); }
+.g-leer .lv-kicker { font-family: var(--glas-mono); font-weight: 500; letter-spacing: 0.08em; color: var(--ink-2); }
+.g-leer .lv-walk { border-radius: var(--r-pill); background: var(--mist); color: var(--navy); padding: 5px 11px; font-size: 12px; }
+.g-leer .lv-walk:hover { background: var(--mist-2); }
+.g-leer .lv-walk.is-on { background: var(--navy); color: #fff; }
+.g-leer .lv-step { border-radius: var(--r-md); }
+.g-leer .lv-step.is-on { background: #fff; box-shadow: inset 0 0 0 2px var(--oranje); }
+.g-leer .lv-slot { border-radius: var(--r-sm); }
+.g-leer .lv-note { background: var(--klei-tint); color: var(--klei); border-radius: var(--r-sm); }
+.g-leer .les-vis, .g-leer .lv-step, .g-leer .lv-slot { transition-duration: 220ms; }
+
+/* ── de ingesproken uitleg: lesblok wit, de bediening als donker paneel (§11 .narr) ─────────────── */
+.g-leer .gt-narration, .g-leer .nar-wrap { margin: 0; }
+.g-leer .nar-wrap.is-hero { display: flex; flex-direction: column; gap: 12px; }
+.g-leer .nar-hero { background: #fff; border-radius: var(--r-lg); box-shadow: none; padding: 0; }
+.g-leer .nar-veil { background: rgba(255, 255, 255, 0.5); -webkit-backdrop-filter: none; backdrop-filter: none; border-radius: var(--r-lg); }
+.g-leer .nar-bigplay { background: var(--oranje); box-shadow: 0 14px 30px -12px rgba(254, 118, 44, 0.7); }
+.g-leer .nar-cap { color: var(--ink); font-weight: 600; }
+.g-leer .stg-rule, .g-leer .stg-demo, .g-leer .stg-card { background: var(--mist); border-radius: var(--r-md); box-shadow: none; }
+.g-leer .stg-nav > button { border-radius: 50%; background: var(--mist); color: var(--navy); box-shadow: none; }
+.g-leer .stg-nav > button:hover { background: var(--mist-2); }
+.g-leer .stg-dots button { background: rgba(0, 43, 109, 0.16); }
+.g-leer .stg-dots button.is-at { background: var(--navy); }
+.g-leer .stg-name { font-family: var(--glas-mono); font-size: 11px; letter-spacing: 0.06em; text-transform: uppercase; color: var(--ink-2); }
+
+.g-leer .nar-card,
+.g-leer .nar-wrap.is-hero .nar-card {
+  max-width: none; border-radius: var(--r-xl); padding: 16px 18px; box-shadow: none;
+  background: var(--g-nacht-stil); color: #fff;
+}
+.g-leer .nar-jump { color: rgba(255, 255, 255, 0.85); box-shadow: none; background: rgba(255, 255, 255, 0.12); }
+.g-leer .nar-jump:hover { background: rgba(255, 255, 255, 0.2); box-shadow: none; }
+.g-leer .nar-jump:focus-visible, .g-leer .nar-play:focus-visible, .g-leer .nar-rate:focus-visible, .g-leer .nar-follow:focus-visible, .g-leer .nc-pill:focus-visible {
+  outline: none; box-shadow: var(--glas-focus-d);
+}
+.g-leer .nar-play,
+.g-leer .nar-wrap.is-hero .nar-play { background: #fff; color: var(--navy); box-shadow: none; }
+.g-leer .nar-play:hover,
+.g-leer .nar-wrap.is-hero .nar-play:hover { background: #fff; box-shadow: none; transform: scale(1.04); }
+.g-leer .nar-kicker { font-family: var(--glas-mono); font-weight: 500; font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; color: rgba(255, 255, 255, 0.62); }
+.g-leer .nar-wave > i { background: rgba(255, 255, 255, 0.22); }
+.g-leer .nar-wave > i.is-said { background: #fff; }
+.g-leer .nar-wave > i.is-now { background: var(--oranje); }
+.g-leer .nar-now { color: rgba(255, 255, 255, 0.72); }
+.g-leer .nar-line > span { color: rgba(255, 255, 255, 0.55); }
+.g-leer .nar-line > span.is-said { color: rgba(255, 255, 255, 0.85); }
+.g-leer .nar-line > span.is-now { color: #fff; background: rgba(254, 118, 44, 0.3); border-radius: 4px; }
+.g-leer .nar-time { color: rgba(255, 255, 255, 0.72); font-family: var(--glas-mono); }
+.g-leer .nar-rate, .g-leer .nar-follow {
+  border-radius: var(--r-pill); background: rgba(255, 255, 255, 0.12); color: #fff; box-shadow: none;
+}
+.g-leer .nar-follow.is-on { background: #fff; color: var(--navy); }
+.g-leer .nar-chaps .nc-lab { font-family: var(--glas-mono); font-weight: 500; color: rgba(255, 255, 255, 0.55); }
+.g-leer .nar-chaps .nc-pill { border-radius: var(--r-pill); background: rgba(255, 255, 255, 0.1); color: #fff; box-shadow: none; }
+.g-leer .nar-chaps .nc-pill:hover { background: rgba(255, 255, 255, 0.18); }
+.g-leer .nar-chaps .nc-pill.is-at { background: #fff; color: var(--navy); }
+.g-leer .nar-pending { color: var(--klei); background: var(--klei-tint); border-radius: var(--r-pill); padding: 4px 12px; font-size: 12.5px; font-weight: 600; align-self: flex-start; }
+.g-leer .nar-note { background: var(--klei-tint); color: var(--klei); border-radius: var(--r-sm); }
+.g-leer .is-narrating:not(.les-vis) { box-shadow: 0 0 0 2px var(--oranje); border-radius: var(--r-md); }
+
+/* ── de opgaven in het venster ───────────────────────────────────────────────────────────────── */
+.g-leer .exq { margin: 0; }
+.g-leer .exq-head b { font-family: var(--font-headline); font-size: 15px; color: var(--ink); }
+.g-leer .exq-head span { font-family: var(--glas-mono); font-size: 11.5px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-2); }
+.g-leer .exq-steps > ol { gap: 6px; }
+.g-leer .exq-steps button {
+  height: 34px; border-radius: var(--r-pill); background: var(--mist); color: var(--ink-2); box-shadow: none;
+  font-size: 13px; transition: background-color 160ms ease, color 160ms ease, transform 160ms var(--ease-out-glas);
+}
+.g-leer .exq-steps button:hover { background: var(--mist-2); color: var(--navy); }
+.g-leer .exq-steps button:active { transform: scale(0.95); }
+.g-leer .exq-steps button:focus-visible { box-shadow: var(--glas-focus); }
+.g-leer .exq-steps button.is-done { background: var(--goed-tint); color: var(--goed-ink); }
+.g-leer .exq-steps button.is-wrong { background: var(--fout-tint); color: var(--fout); }
+.g-leer .exq-steps button.is-at { background: var(--navy); color: #fff; }
+.g-leer .exq-nav button {
+  width: 34px; height: 34px; border-radius: 50%; background: var(--mist); color: var(--navy); box-shadow: none;
+  transition: background-color 160ms ease, transform 160ms var(--ease-out-glas);
+}
+.g-leer .exq-nav button.is-now { background: var(--navy); color: #fff; }
+.g-leer .exq-nav button:hover { background: var(--mist-2); }
+.g-leer .exq-nav button.is-now:hover { background: var(--navy-2); }
+.g-leer .exq-nav button:focus-visible { box-shadow: var(--glas-focus); }
+.g-leer .exq-src { margin-top: 16px; display: flex; flex-direction: column; gap: 10px; }
+.g-leer .exq-card { margin-top: 16px; }
+.g-leer .exq-card .ex, .g-leer .ex { background: #fff; padding: 0; border-radius: 0; box-shadow: none; }
+.g-leer .ex.is-right, .g-leer .ex.is-wrong { box-shadow: none; }
+.g-leer .ex-head { margin-bottom: 10px; }
+.g-leer .ex-tier {
+  font-family: var(--glas-mono); font-size: 10.5px; font-weight: 500; letter-spacing: 0.08em; text-transform: uppercase;
+  padding: 4px 10px; border-radius: var(--r-pill); background: rgba(0, 43, 109, 0.08); color: var(--navy); margin: 0;
+}
+.g-leer .ex-intro { font-size: 14.5px; color: var(--ink-2); margin: 0 0 6px; }
+.g-leer .ex-prompt {
+  font-family: var(--font-headline); font-weight: 700; font-size: 19px; line-height: 1.35; letter-spacing: -0.015em;
+  color: var(--ink); margin: 0 0 14px;
+}
+.g-leer .ex .g-answers { display: flex; flex-direction: column; gap: 8px; }
+.g-leer .ex-hint, .g-leer .mark-hint { font-size: 13.5px; color: var(--ink-2); }
+
+/* het gat (§11 .gap) */
+.g-leer .gap-sentence {
+  font-family: var(--font-headline); font-weight: 600; font-size: 19px; line-height: 2; letter-spacing: -0.01em;
+  color: var(--ink); margin: 0 0 14px;
+}
+.g-leer .gap-slot, .g-leer .gap-input {
+  display: inline-flex; align-items: center; justify-content: center; vertical-align: middle;
+  min-width: 92px; height: 38px; padding: 0 14px; margin: 0 4px; border-radius: var(--r-pill);
+  background: var(--mist); box-shadow: inset 0 0 0 2px rgba(0, 43, 109, 0.22);
+  font-family: var(--font-headline); font-size: 16px; font-weight: 700; color: var(--navy);
+}
+.g-leer .gap-slot.filled { background: var(--navy); color: #fff; box-shadow: none; }
+.g-leer .gap-input { border: 0; outline: none; text-align: center; transition: box-shadow 160ms ease, background-color 160ms ease; }
+.g-leer .gap-input:focus-visible { background: #fff; box-shadow: inset 0 0 0 2px var(--navy); }
+.g-leer .ex.is-right .gap-slot, .g-leer .ex.is-right .gap-input { background: var(--goed-tint); color: var(--goed-ink); box-shadow: inset 0 0 0 2px rgba(43, 122, 92, 0.4); }
+.g-leer .ex.is-wrong .gap-slot, .g-leer .ex.is-wrong .gap-input { background: var(--fout-tint); color: var(--fout); box-shadow: inset 0 0 0 2px rgba(186, 26, 26, 0.35); }
+
+/* chips: de woordjes van invullen en woordorde (§11 .tray, .wo) */
+.g-leer .chips { gap: 8px; }
+.g-leer .chip {
+  height: 40px; padding: 0 16px; border-radius: var(--r-pill); background: var(--mist); color: var(--ink);
+  font-size: 15px; font-weight: 600; box-shadow: 0 1px 0 rgba(0, 43, 109, 0.08);
+  transition: background-color 160ms ease, box-shadow 160ms ease, transform 160ms var(--ease-out-glas);
+}
+.g-leer .chip:hover:not(:disabled) { background: var(--mist-2); box-shadow: 0 1px 0 rgba(0, 43, 109, 0.08); }
+.g-leer .chip:active:not(:disabled) { transform: scale(0.96); }
+.g-leer .chip:focus-visible { box-shadow: var(--glas-focus); }
+.g-leer .chip.picked { background: #fff; color: var(--navy); box-shadow: inset 0 0 0 2px var(--navy); }
+.g-leer .chip:disabled { opacity: 0.55; }
+.g-leer .wo-line { min-height: 56px; padding: 8px; border-radius: var(--r-md); background: var(--mist); gap: 8px; margin-bottom: 12px; }
+.g-leer .wo-line .chip.picked { background: var(--navy); color: #fff; box-shadow: 0 2px 0 rgba(0, 43, 109, 0.2); border-radius: var(--r-sm); }
+.g-leer .wo-empty { color: var(--ink-3); }
+
+/* matchen */
+.g-leer .match { gap: 8px; }
+.g-leer .match-row { background: var(--mist); border-radius: var(--r-md); padding: 10px 12px; gap: 10px; }
+.g-leer .match-l { font-weight: 600; color: var(--ink); }
+.g-leer .match-row select {
+  height: 40px; padding: 0 12px; border-radius: var(--r-sm); background: #fff; color: var(--ink); font-weight: 600;
+  box-shadow: inset 0 0 0 1.5px rgba(0, 43, 109, 0.14);
+}
+.g-leer .match-row select:focus-visible { box-shadow: inset 0 0 0 2px var(--navy); }
+.g-leer .match-row.right { background: var(--goed-tint); box-shadow: none; }
+.g-leer .match-row.wrong { background: var(--fout-tint); box-shadow: none; }
+
+/* open zin */
+.g-leer .open-input {
+  padding: 12px 14px; border-radius: var(--r-md); background: var(--mist); font-size: 15.5px; color: var(--ink);
+  transition: background-color 160ms ease, box-shadow 160ms ease;
+}
+.g-leer .open-input:focus-visible { background: #fff; box-shadow: inset 0 0 0 2px var(--navy); }
+.g-leer .ex-peek { color: var(--navy); margin-top: 10px; }
+.g-leer .model-a { background: #fff; border-radius: var(--r-sm); font-weight: 600; color: var(--ink); }
+.g-leer .model-a.peeked { background: var(--mist); }
+.g-leer .model-check svg { color: var(--goed); }
+.g-leer .model-check li, .g-leer .model-note { color: var(--ink); }
+
+/* markeren */
+.g-leer .mark-body { background: var(--mist); border-radius: var(--r-md); padding: 12px 14px; box-shadow: none; }
+.g-leer .mark-body:focus-visible { box-shadow: inset 0 0 0 2px var(--navy); }
+.g-leer .mark-body .mw.is-other { background: var(--nevel); }
+.g-leer .mark-pick { background: var(--mist); border-radius: var(--r-md); }
+.g-leer .mark-pick.is-on { background: var(--klei-tint); }
+.g-leer .mark-clear { border-radius: var(--r-pill); background: #fff; }
+
+/* het oordeel (§11 .verdict) */
+.gl-verdict {
+  margin-top: 16px; display: flex; gap: 12px; align-items: flex-start; padding: 14px 16px; border-radius: var(--r-md);
+  animation: gl-verdict-in 220ms var(--ease-out-glas) both;
+}
+.gl-verdict.is-ok { background: var(--goed-tint); color: var(--goed-ink); }
+.gl-verdict.is-nok { background: var(--fout-tint); color: var(--fout); }
+.gl-verdict-ic {
+  flex: none; width: 26px; height: 26px; border-radius: 50%; display: grid; place-items: center; color: #fff; margin-top: 1px;
+}
+.gl-verdict.is-ok .gl-verdict-ic { background: var(--goed); }
+.gl-verdict.is-nok .gl-verdict-ic { background: var(--fout); }
+.gl-verdict-body { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 8px; }
+.gl-verdict-body > b { font-family: var(--font-headline); font-size: 16px; line-height: 1.6; }
+.g-leer .gl-verdict .fb-answer { margin: 0; color: var(--ink); font-size: 14.5px; }
+.g-leer .gl-verdict .fb-why { background: transparent; padding: 0; border-radius: 0; }
+.g-leer .gl-verdict .fb-why .mini-label { color: inherit; opacity: 0.8; }
+.g-leer .gl-verdict .fb-why p { color: var(--ink); font-size: 14px; }
+.g-leer .gl-verdict .fb-targets li { color: var(--ink); }
+.g-leer .gl-verdict .model { margin: 0; }
+@keyframes gl-verdict-in { from { opacity: 0; transform: translateY(6px); } }
+
+.g-leer .ex-foot { margin-top: 18px; display: flex; flex-wrap: wrap; justify-content: flex-end; gap: 8px; }
+
+/* ── de microfoon (§10 "Start opname", §11 naspreken) ─────────────────────────────────────────── */
+.g-leer .say-target {
+  margin: 12px 0 0; padding: 0; background: transparent; font-family: var(--font-headline); font-weight: 600;
+  font-size: 19px; line-height: 1.5; color: var(--ink);
+}
+.g-leer .rec { margin-top: 14px; gap: 10px; }
+.rec-stage {
+  border-radius: var(--r-lg); background: var(--mist); padding: 16px; display: flex; flex-direction: column;
+  align-items: flex-start; gap: 12px;
+}
+.rec-big {
+  all: unset; box-sizing: border-box; cursor: pointer; display: inline-flex; align-items: center; gap: 12px;
+  height: 60px; padding: 0 26px 0 8px; border-radius: var(--r-pill); background: var(--navy); color: #fff;
+  font-family: var(--font-headline); font-weight: 700; font-size: 16px; max-width: 100%;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.18), 0 14px 30px -14px rgba(0, 43, 109, 0.75);
+  transition: transform 160ms var(--ease-out-glas), background-color 200ms ease;
+}
+[dir="rtl"] .rec-big { padding: 0 8px 0 26px; }
+.rec-big:hover { background: var(--navy-2); }
+.rec-big:active { transform: scale(0.97); }
+.rec-big:focus-visible { box-shadow: 0 0 0 3px var(--mist), 0 0 0 5px var(--navy); }
+.rec-big:disabled { cursor: default; background: var(--mist-2); color: var(--ink-3); box-shadow: none; }
+.rec-big-mc {
+  position: relative; flex: none; width: 44px; height: 44px; border-radius: 50%; display: flex; align-items: center;
+  justify-content: center; background: rgba(255, 255, 255, 0.14);
+}
+.rec-big.is-live {
+  background: #fff; color: var(--ink); padding-right: 18px;
+  box-shadow: inset 0 0 0 2px var(--navy), 0 14px 30px -18px rgba(0, 43, 109, 0.6);
+}
+[dir="rtl"] .rec-big.is-live { padding: 0 8px 0 18px; }
+.rec-big.is-live:hover { background: #fff; }
+.rec-big.is-live .rec-big-mc { background: none; }
+.rec-big.is-live .rec-big-mc svg { position: absolute; inset: 0; transform: rotate(-90deg); }
+.rec-big.is-live .rec-big-mc svg circle:last-child { transition: stroke-dasharray 1s linear; }
+.rec-big.is-live .rec-big-mc i { width: 14px; height: 14px; border-radius: 4px; background: var(--navy); display: block; }
+.rec-dot { flex: none; width: 8px; height: 8px; border-radius: 50%; background: var(--oranje); animation: gl-rd 1.6s ease-in-out infinite; }
+@keyframes gl-rd { 50% { opacity: 0.35; } }
+.rec-big-time { min-width: 3.2em; }
+.rec-big-lv { display: flex; align-items: center; gap: 2px; height: 22px; width: 90px; }
+.rec-big-lv i { flex: 1; height: 100%; border-radius: 2px; background: var(--ink-3); opacity: 0.6; transform-origin: center; transition: transform 90ms linear; }
+.rec-big-stop { color: var(--ink-2); }
+@media (max-width: 420px) { .rec-big-lv { display: none; } }
+.rec-play-row { display: flex; align-items: center; gap: 12px; width: 100%; }
+.rec-pb {
+  all: unset; box-sizing: border-box; cursor: pointer; flex: none; width: 44px; height: 44px; border-radius: 50%;
+  display: grid; place-items: center; background: #fff; color: var(--navy); box-shadow: inset 0 0 0 1.5px rgba(0, 43, 109, 0.2);
+  transition: transform 160ms var(--ease-out-glas);
+}
+.rec-pb:active { transform: scale(0.94); }
+.rec-pb:focus-visible { box-shadow: 0 0 0 2px #fff, 0 0 0 4px var(--navy); }
+.rec-play-bar { flex: 1; height: 6px; border-radius: var(--r-pill); background: rgba(0, 43, 109, 0.12); overflow: hidden; }
+.rec-play-bar i { display: block; height: 100%; background: var(--navy); border-radius: inherit; transform-origin: left center; }
+[dir="rtl"] .rec-play-bar i { transform-origin: right center; }
+.rec-play-t { flex: none; }
+.g-leer .rec-heard { background: var(--mist); border-radius: var(--r-md); padding: 12px 14px; }
+.g-leer .rec-error { color: var(--fout); font-size: 13.5px; }
+.g-leer .rec-shots img { border-radius: var(--r-md); }
+
+/* ── de tweede kolom: niveau, onderdeel, blokken (GrammarSideNav, WordSideNav) ─────────────────── */
+@media (min-width: 1024px) {
+  .g-leer .gt-side-nav { background: #fff; border-radius: var(--r-xl); box-shadow: none; padding: 10px; }
+}
+.g-leer .gsn-levels { border-radius: var(--r-pill); background: var(--mist); padding: 4px; }
+.g-leer .gsn-levels a { border-radius: var(--r-pill); color: var(--ink-2); transition: background-color 160ms ease, color 160ms ease; }
+.g-leer .gsn-levels a:hover { color: var(--navy); }
+.g-leer .gsn-levels a.is-on { background: #fff; color: var(--navy); box-shadow: 0 1px 3px rgba(0, 27, 80, 0.1); }
+.g-leer .gsn-levels a:focus-visible, .g-leer .gsn-skills a:focus-visible, .g-leer .gsn-item:focus-visible, .g-leer a.gsn-brow:focus-visible {
+  box-shadow: var(--glas-focus);
+}
+.g-leer .gsn-skills { gap: 4px; }
+.g-leer .gsn-skills a { border-radius: var(--r-md); color: var(--ink-2); }
+.g-leer .gsn-skills a:hover { background: var(--mist); color: var(--ink); }
+.g-leer .gsn-skills a.is-on { background: rgba(0, 43, 109, 0.05); color: var(--navy); box-shadow: inset 0 0 0 2px var(--navy); }
+.g-leer .gsn-label, .g-leer .gsn-extras { font-family: var(--glas-mono); font-weight: 500; letter-spacing: 0.08em; color: var(--ink-2); }
+.g-leer .gsn-brow { border-radius: var(--r-md); }
+.g-leer a.gsn-brow:hover { background: var(--mist); }
+.g-leer .gsn-letter { border-radius: var(--r-xs); background: var(--tegel); color: var(--navy); }
+.g-leer .gsn-letter.is-done { background: var(--navy); color: #fff; }
+.g-leer .gsn-item { border-radius: var(--r-sm); color: var(--ink-2); }
+.g-leer .gsn-item:hover { background: var(--mist); color: var(--ink); }
+.g-leer .gsn-item.is-now {
+  background: rgba(254, 118, 44, 0.07); color: var(--ink); font-weight: 600;
+  box-shadow: inset 3px 0 0 var(--oranje); border-radius: 0 var(--r-xs) var(--r-xs) 0;
+}
+[dir="rtl"] .g-leer .gsn-item.is-now { box-shadow: inset -3px 0 0 var(--oranje); border-radius: var(--r-xs) 0 0 var(--r-xs); }
+.g-leer .gsn-item.is-now .gsn-dot { background: #fff; box-shadow: inset 0 0 0 1.5px var(--oranje); }
+.g-leer .gsn-item.is-done .gsn-dot { background: var(--goed); color: #fff; }
+.g-leer .gsn-item.is-locked { color: var(--ink-3); }
+
+/* De inklapbare cursuskaart op een telefoon (GrammarCourseSide). */
+.g-leer .gt-course { background: #fff; border-radius: var(--r-xl); box-shadow: none; }
+.g-leer .gt-course-pct { color: var(--navy); }
+.g-leer .gt-rail { background: rgba(0, 43, 109, 0.09); }
+.g-leer .gt-rail > i { background: var(--navy); }
+.g-leer .gt-side-toggle { border-radius: var(--r-pill); background: var(--mist); color: var(--navy); }
+.g-leer .gt-letter { border-radius: var(--r-xs); background: var(--tegel); color: var(--navy); }
+.g-leer .gt-letter.is-done { background: var(--navy); color: #fff; }
+.g-leer .gt-item { border-radius: var(--r-sm); }
+.g-leer .gt-item.is-now { background: rgba(0, 43, 109, 0.07); color: var(--navy); }
+.g-leer .gt-now { background: var(--navy); color: #fff; border-radius: var(--r-pill); }
+
+/* ── de cursuspagina (leren) ──────────────────────────────────────────────────────────────────── */
+.gl-course { max-width: 64rem; margin: 0 auto; display: flex; flex-direction: column; gap: 14px; }
+.gl-back {
+  align-self: flex-start; display: inline-flex; align-items: center; gap: 6px; height: 34px; padding: 0 14px 0 10px;
+  border-radius: var(--r-pill); background: #fff; color: var(--navy); font-size: 13.5px; font-weight: 600; text-decoration: none;
+  transition: background-color 160ms ease, transform 160ms var(--ease-out-glas);
+}
+[dir="rtl"] .gl-back { padding: 0 10px 0 14px; }
+.gl-back:hover { background: var(--mist-2); }
+.gl-back:active { transform: scale(0.97); }
+.gl-back:focus-visible { outline: none; box-shadow: var(--glas-focus); }
+.gl-course-head { display: grid; gap: 14px; align-items: stretch; }
+@media (min-width: 860px) { .gl-course-head { grid-template-columns: minmax(0, 1fr) 17rem; } }
+.gl-course-title { display: flex; gap: 16px; align-items: flex-start; padding: 22px; border-radius: var(--r-xl); background: #fff; }
+.gl-course-title .gl-learn { margin-top: 8px; font-size: 15px; }
+@media (max-width: 560px) { .gl-course-title { flex-direction: column; gap: 12px; } }
+.gl-total { display: flex; flex-direction: column; gap: 6px; padding: 18px 20px; border-radius: var(--r-xl); background: var(--nacht); color: #fff; }
+.gl-total .g-mono { color: rgba(255, 255, 255, 0.62); }
+.gl-total b { font-family: var(--font-headline); font-weight: 800; font-size: 44px; letter-spacing: -0.05em; line-height: 1; }
+.gl-total b small { font-size: 18px; font-weight: 600; letter-spacing: 0; color: rgba(255, 255, 255, 0.62); margin-left: 2px; }
+.gl-total p { margin: 0; font-size: 13px; color: rgba(255, 255, 255, 0.72); }
+.gl-rail { display: block; height: 6px; border-radius: var(--r-pill); background: rgba(255, 255, 255, 0.16); overflow: hidden; margin: 6px 0 2px; }
+.gl-rail i { display: block; height: 100%; background: #fff; border-radius: inherit; transform-origin: left center; }
+[dir="rtl"] .gl-rail i { transform-origin: right center; }
+.gl-L {
+  flex: none; width: 34px; height: 34px; border-radius: 10px; display: grid; place-items: center;
+  background: var(--mist); color: var(--navy); font-family: var(--font-headline); font-weight: 800;
+}
+.gl-L.is-done { background: var(--navy); color: #fff; }
+.gl-continue .gl-L { background: #fff; box-shadow: var(--glas-ring); }
+.gl-continue { background: #fff; }
+.gl-blocks { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 14px; }
+.gl-block { background: #fff; border-radius: var(--r-xl); padding: 20px; display: flex; flex-direction: column; gap: 10px; }
+.gl-block-head { display: flex; align-items: center; gap: 12px; }
+.gl-block-head h2 { margin: 0; flex: 1; min-width: 0; font-family: var(--font-headline); font-weight: 700; font-size: 19px; letter-spacing: -0.02em; color: var(--ink); }
+.gl-block-intro { margin: 0; max-width: 68ch; font-size: 14.5px; line-height: 1.6; color: var(--ink-2); }
+.gl-block-link { align-self: flex-start; display: inline-flex; align-items: center; gap: 6px; font-weight: 600; font-size: 14px; }
+.gl-lessons { list-style: none; margin: 4px 0 0; padding: 0; display: flex; flex-direction: column; gap: 2px; }
+.gl-les {
+  display: flex; align-items: center; gap: 10px; padding: 9px 10px; border-radius: var(--r-sm); font-size: 14.5px;
+  color: var(--ink); text-decoration: none; transition: background-color 160ms ease;
+}
+.gl-les:hover { background: var(--mist); }
+.gl-les:focus-visible { outline: none; box-shadow: var(--glas-focus); }
+.gl-les:active { background: var(--mist-2); }
+.gl-les-ic {
+  flex: none; width: 20px; height: 20px; border-radius: 50%; display: grid; place-items: center;
+  box-shadow: inset 0 0 0 1.5px rgba(0, 43, 109, 0.2); color: var(--ink-2);
+}
+.gl-les.is-done .gl-les-ic { background: var(--goed); color: #fff; box-shadow: none; }
+.gl-les.is-locked { color: var(--ink-2); }
+.gl-les.is-locked .gl-les-ic { box-shadow: none; }
+.gl-les-t { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.gl-les-m { flex: none; font-size: 11px; }
+.gl-outcomes { margin-top: 4px; padding: 14px 16px; border-radius: var(--r-md); background: var(--mist); }
+.gl-outcomes ul { list-style: none; margin: 8px 0 0; padding: 0; display: flex; flex-direction: column; gap: 6px; }
+.gl-outcomes li { display: flex; align-items: baseline; gap: 8px; font-size: 14px; line-height: 1.55; color: var(--ink); }
+.gl-outcomes svg { flex: none; color: var(--navy); transform: translateY(2px); }
+.gl-note { margin: 4px 0 0; font-size: 14px; line-height: 1.65; color: var(--ink-2); max-width: 68ch; }
+
+/* ── één taalregel (dashboard/[level]/taalregel/[slug]) ─────────────────────────────────────── */
+.gl-rule { max-width: 64rem; margin: 0 auto; display: grid; gap: 14px; align-items: start; }
+@media (min-width: 900px) { .gl-rule { grid-template-columns: minmax(0, 1fr) 16.5rem; } }
+.gl-rule-main { min-width: 0; display: flex; flex-direction: column; gap: 14px; }
+.gl-rule-meta { margin: 0; }
+.g-leer .gl-rule-example { margin: 0; padding: 14px 16px; border-radius: var(--r-md); background: var(--mist); font-size: 15.5px; line-height: 1.6; }
+.gl-rule-h2 { margin: 0 0 4px; font-family: var(--font-headline); font-weight: 700; font-size: 19px; letter-spacing: -0.02em; color: var(--ink); }
+.gl-track { padding: 10px 12px; }
+.gl-track .gl-les-t { white-space: normal; display: flex; flex-direction: column; gap: 1px; }
+.gl-track .gl-les-t b { font-family: var(--font-headline); font-size: 15px; color: var(--ink); }
+.gl-track .gl-les-t small { font-size: 13px; color: var(--ink-2); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.gl-track.is-open .gl-les-ic { background: var(--navy); box-shadow: none; }
+.gl-track.is-unbuilt { cursor: default; }
+.gl-track.is-unbuilt:hover { background: transparent; }
+.gl-track.is-unbuilt .gl-les-ic { box-shadow: inset 0 0 0 1.5px rgba(0, 43, 109, 0.2); }
+.gl-track.is-unbuilt .gl-les-ic { background: transparent; }
+.gl-track .gl-next-go { width: 34px; height: 34px; }
+.gl-track.is-open:hover .gl-next-go { background: var(--navy); color: #fff; }
+.gl-rule-side { display: flex; flex-direction: column; gap: 12px; align-items: flex-start; }
+.gl-mastery {
+  width: 100%; display: flex; flex-direction: column; align-items: center; gap: 10px; text-align: center;
+  padding: 20px 18px; border-radius: var(--r-xl); background: #fff;
+}
+.gl-mastery > p { margin: 0; font-size: 14px; line-height: 1.6; color: var(--ink-2); }
+.gl-mastery > small { font-size: 12px; line-height: 1.5; color: var(--ink-3); }
+.gl-ring { position: relative; width: 112px; height: 112px; display: grid; place-items: center; }
+.gl-ring svg { position: absolute; inset: 0; width: 100%; height: 100%; }
+.gl-ring b { font-family: var(--font-headline); font-weight: 800; font-size: 28px; letter-spacing: -0.04em; color: var(--navy); }
+.gl-ring b small { font-size: 14px; color: var(--ink-3); font-weight: 600; letter-spacing: 0; }
+.gl-mastery-dl { width: 100%; margin: 0; display: flex; flex-direction: column; gap: 6px; text-align: start; font-size: 13px; }
+.gl-mastery-dl > div { display: flex; justify-content: space-between; gap: 8px; padding: 8px 10px; border-radius: var(--r-sm); background: var(--mist); }
+.gl-mastery-dl dt { color: var(--ink-2); }
+.gl-mastery-dl dd { margin: 0; font-weight: 700; color: var(--ink); }
+
+/* ── woordkaarten van de leerlaag (WordDeck · glas.html §11 .wcard) ───────────────────────────── */
+.gl-wordhead { flex-direction: row; align-items: center; gap: 14px; padding-top: 14px; }
+.gl-wordhead .gl-title { margin: 0 0 4px; font-size: clamp(26px, 3vw, 34px); }
+.g-leer .wd-stage { margin-top: 14px; padding: 18px; border-radius: var(--r-xl); background: #fff; }
+@media (min-width: 640px) { .g-leer .wd-stage { padding: 22px 24px; } }
+/* In een les staat de deck al op de witte lespagina: geen tweede vlak eromheen. */
+.g-leer .gl-learnbody .wd-stage { margin-top: 0; padding: 0 0 28px; background: none; }
+.g-leer .wd-keys { font-size: 12.5px; color: var(--ink-3); }
+.g-leer .wd-count, .g-leer .wd-known, .g-leer .wd-status {
+  font-family: var(--glas-mono); font-size: 11.5px; font-weight: 500; letter-spacing: 0.08em; text-transform: uppercase;
+}
+.g-leer .wd-close { width: 34px; height: 34px; border-radius: 50%; align-items: center; justify-content: center; background: var(--mist); color: var(--navy); }
+.g-leer .wd-close:hover { background: var(--mist-2); }
+.g-leer .wd-close:focus-visible { outline: none; box-shadow: var(--glas-focus); }
+.g-leer .wd-bar { background: rgba(0, 43, 109, 0.09); }
+.g-leer .wd-bar > span { background: var(--navy); }
+.g-leer .wd-card {
+  border-radius: var(--r-xl); background: var(--g-nevel); box-shadow: none;
+  transition: transform 180ms var(--ease-out-glas);
+}
+.g-leer .wd-card:hover { transform: translateY(-2px); box-shadow: none; }
+.g-leer .wd-card:active { transform: scale(0.99); }
+.g-leer .wd-card:focus-visible { outline: none; box-shadow: var(--glas-focus); }
+.g-leer .wd-card.is-back { background: var(--mist); }
+.g-leer .wd-pane-img { background: var(--mist-2); }
+.g-leer .wd-chip { font-family: var(--glas-mono); font-weight: 500; }
+.g-leer .wd-chip-art { font-family: var(--font-headline); font-weight: 700; background: rgba(255, 255, 255, 0.7); color: var(--ink-3); }
+.g-leer .wd-receptief { background: rgba(0, 43, 109, 0.08); color: var(--navy); }
+.g-leer .wd-productief { background: var(--klei-tint); color: var(--klei); }
+.g-leer .wd-word {
+  font-size: clamp(28px, 4.6vw, 44px); letter-spacing: -0.04em; color: var(--navy);
+  /* Een lang samengesteld woord (woningcorporatie) breekt op een lettergreep met een streepje,
+     niet midden in een letter; `lang="nl"` op het element geeft de browser de afbreekregels. */
+  overflow-wrap: normal; hyphens: auto;
+}
+.g-leer .wd-flip-pill { background: rgba(255, 255, 255, 0.7); color: var(--navy); }
+.g-leer .wd-speed { background: rgba(255, 255, 255, 0.7); }
+.g-leer .wd-speed.is-on { background: var(--navy); color: #fff; }
+.g-leer .wd-eq { box-shadow: none; }
+.g-leer .wd-eq:focus-visible, .g-leer .wd-speed:focus-visible, .g-leer .wd-toggle:focus-visible,
+.g-leer .wd-lang:focus-visible, .g-leer .wd-arrow:focus-visible, .g-leer .wd-btn:focus-visible { outline: none; box-shadow: var(--glas-focus); }
+.g-leer .wd-trans { background: linear-gradient(rgba(0, 43, 109, 0.1), rgba(0, 43, 109, 0.1)) top / 100% 1px no-repeat; }
+.g-leer .wd-marks { gap: 10px; margin-top: 12px; transition: opacity 180ms var(--ease-out-glas), visibility 0s; }
+/* Onzichtbaar tot de kaart om is, maar de plek blijft bezet: niets eronder verspringt. */
+.g-leer .wd-marks:not(.is-open) { opacity: 0; visibility: hidden; transition: opacity 120ms ease, visibility 0s 120ms; }
+/* Voor- en achterkant op één plek: de kaart is zo hoog als de langste kant en blijft dat. */
+.g-leer .wd-faces { display: grid; gap: 0; }
+/* En elke kaart even hoog, ook van woord tot woord: een vaste maat net boven de langste
+   achterkant van nu (391px desktop, 530px mobiel). Een uitschieter mag groeien. */
+.g-leer .wd-card { min-height: 540px; }
+@media (min-width: 640px) { .g-leer .wd-card { min-height: 400px; } }
+.g-leer .wd-face { grid-area: 1 / 1; min-width: 0; display: flex; flex-direction: column; gap: 0.4rem; }
+.g-leer .wd-face[aria-hidden='true'] { visibility: hidden; }
+.g-leer .wd-card.is-plain .wd-faces { align-items: stretch; }
+.g-leer .wd-card.is-plain .wd-face { align-items: center; }
+.g-leer .wd-btn {
+  height: 48px; padding: 0 22px; border-radius: var(--r-pill); font-family: var(--font-headline); font-weight: 700; font-size: 15px;
+  transition: transform 160ms var(--ease-out-glas), background-color 160ms ease;
+}
+.g-leer .wd-btn:active { transform: scale(0.97); }
+.g-leer .wd-btn-learn { background: #fff; color: var(--navy); box-shadow: inset 0 0 0 1.5px rgba(0, 43, 109, 0.22); }
+.g-leer .wd-btn-learn:hover { background: var(--mist); }
+.g-leer .wd-btn-known { background: var(--navy); color: #fff; }
+.g-leer .wd-btn-known:hover { background: var(--navy-2); }
+.g-leer .wd-btn-p { background: var(--navy); color: #fff; box-shadow: none; }
+.g-leer .wd-arrow { border-radius: 50%; background: var(--mist); color: var(--navy); }
+.g-leer .wd-arrow:hover:not(:disabled) { background: var(--mist-2); }
+.g-leer .wd-status-known { color: var(--goed-ink); }
+.g-leer .wd-status-learning { color: var(--fout); }
+.g-leer .wd-toggle, .g-leer .wd-lang { background: var(--mist); color: var(--navy); white-space: nowrap; }
+/* Op een aanraakscherm zijn er geen pijltjes en geen spatiebalk; de hint zegt dan niets. */
+@media (hover: none) { .g-leer .wd-keys { display: none; } }
+@media (max-width: 479px) {
+  /* Vijf dingen naast elkaar passen niet op 390px: de status krijgt een eigen regel erboven,
+     de pijlen blijven aan de randen en de twee schakelaars staan er samen tussenin. */
+  .g-leer .wd-nav { flex-wrap: wrap; gap: 8px 6px; }
+  .g-leer .wd-status { order: -1; flex-basis: 100%; }
+  .g-leer .wd-toggle { margin-inline-start: auto; }
+  .g-leer .wd-nav > :last-child { margin-inline-start: auto; }
+}
+.g-leer .wd-toggle.is-on { background: var(--navy); color: #fff; }
+.g-leer .wd-done { border-radius: var(--r-xl); background: var(--mist); }
+.g-leer .wd-done-h { color: var(--navy); }
+.g-leer .wd-link { color: var(--navy); }
+
+/* De voortgang per thema (WordSideNav). */
+.g-leer .wsn-prog { background: var(--mist); border-radius: var(--r-lg); }
+.g-leer .gt-mobile-course .wsn-prog { background: #fff; }
+.g-leer .wsn-prog-title { font-family: var(--glas-mono); font-weight: 500; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-2); }
+.g-leer .wsn-prog-num b { color: var(--navy); }
+.g-leer .wsn-prog .gt-rail > i { background: var(--navy); }
+.g-leer .wsn-bar { background: rgba(0, 43, 109, 0.09); }
+.g-leer .wsn-bar > i { background: var(--navy); }
+.g-leer .wsn-course { color: var(--navy); border-radius: var(--r-pill); }
+.g-leer .wsn-course:focus-visible { outline: none; box-shadow: var(--glas-focus); }
+
+/* ── ONA · portfolio (glas.html §11 "ONA") ─────────────────────────────────────────────────────
+   De markup en de klassen blijven (`ona-*`, portal.css); hier krijgen ze het Glas-uiterlijk. De
+   conceptmelding (`ona.draft_notice`) is het klei-vlak bovenaan; zolang `isOnaReviewed()` onwaar
+   is staat er géén docentzegel. */
+.g-leer .ona { gap: 14px; }
+.g-leer .gl-ona-h1 {
+  margin: 0; font-family: var(--font-headline); font-weight: 700; font-size: clamp(28px, 3.4vw, 40px);
+  line-height: 1.08; letter-spacing: -0.035em; color: var(--ink); text-wrap: balance;
+}
+.g-leer .ona-panel { border-radius: var(--r-xl); background: #fff; }
+.g-leer .ona-panel.tier { background: var(--mist-2); }
+.g-leer .ona-panel.gl-ona-guest { background: #fff; }
+.g-leer .ona-pair .ona-checks .ok { color: var(--navy); }
+.g-leer .ona-h2 { font-weight: 700; font-size: 20px; letter-spacing: -0.02em; color: var(--ink); }
+.g-leer .ona-h3 { font-weight: 700; color: var(--ink); }
+.g-leer .ona-sub, .g-leer .ona-muted { color: var(--ink-2); }
+.g-leer .ona-title h1 { font-weight: 700; letter-spacing: -0.035em; color: var(--ink); }
+.g-leer .ona-facts { border-radius: var(--r-md); background: var(--mist); }
+.g-leer .ona-facts dt { font-family: var(--glas-mono); font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-2); }
+.g-leer .ona-facts dd { color: var(--navy); }
+.g-leer .ona-progress-row strong { color: var(--ink); }
+.g-leer .ona-segs { gap: 4px; }
+.g-leer .ona-segs > span { height: 10px; border-radius: 5px; background: rgba(0, 43, 109, 0.1); }
+.g-leer .ona-segs > span[data-s='klaar'] { background: var(--navy); }
+.g-leer .ona-segs > span[data-s='concept'] { background: repeating-linear-gradient(135deg, var(--navy) 0 4px, rgba(0, 43, 109, 0.35) 4px 8px); }
+.g-leer .ona-step { border-radius: var(--r-lg); background: var(--mist); }
+.g-leer .ona-num { background: var(--navy); }
+.g-leer .ona-checks .ok { color: var(--goed); }
+.g-leer .ona-checks .no { color: var(--fout); }
+.g-leer .ona-btn {
+  min-height: 48px; padding: 0 22px; border-radius: var(--r-pill); font-family: var(--font-headline); font-weight: 700;
+  transition: transform 160ms var(--ease-out-glas), background-color 160ms ease;
+}
+.g-leer .ona-btn.primary { background: var(--navy); color: #fff; box-shadow: none; }
+.g-leer .ona-btn.primary:hover { background: var(--navy-2); box-shadow: none; }
+.g-leer .ona-btn.secondary { background: #fff; color: var(--navy); box-shadow: inset 0 0 0 1.5px rgba(0, 43, 109, 0.22); }
+.g-leer .ona-step .ona-btn.secondary { background: #fff; }
+.g-leer .ona-btn.secondary:hover { background: var(--mist-2); }
+.g-leer .ona-btn:focus-visible, .g-leer .ona-card:focus-visible, .g-leer .ona-icon-btn:focus-visible,
+.g-leer .ona-chip:focus-visible, .g-leer .ona-option:focus-within { box-shadow: var(--glas-focus); }
+.g-leer .ona-icon-btn { border-radius: 50%; background: var(--mist); }
+.g-leer .ona-icon-btn:hover { background: var(--mist-2); }
+.g-leer .ona-grid { gap: 12px; }
+.g-leer .ona-card { border-radius: var(--r-lg); background: #fff; min-height: 150px; }
+.g-leer .ona-card.is-next { box-shadow: var(--glas-ring); }
+.g-leer .ona-card.is-locked { background: rgba(255, 255, 255, 0.55); }
+.g-leer .ona-card.is-locked h3 { color: var(--ink-2); }
+@media (hover: hover) and (pointer: fine) {
+  .g-leer .ona-card:hover { box-shadow: none; }
+  .g-leer .ona-card.is-next:hover { box-shadow: var(--glas-ring); }
+}
+.g-leer .ona-tile { border-radius: var(--r-xs); background: var(--tegel); color: var(--navy); }
+.g-leer .ona-card h3 { color: var(--ink); }
+.g-leer .ona-status { height: 28px; padding: 0 11px; font-size: 12.5px; font-weight: 600; }
+.g-leer .ona-status[data-s='klaar'] { background: var(--navy); color: #fff; }
+.g-leer .ona-status[data-s='concept'] { background: rgba(0, 43, 109, 0.08); color: var(--navy); }
+.g-leer .ona-status[data-s='leeg'] { background: var(--mist-2); color: var(--ink-2); }
+.g-leer .ona-status[data-s='locked'] { background: rgba(0, 43, 109, 0.08); color: var(--navy); }
+.g-leer .ona-links a { color: var(--navy); }
+.g-leer .ona-notice { border-radius: var(--r-md); background: var(--klei-tint); color: var(--klei); font-weight: 500; }
+.g-leer .ona-notice.info { background: rgba(0, 43, 109, 0.06); color: var(--navy); }
+.g-leer .ona-textarea, .g-leer .ona-input { border-radius: var(--r-md); background: var(--mist); color: var(--ink); }
+.g-leer .ona-textarea:hover { background: var(--mist-2); }
+.g-leer .ona-textarea:focus, .g-leer .ona-input:focus { background: #fff; box-shadow: inset 0 0 0 2px var(--navy); }
+.g-leer .ona-textarea[readonly] { background: var(--mist); }
+.g-leer .ona-flag { border-radius: var(--r-md); background: rgba(0, 43, 109, 0.06); }
+.g-leer .ona-flag svg, .g-leer .ona-flag strong { color: var(--navy); }
+.g-leer .ona-noflag { color: var(--goed-ink); }
+.g-leer .ona-option { border-radius: var(--r-md); background: var(--mist); }
+.g-leer .ona-option:hover { background: var(--mist-2); }
+.g-leer .ona-option.on { background: #fff; box-shadow: var(--glas-ring); }
+.g-leer .ona-bar { border-radius: var(--r-lg); background: var(--mist); }
+.g-leer .ona-msg .who { font-family: var(--glas-mono); font-weight: 500; font-size: 10.5px; letter-spacing: 0.06em; text-transform: uppercase; }
+.g-leer .ona-msg .bubble { background: var(--mist); border-radius: 18px 18px 18px 6px; font-size: 15px; }
+[dir="rtl"] .g-leer .ona-msg .bubble { border-radius: 18px 18px 6px 18px; }
+.g-leer .ona-msg.me .bubble { background: var(--navy); color: #fff; border-radius: 18px 18px 6px 18px; }
+[dir="rtl"] .g-leer .ona-msg.me .bubble { border-radius: 18px 18px 18px 6px; }
+.g-leer .ona-avatar { background: var(--navy); }
+.g-leer .ona-chip { border-radius: var(--r-pill); background: var(--mist); }
+.g-leer .ona-chip:hover { background: var(--mist-2); }
+.g-leer .ona-chip[aria-pressed='true'] { background: #fff; color: var(--navy); box-shadow: var(--glas-ring); }
+.g-leer .ona-fb li { border-radius: var(--r-md); background: var(--mist); }
+@media print {
+  .g-leer.gl-shell { padding: 0; }
+  .g-leer .ona-panel { background: #fff; }
+}
+
+/* ── KNM: lesmodules en woordkaarten (geërfde KNM-componenten; tokens hierboven doen het meeste) ── */
+.gl-narrow { max-width: 48rem; }
+.gl-themes { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 8px; }
+.gl-theme .gl-next-copy b { color: var(--ink); }
+.gl-theme-sub { font-size: 13px; color: var(--ink-2); }
+.gl-theme.is-locked { background: rgba(255, 255, 255, 0.55); }
+.gl-theme.is-locked .gl-L { background: var(--mist-2); color: var(--ink-2); }
+.gl-theme.is-locked:hover .gl-next-go { background: var(--mist-2); color: var(--navy); }
+
+/* ── reduced motion: alles op zijn eindstand ─────────────────────────────────────────────────── */
+@media (prefers-reduced-motion: reduce) {
+  .g-leer .ona-btn, .gl-back, .gl-les, .g-leer .wd-card, .g-leer .wd-btn,
+  .gl-dlg, .gl-dlg-bd, .gl-next, .gl-next-go, .gl-parts button, .gl-keys li > a, .gl-fold-chev,
+  .g-leer .chip, .g-leer .exq-steps button, .g-leer .exq-nav button, .rec-big, .rec-pb, .rec-big-lv i,
+  .rec-big.is-live .rec-big-mc svg circle:last-child, .g-leer .gap-input, .g-leer .open-input { transition: none; }
+  .gl-dlg[data-starting-style], .gl-dlg[data-ending-style] { transform: translateX(-50%); }
+  .gl-verdict, .rec-dot { animation: none; }
+  .gl-back:active, .gl-next:active, .rec-big:active, .rec-pb:active, .g-leer .chip:active:not(:disabled) { transform: none; }
+  .g-leer .gl-next:hover .gl-next-go { transform: none; }
+}
+
+/* Arabisch: geen spatiëring tussen letters — die breekt het verbonden schrift. */
+[dir="rtl"] .g-leer .g-mono, [dir="rtl"] .g-leer .mini-label, [dir="rtl"] .g-leer .rp-kick, [dir="rtl"] .g-leer .dp-kick,
+[dir="rtl"] .g-leer .fc-label, [dir="rtl"] .g-leer .lv-kicker, [dir="rtl"] .g-leer .ex-tier, [dir="rtl"] .g-leer .exq-head span,
+[dir="rtl"] .g-leer .nar-kicker, [dir="rtl"] .g-leer .nc-lab, [dir="rtl"] .g-leer .gsn-label, [dir="rtl"] .g-leer .stg-name,
+[dir="rtl"] .g-leer .wd-count, [dir="rtl"] .g-leer .wd-known, [dir="rtl"] .g-leer .wd-status, [dir="rtl"] .g-leer .ona-facts dt,
+[dir="rtl"] .gl-dlg .g-mono, [dir="rtl"] .gl-dlg .ex-tier, [dir="rtl"] .gl-dlg .exq-head span {
+  letter-spacing: 0; font-family: var(--font-body);
+}
+
+/* De cursusroute staat in de chrome (`#dash-course`), dus de pagina is één kolom. */
+@media (min-width: 1024px) {
+  .g-leer .gt-page .gt-grid.gt-solo { grid-template-columns: minmax(0, 1fr); }
+}

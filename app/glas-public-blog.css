@@ -1,0 +1,73 @@
+/* Glas · publieke site · blog — aanvullingen op app/glas-public.css voor deze schermen. */
+
+@layer components {
+  /* ---------- overzicht ---------- */
+  .g-blog-meta { font-size: 12.5px; color: var(--ink-2); padding: 0 6px; }
+
+  /* ---------- artikel ----------
+     De blogpost leest als een kennisgids: kop `.g-readhead .g-gh`, leeskaart `.g-prose.guide-prose`
+     (glas-public-gidsen.css, globals.css). Hier alleen wat de blogtekst anders aanlevert. */
+  /* De blog-h2 staat ín `.article-body` (de gids rendert hem los als `.guide-section-title`);
+     hier krijgt hij dezelfde maat en ruimte. */
+  .g-blog-prose .article-body h2 {
+    font-size: clamp(1.5rem, 2.6vw, 1.85rem); letter-spacing: -0.03em; line-height: 1.15;
+    margin: 2.5rem 0 1rem; padding-top: 0;
+  }
+  .g-blog-prose .article-body:not(.is-cont) > h2:first-child { margin-top: 0; }
+  /* Een uitlegelement tussen twee tekstblokken (`<!--uitleg:id-->`, BlogUitleg.tsx). */
+  .g-blog-uitleg { margin: 28px 0 32px; }
+
+  /* `sidebarHtml` is een feitenkaart met oude klassen en inline stijl; bovenaan wordt het de
+     samenvatting van de gids: één mist-vlak, de kop als de "In het kort" van een gids. */
+  .g-blog-summary > div { background: none !important; box-shadow: none !important; padding: 0 !important; border-radius: 0 !important; }
+  .g-blog-summary h3 {
+    font-family: var(--font-headline) !important; font-size: 1rem !important; font-weight: 700 !important;
+    color: var(--navy) !important; text-transform: none !important; letter-spacing: 0 !important; margin: 0 0 10px !important;
+  }
+  .g-blog-summary .facts-table tr:nth-child(odd) td { background: #fff; }
+  .g-blog-summary .facts-table tr:nth-child(even) td { background: transparent; }
+  .g-blog-summary .facts-table td { padding: 9px 12px; }
+  .g-blog-summary .facts-table tr:first-child td:first-child { border-start-start-radius: var(--r-sm); }
+  .g-blog-summary .facts-table tr:first-child td:last-child { border-start-end-radius: var(--r-sm); }
+
+  /* ---------- oefenvragen ---------- */
+  .g-blog-card { background: #fff; border-radius: var(--r-lg); padding: 22px; }
+  .g-topic {
+    display: flex; align-items: center; gap: 14px; padding: 16px; border-radius: var(--r-lg); background: #fff; text-decoration: none;
+    color: inherit; outline: none; transition: transform 200ms var(--ease-out-glas), box-shadow 200ms ease;
+  }
+  .g-topic:hover { transform: translateY(-2px); box-shadow: var(--zweef); }
+  .g-topic:active { transform: scale(0.99); }
+  .g-topic:focus-visible { box-shadow: var(--glas-focus); }
+  .g-topic b { font-family: var(--font-headline); font-size: 16px; color: var(--ink); display: block; }
+  .g-topic small { font-size: 13px; color: var(--ink-2); display: block; }
+  .g-topic > svg { width: 18px; height: 18px; color: var(--navy); margin-inline-start: auto; flex: none; transition: transform 200ms var(--ease-out-glas); }
+  .g-topic:hover > svg { transform: translateX(3px); }
+  [dir="rtl"] .g-topic:hover > svg { transform: translateX(-3px) scaleX(-1); }
+
+  /* De vraag staat altijd op wit (§G5); de voortgang is een rij segmenten, geen balk die groeit. */
+  .g-quiz { background: #fff; border-radius: var(--r-xl); padding: 28px; }
+  @media (max-width: 640px) { .g-quiz { padding: 18px; } }
+  .g-quiz-bar { display: flex; gap: 4px; margin: 10px 0 22px; }
+  .g-quiz-bar i { flex: 1; height: 6px; border-radius: 3px; background: var(--mist-2); transition: background-color 200ms ease; }
+  .g-quiz-bar i.g-on { background: var(--navy); }
+  .g-quiz-q { font-family: var(--font-headline); font-weight: 700; font-size: clamp(19px, 2vw, 22px); line-height: 1.3; letter-spacing: -0.015em; color: var(--ink); margin: 0 0 18px; }
+  .g-quiz-fb { display: flex; gap: 12px; align-items: flex-start; margin-top: 16px; padding: 14px 16px; border-radius: var(--r-md); font-size: 15px; line-height: 1.6; }
+  .g-quiz-fb > svg { width: 18px; height: 18px; flex: none; margin-top: 3px; }
+  .g-quiz-fb.g-ok { background: var(--goed-tint); color: var(--goed-ink); }
+  .g-quiz-fb.g-nok { background: var(--fout-tint); color: #5e0d0d; }
+  .g-quiz-fb b { font-family: var(--font-headline); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .g-topic, .g-topic > svg, .g-quiz-bar i { transition-duration: 0ms; }
+  .g-topic:hover, .g-topic:active, .g-topic:hover > svg { transform: none; }
+}
+
+/* De FAQ op mist (in een witte artikelkaart): het plusje wordt wit, anders verdwijnt zijn cirkel. */
+@layer components {
+  .g-faq.bg-mist .g-faq-pm { background: #fff; }
+  .g-faq.bg-mist details[open] .g-faq-pm { background: var(--navy); }
+  /* Arabisch heeft geen hoofdletters en verbonden letters: de mono-spatiëring breekt de woorden. */
+  [dir="rtl"] :is(.g-feat, .g-post, .g-gcard, .g-blog-card, .g-byline) .g-mono { letter-spacing: 0 !important; font-family: var(--font-body); }
+}

@@ -76,9 +76,9 @@ export function CategoryRadarChart({ data }: Props) {
             />
             <PolarAngleAxis
               dataKey="category"
-              tick={{ fontSize: 11, fill: "#6b7280" }}
+              tick={{ fontSize: 11, fill: "#4c5874" }}
             />
-            <PolarGrid stroke="#e5e7eb" />
+            <PolarGrid stroke="#dfe5ef" />
             <Radar
               dataKey="correct"
               fill="#002b6d"

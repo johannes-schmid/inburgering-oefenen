@@ -1,11 +1,18 @@
 import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import { getTranslations, setRequestLocale } from 'next-intl/server';
-import { PenLine } from 'lucide-react';
+import { ArrowRight, BadgeCheck, Globe } from 'lucide-react';
+import Field from '@/components/glas/Field';
+import { glasButton } from '@/components/glas/Button';
+import Crumbs from '../../_components/glas/Crumbs';
+import FaqList from '../../_components/glas/FaqList';
 import { Link } from '@/i18n/navigation';
 import { getPostBySlug, getPostLocale, getPostSlug, getAllPostParams, hasTranslation } from '@/data/blog-posts';
 import ArticleContent from '@/components/ArticleContent';
-import { SITE_URL, ORG_ID, TEACHER_ID, langTag } from '@/lib/site';
+import BlogUitleg from './BlogUitleg';
+import GuideToc from '@/components/guides/GuideToc';
+import { guideSections } from '@/lib/guides/sections';
+import { SITE_URL, TEACHER_ID, langTag } from '@/lib/site';
 import { absUrl, PROVIDER_REF, TEACHER_REF } from '@/lib/schema';
 
 type Props = { params: Promise<{ locale: string; slug: string }> };
@@ -14,6 +21,22 @@ type Props = { params: Promise<{ locale: string; slug: string }> };
 function relatedSlug(nlSlug: string, locale: string): string {
   const target = getPostBySlug(nlSlug);
   return target ? getPostSlug(target, locale) : nlSlug;
+}
+
+/** De tekst geknipt op `<!--uitleg:id-->`: tekstblokken met een uitlegelement ertussen. Het element
+ *  staat náást `.article-body` en niet erin, zodat de artikelregels (`ul li::before`, `h3`, `p`)
+ *  het element niet raken. */
+function ArticleWithUitleg({ html, locale }: { html: string; locale: string }) {
+  const parts = html.split(/<!--uitleg:([a-z0-9-]+)-->/);
+  return (
+    <>
+      {parts.map((part, i) =>
+        i % 2 === 1
+          ? <BlogUitleg key={i} id={part} locale={locale} />
+          : part.trim() ? <ArticleContent key={i} html={part} className={i > 0 ? 'is-cont' : undefined} /> : null,
+      )}
+    </>
+  );
 }
 
 export async function generateStaticParams() {
@@ -78,6 +101,7 @@ export default async function BlogPostPage({ params }: Props) {
   const lp = getPostLocale(post, locale);
   const translated = hasTranslation(post, locale);
   const canonicalUrl = absUrl(locale, `blog/${getPostSlug(post, locale)}`);
+  const sections = guideSections(lp.articleHtml);
 
   // Rough word count off the rendered body — BlogPosting.wordCount wants prose, not markup.
   const wordCount = lp.articleHtml.replace(/<[^>]+>/g, ' ').split(/\s+/).filter(Boolean).length;
@@ -131,179 +155,135 @@ export default async function BlogPostPage({ params }: Props) {
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
 
-      {/* Breadcrumb */}
-      <div className="bg-surface-container-low border-b" style={{ borderColor: 'rgba(196,198,210,0.2)' }}>
-        <div className="max-w-7xl mx-auto px-6 py-3 flex items-center flex-wrap gap-2 text-sm text-on-surface-variant">
-          <Link href="/" className="hover:text-primary transition-colors">{t('breadcrumb_home')}</Link>
-          <span className="text-outline">›</span>
-          <Link href="/blog" className="hover:text-primary transition-colors">{t('breadcrumb_blog')}</Link>
-          <span className="text-outline">›</span>
-          <span className="text-on-surface font-medium">{lp.breadcrumb}</span>
-        </div>
-      </div>
-
-      {/* Hero */}
-      <div style={{ background: 'linear-gradient(135deg, #002b6d 0%, #1d428a 100%)' }} className="pt-12 pb-12">
-        <div className="max-w-7xl mx-auto px-6">
-          <div className="max-w-3xl">
-            <div className="inline-flex items-center gap-2 mb-5" style={{ background: 'rgba(255,255,255,0.12)', borderRadius: '9999px', padding: '4px 12px' }}>
-              <span className="text-xs font-bold tracking-widest uppercase" style={{ color: 'rgba(255,255,255,0.8)' }}>{lp.category}</span>
-            </div>
-            <h1 className="font-headline font-extrabold text-white mb-5" style={{ fontSize: 'clamp(1.8rem,4vw,2.8rem)', letterSpacing: '-0.02em', lineHeight: 1.15 }}>
-              {lp.heroTitle}
-            </h1>
-            <p className="text-lg mb-8 leading-relaxed max-w-xl" style={{ color: 'rgba(255,255,255,0.7)' }}>
-              {lp.heroSubtitle}
-            </p>
-            <div className="flex items-center gap-4 pt-6" style={{ borderTop: '1px solid rgba(255,255,255,0.15)' }}>
-              <div className="w-10 h-10 rounded-xl overflow-hidden flex-shrink-0" style={{ border: '2px solid rgba(255,255,255,0.2)' }}>
-                <img src="/images/amber-van-der-zalm-264.webp" alt="Amber van der Zalm" width={40} height={40} style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'center top' }} />
+      {/* De kop is die van een kennisgids (GuideArticle.tsx, glas.html §14 "Artikel"): Nevel onder
+          de pil door, titel, lead en auteur links op het veld, de foto van het artikel rechts als
+          losse tegel. Blog en gids hebben zo één leesvorm. */}
+      <Field as="header" variant="nevel" veil className="g-readhead">
+        <div className="g-wrap">
+          <Crumbs
+            items={[
+              { label: t('breadcrumb_home'), href: '/' },
+              { label: t('breadcrumb_blog'), href: '/blog' },
+              { label: lp.breadcrumb },
+            ]}
+          />
+          <div className="g-gh g-gh-photo">
+            <div className="g-gh-text">
+              <h1>{lp.heroTitle}</h1>
+              <p className="g-lead">{lp.heroSubtitle}</p>
+              <div className="mt-7">
+                <div className="g-byline g-gh-byline">
+                  <img src="/images/amber-van-der-zalm-264.webp" alt="" width={46} height={46} />
+                  <span className="min-w-0">
+                    <Link href="/docent" className="g-ilink !no-underline font-headline font-bold text-[14.5px]">Amber van der Zalm</Link>
+                    <small className="block">NT2-docent · {lp.dateLabel}</small>
+                  </span>
+                  <span className="g-byline-sep" aria-hidden="true" />
+                  <span className="g-mono">{t('reading_time', { minutes: post.readingMinutes })}</span>
+                </div>
               </div>
-              <div>
-                <p className="text-sm font-semibold text-white">
-                  <Link href="/docent" className="text-white no-underline hover:opacity-80 transition-opacity">Amber van der Zalm</Link>
+              {/* Melding vóór de eerste regel tekst (AI-verordening art. 50 lid 4 en 5): een
+                  machinevertaling zonder menselijke controle valt niet onder de uitzondering voor
+                  nagekeken tekst. Staat bovenaan, nooit onderaan weggestopt. */}
+              {translated && locale !== 'nl' && (
+                <p className="g-notice g-notice-glas m-0 mt-6 max-w-[640px]" role="note">
+                  <Globe aria-hidden="true" />
+                  <span>{t('mt_notice')}</span>
                 </p>
-                <p className="text-xs" style={{ color: 'rgba(255,255,255,0.5)' }}>
-                  NT2-docent · {lp.dateLabel} · {t('reading_time', { minutes: post.readingMinutes })}
-                </p>
+              )}
+              <div className="flex flex-wrap gap-3 mt-7">
+                <Link href="/oefenen" className={glasButton({ variant: 'navy' })}>
+                  {t('sidebar_cta_btn')}
+                  <ArrowRight className="rtl-flip" aria-hidden="true" />
+                </Link>
               </div>
             </div>
-            {/* Melding vóór de eerste regel tekst (AI-verordening art. 50 lid 4 en 5): een
-                machinevertaling zonder menselijke controle valt niet onder de uitzondering voor
-                nagekeken tekst. */}
-            {translated && locale !== 'nl' && (
-              <p className="m-0 mt-5 rounded-xl px-4 py-3 text-sm leading-relaxed" style={{ background: 'rgba(255,255,255,0.1)', color: 'rgba(255,255,255,0.88)' }}>
-                {t('mt_notice')}
-              </p>
-            )}
+            <div className="g-gh-media">
+              <picture>
+                <img src={post.image} alt={lp.imageAlt} width={1200} height={630} fetchPriority="high" decoding="async" />
+              </picture>
+            </div>
           </div>
         </div>
-      </div>
+      </Field>
 
-      {/* Article body */}
-      <main className="bg-surface">
-        <div className="article-layout">
-          <div className="bg-surface-container-lowest rounded-2xl p-8 md:p-10" style={{ boxShadow: '0 2px 32px rgba(0,43,109,0.06)' }}>
-            <img
-              src={post.image}
-              alt={lp.imageAlt}
-              width={1200}
-              height={630}
-              className="w-full rounded-xl mb-8"
-              style={{ aspectRatio: '1200 / 630', objectFit: 'cover' }}
-            />
+      {/* De leeskaart van de gids: inhoudsopgave links (plakt), één leeskolom rechts, geen zijbalk. */}
+      <main className="g-wrap pt-6 pb-16 sm:pb-20">
+        <div className="g-prose guide-prose g-blog-prose">
+          <GuideToc sections={sections} variant="side" label={t('toc_title')} />
 
-            {/* An untranslated locale falls back to the Dutch body. Force LTR around it: in the
-                Arabic layout (dir="rtl") Dutch text renders with its punctuation flipped to the
-                wrong side, which is unreadable. The page is also noindex in this state. */}
-            {translated ? (
-              <ArticleContent html={lp.articleHtml} />
-            ) : (
-              <>
-                <div className="info-box mb-6">
-                  <p>
-                    {t('not_translated')}{' '}
-                    {/* `locale="nl"` hoort erbij: zonder die prop blijft de link in de huidige taal en wijst
-                        "lees in het Nederlands" naar de pagina waar de lezer al staat. Met de vertaalde
-                        slug van 15-09 werd dat bovendien een 308 naar zichzelf. `post.slug` is hier de
-                        Nederlandse slug, en dat is precies wat de Nederlandse route wil. */}
-                    <Link href={{ pathname: '/blog/[slug]', params: { slug: post.slug } }} locale="nl">
-                      {t('read_in_dutch')}
-                    </Link>
-                  </p>
-                </div>
-                <div dir="ltr" lang="nl">
-                  <ArticleContent html={lp.articleHtml} />
-                </div>
-              </>
+          <article className="g-prose-body min-w-0">
+            <GuideToc sections={sections} variant="fold" label={t('toc_title')} />
+
+            {/* Een onvertaalde taal valt terug op de Nederlandse tekst, geforceerd LTR: in de
+                Arabische layout staat de interpunctie van Nederlandse tekst anders aan de verkeerde
+                kant. De pagina is in deze stand ook noindex. */}
+            {!translated && (
+              <p className="g-notice m-0 mb-6" role="note">
+                <Globe aria-hidden="true" />
+                <span>
+                  {t('not_translated')}{' '}
+                  {/* `locale="nl"`: zonder die prop blijft de link in de huidige taal. */}
+                  <Link href={{ pathname: '/blog/[slug]', params: { slug: post.slug } }} locale="nl" className="g-ilink">
+                    {t('read_in_dutch')}
+                  </Link>
+                </span>
+              </p>
             )}
 
-            {/* FAQ */}
+            <div {...(translated ? {} : { dir: 'ltr' as const, lang: 'nl' })}>
+              {/* De feitenkaart van het artikel, bovenaan zoals de samenvatting van een gids. */}
+              {lp.sidebarHtml && (
+                <section className="g-summary g-blog-summary mb-10" dangerouslySetInnerHTML={{ __html: lp.sidebarHtml }} />
+              )}
+              <ArticleWithUitleg html={lp.articleHtml} locale={translated ? locale : 'nl'} />
+            </div>
+
+            {/* FAQ als `<details>`: dezelfde tekst als de FAQPage hierboven. */}
             {lp.faq.length > 0 && (
-              <section className="mt-12">
-                <h2 className="font-headline font-bold text-on-surface mb-2" style={{ fontSize: '1.4rem', letterSpacing: '-0.01em' }}>
-                  {t('faq_title')}
-                </h2>
-                {/* Uitklapbaar, net als op een gids: een blok van acht open antwoorden duwt de
-                    CTA en de gerelateerde artikelen ver onder de vouw. `<details>` heeft geen
-                    JavaScript nodig en blijft voor een crawler volledig leesbaar. */}
-                <div className="faq-folds mt-4">
-                  {lp.faq.map(f => (
-                    <details key={f.q} className="faq-fold">
-                      <summary>
-                        <span>{f.q}</span>
-                      </summary>
-                      <p>{f.a}</p>
-                    </details>
-                  ))}
-                </div>
+              <section className="mt-14" aria-labelledby="blog-faq-heading">
+                <h2 id="blog-faq-heading" className="g-head g-head-2 mb-4">{t('faq_title')}</h2>
+                <FaqList className="bg-mist" items={lp.faq.map(f => ({ question: f.q, answer: f.a }))} />
               </section>
             )}
 
-            {/* Reviewed-by line — the USP, stated plainly and verifiably */}
-            <p className="mt-10 pt-6 text-sm text-on-surface-variant" style={{ borderTop: '1px solid rgba(196,198,210,0.3)' }}>
-              {t('reviewed_by', { date: post.dateModified })}
+            {/* De nagekeken-door-regel — de USP, gewoon en controleerbaar opgeschreven. */}
+            <p className="g-notice m-0 mt-10" role="note">
+              <BadgeCheck aria-hidden="true" />
+              <span>{t('reviewed_by', { date: post.dateModified })}</span>
             </p>
 
-            {/* Inline CTA */}
-            <div className="mt-8 rounded-2xl p-8 text-center" style={{ background: 'linear-gradient(135deg, #002b6d 0%, #1d428a 100%)' }}>
-              <p className="font-headline font-bold text-white text-xl mb-3">{lp.ctaTitle}</p>
-              <p className="mb-6 text-sm" style={{ color: 'rgba(255,255,255,0.6)' }}>{lp.ctaDesc}</p>
-              <Link
-                href={post.ctaHref}
-                className="inline-flex items-center gap-2 bg-secondary-container text-on-secondary-container px-6 py-3 rounded-xl font-bold text-sm no-underline hover:opacity-90 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 active:scale-[0.98] transition-opacity"
-                style={{ boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.1)', textDecoration: 'none' }}
-              >
+            {/* De slot-CTA: Nacht stil met een witte knop. Eén donker blok op de pagina. */}
+            <Field variant="nacht-stil" className="g-inline-cta !mt-10">
+              <span className="flex-1 min-w-[220px]">
+                <b>{lp.ctaTitle}</b>
+                <small>{lp.ctaDesc}</small>
+              </span>
+              <Link href={post.ctaHref} className={glasButton({ variant: 'wit' })}>
                 {lp.ctaLabel}
-                <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true"><path d="M3 7h8M7 3l4 4-4 4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/></svg>
+                <ArrowRight className="rtl-flip" aria-hidden="true" />
               </Link>
-            </div>
-          </div>
-
-          {/* Sidebar */}
-          <aside className="sidebar">
-            <div className="rounded-2xl p-6 text-center" style={{ background: 'linear-gradient(135deg, #002b6d 0%, #1d428a 100%)' }}>
-              <div className="flex justify-center mb-3">
-                <PenLine className="w-7 h-7" style={{ color: 'rgba(255,255,255,0.85)' }} aria-hidden="true" />
-              </div>
-              <h2 className="font-headline font-bold text-white text-lg mb-2">{t('sidebar_cta_title')}</h2>
-              <p className="text-sm mb-5 leading-relaxed" style={{ color: 'rgba(255,255,255,0.6)' }}>{t('sidebar_cta_desc')}</p>
-              <Link
-                href="/oefenen"
-                className="block bg-secondary-container text-on-secondary-container px-4 py-2.5 rounded-xl font-bold text-sm text-center no-underline hover:opacity-90 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 active:scale-[0.98] transition-opacity"
-                style={{ boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.1)', textDecoration: 'none' }}
-              >
-                {t('sidebar_cta_btn')}
-              </Link>
-            </div>
-
-            {lp.sidebarHtml && (
-              <div dangerouslySetInnerHTML={{ __html: lp.sidebarHtml }} />
-            )}
-
-            {/* Related posts */}
-            {lp.relatedPosts.length > 0 && (
-              <div className="bg-surface-container-lowest rounded-2xl p-6" style={{ boxShadow: '0 2px 16px rgba(0,43,109,0.06)' }}>
-                <h2 className="text-xs font-bold uppercase tracking-widest text-on-surface-variant mb-4">{t('related_title')}</h2>
-                <div className="flex flex-col gap-4">
-                  {lp.relatedPosts.map((r, i) => (
-                    <div key={r.slug}>
-                      {i > 0 && <div className="h-px bg-surface-container mb-4" />}
-                      <Link
-                        href={{ pathname: '/blog/[slug]', params: { slug: relatedSlug(r.slug, locale) } }}
-                        className="block no-underline group"
-                        style={{ textDecoration: 'none' }}
-                      >
-                        <p className="text-sm text-on-surface font-semibold leading-snug mb-1 group-hover:text-primary transition-colors">{r.title}</p>
-                        <p className="text-xs text-on-surface-variant">{r.desc}</p>
-                      </Link>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            )}
-          </aside>
+            </Field>
+          </article>
         </div>
+
+        {lp.relatedPosts.length > 0 && (
+          <nav className="mt-10 bg-wit rounded-g-lg p-6" aria-labelledby="blog-related-heading">
+            <h2 id="blog-related-heading" className="g-mono m-0 mb-4">{t('related_title')}</h2>
+            <ul className="list-none p-0 m-0 flex flex-col gap-3">
+              {lp.relatedPosts.map(r => (
+                <li key={r.slug}>
+                  <Link
+                    href={{ pathname: '/blog/[slug]', params: { slug: relatedSlug(r.slug, locale) } }}
+                    className="g-tlink !text-[15px]"
+                  >
+                    {r.title}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </nav>
+        )}
       </main>
     </>
   );

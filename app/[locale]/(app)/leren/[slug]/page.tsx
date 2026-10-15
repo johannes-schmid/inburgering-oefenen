@@ -5,6 +5,10 @@ import { FEATURES } from '@/lib/features';
 import { fetchPortalMenu } from '@/lib/portal-menu';
 import AppShell from '../../components/AppShell';
 import LerenThemaClient from './LerenThemaClient';
+import CourseRoute from '@/components/lessons/CourseRoute';
+import { ownsKnm } from '@/lib/entitlements';
+import { knmRoute } from '@/lib/lessons/track-routes';
+import { getThema } from '@/data/leren';
 
 export const metadata: Metadata = {
   title: 'Lesmodule | Inburgering Oefenen',
@@ -34,7 +38,16 @@ export default async function LerenThemaPage({
   if (!user) redirect(`/${locale}/login?next=/leren/${slug}`);
 
   const meta = user.user_metadata ?? {};
+  /* Thema 1 is open met een account; de rest hoort bij de KNM-module. `ownsKnm` en geen
+     plancheck: `user_metadata.plan` schrijft niemand meer, dus een betalende klant leest als
+     'free' (CLAUDE.md §2). */
+  const thema = getThema(slug.replace('.html', ''));
+  if (thema && thema.id !== 1 && !ownsKnm(meta)) {
+    redirect(`/${locale}/dashboard/pakketten?onderdeel=knm&vanaf=leren-${thema.slug}`);
+  }
   const menu = await fetchPortalMenu();
+
+  const route = await knmRoute({ locale, userId: user.id, owns: ownsKnm(meta), open: 'leren', currentSlug: slug });
 
   return (
     <AppShell
@@ -44,6 +57,16 @@ export default async function LerenThemaPage({
       active="leren"
       activeGroup="knm"
       menu={menu}
+      course={
+        <CourseRoute
+          courseLabel="KNM"
+          done={route.done}
+          total={route.total}
+          blocks={route.blocks}
+          backHref={`/${locale}/dashboard/knm`}
+          nextHref={`/${locale}/dashboard/knm`}
+        />
+      }
     >
       <LerenThemaClient locale={locale} slug={slug} />
     </AppShell>

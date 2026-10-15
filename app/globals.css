@@ -1,6 +1,15 @@
 @import "tailwindcss";
 @import "tw-animate-css";
 @import "shadcn/tailwind.css";
+@import "./glas-components.css";
+@import "./glas-public.css";
+@import "./glas-public-info.css";
+@import "./glas-public-pages.css";
+@import "./glas-public-gidsen.css";
+@import "./glas-public-tijdlijn.css";
+@import "./glas-public-blog.css";
+@import "./glas-public-oefenexamen.css";
+@import "./glas-uitleg.css";
 
 @source "../data/**/*.ts";
 @source "../components/**/*.tsx";
@@ -294,33 +303,38 @@
 
 .article-body h2 {
   font-family: var(--font-headline);
-  font-size: 1.4rem;
+  font-size: 1.5rem;
   font-weight: 700;
-  color: #002b6d;
-  letter-spacing: -0.01em;
+  color: var(--navy);
+  letter-spacing: -0.025em;
+  line-height: 1.2;
   margin: 40px 0 14px;
-  padding-top: 40px;
+  padding-top: 24px;
+  text-wrap: balance;
 }
 .article-body h2:first-of-type { margin-top: 8px; padding-top: 0; }
 .article-body h3 {
   font-family: var(--font-headline);
-  font-size: 1rem;
+  font-size: 1.05rem;
   font-weight: 700;
-  color: #191c1e;
+  color: var(--ink);
   margin: 24px 0 10px;
 }
-.article-body p { color: #434651; margin-bottom: 16px; font-size: 0.97rem; line-height: 1.75; }
-.article-body strong { color: #191c1e; font-weight: 600; }
-.article-body a { color: #a24000; text-decoration: underline; text-decoration-color: rgba(162,64,0,0.3); }
-.article-body a:hover { text-decoration-color: #a24000; }
+/* Glas (glas.html §14 `.prose`): inkt op wit, navy links met een onderstreep die aantrekt. */
+.article-body p { color: var(--ink); margin-bottom: 16px; font-size: 1rem; line-height: 1.75; }
+.article-body strong { color: var(--ink); font-weight: 600; }
+.article-body a { color: var(--navy); font-weight: 600; text-decoration: underline; text-decoration-color: rgba(0,43,109,0.35); text-underline-offset: 3px; text-decoration-thickness: 1.5px; transition: text-decoration-color 160ms ease; }
+.article-body a:hover { text-decoration-color: var(--navy); }
+.article-body a:focus-visible { outline: none; box-shadow: var(--glas-focus); border-radius: 4px; }
 .article-body ul { list-style: none; display: flex; flex-direction: column; gap: 8px; margin-bottom: 16px; }
-.article-body ul li { display: flex; gap: 10px; color: #434651; font-size: 0.95rem; line-height: 1.7; }
-.article-body ul li::before { content: '→'; color: #fe762c; font-weight: 700; flex-shrink: 0; margin-top: 1px; }
+.article-body ul li { display: flex; gap: 12px; color: var(--ink); font-size: 1rem; line-height: 1.7; }
+/* Een navy punt, geen pijlteken: een tekenglyph is geen icoon (Glas, craft floor). */
+.article-body ul li::before { content: ''; width: 6px; height: 6px; border-radius: 50%; background: var(--navy); flex-shrink: 0; margin-top: 0.72em; }
 
 /* ── Info boxes ── */
-.info-box { background: #f2f4f6; border-radius: 12px; padding: 20px 22px; margin: 24px 0; }
+.info-box { background: var(--mist); border-radius: 16px; padding: 18px 20px; margin: 24px 0; }
 .info-box p { margin-bottom: 0; }
-.info-box-green { background: rgba(76,175,122,0.06); border-left: 3px solid rgba(76,175,122,0.4); border-radius: 0 12px 12px 0; }
+.info-box-green { background: var(--goed-tint); border-radius: 16px; }
 
 /* ── Fact box ──
    Every number in a blog post is wrapped in one of these. It carries the claim, the official
@@ -332,30 +346,31 @@
      </div>
 */
 .fact-box {
-  background: rgba(0,43,109,0.03);
-  border-left: 3px solid #002b6d;
-  border-radius: 0 12px 12px 0;
-  padding: 16px 20px;
-  margin: 22px 0;
+  background: var(--mist);
+  border-radius: 22px;
+  padding: 18px 22px;
+  margin: 24px 0;
 }
 .fact-box-claim {
-  color: #191c1e !important;
-  font-weight: 600;
-  margin-bottom: 6px !important;
+  font-family: var(--font-headline);
+  color: var(--navy) !important;
+  font-weight: 700;
+  margin-bottom: 8px !important;
 }
 .fact-box-source {
-  font-size: 0.8rem !important;
-  color: #5b5e6b !important;
+  font-family: var(--glas-mono);
+  font-size: 0.72rem !important;
+  letter-spacing: 0.04em;
+  color: var(--ink-2) !important;
   margin-bottom: 0 !important;
   line-height: 1.5 !important;
 }
-.fact-box-source a { color: #a24000; }
+.fact-box-source a { color: var(--navy); }
 
 /* ── Jump-link table of contents ── */
 .article-toc {
-  background: #f8f9fb;
-  border: 1px solid rgba(196,198,210,0.3);
-  border-radius: 14px;
+  background: var(--mist);
+  border-radius: 16px;
   padding: 20px 22px;
   margin: 0 0 28px;
 }
@@ -365,13 +380,13 @@
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.08em;
-  color: #5b5e6b;
+  color: var(--ink-2);
   margin-bottom: 12px !important;
 }
 .article-toc ol { counter-reset: toc; list-style: none; display: flex; flex-direction: column; gap: 7px; margin: 0; }
 .article-toc li { counter-increment: toc; display: flex; gap: 10px; font-size: 0.92rem; line-height: 1.5; }
-.article-toc li::before { content: counter(toc) '.'; color: #fe762c; font-weight: 700; flex-shrink: 0; }
-.article-toc a { color: #002b6d; text-decoration: none; }
+.article-toc li::before { content: counter(toc) '.'; color: var(--navy); font-weight: 700; flex-shrink: 0; }
+.article-toc a { color: var(--navy); text-decoration: none; }
 .article-toc a:hover { text-decoration: underline; }
 
 /* Anchor offset so a jump link doesn't hide the heading under the sticky nav */
@@ -386,62 +401,59 @@
   gap: 8px;
   margin-bottom: 16px;
 }
-.article-body ol li { counter-increment: abody; display: flex; gap: 10px; color: #434651; font-size: 0.95rem; line-height: 1.7; }
-.article-body ol li::before { content: counter(abody) '.'; color: #fe762c; font-weight: 700; flex-shrink: 0; }
+.article-body ol li { counter-increment: abody; display: flex; gap: 10px; color: var(--ink); font-size: 1rem; line-height: 1.7; }
+.article-body ol li::before { content: counter(abody) '.'; color: var(--navy); font-family: var(--font-headline); font-weight: 800; flex-shrink: 0; font-variant-numeric: tabular-nums; }
 
 .article-table-wrap { overflow-x: auto; margin: 22px 0; }
-.article-body table { width: 100%; border-collapse: collapse; font-size: 0.9rem; min-width: 460px; }
+.article-table-wrap { border-radius: 22px; }
+.article-body table { width: 100%; border-collapse: collapse; font-size: 0.92rem; min-width: 460px; border-radius: 22px; overflow: hidden; background: #fff; }
 .article-body th {
-  text-align: left;
+  text-align: start;
   font-family: var(--font-headline);
-  font-size: 0.78rem;
-  text-transform: uppercase;
-  letter-spacing: 0.06em;
+  font-size: 0.85rem;
+  font-weight: 700;
   color: #fff;
-  background: #002b6d;
-  padding: 11px 14px;
+  background: var(--navy);
+  padding: 11px 16px;
 }
-.article-body th:first-child { border-radius: 8px 0 0 0; }
-.article-body th:last-child { border-radius: 0 8px 0 0; }
-.article-body td { padding: 11px 14px; color: #434651; border-bottom: 1px solid #eceef0; }
-.article-body tbody tr:nth-child(even) td { background: #f8f9fb; }
-.article-body td strong { color: #191c1e; }
+.article-body td { padding: 11px 16px; color: var(--ink); font-variant-numeric: tabular-nums; }
+.article-body tbody tr:nth-child(even) td { background: var(--mist); }
+.article-body td strong { color: var(--ink); }
 
 /* ── FAQ block ── */
 .article-faq { margin-top: 8px; }
-.article-faq-item { border-bottom: 1px solid #eceef0; padding: 18px 0; }
-.article-faq-item:last-child { border-bottom: none; }
+.article-faq-item { box-shadow: inset 0 -1px 0 var(--mist-2); padding: 18px 0; }
+.article-faq-item:last-child { box-shadow: none; }
 .article-faq-q {
   font-family: var(--font-headline);
   font-size: 0.97rem;
   font-weight: 700;
-  color: #191c1e;
+  color: var(--ink);
   margin-bottom: 8px !important;
   line-height: 1.5;
 }
 
 /* ── Facts table ── */
 .facts-table { width: 100%; border-collapse: collapse; }
-.facts-table tr:nth-child(odd) td { background: #f8f9fb; }
+.facts-table tr:nth-child(odd) td { background: var(--mist); }
 .facts-table tr:nth-child(even) td { background: #ffffff; }
-.facts-table td { padding: 12px 16px; font-size: 0.9rem; }
-.facts-table td:first-child { color: #434651; width: 50%; }
-.facts-table td:last-child { color: #191c1e; font-weight: 600; }
+.facts-table td { padding: 12px 16px; font-size: 0.92rem; }
+.facts-table td:first-child { color: var(--ink-2); width: 50%; }
+.facts-table td:last-child { color: var(--ink); font-weight: 600; }
 
 /* ── Tip cards (knm-examen-tips) ── */
 .tip-card {
-  background: #f8f9fb;
-  border-radius: 14px;
+  background: var(--mist);
+  border-radius: 22px;
   padding: 20px 22px;
   margin: 16px 0 8px;
   display: flex;
   gap: 16px;
   align-items: flex-start;
-  border: 1px solid rgba(196,198,210,0.3);
 }
 .tip-number {
-  width: 34px; height: 34px; border-radius: 10px;
-  background: linear-gradient(135deg, #002b6d 0%, #1d428a 100%);
+  width: 34px; height: 34px; border-radius: 50%;
+  background: var(--navy);
   color: #fff; font-weight: 800; font-size: 0.9rem;
   display: flex; align-items: center; justify-content: center;
   flex-shrink: 0; font-family: var(--font-headline);
@@ -449,11 +461,10 @@
 
 /* ── Theme sections (knm-onderwerpen) ── */
 .theme-section {
-  background: #fff;
-  border-radius: 16px;
+  background: var(--mist);
+  border-radius: 22px;
   padding: 22px 24px;
   margin: 20px 0;
-  border: 1px solid rgba(196,198,210,0.3);
 }
 .theme-header { display: flex; gap: 14px; align-items: center; margin-bottom: 12px; }
 .theme-icon {
@@ -461,15 +472,15 @@
   display: flex; align-items: center; justify-content: center;
   font-size: 1.4rem; flex-shrink: 0;
 }
-.theme-title { font-family: var(--font-headline); font-size: 1rem; font-weight: 700; color: #191c1e; }
+.theme-title { font-family: var(--font-headline); font-size: 1rem; font-weight: 700; color: var(--navy); }
 .difficulty-badge {
   display: inline-block; padding: 2px 10px; border-radius: 999px;
   font-size: 0.72rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em;
   margin-top: 4px;
 }
-.difficulty-hard { background: rgba(186,26,26,0.08); color: #ba1a1a; }
-.difficulty-medium { background: rgba(232,160,58,0.12); color: #a06000; }
-.difficulty-easy { background: rgba(76,175,122,0.10); color: #2d7a52; }
+.difficulty-hard { background: var(--fout-tint); color: var(--fout); }
+.difficulty-medium { background: var(--klei-tint); color: var(--klei); }
+.difficulty-easy { background: var(--goed-tint); color: var(--goed-ink); }
 
 /* ── Step items (knm-examen-dag) ── */
 .step-item {
@@ -477,12 +488,12 @@
   gap: 16px;
   align-items: flex-start;
   padding: 16px 0;
-  border-bottom: 1px solid #eceef0;
+  box-shadow: inset 0 -1px 0 var(--mist-2);
 }
-.step-item:last-child { border-bottom: none; }
+.step-item:last-child { box-shadow: none; }
 .step-num {
-  width: 32px; height: 32px; border-radius: 9px;
-  background: linear-gradient(135deg, #002b6d 0%, #1d428a 100%);
+  width: 32px; height: 32px; border-radius: 50%;
+  background: var(--navy);
   color: #fff; font-weight: 800; font-size: 0.85rem;
   display: flex; align-items: center; justify-content: center;
   flex-shrink: 0; font-family: var(--font-headline);
@@ -505,13 +516,12 @@
 .guide-figure picture, .guide-figure img { display: block; }
 .guide-figure img {
   width: 100%; height: auto;
-  border: 1px solid var(--color-outline-variant);
-  border-radius: 14px;
-  background: var(--color-surface);
+  border-radius: 22px;
+  background: var(--mist);
 }
 .guide-figure figcaption {
   margin-top: 0.8rem; font-size: 0.875rem; line-height: 1.65;
-  color: var(--color-on-surface-variant);
+  color: var(--ink-2);
 }
 /* The two-sided variant. A grid, not two floats, so both labels keep the same width and sit
    under the half of the drawing they describe. */
@@ -529,14 +539,14 @@
   direction: ltr;
 }
 [dir="rtl"] .guide-figure-side { direction: rtl; }
-.guide-figure-side { border-top: 3px solid var(--color-outline-variant); padding-top: 0.6rem; }
-.guide-figure-side.is-now { border-top-color: var(--color-primary); }
+.guide-figure-side { box-shadow: inset 0 3px 0 var(--mist-2); padding-top: 0.75rem; }
+.guide-figure-side.is-now { box-shadow: inset 0 3px 0 var(--navy); }
 .guide-figure-side > p:first-child {
   margin: 0 0 0.15rem; font-family: var(--font-headline); font-weight: 700;
-  font-size: 0.9375rem; color: var(--color-on-surface);
+  font-size: 0.9375rem; color: var(--ink);
 }
 .guide-figure-side > p:last-child {
-  margin: 0; font-size: 0.8125rem; line-height: 1.55; color: var(--color-on-surface-variant);
+  margin: 0; font-size: 0.8125rem; line-height: 1.55; color: var(--ink-2);
 }
 @media (max-width: 560px) {
   .guide-figure-split { grid-template-columns: 1fr; gap: 0.7rem; }
@@ -544,20 +554,20 @@
 
 .docent-note {
   display: flex; gap: 14px; align-items: flex-start;
-  background: #fcecdd; border-radius: 14px;
-  padding: 18px 20px; margin: 24px 0;
+  background: var(--klei-tint); border-radius: 22px;
+  padding: 20px 22px; margin: 26px 0;
 }
 .docent-note-avatar {
   width: 44px; height: 44px; border-radius: 12px; object-fit: cover; object-position: center top;
-  flex-shrink: 0; border: 2px solid rgba(162,64,0,0.15);
+  flex-shrink: 0;
 }
 .docent-note-name {
   font-family: var(--font-headline);
-  font-size: 0.78rem !important; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em;
-  color: #a24000 !important; margin-bottom: 6px !important;
+  font-size: 0.95rem !important; font-weight: 700;
+  color: var(--klei) !important; margin-bottom: 4px !important;
 }
 .docent-note p:last-child { margin-bottom: 0 !important; }
-.docent-note p { font-size: 0.93rem !important; }
+.docent-note p { font-size: 0.97rem !important; line-height: 1.65 !important; }
 /* On a phone the note often sits inside an already-indented step; a fixed side column would
    leave a strip of text a few words wide. Float the avatar instead so the text uses the width. */
 @media (max-width: 640px) {
@@ -568,18 +578,17 @@
 .guide-steps { margin: 24px 0 8px; }
 .guide-step { display: flex; gap: 18px; position: relative; padding-bottom: 30px; }
 .guide-step::before {
-  content: ''; position: absolute; left: 17px; top: 42px; bottom: 6px; width: 2px;
-  background: #e3e8f0; border-radius: 2px;
+  content: ''; position: absolute; inset-inline-start: 17px; top: 42px; bottom: 6px; width: 2px;
+  background: var(--mist-2); border-radius: 2px;
 }
 .guide-step:last-child { padding-bottom: 0; }
 .guide-step:last-child::before { content: none; }
 .guide-step-num {
-  width: 36px; height: 36px; border-radius: 11px;
-  background: linear-gradient(135deg, #002b6d 0%, #1d428a 100%);
-  color: #fff; font-weight: 800; font-size: 0.9rem;
+  width: 36px; height: 36px; border-radius: 50%;
+  background: var(--navy);
+  color: #fff; font-weight: 800; font-size: 0.95rem;
   display: flex; align-items: center; justify-content: center;
   flex-shrink: 0; font-family: var(--font-headline);
-  box-shadow: 0 2px 8px rgba(0,43,109,0.25);
 }
 .guide-step-body { flex: 1; min-width: 0; }
 .article-body .guide-step-body h3 { margin-top: 5px; margin-bottom: 10px; font-size: 1.05rem; }
@@ -587,20 +596,20 @@
 /* Reclaim width on a phone: a smaller marker and a tighter gutter. */
 @media (max-width: 640px) {
   .guide-step { gap: 12px; }
-  .guide-step-num { width: 28px; height: 28px; border-radius: 8px; font-size: 0.8rem; }
-  .guide-step::before { left: 13px; top: 34px; }
+  .guide-step-num { width: 28px; height: 28px; font-size: 0.8rem; }
+  .guide-step::before { inset-inline-start: 13px; top: 34px; }
   .article-body .guide-step-body h3 { margin-top: 2px; }
 }
 
 .guide-cards { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin: 20px 0; }
 @media (max-width: 640px) { .guide-cards { grid-template-columns: 1fr; } }
 .guide-card {
-  background: #f8f9fb; border: 1px solid rgba(196,198,210,0.3);
-  border-radius: 14px; padding: 20px;
+  background: var(--mist);
+  border-radius: 22px; padding: 22px;
 }
 .guide-card-icon {
-  width: 40px; height: 40px; border-radius: 10px;
-  background: rgba(0,43,109,0.07); color: #002b6d;
+  width: 40px; height: 40px; border-radius: 12px;
+  background: #fff; color: var(--navy);
   display: flex; align-items: center; justify-content: center; margin-bottom: 12px;
 }
 .guide-card-icon svg { width: 20px; height: 20px; }
@@ -609,39 +618,41 @@
 
 .yesno-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin: 20px 0; }
 @media (max-width: 640px) { .yesno-grid { grid-template-columns: 1fr; } }
-.yesno-col { border-radius: 14px; padding: 20px; }
-.yesno-col.yes { background: rgba(44,130,83,0.06); border: 1px solid rgba(44,130,83,0.15); }
-.yesno-col.no { background: #f8f9fb; border: 1px solid rgba(196,198,210,0.3); }
+.yesno-col { border-radius: 16px; padding: 20px; }
+.yesno-col.yes { background: var(--goed-tint); }
+.yesno-col.no { background: var(--fout-tint); }
 .yesno-title {
   font-family: var(--font-headline);
   font-size: 0.78rem !important; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em;
   margin-bottom: 12px !important;
 }
-.yesno-col.yes .yesno-title { color: #2d7a52 !important; }
-.yesno-col.no .yesno-title { color: #5b5e6b !important; }
+.yesno-col.yes .yesno-title { color: var(--goed-ink) !important; }
+.yesno-col.no .yesno-title { color: var(--fout) !important; }
 .article-body .yesno-col ul { margin-bottom: 0; }
 .article-body .yesno-col ul li::before { content: none; }
 .yesno-col ul li svg { flex-shrink: 0; margin-top: 4px; width: 15px; height: 15px; }
-.yesno-col.yes ul li svg { color: #2d7a52; }
-.yesno-col.no ul li svg { color: #ba1a1a; }
+.yesno-col.yes ul li svg { color: var(--goed); }
+.yesno-col.no ul li svg { color: var(--fout); }
 
 .guide-cta-inline {
   display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 16px;
-  background: linear-gradient(135deg, #002b6d 0%, #1d428a 100%);
-  border-radius: 16px; padding: 22px 24px; margin: 26px 0;
+  background: var(--nacht);
+  border-radius: 22px; padding: 22px 24px; margin: 28px 0;
 }
 .guide-cta-inline p { color: rgba(255,255,255,0.75) !important; margin-bottom: 0 !important; font-size: 0.92rem !important; }
 .guide-cta-inline p strong { color: #fff; display: block; font-size: 1.02rem; margin-bottom: 2px; }
+/* Op donker een witte pil (glas.html §14 "inline-cta"): oranje blijft voor de ene wijzer per view. */
 .article-body a.guide-cta-btn {
-  display: inline-flex; align-items: center; gap: 8px;
-  background: #fe762c; color: #fff; text-decoration: none;
+  display: inline-flex; align-items: center; gap: 8px; height: 44px;
+  background: #fff; color: var(--navy); text-decoration: none; font-family: var(--font-headline);
   font-weight: 700; font-size: 0.9rem;
-  padding: 11px 20px; border-radius: 12px; flex-shrink: 0;
-  box-shadow: inset 0 1px 0 rgba(255,255,255,0.15);
-  transition: opacity 0.15s ease, transform 0.15s ease;
+  padding: 0 20px; border-radius: 999px; flex-shrink: 0;
+  transition: background-color 160ms ease, transform 160ms cubic-bezier(0.23, 1, 0.32, 1);
 }
-.article-body a.guide-cta-btn:hover { opacity: 0.92; }
-.article-body a.guide-cta-btn:active { transform: scale(0.98); }
+.article-body a.guide-cta-btn:hover { background: var(--mist); }
+.article-body a.guide-cta-btn:active { transform: scale(0.97); }
+.article-body a.guide-cta-btn:focus-visible { box-shadow: var(--glas-focus-d); }
+@media (prefers-reduced-motion: reduce) { .article-body a.guide-cta-btn { transition: none; } .article-body a.guide-cta-btn:active { transform: none; } }
 .article-body a.guide-cta-btn svg { width: 14px; height: 14px; }
 
 /* ── Kennisgids infographics ──
@@ -667,38 +678,35 @@
 .compare-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin: 22px 0; }
 @media (max-width: 700px) { .compare-2 { grid-template-columns: 1fr; } }
 .compare-card {
-  border: 1px solid rgba(196,198,210,0.45); border-radius: 16px; overflow: hidden;
-  background: #fff; display: flex; flex-direction: column;
+  border-radius: 22px; overflow: hidden;
+  background: var(--mist); display: flex; flex-direction: column;
 }
-.compare-card.is-primary { border-color: rgba(0,43,109,0.28); }
-.compare-head { padding: 14px 18px 13px; background: #f8f9fb; border-bottom: 1px solid rgba(196,198,210,0.4); }
-.compare-card.is-primary .compare-head { background: rgba(0,43,109,0.06); border-bottom-color: rgba(0,43,109,0.14); }
+.compare-card.is-primary { box-shadow: inset 0 0 0 2px var(--navy); }
+.compare-head { padding: 18px 20px 6px; }
 .article-body .compare-head h3 {
   margin: 0 0 3px; font-size: 0.98rem; letter-spacing: -0.01em;
 }
 .compare-when {
-  font-size: 0.8rem !important; color: #5b5e6b !important; margin: 0 !important; line-height: 1.45;
+  font-size: 0.82rem !important; color: var(--ink-2) !important; margin: 0 !important; line-height: 1.45;
 }
-.compare-rows { padding: 6px 18px 16px; }
-.compare-row { padding: 11px 0; border-bottom: 1px solid #f0f1f4; }
-.compare-row:last-child { border-bottom: none; padding-bottom: 0; }
+.compare-rows { padding: 4px 20px 18px; }
+.compare-row { padding: 11px 0; box-shadow: inset 0 -1px 0 #fff; }
+.compare-row:last-child { box-shadow: none; padding-bottom: 0; }
 .compare-key {
-  font-family: var(--font-headline);
-  font-size: 0.68rem !important; font-weight: 700; text-transform: uppercase; letter-spacing: 0.07em;
-  color: #8a8d99 !important; margin: 0 0 3px !important;
+  font-family: var(--glas-mono);
+  font-size: 0.7rem !important; font-weight: 500; text-transform: uppercase; letter-spacing: 0.08em;
+  color: var(--ink-2) !important; margin: 0 0 3px !important;
 }
-.compare-val { font-size: 0.91rem !important; color: #191c1e !important; margin: 0 !important; line-height: 1.55; }
+.compare-val { font-size: 0.95rem !important; color: var(--ink) !important; margin: 0 !important; line-height: 1.55; }
 
 /* Three-up route cards. The accent bar is the only thing that differs per route. */
 .route-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; margin: 22px 0; }
 @media (max-width: 860px) { .route-grid { grid-template-columns: 1fr; } }
 .route-card {
-  border: 1px solid rgba(196,198,210,0.45); border-radius: 16px; background: #fff;
+  border-radius: 22px; background: var(--mist);
   overflow: hidden; display: flex; flex-direction: column;
 }
-.route-accent { height: 4px; background: #002b6d; }
-.route-card.r-onderwijs .route-accent { background: #2d7a52; }
-.route-card.r-z .route-accent { background: #a24000; }
+.route-accent { display: none; }
 /* `flex-wrap` is load-bearing: the level badge is `nowrap` (a broken "B1 of\nB2" is worse than a
    second line) and the longest one — "B1 of B2" beside "Onderwijsroute" — does not fit a third of
    the article column. Without the wrap the badge is clipped to "B1 OF HOG". */
@@ -707,84 +715,84 @@
 .route-level {
   font-family: var(--font-headline); font-size: 0.68rem; font-weight: 800; letter-spacing: 0.06em;
   text-transform: uppercase; padding: 4px 9px; border-radius: 999px; white-space: nowrap;
-  background: rgba(0,43,109,0.08); color: #002b6d;
+  background: #fff; color: var(--navy);
 }
-.route-card.r-onderwijs .route-level { background: rgba(44,130,83,0.1); color: #2d7a52; }
-.route-card.r-z .route-level { background: #fcecdd; color: #a24000; }
+.route-card.r-onderwijs .route-level { background: var(--goed-tint); color: var(--goed-ink); }
+.route-card.r-z .route-level { background: var(--klei-tint); color: var(--klei); }
 .route-rows { padding: 0 18px 16px; }
 .route-rows .compare-row:first-child { padding-top: 4px; }
 
 /* The inburgeringstermijn as a bar. Three equal segments, not a to-scale timeline —
    nobody's three years are evenly spread and pretending otherwise invents a schedule. */
 .termijn {
-  border: 1px solid rgba(196,198,210,0.45); border-radius: 16px; padding: 20px; margin: 22px 0;
-  background: #f8f9fb;
+  border-radius: 22px; padding: 22px; margin: 24px 0;
+  background: var(--mist);
 }
 .termijn-ends { display: flex; justify-content: space-between; gap: 12px; margin-bottom: 10px; }
-.termijn-end { font-size: 0.78rem; color: #5b5e6b; line-height: 1.4; max-width: 46%; }
-.termijn-end:last-child { text-align: right; }
+.termijn-end { font-size: 0.8rem; color: var(--ink-2); line-height: 1.4; max-width: 46%; }
+.termijn-end:last-child { text-align: end; }
 .termijn-end strong {
   display: block; font-family: var(--font-headline); font-size: 0.72rem; letter-spacing: 0.07em;
-  text-transform: uppercase; color: #191c1e; margin-bottom: 2px;
+  text-transform: uppercase; color: var(--ink); margin-bottom: 2px;
 }
 .termijn-bar { display: flex; gap: 4px; }
 .termijn-seg {
   flex: 1; height: 34px; border-radius: 8px; display: flex; align-items: center; justify-content: center;
   font-family: var(--font-headline); font-size: 0.75rem; font-weight: 700; letter-spacing: 0.03em; color: #fff;
-  background: linear-gradient(135deg, #002b6d 0%, #1d428a 100%);
+  background: var(--navy);
 }
-.termijn-seg.s2 { background: linear-gradient(135deg, #1d428a 0%, #2f5aa8 100%); }
-.termijn-seg.s3 { background: linear-gradient(135deg, #2f5aa8 0%, #4a74c0 100%); }
+.termijn-seg.s2 { background: var(--navy-2); }
+.termijn-seg.s3 { background: var(--hemel); }
 .termijn-seg.s-extra {
-  flex: 0 0 auto; padding: 0 14px; background: transparent; color: #a24000;
+  flex: 0 0 auto; padding: 0 14px; background: var(--klei-tint); color: var(--klei);
   border: 2px dashed rgba(162,64,0,0.4);
 }
-.termijn-note { font-size: 0.85rem !important; color: #434651 !important; margin: 12px 0 0 !important; }
+.termijn-note { font-size: 0.88rem !important; color: var(--ink-2) !important; margin: 12px 0 0 !important; }
 
 /* Price rows. Deliberately not a <table>: the only two columns are a label and a figure, and
    `.article-body table` sets a 460px min-width that would scroll on a phone for no reason. */
-.price-list { border: 1px solid rgba(196,198,210,0.45); border-radius: 16px; overflow: hidden; margin: 22px 0; }
+.price-list { border-radius: 22px; overflow: hidden; margin: 24px 0; background: var(--mist); padding: 4px; }
 .price-row {
-  display: flex; align-items: center; gap: 12px; padding: 13px 18px;
-  border-bottom: 1px solid #f0f1f4; background: #fff;
+  display: flex; align-items: center; gap: 12px; padding: 13px 16px; border-radius: 16px;
+  background: transparent;
 }
-.price-row:last-child { border-bottom: none; }
+.price-row + .price-row { box-shadow: inset 0 1px 0 #fff; }
 .price-icon {
   width: 30px; height: 30px; border-radius: 9px; flex-shrink: 0;
-  background: rgba(0,43,109,0.07); color: #002b6d;
+  background: #fff; color: var(--navy);
   display: flex; align-items: center; justify-content: center;
 }
 .price-icon svg { width: 15px; height: 15px; }
-.price-name { flex: 1; min-width: 0; font-size: 0.93rem; color: #191c1e; line-height: 1.4; }
-.price-name span { display: block; font-size: 0.79rem; color: #5b5e6b; line-height: 1.45; margin-top: 1px; }
+.price-name { flex: 1; min-width: 0; font-size: 0.95rem; color: var(--ink); line-height: 1.4; }
+.price-name span { display: block; font-size: 0.8rem; color: var(--ink-2); line-height: 1.45; margin-top: 1px; }
 .price-amount {
-  font-family: var(--font-headline); font-weight: 800; font-size: 0.98rem; color: #191c1e;
-  white-space: nowrap;
+  font-family: var(--font-headline); font-weight: 800; font-size: 1rem; color: var(--ink);
+  white-space: nowrap; font-variant-numeric: tabular-nums;
 }
-.price-row.is-total { background: rgba(0,43,109,0.05); }
+.price-row.is-total { background: #fff; box-shadow: none; }
 .price-row.is-total .price-name { font-weight: 700; }
-.price-row.is-total .price-amount { color: #002b6d; font-size: 1.1rem; }
+.price-row.is-total .price-amount { color: var(--navy); font-size: 1.15rem; }
 
 /* A verdict panel: one short answer in large type, then what it means. */
-.verdict { border-radius: 16px; padding: 20px; margin: 22px 0; border: 1px solid transparent; }
-.verdict.ok { background: rgba(44,130,83,0.06); border-color: rgba(44,130,83,0.2); }
-.verdict.warn { background: #fcecdd; border-color: rgba(162,64,0,0.2); }
+.verdict { border-radius: 22px; padding: 22px; margin: 24px 0; }
+.verdict.ok { background: var(--goed-tint); }
+.verdict.warn { background: var(--klei-tint); }
 .verdict-answer {
   font-family: var(--font-headline); font-size: clamp(1.3rem, 4vw, 1.7rem) !important; font-weight: 800;
   letter-spacing: -0.03em; line-height: 1.15; margin: 0 0 6px !important;
 }
-.verdict.ok .verdict-answer { color: #2d7a52 !important; }
-.verdict.warn .verdict-answer { color: #a24000 !important; }
+.verdict.ok .verdict-answer { color: var(--goed-ink) !important; }
+.verdict.warn .verdict-answer { color: var(--klei) !important; }
 .verdict p:last-child { margin-bottom: 0 !important; }
 .verdict p { font-size: 0.93rem !important; }
 
 /* Inline note with an icon — a caveat that must not read as body text. */
 .note-strip {
   display: flex; gap: 12px; align-items: flex-start;
-  border-left: 3px solid #fe762c; background: #f8f9fb;
-  border-radius: 0 12px 12px 0; padding: 14px 18px; margin: 20px 0;
+  background: var(--klei-tint);
+  border-radius: 16px; padding: 14px 18px; margin: 22px 0;
 }
-.note-strip svg { width: 17px; height: 17px; flex-shrink: 0; margin-top: 2px; color: #a24000; }
+.note-strip svg { width: 17px; height: 17px; flex-shrink: 0; margin-top: 3px; color: var(--klei); }
 .note-strip p { margin: 0 !important; font-size: 0.91rem !important; }
 
 /* CSS-only "kies jouw situatie" picker. No JavaScript: a guide body is rendered as a raw HTML
@@ -792,26 +800,27 @@
    fully-readable text with JS off, in print, and for a crawler. */
 .picker { display: flex; flex-direction: column; gap: 10px; margin: 22px 0; }
 .picker details {
-  border: 1px solid rgba(196,198,210,0.45); border-radius: 14px; background: #fff; overflow: hidden;
+  border-radius: 16px; background: var(--mist); overflow: hidden;
 }
-.picker details[open] { border-color: rgba(0,43,109,0.28); }
+.picker details[open] { background: #fff; box-shadow: inset 0 0 0 2px var(--navy); }
 .picker summary {
   display: flex; align-items: center; gap: 12px; cursor: pointer; list-style: none;
-  padding: 15px 18px; font-family: var(--font-headline); font-weight: 700; font-size: 0.95rem;
-  color: #191c1e; transition: background 0.15s ease;
+  padding: 15px 18px; font-family: var(--font-headline); font-weight: 700; font-size: 0.97rem;
+  color: var(--ink); transition: background-color 0.15s ease;
 }
 .picker summary::-webkit-details-marker { display: none; }
-.picker summary:hover { background: #f8f9fb; }
-.picker summary:focus-visible { outline: 2px solid #002b6d; outline-offset: -2px; }
+.picker summary:hover { background: var(--mist-2); }
+.picker details[open] summary:hover { background: transparent; color: var(--navy); }
+.picker summary:focus-visible { outline: none; box-shadow: inset 0 0 0 2px var(--navy); border-radius: 16px; }
 .picker summary::after {
-  content: ''; margin-left: auto; width: 9px; height: 9px; flex-shrink: 0;
-  border-right: 2px solid #fe762c; border-bottom: 2px solid #fe762c;
+  content: ''; margin-inline-start: auto; width: 9px; height: 9px; flex-shrink: 0;
+  border-right: 2px solid var(--navy); border-bottom: 2px solid var(--navy);
   transform: rotate(45deg) translateY(-2px); transition: transform 0.18s cubic-bezier(0.22,1,0.36,1);
 }
 .picker details[open] summary::after { transform: rotate(-135deg) translateY(-2px); }
 .picker-icon {
   width: 30px; height: 30px; border-radius: 9px; flex-shrink: 0;
-  background: rgba(0,43,109,0.07); color: #002b6d;
+  background: #fff; color: var(--navy);
   display: flex; align-items: center; justify-content: center;
 }
 .picker-icon svg { width: 15px; height: 15px; }
@@ -1531,20 +1540,36 @@
   [style*='hero-aurora'], [style*='hero-dot-drift'] { animation: none !important; transform: none !important; }
 }
 
-/* ── De gidspagina als één leeskolom (05-10-2026) ──
-   Een A2-lezer, vaak op een telefoon: iets grotere letter dan de blog, een kop die onder de
-   plakkende navigatie uitkomt bij een ankerklik, en de samenvatting als eigen blok. */
+/* ── De kennisgids in Glas (14-10-2026) ──
+   De leesweergave van glas.html §14: één witte kaart (`.g-prose`) met de inhoudsopgave links en één
+   leeskolom van ±68 tekens rechts. Een A2-lezer, vaak op een telefoon: iets grotere letter dan de
+   blog, en een kop die onder de zwevende pil uitkomt bij een ankerklik. Alles hieronder is gescoped
+   op `.guide-prose`; de basis van `.article-body` (ook de blog) staat hoger in dit bestand. */
+.guide-prose .guide-section { padding-top: 2.5rem; }
+.guide-prose .guide-section-title {
+  font-family: var(--font-headline); font-size: clamp(1.5rem, 2.6vw, 1.85rem); font-weight: 700; letter-spacing: -0.03em;
+  line-height: 1.15; color: var(--navy); margin: 0 0 1rem; text-wrap: balance; scroll-margin-top: calc(var(--nav-h) + 24px);
+}
 .guide-prose .article-body p,
-.guide-prose .article-body ul li { font-size: 1.05rem; line-height: 1.75; }
-.guide-prose .article-body h2 { font-size: 1.6rem; scroll-margin-top: 96px; }
+.guide-prose .article-body ul li,
+.guide-prose .article-body ol li { font-size: 1.0625rem; line-height: 1.8; }
+.guide-prose .article-body p { margin-bottom: 1.2em; }
+.guide-prose .article-body > :first-child { margin-top: 0; }
+.guide-prose .article-body h3 { font-size: 1.2rem; margin: 2.2rem 0 0.7rem; color: var(--navy); }
+.guide-prose .article-body ul { gap: 0.6em; margin-bottom: 1.4em; }
+.guide-prose .article-body .guide-card h3 { margin: 0 0 6px; font-size: 1.05rem; }
+.guide-prose .article-body .guide-step-body h3 { margin: 6px 0 10px; }
+.guide-prose .article-body .compare-head h3, .guide-prose .article-body .route-top h3 { margin: 0 0 3px; font-size: 1.02rem; }
+.guide-prose .guide-card p, .guide-prose .yesno-col ul li, .guide-prose .compare-val { font-size: 0.97rem !important; line-height: 1.65; }
+
+/* De oude springlijst ín het artikel is dubbelop met de inhoudsopgave in de kaart. */
+.guide-prose .article-toc { display: none; }
+
+/* De samenvatting van de docent bovenaan (`.g-summary` levert vlak en ruimte). */
 .guide-summary p { margin-bottom: 8px; }
-.guide-summary p strong { color: #a24000; font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.1em; }
+.guide-summary p strong { color: var(--navy); font-family: var(--font-headline); font-size: 1rem; }
 .guide-summary ul { gap: 6px; margin-bottom: 0; }
-.guide-summary ul li { font-size: 1rem; }
-.guide-toc-link { transition: color 160ms ease, background-color 160ms ease; }
-.guide-toc-link:hover { color: #002b6d; }
-.guide-toc-link:focus-visible { outline: 2px solid #002b6d; outline-offset: 2px; }
-.guide-toc-fold > summary::-webkit-details-marker { display: none; }
+.guide-summary ul li { font-size: 1rem !important; line-height: 1.65 !important; }
 
 /* ── Print / de PDF van een gids (`/api/guide-pdf`) ──
    Weg: de sitechrome, de inhoudsopgave, de knoppen en de verwante stukken. Over: hero, samenvatting,
@@ -1554,155 +1579,157 @@
   .pt-\[var\(--nav-h\)\] { padding-top: 0 !important; }
   body { background: #fff; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
   [data-dev-state-bar] { display: none !important; }
-  .guide-prose { max-width: none; }
-  .faq-fold { break-inside: avoid; }
+  .guide-prose { max-width: none; display: block; padding: 0; }
+  .g-readhead { margin-top: 0 !important; padding: 0 0 16px !important; }
+  .g-readhead::before, .g-readhead::after, .g-readhead .g-veil { display: none !important; }
+  .g-ap-hero { min-height: 0 !important; padding: 0 !important; }
+  .g-ap-hero > .g-glass { box-shadow: none !important; background: none !important; padding: 0 !important; }
+  .g-faq-pm { display: none !important; }
+  .faq-fold:not([open]) > :not(summary), .g-faq details:not([open]) > :not(summary) { display: block !important; }
+  .faq-fold, .g-faq details { break-inside: avoid; }
   .article-body h2 { break-after: avoid; }
   a { color: inherit; text-decoration: none; }
 }
 
-/* ── /gidsen (Bronnen): zoekveld, tegels en kaarten ── */
-.guide-search { box-shadow: var(--shadow-ambient); transition: box-shadow 160ms ease; }
-.guide-search:focus { box-shadow: var(--shadow-ambient), var(--ring-selected); }
-.guide-search::placeholder { color: #5c6170; }
-.guide-chip { transition: background-color 160ms ease, color 160ms ease, transform 120ms ease; }
-.guide-card-link, .featured-card, .topic-tile { transition: transform 200ms cubic-bezier(0.22, 1, 0.36, 1); }
-@media (prefers-reduced-motion: reduce) {
-  .guide-card-link, .featured-card, .topic-tile { transition: none; }
-}
-
-/* ── De gids, ruim (05-10-2026) ──
-   Referentie: de deel.com-landgids. De eigenaar: de stappen en de kaarten waren goed, alleen te
-   dicht op elkaar; wat weg moet zijn randen, gradiënten en het zijbalkje. Alles hieronder is
-   gescoped op `.guide-prose`, zodat de blog en de hubs hun stijl houden. Elke H2-sectie is een
-   rij: kop links (plakkend), tekst rechts — `.guide-row`. */
-.guide-row { display: grid; gap: 1.5rem; padding: 2rem 0; }
-.guide-section + .guide-section { border-top: 0; }
-@media (min-width: 1024px) {
-  .guide-row { grid-template-columns: minmax(200px, 280px) minmax(0, 1fr); column-gap: 5rem; padding: 3rem 0; }
-  .guide-section-title { position: sticky; top: calc(var(--nav-h) + 1.5rem); }
-}
-.guide-col { max-width: 72ch; min-width: 0; }
-.guide-prose .guide-section-title {
-  font-family: var(--font-headline); font-size: 1.75rem; font-weight: 800; letter-spacing: -0.025em;
-  line-height: 1.15; color: #002b6d; margin: 0; scroll-margin-top: calc(var(--nav-h) + 1.5rem);
-}
-.guide-prose .article-body p,
-.guide-prose .article-body ul li,
-.guide-prose .article-body ol li { font-size: 1.1rem; line-height: 1.8; color: #2b2f3a; }
-.guide-prose .article-body p { margin-bottom: 1.3em; }
-.guide-prose .article-body > :first-child { margin-top: 0; }
-.guide-prose .article-body h3 { font-size: 1.25rem; margin: 2.4rem 0 0.8rem; color: #002b6d; }
-.guide-prose .article-body ul { gap: 0.6em; margin-bottom: 1.5em; }
-.guide-prose .article-body strong { color: #191c1e; }
-
-/* Stappen: de navy tegel blijft, met meer lucht ertussen. */
-.guide-prose .guide-steps { margin: 2rem 0 1rem; }
-.guide-prose .guide-step { gap: 1.4rem; padding-bottom: 2.6rem; }
-.guide-prose .guide-step-num { width: 40px; height: 40px; font-size: 1rem; }
-.guide-prose .guide-step::before { left: 19px; top: 48px; }
-.guide-prose .article-body .guide-step-body h3 { margin-top: 6px; font-size: 1.25rem; }
-
-/* Kaarten en ja/nee: de zachte vulling blijft, de rand gaat, de padding groeit. */
-.guide-prose .guide-cards, .guide-prose .yesno-grid { gap: 1.25rem; margin: 2rem 0; }
-.guide-prose .guide-card, .guide-prose .yesno-col.no { background: var(--color-surface-container-low); border: 0; padding: 1.6rem; border-radius: 18px; }
-.guide-prose .yesno-col.yes { border: 0; padding: 1.6rem; border-radius: 18px; }
-.guide-prose .guide-card p, .guide-prose .yesno-col ul li { font-size: 1rem !important; line-height: 1.7; }
-
-/* Vergelijkingen, routes, prijzen en de rest: één zachte tint, geen randen, geen gradiënten. */
-.guide-prose .compare-card, .guide-prose .route-card, .guide-prose .price-list,
-.guide-prose .termijn, .guide-prose .verdict, .guide-prose .theme-section, .guide-prose .tip-card {
-  border: 0; background: var(--color-surface-container-low); border-radius: 18px;
-}
-.guide-prose .compare-2, .guide-prose .route-grid { gap: 1.25rem; margin: 2rem 0; }
-.guide-prose .compare-head { background: none; border-bottom: 0; padding: 1.4rem 1.6rem 0; }
-.guide-prose .compare-card.is-primary .compare-head { background: none; }
-.guide-prose .compare-rows, .guide-prose .route-rows { padding: 0.4rem 1.6rem 1.4rem; }
-.guide-prose .compare-row { border-bottom: 0; padding: 0.65rem 0; }
-.guide-prose .compare-val { font-size: 1rem !important; }
-.guide-prose .route-accent { display: none; }
-.guide-prose .price-row { background: none; border-bottom: 0; padding: 0.8rem 1.6rem; }
-.guide-prose .price-row.is-total { background: rgba(0,43,109,0.06); }
-.guide-prose .termijn { padding: 1.6rem; }
-.guide-prose .termijn-seg { background: #002b6d; }
-.guide-prose .termijn-seg.s2 { background: #1d428a; }
-.guide-prose .termijn-seg.s3 { background: #2f5aa8; }
-.guide-prose .tip-card { padding: 1.4rem 1.6rem; }
-.guide-prose .tip-number { background: #002b6d; }
-
-/* De oude springlijst ín het artikel is dubbelop met de zwevende inhoudsopgave. */
-.guide-prose .article-toc { display: none; }
-
-/* Info en feiten: tekst, geen kader. */
-.guide-prose .info-box { background: none; padding: 0; margin: 1.5rem 0; }
-.guide-prose .fact-box { background: none; border: 0; border-radius: 0; padding: 0; margin: 1.75rem 0; }
-.guide-prose .fact-box-claim { font-size: 1.1rem; }
-
-/* De docentnoot blijft oranje, zonder rand om de foto. */
-.guide-prose .docent-note { border-radius: 18px; padding: 1.5rem 1.6rem; margin: 2.5rem 0; }
-.guide-prose .docent-note-avatar { border: 0; }
-.guide-prose .docent-note p { font-size: 1rem !important; }
-
-/* De tussen-CTA: vlak navy. */
-.guide-prose .guide-cta-inline { background: #002b6d; border-radius: 18px; margin: 2.5rem 0; padding: 1.6rem 1.75rem; }
-
-/* De samenvatting bovenaan. */
-.guide-summary p strong { color: #002b6d; }
-.guide-summary ul li { font-size: 1.05rem !important; }
-
-/* ── De zwevende inhoudsopgave ── */
-.guide-float-toc {
-  position: fixed; left: 1.5rem; bottom: 1.5rem; z-index: 40; max-width: 320px;
-  border-radius: 18px;
-  background: rgba(255, 255, 255, 0.72);
-  backdrop-filter: blur(18px) saturate(1.6); -webkit-backdrop-filter: blur(18px) saturate(1.6);
-  box-shadow: 0 16px 40px -14px rgba(0, 8, 27, 0.25), 0 2px 8px rgba(0, 8, 27, 0.06);
-}
-.guide-float-toc-toggle {
-  display: flex; align-items: center; gap: 0.75rem; width: 100%;
-  padding: 0.75rem 0.9rem 0.75rem 1rem; border: 0; background: transparent; cursor: pointer;
-  color: var(--color-on-surface-variant); text-align: start; border-radius: 18px;
-}
-.guide-float-toc-toggle:focus-visible { outline: 2px solid var(--color-primary); outline-offset: 2px; }
-.guide-float-toc-chevron { margin-inline-start: auto; flex-shrink: 0; transition: transform 200ms cubic-bezier(0.22, 1, 0.36, 1); }
-.guide-float-toc[data-open] .guide-float-toc-chevron { transform: rotate(180deg); }
-.guide-float-toc-list {
-  padding: 0 0.6rem 0.7rem; max-height: 60vh; overflow-y: auto;
-  animation: guide-toc-in 200ms cubic-bezier(0.22, 1, 0.36, 1);
-}
-@keyframes guide-toc-in { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
-@media (prefers-reduced-motion: reduce) {
-  .guide-float-toc-list { animation: none; }
-  .guide-float-toc-chevron { transition: none; }
-}
-
-/* ── De PDF-poort ── */
+/* ── De PDF-poort (Glas: witte kaart van 28px, zweefschaduw, mist-invoer) ── */
 .pdf-dialog {
   border: 0; padding: 0; background: transparent; max-width: min(92vw, 30rem); width: 100%;
   margin: auto; overflow: visible;
 }
-.pdf-dialog::backdrop { background: rgba(0, 8, 27, 0.55); backdrop-filter: blur(4px); }
+.pdf-dialog::backdrop { background: rgba(0, 18, 46, 0.55); backdrop-filter: blur(4px); }
 .pdf-dialog-panel {
-  position: relative; background: var(--color-surface-container-lowest); border-radius: 22px;
-  padding: 2rem 1.75rem 1.75rem; box-shadow: var(--shadow-ambient), 0 24px 60px -20px rgba(0, 8, 27, 0.35);
+  position: relative; background: #fff; border-radius: 28px;
+  padding: 1.9rem 1.6rem 1.6rem; box-shadow: var(--zweef);
 }
-.pdf-dialog[open] .pdf-dialog-panel { animation: pdf-dialog-in 220ms cubic-bezier(0.22, 1, 0.36, 1); }
+.pdf-dialog[open] .pdf-dialog-panel { animation: pdf-dialog-in 220ms cubic-bezier(0.23, 1, 0.32, 1); }
 @keyframes pdf-dialog-in {
   from { opacity: 0; transform: translateY(8px) scale(0.97); }
   to { opacity: 1; transform: none; }
 }
 .pdf-dialog-close {
-  position: absolute; top: 0.9rem; inset-inline-end: 0.9rem; width: 2.25rem; height: 2.25rem;
-  border: 0; border-radius: 999px; background: transparent; color: var(--color-on-surface-variant);
+  position: absolute; top: 0.9rem; inset-inline-end: 0.9rem; width: 2.4rem; height: 2.4rem;
+  border: 0; border-radius: 999px; background: var(--mist); color: var(--ink-2);
   display: inline-flex; align-items: center; justify-content: center; cursor: pointer;
-  transition: background-color 150ms ease;
+  transition: background-color 150ms ease, transform 160ms cubic-bezier(0.23, 1, 0.32, 1);
 }
-.pdf-dialog-close:hover { background: var(--color-surface-container); }
-.pdf-dialog-close:focus-visible { outline: 2px solid var(--color-primary); outline-offset: 2px; }
-.pdf-dialog-input { border: 0; box-shadow: none; transition: box-shadow 150ms ease; }
-.pdf-dialog-input:focus { box-shadow: var(--ring-selected); }
-.pdf-dialog-submit { transition: transform 160ms cubic-bezier(0.22, 1, 0.36, 1); }
-.pdf-dialog-submit:hover:not(:disabled) { transform: translateY(-1px); }
+.pdf-dialog-close:hover { background: var(--mist-2); color: var(--navy); }
+.pdf-dialog-close:active { transform: scale(0.94); }
+.pdf-dialog-close:focus-visible { outline: none; box-shadow: var(--glas-focus); }
+.pdf-dialog-input {
+  width: 100%; height: 50px; border: 0; border-radius: 16px; padding: 0 16px; font-size: 16px; color: var(--ink);
+  background: var(--mist); box-shadow: none; transition: box-shadow 150ms ease;
+}
+.pdf-dialog-input:focus { outline: none; box-shadow: inset 0 0 0 2px var(--navy); }
 @media (prefers-reduced-motion: reduce) {
   .pdf-dialog[open] .pdf-dialog-panel { animation: none; }
-  .pdf-dialog-submit { transition: none; }
+  .pdf-dialog-close { transition: none; }
+  .pdf-dialog-close:active { transform: none; }
+}
+
+/* ══════════════════════════════════════════════════════════════════════════════════════════════
+   GLAS v1.0 — tokens (docs/design/DESIGN_SYSTEM.md §G2, waarden letterlijk uit docs/design/glas.html)
+   Toegevoegd, niets vervangen: oppervlakken die nog niet in Glas zijn herbouwd houden de Civic-
+   Authority-tokens hierboven. De componentlaag staat in app/glas-components.css (klassen `g-*`), de React-kit
+   in components/glas/. Tinten zijn letterlijke rgba(), nooit color-mix() of `/10`.
+   `--ring` uit glas.html heet hier `--glas-ring`: shadcn bezit `--ring` al (een kleur).
+   ══════════════════════════════════════════════════════════════════════════════════════════════ */
+:root {
+  --nacht: #00122e;
+  --diep: #001a4a;
+  --navy: #002b6d;
+  --navy-2: #1d428a;
+  --hemel: #5d7fd6;
+  --waas: #9db8ff;
+  --nevel: #c9d6f2;
+  --mist: #eef2f8;
+  --mist-2: #e3e9f3;
+  --tegel: #e9eef6;
+  --wit: #ffffff;
+  --ink: #0b1a3a;
+  --ink-2: #4c5874;
+  --ink-3: #6f80a8;
+  --oranje: #fe762c;
+  --oranje-zacht: #ffcfb0;
+  --klei: #a24000;
+  --klei-tint: #fcecdd;
+  --goed: #2b7a5c;
+  --goed-ink: #1c5a42;
+  --goed-tint: #e2f1e9;
+  --fout: #ba1a1a;
+  --fout-tint: #fbe9e9;
+
+  --glas: rgba(255, 255, 255, 0.72);
+  --glas-fallback: rgba(255, 255, 255, 0.92);
+  --glas-rand: inset 0 1px 0 rgba(255, 255, 255, 0.95), inset 0 0 0 1px rgba(255, 255, 255, 0.5);
+  --glas-d: rgba(255, 255, 255, 0.08);
+  --glas-d-rand: inset 0 1px 0 rgba(255, 255, 255, 0.18), inset 0 0 0 1px rgba(255, 255, 255, 0.08);
+  --zweef: 0 30px 60px -32px rgba(0, 27, 80, 0.42);
+  --zweef-d: 0 30px 60px -30px rgba(0, 0, 0, 0.55);
+  --glas-ring: inset 0 0 0 2px var(--navy);
+  --glas-focus: 0 0 0 3px var(--mist), 0 0 0 5px var(--navy);
+  --glas-focus-d: 0 0 0 3px var(--nacht), 0 0 0 5px var(--waas);
+
+  --r-pill: 999px;
+  --r-xl: 28px;
+  --r-lg: 22px;
+  --r-md: 16px;
+  --r-sm: 12px;
+  --r-xs: 8px;
+
+  --ease-out-glas: cubic-bezier(0.23, 1, 0.32, 1);
+  --ease-io-glas: cubic-bezier(0.77, 0, 0.175, 1);
+  --veer: cubic-bezier(0.22, 1, 0.36, 1);
+
+  /* G7: Reddit Mono als derde lettertype is nog open; tot dan de systeem-mono. */
+  --glas-mono: ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
+
+  /* De velden (`--g`): één veld met gloed per view. */
+  --g-dageraad: radial-gradient(38% 48% at 80% 28%, #fe762c 0, transparent 70%), radial-gradient(55% 60% at 22% 72%, #1d428a 0, transparent 70%), radial-gradient(50% 50% at 62% 92%, #9db8ff 0, transparent 70%), #c9d6f2;
+  --g-gracht: radial-gradient(50% 60% at 20% 20%, #9db8ff 0, transparent 70%), radial-gradient(45% 55% at 85% 75%, #1d428a 0, transparent 70%), #dbe4f6;
+  --g-nevel: radial-gradient(55% 55% at 50% 40%, #c3d3f7 0, transparent 75%), radial-gradient(40% 40% at 88% 86%, #ffcfb0 0, transparent 70%), #eef2fb;
+  --g-nacht: radial-gradient(50% 60% at 25% 25%, #1d428a 0, transparent 72%), radial-gradient(42% 46% at 82% 82%, #5d7fd6 0, transparent 70%), radial-gradient(30% 34% at 70% 100%, rgba(254, 118, 44, 0.55) 0, transparent 70%), #00122e;
+  --g-nacht-stil: radial-gradient(50% 60% at 25% 25%, #1d428a 0, transparent 72%), radial-gradient(42% 46% at 82% 82%, #2a4f9a 0, transparent 70%), #00122e;
+  --g-licht: radial-gradient(45% 60% at 92% 0%, #b9cbf3 0, transparent 70%), radial-gradient(30% 50% at 100% 100%, #c9d6f2 0, transparent 70%), #eaf0fa;
+  --g-hero: radial-gradient(34% 46% at 84% 26%, #fe762c 0, transparent 70%), radial-gradient(40% 55% at 74% 82%, #5d7fd6 0, transparent 70%), radial-gradient(60% 70% at 10% 30%, #e9eef9 0, transparent 75%), #d6e0f5;
+}
+
+/* Tailwind-utilities voor Glas: `bg-nacht`, `text-ink-2`, `rounded-g-lg`, `shadow-zweef`,
+   `ease-glas`, `font-glas-mono`. Let op: `bg-mist` is ónze mist; Tailwinds eigen `mist-50…950`
+   bestaan ernaast en betekenen iets anders. Gebruik `mist-2`, nooit `mist-200`. */
+@theme inline {
+  --color-nacht: var(--nacht);
+  --color-diep: var(--diep);
+  --color-navy: var(--navy);
+  --color-navy-2: var(--navy-2);
+  --color-hemel: var(--hemel);
+  --color-waas: var(--waas);
+  --color-nevel: var(--nevel);
+  --color-mist: var(--mist);
+  --color-mist-2: var(--mist-2);
+  --color-tegel: var(--tegel);
+  --color-wit: var(--wit);
+  --color-ink: var(--ink);
+  --color-ink-2: var(--ink-2);
+  --color-ink-3: var(--ink-3);
+  --color-oranje: var(--oranje);
+  --color-oranje-zacht: var(--oranje-zacht);
+  --color-klei: var(--klei);
+  --color-klei-tint: var(--klei-tint);
+  --color-goed: var(--goed);
+  --color-goed-ink: var(--goed-ink);
+  --color-goed-tint: var(--goed-tint);
+  --color-fout: var(--fout);
+  --color-fout-tint: var(--fout-tint);
+  --radius-g-xs: var(--r-xs);
+  --radius-g-sm: var(--r-sm);
+  --radius-g-md: var(--r-md);
+  --radius-g-lg: var(--r-lg);
+  --radius-g-xl: var(--r-xl);
+  --shadow-zweef: var(--zweef);
+  --shadow-zweef-d: var(--zweef-d);
+  --shadow-glas-ring: var(--glas-ring);
+  --ease-glas: var(--ease-out-glas);
+  --ease-glas-io: var(--ease-io-glas);
+  --ease-veer: var(--veer);
+  --font-glas-mono: var(--glas-mono);
 }

@@ -91,12 +91,7 @@ export default function LerenThemaClient({ locale, slug }: { locale: string; slu
     try {
       const raw = sessionStorage.getItem('__pw_session__');
       if (raw) {
-        const s = JSON.parse(raw);
-        const tier = s?.user?.user_metadata?.tier ?? s?.user?.user_metadata?.plan ?? (s?.user?.user_metadata?.premium ? 'premium' : 'free');
-        if (thema && thema.id !== 1 && tier !== 'premium_plus') {
-          window.location.href = `/${locale}/activate?upgrade=plus`;
-          return;
-        }
+        JSON.parse(raw);
         setLoading(false);
         fetchAudioData();
         return;
@@ -105,13 +100,7 @@ export default function LerenThemaClient({ locale, slug }: { locale: string; slu
 
     supabase.auth.getSession().then(async ({ data: { session: s } }) => {
       if (!s) { window.location.href = `/${locale}/login`; return; }
-      const { data: liveUser } = await supabase.auth.getUser();
-      const meta = liveUser?.user?.user_metadata ?? s.user.user_metadata;
-      const tier = meta?.tier ?? meta?.plan ?? (meta?.premium ? 'premium' : 'free');
-      if (thema && thema.id !== 1 && tier !== 'premium_plus') {
-        window.location.href = `/${locale}/activate?upgrade=plus`;
-        return;
-      }
+      /* De toegang staat op de server (`page.tsx`, `ownsKnm`); hier geen tweede, losse plancheck. */
       setEmail(s.user.email ?? '');
       setUserId(s.user.id);
       setLoading(false);

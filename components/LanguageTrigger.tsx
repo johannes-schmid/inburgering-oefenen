@@ -22,7 +22,7 @@ export const LOCALES = [
 ] as const;
 
 export const LANGUAGE_TRIGGER_CLASS =
-  'hidden menu:flex items-center gap-1.5 text-[0.8125rem] font-medium text-on-surface-variant bg-transparent rounded-lg pl-2 pr-1.5 py-1.5 cursor-pointer hover:text-primary hover:bg-surface-container transition-colors focus:outline-none focus:ring-2 focus:ring-primary/30';
+  'hidden menu:flex items-center gap-1.5 h-9 ps-3 pe-2.5 rounded-full text-[0.875rem] font-medium text-ink bg-transparent cursor-pointer hover:text-navy hover:bg-[rgba(0,43,109,0.06)] active:scale-[0.97] transition-[color,background-color,transform] duration-150 ease-glas outline-none focus-visible:shadow-[var(--glas-focus)] motion-reduce:transition-none motion-reduce:active:scale-100';
 
 /** De inhoud van de taalknop: vlag, korte code, pijltje. Eén bron voor de statische knop én de menutrigger. */
 export function LanguageTriggerLabel({ locale }: { locale: string }) {

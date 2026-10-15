@@ -132,6 +132,8 @@ const nextConfig: NextConfig = {
       },
       // Root → default locale
       { source: '/', destination: '/nl', permanent: true },
+      /* Variant B was de proefversie van de homepage op /home-b; sinds 15-10 staat ze op /. */
+      { source: '/:locale(nl|en|ar)/home-b', destination: '/:locale', permanent: true },
       // Renamed routes
       { source: '/upgrade', destination: '/nl/premium', permanent: true },
       // Docent has a translated slug for EN

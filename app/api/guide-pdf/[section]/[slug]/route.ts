@@ -1,27 +1,25 @@
 /**
  * De gids als PDF — `GET /api/guide-pdf/[section]/[slug]?locale=nl`.
  *
- * Geen tweede sjabloon: de route opent de gidspagina zélf in een headless Chromium en print hem.
- * De `@media print`-regels in `app/globals.css` halen de navigatie, de footer, de inhoudsopgave
- * en de knoppen weg, zodat wat overblijft de hero, de samenvatting, het artikel, de FAQ en de
- * nagekeken-door-regel is — precies de tekst die de docent heeft gelezen. Een eigen PDF-sjabloon
- * zou een tweede plek zijn waar de gids "staat", en die twee lopen uit elkaar.
+ * De route opent de brochurepagina (`/[locale]/gids-brochure/[section]/[slug]`) in een headless
+ * Chromium en print die. Tot 15-10 printte hij de gidspagina zelf; nu is er een omslag en een
+ * brochure-opmaak, maar nog steeds geen tweede tekst: de brochure rendert dezelfde `articleHtml`
+ * als de gidspagina, zodat er één plek blijft waar de gids "staat". Marges, paginaformaat en de
+ * lopende voetregel staan in de `@page`-regels van die pagina (`preferCSSPageSize`), niet hier.
  *
  * Twee Chromiums: lokaal het geïnstalleerde Chrome (`PDF_CHROME_PATH`, standaard het Mac-pad), op
  * Vercel `@sparticuz/chromium`. Beide via `puppeteer-core`, dus er wordt nooit een browser mee
- * geïnstalleerd in `node_modules`.
+ * geïnstalleerd in `node_modules`. De `@page`-margevakken (de voetregel) vragen Chromium 131+.
  *
  * Alleen gepubliceerde gidsen; een concept geeft 404, net als een onbekende slug. Sinds 05-10
  * staat de download achter een e-mailadres: `/api/guide-pdf-request` geeft een URL met een
- * bewijs van een uur (`?t=`), en zonder geldig bewijs is het antwoord 403. De CDN-cache is
- * daarmee per bewijs, dus feitelijk per download — de kosten zitten in de Chromium-start, niet
- * in de herhaling.
+ * bewijs van een uur (`?t=`), en zonder geldig bewijs is het antwoord 403. Hetzelfde bewijs gaat
+ * door naar de brochurepagina, die zonder bewijs een 404 geeft. De CDN-cache is daarmee per
+ * bewijs, dus feitelijk per download — de kosten zitten in de Chromium-start, niet in de herhaling.
  */
 import { NextResponse, type NextRequest } from 'next/server';
 import { getGuideBySlug } from '@/data/guides/helpers';
 import { routing } from '@/i18n/routing';
-import { contentSlugParam } from '@/i18n/content-slugs';
-import { translateDutchPath } from '@/i18n/paths';
 import { pdfTokenValid } from '@/lib/guides/pdf-token';
 import type { GuideSection } from '@/data/guides/types';
 
@@ -65,8 +63,9 @@ export async function GET(
     return new NextResponse('Forbidden', { status: 403 });
   }
 
-  const path = `/${locale}/${translateDutchPath(section, locale)}/${contentSlugParam(guide.slug, locale)}`;
-  const target = new URL(path, req.nextUrl.origin).toString();
+  const target = new URL(`/${locale}/gids-brochure/${section}/${guide.slug}`, req.nextUrl.origin);
+  const token = req.nextUrl.searchParams.get('t');
+  if (token) target.searchParams.set('t', token);
 
   let browser: Awaited<ReturnType<typeof launch>>;
   try {
@@ -78,16 +77,14 @@ export async function GET(
   }
   try {
     const page = await browser.newPage();
-    await page.goto(target, { waitUntil: 'networkidle0', timeout: 45_000 });
+    const res = await page.goto(target.toString(), { waitUntil: 'networkidle0', timeout: 45_000 });
+    if (!res?.ok()) {
+      console.error('guide-pdf: brochurepagina gaf', res?.status());
+      return new NextResponse('PDF unavailable', { status: 500 });
+    }
     await page.emulateMediaType('print');
-    /* De FAQ-vouwen open: een dichte `<details>` print zijn antwoord niet, en de vraag zonder
-       antwoord is de helft van de FAQ. */
-    await page.$$eval('details', ds => ds.forEach(d => { d.open = true; }));
-    const pdf = await page.pdf({
-      format: 'A4',
-      printBackground: true,
-      margin: { top: '16mm', right: '14mm', bottom: '18mm', left: '14mm' },
-    });
+    await page.evaluate(() => document.fonts.ready);
+    const pdf = await page.pdf({ printBackground: true, preferCSSPageSize: true });
     const filename = `${guide.slug}${locale === 'nl' ? '' : `-${locale}`}.pdf`;
     return new NextResponse(Buffer.from(pdf), {
       headers: {

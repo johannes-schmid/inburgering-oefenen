@@ -61,7 +61,7 @@ export default function Agenda({
     return (
       <Panel className="p-6 sm:p-8">
         <PanelTitle sub={t('sub')}>{t('title')}</PanelTitle>
-        <p className="text-sm leading-relaxed text-on-surface-variant">{t('no_dates')}</p>
+        <p className="text-sm leading-relaxed text-ink-2">{t('no_dates')}</p>
       </Panel>
     );
   }
@@ -81,7 +81,7 @@ export default function Agenda({
 
       {[...byYear.entries()].map(([year, items]) => (
         <section key={year} className="mt-6 first:mt-0">
-          <h3 className="mb-3 font-headline text-sm font-extrabold tabular-nums tracking-[0.04em] text-on-surface-variant">
+          <h3 className="g-mono g-tnum mb-3 !text-navy">
             {year}
           </h3>
           <ol className="space-y-1">
@@ -126,7 +126,7 @@ function Line({
   return (
     <div
       className={[
-        'flex flex-wrap items-baseline gap-x-2.5 gap-y-1 rounded-lg px-3 py-2.5',
+        'flex flex-wrap items-baseline gap-x-2.5 gap-y-1 rounded-g-sm px-3 py-2.5',
         mine ? 'bg-[var(--tl-tint-1)]' : '',
         item.overdue ? 'bg-[color:var(--risk-red-tint)]' : '',
       ].join(' ')}
@@ -137,16 +137,16 @@ function Line({
           color: item.overdue
             ? 'var(--risk-red)'
             : item.kind === 'deadline'
-              ? 'var(--color-primary)'
+              ? 'var(--navy)'
               : mine
-                ? 'var(--color-primary)'
-                : 'var(--color-outline)',
+                ? 'var(--navy)'
+                : 'var(--ink-3)',
         }}
         aria-hidden="true"
       />
 
       <span
-        className={`min-w-0 flex-1 text-sm leading-relaxed ${mine ? 'font-semibold text-on-surface' : 'text-on-surface-variant'}`}
+        className={`min-w-[9rem] flex-1 text-sm leading-relaxed ${mine ? 'font-semibold text-ink' : 'text-ink-2'}`}
       >
         {item.kind === 'deadline'
           ? t('kind.deadline')
@@ -155,7 +155,7 @@ function Line({
 
       <time
         dateTime={toISO(item.date)}
-        className={`whitespace-nowrap text-[13px] tabular-nums ${item.overdue ? 'font-bold text-[color:var(--risk-red)]' : 'text-on-surface'}`}
+        className={`whitespace-nowrap text-[13px] tabular-nums ${item.overdue ? 'font-bold text-[color:var(--risk-red)]' : 'text-ink'}`}
       >
         {when}
       </time>
@@ -166,7 +166,7 @@ function Line({
         <EstimateBadge label={tr('estimate_badge')} />
       )}
 
-      <span className="w-full text-[12px] text-on-surface-variant">
+      <span className="w-full text-[12px] text-ink-2">
         {item.overdue ? t('overdue') : weeks === 0 ? t('this_week') : t('in_weeks', { n: weeks })}
         {/* The deadline gets no actor line. "dit gebeurt dan" is right for a result landing and wrong
             for the end of a legal term — nobody performs that, it simply arrives. */}
@@ -202,8 +202,8 @@ export function NextActions({
   if (items.length === 0) return null;
 
   return (
-    <div className="mt-6 border-t border-outline-variant pt-5">
-      <p className="mb-3 font-headline text-sm font-bold text-on-surface">{t('next_title')}</p>
+    <div className="mt-6 g-tl-sep pt-5">
+      <p className="mb-3 font-headline text-sm font-bold text-ink">{t('next_title')}</p>
       <ol className="space-y-2">
         {items.map(item => {
           const Icon = item.overdue ? CircleAlert : ICON[item.kind];
@@ -211,17 +211,17 @@ export function NextActions({
             <li key={item.id} className="flex flex-wrap items-baseline gap-x-2 text-[13px]">
               <Icon
                 className="mt-1 size-3.5 shrink-0"
-                style={{ color: item.overdue ? 'var(--risk-red)' : 'var(--color-primary)' }}
+                style={{ color: item.overdue ? 'var(--risk-red)' : 'var(--navy)' }}
                 aria-hidden="true"
               />
-              <span className="min-w-0 flex-1 font-semibold text-on-surface">
+              <span className="min-w-0 flex-1 font-semibold text-ink">
                 {item.kind === 'deadline'
                   ? t('kind.deadline')
                   : t(`kind.${item.kind}`, { component: label(item.component, item.level) })}
               </span>
               <time
                 dateTime={toISO(item.date)}
-                className={`whitespace-nowrap tabular-nums ${item.overdue ? 'font-bold text-[color:var(--risk-red)]' : 'text-on-surface-variant'}`}
+                className={`whitespace-nowrap tabular-nums ${item.overdue ? 'font-bold text-[color:var(--risk-red)]' : 'text-ink-2'}`}
               >
                 {item.overdue
                   ? t('overdue')

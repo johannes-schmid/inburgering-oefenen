@@ -87,6 +87,7 @@ export const routing = defineRouting({
     '/dashboard/ona/eindgesprek': '/dashboard/ona/eindgesprek',
     '/dashboard/ona/inleveren': '/dashboard/ona/inleveren',
     '/dashboard/woordkaarten': '/dashboard/woordkaarten',
+    '/dashboard/woordkaarten/[thema]': '/dashboard/woordkaarten/[thema]',
     '/dashboard/profiel': '/dashboard/profiel',
     '/dashboard/pakketten': '/dashboard/pakketten',
     '/dashboard/analyse': '/dashboard/analyse',

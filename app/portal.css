@@ -3512,6 +3512,7 @@ a.gt-brow:focus-visible { outline: none; box-shadow: var(--ring-selected); }
   flex: 1; min-width: 0; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
 }
 .gt-icode { font-weight: 800; font-variant-numeric: tabular-nums; }
+.gt-ikind { font-weight: 800; }
 .gt-now {
   flex: none; align-self: center; padding: 0.1rem 0.45rem; border-radius: 999px;
   background: #fff; color: #a24000; font-size: 0.64rem; font-weight: 800;

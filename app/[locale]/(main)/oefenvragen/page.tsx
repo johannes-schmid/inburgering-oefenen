@@ -4,7 +4,13 @@ import { getTranslations } from 'next-intl/server';
 import { routing } from '@/i18n/routing';
 import { Link } from '@/i18n/navigation';
 import TOPICS from '@/data/oefenvragen-topics';
-import { Breadcrumb, GradientHero, EyebrowBadge, CTABanner } from '@/components/site';
+import { ArrowRight, BadgeCheck, LayoutGrid, ListChecks } from 'lucide-react';
+import PageField from '@/components/glas/PageField';
+import Field from '@/components/glas/Field';
+import SectionHeading from '@/components/glas/SectionHeading';
+import { glasButton } from '@/components/glas/Button';
+import CategoryMark, { type Category } from '@/components/horizon/CategoryMark';
+import Crumbs from '../_components/glas/Crumbs';
 import { FEATURES } from '@/lib/features';
 import { localeHref } from '@/i18n/paths';
 
@@ -61,68 +67,60 @@ export default async function OefenIndexPage({ params }: Props) {
 
   const t = await getTranslations({ locale, namespace: 'oefenvragen' });
 
+  const [headLead, headMuted] = t('heading').split('\n');
+
   return (
     <>
-      <Breadcrumb items={[{ label: t('breadcrumb_home'), href: '/' }, { label: t('breadcrumb_index') }]} />
+      {/* De kop op Gracht met sluier; de drie kerngetallen als metachips op glas in plaats van
+          emoji-tegels (geen emoji in de UI). */}
+      <PageField variant="gracht" className="-mt-[var(--nav-h)] !pt-[calc(var(--nav-h)+40px)] sm:!pt-[calc(var(--nav-h)+64px)]">
+        <Crumbs items={[{ label: t('breadcrumb_home'), href: '/' }, { label: t('breadcrumb_index') }]} className="mb-6" />
+        <SectionHeading as="h1" size="section" title={headLead} muted={headMuted} onField />
+        <p className="g-lead mt-5">{t('intro')}</p>
+        <ul className="g-metachips list-none p-0 m-0 mt-7">
+          <li className="g-metachip g-glass"><ListChecks aria-hidden="true" />{t('stat_total')} · {totalQuestions} vragen</li>
+          <li className="g-metachip g-glass"><LayoutGrid aria-hidden="true" />{t('stat_topics')} · {t('stat_topics_val')}</li>
+          <li className="g-metachip g-glass"><BadgeCheck aria-hidden="true" />{t('stat_teacher')} · {t('stat_teacher_val')}</li>
+        </ul>
+      </PageField>
 
-      <GradientHero className="pb-14">
-        <EyebrowBadge tone="dark" className="mb-5">{t('eyebrow')}</EyebrowBadge>
-        <h1 className="font-headline font-extrabold text-white mb-4" style={{ fontSize: 'clamp(2rem,4vw,3rem)', letterSpacing: '-0.02em', lineHeight: 1.15 }}>
-          {t('heading').split('\n').map((line, i) => (
-            <span key={i}>{line}{i === 0 && <br />}</span>
-          ))}
-        </h1>
-        <p className="text-lg mb-10 leading-relaxed max-w-xl" style={{ color: 'rgba(255,255,255,0.7)' }}>
-          {t('intro')}
-        </p>
-
-        <div className="flex flex-wrap gap-6">
-          {[
-            { icon: '📝', label: t('stat_total'), value: `${totalQuestions} vragen` },
-            { icon: '🗂️', label: t('stat_topics'), value: t('stat_topics_val') },
-            { icon: '🎓', label: t('stat_teacher'), value: t('stat_teacher_val') },
-          ].map(s => (
-            <div key={s.label} className="flex items-center gap-3" style={{ background: 'rgba(255,255,255,0.1)', borderRadius: '12px', padding: '12px 16px' }}>
-              <span style={{ fontSize: '1.5rem' }}>{s.icon}</span>
-              <div>
-                <p className="text-xs font-bold uppercase tracking-widest" style={{ color: 'rgba(255,255,255,0.5)' }}>{s.label}</p>
-                <p className="text-white font-bold text-lg font-headline leading-tight">{s.value}</p>
-              </div>
-            </div>
-          ))}
-        </div>
-      </GradientHero>
-
-      {/* Topics grid */}
-      <div className="bg-surface-container-low py-12">
-        <div className="max-w-7xl mx-auto px-6">
-          <h2 className="font-headline font-bold text-on-surface text-xl mb-6">{t('choose_topic')}</h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+      <main className="g-sec !pt-12">
+        <div className="g-wrap">
+          <h2 className="g-head g-head-2 mb-6">{t('choose_topic')}</h2>
+          <div className="g-grid3">
             {TOPICS.map(topic => (
-              <a key={topic.slug} href={`/oefenvragen/${topic.slug}`} className="topic-card group" style={{ textDecoration: 'none' }}>
-                <div className="topic-icon">{topic.icon}</div>
-                <div className="flex-1 min-w-0">
-                  <p className="topic-name">{topic.name}</p>
-                  <p className="topic-count">{topic.sublabel}</p>
-                  <p className="text-xs mt-1" style={{ color: '#fe762c', fontWeight: 600 }}>{t('free_questions', { n: topic.questions.length })}</p>
-                </div>
-                <svg className="topic-arrow" width="16" height="16" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
-                  <path d="M9 18l6-6-6-6" strokeLinecap="round" strokeLinejoin="round" />
-                </svg>
+              <a key={topic.slug} href={`/oefenvragen/${topic.slug}`} className="g-topic">
+                <CategoryMark category={topicMark(topic.slug)} size={44} />
+                <span className="min-w-0">
+                  <b>{topic.name}</b>
+                  <small>{topic.sublabel}</small>
+                  <span className="g-bdg g-bdg-zacht mt-2 !h-6">{t('free_questions', { n: topic.questions.length })}</span>
+                </span>
+                <ArrowRight className="rtl-flip" aria-hidden="true" />
               </a>
             ))}
           </div>
-
-          <div className="mt-12">
-            <CTABanner
-              eyebrow={t('proef_eyebrow')}
-              title={t('proef_title')}
-              description={t('proef_desc')}
-              button={{ label: t('proef_btn'), href: '/dashboard' }}
-            />
-          </div>
         </div>
+      </main>
+
+      <div className="g-closing">
+        <Field as="section" variant="nevel" aria-labelledby="proef-heading" className="g-block g-cta-band">
+          <h2 id="proef-heading">{t('proef_title')}</h2>
+          <p>{t('proef_desc')}</p>
+          <Link href="/dashboard" className={glasButton({ variant: 'oranje', size: 'lg', className: 'mt-2' })}>
+            {t('proef_btn')}
+            <ArrowRight className="rtl-flip" aria-hidden="true" />
+          </Link>
+        </Field>
       </div>
     </>
   );
+}
+
+/* Het merk van een KNM-onderwerp: de drie thema's met een eigen merk, anders de KNM-zuilen. */
+function topicMark(slug: string): Category {
+  if (slug.startsWith('werk')) return 'werk';
+  if (slug.startsWith('wonen')) return 'wonen';
+  if (slug.startsWith('gezondheid')) return 'gezondheid';
+  return 'knm';
 }

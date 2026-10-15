@@ -1,5 +1,8 @@
 import type { Metadata } from 'next';
 import { routing } from '@/i18n/routing';
+import PageField from '@/components/glas/PageField';
+import SectionHeading from '@/components/glas/SectionHeading';
+
 import { alternatesFor } from '@/lib/schema';
 
 type Props = { params: Promise<{ locale: string }> };
@@ -22,27 +25,18 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
 export default async function TerugbetalingsbeleidPage() {
   return (
-    <main className="max-w-3xl mx-auto px-6 py-16 pb-24">
-      <header className="mb-12">
-        <div
-          className="inline-flex items-center gap-2 mb-4"
-          style={{ background: 'rgba(0,43,109,0.06)', borderRadius: '9999px', padding: '4px 12px' }}
-        >
-          <span className="text-xs font-bold tracking-widest uppercase text-primary">Juridisch</span>
+    <main>
+      <PageField variant="gracht" className="g-pagehead">
+        <div className="g-narrow">
+          <SectionHeading as="h1" size="h1" title={"Terugbetalingsbeleid"} onField />
+          <p className="g-pagehead-meta">Laatst bijgewerkt: juni 2026</p>
         </div>
-        <h1
-          className="font-headline font-extrabold text-on-surface mb-3"
-          style={{ fontSize: 'clamp(1.8rem,4vw,2.4rem)', letterSpacing: '-0.02em' }}
-        >
-          Terugbetalingsbeleid
-        </h1>
-        <p className="text-on-surface-variant text-sm">Laatst bijgewerkt: juni 2026</p>
-      </header>
+      </PageField>
+      <section className="g-sec !pt-10">
+        <div className="g-wrap">
+          <article className="g-prose g-prose-solo g-legal-card">
 
-      <div
-        className="bg-surface-container-lowest rounded-2xl p-8 md:p-10 prose"
-        style={{ boxShadow: '0 2px 24px rgba(0,43,109,0.06)' }}
-      >
+      <div className="g-prose-body g-legal">
         <p>
           Inburgering Oefenen biedt digitale leerproducten aan: online oefenexamens, woordkaarten en leermodules.
           Omdat toegang tot digitale content direct na aankoop beschikbaar is, hanteren wij het volgende beleid.
@@ -101,6 +95,8 @@ export default async function TerugbetalingsbeleidPage() {
           Tel.: 06 57587278
         </p>
       </div>
-    </main>
-  );
+          </article>
+        </div>
+      </section>
+    </main>);
 }

@@ -21,10 +21,12 @@ import { fetchAll } from '@/lib/admin/fetch-all';
 import type { Level, OnderdeelSlug } from '@/data/skills';
 import { RULES_HOME } from './taalregels';
 import {
-  itemInputSchema, PAYLOAD_SCHEMAS,
+  EXERCISE_KINDS, itemInputSchema, PAYLOAD_SCHEMAS,
   type ItemKind, type LessonItem, type Tier,
 } from './items';
 import type { LessonBlock, LessonDetail, LessonSummary, ReviewStatus } from './lessons';
+import type { LessonWord } from './words';
+import { fetchWordProgress, toWord, WORD_COLS, type WordRow } from './words-server';
 
 // ---------------------------------------------------------------------------
 // Rijvormen zoals PostgREST ze teruggeeft
@@ -370,6 +372,29 @@ export async function fetchLessonProgress(
   }
 }
 
+/**
+ * Hoeveel opgaven elke les heeft — voor de opdrachtrij in de cursusroute ("8 opgaven").
+ * Eén rij per les via een gefilterde telling, dus geen 1.000-rijengrens op de items.
+ */
+export async function fetchExerciseCounts(lessonIds: number[]): Promise<Map<number, number>> {
+  const out = new Map<number, number>();
+  if (lessonIds.length === 0) return out;
+  try {
+    const supabase = await createClient();
+    const { data } = await supabase
+      .from('lessons')
+      .select('id, lesson_items(count)')
+      .in('id', lessonIds)
+      .in('lesson_items.kind', [...EXERCISE_KINDS]);
+    for (const r of (data ?? []) as unknown as { id: number; lesson_items: { count: number }[] }[]) {
+      out.set(r.id, r.lesson_items[0]?.count ?? 0);
+    }
+    return out;
+  } catch {
+    return out;
+  }
+}
+
 async function fetchDoneLessonIds(userId: string): Promise<Set<number>> {
   try {
     const supabase = await createClient();
@@ -393,27 +418,34 @@ async function fetchDoneLessonIds(userId: string): Promise<Set<number>> {
  *
  * Geeft een lege map als er geen woordenlijst in de les zit — dan is er ook geen query.
  */
-export async function fetchLessonWords(items: LessonItem[]): Promise<Map<number, LessonWordRow[]>> {
-  const out = new Map<number, LessonWordRow[]>();
+export async function fetchLessonWords(
+  items: LessonItem[],
+  userId: string | null,
+): Promise<Map<number, LessonWord[]>> {
+  const out = new Map<number, LessonWord[]>();
 
   const ids = items
     .filter(i => i.kind === 'woordenlijst')
     .flatMap(i => (i.payload as { word_ids?: number[] }).word_ids ?? []);
   if (!ids.length) return out;
 
+  /* Dezelfde kolommen en dezelfde voortgang als de themadeck: de woordenlijst van een les is
+     sinds 15-10 diezelfde `WordDeck`, en een woord dat je hier "ken ik" geeft is daar gekend. */
   try {
     const supabase = await createClient();
     const { data } = await supabase
       .from('lesson_words')
-      .select('id, dutch, article, plural, frame, meaning_nl, example, usage, sort_order')
+      .select(WORD_COLS)
       .in('id', ids)
       .order('sort_order');
 
-    const byId = new Map((data ?? []).map(w => [w.id, w as LessonWordRow]));
+    const rows = (data ?? []) as unknown as WordRow[];
+    const progress = await fetchWordProgress(userId, rows.map(r => r.id));
+    const byId = new Map(rows.map(r => [r.id, toWord(r, progress.get(r.id) ?? 'unseen')]));
     for (const item of items) {
       if (item.kind !== 'woordenlijst') continue;
       const wanted = (item.payload as { word_ids?: number[] }).word_ids ?? [];
-      out.set(item.id, wanted.map(id => byId.get(id)).filter((w): w is LessonWordRow => !!w));
+      out.set(item.id, wanted.map(id => byId.get(id)).filter((w): w is LessonWord => !!w));
     }
     return out;
   } catch {

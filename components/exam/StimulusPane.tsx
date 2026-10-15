@@ -1,7 +1,9 @@
 'use client';
 
 import { memo } from 'react';
+import { Info } from 'lucide-react';
 import AudioPlayer from './AudioPlayer';
+import './glas-player.css';
 import type { StimulusItem } from '@/lib/exam-content';
 
 /**
@@ -32,10 +34,17 @@ function StimulusPane({
 }) {
   const s = stimulus;
 
+  /* Glas §10: de tekst als papier (crème, een halve graad gedraaid), het fragment als glazen
+     capsule op Gracht, een plaatje op wit. */
   return (
-    <div className="flex flex-col gap-4">
+    <div className="g-xlezen-side">
+      {/* De opdracht in een eigen kader (eigenaar, 15-10): als losse grijze regel boven het
+          papier werd hij overgeslagen, en hij zegt wat je eerst moet lezen. */}
       {s.intro && (
-        <p className="text-sm leading-relaxed text-on-surface-variant m-0">{s.intro}</p>
+        <p className="g-xbrief">
+          <Info size={17} strokeWidth={2.3} className="g-xbrief-i" aria-hidden />
+          <span>{s.intro}</span>
+        </p>
       )}
 
       {s.kind === 'audio' && s.audio_url && (
@@ -50,26 +59,13 @@ function StimulusPane({
       )}
 
       {s.kind === 'text' && s.body_html && (
-        <article
-          className="rounded-2xl bg-surface-container-lowest"
-          style={{ padding: '1.5rem 1.625rem', boxShadow: 'var(--shadow-card-md)' }}
-        >
-          {s.title && (
-            <h2
-              className="font-headline font-bold text-on-surface mb-3"
-              style={{ fontSize: '1.05rem', letterSpacing: '-0.01em' }}
-            >
-              {s.title}
-            </h2>
-          )}
+        <article className="g-xpaper">
+          {s.title && <h2>{s.title}</h2>}
+          {/* The tag-level rules live in .exam-rich in app/globals.css — see the note there. */}
           <div
-            className="exam-stimulus-body exam-rich exam-rich-scroll text-on-surface"
+            className="exam-rich exam-rich-scroll"
             dangerouslySetInnerHTML={{ __html: s.body_html }}
           />
-          {/* The tag-level rules live in .exam-rich in app/globals.css — see the note there. */}
-          <style>{`
-            .exam-stimulus-body { font-size: 0.95rem; line-height: 1.7; }
-          `}</style>
         </article>
       )}
     </div>
@@ -78,15 +74,12 @@ function StimulusPane({
 
 function StimulusImage({ src, alt }: { src: string; alt: string | null }) {
   return (
-    <figure
-      className="m-0 rounded-2xl overflow-hidden bg-surface-container-lowest"
-      style={{ boxShadow: 'var(--shadow-card-md)' }}
-    >
+    <figure className="g-xbody" style={{ margin: 0, padding: 10 }}>
       {/* eslint-disable-next-line @next/next/no-img-element */}
       <img
         src={src}
         alt={alt ?? ''}
-        style={{ width: '100%', height: 'auto', display: 'block' }}
+        style={{ width: '100%', height: 'auto', display: 'block', borderRadius: 12 }}
       />
     </figure>
   );

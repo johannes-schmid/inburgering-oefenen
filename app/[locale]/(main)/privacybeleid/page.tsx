@@ -1,7 +1,10 @@
 import type { Metadata } from 'next';
 import { getTranslations } from 'next-intl/server';
 import { routing } from '@/i18n/routing';
-import { absUrl, alternatesFor } from '@/lib/schema';
+import PageField from '@/components/glas/PageField';
+import SectionHeading from '@/components/glas/SectionHeading';
+
+import { alternatesFor } from '@/lib/schema';
 
 type Props = { params: Promise<{ locale: string }> };
 
@@ -29,37 +32,25 @@ export default async function PrivacybeleidPage({ params }: Props) {
   const t = await getTranslations({ locale, namespace: 'privacy' });
 
   return (
-    <>
-      <main className="max-w-3xl mx-auto px-6 py-16 pb-24">
+    <main>
+      <PageField variant="gracht" className="g-pagehead">
+        <div className="g-narrow">
+          <SectionHeading as="h1" size="h1" title={t('heading')} onField />
+          <p className="g-pagehead-meta">{t('last_updated')}</p>
+        </div>
+      </PageField>
+      <section className="g-sec !pt-10">
+        <div className="g-wrap">
+          <article className="g-prose g-prose-solo g-legal-card">
 
-        <header className="mb-12">
-          <div
-            className="inline-flex items-center gap-2 mb-4"
-            style={{ background: 'rgba(0,43,109,0.06)', borderRadius: '9999px', padding: '4px 12px' }}
-          >
-            <span className="text-xs font-bold tracking-widest uppercase text-primary">
-              {t('eyebrow')}
-            </span>
-          </div>
-          <h1
-            className="font-headline font-extrabold text-on-surface mb-3"
-            style={{ fontSize: 'clamp(1.8rem,4vw,2.4rem)', letterSpacing: '-0.02em' }}
-          >
-            {t('heading')}
-          </h1>
-          <p className="text-on-surface-variant text-sm">{t('last_updated')}</p>
-        </header>
-
-        <div
-          className="bg-surface-container-lowest rounded-2xl p-8 md:p-10 prose"
-          style={{ boxShadow: '0 2px 24px rgba(0,43,109,0.06)' }}
-        >
+        <div className="g-prose-body g-legal">
           {/* De Nederlandse tekst is leidend. /en en /ar tonen de Engelse vertaling: de automatische privacy-check van OpenAI leest de URL die in het app-pakket staat, /en/privacy-policy. */}
           {locale === 'nl' ? <PolicyNl /> : <PolicyEn />}
         </div>
-      </main>
-
-    </>
+          </article>
+        </div>
+      </section>
+    </main>
   );
 }
 
