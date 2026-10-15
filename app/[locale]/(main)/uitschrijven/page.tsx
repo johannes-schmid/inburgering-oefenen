@@ -39,7 +39,7 @@ export default function UitschrijvenPage() {
   /* Staat in de `(main)`-layout, dus de publieke pil en de footer staan er al omheen: geen eigen
      kop meer (die stond er dubbel). Eén kaart op een veld, drie staten. */
   return (
-    <Field as="section" variant="gracht" veil="up" className="g-pagehead pb-20 sm:pb-28 px-4">
+    <Field as="main" variant="gracht" veil="up" className="g-pagehead pb-20 sm:pb-28 px-4">
       <div className="g-statecard shadow-zweef mt-4" aria-live="polite">
         {state === 'confirm' && (
           <>

@@ -25,7 +25,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
 export default async function TerugbetalingsbeleidPage() {
   return (
-    <>
+    <main>
       <PageField variant="gracht" className="g-pagehead">
         <div className="g-narrow">
           <SectionHeading as="h1" size="h1" title={"Terugbetalingsbeleid"} onField />
@@ -98,5 +98,5 @@ export default async function TerugbetalingsbeleidPage() {
           </article>
         </div>
       </section>
-    </>);
+    </main>);
 }

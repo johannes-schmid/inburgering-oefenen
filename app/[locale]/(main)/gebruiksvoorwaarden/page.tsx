@@ -32,7 +32,7 @@ export default async function GebruiksvoorwaardenPage({ params }: Props) {
   const t = await getTranslations({ locale, namespace: 'terms' });
 
   return (
-    <>
+    <main>
       <PageField variant="gracht" className="g-pagehead">
         <div className="g-narrow">
           <SectionHeading as="h1" size="h1" title={t('heading')} onField />
@@ -92,5 +92,5 @@ export default async function GebruiksvoorwaardenPage({ params }: Props) {
           </article>
         </div>
       </section>
-    </>);
+    </main>);
 }

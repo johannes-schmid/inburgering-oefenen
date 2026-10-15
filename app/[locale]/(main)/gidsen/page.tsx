@@ -175,7 +175,7 @@ export default async function GidsenIndexPage({ params }: Props) {
     );
 
   return (
-    <>
+    <main>
       <JsonLd data={jsonLd} />
 
       {/* De kop: Nevel, het leesveld (glas.html §14), onder de pil door. Titel en één zin.
@@ -284,6 +284,6 @@ export default async function GidsenIndexPage({ params }: Props) {
           </div>
         </section>
       )}
-    </>
+    </main>
   );
 }

@@ -5811,3 +5811,9 @@ oplopende `top` per index doet het, en de `prefers-reduced-motion`-uitweg is dan
 **Outcome:** SUCCESS (tsc, eslint, Playwright-screenshots 1440/390 van A2 Lezen examen 1)
 **What worked / went wrong:** `.g-xintro-line` blijft bestaan: hij wordt ook voor feedback- en statusregels in `ExamShell`/`RubricFeedback` gebruikt, dus een eigen klasse in plaats van de gedeelde te wijzigen.
 **Lesson:** Een instructie die gelezen móét worden hoort niet dezelfde stijl te hebben als bijschrift.
+
+## 2026-10-15 — merge-review design/glas-v1: KNM-lesmodules, `<main>`-landmark, e2e bijgewerkt
+**Changed:** KNM-toegang tot `/leren/[slug]` server-side op `ownsKnm` (`app/[locale]/(app)/leren/[slug]/page.tsx`), de `premium_plus`-plancheck uit `LerenThemaClient.tsx` weg; `<main>` terug op GuideHub, /gidsen, /platform, de drie juridische pagina's en /uitschrijven; `tests/free-practice.spec.js` en `tests/public.spec.js` bijgewerkt voor de focuslaag, `ChoiceTile` (`role="radio"`), `.g-slots` en de CTA in de pil.
+**Outcome:** SUCCESS
+**What worked / went wrong:** De Glas-branch stuurde KNM-klanten via de nieuwe `/leren`-doorgang en de cursusroute naar thema 2–7, waar de client op `plan === 'premium_plus'` keek — niemand schrijft `plan`, dus een betalende klant ging naar `/activate`. Bij het herbouwen naar Glas viel `<main>` weg op zeven pagina's (`<>` in plaats van `<main>`); alleen de e2e-suite merkte het. De gratis proef draait sinds de focusmodus in een portal buiten `<main>`, dus alle selectors op `main` vonden niets.
+**Lesson:** Een herbouw van de buitenste wrapper is een wijziging aan de landmark, niet aan de stijl — houd `<main>` aan. En de derde keer: toegang gaat via `ownsKnm`/`ownsModule` op de server, nooit via een plancheck in de client.

@@ -220,7 +220,7 @@ export default async function PlatformPage({ params }: Props) {
   };
 
   return (
-    <>
+    <main>
       <JsonLd data={jsonLd} />
 
       {/* ── DE KOP ── een donkere kaart onder de nav, zoals de referentie; Nacht draagt de ene
@@ -424,6 +424,6 @@ export default async function PlatformPage({ params }: Props) {
           </Link>
         </Field>
       </div>
-    </>
+    </main>
   );
 }

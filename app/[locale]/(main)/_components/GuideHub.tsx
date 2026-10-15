@@ -149,7 +149,7 @@ export default async function GuideHub({
   };
 
   return (
-    <>
+    <main>
       <JsonLd data={jsonLd} />
 
       {/* De kop: Nevel, het leesveld (glas.html §14), onder de pil door, met het kruimelpad erin. */}
@@ -300,6 +300,6 @@ export default async function GuideHub({
           </Link>
         </Field>
       </div>
-    </>
+    </main>
   );
 }
