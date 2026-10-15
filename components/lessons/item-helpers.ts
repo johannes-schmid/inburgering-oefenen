@@ -26,17 +26,7 @@ export { tierChip as tierChipOf } from '@/lib/lessons/lessons';
 
 import type { LessonItem as Row } from '@/lib/lessons/items';
 
-/** Eén woord uit `lesson_words`, zoals de woordenlijst-renderer het toont. */
-export type LessonWord = {
-  id: number;
-  dutch: string;
-  article: string | null;
-  plural: string | null;
-  frame: string | null;
-  meaning_nl: string;
-  example: string | null;
-  usage: 'receptief' | 'productief';
-};
+import type { LessonWord } from '@/lib/lessons/words';
 
 /**
  * Hang de woorden aan het `woordenlijst`-item.
@@ -50,7 +40,15 @@ export type LessonWord = {
  * veld: op alle zestien takken zetten zou betekenen dat een mcq-renderer `item.words` mag
  * lezen en altijd `undefined` krijgt.
  */
-type WithWords<T> = T extends { kind: 'woordenlijst' } ? T & { words?: LessonWord[] } : T;
+type WithWords<T> = T extends { kind: 'woordenlijst' }
+  ? T & {
+      words?: LessonWord[];
+      /** Voor de voortgang van de deck; null bij een gast. */
+      userId?: string | null;
+      /** De les van dit item: een woordenles is af als elk woord gekend is. */
+      lessonId?: number;
+    }
+  : T;
 
 export type LessonItem = WithWords<Row>;
 

@@ -64,10 +64,67 @@
 .gl-crumbs { min-width: 0; flex: 1 1 auto; }
 .g-leer .gl-crumbs .crumbs { margin: 0; }
 .gl-bar-tag { flex: none; }
+/* "Volgende" rechts in de balk: van de uitleg naar de opdracht, van de opdracht verder. */
+.gl-bar-next {
+  flex: none; display: inline-flex; align-items: center; gap: 2px; margin-inline-start: auto; padding: 6px 8px; border-radius: 10px;
+  font-family: var(--font-headline); font-weight: 700; font-size: 14px; color: var(--navy); text-decoration: none;
+  transition: background-color 160ms ease, transform 160ms var(--ease-out-glas);
+}
+.gl-bar-next:active { transform: scale(0.97); }
+.gl-bar-next:focus-visible { outline: none; box-shadow: var(--glas-focus); }
+@media (hover: hover) and (pointer: fine) { .gl-bar-next:hover { background: var(--mist); } }
+
+/* De twee stappen als schakelaar in de pagina — alleen waar de cursusroute niet staat. */
+.gl-steps { display: flex; gap: 4px; padding: 4px; border-radius: 14px; background: var(--mist); align-self: stretch; }
+.gl-steps a {
+  flex: 1; display: inline-flex; align-items: center; justify-content: center; gap: 7px; padding: 9px 12px; border-radius: 10px;
+  font-size: 14px; font-weight: 600; color: var(--ink-2); text-decoration: none; transition: background-color 160ms ease, color 160ms ease;
+}
+.gl-steps a.is-on { background: #fff; color: var(--navy); box-shadow: 0 6px 14px -10px rgba(0, 27, 80, 0.5); }
+.gl-steps a:focus-visible { outline: none; box-shadow: inset 0 0 0 2px var(--navy); }
+@media (min-width: 1024px) { .gl-steps { display: none; } }
+@media (max-width: 1023px) { .gl-stepback { display: none; } }
+
+/* De kop van de opdrachtstap: titel, en terug naar de video. */
+.gl-head.gl-taskhead { flex-direction: row; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: 12px 20px; }
+.gl-taskhead .gl-pending { flex-basis: 100%; }
+.gl-stepback {
+  flex: none; display: inline-flex; align-items: center; gap: 8px; padding: 9px 14px; border-radius: var(--r-pill);
+  background: var(--mist); color: var(--navy); font-weight: 600; font-size: 14px; text-decoration: none;
+  transition: background-color 160ms ease, transform 160ms var(--ease-out-glas);
+}
+.gl-stepback:active { transform: scale(0.97); }
+.gl-stepback:focus-visible { outline: none; box-shadow: var(--glas-focus); }
+@media (hover: hover) and (pointer: fine) { .gl-stepback:hover { background: var(--mist-2); } }
+
+/* De overstap van de uitleg naar de opdracht: Nacht stil, de hele kaart is de link. */
+.gl-handoff { text-decoration: none; transition: transform 160ms var(--ease-out-glas); }
+.gl-handoff:active { transform: scale(0.99); }
+.gl-handoff:focus-visible { outline: none; box-shadow: var(--glas-focus); }
+.gl-handoff .gl-handoff-k { font-size: 10.5px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--waas); }
+.gl-handoff .g-btn > svg { transition: transform 200ms var(--ease-out-glas); }
+@media (hover: hover) and (pointer: fine) {
+  .gl-handoff:hover .g-btn > svg { transform: translateX(3px); }
+  [dir="rtl"] .gl-handoff:hover .g-btn > svg { transform: scaleX(-1) translateX(3px); }
+}
+
+/* De opgaven op de pagina. Met materiaal (tekst, fragment): links de bron, rechts de vraag. */
+@media (min-width: 1200px) {
+  .gl-task.is-wide .exq-has-src { display: grid; grid-template-columns: minmax(0, 1.05fr) minmax(0, 1fr); column-gap: 24px; align-items: start; }
+  .gl-task.is-wide .exq-has-src > .exq { grid-column: 1 / -1; }
+  .gl-task.is-wide .exq-has-src > .exq-src { position: sticky; top: 16px; }
+  .g-leer .gl-task.is-wide .exq-has-src .blk-tekst { grid-template-columns: minmax(0, 1fr); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .gl-bar-next, .gl-stepback, .gl-handoff, .gl-handoff .g-btn > svg, .gl-steps a { transition: none; }
+}
+
 .gl-in { padding: 22px 18px 24px; display: flex; flex-direction: column; gap: 18px; min-width: 0; }
 @media (min-width: 640px) { .gl-in { padding: 26px 28px 30px; gap: 20px; } }
 
 .gl-head { display: flex; flex-direction: column; align-items: flex-start; gap: 10px; }
+.gl-head.is-row { flex-direction: row; align-items: center; gap: 14px; }
+.g-leer .gl-head.is-row .gl-title { margin: 0; }
 .g-leer .gl-title {
   margin: 4px 0 0; font-family: var(--font-headline); font-weight: 700; font-size: clamp(28px, 3.4vw, 40px); line-height: 1.08; letter-spacing: -0.035em;
   color: var(--ink); text-wrap: balance;
@@ -663,6 +720,8 @@
 .gl-wordhead .gl-title { margin: 0 0 4px; font-size: clamp(26px, 3vw, 34px); }
 .g-leer .wd-stage { margin-top: 14px; padding: 18px; border-radius: var(--r-xl); background: #fff; }
 @media (min-width: 640px) { .g-leer .wd-stage { padding: 22px 24px; } }
+/* In een les staat de deck al op de witte lespagina: geen tweede vlak eromheen. */
+.g-leer .gl-learnbody .wd-stage { margin-top: 0; padding: 0 0 28px; background: none; }
 .g-leer .wd-keys { font-size: 12.5px; color: var(--ink-3); }
 .g-leer .wd-count, .g-leer .wd-known, .g-leer .wd-status {
   font-family: var(--glas-mono); font-size: 11.5px; font-weight: 500; letter-spacing: 0.08em; text-transform: uppercase;
@@ -685,7 +744,12 @@
 .g-leer .wd-chip-art { font-family: var(--font-headline); font-weight: 700; background: rgba(255, 255, 255, 0.7); color: var(--ink-3); }
 .g-leer .wd-receptief { background: rgba(0, 43, 109, 0.08); color: var(--navy); }
 .g-leer .wd-productief { background: var(--klei-tint); color: var(--klei); }
-.g-leer .wd-word { font-size: clamp(32px, 4.6vw, 44px); letter-spacing: -0.04em; color: var(--navy); }
+.g-leer .wd-word {
+  font-size: clamp(28px, 4.6vw, 44px); letter-spacing: -0.04em; color: var(--navy);
+  /* Een lang samengesteld woord (woningcorporatie) breekt op een lettergreep met een streepje,
+     niet midden in een letter; `lang="nl"` op het element geeft de browser de afbreekregels. */
+  overflow-wrap: normal; hyphens: auto;
+}
 .g-leer .wd-flip-pill { background: rgba(255, 255, 255, 0.7); color: var(--navy); }
 .g-leer .wd-speed { background: rgba(255, 255, 255, 0.7); }
 .g-leer .wd-speed.is-on { background: var(--navy); color: #fff; }
@@ -693,7 +757,19 @@
 .g-leer .wd-eq:focus-visible, .g-leer .wd-speed:focus-visible, .g-leer .wd-toggle:focus-visible,
 .g-leer .wd-lang:focus-visible, .g-leer .wd-arrow:focus-visible, .g-leer .wd-btn:focus-visible { outline: none; box-shadow: var(--glas-focus); }
 .g-leer .wd-trans { background: linear-gradient(rgba(0, 43, 109, 0.1), rgba(0, 43, 109, 0.1)) top / 100% 1px no-repeat; }
-.g-leer .wd-marks { gap: 10px; margin-top: 12px; }
+.g-leer .wd-marks { gap: 10px; margin-top: 12px; transition: opacity 180ms var(--ease-out-glas), visibility 0s; }
+/* Onzichtbaar tot de kaart om is, maar de plek blijft bezet: niets eronder verspringt. */
+.g-leer .wd-marks:not(.is-open) { opacity: 0; visibility: hidden; transition: opacity 120ms ease, visibility 0s 120ms; }
+/* Voor- en achterkant op één plek: de kaart is zo hoog als de langste kant en blijft dat. */
+.g-leer .wd-faces { display: grid; gap: 0; }
+/* En elke kaart even hoog, ook van woord tot woord: een vaste maat net boven de langste
+   achterkant van nu (391px desktop, 530px mobiel). Een uitschieter mag groeien. */
+.g-leer .wd-card { min-height: 540px; }
+@media (min-width: 640px) { .g-leer .wd-card { min-height: 400px; } }
+.g-leer .wd-face { grid-area: 1 / 1; min-width: 0; display: flex; flex-direction: column; gap: 0.4rem; }
+.g-leer .wd-face[aria-hidden='true'] { visibility: hidden; }
+.g-leer .wd-card.is-plain .wd-faces { align-items: stretch; }
+.g-leer .wd-card.is-plain .wd-face { align-items: center; }
 .g-leer .wd-btn {
   height: 48px; padding: 0 22px; border-radius: var(--r-pill); font-family: var(--font-headline); font-weight: 700; font-size: 15px;
   transition: transform 160ms var(--ease-out-glas), background-color 160ms ease;
@@ -708,7 +784,17 @@
 .g-leer .wd-arrow:hover:not(:disabled) { background: var(--mist-2); }
 .g-leer .wd-status-known { color: var(--goed-ink); }
 .g-leer .wd-status-learning { color: var(--fout); }
-.g-leer .wd-toggle, .g-leer .wd-lang { background: var(--mist); color: var(--navy); }
+.g-leer .wd-toggle, .g-leer .wd-lang { background: var(--mist); color: var(--navy); white-space: nowrap; }
+/* Op een aanraakscherm zijn er geen pijltjes en geen spatiebalk; de hint zegt dan niets. */
+@media (hover: none) { .g-leer .wd-keys { display: none; } }
+@media (max-width: 479px) {
+  /* Vijf dingen naast elkaar passen niet op 390px: de status krijgt een eigen regel erboven,
+     de pijlen blijven aan de randen en de twee schakelaars staan er samen tussenin. */
+  .g-leer .wd-nav { flex-wrap: wrap; gap: 8px 6px; }
+  .g-leer .wd-status { order: -1; flex-basis: 100%; }
+  .g-leer .wd-toggle { margin-inline-start: auto; }
+  .g-leer .wd-nav > :last-child { margin-inline-start: auto; }
+}
 .g-leer .wd-toggle.is-on { background: var(--navy); color: #fff; }
 .g-leer .wd-done { border-radius: var(--r-xl); background: var(--mist); }
 .g-leer .wd-done-h { color: var(--navy); }

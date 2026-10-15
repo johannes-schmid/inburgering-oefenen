@@ -9,12 +9,12 @@ import { grammarTopic, parseLessonRef, videoOf } from '@/data/grammar-syllabus';
 import { visualFor } from '@/data/lesson-visuals';
 import { fetchPortalMenu } from '@/lib/portal-menu';
 import { closeTrail } from '@/lib/portal-crumbs';
-import { fetchCourse, fetchLesson, fetchLessonWords } from '@/lib/lessons/lessons-server';
+import { fetchCourse, fetchExerciseCounts, fetchLesson, fetchLessonWords } from '@/lib/lessons/lessons-server';
 import { fetchGrammarStep } from '@/lib/lessons/grammar-server';
 import { courseOutline, isFreeTopic, grammarStepPath, topicCode, topicPath } from '@/lib/lessons/grammar';
 import { exerciseCount } from '@/lib/lessons/lessons';
 import { courseSideBlocks } from '@/lib/lessons/course-side';
-import { lessonStreamLabels } from '@/lib/lessons/stream-labels';
+import { courseRowLabels, lessonStreamLabels, stepLabels } from '@/lib/lessons/stream-labels';
 import type { LessonItem } from '@/components/lessons/item-helpers';
 import GrammarTopicView, { type TopicPart } from '@/components/lessons/GrammarTopicView';
 import GrammarCourseSide from '@/components/lessons/GrammarCourseSide';
@@ -26,6 +26,7 @@ import PortalCrumbs from '../../../../../components/PortalCrumbs';
 
 type Props = {
   params: Promise<{ locale: string; level: string; skill: string; n: string }>;
+  searchParams: Promise<{ stap?: string }>;
 };
 
 export const metadata: Metadata = {
@@ -53,8 +54,9 @@ export const metadata: Metadata = {
  * bestaat rendert "Deze les wordt nog geschreven"; een `pending` les rendert met de banner van
  * de lespagina. Alleen een onderwerpnummer dat niet in de syllabus staat is een 404.
  */
-export default async function GrammarTopicPage({ params }: Props) {
+export default async function GrammarTopicPage({ params, searchParams }: Props) {
   const { locale, level: rawLevel, skill: slug, n: rawN } = await params;
+  const currentStep = (await searchParams).stap === 'opdracht' ? 'opdracht' : 'uitleg';
   if (!isLevel(rawLevel)) notFound();
   const level = rawLevel;
   const skill = getSkillAtLevel(level, slug);
@@ -74,15 +76,19 @@ export default async function GrammarTopicPage({ params }: Props) {
   }
 
   const t = await getTranslations('grammar');
-  const tLessons = await getTranslations('lessons');
   const tSkills = await getTranslations('skills');
 
-  const [step, blocks, menu, streamLabels] = await Promise.all([
+  const [step, blocks, menu, streamLabels, rowLabels] = await Promise.all([
     fetchGrammarStep(level, skill.slug, user.id),
     fetchCourse(level, skill.slug, user.id),
     fetchPortalMenu(),
     lessonStreamLabels(),
+    courseRowLabels(),
   ]);
+  const exerciseCounts = await fetchExerciseCounts([
+    ...step.topics.flatMap(x => x.lessons.map(l => l.id)),
+    ...(step.extras?.lessons ?? []).map(l => l.id),
+  ].filter((id): id is number => id !== null));
 
   const index = step.topics.findIndex(x => x.n === n);
 
@@ -94,9 +100,9 @@ export default async function GrammarTopicPage({ params }: Props) {
     if (!lesson) {
       return { ref, lessonId: null, title: null, pending: false, items: [], visual: null, exercises: 0 };
     }
-    const words = await fetchLessonWords(lesson.items);
+    const words = await fetchLessonWords(lesson.items, user.id);
     const items = lesson.items.map(item =>
-      item.kind === 'woordenlijst' ? { ...item, words: words.get(item.id) ?? [] } : item) as LessonItem[];
+      item.kind === 'woordenlijst' ? { ...item, words: words.get(item.id) ?? [], userId: user.id, lessonId: lesson.id } : item) as LessonItem[];
     return {
       ref,
       lessonId: lesson.id,
@@ -119,7 +125,9 @@ export default async function GrammarTopicPage({ params }: Props) {
   const sideBlocks = courseSideBlocks({
     locale, level, skill: skill.slug, owned, blocks, step, outline,
     open: 'B', currentTopicN: n, grammarName: t('step_label'),
+    currentStep, exerciseCounts, rowLabels,
   });
+  const exerciseTotal = parts.reduce((sum, p) => sum + p.exercises, 0);
 
   const following = step.topics[index + 1] ?? null;
 
@@ -203,6 +211,8 @@ export default async function GrammarTopicPage({ params }: Props) {
               ? { href: itemHref(following.n), title: `${topicCode(following.n)} · ${following.title}` }
               : { href: `/${locale}/dashboard/${level}/${skill.slug}`, title: t('step_back') }}
             streamLabels={streamLabels}
+            step={currentStep}
+            href={`/${locale}${topicPath(level, skill.slug, n)}`}
             labels={{
               partsAria: t('parts_aria'),
               notWritten: t('not_written'),
@@ -213,12 +223,8 @@ export default async function GrammarTopicPage({ params }: Props) {
               videoSoonSub: t('video_soon_sub'),
               uitlegHead: streamLabels.learnHead,
               uitlegSub: streamLabels.learnSub,
-              close: t('close'),
               nextKick: following ? t('next_topic') : t('step_done'),
-              practiceHead: streamLabels.practiceHead,
-              practiceCtaHead: tLessons('practice_cta_head'),
-              practiceCtaSub: tLessons.raw('practice_cta_sub') as string,
-              practiceStart: tLessons('practice_start'),
+              ...stepLabels(t, rowLabels, exerciseTotal),
             }}
           />
           </main>

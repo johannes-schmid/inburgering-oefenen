@@ -1,14 +1,14 @@
 'use client';
 
 import { useEffect, useMemo, useState } from 'react';
-import { Dialog } from '@base-ui/react/dialog';
-import { ArrowRight, ChevronDown, PenLine, X } from 'lucide-react';
+import { ArrowRight, BookOpen, ChevronDown, ChevronRight, ListChecks, PenLine, SquarePlay } from 'lucide-react';
 import CategoryMark, { type Category } from '@/components/horizon/CategoryMark';
 import LessonStream, { type StreamLabels } from './LessonStream';
 import { LessonProgressScope } from './LessonProgressScope';
 import VideoEmbed from './VideoEmbed';
 import { isExerciseKind, type LessonItem } from './item-helpers';
 import type { LessonVisual as VisualSpec } from '@/data/lesson-visuals';
+import type { LessonStep } from './GrammarCourseSide';
 
 /** Eén les achter het onderwerp, zoals de pagina hem heeft opgehaald — of niet. */
 export type TopicPart = {
@@ -32,14 +32,18 @@ export type TopicViewLabels = {
   videoSoonSub: string;
   uitlegHead: string;
   uitlegSub: string;
-  close: string;
   nextKick: string;
-  /** De oefenkaart onder de uitleg en het venster erboven (Glas §G5). */
-  practiceHead: string;
-  practiceCtaHead: string;
-  /** "{n} opgaven" — de client vult `{n}` in. */
-  practiceCtaSub: string;
-  practiceStart: string;
+  kindVideo: string;
+  kindUitleg: string;
+  kindOpdracht: string;
+  /** "8 opgaven", al ingevuld met het totaal van alle delen. */
+  exercises: string;
+  stepsAria: string;
+  backVideo: string;
+  backUitleg: string;
+  handoffKick: string;
+  handoffStart: string;
+  barNext: string;
 };
 
 /**
@@ -60,43 +64,30 @@ function exampleParts(line: string): { sentences: boolean; parts: string[] } {
 }
 
 /**
- * De les en het grammaticaonderwerp in Glas (§G5): **eerst leren, dan oefenen in een venster.**
+ * De les en het grammaticaonderwerp in Glas, in twee stappen (eigenaar, 15-10, naar Coursera):
+ * **eerst de video of de uitleg, dan de opdracht** — elk op een eigen adres en als eigen rij in
+ * de cursusroute.
  *
- * ── DE OPBOUW ────────────────────────────────────────────────────────────────
- * Eén witte lespagina: bovenin een mistbalk met het kruimelpad, dan het merk, de titel, het
- * leerdoel en de sleutelwoorden. Daaronder de ingesproken uitleg (als die er is) en de uitleg
- * zelf — lezen en luisteren, niets invullen. Onderaan één donkere kaart "Oefen wat je net
- * leerde" met één knop. De opgaven openen in een eigen venster bóven de les, één tegelijk.
- * Sluit je het venster, dan sta je weer precies in de uitleg.
+ * ── DE TWEE STAPPEN ──────────────────────────────────────────────────────────
+ * De uitlegstap is de witte lespagina: kop, video, ingesproken uitleg, de uitleg zelf, en
+ * onderaan één donkere kaart naar de opdracht. De opdrachtstap (`?stap=opdracht`) zet de opgaven
+ * op de pagina, één tegelijk, met het materiaal van een opgave ernaast — wat tot 15-10 in een
+ * venster bóven de uitleg stond. "Dan staat er zoveel op één pagina" was de reden: een video die
+ * je helemaal kunt bekijken, en een opdracht die een eigen plek heeft.
  *
- * ── WAAROM HET OMGEDRAAID IS ─────────────────────────────────────────────────
- * Tot 14-10 opende de pagina op de opgave en zat de uitleg achter een pop-up (eigenaar, 10-10).
- * Glas v1.0 (goedgekeurd 14-10, later) draait dat om naar het Coursera-patroon: de uitleg is
- * rustig en blijft staan, de oefening krijgt een eigen ruimte. "Leren is rustiger dan toetsen."
- *
- * ── HET VENSTER BLIJFT GEMONTEERD ────────────────────────────────────────────
- * `keepMounted`: een half ingevulde opgave is er nog als je het venster sluit om de regel terug
- * te lezen, en de antwoorden van deze sessie ook. Base UI houdt de focus in het venster, Escape
- * en de achtergrond sluiten het, en de focus gaat terug naar de knop die het opende. Geopend of
- * gesloten met het toetsenbord beweegt het niet (G6).
- *
- * ── ALLE ZESTIEN SOORTEN ─────────────────────────────────────────────────────
- * Het venster toont `LessonStream part="oefenen"`, dus elke opgavesoort draait daar met zijn
- * eigen renderer, ook `naspreken` en `opnemen` (de microfoon werkt in een dialoog net zo). Het
- * materiaal waar een opgave over gaat — een fragment, een leestekst — staat in het venster bóven
- * die opgave (`sourcesOf` in de stroom), zodat een luistervraag niet zonder zijn fragment staat.
- * Het materiaal zelf staat ook in de uitleg op de pagina.
+ * Een les zonder opgaven heeft maar één stap; `?stap=opdracht` valt daar terug op de uitleg.
+ * Een oude link met `#oefenen` gaat naar de opdrachtstap.
  *
  * ── DE VOORTGANG BLIJFT PER LES ──────────────────────────────────────────────
  * Elke les is een eigen `LessonStream` met een eigen `lessonId` en een eigen
- * `LessonProgressScope`. Alle lessen blijven gemonteerd en alleen de gekozen staat in beeld.
+ * `LessonProgressScope`. Alle delen blijven gemonteerd en alleen het gekozen deel staat in beeld.
  */
 export default function GrammarTopicView({
   crumbs, kicker = null, category = 'taalregels', title, learn, examples = '', links = [], video,
-  before = null, parts, next, streamLabels, labels,
+  before = null, parts, next, streamLabels, labels, step, href,
 }: {
   crumbs: React.ReactNode;
-  /** De plaats van de les, zoals "C1 · Examenuitleg". Staat in de balk, niet boven de titel. */
+  /** De plaats van de les, zoals "C1 · Examenuitleg". Staat in de balk als er geen opdracht is. */
   kicker?: string | null;
   /** Het merk naast de titel. */
   category?: Category;
@@ -113,41 +104,93 @@ export default function GrammarTopicView({
   next: { href: string; title: string };
   streamLabels: StreamLabels;
   labels: TopicViewLabels;
+  step: LessonStep;
+  /** Het adres van deze pagina, met locale, zonder `?stap`. */
+  href: string;
 }) {
   const [at, setAt] = useState(0);
   const many = parts.length > 1;
   const pending = parts.some(p => p.lessonId !== null && p.pending);
   const ex = exampleParts(examples);
+  const total = parts.reduce((n, p) => n + (p.lessonId === null ? 0 : p.exercises), 0);
+  const split = total > 0;
+  const onTask = split && step === 'opdracht';
+  const taskHref = `${href}?stap=opdracht`;
+  const hasVideo = !!video?.url;
+  const FirstIcon = hasVideo ? SquarePlay : BookOpen;
+  const firstLabel = hasVideo ? labels.kindVideo : labels.kindUitleg;
+
+  useEffect(() => {
+    if (split && !onTask && window.location.hash === '#oefenen') window.location.replace(taskHref);
+  }, [split, onTask, taskHref]);
+
+  const barNext = split && !onTask ? taskHref : next.href;
+  const tag = split
+    ? onTask
+      ? `${labels.kindOpdracht} · ${labels.exercises}`
+      : hasVideo && video?.duration ? `${labels.kindVideo} · ${video.duration}` : firstLabel
+    : kicker;
 
   return (
     <div className="gl-view">
       <article className="gl-page">
         <div className="gl-bar">
           <div className="gl-crumbs">{crumbs}</div>
-          {kicker && <span className="g-mono gl-bar-tag">{kicker}</span>}
+          {tag && <span className="g-mono gl-bar-tag">{tag}</span>}
+          <a href={barNext} className="gl-bar-next">
+            {labels.barNext}
+            <ChevronRight size={16} strokeWidth={2.4} className="rtl-flip" aria-hidden />
+          </a>
         </div>
 
         <div className="gl-in">
-          <header className="gl-head">
-            <CategoryMark category={category} size={44} />
-            <h1 className="g-head gl-title">{title}</h1>
-            {learn && <p className="gl-learn">{learn}</p>}
-            {ex.parts.length > 0 && (ex.sentences
-              ? <p className="gl-sents">{ex.parts.join(' ')}</p>
-              : (
-                <ul className="gl-keys">
-                  {ex.parts.map((w, i) => <li key={i}><span>{w}</span></li>)}
-                </ul>
-              ))}
-            {links.length > 0 && (
-              <ul className="gl-keys">
-                {links.map(l => <li key={l.href}><a href={l.href}>{l.label}</a></li>)}
-              </ul>
-            )}
-            {pending && <p className="gl-pending">{labels.pending}</p>}
-          </header>
+          {/* Onder de breedte van de cursusroute: de twee stappen als schakelaar in de pagina. */}
+          {split && (
+            <nav className="gl-steps" aria-label={labels.stepsAria}>
+              <a href={href} className={onTask ? undefined : 'is-on'} aria-current={onTask ? undefined : 'page'}>
+                <FirstIcon size={15} strokeWidth={2.2} aria-hidden />{firstLabel}
+              </a>
+              <a href={taskHref} className={onTask ? 'is-on' : undefined} aria-current={onTask ? 'page' : undefined}>
+                <ListChecks size={15} strokeWidth={2.2} aria-hidden />{labels.kindOpdracht}
+              </a>
+            </nav>
+          )}
 
-          {video && (
+          {onTask
+            ? (
+              <header className="gl-head gl-taskhead">
+                <h1 className="g-head gl-title">{title}</h1>
+                <a href={href} className="gl-stepback">
+                  <FirstIcon size={15} strokeWidth={2.2} aria-hidden />
+                  {hasVideo ? labels.backVideo : labels.backUitleg}
+                </a>
+                {pending && <p className="gl-pending">{labels.pending}</p>}
+              </header>
+            )
+            : (
+              /* Alleen het merk en de titel (een woordenles): dan staan ze naast elkaar (eigenaar,
+                 15-10) — een losse tegel boven één regel titel leest als een gat. */
+              <header className={`gl-head${!learn && ex.parts.length === 0 && links.length === 0 && !pending ? ' is-row' : ''}`}>
+                <CategoryMark category={category} size={44} />
+                <h1 className="g-head gl-title">{title}</h1>
+                {learn && <p className="gl-learn">{learn}</p>}
+                {ex.parts.length > 0 && (ex.sentences
+                  ? <p className="gl-sents">{ex.parts.join(' ')}</p>
+                  : (
+                    <ul className="gl-keys">
+                      {ex.parts.map((w, i) => <li key={i}><span>{w}</span></li>)}
+                    </ul>
+                  ))}
+                {links.length > 0 && (
+                  <ul className="gl-keys">
+                    {links.map(l => <li key={l.href}><a href={l.href}>{l.label}</a></li>)}
+                  </ul>
+                )}
+                {pending && <p className="gl-pending">{labels.pending}</p>}
+              </header>
+            )}
+
+          {!onTask && video && (
             <figure className="gl-video">
               <VideoEmbed
                 url={video.url}
@@ -191,7 +234,7 @@ export default function GrammarTopicView({
             </div>
           )}
 
-          {before}
+          {!onTask && before}
 
           {parts.map((p, i) => (
             <div
@@ -201,39 +244,70 @@ export default function GrammarTopicView({
               aria-labelledby={many ? `gl-tab-${i}` : undefined}
               hidden={i !== at}
             >
-              <PartBody
-                part={p}
-                category={category}
-                folded={before !== null && before !== false && before !== undefined}
-                streamLabels={streamLabels}
-                labels={labels}
-              />
+              {onTask
+                ? <PartTask part={p} streamLabels={streamLabels} labels={labels} />
+                : (
+                  <PartBody
+                    part={p}
+                    folded={before !== null && before !== false && before !== undefined}
+                    streamLabels={streamLabels}
+                    labels={labels}
+                  />
+                )}
             </div>
           ))}
+
+          {split && !onTask && (
+            <a href={taskHref} className="gl-go g-field g-f-nacht-stil gl-handoff">
+              <span className="gl-go-copy">
+                <small className="g-mono gl-handoff-k">{labels.handoffKick}</small>
+                <b>{labels.kindOpdracht}: {title}</b>
+                <small>{labels.exercises}</small>
+              </span>
+              <span className="g-btn g-btn-wit">
+                {labels.handoffStart}
+                <ArrowRight size={16} strokeWidth={2.4} className="rtl-flip" aria-hidden />
+              </span>
+            </a>
+          )}
         </div>
       </article>
 
-      <a href={next.href} className="gl-next">
-        <span className="gl-next-copy">
-          <span className="g-mono">{labels.nextKick}</span>
-          <b>{next.title}</b>
-        </span>
-        <span className="gl-next-go" aria-hidden>
-          <ArrowRight size={18} strokeWidth={2.4} className="rtl-flip" />
-        </span>
-      </a>
+      {(onTask || !split) && (
+        <a href={next.href} className="gl-next">
+          <span className="gl-next-copy">
+            <span className="g-mono">{labels.nextKick}</span>
+            <b>{next.title}</b>
+          </span>
+          <span className="gl-next-go" aria-hidden>
+            <ArrowRight size={18} strokeWidth={2.4} className="rtl-flip" />
+          </span>
+        </a>
+      )}
     </div>
   );
 }
 
-const SOURCE_KINDS: ReadonlySet<string> = new Set(['audio', 'leestekst', 'woordenlijst', 'zinnenbank']);
+/* Zelfde lijst als in `LessonStream`: de woordenlijst is geen bron bij de opgaven. */
+const SOURCE_KINDS: ReadonlySet<string> = new Set(['audio', 'leestekst', 'zinnenbank']);
 
-/** De uitleg van één les op de pagina, en de oefenkaart die het venster opent. */
+function Unwritten({ labels }: { labels: TopicViewLabels }) {
+  return (
+    <div className="gl-unwritten">
+      <span className="gl-unwritten-ic" aria-hidden><PenLine size={16} strokeWidth={2.4} /></span>
+      <span>
+        <b>{labels.notWritten}</b>
+        <span>{labels.notWrittenSub}</span>
+      </span>
+    </div>
+  );
+}
+
+/** De uitleg van één les op de pagina. */
 function PartBody({
-  part, category, folded, streamLabels, labels,
+  part, folded, streamLabels, labels,
 }: {
   part: TopicPart;
-  category: Category;
   /** Er staat een ingesproken uitleg boven: de geschreven uitleg klapt dan in. */
   folded: boolean;
   streamLabels: StreamLabels;
@@ -241,17 +315,8 @@ function PartBody({
 }) {
   const hasLearn = useMemo(() => part.items.some(i => !isExerciseKind(i.kind)), [part.items]);
 
-  if (part.lessonId === null) {
-    return (
-      <div className="gl-unwritten">
-        <span className="gl-unwritten-ic" aria-hidden><PenLine size={16} strokeWidth={2.4} /></span>
-        <span>
-          <b>{labels.notWritten}</b>
-          <span>{labels.notWrittenSub}</span>
-        </span>
-      </div>
-    );
-  }
+  if (part.lessonId === null) return <Unwritten labels={labels} />;
+  if (!hasLearn) return null;
 
   const stream = (
     <LessonProgressScope>
@@ -267,110 +332,42 @@ function PartBody({
     </LessonProgressScope>
   );
 
-  return (
-    <>
-      {hasLearn && (folded
-        ? (
-          <details className="gl-fold">
-            <summary>
-              <span>
-                <b>{labels.uitlegHead}</b>
-                <small>{labels.uitlegSub}</small>
-              </span>
-              <ChevronDown size={18} strokeWidth={2.4} className="gl-fold-chev" aria-hidden />
-            </summary>
-            <div className="gl-fold-body">{stream}</div>
-          </details>
-        )
-        : <section className="gl-learnbody" aria-label={labels.uitlegHead}>{stream}</section>)}
-
-      {part.exercises > 0 && (
-        <PracticeDialog part={part} category={category} streamLabels={streamLabels} labels={labels} />
-      )}
-    </>
-  );
+  return folded
+    ? (
+      <details className="gl-fold">
+        <summary>
+          <span>
+            <b>{labels.uitlegHead}</b>
+            <small>{labels.uitlegSub}</small>
+          </span>
+          <ChevronDown size={18} strokeWidth={2.4} className="gl-fold-chev" aria-hidden />
+        </summary>
+        <div className="gl-fold-body">{stream}</div>
+      </details>
+    )
+    : <section className="gl-learnbody" aria-label={labels.uitlegHead}>{stream}</section>;
 }
 
 /**
- * "Oefen wat je net leerde" en het venster met de opgaven.
- *
- * Opent ook vanzelf als de pagina met `#oefenen` binnenkomt — het oude anker van de
- * opgavensectie, zodat een bewaarde link nog naar de opgaven gaat.
+ * De opgaven van één les op de pagina, één tegelijk (`layout="topic"`). Het materiaal waar een
+ * opgave over gaat staat erbij (`sourcesOf` in de stroom); is er zulk materiaal, dan staat het
+ * vanaf 960px links en de vraag rechts, zoals in de examenspeler.
  */
-function PracticeDialog({
-  part, category, streamLabels, labels,
-}: {
-  part: TopicPart;
-  category: Category;
-  streamLabels: StreamLabels;
-  labels: TopicViewLabels;
-}) {
-  const [open, setOpen] = useState(false);
-  /* Toetsenbord opent en sluit zonder beweging (G6). */
-  const [instant, setInstant] = useState(false);
-
-  useEffect(() => {
-    if (window.location.hash !== '#oefenen') return;
-    const id = window.setTimeout(() => { setInstant(true); setOpen(true); }, 0);
-    return () => window.clearTimeout(id);
-  }, []);
-
-  const sub = labels.practiceCtaSub.replace('{n}', String(part.exercises));
-  /* Opgaven met een leestekst of fragment krijgen een breed venster: de bron links, de vraag
-     rechts — zoals de examenspeler, zodat de vraag niet onder een lange tekst verdwijnt. */
+function PartTask({ part, streamLabels, labels }: { part: TopicPart; streamLabels: StreamLabels; labels: TopicViewLabels }) {
+  if (part.lessonId === null) return <Unwritten labels={labels} />;
+  if (part.exercises === 0) return null;
   const wide = part.items.some(i => SOURCE_KINDS.has(i.kind));
-
   return (
-    <Dialog.Root
-      open={open}
-      onOpenChange={(next, details) => {
-        const ev = details.event as Event | undefined;
-        const keyboard = details.reason === 'escape-key'
-          || (typeof KeyboardEvent !== 'undefined' && ev instanceof KeyboardEvent)
-          || (typeof MouseEvent !== 'undefined' && ev instanceof MouseEvent && ev.detail === 0);
-        setInstant(keyboard);
-        setOpen(next);
-      }}
-    >
-      <div className="gl-go g-field g-f-nacht-stil">
-        <div className="gl-go-copy">
-          <b>{labels.practiceCtaHead}</b>
-          <small>{sub}</small>
-        </div>
-        <Dialog.Trigger className="g-btn g-btn-wit">
-          {labels.practiceStart}
-          <ArrowRight size={16} strokeWidth={2.4} className="rtl-flip" aria-hidden />
-        </Dialog.Trigger>
-      </div>
-
-      <Dialog.Portal keepMounted>
-        <Dialog.Backdrop className={`gl-dlg-bd${instant ? ' is-instant' : ''}`} />
-        <Dialog.Popup className={`gl-dlg g-leer${wide ? ' is-wide' : ''}${instant ? ' is-instant' : ''}`}>
-          <div className="gl-dlg-h">
-            <CategoryMark category={category} size={36} />
-            <div className="gl-dlg-t">
-              <Dialog.Title className="gl-dlg-title">
-                {labels.practiceHead}{part.title ? ` · ${part.title}` : ''}
-              </Dialog.Title>
-              <Dialog.Description className="gl-dlg-sub">{sub}</Dialog.Description>
-            </div>
-            <Dialog.Close className="g-btn g-btn-ghost g-btn-sm g-btn-icon gl-dlg-x" aria-label={labels.close}>
-              <X size={18} strokeWidth={2.4} aria-hidden />
-            </Dialog.Close>
-          </div>
-          <div className="gl-dlg-b">
-            <LessonProgressScope>
-              <LessonStream
-                lessonId={part.lessonId!}
-                items={part.items}
-                part="oefenen"
-                layout="topic"
-                labels={streamLabels}
-              />
-            </LessonProgressScope>
-          </div>
-        </Dialog.Popup>
-      </Dialog.Portal>
-    </Dialog.Root>
+    <section className={`gl-task${wide ? ' is-wide' : ''}`} aria-label={labels.kindOpdracht}>
+      <LessonProgressScope>
+        <LessonStream
+          lessonId={part.lessonId}
+          items={part.items}
+          part="oefenen"
+          layout="topic"
+          labels={streamLabels}
+        />
+      </LessonProgressScope>
+    </section>
   );
 }

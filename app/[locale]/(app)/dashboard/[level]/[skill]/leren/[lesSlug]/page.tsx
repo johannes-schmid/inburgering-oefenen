@@ -9,14 +9,14 @@ import { closeTrail } from '@/lib/portal-crumbs';
 import { LessonProgressScope } from '@/components/lessons/LessonProgressScope';
 import LessonStage from '@/components/lessons/LessonStage';
 import PortalCrumbs from '../../../../../components/PortalCrumbs';
-import { fetchCourse, fetchLesson, fetchLessonWords } from '@/lib/lessons/lessons-server';
+import { fetchCourse, fetchExerciseCounts, fetchLesson, fetchLessonWords } from '@/lib/lessons/lessons-server';
 import { fetchNarration, narrationCueNames } from '@/lib/lessons/narration';
 import { stepCount, visualFor } from '@/data/lesson-visuals';
 import { conceptPath, exerciseCount, lessonPath } from '@/lib/lessons/lessons';
 import { fetchGrammarStep } from '@/lib/lessons/grammar-server';
 import { courseOutline, grammarStepPath, topicCode, topicOfLesson, topicPath } from '@/lib/lessons/grammar';
 import { courseSideBlocks } from '@/lib/lessons/course-side';
-import { lessonStreamLabels } from '@/lib/lessons/stream-labels';
+import { courseRowLabels, lessonStreamLabels, stepLabels } from '@/lib/lessons/stream-labels';
 import { modulePath } from '@/lib/lessons/sporen';
 import { wordsPath } from '@/lib/lessons/words';
 import LessonNarration from '@/components/lessons/LessonNarration';
@@ -29,7 +29,10 @@ import type { LessonItem } from '@/components/lessons/item-helpers';
 import AppShell from '../../../../../components/AppShell';
 import '@/app/glas-leerlaag.css';
 
-type Props = { params: Promise<{ locale: string; level: string; skill: string; lesSlug: string }> };
+type Props = {
+  params: Promise<{ locale: string; level: string; skill: string; lesSlug: string }>;
+  searchParams: Promise<{ stap?: string }>;
+};
 
 export const metadata: Metadata = {
   title: 'Les | Inburgering Oefenen',
@@ -55,8 +58,9 @@ export const metadata: Metadata = {
  * mogelijk. Hij staat in geen blok, in geen voortgang en in geen menu, en de kop zegt het.
  * Zonder die melding zou de docent niet kunnen zien waar ze naar kijkt.
  */
-export default async function LessonPage({ params }: Props) {
+export default async function LessonPage({ params, searchParams }: Props) {
   const { locale, level: rawLevel, skill: slug, lesSlug } = await params;
+  const currentStep = (await searchParams).stap === 'opdracht' ? 'opdracht' : 'uitleg';
   if (!isLevel(rawLevel)) notFound();
   const level = rawLevel;
   const skill = getSkillAtLevel(level, slug);
@@ -78,20 +82,26 @@ export default async function LessonPage({ params }: Props) {
     redirect(`/${locale}/dashboard/pakketten?onderdeel=${level}:${skill.slug}&vanaf=leren-${lesSlug}`);
   }
 
-  const [blocks, wordsByItem, menu, narration, grammar, labels] = await Promise.all([
+  const [blocks, wordsByItem, menu, narration, grammar, labels, rowLabels] = await Promise.all([
     fetchCourse(level, skill.slug, user.id),
-    fetchLessonWords(lesson.items),
+    fetchLessonWords(lesson.items, user.id),
     fetchPortalMenu(),
     fetchNarration(lesson.id),
     fetchGrammarStep(level, skill.slug, user.id),
     lessonStreamLabels(),
+    courseRowLabels(),
   ]);
+  const exerciseCounts = await fetchExerciseCounts([...new Set([
+    ...blocks.flatMap(b => b.lessons.map(l => l.id)),
+    ...grammar.topics.flatMap(x => x.lessons.map(l => l.id)),
+    ...(grammar.extras?.lessons ?? []).map(l => l.id),
+  ].filter((id): id is number => id !== null))]);
   const tGrammar = await getTranslations('grammar');
 
   // De woorden op hun item hangen, zodat de renderer één databron heeft. Zie `item-helpers.ts`.
   const items: LessonItem[] = lesson.items.map(item =>
     item.kind === 'woordenlijst'
-      ? { ...item, words: wordsByItem.get(item.id) ?? [] }
+      ? { ...item, words: wordsByItem.get(item.id) ?? [], userId: user.id, lessonId: lesson.id }
       : item) as LessonItem[];
 
   /**
@@ -128,6 +138,7 @@ export default async function LessonPage({ params }: Props) {
     locale, level, skill: skill.slug, owned, blocks, step: grammar, outline,
     open: openLetter, currentLessonId: lesson.id, currentTopicN: gTopic?.n ?? null,
     grammarName: tGrammar('step_label'),
+    currentStep, exerciseCounts, rowLabels,
   });
   const sideNav = (
     <CourseRoute
@@ -214,14 +225,26 @@ export default async function LessonPage({ params }: Props) {
       ? { href: `/${locale}${lessonPath(level, skill.slug, nextInBlock.slug)}`, kick: t('next_lesson'), title: nextInBlock.title }
       : { href: `/${locale}/dashboard/${level}/${skill.slug}`, kick: t('module_done_head'), title: t('module_back_to_spoor') };
 
+  /**
+   * Een woordenles (blok A) is alleen de woorden (eigenaar, 15-10): de titel en de kaartendeck.
+   * De uitleg, de voorbeeldkaarten, de leerdoeltekst en de opgaven blijven in de database staan
+   * maar niet op dit scherm. Zonder opgaven zet `lesson-answer` de les nooit op `done`; dat doet
+   * nu de deck, zodra elk woord gekend is (`lessonWordsDone`).
+   */
+  const wordCount = items.reduce((n, i) => n + (i.kind === 'woordenlijst' ? i.words?.length ?? 0 : 0), 0);
+  const wordsOnly = !inGrammar && ownBlock?.letter === 'A' && wordCount > 0;
+  const shownItems = wordsOnly
+    ? items.filter(i => i.kind === 'woordenlijst')
+    : items;
+
   const part: TopicPart = {
     ref: lesson.slug,
     lessonId: lesson.id,
     title: lesson.title,
     pending: lesson.review_status !== 'validated',
-    items,
+    items: shownItems,
     visual,
-    exercises: exerciseCount(lesson.items),
+    exercises: wordsOnly ? 0 : exerciseCount(lesson.items),
   };
 
   return (
@@ -258,8 +281,8 @@ export default async function LessonPage({ params }: Props) {
             kicker={ownBlock && !inGrammar ? `${ownBlock.letter}${atInBlock + 1} · ${ownBlock.name_nl}` : null}
             category={inGrammar || ownBlock?.letter === 'B' ? 'taalregels' : ownBlock?.letter === 'A' ? 'woorden' : 'examen'}
             title={lesson.title}
-            learn={lesson.what_you_learn ?? ''}
-            links={lesson.concepts
+            learn={wordsOnly ? '' : lesson.what_you_learn ?? ''}
+            links={wordsOnly ? [] : lesson.concepts
               .filter(c => c.name_nl.trim().toLowerCase() !== lesson.title.trim().toLowerCase())
               .map(c => ({ label: c.name_nl, href: `/${locale}${conceptPath(level, c.slug)}` }))}
             video={null}
@@ -308,6 +331,8 @@ export default async function LessonPage({ params }: Props) {
             parts={[part]}
             next={{ href: next.href, title: next.title }}
             streamLabels={labels}
+            step={currentStep}
+            href={`/${locale}${lessonPath(level, skill.slug, lesson.slug)}`}
             labels={{
               partsAria: tGrammar('parts_aria'),
               notWritten: tGrammar('not_written'),
@@ -318,12 +343,8 @@ export default async function LessonPage({ params }: Props) {
               videoSoonSub: tGrammar('video_soon_sub'),
               uitlegHead: labels.learnHead,
               uitlegSub: labels.learnSub,
-              close: tGrammar('close'),
               nextKick: next.kick,
-              practiceHead: labels.practiceHead,
-              practiceCtaHead: t('practice_cta_head'),
-              practiceCtaSub: t.raw('practice_cta_sub') as string,
-              practiceStart: t('practice_start'),
+              ...stepLabels(tGrammar, rowLabels, part.exercises),
             }}
           />
           </LessonProgressScope>

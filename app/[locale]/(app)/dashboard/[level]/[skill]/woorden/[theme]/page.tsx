@@ -11,11 +11,12 @@ import { fetchCourse } from '@/lib/lessons/lessons-server';
 import { fetchGrammarStep } from '@/lib/lessons/grammar-server';
 import { courseOutline } from '@/lib/lessons/grammar';
 import { courseSideBlocks } from '@/lib/lessons/course-side';
+import { courseRowLabels } from '@/lib/lessons/stream-labels';
 import { fetchPortalMenu } from '@/lib/portal-menu';
 import { WordProgressCard, type WordSideTheme } from '@/components/lessons/WordSideNav';
 import CourseRoute from '@/components/lessons/CourseRoute';
 import AppShell from '../../../../../components/AppShell';
-import WordDeck from '../../../../_components/WordDeck';
+import WordDeck from '@/components/lessons/WordDeck';
 import { closeTrail } from '@/lib/portal-crumbs';
 import PortalCrumbs from '../../../../../components/PortalCrumbs';
 import CategoryMark from '@/components/horizon/CategoryMark';
@@ -89,7 +90,7 @@ export default async function WoordThemaPage({ params }: Props) {
   const outline = courseOutline(blocks, step);
   const routeBlocks = courseSideBlocks({
     locale, level, skill: skill.slug, owned: true, blocks, step, outline, open: 'A',
-    grammarName: tGrammar('step_label'),
+    grammarName: tGrammar('step_label'), rowLabels: await courseRowLabels(),
   }).map(b => {
     if (b.letter !== 'A') return b;
     const full = sideThemes.filter(th => th.total > 0 && th.known === th.total).length;

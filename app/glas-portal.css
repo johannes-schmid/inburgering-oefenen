@@ -346,26 +346,46 @@ a.cr-st-row:focus-visible { outline: none; box-shadow: 0 0 0 2px #fff, 0 0 0 4px
 .cr-st-count { font-family: var(--glas-mono); font-size: 11.5px; color: var(--ink-2); font-variant-numeric: tabular-nums; }
 .cr-st.is-open .cr-st-name { color: var(--navy); }
 
-.cr-items { list-style: none; margin: 2px 0 8px; padding: 0; padding-inline-start: 44px; display: flex; flex-direction: column; gap: 1px; }
+/*
+ * De rijen van het open blok, plat zoals bij Coursera (eigenaar, 15-10): geen inspringing en
+ * geen eigen lijn. Het type-icoon staat in dezelfde kolom als de bloktegels, dus de routelijn
+ * loopt er gewoon doorheen.
+ */
+.cr-items { list-style: none; margin: 2px 0 10px; padding: 0; display: flex; flex-direction: column; gap: 2px; }
+.cr-li { position: relative; }
 .cr-item {
-  display: flex; align-items: center; gap: 10px; padding: 7px 10px; border-radius: 10px;
-  font-size: 13.5px; font-weight: 500; line-height: 1.35; color: var(--ink-2); text-decoration: none;
-  transition: background-color 160ms ease, color 160ms ease;
+  display: grid; grid-template-columns: 26px minmax(0, 1fr) auto; align-items: start; gap: 12px;
+  padding: 8px 10px 8px 13px; border-radius: 12px; color: var(--ink-2); text-decoration: none;
+  transition: background-color 160ms ease, color 160ms ease, transform 160ms var(--ease-out-glas);
 }
+[dir="rtl"] .cr-item { padding: 8px 13px 8px 10px; }
+.cr-item:active { transform: scale(0.985); }
 .cr-item:focus-visible { outline: none; box-shadow: inset 0 0 0 2px var(--navy); }
-.cr-item.is-now { background: #fff; color: var(--ink); font-weight: 600; box-shadow: inset 0 0 0 1.5px rgba(0, 43, 109, 0.5); }
-.cr-item.is-locked { color: var(--ink-3); }
-.cr-dot {
-  width: 16px; height: 16px; flex: none; border-radius: 50%; display: flex; align-items: center; justify-content: center;
-  box-shadow: inset 0 0 0 1.5px var(--nevel); color: var(--ink-3);
+.cr-kind {
+  width: 26px; height: 26px; border-radius: 8px; display: flex; align-items: center; justify-content: center;
+  background: var(--tegel); color: var(--navy);
 }
-.cr-item.is-done .cr-dot { background: var(--goed); color: #fff; box-shadow: none; }
-.cr-item.is-now .cr-dot { box-shadow: inset 0 0 0 2px var(--oranje); }
-.cr-item.is-locked .cr-dot { box-shadow: none; }
-.cr-item-lb { flex: 1; min-width: 0; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
-.cr-item-n { flex: none; font-family: var(--glas-mono); font-size: 11px; color: var(--ink-3); font-variant-numeric: tabular-nums; }
+.cr-item-txt { min-width: 0; display: flex; flex-direction: column; gap: 2px; padding-top: 3px; }
+.cr-item-lb {
+  font-size: 13.5px; font-weight: 500; line-height: 1.35;
+  display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden;
+}
+.cr-item-lb b { font-weight: 700; color: var(--ink); }
+.cr-item-meta { font-size: 12px; line-height: 1.3; color: var(--ink-3); font-variant-numeric: tabular-nums; }
+.cr-item-end { margin-top: 6px; color: var(--ink-3); }
+.cr-item-end.is-ok { color: var(--goed); }
+.cr-item-n { margin-top: 6px; font-family: var(--glas-mono); font-size: 11px; color: var(--ink-3); font-variant-numeric: tabular-nums; }
+.cr-item.is-now {
+  background: #fff; color: var(--ink);
+  box-shadow: inset 0 0 0 1.5px rgba(0, 43, 109, 0.5), 0 10px 24px -18px rgba(0, 27, 80, 0.5);
+}
+.cr-item.is-now .cr-kind { background: var(--navy); color: #fff; }
+.cr-item.is-done .cr-kind { background: var(--goed-tint); color: var(--goed); }
+.cr-item.is-locked .cr-kind { background: var(--mist); color: var(--ink-3); }
+.cr-item.is-locked .cr-item-lb b { color: var(--ink-2); }
 .cr-extras {
-  padding: 10px 10px 4px; font-family: var(--glas-mono); font-size: 10.5px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink-2);
+  padding: 12px 10px 4px; padding-inline-start: 51px;
+  font-family: var(--glas-mono); font-size: 10.5px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink-2);
 }
 
 .cr-next {
@@ -384,12 +404,13 @@ a.cr-st-row:focus-visible { outline: none; box-shadow: 0 0 0 2px #fff, 0 0 0 4px
   .cr-menu a:hover { background: var(--mist); }
   a.cr-st-row:hover { background: rgba(0, 43, 109, 0.05); }
   .cr-item:not(.is-now):hover { background: rgba(0, 43, 109, 0.05); color: var(--ink); }
+  .cr-item:not(.is-now):hover .cr-kind { background: #fff; }
   .cr-next:hover > svg { transform: translateX(3px); }
   [dir="rtl"] .cr-next:hover > svg { transform: scaleX(-1) translateX(3px); }
 }
 @media (prefers-reduced-motion: reduce) {
   .cr-menu { animation: none; }
-  .cr-switch > summary > svg, .cr-next > svg, .cr-st-row, .cr-next { transition: none; }
+  .cr-switch > summary > svg, .cr-next > svg, .cr-st-row, .cr-next, .cr-item { transition: none; }
 }
 
 @media (max-width: 768px) {

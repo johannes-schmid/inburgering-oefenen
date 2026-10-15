@@ -137,3 +137,13 @@ export function nextTheme(themes: WordTheme[]): WordTheme | null {
   const filled = themes.filter(t => t.words.length > 0);
   return filled.find(t => t.known < t.words.length) ?? filled[0] ?? null;
 }
+
+/**
+ * Is een woordenles af? Als elk woord van de les op "Ken ik" staat (eigenaar, 15-10).
+ *
+ * Een woordenles heeft geen opgaven meer, dus dit is de enige weg naar `done` voor blok A. Een
+ * les zonder woorden is nooit af: dat is een gat in de inhoud en geen voortgang.
+ */
+export function lessonWordsDone(statuses: WordStatus[]): boolean {
+  return statuses.length > 0 && statuses.every(s => s === 'known');
+}

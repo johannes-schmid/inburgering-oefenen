@@ -6,6 +6,7 @@ import { ArrowLeft, ArrowRight, Check, RotateCcw, RefreshCw, X } from 'lucide-re
 import { createClient } from '@/lib/supabase/client';
 import { WORD_KNOWN_EVENT, type WordKnownDetail } from '@/components/lessons/WordSideNav';
 import {
+  lessonWordsDone,
   practiceOrder,
   WORD_CARD_LANGS,
   WORD_CARD_LANG_LABEL,
@@ -52,15 +53,27 @@ import {
  * **Een gast kan hier komen kijken maar niets bewaren.** `userId` is dan null en de deck werkt
  * verder gewoon; de markeringen blijven in de state van deze sessie. Een deck die weigert te
  * openen zou niets te verkopen hebben.
+ *
+ * ── IN EEN LES (`embedded`) ──────────────────────────────────────────────────
+ * Het `woordenlijst`-item van een les toont dezelfde deck (eigenaar, 15-10). Drie dingen gaan dan
+ * anders: er is geen sluitknop en geen "terug naar de thema's" (je bent al in de les), de
+ * toetsen luisteren alleen als de deck focus heeft — op `window` zou spatie of Enter een kaart
+ * omdraaien terwijl de kandidaat verderop een opgave maakt — en het event voor de woordkolom gaat
+ * niet uit, want de woorden van één les zijn geen thema.
  */
 export default function WordDeck({
   words,
   userId,
   backHref,
+  embedded = false,
+  lessonId,
 }: {
   words: LessonWord[];
   userId: string | null;
-  backHref: string;
+  backHref?: string;
+  embedded?: boolean;
+  /** De les waar deze deck in staat: die is af zodra elk woord gekend is. */
+  lessonId?: number;
 }) {
   const t = useTranslations('portal');
 
@@ -94,9 +107,19 @@ export default function WordDeck({
   /* De woordkolom naast de deck telt mee zonder herladen (`WordSideNav`). */
   const theme = words[0]?.theme;
   useEffect(() => {
-    if (!theme) return;
+    if (!theme || embedded) return;
     window.dispatchEvent(new CustomEvent<WordKnownDetail>(WORD_KNOWN_EVENT, { detail: { theme, known } }));
-  }, [theme, known]);
+  }, [theme, known, embedded]);
+
+  /* De les is af als elk woord op "Ken ik" staat — ook als dat al zo was bij het openen, want
+     de woorden kunnen in de themadeck gekend zijn. Eén keer per bezoek is genoeg. */
+  const doneSent = useRef(false);
+  useEffect(() => {
+    if (!embedded || !lessonId || !userId || doneSent.current) return;
+    if (!lessonWordsDone(Object.values(statuses))) return;
+    doneSent.current = true;
+    void markLessonDone(lessonId, userId, words.length);
+  }, [embedded, lessonId, userId, statuses, words.length]);
 
   const save = useCallback(
     async (wordId: number, status: WordStatus) => {
@@ -157,6 +180,7 @@ export default function WordDeck({
     });
   }, [card, statuses, save]);
 
+  const rootRef = useRef<HTMLDivElement | null>(null);
   useEffect(() => {
     function onKey(e: KeyboardEvent) {
       const el = e.target as HTMLElement | null;
@@ -165,15 +189,17 @@ export default function WordDeck({
       else if (e.key === 'ArrowRight') { e.preventDefault(); next(); }
       else if (e.key === ' ' || e.key === 'Enter') { e.preventDefault(); flip(); }
     }
-    window.addEventListener('keydown', onKey);
-    return () => window.removeEventListener('keydown', onKey);
-  }, [prev, next, flip]);
+    const target: HTMLElement | Window | null = embedded ? rootRef.current : window;
+    if (!target) return;
+    target.addEventListener('keydown', onKey as EventListener);
+    return () => target.removeEventListener('keydown', onKey as EventListener);
+  }, [prev, next, flip, embedded]);
 
   if (deck.length === 0) return null;
 
   if (done) {
     return (
-      <div className="wd-done panel">
+      <div className="wd-done panel" ref={rootRef}>
         <p className="wd-done-h">{t('wd_done_head')}</p>
         <p className="wd-done-b">{t('wd_done_body', { known, total: words.length })}</p>
         <div className="wd-done-acts">
@@ -185,7 +211,7 @@ export default function WordDeck({
             <RotateCcw size={15} strokeWidth={2.3} />
             {t('wd_again')}
           </button>
-          <a href={backHref} className="wd-link">{t('wd_back_to_themes')}</a>
+          {backHref && <a href={backHref} className="wd-link">{t('wd_back_to_themes')}</a>}
         </div>
       </div>
     );
@@ -199,12 +225,14 @@ export default function WordDeck({
   const nextLang = langs[(langs.indexOf(lang) + 1) % (langs.length || 1)];
 
   return (
-    <div className="wd">
+    <div className={embedded ? 'wd wd-embedded' : 'wd'} ref={rootRef}>
       {/* De teller en de balk: waar ben je in deze ronde. */}
       <div className="wd-top">
-        <a href={backHref} className="wd-close" aria-label={t('wd_close')}>
-          <X size={18} strokeWidth={2.3} />
-        </a>
+        {backHref && (
+          <a href={backHref} className="wd-close" aria-label={t('wd_close')}>
+            <X size={18} strokeWidth={2.3} />
+          </a>
+        )}
         <span className="wd-count">{t('wd_counter', { n: idx + 1, total: deck.length })}</span>
         <span className="wd-known">{t('wd_known_of', { known, total: words.length })}</span>
       </div>
@@ -233,15 +261,17 @@ export default function WordDeck({
           </span>
         )}
 
-        <span className="wd-pane-body">
-          {!flipped ? (
-            <>
+        {/* Voor- en achterkant staan allebei in de kaart, op dezelfde plek in één raster; alleen
+            de zichtbaarheid wisselt (eigenaar, 15-10). Zo is de kaart even hoog aan beide kanten
+            en springt de pagina eronder niet als je hem omdraait. */}
+        <span className="wd-pane-body wd-faces">
+            <span className="wd-face" aria-hidden={flipped} inert={flipped}>
               <span className="wd-chips">
                 {card.article && <span className="wd-chip wd-chip-art">{card.article}</span>}
                 <span className={`wd-chip wd-${card.usage}`}>{t(`wd_usage_${card.usage}`)}</span>
               </span>
 
-              <span className="wd-word">{card.dutch}</span>
+              <span className="wd-word" lang="nl">{card.dutch}</span>
               {card.plural && (
                 <span className="wd-plural">{t('wd_plural', { plural: card.plural })}</span>
               )}
@@ -263,9 +293,8 @@ export default function WordDeck({
                   {t('wd_flip_hint')}
                 </span>
               </span>
-            </>
-          ) : (
-            <>
+            </span>
+            <span className="wd-face" aria-hidden={!flipped} inert={!flipped}>
               <span className="wd-chips">
                 <span className="wd-word-sm">{head}</span>
                 <SpeakBlock
@@ -275,6 +304,7 @@ export default function WordDeck({
                   slowLabel={t('wd_speed_slow')}
                   ariaLabel={t('wd_say_word')}
                   compact
+                  autoPlay={flipped && !card.exampleAudioUrl}
                 />
               </span>
 
@@ -292,6 +322,7 @@ export default function WordDeck({
                     slowLabel={t('wd_speed_slow')}
                     ariaLabel={t('wd_say_example')}
                     compact
+                    autoPlay={flipped}
                   />
                 </span>
               )}
@@ -317,14 +348,16 @@ export default function WordDeck({
                   {t('wd_flip_back_hint')}
                 </span>
               </span>
-            </>
-          )}
+            </span>
         </span>
       </div>
 
       {/* Ken ik / nog leren staan onder de kaart en niet erop: op de kaart tikken is omdraaien,
-          en een knop binnen een tikbaar vlak dat iets anders doet is hoe je per ongeluk markeert. */}
-      <div className="wd-marks">
+          en een knop binnen een tikbaar vlak dat iets anders doet is hoe je per ongeluk markeert.
+          Ze verschijnen pas als de kaart om is (eigenaar, 15-10): eerst zelf bedenken wat het
+          woord betekent, dan pas zeggen of je het wist. Hun plek blijft bezet, zodat er niets
+          verspringt als ze verschijnen. */}
+      <div className={`wd-marks${flipped ? ' is-open' : ''}`} aria-hidden={!flipped} inert={!flipped}>
         <button type="button" className="wd-btn wd-btn-learn" onClick={() => mark('learning')}>
           <RotateCcw size={15} strokeWidth={2.3} />
           {t('wd_mark_learning')}
@@ -372,6 +405,36 @@ export default function WordDeck({
       <p className="wd-keys">{t('wd_keys')}</p>
     </div>
   );
+}
+
+/**
+ * Zet een woordenles op `done` (eigenaar, 15-10: af = elk woord gekend).
+ *
+ * **Af blijft af.** Alleen een rij die nog niet `done` is wordt bijgewerkt, en de insert slaat
+ * een bestaande rij over: een woord dat later terug naar "Nog leren" gaat maakt de les niet
+ * weer open, en `completed_at` (waar de reeks op telt) schuift niet bij elk bezoek op. Zelfde
+ * richting als `bumpLessonProgress` in `lesson-answer`, dat alleen optelt.
+ */
+async function markLessonDone(lessonId: number, userId: string, total: number): Promise<void> {
+  const row = { state: 'done', items_done: total, items_total: total, completed_at: new Date().toISOString() };
+  try {
+    const sb = createClient();
+    const { data, error } = await sb
+      .from('user_lesson_progress')
+      .update(row)
+      .eq('user_id', userId)
+      .eq('lesson_id', lessonId)
+      .neq('state', 'done')
+      .select('id');
+    if (error) throw error;
+    if (data && data.length > 0) return;
+    const { error: insErr } = await sb
+      .from('user_lesson_progress')
+      .upsert({ user_id: userId, lesson_id: lessonId, ...row }, { onConflict: 'user_id,lesson_id', ignoreDuplicates: true });
+    if (insErr) throw insErr;
+  } catch (e) {
+    console.error('[lessons] woordenles niet afgerond', e);
+  }
 }
 
 /**

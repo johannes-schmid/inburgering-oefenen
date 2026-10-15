@@ -3,14 +3,16 @@
 import { useEffect, useRef, useState } from 'react';
 import { useTranslations } from 'next-intl';
 import {
-  ArrowRight, Check, ChevronDown, ClipboardCheck, Info, Layers, Lock, type LucideIcon, Puzzle, Target,
+  ArrowRight, BookOpen, Check, ChevronDown, ClipboardCheck, Info, Layers, ListChecks, Lock, type LucideIcon, Puzzle,
+  SquarePlay, Target,
 } from 'lucide-react';
 import { WORD_KNOWN_EVENT, type WordKnownDetail } from './WordSideNav';
-import type { SideBlock, SideItem } from './GrammarCourseSide';
+import type { SideBlock, SideItem, SideKind } from './GrammarCourseSide';
 
 export type RouteSkill = { key: string; label: string; href: string; on: boolean };
 
 const ICONS: Record<string, LucideIcon> = { A: Layers, B: Puzzle, C: Info, D: Target, E: ClipboardCheck };
+const KIND_ICONS: Record<SideKind, LucideIcon> = { video: SquarePlay, uitleg: BookOpen, opdracht: ListChecks, woorden: Layers };
 
 /**
  * De cursus als route, in de chrome naast de portaalzijbalk (eigenaar, 15-10): kop met de
@@ -109,19 +111,35 @@ function Station({ block: b, sub }: { block: SideBlock; sub: string }) {
   );
 }
 
+/**
+ * Eén rij onder het open blok, naar Coursera (eigenaar, 15-10): het type als icoon en als vet
+ * woord vóór de titel — "Video: Ontkenning" — met de duur of het aantal opgaven eronder.
+ */
 function Item({ item }: { item: SideItem }) {
+  const Icon = KIND_ICONS[item.kind ?? 'woorden'];
+  const meta = item.meta ?? null;
   return (
-    <li>
+    <li className="cr-li">
       <a
         href={item.href}
         className={`cr-item${item.now ? ' is-now' : ''}${item.done ? ' is-done' : ''}${item.locked ? ' is-locked' : ''}`}
         aria-current={item.now ? 'page' : undefined}
       >
-        <span className="cr-dot" aria-hidden>
-          {item.done ? <Check size={10} strokeWidth={3.4} /> : item.locked ? <Lock size={9} strokeWidth={2.8} /> : null}
+        <span className="cr-kind" aria-hidden><Icon size={14} strokeWidth={2.2} /></span>
+        <span className="cr-item-txt">
+          <span className="cr-item-lb">
+            {item.prefix && <b>{item.prefix}: </b>}
+            {item.label}
+          </span>
+          {meta && <span className="cr-item-meta">{meta}</span>}
         </span>
-        <span className="cr-item-lb">{item.label}</span>
-        {item.count && <span className="cr-item-n">{item.count.known}/{item.count.total}</span>}
+        {item.done
+          ? <Check size={15} strokeWidth={2.8} className="cr-item-end is-ok" aria-hidden />
+          : item.locked
+            ? <Lock size={13} strokeWidth={2.4} className="cr-item-end" aria-hidden />
+            : item.count
+              ? <span className="cr-item-n">{item.count.known}/{item.count.total}</span>
+              : null}
       </a>
     </li>
   );

@@ -87,6 +87,7 @@ export async function fetchGrammarStep(
       review_status: row.review_status,
       is_free: row.is_free,
       done: progress.get(row.id)?.state === 'done',
+      started: progress.has(row.id),
     };
   };
 

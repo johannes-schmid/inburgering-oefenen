@@ -27,6 +27,8 @@ export type TopicLesson = {
   review_status: ReviewStatus | null;
   is_free: boolean;
   done: boolean;
+  /** Er staat voortgang op deze les: de uitleg is voorbij en er is iets beantwoord. */
+  started?: boolean;
 };
 
 export type GrammarTopicState = {

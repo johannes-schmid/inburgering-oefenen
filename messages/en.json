@@ -2457,7 +2457,19 @@
     "route_sub_D": "Practise like in the exam",
     "route_sub_E": "Check if you are ready",
     "route_next_kicker": "Next",
-    "route_next": "The practice exams"
+    "route_next": "The practice exams",
+    "route_kind_video": "Video",
+    "route_kind_uitleg": "Explanation",
+    "route_kind_opdracht": "Exercise",
+    "route_kind_woorden": "Words",
+    "route_minutes": "{n} min",
+    "route_exercises": "{n, plural, one {# question} other {# questions}}",
+    "steps_aria": "Steps of this topic",
+    "step_back_video": "Watch the video again",
+    "step_back_uitleg": "Read the explanation again",
+    "handoff_kick": "Next",
+    "handoff_start": "Start the exercise",
+    "bar_next": "Next"
   },
   "redactie": {
     "meta_title": "How we make our content | Inburgering Oefenen",

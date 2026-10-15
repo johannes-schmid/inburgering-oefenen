@@ -2457,7 +2457,19 @@
     "route_sub_D": "Oefenen zoals in het examen",
     "route_sub_E": "Kijk of je klaar bent",
     "route_next_kicker": "Daarna",
-    "route_next": "De oefenexamens"
+    "route_next": "De oefenexamens",
+    "route_kind_video": "Video",
+    "route_kind_uitleg": "Uitleg",
+    "route_kind_opdracht": "Opdracht",
+    "route_kind_woorden": "Woorden",
+    "route_minutes": "{n} min",
+    "route_exercises": "{n, plural, one {# opgave} other {# opgaven}}",
+    "steps_aria": "Stappen van dit onderwerp",
+    "step_back_video": "Video terugkijken",
+    "step_back_uitleg": "Uitleg teruglezen",
+    "handoff_kick": "Hierna",
+    "handoff_start": "Start de opdracht",
+    "bar_next": "Volgende"
   },
   "redactie": {
     "meta_title": "Zo maken we onze inhoud | Inburgering Oefenen",

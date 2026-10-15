@@ -12,6 +12,7 @@ import { useNarrated } from './NarrationScope';
 import { useLessonProgress } from './LessonProgressScope';
 import LessonVisual, { type VisualLabels } from './LessonVisual';
 import LessonRecorder, { type RecorderLabels } from './LessonRecorder';
+import WordDeck from './WordDeck';
 import type { LessonVisual as VisualSpec } from '@/data/lesson-visuals';
 import VideoEmbed, { type VideoLabels } from './VideoEmbed';
 
@@ -582,8 +583,13 @@ export default function LessonStream({
   );
 }
 
-/** Materiaal waar een opgave over gaat — zie `sourcesOf`. Uitleg en voorbeelden horen er niet bij. */
-const SOURCE_KINDS: ReadonlySet<string> = new Set(['audio', 'leestekst', 'woordenlijst', 'zinnenbank']);
+/**
+ * Materiaal waar een opgave over gaat — zie `sourcesOf`. Uitleg en voorbeelden horen er niet bij.
+ *
+ * De `woordenlijst` ook niet meer (15-10): dat is nu de kaartendeck op de pagina, en de woorden
+ * met hun betekenis naast een invulopgave zetten geeft het antwoord weg.
+ */
+const SOURCE_KINDS: ReadonlySet<string> = new Set(['audio', 'leestekst', 'zinnenbank']);
 
 /* ── de renderers ────────────────────────────────────────────────────────── */
 
@@ -773,40 +779,22 @@ function VideoBlock({ item, labels }: { item: Extract<LessonItem, { kind: 'video
   );
 }
 
+/**
+ * De woorden van een les als omdraaibare kaarten — dezelfde `WordDeck` als de themadeck, met
+ * dezelfde voortgang (eigenaar, 15-10). Een lijst om te lezen was het enige stuk van de les
+ * waar je niets mee deed; een kaart vraagt eerst of je het woord weet.
+ *
+ * Receptief of productief staat als chip op elke kaart, dus de twee koppen van de oude lijst
+ * vervallen. De woorden komen uit `lesson_words` via de pagina; zonder woorden rendert het
+ * niets in plaats van een leeg kader.
+ */
 function Woordenlijst({ item }: { item: Extract<LessonItem, { kind: 'woordenlijst' }> }) {
-  // De woorden zelf komen uit `lesson_words` en worden door de pagina ingeladen; dit item
-  // draagt alleen de verwijzing. Zonder ingeladen woorden rendert het niets in plaats van een
-  // leeg kader — een lege lijst met een kop erboven leest als een fout.
   const words = item.words ?? [];
   if (!words.length) return null;
 
-  const groups = [
-    { usage: 'receptief' as const, head: 'Deze woorden moet je begrijpen' },
-    { usage: 'productief' as const, head: 'Deze woorden moet je zelf kunnen gebruiken' },
-  ];
-
   return (
-    <div className="blk blk-woorden">
-      {groups.map(g => {
-        const list = words.filter(w => w.usage === g.usage);
-        if (!list.length) return null;
-        return (
-          <div key={g.usage} className="woordgroep">
-            <span className="mini-label">{g.head}</span>
-            <ul>
-              {list.map(w => (
-                <li key={w.id}>
-                  <strong>{w.article ? `${w.article} ` : ''}{w.dutch}</strong>
-                  {w.plural && <span className="w-plural">· {w.plural}</span>}
-                  {w.frame && <span className="w-frame">{w.frame}</span>}
-                  <span className="w-meaning">{w.meaning_nl}</span>
-                  {w.example && <span className="w-example">{w.example}</span>}
-                </li>
-              ))}
-            </ul>
-          </div>
-        );
-      })}
+    <div className="blk blk-woorden wd-stage">
+      <WordDeck words={words} userId={item.userId ?? null} lessonId={item.lessonId} embedded />
     </div>
   );
 }

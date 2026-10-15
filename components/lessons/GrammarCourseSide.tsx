@@ -4,8 +4,19 @@ import { useState } from 'react';
 import { Check, ChevronDown, Lock } from 'lucide-react';
 import CategoryMark, { type Category } from '@/components/horizon/CategoryMark';
 
+/**
+ * Wat een rij in het open blok is (eigenaar, 15-10, naar Coursera): elk onderwerp en elke les
+ * staat er twee keer — eerst de video of de uitleg, dan de opdracht. Zonder `kind` is het een
+ * woordenrij (blok A en de woordkaartthema's).
+ */
+export type SideKind = 'video' | 'uitleg' | 'opdracht' | 'woorden';
+export type LessonStep = 'uitleg' | 'opdracht';
+
 export type SideItem = {
   key: string;
+  kind?: SideKind;
+  /** De regel onder het label: "2:50", "8 opgaven", "5 min". */
+  meta?: string | null;
   /** "B3", of `null` voor een les uit de extra reeks. */
   code: string | null;
   label: string;
@@ -16,6 +27,8 @@ export type SideItem = {
   /** Alleen op de woordkaarten: het thema en hoeveel woorden je ervan kent (`CourseRoute`). */
   theme?: string;
   count?: { known: number; total: number };
+  /** "Video", "Opdracht" — vertaald, voor het label. */
+  prefix?: string;
 };
 
 export type SideBlock = {
@@ -130,7 +143,8 @@ function SideRow({ item, nowChip }: { item: SideItem; nowChip: string }) {
             : item.locked ? <Lock size={10} strokeWidth={2.6} /> : null}
         </span>
         <span className="gt-ilabel">
-          {item.code && <span className="gt-icode">{item.code} · </span>}
+          {item.prefix && <b className="gt-ikind">{item.prefix}: </b>}
+          {!item.prefix && item.code && <span className="gt-icode">{item.code} · </span>}
           {item.label}
         </span>
         {item.now && <span className="gt-now">{nowChip}</span>}
