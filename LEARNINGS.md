@@ -5637,3 +5637,9 @@ oplopende `top` per index doet het, en de `prefers-reduced-motion`-uitweg is dan
 **Outcome:** SUCCESS
 **What worked / went wrong:** Zelfde opzet als de homepage-hero (`.g-hero-orbs`: geblurde radial-gradients, alleen transform), maar 6–8s in plaats van 11–14s, ±35% baan en schaal 0,85–1,3. De bollen staan op z-index -2 ná `::before` in de DOM, dus ze liggen boven de veldkleur en onder de korrel.
 **Lesson:** Een sterkere variant van een bestaande animatie hoort als eigen klasse in de stylesheet van dat oppervlak, niet als override van de hero-klassen — dan blijft de homepage ongemoeid.
+
+## 2026-10-15 — /gidsen: stapel vult de uitgelichte kaart, zoekveld weg
+**Changed:** `.g-post-stack` in `app/glas-public.css` krijgt `grid-auto-rows: 1fr` i.p.v. `align-content: start`; het zoekveld (`GuideSearch`, `GuideFilterProvider`, `.g-search`, drie berichtsleutels) is weg uit `gidsen/page.tsx`, `GuideIndex.tsx`, `glas-public-gidsen.css` en `messages/*.json`.
+**Outcome:** SUCCESS
+**What worked / went wrong:** de twee kaarten naast de uitgelichte gids hingen bovenaan met een gat eronder; nu delen ze de hoogte, ook op /blog dat dezelfde klasse gebruikt. Zonder zoekveld had de filtercontext geen tweede lezer meer, dus de chipstatus staat weer gewoon in `GuideIndex`.
+**Lesson:** een stapel naast een uitgelichte kaart rekt mee (`1fr`-rijen), anders oogt hij als een half gevuld raster.

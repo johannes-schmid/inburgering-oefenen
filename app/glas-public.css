@@ -553,7 +553,7 @@
   .g-post h3 { font-family: var(--font-headline); font-size: 17.5px; letter-spacing: -0.015em; line-height: 1.25; padding: 0 6px; color: var(--ink); margin: 0; }
   .g-post .g-mono { padding: 0 6px; }
   .g-post-tx { display: flex; flex-direction: column; gap: 8px; min-width: 0; }
-  .g-post-stack { display: grid; gap: 14px; align-content: start; }
+  .g-post-stack { display: grid; gap: 14px; grid-auto-rows: 1fr; }
   .g-post-stack .g-post { flex-direction: row; align-items: center; padding: 10px; }
   .g-post-stack .g-post-th { width: 140px; height: 120px; }
   @media (max-width: 560px) { .g-post-stack .g-post-th { width: 104px; height: 96px; } }

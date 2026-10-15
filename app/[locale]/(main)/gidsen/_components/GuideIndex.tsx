@@ -1,21 +1,16 @@
 'use client';
 
 /**
- * De gidsenlijst van `/gidsen` — één raster kaarten, gefilterd door het zoekveld in de hero en
- * de onderwerpchips erboven.
- *
- * Herontwerp 05-10-2026 (eigenaar, referentie deel.com/resources): een hub is een *catalogus*,
- * en een catalogus is een zoekveld, een filter en gelijke kaarten. Het zoekveld staat in de band
- * bovenaan en de lijst eronder, dus de twee delen hun toestand via `GuideFilterProvider` — de
- * pagina blijft een servercomponent en zet alleen de drie client-stukjes erin.
+ * De gidsenlijst van `/gidsen` — één raster kaarten, gefilterd door de onderwerpchips erboven.
+ * Het zoekveld in de kop is op 15-10-2026 weggehaald (eigenaar).
  *
  * **Elke gepubliceerde gids houdt een zichtbare link, ook als er gefilterd is.** Het filter
  * verbergt met `hidden`, het verwijdert niet: `tests/public.spec.js` eist dat de Inburgering-
  * gidsen zichtbaar zijn op deze pagina, en een crawler moet ze alle drieëntwintig kunnen volgen.
  */
-import { createContext, useContext, useState, type ReactNode } from 'react';
+import { useState } from 'react';
 import { useTranslations } from 'next-intl';
-import { ArrowRight, Search } from 'lucide-react';
+import { ArrowRight } from 'lucide-react';
 import { Link } from '@/i18n/navigation';
 import FilterChip from '@/components/glas/FilterChip';
 import SectionHeading from '@/components/glas/SectionHeading';
@@ -37,48 +32,9 @@ export type IndexGuide = {
   cover: BrochureCoverData;
 };
 
-type Filter = { query: string; setQuery: (q: string) => void; section: GuideSection | 'all'; setSection: (s: GuideSection | 'all') => void };
-const FilterContext = createContext<Filter | null>(null);
-
-export function GuideFilterProvider({ children }: { children: ReactNode }) {
-  const [query, setQuery] = useState('');
-  const [section, setSection] = useState<GuideSection | 'all'>('all');
-  return <FilterContext.Provider value={{ query, setQuery, section, setSection }}>{children}</FilterContext.Provider>;
-}
-
-function useFilter(): Filter {
-  const ctx = useContext(FilterContext);
-  if (!ctx) throw new Error('GuideFilterProvider ontbreekt');
-  return ctx;
-}
-
-/** Het zoekveld in de hero. Zoekt in titel en beschrijving, zonder knop: typen is zoeken. */
-export function GuideSearch() {
-  const t = useTranslations('gidsen');
-  const { query, setQuery } = useFilter();
-  return (
-    <form role="search" onSubmit={e => e.preventDefault()} className="g-search">
-      <label htmlFor="guide-search" className="sr-only">
-        {t('search_label')}
-      </label>
-      <Search aria-hidden="true" />
-      <input
-        id="guide-search"
-        type="search"
-        value={query}
-        onChange={e => setQuery(e.target.value)}
-        placeholder={t('search_placeholder')}
-        autoComplete="off"
-      />
-    </form>
-  );
-}
-
 /* Twee rijen van drie, dan een knop. Ook de verborgen kaarten staan in de DOM (`hidden`): de
    crawler en `tests/public.spec.js` moeten elke gids kunnen volgen. */
 const INITIAL = 6;
-
-const norm = (s: string) => s.toLocaleLowerCase('nl').normalize('NFD').replace(/\p{M}/gu, '');
 
 export default function GuideIndex({
   guides,
@@ -89,17 +45,12 @@ export default function GuideIndex({
 }) {
   const t = useTranslations('gidsen');
   const tG = useTranslations('guides');
-  const { query, section, setSection } = useFilter();
+  const [section, setSection] = useState<GuideSection | 'all'>('all');
   const [expanded, setExpanded] = useState(false);
-  const q = norm(query.trim());
 
-  const matches = (g: IndexGuide) =>
-    (section === 'all' || section === g.section) &&
-    (q === '' || norm(`${g.title} ${g.description}`).includes(q));
-  const matching = guides.filter(matches);
-  const visible = matching.length;
-  /* Zoeken of filteren toont alles wat past; alleen de ongefilterde lijst wordt ingeklapt. */
-  const filtering = q !== '' || section !== 'all';
+  const matching = guides.filter(g => section === 'all' || section === g.section);
+  /* Een filter toont alles wat past; alleen de ongefilterde lijst wordt ingeklapt. */
+  const filtering = section !== 'all';
   const shown = new Set((filtering || expanded ? matching : matching.slice(0, INITIAL)).map(g => `${g.section}-${g.slug}`));
 
   const chips: { id: GuideSection | 'all'; label: string; count: number }[] = [
@@ -151,9 +102,6 @@ export default function GuideIndex({
             </li>
           ))}
         </ul>
-        {visible === 0 && (
-          <p className="g-body m-0 mt-2">{t('no_results', { query: query.trim() })}</p>
-        )}
         {!filtering && guides.length > INITIAL && (
           <div className="flex justify-center mt-8">
             <button

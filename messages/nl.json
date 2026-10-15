@@ -2201,8 +2201,6 @@
     },
     "all_title": "Alle gidsen",
     "all_sub": "Elke gids die de docent heeft nagekeken.",
-    "search_label": "Zoek een gids",
-    "search_placeholder": "Zoek een gids, bijvoorbeeld ‘vrijstelling’",
     "featured_title": "Begin hier",
     "topics_title": "Kies een onderwerp",
     "topic_traject": "Het traject",
@@ -2219,7 +2217,6 @@
     "topic_ona_live": "Gids + portfoliomodule",
     "filter_all": "Alles",
     "filter_label": "Filter op onderwerp",
-    "no_results": "Geen gids gevonden voor ‘{query}’.",
     "pdf_tag": "PDF",
     "show_more": "Toon alle {count} gidsen",
     "show_less": "Toon minder"

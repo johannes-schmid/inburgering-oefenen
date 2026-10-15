@@ -2201,8 +2201,6 @@
     },
     "all_title": "كل الأدلة",
     "all_sub": "كل دليل راجعه المدرّس.",
-    "search_label": "ابحث عن دليل",
-    "search_placeholder": "ابحث عن دليل، مثلاً ‘الإعفاء’",
     "featured_title": "ابدأ هنا",
     "topics_title": "اختر موضوعاً",
     "topic_traject": "المسار",
@@ -2219,7 +2217,6 @@
     "topic_ona_live": "دليل + وحدة الملف",
     "filter_all": "الكل",
     "filter_label": "تصفية حسب الموضوع",
-    "no_results": "لم يُعثر على دليل لـ ‘{query}’.",
     "pdf_tag": "PDF",
     "show_more": "عرض كل الأدلة ({count})",
     "show_less": "عرض أقل"

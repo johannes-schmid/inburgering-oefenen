@@ -2201,8 +2201,6 @@
     },
     "all_title": "All guides",
     "all_sub": "Every guide the teacher has checked.",
-    "search_label": "Search guides",
-    "search_placeholder": "Search a guide, for example ‘exemption’",
     "featured_title": "Start here",
     "topics_title": "Pick a topic",
     "topic_traject": "The process",
@@ -2219,7 +2217,6 @@
     "topic_ona_live": "Guide + portfolio module",
     "filter_all": "All",
     "filter_label": "Filter by topic",
-    "no_results": "No guide found for ‘{query}’.",
     "pdf_tag": "PDF",
     "show_more": "Show all {count} guides",
     "show_less": "Show fewer"
