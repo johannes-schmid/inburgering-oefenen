@@ -7,7 +7,7 @@ import { localeHref } from '@/i18n/paths';
 import SectionHeading from '@/components/glas/SectionHeading';
 import TrackCard from './TrackCard';
 
-/** De trackband van de homepage, gedeeld door `/` en `/home-b` zodat de twee varianten hetzelfde blok tonen. */
+/** De trackband van de homepage. */
 /** `centered`: kop en inleiding gecentreerd boven de kaarten, zoals de secties van variant B. */
 export default async function HomeTracks({ locale, centered = false }: { locale: string; centered?: boolean }) {
   const t = await getTranslations({ locale, namespace: 'home' });

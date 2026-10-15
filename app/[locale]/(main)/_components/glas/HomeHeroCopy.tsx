@@ -5,7 +5,7 @@ import { glasButton } from '@/components/glas/Button';
 import { Link } from '@/i18n/navigation';
 import { localeHref } from '@/i18n/paths';
 
-/** De tekstkolom van de hero, gedeeld door `/` en `/home-b` zodat de twee varianten dezelfde kop, knoppen en trackrij tonen. */
+/** De tekstkolom van de homepage-hero. */
 export default async function HomeHeroCopy({ locale, headingId }: { locale: string; headingId: string }) {
   const t = await getTranslations({ locale, namespace: 'home' });
 

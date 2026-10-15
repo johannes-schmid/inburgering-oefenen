@@ -468,8 +468,6 @@
   /* Sectieritme van deutschtest üben (`py-24 sm:py-32`): 96px, vanaf 640px 128px. */
   .g-home .g-sec { padding-block: 96px; }
   @media (min-width: 640px) { .g-home .g-sec { padding-block: 128px; } }
-  .g-home .g-closing-open { padding-bottom: 24px; }
-  @media (min-width: 860px) { .g-home .g-closing-open { padding-bottom: 40px; } }
 
   /* Dezelfde overgang voor de paginakop van elke andere publieke pagina (`PageField`, de kop van
      gidsen en hubs). Daar is de kop korter, dus vervaagt de onderste helft in plaats van 260px. */
@@ -528,29 +526,6 @@
   .g-glow-end::before { inset-inline-end: -18%; }
   .g-glow-mid::before { left: 50%; top: 0; translate: -50% 0; background: radial-gradient(closest-side, rgba(195, 211, 247, 0.7), rgba(195, 211, 247, 0)); }
   .g-glow-soft::before { opacity: 0.6; }
-
-  /* Melkglas op de verdieping: glas mag hier omdat de gloed eronder ligt. */
-  .g-numcard.g-glass { background: var(--glas); }
-
-  /* Het bewijs, glas.html §08: stemmen links, docent rechts. Op mobiel eerst de docent. */
-  .g-proof { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 2fr); gap: 14px; align-items: stretch; }
-  .g-proof-reviews { display: flex; flex-direction: column; gap: 14px; }
-  .g-proof-reviews .g-review { flex: 1; }
-  /* Alleen breed: een smallere regel hieronder zou het stapelen van `.g-docent` op mobiel
-     overschrijven (hogere specificiteit), en dan staat de tekst in een kolom van één woord. */
-  @media (min-width: 861px) {
-    .g-proof .g-docent { grid-template-columns: 240px minmax(0, 1fr); }
-    .g-proof .g-docent-t { justify-content: center; padding: 32px; }
-  }
-  @media (max-width: 960px) {
-    .g-proof { grid-template-columns: minmax(0, 1fr); }
-    .g-proof .g-docent { order: -1; }
-  }
-
-  /* De afsluiter zonder eigen vlak: tekst op de ondergrond, de gloed erachter loopt door in de
-     footer, die zelf van boven invloeit (`.g-foot`). */
-  .g-closing-open { padding-bottom: 24px; }
-  @media (min-width: 860px) { .g-closing-open { padding-bottom: 40px; } }
 
   /* ---------- 14 · blog ---------- */
   .g-posts { display: grid; grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr); gap: 14px; }
@@ -709,7 +684,7 @@
 }
 
 /* ══════════════════════════════════════════════════════════════════════════════════════════════
-   Homepage variant B (`/home-b`, ter beoordeling) — de opbouw van deutschtest üben in Glas.
+   Homepage (variant B, sinds 15-10 op `/`) — de opbouw van deutschtest üben in Glas.
    Geen banden en geen lijnen tussen secties (feedback eigenaar 15-10): ruimte en velden scheiden.
    ══════════════════════════════════════════════════════════════════════════════════════════════ */
 @layer components {

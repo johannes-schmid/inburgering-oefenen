@@ -4,7 +4,7 @@
  *
  * **Alles hier is `aria-hidden` en Nederlands, `dir="ltr"`.** Het zijn plaatjes van een Nederlandse
  * opgave of een portaalscherm; de beschrijving staat in de kaarttekst ernaast. Daarom staan de
- * teksten niet in `messages/` (zelfde afspraak als `PanelMock` op `/home-b`).
+ * teksten niet in `messages/` (zelfde afspraak als `PanelMock` op de homepage).
  *
  * Geen verzonnen rubriekcriteria (die schrijft de docent) en geen verzonnen aantallen: wat een
  * getal is, komt uit `data/skills.ts` of uit CLAUDE.md §3.

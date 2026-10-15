@@ -1,33 +1,41 @@
 import type { Metadata } from 'next';
 import { getTranslations, setRequestLocale } from 'next-intl/server';
-import { ArrowRight, ArrowUpRight, Check, X } from 'lucide-react';
+import { ArrowRight, ArrowUpRight, Check, Lock, Play } from 'lucide-react';
 import { routing } from '@/i18n/routing';
-import { DEFAULT_LEVEL, SKILLS, getFormat } from '@/data/skills';
+import { DEFAULT_LEVEL, SKILLS, getFormat, KNM } from '@/data/skills';
+import { getFreePractice, optionKeys, optionText } from '@/data/free-practice';
+import { ONA_CARDS } from '@/data/ona/cards';
+import { BUNDLE_PRICE_CENTS, MODULE_PRICE_CENTS, euro } from '@/lib/pricing';
+import { REVIEWS } from '@/data/reviews';
 import JsonLd from '@/components/JsonLd';
-import KennisbankCards, { type KennisbankCard } from './_components/KennisbankCards';
-import FeatureCarousel from './_components/FeatureCarousel';
-import HomeTracks from './_components/glas/HomeTracks';
-import HomeHeroCopy from './_components/glas/HomeHeroCopy';
-import FaqList from './_components/glas/FaqList';
-import { publishedGuides, getGuideLocale, guideHref } from '@/data/guides/helpers';
-import { getPostBySlug, getPostLocale, getPostSlug } from '@/data/blog-posts';
 import TrustpilotScore from '@/components/site/TrustpilotScore';
 import Field from '@/components/glas/Field';
-import SectionHeading from '@/components/glas/SectionHeading';
 import { glasButton } from '@/components/glas/Button';
 import CategoryMark from '@/components/horizon/CategoryMark';
+import ExamMark from '@/components/horizon/ExamMark';
 import { Link } from '@/i18n/navigation';
+import { localeHref } from '@/i18n/paths';
 import { courseId, TEACHER_REF, ogImageFor } from '@/lib/schema';
-import { localeHref, localizedPath } from '@/i18n/paths';
-import { isOnaAvailable } from '@/lib/ona/access';
-import { REVIEWS } from '@/data/reviews';
+import FaqList from './_components/glas/FaqList';
+import HomeTracks from './_components/glas/HomeTracks';
+import HomeHeroCopy from './_components/glas/HomeHeroCopy';
+import HomeDemo, { type DemoListening, type DemoMcq, type DemoSpeaking } from './_components/glas/HomeDemo';
+
+/* De homepage (variant B, sinds 15-10 de standaard — besluit eigenaar).
+ *
+ * De opbouw en de schrijfstijl zijn die van de landingspagina van deutschtest üben (Nachtzug):
+ * hero met app-scherm, het bewijs, een werkende demo, één zin als citaat, drie panelen
+ * "zo bereid je je voor", drie doelgroepen, de belofte, vragen en een afsluiter. De inhoud is van
+ * dit project, en de vier blokken (Taal A2, Taal B1, KNM, ONA) zijn de tabbladen van de demo.
+ * Alle regels van CLAUDE.md §2 gelden hier ook: ONA heet nergens nagekeken, en een score is
+ * oefenfeedback, geen DUO-uitslag. */
 
 type Props = { params: Promise<{ locale: string }> };
 
 const BASE = 'https://inburgeringoefenen.nl';
 
 export async function generateStaticParams() {
-  return routing.locales.map((locale) => ({ locale }));
+  return routing.locales.map(locale => ({ locale }));
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
@@ -64,10 +72,76 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   };
 }
 
+/* Een eigen KNM-vraag, alleen voor de demo. Feit: de leerplicht begint in de maand nadat een
+   kind 5 wordt (Leerplichtwet 1969, art. 3). */
+const KNM_ITEM: DemoMcq = {
+  intro: '',
+  question: 'Je zoon is 5 jaar geworden. Moet hij naar school?',
+  options: [
+    { key: 'A', text: 'Nee, ouders mogen dat zelf kiezen.' },
+    { key: 'B', text: 'Ja, vanaf 5 jaar is een kind leerplichtig.' },
+    { key: 'C', text: 'Alleen als hij al Nederlands spreekt.' },
+  ],
+  correct: 'B',
+  explanation: 'In Nederland moet een kind vanaf 5 jaar naar school. Dat heet de leerplicht.',
+};
+
+/* Spreken A2, oefenexamen 1, onderdeel 1, opgave 1 — letterlijk uit `scripts/a2-content/spreken.mjs`. */
+const SPREKEN_ITEM: DemoSpeaking = {
+  speaker: 'Buurvrouw',
+  says: 'Hoi! Wij zijn nieuw in deze straat. Waar woont u en hoe lang woont u hier al?',
+  prompt: 'Uw nieuwe buurvrouw stelt zich voor. Geef antwoord op haar vraag.',
+  answer: 'Ik woon op nummer 24. Ik woon hier nu ongeveer drie jaar.',
+  limit: 60,
+};
+
+/* Wat de tegels van proefvraag lu-1 groot laten zien: de drie antwoorden zijn een dag en een tijd. */
+const LU1_TILES: DemoListening['tiles'] = {
+  A: { small: 'woensdag', big: '10:30' },
+  B: { small: 'vrijdag', big: '9:00' },
+  C: { small: 'vrijdag', big: '10:30' },
+};
+
 export default async function HomePage({ params }: Props) {
   const { locale } = await params;
   setRequestLocale(locale);
-  const t = await getTranslations({ locale, namespace: 'home' });
+  const t = await getTranslations({ locale, namespace: 'home_b' });
+  const tHome = await getTranslations({ locale, namespace: 'home' });
+
+  /* Het A2-voorbeeld is een bestaande proefvraag (lz-2), dus tekst die al door de docent is
+     nagekeken, en niet een tweede versie ervan. */
+  const lz = getFreePractice('lezen')!.items.find(i => i.id === 'lz-2')!;
+  const a2Item: DemoMcq = {
+    intro: lz.stimulusIntro.split('\n')[0],
+    stimulusHtml: lz.stimulusHtml,
+    question: lz.question,
+    options: optionKeys(lz).map(k => ({ key: k, text: optionText(lz, k) })),
+    correct: lz.correct,
+    explanation: lz.explanation,
+  };
+  /* Het Luisteren-voorbeeld is proefvraag lu-1, met het echte fragment uit de gratis proef. */
+  const lu = getFreePractice('luisteren')!.items.find(i => i.id === 'lu-1')!;
+  const luItem: DemoListening = {
+    intro: lu.stimulusIntro,
+    question: lu.question,
+    options: optionKeys(lu).map(k => ({ key: k, text: optionText(lu, k) })),
+    correct: lu.correct,
+    explanation: lu.explanation,
+    audioSrc: lu.audioSrc!,
+    script: lu.stimulusScript!,
+    speakers: { A: 'Tandartspraktijk', B: 'Sara' },
+    tiles: LU1_TILES,
+  };
+  const fmt = (skill: 'lezen' | 'luisteren' | 'spreken') => {
+    const f = getFormat('a2', skill);
+    return { items: f.itemCount ?? 0, minutes: f.durationMinutes ?? 0 };
+  };
+
+
+  const reviewDate = new Intl.DateTimeFormat(locale === 'ar' ? 'ar' : locale === 'en' ? 'en-GB' : 'nl-NL', { day: 'numeric', month: 'short', year: 'numeric' });
+
+  const faqs = [1, 2, 3, 4, 5, 6].map(n => ({ question: tHome(`faq_q${n}`), answer: tHome(`faq_a${n}`) }));
+
   const tSkills = await getTranslations({ locale, namespace: 'skills' });
 
   const jsonLd = {
@@ -78,7 +152,7 @@ export default async function HomePage({ params }: Props) {
         '@id': `${BASE}/#website`,
         name: 'Inburgering Oefenen',
         url: `${BASE}/`,
-        description: t('meta_description'),
+        description: tHome('meta_description'),
         inLanguage: 'nl-NL',
       },
       {
@@ -133,280 +207,198 @@ export default async function HomePage({ params }: Props) {
         '@id': `${BASE}/#faq`,
         mainEntity: [1, 2, 3, 4, 5, 6].map(n => ({
           '@type': 'Question',
-          name: t(`faq_q${n}`),
-          acceptedAnswer: { '@type': 'Answer', text: t(`faq_a${n}`) },
+          name: tHome(`faq_q${n}`),
+          acceptedAnswer: { '@type': 'Answer', text: tHome(`faq_a${n}`) },
         })),
       },
     ],
   };
 
-
-
-  /* The A2 tile names the four onderdelen it contains, read straight from the taxonomy — so a
-     fifth onderdeel or a renamed one cannot leave a stale string on the homepage. Each one links to
-     its exam overview: since the four-card grid was removed these chips are the *only* link to the
-     onderdelen from this page, which the hard rule in `CLAUDE.md` requires. */
-  const reviewDate = new Intl.DateTimeFormat(locale === 'ar' ? 'ar' : locale === 'en' ? 'en-GB' : 'nl-NL', { day: 'numeric', month: 'short', year: 'numeric' });
-
-  /* The kennisbank row. Everything a reader can *read* rather than practise, in one grid.
-   *
-   * Assembled here rather than in the client component so no `articleHtml` reaches the browser —
-   * `Nav.tsx` carries the same rule for the same reason.
-   *
-   * Three sources, deliberately mixed: the published guides, the section hubs that have no guide
-   * yet, and the blog posts that already own their query. A guide is only listed when
-   * `publishedGuides()` returns it (reviewed = published), so a draft can never appear here; the
-   * KNM card points at the hub because KNM's kennisgidsen live there and nothing is authored under
-   * `data/guides/` for it yet. The blog posts are the same three the hubs link — one query, one
-   * owning page, so this row must not start competing with `/taalexamens`. */
-  const guideCards: KennisbankCard[] = publishedGuides('inburgering').map(guide => {
-    const g = getGuideLocale(guide, locale);
-    const route = guideHref(guide, locale);
-    return {
-      id: guide.slug,
-      group: t('kb_group_inburgering'),
-      title: g.heroTitle,
-      desc: g.description,
-      /* Dezelfde foto als de hero van de gids zelf, en bewust niet een tweede snede: de tegel is
-         de vooruitblik op díe pagina. `hasWebp` slaat op de hero-variant; hier staat de `.jpg`,
-         want `next/image` maakt er zelf een moderne encode van. */
-      image: guide.heroImage ? `/images/guides/${guide.heroImage.base}.jpg` : undefined,
-      imageAlt: g.heroImageAlt || guide.heroImage?.alt,
-      /* `route.pathname` is de interne routenaam ('/inburgering/[slug]'); `localizedPath` vult
-       * de parameter in én pakt de slug van deze taal. Zelf `/${locale}` ervoor plakken gaf
-       * `/en/inburgering/…`, wat een 307 is naar `/en/civic-integration/…`. */
-      href: localizedPath(route.pathname, locale, { slug: guide.slug, thema: guide.slug }),
-    };
-  });
-
-  const postCards: KennisbankCard[] = ([
-    ['taalniveaus-a1-a2-b1-nederlands', 'kb_group_taalexamens'],
-    ['lezen-examen-inburgering-a2', 'kb_group_taalexamens'],
-    ['luisteren-examen-inburgering-a2', 'kb_group_taalexamens'],
-  ] as const)
-    .map(([slug, group]) => {
-      const post = getPostBySlug(slug);
-      if (!post) return null;
-      const lp = getPostLocale(post, locale);
-      const card: KennisbankCard = {
-        id: slug,
-        group: t(group),
-        title: lp.heroTitle,
-        desc: lp.description,
-        image: post.image,
-        imageAlt: lp.heroTitle,
-        href: localeHref(locale, `blog/${getPostSlug(post, locale)}`),
-      };
-      return card;
-    })
-    .filter((c): c is KennisbankCard => c !== null);
-
-  /* **Zes kaarten, en dat is het patroon van de bento precies één keer**: de grote tegel, twee
-     halve ernaast, en een rij van drie eronder. Een zevende kaart begint het patroon opnieuw en
-     zet er een tweede blok van dezelfde vorm onder — dan leest de rij als een archief in plaats
-     van als een greep uit de kennisbank, en daar staat `/gidsen` al voor.
-
-     De verdeling is vier gidsen, de KNM-hub en één blogpost, zodat elke filterpil ook echt iets
-     te tonen heeft: de pillen worden uit de kaarten afgeleid, dus een rij van zes gidsen zou
-     één pil overhouden. */
-  const KENNISBANK: KennisbankCard[] = [
-    ...guideCards.slice(0, 4),
-    {
-      id: 'knm-hub',
-      group: t('kb_group_knm'),
-      title: t('kb_knm_title'),
-      desc: t('kb_knm_desc'),
-      href: `/${locale}/knm`,
-      category: 'knm',
-    },
-    ...postCards.slice(0, 1),
-  ];
-
-  /* De quotes van echte cursisten. **Leeg tot de eigenaar ze aanlevert** — een quote hier is een
-     uitspraak van een bestaand persoon, dus hij wordt geplakt, niet geschreven (§2: nooit
-     verzonnen social proof). Vorm: { text, author }, met de auteur als voornaam of als soort
-     cursist, nooit een verzonnen volledige naam. De rij rendert niet zolang dit leeg is. */
-  const QUOTES: { text: string; author: string }[] = [];
-
-  /* Het formaat van A2 Lezen als voorbeeld in de eerste verdieping. Uit de taxonomie, nooit
-     getypt: `SEO/facts.md` §1 is de bron van de duur en een hertelling moet de pagina meenemen. */
-  const A2_LEZEN = getFormat(DEFAULT_LEVEL, 'lezen');
-
-  const faqs = [1, 2, 3, 4, 5, 6].map(n => ({ q: `faq_q${n}`, a: `faq_a${n}`, link: n === 1 }));
-
   return (
     <>
       <JsonLd data={jsonLd} />
+      <div className="g-home g-hb">
+        {/* ── HERO ── dezelfde opbouw én tekst als de huidige homepage (HomeHeroCopy). */}
+        <Field as="section" variant="hero" veil className="g-hero g-hero-fade g-hero-live" aria-labelledby="hb-hero">
+          <span className="g-hero-orbs" aria-hidden="true"><i /><i /></span>
+          <div className="g-wrap g-hero-grid">
+            <HomeHeroCopy locale={locale} headingId="hb-hero" />
 
-      {/* Eén doorlopende ondergrond (feedback eigenaar 15-10): de hero vervaagt in de pagina en
-          geen sectie heeft een eigen band. Wat de secties scheidt is ruimte, en een paar zachte
-          gloeden (`g-glow`) die de stijl van de hero vasthouden tot in de footer. */}
-      <div className="g-home">
-
-      {/* ── HERO — product als beeld (glas.html §13 "Hero", G7: de structuur van vandaag) ──
-          Het veld `hero` draagt de ene gloed van deze view, rechts; de tekst staat links op de
-          sluier (regel 06). De knoppen zijn daarom navy en ghost, niet oranje.
-
-          **De trackrij blijft staan en is niet decoratief:** de kop mag "A2, B1 en KNM" zeggen
-          omdat die rij per track zegt wat er wél en niet achter zit (CLAUDE.md §2: het merk is het
-          hele traject, de catalogus wordt apart genoemd). A2 en B1 linken naar hun niveau-overzicht.
-
-          De opbouw is die van deutschtest üben (feedback eigenaar 15-10): een brede tekstkolom met
-          een rustige vinkjesrij onder de knoppen, en rechts één app-scherm met een pil die over de
-          onderrand valt. Het scherm is een plaatje van het product, dus `aria-hidden`; alles wat
-          iemand moet wéten staat links. Elk getal erin is illustratieve schermstand, geen claim. */}
-      <Field as="section" id="hero" variant="hero" veil className="g-hero g-hero-fade g-hero-live" aria-labelledby="hero-heading">
-        <span className="g-hero-orbs" aria-hidden="true"><i /><i /></span>
-        <div className="g-wrap g-hero-grid">
-          <HomeHeroCopy locale={locale} headingId="hero-heading" />
-
-          <div className="g-hero-scene" aria-hidden="true" dir="ltr" lang="nl">
-            <div className="g-phone g-glass g-glass-strong">
-              <span className="g-phone-notch" />
-              <div className="g-phone-big">
-                <span>Je examen over</span>
-                <b className="g-tnum">23 dagen</b>
+            <div className="g-hero-scene" aria-hidden="true" dir="ltr" lang="nl">
+              <div className="g-phone g-glass g-glass-strong">
+                <span className="g-phone-notch" />
+                <div className="g-phone-big">
+                  <span>Je examen over</span>
+                  <b className="g-tnum">12 dagen</b>
+                </div>
+                <div className="g-phone-row">
+                  <CategoryMark category="luisteren" size={36} />
+                  <span><b>Luisteren A2 · vraag 4</b>Ga verder waar je was.</span>
+                </div>
+                <div className="g-phone-row">
+                  <span className="g-phone-ok"><Check /></span>
+                  <span><b>Schrijven nagekeken</b>Je feedback staat klaar.</span>
+                </div>
               </div>
-              <div className="g-phone-row">
-                <CategoryMark category="luisteren" size={36} />
-                <span><b>Luisteren A2 · vraag 4</b>Ga verder waar je was.</span>
+              <div className="g-phone-pill g-glass g-glass-strong">
+                <span className="g-phone-num">2</span>
+                <span><b>Lezen A2 · oefenexamen 2</b>Klaar. Hierna: Schrijven.</span>
               </div>
-              <div className="g-phone-row">
-                <span className="g-phone-ok"><Check /></span>
-                <span><b>Schrijven nagekeken</b>Je feedback staat klaar.</span>
-              </div>
-            </div>
-            <div className="g-phone-pill g-glass g-glass-strong">
-              <span className="g-phone-num">2</span>
-              <span><b>Lezen A2 · oefenexamen 2</b>Klaar. Hierna: Schrijven.</span>
             </div>
           </div>
-        </div>
-      </Field>
+        </Field>
 
-      {/* ── DE VERBINDENDE KAART — drie bewijsstukken direct onder de hero ──
-          Plek en maten zijn die van de talenstrook van deutschtest üben (feedback eigenaar 15-10):
-          geen overlap meer met de hero, de kaart begint op dezelfde hoogte als die strook en de
-          volgende sectie volgt met hetzelfde sectieritme. De vorm van de kaart blijft.
-          Het cijfer, het aantal, de docent. **De Trustpilot-score is van knmoefenen.nl en dat staat
-          erbij**; een score van een ander domein zonder bron is geleend vertrouwen. Er hoort géén
-          `AggregateRating` bij in de structured data van dit domein. Het getal 1.000+ is dat van de
-          docent zelf (opgave eigenaar). Nooit een gebruikersaantal dat niet uit de database of uit
-          `SEO/facts.md` komt. De quotes rij rendert pas als er échte quotes zijn (`QUOTES`). */}
-      <section aria-labelledby="proof-heading" className="g-wrap relative z-10">
-        <div className="bg-wit rounded-g-xl p-2.5 sm:p-3 shadow-zweef">
-          <h2 id="proof-heading" className="g-sr">{t('proof_line')}</h2>
-          <div className="grid gap-2 sm:gap-2.5 lg:grid-cols-3">
-            <div className="rounded-g-lg bg-mist px-4 py-3.5 flex items-center gap-3">
-              <span className="g-head g-tnum text-[28px] font-extrabold tracking-[-0.04em] leading-none shrink-0">4,4</span>
+        {/* ── HET BEWIJS ── dezelfde kaart als op de huidige homepage: de Trustpilot-score is van
+            knmoefenen.nl en dat staat erbij; 1.000+ is de opgave van de docent zelf. */}
+        <section aria-labelledby="hb-proof" className="g-wrap g-hb-proof">
+          <h2 id="hb-proof" className="g-sr">{tHome('proof_line')}</h2>
+          <div className="g-hb-proof-row g-glass g-glass-strong">
+            <div className="g-hb-proof-item">
+              <span className="g-hb-proof-num g-tnum">4,4</span>
               <div className="min-w-0">
                 <TrustpilotScore score={4.4} compact />
-                <p className="m-0 mt-1 text-[0.75rem] leading-snug text-ink-2">
-                  {t('proof_trustpilot_label')}{' '}
+                <p>
+                  {tHome('proof_trustpilot_label')}{' '}
                   <a href="https://nl.trustpilot.com/review/knmoefenen.nl" target="_blank" rel="noopener noreferrer" className="g-ilink inline-flex items-center gap-0.5 whitespace-nowrap">
-                    {t('proof_source')}
+                    {tHome('proof_source')}
                     <ArrowUpRight className="size-3 rtl-flip" aria-hidden="true" />
                   </a>
                 </p>
               </div>
             </div>
-            <div className="rounded-g-lg bg-mist px-4 py-3.5 flex items-center gap-3">
-              <span className="g-head g-tnum text-[28px] font-extrabold tracking-[-0.04em] leading-none shrink-0">1.000+</span>
-              <p className="m-0 text-[0.75rem] leading-snug text-ink-2">{t('proof_students_label')}</p>
+            <div className="g-hb-proof-item">
+              <span className="g-hb-proof-num g-tnum">1.000+</span>
+              <p>{tHome('proof_students_label')}</p>
             </div>
-            <div className="rounded-g-lg bg-mist px-4 py-3.5 flex items-center gap-3">
-              <img
-                src="/images/amber-van-der-zalm-264.webp"
-                alt={t('teacher_name')}
-                width={44}
-                height={44}
-                className="size-11 rounded-g-sm object-cover object-top shrink-0"
-              />
-              <div className="min-w-0 text-[0.75rem] leading-snug text-ink-2">
-                <p className="m-0 g-head text-[0.9375rem] font-bold leading-tight">{t('teacher_name')}</p>
-                <p className="m-0 mt-0.5">
-                  {t('proof_teacher_role')}{' · '}
+            <div className="g-hb-proof-item">
+              <img src="/images/amber-van-der-zalm-264.webp" alt="" width={44} height={44} className="g-hb-proof-face" />
+              <div className="min-w-0">
+                <b>{tHome('teacher_name')}</b>
+                <p>
+                  {tHome('proof_teacher_role')}{' · '}
                   <Link href="/docent" className="g-ilink inline-flex items-center gap-0.5 whitespace-nowrap">
-                    {t('proof_teacher_link')}
+                    {tHome('proof_teacher_link')}
                     <ArrowRight className="size-3 rtl-flip" aria-hidden="true" />
                   </Link>
                 </p>
               </div>
             </div>
           </div>
+        </section>
 
-          {QUOTES.length > 0 && (
-            <ul className="grid gap-2.5 sm:grid-cols-3 mt-2.5 list-none p-0 mb-0">
-              {QUOTES.map(q => (
-                <li key={q.author + q.text.slice(0, 12)} className="rounded-g-lg bg-mist px-5 py-5">
-                  <blockquote className="m-0 text-[0.875rem] leading-relaxed text-ink">{`“${q.text}”`}</blockquote>
-                  <p className="m-0 mt-3 text-[0.75rem] font-semibold text-ink-2">{q.author}</p>
-                </li>
+        {/* ── DE TRACKBAND ── hetzelfde blok als op de huidige homepage, op dezelfde plek. */}
+        <HomeTracks locale={locale} centered />
+
+        {/* ── DE DEMO ── */}
+        <section aria-labelledby="hb-demo" className="g-sec">
+          <div className="g-wrap">
+            <div className="g-hb-center">
+              <h2 id="hb-demo" className="g-hb-h2">{t('demo_h2')}</h2>
+              <p className="g-hb-lead">{t('demo_lead')}</p>
+            </div>
+            <Field variant="gracht" className="g-hb-stage">
+              <HomeDemo
+                luisteren={luItem}
+                lezen={a2Item}
+                spreken={SPREKEN_ITEM}
+                formats={{ luisteren: fmt('luisteren'), lezen: fmt('lezen'), spreken: fmt('spreken') }}
+                knm={KNM_ITEM}
+                knmMinutes={KNM.durationMinutes ?? 0}
+                onaCards={ONA_CARDS.map(c => c.title)}
+              />
+            </Field>
+          </div>
+        </section>
+
+        {/* ── DE ZIN ── */}
+        <section className="g-hb-quote">
+          <figure className="g-wrap">
+            <blockquote>{`“${t('quote_text')}”`}</blockquote>
+            <figcaption>{t('quote_caption')}</figcaption>
+          </figure>
+        </section>
+
+        {/* ── ZO BEREID JE JE VOOR ── echte schermen uit het product, geen nagebouwde. */}
+        <section aria-labelledby="hb-panels" className="g-sec g-hb-band g-hb-panels">
+          <div className="g-wrap">
+            <h2 id="hb-panels" className="g-hb-h2 g-hb-h2-lg">{t('panels_h2')}</h2>
+            <div className="g-hb-panel-list">
+              {([1, 2, 3] as const).map(n => (
+                <div key={n} className="contents">
+                  {n > 1 && <span className="g-sep5" aria-hidden="true"><i /><i /><i /><i /><i /></span>}
+                  <article className="g-hb-pcard">
+                    <div className="g-hb-pcard-t">
+                      <h3>{t(`panel${n}_title`)}</h3>
+                      <p>{t(`panel${n}_text`)}</p>
+                      <ul>
+                        {[1, 2, 3].map(i => <li key={i}>{t(`panel${n}_p${i}`)}</li>)}
+                      </ul>
+                    </div>
+                    <Field variant={n === 2 ? 'nevel' : 'gracht'} className="g-hb-shot">
+                      <PanelMock n={n} />
+                    </Field>
+                  </article>
+                </div>
               ))}
+            </div>
+          </div>
+        </section>
+
+        {/* ── VOOR WIE ── */}
+        <section aria-labelledby="hb-aud" className="g-sec">
+          <div className="g-wrap">
+            <h2 id="hb-aud" className="g-hb-h2 g-hb-h2-start">
+              {t('aud_h2')} <span>{t('aud_h2_muted')}</span>
+            </h2>
+            <ul className="g-hb-aud">
+              <li>
+                <Field variant="gracht" className="g-hb-acard">
+                  <span className="g-hb-tag">{t('aud1_tag')}</span>
+                  <div className="g-hb-art" aria-hidden="true">
+                    <div className="g-hb-art-marks">
+                      {(['a2', 'b1', 'knm', 'ona'] as const).map(k => <ExamMark key={k} track={k} size={52} />)}
+                    </div>
+                  </div>
+                  <h3>{t('aud1_title')}</h3>
+                  <p>{t('aud1_text')}</p>
+                </Field>
+              </li>
+              <li>
+                <Field variant="nevel" className="g-hb-acard">
+                  <span className="g-hb-tag">{t('aud2_tag')}</span>
+                  <div className="g-hb-art" aria-hidden="true">
+                    <div className="g-hb-chipcard g-glass g-glass-strong">
+                      <CategoryMark category="spreken" size={40} />
+                      <span><b>{t('aud2_art')}</b><small dir="ltr" lang="nl">Spreken A2 · examen 3</small></span>
+                    </div>
+                  </div>
+                  <h3>{t('aud2_title')}</h3>
+                  <p>{t('aud2_text')}</p>
+                </Field>
+              </li>
+              <li>
+                <Field variant="gracht" className="g-hb-acard">
+                  <span className="g-hb-tag">{t('aud3_tag')}</span>
+                  <div className="g-hb-art" aria-hidden="true">
+                    <div className="g-hb-ticket g-glass g-glass-strong">
+                      <small>{t('aud3_art')}</small>
+                      <b className="g-tnum">{t('aud3_art_days')}</b>
+                    </div>
+                  </div>
+                  <h3>{t('aud3_title')}</h3>
+                  <p>{t('aud3_text')}</p>
+                </Field>
+              </li>
             </ul>
-          )}
-        </div>
-      </section>
+          </div>
+        </section>
 
-      <HomeTracks locale={locale} />
-
-      {/* ── DE VITRINE — vijf schermen die er al zijn. Ná de tracks: die zeggen *wat* je kunt kopen,
-          deze sectie *hoe het eruitziet*. */}
-      <FeatureCarousel />
-
-      {/* ── VERDIEPING 1 en 2 — zo oefen je, zo leer je ──
-          Dezelfde vorm twee keer, en dat is de structuur: links de belofte, rechts drie getallen die
-          hem onderbouwen. De getallen van verdieping 1 komen uit `data/skills.ts`, niet uit de copy
-          (§9: elk getal heeft een bron). **De middelste kaart van verdieping 2 heeft bewust geen
-          getal**: 31 regels en 28 lessen naast elkaar is een claim die zichzelf tegenspreekt. */}
-      <DeepDive
-        id="dd-oefenen"
-        heading={t('dd1_heading')}
-        body={t('dd1_body')}
-        linkLabel={t('dd1_link')}
-        href={localeHref(locale, `oefenexamen/${DEFAULT_LEVEL}/lezen`)}
-        cards={[
-          { key: 'c1', stat: t('dd1_c1_stat'), label: t('dd1_c1_label'), body: t('dd1_c1_body') },
-          {
-            key: 'c2',
-            stat: t('dd1_c2_stat', { items: A2_LEZEN.itemCount ?? 0 }),
-            label: t('dd1_c2_label'),
-            body: t('dd1_c2_body', { minutes: A2_LEZEN.durationMinutes ?? 0 }),
-          },
-          { key: 'c3', stat: t('dd1_c3_stat'), label: t('dd1_c3_label'), body: t('dd1_c3_body') },
-        ]}
-      />
-      <DeepDive
-        id="dd-leren"
-        heading={t('dd2_heading')}
-        body={t('dd2_body')}
-        linkLabel={t('dd2_link')}
-        href={localeHref(locale, `platform`)}
-        cards={[
-          { key: 'c1', stat: t('dd2_c1_stat'), label: t('dd2_c1_label'), body: t('dd2_c1_body') },
-          { key: 'c2', stat: t('dd2_c2_stat'), label: t('dd2_c2_label'), body: t('dd2_c2_body') },
-          { key: 'c3', stat: t('dd2_c3_stat'), label: t('dd2_c3_label'), body: t('dd2_c3_body') },
-        ]}
-      />
-
-      {/* ── HET BEWIJS — claim, onderbouwing, stemmen (glas.html §08 "Docent, review, vergelijking") ──
-          - Geen `Review` en geen `AggregateRating` in de structured data; `scripts/check-schema.mjs`
-            laat de build vallen als er een verschijnt.
-          - **De quotes zijn echte Trustpilot-reviews van knmoefenen.nl**, letterlijk en met datum.
-            Zie `REVIEWS` voor wat er wel en niet in mag.
-          - **Naast het portret staat een uitspraak, geen citaat** (`home.docent_line`): een quote
-            toeschrijven aan een echte persoon mag alleen met haar eigen, letterlijke woorden.
-          - De vergelijking is feitelijk: geen logo's, niets doorgestreept. */}
-      <section id="docent" aria-labelledby="proofsec-heading" className="g-sec g-glow g-glow-start g-glow-soft">
-        <div className="g-wrap g-stack">
-          <SectionHeading id="proofsec-heading" title={t('proofsec_heading')} aside={t('proofsec_body')} className="mb-12" />
-
-          {/* De opbouw van glas.html §08: links de stemmen, rechts de docent, eronder de vergelijking.
-              Twee reviews, niet drie: de kolom moet even hoog blijven als de docentkaart ernaast. */}
-          <div className="g-proof">
-            <div id="cursisten" className="g-proof-reviews">
-              <h3 className="g-sr">{t('reviews_heading')}</h3>
-              {REVIEWS.slice(0, 2).map(review => (
+        {/* ── STEMMEN ── echte Trustpilot-reviews van knmoefenen.nl, letterlijk (data/reviews.ts). */}
+        <section aria-labelledby="hb-reviews" className="g-sec">
+          <div className="g-wrap">
+            <h2 id="hb-reviews" className="g-hb-h2 g-hb-h2-start">{tHome('reviews_heading')}</h2>
+            <div className="g-reviews g-hb-reviews">
+              {REVIEWS.map(review => (
                 <figure key={review.name} className="g-review">
                   <div className="g-stars" aria-hidden="true"><i /><i /><i /><i /><i /></div>
                   <blockquote lang={review.lang}>{`“${review.text}”`}</blockquote>
@@ -416,138 +408,128 @@ export default async function HomePage({ params }: Props) {
                   </figcaption>
                 </figure>
               ))}
-              <p className="m-0 px-1 text-xs leading-relaxed text-ink-2">
-                {t('reviews_source')}{' '}
-                <a href="https://nl.trustpilot.com/review/knmoefenen.nl" target="_blank" rel="noopener noreferrer" className="g-ilink inline-flex items-center gap-0.5 whitespace-nowrap">
-                  {t('reviews_source_link')}
-                  <ArrowUpRight className="size-3 rtl-flip" aria-hidden="true" />
-                </a>
-              </p>
             </div>
-
-            <div className="g-docent">
-              <img src="/images/amber-van-der-zalm-264.webp" alt={t('teacher_name')} width={264} height={264} />
-              <div className="g-docent-t">
-                <p className="g-docent-line">{t('docent_line')}</p>
-                <p className="m-0 text-[0.9375rem] leading-relaxed text-ink-2">{t('docent_line_sub')}</p>
-                <div className="g-docent-who">
-                  <b>{t('teacher_name')}</b>
-                  <small>{t('teacher_experience')}</small>
-                </div>
-                <Link href="/docent" className="g-tlink">
-                  {t('docent_cta')}
-                  <ArrowRight className="rtl-flip" aria-hidden="true" />
-                </Link>
-              </div>
-            </div>
+            <p className="g-hb-reviews-src">
+              {tHome('reviews_source')}{' '}
+              <a href="https://nl.trustpilot.com/review/knmoefenen.nl" target="_blank" rel="noopener noreferrer" className="g-ilink inline-flex items-center gap-0.5 whitespace-nowrap">
+                {tHome('reviews_source_link')}
+                <ArrowUpRight className="size-3 rtl-flip" aria-hidden="true" />
+              </a>
+            </p>
           </div>
+        </section>
 
-          <div className="g-compare">
-            <div className="g-compare-us g-on-dark flex flex-col">
-              <h3>{t('ai_us_title')}</h3>
-              <ul>
-                {[1, 2, 3, 4].map(n => (
-                  <li key={n}><Check aria-hidden="true" />{t(`ai_us_${n}`)}</li>
-                ))}
-              </ul>
-              <Link href="/docent" className={glasButton({ variant: 'wit', size: 'sm', className: 'mt-6 self-start' })}>
-                {t('docent_meet_cta')}
+        {/* ── DE BELOFTE ── de docent is de belofte; ONA staat er eerlijk bij. */}
+        <section aria-labelledby="hb-promise" className="g-sec">
+          <div className="g-wrap g-hb-promise">
+            <Field variant="nevel" className="g-hb-portrait">
+              <img src="/images/amber-van-der-zalm.webp" alt={tHome('teacher_name')} width={480} height={600} decoding="async" />
+              <div className="g-hb-portrait-who g-glass g-glass-strong">
+                <b>{tHome('teacher_name')}</b>
+                <small>{tHome('teacher_experience')}</small>
+              </div>
+            </Field>
+            <div className="g-hb-promise-t">
+              <h2 id="hb-promise" className="g-hb-h2 g-hb-h2-lg g-hb-h2-start">{t('promise_h2')}</h2>
+              <p>{t('promise_p1')}</p>
+              <p>{t('promise_p2')}</p>
+              <p>{t('promise_p3')}</p>
+              <Link href="/docent" className="g-tlink">
+                {t('promise_link')}
+                <ArrowRight className="rtl-flip" aria-hidden="true" />
               </Link>
             </div>
-            <div className="g-compare-them">
-              <h3>{t('ai_them_title')}</h3>
-              <ul>
-                {[1, 2, 3, 4].map(n => (
-                  <li key={n}><X aria-hidden="true" />{t(`ai_them_${n}`)}</li>
-                ))}
-              </ul>
+          </div>
+        </section>
+
+        {/* ── VRAGEN ── dezelfde zes vragen als de huidige homepage. */}
+        <section id="vragen" aria-labelledby="hb-faq" className="g-sec">
+          <div className="g-wrap grid gap-8 lg:grid-cols-[minmax(0,0.8fr)_minmax(0,1.2fr)] lg:gap-14 items-start">
+            <div>
+              <h2 id="hb-faq" className="g-hb-h2 g-hb-h2-start">{t('faq_h2')}</h2>
+              <p className="g-body mt-4">
+                {t('faq_price', { module: euro(MODULE_PRICE_CENTS), bundle: euro(BUNDLE_PRICE_CENTS) })}
+              </p>
             </div>
+            <FaqList items={faqs} />
           </div>
-        </div>
-      </section>
+        </section>
 
-      {/* ── DE KENNISBANK — alles wat geen oefenexamen is. Welke bestemmingen de rij draagt is een
-          inhoudsbeslissing, begrensd door de publicatiepoort: zie `KENNISBANK`. */}
-      <section aria-labelledby="kennisbank-heading" className="g-sec">
-        <div className="g-wrap">
-          <SectionHeading id="kennisbank-heading" title={t('kb_heading')} aside={t('kb_intro')} className="mb-6" />
-          <KennisbankCards cards={KENNISBANK} allLabel={t('kb_all')} />
-        </div>
-      </section>
-
-      {/* ── FAQ ── dezelfde zes vragen als de FAQPage hierboven in de JSON-LD. */}
-      <section id="faq" aria-labelledby="faq-heading" className="g-sec">
-        <div className="g-wrap grid gap-8 lg:grid-cols-[minmax(0,0.8fr)_minmax(0,1.2fr)] lg:gap-14 items-start">
-          <div className="lg:sticky lg:top-[calc(var(--nav-h)+24px)]">
-            <SectionHeading id="faq-heading" title={t('faq_heading')} size="h1" />
-            <p className="g-body mt-4">{t('faq_subheading')}</p>
-          </div>
-          <FaqList
-            items={faqs.map(({ q, a, link }) => ({
-              question: t(q),
-              answer: t(a),
-              link: link ? { href: '#onderdelen', label: t('faq_a1_link') } : undefined,
-            }))}
-          />
-        </div>
-      </section>
-
-      {/* ── DE AFSLUITER (glas.html §13 "Afsluiter") ──
-          Eén oranje knop, dus géén oranje gloed. Geen eigen vlak meer: een afgeronde kaart boven de
-          footerkaart las als twee blokken (feedback eigenaar 15-10). De tekst staat op de
-          ondergrond met een Nevel-gloed erachter, en die loopt door in de footer, die van boven
-          invloeit. */}
-      <section aria-labelledby="closing-heading" className="g-sec g-glow g-glow-mid g-closing-open">
-        <div className="g-wrap g-cta-band">
-          <h2 id="closing-heading">{t('closing_heading')}</h2>
-          <p>{t('closing_sub')}</p>
-          <a href={localeHref(locale, `oefenen`)} className={glasButton({ variant: 'oranje', size: 'lg', className: 'mt-2' })}>
-            {t('cta_primary')}
-            <ArrowRight className="rtl-flip" aria-hidden="true" />
-          </a>
-        </div>
-      </section>
+        {/* ── AFSLUITER ── één oranje knop op de pagina, op een veld zonder oranje gloed. */}
+        <section aria-labelledby="hb-cta" className="g-wrap g-hb-cta-wrap">
+          <Field variant="gracht" className="g-hb-cta">
+            <h2 id="hb-cta">{t('cta_h2')}</h2>
+            <p>{t('cta_text')}</p>
+            <a href={localeHref(locale, 'oefenen')} className={glasButton({ variant: 'oranje', size: 'lg' })}>
+              {t('hero_cta')}
+              <ArrowRight className="rtl-flip" aria-hidden="true" />
+            </a>
+          </Field>
+        </section>
       </div>
     </>
   );
 }
 
-/* ── De verdieping ──
-   Links de belofte met een link, rechts drie getallen die hem onderbouwen. Een `CategoryMark`
-   hoort hier niet: "10 oefenexamens" is geen onderdeel (§7, de iconenverdeling). De getallen staan
-   op melkglas boven een gloed van de pagina (`g-glow`): wit op mist was te kaal (feedback
-   eigenaar 15-10), en glas mag hier omdat er iets ónder ligt. */
-function DeepDive({
-  id, heading, body, linkLabel, href, cards,
-}: {
-  id: string;
-  heading: string;
-  body: string;
-  linkLabel: string;
-  href: string;
-  cards: { key: string; stat: string; label: string; body: string }[];
-}) {
-  return (
-    <section aria-labelledby={`${id}-heading`} className="g-sec g-glow g-glow-end">
-      <div className="g-wrap grid gap-10 lg:grid-cols-[minmax(0,22rem)_minmax(0,1fr)] lg:gap-16 items-start">
-        <div className="lg:sticky lg:top-[calc(var(--nav-h)+24px)]">
-          <SectionHeading id={`${id}-heading`} title={heading} size="h1" />
-          <p className="g-body mt-4">{body}</p>
-          <a href={href} className="g-tlink mt-5">
-            {linkLabel}
-            <ArrowRight className="rtl-flip" aria-hidden="true" />
-          </a>
+/* De drie panelen tonen elk één klein element uit het platform, nagebouwd en Nederlands zoals het
+   platform zelf (net als de telefoon in de hero) — geen volledige schermafdruk. */
+function PanelMock({ n }: { n: 1 | 2 | 3 }) {
+  if (n === 1) {
+    const days = [
+      { d: 'ma', s: 'done' },
+      { d: 'di', s: 'done' },
+      { d: 'wo', s: 'rest' },
+      { d: 'do', s: 'done' },
+      { d: 'vr', s: 'today' },
+    ] as const;
+    return (
+      <div className="g-hb-mock g-glass g-glass-strong" aria-hidden="true" dir="ltr" lang="nl">
+        <div className="g-hb-mock-head">
+          <b>Hoi Amina</b>
+          <span className="g-hb-mock-mono">examen over 23 dagen</span>
         </div>
-        <ul className="g-numcards">
-          {cards.map(card => (
-            <li key={card.key} className="g-numcard g-glass">
-              <b className="g-tnum">{card.stat}</b>
-              <span className="g-mono mt-2">{card.label}</span>
-              <p>{card.body}</p>
+        <ul className="g-hb-days">
+          {days.map(x => (
+            <li key={x.d} data-s={x.s}>
+              <span>{x.s === 'done' && <Check />}</span>
+              {x.d}
             </li>
           ))}
         </ul>
+        <div className="g-hb-mock-row">
+          <CategoryMark category="lezen" size={40} />
+          <span className="g-hb-mock-txt"><b>Lezen A2 · 45 min</b>Morgen ga je verder bij vraag 14.</span>
+        </div>
       </div>
-    </section>
+    );
+  }
+  if (n === 2) {
+    const wave = [8, 16, 12, 24, 14, 30, 18, 26, 12, 32, 20, 14, 26, 18, 10, 22, 28, 14, 20, 12, 24, 16, 10, 18, 12, 8];
+    return (
+      <div className="g-hb-mock g-glass g-glass-strong" aria-hidden="true" dir="ltr" lang="nl">
+        <div className="g-hb-mock-head">
+          <b className="g-hb-mock-ic"><CategoryMark category="luisteren" size={28} bare />Luisteren · vraag 4</b>
+          <span className="g-hb-mock-chip g-tnum">38:12</span>
+        </div>
+        <span className="g-hb-mock-wave">
+          {wave.map((h, i) => <i key={i} style={{ height: h }} data-on={i < 11 || undefined} />)}
+        </span>
+        <p className="g-hb-mock-foot"><Lock />Wat er gezegd wordt, lees je na je antwoord.</p>
+      </div>
+    );
+  }
+  return (
+    <div className="g-hb-mock g-glass g-glass-strong" aria-hidden="true" dir="ltr" lang="nl">
+      <div className="g-hb-mock-head">
+        <b className="g-hb-mock-ic"><CategoryMark category="taalregels" size={28} bare />omdat, als en toen</b>
+        <span className="g-hb-mock-mono">les · 10 min</span>
+      </div>
+      <p className="g-hb-mock-sent">Ik blijf thuis, <mark>omdat</mark> ik ziek <u>ben</u>.</p>
+      <div className="g-hb-mock-row g-hb-mock-row-plain">
+        <span className="g-hb-mock-play"><Play /></span>
+        <span className="g-hb-mock-txt"><b>Ingesproken uitleg</b>Het werkwoord gaat naar het eind.</span>
+        <span className="g-hb-mock-mono g-tnum">1:48</span>
+      </div>
+    </div>
   );
 }
