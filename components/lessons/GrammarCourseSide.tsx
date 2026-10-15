@@ -13,6 +13,9 @@ export type SideItem = {
   done: boolean;
   now: boolean;
   locked: boolean;
+  /** Alleen op de woordkaarten: het thema en hoeveel woorden je ervan kent (`CourseRoute`). */
+  theme?: string;
+  count?: { known: number; total: number };
 };
 
 export type SideBlock = {

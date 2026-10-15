@@ -2449,7 +2449,15 @@
     "levels_aria": "المستوى",
     "skills_aria": "المهارة",
     "step_done": "لقد أنجزت كل مواضيع الوحدة B",
-    "step_back": "العودة إلى الدورة"
+    "step_back": "العودة إلى الدورة",
+    "route_kicker": "الدورة · {done} من {total}",
+    "route_sub_A": "بطاقات الكلمات حسب الموضوع",
+    "route_sub_B": "قواعد هذا الامتحان",
+    "route_sub_C": "هكذا يعمل الامتحان",
+    "route_sub_D": "تدرّب كما في الامتحان",
+    "route_sub_E": "تأكد إن كنت مستعدًا",
+    "route_next_kicker": "بعد ذلك",
+    "route_next": "امتحانات التدريب"
   },
   "redactie": {
     "meta_title": "كيف نعدّ محتوانا | Inburgering Oefenen",

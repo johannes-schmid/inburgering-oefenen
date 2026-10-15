@@ -2449,7 +2449,15 @@
     "levels_aria": "Level",
     "skills_aria": "Skill",
     "step_done": "You have done every topic in block B",
-    "step_back": "Back to the course"
+    "step_back": "Back to the course",
+    "route_kicker": "Course · {done} of {total}",
+    "route_sub_A": "Word cards by theme",
+    "route_sub_B": "Rules for this exam",
+    "route_sub_C": "How the exam works",
+    "route_sub_D": "Practise like in the exam",
+    "route_sub_E": "Check if you are ready",
+    "route_next_kicker": "Next",
+    "route_next": "The practice exams"
   },
   "redactie": {
     "meta_title": "How we make our content | Inburgering Oefenen",

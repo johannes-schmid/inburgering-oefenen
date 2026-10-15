@@ -42,6 +42,11 @@ type Props = {
    * Weglaten is de regel: de chrome is één zijbalk. Zie `LearnPanelData` in `nav.ts`.
    */
   learn?: LearnPanelData | null;
+  /**
+   * De cursusroute van de leerlaag (`CourseRoute`), als tweede glazen kolom direct naast de
+   * zijbalk. Vanaf 1024px; daaronder toont de pagina zelf haar inklapbare cursuskaart.
+   */
+  course?: ReactNode;
   isGuest?: boolean;
   children: ReactNode;
 };
@@ -66,6 +71,7 @@ export default function AppShell({
   activeGroup = null,
   menu = null,
   learn = null,
+  course = null,
   isGuest = false,
   children,
 }: Props) {
@@ -110,7 +116,7 @@ export default function AppShell({
       {/* De totale breedte van de chrome, gelezen door alles wat ernaast moet staan — de vaste
           onderbalk van de KNM-lespagina is de huidige gebruiker. Zijbalk 280 + 12 marge, plus
           het lespaneel (268 + 12) als dat er is. */}
-      <style>{`:root { --portal-chrome-w: ${learn ? '572px' : '292px'}; } @media (max-width:768px) { :root { --portal-chrome-w: 0px; } }`}</style>
+      <style>{`:root { --portal-chrome-w: ${learn ? '572px' : course ? '584px' : '292px'}; } @media (max-width:1023px) { :root { --portal-chrome-w: ${learn ? '572px' : '292px'}; } } @media (max-width:768px) { :root { --portal-chrome-w: 0px; } }`}</style>
       <div className="g-portal-bg" aria-hidden />
 
       <header id="app-mobile-header" className="g-mhead">
@@ -140,6 +146,7 @@ export default function AppShell({
           isGuest={isGuest}
         />
         {learn && <LearnPanel locale={locale} data={learn} />}
+        {!learn && course && <aside id="dash-course">{course}</aside>}
         <main id="dash-main">{children}</main>
       </div>
 

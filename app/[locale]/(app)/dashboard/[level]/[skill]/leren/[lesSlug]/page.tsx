@@ -3,7 +3,7 @@ import { notFound, redirect } from 'next/navigation';
 import { getTranslations } from 'next-intl/server';
 import { createClient } from '@/lib/supabase/server';
 import { ownsModule } from '@/lib/entitlements';
-import { getSkillAtLevel, isLevel, levelLabel, LEVELS, SKILLS } from '@/data/skills';
+import { getSkillAtLevel, isLevel, levelLabel, SKILLS } from '@/data/skills';
 import { fetchPortalMenu } from '@/lib/portal-menu';
 import { closeTrail } from '@/lib/portal-crumbs';
 import { LessonProgressScope } from '@/components/lessons/LessonProgressScope';
@@ -23,7 +23,7 @@ import LessonNarration from '@/components/lessons/LessonNarration';
 import { NarrationScope } from '@/components/lessons/NarrationScope';
 import GrammarTopicView, { type TopicPart } from '@/components/lessons/GrammarTopicView';
 import GrammarCourseSide from '@/components/lessons/GrammarCourseSide';
-import GrammarSideNav from '@/components/lessons/GrammarSideNav';
+import CourseRoute from '@/components/lessons/CourseRoute';
 import type { Category } from '@/components/horizon';
 import type { LessonItem } from '@/components/lessons/item-helpers';
 import AppShell from '../../../../../components/AppShell';
@@ -63,7 +63,6 @@ export default async function LessonPage({ params }: Props) {
   if (!skill) notFound();
 
   const t = await getTranslations('lessons');
-  const tPortal = await getTranslations('portal');
   const tSkills = await getTranslations('skills');
 
   const supabase = await createClient();
@@ -120,9 +119,8 @@ export default async function LessonPage({ params }: Props) {
     : modulePath(level, skill.slug, 'examentraining', (ownBlock?.letter ?? 'c').toLowerCase());
 
   /**
-   * De tweede kolom en de opbouw van het grammaticaonderwerp (eigenaar, 11-10): dezelfde
-   * niveau- en onderdeelkiezer, dezelfde vijf blokken, met het blok van deze les open. Daarmee
-   * vervalt het spoorpaneel in de chrome (`spoorPanel`/`grammarPanel` in `nav.ts`) voor de les.
+   * De cursusroute naast de zijbalk (eigenaar, 15-10): dezelfde vijf blokken als op het
+   * grammaticaonderwerp, met het blok van deze les open. Het niveau staat in de zijbalk.
    */
   const outline = courseOutline(blocks, grammar);
   const skillName = tSkills(`${skill.key}.name`);
@@ -132,24 +130,18 @@ export default async function LessonPage({ params }: Props) {
     grammarName: tGrammar('step_label'),
   });
   const sideNav = (
-    <GrammarSideNav
-      levels={LEVELS.map(l => ({
-        key: l,
-        label: tPortal('level_section', { level: levelLabel(l) }),
-        href: `/${locale}/dashboard/${l}/${skill.slug}`,
-        on: l === level,
-      }))}
+    <CourseRoute
+      courseLabel={`${levelLabel(level)} ${skillName}`}
+      done={outline.done}
+      total={outline.total}
       skills={SKILLS.map(s => ({
         key: s.slug,
         label: tSkills(`${s.key}.short`),
         href: `/${locale}/dashboard/${level}/${s.slug}`,
         on: s.slug === skill.slug,
       }))}
-      lessonsLabel={tGrammar('lessons_label')}
-      done={outline.done}
-      total={outline.total}
       blocks={sideBlocks}
-      labels={{ levelsAria: tGrammar('levels_aria'), skillsAria: tGrammar('skills_aria'), blocksAria: tGrammar('blocks_aria') }}
+      examsHref={`/${locale}/dashboard/${level}/${skill.slug}`}
     />
   );
 
@@ -240,11 +232,11 @@ export default async function LessonPage({ params }: Props) {
       active={skill.slug}
       activeGroup={level}
       menu={menu}
+      course={sideNav}
     >
       <div className="g-leer gl-shell">
         <div className="gt-page">
-          <div className="gt-grid">
-          <aside className="gt-side-nav">{sideNav}</aside>
+          <div className="gt-grid gt-solo">
           <div className="gt-mobile-course">
             <GrammarCourseSide
               category={skill.slug as Category}

@@ -3,7 +3,7 @@ import { notFound, redirect } from 'next/navigation';
 import { getTranslations } from 'next-intl/server';
 import { createClient } from '@/lib/supabase/server';
 import { ownsModule } from '@/lib/entitlements';
-import { getSkillAtLevel, isLevel, levelLabel, LEVELS, SKILLS } from '@/data/skills';
+import { getSkillAtLevel, isLevel, levelLabel, SKILLS } from '@/data/skills';
 import { lessonStepSoon } from '@/lib/features';
 import { grammarTopic, parseLessonRef, videoOf } from '@/data/grammar-syllabus';
 import { visualFor } from '@/data/lesson-visuals';
@@ -18,7 +18,7 @@ import { lessonStreamLabels } from '@/lib/lessons/stream-labels';
 import type { LessonItem } from '@/components/lessons/item-helpers';
 import GrammarTopicView, { type TopicPart } from '@/components/lessons/GrammarTopicView';
 import GrammarCourseSide from '@/components/lessons/GrammarCourseSide';
-import GrammarSideNav from '@/components/lessons/GrammarSideNav';
+import CourseRoute from '@/components/lessons/CourseRoute';
 import type { Category } from '@/components/horizon';
 import AppShell from '../../../../../components/AppShell';
 import '@/app/glas-leerlaag.css';
@@ -75,7 +75,6 @@ export default async function GrammarTopicPage({ params }: Props) {
 
   const t = await getTranslations('grammar');
   const tLessons = await getTranslations('lessons');
-  const tPortal = await getTranslations('portal');
   const tSkills = await getTranslations('skills');
 
   const [step, blocks, menu, streamLabels] = await Promise.all([
@@ -124,30 +123,24 @@ export default async function GrammarTopicPage({ params }: Props) {
 
   const following = step.topics[index + 1] ?? null;
 
-  /* ── de tweede kolom: niveau, onderdeel en de blokken van deze cursus ── */
-  const stepHref = (l: typeof level, s: string) =>
-    lessonStepSoon(l, 'grammatica')
-      ? `/${locale}/dashboard/${l}/${s}`
-      : `/${locale}${grammarStepPath(l, s as typeof skill.slug)}`;
+  /* ── de cursusroute naast de zijbalk: het onderdeel en de blokken van deze cursus ── */
+  const stepHref = (s: string) =>
+    lessonStepSoon(level, 'grammatica')
+      ? `/${locale}/dashboard/${level}/${s}`
+      : `/${locale}${grammarStepPath(level, s as typeof skill.slug)}`;
   const sideNav = (
-    <GrammarSideNav
-      levels={LEVELS.map(l => ({
-        key: l,
-        label: tPortal('level_section', { level: levelLabel(l) }),
-        href: stepHref(l, skill.slug),
-        on: l === level,
-      }))}
+    <CourseRoute
+      courseLabel={`${levelLabel(level)} ${skillName}`}
+      done={outline.done}
+      total={outline.total}
       skills={SKILLS.map(s => ({
         key: s.slug,
         label: tSkills(`${s.key}.short`),
-        href: stepHref(level, s.slug),
+        href: stepHref(s.slug),
         on: s.slug === skill.slug,
       }))}
-      lessonsLabel={t('lessons_label')}
-      done={outline.done}
-      total={outline.total}
       blocks={sideBlocks}
-      labels={{ levelsAria: t('levels_aria'), skillsAria: t('skills_aria'), blocksAria: t('blocks_aria') }}
+      examsHref={`/${locale}/dashboard/${level}/${skill.slug}`}
     />
   );
 
@@ -179,11 +172,11 @@ export default async function GrammarTopicPage({ params }: Props) {
       active={skill.slug}
       activeGroup={level}
       menu={menu}
+      course={sideNav}
     >
       <div className="g-leer gl-shell">
         <div className="gt-page">
-          <div className="gt-grid">
-          <aside className="gt-side-nav">{sideNav}</aside>
+          <div className="gt-grid gt-solo">
           {/* Onder de breedte van de tweede kolom blijft de inklapbare cursuskaart staan. */}
           <div className="gt-mobile-course">
             <GrammarCourseSide

@@ -841,3 +841,8 @@
 [dir="rtl"] .gl-dlg .g-mono, [dir="rtl"] .gl-dlg .ex-tier, [dir="rtl"] .gl-dlg .exq-head span {
   letter-spacing: 0; font-family: var(--font-body);
 }
+
+/* De cursusroute staat in de chrome (`#dash-course`), dus de pagina is één kolom. */
+@media (min-width: 1024px) {
+  .g-leer .gt-page .gt-grid.gt-solo { grid-template-columns: minmax(0, 1fr); }
+}

@@ -2449,7 +2449,15 @@
     "levels_aria": "Niveau",
     "skills_aria": "Onderdeel",
     "step_done": "Je hebt alle onderwerpen van blok B gedaan",
-    "step_back": "Terug naar de cursus"
+    "step_back": "Terug naar de cursus",
+    "route_kicker": "Cursus · {done} van {total}",
+    "route_sub_A": "Woordkaarten per thema",
+    "route_sub_B": "Regels voor dit examen",
+    "route_sub_C": "Zo werkt het examen",
+    "route_sub_D": "Oefenen zoals in het examen",
+    "route_sub_E": "Kijk of je klaar bent",
+    "route_next_kicker": "Daarna",
+    "route_next": "De oefenexamens"
   },
   "redactie": {
     "meta_title": "Zo maken we onze inhoud | Inburgering Oefenen",

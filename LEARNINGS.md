@@ -5751,3 +5751,9 @@ oplopende `top` per index doet het, en de `prefers-reduced-motion`-uitweg is dan
 **Outcome:** SUCCESS
 **What worked / went wrong:** Lessen worden alleen beloofd waar de leerlaag bestaat (A2, en KNM's lesmodules); B1 krijgt die regel niet, ook al zegt `/premium` "lessen" per module. Native `<dialog>` + `@starting-style` + `allow-discrete` geeft in- én uitgang zonder JS-staat. Een oneven aantal secties liet een gat; de laatste even sectie overspant nu de hele breedte.
 **Lesson:** Een featurelijst op een prijskaart per module afleiden van wat er voor die module bestaat, niet één lijst voor alles — B1 en A2 verkopen niet hetzelfde.
+
+## 2026-10-15 — Cursusroute als tweede glazen kolom naast de zijbalk
+**Changed:** `components/lessons/CourseRoute.tsx` (nieuw) vervangt `GrammarSideNav` (verwijderd) en de kolom van `WordSideNav` op de les-, regel- en woordkaartpagina; `AppShell` kreeg een `course`-slot (`#dash-course`, stijl in `app/glas-portal.css`), de pagina's zijn één kolom (`.gt-solo`); de niveaukiezer is weg.
+**Outcome:** SUCCESS
+**What worked / went wrong:** De kolom in de chrome zetten in plaats van in `.gt-page` haalt het gat tussen zijbalk en menu weg, en `courseSideBlocks` + `extras`/`count` op `SideItem` was genoeg om ook de woordthema's (live via `WORD_KNOWN_EVENT`) te tonen. Een sessie minten met `tests/helpers/session.mjs` faalt lokaal: de Auth-hook weigert wachtwoordlogins. Een magic-link via `admin/generate_link` + `/auth/v1/verify` werkt wel.
+**Lesson:** Een schermcookie voor `check-ui-auth.mjs` mint je via een magic-link-token, niet via een wachtwoord; en een tweede navigatiekolom hoort in de chrome naast de zijbalk, niet in het pagina-grid.
