@@ -31,6 +31,7 @@ export default async function LoginPage({ params, searchParams }: Props) {
 
   return (
     <AuthShell
+      live
       title="Welkom terug"
       intro="Log in om verder te gaan met je oefenexamens en je voortgang te bekijken."
       footer={

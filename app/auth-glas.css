@@ -77,10 +77,50 @@
   .auth-g-foot { font-size: 12.5px; color: var(--ink-2); text-align: center; padding: 24px 16px 28px; }
   .auth-g-on-dark .auth-g-foot { color: rgba(255, 255, 255, 0.6); }
 
+  /* Levend veld (alleen /login): de gloeden van de homepage-hero, maar feller, groter en sneller
+     (wens eigenaar 15-10). Eén oranje gloed, twee blauwe; alleen transform beweegt. De kaart is
+     sterk glas, dus de tekst blijft leesbaar (regel 06). */
+  .auth-g-orbs { position: absolute; inset: 0; z-index: -2; pointer-events: none; }
+  [dir="rtl"] .auth-g-orbs { transform: scaleX(-1); }
+  .auth-g-orbs i {
+    position: absolute; transform: translate(-50%, -50%); filter: blur(40px); will-change: transform;
+    animation: auth-orb-a 6s ease-in-out infinite alternate;
+  }
+  .auth-g-orbs i:nth-child(1) {
+    left: 82%; top: 18%; width: 80vmax; height: 80vmax;
+    background: radial-gradient(closest-side, #fe762c 0, rgba(254, 118, 44, 0.55) 35%, rgba(254, 118, 44, 0) 70%);
+  }
+  .auth-g-orbs i:nth-child(2) {
+    left: 14%; top: 78%; width: 90vmax; height: 90vmax;
+    background: radial-gradient(closest-side, #3d64d0 0, rgba(61, 100, 208, 0.5) 40%, rgba(61, 100, 208, 0) 70%);
+    animation-name: auth-orb-b; animation-duration: 8s; animation-delay: -3s;
+  }
+  .auth-g-orbs i:nth-child(3) {
+    left: 50%; top: 50%; width: 60vmax; height: 60vmax;
+    background: radial-gradient(closest-side, #7f9ce6 0, rgba(127, 156, 230, 0) 70%);
+    animation-name: auth-orb-c; animation-duration: 7s; animation-delay: -5s;
+  }
+  @keyframes auth-orb-a {
+    0% { transform: translate(-50%, -50%) scale(1); }
+    50% { transform: translate(-85%, -20%) scale(1.25); }
+    100% { transform: translate(-30%, -70%) scale(0.85); }
+  }
+  @keyframes auth-orb-b {
+    0% { transform: translate(-50%, -50%) scale(1); }
+    50% { transform: translate(-15%, -80%) scale(0.85); }
+    100% { transform: translate(-75%, -35%) scale(1.2); }
+  }
+  @keyframes auth-orb-c {
+    0% { transform: translate(-50%, -50%) scale(0.9); }
+    50% { transform: translate(-20%, -30%) scale(1.3); }
+    100% { transform: translate(-80%, -65%) scale(1); }
+  }
+
   /* Toestemming (OAuth): de twee keuzes naast elkaar, als pill. */
   .auth-g-who { border-radius: var(--r-md); background: var(--mist); padding: 16px; font-size: 14px; line-height: 1.6; }
 }
 
 @media (prefers-reduced-motion: reduce) {
   .auth-g-google, .auth-g-box, .auth-g-note a, .auth-g-link { transition: none; }
+  .auth-g-orbs i { animation: none; will-change: auto; }
 }

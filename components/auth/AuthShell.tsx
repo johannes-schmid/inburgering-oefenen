@@ -18,15 +18,18 @@ export default function AuthShell({
   children,
   footer,
   showHeaderCta = true,
+  live = false,
 }: {
   title: string;
   intro: string;
   children: ReactNode;
   footer?: ReactNode;
   showHeaderCta?: boolean;
+  live?: boolean;
 }) {
   return (
     <Field variant="licht" className="auth-g-page">
+      {live && <span className="auth-g-orbs" aria-hidden="true"><i /><i /><i /></span>}
       <header className="g-wrap w-full flex items-center justify-between gap-4 py-5">
         <Link href="/" className="auth-g-brand">
           <LogoMark size={32} />

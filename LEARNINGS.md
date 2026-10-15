@@ -5631,3 +5631,9 @@ oplopende `top` per index doet het, en de `prefers-reduced-motion`-uitweg is dan
 **Outcome:** SUCCESS (tsc, 704 unit-tests, next build, detector schoon, schermafdrukken 390/1440 en /ar, 308 en `index, follow` met curl gecontroleerd)
 **What worked / went wrong:** De eigenaar had in een eerdere sessie gevraagd B de standaard te maken, maar dat is nooit gebeurd — B stond alleen op `/home-b` en `/` liet A zien. Het portret in "Onze belofte" was leeg in `check-ui.mjs`, maar in Playwright laadt het gewoon (naturalWidth 480): een artefact van de harness. Met A verdween ook de kennisbankrij, en daarmee de interne links van de homepage naar de gidsen.
 **Lesson:** Een variant "ter beoordeling" op een eigen route promoveren is een eigen stap met een eigen commit; leg het besluit vast in LEARNINGS zodra de eigenaar het neemt, anders verdampt het bij een `/clear`. `grep` is hier ugrep: zet `--include` vóór de paden en nooit na `--`.
+
+## 2026-10-15 — /login: levend veld met snellere gloeden
+**Changed:** `AuthShell` kreeg een `live`-prop die drie gloeden (`.auth-g-orbs` in `app/auth-glas.css`) achter het veld zet; alleen `/login` zet hem aan.
+**Outcome:** SUCCESS
+**What worked / went wrong:** Zelfde opzet als de homepage-hero (`.g-hero-orbs`: geblurde radial-gradients, alleen transform), maar 6–8s in plaats van 11–14s, ±35% baan en schaal 0,85–1,3. De bollen staan op z-index -2 ná `::before` in de DOM, dus ze liggen boven de veldkleur en onder de korrel.
+**Lesson:** Een sterkere variant van een bestaande animatie hoort als eigen klasse in de stylesheet van dat oppervlak, niet als override van de hero-klassen — dan blijft de homepage ongemoeid.
