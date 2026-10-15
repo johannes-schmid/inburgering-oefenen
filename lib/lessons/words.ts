@@ -47,7 +47,8 @@ export type LessonWord = {
   /** De betekenis in eenvoudig Nederlands — van de docent. */
   meaningNl: string;
   example: string | null;
-  usage: 'receptief' | 'productief';
+  /** Null bij een KNM-woordkaart: die kaarten hebben geen leerdoel per woord. */
+  usage: 'receptief' | 'productief' | null;
   /**
    * De foto, of null. Zelfde rol als op een KNM-kaart: de voorkant is dan het beeld plus het
    * woord in plaats van alleen het woord.

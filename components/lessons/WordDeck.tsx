@@ -67,6 +67,7 @@ export default function WordDeck({
   backHref,
   embedded = false,
   lessonId,
+  store = 'lesson',
 }: {
   words: LessonWord[];
   userId: string | null;
@@ -74,6 +75,11 @@ export default function WordDeck({
   embedded?: boolean;
   /** De les waar deze deck in staat: die is af zodra elk woord gekend is. */
   lessonId?: number;
+  /**
+   * Waar de voortgang heen gaat. `knm` is `user_word_card_progress` (de 366 KNM-kaarten), die
+   * alleen `known` kent: "Nog leren" wordt daar `known: false`.
+   */
+  store?: 'lesson' | 'knm';
 }) {
   const t = useTranslations('portal');
 
@@ -126,18 +132,28 @@ export default function WordDeck({
       setStatuses(prev => ({ ...prev, [wordId]: status }));
       if (!userId) return;
       try {
-        await createClient()
-          .from('user_lesson_word_progress')
-          .upsert(
-            { user_id: userId, lesson_word_id: wordId, status, updated_at: new Date().toISOString() },
-            { onConflict: 'user_id,lesson_word_id' },
-          );
+        const updated_at = new Date().toISOString();
+        if (store === 'knm') {
+          await createClient()
+            .from('user_word_card_progress')
+            .upsert(
+              { user_id: userId, word_card_id: wordId, known: status === 'known', updated_at },
+              { onConflict: 'user_id,word_card_id' },
+            );
+        } else {
+          await createClient()
+            .from('user_lesson_word_progress')
+            .upsert(
+              { user_id: userId, lesson_word_id: wordId, status, updated_at },
+              { onConflict: 'user_id,lesson_word_id' },
+            );
+        }
       } catch {
         /* Een mislukte opslag mag de deck niet stilzetten: de markering staat al in de state en
            de volgende kaart komt. Stil falen is hier beter dan een foutmelding over een tabel. */
       }
     },
-    [userId],
+    [userId, store],
   );
 
   const next = useCallback(() => {
@@ -268,7 +284,7 @@ export default function WordDeck({
             <span className="wd-face" aria-hidden={flipped} inert={flipped}>
               <span className="wd-chips">
                 {card.article && <span className="wd-chip wd-chip-art">{card.article}</span>}
-                <span className={`wd-chip wd-${card.usage}`}>{t(`wd_usage_${card.usage}`)}</span>
+                {card.usage && <span className={`wd-chip wd-${card.usage}`}>{t(`wd_usage_${card.usage}`)}</span>}
               </span>
 
               <span className="wd-word" lang="nl">{card.dutch}</span>
