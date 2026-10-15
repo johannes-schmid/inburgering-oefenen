@@ -690,3 +690,7 @@ a.g-sq:focus-visible { outline: none; box-shadow: var(--glas-focus); }
   a.g-mod:hover { transform: none; }
   .g-spin { animation: none; }
 }
+
+/* De stat-tegel in de zijkolom van het dashboard: de afronding en de rand van de widgets ernaast. */
+.g-wid-stat { border-radius: var(--r-xl); box-shadow: var(--glas-rand); min-height: 0; }
+.g-wid-note { margin: 0; font-size: 13.5px; color: var(--ink-2); line-height: 1.5; }

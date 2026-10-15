@@ -5727,3 +5727,9 @@ oplopende `top` per index doet het, en de `prefers-reduced-motion`-uitweg is dan
 **Outcome:** SUCCESS (tsc, 704 unit-tests, next build, eslint schoon, detector schoon, Playwright 390 nl + ar op vijf pagina's)
 **What worked / went wrong:** Na het weghalen van "Uitbreiden" stond er voor een gratis gebruiker alleen "Overzicht" in de balk. Het label "A2" onder een tegel waar A2 al op staat zei niets; "Niveau A2" past bij de zijbalk.
 **Lesson:** Een tab die een module benoemt draagt het trackmerk, niet het categoriemerk — dezelfde regel als in de zijbalk.
+
+## 2026-10-15 — Dashboard: de termijn-widget wordt de gemiddelde score
+**Changed:** de widget rechtsboven op `/dashboard` is nu de bestaande `StatTile` (gemiddelde score, delta, lijn) in `app/[locale]/(app)/dashboard/page.tsx`, gevoed door het nieuwe `fetchScoreTrend()` in `lib/portal-progress.ts`; `.g-wid-stat` in `app/glas-portal.css`; drie `ov_avg_*`-sleutels in nl/en/ar.
+**Outcome:** SUCCESS
+**What worked / went wrong:** `StatTile` stond in de kit maar werd nergens gebruikt; alleen de afronding en rand moesten op die van `.g-wid` ernaast. De delta (groene pill) verschijnt alleen bij een stijging — de kit heeft geen neutrale variant, en een daling in groen zou liegen. Screenshot-sessie weer via `app_metadata.reviewer = true` op een wegwerpaccount, daarna verwijderd.
+**Lesson:** Kijk in `components/glas/` vóór je een widget bouwt: de kit heeft er vaak al een die alleen nog data nodig heeft.

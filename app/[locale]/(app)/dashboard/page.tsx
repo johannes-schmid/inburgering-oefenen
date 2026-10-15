@@ -1,19 +1,17 @@
 import type { Metadata } from 'next';
 import { getTranslations } from 'next-intl/server';
-import { UserPlus } from 'lucide-react';
+import { ChartLine, UserPlus } from 'lucide-react';
 import { createClient } from '@/lib/supabase/server';
 import { ownsKnm, ownsModule, ownsOna } from '@/lib/entitlements';
 import { isOnaAvailable } from '@/lib/ona/access';
 import { fetchOnaState } from '@/lib/ona/server';
 import { cardProgress } from '@/lib/ona/rules';
 import { ONA_CARDS, ONA_CARD_COUNT } from '@/data/ona/cards';
-import { emptyLevelledProgress, fetchPortalProgress } from '@/lib/portal-progress';
+import { emptyLevelledProgress, fetchPortalProgress, fetchScoreTrend } from '@/lib/portal-progress';
 import { KNM, LEVELS, SKILLS, isFreeExamOf, isSkillSlug, levelLabel, skillsAtLevel } from '@/data/skills';
 import { euro, MODULE_PRICE_CENTS, totalExamsForLevel } from '@/lib/pricing';
 import { fetchNextLessons, fetchResume, fetchWeek } from '@/lib/lessons/lessons-server';
-import { fetchTraject } from '@/lib/portal-traject';
-import { localeHref } from '@/i18n/paths';
-import { ExamMark } from '@/components/glas';
+import { ExamMark, StatTile } from '@/components/glas';
 import AppShell from '../components/AppShell';
 import GlasModuleCard from './_components/GlasModuleCard';
 import { fetchPortalMenu } from '@/lib/portal-menu';
@@ -25,7 +23,7 @@ export const metadata: Metadata = {
 
 /**
  * Het portaaloverzicht, in Glas (DESIGN_SYSTEM §G5, glas.html §09 "Dashboard"): **de begroeting,
- * de vier modules als kaarten en twee widgets — je termijn en deze week. Niets anders.**
+ * de vier modules als kaarten en twee widgets — je gemiddelde score en deze week. Niets anders.**
  *
  * Elke kaart draagt één regel over waar je bent en één knop. Alleen de module waar je het laatst
  * was krijgt de oranje knop. De cijfers en de leerroute staan een klik dieper, op de
@@ -35,8 +33,7 @@ export const metadata: Metadata = {
  * les die je opende, anders de eerste die van jou is. Geen score stuurt hier iets.
  *
  * **Elk getal hier is een telling, geen voorspelling**: oefenexamens gedaan, lessen deze week af,
- * en de termijn alleen zoals de kandidaat hem zelf heeft laten uitrekenen (`fetchTraject`).
- * Zonder tijdlijn staat er geen datum, maar een uitnodiging om hem te maken.
+ * en het gemiddelde van je examenscores (`fetchScoreTrend`) — wat je haalde, geen slaagkans.
  */
 export default async function DashboardPage({ params }: { params: Promise<{ locale: string }> }) {
   const { locale } = await params;
@@ -54,13 +51,13 @@ export default async function DashboardPage({ params }: { params: Promise<{ loca
   const meta = user?.user_metadata ?? {};
 
   const onaLive = isOnaAvailable();
-  const [progress, menu, resume, nextLessons, week, traject, onaState] = await Promise.all([
+  const [progress, menu, resume, nextLessons, week, scores, onaState] = await Promise.all([
     user ? fetchPortalProgress(user.id) : Promise.resolve(emptyLevelledProgress()),
     fetchPortalMenu(),
     user ? fetchResume(user.id) : Promise.resolve(null),
     fetchNextLessons(user?.id ?? null),
     fetchWeek(user?.id ?? null),
-    user ? fetchTraject(user.email, locale) : Promise.resolve(null),
+    user ? fetchScoreTrend(user.id) : Promise.resolve(null),
     onaLive ? fetchOnaState(user?.id ?? null) : Promise.resolve(null),
   ]);
 
@@ -266,28 +263,20 @@ export default async function DashboardPage({ params }: { params: Promise<{ loca
           </div>
 
           <aside>
-            {/* Je termijn: alleen uit de tijdlijn die je zelf hebt laten mailen. */}
-            <section className="g-wid" aria-labelledby="wid-term">
-              <span className="g-mono" id="wid-term">{t('ov_term_head')}</span>
-              {traject && (traject.registerBy || traject.termijnEnd) ? (
-                <>
-                  <div className="g-wid-big g-wid-word">{traject.registerBy ?? traject.termijnEnd}</div>
-                  <p>
-                    {traject.registerBy ? t('glas.term_register') : null}
-                    {traject.registerBy && traject.termijnEnd ? <br /> : null}
-                    {traject.termijnEnd ? t('glas.term_end', { date: traject.termijnEnd }) : null}
-                  </p>
-                </>
-              ) : (
-                <>
-                  <div className="g-wid-big g-wid-word">{t('ov_term_none')}</div>
-                  <p>{t('next_deadline_body')}</p>
-                  <a href={localeHref(locale, 'inburgering/tools/tijdlijn')} className="g-tlink">
-                    {t('ov_term_cta_make')}
-                  </a>
-                </>
-              )}
-            </section>
+            <StatTile
+              className="g-wid-stat"
+              icon={<ChartLine />}
+              label={t('ov_avg_head')}
+              value={scores?.averagePct ?? '—'}
+              unit={scores?.averagePct != null ? '%' : undefined}
+              delta={scores?.delta ? `+${scores.delta}` : undefined}
+              viz={scores && scores.points.length > 1
+                ? <ScoreSpark points={scores.points} />
+                : !scores?.count ? <p className="g-wid-note">{t('ov_avg_none')}</p> : undefined}
+            />
+            {scores?.averagePct != null && (
+              <p className="sr-only">{t('ov_avg_sr', { pct: scores.averagePct, n: scores.count })}</p>
+            )}
 
             <section className="g-wid" aria-labelledby="wid-week">
               <span className="g-mono" id="wid-week">{t('ov_week_head')}</span>
@@ -311,5 +300,35 @@ export default async function DashboardPage({ params }: { params: Promise<{ loca
         </div>
       </div>
     </AppShell>
+  );
+}
+
+/** De lijn onder de gemiddelde score: de laatste scores, geschaald op hun eigen bereik. */
+function ScoreSpark({ points }: { points: number[] }) {
+  const min = Math.min(...points);
+  const span = Math.max(1, Math.max(...points) - min);
+  const step = 200 / (points.length - 1);
+  const line = points
+    .map((p, i) => `${i ? 'L' : 'M'}${Math.round(i * step)} ${Math.round(34 - ((p - min) / span) * 26)}`)
+    .join(' ');
+  return (
+    <svg width="100%" height="40" viewBox="0 0 200 40" preserveAspectRatio="none" aria-hidden="true">
+      <defs>
+        <linearGradient id="g-spark-avg" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0" stopColor="#002b6d" stopOpacity=".16" />
+          <stop offset="1" stopColor="#002b6d" stopOpacity="0" />
+        </linearGradient>
+      </defs>
+      <path d={`${line} L200 40 L0 40Z`} fill="url(#g-spark-avg)" />
+      <path
+        d={line}
+        fill="none"
+        stroke="#002b6d"
+        strokeWidth="2.5"
+        strokeLinejoin="round"
+        strokeLinecap="round"
+        vectorEffect="non-scaling-stroke"
+      />
+    </svg>
   );
 }
