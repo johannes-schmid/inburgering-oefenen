@@ -15,13 +15,12 @@ import { spoorPath } from '@/lib/lessons/sporen';
 import { skillTrail } from '@/lib/portal-crumbs';
 import { fetchGrammarStep } from '@/lib/lessons/grammar-server';
 import { grammarStepPath } from '@/lib/lessons/grammar';
-import { euro, MODULE_PRICE_CENTS } from '@/lib/pricing';
 import { fetchPortalMenu } from '@/lib/portal-menu';
 import PortalCrumbs from '../../../components/PortalCrumbs';
 import AppShell from '../../../components/AppShell';
 import { buildExamSlots } from '../../_components/exam-slots';
 import {
-  ExamLane, Lanes, LearnLane, SkillHead, UnlockCard, WeaknessCard, passChanceLevel, type LearnRow,
+  ExamLane, Lanes, LearnLane, SkillHead, WeaknessCard, passChanceLevel, type LearnRow,
 } from '../../_components/GlasSkill';
 
 type Props = { params: Promise<{ locale: string; level: string; skill: string }> };
@@ -40,12 +39,20 @@ const KIND_OF_BLOCK = {
   E: 'strategie',
 } as const;
 const LETTERS = ['A', 'B', 'C', 'D', 'E'] as const;
+/** Het merk per blok: elke module een eigen icoon in plaats van een letter. */
+const MARK_OF_BLOCK = {
+  A: 'woorden',
+  B: 'taalregels',
+  C: 'uitleg',
+  D: 'training',
+  E: 'toets',
+} as const;
 
 /**
  * De onderdeelpagina, in Glas: **"S1 · twee banen"** (DESIGN_SYSTEM §G5, glas.html §09b).
  *
- * Kop met de grote slaagkanskaart; daaronder *1 Leren* (de blokken A–E) → *2 Oefenexamens* (tien
- * vierkantjes en één oranje kaart om te ontgrendelen). Daaronder, als er iets te zeggen valt,
+ * Kop met de grote slaagkanskaart; daaronder naast elkaar *Leren* (de blokken A–E als modules) en
+ * *Oefenexamens* (alle tien als rijen, één knop per rij). Daaronder, als er iets te zeggen valt,
  * waar je punten laat liggen.
  *
  * **Blok B is hier "Taalregels", niet de eigen naam van het blok.** De taalregels van een examen
@@ -102,6 +109,8 @@ export default async function SkillExamsPage({ params }: Props) {
   /* ── 1 Leren: de blokken A–E ─────────────────────────────────────────────────────────── */
   const next = nextLesson(blocks);
   const byLetter = new Map(blocks.map(b => [b.letter, b]));
+  /** Alle lessen samen, voor de regel onder "Leren". */
+  const lessons = { done: 0, total: 0 };
   const learnRows: LearnRow[] = LETTERS.flatMap(letter => {
     const block = byLetter.get(letter);
     const isRules = letter === 'B';
@@ -110,6 +119,8 @@ export default async function SkillExamsPage({ params }: Props) {
     const tally = isRules
       ? { done: grammar.done, total: grammar.total }
       : blockProgress(block!);
+    lessons.done += tally.done;
+    lessons.total += tally.total;
     const soon = lessonStepSoon(level, KIND_OF_BLOCK[letter]);
     /* `withOrder()` zet `is_free` op de eerste les van A, B en C: dat is de etalage. */
     const free = block?.lessons.some(l => l.is_free) ?? false;
@@ -147,15 +158,20 @@ export default async function SkillExamsPage({ params }: Props) {
 
     return [{
       key: letter,
-      letter,
+      mark: MARK_OF_BLOCK[letter],
       title: isRules ? t('leerroute_grammatica_title') : block!.name_nl,
       sub,
       count: tally.total > 0 ? `${tally.done}/${tally.total}` : null,
+      progress: tally.total > 0 ? tally.done / tally.total : null,
       href: state === 'soon' ? null : `/${locale}${continueHref}`,
       state,
     }];
   });
   const allSoon = learnRows.length > 0 && learnRows.every(r => r.state === 'soon');
+  const learnSub = [
+    lessons.total > 0 ? t('glas.learn_lessons', lessons) : null,
+    t('glas.learn_modules', { n: learnRows.length }),
+  ].filter(Boolean).join(' · ');
 
   /* ── 2 Oefenexamens ──────────────────────────────────────────────────────────────────── */
   const { cards, factLine } = await buildExamSlots({
@@ -165,31 +181,7 @@ export default async function SkillExamsPage({ params }: Props) {
     Array.from({ length: skill.examCount }, (_, i) => i + 1).filter(n => isFreeExamOf(level, n)),
   );
   const skillName = tSkills(`${skill.key}.name`);
-  const moduleName = `${skillName} ${levelLabel(level)}`;
-
-  /* De ene oranje kaart: voor een gast het account, voor wie het onderdeel niet heeft de
-     module. Wie hem heeft, krijgt hier niets — het donkere vierkantje wijst al het volgende
-     examen aan. */
-  const upsell = isGuest
-    ? (
-      <UnlockCard
-        title={t('guest_upsell_title')}
-        sub={t('guest_upsell_body')}
-        cta={t('guest_create_account')}
-        href={`/${locale}/register?next=/dashboard/${level}/${skill.slug}`}
-      />
-    )
-    : !ownsThisSkill && pub.size > 0
-      ? (
-        <UnlockCard
-          title={t('glas.unlock_title')}
-          sub={t('glas.unlock_sub', { module: moduleName, price: euro(MODULE_PRICE_CENTS) })}
-          cta={t('glas.unlock_cta', { skill: skillName })}
-          href={`/${locale}/dashboard/pakketten?onderdeel=${level}:${skill.slug}&vanaf=onderdeel`}
-        />
-      )
-      : null;
-
+  
   const examsSub = [
     t('exams_made', { done: p.examsDone, total: skill.examCount }),
     p.averagePct != null ? t('card_average', { pct: p.averagePct }) : null,
@@ -235,7 +227,7 @@ export default async function SkillExamsPage({ params }: Props) {
           <Lanes>
             <LearnLane
               title={t('mod_learn')}
-              sub={t('leerroute_sub')}
+              sub={learnSub}
               rows={learnRows}
               empty={allSoon ? t('leerroute_soon') : t('leerroute_empty')}
               continueLabel={t('mod_continue')}
@@ -246,14 +238,9 @@ export default async function SkillExamsPage({ params }: Props) {
               cards={cards}
               freeNumbers={freeNumbers}
               owns={ownsThisSkill}
+              isGuest={isGuest}
+              factLine={factLine}
               allHref={`/${locale}/dashboard/${level}/${skill.slug}/oefenexamens`}
-              allLabel={t('exams_all')}
-              labels={{
-                free: t('glas.free'),
-                now: t('exams_now'),
-                slot: (n, state) => `${t('exam_row_title', { number: n })} · ${state}`,
-              }}
-              upsell={upsell}
             />
           </Lanes>
 

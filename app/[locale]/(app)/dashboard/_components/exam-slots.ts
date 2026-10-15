@@ -25,6 +25,10 @@ export type ExamCardView = {
   title: string;
   href: string | null;
   isNext: boolean;
+  /** Afgeronde pogingen; 0 = nooit gemaakt. */
+  attempts: number;
+  /** Beste score, of `null` als er niets gescoord is. */
+  pct: number | null;
 };
 
 export async function buildExamSlots({
@@ -101,6 +105,8 @@ export async function buildExamSlots({
       title: t('exam_card_title', { number: String(s.n).padStart(2, '0') }),
       href: s.href,
       isNext,
+      attempts: s.done?.attempts ?? 0,
+      pct: s.done?.bestPct ?? null,
     };
   });
 

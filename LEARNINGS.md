@@ -5733,3 +5733,9 @@ oplopende `top` per index doet het, en de `prefers-reduced-motion`-uitweg is dan
 **Outcome:** SUCCESS
 **What worked / went wrong:** `StatTile` stond in de kit maar werd nergens gebruikt; alleen de afronding en rand moesten op die van `.g-wid` ernaast. De delta (groene pill) verschijnt alleen bij een stijging — de kit heeft geen neutrale variant, en een daling in groen zou liegen. Screenshot-sessie weer via `app_metadata.reviewer = true` op een wegwerpaccount, daarna verwijderd.
 **Lesson:** Kijk in `components/glas/` vóór je een widget bouwt: de kit heeft er vaak al een die alleen nog data nodig heeft.
+
+## 2026-10-15 — Onderdeelpagina: variant E (examens als rijen, modules met merk)
+**Changed:** `dashboard/_components/GlasSkill.tsx` (`Lanes` zonder pijl, `LearnLane` met merk + balk, `ExamLane` als tien rijen met één knop, `UnlockCard` weg), `exam-slots.ts` (+`attempts`, `pct`), de onderdeel- en KNM-pagina, `CategoryMark` (+`leren` `oefenexamens` `uitleg` `training` `toets`), `glas-portal.css` (`.g-xr*` in plaats van `.g-sq*`/`.g-upsell`/`.g-then`), `portal.glas.*` in nl/en/ar.
+**Outcome:** SUCCESS
+**What worked / went wrong:** Eerst vijf varianten als losse HTML-mockup in de scratchpad, pas na de keuze van de eigenaar in de app. Alle tien examens staan er altijd, ook ongepubliceerde (eigenaar: "laat zien dat ze er allemaal zijn"). Het examenmerk staat als watermerk achter het nummer; op 58% van een 46px-tegel was het onzichtbaar, pas met een `bare`-merk van 68px op 12% dekking leest het. Lokale testaccounts met een wachtwoord worden door `hook_reviewer_claims` geweigerd tot `app_metadata.reviewer = true` (alleen lokaal zetten).
+**Lesson:** "N van 25 goed" kan niet uit `ExamProgress` (alleen `bestPct`, en bij Schrijven/Spreken bestaat "goed" niet) — toon pogingen, nooit een teruggerekend aantal.

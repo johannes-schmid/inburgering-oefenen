@@ -7,12 +7,11 @@ import { FEATURES } from '@/lib/features';
 import { KNM, KNM_THEMES, isFreeExamOf } from '@/data/skills';
 import { KNM_WOORDKAARTEN } from '@/data/woordkaarten';
 import { calculateSlaagkans } from '@/lib/exam-readiness';
-import { euro, MODULE_PRICE_CENTS } from '@/lib/pricing';
 import AppShell from '../../components/AppShell';
 import PortalCrumbs from '../../components/PortalCrumbs';
 import { buildExamSlots } from '../_components/exam-slots';
 import {
-  ExamLane, Lanes, LearnLane, SkillHead, UnlockCard, WeaknessCard, passChanceLevel, type LearnRow,
+  ExamLane, Lanes, LearnLane, SkillHead, WeaknessCard, passChanceLevel, type LearnRow,
 } from '../_components/GlasSkill';
 import { fetchPortalMenu } from '@/lib/portal-menu';
 import { fetchKnmThemeWeakness } from '@/lib/vaardigheden-server';
@@ -75,24 +74,25 @@ export default async function KnmExamsPage({ params }: Props) {
   const kansLevel = passChanceLevel(examScores.length, kans.band);
 
   /** De leerbaan van KNM: woorden, dan de thema's. Alleen wat aanstaat komt in de rij. */
-  const steps: { done: number; total: number; title: string; href: string }[] = [
+  const steps: { done: number; total: number; title: string; href: string; mark: LearnRow['mark'] }[] = [
     ...(FEATURES.woordkaarten
-      ? [{ done: wordsKnown, total: WORD_TOTAL, title: tKnm('woorden_title'), href: `/${locale}/dashboard/woordkaarten` }]
+      ? [{ done: wordsKnown, total: WORD_TOTAL, title: tKnm('woorden_title'), href: `/${locale}/dashboard/woordkaarten`, mark: 'woorden' as const }]
       : []),
     ...(FEATURES.leren
-      ? [{ done: themesDone, total: KNM_THEMES.length, title: tKnm('leren_title'), href: `/${locale}/leren` }]
+      ? [{ done: themesDone, total: KNM_THEMES.length, title: tKnm('leren_title'), href: `/${locale}/leren`, mark: 'leren' as const }]
       : []),
   ];
-  const learnRows: LearnRow[] = steps.map((s, i) => {
+  const learnRows: LearnRow[] = steps.map(s => {
     const complete = s.total > 0 && s.done >= s.total;
     return {
       key: s.href,
-      letter: String.fromCharCode(65 + i),
+      mark: s.mark,
       title: s.title,
       sub: complete
         ? t('glas.block_done')
         : s.done === 0 ? t('glas.block_not_started') : `${Math.round((s.done / s.total) * 100)}%`,
       count: `${s.done}/${s.total}`,
+      progress: s.total > 0 ? s.done / s.total : null,
       href: s.href,
       state: complete ? 'd' : 'open',
     };
@@ -104,26 +104,6 @@ export default async function KnmExamsPage({ params }: Props) {
   const freeNumbers = new Set(
     Array.from({ length: KNM.examCount }, (_, i) => i + 1).filter(n => isFreeExamOf(null, n)),
   );
-
-  const upsell = isGuest
-    ? (
-      <UnlockCard
-        title={t('guest_upsell_title')}
-        sub={t('guest_upsell_body')}
-        cta={t('guest_create_account')}
-        href={`/${locale}/register?next=/dashboard/knm`}
-      />
-    )
-    : !owns && pub.size > 0
-      ? (
-        <UnlockCard
-          title={t('glas.unlock_title')}
-          sub={t('glas.unlock_sub', { module: tSkills('knm.name'), price: euro(MODULE_PRICE_CENTS) })}
-          cta={t('glas.unlock_cta', { skill: tSkills('knm.name') })}
-          href={`/${locale}/dashboard/pakketten?onderdeel=knm&vanaf=onderdeel`}
-        />
-      )
-      : null;
 
   const examsSub = [
     t('exams_made', { done: p.examsDone, total: KNM.examCount }),
@@ -170,7 +150,7 @@ export default async function KnmExamsPage({ params }: Props) {
           <Lanes>
             <LearnLane
               title={t('mod_learn')}
-              sub={t('leerroute_sub')}
+              sub={t('glas.learn_modules', { n: learnRows.length })}
               rows={learnRows}
               empty={t('leerroute_empty')}
               continueLabel={t('mod_continue')}
@@ -181,15 +161,10 @@ export default async function KnmExamsPage({ params }: Props) {
               cards={cards}
               freeNumbers={freeNumbers}
               owns={owns}
+              isGuest={isGuest}
+              factLine={factLine}
               /* KNM heeft geen los overzicht van zijn tien examens — deze baan ís het. */
               allHref={null}
-              allLabel={t('exams_all')}
-              labels={{
-                free: t('glas.free'),
-                now: t('exams_now'),
-                slot: (n, state) => `${t('exam_row_title', { number: n })} · ${state}`,
-              }}
-              upsell={upsell}
             />
           </Lanes>
 

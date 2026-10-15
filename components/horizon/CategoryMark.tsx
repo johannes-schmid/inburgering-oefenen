@@ -13,6 +13,11 @@ import { ExamIcon } from '@phosphor-icons/react/dist/ssr/Exam';
 import { HouseLineIcon } from '@phosphor-icons/react/dist/ssr/HouseLine';
 import { FirstAidIcon } from '@phosphor-icons/react/dist/ssr/FirstAid';
 import { BriefcaseIcon } from '@phosphor-icons/react/dist/ssr/Briefcase';
+import { GraduationCapIcon } from '@phosphor-icons/react/dist/ssr/GraduationCap';
+import { ClipboardTextIcon } from '@phosphor-icons/react/dist/ssr/ClipboardText';
+import { LightbulbIcon } from '@phosphor-icons/react/dist/ssr/Lightbulb';
+import { TargetIcon } from '@phosphor-icons/react/dist/ssr/Target';
+import { CheckSquareOffsetIcon } from '@phosphor-icons/react/dist/ssr/CheckSquareOffset';
 import { cn } from '@/lib/utils';
 
 /**
@@ -25,8 +30,12 @@ import { cn } from '@/lib/utils';
  *
  * **Dit is de enige plek waar Phosphor de app in komt.** Zet nooit een losse Phosphor-glyph in een
  * pagina: die mist de tegel, en zonder tegel is het geen merk maar een tweede iconenset. Geïmporteerd
- * per icoon uit `dist/ssr`, zodat dit een servercomponent blijft en de bundel alleen deze dertien
+ * per icoon uit `dist/ssr`, zodat dit een servercomponent blijft en de bundel alleen deze
  * glyphs bevat.
+ *
+ * De onderdeelpagina voegt er vijf toe: `leren` en `oefenexamens` voor de twee banen, en
+ * `uitleg`, `training` en `toets` voor de blokken C–E, zodat elke module een eigen merk heeft in
+ * plaats van een letter.
  *
  * De mapping ligt vast in §G4. `taalregels` en `examen` zijn de Glas-namen; `grammatica` en
  * `examentraining` blijven als aliassen bestaan omdat ze op `ConceptKind` in
@@ -38,6 +47,7 @@ export type Category =
   | 'knm' | 'gidsen' | 'ona'
   | 'wonen' | 'gezondheid' | 'werk'
   | 'woorden' | 'taalregels' | 'examen'
+  | 'leren' | 'oefenexamens' | 'uitleg' | 'training' | 'toets'
   /** Aliassen van `taalregels` en `examen`, voor de leerroute-as (`ConceptKind`). */
   | 'grammatica' | 'examentraining';
 
@@ -57,6 +67,11 @@ const ICONS: Record<Category, ComponentType<IconProps>> = {
   wonen: HouseLineIcon,
   gezondheid: FirstAidIcon,
   werk: BriefcaseIcon,
+  leren: GraduationCapIcon,
+  oefenexamens: ClipboardTextIcon,
+  uitleg: LightbulbIcon,
+  training: TargetIcon,
+  toets: CheckSquareOffsetIcon,
 };
 
 type Props = {
