@@ -5601,3 +5601,27 @@ oplopende `top` per index doet het, en de `prefers-reduced-motion`-uitweg is dan
 **Outcome:** SUCCESS (tsc, 704 unit-tests, next build, detector schoon, PDF's nl/en/ar gecontroleerd)
 **What worked / went wrong:** Lightning CSS (Turbopack) weigert `@page { @bottom-left, @bottom-right { … } }` en breekt dan de hele route met een 500; de `@page`-regels staan nu inline in een `<style>`. `break-inside: avoid` op `.guide-step` liet halve pagina's leeg — een stap mag nu breken, alleen kop en nummer blijven bij elkaar. De korrel (`mix-blend-mode: overlay`) op de omslag maakte de PDF 4,5 MB; in print uit gaf 1,5 MB.
 **Lesson:** Margevakken van `@page` horen niet in een gebundeld CSS-bestand. In een PDF is elke mengmodus of blur een gerasterd vlak: zet hem in print uit. Houd in print alleen kleine blokken bijeen, nooit een blok dat langer kan zijn dan een halve pagina.
+
+## 2026-10-15 — /premium als configurator (Calendly/Zaro) met telefoon-carrousel (Superpower)
+**Changed:** `app/[locale]/(main)/premium/page.tsx` herschreven; nieuw `premium/PlanBuilder.tsx` (kaarten Gratis · Taal A2 · Taal B1 met aanvinkbare onderdelen, KNM/ONA als schakelaars "Los erbij", plakkende totaalbalk op Nacht, alle bedragen via `priceForSelection`) en `premium/WhatYouGet.tsx` (telefoon met vijf schermen, voortgangsstreepjes, lijst ernaast); `g-pb-*`/`g-wyg-*` vervangen de oude `g-pm-*`-kaarten in `app/glas-public-info.css`; namespace `premium_page` vernieuwd in nl/en/ar; `/dashboard/pakketten` leest `?kies=` en vinkt die modules aan (gefilterd op te koop en niet al van jou).
+**Outcome:** SUCCESS (tsc, 704 unit-tests, next build, detector schoon, schermafdrukken 390/1440, /ar, aangeklikte staat)
+**What worked / went wrong:** `/register?module=…` werd nergens gelezen — een keuze op /premium ging bij het aanmelden verloren; nu reist hij mee als `next=/…/dashboard/pakketten?kies=…`. De totaalbalk plakte niet: `.g-field` heeft `overflow: hidden` en is daardoor een scrollcontainer; `overflow: clip` op dit ene veld lost het op. De autoplay hangt aan `animationend` van het voortgangsstreepje, zodat pauzeren (hover, focus, buiten beeld, knop) één `animation-play-state` is.
+**Lesson:** `position: sticky` in een `Field` werkt pas met `overflow: clip` — `hidden` maakt een scrollcontainer. Een queryparameter die een funnel doorgeeft moet aan de ontvangende kant ook gelezen worden; controleer dat voordat je er een knop op bouwt.
+
+## 2026-10-15 — /premium: "Dit krijg je" als hero, configurator ruimer, tabel daarna
+**Changed:** `app/[locale]/(main)/premium/page.tsx` (volgorde: hero met telefoon en h1 "Dit krijg je in elk onderdeel" op Gracht → "Stel je eigen pakket samen" als eigen sectie met h2 → vergelijkingstabel → FAQ; prijsblok uit de hero, alleen een knop naar #pakket), `WhatYouGet.tsx` (kop als eigen grid-gebied, `footer` optioneel), `app/glas-public-info.css` (`.g-pm-hero`: podium als glas op het veld; slide 6s → 2,6s, overgang 520 → 300ms; configurator: kop 80px boven de kaarten, kaarten 28px uit elkaar en 28px binnenrand, rijen en losse modules ruimer).
+**Outcome:** SUCCESS (tsc, eslint, next build, schermafdrukken 390/1440 in Playwright)
+**What worked / went wrong:** Met `order: -1` op mobiel kwam de lijst van vijf vóór de telefoon, waardoor het beeld uit het eerste scherm viel. Een grid met `grid-template-areas` (kop · telefoon · lijst op mobiel, telefoon links naast kop + lijst op desktop) lost dat op zonder de kop dubbel te renderen.
+**Lesson:** Moet een kop op mobiel boven het beeld en op desktop ernaast staan, maak hem een eigen grid-gebied in plaats van de kolommen te herordenen.
+
+## 2026-10-15 — /premium: configurator compact, scorering loopt door
+**Changed:** `app/glas-public-info.css` (`g-pb-*`: kop 26–34px, kaarten 18px padding en 12px gap, prijs 32px, rijen 7px met meta op één regel, add-ons en totaalbalk 44px hoog, sectie-padding 56/72px); `premium/page.tsx` (`ScoreRing correct={21} total={25} passPct={null}` i.p.v. losse resultaten).
+**Outcome:** SUCCESS (tsc, viewportshot 1440×900: hele configurator in één scherm)
+**What worked / went wrong:** De ring met `results` per vraag zette de vier fouten verspreid rond de cirkel, met het oranje 60%-streepje ertussen — in een klein schermpje leest dat als een kapotte ring. Doorlopend vullen leest als "21 van 25". Een volle-pagina-screenshot zet de plakkende balk midden over de kaarten; voor de echte stand een viewport-shot nemen.
+**Lesson:** In een illustratief schermpje toont de scorering een doorlopende vulling; de verdeling per vraag hoort bij de echte uitslag. Controleer een sticky element altijd met een viewport-shot, nooit met een full-page-shot.
+
+## 2026-10-15 — /premium hero: minder tekst naast de telefoon
+**Changed:** `slide1–5_desc` in `messages/{nl,en,ar}.json` ingekort tot één regel; in `app/glas-public-info.css` toont `.g-wyg-list` de omschrijving alleen bij het actieve item.
+**Outcome:** SUCCESS
+**What worked / went wrong:** de niet-actieve omschrijvingen zijn visueel verborgen (clip-path), niet `display:none` — de telefoon is `aria-hidden`, dus de lijst is de enige tekst voor een schermlezer. De verplichte zinnen (model past rubric toe, geen DUO-uitslag; met AI opgesteld, door de docent nagekeken) bleven staan, alleen korter.
+**Lesson:** bij een carrousel met `aria-hidden` beeld nooit tekst met `display:none` wegsnoeien; verberg hem alleen visueel.

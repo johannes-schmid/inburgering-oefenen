@@ -6,7 +6,7 @@ import { ownsKnm, ownsModule, ownsOna, planFromMetadata } from '@/lib/entitlemen
 import { isOnaAvailable } from '@/lib/ona/access';
 import { ONA_CARD_COUNT } from '@/data/ona/cards';
 import { FREE_GRADED_PER_SKILL } from '@/lib/grading-limits';
-import { MODULES } from '@/lib/pricing';
+import { MODULES, parseSelection } from '@/lib/pricing';
 import { DEFAULT_LEVEL, getOnderdeel, isOna, moduleGroupLabel, type SkillSlug } from '@/data/skills';
 import { fetchPublishedExamNumbers } from '@/lib/portal-progress';
 import AppShell from '../../components/AppShell';
@@ -38,14 +38,14 @@ export default async function PakkettenPage({
   searchParams,
 }: {
   params: Promise<{ locale: string }>;
-  searchParams: Promise<{ vanaf?: string; onderdeel?: string }>;
+  searchParams: Promise<{ vanaf?: string; onderdeel?: string; kies?: string }>;
 }) {
   const { locale } = await params;
-  const { onderdeel } = await searchParams;
+  const { onderdeel, kies } = await searchParams;
 
   const supabase = await createClient();
   const { data: { user } } = await supabase.auth.getUser();
-  if (!user) redirect(`/${locale}/login?next=/dashboard/pakketten`);
+  if (!user) redirect(`/${locale}/login?next=${encodeURIComponent(`/dashboard/pakketten${kies ? `?kies=${kies}` : ''}`)}`);
 
   const plan = planFromMetadata(user.user_metadata);
   const meta = user.user_metadata ?? {};
@@ -72,6 +72,17 @@ export default async function PakkettenPage({
   // Highlighted when the candidate arrived from a specific locked onderdeel, so the module they
   // actually need is the one they see first. The param carries a full `level:skill` id.
   const focus = sellable.find(m => m.slug === onderdeel)?.slug ?? null;
+
+  // De keuze uit de configurator op /premium, via `/register?next=…`. Alleen wat hier ook te koop
+  // staat en nog niet van jou is; de prijs rekent de checkout toch opnieuw uit.
+  const owned = (m: (typeof sellable)[number]) =>
+    isOna(m.skill) ? ownsOna(meta)
+    : m.level === null ? ownsKnm(meta)
+    : ownsModule(meta, m.level, m.skill as SkillSlug);
+  const picked = parseSelection(kies?.split(',') ?? []).filter(slug => {
+    const m = sellable.find(x => x.slug === slug);
+    return m !== undefined && !owned(m);
+  });
 
   const menu = await fetchPortalMenu();
 
@@ -106,7 +117,7 @@ export default async function PakkettenPage({
 
         <ModulePicker
           locale={locale}
-          initialSelection={focus ? [focus] : []}
+          initialSelection={picked.length ? picked : focus ? [focus] : []}
           modules={sellable.map(mod => {
             if (isOna(mod.skill)) {
               return {
