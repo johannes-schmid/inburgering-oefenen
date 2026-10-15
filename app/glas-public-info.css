@@ -6,6 +6,39 @@
   .g-pagefield.g-under-nav { margin-top: calc(var(--nav-h) * -1); padding-top: calc(var(--nav-h) + 40px); }
   @media (min-width: 860px) { .g-pagefield.g-under-nav { padding-top: calc(var(--nav-h) + 72px); } }
 
+  /* ---------- /oefenen/[skill] (15-10) · kop, proef met examenfeiten ernaast, volgende stap ---------- */
+  .g-fpx-mark { display: flex; align-items: center; gap: 12px; margin-bottom: 18px; }
+  .g-fpx-lead { margin-top: 16px; max-width: 62ch; }
+  .g-fpx-body { padding-block: 32px 56px; }
+  @media (min-width: 860px) { .g-fpx-body { padding-block: 40px 72px; } }
+  .g-fpx-grid { display: grid; gap: 20px; align-items: start; }
+  #fp-engine { scroll-margin-top: calc(var(--nav-h) + 12px); min-width: 0; }
+  /* De feiten staan onder de proef en alleen zolang de intro staat; tijdens de vragen verdwijnen ze. */
+  .g-fpx-grid:not(:has(.g-xintro)) .g-fpx-about { display: none; }
+  .g-fpx-about { background: #fff; border-radius: var(--r-xl); padding: 26px; }
+  .g-fpx-about > p { margin: 10px 0 0; font-size: 15px; line-height: 1.7; color: var(--ink-2); text-wrap: pretty; }
+  .g-fpx-facts { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin: 20px 0 0; }
+  .g-fpx-facts > div { background: var(--tegel); border-radius: var(--r-sm); padding: 12px 14px; }
+  .g-fpx-facts dt { font-size: 12.5px; color: var(--ink-2); }
+  .g-fpx-facts dd { margin: 2px 0 0; font-family: var(--font-headline); font-weight: 700; font-size: 17px; letter-spacing: -0.02em; color: var(--ink); }
+  .g-fpx-about > .g-fpx-src { margin-top: 14px; font-size: 12.5px; line-height: 1.5; color: var(--ink-2); }
+  @media (min-width: 860px) {
+    .g-fpx-about { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.15fr); grid-template-areas: "h facts" "p facts" "p src"; column-gap: 48px; padding: 32px 36px; }
+    .g-fpx-about > h2 { grid-area: h; }
+    .g-fpx-about > p:not(.g-fpx-src) { grid-area: p; max-width: 52ch; }
+    .g-fpx-about > .g-fpx-facts { grid-area: facts; margin: 0; align-self: start; }
+    .g-fpx-about > .g-fpx-src { grid-area: src; align-self: start; }
+  }
+
+  .g-fpx-after { display: grid; gap: 40px; margin-top: 48px; }
+  .g-fpx-next { background: #fff; border-radius: var(--r-xl); padding: 26px; display: grid; grid-template-columns: minmax(0, 1fr); gap: 20px; align-items: center; }
+  .g-fpx-next > a { justify-self: start; max-width: 100%; height: auto; min-height: 48px; padding-block: 12px; white-space: normal; text-align: start; }
+  .g-fpx-next p { margin: 8px 0 0; font-size: 15px; line-height: 1.7; color: var(--ink-2); max-width: 64ch; text-wrap: pretty; }
+  @media (min-width: 860px) { .g-fpx-next { grid-template-columns: minmax(0, 1fr) auto; padding: 32px 36px; gap: 40px; } }
+  .g-fpx-others-h { margin: 0 0 14px; }
+  .g-chip.g-fpx-chip-plain { padding-inline: 16px 12px; }
+  .g-fpx-chip-plain svg { width: 16px; height: 16px; }
+
   /* ---------- /platform (15-10) · donkere kopkaart, zijbalk met ankers, featurekaarten ---------- */
   .g-pf2-top { padding: 8px 12px 0; }
   .g-pf2-hero { max-width: 1272px; margin-inline: auto; border-radius: var(--r-xl); padding: 28px 20px 0; display: grid; gap: 40px; overflow: hidden; }

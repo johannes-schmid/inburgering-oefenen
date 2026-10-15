@@ -1,11 +1,11 @@
 'use client';
 
-import { useState, useRef, useEffect, useCallback } from 'react';
+import { useState, useRef, useEffect, useCallback, type ReactNode } from 'react';
 import { useTranslations } from 'next-intl';
 import { track } from '@/lib/analytics';
 import { optionKeys, optionText, readAloudSegments, type FreePracticeItem, type OptionKey } from '@/data/free-practice';
 import { DEFAULT_LEVEL, type Level, type OnderdeelSlug } from '@/data/skills';
-import { AnimatedNumber, AnswerGroup, AnswerRow, CategoryMark, Field, ScoreRing, glasButton, type AnswerState } from '@/components/glas';
+import { AnimatedNumber, AnswerGroup, AnswerRow, CategoryMark, Field, PageField, ScoreRing, glasButton, type AnswerState } from '@/components/glas';
 import { useReadAloud } from '@/components/proefexamen/useReadAloud';
 import { useAudioEnabled } from '@/lib/audio-pref';
 import { playCorrectChime } from '@/lib/answer-chime';
@@ -37,9 +37,32 @@ type Props = {
    * falls back to A2, which would send a KNM visitor to `/oefenexamen/a2/knm` — not a route.
    */
   level?: Level | null;
+  /** 2 waar de pagina zelf een h1 in de kop heeft (`/oefenen/[skill]`); de andere proeven hebben die nog niet. */
+  headingLevel?: 1 | 2;
+  /** De inhoud van de paginakop (kruimelpad, h1, lead); de proef zet hem zelf in een `PageField`. */
+  pageHeader?: ReactNode;
+  aside?: ReactNode;
+  after?: ReactNode;
 };
 
-export default function FreePracticeEngine({ skill, skillName, items, locale, level = DEFAULT_LEVEL }: Props) {
+/* Naar het begin van de proef in plaats van naar de top van de pagina: boven de proef kan een
+   paginakop staan, en dan viel elke volgende vraag onder de vouw. Zonder anker blijft het top 0. */
+/** `d` = /oefenen/[skill]: startknop in de paginakop. `nacht` = de proeven zonder eigen kop. */
+type IntroVariant = 'nacht' | 'd';
+
+function scrollToEngine() {
+  // Een frame later: de nieuwe fase moet eerst staan, anders klopt de positie niet (variant d haalt
+  // bij de start de knop uit de kop, en dan schuift alles omhoog).
+  requestAnimationFrame(() => {
+    const el = document.getElementById('fp-engine');
+    if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    else window.scrollTo({ top: 0, behavior: 'smooth' });
+  });
+}
+
+export default function FreePracticeEngine({ skill, skillName, items, locale, level = DEFAULT_LEVEL, headingLevel = 1, pageHeader, aside, after }: Props) {
+  const Heading = headingLevel === 2 ? 'h2' : 'h1';
+  const introVariant: IntroVariant = pageHeader ? 'd' : 'nacht';
   const t = useTranslations('oefenen');
 
   const [phase, setPhase] = useState<Phase>('intro');
@@ -132,7 +155,7 @@ export default function FreePracticeEngine({ skill, skillName, items, locale, le
     setRevealed(true);
     setPhase('quiz');
     track('free_practice_started', { skill, count: total });
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    scrollToEngine();
   }
 
   function choose(option: OptionKey) {
@@ -150,17 +173,17 @@ export default function FreePracticeEngine({ skill, skillName, items, locale, le
     if (idx + 1 >= total) {
       setPhase('results');
       track('free_practice_finished', { skill, score: logRef.current.filter(a => a.isCorrect).length, total });
-      window.scrollTo({ top: 0, behavior: 'smooth' });
+      scrollToEngine();
     } else {
       setIdx(idx + 1);
       setSelected(null);
-      window.scrollTo({ top: 0, behavior: 'smooth' });
+      scrollToEngine();
     }
   }
 
   function revealResults() {
     setRevealed(true);
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    scrollToEngine();
   }
 
   async function submitEmail(e: React.FormEvent) {
@@ -199,41 +222,50 @@ export default function FreePracticeEngine({ skill, skillName, items, locale, le
   /* ── INTRO ──────────────────────────────────────────────────────────────
      Glas §10/§12: een Nacht-kop met het onderdeelmerk en de titel, de belofte als chips, en op wit
      wat de set dekt, de docent en één navy startknop. Geen kicker boven de kop (G-regel). */
-  if (phase === 'intro') {
-    const genres = Array.from(new Set(items.map(i => i.subSkill)));
-    return (
-      <article className="g-xintro" style={{ maxWidth: 'none' }}>
-        <Field variant="nacht" className="g-xprobe-hd">
-          <h1>
-            <CategoryMark category={skill} size={44} tone="dark" />
-            {t('heading', { count: total, skill: skillName })}
-          </h1>
-          <div className="g-xchips">
-            <span className="g-xbdg g-xbdg-glasd g-tnum">{total} {t('stat_questions').toLowerCase()}</span>
-            <span className="g-xbdg g-xbdg-glasd"><Star aria-hidden />{t('stat_free')}</span>
-            <span className="g-xbdg g-xbdg-glasd"><UserRoundCheck aria-hidden />{t('stat_no_account')}</span>
-            <span className="g-xbdg g-xbdg-glasd"><Check strokeWidth={2.6} aria-hidden />{t('feedback_tag')}</span>
-          </div>
-        </Field>
+  const startBtn = (
+    <button type="button" onClick={start} className={glasButton({ variant: 'navy', size: 'lg' })}>
+      {t('start_btn')}
+      <ArrowRight className="rtl-flip" aria-hidden />
+    </button>
+  );
+  const switchHref = localeHref(locale, 'oefenen');
 
-        <div className="g-xintro-bd">
-          <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
-            <span className="g-mono">{t('sections_heading')}</span>
-            <div className="g-xgenres">
-              {genres.map(g => <span key={g} className="g-xbdg">{g}</span>)}
-            </div>
+  const content = (() => {
+    if (phase === 'intro') {
+      const genres = Array.from(new Set(items.map(i => i.subSkill)));
+      const title = (
+        <Heading>
+          <CategoryMark category={skill} size={44} tone="dark" />
+          {t('heading', { count: total, skill: skillName })}
+        </Heading>
+      );
+      const chips = (
+        <div className="g-xchips">
+          <span className="g-xbdg g-xbdg-glasd g-tnum">{total} {t('stat_questions').toLowerCase()}</span>
+          <span className="g-xbdg g-xbdg-glasd"><Star aria-hidden />{t('stat_free')}</span>
+          <span className="g-xbdg g-xbdg-glasd"><UserRoundCheck aria-hidden />{t('stat_no_account')}</span>
+          <span className="g-xbdg g-xbdg-glasd"><Check strokeWidth={2.6} aria-hidden />{t('feedback_tag')}</span>
+        </div>
+      );
+      const genreBlock = (
+        <div className="g-xgenre-blk">
+          <span className="g-mono">{t('sections_heading')}</span>
+          <div className="g-xgenres">
+            {genres.map(g => <span key={g} className="g-xbdg">{g}</span>)}
           </div>
-
+        </div>
+      );
+      /* The onboarding question: should every vraag be read aloud by itself? Asked once,
+         answered in `localStorage`, and the sample button is what unlocks the browser's
+         autoplay so the first question is not silent. */
+      const audioBlock = (
+        <>
           {isListening && (
             <p className="g-xnotice" style={{ margin: 0 }}>
               <Headphones aria-hidden />
               <span>{t('audio_hint')}</span>
             </p>
           )}
-
-          {/* The onboarding question: should every vraag be read aloud by itself? Asked once,
-              answered in `localStorage`, and the sample button is what unlocks the browser's
-              autoplay so the first question is not silent. */}
           {canReadAloud && (
             <AudioPrefRow
               sampleUrl={sampleUrl}
@@ -248,253 +280,316 @@ export default function FreePracticeEngine({ skill, skillName, items, locale, le
               }}
             />
           )}
-
-          <div className="g-xteacher">
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src="/images/amber-van-der-zalm-264.webp" alt="Amber van der Zalm" width={44} height={44} />
-            <span>
-              <b>Amber van der Zalm</b>
-              <small>{t('teacher_title')}</small>
-            </span>
-          </div>
-
-          <div className="g-xrow-act">
-            <button type="button" onClick={start} className={glasButton({ variant: 'navy', size: 'lg' })}>
-              {t('start_btn')}
-              <ArrowRight className="rtl-flip" aria-hidden />
-            </button>
-            <a href={localeHref(locale, `oefenen`)} className={glasButton({ variant: 'ghost', size: 'lg' })}>
-              {t('switch_skill')}
-            </a>
-          </div>
+        </>
+      );
+      const teacher = (
+        <div className="g-xteacher">
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img src="/images/amber-van-der-zalm-264.webp" alt="Amber van der Zalm" width={44} height={44} />
+          <span>
+            <b>Amber van der Zalm</b>
+            <small>{t('teacher_title')}</small>
+          </span>
         </div>
-      </article>
-    );
-  }
+      );
 
-  /* ── QUIZ ─────────────────────────────────────────────────────────────── */
-  if (phase === 'quiz') {
-    const item = items[idx];
-    const done = (idx / total) * 100;
-    const isLast = idx === total - 1;
-    /**
-     * A KNM question stands alone: `stimulus_id IS NULL`, so there is no passage and no audio.
-     * It is rendered single-column for the same reason `ExamShell` does — a two-pane grid whose
-     * left pane is an empty card reads as content that failed to load.
-     */
-    const hasStimulus = !!item.stimulusHtml || !!item.audioSrc;
+      /* Op /oefenen/[skill] staat de startknop in de paginakop (zie onderaan); deze kaart vertelt
+         wat je oefent. De andere proeven (KNM, B1) hebben geen eigen kop en houden de Nacht-kaart. */
+      if (introVariant === 'd') {
+        return (
+          <article className="g-xintro g-xintro-d" style={{ maxWidth: 'none' }}>
+            <div className="g-xd-main">
+              <Heading>{t('intro_d_heading')}</Heading>
+              <p>{t('intro_d_body', { count: total })}</p>
+              {genreBlock}
+            </div>
+            <div className="g-xd-side">
+              {teacher}
+              {audioBlock}
+            </div>
+          </article>
+        );
+      }
 
-    return (
-      <div className="g-xshell">
-        <Field variant={skill === 'lezen' ? 'nevel' : 'gracht'} className="g-xshell-bg" aria-hidden />
-        {/* De glazen balk van de speler, zonder klok: één segment per vraag, want het zijn er tien. */}
-        <div className="g-xbar g-glass" style={{ top: 'calc(var(--nav-h, 64px) + 10px)', paddingInlineStart: 12 }}>
-          <span className="g-xbar-mark"><CategoryMark category={skill} size={28} /></span>
-          <div
-            className="g-xsegs"
-            role="progressbar"
-            aria-valuemin={0}
-            aria-valuemax={total}
-            aria-valuenow={log.length}
-            aria-label={t('q_done', { pct: Math.round(done) })}
-          >
-            {items.map((it, i) => (
-              <span key={i} className="g-xseg" style={i === idx ? { background: 'rgba(0,43,109,.18)' } : undefined}>
-                <b style={{ transform: `scaleX(${i < log.length ? 1 : 0})` }} />
-              </span>
-            ))}
+      return (
+        <article className="g-xintro" style={{ maxWidth: 'none' }}>
+          <Field variant="nacht" className="g-xprobe-hd">
+            {title}
+            {chips}
+          </Field>
+
+          <div className="g-xintro-bd">
+            {genreBlock}
+            {audioBlock}
+            {teacher}
+            <div className="g-xrow-act">
+              {startBtn}
+              <a href={switchHref} className={glasButton({ variant: 'ghost', size: 'lg' })}>
+                {t('switch_skill')}
+              </a>
+            </div>
           </div>
-          <span className="g-xbar-step">{t('q_progress', { current: idx + 1, total })}</span>
-        </div>
+        </article>
+      );
+    }
 
-        {/* Two panes, like the DUO player: stimulus left, question right. One pane where the
-            question stands alone. */}
-        {/* De opgaven zijn altijd Nederlands: ook op /ar staan ze links-naar-rechts. */}
-        <div dir="ltr" lang="nl" className={hasStimulus ? 'g-xlezen' : undefined} style={hasStimulus ? undefined : { maxWidth: 760, width: '100%', marginInline: 'auto' }}>
-          {hasStimulus && <StimulusPane item={item} isListening={isListening} />}
-          {/* The question travels with the reader. A DUO Lezen text is far taller than one
-              viewport, so a static question pane scrolls out of sight and the candidate has to
-              scroll back up to answer what they have just read. On lg the pane sticks below the
-              fixed header (`--nav-h`) and scrolls internally if it is itself taller than the
-              viewport — and the Volgende-knop lives *inside* it, so the way forward is on screen
-              the moment an answer is chosen rather than at the foot of the passage. */}
-          <div
-            className={hasStimulus ? 'lg:sticky lg:overflow-y-auto flex flex-col gap-3' : 'flex flex-col gap-3'}
-            style={hasStimulus ? { top: 'calc(var(--nav-h) + 5rem)', maxHeight: 'calc(100vh - var(--nav-h) - 6rem)' } : undefined}
-          >
-            <QuestionPane
-              item={item}
-              selected={selected}
-              onChoose={choose}
-              explanationLabel={t('explanation_label')}
-              correctLabel={t('correct_label_inline')}
-              wrongLabel={t('wrong_label_inline')}
-              readLabel={t('readaloud_read')}
-              stopLabel={t('readaloud_stop')}
-            />
-            {selected && (
-              <div className={`g-xfoot g-glass${hasStimulus ? ' lg:sticky lg:bottom-0' : ''}`} style={hasStimulus ? undefined : { position: 'static' }}>
-                <span className="g-xfoot-sp" />
-                <button
-                  type="button"
-                  onClick={next}
-                  className={glasButton({ variant: isLast ? 'oranje' : 'navy', size: 'sm' })}
-                >
-                  {isLast ? t('finish_btn') : t('next_btn')}
-                  <ArrowRight className="rtl-flip" aria-hidden />
-                </button>
-              </div>
-            )}
-          </div>
-        </div>
-      </div>
-    );
-  }
+    /* ── QUIZ ─────────────────────────────────────────────────────────────── */
+    if (phase === 'quiz') {
+      const item = items[idx];
+      const done = (idx / total) * 100;
+      const isLast = idx === total - 1;
+      /**
+       * A KNM question stands alone: `stimulus_id IS NULL`, so there is no passage and no audio.
+       * It is rendered single-column for the same reason `ExamShell` does — a two-pane grid whose
+       * left pane is an empty card reads as content that failed to load.
+       */
+      const hasStimulus = !!item.stimulusHtml || !!item.audioSrc;
 
-  /* ── RESULTS ──────────────────────────────────────────────────────────
-     One card, glas.html §12 "Gratis proef": the score ring and the potential, the e-mail offer
-     underneath, and a single way on to the platform. The per-question explanation has already
-     been given inline during the sitting, so it is not repeated here.
-
-     The gate (`revealed === false`, local `?flow=gate`) blurs everything that carries the score
-     and lays the e-mail card over it in glass — **with the skip link**, always. */
-  const passed = pct >= PASS_PCT;
-  const potentialPct = projectSlaagkans(pct);
-
-  const byGenre = new Map<string, { correct: number; total: number }>();
-  log.forEach(a => {
-    const row = byGenre.get(a.item.subSkill) ?? { correct: 0, total: 0 };
-    row.total += 1;
-    if (a.isCorrect) row.correct += 1;
-    byGenre.set(a.item.subSkill, row);
-  });
-  const weak = Array.from(byGenre.entries())
-    .filter(([, r]) => r.correct < r.total)
-    .sort((a, b) => a[1].correct / a[1].total - b[1].correct / b[1].total)
-    .map(([genre]) => genre)
-    .slice(0, 3);
-
-  const emailForm = (
-    <form onSubmit={submitEmail} noValidate style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
-      <div className="g-xfp-row">
-        <label htmlFor="fp-email" className="sr-only">{t('gate_placeholder')}</label>
-        <input
-          id="fp-email"
-          type="email"
-          inputMode="email"
-          autoComplete="email"
-          value={email}
-          onChange={e => { setEmail(e.target.value); setEmailError(false); }}
-          placeholder={t('gate_placeholder')}
-          aria-invalid={emailError}
-          aria-describedby={emailError ? 'fp-email-error' : undefined}
-          className="g-xinput"
-        />
-        <button type="submit" disabled={sending} className={glasButton({ variant: 'navy' })}>
-          {sending ? t('gate_sending') : revealed ? t('email_send') : t('gate_submit')}
-        </button>
-      </div>
-      {emailError && (
-        <p id="fp-email-error" role="alert" className="g-xfp-err">
-          {t('gate_error')}
-        </p>
-      )}
-      <p className="g-xfp-small">{t('gate_privacy')}</p>
-    </form>
-  );
-
-  return (
-    <div className="g-xshell" style={{ gap: 14 }}>
-      <Field variant="licht" className="g-xshell-bg" aria-hidden />
-      <section className="g-xfp" style={{ minHeight: revealed ? undefined : 380 }}>
-        <div className={revealed ? undefined : 'g-xfp-locked'} inert={!revealed} aria-hidden={!revealed}>
-          <div className="g-xfp-top">
-            <ScoreRing
-              results={log.map(a => a.isCorrect)}
-              passPct={PASS_PCT}
-              size={150}
-              label={t('result_score_eyebrow', { score, total })}
+      return (
+        <div className="g-xshell">
+          <Field variant={skill === 'lezen' ? 'nevel' : 'gracht'} className="g-xshell-bg" aria-hidden />
+          {/* De glazen balk van de speler, zonder klok: één segment per vraag, want het zijn er tien. */}
+          <div className="g-xbar g-glass" style={{ top: 'calc(var(--nav-h, 64px) + 10px)', paddingInlineStart: 12 }}>
+            <span className="g-xbar-mark"><CategoryMark category={skill} size={28} /></span>
+            <div
+              className="g-xsegs"
+              role="progressbar"
+              aria-valuemin={0}
+              aria-valuemax={total}
+              aria-valuenow={log.length}
+              aria-label={t('q_done', { pct: Math.round(done) })}
             >
-              <b style={{ fontSize: 40 }}><AnimatedNumber value={score} locales={locale} /><span>/{total}</span></b>
-              <small>{t('gauge_now')} {pct}%</small>
-            </ScoreRing>
-            <div style={{ minWidth: 0 }}>
-              <span className="g-mono">{t('result_score_eyebrow', { score, total })}</span>
-              <h2>
-                {t('potential_headline')} <em>{potentialPct}%</em>
-              </h2>
-              <p>{weak.length > 0 ? t('weak_intro', { topics: weak.join(', ') }) : t('weak_none')}</p>
-              <p style={{ fontWeight: 600, color: passed ? 'var(--goed-ink)' : 'var(--ink)' }}>
-                {passed ? t('verdict_pass_title') : t('verdict_fail_title')}
-              </p>
-              {/* Nu en mogelijk op één balk: het verschil tússen de twee is het aanbod. */}
-              <div className="g-xbar2" style={{ marginTop: 12, position: 'relative', height: 10 }} role="img" aria-label={`${t('legend_now', { pct })}, ${t('legend_potential', { pct: potentialPct })}`}>
-                <i style={{ position: 'absolute', inset: 0, background: 'var(--waas)', transform: `scaleX(${potentialPct / 100})` }} />
-                <i style={{ position: 'absolute', inset: 0, background: 'var(--navy)', transform: `scaleX(${pct / 100})` }} />
-              </div>
-              <div className="g-xfp-legend" aria-hidden>
-                <span><i style={{ background: 'var(--navy)' }} />{t('legend_now', { pct })}</span>
-                <span><i style={{ background: 'var(--waas)' }} />{t('legend_potential', { pct: potentialPct })}</span>
-              </div>
+              {items.map((it, i) => (
+                <span key={i} className="g-xseg" style={i === idx ? { background: 'rgba(0,43,109,.18)' } : undefined}>
+                  <b style={{ transform: `scaleX(${i < log.length ? 1 : 0})` }} />
+                </span>
+              ))}
+            </div>
+            <span className="g-xbar-step">{t('q_progress', { current: idx + 1, total })}</span>
+          </div>
+
+          {/* Two panes, like the DUO player: stimulus left, question right. One pane where the
+              question stands alone. */}
+          {/* De opgaven zijn altijd Nederlands: ook op /ar staan ze links-naar-rechts. */}
+          <div dir="ltr" lang="nl" className={hasStimulus ? 'g-xlezen' : undefined} style={hasStimulus ? undefined : { maxWidth: 760, width: '100%', marginInline: 'auto' }}>
+            {hasStimulus && <StimulusPane item={item} isListening={isListening} />}
+            {/* The question travels with the reader. A DUO Lezen text is far taller than one
+                viewport, so a static question pane scrolls out of sight and the candidate has to
+                scroll back up to answer what they have just read. On lg the pane sticks below the
+                fixed header (`--nav-h`) and scrolls internally if it is itself taller than the
+                viewport — and the Volgende-knop lives *inside* it, so the way forward is on screen
+                the moment an answer is chosen rather than at the foot of the passage. */}
+            <div
+              className={hasStimulus ? 'lg:sticky lg:overflow-y-auto flex flex-col gap-3' : 'flex flex-col gap-3'}
+              style={hasStimulus ? { top: 'calc(var(--nav-h) + 5rem)', maxHeight: 'calc(100vh - var(--nav-h) - 6rem)' } : undefined}
+            >
+              <QuestionPane
+                item={item}
+                selected={selected}
+                onChoose={choose}
+                explanationLabel={t('explanation_label')}
+                correctLabel={t('correct_label_inline')}
+                wrongLabel={t('wrong_label_inline')}
+                readLabel={t('readaloud_read')}
+                stopLabel={t('readaloud_stop')}
+              />
+              {selected && (
+                <div className={`g-xfoot g-glass${hasStimulus ? ' lg:sticky lg:bottom-0' : ''}`} style={hasStimulus ? undefined : { position: 'static' }}>
+                  <span className="g-xfoot-sp" />
+                  <button
+                    type="button"
+                    onClick={next}
+                    className={glasButton({ variant: isLast ? 'oranje' : 'navy', size: 'sm' })}
+                  >
+                    {isLast ? t('finish_btn') : t('next_btn')}
+                    <ArrowRight className="rtl-flip" aria-hidden />
+                  </button>
+                </div>
+              )}
             </div>
           </div>
         </div>
+      );
+    }
 
-        {revealed ? (
-          <div className="g-xfp-mail">
-            {emailCaptured ? (
-              <p className="g-xfp-sent">
-                <Check strokeWidth={2.6} aria-hidden />
-                {t('email_sent')}
-              </p>
-            ) : (
-              <>
-                <b><Mail aria-hidden />{t('email_cta_after')}</b>
-                {emailForm}
-              </>
-            )}
+    /* ── RESULTS ──────────────────────────────────────────────────────────
+       One card, glas.html §12 "Gratis proef": the score ring and the potential, the e-mail offer
+       underneath, and a single way on to the platform. The per-question explanation has already
+       been given inline during the sitting, so it is not repeated here.
+
+       The gate (`revealed === false`, local `?flow=gate`) blurs everything that carries the score
+       and lays the e-mail card over it in glass — **with the skip link**, always. */
+    const passed = pct >= PASS_PCT;
+    const potentialPct = projectSlaagkans(pct);
+
+    const byGenre = new Map<string, { correct: number; total: number }>();
+    log.forEach(a => {
+      const row = byGenre.get(a.item.subSkill) ?? { correct: 0, total: 0 };
+      row.total += 1;
+      if (a.isCorrect) row.correct += 1;
+      byGenre.set(a.item.subSkill, row);
+    });
+    const weak = Array.from(byGenre.entries())
+      .filter(([, r]) => r.correct < r.total)
+      .sort((a, b) => a[1].correct / a[1].total - b[1].correct / b[1].total)
+      .map(([genre]) => genre)
+      .slice(0, 3);
+
+    const emailForm = (
+      <form onSubmit={submitEmail} noValidate style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
+        <div className="g-xfp-row">
+          <label htmlFor="fp-email" className="sr-only">{t('gate_placeholder')}</label>
+          <input
+            id="fp-email"
+            type="email"
+            inputMode="email"
+            autoComplete="email"
+            value={email}
+            onChange={e => { setEmail(e.target.value); setEmailError(false); }}
+            placeholder={t('gate_placeholder')}
+            aria-invalid={emailError}
+            aria-describedby={emailError ? 'fp-email-error' : undefined}
+            className="g-xinput"
+          />
+          <button type="submit" disabled={sending} className={glasButton({ variant: 'navy' })}>
+            {sending ? t('gate_sending') : revealed ? t('email_send') : t('gate_submit')}
+          </button>
+        </div>
+        {emailError && (
+          <p id="fp-email-error" role="alert" className="g-xfp-err">
+            {t('gate_error')}
+          </p>
+        )}
+        <p className="g-xfp-small">{t('gate_privacy')}</p>
+      </form>
+    );
+
+    return (
+      <div className="g-xshell" style={{ gap: 14 }}>
+        <Field variant="licht" className="g-xshell-bg" aria-hidden />
+        <section className="g-xfp" style={{ minHeight: revealed ? undefined : 380 }}>
+          <div className={revealed ? undefined : 'g-xfp-locked'} inert={!revealed} aria-hidden={!revealed}>
+            <div className="g-xfp-top">
+              <ScoreRing
+                results={log.map(a => a.isCorrect)}
+                passPct={PASS_PCT}
+                size={150}
+                label={t('result_score_eyebrow', { score, total })}
+              >
+                <b style={{ fontSize: 40 }}><AnimatedNumber value={score} locales={locale} /><span>/{total}</span></b>
+                <small>{t('gauge_now')} {pct}%</small>
+              </ScoreRing>
+              <div style={{ minWidth: 0 }}>
+                <span className="g-mono">{t('result_score_eyebrow', { score, total })}</span>
+                <h2>
+                  {t('potential_headline')} <em>{potentialPct}%</em>
+                </h2>
+                <p>{weak.length > 0 ? t('weak_intro', { topics: weak.join(', ') }) : t('weak_none')}</p>
+                <p style={{ fontWeight: 600, color: passed ? 'var(--goed-ink)' : 'var(--ink)' }}>
+                  {passed ? t('verdict_pass_title') : t('verdict_fail_title')}
+                </p>
+                {/* Nu en mogelijk op één balk: het verschil tússen de twee is het aanbod. */}
+                <div className="g-xbar2" style={{ marginTop: 12, position: 'relative', height: 10 }} role="img" aria-label={`${t('legend_now', { pct })}, ${t('legend_potential', { pct: potentialPct })}`}>
+                  <i style={{ position: 'absolute', inset: 0, background: 'var(--waas)', transform: `scaleX(${potentialPct / 100})` }} />
+                  <i style={{ position: 'absolute', inset: 0, background: 'var(--navy)', transform: `scaleX(${pct / 100})` }} />
+                </div>
+                <div className="g-xfp-legend" aria-hidden>
+                  <span><i style={{ background: 'var(--navy)' }} />{t('legend_now', { pct })}</span>
+                  <span><i style={{ background: 'var(--waas)' }} />{t('legend_potential', { pct: potentialPct })}</span>
+                </div>
+              </div>
+            </div>
           </div>
-        ) : (
-          <div className="g-xfp-gate g-xfp-gate-over g-glass g-glass-strong">
-            <b>{t('email_cta_locked')}</b>
-            {emailForm}
-            {/* The way out. Withholding a result the visitor already earned with no
-                escape is coercive and mostly buys junk addresses. */}
-            <button type="button" onClick={revealResults} className="g-xskip">
-              {t('gate_skip')}
-            </button>
+
+          {revealed ? (
+            <div className="g-xfp-mail">
+              {emailCaptured ? (
+                <p className="g-xfp-sent">
+                  <Check strokeWidth={2.6} aria-hidden />
+                  {t('email_sent')}
+                </p>
+              ) : (
+                <>
+                  <b><Mail aria-hidden />{t('email_cta_after')}</b>
+                  {emailForm}
+                </>
+              )}
+            </div>
+          ) : (
+            <div className="g-xfp-gate g-xfp-gate-over g-glass g-glass-strong">
+              <b>{t('email_cta_locked')}</b>
+              {emailForm}
+              {/* The way out. Withholding a result the visitor already earned with no
+                  escape is coercive and mostly buys junk addresses. */}
+              <button type="button" onClick={revealResults} className="g-xskip">
+                {t('gate_skip')}
+              </button>
+            </div>
+          )}
+        </section>
+
+        {/* ── On to the platform ──────────────────────────────────────────────
+            Held back until the score is on screen: it is the exit, and offering it beside a
+            blurred result asks the visitor to leave before they have seen what they came for. */}
+        {revealed && (
+          <section className="g-xfp g-xfp-next">
+            <a
+              href={platformHref}
+              onClick={() => track('free_practice_platform_click', { skill, level, pct })}
+              className={glasButton({ variant: 'oranje', size: 'lg' })}
+            >
+              {t('platform_cta')}
+              <ArrowRight className="rtl-flip" aria-hidden />
+            </a>
+
+            <p className="g-xfp-note">
+              {t('platform_note')} {' · '}
+              {t('login_prompt')}{' '}
+              <a href={`/${locale}/login`} className="g-tlink" style={{ fontSize: 13 }}>{t('login_link')}</a>
+            </p>
+
+            <p className="g-xfp-note">
+              <button type="button" onClick={start} className="g-xskip" style={{ alignSelf: 'center' }}>
+                {t('retry')}
+              </button>
+            </p>
+          </section>
+        )}
+      </div>
+    );
+  })();
+
+  if (!pageHeader) return content;
+
+  /* Op /oefenen/[skill] tekent de proef ook de paginakop, zodat variant d de startknop ín de kop
+     kan zetten — onder de lead, als eerste handeling van de pagina. De feiten en de volgende stap
+     van de pagina komen als `aside`/`after` mee. */
+  return (
+    <>
+      <PageField variant="gracht" className="g-under-nav">
+        {pageHeader}
+        {phase === 'intro' && introVariant === 'd' && (
+          <div className="g-xd-cta">
+            <div className="g-xd-row">
+              {startBtn}
+              <a href={switchHref} className="g-tlink">{t('switch_skill')}</a>
+            </div>
+            <ul className="g-xd-perks">
+              <li><Check strokeWidth={2.6} aria-hidden />{t('stat_free')}</li>
+              <li><Check strokeWidth={2.6} aria-hidden />{t('stat_no_account')}</li>
+              <li><Check strokeWidth={2.6} aria-hidden />{t('feedback_tag')}</li>
+            </ul>
           </div>
         )}
-      </section>
-
-      {/* ── On to the platform ──────────────────────────────────────────────
-          Held back until the score is on screen: it is the exit, and offering it beside a
-          blurred result asks the visitor to leave before they have seen what they came for. */}
-      {revealed && (
-        <section className="g-xfp g-xfp-next">
-          <a
-            href={platformHref}
-            onClick={() => track('free_practice_platform_click', { skill, level, pct })}
-            className={glasButton({ variant: 'oranje', size: 'lg' })}
-          >
-            {t('platform_cta')}
-            <ArrowRight className="rtl-flip" aria-hidden />
-          </a>
-
-          <p className="g-xfp-note">
-            {t('platform_note')} {' · '}
-            {t('login_prompt')}{' '}
-            <a href={`/${locale}/login`} className="g-tlink" style={{ fontSize: 13 }}>{t('login_link')}</a>
-          </p>
-
-          <p className="g-xfp-note">
-            <button type="button" onClick={start} className="g-xskip" style={{ alignSelf: 'center' }}>
-              {t('retry')}
-            </button>
-          </p>
-        </section>
-      )}
-    </div>
+      </PageField>
+      <div className="g-wrap g-fpx-body">
+        <div className="g-fpx-grid">
+          <div id="fp-engine" className="g-fpx-engine">{content}</div>
+          {aside}
+        </div>
+        {after}
+      </div>
+    </>
   );
 }
 

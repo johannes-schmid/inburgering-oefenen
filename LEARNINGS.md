@@ -5643,3 +5643,33 @@ oplopende `top` per index doet het, en de `prefers-reduced-motion`-uitweg is dan
 **Outcome:** SUCCESS
 **What worked / went wrong:** de twee kaarten naast de uitgelichte gids hingen bovenaan met een gat eronder; nu delen ze de hoogte, ook op /blog dat dezelfde klasse gebruikt. Zonder zoekveld had de filtercontext geen tweede lezer meer, dus de chipstatus staat weer gewoon in `GuideIndex`.
 **Lesson:** een stapel naast een uitgelichte kaart rekt mee (`1fr`-rijen), anders oogt hij als een half gevuld raster.
+
+## 2026-10-15 — /oefenen/[skill]: Glas-paginakop met SEO-h1, examenfeiten naast de proef
+**Changed:** `app/[locale]/(main)/oefenen/[skill]/page.tsx` krijgt de opbouw van `/oefenvragen/[slug]`: `PageField` (Gracht, onder de nav) met kruimelpad, merk, badge, h1 "Lezen/Luisteren oefenen voor het inburgeringsexamen A2" en lead; naast de proefkaart "Zo ziet het examen eruit" (25 vragen, 65/45 min, computer, 3 of 4 keuzes — uit `data/skills.ts`/`SEO/facts.md` §1), daaronder de volgende stap naar `/oefenexamen/a2/[skill]` en chips naar de andere proeven. `FreePracticeEngine` kreeg `headingLevel` (h2 op deze pagina) en scrollt naar `#fp-engine` i.p.v. naar top 0. CSS `g-fpx-*` in `app/glas-public-info.css`; keys `oefenen.skillpage.*` in nl/en/ar.
+**Outcome:** SUCCESS (tsc, 704 unit-tests, next build, detector schoon, Playwright 1440/390 nl/en/ar, één h1, geen horizontale scroll)
+**What worked / went wrong:** De lange knoptekst ("Go to the A2 Reading practice exams") hield de grid op 390px 16px te breed; `minmax(0,1fr)` en een knop die mag afbreken lossen het op. De feitenkolom staat alleen naast de intro (`:has(.g-xintro)`); tijdens de vragen krijgt de speler de volle breedte. Chromium 101 van `check-ui.mjs` kent `:has()` niet, dus de controle liep via Playwright. De twee lintfouten in `FreePracticeEngine.tsx` (setState in effect) bestonden al op HEAD.
+**Lesson:** Komt er een paginakop boven een client-flow die bij elke stap naar top 0 scrollt, laat hem naar zijn eigen anker scrollen — anders valt elke vraag onder de vouw. URL's niet veranderd: `/oefenen/lezen` rankt al en draagt de zoekterm.
+
+## 2026-10-15 — /oefenen/[skill]: examenfeiten onder de proef i.p.v. ernaast
+**Changed:** `app/glas-public-info.css` — de twee kolommen van `.g-fpx-grid` weg; `.g-fpx-about` staat op desktop over de volle breedte onder de proefkaart, met tekst links en de feiten (2×2) rechts.
+**Outcome:** SUCCESS (tsc, Playwright 1440/390, geen horizontale scroll)
+**What worked / went wrong:** De feiten op vier kolommen braken "Op de computer" over twee regels; 2×2 houdt elke waarde op één regel.
+**Lesson:** Een rij korte feitentegels in een halve kaartbreedte: reken de langste waarde mee voordat je naar vier kolommen gaat.
+
+## 2026-10-15 — Proefkaart op /oefenen/[skill]: drie lichte varianten ter beoordeling
+**Changed:** `FreePracticeEngine.tsx` — de intro is opgedeeld in delen (kop, chips, tekstsoorten, audio, docent, knop) en heeft vier opstellingen: `nacht` (KNM/B1, ongewijzigd), `a` lichte kop (standaard op /oefenen/[skill]), `b` compacte kaart met de knop rechts, `c` de knop in de lichte kop. Keuze via `?variant=` (gelezen met `useSyncExternalStore`, server rendert `a`). CSS `g-xintro-a/b/c`, `g-xb-*`, `g-xc-*` in `components/exam/glas-player.css`.
+**Outcome:** SUCCESS (tsc, next build, Playwright 1440/390 per variant, geen horizontale scroll, KNM houdt de Nacht-kop)
+**What worked / went wrong:** De varianten hangen aan `headingLevel === 2`, dus alleen de pagina mét eigen kop kan kiezen. Twee bestaande lintfouten in het bestand niet aangeraakt.
+**Lesson:** Een URL-parameter om varianten te vergelijken op een statische pagina: lees hem in de client met `useSyncExternalStore` in plaats van `searchParams`, anders wordt de SSG-route dynamisch.
+
+## 2026-10-15 — Proefkaart variant d: startknop in de paginakop, kaart eronder vertelt wat je oefent
+**Changed:** `FreePracticeEngine.tsx` neemt op /oefenen/[skill] `pageHeader`/`aside`/`after` aan en tekent de `PageField` zelf, zodat variant `d` de startknop + drie vinkjes onder de lead in de kop kan zetten; de introkaart wordt "Wat je oefent" (tekst, tekstsoorten, docent, audio). De fase-weergave staat in een IIFE (`content`) na alle hooks. `page.tsx` geeft kop, feiten en volgende stap als props door. Keys `oefenen.intro_d_heading`/`intro_d_body` in nl/en/ar; CSS `g-xd-*` in `components/exam/glas-player.css`.
+**Outcome:** SUCCESS (tsc, 704 unit-tests, next build, detector schoon, Playwright 1440/390, geen consolefouten)
+**What worked / went wrong:** JSX die een servercomponent als prop aan een clientcomponent geeft en daar náást ander JSX als kind belandt, gaf "Each child in a list should have a unique key" — een `key` op de doorgegeven elementen lost het op. Na "Begin" scrolde de proef 106px te ver: de positie werd berekend vóórdat de knop uit de kop verdween; `scrollToEngine` wacht nu één frame.
+**Lesson:** Server-JSX als prop naast ander kind in een clientcomponent: geef het een `key`. Scroll naar een element ná de state-wissel die de layout verandert, niet in dezelfde tick.
+
+## 2026-10-15 — Variant d is de proefkaart van /oefenen/[skill]; a, b, c weg
+**Changed:** `FreePracticeEngine.tsx` kiest `d` zodra er een `pageHeader` is en anders de Nacht-kaart (KNM, B1); `?variant=`, `useSyncExternalStore` en de CSS van a/b/c (`g-xintro-a/b/c`, `g-xb-*`, `g-xc-*`) zijn weg.
+**Outcome:** SUCCESS (tsc, 704 unit-tests, next build, detector schoon; startknop staat nu in de server-HTML)
+**What worked / went wrong:** Zonder URL-keuze rendert de server meteen de goede variant, dus de knop springt niet meer in beeld na het laden.
+**Lesson:** Varianten ter beoordeling zijn tijdelijk: na de keus de schakelaar én de CSS van de verliezers in dezelfde commit weghalen.
