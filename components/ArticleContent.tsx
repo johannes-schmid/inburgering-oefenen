@@ -2,9 +2,9 @@
 
 import { useEffect, useRef } from 'react';
 
-type Props = { html: string };
+type Props = { html: string; className?: string };
 
-export default function ArticleContent({ html }: Props) {
+export default function ArticleContent({ html, className }: Props) {
   const ref = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -29,7 +29,7 @@ export default function ArticleContent({ html }: Props) {
   return (
     <div
       ref={ref}
-      className="article-body"
+      className={className ? `article-body ${className}` : 'article-body'}
       dangerouslySetInnerHTML={{ __html: html }}
     />
   );

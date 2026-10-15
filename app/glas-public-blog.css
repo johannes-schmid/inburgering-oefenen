@@ -4,41 +4,34 @@
   /* ---------- overzicht ---------- */
   .g-blog-meta { font-size: 12.5px; color: var(--ink-2); padding: 0 6px; }
 
-  /* ---------- artikel: beeldkop ---------- */
-  .g-blog-hero { min-height: 460px; }
-  @media (max-width: 640px) { .g-blog-hero { min-height: 0; padding-top: 180px; } }
-  .g-blog-author { color: var(--navy); text-decoration: none; border-radius: 4px; outline: none; transition: color 160ms ease; }
-  .g-blog-author:hover { text-decoration: underline; text-underline-offset: 3px; }
-  .g-blog-author:active { opacity: 0.75; }
-  .g-blog-author:focus-visible { box-shadow: var(--glas-focus); }
-
-  /* ---------- artikel: tekst + zijkolom ---------- */
-  .g-blog-grid { display: grid; grid-template-columns: minmax(0, 1fr) 320px; gap: 20px; align-items: start; }
-  @media (max-width: 1020px) { .g-blog-grid { grid-template-columns: minmax(0, 1fr); } }
-  .g-blog-body { background: #fff; border-radius: var(--r-xl); padding: 40px 44px; min-width: 0; }
-  @media (max-width: 860px) { .g-blog-body { padding: 22px; } }
-  .g-blog-body > .article-body { max-width: 68ch; }
-  .g-blog-body .g-inline-cta { margin-top: 28px; }
-  .g-blog-side { position: sticky; top: calc(var(--nav-h) + 24px); display: grid; gap: 14px; }
-  @media (max-width: 1020px) { .g-blog-side { position: static; } }
-  .g-blog-card { background: #fff; border-radius: var(--r-lg); padding: 22px; }
-  /* `sidebarHtml` komt uit de data met oude klassen; hier krijgt het de Glas-kaart. */
-  .g-blog-sidehtml > div { background: #fff !important; border-radius: var(--r-lg) !important; box-shadow: none !important; padding: 22px !important; }
-  .g-blog-sidehtml h3 { font-family: var(--glas-mono); font-size: 12px !important; letter-spacing: 0.08em; font-weight: 500 !important; color: var(--ink-2) !important; }
-  .g-blog-related { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; }
-  .g-blog-related li + li { box-shadow: inset 0 1px 0 var(--mist-2); }
-  .g-blog-related a {
-    display: flex; flex-direction: column; gap: 3px; padding: 12px 8px; margin-inline: -8px; border-radius: var(--r-sm);
-    text-decoration: none; outline: none; transition: background-color 160ms ease;
+  /* ---------- artikel ----------
+     De blogpost leest als een kennisgids: kop `.g-readhead .g-gh`, leeskaart `.g-prose.guide-prose`
+     (glas-public-gidsen.css, globals.css). Hier alleen wat de blogtekst anders aanlevert. */
+  /* De blog-h2 staat ín `.article-body` (de gids rendert hem los als `.guide-section-title`);
+     hier krijgt hij dezelfde maat en ruimte. */
+  .g-blog-prose .article-body h2 {
+    font-size: clamp(1.5rem, 2.6vw, 1.85rem); letter-spacing: -0.03em; line-height: 1.15;
+    margin: 2.5rem 0 1rem; padding-top: 0;
   }
-  .g-blog-related a:hover { background: var(--mist); }
-  .g-blog-related a:active { background: var(--mist-2); }
-  .g-blog-related a:focus-visible { box-shadow: var(--glas-focus); }
-  .g-blog-related b { font-family: var(--font-headline); font-size: 14.5px; line-height: 1.3; color: var(--ink); }
-  .g-blog-related a:hover b { color: var(--navy); }
-  .g-blog-related small { font-size: 12.5px; color: var(--ink-2); line-height: 1.45; }
+  .g-blog-prose .article-body:not(.is-cont) > h2:first-child { margin-top: 0; }
+  /* Een uitlegelement tussen twee tekstblokken (`<!--uitleg:id-->`, BlogUitleg.tsx). */
+  .g-blog-uitleg { margin: 28px 0 32px; }
+
+  /* `sidebarHtml` is een feitenkaart met oude klassen en inline stijl; bovenaan wordt het de
+     samenvatting van de gids: één mist-vlak, de kop als de "In het kort" van een gids. */
+  .g-blog-summary > div { background: none !important; box-shadow: none !important; padding: 0 !important; border-radius: 0 !important; }
+  .g-blog-summary h3 {
+    font-family: var(--font-headline) !important; font-size: 1rem !important; font-weight: 700 !important;
+    color: var(--navy) !important; text-transform: none !important; letter-spacing: 0 !important; margin: 0 0 10px !important;
+  }
+  .g-blog-summary .facts-table tr:nth-child(odd) td { background: #fff; }
+  .g-blog-summary .facts-table tr:nth-child(even) td { background: transparent; }
+  .g-blog-summary .facts-table td { padding: 9px 12px; }
+  .g-blog-summary .facts-table tr:first-child td:first-child { border-start-start-radius: var(--r-sm); }
+  .g-blog-summary .facts-table tr:first-child td:last-child { border-start-end-radius: var(--r-sm); }
 
   /* ---------- oefenvragen ---------- */
+  .g-blog-card { background: #fff; border-radius: var(--r-lg); padding: 22px; }
   .g-topic {
     display: flex; align-items: center; gap: 14px; padding: 16px; border-radius: var(--r-lg); background: #fff; text-decoration: none;
     color: inherit; outline: none; transition: transform 200ms var(--ease-out-glas), box-shadow 200ms ease;
@@ -67,7 +60,7 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .g-blog-author, .g-blog-related a, .g-topic, .g-topic > svg, .g-quiz-bar i { transition-duration: 0ms; }
+  .g-topic, .g-topic > svg, .g-quiz-bar i { transition-duration: 0ms; }
   .g-topic:hover, .g-topic:active, .g-topic:hover > svg { transform: none; }
 }
 
@@ -76,5 +69,5 @@
   .g-faq.bg-mist .g-faq-pm { background: #fff; }
   .g-faq.bg-mist details[open] .g-faq-pm { background: var(--navy); }
   /* Arabisch heeft geen hoofdletters en verbonden letters: de mono-spatiëring breekt de woorden. */
-  [dir="rtl"] :is(.g-blog-hero, .g-feat, .g-post, .g-gcard, .g-blog-card, .g-byline) .g-mono, [dir="rtl"] .g-blog-sidehtml h3 { letter-spacing: 0 !important; font-family: var(--font-body); }
+  [dir="rtl"] :is(.g-feat, .g-post, .g-gcard, .g-blog-card, .g-byline) .g-mono { letter-spacing: 0 !important; font-family: var(--font-body); }
 }

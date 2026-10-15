@@ -196,6 +196,35 @@ wonen gezondheid werk` (+ aliassen `grammatica`, `examentraining`).
 `g-glass`-kaart, logo + tagline + de vier track-merken (36px), drie linkkolommen, juridische regel
 eronder. Klassen `g-foot*` in `app/glas-components.css`.
 
+## Uitleg — `components/glas/uitleg/` (ter beoordeling, 15-10-2026)
+
+Elementen die een begrip laten **zien** in plaats van beschrijven, voor gidsen, blog en leerlaag.
+Voorbeeldpagina: `/uitleg-elementen` (noindex, niet in de sitemap). CSS: `app/glas-uitleg.css`
+(voorvoegsel `g-uit-`). Ingebouwd in de blog via `<!--uitleg:id-->` in `articleHtml`; de inhoud per
+id staat in `app/[locale]/(main)/blog/[slug]/BlogUitleg.tsx`. De gidsen hebben ze nog niet.
+
+Eén vorm voor allemaal: een **mistpaneel** (22px) in de witte leeskolom, wat je aanraakt is wit,
+gekozen = navy inset-ring, oranje alleen als wijzer. **Elk getal komt uit `SEO/facts.md` en de bron
+staat eronder** (`bron`-prop op elk element). Labels zijn props met Nederlandse standaarden, zodat
+de inhoud per taal ze kan meegeven.
+
+| Element | Wanneer |
+|---|---|
+| `Tijdlijn` | momenten in volgorde; `grens` = harde datum, `nu` = jij bent hier, `estimate` = gestippeld |
+| `Beslispad` `variant="stap"` | geldt dit voor mij? één vraag tegelijk, vertakkingen mogen |
+| `Beslispad` `variant="ladder"` | idem, alle vragen tegelijk; alleen voor een rechte reeks |
+| `Scenarios` | wat gebeurt er als…; links de gevolgen, rechts in Nacht wat jij doet |
+| `Pogingen` | examenpogingen naspelen met kosten per profiel; afzeggen telt niet |
+| `Stappen` | proces met een klok, één stap tegelijk, optionele afvinklijst |
+| `Vergelijker` | twee of drie dingen per rij; "wat geldt voor jou?" + "alleen verschillen"; `null` = grijs streepje |
+| `Termijn` | PIP-datum → start, einde, dagen over; rekent met `lib/tijdlijn/engine/dates` |
+| `ExamenOpbouw` | balk per niveau: lengte = tijd, blokje = vraag; `null` = "nog niet bekend" |
+| `Onderdelenkaart` | geheel en delen, tegelgrootte = gewicht, huidige tegel navy |
+| `KloptHet` | misverstanden: klopt / klopt niet, antwoord met bron |
+
+Beweging: inhoud staat altijd zichtbaar zonder JS en in print; de tijdlijn animeert alleen als hij
+onder de vouw begon. Keuze eigenaar 15-10: alleen de verticale tijdlijn (de route met stations is geschrapt); beslispad als ladder waar de vragen een rechte reeks zijn, als stap waar ze vertakken.
+
 ## Valkuilen
 
 - **Prefix.** glas.html's korte klassen (`.btn`, `.chip`, `.field`, `.st`, `.opt`, `.ring`) bestaan

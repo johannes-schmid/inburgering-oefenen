@@ -9,6 +9,7 @@
 @import "./glas-public-tijdlijn.css";
 @import "./glas-public-blog.css";
 @import "./glas-public-oefenexamen.css";
+@import "./glas-uitleg.css";
 
 @source "../data/**/*.ts";
 @source "../components/**/*.tsx";

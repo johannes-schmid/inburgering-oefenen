@@ -15,8 +15,9 @@ import { useTranslations } from 'next-intl';
 import { ChevronDown } from 'lucide-react';
 import type { GuideSectionEntry } from '@/lib/guides/sections';
 
-export default function GuideToc({ sections, variant }: { sections: GuideSectionEntry[]; variant: 'side' | 'fold' }) {
+export default function GuideToc({ sections, variant, label }: { sections: GuideSectionEntry[]; variant: 'side' | 'fold'; label?: string }) {
   const t = useTranslations('guides');
+  const title = label ?? t('toc_title');
   const [active, setActive] = useState<string | null>(sections[0]?.id ?? null);
 
   useEffect(() => {
@@ -59,7 +60,7 @@ export default function GuideToc({ sections, variant }: { sections: GuideSection
     return (
       <details className="g-guide-tocfold no-print">
         <summary>
-          {t('toc_title')}
+          {title}
           <ChevronDown aria-hidden="true" />
         </summary>
         {items}
@@ -67,8 +68,8 @@ export default function GuideToc({ sections, variant }: { sections: GuideSection
     );
   }
   return (
-    <nav aria-label={t('toc_title')} className="g-guide-toc no-print">
-      <span className="g-mono px-3">{t('toc_title')}</span>
+    <nav aria-label={title} className="g-guide-toc no-print">
+      <span className="g-mono px-3">{title}</span>
       {items}
     </nav>
   );

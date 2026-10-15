@@ -4,12 +4,14 @@ import { getTranslations, setRequestLocale } from 'next-intl/server';
 import { ArrowRight, BadgeCheck, Globe } from 'lucide-react';
 import Field from '@/components/glas/Field';
 import { glasButton } from '@/components/glas/Button';
-import CategoryMark from '@/components/horizon/CategoryMark';
 import Crumbs from '../../_components/glas/Crumbs';
 import FaqList from '../../_components/glas/FaqList';
 import { Link } from '@/i18n/navigation';
 import { getPostBySlug, getPostLocale, getPostSlug, getAllPostParams, hasTranslation } from '@/data/blog-posts';
 import ArticleContent from '@/components/ArticleContent';
+import BlogUitleg from './BlogUitleg';
+import GuideToc from '@/components/guides/GuideToc';
+import { guideSections } from '@/lib/guides/sections';
 import { SITE_URL, TEACHER_ID, langTag } from '@/lib/site';
 import { absUrl, PROVIDER_REF, TEACHER_REF } from '@/lib/schema';
 
@@ -19,6 +21,22 @@ type Props = { params: Promise<{ locale: string; slug: string }> };
 function relatedSlug(nlSlug: string, locale: string): string {
   const target = getPostBySlug(nlSlug);
   return target ? getPostSlug(target, locale) : nlSlug;
+}
+
+/** De tekst geknipt op `<!--uitleg:id-->`: tekstblokken met een uitlegelement ertussen. Het element
+ *  staat náást `.article-body` en niet erin, zodat de artikelregels (`ul li::before`, `h3`, `p`)
+ *  het element niet raken. */
+function ArticleWithUitleg({ html, locale }: { html: string; locale: string }) {
+  const parts = html.split(/<!--uitleg:([a-z0-9-]+)-->/);
+  return (
+    <>
+      {parts.map((part, i) =>
+        i % 2 === 1
+          ? <BlogUitleg key={i} id={part} locale={locale} />
+          : part.trim() ? <ArticleContent key={i} html={part} className={i > 0 ? 'is-cont' : undefined} /> : null,
+      )}
+    </>
+  );
 }
 
 export async function generateStaticParams() {
@@ -83,6 +101,7 @@ export default async function BlogPostPage({ params }: Props) {
   const lp = getPostLocale(post, locale);
   const translated = hasTranslation(post, locale);
   const canonicalUrl = absUrl(locale, `blog/${getPostSlug(post, locale)}`);
+  const sections = guideSections(lp.articleHtml);
 
   // Rough word count off the rendered body — BlogPosting.wordCount wants prose, not markup.
   const wordCount = lp.articleHtml.replace(/<[^>]+>/g, ' ').split(/\s+/).filter(Boolean).length;
@@ -136,11 +155,10 @@ export default async function BlogPostPage({ params }: Props) {
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
 
-      {/* ── De beeldkop (glas.html §14 "Artikelpagina") ──
-          De foto van het artikel is de kop; titel, ondertitel en auteur staan op glas van 86% wit
-          (regel 06: tekst nooit op het drukke deel van een beeld). Het veld Nevel loopt onder de
-          zwevende pil door, zodat die iets heeft om op te zweven. */}
-      <Field as="header" variant="nevel" className="-mt-[var(--nav-h)] pt-[calc(var(--nav-h)+28px)] pb-2">
+      {/* De kop is die van een kennisgids (GuideArticle.tsx, glas.html §14 "Artikel"): Nevel onder
+          de pil door, titel, lead en auteur links op het veld, de foto van het artikel rechts als
+          losse tegel. Blog en gids hebben zo één leesvorm. */}
+      <Field as="header" variant="nevel" veil className="g-readhead">
         <div className="g-wrap">
           <Crumbs
             items={[
@@ -148,129 +166,124 @@ export default async function BlogPostPage({ params }: Props) {
               { label: t('breadcrumb_blog'), href: '/blog' },
               { label: lp.breadcrumb },
             ]}
-            className="mb-5"
           />
-          <div className="g-ap-hero g-blog-hero">
-            <img src={post.image} alt={lp.imageAlt} width={1200} height={630} />
-            <div className="g-glass g-glass-strong">
-              <span className="g-mono">{lp.category}</span>
+          <div className="g-gh g-gh-photo">
+            <div className="g-gh-text">
               <h1>{lp.heroTitle}</h1>
-              <p className="m-0 mt-3 text-[1.0625rem] leading-relaxed text-ink-2 max-w-[56ch]">{lp.heroSubtitle}</p>
-              <div className="g-byline mt-5">
-                <img src="/images/amber-van-der-zalm-264.webp" alt="Amber van der Zalm" width={46} height={46} />
-                <span>
-                  <b>
-                    <Link href="/docent" className="g-blog-author">Amber van der Zalm</Link>
-                  </b>
-                  <small>NT2-docent · {lp.dateLabel}</small>
-                </span>
-                <span className="g-byline-sep" aria-hidden="true" />
-                <span className="g-mono">{t('reading_time', { minutes: post.readingMinutes })}</span>
+              <p className="g-lead">{lp.heroSubtitle}</p>
+              <div className="mt-7">
+                <div className="g-byline g-gh-byline">
+                  <img src="/images/amber-van-der-zalm-264.webp" alt="" width={46} height={46} />
+                  <span className="min-w-0">
+                    <Link href="/docent" className="g-ilink !no-underline font-headline font-bold text-[14.5px]">Amber van der Zalm</Link>
+                    <small className="block">NT2-docent · {lp.dateLabel}</small>
+                  </span>
+                  <span className="g-byline-sep" aria-hidden="true" />
+                  <span className="g-mono">{t('reading_time', { minutes: post.readingMinutes })}</span>
+                </div>
               </div>
+              {/* Melding vóór de eerste regel tekst (AI-verordening art. 50 lid 4 en 5): een
+                  machinevertaling zonder menselijke controle valt niet onder de uitzondering voor
+                  nagekeken tekst. Staat bovenaan, nooit onderaan weggestopt. */}
+              {translated && locale !== 'nl' && (
+                <p className="g-notice g-notice-glas m-0 mt-6 max-w-[640px]" role="note">
+                  <Globe aria-hidden="true" />
+                  <span>{t('mt_notice')}</span>
+                </p>
+              )}
+              <div className="flex flex-wrap gap-3 mt-7">
+                <Link href="/oefenen" className={glasButton({ variant: 'navy' })}>
+                  {t('sidebar_cta_btn')}
+                  <ArrowRight className="rtl-flip" aria-hidden="true" />
+                </Link>
+              </div>
+            </div>
+            <div className="g-gh-media">
+              <picture>
+                <img src={post.image} alt={lp.imageAlt} width={1200} height={630} fetchPriority="high" decoding="async" />
+              </picture>
             </div>
           </div>
         </div>
       </Field>
 
-      <main className="g-sec !pt-6">
-        <div className="g-wrap">
-          {/* Melding vóór de eerste regel tekst (AI-verordening art. 50 lid 4 en 5): een
-              machinevertaling zonder menselijke controle valt niet onder de uitzondering voor
-              nagekeken tekst. Staat bovenaan, nooit onderaan weggestopt. */}
-          {translated && locale !== 'nl' && (
-            <div className="g-notice g-notice-glas mb-6 max-w-[760px]" role="note">
-              <Globe aria-hidden="true" />
-              <span>{t('mt_notice')}</span>
-            </div>
-          )}
+      {/* De leeskaart van de gids: inhoudsopgave links (plakt), één leeskolom rechts, geen zijbalk. */}
+      <main className="g-wrap pt-6 pb-16 sm:pb-20">
+        <div className="g-prose guide-prose g-blog-prose">
+          <GuideToc sections={sections} variant="side" label={t('toc_title')} />
 
-          <div className="g-blog-grid">
-            <article className="g-blog-body">
-              {/* Een onvertaalde taal valt terug op de Nederlandse tekst. Forceer LTR eromheen: in
-                  de Arabische layout (dir="rtl") staat de interpunctie van Nederlandse tekst anders
-                  aan de verkeerde kant. De pagina is in deze stand ook noindex. */}
-              {translated ? (
-                <ArticleContent html={lp.articleHtml} />
-              ) : (
-                <>
-                  <div className="g-notice mb-6" role="note">
-                    <Globe aria-hidden="true" />
-                    <span>
-                      {t('not_translated')}{' '}
-                      {/* `locale="nl"`: zonder die prop blijft de link in de huidige taal en wijst
-                          "lees in het Nederlands" naar de pagina waar de lezer al staat. `post.slug`
-                          is de Nederlandse slug, precies wat de Nederlandse route wil. */}
-                      <Link href={{ pathname: '/blog/[slug]', params: { slug: post.slug } }} locale="nl" className="g-ilink">
-                        {t('read_in_dutch')}
-                      </Link>
-                    </span>
-                  </div>
-                  <div dir="ltr" lang="nl">
-                    <ArticleContent html={lp.articleHtml} />
-                  </div>
-                </>
-              )}
+          <article className="g-prose-body min-w-0">
+            <GuideToc sections={sections} variant="fold" label={t('toc_title')} />
 
-              {/* FAQ als `<details>`: een blok van acht open antwoorden duwt de CTA en de
-                  gerelateerde artikelen ver onder de vouw. Dezelfde tekst als de FAQPage hierboven. */}
-              {lp.faq.length > 0 && (
-                <section className="mt-12" aria-labelledby="blog-faq-heading">
-                  <h2 id="blog-faq-heading" className="g-head g-head-2 mb-4">{t('faq_title')}</h2>
-                  <FaqList className="bg-mist" items={lp.faq.map(f => ({ question: f.q, answer: f.a }))} />
-                </section>
-              )}
-
-              {/* De nagekeken-door-regel — de USP, gewoon en controleerbaar opgeschreven. */}
-              <div className="g-notice mt-10" role="note">
-                <BadgeCheck aria-hidden="true" />
-                <span>{t('reviewed_by', { date: post.dateModified })}</span>
-              </div>
-
-              {/* Inline CTA op Nacht stil met een witte knop: geen oranje naast een donker vlak. */}
-              <Field variant="nacht-stil" className="g-inline-cta">
-                <span className="flex-1 min-w-[200px]">
-                  <b>{lp.ctaTitle}</b>
-                  <small>{lp.ctaDesc}</small>
+            {/* Een onvertaalde taal valt terug op de Nederlandse tekst, geforceerd LTR: in de
+                Arabische layout staat de interpunctie van Nederlandse tekst anders aan de verkeerde
+                kant. De pagina is in deze stand ook noindex. */}
+            {!translated && (
+              <p className="g-notice m-0 mb-6" role="note">
+                <Globe aria-hidden="true" />
+                <span>
+                  {t('not_translated')}{' '}
+                  {/* `locale="nl"`: zonder die prop blijft de link in de huidige taal. */}
+                  <Link href={{ pathname: '/blog/[slug]', params: { slug: post.slug } }} locale="nl" className="g-ilink">
+                    {t('read_in_dutch')}
+                  </Link>
                 </span>
-                <Link href={post.ctaHref} className={glasButton({ variant: 'wit' })}>
-                  {lp.ctaLabel}
-                  <ArrowRight className="rtl-flip" aria-hidden="true" />
-                </Link>
-              </Field>
-            </article>
+              </p>
+            )}
 
-            <aside className="g-blog-side">
-              <div className="g-blog-card">
-                <CategoryMark category="examen" size={44} />
-                <h2 className="g-head g-head-3 mt-4">{t('sidebar_cta_title')}</h2>
-                <p className="m-0 mt-2 text-sm leading-relaxed text-ink-2">{t('sidebar_cta_desc')}</p>
-                <Link href="/oefenen" className={glasButton({ variant: 'navy', size: 'sm', className: 'mt-4 w-full' })}>
-                  {t('sidebar_cta_btn')}
-                </Link>
-              </div>
-
+            <div {...(translated ? {} : { dir: 'ltr' as const, lang: 'nl' })}>
+              {/* De feitenkaart van het artikel, bovenaan zoals de samenvatting van een gids. */}
               {lp.sidebarHtml && (
-                <div className="g-blog-sidehtml" dangerouslySetInnerHTML={{ __html: lp.sidebarHtml }} />
+                <section className="g-summary g-blog-summary mb-10" dangerouslySetInnerHTML={{ __html: lp.sidebarHtml }} />
               )}
+              <ArticleWithUitleg html={lp.articleHtml} locale={translated ? locale : 'nl'} />
+            </div>
 
-              {lp.relatedPosts.length > 0 && (
-                <nav className="g-blog-card" aria-labelledby="blog-related-heading">
-                  <h2 id="blog-related-heading" className="g-mono mb-2">{t('related_title')}</h2>
-                  <ul className="g-blog-related">
-                    {lp.relatedPosts.map(r => (
-                      <li key={r.slug}>
-                        <Link href={{ pathname: '/blog/[slug]', params: { slug: relatedSlug(r.slug, locale) } }}>
-                          <b>{r.title}</b>
-                          <small>{r.desc}</small>
-                        </Link>
-                      </li>
-                    ))}
-                  </ul>
-                </nav>
-              )}
-            </aside>
-          </div>
+            {/* FAQ als `<details>`: dezelfde tekst als de FAQPage hierboven. */}
+            {lp.faq.length > 0 && (
+              <section className="mt-14" aria-labelledby="blog-faq-heading">
+                <h2 id="blog-faq-heading" className="g-head g-head-2 mb-4">{t('faq_title')}</h2>
+                <FaqList className="bg-mist" items={lp.faq.map(f => ({ question: f.q, answer: f.a }))} />
+              </section>
+            )}
+
+            {/* De nagekeken-door-regel — de USP, gewoon en controleerbaar opgeschreven. */}
+            <p className="g-notice m-0 mt-10" role="note">
+              <BadgeCheck aria-hidden="true" />
+              <span>{t('reviewed_by', { date: post.dateModified })}</span>
+            </p>
+
+            {/* De slot-CTA: Nacht stil met een witte knop. Eén donker blok op de pagina. */}
+            <Field variant="nacht-stil" className="g-inline-cta !mt-10">
+              <span className="flex-1 min-w-[220px]">
+                <b>{lp.ctaTitle}</b>
+                <small>{lp.ctaDesc}</small>
+              </span>
+              <Link href={post.ctaHref} className={glasButton({ variant: 'wit' })}>
+                {lp.ctaLabel}
+                <ArrowRight className="rtl-flip" aria-hidden="true" />
+              </Link>
+            </Field>
+          </article>
         </div>
+
+        {lp.relatedPosts.length > 0 && (
+          <nav className="mt-10 bg-wit rounded-g-lg p-6" aria-labelledby="blog-related-heading">
+            <h2 id="blog-related-heading" className="g-mono m-0 mb-4">{t('related_title')}</h2>
+            <ul className="list-none p-0 m-0 flex flex-col gap-3">
+              {lp.relatedPosts.map(r => (
+                <li key={r.slug}>
+                  <Link
+                    href={{ pathname: '/blog/[slug]', params: { slug: relatedSlug(r.slug, locale) } }}
+                    className="g-tlink !text-[15px]"
+                  >
+                    {r.title}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </nav>
+        )}
       </main>
     </>
   );
