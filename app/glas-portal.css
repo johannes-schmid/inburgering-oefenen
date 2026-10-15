@@ -33,7 +33,9 @@
   width: 280px; flex: none; height: calc(100vh - 24px); position: sticky; top: 12px;
   margin: 12px 0 12px 12px; margin-inline: 12px 0;
   display: flex; flex-direction: column; padding: 16px 12px 12px; border-radius: var(--r-xl);
-  background: rgba(255, 255, 255, 0.86);
+  /* Glas zoals de navpil van de site, met een glans van boven naar onder: het veld achter de
+     zijbalk is bijna vlak, dus pas aan de onderkant laat het zijn kleur zien. */
+  background: linear-gradient(170deg, rgba(255, 255, 255, 0.78) 0%, rgba(255, 255, 255, 0.52) 100%);
   -webkit-backdrop-filter: blur(24px) saturate(1.5); backdrop-filter: blur(24px) saturate(1.5);
   box-shadow: var(--glas-rand), var(--zweef);
 }
@@ -136,7 +138,7 @@
 .g-mhead {
   position: sticky; top: 8px; z-index: 50; margin: 8px 12px 0; padding: 7px 7px 7px 12px;
   padding-inline: 12px 7px; align-items: center; justify-content: space-between; gap: 12px;
-  border-radius: var(--r-pill); background: rgba(255, 255, 255, 0.86);
+  border-radius: var(--r-pill); background: var(--glas);
   -webkit-backdrop-filter: blur(24px) saturate(1.5); backdrop-filter: blur(24px) saturate(1.5);
   box-shadow: var(--glas-rand), 0 18px 40px -28px rgba(0, 27, 80, 0.45);
 }
@@ -159,7 +161,7 @@
   display: none; position: fixed; z-index: 100; left: 12px; right: 12px;
   bottom: calc(10px + env(safe-area-inset-bottom)); max-width: 440px; margin: 0 auto;
   justify-content: space-around; align-items: flex-start; gap: 2px; padding: 7px 6px 6px;
-  border-radius: var(--r-xl); background: rgba(255, 255, 255, 0.86);
+  border-radius: var(--r-xl); background: var(--glas);
   -webkit-backdrop-filter: blur(24px) saturate(1.5); backdrop-filter: blur(24px) saturate(1.5);
   box-shadow: var(--glas-rand), var(--zweef);
 }
@@ -257,7 +259,9 @@
    Gedeelde bouwstenen van de overzichtsschermen
    ════════════════════════════════════════════════════════════════════════════════════════════ */
 
-.g-page { max-width: 1140px; margin: 0 auto; padding: 32px 28px 64px; }
+/* `background: none` omdat de publieke `.g-page` (glas-public.css) een mist-vlak zet; hier moet
+   het veld "Licht" erdoorheen, anders staat de inhoud in een doos op het verloop. */
+.g-page { max-width: 1140px; margin: 0 auto; padding: 32px 28px 64px; background: none; }
 .g-page-narrow { max-width: 860px; }
 @media (max-width: 768px) { .g-page { padding: 20px 16px 32px; } }
 
