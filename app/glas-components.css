@@ -73,9 +73,15 @@
   .g-on-field .g-head > .g-head-muted, .g-head.g-on-field > .g-head-muted { color: var(--ink-2); }
   .g-on-dark .g-head, .g-head.g-on-dark { color: #fff; }
   .g-on-dark .g-head > .g-head-muted, .g-head.g-on-dark > .g-head-muted { color: rgba(255, 255, 255, 0.55); }
-  .g-head-display { font-size: clamp(46px, 7.4vw, 96px); line-height: 0.98; letter-spacing: -0.05em; font-weight: 700; }
-  .g-head-section { font-size: clamp(34px, 4.6vw, 58px); line-height: 1.02; letter-spacing: -0.045em; font-weight: 700; }
-  .g-head-1 { font-size: clamp(32px, 4vw, 48px); line-height: 1.06; letter-spacing: -0.04em; font-weight: 700; }
+  /* Spatiëring hoort bij de grootte, niet bij de klasse: op 34px sloot -0.045em de letters
+     ("achter alles") dicht. Smal ruimer, breed hooguit -0.04em. */
+  .g-head-display { font-size: clamp(46px, 7.4vw, 96px); line-height: 0.98; letter-spacing: -0.035em; font-weight: 700; }
+  .g-head-section { font-size: clamp(34px, 4.6vw, 58px); line-height: 1.02; letter-spacing: -0.03em; font-weight: 700; }
+  .g-head-1 { font-size: clamp(32px, 4vw, 48px); line-height: 1.06; letter-spacing: -0.028em; font-weight: 700; }
+  @media (min-width: 860px) {
+    .g-head-display, .g-head-section { letter-spacing: -0.04em; }
+    .g-head-1 { letter-spacing: -0.035em; }
+  }
   .g-head-2 { font-size: 30px; line-height: 1.12; letter-spacing: -0.03em; font-weight: 700; }
   .g-head-3 { font-size: 22px; line-height: 1.25; letter-spacing: -0.02em; font-weight: 700; color: var(--ink); }
   .g-lead { font-size: clamp(17px, 1.5vw, 19px); line-height: 1.6; color: var(--ink-2); max-width: 52ch; text-wrap: pretty; }
@@ -437,7 +443,15 @@
   @media (max-width: 860px) { .g-shead { grid-template-columns: minmax(0, 1fr); gap: 16px; } }
 
   /* ---------- 13 · footer F1 "licht glas" ---------- */
-  .g-foot { padding: 16px; }
+  .g-foot { padding: 96px 16px 16px; }
+  /* Het veld vloeit van boven in, zodat de pagina erboven doorloopt in de footer in plaats van op
+     een rand te stoppen (feedback eigenaar 15-10). */
+  .g-foot.g-field::before { inset: 0 -12% -12%; }
+  .g-foot.g-field::before,
+  .g-foot.g-field::after {
+    -webkit-mask-image: linear-gradient(transparent, #000 220px);
+    mask-image: linear-gradient(transparent, #000 220px);
+  }
   .g-foot-card {
     border-radius: var(--r-xl); padding: 28px; display: grid;
     grid-template-columns: minmax(0, 1.2fr) repeat(3, minmax(0, 1fr)); gap: 28px;
@@ -500,6 +514,17 @@
   a.g-slot:hover, a.g-slot.g-slot-open:hover .g-slot-ic { transform: none; }
   .g-ll .g-ll-bar, .g-ll .g-ll-sun { animation: none; opacity: 1; transform: none; }
   .g-ll-wait { animation-duration: 0ms; }
+}
+
+/* Glas wordt mat voor wie minder transparantie of meer contrast vraagt (macOS/iOS-instelling):
+   dezelfde vorm, zonder blur, met een tekenende rand bij meer contrast. */
+@media (prefers-reduced-transparency: reduce) {
+  .g-glass, .g-glass.g-glass-strong, .g-btn-ghost { background: var(--glas-fallback); -webkit-backdrop-filter: none; backdrop-filter: none; }
+  .g-glass-d { background: rgba(0, 26, 74, 0.96); -webkit-backdrop-filter: none; backdrop-filter: none; }
+}
+@media (prefers-contrast: more) {
+  .g-glass, .g-glass.g-glass-strong { background: #fff; -webkit-backdrop-filter: none; backdrop-filter: none; box-shadow: inset 0 0 0 1px var(--ink-2), var(--zweef); }
+  .g-glass-d { background: var(--navy); -webkit-backdrop-filter: none; backdrop-filter: none; box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.6); }
 }
 
 /* ---------- 07 · het docentzegel (`.seal`) — components/glas/ValidationSeal.tsx ---------- */

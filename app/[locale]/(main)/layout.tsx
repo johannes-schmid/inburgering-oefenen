@@ -32,9 +32,13 @@ export default async function MainLayout({
           Een pagina die een eigen laadtoestand wil, zet een `loading.tsx` of een grens rond
           precies het deel dat wacht. */}
       {/* `g-page`: de Glas-ondergrond (mist). Elke pagina begint met een veld dat met een negatieve
-          marge onder de zwevende pil door loopt; de pil heeft dat veld nodig om te zweven. */}
-      <div className="g-page pt-[var(--nav-h)]">{children}</div>
-      <Footer />
+          marge onder de zwevende pil door loopt; de pil heeft dat veld nodig om te zweven.
+          **De footer staat ín die ondergrond**: zijn veld vloeit van boven in, en daaronder moet
+          mist liggen en niet het witte `body` — anders blijft er alsnog een rand staan. */}
+      <div className="g-page pt-[var(--nav-h)]">
+        {children}
+        <Footer />
+      </div>
       {/* Local only — see lib/dev-tools.ts. Excluded from the tree in prod builds. */}
       {DevStateBar && <DevStateBar locale={locale} />}
     </>

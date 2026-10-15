@@ -3,12 +3,13 @@ import Field, { type FieldVariant } from '@/components/glas/Field';
 import ExamMark, { type Track } from '@/components/horizon/ExamMark';
 
 /**
- * De track-kaart (glas.html §08 "Track-kaart", §13 "Trackband"): een kop op een veld met het grote
- * track-merk, daaronder titel, uitleg, de chips en een voet met pijl.
+ * De track-kaart (glas.html §08 "Track-kaart"): een kop op een veld met het grote track-merk, de
+ * badge en één mono-regel; daaronder titel, uitleg en een voet met pijl.
  *
- * **De kaart is geen anker**: de chips zijn zelf links (naar de onderdeelpagina's — de homepage moet
- * alle vier de taalonderdelen linken, CLAUDE.md §3), en een link in een link is ongeldige HTML. De
- * voet is de link van de kaart; zijn `::after` spant de hele kaart en de chips liggen erboven.
+ * `chips` staan ín die mono-regel, als links (naar de onderdeelpagina's — de homepage moet alle
+ * vier de taalonderdelen linken, CLAUDE.md §3); zonder chips toont de regel `meta`. **De kaart is
+ * geen anker**, want een link in een link is ongeldige HTML: de voet is de link van de kaart, zijn
+ * `::after` spant de hele kaart en de onderdeellinks liggen erboven.
  *
  * `variant` van de kop: alleen `gracht`, `nevel` of `dageraad` (glas.html: "op de kaartkop alleen
  * Gracht, Nevel of Dageraad"). Beschikbaarheid staat in de tekst (`note`, `badge`), nooit in de kleur.
@@ -47,20 +48,21 @@ export default function TrackCard({
           <ExamMark track={track} size={72} muted={muted} />
           {badge && <span className="g-bdg g-bdg-glas g-bdg-mono">{badge}</span>}
         </div>
-        {meta && <span className="g-track-meta">{meta}</span>}
-      </Field>
-      <div className="g-track-bd">
-        <H>{title}</H>
-        {desc && <p>{desc}</p>}
-        {chips && chips.length > 0 && (
-          <ul className="g-track-chips">
+        {chips && chips.length > 0 ? (
+          <ul className="g-track-meta g-track-links">
             {chips.map(chip => (
               <li key={chip.key}>
                 <a href={chip.href}>{chip.name}</a>
               </li>
             ))}
           </ul>
+        ) : (
+          meta && <span className="g-track-meta">{meta}</span>
         )}
+      </Field>
+      <div className="g-track-bd">
+        <H>{title}</H>
+        {desc && <p>{desc}</p>}
         {note && <p className="g-track-note">{note}</p>}
         <a href={href} className="g-track-ft">
           {ctaLabel}

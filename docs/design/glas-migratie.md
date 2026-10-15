@@ -146,3 +146,36 @@ Gedeelde onderdelen (layout, nav, zijbalk) staan onderaan in een eigen tabel.
 | Route | Bestand | Agent | Status | Notities |
 |---|---|---|---|---|
 | `/[...rest]` | `app/[locale]/[...rest]/page.tsx` |  | oud |  |
+
+## Feedback eigenaar — homepage in Glas (2026-10-15)
+
+**Uitgevoerd op 15-10**, behalve dat de reviewkolom twee van de drie reviews toont (de kolom moet
+even hoog blijven als de docentkaart). Ook gedaan op verzoek: de hero is weer ±900px hoog zoals
+vóór Glas, en elke paginakop (`PageField`, `g-readhead`) vervaagt nu in de pagina; tier-banden
+lopen in en uit in plaats van op een rand te beginnen. Rode draad: **de pagina is te blokkerig en daardoor niet rustig** — secties
+staan als losse vlakken onder elkaar en vloeien niet in elkaar over. Dat is het eerste wat opgelost
+moet worden, op de homepage én in de footer.
+
+1. **Hero is te vol.** De regel "gecontroleerd door een NT2-docent" (de validatiechip/het zegel in
+   de hero) mag kleiner.
+2. **De hero moet overvloeien in de rest van de pagina.** Geen harde onderrand: het veld vervaagt
+   naar de pagina-achtergrond, en die achtergrond houdt daarna een vleugje van dezelfde stijl vast.
+   Voorbeelden:
+   - Settly — `Settly-website/app/(site)/globals.css`: `.globe-glow` (mask
+     `linear-gradient(#000 calc(100% - 140px), transparent)`) en `.crossings-hero::before`
+     (`linear-gradient(#000 55%, transparent)`).
+   - deutschtest üben — `deutsch-test/DESIGN.md` §Elevation (de `.nacht-orb`-bollen achter de hero)
+     en `deutsch-test/app/(main)/landing.css`.
+3. **Minder blokken.** De tier-wissels tussen secties (`g-sec-tier`) maken een streepjescode;
+   overgangen moeten zachter, of er moeten vlakken uit.
+4. **Track-kaarten: neem die uit glas.html** (§08 "Track-kaart") — die zijn mooier dan wat nu op
+   de homepage staat (`_components/glas/TrackCard`). Vervang ze één-op-één.
+5. **"Dit is wat je krijgt" (`vitrine_*`, `FeatureCarousel`) toont oude screenshots** van het
+   platform. Vervangen door beelden in de nieuwe Glas-stijl.
+6. **De reviewsectie moet gelijk zijn aan die in glas.html** (§08 "Docent, review, vergelijking").
+7. **"Eén docent staat achter alles"** (`proofsec_*`) hoort er ook in, in de vorm uit glas.html.
+8. **Witte kaarten zijn te kaal.** Probeer bij een deel ervan — bijvoorbeeld "Oefen op de vorm van
+   het echte examen" (`dd1_*`) en de andere deep-dives — de glazige melkglas-kaart (`g-glass`).
+   Kan ook vanzelf beter worden zodra de achtergrond verandert (punt 2–3); eerst daar kijken.
+9. **Footer: zelfde probleem.** Te veel blokken, niets vloeit in elkaar over. De homepage-CTA
+   erboven en de footer moeten één overgang worden.

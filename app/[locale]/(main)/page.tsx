@@ -1,12 +1,13 @@
 import type { Metadata } from 'next';
 import { getTranslations, setRequestLocale } from 'next-intl/server';
-import { ArrowRight, ArrowUpRight, Check, Clock, Play, X } from 'lucide-react';
+import { ArrowRight, ArrowUpRight, Check, X } from 'lucide-react';
 import { routing } from '@/i18n/routing';
-import { DEFAULT_LEVEL, KNM_THEMES, SKILLS, getFormat } from '@/data/skills';
+import { DEFAULT_LEVEL, SKILLS, getFormat } from '@/data/skills';
 import JsonLd from '@/components/JsonLd';
 import KennisbankCards, { type KennisbankCard } from './_components/KennisbankCards';
 import FeatureCarousel from './_components/FeatureCarousel';
-import TrackCard from './_components/glas/TrackCard';
+import HomeTracks from './_components/glas/HomeTracks';
+import HomeHeroCopy from './_components/glas/HomeHeroCopy';
 import FaqList from './_components/glas/FaqList';
 import { publishedGuides, getGuideLocale, guideHref } from '@/data/guides/helpers';
 import { getPostBySlug, getPostLocale, getPostSlug } from '@/data/blog-posts';
@@ -14,12 +15,12 @@ import TrustpilotScore from '@/components/site/TrustpilotScore';
 import Field from '@/components/glas/Field';
 import SectionHeading from '@/components/glas/SectionHeading';
 import { glasButton } from '@/components/glas/Button';
-import ExamMark from '@/components/horizon/ExamMark';
 import CategoryMark from '@/components/horizon/CategoryMark';
 import { Link } from '@/i18n/navigation';
 import { courseId, TEACHER_REF, ogImageFor } from '@/lib/schema';
 import { localeHref, localizedPath } from '@/i18n/paths';
 import { isOnaAvailable } from '@/lib/ona/access';
+import { REVIEWS } from '@/data/reviews';
 
 type Props = { params: Promise<{ locale: string }> };
 
@@ -139,74 +140,12 @@ export default async function HomePage({ params }: Props) {
     ],
   };
 
-  /* The four parts of the inburgeringstraject, in the order a candidate meets them, with what is
-     actually shipped. `live: false` renders the "binnenkort" chip — see the comment on the row in
-     the hero for why a bare list of four would be a false claim. A2 is the shipped product; B1's
-     thirty exams exist but sit behind the docent's review gate (`noindex`, see `data/skills.ts`);
-     KNM is the documented fifth onderdeel and is not built; ONA is announced and not built. */
-  const TRACKS = [
-    { key: 'track_a2', live: true },
-    /* B1 went live 2026-08-23: the docent signed off the thirty B1 oefenexamens, so its pages
-       are indexed and its modules buyable. This chip, `TRACKS` on `/platform`, the `robots` on
-       `oefenexamen/[level]/[skill]` and the `LEVELS` loop in `app/sitemap.ts` are one decision
-       in four files and move together. */
-    { key: 'track_b1', live: true },
-    /* KNM went live 2026-08-24, when its content moved across from knmoefenen.nl: ten
-       oefenexamens, seven lesmodules and 366 woordkaarten, all authored on that platform by
-       the same docent. This chip, the tile below, `TRACKS` on `/platform`, the KNM rows in
-       `app/sitemap.ts` and `lib/llms.ts`, and the table at the top of `CLAUDE.md` are one
-       decision in six places and move together. */
-    { key: 'track_knm', live: true },
-    /* ONA volgt `isOnaAvailable()` — dezelfde vlag als het portaal, het menu en de checkout. */
-    { key: 'track_ona', live: isOnaAvailable() },
-  ] as const;
 
 
   /* The A2 tile names the four onderdelen it contains, read straight from the taxonomy — so a
      fifth onderdeel or a renamed one cannot leave a stale string on the homepage. Each one links to
      its exam overview: since the four-card grid was removed these chips are the *only* link to the
      onderdelen from this page, which the hard rule in `CLAUDE.md` requires. */
-  const A2_CHIPS = SKILLS.map(s => ({ slug: s.slug, name: tSkills(`${s.key}.name`) }));
-
-  /* B1's chips are the onderdelen that actually have something behind them, derived from the same
-     fact the overview page's `robots` reads: `itemCount === null` means DUO's format at this level
-     is unverified, which is B1 Luisteren and only B1 Luisteren. So this list is Lezen, Schrijven
-     and Spreken, and it will pick up Luisteren automatically on the commit that counts its format
-     off real material — rather than needing someone to remember this line. Linking Luisteren today
-     would put a `noindex` page behind a chip on the most-linked page on the site. */
-  const B1_CHIPS = SKILLS
-    .filter(s => getFormat('b1', s.slug).itemCount !== null)
-    .map(s => ({ slug: s.slug, name: tSkills(`${s.key}.name`) }));
-
-  /* Echte reviews van **knmoefenen.nl** op Trustpilot, letterlijk overgenomen (11-10-2026) en in
-     hun eigen taal: een vertaalde quote is niet meer wat iemand schreef. Een eventuele weglating is
-     gemarkeerd met […]. De naam staat zoals Trustpilot hem toont, ingekort tot voornaam en
-     initiaal; er is geen foto, want de reviewers hebben er op Trustpilot geen.
-
-     **Wat hier niet mag komen:** een review van iemand die aan het bedrijf verbonden is. "Amber"
-     en "ingrid van der zalm" (beide augustus 2026) staan daarom niet in deze lijst; zie
-     `SEO/facts.md` §12. Elke nieuwe review hier: eerst de eigenaar laten bevestigen dat het een
-     echte, onafhankelijke klant is. */
-  const REVIEWS = [
-    {
-      name: 'Francesca G.',
-      date: '2026-08-09',
-      lang: 'en',
-      text: 'The practice exams are extremely helpful. I completed 10 practice exams and passed with a 9!',
-    },
-    {
-      name: 'Anne',
-      date: '2026-08-10',
-      lang: 'en',
-      text: "I used KNMoefenen for about six weeks while preparing for my inburgering exam, and it made a real difference in how I studied. […] The free flashcards are a real bonus, so don't skip it!",
-    },
-    {
-      name: 'Raghda Z.',
-      date: '2026-09-23',
-      lang: 'nl',
-      text: 'Dank u voor deze prachtige aanmelding, het heeft mijn studie van het boek in korte tijd verkort',
-    },
-  ] as const;
   const reviewDate = new Intl.DateTimeFormat(locale === 'ar' ? 'ar' : locale === 'en' ? 'en-GB' : 'nl-NL', { day: 'numeric', month: 'short', year: 'numeric' });
 
   /* The kennisbank row. Everything a reader can *read* rather than practise, in one grid.
@@ -295,11 +234,14 @@ export default async function HomePage({ params }: Props) {
 
   const faqs = [1, 2, 3, 4, 5, 6].map(n => ({ q: `faq_q${n}`, a: `faq_a${n}`, link: n === 1 }));
 
-  const [heroLead, heroMuted] = t('hero_line1').split(' — ');
-
   return (
     <>
       <JsonLd data={jsonLd} />
+
+      {/* Eén doorlopende ondergrond (feedback eigenaar 15-10): de hero vervaagt in de pagina en
+          geen sectie heeft een eigen band. Wat de secties scheidt is ruimte, en een paar zachte
+          gloeden (`g-glow`) die de stijl van de hero vasthouden tot in de footer. */}
+      <div className="g-home">
 
       {/* ── HERO — product als beeld (glas.html §13 "Hero", G7: de structuur van vandaag) ──
           Het veld `hero` draagt de ene gloed van deze view, rechts; de tekst staat links op de
@@ -309,99 +251,49 @@ export default async function HomePage({ params }: Props) {
           omdat die rij per track zegt wat er wél en niet achter zit (CLAUDE.md §2: het merk is het
           hele traject, de catalogus wordt apart genoemd). A2 en B1 linken naar hun niveau-overzicht.
 
-          Rechts de scène: drie glazen kaartjes met een vraag, een examendag en een luisterspeler.
-          Het is een plaatje van het product, dus `aria-hidden`; alles wat iemand moet wéten staat
-          in de tekst links. Elk getal erin is illustratieve schermstand, geen claim. Onder 960px
-          valt de scène weg: zes overlappende kaartjes worden op 390px een stapel afgesneden blokken. */}
-      <Field as="section" id="hero" variant="hero" veil className="g-hero" aria-labelledby="hero-heading">
+          De opbouw is die van deutschtest üben (feedback eigenaar 15-10): een brede tekstkolom met
+          een rustige vinkjesrij onder de knoppen, en rechts één app-scherm met een pil die over de
+          onderrand valt. Het scherm is een plaatje van het product, dus `aria-hidden`; alles wat
+          iemand moet wéten staat links. Elk getal erin is illustratieve schermstand, geen claim. */}
+      <Field as="section" id="hero" variant="hero" veil className="g-hero g-hero-fade g-hero-live" aria-labelledby="hero-heading">
+        <span className="g-hero-orbs" aria-hidden="true"><i /><i /></span>
         <div className="g-wrap g-hero-grid">
-          <div>
-            <span className="g-seal g-glass g-glass-strong">
-              <img src="/images/amber-van-der-zalm-264.webp" alt="" width={30} height={30} />
-              <b>{t('hero_badge')}</b>
-            </span>
-            <h1 id="hero-heading">
-              {heroLead}
-              {heroMuted && <> <span>{heroMuted}</span></>}
-            </h1>
-            <p className="g-lead">{t('hero_subheading')}</p>
-            <div className="g-ctas">
-              <a href={localeHref(locale, `oefenen`)} className={glasButton({ variant: 'navy', size: 'lg' })}>
-                {t('cta_primary')}
-                <ArrowRight className="rtl-flip" aria-hidden="true" />
-              </a>
-              <Link href="/platform" className={glasButton({ variant: 'ghost', size: 'lg' })}>
-                {t('cta_secondary')}
-              </Link>
-            </div>
+          <HomeHeroCopy locale={locale} headingId="hero-heading" />
 
-            <ul className="flex flex-wrap items-center gap-2 list-none p-0 m-0 mt-6" aria-label={t('blocks_heading')}>
-              {TRACKS.map(track => {
-                const levelHref = track.key === 'track_a2' ? localeHref(locale, 'oefenexamen/a2')
-                  : track.key === 'track_b1' ? localeHref(locale, 'oefenexamen/b1')
-                  : null;
-                return (
-                  <li key={track.key}>
-                    {levelHref ? (
-                      <a href={levelHref} className="g-metachip g-glass g-hero-track">
-                        <Check aria-hidden="true" className="text-goed" />
-                        {t(track.key)}
-                      </a>
-                    ) : (
-                      <span className="g-metachip g-glass">
-                        {track.live ? <Check aria-hidden="true" className="text-goed" /> : <Clock aria-hidden="true" />}
-                        {t(track.key)}
-                        {!track.live && <span className="g-bdg g-bdg-grijs !h-5 !px-2 !text-[11px]">{t('pkg_soon')}</span>}
-                      </span>
-                    )}
-                  </li>
-                );
-              })}
-            </ul>
-          </div>
-
-          <div className="g-scene" aria-hidden="true" dir="ltr" lang="nl">
-            <div className="g-glass g-glass-strong" style={{ insetInlineStart: 0, top: 6, width: '78%', padding: 18 }}>
-              <div className="flex items-center justify-between">
-                <span className="g-mono">Lezen A2 · vraag 4</span>
-                <CategoryMark category="lezen" size={30} />
+          <div className="g-hero-scene" aria-hidden="true" dir="ltr" lang="nl">
+            <div className="g-phone g-glass g-glass-strong">
+              <span className="g-phone-notch" />
+              <div className="g-phone-big">
+                <span>Je examen over</span>
+                <b className="g-tnum">23 dagen</b>
               </div>
-              <div className="g-head text-[17px] font-bold tracking-[-0.015em] text-ink mt-2.5 mb-3">
-                Wat moet je meenemen naar de afspraak?
+              <div className="g-phone-row">
+                <CategoryMark category="luisteren" size={36} />
+                <span><b>Luisteren A2 · vraag 4</b>Ga verder waar je was.</span>
               </div>
-              <div className="g-answers">
-                <div className="g-ans !py-2.5 !text-sm"><span className="g-ans-k !size-[26px]">A</span><span className="g-ans-text">Je paspoort en een pasfoto</span></div>
-                <div className="g-ans !py-2.5 !text-sm" aria-checked="true"><span className="g-ans-k !size-[26px]">B</span><span className="g-ans-text">Alleen een brief van de gemeente</span></div>
+              <div className="g-phone-row">
+                <span className="g-phone-ok"><Check /></span>
+                <span><b>Schrijven nagekeken</b>Je feedback staat klaar.</span>
               </div>
             </div>
-            <div className="g-glass g-glass-strong flex items-center gap-3.5" style={{ insetInlineEnd: 0, top: 238, width: '54%', padding: 16 }}>
-              <ExamMark track="a2" size={56} />
-              <div>
-                <span className="g-mono">Je examen</span>
-                <div className="g-head g-tnum text-[34px] font-extrabold tracking-[-0.05em] leading-none mt-1">23 dagen</div>
-              </div>
-            </div>
-            <div className="g-glass g-glass-strong flex items-center gap-3" style={{ insetInlineStart: '6%', top: 352, width: '62%', padding: '12px 14px' }}>
-              <span className="size-[38px] rounded-full bg-navy text-white flex items-center justify-center shrink-0">
-                <Play className="size-4" fill="currentColor" />
-              </span>
-              <span className="flex items-center gap-[3px] h-7 flex-1 overflow-hidden">
-                {WAVE.map((h, i) => (
-                  <b key={i} className="block w-[3px] rounded-[2px] bg-navy shrink-0" style={{ height: `${h}%`, opacity: i < 14 ? 1 : 0.3 }} />
-                ))}
-              </span>
+            <div className="g-phone-pill g-glass g-glass-strong">
+              <span className="g-phone-num">2</span>
+              <span><b>Lezen A2 · oefenexamen 2</b>Klaar. Hierna: Schrijven.</span>
             </div>
           </div>
         </div>
       </Field>
 
-      {/* ── DE VERBINDENDE KAART — drie bewijsstukken over de onderrand van de hero ──
+      {/* ── DE VERBINDENDE KAART — drie bewijsstukken direct onder de hero ──
+          Plek en maten zijn die van de talenstrook van deutschtest üben (feedback eigenaar 15-10):
+          geen overlap meer met de hero, de kaart begint op dezelfde hoogte als die strook en de
+          volgende sectie volgt met hetzelfde sectieritme. De vorm van de kaart blijft.
           Het cijfer, het aantal, de docent. **De Trustpilot-score is van knmoefenen.nl en dat staat
           erbij**; een score van een ander domein zonder bron is geleend vertrouwen. Er hoort géén
           `AggregateRating` bij in de structured data van dit domein. Het getal 1.000+ is dat van de
           docent zelf (opgave eigenaar). Nooit een gebruikersaantal dat niet uit de database of uit
           `SEO/facts.md` komt. De quotes rij rendert pas als er échte quotes zijn (`QUOTES`). */}
-      <section aria-labelledby="proof-heading" className="g-wrap relative z-10 -mt-12 sm:-mt-16">
+      <section aria-labelledby="proof-heading" className="g-wrap relative z-10">
         <div className="bg-wit rounded-g-xl p-2.5 sm:p-3 shadow-zweef">
           <h2 id="proof-heading" className="g-sr">{t('proof_line')}</h2>
           <div className="grid gap-2 sm:gap-2.5 lg:grid-cols-3">
@@ -456,74 +348,7 @@ export default async function HomePage({ params }: Props) {
         </div>
       </section>
 
-      {/* ── DE TRACKBAND — het hele traject, in DUO's eigen volgorde ──
-          **A2 → B1 → KNM → ONA, en die volgorde is gebrond, niet gekozen** (`SEO/facts.md` §7): de
-          taalonderdelen eerst, dan KNM, dan ONA. A2 en B1 zijn twee niveaus van dezelfde vier
-          onderdelen, dus ze staan naast elkaar.
-
-          **De chips zijn links, en dat is een productregel**: de homepage moet alle vier de
-          taalonderdelen linken (CLAUDE.md §3, `tests/public.spec.js`). A2 leest ze uit `SKILLS`, B1
-          uit dezelfde taxonomie gefilterd op een geverifieerd formaat (dus geen Luisteren B1 tot
-          dat geteld is), KNM uit `KNM_THEMES`. Beschikbaarheid staat in de tekst — de B1-noot, de
-          "binnenkort"-badge van ONA als `isOnaAvailable()` onwaar is — nooit in de kleur.
-          Kaartkoppen: Gracht, en Nevel voor ONA (glas.html §13 "Trackband"). */}
-      <section id="onderdelen" aria-labelledby="blocks-heading" className="g-sec g-sec-tier mt-12 sm:mt-16">
-        <div className="g-wrap">
-          <SectionHeading id="blocks-heading" title={t('blocks_heading')} aside={t('blocks_intro')} className="mb-10" />
-          <div className="g-tracks">
-            <TrackCard
-              track="a2"
-              title={t('blocks_a2_title')}
-              desc={t('blocks_a2_desc')}
-              chips={A2_CHIPS.map(chip => ({ key: chip.slug, name: chip.name, href: localeHref(locale, `oefenexamen/${DEFAULT_LEVEL}/${chip.slug}`) }))}
-              ctaLabel={t('blocks_a2_cta')}
-              href={localeHref(locale, `oefenen`)}
-            />
-            <TrackCard
-              track="b1"
-              title={t('blocks_b1_title')}
-              desc={t('blocks_b1_desc')}
-              chips={B1_CHIPS.map(chip => ({ key: chip.slug, name: chip.name, href: localeHref(locale, `oefenexamen/b1/${chip.slug}`) }))}
-              note={t('blocks_b1_note')}
-              ctaLabel={t('blocks_b1_cta')}
-              href={localeHref(locale, `oefenen/b1/lezen`)}
-            />
-            {/* KNM: de chips wijzen naar de kennisgidsen per thema — publiek, zonder account.
-                knmoefenen.nl blijft bewust staan als ranking-asset; deze link is intern. */}
-            <TrackCard
-              track="knm"
-              title={t('blocks_knm_title')}
-              desc={t('blocks_knm_desc')}
-              chips={KNM_THEMES.map(theme => ({ key: theme.id, name: theme.title, href: `/${locale}/knm/${theme.guideSlug}` }))}
-              ctaLabel={t('blocks_knm_cta')}
-              href={localeHref(locale, `oefenexamen/knm`)}
-            />
-            {/* ONA volgt `isOnaAvailable()` — dezelfde vlag als het portaal, het menu en de checkout.
-                Live wijst de knop naar het portaal; anders is het de aankondiging met `/contact`. */}
-            {isOnaAvailable() ? (
-              <TrackCard
-                track="ona"
-                variant="nevel"
-                title={t('blocks_ona_title')}
-                desc={t('blocks_ona_desc')}
-                ctaLabel={t('blocks_ona_cta')}
-                href={localeHref(locale, `dashboard/ona`)}
-              />
-            ) : (
-              <TrackCard
-                track="ona"
-                variant="nevel"
-                muted
-                badge={t('pkg_soon')}
-                title={t('blocks_ona_title')}
-                desc={t('blocks_ona_desc')}
-                ctaLabel={t('blocks_notify')}
-                href={localeHref(locale, `contact`)}
-              />
-            )}
-          </div>
-        </div>
-      </section>
+      <HomeTracks locale={locale} />
 
       {/* ── DE VITRINE — vijf schermen die er al zijn. Ná de tracks: die zeggen *wat* je kunt kopen,
           deze sectie *hoe het eruitziet*. */}
@@ -536,7 +361,6 @@ export default async function HomePage({ params }: Props) {
           getal**: 31 regels en 28 lessen naast elkaar is een claim die zichzelf tegenspreekt. */}
       <DeepDive
         id="dd-oefenen"
-        tier
         heading={t('dd1_heading')}
         body={t('dd1_body')}
         linkLabel={t('dd1_link')}
@@ -573,31 +397,48 @@ export default async function HomePage({ params }: Props) {
           - **Naast het portret staat een uitspraak, geen citaat** (`home.docent_line`): een quote
             toeschrijven aan een echte persoon mag alleen met haar eigen, letterlijke woorden.
           - De vergelijking is feitelijk: geen logo's, niets doorgestreept. */}
-      <section id="docent" aria-labelledby="proofsec-heading" className="g-sec g-sec-tier">
+      <section id="docent" aria-labelledby="proofsec-heading" className="g-sec g-glow g-glow-start g-glow-soft">
         <div className="g-wrap g-stack">
-          <SectionHeading id="proofsec-heading" title={t('proofsec_heading')} aside={t('proofsec_body')} className="mb-6" />
+          <SectionHeading id="proofsec-heading" title={t('proofsec_heading')} aside={t('proofsec_body')} className="mb-12" />
 
-          <div className="g-docent">
-            <img src="/images/amber-van-der-zalm-264.webp" alt={t('teacher_name')} width={264} height={264} />
-            <div className="g-docent-t">
-              <p className="g-docent-line">{t('docent_line')}</p>
-              <p className="m-0 text-[0.9375rem] leading-relaxed text-ink-2">{t('docent_line_sub')}</p>
-              <ul className="g-metachips list-none p-0 m-0">
-                {[1, 2, 3].map(n => (
-                  <li key={n} className="g-metachip bg-mist">
-                    <Check aria-hidden="true" className="!text-goed" />
-                    {t(`docent_chip_${n}`)}
-                  </li>
-                ))}
-              </ul>
-              <div className="g-docent-who">
-                <b>{t('teacher_name')}</b>
-                <small>{t('teacher_experience')}</small>
+          {/* De opbouw van glas.html §08: links de stemmen, rechts de docent, eronder de vergelijking.
+              Twee reviews, niet drie: de kolom moet even hoog blijven als de docentkaart ernaast. */}
+          <div className="g-proof">
+            <div id="cursisten" className="g-proof-reviews">
+              <h3 className="g-sr">{t('reviews_heading')}</h3>
+              {REVIEWS.slice(0, 2).map(review => (
+                <figure key={review.name} className="g-review">
+                  <div className="g-stars" aria-hidden="true"><i /><i /><i /><i /><i /></div>
+                  <blockquote lang={review.lang}>{`“${review.text}”`}</blockquote>
+                  <figcaption>
+                    <b>{review.name}</b>
+                    Trustpilot · <time dateTime={review.date}>{reviewDate.format(new Date(review.date))}</time>
+                  </figcaption>
+                </figure>
+              ))}
+              <p className="m-0 px-1 text-xs leading-relaxed text-ink-2">
+                {t('reviews_source')}{' '}
+                <a href="https://nl.trustpilot.com/review/knmoefenen.nl" target="_blank" rel="noopener noreferrer" className="g-ilink inline-flex items-center gap-0.5 whitespace-nowrap">
+                  {t('reviews_source_link')}
+                  <ArrowUpRight className="size-3 rtl-flip" aria-hidden="true" />
+                </a>
+              </p>
+            </div>
+
+            <div className="g-docent">
+              <img src="/images/amber-van-der-zalm-264.webp" alt={t('teacher_name')} width={264} height={264} />
+              <div className="g-docent-t">
+                <p className="g-docent-line">{t('docent_line')}</p>
+                <p className="m-0 text-[0.9375rem] leading-relaxed text-ink-2">{t('docent_line_sub')}</p>
+                <div className="g-docent-who">
+                  <b>{t('teacher_name')}</b>
+                  <small>{t('teacher_experience')}</small>
+                </div>
+                <Link href="/docent" className="g-tlink">
+                  {t('docent_cta')}
+                  <ArrowRight className="rtl-flip" aria-hidden="true" />
+                </Link>
               </div>
-              <Link href="/docent" className={glasButton({ variant: 'navy', size: 'sm' })}>
-                {t('docent_cta')}
-                <ArrowRight className="rtl-flip" aria-hidden="true" />
-              </Link>
             </div>
           </div>
 
@@ -622,29 +463,6 @@ export default async function HomePage({ params }: Props) {
               </ul>
             </div>
           </div>
-
-          <div id="cursisten" className="mt-10">
-            <SectionHeading title={t('reviews_heading')} size="h2" as="h3" className="mb-5" />
-            <div className="g-reviews">
-              {REVIEWS.map(review => (
-                <figure key={review.name} className="g-review">
-                  <div className="g-stars" aria-hidden="true"><i /><i /><i /><i /><i /></div>
-                  <blockquote lang={review.lang}>{`“${review.text}”`}</blockquote>
-                  <figcaption>
-                    <b>{review.name}</b>
-                    Trustpilot · <time dateTime={review.date}>{reviewDate.format(new Date(review.date))}</time>
-                  </figcaption>
-                </figure>
-              ))}
-            </div>
-            <p className="m-0 mt-4 text-xs leading-relaxed text-ink-2">
-              {t('reviews_source')}{' '}
-              <a href="https://nl.trustpilot.com/review/knmoefenen.nl" target="_blank" rel="noopener noreferrer" className="g-ilink inline-flex items-center gap-0.5 whitespace-nowrap">
-                {t('reviews_source_link')}
-                <ArrowUpRight className="size-3 rtl-flip" aria-hidden="true" />
-              </a>
-            </p>
-          </div>
         </div>
       </section>
 
@@ -652,13 +470,13 @@ export default async function HomePage({ params }: Props) {
           inhoudsbeslissing, begrensd door de publicatiepoort: zie `KENNISBANK`. */}
       <section aria-labelledby="kennisbank-heading" className="g-sec">
         <div className="g-wrap">
-          <SectionHeading id="kennisbank-heading" title={t('kb_heading')} aside={t('kb_intro')} className="mb-8" />
+          <SectionHeading id="kennisbank-heading" title={t('kb_heading')} aside={t('kb_intro')} className="mb-6" />
           <KennisbankCards cards={KENNISBANK} allLabel={t('kb_all')} />
         </div>
       </section>
 
       {/* ── FAQ ── dezelfde zes vragen als de FAQPage hierboven in de JSON-LD. */}
-      <section id="faq" aria-labelledby="faq-heading" className="g-sec g-sec-tier">
+      <section id="faq" aria-labelledby="faq-heading" className="g-sec">
         <div className="g-wrap grid gap-8 lg:grid-cols-[minmax(0,0.8fr)_minmax(0,1.2fr)] lg:gap-14 items-start">
           <div className="lg:sticky lg:top-[calc(var(--nav-h)+24px)]">
             <SectionHeading id="faq-heading" title={t('faq_heading')} size="h1" />
@@ -675,34 +493,32 @@ export default async function HomePage({ params }: Props) {
       </section>
 
       {/* ── DE AFSLUITER (glas.html §13 "Afsluiter") ──
-          Nevel met één oranje knop, dus géén gloed. Hij was een navy band die met een skyline
-          overliep in een navy footer; die footer is nu F1 "licht glas", en navy tegen een licht
-          veld is een naad. Nu zijn afsluiter en footer twee afgeronde vlakken op dezelfde
-          mistondergrond, met dezelfde 16px marge — er is geen rand meer om te overbruggen. */}
-      <div className="g-closing">
-        <Field as="section" variant="nevel" aria-labelledby="closing-heading" className="g-block g-cta-band">
+          Eén oranje knop, dus géén oranje gloed. Geen eigen vlak meer: een afgeronde kaart boven de
+          footerkaart las als twee blokken (feedback eigenaar 15-10). De tekst staat op de
+          ondergrond met een Nevel-gloed erachter, en die loopt door in de footer, die van boven
+          invloeit. */}
+      <section aria-labelledby="closing-heading" className="g-sec g-glow g-glow-mid g-closing-open">
+        <div className="g-wrap g-cta-band">
           <h2 id="closing-heading">{t('closing_heading')}</h2>
           <p>{t('closing_sub')}</p>
           <a href={localeHref(locale, `oefenen`)} className={glasButton({ variant: 'oranje', size: 'lg', className: 'mt-2' })}>
             {t('cta_primary')}
             <ArrowRight className="rtl-flip" aria-hidden="true" />
           </a>
-        </Field>
+        </div>
+      </section>
       </div>
     </>
   );
 }
 
-/* Het golfje van de luisterspeler in de hero: vaste hoogtes, zodat server en client hetzelfde
-   tekenen (een `Math.random()` hier is een hydration-mismatch). */
-const WAVE = [38, 62, 80, 54, 92, 70, 44, 66, 88, 58, 36, 72, 96, 64, 48, 76, 90, 52, 40, 68, 84, 60, 46, 74, 56, 34, 62, 86, 50, 42];
-
 /* ── De verdieping ──
    Links de belofte met een link, rechts drie getallen die hem onderbouwen. Een `CategoryMark`
-   hoort hier niet: "10 oefenexamens" is geen onderdeel (§7, de iconenverdeling). De twee
-   verdiepingen staan op verschillende ondergronden; dat is de scheiding, geen lijn. */
+   hoort hier niet: "10 oefenexamens" is geen onderdeel (§7, de iconenverdeling). De getallen staan
+   op melkglas boven een gloed van de pagina (`g-glow`): wit op mist was te kaal (feedback
+   eigenaar 15-10), en glas mag hier omdat er iets ónder ligt. */
 function DeepDive({
-  id, heading, body, linkLabel, href, cards, tier,
+  id, heading, body, linkLabel, href, cards,
 }: {
   id: string;
   heading: string;
@@ -710,11 +526,10 @@ function DeepDive({
   linkLabel: string;
   href: string;
   cards: { key: string; stat: string; label: string; body: string }[];
-  tier?: boolean;
 }) {
   return (
-    <section aria-labelledby={`${id}-heading`} className={tier ? 'g-sec g-sec-tier' : 'g-sec'}>
-      <div className="g-wrap grid gap-10 lg:grid-cols-[minmax(0,26rem)_minmax(0,1fr)] lg:gap-16 items-start">
+    <section aria-labelledby={`${id}-heading`} className="g-sec g-glow g-glow-end">
+      <div className="g-wrap grid gap-10 lg:grid-cols-[minmax(0,22rem)_minmax(0,1fr)] lg:gap-16 items-start">
         <div className="lg:sticky lg:top-[calc(var(--nav-h)+24px)]">
           <SectionHeading id={`${id}-heading`} title={heading} size="h1" />
           <p className="g-body mt-4">{body}</p>
@@ -725,7 +540,7 @@ function DeepDive({
         </div>
         <ul className="g-numcards">
           {cards.map(card => (
-            <li key={card.key} className={tier ? 'g-numcard' : 'g-numcard'}>
+            <li key={card.key} className="g-numcard g-glass">
               <b className="g-tnum">{card.stat}</b>
               <span className="g-mono mt-2">{card.label}</span>
               <p>{card.body}</p>

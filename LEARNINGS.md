@@ -3,6 +3,28 @@
 Append-only log of successes and failures from each working session.
 Read this at the start of every session and apply lessons before writing code.
 
+## 2026-10-13 — B1 Luisteren opnieuw ingesproken met `eleven_v4`, examens 7–10 geschreven
+**Changed:** `createTts({ dialogueModel, speechModel })` in `scripts/a2-content/lib.mjs` (standaard
+ongewijzigd `eleven_v3` / `eleven_multilingual_v2`); `--model <id>` in `scripts/seed-b1-content.mjs`;
+`scripts/b1-content/generated/luisteren-07..10.json` geschreven. Alle B1-Luisterenaudio lokaal
+opnieuw ingesproken met `eleven_v4` (dialoog én verteller); productie examen 1 en 2 in place gepatcht.
+**Outcome:** SUCCESS
+**What worked / went wrong:**
+- Productie had examen 1 en 2 gepubliceerd met 11 resp. 17 fragmenten als tekststimulus: de
+  credits waren op tijdens de productie-seed, níet tijdens de lokale. Lokaal was alles ingesproken.
+  Altijd beide omgevingen tellen voordat je "de audio ontbreekt" aanneemt.
+- **Een gepubliceerd examen opnieuw seeden wist de antwoorden van kandidaten**: `seedLuisteren`
+  verwijdert de stimuli, en `questions → user_question_results` is ON DELETE CASCADE. Voor een live
+  examen dus de mp3's uploaden en de bestaande rijen patchen (`kind`, `audio_url`, `body_html`),
+  met een `?v=v4` op de URL tegen de CDN-cache van het overschreven bestand.
+- `/v1/text-to-dialogue` accepteert `eleven_v4` (en `eleven_v4_turbo`); `eleven_v3` was tot nu
+  toe het enige model dat werkte.
+- Het abonnement staat **5 gelijktijdige requests** toe. Negen examens tegelijk gaf meteen
+  `429 concurrent_limit_exceeded` en tekststimuli; een pool van vijf (`xargs -P 5`) liep schoon.
+  Een herhaalronde zonder `--force-audio` vult alleen de gaten, dus een 429 kost niets dubbel.
+**Lesson:** Een seeder die "vervang de inhoud" doet is op een live examen een delete van
+gebruikersdata. Controleer de cascades van een tabel vóór je hem in productie opnieuw vult.
+
 ## 2026-09-16 — Een instructiescherm voor B1 Luisteren, en 25 seconden leestijd die echt aftellen
 **Changed:** `components/exam/AudioPlayer.tsx` (`examenAudio`-stand), `components/exam/StimulusPane.tsx`,
 `components/exam/ExamShell.tsx` (fase `instructie`, `LUISTEREN_LEESTIJD_SECONDEN`, geen "Vorige" meer
@@ -5501,3 +5523,57 @@ oplopende `top` per index doet het, en de `prefers-reduced-motion`-uitweg is dan
 **Outcome:** SUCCESS
 **What worked / went wrong:** Alles in `public/` gaat mee met elke deploy; `noindex` houdt zoekmachines weg, niet bezoekers. Vanaf schijf (file://) laden alle 18 afbeeldingen, en de dev-server geeft nu 404.
 **Lesson:** Een interne referentiepagina hoort in `docs/`, niet in `public/` — "niet geïndexeerd" is iets anders dan "niet live".
+
+## 2026-10-15 — Glas-homepage rustiger: hero vervaagt, geen banden, footer loopt door
+**Changed:** `app/[locale]/(main)/page.tsx` (hero in de opbouw van deutschtest üben: tekstkolom 1.15fr bovenaan, vinkjesrij, rechts één app-scherm met pil; één ondergrond `g-home`, `g-glow`-gloeden i.p.v. `g-sec-tier`, kleiner zegel, hero ±900px, track-kaarten als glas.html §08 met de onderdelen als mono-linkregel in de kop, docent+reviews naast elkaar, melkglas op de getallen, afsluiter zonder vlak), `_components/glas/TrackCard.tsx`, `app/glas-public.css`, `app/glas-components.css` (footer vloeit van boven in), `(main)/layout.tsx` (footer binnen `g-page`), nieuwe schermafdrukken in `public/images/platform/`, vier keys in `messages/{nl,en,ar}.json`.
+**Outcome:** SUCCESS (tsc, 704 unit-tests, next build, homepage-e2e, screenshots 390/1440 van /, /platform, /gidsen, /docent, /premium)
+**What worked / went wrong:** Een masker op `.g-field::before` liet tóch een rand staan: dat pseudo-element steekt 12% buiten de box uit (blur-rand), dus het masker liep buiten beeld door en de zichtbare onderkant was nog half dekkend. `inset` aan die kant op 0 loste het op. De footer hield daarna nog een rand omdat hij buiten `g-page` stond, op het witte `body`; een mist-achtergrond op de footer zelf sneed dan weer de gloed van de afsluiter af. Inloggen voor schermafdrukken: de auth-hook weigert wachtwoordlogins, behalve met `app_metadata.reviewer = true` (alleen via de service-sleutel, lokaal).
+**Lesson:** Wie een veld laat vervagen, moet weten wat eronder ligt — zowel de uitloop van het pseudo-element als de ondergrond van de ouder. Controleer met `getComputedStyle` van de ouder, niet alleen van het element.
+
+## 2026-10-15 — Homepage: bewijskaart onder de hero, sectieritme van deutschtest üben
+**Changed:** `app/[locale]/(main)/page.tsx` (kaart niet meer over de hero, kopmarges gelijkgetrokken naar 48px), `app/glas-public.css` (hero schermhoogte-afhankelijk, `.g-home .g-sec` 96/128px, korte-schermvariant, `.g-proof .g-docent` alleen ≥861px).
+**Outcome:** SUCCESS
+**What worked / went wrong:** Eerst een strook met haarlijnen gebouwd als bij deutschtest üben; eigenaar wilde de kaartvorm houden — alleen plek en maten overnemen. Een vaste hero van 850px duwde de kaart onder de vouw op een laptop; de hoogte van de hero werd daar bepaald door de 4:5-doos rond de telefoon, niet door de tekst. Bijvangst: `.g-proof .g-docent` overschreef het stapelen op mobiel, waardoor de docenttekst in een kolom van één woord stond.
+**Lesson:** "Zelfde hoogte als de zustersite" betekent: bewijs zichtbaar in het eerste scherm. Meet het op 1280×720, 1366×768 en 1440×900, niet op één viewport. Een regel met een extra selector overschrijft de mobiele variant van de basisregel — zet hem in een min-width-query.
+
+## 2026-10-15 — Homepage langs de apple-design-skill: hover alleen bij een muis, spatiëring per grootte, mat glas op verzoek
+**Changed:** `app/glas-public.css` (til-/zoomhovers van track-, gids-, foto- en blogkaarten achter `@media (hover: hover) and (pointer: fine)`; `.g-hero h1`, `.g-cta-band h2` en `.g-numcard b` ruimer gespatieerd, smal -0.03em en breed -0.04em; mobiel menu schaalt vanaf de hamburger i.p.v. het midden), `app/glas-components.css` (`.g-head-display/-section/-1` idem per breakpoint; `prefers-reduced-transparency` en `prefers-contrast: more` maken `.g-glass`/`.g-glass-d` mat, resp. wit met rand).
+**Outcome:** SUCCESS (tsc, next build, screenshots 390/1440)
+**What worked / went wrong:** Eén letter-spacing per klasse (-0.045/-0.05em) was op 58px goed en op 34px te krap: "achter alles" liep in elkaar. Op een touchscherm bleef een kaart na een tik "opgetild" staan omdat `:hover` daar blijft hangen.
+**Lesson:** Spatiëring is een functie van de lettergrootte, niet van de kop-klasse — geef een clamp()-kop ook een breakpoint voor zijn tracking. Elke hover die beweegt hoort achter `(hover: hover) and (pointer: fine)`.
+
+## 2026-10-15 — Homepage variant B ter beoordeling: de opbouw van deutschtest üben
+**Changed:** nieuwe route `app/[locale]/(main)/home-b/page.tsx` (noindex, niet in de sitemap), `_components/glas/HomeDemo.tsx` (vier tabbladen Taal A2 · Taal B1 · KNM · ONA, elk met één werkende opgave), een `g-hb-`-blok onderaan `app/glas-public.css`, namespace `home_b` in `messages/{nl,en,ar}.json`. Volgorde als Nachtzug: hero → strook met de vier blokken → demo → één zin → drie panelen met échte schermafdrukken → drie doelgroepen → belofte (docent) → vragen → afsluiter.
+**Outcome:** SUCCESS (tsc, 704 unit-tests, next build, schermafdrukken 390/1440 en /ar)
+**What worked / went wrong:** Een `<img loading="lazy">` met `z-index:-1` in een `Field` laadde in de headless browser niet (portret bleef leeg); eager laden loste het op. Op /ar draaide de Nederlandse opgave mee naar rechts-links (vraag vóór de tekst) en spatieerde de systeem-mono de Arabische letters uit elkaar — `dir="ltr"` op de opgave en de body-font voor dat label in het Arabisch.
+**Lesson:** Een opgave is Nederlands en leest links-rechts in elke taal; zet `dir="ltr"` op het hele opgaveblok, niet alleen op de tekst. Een mono-label met Arabische tekst krijgt de body-font.
+
+## 2026-10-15 — Homepage-hero: de gloed beweegt
+**Changed:** `app/[locale]/(main)/page.tsx` (`g-hero-live` + `.g-hero-orbs` in de hero), `app/glas-public.css` (oranje en blauwe gloed uit `--g-hero` gehaald en als twee bollen die in 22s/28s langzaam drijven, alleen `transform`; het veld houdt de lichte ondergrond; stil bij "beweging verminderen", gespiegeld in RTL).
+**Outcome:** SUCCESS (tsc, next build, schermafdrukken 1440/390 op t=0 en t=10s, `getAnimations()` = running)
+**What worked / went wrong:** Eerst gecentreerd met de losse `translate`-eigenschap; Chromium 101 van de screenshot-harness kent die niet, dus de bollen stonden buiten beeld en de hero had geen oranje meer. Het centreren zit nu in de `transform` van de keyframes.
+**Lesson:** Gebruik geen losse `translate`/`scale`/`rotate`-eigenschappen — dezelfde categorie als `color-mix()`: de harness rendert ze niet, en een kapotte gloed ziet er dan uit als "rustiger".
+
+## 2026-10-15 — Variant B: glazen demovenster, bewijs onder de hero, reviews
+**Changed:** `HomeDemo.tsx` is nu een glazen venster zoals bij deutschtest üben (vensterbalk met stippen, titel en tijd; navy pil-tabs; voettekst met Terug, stapstippen en Volgende) op een eigen veld met blauw linksboven en zacht oranje onderaan; de strook "Alles voor je inburgering" is weg en vervangen door de bewijskaart (Trustpilot knmoefenen.nl, 1.000+, docent) in glas; nieuwe sectie met de drie Trustpilot-reviews. `REVIEWS` verhuisd van de homepage naar `data/reviews.ts` (één bron voor beide pagina's). Keys `demo_back`/`demo_next` erbij, `strip_label` eruit.
+**Outcome:** SUCCESS (tsc, 704 unit-tests, next build, schermafdrukken 390/1440)
+**What worked / went wrong:** Scheiding binnen het venster met ruimte in plaats van haarlijnen (de referentie gebruikt lijnen; Glas niet) oogt even rustig. Een vaste min-hoogte op het tabpaneel voorkomt springen bij het wisselen, maar te hoog laat een gat boven de voettekst.
+**Lesson:** Echte reviews horen in één databestand zodra twee pagina's ze tonen — anders loopt de lijst met regels over wie er wel en niet in mag uit elkaar.
+
+## 2026-10-15 — Variant B: demo per onderdeel met Luisteren en Spreken, panelen als losse elementen
+**Changed:** `_components/glas/HomeDemo.tsx` (zes tabbladen per onderdeel met `CategoryMark`; Luisteren = proefvraag lu-1 met het echte mp3, golfvorm die meeloopt en drie tijdtegels; transcript pas na het goede antwoord; Spreken = A2-opgave 1.1 uit `spreken.mjs` met echte microfoon via `WavRecorder`, niveaumeter, terugluisteren en voorbeeldantwoord, niets verstuurd), `home-b/page.tsx` (schermafdrukken in de panelen vervangen door `PanelMock`: weekdagen, luisterkaart, taalregel; `g-sep5` tussen de kaarten), `app/glas-public.css`, keys in `messages/{nl,en,ar}.json` (`panel*_alt`, `demo_a2_sub`, `demo_b1_sub`, `demo_a2_parts` eruit).
+**Outcome:** SUCCESS (tsc, 704 unit-tests, next build, detector schoon, schermafdrukken 1440/390 en /ar van elke demo-stand)
+**What worked / went wrong:** De lijststijl van de paneelkaart (`.g-hb-pcard li` met oranje stip) lekte in de weekdagen van het nagebouwde element, dat daardoor verticaal stond — gescoped naar `.g-hb-pcard-t`. Op mobiel was de demo breder dan het scherm: een grid zonder `minmax(0, 1fr)` groeit mee met de min-content van de tegels. Het transcript na een fout antwoord tonen verraadde het goede antwoord.
+**Lesson:** Een generieke `li`-regel op een kaart raakt elk nagebouwd element dat je erin zet — scope hem op de tekstkolom. Een enkelvoudige grid-kolom met knoppen erin krijgt altijd `minmax(0, 1fr)`.
+
+## 2026-10-15 — Variant B: trackband, mono-regel A2, sectieritme naar deutschtest üben
+**Changed:** de trackband is `_components/glas/HomeTracks.tsx` geworden en staat nu op `/` én `/home-b` (na de bewijskaart); `.g-track-meta` 10,5px/0.05em en `.g-track-links` zonder scheidingspunt; in `/home-b` is "Zo bereid je je voor" een band op `--mist-2` en schuift een kale sectie na een kale sectie op (`app/glas-public.css`).
+**Outcome:** SUCCESS
+**What worked / went wrong:** deutschtest gemeten met Puppeteer in plaats van op het oog: de sectiepadding was al gelijk (128/96px). Wat vreemd oogde was (1) "Zo bereid" plakte 70px onder de quote omdat zijn padding-top op 0 stond, (2) de kaarten waren smaller dan de kop erboven, (3) twee kale secties na elkaar gaven 256px leegte zonder grens — deutschtest zet daar een band of haarlijn. De A2-regel brak af met het "·" vooraan de tweede regel.
+**Lesson:** meet de referentie voordat je spacing kopieert — het verschil zat in de grenzen tussen secties, niet in de getallen. Een scheidingsteken als `::before` op `li + li` belandt bij afbreken vooraan een regel; laat de onderstreping scheiden.
+
+## 2026-10-15 — Variant B: herotekst gedeeld, demo/panelen op de maten van deutschtest, levende hero
+**Changed:** herotekstkolom naar `_components/glas/HomeHeroCopy.tsx` (gedeeld door `/` en `/home-b`, met `TRACKS`); `HomeTracks` kreeg `centered`; B kreeg `g-hero-live` + `g-hero-orbs`; demo-venster en panelen in `app/glas-public.css` op de waarden uit `deutsch-test/components/design/variants/nachtzug*.tsx`.
+**Outcome:** SUCCESS
+**What worked / went wrong:** de lokale repo `~/Desktop/Development-Projects/deutsch-test` lezen gaf exacte maten (venster 22px rond, tabs 36px, paneel p-8, kaart 24px + haarlijn #d6dce6, 64px ritme) — beter dan meten op schermafdrukken. Een aangeleverd component (BackgroundGradientAnimation, Tailwind v3-config, paarse standaardkleuren, setState per muisbeweging) bleek overbodig: de homepage had al een transform-only drift in de eigen kleuren. Een gecentreerde kop met `text-wrap: balance` brak nog op "blok / voor blok"; pas `max-width: 12ch` gaf de goede breuk in nl/en/ar.
+**Lesson:** kijk eerst of het gevraagde effect al in de codebase bestaat voordat je een extern component integreert; en een referentiesite met lokale bron lees je, die meet je niet na.
