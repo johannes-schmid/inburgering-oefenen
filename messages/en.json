@@ -1489,7 +1489,12 @@
     "pdf_consent": "You can unsubscribe at any time, with one click at the bottom of every e-mail.",
     "pdf_close": "Close",
     "mt_notice": "Machine translation: this page was translated automatically from the reviewed Dutch text and has not been checked by a person.",
-    "how_made": "How we make our content"
+    "how_made": "How we make our content",
+    "brochure_kind": "Guide · {section}",
+    "brochure_reviewed": "Dutch text reviewed by {name}",
+    "brochure_version": "Version {date}",
+    "brochure_qr_hint": "Scan the code or go to",
+    "brochure_download": "Download the guide"
   },
   "inburgering_route": {
     "heading": "Where do you start with inburgering?",

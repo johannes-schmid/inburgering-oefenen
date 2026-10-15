@@ -17,10 +17,10 @@ import { createContext, useContext, useState, type ReactNode } from 'react';
 import { useTranslations } from 'next-intl';
 import { ArrowRight, Search } from 'lucide-react';
 import { Link } from '@/i18n/navigation';
-import CategoryMark from '@/components/horizon/CategoryMark';
 import FilterChip from '@/components/glas/FilterChip';
 import SectionHeading from '@/components/glas/SectionHeading';
 import { glasButton } from '@/components/glas/Button';
+import BrochureCover, { type BrochureCoverData } from '@/components/guides/BrochureCover';
 import type { GuideSection } from '@/data/guides/types';
 import type { GuideRoute } from '@/data/guides/helpers';
 
@@ -33,6 +33,8 @@ export type IndexGuide = {
   /* De link wordt op de server gemaakt (`guideHref`): alleen dáár is de vertaalde slug bekend, en
      een client die hem zelf samenstelt serveert onder /en en /ar een 308 naar de Nederlandse. */
   href: GuideRoute;
+  /* De omslag van de PDF, als miniatuur: wat je op de kaart ziet is wat je downloadt. */
+  cover: BrochureCoverData;
 };
 
 type Filter = { query: string; setQuery: (q: string) => void; section: GuideSection | 'all'; setSection: (s: GuideSection | 'all') => void };
@@ -129,17 +131,21 @@ export default function GuideIndex({
         <ul className="g-grid3 list-none p-0 m-0" aria-live="polite">
           {guides.map(guide => (
             <li key={`${guide.section}-${guide.slug}`} hidden={!shown.has(`${guide.section}-${guide.slug}`)}>
-              <Link href={guide.href} className="g-gids h-full">
-                <span className="flex items-center justify-between gap-3">
-                  <CategoryMark category={marks.get(guide.section) ?? 'gidsen'} size={44} />
-                  <span className="g-bdg g-bdg-klei g-bdg-mono">{t('pdf_tag')}</span>
+              <Link href={guide.href} className="g-gbro">
+                <span className={`g-gbro-stage is-${guide.section}`}>
+                  <span className="g-gbro-sheet" aria-hidden="true" />
+                  <BrochureCover cover={guide.cover} size="card" />
                 </span>
-                <span className="g-mono">{t(`sec_${guide.section}`)}</span>
-                <h3>{guide.title}</h3>
-                <p>{guide.description}</p>
-                <span className="g-gids-ft">
-                  <span>{tG('reading_time', { minutes: guide.minutes })}</span>
-                  <ArrowRight aria-hidden="true" className="rtl-flip" />
+                <span className="g-gbro-tx">
+                  <h3>{guide.title}</h3>
+                  <p>{guide.description}</p>
+                  <span className="g-gbro-ft">
+                    <span>
+                      <span className="g-gbro-pdf">{t('pdf_tag')}</span>
+                      {t(`sec_${guide.section}`)} · {tG('reading_time', { minutes: guide.minutes })}
+                    </span>
+                    <ArrowRight aria-hidden="true" className="rtl-flip" />
+                  </span>
                 </span>
               </Link>
             </li>

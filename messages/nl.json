@@ -1489,7 +1489,12 @@
     "pdf_consent": "Uitschrijven kan altijd, met één klik onderaan elke mail.",
     "pdf_close": "Sluiten",
     "mt_notice": "Automatisch vertaald uit de nagekeken Nederlandse tekst; deze vertaling is niet door een mens nagekeken.",
-    "how_made": "Zo maken we onze inhoud"
+    "how_made": "Zo maken we onze inhoud",
+    "brochure_kind": "Gids · {section}",
+    "brochure_reviewed": "Nagekeken door {name}",
+    "brochure_version": "Versie {date}",
+    "brochure_qr_hint": "Scan de code of ga naar",
+    "brochure_download": "Download de gids"
   },
   "inburgering_route": {
     "heading": "Waar begin je met inburgeren?",

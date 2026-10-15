@@ -41,6 +41,7 @@ import { getSortedPosts, getPostLocale, getPostSlug } from '@/data/blog-posts';
 import { publishedGuides, getGuideBySlug, getGuideLocale, guideHref } from '@/data/guides/helpers';
 import type { GuideSection } from '@/data/guides/types';
 import { isOnaAvailable } from '@/lib/ona/access';
+import { brochureCover } from '@/lib/guides/brochure';
 
 type Props = { params: Promise<{ locale: string }> };
 
@@ -98,10 +99,11 @@ export default async function GidsenIndexPage({ params }: Props) {
   const tB = await getTranslations({ locale, namespace: 'breadcrumbs' });
   const onaLive = isOnaAvailable();
 
-  const guides = SECTIONS.flatMap(s =>
-    publishedGuides(s.id).map(g => {
+  const guides = await Promise.all(SECTIONS.flatMap(s =>
+    publishedGuides(s.id).map(async g => {
       const lg = getGuideLocale(g, locale);
       return {
+        cover: await brochureCover(g, locale),
         slug: g.slug,
         section: g.section,
         title: lg.heroTitle,
@@ -113,7 +115,7 @@ export default async function GidsenIndexPage({ params }: Props) {
         url: absUrl(locale, `${s.id}/${g.slug}`),
       };
     }),
-  );
+  ));
   const count = (section: GuideSection) => guides.filter(g => g.section === section).length;
 
   /* Een uitgelichte gids die (nog) niet `reviewed` is valt stil weg — dezelfde poort als de lijst. */

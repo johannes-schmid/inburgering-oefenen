@@ -1489,7 +1489,12 @@
     "pdf_consent": "يمكنك إلغاء الاشتراك في أي وقت بنقرة واحدة أسفل كل رسالة.",
     "pdf_close": "إغلاق",
     "mt_notice": "ترجمة آلية: تُرجمت هذه الصفحة آليًا من النص الهولندي المُراجَع، ولم يراجع إنسانٌ هذه الترجمة.",
-    "how_made": "كيف نعدّ محتوانا"
+    "how_made": "كيف نعدّ محتوانا",
+    "brochure_kind": "دليل · {section}",
+    "brochure_reviewed": "راجعت {name} النص الهولندي",
+    "brochure_version": "إصدار {date}",
+    "brochure_qr_hint": "امسح الرمز أو اذهب إلى",
+    "brochure_download": "حمّل الدليل"
   },
   "inburgering_route": {
     "heading": "من أين تبدأ عملية الاندماج؟",
