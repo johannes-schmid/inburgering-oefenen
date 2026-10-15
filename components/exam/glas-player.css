@@ -153,6 +153,14 @@
   /* ---------- lezen: de brief als papier ---------- */
   .g-xlezen { display: grid; grid-template-columns: minmax(0, 1.05fr) minmax(0, 1fr); gap: 14px; align-items: start; }
   .g-xlezen-side { display: flex; flex-direction: column; gap: 12px; min-width: 0; }
+  /* Op desktop blijft de vraag in beeld terwijl je door een lange tekst scrolt (eigenaar, 15-10):
+     sticky onder de balk, en nooit hoger dan het venster tussen balk en voetbalk. */
+  @media (min-width: 1024px) {
+    .g-xlezen-q {
+      position: sticky; top: 84px; max-height: calc(100dvh - 84px - 84px);
+      overflow-y: auto; overscroll-behavior: contain; border-radius: var(--r-lg);
+    }
+  }
   .g-xpaper {
     background: #fbf8f1; border-radius: 6px; padding: 26px 28px; transform: rotate(-0.6deg);
     box-shadow: 0 1px 0 rgba(0, 0, 0, 0.03), 0 22px 40px -24px rgba(60, 40, 0, 0.35);
@@ -162,6 +170,12 @@
   .g-xpaper h2 { font-family: var(--font-headline); font-size: 17px; font-weight: 700; color: #2a2620; margin: 0 0 10px; letter-spacing: -0.01em; }
   .g-xpaper-from { font-family: var(--glas-mono); font-size: 11px; letter-spacing: 0.06em; color: #8a7e66; margin-bottom: 14px; text-transform: uppercase; }
   .g-xpaper .exam-rich { color: #2a2620; }
+  .g-xbrief {
+    display: flex; gap: 10px; align-items: flex-start; margin: 0; padding: 14px 16px;
+    border-radius: var(--r-md); background: var(--wit); box-shadow: var(--shadow-ambient);
+    font-size: 15px; line-height: 1.6; font-weight: 500; color: var(--ink); text-wrap: pretty;
+  }
+  .g-xbrief-i { flex: none; margin-top: 3px; color: var(--navy); }
   .g-xintro-line { font-size: 14.5px; line-height: 1.65; color: var(--ink-2); margin: 0; }
   .g-xswitch { display: none; padding: 4px; border-radius: var(--r-pill); background: var(--wit); gap: 4px; }
   .g-xswitch button {

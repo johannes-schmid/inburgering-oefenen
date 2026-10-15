@@ -5805,3 +5805,9 @@ oplopende `top` per index doet het, en de `prefers-reduced-motion`-uitweg is dan
 **Outcome:** SUCCESS (tsc, 707 unit-tests, next build; eslint alleen de twee bestaande `SpeakBlock`-fouten; screenshots 1440/390; Playwright: "Ken ik" → rij in `user_word_card_progress`, zijbalk 0/64 → 1/64)
 **What worked / went wrong:** De oude KNM-weergave schreef `status`, `seen_count` en `last_seen_at` naar `user_word_card_progress`, maar die tabel heeft alleen `known boolean` — de voortgang is nooit opgeslagen (alleen localStorage), en `countWordsKnown` filterde op dezelfde niet-bestaande kolom en gaf altijd 0. Bovendien zijn de id's in `data/woordkaarten.ts` (101, 102, …) niet die van `word_cards` (1, 2, …); de deck leest daarom uit de tabel.
 **Lesson:** Een fout van PostgREST over een onbekende kolom komt als `error` terug en niet als exceptie — wie `error` negeert, ziet een lege toestand en geen fout. Controleer bij geërfde code de kolommen tegen `\d tabel`.
+
+## 2026-10-15 — Opdrachtregel boven de tekst in een kader
+**Changed:** vanaf 1024px is `.g-xlezen-q` sticky onder de balk (`top: 84px`, eigen scroll als de vraag hoger is dan het venster). `components/exam/StimulusPane.tsx` toont `stimulus.intro` als `.g-xbrief` (wit kader, `--shadow-ambient`, lucide `Info`) in plaats van de grijze `.g-xintro-line`; CSS in `components/exam/glas-player.css`.
+**Outcome:** SUCCESS (tsc, eslint, Playwright-screenshots 1440/390 van A2 Lezen examen 1)
+**What worked / went wrong:** `.g-xintro-line` blijft bestaan: hij wordt ook voor feedback- en statusregels in `ExamShell`/`RubricFeedback` gebruikt, dus een eigen klasse in plaats van de gedeelde te wijzigen.
+**Lesson:** Een instructie die gelezen móét worden hoort niet dezelfde stijl te hebben als bijschrift.

@@ -1,6 +1,7 @@
 'use client';
 
 import { memo } from 'react';
+import { Info } from 'lucide-react';
 import AudioPlayer from './AudioPlayer';
 import './glas-player.css';
 import type { StimulusItem } from '@/lib/exam-content';
@@ -37,7 +38,14 @@ function StimulusPane({
      capsule op Gracht, een plaatje op wit. */
   return (
     <div className="g-xlezen-side">
-      {s.intro && <p className="g-xintro-line">{s.intro}</p>}
+      {/* De opdracht in een eigen kader (eigenaar, 15-10): als losse grijze regel boven het
+          papier werd hij overgeslagen, en hij zegt wat je eerst moet lezen. */}
+      {s.intro && (
+        <p className="g-xbrief">
+          <Info size={17} strokeWidth={2.3} className="g-xbrief-i" aria-hidden />
+          <span>{s.intro}</span>
+        </p>
+      )}
 
       {s.kind === 'audio' && s.audio_url && (
         <>
