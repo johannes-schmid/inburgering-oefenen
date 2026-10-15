@@ -47,7 +47,7 @@ Gedeelde onderdelen (layout, nav, zijbalk) staan onderaan in een eigen tabel.
 | `/oefenvragen/[slug]` | `app/[locale]/(main)/oefenvragen/[slug]/page.tsx` |  | oud |  |
 | `/oefenvragen` | `app/[locale]/(main)/oefenvragen/page.tsx` |  | oud |  |
 | `/` | `app/[locale]/(main)/page.tsx` |  | oud |  |
-| `/platform` | `app/[locale]/(main)/platform/page.tsx` |  | oud |  |
+| `/platform` | `app/[locale]/(main)/platform/page.tsx` | Nacht-kopkaart, zijbalk met ankers, featurekaarten met nagebouwde schermen (`FeatureMocks.tsx`) | glas | 2026-10-15 |
 | `/premium` | `app/[locale]/(main)/premium/page.tsx` |  | oud |  |
 | `/privacybeleid` | `app/[locale]/(main)/privacybeleid/page.tsx` |  | oud |  |
 | `/redactie` | `app/[locale]/(main)/redactie/page.tsx` |  | oud |  |

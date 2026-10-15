@@ -274,7 +274,7 @@ test.describe('the kennisgids sections', () => {
          the docent's review gate, because a link from here would have handed a crawler exactly
          the pages we told it to ignore. The two genuinely unbuilt tracks are still not links,
          which is the part of this assertion that still has teeth. */
-      await expect(page.getByText('Taalexamens B1')).toBeVisible();
+      await expect(page.getByRole('heading', { name: 'Taal B1' })).toBeVisible();
       await expect(page.locator('main a[href*="/knm/oefenexamen"]')).toHaveCount(0);
 
       // Gidsen: every published guide, the three hubs and the blog.
