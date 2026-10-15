@@ -478,7 +478,7 @@ export default function FreePracticeEngine({ skill, skillName, items, locale, le
                   <button
                     type="button"
                     onClick={next}
-                    className={glasButton({ variant: isLast ? 'oranje' : 'navy', size: 'sm' })}
+                    className={glasButton({ variant: 'navy', size: 'sm' })}
                   >
                     {isLast ? t('finish_btn') : t('next_btn')}
                     <ArrowRight className="rtl-flip" aria-hidden />
@@ -557,8 +557,11 @@ export default function FreePracticeEngine({ skill, skillName, items, locale, le
         <section className="g-xfp" style={{ minHeight: revealed ? undefined : 380 }}>
           <div className={revealed ? undefined : 'g-xfp-locked'} inert={!revealed} aria-hidden={!revealed}>
             <div className="g-xfp-top">
+              {/* Aaneengesloten vullen, niet per vraag op volgorde: naast "Nu 60%" moet de ring
+                  ook 60% laten zien, anders lezen losse gaten als een kapotte grafiek. */}
               <ScoreRing
-                results={log.map(a => a.isCorrect)}
+                correct={score}
+                total={total}
                 passPct={PASS_PCT}
                 size={150}
                 label={t('result_score_eyebrow', { score, total })}
@@ -635,7 +638,7 @@ export default function FreePracticeEngine({ skill, skillName, items, locale, le
             <a
               href={platformHref}
               onClick={() => track('free_practice_platform_click', { skill, level, pct })}
-              className={glasButton({ variant: 'oranje', size: 'lg' })}
+              className={glasButton({ variant: 'navy', size: 'lg' })}
             >
               {t('platform_cta')}
               <ArrowRight className="rtl-flip" aria-hidden />

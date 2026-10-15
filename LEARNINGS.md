@@ -5691,3 +5691,9 @@ oplopende `top` per index doet het, en de `prefers-reduced-motion`-uitweg is dan
 **Outcome:** SUCCESS
 **What worked / went wrong:** kop, stappen en speler zweefden los op het Gracht-veld; op een kaart die even hoog begint als de vraagkaart lezen ze als één paneel, en de koppen links en rechts staan op één lijn.
 **Lesson:** in de focusmodus hoort elke kolom op een eigen vlak; losse tekst direct op het veld leest als iets dat er niet bij hoort.
+
+## 2026-10-15 — Proefuitslag: ring aaneengesloten, knoppen navy
+**Changed:** `ScoreRing` op de proefuitslag krijgt `correct`/`total` in plaats van `results`, en de "Bekijk uitslag"- en platformknop zijn `navy` in plaats van `oranje` (`FreePracticeEngine.tsx`).
+**Outcome:** SUCCESS
+**What worked / went wrong:** een segment per vraag op volgorde gaf losse gaten in de ring naast "Nu 60%"; de eigenaar las dat als een kapotte grafiek.
+**Lesson:** naast een percentage moet de ring dat percentage tonen; de volgorde per vraag hoort in het overzicht per vraag, niet in de ring.
