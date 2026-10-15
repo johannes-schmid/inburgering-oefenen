@@ -5817,3 +5817,9 @@ oplopende `top` per index doet het, en de `prefers-reduced-motion`-uitweg is dan
 **Outcome:** SUCCESS
 **What worked / went wrong:** De Glas-branch stuurde KNM-klanten via de nieuwe `/leren`-doorgang en de cursusroute naar thema 2–7, waar de client op `plan === 'premium_plus'` keek — niemand schrijft `plan`, dus een betalende klant ging naar `/activate`. Bij het herbouwen naar Glas viel `<main>` weg op zeven pagina's (`<>` in plaats van `<main>`); alleen de e2e-suite merkte het. De gratis proef draait sinds de focusmodus in een portal buiten `<main>`, dus alle selectors op `main` vonden niets.
 **Lesson:** Een herbouw van de buitenste wrapper is een wijziging aan de landmark, niet aan de stijl — houd `<main>` aan. En de derde keer: toegang gaat via `ownsKnm`/`ownsModule` op de server, nooit via een plancheck in de client.
+
+## 2026-10-15 — homepage-hero: meer ruimte onder de menupil op een laag laptopscherm
+**Changed:** `app/glas-public.css` — in de `max-height: 820px`-regel van `.g-hero-fade` gaat de bovenruimte van `--nav-h + 12px` naar `+ 32px` en de onderruimte van 24px naar 16px.
+**Outcome:** SUCCESS
+**What worked / went wrong:** De compacte regel voor lage schermen liet ~25px tussen de pil en de docentchip; op productie oogde dat krap. Gemeten op 1280×720 en 1440×800: ~45px ruimte, de bewijskaart blijft in het eerste scherm.
+**Lesson:** Een compacte variant voor lage schermen mag schuiven op de ruimte ónder de hero, niet op de ademruimte direct onder de zwevende navigatie.
