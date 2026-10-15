@@ -136,15 +136,17 @@ export default async function GuideArticle({
   const dirProps = translated ? {} : { dir: 'ltr' as const, lang: 'nl' };
 
   const byline = (
-    <div className="g-byline">
+    <div className="g-byline g-gh-byline">
       <img src="/images/amber-van-der-zalm-264.webp" alt="" width={46} height={46} />
-      <span className="min-w-0 flex-1">
+      <span className="min-w-0">
         <Link href="/docent" className="g-ilink !no-underline font-headline font-bold text-[14.5px]">Amber van der Zalm</Link>
         <small className="block">
-          {t('author_role')} · {lg.dateLabel} · {t('reading_time', { minutes: guide.readingMinutes })} ·{' '}
+          {t('author_role')} · {lg.dateLabel} ·{' '}
           <Link href="/redactie" className="g-ilink !font-medium">{t('how_made')}</Link>
         </small>
       </span>
+      <span className="g-byline-sep" aria-hidden="true" />
+      <span className="g-mono">{t('reading_time', { minutes: guide.readingMinutes })}</span>
     </div>
   );
 
@@ -155,58 +157,55 @@ export default async function GuideArticle({
         <link rel="preload" as="image" href={heroSrc} fetchPriority="high" />
       )}
 
-      {/* De kop (glas.html §14 "Artikel"): Nevel, het leesveld, onder de pil door. Heeft de gids een
-          eigen kopfoto, dan is het de **beeldkop** — de titel op glas over de foto. Zonder foto staat
-          de titel direct op het veld. `guide-hero` houdt de kop in de PDF (`@media print`). */}
+      {/* De kop (glas.html §14 "Artikel"): Nevel, het leesveld, onder de pil door. Titel, lead,
+          auteur en melding staan links direct op het veld; heeft de gids een kopfoto, dan staat die
+          rechts als losse tegel met een glazen plaat erachter. Zonder foto is de kop één kolom.
+          `guide-hero` houdt de kop in de PDF (`@media print`). */}
       <Field as="header" variant="nevel" veil className="guide-hero g-readhead">
         <div className="g-wrap">
           <Crumbs items={crumbs} />
-          {heroSrc && guide.heroImage ? (
-            <div className="g-ap-hero mt-5">
-              <picture className="no-print">
-                {guide.heroImage.hasWebp && (
-                  <source srcSet={`/images/guides/${guide.heroImage.base}.webp`} type="image/webp" />
-                )}
-                <img
-                  src={`/images/guides/${guide.heroImage.base}.jpg`}
-                  alt={lg.heroImageAlt}
-                  width={1800}
-                  height={760}
-                  style={{ objectPosition: guide.heroImage.position ?? 'center 45%' }}
-                  fetchPriority="high"
-                  decoding="async"
-                />
-              </picture>
-              <div className="g-glass g-glass-strong">
-                <span className="g-mono">{tB(guide.section)}</span>
-                <h1>{lg.heroTitle}</h1>
-                <div className="mt-4">{byline}</div>
+          <div className={heroSrc ? 'g-gh g-gh-photo' : 'g-gh'}>
+            <div className="g-gh-text">
+              <h1>{lg.heroTitle}</h1>
+              <p className="g-lead">{lg.heroSubtitle}</p>
+              <div className="mt-7">{byline}</div>
+              {/* Melding vóór de eerste regel van het artikel (AI-verordening art. 50 lid 4 en 5):
+                  de EN/AR-gidsen zijn machinevertalingen zonder menselijke controle. Onderaan staat
+                  dezelfde zin nog in de reviewregel; die kwam pas ná het lezen. */}
+              {locale !== 'nl' && (
+                <p className="g-notice g-notice-glas m-0 mt-6 max-w-[640px]">
+                  <Globe aria-hidden="true" />
+                  <span>{t('mt_notice')}</span>
+                </p>
+              )}
+              <div className="no-print flex flex-wrap gap-3 mt-7">
+                <PdfButton className={glasButton({ variant: 'navy' })}>
+                  {t('pdf_button')}
+                </PdfButton>
+                <Link href="/oefenen" className={glasButton({ variant: 'ghost' })}>
+                  {t('check_button')}
+                  <ArrowRight className="rtl-flip" aria-hidden="true" />
+                </Link>
               </div>
             </div>
-          ) : (
-            <>
-              <h1>{lg.heroTitle}</h1>
-              <div className="mt-6">{byline}</div>
-            </>
-          )}
-          {/* Melding vóór de eerste regel tekst (AI-verordening art. 50 lid 4 en 5): de EN/AR-
-              gidsen zijn machinevertalingen zonder menselijke controle. Onderaan staat dezelfde
-              zin nog in de reviewregel; die kwam pas ná het lezen. */}
-          {locale !== 'nl' && (
-            <p className="g-notice g-notice-glas m-0 mt-5 max-w-[640px]">
-              <Globe aria-hidden="true" />
-              <span>{t('mt_notice')}</span>
-            </p>
-          )}
-          <p className="g-lead">{lg.heroSubtitle}</p>
-          <div className="no-print flex flex-wrap gap-3 mt-6">
-            <PdfButton className={glasButton({ variant: 'navy' })}>
-              {t('pdf_button')}
-            </PdfButton>
-            <Link href="/oefenen" className={glasButton({ variant: 'ghost' })}>
-              {t('check_button')}
-              <ArrowRight className="rtl-flip" aria-hidden="true" />
-            </Link>
+            {heroSrc && guide.heroImage && (
+              <div className="g-gh-media no-print">
+                <picture>
+                  {guide.heroImage.hasWebp && (
+                    <source srcSet={`/images/guides/${guide.heroImage.base}.webp`} type="image/webp" />
+                  )}
+                  <img
+                    src={`/images/guides/${guide.heroImage.base}.jpg`}
+                    alt={lg.heroImageAlt}
+                    width={1800}
+                    height={760}
+                    style={{ objectPosition: guide.heroImage.position ?? 'center 45%' }}
+                    fetchPriority="high"
+                    decoding="async"
+                  />
+                </picture>
+              </div>
+            )}
           </div>
         </div>
       </Field>

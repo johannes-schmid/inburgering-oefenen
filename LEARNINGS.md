@@ -5583,3 +5583,15 @@ oplopende `top` per index doet het, en de `prefers-reduced-motion`-uitweg is dan
 **Outcome:** SUCCESS (tsc, 704 unit-tests, next build, detector schoon, schermafdrukken 390/1440 en /ar)
 **What worked / went wrong:** Eén klassenaam (`g-pf2-foot`) voor twee dingen — de kaartvoet en een regel in een schermpje — liet de mockregel `margin:0; padding:0` de kaartvoet platdrukken. Een algemene `.g-pf2-amber b { color:#fff }` maakte de tekst in het docentzegel (`<b>` in een witte pil) onzichtbaar. De telefoon over het portaalvenster dekte eerst de modulenamen af; pas compactere modulekaarten plus een "deze week"-rij eronder gaven hem een plek die niets wegneemt. Bijvangst, niet opgelost: de `(main)`-layout rendert op deze branch geen `<main>` meer, waardoor 17 tests in `public.spec.js` falen op `main a[href=…]`.
 **Lesson:** Een selector op een kaal element (`b`, `small`, `li`) in een kaart raakt elk component dat je erin zet — scope op de directe kinderen. En geef een element in een nagebouwd schermpje nooit dezelfde klasse als een deel van de kaart eromheen.
+
+## 2026-10-15 — Gidskop in twee kolommen: tekst links, foto als tegel rechts
+**Changed:** `app/[locale]/(main)/_components/GuideArticle.tsx` (titel niet meer op glas over de foto; crumbs → h1 → lead → auteursregel met scheiding en mono-leestijd → MT-melding → knoppen, foto rechts; het mono-label met de sectienaam boven de titel is weg), `app/glas-public-gidsen.css` (`.g-gh*` vervangt de `.g-readhead .g-ap-hero`-regels: grid 1.25fr/0.75fr vanaf 960px, foto 4:5 op een glazen plaat die 4° gedraaid achter hem ligt, gespiegeld in RTL; op mobiel staat de foto 16:10 boven de titel).
+**Outcome:** SUCCESS (tsc, 704 unit-tests, next build, detector schoon, schermafdrukken 390/1440 en /ar)
+**What worked / went wrong:** De auteursregel brak op mobiel in drie losse regels (avatar alleen, naam eronder, losse scheidingslijn): in een `flex-wrap`-rij breekt een item af op zijn max-content vóór het krimpt. `flex: 1 1 200px` op het tekstblok en de leestijd op een eigen regel onder de naam loste het op.
+**Lesson:** In een wrappende flexrij geef je het tekstblok een kleine `flex-basis`, anders springt het als geheel naar de volgende regel in plaats van af te breken.
+
+## 2026-10-15 — Gidskop: oranje gloed naar linksonder
+**Changed:** `app/glas-public-gidsen.css` — `.guide-hero.g-f-nevel` krijgt een eigen `--g` met de perzik-gloed linksonder (RTL gespiegeld), en `.guide-hero .g-veil` schuift omhoog naar de titel.
+**Outcome:** SUCCESS (schermafdrukken 1440/390)
+**What worked / went wrong:** Alleen de gloed verplaatsen was nauwelijks zichtbaar: de `g-veil` (wit waas achter de tekst, 20% 52%) en het masker onderaan de kop wasten hem weg. Pas sterker van kleur, hoger (72%) en met de sluier omhoog werd hij zichtbaar.
+**Lesson:** Een gloed in een `Field` met `veil` concurreert met die sluier; wie de gloed verplaatst, moet de sluier meeschuiven.
