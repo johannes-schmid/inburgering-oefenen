@@ -50,6 +50,7 @@ export default async function RegisterPage({ params, searchParams }: Props) {
 
   return (
     <Field variant="gracht" veil className="auth-g-page">
+      <span className="auth-g-orbs" aria-hidden="true"><i /><i /><i /></span>
       <header className="g-wrap w-full flex items-center justify-between gap-4 py-5">
         <Link href="/" className="auth-g-brand">
           <LogoMark size={32} />
