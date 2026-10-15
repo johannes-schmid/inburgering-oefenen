@@ -180,7 +180,7 @@ export default async function OefenenPickerPage({ params }: Props) {
   return (
     <main className="bg-mist min-h-screen">
       <JsonLd data={jsonLd} />
-      <PageField variant="dageraad">
+      <PageField variant="dageraad" className="g-under-nav">
         <SectionHeading as="h1" size="h1" title={t('pick_heading')} onField />
         <p className="g-lead" style={{ marginTop: 16 }}>{t('pick_sub')}</p>
       </PageField>
