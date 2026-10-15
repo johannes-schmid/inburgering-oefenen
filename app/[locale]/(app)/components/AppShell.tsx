@@ -2,11 +2,13 @@
 
 import type { ReactNode } from 'react';
 import { useTranslations } from 'next-intl';
-import { LayoutDashboard, Plus, User } from 'lucide-react';
+import { LayoutDashboard, User } from 'lucide-react';
 import PortalSidebar from './PortalSidebar';
 import LearnPanel from './LearnPanel';
 import CategoryMark from '@/components/horizon/CategoryMark';
+import ExamMark, { type Track } from '@/components/horizon/ExamMark';
 import LogoMark from '@/components/site/LogoMark';
+import { KNM_SLUG, LEVELS } from '@/data/skills';
 import type { PortalMenu } from '@/lib/portal-menu';
 import type { LearnPanelData, PortalNav } from './nav';
 
@@ -87,8 +89,21 @@ export default function AppShell({
       ? `${tSkills(`${item.messageKey}.short`)} ${item.level.toUpperCase()}`
       : tSkills(`${item.messageKey}.short`),
   }));
-  const showExtend = (menu?.available.length ?? 1) > 0 || ownedItems.length > tabs.length;
-  const onOverview = active === 'overview' || active === 'overview-module';
+
+  /* Zonder eigen onderdeel krijgt de balk de modules zelf — A2, B1, KNM — want elke cursus is
+     open met een gratis examen en gratis lessen (eigenaar, 15-10). Anders stond hier alleen
+     "Overzicht". Catalogusvolgorde, dezelfde als de zijbalk. */
+  const trackTabs = tabs.length > 0 ? [] : [...(menu?.owned ?? []), ...(menu?.available ?? [])]
+    .sort((a, b) => (a.level === null ? 99 : LEVELS.indexOf(a.level)) - (b.level === null ? 99 : LEVELS.indexOf(b.level)))
+    .map(group => ({
+      key: group.id,
+      track: (group.level ?? KNM_SLUG) as Track,
+      href: group.href,
+      active: activeGroup === group.id,
+      label: group.level ? t('level_section', { level: group.badge ?? group.level.toUpperCase() }) : group.label,
+    }));
+  const onTrack = trackTabs.some(tab => tab.active);
+  const onOverview = active === 'overview' || (active === 'overview-module' && !onTrack);
 
   return (
     <div className="g-portal">
@@ -128,10 +143,10 @@ export default function AppShell({
         <main id="dash-main">{children}</main>
       </div>
 
-      {/* The mobile bar carries the same rule as the sidebar: it lists **your cursus**, not the
-          catalogue — the owned onderdelen across every module, flattened and capped at four.
-          `label` carries the level for a taalonderdeel, which is what stops A2 Lezen and B1
-          Lezen being two identical tabs. Anything past the cap is reachable through Overzicht. */}
+      {/* The mobile bar lists **your cursus**: the owned onderdelen across every module,
+          flattened and capped at four. `label` carries the level for a taalonderdeel, which is
+          what stops A2 Lezen and B1 Lezen being two identical tabs. Anything past the cap is
+          reachable through Overzicht. Owning nothing, it lists the modules instead (`trackTabs`). */}
       <nav id="dash-bottom-bar" aria-label={t('nav_aria')}>
         {/* A module's own overview has no tab of its own; it marks Overzicht instead. */}
         <a
@@ -157,13 +172,20 @@ export default function AppShell({
           </a>
         ))}
 
-        {/* The offer gets a tab only when there is something left to sell. */}
-        {showExtend && (
-          <a href={`/${locale}/dashboard/pakketten?vanaf=tabbar`} className="g-tab">
-            <span className="g-tab-plus" aria-hidden><Plus strokeWidth={2.6} /></span>
-            <span>{t('nav_extend_short')}</span>
+        {/* Een module is iets dat je koopt: het trackmerk, niet het categoriemerk (§7). */}
+        {trackTabs.map(tab => (
+          <a
+            key={tab.key}
+            href={`/${locale}${tab.href}`}
+            aria-current={tab.active && active === 'overview-module' ? 'page' : undefined}
+            className={`g-tab${tab.active ? ' g-on' : ''}`}
+          >
+            <span className="g-tab-mark" aria-hidden>
+              <ExamMark track={tab.track} size={36} />
+            </span>
+            <span>{tab.label}</span>
           </a>
-        )}
+        ))}
       </nav>
     </div>
   );

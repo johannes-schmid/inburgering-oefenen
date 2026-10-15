@@ -72,8 +72,6 @@
 .g-navi.g-on .g-navi-ic { background: rgba(255, 255, 255, 0.14); color: #fff; }
 .g-navi-ic.g-navi-ic-bare { background: none; }
 .g-navi-ic.g-navi-ic-navy { background: var(--navy); color: #fff; }
-/* De oranje "+" is de enige oranje vlek in de chrome (glas.html §09b). */
-.g-navi-ic.g-navi-plus { background: var(--oranje); color: #3d1500; }
 .g-navi-lb { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .g-navi-end { margin-inline-start: auto; font-size: 12px; font-weight: 500; color: var(--ink-2); flex: none; }
 .g-navi.g-on .g-navi-end { color: rgba(255, 255, 255, 0.7); }
@@ -132,6 +130,28 @@
   display: flex; flex-direction: column; gap: 1px;
 }
 .g-side-foot .g-navi { padding: 7px 8px; }
+/* De winkel als één stille regel bovenaan de voet: stand links, actie rechts, geen oranje. */
+.g-side-plan {
+  display: flex; align-items: center; justify-content: space-between; gap: 10px;
+  margin-bottom: 3px; padding: 10px 12px; border-radius: 16px; background: #fff;
+  text-decoration: none; transition: background-color 160ms ease, transform 160ms var(--ease-out-glas);
+}
+.g-side-plan:hover { background: rgba(255, 255, 255, 0.7); }
+.g-side-plan:active { transform: scale(0.98); }
+.g-side-plan:focus-visible { outline: none; box-shadow: 0 0 0 2px var(--navy); }
+.g-side-plan-st { font-size: 12.5px; font-weight: 500; color: var(--ink-2); white-space: nowrap; }
+.g-side-plan-cta {
+  display: inline-flex; align-items: center; gap: 5px; font-size: 13px; font-weight: 700;
+  color: var(--navy); white-space: nowrap;
+}
+.g-side-plan-cta > svg { width: 14px; height: 14px; transition: transform 160ms var(--ease-out-glas); }
+@media (hover: hover) and (pointer: fine) {
+  .g-side-plan:hover .g-side-plan-cta > svg { transform: translateX(2px); }
+  [dir="rtl"] .g-side-plan:hover .g-side-plan-cta > svg { transform: scaleX(-1) translateX(2px); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .g-side-plan, .g-side-plan-cta > svg { transition: background-color 160ms ease; }
+}
 
 /* ── Mobiel: glazen kopbalk en de zwevende tabbalk ── */
 #app-mobile-header { display: none; }
@@ -184,11 +204,6 @@
    zijn eigen tegel, dus de ring komt eromheen. */
 .g-tab-mark { border-radius: 11px; display: flex; flex: none; }
 .g-tab.g-on .g-tab-mark { box-shadow: 0 0 0 2px #fff, 0 0 0 4px var(--navy); }
-.g-tab-plus {
-  width: 36px; height: 36px; border-radius: 50%; display: flex; align-items: center;
-  justify-content: center; background: var(--oranje); color: #3d1500; flex: none;
-}
-.g-tab-plus > svg { width: 18px; height: 18px; }
 
 /* ── Het lespaneel: de tweede kolom, alleen binnen een cursus ── */
 #dash-panel {

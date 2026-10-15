@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import { useTranslations } from 'next-intl';
-import { BookOpen, ChevronRight, ClipboardList, LayersIcon, LayoutDashboard, Lock, LogIn, LogOut, Mail, MessageSquare, Plus, Send, UserPlus } from 'lucide-react';
+import { ArrowRight, BookOpen, ChevronRight, ClipboardList, LayersIcon, LayoutDashboard, Lock, LogIn, LogOut, Mail, MessageSquare, Send, UserPlus } from 'lucide-react';
 import { createClient } from '@/lib/supabase/client';
 import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
 import LogoMark from '@/components/site/LogoMark';
@@ -105,8 +105,11 @@ export default function PortalSidebar({
     window.location.href = '/';
   }
 
-  const showExtend = (menu?.available.length ?? 1) > 0
-    || groups.some(g => g.items.some(i => !i.owned));
+  /* Elke cursus staat open in het menu; de winkel is één stille regel in de voet, alleen zolang
+     er nog iets te kopen is (eigenaar, 15-10). De echte verkoop zit waar je op een slot stuit. */
+  const showPlan = !isGuest && ((menu?.available.length ?? 1) > 0
+    || groups.some(g => g.items.some(i => !i.owned)));
+  const ownsAny = groups.some(g => g.items.some(i => i.owned));
   const onaOn = activeGroup === 'ona' && active === 'overview-module';
 
   return (
@@ -297,16 +300,18 @@ export default function PortalSidebar({
             <span className="g-ssub-tag">{t('tag_roadmap')}</span>
           </span>
         )}
-
-        {showExtend && (
-          <a href={`/${locale}/dashboard/pakketten?vanaf=sidebar`} className="g-navi">
-            <span className="g-navi-ic g-navi-plus" aria-hidden><Plus strokeWidth={2.6} /></span>
-            <span className="g-navi-lb">{t('nav_extend_course')}</span>
-          </a>
-        )}
       </div>
 
       <div className="g-side-foot">
+        {showPlan && (
+          <a href={`/${locale}/dashboard/pakketten?vanaf=sidebar`} className="g-side-plan">
+            <span className="g-side-plan-st">{ownsAny ? t('side_plan_partial') : t('side_plan_free')}</span>
+            <span className="g-side-plan-cta">
+              {t('side_plan_cta')}
+              <ArrowRight strokeWidth={2.4} aria-hidden className="rtl-flip" />
+            </span>
+          </a>
+        )}
         {isGuest ? (
           <>
             <a href={`/${locale}/register`} className="g-navi">

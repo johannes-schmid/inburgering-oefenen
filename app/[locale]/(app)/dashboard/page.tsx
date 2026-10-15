@@ -152,10 +152,12 @@ export default async function DashboardPage({ params }: { params: Promise<{ loca
         ? t('mod_exams', { done: track.done, total: track.total })
         : state === 'locked' ? track.price : track.facts,
       pct: state === 'active' ? pct(track.done, track.total) : null,
-      href: track.owned
-        ? track.base
-        : `/${locale}/dashboard/pakketten?vanaf=portaal&onderdeel=${track.key}`,
-      cta: !track.owned ? t('mod_add') : state === 'active' ? t('mod_continue') : t('card_start'),
+      /* Elke kaart opent de cursus, ook zonder module: daar staan het gratis examen en de
+         gratis lessen, en het slot met de prijs (eigenaar, 15-10). */
+      href: track.base,
+      cta: !track.owned
+        ? (track.freeLine ? t('mod_try') : t('card_start'))
+        : state === 'active' ? t('mod_continue') : t('card_start'),
     };
   });
 

@@ -5715,3 +5715,15 @@ oplopende `top` per index doet het, en de `prefers-reduced-motion`-uitweg is dan
 **Outcome:** SUCCESS
 **What worked / went wrong:** een segment per vraag op volgorde gaf losse gaten in de ring naast "Nu 60%"; de eigenaar las dat als een kapotte grafiek.
 **Lesson:** naast een percentage moet de ring dat percentage tonen; de volgorde per vraag hoort in het overzicht per vraag, niet in de ring.
+
+## 2026-10-15 — Portaal: geen "Cursus uitbreiden" meer, elke cursus open
+**Changed:** `PortalSidebar.tsx` verliest de oranje "+ Cursus uitbreiden"-rij en krijgt bovenaan de voet één stille regel `g-side-plan` ("Gratis versie / Jouw pakket · Bekijk pakketten →", alleen voor ingelogden zolang er iets te kopen is); `AppShell.tsx` verliest de "Uitbreiden"-tab; de modulekaarten op `/dashboard` linken altijd naar de cursus (zonder module: "Gratis proberen" als examen 1 gratis is) in plaats van naar `/dashboard/pakketten`. CSS in `app/glas-portal.css` (`g-navi-plus`, `g-tab-plus` weg); keys `side_plan_*` en `mod_try` in nl/en/ar, `nav_extend_*` en `mod_add` weg.
+**Outcome:** SUCCESS (tsc, 704 unit-tests, next build, detector schoon, Playwright 1440/390 nl + ar als gratis en als gedeeltelijke gebruiker, geen horizontale scroll)
+**What worked / went wrong:** `plan_free` bestond al in de `portal`-namespace — eerst dubbel toegevoegd, daarna hernoemd naar `side_plan_*`. Lokale testsessies via `mintSession` worden door de reviewer-hook geweigerd; `app_metadata.reviewer = true` op de lokale testgebruiker lost dat op. Een gratis gebruiker heeft op mobiel nu alleen de tab "Overzicht".
+**Lesson:** De verkoop hoort waar je op een slot stuit (unlock-kaart, slotjes, examens), niet als menu-item; het menu toont wat er is. Grep de namespace vóór een nieuwe key — ook een generieke naam als `plan_free`.
+
+## 2026-10-15 — Mobiele tabbalk: de modules als tabs zolang je niets bezit
+**Changed:** `AppShell.tsx` — zonder eigen onderdeel toont de tabbalk naast "Overzicht" de modules A2, B1 en KNM (`trackTabs`, `ExamMark` op 36px, label "Niveau A2"/"KNM"); de moduletab is actief op alles binnen die module, en "Overzicht" alleen nog op `/dashboard`.
+**Outcome:** SUCCESS (tsc, 704 unit-tests, next build, eslint schoon, detector schoon, Playwright 390 nl + ar op vijf pagina's)
+**What worked / went wrong:** Na het weghalen van "Uitbreiden" stond er voor een gratis gebruiker alleen "Overzicht" in de balk. Het label "A2" onder een tegel waar A2 al op staat zei niets; "Niveau A2" past bij de zijbalk.
+**Lesson:** Een tab die een module benoemt draagt het trackmerk, niet het categoriemerk — dezelfde regel als in de zijbalk.
