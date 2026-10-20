@@ -1,7 +1,7 @@
 'use client';
 
 import { memo } from 'react';
-import { Info } from 'lucide-react';
+import { ExternalLink, Info } from 'lucide-react';
 import AudioPlayer from './AudioPlayer';
 import ListenSequence from './ListenSequence';
 import './glas-player.css';
@@ -31,6 +31,7 @@ function StimulusPane({
   examenAudio,
   sectionName,
   listen,
+  textHref,
 }: {
   stimulus: StimulusItem;
   examenAudio?: { readSeconds: number };
@@ -38,6 +39,8 @@ function StimulusPane({
   sectionName?: string;
   /** A2 Luisteren: situatie → leestijd → fragment, zie `ListenSequence`. */
   listen?: { readSeconds: number; onReplay: () => void; onFragmentEnd: () => void };
+  /** B1 Lezen: deze tekst in het tekstboekje, in een nieuw tabblad (zie `lib/tekstboekje.ts`). */
+  textHref?: string;
 }) {
   const s = stimulus;
   const isLetter = sectionName === 'Brief of e-mail';
@@ -78,6 +81,12 @@ function StimulusPane({
 
       {s.kind === 'text' && s.body_html && (
         <article className="g-xpaper">
+          {textHref && (
+            <a href={textHref} target="_blank" rel="noopener" className="g-xlink g-xnewtab">
+              <ExternalLink aria-hidden />
+              Open tekst in nieuw tabblad
+            </a>
+          )}
           {s.title && <h2>{s.title}</h2>}
           {/* The tag-level rules live in .exam-rich in app/globals.css — see the note there. */}
           <div
@@ -109,7 +118,8 @@ export default memo(
     prev.stimulus.id === next.stimulus.id &&
     prev.examenAudio?.readSeconds === next.examenAudio?.readSeconds &&
     prev.sectionName === next.sectionName &&
-    Boolean(prev.listen) === Boolean(next.listen)
+    Boolean(prev.listen) === Boolean(next.listen) &&
+    prev.textHref === next.textHref
 );
 
 /**

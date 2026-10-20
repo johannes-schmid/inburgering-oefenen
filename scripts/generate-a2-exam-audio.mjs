@@ -1,5 +1,6 @@
 /**
- * De gesproken examenonderdelen die DUO bij A2 voorleest en die wij nog niet hadden.
+ * De gesproken examenonderdelen die DUO voorleest en die wij nog niet hadden — A2, en sinds
+ * 20-10-2026 ook B1 Spreken (`--level b1`).
  *
  * ## Wat er wordt ingesproken
  * - **Spreken**, opdrachten met plaatjes (`describe`, `choose`, `cover_all`): DUO leest de hele
@@ -10,6 +11,11 @@
  *
  * Alles wat de verteller zegt is één stem op één snelheid: die van de geluidstest. Elke tekst
  * eindigt op een leesteken, anders zakt de intonatie aan het eind niet.
+ * - **B1 Spreken**: bij élke opdracht leest de verteller de opdrachtkaart (`prompt_html`) voor. Heeft
+ *   de opdracht een persoon die iets zegt (`prompt_script` + de bestaande opname), dan volgt die
+ *   opname na 0,6 s — zoals DUO's "… Luister naar uw medestudente en reageer." gevolgd door de
+ *   medestudente. Anders dan A2 is dat niet alleen bij `react`: bij B1 spreekt iemand ook in
+ *   opdrachten met plaatjes. `prompt_script` blijft de regel van die persoon.
  * - **Luisteren**: per stimulus de situatie uit `stimuli.intro` (`situation_audio_url`), en per
  *   vraag de vraag en elk antwoord (`questions.prompt_audio_url`, `question_options.audio_url`) —
  *   DUO leest die voor nadat het fragment is afgelopen.
@@ -23,6 +29,7 @@
  *   node scripts/generate-a2-exam-audio.mjs spreken                  # lokaal genereren
  *   node scripts/generate-a2-exam-audio.mjs luisteren --exam 1       # één examen
  *   node scripts/generate-a2-exam-audio.mjs --production             # het gehoste project
+ *   node scripts/generate-a2-exam-audio.mjs --level b1 --export      # B1 Spreken, alleen de .txt's
  *
  * Hervatbaar: wat al een url heeft wordt overgeslagen, tenzij `--force`.
  */
@@ -43,8 +50,14 @@ const EXPORT = flag('export');
 const PRODUCTION = flag('production');
 const FORCE = flag('force');
 const ONLY_EXAM = opt('exam') ? Number(opt('exam')) : null;
+const LEVEL = opt('level') ?? 'a2';
+if (LEVEL !== 'a2' && LEVEL !== 'b1') {
+  console.error(`--level ${LEVEL}: alleen a2 of b1.`);
+  process.exit(1);
+}
 const SKILLS = ['spreken', 'luisteren'].filter(s => args.includes(s));
-const RUN_SKILLS = SKILLS.length ? SKILLS : ['spreken', 'luisteren'];
+// B1 Luisteren heeft zijn eigen, officiële verloop (introtracks, 25 s leestijd) en hoort hier niet.
+const RUN_SKILLS = LEVEL === 'b1' ? ['spreken'] : SKILLS.length ? SKILLS : ['spreken', 'luisteren'];
 
 /** Gelijk aan `PICTURE_RULE` in components/exam/SpeakingTask.tsx. */
 export const PICTURE_RULE = {
@@ -107,7 +120,7 @@ if (!EXPORT && !env.ELEVEN_LAPS_API_KEY) {
   process.exit(1);
 }
 
-const EXPORT_DIR = path.join(ROOT, 'scripts', 'exam-content', 'a2-audio');
+const EXPORT_DIR = path.join(ROOT, 'scripts', 'exam-content', `${LEVEL}-audio`);
 /** De stem en snelheid van de geluidstest (`public/audio/exam/geluidstest.mp3`): één verteller. */
 const NARRATOR_SPEED = 1.0;
 /** Staat in elke url die deze versie schreef, zodat een herhaalde run hem overslaat. */
@@ -117,7 +130,7 @@ let chars = 0;
 let made = 0;
 
 async function exams(skill) {
-  const filter = `level=eq.a2&skill=eq.${skill}&number=gt.0${ONLY_EXAM ? `&number=eq.${ONLY_EXAM}` : ''}`;
+  const filter = `level=eq.${LEVEL}&skill=eq.${skill}&number=gt.0${ONLY_EXAM ? `&number=eq.${ONLY_EXAM}` : ''}`;
   return db.selectRows('exams', `select=id,number&${filter}&order=number`);
 }
 
@@ -148,7 +161,48 @@ function concatMp3(first, second) {
   return buf;
 }
 
+/** Een bestaande sprekeropname veilig wegzetten als `speaker.mp3`, zodat een herhaalde run hem terugvindt. */
+async function speakerClip(t) {
+  const speakerPath = `task-${t.id}/speaker.mp3`;
+  let speakerUrl = await storage.existing(AUDIO_BUCKET, speakerPath);
+  if (!speakerUrl) {
+    const res = await fetch(t.prompt_audio_url);
+    if (!res.ok) throw new Error(`spreker-opname ${t.id}: ${res.status}`);
+    speakerUrl = await storage.upload(AUDIO_BUCKET, speakerPath, Buffer.from(await res.arrayBuffer()), 'audio/mpeg');
+  }
+  return Buffer.from(await (await fetch(speakerUrl)).arrayBuffer());
+}
+
+async function runSprekenB1() {
+  for (const exam of await exams('spreken')) {
+    const tasks = await db.selectRows(
+      'open_tasks',
+      `select=id,sort_order,image_usage,prompt_html,prompt_script,prompt_audio_url&exam_id=eq.${exam.id}&order=sort_order`,
+    );
+    const lines = [`# B1 Spreken — oefenexamen ${exam.number}`, `# verteller: ${NARRATOR_KEY}, snelheid ${NARRATOR_SPEED} (zelfde als de geluidstest)`, ''];
+    for (const t of tasks) {
+      const done = (t.prompt_audio_url ?? '').includes(VERSION) && !FORCE;
+      const card = ensureStop(stripHtml(t.prompt_html));
+      const speaker = (t.prompt_script ?? '').trim();
+      const withSpeaker = Boolean(speaker && t.prompt_audio_url);
+      lines.push(`[opdracht ${t.sort_order} · ${t.image_usage} · verteller${withSpeaker ? ', dan spreker' : ''}]`, card);
+      if (withSpeaker) lines.push(`— spreker: ${speaker}`);
+      lines.push('');
+      if (EXPORT) { chars += card.length; continue; }
+      if (done) continue;
+      const intro = await speak(card, NARRATOR_KEY, NARRATOR_SPEED);
+      const buf = withSpeaker ? concatMp3(intro, await speakerClip(t)) : intro;
+      const url = await storage.upload(AUDIO_BUCKET, `task-${t.id}/prompt.mp3`, buf, 'audio/mpeg');
+      await db.patch('open_tasks', `id=eq.${t.id}`, { prompt_audio_url: url + stamp() });
+      process.stdout.write(withSpeaker ? 'r' : '.');
+    }
+    if (EXPORT) write(`spreken-${String(exam.number).padStart(2, '0')}.txt`, lines);
+    else console.log(` spreken ${exam.number}`);
+  }
+}
+
 async function runSpreken() {
+  if (LEVEL === 'b1') return runSprekenB1();
   for (const exam of await exams('spreken')) {
     const tasks = await db.selectRows(
       'open_tasks',
@@ -165,14 +219,7 @@ async function runSpreken() {
         lines.push(`[opdracht ${t.sort_order} · react · verteller, dan spreker]`, situation, `— spreker: ${(t.prompt_script ?? '').trim()}`, '');
         if (EXPORT) { chars += situation.length; continue; }
         if (done || !t.prompt_audio_url) continue;
-        const speakerPath = `task-${t.id}/speaker.mp3`;
-        let speakerUrl = await storage.existing(AUDIO_BUCKET, speakerPath);
-        if (!speakerUrl) {
-          const res = await fetch(t.prompt_audio_url);
-          if (!res.ok) throw new Error(`spreker-opname ${t.id}: ${res.status}`);
-          speakerUrl = await storage.upload(AUDIO_BUCKET, speakerPath, Buffer.from(await res.arrayBuffer()), 'audio/mpeg');
-        }
-        const speaker = Buffer.from(await (await fetch(speakerUrl)).arrayBuffer());
+        const speaker = await speakerClip(t);
         const intro = await speak(situation, NARRATOR_KEY, NARRATOR_SPEED);
         const url = await storage.upload(AUDIO_BUCKET, `task-${t.id}/prompt.mp3`, concatMp3(intro, speaker), 'audio/mpeg');
         await db.patch('open_tasks', `id=eq.${t.id}`, { prompt_audio_url: url + stamp() });

@@ -103,7 +103,7 @@
   .g-xfoot-sp { flex: 1; }
   .g-xfoot-meta { font-size: 13px; color: var(--ink-2); font-variant-numeric: tabular-nums; white-space: nowrap; }
   @media (max-width: 768px) { .g-xfoot { bottom: 88px; } }
-  @media (max-width: 520px) { .g-xfoot-meta { display: none; } }
+  @media (max-width: 520px) { .g-xfoot-meta { display: none; } .g-xfoot-ov > span { display: none; } .g-xfoot-ov { padding-inline: 12px; } }
 
   /* ---------- vraag ---------- */
   .g-xqhead { font-size: 13px; color: var(--ink-2); display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
@@ -310,6 +310,8 @@
   /* ---------- schrijven ---------- */
   .g-xwrite { display: grid; grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr); gap: 14px; align-items: start; }
   .g-xwrite-fb { grid-column: 1 / -1; min-width: 0; }
+  /* Korte opdracht: opdracht boven, mailvenster eronder over de hele breedte (zoals DUO). */
+  .g-xwrite-stack { grid-template-columns: minmax(0, 1fr); max-width: 860px; margin-inline: auto; }
   @media (max-width: 899px) { .g-xwrite { grid-template-columns: minmax(0, 1fr); } }
   .g-xtitle { font-family: var(--font-headline); font-size: 22px; font-weight: 700; letter-spacing: -0.02em; line-height: 1.25; color: var(--ink); margin: 10px 0 10px; text-wrap: balance; }
   .g-xprompt { font-size: 15px; line-height: 1.7; color: var(--ink); }
@@ -330,6 +332,9 @@
   .g-ximgs figcaption { font-size: 12.5px; font-weight: 600; text-align: center; margin-top: 6px; color: var(--ink-2); }
 
   .g-xmail { border-radius: var(--r-lg); background: #fff; box-shadow: inset 0 0 0 1px var(--mist-2); overflow: hidden; }
+  .g-xmail-bar { display: flex; align-items: center; gap: 6px; padding: 9px 16px; background: var(--navy); color: #fff; font-size: 13px; font-weight: 600; }
+  .g-xmail-bar span { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .g-xmail-bar i { width: 9px; height: 9px; border-radius: 50%; background: rgba(255, 255, 255, 0.35); flex: none; }
   .g-xmail-r { display: flex; gap: 12px; padding: 11px 16px; font-size: 14px; box-shadow: inset 0 -1px 0 var(--mist-2); }
   .g-xmail-r > span { width: 84px; flex: none; color: var(--ink-2); }
   .g-xmail-t { padding: 16px; }
@@ -360,8 +365,16 @@
   .g-xlocked { display: inline-flex; align-items: center; gap: 6px; font-size: 12.5px; color: var(--ink-2); }
   .g-xlocked > svg { width: 13px; height: 13px; }
 
-  .g-xform { display: flex; flex-direction: column; gap: 14px; padding: 16px; border-radius: var(--r-lg); background: var(--mist); }
-  .g-xform label.g-xform-l { font-size: 13.5px; font-weight: 600; color: var(--ink); }
+  .g-xform { display: flex; flex-direction: column; gap: 10px; margin-bottom: 14px; }
+  .g-xform-sec { display: flex; flex-direction: column; gap: 14px; padding: 16px; border-radius: var(--r-lg); background: var(--mist); }
+  .g-xform-h { margin: 0; font-family: var(--font-headline); font-size: 15px; font-weight: 700; letter-spacing: -0.01em; color: var(--ink); }
+  .g-xform-row { display: flex; flex-direction: column; gap: 6px; }
+  .g-xform-l { font-size: 13.5px; font-weight: 600; line-height: 1.5; color: var(--ink); }
+  .g-xform-hint { font-weight: 500; color: var(--ink-2); }
+  .g-xform-static { display: flex; flex-wrap: wrap; gap: 4px 12px; font-size: 14px; line-height: 1.5; color: var(--ink); }
+  .g-xform-static .g-xform-l { width: 150px; flex: none; color: var(--ink-2); font-weight: 500; }
+  .g-xform-area { background: #fff; }
+  .g-xpick-box::before { border-radius: 4px; }
   .g-xinput {
     height: 48px; border: 0; border-radius: var(--r-md); padding: 0 16px; background: #fff; color: var(--ink); font: inherit; font-size: 15px;
     outline: none; transition: box-shadow 160ms ease;
@@ -737,6 +750,22 @@
   .g-xsoundcheck { display: flex; flex-direction: column; gap: 8px; padding: 16px; border-radius: var(--r-lg); background: var(--mist); }
   .g-xsoundcheck h3 { font-family: var(--font-headline); font-size: 15px; font-weight: 700; color: var(--ink); margin: 0; }
   .g-xsoundcheck p { margin: 0; font-size: 14px; line-height: 1.55; color: var(--ink-2); }
+  .g-xsoundcheck .g-xrec-err { font-size: 13.5px; }
+  .g-xreeks { list-style: none; margin: 2px 0 4px; padding: 10px 14px; border-radius: var(--r-md); background: var(--mist); display: flex; flex-direction: column; gap: 4px; max-width: 320px; }
+  .g-xreeks li { display: flex; justify-content: space-between; gap: 16px; font-size: 14.5px; line-height: 1.6; color: var(--ink); }
+  .g-xreeks b { font-weight: 700; color: var(--navy); }
+  .g-xrun { display: flex; flex-direction: column; gap: 10px; align-items: flex-start; width: 100%; }
+  .g-xrun small { font-size: 13.5px; line-height: 1.5; color: var(--ink-2); }
+  .g-xrun .g-xwv { width: 100%; }
+  .g-xrun-done { display: flex; gap: 8px; align-items: flex-start; margin: 0; font-size: 14px; font-weight: 600; line-height: 1.5; color: var(--goed-ink, var(--ink)); }
+  .g-xrun-done > svg { width: 16px; height: 16px; flex: none; margin-top: 2px; }
+  .g-xmic { display: flex; flex-wrap: wrap; align-items: center; gap: 12px; }
+  .g-xmic > .g-btn { gap: 8px; }
+  .g-xmic-live { width: 8px; height: 8px; border-radius: 50%; background: var(--oranje); animation: g-xrd 1.6s ease-in-out infinite; }
+  .g-xmic-verdict { border: 0; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 8px 18px; }
+  .g-xmic-verdict label { display: inline-flex; align-items: center; gap: 8px; font-size: 14px; font-weight: 600; color: var(--ink); cursor: pointer; }
+  .g-xmic-verdict input { accent-color: var(--navy); width: 16px; height: 16px; }
+  .g-xmic-tips { margin: 0; padding-inline-start: 20px; list-style: disc; display: flex; flex-direction: column; gap: 4px; font-size: 13.5px; line-height: 1.55; color: var(--ink-2); }
   .g-xintro-small { margin: 0; font-size: 13.5px; line-height: 1.55; color: var(--ink-2); }
 
   /* ---------- luisteren A2: het verloop van één vraag ---------- */
@@ -748,27 +777,85 @@
   .g-xsubmit-row > svg { flex: none; width: 18px; height: 18px; margin-top: 2px; color: var(--navy); }
   .g-xsubmit-row.is-warn > svg { color: var(--klei); }
   .g-xsubmit-row b { font-weight: 700; }
-  .g-xjump { display: grid; grid-template-columns: repeat(auto-fill, minmax(44px, 1fr)); gap: 6px; max-height: 196px; overflow-y: auto; padding: 2px; }
-  .g-xjump button {
-    all: unset; box-sizing: border-box; cursor: pointer; height: 40px; border-radius: var(--r-md);
-    display: flex; align-items: center; justify-content: center; background: var(--mist);
-    font-family: var(--font-headline); font-weight: 700; font-size: 14px; color: var(--navy);
+  .g-xlink {
+    all: unset; box-sizing: border-box; cursor: pointer; display: inline-flex; align-items: center; gap: 6px; align-self: flex-start;
+    font-size: 14px; font-weight: 600; color: var(--navy); border-radius: var(--r-xs); padding: 2px 0;
+    text-decoration: underline; text-decoration-color: rgba(0, 43, 109, 0.3); text-underline-offset: 3px;
+    transition: text-decoration-color 160ms ease;
+  }
+  .g-xlink > svg { width: 16px; height: 16px; }
+  .g-xnewtab { font-size: 13px; margin-bottom: 10px; }
+  .g-xnewtab > svg { width: 14px; height: 14px; }
+  .g-xlink:hover { text-decoration-color: var(--navy); }
+  .g-xlink:focus-visible { box-shadow: var(--glas-focus); }
+  .g-xlink:active { opacity: 0.8; }
+
+  /* ---------- overzicht: alle nummers met hun stand ---------- */
+  .g-xover { display: grid; grid-template-columns: repeat(auto-fill, minmax(46px, 1fr)); gap: 6px; max-height: 260px; overflow-y: auto; padding: 2px; }
+  .g-xover button {
+    all: unset; box-sizing: border-box; cursor: pointer; position: relative; height: 42px; border-radius: var(--r-md);
+    display: flex; align-items: center; justify-content: center; gap: 3px;
+    font-family: var(--font-headline); font-weight: 700; font-size: 14px;
     transition: background-color 160ms ease, transform 160ms var(--ease-out-glas);
   }
-  @media (hover: hover) and (pointer: fine) { .g-xjump button:hover { background: var(--mist-2); } }
-  .g-xjump button:focus-visible { box-shadow: var(--glas-focus); }
-  .g-xjump button:active { transform: scale(0.96); }
+  .g-xover button[data-state="onbeantwoord"] { background: #fff; color: var(--navy); box-shadow: inset 0 0 0 1.5px rgba(0, 43, 109, 0.22); }
+  .g-xover button[data-state="beantwoord"] { background: var(--navy); color: #fff; }
+  .g-xover button[data-flag] { background: #fcecdd; color: #a24000; box-shadow: inset 0 0 0 1.5px rgba(162, 64, 0, 0.35); }
+  .g-xover button > svg { width: 12px; height: 12px; }
+  .g-xover button[aria-current="step"] { outline: 2px solid var(--navy); outline-offset: 2px; }
+  .g-xover button:disabled { cursor: not-allowed; opacity: 0.45; }
+  @media (hover: hover) and (pointer: fine) { .g-xover button:not(:disabled):hover { transform: translateY(-1px); } }
+  .g-xover button:focus-visible { box-shadow: var(--glas-focus); }
+  .g-xover button:not(:disabled):active { transform: scale(0.96); }
+  .g-xlegend { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 6px 16px; font-size: 13px; color: var(--ink-2); }
+  .g-xlegend li { display: inline-flex; align-items: center; gap: 7px; }
+  .g-xlegend i { width: 18px; height: 18px; border-radius: 5px; display: inline-flex; align-items: center; justify-content: center; }
+  .g-xlegend i[data-state="onbeantwoord"] { background: #fff; box-shadow: inset 0 0 0 1.5px rgba(0, 43, 109, 0.22); }
+  .g-xlegend i[data-state="beantwoord"] { background: var(--navy); }
+  .g-xlegend i[data-flag] { background: #fcecdd; color: #a24000; box-shadow: inset 0 0 0 1.5px rgba(162, 64, 0, 0.35); }
+  .g-xlegend i svg { width: 11px; height: 11px; }
+
+  /* ---------- gereedschap in de balk: loep en vlaggetje ---------- */
+  .g-xbar-tools { display: inline-flex; gap: 4px; flex: none; }
+  .g-xbar-tool {
+    width: 32px; height: 32px; border: 0; border-radius: 50%; cursor: pointer; flex: none;
+    display: inline-flex; align-items: center; justify-content: center;
+    background: rgba(0, 43, 109, 0.07); color: var(--navy);
+    transition: background-color 160ms ease, transform 160ms var(--ease-out-glas);
+  }
+  .g-xbar-tool > svg { width: 15px; height: 15px; }
+  .g-xbar-tool:hover { background: rgba(0, 43, 109, 0.12); }
+  .g-xbar-tool:active { transform: scale(0.94); }
+  .g-xbar-tool:focus-visible { outline: none; box-shadow: var(--glas-focus); }
+  .g-xbar-tool:disabled { opacity: 0.4; cursor: default; }
+  .g-xbar-tool:disabled:active { transform: none; }
+  .g-xbar-flag[aria-pressed="true"] { background: #fcecdd; color: #a24000; }
+  .g-xbar-flag[aria-pressed="true"] > svg { fill: currentColor; }
+  @media (max-width: 520px) { .g-xbar-tool:not(.g-xbar-flag) { display: none; } }
+
+  /* De loep vergroot de vraag en de tekst, niet de balk en de knoppen eronder. */
+  .g-xzoom { display: flex; flex-direction: column; gap: 12px; min-width: 0; }
+
+  /* ---------- de kwartierwaarschuwing ---------- */
+  .g-xwarn {
+    display: flex; align-items: center; gap: 10px; padding: 8px 8px 8px 14px; border-radius: var(--r-lg);
+    background: #fcecdd; color: #a24000; font-size: 14px; font-weight: 600; line-height: 1.45;
+    transition: opacity 200ms var(--ease-out-glas), transform 200ms var(--ease-out-glas);
+    @starting-style { opacity: 0; transform: translateY(-4px); }
+  }
+  .g-xwarn > svg { width: 16px; height: 16px; flex: none; }
+  .g-xwarn > span { flex: 1; min-width: 0; }
 }
 
 @media (prefers-reduced-motion: reduce) {
   .g-xbar-x, .g-xseg > b, .g-xtimer, .g-xap, .g-xab, .g-xread, .g-xrecbig, .g-xpick, .g-xmode label, .g-xpart,
   .g-xtextarea, .g-xinput, .g-xprog > i, .g-xrv-cr, .g-xrv-cr-body, .g-xrv-pp > i, .g-xrv-tot, .g-xrv-tot > *,
-  .g-xrv-status, .g-xmark-note, .g-xcd > svg circle:last-child, .g-xlv > i, .g-xjump button { transition-duration: 0ms !important; }
-  .g-xjump button:active { transform: none; }
+  .g-xrv-status, .g-xmark-note, .g-xcd > svg circle:last-child, .g-xlv > i, .g-xover button, .g-xbar-tool, .g-xwarn { transition-duration: 0ms !important; }
+  .g-xover button:active, .g-xover button:hover, .g-xbar-tool:active { transform: none !important; }
   .g-xbar-x:active, .g-xap:active, .g-xab:active, .g-xread:active, .g-xrecbig:active, .g-xpick:active,
   .g-xmode label:active, .g-xpart:active { transform: none; }
   .g-xpart:hover { transform: none !important; }
-  .g-xrecdot, .g-xreading span, .g-xspin, .g-xrv-orb, .g-xrv-cr::before, .g-xdots > i, .g-xrv-wvr > b,
+  .g-xrecdot, .g-xmic-live, .g-xreading span, .g-xspin, .g-xrv-orb, .g-xrv-cr::before, .g-xdots > i, .g-xrv-wvr > b,
   .g-xrv-doc::after, .g-xdialog-stage, .g-xdialog { animation: none !important; }
   .g-xfocus-in { animation: none; }
   .g-xpace, .g-xpace-val { transition-duration: 0ms !important; }

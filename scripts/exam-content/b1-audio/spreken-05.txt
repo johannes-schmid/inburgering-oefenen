@@ -1,0 +1,61 @@
+# B1 Spreken — oefenexamen 5
+# verteller: narrator, snelheid 1 (zelfde als de geluidstest)
+
+[opdracht 1 · react · verteller, dan spreker]
+U werkt bij een schoonmaakbedrijf. U heeft in juli een week vakantie aangevraagd. Een collega komt naar u toe in de kantine. Luister naar uw collega en reageer. Zeg of u wilt ruilen en waarom wel of niet.
+— spreker: Zeg, jij hebt toch die week in juli vrij? Zou je met mij willen ruilen, want mijn zus gaat dan trouwen.
+
+[opdracht 2 · none · verteller]
+U zoekt een nieuwe baan. U kunt kiezen tussen een groot bedrijf met veel afdelingen en een klein bedrijf met acht medewerkers. Vertel welk bedrijf u zou kiezen. Vertel ook waarom u dat kiest.
+
+[opdracht 3 · react · verteller, dan spreker]
+U werkt in een winkel in huishoudelijke spullen. Een klant heeft een grote wasmand gekocht. Zij komt bij de kassa staan. Luister naar de klant en reageer. Zeg wat er wel of niet mogelijk is.
+— spreker: Ik krijg dit echt niet op mijn fiets. Kunt u het misschien bij mij thuis bezorgen?
+
+[opdracht 4 · describe · verteller]
+U helpt een vriend bij de balie van de gemeente. Hij moet een formulier invullen, maar hij leest nog niet goed Nederlands. Kijk naar het plaatje. Leg aan uw vriend uit welke gegevens hij op het formulier moet invullen.
+
+[opdracht 5 · none · verteller]
+U werkt in een fabriek. U moest uw werkkleding tot nu toe zelf thuis wassen. Vanaf volgende maand laat het bedrijf de kleding wassen door een wasserij. Vertel wat u van deze verandering vindt. Vertel ook waarom u dat vindt.
+
+[opdracht 6 · react · verteller, dan spreker]
+U volgt een beroepsopleiding. Een medestudent heeft net zijn cijfer gekregen. Hij is gezakt en zegt bijna niets meer. Luister naar uw medestudent en reageer.
+— spreker: Een vier... En ik had er zo hard voor geleerd. Ik weet niet of ik dit nog wel wil.
+
+[opdracht 7 · none · verteller]
+U werkt al drie jaar bij hetzelfde bedrijf. Uw leidinggevende geeft u een keuze. U krijgt vijftig euro netto per maand extra, of vijf extra vrije dagen per jaar. Vertel wat u kiest. Vertel ook waarom u dat kiest.
+
+[opdracht 8 · describe · verteller]
+U komt bij de supermarkt een oudere mevrouw tegen. Zij kan haar boodschappen bijna niet dragen. Kijk naar het plaatje. Bied de mevrouw uw hulp aan en zeg wat u precies voor haar kunt doen.
+
+[opdracht 9 · cover_all · verteller, dan spreker]
+U werkt bij een taalschool. Een cursist is net in Nederland komen wonen. Hij weet niet hoe hij een afspraak bij de huisarts maakt. Kijk naar de plaatjes. Leg hem uit hoe hij een afspraak maakt. U moet daarbij alle plaatjes gebruiken. U hoort eerst wat de cursist vraagt.
+— spreker: Ik heb al een week last van mijn keel, maar ik weet niet hoe het hier werkt. Hoe maak ik een afspraak bij de huisarts?
+
+[opdracht 10 · none · verteller, dan spreker]
+U praat met een vriendin over werk. Zij zegt dat veel mensen hun baan alleen doen voor het geld. Zij is benieuwd wat u zou doen als geld geen rol speelde. Vertel welk beroep u dan zou kiezen. Vertel ook waarom u juist dat beroep zou kiezen.
+— spreker: Stel je voor dat je genoeg geld hebt en niet meer hoeft te werken voor je inkomen. Welk beroep zou jij dan kiezen?
+
+[opdracht 11 · cover_all · verteller, dan spreker]
+U werkt op een klein kantoor van een verzekeringsbedrijf. Volgende week verhuist het kantoor naar een ander gebouw. Een nieuwe collega was op de informatiebijeenkomst niet aanwezig. Kijk naar de plaatjes. Vertel haar wat er op de dag van de verhuizing gebeurt. U moet daarbij alle plaatjes gebruiken. U hoort eerst wat uw collega vraagt.
+— spreker: Ik was er dinsdag niet bij. Wat gebeurt er eigenlijk allemaal op de dag van de verhuizing?
+
+[opdracht 12 · choose · verteller, dan spreker]
+Uw buurvrouw wil met haar man en twee kinderen gaan sporten. Zij twijfelt tussen twee abonnementen in de buurt. Zij vraagt u om advies. Kijk naar de twee plaatjes. Adviseer haar welk abonnement zij moet kiezen. Noem minstens twee redenen voor uw keuze.
+— spreker: We willen als gezin meer bewegen, maar ik weet niet wat handiger is. Wat zou jij ons aanraden?
+
+[opdracht 13 · cover_all · verteller, dan spreker]
+U werkt in het magazijn van een groothandel in kantoorartikelen. Een nieuwe collega neemt vandaag voor het eerst een levering aan. Hij weet niet precies wat hij moet controleren. Kijk naar de plaatjes. Leg hem uit hoe hij een levering moet controleren. U moet daarbij alle plaatjes gebruiken. U hoort eerst wat uw collega vraagt.
+— spreker: Straks komt die vrachtwagen en dan sta ik er alleen voor. Wat moet ik precies doen als de spullen binnenkomen?
+
+[opdracht 14 · none · verteller, dan spreker]
+Op de ouderavond van een basisschool gaat het over mobiele telefoons. Steeds meer kinderen krijgen al op jonge leeftijd een eigen telefoon. Een andere ouder wil weten hoe u daarover denkt. Vertel wat u ervan vindt. Leg ook uit waarom u dat vindt.
+— spreker: Mijn dochter van acht vraagt elke dag om een telefoon. Wat vind jij daar nou van?
+
+[opdracht 15 · choose · verteller, dan spreker]
+U gaat volgend jaar met een groep van acht vrienden op vakantie. De groep bestaat uit stellen met kinderen en twee mensen die alleen komen. De organisator twijfelt tussen twee bestemmingen. Kijk naar de twee plaatjes. Adviseer welke bestemming beter is voor de groep. Noem minstens twee redenen voor uw keuze.
+— spreker: Ik moet volgende week boeken, anders is alles vol. Welke van de twee lijkt jou beter voor onze groep?
+
+[opdracht 16 · none · verteller, dan spreker]
+U volgt een cursus Nederlands. Een medecursist vindt het lastig om de taal buiten de les te oefenen. Hij vraagt hoe u dat aanpakt. Vertel hoe u zelf het beste Nederlands leert. Leg ook uit waarom die manier voor u goed werkt.
+— spreker: In de les gaat het wel, maar daarna doe ik eigenlijk niets meer met de taal. Hoe leer jij het beste Nederlands?

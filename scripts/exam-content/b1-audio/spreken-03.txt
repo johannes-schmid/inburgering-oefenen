@@ -1,0 +1,61 @@
+# B1 Spreken — oefenexamen 3
+# verteller: narrator, snelheid 1 (zelfde als de geluidstest)
+
+[opdracht 1 · react · verteller, dan spreker]
+U woont in een appartement. Gisteravond had u bezoek van vrienden. Uw buurman komt bij u aan de deur. Luister naar de buurman en reageer. Zeg ook wat u de volgende keer gaat doen.
+— spreker: Zeg, ik heb vannacht bijna niet geslapen door al dat lawaai bij jullie. Kan dat niet wat rustiger?
+
+[opdracht 2 · none · verteller]
+U werkt op een kantoor van een verzekeringsbedrijf. Het kantoor wordt verbouwd. U mag kiezen: een vaste werkplek of een flexplek. Vertel welke werkplek u kiest. Vertel ook waarom u dat kiest.
+
+[opdracht 3 · react · verteller, dan spreker]
+U werkt in een winkel voor huishoudelijke artikelen. Een klant komt bij de kassa staan. Zij heeft geen kassabon bij zich. Luister naar de klant en reageer. Leg uit wat er wel mogelijk is.
+— spreker: Ik wil deze pan graag ruilen, maar ik heb de bon weggegooid. Dat is toch geen probleem?
+
+[opdracht 4 · describe · verteller]
+U loopt met een kennis naar het gezondheidscentrum in de wijk. Bij de ingang hangt een bord. Uw kennis kan het bord niet goed lezen. Kijk naar het plaatje. Leg uit wat er op het bord staat.
+
+[opdracht 5 · none · verteller]
+U werkt in de keuken van een groot verzorgingshuis. De leidinggevende wil een cursus Nederlands aanbieden. De cursus is één keer per week na het werk. Vertel wat u van dit plan vindt. Geef ook een reden.
+
+[opdracht 6 · react · verteller, dan spreker]
+U werkt bij een pakketbezorger. De trein had vandaag vertraging. U komt een half uur te laat binnen. Luister naar uw collega en reageer. Leg uit hoe u het werk gaat inhalen.
+— spreker: Hé, waar bleef je nou? We staan hier al een half uur met te weinig mensen.
+
+[opdracht 7 · none · verteller]
+U werkt vier dagen per week bij een schoonmaakbedrijf. Uw werkgever heeft het druk. U mag kiezen: een dag extra werken met extra loon, of een dag extra vrij. Vertel wat u kiest. Vertel ook waarom u dat kiest.
+
+[opdracht 8 · describe · verteller]
+Er is een nieuwe bewoner in uw straat komen wonen. Hij kent nog niemand in de buurt. U komt hem tegen op de stoep. Kijk naar het plaatje. Vertel hem wat hij in de buurt kan doen om mensen te leren kennen.
+
+[opdracht 9 · cover_all · verteller, dan spreker]
+U werkt in een kledingwinkel in Zwolle. Een nieuwe collega, Bram, sluit vanavond voor het eerst alleen af. Hij weet niet in welke volgorde hij de taken moet doen. Kijk naar de plaatjes. Leg Bram uit hoe hij de winkel moet afsluiten. U moet daarbij alle plaatjes gebruiken. U hoort eerst wat Bram zegt.
+— spreker: Ik moet vanavond voor het eerst alleen afsluiten, maar ik weet niet goed waar ik moet beginnen. Kun je me even uitleggen wat ik precies moet doen?
+
+[opdracht 10 · none · verteller, dan spreker]
+U praat met een vriend over school en werk. Hij vertelt dat hij spijt heeft van zijn studiekeuze. Hij vraagt hoe u daarover denkt. Vertel welke opleiding u zou kiezen als u opnieuw kon beginnen. Vertel ook waarom u die opleiding zou kiezen.
+— spreker: Als ik opnieuw kon beginnen, zou ik iets heel anders gaan doen. En jij, welke opleiding zou jij dan kiezen?
+
+[opdracht 11 · cover_all · verteller, dan spreker]
+In uw wijk in Apeldoorn wordt zaterdag een buurtdag georganiseerd. U zit in de organisatie en kent het programma. Een buurvrouw heeft de brief niet goed gelezen. Kijk naar de plaatjes. Vertel haar wat het programma van de buurtdag is. U moet daarbij alle plaatjes gebruiken. U hoort eerst wat de buurvrouw zegt.
+— spreker: Ik heb die brief over de buurtdag ergens weggelegd en nu kan ik hem niet vinden. Wat gaan we zaterdag eigenlijk allemaal doen?
+
+[opdracht 12 · choose · verteller, dan spreker]
+Uw zus zoekt met haar man en twee kinderen een andere woning. Ze twijfelt tussen twee huizen die ze heeft gezien. Ze wil graag uw advies. Kijk naar de twee plaatjes. Adviseer haar welke woning beter bij haar gezin past en geef minimaal twee redenen.
+— spreker: We kunnen kiezen tussen deze twee woningen, maar we komen er samen niet uit. Welke zou jij nemen voor ons gezin?
+
+[opdracht 13 · cover_all · verteller, dan spreker]
+U komt vaak in de bibliotheek van uw gemeente. Een kennis wil ook lid worden, maar weet niet hoe dat gaat. U legt het hem uit. Kijk naar de plaatjes. Leg uit hoe hij zich moet aanmelden voor de bibliotheek. U moet daarbij alle plaatjes gebruiken. U hoort eerst wat uw kennis vraagt.
+— spreker: Ik wil graag boeken lenen voor mijn dochter, maar ik heb geen idee hoe je lid wordt. Hoe moet ik dat aanpakken?
+
+[opdracht 14 · none · verteller, dan spreker]
+U zit met een groepje in de wachtkamer van het buurthuis. Iemand vertelt dat zij drie ochtenden per week vrijwilligerswerk doet. Ze vraagt wat u van vrijwilligerswerk vindt. Vertel wat u van vrijwilligerswerk vindt. Vertel ook waarom u dat vindt.
+— spreker: Ik doe al jaren vrijwilligerswerk en ik zou het iedereen aanraden. Wat vindt u daar eigenlijk van?
+
+[opdracht 15 · choose · verteller, dan spreker]
+Uw vriendin Sanne wil naast haar werk een cursus gaan volgen. Ze heeft twee mogelijkheden gevonden en kan er maar één betalen. Ze vraagt u om advies. Kijk naar de twee plaatjes. Adviseer haar welke cursus ze het beste kan volgen en geef minimaal twee redenen.
+— spreker: Ik kan maar één cursus doen, want de rest kan ik niet betalen. Welke zou jij mij aanraden?
+
+[opdracht 16 · none · verteller, dan spreker]
+U staat na de les te praten met een medestudent. Hij vertelt dat hij het druk heeft met zijn werk en zijn kinderen. Hij is nieuwsgierig hoe u dat doet. Vertel hoe u uw werk en uw gezin combineert. Vertel ook wat u daarbij moeilijk of makkelijk vindt.
+— spreker: Ik krijg mijn werk en de kinderen bijna niet meer bij elkaar. Hoe regel jij dat allemaal?

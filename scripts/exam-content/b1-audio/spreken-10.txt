@@ -1,0 +1,61 @@
+# B1 Spreken — oefenexamen 10
+# verteller: narrator, snelheid 1 (zelfde als de geluidstest)
+
+[opdracht 1 · react · verteller, dan spreker]
+U werkt bij een fietsenwerkplaats in Zwolle. U maakt afspraken voor reparaties. Op donderdag is de werkplaats gesloten. Een klant wil juist dan komen. Luister naar de klant en reageer. Stel een andere dag voor en leg uit waarom donderdag niet kan.
+— spreker: Goedemiddag, ik wil mijn fiets laten maken. Kan dat donderdagochtend om tien uur?
+
+[opdracht 2 · none · verteller]
+U wilt een beroepsopleiding gaan doen. U kunt kiezen: een opleiding in de techniek of een opleiding in de zorg. Een vriend vraagt wat u gaat doen. Vertel welke opleiding u kiest. Vertel ook waarom u die keuze maakt.
+
+[opdracht 3 · react · verteller, dan spreker]
+U werkt in een groot magazijn. U praat vaak met de mensen om u heen. Een collega vindt dat u daardoor te langzaam werkt. Hij zegt er iets van. Luister naar uw collega en reageer. Zeg wat u ervan vindt.
+— spreker: Zeg, jij staat de hele ochtend te kletsen. Ik moet daardoor steeds jouw dozen ook nog doen.
+
+[opdracht 4 · describe · verteller]
+U staat met een vriendin voor een gezondheidscentrum. Zij kan het bord met de openingstijden niet lezen. Kijk naar het plaatje. Leg uit wat er op het bord staat over de openingstijden.
+
+[opdracht 5 · none · verteller]
+De bibliotheek in uw wijk is nu zes dagen per week open. De gemeente wil dat de bibliotheek een dag minder opengaat, omdat er te weinig geld is. Een medewerker van de gemeente vraagt naar uw mening. Vertel wat u van dit plan vindt. Geef ook een reden.
+
+[opdracht 6 · react · verteller, dan spreker]
+U volgt een opleiding tot verzorgende. Een medestudent uit uw klas heeft moeite met Nederlands. Hij spreekt u aan na de les. Luister naar uw medestudent en reageer. Zeg of u hem wilt helpen en hoe.
+— spreker: Hé, mag ik je wat vragen? Ik snap die opdrachten Nederlands echt niet. Zou jij me een keer willen helpen?
+
+[opdracht 7 · none · verteller]
+U moet stage gaan lopen voor uw opleiding. U mag kiezen tussen een groot bedrijf met driehonderd medewerkers en een klein bedrijf met acht medewerkers. Uw stagebegeleider wil weten wat u wilt. Vertel welk bedrijf u kiest. Leg uit waarom u dat bedrijf beter vindt.
+
+[opdracht 8 · describe · verteller]
+U werkt in een buurthuis bij de balie. Een klant met een kinderwagen komt niet naar binnen. U wilt uw leidinggevende uitleggen wat het probleem is. Kijk naar het plaatje. Leg uit wat u ziet en wat er moet gebeuren.
+
+[opdracht 9 · cover_all · verteller, dan spreker]
+U volgt een opleiding mediavormgeving. U hebt een foto-opdracht gemaakt over uw eigen wijk. Een medestudent begint pas volgende week en vraagt hoe u dat hebt aangepakt. Kijk naar de plaatjes. Leg uit hoe u de opdracht hebt aangepakt. U moet daarbij alle plaatjes gebruiken. U hoort eerst wat uw medestudent vraagt.
+— spreker: Ik moet volgende week ook zo'n foto-opdracht doen, maar ik weet niet waar ik moet beginnen. Hoe heb jij dat aangepakt?
+
+[opdracht 10 · none · verteller, dan spreker]
+U zit in een leesclub van de bibliotheek. Een ander lid wil iets lezen of kijken in de vakantie. Zij vraagt u om een tip. Vertel welk boek of welke film u haar aanraadt. Vertel ook waarom u dat een goede tip vindt.
+— spreker: Ik heb straks twee weken vrij en ik weet nog niks. Welk boek of welke film zou jij mij aanraden?
+
+[opdracht 11 · cover_all · verteller, dan spreker]
+U werkt bij een buurtcentrum. U organiseert een excursie naar een museum in Utrecht. Een vrijwilliger wil weten hoe de dag eruitziet. Kijk naar de plaatjes. Vertel wat er allemaal geregeld is voor de excursie. U moet daarbij alle plaatjes gebruiken. U hoort eerst wat de vrijwilliger vraagt.
+— spreker: Ik ga zaterdag mee als begeleider. Wat is er eigenlijk allemaal geregeld voor die dag?
+
+[opdracht 12 · choose · verteller, dan spreker]
+U werkt bij een installatiebedrijf. Uw leidinggevende koopt nieuwe telefoons voor de monteurs. De monteurs werken veel buiten en gebruiken de telefoon voor foto's en formulieren. Kijk naar de twee plaatjes. Zeg welke telefoon u beter vindt voor het werk. Geef minimaal twee redenen voor uw keuze.
+— spreker: Ik twijfel tussen deze twee toestellen. Welke lijkt jou beter voor de monteurs?
+
+[opdracht 13 · cover_all · verteller, dan spreker]
+U werkt bij een hoveniersbedrijf. Een nieuwe collega gaat morgen alleen naar een klant in Zwolle. De tuin is lang niet bijgehouden. Kijk naar de plaatjes. Leg uw collega uit hoe hij de tuin moet aanpakken. U moet daarbij alle plaatjes gebruiken. U hoort eerst wat uw collega vraagt.
+— spreker: Ik ga morgen voor het eerst alleen naar die klant. In welke volgorde pak ik die tuin het beste aan?
+
+[opdracht 14 · none · verteller, dan spreker]
+U volgt een cursus over gezond leven. De docent vertelt dat veel volwassenen te weinig bewegen. Zij vraagt de cursisten om ideeën. Vertel wat er volgens u aan dat probleem gedaan kan worden. Vertel ook waarom u denkt dat dat helpt.
+— spreker: Veel mensen zitten de hele dag stil, op het werk en daarna thuis. Wat zou daaraan gedaan kunnen worden, denkt u?
+
+[opdracht 15 · choose · verteller, dan spreker]
+U zit in de ouderraad van een school. De school wil de kantine veranderen. Er liggen twee voorstellen op tafel. Kijk naar de twee plaatjes. Zeg welke kantine volgens u gezonder eten aanbiedt. Geef minimaal twee redenen voor uw keuze.
+— spreker: We moeten vanavond kiezen tussen deze twee opzetten voor de kantine. Welke vindt u gezonder?
+
+[opdracht 16 · none · verteller, dan spreker]
+U hebt een gesprek met uw loopbaanadviseur van de gemeente. Zij wil weten wat uw plannen zijn. Zij vraagt u naar de toekomst. Vertel wat u over vijf jaar wilt doen. Vertel ook waarom u dat wilt en wat u ervoor gaat doen.
+— spreker: Als u vooruitkijkt: wat wilt u over vijf jaar doen, denkt u?

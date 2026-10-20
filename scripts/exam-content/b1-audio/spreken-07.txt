@@ -1,0 +1,61 @@
+# B1 Spreken — oefenexamen 7
+# verteller: narrator, snelheid 1 (zelfde als de geluidstest)
+
+[opdracht 1 · react · verteller, dan spreker]
+U volgt een opleiding tot logistiek medewerker. U maakt met drie medestudenten een groepsopdracht. Eén medestudent wil de taken anders verdelen. Luister naar de medestudent en reageer.
+— spreker: Zeg, ik wil de taken toch anders verdelen. Jij doet de hele presentatie, want ik heb het echt te druk deze week.
+
+[opdracht 2 · none · verteller]
+U wilt een beroepsopleiding gaan doen. Er zijn twee opleidingen. Bij de ene opleiding loopt u veel stage. Bij de andere opleiding zit u vooral in de les. Vertel welke opleiding u zou kiezen. Vertel ook waarom u dat kiest.
+
+[opdracht 3 · react · verteller, dan spreker]
+U werkt bij de klantenservice van een webwinkel. Een klant heeft een bestelling ontvangen. Het product is kapot aangekomen. Luister naar de klant en reageer.
+— spreker: Ik heb gisteren de lamp gekregen, maar het glas is helemaal gebroken. Ik heb er zestig euro voor betaald, hoor!
+
+[opdracht 4 · describe · verteller]
+U werkt in een productiehal. Bij een machine hangt een instructiekaart. Een nieuwe collega kan de kaart niet lezen. Kijk naar het plaatje. Leg uit wat er op de instructiekaart staat.
+
+[opdracht 5 · none · verteller]
+U werkt bij een schoonmaakbedrijf. Het bedrijf wil dat iedereen vier dagen per week werkt, negen uur per dag. U werkt nu vijf dagen van zeven uur. Vertel wat u van dit plan vindt. Vertel ook waarom u dat vindt.
+
+[opdracht 6 · react · verteller, dan spreker]
+U werkt bij een zorginstelling. U wilt graag een cursus doen om beter te worden in uw werk. U heeft een gesprek met uw leidinggevende. Luister naar uw leidinggevende en reageer.
+— spreker: Ik zie in je aanvraag dat je die cursus wilt volgen. Vertel eens, waarom is dat belangrijk voor je?
+
+[opdracht 7 · none · verteller]
+U begint bij een nieuw bedrijf. U mag kiezen: u werkt alleen aan uw eigen taken, of u werkt in een team. Uw contactpersoon vraagt naar uw voorkeur. Vertel welke manier van werken u kiest. Vertel ook waarom u dat kiest.
+
+[opdracht 8 · describe · verteller]
+U werkt in de keuken van een restaurant. Een collega heeft zich gesneden aan een mes. De bedrijfsleider is er niet. Kijk naar het plaatje. Vertel wat er gebeurd is en wat u gaat doen.
+
+[opdracht 9 · cover_all · verteller, dan spreker]
+U volgt een cursus Nederlands bij een buurtcentrum in Zwolle. Een kennis wil zich ook inschrijven, maar zij weet niet hoe dat gaat. Kijk naar de plaatjes. Leg haar uit hoe zij zich kan inschrijven voor de cursus. U moet daarbij alle plaatjes gebruiken. U hoort eerst wat uw kennis vraagt.
+— spreker: Ik zou die cursus ook graag willen doen, maar ik snap niet hoe ik me moet aanmelden. Kun jij me uitleggen wat ik precies moet doen?
+
+[opdracht 10 · none · verteller, dan spreker]
+U werkt bij een schoonmaakbedrijf. Uw leidinggevende vraagt de medewerkers naar hun ideeën. Zij wil weten wat er beter kan op de werkvloer. Vertel welke verandering u op uw werk zou willen. Vertel ook waarom u dat belangrijk vindt.
+— spreker: We willen graag weten wat jullie zelf zouden veranderen. Wat zou jij anders willen op je werk, en waarom eigenlijk?
+
+[opdracht 11 · cover_all · verteller, dan spreker]
+Uw neef wil volgend jaar een opleiding gaan doen. Hij twijfelt of hij naar de open dag van het opleidingscentrum zal gaan. U bent er vorig jaar zelf geweest. Kijk naar de plaatjes. Vertel hem wat er tijdens de open dag gebeurt. U moet daarbij alle plaatjes gebruiken. U hoort eerst wat uw neef vraagt.
+— spreker: Ik weet niet of ik naar die open dag ga. Wat doen ze daar eigenlijk allemaal?
+
+[opdracht 12 · choose · verteller, dan spreker]
+Uw buurvrouw begint in september met een opleiding administratie. Zij wil een laptop kopen en heeft twee modellen gezien. Kijk naar de twee plaatjes. Adviseer haar welke laptop zij moet kopen. Noem minstens twee redenen voor uw keuze.
+— spreker: Ik zie door de bomen het bos niet meer. Welke van deze twee laptops zou jij nemen voor mijn opleiding?
+
+[opdracht 13 · cover_all · verteller, dan spreker]
+U werkt in een tuincentrum bij de kassa. Een nieuwe collega moet vanavond de winkel sluiten. Hij weet nog niet hoe hij de kassa afsluit. Kijk naar de plaatjes. Leg uw collega uit wat hij aan het eind van de dag moet doen. U moet daarbij alle plaatjes gebruiken. U hoort eerst wat uw collega vraagt.
+— spreker: Ik moet vanavond afsluiten, maar ik heb dat nog nooit gedaan. Kun je me uitleggen hoe ik de kassa afsluit?
+
+[opdracht 14 · none · verteller, dan spreker]
+Bij uw werkgever werken veel collega's tegenwoordig thuis. Tijdens een werkoverleg wordt er over thuiswerken gepraat. Een collega vraagt naar uw mening. Vertel wat volgens u de nadelen van thuiswerken zijn. Geef ook voorbeelden uit uw eigen ervaring.
+— spreker: Iedereen is altijd zo positief over thuiswerken. Wat vind jij eigenlijk de nadelen ervan?
+
+[opdracht 15 · choose · verteller, dan spreker]
+U werkt bij een gemeente en organiseert een cursus voor twintig deelnemers. De cursus duurt een hele dag en er wordt in groepjes gewerkt. Er zijn twee zalen beschikbaar. Kijk naar de twee plaatjes. Adviseer uw collega welke zaal geschikt is. Noem minstens twee redenen voor uw keuze.
+— spreker: Ik moet vandaag nog een zaal vastleggen. Welke van deze twee is volgens jou het beste voor onze cursus?
+
+[opdracht 16 · none · verteller, dan spreker]
+In uw flat komt een nieuwe bewoner wonen. De woningcorporatie maakt een boekje over prettig samenwonen in de flat. Een medewerkster vraagt bewoners naar hun ervaring. Vertel wat u een goede buur maakt. Geef ook voorbeelden van wat u voor uw buren doet.
+— spreker: Wij vragen alle bewoners hetzelfde: wat maakt u volgens uzelf een goede buur?

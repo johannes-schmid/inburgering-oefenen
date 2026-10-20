@@ -139,16 +139,18 @@ function toOpenTaskItem(d: OpgaveDraft): OpenTaskItem {
     title: d.title.trim() || null,
     prompt_html: d.prompt_html.trim() || '<p>(nog geen opdrachttekst)</p>',
     bullet_points: d.bullet_points.map(b => b.trim()).filter(Boolean),
-    email_to: d.task_type === 'email' ? d.email_to.trim() || null : null,
-    email_cc: d.task_type === 'email' ? d.email_cc.trim() || null : null,
-    email_subject: d.task_type === 'email' ? d.email_subject.trim() || null : null,
+    email_to: d.skill === 'spreken' ? null : d.email_to.trim() || null,
+    email_cc: d.skill === 'spreken' ? null : d.email_cc.trim() || null,
+    email_subject: d.skill === 'spreken' ? null : d.email_subject.trim() || null,
     greeting: d.greeting.trim() || null,
     closing: d.closing.trim() || null,
     min_sentences: d.min_sentences && d.min_sentences > 0 ? d.min_sentences : null,
-    form_schema: d.task_type === 'form' ? { sections: d.form_sections } : null,
+    form_schema:
+      d.task_type === 'form' || d.form_sections.some(s => s.fields.length > 0) ? { sections: d.form_sections } : null,
     image_usage: d.skill === 'spreken' ? d.image_usage : 'none',
     prompt_audio_url: d.skill === 'spreken' ? d.prompt_audio_url.trim() || null : null,
     max_record_seconds: d.skill === 'spreken' ? d.max_record_seconds : 60,
+    prep_seconds: null,
     images: d.images.map((im, i) => ({
       // An unsaved image row has no id yet; a stable negative one keeps React keys distinct.
       id: im.id ?? -(i + 1),

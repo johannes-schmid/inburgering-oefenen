@@ -1,9 +1,9 @@
 'use client';
 
 import { useCallback, useEffect, useMemo, useRef, useState, type ReactNode } from 'react';
-import { Check, Clock, Info, Loader2, Mic, RotateCcw, TriangleAlert } from 'lucide-react';
+import { Check, Clock, Info, Loader2, Mic, Play, RotateCcw, TriangleAlert } from 'lucide-react';
 import type { FeedbackHighlight, RubricFeedbackState } from './RubricFeedback';
-import AudioPlayer from './AudioPlayer';
+import AudioPlayer, { Countdown, Wave } from './AudioPlayer';
 import './glas-player.css';
 import { WavRecorder, canRecordWav } from '@/lib/wav-recorder';
 import {
@@ -52,7 +52,29 @@ type Props = {
    * score next to the question it answers and roughly halves the page.
    */
   feedback?: ReactNode;
+  /**
+   * B1: de opdracht loopt vanzelf, zoals bij DUO — voorlezen, kijk- of voorbereidingstijd
+   * (`prep_seconds`), pieptoon, opname van `max_record_seconds`, pieptoon. `once` is de
+   * examenmodus: één opname, geen stopknop, en daarna `onFinished` (de shell gaat door).
+   * Zonder `run` is het de A2-speler: zelf op opnemen drukken, opnieuw mag.
+   */
+  run?: { once: boolean; onFinished: () => void };
 };
+
+/** De pieptoon van DUO: begin en einde van de spreektijd. */
+const PIEPTOON = '/audio/exam/pieptoon.mp3';
+
+/** Speel een kort geluid af en wacht tot het klaar is. Geweigerd of kapot? Dan gewoon door. */
+function playOnce(src: string): Promise<void> {
+  return new Promise(resolve => {
+    const a = new Audio(src);
+    a.onended = () => resolve();
+    a.onerror = () => resolve();
+    a.play().catch(() => resolve());
+  });
+}
+
+type RunStage = 'listen' | 'blocked' | 'prep' | 'record' | 'saved';
 
 /**
  * De plaatjesregel onder de opdracht, in DUO's woorden. Gelijk aan `PICTURE_RULE` in
@@ -95,6 +117,7 @@ export default function SpeakingTask({
   liveTranscript = true,
   review,
   feedback,
+  run,
 }: Props) {
   const [recording, setRecording] = useState(false);
   const [elapsed, setElapsed] = useState(0);
@@ -110,6 +133,17 @@ export default function SpeakingTask({
   const tickRef = useRef<ReturnType<typeof setInterval> | null>(null);
   const elapsedRef = useRef(0);
   const limit = task.max_record_seconds;
+  const prepTotal = task.prep_seconds ?? 0;
+
+  /* ── De automatische loop (B1). Zie `run` in de props. ── */
+  const [stage, setStage] = useState<RunStage>(task.prompt_audio_url ? 'listen' : prepTotal > 0 ? 'prep' : 'record');
+  const [prepLeft, setPrepLeft] = useState(prepTotal);
+  const [promptProgress, setPromptProgress] = useState(0);
+  const promptRef = useRef<HTMLAudioElement | null>(null);
+  const runRef = useRef(run);
+  useEffect(() => { runRef.current = run; }, [run]);
+  /** Eén opname per beurt, ook als React een effect dubbel draait. */
+  const recordingStartedRef = useRef(false);
 
   // Derived rather than held in state, so there is no render where the URL and the blob
   // disagree. The effect only revokes: leaking one object URL per retake would keep every
@@ -207,8 +241,63 @@ export default function SpeakingTask({
     tickRef.current = setInterval(() => {
       elapsedRef.current += 1;
       setElapsed(elapsedRef.current);
-      if (elapsedRef.current >= limit) void stop();
+      if (elapsedRef.current >= limit) void (runRef.current ? finishRun() : stop());
     }, 1000);
+  }
+
+  /** Pieptoon, dan de opname. Bij een geweigerde microfoon blijft er een knop om opnieuw te proberen. */
+  async function beginRecord() {
+    if (recordingStartedRef.current) return;
+    recordingStartedRef.current = true;
+    setStage('record');
+    await playOnce(PIEPTOON);
+    await start();
+    if (!recorderRef.current) recordingStartedRef.current = false;
+  }
+
+  /** De tijd is om (of de kandidaat stopt in de oefenstand): opslaan, pieptoon, klaar. */
+  async function finishRun() {
+    await stop();
+    await playOnce(PIEPTOON);
+    setStage('saved');
+  }
+
+  useEffect(() => {
+    if (!run || stage !== 'listen') return;
+    void promptRef.current?.play().catch(() => setStage('blocked'));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [stage]);
+
+  useEffect(() => {
+    if (!run) return;
+    if (stage === 'record' && !task.prompt_audio_url && prepTotal === 0) void beginRecord();
+    if (stage !== 'prep') return;
+    let left = prepTotal;
+    const id = setInterval(() => {
+      left -= 1;
+      setPrepLeft(left);
+      if (left <= 0) { clearInterval(id); void beginRecord(); }
+    }, 1000);
+    return () => clearInterval(id);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [stage]);
+
+  useEffect(() => {
+    if (!run?.once || stage !== 'saved') return;
+    const id = setTimeout(() => runRef.current?.onFinished(), 1500);
+    return () => clearTimeout(id);
+  }, [run?.once, stage]);
+
+  function afterPrompt() {
+    if (!run || stage !== 'listen') return;
+    if (prepTotal > 0) { setPrepLeft(prepTotal); setStage('prep'); }
+    else void beginRecord();
+  }
+
+  /** Oefenstand: nog een keer, met pieptoon. */
+  function retake() {
+    recordingStartedRef.current = false;
+    void beginRecord();
   }
 
   const remaining = Math.max(limit - elapsed, 0);
@@ -231,7 +320,7 @@ export default function SpeakingTask({
       <section className="g-xbody g-xspeak-q">
         <div className="g-xqhead" style={{ justifyContent: 'space-between' }}>
           <span className="g-mono g-tnum">Opdracht {taskNumber} van {total}</span>
-          <span className="g-xbdg"><Clock aria-hidden />Max. {limit} sec.</span>
+          <span className="g-xbdg"><Clock aria-hidden />{run ? `${limit} sec. spreektijd` : `Max. ${limit} sec.`}</span>
         </div>
 
         {task.title && <h2 className="g-xtitle">{task.title}</h2>}
@@ -250,7 +339,7 @@ export default function SpeakingTask({
           </p>
         )}
 
-        {task.prompt_audio_url && (
+        {task.prompt_audio_url && !run && (
           <div style={{ marginTop: 16 }}>
             {/* Speelt vanzelf, zoals DUO de opdracht voorleest. */}
             <AudioPlayer src={task.prompt_audio_url} label="Opdracht beluisteren" compact autoPlay />
@@ -281,56 +370,149 @@ export default function SpeakingTask({
         <div className="g-xrec">
           <span className="g-mono">Opnemen</span>
 
-          <div className="g-xrstep">
-            {!recording ? (
-              <button type="button" onClick={start} className="g-xrecbig" aria-label={hasRecording ? 'Opnieuw opnemen' : 'Start opname'}>
-                <span className="g-xrecbig-mc">
-                  {hasRecording ? <RotateCcw aria-hidden /> : <Mic aria-hidden />}
-                </span>
-                {hasRecording ? 'Opnieuw opnemen' : 'Start opname'}
-              </button>
-            ) : (
-              <button type="button" onClick={() => void stop()} className="g-xrecbig g-xrecbig-live" aria-label="Stop opname">
-                <span className="g-xrecbig-mc">
-                  <svg className="g-xring" width="44" height="44" viewBox="0 0 44 44" aria-hidden>
-                    <circle cx="22" cy="22" r="20" fill="none" stroke="rgba(0,43,109,.12)" strokeWidth="3" />
-                    <circle
-                      cx="22" cy="22" r="20" fill="none" stroke="#002b6d" strokeWidth="3" strokeLinecap="round"
-                      strokeDasharray={ringC} strokeDashoffset={ringC * (1 - Math.min(elapsed / limit, 1))}
-                    />
-                  </svg>
-                  <i />
-                </span>
-                <span className="g-xrecdot" aria-hidden />
-                <span className="g-tnum" aria-live="off">{Math.floor(elapsed / 60)}:{String(elapsed % 60).padStart(2, '0')}</span>
-                <span className="g-xlv" aria-hidden>
-                  {Array.from({ length: METER_BARS }, (_, i) => {
-                    // A centred, roughly bell-shaped response so the meter reads as a voice rather
-                    // than a bar chart.
-                    const distance = Math.abs(i - (METER_BARS - 1) / 2) / ((METER_BARS - 1) / 2);
-                    const shape = 1 - distance * 0.75;
-                    return <i key={i} style={{ transform: `scaleY(${Math.max(0.12, level * shape).toFixed(3)})` }} />;
-                  })}
-                </span>
-                <span style={{ color: 'var(--ink-2)' }}>Stop</span>
-              </button>
-            )}
-            <small aria-live="polite">
-              {recording
-                ? `Nog ${remaining} seconden. Druk op stop als je klaar bent.`
-                : hasRecording
-                  ? `Opname van ${Math.round(answer.seconds)} sec. Luister hem terug, of neem opnieuw op.`
-                  : `Je hebt ${limit} seconden. Daarna kun je terugluisteren.`}
-            </small>
-            {error && (
-              <p className="g-xrec-err">
-                <TriangleAlert aria-hidden />
-                {error}
-              </p>
-            )}
-          </div>
+          {run ? (
+            <div className="g-xrstep">
+              {task.prompt_audio_url && (
+                <audio
+                  ref={promptRef}
+                  src={task.prompt_audio_url}
+                  preload="auto"
+                  onTimeUpdate={e => setPromptProgress(e.currentTarget.duration ? e.currentTarget.currentTime / e.currentTarget.duration : 0)}
+                  onEnded={afterPrompt}
+                />
+              )}
+              {stage === 'listen' && (
+                <div className="g-xrun">
+                  <Wave progress={promptProgress} />
+                  <small aria-live="polite">U hoort de opdracht.</small>
+                </div>
+              )}
+              {stage === 'blocked' && (
+                <button
+                  type="button"
+                  className="g-btn g-btn-navy g-btn-sm"
+                  onClick={() => { setStage('listen'); void promptRef.current?.play().catch(() => setStage('blocked')); }}
+                >
+                  <Play aria-hidden />
+                  Start de opdracht
+                </button>
+              )}
+              {stage === 'prep' && (
+                <div className="g-xrun">
+                  <Countdown left={prepLeft} total={prepTotal} />
+                  <small aria-live="polite">
+                    {task.images.length > 0 && task.part_id && prepTotal <= 5
+                      ? 'Bekijk het plaatje. Na de pieptoon begint de opname.'
+                      : 'Bedenk wat u gaat zeggen. Na de pieptoon begint de opname.'}
+                  </small>
+                </div>
+              )}
+              {stage === 'record' && (recording ? (
+                <div className="g-xrecbig g-xrecbig-live" role="timer" aria-label={`Opname loopt, nog ${remaining} seconden`}>
+                  <span className="g-xrecbig-mc">
+                    <svg className="g-xring" width="44" height="44" viewBox="0 0 44 44" aria-hidden>
+                      <circle cx="22" cy="22" r="20" fill="none" stroke="rgba(0,43,109,.12)" strokeWidth="3" />
+                      <circle
+                        cx="22" cy="22" r="20" fill="none" stroke="#002b6d" strokeWidth="3" strokeLinecap="round"
+                        strokeDasharray={ringC} strokeDashoffset={ringC * (1 - Math.min(elapsed / limit, 1))}
+                      />
+                    </svg>
+                    <i />
+                  </span>
+                  <span className="g-xrecdot" aria-hidden />
+                  <span className="g-tnum">Nog {remaining} sec.</span>
+                  <span className="g-xlv" aria-hidden>
+                    {Array.from({ length: METER_BARS }, (_, i) => {
+                      const distance = Math.abs(i - (METER_BARS - 1) / 2) / ((METER_BARS - 1) / 2);
+                      return <i key={i} style={{ transform: `scaleY(${Math.max(0.12, level * (1 - distance * 0.75)).toFixed(3)})` }} />;
+                    })}
+                  </span>
+                </div>
+              ) : error ? (
+                <button type="button" className="g-btn g-btn-navy g-btn-sm" onClick={retake}>
+                  <Mic aria-hidden />
+                  Opnieuw proberen
+                </button>
+              ) : (
+                <small aria-live="polite">Pieptoon…</small>
+              ))}
+              {stage === 'record' && recording && !run.once && (
+                <button type="button" className="g-btn g-btn-ghost g-btn-sm" onClick={() => void finishRun()}>
+                  Klaar, stop de opname
+                </button>
+              )}
+              {stage === 'saved' && (
+                run.once ? (
+                  <p className="g-xrun-done">
+                    <Check aria-hidden />
+                    Uw antwoord is opgeslagen. De volgende opdracht begint zo.
+                  </p>
+                ) : (
+                  <button type="button" onClick={retake} className="g-xrecbig" aria-label="Opnieuw opnemen">
+                    <span className="g-xrecbig-mc"><RotateCcw aria-hidden /></span>
+                    Opnieuw opnemen
+                  </button>
+                )
+              )}
+              {error && (
+                <p className="g-xrec-err">
+                  <TriangleAlert aria-hidden />
+                  {error}
+                </p>
+              )}
+            </div>
+          ) : (
+            <div className="g-xrstep">
+              {!recording ? (
+                <button type="button" onClick={start} className="g-xrecbig" aria-label={hasRecording ? 'Opnieuw opnemen' : 'Start opname'}>
+                  <span className="g-xrecbig-mc">
+                    {hasRecording ? <RotateCcw aria-hidden /> : <Mic aria-hidden />}
+                  </span>
+                  {hasRecording ? 'Opnieuw opnemen' : 'Start opname'}
+                </button>
+              ) : (
+                <button type="button" onClick={() => void stop()} className="g-xrecbig g-xrecbig-live" aria-label="Stop opname">
+                  <span className="g-xrecbig-mc">
+                    <svg className="g-xring" width="44" height="44" viewBox="0 0 44 44" aria-hidden>
+                      <circle cx="22" cy="22" r="20" fill="none" stroke="rgba(0,43,109,.12)" strokeWidth="3" />
+                      <circle
+                        cx="22" cy="22" r="20" fill="none" stroke="#002b6d" strokeWidth="3" strokeLinecap="round"
+                        strokeDasharray={ringC} strokeDashoffset={ringC * (1 - Math.min(elapsed / limit, 1))}
+                      />
+                    </svg>
+                    <i />
+                  </span>
+                  <span className="g-xrecdot" aria-hidden />
+                  <span className="g-tnum" aria-live="off">{Math.floor(elapsed / 60)}:{String(elapsed % 60).padStart(2, '0')}</span>
+                  <span className="g-xlv" aria-hidden>
+                    {Array.from({ length: METER_BARS }, (_, i) => {
+                      // A centred, roughly bell-shaped response so the meter reads as a voice rather
+                      // than a bar chart.
+                      const distance = Math.abs(i - (METER_BARS - 1) / 2) / ((METER_BARS - 1) / 2);
+                      const shape = 1 - distance * 0.75;
+                      return <i key={i} style={{ transform: `scaleY(${Math.max(0.12, level * shape).toFixed(3)})` }} />;
+                    })}
+                  </span>
+                  <span style={{ color: 'var(--ink-2)' }}>Stop</span>
+                </button>
+              )}
+              <small aria-live="polite">
+                {recording
+                  ? `Nog ${remaining} seconden. Druk op stop als je klaar bent.`
+                  : hasRecording
+                    ? `Opname van ${Math.round(answer.seconds)} sec. Luister hem terug, of neem opnieuw op.`
+                    : `Je hebt ${limit} seconden. Daarna kun je terugluisteren.`}
+              </small>
+              {error && (
+                <p className="g-xrec-err">
+                  <TriangleAlert aria-hidden />
+                  {error}
+                </p>
+              )}
+            </div>
+          )}
 
-          {previewUrl && !recording && (
+          {previewUrl && !recording && (!run || (stage === 'saved' && !run.once)) && (
             <AudioPlayer src={previewUrl} label="Jouw opname" compact />
           )}
 

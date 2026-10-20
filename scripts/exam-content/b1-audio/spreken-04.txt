@@ -1,0 +1,61 @@
+# B1 Spreken — oefenexamen 4
+# verteller: narrator, snelheid 1 (zelfde als de geluidstest)
+
+[opdracht 1 · react · verteller, dan spreker]
+U werkt in een drukke telefoonwinkel. Er staan veel mensen in de rij. Een klant wacht al bijna een half uur. Hij spreekt u aan. Reageer op de klant en zeg wat u voor hem gaat doen.
+— spreker: Ik sta hier nu al bijna een half uur te wachten, hoor! Kan dat niet een beetje sneller?
+
+[opdracht 2 · none · verteller]
+U wilt een cursus Nederlands gaan doen. Er zijn twee mogelijkheden. De cursus is op zaterdagochtend, of op twee avonden per week. Een vriend vraagt welke cursus u kiest. Vertel welke cursus u kiest en waarom.
+
+[opdracht 3 · react · verteller, dan spreker]
+U volgt een opleiding tot verzorgende. Een medestudente was vorige week ziek. Zij komt naar u toe in de pauze. Reageer op uw medestudente.
+— spreker: Hé, ik was vorige week ziek en ik heb dus niks van die les. Mag ik jouw aantekeningen even kopiëren?
+
+[opdracht 4 · describe · verteller]
+U werkt bij een groot verhuisbedrijf. Een nieuwe collega staat met u bij de kantine. Hij begrijpt de prijslijst nog niet goed. Kijk naar het plaatje. Leg uw collega uit wat er op de prijslijst staat.
+
+[opdracht 5 · none · verteller]
+U werkt bij een thuiszorgorganisatie. Het werkoverleg duurt nu een uur. Uw leidinggevende wil er een half uur van maken, zodat er meer tijd is voor de cliënten. Vertel wat u van dit plan vindt en waarom.
+
+[opdracht 6 · react · verteller, dan spreker]
+U loopt stage bij een kinderdagverblijf. U bent nu drie weken bezig. Uw leidinggevende komt even bij u zitten. Reageer op uw leidinggevende.
+— spreker: Zo, je bent nu een paar weken bij ons. Vertel eens, hoe gaat je stage tot nu toe?
+
+[opdracht 7 · none · verteller]
+U kunt kiezen tussen twee banen. De eerste baan is tien minuten fietsen van uw huis. De tweede baan betaalt tweehonderd euro per maand meer, maar u bent elke dag anderhalf uur onderweg. Vertel welke baan u kiest en waarom.
+
+[opdracht 8 · describe · verteller]
+U bent in een ziekenhuis voor een controle. Bij de hoofdingang staat een oudere man. Hij zoekt de afdeling Radiologie en weet niet welke kant hij op moet. Kijk naar het plaatje. Vertel de man precies hoe hij moet lopen.
+
+[opdracht 9 · cover_all · verteller, dan spreker]
+U werkt bij een groot bedrijf in Zwolle. Een leverancier komt morgen voor het eerst langs. Hij weet niet wat hij bij aankomst moet doen. Kijk naar de plaatjes. Leg hem uit welke stappen hij bij aankomst moet zetten. U moet daarbij alle plaatjes gebruiken. U hoort eerst de leverancier.
+— spreker: Ik kom morgen voor het eerst bij jullie langs. Wat moet ik doen als ik binnenkom?
+
+[opdracht 10 · none · verteller, dan spreker]
+Een kennis uit uw taalcursus heeft een vrije dag. Zij wil graag een dagje naar een andere stad in Nederland. Zij vraagt u om een tip. Vertel welke stad u haar aanraadt. Vertel ook waarom u die stad kiest en wat zij daar kan doen.
+— spreker: Ik heb volgende week een vrije dag. Welke stad moet ik volgens jou echt een keer bezoeken?
+
+[opdracht 11 · cover_all · verteller, dan spreker]
+U werkt op een kantoor in Breda. Er is vandaag een nieuwe medewerker begonnen. Hij wil koffie halen, maar hij snapt de machine niet. Kijk naar de plaatjes. Leg hem uit hoe de koffiemachine werkt. U moet daarbij alle plaatjes gebruiken. U hoort eerst de nieuwe medewerker.
+— spreker: Ik wil graag een kopje koffie, maar ik weet niet hoe dit apparaat werkt. Kun je het even uitleggen?
+
+[opdracht 12 · choose · verteller, dan spreker]
+Uw collega Miriam gaat na twaalf jaar met pensioen. De afdeling heeft geld ingezameld voor een cadeau. Een collega twijfelt tussen twee mogelijkheden. Kijk naar de twee plaatjes. Zeg welk cadeau u kiest en geef minimaal twee redenen.
+— spreker: Ik twijfel echt. Zullen we een boeket met een cadeaubon geven of toch een dagje weg met een overnachting?
+
+[opdracht 13 · cover_all · verteller, dan spreker]
+Uw buurvrouw gaat over twee maanden verhuizen naar Deventer. Zij heeft nog nooit eerder verhuisd. Zij vraagt u wat zij allemaal moet regelen. Kijk naar de plaatjes. Leg haar uit wat zij op tijd moet doen. U moet daarbij alle plaatjes gebruiken. U hoort eerst uw buurvrouw.
+— spreker: Ik verhuis over twee maanden, maar ik zie er tegenop. Wat moet ik allemaal regelen?
+
+[opdracht 14 · none · verteller, dan spreker]
+U zit in de kantine van uw opleiding. Een medestudent leest een bericht over winkels die op zondag open zijn. In steeds meer plaatsen zijn dat er meer. Vertel wat u van koopzondagen vindt. Geef ook redenen en een voorbeeld.
+— spreker: Bij ons in het dorp gaan de winkels nu ook op zondag open. Wat vind jij daar eigenlijk van?
+
+[opdracht 15 · choose · verteller, dan spreker]
+Uw zwager gaat volgende maand in Amersfoort werken. Hij fietst dan elke dag twaalf kilometer heen en weer. Hij wil een nieuwe fiets kopen. Kijk naar de twee plaatjes. Zeg welke fiets u hem aanraadt en geef minimaal twee redenen.
+— spreker: Ik ga elke dag twaalf kilometer naar mijn werk fietsen. Welke fiets kan ik volgens jou het beste nemen?
+
+[opdracht 16 · none · verteller, dan spreker]
+U volgt een beroepsopleiding. Een medestudent moet binnenkort een stageplek zoeken. Zij weet niet waar zij op moet letten. Vertel wat volgens u een goede stageplek maakt. Geef ook redenen en een voorbeeld.
+— spreker: Ik moet volgende periode stage lopen, maar ik weet niet waar ik op moet letten. Wat maakt een stageplek goed?

@@ -229,16 +229,21 @@ export default function OpgaveForm({
       title: form.title.trim() || null,
       prompt_html: form.prompt_html.trim() || null,
       bullet_points: form.bullet_points.map(b => b.trim()).filter(Boolean),
-      email_to: form.task_type === 'email' ? form.email_to.trim() || null : null,
-      email_cc: form.task_type === 'email' ? form.email_cc.trim() || null : null,
-      email_subject: form.task_type === 'email' ? form.email_subject.trim() || null : null,
+      // Niet alleen `email`: bij B1 is een `sentence_completion` of `letter` ook vaak een mail,
+      // en de speler kiest het mailvenster op deze velden. Ze wissen op task_type wiste hun kop.
+      email_to: isSpeaking ? null : form.email_to.trim() || null,
+      email_cc: isSpeaking ? null : form.email_cc.trim() || null,
+      email_subject: isSpeaking ? null : form.email_subject.trim() || null,
       greeting: form.greeting.trim() || null,
       closing: form.closing.trim() || null,
       min_sentences: form.min_sentences && form.min_sentences > 0 ? form.min_sentences : null,
-      // The player reads `sections[].fields[]` (lib/exam-content.ts FormSchema). The column comment
-      // in the baseline describes a different `rows[].kind` shape and is stale — the code is what
-      // renders, so this matches the code.
-      form_schema: form.task_type === 'form' ? { sections: form.form_sections } : null,
+      // Altijd de `sections[].fields[]`-vorm; `normalizeFormSchema` (lib/form-schema.ts) leest
+      // bij het laden ook de oude `rows[].kind`-vorm, zodat opslaan hier geen rijen meer wist.
+      // Een niet-formulier mag een schema houden (B1 7.11: een verslag met een kop).
+      form_schema:
+        form.task_type === 'form' || form.form_sections.some(s => s.fields.length > 0)
+          ? { sections: form.form_sections }
+          : null,
       image_usage: isSpeaking ? form.image_usage : 'none',
       prompt_audio_url: isSpeaking ? form.prompt_audio_url.trim() || null : null,
       prompt_script: isSpeaking ? form.prompt_script.trim() || null : null,
@@ -1040,6 +1045,7 @@ function FormSchemaEditor({
                 <option value="date">Datum</option>
                 <option value="radio">Keuze (één)</option>
                 <option value="checkbox">Keuze (meer)</option>
+                <option value="static">Vaste tekst</option>
               </select>
               <button
                 type="button"
@@ -1049,6 +1055,34 @@ function FormSchemaEditor({
               >
                 <Trash2 size={14} aria-hidden />
               </button>
+              {f.type === 'static' && (
+                <input
+                  value={f.value ?? ''}
+                  onChange={e =>
+                    patchSection(i, {
+                      fields: s.fields.map((x, m) => (m === k ? { ...x, value: e.target.value } : x)),
+                    })
+                  }
+                  placeholder="De tekst die al ingevuld staat"
+                  className="field sm:col-span-4"
+                />
+              )}
+              {f.type === 'text' && (
+                <label className="sm:col-span-4 inline-flex items-center gap-2 text-sm">
+                  <input
+                    type="checkbox"
+                    checked={f.multiline === true}
+                    onChange={e =>
+                      patchSection(i, {
+                        fields: s.fields.map((x, m) =>
+                          m === k ? { ...x, multiline: e.target.checked || undefined } : x
+                        ),
+                      })
+                    }
+                  />
+                  Antwoord van meerdere zinnen
+                </label>
+              )}
               {(f.type === 'radio' || f.type === 'checkbox') && (
                 <input
                   value={(f.options ?? []).join(', ')}

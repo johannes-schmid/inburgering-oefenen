@@ -4,7 +4,13 @@ import { useMemo, type ReactNode } from 'react';
 import { Check, Info, Loader2, Lock, RotateCcw } from 'lucide-react';
 import type { FeedbackHighlight, RubricFeedbackState } from './RubricFeedback';
 import './glas-player.css';
-import type { FormField, OpenTaskItem } from '@/lib/exam-content';
+import type { OpenTaskItem } from '@/lib/exam-content';
+import { normalizeFormSchema, type FormField, type FormSection } from '@/lib/form-schema';
+
+/** Korter dan dit (zonder plaatjes) staan opdracht en antwoord onder elkaar, zoals bij DUO. */
+const STACK_BELOW_CHARS = 700;
+/** Het afzenderadres in het mailvenster; DUO toont hier het adres van de kandidaat. */
+const MAIL_FROM = 'kandidaat@mail.nl';
 
 export type WritingAnswer = { text: string; json: Record<string, string> | null };
 
@@ -56,7 +62,7 @@ export default function WritingTask({
   feedback,
   canSeeModelAnswer = false,
 }: Props) {
-  const fields = useMemo(() => flattenFields(task), [task]);
+  const sections = useMemo(() => normalizeFormSchema(task.form_schema), [task]);
   const words = answer.text.trim() ? answer.text.trim().split(/\s+/).length : 0;
   const isForm = task.task_type === 'form';
   /**
@@ -74,11 +80,20 @@ export default function WritingTask({
   const gradedText = graded ? review?.answerText?.trim() || '' : '';
 
   const paneLabel = isForm ? 'Het formulier' : isMail ? 'Jouw e-mail' : 'Jouw tekst';
+  /* Een korte opdracht zonder plaatjes staat bóven het antwoord, over de hele breedte — zoals
+     het mailvenster bij DUO. Is er veel te lezen, dan blijven opdracht en antwoord naast elkaar. */
+  const promptChars =
+    (task.prompt_html ?? '').replace(/<[^>]+>/g, '').length + task.bullet_points.join(' ').length;
+  const stacked = task.images.length === 0 && promptChars < STACK_BELOW_CHARS;
+  const formPart =
+    sections.length > 0 ? (
+      <FormAnswer sections={sections} value={answer.json ?? {}} onChange={json => onChange({ ...answer, json })} />
+    ) : null;
 
   /* Glas §10 "Schrijven": de opdracht links op wit met de punten in een mistvlak, rechts de
      e-mail als envelop (Aan/Onderwerp, dan de tekst), de beoordeling eronder over de hele breedte. */
   return (
-    <div className="g-xwrite">
+    <div className={stacked ? 'g-xwrite g-xwrite-stack' : 'g-xwrite'}>
       {/* ── Left: the opdracht ── */}
       <section className="g-xbody">
         <div className="g-xqhead" style={{ justifyContent: 'space-between' }}>
@@ -140,55 +155,61 @@ export default function WritingTask({
         </div>
 
         {isForm ? (
-          <FormAnswer
-            fields={fields}
-            value={answer.json ?? {}}
-            onChange={json => onChange({ ...answer, json })}
-          />
+          formPart
         ) : (
-          <div className="g-xmail">
-            {isMail && (
-              <dl style={{ margin: 0 }}>
-                {task.email_to && <MailRow label="Aan" value={task.email_to} />}
-                {task.email_cc && <MailRow label="Cc" value={task.email_cc} />}
-                {task.email_subject && <MailRow label="Onderwerp" value={task.email_subject} />}
-              </dl>
-            )}
-
-            <div className="g-xmail-t">
-              {task.greeting && <p className="g-xmail-fixed">{task.greeting}</p>}
-
-              {graded && gradedText && review ? (
-                <MarkedText text={gradedText} highlights={review.highlights} />
-              ) : (
-                <label className="block">
-                  <span className="sr-only">Jouw antwoord</span>
-                  <textarea
-                    value={answer.text}
-                    onChange={e => onChange({ ...answer, text: e.target.value })}
-                    rows={isMail ? 8 : 7}
-                    placeholder="Schrijf hier je antwoord…"
-                    className="g-xtextarea"
-                    readOnly={grading}
-                  />
-                </label>
+          <>
+            {formPart}
+            <div className="g-xmail">
+              {isMail && (
+                <>
+                  <div className="g-xmail-bar" aria-hidden>
+                    <span>{task.email_subject || 'Nieuw bericht'}</span>
+                    <i /><i /><i />
+                  </div>
+                  <dl style={{ margin: 0 }}>
+                    <MailRow label="Van" value={MAIL_FROM} />
+                    {task.email_to && <MailRow label="Aan" value={task.email_to} />}
+                    {task.email_cc && <MailRow label="Cc" value={task.email_cc} />}
+                    {task.email_subject && <MailRow label="Onderwerp" value={task.email_subject} />}
+                  </dl>
+                </>
               )}
 
-              {task.closing && <p className="g-xmail-fixed g-xmail-fixed-end">{task.closing}</p>}
-            </div>
+              <div className="g-xmail-t">
+                {task.greeting && <p className="g-xmail-fixed">{task.greeting}</p>}
 
-            <div className="g-xmail-ft">
-              <span className="g-mono g-tnum" style={{ fontSize: 11 }}>
-                {words} {words === 1 ? 'woord' : 'woorden'}
-              </span>
-              {graded && review && review.highlights.length > 0 && (
-                <span style={{ display: 'flex', gap: 12 }}>
-                  <span className="g-xmark g-xmark-good">goed</span>
-                  <span className="g-xmark g-xmark-improve">kan beter</span>
+                {graded && gradedText && review ? (
+                  <MarkedText text={gradedText} highlights={review.highlights} />
+                ) : (
+                  <label className="block">
+                    <span className="sr-only">Jouw antwoord</span>
+                    <textarea
+                      value={answer.text}
+                      onChange={e => onChange({ ...answer, text: e.target.value })}
+                      rows={isMail ? 8 : 7}
+                      placeholder="Schrijf hier je antwoord…"
+                      className="g-xtextarea"
+                      readOnly={grading}
+                    />
+                  </label>
+                )}
+
+                {task.closing && <p className="g-xmail-fixed g-xmail-fixed-end">{task.closing}</p>}
+              </div>
+
+              <div className="g-xmail-ft">
+                <span className="g-mono g-tnum" style={{ fontSize: 11 }}>
+                  {words} {words === 1 ? 'woord' : 'woorden'}
                 </span>
-              )}
+                {graded && review && review.highlights.length > 0 && (
+                  <span style={{ display: 'flex', gap: 12 }}>
+                    <span className="g-xmark g-xmark-good">goed</span>
+                    <span className="g-xmark g-xmark-improve">kan beter</span>
+                  </span>
+                )}
+              </div>
             </div>
-          </div>
+          </>
         )}
 
         {review && (
@@ -265,11 +286,11 @@ function MailRow({ label, value }: { label: string; value: string }) {
 }
 
 function FormAnswer({
-  fields,
+  sections,
   value,
   onChange,
 }: {
-  fields: FormField[];
+  sections: FormSection[];
   value: Record<string, string>;
   onChange: (next: Record<string, string>) => void;
 }) {
@@ -277,47 +298,87 @@ function FormAnswer({
 
   return (
     <div className="g-xform">
-      {fields.map(f => (
-        <div key={f.key} style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
-          <label className="g-xform-l" htmlFor={`form-${f.key}`}>
-            {f.label}
-          </label>
-
-          {f.type === 'radio' || f.type === 'checkbox' ? (
-            <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8 }} role="radiogroup" aria-label={f.label}>
-              {(f.options ?? []).map(opt => (
-                <button
-                  key={opt}
-                  type="button"
-                  role="radio"
-                  aria-checked={value[f.key] === opt}
-                  onClick={() => set(f.key, opt)}
-                  className="g-xpick"
-                >
-                  {opt}
-                </button>
-              ))}
-            </div>
-          ) : (
-            <input
-              id={`form-${f.key}`}
-              type={f.type === 'date' ? 'date' : 'text'}
-              value={value[f.key] ?? ''}
-              placeholder={f.placeholder}
-              onChange={e => set(f.key, e.target.value)}
-              className="g-xinput"
-            />
-          )}
+      {sections.map((sec, i) => (
+        <div key={i} className="g-xform-sec">
+          {sec.title && <h3 className="g-xform-h">{sec.title}</h3>}
+          {sec.fields.map(f => (
+            <FormRow key={f.key} field={f} value={value[f.key] ?? f.prefill ?? ''} onChange={v => set(f.key, v)} />
+          ))}
         </div>
       ))}
     </div>
   );
 }
 
-/** `form_schema` may be a flat field list or grouped into sections; both flatten to rows. */
-function flattenFields(task: OpenTaskItem): FormField[] {
-  const schema = task.form_schema;
-  if (!schema) return [];
-  if (schema.sections?.length) return schema.sections.flatMap(s => s.fields ?? []);
-  return schema.fields ?? [];
+/** Meerdere keuzes worden als "a; b" bewaard: `answer_json` is één string per sleutel. */
+const SEP = '; ';
+
+function FormRow({ field: f, value, onChange }: { field: FormField; value: string; onChange: (v: string) => void }) {
+  if (f.type === 'static') {
+    return (
+      <div className="g-xform-static">
+        <span className="g-xform-l">{f.label}</span>
+        <span>{f.value}</span>
+      </div>
+    );
+  }
+
+  if (f.type === 'radio' || f.type === 'checkbox') {
+    const multi = f.type === 'checkbox';
+    const picked = multi ? value.split(SEP).filter(Boolean) : [value];
+    const toggle = (opt: string) => {
+      if (!multi) return onChange(opt);
+      const next = picked.includes(opt) ? picked.filter(p => p !== opt) : [...picked, opt];
+      onChange((f.options ?? []).filter(o => next.includes(o)).join(SEP));
+    };
+    return (
+      <div className="g-xform-row">
+        <span className="g-xform-l" id={`form-${f.key}-l`}>
+          {f.label}
+          {multi && <span className="g-xform-hint"> · meer antwoorden mogelijk</span>}
+        </span>
+        <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8 }} role={multi ? 'group' : 'radiogroup'} aria-labelledby={`form-${f.key}-l`}>
+          {(f.options ?? []).map(opt => (
+            <button
+              key={opt}
+              type="button"
+              role={multi ? 'checkbox' : 'radio'}
+              aria-checked={picked.includes(opt)}
+              onClick={() => toggle(opt)}
+              className={multi ? 'g-xpick g-xpick-box' : 'g-xpick'}
+            >
+              {opt}
+            </button>
+          ))}
+        </div>
+      </div>
+    );
+  }
+
+  return (
+    <div className="g-xform-row">
+      <label className="g-xform-l" htmlFor={`form-${f.key}`}>
+        {f.label}
+      </label>
+      {f.multiline ? (
+        <textarea
+          id={`form-${f.key}`}
+          value={value}
+          placeholder={f.placeholder}
+          onChange={e => onChange(e.target.value)}
+          rows={3}
+          className="g-xtextarea g-xform-area"
+        />
+      ) : (
+        <input
+          id={`form-${f.key}`}
+          type={f.type === 'date' ? 'date' : 'text'}
+          value={value}
+          placeholder={f.placeholder}
+          onChange={e => onChange(e.target.value)}
+          className="g-xinput"
+        />
+      )}
+    </div>
+  );
 }

@@ -304,14 +304,16 @@ const TASK_RULES: Record<Level, Record<SkillSlug, TaskRule[]>> = {
       { category: 'picture_report',      perExam: [0, 1], imageCount: 3,    minSentences: null, bullets: [4, 6], recordSeconds: null },
       { category: 'data_text',           perExam: [0, 1], imageCount: null, minSentences: null, bullets: [3, 5], recordSeconds: null },
     ],
-    // The recording cap stays 60 s. DUO's 20 s / 30 s spreektijd is the *target* length;
-    // cutting a B1 candidate off at 20 s would fail them on our stopwatch, not their Dutch.
+    // De spreektijd is sinds 20-10-2026 die van DUO (besluit eigenaar): deel 1 20 s (5 s kijken
+    // bij een plaatje), deel 2 15 s voorbereiden + 30 s. Dat verschilt per déél en niet per soort,
+    // dus staat het op `open_tasks` (`max_record_seconds`, `prep_seconds`) en is het hier null.
+    // Zie de migratie 20261021120100_b1_spreken_duo_timings en SEO/facts.md.
     spreken: [
-      { category: 'speaking_none',      perExam: [4, 7], imageCount: 0, minSentences: null, bullets: null, recordSeconds: 60 },
-      { category: 'speaking_react',     perExam: [2, 4], imageCount: 1, minSentences: null, bullets: null, recordSeconds: 60 },
-      { category: 'speaking_describe',  perExam: [1, 3], imageCount: 1, minSentences: null, bullets: null, recordSeconds: 60 },
-      { category: 'speaking_choose',    perExam: [1, 3], imageCount: 2, minSentences: null, bullets: null, recordSeconds: 60 },
-      { category: 'speaking_cover_all', perExam: [2, 4], imageCount: 3, minSentences: null, bullets: null, recordSeconds: 60 },
+      { category: 'speaking_none',      perExam: [4, 7], imageCount: 0, minSentences: null, bullets: null, recordSeconds: null },
+      { category: 'speaking_react',     perExam: [2, 4], imageCount: 1, minSentences: null, bullets: null, recordSeconds: null },
+      { category: 'speaking_describe',  perExam: [1, 3], imageCount: 1, minSentences: null, bullets: null, recordSeconds: null },
+      { category: 'speaking_choose',    perExam: [1, 3], imageCount: 2, minSentences: null, bullets: null, recordSeconds: null },
+      { category: 'speaking_cover_all', perExam: [2, 4], imageCount: 3, minSentences: null, bullets: null, recordSeconds: null },
     ],
   },
 };

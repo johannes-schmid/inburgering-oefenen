@@ -1,0 +1,61 @@
+# B1 Spreken — oefenexamen 9
+# verteller: narrator, snelheid 1 (zelfde als de geluidstest)
+
+[opdracht 1 · react · verteller, dan spreker]
+U werkt bij de klantenservice van een meubelwinkel. Een klant komt boos naar de balie. Zij is niet tevreden over een medewerker van de bezorgdienst. Luister naar de klant en reageer. Zeg wat u met haar klacht gaat doen.
+— spreker: Die man die mijn kast kwam bezorgen, was echt onbeschoft tegen mij. Ik wil dat iemand daar iets mee doet, want zo ga je niet met klanten om.
+
+[opdracht 2 · none · verteller]
+U kunt kiezen tussen twee banen. Bij de eerste baan reist u elke week door het hele land. Bij de tweede baan werkt u altijd op één plek, tien minuten van uw huis. Vertel welke baan u zou kiezen. Vertel ook waarom u dat kiest.
+
+[opdracht 3 · react · verteller, dan spreker]
+U volgt een opleiding tot administratief medewerker. Morgen houdt uw groepje een presentatie. Een medestudent belt u op. Luister naar uw medestudent en reageer. Zeg of u het doet en waarom.
+— spreker: Ik ben behoorlijk ziek geworden, dus ik red het morgen niet. Zou jij mijn deel van de presentatie willen doen?
+
+[opdracht 4 · describe · verteller]
+U eet met een vriendin in een restaurant. Uw vriendin is haar bril vergeten en kan de kaart niet lezen. Zij vraagt u om hulp. Kijk naar het plaatje. Vertel uw vriendin wat er op de menukaart staat.
+
+[opdracht 5 · none · verteller]
+Op uw opleiding komt een nieuwe regel. Studenten mogen hun telefoon niet meer meenemen in de les. De telefoons gaan in een kastje bij de deur. Vertel wat u van deze regel vindt. Vertel ook waarom u dat vindt.
+
+[opdracht 6 · react · verteller, dan spreker]
+U loopt stage bij een kinderdagverblijf. Vandaag heeft u een gesprek met uw stagebegeleidster. Zij wil weten hoe het met u gaat. Luister naar uw stagebegeleidster en reageer. Vertel wat u nog wilt leren en waarom.
+— spreker: Je bent nu twee maanden bij ons en het gaat prima met de kinderen. Wat zou je in de rest van je stage nog graag willen leren?
+
+[opdracht 7 · none · verteller]
+U gaat een cursus Nederlands volgen. U mag kiezen tussen een groep van twintig cursisten of een groep van zes cursisten. De kleine groep is iets duurder. Vertel welke groep u kiest. Vertel ook waarom u die groep kiest.
+
+[opdracht 8 · describe · verteller]
+U werkt als vrijwilliger in een verzorgingshuis. Meneer De Waal wil graag even naar buiten. U gaat samen met hem de tuin in. Kijk naar het plaatje. Vertel meneer De Waal wat hij buiten kan zien en doen.
+
+[opdracht 9 · cover_all · verteller, dan spreker]
+U werkt als vrijwilliger in een fietswerkplaats in de buurt. Een buurvrouw komt langs met een lekke band. Zij wil de band graag zelf leren plakken. Kijk naar de plaatjes. Leg haar stap voor stap uit wat zij moet doen. U moet daarbij alle plaatjes gebruiken. U hoort eerst wat de buurvrouw zegt.
+— spreker: Mijn band is lek, maar ik wil hem graag zelf leren plakken. Kunt u mij uitleggen hoe ik dat het beste doe?
+
+[opdracht 10 · none · verteller, dan spreker]
+U woont in een wijk met veel nieuwe bewoners. De gemeente heeft geld voor één activiteit in uw straat. Een medewerker van de gemeente belt u op. Vertel welke activiteit u zou organiseren. Vertel ook waarom u denkt dat die activiteit goed is voor de buurt.
+— spreker: Wij hebben nog geld over voor een activiteit in uw straat. Wat zou u organiseren, en waarom denkt u dat dat goed werkt?
+
+[opdracht 11 · cover_all · verteller, dan spreker]
+U werkt bij een schoonmaakbedrijf. Volgende maand is er een bedrijfsuitje voor alle medewerkers. Een nieuwe collega weet nog niet wat er die dag gebeurt. Kijk naar de plaatjes. Vertel uw collega wat er tijdens die dag gebeurt. U moet daarbij alle plaatjes gebruiken. U hoort eerst wat uw collega vraagt.
+— spreker: Ik ga voor het eerst mee met het bedrijfsuitje. Wat gaan we die dag eigenlijk allemaal doen?
+
+[opdracht 12 · choose · verteller, dan spreker]
+Uw zwager werkt in de bouw en wil graag doorgroeien naar leidinggevende. Hij kan een cursus volgen die zijn werkgever betaalt. Er zijn twee cursussen mogelijk. Kijk naar de twee plaatjes. Adviseer hem welke cursus hij moet kiezen. Noem minimaal twee redenen voor uw keuze.
+— spreker: Ik twijfel echt tussen deze twee cursussen. Welke zou jij nemen als je wilt doorgroeien?
+
+[opdracht 13 · cover_all · verteller, dan spreker]
+U werkt in een studentenhuis als beheerder. Er komt volgende week een nieuwe bewoner. Een stagiair moet de kamer klaarmaken en vraagt hoe dat moet. Kijk naar de plaatjes. Leg de stagiair uit wat hij achter elkaar moet doen. U moet daarbij alle plaatjes gebruiken. U hoort eerst wat de stagiair vraagt.
+— spreker: Ik moet die kamer op de eerste verdieping klaarmaken. Kunt u even uitleggen wat ik precies moet doen?
+
+[opdracht 14 · none · verteller, dan spreker]
+In een tijdschrift staat dat jongeren steeds later beginnen met werken. Zij studeren langer en gaan vaak eerst reizen. Tijdens de koffiepauze op uw opleiding vraagt een medestudent wat u ervan vindt. Vertel wat u van deze ontwikkeling vindt. Leg ook uit waarom u dat vindt.
+— spreker: Ik las dat jongeren tegenwoordig pas rond hun vijfentwintigste echt gaan werken. Wat vind jij daarvan?
+
+[opdracht 15 · choose · verteller, dan spreker]
+U werkt bij een klein administratiekantoor. Het kantoor wordt verbouwd en de directeur twijfelt over de indeling. Er zijn twee mogelijkheden. Kijk naar de twee plaatjes. Adviseer de directeur welke indeling beter werkt. Noem minimaal twee redenen voor uw keuze.
+— spreker: We kunnen kiezen tussen deze twee indelingen. Welke werkt volgens u beter voor ons team?
+
+[opdracht 16 · none · verteller, dan spreker]
+U volgt een opleiding naast uw werk. De school onderzoekt hoe studenten beter kunnen leren. Een medewerker van de school interviewt u daarover. Vertel wat u nodig heeft om goed te kunnen leren. Leg ook uit waarom dat voor u belangrijk is.
+— spreker: We willen studenten beter helpen. Wat heeft u zelf nodig om goed te kunnen leren?

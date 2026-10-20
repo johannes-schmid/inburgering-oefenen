@@ -1,4 +1,5 @@
 import { generateObject, jsonSchema } from 'ai';
+import { formLabels } from '@/lib/form-schema';
 import {
   GRADER_AUDIO,
   GRADER_TEMPERATURE,
@@ -267,8 +268,10 @@ function renderAnswer(task: GradeTask, answer: GradeAnswer): string {
 
   if (answer.answer_json && Object.keys(answer.answer_json).length > 0) {
     lines.push('Ingevuld formulier:');
+    // Op label, niet op sleutel: "s2-r1" zegt het model niets, de vraag zelf wel.
+    const labels = formLabels(task.form_schema);
     for (const [k, v] of Object.entries(answer.answer_json)) {
-      lines.push(`- ${k}: ${v === '' || v == null ? '(leeg gelaten)' : String(v)}`);
+      lines.push(`- ${labels[k] || k}: ${v === '' || v == null ? '(leeg gelaten)' : String(v)}`);
     }
   }
 

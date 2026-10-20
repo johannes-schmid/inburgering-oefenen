@@ -14,6 +14,7 @@
 import { createClient } from './supabase/server';
 import { levelFilter } from './exams';
 import type { Level, OnderdeelSlug } from '@/data/skills';
+import type { FormSchema } from './form-schema';
 
 export type OptionItem = {
   id: number;
@@ -84,7 +85,16 @@ export type OpenTaskItem = {
   part_id: number | null;
   sort_order: number;
   section_id: number | null;
-  task_type: 'email' | 'short_text' | 'form' | 'picture_note' | 'speaking';
+  task_type:
+    | 'email'
+    | 'short_text'
+    | 'form'
+    | 'picture_note'
+    | 'speaking'
+    | 'sentence_completion'
+    | 'letter'
+    | 'picture_report'
+    | 'data_text';
   title: string | null;
   prompt_html: string | null;
   bullet_points: string[];
@@ -98,6 +108,8 @@ export type OpenTaskItem = {
   image_usage: 'none' | 'react' | 'describe' | 'choose' | 'cover_all';
   prompt_audio_url: string | null;
   max_record_seconds: number;
+  /** Seconden om te kijken of voor te bereiden vóór de pieptoon (B1 Spreken); null = geen. */
+  prep_seconds: number | null;
   images: TaskImage[];
 };
 
@@ -109,19 +121,8 @@ export type OpenTaskItem = {
  * grader is server-side (`lib/ai/grade.ts`) and loads these itself with the service key.
  */
 
-/** A Schrijven "formulier" task: a list of rows the candidate fills or picks from. */
-export type FormSchema = {
-  sections?: { title?: string; fields: FormField[] }[];
-  fields?: FormField[];
-};
-
-export type FormField = {
-  key: string;
-  label: string;
-  type: 'text' | 'date' | 'radio' | 'checkbox';
-  options?: string[];
-  placeholder?: string;
-};
+/** A Schrijven "formulier" task: see `lib/form-schema.ts` for both stored shapes. */
+export type { FormField, FormSchema } from './form-schema';
 
 export type ExamPartItem = {
   id: number;
@@ -171,7 +172,7 @@ const STIMULUS_COLS =
 const TASK_COLS =
   `id, part_id, sort_order, section_id, task_type, title, prompt_html, bullet_points, ` +
   `email_to, email_cc, email_subject, greeting, closing, min_sentences, form_schema, ` +
-  `image_usage, prompt_audio_url, max_record_seconds, ` +
+  `image_usage, prompt_audio_url, max_record_seconds, prep_seconds, ` +
   `open_task_images(id, sort_order, image_url, caption, alt_text, group_label)`;
 
 const byOrder = <T extends { sort_order: number }>(rows: T[]) =>

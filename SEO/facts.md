@@ -422,3 +422,35 @@ Wat blijft staan als ondergrens:
 
 `components/horizon/AvatarCluster.tsx` en `public/images/avatars/` staan nog in de repo maar
 worden nergens meer getoond.
+
+## 13. Staatsexamen NT2 programma I (B1) — het verloop op de computer — VERIFIED 2026-10-20
+
+Bron: https://www.staatsexamensnt2.nl/voorbereiden/hoe-ziet-het-examen-eruit (de vier
+instructievideo's van CvTE, opgenomen 15-07-2025, met hun ondertitels) en
+https://www.staatsexamensnt2.nl/voorbereiden/extra-tijd-bij-aangepast-examen. Geraadpleegd
+20-10-2026. Gebruikt in de B1-speler (startschermen, Spreken-tijden, tekstboekje).
+
+- **Lezen** — 110 minuten. De teksten staan in een papieren **tekstboekje**, de vragen op de
+  computer; boven elke vraag staat bij welke tekst die hoort. In het boekje mag je aantekeningen
+  maken en onderstrepen. De formattekst zegt "6 teksten, 36 vragen", de video "35 of 36"; onze
+  examens hebben er 35.
+- **Woordenboek** — alleen een papieren **Van Dale Pocketwoordenboek NT2**, zelf meenemen, zonder
+  aantekeningen of briefjes erin; geen elektronische hulpmiddelen. Toegestaan bij Lezen en
+  Schrijven, niet bij Spreken.
+- **Schrijven** — 100 minuten, 12 opdrachten, op de computer; je bepaalt zelf de volgorde. Het
+  advies "maximaal 20 minuten voor de korte opdrachten" en de verdeling kort/lang staan op het
+  startscherm van DUO's eigen openbaar examen (Schrijven I, 2023), aangeleverd door de eigenaar.
+  De **puntenaantallen** per opdracht noemen we niet: wij beoordelen met een rubriek, niet in punten.
+- **Spreken** — 16 opdrachten in twee delen, je praat niet tegen een persoon:
+  - deel 1: 8 korte opdrachten, **20 seconden** spreektijd; **5 seconden** om te kijken, alleen als
+    er een plaatje of tekst bij staat;
+  - deel 2: 8 opdrachten, **15 seconden** voorbereiden, daarna **30 seconden** spreektijd;
+  - een **pieptoon** start de spreektijd, een tweede pieptoon beëindigt die; daarna begint de
+    volgende opdracht vanzelf. Je hoort elke opdracht één keer en neemt één keer op;
+  - vooraf een geluidstest en een microfoontest (naam inspreken, terugluisteren).
+- **Overzicht en markeren** — rechtsboven een markeerknop (vlaggetje); "Overzicht" toont welke
+  vragen beantwoord en gemarkeerd zijn, en van daaruit lever je in. Een kwartier voor het einde
+  komt er een waarschuwing.
+
+⚠️ De duur van Spreken (DUO noemt circa 25 minuten; "35 minuten" is het aangepaste examen) is in
+onze examens 30 minuten. Noem geen DUO-duur voor Spreken B1 zonder deze bron erbij.

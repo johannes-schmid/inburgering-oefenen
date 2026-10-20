@@ -1,0 +1,61 @@
+# B1 Spreken — oefenexamen 6
+# verteller: narrator, snelheid 1 (zelfde als de geluidstest)
+
+[opdracht 1 · react · verteller, dan spreker]
+U werkt bij een sportschool aan de balie. Een klant komt naar u toe. Hij wil zijn abonnement stoppen. Luister naar de klant en reageer. Vertel hem wat hij moet doen om op te zeggen.
+— spreker: Goedemiddag, ik kom hier al twee jaar, maar ik wil mijn abonnement opzeggen. Kan dat gewoon vandaag?
+
+[opdracht 2 · none · verteller]
+U begint volgende maand met een nieuwe baan. Het werk is zes kilometer van uw huis. U kunt met de fiets gaan of met de bus. Vertel welke keuze u maakt. Vertel ook waarom u dat kiest.
+
+[opdracht 3 · react · verteller, dan spreker]
+U werkt op een kantoor van een verhuisbedrijf. Een collega zit achter de computer. Zij vraagt u om hulp. Luister naar uw collega en reageer. Zeg of u kunt helpen en wanneer.
+— spreker: Heb je heel even tijd om mee te kijken? Ik krijg dit bestand maar niet open en de klant wacht al.
+
+[opdracht 4 · describe · verteller]
+U werkt als vrijwilliger in een buurthuis. In de gang hangt het rooster van de sportzaal. Een bezoeker vraagt wat er op het rooster staat. Kijk naar het plaatje. Vertel wat er deze week in de sportzaal te doen is.
+
+[opdracht 5 · none · verteller]
+U volgt een opleiding tot verzorgende. De school wil de lessen later laten beginnen. De eerste les start dan om half tien in plaats van half negen. Vertel wat u van dit plan vindt. Vertel ook waarom u dat vindt.
+
+[opdracht 6 · react · verteller, dan spreker]
+U woont in een flat in Zwolle. Uw buurvrouw gaat twee weken op vakantie. Zij belt bij u aan. Luister naar uw buurvrouw en reageer. Zeg of u het doet en maak een afspraak.
+— spreker: Ik ga zondag twee weken weg. Zou jij misschien op mijn plantjes willen letten?
+
+[opdracht 7 · none · verteller]
+U doet een opleiding techniek. U kunt stage lopen bij een bedrijf in uw eigen dorp. U kunt ook stage lopen in Rotterdam, waar u meer leert, maar de reis duurt anderhalf uur. Vertel welke stage u kiest. Vertel ook waarom u die keuze maakt.
+
+[opdracht 8 · describe · verteller]
+U doet boodschappen in de supermarkt. Bij de kassa staat een klein kind te huilen. Het kind kan zijn moeder niet vinden. Kijk naar het plaatje. Vertel de medewerker van de supermarkt wat er aan de hand is en hoe het kind eruitziet.
+
+[opdracht 9 · cover_all · verteller, dan spreker]
+U werkt bij een installatiebedrijf in Zwolle. U zit in de commissie die het personeelsfeest organiseert. Een nieuwe collega wil helpen en vraagt wat er nog moet gebeuren. Kijk naar de plaatjes. Leg uit wat er allemaal moet gebeuren voor het feest. U moet daarbij alle plaatjes gebruiken. U hoort eerst uw collega.
+— spreker: Ik wil graag meehelpen met het personeelsfeest, maar ik weet nog niet wat er precies geregeld moet worden. Kun je me uitleggen wat we allemaal moeten doen?
+
+[opdracht 10 · none · verteller, dan spreker]
+U werkt bij een thuiszorgorganisatie. Uw werkgever betaalt elk jaar een cursus voor het personeel. Uw leidinggevende vraagt wat de collega's het beste kunnen volgen. Vertel welke cursus u uw collega's zou aanraden. Vertel ook waarom u die cursus een goed idee vindt.
+— spreker: We hebben dit jaar weer geld voor een cursus voor het hele team. Welke cursus zou jij de collega's aanraden, en waarom eigenlijk?
+
+[opdracht 11 · cover_all · verteller, dan spreker]
+U werkt op het kantoor van een woningcorporatie. Er is een nieuwe printer gekomen. Een stagiair weet niet hoe het apparaat werkt. Kijk naar de plaatjes. Leg de stagiair uit hoe hij de printer moet gebruiken. U moet daarbij alle plaatjes gebruiken. U hoort eerst de stagiair.
+— spreker: Ik moet dit rapport uitprinten, maar ik snap deze printer echt niet. Kun jij me even uitleggen hoe het werkt?
+
+[opdracht 12 · choose · verteller, dan spreker]
+Uw buurman heeft een klein schildersbedrijf met drie werknemers. Hij wil een andere bedrijfsauto kopen. Hij twijfelt tussen twee auto's. Kijk naar de twee plaatjes. Adviseer uw buurman welke auto beter bij zijn bedrijf past. Noem minimaal twee redenen voor uw keuze.
+— spreker: Ik moet een nieuwe auto voor de zaak kopen, maar ik kom er niet uit. Welke zou jij nemen en waarom?
+
+[opdracht 13 · cover_all · verteller, dan spreker]
+U woont al tien jaar in een wijk in Apeldoorn. Er is een nieuwe bewoner in de straat komen wonen. Zij kent nog niemand en vraagt u om tips. Kijk naar de plaatjes. Vertel wat de nieuwe bewoner allemaal kan doen in de wijk. U moet daarbij alle plaatjes gebruiken. U hoort eerst de nieuwe bewoner.
+— spreker: Ik woon hier pas twee weken en ik ken nog helemaal niemand. Wat kan ik hier in de buurt eigenlijk allemaal doen?
+
+[opdracht 14 · none · verteller, dan spreker]
+Steeds meer mensen kopen tweedehands spullen. Ze kopen kleding, meubels en telefoons via internet of in een kringloopwinkel. Op een verjaardag praat een vriendin daarover met u. Vertel wat u van tweedehands kopen vindt. Leg ook uit waarom u dat vindt.
+— spreker: Ik koop tegenwoordig bijna alles tweedehands. Wat vind jij daar eigenlijk van?
+
+[opdracht 15 · choose · verteller, dan spreker]
+Een kennis van u werkt al vijftien jaar in de horeca. Hij wil ander werk gaan doen, want het werk is zwaar. Hij twijfelt tussen twee opleidingen. Kijk naar de twee plaatjes. Adviseer uw kennis welke opleiding beter is voor hem. Noem minimaal twee redenen voor uw keuze.
+— spreker: Ik wil echt iets anders gaan doen, maar ik weet niet welke opleiding ik moet kiezen. Wat zou jij doen in mijn geval?
+
+[opdracht 16 · none · verteller, dan spreker]
+U heeft een gesprek met uw leidinggevende over uw werk. Zij wil weten hoe u het werk ervaart. Zij vraagt wat u er elke dag voor motiveert. Vertel wat u motiveert in uw werk. Leg ook uit waarom dat voor u belangrijk is.
+— spreker: Ik ben benieuwd hoe jij erin staat. Wat motiveert jou eigenlijk het meest in je werk?

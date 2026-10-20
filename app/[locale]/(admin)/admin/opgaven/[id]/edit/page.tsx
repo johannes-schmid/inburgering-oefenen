@@ -1,4 +1,5 @@
 import { notFound } from 'next/navigation';
+import { normalizeFormSchema } from '@/lib/form-schema';
 import { createClient } from '@/lib/supabase/server';
 import { fetchOpenTaskChoices, fetchOpgaveNav } from '@/lib/admin/open-tasks';
 import OpgaveForm from '../../_components/OpgaveForm';
@@ -59,7 +60,6 @@ export default async function EditOpgavePage({
       group_label: im.group_label ?? '',
     }));
 
-  const schema = r.form_schema as { sections?: { title?: string; fields?: unknown[] }[] } | null;
 
   const initial: OpgaveDraft = {
     id: r.id as number,
@@ -80,10 +80,9 @@ export default async function EditOpgavePage({
     greeting: (r.greeting as string | null) ?? '',
     closing: (r.closing as string | null) ?? '',
     min_sentences: (r.min_sentences as number | null) ?? null,
-    form_sections: (schema?.sections ?? []).map(s => ({
-      title: s.title ?? '',
-      fields: (s.fields ?? []) as OpgaveDraft['form_sections'][number]['fields'],
-    })),
+    // Beide opgeslagen vormen; zonder dit werd een B1-formulier (`rows`) bij openen leeg en
+    // bij opslaan gewist — zo verloor B1 1.10 zijn vragen.
+    form_sections: normalizeFormSchema(r.form_schema),
     image_usage: r.image_usage as OpgaveDraft['image_usage'],
     prompt_audio_url: (r.prompt_audio_url as string | null) ?? '',
     prompt_voice: (r.prompt_voice as OpgaveDraft['prompt_voice']) ?? null,

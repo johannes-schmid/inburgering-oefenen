@@ -1,0 +1,61 @@
+# B1 Spreken — oefenexamen 1
+# verteller: narrator, snelheid 1 (zelfde als de geluidstest)
+
+[opdracht 1 · react · verteller, dan spreker]
+U volgt een opleiding tot doktersassistent. Morgen geeft u samen met een medestudent een presentatie. Alles is al af, maar zij wil nu iets anders. Luister naar uw medestudent en reageer. Zeg wat u ervan vindt en waarom.
+— spreker: Zeg, ik heb er vannacht over nagedacht: laten we die hele presentatie omgooien en er een toneelstukje van maken. Veel leuker toch?
+
+[opdracht 2 · react · verteller, dan spreker]
+U werkt bij een groot kantoor. U loopt langs de receptie. Een collega van de receptie spreekt u aan. Luister naar uw collega en reageer.
+— spreker: Goedemiddag, ik zoek een pakket voor uw afdeling. Het is gisteren bezorgd, maar niemand weet waar het is gebleven. Heeft u het misschien gezien?
+
+[opdracht 3 · none · verteller]
+U gaat vanaf volgende maand vier dagen per week werken in plaats van vijf. U mag zelf kiezen welke dag u vrij neemt. Uw leidinggevende vraagt uw voorkeur. Vertel welke dag u vrij wilt zijn. Vertel ook waarom u die dag kiest.
+
+[opdracht 4 · react · verteller, dan spreker]
+U werkt in een bloemenwinkel. Een klant komt binnen. Hij zoekt bloemen voor een feest. Luister naar de klant en reageer. Geef hem een advies.
+— spreker: Mijn ouders zijn veertig jaar getrouwd en ik wil een mooi boeket geven. Ik heb ongeveer dertig euro. Wat raadt u me aan?
+
+[opdracht 5 · none · verteller]
+U werkt bij een transportbedrijf. Uw werkgever biedt een cursus veilig rijden aan. De cursus is vier keer op zaterdagochtend, in uw vrije tijd. Uw werkgever betaalt de cursus. Vertel of u de cursus gaat volgen. Vertel ook waarom u dat wel of niet doet.
+
+[opdracht 6 · describe · verteller]
+U werkt in de schoonmaak bij een school. Er is een nieuwe collega begonnen. Hij weet nog niet waar de spullen liggen. Kijk naar het plaatje. Leg uw nieuwe collega uit wat er in de voorraadkast staat en waar hij het kan vinden.
+
+[opdracht 7 · none · verteller]
+U volgt een opleiding techniek. Volgende week zou uw klas naar een fabriek gaan. De school heeft de excursie afgelast, omdat er te weinig begeleiders zijn. Een medestudent vraagt wat u ervan vindt. Vertel wat u van dit besluit vindt. Vertel ook waarom u dat vindt.
+
+[opdracht 8 · describe · verteller]
+U werkt in een verzorgingshuis. Vanmiddag is er een activiteit in de grote zaal. Een bewoonster zegt dat ze liever op haar kamer blijft. Kijk naar het plaatje. Vertel de bewoonster wat er in de zaal gebeurt en probeer haar over te halen om mee te gaan.
+
+[opdracht 9 · cover_all · verteller, dan spreker]
+U werkt bij een groot tuincentrum. Vandaag begint er een nieuwe medewerker. Hij vraagt u hoe de eerste dag eruitziet. Kijk naar de plaatjes. Vertel hem wat het programma van de inwerkdag is. U moet daarbij alle plaatjes gebruiken. U hoort eerst wat de nieuwe medewerker zegt.
+— spreker: Goedemorgen, ik ben Youssef, ik begin vandaag. Weet jij misschien wat we vandaag allemaal gaan doen?
+
+[opdracht 10 · none · verteller, dan spreker]
+U praat met een vriendin over vakantie. Zij vertelt dat zij graag naar Portugal wil. Daarna vraagt zij het aan u. Vertel naar welk land u graag zou willen gaan. Vertel ook waarom u juist dat land wilt bezoeken.
+— spreker: Ik zou zelf zo graag naar Portugal gaan. En jij, welk land wil jij een keer bezoeken?
+
+[opdracht 11 · cover_all · verteller, dan spreker]
+U volgt een opleiding tot verzorgende. In de mediatheek van de school staat een boekenkast met studieboeken. Een nieuwe student weet niet hoe het systeem werkt. Kijk naar de plaatjes. Leg hem uit wat hij precies moet doen. U moet daarbij alle plaatjes gebruiken. U hoort eerst wat de nieuwe student vraagt.
+— spreker: Ik zoek een boek over anatomie, maar ik snap niet hoe het hier werkt. Kun jij het me uitleggen?
+
+[opdracht 12 · cover_all · verteller, dan spreker]
+U werkt op de administratie van een meubelfabriek. Er komt vandaag een nieuwe bezorger goederen brengen. Hij belt u op, omdat hij het terrein niet kent. Kijk naar de plaatjes. Vertel hem wat hij bij aankomst op het terrein moet doen. U moet daarbij alle plaatjes gebruiken. U hoort eerst wat de bezorger vraagt.
+— spreker: Ik ben over tien minuten bij jullie, maar ik ben er nog nooit geweest. Wat moet ik doen als ik aankom?
+
+[opdracht 13 · choose · verteller, dan spreker]
+Op uw werk wordt de kantoorruimte verbouwd. Er zijn twee soorten nieuwe werkplekken gemaakt. Een collega was ziek en heeft ze nog niet gezien. Kijk naar de twee plaatjes. Beschrijf hoe de twee werkplekken eruitzien en zeg welke u zou kiezen. Geef minimaal twee redenen voor uw keuze.
+— spreker: Ik hoorde dat we mogen kiezen tussen twee soorten werkplekken. Hoe zien ze eruit, en welke zou jij nemen?
+
+[opdracht 14 · none · verteller, dan spreker]
+Uw zus wil meer aan sport gaan doen. Zij twijfelt tussen zwemmen en fitness. Zij vraagt u om advies. Geef uw zus een advies. Vertel ook waarom u haar dat adviseert.
+— spreker: Ik wil echt meer bewegen, maar ik weet niet wat ik moet kiezen: zwemmen of fitness. Wat vind jij?
+
+[opdracht 15 · choose · verteller, dan spreker]
+Uw neef begint maandag aan zijn eerste werkdag op een kantoor. Hij heeft twee tassen in huis. Hij weet niet welke tas hij zal meenemen. Kijk naar de twee plaatjes. Adviseer uw neef welke tas hij mee moet nemen. Geef minimaal twee redenen voor uw keuze.
+— spreker: Maandag is mijn eerste werkdag. Welke tas moet ik nou meenemen, denk je?
+
+[opdracht 16 · none · verteller, dan spreker]
+U leest een bericht over het tekort aan technisch personeel. In de techniek werken nog weinig vrouwen. Een medestudent begint erover te praten. Zeg wat u van deze situatie vindt. Vertel ook waarom u dat vindt.
+— spreker: Bij ons in de klas zitten bijna alleen jongens. Wat vind jij daarvan, dat er zo weinig vrouwen in de techniek werken?

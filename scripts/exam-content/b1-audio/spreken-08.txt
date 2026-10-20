@@ -1,0 +1,61 @@
+# B1 Spreken — oefenexamen 8
+# verteller: narrator, snelheid 1 (zelfde als de geluidstest)
+
+[opdracht 1 · react · verteller, dan spreker]
+U werkt in een fietsenwinkel in Zwolle. Een vaste klant laat zijn fiets nakijken. Hij vraagt om korting, omdat hij vaak in de winkel komt. U mag zelf geen korting geven. Luister naar de klant en reageer. Leg uit wat u wel voor hem kunt doen.
+— spreker: Zeg, ik kom hier echt elke maand met mijn fiets. Kan er dan niet een beetje korting af?
+
+[opdracht 2 · none · verteller]
+U kunt kiezen tussen twee banen. De eerste baan is een vast contract met een lager salaris. De tweede baan is tijdelijk werk, maar u verdient daar meer. Vertel welke baan u zou kiezen. Vertel ook waarom u die keuze maakt.
+
+[opdracht 3 · react · verteller, dan spreker]
+U werkt in de keuken van een zorginstelling. Een collega laat steeds zijn spullen en vuile bakken staan. Daardoor moet u telkens zijn werkplek opruimen. Vandaag spreekt u hem erop aan. Luister naar uw collega en reageer. Zeg wat u van hem verwacht.
+— spreker: Sorry hoor, ik had haast. Jij ruimt het toch altijd wel even op?
+
+[opdracht 4 · describe · verteller]
+U werkt bij de balie van een buurtcentrum. Bij de ingang hangt een plattegrond van het gebouw. Een nieuwe bezoeker begrijpt de plattegrond niet. Kijk naar het plaatje. Leg uit wat er op de plattegrond staat en waar de bezoeker de belangrijkste ruimtes kan vinden.
+
+[opdracht 5 · none · verteller]
+De gemeente wil uw straat autovrij maken. Er komen dan meer bomen, banken en fietsenrekken. Bewoners moeten hun auto verderop parkeren, in een parkeergarage. Op een bewonersavond mag u uw mening geven. Vertel wat u van dit plan vindt. Geef ook een reden waarom u dat vindt.
+
+[opdracht 6 · react · verteller, dan spreker]
+U volgt een beroepsopleiding tot verzorgende. Volgende week is er een belangrijke toets. Een medestudent spreekt u aan in de kantine. Luister naar uw medestudent en reageer. Zeg wat u wilt afspreken.
+— spreker: Hé, zullen wij samen leren voor die toets van volgende week? Ik zie er best tegenop, eerlijk gezegd.
+
+[opdracht 7 · none · verteller]
+Uw werkgever betaalt één cursus voor u. U kunt kiezen tussen een cursus Nederlands of een vakcursus over nieuwe machines. U moet uw keuze uitleggen aan uw leidinggevende. Vertel welke cursus u kiest. Vertel ook waarom die cursus voor u het beste is.
+
+[opdracht 8 · describe · verteller]
+U werkt als gastvrouw of gastheer bij een gemeentekantoor. Een bezoeker heeft een afspraak, maar hij weet niet waar hij zich moet melden. Bij de ingang staan een aanmeldzuil en een balie. Kijk naar het plaatje. Leg de bezoeker uit wat hij ziet en wat hij precies moet doen.
+
+[opdracht 9 · cover_all · verteller, dan spreker]
+U werkt in een webwinkel voor huishoudartikelen. Er is een nieuwe medewerker begonnen. Hij moet een pakket klaarmaken voor de post. Kijk naar de plaatjes. Leg hem uit hoe hij een pakket verzendklaar maakt. U moet daarbij alle plaatjes gebruiken. U hoort eerst de vraag van uw collega.
+— spreker: Ik moet dit pakket vandaag nog versturen, maar ik heb dat nog nooit gedaan. Kun je me uitleggen hoe ik dat aanpak?
+
+[opdracht 10 · none · verteller, dan spreker]
+U praat met een vriendin over cursussen. Zij wil in september iets nieuws gaan leren. Zij vraagt wat u zelf zou kiezen. Vertel welk vak of welke cursus u het liefst zou volgen. Vertel ook waarom u daarvoor kiest.
+— spreker: Ik ga in september een cursus doen. En jij, welk vak zou jij het liefst leren?
+
+[opdracht 11 · cover_all · verteller, dan spreker]
+U volgt een beroepsopleiding voor kapper. Een kennis begint volgende maand met dezelfde opleiding. Zij is benieuwd naar de eerste dag. Kijk naar de plaatjes. Vertel haar wat er op de eerste dag gebeurt. U moet daarbij alle plaatjes gebruiken. U hoort eerst de vraag van uw kennis.
+— spreker: Volgende maand begin ik met de opleiding. Ik ben best zenuwachtig. Wat gebeurt er eigenlijk op die eerste dag?
+
+[opdracht 12 · choose · verteller, dan spreker]
+U zit in de personeelsvereniging van een bedrijf. De kantine is pas geverfd en er moet een plant komen. Er zijn twee planten uitgezocht. Kijk naar de twee plaatjes. Adviseer welke plant het beste in de kantine past. Geef minstens twee redenen voor uw keuze.
+— spreker: We kunnen kiezen uit deze twee planten voor de kantine. Welke zou jij nemen, en waarom?
+
+[opdracht 13 · cover_all · verteller, dan spreker]
+U werkt in het magazijn van een tuincentrum. Er komt een nieuwe collega bij het team. Hij moet leren hoe de voorraad wordt bijgehouden. Kijk naar de plaatjes. Leg uit hoe het bijhouden van de voorraad gaat. U moet daarbij alle plaatjes gebruiken. U hoort eerst de vraag van uw collega.
+— spreker: Volgende week doe ik de voorraad voor het eerst alleen. Hoe werkt dat hier precies?
+
+[opdracht 14 · none · verteller, dan spreker]
+U hoort een gesprek in de wachtkamer van de tandarts. Het gaat over supermarkten die veel eten weggooien. Iemand naast u vraagt naar uw mening. Vertel wat u ervan vindt dat er zoveel eten wordt weggegooid. Leg ook uit waarom u dat vindt en wat er volgens u zou moeten gebeuren.
+— spreker: Ik las dat supermarkten elke dag bakken vol goed eten weggooien. Wat vind jij daarvan?
+
+[opdracht 15 · choose · verteller, dan spreker]
+U logeert bij een vriend in Zwolle. Hij wil morgen met u naar het strandje bij de rivier fietsen. Er zijn twee routes mogelijk. Kijk naar de twee plaatjes. Adviseer welke route u samen zou nemen. Geef minstens twee redenen voor uw keuze.
+— spreker: We kunnen morgen twee kanten op fietsen. Welke route zou jij nemen, denk je?
+
+[opdracht 16 · none · verteller, dan spreker]
+U hebt een gesprek met uw leidinggevende. Het is een drukke periode op de afdeling. Zij wil weten hoe u daarmee omgaat. Vertel hoe u met drukte op uw werk omgaat. Geef ook een voorbeeld uit uw eigen ervaring.
+— spreker: Het is de laatste weken erg druk bij ons. Hoe ga jij daar eigenlijk mee om?

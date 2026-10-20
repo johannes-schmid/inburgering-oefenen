@@ -1,0 +1,61 @@
+# B1 Spreken — oefenexamen 2
+# verteller: narrator, snelheid 1 (zelfde als de geluidstest)
+
+[opdracht 1 · react · verteller, dan spreker]
+U werkt in een verzorgingshuis. Uw collega Ramon moet vrijdagavond werken. Hij vraagt of u zijn dienst wilt overnemen. Luister naar Ramon en reageer. Vertel ook waarom u dat wel of niet kunt doen.
+— spreker: Zeg, ik zit een beetje met vrijdagavond. Zou jij mijn dienst willen overnemen?
+
+[opdracht 2 · none · verteller]
+U mag zelf kiezen waar u werkt. U kunt twee dagen thuiswerken. U kunt ook elke dag naar het kantoor komen. Vertel wat u kiest. Vertel ook waarom u dat kiest.
+
+[opdracht 3 · react · verteller, dan spreker]
+U werkt in een grote bouwmarkt. Een klant zoekt iets en kan het niet vinden. Zij spreekt u aan bij de kassa. Luister naar de klant en reageer. Vertel haar waar zij moet zijn.
+— spreker: Meneer, sorry dat ik u stoor. Ik zoek witte verf voor de badkamer, maar ik zie hier alleen kwasten liggen.
+
+[opdracht 4 · describe · verteller]
+U werkt in een restaurant. Aan de muur in de keuken hangt het rooster van deze week. Een nieuwe collega heeft het rooster nog niet gezien. Kijk naar het plaatje. Leg uit wat er op het rooster staat.
+
+[opdracht 5 · none · verteller]
+U werkt in een fabriek. De kantine gaat vanaf volgende maand een uur korter open. De leiding vraagt de werknemers om hun mening. Vertel wat u van dit plan vindt. Vertel ook waarom u dat vindt.
+
+[opdracht 6 · react · verteller, dan spreker]
+U volgt een beroepsopleiding. U maakt een opdracht in het computerlokaal. Een medestudent begrijpt de opdracht niet. Luister naar uw medestudent en reageer. Leg uit wat zij moet doen.
+— spreker: Ik snap er echt niks van. Moeten we nu een verslag schrijven of alleen die vragen invullen?
+
+[opdracht 7 · none · verteller]
+U werkt vier dagen per week. Uw werkgever biedt u een cursus aan van tien avonden. De cursus is gratis, maar u moet in uw eigen tijd komen. Vertel of u de cursus gaat volgen. Vertel ook waarom u dat wel of niet doet.
+
+[opdracht 8 · describe · verteller]
+U loopt stage bij een kinderopvang. Een jongetje van vier is op het plein gevallen. Hij huilt en zit op de grond. Kijk naar het plaatje. Troost het kind en zeg wat u gaat doen.
+
+[opdracht 9 · cover_all · verteller, dan spreker]
+U werkt in een groot tuincentrum in Zwolle. Er begint vandaag een nieuwe collega, Rachid. Hij weet nog niet wat hij op zijn eerste dag moet doen. Kijk naar de plaatjes. Leg Rachid uit wat hij vandaag achter elkaar moet doen. U moet daarbij alle plaatjes gebruiken. U hoort eerst Rachid.
+— spreker: Goedemorgen! Ik ben Rachid, ik begin vandaag. Kun je me vertellen wat ik allemaal moet doen vandaag?
+
+[opdracht 10 · none · verteller, dan spreker]
+Een vriend van u zit veel achter de computer. Hij wil meer gaan bewegen, maar hij weet niet wat. Hij vraagt u om een tip. Vertel welke sport u hem aanraadt. Vertel ook waarom u juist die sport een goed idee vindt.
+— spreker: Ik zit de hele dag stil en dat is niet gezond. Welke sport zou jij mij aanraden?
+
+[opdracht 11 · cover_all · verteller, dan spreker]
+U werkt in een zorginstelling in Apeldoorn. In de personeelsruimte staat een wasmachine voor de werkkleding. Een nieuwe medewerkster weet niet hoe die werkt. Kijk naar de plaatjes. Leg haar stap voor stap uit hoe zij de wasmachine moet gebruiken. U moet daarbij alle plaatjes gebruiken. U hoort eerst uw collega.
+— spreker: Ik moet mijn vieze schort wassen, maar ik snap die machine niet. Kun je uitleggen hoe het moet?
+
+[opdracht 12 · choose · verteller, dan spreker]
+U zit in de activiteitencommissie van uw buurthuis. Er komt een informatieavond over de nieuwe parkeerregels. Er komen ongeveer veertig bewoners. Een bestuurslid twijfelt tussen twee zalen. Kijk naar de twee plaatjes. Zeg welke zaal u kiest voor deze avond. Geef minstens twee redenen voor uw keuze.
+— spreker: We kunnen twee zalen huren. Welke lijkt jou het beste voor die informatieavond?
+
+[opdracht 13 · cover_all · verteller, dan spreker]
+U volgt een opleiding logistiek aan een opleidingscentrum in Tilburg. Zaterdag is er een open dag voor nieuwe studenten. Een buurvrouw wil met haar zoon komen kijken. Kijk naar de plaatjes. Vertel haar wat er die dag te doen is en in welke volgorde. U moet daarbij alle plaatjes gebruiken. U hoort eerst uw buurvrouw.
+— spreker: Mijn zoon wil zaterdag naar die open dag. Wat kunnen we daar eigenlijk allemaal verwachten?
+
+[opdracht 14 · none · verteller, dan spreker]
+Steeds meer mensen blijven werken nadat zij de pensioenleeftijd hebben bereikt. Sommigen doen dat voor het geld, anderen voor de contacten. In de kantine praat een collega hierover met u. Vertel wat u hiervan vindt. Leg ook uit waarom u dat vindt.
+— spreker: Mijn vader is bijna zeventig en hij werkt nog steeds twee dagen. Wat vind jij daar eigenlijk van?
+
+[opdracht 15 · choose · verteller, dan spreker]
+U werkt bij een bouwbedrijf in Almere. Een collega mag nieuwe werkschoenen uitzoeken. Hij werkt vooral buiten op de steiger. Kijk naar de twee plaatjes. Adviseer hem welke schoenen hij moet kiezen. Geef minstens twee redenen voor uw advies.
+— spreker: Ik mag nieuwe werkschoenen bestellen, hoge of lage. Welke zou jij nemen?
+
+[opdracht 16 · none · verteller, dan spreker]
+U doet mee aan een gesprek over werkplezier bij uw werkgever. De gespreksleider wil weten wat medewerkers van hun leidinggevende verwachten. Zij vraagt het aan u. Vertel wat u belangrijk vindt in een goede leidinggevende. Leg ook uit waarom u dat belangrijk vindt.
+— spreker: Wat vindt u nu echt belangrijk in een goede leidinggevende?

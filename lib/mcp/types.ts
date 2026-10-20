@@ -64,7 +64,7 @@ export type WritingExercise = {
   onderdeel: 'schrijven';
   onderdeelLabel: string;
   examNumber: number;
-  taskType: 'email' | 'short_text' | 'form' | 'picture_note' | 'speaking';
+  taskType: import('@/lib/exam-content').OpenTaskItem['task_type'];
   title: string | null;
   promptHtml: string | null;
   bulletPoints: string[];

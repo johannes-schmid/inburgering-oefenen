@@ -57,13 +57,16 @@ export default function BrochureCover({
           <span className="bc-kind">{cover.kind}</span>
           <Title className="bc-title">{cover.title}</Title>
           <p className="bc-sub">{cover.subtitle}</p>
-          <span className="bc-by">
-            <img src="/images/amber-van-der-zalm-264.webp" alt="" width={66} height={66} />
-            <span>
-              <b>{cover.reviewer}</b>
-              {cover.role}
+          {/* Zonder `reviewer` geen foto: het tekstboekje van een examen noemt geen persoon. */}
+          {cover.reviewer && (
+            <span className="bc-by">
+              <img src="/images/amber-van-der-zalm-264.webp" alt="" width={66} height={66} />
+              <span>
+                <b>{cover.reviewer}</b>
+                {cover.role}
+              </span>
             </span>
-          </span>
+          )}
         </div>
       </div>
       <div className="bc-foot">

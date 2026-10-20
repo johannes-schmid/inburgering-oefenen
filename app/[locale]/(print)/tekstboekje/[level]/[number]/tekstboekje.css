@@ -1,0 +1,47 @@
+/* Het tekstboekje van een Lezen-examen: op het scherm een leesvel, op papier A4 met omslag.
+   De omslag zelf (.bc) komt uit app/glas-public-gidsen.css; de @page-regels staan inline in
+   page.tsx, omdat Lightning CSS de margevakken (@bottom-left) niet kent. */
+
+html:has(.tb-doc), body:has(.tb-doc) {
+  background: #fff;
+  -webkit-print-color-adjust: exact;
+  print-color-adjust: exact;
+}
+body:has(.tb-doc) [data-dev-state-bar], body:has(.tb-doc) nextjs-portal { display: none !important; }
+
+.tb-doc { background: #fff; color: var(--ink); }
+.tb-doc > .bc { break-after: page; }
+@media print { .tb-doc .bc-field::after { display: none; } }
+
+@media screen {
+  body:has(.tb-doc) { background: var(--mist-2); }
+  .tb-doc { background: transparent; padding: 32px 16px 64px; display: flex; flex-direction: column; align-items: center; gap: 24px; }
+  /* In een tabblad naast het examen gaat het om de tekst, niet om de omslag. */
+  .tb-doc > .bc { display: none; }
+  .tb { background: #fff; width: 210mm; max-width: 100%; padding: 15mm 17mm; border-radius: 6px; box-shadow: var(--zweef); }
+  .tb-tekst { scroll-margin-top: 24px; }
+  .tb-tekst:target .tb-nr { background: var(--navy); color: #fff; }
+}
+@media screen and (max-width: 640px) {
+  .tb-doc { padding: 16px 0 40px; }
+  .tb { padding: 20px 16px; border-radius: 0; }
+}
+
+.tb { font-family: var(--font-body); font-size: 15.5px; line-height: 1.7; }
+.tb-uitleg { padding: 16px 18px; border-radius: 10px; background: var(--mist); margin-bottom: 28px; break-inside: avoid; }
+.tb-uitleg h2 { font-family: var(--font-headline); font-size: 17px; font-weight: 700; margin: 0 0 6px; color: var(--ink); }
+.tb-uitleg ul { margin: 0; padding-inline-start: 20px; list-style: disc; color: var(--ink-2); font-size: 14.5px; }
+
+.tb-tekst { padding-top: 6px; }
+.tb-tekst + .tb-tekst { break-before: page; margin-top: 40px; }
+.tb-nr {
+  display: inline-block; padding: 3px 10px; border-radius: 999px; background: rgba(0, 43, 109, 0.08); color: var(--navy);
+  font-family: ui-monospace, Menlo, Consolas, monospace; font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase;
+}
+.tb-intro { margin: 12px 0 0; padding: 10px 14px; border-radius: 8px; background: var(--mist); font-size: 14px; line-height: 1.6; color: var(--ink-2); }
+.tb-tekst h2 { font-family: var(--font-headline); font-size: 21px; font-weight: 700; letter-spacing: -0.015em; line-height: 1.3; margin: 18px 0 12px; color: var(--ink); break-after: avoid; }
+.tb-img { display: block; max-width: 100%; border-radius: 8px; margin: 0 0 14px; break-inside: avoid; }
+.tb-body { color: var(--ink); }
+.tb-body p, .tb-body li { orphans: 3; widows: 3; }
+.tb-body h3, .tb-body h4 { break-after: avoid; }
+.tb-body table, .tb-body figure { break-inside: avoid; }

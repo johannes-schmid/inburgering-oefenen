@@ -160,7 +160,7 @@ and durations.
 | **Lezen** | 25 items · 65 min | 35 items · 110 min | text stimulus + MCQ | auto |
 | **Luisteren** | 25 items · 45 min | *no content, no verified format* | audio stimulus + MCQ | auto |
 | **Schrijven** | 4 items · 40 min | 12 items · 100 min | open task: e-mail / short text / form | rubric |
-| **Spreken** | 16 items · 35 min | 8 items · 30 min | audio prompt + image(s) → recording | rubric |
+| **Spreken** | 16 items · 35 min | 16 items in 2 delen · 30 min — deel 1: 20 s spreken (5 s kijken bij een plaatje), deel 2: 15 s voorbereiden + 30 s; pieptoon, opname start vanzelf | audio prompt + image(s) → recording | rubric |
 | **KNM** | 40 items · 45 min, **no level** | — | standalone MCQ, reads itself aloud | auto |
 | **ONA** | announced only | — | — | — |
 
@@ -849,7 +849,10 @@ afrekenlink** (OpenAI-beleid); en **`is_correct`/`explanation`/`model_answer` ko
   `data/lesson-visuals.ts` dekt alleen blok B van A2 Lezen; `narration/` idem. Geen van beide is een
   gat in de les — de geschreven uitleg *is* de les — maar het verschil tussen de cursussen is
   zichtbaar.
-- **B1 Luisteren has no content and no verified format** — ten unpublished exams, all-NULL counts.
+- **B1 Luisteren: the docs and the database disagree.** This file and `data/skills.ts` still say "no
+  content, all-NULL counts", but the local database has ten published exams of 39 questions with
+  audio, and the owner says (20-10) it is built in DUO's official format. Reconcile `TRACKS`,
+  `data/skills.ts`, the counts and the copy in one commit before any page claims it.
 - **The eleven B1 rubrics and KNM's `speaking_react` rubric are drafts**, marked in their
   `system_prompt`. Rewrite them in `/admin/rubrics` before a grade counts.
 - **`/api/generate-question-audio`, `generate-wordcard-audio` and `admin/generate-lesson-audio` have
