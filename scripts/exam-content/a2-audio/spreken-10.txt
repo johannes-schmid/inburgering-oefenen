@@ -1,0 +1,54 @@
+# A2 Spreken — oefenexamen 10
+# verteller: narrator, snelheid 1 (zelfde als de geluidstest)
+
+[opdracht 1 · react · verteller, dan spreker]
+U staat bij de balie van de gemeente. Geef antwoord op haar vraag.
+— spreker: Goedemorgen. U wilt een paspoort aanvragen? Heeft u alle papieren bij u?
+
+[opdracht 2 · react · verteller, dan spreker]
+Een buurman vertelt u iets. Geef antwoord.
+— spreker: Wij starten een wandelgroep in de buurt. Zou u mee willen doen?
+
+[opdracht 3 · react · verteller, dan spreker]
+Uw leidinggevende heeft een gesprek met u. Geef antwoord.
+— spreker: U werkt hier nu een half jaar. Wat vindt u tot nu toe van het werk?
+
+[opdracht 4 · react · verteller, dan spreker]
+Een verkoopster spreekt u aan in een winkel. Geef antwoord.
+— spreker: Wat kan ik voor u doen? Zoekt u iets bepaalds?
+
+[opdracht 5 · describe · verteller]
+Vertel wat u op dit plaatje ziet. Vertel ook wat er hier gebeurt. Gebruik het plaatje.
+
+[opdracht 6 · describe · verteller]
+Beschrijf dit plaatje. Vertel ook of u hier zou willen werken. Gebruik het plaatje.
+
+[opdracht 7 · describe · verteller]
+Vertel wat er op dit plaatje gebeurt. Vertel ook wat er lastig is. Gebruik het plaatje.
+
+[opdracht 8 · describe · verteller]
+Vertel wat u ziet. Vertel ook wanneer u dit gebruikt. Gebruik het plaatje.
+
+[opdracht 9 · choose · verteller]
+Welke vakantie kiest u met het gezin? Kies één plaatje en vertel waarom.
+
+[opdracht 10 · choose · verteller]
+Wat doet u liever op zondag? Kies één plaatje en leg uit waarom.
+
+[opdracht 11 · choose · verteller]
+Welke woning zou u huren? Kies één plaatje en vertel waarom.
+
+[opdracht 12 · choose · verteller]
+Hoe wilt u liever contact houden met familie? Kies één plaatje en leg uit waarom.
+
+[opdracht 13 · cover_all · verteller]
+Vertel wat deze persoon met de boodschappen doet. Gebruik alle plaatjes.
+
+[opdracht 14 · cover_all · verteller]
+Vertel het verhaal van deze eerste werkdag. Gebruik alle drie de plaatjes.
+
+[opdracht 15 · cover_all · verteller]
+Vertel wat deze mensen aan het huis doen. Gebruik alle plaatjes.
+
+[opdracht 16 · cover_all · verteller]
+Vertel wat er op deze regenachtige dag gebeurt. Gebruik alle plaatjes.

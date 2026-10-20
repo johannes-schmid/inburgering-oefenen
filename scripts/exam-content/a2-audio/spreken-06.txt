@@ -1,0 +1,54 @@
+# A2 Spreken — oefenexamen 6
+# verteller: narrator, snelheid 1 (zelfde als de geluidstest)
+
+[opdracht 1 · react · verteller, dan spreker]
+De rij-instructeur stelt u een vraag. Geef antwoord.
+— spreker: U wilt uw rijbewijs halen, hoor ik. Waarom wilt u leren autorijden?
+
+[opdracht 2 · react · verteller, dan spreker]
+U staat bij de slager. Geef antwoord op haar vraag.
+— spreker: Goedemorgen! Wat kan ik voor u snijden vandaag?
+
+[opdracht 3 · react · verteller, dan spreker]
+De medewerker van de bibliotheek vraagt iets. Geef antwoord.
+— spreker: U heeft zich ingeschreven voor de bibliotheek. Wat voor boeken leest u graag?
+
+[opdracht 4 · react · verteller, dan spreker]
+Uw buurman vraagt om hulp. Geef antwoord.
+— spreker: Zeg buurman, mijn auto start niet. Kunt u misschien even helpen?
+
+[opdracht 5 · describe · verteller]
+Vertel wat u op dit plaatje ziet. Vertel ook wat hier verkocht wordt. Gebruik het plaatje.
+
+[opdracht 6 · describe · verteller]
+Beschrijf dit plaatje. Vertel ook wat de mensen hier komen doen. Gebruik het plaatje.
+
+[opdracht 7 · describe · verteller]
+Vertel wat er op dit plaatje gebeurt. Vertel ook of dit gezond is. Gebruik het plaatje.
+
+[opdracht 8 · describe · verteller]
+Vertel wat u ziet. Vertel ook wat u van dit weer vindt. Gebruik het plaatje.
+
+[opdracht 9 · choose · verteller]
+Welke telefoon zou u kiezen? Kies één plaatje en vertel waarom.
+
+[opdracht 10 · choose · verteller]
+Waar wilt u liever wonen? Kies één plaatje en leg uit waarom.
+
+[opdracht 11 · choose · verteller]
+Welke cursus zou u volgen? Kies één plaatje en vertel waarom.
+
+[opdracht 12 · choose · verteller]
+Wat drinkt u liever in de ochtend? Kies één plaatje en leg uit waarom.
+
+[opdracht 13 · cover_all · verteller]
+Vertel wat deze persoon doet als het regent. Gebruik alle plaatjes.
+
+[opdracht 14 · cover_all · verteller]
+Vertel het verhaal van dit bezoek. Gebruik alle drie de plaatjes.
+
+[opdracht 15 · cover_all · verteller]
+Vertel wat er op dit feest gebeurt. Gebruik alle plaatjes.
+
+[opdracht 16 · cover_all · verteller]
+Vertel wat deze persoon met de post doet. Gebruik alle plaatjes.

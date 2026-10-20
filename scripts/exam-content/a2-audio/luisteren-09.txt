@@ -1,0 +1,182 @@
+# A2 Luisteren — oefenexamen 9
+# stem: narrator
+
+[tekst 1 · situatie]
+Meneer Rahimi meldt zijn dochter aan bij een nieuwe school. Lees eerst de vraag. Luister daarna naar de tekst.
+
+[tekst 1 · vraag 1]
+In welke groep komt de dochter?
+A  In groep drie.
+B  In groep vijf.
+C  In groep zes.
+
+[tekst 1 · vraag 2]
+Wie vraagt het dossier op bij de oude school?
+A  De gemeente.
+B  De nieuwe school.
+C  Meneer Rahimi zelf.
+
+[tekst 1 · vraag 3]
+Wat gebeurt er voordat zij echt begint?
+A  Een toets.
+B  Een gesprek met de directeur.
+C  Een kennismaking en een proefdag.
+
+[tekst 2 · situatie]
+In de parkeergarage hoort Ana een mededeling. Lees eerst de vraag. Luister daarna naar de tekst.
+
+[tekst 2 · vraag 1]
+Waarom is de uitrit op niveau min één dicht?
+A  Er is onderhoud aan de slagboom.
+B  De garage is vol.
+C  Er is een ongeluk gebeurd.
+
+[tekst 2 · vraag 2]
+Wat moet u doen voordat u naar uw auto loopt?
+A  De groene borden volgen.
+B  Afrekenen bij de betaalautomaat.
+C  Uw kaartje laten scannen bij de uitrit.
+
+[tekst 2 · vraag 3]
+Hoe laat gaat de garage morgen open?
+A  Om één uur.
+B  Om zeven uur.
+C  Om zes uur.
+
+[tekst 3 · situatie]
+Mevrouw Kaya belt de fysiotherapeut. Lees eerst de vraag. Luister daarna naar de tekst.
+
+[tekst 3 · vraag 1]
+Hoe lang duurt de eerste afspraak?
+A  Drie kwartier.
+B  Een half uur.
+C  Een uur.
+
+[tekst 3 · vraag 2]
+Wanneer komt mevrouw Kaya?
+A  Volgende maand.
+B  Vrijdag om twee uur.
+C  Woensdag om half tien.
+
+[tekst 4 · situatie]
+In een winkel krijgt Sofia uitleg over de kassa. Lees eerst de vraag. Luister daarna naar de tekst.
+
+[tekst 4 · vraag 1]
+Waarmee logt Sofia in?
+A  Met het nummer van een collega.
+B  Met haar telefoon.
+C  Met haar eigen nummer.
+
+[tekst 4 · vraag 2]
+Wat doet zij met contant geld?
+A  Op het bakje leggen tot het wisselgeld terug is.
+B  Meteen in de la doen.
+C  Aan een collega geven.
+
+[tekst 4 · vraag 3]
+Wat doet zij als een klant iets wil ruilen?
+A  De klant wegsturen.
+B  Een collega roepen.
+C  Het zelf regelen.
+
+[tekst 5 · situatie]
+Meneer Novak praat met zijn buurvrouw over een pakket. Lees eerst de vraag. Luister daarna naar de tekst.
+
+[tekst 5 · vraag 1]
+Waarom praten zij met elkaar?
+A  Er is overlast geweest.
+B  Zij organiseren een feest.
+C  De buurvrouw heeft een pakket aangenomen.
+
+[tekst 5 · vraag 2]
+Wat zit er in het pakket?
+A  Boeken.
+B  Kleding.
+C  Gereedschap.
+
+[tekst 6 · situatie]
+Meneer Osei luistert een bericht van de bank af. Lees eerst de vraag. Luister daarna naar de tekst.
+
+[tekst 6 · vraag 1]
+Waarom belt de bank?
+A  Zijn pas is verlopen.
+B  Er was een ongewone betaling naar het buitenland.
+C  Zijn rekening staat rood.
+
+[tekst 6 · vraag 2]
+Wat moet hij doen als hij de betaling zelf deed?
+A  Niets doen.
+B  Naar het kantoor gaan.
+C  De bank terugbellen op het nummer achterop zijn pas.
+
+[tekst 7 · situatie]
+In het theater klinkt een mededeling voor de voorstelling. Lees eerst de vraag. Luister daarna naar de tekst.
+
+[tekst 7 · vraag 1]
+Wat moet u met uw telefoon doen?
+A  Helemaal uitzetten.
+B  Op stil zetten.
+C  Inleveren.
+
+[tekst 7 · vraag 2]
+Hoe lang duurt de pauze?
+A  Een uur.
+B  Twintig minuten.
+C  Vijf minuten.
+
+[tekst 7 · vraag 3]
+Wat gebeurt er als u na de pauze te laat bent?
+A  U mag niet meer naar binnen.
+B  U krijgt uw geld terug.
+C  U kunt pas bij een geschikt moment naar binnen.
+
+[tekst 8 · situatie]
+Fatima wil een kast kopen in de kringloopwinkel. Lees eerst de vraag. Luister daarna naar de tekst.
+
+[tekst 8 · vraag 1]
+Wat is er aan de hand met de kast?
+A  De deur klemt een beetje.
+B  Er zit een kras op.
+C  Er ontbreekt een plank.
+
+[tekst 8 · vraag 2]
+Wat kost het bezorgen?
+A  Niets.
+B  € 20.
+C  € 45.
+
+[tekst 9 · situatie]
+Bij de apotheek legt een medewerker de nieuwe automaat uit. Lees eerst de vraag. Luister daarna naar de tekst.
+
+[tekst 9 · vraag 1]
+Hoe krijgt u de code?
+A  Per e-mail.
+B  Bij de balie.
+C  Per sms.
+
+[tekst 9 · vraag 2]
+Wanneer werkt de automaat?
+A  Dag en nacht.
+B  Alleen tijdens openingstijden.
+C  Alleen in het weekend.
+
+[tekst 9 · vraag 3]
+Welke medicijnen gaan niet in de automaat?
+A  Medicijnen zonder recept.
+B  Medicijnen die koud bewaard moeten worden.
+C  Medicijnen voor kinderen.
+
+[tekst 10 · situatie]
+In het buurthuis klinkt een mededeling over de zomer. Lees eerst de vraag. Luister daarna naar de tekst.
+
+[tekst 10 · vraag 1]
+Wat gebeurt er met de vaste cursussen?
+A  Die gaan gewoon door.
+B  Die zijn alleen ’s middags.
+C  Die stoppen in die periode.
+
+[tekst 10 · vraag 2]
+Waarom is aanmelden voor de uitstapjes verplicht?
+A  Er kunnen maar twintig mensen mee met de bus.
+B  Het kost geld.
+C  Er zijn te weinig begeleiders.

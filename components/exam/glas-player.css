@@ -162,14 +162,14 @@
     }
   }
   .g-xpaper {
-    background: #fbf8f1; border-radius: 6px; padding: 26px 28px; transform: rotate(-0.6deg);
-    box-shadow: 0 1px 0 rgba(0, 0, 0, 0.03), 0 22px 40px -24px rgba(60, 40, 0, 0.35);
-    font-size: 15.5px; line-height: 1.7; color: #2a2620; min-width: 0;
+    background: var(--wit); border-radius: var(--r-lg); padding: 26px 28px;
+    font-size: 15.5px; line-height: 1.7; color: var(--ink); min-width: 0;
   }
-  [dir="rtl"] .g-xpaper { transform: rotate(0.6deg); }
-  .g-xpaper h2 { font-family: var(--font-headline); font-size: 17px; font-weight: 700; color: #2a2620; margin: 0 0 10px; letter-spacing: -0.01em; }
-  .g-xpaper-from { font-family: var(--glas-mono); font-size: 11px; letter-spacing: 0.06em; color: #8a7e66; margin-bottom: 14px; text-transform: uppercase; }
-  .g-xpaper .exam-rich { color: #2a2620; }
+  .g-xpaper h2 { font-family: var(--font-headline); font-size: 17px; font-weight: 700; color: var(--ink); margin: 0 0 12px; letter-spacing: -0.01em; }
+  .g-xpaper .exam-rich { color: var(--ink); }
+  /* Een brief of e-mail: de tekst in een kader, zoals DUO hem toont. Het kader is het document,
+     geen sectiegrens — daarom een inset-schaduw en geen border (no-line rule). */
+  .g-xletter { padding: 18px 20px; border-radius: var(--r-md); box-shadow: inset 0 0 0 1px var(--mist-2); }
   .g-xbrief {
     display: flex; gap: 10px; align-items: flex-start; margin: 0; padding: 14px 16px;
     border-radius: var(--r-md); background: var(--wit); box-shadow: var(--shadow-ambient);
@@ -190,7 +190,8 @@
     .g-xswitch { display: flex; }
     .g-xlezen[data-pane="tekst"] .g-xlezen-q { display: none; }
     .g-xlezen[data-pane="vragen"] .g-xlezen-text { display: none; }
-    .g-xpaper { transform: none; padding: 20px 18px; }
+    .g-xpaper { padding: 20px 18px; }
+    .g-xletter { padding: 14px 14px; }
   }
 
   /* ---------- luisteren: de glazen capsule op Gracht ---------- */
@@ -726,10 +727,44 @@
   .g-xseal b { font-family: var(--font-headline); font-weight: 700; }
 }
 
+@layer components {
+  /* ---------- startscherm A2: het welkom in DUO's vorm ---------- */
+  .g-xwelcome { display: flex; flex-direction: column; gap: 8px; max-width: 62ch; }
+  .g-xwelcome h2 { font-family: var(--font-headline); font-size: 18px; font-weight: 700; letter-spacing: -0.015em; color: var(--ink); margin: 0 0 2px; }
+  .g-xwelcome p { margin: 0; font-size: 15px; line-height: 1.7; color: var(--ink); text-wrap: pretty; }
+  .g-xwelcome ol { list-style: decimal; margin: 2px 0 4px; padding-inline-start: 22px; display: flex; flex-direction: column; gap: 4px; font-size: 15px; line-height: 1.6; color: var(--ink); }
+  .g-xwelcome ol li::marker { color: var(--navy); font-weight: 700; font-variant-numeric: tabular-nums; }
+  .g-xsoundcheck { display: flex; flex-direction: column; gap: 8px; padding: 16px; border-radius: var(--r-lg); background: var(--mist); }
+  .g-xsoundcheck h3 { font-family: var(--font-headline); font-size: 15px; font-weight: 700; color: var(--ink); margin: 0; }
+  .g-xsoundcheck p { margin: 0; font-size: 14px; line-height: 1.55; color: var(--ink-2); }
+  .g-xintro-small { margin: 0; font-size: 13.5px; line-height: 1.55; color: var(--ink-2); }
+
+  /* ---------- luisteren A2: het verloop van één vraag ---------- */
+  .g-xlseq { display: flex; align-items: center; justify-content: flex-start; gap: 10px; flex-wrap: wrap; margin-top: 10px; }
+
+  /* ---------- inleveren ---------- */
+  .g-xdialog-submit { max-width: 520px; }
+  .g-xdialog .g-xsubmit-row { display: flex; gap: 10px; align-items: flex-start; color: var(--ink); }
+  .g-xsubmit-row > svg { flex: none; width: 18px; height: 18px; margin-top: 2px; color: var(--navy); }
+  .g-xsubmit-row.is-warn > svg { color: var(--klei); }
+  .g-xsubmit-row b { font-weight: 700; }
+  .g-xjump { display: grid; grid-template-columns: repeat(auto-fill, minmax(44px, 1fr)); gap: 6px; max-height: 196px; overflow-y: auto; padding: 2px; }
+  .g-xjump button {
+    all: unset; box-sizing: border-box; cursor: pointer; height: 40px; border-radius: var(--r-md);
+    display: flex; align-items: center; justify-content: center; background: var(--mist);
+    font-family: var(--font-headline); font-weight: 700; font-size: 14px; color: var(--navy);
+    transition: background-color 160ms ease, transform 160ms var(--ease-out-glas);
+  }
+  @media (hover: hover) and (pointer: fine) { .g-xjump button:hover { background: var(--mist-2); } }
+  .g-xjump button:focus-visible { box-shadow: var(--glas-focus); }
+  .g-xjump button:active { transform: scale(0.96); }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .g-xbar-x, .g-xseg > b, .g-xtimer, .g-xap, .g-xab, .g-xread, .g-xrecbig, .g-xpick, .g-xmode label, .g-xpart,
   .g-xtextarea, .g-xinput, .g-xprog > i, .g-xrv-cr, .g-xrv-cr-body, .g-xrv-pp > i, .g-xrv-tot, .g-xrv-tot > *,
-  .g-xrv-status, .g-xmark-note, .g-xcd > svg circle:last-child, .g-xlv > i { transition-duration: 0ms !important; }
+  .g-xrv-status, .g-xmark-note, .g-xcd > svg circle:last-child, .g-xlv > i, .g-xjump button { transition-duration: 0ms !important; }
+  .g-xjump button:active { transform: none; }
   .g-xbar-x:active, .g-xap:active, .g-xab:active, .g-xread:active, .g-xrecbig:active, .g-xpick:active,
   .g-xmode label:active, .g-xpart:active { transform: none; }
   .g-xpart:hover { transform: none !important; }

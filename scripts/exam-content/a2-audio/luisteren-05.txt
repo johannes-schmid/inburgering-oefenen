@@ -1,0 +1,182 @@
+# A2 Luisteren — oefenexamen 5
+# stem: narrator
+
+[tekst 1 · situatie]
+Mevrouw Ivanova opent een rekening bij de bank. Lees eerst de vraag. Luister daarna naar de tekst.
+
+[tekst 1 · vraag 1]
+Wat kost de rekening per maand?
+A  € 2,25.
+B  € 5,00.
+C  Niets.
+
+[tekst 1 · vraag 2]
+Wat kost internetbankieren extra?
+A  Dat kan zij niet krijgen.
+B  Niets, dat zit erbij.
+C  Twee euro.
+
+[tekst 1 · vraag 3]
+Hoe krijgt zij haar pincode?
+A  Samen met de pas.
+B  Per e-mail.
+C  In een aparte envelop per post.
+
+[tekst 2 · situatie]
+Op school hoort Yusuf een bericht door de intercom. Lees eerst de vraag. Luister daarna naar de tekst.
+
+[tekst 2 · vraag 1]
+Waarom vervalt de wiskundeles?
+A  De docent voelt zich niet lekker.
+B  Er is een toets.
+C  Het lokaal is bezet.
+
+[tekst 2 · vraag 2]
+Wat gebeurt er met klas 3B?
+A  Zij krijgen een andere les.
+B  Zij maken een toets Engels.
+C  Zij zijn ook vrij.
+
+[tekst 2 · vraag 3]
+Hoe laat zijn de meeste klassen vrij?
+A  Om kwart over drie.
+B  Om twintig over twee.
+C  Om kwart over twee.
+
+[tekst 3 · situatie]
+Meneer Yildiz wordt gebeld door de garage. Lees eerst de vraag. Luister daarna naar de tekst.
+
+[tekst 3 · vraag 1]
+Wat moet er extra gebeuren aan de auto?
+A  Twee banden vervangen.
+B  De remmen vervangen.
+C  Alleen de olie verversen.
+
+[tekst 3 · vraag 2]
+Wanneer is de auto klaar?
+A  Over twee dagen.
+B  Morgen aan het eind van de ochtend.
+C  Vandaag aan het eind van de middag.
+
+[tekst 4 · situatie]
+Een medewerker legt uit hoe de zelfscankassa werkt. Lees eerst de vraag. Luister daarna naar de tekst.
+
+[tekst 4 · vraag 1]
+Wanneer moet u een product scannen?
+A  Nadat u het in uw tas heeft gedaan.
+B  Aan het eind, bij de kassa.
+C  Voordat u het in uw tas doet.
+
+[tekst 4 · vraag 2]
+Wat doet u met groente en fruit?
+A  Zelf wegen en het bonnetje erop plakken.
+B  Bij de kassa laten wegen.
+C  Gewoon scannen.
+
+[tekst 4 · vraag 3]
+Wanneer krijgt u een controle?
+A  Alleen bij grote boodschappen.
+B  Dat gebeurt willekeurig.
+C  Altijd.
+
+[tekst 5 · situatie]
+Twee ouders praten met elkaar op het schoolplein. Lees eerst de vraag. Luister daarna naar de tekst.
+
+[tekst 5 · vraag 1]
+Waarom gaat Trees niet mee?
+A  Zij is ziek.
+B  Zij heeft geen zin.
+C  Zij moet werken.
+
+[tekst 5 · vraag 2]
+Waar gaan de kinderen naartoe?
+A  Naar het natuurmuseum en de speeltuin.
+B  Naar het strand.
+C  Naar de dierentuin.
+
+[tekst 6 · situatie]
+Op de website van de gemeente staat een gesproken bericht. Lees eerst de vraag. Luister daarna naar de tekst.
+
+[tekst 6 · vraag 1]
+Waarom is het stadskantoor gesloten?
+A  Vanwege vakantie.
+B  Vanwege een verhuizing.
+C  Vanwege een verbouwing.
+
+[tekst 6 · vraag 2]
+Wat moet u doen als u een afspraak had in die week?
+A  Zelf een nieuwe afspraak maken.
+B  Naar de nieuwe locatie gaan.
+C  Niets, de afspraak wordt automatisch verzet.
+
+[tekst 6 · vraag 3]
+Wanneer is de gemeente telefonisch bereikbaar?
+A  Op werkdagen tussen negen en twaalf uur.
+B  De hele dag.
+C  Alleen in noodgevallen ’s avonds.
+
+[tekst 7 · situatie]
+Meneer Kowalski is bij de huisarts. Lees eerst de vraag. Luister daarna naar de tekst.
+
+[tekst 7 · vraag 1]
+Hoe lang heeft meneer Kowalski al pijn?
+A  Drie maanden.
+B  Drie weken.
+C  Drie dagen.
+
+[tekst 7 · vraag 2]
+Wat adviseert de dokter?
+A  Rust nemen in bed.
+B  Stoppen met werken.
+C  Blijven bewegen en voorzichtig tillen.
+
+[tekst 8 · situatie]
+Mevrouw Osei luistert een bericht af. Lees eerst de vraag. Luister daarna naar de tekst.
+
+[tekst 8 · vraag 1]
+Wanneer komt de loodgieter?
+A  Donderdagochtend tussen acht en twaalf uur.
+B  Donderdagmiddag.
+C  Woensdagochtend.
+
+[tekst 8 · vraag 2]
+Wie moet er thuis zijn?
+A  Niemand, hij heeft een sleutel.
+B  Iemand van achttien jaar of ouder.
+C  Mevrouw Osei zelf.
+
+[tekst 9 · situatie]
+Een trainer legt de regels van de sportschool uit. Lees eerst de vraag. Luister daarna naar de tekst.
+
+[tekst 9 · vraag 1]
+Wat is verplicht op de sportschool?
+A  Sportschoenen met witte zolen.
+B  Een eigen slot meenemen.
+C  Een handdoek op het apparaat leggen.
+
+[tekst 9 · vraag 2]
+Wanneer is het het drukst?
+A  Tussen zes en acht ’s avonds.
+B  In de ochtend.
+C  In het weekend.
+
+[tekst 10 · situatie]
+In de trein hoort Sara een mededeling. Lees eerst de vraag. Luister daarna naar de tekst.
+
+[tekst 10 · vraag 1]
+Waarom is het drukker dan normaal?
+A  Er zijn werkzaamheden.
+B  De trein heeft minder rijtuigen.
+C  Er is een evenement.
+
+[tekst 10 · vraag 2]
+Wat vraagt de conducteur aan de reizigers?
+A  Door te lopen naar rijtuig vijf.
+B  Hun kaartje klaar te houden.
+C  Geen tassen op de stoel naast zich te leggen.
+
+[tekst 10 · vraag 3]
+Welk toilet kunt u gebruiken?
+A  Dat in rijtuig vijf.
+B  Dat in rijtuig drie.
+C  Er is geen toilet.

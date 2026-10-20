@@ -1,0 +1,54 @@
+# A2 Spreken — oefenexamen 3
+# verteller: narrator, snelheid 1 (zelfde als de geluidstest)
+
+[opdracht 1 · react · verteller, dan spreker]
+Iemand van de woningcorporatie praat met u. Geef antwoord op zijn vraag.
+— spreker: Goedemorgen. U komt voor de sleutel, hè? Wanneer wilt u de woning bekijken?
+
+[opdracht 2 · react · verteller, dan spreker]
+U meldt zich aan bij een buurthuis. Geef antwoord.
+— spreker: Wat leuk dat u meedoet! Wat voor werk wilt u graag als vrijwilliger doen?
+
+[opdracht 3 · react · verteller, dan spreker]
+U heeft een gesprek met de juf op school. Geef antwoord.
+— spreker: Uw zoon doet het goed in de klas. Hoe gaat het thuis met zijn huiswerk?
+
+[opdracht 4 · react · verteller, dan spreker]
+Uw buurman begint een praatje over de tuin. Geef antwoord.
+— spreker: Zeg, ik zie u vaak in de tuin. Wat groeit er allemaal bij u?
+
+[opdracht 5 · describe · verteller]
+Vertel wat u op dit plaatje ziet. Vertel ook wat deze mensen aan het leren zijn. Gebruik het plaatje.
+
+[opdracht 6 · describe · verteller]
+Beschrijf dit plaatje. Vertel ook wanneer u zelf naar zo’n plek gaat. Gebruik het plaatje.
+
+[opdracht 7 · describe · verteller]
+Vertel wat er op dit plaatje gebeurt. Vertel ook wat u ervan vindt. Gebruik het plaatje.
+
+[opdracht 8 · describe · verteller]
+Vertel wat u ziet. Vertel ook waarom mensen dit doen. Gebruik het plaatje.
+
+[opdracht 9 · choose · verteller]
+Welke woning zou u kiezen? Kies één plaatje en vertel waarom.
+
+[opdracht 10 · choose · verteller]
+Hoe leert u liever Nederlands? Kies één plaatje en leg uit waarom.
+
+[opdracht 11 · choose · verteller]
+Waar viert u liever een feest? Kies één plaatje en vertel waarom.
+
+[opdracht 12 · choose · verteller]
+Welk werk zou u liever doen? Kies één plaatje en leg uit waarom.
+
+[opdracht 13 · cover_all · verteller]
+Vertel wat deze persoon op een werkdag doet. Gebruik alle plaatjes.
+
+[opdracht 14 · cover_all · verteller]
+Vertel het verhaal van deze dag op school. Gebruik alle plaatjes.
+
+[opdracht 15 · cover_all · verteller]
+Vertel wat er gebeurt als iemand ziek is. Gebruik alle plaatjes.
+
+[opdracht 16 · cover_all · verteller]
+Vertel wat deze mensen samen doen. Gebruik alle drie de plaatjes.

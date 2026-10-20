@@ -1,0 +1,54 @@
+# A2 Spreken — oefenexamen 4
+# verteller: narrator, snelheid 1 (zelfde als de geluidstest)
+
+[opdracht 1 · react · verteller, dan spreker]
+U komt bij de balie van een sportschool. Geef antwoord op zijn vraag.
+— spreker: Welkom bij de sportschool. Wat voor sport wilt u hier gaan doen?
+
+[opdracht 2 · react · verteller, dan spreker]
+Een collega maakt een praatje. Geef antwoord in hele zinnen.
+— spreker: U bent nieuw hier, hè? Waar komt u vandaan en hoe bevalt het in Nederland?
+
+[opdracht 3 · react · verteller, dan spreker]
+U belt de klantenservice. Geef antwoord op haar vraag.
+— spreker: Goedemiddag. Uw pakket is te laat, zegt u? Vertelt u eens wat er precies is gebeurd.
+
+[opdracht 4 · react · verteller, dan spreker]
+Iemand van de buurtvereniging spreekt u aan. Geef antwoord.
+— spreker: Wij zoeken nog mensen voor de buurtvereniging. Wat zou u willen doen?
+
+[opdracht 5 · describe · verteller]
+Vertel wat u op het plaatje ziet. Vertel ook wat deze man aan het doen is. Gebruik het plaatje.
+
+[opdracht 6 · describe · verteller]
+Beschrijf dit plaatje. Vertel ook of u hier graag zou komen. Gebruik het plaatje.
+
+[opdracht 7 · describe · verteller]
+Vertel wat er op dit plaatje gebeurt. Vertel ook wat er moeilijk aan is. Gebruik het plaatje.
+
+[opdracht 8 · describe · verteller]
+Vertel wat u ziet. Vertel ook waarom dit belangrijk is. Gebruik het plaatje.
+
+[opdracht 9 · choose · verteller]
+Wat neemt u liever mee naar het werk? Kies één plaatje en vertel waarom.
+
+[opdracht 10 · choose · verteller]
+Welke vakantie lijkt u leuker? Kies één plaatje en leg uit waarom.
+
+[opdracht 11 · choose · verteller]
+Hoe wilt u liever betalen? Kies één plaatje en vertel waarom.
+
+[opdracht 12 · choose · verteller]
+Welk huisdier zou u kiezen? Kies één plaatje en leg uit waarom.
+
+[opdracht 13 · cover_all · verteller]
+Vertel wat deze persoon met de was doet. Gebruik alle plaatjes.
+
+[opdracht 14 · cover_all · verteller]
+Vertel wat er in de winkel gebeurt. Gebruik alle drie de plaatjes.
+
+[opdracht 15 · cover_all · verteller]
+Vertel het verhaal van deze sollicitatie. Gebruik alle plaatjes.
+
+[opdracht 16 · cover_all · verteller]
+Vertel wat deze familie in het weekend doet. Gebruik alle plaatjes.

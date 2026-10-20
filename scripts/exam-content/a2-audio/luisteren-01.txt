@@ -1,0 +1,182 @@
+# A2 Luisteren — oefenexamen 1
+# stem: narrator
+
+[tekst 1 · situatie]
+Youssef belt de huisartsenpraktijk voor een afspraak. Lees eerst de vraag. Luister daarna naar de tekst.
+
+[tekst 1 · vraag 1]
+Waarom belt Youssef?
+A  Om een afspraak te maken.
+B  Om een afspraak af te zeggen.
+C  Om medicijnen te vragen.
+
+[tekst 1 · vraag 2]
+Hoe laat komt Youssef?
+A  Om half 11.
+B  Om kwart voor 4.
+C  Om kwart over 4.
+
+[tekst 1 · vraag 3]
+Wat moet Youssef meenemen?
+A  Zijn paspoort.
+B  Een lijstje met vragen.
+C  Zijn verzekeringspas.
+
+[tekst 2 · situatie]
+Ines doet boodschappen. Zij hoort een bericht door de luidspreker. Lees eerst de vraag. Luister daarna naar de tekst.
+
+[tekst 2 · vraag 1]
+Wat kost een doosje aardbeien vanmiddag?
+A  Twee euro.
+B  Drie euro vijftig.
+C  Vijf euro.
+
+[tekst 2 · vraag 2]
+Welke kleur is de jas van het meisje?
+A  Blauw.
+B  Roze.
+C  Rood.
+
+[tekst 2 · vraag 3]
+Hoe laat gaat de winkel dicht?
+A  Om negen uur.
+B  Om vijf uur.
+C  Om acht uur.
+
+[tekst 3 · situatie]
+Steven komt Jari tegen op straat. Ze praten even met elkaar. Lees eerst de vraag. Luister daarna naar de tekst.
+
+[tekst 3 · vraag 1]
+Waar woont Jari nu?
+A  Boven een bakker.
+B  Naast het station.
+C  Bij zijn werk in het gebouw.
+
+[tekst 3 · vraag 2]
+Hoe lang doet Jari nu over de reis naar zijn werk?
+A  Een uur.
+B  Tien minuten.
+C  Drie kwartier.
+
+[tekst 3 · vraag 3]
+Waarom komt Jari zaterdag pas later?
+A  Hij is ziek.
+B  Hij heeft geen vervoer.
+C  Hij moet werken.
+
+[tekst 4 · situatie]
+De vader van Sofie luistert een bericht af op zijn telefoon. Lees eerst de vraag. Luister daarna naar de tekst.
+
+[tekst 4 · vraag 1]
+Hoe laat moet Sofie op school zijn?
+A  Om kwart over acht.
+B  Om half negen.
+C  Om vier uur.
+
+[tekst 4 · vraag 2]
+Wat hoeft Sofie niet mee te nemen?
+A  Een regenjas.
+B  Geld.
+C  Brood.
+
+[tekst 5 · situatie]
+Meryem wil lid worden van een sportschool. Lees eerst de vraag. Luister daarna naar de tekst.
+
+[tekst 5 · vraag 1]
+Hoeveel gaat Meryem per maand betalen?
+A  Dertig euro.
+B  Vijftig euro.
+C  Tweeëntwintig euro.
+
+[tekst 5 · vraag 2]
+Wat gaat Meryem eerst thuis halen?
+A  Een handdoek.
+B  Haar bankpas.
+C  Sportschoenen.
+
+[tekst 6 · situatie]
+Op haar eerste werkdag krijgt Ana uitleg van haar leidinggevende. Lees eerst de vraag. Luister daarna naar de tekst.
+
+[tekst 6 · vraag 1]
+Wat moet Ana aantrekken in de hal?
+A  Haar eigen kleren.
+B  Werkkleding en veiligheidsschoenen.
+C  Alleen een jas.
+
+[tekst 6 · vraag 2]
+Wat moet Ana doen als zij ziek is?
+A  Haar leidinggevende persoonlijk bellen.
+B  Een e-mail sturen.
+C  Vóór half zeven naar het nummer bellen.
+
+[tekst 6 · vraag 3]
+Waar schrijft Ana haar uren op?
+A  Op de lijst bij de deur.
+B  In een app.
+C  Op de computer in het kantoor.
+
+[tekst 7 · situatie]
+Julio zit in de trein en hoort een mededeling van de conducteur. Lees eerst de vraag. Luister daarna naar de tekst.
+
+[tekst 7 · vraag 1]
+Julio moet naar Zwolle. Wat moet hij doen?
+A  De bus nemen bij de voorkant.
+B  Overstappen op spoor vijf.
+C  In deze trein blijven zitten.
+
+[tekst 7 · vraag 2]
+Waarom rijdt de trein naar Utrecht niet?
+A  Door een ongeluk.
+B  Door het weer.
+C  Door werkzaamheden.
+
+[tekst 8 · situatie]
+Meneer De Boer luistert een bericht van de garage af. Lees eerst de vraag. Luister daarna naar de tekst.
+
+[tekst 8 · vraag 1]
+Wat moet er aan de auto gebeuren?
+A  De remmen vervangen.
+B  Een band vervangen.
+C  Alleen een controle.
+
+[tekst 8 · vraag 2]
+Wanneer is de auto klaar?
+A  Overmorgen in de ochtend.
+B  Morgen aan het eind van de middag.
+C  Vandaag aan het eind van de dag.
+
+[tekst 8 · vraag 3]
+Wat moet meneer De Boer doen?
+A  Langskomen.
+B  Een e-mail sturen.
+C  Terugbellen.
+
+[tekst 9 · situatie]
+Nadia zit bij de kapper. Ze praat met de kapster. Lees eerst de vraag. Luister daarna naar de tekst.
+
+[tekst 9 · vraag 1]
+Wat wil Nadia laten doen?
+A  Alleen verven.
+B  Knippen en verven.
+C  Alleen knippen en wassen..
+
+[tekst 9 · vraag 2]
+Hoeveel kost het?
+A  Twintig euro.
+B  Negenentwintig euro.
+C  Negenendertig euro.
+
+[tekst 10 · situatie]
+Een medewerker van de gemeente legt uit hoe het afval werkt. Lees eerst de vraag. Luister daarna naar de tekst.
+
+[tekst 10 · vraag 1]
+Wanneer wordt de grijze container geleegd?
+A  Elke maandag.
+B  Eens in de twee weken.
+C  Elke woensdag.
+
+[tekst 10 · vraag 2]
+Waar moet papier naartoe?
+A  Naar de blauwe container op het plein.
+B  In de groene bak.
+C  In de grijze container.

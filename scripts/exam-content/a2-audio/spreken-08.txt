@@ -1,0 +1,54 @@
+# A2 Spreken — oefenexamen 8
+# verteller: narrator, snelheid 1 (zelfde als de geluidstest)
+
+[opdracht 1 · react · verteller, dan spreker]
+U belt de woningcorporatie. Geef antwoord op haar vraag.
+— spreker: Goedemiddag. U wilt een klacht melden over de woning? Vertelt u eens wat er aan de hand is.
+
+[opdracht 2 · react · verteller, dan spreker]
+De eigenaar van een winkel praat met u. Geef antwoord.
+— spreker: Wij zoeken iemand voor de zaterdag. Hoeveel uur wilt u werken?
+
+[opdracht 3 · react · verteller, dan spreker]
+Een moeder van school praat met u. Geef antwoord.
+— spreker: Uw dochter fietst nu zelf naar school, hè? Hoe gaat dat?
+
+[opdracht 4 · react · verteller, dan spreker]
+Een collega vraagt iets. Geef antwoord in hele zinnen.
+— spreker: Ik hoorde dat u gaat verhuizen. Waar gaat u naartoe en wanneer?
+
+[opdracht 5 · describe · verteller]
+Vertel wat u op dit plaatje ziet. Vertel ook wat er te koop is. Gebruik het plaatje.
+
+[opdracht 6 · describe · verteller]
+Beschrijf dit plaatje. Vertel ook wat deze vrouw aan het doen is. Gebruik het plaatje.
+
+[opdracht 7 · describe · verteller]
+Vertel wat er op dit plaatje gebeurt. Vertel ook wat u ervan vindt. Gebruik het plaatje.
+
+[opdracht 8 · describe · verteller]
+Vertel wat u ziet. Vertel ook wanneer u hier zou zijn. Gebruik het plaatje.
+
+[opdracht 9 · choose · verteller]
+Welke bank zou u in de woonkamer zetten? Kies één plaatje en vertel waarom.
+
+[opdracht 10 · choose · verteller]
+Wat doet u liever in de zomer? Kies één plaatje en leg uit waarom.
+
+[opdracht 11 · choose · verteller]
+Welk vervoer kiest u voor korte ritten? Kies één plaatje en vertel waarom.
+
+[opdracht 12 · choose · verteller]
+Welk cadeau geeft u aan een kind? Kies er één en leg uit waarom.
+
+[opdracht 13 · cover_all · verteller]
+Vertel wat deze persoon met het eten doet. Gebruik alle plaatjes.
+
+[opdracht 14 · cover_all · verteller]
+Vertel het verhaal van deze sollicitatie. Gebruik alle drie de plaatjes.
+
+[opdracht 15 · cover_all · verteller]
+Vertel wat er bij de kapper gebeurt. Gebruik alle plaatjes.
+
+[opdracht 16 · cover_all · verteller]
+Vertel wat deze mensen in het buurthuis doen. Gebruik alle plaatjes.

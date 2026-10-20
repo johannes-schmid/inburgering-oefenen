@@ -1,0 +1,54 @@
+# A2 Spreken — oefenexamen 7
+# verteller: narrator, snelheid 1 (zelfde als de geluidstest)
+
+[opdracht 1 · react · verteller, dan spreker]
+De assistente van de tandarts vraagt iets. Geef antwoord.
+— spreker: U komt voor de tandarts. Wanneer bent u hier voor het laatst geweest?
+
+[opdracht 2 · react · verteller, dan spreker]
+De verhuurder belt u over een kamer. Geef antwoord.
+— spreker: Wij hebben een kamer vrij vanaf oktober. Met hoeveel mensen komt u wonen?
+
+[opdracht 3 · react · verteller, dan spreker]
+Uw begeleider bij de inburgering vraagt iets. Geef antwoord.
+— spreker: Wat fijn dat u er bent. Wat wilt u dit jaar het liefste leren?
+
+[opdracht 4 · react · verteller, dan spreker]
+Een kennis vraagt om hulp. Geef antwoord.
+— spreker: Zeg, ik ga volgende week verhuizen. Kunt u misschien helpen met dragen?
+
+[opdracht 5 · describe · verteller]
+Vertel wat u op dit plaatje ziet. Vertel ook wat deze mensen aan het doen zijn. Gebruik het plaatje.
+
+[opdracht 6 · describe · verteller]
+Beschrijf dit plaatje. Vertel ook wat u hier zou kopen. Gebruik het plaatje.
+
+[opdracht 7 · describe · verteller]
+Vertel wat er op dit plaatje gebeurt. Vertel ook wat er gevaarlijk is. Gebruik het plaatje.
+
+[opdracht 8 · describe · verteller]
+Vertel wat u ziet. Vertel ook waarom mensen dit doen. Gebruik het plaatje.
+
+[opdracht 9 · choose · verteller]
+Welke fiets zou u kopen? Kies één plaatje en vertel waarom.
+
+[opdracht 10 · choose · verteller]
+Waar zou u liever werken? Kies één plaatje en leg uit waarom.
+
+[opdracht 11 · choose · verteller]
+Wat eet u liever als ontbijt? Kies één plaatje en vertel waarom.
+
+[opdracht 12 · choose · verteller]
+Welke les zou u kiezen voor uw kind? Kies één plaatje en leg uit waarom.
+
+[opdracht 13 · cover_all · verteller]
+Vertel wat deze persoon met de fiets doet. Gebruik alle plaatjes.
+
+[opdracht 14 · cover_all · verteller]
+Vertel het verhaal van deze dag op het strand. Gebruik alle plaatjes.
+
+[opdracht 15 · cover_all · verteller]
+Vertel wat er in deze klas gebeurt. Gebruik alle drie de plaatjes.
+
+[opdracht 16 · cover_all · verteller]
+Vertel wat deze persoon met het pakket doet. Gebruik alle plaatjes.

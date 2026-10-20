@@ -1,0 +1,54 @@
+# A2 Spreken — oefenexamen 2
+# verteller: narrator, snelheid 1 (zelfde als de geluidstest)
+
+[opdracht 1 · react · verteller, dan spreker]
+U staat bij de balie van een uitzendbureau. Geef antwoord op de vraag.
+— spreker: Goedemiddag. U wilt zich inschrijven, zei u? Wat voor werk doet u nu?
+
+[opdracht 2 · react · verteller, dan spreker]
+De docent van een taalcursus vraagt iets. Geef antwoord in hele zinnen.
+— spreker: Leuk dat u er bent! Waarom wilt u Nederlands leren?
+
+[opdracht 3 · react · verteller, dan spreker]
+U zit bij de huisarts. Geef antwoord op haar vraag.
+— spreker: Wat kan ik voor u doen? Vertel eens waar u last van heeft.
+
+[opdracht 4 · react · verteller, dan spreker]
+Uw buurman nodigt u uit. Geef antwoord.
+— spreker: Hé buurman! Wij geven zaterdag een feest. Komt u ook, en wat neemt u mee?
+
+[opdracht 5 · describe · verteller]
+Vertel wat u op het plaatje ziet. Vertel ook wat dit voor plek is. Gebruik het plaatje.
+
+[opdracht 6 · describe · verteller]
+Vertel wat de mensen op dit plaatje doen. Vertel ook of u dat zelf ook doet. Gebruik het plaatje.
+
+[opdracht 7 · describe · verteller]
+Beschrijf dit plaatje. Vertel ook wat u van dit werk vindt. Gebruik het plaatje.
+
+[opdracht 8 · describe · verteller]
+Vertel wat u ziet op dit plaatje. Vertel ook waarom dit handig is. Gebruik het plaatje.
+
+[opdracht 9 · choose · verteller]
+Waar eet u liever? Kies één plaatje en vertel waarom.
+
+[opdracht 10 · choose · verteller]
+Hoe reist u liever naar een andere stad? Kies één plaatje en leg uit waarom.
+
+[opdracht 11 · choose · verteller]
+Welke cursus zou u kiezen? Kies één plaatje en vertel waarom.
+
+[opdracht 12 · choose · verteller]
+Waar doet u liever boodschappen? Kies één plaatje en leg uit waarom.
+
+[opdracht 13 · cover_all · verteller]
+Vertel wat deze persoon doet. Gebruik alle drie de plaatjes.
+
+[opdracht 14 · cover_all · verteller]
+Vertel wat er gebeurt bij de dokter. Gebruik alle plaatjes.
+
+[opdracht 15 · cover_all · verteller]
+Vertel het verhaal van deze verhuizing. Gebruik alle plaatjes.
+
+[opdracht 16 · cover_all · verteller]
+Vertel wat deze mensen op zaterdag doen. Gebruik alle plaatjes.

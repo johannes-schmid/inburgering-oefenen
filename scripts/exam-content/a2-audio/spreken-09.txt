@@ -1,0 +1,54 @@
+# A2 Spreken — oefenexamen 9
+# verteller: narrator, snelheid 1 (zelfde als de geluidstest)
+
+[opdracht 1 · react · verteller, dan spreker]
+De medewerker van het opleidingscentrum vraagt iets. Geef antwoord.
+— spreker: U wilt een cursus doen bij ons. Op welke dagen kunt u het beste komen?
+
+[opdracht 2 · react · verteller, dan spreker]
+U bezoekt een kinderdagverblijf. Geef antwoord op haar vraag.
+— spreker: U komt voor de kinderopvang, hè? Hoe oud is uw kind?
+
+[opdracht 3 · react · verteller, dan spreker]
+Een handhaver spreekt u aan. Geef antwoord.
+— spreker: Uw fiets stond op de stoep, meneer. Weet u waar u hier mag parkeren?
+
+[opdracht 4 · react · verteller, dan spreker]
+Op een buurtfeest vraagt iemand naar uw eten. Geef antwoord.
+— spreker: Wat een lekker eten heeft u meegenomen! Wat is dit precies?
+
+[opdracht 5 · describe · verteller]
+Vertel wat u op dit plaatje ziet. Vertel ook wat deze man aan het doen is. Gebruik het plaatje.
+
+[opdracht 6 · describe · verteller]
+Beschrijf dit plaatje. Vertel ook waarom mensen hier komen. Gebruik het plaatje.
+
+[opdracht 7 · describe · verteller]
+Vertel wat er op dit plaatje gebeurt. Vertel ook wat u zou doen. Gebruik het plaatje.
+
+[opdracht 8 · describe · verteller]
+Vertel wat u ziet. Vertel ook waar dit voor is. Gebruik het plaatje.
+
+[opdracht 9 · choose · verteller]
+Welke tafel zou u kopen? Kies één plaatje en vertel waarom.
+
+[opdracht 10 · choose · verteller]
+Hoe wilt u liever iets leren? Kies één plaatje en leg uit waarom.
+
+[opdracht 11 · choose · verteller]
+Waar gaat u liever heen met de kinderen? Kies één plaatje en vertel waarom.
+
+[opdracht 12 · choose · verteller]
+Welke schoenen koopt u voor uw werk? Kies één plaatje en leg uit waarom.
+
+[opdracht 13 · cover_all · verteller]
+Vertel wat deze persoon in de ochtend doet. Gebruik alle plaatjes.
+
+[opdracht 14 · cover_all · verteller]
+Vertel het verhaal van deze afspraak. Gebruik alle drie de plaatjes.
+
+[opdracht 15 · cover_all · verteller]
+Vertel wat er in deze tuin gebeurt. Gebruik alle plaatjes.
+
+[opdracht 16 · cover_all · verteller]
+Vertel wat deze persoon met de telefoon doet. Gebruik alle plaatjes.

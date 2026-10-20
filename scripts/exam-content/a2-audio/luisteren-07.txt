@@ -1,0 +1,182 @@
+# A2 Luisteren — oefenexamen 7
+# stem: narrator
+
+[tekst 1 · situatie]
+Meneer Adeyemi schrijft zich in bij een uitzendbureau. Lees eerst de vraag. Luister daarna naar de tekst.
+
+[tekst 1 · vraag 1]
+Wat voor werk zoekt meneer Adeyemi?
+A  Werk in een magazijn of in de bouw.
+B  Werk in de horeca.
+C  Werk als chauffeur.
+
+[tekst 1 · vraag 2]
+Onder welke voorwaarde betaalt het bureau de heftruckcursus?
+A  Als hij zelf de helft betaalt.
+B  Als hij drie maanden bij hen werkt.
+C  Als hij al ervaring heeft.
+
+[tekst 1 · vraag 3]
+Wanneer kan hij waarschijnlijk beginnen?
+A  Vandaag nog.
+B  Over drie maanden.
+C  Volgende week maandag.
+
+[tekst 2 · situatie]
+Tijdens een festival in het park klinkt een mededeling. Lees eerst de vraag. Luister daarna naar de tekst.
+
+[tekst 2 · vraag 1]
+Waar moeten de ouders van Timo naartoe?
+A  Naar de informatietent naast de grote ingang.
+B  Naar het podium.
+C  Naar de uitgang.
+
+[tekst 2 · vraag 2]
+Wat gebeurt er vanaf drie uur?
+A  De laatste band begint.
+B  Het gaat regenen.
+C  Het festival stopt.
+
+[tekst 2 · vraag 3]
+Hoe laat sluit het terrein?
+A  Om zes uur.
+B  Om drie uur.
+C  Om acht uur.
+
+[tekst 3 · situatie]
+Mevrouw Petrova belt de gemeente over haar afvalcontainer. Lees eerst de vraag. Luister daarna naar de tekst.
+
+[tekst 3 · vraag 1]
+Waarom is de container niet geleegd?
+A  De wagen heeft een storing gehad.
+B  De container stond verkeerd.
+C  Het was een feestdag.
+
+[tekst 3 · vraag 2]
+Wat moet mevrouw Petrova doen?
+A  Zelf naar de milieustraat gaan.
+B  De container vanavond weer buiten zetten.
+C  De container binnen zetten.
+
+[tekst 4 · situatie]
+Voor een examen krijgen de kandidaten uitleg. Lees eerst de vraag. Luister daarna naar de tekst.
+
+[tekst 4 · vraag 1]
+Wat moet er in de bak bij de deur?
+A  Papier en pen.
+B  De jas.
+C  De telefoon en een horloge met een scherm.
+
+[tekst 4 · vraag 2]
+Wat doet u als u naar het toilet wilt?
+A  Uw hand opsteken en wachten.
+B  Gewoon opstaan en gaan.
+C  Wachten tot de pauze.
+
+[tekst 4 · vraag 3]
+Wanneer mag u niet weggaan als u klaar bent?
+A  U mag nooit eerder weg.
+B  In het laatste kwartier.
+C  In het eerste halfuur.
+
+[tekst 5 · situatie]
+Mevrouw De Wit is bij de dierenarts met haar kat. Lees eerst de vraag. Luister daarna naar de tekst.
+
+[tekst 5 · vraag 1]
+Wat is het probleem met de kat?
+A  Zij drinkt niet.
+B  Zij loopt mank.
+C  Zij eet bijna niets en slaapt veel.
+
+[tekst 5 · vraag 2]
+Wat denkt de dierenarts dat de oorzaak is?
+A  Haar tanden.
+B  Haar maag.
+C  Haar leeftijd.
+
+[tekst 6 · situatie]
+Ahmed luistert een bericht van zijn verhuurder af. Lees eerst de vraag. Luister daarna naar de tekst.
+
+[tekst 6 · vraag 1]
+Waarvoor komt de monteur?
+A  Voor de meterstanden.
+B  Voor de jaarlijkse controle van de cv-ketel.
+C  Voor een reparatie aan de kraan.
+
+[tekst 6 · vraag 2]
+Wat moet Ahmed doen als dinsdag niet lukt?
+A  De monteur zelf bellen.
+B  Niets doen.
+C  Het vóór maandag laten weten.
+
+[tekst 7 · situatie]
+In de bibliotheek klinkt een bericht over de computers. Lees eerst de vraag. Luister daarna naar de tekst.
+
+[tekst 7 · vraag 1]
+Waarmee logt u vanaf volgende week in?
+A  Met uw pasnummer en geboortedatum.
+B  Met het oude wachtwoord.
+C  Met uw e-mailadres.
+
+[tekst 7 · vraag 2]
+Wanneer is er hulp bij de computerhoek?
+A  Alleen op afspraak.
+B  Dinsdag- en donderdagmiddag tussen twee en vier uur.
+C  Elke dag de hele dag.
+
+[tekst 7 · vraag 3]
+Wat verandert er aan het printen?
+A  Het wordt duurder.
+B  Het kan niet meer.
+C  Niets.
+
+[tekst 8 · situatie]
+Meneer Silva checkt in bij een hotel. Lees eerst de vraag. Luister daarna naar de tekst.
+
+[tekst 8 · vraag 1]
+Wat kost het ontbijt?
+A  € 12,50 per persoon.
+B  Niets, het is inbegrepen.
+C  € 15 per persoon.
+
+[tekst 8 · vraag 2]
+Hoe laat kan meneer Silva ontbijten?
+A  Alleen om acht uur.
+B  Tussen half zeven en half elf.
+C  Tussen zeven en tien uur.
+
+[tekst 9 · situatie]
+Op kantoor legt een collega de ontruimingsoefening uit. Lees eerst de vraag. Luister daarna naar de tekst.
+
+[tekst 9 · vraag 1]
+Wat mogen de medewerkers niet meenemen?
+A  Hun telefoon.
+B  Hun badge.
+C  Jassen en tassen.
+
+[tekst 9 · vraag 2]
+Waar verzamelt iedereen?
+A  Op het grasveld aan de overkant van de straat.
+B  Bij de hoofdingang.
+C  In de kantine.
+
+[tekst 9 · vraag 3]
+Hoe herken je de collega’s die de namen afvinken?
+A  Zij staan bij de lift.
+B  Zij dragen gele hesjes.
+C  Zij hebben een megafoon.
+
+[tekst 10 · situatie]
+Op de markt hoort Anna een mededeling. Lees eerst de vraag. Luister daarna naar de tekst.
+
+[tekst 10 · vraag 1]
+Waarom sluit de markt eerder?
+A  Vanwege de regen.
+B  Vanwege een feestdag.
+C  Vanwege de harde wind.
+
+[tekst 10 · vraag 2]
+Hoe laat sluit de markt vandaag?
+A  Om twee uur.
+B  Om vier uur.
+C  Om acht uur.

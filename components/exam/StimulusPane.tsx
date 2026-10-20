@@ -3,6 +3,7 @@
 import { memo } from 'react';
 import { Info } from 'lucide-react';
 import AudioPlayer from './AudioPlayer';
+import ListenSequence from './ListenSequence';
 import './glas-player.css';
 import type { StimulusItem } from '@/lib/exam-content';
 
@@ -28,14 +29,21 @@ import type { StimulusItem } from '@/lib/exam-content';
 function StimulusPane({
   stimulus,
   examenAudio,
+  sectionName,
+  listen,
 }: {
   stimulus: StimulusItem;
   examenAudio?: { readSeconds: number };
+  /** De tekstsoort. "Brief of e-mail" krijgt een kader, zoals DUO een brief of mail toont. */
+  sectionName?: string;
+  /** A2 Luisteren: situatie → leestijd → fragment, zie `ListenSequence`. */
+  listen?: { readSeconds: number; onReplay: () => void; onFragmentEnd: () => void };
 }) {
   const s = stimulus;
+  const isLetter = sectionName === 'Brief of e-mail';
 
-  /* Glas §10: de tekst als papier (crème, een halve graad gedraaid), het fragment als glazen
-     capsule op Gracht, een plaatje op wit. */
+  /* De tekst staat als gewone tekst op wit, zoals in DUO's examen (eigenaar, 20-10: het crème
+     papier leidde af). Een brief of e-mail staat in een eigen kader binnen die tekst. */
   return (
     <div className="g-xlezen-side">
       {/* De opdracht in een eigen kader (eigenaar, 15-10): als losse grijze regel boven het
@@ -49,7 +57,17 @@ function StimulusPane({
 
       {s.kind === 'audio' && s.audio_url && (
         <>
-          <AudioPlayer src={s.audio_url} label="Fragment" examenAudio={examenAudio} />
+          {listen ? (
+            <ListenSequence
+              situationUrl={s.situation_audio_url}
+              fragmentUrl={s.audio_url}
+              readSeconds={listen.readSeconds}
+              onReplay={listen.onReplay}
+              onFragmentEnd={listen.onFragmentEnd}
+            />
+          ) : (
+            <AudioPlayer src={s.audio_url} label="Fragment" examenAudio={examenAudio} />
+          )}
           {s.image_url && <StimulusImage src={s.image_url} alt={s.image_alt} />}
         </>
       )}
@@ -63,7 +81,7 @@ function StimulusPane({
           {s.title && <h2>{s.title}</h2>}
           {/* The tag-level rules live in .exam-rich in app/globals.css — see the note there. */}
           <div
-            className="exam-rich exam-rich-scroll"
+            className={`exam-rich exam-rich-scroll${isLetter ? ' g-xletter' : ''}`}
             dangerouslySetInnerHTML={{ __html: s.body_html }}
           />
         </article>
@@ -89,7 +107,9 @@ export default memo(
   StimulusPane,
   (prev, next) =>
     prev.stimulus.id === next.stimulus.id &&
-    prev.examenAudio?.readSeconds === next.examenAudio?.readSeconds
+    prev.examenAudio?.readSeconds === next.examenAudio?.readSeconds &&
+    prev.sectionName === next.sectionName &&
+    Boolean(prev.listen) === Boolean(next.listen)
 );
 
 /**

@@ -1,0 +1,182 @@
+# A2 Luisteren — oefenexamen 4
+# stem: narrator
+
+[tekst 1 · situatie]
+Grace heeft een gesprek voor een baan in een hotel. Lees eerst de vraag. Luister daarna naar de tekst.
+
+[tekst 1 · vraag 1]
+Waarom wil Yunes in het hotel werken?
+A  Hij werkt graag met mensen.
+B  Het betaalt beter.
+C  Het is dichter bij huis.
+
+[tekst 1 · vraag 2]
+Hoe laat begint het werk in het hotel?
+A  Om twaalf uur.
+B  Om zeven uur.
+C  Om half negen.
+
+[tekst 1 · vraag 3]
+Wat zegt Yunes over het weekend?
+A  Eén dag per week kan zeker.
+B  Hij kan nooit in het weekend.
+C  Hij kan elk weekend twee dagen.
+
+[tekst 2 · situatie]
+In het zwembad hoort Karim een mededeling. Lees eerst de vraag. Luister daarna naar de tekst.
+
+[tekst 2 · vraag 1]
+Waar moeten mensen die vrij zwemmen straks naartoe?
+A  Naar het kleine bad.
+B  Naar de glijbaan.
+C  Naar buiten.
+
+[tekst 2 · vraag 2]
+Is de glijbaan open tijdens de lessen?
+A  Alleen voor kinderen.
+B  Ja, de hele middag.
+C  Nee, die is dan dicht.
+
+[tekst 2 · vraag 3]
+Wat gebeurt er met het muntje voor het kluisje?
+A  Dat is de prijs van het kluisje.
+B  Dat kost een euro.
+C  Dat krijgt u terug.
+
+[tekst 3 · situatie]
+Meneer Petrov belt over zijn energierekening. Lees eerst de vraag. Luister daarna naar de tekst.
+
+[tekst 3 · vraag 1]
+Waarom is de rekening zo hoog?
+A  Het verbruik is te hoog geschat.
+B  De prijzen zijn gestegen.
+C  Hij heeft een jaar niet betaald.
+
+[tekst 3 · vraag 2]
+Hoe vaak moet hij de meterstanden doorgeven?
+A  Nooit.
+B  Eén keer per jaar.
+C  Elke maand.
+
+[tekst 4 · situatie]
+Op haar nieuwe werk krijgt Amira uitleg in de keuken. Lees eerst de vraag. Luister daarna naar de tekst.
+
+[tekst 4 · vraag 1]
+Wat moet Twan eerst doen met de borden?
+A  Ze in het bovenste rek zetten.
+B  Ze laten weken.
+C  Ze afspoelen onder de kraan.
+
+[tekst 4 · vraag 2]
+Waar horen glazen?
+A  In het bovenste rek.
+B  In het onderste rek.
+C  Naast de machine.
+
+[tekst 4 · vraag 3]
+Hoe zet hij de machine aan het eind uit?
+A  Dat doet Marco.
+B  Met de rode knop.
+C  Met de stekker.
+
+[tekst 5 · situatie]
+Tomasz wil een zaal huren voor zijn voetbalgroep. Lees eerst de vraag. Luister daarna naar de tekst.
+
+[tekst 5 · vraag 1]
+Op welke avond kan de groep terecht?
+A  Op dinsdag.
+B  Op donderdag.
+C  Op woensdag.
+
+[tekst 5 · vraag 2]
+Wat kost een uur?
+A  € 46.
+B  € 26.
+C  € 66.
+
+[tekst 6 · situatie]
+In de bibliotheek klinkt een mededeling. Lees eerst de vraag. Luister daarna naar de tekst.
+
+[tekst 6 · vraag 1]
+Hoe laat sluit de bibliotheek vandaag?
+A  Om half acht.
+B  Om vijf uur.
+C  Om acht uur.
+
+[tekst 6 · vraag 2]
+Wat moet u doen om naar de schrijversavond te komen?
+A  Een kaartje kopen.
+B  Niets, u loopt gewoon binnen.
+C  U van tevoren aanmelden.
+
+[tekst 6 · vraag 3]
+Tot hoe laat kunt u vandaag boeken lenen?
+A  Tot kwart voor vijf.
+B  Tot vijf uur.
+C  Tot half acht.
+
+[tekst 7 · situatie]
+Lucia luistert een bericht van haar vriendin af. Lees eerst de vraag. Luister daarna naar de tekst.
+
+[tekst 7 · vraag 1]
+Waarom belt Marjan?
+A  Zij is haar telefoon kwijt.
+B  Zij wil de afspraak veranderen vanwege de regen.
+C  Zij kan zaterdag niet.
+
+[tekst 7 · vraag 2]
+Hoe laat kan Marjan op zijn vroegst?
+A  Om twaalf uur.
+B  Om één uur.
+C  Om half een.
+
+[tekst 8 · situatie]
+Mevrouw Bakker haalt haar nieuwe bril op. Lees eerst de vraag. Luister daarna naar de tekst.
+
+[tekst 8 · vraag 1]
+Wat is er mis met de bril?
+A  Hij zit strak achter de oren.
+B  De glazen zijn kapot.
+C  De kleur klopt niet.
+
+[tekst 8 · vraag 2]
+Wat gebeurt er als het lezen na twee weken nog niet went?
+A  Zij moet een nieuwe bril kopen.
+B  Zij komt terug en de glazen worden gratis aangepast.
+C  Zij krijgt haar geld terug.
+
+[tekst 9 · situatie]
+Een monteur legt uit hoe de nieuwe wasmachine werkt. Lees eerst de vraag. Luister daarna naar de tekst.
+
+[tekst 9 · vraag 1]
+Waar hoort de wasverzachter?
+A  In het linkervakje.
+B  In de trommel.
+C  In het rechtervakje.
+
+[tekst 9 · vraag 2]
+Hoe vaak moet het filter schoongemaakt worden?
+A  Ongeveer één keer per maand.
+B  Elke week.
+C  Eén keer per jaar.
+
+[tekst 10 · situatie]
+Op het werk hoort Ana een mededeling van de leidinggevende. Lees eerst de vraag. Luister daarna naar de tekst.
+
+[tekst 10 · vraag 1]
+Wat verandert er vanaf woensdag?
+A  Er komt een nieuwe leidinggevende.
+B  De uren worden in een nieuw systeem geregistreerd.
+C  De werktijden veranderen.
+
+[tekst 10 · vraag 2]
+Wat moeten de medewerkers met het tijdelijke wachtwoord doen?
+A  Het opschrijven bij de deur.
+B  Het aan de leidinggevende geven.
+C  Het meteen veranderen.
+
+[tekst 10 · vraag 3]
+Hoe laat is de uitleg in de kantine?
+A  Woensdag om acht uur.
+B  Woensdag om twaalf uur.
+C  Vanmiddag.

@@ -62,6 +62,11 @@ export type StimulusItem = {
    */
   intro_audio_url: string | null;
   intro_audio_seconds: number | null;
+  /**
+   * De situatie uit `intro`, ingesproken — A2 Luisteren. Speelt vóór élke vraag van deze
+   * stimulus, en opnieuw bij "Opnieuw luisteren". Zie `20261020120000_stimuli_situation_audio`.
+   */
+  situation_audio_url: string | null;
   questions: QuestionItem[];
 };
 
@@ -162,7 +167,7 @@ const QUESTION_COLS =
   `question_options(${OPTION_COLS})`;
 const STIMULUS_COLS =
   `id, part_id, sort_order, section_id, kind, intro, title, body_html, image_url, ` +
-  `image_alt, audio_url, intro_audio_url, intro_audio_seconds, questions(${QUESTION_COLS})`;
+  `image_alt, audio_url, intro_audio_url, intro_audio_seconds, situation_audio_url, questions(${QUESTION_COLS})`;
 const TASK_COLS =
   `id, part_id, sort_order, section_id, task_type, title, prompt_html, bullet_points, ` +
   `email_to, email_cc, email_subject, greeting, closing, min_sentences, form_schema, ` +

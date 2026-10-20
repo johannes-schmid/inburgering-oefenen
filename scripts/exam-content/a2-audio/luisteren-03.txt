@@ -1,0 +1,182 @@
+# A2 Luisteren — oefenexamen 3
+# stem: narrator
+
+[tekst 1 · situatie]
+Meneer Chen brengt zijn dochter naar de kinderopvang. Lees eerst de vraag. Luister daarna naar de tekst.
+
+[tekst 1 · vraag 1]
+Wat vertelt meneer Chen over zijn dochter?
+A  Zij heeft slecht geslapen.
+B  Zij heeft koorts.
+C  Zij wil niet eten.
+
+[tekst 1 · vraag 2]
+Wat spreken zij af voor de middag?
+A  Lin gaat naar de dokter.
+B  Lin mag wat langer slapen.
+C  Lin wordt eerder opgehaald.
+
+[tekst 1 · vraag 3]
+Wat moet meneer Chen nog doen?
+A  Een formulier invullen.
+B  De opvang betalen.
+C  Zijn nieuwe telefoonnummer doorgeven.
+
+[tekst 2 · situatie]
+Fatima hoort een bericht in het winkelcentrum. Lees eerst de vraag. Luister daarna naar de tekst.
+
+[tekst 2 · vraag 1]
+Hoe laat sluit het winkelcentrum vanavond?
+A  Om acht uur.
+B  Om negen uur.
+C  Om tien uur.
+
+[tekst 2 · vraag 2]
+Welke winkel blijft langer open?
+A  De bakker.
+B  De supermarkt.
+C  De apotheek.
+
+[tekst 2 · vraag 3]
+Hoe laat moet de auto uit de garage zijn?
+A  Vóór acht uur.
+B  Vóór tien uur.
+C  Vóór half negen.
+
+[tekst 3 · situatie]
+Mevrouw Novak belt haar zorgverzekering. Lees eerst de vraag. Luister daarna naar de tekst.
+
+[tekst 3 · vraag 1]
+Hoeveel behandelingen vergoedt haar pakket?
+A  Negen.
+B  Twaalf.
+C  Drie.
+
+[tekst 3 · vraag 2]
+Wat regelt de medewerker voor haar?
+A  Een nieuwe polis.
+B  Betalen in drie termijnen.
+C  Een hogere vergoeding.
+
+[tekst 4 · situatie]
+Nieuwe medewerkers krijgen uitleg over veiligheid. Lees eerst de vraag. Luister daarna naar de tekst.
+
+[tekst 4 · vraag 1]
+Wat is verplicht in de hal?
+A  Alleen veiligheidsschoenen.
+B  Een bedrijfsjas.
+C  Een helm en een veiligheidsbril.
+
+[tekst 4 · vraag 2]
+Waar moet iedereen bij brandalarm verzamelen?
+A  Op het parkeerterrein bij de vlaggenmast.
+B  Bij de kantine.
+C  Bij de hoofdingang.
+
+[tekst 4 · vraag 3]
+Wat mag u bij een alarm nooit doen?
+A  De teamleider waarschuwen.
+B  Teruggaan naar binnen om spullen te halen.
+C  Rustig naar buiten lopen.
+
+[tekst 5 · situatie]
+Joseph koopt groente op de markt. Lees eerst de vraag. Luister daarna naar de tekst.
+
+[tekst 5 · vraag 1]
+Hoeveel tomaten koopt Joseph uiteindelijk?
+A  Een kilo.
+B  Een halve kilo.
+C  Twee kilo.
+
+[tekst 5 · vraag 2]
+Hoe betaalt Joseph?
+A  Contant.
+B  Met de pas.
+C  Met de telefoon.
+
+[tekst 6 · situatie]
+Meneer Osei luistert een bericht van de tandarts af. Lees eerst de vraag. Luister daarna naar de tekst.
+
+[tekst 6 · vraag 1]
+Waarom belt de assistente?
+A  Er is een controle nodig.
+B  De afspraak moet verzet worden.
+C  De rekening is niet betaald.
+
+[tekst 6 · vraag 2]
+Wat gebeurt er als meneer Osei niet reageert?
+A  De afspraak vervalt helemaal.
+B  Hij krijgt een rekening.
+C  Hij wordt voorlopig op de vrijdag gezet.
+
+[tekst 7 · situatie]
+In de bus hoort Nadia een mededeling van de chauffeur. Lees eerst de vraag. Luister daarna naar de tekst.
+
+[tekst 7 · vraag 1]
+Welke halte wordt vandaag niet bediend?
+A  Halte Stadhuis.
+B  Halte Museumplein.
+C  Het eindpunt.
+
+[tekst 7 · vraag 2]
+Wat moeten reizigers naar het ziekenhuis doen?
+A  In de bus blijven zitten.
+B  Bij Museumplein overstappen op lijn veertien.
+C  Uitstappen bij de Grote Markt.
+
+[tekst 7 · vraag 3]
+Hoeveel later komt de bus aan?
+A  Ongeveer vijf minuten.
+B  Ongeveer een half uur.
+C  Ongeveer tien minuten.
+
+[tekst 8 · situatie]
+Mevrouw Adebayo praat met een medewerker van de woningcorporatie. Lees eerst de vraag. Luister daarna naar de tekst.
+
+[tekst 8 · vraag 1]
+Wat is het probleem in de woning?
+A  Schimmel in de badkamer.
+B  Een lekkende kraan.
+C  De verwarming doet het niet.
+
+[tekst 8 · vraag 2]
+Hoe krijgt zij te horen wanneer iemand komt?
+A  Via de website.
+B  Per sms.
+C  Per brief.
+
+[tekst 9 · situatie]
+Een medewerker legt uit hoe het parkeren in de wijk werkt. Lees eerst de vraag. Luister daarna naar de tekst.
+
+[tekst 9 · vraag 1]
+Op welke dag hoeft u niet te betalen?
+A  Op zaterdag.
+B  Op maandag.
+C  Op zondag.
+
+[tekst 9 · vraag 2]
+Wat moet u niet vergeten?
+A  Uw kenteken invoeren.
+B  De vergunning achter het raam leggen.
+C  Contant te betalen.
+
+[tekst 10 · situatie]
+Ouders horen een bericht in de wachtkamer van het consultatiebureau. Lees eerst de vraag. Luister daarna naar de tekst.
+
+[tekst 10 · vraag 1]
+Waarom moeten de ouders langer wachten?
+A  De computer is stuk.
+B  Een collega is ziek.
+C  Er zijn te veel afspraken.
+
+[tekst 10 · vraag 2]
+Op welke dagen is er volgende week ruimte?
+A  Maandag en woensdag.
+B  Alleen vrijdag.
+C  Dinsdag en vrijdag.
+
+[tekst 10 · vraag 3]
+Wat wordt er gevraagd over het speelgoed?
+A  Het na gebruik terugleggen.
+B  Het niet te gebruiken.
+C  Het mee naar huis te nemen.

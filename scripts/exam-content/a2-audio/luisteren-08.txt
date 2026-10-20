@@ -1,0 +1,182 @@
+# A2 Luisteren — oefenexamen 8
+# stem: narrator
+
+[tekst 1 · situatie]
+Mevrouw Yilmaz laat haar ogen meten bij de opticien. Lees eerst de vraag. Luister daarna naar de tekst.
+
+[tekst 1 · vraag 1]
+Waarom komt mevrouw Yilmaz?
+A  Zij ziet wazig als zij leest.
+B  Haar bril is kapot.
+C  Zij wil een zonnebril.
+
+[tekst 1 · vraag 2]
+Wat kost de oogmeting?
+A  Dat hangt van de sterkte af.
+B  Niets.
+C  € 20.
+
+[tekst 1 · vraag 3]
+Hoe lang duurt het meestal voordat een bril klaar is?
+A  Twintig minuten.
+B  Vier jaar.
+C  Ongeveer een week.
+
+[tekst 2 · situatie]
+Op het vliegveld hoort Nour een omroepbericht. Lees eerst de vraag. Luister daarna naar de tekst.
+
+[tekst 2 · vraag 1]
+Vanaf welke gate vertrekt de vlucht?
+A  Gate B12.
+B  Gate B4.
+C  Dat is nog niet bekend.
+
+[tekst 2 · vraag 2]
+Wie mag zich als eerste melden?
+A  Iedereen tegelijk.
+B  Passagiers met kleine kinderen en passagiers die hulp nodig hebben.
+C  Passagiers met alleen handbagage.
+
+[tekst 2 · vraag 3]
+Wanneer begint het instappen?
+A  Meteen.
+B  Om drie uur vijfentwintig.
+C  Over ongeveer twintig minuten.
+
+[tekst 3 · situatie]
+Meneer Bakker wordt gebeld door het ziekenhuis. Lees eerst de vraag. Luister daarna naar de tekst.
+
+[tekst 3 · vraag 1]
+Waarom belt het ziekenhuis?
+A  Er is een plek eerder vrijgekomen voor de operatie.
+B  De operatie gaat niet door.
+C  Er is een rekening niet betaald.
+
+[tekst 3 · vraag 2]
+Wanneer moet hij laten weten of hij komt?
+A  Op donderdag zelf.
+B  Vóór morgen twaalf uur.
+C  Vandaag nog.
+
+[tekst 4 · situatie]
+Op haar eerste werkdag krijgt Maria uitleg over het schoonmaken. Lees eerst de vraag. Luister daarna naar de tekst.
+
+[tekst 4 · vraag 1]
+Waar begint Maria met schoonmaken?
+A  Op de begane grond.
+B  Bij de toiletten.
+C  Op de bovenste verdieping.
+
+[tekst 4 · vraag 2]
+Waarvoor zijn de gele doeken?
+A  Uitsluitend voor het toilet.
+B  Voor de bureaus.
+C  Voor de ramen.
+
+[tekst 4 · vraag 3]
+Wat doet zij als zij iets kapot ziet?
+A  Meteen bellen.
+B  Het op het lijstje in de kast schrijven.
+C  Het zelf maken.
+
+[tekst 5 · situatie]
+Hassan wil zijn abonnement opzeggen. Lees eerst de vraag. Luister daarna naar de tekst.
+
+[tekst 5 · vraag 1]
+Waarom zegt Hassan zijn abonnement op?
+A  Het is te duur.
+B  Hij is geblesseerd.
+C  Hij gaat verhuizen.
+
+[tekst 5 · vraag 2]
+Hoe lang is de opzegtermijn?
+A  Eén maand.
+B  Zes weken.
+C  Drie maanden.
+
+[tekst 6 · situatie]
+Mevrouw Traoré luistert een bericht van de opvang af. Lees eerst de vraag. Luister daarna naar de tekst.
+
+[tekst 6 · vraag 1]
+Wat is er met Amadou?
+A  Hij wil niet eten.
+B  Hij heeft koorts.
+C  Hij is gevallen.
+
+[tekst 6 · vraag 2]
+Wat moet mevrouw Traoré doen als iemand anders hem ophaalt?
+A  Een briefje meegeven.
+B  Niets, dat mag altijd.
+C  Dat telefonisch doorgeven aan de opvang.
+
+[tekst 7 · situatie]
+Op het station hoort Kwame een mededeling over de roltrap. Lees eerst de vraag. Luister daarna naar de tekst.
+
+[tekst 7 · vraag 1]
+Wat is er kapot?
+A  De roltrap naar spoor vier en vijf.
+B  De lift naast de kiosk.
+C  De kaartautomaat.
+
+[tekst 7 · vraag 2]
+Wat wordt reizigers geadviseerd?
+A  Hun kaartje om te ruilen.
+B  Meer tijd te nemen voor het overstappen.
+C  Een andere route te nemen.
+
+[tekst 7 · vraag 3]
+Waar staan de medewerkers?
+A  Bij de kiosk.
+B  Op het perron.
+C  Bij de trap.
+
+[tekst 8 · situatie]
+Mevrouw Silva komt haar rijbewijs ophalen. Lees eerst de vraag. Luister daarna naar de tekst.
+
+[tekst 8 · vraag 1]
+Wat gebeurt er met het oude rijbewijs?
+A  Er wordt een hoekje uitgeknipt en zij mag het houden.
+B  Het wordt weggegooid.
+C  Zij houdt het gewoon.
+
+[tekst 8 · vraag 2]
+Moet mevrouw Silva nog betalen?
+A  Ja, per rekening.
+B  Nee, zij heeft bij de aanvraag betaald.
+C  Ja, aan het loket.
+
+[tekst 9 · situatie]
+Een medewerker legt uit hoe de app van de gemeente werkt. Lees eerst de vraag. Luister daarna naar de tekst.
+
+[tekst 9 · vraag 1]
+Wanneer hoeft u niet in te loggen?
+A  Als u een uittreksel aanvraagt.
+B  Nooit, inloggen is altijd nodig.
+C  Als u een melding doet over de openbare ruimte.
+
+[tekst 9 · vraag 2]
+Wat krijgt u na het versturen van een melding?
+A  Een meldingsnummer.
+B  Een telefoontje.
+C  Een brief.
+
+[tekst 10 · situatie]
+In de sporthal klinkt een mededeling. Lees eerst de vraag. Luister daarna naar de tekst.
+
+[tekst 10 · vraag 1]
+Waarom loopt het toernooi achter?
+A  De zaal was niet klaar.
+B  Er was een blessure in de tweede ronde.
+C  Een team kwam te laat.
+
+[tekst 10 · vraag 2]
+Hoe laat begint de finale nu?
+A  Om vier uur.
+B  Om zes uur.
+C  Om half vijf.
+
+[tekst 10 · vraag 3]
+Wat wordt gevraagd aan teams die klaar zijn?
+A  De kleedkamers vrij te maken.
+B  Naar huis te gaan.
+C  In de kantine te wachten.

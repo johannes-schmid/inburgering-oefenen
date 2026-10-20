@@ -1,0 +1,182 @@
+# A2 Luisteren — oefenexamen 2
+# stem: narrator
+
+[tekst 1 · situatie]
+Meneer Diallo staat bij de balie van de gemeente. Lees eerst de vraag. Luister daarna naar de tekst.
+
+[tekst 1 · vraag 1]
+Waarom kan meneer Diallo vandaag niet geholpen worden?
+A  Hij heeft geen afspraak.
+B  Zijn paspoort is al verlopen.
+C  De balie is gesloten.
+
+[tekst 1 · vraag 2]
+Wat moet hij meenemen naar de afspraak?
+A  Zijn rijbewijs en contant geld.
+B  Zijn oude paspoort, een pasfoto en zijn bankpas.
+C  Alleen een pasfoto.
+
+[tekst 1 · vraag 3]
+Hoe kan hij het paspoort ophalen?
+A  Met een nieuwe afspraak.
+B  Het wordt thuisgestuurd.
+C  Zonder afspraak.
+
+[tekst 2 · situatie]
+Elena staat op het perron en hoort een omroepbericht. Lees eerst de vraag. Luister daarna naar de tekst.
+
+[tekst 2 · vraag 1]
+Hoeveel vertraging heeft de intercity?
+A  Ongeveer twintig minuten.
+B  Ongeveer een kwartier.
+C  Ongeveer vier minuten.
+
+[tekst 2 · vraag 2]
+Van welk spoor vertrekt de intercity nu?
+A  Van spoor twee.
+B  Van spoor zeven.
+C  Van spoor vier.
+
+[tekst 2 · vraag 3]
+Wat kunnen reizigers met haast doen?
+A  Op spoor vier wachten.
+B  Een taxi nemen.
+C  De stoptrein van spoor twee nemen.
+
+[tekst 3 · situatie]
+De moeder van Amir wordt gebeld door de school. Lees eerst de vraag. Luister daarna naar de tekst.
+
+[tekst 3 · vraag 1]
+Waarom belt de school?
+A  Amir is gevallen en heeft een dikke knie.
+B  Amir is ziek geworden.
+C  Amir heeft ruzie gehad.
+
+[tekst 3 · vraag 2]
+Wat besluit de moeder van Amir?
+A  Zij brengt hem naar de dokter.
+B  Hij blijft tot half drie op school.
+C  Zij haalt hem meteen op.
+
+[tekst 4 · situatie]
+Op haar eerste dag als vrijwilliger krijgt Zeynep uitleg. Lees eerst de vraag. Luister daarna naar de tekst.
+
+[tekst 4 · vraag 1]
+Wat moet Zeynep als eerste doen met binnengebrachte spullen?
+A  De prijs erop schrijven.
+B  Ze meteen in de winkel zetten.
+C  Kijken of alles heel en schoon is.
+
+[tekst 4 · vraag 2]
+Wie bepaalt de prijzen?
+A  Marloes.
+B  Zeynep zelf.
+C  De klant.
+
+[tekst 4 · vraag 3]
+Hoe laat is de pauze?
+A  Aan het eind van de dag.
+B  Tussen 12.00 en 12.30 uur.
+C  Om 13.00 uur.
+
+[tekst 5 · situatie]
+Rosa wil een broek ruilen in een kledingwinkel. Lees eerst de vraag. Luister daarna naar de tekst.
+
+[tekst 5 · vraag 1]
+Waarom wil Rosa de jurk ruilen?
+A  Hij is kapot.
+B  De kleur bevalt niet.
+C  Hij is te klein.
+
+[tekst 5 · vraag 2]
+Welke kleur gaat Rosa passen?
+A  Zwart.
+B  Dezelfde kleur als eerst.
+C  Blauw.
+
+[tekst 6 · situatie]
+Mevrouw Kaya luistert een bericht van de apotheek af. Lees eerst de vraag. Luister daarna naar de tekst.
+
+[tekst 6 · vraag 1]
+Wat is er aan de hand met het derde medicijn?
+A  De huisarts heeft het gestopt.
+B  Het is tijdelijk niet leverbaar.
+C  Het is te duur geworden.
+
+[tekst 6 · vraag 2]
+Wat moet mevrouw Kaya doen als zij akkoord gaat met het andere middel?
+A  De apotheek terugbellen.
+B  De huisarts bellen.
+C  Niets.
+
+[tekst 7 · situatie]
+In het buurthuis hoort Samir een mededeling. Lees eerst de vraag. Luister daarna naar de tekst.
+
+[tekst 7 · vraag 1]
+Waarom gaat de computerles niet door?
+A  De docent is ziek.
+B  Er zijn te weinig mensen.
+C  De computers zijn kapot.
+
+[tekst 7 · vraag 2]
+Wanneer wordt de les ingehaald?
+A  Volgende maand.
+B  Vrijdag om 14.00 uur.
+C  Zondag om 13.00 uur.
+
+[tekst 7 · vraag 3]
+Waarvoor zoekt het buurthuis mensen?
+A  Om computerles te geven.
+B  Om koffie te kopen.
+C  Om de zondagmiddagen te draaien.
+
+[tekst 8 · situatie]
+Bram brengt zijn fiets naar de fietsenmaker. Lees eerst de vraag. Luister daarna naar de tekst.
+
+[tekst 8 · vraag 1]
+Wat moet er aan de fiets vervangen worden?
+A  De remblokken.
+B  De ketting.
+C  Het achterwiel.
+
+[tekst 8 · vraag 2]
+Wat kost het in totaal?
+A  € 44,50.
+B  € 24,50.
+C  € 14,50.
+
+[tekst 9 · situatie]
+Een medewerker legt uit hoe de bibliotheekpas werkt. Lees eerst de vraag. Luister daarna naar de tekst.
+
+[tekst 9 · vraag 1]
+Hoeveel boeken mag u tegelijk lenen?
+A  Drie.
+B  Twintig.
+C  Tien.
+
+[tekst 9 · vraag 2]
+Welke boeken kunt u niet verlengen?
+A  Nieuwe boeken.
+B  Boeken voor kinderen.
+C  Boeken die u online leende.
+
+[tekst 10 · situatie]
+Op de website van de sportclub staat een gesproken bericht. Lees eerst de vraag. Luister daarna naar de tekst.
+
+[tekst 10 · vraag 1]
+Waar trainen de jeugdleden die week?
+A  Zij trainen niet.
+B  In de gymzaal van de school aan de Lindelaan.
+C  In de grote zaal.
+
+[tekst 10 · vraag 2]
+Wat krijgen volwassen leden in plaats van de trainingen?
+A  Hun geld terug.
+B  Een gratis maand.
+C  Een extra trainingsweek in juli.
+
+[tekst 10 · vraag 3]
+Waarom moeten leden in sportkleding komen?
+A  Er zijn geen kleedkamers.
+B  De zaal is koud.
+C  Er is geen tijd om om te kleden.

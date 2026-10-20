@@ -54,12 +54,16 @@ type Props = {
   feedback?: ReactNode;
 };
 
+/**
+ * De plaatjesregel onder de opdracht, in DUO's woorden. Gelijk aan `PICTURE_RULE` in
+ * `scripts/generate-a2-exam-audio.mjs`, dat dezelfde regel aan het eind van de opname uitspreekt.
+ */
 const IMAGE_RULE: Record<OpenTaskItem['image_usage'], string | null> = {
   none: null,
   react: 'Kijk naar het plaatje en reageer op de situatie.',
-  describe: 'Gebruik steeds het plaatje.',
-  choose: 'Kies één plaatje en leg uit waarom.',
-  cover_all: 'Vertel iets bij elk plaatje.',
+  describe: 'Gebruik het plaatje.',
+  choose: 'Kies één van de plaatjes.',
+  cover_all: 'Vertel iets over alle plaatjes.',
 };
 
 /** Bars in the level meter. Fixed count so the layout never reflows while speaking. */
@@ -149,6 +153,8 @@ export default function SpeakingTask({
   }, []);
 
   async function start() {
+    // De voorgelezen opdracht mag niet in de opname terechtkomen.
+    document.querySelectorAll<HTMLAudioElement>('.g-xspeak audio').forEach(a => a.pause());
     setError(null);
     setSttError(null);
     setTranscript('');
@@ -246,7 +252,8 @@ export default function SpeakingTask({
 
         {task.prompt_audio_url && (
           <div style={{ marginTop: 16 }}>
-            <AudioPlayer src={task.prompt_audio_url} label="Vraag beluisteren" compact />
+            {/* Speelt vanzelf, zoals DUO de opdracht voorleest. */}
+            <AudioPlayer src={task.prompt_audio_url} label="Opdracht beluisteren" compact autoPlay />
           </div>
         )}
 

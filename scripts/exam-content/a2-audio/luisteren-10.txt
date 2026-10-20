@@ -1,0 +1,182 @@
+# A2 Luisteren — oefenexamen 10
+# stem: narrator
+
+[tekst 1 · situatie]
+Mevrouw Mensah bespreekt haar woningaanvraag. Lees eerst de vraag. Luister daarna naar de tekst.
+
+[tekst 1 · vraag 1]
+Waarom krijgt mevrouw Mensah geen woning?
+A  Zij reageert op woningen met een lange wachttijd.
+B  Zij staat te kort ingeschreven.
+C  Haar inkomen is te hoog.
+
+[tekst 1 · vraag 2]
+Hoe lang is de wachttijd in de wijk Noord?
+A  Ongeveer vier jaar.
+B  Ongeveer drie jaar.
+C  Ongeveer acht jaar.
+
+[tekst 1 · vraag 3]
+Wat krijgt zij mee?
+A  Een sleutel.
+B  Een formulier.
+C  Een folder.
+
+[tekst 2 · situatie]
+In het zwembad klinkt een mededeling. Lees eerst de vraag. Luister daarna naar de tekst.
+
+[tekst 2 · vraag 1]
+Waarom sluit het diepe bad eerder?
+A  Het water moet behandeld worden.
+B  Er is een wedstrijd.
+C  Er zijn te weinig badmeesters.
+
+[tekst 2 · vraag 2]
+Wanneer is de nieuwe aquagymles?
+A  Elke ochtend.
+B  Woensdagochtend van tien tot elf.
+C  Woensdagmiddag van vier tot vijf.
+
+[tekst 2 · vraag 3]
+Wat kost de eerste les?
+A  Vijftien euro.
+B  Dat wordt niet gezegd.
+C  Niets.
+
+[tekst 3 · situatie]
+Ibrahim belt zijn leidinggevende. Lees eerst de vraag. Luister daarna naar de tekst.
+
+[tekst 3 · vraag 1]
+Waarom is Ibrahim later?
+A  Er rijden geen treinen door een storing.
+B  Hij heeft zich verslapen.
+C  Hij is naar de dokter geweest.
+
+[tekst 3 · vraag 2]
+Hoe laat denkt hij op het werk te zijn?
+A  Pas vanmiddag.
+B  Rond half elf.
+C  Rond tien uur.
+
+[tekst 3 · vraag 3]
+Wat vraagt hij aan Karin?
+A  Zijn werk over te nemen.
+B  Hem op te halen.
+C  Marloes te zeggen dat hij vanmiddag terugbelt.
+
+[tekst 4 · situatie]
+Een begeleider legt uit hoe het inburgeringsexamen werkt. Lees eerst de vraag. Luister daarna naar de tekst.
+
+[tekst 4 · vraag 1]
+Doet u alle onderdelen op één dag?
+A  Nee, u plant ze zelf apart in.
+B  Ja, alles op één dag.
+C  Dat bepaalt DUO.
+
+[tekst 4 · vraag 2]
+Wat gebeurt er als u voor één onderdeel zakt?
+A  U moet een jaar wachten.
+B  U doet alleen dat onderdeel opnieuw.
+C  U doet alles opnieuw.
+
+[tekst 5 · situatie]
+Meneer Kowalski vraagt hulp in de bouwmarkt. Lees eerst de vraag. Luister daarna naar de tekst.
+
+[tekst 5 · vraag 1]
+Hoeveel verf heeft meneer Kowalski nodig?
+A  Ongeveer vijf liter.
+B  Ongeveer twintig liter.
+C  Ongeveer tien liter.
+
+[tekst 5 · vraag 2]
+Waarom raadt de medewerker de goedkope verf af?
+A  Daarvan zijn vaak drie lagen nodig.
+B  Die is niet op voorraad.
+C  Die is niet geschikt voor slaapkamers.
+
+[tekst 6 · situatie]
+Mevrouw Adebayo luistert een bericht af. Lees eerst de vraag. Luister daarna naar de tekst.
+
+[tekst 6 · vraag 1]
+Waarom belt de praktijk?
+A  De tandarts is ziek.
+B  De behandeling wordt duurder dan gedacht.
+C  De afspraak vervalt.
+
+[tekst 6 · vraag 2]
+Wat gebeurt er met de afspraak van donderdag?
+A  Die is geannuleerd.
+B  Die wordt verzet naar vrijdag.
+C  Die blijft voorlopig staan.
+
+[tekst 7 · situatie]
+Op de camping klinkt een mededeling van de receptie. Lees eerst de vraag. Luister daarna naar de tekst.
+
+[tekst 7 · vraag 1]
+Wat wordt er vanavond verwacht?
+A  Onweer met harde wind.
+B  Sneeuw.
+C  Mist.
+
+[tekst 7 · vraag 2]
+Wat gaat er niet door?
+A  De film voor de kinderen.
+B  Het animatieprogramma.
+C  Het eten in het restaurant.
+
+[tekst 7 · vraag 3]
+Hoe laat sluit de zwemplas?
+A  Om acht uur.
+B  Om elf uur.
+C  Om vijf uur.
+
+[tekst 8 · situatie]
+Meneer Sow komt bij het inloopspreekuur van het wijkteam. Lees eerst de vraag. Luister daarna naar de tekst.
+
+[tekst 8 · vraag 1]
+Waar gaat de brief over?
+A  Zijn huurtoeslag.
+B  Een boete.
+C  Zijn zorgverzekering.
+
+[tekst 8 · vraag 2]
+Wat gebeurt er als hij niets doorgeeft?
+A  Er gebeurt niets.
+B  De toeslag stopt.
+C  Hij krijgt een boete.
+
+[tekst 9 · situatie]
+Een medewerker legt uit hoe de leenautomaat werkt. Lees eerst de vraag. Luister daarna naar de tekst.
+
+[tekst 9 · vraag 1]
+Waar legt u uw pas?
+A  Op de plaat voor de boeken.
+B  In de gleuf naast het scherm.
+C  Op het ronde vlak rechtsonder.
+
+[tekst 9 · vraag 2]
+Hoeveel boeken kunt u tegelijk op de plaat leggen?
+A  Vijf.
+B  Eén.
+C  Tien.
+
+[tekst 9 · vraag 3]
+Waarom raadt hij de e-mail aan?
+A  Het bonnetje raakt vaak zoek.
+B  Daar staat in wanneer de boeken terug moeten.
+C  Dat is goedkoper.
+
+[tekst 10 · situatie]
+Ouders horen een bericht van de school. Lees eerst de vraag. Luister daarna naar de tekst.
+
+[tekst 10 · vraag 1]
+Welke groepen zijn dinsdag vrij?
+A  Alle groepen.
+B  De groepen een en twee.
+C  De groepen drie tot en met acht.
+
+[tekst 10 · vraag 2]
+Wat moet u doen als u geen opvang kunt regelen?
+A  Vóór maandag twaalf uur contact opnemen met de directeur.
+B  Uw kind toch naar school brengen.
+C  Niets, er is altijd opvang.

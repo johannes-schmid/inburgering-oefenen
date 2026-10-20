@@ -1,7 +1,7 @@
 'use client';
 
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import { ArrowLeft, ArrowRight, Check, ChevronRight, Clock, FileCheck2, Info, RotateCcw, TriangleAlert, X } from 'lucide-react';
+import { ArrowLeft, ArrowRight, Check, ChevronRight, Clock, FileCheck2, Info, PenLine, RotateCcw, TriangleAlert, X } from 'lucide-react';
 import { AnimatedNumber, CategoryMark, Field, PassChanceCard, ScoreRing, glasButton, type Category, type PassChanceLevel } from '@/components/glas';
 import { calculateSlaagkans } from '@/lib/exam-readiness';
 import PassBurst from './PassBurst';
@@ -56,6 +56,15 @@ type Phase = 'intro' | 'instructie' | 'part' | 'tekstintro' | 'exam' | 'grading'
  * dan is dit de ene plek: haal `level === 'b1'` weg.
  */
 const LUISTEREN_LEESTIJD_SECONDEN = 25;
+
+/**
+ * A2 Luisteren: de leestijd tussen de voorgelezen situatie en het fragment. Korter dan B1, want
+ * een A2-vraag heeft drie korte antwoorden; herhalen blijft daar wel vrij (zie `ListenSequence`).
+ */
+const A2_LUISTEREN_LEESTIJD_SECONDEN = 15;
+
+/** De geluidstest op het startscherm. Bron: `scripts/exam-content/narration/geluidstest.txt`. */
+const GELUIDSTEST_AUDIO = '/audio/exam/geluidstest.mp3';
 
 /**
  * De gesproken uitleg op het instructiescherm. Eén bestand in `public/`, niet in Storage: hij is
@@ -191,6 +200,8 @@ export default function ExamShell({ content, canSeeExplanations, guest = null }:
   const isOpenSkill = exam.skill === 'schrijven' || exam.skill === 'spreken';
   /** Zie `LUISTEREN_LEESTIJD_SECONDEN`: de examenstand is er voorlopig alleen voor B1. */
   const strengLuisteren = exam.skill === 'luisteren' && exam.level === 'b1';
+  /** A2 Luisteren loopt zoals DUO: situatie, leestijd, fragment, en dan de vraag voorgelezen. */
+  const a2Luisteren = exam.skill === 'luisteren' && exam.level === 'a2';
   // Terug naar het onderdeel waar dit examen bij hoort, niet naar het hoofddashboard.
   const dashboardHref = exam.level
     ? ({ pathname: '/dashboard/[level]/[skill]', params: { level: exam.level, skill: exam.skill } } as const)
@@ -259,6 +270,10 @@ export default function ExamShell({ content, canSeeExplanations, guest = null }:
   const [wall, setWall] = useState(false);
   /** Het kruisje in de glazen balk vraagt eerst of je echt wilt stoppen. */
   const [closing, setClosing] = useState(false);
+  /** "Examen inleveren" vraagt eerst of het definitief is, met wat er nog open staat. */
+  const [confirmSubmit, setConfirmSubmit] = useState(false);
+  /** A2 Luisteren: de vraag waarvan het fragment net is afgelopen, en die nu voorgelezen wordt. */
+  const [readFor, setReadFor] = useState<number | null>(null);
   /** Lezen op een smal scherm: tekst of vraag in beeld, per stimulus onthouden. */
   const [paneFor, setPaneFor] = useState<{ id: number | null; v: 'tekst' | 'vragen' }>({ id: null, v: 'tekst' });
 
@@ -970,6 +985,12 @@ export default function ExamShell({ content, canSeeExplanations, guest = null }:
                     : step.stimulus!.id}
                   stimulus={step.stimulus!}
                   examenAudio={strengLuisteren ? { readSeconds: LUISTEREN_LEESTIJD_SECONDEN } : undefined}
+                  sectionName={step.stimulus!.section_id ? sectionNames[step.stimulus!.section_id] : undefined}
+                  listen={a2Luisteren ? {
+                    readSeconds: A2_LUISTEREN_LEESTIJD_SECONDEN,
+                    onReplay: () => setReadFor(null),
+                    onFragmentEnd: () => setReadFor(step.question.id),
+                  } : undefined}
                 />
               </div>
               <div className="g-xlezen-q">
@@ -981,6 +1002,8 @@ export default function ExamShell({ content, canSeeExplanations, guest = null }:
                   onSelect={o => setChosen(prev => ({ ...prev, [step.question.id]: o }))}
                   showFeedback={false}
                   sectionName={step.stimulus!.section_id ? sectionNames[step.stimulus!.section_id] : undefined}
+                  readAloud={a2Luisteren}
+                  readAloudArmed={readFor === step.question.id}
                 />
               </div>
             </div>
@@ -1089,7 +1112,7 @@ export default function ExamShell({ content, canSeeExplanations, guest = null }:
           ) : (
             <button
               type="button"
-              onClick={() => void submitExam()}
+              onClick={() => setConfirmSubmit(true)}
               disabled={submitting}
               className="g-btn g-btn-navy g-btn-sm"
             >
@@ -1100,6 +1123,17 @@ export default function ExamShell({ content, canSeeExplanations, guest = null }:
         </div>
 
         {closeDialog}
+
+        {confirmSubmit && (
+          <SubmitDialog
+            secondsLeft={secondsLeft}
+            open={steps.map((st, i) => (isDone(st) ? null : i + 1)).filter((n): n is number => n !== null)}
+            noun={isOpenSkill ? 'opdrachten' : 'vragen'}
+            onJump={n => { setConfirmSubmit(false); goTo(n - 1); }}
+            onStay={() => setConfirmSubmit(false)}
+            onSubmit={() => { setConfirmSubmit(false); void submitExam(); }}
+          />
+        )}
 
         {/* De gastgrens. Het examen blijft eronder staan — zie `GuestSignupOverlay`. */}
         {wall && guest && (
@@ -1503,6 +1537,81 @@ function CloseDialog({ href, onStay }: { href: React.ComponentProps<typeof Link>
 }
 
 /**
+ * Inleveren is definitief, dus de knop vraagt het eerst — met de resterende tijd en de nummers
+ * die nog open staan, zoals DUO's eigen inleverscherm. Een nummer aanklikken brengt je erheen.
+ */
+function SubmitDialog({
+  secondsLeft,
+  open,
+  noun,
+  onJump,
+  onStay,
+  onSubmit,
+}: {
+  secondsLeft: number;
+  /** De nummers (1-based) die nog geen antwoord hebben. */
+  open: number[];
+  noun: 'vragen' | 'opdrachten';
+  onJump: (n: number) => void;
+  onStay: () => void;
+  onSubmit: () => void;
+}) {
+  useEffect(() => {
+    const onKey = (e: KeyboardEvent) => { if (e.key === 'Escape') onStay(); };
+    window.addEventListener('keydown', onKey);
+    return () => window.removeEventListener('keydown', onKey);
+  }, [onStay]);
+  const left = Math.max(secondsLeft, 0);
+  const m = Math.floor(left / 60);
+  const sec = left % 60;
+  const one = noun === 'vragen' ? 'vraag' : 'opdracht';
+  return (
+    <div className="g-xdialog-stage" role="dialog" aria-modal="true" aria-labelledby="exam-submit-title" onClick={onStay}>
+      <div className="g-xdialog g-xdialog-submit" onClick={e => e.stopPropagation()}>
+        <h2 id="exam-submit-title">Weet u zeker dat u het examen wilt inleveren?</h2>
+        <p className="g-xsubmit-row">
+          <Clock aria-hidden />
+          <span>
+            U heeft nog <b className="g-tnum">{m} {m === 1 ? 'minuut' : 'minuten'} en {sec} {sec === 1 ? 'seconde' : 'seconden'}</b> over.
+          </span>
+        </p>
+        {open.length > 0 ? (
+          <>
+            <p className="g-xsubmit-row is-warn">
+              <TriangleAlert aria-hidden />
+              <span>
+                U heeft <b>{open.length} {open.length === 1 ? one : noun}</b> niet ingevuld.
+              </span>
+            </p>
+            <div className="g-xjump" role="group" aria-label={`${noun} zonder antwoord`}>
+              {open.map(n => (
+                <button key={n} type="button" className="g-tnum" onClick={() => onJump(n)} aria-label={`Ga naar ${one} ${n}`}>
+                  {n}
+                </button>
+              ))}
+            </div>
+          </>
+        ) : (
+          <p className="g-xsubmit-row">
+            <Check aria-hidden />
+            <span>U heeft alle {noun} ingevuld.</span>
+          </p>
+        )}
+        <div className="g-xdialog-act">
+          <button type="button" className="g-btn g-btn-ghost g-btn-sm" onClick={onStay} autoFocus>
+            Terug naar het examen
+          </button>
+          <button type="button" className="g-btn g-btn-navy g-btn-sm" onClick={onSubmit}>
+            <FileCheck2 aria-hidden />
+            Definitief inleveren
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+/**
  * De slaagkans na dit examen, uit de bestaande regel (`calculateSlaagkans`): met één examen weegt
  * de 50%-aanname nog zwaar mee, en dat is eerlijk — één examen zegt weinig. Geen AI-oordeel.
  */
@@ -1583,6 +1692,78 @@ function LuisterInstructie({ onStart }: { onStart: () => void }) {
   );
 }
 
+/**
+ * Het welkom van een A2-examen, naar DUO's eigen startscherm: in de u-vorm, zoals het echte
+ * examen, met per onderdeel wat de kandidaat daar vooraf hoort te weten. Luisteren en Spreken
+ * krijgen een geluidstest — dat afspelen is meteen het gebaar dat het automatisch afspelen in
+ * de rest van de zitting vrijgeeft.
+ */
+function A2Welcome({ content, totalItems }: { content: ExamContent; totalItems: number }) {
+  const { exam, tasks } = content;
+  const name = SKILL_NAME[exam.skill] ?? exam.skill;
+  const minutes = Math.round(exam.duration_seconds / 60);
+
+  const soorten: string[] = [];
+  if (exam.skill === 'spreken') {
+    for (const t of tasks) {
+      const n = t.images.length;
+      const label = t.image_usage === 'react'
+        ? 'vragen waarin iemand iets tegen u zegt (op het echte examen is dit een video)'
+        : `vragen met ${n} ${n === 1 ? 'plaatje' : 'plaatjes'}`;
+      if (!soorten.includes(label)) soorten.push(label);
+    }
+  }
+
+  return (
+    <>
+      <section className="g-xwelcome" aria-labelledby="exam-welcome">
+        <h2 id="exam-welcome">Welkom</h2>
+        <p>U gaat het oefenexamen {name} A2 maken.</p>
+        {exam.skill === 'spreken' && soorten.length > 0 ? (
+          <>
+            <p>Het examen heeft {soorten.length === 4 ? 'vier' : soorten.length} soorten vragen:</p>
+            <ol>{soorten.map(l => <li key={l}>{l}</li>)}</ol>
+            <p>U hoort elke opdracht ook. Daarna neemt u uw antwoord op.</p>
+          </>
+        ) : exam.skill === 'schrijven' ? (
+          <p>U krijgt {totalItems} schrijfopdrachten. Schrijf in hele zinnen, en houd u aan het aantal zinnen dat de opdracht vraagt.</p>
+        ) : (
+          <p>U moet in dit examen {totalItems} vragen beantwoorden.</p>
+        )}
+        {exam.skill === 'luisteren' && (
+          <p>
+            Bij elke vraag hoort u eerst de situatie. Dan leest u de vraag, en daarna start het
+            fragment vanzelf. Na het fragment worden de vraag en de antwoorden voorgelezen. U kunt
+            altijd opnieuw luisteren.
+          </p>
+        )}
+        <p>U mag {minutes} minuten over het examen doen. Veel succes!</p>
+      </section>
+
+      {exam.skill === 'schrijven' && (
+        <p className="g-xnotice">
+          <PenLine strokeWidth={2.2} aria-hidden />
+          <span>
+            <strong>Het echte examen maakt u met pen en papier.</strong> Schrijven is het enige
+            A2-examen dat niet op de computer is. Oefen daarom ook eens met de hand: dan weet u
+            hoeveel tijd dat kost.
+          </span>
+        </p>
+      )}
+
+      {(exam.skill === 'luisteren' || exam.skill === 'spreken') && (
+        <section className="g-xsoundcheck" aria-labelledby="exam-soundcheck">
+          <h3 id="exam-soundcheck">Geluid testen</h3>
+          <p>Hoort u de stem goed? Zet het geluid op uw computer of telefoon harder of zachter.</p>
+          <AudioPlayer src={GELUIDSTEST_AUDIO} compact />
+        </section>
+      )}
+
+      <p className="g-xintro-small">Alle opgaven zijn gemaakt en nagekeken door een NT2-docent.</p>
+    </>
+  );
+}
+
 function ExamIntroScreen({
   content,
   totalItems,
@@ -1632,24 +1813,28 @@ function ExamIntroScreen({
       </Field>
 
       <div className="g-xintro-bd">
-        {/* Bij streng luisteren gaat "heen en terug" niet op — daar loopt het examen alleen
-            vooruit. Eén zin die niet klopt over hoe de navigatie werkt kost de kandidaat een
-            vraag voordat hij doorheeft dat het anders is. */}
-        <p>
-          {strengLuisteren ? (
-            <>
-              De klok loopt zodra je begint. Je hoort elk fragment één keer en gaat steeds
-              vooruit; teruggaan naar een vraag kan niet. Op het volgende scherm staat de
-              volledige uitleg. Alle opgaven zijn gemaakt en nagekeken door een NT2-docent.
-            </>
-          ) : (
-            <>
-              De klok loopt zodra je begint. Je kunt heen en terug tussen de vragen en je antwoord
-              nog aanpassen tot je inlevert. Alle opgaven zijn gemaakt en nagekeken door een
-              NT2-docent.
-            </>
-          )}
-        </p>
+        {exam.level === 'a2' && !empty ? (
+          <A2Welcome content={content} totalItems={totalItems} />
+        ) : (
+          /* Bij streng luisteren gaat "heen en terug" niet op — daar loopt het examen alleen
+             vooruit. Eén zin die niet klopt over hoe de navigatie werkt kost de kandidaat een
+             vraag voordat hij doorheeft dat het anders is. */
+          <p>
+            {strengLuisteren ? (
+              <>
+                De klok loopt zodra je begint. Je hoort elk fragment één keer en gaat steeds
+                vooruit; teruggaan naar een vraag kan niet. Op het volgende scherm staat de
+                volledige uitleg. Alle opgaven zijn gemaakt en nagekeken door een NT2-docent.
+              </>
+            ) : (
+              <>
+                De klok loopt zodra je begint. Je kunt heen en terug tussen de vragen en je antwoord
+                nog aanpassen tot je inlevert. Alle opgaven zijn gemaakt en nagekeken door een
+                NT2-docent.
+              </>
+            )}
+          </p>
+        )}
 
         {readAloudSample && !empty && (
           <AudioPrefRow

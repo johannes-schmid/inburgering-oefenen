@@ -30,6 +30,11 @@ type Props = {
    * it on the standalone branch only. Off by default, so Lezen/Luisteren/B1 are untouched.
    */
   readAloud?: boolean;
+  /**
+   * A2 Luisteren: lees pas voor als dit waar wordt — na het fragment, zoals DUO. Weglaten is de
+   * KNM-stand, waar het voorlezen meteen begint.
+   */
+  readAloudArmed?: boolean;
 };
 
 /**
@@ -46,6 +51,7 @@ export default function McqQuestion({
   showFeedback,
   sectionName,
   readAloud = false,
+  readAloudArmed = true,
 }: Props) {
   const answered = chosenId !== null;
   const correct = q.options.find(o => o.is_correct) ?? null;
@@ -68,8 +74,8 @@ export default function McqQuestion({
       ]
     : [];
   const [audioEnabled] = useAudioEnabled();
-  const { reading, activeSeg, activeWord, toggle } = useReadAloud(segments, audioEnabled);
-  const hasReadAloud = segments.some(s => s.url);
+  const { reading, activeSeg, activeWord, toggle } = useReadAloud(segments, audioEnabled && readAloudArmed);
+  const hasReadAloud = segments.some(s => s.url) && readAloudArmed;
 
   /* Glas §10: de vraag staat altijd op wit; de antwoorden zijn rijen (variant A, §G5). */
   return (
@@ -93,7 +99,7 @@ export default function McqQuestion({
       {/* On Luisteren the question itself is spoken — a second player, independent of the
           stimulus fragment above it. Hidden where read-aloud is on: it is the same recording
           the sequence already plays, and two controls for one clip invite starting both. */}
-      {q.prompt_audio_url && !hasReadAloud && (
+      {q.prompt_audio_url && !readAloud && (
         <div style={{ marginBottom: 16 }}>
           <AudioPlayer src={q.prompt_audio_url} label="Vraag beluisteren" compact />
         </div>
@@ -124,9 +130,9 @@ export default function McqQuestion({
             }}
             /* Segment 0 is the prompt, so this option is segment i + 1. */
             beingRead={hasReadAloud && reading && activeSeg === i + 1}
-            /* Dropped once answered: the sequence reads on past the click, and a word-mark
-               inside a revealed verdict row overpaints it. */
-            highlight={hasReadAloud && !answered ? { activeSeg, activeWord, thisSeg: i + 1, reading } : undefined}
+            /* Dropped once the verdict is revealed: a word-mark inside a verdict row overpaints
+               it. In an exam nothing is revealed, so the reading keeps marking past a click. */
+            highlight={hasReadAloud && !(answered && showFeedback) ? { activeSeg, activeWord, thisSeg: i + 1, reading } : undefined}
           />
         ))}
       </div>
@@ -180,7 +186,7 @@ function OptionButton({
     state === 'ok' && 'g-ans-ok answer-correct',
     state === 'nok' && 'g-ans-nok',
     state === 'dim' && 'g-ans-dim',
-    !state && beingRead && !answered && 'g-xans-reading',
+    !state && beingRead && !reveal && 'g-xans-reading',
   ].filter(Boolean).join(' ');
 
   return (
@@ -216,7 +222,7 @@ function OptionButton({
         </span>
       )}
 
-      {beingRead && !answered && <span className="g-xans-eq"><EqBars size={14} /></span>}
+      {beingRead && !reveal && <span className="g-xans-eq"><EqBars size={14} /></span>}
       {state === 'ok' && <span className="g-ans-tag"><Check strokeWidth={3} aria-hidden />Juist</span>}
       {state === 'nok' && <span className="g-ans-tag"><X strokeWidth={3} aria-hidden />Jouw antwoord</span>}
     </button>

@@ -33,11 +33,17 @@ export default function AudioPlayer({
   label,
   compact = false,
   examenAudio,
+  autoPlay = false,
 }: {
   src: string;
   label?: string;
   compact?: boolean;
   examenAudio?: { readSeconds: number };
+  /**
+   * Vrije stand: start zodra het onderdeel in beeld komt (Spreken A2 — DUO leest elke opdracht
+   * voor). Weigert de browser dat, dan blijft gewoon de afspeelknop staan.
+   */
+  autoPlay?: boolean;
 }) {
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const [playing, setPlaying] = useState(false);
@@ -79,6 +85,11 @@ export default function AudioPlayer({
     }, 1000);
     return () => clearInterval(id);
   }, [readSeconds, src]);
+
+  useEffect(() => {
+    if (!autoPlay || examenAudio) return;
+    void audioRef.current?.play().catch(() => {});
+  }, [autoPlay, examenAudio, src]);
 
   function toggle() {
     const a = audioRef.current;
@@ -221,7 +232,7 @@ const WAVE_HEIGHTS = Array.from({ length: WAVE_BARS }, (_, i) =>
   5 + Math.round(Math.abs(Math.sin(i * 0.5) * Math.cos(i * 0.23)) * 26 + (i % 4) * 1.5)
 );
 
-function Wave({ progress }: { progress: number }) {
+export function Wave({ progress }: { progress: number }) {
   return (
     <div className="g-xwv" aria-hidden>
       {WAVE_HEIGHTS.map((h, i) => (
@@ -233,7 +244,7 @@ function Wave({ progress }: { progress: number }) {
 }
 
 /** De leestijd als ring die leegloopt; het getal in het midden is wat de kandidaat leest. */
-function Countdown({ left, total }: { left: number; total: number }) {
+export function Countdown({ left, total }: { left: number; total: number }) {
   const c = 2 * Math.PI * 25;
   const frac = total > 0 ? Math.max(0, left) / total : 0;
   return (
@@ -250,7 +261,7 @@ function Countdown({ left, total }: { left: number; total: number }) {
   );
 }
 
-function fmt(secs: number): string {
+export function fmt(secs: number): string {
   if (!Number.isFinite(secs)) return '0:00';
   const m = Math.floor(secs / 60);
   const s = Math.floor(secs % 60);

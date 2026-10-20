@@ -1,0 +1,54 @@
+# A2 Spreken — oefenexamen 5
+# verteller: narrator, snelheid 1 (zelfde als de geluidstest)
+
+[opdracht 1 · react · verteller, dan spreker]
+U zit bij de bank. Geef antwoord op haar vraag.
+— spreker: Goedemiddag. U wilt een rekening openen? Vertelt u eens waarvoor u die nodig heeft.
+
+[opdracht 2 · react · verteller, dan spreker]
+Een vriend vraagt u iets. Geef antwoord in hele zinnen.
+— spreker: Hé, wij gaan zondag wandelen in het bos. Gaat u mee, en hoe laat kunt u?
+
+[opdracht 3 · react · verteller, dan spreker]
+De klusjesman van de woningcorporatie belt u. Geef antwoord.
+— spreker: De kraan lekt al een week, hoor ik. Wanneer kan ik langskomen om het te maken?
+
+[opdracht 4 · react · verteller, dan spreker]
+De juf van school vraagt om hulp. Geef antwoord.
+— spreker: Wij zoeken nog ouders voor het schoolreisje. Kunt u meehelpen, en wat kunt u doen?
+
+[opdracht 5 · describe · verteller]
+Vertel wat u op dit plaatje ziet. Vertel ook wat deze mensen aan het vieren zijn. Gebruik het plaatje.
+
+[opdracht 6 · describe · verteller]
+Beschrijf dit plaatje. Vertel ook hoe vaak u hier komt. Gebruik het plaatje.
+
+[opdracht 7 · describe · verteller]
+Vertel wat er op dit plaatje gebeurt. Vertel ook wat u zou doen. Gebruik het plaatje.
+
+[opdracht 8 · describe · verteller]
+Vertel wat u ziet. Vertel ook waarom mensen hier graag komen. Gebruik het plaatje.
+
+[opdracht 9 · choose · verteller]
+Welke jas zou u kopen? Kies één plaatje en vertel waarom.
+
+[opdracht 10 · choose · verteller]
+Wat doet u liever op een vrije avond? Kies één plaatje en leg uit waarom.
+
+[opdracht 11 · choose · verteller]
+Welke bijbaan zou u kiezen? Kies één plaatje en vertel waarom.
+
+[opdracht 12 · choose · verteller]
+Hoe wilt u liever nieuws volgen? Kies één plaatje en leg uit waarom.
+
+[opdracht 13 · cover_all · verteller]
+Vertel wat deze persoon in de avond doet. Gebruik alle plaatjes.
+
+[opdracht 14 · cover_all · verteller]
+Vertel het verhaal van deze reis. Gebruik alle drie de plaatjes.
+
+[opdracht 15 · cover_all · verteller]
+Vertel wat deze mensen in de tuin doen. Gebruik alle plaatjes.
+
+[opdracht 16 · cover_all · verteller]
+Vertel wat er misgaat en hoe het afloopt. Gebruik alle plaatjes.

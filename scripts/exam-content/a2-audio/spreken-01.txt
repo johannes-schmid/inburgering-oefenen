@@ -1,0 +1,54 @@
+# A2 Spreken — oefenexamen 1
+# verteller: narrator, snelheid 1 (zelfde als de geluidstest)
+
+[opdracht 1 · react · verteller, dan spreker]
+Uw nieuwe buurvrouw stelt zich voor. Geef antwoord op haar vraag.
+— spreker: Hoi! Wij zijn nieuw in deze straat. Waar woont u en hoe lang woont u hier al?
+
+[opdracht 2 · react · verteller, dan spreker]
+Een collega vraagt iets aan u. Geef antwoord in hele zinnen.
+— spreker: Ik neem elke dag twee keer pauze op mijn werk. Hoevaak neemt u pauze? Vertel ook wat u dan doet.
+
+[opdracht 3 · react · verteller, dan spreker]
+Uw leidinggevende praat met u. Geef antwoord op haar vraag.
+— spreker: U bent er snel. Hoe komt u meestal naar uw werk?
+
+[opdracht 4 · react · verteller, dan spreker]
+Iemand in de wachtkamer begint een gesprek. Geef antwoord.
+— spreker: Wat een slecht weer, hè? Wat vindt u van het weer hier in Nederland?
+
+[opdracht 5 · describe · verteller]
+Vertel wat u op het plaatje ziet. Vertel ook wat de mensen aan het doen zijn. Gebruik het plaatje.
+
+[opdracht 6 · describe · verteller]
+Vertel wat er op dit plaatje gebeurt. Vertel ook waar deze mensen zijn. Gebruik het plaatje.
+
+[opdracht 7 · describe · verteller]
+Ik kook graag pasta. En wat kookt ú graag? Gebruik het plaatje.
+
+[opdracht 8 · describe · verteller]
+Op welke dag is het Koningsdag? En wat doet u op die dag? Gebruik het plaatje.
+
+[opdracht 9 · choose · verteller]
+Waar gaat u liever naartoe in de vakantie? Kies één plaatje en vertel waarom.
+
+[opdracht 10 · choose · verteller]
+In welk huis zou u liever wonen? Kies één plaatje en leg uit waarom.
+
+[opdracht 11 · choose · verteller]
+Welke sport zou u willen doen? Kies één plaatje en vertel waarom.
+
+[opdracht 12 · choose · verteller]
+Welk cadeau geeft u aan een vriend? Kies er één en leg uit waarom.
+
+[opdracht 13 · cover_all · verteller]
+Vertel wat deze persoon in de ochtend doet. Gebruik alle drie de plaatjes.
+
+[opdracht 14 · cover_all · verteller]
+Vertel het verhaal van deze verjaardag. Gebruik alle plaatjes.
+
+[opdracht 15 · cover_all · verteller]
+Vertel wat deze vrouw doet. Gebruik alle plaatjes.
+
+[opdracht 16 · cover_all · verteller]
+Vertel wat er misgaat en hoe het afloopt. Gebruik alle plaatjes.

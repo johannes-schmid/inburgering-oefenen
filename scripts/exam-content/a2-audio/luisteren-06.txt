@@ -1,0 +1,182 @@
+# A2 Luisteren — oefenexamen 6
+# stem: narrator
+
+[tekst 1 · situatie]
+Meneer Traoré zit bij de kapper. Lees eerst de vraag. Luister daarna naar de tekst.
+
+[tekst 1 · vraag 1]
+Wat wil meneer Traoré anders dan de vorige keer?
+A  De zijkanten iets langer.
+B  De baard eraf.
+C  Een andere kleur.
+
+[tekst 1 · vraag 2]
+Wat betaalt hij vandaag?
+A  € 6.
+B  € 19,50.
+C  € 25.
+
+[tekst 1 · vraag 3]
+Wat spreken zij nog af?
+A  Dat hij terugbelt.
+B  Dat hij volgende keer betaalt.
+C  Een nieuwe afspraak over zes weken.
+
+[tekst 2 · situatie]
+In de supermarkt hoort Elif een bericht. Lees eerst de vraag. Luister daarna naar de tekst.
+
+[tekst 2 · vraag 1]
+Wat gebeurt er met de kassa’s?
+A  Er gaan twee extra kassa’s open.
+B  De kassa’s gaan sluiten.
+C  De kassa’s zijn kapot.
+
+[tekst 2 · vraag 2]
+Wat is er bij de bakkerij?
+A  Een nieuwe kassa.
+B  Een proeverij van volkorenbrood.
+C  Een aanbieding op taart.
+
+[tekst 2 · vraag 3]
+Wat is er met de blauwe auto?
+A  Hij staat verkeerd geparkeerd.
+B  Hij is beschadigd.
+C  De lichten staan aan.
+
+[tekst 3 · situatie]
+Mevrouw Sultani belt een taalschool. Lees eerst de vraag. Luister daarna naar de tekst.
+
+[tekst 3 · vraag 1]
+Wat moet mevrouw Sultani eerst doen?
+A  Een korte test doen.
+B  Zich meteen inschrijven.
+C  De boeken kopen.
+
+[tekst 3 · vraag 2]
+Wanneer kan zij de test doen?
+A  Volgende maand.
+B  Dinsdagavond om zeven uur.
+C  Donderdagochtend om tien uur.
+
+[tekst 4 · situatie]
+Bij de milieustraat legt een medewerker uit hoe het werkt. Lees eerst de vraag. Luister daarna naar de tekst.
+
+[tekst 4 · vraag 1]
+Wat moet u bij de slagboom laten zien?
+A  Een bonnetje.
+B  Niets.
+C  Uw pas of identiteitsbewijs.
+
+[tekst 4 · vraag 2]
+Waar moet verf naartoe?
+A  Naar het kleine gebouwtje links.
+B  Naar bak twee.
+C  Naar bak negen.
+
+[tekst 4 · vraag 3]
+Wat wordt gevraagd over kinderen?
+A  Zij moeten thuisblijven.
+B  Zij mogen niet uitstappen.
+C  Zij mogen helpen.
+
+[tekst 5 · situatie]
+Meneer Nowak meldt zich bij de balie van het ziekenhuis. Lees eerst de vraag. Luister daarna naar de tekst.
+
+[tekst 5 · vraag 1]
+Waar moet meneer Nowak naartoe?
+A  Naar de begane grond.
+B  Naar de spoedeisende hulp.
+C  Naar route veertig op de eerste verdieping.
+
+[tekst 5 · vraag 2]
+Wat moet hij op de afdeling doen?
+A  De streepjescode bij de zuil scannen.
+B  Zich bij een medewerker melden.
+C  Direct in de wachtkamer gaan zitten.
+
+[tekst 6 · situatie]
+Op de club klinkt een mededeling door de luidspreker. Lees eerst de vraag. Luister daarna naar de tekst.
+
+[tekst 6 · vraag 1]
+Waarom wordt er op een ander veld gespeeld?
+A  Er is een ander toernooi.
+B  Het veld achter de kantine staat onder water.
+C  Het veld wordt verbouwd.
+
+[tekst 6 · vraag 2]
+Hoe laat begint de eerste wedstrijd?
+A  Om één uur.
+B  Om twee uur.
+C  Om half twee.
+
+[tekst 6 · vraag 3]
+Wat wordt aan de ouders gevraagd?
+A  Zoveel mogelijk samen te rijden.
+B  Thuis te blijven.
+C  Eerder te komen.
+
+[tekst 7 · situatie]
+De vader van Lena luistert een bericht van school af. Lees eerst de vraag. Luister daarna naar de tekst.
+
+[tekst 7 · vraag 1]
+Wat is er met Lena gebeurd?
+A  Zij is ziek geworden.
+B  Zij heeft haar pols verdraaid.
+C  Zij is gevallen op het plein.
+
+[tekst 7 · vraag 2]
+Wanneer moet de vader de huisartsenpost bellen?
+A  Meteen vanavond.
+B  Morgenochtend.
+C  Als de pols dikker wordt of zij haar hand niet kan bewegen.
+
+[tekst 8 · situatie]
+Marta wil meedoen aan een activiteit in het buurthuis. Lees eerst de vraag. Luister daarna naar de tekst.
+
+[tekst 8 · vraag 1]
+Wat betaalt Marta per keer?
+A  € 2,50.
+B  € 5.
+C  Niets.
+
+[tekst 8 · vraag 2]
+Wanneer moet zij zich uiterlijk aanmelden?
+A  Op maandag om zes uur.
+B  Op zondag.
+C  Op maandagochtend.
+
+[tekst 9 · situatie]
+Op zijn eerste werkdag krijgt Bilal uitleg over het bezorgen. Lees eerst de vraag. Luister daarna naar de tekst.
+
+[tekst 9 · vraag 1]
+Wat moet Bilal doen voordat hij een pakket afgeeft?
+A  De klant bellen.
+B  Een foto maken.
+C  Het scannen.
+
+[tekst 9 · vraag 2]
+Wat mag hij nooit doen?
+A  Een pakket achter de deur zetten.
+B  Bij de buren afgeven.
+C  Om een identiteitsbewijs vragen.
+
+[tekst 9 · vraag 3]
+Wat doet hij bij een pakket met leeftijdscontrole?
+A  Het meenemen terug.
+B  Altijd om een identiteitsbewijs vragen.
+C  Het bij de buren afgeven.
+
+[tekst 10 · situatie]
+In de wachtkamer van de huisarts klinkt een mededeling. Lees eerst de vraag. Luister daarna naar de tekst.
+
+[tekst 10 · vraag 1]
+Hoeveel loopt het spreekuur uit?
+A  Ongeveer een kwartier.
+B  Ongeveer twee uur.
+C  Ongeveer veertig minuten.
+
+[tekst 10 · vraag 2]
+Wat kan iemand doen die alleen een recept ophaalt?
+A  Doorlopen naar het loket rechts.
+B  Toch wachten.
+C  Morgen terugkomen.
