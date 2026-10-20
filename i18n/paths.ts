@@ -29,7 +29,7 @@ export function translateDutchPath(path: string, locale: string): string {
   const entry = routing.pathnames[match.route] as string | Record<string, string>;
   const template = typeof entry === 'string' ? entry : entry[locale as Locale] ?? entry.nl;
 
-  return fill(template, match.params, locale).replace(/^\//, '');
+  return fill(template, match.params, locale, typeof entry !== 'string').replace(/^\//, '');
 }
 
 /**
@@ -44,7 +44,7 @@ export function localizedPath(
 ): string {
   const entry = routing.pathnames[route] as string | Record<string, string>;
   const template = typeof entry === 'string' ? entry : entry[locale as Locale] ?? entry.nl;
-  return `/${locale}${fill(template, params, locale)}`;
+  return `/${locale}${fill(template, params, locale, typeof entry !== 'string')}`;
 }
 
 /**
@@ -55,16 +55,22 @@ export function localizedPath(
  * Alle andere blijven staan. `[level]` is 'a2'/'b1' en `[n]` is een examennummer — namen die
  * DUO voert of die de kandidaat op zijn uitslag ziet; een vertaling daarvan is geen betere
  * URL, alleen een onherkenbare.
+ *
+ * **De onderdeelnaam alleen op een route die per taal een eigen pad heeft** (`localized`): de
+ * trechter. `/dashboard/[level]/[skill]` is in elke taal hetzelfde pad en de pagina's eronder
+ * kennen alleen de Nederlandse naam. Zonder deze voorwaarde stuurde `canonicalLocalePath` elke
+ * portaallink in EN/AR met een 308 naar `/en/dashboard/a2/listening` — een 404 (20-10).
+ * `[thema]` op `/knm/[thema]` wordt wél vertaald, ook al heeft die route één pad.
  */
-function fill(template: string, params: Record<string, string>, locale: string): string {
+function fill(template: string, params: Record<string, string>, locale: string, localized: boolean): string {
   return Object.entries(params).reduce(
-    (path, [name, value]) => path.replace(`[${name}]`, paramValue(name, value, locale)),
+    (path, [name, value]) => path.replace(`[${name}]`, paramValue(name, value, locale, localized)),
     template,
   );
 }
 
-function paramValue(name: string, value: string, locale: string): string {
-  if (name === 'skill' && isSkillSlug(value)) return skillParam(value, locale);
+function paramValue(name: string, value: string, locale: string, localized: boolean): string {
+  if (name === 'skill' && isSkillSlug(value)) return localized ? skillParam(value, locale) : value;
   if (name === 'slug' || name === 'thema') return contentSlugParam(value, locale);
   return value;
 }

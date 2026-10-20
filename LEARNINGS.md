@@ -5841,3 +5841,9 @@ oplopende `top` per index doet het, en de `prefers-reduced-motion`-uitweg is dan
 **Outcome:** SUCCESS (160/160 taken op de nieuwe versie; Scribe met sprekerscheiding op opdracht 1: verteller → buurvrouw, opdracht 5: alleen verteller)
 **What worked / went wrong:** De eerste run sloeg 70 plaatjestaken over omdat het script op "tekst ongewijzigd" hervatte; bij een stemwissel hoort de versie in de url, niet de tekst.
 **Lesson:** Een hervatbare TTS-run moet hervatten op wát er is ingesproken (stem + versie), niet alleen op de tekst.
+
+## 2026-10-20 — EN/AR-portaal: elk onderdeel gaf een 404
+**Changed:** `i18n/paths.ts` vertaalt `[skill]` alleen nog op een route met een eigen pad per taal (de trechter), niet op `/dashboard/[level]/[skill]`; test in `tests-unit/slug-translations.test.ts`.
+**Outcome:** SUCCESS (708 unit-tests, tsc, next build; lokaal `/en/dashboard/a2/luisteren` 200, `/en/oefenen/lezen` nog steeds 308 → `/en/practice/reading`)
+**What worked / went wrong:** `canonicalLocalePath` (11-10) liep via `translateDutchPath`, en die vertaalde de onderdeelnaam op élke route met `[skill]`. De portaallinks waren goed; de proxy stuurde ze met een 308 naar `/en/dashboard/a2/listening`, en die pagina kent alleen de Nederlandse naam. `canonicalSkillPath` had die afbakening al — de nieuwe functie nam hem niet over.
+**Lesson:** Een nieuwe canonicaliseerstap in `proxy.ts` erft niet vanzelf de afbakening van de oude; test hem ook op het portaal, niet alleen op de publieke pagina's.

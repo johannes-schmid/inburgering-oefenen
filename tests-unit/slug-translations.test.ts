@@ -201,6 +201,20 @@ describe('canonicalLocalePath', () => {
     expect(canonicalLocalePath('/en')).toBeUndefined();
   });
 
+  /* 20-10: `/en/dashboard/a2/luisteren` ging met een 308 naar `/listening`, en die route kent
+   * alleen de Nederlandse onderdeelnaam — elk onderdeel in het EN/AR-portaal was een 404. */
+  it('vertaalt de onderdeelnaam niet in het portaal, wel in de trechter', () => {
+    for (const locale of ['en', 'ar']) {
+      for (const skill of SKILLS) {
+        expect(canonicalLocalePath(`/${locale}/dashboard/a2/${skill.slug}`)).toBeUndefined();
+        expect(canonicalLocalePath(`/${locale}/dashboard/b1/${skill.slug}`)).toBeUndefined();
+      }
+    }
+    expect(localeHref('en', 'dashboard/a2/luisteren')).toBe('/en/dashboard/a2/luisteren');
+    expect(canonicalLocalePath('/en/oefenen/lezen')).toBe('/en/practice/reading');
+    expect(canonicalLocalePath('/en/oefenexamen/a2/luisteren/1')).toBe('/en/practice-exam/a2/listening/1');
+  });
+
   it('decodeert Arabisch voordat het vergelijkt', () => {
     const want = canonicalLocalePath('/ar/inburgering/boete-en-termijn');
     expect(want).toBeDefined();
