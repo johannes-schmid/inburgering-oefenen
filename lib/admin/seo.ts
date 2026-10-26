@@ -46,6 +46,40 @@ export type Evidence = {
   recent: { start: string; end: string; pages: number; position: number | null };
   lost: LostPage[];
 };
+/** Een pagina uit de triage, met zijn live zoekcijfers ernaast. `null` = onbekend (geen live data). */
+export type PageCell = {
+  path: string;
+  section: string;
+  verdict: 'healthy' | 'improve' | 'consolidate' | 'remove' | 'watch';
+  reason: string;
+  plan: { action: string; owner: string; week?: string; starts?: string; into?: string } | null;
+  /** Vertoningen in aug + sep volgens de audit; de terugval voor de tegelgrootte zonder live data. */
+  demand: number;
+  before: { impressions: number; position: number | null } | null;
+  now: { impressions: number; position: number | null } | null;
+  queries: { query: string; impressions: number; position: number }[];
+};
+export type PlannedPage = {
+  id: string; title: string; section: string; demand: number; evidence: string; why: string; owner: string; week: string; starts: string;
+};
+export type PageMap = {
+  updated: string;
+  sections: { key: string; label: string; note: string }[];
+  counts: Record<PageCell['verdict'], number>;
+  pages: PageCell[];
+  planned: PlannedPage[];
+  windows: { before: { start: string; end: string }; now: { start: string; end: string } } | null;
+};
+export type Competitors = {
+  updated: string;
+  method: string;
+  queries: { query: string; top: string[]; ours: number | null }[];
+  domains: { domain: string; top5: number; top10: number; official: boolean; pages_in_sitemap: number | null }[];
+  pages: { url: string; domain: string; intent: string; ours: boolean; author: string; first_hand: string; practice: string; words: number; templated: string; date: string; languages: string; verdict: string }[];
+  summary: string;
+  differences: { title: string; them: string; us: string; evidence: 'strong' | 'medium' | 'weak' }[];
+  lessons: string[];
+};
 export type LiveState = { state: 'live' | 'snapshot' | 'error'; detail: string; fetchedAt: string | null; bingLive: boolean };
 
 export type SeoCockpit = {
@@ -58,6 +92,8 @@ export type SeoCockpit = {
   daily: DayPoint[];
   diagnosis: Diagnosis | null;
   evidence: Evidence | null;
+  pageMap: PageMap | null;
+  competitors: Competitors | null;
   recovery: RecoveryRead;
   inburgering: {
     windows: GscSite['windows'] | null;
@@ -139,6 +175,7 @@ export async function loadSeoCockpit(now = new Date()): Promise<SeoCockpit> {
   const latestWeek = weeks.at(-1) ?? null;
 
   const diagnosis = await json<Diagnosis>('diagnosis.json');
+  const triage = await json<Omit<PageMap, 'pages' | 'windows'> & { pages: Omit<PageCell, 'before' | 'now' | 'queries'>[] }>('pages.json');
   const [liveGsc, liveBing, index, gsc, bing, health, ledger, recs, config, history, reportFiles] = await Promise.all([
     diagnosis ? fetchLiveGsc(diagnosis.baseline, now) : null,
     fetchLiveBing(),
@@ -208,6 +245,8 @@ export async function loadSeoCockpit(now = new Date()): Promise<SeoCockpit> {
           lost: lostPages(live.pages.baseline, live.pages.recent),
         }
       : null,
+    pageMap: triage ? buildPageMap(triage, live, diagnosis) : null,
+    competitors: await json<Competitors>('competitors-analysis.json'),
     // Het oordeel rekent zonder de voorlopige dagen: een halve dag van vandaag trekt het weekgemiddelde omlaag.
     recovery: recoveryRead(daily.filter(p => !p.preliminary)),
     inburgering: {
@@ -238,6 +277,38 @@ export async function loadSeoCockpit(now = new Date()): Promise<SeoCockpit> {
       .filter(f => f.endsWith('.md'))
       .reverse()
       .map(f => ({ name: f.replace(/\.md$/, ''), href: `${REPO_URL}/blob/main/seo-agent/reports/${f}` })),
+  };
+}
+
+const SITE_ORIGIN = 'https://inburgeringoefenen.nl';
+
+/** De triage uit `pages.json` met per pagina de live cijfers: nulmeting, nu, en de vijf grootste zoekwoorden. */
+function buildPageMap(
+  triage: Omit<PageMap, 'pages' | 'windows'> & { pages: Omit<PageCell, 'before' | 'now' | 'queries'>[] },
+  live: Awaited<ReturnType<typeof fetchLiveGsc>> | null,
+  diagnosis: Diagnosis | null,
+): PageMap {
+  const ok = live && !('error' in live) ? live : null;
+  const key = (url: string) => decodeURI(url.replace(SITE_ORIGIN, '')) || '/';
+  const before = new Map(ok?.pages.baseline.map(r => [key(r.page), r]) ?? []);
+  const now = new Map(ok?.pages.recent.map(r => [key(r.page), r]) ?? []);
+  const queries = new Map<string, PageCell['queries']>();
+  for (const r of ok?.queryPage ?? []) {
+    const k = key(r.page);
+    const list = queries.get(k) ?? [];
+    list.push({ query: r.query, impressions: r.impressions, position: r.position });
+    queries.set(k, list);
+  }
+  const cell = (r?: PageRow) => (r ? { impressions: r.impressions, position: r.position } : { impressions: 0, position: null });
+  return {
+    ...triage,
+    windows: ok && diagnosis ? { before: { start: diagnosis.baseline.start, end: diagnosis.baseline.end }, now: ok.pages.recentWindow } : null,
+    pages: triage.pages.map(p => ({
+      ...p,
+      before: ok ? cell(before.get(p.path)) : null,
+      now: ok ? cell(now.get(p.path)) : null,
+      queries: (queries.get(p.path) ?? []).sort((a, b) => b.impressions - a.impressions).slice(0, 5),
+    })),
   };
 }
 

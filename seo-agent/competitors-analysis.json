@@ -1,0 +1,570 @@
+{
+  "updated": "2026-10-26",
+  "method": "12 Google NL searches via the Firecrawl search API (country nl, top 10 each) on 26 Oct 2026, plus Firecrawl scrapes of 6 competitor pages and 6 of our pages; word counts are approximate main-content estimates from the scraped markdown, sitemap sizes from seo-agent/data/2026-W43/competitors.json.",
+  "queries": [
+    {
+      "query": "a2 schrijven",
+      "top": [
+        "inburgeren.nl",
+        "inburgering.org",
+        "youtube.com",
+        "mediatheek.steunpuntvluchtelingendebilt.nl",
+        "slo.nl",
+        "youtube.com",
+        "adappel.nl",
+        "youtube.com",
+        "nt2taalmenu.nl",
+        "denieuwenederlanders.nl"
+      ],
+      "ours": null
+    },
+    {
+      "query": "inburgeren",
+      "top": [
+        "inburgeren.nl",
+        "vluchtelingenwerk.nl",
+        "rijksoverheid.nl",
+        "ind.nl",
+        "infoplein.oosterhout.nl",
+        "nederlandwereldwijd.nl",
+        "staatsexamensnt2.nl",
+        "juridischloket.nl",
+        "nt2.nl",
+        "apps.duo.nl"
+      ],
+      "ours": null
+    },
+    {
+      "query": "wie moeten inburgeren",
+      "top": [
+        "rijksoverheid.nl",
+        "inburgeren.nl",
+        "nt2.nl",
+        "ind.nl",
+        "vluchtelingenwerk.nl",
+        "inburgeren.nl",
+        "juridischloket.nl",
+        "mboraad.nl",
+        "rijksoverheid.nl",
+        "inburgeren.nl"
+      ],
+      "ours": null
+    },
+    {
+      "query": "hoe lang mag je doen over inburgeren",
+      "top": [
+        "inburgeren.nl",
+        "juridischloket.nl",
+        "vluchtelingenwerk.nl",
+        "ind.nl",
+        "inburgeren.nl",
+        "inburgeren.nl",
+        "rijksoverheid.nl",
+        "inburgeren.nl",
+        "ind.nl",
+        "refugeehelp.nl"
+      ],
+      "ours": null
+    },
+    {
+      "query": "ona examen",
+      "top": [
+        "inburgeren.nl",
+        "inburgeren.nl",
+        "inburgering.org",
+        "youtube.com",
+        "nedles.nl",
+        "inburgeringonline.nl",
+        "duo.nl",
+        "inburgeren.nl",
+        "nederlandseles.nu",
+        "youtube.com"
+      ],
+      "ours": null
+    },
+    {
+      "query": "inburgering examen b1",
+      "top": [
+        "inburgeren.nl",
+        "inburgeren.nl",
+        "staatsexamensnt2.nl",
+        "inburgeren.nl",
+        "inburgeringonline.nl",
+        "inburgering.org",
+        "inburgeren.nl",
+        "youtube.com",
+        "adappel.nl",
+        "inburgeren.nl"
+      ],
+      "ours": null
+    },
+    {
+      "query": "taalniveaus a1 a2 b1",
+      "top": [
+        "detaalbrigade.nl",
+        "onzetaal.nl",
+        "olafgeysendorpher.nl",
+        "rug.nl",
+        "paktaal.nl",
+        "nabuacademy.nl",
+        "inburgeringonline.nl",
+        "uvatalen.nl",
+        "b1teksten.nl",
+        "inburgering.org"
+      ],
+      "ours": null
+    },
+    {
+      "query": "want of omdat",
+      "top": [
+        "thedutchonlineacademy.com",
+        "schrijfwijzer.nl",
+        "babel.nl",
+        "reddit.com",
+        "vlaanderen.be",
+        "elon.io",
+        "youtube.com",
+        "doetietsmettaal.nl",
+        "youtube.com",
+        "neerlandistiek.nl"
+      ],
+      "ours": null
+    },
+    {
+      "query": "inburgeringsexamen zakken herkansen",
+      "top": [
+        "inburgeren.nl",
+        "inburgeringoefenen.nl",
+        "inburgering.org",
+        "inburgeren.nl",
+        "ind.nl",
+        "oudersenonderwijs.nl",
+        "rijksoverheid.nl",
+        "juridischloket.nl",
+        "linkedin.com",
+        "mvv-gezinshereniging.nl"
+      ],
+      "ours": 2
+    },
+    {
+      "query": "lezen examen inburgering a2",
+      "top": [
+        "inburgeren.nl",
+        "youtube.com",
+        "nt2taalmenu.nl",
+        "youtube.com",
+        "inburgeren.nl",
+        "adappel.nl",
+        "youtube.com",
+        "inburgering.org",
+        "inburgeringprep.com",
+        "youtube.com"
+      ],
+      "ours": null
+    },
+    {
+      "query": "inburgering examen oefenen",
+      "top": [
+        "inburgeren.nl",
+        "inburgering.org",
+        "naarnederland.nl",
+        "inburgeren.nl",
+        "dutchtutor.com",
+        "inburgering.nl",
+        "inburgeringonline.nl",
+        "apps.duo.nl",
+        "nt2taalmenu.nl",
+        "overoefenen.nl"
+      ],
+      "ours": null
+    },
+    {
+      "query": "knm examen oefenen",
+      "top": [
+        "inburgeren.nl",
+        "inburgering.org",
+        "adappel.nl",
+        "mediatheek.steunpuntvluchtelingendebilt.nl",
+        "inburgering.nl",
+        "youtube.com",
+        "knmoefenen.nl",
+        "lessonup.com",
+        "inburgeren.nl",
+        "inburgeringprep.com"
+      ],
+      "ours": null
+    }
+  ],
+  "domains": [
+    {
+      "domain": "inburgeren.nl",
+      "top5": 10,
+      "top10": 10,
+      "official": true,
+      "pages_in_sitemap": 39
+    },
+    {
+      "domain": "inburgering.org",
+      "top5": 5,
+      "top10": 8,
+      "official": false,
+      "pages_in_sitemap": 2000
+    },
+    {
+      "domain": "youtube.com",
+      "top5": 3,
+      "top10": 6,
+      "official": false,
+      "pages_in_sitemap": null
+    },
+    {
+      "domain": "ind.nl",
+      "top5": 4,
+      "top10": 4,
+      "official": true,
+      "pages_in_sitemap": null
+    },
+    {
+      "domain": "rijksoverheid.nl",
+      "top5": 2,
+      "top10": 4,
+      "official": true,
+      "pages_in_sitemap": null
+    },
+    {
+      "domain": "juridischloket.nl",
+      "top5": 1,
+      "top10": 4,
+      "official": true,
+      "pages_in_sitemap": null
+    },
+    {
+      "domain": "adappel.nl",
+      "top5": 1,
+      "top10": 4,
+      "official": false,
+      "pages_in_sitemap": 81
+    },
+    {
+      "domain": "inburgeringonline.nl",
+      "top5": 1,
+      "top10": 4,
+      "official": false,
+      "pages_in_sitemap": null
+    },
+    {
+      "domain": "vluchtelingenwerk.nl",
+      "top5": 3,
+      "top10": 3,
+      "official": false,
+      "pages_in_sitemap": null
+    },
+    {
+      "domain": "nt2taalmenu.nl",
+      "top5": 1,
+      "top10": 3,
+      "official": false,
+      "pages_in_sitemap": 1835
+    },
+    {
+      "domain": "mediatheek.steunpuntvluchtelingendebilt.nl",
+      "top5": 2,
+      "top10": 2,
+      "official": false,
+      "pages_in_sitemap": null
+    },
+    {
+      "domain": "nt2.nl",
+      "top5": 1,
+      "top10": 2,
+      "official": false,
+      "pages_in_sitemap": null
+    },
+    {
+      "domain": "staatsexamensnt2.nl",
+      "top5": 1,
+      "top10": 2,
+      "official": true,
+      "pages_in_sitemap": null
+    },
+    {
+      "domain": "inburgering.nl",
+      "top5": 1,
+      "top10": 2,
+      "official": false,
+      "pages_in_sitemap": null
+    },
+    {
+      "domain": "inburgeringprep.com",
+      "top5": 0,
+      "top10": 2,
+      "official": false,
+      "pages_in_sitemap": null
+    },
+    {
+      "domain": "apps.duo.nl",
+      "top5": 0,
+      "top10": 2,
+      "official": true,
+      "pages_in_sitemap": null
+    },
+    {
+      "domain": "nedles.nl",
+      "top5": 1,
+      "top10": 1,
+      "official": false,
+      "pages_in_sitemap": 310
+    },
+    {
+      "domain": "denieuwenederlanders.nl",
+      "top5": 0,
+      "top10": 1,
+      "official": false,
+      "pages_in_sitemap": 640
+    },
+    {
+      "domain": "olafgeysendorpher.nl",
+      "top5": 1,
+      "top10": 1,
+      "official": false,
+      "pages_in_sitemap": null
+    },
+    {
+      "domain": "knmoefenen.nl",
+      "top5": 0,
+      "top10": 1,
+      "official": false,
+      "pages_in_sitemap": null
+    },
+    {
+      "domain": "inburgeringoefenen.nl",
+      "top5": 1,
+      "top10": 1,
+      "official": false,
+      "pages_in_sitemap": null
+    }
+  ],
+  "pages": [
+    {
+      "url": "https://inburgering.org/nl/exam-info/a2-writing-guide",
+      "domain": "inburgering.org",
+      "intent": "A2 Schrijven guide",
+      "ours": false,
+      "author": "Brand only: 'Door Inburgering.org team' linking to /about. No named person, no photo, no credentials on the page.",
+      "first_hand": "Own practice material: 3 practice sets with 12 original tasks (e-mail to a bike repair shop, form for a taalcafe, note for neighbour Nadia). Reproduces DUO's scoring model as a points table (adequaatheid 0-3, spelling 0-2, etc.) with links to the DUO PDFs. Minute-by-minute 40-minute schedule.",
+      "practice": "Yes, on the page: 12 writing tasks to do on paper with a timer and self-scoring against DUO criteria. Links to printable PDF 'Oefenboek' and summary.",
+      "words": 2300,
+      "templated": "Partly. Same site has parallel guides per level and skill (A1-B2 x 4 skills) in 9 languages, and its sitemap includes programmatic pages like /ar/de-of-het/<word>. The page text itself is task-specific, not generic.",
+      "date": "'Laatst bijgewerkt 5 oktober 2026'",
+      "languages": "9: NL, EN, RU, AR, TR, FR, ES, PT, ZH",
+      "verdict": "Earns its place by putting real practice tasks and DUO's actual scoring grid on the page, so the searcher can start practising without signing up."
+    },
+    {
+      "url": "https://denieuwenederlanders.nl/a2-schrijven-tips-oefenen-en-voorbeelden/",
+      "domain": "denieuwenederlanders.nl",
+      "intent": "A2 Schrijven guide",
+      "ours": false,
+      "author": "First name only: 'Geschreven door: Nicole' (author archive link). No surname, credentials or photo visible.",
+      "first_hand": "Many example tasks with 14 'Voorbeeldantwoord' sample answers. Embeds 5 YouTube videos. Its per-task point values (e.g. 'Inhoud 4 - Taalgebruik 3 - Woordenschat 2 - Spelling/lay-out 1') do not match DUO's published model, so accuracy is weak.",
+      "practice": "Downloadable: links to 5 AdAppel oefentoetsen with answer PDFs, 3 DUO PDFs and NT2 TaalMenu. No interactive exercise.",
+      "words": 2800,
+      "templated": "Low-polish WordPress aggregator page: link lists, embedded videos, plain bullet tips. Does not read as AI-generated; reads as a hand-built resource page.",
+      "date": "No visible date. Image paths show uploads from 2025/09.",
+      "languages": "Machine-translation widget with about 24 languages (Amharic, Arabic, etc.)",
+      "verdict": "Only ranks 10th, but shows that a scrappy hub of sample answers and links to free exams satisfies the 'a2 schrijven' intent better than a pure explainer."
+    },
+    {
+      "url": "https://nedles.nl/examentraining-nederlands/ona/",
+      "domain": "nedles.nl",
+      "intent": "ONA explainer",
+      "ours": false,
+      "author": "Named person in the text: 'Ik (Annelies Braams) vind het een heel stompzinnig examen'. Language school with a Docenten page and NRTO code of conduct.",
+      "first_hand": "Personal opinion from a school owner; no examples, no data. States plainly 'NedLes biedt geen hulp bij voorbereiding op het ONA examen.'",
+      "practice": "None.",
+      "words": 200,
+      "templated": "No. Short, idiosyncratic, opinionated.",
+      "date": "None visible on the page.",
+      "languages": "NL, with an English site at nedles.com",
+      "verdict": "A thin page on an established, real language school ranks top 5 for 'ona examen', which points to site trust rather than page content as the deciding factor."
+    },
+    {
+      "url": "https://olafgeysendorpher.nl/kennis/taalniveaus/",
+      "domain": "olafgeysendorpher.nl",
+      "intent": "Language levels A1-C2 explainer",
+      "ours": false,
+      "author": "Named individual consultant (site is his name), LinkedIn and phone number in the footer. Writes in first person ('bekijk mijn 6 voorbeelden').",
+      "first_hand": "Original device: the same medicine-leaflet sentence rewritten at all six levels A1-C2. Own images, a downloadable hand-out, cites a 2022 study by Pander Maat and Gravekamp.",
+      "practice": "Downloadable hand-out (email-gated). No exercises.",
+      "words": 1100,
+      "templated": "No. Distinctive voice and a single worked example carried through the page. One image filename shows it was ChatGPT-generated ('chatgpt-image-26-nov-2025').",
+      "date": "No visible date; image filename suggests November 2025 or later.",
+      "languages": "NL only",
+      "verdict": "Different audience (writers, not learners), but wins on a memorable original example that shows each level instead of describing it."
+    },
+    {
+      "url": "https://nt2taalmenu.nl/nt2-a2-lezen-inburgeringsexamen-1/",
+      "domain": "nt2taalmenu.nl",
+      "intent": "A2 Lezen practice exam",
+      "ours": false,
+      "author": "Volunteer-run foundation: site has 'Wie zijn wij', 'Redactie' and 'Giften, ANBI' pages. No author on this page.",
+      "first_hand": "unknown - the exam itself is an embedded exercise that did not render in the scrape (only the H2 and a reCAPTCHA notice came through).",
+      "practice": "Yes, the page is the practice exam itself, free and without an account (inferred from title and site structure; content not rendered in scrape).",
+      "words": 20,
+      "templated": "Yes in structure: one of 1,835 sitemap URLs organised as A1/A2/B1/B2 menus with per-skill 'verzamel-pagina's'. But each page is an exercise, not filler text.",
+      "date": "None visible.",
+      "languages": "Flag switcher visible (NL plus at least one other); details unknown.",
+      "verdict": "Ranks with almost no text because the page is a free exam; it matches 'oefen' intent exactly and sits on a large, old, non-commercial site."
+    },
+    {
+      "url": "https://www.inburgeringonline.nl/nl/b1",
+      "domain": "inburgeringonline.nl",
+      "intent": "B1 exam course landing page",
+      "ours": false,
+      "author": "Brand; reviews mention a teacher by first name ('@Bart - great job', 'provided by Bart'). No author block.",
+      "first_hand": "Video tour, claims '70.000+ Studenten sinds 2021' and '85% Slagingspercentage', about 20 named student reviews with photos, course contents ('21 lesvideo's', '55+ examenoefeningen').",
+      "practice": "Behind payment; the page is a sales page.",
+      "words": 2500,
+      "templated": "Commercial template shared with its A2 page; review carousel repeats in the markup.",
+      "date": "None visible; '2026' in the video thumbnail filename and exam-rule text.",
+      "languages": "NL, EN, AR",
+      "verdict": "A plain sales page that ranks on brand strength, operating history since 2021 and heavy social proof, not on informational depth."
+    },
+    {
+      "url": "https://inburgeringoefenen.nl/nl/taalexamens/schrijven-examen",
+      "domain": "inburgeringoefenen.nl",
+      "intent": "A2 Schrijven guide",
+      "ours": true,
+      "author": "Named teacher with photo: 'Amber van der Zalm NT2-docent', linked /docent and /redactie, plus 'Gecontroleerd door Amber van der Zalm, NT2-gecertificeerd docent - 23 augustus 2026'. Two first-person quote boxes.",
+      "first_hand": "Teacher tips in quote boxes ('schrijf de gevraagde punten eerst over als kladlijstje'). No sample task, no sample answer, no scoring grid; assessment is described 'in grote lijnen'. Stock-style photo ('Een hand schrijft met een pen op papier').",
+      "practice": "None on the page. CTA to paid modules and an email-gated PDF of the guide itself.",
+      "words": 1500,
+      "templated": "Yes. Same skeleton as our ONA and B1 guides: 'In het kort' box, numbered TOC, quoted DUO text with 'Bronnen ... geraadpleegd', two Amber quote boxes, Doen/Niet doen, FAQ, PDF gate. 13 em dashes on the page (0-1 on each competitor page).",
+      "date": "23 augustus 2026",
+      "languages": "NL, EN, AR (EN/AR machine-translated, labelled as such)",
+      "verdict": "Accurate and well sourced, but it explains the exam without letting the reader practise or see a model answer, which is what the ranking pages offer."
+    },
+    {
+      "url": "https://inburgeringoefenen.nl/nl/inburgering/ona-examen",
+      "domain": "inburgeringoefenen.nl",
+      "intent": "ONA explainer",
+      "ours": true,
+      "author": "Amber van der Zalm, NT2-docent, photo, dated 24 augustus 2026, link to /redactie.",
+      "first_hand": "Clear eligibility logic (Wet 2013 vs 2021), the 8 resultaatkaarten described in one line each, comparison of eindgesprek vs 64-hour course, one teacher tip. No worked portfolio example.",
+      "practice": "Not on the page (ONA module lives in the portal).",
+      "words": 1800,
+      "templated": "Yes, same guide template; 19 em dashes.",
+      "date": "24 augustus 2026",
+      "languages": "NL, EN, AR",
+      "verdict": "Deeper and more useful than the nedles page that outranks it, which suggests our problem on this query is site-level trust, not page quality."
+    },
+    {
+      "url": "https://inburgeringoefenen.nl/nl/blog/taalniveaus-a1-a2-b1-nederlands",
+      "domain": "inburgeringoefenen.nl",
+      "intent": "Language levels A1-B1 explainer",
+      "ours": true,
+      "author": "Amber van der Zalm, NT2-docent, photo, 28 juli 2026, '8 min lezen'.",
+      "first_hand": "Some classroom voice ('Wat ik in mijn lessen het vaakst zie: Lezen loopt voor'). Self-check questions per skill. Interactive leerroute selector. No example sentence or text shown at each level.",
+      "practice": "Interactive route picker; no language exercise.",
+      "words": 2000,
+      "templated": "Partly: blog template with summary table, TOC and sourced quote blocks; 13 em dashes.",
+      "date": "28 juli 2026",
+      "languages": "NL, EN, AR",
+      "verdict": "Covers more than the ranking pages but describes the levels in the abstract, where the strongest competitor shows them with one concrete sentence."
+    },
+    {
+      "url": "https://inburgeringoefenen.nl/nl/taalexamens/b1-examen",
+      "domain": "inburgeringoefenen.nl",
+      "intent": "B1 exam explainer",
+      "ours": true,
+      "author": "Amber van der Zalm, NT2-docent, photo, 24 augustus 2026.",
+      "first_hand": "Factual comparison of inburgeringsexamen A2 vs staatsexamen NT2 B1 (locations, sign-up, durations). No sample items.",
+      "practice": "None on the page.",
+      "words": 1900,
+      "templated": "Yes, same guide template; 21 em dashes.",
+      "date": "24 augustus 2026",
+      "languages": "NL, EN, AR",
+      "verdict": "Correct and sourced, but the query 'inburgering examen b1' is held by inburgeren.nl plus course sellers; an explainer without practice has no clear role there."
+    },
+    {
+      "url": "https://inburgeringoefenen.nl/nl/oefenexamen/a2/lezen",
+      "domain": "inburgeringoefenen.nl",
+      "intent": "A2 Lezen practice exams",
+      "ours": true,
+      "author": "'Gecontroleerd door een NT2-docent' with photo; no name on this page.",
+      "first_hand": "Lists 10 practice exams; exam 1 free, 2-10 'In het pakket'. Short explanation of the exam format.",
+      "practice": "Yes, but behind an account: the player redirects guests to /register. No question is visible on the page itself.",
+      "words": 400,
+      "templated": "Yes, one of a family of identical /oefenexamen/[level]/[skill] pages.",
+      "date": "None visible.",
+      "languages": "NL, EN, AR",
+      "verdict": "Has the right product for the 'oefenen' intent, but an anonymous visitor (and Google) sees a list of locked slots, while nt2taalmenu and inburgering.org show the exercise itself."
+    },
+    {
+      "url": "https://inburgeringoefenen.nl/nl/blog/inburgeringsexamen-zakken-herkansen",
+      "domain": "inburgeringoefenen.nl",
+      "intent": "Failed exam / retake explainer",
+      "ours": true,
+      "author": "Amber van der Zalm, NT2-docent, photo, 25 juli 2026, first person ('de vraag die mij het vaakst wordt gesteld').",
+      "first_hand": "Original research angle: 'DUO noemt geen maximum. Ik heb het gezocht op inburgeren.nl en in het volledige examenreglement.' Interactive retake cost calculator.",
+      "practice": "Interactive cost calculator; no exercise.",
+      "words": 1900,
+      "templated": "Blog template; 14 em dashes.",
+      "date": "25 juli 2026",
+      "languages": "NL, EN, AR",
+      "verdict": "Still ranks #2 in this check, likely because it answers a narrow question with a verified fact competitors get wrong and few commercial pages compete."
+    }
+  ],
+  "summary": "Outside the official sites, the pages that still rank either let the searcher practise right away (inburgering.org shows 12 writing tasks plus DUO's scoring grid, nt2taalmenu.nl is the exam itself, denieuwenederlanders.nl lists 14 sample answers) or sit on old, established domains where even a 200-word page ranks (nedles.nl for 'ona examen'). inburgeren.nl appears in the top 10 for 10 of 12 queries and in the top 5 for all 10; that is authority, not content quality, and no one will outrank it on rules questions. Our guides are accurate, dated and signed by a named teacher, but they explain rather than demonstrate: no sample tasks and no model answers on the page. Our free 10-question taster needs no account, but it lives on /oefenen, not on the guide and exam pages Google ranks, where visitors see locked exam slots. And one identical template runs across many pages. Evidence that the demotion is site-level rather than page-level: thinner pages on trusted domains outrank our deeper ones, and our one narrow, fact-led blog post still ranks #2.",
+  "differences": [
+    {
+      "title": "Practice on the page",
+      "them": "inburgering.org A2 Schrijven has 3 practice sets with 12 tasks on the page; nt2taalmenu.nl's ranking URL is a free practice exam; denieuwenederlanders links to 8 free exam PDFs with answers.",
+      "us": "Our guides have no tasks. A free 10-question taster without an account exists on /oefenen, but the guide and /oefenexamen pages Google ranks don’t show it; there a visitor sees locked exam slots (exam 1 is free after registering).",
+      "evidence": "strong"
+    },
+    {
+      "title": "Model answers and scoring detail",
+      "them": "denieuwenederlanders shows 14 'Voorbeeldantwoord' blocks; inburgering.org reproduces DUO's scoring grid with point ranges (adequaatheid 0-3, spelling 0-2, the 0-points rule) and a 40-minute timetable.",
+      "us": "Our Schrijven guide describes assessment 'in grote lijnen' in four bullets and shows no sample answer.",
+      "evidence": "strong"
+    },
+    {
+      "title": "Site age and trust",
+      "them": "nedles.nl ranks top 5 for 'ona examen' with about 200 words and the line 'NedLes biedt geen hulp bij voorbereiding op het ONA examen'. inburgeringonline.nl claims 70,000+ students since 2021. nt2taalmenu.nl is an ANBI foundation with 1,835 URLs.",
+      "us": "Young domain (forked July 2026) with a recent, fast content build.",
+      "evidence": "medium"
+    },
+    {
+      "title": "Template uniformity",
+      "them": "Competitor pages vary in shape and voice (opinionated school owner, link hub, task sheet). Em dashes per page: 0-1.",
+      "us": "Every guide repeats the same skeleton (In het kort, TOC, sourced quote blocks, two teacher quote boxes, Doen/Niet doen, FAQ, PDF gate) with 13-21 em dashes per page, a pattern often associated with AI-drafted text.",
+      "evidence": "medium"
+    },
+    {
+      "title": "Show, don't describe",
+      "them": "olafgeysendorpher.nl shows one medicine-leaflet sentence rewritten at all six levels; inburgering.org's tasks show what A2 writing looks like.",
+      "us": "Our taalniveaus post describes levels in a table of abstract phrases ('dagelijks leven', 'normaal gesprek') with no example text per level.",
+      "evidence": "medium"
+    },
+    {
+      "title": "Video",
+      "them": "YouTube appears in the top 10 for 6 of 12 queries; denieuwenederlanders embeds 5 videos; inburgeringonline sells on a video tour and 21 lesson videos.",
+      "us": "No video on any page checked.",
+      "evidence": "strong"
+    },
+    {
+      "title": "Author signals are not the differentiator",
+      "them": "Most ranking non-government pages have weak author signals: 'Inburgering.org team', 'Nicole', or none.",
+      "us": "We have the strongest author block in the set (named NT2 teacher, photo, review date, /redactie page), yet rank lower. Author markup alone did not protect us.",
+      "evidence": "strong"
+    }
+  ],
+  "lessons": [
+    "Put real practice on public guide pages: at least one full sample task per onderdeel with a model answer and the DUO scoring points, visible without an account.",
+    "Put the free taster (no account needed) on the pages Google ranks: embed a few questions on each guide and at the top of /oefenexamen, so the page itself satisfies oefenen intent.",
+    "Break the single guide template: let each page's shape follow its topic, drop boilerplate blocks that repeat on every page, and cut the em-dash-heavy house style.",
+    "Add concrete demonstrations from Amber's teaching, such as the same message written at A1, A2 and B1, or a real corrected student text, instead of more description.",
+    "Prioritise narrow, fact-led questions where we hold a verified answer others get wrong (as with the retake post) over broad rules queries that inburgeren.nl owns.",
+    "Treat recovery as site-level: prune or merge thin and near-duplicate pages and slow new publishing until the remaining pages each offer something no sibling page does."
+  ]
+}

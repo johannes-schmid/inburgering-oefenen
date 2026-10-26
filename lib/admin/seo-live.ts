@@ -17,6 +17,8 @@ import type { BingDay, GscDay } from './seo-model';
 const SITE = 'sc-domain:inburgeringoefenen.nl';
 const BRAND = 'inburgering ?oefenen|inburgeringoefenen';
 const TTL = 30 * 60_000;
+/** Een fout van Google (vaak een kortstondige 502) mag de pagina geen half uur op de snapshot zetten. */
+const ERROR_TTL = 60_000;
 /** De eerste dag met data; de backfill van 05-10 begint hier. */
 const FIRST_DAY = '2026-07-28';
 
@@ -30,6 +32,8 @@ export type LiveGsc = {
   totals: { current: Totals; previous: Totals };
   nonBrand: { current: Totals; previous: Totals };
   pages: { baseline: PageRow[]; recent: PageRow[]; recentWindow: { start: string; end: string } };
+  /** Zoekwoord × pagina sinds de eerste dag, voor de lade bij een pagina. Alleen rijen met ≥ 2 vertoningen. */
+  queryPage: { query: string; page: string; impressions: number; position: number }[];
 };
 
 export type LiveBing = { fetchedAt: string; inburgering: BingDay[] | null; knm: BingDay[] | null };
@@ -56,7 +60,7 @@ function creds(): { client_email: string; private_key: string } | null {
  */
 export async function fetchLiveGsc(baseline: { start: string; end: string }, now = new Date()): Promise<LiveGsc | { error: string } | null> {
   const key = `${baseline.start}:${baseline.end}`;
-  if (gscCache && gscCache.key === key && Date.now() - gscCache.at < TTL) return gscCache.value;
+  if (gscCache && gscCache.key === key && Date.now() - gscCache.at < ('error' in gscCache.value ? ERROR_TTL : TTL)) return gscCache.value;
 
   let c: ReturnType<typeof creds>;
   try {
@@ -69,10 +73,19 @@ export async function fetchLiveGsc(baseline: { start: string; end: string }, now
   const auth = new google.auth.JWT({ email: c.client_email, key: c.private_key, scopes: ['https://www.googleapis.com/auth/webmasters.readonly'] });
   const sc = google.searchconsole({ version: 'v1', auth });
   type Body = Pick<searchconsole_v1.Schema$SearchAnalyticsQueryRequest, 'startDate' | 'endDate' | 'dimensions' | 'dimensionFilterGroups'>;
-  const query = async (body: Body) => (await sc.searchanalytics.query({
+  const once = async (body: Body) => (await sc.searchanalytics.query({
     siteUrl: SITE,
     requestBody: { rowLimit: 25000, dataState: 'all', type: 'web', ...body },
   })).data.rows ?? [];
+  // Eén herkansing: Search Console geeft af en toe een 502 die een seconde later weg is.
+  const query = async (body: Body) => {
+    try {
+      return await once(body);
+    } catch {
+      await new Promise(r => setTimeout(r, 800));
+      return once(body);
+    }
+  };
 
   const today = ymd(now);
   const current = { start: addDays(today, -27), end: today };
@@ -88,7 +101,7 @@ export async function fetchLiveGsc(baseline: { start: string; end: string }, now
     rows.map(r => ({ page: r.keys![0], clicks: r.clicks ?? 0, impressions: r.impressions ?? 0, position: r.position ?? 0 }));
 
   try {
-    const [daily, cur, prev, nbCur, nbPrev, base, recent] = await Promise.all([
+    const [daily, cur, prev, nbCur, nbPrev, base, recent, qp] = await Promise.all([
       query({ startDate: FIRST_DAY, endDate: today, dimensions: ['date'] }),
       query({ startDate: current.start, endDate: current.end }),
       query({ startDate: previous.start, endDate: previous.end }),
@@ -96,6 +109,7 @@ export async function fetchLiveGsc(baseline: { start: string; end: string }, now
       query({ startDate: previous.start, endDate: previous.end, dimensionFilterGroups: nonBrand }),
       query({ startDate: baseline.start, endDate: baseline.end, dimensions: ['page'] }),
       query({ startDate: recentWindow.start, endDate: recentWindow.end, dimensions: ['page'] }),
+      query({ startDate: FIRST_DAY, endDate: today, dimensions: ['query', 'page'] }),
     ]);
     const value: LiveGsc = {
       fetchedAt: new Date().toISOString(),
@@ -104,11 +118,16 @@ export async function fetchLiveGsc(baseline: { start: string; end: string }, now
       totals: { current: total(cur), previous: total(prev) },
       nonBrand: { current: total(nbCur), previous: total(nbPrev) },
       pages: { baseline: pages(base), recent: pages(recent), recentWindow },
+      queryPage: qp
+        .filter(r => (r.impressions ?? 0) >= 2)
+        .map(r => ({ query: r.keys![0], page: r.keys![1], impressions: r.impressions ?? 0, position: r.position ?? 0 })),
     };
     gscCache = { at: Date.now(), key, value };
     return value;
   } catch (e) {
-    const value = { error: e instanceof Error ? e.message.slice(0, 160) : 'Search Console request failed' };
+    const raw = e instanceof Error ? e.message : '';
+    const code = /\b(4\d\d|5\d\d)\b/.exec(raw)?.[1];
+    const value = { error: raw.trimStart().startsWith('<') || code ? `Google returned an error${code ? ` (${code})` : ''}, retrying in a minute` : raw.slice(0, 120) || 'request failed' };
     gscCache = { at: Date.now(), key, value };
     return value;
   }

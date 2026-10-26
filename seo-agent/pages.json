@@ -1,0 +1,2059 @@
+{
+  "$comment": "Gegenereerd door scripts/seo-agent/pages.mjs uit de sitemap en de pagina-audit. Niet met de hand bewerken: pas de regels in het script aan en draai het opnieuw. De zoekcijfers per pagina komen live uit Search Console op /admin/seo.",
+  "updated": "2026-10-26",
+  "sources": {
+    "sitemap": "seo-agent/data/2026-W43/health.json",
+    "audit": "seo-agent/reports/page-audit-2026-10-11.csv"
+  },
+  "amber_per_week": 2,
+  "sections": [
+    {
+      "key": "practice",
+      "label": "Practice exams",
+      "note": "What we sell. Tool intent, the queries AI Overviews can’t answer."
+    },
+    {
+      "key": "guides",
+      "label": "Guides (NL)",
+      "note": "The informational layer. Must be teacher-reviewed to earn trust back."
+    },
+    {
+      "key": "blog",
+      "label": "Blog (NL)",
+      "note": "Topic posts. Several duplicate a guide."
+    },
+    {
+      "key": "knm",
+      "label": "KNM guides (NL)",
+      "note": "Overlaps knmoefenen.nl, which Google prefers for KNM."
+    },
+    {
+      "key": "core",
+      "label": "Core pages",
+      "note": "Home, platform, pricing, teacher, editorial policy."
+    },
+    {
+      "key": "translations",
+      "label": "EN / AR translations",
+      "note": "Machine translations nobody reviewed."
+    }
+  ],
+  "counts": {
+    "healthy": 84,
+    "improve": 13,
+    "consolidate": 4,
+    "remove": 73,
+    "watch": 3
+  },
+  "pages": [
+    {
+      "path": "/nl",
+      "section": "core",
+      "verdict": "healthy",
+      "reason": "A core page of the site.",
+      "plan": null,
+      "demand": 270
+    },
+    {
+      "path": "/nl/platform",
+      "section": "core",
+      "verdict": "healthy",
+      "reason": "A core page of the site.",
+      "plan": null,
+      "demand": 0
+    },
+    {
+      "path": "/nl/premium",
+      "section": "core",
+      "verdict": "healthy",
+      "reason": "A core page of the site.",
+      "plan": null,
+      "demand": 4
+    },
+    {
+      "path": "/nl/gidsen",
+      "section": "core",
+      "verdict": "healthy",
+      "reason": "A core page of the site.",
+      "plan": null,
+      "demand": 0
+    },
+    {
+      "path": "/en",
+      "section": "core",
+      "verdict": "healthy",
+      "reason": "A core page of the site.",
+      "plan": null,
+      "demand": 234
+    },
+    {
+      "path": "/nl/docent",
+      "section": "core",
+      "verdict": "healthy",
+      "reason": "A core page of the site.",
+      "plan": null,
+      "demand": 2
+    },
+    {
+      "path": "/nl/redactie",
+      "section": "core",
+      "verdict": "healthy",
+      "reason": "A core page of the site.",
+      "plan": null,
+      "demand": 0
+    },
+    {
+      "path": "/nl/contact",
+      "section": "core",
+      "verdict": "healthy",
+      "reason": "A core page of the site.",
+      "plan": null,
+      "demand": 0
+    },
+    {
+      "path": "/en/platform",
+      "section": "core",
+      "verdict": "healthy",
+      "reason": "A core page of the site.",
+      "plan": null,
+      "demand": 0
+    },
+    {
+      "path": "/en/guides",
+      "section": "core",
+      "verdict": "healthy",
+      "reason": "A core page of the site.",
+      "plan": null,
+      "demand": 0
+    },
+    {
+      "path": "/en/contact",
+      "section": "core",
+      "verdict": "healthy",
+      "reason": "A core page of the site.",
+      "plan": null,
+      "demand": 0
+    },
+    {
+      "path": "/en/teacher",
+      "section": "core",
+      "verdict": "healthy",
+      "reason": "A core page of the site.",
+      "plan": null,
+      "demand": 8
+    },
+    {
+      "path": "/ar",
+      "section": "core",
+      "verdict": "healthy",
+      "reason": "A core page of the site.",
+      "plan": null,
+      "demand": 1
+    },
+    {
+      "path": "/ar/المنصة",
+      "section": "core",
+      "verdict": "healthy",
+      "reason": "A core page of the site.",
+      "plan": null,
+      "demand": 0
+    },
+    {
+      "path": "/ar/الأدلة",
+      "section": "core",
+      "verdict": "healthy",
+      "reason": "A core page of the site.",
+      "plan": null,
+      "demand": 0
+    },
+    {
+      "path": "/ar/الباقة-المميزة",
+      "section": "core",
+      "verdict": "healthy",
+      "reason": "A core page of the site.",
+      "plan": null,
+      "demand": 0
+    },
+    {
+      "path": "/en/editorial-policy",
+      "section": "core",
+      "verdict": "healthy",
+      "reason": "A core page of the site.",
+      "plan": null,
+      "demand": 0
+    },
+    {
+      "path": "/ar/المعلمة",
+      "section": "core",
+      "verdict": "healthy",
+      "reason": "A core page of the site.",
+      "plan": null,
+      "demand": 0
+    },
+    {
+      "path": "/en/premium",
+      "section": "core",
+      "verdict": "healthy",
+      "reason": "A core page of the site.",
+      "plan": null,
+      "demand": 0
+    },
+    {
+      "path": "/ar/سياسة-التحرير",
+      "section": "core",
+      "verdict": "healthy",
+      "reason": "A core page of the site.",
+      "plan": null,
+      "demand": 0
+    },
+    {
+      "path": "/ar/تواصل-معنا",
+      "section": "core",
+      "verdict": "healthy",
+      "reason": "A core page of the site.",
+      "plan": null,
+      "demand": 0
+    },
+    {
+      "path": "/nl/oefenen",
+      "section": "practice",
+      "verdict": "healthy",
+      "reason": "A practice page: what the site sells. Keep it, link to it from every guide.",
+      "plan": null,
+      "demand": 31
+    },
+    {
+      "path": "/en/practice",
+      "section": "practice",
+      "verdict": "healthy",
+      "reason": "A practice page: what the site sells. Keep it, link to it from every guide.",
+      "plan": null,
+      "demand": 44
+    },
+    {
+      "path": "/nl/oefenen/lezen",
+      "section": "practice",
+      "verdict": "healthy",
+      "reason": "A practice page: what the site sells. Keep it, link to it from every guide.",
+      "plan": null,
+      "demand": 11
+    },
+    {
+      "path": "/en/practice/listening",
+      "section": "practice",
+      "verdict": "healthy",
+      "reason": "A practice page: what the site sells. Keep it, link to it from every guide.",
+      "plan": null,
+      "demand": 4
+    },
+    {
+      "path": "/en/practice/reading",
+      "section": "practice",
+      "verdict": "healthy",
+      "reason": "A practice page: what the site sells. Keep it, link to it from every guide.",
+      "plan": null,
+      "demand": 7
+    },
+    {
+      "path": "/nl/oefenen/luisteren",
+      "section": "practice",
+      "verdict": "healthy",
+      "reason": "A practice page: what the site sells. Keep it, link to it from every guide.",
+      "plan": null,
+      "demand": 15
+    },
+    {
+      "path": "/nl/oefenen/knm",
+      "section": "practice",
+      "verdict": "healthy",
+      "reason": "A practice page: what the site sells. Keep it, link to it from every guide.",
+      "plan": null,
+      "demand": 0
+    },
+    {
+      "path": "/ar/تدرب",
+      "section": "practice",
+      "verdict": "healthy",
+      "reason": "A practice page: what the site sells. Keep it, link to it from every guide.",
+      "plan": null,
+      "demand": 18
+    },
+    {
+      "path": "/en/practice/knm",
+      "section": "practice",
+      "verdict": "healthy",
+      "reason": "A practice page: what the site sells. Keep it, link to it from every guide.",
+      "plan": null,
+      "demand": 0
+    },
+    {
+      "path": "/nl/oefenen/b1/lezen",
+      "section": "practice",
+      "verdict": "healthy",
+      "reason": "A practice page: what the site sells. Keep it, link to it from every guide.",
+      "plan": null,
+      "demand": 0
+    },
+    {
+      "path": "/en/practice/b1/reading",
+      "section": "practice",
+      "verdict": "healthy",
+      "reason": "A practice page: what the site sells. Keep it, link to it from every guide.",
+      "plan": null,
+      "demand": 0
+    },
+    {
+      "path": "/nl/oefenexamen/a2",
+      "section": "practice",
+      "verdict": "healthy",
+      "reason": "A practice page: what the site sells. Keep it, link to it from every guide.",
+      "plan": null,
+      "demand": 167
+    },
+    {
+      "path": "/en/practice-exam/a2",
+      "section": "practice",
+      "verdict": "healthy",
+      "reason": "A practice page: what the site sells. Keep it, link to it from every guide.",
+      "plan": null,
+      "demand": 0
+    },
+    {
+      "path": "/ar/تدرب/الاستماع",
+      "section": "practice",
+      "verdict": "healthy",
+      "reason": "A practice page: what the site sells. Keep it, link to it from every guide.",
+      "plan": null,
+      "demand": 0
+    },
+    {
+      "path": "/ar/امتحان-تجريبي/a2",
+      "section": "practice",
+      "verdict": "healthy",
+      "reason": "A practice page: what the site sells. Keep it, link to it from every guide.",
+      "plan": null,
+      "demand": 0
+    },
+    {
+      "path": "/nl/oefenexamen/b1",
+      "section": "practice",
+      "verdict": "healthy",
+      "reason": "A practice page: what the site sells. Keep it, link to it from every guide.",
+      "plan": null,
+      "demand": 179
+    },
+    {
+      "path": "/en/practice-exam/b1",
+      "section": "practice",
+      "verdict": "healthy",
+      "reason": "A practice page: what the site sells. Keep it, link to it from every guide.",
+      "plan": null,
+      "demand": 0
+    },
+    {
+      "path": "/ar/امتحان-تجريبي/b1",
+      "section": "practice",
+      "verdict": "healthy",
+      "reason": "A practice page: what the site sells. Keep it, link to it from every guide.",
+      "plan": null,
+      "demand": 0
+    },
+    {
+      "path": "/ar/تدرب/القراءة",
+      "section": "practice",
+      "verdict": "healthy",
+      "reason": "A practice page: what the site sells. Keep it, link to it from every guide.",
+      "plan": null,
+      "demand": 0
+    },
+    {
+      "path": "/nl/oefenexamen/a2/lezen",
+      "section": "practice",
+      "verdict": "healthy",
+      "reason": "A practice page: what the site sells. Keep it, link to it from every guide.",
+      "plan": null,
+      "demand": 57
+    },
+    {
+      "path": "/ar/تدرب/knm",
+      "section": "practice",
+      "verdict": "healthy",
+      "reason": "A practice page: what the site sells. Keep it, link to it from every guide.",
+      "plan": null,
+      "demand": 0
+    },
+    {
+      "path": "/en/practice-exam/a2/reading",
+      "section": "practice",
+      "verdict": "healthy",
+      "reason": "A practice page: what the site sells. Keep it, link to it from every guide.",
+      "plan": null,
+      "demand": 29
+    },
+    {
+      "path": "/ar/امتحان-تجريبي/a2/القراءة",
+      "section": "practice",
+      "verdict": "healthy",
+      "reason": "A practice page: what the site sells. Keep it, link to it from every guide.",
+      "plan": null,
+      "demand": 11
+    },
+    {
+      "path": "/ar/تدرب/b1/القراءة",
+      "section": "practice",
+      "verdict": "healthy",
+      "reason": "A practice page: what the site sells. Keep it, link to it from every guide.",
+      "plan": null,
+      "demand": 0
+    },
+    {
+      "path": "/nl/oefenexamen/b1/lezen",
+      "section": "practice",
+      "verdict": "healthy",
+      "reason": "A practice page: what the site sells. Keep it, link to it from every guide.",
+      "plan": null,
+      "demand": 0
+    },
+    {
+      "path": "/ar/امتحان-تجريبي/b1/القراءة",
+      "section": "practice",
+      "verdict": "healthy",
+      "reason": "A practice page: what the site sells. Keep it, link to it from every guide.",
+      "plan": null,
+      "demand": 0
+    },
+    {
+      "path": "/en/practice-exam/b1/reading",
+      "section": "practice",
+      "verdict": "healthy",
+      "reason": "A practice page: what the site sells. Keep it, link to it from every guide.",
+      "plan": null,
+      "demand": 0
+    },
+    {
+      "path": "/nl/oefenexamen/a2/luisteren",
+      "section": "practice",
+      "verdict": "healthy",
+      "reason": "A practice page: what the site sells. Keep it, link to it from every guide.",
+      "plan": null,
+      "demand": 38
+    },
+    {
+      "path": "/en/practice-exam/a2/listening",
+      "section": "practice",
+      "verdict": "healthy",
+      "reason": "A practice page: what the site sells. Keep it, link to it from every guide.",
+      "plan": null,
+      "demand": 3
+    },
+    {
+      "path": "/nl/oefenexamen/a2/schrijven",
+      "section": "practice",
+      "verdict": "healthy",
+      "reason": "A practice page: what the site sells. Keep it, link to it from every guide.",
+      "plan": null,
+      "demand": 102
+    },
+    {
+      "path": "/ar/امتحان-تجريبي/a2/الاستماع",
+      "section": "practice",
+      "verdict": "healthy",
+      "reason": "A practice page: what the site sells. Keep it, link to it from every guide.",
+      "plan": null,
+      "demand": 1
+    },
+    {
+      "path": "/en/practice-exam/a2/writing",
+      "section": "practice",
+      "verdict": "healthy",
+      "reason": "A practice page: what the site sells. Keep it, link to it from every guide.",
+      "plan": null,
+      "demand": 8
+    },
+    {
+      "path": "/nl/oefenexamen/b1/schrijven",
+      "section": "practice",
+      "verdict": "healthy",
+      "reason": "A practice page: what the site sells. Keep it, link to it from every guide.",
+      "plan": null,
+      "demand": 0
+    },
+    {
+      "path": "/ar/امتحان-تجريبي/a2/الكتابة",
+      "section": "practice",
+      "verdict": "healthy",
+      "reason": "A practice page: what the site sells. Keep it, link to it from every guide.",
+      "plan": null,
+      "demand": 0
+    },
+    {
+      "path": "/ar/امتحان-تجريبي/b1/الكتابة",
+      "section": "practice",
+      "verdict": "healthy",
+      "reason": "A practice page: what the site sells. Keep it, link to it from every guide.",
+      "plan": null,
+      "demand": 0
+    },
+    {
+      "path": "/en/practice-exam/b1/writing",
+      "section": "practice",
+      "verdict": "healthy",
+      "reason": "A practice page: what the site sells. Keep it, link to it from every guide.",
+      "plan": null,
+      "demand": 0
+    },
+    {
+      "path": "/nl/oefenexamen/a2/spreken",
+      "section": "practice",
+      "verdict": "healthy",
+      "reason": "A practice page: what the site sells. Keep it, link to it from every guide.",
+      "plan": null,
+      "demand": 110
+    },
+    {
+      "path": "/nl/oefenexamen/b1/spreken",
+      "section": "practice",
+      "verdict": "healthy",
+      "reason": "A practice page: what the site sells. Keep it, link to it from every guide.",
+      "plan": null,
+      "demand": 0
+    },
+    {
+      "path": "/en/practice-exam/a2/speaking",
+      "section": "practice",
+      "verdict": "healthy",
+      "reason": "A practice page: what the site sells. Keep it, link to it from every guide.",
+      "plan": null,
+      "demand": 15
+    },
+    {
+      "path": "/ar/امتحان-تجريبي/a2/التحدث",
+      "section": "practice",
+      "verdict": "healthy",
+      "reason": "A practice page: what the site sells. Keep it, link to it from every guide.",
+      "plan": null,
+      "demand": 2
+    },
+    {
+      "path": "/nl/oefenexamen/knm",
+      "section": "practice",
+      "verdict": "healthy",
+      "reason": "A practice page: what the site sells. Keep it, link to it from every guide.",
+      "plan": null,
+      "demand": 9
+    },
+    {
+      "path": "/en/practice-exam/b1/speaking",
+      "section": "practice",
+      "verdict": "healthy",
+      "reason": "A practice page: what the site sells. Keep it, link to it from every guide.",
+      "plan": null,
+      "demand": 0
+    },
+    {
+      "path": "/ar/امتحان-تجريبي/b1/التحدث",
+      "section": "practice",
+      "verdict": "healthy",
+      "reason": "A practice page: what the site sells. Keep it, link to it from every guide.",
+      "plan": null,
+      "demand": 0
+    },
+    {
+      "path": "/nl/blog",
+      "section": "core",
+      "verdict": "healthy",
+      "reason": "A core page of the site.",
+      "plan": null,
+      "demand": 1
+    },
+    {
+      "path": "/ar/امتحان-تجريبي/knm",
+      "section": "practice",
+      "verdict": "healthy",
+      "reason": "A practice page: what the site sells. Keep it, link to it from every guide.",
+      "plan": null,
+      "demand": 0
+    },
+    {
+      "path": "/en/blog",
+      "section": "core",
+      "verdict": "healthy",
+      "reason": "A core page of the site.",
+      "plan": null,
+      "demand": 1
+    },
+    {
+      "path": "/ar/المدونة",
+      "section": "core",
+      "verdict": "healthy",
+      "reason": "A core page of the site.",
+      "plan": null,
+      "demand": 0
+    },
+    {
+      "path": "/nl/blog/veelgemaakte-fouten-schrijven-examen-a2",
+      "section": "blog",
+      "verdict": "healthy",
+      "reason": "Reviewed in the audit; nothing wrong found.",
+      "plan": null,
+      "demand": 86
+    },
+    {
+      "path": "/en/blog/common-mistakes-writing-exam-a2",
+      "section": "translations",
+      "verdict": "remove",
+      "reason": "Machine translation nobody reviewed. It had 35 impressions, partly on Dutch queries the Dutch original should get.",
+      "plan": {
+        "action": "Noindex and drop from the sitemap. The page stays reachable; it returns to the index once a fluent reviewer checks it.",
+        "owner": "agent",
+        "when": "remove",
+        "week": "2026-W44",
+        "starts": "2026-10-26"
+      },
+      "demand": 35
+    },
+    {
+      "path": "/en/practice-exam/knm",
+      "section": "practice",
+      "verdict": "healthy",
+      "reason": "A practice page: what the site sells. Keep it, link to it from every guide.",
+      "plan": null,
+      "demand": 0
+    },
+    {
+      "path": "/ar/المدونة/أخطاء-شائعة-امتحان-الكتابة-a2",
+      "section": "translations",
+      "verdict": "remove",
+      "reason": "Machine translation nobody reviewed, with no search demand.",
+      "plan": {
+        "action": "Noindex and drop from the sitemap. The page stays reachable; it returns to the index once a fluent reviewer checks it.",
+        "owner": "agent",
+        "when": "remove",
+        "week": "2026-W44",
+        "starts": "2026-10-26"
+      },
+      "demand": 0
+    },
+    {
+      "path": "/nl/blog/want-of-omdat",
+      "section": "blog",
+      "verdict": "improve",
+      "reason": "Had real demand (312 impressions in Aug and Sep). Worth saving.",
+      "plan": {
+        "action": "Amber reviews it, adds an example from her own teaching and signs it. Then request indexing.",
+        "owner": "amber",
+        "when": "amber",
+        "demand": 312,
+        "week": "2026-W46",
+        "starts": "2026-11-09"
+      },
+      "demand": 312
+    },
+    {
+      "path": "/nl/blog/wederkerende-werkwoorden-nederlands",
+      "section": "blog",
+      "verdict": "healthy",
+      "reason": "Reviewed in the audit; nothing wrong found.",
+      "plan": null,
+      "demand": 77
+    },
+    {
+      "path": "/ar/المدونة/want-أم-omdat",
+      "section": "translations",
+      "verdict": "remove",
+      "reason": "Machine translation nobody reviewed, with no search demand.",
+      "plan": {
+        "action": "Noindex and drop from the sitemap. The page stays reachable; it returns to the index once a fluent reviewer checks it.",
+        "owner": "agent",
+        "when": "remove",
+        "week": "2026-W44",
+        "starts": "2026-10-26"
+      },
+      "demand": 0
+    },
+    {
+      "path": "/en/blog/dutch-reflexive-verbs",
+      "section": "translations",
+      "verdict": "remove",
+      "reason": "Machine translation nobody reviewed. It had 44 impressions, partly on Dutch queries the Dutch original should get.",
+      "plan": {
+        "action": "Noindex and drop from the sitemap. The page stays reachable; it returns to the index once a fluent reviewer checks it.",
+        "owner": "agent",
+        "when": "remove",
+        "week": "2026-W44",
+        "starts": "2026-10-26"
+      },
+      "demand": 44
+    },
+    {
+      "path": "/en/blog/speaking-exam-a2-tips",
+      "section": "translations",
+      "verdict": "remove",
+      "reason": "Machine translation nobody reviewed. It had 40 impressions, partly on Dutch queries the Dutch original should get.",
+      "plan": {
+        "action": "Noindex and drop from the sitemap. The page stays reachable; it returns to the index once a fluent reviewer checks it.",
+        "owner": "agent",
+        "when": "remove",
+        "week": "2026-W44",
+        "starts": "2026-10-26"
+      },
+      "demand": 40
+    },
+    {
+      "path": "/ar/المدونة/الأفعال-الانعكاسية-الهولندية",
+      "section": "translations",
+      "verdict": "remove",
+      "reason": "Machine translation nobody reviewed, with no search demand.",
+      "plan": {
+        "action": "Noindex and drop from the sitemap. The page stays reachable; it returns to the index once a fluent reviewer checks it.",
+        "owner": "agent",
+        "when": "remove",
+        "week": "2026-W44",
+        "starts": "2026-10-26"
+      },
+      "demand": 0
+    },
+    {
+      "path": "/nl/blog/spreken-examen-inburgering-tips",
+      "section": "blog",
+      "verdict": "consolidate",
+      "reason": "Same search intent as /nl/taalexamens/spreken-examen. Two pages split the signal; one strong page wins.",
+      "plan": {
+        "action": "Move the best parts into /nl/taalexamens/spreken-examen and 301 this URL to it.",
+        "owner": "agent",
+        "when": "consolidate",
+        "into": "/nl/taalexamens/spreken-examen",
+        "week": "2026-W45",
+        "starts": "2026-11-02"
+      },
+      "demand": 93
+    },
+    {
+      "path": "/en/blog/want-or-omdat-dutch",
+      "section": "translations",
+      "verdict": "remove",
+      "reason": "Machine translation nobody reviewed. It had 91 impressions, partly on Dutch queries the Dutch original should get.",
+      "plan": {
+        "action": "Noindex and drop from the sitemap. The page stays reachable; it returns to the index once a fluent reviewer checks it.",
+        "owner": "agent",
+        "when": "remove",
+        "week": "2026-W44",
+        "starts": "2026-10-26"
+      },
+      "demand": 91
+    },
+    {
+      "path": "/ar/المدونة/نصائح-امتحان-التحدث-a2",
+      "section": "translations",
+      "verdict": "remove",
+      "reason": "Machine translation nobody reviewed, with no search demand.",
+      "plan": {
+        "action": "Noindex and drop from the sitemap. The page stays reachable; it returns to the index once a fluent reviewer checks it.",
+        "owner": "agent",
+        "when": "remove",
+        "week": "2026-W44",
+        "starts": "2026-10-26"
+      },
+      "demand": 0
+    },
+    {
+      "path": "/en/blog/a2-integration-exam-explained",
+      "section": "translations",
+      "verdict": "remove",
+      "reason": "Machine translation nobody reviewed. It had 57 impressions, partly on Dutch queries the Dutch original should get.",
+      "plan": {
+        "action": "Noindex and drop from the sitemap. The page stays reachable; it returns to the index once a fluent reviewer checks it.",
+        "owner": "agent",
+        "when": "remove",
+        "week": "2026-W44",
+        "starts": "2026-10-26"
+      },
+      "demand": 57
+    },
+    {
+      "path": "/ar/المدونة/شرح-امتحان-الاندماج-a2",
+      "section": "translations",
+      "verdict": "remove",
+      "reason": "Machine translation nobody reviewed. It had 19 impressions, partly on Dutch queries the Dutch original should get.",
+      "plan": {
+        "action": "Noindex and drop from the sitemap. The page stays reachable; it returns to the index once a fluent reviewer checks it.",
+        "owner": "agent",
+        "when": "remove",
+        "week": "2026-W44",
+        "starts": "2026-10-26"
+      },
+      "demand": 19
+    },
+    {
+      "path": "/nl/blog/inburgeringsexamen-a2-uitleg",
+      "section": "blog",
+      "verdict": "consolidate",
+      "reason": "Same search intent as /nl/taalexamens/taalexamens-a2-b1. Two pages split the signal; one strong page wins.",
+      "plan": {
+        "action": "Move the best parts into /nl/taalexamens/taalexamens-a2-b1 and 301 this URL to it.",
+        "owner": "agent",
+        "when": "consolidate",
+        "into": "/nl/taalexamens/taalexamens-a2-b1",
+        "week": "2026-W45",
+        "starts": "2026-11-02"
+      },
+      "demand": 141
+    },
+    {
+      "path": "/nl/blog/lezen-examen-inburgering-a2",
+      "section": "blog",
+      "verdict": "consolidate",
+      "reason": "Same search intent as /nl/taalexamens/lezen-examen. Two pages split the signal; one strong page wins.",
+      "plan": {
+        "action": "Move the best parts into /nl/taalexamens/lezen-examen and 301 this URL to it.",
+        "owner": "agent",
+        "when": "consolidate",
+        "into": "/nl/taalexamens/lezen-examen",
+        "week": "2026-W45",
+        "starts": "2026-11-02"
+      },
+      "demand": 147
+    },
+    {
+      "path": "/ar/المدونة/امتحان-القراءة-الاندماج-a2",
+      "section": "translations",
+      "verdict": "remove",
+      "reason": "Machine translation nobody reviewed, with no search demand.",
+      "plan": {
+        "action": "Noindex and drop from the sitemap. The page stays reachable; it returns to the index once a fluent reviewer checks it.",
+        "owner": "agent",
+        "when": "remove",
+        "week": "2026-W44",
+        "starts": "2026-10-26"
+      },
+      "demand": 0
+    },
+    {
+      "path": "/nl/blog/luisteren-examen-inburgering-a2",
+      "section": "blog",
+      "verdict": "consolidate",
+      "reason": "Same search intent as /nl/taalexamens/luisteren-examen. Two pages split the signal; one strong page wins.",
+      "plan": {
+        "action": "Move the best parts into /nl/taalexamens/luisteren-examen and 301 this URL to it.",
+        "owner": "agent",
+        "when": "consolidate",
+        "into": "/nl/taalexamens/luisteren-examen",
+        "week": "2026-W45",
+        "starts": "2026-11-02"
+      },
+      "demand": 100
+    },
+    {
+      "path": "/en/blog/reading-exam-a2-integration",
+      "section": "translations",
+      "verdict": "remove",
+      "reason": "Machine translation nobody reviewed. It had 53 impressions, partly on Dutch queries the Dutch original should get.",
+      "plan": {
+        "action": "Noindex and drop from the sitemap. The page stays reachable; it returns to the index once a fluent reviewer checks it.",
+        "owner": "agent",
+        "when": "remove",
+        "week": "2026-W44",
+        "starts": "2026-10-26"
+      },
+      "demand": 53
+    },
+    {
+      "path": "/en/blog/listening-exam-a2-integration",
+      "section": "translations",
+      "verdict": "remove",
+      "reason": "Machine translation nobody reviewed. It had 106 impressions, partly on Dutch queries the Dutch original should get.",
+      "plan": {
+        "action": "Noindex and drop from the sitemap. The page stays reachable; it returns to the index once a fluent reviewer checks it.",
+        "owner": "agent",
+        "when": "remove",
+        "week": "2026-W44",
+        "starts": "2026-10-26"
+      },
+      "demand": 106
+    },
+    {
+      "path": "/ar/المدونة/امتحان-الاستماع-الاندماج-a2",
+      "section": "translations",
+      "verdict": "remove",
+      "reason": "Machine translation nobody reviewed, with no search demand.",
+      "plan": {
+        "action": "Noindex and drop from the sitemap. The page stays reachable; it returns to the index once a fluent reviewer checks it.",
+        "owner": "agent",
+        "when": "remove",
+        "week": "2026-W44",
+        "starts": "2026-10-26"
+      },
+      "demand": 0
+    },
+    {
+      "path": "/en/blog/failing-and-retaking-the-integration-exam",
+      "section": "translations",
+      "verdict": "remove",
+      "reason": "Machine translation nobody reviewed. It had 156 impressions, partly on Dutch queries the Dutch original should get.",
+      "plan": {
+        "action": "Noindex and drop from the sitemap. The page stays reachable; it returns to the index once a fluent reviewer checks it.",
+        "owner": "agent",
+        "when": "remove",
+        "week": "2026-W44",
+        "starts": "2026-10-26"
+      },
+      "demand": 156
+    },
+    {
+      "path": "/nl/blog/inburgeringsexamen-zakken-herkansen",
+      "section": "blog",
+      "verdict": "improve",
+      "reason": "Had real demand (212 impressions in Aug and Sep). Worth saving.",
+      "plan": {
+        "action": "Amber reviews it, adds an example from her own teaching and signs it. Then request indexing.",
+        "owner": "amber",
+        "when": "amber",
+        "demand": 212,
+        "week": "2026-W51",
+        "starts": "2026-12-14"
+      },
+      "demand": 212
+    },
+    {
+      "path": "/en/blog/dutch-language-levels-a1-a2-b1",
+      "section": "translations",
+      "verdict": "remove",
+      "reason": "Machine translation nobody reviewed. It had 42 impressions, partly on Dutch queries the Dutch original should get.",
+      "plan": {
+        "action": "Noindex and drop from the sitemap. The page stays reachable; it returns to the index once a fluent reviewer checks it.",
+        "owner": "agent",
+        "when": "remove",
+        "week": "2026-W44",
+        "starts": "2026-10-26"
+      },
+      "demand": 42
+    },
+    {
+      "path": "/nl/blog/taalniveaus-a1-a2-b1-nederlands",
+      "section": "blog",
+      "verdict": "improve",
+      "reason": "Had real demand (526 impressions in Aug and Sep). Worth saving.",
+      "plan": {
+        "action": "Amber reviews it, adds an example from her own teaching and signs it. Then request indexing.",
+        "owner": "amber",
+        "when": "amber",
+        "demand": 526,
+        "week": "2026-W44",
+        "starts": "2026-10-26"
+      },
+      "demand": 526
+    },
+    {
+      "path": "/ar/المدونة/مستويات-اللغة-الهولندية-a1-a2-b1",
+      "section": "translations",
+      "verdict": "remove",
+      "reason": "Machine translation nobody reviewed, with no search demand.",
+      "plan": {
+        "action": "Noindex and drop from the sitemap. The page stays reachable; it returns to the index once a fluent reviewer checks it.",
+        "owner": "agent",
+        "when": "remove",
+        "week": "2026-W44",
+        "starts": "2026-10-26"
+      },
+      "demand": 0
+    },
+    {
+      "path": "/en/civic-integration",
+      "section": "core",
+      "verdict": "healthy",
+      "reason": "A core page of the site.",
+      "plan": null,
+      "demand": 0
+    },
+    {
+      "path": "/nl/inburgering",
+      "section": "core",
+      "verdict": "healthy",
+      "reason": "A core page of the site.",
+      "plan": null,
+      "demand": 0
+    },
+    {
+      "path": "/ar/المدونة/الرسوب-وإعادة-امتحان-الاندماج",
+      "section": "translations",
+      "verdict": "remove",
+      "reason": "Machine translation nobody reviewed, with no search demand.",
+      "plan": {
+        "action": "Noindex and drop from the sitemap. The page stays reachable; it returns to the index once a fluent reviewer checks it.",
+        "owner": "agent",
+        "when": "remove",
+        "week": "2026-W44",
+        "starts": "2026-10-26"
+      },
+      "demand": 0
+    },
+    {
+      "path": "/nl/knm",
+      "section": "core",
+      "verdict": "healthy",
+      "reason": "A core page of the site.",
+      "plan": null,
+      "demand": 0
+    },
+    {
+      "path": "/en/language-exams",
+      "section": "core",
+      "verdict": "healthy",
+      "reason": "A core page of the site.",
+      "plan": null,
+      "demand": 0
+    },
+    {
+      "path": "/en/knm",
+      "section": "core",
+      "verdict": "healthy",
+      "reason": "A core page of the site.",
+      "plan": null,
+      "demand": 0
+    },
+    {
+      "path": "/ar/knm",
+      "section": "core",
+      "verdict": "healthy",
+      "reason": "A core page of the site.",
+      "plan": null,
+      "demand": 0
+    },
+    {
+      "path": "/nl/taalexamens",
+      "section": "core",
+      "verdict": "healthy",
+      "reason": "A core page of the site.",
+      "plan": null,
+      "demand": 0
+    },
+    {
+      "path": "/ar/الاندماج",
+      "section": "core",
+      "verdict": "healthy",
+      "reason": "A core page of the site.",
+      "plan": null,
+      "demand": 0
+    },
+    {
+      "path": "/ar/امتحانات-اللغة",
+      "section": "core",
+      "verdict": "healthy",
+      "reason": "A core page of the site.",
+      "plan": null,
+      "demand": 0
+    },
+    {
+      "path": "/nl/knm/knm-examen",
+      "section": "knm",
+      "verdict": "remove",
+      "reason": "Never shown in Google. knmoefenen.nl covers KNM and Google prefers it.",
+      "plan": {
+        "action": "Noindex here until the merge, after your yes. The page stays live for users.",
+        "owner": "eigenaar",
+        "when": "decision",
+        "week": "2026-W45",
+        "starts": "2026-11-02"
+      },
+      "demand": 0
+    },
+    {
+      "path": "/en/knm/knm-exam",
+      "section": "translations",
+      "verdict": "remove",
+      "reason": "Machine translation nobody reviewed, with no search demand.",
+      "plan": {
+        "action": "Noindex and drop from the sitemap. The page stays reachable; it returns to the index once a fluent reviewer checks it.",
+        "owner": "agent",
+        "when": "remove",
+        "week": "2026-W44",
+        "starts": "2026-10-26"
+      },
+      "demand": 0
+    },
+    {
+      "path": "/ar/امتحانات-اللغة/امتحانات-اللغة-a2-b1",
+      "section": "translations",
+      "verdict": "remove",
+      "reason": "Machine translation nobody reviewed, with no search demand.",
+      "plan": {
+        "action": "Noindex and drop from the sitemap. The page stays reachable; it returns to the index once a fluent reviewer checks it.",
+        "owner": "agent",
+        "when": "remove",
+        "week": "2026-W44",
+        "starts": "2026-10-26"
+      },
+      "demand": 0
+    },
+    {
+      "path": "/nl/inburgering/inburgering-stappenplan",
+      "section": "guides",
+      "verdict": "improve",
+      "reason": "Had real demand (885 impressions in Aug and Sep). Worth saving.",
+      "plan": {
+        "action": "It competes with moet-ik-inburgeren for the same queries. Make this the one page for \"inburgeren\" and \"wat is inburgeren\", and leave \"wie moet inburgeren\" to the other page.",
+        "owner": "amber",
+        "when": "amber",
+        "demand": 885,
+        "week": "2026-W44",
+        "starts": "2026-10-26"
+      },
+      "demand": 885
+    },
+    {
+      "path": "/nl/taalexamens/taalexamens-a2-b1",
+      "section": "guides",
+      "verdict": "healthy",
+      "reason": "Reviewed in the audit; nothing wrong found.",
+      "plan": null,
+      "demand": 62
+    },
+    {
+      "path": "/en/language-exams/language-exams-a2-b1",
+      "section": "translations",
+      "verdict": "remove",
+      "reason": "Machine translation nobody reviewed, with no search demand.",
+      "plan": {
+        "action": "Noindex and drop from the sitemap. The page stays reachable; it returns to the index once a fluent reviewer checks it.",
+        "owner": "agent",
+        "when": "remove",
+        "week": "2026-W44",
+        "starts": "2026-10-26"
+      },
+      "demand": 0
+    },
+    {
+      "path": "/en/language-exams/b1-exam",
+      "section": "translations",
+      "verdict": "remove",
+      "reason": "Machine translation nobody reviewed, with no search demand.",
+      "plan": {
+        "action": "Noindex and drop from the sitemap. The page stays reachable; it returns to the index once a fluent reviewer checks it.",
+        "owner": "agent",
+        "when": "remove",
+        "week": "2026-W44",
+        "starts": "2026-10-26"
+      },
+      "demand": 0
+    },
+    {
+      "path": "/ar/knm/امتحان-knm",
+      "section": "translations",
+      "verdict": "remove",
+      "reason": "Machine translation nobody reviewed, with no search demand.",
+      "plan": {
+        "action": "Noindex and drop from the sitemap. The page stays reachable; it returns to the index once a fluent reviewer checks it.",
+        "owner": "agent",
+        "when": "remove",
+        "week": "2026-W44",
+        "starts": "2026-10-26"
+      },
+      "demand": 0
+    },
+    {
+      "path": "/en/civic-integration/integration-step-by-step",
+      "section": "translations",
+      "verdict": "remove",
+      "reason": "Machine translation nobody reviewed. It had 308 impressions, partly on Dutch queries the Dutch original should get.",
+      "plan": {
+        "action": "Noindex and drop from the sitemap. The page stays reachable; it returns to the index once a fluent reviewer checks it.",
+        "owner": "agent",
+        "when": "remove",
+        "week": "2026-W44",
+        "starts": "2026-10-26"
+      },
+      "demand": 308
+    },
+    {
+      "path": "/ar/الاندماج/خطوات-الاندماج",
+      "section": "translations",
+      "verdict": "remove",
+      "reason": "Machine translation nobody reviewed, with no search demand.",
+      "plan": {
+        "action": "Noindex and drop from the sitemap. The page stays reachable; it returns to the index once a fluent reviewer checks it.",
+        "owner": "agent",
+        "when": "remove",
+        "week": "2026-W44",
+        "starts": "2026-10-26"
+      },
+      "demand": 0
+    },
+    {
+      "path": "/nl/taalexamens/b1-examen",
+      "section": "guides",
+      "verdict": "improve",
+      "reason": "Had real demand (404 impressions in Aug and Sep). Worth saving.",
+      "plan": {
+        "action": "Amber reviews it, adds an example from her own teaching and signs it. Then request indexing.",
+        "owner": "amber",
+        "when": "amber",
+        "demand": 404,
+        "week": "2026-W45",
+        "starts": "2026-11-02"
+      },
+      "demand": 404
+    },
+    {
+      "path": "/nl/inburgering/ona-examen",
+      "section": "guides",
+      "verdict": "improve",
+      "reason": "Had real demand (267 impressions in Aug and Sep). Worth saving.",
+      "plan": {
+        "action": "Amber reviews it, adds an example from her own teaching and signs it. Then request indexing.",
+        "owner": "amber",
+        "when": "amber",
+        "demand": 267,
+        "week": "2026-W48",
+        "starts": "2026-11-23"
+      },
+      "demand": 267
+    },
+    {
+      "path": "/en/civic-integration/ona-exam",
+      "section": "translations",
+      "verdict": "remove",
+      "reason": "Machine translation nobody reviewed, with no search demand.",
+      "plan": {
+        "action": "Noindex and drop from the sitemap. The page stays reachable; it returns to the index once a fluent reviewer checks it.",
+        "owner": "agent",
+        "when": "remove",
+        "week": "2026-W44",
+        "starts": "2026-10-26"
+      },
+      "demand": 0
+    },
+    {
+      "path": "/ar/امتحانات-اللغة/امتحان-b1",
+      "section": "translations",
+      "verdict": "remove",
+      "reason": "Machine translation nobody reviewed, with no search demand.",
+      "plan": {
+        "action": "Noindex and drop from the sitemap. The page stays reachable; it returns to the index once a fluent reviewer checks it.",
+        "owner": "agent",
+        "when": "remove",
+        "week": "2026-W44",
+        "starts": "2026-10-26"
+      },
+      "demand": 0
+    },
+    {
+      "path": "/nl/knm/werk-en-inkomen",
+      "section": "knm",
+      "verdict": "remove",
+      "reason": "Never shown in Google. knmoefenen.nl covers KNM and Google prefers it.",
+      "plan": {
+        "action": "Noindex here until the merge, after your yes. The page stays live for users.",
+        "owner": "eigenaar",
+        "when": "decision",
+        "week": "2026-W45",
+        "starts": "2026-11-02"
+      },
+      "demand": 0
+    },
+    {
+      "path": "/en/knm/work-and-income",
+      "section": "translations",
+      "verdict": "remove",
+      "reason": "Machine translation nobody reviewed, with no search demand.",
+      "plan": {
+        "action": "Noindex and drop from the sitemap. The page stays reachable; it returns to the index once a fluent reviewer checks it.",
+        "owner": "agent",
+        "when": "remove",
+        "week": "2026-W44",
+        "starts": "2026-10-26"
+      },
+      "demand": 0
+    },
+    {
+      "path": "/ar/الاندماج/امتحان-ona",
+      "section": "translations",
+      "verdict": "remove",
+      "reason": "Machine translation nobody reviewed, with no search demand.",
+      "plan": {
+        "action": "Noindex and drop from the sitemap. The page stays reachable; it returns to the index once a fluent reviewer checks it.",
+        "owner": "agent",
+        "when": "remove",
+        "week": "2026-W44",
+        "starts": "2026-10-26"
+      },
+      "demand": 0
+    },
+    {
+      "path": "/nl/knm/omgangsvormen-waarden-en-normen",
+      "section": "knm",
+      "verdict": "remove",
+      "reason": "Never shown in Google. knmoefenen.nl covers KNM and Google prefers it.",
+      "plan": {
+        "action": "Noindex here until the merge, after your yes. The page stays live for users.",
+        "owner": "eigenaar",
+        "when": "decision",
+        "week": "2026-W45",
+        "starts": "2026-11-02"
+      },
+      "demand": 0
+    },
+    {
+      "path": "/ar/knm/العمل-والدخل",
+      "section": "translations",
+      "verdict": "remove",
+      "reason": "Machine translation nobody reviewed, with no search demand.",
+      "plan": {
+        "action": "Noindex and drop from the sitemap. The page stays reachable; it returns to the index once a fluent reviewer checks it.",
+        "owner": "agent",
+        "when": "remove",
+        "week": "2026-W44",
+        "starts": "2026-10-26"
+      },
+      "demand": 0
+    },
+    {
+      "path": "/ar/knm/العادات-والقيم-والمعايير",
+      "section": "translations",
+      "verdict": "remove",
+      "reason": "Machine translation nobody reviewed, with no search demand.",
+      "plan": {
+        "action": "Noindex and drop from the sitemap. The page stays reachable; it returns to the index once a fluent reviewer checks it.",
+        "owner": "agent",
+        "when": "remove",
+        "week": "2026-W44",
+        "starts": "2026-10-26"
+      },
+      "demand": 0
+    },
+    {
+      "path": "/en/knm/customs-values-and-norms",
+      "section": "translations",
+      "verdict": "remove",
+      "reason": "Machine translation nobody reviewed, with no search demand.",
+      "plan": {
+        "action": "Noindex and drop from the sitemap. The page stays reachable; it returns to the index once a fluent reviewer checks it.",
+        "owner": "agent",
+        "when": "remove",
+        "week": "2026-W44",
+        "starts": "2026-10-26"
+      },
+      "demand": 0
+    },
+    {
+      "path": "/nl/knm/wonen",
+      "section": "knm",
+      "verdict": "remove",
+      "reason": "Never shown in Google. knmoefenen.nl covers KNM and Google prefers it.",
+      "plan": {
+        "action": "Noindex here until the merge, after your yes. The page stays live for users.",
+        "owner": "eigenaar",
+        "when": "decision",
+        "week": "2026-W45",
+        "starts": "2026-11-02"
+      },
+      "demand": 0
+    },
+    {
+      "path": "/en/knm/housing",
+      "section": "translations",
+      "verdict": "remove",
+      "reason": "Machine translation nobody reviewed, with no search demand.",
+      "plan": {
+        "action": "Noindex and drop from the sitemap. The page stays reachable; it returns to the index once a fluent reviewer checks it.",
+        "owner": "agent",
+        "when": "remove",
+        "week": "2026-W44",
+        "starts": "2026-10-26"
+      },
+      "demand": 0
+    },
+    {
+      "path": "/ar/knm/السكن",
+      "section": "translations",
+      "verdict": "remove",
+      "reason": "Machine translation nobody reviewed, with no search demand.",
+      "plan": {
+        "action": "Noindex and drop from the sitemap. The page stays reachable; it returns to the index once a fluent reviewer checks it.",
+        "owner": "agent",
+        "when": "remove",
+        "week": "2026-W44",
+        "starts": "2026-10-26"
+      },
+      "demand": 0
+    },
+    {
+      "path": "/en/knm/health-and-healthcare",
+      "section": "translations",
+      "verdict": "remove",
+      "reason": "Machine translation nobody reviewed, with no search demand.",
+      "plan": {
+        "action": "Noindex and drop from the sitemap. The page stays reachable; it returns to the index once a fluent reviewer checks it.",
+        "owner": "agent",
+        "when": "remove",
+        "week": "2026-W44",
+        "starts": "2026-10-26"
+      },
+      "demand": 0
+    },
+    {
+      "path": "/nl/knm/gezondheid-en-gezondheidszorg",
+      "section": "knm",
+      "verdict": "remove",
+      "reason": "Never shown in Google. knmoefenen.nl covers KNM and Google prefers it.",
+      "plan": {
+        "action": "Noindex here until the merge, after your yes. The page stays live for users.",
+        "owner": "eigenaar",
+        "when": "decision",
+        "week": "2026-W45",
+        "starts": "2026-11-02"
+      },
+      "demand": 0
+    },
+    {
+      "path": "/ar/knm/الصحة-والرعاية-الصحية",
+      "section": "translations",
+      "verdict": "remove",
+      "reason": "Machine translation nobody reviewed, with no search demand.",
+      "plan": {
+        "action": "Noindex and drop from the sitemap. The page stays reachable; it returns to the index once a fluent reviewer checks it.",
+        "owner": "agent",
+        "when": "remove",
+        "week": "2026-W44",
+        "starts": "2026-10-26"
+      },
+      "demand": 0
+    },
+    {
+      "path": "/en/knm/history-and-geography",
+      "section": "translations",
+      "verdict": "remove",
+      "reason": "Machine translation nobody reviewed, with no search demand.",
+      "plan": {
+        "action": "Noindex and drop from the sitemap. The page stays reachable; it returns to the index once a fluent reviewer checks it.",
+        "owner": "agent",
+        "when": "remove",
+        "week": "2026-W44",
+        "starts": "2026-10-26"
+      },
+      "demand": 0
+    },
+    {
+      "path": "/ar/knm/التاريخ-والجغرافيا",
+      "section": "translations",
+      "verdict": "remove",
+      "reason": "Machine translation nobody reviewed, with no search demand.",
+      "plan": {
+        "action": "Noindex and drop from the sitemap. The page stays reachable; it returns to the index once a fluent reviewer checks it.",
+        "owner": "agent",
+        "when": "remove",
+        "week": "2026-W44",
+        "starts": "2026-10-26"
+      },
+      "demand": 0
+    },
+    {
+      "path": "/nl/knm/geschiedenis-en-geografie",
+      "section": "knm",
+      "verdict": "remove",
+      "reason": "Never shown in Google. knmoefenen.nl covers KNM and Google prefers it.",
+      "plan": {
+        "action": "Noindex here until the merge, after your yes. The page stays live for users.",
+        "owner": "eigenaar",
+        "when": "decision",
+        "week": "2026-W45",
+        "starts": "2026-11-02"
+      },
+      "demand": 0
+    },
+    {
+      "path": "/en/knm/institutions",
+      "section": "translations",
+      "verdict": "remove",
+      "reason": "Machine translation nobody reviewed, with no search demand.",
+      "plan": {
+        "action": "Noindex and drop from the sitemap. The page stays reachable; it returns to the index once a fluent reviewer checks it.",
+        "owner": "agent",
+        "when": "remove",
+        "week": "2026-W44",
+        "starts": "2026-10-26"
+      },
+      "demand": 0
+    },
+    {
+      "path": "/nl/knm/instanties",
+      "section": "knm",
+      "verdict": "remove",
+      "reason": "Never shown in Google. knmoefenen.nl covers KNM and Google prefers it.",
+      "plan": {
+        "action": "Noindex here until the merge, after your yes. The page stays live for users.",
+        "owner": "eigenaar",
+        "when": "decision",
+        "week": "2026-W45",
+        "starts": "2026-11-02"
+      },
+      "demand": 0
+    },
+    {
+      "path": "/en/knm/government-and-rule-of-law",
+      "section": "translations",
+      "verdict": "remove",
+      "reason": "Machine translation nobody reviewed, with no search demand.",
+      "plan": {
+        "action": "Noindex and drop from the sitemap. The page stays reachable; it returns to the index once a fluent reviewer checks it.",
+        "owner": "agent",
+        "when": "remove",
+        "week": "2026-W44",
+        "starts": "2026-10-26"
+      },
+      "demand": 0
+    },
+    {
+      "path": "/ar/knm/المؤسسات",
+      "section": "translations",
+      "verdict": "remove",
+      "reason": "Machine translation nobody reviewed, with no search demand.",
+      "plan": {
+        "action": "Noindex and drop from the sitemap. The page stays reachable; it returns to the index once a fluent reviewer checks it.",
+        "owner": "agent",
+        "when": "remove",
+        "week": "2026-W44",
+        "starts": "2026-10-26"
+      },
+      "demand": 0
+    },
+    {
+      "path": "/nl/knm/staatsinrichting-en-rechtsstaat",
+      "section": "knm",
+      "verdict": "remove",
+      "reason": "Never shown in Google. knmoefenen.nl covers KNM and Google prefers it.",
+      "plan": {
+        "action": "Noindex here until the merge, after your yes. The page stays live for users.",
+        "owner": "eigenaar",
+        "when": "decision",
+        "week": "2026-W45",
+        "starts": "2026-11-02"
+      },
+      "demand": 0
+    },
+    {
+      "path": "/nl/knm/onderwijs-en-opvoeding",
+      "section": "knm",
+      "verdict": "remove",
+      "reason": "Never shown in Google. knmoefenen.nl covers KNM and Google prefers it.",
+      "plan": {
+        "action": "Noindex here until the merge, after your yes. The page stays live for users.",
+        "owner": "eigenaar",
+        "when": "decision",
+        "week": "2026-W45",
+        "starts": "2026-11-02"
+      },
+      "demand": 0
+    },
+    {
+      "path": "/en/knm/education-and-parenting",
+      "section": "translations",
+      "verdict": "remove",
+      "reason": "Machine translation nobody reviewed, with no search demand.",
+      "plan": {
+        "action": "Noindex and drop from the sitemap. The page stays reachable; it returns to the index once a fluent reviewer checks it.",
+        "owner": "agent",
+        "when": "remove",
+        "week": "2026-W44",
+        "starts": "2026-10-26"
+      },
+      "demand": 0
+    },
+    {
+      "path": "/en/language-exams/reading-exam",
+      "section": "translations",
+      "verdict": "remove",
+      "reason": "Machine translation nobody reviewed, with no search demand.",
+      "plan": {
+        "action": "Noindex and drop from the sitemap. The page stays reachable; it returns to the index once a fluent reviewer checks it.",
+        "owner": "agent",
+        "when": "remove",
+        "week": "2026-W44",
+        "starts": "2026-10-26"
+      },
+      "demand": 0
+    },
+    {
+      "path": "/nl/taalexamens/lezen-examen",
+      "section": "guides",
+      "verdict": "improve",
+      "reason": "Had real demand (218 impressions in Aug and Sep). Worth saving.",
+      "plan": {
+        "action": "Receives the blog post on the same topic (301).",
+        "owner": "amber",
+        "when": "amber",
+        "demand": 218,
+        "week": "2026-W50",
+        "starts": "2026-12-07"
+      },
+      "demand": 218
+    },
+    {
+      "path": "/ar/knm/نظام-الدولة-وسيادة-القانون",
+      "section": "translations",
+      "verdict": "remove",
+      "reason": "Machine translation nobody reviewed, with no search demand.",
+      "plan": {
+        "action": "Noindex and drop from the sitemap. The page stays reachable; it returns to the index once a fluent reviewer checks it.",
+        "owner": "agent",
+        "when": "remove",
+        "week": "2026-W44",
+        "starts": "2026-10-26"
+      },
+      "demand": 0
+    },
+    {
+      "path": "/ar/knm/التعليم-والتربية",
+      "section": "translations",
+      "verdict": "remove",
+      "reason": "Machine translation nobody reviewed, with no search demand.",
+      "plan": {
+        "action": "Noindex and drop from the sitemap. The page stays reachable; it returns to the index once a fluent reviewer checks it.",
+        "owner": "agent",
+        "when": "remove",
+        "week": "2026-W44",
+        "starts": "2026-10-26"
+      },
+      "demand": 0
+    },
+    {
+      "path": "/ar/امتحانات-اللغة/امتحان-القراءة",
+      "section": "translations",
+      "verdict": "remove",
+      "reason": "Machine translation nobody reviewed, with no search demand.",
+      "plan": {
+        "action": "Noindex and drop from the sitemap. The page stays reachable; it returns to the index once a fluent reviewer checks it.",
+        "owner": "agent",
+        "when": "remove",
+        "week": "2026-W44",
+        "starts": "2026-10-26"
+      },
+      "demand": 0
+    },
+    {
+      "path": "/en/language-exams/listening-exam",
+      "section": "translations",
+      "verdict": "remove",
+      "reason": "Machine translation nobody reviewed, with no search demand.",
+      "plan": {
+        "action": "Noindex and drop from the sitemap. The page stays reachable; it returns to the index once a fluent reviewer checks it.",
+        "owner": "agent",
+        "when": "remove",
+        "week": "2026-W44",
+        "starts": "2026-10-26"
+      },
+      "demand": 0
+    },
+    {
+      "path": "/nl/taalexamens/luisteren-examen",
+      "section": "guides",
+      "verdict": "improve",
+      "reason": "Had real demand (240 impressions in Aug and Sep). Worth saving.",
+      "plan": {
+        "action": "Receives the blog post on the same topic (301).",
+        "owner": "amber",
+        "when": "amber",
+        "demand": 240,
+        "week": "2026-W49",
+        "starts": "2026-11-30"
+      },
+      "demand": 240
+    },
+    {
+      "path": "/ar/امتحانات-اللغة/امتحان-الاستماع",
+      "section": "translations",
+      "verdict": "remove",
+      "reason": "Machine translation nobody reviewed, with no search demand.",
+      "plan": {
+        "action": "Noindex and drop from the sitemap. The page stays reachable; it returns to the index once a fluent reviewer checks it.",
+        "owner": "agent",
+        "when": "remove",
+        "week": "2026-W44",
+        "starts": "2026-10-26"
+      },
+      "demand": 0
+    },
+    {
+      "path": "/nl/taalexamens/schrijven-examen",
+      "section": "guides",
+      "verdict": "improve",
+      "reason": "Had real demand (395 impressions in Aug and Sep). Worth saving.",
+      "plan": {
+        "action": "Add real A2 answers scored against the DUO criteria by Amber. That is what no AI page can copy.",
+        "owner": "amber",
+        "when": "amber",
+        "demand": 395,
+        "week": "2026-W46",
+        "starts": "2026-11-09"
+      },
+      "demand": 395
+    },
+    {
+      "path": "/nl/taalexamens/spreken-examen",
+      "section": "guides",
+      "verdict": "improve",
+      "reason": "Had real demand (269 impressions in Aug and Sep). Worth saving.",
+      "plan": {
+        "action": "Receives the blog post on the same topic (301).",
+        "owner": "amber",
+        "when": "amber",
+        "demand": 269,
+        "week": "2026-W47",
+        "starts": "2026-11-16"
+      },
+      "demand": 269
+    },
+    {
+      "path": "/ar/امتحانات-اللغة/امتحان-الكتابة",
+      "section": "translations",
+      "verdict": "remove",
+      "reason": "Machine translation nobody reviewed, with no search demand.",
+      "plan": {
+        "action": "Noindex and drop from the sitemap. The page stays reachable; it returns to the index once a fluent reviewer checks it.",
+        "owner": "agent",
+        "when": "remove",
+        "week": "2026-W44",
+        "starts": "2026-10-26"
+      },
+      "demand": 0
+    },
+    {
+      "path": "/en/language-exams/speaking-exam",
+      "section": "translations",
+      "verdict": "remove",
+      "reason": "Machine translation nobody reviewed, with no search demand.",
+      "plan": {
+        "action": "Noindex and drop from the sitemap. The page stays reachable; it returns to the index once a fluent reviewer checks it.",
+        "owner": "agent",
+        "when": "remove",
+        "week": "2026-W44",
+        "starts": "2026-10-26"
+      },
+      "demand": 0
+    },
+    {
+      "path": "/en/language-exams/writing-exam",
+      "section": "translations",
+      "verdict": "remove",
+      "reason": "Machine translation nobody reviewed, with no search demand.",
+      "plan": {
+        "action": "Noindex and drop from the sitemap. The page stays reachable; it returns to the index once a fluent reviewer checks it.",
+        "owner": "agent",
+        "when": "remove",
+        "week": "2026-W44",
+        "starts": "2026-10-26"
+      },
+      "demand": 0
+    },
+    {
+      "path": "/ar/الاندماج/الإعفاء-والاستثناء",
+      "section": "translations",
+      "verdict": "remove",
+      "reason": "Machine translation nobody reviewed, with no search demand.",
+      "plan": {
+        "action": "Noindex and drop from the sitemap. The page stays reachable; it returns to the index once a fluent reviewer checks it.",
+        "owner": "agent",
+        "when": "remove",
+        "week": "2026-W44",
+        "starts": "2026-10-26"
+      },
+      "demand": 0
+    },
+    {
+      "path": "/ar/امتحانات-اللغة/امتحان-التحدث",
+      "section": "translations",
+      "verdict": "remove",
+      "reason": "Machine translation nobody reviewed, with no search demand.",
+      "plan": {
+        "action": "Noindex and drop from the sitemap. The page stays reachable; it returns to the index once a fluent reviewer checks it.",
+        "owner": "agent",
+        "when": "remove",
+        "week": "2026-W44",
+        "starts": "2026-10-26"
+      },
+      "demand": 0
+    },
+    {
+      "path": "/nl/inburgering/vrijstelling-en-ontheffing",
+      "section": "guides",
+      "verdict": "watch",
+      "reason": "Never shown in Google, not even before the drop.",
+      "plan": {
+        "action": "No work now. After the recovery, decide whether it has a reason to exist.",
+        "owner": "agent",
+        "when": "later"
+      },
+      "demand": 0
+    },
+    {
+      "path": "/en/civic-integration/exemption-and-waiver",
+      "section": "translations",
+      "verdict": "remove",
+      "reason": "Machine translation nobody reviewed, with no search demand.",
+      "plan": {
+        "action": "Noindex and drop from the sitemap. The page stays reachable; it returns to the index once a fluent reviewer checks it.",
+        "owner": "agent",
+        "when": "remove",
+        "week": "2026-W44",
+        "starts": "2026-10-26"
+      },
+      "demand": 0
+    },
+    {
+      "path": "/nl/inburgering/boete-en-termijn",
+      "section": "guides",
+      "verdict": "watch",
+      "reason": "Never shown in Google, not even before the drop.",
+      "plan": {
+        "action": "No work now. After the recovery, decide whether it has a reason to exist.",
+        "owner": "agent",
+        "when": "later"
+      },
+      "demand": 0
+    },
+    {
+      "path": "/ar/الاندماج/الغرامة-والمهلة",
+      "section": "translations",
+      "verdict": "remove",
+      "reason": "Machine translation nobody reviewed. It had 33 impressions, partly on Dutch queries the Dutch original should get.",
+      "plan": {
+        "action": "Noindex and drop from the sitemap. The page stays reachable; it returns to the index once a fluent reviewer checks it.",
+        "owner": "agent",
+        "when": "remove",
+        "week": "2026-W44",
+        "starts": "2026-10-26"
+      },
+      "demand": 33
+    },
+    {
+      "path": "/nl/inburgering/pvt-map-en-ona",
+      "section": "guides",
+      "verdict": "watch",
+      "reason": "Never shown in Google, not even before the drop.",
+      "plan": {
+        "action": "No work now. After the recovery, decide whether it has a reason to exist.",
+        "owner": "agent",
+        "when": "later"
+      },
+      "demand": 0
+    },
+    {
+      "path": "/en/civic-integration/pvt-map-and-ona",
+      "section": "translations",
+      "verdict": "remove",
+      "reason": "Machine translation nobody reviewed, with no search demand.",
+      "plan": {
+        "action": "Noindex and drop from the sitemap. The page stays reachable; it returns to the index once a fluent reviewer checks it.",
+        "owner": "agent",
+        "when": "remove",
+        "week": "2026-W44",
+        "starts": "2026-10-26"
+      },
+      "demand": 0
+    },
+    {
+      "path": "/ar/الاندماج/pvt-map-و-ona",
+      "section": "translations",
+      "verdict": "remove",
+      "reason": "Machine translation nobody reviewed, with no search demand.",
+      "plan": {
+        "action": "Noindex and drop from the sitemap. The page stays reachable; it returns to the index once a fluent reviewer checks it.",
+        "owner": "agent",
+        "when": "remove",
+        "week": "2026-W44",
+        "starts": "2026-10-26"
+      },
+      "demand": 0
+    },
+    {
+      "path": "/en/civic-integration/fines-and-deadlines",
+      "section": "translations",
+      "verdict": "remove",
+      "reason": "Machine translation nobody reviewed, with no search demand.",
+      "plan": {
+        "action": "Noindex and drop from the sitemap. The page stays reachable; it returns to the index once a fluent reviewer checks it.",
+        "owner": "agent",
+        "when": "remove",
+        "week": "2026-W44",
+        "starts": "2026-10-26"
+      },
+      "demand": 0
+    },
+    {
+      "path": "/nl/inburgering/moet-ik-inburgeren",
+      "section": "guides",
+      "verdict": "improve",
+      "reason": "Had real demand (522 impressions in Aug and Sep). Worth saving.",
+      "plan": {
+        "action": "Own the \"wie moet inburgeren / verplicht\" intent; link to the stappenplan for the rest.",
+        "owner": "amber",
+        "when": "amber",
+        "demand": 522,
+        "week": "2026-W45",
+        "starts": "2026-11-02"
+      },
+      "demand": 522
+    },
+    {
+      "path": "/nl/inburgering/welke-wet-en-welke-route",
+      "section": "guides",
+      "verdict": "improve",
+      "reason": "Had real demand (287 impressions in Aug and Sep). Worth saving.",
+      "plan": {
+        "action": "Amber reviews it, adds an example from her own teaching and signs it. Then request indexing.",
+        "owner": "amber",
+        "when": "amber",
+        "demand": 287,
+        "week": "2026-W47",
+        "starts": "2026-11-16"
+      },
+      "demand": 287
+    },
+    {
+      "path": "/en/civic-integration/do-i-have-to-integrate",
+      "section": "translations",
+      "verdict": "remove",
+      "reason": "Machine translation nobody reviewed. It had 217 impressions, partly on Dutch queries the Dutch original should get.",
+      "plan": {
+        "action": "Noindex and drop from the sitemap. The page stays reachable; it returns to the index once a fluent reviewer checks it.",
+        "owner": "agent",
+        "when": "remove",
+        "week": "2026-W44",
+        "starts": "2026-10-26"
+      },
+      "demand": 217
+    },
+    {
+      "path": "/ar/الاندماج/هل-يجب-علي-الاندماج",
+      "section": "translations",
+      "verdict": "remove",
+      "reason": "Machine translation nobody reviewed, with no search demand.",
+      "plan": {
+        "action": "Noindex and drop from the sitemap. The page stays reachable; it returns to the index once a fluent reviewer checks it.",
+        "owner": "agent",
+        "when": "remove",
+        "week": "2026-W44",
+        "starts": "2026-10-26"
+      },
+      "demand": 0
+    },
+    {
+      "path": "/en/civic-integration/which-law-and-which-route",
+      "section": "translations",
+      "verdict": "remove",
+      "reason": "Machine translation nobody reviewed. It had 103 impressions, partly on Dutch queries the Dutch original should get.",
+      "plan": {
+        "action": "Noindex and drop from the sitemap. The page stays reachable; it returns to the index once a fluent reviewer checks it.",
+        "owner": "agent",
+        "when": "remove",
+        "week": "2026-W44",
+        "starts": "2026-10-26"
+      },
+      "demand": 103
+    },
+    {
+      "path": "/nl/inburgering/wat-kost-inburgeren",
+      "section": "guides",
+      "verdict": "improve",
+      "reason": "Had real demand (236 impressions in Aug and Sep). Worth saving.",
+      "plan": {
+        "action": "Amber reviews it, adds an example from her own teaching and signs it. Then request indexing.",
+        "owner": "amber",
+        "when": "amber",
+        "demand": 236,
+        "week": "2026-W49",
+        "starts": "2026-11-30"
+      },
+      "demand": 236
+    },
+    {
+      "path": "/ar/الاندماج/أي-قانون-وأي-مسار",
+      "section": "translations",
+      "verdict": "remove",
+      "reason": "Machine translation nobody reviewed, with no search demand.",
+      "plan": {
+        "action": "Noindex and drop from the sitemap. The page stays reachable; it returns to the index once a fluent reviewer checks it.",
+        "owner": "agent",
+        "when": "remove",
+        "week": "2026-W44",
+        "starts": "2026-10-26"
+      },
+      "demand": 0
+    },
+    {
+      "path": "/en/civic-integration/what-does-integration-cost",
+      "section": "translations",
+      "verdict": "remove",
+      "reason": "Machine translation nobody reviewed. It had 123 impressions, partly on Dutch queries the Dutch original should get.",
+      "plan": {
+        "action": "Noindex and drop from the sitemap. The page stays reachable; it returns to the index once a fluent reviewer checks it.",
+        "owner": "agent",
+        "when": "remove",
+        "week": "2026-W44",
+        "starts": "2026-10-26"
+      },
+      "demand": 123
+    },
+    {
+      "path": "/ar/الاندماج/تكلفة-الاندماج",
+      "section": "translations",
+      "verdict": "remove",
+      "reason": "Machine translation nobody reviewed, with no search demand.",
+      "plan": {
+        "action": "Noindex and drop from the sitemap. The page stays reachable; it returns to the index once a fluent reviewer checks it.",
+        "owner": "agent",
+        "when": "remove",
+        "week": "2026-W44",
+        "starts": "2026-10-26"
+      },
+      "demand": 0
+    },
+    {
+      "path": "/nl/inburgering/tools/tijdlijn",
+      "section": "practice",
+      "verdict": "healthy",
+      "reason": "A practice page: what the site sells. Keep it, link to it from every guide.",
+      "plan": null,
+      "demand": 0
+    },
+    {
+      "path": "/ar/الاندماج/أدوات/الجدول-الزمني",
+      "section": "practice",
+      "verdict": "healthy",
+      "reason": "A practice page: what the site sells. Keep it, link to it from every guide.",
+      "plan": null,
+      "demand": 0
+    },
+    {
+      "path": "/en/civic-integration/tools/timeline",
+      "section": "practice",
+      "verdict": "healthy",
+      "reason": "A practice page: what the site sells. Keep it, link to it from every guide.",
+      "plan": null,
+      "demand": 0
+    }
+  ],
+  "planned": [
+    {
+      "id": "voorbeeldvragen",
+      "title": "Voorbeeldvragen inburgeringsexamen",
+      "section": "practice",
+      "demand": 53,
+      "evidence": "\"inburgeringsvragen\" had 53 impressions; Google showed /nl/oefenen at position 82, a page that doesn’t answer it.",
+      "why": "Tool intent with our own reviewed exam items: something an AI Overview can’t replace and a competitor can’t copy.",
+      "owner": "agent",
+      "week": "2026-W48",
+      "starts": "2026-11-23"
+    },
+    {
+      "id": "most-missed",
+      "title": "Most-missed questions in our practice exams",
+      "section": "guides",
+      "demand": 0,
+      "evidence": "No query yet. Built for links, brand searches and AI citations.",
+      "why": "Uses our own answer data (anonymised). First-hand data is the strongest non-commodity signal in the recovery playbook.",
+      "owner": "agent",
+      "week": "2026-W50",
+      "starts": "2026-12-07"
+    }
+  ]
+}

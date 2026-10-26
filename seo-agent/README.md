@@ -46,6 +46,14 @@ die belofte stuk. Inhoud die anders moet is een **pakket** voor Amber: een aanbe
 `recommendations.json` (de to-dolijst) en `diagnosis.json` (waarom Google ons minder toont) zijn
 **Engels**: ze zijn voor de eigenaar en verschijnen op `/admin/seo`.
 
+`/admin/seo` heeft vier tabs. **Pages** is de treemap van elke sitemap-URL: grootte = vraag in
+Google, kleur = de bak uit het herstelplaybook (healthy · improve · consolidate · remove · watch),
+gestippeld = een geplande nieuwe pagina. De indeling staat in `seo-agent/pages.json` en komt uit
+`node scripts/seo-agent/pages.mjs` (sitemap + de nieuwste pagina-audit); pas de regels in dat
+script aan, nooit de JSON. **Competitors** leest `seo-agent/competitors-analysis.json`: welke
+domeinen Google NL toont voor onze zoekwoorden (Firecrawl-search, `country: nl`) en waarin hun
+pagina's van de onze verschillen.
+
 ## KPI's
 
 | Fase | Noordster | Ondersteunend |

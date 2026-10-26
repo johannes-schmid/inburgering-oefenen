@@ -5,15 +5,20 @@ import {
 } from 'lucide-react';
 import {
   fetchSeoPulls, loadSeoCockpit, REPO_URL,
-  type Evidence, type SeoCockpit, type SeoPull, type SourceRow, type Window28,
+  type Competitors, type Evidence, type PageMap, type SeoCockpit, type SeoPull, type SourceRow, type Window28,
 } from '@/lib/admin/seo';
 import {
   byPriority, isLive, ledgerStatus, planAmberWeek,
   type Diagnosis, type LedgerEntry, type Owner, type Recommendation,
 } from '@/lib/admin/seo-model';
+import { SeoPageMap } from './_components/SeoPageMap';
+import { SeoTabs, type SeoTabKey } from './_components/SeoTabs';
 import { SeoTrendChart } from './_components/SeoTrendChart';
 
 export const dynamic = 'force-dynamic';
+
+const TAB_KEYS: SeoTabKey[] = ['overview', 'pages', 'competitors', 'numbers'];
+const isTab = (v: unknown): v is SeoTabKey => TAB_KEYS.includes(v as SeoTabKey);
 
 /**
  * SEO: de plek waar de eigenaar de SEO-lus volgt, in plaats van in PR's die niemand opent.
@@ -23,7 +28,8 @@ export const dynamic = 'force-dynamic';
  * wat doe ik nu, en pas dan de cijfers. Google komt live uit Search Console (`lib/admin/seo-live.ts`),
  * de rest uit `seo-agent/` in de repo (`lib/admin/seo.ts`). Alleen lezen; afvinken is stap 2.
  */
-export default async function SeoPage() {
+export default async function SeoPage({ searchParams }: { searchParams: Promise<{ tab?: string }> }) {
+  const { tab } = await searchParams;
   const [data, pulls] = await Promise.all([loadSeoCockpit(), fetchSeoPulls()]);
   const today = new Date().toISOString().slice(0, 10);
 
@@ -31,36 +37,47 @@ export default async function SeoPage() {
     <div className="max-w-6xl">
       <Header data={data} />
       <Verdict data={data} />
-      {data.diagnosis && <DiagnosisCard diagnosis={data.diagnosis} evidence={data.evidence} recovery={data.recovery.bingRatio} />}
-      <Todo data={data} />
-
-      <h2 className="mt-12 mb-4 text-xl font-headline font-bold tracking-tight text-on-surface">The numbers</h2>
-      <Kpis data={data} />
-      <div className="mt-5 grid grid-cols-1 gap-5 lg:grid-cols-[minmax(0,2fr)_minmax(0,1fr)]">
-        <CardShell title="Impressions per day" note="inburgeringoefenen.nl · Google and Bing side by side">
-          {data.daily.length > 0 ? (
-            <SeoTrendChart
-              points={data.daily}
-              changes={data.ledger
-                .filter(e => e.site !== 'knm')
-                .map(e => ({ date: e.date, change: e.change ?? e.id ?? '' }))}
-            />
-          ) : (
-            <Empty>No daily numbers yet. Friday&apos;s data pull fills this chart.</Empty>
-          )}
-        </CardShell>
-        <Sources data={data} />
-      </div>
-
-      <div className="mt-5 grid grid-cols-1 gap-5 lg:grid-cols-[minmax(0,3fr)_minmax(0,2fr)]">
-        <Experiments entries={data.ledger} today={today} />
-        <NearQueries data={data} />
-      </div>
-
-      <div className="mt-5 grid grid-cols-1 gap-5 lg:grid-cols-2">
-        <Pulls pulls={pulls} />
-        <Reports reports={data.reports} />
-      </div>
+      <SeoTabs
+        initial={isTab(tab) ? tab : 'overview'}
+        panels={{
+          overview: (
+            <>
+              {data.diagnosis && <DiagnosisCard diagnosis={data.diagnosis} evidence={data.evidence} recovery={data.recovery.bingRatio} />}
+              <Todo data={data} />
+            </>
+          ),
+          pages: data.pageMap ? <PagesPanel map={data.pageMap} /> : <Empty>No page triage yet. Run node scripts/seo-agent/pages.mjs.</Empty>,
+          competitors: data.competitors ? <CompetitorsPanel c={data.competitors} /> : <Empty>No competitor analysis yet.</Empty>,
+          numbers: (
+            <>
+              <Kpis data={data} />
+              <div className="mt-5 grid grid-cols-1 gap-5 lg:grid-cols-[minmax(0,2fr)_minmax(0,1fr)]">
+                <CardShell title="Impressions per day" note="inburgeringoefenen.nl · Google and Bing side by side">
+                  {data.daily.length > 0 ? (
+                    <SeoTrendChart
+                      points={data.daily}
+                      changes={data.ledger
+                        .filter(e => e.site !== 'knm')
+                        .map(e => ({ date: e.date, change: e.change ?? e.id ?? '' }))}
+                    />
+                  ) : (
+                    <Empty>No daily numbers yet. Friday&apos;s data pull fills this chart.</Empty>
+                  )}
+                </CardShell>
+                <Sources data={data} />
+              </div>
+              <div className="mt-5 grid grid-cols-1 gap-5 lg:grid-cols-[minmax(0,3fr)_minmax(0,2fr)]">
+                <Experiments entries={data.ledger} today={today} />
+                <NearQueries data={data} />
+              </div>
+              <div className="mt-5 grid grid-cols-1 gap-5 lg:grid-cols-2">
+                <Pulls pulls={pulls} />
+                <Reports reports={data.reports} />
+              </div>
+            </>
+          ),
+        }}
+      />
     </div>
   );
 }
@@ -352,7 +369,7 @@ function Todo({ data }: { data: SeoCockpit }) {
   const yourMinutes = live.filter(r => r.owner === 'eigenaar' && r.priority === 'now').reduce((s, r) => s + (r.minutes ?? 0), 0);
 
   return (
-    <section className="mt-10" aria-labelledby="todo">
+    <section className="mt-8" aria-labelledby="todo">
       <div className="mb-4 flex flex-wrap items-end justify-between gap-3">
         <div>
           <h2 id="todo" className="text-xl font-headline font-bold tracking-tight text-on-surface">To-do</h2>
@@ -725,5 +742,189 @@ function Reports({ reports }: { reports: SeoCockpit['reports'] }) {
         </ul>
       )}
     </CardShell>
+  );
+}
+
+/* ── Pagina's: de treemap en de weekplanning ─────────────────────────────── */
+
+const PLAN_KIND: Record<string, { label: string; color: string }> = {
+  remove: { label: 'Remove', color: '#c2416b' },
+  consolidate: { label: 'Consolidate', color: '#b07d12' },
+  improve: { label: 'Improve', color: '#2f5fb3' },
+  watch: { label: 'Watch', color: '#8a94ad' },
+  healthy: { label: 'Tidy', color: '#2b8a63' },
+};
+
+function PagesPanel({ map }: { map: PageMap }) {
+  type Item = { label: string; kind: string; owner: string; planned?: boolean };
+  const byWeek = new Map<string, { starts: string; items: Item[] }>();
+  const add = (week: string | undefined, starts: string | undefined, item: Item) => {
+    if (!week) return;
+    const w = byWeek.get(week) ?? { starts: starts ?? '', items: [] };
+    w.items.push(item);
+    byWeek.set(week, w);
+  };
+  for (const p of map.pages) if (p.plan?.week) add(p.plan.week, p.plan.starts, { label: p.path.split('/').filter(Boolean).slice(-1)[0] ?? p.path, kind: p.verdict, owner: p.plan.owner });
+  for (const p of map.planned) add(p.week, p.starts, { label: p.title, kind: 'planned', owner: p.owner, planned: true });
+  const weeks = [...byWeek.entries()].sort(([a], [b]) => a.localeCompare(b));
+
+  return (
+    <>
+      <CardShell title="Every page on the site" note={`Triage from ${dateLabel(map.updated)}, search numbers live. Click a tile for its search data, plan and date.`}>
+        <SeoPageMap map={map} />
+      </CardShell>
+
+      <CardShell className="mt-5" title="When it happens" note="Cleanup first and fast, then Amber at two pages a week, then new pages one at a time">
+        <ol className="-mx-1 flex snap-x gap-3 overflow-x-auto px-1 pb-2">
+          {weeks.map(([week, w], i) => {
+            const groups = new Map<string, Item[]>();
+            for (const it of w.items) groups.set(it.kind, [...(groups.get(it.kind) ?? []), it]);
+            return (
+              <li key={week} className={`w-56 shrink-0 snap-start rounded-xl p-3.5 ${i === 0 ? 'bg-[rgba(0,43,109,0.06)] shadow-[var(--ring-selected)]' : 'bg-surface-container-low'}`}>
+                <p className="text-sm font-headline font-bold text-on-surface">Week {Number(week.split('-W')[1])}{i === 0 && <span className="ml-1.5 text-xs font-semibold text-primary">this week</span>}</p>
+                <p className="text-[11px] text-on-surface-variant">from {dateLabel(w.starts)}</p>
+                <ul className="mt-3 space-y-2.5">
+                  {[...groups.entries()].map(([kind, items]) => (
+                    <li key={kind}>
+                      <p className="flex items-center gap-1.5 text-xs font-semibold text-on-surface">
+                        {kind === 'planned'
+                          ? <span className="inline-block h-2.5 w-3.5 rounded-[3px] border border-dashed border-primary" aria-hidden />
+                          : <span className="size-2.5 rounded-full" style={{ background: PLAN_KIND[kind]?.color }} aria-hidden />}
+                        {kind === 'planned' ? 'New page' : PLAN_KIND[kind]?.label ?? kind}
+                        <span className="font-normal text-on-surface-variant tabular-nums">{items.length}</span>
+                      </p>
+                      <ul className="mt-1 space-y-0.5 pl-4 text-[11px] text-on-surface-variant">
+                        {items.slice(0, 3).map(it => <li key={it.label} className="truncate" dir="auto">{it.label}</li>)}
+                        {items.length > 3 && <li>and {items.length - 3} more</li>}
+                      </ul>
+                    </li>
+                  ))}
+                </ul>
+              </li>
+            );
+          })}
+        </ol>
+        <p className="mt-2 text-[11px] text-on-surface-variant">
+          Expect the first movement 4 to 8 weeks after the cleanup is recrawled, often only at Google&apos;s next spam or core update. Documented recoveries took 3 to 6 months.
+        </p>
+      </CardShell>
+    </>
+  );
+}
+
+/* ── Concurrenten: wat zij anders doen ───────────────────────────────────── */
+
+const EVIDENCE_STYLE: Record<Competitors['differences'][number]['evidence'], string> = {
+  strong: 'bg-[rgba(0,43,109,0.08)] text-primary',
+  medium: 'bg-surface-container text-on-surface',
+  weak: 'bg-surface-container text-on-surface-variant',
+};
+
+function CompetitorsPanel({ c }: { c: Competitors }) {
+  const domains = c.domains.filter(d => d.domain !== 'inburgeringoefenen.nl').slice(0, 8);
+  const max = Math.max(...domains.map(d => d.top10), 1);
+  const stillWorks = c.pages.filter(p => p.ours && /ranks #?\d/i.test(p.verdict));
+  return (
+    <>
+      <section className="rounded-2xl bg-surface-container-lowest p-5 shadow-[var(--shadow-ambient)] sm:p-6">
+        <h2 className="text-xl font-headline font-bold tracking-tight text-on-surface">Why their content still works and ours doesn&apos;t</h2>
+        <p className="mt-2 max-w-3xl text-[15px] leading-relaxed text-on-surface">{c.summary}</p>
+        <p className="mt-3 text-[11px] text-on-surface-variant">{c.method} · {dateLabel(c.updated)} · <ExtLink href={sourceHref('seo-agent/competitors-analysis.json')}>competitors-analysis.json</ExtLink></p>
+      </section>
+
+      <div className="mt-5 grid grid-cols-1 gap-5 lg:grid-cols-[minmax(0,2fr)_minmax(0,3fr)]">
+        <CardShell title="Who Google shows instead" note={`Appearances in the top 10 across ${c.queries.length} of our queries`}>
+          <ul className="space-y-2.5">
+            {domains.map(d => (
+              <li key={d.domain}>
+                <div className="flex items-baseline justify-between gap-2 text-sm">
+                  <span className="min-w-0 truncate font-semibold text-on-surface">{d.domain}{d.official && <span className="ml-1.5 text-[11px] font-normal text-on-surface-variant">official</span>}</span>
+                  <span className="shrink-0 text-xs text-on-surface-variant tabular-nums"><span className="font-semibold text-on-surface">{d.top10}</span> top 10 · {d.top5} top 5</span>
+                </div>
+                <div className="mt-1 h-2 overflow-hidden rounded-full bg-surface-container">
+                  <div className="h-full origin-left rounded-full" style={{ transform: `scaleX(${d.top10 / max})`, background: d.official ? 'var(--ink-3)' : '#2f5fb3' }} />
+                </div>
+              </li>
+            ))}
+          </ul>
+          <p className="mt-4 text-[11px] text-on-surface-variant">Grey: government sites. Nobody outranks those on rules questions, so we shouldn&apos;t try.</p>
+        </CardShell>
+
+        <CardShell title="What still works for us" note="Pages of ours that still rank in this check">
+          {stillWorks.length === 0 ? (
+            <Empty>None of our pages showed up in the top 10 for these queries.</Empty>
+          ) : (
+            <ul className="space-y-3">
+              {stillWorks.map(p => (
+                <li key={p.url} className="rounded-xl bg-[var(--goed-tint)] px-4 py-3">
+                  <p className="flex items-center gap-1.5 text-sm font-semibold text-[var(--goed-ink)]"><Check className="size-4" aria-hidden />{shortPath(p.url)}</p>
+                  <p className="mt-1 text-[13px] leading-relaxed text-on-surface">{p.verdict}</p>
+                </li>
+              ))}
+            </ul>
+          )}
+          <p className="mt-4 text-[11px] text-on-surface-variant">Firecrawl&apos;s Google results can differ from what Search Console records, so treat a single rank as a hint.</p>
+        </CardShell>
+      </div>
+
+      <h2 className="mt-8 mb-3 text-lg font-headline font-bold tracking-tight text-on-surface">Them vs us</h2>
+      <ul className="space-y-3">
+        {c.differences.map(d => (
+          <li key={d.title} className="rounded-2xl bg-surface-container-lowest p-4 shadow-[var(--shadow-ambient)] sm:p-5">
+            <div className="flex flex-wrap items-center justify-between gap-2">
+              <h3 className="text-[15px] font-semibold text-on-surface">{d.title}</h3>
+              <Chip className={EVIDENCE_STYLE[d.evidence]}>{d.evidence} evidence</Chip>
+            </div>
+            <div className="mt-3 grid grid-cols-1 gap-3 md:grid-cols-2">
+              <div className="rounded-xl bg-surface-container-low px-4 py-3">
+                <p className="text-xs font-semibold text-on-surface-variant">Them</p>
+                <p className="mt-1 text-[13px] leading-relaxed text-on-surface">{d.them}</p>
+              </div>
+              <div className="rounded-xl bg-[rgba(0,43,109,0.05)] px-4 py-3">
+                <p className="text-xs font-semibold text-primary">Us</p>
+                <p className="mt-1 text-[13px] leading-relaxed text-on-surface">{d.us}</p>
+              </div>
+            </div>
+          </li>
+        ))}
+      </ul>
+
+      <CardShell className="mt-5" title="What we take from this" note="Each of these feeds the to-do list and the page plans">
+        <ol className="space-y-2.5">
+          {c.lessons.map((l, i) => (
+            <li key={l} className="grid grid-cols-[22px_1fr] gap-x-2 text-sm leading-relaxed text-on-surface">
+              <span className="mt-0.5 flex size-[22px] items-center justify-center rounded-full bg-[rgba(0,43,109,0.08)] text-[11px] font-bold text-primary tabular-nums">{i + 1}</span>
+              <span>{l}</span>
+            </li>
+          ))}
+        </ol>
+      </CardShell>
+
+      <details className="mt-5 rounded-2xl bg-surface-container-lowest p-5 text-sm shadow-[var(--shadow-ambient)]">
+        <summary className="cursor-pointer rounded-sm font-semibold text-primary underline-offset-4 hover:underline focus-visible:outline-none focus-visible:shadow-[var(--ring-selected)]">
+          The {c.pages.length} pages compared, side by side
+        </summary>
+        <div className="mt-4 overflow-x-auto">
+          <table className="w-full min-w-[760px] text-left text-xs">
+            <thead className="text-on-surface-variant">
+              <tr>
+                {['Page', 'Author', 'First-hand value', 'Practice on page', 'Words'].map(h => <th key={h} className="py-1.5 pr-3 font-medium">{h}</th>)}
+              </tr>
+            </thead>
+            <tbody className="align-top">
+              {c.pages.map((p, i) => (
+                <tr key={p.url} className={p.ours ? 'bg-[rgba(0,43,109,0.05)]' : i % 2 === 0 ? 'bg-surface-container-low/60' : ''}>
+                  <td className="max-w-[200px] py-2 pr-3 pl-2"><a href={p.url} target="_blank" rel="noreferrer" className="font-semibold text-primary underline-offset-4 hover:underline">{p.ours ? 'Ours: ' : ''}{p.domain}</a><span className="block text-on-surface-variant">{p.intent}</span></td>
+                  <td className="max-w-[160px] py-2 pr-3">{p.author}</td>
+                  <td className="max-w-[220px] py-2 pr-3">{p.first_hand}</td>
+                  <td className="max-w-[200px] py-2 pr-3">{p.practice}</td>
+                  <td className="py-2 pr-2 tabular-nums">{p.words ? nf.format(p.words) : 'n/a'}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </details>
+    </>
   );
 }
