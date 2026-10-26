@@ -5883,3 +5883,9 @@ oplopende `top` per index doet het, en de `prefers-reduced-motion`-uitweg is dan
 **Outcome:** SUCCESS
 **What worked / went wrong:** Firecrawl `/v2/search` met `country: nl` geeft bruikbare Google-NL-resultaten. De concurrentie-agent schreef "oefenen alleen na registratie", terwijl de gratis taster zonder account bestaat — gecorrigeerd: het gat is dat de taster niet op de gerankte pagina's staat. Een kortstondige 502 van Search Console werd een half uur gecachet en als ruwe HTML in de kop getoond; nu één herkansing, fouten één minuut in de cache en een korte melding. Zonder live data waren alle tegels even groot; de audit-vraag is nu de terugval. Een functie uit een `'use client'`-bestand aanroepen vanuit de server-page gaf een 500.
 **Lesson:** Controleer elke bewering van een onderzoeksagent over je eigen product tegen wat je weet; en cache een fout nooit zo lang als een goed antwoord.
+
+## 2026-10-26 — Clarity naar het eigen project
+**Changed:** de Clarity-projectcode in `components/MicrosoftClarity.tsx` van `wimis0iaqp` (geërfd van knmoefenen.nl) naar `z3te3xx19r`.
+**Outcome:** SUCCESS
+**What worked / went wrong:** Clarity stond al in de layouts van `(main)`, `(app)` en `(auth)` via `AnalyticsProviders`, niet in `(admin)` — maar sinds de fork stuurde het alle opnames naar het KNM-project.
+**Lesson:** na een fork elke hardgecodeerde derde-partij-ID nalopen (GA, Clarity, Meta-pixel); de code werkt en logt niets, alleen de data komt op de verkeerde plek terecht.
