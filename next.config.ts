@@ -46,6 +46,9 @@ const nextConfig: NextConfig = {
     // Vite bouwt hem in `prebuild`; zonder deze regel ziet de file tracing hem niet en staat hij
     // niet in de serverless functie op Vercel.
     '/api/mcp': ['./widgets/dist/**'],
+    // /admin/seo leest de snapshots, het logboek en de aanbevelingen van schijf (`lib/admin/seo.ts`).
+    // Een glob als sleutel, om dezelfde reden als bij de gids-PDF hieronder: `[locale]` is een tekenklasse.
+    '/**/admin/seo': ['./seo-agent/**/*.json', './seo-agent/reports/*.md'],
     // De gids-PDF: `@sparticuz/chromium` pakt zijn Chromium bij de eerste aanvraag uit `bin/`
     // (brotli-archieven die de code nooit met een statische import noemt). Zonder deze regel
     // staan ze niet in de functie en faalt `executablePath()` met een 500 vóór er iets logt.

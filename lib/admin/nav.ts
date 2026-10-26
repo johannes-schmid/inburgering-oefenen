@@ -61,6 +61,7 @@ export const ADMIN_NAV_SECTIONS: AdminNavSection[] = [
     items: [
       { path: '', icon: 'dashboard', label: 'Dashboard' },
       { path: '/doelen', icon: 'flag', label: 'Doelen' },
+      { path: '/seo', icon: 'seo', label: 'SEO' },
     ],
   },
   {

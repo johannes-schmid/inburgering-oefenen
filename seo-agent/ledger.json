@@ -36,6 +36,54 @@
       "source": "LEARNINGS 2026-10-05",
       "window_end": "2026-11-09",
       "verdict": null
+    },
+    {
+      "id": "2026-10-11-echte-docent",
+      "date": "2026-10-11",
+      "site": "inburgering",
+      "page": "/nl/docent, alle gidsen en blogs, /nl",
+      "change": "Schuilnaam \"Marieke Schipper\" vervangen door de echte docent Amber van der Zalm (foto, feiten, sameAs naar LinkedIn en bedrijf)",
+      "hypothesis": "Herstel na de spam-update van september: een verifieerbare auteur in plaats van een verzonnen profiel (Google, richtlijn 01-10)",
+      "metric": "impressions:site",
+      "source": "commit b77d3d4",
+      "window_end": "2026-12-10",
+      "verdict": null
+    },
+    {
+      "id": "2026-10-11-echte-reviews",
+      "date": "2026-10-11",
+      "site": "inburgering",
+      "page": "/nl",
+      "change": "Zelfgeschreven quotes met AI-portretten vervangen door letterlijke Trustpilot-reviews van knmoefenen.nl; score en aantal gelabeld",
+      "hypothesis": "Minder signalen van misleidende social proof",
+      "metric": "impressions:site",
+      "source": "commit b77d3d4",
+      "window_end": "2026-12-10",
+      "verdict": null
+    },
+    {
+      "id": "2026-10-11-geen-ai-claims",
+      "date": "2026-10-11",
+      "site": "inburgering",
+      "page": "sitebreed",
+      "change": "Alle \"geen AI\"-claims herschreven naar \"AI helpt, de docent beslist\"; /redactie en AI-paragraaf privacybeleid; vertaalmelding bovenaan EN/AR",
+      "hypothesis": "Eerlijke uitleg over AI-gebruik (Google \"how\", AI-verordening art. 50)",
+      "metric": "impressions:site",
+      "source": "commit b77d3d4",
+      "window_end": "2026-12-10",
+      "verdict": null
+    },
+    {
+      "id": "2026-10-11-een-308-oude-urls",
+      "date": "2026-10-11",
+      "site": "inburgering",
+      "page": "/en/*, /ar/* (oude Nederlandse slugs)",
+      "change": "Oude EN/AR-URL's in één 308 naar het eindpad in plaats van 307 + 308",
+      "hypothesis": "Oude URL's verdwijnen uit de index; vertoningen gaan over op de vertaalde URL",
+      "metric": "impressions:/en/civic-integration/*",
+      "source": "commit b77d3d4",
+      "window_end": "2026-12-10",
+      "verdict": null
     }
   ]
 }

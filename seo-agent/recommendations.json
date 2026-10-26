@@ -1,0 +1,269 @@
+{
+  "$comment": "De to-dolijst op /admin/seo, in het Engels (besluit eigenaar, 26-10). De zaterdagrun (/seo-weekly) schrijft dit bestand: nieuwe taken erbij, status bijwerken, nooit een id hergebruiken. Elke taak heeft why, steps en expect. Ambers taken dragen minutes, en hun som per week blijft onder rules.amber_minutes_per_week in config.json.",
+  "updated": "2026-10-26",
+  "items": [
+    {
+      "id": "2026-10-26-manual-actions",
+      "created": "2026-10-26",
+      "site": "inburgering",
+      "owner": "eigenaar",
+      "kind": "measurement",
+      "priority": "now",
+      "task": "Check Search Console for a manual action",
+      "why": "Everything points to an algorithmic demotion, but a manual penalty looks the same from the outside and needs a completely different fix (a reconsideration request). The API can't see it, only you can.",
+      "steps": [
+        "Search Console > inburgeringoefenen.nl > Security & Manual actions > Manual actions.",
+        "Tell me what it says. \"No issues detected\" is the expected answer."
+      ],
+      "expect": "Most likely \"No issues detected\", which confirms the plan below. If there is an action, we stop everything else and fix that first.",
+      "minutes": 2,
+      "source": "seo-agent/diagnosis.json",
+      "status": "open"
+    },
+    {
+      "id": "2026-10-26-gsc-knm-access",
+      "created": "2026-10-26",
+      "site": "knm",
+      "owner": "eigenaar",
+      "kind": "measurement",
+      "priority": "now",
+      "task": "Give the SEO loop access to knmoefenen.nl in Search Console",
+      "why": "Friday's data pull for knmoefenen.nl was refused (\"insufficient permission\"). That's the site that ranks and earns money, and right now we only see its Bing numbers.",
+      "steps": [
+        "Search Console > knmoefenen.nl > Settings > Users and permissions > Add user.",
+        "Email: claude-seo-reader@inburgering-seo.iam.gserviceaccount.com, permission: Full."
+      ],
+      "expect": "From Friday 30 Oct this page shows knmoefenen.nl's Google numbers next to this site's, and the loop can plan for both.",
+      "minutes": 5,
+      "source": "seo-agent/data/2026-W43/gsc.json",
+      "status": "open"
+    },
+    {
+      "id": "2026-10-26-posthog-inburgering",
+      "created": "2026-10-26",
+      "site": "inburgering",
+      "owner": "eigenaar",
+      "kind": "measurement",
+      "priority": "now",
+      "task": "Find out why PostHog sees no visitors on inburgeringoefenen.nl",
+      "why": "In 28 days PostHog counted 25,791 pageviews on knmoefenen.nl and zero here. When Google traffic comes back we won't know which pages turn visitors into signups, which is the whole point of the loop.",
+      "steps": [
+        "Vercel > project > Settings > Environment Variables: is NEXT_PUBLIC_POSTHOG_PROJECT_TOKEN set for Production?",
+        "Missing: add it and redeploy. Present: tell me and I'll debug lib/posthog-client.ts."
+      ],
+      "expect": "Pageviews for inburgeringoefenen.nl show up in PostHog within an hour of the next deploy.",
+      "minutes": 10,
+      "source": "seo-agent/data/2026-W43/posthog.json",
+      "status": "open"
+    },
+    {
+      "id": "2026-10-26-noindex-translations",
+      "created": "2026-10-26",
+      "site": "inburgering",
+      "owner": "agent",
+      "kind": "cleanup",
+      "priority": "now",
+      "task": "Take the 57 unreviewed machine translations out of Google",
+      "why": "Our main suspect for the drop is \"too much unreviewed content\". These 57 English and Arabic pages are a third of the site, nobody reviewed them, and together they earned almost no clicks. They cost trust and earn nothing.",
+      "steps": [
+        "Agent: opens one PR that sets these pages to noindex and drops them from the sitemap. They stay reachable for readers.",
+        "You: check the list in the PR and merge."
+      ],
+      "expect": "The sitemap drops from 177 to about 120 URLs. Google drops the pages over 2 to 6 weeks as it recrawls. No traffic is lost, because they had no clicks. A page goes back in the index once Amber reviews it.",
+      "pages": [
+        "/ar/المدونة/أخطاء-شائعة-امتحان-الكتابة-a2",
+        "/en/blog/want-or-omdat-dutch",
+        "/ar/المدونة/want-أم-omdat",
+        "/en/blog/dutch-reflexive-verbs",
+        "/ar/المدونة/الأفعال-الانعكاسية-الهولندية",
+        "/ar/المدونة/نصائح-امتحان-التحدث-a2",
+        "/en/blog/a2-integration-exam-explained",
+        "/ar/المدونة/شرح-امتحان-الاندماج-a2",
+        "/ar/المدونة/امتحان-القراءة-الاندماج-a2",
+        "/ar/المدونة/امتحان-الاستماع-الاندماج-a2",
+        "/en/blog/failing-and-retaking-the-integration-exam",
+        "/ar/المدونة/الرسوب-وإعادة-امتحان-الاندماج",
+        "/en/blog/dutch-language-levels-a1-a2-b1",
+        "/ar/المدونة/مستويات-اللغة-الهولندية-a1-a2-b1",
+        "/en/knm/knm-exam",
+        "/ar/knm/امتحان-knm",
+        "/en/language-exams/language-exams-a2-b1",
+        "/ar/امتحانات-اللغة/امتحانات-اللغة-a2-b1",
+        "/ar/الاندماج/خطوات-الاندماج",
+        "/en/language-exams/b1-exam",
+        "/ar/امتحانات-اللغة/امتحان-b1",
+        "/en/civic-integration/ona-exam",
+        "/ar/الاندماج/امتحان-ona",
+        "/en/knm/work-and-income",
+        "/ar/knm/العمل-والدخل",
+        "/en/knm/customs-values-and-norms",
+        "/ar/knm/العادات-والقيم-والمعايير",
+        "/en/knm/housing",
+        "/ar/knm/السكن",
+        "/en/knm/health-and-healthcare",
+        "/ar/knm/الصحة-والرعاية-الصحية",
+        "/en/knm/history-and-geography",
+        "/ar/knm/التاريخ-والجغرافيا",
+        "/en/knm/institutions",
+        "/ar/knm/المؤسسات",
+        "/en/knm/government-and-rule-of-law",
+        "/ar/knm/نظام-الدولة-وسيادة-القانون",
+        "/en/knm/education-and-parenting",
+        "/ar/knm/التعليم-والتربية",
+        "/en/language-exams/reading-exam",
+        "/ar/امتحانات-اللغة/امتحان-القراءة",
+        "/en/language-exams/listening-exam",
+        "/ar/امتحانات-اللغة/امتحان-الاستماع",
+        "/en/language-exams/writing-exam",
+        "/ar/امتحانات-اللغة/امتحان-الكتابة",
+        "/en/language-exams/speaking-exam",
+        "/ar/امتحانات-اللغة/امتحان-التحدث",
+        "/en/civic-integration/exemption-and-waiver",
+        "/ar/الاندماج/الإعفاء-والاستثناء",
+        "/en/civic-integration/fines-and-deadlines",
+        "/ar/الاندماج/الغرامة-والمهلة",
+        "/en/civic-integration/pvt-map-and-ona",
+        "/ar/الاندماج/pvt-map-و-ona",
+        "/en/civic-integration/do-i-have-to-integrate",
+        "/ar/الاندماج/هل-يجب-علي-الاندماج",
+        "/ar/الاندماج/أي-قانون-وأي-مسار",
+        "/ar/الاندماج/تكلفة-الاندماج"
+      ],
+      "source": "seo-agent/reports/page-audit-2026-10-11.md",
+      "status": "open"
+    },
+    {
+      "id": "2026-10-26-knm-overlap",
+      "created": "2026-10-26",
+      "site": "inburgering",
+      "owner": "eigenaar",
+      "kind": "decision",
+      "priority": "next",
+      "task": "Decide: noindex the 9 KNM guide pages here until the merge",
+      "why": "Google has never shown these pages once. knmoefenen.nl covers KNM and Google prefers it. Two sites from one owner competing on the same topic can make both look worse.",
+      "steps": [
+        "You: say yes or no.",
+        "If yes, agent: one PR that noindexes them here (the pages stay live for users)."
+      ],
+      "expect": "No visible loss, since they get zero impressions now. Google sees a clearer split: this site for the language exams, knmoefenen.nl for KNM.",
+      "minutes": 2,
+      "pages": [
+        "/nl/knm/knm-examen",
+        "/nl/knm/werk-en-inkomen",
+        "/nl/knm/omgangsvormen-waarden-en-normen",
+        "/nl/knm/wonen",
+        "/nl/knm/gezondheid-en-gezondheidszorg",
+        "/nl/knm/geschiedenis-en-geografie",
+        "/nl/knm/instanties",
+        "/nl/knm/staatsinrichting-en-rechtsstaat",
+        "/nl/knm/onderwijs-en-opvoeding"
+      ],
+      "source": "seo-agent/reports/page-audit-2026-10-11.md",
+      "status": "open"
+    },
+    {
+      "id": "2026-10-26-amber-stappenplan",
+      "created": "2026-10-26",
+      "site": "inburgering",
+      "owner": "amber",
+      "kind": "content",
+      "priority": "now",
+      "task": "Review and enrich: Inburgering stappenplan",
+      "why": "Our biggest page. Google still shows it (445 times in the last two weeks), but it fell from position 38 to 70. Demand is proven, so a page visibly checked by a real NT2 teacher is the strongest quality signal we can send.",
+      "steps": [
+        "Agent: prepares a review pack (what the top 3 Google results cover that we don't, claims without a source, passages to rewrite first).",
+        "Amber: edits the page, adds an example from her own teaching, and marks it reviewed with her name.",
+        "You: after it's live, Search Console > URL Inspection > paste the URL > Request indexing."
+      ],
+      "expect": "After the recrawl the page climbs back towards its old position. Judge it after 5 weeks in Experiments; don't expect a jump before Google re-evaluates the whole site.",
+      "minutes": 60,
+      "pages": [
+        "/nl/inburgering/inburgering-stappenplan"
+      ],
+      "source": "seo-agent/reports/page-audit-2026-10-11.md",
+      "status": "open"
+    },
+    {
+      "id": "2026-10-26-amber-taalniveaus",
+      "created": "2026-10-26",
+      "site": "inburgering",
+      "owner": "amber",
+      "kind": "content",
+      "priority": "now",
+      "task": "Review and enrich: Taalniveaus A1, A2, B1 (blog)",
+      "why": "This page ranked at position 7 in September (339 impressions) and is now at 73. Exam-level questions are exactly where a teacher's judgement beats generic AI text.",
+      "steps": [
+        "Agent: prepares a review pack (what the top 3 Google results cover that we don't, claims without a source, passages to rewrite first).",
+        "Amber: edits the page, adds an example from her own teaching, and marks it reviewed with her name.",
+        "You: after it's live, Search Console > URL Inspection > paste the URL > Request indexing."
+      ],
+      "expect": "Same as above. Position back under 20 within 5 to 8 weeks of the recrawl would mean the site-level demotion is lifting.",
+      "minutes": 60,
+      "pages": [
+        "/nl/blog/taalniveaus-a1-a2-b1-nederlands"
+      ],
+      "source": "seo-agent/reports/page-audit-2026-10-11.md",
+      "status": "open"
+    },
+    {
+      "id": "2026-10-26-amber-moet-ik-inburgeren",
+      "created": "2026-10-26",
+      "site": "inburgering",
+      "owner": "amber",
+      "kind": "content",
+      "priority": "next",
+      "task": "Review and enrich: Moet ik inburgeren?",
+      "why": "377 impressions in September at position 35, zero since 9 Oct. Google last crawled it on 21 Aug, so it hasn't seen any of our trust fixes yet.",
+      "steps": [
+        "Agent: prepares a review pack (what the top 3 Google results cover that we don't, claims without a source, passages to rewrite first).",
+        "Amber: edits the page, adds an example from her own teaching, and marks it reviewed with her name.",
+        "You: after it's live, Search Console > URL Inspection > paste the URL > Request indexing."
+      ],
+      "expect": "The page shows up in Google again within 2 to 4 weeks of the indexing request.",
+      "minutes": 60,
+      "pages": [
+        "/nl/inburgering/moet-ik-inburgeren"
+      ],
+      "source": "seo-agent/reports/page-audit-2026-10-11.md",
+      "status": "open"
+    },
+    {
+      "id": "2026-10-26-amber-b1-examen",
+      "created": "2026-10-26",
+      "site": "inburgering",
+      "owner": "amber",
+      "kind": "content",
+      "priority": "next",
+      "task": "Review and enrich: B1-examen",
+      "why": "It ranked at position 11 in September (358 impressions) and has had zero since 9 Oct. B1 is a product we sell, so this page leads straight to revenue.",
+      "steps": [
+        "Agent: prepares a review pack (what the top 3 Google results cover that we don't, claims without a source, passages to rewrite first).",
+        "Amber: edits the page, adds an example from her own teaching, and marks it reviewed with her name.",
+        "You: after it's live, Search Console > URL Inspection > paste the URL > Request indexing."
+      ],
+      "expect": "The page shows up in Google again. Watch \"Close to the top\" for B1 queries.",
+      "minutes": 60,
+      "pages": [
+        "/nl/taalexamens/b1-examen"
+      ],
+      "source": "seo-agent/reports/page-audit-2026-10-11.md",
+      "status": "open"
+    },
+    {
+      "id": "2026-10-26-titles-length",
+      "created": "2026-10-26",
+      "site": "inburgering",
+      "owner": "agent",
+      "kind": "title",
+      "priority": "later",
+      "task": "Fix 61 titles or descriptions that are too long or too short",
+      "why": "Google rewrites titles over 60 and descriptions outside 140 to 160 characters. It's small, and it only matters once pages rank again, so it waits.",
+      "steps": [
+        "Agent: takes these along in the regular title PRs, three at a time, pages with impressions first."
+      ],
+      "expect": "Slightly better click-through on pages that rank. Not a recovery lever.",
+      "source": "seo-agent/data/2026-W43/health.json",
+      "status": "planned"
+    }
+  ]
+}

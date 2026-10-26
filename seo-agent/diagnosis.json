@@ -1,0 +1,66 @@
+{
+  "$comment": "De diagnose bovenaan /admin/seo: waarom Google ons minder toont. In het Engels (besluit eigenaar, 26-10). De weekrun werkt dit bij als een check verandert of een hypothese wordt getoetst; de live cijfers (pagina's met vertoningen, positie) rekent de pagina zelf uit tegen `baseline`.",
+  "updated": "2026-10-26",
+  "question": "Why is Google showing us so much less?",
+  "answer": "Google didn't remove our pages. It demoted the whole site at once. Every page we checked is still indexed with the right canonical, but pages that ranked 7 to 16 in September now sit around position 65 to 70, or don't show at all. That pattern (the whole site, overnight, during Google's September spam update, while Bing kept growing) points to a sitewide quality judgement, not a technical bug.",
+  "baseline": {
+    "start": "2026-08-27",
+    "end": "2026-09-23",
+    "label": "the 4 weeks before the drop"
+  },
+  "checks": [
+    {
+      "status": "ruled-out",
+      "title": "Pages fell out of Google's index",
+      "detail": "On 26 Oct the URL Inspection API reported all 10 top pages as \"Submitted and indexed\", with Google's canonical matching ours. All return HTTP 200."
+    },
+    {
+      "status": "ruled-out",
+      "title": "A broken deploy, sitemap or robots.txt",
+      "detail": "Friday's health check found 177 sitemap URLs, all 200, with no noindex or canonical errors. Bing crawls the same site and its impressions went up, so the site itself works."
+    },
+    {
+      "status": "ruled-out",
+      "title": "Our own page changes caused it",
+      "detail": "The changes just before the drop (homepage hero on 21 Sep, keyword titles on 25 Sep) touched a handful of pages. The drop hit dozens of guides and blog posts we didn't touch; the live count is in \"Pages Google shows\" above."
+    },
+    {
+      "status": "confirmed",
+      "title": "It dropped twice, not once",
+      "detail": "Impressions were near zero from 6 to 16 Sep, came back from 17 to 29 Sep (up to 431 a day), and then disappeared again on 30 Sep. There were no deploys between 2 and 9 Sep, so the first drop wasn't us either. Going on and off like this fits a young site that Google hasn't decided to trust yet. The spam update then settled it the wrong way."
+    },
+    {
+      "status": "confirmed",
+      "title": "The final drop matches Google's spam update",
+      "detail": "Impressions fell from 321 to 5 a day on 30 Sep, inside the September spam update (24 Sep to 8 Oct), and have stayed low since."
+    },
+    {
+      "status": "open",
+      "title": "A manual action from Google",
+      "detail": "Unlikely, but only you can check this: Search Console, Security & Manual actions. A manual action would change the whole plan."
+    }
+  ],
+  "hypotheses": [
+    {
+      "title": "Too much unreviewed content, too fast",
+      "why": "The site went from 0 to about 177 URLs in three months. 57 of them are machine translations nobody reviewed, and they earned almost no clicks. Google's spam policies call this pattern \"scaled content abuse\".",
+      "test": "Noindex the 57 translations and have Amber visibly review the pages that still have demand. If this is the cause, the number of pages with impressions starts climbing within 4 to 8 weeks of Google recrawling."
+    },
+    {
+      "title": "Weak trust signals while Google was looking",
+      "why": "Until 11 Oct the site showed a teacher under a pseudonym with someone else's photo, self-written testimonials with AI portraits and \"geen AI\" claims. All of that was removed on 11 Oct, but the spam update ran from 24 Sep to 8 Oct, when it was all still live.",
+      "test": "Nothing more to fix; it's live. Google has to recrawl and re-evaluate. Requesting indexing for the key pages after Amber's review speeds up the recrawl."
+    },
+    {
+      "title": "Overlap with knmoefenen.nl",
+      "why": "The same owner runs two sites on the same subject. The 9 KNM guide pages here have never been shown in Google once, so Google treats knmoefenen.nl as the better answer for KNM.",
+      "test": "Noindex the KNM guide pages here until the merge. Low risk, because they get zero impressions now."
+    },
+    {
+      "title": "No authority yet",
+      "why": "The domain is a few months old and has almost no links from other sites. The on-off pattern in September is typical of a site Google hasn't made up its mind about. A young site with lots of content and little outside support is easy to demote.",
+      "test": "Get a handful of real links: Amber's LinkedIn and NT2 networks, language schools, gemeente pages. This is slow, so it's next month's work, not this week's."
+    }
+  ],
+  "recovery": "Algorithmic demotions don't lift on request. Google re-evaluates over weeks, and often only at the next core or spam update. Two numbers on this page tell us it's working: pages with impressions back above 50 (it was 62), and the average position of shown pages back under 30."
+}

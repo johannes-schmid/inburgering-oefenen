@@ -6,7 +6,8 @@ een Claude-routine die data en doet voorstellen; de eigenaar beoordeelt bij de k
 ```
 vrijdag 23:00   .github/workflows/seo-collect.yml → scripts/seo-agent/collect.mjs
                 → seo-agent/data/<ISO-week>/{gsc,bing,posthog,health,competitors,geo,index}.json  (commit op main)
-zaterdag 06:00  routine "SEO weekly"  = /seo-weekly   → seo-agent/reports/<week>.md, seo-agent/ledger.json, ≤3 PR's, mail
+zaterdag 06:00  routine "SEO weekly"  = /seo-weekly   → reports/<week>.md + ledger.json + recommendations.json (op main), ≤3 PR's
+                                                     → te lezen op /admin/seo
 1e zaterdag     routine "SEO monthly" = /seo-monthly  → seo-agent/briefs/*.md, ≤2 PR's (alleen links/schema)
 ```
 
@@ -39,8 +40,11 @@ iets verandert maakt het onmogelijk te zien wat werkte. Daarom:
 Zie `editable_surfaces` en `protected_paths` in `seo-agent/config.json`. Kort: titels, meta
 descriptions, interne links, structured data, sitemap en robots **wel**; de tekst van gidsen en
 posts, `SEO/facts.md`, prijzen, vertalingen en alles onder `scripts/` **niet**. De USP is "door een
-docent gevalideerd, geen AI" — een agent die kopij schrijft, maakt de belofte stuk. Inhoud die
-anders moet is een **brief** in `seo-agent/briefs/` voor Marieke.
+NT2-docent gemaakt en nagekeken; AI helpt, zij beslist" — een agent die zelf kopij publiceert, maakt
+die belofte stuk. Inhoud die anders moet is een **pakket** voor Amber: een aanbeveling met
+`owner: "amber"` in `seo-agent/recommendations.json` en een brief in `seo-agent/briefs/`.
+`recommendations.json` (de to-dolijst) en `diagnosis.json` (waarom Google ons minder toont) zijn
+**Engels**: ze zijn voor de eigenaar en verschijnen op `/admin/seo`.
 
 ## KPI's
 
@@ -53,10 +57,13 @@ anders moet is een **brief** in `seo-agent/briefs/` voor Marieke.
 
 ## Zaterdag, voor de eigenaar
 
-1. Open de mail of `seo-agent/reports/<week>.md` op de `claude/seo-<week>-report`-branch.
+1. Open **`/admin/seo`**. Daar staan de stand van zaken, de meting van vrijdag, wat er per persoon
+   te doen is (jij, Amber, de agent), de experimenten en de open PR's. Het rapport zelf staat op
+   `main` in `seo-agent/reports/<week>.md`; de pagina linkt ernaar.
 2. Lees de ledger-oordelen: wat van vijf weken geleden heeft gewerkt?
 3. Beoordeel de PR's. Sluiten mag; schrijf dan waarom in de PR, de maandrun leest dat.
-4. Een brief in `seo-agent/briefs/` is voor Marieke, niet voor de agent.
+4. Ambers werk per week blijft onder `rules.amber_minutes_per_week` (150 minuten); wat niet past
+   schuift door. Een brief in `seo-agent/briefs/` is voor haar, niet voor de agent.
 
 ## Bronnen en sleutels
 

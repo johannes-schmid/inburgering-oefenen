@@ -70,7 +70,8 @@
     "window_days": 28,
     "striking_distance": { "position_min": 8, "position_max": 15, "min_impressions": 50 },
     "decay_threshold_pct": -30,
-    "verdict_after_days": 35
+    "verdict_after_days": 35,
+    "amber_minutes_per_week": 150
   },
   "protected_paths": [
     "SEO/facts.md",

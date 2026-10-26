@@ -22,6 +22,7 @@ import {
   ListChecks,
   MessageSquareText,
   SquarePen,
+  TrendingUp,
   Users,
   type LucideIcon,
 } from 'lucide-react';
@@ -40,6 +41,7 @@ const ICONS: Record<string, LucideIcon> = {
   checklist: ListChecks,
   rate_review: MessageSquareText,
   group: Users,
+  seo: TrendingUp,
 };
 
 function NavIcon({ name }: { name: string }) {

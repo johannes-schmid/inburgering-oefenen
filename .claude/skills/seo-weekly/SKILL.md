@@ -63,12 +63,27 @@ en code-opmerkingen zijn Nederlands (CLAUDE.md §11).
 6. **Rapport.** Schrijf `seo-agent/reports/<week>.md` met: samenvatting in vijf regels, het KPI-blok,
    de ledger-oordelen van deze week, de geopende PR's (link + hypothese), GEO (even weken),
    wat onbekend was en waarom, en één aanbeveling voor de eigenaar die geen PR kan zijn
-   (bijvoorbeeld een onderwerp voor Amber). Commit rapport + ledger op branch
-   `claude/seo-<week>-report` en open daar een PR voor.
+   (bijvoorbeeld een onderwerp voor Amber). Commit rapport, ledger en `recommendations.json`
+   **rechtstreeks op `main`** (`chore(seo): rapport <week>`), géén rapport-PR: de eigenaar leest
+   het op `/admin/seo`, en een PR-branch is precies waar de rapporten van W41 en W42 ongelezen
+   bleven liggen. Code-wijzigingen (titels, techniek) blijven wél PR's.
+
+6a. **To-dolijst en diagnose — in het Engels** (besluit eigenaar, 26-10; de rest van de repo blijft
+   Nederlands). Werk `seo-agent/recommendations.json` bij: dat is de to-dolijst op `/admin/seo`.
+   Per taak: `task` (een gebiedende zin), `owner` (`eigenaar` voor wat alleen hij kan, `amber`
+   voor nakijken en verrijken, `agent` voor wat als PR komt), `priority` (`now` / `next` /
+   `later`), `kind`, `why` mét het getal en de bron, `steps` (de concrete volgende stap, met
+   waar je klikt), en `expect` (wat we daarna zien en wanneer). Een taak zonder `expect` is niet
+   te toetsen en hoort er niet in. Ids nooit hergebruiken; zet een taak op `done` of `dismissed`
+   in plaats van hem te verwijderen. Ambers taken krijgen `minutes`; nooit meer dan
+   `rules.amber_minutes_per_week` per week, de rest blijft `open` en schuift door.
+   Werk `seo-agent/diagnosis.json` bij als een check verandert of een hypothese getoetst is
+   (`checks[].status`, `updated`); de live cijfers rekent de pagina zelf.
 
 7. **Mail.** Stuur met de Gmail-connector de samenvatting (de eerste ~40 regels van het
-   rapport, plus de PR-links) naar de eigenaar, onderwerp `SEO <week> — <één zin>`. Als Gmail
-   niet beschikbaar is: zeg dat in de PR-body en ga door.
+   rapport, plus de PR-links en de link naar `https://inburgeringoefenen.nl/nl/admin/seo`) naar
+   de eigenaar, onderwerp `SEO <week> — <één zin>`. Als Gmail niet beschikbaar is: zet dat als
+   item met `owner: "eigenaar"` in `recommendations.json` en ga door.
 
 ## Harde regels
 
@@ -78,6 +93,6 @@ en code-opmerkingen zijn Nederlands (CLAUDE.md §11).
 - Geen zoekwoord claimen dat in `SEO/used-keywords.md` al bij een andere URL hoort.
 - Vóór elke push: `npx tsc --noEmit` en `npm run test:unit` groen. `tests-unit/guides.test.ts`
   bewaakt de lengtes; als hij rood wordt, is jouw titel fout, niet de test.
-- Hooguit `weekly_pr_cap` inhoudelijke PR's + één technische + de rapport-PR.
+- Hooguit `weekly_pr_cap` inhoudelijke PR's + één technische. Rapport en aanbevelingen gaan op `main`.
 - Een getal zonder bronbestand bestaat niet. Een week zonder GSC-data is een rapport dat dat
   zegt, geen rapport met schattingen.
