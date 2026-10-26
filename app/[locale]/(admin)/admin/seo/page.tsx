@@ -1,83 +1,80 @@
 import type { ReactNode } from 'react';
 import {
-  ArrowDownRight, ArrowRight, ArrowUpRight, Check, Circle, CircleCheck, CircleDashed, CircleSlash, ExternalLink, GitPullRequest,
+  ArrowDownRight, ArrowRight, ArrowUpRight, Check, ChevronDown, Circle, CircleCheck, CircleDashed, CircleSlash, ExternalLink, GitPullRequest,
   Radio, TriangleAlert, X,
 } from 'lucide-react';
 import {
   fetchSeoPulls, loadSeoCockpit, REPO_URL,
-  type Competitors, type Evidence, type PageMap, type SeoCockpit, type SeoPull, type SourceRow, type Window28,
+  type Competitors, type Evidence, type SeoCockpit, type SeoPull, type SourceRow, type Window28,
 } from '@/lib/admin/seo';
 import {
   byPriority, isLive, ledgerStatus, planAmberWeek,
   type Diagnosis, type LedgerEntry, type Owner, type Recommendation,
 } from '@/lib/admin/seo-model';
-import { SeoPageMap } from './_components/SeoPageMap';
-import { SeoTabs, type SeoTabKey } from './_components/SeoTabs';
+import { SeoSiteStructure } from './_components/SeoSiteStructure';
 import { SeoTrendChart } from './_components/SeoTrendChart';
 
 export const dynamic = 'force-dynamic';
-
-const TAB_KEYS: SeoTabKey[] = ['overview', 'pages', 'competitors', 'numbers'];
-const isTab = (v: unknown): v is SeoTabKey => TAB_KEYS.includes(v as SeoTabKey);
 
 /**
  * SEO: de plek waar de eigenaar de SEO-lus volgt, in plaats van in PR's die niemand opent.
  *
  * **Deze pagina is Engels** (besluit eigenaar, 26-10): het is zijn eigen werkplek, geen scherm
- * voor de docent of een kandidaat. Volgorde = de vragen die hij stelt: hoe staan we ervoor, waarom,
- * wat doe ik nu, en pas dan de cijfers. Google komt live uit Search Console (`lib/admin/seo-live.ts`),
- * de rest uit `seo-agent/` in de repo (`lib/admin/seo.ts`). Alleen lezen; afvinken is stap 2.
+ * voor de docent of een kandidaat. Eén pagina, drie vragen (besluit eigenaar, 26-10): hoe gezond
+ * is de site (score op 100, per week bewaard in `seo-agent/data/history/health.json`), wat zeggen
+ * de bronnen (Google, Bing, AI-zoekmachines), en welke pagina vraagt wat (de sitestructuur, elke
+ * pagina op 10). Diagnose, to-dolijst, concurrenten en cijfers staan ingeklapt onder "More".
+ * Google komt live uit Search Console (`lib/admin/seo-live.ts`), de rest uit `seo-agent/`.
  */
-export default async function SeoPage({ searchParams }: { searchParams: Promise<{ tab?: string }> }) {
-  const { tab } = await searchParams;
+export default async function SeoPage() {
   const [data, pulls] = await Promise.all([loadSeoCockpit(), fetchSeoPulls()]);
   const today = new Date().toISOString().slice(0, 10);
 
   return (
     <div className="max-w-6xl">
       <Header data={data} />
-      <Verdict data={data} />
-      <SeoTabs
-        initial={isTab(tab) ? tab : 'overview'}
-        panels={{
-          overview: (
-            <>
-              {data.diagnosis && <DiagnosisCard diagnosis={data.diagnosis} evidence={data.evidence} recovery={data.recovery.bingRatio} />}
-              <Todo data={data} />
-            </>
-          ),
-          pages: data.pageMap ? <PagesPanel map={data.pageMap} /> : <Empty>No page triage yet. Run node scripts/seo-agent/pages.mjs.</Empty>,
-          competitors: data.competitors ? <CompetitorsPanel c={data.competitors} /> : <Empty>No competitor analysis yet.</Empty>,
-          numbers: (
-            <>
-              <Kpis data={data} />
-              <div className="mt-5 grid grid-cols-1 gap-5 lg:grid-cols-[minmax(0,2fr)_minmax(0,1fr)]">
-                <CardShell title="Impressions per day" note="inburgeringoefenen.nl · Google and Bing side by side">
-                  {data.daily.length > 0 ? (
-                    <SeoTrendChart
-                      points={data.daily}
-                      changes={data.ledger
-                        .filter(e => e.site !== 'knm')
-                        .map(e => ({ date: e.date, change: e.change ?? e.id ?? '' }))}
-                    />
-                  ) : (
-                    <Empty>No daily numbers yet. Friday&apos;s data pull fills this chart.</Empty>
-                  )}
-                </CardShell>
+      <HealthBand data={data} />
+      <SourceTiles data={data} />
+      <SiteWideActions data={data} />
+      <div className="mt-10">
+        {data.structure
+          ? <SeoSiteStructure structure={data.structure} />
+          : <Empty>No page triage yet. Run node scripts/seo-agent/pages.mjs.</Empty>}
+      </div>
+
+      <section className="mt-12" aria-labelledby="more">
+        <h2 id="more" className="text-xl font-headline font-bold tracking-tight text-on-surface">More</h2>
+        <p className="mt-1 mb-4 text-sm text-on-surface-variant">The background behind the scores. Closed until you need it.</p>
+        <div className="space-y-3">
+          {data.diagnosis && (
+            <Fold title="Why Google shows us less" note="The diagnosis, with live evidence">
+              <DiagnosisCard diagnosis={data.diagnosis} evidence={data.evidence} recovery={data.recovery.bingRatio} />
+            </Fold>
+          )}
+          <Fold title="Full to-do list" note={`${data.recommendations.filter(isLive).length} open, by priority and owner`}>
+            <Todo data={data} />
+          </Fold>
+          {data.competitors && (
+            <Fold title="Competitor analysis" note={`Who Google shows instead, and what they do differently · ${dateLabel(data.competitors.updated)}`}>
+              <CompetitorsPanel c={data.competitors} />
+            </Fold>
+          )}
+          <Fold title="Numbers and experiments" note="Key figures, the Friday data pull, experiments, queries close to the top, PRs and reports">
+            <Kpis data={data} />
+            <div className="mt-5 grid grid-cols-1 gap-5 lg:grid-cols-[minmax(0,3fr)_minmax(0,2fr)]">
+              <Experiments entries={data.ledger} today={today} />
+              <div className="space-y-5">
                 <Sources data={data} />
-              </div>
-              <div className="mt-5 grid grid-cols-1 gap-5 lg:grid-cols-[minmax(0,3fr)_minmax(0,2fr)]">
-                <Experiments entries={data.ledger} today={today} />
                 <NearQueries data={data} />
               </div>
-              <div className="mt-5 grid grid-cols-1 gap-5 lg:grid-cols-2">
-                <Pulls pulls={pulls} />
-                <Reports reports={data.reports} />
-              </div>
-            </>
-          ),
-        }}
-      />
+            </div>
+            <div className="mt-5 grid grid-cols-1 gap-5 lg:grid-cols-2">
+              <Pulls pulls={pulls} />
+              <Reports reports={data.reports} />
+            </div>
+          </Fold>
+        </div>
+      </section>
     </div>
   );
 }
@@ -182,41 +179,214 @@ function Header({ data }: { data: SeoCockpit }) {
   );
 }
 
-/* ── Hoe staan we ervoor ─────────────────────────────────────────────────── */
+/* ── Hoe gezond is de site ──────────────────────────────────────────────── */
 
-function Verdict({ data }: { data: SeoCockpit }) {
+const toneFor100 = (n: number) =>
+  n >= 80 ? 'text-[var(--goed-ink)]' : n >= 50 ? 'text-[#a24000]' : 'text-[var(--fout)]';
+
+function HealthBand({ data }: { data: SeoCockpit }) {
+  const st = data.structure;
   const r = data.recovery;
-  if (r.tone === 'onbekend' || r.googleRatio === null) {
-    return (
-      <section className="mb-5 rounded-2xl bg-surface-container-low px-5 py-4 text-sm text-on-surface-variant">
-        Not enough daily numbers yet to judge a trend. After four weeks of data there&apos;s a verdict here.
-      </section>
-    );
-  }
+  const history = st?.history ?? [];
+  const last = history.at(-1);
+  const score = st?.site ?? null;
+  const delta = score !== null && last?.site != null ? score - last.site : null;
   const peakMonth = r.googlePeakDate
     ? new Date(`${r.googlePeakDate}T00:00:00Z`).toLocaleDateString('en-GB', { month: 'long', timeZone: 'UTC' })
     : '';
-  const alarm = r.tone === 'alarm';
-  const trend = r.googleTrend;
 
   return (
-    <section
-      className={`mb-5 rounded-2xl px-5 py-5 sm:px-6 ${alarm ? 'bg-[#fcecdd]' : r.tone === 'let-op' ? 'bg-[#fff6ee]' : 'bg-surface-container-low'}`}
-      aria-label="Where we stand"
-    >
-      <p className={`max-w-4xl text-lg font-headline font-bold leading-snug tracking-tight text-balance sm:text-xl ${alarm ? 'text-[#a24000]' : 'text-on-surface'}`}>
-        {r.tone === 'rustig'
-          ? <>Google shows the site at {pct(r.googleRatio)} of its best weeks. No drop to worry about.</>
-          : <>Google shows the site at {pct(r.googleRatio)} of its best weeks ({peakMonth}).{r.bingRatio !== null && <> Bing is at {pct(r.bingRatio)}.</>}</>}
-      </p>
-      <p className="mt-2 max-w-3xl text-sm leading-relaxed text-on-surface-variant">
-        {r.cause === 'google' && <>Bing didn&apos;t drop, so the problem is how Google judges the site, not the site itself. </>}
-        {r.cause === 'beide' && <>Bing dropped too, so look at the site first: a deploy, the sitemap or indexing. </>}
-        {trend !== null && (
-          <>Last full week: {nf.format(Math.round(r.googleNow ?? 0))} Google impressions a day, {trend >= 0 ? 'up' : 'down'} {pct(Math.abs(trend))} on the week before. At the peak it was {nf.format(Math.round(r.googlePeak ?? 0))} a day.</>
+    <section className="mb-5 grid grid-cols-1 gap-x-8 gap-y-4 rounded-2xl bg-surface-container-lowest p-5 shadow-[var(--shadow-ambient)] sm:p-6 md:grid-cols-[auto_minmax(0,1fr)]" aria-label="Site health">
+      <div className="flex items-end gap-4 md:flex-col md:items-start md:gap-1">
+        <p className="text-xs font-medium text-on-surface-variant">Site health</p>
+        <p className="flex items-baseline gap-1 font-headline font-bold tracking-tight tabular-nums">
+          <span className={`text-6xl leading-none ${score === null ? 'text-on-surface-variant' : toneFor100(score)}`}>{score ?? 'n/a'}</span>
+          <span className="text-lg text-on-surface-variant">/100</span>
+        </p>
+        {delta !== null && (
+          <p className="text-xs text-on-surface-variant tabular-nums">
+            <span className={`font-semibold ${delta > 0 ? 'text-[var(--goed)]' : delta < 0 ? 'text-[#a24000]' : ''}`}>{delta > 0 ? '+' : ''}{delta}</span> since {last!.week.replace(/^\d{4}-/, '')}
+          </p>
         )}
-      </p>
+      </div>
+
+      <div className="min-w-0 md:self-center">
+        {r.tone !== 'onbekend' && r.googleRatio !== null ? (
+          <p className="max-w-3xl text-lg font-headline font-bold leading-snug tracking-tight text-balance text-on-surface">
+            Google shows the site at {pct(r.googleRatio)} of its best weeks{peakMonth && ` (${peakMonth})`}.
+            {r.bingRatio !== null && <> Bing is at {pct(r.bingRatio)}.</>}
+          </p>
+        ) : (
+          <p className="text-sm text-on-surface-variant">Not enough daily numbers yet to judge a trend.</p>
+        )}
+        <p className="mt-1.5 max-w-3xl text-sm leading-relaxed text-on-surface-variant">
+          {r.cause === 'google' && <>Bing didn&apos;t drop, so the problem is how Google judges the site, not the site itself. </>}
+          {r.cause === 'beide' && <>Bing dropped too, so look at the site first: a deploy, the sitemap or indexing. </>}
+          The score weighs every page by its search demand: removing weak pages and fixing big ones moves it most.
+        </p>
+        {history.length > 0 && (
+          <ol className="mt-3 flex flex-wrap items-center gap-1.5 text-xs tabular-nums" aria-label="Score per week">
+            {history.map(h => (
+              <li key={h.week} className="rounded-md bg-surface-container-low px-2 py-1 text-on-surface-variant">
+                {h.week.replace(/^\d{4}-/, '')} <span className="font-semibold text-on-surface">{h.site ?? 'n/a'}</span>
+              </li>
+            ))}
+            {score !== null && (
+              <li className="rounded-md bg-[rgba(0,43,109,0.08)] px-2 py-1 text-primary" title="Live: the last 28 days up to today, including the preliminary days">
+                Now, live <span className="font-semibold">{score}</span>
+              </li>
+            )}
+          </ol>
+        )}
+      </div>
     </section>
+  );
+}
+
+/* ── Wat zeggen de bronnen ───────────────────────────────────────────────── */
+
+function SourceTile({ name, status, children }: { name: string; status: ReactNode; children: ReactNode }) {
+  return (
+    <div className="min-w-0 rounded-2xl bg-surface-container-lowest p-4 shadow-[var(--shadow-ambient)] sm:p-5">
+      <div className="flex items-center justify-between gap-2">
+        <h3 className="text-sm font-headline font-bold text-on-surface">{name}</h3>
+        <span className="text-[11px] text-on-surface-variant">{status}</span>
+      </div>
+      <div className="mt-3">{children}</div>
+    </div>
+  );
+}
+
+function Figure({ value, label, before, inverse, format = nf.format }: {
+  value: number | null; label: string; before?: number | null; inverse?: boolean; format?: (n: number) => string;
+}) {
+  return (
+    <div className="min-w-0">
+      <p className="text-2xl font-headline font-bold tracking-tight text-on-surface tabular-nums">{value === null ? 'n/a' : format(value)}</p>
+      <p className="flex flex-wrap items-baseline gap-x-1.5 text-xs text-on-surface-variant">
+        {label}
+        {value !== null && before != null && <Delta now={value} before={before} inverse={inverse} />}
+      </p>
+    </div>
+  );
+}
+
+function SourceTiles({ data }: { data: SeoCockpit }) {
+  const t = data.inburgering.totals;
+  const bing = data.inburgering.bing;
+  const geo = data.sources.find(s => s.key === 'geo');
+  const live = data.live.state === 'live';
+  return (
+    <section aria-label="Sources" className="mb-5">
+      <div className="grid grid-cols-1 gap-3 md:grid-cols-3">
+        <SourceTile
+          name="Google"
+          status={live
+            ? <span className="inline-flex items-center gap-1 font-semibold text-[var(--goed)]"><Radio className="size-3" aria-hidden /> live</span>
+            : data.inburgering.gscError ? <span className="text-[#a24000]">unknown</span> : 'Friday’s data pull'}
+        >
+          <div className="grid grid-cols-3 gap-3">
+            <Figure value={t?.current.clicks ?? null} before={t?.previous.clicks} label="clicks" />
+            <Figure value={t?.current.impressions ?? null} before={t?.previous.impressions} label="impressions" />
+            <Figure value={t?.current.position ?? null} before={t?.previous.position} label="avg position" inverse format={n => nf1.format(n)} />
+          </div>
+          <p className="mt-2 text-[11px] text-on-surface-variant">Last 28 days vs the 28 before</p>
+        </SourceTile>
+        <SourceTile name="Bing" status={data.live.bingLive ? <span className="inline-flex items-center gap-1 font-semibold text-[var(--goed)]"><Radio className="size-3" aria-hidden /> live</span> : 'Friday’s data pull'}>
+          <div className="grid grid-cols-2 gap-3">
+            <Figure value={bing?.clicks ?? null} before={bing?.prevClicks} label="clicks" />
+            <Figure value={bing?.impressions ?? null} before={bing?.prevImpressions} label="impressions" />
+          </div>
+          <p className="mt-2 text-[11px] text-on-surface-variant">Last 28 days vs the 28 before</p>
+        </SourceTile>
+        <SourceTile name="AI search" status={geo?.state === 'ok' ? 'measured' : 'not measured yet'}>
+          {geo?.state === 'ok' ? (
+            <p className="text-sm text-on-surface">Measured in {data.latestWeek}. ChatGPT, Perplexity and Claude, asked our 12 questions.</p>
+          ) : (
+            <>
+              <p className="text-sm leading-relaxed text-on-surface">Whether ChatGPT, Perplexity and Claude name us for our 12 questions. Runs in even weeks, next on {dayLabel(data.nextCollect)}.</p>
+              <p className="mt-1.5 text-[11px] text-on-surface-variant">
+                {geo?.state === 'error' ? `Last run failed: ${geo.detail}` : 'Unknown, not zero. Google’s AI Overviews are counted inside Google’s numbers; Search Console doesn’t split them out.'}
+              </p>
+            </>
+          )}
+        </SourceTile>
+      </div>
+
+      <CardShell className="mt-3" title="Impressions per day" note="Google and Bing side by side. Grows by a day every day.">
+        {data.daily.length > 0 ? (
+          <SeoTrendChart
+            points={data.daily}
+            changes={data.ledger
+              .filter(e => e.site !== 'knm')
+              .map(e => ({ date: e.date, change: e.change ?? e.id ?? '' }))}
+          />
+        ) : (
+          <Empty>No daily numbers yet. Friday&apos;s data pull fills this chart.</Empty>
+        )}
+      </CardShell>
+    </section>
+  );
+}
+
+/* ── Wat niet bij één pagina hoort ────────────────────────────────────────── */
+
+function SiteWideActions({ data }: { data: SeoCockpit }) {
+  const items = data.recommendations
+    .filter(r => isLive(r) && r.priority !== 'later' && (r.pages?.length ?? 0) !== 1)
+    .sort(byPriority);
+  if (items.length === 0) return null;
+  return (
+    <section className="mt-10" aria-labelledby="sitewide">
+      <h2 id="sitewide" className="text-xl font-headline font-bold tracking-tight text-on-surface">Site-wide actions</h2>
+      <p className="mt-1 mb-4 text-sm text-on-surface-variant">Not about one page. These come first; each page below shows the ones that touch it.</p>
+      <ul className="space-y-2">
+        {items.map(r => {
+          const owner = OWNER[r.owner];
+          return (
+            <li key={r.id}>
+              <details className="group rounded-2xl bg-surface-container-lowest shadow-[var(--shadow-ambient)]">
+                <summary className="grid cursor-pointer list-none grid-cols-[20px_1fr_auto] items-center gap-x-3 rounded-2xl px-4 py-3 transition-colors duration-150 hover:bg-surface-container-low/50 focus-visible:outline-none focus-visible:shadow-[var(--ring-selected)] sm:px-5 [&::-webkit-details-marker]:hidden">
+                  <Circle className="size-4 text-on-surface-variant/60" aria-hidden />
+                  <span className="min-w-0 text-sm font-semibold text-on-surface">{r.task}</span>
+                  <span className="flex items-center gap-1.5">
+                    <Chip className={owner.cls}>{owner.label}</Chip>
+                    {r.minutes !== undefined && <Chip>{r.minutes} min</Chip>}
+                    {(r.pages?.length ?? 0) > 1 && <Chip className="hidden sm:inline-flex">{r.pages!.length} pages</Chip>}
+                    <ChevronDown className="size-4 text-on-surface-variant transition-transform duration-200 ease-[cubic-bezier(0.22,1,0.36,1)] group-open:rotate-180 motion-reduce:transition-none" aria-hidden />
+                  </span>
+                </summary>
+                <dl className="grid grid-cols-1 gap-x-4 gap-y-2 px-4 pb-4 text-[13px] leading-relaxed sm:grid-cols-[88px_1fr] sm:px-5 sm:pl-[52px]">
+                  <dt className="font-semibold text-on-surface-variant">Why</dt>
+                  <dd className="text-on-surface">{r.why}</dd>
+                  <dt className="font-semibold text-on-surface-variant">Steps</dt>
+                  <dd className="text-on-surface">
+                    <ol className="list-decimal space-y-1 pl-4 marker:text-on-surface-variant">{r.steps.map(s => <li key={s}>{s}</li>)}</ol>
+                  </dd>
+                  <dt className="font-semibold text-on-surface-variant">We expect</dt>
+                  <dd className="text-on-surface">{r.expect}</dd>
+                </dl>
+              </details>
+            </li>
+          );
+        })}
+      </ul>
+    </section>
+  );
+}
+
+function Fold({ title, note, children }: { title: string; note: string; children: ReactNode }) {
+  return (
+    <details className="group rounded-2xl bg-surface-container-low">
+      <summary className="grid cursor-pointer list-none grid-cols-[1fr_auto] items-center gap-x-4 rounded-2xl px-5 py-4 transition-colors duration-150 hover:bg-surface-container focus-visible:outline-none focus-visible:shadow-[var(--ring-selected)] sm:px-6 [&::-webkit-details-marker]:hidden">
+        <span className="min-w-0">
+          <span className="block text-[15px] font-headline font-bold tracking-tight text-on-surface">{title}</span>
+          <span className="mt-0.5 block text-xs text-on-surface-variant">{note}</span>
+        </span>
+        <ChevronDown className="size-4 text-on-surface-variant transition-transform duration-200 ease-[cubic-bezier(0.22,1,0.36,1)] group-open:rotate-180 motion-reduce:transition-none" aria-hidden />
+      </summary>
+      <div className="px-3 pb-3 sm:px-4 sm:pb-4">{children}</div>
+    </details>
   );
 }
 
@@ -742,73 +912,6 @@ function Reports({ reports }: { reports: SeoCockpit['reports'] }) {
         </ul>
       )}
     </CardShell>
-  );
-}
-
-/* ── Pagina's: de treemap en de weekplanning ─────────────────────────────── */
-
-const PLAN_KIND: Record<string, { label: string; color: string }> = {
-  remove: { label: 'Remove', color: '#c2416b' },
-  consolidate: { label: 'Consolidate', color: '#b07d12' },
-  improve: { label: 'Improve', color: '#2f5fb3' },
-  watch: { label: 'Watch', color: '#8a94ad' },
-  healthy: { label: 'Tidy', color: '#2b8a63' },
-};
-
-function PagesPanel({ map }: { map: PageMap }) {
-  type Item = { label: string; kind: string; owner: string; planned?: boolean };
-  const byWeek = new Map<string, { starts: string; items: Item[] }>();
-  const add = (week: string | undefined, starts: string | undefined, item: Item) => {
-    if (!week) return;
-    const w = byWeek.get(week) ?? { starts: starts ?? '', items: [] };
-    w.items.push(item);
-    byWeek.set(week, w);
-  };
-  for (const p of map.pages) if (p.plan?.week) add(p.plan.week, p.plan.starts, { label: p.path.split('/').filter(Boolean).slice(-1)[0] ?? p.path, kind: p.verdict, owner: p.plan.owner });
-  for (const p of map.planned) add(p.week, p.starts, { label: p.title, kind: 'planned', owner: p.owner, planned: true });
-  const weeks = [...byWeek.entries()].sort(([a], [b]) => a.localeCompare(b));
-
-  return (
-    <>
-      <CardShell title="Every page on the site" note={`Triage from ${dateLabel(map.updated)}, search numbers live. Click a tile for its search data, plan and date.`}>
-        <SeoPageMap map={map} />
-      </CardShell>
-
-      <CardShell className="mt-5" title="When it happens" note="Cleanup first and fast, then Amber at two pages a week, then new pages one at a time">
-        <ol className="-mx-1 flex snap-x gap-3 overflow-x-auto px-1 pb-2">
-          {weeks.map(([week, w], i) => {
-            const groups = new Map<string, Item[]>();
-            for (const it of w.items) groups.set(it.kind, [...(groups.get(it.kind) ?? []), it]);
-            return (
-              <li key={week} className={`w-56 shrink-0 snap-start rounded-xl p-3.5 ${i === 0 ? 'bg-[rgba(0,43,109,0.06)] shadow-[var(--ring-selected)]' : 'bg-surface-container-low'}`}>
-                <p className="text-sm font-headline font-bold text-on-surface">Week {Number(week.split('-W')[1])}{i === 0 && <span className="ml-1.5 text-xs font-semibold text-primary">this week</span>}</p>
-                <p className="text-[11px] text-on-surface-variant">from {dateLabel(w.starts)}</p>
-                <ul className="mt-3 space-y-2.5">
-                  {[...groups.entries()].map(([kind, items]) => (
-                    <li key={kind}>
-                      <p className="flex items-center gap-1.5 text-xs font-semibold text-on-surface">
-                        {kind === 'planned'
-                          ? <span className="inline-block h-2.5 w-3.5 rounded-[3px] border border-dashed border-primary" aria-hidden />
-                          : <span className="size-2.5 rounded-full" style={{ background: PLAN_KIND[kind]?.color }} aria-hidden />}
-                        {kind === 'planned' ? 'New page' : PLAN_KIND[kind]?.label ?? kind}
-                        <span className="font-normal text-on-surface-variant tabular-nums">{items.length}</span>
-                      </p>
-                      <ul className="mt-1 space-y-0.5 pl-4 text-[11px] text-on-surface-variant">
-                        {items.slice(0, 3).map(it => <li key={it.label} className="truncate" dir="auto">{it.label}</li>)}
-                        {items.length > 3 && <li>and {items.length - 3} more</li>}
-                      </ul>
-                    </li>
-                  ))}
-                </ul>
-              </li>
-            );
-          })}
-        </ol>
-        <p className="mt-2 text-[11px] text-on-surface-variant">
-          Expect the first movement 4 to 8 weeks after the cleanup is recrawled, often only at Google&apos;s next spam or core update. Documented recoveries took 3 to 6 months.
-        </p>
-      </CardShell>
-    </>
   );
 }
 

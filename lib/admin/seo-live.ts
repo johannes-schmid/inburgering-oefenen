@@ -31,7 +31,8 @@ export type LiveGsc = {
   windows: { current: { start: string; end: string }; previous: { start: string; end: string } };
   totals: { current: Totals; previous: Totals };
   nonBrand: { current: Totals; previous: Totals };
-  pages: { baseline: PageRow[]; recent: PageRow[]; recentWindow: { start: string; end: string } };
+  /** `current` is hetzelfde 28-dagenvenster als `windows.current`: de basis van de paginascore. */
+  pages: { baseline: PageRow[]; recent: PageRow[]; current: PageRow[]; recentWindow: { start: string; end: string } };
   /** Zoekwoord × pagina sinds de eerste dag, voor de lade bij een pagina. Alleen rijen met ≥ 2 vertoningen. */
   queryPage: { query: string; page: string; impressions: number; position: number }[];
 };
@@ -101,7 +102,7 @@ export async function fetchLiveGsc(baseline: { start: string; end: string }, now
     rows.map(r => ({ page: r.keys![0], clicks: r.clicks ?? 0, impressions: r.impressions ?? 0, position: r.position ?? 0 }));
 
   try {
-    const [daily, cur, prev, nbCur, nbPrev, base, recent, qp] = await Promise.all([
+    const [daily, cur, prev, nbCur, nbPrev, base, recent, curPages, qp] = await Promise.all([
       query({ startDate: FIRST_DAY, endDate: today, dimensions: ['date'] }),
       query({ startDate: current.start, endDate: current.end }),
       query({ startDate: previous.start, endDate: previous.end }),
@@ -109,6 +110,7 @@ export async function fetchLiveGsc(baseline: { start: string; end: string }, now
       query({ startDate: previous.start, endDate: previous.end, dimensionFilterGroups: nonBrand }),
       query({ startDate: baseline.start, endDate: baseline.end, dimensions: ['page'] }),
       query({ startDate: recentWindow.start, endDate: recentWindow.end, dimensions: ['page'] }),
+      query({ startDate: current.start, endDate: current.end, dimensions: ['page'] }),
       query({ startDate: FIRST_DAY, endDate: today, dimensions: ['query', 'page'] }),
     ]);
     const value: LiveGsc = {
@@ -117,7 +119,7 @@ export async function fetchLiveGsc(baseline: { start: string; end: string }, now
       windows: { current, previous },
       totals: { current: total(cur), previous: total(prev) },
       nonBrand: { current: total(nbCur), previous: total(nbPrev) },
-      pages: { baseline: pages(base), recent: pages(recent), recentWindow },
+      pages: { baseline: pages(base), recent: pages(recent), current: pages(curPages), recentWindow },
       queryPage: qp
         .filter(r => (r.impressions ?? 0) >= 2)
         .map(r => ({ query: r.keys![0], page: r.keys![1], impressions: r.impressions ?? 0, position: r.position ?? 0 })),

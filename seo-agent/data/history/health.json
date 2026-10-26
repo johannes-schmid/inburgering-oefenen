@@ -1,0 +1,37 @@
+{
+  "$comment": "Geschreven door scripts/seo-agent/score.mjs. Eén rij per week; de som staat in lib/admin/seo-score.mjs.",
+  "rows": [
+    {
+      "week": "2026-W41",
+      "date": "2026-10-07",
+      "site": 55,
+      "sections": {
+        "core": 7.8,
+        "practice": 8.8,
+        "blog": 6.3,
+        "translations": 2,
+        "knm": 4,
+        "guides": 4.9
+      },
+      "pages": 177,
+      "gsc": true,
+      "triage": "2026-10-26"
+    },
+    {
+      "week": "2026-W43",
+      "date": "2026-10-20",
+      "site": 51,
+      "sections": {
+        "core": 7.9,
+        "practice": 8.6,
+        "blog": 5,
+        "translations": 1.8,
+        "knm": 4,
+        "guides": 4.5
+      },
+      "pages": 177,
+      "gsc": true,
+      "triage": "2026-10-26"
+    }
+  ]
+}

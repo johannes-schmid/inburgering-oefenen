@@ -566,5 +566,33 @@
     "Add concrete demonstrations from Amber's teaching, such as the same message written at A1, A2 and B1, or a real corrected student text, instead of more description.",
     "Prioritise narrow, fact-led questions where we hold a verified answer others get wrong (as with the retake post) over broad rules queries that inburgeren.nl owns.",
     "Treat recovery as site-level: prune or merge thin and near-duplicate pages and slow new publishing until the remaining pages each offer something no sibling page does."
-  ]
+  ],
+  "by_section": {
+    "$comment": "Welke lessen uit deze analyse gelden voor welke sectie van /admin/seo. Tekst uit `lessons` en `differences`; de pagina toont ze bij elke pagina van die sectie.",
+    "practice": [
+      "Put the free taster (no account needed) on the pages Google ranks: embed a few questions on each guide and at the top of /oefenexamen, so the page itself satisfies oefenen intent.",
+      "nt2taalmenu.nl and inburgering.org show the exercise itself on the ranking page; ours shows a list of locked slots to an anonymous visitor."
+    ],
+    "guides": [
+      "Put real practice on public guide pages: at least one full sample task per onderdeel with a model answer and the DUO scoring points, visible without an account.",
+      "Add concrete demonstrations from Amber's teaching, such as the same message written at A1, A2 and B1, or a real corrected student text, instead of more description.",
+      "Break the single guide template: let each page's shape follow its topic, drop boilerplate blocks that repeat on every page, and cut the em-dash-heavy house style."
+    ],
+    "blog": [
+      "Add concrete demonstrations from Amber's teaching, such as the same message written at A1, A2 and B1, or a real corrected student text, instead of more description.",
+      "Prioritise narrow, fact-led questions where we hold a verified answer others get wrong (as with the retake post) over broad rules queries that inburgeren.nl owns.",
+      "Treat recovery as site-level: prune or merge thin and near-duplicate pages and slow new publishing until the remaining pages each offer something no sibling page does."
+    ],
+    "knm": [
+      "Treat recovery as site-level: prune or merge thin and near-duplicate pages and slow new publishing until the remaining pages each offer something no sibling page does.",
+      "knmoefenen.nl already ranks for KNM queries; two sites from one owner competing for the same query split the signal."
+    ],
+    "translations": [
+      "Treat recovery as site-level: prune or merge thin and near-duplicate pages and slow new publishing until the remaining pages each offer something no sibling page does."
+    ],
+    "core": [
+      "Our author block is the strongest in the set (named NT2 teacher, photo, review date, /redactie), yet we rank lower: trust is site-level, not markup.",
+      "Prioritise narrow, fact-led questions where we hold a verified answer others get wrong (as with the retake post) over broad rules queries that inburgeren.nl owns."
+    ]
+  }
 }

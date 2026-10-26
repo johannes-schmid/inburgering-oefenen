@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import { readFileSync } from 'node:fs';
 import {
-  expectedSnapshotWeek, ledgerStatus, markPreliminary, mergeDaily, parseBingDate, parseSourceStatus, planAmberWeek, squarify,
+  expectedSnapshotWeek, ledgerStatus, markPreliminary, mergeDaily, parseBingDate, parseSourceStatus, planAmberWeek,
   recoveryRead, type DayPoint, type Recommendation,
 } from '@/lib/admin/seo-model';
 
@@ -137,41 +137,6 @@ describe('seo-agent/recommendations.json', () => {
       expect(r.steps.length, r.id).toBeGreaterThan(0);
       expect(r.expect.length, r.id).toBeGreaterThan(20);
     }
-  });
-});
-
-describe('treemap', () => {
-  const rect = { x: 0, y: 0, w: 600, h: 400 };
-  const items = [60, 30, 20, 20, 10, 6, 4, 1, 0].map((value, i) => ({ value, item: `p${i}` }));
-  const tiles = squarify(items, rect);
-  it('geeft elke positieve waarde een tegel met een evenredig oppervlak', () => {
-    expect(tiles).toHaveLength(8);
-    const total = 151;
-    for (const t of tiles) {
-      const v = items.find(i => i.item === t.item)!.value;
-      expect(t.w * t.h).toBeCloseTo((v / total) * 600 * 400, 3);
-    }
-  });
-  it('blijft binnen het vlak en overlapt niet', () => {
-    for (const t of tiles) {
-      expect(t.x).toBeGreaterThanOrEqual(-1e-6);
-      expect(t.y).toBeGreaterThanOrEqual(-1e-6);
-      expect(t.x + t.w).toBeLessThanOrEqual(600 + 1e-6);
-      expect(t.y + t.h).toBeLessThanOrEqual(400 + 1e-6);
-    }
-    for (let a = 0; a < tiles.length; a++) for (let b = a + 1; b < tiles.length; b++) {
-      const A = tiles[a], B = tiles[b];
-      const ox = Math.min(A.x + A.w, B.x + B.w) - Math.max(A.x, B.x);
-      const oy = Math.min(A.y + A.h, B.y + B.h) - Math.max(A.y, B.y);
-      expect(ox > 1e-6 && oy > 1e-6).toBe(false);
-    }
-  });
-  it('maakt de grootste tegels niet extreem langwerpig', () => {
-    const big = tiles.find(t => t.item === 'p0')!;
-    expect(Math.max(big.w / big.h, big.h / big.w)).toBeLessThan(3);
-  });
-  it('zonder waarde geen tegels', () => {
-    expect(squarify([{ value: 0, item: 'x' }], rect)).toEqual([]);
   });
 });
 

@@ -50,6 +50,8 @@ jobs:
           node scripts/seo-agent/collect.mjs \
             ${{ inputs.backfill && '--backfill' || '' }} \
             ${{ inputs.force_geo && '--force-geo' || '' }}
+      - name: Gezondheidsscore
+        run: node scripts/seo-agent/score.mjs
       - name: Commit
         run: |
           git config user.name "seo-agent"

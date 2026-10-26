@@ -46,6 +46,45 @@ die belofte stuk. Inhoud die anders moet is een **pakket** voor Amber: een aanbe
 `recommendations.json` (de to-dolijst) en `diagnosis.json` (waarom Google ons minder toont) zijn
 **Engels**: ze zijn voor de eigenaar en verschijnen op `/admin/seo`.
 
+`/admin/seo` is één pagina (besluit eigenaar, 26-10): bovenaan de **gezondheidsscore** van de site
+(op 100) en de drie bronnen (Google, Bing, AI-zoekmachines), daaronder de **sitestructuur**: elke
+sitemap-URL in haar sectie met een score op 10, waarom, en de volgende stap. Een pagina openklappen
+toont de zoekcijfers, wat concurrenten beter doen en twee knoppen: een prompt voor Claude Code of de
+stappen om het zelf te doen. Diagnose, to-dolijst, concurrentieanalyse en cijfers staan ingeklapt
+onder "More".
+
+- **De som** staat in `lib/admin/seo-score.mjs` (gewoon JavaScript, zodat pagina en script dezelfde
+  gebruiken). Begint op 10; aftrek voor het oordeel uit de triage, zichtbaarheid tegen aug–sep
+  (`demand`), positie en de gezondheidscheck. De site is het gemiddelde gewogen naar zoekvraag.
+- **De lijn over de tijd**: `node scripts/seo-agent/score.mjs` schrijft na elke vrijdagrun één rij
+  in `data/history/health.json` (stap in `seo-collect.yml`). Rekent op de snapshot, dus de live
+  "Now" op de pagina kan een paar punten afwijken.
+- **De indeling** staat in `seo-agent/pages.json` en komt uit `node scripts/seo-agent/pages.mjs`
+  (sitemap + de nieuwste pagina-audit); pas de regels in dat script aan, nooit de JSON.
+- **Concurrenten**: `competitors-analysis.json`, met `by_section` voor de inzichten per sectie.
+
+## Cadans
+
+| Ritme | Taak | Uitkomst |
+|---|---|---|
+| wekelijks | KPI-blok + ledger-oordelen | rapport |
+| wekelijks | technische gezondheid (4xx, canonical, noindex, JSON-LD) | één PR als er iets stuk is |
+| tweewekelijks (oneven weken) | striking distance, posities 8–15 | ≤ 3 title/description-PR's |
+| tweewekelijks (even weken) | GEO: vaste prompts naar ChatGPT, Perplexity, Claude | citatie-aandeel in het rapport |
+| maandelijks | decay, kannibalisatie, interne links, concurrentenverschil | briefs + ≤ 2 link-PR's |
+| per kwartaal | markt en scope | één alinea |
+
+## Wat een agent mag aanraken
+
+Zie `editable_surfaces` en `protected_paths` in `seo-agent/config.json`. Kort: titels, meta
+descriptions, interne links, structured data, sitemap en robots **wel**; de tekst van gidsen en
+posts, `SEO/facts.md`, prijzen, vertalingen en alles onder `scripts/` **niet**. De USP is "door een
+NT2-docent gemaakt en nagekeken; AI helpt, zij beslist" — een agent die zelf kopij publiceert, maakt
+die belofte stuk. Inhoud die anders moet is een **pakket** voor Amber: een aanbeveling met
+`owner: "amber"` in `seo-agent/recommendations.json` en een brief in `seo-agent/briefs/`.
+`recommendations.json` (de to-dolijst) en `diagnosis.json` (waarom Google ons minder toont) zijn
+**Engels**: ze zijn voor de eigenaar en verschijnen op `/admin/seo`.
+
 `/admin/seo` heeft vier tabs. **Pages** is de treemap van elke sitemap-URL: grootte = vraag in
 Google, kleur = de bak uit het herstelplaybook (healthy · improve · consolidate · remove · watch),
 gestippeld = een geplande nieuwe pagina. De indeling staat in `seo-agent/pages.json` en komt uit

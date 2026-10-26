@@ -1,10 +1,11 @@
 import { readFile, readdir } from 'node:fs/promises';
 import path from 'node:path';
 import {
-  expectedSnapshotWeek, markPreliminary, mergeDaily, nextCollectDate, parseBingDate, parseSourceStatus, recoveryRead,
+  expectedSnapshotWeek, isLive, markPreliminary, mergeDaily, nextCollectDate, parseBingDate, parseSourceStatus, recoveryRead,
   type BingDay, type DayPoint, type Diagnosis, type GscDay, type LedgerEntry, type Recommendation, type RecoveryRead, type SourceState,
 } from './seo-model';
-import { fetchLiveBing, fetchLiveGsc, type PageRow } from './seo-live';
+import { fetchLiveBing, fetchLiveGsc, type LiveGsc, type PageRow } from './seo-live';
+import { pageScore, pageWeight, rollup, type HistoryRow, type ScoreFactor, type ScoreInput, type Verdict } from './seo-score.mjs';
 
 /**
  * De bron van `/admin/seo`: de bestanden die de SEO-lus in de repo zet.
@@ -46,29 +47,35 @@ export type Evidence = {
   recent: { start: string; end: string; pages: number; position: number | null };
   lost: LostPage[];
 };
-/** Een pagina uit de triage, met zijn live zoekcijfers ernaast. `null` = onbekend (geen live data). */
-export type PageCell = {
+/** Een pagina uit de triage met haar live cijfers, haar score en wat eraan te doen is. `now: null` = onbekend. */
+export type StructurePage = {
   path: string;
   section: string;
-  verdict: 'healthy' | 'improve' | 'consolidate' | 'remove' | 'watch';
+  verdict: Verdict;
   reason: string;
   plan: { action: string; owner: string; week?: string; starts?: string; into?: string } | null;
-  /** Vertoningen in aug + sep volgens de audit; de terugval voor de tegelgrootte zonder live data. */
+  /** Vertoningen in aug + sep volgens de audit: de maatstaf voor "voor de val". */
   demand: number;
-  before: { impressions: number; position: number | null } | null;
-  now: { impressions: number; position: number | null } | null;
+  now: { impressions: number; clicks: number; position: number | null } | null;
   queries: { query: string; impressions: number; position: number }[];
+  issues: string[];
+  score: number;
+  factors: ScoreFactor[];
+  weight: number;
+  recs: Pick<Recommendation, 'id' | 'task' | 'owner' | 'priority' | 'steps' | 'why' | 'expect' | 'status'>[];
+  competitor: string | null;
 };
 export type PlannedPage = {
   id: string; title: string; section: string; demand: number; evidence: string; why: string; owner: string; week: string; starts: string;
 };
-export type PageMap = {
+export type SiteStructure = {
   updated: string;
-  sections: { key: string; label: string; note: string }[];
-  counts: Record<PageCell['verdict'], number>;
-  pages: PageCell[];
+  sections: { key: string; label: string; note: string; score: number | null; insights: string[] }[];
+  pages: StructurePage[];
   planned: PlannedPage[];
-  windows: { before: { start: string; end: string }; now: { start: string; end: string } } | null;
+  site: number | null;
+  history: HistoryRow[];
+  live: boolean;
 };
 export type Competitors = {
   updated: string;
@@ -79,6 +86,7 @@ export type Competitors = {
   summary: string;
   differences: { title: string; them: string; us: string; evidence: 'strong' | 'medium' | 'weak' }[];
   lessons: string[];
+  by_section?: Record<string, string[]>;
 };
 export type LiveState = { state: 'live' | 'snapshot' | 'error'; detail: string; fetchedAt: string | null; bingLive: boolean };
 
@@ -92,7 +100,7 @@ export type SeoCockpit = {
   daily: DayPoint[];
   diagnosis: Diagnosis | null;
   evidence: Evidence | null;
-  pageMap: PageMap | null;
+  structure: SiteStructure | null;
   competitors: Competitors | null;
   recovery: RecoveryRead;
   inburgering: {
@@ -175,8 +183,8 @@ export async function loadSeoCockpit(now = new Date()): Promise<SeoCockpit> {
   const latestWeek = weeks.at(-1) ?? null;
 
   const diagnosis = await json<Diagnosis>('diagnosis.json');
-  const triage = await json<Omit<PageMap, 'pages' | 'windows'> & { pages: Omit<PageCell, 'before' | 'now' | 'queries'>[] }>('pages.json');
-  const [liveGsc, liveBing, index, gsc, bing, health, ledger, recs, config, history, reportFiles] = await Promise.all([
+  const triage = await json<Triage>('pages.json');
+  const [liveGsc, liveBing, index, gsc, bing, health, ledger, recs, config, history, reportFiles, scoreHistory, competitors] = await Promise.all([
     diagnosis ? fetchLiveGsc(diagnosis.baseline, now) : null,
     fetchLiveBing(),
     latestWeek ? json<{ generated_at: string; sources: Record<string, string> }>(`data/${latestWeek}/index.json`) : null,
@@ -188,6 +196,8 @@ export async function loadSeoCockpit(now = new Date()): Promise<SeoCockpit> {
     json<{ rules: { amber_minutes_per_week?: number } }>('config.json'),
     list('data/history'),
     list('reports'),
+    json<{ rows: HistoryRow[] }>('data/history/health.json'),
+    json<Competitors>('competitors-analysis.json'),
   ]);
 
   // Oud → nieuw: eerst de backfills, dan elke week; de nieuwste snapshot wint per dag.
@@ -245,8 +255,10 @@ export async function loadSeoCockpit(now = new Date()): Promise<SeoCockpit> {
           lost: lostPages(live.pages.baseline, live.pages.recent),
         }
       : null,
-    pageMap: triage ? buildPageMap(triage, live, diagnosis) : null,
-    competitors: await json<Competitors>('competitors-analysis.json'),
+    structure: triage
+      ? buildStructure(triage, live, gIn, hIn?.problems ?? {}, recs?.items ?? [], competitors, scoreHistory?.rows ?? [])
+      : null,
+    competitors,
     // Het oordeel rekent zonder de voorlopige dagen: een halve dag van vandaag trekt het weekgemiddelde omlaag.
     recovery: recoveryRead(daily.filter(p => !p.preliminary)),
     inburgering: {
@@ -282,33 +294,77 @@ export async function loadSeoCockpit(now = new Date()): Promise<SeoCockpit> {
 
 const SITE_ORIGIN = 'https://inburgeringoefenen.nl';
 
-/** De triage uit `pages.json` met per pagina de live cijfers: nulmeting, nu, en de vijf grootste zoekwoorden. */
-function buildPageMap(
-  triage: Omit<PageMap, 'pages' | 'windows'> & { pages: Omit<PageCell, 'before' | 'now' | 'queries'>[] },
-  live: Awaited<ReturnType<typeof fetchLiveGsc>> | null,
-  diagnosis: Diagnosis | null,
-): PageMap {
-  const ok = live && !('error' in live) ? live : null;
+type Triage = Omit<SiteStructure, 'pages' | 'sections' | 'site' | 'history' | 'live'> & {
+  sections: { key: string; label: string; note: string }[];
+  pages: Pick<StructurePage, 'path' | 'section' | 'verdict' | 'reason' | 'plan' | 'demand'>[];
+};
+
+/**
+ * De triage uit `pages.json` met per pagina de cijfers van de laatste 28 dagen (live, anders de
+ * snapshot van vrijdag), de bevindingen van de gezondheidscheck, de score en de taken die haar
+ * noemen. De som staat in `seo-score.mjs`, dezelfde die de wekelijkse rij schrijft.
+ */
+function buildStructure(
+  triage: Triage,
+  live: LiveGsc | null,
+  snapshot: GscSite | undefined,
+  problems: Record<string, string[]>,
+  recommendations: Recommendation[],
+  competitors: Competitors | null,
+  history: HistoryRow[],
+): SiteStructure {
   const key = (url: string) => decodeURI(url.replace(SITE_ORIGIN, '')) || '/';
-  const before = new Map(ok?.pages.baseline.map(r => [key(r.page), r]) ?? []);
-  const now = new Map(ok?.pages.recent.map(r => [key(r.page), r]) ?? []);
-  const queries = new Map<string, PageCell['queries']>();
-  for (const r of ok?.queryPage ?? []) {
+  const snapRows = (snapshot as { current?: { page?: { keys: [string]; clicks: number; impressions: number; position: number }[] } } | undefined)?.current?.page;
+  const rows: PageRow[] | null = live
+    ? live.pages.current
+    : snapRows ? snapRows.map(r => ({ page: r.keys[0], clicks: r.clicks, impressions: r.impressions, position: r.position })) : null;
+  const now = new Map(rows?.map(r => [key(r.page), r]) ?? []);
+  const issues = new Map(Object.entries(problems).map(([url, list]) => [key(url), list]));
+  const queries = new Map<string, StructurePage['queries']>();
+  for (const r of live?.queryPage ?? []) {
     const k = key(r.page);
-    const list = queries.get(k) ?? [];
-    list.push({ query: r.query, impressions: r.impressions, position: r.position });
-    queries.set(k, list);
+    queries.set(k, [...(queries.get(k) ?? []), { query: r.query, impressions: r.impressions, position: r.position }]);
   }
-  const cell = (r?: PageRow) => (r ? { impressions: r.impressions, position: r.position } : { impressions: 0, position: null });
-  return {
-    ...triage,
-    windows: ok && diagnosis ? { before: { start: diagnosis.baseline.start, end: diagnosis.baseline.end }, now: ok.pages.recentWindow } : null,
-    pages: triage.pages.map(p => ({
+  const openRecs = recommendations.filter(isLive);
+  const ours = new Map((competitors?.pages ?? []).filter(p => p.ours).map(p => [key(p.url), p.verdict]));
+
+  const inputs: ScoreInput[] = triage.pages.map(p => {
+    const r = now.get(p.path);
+    return {
+      path: p.path, section: p.section, verdict: p.verdict, demand: p.demand,
+      now: rows ? { impressions: r?.impressions ?? 0, position: r ? r.position : null } : null,
+      issues: issues.get(p.path) ?? [],
+    };
+  });
+  const totals = rollup(inputs);
+
+  const pages: StructurePage[] = triage.pages.map((p, i) => {
+    const input = inputs[i];
+    const { score, factors } = pageScore(input);
+    const r = now.get(p.path);
+    return {
       ...p,
-      before: ok ? cell(before.get(p.path)) : null,
-      now: ok ? cell(now.get(p.path)) : null,
+      now: rows ? { impressions: r?.impressions ?? 0, clicks: r?.clicks ?? 0, position: r ? r.position : null } : null,
       queries: (queries.get(p.path) ?? []).sort((a, b) => b.impressions - a.impressions).slice(0, 5),
-    })),
+      issues: input.issues,
+      score,
+      factors,
+      weight: pageWeight(input),
+      recs: openRecs
+        .filter(x => x.pages?.includes(p.path))
+        .map(({ id, task, owner, priority, steps, why, expect, status }) => ({ id, task, owner, priority, steps, why, expect, status })),
+      competitor: ours.get(p.path) ?? null,
+    };
+  });
+
+  return {
+    updated: triage.updated,
+    planned: triage.planned,
+    sections: triage.sections.map(s => ({ ...s, score: totals.sections[s.key] ?? null, insights: competitors?.by_section?.[s.key] ?? [] })),
+    pages,
+    site: totals.site,
+    history,
+    live: !!live,
   };
 }
 
