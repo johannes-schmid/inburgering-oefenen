@@ -2,7 +2,7 @@
   "crons": [
     {
       "path": "/api/send-campaign-emails",
-      "schedule": "0 9 * * *"
+      "schedule": "0 17 * * *"
     },
     {
       "path": "/api/reconcile-payments",

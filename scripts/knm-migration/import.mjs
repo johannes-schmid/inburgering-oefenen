@@ -24,7 +24,7 @@ const HERE = dirname(fileURLToPath(import.meta.url));
 const ROOT = resolve(HERE, '../..');
 const KNM_ENV = resolve(ROOT, '../knm-website/.env.local');
 const PER_DAY = 80;
-const SEND_HOUR_UTC = 8; // de cron draait om 09:00 UTC
+const SEND_HOUR_UTC = 8; // ruim vóór de cron van 17:00 UTC (18:00/19:00 NL), die alles verstuurt wat due is
 const UNSUB = 'Uitgeschreven';
 
 const args = Object.fromEntries(process.argv.slice(2).map(a => {

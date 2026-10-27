@@ -466,7 +466,7 @@ a session, append to it at the end.
 | `mollie-checkout` / `mollie-webhook` / `payment-status` / `checkout-modules` | payment + entitlement |
 | `cancel-subscription` / `reconcile-payments` | cancels live subscriptions; sets `modules_until` |
 | `submit-results` / `claim-submissions` | anon results mail + campaign queue; links them to an account |
-| `send-campaign-emails` | Vercel Cron, daily 09:00 UTC |
+| `send-campaign-emails` | Vercel Cron, daily 17:00 UTC (18:00 NL in winter) — the KNM users practise in the evening, see LEARNINGS 2026-10-27 |
 | `tijdlijn-email` | recomputes the plan server-side and queues the reminder |
 | `admin/upload-image` / `pexels-*` / `upload-pexels-image` | admin image tooling |
 | `admin/run-eval` / `admin/suggest-item` / `admin-revalidate` | admin tooling |
