@@ -70,6 +70,8 @@ export const routing = defineRouting({
      * slug maakt van iedere oude mail een redirect-hop op de ene handeling die meteen moet
      * werken. */
     '/uitschrijven': '/uitschrijven',
+    // De landingspagina van de knmoefenen.nl-mailing (lib/knm-migration.ts) — noindex, dus onvertaald.
+    '/welkom-knm': '/welkom-knm',
 
     // ── Portaal en auth — geen SEO-oppervlak, dus onvertaald (besluit 15-09) ──
     '/login': '/login',

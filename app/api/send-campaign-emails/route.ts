@@ -7,6 +7,7 @@ import { day7Email, day7Subject } from '@/lib/email/templates/day7';
 import { abandonEmail, abandonSubject } from '@/lib/email/templates/abandon';
 import { guideDay2Email, guideDay2Subject, guideDay7Email, guideDay7Subject } from '@/lib/email/templates/guide';
 import { timelineReminderEmail, timelineReminderSubject } from '@/lib/email/templates/timeline';
+import { knmMigrationEmail, knmMigrationSubject } from '@/lib/email/templates/knmMigration';
 import { buildTimelineEmailPayload } from '@/lib/tijdlijn/email-payload';
 import { pd } from '@/lib/tijdlijn/engine/dates';
 import { type EmailLocale } from '@/lib/email/i18n';
@@ -106,11 +107,23 @@ export async function GET(request: Request): Promise<Response> {
         }
         html = timelineReminderEmail(built.payload, locale, unsubscribeUrl);
         subject = timelineReminderSubject(built.payload, locale);
+      } else if (row.campaign_type === 'knm_migration') {
+        html = knmMigrationEmail((row.payload?.firstName as string) || '', row.payload?.segment === 'paid' ? 'paid' : 'free', locale, unsubscribeUrl);
+        subject = knmMigrationSubject(locale);
       } else {
         continue;
       }
 
-      const { error: sendError } = await resend.emails.send({ from: FROM, to: row.email, subject, html });
+      /* One-click uitschrijven (RFC 8058): Gmail toont dan zijn eigen knop, in plaats van de mail
+       * als spam te laten markeren door wie de link onderaan niet vindt. De POST gaat naar
+       * /api/unsubscribe, die het adres uit de query leest. */
+      const oneClickUrl = `https://inburgeringoefenen.nl/api/unsubscribe?email=${encodeURIComponent(row.email)}`;
+      const headers = {
+        'List-Unsubscribe': `<${oneClickUrl}>`,
+        'List-Unsubscribe-Post': 'List-Unsubscribe=One-Click',
+      };
+
+      const { error: sendError } = await resend.emails.send({ from: FROM, to: row.email, subject, html, headers });
       if (sendError) throw sendError;
 
       await supabase
