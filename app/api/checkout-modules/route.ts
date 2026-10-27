@@ -2,7 +2,8 @@ import { NextResponse } from 'next/server';
 import createMollieClient, { SequenceType, type PaymentCreateParams } from '@mollie/api-client';
 import { createClient } from '@/lib/supabase/server';
 import { createAdminClient } from '@/lib/supabase/admin';
-import { euro, parseSelection, priceForSelection } from '@/lib/pricing';
+import { applyDiscount, euro, parseSelection, priceForSelection } from '@/lib/pricing';
+import { findDiscountCode } from '@/lib/discount-codes';
 import { ONA_MODULE_ID } from '@/lib/entitlements';
 import { isOnaAvailable } from '@/lib/ona/access';
 import { TABLE, PAYMENT_STATUS } from '@/lib/api-constants';
@@ -28,6 +29,12 @@ import { captureServerEvent } from '@/lib/posthog-server';
  * `/api/payment-status`. A plain one-off payment would charge once and grant forever, which is not
  * what the page promises.
  *
+ * ## Kortingscodes
+ * De client stuurt alleen de code; of hij geldt en wat hij scheelt, bepaalt `findDiscountCode()`
+ * hier. Een onbekende code is een fout en wordt niet stil genegeerd: wie KNM10 intikt en de volle
+ * prijs betaalt, voelt zich terecht bedrogen. De korting zit in het bedrag van de eerste betaling,
+ * en daarmee ook in de maandelijkse incasso (`fulfilModulePayment()` neemt dat bedrag over).
+ *
  * Cancellation is `/api/cancel-subscription` + `lib/subscriptions.ts`, which keeps the
  * "maandelijks opzeggen" promise on the pricing page.
  */
@@ -50,7 +57,7 @@ export async function POST(request: Request) {
     );
   }
 
-  let body: { modules?: unknown; locale?: unknown };
+  let body: { modules?: unknown; locale?: unknown; code?: unknown };
   try {
     body = await request.json();
   } catch {
@@ -67,10 +74,17 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: 'Kies minstens één onderdeel.', code: 'empty' }, { status: 400 });
   }
 
-  const amountCents = priceForSelection(modules);
-  if (amountCents <= 0) {
+  const listAmountCents = priceForSelection(modules);
+  if (listAmountCents <= 0) {
     return NextResponse.json({ error: 'Ongeldige selectie.' }, { status: 400 });
   }
+
+  const typedCode = typeof body.code === 'string' ? body.code.trim() : '';
+  const discount = typedCode ? findDiscountCode(typedCode) : null;
+  if (typedCode && !discount) {
+    return NextResponse.json({ error: 'Deze kortingscode is niet geldig.', code: 'invalid_code' }, { status: 400 });
+  }
+  const amountCents = discount ? applyDiscount(listAmountCents, discount.pct) : listAmountCents;
 
   const locale = typeof body.locale === 'string' && /^[a-z]{2}$/.test(body.locale) ? body.locale : 'nl';
   const baseUrl = process.env.BASE_URL || 'https://inburgeringoefenen.nl';
@@ -98,9 +112,9 @@ export async function POST(request: Request) {
     }
 
     const description =
-      modules.length === 4
+      (modules.length === 4
         ? 'Inburgering Oefenen — alle vier de onderdelen'
-        : `Inburgering Oefenen — ${modules.join(', ')}`;
+        : `Inburgering Oefenen — ${modules.join(', ')}`) + (discount ? ` (korting ${discount.code})` : '');
 
     const params: PaymentCreateParams = {
       amount: { currency: 'EUR', value: (amountCents / 100).toFixed(2) },
@@ -115,6 +129,8 @@ export async function POST(request: Request) {
         email: user.email,
         modules,
         amountCents,
+        listAmountCents,
+        discountCode: discount?.code ?? null,
         locale,
         kind: 'modules',
       },
@@ -148,6 +164,7 @@ export async function POST(request: Request) {
       module_count: modules.length,
       value: amountCents / 100,
       currency: 'EUR',
+      discount_code: discount?.code ?? null,
       payment_id: payment.id,
       locale,
     });

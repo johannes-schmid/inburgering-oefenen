@@ -30,6 +30,8 @@ export type ModulePaymentMetadata = {
   modules?: unknown;
   locale?: string;
   kind?: string;
+  /** De kortingscode van de eerste betaling; de incasso erna draagt hem mee. */
+  discountCode?: string | null;
 };
 
 export function isModulePayment(meta: unknown): boolean {
@@ -152,7 +154,12 @@ async function ensureSubscription(
       // started, so the first collection belongs a month out.
       startDate: oneMonthFromToday(),
       webhookUrl: payment.webhookUrl ?? undefined,
-      metadata: { userId, modules: owned, kind: 'modules' },
+      metadata: {
+        userId,
+        modules: owned,
+        kind: 'modules',
+        discountCode: (payment.metadata as ModulePaymentMetadata | null)?.discountCode ?? null,
+      },
     });
     return true;
   } catch (err) {

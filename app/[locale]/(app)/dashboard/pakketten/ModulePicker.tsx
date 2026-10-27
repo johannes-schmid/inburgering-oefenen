@@ -1,11 +1,12 @@
 'use client';
 
-import { useMemo, useRef, useState, type Ref } from 'react';
-import { ArrowRight, Check, ListChecks, Loader2, Lock, Sparkles, TriangleAlert, X } from 'lucide-react';
+import { useEffect, useMemo, useRef, useState, type FormEvent, type Ref } from 'react';
+import { ArrowRight, BadgePercent, Check, ListChecks, Loader2, Lock, Sparkles, TriangleAlert, X } from 'lucide-react';
 import CategoryMark from '@/components/horizon/CategoryMark';
 import ExamMark, { type Track } from '@/components/horizon/ExamMark';
 import type { Level, OnaSlug, OnderdeelSlug } from '@/data/skills';
 import {
+  applyDiscount,
   BUNDLE_LIST_PRICE_CENTS,
   BUNDLE_PRICE_CENTS,
   BUNDLE_SAVING_PCT,
@@ -16,6 +17,7 @@ import {
   type ModuleSlug,
 } from '@/lib/pricing';
 import { track } from '@/lib/analytics';
+import { DISCOUNT_CODE_STORAGE_KEY, findDiscountCode, type DiscountCode } from '@/lib/discount-codes';
 
 export type PickerModule = {
   /** The full `level:skill` module id — what gets posted to checkout. */
@@ -48,24 +50,34 @@ export type PickerModule = {
  *
  * The total here is presentation. `/api/checkout-modules` recomputes it from the module list, so a
  * tampered client gets the real price.
+ *
+ * Een kortingscode komt uit `?code=` (de knop op `/welkom-knm`), uit wat de browser eerder
+ * onthield (wie via "Gratis beginnen" binnenkwam, heeft geen code in de link), of uit het veld.
+ * De server controleert hem opnieuw; hier toont hij alleen wat je gaat betalen.
  */
 export default function ModulePicker({
   modules,
   locale,
   initialSelection,
+  initialCode,
 }: {
   modules: PickerModule[];
   locale: string;
   initialSelection: ModuleSlug[];
+  initialCode: string | null;
 }) {
   const [selected, setSelected] = useState<ModuleSlug[]>(initialSelection);
+  const [discount, setDiscount] = useState<DiscountCode | null>(() => findDiscountCode(initialCode));
+  const [codeInput, setCodeInput] = useState('');
+  const [codeError, setCodeError] = useState<string | null>(null);
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const incRef = useRef<HTMLDialogElement>(null);
   const openIncluded = () => incRef.current?.showModal();
 
   const buyable = useMemo(() => modules.filter(m => !m.owned), [modules]);
-  const total = priceForSelection(selected);
+  const listTotal = priceForSelection(selected);
+  const total = discount ? applyDiscount(listTotal, discount.pct) : listTotal;
   const saving = savingForSelection(selected);
   const allSelected = selected.length === modules.length;
 
@@ -88,6 +100,35 @@ export default function ModulePicker({
     return out;
   }, [modules]);
 
+  useEffect(() => {
+    if (discount) {
+      try { localStorage.setItem(DISCOUNT_CODE_STORAGE_KEY, discount.code); } catch {}
+      return;
+    }
+    let remembered: string | null = null;
+    try { remembered = localStorage.getItem(DISCOUNT_CODE_STORAGE_KEY); } catch {}
+    const found = findDiscountCode(remembered);
+    // eslint-disable-next-line react-hooks/set-state-in-effect -- localStorage bestaat pas na hydratie
+    if (found) setDiscount(found);
+  }, [discount]);
+
+  function applyCode(e: FormEvent) {
+    e.preventDefault();
+    const found = findDiscountCode(codeInput);
+    if (!found) {
+      setCodeError('Deze kortingscode kennen we niet. Controleer de spelling.');
+      return;
+    }
+    setCodeError(null);
+    setCodeInput('');
+    setDiscount(found);
+  }
+
+  function removeCode() {
+    try { localStorage.removeItem(DISCOUNT_CODE_STORAGE_KEY); } catch {}
+    setDiscount(null);
+  }
+
   function toggle(slug: ModuleSlug) {
     setError(null);
     setSelected(prev => (prev.includes(slug) ? prev.filter(s => s !== slug) : [...prev, slug]));
@@ -102,14 +143,20 @@ export default function ModulePicker({
     if (selected.length === 0) return;
     setBusy(true);
     setError(null);
-    track('checkout_initiated', { modules: selected.join(','), module_count: selected.length, amount_cents: total });
+    track('checkout_initiated', {
+      modules: selected.join(','),
+      module_count: selected.length,
+      amount_cents: total,
+      discount_code: discount?.code ?? null,
+    });
     try {
       const res = await fetch('/api/checkout-modules', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ modules: selected, locale }),
+        body: JSON.stringify({ modules: selected, locale, code: discount?.code }),
       });
       const json = await res.json();
+      if (json.code === 'invalid_code') removeCode();
       if (!res.ok || !json.checkoutUrl) throw new Error(json.error || 'Betalen is niet gelukt.');
       // /betaling-gelukt polls /api/payment-status with this id, and that is the path that grants
       // the modules and creates the subscription when the webhook has not fired.
@@ -117,7 +164,7 @@ export default function ModulePicker({
         try { localStorage.setItem('io_pending_payment_id', json.paymentId); } catch {}
       }
       // Straight to Mollie. No interstitial: the choice was made on this page.
-      window.location.href = json.checkoutUrl;
+      window.location.assign(json.checkoutUrl);
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Betalen is niet gelukt.');
       setBusy(false);
@@ -152,6 +199,44 @@ export default function ModulePicker({
           <ArrowRight strokeWidth={2.5} className="rtl-flip" aria-hidden />
         </button>
       </div>
+      <div className="g-mp-code">
+        {discount ? (
+          <p className="g-mp-code-on">
+            <BadgePercent aria-hidden />
+            <span>
+              <b>{discount.code}</b> is toegepast: {discount.pct}% korting op je abonnement, elke maand.
+            </span>
+            <button type="button" onClick={removeCode} className="g-mp-code-x">Verwijderen</button>
+          </p>
+        ) : (
+          <form onSubmit={applyCode} className="g-mp-code-form">
+            <label htmlFor="g-mp-code-in">Heb je een kortingscode?</label>
+            <span className="g-mp-code-row">
+              <input
+                id="g-mp-code-in"
+                value={codeInput}
+                onChange={e => { setCodeInput(e.target.value); setCodeError(null); }}
+                className="g-mp-code-in"
+                autoComplete="off"
+                autoCapitalize="characters"
+                spellCheck={false}
+                aria-invalid={codeError ? true : undefined}
+                aria-describedby={codeError ? 'g-mp-code-err' : undefined}
+              />
+              <button type="submit" className="g-btn g-btn-ghost g-btn-sm" disabled={!codeInput.trim()}>
+                Toepassen
+              </button>
+            </span>
+          </form>
+        )}
+        {codeError && (
+          <p id="g-mp-code-err" className="g-mp-error" role="alert">
+            <TriangleAlert aria-hidden />
+            {codeError}
+          </p>
+        )}
+      </div>
+
       {groups.map(group => {
         /* Het trackmerk benoemt waar je voor betaalt (§G1 regel 5: groot waar je kiest of koopt).
            KNM en ONA hebben geen niveau; hun merk volgt uit het onderdeel. */
@@ -246,6 +331,12 @@ export default function ModulePicker({
                   <span>{euro(MODULE_PRICE_CENTS)}</span>
                 </li>
               ))}
+              {discount && (
+                <li className="g-mp-line-discount">
+                  <span>Korting {discount.code}</span>
+                  <span>−{euro(listTotal - total)}</span>
+                </li>
+              )}
             </ul>
           )}
           <button type="button" onClick={openIncluded} className="g-mp-side-link">
@@ -253,15 +344,19 @@ export default function ModulePicker({
             Wat zit er in elke module?
           </button>
           <p className="g-mp-bar-total">
+            {discount && listTotal > 0 && <s>{euro(listTotal)}</s>}
             {euro(total)} <small>per maand</small>
           </p>
+          {discount && listTotal > 0 && (
+            <p className="g-mp-bar-saving">Met {discount.code}: {discount.pct}% korting, elke maand</p>
+          )}
           {saving > 0 && <p className="g-mp-bar-saving">Je bespaart {euro(saving)} per maand</p>}
           {selected.length === 3 && groups.length === 1 && (
             // Three modules cost €29,85 and four cost €29,95 — ten cents more for a whole extra
             // onderdeel. Single-level only: with two levels on sale the quoted saving could be
             // one that no completion of the basket reaches.
             <p className="g-mp-bar-nudge">
-              Voor {euro(BUNDLE_PRICE_CENTS - total)} meer krijg je het vierde onderdeel er ook bij.
+              Voor {euro(BUNDLE_PRICE_CENTS - listTotal)} meer krijg je het vierde onderdeel er ook bij.
             </p>
           )}
         </div>

@@ -999,3 +999,31 @@ a.g-xr-locked:hover { background: #f6f8fc; }
 /* De stat-tegel in de zijkolom van het dashboard: de afronding en de rand van de widgets ernaast. */
 .g-wid-stat { border-radius: var(--r-xl); box-shadow: var(--glas-rand); min-height: 0; }
 .g-wid-note { margin: 0; font-size: 13.5px; color: var(--ink-2); line-height: 1.5; }
+
+/* Kortingscode in de pakkettenkiezer: een rustig veld onder de tegels, en een bevestiging zodra
+   een code geldt. De prijs zelf verandert in de rekening ernaast. */
+.g-mp-code { display: flex; flex-direction: column; gap: 8px; background: #fff; border-radius: var(--r-xl); padding: 16px 20px; }
+.g-mp-code-form { display: flex; flex-wrap: wrap; align-items: center; gap: 10px 16px; }
+.g-mp-code-form label { font-size: 14px; font-weight: 600; color: var(--ink); }
+.g-mp-code-row { display: flex; gap: 8px; flex: 1 1 260px; max-width: 360px; }
+.g-mp-code-in {
+  flex: 1; min-width: 0; height: 38px; padding: 0 12px; border-radius: 10px; border: 0;
+  background: var(--mist); color: var(--ink); font-family: var(--font-headline); font-weight: 700;
+  font-size: 15px; letter-spacing: 0.04em; text-transform: uppercase;
+  transition: background-color 160ms ease, box-shadow 160ms ease;
+}
+.g-mp-code-in:focus, .g-mp-code-in:focus-visible { outline: none; background: #fff; box-shadow: inset 0 0 0 2px var(--navy); }
+.g-mp-code-in[aria-invalid="true"] { box-shadow: inset 0 0 0 2px var(--fout); }
+.g-mp-code-on { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 10px; margin: 0; font-size: 14px; color: var(--ink); }
+.g-mp-code-on > svg { width: 18px; height: 18px; color: var(--goed); flex: none; }
+.g-mp-code-on b { font-family: var(--font-headline); color: var(--navy); }
+.g-mp-code-x {
+  margin-inline-start: auto; padding: 0; background: none; border: 0; cursor: pointer; font-size: 13px; font-weight: 700;
+  color: var(--ink-2); text-decoration: underline; text-underline-offset: 3px;
+}
+.g-mp-code-x:focus-visible { outline: none; box-shadow: var(--glas-focus); border-radius: 4px; }
+@media (hover: hover) and (pointer: fine) { .g-mp-code-x:hover { color: var(--navy); } }
+.g-mp-bar-total s { font-size: 16px; font-weight: 700; letter-spacing: 0; color: rgba(255, 255, 255, 0.55); margin-inline-end: 8px; }
+.g-mp-lines li.g-mp-line-discount span { color: var(--oranje-zacht); }
+.g-mp-lines li.g-mp-line-discount span:last-child { color: var(--oranje-zacht); }
+@media (prefers-reduced-motion: reduce) { .g-mp-code-in { transition-duration: 0ms; } }

@@ -5,6 +5,8 @@
  * de mail nooit een korting belooft die de pagina anders noemt. De code zelf wordt bij het
  * afrekenen gevalideerd tegen de kortingscodes — dit bestand belooft alleen wat er in de mail staat.
  */
+import { applyDiscount } from './pricing';
+
 export const KNM_MIGRATION_CODE = 'KNM10';
 export const KNM_MIGRATION_PCT = 10;
 
@@ -21,11 +23,7 @@ export function knmMigrationLandingUrl(locale: string, segment: KnmMigrationSegm
   return `https://inburgeringoefenen.nl/${locale}/welkom-knm?${q}`;
 }
 
-/**
- * De maandprijs met de code, voor de prijsblokken op `/welkom-knm`. Afgerond op hele centen
- * (€9,95 → €8,96); het afrekenen moet precies zo afronden, anders noemt de pagina een ander
- * bedrag dan Mollie vraagt.
- */
+/** De maandprijs met de code, voor `/welkom-knm` en de mail — dezelfde som als de checkout. */
 export function knmMigrationPriceCents(cents: number): number {
-  return Math.round((cents * (100 - KNM_MIGRATION_PCT)) / 100);
+  return applyDiscount(cents, KNM_MIGRATION_PCT);
 }

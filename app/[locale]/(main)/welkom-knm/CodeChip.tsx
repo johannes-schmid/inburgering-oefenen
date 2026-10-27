@@ -2,15 +2,22 @@
 
 import { useEffect, useRef, useState } from 'react';
 import { Check, Copy } from 'lucide-react';
+import { DISCOUNT_CODE_STORAGE_KEY } from '@/lib/discount-codes';
 
 /**
  * De code als één knop: klik kopieert. Het icoon wisselt van kopiëren naar een vinkje, de code
  * zelf blijft staan, zodat de knop niet verspringt.
+ *
+ * De chip onthoudt de code ook in de browser: wie hier op "Gratis beginnen" klikt, heeft geen
+ * `?code=` in de link, en de pakkettenkiezer vult hem dan later alsnog in.
  */
 export default function CodeChip({ code, copyLabel, copiedLabel }: { code: string; copyLabel: string; copiedLabel: string }) {
   const [copied, setCopied] = useState(false);
   const timer = useRef<ReturnType<typeof setTimeout> | null>(null);
   useEffect(() => () => { if (timer.current) clearTimeout(timer.current); }, []);
+  useEffect(() => {
+    try { localStorage.setItem(DISCOUNT_CODE_STORAGE_KEY, code); } catch {}
+  }, [code]);
 
   async function copy() {
     try {

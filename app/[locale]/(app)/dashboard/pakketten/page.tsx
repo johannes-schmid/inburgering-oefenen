@@ -40,14 +40,18 @@ export default async function PakkettenPage({
   searchParams,
 }: {
   params: Promise<{ locale: string }>;
-  searchParams: Promise<{ vanaf?: string; onderdeel?: string; kies?: string }>;
+  searchParams: Promise<{ vanaf?: string; onderdeel?: string; kies?: string; code?: string }>;
 }) {
   const { locale } = await params;
-  const { onderdeel, kies } = await searchParams;
+  const { onderdeel, kies, code } = await searchParams;
 
   const supabase = await createClient();
   const { data: { user } } = await supabase.auth.getUser();
-  if (!user) redirect(`/${locale}/login?next=${encodeURIComponent(`/dashboard/pakketten${kies ? `?kies=${kies}` : ''}`)}`);
+  if (!user) {
+    // `code` gaat mee door het inloggen: zonder valt de korting uit de link van /welkom-knm weg.
+    const back = new URLSearchParams({ ...(kies ? { kies } : {}), ...(code ? { code } : {}) }).toString();
+    redirect(`/${locale}/login?next=${encodeURIComponent(`/dashboard/pakketten${back ? `?${back}` : ''}`)}`);
+  }
 
   const plan = planFromMetadata(user.user_metadata);
   const meta = user.user_metadata ?? {};
@@ -119,6 +123,7 @@ export default async function PakkettenPage({
 
         <ModulePicker
           locale={locale}
+          initialCode={code ?? null}
           initialSelection={picked.length ? picked : focus ? [focus] : []}
           modules={sellable.map(mod => {
             if (isOna(mod.skill)) {

@@ -46,6 +46,17 @@ export const BUNDLE_PAID_MODULES = Math.round(BUNDLE_PRICE_CENTS / MODULE_PRICE_
  */
 export const BUNDLE_SAVING_PCT = Math.floor((BUNDLE_SAVING_CENTS / BUNDLE_LIST_PRICE_CENTS) * 100);
 
+/**
+ * Een bedrag na een kortingscode, afgerond op hele centen (€9,95 − 10% → €8,96).
+ *
+ * Eén plek voor die afronding: de checkout (`/api/checkout-modules`), de kiezer, `/welkom-knm` en
+ * de overstapmail rekenen er allemaal mee. Rekenen ze verschillend, dan noemt de pagina een ander
+ * bedrag dan Mollie vraagt.
+ */
+export function applyDiscount(cents: number, pct: number): number {
+  return Math.max(0, Math.round((cents * (100 - pct)) / 100));
+}
+
 /** `1295` → `"12,95"`. Dutch decimal comma; pricing must always show a concrete number. */
 export function euro(cents: number): string {
   return `€${(cents / 100).toFixed(2).replace('.', ',')}`;
