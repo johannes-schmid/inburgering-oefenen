@@ -5932,7 +5932,7 @@ oplopende `top` per index doet het, en de `prefers-reduced-motion`-uitweg is dan
 **What worked / went wrong:** De negen KNM-gidsen hadden in Search Console nul vertoningen; knmoefenen.nl dekt KNM en Google kiest dat domein. Eén lijst, drie lezers — robots, hreflang en sitemap konden niet meer uiteenlopen. De pagina's en de hub blijven live voor lezers; `llms.txt` is bewust ongemoeid gelaten (het besluit gaat over Google, niet over de inhoud).
 **Lesson:** Een noindex-besluit hoort op één plek te staan die robots, hreflang én sitemap samen lezen; een `index: false` alleen op de pagina laat de sitemap en de hreflang een noindex-URL adverteren, en dat is de tegenspraak die Google het hele cluster laat afwaarderen.
 ## 2026-11-03 — Social proof van de homepage gehaald
-**Changed:** `app/[locale]/(main)/page.tsx` — de bewijsstrook (Trustpilot 4,4 · 1.000+ · docent) en de sectie met Trustpilot-reviews verwijderd; `notdo_1` op `/redactie` in nl/en/ar aangepast, want die zin verwees naar reviews op de homepage.
+**Changed:** `app/[locale]/(main)/page.tsx` — de bewijsstrook (Trustpilot 4,4 · 1.000+ · docent) en de sectie met Trustpilot-reviews verwijderd; `notdo_1` op `/redactie` in nl/en/ar aangepast, want die zin verwees naar reviews op de homepage. `app/glas-public.css`: de trackband (`#onderdelen`) krijgt minder ruimte boven, zodat hij direct op de hero volgt.
 **Outcome:** SUCCESS
 **What worked / went wrong:** tsc, lint en unit tests groen; screenshots mobiel + desktop gecontroleerd. De Trustpilot-score en de reviews waren van knmoefenen.nl, niet van deze site — eigenaar wil ze niet op de landingspagina.
 **Lesson:** als een blok van de homepage verdwijnt, grep de hele message-bundel op pagina's die ernaar verwijzen (`/redactie` deed dat).
