@@ -86,6 +86,30 @@
       "verdict": null
     },
     {
+      "id": "2026-11-03-knm-gidsen-noindex",
+      "date": "2026-11-03",
+      "site": "inburgering",
+      "page": "/nl/knm/* (9 kennisgidsen, alle talen)",
+      "change": "De negen KNM-gidsen op noindex gezet (NOINDEX_SECTIONS in data/guides/helpers.ts); uit sitemap en hreflang, pagina's en hub blijven live",
+      "hypothesis": "Geen verlies: de pagina's hadden nul vertoningen. Google ziet een duidelijker verdeling — deze site de taalexamens, knmoefenen.nl KNM — en knmoefenen.nl verliest geen KNM-posities aan een duplicaat",
+      "metric": "impressions:/nl/knm/* (verwacht 0) + knmoefenen.nl impressions:site",
+      "source": "besluit eigenaar 2026-11-03, voorstel weekrun",
+      "window_end": "2026-12-15",
+      "verdict": null
+    },
+    {
+      "id": "2026-11-03-stappenplan-wat-is-inburgeren",
+      "date": "2026-11-03",
+      "site": "inburgering",
+      "page": "/nl/inburgering/inburgering-stappenplan",
+      "change": "Herschrijving (door de eigenaar samengevoegd vóór de review van Amber): titel en H1 beginnen met 'Inburgeren: wat is het en hoe werkt het?'; de ja/nee-tabel 'wie moet inburgeren' verhuisd naar een link naar moet-ik-inburgeren; nieuw: een eigen schrijfopdracht A2 met goed antwoord, één bericht op A1/A2/B1, een kop 'Hoe lang mag je doen over inburgeren?' en 'Wat kost inburgeren?'; EN/AR meevertaald",
+      "hypothesis": "De pagina wordt dé landing voor 'inburgeren', 'wat is inburgeren' en 'hoe lang mag je doen over inburgeren' (nu positie ~57, 741 vertoningen/28d) en kannibaliseert moet-ik-inburgeren niet meer; demonstratie in plaats van beschrijving houdt de lezer op de pagina",
+      "metric": "position+impressions:inburgeren|wat is inburgeren|hoe lang mag je doen over inburgeren; clicks:/nl/inburgering/inburgering-stappenplan",
+      "source": "seo-agent/briefs/2026-11-03-stappenplan-herschrijving.md; /admin/seo triage 03-11 (score 5/10)",
+      "window_end": "2026-12-08",
+      "verdict": null
+    },
+    {
       "id": "2026-11-03-consolidate-blog-into-guides",
       "date": "2026-11-03",
       "site": "inburgering",
