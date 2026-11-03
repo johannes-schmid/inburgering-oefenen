@@ -168,6 +168,23 @@ export function relatedGuides(guide: Guide): Guide[] {
  * Dutch is always in the list when the guide is published: it is the source and the `x-default`.
  */
 export function indexableLocales(guide: Guide): readonly string[] {
-  if (guide.status !== 'reviewed') return [];
+  if (guide.status !== 'reviewed' || !isIndexable(guide)) return [];
   return (['nl', 'en', 'ar'] as const).filter(l => hasTranslation(guide, l));
+}
+
+/**
+ * Secties die bewust `noindex` zijn, los van de reviewstatus.
+ *
+ * `knm` staat hier sinds 2026-11-03 (besluit eigenaar). De negen KNM-gidsen hebben in Search
+ * Console nog nooit één vertoning gehad: knmoefenen.nl dekt KNM en Google kiest dat domein. Twee
+ * sites van één eigenaar op hetzelfde onderwerp verzwakken elkaar, dus tot de samenvoeging is de
+ * verdeling: deze site de taalexamens, knmoefenen.nl KNM. De pagina's blijven live en op de hub
+ * staan voor lezers — alleen robots, hreflang en de sitemap lezen deze lijst. Haal `knm` eruit
+ * zodra knmoefenen.nl hierheen verhuist; zie `seo-agent/ledger.json`.
+ */
+export const NOINDEX_SECTIONS: readonly GuideSection[] = ['knm'];
+
+/** Of een gids überhaupt geïndexeerd mag worden; de reviewstatus is een aparte poort. */
+export function isIndexable(guide: Guide): boolean {
+  return !NOINDEX_SECTIONS.includes(guide.section);
 }

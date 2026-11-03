@@ -10,7 +10,7 @@
 import { describe, it, expect } from 'vitest';
 import { GUIDES } from '@/data/guides';
 import { TRANSLATIONS } from '@/data/guides/translations';
-import { getGuideLocale, publishedGuides, indexableLocales } from '@/data/guides/helpers';
+import { getGuideLocale, publishedGuides, indexableLocales, isIndexable } from '@/data/guides/helpers';
 
 const LOCALES = ['en', 'ar'] as const;
 
@@ -80,6 +80,12 @@ describe('translated guides', () => {
   it('claims an hreflang alternative only for a locale it can actually serve', () => {
     for (const guide of publishedGuides()) {
       const claimed = indexableLocales(guide);
+      /* A section in `NOINDEX_SECTIONS` (KNM, until the merge) claims nothing at all — that case
+         is pinned in `guides.test.ts`. */
+      if (!isIndexable(guide)) {
+        expect(claimed).toEqual([]);
+        continue;
+      }
       expect(claimed, `${guide.slug} must always claim Dutch`).toContain('nl');
       for (const locale of LOCALES) {
         const hasBody = Boolean(guide.translations?.[locale]?.articleHtml);

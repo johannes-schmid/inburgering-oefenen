@@ -7,7 +7,7 @@ import { b1TasterSkills } from '@/lib/free-practice-b1';
 import { hasDbFreePractice } from '@/lib/free-practice-db';
 import { FEATURES } from '@/lib/features';
 import { getSortedPosts, getPostSlug, hasTranslation } from '@/data/blog-posts';
-import { publishedGuides, hasTranslation as guideHasTranslation } from '@/data/guides/helpers';
+import { publishedGuides, indexableLocales } from '@/data/guides/helpers';
 
 const LOCALES = routing.locales;
 
@@ -175,9 +175,10 @@ export default function sitemap(): MetadataRoute.Sitemap {
    * The hubs are listed unconditionally — they carry their own orienting content whether or not a
    * guide has been reviewed yet, so they are never an empty page (see `_components/GuideHub.tsx`).
    *
-   * The guides are gated twice, and both gates mean "this URL is noindex, so do not advertise it":
-   * `publishedGuides()` drops anything the docent has not reviewed, and `guideHasTranslation()`
-   * drops a locale with no body of its own. Same rule as the blog block above.
+   * The guides are gated by `indexableLocales()`, which is the same list the page's `robots` and
+   * hreflang read: unreviewed, untranslated in this locale, or in a `NOINDEX_SECTIONS` section
+   * (KNM, until the merge with knmoefenen.nl) all mean "this URL is noindex, so do not advertise
+   * it". Same rule as the blog block above.
    */
   for (const section of ['inburgering', 'knm', 'taalexamens'] as const) {
     for (const locale of LOCALES) {
@@ -191,7 +192,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
 
   for (const guide of publishedGuides()) {
     for (const locale of LOCALES) {
-      if (!guideHasTranslation(guide, locale)) continue;
+      if (!indexableLocales(guide).includes(locale)) continue;
       entries.push({
         url: absUrl(locale, `${guide.section}/${guide.slug}`),
         changeFrequency: 'monthly',
