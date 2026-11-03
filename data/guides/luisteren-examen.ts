@@ -1,9 +1,10 @@
 /**
  * Taalexamens spoke — Luisteren.
  *
- * Scoped against the blog post `luisteren-examen-inburgering-a2` the same way `lezen-examen.ts`
- * is scoped against its post: the post owns the A2 query, this guide is the two-level reference
- * the cluster links to. See that file's header.
+ * **De blogpost `luisteren-examen-inburgering-a2` is op 03-11-2026 in deze gids opgegaan** en
+ * `/nl/blog/luisteren-examen-inburgering-a2` (en de EN/AR-slugs) 301'en hierheen (`next.config.ts`).
+ * De vergelijking met Lezen, de vraagtypes, de voorbeeldvraag, de examendag en de cesuur-paragraaf
+ * komen uit die post. Zie de kop van `lezen-examen.ts`.
  *
  * The one detail worth getting right here and nowhere else: **a fragment is replayed per question
  * in our own player**, matching how DUO presents it (see CLAUDE.md, "Luisteren replays the
@@ -18,7 +19,10 @@ export const SRC_TAALEXAMENS = 'https://www.inburgeren.nl/examen-doen/inhoud-taa
 export const SRC_OEFENEN = 'https://www.inburgeren.nl/examen-doen/oefenen.jsp';
 export const SRC_NT2 = 'https://www.staatsexamensnt2.nl/';
 export const SRC_AANGEPAST = 'https://www.inburgeren.nl/examen-doen/aangepast-examen.jsp';
+export const SRC_REGLEMENT = 'https://www.inburgeren.nl/images/examenreglement.pdf';
 export const CHECKED = '23-08-2026';
+/** De feiten die op 03-11-2026 uit de blogpost zijn overgenomen dragen de datum van díe verificatie. */
+export const CHECKED_POST = '28-07-2026';
 
 export const card = (icon: string, title: string, body: string) =>
   `<div class="guide-card"><span class="guide-card-icon">${icon}</span><h3>${title}</h3><p>${body}</p></div>`;
@@ -38,7 +42,7 @@ const guide: Guide = {
     'Filmpjes en gesprekken beluisteren en vragen beantwoorden. Hoe het examen Luisteren werkt op A2 en B1, waar de tijd in gaat zitten en hoe je ervoor oefent.',
 
   datePublished: '2026-08-23',
-  dateModified: '2026-08-23',
+  dateModified: '2026-11-03',
   dateLabel: '23 augustus 2026',
   breadcrumb: 'Luisteren',
   eyebrow: 'Taalexamen',
@@ -52,7 +56,7 @@ const guide: Guide = {
     alt: 'Iemand werkt met een koptelefoon achter een laptop',
     credit: 'Pavel Danilyuk (Pexels)',
   },
-  readingMinutes: 7,
+  readingMinutes: 9,
 
   articleHtml: `
 <h2 id="hoe-ziet-het-eruit">Hoe ziet het examen eruit?</h2>
@@ -77,7 +81,17 @@ ${factTwo('DUO: "Het examen Luisteren op niveau A2 doet u op de computer. U krij
 ${fact('Op het startscherm van DUO’s openbare oefenexamens Luisteren A2 staat: "U moet in dit examen 25 vragen beantwoorden", met een teller van 25 vragen en 45 minuten.', 'inburgeren.nl — Oefenen', SRC_OEFENEN, CHECKED)}
 
 <p>Merk het verschil met Lezen: je hebt <strong>minder tijd voor evenveel vragen</strong>. Dat komt
-doordat het geluid zelf tijd kost. Je kunt dus niet lang nadenken.</p>
+doordat het geluid zelf tijd kost. Je kunt dus niet lang nadenken. Drie dingen maken het verschil:</p>
+
+<ol>
+  <li><strong>Minder tijd.</strong> Bijna een minuut minder per vraag.</li>
+  <li><strong>Je bepaalt het tempo niet.</strong> Bij Lezen kun je een moeilijke zin drie keer bekijken. Bij audio loopt het door.</li>
+  <li><strong>Het is weg.</strong> Een gesprek gaat voorbij. Mis je een getal, dan kun je niet even terugbladeren.</li>
+</ol>
+
+<p>Daarom is &eacute;&eacute;n specifieke voorbereiding zo belangrijk: <strong>oefen alsof je elk
+fragment maar &eacute;&eacute;n keer hoort</strong>. Als je thuis steeds terugspoelt, oefen je iets
+anders dan het examen.</p>
 
 <h2 id="wat-hoor-je">Wat hoor je precies?</h2>
 
@@ -92,6 +106,42 @@ meestal twee of drie vragen.</p>
 </div>
 
 ${docent('De meeste fouten bij Luisteren gaan niet over woorden maar over <strong>getallen</strong>: tijden, huisnummers, bedragen, dagen. "Half vier" is niet vier uur, en "over een kwartier" is geen tijdstip maar een verschil. Oefen daar apart op — het is een klein stuk van de taal met een groot aandeel in de vragen.')}
+
+<h2 id="soorten-vragen">Wat voor vragen krijg je?</h2>
+
+<p>De vragen vallen grofweg in een paar types uiteen. Weet je welk type je krijgt, dan weet je
+waar je op moet letten voordat de audio begint.</p>
+
+<div class="article-table-wrap">
+<table>
+  <thead><tr><th>Soort vraag</th><th>Wat men vraagt</th><th>Waar je op let</th></tr></thead>
+  <tbody>
+    <tr><td><strong>Detail</strong></td><td>een tijd, prijs, dag of huisnummer</td><td>cijfers — bijna altijd de kern</td></tr>
+    <tr><td><strong>Hoofdpunt</strong></td><td>waar gaat dit gesprek over?</td><td>de eerste zinnen</td></tr>
+    <tr><td><strong>Reden</strong></td><td>waarom gebeurt er iets?</td><td>"omdat", "want", "daarom"</td></tr>
+    <tr><td><strong>Wat moet u doen</strong></td><td>welke actie wordt gevraagd</td><td>"bel", "kom", "neem", "stuur"</td></tr>
+    <tr><td><strong>Gevoel of mening</strong></td><td>hoe reageert iemand?</td><td>de toon en woorden als "helaas", "gelukkig"</td></tr>
+  </tbody>
+</table>
+</div>
+
+<p>Let op &eacute;&eacute;n valkuil bij het type "detail": in een gesprek worden vaak <strong>twee
+getallen</strong> genoemd. Een oude afspraak en een nieuwe. Een prijs met en zonder korting. De
+vraag gaat bijna altijd over het tweede.</p>
+
+<h3>Probeer een vraag</h3>
+
+<p>Stel je voor dat je dit hoort. E&eacute;n keer.</p>
+
+<div class="blog-quiz-card">
+  <p class="blog-quiz-q">Je hoort bij de tandarts: "Uw afspraak van donderdag half elf kan helaas niet doorgaan. Kunt u vrijdag om kwart over negen? Anders is de eerstvolgende mogelijkheid maandag." Wanneer is de nieuwe afspraak die de tandarts voorstelt?</p>
+  <div class="blog-quiz-opts">
+    <button type="button" class="blog-quiz-opt"><span class="blog-quiz-letter">A</span><span>Donderdag om 10.30 uur</span></button>
+    <button type="button" class="blog-quiz-opt" data-answer="correct"><span class="blog-quiz-letter">B</span><span>Vrijdag om 9.15 uur</span></button>
+    <button type="button" class="blog-quiz-opt"><span class="blog-quiz-letter">C</span><span>Maandag om 9.15 uur</span></button>
+  </div>
+  <div class="blog-quiz-ans">Het juiste antwoord is <strong>B</strong>. "Kwart over negen" is 9.15 uur, en dat is op vrijdag. Donderdag half elf (10.30) was de <em>oude</em> afspraak, en maandag is alleen een alternatief als vrijdag niet kan. Zie je hoeveel informatie in twee zinnen zit? Daarom lees je de vraag vooraf.</div>
+</div>
 
 <h2 id="strategie">De strategie: lees vooruit</h2>
 
@@ -143,14 +193,53 @@ vraag is hoe hij gaat. Wie "trein" herkent, kiest fout.</p>
 <p>Luister daarom altijd de zin af. Het belangrijkste woord in dat voorbeeld is
 <strong>maar</strong>.</p>
 
+<h3>De tweede valkuil: alles willen begrijpen</h3>
+
+<p>Er valt een woord dat je niet kent. Je gaat erover nadenken. Wat betekende dat? Terwijl je
+nadenkt, praat de audio door. Je mist de volgende twee zinnen — en d&aacute;&aacute;r stond het
+antwoord. E&eacute;n onbekend woord kost je zo drie zinnen. Het is bijna altijd beter om een
+woord te laten gaan en te blijven luisteren.</p>
+
+${note('Oefen dit apart. Luister naar iets wat net te moeilijk voor je is en spreek met jezelf af: ik stop niet, ik spoel niet terug, ik zoek niets op. Alleen doorluisteren. Dat voelt onprettig, en het is precies de vaardigheid die het examen test.')}
+
 ${note('Heb je een gehoorbeperking? DUO kan het examen aanpassen, bijvoorbeeld met extra tijd of aangepaste apparatuur. Dat vraag je vooraf aan, met een verklaring. Regel dat ruim voordat je je aanmeldt.')}
 
 ${fact('Kunt u door een ziekte of een beperking het examen niet op de gewone manier doen, dan kan DUO een aangepast examen toestaan. U vraagt dat vooraf aan bij DUO.', 'inburgeren.nl — Aangepast examen bij ziekte of beperking', SRC_AANGEPAST, CHECKED)}
 
+<h2 id="examendag">Op de examendag</h2>
+
+<p>Bij Luisteren is &eacute;&eacute;n ding belangrijker dan bij de andere onderdelen: <strong>je
+geluid</strong>. In de oefenexamens van DUO kun je vooraf je audiovolume testen. Doe dat rustig, en
+zet het volume iets hoger dan je normaal zou doen.</p>
+
+${fact('Je moet 30 minuten voor het examen aanwezig zijn. Je krijgt 15 minuten uitleg voordat het examen begint. Zonder geldig legitimatiebewijs mag je geen examen doen.', 'DUO Examenreglement', SRC_REGLEMENT, CHECKED_POST)}
+
+<p>Die 15 minuten uitleg zijn extra; ze gaan niet van je 45 minuten af. Verder geldt hetzelfde als
+bij de andere onderdelen: telefoon en tas in een kluisje, wc alleen met begeleiding, en het examen
+is geheim — geen foto's, geen vragen overschrijven.</p>
+
+<p>DUO adviseert om oefenexamens op een computer te doen in plaats van op een telefoon. Voor
+Luisteren geldt dat extra: op een klein scherm zie je de vraag en de antwoorden niet in &eacute;&eacute;n
+oogopslag, en dan kun je niet vooruitlezen.</p>
+
+<h2 id="slagen">Hoeveel moet je goed hebben?</h2>
+
+<p>Zoals bij alle onderdelen: <strong>DUO maakt de grens niet bekend</strong>. Online lees je een
+exact aantal goede antwoorden, maar dat getal komt niet van DUO, en sites spreken elkaar tegen.</p>
+
+${fact('"De zak-slaaggrens wordt uitgedrukt in een cesuur, vastgesteld door de Minister." Je krijgt een cijfer per onderdeel en de uitslag geslaagd of niet geslaagd. Luisteren wordt, net als Lezen en KNM, geautomatiseerd nagekeken.', 'DUO Examenreglement, artikel 10 en 16', SRC_REGLEMENT, CHECKED_POST)}
+
+<p>Je hoeft niet alle antwoorden goed te hebben om te slagen; dat staat letterlijk in de
+samenvatting van het examenreglement. Ben je gezakt voor Luisteren? Dan doe je <strong>alleen dat
+onderdeel</strong> opnieuw. Wat je hebt gehaald, blijft staan.</p>
+
 <h2 id="oefenen">Hoe je oefent</h2>
 
 <p>Luisteren is het onderdeel dat het snelst beter wordt van dagelijkse gewoontes, en het traagst
-van boeken.</p>
+van boeken. Begin bij DUO zelf: er zijn <strong>3 gratis oefenexamens Luisteren A2</strong>, en
+dat is precies het echte format.</p>
+
+${fact('De drie officiële oefenexamens Luisteren A2 van DUO bestaan uit 25 vragen en duren 45 minuten.', 'inburgeren.nl — Oefenen', SRC_OEFENEN, CHECKED_POST)}
 
 <div class="guide-steps">
   <div class="guide-step"><span class="guide-step-num">1</span><div class="guide-step-body">
@@ -184,6 +273,7 @@ ${inlineCta('Oefen Luisteren met echte fragmenten', 'Tien vragen met audio, met 
   <li>Lees de vraag v&oacute;&oacute;rdat het geluid begint.</li>
   <li>Pas op voor antwoorden met een woord dat je h&oacute;&oacute;rde maar dat niet klopt.</li>
   <li>Oefen getallen, tijden en data apart.</li>
+  <li>Oefen zonder terugspoelen: zo werkt het examen ook.</li>
 </ul>`,
 
   faq: [
@@ -204,13 +294,25 @@ ${inlineCta('Oefen Luisteren met echte fragmenten', 'Tien vragen met audio, met 
       a: 'Omdat je in het echt het gezicht ziet, de situatie kent en kunt vragen om herhaling. Op het examen valt dat allemaal weg en komt er tijdsdruk bij. Dat is te trainen: oefen met opnames tot de situatie niet nieuw meer voelt.',
     },
     {
+      q: 'Waarom is Luisteren moeilijker dan Lezen?',
+      a: 'Om drie redenen: je hebt minder tijd per vraag, je bepaalt zelf niet het tempo, en je kunt niet terug. Bij Lezen kun je een moeilijke zin drie keer bekijken. Bij Luisteren is hij weg.',
+    },
+    {
+      q: 'Hoe wordt het examen Luisteren nagekeken?',
+      a: 'Automatisch. Volgens artikel 10 van het examenreglement worden Luisteren, Lezen en KNM geautomatiseerd nagekeken. Er kijkt geen mens naar je antwoorden. De zak-slaaggrens publiceert DUO niet.',
+    },
+    {
+      q: 'Mag je aantekeningen maken tijdens het examen Luisteren?',
+      a: 'Je eigen spullen mag je niet gebruiken; die gaan volgens het examenreglement in een kluisje. Vraag op de examenlocatie wat wel mag — de belangrijkste regels staan ook in je oproepbrief.',
+    },
+    {
       q: 'Ik heb een gehoorbeperking. Kan ik een aangepast examen krijgen?',
       a: 'Ja, dat kan. Kun je door ziekte of een beperking het examen niet op de gewone manier doen, dan kan DUO een aangepast examen toestaan, bijvoorbeeld met extra tijd of andere apparatuur. Je vraagt dat vooraf aan bij DUO, ruim voordat je je voor een datum aanmeldt.',
     },
   ],
 
   related: ['taalexamens-a2-b1', 'lezen-examen', 'spreken-examen'],
-  relatedPosts: ['luisteren-examen-inburgering-a2', 'inburgeringsexamen-a2-uitleg'],
+  relatedPosts: ['inburgeringsexamen-zakken-herkansen', 'taalniveaus-a1-a2-b1-nederlands'],
 
   ctaTitle: 'Oefen het onderdeel Luisteren',
   ctaDesc: 'Gratis proefexamen van tien vragen met audio, met uitleg na elk antwoord.',

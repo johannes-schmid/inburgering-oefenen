@@ -346,7 +346,7 @@ ${figure(
     ${fact('De kennisexamens en de taalexamens op A2 doe je op een van de zes examenlocaties: Amsterdam, Eindhoven, Rijswijk, Rotterdam, Utrecht of Zwolle. Examens op B1 of B2 zijn het staatsexamen NT2, met eigen locaties.', 'inburgeren.nl — Examenplaatsen', SRC_LOCATIES, CHECKED)}
     ${docent('In mijn lessen zie ik dat de meeste cursisten Lezen en Luisteren het makkelijkst vinden. Schrijven en Spreken vinden ze vaak moeilijker. Begin daarom met Lezen of Luisteren, en verdeel je tijd goed. Plan liever niet meerdere examens op één dag — zo houd je genoeg energie over.')}
     <p>Wil je precies weten hoe elk taalonderdeel eruitziet? Lees:
-    <a href="/nl/blog/inburgeringsexamen-a2-uitleg">Inburgeringsexamen A2: de 4 taalonderdelen uitgelegd</a>.
+    <a href="/nl/taalexamens/taalexamens-a2-b1">De taalexamens A2 en B1 uitgelegd</a>.
     Twijfel je over het niveau? Lees:
     <a href="/nl/blog/taalniveaus-a1-a2-b1-nederlands">het verschil tussen A1, A2 en B1</a>.</p>
   </div>
@@ -424,7 +424,6 @@ ${docent('Ik heb deze oefenexamens gemaakt omdat er nog weinig plekken zijn waar
 
   related: ['moet-ik-inburgeren', 'welke-wet-en-welke-route', 'wat-kost-inburgeren'],
   relatedPosts: [
-    'inburgeringsexamen-a2-uitleg',
     'taalniveaus-a1-a2-b1-nederlands',
     'inburgeringsexamen-zakken-herkansen',
   ],
@@ -724,7 +723,7 @@ ${figure(
     ${factIn('en', 'You sit the knowledge exams and the A2 language exams at one of six exam locations: Amsterdam, Eindhoven, Rijswijk, Rotterdam, Utrecht or Zwolle. Exams at B1 or B2 are the staatsexamen NT2, which has its own locations.', 'inburgeren.nl — Examenplaatsen', SRC_LOCATIES, CHECKED)}
     ${docentIn('en', 'In my lessons I see that most students find Reading and Listening easiest. Writing and Speaking they often find harder. So start with Reading or Listening, and divide your time well. Try not to plan several exams on one day — that way you keep enough energy.')}
     <p>Want to know exactly what each language part looks like? Read:
-    <a href="/en/blog/a2-integration-exam-explained">Inburgeringsexamen A2: the 4 language parts explained</a>.
+    <a href="/en/language-exams/language-exams-a2-b1">The language exams A2 and B1 explained</a>.
     Unsure about the level? Read:
     <a href="/en/blog/dutch-language-levels-a1-a2-b1">the difference between A1, A2 and B1</a>.</p>
   </div>

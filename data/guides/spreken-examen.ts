@@ -12,6 +12,11 @@
  * counter beside it is attributed to the oefenexamens, never to the real exam.
  *
  * Same 16-week uitslag caveat as Schrijven, and dated for the same reason.
+ *
+ * **De blogpost `spreken-examen-inburgering-tips` is op 03-11-2026 in deze gids opgegaan** en
+ * `/nl/blog/spreken-examen-inburgering-tips` (en de EN/AR-slugs) 301'en hierheen (`next.config.ts`).
+ * De sectie "Vijf tips uit de les" — de twee vragen in onderdeel 1 (de observatie van de docent,
+ * in haar woorden), want/omdat, korte zinnen, me/zich, doorpraten — komt uit die post.
  */
 import type { Guide } from './types';
 import { fact } from './types';
@@ -22,7 +27,10 @@ export const SRC_OEFENEN = 'https://www.inburgeren.nl/examen-doen/oefenen.jsp';
 export const SRC_NT2 = 'https://www.staatsexamensnt2.nl/';
 export const SRC_NIEUWS = 'https://www.inburgeren.nl/nieuwsberichten/artikel.jsp?cid=tcm:94-243309-16';
 export const SRC_UITSLAG = 'https://www.inburgeren.nl/examen-doen/uitslag-examen.jsp';
+export const SRC_REGLEMENT = 'https://www.inburgeren.nl/images/examenreglement.pdf';
 export const CHECKED = '23-08-2026';
+/** De feiten die op 03-11-2026 uit de blogpost zijn overgenomen dragen de datum van díe verificatie. */
+export const CHECKED_POST = '16-09-2026';
 
 export const card = (icon: string, title: string, body: string) =>
   `<div class="guide-card"><span class="guide-card-icon">${icon}</span><h3>${title}</h3><p>${body}</p></div>`;
@@ -42,7 +50,7 @@ const guide: Guide = {
     'Spreken doe je op de computer met een microfoon: filmpjes en plaatjes met vragen. Hoe het examen werkt op A2 en B1, en hoe je hardop oefent zonder partner.',
 
   datePublished: '2026-08-23',
-  dateModified: '2026-08-23',
+  dateModified: '2026-11-03',
   dateLabel: '23 augustus 2026',
   breadcrumb: 'Spreken',
   eyebrow: 'Taalexamen',
@@ -56,7 +64,7 @@ const guide: Guide = {
     alt: 'Een vrouw spreekt in een headset achter een computer',
     credit: 'MART PRODUCTION (Pexels)',
   },
-  readingMinutes: 8,
+  readingMinutes: 10,
 
   articleHtml: `
 <h2 id="hoe-ziet-het-eruit">Hoe ziet het examen eruit?</h2>
@@ -100,6 +108,8 @@ ${note('Je krijgt per vraag een <strong>beperkte spreektijd</strong> en het opne
 <p>Spreken wordt deels automatisch en deels door mensen beoordeeld. In grote lijnen gaat het om
 vier dingen tegelijk.</p>
 
+${fact('"Het examen Spreekvaardigheid wordt gedeeltelijk geautomatiseerd en gedeeltelijk door gecertificeerde beoordelaars nagekeken en beoordeeld." Je wordt beoordeeld op of je begrijpelijk bent, niet op tempo.', 'DUO Examenreglement, artikel 10', SRC_REGLEMENT, CHECKED_POST)}
+
 <ul>
   <li><strong>Heb je antwoord gegeven op de vraag?</strong> Een prachtig verhaal over iets anders levert niets op.</li>
   <li><strong>Ben je te verstaan?</strong> Uitspraak en tempo. Rustig en duidelijk is beter dan snel.</li>
@@ -136,7 +146,7 @@ ${docent('Het grootste probleem bij Spreken is niet de taal maar de stilte. Curs
     <ul>
       <li>${I_CHECK}<span>Praat duidelijk en niet te snel, met je mond dicht bij de microfoon</span></li>
       <li>${I_CHECK}<span>Gebruik hele zinnen, ook bij een simpele vraag</span></li>
-      <li>${I_CHECK}<span>Geef altijd een reden — "omdat" is het nuttigste woord van dit examen</span></li>
+      <li>${I_CHECK}<span>Geef altijd een reden — een "want" of "omdat" levert bijna altijd punten op</span></li>
       <li>${I_CHECK}<span>Verbeter jezelf hardop als je iets fout zegt; dat mag en het telt niet tegen je</span></li>
     </ul>
   </div>
@@ -150,6 +160,62 @@ ${docent('Het grootste probleem bij Spreken is niet de taal maar de stilte. Curs
     </ul>
   </div>
 </div>
+
+<h2 id="tips">Vijf tips uit de les</h2>
+
+<p>Dit zijn de dingen die bij cursisten het vaakst misgaan, en die je in een week kunt afleren.</p>
+
+<h3>1. Luister naar de h&eacute;le vraag — er zitten er vaak twee in</h3>
+
+${docent('Onderdeel 1: luister heel goed naar de vraagstelling. Er worden twee vragen gesteld, niet &eacute;&eacute;n. Bijvoorbeeld: "Ik doe mijn boodschappen bij Albert Heijn. Waar doe jij je boodschappen? En hoe vaak per week?"')}
+
+<p>In dat voorbeeld zijn er twee dingen die je moet zeggen: <strong>waar</strong> je boodschappen
+doet en <strong>hoe vaak</strong>. Antwoord je alleen "Bij de Lidl", dan mis je de helft van de
+vraag. Luister tot het einde v&oacute;&oacute;rdat je bedenkt wat je gaat zeggen, en tel in je hoofd
+de vraagwoorden — <em>waar</em>, <em>hoe vaak</em>, <em>waarom</em>, <em>wanneer</em>. Elk
+vraagwoord is &eacute;&eacute;n ding dat in je antwoord moet.</p>
+
+<div class="yesno-grid">
+  <div class="yesno-col no">
+    <p class="yesno-title">Half antwoord</p>
+    <ul>
+      <li>${I_X}<span>Bij de Lidl.</span></li>
+    </ul>
+  </div>
+  <div class="yesno-col yes">
+    <p class="yesno-title">Heel antwoord</p>
+    <ul>
+      <li>${I_CHECK}<span>Ik doe mijn boodschappen bij de Lidl. Ik ga twee keer per week.</span></li>
+    </ul>
+  </div>
+</div>
+
+<h3>2. Kies onder tijdsdruk ‘want’, niet ‘omdat’</h3>
+
+<p>Bij spreken heb je geen tijd om een zin te herstellen. <em>Want</em> laat de woordvolgorde met
+rust; <em>omdat</em> stuurt het werkwoord naar het einde van de zin, en onder tijdsdruk gaat dat
+mis. "Ik ga met de fiets, <strong>want</strong> het <strong>is</strong> dichtbij" blijft gewoon
+staan; bij "omdat het dichtbij <strong>is</strong>" moet je het werkwoord verplaatsen. De
+uitzondering: op een directe <em>waarom</em>-vraag antwoord je w&eacute;l met <em>omdat</em>. De
+hele uitleg staat in <a href="/nl/blog/want-of-omdat">Want of omdat</a>.</p>
+
+<h3>3. Twee korte zinnen zijn beter dan &eacute;&eacute;n lange</h3>
+
+<p>Op A2 word je beoordeeld op of je begrijpelijk en correct spreekt, niet op of je ingewikkelde
+zinnen maakt. Een lange zin die halverwege instort levert minder op dan twee zinnen die kloppen.</p>
+
+<h3>4. Vergeet ‘me’ en ‘zich’ niet</h3>
+
+<p>Ik voel <strong>me</strong> goed. Ik bereid <strong>me</strong> voor. Ik kan <strong>me</strong>
+concentreren. Het weglaten van dat woordje is een van de meest hoorbare fouten, en bij spreken valt
+het meer op dan op papier. De twintig werkwoorden die je op A2 nodig hebt, staan in
+<a href="/nl/blog/wederkerende-werkwoorden-nederlands">wederkerende werkwoorden</a>.</p>
+
+<h3>5. Blijf praten tot de tijd om is</h3>
+
+<p>Heb je je antwoord gegeven en is er nog tijd? Voeg &eacute;&eacute;n zin toe: een voorbeeld, een
+reden of een detail. "Ik doe boodschappen bij de Lidl. Ik ga twee keer per week. <strong>Het is
+dichtbij mijn huis.</strong>" Die derde zin kost je niets en laat meer Nederlands horen.</p>
 
 <h2 id="zenuwen">Zenuwen en de microfoon</h2>
 
@@ -186,6 +252,7 @@ ${inlineCta('Oefen Spreken met beoordeling per criterium', 'Neem je antwoord op 
   <li>Vier soorten vragen: video, 1 plaatje, 2 plaatjes, 3 plaatjes.</li>
   <li>DUO's A2-oefenexamens hebben 16 vragen.</li>
   <li>Praat door, gebruik hele zinnen en geef altijd een reden.</li>
+  <li>Onderdeel 1 stelt vaak twee vragen in één: beantwoord ze allebei.</li>
   <li>Uitslag Spreken A2 duurt op dit moment tot 16 weken: plan het vroeg.</li>
 </ul>`,
 
@@ -203,6 +270,18 @@ ${inlineCta('Oefen Spreken met beoordeling per criterium', 'Neem je antwoord op 
       a: 'Blijf praten. Stilte levert nooit punten op, een half antwoord soms wel. Zeg de vraag in je eigen woorden terug, noem wat je wel ziet, of geef een reden waarom je twijfelt. Je mag jezelf ook hardop verbeteren; dat telt niet tegen je.',
     },
     {
+      q: 'Worden er echt twee vragen tegelijk gesteld?',
+      a: 'Bij onderdeel 1 komt dat regelmatig voor. Bijvoorbeeld: “Waar doe jij je boodschappen? En hoe vaak per week?” Dat zijn twee dingen die allebei in je antwoord moeten. Tel de vraagwoorden en beantwoord ze alle twee, in twee korte zinnen.',
+    },
+    {
+      q: 'Mag ik mezelf verbeteren tijdens het spreken?',
+      a: 'Ja. Jezelf verbeteren is normaal spreken en wordt niet afgestraft. Verbeter in één keer en praat door — helemaal opnieuw beginnen kost tijd die je niet hebt.',
+    },
+    {
+      q: 'Moet ik snel praten?',
+      a: 'Nee. Rustig en verstaanbaar levert meer op dan snel en onduidelijk. Je wordt beoordeeld op of je begrijpelijk bent, niet op tempo.',
+    },
+    {
       q: 'Hoe kan ik Spreken oefenen als ik geen Nederlandse gesprekspartner heb?',
       a: 'Hardop, alleen, met een opname. Beschrijf wat je ziet in hele zinnen en neem jezelf op met je telefoon. Luister het daarna terug: je hoort meteen of je te zacht praat, te snel gaat of te lang stil bent. Zoek daarnaast een taalmaatje of taalcafé via de bibliotheek of VluchtelingenWerk.',
     },
@@ -213,7 +292,7 @@ ${inlineCta('Oefen Spreken met beoordeling per criterium', 'Neem je antwoord op 
   ],
 
   related: ['taalexamens-a2-b1', 'schrijven-examen', 'luisteren-examen'],
-  relatedPosts: ['inburgeringsexamen-a2-uitleg', 'inburgeringsexamen-zakken-herkansen'],
+  relatedPosts: ['want-of-omdat', 'wederkerende-werkwoorden-nederlands', 'inburgeringsexamen-zakken-herkansen'],
 
   ctaTitle: 'Oefen het onderdeel Spreken',
   ctaDesc: 'Spreekopdrachten met feedback per criterium, opgesteld door een NT2-docent.',

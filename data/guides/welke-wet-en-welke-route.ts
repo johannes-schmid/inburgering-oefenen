@@ -282,7 +282,7 @@ ${fact('De inburgeringstermijn is 3 jaar en begint op de dag na de dagtekening v
   ],
 
   related: ['moet-ik-inburgeren', 'inburgering-stappenplan', 'wat-kost-inburgeren'],
-  relatedPosts: ['taalniveaus-a1-a2-b1-nederlands', 'inburgeringsexamen-a2-uitleg'],
+  relatedPosts: ['taalniveaus-a1-a2-b1-nederlands', 'inburgeringsexamen-zakken-herkansen'],
 
   ctaTitle: 'B1 of A2 — waar sta je nu?',
   ctaDesc: 'Doe een gratis oefenexamen van tien vragen en zie meteen wat je al kunt.',

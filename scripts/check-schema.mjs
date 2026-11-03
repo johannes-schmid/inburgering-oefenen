@@ -52,7 +52,7 @@ const PAGES = [
   { path: '/nl/docent',                 expect: ['ProfilePage', 'Person'] },
   // The blog is live and was never covered by this guard.
   { path: '/nl/blog',                   expect: ['Blog', 'ItemList'] },
-  { path: '/nl/blog/inburgeringsexamen-a2-uitleg', expect: ['BlogPosting', 'BreadcrumbList'] },
+  { path: '/nl/blog/want-of-omdat',     expect: ['BlogPosting', 'BreadcrumbList'] },
   // The kennisgids hubs (M1). Their ItemList appears only once a guide has been reviewed, so it
   // is deliberately not expected here — an empty section must still validate.
   { path: '/nl/inburgering',            expect: ['CollectionPage', 'BreadcrumbList'] },

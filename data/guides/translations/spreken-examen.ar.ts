@@ -12,7 +12,7 @@
  */
 import type { GuideLocale } from '../types';
 import { I_CHECK, I_MIC, I_X, docentIn, factIn, factTwoIn, inlineCta, note } from '../kit';
-import { CHECKED, SRC_NIEUWS, SRC_NT2, SRC_OEFENEN, SRC_TAALEXAMENS, SRC_UITSLAG, card } from '../spreken-examen';
+import { CHECKED, CHECKED_POST, SRC_NIEUWS, SRC_NT2, SRC_OEFENEN, SRC_REGLEMENT, SRC_TAALEXAMENS, SRC_UITSLAG, card } from '../spreken-examen';
 
 const translation: GuideLocale = {
   title: 'امتحان Spreken (A2 وB1): الشكل والوقت والطريقة',
@@ -66,6 +66,8 @@ ${note('لكل سؤال <strong>وقت تحدّث محدود</strong> ويبدأ
 
 <p>يُقيَّم Spreken جزئياً بشكل آلي وجزئياً من قِبل أشخاص. وبشكل عام يتعلق الأمر بأربعة أشياء في وقت واحد.</p>
 
+${factIn('ar', '«Het examen Spreekvaardigheid wordt gedeeltelijk geautomatiseerd en gedeeltelijk door gecertificeerde beoordelaars nagekeken en beoordeeld» — يُصحَّح امتحان التحدث جزئيًا آليًا وجزئيًا على يد مصحّحين معتمدين. ويُقيَّم مدى وضوحك، لا سرعتك.', 'DUO Examenreglement, artikel 10', SRC_REGLEMENT, CHECKED_POST)}
+
 <ul>
   <li><strong>هل أجبت عن السؤال؟</strong> قصة رائعة عن شيء آخر لا تمنحك شيئاً.</li>
   <li><strong>هل كلامك مفهوم؟</strong> النطق والسرعة. الهدوء والوضوح أفضل من السرعة.</li>
@@ -102,7 +104,7 @@ ${docentIn('ar', 'أكبر مشكلة في Spreken ليست اللغة بل ال
     <ul>
       <li>${I_CHECK}<span>تكلّم بوضوح وليس بسرعة، وفمك قريب من الميكروفون</span></li>
       <li>${I_CHECK}<span>استخدم جملاً كاملة، حتى مع سؤال بسيط</span></li>
-      <li>${I_CHECK}<span>اذكر دائماً سبباً — "لأن" هي أنفع كلمة في هذا الامتحان</span></li>
+      <li>${I_CHECK}<span>اذكر دائماً سبباً — «want» أو «omdat» (لأن) تمنحك نقاطاً في الغالب</span></li>
       <li>${I_CHECK}<span>صحّح نفسك بصوت عالٍ إذا قلت شيئاً خطأ؛ هذا مسموح ولا يُحسب ضدك</span></li>
     </ul>
   </div>
@@ -116,6 +118,58 @@ ${docentIn('ar', 'أكبر مشكلة في Spreken ليست اللغة بل ال
     </ul>
   </div>
 </div>
+
+<h2 id="tips">خمس نصائح من الدرس</h2>
+
+<p>هذه هي الأمور التي تخطئ فيها الدارسون أكثر من غيرها، والتي يمكنك التخلّص منها في أسبوع.</p>
+
+<h3>١. استمع إلى السؤال كاملًا — ففيه سؤالان غالبًا</h3>
+
+${docentIn('ar', 'الجزء الأول: استمع جيدًا إلى صيغة السؤال. يُطرح سؤالان لا سؤال واحد. مثال: «Ik doe mijn boodschappen bij Albert Heijn. Waar doe jij je boodschappen? En hoe vaak per week?»')}
+
+<p>في هذا المثال عليك أن تقول شيئين: <strong>أين</strong> تتسوّق و<strong>كم مرة</strong>. فإن
+أجبت «Bij de Lidl» فقط، فاتك نصف السؤال. استمع حتى النهاية <em>قبل</em> أن تفكر في إجابتك، وعُدّ في
+رأسك أدوات الاستفهام — <em>waar</em>، <em>hoe vaak</em>، <em>waarom</em>، <em>wanneer</em>. كل أداة
+استفهام تعني شيئًا يجب أن يرد في جوابك.</p>
+
+<div class="yesno-grid">
+  <div class="yesno-col no">
+    <p class="yesno-title">نصف إجابة</p>
+    <ul>
+      <li>${I_X}<span dir="ltr" lang="nl">Bij de Lidl.</span></li>
+    </ul>
+  </div>
+  <div class="yesno-col yes">
+    <p class="yesno-title">إجابة كاملة</p>
+    <ul>
+      <li>${I_CHECK}<span dir="ltr" lang="nl">Ik doe mijn boodschappen bij de Lidl. Ik ga twee keer per week.</span></li>
+    </ul>
+  </div>
+</div>
+
+<h3>٢. تحت ضغط الوقت اختر «want» لا «omdat»</h3>
+
+<p>في الكلام لا وقت لديك لإصلاح الجملة. <em>want</em> تترك ترتيب الكلمات كما هو، أما
+<em>omdat</em> فترسل الفعل إلى آخر الجملة، وتحت ضغط الوقت يقع الخطأ. «Ik ga met de fiets,
+<strong>want</strong> het <strong>is</strong> dichtbij» تبقى كما هي؛ أما مع «omdat het dichtbij
+<strong>is</strong>» فعليك نقل الفعل. والاستثناء: عند سؤال <em>waarom</em> المباشر تجيب فعلًا
+بـ<em>omdat</em>. والشرح الكامل في <a href="/ar/المدونة/want-أم-omdat">want أم omdat</a>.</p>
+
+<h3>٣. جملتان قصيرتان خير من جملة طويلة</h3>
+
+<p>في المستوى A2 يُقيَّم مدى وضوحك وصحتك في الكلام، لا قدرتك على بناء جمل معقّدة. والجملة الطويلة
+التي تنهار في منتصفها تعطي أقل من جملتين صحيحتين.</p>
+
+<h3>٤. لا تنسَ «me» و«zich»</h3>
+
+<p><span dir="ltr" lang="nl">Ik voel <strong>me</strong> goed. Ik bereid <strong>me</strong> voor. Ik kan <strong>me</strong> concentreren.</span>
+حذف هذه الكلمة من أكثر الأخطاء وضوحًا للأذن، وفي الكلام يلفت الانتباه أكثر مما في الورق. والأفعال
+العشرون التي تحتاجها في A2 في <a href="/ar/المدونة/الأفعال-الانعكاسية-الهولندية">الأفعال الانعكاسية</a>.</p>
+
+<h3>٥. استمر في الكلام حتى ينتهي الوقت</h3>
+
+<p>أعطيت جوابك وبقي وقت؟ أضف جملة واحدة: مثالًا أو سببًا أو تفصيلًا. <span dir="ltr" lang="nl">«Ik doe boodschappen bij de Lidl. Ik ga twee keer per week. <strong>Het is dichtbij mijn huis.</strong>»</span>
+هذه الجملة الثالثة لا تكلّفك شيئًا وتُظهر هولندية أكثر.</p>
 
 <h2 id="zenuwen">التوتر والميكروفون</h2>
 
@@ -152,9 +206,22 @@ ${inlineCta('تدرّب على Spreken مع تقييم لكل معيار', 'سج
   <li>امتحانات DUO التدريبية لمستوى A2 تحتوي على 16 سؤالاً.</li>
   <li>استمر في الكلام، استخدم جملاً كاملة، واذكر دائماً سبباً.</li>
   <li>نتيجة Spreken A2 تستغرق في الوقت الحالي حتى 16 أسبوعاً: خطّط لها مبكراً.</li>
+  <li>الجزء الأول يطرح غالبًا سؤالين في واحد: أجب عنهما معًا.</li>
 </ul>`,
 
   faq: [
+    {
+      q: 'هل يُطرح سؤالان معًا فعلًا؟',
+      a: 'في الجزء الأول يحدث ذلك كثيرًا. مثال: «Waar doe jij je boodschappen? En hoe vaak per week?» هذان شيئان يجب أن يردا كلاهما في جوابك. عُدّ أدوات الاستفهام وأجب عنهما معًا، في جملتين قصيرتين.',
+    },
+    {
+      q: 'هل يمكنني تصحيح نفسي أثناء الكلام؟',
+      a: 'نعم. تصحيح النفس كلام طبيعي ولا يُعاقَب عليه. صحّح مرة واحدة وتابع الكلام — أما البدء من جديد تمامًا فيكلّفك وقتًا لا تملكه.',
+    },
+    {
+      q: 'هل يجب أن أتكلم بسرعة؟',
+      a: 'لا. الهدوء والوضوح يعطيان أكثر من السرعة وعدم الوضوح. يُقيَّم مدى وضوحك، لا سرعتك.',
+    },
   {
     q: 'هل أتحدث في امتحان Spreken إلى شخص حقيقي؟',
     a: 'لا. تجلس أمام حاسوب مع سماعة رأس وميكروفون. ترى مقاطع فيديو وصوراً مع أسئلة، وتسجّل إجابتك بصوتك. لا يجلس أمامك ممتحِن، ولا يمكنك أن تطلب إعادة السؤال.',

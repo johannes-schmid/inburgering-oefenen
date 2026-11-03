@@ -514,7 +514,7 @@ test.describe('the language switcher', () => {
    * shape — static, one dynamic segment, three of them, and a translated slug. */
   for (const [path, expected] of [
     ['/nl/premium', /\/en\/premium$/],
-    ['/nl/blog/inburgeringsexamen-a2-uitleg', /\/en\/blog\/inburgeringsexamen-a2-uitleg$/],
+    ['/nl/blog/want-of-omdat', /\/en\/blog\/want-or-omdat-dutch$/],
     /* Sinds 15-09 verhuist de wissel óók de slug, en bij het examen zelfs de onderdeelnaam:
      * die is een parameterwaarde die next-intl niet aanraakt, dus `skillParam` doet het aan de
      * kant van de link en `proxy.ts` aan de kant van de URL. Deze regels legden de ónvertaalde

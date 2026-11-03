@@ -12,7 +12,7 @@
  */
 import type { GuideLocale } from '../types';
 import { I_CHECK, I_MIC, I_X, docentIn, factIn, factTwoIn, inlineCta, note } from '../kit';
-import { CHECKED, SRC_NIEUWS, SRC_NT2, SRC_OEFENEN, SRC_TAALEXAMENS, SRC_UITSLAG, card } from '../spreken-examen';
+import { CHECKED, CHECKED_POST, SRC_NIEUWS, SRC_NT2, SRC_OEFENEN, SRC_REGLEMENT, SRC_TAALEXAMENS, SRC_UITSLAG, card } from '../spreken-examen';
 
 const translation: GuideLocale = {
   title: 'The Spreken exam (A2 and B1): format, time and approach',
@@ -68,6 +68,8 @@ ${note('You get a <strong>limited speaking time</strong> for each question and t
 <p>Spreken is assessed partly automatically and partly by people. Broadly speaking, four things
 matter at the same time.</p>
 
+${factIn('en', '"Het examen Spreekvaardigheid wordt gedeeltelijk geautomatiseerd en gedeeltelijk door gecertificeerde beoordelaars nagekeken en beoordeeld." (The Speaking exam is marked partly automatically and partly by certified assessors.) You are assessed on whether you are understandable, not on speed.', 'DUO Examenreglement, artikel 10', SRC_REGLEMENT, CHECKED_POST)}
+
 <ul>
   <li><strong>Did you answer the question?</strong> A beautiful story about something else gives you nothing.</li>
   <li><strong>Can you be understood?</strong> Pronunciation and speed. Calm and clear is better than fast.</li>
@@ -104,7 +106,7 @@ ${docentIn('en', 'The biggest problem with Spreken is not the language but the s
     <ul>
       <li>${I_CHECK}<span>Speak clearly and not too fast, with your mouth close to the microphone</span></li>
       <li>${I_CHECK}<span>Use full sentences, also for a simple question</span></li>
-      <li>${I_CHECK}<span>Always give a reason — "omdat" (because) is the most useful word in this exam</span></li>
+      <li>${I_CHECK}<span>Always give a reason — a "want" or "omdat" (because) almost always earns points</span></li>
       <li>${I_CHECK}<span>Correct yourself out loud if you say something wrong; that is allowed and it does not count against you</span></li>
     </ul>
   </div>
@@ -118,6 +120,63 @@ ${docentIn('en', 'The biggest problem with Spreken is not the language but the s
     </ul>
   </div>
 </div>
+
+<h2 id="tips">Five tips from the classroom</h2>
+
+<p>These are the things that most often go wrong for students, and that you can unlearn in a week.</p>
+
+<h3>1. Listen to the whole question — there are often two in it</h3>
+
+${docentIn('en', 'Part 1: listen very carefully to the question. Two questions are asked, not one. For example: "Ik doe mijn boodschappen bij Albert Heijn. Waar doe jij je boodschappen? En hoe vaak per week?"')}
+
+<p>In that example there are two things you have to say: <strong>where</strong> you do your
+shopping and <strong>how often</strong>. If you answer only "Bij de Lidl", you miss half the
+question. Listen to the end <em>before</em> you start thinking about your answer, and count the
+question words in your head — <em>waar</em>, <em>hoe vaak</em>, <em>waarom</em>, <em>wanneer</em>.
+Every question word is one thing that has to be in your answer.</p>
+
+<div class="yesno-grid">
+  <div class="yesno-col no">
+    <p class="yesno-title">Half an answer</p>
+    <ul>
+      <li>${I_X}<span>Bij de Lidl.</span></li>
+    </ul>
+  </div>
+  <div class="yesno-col yes">
+    <p class="yesno-title">Complete answer</p>
+    <ul>
+      <li>${I_CHECK}<span>Ik doe mijn boodschappen bij de Lidl. Ik ga twee keer per week.</span></li>
+    </ul>
+  </div>
+</div>
+
+<h3>2. Under time pressure, choose ‘want’, not ‘omdat’</h3>
+
+<p>When speaking you have no time to repair a sentence. <em>Want</em> leaves the word order alone;
+<em>omdat</em> sends the verb to the end of the clause, and under time pressure that goes wrong.
+"Ik ga met de fiets, <strong>want</strong> het <strong>is</strong> dichtbij" simply stays as it is;
+with "omdat het dichtbij <strong>is</strong>" you have to move the verb. The exception: to a direct
+<em>waarom</em> question you do answer with <em>omdat</em>. The full explanation is in
+<a href="/en/blog/want-or-omdat-dutch">Want or omdat</a>.</p>
+
+<h3>3. Two short sentences are better than one long one</h3>
+
+<p>At A2 you are assessed on whether you speak clearly and correctly, not on whether you build
+complex sentences. A long sentence that collapses halfway scores less than two sentences that are
+right.</p>
+
+<h3>4. Do not forget ‘me’ and ‘zich’</h3>
+
+<p>Ik voel <strong>me</strong> goed. Ik bereid <strong>me</strong> voor. Ik kan <strong>me</strong>
+concentreren. Dropping that little word is one of the most audible mistakes, and in speech it stands
+out more than on paper. The twenty verbs you need at A2 are in
+<a href="/en/blog/dutch-reflexive-verbs">Dutch reflexive verbs</a>.</p>
+
+<h3>5. Keep talking until time is up</h3>
+
+<p>Given your answer and still have time? Add one sentence: an example, a reason or a detail. "Ik
+doe boodschappen bij de Lidl. Ik ga twee keer per week. <strong>Het is dichtbij mijn huis.</strong>"
+That third sentence costs you nothing and lets you show more Dutch.</p>
 
 <h2 id="zenuwen">Nerves and the microphone</h2>
 
@@ -155,9 +214,22 @@ ${inlineCta('Practise Spreken with assessment per criterion', 'Record your answe
   <li>DUO’s A2 oefenexamens have 16 questions.</li>
   <li>Keep talking, use full sentences and always give a reason.</li>
   <li>The result for Spreken A2 currently takes up to 16 weeks: plan it early.</li>
+  <li>Part 1 often asks two questions in one: answer both.</li>
 </ul>`,
 
   faq: [
+    {
+      q: 'Are two questions really asked at once?',
+      a: 'In part 1 that happens regularly. For example: "Waar doe jij je boodschappen? En hoe vaak per week?" Those are two things that both have to be in your answer. Count the question words and answer both of them, in two short sentences.',
+    },
+    {
+      q: 'May I correct myself while speaking?',
+      a: 'Yes. Correcting yourself is normal speech and is not penalised. Correct it once and keep talking — starting over completely costs time you do not have.',
+    },
+    {
+      q: 'Do I have to speak fast?',
+      a: 'No. Calm and understandable earns more than fast and unclear. You are assessed on whether you are understandable, not on speed.',
+    },
   {
     q: 'Do I speak to a real person in the exam Spreken?',
     a: 'No. You sit at a computer with headphones and a microphone. You see videos and pictures with questions, and you record your answer by speaking. There is no examiner sitting opposite you, and you cannot ask for anything to be repeated.',

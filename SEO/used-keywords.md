@@ -5,15 +5,15 @@ cannibalise each other and both lose.
 
 | Primary keyword | Post slug | Published |
 |---|---|---|
-| inburgeringsexamen a2 | `inburgeringsexamen-a2-uitleg` | 2026-07-08 |
-| lezen examen inburgering | `lezen-examen-inburgering-a2` | 2026-07-14 |
-| luisteren examen inburgering | `luisteren-examen-inburgering-a2` | 2026-07-20 |
+| inburgeringsexamen a2 | ~~`inburgeringsexamen-a2-uitleg`~~ → `/taalexamens/taalexamens-a2-b1` (samengevoegd 2026-11-03) | 2026-07-08 |
+| lezen examen inburgering | ~~`lezen-examen-inburgering-a2`~~ → `/taalexamens/lezen-examen` (samengevoegd 2026-11-03) | 2026-07-14 |
+| luisteren examen inburgering | ~~`luisteren-examen-inburgering-a2`~~ → `/taalexamens/luisteren-examen` (samengevoegd 2026-11-03) | 2026-07-20 |
 | inburgeringsexamen zakken | `inburgeringsexamen-zakken-herkansen` | 2026-07-25 |
 | wat is het verschil tussen a1 en a2 | `taalniveaus-a1-a2-b1-nederlands` | 2026-07-28 |
 | schrijven examen inburgering tips | `veelgemaakte-fouten-schrijven-examen-a2` | 2026-09-16 |
 | verschil want en omdat | `want-of-omdat` | 2026-09-16 |
 | wederkerende werkwoorden | `wederkerende-werkwoorden-nederlands` | 2026-09-16 |
-| spreken examen inburgering tips | `spreken-examen-inburgering-tips` | 2026-09-16 |
+| spreken examen inburgering tips | ~~`spreken-examen-inburgering-tips`~~ → `/taalexamens/spreken-examen` (samengevoegd 2026-11-03) | 2026-09-16 |
 
 ## Page-level primaries (2026-09-25, Semrush)
 
@@ -39,15 +39,11 @@ volumes is the top of `SEO/keywords.md`.
 
 | Post | NL | EN | AR |
 |---|---|---|---|
-| `inburgeringsexamen-a2-uitleg` | ✅ | ✅ | ✅ |
-| `lezen-examen-inburgering-a2` | ✅ | ✅ | — |
-| `luisteren-examen-inburgering-a2` | ✅ | ✅ | — |
 | `inburgeringsexamen-zakken-herkansen` | ✅ | ✅ | — |
 | `taalniveaus-a1-a2-b1-nederlands` | ✅ | ✅ | — |
 | `veelgemaakte-fouten-schrijven-examen-a2` | ✅ | ✅ | ✅ |
 | `want-of-omdat` | ✅ | ✅ | ✅ |
 | `wederkerende-werkwoorden-nederlands` | ✅ | ✅ | ✅ |
-| `spreken-examen-inburgering-tips` | ✅ | ✅ | ✅ |
 
 A locale with no `articleHtml` is `noindex`ed and shows a "not translated yet" notice above an
 LTR-wrapped Dutch fallback, and is excluded from the sitemap. So the four remaining missing Arabic bodies (the July posts)
@@ -59,5 +55,5 @@ keep the slug identical across locales (see the note in `components/Nav.tsx`).
 ## Claimed but not yet written
 Reserved so a future session doesn't target them from a second angle:
 - `schrijven examen inburgering` — nog vrij; de tips-variant is geclaimd door `veelgemaakte-fouten-schrijven-examen-a2`
-- `spreken examen inburgering` — nog vrij; de tips-variant is geclaimd door `spreken-examen-inburgering-tips`
+- `spreken examen inburgering` — eigenaar is `/taalexamens/spreken-examen` (de tips-post is er op 2026-11-03 in opgegaan)
 - `wet inburgering 2021` — blocked on reading the 2025-10-21 statute amendment

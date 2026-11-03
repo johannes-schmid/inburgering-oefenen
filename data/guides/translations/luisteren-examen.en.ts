@@ -12,7 +12,7 @@
  */
 import type { GuideLocale } from '../types';
 import { I_CHECK, I_HEADPHONES, I_X, docentIn, factIn, factTwoIn, inlineCta, note } from '../kit';
-import { CHECKED, SRC_AANGEPAST, SRC_NT2, SRC_OEFENEN, SRC_TAALEXAMENS, card } from '../luisteren-examen';
+import { CHECKED, CHECKED_POST, SRC_AANGEPAST, SRC_NT2, SRC_OEFENEN, SRC_REGLEMENT, SRC_TAALEXAMENS, card } from '../luisteren-examen';
 
 const translation: GuideLocale = {
   title: 'The Luisteren exam (A2 and B1): format, time and approach',
@@ -51,6 +51,18 @@ ${factIn('en', 'On the start screen of DUO’s public practice exams Luisteren A
 <p>Note the difference with Lezen (reading): you have <strong>less time for the same number of
 questions</strong>. That is because the audio itself takes time. So you cannot think for long.</p>
 
+<p>Three things make the difference:</p>
+
+<ol>
+  <li><strong>Less time.</strong> Nearly a minute less per question.</li>
+  <li><strong>You do not set the pace.</strong> With Lezen you can look at a hard sentence three times. With audio it keeps going.</li>
+  <li><strong>It is gone.</strong> A conversation passes. Miss a number and you cannot flip back a page.</li>
+</ol>
+
+<p>Which is why one specific habit matters most: <strong>practise as if you hear every fragment
+only once</strong>. If you keep rewinding at home, you are training something other than the
+exam.</p>
+
 <h2 id="wat-hoor-je">What exactly do you hear?</h2>
 
 <p>At A2 they are short fragments from daily life. One fragment usually has two or three
@@ -64,6 +76,42 @@ questions.</p>
 </div>
 
 ${docentIn('en', 'Most mistakes in Luisteren are not about words but about <strong>numbers</strong>: times, house numbers, amounts, days. "Half vier" (half past three) is not four o’clock, and "over een kwartier" (in a quarter of an hour) is not a point in time but a difference. Practise that separately — it is a small part of the language with a large share of the questions.')}
+
+<h2 id="soorten-vragen">What kind of questions do you get?</h2>
+
+<p>The questions fall roughly into a few types. Know which type you are getting and you know what to
+listen for before the audio starts.</p>
+
+<div class="article-table-wrap">
+<table>
+  <thead><tr><th>Type</th><th>What is asked</th><th>What to listen for</th></tr></thead>
+  <tbody>
+    <tr><td><strong>Detail</strong></td><td>a time, price, day or house number</td><td>digits — almost always the point</td></tr>
+    <tr><td><strong>Main point</strong></td><td>what is this conversation about?</td><td>the opening sentences</td></tr>
+    <tr><td><strong>Reason</strong></td><td>why does something happen?</td><td>"omdat", "want", "daarom"</td></tr>
+    <tr><td><strong>Required action</strong></td><td>what should you do?</td><td>"bel", "kom", "neem", "stuur"</td></tr>
+    <tr><td><strong>Feeling or opinion</strong></td><td>how does someone react?</td><td>the tone, and words like "helaas", "gelukkig"</td></tr>
+  </tbody>
+</table>
+</div>
+
+<p>One trap with the "detail" type: a conversation often mentions <strong>two numbers</strong>. An
+old appointment and a new one. A price with and without discount. The question is almost always
+about the second.</p>
+
+<h3>Try a question</h3>
+
+<p>Imagine you hear this. Once.</p>
+
+<div class="blog-quiz-card">
+  <p class="blog-quiz-q">At the dentist you hear: "Uw afspraak van donderdag half elf kan helaas niet doorgaan. Kunt u vrijdag om kwart over negen? Anders is de eerstvolgende mogelijkheid maandag." Which new appointment is the dentist proposing?</p>
+  <div class="blog-quiz-opts">
+    <button type="button" class="blog-quiz-opt"><span class="blog-quiz-letter">A</span><span>Thursday at 10.30</span></button>
+    <button type="button" class="blog-quiz-opt" data-answer="correct"><span class="blog-quiz-letter">B</span><span>Friday at 9.15</span></button>
+    <button type="button" class="blog-quiz-opt"><span class="blog-quiz-letter">C</span><span>Monday at 9.15</span></button>
+  </div>
+  <div class="blog-quiz-ans">The correct answer is <strong>B</strong>. "Kwart over negen" is 9.15, and that is on Friday. Thursday half elf (10.30) was the <em>old</em> appointment, and Monday is only a fallback if Friday does not work. Note how much information sits in two sentences — which is exactly why you read the question first.</div>
+</div>
 
 <h2 id="strategie">The strategy: read ahead</h2>
 
@@ -116,13 +164,51 @@ to go by train, but now I am going by bike). The question is how he travels. Any
 <p>So always listen to the end of the sentence. The most important word in that example is
 <strong>maar</strong> (but).</p>
 
+<h3>The second trap: wanting to understand everything</h3>
+
+<p>A word comes up that you do not know. You start thinking about it. What did it mean? While you
+think, the audio continues. You miss the next two sentences — and <em>that</em> is where the answer
+was. One unknown word costs you three sentences that way. It is almost always better to let a word
+go and keep listening.</p>
+
+${note('Train this separately. Listen to something slightly too hard for you and agree with yourself: I do not stop, I do not rewind, I do not look anything up. Just keep listening. It feels uncomfortable, and it is precisely the skill the exam tests.')}
+
 ${note('Do you have a hearing impairment? DUO can adapt the exam, for example with extra time or adapted equipment. You apply for this in advance, with a statement. Arrange it well before you register.')}
 
 ${factIn('en', 'If you cannot take the exam in the normal way because of an illness or a disability, DUO can allow an adapted exam. You apply for this in advance at DUO.', 'inburgeren.nl — Aangepast examen bij ziekte of beperking', SRC_AANGEPAST, CHECKED)}
 
+<h2 id="examendag">On exam day</h2>
+
+<p>With Luisteren one thing matters more than with the other parts: <strong>your sound</strong>. In
+DUO’s practice exams you can test your audio volume beforehand. Do that calmly, and set the volume
+slightly higher than you normally would.</p>
+
+${factIn('en', 'You must be present 30 minutes before the exam. You get 15 minutes of explanation before the exam starts. Without valid ID you may not sit the exam.', 'DUO Examenreglement', SRC_REGLEMENT, CHECKED_POST)}
+
+<p>Those 15 minutes of explanation are extra; they do not come off your 45 minutes. Otherwise the
+same applies as for the other parts: phone and bag in a locker, toilet only with supervision, and
+the exam is confidential — no photos, no copying questions.</p>
+
+<p>DUO advises taking practice exams on a computer rather than on a phone. For Luisteren that
+matters even more: on a small screen you cannot see the question and the answers at a glance, and
+then you cannot read ahead.</p>
+
+<h2 id="slagen">How much do you need correct?</h2>
+
+<p>As with every part: <strong>DUO does not publish the cut-off</strong>. Online you read an exact
+number of correct answers, but that number does not come from DUO, and sites contradict each other.</p>
+
+${factIn('en', '"De zak-slaaggrens wordt uitgedrukt in een cesuur, vastgesteld door de Minister." You get a grade per part and the result passed or not passed. Luisteren is marked automatically, like Lezen and KNM.', 'DUO Examenreglement, artikel 10 en 16', SRC_REGLEMENT, CHECKED_POST)}
+
+<p>You do not need every answer right to pass; that is stated literally in the plain-language
+summary of the exam regulations. Failed Luisteren? Then you retake <strong>only that part</strong>.
+What you have passed stays passed.</p>
+
 <h2 id="oefenen">How to practise</h2>
 
-<p>Luisteren is the part that improves fastest from daily habits, and slowest from books.</p>
+<p>Luisteren is the part that improves fastest from daily habits, and slowest from books. Start with DUO itself: there are <strong>3 free A2 Luisteren practice exams</strong>, and that is exactly the real format.</p>
+
+${factIn('en', 'The three official DUO A2 Luisteren practice exams consist of 25 questions and last 45 minutes.', 'inburgeren.nl — Oefenen', SRC_OEFENEN, CHECKED_POST)}
 
 <div class="guide-steps">
   <div class="guide-step"><span class="guide-step-num">1</span><div class="guide-step-body">
@@ -156,9 +242,22 @@ ${inlineCta('Practise Luisteren with real fragments', 'Ten questions with audio,
   <li>Read the question before the audio starts.</li>
   <li>Watch out for answers with a word that you did hear but that is not correct.</li>
   <li>Practise numbers, times and dates separately.</li>
+  <li>Practise without rewinding: that is how the exam works too.</li>
 </ul>`,
 
   faq: [
+    {
+      q: 'Why is Luisteren harder than Lezen?',
+      a: 'For three reasons: you have less time per question, you do not set the pace yourself, and you cannot go back. With Lezen you can look at a hard sentence three times. With Luisteren it is gone.',
+    },
+    {
+      q: 'How is the Luisteren exam marked?',
+      a: 'Automatically. According to article 10 of the exam regulations, Luisteren, Lezen and KNM are marked by computer. No human looks at your answers. DUO does not publish the pass mark.',
+    },
+    {
+      q: 'May I take notes during the Luisteren exam?',
+      a: 'You may not use your own belongings; according to the exam regulations they go in a locker. Ask at the exam location what is allowed — the most important rules are also in your invitation letter.',
+    },
   {
     q: 'How long does the Luisteren exam take?',
     a: 'At level A2 it takes 45 minutes, on the computer. At level B1 it is part of the staatsexamen NT2 and it takes 90 minutes. Information about the content of the B1 exam is on staatsexamensnt2.nl.',

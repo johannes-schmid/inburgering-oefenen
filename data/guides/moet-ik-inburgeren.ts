@@ -299,7 +299,7 @@ ${inlineCta('Kijk vast waar je nu staat', 'Tien vragen per onderdeel, met uitleg
   ],
 
   related: ['welke-wet-en-welke-route', 'inburgering-stappenplan', 'wat-kost-inburgeren'],
-  relatedPosts: ['taalniveaus-a1-a2-b1-nederlands', 'inburgeringsexamen-a2-uitleg'],
+  relatedPosts: ['taalniveaus-a1-a2-b1-nederlands', 'inburgeringsexamen-zakken-herkansen'],
 
   ctaTitle: 'Weten hoe goed je Nederlands al is?',
   ctaDesc: 'Doe een gratis oefenexamen van tien vragen. Met uitleg bij elk antwoord, zonder account.',

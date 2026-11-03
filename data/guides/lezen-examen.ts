@@ -1,12 +1,10 @@
 /**
  * Taalexamens spoke — Lezen.
  *
- * **This page and the blog post `lezen-examen-inburgering-a2` cover related ground on purpose,
- * and they are scoped so they do not compete.** The post is the A2 explainer and owns the
- * "lezen examen inburgering A2" query; this guide is the per-onderdeel reference across *both*
- * levels and is where the cluster's internal links point. Both link the other. If a future edit
- * makes either one the general "alles over lezen" page, one of them has to go — one query, one
- * owning page (`docs/MILESTONES.html`, M1's call on `taalniveaus-a1-a2-b1-nederlands`).
+ * **De blogpost `lezen-examen-inburgering-a2` is op 03-11-2026 in deze gids opgegaan** en
+ * `/nl/blog/lezen-examen-inburgering-a2` (en de EN/AR-slugs) 301'en hierheen (`next.config.ts`).
+ * Twee pagina's op één zoekintentie splitsten het signaal van Google; de vraagtypes, de
+ * voorbeeldvraag, de examendag en de cesuur-paragraaf komen uit die post. Eén query, één pagina.
  *
  * Item counts are attributed to DUO's oefenexamens, never to "het examen" — `SEO/facts.md` §1.
  * For B1 only the duration is DUO-sourced; the content description lives at staatsexamensnt2.nl
@@ -20,7 +18,10 @@ export const SRC_TAALEXAMENS = 'https://www.inburgeren.nl/examen-doen/inhoud-taa
 export const SRC_OEFENEN = 'https://www.inburgeren.nl/examen-doen/oefenen.jsp';
 export const SRC_NT2 = 'https://www.staatsexamensnt2.nl/';
 export const SRC_REGELS = 'https://www.inburgeren.nl/examen-doen/regels-examen.jsp';
+export const SRC_REGLEMENT = 'https://www.inburgeren.nl/images/examenreglement.pdf';
 export const CHECKED = '23-08-2026';
+/** De feiten die op 03-11-2026 uit de blogpost zijn overgenomen dragen de datum van díe verificatie. */
+export const CHECKED_POST = '28-07-2026';
 
 export const card = (icon: string, title: string, body: string) =>
   `<div class="guide-card"><span class="guide-card-icon">${icon}</span><h3>${title}</h3><p>${body}</p></div>`;
@@ -40,7 +41,7 @@ const guide: Guide = {
     'Hoe ziet het examen Lezen eruit op A2 en B1, hoeveel tijd heb je per tekst, en met welke leesstrategie haal je het? Uitleg en oefentips van een NT2-docent.',
 
   datePublished: '2026-08-23',
-  dateModified: '2026-08-23',
+  dateModified: '2026-11-03',
   dateLabel: '23 augustus 2026',
   breadcrumb: 'Lezen',
   eyebrow: 'Taalexamen',
@@ -54,7 +55,7 @@ const guide: Guide = {
     alt: 'Een vrouw leest een boek bij het raam',
     credit: 'Rahul Shah (Pexels)',
   },
-  readingMinutes: 7,
+  readingMinutes: 9,
 
   articleHtml: `
 <h2 id="hoe-ziet-het-eruit">Hoe ziet het examen eruit?</h2>
@@ -116,6 +117,40 @@ ook begrijpen wat de schrijver bedoelt en welke mening hij heeft.</p>
   </div></div>
 </div>
 
+<p>Binnen die drie soorten kun je nog preciezer kijken naar w&aacute;t er gevraagd wordt. Herken
+je het type, dan weet je meteen waar je in de tekst moet zoeken.</p>
+
+<div class="article-table-wrap">
+<table>
+  <thead><tr><th>Soort vraag</th><th>Wat men vraagt</th><th>Waar je zoekt</th></tr></thead>
+  <tbody>
+    <tr><td><strong>Detail</strong></td><td>een tijd, prijs, datum of adres</td><td>naar cijfers in de tekst</td></tr>
+    <tr><td><strong>Hoofdgedachte</strong></td><td>waar gaat deze tekst over?</td><td>titel en eerste regels</td></tr>
+    <tr><td><strong>Doel</strong></td><td>waarom is deze tekst geschreven?</td><td>wie stuurt het, en aan wie</td></tr>
+    <tr><td><strong>Wat moet u doen</strong></td><td>welke actie wordt gevraagd</td><td>naar werkwoorden als "bel", "stuur", "kom"</td></tr>
+    <tr><td><strong>Voorwaarde</strong></td><td>voor wie geldt iets wel of niet</td><td>naar woorden als "alleen", "als", "of hoger"</td></tr>
+  </tbody>
+</table>
+</div>
+
+<p>Dat laatste type kost de meeste punten. Een tekst zegt bijvoorbeeld dat iets alleen geldt
+"vanaf de 4e verdieping". Wie dat woordje mist, kiest het verkeerde antwoord — ook als hij de
+hele tekst goed begreep.</p>
+
+<h3>Probeer een vraag</h3>
+
+<p>Zo werkt zo'n vraag in de praktijk. Lees eerst de vraag, dan het briefje.</p>
+
+<div class="blog-quiz-card">
+  <p class="blog-quiz-q">Op een briefje bij de lift staat: "De lift is kapot. Maandag komt de monteur. Woont u op de 4e verdieping of hoger en kunt u niet traplopen? Bel de beheerder: 020 555 1234." Wat moet u doen als u op de 2e verdieping woont?</p>
+  <div class="blog-quiz-opts">
+    <button type="button" class="blog-quiz-opt"><span class="blog-quiz-letter">A</span><span>De beheerder bellen</span></button>
+    <button type="button" class="blog-quiz-opt"><span class="blog-quiz-letter">B</span><span>Wachten op de monteur op maandag</span></button>
+    <button type="button" class="blog-quiz-opt" data-answer="correct"><span class="blog-quiz-letter">C</span><span>Niets, u gebruikt de trap</span></button>
+  </div>
+  <div class="blog-quiz-ans">Het juiste antwoord is <strong>C</strong>. Het briefje zegt alleen dat je moet bellen als je op de <strong>4e verdieping of hoger</strong> woont &eacute;n niet kunt traplopen. Woon je op de 2e? Dan geldt die regel niet voor jou. Zie je hoe belangrijk dat kleine woordje "of hoger" is? Dat is precies wat dit examen test.</div>
+</div>
+
 <h2 id="tijd">De tijd is het echte examen</h2>
 
 <p>Reken het even uit voor A2: 65 minuten voor de vragen van een compleet oefenexamen komt neer op
@@ -153,11 +188,54 @@ ${docent('"Eerst de vraag, dan de tekst" is de tip die bij mij het meeste versch
   <li><strong>Ontkenningen.</strong> "Wat is <em>niet</em> waar?" Onderstreep dat woord in je hoofd; hier gaan veel punten verloren bij mensen die de tekst prima begrepen.</li>
 </ul>
 
-${note('Op je examendag: neem een geldig identiteitsbewijs mee en wees op tijd. Kom je te laat, dan kun je worden geweigerd, en dan ben je je examengeld kwijt. De regels staan op de site van DUO.')}
+<h2 id="examendag">Op de examendag</h2>
+
+<p>Een paar praktische dingen die in het offici&euml;le examenreglement staan, maar die je zelden
+ergens leest.</p>
+
+${fact('Je moet 30 minuten voor het examen aanwezig zijn. Je krijgt 15 minuten uitleg voordat het examen begint. Zonder geldig legitimatiebewijs mag je geen examen doen.', 'DUO Examenreglement', SRC_REGLEMENT, CHECKED_POST)}
+
+<p>Die 15 minuten uitleg zijn <strong>extra</strong> — ze gaan niet van je 65 minuten af. Gebruik ze
+om rustig te worden en de knoppen te bekijken.</p>
+
+<ul>
+  <li>Neem een geldig legitimatiebewijs mee. Is het beschadigd of verlopen, dan mag je niet meedoen.</li>
+  <li>Je telefoon, tas en horloge gaan in een kluisje. Een woordenboek mag dus ook niet.</li>
+  <li>Naar de wc mag, maar alleen met begeleiding, en je moet het eerst vragen.</li>
+  <li>Het examen is geheim: geen foto's, geen vragen overschrijven. Dat is examenfraude.</li>
+  <li>Je kunt je examendatum, tijd of locatie tot <strong>7 dagen</strong> vooraf veranderen.</li>
+</ul>
+
+${note('Kom je te laat, dan kun je worden geweigerd, en dan ben je je examengeld kwijt. De regels staan op de site van DUO.')}
 
 ${fact('Voor het inburgeringsexamen gelden vaste regels over onder meer identificatie en te laat komen; DUO publiceert die in de regels voor het examen en in het Examenreglement.', 'inburgeren.nl — Regels voor het examen', SRC_REGELS, CHECKED)}
 
+<h2 id="slagen">Hoeveel moet je goed hebben?</h2>
+
+<p>Kort antwoord: <strong>dat weet niemand buiten DUO</strong>.</p>
+
+<p>Je leest online vaak een exact aantal — zoveel van de 25 goed. Die getallen staan op geen enkele
+offici&euml;le pagina, en ze spreken elkaar tegen. Wat er w&eacute;l offici&euml;el staat, is dit:</p>
+
+${fact('"De zak-slaaggrens wordt uitgedrukt in een cesuur, vastgesteld door de Minister." DUO publiceert die grens niet.', 'DUO Examenreglement, artikel 10 lid 5', SRC_REGLEMENT, CHECKED_POST)}
+
+<p>Je krijgt een cijfer per onderdeel, plus "geslaagd" of "niet geslaagd". In de samenvatting van
+het reglement staat: "Niet alle antwoorden hoeven goed te zijn om te slagen." Lezen wordt
+automatisch nagekeken, net als Luisteren en KNM; er kijkt geen mens naar je antwoorden.</p>
+
+<p>Praktisch betekent dat: mik niet op een minimum. Oefen tot je de grote meerderheid goed hebt.
+Dan zit je veilig, wat de cesuur ook is.</p>
+
 <h2 id="oefenen">Hoe je oefent</h2>
+
+<p>Begin bij DUO zelf. Er zijn <strong>4 gratis oefenexamens Lezen A2</strong>, en dat is precies
+het echte format en de echte klok. Doe ze op een computer, niet op je telefoon: het echte examen
+is op een groot scherm, en DUO adviseert dat zelf.</p>
+
+${fact('DUO biedt 4 online oefenexamens Lezen A2 aan. Voor Luisteren en Spreken zijn het er 3, voor Schrijven 3 (als pdf). DUO adviseert de oefenexamens op een computer te doen.', 'inburgeren.nl — Oefenen', SRC_OEFENEN, CHECKED_POST)}
+
+<p>Vier examens is een goed begin, maar te weinig om een format echt in je vingers te krijgen.
+Daarna werkt dit:</p>
 
 <div class="guide-steps">
   <div class="guide-step"><span class="guide-step-num">1</span><div class="guide-step-body">
@@ -189,6 +267,7 @@ ${inlineCta('Oefen Lezen met echte examenvragen', 'Tien vragen, met uitleg na el
   <li>Lees eerst de vraag, dan de tekst.</li>
   <li>Sla een vraag over en kom terug; vul altijd iets in.</li>
   <li>Let op ontkenningen en op opties die er "bijna" staan.</li>
+  <li>De zak-slaaggrens publiceert DUO niet.</li>
 </ul>`,
 
   faq: [
@@ -209,13 +288,21 @@ ${inlineCta('Oefen Lezen met echte examenvragen', 'Tien vragen, met uitleg na el
       a: 'Niet stoppen. Lees de zin en de zin erna af; heel vaak wordt de betekenis dan duidelijk uit de context. Het examen test of je de tekst begrijpt, niet of je elk woord kent. Blijf je hangen, sla de vraag dan over en kom later terug.',
     },
     {
+      q: 'Hoeveel vragen moet ik goed hebben bij Lezen?',
+      a: 'DUO maakt dat niet bekend. In het Examenreglement staat dat de zak-slaaggrens een cesuur is die de minister vaststelt. De exacte aantallen die je online tegenkomt, komen niet van DUO. Oefen tot je de grote meerderheid goed hebt.',
+    },
+    {
+      q: 'Wordt het examen Lezen door een mens nagekeken?',
+      a: 'Nee. Lezen wordt automatisch nagekeken, net als Luisteren en KNM. Alleen Schrijven en Spreken worden (deels) door gecertificeerde beoordelaars bekeken.',
+    },
+    {
       q: 'Mag ik een woordenboek meenemen naar het examen?',
       a: 'Nee. Bij het inburgeringsexamen mag je geen eigen hulpmiddelen gebruiken. Neem wel een geldig identiteitsbewijs mee en zorg dat je op tijd bent; te laat komen kan betekenen dat je niet mee mag doen en je examengeld kwijt bent.',
     },
   ],
 
   related: ['taalexamens-a2-b1', 'luisteren-examen', 'schrijven-examen'],
-  relatedPosts: ['lezen-examen-inburgering-a2', 'inburgeringsexamen-a2-uitleg'],
+  relatedPosts: ['inburgeringsexamen-zakken-herkansen', 'taalniveaus-a1-a2-b1-nederlands'],
 
   ctaTitle: 'Oefen het onderdeel Lezen',
   ctaDesc: 'Gratis proefexamen van tien vragen, met uitleg na elk antwoord. Zonder account.',

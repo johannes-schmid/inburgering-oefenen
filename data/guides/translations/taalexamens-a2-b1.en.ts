@@ -12,7 +12,7 @@
  */
 import type { GuideLocale } from '../types';
 import { I_BOOK, I_CHECK, I_HEADPHONES, I_MIC, I_PEN, I_X, docentIn, factIn, factTwoIn, inlineCta, note } from '../kit';
-import { CHECKED, SRC_KOSTEN, SRC_OEFENEN, SRC_PLAATSEN, SRC_REGLEMENT, SRC_ROUTES, SRC_TAALEXAMENS, SRC_UITSLAG, card } from '../taalexamens-a2-b1';
+import { CHECKED, CHECKED_POST, SRC_KOSTEN, SRC_OEFENEN, SRC_PLAATSEN, SRC_REGLEMENT, SRC_ROUTES, SRC_TAALEXAMENS, SRC_UITSLAG, card, SRC_WET } from '../taalexamens-a2-b1';
 
 const translation: GuideLocale = {
   title: 'The inburgering exam: the A2 and B1 language exams explained',
@@ -59,12 +59,12 @@ number.</p>
 
 <div class="article-table-wrap">
 <table>
-  <thead><tr><th>Part (A2)</th><th>In DUO's practice exams</th><th>Duration</th></tr></thead>
+  <thead><tr><th>Part (A2)</th><th>In DUO's practice exams</th><th>Duration</th><th>Format</th><th>Marked by</th></tr></thead>
   <tbody>
-    <tr><td><strong>Lezen</strong></td><td>25 questions</td><td>65 minutes</td></tr>
-    <tr><td><strong>Luisteren</strong></td><td>25 questions</td><td>45 minutes</td></tr>
-    <tr><td><strong>Schrijven</strong></td><td>4 assignments</td><td>40 minutes</td></tr>
-    <tr><td><strong>Spreken</strong></td><td>16 questions</td><td>35 minutes</td></tr>
+    <tr><td><strong>Lezen</strong></td><td>25 questions</td><td>65 minutes</td><td>computer</td><td>automated</td></tr>
+    <tr><td><strong>Luisteren</strong></td><td>25 questions</td><td>45 minutes</td><td>computer</td><td>automated</td></tr>
+    <tr><td><strong>Schrijven</strong></td><td>4 assignments</td><td>40 minutes</td><td><strong>pen and paper</strong></td><td>humans</td></tr>
+    <tr><td><strong>Spreken</strong></td><td>16 questions</td><td>35 minutes</td><td>computer</td><td>partly humans</td></tr>
   </tbody>
 </table>
 </div>
@@ -74,11 +74,17 @@ is what you can check, and it is enough to base your preparation on.</p>
 
 ${factIn('en', 'DUO makes practice exams available that anyone can take without logging in. The start screens of the A2 practice exams show the number of questions: 25 for Lezen, 25 for Luisteren and 16 for Spreken; the Schrijven practice exam contains 4 assignments.', 'inburgeren.nl — Oefenen', SRC_OEFENEN, CHECKED)}
 
+<p>The marking differs per part too. Lezen and Luisteren are marked by computer. Schrijven is
+<strong>marked by people</strong>: an assessor checks whether your message is clear, and you do not
+need to write flawlessly. Spreken sits in between.</p>
+
+${factIn('en', 'Lezen, Luisteren and KNM are marked automatically. Schrijven is marked by certified assessors. Spreken is partly automated and partly assessor-marked.', 'DUO Examenreglement, artikel 10', SRC_REGLEMENT, CHECKED_POST)}
+
 <h2 id="a2-of-b1">A2 or B1: which level do I have to take?</h2>
 
 <p>You do not decide that yourself. Under the Wet inburgering 2021, your <strong>gemeente
 (municipality)</strong> chooses a leerroute (learning route) after the brede intake and the
-leerbaarheidstoets, and that route determines your level.</p>
+leerbaarheidstoets, and that route determines your level. It is recorded in your <strong>persoonlijk plan inburgering en participatie (PIP)</strong>; if you do not know, look in Mijn Inburgering.</p>
 
 <div class="guide-steps">
   <div class="guide-step"><span class="guide-step-num">1</span><div class="guide-step-body">
@@ -135,6 +141,24 @@ ${factTwoIn('en', 'The gemeente decides on the basis of the brede intake which l
 
 ${docentIn('en', 'The difference between A2 and B1 is not mainly more words. It is that at B1 you have to be able to give an opinion and explain it. At A2 you say "I do not think it is good"; at B1 you say why, with an example, in two or three sentences in a row. You practise that too little if you only learn words.')}
 
+
+${note('The Wet inburgering 2021 took effect on <strong>1 January 2022</strong> — the law is named 2021 but applies from 2022. Many websites get this wrong. If you fell under the old Wet inburgering 2013, you take all language exams at A2.')}
+
+${factIn('en', '"De nieuwe Wet Inburgering is in werking getreden op 1 januari 2022." (The new Wet inburgering came into force on 1 January 2022.)', 'Rijksoverheid — Nieuwe Wet inburgering', SRC_WET, CHECKED_POST)}
+
+<h2 id="moeilijk">How hard is the exam?</h2>
+
+<p>The A2 inburgeringsexamen is <strong>not an intelligence test</strong>. It is a format. And a
+format can be learned.</p>
+
+<p>A2 means: you can talk about everyday things. Your work, your family, shopping, making an
+appointment at the doctor. You do not need to understand a newspaper article about politics.</p>
+
+<p>Most people who fail do not fail because their Dutch is too weak. They fail because they did not
+know the exam. They did not know Schrijven is on paper. They had never practised against a clock.
+They did not know you cannot rewind in Luisteren. That is why practising with the real format
+matters more than learning another hundred words.</p>
+
 <h2 id="wanneer-geslaagd">When have you passed?</h2>
 
 <p>DUO does not publish that. The Examenreglement says that the line between failing and passing is
@@ -144,6 +168,11 @@ correct answers.</p>
 <p>Sites that do give such a number cannot support it. That is why we do not give one. What you can
 do: practise until you feel comfortable in each part within the time, instead of aiming at a line
 that nobody knows.</p>
+
+<p>What the plain-language summary of the regulations does say is one line that reassures many
+people: <strong>"Niet alle antwoorden hoeven goed te zijn om te slagen."</strong> (Not all answers
+need to be correct in order to pass.) You get a grade per part, plus "geslaagd" or "niet
+geslaagd".</p>
 
 ${factIn('en', 'The Examenreglement inburgering states that the line between failing and passing is formed by a cesuur, set by the Minister. DUO does not publish a concrete percentage or number of correct answers.', 'DUO — Examenreglement inburgering, artikel 10', SRC_REGLEMENT, CHECKED)}
 
@@ -164,6 +193,19 @@ ${note('DUO reported on 31 July 2026 that the marking of <strong>Spreken A2 and 
 ${factTwoIn('en', 'The result of the A2 language exams and the kennisexamens comes within 8 weeks. The exams are taken at six locations: Amsterdam, Eindhoven, Rijswijk, Rotterdam, Utrecht and Zwolle.', [['inburgeren.nl — Uitslag examen', SRC_UITSLAG], ['inburgeren.nl — Examenplaatsen', SRC_PLAATSEN]], CHECKED)}
 
 ${factIn('en', 'For the inburgeringsexamen you pay per part; at the moment that is €50 per exam. The amounts are indexed and can change.', 'inburgeren.nl — Inburgeren betalen', SRC_KOSTEN, CHECKED)}
+
+<h2 id="examendag">On exam day</h2>
+
+<p>A few practical things almost nobody writes down, but which are in the official regulations.</p>
+
+${factIn('en', 'You get 15 minutes of explanation before each exam begins. You must be present 30 minutes beforehand. Without valid ID you may not sit the exam.', 'DUO Examenreglement', SRC_REGLEMENT, CHECKED_POST)}
+
+<ul>
+  <li>Those 15 minutes of explanation are extra; they do not come off your exam time.</li>
+  <li>Your phone, bag and watch go in a locker. The exam is confidential: no photos, no copying questions.</li>
+  <li>You can change your exam date, time or location up to <strong>7 days</strong> beforehand.</li>
+  <li>Not showing up means paying again.</li>
+</ul>
 
 <h2 id="volgorde">In which order do you take them?</h2>
 
@@ -196,6 +238,17 @@ ${inlineCta('Calculate your own end dates', 'The timeline maker works out for ea
 <p>It is different for each part. That is why every part has its own guide on this site: what
 exactly you are given, where the time goes, and where most people stumble.</p>
 
+<p>Start with DUO itself. There are free practice exams: <strong>4 for Lezen, 3 for Luisteren, 3
+for Spreken and 3 for Schrijven</strong>, and they are exactly the real format. Do all of them. Two
+practical tips from DUO: take them on a <strong>computer</strong>, not on your phone, and DUO’s
+Spreken practice exam <strong>does not work in Safari</strong>.</p>
+
+${factIn('en', 'In DUO’s official practice exams: Lezen 25 questions (4 exams), Luisteren 25 questions (3 exams), Spreken 16 questions (3 exams), Schrijven 4 tasks (3 exams). DUO advises taking the practice exams on a computer; the Spreken practice exam does not work in Safari.', 'inburgeren.nl — Oefenen', SRC_OEFENEN, CHECKED_POST)}
+
+<p>Three or four practice exams is not much if you want to learn a format. That is why this site has
+<strong>10 per part</strong>, drafted with the help of AI and fully checked by a certified NT2
+teacher.</p>
+
 ${docentIn('en', 'With my students, the biggest difference between passing and failing is rarely the level. It is the time. They do know the words, but they have never practised with a clock. Take a complete practice exam with a timer at least three times before you take the real one.')}
 `,
 
@@ -210,6 +263,14 @@ ${docentIn('en', 'With my students, the biggest difference between passing and f
 </ul>`,
 
   faq: [
+    {
+      q: 'Do I take the exam on a computer?',
+      a: 'Lezen, Luisteren and Spreken you take on a computer. Schrijven you do with pen and paper. Many people do not know that last point and get a shock on exam day.',
+    },
+    {
+      q: 'Which part is the hardest?',
+      a: 'That differs per person. Luisteren is underestimated most often: in the practice exams you get 25 questions in 45 minutes and you cannot rewind a fragment. With Lezen you have more time per question, but you do have to find the right information quickly.',
+    },
   {
     q: 'How many questions does the inburgeringsexamen A2 have?',
     a: 'DUO does not publish that on its information pages. But DUO\'s own practice exams are public, and they show the number: 25 questions for Lezen, 25 for Luisteren, 16 for Spreken and 4 assignments for Schrijven. Use that as your guide, but do not call it an official norm.',
