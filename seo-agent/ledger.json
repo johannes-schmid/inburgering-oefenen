@@ -84,6 +84,18 @@
       "source": "commit b77d3d4",
       "window_end": "2026-12-10",
       "verdict": null
+    },
+    {
+      "id": "2026-11-03-knm-gidsen-noindex",
+      "date": "2026-11-03",
+      "site": "inburgering",
+      "page": "/nl/knm/* (9 kennisgidsen, alle talen)",
+      "change": "De negen KNM-gidsen op noindex gezet (NOINDEX_SECTIONS in data/guides/helpers.ts); uit sitemap en hreflang, pagina's en hub blijven live",
+      "hypothesis": "Geen verlies: de pagina's hadden nul vertoningen. Google ziet een duidelijker verdeling — deze site de taalexamens, knmoefenen.nl KNM — en knmoefenen.nl verliest geen KNM-posities aan een duplicaat",
+      "metric": "impressions:/nl/knm/* (verwacht 0) + knmoefenen.nl impressions:site",
+      "source": "besluit eigenaar 2026-11-03, voorstel weekrun",
+      "window_end": "2026-12-15",
+      "verdict": null
     }
   ]
 }

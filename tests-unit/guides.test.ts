@@ -15,6 +15,9 @@ import {
   getGuideLocale,
   hasTranslation,
   relatedGuides,
+  indexableLocales,
+  isIndexable,
+  NOINDEX_SECTIONS,
 } from '@/data/guides/helpers';
 
 describe('the guide registry', () => {
@@ -85,6 +88,25 @@ describe('the review gate', () => {
     for (const section of ['inburgering', 'knm', 'taalexamens'] as const) {
       expect(GUIDES.filter(g => g.section === section && g.pillar).length).toBeLessThanOrEqual(1);
     }
+  });
+});
+
+describe('the noindex sections', () => {
+  /* KNM is noindex until the merge with knmoefenen.nl (owner's decision, 2026-11-03). The pages
+     stay live and listed on the hub; what must agree is robots, hreflang and the sitemap, and all
+     three read `indexableLocales()`. A KNM guide claiming a single locale would reopen the split. */
+  it('keeps KNM out of the index while the two sites coexist', () => {
+    expect(NOINDEX_SECTIONS).toContain('knm');
+    for (const g of GUIDES.filter(g => g.section === 'knm')) {
+      expect(isIndexable(g)).toBe(false);
+      expect(indexableLocales(g)).toEqual([]);
+    }
+  });
+
+  it('still indexes a reviewed guide outside those sections', () => {
+    const others = publishedGuides().filter(g => isIndexable(g));
+    expect(others.length).toBeGreaterThan(0);
+    for (const g of others) expect(indexableLocales(g)).toContain('nl');
   });
 });
 
