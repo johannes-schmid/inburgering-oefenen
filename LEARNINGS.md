@@ -5931,3 +5931,14 @@ oplopende `top` per index doet het, en de `prefers-reduced-motion`-uitweg is dan
 **Outcome:** SUCCESS
 **What worked / went wrong:** De negen KNM-gidsen hadden in Search Console nul vertoningen; knmoefenen.nl dekt KNM en Google kiest dat domein. Eén lijst, drie lezers — robots, hreflang en sitemap konden niet meer uiteenlopen. De pagina's en de hub blijven live voor lezers; `llms.txt` is bewust ongemoeid gelaten (het besluit gaat over Google, niet over de inhoud).
 **Lesson:** Een noindex-besluit hoort op één plek te staan die robots, hreflang én sitemap samen lezen; een `index: false` alleen op de pagina laat de sitemap en de hreflang een noindex-URL adverteren, en dat is de tegenspraak die Google het hele cluster laat afwaarderen.
+## 2026-11-03 — Social proof van de homepage gehaald
+**Changed:** `app/[locale]/(main)/page.tsx` — de bewijsstrook (Trustpilot 4,4 · 1.000+ · docent) en de sectie met Trustpilot-reviews verwijderd; `notdo_1` op `/redactie` in nl/en/ar aangepast, want die zin verwees naar reviews op de homepage.
+**Outcome:** SUCCESS
+**What worked / went wrong:** tsc, lint en unit tests groen; screenshots mobiel + desktop gecontroleerd. De Trustpilot-score en de reviews waren van knmoefenen.nl, niet van deze site — eigenaar wil ze niet op de landingspagina.
+**Lesson:** als een blok van de homepage verdwijnt, grep de hele message-bundel op pagina's die ernaar verwijzen (`/redactie` deed dat).
+
+## 2026-11-03 — Stappenplan herschreven voor "wat is inburgeren" (concept, PR)
+**Changed:** `data/guides/inburgering-stappenplan.ts` (NL-tekst nieuw: voorbeeldopdracht Schrijven A2 met goed antwoord, één bericht op A1/A2/B1, koppen "Hoe lang mag je doen over inburgeren?" en "Wat kost inburgeren?", de wie-moet-inburgeren-tabel weg naar een link; EN/AR meevertaald), `seo-agent/briefs/2026-11-03-stappenplan-herschrijving.md`, rij in `seo-agent/ledger.json`. Als PR, niet op main.
+**Outcome:** SUCCESS lokaal (tsc, 775 unit-tests, next build, screenshots nl/ar 390 en 1440)
+**What worked / went wrong:** Alleen de Nederlandse tekst herschrijven kan niet: `guide-translations.test.ts` en `inburgering-route.test.ts` eisen dezelfde `<h2 id>`-reeks in elke taal, dus EN en AR moesten mee. De Nederlandse voorbeelden in de Arabische tekst stonden RTL ("dat Sara ziek is .1"); een `rowNl()` met `dir="ltr"` lost dat op. Een eerste beschrijving was 162 tekens; de test vangt dat. "Links de opdracht, rechts het antwoord" klopt niet op mobiel, waar de kaarten stapelen.
+**Lesson:** Een gids heeft drie lichamen die structureel aan elkaar vastzitten; een herschrijving is per definitie drievoudig. En Nederlands lesmateriaal in een RTL-pagina krijgt altijd een expliciete `dir="ltr"`.
