@@ -1,7 +1,7 @@
 /**
  * The article-cover glyph sheet.
  *
- * Twenty-three marks on one 96×96 grid, each built from **rectangles, discs and the one permitted
+ * Twenty-six marks on one 96×96 grid, each built from **rectangles, discs and the one permitted
  * triangle** — the same blocks the gable houses and the `CategoryMark`s are made of. That is not a
  * stylistic preference: `docs/design/DESIGN_SYSTEM.md` §7.3 bans illustrations, mascots and
  * line-art imagery outright, so a cover cannot carry a drawing. Headspace's article art is exactly
@@ -36,7 +36,7 @@ import type { ReactNode } from 'react';
 export type CoverGlyph =
   | 'colonnade' | 'briefcase' | 'twopeople' | 'house' | 'cross' | 'globe' | 'scales' | 'books'
   | 'loket' | 'quad' | 'doc' | 'headphones' | 'pen' | 'mic' | 'steps' | 'fork' | 'route'
-  | 'euro' | 'stamp' | 'clock' | 'sign' | 'ladder' | 'cards';
+  | 'euro' | 'stamp' | 'clock' | 'sign' | 'ladder' | 'cards' | 'envelope' | 'graded' | 'passport';
 
 /**
  * Every glyph, drawn into a 96×96 box.
@@ -259,6 +259,38 @@ export const GLYPHS: Record<CoverGlyph, (ink: string, cut: string) => ReactNode>
       <circle cx="70" cy="26" r="16" fill={ink} opacity={0.72} />
       <path d="M14 64 q14 -26 26 -6 q10 16 22 -14" fill="none" stroke={ink} strokeWidth="8" strokeLinecap="round" />
       <rect x="10" y="70" width="76" height="8" rx="3" fill={ink} />
+    </>
+  ),
+  /* De uitslag die per brief komt — de envelop met zijn klep als de ene driehoek, in `cut`.
+     Niet `doc` (een los vel) en niet `clock` (de termijn): het wachten is op een brief. */
+  envelope: (ink, cut) => (
+    <>
+      <rect x="8" y="22" width="80" height="56" rx="5" fill={ink} opacity={0.9} />
+      <path d="M12 26 L48 54 L84 26 Z" fill={cut} opacity={0.5} />
+      <rect x="8" y="82" width="80" height="6" rx="3" fill={ink} opacity={0.45} />
+    </>
+  ),
+  /* Een nagekeken opdracht: het vel met regels, en de schijf van het oordeel er rechtsonder
+     overheen met een vinkje uitgespaard. Niet `stamp` (een vierkant vinkje zonder vel) en niet
+     `doc` (een vel zonder oordeel) — het onderwerp is precies die twee samen. */
+  graded: (ink, cut) => (
+    <>
+      <rect x="10" y="8" width="56" height="74" rx="4" fill={ink} opacity={0.6} />
+      <rect x="20" y="22" width="36" height="6" fill={cut} opacity={0.5} />
+      <rect x="20" y="36" width="36" height="6" fill={cut} opacity={0.4} />
+      <rect x="20" y="50" width="22" height="6" fill={cut} opacity={0.3} />
+      <circle cx="66" cy="66" r="24" fill={ink} />
+      <path d="M55 66 l8 8 l15 -16" fill="none" stroke={cut} strokeWidth="7" strokeLinecap="square" />
+    </>
+  ),
+  /* Het paspoort: naturalisatie en verblijf. Een staand boekje met een uitgespaarde schijf en
+     één regel eronder — geen tekst, geen wapen, alleen de blokken van §7.3. */
+  passport: (ink, cut) => (
+    <>
+      <rect x="22" y="6" width="52" height="84" rx="6" fill={ink} opacity={0.92} />
+      <circle cx="48" cy="40" r="15" fill={cut} opacity={0.55} />
+      <circle cx="48" cy="40" r="8" fill={ink} />
+      <rect x="34" y="66" width="28" height="6" rx="3" fill={cut} opacity={0.5} />
     </>
   ),
 };

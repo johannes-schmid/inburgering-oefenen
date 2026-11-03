@@ -36,6 +36,8 @@ import luisterenExamen from './luisteren-examen';
 import schrijvenExamen from './schrijven-examen';
 import sprekenExamen from './spreken-examen';
 import b1Examen from './b1-examen';
+import schrijvenExamenVoorbeelden from './schrijven-examen-voorbeelden';
+import uitslagSprekenSchrijvenA2 from './uitslag-spreken-schrijven-a2';
 
 /* The remaining Inburgering spokes. Each must also be added to a fase in `phases.ts`, in the same
    commit — `tests-unit/inburgering-route.test.ts` requires every published inburgering guide to
@@ -44,6 +46,7 @@ import vrijstellingEnOntheffing from './vrijstelling-en-ontheffing';
 import boeteEnTermijn from './boete-en-termijn';
 import pvtMapEnOna from './pvt-map-en-ona';
 import onaExamen from './ona-examen';
+import taaleisNaturalisatie from './taaleis-naturalisatie';
 
 /**
  * The Dutch guides, before their translations are attached.
@@ -76,8 +79,11 @@ const SOURCES: Guide[] = [
   schrijvenExamen,
   sprekenExamen,
   b1Examen,
+  schrijvenExamenVoorbeelden,
+  uitslagSprekenSchrijvenA2,
 
   vrijstellingEnOntheffing,
+  taaleisNaturalisatie,
   boeteEnTermijn,
   pvtMapEnOna,
   onaExamen,

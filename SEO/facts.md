@@ -454,3 +454,40 @@ https://www.staatsexamensnt2.nl/voorbereiden/extra-tijd-bij-aangepast-examen. Ge
 
 ⚠️ De duur van Spreken (DUO noemt circa 25 minuten; "35 minuten" is het aangepaste examen) is in
 onze examens 30 minuten. Noem geen DUO-duur voor Spreken B1 zonder deze bron erbij.
+
+## 14. Uitslag, herkansen en diploma bij vertraging — VERIFIED 2026-11-03
+
+Gebruikt in `data/guides/uitslag-spreken-schrijven-a2.ts` en `schrijven-examen-voorbeelden.ts`.
+Alle citaten letterlijk, pagina's opgehaald 03-11-2026.
+
+- **16 weken** — https://www.inburgeren.nl/nieuwsberichten/artikel.jsp?cid=tcm:94-243309-16
+  (31-07-2026): *"DUO doet nu maximaal 16 weken over het nakijken van de examens. Uw uitslag krijgt
+  u dus binnen deze 16 weken."* · *"Iemand die op dezelfde dag als u examen doet, kan de uitslag
+  eerder of later krijgen."* Geen nieuwer bericht tot en met 03-11-2026. De vaste uitslagpagina en
+  het Examenreglement (nov. 2025, art. 16 lid 3) zeggen nog "binnen 8 weken" — dat is de normale
+  termijn, niet in tegenspraak met het bericht.
+- **Verlenging, automatisch** — zelfde bericht: *"Dan geeft DUO u 6 maanden verlenging. U hoeft
+  hiervoor niets te doen. De verlenging gaat vanzelf. DUO stuurt u een brief als u verlenging
+  krijgt."* ⚠️ Niet verwarren met het bericht van 18-05-2026 (tcm:94-240376-16, te weinig
+  examenplaatsen): maatwerk, alleen per brief — *"Hebt u geen brief gekregen? Dan krijgt u geen
+  extra tijd"*.
+- **Opnieuw aanmelden terwijl je wacht (A2)** — ❌ NIET GEVONDEN in Examenreglement of op
+  aanmelden-examen.jsp. "De hoogste uitslag telt" komt alleen van Reddit. Niet als feit publiceren.
+  Staatsexamen NT2 wél expliciet: *"U kunt zich niet aanmelden voor een onderdeel waarvoor u al
+  ingeschreven staat of nog een uitslag moet krijgen."* (https://duo.nl/particulier/staatsexamen-nt2/aanmelden.jsp)
+- **Annuleren** — Examenreglement: restitutie bij annuleren *"uiterlijk tot 7 dagen voor de
+  examendatum"*; verwijderen kan tot één dag ervoor, dan zonder terugbetaling.
+- **Diploma** — https://www.inburgeren.nl/nieuwsberichten/artikel.jsp?cid=tcm:94-235392-16
+  (29-01-2026): *"Wacht tot u die brief hebt gekregen. Daarna kunt u uw diploma aanvragen in Mijn
+  Inburgering."*; IND en gemeenten accepteren het digitale diploma, *"bijvoorbeeld als u wilt
+  naturaliseren"*. https://www.inburgeren.nl/examen-doen/diploma.jsp: *"Een print is niet
+  geldig."* · papieren diploma *"binnen 8 weken thuisgestuurd"*. ❌ Niet gevonden: hoe snel het
+  digitale diploma er is na de laatste uitslag; of het digitale diploma geldt voor verblijf
+  onbepaalde tijd (alleen naturalisatie wordt genoemd).
+- **Klacht** — https://www.inburgeren.nl/niet-tevreden/klacht.jsp: antwoord *"binnen 6 weken"*.
+  Dwangsom (duo-is-te-laat.jsp) gaat alleen over **aanvragen**; niet beloven voor een uitslag.
+  Inzage kan niet (Examenreglement art. 14 lid 3); DUO biedt geen bezwaar tegen een cijfer.
+- **Oefenexamens Schrijven A2** — de drie pdf's op https://www.inburgeren.nl/examen-doen/oefenen.jsp
+  bevatten elk 4 opdrachten en **geen voorbeeldantwoord en geen beoordelingsschema** (alle drie
+  doorzocht 03-11-2026). Reddit beweert dat DUO een "officiële rubric" voor Schrijven publiceert:
+  niet gevonden.

@@ -54,6 +54,9 @@ keep the slug identical across locales (see the note in `components/Nav.tsx`).
 
 ## Claimed but not yet written
 Reserved so a future session doesn't target them from a second angle:
+- `schrijven examen inburgering voorbeeld` — `/taalexamens/schrijven-examen-voorbeelden` (concept 2026-11-03, wacht op review)
+- `uitslag spreken a2` / `uitslag inburgeringsexamen` — `/taalexamens/uitslag-spreken-schrijven-a2` (concept 2026-11-03)
+- `taaleis naturalisatie` — `/inburgering/taaleis-naturalisatie` (concept 2026-11-03)
 - `schrijven examen inburgering` — nog vrij; de tips-variant is geclaimd door `veelgemaakte-fouten-schrijven-examen-a2`
 - `spreken examen inburgering` — eigenaar is `/taalexamens/spreken-examen` (de tips-post is er op 2026-11-03 in opgegaan)
 - `wet inburgering 2021` — blocked on reading the 2025-10-21 statute amendment

@@ -32,6 +32,7 @@ const GUIDE_SLUGS: Record<string, Translated> = {
   'inburgering-stappenplan':     { en: 'integration-step-by-step',       ar: 'خطوات-الاندماج' },
   'moet-ik-inburgeren':          { en: 'do-i-have-to-integrate',         ar: 'هل-يجب-علي-الاندماج' },
   'ona-examen':                  { en: 'ona-exam',                       ar: 'امتحان-ona' },
+  'taaleis-naturalisatie':       { en: 'naturalisation-language-requirement', ar: 'شرط-اللغة-للتجنس' },
   'pvt-map-en-ona':              { en: 'pvt-map-and-ona',                ar: 'pvt-map-و-ona' },
   'vrijstelling-en-ontheffing':  { en: 'exemption-and-waiver',           ar: 'الإعفاء-والاستثناء' },
   'wat-kost-inburgeren':         { en: 'what-does-integration-cost',     ar: 'تكلفة-الاندماج' },
@@ -53,6 +54,8 @@ const GUIDE_SLUGS: Record<string, Translated> = {
   'lezen-examen':        { en: 'reading-exam',          ar: 'امتحان-القراءة' },
   'luisteren-examen':    { en: 'listening-exam',        ar: 'امتحان-الاستماع' },
   'schrijven-examen':    { en: 'writing-exam',          ar: 'امتحان-الكتابة' },
+  'schrijven-examen-voorbeelden': { en: 'writing-exam-examples', ar: 'أمثلة-امتحان-الكتابة' },
+  'uitslag-spreken-schrijven-a2': { en: 'speaking-writing-a2-results', ar: 'نتيجة-التحدث-والكتابة-a2' },
   'spreken-examen':      { en: 'speaking-exam',         ar: 'امتحان-التحدث' },
   'taalexamens-a2-b1':   { en: 'language-exams-a2-b1',  ar: 'امتحانات-اللغة-a2-b1' },
 };
