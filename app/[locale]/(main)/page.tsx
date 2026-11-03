@@ -1,14 +1,12 @@
 import type { Metadata } from 'next';
 import { getTranslations, setRequestLocale } from 'next-intl/server';
-import { ArrowRight, ArrowUpRight, Check, Lock, Play } from 'lucide-react';
+import { ArrowRight, Check, Lock, Play } from 'lucide-react';
 import { routing } from '@/i18n/routing';
 import { DEFAULT_LEVEL, SKILLS, getFormat, KNM } from '@/data/skills';
 import { getFreePractice, optionKeys, optionText } from '@/data/free-practice';
 import { ONA_CARDS } from '@/data/ona/cards';
 import { BUNDLE_PRICE_CENTS, MODULE_PRICE_CENTS, euro } from '@/lib/pricing';
-import { REVIEWS } from '@/data/reviews';
 import JsonLd from '@/components/JsonLd';
-import TrustpilotScore from '@/components/site/TrustpilotScore';
 import Field from '@/components/glas/Field';
 import { glasButton } from '@/components/glas/Button';
 import CategoryMark from '@/components/horizon/CategoryMark';
@@ -138,7 +136,6 @@ export default async function HomePage({ params }: Props) {
   };
 
 
-  const reviewDate = new Intl.DateTimeFormat(locale === 'ar' ? 'ar' : locale === 'en' ? 'en-GB' : 'nl-NL', { day: 'numeric', month: 'short', year: 'numeric' });
 
   const faqs = [1, 2, 3, 4, 5, 6].map(n => ({ question: tHome(`faq_q${n}`), answer: tHome(`faq_a${n}`) }));
 
@@ -248,44 +245,6 @@ export default async function HomePage({ params }: Props) {
           </div>
         </Field>
 
-        {/* ── HET BEWIJS ── dezelfde kaart als op de huidige homepage: de Trustpilot-score is van
-            knmoefenen.nl en dat staat erbij; 1.000+ is de opgave van de docent zelf. */}
-        <section aria-labelledby="hb-proof" className="g-wrap g-hb-proof">
-          <h2 id="hb-proof" className="g-sr">{tHome('proof_line')}</h2>
-          <div className="g-hb-proof-row g-glass g-glass-strong">
-            <div className="g-hb-proof-item">
-              <span className="g-hb-proof-num g-tnum">4,4</span>
-              <div className="min-w-0">
-                <TrustpilotScore score={4.4} compact />
-                <p>
-                  {tHome('proof_trustpilot_label')}{' '}
-                  <a href="https://nl.trustpilot.com/review/knmoefenen.nl" target="_blank" rel="noopener noreferrer" className="g-ilink inline-flex items-center gap-0.5 whitespace-nowrap">
-                    {tHome('proof_source')}
-                    <ArrowUpRight className="size-3 rtl-flip" aria-hidden="true" />
-                  </a>
-                </p>
-              </div>
-            </div>
-            <div className="g-hb-proof-item">
-              <span className="g-hb-proof-num g-tnum">1.000+</span>
-              <p>{tHome('proof_students_label')}</p>
-            </div>
-            <div className="g-hb-proof-item">
-              <img src="/images/amber-van-der-zalm-264.webp" alt="" width={44} height={44} className="g-hb-proof-face" />
-              <div className="min-w-0">
-                <b>{tHome('teacher_name')}</b>
-                <p>
-                  {tHome('proof_teacher_role')}{' · '}
-                  <Link href="/docent" className="g-ilink inline-flex items-center gap-0.5 whitespace-nowrap">
-                    {tHome('proof_teacher_link')}
-                    <ArrowRight className="size-3 rtl-flip" aria-hidden="true" />
-                  </Link>
-                </p>
-              </div>
-            </div>
-          </div>
-        </section>
-
         {/* ── DE TRACKBAND ── hetzelfde blok als op de huidige homepage, op dezelfde plek. */}
         <HomeTracks locale={locale} centered />
 
@@ -390,32 +349,6 @@ export default async function HomePage({ params }: Props) {
                 </Field>
               </li>
             </ul>
-          </div>
-        </section>
-
-        {/* ── STEMMEN ── echte Trustpilot-reviews van knmoefenen.nl, letterlijk (data/reviews.ts). */}
-        <section aria-labelledby="hb-reviews" className="g-sec">
-          <div className="g-wrap">
-            <h2 id="hb-reviews" className="g-hb-h2 g-hb-h2-start">{tHome('reviews_heading')}</h2>
-            <div className="g-reviews g-hb-reviews">
-              {REVIEWS.map(review => (
-                <figure key={review.name} className="g-review">
-                  <div className="g-stars" aria-hidden="true"><i /><i /><i /><i /><i /></div>
-                  <blockquote lang={review.lang}>{`“${review.text}”`}</blockquote>
-                  <figcaption>
-                    <b>{review.name}</b>
-                    Trustpilot · <time dateTime={review.date}>{reviewDate.format(new Date(review.date))}</time>
-                  </figcaption>
-                </figure>
-              ))}
-            </div>
-            <p className="g-hb-reviews-src">
-              {tHome('reviews_source')}{' '}
-              <a href="https://nl.trustpilot.com/review/knmoefenen.nl" target="_blank" rel="noopener noreferrer" className="g-ilink inline-flex items-center gap-0.5 whitespace-nowrap">
-                {tHome('reviews_source_link')}
-                <ArrowUpRight className="size-3 rtl-flip" aria-hidden="true" />
-              </a>
-            </p>
           </div>
         </section>
 

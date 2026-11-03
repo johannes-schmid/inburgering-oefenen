@@ -468,6 +468,10 @@
   /* Sectieritme van deutschtest üben (`py-24 sm:py-32`): 96px, vanaf 640px 128px. */
   .g-home .g-sec { padding-block: 96px; }
   @media (min-width: 640px) { .g-home .g-sec { padding-block: 128px; } }
+  /* De trackband volgt direct op de hero: zonder de bewijsstrook ertussen (weg sinds 03-11) is de
+     volle sectieruimte erboven een gat. */
+  .g-home #onderdelen.g-sec { padding-top: 24px; }
+  @media (min-width: 640px) { .g-home #onderdelen.g-sec { padding-top: 32px; } }
 
   /* Dezelfde overgang voor de paginakop van elke andere publieke pagina (`PageField`, de kop van
      gidsen en hubs). Daar is de kop korter, dus vervaagt de onderste helft in plaats van 260px. */
