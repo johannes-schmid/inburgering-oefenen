@@ -190,7 +190,8 @@
         "/nl/blog/luisteren-examen-inburgering-a2"
       ],
       "source": "seo-agent/pages.json",
-      "status": "open"
+      "status": "done",
+      "done": "2026-11-03"
     },
     {
       "id": "2026-10-26-amber-stappenplan",

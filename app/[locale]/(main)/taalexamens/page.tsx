@@ -4,9 +4,9 @@
  * M1 deliberately left this section out of the menu because its per-onderdeel guides are M4 work
  * and an empty section is thin content twice over. It exists now because the owner asked for
  * `docs/MILESTONES.html` §3's structure (2026-08-20) **and** because the section turned out not to
- * be empty: `lezen-examen-inburgering-a2` and `luisteren-examen-inburgering-a2` already exist as
- * blog posts, so two of the four onderdeel guides are effectively written. `GuideHub`'s
- * `HUB_POSTS.taalexamens` surfaces them; M4 links them rather than writing competing pages.
+ * be empty: the Lezen and Luisteren blog posts already existed, so two of the four onderdeel
+ * guides were effectively written. M4 wrote the guides anyway; on 2026-11-03 the four overlapping
+ * posts were merged into them and their URLs 301 to the guides (`next.config.ts`).
  *
  * Renders the same `GuideHub` as `/inburgering` and `/knm`, with four orienting cards instead of
  * five — one per onderdeel rather than one per phase.

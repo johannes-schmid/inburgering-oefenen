@@ -252,7 +252,7 @@ bij elk antwoord, geen account nodig.</p>
   ],
 
   related: ['moet-ik-inburgeren', 'welke-wet-en-welke-route', 'inburgering-stappenplan'],
-  relatedPosts: ['inburgeringsexamen-zakken-herkansen', 'inburgeringsexamen-a2-uitleg'],
+  relatedPosts: ['inburgeringsexamen-zakken-herkansen', 'taalniveaus-a1-a2-b1-nederlands'],
 
   ctaTitle: 'Oefen voordat je betaalt',
   ctaDesc: 'Een gratis oefenexamen van tien vragen, met uitleg bij elk antwoord. Geen account nodig.',

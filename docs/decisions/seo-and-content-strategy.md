@@ -318,10 +318,14 @@ conversion from the nav matters, that is the thing to watch.
   translations. It is 7 of the 8 official thema's — "Omgangsvormen, waarden en normen" is missing.
   The owner chose (2026-08-20) to ship the placeholder now and surface the data later, after
   docent review.
-- **`/taalexamens` overlaps two existing blog posts on purpose.**
-  `lezen-examen-inburgering-a2` and `luisteren-examen-inburgering-a2` are two of the four
-  per-onderdeel guides M4 plans. `HUB_POSTS.taalexamens` links them; M4 must not write competing
-  pages. One query, one owning page — the same call M1 made for `taalniveaus-a1-a2-b1-nederlands`.
+- **`/taalexamens` overlapped two existing blog posts on purpose, and that overlap was resolved
+  on 2026-11-03.** `lezen-examen-inburgering-a2` and `luisteren-examen-inburgering-a2` were
+  written before the per-onderdeel guides; once M4 wrote the guides, both pairs — plus
+  `spreken-examen-inburgering-tips` / `spreken-examen` and `inburgeringsexamen-a2-uitleg` /
+  `taalexamens-a2-b1` — answered one intent from two URLs (the SEO agent's
+  `2026-10-26-consolidate-blog`). Everything unique moved into the guide, the posts were deleted
+  and their URLs 301 to the guide in `next.config.ts`. One query, one owning page — the same call
+  M1 made for `taalniveaus-a1-a2-b1-nederlands`.
 
 ### M2c — de Tijdlijn Builder is echt (2026-08-20)
 

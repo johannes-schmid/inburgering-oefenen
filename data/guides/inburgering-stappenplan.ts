@@ -183,7 +183,7 @@ ${fact('Het examen Schrijven A2 maak je met pen en papier. Je krijgt 4 schrijfop
 
 <p>Lezen en Luisteren zijn meerkeuzevragen op de computer. Bij Spreken spreek je antwoorden in.
 Elk onderdeel heeft zo zijn eigen vorm. Wil je ze alle vier zien? Lees
-<a href="/nl/blog/inburgeringsexamen-a2-uitleg">Inburgeringsexamen A2: de 4 taalonderdelen uitgelegd</a>.</p>
+<a href="/nl/taalexamens/taalexamens-a2-b1">De taalexamens A2 en B1 uitgelegd</a>.</p>
 
 <div class="guide-cta-inline">
   <p><strong>Probeer het zelf</strong>Doe 10 vragen Lezen of Luisteren, met uitleg bij elk antwoord. Je hebt geen account nodig.</p>
@@ -466,7 +466,6 @@ ${docent('Ik heb deze oefenexamens gemaakt omdat er nog weinig plekken zijn waar
 
   related: ['moet-ik-inburgeren', 'welke-wet-en-welke-route', 'wat-kost-inburgeren', 'boete-en-termijn'],
   relatedPosts: [
-    'inburgeringsexamen-a2-uitleg',
     'taalniveaus-a1-a2-b1-nederlands',
     'inburgeringsexamen-zakken-herkansen',
   ],
@@ -595,7 +594,7 @@ ${factIn('en', 'The Writing A2 exam is done with pen and paper. You get 4 writin
 
 <p>Reading and Listening are multiple-choice questions on the computer. In Speaking you record
 your answers. Each part has its own format. Want to see all four? Read
-<a href="/en/blog/a2-integration-exam-explained">Inburgeringsexamen A2: the 4 language parts explained</a>.</p>
+<a href="/en/language-exams/language-exams-a2-b1">The language exams A2 and B1 explained</a>.</p>
 
 <div class="guide-cta-inline">
   <p><strong>Try it yourself</strong>Do 10 Reading or Listening questions, with an explanation after every answer. No account needed.</p>

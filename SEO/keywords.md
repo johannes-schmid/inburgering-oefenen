@@ -25,7 +25,7 @@ The tables below are real volume and KD; everything under the rule further down 
 | `/nl/inburgering/welke-wet-en-welke-route` | wet inburgering 2021 (480 / 16) | nieuwe wet inburgering 140/22 · wet inburgering 320/30 · z route inburgering 260/11 · b1 route inburgering 90/10 | retitled |
 | `/nl/inburgering/pvt-map-en-ona` | map inburgering (210 / 23) | | retitled |
 | `/nl/inburgering/moet-ik-inburgeren` | inburgering verplicht (110 / 24) | wie moeten inburgeren 70/19 · verplicht inburgeren 90/23 | retitled |
-| `/nl/blog/inburgeringsexamen-a2-uitleg` | inburgeringsexamen a2 (170 / 32) | a2 inburgeringsexamen 90/22 | unchanged (spoke) |
+| `/nl/taalexamens/taalexamens-a2-b1` | inburgeringsexamen a2 (170 / 32) | a2 inburgeringsexamen 90/22 | took over from the blog post, merged 2026-11-03 |
 
 **Not targeted, on purpose:** `inburgering` 33.100/49 and `duo inburgering` 6.600/38 are
 navigational (DUO); `inburgering online` 3.600/46 is a course-provider SERP; everything with `a1`

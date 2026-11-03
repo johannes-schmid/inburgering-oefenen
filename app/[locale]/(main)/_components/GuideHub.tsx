@@ -61,7 +61,6 @@ const SECTION_CARDS: Record<GuideSection, number> = {
  */
 const HUB_POSTS: Record<GuideSection, string[]> = {
   inburgering: [
-    'inburgeringsexamen-a2-uitleg',
     'taalniveaus-a1-a2-b1-nederlands',
     'inburgeringsexamen-zakken-herkansen',
   ],
@@ -71,10 +70,10 @@ const HUB_POSTS: Record<GuideSection, string[]> = {
    * rather than M4 writing competing pages — one query, one owning page, the same call M1 made for
    * `taalniveaus-a1-a2-b1-nederlands`. */
   taalexamens: [
-    'lezen-examen-inburgering-a2',
-    'luisteren-examen-inburgering-a2',
-    'inburgeringsexamen-a2-uitleg',
+    /* De posts over Lezen, Luisteren, Spreken en de vier onderdelen zijn op 03-11-2026 in hun
+     * gids opgegaan (zie `next.config.ts`); wat hier stond was hun plaatshouder. */
     'taalniveaus-a1-a2-b1-nederlands',
+    'inburgeringsexamen-zakken-herkansen',
   ],
 };
 

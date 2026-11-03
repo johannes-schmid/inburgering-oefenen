@@ -20,9 +20,9 @@ over vier weken en doet de dingen die te traag zijn voor een weekoordeel. Output
    vertoningen hebben en de posities elkaar afwisselen (beide tussen 5 en 30). Kies de winnaar
    volgens de kaart in `SEO/keywords.md` ("één query, één pagina"). Voorstel: de verliezer
    verwijst intern naar de winnaar en laat de query uit zijn titel; dat is een PR als het
-   alleen een link of een title raakt, anders een brief. Let speciaal op het paar uit
-   `gsc-indexering-16-09-2026.txt`: `/nl/blog/spreken-examen-inburgering-tips` vs
-   `/nl/taalexamens/spreken-examen`.
+   alleen een link of een title raakt, anders een brief. Het paar uit
+   `gsc-indexering-16-09-2026.txt` (`/nl/blog/spreken-examen-inburgering-tips` vs
+   `/nl/taalexamens/spreken-examen`) is op 03-11-2026 samengevoegd; de post 301't naar de gids.
 
 3. **Interne links.** `health.json → orphans` plus pagina's met `internal_link_count` onder
    de mediaan: stel per wees drie bronpagina's voor uit de top-20 op clicks, en zet de links

@@ -230,7 +230,7 @@ ${inlineCta('Oefen Schrijven met beoordeling per criterium', 'Onze schrijfopdrac
   ],
 
   related: ['taalexamens-a2-b1', 'spreken-examen', 'lezen-examen'],
-  relatedPosts: ['inburgeringsexamen-a2-uitleg', 'inburgeringsexamen-zakken-herkansen'],
+  relatedPosts: ['inburgeringsexamen-zakken-herkansen', 'taalniveaus-a1-a2-b1-nederlands'],
 
   ctaTitle: 'Oefen het onderdeel Schrijven',
   ctaDesc: 'Schrijfopdrachten met feedback per criterium, opgesteld door een NT2-docent.',

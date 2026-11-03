@@ -267,7 +267,7 @@ ${inlineCta('Oefen dit thema met examenvragen', 'Situaties zoals in het echte KN
   ],
 
   related: ['instanties', 'onderwijs-en-opvoeding', 'staatsinrichting-en-rechtsstaat'],
-  relatedPosts: ['inburgeringsexamen-a2-uitleg'],
+  relatedPosts: ['taalniveaus-a1-a2-b1-nederlands'],
 
   ctaTitle: 'Oefen het thema Werk en inkomen',
   ctaDesc: 'Gratis proefexamen van tien vragen, met uitleg na elk antwoord. Zonder account.',

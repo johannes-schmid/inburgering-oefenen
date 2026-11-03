@@ -17,9 +17,6 @@ const CREDITS = path.join(ROOT, 'resources/images/CREDITS.md');
 // One search query per post slug. Chosen to match the article's subject, not just its keyword —
 // a generic "study" stock photo adds nothing.
 const QUERIES = {
-  'inburgeringsexamen-a2-uitleg': 'woman studying language books table',
-  'lezen-examen-inburgering-a2': 'person reading document laptop desk',
-  'luisteren-examen-inburgering-a2': 'person wearing headphones laptop listening',
   'inburgeringsexamen-zakken-herkansen': 'person reading letter kitchen table',
   'taalniveaus-a1-a2-b1-nederlands': 'teacher explaining whiteboard adult student',
 };

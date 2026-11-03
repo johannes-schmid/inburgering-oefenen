@@ -247,7 +247,7 @@ uit wanneer je je uiterlijk moet aanmelden voor elk examen.</p>
     'staatsinrichting-en-rechtsstaat',
     'werk-en-inkomen',
   ],
-  relatedPosts: ['inburgeringsexamen-a2-uitleg', 'inburgeringsexamen-zakken-herkansen'],
+  relatedPosts: ['inburgeringsexamen-zakken-herkansen', 'taalniveaus-a1-a2-b1-nederlands'],
 
   ctaTitle: 'Oefen KNM met echte examenvragen',
   ctaDesc: 'Gratis proefexamen van tien vragen, met uitleg na elk antwoord. Zonder account.',

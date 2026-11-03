@@ -18,6 +18,11 @@
  * B1 is described here as an exam a reader may have to take — that is a fact about DUO, not a
  * claim about our catalogue. Our own B1 practice material is behind the docent's review gate and
  * this page does not advertise it.
+ *
+ * **De blogpost `inburgeringsexamen-a2-uitleg` is op 03-11-2026 in deze gids opgegaan** en
+ * `/nl/blog/inburgeringsexamen-a2-uitleg` (en de EN/AR-slugs) 301'en hierheen (`next.config.ts`).
+ * De kolom "nagekeken door", "Hoe moeilijk is het examen?", de examendag en de oefenexamens van
+ * DUO komen uit die post.
  */
 import type { Guide } from './types';
 import { fact } from './types';
@@ -33,7 +38,10 @@ export const SRC_UITSLAG = 'https://www.inburgeren.nl/examen-doen/uitslag-examen
 export const SRC_KOSTEN = 'https://www.inburgeren.nl/inburgeren-betalen/index.jsp';
 export const SRC_ROUTES = 'https://www.inburgeren.nl/u-gaat-inburgeren/';
 export const SRC_PLAATSEN = 'https://www.inburgeren.nl/examen-doen/examenplaatsen.jsp';
+export const SRC_WET = 'https://www.rijksoverheid.nl/themas/migratie-en-reizen/inburgeren-in-nederland/nieuwe-wet-inburgering';
 export const CHECKED = '23-08-2026';
+/** De feiten die op 03-11-2026 uit de blogpost zijn overgenomen dragen de datum van díe verificatie. */
+export const CHECKED_POST = '28-07-2026';
 
 export const card = (icon: string, title: string, body: string) =>
   `<div class="guide-card"><span class="guide-card-icon">${icon}</span><h3>${title}</h3><p>${body}</p></div>`;
@@ -53,7 +61,7 @@ const guide: Guide = {
     'Het inburgeringsexamen bestaat uit vier taalexamens, KNM en soms ONA. Wat je doet bij lezen, luisteren, schrijven en spreken, hoe lang elk duurt en A2 of B1.',
 
   datePublished: '2026-08-23',
-  dateModified: '2026-08-23',
+  dateModified: '2026-11-03',
   dateLabel: '23 augustus 2026',
   breadcrumb: 'De taalexamens',
   eyebrow: 'Taalexamens',
@@ -67,7 +75,7 @@ const guide: Guide = {
     alt: 'Volwassen cursisten maken een toets in een klaslokaal',
     credit: 'Kari Alfonso (Pexels)',
   },
-  readingMinutes: 8,
+  readingMinutes: 10,
 
   articleHtml: `
 <p>Het <strong>inburgeringsexamen</strong> is niet &eacute;&eacute;n examen maar een reeks: vier
@@ -101,12 +109,12 @@ eigen oefenexamens: die kun je zonder inloggen doen, en op het startscherm staat
 
 <div class="article-table-wrap">
 <table>
-  <thead><tr><th>Onderdeel (A2)</th><th>In DUO's oefenexamens</th><th>Duur</th></tr></thead>
+  <thead><tr><th>Onderdeel (A2)</th><th>In DUO's oefenexamens</th><th>Duur</th><th>Waarop</th><th>Nagekeken door</th></tr></thead>
   <tbody>
-    <tr><td><strong>Lezen</strong></td><td>25 vragen</td><td>65 minuten</td></tr>
-    <tr><td><strong>Luisteren</strong></td><td>25 vragen</td><td>45 minuten</td></tr>
-    <tr><td><strong>Schrijven</strong></td><td>4 opdrachten</td><td>40 minuten</td></tr>
-    <tr><td><strong>Spreken</strong></td><td>16 vragen</td><td>35 minuten</td></tr>
+    <tr><td><strong>Lezen</strong></td><td>25 vragen</td><td>65 minuten</td><td>computer</td><td>automatisch</td></tr>
+    <tr><td><strong>Luisteren</strong></td><td>25 vragen</td><td>45 minuten</td><td>computer</td><td>automatisch</td></tr>
+    <tr><td><strong>Schrijven</strong></td><td>4 opdrachten</td><td>40 minuten</td><td><strong>pen en papier</strong></td><td>mensen</td></tr>
+    <tr><td><strong>Spreken</strong></td><td>16 vragen</td><td>35 minuten</td><td>computer</td><td>deels mensen</td></tr>
   </tbody>
 </table>
 </div>
@@ -116,10 +124,18 @@ er 25". Dat is wat je kunt controleren, en het is genoeg om je voorbereiding op 
 
 ${fact('DUO stelt oefenexamens beschikbaar die iedereen zonder inloggen kan maken. Op de startschermen van de A2-oefenexamens staat het aantal vragen: 25 bij Lezen, 25 bij Luisteren en 16 bij Spreken; het oefenexamen Schrijven bevat 4 opdrachten.', 'inburgeren.nl — Oefenen', SRC_OEFENEN, CHECKED)}
 
+<p>Ook het nakijken verschilt per onderdeel. Lezen en Luisteren kijkt de computer na. Schrijven
+wordt <strong>door mensen nagekeken</strong>: een beoordelaar kijkt of je boodschap duidelijk is,
+en je hoeft niet foutloos te schrijven. Spreken zit ertussenin.</p>
+
+${fact('Lezen, Luisteren en KNM worden automatisch nagekeken. Schrijven wordt door gecertificeerde beoordelaars nagekeken. Spreken deels automatisch, deels door beoordelaars.', 'DUO Examenreglement, artikel 10', SRC_REGLEMENT, CHECKED_POST)}
+
 <h2 id="a2-of-b1">A2 of B1: welk niveau moet ik doen?</h2>
 
 <p>Dat bepaal je niet zelf. Onder de Wet inburgering 2021 kiest je <strong>gemeente</strong> na de
-brede intake en de leerbaarheidstoets een leerroute, en die route bepaalt je niveau.</p>
+brede intake en de leerbaarheidstoets een leerroute, en die route bepaalt je niveau. Het staat in
+je <strong>persoonlijk plan inburgering en participatie (PIP)</strong>; weet je het niet, kijk dan
+in Mijn Inburgering.</p>
 
 <div class="guide-steps">
   <div class="guide-step"><span class="guide-step-num">1</span><div class="guide-step-body">
@@ -176,14 +192,35 @@ ${factTwo('De gemeente bepaalt op basis van de brede intake welke leerroute u vo
 
 ${docent('Het verschil tussen A2 en B1 is niet vooral meer woorden. Het is dat je op B1 een mening moet kunnen geven en die kunnen uitleggen. Op A2 zeg je "ik vind het niet goed"; op B1 zeg je waarom, met een voorbeeld, in twee of drie zinnen achter elkaar. Daar oefen je te weinig op als je alleen woordjes leert.')}
 
+${note('De Wet inburgering 2021 is ingegaan op <strong>1 januari 2022</strong> — de wet heet 2021, maar werkt vanaf 2022. Veel websites hebben dat verkeerd. Viel je onder de oude Wet inburgering 2013, dan doe je alle taalexamens op A2.')}
+
+${fact('"De nieuwe Wet Inburgering is in werking getreden op 1 januari 2022."', 'Rijksoverheid — Nieuwe Wet inburgering', SRC_WET, CHECKED_POST)}
+
+<h2 id="moeilijk">Hoe moeilijk is het examen?</h2>
+
+<p>Het inburgeringsexamen A2 is <strong>geen intelligentietest</strong>. Het is een format. En een
+format kun je leren.</p>
+
+<p>A2 betekent: je kunt praten over dagelijkse dingen. Je werk, je familie, boodschappen doen, een
+afspraak maken bij de dokter. Je hoeft geen krantenartikel over politiek te begrijpen.</p>
+
+<p>De meeste mensen die zakken, zakken niet omdat hun Nederlands te slecht is. Ze zakken omdat ze
+het examen niet kenden. Ze wisten niet dat Schrijven op papier is. Ze hadden nooit met een klok
+geoefend. Ze wisten niet dat je bij Luisteren niet kunt terugspoelen. Daarom is oefenen met het
+echte format belangrijker dan nog honderd woorden leren.</p>
+
 <h2 id="wanneer-geslaagd">Wanneer ben je geslaagd?</h2>
 
 <p>Dat publiceert DUO niet. In het Examenreglement staat dat de grens tussen zakken en slagen een
 <strong>cesuur</strong> is die door de Minister wordt vastgesteld. Er staat geen percentage bij en
 geen aantal goede antwoorden.</p>
 
-<p>Sites die wel zo'n getal noemen, kunnen het niet onderbouwen. Wij noemen het daarom niet. Wat je
-w&eacute;l kunt doen: oefen tot je je in elk onderdeel comfortabel voelt binnen de tijd, in plaats
+<p>Sites die wel zo'n getal noemen, kunnen het niet onderbouwen. Wij noemen het daarom niet. Wat er
+w&eacute;l staat, in de samenvatting van het reglement, is &eacute;&eacute;n zin die veel mensen
+rustiger maakt: <strong>"Niet alle antwoorden hoeven goed te zijn om te slagen."</strong> Je krijgt
+een cijfer per onderdeel, plus "geslaagd" of "niet geslaagd".</p>
+
+<p>Wat je kunt doen: oefen tot je je in elk onderdeel comfortabel voelt binnen de tijd, in plaats
 van te mikken op een grens die niemand kent.</p>
 
 ${fact('Het Examenreglement inburgering bepaalt dat de grens tussen zakken en slagen wordt gevormd door een cesuur, vastgesteld door de Minister. Een concreet percentage of aantal goede antwoorden publiceert DUO niet.', 'DUO — Examenreglement inburgering, artikel 10', SRC_REGLEMENT, CHECKED)}
@@ -206,6 +243,20 @@ ${note('DUO meldde op 31 juli 2026 dat het nakijken van <strong>Spreken A2 en Sc
 ${factTwo('De uitslag van de taalexamens A2 en de kennisexamens komt binnen 8 weken. De examens worden afgenomen op zes locaties: Amsterdam, Eindhoven, Rijswijk, Rotterdam, Utrecht en Zwolle.', [['inburgeren.nl — Uitslag examen', SRC_UITSLAG], ['inburgeren.nl — Examenplaatsen', SRC_PLAATSEN]], CHECKED)}
 
 ${fact('Voor het inburgeringsexamen betaalt u per onderdeel; op dit moment is dat €50 per examen. De bedragen zijn geïndexeerd en kunnen wijzigen.', 'inburgeren.nl — Inburgeren betalen', SRC_KOSTEN, CHECKED)}
+
+<h2 id="examendag">Op de examendag</h2>
+
+<p>Een paar praktische dingen die bijna niemand opschrijft, maar die wel in het offici&euml;le
+reglement staan.</p>
+
+${fact('Je krijgt 15 minuten uitleg voordat elk examen begint. Je moet 30 minuten voor het examen aanwezig zijn. Zonder geldig legitimatiebewijs mag je geen examen doen.', 'DUO Examenreglement', SRC_REGLEMENT, CHECKED_POST)}
+
+<ul>
+  <li>Die 15 minuten uitleg zijn extra; ze gaan niet van je examentijd af.</li>
+  <li>Je telefoon, tas en horloge gaan in een kluisje. Het examen is geheim: geen foto's, geen vragen overschrijven.</li>
+  <li>Je kunt je examendatum, tijd of locatie tot <strong>7 dagen</strong> vooraf veranderen.</li>
+  <li>Kom je niet opdagen? Dan moet je opnieuw betalen.</li>
+</ul>
 
 <h2 id="volgorde">In welke volgorde doe je ze?</h2>
 
@@ -237,6 +288,17 @@ ${inlineCta('Bereken je eigen einddata', 'De tijdlijn-maker rekent per onderdeel
 
 <p>Per onderdeel anders. Daarvoor heeft elk onderdeel op deze site zijn eigen gids: wat je precies
 krijgt voorgelegd, waar de tijd in gaat zitten, en waar de meeste mensen op struikelen.</p>
+
+<p>Begin bij DUO zelf. Er zijn gratis oefenexamens: <strong>4 voor Lezen, 3 voor Luisteren, 3 voor
+Spreken en 3 voor Schrijven</strong>, en ze zijn precies het echte format. Doe ze allemaal. Twee
+praktische tips van DUO daarbij: doe ze op een <strong>computer</strong>, niet op je telefoon, en
+het oefenexamen Spreken van DUO <strong>werkt niet in Safari</strong>.</p>
+
+${fact('In de officiële oefenexamens van DUO: Lezen 25 vragen (4 examens), Luisteren 25 vragen (3 examens), Spreken 16 vragen (3 examens), Schrijven 4 opdrachten (3 examens). DUO adviseert de oefenexamens op een computer te doen; het oefenexamen Spreken werkt niet in Safari.', 'inburgeren.nl — Oefenen', SRC_OEFENEN, CHECKED_POST)}
+
+<p>Drie of vier oefenexamens is niet veel als je een format wilt leren. Daarom staan er op deze site
+<strong>10 per onderdeel</strong>, opgesteld met hulp van AI en volledig nagekeken door een
+gecertificeerde NT2-docent.</p>
 
 ${docent('Het grootste verschil tussen slagen en zakken is bij mijn cursisten zelden het niveau. Het is de tijd. Ze kennen de woorden wel, maar ze hebben nooit onder een klok geoefend. Doe minstens drie keer een compleet oefenexamen met een timer erbij v&oacute;&oacute;r je het echte doet.')}
 `,
@@ -273,13 +335,21 @@ ${docent('Het grootste verschil tussen slagen en zakken is bij mijn cursisten ze
       a: 'Normaal binnen 8 weken voor de taalexamens A2 en de kennisexamens. DUO meldde op 31 juli 2026 dat Spreken A2 en Schrijven A2 op dit moment tot 16 weken kunnen duren, met automatisch zes maanden verlenging voor wie daardoor in de knel komt. Controleer de actuele stand bij DUO.',
     },
     {
+      q: 'Doe ik het examen op de computer?',
+      a: 'Lezen, Luisteren en Spreken doe je op de computer. Schrijven doe je met pen en papier. Veel mensen weten dat laatste niet en schrikken op de examendag.',
+    },
+    {
+      q: 'Welk onderdeel is het moeilijkst?',
+      a: 'Dat verschilt per persoon. Luisteren wordt het vaakst onderschat: je krijgt in de oefenexamens 25 vragen in 45 minuten en je kunt een fragment niet terugspoelen. Bij Lezen heb je meer tijd per vraag, maar je moet wel snel de juiste informatie vinden.',
+    },
+    {
       q: 'Kan ik één onderdeel apart doen?',
       a: 'Ja. De vier taalonderdelen zijn aparte examens met een eigen aanmelding, een eigen datum en een eigen uitslag. Haal je er één niet, dan doe je alleen dat onderdeel over; wat je al hebt gehaald, blijft staan.',
     },
   ],
 
   related: ['b1-examen', 'lezen-examen', 'luisteren-examen', 'schrijven-examen', 'spreken-examen'],
-  relatedPosts: ['inburgeringsexamen-a2-uitleg', 'taalniveaus-a1-a2-b1-nederlands'],
+  relatedPosts: ['taalniveaus-a1-a2-b1-nederlands', 'inburgeringsexamen-zakken-herkansen'],
 
   ctaTitle: 'Oefen een compleet examenonderdeel',
   ctaDesc: 'Gratis proefexamen van tien vragen, met uitleg na elk antwoord. Zonder account.',

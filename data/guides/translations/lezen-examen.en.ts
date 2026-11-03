@@ -12,7 +12,7 @@
  */
 import type { GuideLocale } from '../types';
 import { I_BOOK, I_CHECK, I_X, docentIn, factIn, factTwoIn, inlineCta, note } from '../kit';
-import { CHECKED, SRC_NT2, SRC_OEFENEN, SRC_REGELS, SRC_TAALEXAMENS, card } from '../lezen-examen';
+import { CHECKED, CHECKED_POST, SRC_NT2, SRC_OEFENEN, SRC_REGELS, SRC_REGLEMENT, SRC_TAALEXAMENS, card } from '../lezen-examen';
 
 const translation: GuideLocale = {
   title: 'The Lezen exam (A2 and B1): format, time and approach',
@@ -86,6 +86,41 @@ but also understand what the writer means and what opinion he has.</p>
   </div></div>
 </div>
 
+
+<p>Within those three kinds you can look more precisely at <em>what</em> is being asked. Recognise
+the type and you know straight away where to look in the text.</p>
+
+<div class="article-table-wrap">
+<table>
+  <thead><tr><th>Type</th><th>What is asked</th><th>Where to look</th></tr></thead>
+  <tbody>
+    <tr><td><strong>Detail</strong></td><td>a time, price, date or address</td><td>for digits in the text</td></tr>
+    <tr><td><strong>Main idea</strong></td><td>what is this text about?</td><td>the title and first lines</td></tr>
+    <tr><td><strong>Purpose</strong></td><td>why was it written?</td><td>who sent it, and to whom</td></tr>
+    <tr><td><strong>Required action</strong></td><td>what should you do?</td><td>verbs like "bel", "stuur", "kom"</td></tr>
+    <tr><td><strong>Condition</strong></td><td>who does this apply to?</td><td>words like "alleen", "als", "of hoger"</td></tr>
+  </tbody>
+</table>
+</div>
+
+<p>That last type costs the most marks. A text says something applies only "vanaf de 4e
+verdieping" (from the 4th floor up). Miss those words and you pick the wrong answer — even if you
+understood the whole text.</p>
+
+<h3>Try a question</h3>
+
+<p>This is how such a question works in practice. Read the question first, then the note.</p>
+
+<div class="blog-quiz-card">
+  <p class="blog-quiz-q">A notice by the lift reads: "De lift is kapot. Maandag komt de monteur. Woont u op de 4e verdieping of hoger en kunt u niet traplopen? Bel de beheerder: 020 555 1234." What should you do if you live on the 2nd floor?</p>
+  <div class="blog-quiz-opts">
+    <button type="button" class="blog-quiz-opt"><span class="blog-quiz-letter">A</span><span>Call the building manager</span></button>
+    <button type="button" class="blog-quiz-opt"><span class="blog-quiz-letter">B</span><span>Wait for the engineer on Monday</span></button>
+    <button type="button" class="blog-quiz-opt" data-answer="correct"><span class="blog-quiz-letter">C</span><span>Nothing — use the stairs</span></button>
+  </div>
+  <div class="blog-quiz-ans">The correct answer is <strong>C</strong>. The notice only asks you to call if you live on the <strong>4th floor or higher</strong> and cannot use stairs. On the 2nd floor that condition does not apply to you. Notice how much rests on "of hoger" — that is exactly what this exam tests.</div>
+</div>
+
 <h2 id="tijd">Time is the real exam</h2>
 
 <p>Work it out for A2: 65 minutes for the questions of a complete oefenexamen comes down to about
@@ -123,11 +158,54 @@ ${docentIn('en', '"First the question, then the text" is the tip that makes the 
   <li><strong>Negations.</strong> "What is <em>not</em> true?" Underline that word in your head; many points are lost here by people who understood the text perfectly well.</li>
 </ul>
 
+<h2 id="examendag">On exam day</h2>
+
+<p>A few practical things that are in the official exam regulations, but that you rarely read
+anywhere.</p>
+
+${factIn('en', 'You must be present 30 minutes before the exam. You get 15 minutes of explanation before the exam starts. Without valid ID you may not sit the exam.', 'DUO Examenreglement', SRC_REGLEMENT, CHECKED_POST)}
+
+<p>Those 15 minutes of explanation are <strong>extra</strong> — they do not come off your 65
+minutes. Use them to settle down and look at the buttons.</p>
+
+<ul>
+  <li>Bring a valid identity document. If it is damaged or expired, you may not take part.</li>
+  <li>Your phone, bag and watch go in a locker. So a dictionary is not allowed either.</li>
+  <li>You may go to the toilet, but only with supervision, and you have to ask first.</li>
+  <li>The exam is confidential: no photos, no copying questions. That is exam fraud.</li>
+  <li>You can change your exam date, time or location up to <strong>7 days</strong> beforehand.</li>
+</ul>
+
 ${note('On your exam day: bring a valid identity document and be on time. If you are late, you can be refused, and then you lose your exam fee. The rules are on the DUO website.')}
 
 ${factIn('en', 'Fixed rules apply to the inburgeringsexamen about, among other things, identification and arriving late; DUO publishes these in the rules for the exam and in the Examenreglement.', 'inburgeren.nl — Regels voor het examen', SRC_REGELS, CHECKED)}
 
+<h2 id="slagen">How much do you need correct?</h2>
+
+<p>Short answer: <strong>nobody outside DUO knows</strong>.</p>
+
+<p>Online you often read an exact number — so many out of 25 correct. Those numbers appear on no
+official page, and they contradict each other. What is official is this:</p>
+
+${factIn('en', '"De zak-slaaggrens wordt uitgedrukt in een cesuur, vastgesteld door de Minister." — the pass mark is a cut-off set by the Minister, and DUO does not publish it.', 'DUO Examenreglement, artikel 10 lid 5', SRC_REGLEMENT, CHECKED_POST)}
+
+<p>You get a grade per part, plus "geslaagd" (passed) or "niet geslaagd" (not passed). The
+plain-language summary of the regulations says: not all answers need to be correct in order to
+pass. Lezen is marked automatically, like Luisteren and KNM; no human looks at your answers.</p>
+
+<p>Practically that means: do not aim at a minimum. Practise until you get the large majority
+right. Then you are safe, whatever the cut-off is.</p>
+
 <h2 id="oefenen">How to practise</h2>
+
+<p>Start with DUO itself. There are <strong>4 free A2 Lezen practice exams</strong>, and that is
+exactly the real format and the real clock. Do them on a computer, not on your phone: the real exam
+is on a large screen, and DUO advises this itself.</p>
+
+${factIn('en', 'DUO offers 4 online A2 Lezen practice exams. For Luisteren and Spreken there are 3, for Schrijven 3 (as pdf). DUO advises taking the practice exams on a computer.', 'inburgeren.nl — Oefenen', SRC_OEFENEN, CHECKED_POST)}
+
+<p>Four exams is a good start, but too few to really get a format into your fingers. After that,
+this works:</p>
 
 <div class="guide-steps">
   <div class="guide-step"><span class="guide-step-num">1</span><div class="guide-step-body">
@@ -159,9 +237,18 @@ ${inlineCta('Practise Lezen with real exam questions', 'Ten questions, with an e
   <li>Read the question first, then the text.</li>
   <li>Skip a question and come back; always fill in something.</li>
   <li>Watch out for negations and for options that are "almost" in the text.</li>
+  <li>DUO does not publish the pass mark.</li>
 </ul>`,
 
   faq: [
+    {
+      q: 'How many questions do I need correct in Lezen?',
+      a: 'DUO does not say. The Examenreglement states that the pass mark is a cut-off (cesuur) set by the Minister. The exact numbers you come across online do not come from DUO. Practise until you get the large majority right.',
+    },
+    {
+      q: 'Is the Lezen exam marked by a person?',
+      a: 'No. Lezen is marked automatically, like Luisteren and KNM. Only Schrijven and Spreken are (partly) assessed by certified assessors.',
+    },
   {
     q: 'How long does the Lezen exam take?',
     a: 'At level A2 it takes 65 minutes and you take it on a computer. At level B1 it is part of the staatsexamen NT2 and it takes 110 minutes. Information about the content of the B1 exam is on staatsexamensnt2.nl.',

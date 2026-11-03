@@ -108,6 +108,18 @@
       "source": "seo-agent/briefs/2026-11-03-stappenplan-herschrijving.md; /admin/seo triage 03-11 (score 5/10)",
       "window_end": "2026-12-08",
       "verdict": null
+    },
+    {
+      "id": "2026-11-03-consolidate-blog-into-guides",
+      "date": "2026-11-03",
+      "site": "inburgering",
+      "page": "/nl/taalexamens/taalexamens-a2-b1, /nl/taalexamens/lezen-examen, /nl/taalexamens/luisteren-examen, /nl/taalexamens/spreken-examen",
+      "change": "Vier blogposts (inburgeringsexamen-a2-uitleg, lezen-examen-inburgering-a2, luisteren-examen-inburgering-a2, spreken-examen-inburgering-tips) in hun gids opgegaan; unieke inhoud verhuisd, posts verwijderd, 301 per taal naar de gids",
+      "hypothesis": "Eén pagina per zoekintentie: de gidsen verzamelen de vertoningen die beide pagina's hadden; de posts verdwijnen uit de treemap en de gidsen groeien binnen 2 tot 4 weken na de hercrawl",
+      "metric": "impressions+clicks on the four guides vs the sum of guide+post before",
+      "source": "recommendations.json 2026-10-26-consolidate-blog",
+      "window_end": "2026-12-08",
+      "verdict": null
     }
   ]
 }

@@ -242,6 +242,33 @@ const nextConfig: NextConfig = {
       { source: '/ar/premium',  destination: '/ar/%D8%A7%D9%84%D8%A8%D8%A7%D9%82%D8%A9-%D8%A7%D9%84%D9%85%D9%85%D9%8A%D8%B2%D8%A9', permanent: true },
       { source: '/ar/docent',   destination: '/ar/%D8%A7%D9%84%D9%85%D8%B9%D9%84%D9%85%D8%A9', permanent: true },
       { source: '/ar/contact',  destination: '/ar/%D8%AA%D9%88%D8%A7%D8%B5%D9%84-%D9%85%D8%B9%D9%86%D8%A7', permanent: true },
+
+      /* ── VIER BLOGPOSTS ZIJN OP 03-11-2026 IN HUN GIDS OPGEGAAN ─────────────────
+         Elk van deze posts beantwoordde dezelfde vraag als een gids in `/taalexamens`, en twee
+         pagina's op één zoekintentie splitsen het signaal van Google (seo-agent/recommendations
+         `2026-10-26-consolidate-blog`). Wat uniek was staat nu in de gids; de post is uit
+         `data/blog-posts.ts` en `i18n/content-slugs.ts`, en de oude URL 301't naar de gids —
+         per taal naar de vertaalde slug, zodat er geen keten via next-intl ontstaat (zie de
+         opmerking bij de A2-omleidingen hierboven). De Arabische paden zijn percent-encoded,
+         net als de AR-omleidingen hierboven. Nooit verwijderen: de oude URL's staan in de index
+         van Google en Bing en in verstuurde e-mails. */
+      ...([
+        ['inburgeringsexamen-a2-uitleg', 'a2-integration-exam-explained', '%D8%B4%D8%B1%D8%AD-%D8%A7%D9%85%D8%AA%D8%AD%D8%A7%D9%86-%D8%A7%D9%84%D8%A7%D9%86%D8%AF%D9%85%D8%A7%D8%AC-a2',
+          'taalexamens-a2-b1', 'language-exams-a2-b1', '%D8%A7%D9%85%D8%AA%D8%AD%D8%A7%D9%86%D8%A7%D8%AA-%D8%A7%D9%84%D9%84%D8%BA%D8%A9-a2-b1'],
+        ['lezen-examen-inburgering-a2', 'reading-exam-a2-integration', '%D8%A7%D9%85%D8%AA%D8%AD%D8%A7%D9%86-%D8%A7%D9%84%D9%82%D8%B1%D8%A7%D8%A1%D8%A9-%D8%A7%D9%84%D8%A7%D9%86%D8%AF%D9%85%D8%A7%D8%AC-a2',
+          'lezen-examen', 'reading-exam', '%D8%A7%D9%85%D8%AA%D8%AD%D8%A7%D9%86-%D8%A7%D9%84%D9%82%D8%B1%D8%A7%D8%A1%D8%A9'],
+        ['luisteren-examen-inburgering-a2', 'listening-exam-a2-integration', '%D8%A7%D9%85%D8%AA%D8%AD%D8%A7%D9%86-%D8%A7%D9%84%D8%A7%D8%B3%D8%AA%D9%85%D8%A7%D8%B9-%D8%A7%D9%84%D8%A7%D9%86%D8%AF%D9%85%D8%A7%D8%AC-a2',
+          'luisteren-examen', 'listening-exam', '%D8%A7%D9%85%D8%AA%D8%AD%D8%A7%D9%86-%D8%A7%D9%84%D8%A7%D8%B3%D8%AA%D9%85%D8%A7%D8%B9'],
+        ['spreken-examen-inburgering-tips', 'speaking-exam-a2-tips', '%D9%86%D8%B5%D8%A7%D8%A6%D8%AD-%D8%A7%D9%85%D8%AA%D8%AD%D8%A7%D9%86-%D8%A7%D9%84%D8%AA%D8%AD%D8%AF%D8%AB-a2',
+          'spreken-examen', 'speaking-exam', '%D8%A7%D9%85%D8%AA%D8%AD%D8%A7%D9%86-%D8%A7%D9%84%D8%AA%D8%AD%D8%AF%D8%AB'],
+      ] as const).flatMap(([postNl, postEn, postAr, guideNl, guideEn, guideAr]) => [
+        { source: `/nl/blog/${postNl}`, destination: `/nl/taalexamens/${guideNl}`, permanent: true },
+        { source: `/en/blog/${postEn}`, destination: `/en/language-exams/${guideEn}`, permanent: true },
+        { source: `/ar/%D8%A7%D9%84%D9%85%D8%AF%D9%88%D9%86%D8%A9/${postAr}`, destination: `/ar/%D8%A7%D9%85%D8%AA%D8%AD%D8%A7%D9%86%D8%A7%D8%AA-%D8%A7%D9%84%D9%84%D8%BA%D8%A9/${guideAr}`, permanent: true },
+        /* De onvertaalde slug onder een vertaalde locale stond in GSC (`/en/blog/<nl-slug>`). */
+        { source: `/en/blog/${postNl}`, destination: `/en/language-exams/${guideEn}`, permanent: true },
+        { source: `/ar/blog/${postNl}`, destination: `/ar/%D8%A7%D9%85%D8%AA%D8%AD%D8%A7%D9%86%D8%A7%D8%AA-%D8%A7%D9%84%D9%84%D8%BA%D8%A9/${guideAr}`, permanent: true },
+      ]),
     ];
   },
 
