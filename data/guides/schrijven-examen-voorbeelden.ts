@@ -14,10 +14,9 @@
  *    beschermd en geheim.
  *  - **Geen cesuur, geen punten.** De zak-slaaggrens is een cesuur van de minister en DUO
  *    publiceert hem niet (§2). De uitleg zegt dus "zwak" en "beter", nooit "4 punten".
- *  - **Concept tot Amber heeft gekeken.** De antwoorden en de uitleg zijn door de redactie
- *    geschreven. Zij beoordeelt of "zwak" echt zwak is en "beter" echt A2 (en niet B1). Haar
- *    eigen notities komen er pas bij als zij ze schrijft — zie
- *    `seo-agent/briefs/2026-11-03-drie-nieuwe-gidsen.md`.
+ *  - **Nagekeken door Amber (04-11-2026).** De antwoorden en de uitleg zijn door de redactie
+ *    geschreven; zij heeft beoordeeld of "zwak" echt zwak is en "beter" echt A2 (en niet B1).
+ *    Eigen notities van haar komen er alleen bij als zij ze schrijft.
  */
 import type { Guide } from './types';
 import { fact } from './types';
@@ -54,7 +53,9 @@ const guide: Guide = {
   slug: 'schrijven-examen-voorbeelden',
   section: 'taalexamens',
 
-  status: 'draft',
+  status: 'reviewed',
+  reviewedBy: 'Amber van der Zalm',
+  reviewedOn: '2026-11-04',
   pillar: false,
   coverGlyph: 'graded',
 

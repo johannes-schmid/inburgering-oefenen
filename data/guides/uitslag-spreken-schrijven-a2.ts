@@ -43,7 +43,9 @@ const guide: Guide = {
   slug: 'uitslag-spreken-schrijven-a2',
   section: 'taalexamens',
 
-  status: 'draft',
+  status: 'reviewed',
+  reviewedBy: 'Amber van der Zalm',
+  reviewedOn: '2026-11-04',
   pillar: false,
   coverGlyph: 'envelope',
 

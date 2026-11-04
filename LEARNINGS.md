@@ -5954,3 +5954,9 @@ oplopende `top` per index doet het, en de `prefers-reduced-motion`-uitweg is dan
 **Outcome:** SUCCESS
 **What worked / went wrong:** Blogposts hebben geen conceptstatus — een post in `data/blog-posts.ts` staat bij de volgende deploy live. Daarom als gids geschreven: die is pas openbaar bij `status: 'reviewed'`. Alle 23 cover-glyphs waren al vergeven en de uniciteitstest geldt ook voor concepten, dus er moesten glyphs bij. `.article-body li` is `display: flex`: een `<li>` met `<strong>` of `<em>` en losse tekst valt uiteen in kolommen — wikkel de inhoud in één `<span>`. Reddit is niet te lezen met WebFetch; de Apify-MCP (reddit-scraper-lite) wel, inclusief reacties.
 **Lesson:** Nieuwe inhoud die op review wacht hoort in `data/guides/`, niet in de blog. En: claims van Reddit ("de hoogste uitslag telt", "DUO publiceert een rubric voor Schrijven") eerst bij de bron checken — beide bleken niet officieel te bestaan.
+
+## 2026-11-04 — Drie gidsen vrijgegeven na review van Amber
+**Changed:** `status: 'reviewed'` (Amber van der Zalm, 04-11-2026) in `data/guides/schrijven-examen-voorbeelden.ts`, `uitslag-spreken-schrijven-a2.ts` en `taaleis-naturalisatie.ts`; `taaleis-naturalisatie` toegevoegd aan fase 3 in `data/guides/phases.ts`.
+**Outcome:** SUCCESS
+**What worked / went wrong:** De eigenaar draaide URL Inspection op een concept en kreeg "Excluded by noindex" — verwacht gedrag, geen fout. Na de statuswissel komen de pagina's vanzelf in de sitemap en op de hub.
+**Lesson:** Indexering pas aanvragen in Search Console nadat de `reviewed`-commit live staat; een concept is bewust noindex.

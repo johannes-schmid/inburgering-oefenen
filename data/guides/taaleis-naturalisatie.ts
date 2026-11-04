@@ -49,7 +49,9 @@ const guide: Guide = {
   slug: 'taaleis-naturalisatie',
   section: 'inburgering',
 
-  status: 'draft',
+  status: 'reviewed',
+  reviewedBy: 'Amber van der Zalm',
+  reviewedOn: '2026-11-04',
   pillar: false,
   coverGlyph: 'passport',
 
