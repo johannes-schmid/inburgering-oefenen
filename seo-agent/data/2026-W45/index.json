@@ -1,0 +1,13 @@
+{
+  "week": "2026-W45",
+  "generated_at": "2026-11-07T00:37:09.733Z",
+  "sources": {
+    "gsc": "ok (5s)",
+    "bing": "ok (3s)",
+    "posthog": "ok (3s)",
+    "health": "ok (25s)",
+    "competitors": "ok (82s)",
+    "geo": "skipped: oneven week (2026-W45); GEO draait in even weken"
+  },
+  "geo_due": false
+}
