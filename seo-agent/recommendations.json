@@ -1,6 +1,6 @@
 {
   "$comment": "De to-dolijst op /admin/seo, in het Engels (besluit eigenaar, 26-10). De zaterdagrun (/seo-weekly) schrijft dit bestand: nieuwe taken erbij, status bijwerken, nooit een id hergebruiken. Elke taak heeft why, steps en expect. Ambers taken dragen minutes, en hun som per week blijft onder rules.amber_minutes_per_week in config.json.",
-  "updated": "2026-10-26",
+  "updated": "2026-11-07",
   "items": [
     {
       "id": "2026-10-26-manual-actions",

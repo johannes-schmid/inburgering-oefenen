@@ -11,7 +11,8 @@
       "metric": "impressions:inburgering*",
       "source": "LEARNINGS 2026-09-25",
       "window_end": "2026-10-26",
-      "verdict": null
+      "verdict": "didnt",
+      "verdict_note": "Verwacht verlies van vertoningen op 'inburgering*'-query's bleef uit: 149 vertoningen/1 click (10-09 t/m 07-10, vorig venster) naar 835/2 clicks (08-10 t/m 04-11), gsc.json. Sterk vertekend: de hele site viel van 30-09 tot 25-10 naar ~0-50 vertoningen per dag en herstelde op 26-10, dus dit venster zegt niets over de H1."
     },
     {
       "id": "2026-09-25-money-pages-keyword-first",
@@ -23,7 +24,8 @@
       "metric": "impressions+clicks on 'inburgering examen oefenen*'",
       "source": "LEARNINGS 2026-09-25, SEO/keywords.md kaart",
       "window_end": "2026-10-30",
-      "verdict": null
+      "verdict": "inconclusive",
+      "verdict_note": "'inburgering examen oefenen*': 40 vertoningen/1 click (vorig venster) naar 48/0 (huidig), gsc.json; beide onder 50 vertoningen. Bovendien viel de site 30-09 t/m 25-10 bijna weg uit Google."
     },
     {
       "id": "2026-10-05-privacy-index",
