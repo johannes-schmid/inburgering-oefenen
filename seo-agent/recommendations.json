@@ -296,6 +296,22 @@
       "expect": "Slightly better click-through on pages that rank. Not a recovery lever.",
       "source": "seo-agent/data/2026-W43/health.json",
       "status": "planned"
+    },
+    {
+      "id": "2026-11-07-gmail-send",
+      "created": "2026-11-07",
+      "site": "inburgering",
+      "owner": "eigenaar",
+      "kind": "access",
+      "priority": "now",
+      "task": "Allow the SEO weekly run to send its summary by e-mail",
+      "why": "The W45 run could not mail its summary: the Gmail connector offers no send or create-draft tool in this run (the connector does not offer it, or an organization admin removed it). The report is only at seo-agent/reports/2026-W45.md and /admin/seo.",
+      "steps": [
+        "Ask an organization admin to allow the Gmail send/draft tool for the scheduled routine, or read the report on /admin/seo."
+      ],
+      "expect": "From W46 the Saturday mail arrives; until then the push notification is the only signal.",
+      "source": "seo-agent/data/2026-W45/index.json",
+      "status": "open"
     }
   ]
 }
