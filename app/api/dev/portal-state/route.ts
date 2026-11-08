@@ -94,6 +94,7 @@ export async function POST(request: Request): Promise<Response> {
   meta.tier = shape.plan;
   meta.premium = shape.plan !== 'free';
   meta.modules = shape.modules;
+  meta.module_until = null;
   meta.modules_until =
     shape.expiredDaysAgo === null
       ? null

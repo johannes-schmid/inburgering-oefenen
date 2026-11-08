@@ -134,3 +134,50 @@ describe('buildMrrMovements', () => {
     expect(summary.arpuCents).toBe(995);
   });
 });
+
+describe('co-terming in de MRR', () => {
+  const NOW_C = Date.parse('2026-11-20T12:00:00Z');
+
+  it('telt wat verlengt als MRR en een opgezegde module als pendingChurn', () => {
+    const s = summariseSubscriptions(
+      [user({ modules: ['a2:lezen', 'knm'], module_until: { knm: '2026-12-01' } })],
+      NOW_C,
+    );
+    expect(s.mrrCents).toBe(995);
+    expect(s.activeSubscribers).toBe(1);
+    expect(s.pendingChurnCents).toBe(995);
+    expect(s.pendingChurnCount).toBe(0);
+  });
+
+  it('boekt één module uit de bundel als contraction van tien cent', () => {
+    const rows = buildMrrMovements(
+      [{
+        id: 'u1', created_at: '2026-09-01T00:00:00Z', email: 'a@b.nl',
+        user_metadata: {
+          modules: ['a2:lezen', 'a2:luisteren', 'a2:schrijven', 'a2:spreken'],
+          module_until: { 'a2:luisteren': '2026-12-01' },
+        },
+      }],
+      [{ user_id: 'u1', amount_cents: 2995, created_at: '2026-09-01T00:00:00Z' }],
+      6,
+      Date.parse('2026-12-20T12:00:00Z'),
+    );
+    const dec = rows.find(r => r.month === '2026-12')!;
+    expect(dec.contractionCents).toBe(-10);
+    expect(dec.churnCents).toBe(0);
+  });
+
+  it('telt een tussentijdse incasso op de maandprijs van wat erbij kwam', () => {
+    const rows = buildMrrMovements(
+      [{ id: 'u1', created_at: '2026-10-01T00:00:00Z', email: 'a@b.nl', user_metadata: { modules: ['a2:lezen', 'a2:spreken'] } }],
+      [
+        { user_id: 'u1', amount_cents: 995, created_at: '2026-10-01T00:00:00Z', product: 'modules:a2:lezen' },
+        { user_id: 'u1', amount_cents: 498, created_at: '2026-11-15T00:00:00Z', product: 'change:+a2:spreken' },
+      ],
+      6,
+      NOW_C,
+    );
+    expect(rows.find(r => r.month === '2026-11')!.expansionCents).toBe(995);
+    expect(rows[rows.length - 1].mrrCents).toBe(1990);
+  });
+});

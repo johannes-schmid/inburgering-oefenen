@@ -1,11 +1,11 @@
 import { priceForSelection, type ModuleSelection } from '@/lib/pricing';
-import { purchasedModules } from '@/lib/entitlements';
+import { moduleUntil, purchasedModules, renewingModules, type ModuleId } from '@/lib/entitlements';
 
 /**
  * Terugkerende omzet en opzeggingen, gerekend uit `auth.users.user_metadata`.
  *
- * Er is geen abonnementen-tabel: de Mollie-webhook schrijft `modules`, `/api/cancel-subscription`
- * schrijft `subscription_canceled_at` en `modules_until`. Dat is de enige plek waar staat wat er
+ * Er is geen abonnementen-tabel: de Mollie-webhook schrijft `modules`, `/api/change-modules` en
+ * `/api/cancel-subscription` schrijven een einddatum per module (`module_until`). Dat is de enige plek waar staat wat er
  * maandelijks binnenkomt, dus wordt het hier gelezen in plaats van uit `payments` — een som over
  * `payments` is *gefactureerde* omzet en telt de maand van vandaag nog niet mee.
  *
@@ -70,21 +70,37 @@ export function summariseSubscriptions(users: WithEmail[], now = Date.now()): Mr
 
   for (const u of users) {
     const meta = u.user_metadata ?? null;
-    const modules = purchasedModules(meta) as ModuleSelection;
-    if (modules.length === 0) continue;
+    const bought = purchasedModules(meta);
+    if (bought.length === 0) continue;
 
-    const cents = priceForSelection(modules);
-    const canceledAt = str(meta?.subscription_canceled_at);
+    // Sinds co-terming (08-11) kan één module opgezegd zijn terwijl de rest verlengt. Wat verlengt
+    // is MRR; wat nog loopt maar niet verlengt is `pendingChurn` — ook als het account zelf blijft.
+    const renewing = renewingModules(meta as never);
+    const stillOpen = (id: ModuleId) => {
+      const until = moduleUntil(meta as never, id);
+      return until === null || Date.parse(until) >= now;
+    };
+    const ending = bought.filter(id => !renewing.includes(id) && stillOpen(id));
 
-    if (!canceledAt) {
+    if (renewing.length > 0) {
+      const cents = priceForSelection(renewing as ModuleSelection);
       mrrCents += cents;
       activeSubscribers++;
+      if (ending.length > 0) {
+        pendingChurnCents += priceForSelection([...renewing, ...ending] as ModuleSelection) - cents;
+      }
       continue;
     }
 
+    // Niets verlengt meer: het account is opgezegd. De prijs is die van de laatste set die liep —
+    // de modules met de laatste einddatum.
+    const lastDate = bought.map(id => moduleUntil(meta as never, id) ?? '').sort().pop() ?? '';
+    const lastSet = bought.filter(id => (moduleUntil(meta as never, id) ?? '') === lastDate);
+    const cents = priceForSelection(lastSet as ModuleSelection);
+    const canceledAt = str(meta?.subscription_canceled_at) ?? lastDate;
+
     churnedMrrCents += cents;
-    const until = str(meta?.modules_until);
-    const stillRunning = until ? Date.parse(until) >= now : true;
+    const stillRunning = lastDate ? Date.parse(lastDate) >= now : true;
     if (stillRunning) {
       pendingChurnCents += cents;
       pendingChurnCount++;
@@ -95,7 +111,7 @@ export function summariseSubscriptions(users: WithEmail[], now = Date.now()): Mr
 
     recent.push({
       email: u.email ?? '—',
-      modules,
+      modules: lastSet,
       cents,
       canceledAt,
     });
@@ -145,10 +161,8 @@ export function summariseSubscriptions(users: WithEmail[], now = Date.now()): Mr
  *
  * Twee eerlijke beperkingen, die op de kaart ook genoemd worden:
  *
- * - **`contractionCents` is vandaag altijd 0.** Opzeggen is alles-of-niets — `/api/cancel-subscription`
- *   zegt elk abonnement van de klant op — dus een gedeeltelijke afbouw bestaat niet. Het blok blijft
- *   in het model staan omdat een per-module-opzegging het wél gaat vullen; een reeks die er dan pas
- *   bijkomt, breekt de grafiek op het moment dat hij interessant wordt.
+ * - **`contractionCents`** is één module opgezegd terwijl de rest doorloopt (`/api/change-modules`,
+ *   sinds co-terming 08-11), geboekt in de maand van haar einddatum.
  * - **`reactivationCents`** is een betaling van iemand die eerder had opgezegd. Metadata bewaart maar
  *   één opzegdatum, dus een klant die twee keer terugkomt telt de eerste keer als nieuw.
  *
@@ -181,7 +195,19 @@ export type MovementPayment = {
   user_id: string | null;
   amount_cents: number;
   created_at: string;
+  /** `modules:…` of `change:+…;-…`. Nodig om een tussentijdse incasso op zijn maandwaarde te tellen. */
+  product?: string | null;
 };
+
+/**
+ * Wat een betaling aan de MRR toevoegt. Een tussentijdse incasso (`change:`) is maar een deel van
+ * de maand; aan de MRR voegt hij de maandprijs toe van wat erbij kwam.
+ */
+function movementCents(p: MovementPayment): number {
+  if (!p.product?.startsWith('change:+')) return p.amount_cents;
+  const added = p.product.slice('change:+'.length).split(';')[0].split(',').filter(Boolean);
+  return priceForSelection(added as ModuleSelection);
+}
 
 const monthKey = (iso: string) => iso.slice(0, 7);
 
@@ -239,24 +265,35 @@ export function buildMrrMovements(
     list.forEach((p, i) => {
       const b = bucket(monthKey(p.created_at));
       if (!b) return;
-      if (i === 0) b.newCents += p.amount_cents;
+      const cents = movementCents(p);
+      if (i === 0) b.newCents += cents;
       else if (canceled !== undefined && Date.parse(p.created_at) > canceled) {
-        b.reactivationCents += p.amount_cents;
-      } else b.expansionCents += p.amount_cents;
+        b.reactivationCents += cents;
+      } else b.expansionCents += cents;
     });
   }
 
+  // Elke einddatum is een stap omlaag: wat vóór die datum liep, min wat erna nog loopt. Is er
+  // daarna niets meer, dan is het churn; anders contraction (één module opgezegd, de rest loopt
+  // door). Via `priceForSelection`, zodat het opzeggen van één module uit een bundel de echte
+  // daling boekt en niet €9,95.
   for (const u of users) {
     const meta = u.user_metadata ?? null;
-    const canceledAt = str(meta?.subscription_canceled_at);
-    if (!canceledAt) continue;
-    const modules = purchasedModules(meta) as ModuleSelection;
-    if (modules.length === 0) continue;
-    // De incasso valt weg aan het eind van de betaalde periode; ontbreekt die datum, dan is de
-    // opzegdatum het beste dat we hebben.
-    const b = bucket(monthKey(str(meta?.modules_until) ?? canceledAt));
-    if (!b) continue;
-    b.churnCents -= priceForSelection(modules);
+    const bought = purchasedModules(meta);
+    if (bought.length === 0) continue;
+    const dated = bought
+      .map(id => ({ id, until: moduleUntil(meta as never, id) }))
+      .filter((x): x is { id: ModuleId; until: string } => x.until !== null);
+    const renewing = bought.filter(id => moduleUntil(meta as never, id) === null);
+    for (const date of [...new Set(dated.map(d => d.until))].sort()) {
+      const before = [...renewing, ...dated.filter(d => d.until >= date).map(d => d.id)];
+      const after = [...renewing, ...dated.filter(d => d.until > date).map(d => d.id)];
+      const drop = priceForSelection(before as ModuleSelection) - priceForSelection(after as ModuleSelection);
+      const b = bucket(monthKey(date));
+      if (!b || drop <= 0) continue;
+      if (after.length === 0) b.churnCents -= drop;
+      else b.contractionCents -= drop;
+    }
   }
 
   // Vooruit optellen vanaf de oudste maand; wat vóór het venster ligt wordt het startpunt.

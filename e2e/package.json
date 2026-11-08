@@ -1,0 +1,19 @@
+{
+  "name": "inburgering-oefenen-e2e",
+  "private": true,
+  "type": "module",
+  "description": "Agentische e2e-tests (github.com/tester-army/e2e). Eigen pakket: e2e vraagt ai@7, de app draait op ai@6.",
+  "engines": {
+    "node": ">=24.8"
+  },
+  "scripts": {
+    "test": "e2e run",
+    "explore": "e2e explore"
+  },
+  "devDependencies": {
+    "@ai-sdk/anthropic": "^4.0.99",
+    "@e2e-dev/web": "^0.15.5",
+    "ai": "^7.0.165",
+    "e2e": "^0.23.0"
+  }
+}

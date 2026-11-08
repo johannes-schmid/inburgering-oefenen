@@ -1,7 +1,9 @@
 import { createAdminClient } from '@/lib/supabase/admin';
 import { fetchAll } from '@/lib/admin/fetch-all';
 import {
+  endingModules,
   modulesExpired,
+  renewingModules,
   modulesFromMetadata,
   planFromMetadata,
   purchasedModules,
@@ -152,7 +154,9 @@ export default async function UsersPage() {
       const owned = modulesFromMetadata(meta);
       const bought = purchasedModules(meta);
       const access: Access = legacy ? 'legacy' : owned.length > 0 ? 'modules' : 'free';
-      const until = typeof meta.modules_until === 'string' ? meta.modules_until : null;
+      // "Opgezegd · tot" alleen als niets meer verlengt; een losse opgezegde module staat bij de module zelf.
+      const ending = new Map(endingModules(meta).map(m => [m.id, m.until]));
+      const until = renewingModules(meta).length === 0 && ending.size > 0 ? [...ending.values()].sort().pop()! : null;
 
       const userPayments = paymentsByUser.get(u.id) ?? [];
       const userAttempts = attemptsByUser.get(u.id) ?? [];
@@ -197,7 +201,12 @@ export default async function UsersPage() {
         created_at: u.created_at,
         last_sign_in_at: u.last_sign_in_at ?? null,
         access,
-        modules: legacy ? ['Alles (oude aankoop)'] : owned.map(moduleLabel),
+        modules: legacy
+          ? ['Alles (oude aankoop)']
+          : owned.map(id => {
+              const end = until === null ? ending.get(id) : undefined;
+              return end ? `${moduleLabel(id)} · tot ${end.slice(8, 10)}-${end.slice(5, 7)}` : moduleLabel(id);
+            }),
         modules_until: until,
         lapsed_modules: !legacy && modulesExpired(meta) ? bought.map(moduleLabel) : [],
         payments_count: userPayments.length,

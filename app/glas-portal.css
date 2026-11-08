@@ -473,6 +473,10 @@ a.cr-st-row:focus-visible { outline: none; box-shadow: 0 0 0 2px #fff, 0 0 0 4px
 .g-kv { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 10px 16px; font-size: 14.5px; margin: 0; }
 .g-kv dt { color: var(--ink-2); }
 .g-kv dd { margin: 0; font-family: var(--font-headline); font-weight: 700; text-align: end; font-variant-numeric: tabular-nums; overflow-wrap: anywhere; }
+/* Met een moduleregel erin ("Opgezegd, open tot …"): het label houdt zijn breedte en de waarde
+   breekt af, anders wordt "Schrijven A2" over twee regels gezet. */
+.g-kv.g-kv-flex { grid-template-columns: max-content minmax(0, 1fr); }
+.g-kv.g-kv-flex dd { overflow-wrap: normal; text-wrap: pretty; }
 
 /* Kruimelpad (PortalCrumbs met `glas`). */
 .g-crumbs { margin-bottom: 14px; }
@@ -891,6 +895,53 @@ a.g-xr-locked:hover { background: #f6f8fc; }
 .g-mp-bar:not([data-empty="true"]) .g-mp-error { color: #ffb4a8; }
 .g-mp-error { display: flex; align-items: center; gap: 7px; margin: 0; font-size: 13.5px; color: var(--fout); }
 .g-mp-error > svg { width: 15px; height: 15px; }
+/* Wijzigen van een lopend abonnement (co-terming). De regels staan op elk formaat in de rekening:
+   een wijziging zonder zichtbare plussen en minnen is een bedrag zonder uitleg. */
+.g-mp-price em.g-mp-stop { color: var(--klei); }
+/* Nog niets gewijzigd: de rekening toont het lopende abonnement. Dat is echte informatie, dus
+   leesbaar op het lichte vlak; en op kleinere schermen plakt hij niet over de tegels, want er valt
+   nog niets te bevestigen. */
+.g-mp-bar[data-idle] .g-mp-bar-total { color: var(--navy); }
+.g-mp-bar[data-idle] .g-mp-bar-nudge { color: var(--ink-2); }
+@media (max-width: 1199px) { .g-mp-bar[data-idle] { position: static; } }
+.g-mp-lines.g-mp-lines-always {
+  display: flex; flex-direction: column; gap: 8px; margin: 12px 0 0; padding: 12px 0 0; list-style: none;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.12);
+}
+.g-mp-lines-always li { display: flex; justify-content: space-between; gap: 12px; font-size: 13.5px; color: rgba(255, 255, 255, 0.86); }
+.g-mp-lines-always li span:last-child { color: rgba(255, 255, 255, 0.6); flex: none; }
+.g-mp-delta { display: inline-flex; align-items: center; gap: 7px; min-width: 0; }
+.g-mp-delta > svg { width: 14px; height: 14px; flex: none; color: var(--oranje-zacht); }
+.g-mp-quote { margin: 14px 0 0; display: grid; gap: 10px; transition: opacity 160ms ease; }
+.g-mp-quote[data-loading] { opacity: 0.55; }
+.g-mp-quote > div { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; }
+.g-mp-quote dt { font-size: 13px; color: rgba(255, 255, 255, 0.72); }
+.g-mp-quote dd {
+  margin: 0; font-family: var(--font-headline); font-weight: 800; font-size: 26px; letter-spacing: -0.035em;
+  line-height: 1; font-variant-numeric: tabular-nums;
+}
+.g-mp-quote dd small { font-size: 12px; font-weight: 600; letter-spacing: 0; color: rgba(255, 255, 255, 0.7); }
+.g-mp-quote .g-mp-bar-nudge { margin: 0; }
+
+.g-cf { width: min(520px, calc(100% - 32px)); }
+.g-cf .g-inc-head h2 { margin-top: 0; }
+.g-cf-rows { margin: 20px 0 0; padding: 4px 18px; border-radius: 16px; background: var(--mist); }
+.g-cf-rows > div { display: flex; justify-content: space-between; align-items: baseline; gap: 16px; padding: 12px 0; }
+.g-cf-rows > div + div { box-shadow: inset 0 1px 0 rgba(0, 43, 109, 0.08); }
+.g-cf-rows dt { font-size: 13.5px; color: var(--ink-2); flex: none; }
+.g-cf-rows dd { margin: 0; font-size: 14px; font-weight: 700; color: var(--ink); text-align: end; text-wrap: pretty; }
+.g-cf-rows dd.g-cf-num { font-family: var(--font-headline); font-size: 20px; font-weight: 800; letter-spacing: -0.03em; color: var(--navy); font-variant-numeric: tabular-nums; }
+.g-cf-consent { margin: 16px 0 0; font-size: 13px; line-height: 1.6; color: var(--ink-2); max-width: 60ch; }
+.g-cf .g-mp-error { margin-top: 12px; }
+.g-cf-act { display: flex; justify-content: flex-end; flex-wrap: wrap; gap: 10px; margin-top: 20px; }
+.g-cf-act form { margin: 0; }
+@media (max-width: 560px) {
+  .g-cf-rows > div { flex-direction: column; align-items: flex-start; gap: 2px; }
+  .g-cf-rows dd { text-align: start; }
+  .g-cf-act { flex-direction: column-reverse; }
+  .g-cf-act .g-btn, .g-cf-act form { width: 100%; justify-content: center; }
+}
+
 .g-spin { animation: g-spin 900ms linear infinite; }
 @keyframes g-spin { to { transform: rotate(360deg); } }
 

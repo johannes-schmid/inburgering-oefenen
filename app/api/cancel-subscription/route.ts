@@ -3,7 +3,8 @@ import { Resend } from 'resend';
 import { createClient } from '@/lib/supabase/server';
 import { createAdminClient } from '@/lib/supabase/admin';
 import { cancelAllSubscriptions, listLiveSubscriptions } from '@/lib/subscriptions';
-import { modulesFromMetadata } from '@/lib/entitlements';
+import { renewingModules } from '@/lib/entitlements';
+import { cancelAll } from '@/lib/billing/metadata';
 import { cancellationEmail, cancellationSubject } from '@/lib/email/templates/cancellation';
 import { type EmailLocale } from '@/lib/email/i18n';
 
@@ -63,10 +64,10 @@ export async function POST() {
       user_metadata: {
         ...meta,
         subscription_canceled_at: new Date().toISOString(),
-        // No next payment date (Mollie omits it once a subscription will not charge again) means we
-        // cannot tell when the paid period ends. Keeping access is the only defensible default —
-        // guessing a date could cut someone off inside a month they paid for.
-        ...(accessUntil ? { modules_until: accessUntil } : {}),
+        // Een datum per module (co-terming): wat al eerder was opgezegd houdt zijn eigen datum. Zonder
+        // volgende incassodatum blijft alles open — gokken kan iemand afsluiten binnen een betaalde
+        // maand. Zie `cancelAll()`.
+        ...cancelAll(meta, accessUntil),
       },
     });
 
@@ -75,7 +76,7 @@ export async function POST() {
       firstName: typeof meta.full_name === 'string' ? meta.full_name.split(' ')[0] : '',
       locale: emailLocale(meta.locale),
       accessUntil,
-      modules: modulesFromMetadata(meta),
+      modules: renewingModules(meta),
     });
   }
 

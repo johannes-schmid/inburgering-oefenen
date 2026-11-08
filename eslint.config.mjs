@@ -12,6 +12,8 @@ const eslintConfig = defineConfig([
     "out/**",
     "build/**",
     "next-env.d.ts",
+    // Eigen pakket met eigen dependencies (ai@7), zie e2e/package.json.
+    "e2e/**",
   ]),
 ]);
 

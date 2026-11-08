@@ -77,7 +77,7 @@ export default async function AdminDashboard() {
     // 1.000 rijen en dan zou de oudste betaling van een klant kunnen ontbreken: hij telt dan
     // opnieuw als nieuw.
     fetchAll<MovementPayment>((from, to) =>
-      supabase.from('payments').select('user_id, amount_cents, created_at').eq('status', 'paid')
+      supabase.from('payments').select('user_id, product, amount_cents, created_at').eq('status', 'paid')
         .order('created_at', { ascending: true }).range(from, to)),
   ]);
 

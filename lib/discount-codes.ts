@@ -39,3 +39,16 @@ export function findDiscountCode(
 
 /** Waar de kiezer een code onthoudt die iemand eerder zag, bijvoorbeeld op `/welkom-knm`. */
 export const DISCOUNT_CODE_STORAGE_KEY = 'io_discount_code';
+
+/**
+ * Het percentage van een code die al op een abonnement staat — ook als de code inmiddels niet
+ * meer te gebruiken is.
+ *
+ * Wie met een code afsloot, houdt de korting zolang het abonnement loopt (het maandbedrag nam het
+ * bedrag van de eerste betaling over). Als co-terming het maandbedrag herberekent, mag een
+ * verlopen `validUntil` die korting niet stil laten verdwijnen.
+ */
+export function discountPctForCode(code: unknown, codes: DiscountCode[] = DISCOUNT_CODES): number {
+  if (typeof code !== 'string') return 0;
+  return codes.find(c => c.code === code.trim().toUpperCase())?.pct ?? 0;
+}

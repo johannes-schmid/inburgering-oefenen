@@ -110,32 +110,76 @@ export function normaliseModule(raw: string): ModuleId | null {
  * Do not delete it — it is somebody's purchase.
  */
 export function modulesFromMetadata(meta: Meta): ModuleId[] {
-  const raw = (meta as { modules?: unknown } | null | undefined)?.modules;
-  if (!Array.isArray(raw)) return [];
-  if (modulesExpired(meta)) return [];
-  return raw
-    .filter((x): x is string => typeof x === 'string')
-    .map(normaliseModule)
-    .filter((x): x is ModuleId => x !== null);
+  return purchasedModules(meta).filter(id => !dateHasPassed(moduleUntil(meta, id)));
 }
 
 /**
- * After cancelling, access runs to the end of the period already paid for.
+ * Wanneer één module dichtgaat — of `null` als hij gewoon verlengt.
  *
- * `modules_until` is written by `/api/cancel-subscription` as the date the next charge would have
- * fallen. It is absent for an active subscriber, so this is `false` for everyone who has not
- * cancelled. Expiry is therefore a pure function of the metadata — no cron job has to run on the
- * right day for access to lapse, and a cron that failed to run cannot leave someone with free
- * access indefinitely.
+ * Twee bronnen, en de eigen datum wint:
+ *  - `module_until[id]` — per module, geschreven sinds co-terming (08-11) door
+ *    `/api/change-modules` (opzeggen van één module), `/api/cancel-subscription` (alles) en
+ *    `fulfilModulePayment()` (een nieuwe aankoop zet de datums van wat nog liep vast).
+ *  - `modules_until` — de oude gezamenlijke datum van vóór co-terming, voor accounts die toen
+ *    opzegden. Hij geldt alleen voor modules zonder eigen datum.
  *
- * The raw list is still in `user_metadata.modules`, so resubscribing restores exactly what was
- * owned rather than making the candidate re-pick.
+ * Verlopen is daarmee nog steeds een pure functie van de metadata: geen cron hoeft op de juiste
+ * dag te draaien, en een cron die faalt kan niemand gratis toegang laten houden.
+ */
+export function moduleUntil(meta: Meta, id: ModuleId): string | null {
+  const own = moduleUntilMap(meta)[id];
+  if (typeof own === 'string') return own;
+  const shared = (meta as { modules_until?: unknown } | null | undefined)?.modules_until;
+  return typeof shared === 'string' ? shared : null;
+}
+
+/** `module_until`, met de sleutels genormaliseerd zoals `modules` (een bare slug is A2). */
+export function moduleUntilMap(meta: Meta): Partial<Record<ModuleId, string>> {
+  const raw = (meta as { module_until?: unknown } | null | undefined)?.module_until;
+  if (!raw || typeof raw !== 'object') return {};
+  const out: Partial<Record<ModuleId, string>> = {};
+  for (const [key, value] of Object.entries(raw as Record<string, unknown>)) {
+    const id = normaliseModule(key);
+    if (id && typeof value === 'string') out[id] = value;
+  }
+  return out;
+}
+
+function dateHasPassed(date: string | null): boolean {
+  if (date === null) return false;
+  const ts = Date.parse(date);
+  return Number.isFinite(ts) && ts < Date.now();
+}
+
+/**
+ * Wat het abonnement incasseert: gekocht en zonder einddatum.
+ *
+ * Dit is de lijst waar het maandbedrag uit volgt (`priceForSelection`), nooit het bedrag van de
+ * laatste betaling — dat laatste was de fout die bijkopers maandenlang te weinig liet betalen.
+ */
+export function renewingModules(meta: Meta): ModuleId[] {
+  return purchasedModules(meta).filter(id => moduleUntil(meta, id) === null);
+}
+
+/** Nog open, maar met een einddatum: opgezegd en loopt tot `until`. */
+export function endingModules(meta: Meta): { id: ModuleId; until: string }[] {
+  return modulesFromMetadata(meta)
+    .map(id => ({ id, until: moduleUntil(meta, id) }))
+    .filter((x): x is { id: ModuleId; until: string } => x.until !== null);
+}
+
+/**
+ * Alle toegang is voorbij: er is iets gekocht en elke module heeft een datum die voorbij is.
+ *
+ * Sinds co-terming kan één module dicht zijn terwijl een andere loopt; dat is geen "verlopen
+ * account" en de profielpagina moet dan niet zeggen dat de toegang weg is.
+ *
+ * The raw list is still in `user_metadata.modules`, so the account and admin pages can show what
+ * lapsed.
  */
 export function modulesExpired(meta: Meta): boolean {
-  const until = (meta as { modules_until?: unknown } | null | undefined)?.modules_until;
-  if (typeof until !== 'string') return false;
-  const ts = Date.parse(until);
-  return Number.isFinite(ts) && ts < Date.now();
+  const bought = purchasedModules(meta);
+  return bought.length > 0 && bought.every(id => dateHasPassed(moduleUntil(meta, id)));
 }
 
 /** The modules the account bought, ignoring whether access has lapsed. For account/billing UI. */

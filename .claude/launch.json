@@ -1,0 +1,17 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "dev",
+      "runtimeExecutable": "/usr/bin/env",
+      "runtimeArgs": ["PATH=/opt/homebrew/bin:/usr/bin:/bin:/usr/sbin:/sbin", "npm", "run", "dev"],
+      "port": 3001
+    },
+    {
+      "name": "dev-e2e",
+      "runtimeExecutable": "/usr/bin/env",
+      "runtimeArgs": ["RESEND_API_KEY=re_e2e_disabled", "PATH=/opt/homebrew/bin:/usr/bin:/bin:/usr/sbin:/sbin", "npm", "run", "dev"],
+      "port": 3001
+    }
+  ]
+}

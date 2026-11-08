@@ -6,6 +6,8 @@ import { applyDiscount, euro, parseSelection, priceForSelection } from '@/lib/pr
 import { findDiscountCode } from '@/lib/discount-codes';
 import { ONA_MODULE_ID } from '@/lib/entitlements';
 import { isOnaAvailable } from '@/lib/ona/access';
+import { listLiveSubscriptions } from '@/lib/subscriptions';
+import { moduleLabel } from '@/lib/email/templates/cancellation';
 import { TABLE, PAYMENT_STATUS } from '@/lib/api-constants';
 import { captureServerEvent } from '@/lib/posthog-server';
 
@@ -99,6 +101,13 @@ export async function POST(request: Request) {
     let customerId: string | undefined =
       typeof meta.mollie_customer_id === 'string' ? meta.mollie_customer_id : undefined;
 
+    // Met een lopend abonnement is bijkopen een wijziging (`/api/change-modules`): het resterende
+    // deel van de periode nu, daarna één bedrag op de bestaande verlengdatum. Een volle maand via
+    // deze checkout zou betalen voor dagen die het abonnement daarna nog eens incasseert.
+    if (customerId && (await listLiveSubscriptions(customerId)).length > 0) {
+      return NextResponse.json({ error: 'Je hebt al een abonnement.', code: 'use_change' }, { status: 409 });
+    }
+
     if (!customerId) {
       const customer = await mollie.customers.create({
         name: typeof meta.full_name === 'string' ? meta.full_name : (user.email ?? 'Kandidaat'),
@@ -111,10 +120,10 @@ export async function POST(request: Request) {
       });
     }
 
+    // De kandidaat ziet dit op de Mollie-pagina en mogelijk op het afschrift: leesbare namen, nooit
+    // `a2:luisteren`. (Vroeger heette élke selectie van vier "alle vier de onderdelen", ook drie A2 + KNM.)
     const description =
-      (modules.length === 4
-        ? 'Inburgering Oefenen — alle vier de onderdelen'
-        : `Inburgering Oefenen — ${modules.join(', ')}`) + (discount ? ` (korting ${discount.code})` : '');
+      `Inburgering Oefenen — ${modules.map(moduleLabel).join(', ')}` + (discount ? ` (korting ${discount.code})` : '');
 
     const params: PaymentCreateParams = {
       amount: { currency: 'EUR', value: (amountCents / 100).toFixed(2) },

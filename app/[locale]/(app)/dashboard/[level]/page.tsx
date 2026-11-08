@@ -9,6 +9,7 @@ import { totalExamsForLevel } from '@/lib/pricing';
 import { fetchLessonCounts, moduleKey } from '@/lib/lessons/lessons-server';
 import { averageReadiness, readiness } from '@/lib/lessons/readiness';
 import { fetchNextLesson, type NextLesson } from '@/lib/portal-next';
+import { ownsModule } from '@/lib/entitlements';
 import { CategoryMark } from '@/components/glas';
 import AppShell from '../../components/AppShell';
 import GlasModuleCard from '../_components/GlasModuleCard';
@@ -117,6 +118,9 @@ export default async function LevelOverviewPage({ params }: Props) {
                   title={tSkills(`${skill.key}.name`)}
                   line={step
                     ? t('ov_next', { lesson: step.title })
+                    // Geen volgende les betekent bij een module die je niet hebt: geen toegang, niet
+                    // "alles af" — `fetchNextLesson` geeft dan altijd null.
+                    : !ownsModule(meta, level, skill.slug as SkillSlug) ? t('mod_not_in_package')
                     : les.total === 0 ? t('ov_next_empty') : t('ov_next_none')}
                   /* Gemeten of niet: een balk op 0% bij iemand die nog niets deed leest als
                      voortgang die hij kwijt is. */

@@ -1,7 +1,8 @@
 'use client';
 
 import { useEffect, useMemo, useRef, useState, type FormEvent, type Ref } from 'react';
-import { ArrowRight, BadgePercent, Check, ListChecks, Loader2, Lock, Sparkles, TriangleAlert, X } from 'lucide-react';
+import { useRouter } from 'next/navigation';
+import { ArrowRight, BadgePercent, Check, ListChecks, Loader2, Lock, Minus, Plus, Sparkles, TriangleAlert, X } from 'lucide-react';
 import CategoryMark from '@/components/horizon/CategoryMark';
 import ExamMark, { type Track } from '@/components/horizon/ExamMark';
 import type { Level, OnaSlug, OnderdeelSlug } from '@/data/skills';
@@ -38,7 +39,45 @@ export type PickerModule = {
   includes: string[];
   /** Already paid for — shown as owned and excluded from the total. */
   owned: boolean;
+  /** Van jou en het abonnement verlengt hem. */
+  renews: boolean;
+  /** Van jou, opgezegd, open tot deze datum (`YYYY-MM-DD`). */
+  until: string | null;
 };
+
+/** Het lopende abonnement. Zonder abonnement is de kiezer een gewone checkout. */
+export type PickerSubscription = {
+  periodEnd: string;
+  monthlyCents: number;
+  /** Alles is opgezegd maar loopt nog; een module aanzetten hervat het abonnement. */
+  resuming?: boolean;
+};
+
+type Quote = {
+  newlyGranted: string[];
+  restored: string[];
+  removed: string[];
+  chargeNowCents: number;
+  waived: boolean;
+  monthlyAfterCents: number;
+  monthlyNowCents: number;
+  periodEnd: string;
+  cancelsSubscription: boolean;
+};
+
+const MONTHS = ['januari', 'februari', 'maart', 'april', 'mei', 'juni', 'juli', 'augustus', 'september', 'oktober', 'november', 'december'];
+
+/** `2026-12-08` → `8 december`, zonder `new Date()`: dat verschuift de dag in de helft van de tijdzones. */
+function day(iso: string): string {
+  const [, m, d] = iso.split('-').map(Number);
+  return m && d ? `${d} ${MONTHS[m - 1]}` : iso;
+}
+
+function moduleName(m: PickerModule): string {
+  if (m.skill === 'knm') return 'KNM';
+  if (m.skill === 'ona') return 'ONA';
+  return `${m.label[0].toUpperCase()}${m.label.slice(1)} ${m.levelLabel}`;
+}
 
 /**
  * Combine modules and see what it costs, then go straight to payment.
@@ -56,6 +95,23 @@ export type PickerModule = {
  * De server controleert hem opnieuw; hier toont hij alleen wat je gaat betalen.
  */
 export default function ModulePicker({
+  modules,
+  locale,
+  initialSelection,
+  initialCode,
+  subscription,
+}: {
+  modules: PickerModule[];
+  locale: string;
+  initialSelection: ModuleSlug[];
+  initialCode: string | null;
+  subscription: PickerSubscription | null;
+}) {
+  if (subscription) return <ChangePicker modules={modules} locale={locale} subscription={subscription} initialAdd={initialSelection} />;
+  return <CheckoutPicker modules={modules} locale={locale} initialSelection={initialSelection} initialCode={initialCode} />;
+}
+
+function CheckoutPicker({
   modules,
   locale,
   initialSelection,
@@ -157,6 +213,9 @@ export default function ModulePicker({
       });
       const json = await res.json();
       if (json.code === 'invalid_code') removeCode();
+      // Er loopt intussen een abonnement (een tweede tabblad, of de betaling kwam net binnen):
+      // dan is dit een wijziging, en die toont de pagina na herladen.
+      if (json.code === 'use_change') { window.location.reload(); return; }
       if (!res.ok || !json.checkoutUrl) throw new Error(json.error || 'Betalen is niet gelukt.');
       // /betaling-gelukt polls /api/payment-status with this id, and that is the path that grants
       // the modules and creates the subscription when the webhook has not fired.
@@ -274,7 +333,7 @@ export default function ModulePicker({
                       </span>
                       <span className="g-mp-price">
                         {mod.owned
-                          ? <em>Je hebt dit al</em>
+                          ? <em>{mod.until ? `Open tot ${day(mod.until)}` : 'Je hebt dit al'}</em>
                           : <>{euro(MODULE_PRICE_CENTS)} <small>p/m</small></>}
                       </span>
                     </span>
@@ -393,6 +452,359 @@ export default function ModulePicker({
           <p className="g-mp-small g-mp-small-side">{consent}</p>
         </div>
       </aside>
+
+      <IncludedDialog ref={incRef} modules={modules} />
+    </div>
+  );
+}
+
+/**
+ * Een lopend abonnement aanpassen (co-terming, 08-11).
+ *
+ * Elke tegel is een schakelaar voor "verlengt na de wijziging". Wat je aanzet gaat meteen open en
+ * kost nu het resterende deel van de periode; wat je uitzet blijft open tot de verlengdatum. Het
+ * bedrag komt van `/api/change-modules` (preview), zodat wat hier staat is wat Mollie vraagt — de
+ * kiezer rekent zelf niets uit.
+ *
+ * Bevestigen gaat via een dialoog: er wordt geld afgeschreven zonder dat de kandidaat langs een
+ * betaalscherm gaat, en dat hoort een eigen, expliciete stap te zijn.
+ */
+function ChangePicker({
+  modules,
+  locale,
+  subscription,
+  initialAdd,
+}: {
+  modules: PickerModule[];
+  locale: string;
+  subscription: PickerSubscription;
+  initialAdd: ModuleSlug[];
+}) {
+  const router = useRouter();
+  const renewing = useMemo(() => modules.filter(m => m.renews).map(m => m.slug), [modules]);
+  const [wanted, setWanted] = useState<ModuleSlug[]>(() => [...new Set([...renewing, ...initialAdd])]);
+  /* De offerte hoort bij één selectie. Klikt iemand verder voordat hij binnen is, dan is hij voor
+     een andere selectie en telt hij niet: zo staat er nooit een bedrag naast de verkeerde tegels. */
+  const [result, setResult] = useState<{ key: string; quote: Quote | null; error: string | null } | null>(null);
+  const [busy, setBusy] = useState(false);
+  const [done, setDone] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const confirmRef = useRef<HTMLDialogElement>(null);
+  const incRef = useRef<HTMLDialogElement>(null);
+
+  const add = wanted.filter(s => !renewing.includes(s));
+  const remove = renewing.filter(s => !wanted.includes(s));
+  const changed = add.length > 0 || remove.length > 0;
+  const addKey = add.join(',');
+  const removeKey = remove.join(',');
+  const key = `${addKey}|${removeKey}`;
+  const current = result?.key === key ? result : null;
+  const quote = current?.quote ?? null;
+  const loading = changed && current === null;
+  const quoteError = current?.error ?? null;
+
+  useEffect(() => {
+    if (!addKey && !removeKey) return;
+    const ctrl = new AbortController();
+    const forKey = `${addKey}|${removeKey}`;
+    const t = setTimeout(async () => {
+      try {
+        const res = await fetch('/api/change-modules', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ add: addKey ? addKey.split(',') : [], remove: removeKey ? removeKey.split(',') : [], locale, confirm: false }),
+          signal: ctrl.signal,
+        });
+        const json = await res.json();
+        if (!res.ok) throw new Error(json.code === 'no_subscription' ? 'reload' : 'Het bedrag kon niet worden berekend.');
+        setResult({ key: forKey, quote: json.quote as Quote, error: null });
+      } catch (err) {
+        if (ctrl.signal.aborted) return;
+        if (err instanceof Error && err.message === 'reload') { window.location.reload(); return; }
+        setResult({ key: forKey, quote: null, error: err instanceof Error ? err.message : 'Het bedrag kon niet worden berekend.' });
+      }
+    }, 220);
+    return () => { clearTimeout(t); ctrl.abort(); };
+  }, [addKey, removeKey, locale]);
+
+  const groups = useMemo(() => {
+    const out: { level: Level | null; levelLabel: string; mods: PickerModule[] }[] = [];
+    for (const m of modules) {
+      const g = out.find(x => x.levelLabel === m.levelLabel);
+      if (g) g.mods.push(m);
+      else out.push({ level: m.level, levelLabel: m.levelLabel, mods: [m] });
+    }
+    return out;
+  }, [modules]);
+
+  function toggle(slug: ModuleSlug) {
+    setError(null);
+    setDone(false);
+    setWanted(prev => (prev.includes(slug) ? prev.filter(s => s !== slug) : [...prev, slug]));
+  }
+
+  async function confirm() {
+    setBusy(true);
+    setError(null);
+    try {
+      const res = await fetch('/api/change-modules', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ add, remove, locale, confirm: true }),
+      });
+      const json = await res.json();
+      if (!res.ok) {
+        throw new Error(json.code === 'charge_failed'
+          ? 'De afschrijving is geweigerd. Er is niets veranderd. Probeer het later opnieuw of neem contact met ons op.'
+          : 'Je wijziging is niet gelukt. Er is niets veranderd.');
+      }
+      if (json.mode === 'checkout' && json.checkoutUrl) {
+        try { localStorage.setItem('io_pending_payment_id', json.paymentId); } catch {}
+        window.location.assign(json.checkoutUrl);
+        return;
+      }
+      // De kiezer blijft staan en haalt alleen de nieuwe stand op. De melding is component-state en
+      // geen URL-parameter: die liet elke ?gewijzigd=… een verwerkte wijziging melden. En `busy` gaat
+      // hier zelf terug, anders bleef de knop na de eerste wijziging grijs tot iemand herlaadde.
+      confirmRef.current?.close();
+      setDone(true);
+      setBusy(false);
+      router.refresh();
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Je wijziging is niet gelukt.');
+      setBusy(false);
+    }
+  }
+
+  const byslug = (s: string) => modules.find(m => m.slug === s);
+  const added = add.map(byslug).filter((m): m is PickerModule => m !== undefined);
+  const removed = remove.map(byslug).filter((m): m is PickerModule => m !== undefined);
+  const end = day(subscription.periodEnd);
+  const ready = changed && quote !== null && !loading;
+
+  function tileState(mod: PickerModule, on: boolean): { text: string; tone?: 'stop' } {
+    if (mod.renews) return on ? { text: 'Verlengt elke maand' } : { text: `Stopt, open tot ${end}`, tone: 'stop' };
+    if (mod.until) return on ? { text: 'Verlengt weer' } : { text: `Open tot ${day(mod.until)}` };
+    return { text: '' };
+  }
+
+  return (
+    <div className="g-mp">
+      <div className="g-mp-main">
+        {done && (
+          <p className="g-notice" role="status">
+            <Check aria-hidden />
+            <span>Je wijziging is verwerkt. Je krijgt een bevestiging per e-mail.</span>
+          </p>
+        )}
+        <div className="g-mp-allin">
+          <p>
+            <b>Zet onderdelen aan of uit.</b> Wat je aanzet, staat meteen open. Wat je uitzet, blijft
+            open tot {end}. Daarna betaal je één bedrag per maand.
+          </p>
+          <button type="button" onClick={() => incRef.current?.showModal()} className="g-mp-allin-btn">
+            Bekijk alles
+            <ArrowRight strokeWidth={2.5} className="rtl-flip" aria-hidden />
+          </button>
+        </div>
+
+        {groups.map(group => (
+          <section key={group.levelLabel} className="g-mp-group">
+            <h2 className="g-mp-gh">
+              {group.level && <ExamMark track={group.level} size={36} />}
+              {group.level ? `Niveau ${group.levelLabel}` : group.levelLabel}
+            </h2>
+            <div className="g-mp-grid" role="group" aria-label={group.levelLabel}>
+              {group.mods.map(mod => {
+                const on = wanted.includes(mod.slug);
+                const state = tileState(mod, on);
+                return (
+                  <button
+                    key={mod.slug}
+                    type="button"
+                    role="checkbox"
+                    aria-checked={on}
+                    onClick={() => toggle(mod.slug)}
+                    className="g-tile"
+                    data-stop={state.tone === 'stop' || undefined}
+                  >
+                    <CategoryMark category={mod.skill} size={44} />
+                    <span className="min-w-0 pe-7">
+                      <span className="g-tile-title g-cap">{mod.skill === 'knm' ? 'KNM' : mod.label}</span>
+                      <span className="g-mp-inc">
+                        {mod.includes.map(line => (
+                          <span key={line}><Check aria-hidden strokeWidth={2.75} />{line}</span>
+                        ))}
+                      </span>
+                      <span className="g-mp-price">
+                        {state.text
+                          ? <em className={state.tone === 'stop' ? 'g-mp-stop' : undefined}>{state.text}</em>
+                          : <>{euro(MODULE_PRICE_CENTS)} <small>p/m</small></>}
+                      </span>
+                    </span>
+                    <span className="g-tile-tick" aria-hidden>
+                      <Check size={14} strokeWidth={3} />
+                    </span>
+                  </button>
+                );
+              })}
+            </div>
+          </section>
+        ))}
+      </div>
+
+      <aside className="g-mp-bar" data-empty={!changed} data-idle={!changed || undefined} aria-label="Jouw abonnement" aria-live="polite">
+        <div className="g-mp-sum min-w-0">
+          <p className="g-mp-bar-label">{changed ? 'Jouw wijziging' : subscription.resuming ? 'Opgezegd' : 'Je abonnement'}</p>
+          {changed && (
+            <ul className="g-mp-lines g-mp-lines-always">
+              {added.map(m => (
+                <li key={m.slug}>
+                  <span className="g-mp-delta"><Plus aria-hidden />{moduleName(m)}</span>
+                  <span>{m.until ? 'verlengt weer' : 'nu open'}</span>
+                </li>
+              ))}
+              {removed.map(m => (
+                <li key={m.slug}>
+                  <span className="g-mp-delta"><Minus aria-hidden />{moduleName(m)}</span>
+                  <span>open tot {end}</span>
+                </li>
+              ))}
+            </ul>
+          )}
+
+          {!changed && subscription.resuming ? (
+            <p className="g-mp-bar-nudge">Er wordt niets meer afgeschreven. Je onderdelen lopen tot {end}.</p>
+          ) : !changed ? (
+            <>
+              <p className="g-mp-bar-total">{euro(subscription.monthlyCents)} <small>per maand</small></p>
+              <p className="g-mp-bar-nudge">Volgende betaling op {end}.</p>
+            </>
+          ) : (
+            <dl className="g-mp-quote" data-loading={loading || undefined}>
+              <div>
+                <dt>Nu betalen</dt>
+                <dd>{quote ? euro(quote.chargeNowCents) : '—'}</dd>
+              </div>
+              <div>
+                <dt>Vanaf {end}</dt>
+                <dd>{quote ? (quote.cancelsSubscription ? 'niets meer' : <>{euro(quote.monthlyAfterCents)} <small>p/m</small></>) : '—'}</dd>
+              </div>
+              {quote?.waived && <p className="g-mp-bar-nudge">De paar dagen tot {end} krijg je erbij.</p>}
+              {quote && quote.chargeNowCents > 0 && (
+                <p className="g-mp-bar-nudge">Alleen de dagen tot {end}. Daarna één bedrag per maand.</p>
+              )}
+            </dl>
+          )}
+        </div>
+
+        <div className="g-mp-act">
+          <button
+            type="button"
+            onClick={() => confirmRef.current?.showModal()}
+            disabled={!ready || busy}
+            className="g-btn g-btn-oranje g-btn-lg"
+          >
+            {loading ? (<><Loader2 className="g-spin" aria-hidden /> Bedrag berekenen…</>) : (
+              <>
+                Wijziging bekijken
+                <ArrowRight strokeWidth={2.5} className="rtl-flip" aria-hidden />
+              </>
+            )}
+          </button>
+          <p className="g-mp-trust">
+            <Lock aria-hidden />
+            Je kunt elk onderdeel apart opzeggen. Opzeggen kost niets.
+          </p>
+          {(error ?? quoteError) && (
+            <p className="g-mp-error" role="alert">
+              <TriangleAlert aria-hidden />
+              {error ?? quoteError}
+            </p>
+          )}
+        </div>
+      </aside>
+
+      <dialog
+        ref={confirmRef}
+        className="g-inc g-cf"
+        aria-labelledby="g-cf-title"
+        onClick={e => { if (e.target === e.currentTarget && !busy) e.currentTarget.close(); }}
+      >
+        {quote && (
+          <div className="g-inc-in">
+            <header className="g-inc-head">
+              <div>
+                <h2 id="g-cf-title">Klopt dit?</h2>
+                <p>Controleer je wijziging. Pas als je bevestigt, verandert er iets.</p>
+              </div>
+              <form method="dialog">
+                <button type="submit" className="g-inc-x" aria-label="Sluiten" disabled={busy}>
+                  <X aria-hidden />
+                </button>
+              </form>
+            </header>
+
+            <dl className="g-cf-rows">
+              {added.filter(m => !quote.restored.includes(m.slug)).length > 0 && (
+                <div>
+                  <dt>Erbij, staat meteen open</dt>
+                  <dd>{added.filter(m => !quote.restored.includes(m.slug)).map(moduleName).join(', ')}</dd>
+                </div>
+              )}
+              {added.filter(m => quote.restored.includes(m.slug)).length > 0 && (
+                <div>
+                  <dt>Verlengt weer</dt>
+                  <dd>{added.filter(m => quote.restored.includes(m.slug)).map(moduleName).join(', ')}</dd>
+                </div>
+              )}
+              {removed.length > 0 && (
+                <div>
+                  <dt>Opgezegd</dt>
+                  <dd>{removed.map(moduleName).join(', ')}, open tot en met {end}</dd>
+                </div>
+              )}
+              <div>
+                <dt>Nu betalen</dt>
+                <dd className="g-cf-num">{euro(quote.chargeNowCents)}</dd>
+              </div>
+              <div>
+                <dt>Vanaf {end} per maand</dt>
+                <dd className="g-cf-num">{quote.cancelsSubscription ? 'niets meer' : euro(quote.monthlyAfterCents)}</dd>
+              </div>
+            </dl>
+
+            {/* Toestemming voor de incasso in onze eigen woorden, vóór er iets wordt afgeschreven —
+                dezelfde reden als de toestemmingsregel in de checkout. */}
+            <p className="g-cf-consent">
+              {quote.chargeNowCents > 0
+                ? <>We schrijven nu {euro(quote.chargeNowCents)} af op dezelfde manier als je maandbedrag. Kan dat niet, dan betaal je het via iDEAL. </>
+                : <>Je betaalt nu niets. </>}
+              {quote.cancelsSubscription
+                ? <>Na {end} schrijven we niets meer af.</>
+                : <>Vanaf {end} wordt elke maand {euro(quote.monthlyAfterCents)} afgeschreven, totdat je opzegt.</>}
+            </p>
+
+            {error && (
+              <p className="g-mp-error" role="alert">
+                <TriangleAlert aria-hidden />
+                {error}
+              </p>
+            )}
+
+            <div className="g-cf-act">
+              <form method="dialog">
+                <button type="submit" className="g-btn g-btn-ghost" disabled={busy}>Terug</button>
+              </form>
+              <button type="button" onClick={confirm} disabled={busy} className="g-btn g-btn-oranje">
+                {busy
+                  ? (<><Loader2 className="g-spin" aria-hidden /> Bezig…</>)
+                  : quote.chargeNowCents > 0 ? `Bevestigen en ${euro(quote.chargeNowCents)} betalen` : 'Bevestigen'}
+              </button>
+            </div>
+          </div>
+        )}
+      </dialog>
 
       <IncludedDialog ref={incRef} modules={modules} />
     </div>

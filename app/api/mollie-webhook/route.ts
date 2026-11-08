@@ -1,7 +1,7 @@
 import { createMollieClient } from '@mollie/api-client';
 import { Resend } from 'resend';
 import { createAdminClient } from '@/lib/supabase/admin';
-import { fulfilModulePayment, isModulePayment } from '@/lib/mollie-modules';
+import { fulfilModulePayment, handleModuleChangePayment, isModuleChangePayment, isModulePayment } from '@/lib/mollie-modules';
 import { TABLE, PAYMENT_STATUS, PRODUCTS } from '@/lib/api-constants';
 import { activationEmail, activationSubject } from '@/lib/email/templates/activation';
 import { upgradeEmail, upgradeSubject } from '@/lib/email/templates/upgrade';
@@ -27,6 +27,13 @@ export async function POST(request: Request): Promise<Response> {
       .from(TABLE.PAYMENTS)
       .update({ status: payment.status, updated_at: new Date().toISOString() })
       .eq('mollie_payment_id', paymentId);
+
+    // Een tussentijdse wijziging heeft zijn eigen afhandeling — ook bij mislukken, want een incasso
+    // op het mandaat opende de modules al — en zijn eigen bevestiging in plaats van de activatiemail.
+    if (isModuleChangePayment(payment.metadata)) {
+      await handleModuleChangePayment(mollie, supabase, payment);
+      return Response.json({ received: true });
+    }
 
     if (payment.status === PAYMENT_STATUS.PAID) {
       const meta = payment.metadata as {

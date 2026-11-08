@@ -1,10 +1,12 @@
+import { Fragment } from 'react';
 import type { Metadata } from 'next';
 import { redirect } from 'next/navigation';
 import { getTranslations } from 'next-intl/server';
 import { ArrowRight, Check, ClipboardList, LogOut, Mail, Package, TriangleAlert } from 'lucide-react';
 import { SettingsList, SettingsRow } from '@/components/glas';
 import { createClient } from '@/lib/supabase/server';
-import { modulesExpired, planFromMetadata } from '@/lib/entitlements';
+import { endingModules, modulesExpired, moduleUntil, planFromMetadata, purchasedModules, renewingModules } from '@/lib/entitlements';
+import { moduleLabel } from '@/lib/email/templates/cancellation';
 import { fetchPortalProgress } from '@/lib/portal-progress';
 import { LEVELS, SKILLS, levelLabel, skillsAtLevel } from '@/data/skills';
 import CategoryMark from '@/components/horizon/CategoryMark';
@@ -49,7 +51,15 @@ export default async function ProfilePage({ params }: { params: Promise<{ locale
     .filter((d): d is string => Boolean(d))
     .sort()[0];
   const canceledAt = typeof meta.subscription_canceled_at === 'string' ? meta.subscription_canceled_at : null;
-  const modulesUntil = typeof meta.modules_until === 'string' ? meta.modules_until : null;
+  // Per module sinds co-terming: wat verlengt, en wat opgezegd is en tot wanneer open blijft. De
+  // opzegmelding hoort alleen bij een account waar niets meer verlengt.
+  const renewing = renewingModules(meta);
+  const ending = endingModules(meta);
+  const modulesUntil = renewing.length === 0 && ending.length > 0
+    ? ending.map(m => m.until).sort().pop()!
+    : renewing.length === 0 && modulesExpired(meta)
+      ? purchasedModules(meta).map(id => moduleUntil(meta, id)).filter((d): d is string => d !== null).sort().pop() ?? null
+      : null;
 
   // Same predicate the entitlement check uses, so the page can never claim access the app denies.
   const accessLapsed = modulesExpired(meta);
@@ -123,7 +133,19 @@ export default async function ProfilePage({ params }: { params: Promise<{ locale
 
               {subscriptions.length > 0 ? (
                 <>
-                  <dl className="g-kv">
+                  <dl className="g-kv g-kv-flex">
+                    {renewing.map(id => (
+                      <Fragment key={id}>
+                        <dt>{moduleLabel(id)}</dt>
+                        <dd>Verlengt</dd>
+                      </Fragment>
+                    ))}
+                    {ending.map(m => (
+                      <Fragment key={m.id}>
+                        <dt>{moduleLabel(m.id)}</dt>
+                        <dd>Opgezegd, open tot {formatDutchDate(m.until)}</dd>
+                      </Fragment>
+                    ))}
                     <dt>Per maand</dt>
                     <dd>{euro(monthlyCents)}</dd>
                     {nextPayment && (
@@ -134,12 +156,13 @@ export default async function ProfilePage({ params }: { params: Promise<{ locale
                     )}
                   </dl>
                   <p className="g-mp-small">
-                    Wordt automatisch verlengd via SEPA-incasso. Opzeggen kan elke maand; je houdt
-                    toegang tot het einde van de periode die je al betaald hebt.
+                    Wordt elke maand automatisch afgeschreven, op dezelfde manier als je eerste betaling. Je kunt een onderdeel apart opzeggen
+                    bij Onderdelen aanpassen, of alles in één keer hieronder. Je houdt toegang tot het
+                    einde van de periode die je al betaald hebt.
                   </p>
                   <div className="flex flex-wrap gap-2.5">
                     <a href={`/${locale}/dashboard/pakketten?vanaf=profiel`} className="g-btn g-btn-ghost g-btn-sm">
-                      {t('upsell_cta')}
+                      Onderdelen aanpassen
                     </a>
                     <CancelSubscription accessHint={nextPayment ? formatDutchDate(nextPayment) : null} />
                   </div>

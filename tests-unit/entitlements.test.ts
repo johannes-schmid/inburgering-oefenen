@@ -1,6 +1,10 @@
 import { describe, expect, it } from 'vitest';
 import {
   canOpenExam,
+  endingModules,
+  moduleUntil,
+  ownsKnm,
+  renewingModules,
   modulesExpired,
   modulesFromMetadata,
   normaliseModule,
@@ -148,5 +152,47 @@ describe('normaliseModule — the legacy bare slug', () => {
   it('drops unparseable entries rather than failing the whole list', () => {
     expect(modulesFromMetadata({ modules: ['lezen', 'c1:lezen', 'b1:spreken'] } as never))
       .toEqual(['a2:lezen', 'b1:spreken']);
+  });
+});
+
+describe('einddatum per module (co-terming)', () => {
+  it('sluit alleen de module waarvan de eigen datum voorbij is', () => {
+    const meta = { modules: ['a2:lezen', 'knm'], module_until: { knm: PAST } };
+    expect(modulesFromMetadata(meta as never)).toEqual(['a2:lezen']);
+    expect(ownsKnm(meta as never)).toBe(false);
+    expect(ownsModule(meta as never, 'a2', 'lezen')).toBe(true);
+  });
+
+  it('houdt een opgezegde module open tot haar datum', () => {
+    const meta = { modules: ['knm'], module_until: { knm: FUTURE } };
+    expect(ownsKnm(meta as never)).toBe(true);
+    expect(renewingModules(meta as never)).toEqual([]);
+    expect(endingModules(meta as never)).toEqual([{ id: 'knm', until: FUTURE }]);
+  });
+
+  it('een eigen datum gaat vóór de oude gezamenlijke datum', () => {
+    const meta = { modules: ['a2:lezen', 'knm'], modules_until: PAST, module_until: { 'a2:lezen': FUTURE } };
+    expect(modulesFromMetadata(meta as never)).toEqual(['a2:lezen']);
+  });
+
+  it('de oude gezamenlijke datum geldt voor modules zonder eigen datum', () => {
+    const meta = { modules: ['a2:lezen'], modules_until: FUTURE };
+    expect(renewingModules(meta as never)).toEqual([]);
+    expect(moduleUntil(meta as never, 'a2:lezen')).toBe(FUTURE);
+  });
+
+  it('verlengt wat geen datum heeft', () => {
+    const meta = { modules: ['a2:lezen', 'a2:schrijven'], module_until: { 'a2:schrijven': FUTURE } };
+    expect(renewingModules(meta as never)).toEqual(['a2:lezen']);
+  });
+
+  it('is pas verlopen als álle modules voorbij zijn', () => {
+    expect(modulesExpired({ modules: ['a2:lezen', 'knm'], module_until: { knm: PAST } } as never)).toBe(false);
+    expect(modulesExpired({ modules: ['knm'], module_until: { knm: PAST } } as never)).toBe(true);
+  });
+
+  it('leest een bare slug in module_until als A2', () => {
+    const meta = { modules: ['lezen'], module_until: { lezen: PAST } };
+    expect(modulesFromMetadata(meta as never)).toEqual([]);
   });
 });

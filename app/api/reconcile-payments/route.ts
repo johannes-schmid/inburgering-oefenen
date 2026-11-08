@@ -1,7 +1,7 @@
 import { createMollieClient } from '@mollie/api-client';
 import { createAdminClient } from '@/lib/supabase/admin';
 import { TABLE, PAYMENT_STATUS, PRODUCTS } from '@/lib/api-constants';
-import { fulfilModulePayment, isModulePayment } from '@/lib/mollie-modules';
+import { fulfilModulePayment, handleModuleChangePayment, isModuleChangePayment, isModulePayment } from '@/lib/mollie-modules';
 
 // Reconcile non-final payments against Mollie and upgrade users if paid.
 // Called hourly by Vercel Cron (see vercel.json). Guarded by CRON_SECRET.
@@ -44,6 +44,13 @@ export async function GET(request: Request): Promise<Response> {
         .update({ status: mollieStatus, updated_at: new Date().toISOString() })
         .eq('id', row.id);
       synced++;
+
+      // Een SEPA-incasso voor een wijziging staat dagen op `pending`; een mislukte die de webhook
+      // miste, sluit hier alsnog wat hij opende.
+      if (isModuleChangePayment(payment.metadata)) {
+        await handleModuleChangePayment(mollie, supabase, payment);
+        continue;
+      }
 
       if (mollieStatus === PAYMENT_STATUS.PAID) {
         const meta = payment.metadata as { userId?: string; product?: string } | undefined;

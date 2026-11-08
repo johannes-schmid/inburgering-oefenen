@@ -1210,7 +1210,7 @@
     "resume_head": "تابع مع {module}",
     "resume_sub": "{lesson} · وحدة {module}",
     "resume_sub_plain": "{lesson}",
-    "ov_sub": "أنجزت {pct}% · {owned} من {total} أجزاء في باقتك",
+    "ov_sub": "أنجزت {pct}% · {owned} من {total} وحدات في باقتك",
     "ov_total_head": "التقدم الإجمالي",
     "ov_of_all": "من الكل",
     "ov_week_head": "هذا الأسبوع",

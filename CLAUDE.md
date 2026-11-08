@@ -16,6 +16,7 @@ disagree, this file is current and the decision file is history.
 | public pages, gidsen, the tijdlijn tool, SEO | `docs/decisions/seo-and-content-strategy.md` |
 | any visual surface | `docs/decisions/design-history.md` + `docs/design/DESIGN_SYSTEM.md` |
 | Schrijven/Spreken grading, AI spend | `docs/decisions/grading-and-costs.md` |
+| subscriptions: adding, removing or switching modules | `docs/decisions/billing-coterm.md` |
 | what is still open | `docs/decisions/open-items.md` + `docs/MILESTONES.html` |
 
 ---
@@ -138,7 +139,13 @@ site-wide on 2026-10-11 (ACM: misleading claim). See `docs/decisions/ai-complian
 - **KNM is its own module at €9,95 and sits outside both level bundles** (owner's decision). So
   "everything" is a level bundle plus €9,95, not a product of its own — **there is no all-access
   subscription**, and `ownsKnm()` is deliberately separate from `ownsModule()`.
-- Mollie, iDEAL-first then SEPA. Cancellable in `/dashboard/profiel`; access runs to `modules_until`.
+- Mollie, iDEAL-first then SEPA. Cancellable in `/dashboard/profiel`.
+- **One subscription per customer, one renewal date (co-terming, 2026-11-08).** Adding a module
+  mid-period opens it now and charges only the rest of the period; removing one keeps it open to
+  the renewal date. `/api/change-modules` does both; `/api/checkout-modules` refuses (`use_change`)
+  while a subscription runs. **The subscription amount is always computed from
+  `renewingModules(meta)`, never copied from a payment** — copying it under-billed every add-on
+  buyer. Access ends per module (`module_until`); the old shared `modules_until` is a fallback.
 - The buyer is primarily the gezinsmigrant (self-funded or DUO loan, often EN/AR/TR-speaking).
   Price anchor for copy: a DUO exam costs €50 per onderdeel.
 
@@ -752,6 +759,15 @@ npm run test:unit                                   # vitest — pure logic, ~1s
 PATH="/opt/homebrew/bin:$PATH" npm run test:e2e     # playwright — browser, needs the local stack
 ```
 
+**A third suite, agentic: `e2e/`** (github.com/tester-army/e2e, added 2026-11-08). Its own package
+with its own `node_modules`, because e2e needs `ai@7` and the app runs on `ai@6` — never move its
+dependencies into the root `package.json`. Node 24 (keg-only `brew install node@24`) and the local
+stack only; start everything through `./e2e/run.sh` (`run`, `explore --session <persona>`), which sets
+the local service-role JWT and Node 24. The model is Anthropic direct (key from `.env.local`). Setup
+tests reset five existing local test users and buy KNM through the Mollie test checkout; see
+`docs/decisions/billing-coterm.md` §Testen. Start the dev server for it with `RESEND_API_KEY` set to a
+dummy (`dev-e2e` in `.claude/launch.json`) so no real mail goes out.
+
 `tests-unit/` covers logic that needs no browser (pricing, rubrics, entitlements, the dialogue
 parser, the skills invariants). Add a case here whenever you fix a logic bug. `tests/` is five
 Playwright files, each asking one question: `public.spec.js` (the onderdelen are visible, the funnel
@@ -859,9 +875,10 @@ afrekenlink** (OpenAI-beleid); en **`is_correct`/`explanation`/`model_answer` ko
   no admin guard** — reachable by anyone who knows the path, and each spends ElevenLabs credits.
   `requireAdmin()` in `lib/admin/guard.ts` is how a route handler checks the allowlist.
 - ~~Soft 404s~~ — verified 11-10 on production: unknown paths and unknown guide/blog slugs return a real 404.
-- **Marketing/legal copy still says KNM or "Professioneel Pakket"** in `betaling-gelukt` and parts of
-  the legal pages. These are factual claims about the product and a real person, so they need the
-  owner's wording, not a search-and-replace.
+- **Marketing/legal copy still says KNM or "Professioneel Pakket"** in parts of the legal pages.
+  These are factual claims about the product and a real person, so they need the owner's wording,
+  not a search-and-replace. (`betaling-gelukt` was rewritten neutrally on 2026-11-08: no package
+  name, no counts.)
 - **The KNM service key was exposed to browsers before the fork** and must be rotated.
 - `submit-results` never writes `exam_number` despite `UNIQUE(email, exam_number)`;
   `exam_results` and `exam_submissions` coexist unreconciled.

@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { Link } from '@/i18n/navigation';
+import { Link, useRouter } from '@/i18n/navigation';
 import { createClient } from '@/lib/supabase/client';
 import { trackMetaEvent } from '@/components/MetaPixel';
 import { track } from '@/lib/analytics';
@@ -13,6 +13,8 @@ type State = 'loading' | 'success' | 'pending' | 'failed' | 'noid';
 
 export default function BetalingGeluktPage() {
   const [state, setState] = useState<State>('loading');
+  const [isChange, setIsChange] = useState(false);
+  const router = useRouter();
   const supabase = createClient();
 
   async function checkPaymentStatus(paymentId: string, attempt: number) {
@@ -31,8 +33,10 @@ export default function BetalingGeluktPage() {
         let abVariant = 'control';
         try { abVariant = localStorage.getItem('io_ab_variant') ?? 'control'; } catch {}
         track('payment_success_viewed', { plan, value, currency: 'EUR', ab_variant: abVariant });
+        setIsChange(data.kind === 'change');
         setState('success');
-        setTimeout(() => { window.location.href = '/dashboard'; }, 3000);
+        // Via de i18n-router, zodat de taal in het pad blijft (`/nl/dashboard`, niet `/dashboard`).
+        setTimeout(() => { router.push('/dashboard'); }, 3000);
         return;
       }
       if (data.status === 'failed') {
@@ -96,13 +100,18 @@ export default function BetalingGeluktPage() {
             <>
               <span className="g-pay-ic g-pay-ok" aria-hidden><Check strokeWidth={2.6} /></span>
               <div>
-                <h1>Betaling geslaagd!</h1>
-                <p>Je Professioneel Pakket is actief. Je hebt nu toegang tot alle 10 proefexamens, directe feedback en je persoonlijk dashboard.</p>
+                <h1>Betaling geslaagd</h1>
+                {/* Wat er gekocht is staat in de bevestigingsmail en op Mijn account. Hier geen
+                    pakketnaam en geen aantallen: "Professioneel Pakket" bestaat sinds de prijs per
+                    onderdeel niet meer. */}
+                <p>{isChange
+                  ? 'Je wijziging is verwerkt. Wat je erbij nam, staat open.'
+                  : 'Je onderdelen staan open. Je ziet ze op je dashboard en op Mijn account.'}</p>
               </div>
               <p className="g-pay-sub">Je wordt automatisch doorgestuurd naar je dashboard…</p>
-              <a href="/dashboard" className="g-btn g-btn-oranje">
+              <Link href="/dashboard" className="g-btn g-btn-oranje">
                 Naar mijn dashboard <ArrowRight strokeWidth={2.4} className="rtl-flip" aria-hidden />
-              </a>
+              </Link>
             </>
           )}
 
@@ -114,9 +123,9 @@ export default function BetalingGeluktPage() {
                 <p>Je betaling is ontvangen en wordt verwerkt. Dit kan een paar minuten duren.</p>
               </div>
               <p className="g-pay-sub">Ga alvast naar je dashboard — je examens worden ontgrendeld zodra de betaling bevestigd is.</p>
-              <a href="/dashboard" className="g-btn g-btn-oranje">
+              <Link href="/dashboard" className="g-btn g-btn-oranje">
                 Naar mijn dashboard <ArrowRight strokeWidth={2.4} className="rtl-flip" aria-hidden />
-              </a>
+              </Link>
             </>
           )}
 
@@ -128,10 +137,10 @@ export default function BetalingGeluktPage() {
                 <p>Je betaling is geannuleerd of mislukt. Er is niets van je rekening afgeschreven. Probeer het opnieuw.</p>
               </div>
               <div className="g-pay-actions">
-                <Link href="/activate" className="g-btn g-btn-oranje">
+                <Link href="/dashboard/pakketten" className="g-btn g-btn-oranje">
                   Opnieuw proberen <ArrowRight strokeWidth={2.4} className="rtl-flip" aria-hidden />
                 </Link>
-                <a href="/dashboard" className="g-btn g-btn-ghost">Terug naar dashboard</a>
+                <Link href="/dashboard" className="g-btn g-btn-ghost">Terug naar dashboard</Link>
               </div>
             </>
           )}
@@ -142,9 +151,9 @@ export default function BetalingGeluktPage() {
                 <h1>Geen betaling gevonden</h1>
                 <p>We konden je betaling niet terugvinden. Ga naar je dashboard om je status te bekijken.</p>
               </div>
-              <a href="/dashboard" className="g-btn g-btn-oranje">
+              <Link href="/dashboard" className="g-btn g-btn-oranje">
                 Naar mijn dashboard <ArrowRight strokeWidth={2.4} className="rtl-flip" aria-hidden />
-              </a>
+              </Link>
             </>
           )}
         </GlassCard>

@@ -9,7 +9,7 @@ import { checkMcq, explainQuestion } from '../answers';
 import { submitWriting } from '../writing';
 import { profile, progress } from '../progress';
 import { tierFor, onderdeelLabel } from '../entitlement';
-import { modulesFromMetadata, parseModuleId } from '@/lib/entitlements';
+import { endingModules, modulesFromMetadata, parseModuleId, renewingModules } from '@/lib/entitlements';
 import { logEvent } from '../events';
 import type { Gate, ToolOutcome } from '../types';
 
@@ -288,7 +288,10 @@ export function registerTools(server: McpServer, widgetHtml: () => string): void
       if (ctx.kind !== 'user') return loginRequired();
       logEvent('chatgpt_tool_called', ctx, { tool: 'get_premium_status' });
       const modules = modulesFromMetadata(ctx.meta).map(parseModuleId).filter((m): m is NonNullable<typeof m> => m !== null).map(m => onderdeelLabel(m.level, m.skill));
-      const until = typeof ctx.meta.modules_until === 'string' ? ctx.meta.modules_until.slice(0, 10) : null;
+      // Alleen een einddatum als niets meer verlengt; anders loopt de toegang gewoon door.
+      const until = renewingModules(ctx.meta).length === 0
+        ? (endingModules(ctx.meta).map(m => m.until).sort().pop()?.slice(0, 10) ?? null)
+        : null;
       const data = { isPremium: modules.length > 0, modules, activeUntil: until };
       return {
         content: [{ type: 'text', text: data.isPremium ? `Modules: ${modules.join(', ')}${until ? ` (toegang tot ${until})` : ''}.` : 'Geen betaalde module; oefenexamen 1 van elk onderdeel is gratis.' }],

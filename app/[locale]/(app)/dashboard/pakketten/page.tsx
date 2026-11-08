@@ -2,7 +2,8 @@ import type { Metadata } from 'next';
 import { redirect } from 'next/navigation';
 import { Check } from 'lucide-react';
 import { createClient } from '@/lib/supabase/server';
-import { ownsKnm, ownsModule, ownsOna, planFromMetadata } from '@/lib/entitlements';
+import { endingModules, ownsKnm, ownsModule, ownsOna, planFromMetadata, renewingModules } from '@/lib/entitlements';
+import { currentPeriod } from '@/lib/billing/change';
 import { isOnaAvailable } from '@/lib/ona/access';
 import { ONA_CARD_COUNT } from '@/data/ona/cards';
 import { FREE_GRADED_PER_SKILL } from '@/lib/grading-limits';
@@ -92,6 +93,18 @@ export default async function PakkettenPage({
 
   const menu = await fetchPortalMenu();
 
+  // Met een lopend abonnement wordt de kiezer een wijziging (co-terming): eigen modules zijn dan
+  // schakelaars, en de rekening toont wat je nu en daarna betaalt. Mollie is de bron.
+  // Ook zonder lopend abonnement, zolang er nog modules openstaan en het mandaat geldig is: dan
+  // hervat een module weer aanzetten het abonnement (`currentPeriod`).
+  const customerId = typeof meta.mollie_customer_id === 'string' ? meta.mollie_customer_id : null;
+  const period = await currentPeriod(meta, customerId);
+  const subscription = period
+    ? { periodEnd: period.periodEnd, monthlyCents: period.monthlyNowCents, resuming: period.resuming }
+    : null;
+  const renewing = new Set<string>(renewingModules(meta));
+  const endsOn = new Map<string, string>(endingModules(meta).map(m => [m.id, m.until]));
+
   return (
     <AppShell
       locale={locale}
@@ -103,13 +116,25 @@ export default async function PakkettenPage({
       <div className="g-page">
         <header className="g-ph">
           <span className="g-mono">Pakketten</span>
-          <h1>Kies wat je wilt oefenen</h1>
-          <p>
-            Elk onderdeel is een eigen abonnement. Je betaalt per maand en je kunt maandelijks
-            opzeggen. Zonder abonnement kun je per onderdeel {FREE_GRADED_PER_SKILL} opdrachten
-            laten nakijken.
-          </p>
+          <h1>{subscription ? 'Je onderdelen aanpassen' : 'Kies wat je wilt oefenen'}</h1>
+          {subscription?.resuming ? (
+            <p>
+              Je abonnement is opgezegd. Je onderdelen blijven open tot de datum die erbij staat.
+              Zet er een weer aan om door te gaan; voor de dagen die je al betaald hebt, betaal je niets.
+            </p>
+          ) : subscription ? (
+            <p>
+              Je hebt één abonnement voor al je onderdelen. Zet er een bij of zet er een uit. Je
+              betaalt alleen voor de dagen tot je volgende betaling.
+            </p>
+          ) : (
+            <p>
+              Je betaalt per onderdeel per maand en je kunt maandelijks opzeggen. Zonder
+              abonnement kun je per onderdeel {FREE_GRADED_PER_SKILL} opdrachten laten nakijken.
+            </p>
+          )}
         </header>
+
 
         {plan !== 'free' && (
           <p className="g-notice g-notice-gap">
@@ -123,6 +148,7 @@ export default async function PakkettenPage({
 
         <ModulePicker
           locale={locale}
+          subscription={subscription}
           initialCode={code ?? null}
           initialSelection={picked.length ? picked : focus ? [focus] : []}
           modules={sellable.map(mod => {
@@ -143,6 +169,8 @@ export default async function PakkettenPage({
                   'Eindgesprek oefenen',
                 ],
                 owned: ownsOna(meta),
+                renews: renewing.has(mod.slug),
+                until: endsOn.get(mod.slug) ?? null,
               };
             }
             const skill = getOnderdeel(mod.skill)!;
@@ -169,6 +197,8 @@ export default async function PakkettenPage({
               owned: mod.level === null
                 ? ownsKnm(meta)
                 : ownsModule(meta, mod.level, mod.skill as SkillSlug),
+              renews: renewing.has(mod.slug),
+              until: endsOn.get(mod.slug) ?? null,
             };
           })}
         />

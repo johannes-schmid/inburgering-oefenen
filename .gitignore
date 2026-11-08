@@ -59,3 +59,5 @@ temporary_walkthroughs/
 
 # ChatGPT-widget: gebouwd door `npm run build:widget` (prebuild)
 widgets/dist/
+# e2e (eigen pakket in e2e/): uitvoer van de runner
+e2e/.e2e/

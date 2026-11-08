@@ -1210,7 +1210,7 @@
     "resume_head": "Continue with {module}",
     "resume_sub": "{lesson} · module {module}",
     "resume_sub_plain": "{lesson}",
-    "ov_sub": "You're {pct}% along · {owned} of {total} parts in your package",
+    "ov_sub": "You're {pct}% along · {owned} of {total} modules in your package",
     "ov_total_head": "Total progress",
     "ov_of_all": "of everything",
     "ov_week_head": "This week",

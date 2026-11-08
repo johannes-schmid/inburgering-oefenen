@@ -46,7 +46,7 @@ export function moduleLabel(id: string): string {
  * a date and formatting it back shifts it a day in half the world's timezones, and a cancellation
  * mail that understates the paid-for period by one day is a complaint.
  */
-function formatDate(iso: string, locale: EmailLocale): string {
+export function formatDate(iso: string, locale: EmailLocale): string {
   const [y, m, d] = iso.split('-').map(Number);
   if (!y || !m || !d) return iso;
   const months: Record<EmailLocale, string[]> = {

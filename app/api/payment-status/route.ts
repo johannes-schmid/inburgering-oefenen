@@ -2,7 +2,7 @@ import { createMollieClient } from '@mollie/api-client';
 import { Resend } from 'resend';
 import { createAdminClient } from '@/lib/supabase/admin';
 import { TABLE, PAYMENT_STATUS, PRODUCTS, jsonOk, jsonError } from '@/lib/api-constants';
-import { fulfilModulePayment, isModulePayment } from '@/lib/mollie-modules';
+import { fulfilModulePayment, handleModuleChangePayment, isModuleChangePayment, isModulePayment } from '@/lib/mollie-modules';
 import { activationEmail, activationSubject } from '@/lib/email/templates/activation';
 import { upgradeEmail, upgradeSubject } from '@/lib/email/templates/upgrade';
 import { type EmailLocale } from '@/lib/email/i18n';
@@ -20,6 +20,21 @@ export async function GET(request: Request): Promise<Response> {
     const mollie = createMollieClient({ apiKey: mollieApiKey });
     const payment = await mollie.payments.get(paymentId);
     const supabase = createAdminClient();
+
+    if (isModuleChangePayment(payment.metadata)) {
+      await supabase
+        .from(TABLE.PAYMENTS)
+        .update({ status: payment.status, updated_at: new Date().toISOString() })
+        .eq('mollie_payment_id', paymentId);
+      await handleModuleChangePayment(mollie, supabase, payment);
+      if (payment.status === PAYMENT_STATUS.PAID) {
+        return jsonOk({ status: PAYMENT_STATUS.PAID, kind: 'change', amount: Number(payment.amount.value) });
+      }
+      if ([PAYMENT_STATUS.CANCELED, PAYMENT_STATUS.FAILED, PAYMENT_STATUS.EXPIRED].includes(payment.status as typeof PAYMENT_STATUS.CANCELED)) {
+        return jsonOk({ status: 'failed', kind: 'change' });
+      }
+      return jsonOk({ status: 'pending', kind: 'change' });
+    }
 
     if (payment.status === PAYMENT_STATUS.PAID) {
       const meta = payment.metadata as { userId?: string; product?: string; locale?: string; pricingVariant?: string } | undefined;

@@ -20,6 +20,8 @@ export type SubscriptionSummary = {
   /** `YYYY-MM-DD`, absent once the subscription will not charge again. */
   nextPaymentDate?: string;
   description: string;
+  /** De kortingscode in de metadata van het abonnement; het maandbedrag rekent ermee. */
+  discountCode: string | null;
 };
 
 /** A subscription in one of these states will still take money and is therefore cancellable. */
@@ -57,10 +59,52 @@ export async function listLiveSubscriptions(customerId: string): Promise<Subscri
         interval: s.interval,
         nextPaymentDate: s.nextPaymentDate,
         description: s.description,
+        discountCode: readDiscountCode(s.metadata),
       }));
   } catch (err) {
     console.error('[subscriptions] list failed', customerId, err instanceof Error ? err.message : err);
     return [];
+  }
+}
+
+function readDiscountCode(metadata: unknown): string | null {
+  const code = (metadata as { discountCode?: unknown } | null | undefined)?.discountCode;
+  return typeof code === 'string' && code ? code : null;
+}
+
+/**
+ * De kortingscode van het meest recente abonnement, ook als dat is opgezegd.
+ *
+ * Wie zijn abonnement hervat, houdt de korting waarmee hij ooit afsloot.
+ */
+export async function latestDiscountCode(customerId: string): Promise<string | null> {
+  const mollie = client();
+  if (!mollie) return null;
+  try {
+    const page = await mollie.customerSubscriptions.page({ customerId, limit: 50 });
+    const newest = [...page].sort((a, b) => b.createdAt.localeCompare(a.createdAt))[0];
+    return newest ? readDiscountCode(newest.metadata) : null;
+  } catch {
+    return null;
+  }
+}
+
+/**
+ * Het geldige mandaat van deze klant, of `null`.
+ *
+ * Alleen een `valid` mandaat mag een incasso op aanvraag dragen; een `pending` mandaat (SEPA die
+ * nog niet bevestigd is) mag wel een abonnement hebben, maar Mollie weigert er een losse
+ * `recurring`-betaling op. Zonder geldig mandaat gaat een wijziging via de checkout.
+ */
+export async function validMandateId(customerId: string): Promise<string | null> {
+  const mollie = client();
+  if (!mollie) return null;
+  try {
+    const page = await mollie.customerMandates.page({ customerId, limit: 50 });
+    return page.find(m => m.status === 'valid')?.id ?? null;
+  } catch (err) {
+    console.error('[subscriptions] mandates failed', customerId, err instanceof Error ? err.message : err);
+    return null;
   }
 }
 

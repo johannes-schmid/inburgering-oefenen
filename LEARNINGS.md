@@ -5973,3 +5973,57 @@ oplopende `top` per index doet het, en de `prefers-reduced-motion`-uitweg is dan
 **Outcome:** SUCCESS (regio en omleiding geverifieerd; regio werkt pas vanaf de volgende productiedeploy)
 **What worked / went wrong:** de functies draaiden in Washington terwijl Supabase in Frankfurt staat — elke query stak twee keer de oceaan over. De Vercel-MCP had geen toegang tot de team-scope; `vercel api … --method PATCH` met de CLI-login wel.
 **Lesson:** zet de functieregio altijd naast de database. Een domeinomleiding herken je aan een 308 zónder de app-headers (`permissions-policy`).
+
+## 2026-11-08 — Co-terming: modules wisselen, erbij en eraf
+**Changed:** nieuw `lib/billing/{coterm,metadata,amount,change}.ts`, route `app/api/change-modules`, `ChangePicker` in `dashboard/pakketten/ModulePicker.tsx`, einddatum per module in `lib/entitlements.ts` (`module_until`, `renewingModules`, `endingModules`), `syncSubscription`/`handleModuleChangePayment` in `lib/mollie-modules.ts`, mail `lib/email/templates/module-change.ts`, per-module status op `/dashboard/profiel`, MRR met contraction (`lib/admin/mrr.ts`), `scripts/billing/subscription-audit.mjs`, besluit in `docs/decisions/billing-coterm.md`.
+**Outcome:** SUCCESS (tsc, 816 unit-tests groen — de ene rode `seo-cockpit` was er al, lint schoon, next build; eind-tot-eind in Mollie-testmodus: eerste kaartbetaling, wissel op het mandaat, wissel via de checkout, terugzetten, opzeggen)
+**What worked / went wrong:** De klantvraag ("switch naar A2") legde een veel grotere fout bloot: het abonnement nam het bedrag van de láátste betaling over, dus elke bijkoper betaalde te weinig — en niemand zag het, want de MRR-tegel rekent uit de metadata en niet uit wat Mollie incasseert. De offerte en de metadata-overgangen zijn puur en test-eerst geschreven; daardoor klopte het bedrag (€22,89 nu, €29,85 vanaf de verlengdatum) meteen in de UI.
+**Lesson:** Een bedrag dat elke maand terugkomt, reken je uit de bron (wat verlengt) en kopieer je nooit van een betaling. En een MRR die uit dezelfde metadata komt als de toegang kan een incassofout niet zien — daarvoor is `subscription-audit.mjs`.
+
+## 2026-11-08 — Co-terming, poging 1: incasso op het mandaat geweigerd
+**Changed:** `lib/billing/change.ts` — terugval naar de checkout als Mollie de `recurring`-betaling weigert.
+**Outcome:** FAILURE → opgelost
+**What worked / went wrong:** "The payment method is not enabled in your website profile": het testprofiel heeft geen SEPA-incasso. Eerst gaf de route `charge_failed`; nu betaalt de kandidaat dan via iDEAL, wat meteen een nieuw mandaat oplevert.
+**Lesson:** Een incasso op aanvraag kan altijd geweigerd worden (methode uit, mandaat ingetrokken); er moet een weg zijn die niet van het mandaat afhangt.
+
+## 2026-11-08 — Co-terming, poging 2: PATCH gaf 404 "No subscription exists"
+**Changed:** niets in de code; testopzet aangepast.
+**Outcome:** FAILURE (testopzet) → opgelost
+**What worked / went wrong:** Het testabonnement was aangemaakt met een `MOLLIE_API_KEY` uit de shell (een ander profiel), want `node --env-file` overschrijft geen bestaande variabele. Klanten zijn gedeeld over profielen, abonnementen niet: lezen lukte, PATCH gaf 404.
+**Lesson:** Bij Mollie-tests `env -u MOLLIE_API_KEY node --env-file=…` gebruiken, en bij een onverklaarbare 404 eerst controleren of server en script dezelfde sleutel hebben.
+
+## 2026-11-08 — Co-terming, poging 3: een eerste betaling werd bij elke poll opnieuw toegekend
+**Changed:** `fulfilled_payments` in de metadata; `fulfilModulePayment()` kent een eerste betaling één keer toe. Ook: PATCH valt terug zonder `mandateId` als Mollie het nieuwe mandaat weigert.
+**Outcome:** FAILURE → opgelost
+**What worked / went wrong:** Na een wissel stond KNM toch weer op "verlengt" en het abonnement op €39,80: het tabblad `/betaling-gelukt` pollde nog, en elke poll draaide de aankoop opnieuw en wiste de einddatum. Dat deed de oude code ook al met `modules_until`.
+**Lesson:** Alles wat de webhook, de poll én de cron kunnen aanroepen, moet idempotent zijn tegen de *latere* toestand, niet alleen tegen zichzelf.
+
+## 2026-11-08 — Eerste uitlegvideo: "Want or omdat?" (9:16, Engels)
+**Changed:** `videos/tts.mjs` (ElevenLabs `/with-timestamps`, één mp3 per scène + woordtijden), `videos/01-want-of-omdat/` (HyperFrames-project: `script.json`, `build.mjs` → `index.html`, fonts, audio), render in `renders/` (gitignored).
+**Outcome:** SUCCESS (lokaal; niet gecommit, niet gepubliceerd)
+**What worked / went wrong:** HyperFrames vraagt Node ≥22 en de machine heeft 20; `npx -y -p node@22 -p hyperframes -c 'hyperframes …'` werkt zonder iets te installeren. De Nederlandse stem `woman_older` op `eleven_multilingual_v2` spreekt Engels mét correct uitgesproken Nederlandse zinnen (Scribe herkende ze als `nld`); op snelheid 1.0 was "Ik kom niet, want ik ben ziek" één seconde, te snel voor een cursist — 0.9 is beter. Tegels met vaste breedte (56 + 44 px per teken) maken elke woordpositie uit te rekenen, zodat het werkwoord als echte beweging naar achteren kan springen. De ruwe mix was −9,8 LUFS; ffmpeg `loudnorm` naar −14.
+**Lesson:** Laat elke tijd in de film uit de woordtijden van de voice-over komen (`at(scene, woord)`), dan landt tekst op het woord dat hem noemt en blijft dat zo na een nieuwe TTS-run. En: de uitgesproken URL hoort als URL in de ondertitel, niet als "dot n l".
+
+## 2026-11-08 — Uitlegvideo v2: intro, hoofdstukken, vertaling onder elk woord
+**Changed:** `videos/01-want-of-omdat/script.json` (nieuw script voor wie geen Nederlands kent) en `build.mjs` (intro-kaart, hoofdstuk-chip 1/2/3, drijvende Glas-velden, Engelse vertaling onder elke tegel).
+**Outcome:** SUCCESS (render 60 s, −14,3 LUFS; nog niet gepubliceerd)
+**What worked / went wrong:** v1 begon midden in de uitleg en ging uit van iemand die al Nederlands kent. Wat het toegankelijk maakt: eerst het begrip "werkwoord" in het Engels uitleggen ("I am sick", am = oranje), dan dezelfde tegels Nederlands laten worden met de vertaling eronder. Die vertaling verhuist mee met het woord, zodat "because I sick am" vanzelf in beeld komt. De velden (Dageraad → Gracht → Nevel → Gracht → Dageraad) zijn de gloeden uit `glas.html` als losse divs die met GSAP-keyframes drijven; tekst staat altijd op glas (86% wit), ook de ondertitels.
+**Lesson:** Voor een beginner eerst het gereedschap (het werkwoord) in de eigen taal uitleggen, dan pas de regel. En een uitlegvideo heeft een intro nodig die zegt waar het over gaat en een hoofdstuk-indicatie, anders weet de kijker niet waar hij is.
+
+## 2026-11-08 — e2e (tester-army) toegevoegd en een bug bash op co-terming
+**Changed:** nieuw pakket `e2e/` (`package.json`, `e2e.config.ts`, `run.sh`, `tests/sessions.e2e.ts`, `tests/coterm.e2e.ts`, `tests/helpers/accounts.ts`), skill in `.agents/skills/e2e` (+ link in `.claude/skills/e2e`), `e2e` uitgesloten in `tsconfig.json` en `eslint.config.mjs`, `e2e/.e2e/` in `.gitignore`, `dev-e2e` in `.claude/launch.json`.
+**Outcome:** SUCCESS voor de opzet (regressietests 4/4 groen, de agent rondt zelf de Mollie-testcheckout af); de bug bash brak halverwege af: het Anthropic-tegoed was op.
+**What worked / went wrong:** `e2e init` zette `e2e` in de root naast `ai@6`, terwijl e2e `ai@^7` als peer vraagt — teruggedraaid en in een eigen pakket gezet. Nieuwe lokale gebruikers kunnen niet (signup-hook), dus de personas zijn bestaande testgebruikers die de setup reset. De admin-API wil de JWT-service-key uit `supabase status`, niet de `sb_secret_`-sleutel uit `.env.development.local`. `ANTHROPIC_API_KEY` staat alleen in `.env.local`. `e2e explore` kent geen `--action-timeout` (die hoort in de config). Setup-tests draaien alleen voor een test die hun sessie gebruikt.
+**Lesson:** Een testtool met eigen peer-dependencies hoort in een eigen pakket; en een agentische bug bash met vijf parallelle charters kost al snel een miljoen tokens — controleer het tegoed vóór je hem start.
+
+## 2026-11-08 — Bug bash co-terming (e2e, tweede poging)
+**Changed:** repro-tests in `e2e/tests/bugbash/coterm.e2e.ts` (4, alle rood); twee groene in `e2e/.e2e/bugbash/extra-tests/` (niet gereproduceerd).
+**Outcome:** SUCCESS — 4 bugs bevestigd met een falende test, 5 kleinere via de code, 7 bevindingen verworpen.
+**What worked / went wrong:** De "hoog"-bevinding "terugzetten gaat verloren" bleek geen eigen bug: na de eerste bevestigde wijziging blijft `busy` op `true` in `ChangePicker`, dus de knop blijft grijs en de verkenner zag daarna verouderde schermen. Met een herlaad tussen de stappen blijft het terugzetten gewoon staan. Twee repro-tests waren eerst fout omdat ze één account deelden (de serverstand loopt door tussen tests met dezelfde sessie). Een sceptische persona weigert de setup af te ronden als de bevestigingspagina iets onjuists zegt ("Professioneel Pakket").
+**Lesson:** Een agent-bevinding is een claim: bewijs hem met een test die één ding toetst op een eigen account. En een client-component die na `router.refresh()` blijft staan, moet zijn eigen bezig-status zelf terugzetten.
+
+## 2026-11-08 — De bevindingen uit de bug bash opgelost
+**Changed:** `ChangePicker` (busy terug, melding als state, "Verlengt weer" in de dialoog), `currentPeriod()` in `lib/billing/change.ts` (hervatten na opzeggen, gedeeld met de pakkettenpagina), `startDate` in `syncSubscription`, `moduleLabel()` in de Mollie-omschrijvingen, "Niet in je pakket" op `dashboard/[level]`, `ov_sub` → "modules" (nl/en/ar), neutrale incassozin op Mijn account, `betaling-gelukt` herschreven + locale-links. Repro's → `e2e/tests/coterm-fixes.e2e.ts`.
+**Outcome:** SUCCESS — alle vier de repro-tests groen, tsc, lint, unit (de bekende `seo-cockpit` rood), next build.
+**What worked / went wrong:** Een hervat abonnement moet beginnen op de oude einddatum (`startDate`), anders betaalt de kandidaat dubbel. GoTrue laat een metadataveld dat op `null` wordt gezet helemaal weg: een test moet `?? null` lezen.
+**Lesson:** De beslissing "wijziging of checkout?" moet op één plek staan die de pagina én de route lezen; twee kopieën liepen uiteen precies bij de randgeval-stand "opgezegd maar nog open".

@@ -1210,7 +1210,7 @@
     "resume_head": "Ga verder bij {module}",
     "resume_sub": "{lesson} · module {module}",
     "resume_sub_plain": "{lesson}",
-    "ov_sub": "Je bent {pct}% op weg · {owned} van {total} onderdelen in je pakket",
+    "ov_sub": "Je bent {pct}% op weg · {owned} van {total} modules in je pakket",
     "ov_total_head": "Totale voortgang",
     "ov_of_all": "van alles",
     "ov_week_head": "Deze week",

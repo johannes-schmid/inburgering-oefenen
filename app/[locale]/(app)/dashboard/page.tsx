@@ -69,7 +69,8 @@ export default async function DashboardPage({ params }: { params: Promise<{ loca
     + progress.knm.examsDone;
   const totalPct = pct(totalDone, totalExams);
 
-  /* Hoeveel van de catalogus is van jou? ONA telt mee in de noemer. */
+  /* Hoeveel van de catalogus is van jou, geteld in modules zoals de zijbalk ze noemt (Niveau A2, Niveau B1,
+     KNM, ONA) — niet in onderdelen: wie alle vier A2-onderdelen heeft, heeft één module. ONA telt mee. */
   const ownedTracks =
     LEVELS.filter(l => SKILLS.some(s => ownsModule(meta, l, s.slug))).length + (ownsKnm(meta) ? 1 : 0)
     + (ownsOna(meta) ? 1 : 0);
