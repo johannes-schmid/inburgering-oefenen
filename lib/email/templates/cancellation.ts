@@ -27,6 +27,19 @@ const SKILL_LABELS: Record<string, string> = {
 };
 
 /**
+ * `a2:lezen` → `Lezen A2`, `knm` → `KNM`.
+ *
+ * De route geeft `modulesFromMetadata()` door, en dat zijn genormaliseerde `level:skill`-ids. De
+ * oude tabel kende alleen de kale slug, dus de mail noemde "a2:lezen" letterlijk.
+ */
+export function moduleLabel(id: string): string {
+  if (id === 'knm' || id === 'ona') return id.toUpperCase();
+  const [level, skill] = id.includes(':') ? id.split(':') : [null, id];
+  const name = SKILL_LABELS[skill] ?? skill;
+  return level ? `${name} ${level.toUpperCase()}` : name;
+}
+
+/**
  * `2026-08-31` → `31 augustus 2026`.
  *
  * Built from the plain `YYYY-MM-DD` Mollie returns, with no `new Date()` in between: parsing it as
@@ -61,33 +74,31 @@ export function cancellationEmail(
   locale: EmailLocale,
 ): string {
   const s = t[locale].cancellation;
-  const named = modules.map(m => SKILL_LABELS[m] ?? m);
+  const named = modules.map(moduleLabel);
 
   const body = `
 <div class="hero">
-  <p class="hero-eyebrow">${s.label}</p>
+  <span class="chip-d">${s.label}</span>
   <h1 class="hero-h1">${s.title}</h1>
-  <p class="hero-sub">${s.greeting(firstName)}</p>
-  <p class="hero-sub" style="margin-top:10px;">${s.body}</p>
+  <p class="hero-greet">${s.greeting(firstName)}</p>
+  <p class="hero-sub">${s.body}</p>
 </div>
 <div class="sec">
-  <p class="sec-label">${s.accessLabel}</p>
-  <p class="sec-body">${accessUntil ? s.accessUntil(formatDate(accessUntil, locale)) : s.accessUnknown}</p>
-</div>${named.length > 0 ? `
-<div class="sec">
-  <p class="sec-label">${s.modulesLabel}</p>
-  <p class="sec-body">${named.join(' · ')}</p>
-</div>` : ''}
-<div class="div"></div>
-<div class="sec">
-  <p class="sec-label">${s.againLabel}</p>
+  <div class="panel">
+    <p class="small" style="font-weight:700;color:#5b6070;margin-bottom:6px;">${s.accessLabel}</p>
+    <p style="font-family:Manrope,-apple-system,Arial,sans-serif;font-size:20px;font-weight:800;color:#002b6d;letter-spacing:-0.5px;line-height:1.35;">${accessUntil ? s.accessUntil(formatDate(accessUntil, locale)) : s.accessUnknown}</p>${named.length > 0 ? `
+    <p class="small" style="font-weight:700;color:#5b6070;margin:20px 0 8px;">${s.modulesLabel}</p>
+    <p>${named.map(n => `<span style="display:inline-block;background:#ffffff;color:#002b6d;font-size:14px;font-weight:700;border-radius:999px;padding:6px 14px;margin:0 6px 6px 0;">${n}</span>`).join('')}</p>` : ''}
+  </div>
+</div>
+<div class="sec" style="padding-top:0;">
+  <h2 class="sec-title" style="font-size:19px;">${s.againLabel}</h2>
   <p class="sec-body">${s.againBody}</p>
-  <a href="${accountUrl}" class="btn" style="margin-top:20px;">${s.cta}</a>
+  <a href="${accountUrl}" class="btn" style="margin-top:22px;">${s.cta}</a>
 </div>
-<div class="div"></div>
-<div class="sec">
-  <p class="sec-body">${s.supportText} <a href="mailto:${t[locale].common.support}" style="color:#fe762c;">${t[locale].common.support}</a></p>
-  <p class="sec-body" style="margin-top:12px;font-weight:700;color:#002b6d;">Inburgering Oefenen</p>
+<div class="sec tier">
+  <p class="sec-body">${s.supportText} <a href="mailto:${t[locale].common.support}">${t[locale].common.support}</a></p>
+  <p class="sign">Inburgering Oefenen</p>
 </div>`;
 
   return renderEmail({ locale, title: s.title, bodyHtml: body, isTransactional: true });

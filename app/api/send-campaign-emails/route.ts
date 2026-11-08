@@ -13,7 +13,7 @@ import { pd } from '@/lib/tijdlijn/engine/dates';
 import { type EmailLocale } from '@/lib/email/i18n';
 
 const resend = new Resend(process.env.RESEND_API_KEY);
-const FROM = process.env.RESEND_FROM_EMAIL || 'Marieke <marieke@inburgeringoefenen.nl>';
+const FROM = process.env.RESEND_FROM_EMAIL || 'Inburgering Oefenen <support@inburgeringoefenen.nl>';
 
 export async function GET(request: Request): Promise<Response> {
   const auth = request.headers.get('authorization') ?? '';

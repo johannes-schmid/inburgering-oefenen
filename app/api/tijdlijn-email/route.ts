@@ -62,7 +62,7 @@ export async function POST(request: Request): Promise<Response> {
 
   const unsubscribeUrl = `${SITE_URL}/${locale}/uitschrijven?email=${encodeURIComponent(email)}`;
   const { error } = await resend.emails.send({
-    from: process.env.RESEND_FROM_EMAIL || 'Marieke <marieke@inburgeringoefenen.nl>',
+    from: process.env.RESEND_FROM_EMAIL || 'Inburgering Oefenen <support@inburgeringoefenen.nl>',
     to: email,
     subject: timelineEmailSubject(built.payload, locale),
     html: timelineEmail(built.payload, locale, unsubscribeUrl),

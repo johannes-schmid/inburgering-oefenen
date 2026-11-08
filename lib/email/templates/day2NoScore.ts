@@ -19,23 +19,21 @@ export function day2NoScoreEmail(firstName: string, locale: EmailLocale, unsubsc
   <p class="hero-sub">${s.heroSub}</p>
 </div>
 <div class="sec">
-  <p class="sec-label">${s.freeLabel}</p>
+  <span class="chip">${s.freeLabel}</span>
   <h2 class="sec-title">${s.freeTitle}</h2>
   <p class="sec-body" style="margin-bottom:24px;">${s.freeBody}</p>
-  <div style="background:#fff7ed;border:1.5px solid rgba(254,118,44,0.3);border-radius:12px;padding:28px;text-align:center;">
-    <p style="font-family:Manrope,-apple-system,Arial,sans-serif;font-size:18px;font-weight:800;color:#191c1e;margin-bottom:8px;">${s.freeCtaTitle}</p>
-    <p style="font-size:14px;color:#434651;line-height:1.6;margin-bottom:20px;">${s.freeCtaSub}</p>
-    <a href="${examUrl}" class="btn" style="display:inline-block;">${s.freeBtn}</a>
+  <div class="panel" style="text-align:center;">
+    <p style="font-family:Manrope,-apple-system,Arial,sans-serif;font-size:20px;font-weight:800;color:#002b6d;letter-spacing:-0.5px;margin-bottom:8px;">${s.freeCtaTitle}</p>
+    <p class="sec-body" style="font-size:15px;margin-bottom:22px;">${s.freeCtaSub}</p>
+    <a href="${examUrl}" class="btn">${s.freeBtn}</a>
   </div>
 </div>
-<div class="div"></div>
 ${skillsShowcase(locale)}
-<div class="div"></div>
-<div class="sec" style="background:#f8f9fb;">
-  <p class="sec-label" style="text-align:center;">${s.readyLabel}</p>
+<div class="sec tier" style="text-align:center;">
+  <h2 class="sec-title">${s.readyLabel}</h2>
   ${packageCards(locale)}
   ${paymentBadges(locale)}
-  <p style="font-size:11px;color:#9CA3AF;text-align:center;margin-top:10px;">🔒 ${locale === 'ar' ? 'دفع آمن · وصول فوري' : locale === 'en' ? 'Secure payment · Instant access' : 'Veilig betalen · Directe toegang'}</p>
+  <p class="small" style="margin-top:10px;">${locale === 'ar' ? 'دفع آمن · وصول فوري' : locale === 'en' ? 'Secure payment · Instant access' : 'Veilig betalen · Directe toegang'}</p>
 </div>`;
 
   return renderEmail({ locale, title: s.subject, bodyHtml: body, unsubscribeUrl });

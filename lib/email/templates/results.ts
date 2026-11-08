@@ -1,5 +1,6 @@
 import { type EmailLocale, t, dir } from '../i18n';
 import { renderEmail } from '../layout';
+import { scoreSegments, statusPill } from '../components';
 import { DEFAULT_LEVEL } from '@/data/skills';
 
 type CatScore = { correct: number; total: number };
@@ -30,8 +31,6 @@ export function resultsEmail(
   const s = t[locale].results;
   const rtl = dir(locale) === 'rtl';
   const skillName = data.skill ? s.skillNames[data.skill] : undefined;
-  // Lightened variants — #16a34a / #dc2626 do not carry enough contrast on the navy hero.
-  const accent = data.pct >= 80 ? '#4ade80' : data.pct >= 60 ? '#fe9f5f' : '#ff8a80';
 
   let scoreMsg: string;
   if (data.pct >= 80) scoreMsg = s.goodScore;
@@ -42,23 +41,25 @@ export function resultsEmail(
 
   const catRows = cats.map(([cat, sc]) => {
     const cp = Math.round((sc.correct / sc.total) * 100);
-    const cc = cp >= 60 ? '#16a34a' : cp >= 40 ? '#a24000' : '#dc2626';
+    /* Glas G3: groen = in orde, klei = aandacht, rood = fout. */
+    const [cc, ink] = cp >= 60 ? ['#2b7a5c', '#1c5a42'] : cp >= 40 ? ['#fe762c', '#a24000'] : ['#ba1a1a', '#ba1a1a'];
+    const pad = rtl ? 'padding:10px 0 10px 14px' : 'padding:10px 14px 10px 0';
     return `
 <tr>
-  <td style="padding:8px 12px 8px 0;font-size:13px;color:#434651;white-space:nowrap;">${cat}</td>
-  <td style="padding:8px 0;width:100%;">
-    <div style="background:#e0e3e5;border-radius:4px;height:8px;overflow:hidden;">
-      <div style="background:${cc};width:${Math.max(4, cp)}%;height:8px;border-radius:4px;"></div>
+  <td style="${pad};font-size:14px;font-weight:600;color:#002b6d;white-space:nowrap;">${cat}</td>
+  <td style="padding:10px 0;width:100%;">
+    <div style="background:#eef2f8;border-radius:999px;height:10px;overflow:hidden;">
+      <div style="background:${cc};width:${Math.max(4, cp)}%;height:10px;border-radius:999px;"></div>
     </div>
   </td>
-  <td style="padding:8px 0 8px 12px;font-size:13px;font-weight:700;color:${cc};white-space:nowrap;text-align:${rtl ? 'left' : 'right'};">${sc.correct}/${sc.total} (${cp}%)</td>
+  <td style="padding:10px ${rtl ? '14px 10px 0' : '0 10px 14px'};font-size:14px;font-weight:700;color:${ink};white-space:nowrap;text-align:${rtl ? 'left' : 'right'};">${sc.correct}/${sc.total}</td>
 </tr>`;
   }).join('');
 
   const catSection = cats.length
     ? `
 <div class="sec">
-  <p class="sec-label">${s.catTitle}</p>
+  <h2 class="sec-title" style="font-size:19px;margin-bottom:8px;">${s.catTitle}</h2>
   <table width="100%" cellpadding="0" cellspacing="0">${catRows}</table>
 </div>`
     : '';
@@ -70,16 +71,16 @@ export function resultsEmail(
       .map(([cat, sc]) => {
         const cp = Math.round((sc.correct / sc.total) * 100);
         const tip = STUDY_TIPS[cat] || '';
-        return `<tr><td style="padding:12px 0;border-bottom:1px solid #f0f2f4;">
-          <p style="margin:0 0 4px;font-size:13px;font-weight:700;color:#002b6d;">${cat} — ${cp}%</p>
-          <p style="margin:0;font-size:13px;color:#434651;line-height:1.5;">${tip}</p>
+        return `<tr><td style="padding:10px 0;">
+          <p style="margin:0 0 4px;font-size:14px;font-weight:700;color:#a24000;">${cat} · ${cp}%</p>
+          <p style="margin:0;font-size:14px;color:#434651;line-height:1.6;">${tip}</p>
         </td></tr>`;
       }).join('');
     if (weakTips) {
       studyTipsHtml = `
 <div class="sec" style="padding-top:0;">
-  <div style="background:#fff8f0;border:1.5px solid #fde3c8;border-radius:10px;padding:20px 24px;">
-    <p style="margin:0 0 16px;font-size:11px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:#a24000;">${s.studyTipsLabel}</p>
+  <div class="panel-tip">
+    <h2 class="sec-title" style="font-size:18px;color:#a24000;margin-bottom:4px;">${s.studyTipsLabel}</h2>
     <table width="100%" cellpadding="0" cellspacing="0">${weakTips}</table>
   </div>
 </div>`;
@@ -93,32 +94,23 @@ export function resultsEmail(
   /* The score is plain text in a table cell, not an SVG ring: Gmail strips inline <svg>
      outright, which left the old ring — and the score itself — invisible. */
   const body = `
-<div class="hero" style="text-align:center;padding:34px 40px 38px;">
-  <p class="hero-eyebrow" style="margin-bottom:16px;">${s.eyebrow(skillName)}</p>
-  <table cellpadding="0" cellspacing="0" border="0" align="center" style="margin:0 auto;">
-    <tr>
-      <td align="center" style="background:rgba(255,255,255,0.07);border:1px solid rgba(255,255,255,0.16);border-radius:16px;padding:20px 34px;">
-        <p style="margin:0;font-family:Manrope,-apple-system,Arial,sans-serif;font-size:46px;font-weight:800;line-height:1;letter-spacing:-2px;color:${accent};">${data.pct}%</p>
-        <p style="margin:8px 0 0;font-size:13px;color:rgba(255,255,255,0.6);">${s.scoreLabel}: ${data.score} / ${data.total}</p>
-      </td>
-    </tr>
-  </table>
-  <p style="margin:20px 0 0;">
-    <span style="display:inline-block;background:rgba(255,255,255,0.1);border:1px solid rgba(255,255,255,0.22);color:#ffffff;font-size:13px;font-weight:700;padding:6px 18px;border-radius:99px;">${data.passed ? s.passLabel : s.failLabel}</span>
-  </p>
-  <p style="margin:14px 0 6px;font-size:14px;color:rgba(255,255,255,0.78);line-height:1.6;">${data.passed ? s.passSubtext : s.failSubtext}</p>
-  <p style="font-size:14px;color:rgba(255,255,255,0.55);line-height:1.6;">${scoreMsg}</p>
+<div class="hero" style="text-align:center;padding-top:20px;">
+  <span class="chip-d">${s.eyebrow(skillName)}</span>
+  <p style="margin:0 0 6px;font-family:Manrope,-apple-system,Arial,sans-serif;font-size:84px;font-weight:800;color:#002b6d;line-height:1;letter-spacing:-3.4px;">${data.pct}<span style="font-size:34px;color:#5d7fd6;letter-spacing:-1px;">%</span></p>
+  <p style="margin:0 0 18px;font-size:14px;color:#5b6070;">${s.scoreLabel}: ${data.score} / ${data.total}</p>
+  <p style="margin:0 0 24px;">${statusPill(data.passed, data.passed ? s.passLabel : s.failLabel)}</p>
+  ${scoreSegments(data.score, data.total, locale, data.passed ? s.passSubtext : s.failSubtext)}
+  <p class="hero-sub" style="margin:16px auto 0;max-width:420px;font-size:15px;">${scoreMsg}</p>
 </div>
 ${catSection}
 ${studyTipsHtml}
 <div class="sec"${cats.length ? ' style="padding-top:0;"' : ''}>
-  <p style="margin:0;font-size:12px;color:#747782;line-height:1.6;">${s.thresholdNote}</p>
+  <p class="small">${s.thresholdNote}</p>
 </div>
-<div class="div"></div>
-<div class="sec" style="background:#f8f9fb;text-align:center;">
-  <p class="sec-label">${s.nextLabel}</p>
-  <p class="sec-title">${s.nextTitle}</p>
-  <p class="sec-body" style="margin-bottom:22px;">${s.nextBody}</p>
+<div class="sec tier" style="text-align:center;">
+  <span class="chip">${s.nextLabel}</span>
+  <h2 class="sec-title">${s.nextTitle}</h2>
+  <p class="sec-body" style="margin-bottom:24px;">${s.nextBody}</p>
   <a href="${practiceUrl}" class="btn">${s.nextBtn}</a>
 </div>`;
 

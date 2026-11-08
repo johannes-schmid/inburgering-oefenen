@@ -10,19 +10,20 @@ export function feedbackEmail({ firstName }: { firstName: string }, locale: Emai
   const contactUrl = 'https://inburgeringoefenen.nl/contact';
 
   const body = `
+<div class="hero">
+  <span class="chip-d">${s.label}</span>
+  <h1 class="hero-h1">${s.title}</h1>
+</div>
 <div class="sec">
-  <p class="sec-label">${s.label}</p>
-  <h1 class="sec-title">${s.title}</h1>
-  <p class="sec-body">${s.greeting(firstName)}</p>
+  <p class="sec-body" style="font-weight:600;color:#002b6d;">${s.greeting(firstName)}</p>
   <p class="sec-body" style="margin-top:14px;">${s.body1}</p>
   <p class="sec-body" style="margin-top:14px;">${s.body2}</p>
   <p class="sec-body" style="margin-top:14px;">${s.body3}</p>
   <a href="${contactUrl}" class="btn" style="margin-top:28px;">${s.cta}</a>
 </div>
-<div class="div"></div>
-<div class="sec">
+<div class="sec tier">
   <p class="sec-body">${s.closing}</p>
-  <p class="sec-body" style="margin-top:10px;font-weight:700;color:#002b6d;">Inburgering Oefenen</p>
+  <p class="sign">Inburgering Oefenen</p>
 </div>`;
 
   return renderEmail({ locale, title: s.title, bodyHtml: body, isTransactional: true });

@@ -1,6 +1,6 @@
 import { type EmailLocale, t } from '../i18n';
 import { renderEmail } from '../layout';
-import { packageCards, paymentBadges } from '../components';
+import { packageCards, paymentBadges, checkList } from '../components';
 
 export function abandonSubject(locale: EmailLocale): string {
   return t[locale].abandon.subject;
@@ -14,35 +14,32 @@ export function abandonEmail(firstName: string, locale: EmailLocale, unsubscribe
 
   /* No testimonials. The two that used to sit here were invented, and the product has no
      customers yet — see the fabricated-social-proof note in CLAUDE.md. */
-  const benefitsHtml = [...s.benefits].map(b => `
-<div style="display:flex;align-items:flex-start;gap:10px;padding:6px 0;">
-  <span style="color:#10b981;font-weight:700;font-size:15px;flex-shrink:0;margin-top:1px;">✓</span>
-  <span style="font-size:14px;color:#434651;line-height:1.6;">${b}</span>
-</div>`).join('');
+  const benefitsHtml = checkList([...s.benefits]);
 
   const body = `
 <div class="hero">
-  <p class="hero-eyebrow">${s.label}</p>
+  <span class="chip-d">${s.label}</span>
   <h1 class="hero-h1">${s.title}</h1>
-  <p class="hero-sub">${s.greeting(firstName)}</p>
-  <p class="hero-sub" style="margin-top:10px;">${s.body1}</p>
+  <p class="hero-greet">${s.greeting(firstName)}</p>
+  <p class="hero-sub">${s.body1}</p>
 </div>
 <div class="sec">
-  <p class="sec-label">${s.body2}</p>
-  <h2 class="sec-title" style="font-size:17px;margin-bottom:16px;">${s.benefitsLabel}</h2>
+  <p class="sec-body" style="margin-bottom:8px;">${s.body2}</p>
+  <h2 class="sec-title" style="font-size:19px;">${s.benefitsLabel}</h2>
   ${benefitsHtml}
 </div>
-<div class="div"></div>
-<div class="sec" style="background:#f8f9fb;">
-  <p class="sec-label" style="text-align:center;">${s.packagesLabel}</p>
+<div class="sec tier">
+  <h2 class="sec-title" style="text-align:center;">${s.packagesLabel}</h2>
   ${packageCards(locale, activateUrl)}
-  ${paymentBadges(locale)}
-  <p style="font-size:11px;color:#9CA3AF;text-align:center;margin-top:10px;">${s.secureMsg}</p>
-  <a href="${activateUrl}" class="btn" style="margin-top:20px;">${s.ctaBtn}</a>
+  <div style="text-align:center;margin-top:26px;">
+    <a href="${activateUrl}" class="btn">${s.ctaBtn}</a>
+    ${paymentBadges(locale)}
+    <p class="small" style="margin-top:10px;">${s.secureMsg}</p>
+  </div>
 </div>
 <div class="sec">
-  <p class="sec-body">${s.closingNote} <a href="mailto:${t[locale].common.support}" style="color:#fe762c;">${t[locale].common.support}</a></p>
-  <p class="sec-body" style="margin-top:10px;font-weight:700;color:#002b6d;">Inburgering Oefenen</p>
+  <p class="sec-body">${s.closingNote} <a href="mailto:${t[locale].common.support}">${t[locale].common.support}</a></p>
+  <p class="sign">Inburgering Oefenen</p>
 </div>`;
 
   return renderEmail({ locale, title: s.title, bodyHtml: body, unsubscribeUrl });

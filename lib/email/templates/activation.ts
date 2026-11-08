@@ -1,6 +1,6 @@
 import { type EmailLocale, t } from '../i18n';
 import { renderEmail } from '../layout';
-import { featureListDark } from '../components';
+import { checkList } from '../components';
 
 export function activationSubject(plan: string, locale: EmailLocale): string {
   return plan === 'premium_plus' ? t[locale].activation.subjectCompleet : t[locale].activation.subjectPremium;
@@ -19,22 +19,23 @@ export function activationEmail(
   const features = isCompleet ? [...s.featCompleet] : [...s.featPremium];
 
   const body = `
-<div class="sec">
-  <p class="sec-label">${s.label}</p>
-  <h1 class="sec-title">${s.title(planLabel)}</h1>
-  <p class="sec-body">${s.greeting(firstName)}</p>
-  <p class="sec-body" style="margin-top:12px;">${isCompleet ? s.introCompleet : s.introPremium}</p>
+<div class="hero">
+  <span class="chip-d">${s.label}</span>
+  <h1 class="hero-h1">${s.title(planLabel)}</h1>
+  <p class="hero-greet">${s.greeting(firstName)}</p>
+  <p class="hero-sub">${isCompleet ? s.introCompleet : s.introPremium}</p>
   <a href="${loginUrl}" class="btn" style="margin-top:28px;">${s.ctaText}</a>
-  <div class="feat" style="margin-top:28px;">
-    <p class="feat-title">${s.featuresLabel}</p>
-    ${featureListDark(features)}
+</div>
+<div class="sec">
+  <div class="panel">
+    <h2 class="sec-title" style="font-size:19px;">${s.featuresLabel}</h2>
+    ${checkList(features)}
   </div>
 </div>
-<div class="div"></div>
-<div class="sec">
-  <p class="sec-body">${s.supportText} <a href="mailto:${t[locale].common.support}" style="color:#fe762c;">${t[locale].common.support}</a></p>
+<div class="sec tier">
+  <p class="sec-body">${s.supportText} <a href="mailto:${t[locale].common.support}">${t[locale].common.support}</a></p>
   <p class="sec-body" style="margin-top:12px;">${s.closing}</p>
-  <p class="sec-body" style="margin-top:6px;font-weight:700;color:#002b6d;">Inburgering Oefenen</p>
+  <p class="sign">Inburgering Oefenen</p>
 </div>`;
 
   return renderEmail({

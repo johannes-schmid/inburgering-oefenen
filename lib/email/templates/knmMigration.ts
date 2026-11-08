@@ -1,5 +1,6 @@
 import { type EmailLocale, t } from '../i18n';
 import { renderEmail } from '../layout';
+import { checkList } from '../components';
 import { KNM, getFormat, DEFAULT_LEVEL } from '@/data/skills';
 import { MODULE_PRICE_CENTS, BUNDLE_PRICE_CENTS, euro } from '@/lib/pricing';
 import {
@@ -35,38 +36,37 @@ export function knmMigrationEmail(
   const s = t[locale].knmMigration;
   const url = knmMigrationLandingUrl(locale, segment);
 
-  const items = s.items.map(i => `
-<div style="display:flex;align-items:flex-start;gap:10px;padding:6px 0;">
-  <span style="color:#fe762c;font-weight:700;font-size:15px;flex-shrink:0;margin-top:1px;">✓</span>
-  <span style="font-size:14px;color:#434651;line-height:1.6;">${fill(i)}</span>
-</div>`).join('');
+  const items = checkList(s.items.map(fill));
 
   const body = `
 <div class="hero">
-  <img src="https://inburgeringoefenen.nl/images/knm-oefenen-logo-email.png" width="40" height="40" alt="KNM Oefenen" style="display:block;border-radius:10px;border:2px solid rgba(255,255,255,0.35);margin-bottom:14px;">
-  <p class="hero-eyebrow">${s.eyebrow}</p>
+  <table cellpadding="0" cellspacing="0" border="0" style="margin-bottom:18px;"><tr>
+    <td valign="middle"><img src="https://inburgeringoefenen.nl/images/knm-oefenen-logo-email.png" width="36" height="36" alt="KNM Oefenen" style="display:block;border-radius:9px;"></td>
+    <td valign="middle" style="padding:0 10px;"><span class="chip-d" style="margin:0;">${s.eyebrow}</span></td>
+  </tr></table>
   <h1 class="hero-h1">${s.headline}</h1>
-  <p class="hero-sub">${s.greeting(firstName)}</p>
-  <p class="hero-sub" style="margin-top:10px;">${s.intro}</p>
+  <p class="hero-greet">${s.greeting(firstName)}</p>
+  <p class="hero-sub">${s.intro}</p>
   <p class="hero-sub" style="margin-top:10px;">${segment === 'paid' ? s.introPaid : s.introFree}</p>
 </div>
 <div class="sec">
-  <p class="sec-label">${s.whatLabel}</p>
-  <h2 class="sec-title" style="font-size:17px;margin-bottom:16px;">${s.whatTitle}</h2>
+  <span class="chip">${s.whatLabel}</span>
+  <h2 class="sec-title" style="font-size:19px;">${s.whatTitle}</h2>
   ${items}
 </div>
-<div class="div"></div>
-<div class="sec" style="background:#f8f9fb;text-align:center;">
-  <p class="sec-label" style="text-align:center;">${s.codeLabel}</p>
-  <p style="display:inline-block;margin:6px 0 12px;font-family:Manrope,-apple-system,Arial,sans-serif;font-size:26px;font-weight:800;letter-spacing:3px;color:#002b6d;background:#ffffff;border:2px dashed rgba(254,118,44,0.6);border-radius:10px;padding:10px 22px;">${KNM_MIGRATION_CODE}</p>
-  <p class="sec-body" style="text-align:center;">${fill(s.codeBody)}</p>
-  <p style="font-size:12px;color:#747782;text-align:center;line-height:1.6;margin-top:8px;">${fill(s.priceLine)}</p>
-  <a href="${url}" class="btn" style="margin-top:20px;">${s.ctaBtn}</a>
+<div class="sec" style="padding-top:0;">
+  <div class="panel" style="text-align:center;">
+    <p class="small" style="font-weight:700;margin-bottom:12px;">${s.codeLabel}</p>
+    <p style="display:inline-block;margin:0 0 16px;font-family:Manrope,-apple-system,Arial,sans-serif;font-size:28px;font-weight:800;letter-spacing:4px;color:#002b6d;background:#ffffff;border-radius:16px;padding:12px 26px;box-shadow:0 12px 24px -16px rgba(0,43,109,0.4);">${KNM_MIGRATION_CODE}</p>
+    <p class="sec-body" style="font-size:15px;">${fill(s.codeBody)}</p>
+    <p class="small" style="margin-top:8px;">${fill(s.priceLine)}</p>
+    <a href="${url}" class="btn" style="margin-top:22px;">${s.ctaBtn}</a>
+  </div>
 </div>
-<div class="sec">
-  <p class="sec-body">${s.closingNote} <a href="mailto:${t[locale].common.support}" style="color:#fe762c;">${t[locale].common.support}</a></p>
-  <p class="sec-body" style="margin-top:10px;font-weight:700;color:#002b6d;">Inburgering Oefenen</p>
-  <p style="font-size:11px;color:#9CA3AF;margin-top:14px;">${s.whyNote}</p>
+<div class="sec tier">
+  <p class="sec-body">${s.closingNote} <a href="mailto:${t[locale].common.support}">${t[locale].common.support}</a></p>
+  <p class="sign">Inburgering Oefenen</p>
+  <p class="small" style="margin-top:16px;">${s.whyNote}</p>
 </div>`;
 
   return renderEmail({ locale, title: fill(s.subject), bodyHtml: body, unsubscribeUrl });

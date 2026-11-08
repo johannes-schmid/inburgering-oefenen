@@ -5,6 +5,24 @@ import { MODULE_PRICE_CENTS, BUNDLE_PRICE_CENTS, BUNDLE_SAVING_CENTS, euro } fro
 /** Where every pricing CTA in an e-mail goes: the public pricing page, readable without a login. */
 const PRICING_URL = 'https://inburgeringoefenen.nl/premium';
 
+const HEAD = "font-family:Manrope,-apple-system,Arial,sans-serif;";
+
+/** Een vinkje in een groen rondje (Glas G3). Tekst, geen SVG: Gmail haalt SVG weg. */
+export function check(onDark = false): string {
+  return `<span class="ck${onDark ? ' ck-d' : ''}">&#10003;</span>`;
+}
+
+/** Een lijst met vinkjes — de vervanger van de oude `feat-li` met een oranje ✓ ervoor. */
+export function checkList(items: string[], onDark = false): string {
+  const color = onDark ? 'rgba(255,255,255,0.86)' : '#434651';
+  return `<table width="100%" cellpadding="0" cellspacing="0" border="0">${items.map(i => `
+  <tr>
+    <td width="34" valign="top" style="padding:6px 0;">${check(onDark)}</td>
+    <td valign="top" style="padding:7px 0;font-size:15px;line-height:1.6;color:${color};">${i}</td>
+  </tr>`).join('')}
+</table>`;
+}
+
 /**
  * The two offers, priced from `lib/pricing.ts`.
  *
@@ -12,33 +30,40 @@ const PRICING_URL = 'https://inburgeringoefenen.nl/premium';
  * toegang" out of the copy file, which stopped being true the day the product moved to a
  * per-onderdeel monthly subscription — an e-mail quoting a price checkout will not honour is a
  * false price claim, not a stale string.
+ *
+ * Glas-prijsvergelijking: de aanbevolen kolom is één navy vlak, vinkjes groen, en geen oranje —
+ * het ene oranje van de mail is de hoofdknop.
  */
 export function packageCards(locale: EmailLocale, pricingUrl = PRICING_URL): string {
   const s = t[locale].common.packages;
-  const moduleFeatures = s.moduleFeatures.map(f => `<p class="pkg-feat">${f}</p>`).join('');
-  const bundleFeatures = s.bundleFeatures.map(f => `<p class="pkg-feat">${f}</p>`).join('');
   const bundleNote = s.bundleNote.replace('{saving}', euro(BUNDLE_SAVING_CENTS));
+  const side = dir(locale) === 'rtl' ? ['left', 'right'] : ['right', 'left'];
+  const feats = (items: readonly string[], onDark: boolean) => items.map(f => `
+      <tr>
+        <td width="28" valign="top" style="padding:5px 0;">${check(onDark)}</td>
+        <td valign="top" style="padding:6px 0;font-size:13px;line-height:1.5;color:${onDark ? 'rgba(255,255,255,0.86)' : '#434651'};">${f}</td>
+      </tr>`).join('');
 
   return `
-<table class="pkg-grid" width="100%" cellpadding="0" cellspacing="0" border="0">
+<table width="100%" cellpadding="0" cellspacing="0" border="0" style="margin-top:22px;">
   <tr>
-    <td class="pkg-cell" style="padding-right:8px;">
-      <div class="pkg-pro">
-        <p class="pkg-name">${s.moduleTitle}</p>
-        <p class="pkg-price">${euro(MODULE_PRICE_CENTS)}</p>
-        <p class="pkg-note">${s.perMonth} · ${s.cancelAny}</p>
-        ${moduleFeatures}
-        <a href="${pricingUrl}" class="pkg-btn pkg-btn-pro">${s.moduleBtn}</a>
+    <td class="pkg-cell" width="50%" valign="top" style="padding-${side[0]}:6px;">
+      <div style="text-align:start;background:#ffffff;border-radius:22px;padding:24px;box-shadow:0 12px 28px -18px rgba(0,43,109,0.35);">
+        <p style="${HEAD}font-size:15px;font-weight:800;color:#002b6d;margin:0;">${s.moduleTitle}</p>
+        <p style="${HEAD}font-size:32px;font-weight:800;color:#002b6d;letter-spacing:-1.2px;margin:10px 0 2px;">${euro(MODULE_PRICE_CENTS)}</p>
+        <p style="font-size:12px;color:#5b6070;margin:0 0 14px;">${s.perMonth} · ${s.cancelAny}</p>
+        <table width="100%" cellpadding="0" cellspacing="0" border="0">${feats(s.moduleFeatures, false)}</table>
+        <a href="${pricingUrl}" class="btn-w" style="display:block;margin-top:18px;padding:12px 18px;font-size:14px;">${s.moduleBtn}</a>
       </div>
     </td>
-    <td class="pkg-cell" style="padding-left:8px;">
-      <div class="pkg-compleet">
-        <span class="pkg-badge">${s.bestValue}</span>
-        <p class="pkg-name">${s.bundleTitle}</p>
-        <p class="pkg-price">${euro(BUNDLE_PRICE_CENTS)}</p>
-        <p class="pkg-note">${s.perMonth} · ${bundleNote}</p>
-        ${bundleFeatures}
-        <a href="${pricingUrl}" class="pkg-btn pkg-btn-compleet">${s.bundleBtn}</a>
+    <td class="pkg-cell" width="50%" valign="top" style="padding-${side[1]}:6px;">
+      <div style="text-align:start;background-color:#002b6d;background-image:linear-gradient(180deg,#002b6d 0%,#001a4a 100%);border-radius:22px;padding:24px;box-shadow:0 16px 32px -18px rgba(0,18,46,0.6);">
+        <span style="display:inline-block;background:rgba(255,255,255,0.14);color:#ffffff;font-size:11px;font-weight:700;border-radius:999px;padding:3px 10px;margin-bottom:10px;">${s.bestValue}</span>
+        <p style="${HEAD}font-size:15px;font-weight:800;color:#ffffff;margin:0;">${s.bundleTitle}</p>
+        <p style="${HEAD}font-size:32px;font-weight:800;color:#ffffff;letter-spacing:-1.2px;margin:10px 0 2px;">${euro(BUNDLE_PRICE_CENTS)}</p>
+        <p style="font-size:12px;color:#c9d6f2;margin:0 0 14px;">${s.perMonth} · ${bundleNote}</p>
+        <table width="100%" cellpadding="0" cellspacing="0" border="0">${feats(s.bundleFeatures, true)}</table>
+        <a href="${pricingUrl}" class="btn-w" style="display:block;margin-top:18px;padding:12px 18px;font-size:14px;box-shadow:none;">${s.bundleBtn}</a>
       </div>
     </td>
   </tr>
@@ -50,23 +75,15 @@ export function paymentBadges(locale: EmailLocale): string {
   return `<div class="pay-badges">${badges.map(b => `<span class="pay-badge">${b}</span>`).join('')}</div>`;
 }
 
-export function featureListDark(items: string[]): string {
-  return items.map(i => `<p class="feat-li">${i}</p>`).join('');
-}
-
 /**
  * The product showcase: the four onderdelen, then why the content is a docent's and not a model's.
  *
- * Replaces the KNM `featureDuo` — a woordkaarten flashcard mock-up and a seven-leermodules audio
- * player. Both surfaces are flagged off in `lib/features.ts` and have no A2 content, so the e-mail
- * was advertising two dead ends.
- *
  * Item counts and durations come from `data/skills.ts`, so they cannot drift from the taxonomy.
+ * Rijen wisselen van tint in plaats van een lijn ertussen (de no-line-regel).
  */
 export function skillsShowcase(locale: EmailLocale = 'nl'): string {
   const s = t[locale].common.skills;
-  const rtl = dir(locale) === 'rtl';
-  const align = rtl ? 'left' : 'right';
+  const align = dir(locale) === 'rtl' ? 'left' : 'right';
 
   // A2 only — these e-mails go to people in the A2 funnel and quote the A2 offer.
   //
@@ -75,57 +92,69 @@ export function skillsShowcase(locale: EmailLocale = 'nl'): string {
   // than a row that is not there. All four A2 formats are known, so nothing is dropped today.
   const rows = skillsAtLevel(DEFAULT_LEVEL)
     .filter(skill => skill.itemCount !== null && skill.durationMinutes !== null)
-    .map(skill => {
-    const itemCount = skill.itemCount as number;
-    const durationMinutes = skill.durationMinutes as number;
-    const items = skill.scoring === 'open' ? s.itemsOpen(itemCount) : s.itemsMcq(itemCount);
-    return `
+    .map((skill, i) => {
+      const itemCount = skill.itemCount as number;
+      const durationMinutes = skill.durationMinutes as number;
+      const items = skill.scoring === 'open' ? s.itemsOpen(itemCount) : s.itemsMcq(itemCount);
+      const bg = i % 2 === 0 ? '#eef2f8' : '#ffffff';
+      return `
 <tr>
-  <td style="padding:10px 0;border-bottom:1px solid rgba(255,255,255,0.08);">
-    <p style="margin:0;font-family:Manrope,-apple-system,Arial,sans-serif;font-size:14px;font-weight:800;color:#ffffff;">${s.names[skill.slug]}</p>
-    <p style="margin:2px 0 0;font-size:11px;color:rgba(255,255,255,0.45);">${items} · ${s.minutes(durationMinutes)}</p>
+  <td style="background:${bg};padding:13px 18px;border-radius:14px 0 0 14px;">
+    <p style="margin:0;${HEAD}font-size:15px;font-weight:800;color:#002b6d;">${s.names[skill.slug]}</p>
+    <p style="margin:2px 0 0;font-size:12px;color:#5b6070;">${items} · ${s.minutes(durationMinutes)}</p>
   </td>
-  <td align="${align}" style="padding:10px 0;border-bottom:1px solid rgba(255,255,255,0.08);">
-    <span style="display:inline-block;background:rgba(254,118,44,0.15);border:1px solid rgba(254,118,44,0.35);color:#fdba74;font-size:11px;font-weight:700;padding:3px 10px;border-radius:6px;">${skill.examCount}×</span>
-  </td>
+  <td align="${align}" style="background:${bg};padding:13px 18px;border-radius:0 14px 14px 0;${HEAD}font-size:15px;font-weight:800;color:#002b6d;white-space:nowrap;">${skill.examCount}&times;</td>
 </tr>`;
-  }).join('');
+    }).join('');
 
   return `
-<!-- ── The four onderdelen ── -->
-<div style="padding:28px 32px 24px;" dir="${dir(locale)}">
-  <p style="margin:0 0 4px;font-size:10px;font-weight:700;color:#fe762c;text-transform:uppercase;letter-spacing:1px;">${s.label}</p>
-  <p style="font-family:Manrope,-apple-system,Arial,sans-serif;font-size:18px;font-weight:800;color:#191c1e;margin:0 0 6px;letter-spacing:-0.3px;line-height:1.3;">${s.heading}</p>
-  <p style="font-size:13px;color:#434651;line-height:1.6;margin:0 0 16px;">${s.desc}</p>
-  <div style="background:linear-gradient(160deg,#001040 0%,#002b6d 55%,#0f3a8a 100%);border-radius:12px;padding:8px 18px 14px;">
-    <table width="100%" cellpadding="0" cellspacing="0" border="0">${rows}</table>
-  </div>
+<div class="sec" dir="${dir(locale)}">
+  <span class="chip">${s.label}</span>
+  <h2 class="sec-title">${s.heading}</h2>
+  <p class="sec-body" style="margin-bottom:20px;">${s.desc}</p>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">${rows}</table>
 </div>
-
-<div style="height:1px;background:#f0f2f5;margin:0 32px;"></div>
-
-<!-- ── Docent, not AI — the product's only real claim ── -->
-<div style="padding:28px 32px 24px;" dir="${dir(locale)}">
-  <p style="margin:0 0 4px;font-size:10px;font-weight:700;color:#fe762c;text-transform:uppercase;letter-spacing:1px;">${s.docentLabel}</p>
-  <p style="font-family:Manrope,-apple-system,Arial,sans-serif;font-size:18px;font-weight:800;color:#191c1e;margin:0 0 6px;letter-spacing:-0.3px;line-height:1.3;">${s.docentHeading}</p>
-  <p style="font-size:13px;color:#434651;line-height:1.6;margin:0;">${s.docentDesc}</p>
+<div class="sec" style="padding-top:0;" dir="${dir(locale)}">
+  <div class="panel">
+    <span class="chip" style="background:#ffffff;">${s.docentLabel}</span>
+    <h2 class="sec-title" style="font-size:19px;">${s.docentHeading}</h2>
+    <p class="sec-body" style="font-size:15px;">${s.docentDesc}</p>
+  </div>
 </div>`;
 }
 
-export function svgScoreRing(pct: number, score: number, total: number): string {
-  const radius = 54;
-  const circumference = 2 * Math.PI * radius;
-  const dashOffset = circumference - (pct / 100) * circumference;
-  const ringColor = pct >= 80 ? '#16a34a' : pct >= 60 ? '#fe762c' : '#dc2626';
+/**
+ * De score als Glas-ring, platgeslagen tot een balk: één segment per vraag, gevuld = goed,
+ * leeg = fout, en een oranje streepje op onze oefengrens van 60% (G5 "Score").
+ *
+ * We weten alleen het aantal goed, niet wélke vragen, dus de gevulde segmenten staan vooraan.
+ * Een tabel, geen SVG — Gmail toont SVG niet.
+ */
+export function scoreSegments(score: number, total: number, locale: EmailLocale, markLabel: string): string {
+  if (!total || total < 1) return '';
+  const rtl = dir(locale) === 'rtl';
+  const n = Math.min(total, 50);
+  const filled = Math.round((score / total) * n);
+  const cells = Array.from({ length: n }, (_, i) =>
+    `<td style="height:10px;border-radius:3px;${i < filled ? 'background:#2b7a5c;' : 'background:#ffffff;box-shadow:inset 0 0 0 1px #c9d6f2;'}"></td>`,
+  ).join('<td width="3" style="font-size:0;line-height:0;">&nbsp;</td>');
+
   return `
-<div style="text-align:center;margin-bottom:24px;">
-  <svg width="140" height="140" viewBox="0 0 140 140" xmlns="http://www.w3.org/2000/svg">
-    <circle cx="70" cy="70" r="${radius}" fill="none" stroke="#e0e3e5" stroke-width="12"/>
-    <circle cx="70" cy="70" r="${radius}" fill="none" stroke="${ringColor}" stroke-width="12"
-      stroke-dasharray="${circumference.toFixed(2)}" stroke-dashoffset="${dashOffset.toFixed(2)}"
-      stroke-linecap="round" transform="rotate(-90 70 70)"/>
-    <text x="70" y="62" text-anchor="middle" font-size="28" font-weight="800" fill="${ringColor}" font-family="Manrope,Arial,sans-serif">${pct}%</text>
-    <text x="70" y="82" text-anchor="middle" font-size="13" fill="#747782" font-family="Arial,sans-serif">${score} / ${total}</text>
-  </svg>
-</div>`;
+<table width="100%" cellpadding="0" cellspacing="0" border="0" style="max-width:420px;margin:0 auto;"><tr>${cells}</tr></table>
+<table width="100%" cellpadding="0" cellspacing="0" border="0" style="max-width:420px;margin:6px auto 0;">
+  <tr>
+    <td width="60%" style="border-${rtl ? 'left' : 'right'}:2px solid #fe762c;height:8px;font-size:0;line-height:0;">&nbsp;</td>
+    <td width="40%" style="font-size:0;line-height:0;">&nbsp;</td>
+  </tr>
+  <tr>
+    <td colspan="2" style="padding-top:6px;font-size:12px;color:#5b6070;text-align:center;">${markLabel}</td>
+  </tr>
+</table>`;
+}
+
+/** Een statuslabel op het lichte veld: groen met vinkje, of rood met kruis (Glas G3). */
+export function statusPill(ok: boolean, label: string): string {
+  return ok
+    ? `<span style="display:inline-block;background:#e2f1e9;color:#1c5a42;font-size:13px;font-weight:700;padding:6px 16px;border-radius:999px;">&#10003;&nbsp; ${label}</span>`
+    : `<span style="display:inline-block;background:#fbe9e9;color:#ba1a1a;font-size:13px;font-weight:700;padding:6px 16px;border-radius:999px;">&#10005;&nbsp; ${label}</span>`;
 }

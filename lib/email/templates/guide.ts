@@ -36,7 +36,7 @@ const COPY: Record<EmailLocale, Copy> = {
     exam: { inburgering: 'het inburgeringsexamen', taalexamens: 'je taalexamen', knm: 'je KNM-examen' },
     day2Subject: exam => `Wil je ${exam} halen? Begin met een gratis oefenexamen`,
     greeting: name => `Hoi ${name},`,
-    day2Headline: exam => `Wil je ${exam} <span style="color:#fe762c;">halen</span>?`,
+    day2Headline: exam => `Wil je ${exam} <span style="color:#5d7fd6;">halen</span>?`,
     day2Sub: title => `Je hebt de gids “${title}” gedownload. Lezen is stap één. Stap twee is kijken waar je nu staat.`,
     day2Label: 'Gratis',
     day2Title: 'Doe een gratis oefenexamen',
@@ -55,7 +55,7 @@ const COPY: Record<EmailLocale, Copy> = {
     exam: { inburgering: 'the inburgering exam', taalexamens: 'your language exam', knm: 'your KNM exam' },
     day2Subject: exam => `Want to pass ${exam}? Start with a free practice exam`,
     greeting: name => `Hi ${name},`,
-    day2Headline: exam => `Want to <span style="color:#fe762c;">pass</span> ${exam}?`,
+    day2Headline: exam => `Want to <span style="color:#5d7fd6;">pass</span> ${exam}?`,
     day2Sub: title => `You downloaded the guide “${title}”. Reading is step one. Step two is seeing where you stand right now.`,
     day2Label: 'Free',
     day2Title: 'Take a free practice exam',
@@ -74,7 +74,7 @@ const COPY: Record<EmailLocale, Copy> = {
     exam: { inburgering: 'امتحان الاندماج', taalexamens: 'امتحان اللغة', knm: 'امتحان KNM' },
     day2Subject: exam => `هل تريد اجتياز ${exam}؟ ابدأ باختبار تدريبي مجاني`,
     greeting: name => `مرحباً ${name}،`,
-    day2Headline: exam => `هل تريد <span style="color:#fe762c;">اجتياز</span> ${exam}؟`,
+    day2Headline: exam => `هل تريد <span style="color:#5d7fd6;">اجتياز</span> ${exam}؟`,
     day2Sub: title => `لقد حمّلت الدليل “${title}”. القراءة هي الخطوة الأولى. الخطوة الثانية هي معرفة مستواك الآن.`,
     day2Label: 'مجاناً',
     day2Title: 'قم باختبار تدريبي مجاني',
@@ -112,16 +112,14 @@ export function guideDay2Email(payload: GuidePayload, firstName: string, locale:
   <p class="hero-sub">${c.day2Sub(payload.title ?? '')}</p>
 </div>
 <div class="sec">
-  <p class="sec-label">${c.day2Label}</p>
+  <span class="chip">${c.day2Label}</span>
   <h2 class="sec-title">${c.day2Title}</h2>
-  <p class="sec-body" style="margin-bottom:24px;">${c.day2Body}</p>
+  <p class="sec-body" style="margin-bottom:26px;">${c.day2Body}</p>
   <a href="https://inburgeringoefenen.nl/oefenen" class="btn">${c.day2Btn}</a>
 </div>
-<div class="div"></div>
 ${skillsShowcase(locale)}
-<div class="div"></div>
-<div class="sec" style="background:#f8f9fb;">
-  <p class="sec-label" style="text-align:center;">${c.readyLabel}</p>
+<div class="sec tier" style="text-align:center;">
+  <h2 class="sec-title">${c.readyLabel}</h2>
   ${packageCards(locale)}
   ${paymentBadges(locale)}
 </div>`;
@@ -138,16 +136,16 @@ export function guideDay7Email(payload: GuidePayload, firstName: string, locale:
   const exam = examOf(c, payload.section);
   const body = `
 <div class="hero">
-  <p class="hero-eyebrow">${c.day7Eyebrow}</p>
+  <span class="chip-d">${c.day7Eyebrow}</span>
   <h1 class="hero-h1">${c.day7Headline(exam)}</h1>
   <p class="hero-sub">${c.day7Body(firstName)}</p>
 </div>
-<div class="sec" style="background:#f8f9fb;">
-  <p class="sec-label" style="text-align:center;">${c.day7Label}</p>
-  <h2 class="sec-title" style="text-align:center;">${c.day7Title}</h2>
+<div class="sec tier" style="text-align:center;">
+  <span class="chip">${c.day7Label}</span>
+  <h2 class="sec-title">${c.day7Title}</h2>
   ${packageCards(locale)}
   ${paymentBadges(locale)}
-  <p style="font-size:11px;color:#9CA3AF;text-align:center;margin-top:12px;">${c.secure}</p>
+  <p class="small" style="margin-top:10px;">${c.secure}</p>
 </div>`;
   return renderEmail({ locale, title: guideDay7Subject(payload, locale), bodyHtml: body, unsubscribeUrl });
 }

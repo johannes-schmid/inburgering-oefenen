@@ -108,6 +108,19 @@ const COPY = {
   },
 } as const;
 
+/**
+ * De datum die telt, als het Glas-"vandaag"-vlak: Nacht draagt gewicht (G1.4). Eén groot getal,
+ * daaronder wat het betekent.
+ */
+function dateCard(label: string, date: string, note: string | null, deadline: string | null): string {
+  return `<div style="background-color:#00122e;background-image:linear-gradient(160deg,#00122e 0%,#002b6d 100%);border-radius:22px;padding:28px;">
+  <p style="margin:0 0 8px;font-size:14px;color:#c9d6f2;">${label}</p>
+  <p style="margin:0;font-family:Manrope,-apple-system,Arial,sans-serif;font-size:36px;font-weight:800;color:#ffffff;letter-spacing:-1.4px;line-height:1.1;">${date}</p>
+  ${note ? `<p style="margin:12px 0 0;font-size:15px;color:#ffffff;line-height:1.6;">${note}</p>` : ''}
+  ${deadline ? `<p style="margin:14px 0 0;font-size:14px;color:#c9d6f2;">${deadline}</p>` : ''}
+</div>`;
+}
+
 const REMINDER = {
   nl: {
     subject: (c: string) => `Tijd om je aan te melden voor ${c}`,
@@ -154,16 +167,14 @@ export function timelineReminderEmail(
   const component = payload.bindingComponent ?? c.title;
   const body = `
 <div class="hero">
-  <p class="hero-eyebrow">${r.eyebrow}</p>
+  <span class="chip-d">${r.eyebrow}</span>
   <h1 class="hero-h1">${r.title}</h1>
   <p class="hero-sub">${r.lead(component, payload.headlineDate ?? '')}</p>
 </div>
 <div class="sec">
-  <p style="margin:0 0 4px;font-size:14px;color:#434651;">${c.headline}</p>
-  <p style="margin:0;font-family:Manrope,-apple-system,Arial,sans-serif;font-size:34px;font-weight:800;color:#a24000;letter-spacing:-1px;line-height:1.1;">${payload.headlineDate ?? '—'}</p>
-  ${payload.deadline ? `<p style="margin:14px 0 0;font-size:14px;color:#434651;"><strong>${c.deadline}:</strong> ${payload.deadline}</p>` : ''}
-  <a class="btn" style="margin-top:24px;" href="${payload.shareUrl}">${c.open}</a>
-  <p style="margin:20px 0 0;font-size:12px;color:#434651;line-height:1.7;">${c.disclaimer} ${payload.rulesVersion}.</p>
+  ${dateCard(c.headline, payload.headlineDate ?? '—', null, payload.deadline ? `${c.deadline}: ${payload.deadline}` : null)}
+  <a class="btn" style="margin-top:26px;" href="${payload.shareUrl}">${c.open}</a>
+  <p class="small" style="margin-top:22px;">${c.disclaimer} ${payload.rulesVersion}.</p>
 </div>
 `;
   return renderEmail({ locale, title: r.title, bodyHtml: body, unsubscribeUrl });
@@ -176,13 +187,14 @@ export function timelineEmailSubject(payload: TimelineEmailPayload, locale: Emai
 /** Everything interpolated here comes from the engine, never from the request body. */
 export function timelineEmail(payload: TimelineEmailPayload, locale: EmailLocale, unsubscribeUrl: string): string {
   const c = COPY[locale];
-  const cell = 'padding:10px 12px;border-bottom:1px solid #eceef0;font-size:14px;color:#191c1e;';
-  const head =
-    'padding:10px 12px;border-bottom:2px solid #e0e3e5;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.6px;color:#434651;text-align:start;';
+  /* Rijen wisselen van tint in plaats van een lijn ertussen (no-line-regel), zoals de Glas-vergelijking. */
+  const cell = 'padding:12px;font-size:14px;color:#191c1e;vertical-align:top;';
+  const head = 'padding:0 12px 10px;font-size:12px;font-weight:700;color:#5b6070;text-align:start;';
+  const tint = (i: number) => (i % 2 === 0 ? 'background:#eef2f8;' : '');
 
   const body = `
 <div class="hero">
-  <p class="hero-eyebrow">${c.eyebrow}</p>
+  <span class="chip-d">${c.eyebrow}</span>
   <h1 class="hero-h1">${c.title}</h1>
   <p class="hero-sub">${c.lead}</p>
 </div>
@@ -190,33 +202,36 @@ export function timelineEmail(payload: TimelineEmailPayload, locale: EmailLocale
 ${
   payload.headlineDate
     ? `<div class="sec">
-  <p style="margin:0 0 4px;font-size:14px;color:#434651;">${c.headline}</p>
-  <p style="margin:0;font-family:Manrope,-apple-system,Arial,sans-serif;font-size:34px;font-weight:800;color:#002b6d;letter-spacing:-1px;line-height:1.1;">${payload.headlineDate}</p>
-  ${payload.headlineWeeks !== null ? `<p style="margin:6px 0 0;font-size:16px;font-weight:700;color:#a24000;">${c.weeks(payload.headlineWeeks)}</p>` : ''}
-  ${payload.bindingComponent ? `<p style="margin:10px 0 0;font-size:14px;color:#434651;line-height:1.7;">${c.forComponent(payload.bindingComponent)}</p>` : ''}
-  ${payload.deadline ? `<p style="margin:14px 0 0;font-size:14px;color:#434651;"><strong>${c.deadline}:</strong> ${payload.deadline}</p>` : ''}
+  ${dateCard(
+    c.headline,
+    payload.headlineDate,
+    [payload.headlineWeeks !== null ? c.weeks(payload.headlineWeeks) : '', payload.bindingComponent ? c.forComponent(payload.bindingComponent) : '']
+      .filter(Boolean)
+      .join(' '),
+    payload.deadline ? `${c.deadline}: ${payload.deadline}` : null,
+  )}
 </div>`
     : ''
 }
 
-<div class="sec" style="padding-top:0;">
-  <table style="width:100%;border-collapse:collapse;">
+<div class="sec"${payload.headlineDate ? ' style="padding-top:0;"' : ''}>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
     <thead>
       <tr>
-        <th style="${head}">${c.thName}</th>
-        <th style="${head}">${c.thRegister}</th>
-        <th style="${head}">${c.thReady}</th>
-        <th style="${head}">${c.thCost}</th>
+        <th width="22%" style="${head}">${c.thName}</th>
+        <th width="26%" style="${head}">${c.thRegister}</th>
+        <th width="32%" style="${head}">${c.thReady}</th>
+        <th width="20%" style="${head}">${c.thCost}</th>
       </tr>
     </thead>
     <tbody>
       ${payload.rows
         .map(
-          r => `<tr>
-        <td style="${cell}font-weight:700;">${r.label}</td>
-        <td style="${cell}">${r.registerBy ?? '—'}</td>
-        <td style="${cell}color:#434651;">${r.readyBy ?? '—'}</td>
-        <td style="${cell}">${r.fee}<br><span style="font-size:12px;color:#434651;">${r.payer}</span></td>
+          (r, i) => `<tr>
+        <td style="${cell}${tint(i)}border-radius:12px 0 0 12px;font-weight:700;color:#002b6d;">${r.label}</td>
+        <td style="${cell}${tint(i)}">${r.registerBy ?? '—'}</td>
+        <td style="${cell}${tint(i)}color:#434651;">${r.readyBy ?? '—'}</td>
+        <td style="${cell}${tint(i)}border-radius:0 12px 12px 0;">${r.fee}<br><span style="font-size:12px;color:#5b6070;">${r.payer}</span></td>
       </tr>`,
         )
         .join('')}
@@ -225,22 +240,24 @@ ${
 </div>
 
 <div class="sec" style="padding-top:0;">
-  <p class="sec-label">${c.costTitle}</p>
-  <table style="width:100%;border-collapse:collapse;">
-    <tr>
-      <td style="${cell}">${c.costBest}</td>
-      <td style="${cell}text-align:end;font-weight:700;">${payload.costBest}</td>
-    </tr>
-    <tr>
-      <td style="${cell}">${c.costExpected}</td>
-      <td style="${cell}text-align:end;font-weight:700;">${payload.costExpected}</td>
-    </tr>
-  </table>
+  <div class="panel">
+    <h2 class="sec-title" style="font-size:18px;">${c.costTitle}</h2>
+    <table width="100%" cellpadding="0" cellspacing="0" border="0">
+      <tr>
+        <td style="padding:6px 0;font-size:15px;color:#434651;">${c.costBest}</td>
+        <td style="padding:6px 0;text-align:end;font-family:Manrope,-apple-system,Arial,sans-serif;font-size:18px;font-weight:800;color:#002b6d;">${payload.costBest}</td>
+      </tr>
+      <tr>
+        <td style="padding:6px 0;font-size:15px;color:#434651;">${c.costExpected}</td>
+        <td style="padding:6px 0;text-align:end;font-family:Manrope,-apple-system,Arial,sans-serif;font-size:18px;font-weight:800;color:#002b6d;">${payload.costExpected}</td>
+      </tr>
+    </table>
+  </div>
 </div>
 
-<div class="sec" style="padding-top:0;">
+<div class="sec tier">
   <a class="btn" href="${payload.shareUrl}">${c.open}</a>
-  <p style="margin:20px 0 0;font-size:12px;color:#434651;line-height:1.7;">${c.disclaimer} ${payload.rulesVersion}.</p>
+  <p class="small" style="margin-top:22px;">${c.disclaimer} ${payload.rulesVersion}.</p>
 </div>
 `;
 
