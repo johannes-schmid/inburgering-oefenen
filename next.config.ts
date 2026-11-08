@@ -126,13 +126,8 @@ const nextConfig: NextConfig = {
 
   async redirects() {
     return [
-      // www → apex
-      {
-        source: '/:path*',
-        has: [{ type: 'host', value: 'www.inburgeringoefenen.nl' }],
-        destination: 'https://inburgeringoefenen.nl/:path*',
-        permanent: true,
-      },
+      /* www → apex staat sinds 08-11-2026 als domeinomleiding in Vercel (Domains → www, 308) en
+       * niet meer hier: die antwoordt aan de rand, vóór de app. */
       // Root → default locale
       { source: '/', destination: '/nl', permanent: true },
       /* Variant B was de proefversie van de homepage op /home-b; sinds 15-10 staat ze op /. */
