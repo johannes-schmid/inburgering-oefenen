@@ -47,9 +47,10 @@ export type BoardProps = {
   google: { clicks: number; prev: number } | null;
   bing: Window28 | null;
   geoNote: string;
+  trend?: ReactNode;
 };
 
-export function SeoBoard({ structure, funnel, indexing, google, bing, geoNote }: BoardProps) {
+export function SeoBoard({ structure, funnel, indexing, google, bing, geoNote, trend }: BoardProps) {
   const [filter, setFilter] = useState<Filter | null>(null);
   const [kind, setKind] = useState<KindTab>('all');
   const [q, setQ] = useState('');
@@ -174,6 +175,8 @@ export function SeoBoard({ structure, funnel, indexing, google, bing, geoNote }:
           {live && byKind && <FunnelDetail total={live.total} byKind={byKind} />}
         </div>
       </div>
+
+      {trend && <div className="mt-3">{trend}</div>}
 
       <section aria-label="Filters" className="mt-3 grid grid-cols-1 gap-3 md:grid-cols-3">
         <FilterCard on={filter === 'action'} onClick={() => choose('action')} n={counts.action} tone="text-[var(--fout)]"

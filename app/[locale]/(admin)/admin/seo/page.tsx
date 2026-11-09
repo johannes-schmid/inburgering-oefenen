@@ -12,6 +12,9 @@ import {
   type Diagnosis, type LedgerEntry, type Owner, type Recommendation,
 } from '@/lib/admin/seo-model';
 import { fetchSeoFunnel } from '@/lib/admin/seo-funnel';
+import { loadBacklinks } from '@/lib/admin/seo-backlinks';
+import Link from 'next/link';
+import { SeoBacklinks } from './_components/SeoBacklinks';
 import { SeoBoard } from './_components/SeoBoard';
 import { SeoTrendChart } from './_components/SeoTrendChart';
 
@@ -26,16 +29,30 @@ export const dynamic = 'force-dynamic';
  * de bronnen (Google, Bing, AI-zoekmachines), en welke pagina vraagt wat (de sitestructuur, elke
  * pagina op 10). Sinds 09-11 is dat één bord (`SeoBoard`): widgets bovenaan die de pagina-tabel
  * filteren, met de funnel uit GA4 en de indexering uit URL Inspection. Diagnose, to-dolijst,
- * concurrenten en cijfers staan ingeklapt onder "More".
+ * concurrenten en cijfers staan ingeklapt onder "More". De tab Backlinks (`?tab=backlinks`) toont
+ * wie nu naar ons linkt (Bing) en de nagelopen kandidaten uit `seo-agent/backlink-prospects.json`.
  * Google komt live uit Search Console (`lib/admin/seo-live.ts`), de rest uit `seo-agent/`.
  */
-export default async function SeoPage() {
+export default async function SeoPage({ searchParams }: { searchParams: Promise<{ tab?: string }> }) {
+  const tab = (await searchParams).tab === 'backlinks' ? 'backlinks' : 'overview';
+  if (tab === 'backlinks') {
+    const [data, backlinks] = await Promise.all([loadSeoCockpit(), loadBacklinks()]);
+    return (
+      <div className="max-w-6xl">
+        <Header data={data} />
+        <Tabs active="backlinks" />
+        <SeoBacklinks data={backlinks} />
+      </div>
+    );
+  }
+
   const [data, pulls, funnel] = await Promise.all([loadSeoCockpit(), fetchSeoPulls(), fetchSeoFunnel()]);
   const today = new Date().toISOString().slice(0, 10);
 
   return (
     <div className="max-w-6xl">
       <Header data={data} />
+      <Tabs active="overview" />
       {data.structure ? (
         <SeoBoard
           structure={data.structure}
@@ -44,6 +61,11 @@ export default async function SeoPage() {
           google={data.inburgering.totals ? { clicks: data.inburgering.totals.current.clicks, prev: data.inburgering.totals.previous.clicks } : null}
           bing={data.inburgering.bing}
           geoNote={geoNote(data)}
+          trend={
+            <CardShell title="Impressions and clicks per day" note="Google and Bing side by side, with every change we made">
+              <TrendCard data={data} />
+            </CardShell>
+          }
         />
       ) : (
         <Empty>No page triage yet. Run node scripts/seo-agent/pages.mjs.</Empty>
@@ -53,9 +75,6 @@ export default async function SeoPage() {
         <h2 id="more" className="text-xl font-headline font-bold tracking-tight text-on-surface">More</h2>
         <p className="mt-1 mb-4 text-sm text-on-surface-variant">The background behind the numbers. Closed until you need it.</p>
         <div className="space-y-3">
-          <Fold title="Impressions per day" note="Google and Bing side by side, with every change we made">
-            <TrendCard data={data} />
-          </Fold>
           <SiteWideActions data={data} />
           {data.diagnosis && (
             <Fold title="Why Google shows us less" note="The diagnosis, with live evidence">
@@ -148,6 +167,27 @@ function ExtLink({ href, children, className = '' }: { href: string; children: R
 
 function Chip({ children, className = 'bg-surface-container text-on-surface-variant' }: { children: ReactNode; className?: string }) {
   return <span className={`inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-[11px] font-semibold ${className}`}>{children}</span>;
+}
+
+/* ── Tabs ───────────────────────────────────────────────────────────────── */
+
+const TABS = [['overview', 'Overview', '?'], ['backlinks', 'Backlinks', '?tab=backlinks']] as const;
+
+function Tabs({ active }: { active: (typeof TABS)[number][0] }) {
+  return (
+    <nav aria-label="SEO views" className="mb-5 inline-flex rounded-xl bg-surface-container-low p-1 text-sm">
+      {TABS.map(([key, label, href]) => (
+        <Link
+          key={key}
+          href={href}
+          aria-current={active === key ? 'page' : undefined}
+          className={`rounded-lg px-4 py-1.5 font-semibold transition-transform duration-150 ease-out focus-visible:outline-none focus-visible:shadow-[var(--ring-selected)] active:scale-[0.97] motion-reduce:transition-none ${active === key ? 'bg-surface-container-lowest text-primary shadow-[var(--shadow-ambient)]' : 'text-on-surface-variant hover:text-on-surface'}`}
+        >
+          {label}
+        </Link>
+      ))}
+    </nav>
+  );
 }
 
 /* ── Kop ────────────────────────────────────────────────────────────────── */
