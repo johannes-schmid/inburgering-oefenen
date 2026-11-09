@@ -1,0 +1,166 @@
+{
+  "updated": "2026-11-09",
+  "note": "Met de hand nagelopen kandidaten voor een backlink. Zet status op asked, listed of declined; listed volgt ook vanzelf uit Bing.",
+  "prospects": [
+    {
+      "domain": "knmoefenen.nl",
+      "url": "https://knmoefenen.nl",
+      "kind": "own-site",
+      "why": "Sister site with the traffic and authority; today it links to inburgeringoefenen.nl only from two navigation items ('Taalexamens A2 oefenen' and 'Inburgering Oefenen — het hele examen'), not from the body text.",
+      "how": "Link from its relevant pages to the matching inburgeringoefenen.nl pages, using in-content contextual links (KNM pages to the A2/B1 taalonderdelen and ONA, results pages to the full exam), not just the nav.",
+      "effort": "low",
+      "verified": "2026-11-09",
+      "status": "todo"
+    },
+    {
+      "domain": "dikverhaar.nl",
+      "url": "https://www.dikverhaar.nl/inburgeringsexamen-oefenen/",
+      "kind": "resource-list",
+      "why": "An Amsterdam NT2 teacher's 'oefenen voor het examen' page linking many practice sites, including commercial ones (adappel.nl, virtueletraining.com, lingua-incognita.nl, knoestertrainingen.nl, nt2taalmenu.nl). It has KNM and ONA sections, says no ONA practice material exists, and much of it looks dated (2016/2018 files, old KNS wording).",
+      "how": "Email Dik Verhaar through the contact address on his site: offer an up-to-date A2/B1 + KNM + ONA practice resource checked by an NT2 teacher, pointing to the free taster and the ONA module as a fix for his 'no ONA practice' note.",
+      "effort": "low",
+      "verified": "2026-11-09",
+      "status": "todo"
+    },
+    {
+      "domain": "samenspraakbest.nl",
+      "url": "https://www.samenspraakbest.nl/informatie/links/",
+      "kind": "organisation",
+      "why": "The Best taalcoach foundation (part of Het Begint met Taal) keeps a links page with an 'Oefenen' section listing nt2taalmenu.nl A2/B1/KNS pages and inburgeren.nl practice exams.",
+      "how": "Email the secretary address on the page asking to add us under 'Oefenen' as an inburgering practice-exam resource for their taalcoaches and learners.",
+      "effort": "low",
+      "verified": "2026-11-09",
+      "status": "todo"
+    },
+    {
+      "domain": "digitale-sociale-kaart.nl",
+      "url": "https://www.digitale-sociale-kaart.nl/organisatie/nt2taalmenu.html",
+      "kind": "directory",
+      "why": "The Digitale Sociale Kaart Nederland lists NT2TaalMenu as an organisation with services per level ('Niveau A2 (Inburgeringsexamen)'), and the page invites organisations to register ('meld uw organisatie aan').",
+      "how": "Register inburgeringoefenen.nl as an organisation with services for A2, B1, KNM and ONA through the site's 'Aanmelden en wijzigen' route.",
+      "effort": "low",
+      "verified": "2026-11-09",
+      "status": "todo"
+    },
+    {
+      "domain": "expat.com",
+      "url": "https://www.expat.com/en/business/142511_inburgeringprepcom.html",
+      "kind": "directory",
+      "why": "Expat.com's Netherlands business directory (Education > Language institutions) already lists competitors inburgeringprep.com and Inburgering.org.",
+      "how": "Add a business listing for inburgeringoefenen.nl in the same Language institutions category, through the directory's add-business flow (check the FAQ for whether a basic listing is free).",
+      "effort": "low",
+      "verified": "2026-11-09",
+      "status": "todo"
+    },
+    {
+      "domain": "welcometonijmegen.nl",
+      "url": "https://welcometonijmegen.nl/en/integration-in-dutch-society/tips-and-exams/",
+      "kind": "organisation",
+      "why": "The Yalla Foundation's newcomer guide has a 'Tips & Test-exams' page linking practice sites (basisexameninburgering.nl, toetskns.nl, knoestertrainingen.nl/examens, taalspot.nl, nt2taalmenu.nl). Some links look stale: knoestertrainingen.nl announces a rename to Lingua Academy, and a teacher's blog calls it unreachable.",
+      "how": "Use the contact page linked from the site menu to suggest replacing stale entries with our free A2/B1/KNM taster; also ask for a spot on their 'Apps & websites to practice Dutch' page.",
+      "effort": "medium",
+      "verified": "2026-11-09",
+      "status": "todo"
+    },
+    {
+      "domain": "bplusc.nl",
+      "url": "https://www.bplusc.nl/taalhuis/nederlands-leren/oefenen-in-het-taalhuis.html",
+      "kind": "bibliotheek",
+      "why": "The BplusC Taalhuis practice list already includes commercial tools (Babbel, Learn Dutch Online, Simya) next to NT2 TaalMenu, and has its own 'Oefenen met informatie en inburgering' section that only links to inburgeren.nl.",
+      "how": "Email the Taalhuis/BplusC editors asking to add us to the inburgering section as a free, teacher-checked practice exam for every onderdeel.",
+      "effort": "medium",
+      "verified": "2026-11-09",
+      "status": "todo"
+    },
+    {
+      "domain": "bibliotheekdenhaag.nl",
+      "url": "https://www.bibliotheekdenhaag.nl/leren/nederlands-leren/online-nederlands-leren.html",
+      "kind": "bibliotheek",
+      "why": "The Bibliotheek Den Haag 'online Nederlands leren' page lists NT2school.nl (with KNM practice exams) and Ad Appel Taaltrainingen (inburgering and staatsexamen) but has no dedicated inburgering exam-practice entry.",
+      "how": "Email Taalhuis Den Haag / the library editors asking to add us as an exam-format practice option (free taster, exam 1 free) for learners preparing for A2/B1 and KNM.",
+      "effort": "medium",
+      "verified": "2026-11-09",
+      "status": "todo"
+    },
+    {
+      "domain": "bibliotheekzuidkennemerland.nl",
+      "url": "https://www.bibliotheekzuidkennemerland.nl/onderwijs/nederlands-leren/thuis-oefenen.html",
+      "kind": "bibliotheek",
+      "why": "The 'Websites om thuis Nederlands mee te oefenen' list includes the exam-practice site basisexameninburgering.nl next to nt2taalmenu.nl and oefenen.nl, so an exam-practice entry fits.",
+      "how": "Email the library's Nederlands leren team asking to add us as a free A2/B1/KNM practice exam site next to basisexameninburgering.nl.",
+      "effort": "medium",
+      "verified": "2026-11-09",
+      "status": "todo"
+    },
+    {
+      "domain": "uilentaal.wordpress.com",
+      "url": "https://uilentaal.wordpress.com/2023/09/14/inburgering-inburgeren-heel-veel-oefenen/",
+      "kind": "resource-list",
+      "why": "An NT2 teacher's 'héél véél oefenen' post for her students, linking 12+ practice sources including commercial ones (Ad Appel, virtueletraining.com, taalpraktijk-nt2.nl). It flags knoestertrainingen.nl as unreachable, so a replacement link is a natural ask.",
+      "how": "Contact the blog author through WordPress and offer us as a replacement for the dead Knoester link (A2/B1 practice exams, all four skills plus KNM).",
+      "effort": "medium",
+      "verified": "2026-11-09",
+      "status": "todo"
+    },
+    {
+      "domain": "bibliotheekveldhoven.nl",
+      "url": "https://www.bibliotheekveldhoven.nl/educatie/digitaalhuis/ik-wil-nederlands-leren.html",
+      "kind": "bibliotheek",
+      "why": "The DigiTaalhuis 'Ik wil Nederlands leren' page offers inburgering advice and links NT2 TaalMenu specifically as preparation for the inburgeringsexamen and Staatsexamen; it has no dedicated exam-practice site.",
+      "how": "Email the DigiTaalhuis asking to add us as an inburgering exam-practice site next to NT2 TaalMenu.",
+      "effort": "medium",
+      "verified": "2026-11-09",
+      "status": "todo"
+    },
+    {
+      "domain": "basisvaardigheden.nl",
+      "url": "https://basisvaardigheden.nl/voor-vrijwilligers/oefenmaterialen/nt2-taalmenu",
+      "kind": "resource-list",
+      "why": "Expertisepunt Basisvaardigheden runs a practice-material database for volunteers (106 materials, with an NT2 filter) where NT2 TaalMenu has its own entry.",
+      "how": "Email info@basisvaardigheden.nl (on the page) asking to add inburgeringoefenen.nl as an NT2 practice material for A2/B1/KNM.",
+      "effort": "medium",
+      "verified": "2026-11-09",
+      "status": "todo"
+    },
+    {
+      "domain": "expatica.com",
+      "url": "https://www.expatica.com/nl/directory/education/language-schools/",
+      "kind": "directory",
+      "why": "Expatica's NL Language Schools directory lists Dutch providers, including civic-integration exam prep (Tulp Educatie, Kickstart), but no online inburgering practice platform.",
+      "how": "Submit a listing through the directory's 'Add listing' flow; check whether a basic listing is free or paid first.",
+      "effort": "medium",
+      "verified": "2026-11-09",
+      "status": "todo"
+    },
+    {
+      "domain": "taalthuis.nl",
+      "url": "https://www.taalthuis.nl/learn-dutch-for-free/",
+      "kind": "school",
+      "why": "The 'Learn Dutch for free' page of the Haarlem language school Taalthuis links free practice sites (oefenen.nl, nt2taalmenu.nl, mijnwoordenboek.nl) but nothing for inburgering exam practice.",
+      "how": "Email Taalthuis suggesting we be added as the free inburgering exam-practice resource (taster plus exam 1 free); it complements their courses rather than competing with them.",
+      "effort": "medium",
+      "verified": "2026-11-09",
+      "status": "todo"
+    },
+    {
+      "domain": "dutchreview.com",
+      "url": "https://dutchreview.com/find-a-business/dutch-language-schools/inburgering-org/",
+      "kind": "directory",
+      "why": "DutchReview's 'Find a…' business directory has a 'Dutch Language School' category where competitor Inburgering.org has an online-provider listing; its inburgering features are sponsored.",
+      "how": "Ask DutchReview (via Advertise with DutchReview) for a listing in the Dutch Language School category or a feature on teacher-checked practice; budget for it as paid placement.",
+      "effort": "high",
+      "verified": "2026-11-09",
+      "status": "todo"
+    },
+    {
+      "domain": "access-nl.org",
+      "url": "https://access-nl.org/partner/inburgering-org/",
+      "kind": "organisation",
+      "why": "ACCESS NL, the expat-support non-profit, lists competitor Inburgering.org as an ACCESS Partner under Education & Childcare > Learning Dutch.",
+      "how": "Email the Relationship Management Department (address on the become-a-partner page) about the service-provider partner programme; fees and requirements are in their programme documents.",
+      "effort": "high",
+      "verified": "2026-11-09",
+      "status": "todo"
+    }
+  ]
+}
