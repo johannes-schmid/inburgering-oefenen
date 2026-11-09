@@ -11,7 +11,8 @@ import {
   byPriority, isLive, ledgerStatus, planAmberWeek,
   type Diagnosis, type LedgerEntry, type Owner, type Recommendation,
 } from '@/lib/admin/seo-model';
-import { SeoSiteStructure } from './_components/SeoSiteStructure';
+import { fetchSeoFunnel } from '@/lib/admin/seo-funnel';
+import { SeoBoard } from './_components/SeoBoard';
 import { SeoTrendChart } from './_components/SeoTrendChart';
 
 export const dynamic = 'force-dynamic';
@@ -23,29 +24,39 @@ export const dynamic = 'force-dynamic';
  * voor de docent of een kandidaat. Eén pagina, drie vragen (besluit eigenaar, 26-10): hoe gezond
  * is de site (score op 100, per week bewaard in `seo-agent/data/history/health.json`), wat zeggen
  * de bronnen (Google, Bing, AI-zoekmachines), en welke pagina vraagt wat (de sitestructuur, elke
- * pagina op 10). Diagnose, to-dolijst, concurrenten en cijfers staan ingeklapt onder "More".
+ * pagina op 10). Sinds 09-11 is dat één bord (`SeoBoard`): widgets bovenaan die de pagina-tabel
+ * filteren, met de funnel uit GA4 en de indexering uit URL Inspection. Diagnose, to-dolijst,
+ * concurrenten en cijfers staan ingeklapt onder "More".
  * Google komt live uit Search Console (`lib/admin/seo-live.ts`), de rest uit `seo-agent/`.
  */
 export default async function SeoPage() {
-  const [data, pulls] = await Promise.all([loadSeoCockpit(), fetchSeoPulls()]);
+  const [data, pulls, funnel] = await Promise.all([loadSeoCockpit(), fetchSeoPulls(), fetchSeoFunnel()]);
   const today = new Date().toISOString().slice(0, 10);
 
   return (
     <div className="max-w-6xl">
       <Header data={data} />
-      <HealthBand data={data} />
-      <SourceTiles data={data} />
-      <SiteWideActions data={data} />
-      <div className="mt-10">
-        {data.structure
-          ? <SeoSiteStructure structure={data.structure} />
-          : <Empty>No page triage yet. Run node scripts/seo-agent/pages.mjs.</Empty>}
-      </div>
+      {data.structure ? (
+        <SeoBoard
+          structure={data.structure}
+          funnel={funnel}
+          indexing={data.indexing}
+          google={data.inburgering.totals ? { clicks: data.inburgering.totals.current.clicks, prev: data.inburgering.totals.previous.clicks } : null}
+          bing={data.inburgering.bing}
+          geoNote={geoNote(data)}
+        />
+      ) : (
+        <Empty>No page triage yet. Run node scripts/seo-agent/pages.mjs.</Empty>
+      )}
 
       <section className="mt-12" aria-labelledby="more">
         <h2 id="more" className="text-xl font-headline font-bold tracking-tight text-on-surface">More</h2>
-        <p className="mt-1 mb-4 text-sm text-on-surface-variant">The background behind the scores. Closed until you need it.</p>
+        <p className="mt-1 mb-4 text-sm text-on-surface-variant">The background behind the numbers. Closed until you need it.</p>
         <div className="space-y-3">
+          <Fold title="Impressions per day" note="Google and Bing side by side, with every change we made">
+            <TrendCard data={data} />
+          </Fold>
+          <SiteWideActions data={data} />
           {data.diagnosis && (
             <Fold title="Why Google shows us less" note="The diagnosis, with live evidence">
               <DiagnosisCard diagnosis={data.diagnosis} evidence={data.evidence} recovery={data.recovery.bingRatio} />
@@ -77,6 +88,13 @@ export default async function SeoPage() {
       </section>
     </div>
   );
+}
+
+/** De AI-widget meet bezoeken (GA4); of een assistent ons ook *noemt*, meet de GEO-run. */
+function geoNote(data: SeoCockpit): string {
+  const geo = data.sources.find(s => s.key === 'geo');
+  if (geo?.state === 'ok') return `Citations measured in ${data.latestWeek}; see Friday's data pull under More.`;
+  return 'Visits from GA4. Whether AI assistants cite us is not measured yet: the GEO run has never run.';
 }
 
 /* ── Opmaak ─────────────────────────────────────────────────────────────── */
@@ -179,153 +197,16 @@ function Header({ data }: { data: SeoCockpit }) {
   );
 }
 
-/* ── Hoe gezond is de site ──────────────────────────────────────────────── */
+/* ── Vertoningen per dag ─────────────────────────────────────────────────── */
 
-const toneFor100 = (n: number) =>
-  n >= 80 ? 'text-[var(--goed-ink)]' : n >= 50 ? 'text-[#a24000]' : 'text-[var(--fout)]';
-
-function HealthBand({ data }: { data: SeoCockpit }) {
-  const st = data.structure;
-  const r = data.recovery;
-  const history = st?.history ?? [];
-  const last = history.at(-1);
-  const score = st?.site ?? null;
-  const delta = score !== null && last?.site != null ? score - last.site : null;
-  const peakMonth = r.googlePeakDate
-    ? new Date(`${r.googlePeakDate}T00:00:00Z`).toLocaleDateString('en-GB', { month: 'long', timeZone: 'UTC' })
-    : '';
-
-  return (
-    <section className="mb-5 grid grid-cols-1 gap-x-8 gap-y-4 rounded-2xl bg-surface-container-lowest p-5 shadow-[var(--shadow-ambient)] sm:p-6 md:grid-cols-[auto_minmax(0,1fr)]" aria-label="Site health">
-      <div className="flex items-end gap-4 md:flex-col md:items-start md:gap-1">
-        <p className="text-xs font-medium text-on-surface-variant">Site health</p>
-        <p className="flex items-baseline gap-1 font-headline font-bold tracking-tight tabular-nums">
-          <span className={`text-6xl leading-none ${score === null ? 'text-on-surface-variant' : toneFor100(score)}`}>{score ?? 'n/a'}</span>
-          <span className="text-lg text-on-surface-variant">/100</span>
-        </p>
-        {delta !== null && (
-          <p className="text-xs text-on-surface-variant tabular-nums">
-            <span className={`font-semibold ${delta > 0 ? 'text-[var(--goed)]' : delta < 0 ? 'text-[#a24000]' : ''}`}>{delta > 0 ? '+' : ''}{delta}</span> since {last!.week.replace(/^\d{4}-/, '')}
-          </p>
-        )}
-      </div>
-
-      <div className="min-w-0 md:self-center">
-        {r.tone !== 'onbekend' && r.googleRatio !== null ? (
-          <p className="max-w-3xl text-lg font-headline font-bold leading-snug tracking-tight text-balance text-on-surface">
-            Google shows the site at {pct(r.googleRatio)} of its best weeks{peakMonth && ` (${peakMonth})`}.
-            {r.bingRatio !== null && <> Bing is at {pct(r.bingRatio)}.</>}
-          </p>
-        ) : (
-          <p className="text-sm text-on-surface-variant">Not enough daily numbers yet to judge a trend.</p>
-        )}
-        <p className="mt-1.5 max-w-3xl text-sm leading-relaxed text-on-surface-variant">
-          {r.cause === 'google' && <>Bing didn&apos;t drop, so the problem is how Google judges the site, not the site itself. </>}
-          {r.cause === 'beide' && <>Bing dropped too, so look at the site first: a deploy, the sitemap or indexing. </>}
-          The score weighs every page by its search demand: removing weak pages and fixing big ones moves it most.
-        </p>
-        {history.length > 0 && (
-          <ol className="mt-3 flex flex-wrap items-center gap-1.5 text-xs tabular-nums" aria-label="Score per week">
-            {history.map(h => (
-              <li key={h.week} className="rounded-md bg-surface-container-low px-2 py-1 text-on-surface-variant">
-                {h.week.replace(/^\d{4}-/, '')} <span className="font-semibold text-on-surface">{h.site ?? 'n/a'}</span>
-              </li>
-            ))}
-            {score !== null && (
-              <li className="rounded-md bg-[rgba(0,43,109,0.08)] px-2 py-1 text-primary" title="Live: the last 28 days up to today, including the preliminary days">
-                Now, live <span className="font-semibold">{score}</span>
-              </li>
-            )}
-          </ol>
-        )}
-      </div>
-    </section>
-  );
-}
-
-/* ── Wat zeggen de bronnen ───────────────────────────────────────────────── */
-
-function SourceTile({ name, status, children }: { name: string; status: ReactNode; children: ReactNode }) {
-  return (
-    <div className="min-w-0 rounded-2xl bg-surface-container-lowest p-4 shadow-[var(--shadow-ambient)] sm:p-5">
-      <div className="flex items-center justify-between gap-2">
-        <h3 className="text-sm font-headline font-bold text-on-surface">{name}</h3>
-        <span className="text-[11px] text-on-surface-variant">{status}</span>
-      </div>
-      <div className="mt-3">{children}</div>
-    </div>
-  );
-}
-
-function Figure({ value, label, before, inverse, format = nf.format }: {
-  value: number | null; label: string; before?: number | null; inverse?: boolean; format?: (n: number) => string;
-}) {
-  return (
-    <div className="min-w-0">
-      <p className="text-2xl font-headline font-bold tracking-tight text-on-surface tabular-nums">{value === null ? 'n/a' : format(value)}</p>
-      <p className="flex flex-wrap items-baseline gap-x-1.5 text-xs text-on-surface-variant">
-        {label}
-        {value !== null && before != null && <Delta now={value} before={before} inverse={inverse} />}
-      </p>
-    </div>
-  );
-}
-
-function SourceTiles({ data }: { data: SeoCockpit }) {
-  const t = data.inburgering.totals;
-  const bing = data.inburgering.bing;
-  const geo = data.sources.find(s => s.key === 'geo');
-  const live = data.live.state === 'live';
-  return (
-    <section aria-label="Sources" className="mb-5">
-      <div className="grid grid-cols-1 gap-3 md:grid-cols-3">
-        <SourceTile
-          name="Google"
-          status={live
-            ? <span className="inline-flex items-center gap-1 font-semibold text-[var(--goed)]"><Radio className="size-3" aria-hidden /> live</span>
-            : data.inburgering.gscError ? <span className="text-[#a24000]">unknown</span> : 'Friday’s data pull'}
-        >
-          <div className="grid grid-cols-3 gap-3">
-            <Figure value={t?.current.clicks ?? null} before={t?.previous.clicks} label="clicks" />
-            <Figure value={t?.current.impressions ?? null} before={t?.previous.impressions} label="impressions" />
-            <Figure value={t?.current.position ?? null} before={t?.previous.position} label="avg position" inverse format={n => nf1.format(n)} />
-          </div>
-          <p className="mt-2 text-[11px] text-on-surface-variant">Last 28 days vs the 28 before</p>
-        </SourceTile>
-        <SourceTile name="Bing" status={data.live.bingLive ? <span className="inline-flex items-center gap-1 font-semibold text-[var(--goed)]"><Radio className="size-3" aria-hidden /> live</span> : 'Friday’s data pull'}>
-          <div className="grid grid-cols-2 gap-3">
-            <Figure value={bing?.clicks ?? null} before={bing?.prevClicks} label="clicks" />
-            <Figure value={bing?.impressions ?? null} before={bing?.prevImpressions} label="impressions" />
-          </div>
-          <p className="mt-2 text-[11px] text-on-surface-variant">Last 28 days vs the 28 before</p>
-        </SourceTile>
-        <SourceTile name="AI search" status={geo?.state === 'ok' ? 'measured' : 'not measured yet'}>
-          {geo?.state === 'ok' ? (
-            <p className="text-sm text-on-surface">Measured in {data.latestWeek}. ChatGPT, Perplexity and Claude, asked our 12 questions.</p>
-          ) : (
-            <>
-              <p className="text-sm leading-relaxed text-on-surface">Whether ChatGPT, Perplexity and Claude name us for our 12 questions. Runs in even weeks, next on {dayLabel(data.nextCollect)}.</p>
-              <p className="mt-1.5 text-[11px] text-on-surface-variant">
-                {geo?.state === 'error' ? `Last run failed: ${geo.detail}` : 'Unknown, not zero. Google’s AI Overviews are counted inside Google’s numbers; Search Console doesn’t split them out.'}
-              </p>
-            </>
-          )}
-        </SourceTile>
-      </div>
-
-      <CardShell className="mt-3" title="Impressions per day" note="Google and Bing side by side. Grows by a day every day.">
-        {data.daily.length > 0 ? (
-          <SeoTrendChart
-            points={data.daily}
-            changes={data.ledger
-              .filter(e => e.site !== 'knm')
-              .map(e => ({ date: e.date, change: e.change ?? e.id ?? '' }))}
-          />
-        ) : (
-          <Empty>No daily numbers yet. Friday&apos;s data pull fills this chart.</Empty>
-        )}
-      </CardShell>
-    </section>
+function TrendCard({ data }: { data: SeoCockpit }) {
+  return data.daily.length > 0 ? (
+    <SeoTrendChart
+      points={data.daily}
+      changes={data.ledger.filter(e => e.site !== 'knm').map(e => ({ date: e.date, change: e.change ?? e.id ?? '' }))}
+    />
+  ) : (
+    <Empty>No daily numbers yet. Friday&apos;s data pull fills this chart.</Empty>
   );
 }
 
@@ -337,9 +218,7 @@ function SiteWideActions({ data }: { data: SeoCockpit }) {
     .sort(byPriority);
   if (items.length === 0) return null;
   return (
-    <section className="mt-10" aria-labelledby="sitewide">
-      <h2 id="sitewide" className="text-xl font-headline font-bold tracking-tight text-on-surface">Site-wide actions</h2>
-      <p className="mt-1 mb-4 text-sm text-on-surface-variant">Not about one page. These come first; each page below shows the ones that touch it.</p>
+    <Fold title="Site-wide actions" note={`${items.length} tasks that aren't about one page`}>
       <ul className="space-y-2">
         {items.map(r => {
           const owner = OWNER[r.owner];
@@ -371,7 +250,7 @@ function SiteWideActions({ data }: { data: SeoCockpit }) {
           );
         })}
       </ul>
-    </section>
+    </Fold>
   );
 }
 

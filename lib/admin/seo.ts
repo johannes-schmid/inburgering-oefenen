@@ -5,6 +5,7 @@ import {
   type BingDay, type DayPoint, type Diagnosis, type GscDay, type LedgerEntry, type Recommendation, type RecoveryRead, type SourceState,
 } from './seo-model';
 import { fetchLiveBing, fetchLiveGsc, type LiveGsc, type PageRow } from './seo-live';
+import type { IndexRecord } from './seo-funnel-model';
 import { pageScore, pageWeight, rollup, type HistoryRow, type ScoreFactor, type ScoreInput, type Verdict } from './seo-score.mjs';
 
 /**
@@ -117,6 +118,8 @@ export type SeoCockpit = {
   recommendations: Recommendation[];
   amberBudget: number;
   reports: { name: string; href: string }[];
+  /** URL Inspection per pagina uit de nieuwste week die hem heeft; `null` = nooit gecontroleerd. */
+  indexing: { checkedAt: string; pages: Record<string, IndexRecord> } | null;
 };
 
 async function json<T>(file: string): Promise<T | null> {
@@ -155,6 +158,7 @@ const SOURCE_LABELS: Record<string, string> = {
   health: 'Gezondheidscheck',
   competitors: 'Concurrenten',
   geo: 'AI-zoekmachines',
+  indexing: 'Indexering',
 };
 
 const LENGTH_ISSUE = /^(title|description) \d+ tekens$/;
@@ -211,6 +215,15 @@ export async function loadSeoCockpit(now = new Date()): Promise<SeoCockpit> {
     const d = g?.sites.inburgering?.daily;
     if (d) googleRuns.push(d);
   }
+  let indexing: SeoCockpit['indexing'] = null;
+  for (const w of [...weeks].reverse()) {
+    const snap = await json<{ generated_at: string; pages?: Record<string, IndexRecord> }>(`data/${w}/indexing.json`);
+    if (snap?.pages) {
+      indexing = { checkedAt: snap.generated_at, pages: snap.pages };
+      break;
+    }
+  }
+
   const live = liveGsc && !('error' in liveGsc) ? liveGsc : null;
   if (live) googleRuns.push(live.daily);
   const bingIn = liveBing?.inburgering ?? bing?.sites.inburgering?.GetRankAndTrafficStats ?? [];
@@ -289,6 +302,7 @@ export async function loadSeoCockpit(now = new Date()): Promise<SeoCockpit> {
       .filter(f => f.endsWith('.md'))
       .reverse()
       .map(f => ({ name: f.replace(/\.md$/, ''), href: `${REPO_URL}/blob/main/seo-agent/reports/${f}` })),
+    indexing,
   };
 }
 

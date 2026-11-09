@@ -8,7 +8,7 @@ import { google } from 'googleapis';
  * bij een fout is het resultaat `null`: **onbekend, nooit nul** — een funnel die bij een verlopen
  * sleutel "0 bezoekers" zegt, wijst de verkeerde stap aan als bottleneck.
  */
-const PROPERTY = `properties/${process.env.GA4_PROPERTY_ID ?? '547503294'}`;
+export const PROPERTY = `properties/${process.env.GA4_PROPERTY_ID ?? '547503294'}`;
 
 /** De events die betekenen dat iemand echt begint te oefenen. */
 const PRACTICE_EVENTS = ['free_practice_started', 'exam_started'];
@@ -39,7 +39,7 @@ function parseCreds(raw: string): { client_email: string; private_key: string } 
   }
 }
 
-function client() {
+export function client() {
   const raw = process.env.GA4_SA_JSON ?? process.env.GSC_SA_JSON;
   if (!raw) return null;
   const creds = parseCreds(raw);

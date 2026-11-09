@@ -1,0 +1,529 @@
+{
+  "week": "2026-W45",
+  "generated_at": "2026-11-09T07:26:34.396Z",
+  "property": "sc-domain:inburgeringoefenen.nl",
+  "checked": 104,
+  "pages": {
+    "/nl": {
+      "verdict": "PASS",
+      "coverage": "Submitted and indexed",
+      "lastCrawl": "2026-11-05T21:39:43Z"
+    },
+    "/nl/platform": {
+      "verdict": "NEUTRAL",
+      "coverage": "Discovered - currently not indexed",
+      "lastCrawl": null
+    },
+    "/nl/premium": {
+      "verdict": "NEUTRAL",
+      "coverage": "Crawled - currently not indexed",
+      "lastCrawl": "2026-07-31T07:16:47Z"
+    },
+    "/nl/gidsen": {
+      "verdict": "NEUTRAL",
+      "coverage": "URL is unknown to Google",
+      "lastCrawl": null
+    },
+    "/en": {
+      "verdict": "PASS",
+      "coverage": "Submitted and indexed",
+      "lastCrawl": "2026-08-21T12:37:14Z"
+    },
+    "/nl/docent": {
+      "verdict": "PASS",
+      "coverage": "Submitted and indexed",
+      "lastCrawl": "2026-10-11T17:12:08Z"
+    },
+    "/nl/redactie": {
+      "verdict": "PASS",
+      "coverage": "Submitted and indexed",
+      "lastCrawl": "2026-10-11T17:12:08Z"
+    },
+    "/nl/contact": {
+      "verdict": "PASS",
+      "coverage": "Submitted and indexed",
+      "lastCrawl": "2026-07-30T03:31:19Z"
+    },
+    "/en/platform": {
+      "verdict": "NEUTRAL",
+      "coverage": "Discovered - currently not indexed",
+      "lastCrawl": null
+    },
+    "/en/guides": {
+      "verdict": "NEUTRAL",
+      "coverage": "URL is unknown to Google",
+      "lastCrawl": null
+    },
+    "/en/contact": {
+      "verdict": "NEUTRAL",
+      "coverage": "Alternate page with proper canonical tag",
+      "lastCrawl": "2026-08-21T04:26:18Z"
+    },
+    "/en/teacher": {
+      "verdict": "PASS",
+      "coverage": "Submitted and indexed",
+      "lastCrawl": "2026-08-21T04:12:36Z"
+    },
+    "/ar": {
+      "verdict": "PASS",
+      "coverage": "Submitted and indexed",
+      "lastCrawl": "2026-10-29T10:57:19Z"
+    },
+    "/ar/المنصة": {
+      "verdict": "NEUTRAL",
+      "coverage": "URL is unknown to Google",
+      "lastCrawl": null
+    },
+    "/ar/الأدلة": {
+      "verdict": "NEUTRAL",
+      "coverage": "URL is unknown to Google",
+      "lastCrawl": null
+    },
+    "/ar/الباقة-المميزة": {
+      "verdict": "PASS",
+      "coverage": "Submitted and indexed",
+      "lastCrawl": "2026-10-31T03:15:51Z"
+    },
+    "/en/editorial-policy": {
+      "verdict": "NEUTRAL",
+      "coverage": "Discovered - currently not indexed",
+      "lastCrawl": null
+    },
+    "/ar/المعلمة": {
+      "verdict": "NEUTRAL",
+      "coverage": "URL is unknown to Google",
+      "lastCrawl": null
+    },
+    "/en/premium": {
+      "verdict": "NEUTRAL",
+      "coverage": "URL is unknown to Google",
+      "lastCrawl": null
+    },
+    "/ar/سياسة-التحرير": {
+      "verdict": "NEUTRAL",
+      "coverage": "URL is unknown to Google",
+      "lastCrawl": null
+    },
+    "/ar/تواصل-معنا": {
+      "verdict": "NEUTRAL",
+      "coverage": "URL is unknown to Google",
+      "lastCrawl": null
+    },
+    "/nl/oefenen": {
+      "verdict": "PASS",
+      "coverage": "Submitted and indexed",
+      "lastCrawl": "2026-09-25T09:17:19Z"
+    },
+    "/en/practice": {
+      "verdict": "PASS",
+      "coverage": "Submitted and indexed",
+      "lastCrawl": "2026-11-09T05:43:40Z"
+    },
+    "/nl/oefenen/lezen": {
+      "verdict": "PASS",
+      "coverage": "Submitted and indexed",
+      "lastCrawl": "2026-07-29T12:04:28Z"
+    },
+    "/en/practice/listening": {
+      "verdict": "NEUTRAL",
+      "coverage": "URL is unknown to Google",
+      "lastCrawl": null
+    },
+    "/en/practice/reading": {
+      "verdict": "NEUTRAL",
+      "coverage": "URL is unknown to Google",
+      "lastCrawl": null
+    },
+    "/nl/oefenen/luisteren": {
+      "verdict": "PASS",
+      "coverage": "Submitted and indexed",
+      "lastCrawl": "2026-07-29T12:05:10Z"
+    },
+    "/nl/oefenen/knm": {
+      "verdict": "NEUTRAL",
+      "coverage": "URL is unknown to Google",
+      "lastCrawl": null
+    },
+    "/ar/تدرب": {
+      "verdict": "NEUTRAL",
+      "coverage": "URL is unknown to Google",
+      "lastCrawl": null
+    },
+    "/en/practice/knm": {
+      "verdict": "NEUTRAL",
+      "coverage": "URL is unknown to Google",
+      "lastCrawl": null
+    },
+    "/nl/oefenen/b1/lezen": {
+      "verdict": "NEUTRAL",
+      "coverage": "Discovered - currently not indexed",
+      "lastCrawl": null
+    },
+    "/en/practice/b1/reading": {
+      "verdict": "NEUTRAL",
+      "coverage": "Discovered - currently not indexed",
+      "lastCrawl": null
+    },
+    "/nl/oefenexamen/a2": {
+      "verdict": "PASS",
+      "coverage": "Submitted and indexed",
+      "lastCrawl": "2026-09-25T09:17:19Z"
+    },
+    "/en/practice-exam/a2": {
+      "verdict": "NEUTRAL",
+      "coverage": "URL is unknown to Google",
+      "lastCrawl": null
+    },
+    "/ar/تدرب/الاستماع": {
+      "verdict": "NEUTRAL",
+      "coverage": "URL is unknown to Google",
+      "lastCrawl": null
+    },
+    "/ar/امتحان-تجريبي/a2": {
+      "verdict": "NEUTRAL",
+      "coverage": "URL is unknown to Google",
+      "lastCrawl": null
+    },
+    "/nl/oefenexamen/b1": {
+      "verdict": "PASS",
+      "coverage": "Submitted and indexed",
+      "lastCrawl": "2026-10-30T06:33:02Z"
+    },
+    "/en/practice-exam/b1": {
+      "verdict": "NEUTRAL",
+      "coverage": "URL is unknown to Google",
+      "lastCrawl": null
+    },
+    "/ar/امتحان-تجريبي/b1": {
+      "verdict": "NEUTRAL",
+      "coverage": "URL is unknown to Google",
+      "lastCrawl": null
+    },
+    "/ar/تدرب/القراءة": {
+      "verdict": "NEUTRAL",
+      "coverage": "URL is unknown to Google",
+      "lastCrawl": null
+    },
+    "/nl/oefenexamen/a2/lezen": {
+      "verdict": "PASS",
+      "coverage": "Submitted and indexed",
+      "lastCrawl": "2026-10-30T20:03:22Z"
+    },
+    "/ar/تدرب/knm": {
+      "verdict": "NEUTRAL",
+      "coverage": "URL is unknown to Google",
+      "lastCrawl": null
+    },
+    "/en/practice-exam/a2/reading": {
+      "verdict": "PASS",
+      "coverage": "Submitted and indexed",
+      "lastCrawl": "2026-09-25T09:20:39Z"
+    },
+    "/ar/امتحان-تجريبي/a2/القراءة": {
+      "verdict": "NEUTRAL",
+      "coverage": "URL is unknown to Google",
+      "lastCrawl": null
+    },
+    "/ar/تدرب/b1/القراءة": {
+      "verdict": "NEUTRAL",
+      "coverage": "URL is unknown to Google",
+      "lastCrawl": null
+    },
+    "/nl/oefenexamen/b1/lezen": {
+      "verdict": "NEUTRAL",
+      "coverage": "URL is unknown to Google",
+      "lastCrawl": null
+    },
+    "/ar/امتحان-تجريبي/b1/القراءة": {
+      "verdict": "NEUTRAL",
+      "coverage": "URL is unknown to Google",
+      "lastCrawl": null
+    },
+    "/en/practice-exam/b1/reading": {
+      "verdict": "NEUTRAL",
+      "coverage": "URL is unknown to Google",
+      "lastCrawl": null
+    },
+    "/nl/oefenexamen/a2/luisteren": {
+      "verdict": "PASS",
+      "coverage": "Submitted and indexed",
+      "lastCrawl": "2026-09-25T09:17:19Z"
+    },
+    "/en/practice-exam/a2/listening": {
+      "verdict": "PASS",
+      "coverage": "Submitted and indexed",
+      "lastCrawl": "2026-11-01T05:36:49Z"
+    },
+    "/nl/oefenexamen/a2/schrijven": {
+      "verdict": "PASS",
+      "coverage": "Submitted and indexed",
+      "lastCrawl": "2026-11-02T16:45:23Z"
+    },
+    "/ar/امتحان-تجريبي/a2/الاستماع": {
+      "verdict": "NEUTRAL",
+      "coverage": "URL is unknown to Google",
+      "lastCrawl": null
+    },
+    "/en/practice-exam/a2/writing": {
+      "verdict": "PASS",
+      "coverage": "Submitted and indexed",
+      "lastCrawl": "2026-11-01T07:58:09Z"
+    },
+    "/nl/oefenexamen/b1/schrijven": {
+      "verdict": "NEUTRAL",
+      "coverage": "URL is unknown to Google",
+      "lastCrawl": null
+    },
+    "/ar/امتحان-تجريبي/a2/الكتابة": {
+      "verdict": "NEUTRAL",
+      "coverage": "URL is unknown to Google",
+      "lastCrawl": null
+    },
+    "/ar/امتحان-تجريبي/b1/الكتابة": {
+      "verdict": "NEUTRAL",
+      "coverage": "URL is unknown to Google",
+      "lastCrawl": null
+    },
+    "/en/practice-exam/b1/writing": {
+      "verdict": "NEUTRAL",
+      "coverage": "URL is unknown to Google",
+      "lastCrawl": null
+    },
+    "/nl/oefenexamen/a2/spreken": {
+      "verdict": "PASS",
+      "coverage": "Submitted and indexed",
+      "lastCrawl": "2026-10-31T15:45:27Z"
+    },
+    "/nl/oefenexamen/b1/spreken": {
+      "verdict": "NEUTRAL",
+      "coverage": "Discovered - currently not indexed",
+      "lastCrawl": null
+    },
+    "/en/practice-exam/a2/speaking": {
+      "verdict": "PASS",
+      "coverage": "Submitted and indexed",
+      "lastCrawl": "2026-11-02T14:32:19Z"
+    },
+    "/ar/امتحان-تجريبي/a2/التحدث": {
+      "verdict": "NEUTRAL",
+      "coverage": "URL is unknown to Google",
+      "lastCrawl": null
+    },
+    "/nl/oefenexamen/knm": {
+      "verdict": "PASS",
+      "coverage": "Submitted and indexed",
+      "lastCrawl": "2026-09-25T09:17:19Z"
+    },
+    "/en/practice-exam/b1/speaking": {
+      "verdict": "NEUTRAL",
+      "coverage": "URL is unknown to Google",
+      "lastCrawl": null
+    },
+    "/ar/امتحان-تجريبي/b1/التحدث": {
+      "verdict": "NEUTRAL",
+      "coverage": "URL is unknown to Google",
+      "lastCrawl": null
+    },
+    "/nl/blog": {
+      "verdict": "PASS",
+      "coverage": "Submitted and indexed",
+      "lastCrawl": "2026-08-01T23:53:19Z"
+    },
+    "/ar/امتحان-تجريبي/knm": {
+      "verdict": "NEUTRAL",
+      "coverage": "URL is unknown to Google",
+      "lastCrawl": null
+    },
+    "/en/blog": {
+      "verdict": "PASS",
+      "coverage": "Submitted and indexed",
+      "lastCrawl": "2026-10-31T14:49:18Z"
+    },
+    "/ar/المدونة": {
+      "verdict": "NEUTRAL",
+      "coverage": "URL is unknown to Google",
+      "lastCrawl": null
+    },
+    "/nl/blog/veelgemaakte-fouten-schrijven-examen-a2": {
+      "verdict": "PASS",
+      "coverage": "Submitted and indexed",
+      "lastCrawl": "2026-09-16T18:06:54Z"
+    },
+    "/en/practice-exam/knm": {
+      "verdict": "NEUTRAL",
+      "coverage": "URL is unknown to Google",
+      "lastCrawl": null
+    },
+    "/nl/blog/want-of-omdat": {
+      "verdict": "PASS",
+      "coverage": "Submitted and indexed",
+      "lastCrawl": "2026-11-03T10:39:29Z"
+    },
+    "/nl/blog/wederkerende-werkwoorden-nederlands": {
+      "verdict": "PASS",
+      "coverage": "Submitted and indexed",
+      "lastCrawl": "2026-09-16T18:09:00Z"
+    },
+    "/nl/blog/spreken-examen-inburgering-tips": {
+      "verdict": "PASS",
+      "coverage": "Submitted and indexed",
+      "lastCrawl": "2026-09-16T18:09:00Z"
+    },
+    "/nl/blog/inburgeringsexamen-a2-uitleg": {
+      "verdict": "PASS",
+      "coverage": "Submitted and indexed",
+      "lastCrawl": "2026-11-03T13:31:02Z"
+    },
+    "/nl/blog/lezen-examen-inburgering-a2": {
+      "verdict": "PASS",
+      "coverage": "Submitted and indexed",
+      "lastCrawl": "2026-10-18T04:39:47Z"
+    },
+    "/nl/blog/luisteren-examen-inburgering-a2": {
+      "verdict": "NEUTRAL",
+      "coverage": "Crawled - currently not indexed",
+      "lastCrawl": "2026-07-30T22:01:10Z"
+    },
+    "/nl/blog/inburgeringsexamen-zakken-herkansen": {
+      "verdict": "PASS",
+      "coverage": "Submitted and indexed",
+      "lastCrawl": "2026-10-23T16:20:16Z"
+    },
+    "/nl/blog/taalniveaus-a1-a2-b1-nederlands": {
+      "verdict": "PASS",
+      "coverage": "Submitted and indexed",
+      "lastCrawl": "2026-10-23T16:52:29Z"
+    },
+    "/en/civic-integration": {
+      "verdict": "NEUTRAL",
+      "coverage": "URL is unknown to Google",
+      "lastCrawl": null
+    },
+    "/nl/inburgering": {
+      "verdict": "NEUTRAL",
+      "coverage": "Discovered - currently not indexed",
+      "lastCrawl": null
+    },
+    "/nl/knm": {
+      "verdict": "PASS",
+      "coverage": "Submitted and indexed",
+      "lastCrawl": "2026-11-03T02:05:27Z"
+    },
+    "/en/language-exams": {
+      "verdict": "NEUTRAL",
+      "coverage": "Discovered - currently not indexed",
+      "lastCrawl": null
+    },
+    "/en/knm": {
+      "verdict": "NEUTRAL",
+      "coverage": "URL is unknown to Google",
+      "lastCrawl": null
+    },
+    "/ar/knm": {
+      "verdict": "NEUTRAL",
+      "coverage": "Discovered - currently not indexed",
+      "lastCrawl": null
+    },
+    "/nl/taalexamens": {
+      "verdict": "NEUTRAL",
+      "coverage": "URL is unknown to Google",
+      "lastCrawl": null
+    },
+    "/ar/الاندماج": {
+      "verdict": "NEUTRAL",
+      "coverage": "URL is unknown to Google",
+      "lastCrawl": null
+    },
+    "/ar/امتحانات-اللغة": {
+      "verdict": "NEUTRAL",
+      "coverage": "URL is unknown to Google",
+      "lastCrawl": null
+    },
+    "/nl/inburgering/inburgering-stappenplan": {
+      "verdict": "PASS",
+      "coverage": "Submitted and indexed",
+      "lastCrawl": "2026-10-11T17:13:46Z"
+    },
+    "/nl/taalexamens/taalexamens-a2-b1": {
+      "verdict": "PASS",
+      "coverage": "Submitted and indexed",
+      "lastCrawl": "2026-11-03T19:29:11Z"
+    },
+    "/nl/taalexamens/b1-examen": {
+      "verdict": "PASS",
+      "coverage": "Submitted and indexed",
+      "lastCrawl": "2026-10-23T16:25:41Z"
+    },
+    "/nl/inburgering/ona-examen": {
+      "verdict": "PASS",
+      "coverage": "Submitted and indexed",
+      "lastCrawl": "2026-08-24T09:10:13Z"
+    },
+    "/nl/taalexamens/lezen-examen": {
+      "verdict": "PASS",
+      "coverage": "Submitted and indexed",
+      "lastCrawl": "2026-11-03T19:31:09Z"
+    },
+    "/nl/taalexamens/luisteren-examen": {
+      "verdict": "PASS",
+      "coverage": "Submitted and indexed",
+      "lastCrawl": "2026-11-03T19:31:09Z"
+    },
+    "/nl/taalexamens/schrijven-examen": {
+      "verdict": "PASS",
+      "coverage": "Submitted and indexed",
+      "lastCrawl": "2026-09-12T10:31:41Z"
+    },
+    "/nl/taalexamens/spreken-examen": {
+      "verdict": "PASS",
+      "coverage": "Submitted and indexed",
+      "lastCrawl": "2026-11-03T19:31:08Z"
+    },
+    "/nl/inburgering/vrijstelling-en-ontheffing": {
+      "verdict": "NEUTRAL",
+      "coverage": "Discovered - currently not indexed",
+      "lastCrawl": null
+    },
+    "/nl/inburgering/boete-en-termijn": {
+      "verdict": "NEUTRAL",
+      "coverage": "URL is unknown to Google",
+      "lastCrawl": null
+    },
+    "/nl/inburgering/pvt-map-en-ona": {
+      "verdict": "NEUTRAL",
+      "coverage": "URL is unknown to Google",
+      "lastCrawl": null
+    },
+    "/nl/inburgering/moet-ik-inburgeren": {
+      "verdict": "PASS",
+      "coverage": "Submitted and indexed",
+      "lastCrawl": "2026-08-21T12:33:11Z"
+    },
+    "/nl/inburgering/welke-wet-en-welke-route": {
+      "verdict": "PASS",
+      "coverage": "Submitted and indexed",
+      "lastCrawl": "2026-08-21T12:33:11Z"
+    },
+    "/nl/inburgering/wat-kost-inburgeren": {
+      "verdict": "PASS",
+      "coverage": "Submitted and indexed",
+      "lastCrawl": "2026-08-27T14:34:07Z"
+    },
+    "/nl/inburgering/tools/tijdlijn": {
+      "verdict": "NEUTRAL",
+      "coverage": "URL is unknown to Google",
+      "lastCrawl": null
+    },
+    "/ar/الاندماج/أدوات/الجدول-الزمني": {
+      "verdict": "NEUTRAL",
+      "coverage": "URL is unknown to Google",
+      "lastCrawl": null
+    },
+    "/en/civic-integration/tools/timeline": {
+      "verdict": "NEUTRAL",
+      "coverage": "Discovered - currently not indexed",
+      "lastCrawl": null
+    }
+  },
+  "errors": []
+}
