@@ -36,7 +36,8 @@ site_url = "http://localhost:3001"
 # `/auth/callback` must be listed explicitly (or via the wildcard): Supabase matches the
 # redirect_to it is handed, and `http://localhost:3001` alone does not cover a sub-path — the
 # Google round-trip fails with "requested path is invalid" without this.
-additional_redirect_urls = ["http://localhost:3001/**", "http://127.0.0.1:3001/**"]
+# `inburgeringoefenen://auth` is de terugkeer-URL van de iOS-app (mobile/): Google rondt daar af.
+additional_redirect_urls = ["http://localhost:3001/**", "http://127.0.0.1:3001/**", "inburgeringoefenen://auth"]
 jwt_expiry = 3600
 enable_refresh_token_rotation = true
 refresh_token_reuse_interval = 10
@@ -73,3 +74,11 @@ uri = "pg-functions://postgres/public/hook_google_only_signup"
 enabled = true
 client_id = "env(GOOGLE_CLIENT_ID)"
 secret = "env(GOOGLE_CLIENT_SECRET)"
+
+# Inloggen met Apple, alleen voor de iOS-app (mobile/). De app wisselt het identiteitstoken van
+# iOS in via `signInWithIdToken`; daarvoor is alleen de bundle-id als client-id nodig, geen
+# geheim. `hook_google_only_signup` weigert alleen provider `email` en laat Apple dus door.
+[auth.external.apple]
+enabled = true
+client_id = "nl.inburgeringoefenen.app"
+secret = ""

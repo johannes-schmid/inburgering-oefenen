@@ -1,0 +1,35 @@
+{
+  "expo": {
+    "name": "Inburgering Oefenen",
+    "slug": "inburgering-oefenen",
+    "scheme": "inburgeringoefenen",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/icon.png",
+    "userInterfaceStyle": "light",
+    "ios": {
+      "bundleIdentifier": "nl.inburgeringoefenen.app",
+      "supportsTablet": false,
+      "usesAppleSignIn": true,
+      "infoPlist": {
+        "CFBundleDisplayName": "Inburgering",
+        "NSMicrophoneUsageDescription": "Voor de spreekopdrachten neem je je antwoord op met de microfoon.",
+        "ITSAppUsesNonExemptEncryption": false
+      }
+    },
+    "plugins": [
+      "expo-web-browser",
+      "expo-localization",
+      "expo-font",
+      "expo-apple-authentication",
+      [
+        "expo-splash-screen",
+        {
+          "image": "./assets/splash-icon.png",
+          "imageWidth": 96,
+          "backgroundColor": "#eaf0fa"
+        }
+      ]
+    ]
+  }
+}

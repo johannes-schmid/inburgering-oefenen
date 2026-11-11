@@ -330,6 +330,7 @@ Four traps this taxonomy sets, all of which have bitten:
 | **Auth** | `app/[locale]/(auth)/` | minimal shell | login/register/activate |
 | **Admin** | `app/[locale]/(admin)/` | admin shell, `admin_users` allowlist | internal only |
 | **ChatGPT-app** | `app/api/mcp/` + `lib/mcp/` + `widgets/` | geen layout — MCP-tools en een widget in een iframe van ChatGPT | ChatGPT-gebruikers; zie `docs/chatgpt-app/` |
+| **iOS-app** | `mobile/` (Expo) + `app/api/app-session` | geen eigen schermen behalve inloggen — het studieportaal in een webview | kandidaten op iPhone; zie `mobile/README.md` |
 
 **Rule:** needs the sidebar → `(app)`. Needs the public nav → `(main)`. Auth → `(auth)`. Internal
 content management → `(admin)`. `/admin-login` lives in `(auth)`, not `(admin)`, or the admin
@@ -448,6 +449,7 @@ nieuw voorstel; en de agent raakt nooit kopij, feiten of vertalingen aan — dat
 ├── supabase/migrations/ # + legacy-knm-migrations/ (archived, NOT applied)
 ├── widgets/             # exercise/ (React, Vite) → dist/exercise.js, inline in de ui://-resource van /api/mcp
 ├── docs/chatgpt-app/    # DEVELOPER.md (architectuur, auth, tools, deploy) + PRODUCT.md (de ervaring)
+├── mobile/              # ★ de iOS-app (Expo SDK 58, eigen pakket, Node 24): inlogscherm + het portaal in een webview — zie mobile/README.md
 ├── tests/ tests-unit/   # playwright | vitest
 ├── SEO/                 # README (process), facts.md (★ every number), keywords, voice
 ├── seo-agent/                 # ★ de SEO/GEO-lus: config.json, ledger.json, data/<week>/, reports/, briefs/ — zie seo-agent/README.md
@@ -466,6 +468,7 @@ a session, append to it at the end.
 | `grade-open` | the one grading endpoint: rubric + model, capped and idempotent — HTTP-glue around `lib/grading/grade-submission.ts` |
 | `mcp` | **de ChatGPT-app** (Streamable HTTP MCP, 7 tools + widget). Auth optioneel: Supabase OAuth 2.1-token → `lib/mcp/auth.ts`. Zie `docs/chatgpt-app/DEVELOPER.md` |
 | `/.well-known/oauth-protected-resource` | RFC 9728: wijst ChatGPT naar Supabase Auth als autorisatieserver; `resource` = `MCP_RESOURCE_URL` |
+| `app-session` | de iOS-app draagt hier zijn Supabase-sessie over aan de webview (POST, kop `X-App-Shell` verplicht); zet dezelfde cookies als `/auth/callback` |
 | `stt-token` | mints a single-use ElevenLabs realtime token; the key never reaches the browser |
 | `generate-stimulus-audio` | two-voice Luisteren audio from `script` + `voice_cast` |
 | `generate-question-audio` / `generate-wordcard-audio` / `admin/generate-lesson-audio` | other TTS surfaces |

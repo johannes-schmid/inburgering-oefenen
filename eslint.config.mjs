@@ -14,6 +14,8 @@ const eslintConfig = defineConfig([
     "next-env.d.ts",
     // Eigen pakket met eigen dependencies (ai@7), zie e2e/package.json.
     "e2e/**",
+    // De iOS-app: eigen pakket (Expo, React Native), zie mobile/package.json.
+    "mobile/**",
   ]),
 ]);
 
