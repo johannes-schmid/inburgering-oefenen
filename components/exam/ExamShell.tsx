@@ -173,7 +173,7 @@ type Step =
 
 type Props = {
   content: ExamContent;
-  /** Compleet plan — per-question explanations in the MCQ review. */
+  /** Heeft de module van dit examen: uitleg per vraag in de uitslag, en het modelantwoord. */
   canSeeExplanations: boolean;
   /**
    * Gezet als er géén account achter deze zitting zit: de gast mag `limit` vragen maken en
@@ -214,6 +214,8 @@ export default function ExamShell({ content, canSeeExplanations, guest = null }:
   const b1Spreken = exam.skill === 'spreken' && exam.level === 'b1';
   /** B1 Lezen: bij DUO staan de teksten in een papieren tekstboekje; wij bieden een tabblad en een PDF. */
   const b1Lezen = exam.skill === 'lezen' && exam.level === 'b1';
+  /** KNM: het oordeel en de uitleg komen na elke vraag, niet pas na het inleveren. */
+  const knmFeedback = exam.skill === 'knm';
   // Terug naar het onderdeel waar dit examen bij hoort, niet naar het hoofddashboard.
   const dashboardHref = exam.level
     ? ({ pathname: '/dashboard/[level]/[skill]', params: { level: exam.level, skill: exam.skill } } as const)
@@ -518,7 +520,7 @@ export default function ExamShell({ content, canSeeExplanations, guest = null }:
     if (userId) {
       const id = await startExamAttempt(supabase, {
         userId, skill: exam.skill, level: exam.level, examNumber: exam.number, examId: exam.id,
-        feedbackMode: isOpenSkill ? feedbackMode : 'exam',
+        feedbackMode: isOpenSkill ? feedbackMode : knmFeedback ? 'practice' : 'exam',
       });
       attemptRef.current = id;
       setAttemptId(id);
@@ -575,6 +577,22 @@ export default function ExamShell({ content, canSeeExplanations, guest = null }:
     setIdx(next);
     setPhase(phaseFor(next));
     window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  /**
+   * Een KNM-vraag met een foto is hoger dan het scherm: het oordeel valt dan onder de plakkende
+   * voetbalk en de kandidaat drukt op "Volgende" zonder het te zien. Alleen schuiven als dat zo is.
+   */
+  function revealVerdict() {
+    requestAnimationFrame(() => requestAnimationFrame(() => {
+      const verdict = document.querySelector('.answer-verdict');
+      const foot = document.querySelector('.exam-nav');
+      if (!verdict) return;
+      const limit = foot ? foot.getBoundingClientRect().top : window.innerHeight;
+      if (verdict.getBoundingClientRect().bottom <= limit) return;
+      const calm = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      verdict.scrollIntoView({ block: 'center', behavior: calm ? 'auto' : 'smooth' });
+    }));
   }
 
   async function submitExam() {
@@ -1008,8 +1026,14 @@ export default function ExamShell({ content, canSeeExplanations, guest = null }:
               questionNumber={idx + 1}
               total={totalItems}
               chosenId={chosen[step.question.id]?.id ?? null}
-              onSelect={o => setChosen(prev => ({ ...prev, [step.question.id]: o }))}
-              showFeedback={false}
+              onSelect={o => {
+                setChosen(prev => ({ ...prev, [step.question.id]: o }));
+                if (knmFeedback) revealVerdict();
+              }}
+              /* KNM toont het oordeel, het juiste antwoord en de uitleg direct na elke vraag
+                 (besluit eigenaar, 12-11). Het antwoord staat na de keuze vast, dus de score
+                 blijft een eerste poging. Lezen en Luisteren krijgen niets tot het inleveren. */
+              showFeedback={knmFeedback}
               sectionName={step.question.section_id ? sectionNames[step.question.section_id] : undefined}
               /* KNM only. Its bank is the one with per-option audio, and reading a Luisteren
                  question aloud would speak over the fragment the item tests. */
@@ -1488,7 +1512,7 @@ export default function ExamShell({ content, canSeeExplanations, guest = null }:
                           : <>Niet beantwoord</>}
                         {!right && correct && <> · juist: <strong>{correct.label}</strong></>}
                       </small>
-                      {canSeeExplanations && !right && s.question.explanation && (
+                      {(canSeeExplanations || knmFeedback) && !right && s.question.explanation && (
                         <small style={{ marginTop: 4 }}>{s.question.explanation}</small>
                       )}
                     </div>
@@ -1497,9 +1521,11 @@ export default function ExamShell({ content, canSeeExplanations, guest = null }:
               })}
             </ol>
 
-            {!canSeeExplanations && (
+            {/* KNM heeft de uitleg tijdens het examen al getoond; hem hier achterhouden zou de
+                upsell onwaar maken. */}
+            {!canSeeExplanations && !knmFeedback && (
               <div className="g-xupsell">
-                <span>Uitleg per vraag zit in het Compleet-pakket.</span>
+                <span>Uitleg per vraag zit in de module {skillLabel(exam.skill, exam.level)}.</span>
                 <Link href="/premium" className="g-tlink" style={{ color: 'var(--klei)', fontSize: 14 }}>
                   Bekijk de pakketten
                   <ArrowRight className="rtl-flip" size={15} aria-hidden />
@@ -2192,6 +2218,12 @@ function ExamIntroScreen({
                 De klok loopt zodra je begint. Je hoort elk fragment één keer en gaat steeds
                 vooruit; teruggaan naar een vraag kan niet. Op het volgende scherm staat de
                 volledige uitleg. Alle opgaven zijn gemaakt en nagekeken door een NT2-docent.
+              </>
+            ) : exam.skill === 'knm' ? (
+              <>
+                De klok loopt zodra je begint. Na elke vraag zie je meteen of je antwoord goed is,
+                met het juiste antwoord en de uitleg. Je antwoord staat daarna vast. Alle opgaven
+                zijn gemaakt en nagekeken door een NT2-docent.
               </>
             ) : (
               <>

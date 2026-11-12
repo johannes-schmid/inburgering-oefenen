@@ -414,7 +414,7 @@ export default function QuestionForm({
         </p>
       </div>
 
-      <Field label="Uitleg" hint="Zichtbaar in het Compleet-pakket na het inleveren.">
+      <Field label="Uitleg" hint="Zichtbaar na het inleveren voor wie de module heeft; bij KNM direct na elke vraag.">
         <textarea
           value={form.explanation}
           onChange={e => patch({ explanation: e.target.value })}

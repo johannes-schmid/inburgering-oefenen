@@ -3,7 +3,7 @@ import { notFound, redirect } from 'next/navigation';
 import { KNM } from '@/data/skills';
 import { fetchExamContent } from '@/lib/exam-content';
 import { createClient } from '@/lib/supabase/server';
-import { canSeeExplanations, ownsKnm, planFromMetadata } from '@/lib/entitlements';
+import { canSeeExplanations, ownsKnm } from '@/lib/entitlements';
 import AppShell from '../../../components/AppShell';
 import ExamShell from '@/components/exam/ExamShell';
 import { fetchPortalMenu } from '@/lib/portal-menu';
@@ -57,10 +57,10 @@ export default async function KnmExamPage({ params }: Props) {
     );
   }
 
-  const plan = planFromMetadata(user.user_metadata);
+  const owns = ownsKnm(user.user_metadata);
   // `ownsKnm`, not `ownsModule(…, 'a2', …)`: KNM is sold as its own level-less module, so an
   // A2 customer does not have it and a KNM customer is not an A2 one.
-  if (!content.exam.is_free && !ownsKnm(user.user_metadata)) {
+  if (!content.exam.is_free && !owns) {
     redirect(encodeURI(localeHref(locale, `premium?vanaf=oefenexamen-knm-${number}`)));
   }
 
@@ -70,7 +70,7 @@ export default async function KnmExamPage({ params }: Props) {
     <AppShell locale={locale} email={user.email ?? ''} active="knm" activeGroup="knm" menu={menu}>
       <div className="px-5 py-7 sm:px-8">
         <div className="max-w-6xl mx-auto">
-          <ExamShell content={content} canSeeExplanations={canSeeExplanations(plan)} />
+          <ExamShell content={content} canSeeExplanations={canSeeExplanations(owns)} />
         </div>
       </div>
     </AppShell>

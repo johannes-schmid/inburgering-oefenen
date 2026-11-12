@@ -6052,3 +6052,21 @@ Lokaal inloggen als admin: de wachtwoord-hook blokkeert `tests/helpers/session.m
 **Outcome:** FAILURE, daarna opgelost.
 **What worked / went wrong:** Het script draait vóór de pagina en zette `data-shell="ios"` op `<html>` om de app in CSS herkenbaar te maken. De dev-overlay van Next meldde "1 Issue" op elk scherm; in een gewone browser niet. Zonder die ene regel was de melding weg.
 **Lesson:** Een script dat vóór React draait mag de DOM niet aanraken. Wil de site de app herkennen, dan aan de user-agent (`InburgeringOefenenApp/1.0`), op de server of ná het mounten.
+
+## 2026-11-12 — KNM-oefenexamen: oordeel, juiste antwoord en uitleg na elke vraag
+**Changed:** `components/exam/ExamShell.tsx` — de losse-vraagtak (KNM) geeft `showFeedback={knmFeedback}` aan `McqQuestion`, de zitting wordt als `feedback_mode: 'practice'` gestempeld, en de introtekst van KNM zegt dat het oordeel na elke vraag komt en het antwoord daarna vaststaat.
+**Outcome:** SUCCESS (tsc, `next build`, in de browser op 375 en desktop). Eerste poging zonder browsercontrole: Docker Desktop stond uit, dus `/oefenexamen/knm/1` gaf een 404.
+**What worked / went wrong:** `McqQuestion` had de oordeelstand al (proefvragen, admin-preview); het examen zette hem alleen uit. De uitleg per vraag staat in die stand niet achter `canSeeExplanations`, terwijl de uitslag aan het eind dat wel doet — en die poort is sinds de moduleprijzen voor iedereen dicht (`plan` wordt nergens meer geschreven). De twee eslint-fouten (`set-state-in-effect`, regel 354 en 450) en de rode `seo-cockpit`-test stonden er al.
+**Lesson:** Kijk eerst of de component de gevraagde stand al kent voordat je hem bouwt; en een 404 op een examenpagina is lokaal meestal de stack die niet draait, niet de route.
+
+## 2026-11-12 — KNM-oordeel viel onder de plakkende voetbalk
+**Changed:** `revealVerdict()` in `components/exam/ExamShell.tsx` schuift het oordeel in beeld als het onder `.exam-nav` valt.
+**Outcome:** SUCCESS
+**What worked / went wrong:** Een KNM-vraag met een foto is hoger dan het scherm; het oordeel stond eronder en "Volgende" bleef in beeld, dus je klikte door zonder het te zien. Bij het nameten leek het schuiven niet te werken: `window.scrollY` bleef 0, want de scrollcontainer van het portaal is `<main>`, niet het venster.
+**Lesson:** Een stand die je aanzet moet je op een echte vraag met plaatje bekijken, niet op de DOM-klasse; en meet scroll in het portaal op `<main>`.
+
+## 2026-11-12 — Betalende abonnee kreeg "Uitleg zit in het Compleet-pakket"
+**Changed:** `canSeeExplanations()` in `lib/entitlements.ts` neemt nu het bezit van de module (`ownsKnm` / `ownsModule`) in plaats van `plan`; beide spelerpagina's geven dat door; de upsell in de uitslag noemt de module; KNM toont de uitleg in de uitslag altijd. Test in `tests-unit/entitlements.test.ts`.
+**Outcome:** SUCCESS (36/36 entitlement-tests, tsc, build; lokaal als KNM-abonnee en als gratis account door examen 1)
+**What worked / went wrong:** Derde keer dezelfde fout als de speler en `grading-limits`: een poort op `plan === 'premium_plus'`, een waarde die sinds de moduleprijzen niemand meer krijgt. Dezelfde vlag stuurt ook het modelantwoord bij Schrijven, dus dat stond voor abonnees ook dicht. Lokaal inloggen: wachtwoordlogin wordt door de Auth-hook geweigerd, dus een bestaande testgebruiker met een magic link van de admin-API (JWT uit `supabase status -o env`), en Playwright met `channel: 'chrome'` omdat de eigen Chromium niet geïnstalleerd is.
+**Lesson:** Elke lezer van `plan` is verdacht; een poort hoort `ownsModule`/`ownsKnm` te krijgen. Open na een betaalwijziging de uitslag als betalende gebruiker, niet alleen het examen.

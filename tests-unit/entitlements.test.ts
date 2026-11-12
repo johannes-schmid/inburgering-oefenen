@@ -1,6 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import {
   canOpenExam,
+  canSeeExplanations,
   endingModules,
   moduleUntil,
   ownsKnm,
@@ -194,5 +195,31 @@ describe('einddatum per module (co-terming)', () => {
   it('leest een bare slug in module_until als A2', () => {
     const meta = { modules: ['lezen'], module_until: { lezen: PAST } };
     expect(modulesFromMetadata(meta as never)).toEqual([]);
+  });
+});
+
+/**
+ * De uitleg per vraag en het modelantwoord hingen aan `plan === 'premium_plus'`, een waarde die
+ * sinds de moduleprijzen niemand meer krijgt: een betalende abonnee zag "Uitleg zit in Compleet".
+ */
+describe('canSeeExplanations', () => {
+  it('opens for a KNM module subscriber', () => {
+    expect(canSeeExplanations(ownsKnm({ modules: ['knm'], modules_until: FUTURE } as never))).toBe(true);
+  });
+
+  it('opens for a level module subscriber, for that module only', () => {
+    const meta = { modules: ['a2:lezen'], modules_until: FUTURE };
+    expect(canSeeExplanations(ownsModule(meta as never, 'a2', 'lezen'))).toBe(true);
+    expect(canSeeExplanations(ownsModule(meta as never, 'a2', 'schrijven'))).toBe(false);
+    expect(canSeeExplanations(ownsKnm(meta as never))).toBe(false);
+  });
+
+  it('stays open for the legacy all-access plans', () => {
+    expect(canSeeExplanations(ownsKnm({ plan: 'premium' }))).toBe(true);
+    expect(canSeeExplanations(ownsModule({ plan: 'premium_plus' }, 'b1', 'lezen'))).toBe(true);
+  });
+
+  it('stays closed for a free account', () => {
+    expect(canSeeExplanations(ownsKnm({}))).toBe(false);
   });
 });

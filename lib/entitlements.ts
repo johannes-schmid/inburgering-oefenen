@@ -30,15 +30,16 @@ export function canOpenExam(plan: Plan, isFree: boolean): boolean {
 }
 
 /**
- * Per-question explanations and rubric feedback are the Compleet tier.
+ * De uitleg per vraag en het modelantwoord horen bij de module: wie het onderdeel heeft, ziet ze.
  *
- * `UNGATE_PAID_FEATURES` short-circuits this while the grading work is being reviewed — see the
- * warning on that flag in lib/features.ts. This function is its only reader, so turning the gate
- * back on is a one-line change here-adjacent, not an audit of every surface.
+ * `ownsThisModule` is de uitkomst van `ownsModule(…)` of `ownsKnm(…)` voor het onderdeel van dit
+ * examen. Dit las tot 12-11 `plan === 'premium_plus'`, de oude Compleet-tier — een waarde die
+ * sinds de moduleprijzen niemand meer krijgt, dus een betalende abonnee zag de upsell.
+ *
+ * `UNGATE_PAID_FEATURES` zet de poort voor iedereen open; zie de noot in lib/features.ts.
  */
-export function canSeeExplanations(plan: Plan): boolean {
-  if (UNGATE_PAID_FEATURES) return true;
-  return plan === 'premium_plus';
+export function canSeeExplanations(ownsThisModule: boolean): boolean {
+  return UNGATE_PAID_FEATURES || ownsThisModule;
 }
 
 
