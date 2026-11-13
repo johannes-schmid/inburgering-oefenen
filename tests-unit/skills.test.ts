@@ -61,20 +61,19 @@ describe('exam task rules', () => {
   });
 
   /**
-   * B1 Luisteren is unverified and must stay that way until someone has DUO's B1 Luisteren
-   * material in hand. Every other (level, skill) is filled in; this pins the one gap, so
-   * "fill in B1 for symmetry" cannot quietly invent the standard the docent is measured by.
+   * B1 Luisteren got its format on 2026-11-13: 39 one-question fragments in 90 minutes, the shape
+   * its ten published exams are built to. Pinned so it cannot drift from `exam_formats`.
    */
-  it('leaves B1 Luisteren unverified', () => {
+  it('mirrors exam_formats for B1 Luisteren', () => {
     expect(formatTaskRules('b1', 'luisteren')).toEqual([]);
-    expect(getFormat('b1', 'luisteren').itemCount).toBeNull();
-    expect(getFormat('b1', 'luisteren').durationMinutes).toBeNull();
-    expect(formatRules('b1', 'luisteren').stimulusCount).toBeNull();
+    expect(getFormat('b1', 'luisteren').itemCount).toBe(39);
+    expect(getFormat('b1', 'luisteren').durationMinutes).toBe(90);
+    expect(formatRules('b1', 'luisteren').stimulusCount).toBe(39);
   });
 
-  /** The three B1 onderdelen that *were* counted must all be present, or the mirror is half-done. */
-  it('has B1 Lezen, Schrijven and Spreken filled in', () => {
-    for (const skill of ['lezen', 'schrijven', 'spreken'] as SkillSlug[]) {
+  /** All four B1 onderdelen must be present, or the mirror is half-done. */
+  it('has every B1 onderdeel filled in', () => {
+    for (const skill of ['lezen', 'luisteren', 'schrijven', 'spreken'] as SkillSlug[]) {
       expect(getFormat('b1', skill).itemCount, `b1 ${skill} itemCount`).not.toBeNull();
       expect(getFormat('b1', skill).durationMinutes, `b1 ${skill} duration`).not.toBeNull();
     }

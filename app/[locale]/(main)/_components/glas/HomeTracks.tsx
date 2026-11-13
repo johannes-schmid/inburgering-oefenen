@@ -19,11 +19,10 @@ export default async function HomeTracks({ locale, centered = false }: { locale:
   const KNM_WORDS = KNM_WOORDKAARTEN.themes.reduce((n, theme) => n + theme.words.length, 0);
 
   /* B1's chips are the onderdelen that actually have something behind them, derived from the same
-     fact the overview page's `robots` reads: `itemCount === null` means DUO's format at this level
-     is unverified, which is B1 Luisteren and only B1 Luisteren. So this list is Lezen, Schrijven
-     and Spreken, and it will pick up Luisteren automatically on the commit that counts its format
-     off real material — rather than needing someone to remember this line. Linking Luisteren today
-     would put a `noindex` page behind a chip on the most-linked page on the site. */
+     fact the overview page's `robots` reads: `itemCount === null` means the format at this level is
+     unverified. Since 2026-11-13 that is no onderdeel (B1 Luisteren got its count), so this is all
+     four — but the filter stays: a chip to a `noindex` page on the most-linked page on the site is
+     the bug it prevents. */
   const B1_CHIPS = SKILLS
     .filter(s => getFormat('b1', s.slug).itemCount !== null)
     .map(s => ({ slug: s.slug, name: tSkills(`${s.key}.name`) }));
@@ -37,8 +36,8 @@ export default async function HomeTracks({ locale, centered = false }: { locale:
         vier de taalonderdelen linken (CLAUDE.md §3, `tests/public.spec.js`). Ze staan als de
         mono-regel uit glas.html §08 in de kaartkop, niet meer als rij chips: die maakten van elke
         kaart een formulier (feedback eigenaar 15-10). A2 leest ze uit `SKILLS`, B1 uit dezelfde
-        taxonomie gefilterd op een geverifieerd formaat (dus geen Luisteren B1 tot dat geteld is).
-        Beschikbaarheid staat in de tekst — de B1-noot, de badge — nooit in de kleur.
+        taxonomie gefilterd op een geverifieerd formaat.
+        Beschikbaarheid staat in de tekst — de badge — nooit in de kleur.
         Kaartkoppen: Gracht, Dageraad voor KNM, Nevel voor ONA (glas.html §08 "Track-kaart"). */
   return (
     <section id="onderdelen" aria-labelledby="blocks-heading" className="g-sec g-glow g-glow-start g-glow-soft">
@@ -67,7 +66,6 @@ export default async function HomeTracks({ locale, centered = false }: { locale:
             desc={t('blocks_b1_desc')}
             chips={B1_CHIPS.map(chip => ({ key: chip.slug, name: chip.name, href: localeHref(locale, `oefenexamen/b1/${chip.slug}`) }))}
             badge={t('track_live')}
-            note={t('blocks_b1_note')}
             ctaLabel={t('blocks_b1_cta')}
             href={localeHref(locale, `oefenen/b1/lezen`)}
           />

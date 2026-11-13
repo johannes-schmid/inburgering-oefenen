@@ -74,7 +74,12 @@ describe('targets', () => {
   it('has no script target where the audio band is unverified', () => {
     // NULL means unverified and the check is skipped — same convention as `exam_publish_issues()`.
     expect(lengthTarget('a2', 'script', 'lezen')).toBeNull();
-    expect(lengthTarget('b1', 'script', 'luisteren')).toBeNull();
+  });
+
+  it('reads the B1 Luisteren audio band from its format', () => {
+    expect(lengthTarget('b1', 'script', 'luisteren')).toEqual(
+      expect.objectContaining({ unit: 'seconden', min: 35, max: 95, source: 'format' })
+    );
   });
 
   it('labels every non-audio target as an own guideline', () => {

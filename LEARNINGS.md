@@ -3,6 +3,13 @@
 Append-only log of successes and failures from each working session.
 Read this at the start of every session and apply lessons before writing code.
 
+## 2026-11-13 — B1 Luisteren publiek: format geteld, gratis taster, "komt eraan" weg
+
+**Changed:** `data/skills.ts` (b1 luisteren 39 vragen / 90 min + regels, gelijk aan `exam_formats`), `lib/free-practice-db.ts` (`b1:luisteren` uit examens 1–10), `HomeTracks.tsx` (noot weg), acht teksten × nl/en/ar in `messages/`, en de tests die het gat vastpinden (`skills`, `length-targets`, `portal-crumbs`, `tests/seo.spec.js`).
+**Outcome:** SUCCESS (tsc schoon, vitest 849/850 — de ene rode is `seo-cockpit`, ook rood op een schone boom; `next build` groen; taster lokaal doorgeklikt met audio)
+**What worked / went wrong:** Omdat chips, `robots`, sitemap, de kiezer op `/oefenen` en de portaalkruimels allemaal op `itemCount !== null` en `SOURCE` lezen, was het vullen van één telling genoeg om B1 Luisteren overal tegelijk te openen. Op productie staat B1 Luisteren examen 1 op `is_free = false`, terwijl de regel "examen 1 van elk gepubliceerd onderdeel gratis" is — op verzoek van de eigenaar op productie én lokaal op `true` gezet, en `exam_formats.verified_note` voor (b1, luisteren) bijgewerkt.
+**Lesson:** Een beschikbaarheidsclaim die uit één feit is afgeleid, gaat met dat feit mee open; de losse kopij ("komt eraan", "behalve Luisteren B1") is wat je met de hand moet zoeken — grep alle drie de locales op de onderdeelnaam, niet alleen op de sleutel.
+
 ## 2026-10-13 — B1 Luisteren opnieuw ingesproken met `eleven_v4`, examens 7–10 geschreven
 **Changed:** `createTts({ dialogueModel, speechModel })` in `scripts/a2-content/lib.mjs` (standaard
 ongewijzigd `eleven_v3` / `eleven_multilingual_v2`); `--model <id>` in `scripts/seed-b1-content.mjs`;

@@ -94,19 +94,15 @@ test.describe('crawlability', () => {
     expect(res.status()).toBe(200);
     const xml = await res.text();
     expect(xml).toContain('/oefenexamen/a2/lezen');
-    /* B1 joined the sitemap on 2026-08-23, when the docent signed its content off — but only the
-       three onderdelen that have any. B1 Luisteren's format is unverified (`itemCount === null`,
-       `data/skills.ts`), its overview is `noindex`, and a sitemap entry for a noindex URL is the
-       contradiction this assertion exists to catch. The overview page's `robots` and this loop are
-       gated on the same fact; that is what stops them drifting. */
-    for (const skill of ['lezen', 'schrijven', 'spreken']) {
+    /* B1 joined the sitemap on 2026-08-23, Luisteren on 2026-11-13 once its format was counted.
+       The overview page's `robots` and the sitemap are gated on the same fact (`itemCount`). */
+    for (const skill of ['lezen', 'luisteren', 'schrijven', 'spreken']) {
       expect(xml).toContain(`/oefenexamen/b1/${skill}`);
     }
-    expect(xml).not.toContain('/oefenexamen/b1/luisteren');
 
-    // The free B1 taster, derived from B1 Lezen exam 1. Lezen only — see `lib/free-practice-b1.ts`.
+    // The free B1 tasters: Lezen and Luisteren — see `lib/free-practice-db.ts`.
     expect(xml).toContain('/oefenen/b1/lezen');
-    expect(xml).not.toContain('/oefenen/b1/luisteren');
+    expect(xml).toContain('/oefenen/b1/luisteren');
   });
 
   test('admin is noindex', async ({ page }) => {

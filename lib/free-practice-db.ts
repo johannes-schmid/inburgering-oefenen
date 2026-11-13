@@ -66,9 +66,8 @@ function sourceKey(level: Level | null, skill: OnderdeelSlug): SourceKey {
  * The (level, onderdeel) pairs with a taster, and the oefenexamens each draws from.
  *
  * A2 Luisteren is here as well as Lezen: an audio stimulus carries `audio_url`, which the
- * engine's player takes directly, so nothing about it needs the committed mp3s. B1 Luisteren is
- * absent because there is no B1 Luisteren content and its format is deliberately unverified
- * (`data/skills.ts`). Schrijven and Spreken are absent at both levels: they are rubric-graded,
+ * engine's player takes directly, so nothing about it needs the committed mp3s; B1 Luisteren the
+ * same way since 2026-11-13. Schrijven and Spreken are absent at both levels: they are rubric-graded,
  * so every answer costs a model call and has to be attributable to an account first — the
  * picker sends those two to oefenexamen 1, which is free.
  *
@@ -90,6 +89,9 @@ const SOURCE: Partial<Record<SourceKey, number[]>> = {
   'a2:lezen': [1],
   'a2:luisteren': [1],
   'b1:lezen': [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
+  // B1 Luisteren (2026-11-13) mengt om dezelfde reden als Lezen: 39 vragen per examen, dus één
+  // uit elk van de tien in plaats van een kwart van één zitting.
+  'b1:luisteren': [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
   // KNM draws from exam 1 only, for A2's reason and not B1's: KNM exam 1 is `is_free`, so the
   // ten questions handed out are ten a visitor can sit in full after making an account. Its
   // forty items already span the seven thema's, so a mix would buy no extra spread either.

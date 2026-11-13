@@ -25,10 +25,10 @@ describe('skillTrail', () => {
     expect(t[2].siblings?.every(s => s.muted !== true)).toBe(true);
   });
 
-  /* Een NULL itemtelling betekent onverifieerd, niet nul — B1 Luisteren heeft geen inhoud. */
-  it('dimt een onderdeel zonder geverifieerde itemtelling', () => {
+  /* Een NULL itemtelling betekent onverifieerd, niet nul. Sinds 13-11 heeft elk B1-onderdeel er een. */
+  it('dimt geen B1-onderdeel nu elke itemtelling geverifieerd is', () => {
     const t = skillTrail({ locale: 'nl', level: 'b1', skill: 'lezen', overviewLabel: 'Overzicht', skillName: name });
-    expect(t[2].siblings?.find(s => s.label === 'Luisteren')?.muted).toBe(true);
+    expect(t[2].siblings?.find(s => s.label === 'Luisteren')?.muted).toBe(false);
     expect(t[2].siblings?.find(s => s.label === 'Lezen')?.muted).toBe(false);
   });
 });

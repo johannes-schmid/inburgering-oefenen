@@ -63,7 +63,7 @@ export default async function OefenenPickerPage({ params }: Props) {
    *  - **free with an account** — Schrijven and Spreken, at both levels. Every answer is marked
    *    per criterium by a model, which costs money per submission, so it has to hang off an
    *    account; oefenexamen 1 is `is_free` at both levels, so what the card promises is real;
-   *  - **absent** — B1 Luisteren, which has no content and no counted format (`data/skills.ts`).
+   *  - **absent** — none today; B1 Luisteren was, until its format was counted (2026-11-13).
    *    Omitted rather than shown as "binnenkort": a card would advertise a level of an onderdeel
    *    nobody has authored a single item at.
    *

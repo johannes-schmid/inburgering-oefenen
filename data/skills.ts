@@ -33,11 +33,10 @@
  * on 2026-08-21** (Lezen I and Schrijven I 2022 + 2023, Spreken I 2022–2025). Attribute them
  * to DUO's published practice exams, exactly as for A2 — never to an official DUO norm.
  *
- * **B1 Luisteren is still `null`, and that is not an oversight.** There is no B1 Luisteren
- * reference material, so its shape is genuinely unknown. `null` means "we do not know",
- * renders as an em dash, and makes `exam_publish_issues()` skip its count check rather than
- * blocking the docent on a guess. Fill it in only by counting it off DUO's own material — and
- * update `exam_formats` in the database in the same commit.
+ * **B1 Luisteren was `null` until 2026-11-13**; it is now 39 questions / 90 minutes, the format
+ * its ten published exams are built to (`exam_formats`, same numbers). `null` still means "we do
+ * not know" wherever it appears: it renders as an em dash and makes `exam_publish_issues()` skip
+ * its count check rather than blocking the docent on a guess.
  */
 
 /**
@@ -203,11 +202,12 @@ const FORMATS: Record<Level, Record<SkillSlug, SkillFormat>> = {
   // method `SEO/facts.md` §1 records for A2, and attributable the same way: to DUO's
   // published practice exams, never to an official DUO norm.
   //
-  // **Luisteren stays null.** There is no B1 Luisteren reference material, so its shape is
-  // genuinely unknown. Filling it in for symmetry would invent a standard.
+  // **Luisteren: 39 / 90 min since 2026-11-13** — the format the ten published exams are built
+  // to (owner, 20-10: DUO's official B1 format), mirrored from `exam_formats` and
+  // `scripts/b1-content/rules.mjs`. Attribute it to our oefenexamens, never to a DUO norm.
   b1: {
     lezen:     { itemCount: 35,   durationMinutes: 110,  examCount: 10 },
-    luisteren: { itemCount: null, durationMinutes: null, examCount: 10 },
+    luisteren: { itemCount: 39,   durationMinutes: 90,   examCount: 10 },
     schrijven: { itemCount: 12,   durationMinutes: 100,  examCount: 10 },
     spreken:   { itemCount: 16,   durationMinutes: 30,   examCount: 10 },
   },
@@ -249,7 +249,8 @@ const RULES: Record<Level, Record<SkillSlug, SkillRules>> = {
   // four — the delen differ in spreektijd (20 s vs 30 s), which is why the split matters.
   b1: {
     lezen:     { ...NO_RULES, stimulusCount: 6, questionsPerStimulus: [4, 7], options: [3, 4] },
-    luisteren: NO_RULES,
+    // Luisteren mirrors `exam_formats` after `20260916150000_b1_luisteren_format.sql`.
+    luisteren: { ...NO_RULES, stimulusCount: 39, questionsPerStimulus: [1, 1], options: [3, 3], audioSeconds: [35, 95] },
     schrijven: NO_RULES,
     spreken:   { ...NO_RULES, partCount: 2, itemsPerPart: 8 },
   },
