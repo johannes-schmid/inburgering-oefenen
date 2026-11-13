@@ -22,6 +22,7 @@ import {
   ListChecks,
   MessageSquareText,
   SquarePen,
+  Star,
   TrendingUp,
   Users,
   type LucideIcon,
@@ -42,6 +43,7 @@ const ICONS: Record<string, LucideIcon> = {
   rate_review: MessageSquareText,
   group: Users,
   seo: TrendingUp,
+  star: Star,
 };
 
 function NavIcon({ name }: { name: string }) {

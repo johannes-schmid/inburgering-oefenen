@@ -425,7 +425,7 @@ nieuw voorstel; en de agent raakt nooit kopij, feiten of vertalingen aan — dat
 │   ├── (main)/          # public: homepage, platform, gidsen, oefenen, oefenexamen, premium, blog
 │   ├── (app)/           # portal: dashboard, the player, leren, woordkaarten, pakketten, profiel
 │   ├── (auth)/          # login, register, activate, admin-login
-│   └── (admin)/         # questions, fragmenten, exams, rubrics, beoordeling, users, woordkaarten
+│   └── (admin)/         # questions, fragmenten, exams, rubrics, beoordeling, users, reviews, woordkaarten
 ├── app/api/             # route handlers — see the table below
 ├── components/          # horizon | site | ui | reui | exam | leren | proefexamen
 ├── data/
@@ -480,6 +480,7 @@ a session, append to it at the end.
 | `tijdlijn-email` | recomputes the plan server-side and queues the reminder |
 | `admin/upload-image` / `pexels-*` / `upload-pexels-image` | admin image tooling |
 | `admin/run-eval` / `admin/suggest-item` / `admin-revalidate` | admin tooling |
+| `admin/request-review` | het reviewverzoek vanuit `/admin/reviews`: `requireAdmin()`, alleen wie betaald heeft, 90 dagen wachttijd (`lib/admin/review-score.ts`), en een rij in `review_requests` pas ná een geslaagde verzending |
 | `contact-submit` / `unsubscribe` / `track-activate-visit` | support |
 
 **Every exam item points at our own Storage.** `admin/upload-image` re-encodes to WebP and stores in

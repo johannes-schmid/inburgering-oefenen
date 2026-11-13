@@ -101,7 +101,13 @@ export const ADMIN_NAV_SECTIONS: AdminNavSection[] = [
       { path: '/beoordeling', icon: 'rate_review', label: 'Beoordelen' },
     ],
   },
-  { title: 'Beheer', items: [{ path: '/users', icon: 'group', label: 'Gebruikers' }] },
+  {
+    title: 'Beheer',
+    items: [
+      { path: '/users', icon: 'group', label: 'Gebruikers' },
+      { path: '/reviews', icon: 'star', label: 'Reviews' },
+    ],
+  },
 ];
 
 /** Alle rijen plat, voor wie alleen de paden nodig heeft. */

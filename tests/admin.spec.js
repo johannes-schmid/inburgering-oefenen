@@ -92,6 +92,8 @@ test.describe('the money-spending routes refuse anonymous callers', () => {
     '/api/generate-question-audio',
     '/api/generate-stimulus-audio',
     '/api/admin/run-eval',
+    // Stuurt een mail naar een klant: geen credits, wel iets dat niet terug te halen is.
+    '/api/admin/request-review',
   ];
 
   for (const route of ROUTES) {
