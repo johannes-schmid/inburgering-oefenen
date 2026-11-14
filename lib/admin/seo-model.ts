@@ -46,7 +46,7 @@ export type Recommendation = {
   created: string;
   site: 'inburgering' | 'knm';
   owner: Owner;
-  kind: 'measurement' | 'cleanup' | 'content' | 'title' | 'technical' | 'decision';
+  kind: 'measurement' | 'cleanup' | 'content' | 'title' | 'technical' | 'decision' | 'access';
   priority: 'now' | 'next' | 'later';
   task: string;
   why: string;

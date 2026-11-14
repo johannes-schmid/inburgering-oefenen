@@ -125,7 +125,7 @@ describe('seo-agent/recommendations.json', () => {
     expect(new Set(ids).size).toBe(ids.length);
     for (const r of file.items as Recommendation[]) {
       expect(['eigenaar', 'amber', 'agent']).toContain(r.owner);
-      expect(['measurement', 'cleanup', 'content', 'title', 'technical', 'decision']).toContain(r.kind);
+      expect(['measurement', 'cleanup', 'content', 'title', 'technical', 'decision', 'access']).toContain(r.kind);
       expect(['now', 'next', 'later']).toContain(r.priority);
       expect(['open', 'planned', 'in-progress', 'done', 'dismissed']).toContain(r.status);
       if (r.owner === 'amber') expect(r.minutes).toBeGreaterThan(0);
