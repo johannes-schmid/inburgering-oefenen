@@ -266,7 +266,11 @@ export function mp3DurationSeconds(buf) {
   return seconds > 0 ? Math.round(seconds * 100) / 100 : null;
 }
 
-export function createTts({ apiKey }) {
+/**
+ * `dialogueModel` en `speechModel` staan standaard op wat A2 en de lessen altijd gebruikten; de
+ * B1-seeder geeft `eleven_v4` mee via `--model`. Eén examen hoort wel op één model te staan.
+ */
+export function createTts({ apiKey, dialogueModel = 'eleven_v3', speechModel = 'eleven_multilingual_v2' }) {
   /**
    * A whole scene in one `/v1/text-to-dialogue` call, the way the taster pipeline does it.
    * `lines` is [[speaker, text], …]; `cast` maps every speaker tag to a key of tts-voices.json.
@@ -285,7 +289,7 @@ export function createTts({ apiKey }) {
       headers: { 'xi-api-key': apiKey, 'Content-Type': 'application/json' },
       body: JSON.stringify({
         inputs,
-        model_id: 'eleven_v3',
+        model_id: dialogueModel,
         settings: { stability: 0.5, use_speaker_boost: true },
         apply_text_normalization: 'on',
         seed: 20260731,
@@ -309,7 +313,7 @@ export function createTts({ apiKey }) {
       headers: { 'xi-api-key': apiKey, 'Content-Type': 'application/json' },
       body: JSON.stringify({
         text,
-        model_id: 'eleven_multilingual_v2',
+        model_id: speechModel,
         voice_settings: {
           stability: 0.45,
           similarity_boost: 0.75,

@@ -122,6 +122,18 @@ export const routing = defineRouting({
       ar: '/المنصة',
     },
 
+    // ── Landingspagina's (richting A, 13-11) — zie seo-agent/landing-pages.json ──
+    '/herexamen': {
+      nl: '/herexamen',
+      en: '/retake-exam',
+      ar: '/إعادة-الامتحان',
+    },
+    '/voorbeeldvragen': {
+      nl: '/voorbeeldvragen',
+      en: '/example-questions',
+      ar: '/أسئلة-نموذجية',
+    },
+
     // ── Kennisgidsen ─────────────────────────────────────────────────────────
     /* Sectie-slug én gids-slug zijn vertaald. De tweede is een parameterwaarde, en die
      * vertaalt next-intl niet mee — dat doet `contentSlugParam` in `i18n/content-slugs.ts`,

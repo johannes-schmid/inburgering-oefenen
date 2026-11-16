@@ -62,6 +62,10 @@ onder "More".
 - **De indeling** staat in `seo-agent/pages.json` en komt uit `node scripts/seo-agent/pages.mjs`
   (sitemap + de nieuwste pagina-audit); pas de regels in dat script aan, nooit de JSON.
 - **Concurrenten**: `competitors-analysis.json`, met `by_section` voor de inzichten per sectie.
+- **Landingspagina's** (13-11): `landing-pages.json`. Elke zaterdag twee à drie voorstellen in
+  richting A ("probeer direct": een echte opgave bovenaan, één knop "Start gratis", geen prijzen),
+  elke week een andere variant, hooguit één nieuwe URL per week. Op het bord als rij in de tabel,
+  met een eigen filter; de regels staan in `lib/admin/seo-landing.ts` en `tests-unit/seo-landing.test.ts`.
 
 ## Cadans
 

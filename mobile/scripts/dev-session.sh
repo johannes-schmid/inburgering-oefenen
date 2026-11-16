@@ -1,7 +1,8 @@
 #!/bin/bash
 # Logt de app in de simulator in als een lokale testgebruiker, zonder door Google te gaan.
 #
-#   ./mobile/scripts/dev-session.sh menu-partial@local.test
+#   ./mobile/scripts/dev-session.sh menu-partial@local.test            # iOS-simulator
+#   ./mobile/scripts/dev-session.sh menu-partial@local.test android    # Android-emulator
 #
 # Alleen de LOKALE stack (544xx) en alleen een dev-build: de ingang `dev-session` bestaat in
 # een release-build niet (zie App.tsx). De sessie komt van een magic link uit de admin-API,
@@ -9,6 +10,7 @@
 set -euo pipefail
 
 EMAIL="${1:-menu-partial@local.test}"
+TARGET="${2:-ios}"
 API="http://127.0.0.1:54421"
 cd "$(dirname "$0")/../.."
 
@@ -24,5 +26,13 @@ FRAGMENT=$(curl -s -X POST "$API/auth/v1/verify" \
   -d "{\"type\":\"magiclink\",\"token_hash\":\"$HASH\"}" \
   | python3 -c 'import json,sys; s=json.load(sys.stdin); print("access_token=%s&refresh_token=%s" % (s["access_token"], s["refresh_token"]))')
 
-xcrun simctl openurl booted "inburgeringoefenen://dev-session#$FRAGMENT"
-echo "Sessie voor $EMAIL aangereikt aan de simulator."
+if [ "$TARGET" = "android" ]; then
+  # De emulator praat met de lokale stack en `next dev` via adb reverse, dus dezelfde URL's als iOS.
+  adb reverse tcp:3001 tcp:3001 >/dev/null
+  adb reverse tcp:54421 tcp:54421 >/dev/null
+  adb shell am start -a android.intent.action.VIEW -d "'inburgeringoefenen://dev-session#$FRAGMENT'" >/dev/null
+  echo "Sessie voor $EMAIL aangereikt aan de emulator."
+else
+  xcrun simctl openurl booted "inburgeringoefenen://dev-session#$FRAGMENT"
+  echo "Sessie voor $EMAIL aangereikt aan de simulator."
+fi

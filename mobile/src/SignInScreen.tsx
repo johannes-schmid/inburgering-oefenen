@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Pressable, StyleSheet, Text, View, useWindowDimensions } from 'react-native';
+import { Platform, Pressable, StyleSheet, Text, View, useWindowDimensions } from 'react-native';
 import * as AppleAuthentication from 'expo-apple-authentication';
 import * as Haptics from 'expo-haptics';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
@@ -20,8 +20,9 @@ type Props = {
  * Het enige scherm dat de app zelf tekent. Glas v1.0, veld "Licht" met één zonneschijf die
  * achter het inlogvlak opkomt — de horizon van het merk, één oranje punt per compositie.
  *
- * Twee knoppen en geen formulier: de site kent alleen Google, en Apple eist dat een app met
- * een externe login ook Inloggen met Apple biedt (richtlijn 4.8). Kopen kan hier niet.
+ * Geen formulier: de site kent alleen Google, en Apple eist dat een app met een externe login
+ * ook Inloggen met Apple biedt (richtlijn 4.8). Die eis geldt niet op Android en de knop bestaat
+ * daar niet, dus Android toont alleen Google. Kopen kan hier niet.
  */
 export default function SignInScreen({ locale, failed = false, onSignedIn }: Props) {
   const t = STRINGS[locale];
@@ -76,15 +77,17 @@ export default function SignInScreen({ locale, failed = false, onSignedIn }: Pro
           </View>
         )}
 
-        <View style={[styles.appleWrap, busy !== null && styles.dim]} pointerEvents={busy ? 'none' : 'auto'}>
-          <AppleAuthentication.AppleAuthenticationButton
-            buttonType={AppleAuthentication.AppleAuthenticationButtonType.CONTINUE}
-            buttonStyle={AppleAuthentication.AppleAuthenticationButtonStyle.BLACK}
-            cornerRadius={27}
-            style={styles.apple}
-            onPress={() => run('apple')}
-          />
-        </View>
+        {Platform.OS === 'ios' && (
+          <View style={[styles.appleWrap, busy !== null && styles.dim]} pointerEvents={busy ? 'none' : 'auto'}>
+            <AppleAuthentication.AppleAuthenticationButton
+              buttonType={AppleAuthentication.AppleAuthenticationButtonType.CONTINUE}
+              buttonStyle={AppleAuthentication.AppleAuthenticationButtonStyle.BLACK}
+              cornerRadius={27}
+              style={styles.apple}
+              onPress={() => run('apple')}
+            />
+          </View>
+        )}
 
         <Pressable
           onPress={() => run('google')}
@@ -171,6 +174,7 @@ const styles = StyleSheet.create({
     shadowOffset: { width: 0, height: -10 },
     shadowOpacity: 0.1,
     shadowRadius: 28,
+    elevation: 16,
   },
   body: { fontFamily: font.body, fontSize: 16, lineHeight: 24, color: color.ink2, marginBottom: 4 },
   alert: { backgroundColor: color.foutTint, borderRadius: 12, paddingHorizontal: 14, paddingVertical: 12 },

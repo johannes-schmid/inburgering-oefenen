@@ -9,6 +9,8 @@
     "userInterfaceStyle": "light",
     "ios": {
       "bundleIdentifier": "nl.inburgeringoefenen.app",
+      "appleTeamId": "43V458B64N",
+      "buildNumber": "2",
       "supportsTablet": false,
       "usesAppleSignIn": true,
       "infoPlist": {
@@ -16,6 +18,18 @@
         "NSMicrophoneUsageDescription": "Voor de spreekopdrachten neem je je antwoord op met de microfoon.",
         "ITSAppUsesNonExemptEncryption": false
       }
+    },
+    "android": {
+      "package": "nl.inburgeringoefenen.app",
+      "versionCode": 2,
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/adaptive-icon.png",
+        "backgroundColor": "#002b6d"
+      },
+      "permissions": [
+        "android.permission.RECORD_AUDIO",
+        "android.permission.MODIFY_AUDIO_SETTINGS"
+      ]
     },
     "plugins": [
       "expo-web-browser",

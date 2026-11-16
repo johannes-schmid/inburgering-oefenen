@@ -219,6 +219,8 @@ const POSTS: BlogPost[] = [
 
 <p>Dat is het belangrijkste om te weten, en het is de vraag die mij het vaakst wordt gesteld. Hieronder lees je hoe herkansen werkt, wat het kost, en wat je uitslagbrief eigenlijk betekent.</p>
 
+<p>Wil je meteen oefenen? <a href="/nl/herexamen">Kies het onderdeel waarvoor je gezakt bent</a> en begin gratis met oefenexamen 1.</p>
+
 <div class="article-toc">
   <p class="article-toc-title">In dit artikel</p>
   <ol>
@@ -303,6 +305,8 @@ ${fact('"Het afgelegde en beoordeelde examen kan niet worden ingezien door de ka
   <li><strong>Kijk na welke vragen je fout had</strong> en waarom. Dat is precies wat DUO je niet geeft, en waar je het meest van leert.</li>
   <li><strong>Wacht met aanmelden</strong> tot je oefenexamens goed gaan. Een herkansing kost geld en tijd.</li>
 </ol>
+
+<p>Op <a href="/nl/herexamen">de pagina voor je herexamen</a> kies je het onderdeel dat je opnieuw doet. Je oefent dan alleen dat.</p>
 
 <h2 id="termijn">Je termijn en wat als die bijna om is</h2>
 

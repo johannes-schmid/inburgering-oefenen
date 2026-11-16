@@ -302,7 +302,7 @@
       "created": "2026-11-07",
       "site": "inburgering",
       "owner": "eigenaar",
-      "kind": "access",
+      "kind": "measurement",
       "priority": "now",
       "task": "Allow the SEO weekly run to send its summary by e-mail",
       "why": "The W45 run could not mail its summary: the Gmail connector offers no send or create-draft tool in this run (the connector does not offer it, or an organization admin removed it). The report is only at seo-agent/reports/2026-W45.md and /admin/seo.",

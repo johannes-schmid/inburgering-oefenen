@@ -6,6 +6,7 @@ import {
 } from './seo-model';
 import { fetchLiveBing, fetchLiveGsc, type LiveGsc, type PageRow } from './seo-live';
 import type { IndexRecord } from './seo-funnel-model';
+import { landingPaths, landingSuggestions, type LandingFile, type LandingInfo } from './seo-landing';
 import { pageScore, pageWeight, rollup, type HistoryRow, type ScoreFactor, type ScoreInput, type Verdict } from './seo-score.mjs';
 
 /**
@@ -68,12 +69,16 @@ export type StructurePage = {
 };
 export type PlannedPage = {
   id: string; title: string; section: string; demand: number; evidence: string; why: string; owner: string; week: string; starts: string;
+  /** Alleen bij een voorgestelde landingspagina (`seo-agent/landing-pages.json`). */
+  landing?: LandingInfo;
 };
 export type SiteStructure = {
   updated: string;
   sections: { key: string; label: string; note: string; score: number | null; insights: string[] }[];
   pages: StructurePage[];
   planned: PlannedPage[];
+  /** Bestaande pagina's die een landingspagina zijn of worden: voor het filter op het bord. */
+  landingPaths: string[];
   site: number | null;
   history: HistoryRow[];
   live: boolean;
@@ -188,6 +193,7 @@ export async function loadSeoCockpit(now = new Date()): Promise<SeoCockpit> {
 
   const diagnosis = await json<Diagnosis>('diagnosis.json');
   const triage = await json<Triage>('pages.json');
+  const landing = await json<LandingFile>('landing-pages.json');
   const [liveGsc, liveBing, index, gsc, bing, health, ledger, recs, config, history, reportFiles, scoreHistory, competitors] = await Promise.all([
     diagnosis ? fetchLiveGsc(diagnosis.baseline, now) : null,
     fetchLiveBing(),
@@ -269,7 +275,7 @@ export async function loadSeoCockpit(now = new Date()): Promise<SeoCockpit> {
         }
       : null,
     structure: triage
-      ? buildStructure(triage, live, gIn, hIn?.problems ?? {}, recs?.items ?? [], competitors, scoreHistory?.rows ?? [])
+      ? withLanding(buildStructure(triage, live, gIn, hIn?.problems ?? {}, recs?.items ?? [], competitors, scoreHistory?.rows ?? []), landing)
       : null,
     competitors,
     // Het oordeel rekent zonder de voorlopige dagen: een halve dag van vandaag trekt het weekgemiddelde omlaag.
@@ -374,12 +380,18 @@ function buildStructure(
   return {
     updated: triage.updated,
     planned: triage.planned,
+    landingPaths: [],
     sections: triage.sections.map(s => ({ ...s, score: totals.sections[s.key] ?? null, insights: competitors?.by_section?.[s.key] ?? [] })),
     pages,
     site: totals.site,
     history,
     live: !!live,
   };
+}
+
+/** De landingspagina's erbij: de open voorstellen bovenaan de voorstellen, de paden voor het filter. */
+function withLanding(structure: SiteStructure, file: LandingFile | null): SiteStructure {
+  return { ...structure, planned: [...landingSuggestions(file), ...structure.planned], landingPaths: landingPaths(file) };
 }
 
 export type SeoPull = { number: number; title: string; url: string; branch: string; createdAt: string; draft: boolean };

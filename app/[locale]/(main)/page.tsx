@@ -2,8 +2,7 @@ import type { Metadata } from 'next';
 import { getTranslations, setRequestLocale } from 'next-intl/server';
 import { ArrowRight, Check, Lock, Play } from 'lucide-react';
 import { routing } from '@/i18n/routing';
-import { DEFAULT_LEVEL, SKILLS, getFormat, KNM } from '@/data/skills';
-import { getFreePractice, optionKeys, optionText } from '@/data/free-practice';
+import { DEFAULT_LEVEL, SKILLS, KNM } from '@/data/skills';
 import { ONA_CARDS } from '@/data/ona/cards';
 import { BUNDLE_PRICE_CENTS, MODULE_PRICE_CENTS, euro } from '@/lib/pricing';
 import JsonLd from '@/components/JsonLd';
@@ -17,7 +16,8 @@ import { courseId, TEACHER_REF, ogImageFor } from '@/lib/schema';
 import FaqList from './_components/glas/FaqList';
 import HomeTracks from './_components/glas/HomeTracks';
 import HomeHeroCopy from './_components/glas/HomeHeroCopy';
-import HomeDemo, { type DemoListening, type DemoMcq, type DemoSpeaking } from './_components/glas/HomeDemo';
+import HomeDemo, { type DemoMcq } from './_components/glas/HomeDemo';
+import { SPREKEN_ITEM, demoFormats, lezenDemo, luisterenDemo } from './_components/glas/demo-items';
 
 /* De homepage (variant B, sinds 15-10 de standaard — besluit eigenaar).
  *
@@ -84,58 +84,14 @@ const KNM_ITEM: DemoMcq = {
   explanation: 'In Nederland moet een kind vanaf 5 jaar naar school. Dat heet de leerplicht.',
 };
 
-/* Spreken A2, oefenexamen 1, onderdeel 1, opgave 1 — letterlijk uit `scripts/a2-content/spreken.mjs`. */
-const SPREKEN_ITEM: DemoSpeaking = {
-  speaker: 'Buurvrouw',
-  says: 'Hoi! Wij zijn nieuw in deze straat. Waar woont u en hoe lang woont u hier al?',
-  prompt: 'Uw nieuwe buurvrouw stelt zich voor. Geef antwoord op haar vraag.',
-  answer: 'Ik woon op nummer 24. Ik woon hier nu ongeveer drie jaar.',
-  limit: 60,
-};
-
-/* Wat de tegels van proefvraag lu-1 groot laten zien: de drie antwoorden zijn een dag en een tijd. */
-const LU1_TILES: DemoListening['tiles'] = {
-  A: { small: 'woensdag', big: '10:30' },
-  B: { small: 'vrijdag', big: '9:00' },
-  C: { small: 'vrijdag', big: '10:30' },
-};
-
 export default async function HomePage({ params }: Props) {
   const { locale } = await params;
   setRequestLocale(locale);
   const t = await getTranslations({ locale, namespace: 'home_b' });
   const tHome = await getTranslations({ locale, namespace: 'home' });
 
-  /* Het A2-voorbeeld is een bestaande proefvraag (lz-2), dus tekst die al door de docent is
-     nagekeken, en niet een tweede versie ervan. */
-  const lz = getFreePractice('lezen')!.items.find(i => i.id === 'lz-2')!;
-  const a2Item: DemoMcq = {
-    intro: lz.stimulusIntro.split('\n')[0],
-    stimulusHtml: lz.stimulusHtml,
-    question: lz.question,
-    options: optionKeys(lz).map(k => ({ key: k, text: optionText(lz, k) })),
-    correct: lz.correct,
-    explanation: lz.explanation,
-  };
-  /* Het Luisteren-voorbeeld is proefvraag lu-1, met het echte fragment uit de gratis proef. */
-  const lu = getFreePractice('luisteren')!.items.find(i => i.id === 'lu-1')!;
-  const luItem: DemoListening = {
-    intro: lu.stimulusIntro,
-    question: lu.question,
-    options: optionKeys(lu).map(k => ({ key: k, text: optionText(lu, k) })),
-    correct: lu.correct,
-    explanation: lu.explanation,
-    audioSrc: lu.audioSrc!,
-    script: lu.stimulusScript!,
-    speakers: { A: 'Tandartspraktijk', B: 'Sara' },
-    tiles: LU1_TILES,
-  };
-  const fmt = (skill: 'lezen' | 'luisteren' | 'spreken') => {
-    const f = getFormat('a2', skill);
-    return { items: f.itemCount ?? 0, minutes: f.durationMinutes ?? 0 };
-  };
-
-
+  const a2Item = lezenDemo();
+  const luItem = luisterenDemo();
 
   const faqs = [1, 2, 3, 4, 5, 6].map(n => ({ question: tHome(`faq_q${n}`), answer: tHome(`faq_a${n}`) }));
 
@@ -260,7 +216,7 @@ export default async function HomePage({ params }: Props) {
                 luisteren={luItem}
                 lezen={a2Item}
                 spreken={SPREKEN_ITEM}
-                formats={{ luisteren: fmt('luisteren'), lezen: fmt('lezen'), spreken: fmt('spreken') }}
+                formats={demoFormats()}
                 knm={KNM_ITEM}
                 knmMinutes={KNM.durationMinutes ?? 0}
                 onaCards={ONA_CARDS.map(c => c.title)}

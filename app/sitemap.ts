@@ -88,6 +88,10 @@ export default function sitemap(): MetadataRoute.Sitemap {
     }
   }
 
+  /* Landingspagina "herexamen" (live 16-11, nagekeken door Amber). Alleen Nederlands: de EN- en
+     AR-versie zijn `noindex` (`robots` in de pagina zelf), en die twee gaan samen. */
+  entries.push({ url: absUrl('nl', 'herexamen'), changeFrequency: 'monthly', priority: 0.8 });
+
   /* One overview page per (level, onderdeel).
    *
    * Both levels since 2026-08-23. This block listed `DEFAULT_LEVEL` only for as long as B1 was

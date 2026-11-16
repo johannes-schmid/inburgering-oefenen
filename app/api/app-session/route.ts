@@ -5,9 +5,9 @@ import { routing } from '@/i18n/routing';
 import { captureServerEvent } from '@/lib/posthog-server';
 
 /**
- * De overdracht van een sessie uit de iOS-app naar de webview.
+ * De overdracht van een sessie uit de app (iOS en Android) naar de webview.
  *
- * De app (`mobile/`) logt zelf in — Google via het systeemvenster, Apple via de eigen knop —
+ * De app (`mobile/`) logt zelf in — Google via het systeemvenster, Apple via de eigen knop (iOS) —
  * want Google weigert OAuth in een ingebedde webview. Wat de app daarna in handen heeft is een
  * gewone Supabase-sessie; dit endpoint zet die om in dezelfde cookies die `/auth/callback` zet,
  * zodat het portaal in de webview precies de sessie ziet die de browser ook zou zien.
@@ -33,7 +33,8 @@ function safePath(raw: string | null): string {
 export async function POST(request: NextRequest) {
   const { origin } = new URL(request.url);
 
-  if (!request.headers.get('x-app-shell')) {
+  const shell = request.headers.get('x-app-shell');
+  if (!shell) {
     return NextResponse.json({ error: 'forbidden' }, { status: 403 });
   }
 
@@ -78,7 +79,7 @@ export async function POST(request: NextRequest) {
   if (Date.now() - new Date(user.created_at).getTime() < 2 * 60_000) {
     await captureServerEvent(user.id, 'signup_completed', {
       provider: user.app_metadata?.provider ?? 'google',
-      source: 'ios_app',
+      source: shell === 'android' ? 'android_app' : 'ios_app',
       $set: { email: user.email },
     });
   }

@@ -9,6 +9,8 @@ export const SUPABASE_URL = process.env.EXPO_PUBLIC_SUPABASE_URL!;
 export const SUPABASE_ANON_KEY = process.env.EXPO_PUBLIC_SUPABASE_ANON_KEY!;
 
 export const SCHEME = 'inburgeringoefenen';
+/** De overdracht van de sessie aan de webview; zie `app/api/app-session/route.ts`. */
+export const HANDOFF_PATH = '/api/app-session';
 export const AUTH_REDIRECT = `${SCHEME}://auth`;
 
 export type Locale = 'nl' | 'en' | 'ar';
@@ -23,8 +25,9 @@ export function deviceLocale(): Locale {
 export const dashboardPath = (locale: Locale) => `/${locale}/dashboard`;
 
 /**
- * Paden waar je een pakket koopt of wijzigt. Apple staat in een app geen andere betaalweg dan
- * in-app-aankopen toe voor digitale abonnementen (richtlijn 3.1.1), dus de app opent ze niet.
+ * Paden waar je een pakket koopt of wijzigt. Apple (richtlijn 3.1.1) en Google Play (Payments
+ * policy) staan in een app geen andere betaalweg dan hun eigen aankopen toe voor digitale
+ * abonnementen, dus de app opent ze op geen van beide platforms.
  * `/premium` heet in het Arabisch anders; zie `i18n/routing.ts`.
  */
 const PURCHASE_PATH = /\/dashboard\/pakketten(\/|$)|\/premium(\/|$)|\/betaling-gelukt(\/|$)|\/%D8%A7%D9%84%D8%A8%D8%A7%D9%82%D8%A9-%D8%A7%D9%84%D9%85%D9%85%D9%8A%D8%B2%D8%A9|\/الباقة-المميزة/;

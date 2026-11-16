@@ -1,7 +1,7 @@
 'use client';
 
 import { Fragment, useMemo, useRef, useState, type ReactNode } from 'react';
-import { ChevronRight, Search, X } from 'lucide-react';
+import { Check, ChevronRight, CircleAlert, Search, X } from 'lucide-react';
 import type { PlannedPage, SiteStructure, StructurePage, Window28 } from '@/lib/admin/seo';
 import {
   indexState, kindOfSection, rate, rollupByKind, weakestStep,
@@ -14,14 +14,16 @@ import { OWNER, PageDetail, nextAction, scoreTone, weekNo, whyLine } from './Seo
  * Het bord van `/admin/seo` (besluit eigenaar, 09-11): bovenaan widgets, eronder één tabel met alle
  * pagina's. Drie widgets zíjn filters op die tabel — actie nodig, voorgestelde pagina's, niet
  * geïndexeerd — en de funnelkaart klapt een uitsplitsing per soort pagina open. Voorgestelde nieuwe
- * pagina's staan als rij in dezelfde tabel, met zoekvraag in plaats van klikken.
+ * pagina's staan als rij in dezelfde tabel, met zoekvraag in plaats van klikken. Landingspagina's
+ * (13-11) ook: een voorstel uit `seo-agent/landing-pages.json` is een rij, een bestaande pagina die er
+ * een is krijgt het label, en het vierde filter toont ze samen.
  */
 
 const nf = new Intl.NumberFormat('en-GB');
 const eur = new Intl.NumberFormat('en-GB', { style: 'currency', currency: 'EUR' });
 const pct = (x: number | null) => (x === null ? '—' : `${(x * 100).toFixed(x < 0.1 ? 1 : 0)}%`);
 
-type Filter = 'action' | 'suggested' | 'noindex';
+type Filter = 'action' | 'suggested' | 'landing' | 'noindex';
 type KindTab = 'all' | PageKind;
 
 /** Vanaf deze zoekbezoeken zonder één oefenstart is een pagina een lek, geen toeval. */
@@ -38,6 +40,7 @@ type Row = {
   funnel: FunnelCounts | null;
   leak: boolean;
   action: boolean;
+  landing: boolean;
 };
 
 export type BoardProps = {
@@ -60,6 +63,7 @@ export function SeoBoard({ structure, funnel, indexing, google, bing, geoNote, t
 
   const rows = useMemo<Row[]>(() => {
     const live = 'error' in funnel ? null : funnel;
+    const landingSet = new Set(structure.landingPaths);
     const pages = structure.pages.map(p => {
       const f = live ? live.byPage[p.path] ?? { visits: 0, practice: 0, account: 0, checkout: 0, paid: 0, revenue: 0 } : null;
       const rec = indexing?.pages[p.path];
@@ -70,11 +74,12 @@ export function SeoBoard({ structure, funnel, indexing, google, bing, geoNote, t
         index, indexNote: rec && index !== 'indexed' && index !== 'canonical' ? rec.coverage : null,
         funnel: f, leak,
         action: (p.score <= 7 && p.verdict !== 'remove') || leak,
+        landing: landingSet.has(p.path),
       } satisfies Row;
     });
     const planned = structure.planned.map(p => ({
       key: `planned:${p.id}`, path: p.title, kind: kindOfSection(p.section), page: null, planned: p,
-      index: 'unknown' as const, indexNote: null, funnel: null, leak: false, action: false,
+      index: 'unknown' as const, indexNote: null, funnel: null, leak: false, action: false, landing: !!p.landing,
     }));
     return [...planned, ...pages.sort((a, b) => b.page.weight - a.page.weight)];
   }, [structure, funnel, indexing]);
@@ -82,12 +87,14 @@ export function SeoBoard({ structure, funnel, indexing, google, bing, geoNote, t
   const counts = {
     action: rows.filter(r => r.action).length,
     suggested: rows.filter(r => r.planned).length,
+    landing: rows.filter(r => r.landing).length,
     noindex: rows.filter(r => r.index === 'not-indexed' || r.index === 'discovered').length,
   };
 
   const visible = rows.filter(r => {
     if (filter === 'action' && !r.action) return false;
     if (filter === 'suggested' && !r.planned) return false;
+    if (filter === 'landing' && !r.landing) return false;
     if (filter === 'noindex' && r.index !== 'not-indexed' && r.index !== 'discovered') return false;
     if (kind !== 'all' && r.kind !== kind) return false;
     if (q && !decodeURI(r.path).toLowerCase().includes(q.toLowerCase())) return false;
@@ -178,11 +185,13 @@ export function SeoBoard({ structure, funnel, indexing, google, bing, geoNote, t
 
       {trend && <div className="mt-3">{trend}</div>}
 
-      <section aria-label="Filters" className="mt-3 grid grid-cols-1 gap-3 md:grid-cols-3">
+      <section aria-label="Filters" className="mt-3 grid grid-cols-1 gap-3 md:grid-cols-2 xl:grid-cols-4">
         <FilterCard on={filter === 'action'} onClick={() => choose('action')} n={counts.action} tone="text-[var(--fout)]"
           title="Pages that need action" note="Score 7 or lower, or search visitors who never start practising" />
         <FilterCard on={filter === 'suggested'} onClick={() => choose('suggested')} n={counts.suggested} tone="text-primary"
-          title="Suggested new pages" note="Articles and gidsen worth writing next" />
+          title="Suggested new pages" note="Gidsen, articles and landing pages worth making next" />
+        <FilterCard on={filter === 'landing'} onClick={() => choose('landing')} n={counts.landing} tone="text-primary"
+          title="Landing pages" note="Pages that open on a real exam question and start free. New suggestions every Saturday" />
         <FilterCard on={filter === 'noindex'} onClick={() => choose('noindex')} n={indexing ? counts.noindex : null} tone="text-[#a24000]"
           title="Not indexed" note={indexing ? `Pages that should be in Google but aren't · checked ${dayLabel(indexing.checkedAt)}` : 'Not checked yet. Runs with the Friday data pull.'} />
       </section>
@@ -224,7 +233,7 @@ export function SeoBoard({ structure, funnel, indexing, google, bing, geoNote, t
   );
 }
 
-const FILTER_LABEL: Record<Filter, string> = { action: 'Needs action', suggested: 'Suggested', noindex: 'Not indexed' };
+const FILTER_LABEL: Record<Filter, string> = { action: 'Needs action', suggested: 'Suggested', landing: 'Landing pages', noindex: 'Not indexed' };
 const KIND_TABS: [KindTab, string][] = [['all', 'All'], ['gids', 'Gidsen'], ['blog', 'Blog'], ['practice', 'Practice'], ['other', 'Other']];
 const KIND_LABEL: Record<PageKind, string> = { gids: 'Gidsen', blog: 'Blog', practice: 'Practice pages', other: 'Other pages' };
 const STEP_LABEL: Record<FunnelStep, string> = { visits: 'Search visits', practice: 'Started practising', account: 'Started sign-in', checkout: 'Checkout', paid: 'Paid' };
@@ -436,7 +445,10 @@ function PageCells({ r, td, funnelKnown }: { r: Row; td: string; funnelKnown: bo
     <>
       <td className={td}>
         <span className="block truncate font-mono text-[13px] font-medium text-primary" dir="auto">{decodeURI(p.path)}</span>
-        <span className="block truncate text-xs text-on-surface-variant">{whyLine(p)}</span>
+        <span className="flex min-w-0 items-center gap-1.5 text-xs text-on-surface-variant">
+          {r.landing && <LandingTag />}
+          <span className="truncate">{whyLine(p)}</span>
+        </span>
       </td>
       <td className={td}><IndexCell r={r} /></td>
       <td className={td}><span className={`inline-flex h-7 min-w-9 items-center justify-center rounded-lg px-1.5 text-sm font-bold ${scoreTone(p.score)}`}>{p.score}</span></td>
@@ -460,23 +472,37 @@ function PageCells({ r, td, funnelKnown }: { r: Row; td: string; funnelKnown: bo
   );
 }
 
+function LandingTag() {
+  return <span className="shrink-0 rounded-full bg-[#fcecdd] px-1.5 py-px text-[10.5px] font-semibold text-[#a24000]">Landing</span>;
+}
+
 function PlannedCells({ r, td }: { r: Row; td: string }) {
   const p = r.planned!;
   const owner = OWNER[p.owner];
+  const l = p.landing;
+  const passed = l ? l.checks.filter(c => c.ok).length : 0;
   return (
     <>
       <td className={td}>
         <span className="block truncate font-medium text-on-surface italic">{p.title}</span>
-        <span className="block truncate text-xs text-on-surface-variant">{p.why}</span>
+        {l ? (
+          <span className="flex min-w-0 items-center gap-1.5 text-xs text-on-surface-variant">
+            <LandingTag />
+            <span className="truncate font-mono" title={l.path}>{l.kind === 'new' ? 'new ' : ''}{l.path}</span>
+          </span>
+        ) : <span className="block truncate text-xs text-on-surface-variant">{p.why}</span>}
       </td>
-      <td className={td}><span className="rounded-full bg-[rgba(0,43,109,0.10)] px-2 py-0.5 text-[11px] font-semibold text-primary">Suggested</span></td>
+      <td className={td}>
+        <span className="rounded-full bg-[rgba(0,43,109,0.10)] px-2 py-0.5 text-[11px] font-semibold text-primary">{l?.status === 'approved' ? 'Approved' : 'Suggested'}</span>
+        {l && <span className={`mt-0.5 block text-[11px] ${passed === l.checks.length ? 'text-[var(--goed-ink)]' : 'text-[#a24000]'}`}>{passed} of {l.checks.length} checks</span>}
+      </td>
       <td className={td}><span className="text-on-surface-variant">—</span></td>
       <td className={`${td} text-right`} colSpan={5}>
-        <span className="text-xs text-on-surface-variant">Search demand </span>
+        <span className="text-xs text-on-surface-variant">{l ? `“${l.query}” · ` : ''}Search demand </span>
         <span className="font-semibold">{p.demand ? `${nf.format(p.demand)} impressions` : 'none measured yet'}</span>
       </td>
       <td className={td}>
-        <span className="block font-medium text-on-surface">Write it</span>
+        <span className="block font-medium text-on-surface">{l ? (l.kind === 'new' ? 'Build the page' : 'Build this variant') : 'Write it'}</span>
         <span className="mt-0.5 flex items-center gap-1.5 text-[11px] text-on-surface-variant">
           {owner && <span className={`rounded-full px-2 py-px font-semibold ${owner.cls}`}>{owner.label}</span>}
           {weekNo(p.week)}
@@ -487,6 +513,37 @@ function PlannedCells({ r, td }: { r: Row; td: string }) {
 }
 
 function PlannedDetail({ p }: { p: PlannedPage }) {
+  const l = p.landing;
+  if (l) {
+    return (
+      <div className="grid grid-cols-1 gap-5 px-4 pb-4 text-[13px] leading-relaxed text-on-surface md:grid-cols-2 xl:grid-cols-4 lg:pl-[52px]">
+        <div><h4 className="text-xs font-semibold text-on-surface-variant">Why this page</h4><p className="mt-1.5">{p.why}</p></div>
+        <div>
+          <h4 className="text-xs font-semibold text-on-surface-variant">Evidence</h4><p className="mt-1.5">{p.evidence}</p>
+          <h4 className="mt-3 text-xs font-semibold text-on-surface-variant">Competitor now</h4><p className="mt-1.5">{l.competitor}</p>
+        </div>
+        <div>
+          <h4 className="text-xs font-semibold text-on-surface-variant">This week&apos;s variant</h4><p className="mt-1.5">{l.variant}</p>
+          <p className="mt-2 text-xs text-on-surface-variant">
+            {l.kind === 'new' ? 'A new URL: counts towards the one new page per week.' : 'An upgrade of an existing page: no new URL.'} {weekNo(p.week)}, owner {OWNER[p.owner]?.label ?? p.owner}.
+          </p>
+        </div>
+        <div>
+          <h4 className="text-xs font-semibold text-on-surface-variant">Spam check</h4>
+          <ul className="mt-1.5 space-y-1.5">
+            {l.checks.map(c => (
+              <li key={c.label} className="flex gap-2">
+                {c.ok
+                  ? <Check className="mt-0.5 size-4 shrink-0 text-[var(--goed)]" aria-label="Passed" />
+                  : <CircleAlert className="mt-0.5 size-4 shrink-0 text-[#a24000]" aria-label="Open" />}
+                <span>{c.label}</span>
+              </li>
+            ))}
+          </ul>
+        </div>
+      </div>
+    );
+  }
   return (
     <div className="grid grid-cols-1 gap-5 px-4 pb-4 text-[13px] leading-relaxed text-on-surface md:grid-cols-3 lg:pl-[52px]">
       <div><h4 className="text-xs font-semibold text-on-surface-variant">Why this page</h4><p className="mt-1.5">{p.why}</p></div>

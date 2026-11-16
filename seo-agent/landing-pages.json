@@ -1,0 +1,114 @@
+{
+  "$comment": "Voorgestelde landingspagina's (richting A, 'probeer direct': de pagina opent met een echte, nagekeken examenopgave en één knop 'Start gratis' naar het platform; geen prijzen). De zaterdagrun (/seo-weekly) zet hier elke week twee à drie varianten bij en werkt de status bij; ze verschijnen als rij op /admin/seo, achter het filter Landing pages. Ids nooit hergebruiken; een idee dat afvalt krijgt status 'dismissed' en blijft staan. Teksten zijn Engels (besluit eigenaar, 26-10): ze zijn voor de eigenaar.",
+  "updated": "2026-11-16",
+  "rules": {
+    "direction": "A",
+    "suggestions_per_week": [
+      2,
+      3
+    ],
+    "new_urls_per_week": 1,
+    "checks": [
+      "A working exam item from our own reviewed content is in the hero",
+      "Not a near-copy of another landing page (a different item type or a different question)",
+      "Every fact comes from data/skills.ts or SEO/facts.md",
+      "Amber has reviewed the copy"
+    ],
+    "focus": "New pages for specific searches that no practice page answers yet (retakes, a failed part, a deadline). Not upgrades of the existing practice pages (owner, 13-11)."
+  },
+  "items": [
+    {
+      "id": "2026-W46-oefenen",
+      "created": "2026-11-13",
+      "week": "2026-W46",
+      "status": "dismissed",
+      "kind": "upgrade",
+      "path": "/nl/oefenen",
+      "query": "inburgering oefenen",
+      "title": "Gratis oefenexamen inburgering",
+      "variant": "Hero opens on Lezen A2 question lz-2 (already reviewed, also used on the homepage demo). Under it, one tile per published part that starts exam 1.",
+      "demand": 204,
+      "evidence": "\"inburgering oefenen\" had 204 impressions at position 9 and \"inburgeringsexamen oefenen\" 32 at position 11 (GSC, W45). Both land on /nl and /nl/oefenen; neither starts with something to do.",
+      "competitor": "The rest of this SERP is spam PDFs and inburgering.org /nl/free/exam.",
+      "why": "Our strongest query, already on page 1. A first question in the hero should lift clicks into practice without a new URL.",
+      "checks": [
+        true,
+        true,
+        true,
+        true
+      ],
+      "owner": "agent",
+      "dismissed_note": "Owner, 13-11: the practice pages already exist; landing pages are for new, specific searches."
+    },
+    {
+      "id": "2026-W46-spreken-a2",
+      "created": "2026-11-13",
+      "week": "2026-W46",
+      "status": "dismissed",
+      "kind": "upgrade",
+      "path": "/nl/oefenexamen/a2/spreken",
+      "query": "spreken a2 oefenen",
+      "title": "Spreken A2 oefenen",
+      "variant": "Hero opens on Spreken A2 exam 1, opdracht 1 (the neighbour asks where you live) with the recorder. After recording: the model answer and \"Verder met opdracht 2\".",
+      "demand": 110,
+      "evidence": "110 impressions in Aug and Sep (page audit). The page lists ten exam slots but has no first step.",
+      "competitor": "inburgering.org/nl/speaking-a2 shows a free sample before the price.",
+      "why": "Speaking is the part people fear most and can practise least on their own. A recorder you can use at once is something a guide page can't offer.",
+      "checks": [
+        true,
+        true,
+        true,
+        true
+      ],
+      "owner": "agent",
+      "dismissed_note": "Owner, 13-11: the practice pages already exist; landing pages are for new, specific searches."
+    },
+    {
+      "id": "2026-W46-herexamen",
+      "created": "2026-11-13",
+      "week": "2026-W46",
+      "status": "live",
+      "kind": "new",
+      "path": "/nl/herexamen",
+      "query": "herexamen inburgering",
+      "title": "Gezakt voor één onderdeel? Oefen alleen dat",
+      "variant": "Hero opens on the working demo with four tabs (Lezen, Luisteren, Schrijven, Spreken); each tab ends in 'Start <part> gratis' to exam 1. Below: exam 1 per part for A2 and B1, five DUO facts with sources, Amber, FAQ.",
+      "demand": 0,
+      "evidence": "No query measured yet; we don't rank for it. The research of 13-11 found no sales page for retaking one part in Google NL, only guides and government PDFs.",
+      "competitor": "inburgering.org/exam-info/a2-exam-results-and-resits (a guide, no offer).",
+      "why": "Someone who failed one part knows exactly what to practise, and our modules are per part. The rules on retakes must come from DUO via SEO/facts.md first.",
+      "checks": [
+        true,
+        true,
+        true,
+        true
+      ],
+      "owner": "amber",
+      "note": "Built 13-11, reviewed by Amber and live 16-11: indexable (nl only), in the sitemap, linked twice from /nl/blog/inburgeringsexamen-zakken-herkansen.",
+      "live": "2026-11-16"
+    },
+    {
+      "id": "2026-W48-voorbeeldvragen",
+      "created": "2026-11-16",
+      "week": "2026-W48",
+      "status": "suggested",
+      "kind": "new",
+      "path": "/nl/voorbeeldvragen",
+      "query": "voorbeeldvragen inburgeringsexamen",
+      "title": "Voorbeeldvragen inburgeringsexamen",
+      "variant": "Hero opens on Lezen A2 taster item lz-4 (answerable, with explanation). Below: Luisteren lu-4 with the real recording (transcript after a correct answer), the Schrijven A2 exam-1 e-mail task and the Spreken A2 prompt (task only, never the model answer), an A2 format table linking to exam 1 per part, Amber, FAQ.",
+      "demand": 53,
+      "evidence": "\"inburgeringsvragen\" had 53 impressions; Google showed /nl/oefenen at position 82 (planned page in scripts/seo-agent/pages.mjs).",
+      "competitor": "Sample-question pages in this SERP are guides (inburgering.org); none lets you answer on the page without an account.",
+      "why": "Tool intent with our own reviewed exam items: something an AI Overview cannot replace and a competitor cannot copy. Different items and layout from /herexamen.",
+      "checks": [
+        true,
+        true,
+        true,
+        false
+      ],
+      "owner": "amber",
+      "note": "Built 16-11 at app/[locale]/(main)/voorbeeldvragen/page.tsx. noindex and out of the sitemap until Amber has reviewed it (seo-agent/briefs/2026-11-16-voorbeeldvragen.md). Go live in week 48 at the earliest (one new URL per week; /herexamen is this week)."
+    }
+  ]
+}

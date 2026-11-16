@@ -28,7 +28,7 @@
  *   node scripts/seed-b1-content.mjs all --production     # the hosted project
  *
  * Flags: --dry-run, --exam N, --production, --partial, --no-audio, --force-audio, --no-publish,
- *        --no-images.
+ *        --no-images, --model <elevenlabs-model-id>.
  * Needs ELEVEN_LAPS_API_KEY (Spreken's react prompts) and PEXELS_API_KEY (the plaatjes).
  */
 import {
@@ -78,7 +78,7 @@ const NO_PUBLISH = flag('no-publish');
 const NO_IMAGES = flag('no-images');
 const PARTIAL = flag('partial');
 const ONLY_EXAM = value('exam') ? Number(value('exam')) : null;
-const command = argv.find(a => !a.startsWith('--') && a !== value('exam')) ?? 'all';
+const command = argv.find(a => !a.startsWith('--') && a !== value('exam') && a !== value('model')) ?? 'all';
 
 const wanted = command === 'all' ? SKILLS : [command];
 for (const w of wanted) {
@@ -162,7 +162,12 @@ if (PRODUCTION) {
 
 const db = createDb({ supabaseUrl: SUPABASE_URL, serviceKey: SERVICE_KEY });
 const storage = createStorage({ supabaseUrl: SUPABASE_URL, serviceKey: SERVICE_KEY });
-const tts = createTts({ apiKey: env.ELEVEN_LAPS_API_KEY });
+const MODEL = value('model');
+const tts = createTts({
+  apiKey: env.ELEVEN_LAPS_API_KEY,
+  ...(MODEL ? { dialogueModel: MODEL, speechModel: MODEL } : {}),
+});
+if (MODEL) console.log(`TTS-model: ${MODEL}\n`);
 const images = createImages({
   storage,
   apiKey: env.PEXELS_API_KEY,

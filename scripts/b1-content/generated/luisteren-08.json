@@ -1,0 +1,515 @@
+[
+  {
+    "section": "informatief",
+    "cast": {
+      "A": "man_richard",
+      "B": "woman_young"
+    },
+    "title": "Gastvrouw in een verzorgingshuis",
+    "intro": "U gaat luisteren naar een gesprek tussen Wouter Snijders en Sanne Vermeer. Wouter Snijders maakt interviews over beroepen in de zorg. Sanne Vermeer werkt als gastvrouw in een verzorgingshuis en vertelt hoe haar werkdag eruitziet.",
+    "speaker_a": "Wouter Snijders",
+    "speaker_b": "Sanne Vermeer",
+    "opening": "A: Goedemiddag, mevrouw Vermeer. Leuk dat u even tijd heeft om met mij te praten.\nB: Goedemiddag. Ja, graag zelfs, want veel mensen weten eigenlijk niet wat een gastvrouw doet.\nA: Dat klopt, daar wil ik het ook over hebben. U werkt in verzorgingshuis De Lindehof, in Zutphen?\nB: Dat is juist, ja. Ik werk daar nu bijna vijf jaar, op de afdeling waar vooral oudere bewoners wonen die nog redelijk zelfstandig zijn.",
+    "fragments": [
+      {
+        "script": "A: Kunt u eens vertellen hoe uw dag begint?\nB: Nou, ik begin om half acht, en het eerste wat ik doe is de koffie zetten en de tafels klaarzetten in de gezamenlijke ruimte. Dat klinkt simpel, maar het is eigenlijk het belangrijkste moment van de dag.\nA: Hoezo het belangrijkste?\nB: Ja, kijk, ik zie dan meteen wie er beneden komt en wie niet. Als mevrouw Dijkhuizen er om negen uur nog niet is, dan weet ik: er is iets. Dan geef ik dat door aan de verzorgende.\nA: Dus u let ook op de gezondheid van de bewoners?\nB: Niet medisch, hoor, dat mag ik niet en dat kan ik ook niet. Ik ben geen verpleegkundige. Maar ik zie de bewoners elke ochtend, dus ik merk het wel als iemand stiller is dan normaal of minder eet. Die signalen geef ik door, en daar doen mijn collega's dan iets mee. Dat is echt een deel van mijn werk, ook al staat het niet in mijn functiebeschrijving.",
+        "prompt": "Waarom vindt Sanne Vermeer het begin van de ochtend het belangrijkste moment?",
+        "options": [
+          "Omdat de bewoners dan het meest willen praten",
+          "Omdat de koffie en de tafels dan klaar moeten zijn",
+          "Omdat ze dan merkt hoe het met de bewoners gaat"
+        ],
+        "correct": 2,
+        "explanation": "Ze legt uit dat ze 's ochtends ziet wie er wel en niet komt en of iemand stiller is of minder eet, en dat ze dat doorgeeft. De koffie en de tafels noemt ze wel, maar juist als iets dat simpel klinkt en niet de echte reden is."
+      },
+      {
+        "script": "A: U zei dat u geen verpleegkundige bent. Wat voor opleiding heeft u dan gedaan?\nB: Ik heb een opleiding gedaan in de horeca, niveau twee. Daarna heb ik jaren in een restaurant gewerkt. Toen ik hier kwam werken, heb ik een interne cursus gevolgd van vier dagen over omgaan met dementie.\nA: Vier dagen, dat is niet veel.\nB: Nee, dat vond ik zelf ook. Ik dacht eerlijk gezegd: hier kom ik niet mee weg. En in het begin viel dat ook tegen, want ik wist bijvoorbeeld niet goed wat ik moest doen als een bewoner steeds hetzelfde vroeg.\nA: Wat deed u toen?\nB: Ik ben gaan kijken bij een collega die er al vijftien jaar werkte. Dat heeft me meer geleerd dan die cursus. En sinds vorig jaar mogen we per jaar twee dagen bijscholing kiezen, dat betaalt de werkgever. Daar heb ik vorige maand een dag over communicatie gedaan.",
+        "prompt": "Wat zegt Sanne Vermeer over de interne cursus van vier dagen?",
+        "options": [
+          "Die cursus hielp haar minder dan ze had gehoopt",
+          "Die cursus moest ze zelf betalen uit haar loon",
+          "Die cursus was bedoeld voor verpleegkundigen"
+        ],
+        "correct": 0,
+        "explanation": "Ze zegt dat de cursus haar tegenviel en dat ze meer leerde van een ervaren collega. Over betalen zegt ze alleen dat de werkgever de bijscholing van twee dagen per jaar betaalt."
+      },
+      {
+        "script": "A: Hoe ziet de rest van uw dag eruit?\nB: Na het koffiemoment help ik bij de lunch. Wij koken niet zelf, het eten komt uit de centrale keuken, maar ik verdeel het en ik snijd het brood. En ik zorg dat iedereen krijgt wat bij hem past.\nA: Wat bedoelt u daarmee?\nB: Nou, sommige bewoners mogen bijvoorbeeld geen zout, of ze moeten eten dat fijngemaakt is omdat ze zich anders verslikken. Dat staat allemaal op een lijst in de keuken. Die lijst moet ik elke ochtend controleren, want hij verandert.\nA: Dus dat is nogal precies werk.\nB: Heel precies, ja. Als ik iemand het verkeerde bord geef, kan dat echt gevaarlijk zijn. In het begin maakte ik me daar veel zorgen over. Nu controleer ik altijd twee keer, en bij twijfel vraag ik het gewoon aan de verzorgende. Dat is geen schande, dat heeft mijn teamleider ook duidelijk gezegd.\nA: Dat is fijn om te horen.",
+        "prompt": "Wat vertelt Sanne Vermeer over de lijst in de keuken?",
+        "options": [
+          "Die lijst maakt ze samen met de centrale keuken",
+          "Die lijst moet ze dagelijks opnieuw nakijken",
+          "Die lijst wordt door de teamleider gecontroleerd"
+        ],
+        "correct": 1,
+        "explanation": "Ze zegt dat ze de lijst elke ochtend moet controleren omdat hij verandert. De teamleider komt wel voor, maar die zei alleen dat vragen bij twijfel geen schande is."
+      },
+      {
+        "script": "A: Werkt u ook in de weekenden?\nB: Ja, één weekend per maand. Dan werk ik zaterdag en zondag, en daar krijg ik een toeslag voor. Dat is vijfentwintig procent extra op mijn uurloon.\nA: En vindt u dat vervelend, weekenddiensten?\nB: Dat wisselt. Ik heb twee kinderen, dus dat moet thuis geregeld worden. Maar ik vind het zelf de mooiste dienst van de maand.\nA: O ja? Waarom?\nB: Omdat er in het weekend meer bezoek komt. Kinderen, kleinkinderen, iedereen loopt in en uit. Dan is het gezellig in de zaal en dan heb ik ook echt tijd om met mensen te praten, want er zijn geen vergaderingen en geen afspraken met de fysiotherapeut.\nA: Dus op een gewone dag heeft u die tijd niet?\nB: Minder, ja. Op doordeweekse dagen loopt het programma vol. Dan ben ik vooral aan het rennen tussen de keuken en de zaal. In het weekend kan ik gewoon even gaan zitten bij iemand. Dat hoort er ook bij, vind ik.",
+        "prompt": "Waarom werkt Sanne Vermeer graag in het weekend?",
+        "options": [
+          "Omdat haar kinderen dan bij haar op bezoek komen",
+          "Omdat ze dan meer rust heeft voor de bewoners",
+          "Omdat ze dan vijfentwintig procent meer verdient"
+        ],
+        "correct": 1,
+        "explanation": "Ze zegt dat er in het weekend geen vergaderingen en afspraken zijn, zodat ze echt tijd heeft om bij iemand te gaan zitten. De toeslag van vijfentwintig procent noemt ze als feit, niet als reden waarom ze de dienst mooi vindt."
+      },
+      {
+        "script": "A: Zijn er ook dingen die u zwaar vindt in dit werk?\nB: Ja, natuurlijk. Het zwaarste is dat bewoners overlijden. Je kent iemand soms drie of vier jaar, je weet hoe zij haar thee wil, en dan is die stoel op een dag leeg.\nA: Hoe gaat u daarmee om?\nB: We hebben daar afspraken over gemaakt in het team. Als een bewoner is overleden, steken we een kaars aan bij de voordeur en die blijft branden tot na de uitvaart. En we praten erover in de overdracht, ook de gastvrouwen.\nA: Dat was eerder niet zo?\nB: Nee, en dat vond ik juist moeilijk. Vroeger hoorde ik het soms pas twee dagen later, van een andere bewoner. Ik heb dat in de teamvergadering aan de orde gesteld, en toen bleek dat mijn collega's er net zo over dachten. Nu krijgen we een bericht in de groepsapp, dezelfde dag nog.\nA: Dus u heeft dat zelf veranderd.\nB: Met het team, ja. Dat geeft wel een goed gevoel.",
+        "prompt": "Wat is er veranderd nadat Sanne Vermeer het onderwerp had aangekaart?",
+        "options": [
+          "Gastvrouwen gaan nu mee naar de uitvaart",
+          "Gastvrouwen horen het nieuws nu dezelfde dag",
+          "Gastvrouwen steken sinds kort zelf de kaars aan"
+        ],
+        "correct": 1,
+        "explanation": "Ze zegt dat ze het vroeger pas twee dagen later hoorde en dat er nu dezelfde dag een bericht in de groepsapp komt. Over de kaars en de uitvaart zegt ze niet dat de gastvrouwen daar een nieuwe taak in hebben."
+      },
+      {
+        "script": "A: Zou u dit werk aanraden aan iemand die een baan zoekt?\nB: Dat hangt er helemaal van af. Je moet geduld hebben en je moet het niet erg vinden om hetzelfde verhaal vijf keer te horen. Wie dat niet kan, houdt het niet vol.\nA: En het salaris?\nB: Nou, daar moet ik eerlijk in zijn. Het is geen baan waar je rijk van wordt. Ik zit in de laagste groep van de cao, dus ik verdien minder dan een verzorgende. Daarom werk ik ook achtentwintig uur en niet minder.\nA: Maar u blijft het doen.\nB: Ja. En wat ik nieuwe mensen altijd zeg: kom eerst een dag meelopen voordat je solliciteert. Dat mag bij ons. Dan merk je binnen een paar uur of het bij je past of niet. Dat is eerlijker dan een mooi verhaal van mij.\nA: Een goed advies. Mevrouw Vermeer, hartelijk dank voor dit gesprek.\nB: Graag gedaan, en kom gerust eens koffiedrinken.",
+        "prompt": "Wat raadt Sanne Vermeer belangstellenden aan?",
+        "options": [
+          "Om een opleiding tot verzorgende te gaan volgen",
+          "Om eerst zelf een dag op de afdeling te komen kijken",
+          "Om minstens achtentwintig uur per week te gaan werken"
+        ],
+        "correct": 1,
+        "explanation": "Ze zegt dat nieuwe mensen eerst een dag moeten meelopen voordat ze solliciteren. De achtentwintig uur gaat over haar eigen contract vanwege het salaris, niet over een advies aan anderen."
+      }
+    ]
+  },
+  {
+    "section": "beschouwend",
+    "cast": {
+      "A": "woman_noa",
+      "B": "man_older"
+    },
+    "title": "Terug na een zware knieblessure",
+    "intro": "U gaat luisteren naar een gesprek tussen Ingrid Veenstra en Ramon Veldkamp. Ingrid Veenstra maakt een podcast over sport en gezondheid. Ramon Veldkamp is volleyballer en kijkt terug op een lange blessure en zijn weg terug naar het veld.",
+    "speaker_a": "Ingrid Veenstra",
+    "speaker_b": "Ramon Veldkamp",
+    "opening": "A: Ramon, welkom. Fijn dat je er bent. Je zit weer in de wedstrijdselectie, hoor ik.\nB: Ja, sinds een paar weken. Het voelt nog een beetje onwerkelijk, moet ik zeggen.\nA: Dat kan ik me voorstellen. Je hebt bijna twee seizoenen niet gespeeld.\nB: Twintig maanden, om precies te zijn. Ik heb ze geteld, ja. Dat doe je op een bepaald moment.",
+    "fragments": [
+      {
+        "script": "A: Laten we bij het begin beginnen. Hoe is het gebeurd?\nB: Nou, kijk, dat is het gekke. Mensen denken altijd aan zo'n harde botsing, of een tegenstander die op je valt. Bij mij was het een heel gewone training op een dinsdagavond. Ik sprong voor een blok, kwam neer op één been, en ik hoorde iets knappen. Geen contact, niemand in de buurt.\nA: En wist je op dat moment al hoe erg het was?\nB: Ja en nee. De pijn viel eerlijk gezegd mee, de eerste minuten. Maar ik kon niet meer op dat been staan, en dat zegt genoeg. De fysiotherapeut van de club kwam erbij en die zei meteen: dit gaan we laten onderzoeken. Hij zei het heel rustig, maar ik zag aan zijn gezicht dat hij het al wist.\nA: En het onderzoek?\nB: Twee dagen later in het ziekenhuis. Voorste kruisband helemaal doorgescheurd, en ook schade aan het kraakbeen. Dat tweede was eigenlijk het vervelendste nieuws, want daar kun je minder aan doen.",
+        "prompt": "Hoe is de blessure van Ramon Veldkamp ontstaan?",
+        "options": [
+          "door een botsing met een tegenstander tijdens een wedstrijd",
+          "door een val waarbij een andere speler op hem terechtkwam",
+          "door een verkeerde landing na een sprong op de training"
+        ],
+        "correct": 2,
+        "explanation": "Hij vertelt dat hij op een gewone training voor een blok sprong en op één been neerkwam, zonder dat er iemand in de buurt was. De opties over een botsing of een val met een tegenstander noemt hij juist als het beeld dat mensen verkeerd hebben."
+      },
+      {
+        "script": "A: En toen volgde een operatie.\nB: Ja, maar niet meteen. Daar had ik niet op gerekend. Ik dacht: hoe sneller onder het mes, hoe sneller terug. Maar de chirurg wilde eerst zes weken wachten.\nA: Waarom dan?\nB: Omdat mijn knie dik stond en ik hem bijna niet kon buigen. Hij legde uit dat een operatie op een stijve knie slechter afloopt. Dus eerst zwelling weg, beweging terug, spieren een beetje op peil, en dán opereren. Ik vond dat moeilijk te accepteren, want ik had het gevoel dat ik zes weken zat te wachten voor niets.\nA: Maar je hebt het wel gedaan.\nB: Ik heb het gedaan, ja. En achteraf was dat het beste besluit van het hele traject. Ik heb later een ploeggenoot gezien die drie dagen na zijn blessure geopereerd werd. Die heeft er maanden langer over gedaan. Dus ja, dat wachten voelde als verloren tijd, maar dat was het niet.",
+        "prompt": "Waarom werd Ramon Veldkamp niet direct geopereerd?",
+        "options": [
+          "De knie moest eerst minder dik en beweeglijker worden.",
+          "Er was in het ziekenhuis geen ruimte in het operatieschema.",
+          "Hij wilde zelf eerst een tweede arts om advies vragen."
+        ],
+        "correct": 0,
+        "explanation": "De chirurg wilde wachten omdat de knie dik was en nauwelijks kon buigen; een operatie op een stijve knie loopt slechter af. Dat Ramon zelf twijfelde, ging juist over het wachten, niet over een tweede arts."
+      },
+      {
+        "script": "A: Je noemde het net een traject. Hoe zag dat eruit, in tijd en in geld?\nB: Het revalidatieschema van de club liep over negen maanden. Dat is het standaardverhaal bij een kruisband. In de praktijk werd het bij mij veel langer, maar dat wist ik toen nog niet.\nA: En financieel?\nB: Nou, kijk, ik speel niet in de hoogste divisie. Ik heb een contract voor twintig uur per week bij de club en daarnaast werk ik drie dagen bij een installatiebedrijf. Mijn clubcontract liep door, dat was netjes geregeld. Maar de begeleiding die ik extra wilde, een krachttrainer op vrijdag, die zat er niet in. Dat kostte vijfenveertig euro per uur en dat heb ik anderhalf jaar lang zelf betaald.\nA: Dat loopt op.\nB: Dat loopt op, ja. Ik ben er niet armer van geworden dan nodig, maar mijn spaargeld is wel flink geslonken. En toch zou ik het weer doen, want juist die vrijdagen hebben mij vooruitgeholpen.",
+        "prompt": "Wat vertelt Ramon Veldkamp over de extra krachttrainer?",
+        "options": [
+          "De club betaalde de helft van de kosten mee.",
+          "Hij betaalde de kosten van vijfenveertig euro per uur zelf.",
+          "Hij kon hem maar een paar maanden betalen."
+        ],
+        "correct": 1,
+        "explanation": "Hij zegt dat de krachttrainer vijfenveertig euro per uur kostte en dat hij die anderhalf jaar zelf heeft betaald. Zijn clubcontract liep door, maar de extra begeleiding zat daar niet in."
+      },
+      {
+        "script": "A: Je zei net dat die negen maanden in de praktijk langer werden. Wat ging er mis?\nB: Na ongeveer zeven maanden mocht ik weer springen. Voorzichtig, op een zachte mat, onder toezicht. En dat ging goed, bijna te goed. Ik voelde me zo sterk dat ik dacht: ik ben er bijna.\nA: En toen?\nB: Toen heb ik in een onderlinge wedstrijd, buiten het schema om, een paar keer vol aangevallen. Niemand had dat gevraagd. Ik wilde het zelf. En die avond stond mijn knie weer dik.\nA: Was er nieuwe schade?\nB: Nee, gelukkig niet. De band zat goed, dat bleek uit de scan. Maar het kraakbeen was geïrriteerd en ik moest vier maanden terug in het programma. Vier maanden, door één avond ongeduld.\nA: Dat moet hard zijn aangekomen.\nB: Dat was het dieptepunt. Niet de blessure zelf, maar dat moment. Want de eerste keer kon ik er niets aan doen. Die tweede keer wel.",
+        "prompt": "Waarom noemt Ramon Veldkamp die avond zijn dieptepunt?",
+        "options": [
+          "Omdat de club hem daarna uit de selectie heeft gezet.",
+          "Omdat de kruisband opnieuw beschadigd bleek te zijn.",
+          "Omdat hij de terugval aan zijn eigen ongeduld te wijten had."
+        ],
+        "correct": 2,
+        "explanation": "Hij zegt dat hij aan de eerste blessure niets kon doen, maar aan deze terugval wel: hij viel buiten het schema vol aan omdat hij dat zelf wilde. Nieuwe schade aan de band was er volgens de scan juist niet."
+      },
+      {
+        "script": "A: Hoe ben je daar weer uit gekomen?\nB: Met hulp. Dat moet ik eerlijk zeggen. De club heeft een sportpsycholoog en daar ben ik na die terugval naartoe gegaan. In het begin met tegenzin, want ik dacht: mijn knie is het probleem, niet mijn hoofd.\nA: En dat bleek anders.\nB: Ja. Zij liet mij opschrijven wat ik elke week wilde bereiken. Heel kleine dingen. Eén keer traplopen zonder leuning. Twintig minuten fietsen zonder pijn. En aan het eind van de week keken we of het gelukt was.\nA: Waarom hielp dat?\nB: Omdat ik daarvoor alleen naar dat ene grote doel keek: weer in het veld staan. En dat doel lag zo ver weg dat elke dag voelde als mislukking. Met die kleine doelen had ik elke week iets wat wél lukte. Daar was ik niet meteen enthousiast over, hoor. Het klonk me te simpel. Maar na een maand merkte ik dat ik weer met plezier naar de zaal ging.",
+        "prompt": "Wat was volgens Ramon Veldkamp het nut van de aanpak van de sportpsycholoog?",
+        "options": [
+          "Hij kon door kleine weekdoelen weer succes ervaren.",
+          "Hij kreeg eindelijk uitleg over de schade in zijn knie.",
+          "Hij leerde zijn teamgenoten om steun te vragen."
+        ],
+        "correct": 0,
+        "explanation": "Hij legt uit dat het grote doel te ver weg lag, waardoor elke dag als mislukking voelde; met kleine weekdoelen lukte er elke week wel iets. Dat hij hulp van anderen kreeg, betekende niet dat hij om steun van teamgenoten leerde vragen."
+      },
+      {
+        "script": "A: En nu? Je speelt weer. Is het zoals vroeger?\nB: Nee. En dat heb ik moeten leren. Mijn sprong is een paar centimeter lager dan voor de blessure, en dat komt niet meer terug. Dat is gemeten, dat is geen gevoel.\nA: Vind je dat erg?\nB: Vroeger zou ik gezegd hebben: ja, natuurlijk. Nu denk ik daar anders over. Ik ben technisch beter geworden, omdat ik twintig maanden naar wedstrijden heb zitten kijken. Ik lees het spel sneller. Dus ik verlies iets en ik win iets.\nA: Zou je jongere spelers nog iets willen meegeven?\nB: Eén ding. Als je begeleiders zeggen dat je nog niet mag, geloof ze dan. Ook als je lichaam iets anders roept. Ik heb vier maanden verloren omdat ik dachtdat ik het beter wist. Die les kostte mij meer dan de operatie.\nA: Een duidelijke boodschap. Ramon, dank voor je openheid.\nB: Graag gedaan.",
+        "prompt": "Wat wil Ramon Veldkamp jongere spelers vooral meegeven?",
+        "options": [
+          "dat een blessure je spelinzicht uiteindelijk beter maakt",
+          "dat ze het advies van hun begeleiders moeten volgen",
+          "dat ze zelf moeten voelen wanneer ze weer kunnen spelen"
+        ],
+        "correct": 1,
+        "explanation": "Hij noemt één ding: als begeleiders zeggen dat het nog niet mag, moet je ze geloven, ook als je lichaam iets anders zegt. Dat hij beter is geworden in spelinzicht vertelt hij over zichzelf, niet als advies."
+      }
+    ]
+  },
+  {
+    "section": "informatief",
+    "cast": {
+      "A": "man_eric",
+      "B": "woman_roos"
+    },
+    "intro": "U gaat luisteren naar een gesprek tussen Youssef Bakkali en Fatima el Idrissi. Youssef Bakkali werkt bij de wegenwacht van de ANWB en legt uit wat u moet doen bij pech onderweg. Fatima el Idrissi heeft net een auto gekocht en stelt hem vragen over de hulp en de kosten.",
+    "speaker_a": "Youssef Bakkali",
+    "speaker_b": "Fatima el Idrissi",
+    "title": "Pech onderweg: hoe werkt de hulp",
+    "opening": "A: Goedemiddag, u spreekt met Youssef Bakkali van de klantenservice. Waarmee kan ik u helpen?\nB: Goedemiddag. Ik heb vorige week een tweedehands auto gekocht en nu vroeg ik me af wat ik eigenlijk moet doen als ik met pech langs de weg sta.\nA: Dat is een verstandige vraag, want de meeste mensen bellen ons pas als het misgaat. Mag ik vragen of u al lid bent?\nB: Nee, nog niet. Ik wil eerst weten wat het inhoudt, en vooral wat het kost.",
+    "fragments": [
+      {
+        "script": "A: Dat begrijp ik. Nou, kijk, het begint altijd met uw veiligheid. Als u stilvalt, probeer dan de auto zo veel mogelijk naar de vluchtstrook of de berm te krijgen.\nB: En dan gewoon in de auto blijven zitten?\nA: Nee, juist niet. Op de snelweg stapt u uit aan de kant van de passagier, dus niet aan de kant van het verkeer, en u gaat achter de vangrail staan. Daar bent u veilig.\nB: Ook als het regent? Ik zou geneigd zijn om binnen te blijven.\nA: Ja, ook als het regent. Dat is nat, maar een auto op de vluchtstrook wordt soms aangereden, en dan wilt u er niet in zitten. Trek uw alarmlichten aan en zet, als u op een gewone weg staat, een gevarendriehoek op ongeveer dertig meter afstand.\nB: En op de snelweg dan niet?\nA: Op de snelweg adviseren wij dat niet, omdat u dan te lang langs het verkeer loopt. Daar belt u ons gewoon meteen.",
+        "prompt": "Wat zegt Youssef Bakkali over uitstappen bij pech op de snelweg?",
+        "options": [
+          "Bij regen kunt u beter in de auto blijven wachten.",
+          "U kunt het beste achter de vangrail gaan staan.",
+          "U moet eerst een gevarendriehoek neerzetten."
+        ],
+        "correct": 1,
+        "explanation": "Youssef zegt dat u aan de passagierskant uitstapt en achter de vangrail gaat staan, omdat dat veilig is. Blijven zitten bij regen wijst hij juist af, en een gevarendriehoek adviseert hij op de snelweg niet."
+      },
+      {
+        "script": "B: Goed, en dan bel ik u. Hoe gaat dat precies?\nA: U belt ons alarmnummer, dat staat op uw lidmaatschapskaart en ook in onze app. Wij vragen dan uw kenteken, waar u ongeveer staat en wat het probleem is. Bij de snelweg vragen we naar het hectometerbordje.\nB: Het wat?\nA: Het hectometerbordje. Dat zijn die kleine witte bordjes langs de kant met een getal erop, bijvoorbeeld 42,6. Daarmee weet onze wegenwacht precies waar u staat, tot op honderd meter.\nB: Ah, die bordjes. Daar heb ik nooit naar gekeken.\nA: Dat doet bijna niemand, tot het nodig is. Gebruikt u de app, dan geeft die uw locatie automatisch door, dus dan hoeft u niets op te zoeken.\nB: En hoe lang moet ik dan wachten?\nA: Gemiddeld is onze wegenwacht binnen veertig minuten bij u. Op een drukke vrijdagmiddag of bij vorst kan het langer duren, dat zeg ik er eerlijk bij.",
+        "prompt": "Waarom vraagt de ANWB naar het nummer op het hectometerbordje?",
+        "options": [
+          "Om de auto zo nauwkeurig mogelijk te kunnen vinden.",
+          "Om te bepalen welke wegenwacht dienst heeft.",
+          "Om te weten hoe lang het wachten gaat duren."
+        ],
+        "correct": 0,
+        "explanation": "Youssef legt uit dat de wegenwacht met dat getal tot op honderd meter weet waar de auto staat. Over de wachttijd praat hij pas daarna, en die hangt niet van het bordje af."
+      },
+      {
+        "script": "B: Veertig minuten, dat valt mee. En wat kan zo'n monteur dan doen?\nA: In ongeveer tachtig procent van de gevallen maken wij de auto langs de weg weer rijdend. Denk aan een lege accu, een lekke band, een kabeltje dat los zit of een storing die we met de computer kunnen oplossen.\nB: En de andere twintig procent?\nA: Dan nemen we de auto mee. Wij slepen hem naar een garage in de buurt, of naar uw eigen garage als die binnen een bepaalde afstand ligt. U mag altijd meerijden in de wegenwacht, en uw passagiers ook, zolang er plek is.\nB: Dat is fijn, want ik rij vaak met mijn moeder.\nA: Precies. En let op: wij repareren langs de weg, maar wij doen geen onderhoud. Als uw remmen slecht zijn, zeggen wij dat eerlijk, maar dan moet u echt naar de garage.\nB: Logisch, ja.",
+        "prompt": "Wat vertelt Youssef Bakkali over het werk van de wegenwacht langs de weg?",
+        "options": [
+          "Hij repareert alleen storingen die met de computer te vinden zijn.",
+          "Hij sleept de auto in de meeste gevallen naar een garage in de buurt.",
+          "Hij verhelpt de meeste problemen ter plekke, maar doet geen onderhoud."
+        ],
+        "correct": 2,
+        "explanation": "Youssef zegt dat ongeveer tachtig procent langs de weg wordt opgelost en dat ze geen onderhoud doen. Slepen gebeurt juist in de kleinere groep van twintig procent."
+      },
+      {
+        "script": "B: Dan de kosten. Wat betaal ik per jaar?\nA: Het basislidmaatschap voor pechhulp in Nederland kost zevenentachtig euro per jaar. Daar zit hulp langs de weg in, slepen in Nederland en vervangend vervoer voor één dag als uw auto echt stil blijft staan.\nB: Zevenentachtig euro. En als ik naar Marokko of naar Frankrijk rijd?\nA: Dan hebt u een uitbreiding nodig voor het buitenland. Die kost vierenveertig euro per jaar extra, dus samen honderdeenendertig euro. Daarmee bent u in heel Europa gedekt, en ook in een aantal landen rond de Middellandse Zee.\nB: Hm, dat is best een bedrag.\nA: Dat is het, maar bedenk dat één sleepbeurt uit het buitenland al snel meer dan duizend euro kost. Daarom kiezen de meeste mensen die op vakantie rijden toch voor die uitbreiding.\nB: Ik rij één keer per jaar naar het zuiden, dus misschien is dat slim.",
+        "prompt": "Hoeveel betaalt iemand per jaar voor pechhulp in Nederland én in het buitenland?",
+        "options": [
+          "131 euro",
+          "44 euro",
+          "87 euro"
+        ],
+        "correct": 0,
+        "explanation": "Het basislidmaatschap kost 87 euro en de uitbreiding voor het buitenland 44 euro, samen 131 euro. De losse bedragen van 44 en 87 euro dekken niet beide samen."
+      },
+      {
+        "script": "B: Ik moet nog iets vragen. Mijn auto is uit 2009. Maakt de leeftijd van de auto uit?\nA: Goed dat u dat zegt. Voor de pechhulp in Nederland maakt de leeftijd niets uit, wij komen ook bij een auto van twintig jaar oud.\nB: Fijn.\nA: Maar voor de buitenlanddekking geldt wel een voorwaarde. Is uw auto ouder dan vijftien jaar, dan kijken wij eerst of hij goed onderhouden is. In sommige gevallen vragen wij een recent onderhoudsbewijs van de garage.\nB: Mijn auto is zestien jaar oud. Dus dat geldt voor mij.\nA: Dan is dat wel iets om te regelen voordat u wegrijdt. Het is geen afwijzing, let wel, het is alleen een extra controle, omdat oude auto's in het buitenland vaker stilvallen.\nB: En wat als ik dat bewijs niet heb?\nA: Dan kunnen wij de dekking beperken. Daarom zeg ik altijd: regel het voor uw vertrek, niet erna.",
+        "prompt": "Wat betekent de leeftijd van de auto van Fatima el Idrissi voor haar?",
+        "options": [
+          "Voor de hulp in Nederland moet zij een onderhoudsbewijs tonen.",
+          "Voor hulp in het buitenland kan er een onderhoudsbewijs nodig zijn.",
+          "Zij kan voor haar auto geen buitenlanddekking meer afsluiten."
+        ],
+        "correct": 1,
+        "explanation": "Bij auto's ouder dan vijftien jaar vraagt de ANWB soms een recent onderhoudsbewijs voor de buitenlanddekking. Youssef zegt uitdrukkelijk dat het geen afwijzing is en dat de leeftijd voor hulp in Nederland niet uitmaakt."
+      },
+      {
+        "script": "B: Stel, ik ben nog geen lid en ik sta morgen stil. Kan ik dan toch bellen?\nA: Ja, dat kan. Wij helpen ook niet-leden, maar dan betaalt u per keer. Hulp langs de weg kost dan rond de honderdvijfendertig euro, en slepen is duurder.\nB: Dus ik kan beter op dat moment lid worden?\nA: Daar moet ik eerlijk over zijn: dat werkt niet. Wie zich aanmeldt terwijl de auto al stilstaat, betaalt de hulp van die keer zelf. Er geldt een wachttijd van drie dagen voordat uw lidmaatschap ingaat.\nB: Oh, dat wist ik niet.\nA: Nee, en dat is voor veel mensen een teleurstelling. Ik heb mensen aan de telefoon gehad die dachten dat ze er onderuit kwamen, en die stonden dan met een rekening van tweehonderd euro.\nB: Dan meld ik me liever deze week aan, nu het nog rustig is.\nA: Dat lijkt mij het slimste, ja.",
+        "prompt": "Waarom heeft het geen zin om lid te worden terwijl de auto al stilstaat?",
+        "options": [
+          "Het lidmaatschap gaat pas na drie dagen in.",
+          "Niet-leden krijgen helemaal geen hulp langs de weg.",
+          "Wie later lid wordt, betaalt een hogere jaarbijdrage."
+        ],
+        "correct": 0,
+        "explanation": "Youssef noemt een wachttijd van drie dagen, waardoor de hulp van dat moment zelf betaald moet worden. Niet-leden krijgen wél hulp, alleen tegen betaling per keer."
+      },
+      {
+        "script": "B: En vervangend vervoer, u noemde dat net. Hoe gaat dat?\nA: Als wij uw auto meenemen naar de garage en u kunt die dag niet verder, dan regelen wij één dag een huurauto of taxivervoer naar uw bestemming. Dat zit in het basislidmaatschap.\nB: Eén dag. En als de reparatie langer duurt?\nA: Dan stopt het. Vanaf de tweede dag betaalt u zelf, tenzij u de uitgebreide dekking hebt. Die kost achttien euro extra per jaar en geeft recht op zeven dagen vervangend vervoer.\nB: Hm. Ik werk in de thuiszorg, ik rij elke dag naar klanten.\nA: Dan is die uitbreiding voor u waarschijnlijk wel verstandig. Ik merk dat mensen die hun auto voor hun werk nodig hebben, met één dag niet genoeg hebben. Een garage heeft soms een week nodig om een onderdeel te krijgen.\nB: Ja, dat risico wil ik niet lopen. Zet die er maar bij.",
+        "prompt": "Wat vindt Youssef Bakkali van de uitgebreide dekking voor Fatima el Idrissi?",
+        "options": [
+          "Die is voor haar waarschijnlijk een goede keuze.",
+          "Die is vooral nuttig voor mensen met een oude auto.",
+          "Die raadt hij af, omdat één dag meestal genoeg is."
+        ],
+        "correct": 0,
+        "explanation": "Youssef zegt dat de uitbreiding voor haar verstandig lijkt, omdat mensen die hun auto voor hun werk nodig hebben met één dag niet toekomen. Hij zegt juist niet dat één dag genoeg is."
+      },
+      {
+        "script": "B: Goed. Hoe meld ik me nu aan?\nA: Dat kan online in ongeveer vijf minuten, of ik regel het nu meteen telefonisch met u. U hebt uw kenteken nodig en uw rekeningnummer voor de automatische betaling.\nB: Doet u het maar telefonisch, dan weet ik dat het goed staat.\nA: Prima. U krijgt binnen twee werkdagen een bevestiging per e-mail, met uw lidmaatschapsnummer en het alarmnummer. De kaart komt per post, maar wacht daar niet op: het nummer in de e-mail is genoeg.\nB: En dat onderhoudsbewijs voor het buitenland?\nA: Dat stuurt u later na, voor uw vakantie. U mag dat per e-mail sturen; het mag ook een foto van de rekening van de garage zijn.\nB: Helder. En denk eraan dat de dekking pas over drie dagen ingaat, dat weet ik nu.\nA: Precies, u hebt goed opgelet. Ik zet het nu voor u in orde.",
+        "prompt": "Wat zegt Youssef Bakkali over de bevestiging van het lidmaatschap?",
+        "options": [
+          "Fatima el Idrissi moet wachten tot de kaart met de post komt.",
+          "Het lidmaatschapsnummer staat in de e-mail die zij ontvangt.",
+          "Zij krijgt het alarmnummer pas na drie werkdagen te horen."
+        ],
+        "correct": 1,
+        "explanation": "Youssef zegt dat de e-mail binnen twee werkdagen komt met het lidmaatschapsnummer en het alarmnummer, en dat zij niet op de kaart hoeft te wachten."
+      }
+    ]
+  },
+  {
+    "section": "persuasief",
+    "cast": {
+      "A": "woman_older",
+      "B": "man_richard"
+    },
+    "fragments": [
+      {
+        "script": "A: Nou, dan begin ik maar meteen. De gemeente wil vanaf 1 januari overgaan op een nieuw systeem voor het afval.\nB: Ja, dat heb ik gelezen in dat blaadje dat in de bus lag.\nA: En wat vond u ervan?\nB: Eerlijk gezegd vooral onduidelijk. Er stond iets over een container minder en iets over betalen per keer, maar ik werd er niet veel wijzer van.\nA: Dat hoor ik vaker, en dat is ook precies waarom ik langskom. Het idee is simpel: de grijze container voor restafval wordt kleiner, en u krijgt er een extra bak bij voor groente, fruit en tuinafval.\nB: Dus meer bakken in mijn schuurtje.\nA: Eén bak meer, ja. Maar de grijze wordt kleiner, dus in totaal neemt het bijna dezelfde ruimte in. En het papier en het plastic blijven gewoon zoals het nu gaat.\nB: Goed, dat valt mee. Maar waarom moet dit eigenlijk allemaal?",
+        "prompt": "Waarom komt Els Verhoeven bij Sander Bekkers langs?",
+        "options": [
+          "Omdat bewoners het nieuwe systeem niet goed begrijpen",
+          "Omdat hij een extra container heeft aangevraagd",
+          "Omdat hij te veel restafval aanbiedt"
+        ],
+        "correct": 0,
+        "explanation": "Els zegt dat ze vaker hoort dat de informatie onduidelijk is en dat ze daarom langskomt. Dat er een extra bak bij komt, is onderdeel van haar uitleg, niet de reden van haar bezoek."
+      },
+      {
+        "script": "A: Kijk, in onze gemeente zit nu nog ongeveer de helft van alles wat in de grijze bak gaat, bij het verkeerde afval. Dat is voornamelijk groente- en fruitafval.\nB: De helft? Dat lijkt me veel.\nA: Het is gemeten, meneer Bekkers, een jaar lang, bij een paar honderd huishoudens. En dat afval wordt nu verbrand, terwijl er compost van gemaakt had kunnen worden.\nB: Ja, maar dat is toch niet mijn schuld? Ik heb geen tuin, ik heb bijna geen groenafval.\nA: Dat snap ik, en voor u zal het verschil ook kleiner zijn. Maar het verbranden kost ons als gemeente geld, en dat geld halen we op bij alle bewoners samen, via de afvalstoffenheffing.\nB: Dus u wilt zeggen: ik betaal nu mee voor het afval van de buren.\nA: Zo zou ik het niet zeggen, maar u betaalt wel mee aan een rekening die lager kan. Daar wil ik het juist over hebben.",
+        "prompt": "Wat bedoelt Els Verhoeven met haar opmerking over de afvalstoffenheffing?",
+        "options": [
+          "De kosten van het verbranden worden door alle bewoners gedragen",
+          "De kosten van het verbranden zijn het afgelopen jaar gedaald",
+          "Sander Bekkers betaalt meer heffing dan zijn buren"
+        ],
+        "correct": 0,
+        "explanation": "Els legt uit dat het verbranden de gemeente geld kost en dat dat geld via de heffing bij alle bewoners wordt opgehaald. Ze neemt juist afstand van de conclusie dat hij voor zijn buren betaalt."
+      },
+      {
+        "script": "A: Het nieuwe tarief bestaat uit twee delen. U betaalt een vast bedrag per jaar, en daarnaast per keer dat de grijze container wordt geleegd.\nB: En dat vaste bedrag is?\nA: Voor een eenpersoonshuishouden honderdtachtig euro per jaar. En dan vier euro vijftig voor elke keer dat u de grijze bak aan de straat zet.\nB: Vier euro vijftig per keer. Als ik dat elke twee weken doe, ben ik dus ruim honderd euro extra kwijt.\nA: Dat zou kunnen, ja, als u hem elke keer aanbiedt. Maar de meeste alleenwonenden die hier al met dit systeem werken, zetten hem ongeveer één keer per maand buiten.\nB: Omdat ze het scheiden?\nA: Precies. En de bakken voor groenafval, papier en plastic worden gratis geleegd, zo vaak als u wilt. U betaalt dus alleen voor wat echt overblijft.\nB: Ja, kijk, dat verandert de rekensom wel.",
+        "prompt": "Wat moet Sander Bekkers in het nieuwe systeem betalen voor één keer legen van de grijze container?",
+        "options": [
+          "Honderdtachtig euro",
+          "Vier euro vijftig",
+          "Vijftien euro"
+        ],
+        "correct": 1,
+        "explanation": "Els noemt vier euro vijftig per keer dat de grijze bak wordt geleegd. Honderdtachtig euro is het vaste bedrag per jaar."
+      },
+      {
+        "script": "B: Maar ik woon drie hoog, zonder lift. Ik heb helemaal geen plek voor drie of vier bakken.\nA: Dat is een terecht punt, en daar is een uitzondering voor. Bewoners van een appartement zonder eigen berging krijgen geen bakken, maar een pasje voor de ondergrondse containers in de wijk.\nB: Een pasje.\nA: Ja, en dan wordt geregistreerd hoe vaak u de klep voor het restafval opent. Het groenafval, papier en plastic kunt u er onbeperkt in gooien, zonder dat het u iets kost.\nB: En die containers staan waar?\nA: In uw straat op de hoek bij het pleintje, en er komt er nog een bij achter de supermarkt. Dus hooguit honderd meter lopen.\nB: Dat is te doen. Alleen, ik ben vaak laat thuis en dan is het donker.\nA: Ze zijn vierentwintig uur per dag open, daar hoeft u niet op te letten. En de verlichting bij het pleintje wordt dit voorjaar vernieuwd.",
+        "prompt": "Wat geldt er volgens Els Verhoeven voor bewoners van een appartement zonder berging?",
+        "options": [
+          "Zij hoeven hun afval niet te scheiden",
+          "Zij krijgen een kleinere grijze container",
+          "Zij maken met een pasje gebruik van containers in de wijk"
+        ],
+        "correct": 2,
+        "explanation": "Els legt uit dat deze bewoners geen bakken krijgen, maar een pasje voor de ondergrondse containers. Een kleinere grijze container is juist bedoeld voor bewoners met een eigen berging."
+      },
+      {
+        "script": "B: En werkt het ook echt? U zei dat er al wijken mee begonnen zijn.\nA: Twee wijken, sinds vorig jaar maart. Daar is het restafval met ongeveer een derde gedaald. Dat is minder dan we hadden gehoopt, dat moet ik eerlijk zeggen.\nB: O. Dus het viel tegen.\nA: In het begin wel. We hadden op de helft gerekend. Wat bleek: veel mensen gooiden hun plastic wel apart, maar hun groenafval niet, omdat ze dat vies vonden in de keuken.\nB: Dat kan ik me voorstellen.\nA: Daarom hebben we nu een kleine keukenbak met deksel, die bewoners gratis kunnen ophalen bij het wijkcentrum. Sindsdien gaat het beter, al zijn we nog niet waar we willen zijn.\nB: Dus u geeft toe dat het nog niet loopt zoals het moet.\nA: Het loopt beter dan het oude systeem, maar niet perfect. Ik ga u geen mooi verhaal verkopen.",
+        "prompt": "Wat zegt Els Verhoeven over de twee wijken waar het systeem al werkt?",
+        "options": [
+          "Het restafval is daar gehalveerd",
+          "Het resultaat was lager dan verwacht",
+          "Het systeem is daar na een jaar gestopt"
+        ],
+        "correct": 1,
+        "explanation": "Els zegt dat het restafval met ongeveer een derde daalde, terwijl op de helft was gerekend. De halvering was dus het doel en niet het resultaat."
+      },
+      {
+        "script": "B: En stel dat ik het gewoon niet wil. Kan ik ergens bezwaar maken?\nA: U kunt bezwaar maken tegen de aanslag van de heffing, maar niet tegen het systeem zelf. Dat is in de gemeenteraad besloten, in november, met een ruime meerderheid.\nB: Dus het staat al vast.\nA: Het invoeren staat vast, ja. Maar hoe we het uitvoeren, daar kunt u nog wel invloed op hebben. Er is een bewonerspanel dat meekijkt naar de inzamelroutes en de plek van de containers.\nB: En daar zitten gewone bewoners in?\nA: Twaalf bewoners uit de hele gemeente, die vier keer per jaar bij elkaar komen. Er zijn nog drie plekken vrij, en er is nog niemand uit uw buurt bij.\nB: Hm. Ik weet niet of ik daar de tijd voor heb.\nA: De avonden duren twee uur en u krijgt een vergoeding voor uw reiskosten. U mag er ook eerst een keer bij komen zitten om te kijken.",
+        "prompt": "Waar stuurt Els Verhoeven het gesprek naartoe als Sander Bekkers over bezwaar maken begint?",
+        "options": [
+          "Naar de mogelijkheid om in een bewonerspanel mee te denken",
+          "Naar de procedure voor bezwaar tegen de aanslag",
+          "Naar het besluit dat de gemeenteraad in november nam"
+        ],
+        "correct": 0,
+        "explanation": "Els zegt dat het invoeren vaststaat, maar dat hij via het bewonerspanel invloed kan hebben op de uitvoering, en nodigt hem daarvoor uit. Het raadsbesluit en het bezwaar noemt ze alleen om uit te leggen wat niet meer kan."
+      },
+      {
+        "script": "A: Mag ik u iets concreets voorstellen? Probeer het drie maanden. Als u in die periode merkt dat u duurder uitkomt dan vorig jaar, dan krijgt u het verschil terug.\nB: Dat klinkt bijna te mooi.\nA: Het is een afspraak die geldt voor het eerste halfjaar, voor alle huishoudens. We rekenen het na op uw oude rekening, dus u hoeft niets te bewaren of op te sturen.\nB: Nou ja, dan loop ik eigenlijk geen risico.\nA: Dat is precies de bedoeling. En ik laat deze folder achter met het telefoonnummer van het afvalloket, dat is op werkdagen bereikbaar tussen negen en vijf.\nB: Goed. Ik ga die keukenbak ophalen en dan kijken we in het voorjaar hoe het staat.\nA: Fijn. En denkt u nog even na over dat panel? De eerste avond is op 12 februari.\nB: Ik laat het u weten. Bedankt voor de uitleg, het is me nu een stuk duidelijker.\nA: Graag gedaan, meneer Bekkers. Een goede dag nog.",
+        "prompt": "Wat biedt Els Verhoeven aan om Sander Bekkers over te halen?",
+        "options": [
+          "Dat de eerste drie maanden gratis zijn",
+          "Dat hij het verschil terugkrijgt als hij duurder uitkomt",
+          "Dat hij voorlopig geen nieuwe containers hoeft te nemen"
+        ],
+        "correct": 1,
+        "explanation": "Els stelt voor het drie maanden te proberen; wie duurder uitkomt dan vorig jaar, krijgt het verschil terug. Gratis is het dus niet: hij betaalt wel, maar nooit meer dan voorheen."
+      }
+    ],
+    "intro": "U gaat luisteren naar een gesprek tussen Els Verhoeven en Sander Bekkers. Els Verhoeven werkt bij de gemeente en gaat langs bij bewoners over een nieuwe manier van afval scheiden. Sander Bekkers woont in een appartement en is er nog niet van overtuigd.",
+    "opening": "A: Goedemiddag, bent u meneer Bekkers? Els Verhoeven, van de gemeente.\nB: Ja, dat ben ik. U had gebeld, ja. Komt u binnen.\nA: Dank u. Ik kom bij alle bewoners van deze straat langs, want er verandert iets in de manier waarop we het afval ophalen.\nB: Dat dacht ik al. Nou, gaat u zitten, dan hoor ik het verhaal.",
+    "speaker_a": "Els Verhoeven",
+    "speaker_b": "Sander Bekkers",
+    "title": "Een nieuw systeem voor het afval"
+  },
+  {
+    "section": "instructief",
+    "cast": {
+      "A": "man_young",
+      "B": "man_older"
+    },
+    "title": "Beginnen met bijen in de stadstuin",
+    "intro": "U gaat luisteren naar een gesprek tussen Hakan Yalçın en Dennis Molenaar. Hakan Yalçın wil graag bijen gaan houden in zijn stadstuin. Dennis Molenaar is imker en legt hem stap voor stap uit hoe hij dat kan aanpakken.",
+    "speaker_a": "Hakan Yalçın",
+    "speaker_b": "Dennis Molenaar",
+    "opening": "A: Goedemiddag, bent u Dennis Molenaar? Ik ben Hakan Yalçın, we hebben gemaild over de bijen.\nB: Ja, klopt, kom erin. Wat leuk dat u langskomt. U schreef dat u een tuin achter uw huis heeft?\nA: Ja, een stadstuin van ongeveer zeven bij acht meter. Ik lees al een jaar over bijen, maar ik weet eigenlijk niet waar ik moet beginnen.\nB: Nou, dat is precies de goede vraag. Veel mensen kopen eerst een kast en gaan daarna nadenken, en dat werkt meestal niet.",
+    "fragments": [
+      {
+        "script": "A: Wat is dan wel de eerste stap?\nB: Een cursus. Echt, dat is stap één. De bijenvereniging hier in de buurt geeft elk voorjaar een beginnerscursus van acht avonden, en daarbij horen ook vier zaterdagen in de leertuin.\nA: Acht avonden, dat is wel een investering van tijd.\nB: Ja, kijk, het lijkt veel, maar u leert daar een volk openmaken terwijl iemand naast u staat. Dat kunt u uit geen enkel boek halen. De cursus kost honderdvijfentwintig euro, en daar zit het lesmateriaal bij in.\nA: En het lidmaatschap van de vereniging?\nB: Dat is apart, zevenendertig euro per jaar. Maar daar zit wel een verzekering bij, dus dat is geen weggegooid geld.\nA: Ik dacht eerlijk gezegd dat ik gewoon in mei kon beginnen met een volkje van iemand die stopt.\nB: Dat kan technisch wel, maar dan staat u in juni met duizenden bijen in uw tuin zonder dat u weet wat u ziet. Dat gaat bijna altijd mis.",
+        "prompt": "Waarom vindt Dennis Molenaar de cursus belangrijker dan een boek?",
+        "options": [
+          "Omdat de cursus goedkoper is dan goede vakliteratuur.",
+          "Omdat het lesmateriaal bij de prijs van de cursus hoort.",
+          "Omdat je op de cursus onder begeleiding met een volk werkt."
+        ],
+        "correct": 2,
+        "explanation": "Dennis zegt dat je op de cursus een volk leert openmaken terwijl iemand naast je staat, en dat je dat uit geen enkel boek kunt halen. Dat het lesmateriaal bij de prijs zit, noemt hij wel, maar dat is niet zijn reden om de cursus belangrijk te vinden."
+      },
+      {
+        "script": "A: Oké, dus eerst de cursus. En de tuin zelf, moet die aan eisen voldoen?\nB: De belangrijkste eis is de vliegrichting. De bijen vliegen in een rechte lijn de kast uit, soms wel tien meter laag over de grond. Als die lijn over het terras van de buren loopt, krijgt u problemen.\nA: Mijn tuin grenst aan drie andere tuinen.\nB: Dan zet u de kast met de opening naar een schutting of een hoge heg, op een meter of twee afstand. De bijen moeten dan omhoog, en boven de twee meter vliegen ze over de mensen heen.\nA: Dat is slim. En de zon?\nB: Ochtendzon is fijn, maar in de volle middagzon tegen een stenen muur wordt het te warm. Half beschaduwd is beter.\nA: En water?\nB: Dat vergeten beginners altijd. Zet een schaal met water en wat kurk of steentjes erin, anders gaan ze bij de buren uit het kinderbadje drinken. En dan heeft u echt een gesprek.",
+        "prompt": "Wat moet Hakan Yalçın volgens Dennis Molenaar met de opening van de kast doen?",
+        "options": [
+          "Die naar de ochtendzon toe laten wijzen.",
+          "Die naar een schutting of hoge heg richten.",
+          "Die van de buurtuinen af naar zijn eigen huis richten."
+        ],
+        "correct": 1,
+        "explanation": "Dennis adviseert de kast met de opening richting een schutting of hoge heg te zetten, zodat de bijen omhoog moeten. Ochtendzon noemt hij wel als voordeel, maar dat gaat over de plek van de kast, niet over de richting van de opening."
+      },
+      {
+        "script": "A: En dan de kast. Daar zie ik heel veel soorten.\nB: Ja, en daar kunt u eindeloos over lezen. Mijn advies: neem hetzelfde systeem als de mensen in uw eigen vereniging. Dan passen de raampjes van een collega in uw kast.\nA: Waarom is dat belangrijk?\nB: Omdat u in het eerste jaar dingen gaat leenen en ruilen. Als uw volk zwak is, kan iemand u een raam met broed geven. Maar alleen als de maat klopt.\nA: Ah, dus niet de mooiste kast, maar de meest gebruikelijke.\nB: Precies. En koop uw eerste kast tweedehands, maar wel van iemand uit de vereniging die u kent. Een kast van internet kan ziektes meebrengen.\nA: Wat kost zo'n tweedehands kast?\nB: Reken op zeventig tot honderd euro. Nieuw bent u twee keer zo duur. En u heeft nog een kap, handschoenen en een beitel nodig, samen zo'n vijftig euro. Een berookapparaat kunt u het eerste jaar van de vereniging leenen.",
+        "prompt": "Waarom raadt Dennis Molenaar aan hetzelfde kastsysteem te kiezen als de vereniging?",
+        "options": [
+          "Omdat de vereniging die kasten tweedehands verkoopt.",
+          "Omdat je dan raampjes met andere imkers kunt uitwisselen.",
+          "Omdat zulke kasten minder ziektes met zich meebrengen."
+        ],
+        "correct": 1,
+        "explanation": "Dennis legt uit dat je in het eerste jaar spullen leent en ruilt, bijvoorbeeld een raam met broed, en dat dat alleen kan als de maat klopt. Het risico op ziektes noemt hij apart, bij het kopen van een kast via internet."
+      },
+      {
+        "script": "A: En dan de bijen zelf. Hoe kom ik daaraan?\nB: Er zijn twee manieren. U koopt een zwerm of een kunstzwerm bij een imker, of u krijgt in mei een zwerm die ergens is neergestreken.\nA: Gratis bijen, dat klinkt goed.\nB: Nou, kijk, een gevangen zwerm is spannend, maar u weet niets over de moer en niets over ziektes. Voor een eerste jaar is dat niet ideaal.\nA: Dus beter kopen.\nB: Ja. Een kunstzwerm met een jonge koningin kost ongeveer honderdvijftig euro. Dat lijkt veel, maar u koopt eigenlijk rust. U weet hoe oud de koningin is en u weet dat het volk gezond is bekeken.\nA: Wanneer moet ik die bestellen?\nB: In februari of maart al, want in mei is alles weg. En let op: u krijgt hem pas als het weer het toelaat. Vorig jaar was het koud en toen leverde ik pas eind mei, drie weken later dan gepland. Daar moet u tegen kunnen.",
+        "prompt": "Wat zegt Dennis Molenaar over het kopen van een kunstzwerm?",
+        "options": [
+          "Dat die in mei nog goed verkrijgbaar is.",
+          "Dat die pas na de cursus geleverd mag worden.",
+          "Dat je daarmee zekerheid over het volk koopt."
+        ],
+        "correct": 2,
+        "explanation": "Dennis zegt dat je met een kunstzwerm eigenlijk rust koopt: je weet hoe oud de koningin is en dat het volk gezond is bekeken. Hij zegt juist dat in mei alles weg is, dus bestellen moet in februari of maart."
+      },
+      {
+        "script": "A: En de buren? Daar zit ik een beetje mee.\nB: Doe dat vóórdat de bijen er staan, niet erna. Gewoon aanbellen, vertellen wat u gaat doen en vragen of iemand allergisch is.\nA: En als iemand zegt dat hij het niet wil?\nB: Formeel mag u in uw eigen tuin bijen houden, daar heeft u geen vergunning voor nodig. Maar als u op ruzie gaat staan, heeft u er jaren last van. Dus eerst praten, dan kijken.\nA: Hoeveel kasten mag ik eigenlijk hebben?\nB: Dat hangt van de gemeente af. Hier mag het in een gewone tuin, maar in sommige wijken staat in de regels dat het er maximaal twee mogen zijn. Op een volkstuincomplex is het vaak weer anders, daar beslist het bestuur.\nA: Dus ik moet het even nakijken.\nB: Ja, bel de gemeente of kijk in de verordening. En loop langs de buren met een potje honing in het najaar. Dat werkt beter dan elk gesprek.",
+        "prompt": "Wat bedoelt Dennis Molenaar met zijn opmerking over een potje honing?",
+        "options": [
+          "Dat buren meestal pas in het najaar klagen.",
+          "Dat een klein gebaar de buren het makkelijkst gunstig stemt.",
+          "Dat je met honing de kosten van het imkeren terugverdient."
+        ],
+        "correct": 1,
+        "explanation": "Dennis zegt dat langsgaan met een potje honing beter werkt dan elk gesprek: een kleine attentie houdt de verhouding met de buren goed. Over klachten in het najaar of over geld terugverdienen zegt hij niets."
+      },
+      {
+        "script": "A: En hoeveel tijd kost het nou echt, per week?\nB: In het voorjaar, van half april tot eind juni, kijkt u elke zeven tot negen dagen in het volk. Dat is het zwermseizoen. Zo'n controle duurt een half uur, drie kwartier.\nA: Elke week dus.\nB: Ja, en dat is niet flexibel. Als u een weekend weg bent en u slaat een controle over, kan het volk zwermen. Dan hangt de helft van uw bijen in een boom bij iemand anders.\nA: Dat klinkt stressvol.\nB: Dat eerste jaar vond ik het ook zwaar, eerlijk gezegd. Ik had een vakantie geboekt in juni en dat was gewoon dom. Nu plan ik mijn vakantie in juli of augustus.\nA: En de rest van het jaar?\nB: Dan is het veel rustiger. Na de zomer behandelt u tegen de varroamijt en in de winter kijkt u alleen of de kast nog droog staat en of er genoeg voer is. Dat is een kwartiertje per maand.",
+        "prompt": "Waarom noemt Dennis Molenaar zijn vakantie in juni dom?",
+        "options": [
+          "Omdat hij toen juist in het zwermseizoen weg was.",
+          "Omdat hij toen vergat tegen de varroamijt te behandelen.",
+          "Omdat hij toen zijn kast niet droog had neergezet."
+        ],
+        "correct": 0,
+        "explanation": "Dennis vertelt dat je van half april tot eind juni elke zeven tot negen dagen moet controleren, en dat hij juist in juni op vakantie ging. De behandeling tegen de varroamijt is pas na de zomer en heeft daar niets mee te maken."
+      },
+      {
+        "script": "A: Stel dat ik dit allemaal doe. Hoeveel honing haal ik dan uit mijn tuin?\nB: Het eerste jaar: waarschijnlijk niets. Een jong volk moet eerst zelf sterk worden, dus die honing laat u zitten.\nA: Helemaal niets?\nB: Soms een paar potjes, maar reken er niet op. Vanaf het tweede jaar is tien tot twintig kilo in de stad heel normaal. In de stad bloeit het eigenlijk best goed, met al die tuinen en lindes langs de straat.\nA: Dus ik moet het niet voor de honing doen.\nB: Nee, en dat zeg ik tegen iedereen. Wie honing wil, koopt die goedkoper bij mij. U doet het omdat u het boeiend vindt om elke week in dat volk te kijken.\nA: Ik denk dat ik dan eerst die cursus doe en volgend voorjaar begin.\nB: Dat is precies de goede volgorde. Meld u voor eind januari aan, want de groep zit meestal snel vol. En kom in mei een zaterdag met mij meelopen, dan ziet u of het echt iets voor u is.",
+        "prompt": "Welk advies geeft Dennis Molenaar aan het eind van het gesprek?",
+        "options": [
+          "Het eerste jaar de honing in de kast laten zitten.",
+          "In januari nog een beslissing over de cursus nemen.",
+          "Zich voor eind januari voor de cursus inschrijven."
+        ],
+        "correct": 2,
+        "explanation": "Dennis zegt dat Hakan zich voor eind januari moet aanmelden, omdat de groep meestal snel vol zit. Dat de honing het eerste jaar in de kast blijft, is wel gezegd, maar dat staat eerder in het fragment en is niet het afsluitende advies."
+      }
+    ]
+  },
+  {
+    "section": "informatief",
+    "cast": {
+      "A": "woman_roos",
+      "B": "woman_noa"
+    },
+    "title": "Van de thuiszorg naar de ict",
+    "intro": "U gaat luisteren naar een gesprek tussen Nadia Bouzid en Lianne de Groot. Nadia Bouzid maakt interviews voor een personeelsblad. Zij spreekt met Lianne de Groot, die via een zij-instroomtraject van acht maanden in de ict is gaan werken.",
+    "speaker_a": "Nadia Bouzid",
+    "speaker_b": "Lianne de Groot",
+    "opening": "A: Lianne, fijn dat je even tijd hebt. Ik wil het graag hebben over je overstap naar de ict.\nB: Ja, leuk. Ik vertel er eerlijk gezegd best graag over, want ik krijg die vraag vaak.\nA: Dat kan ik me voorstellen. Je werkte hiervoor in de thuiszorg, klopt dat?\nB: Klopt, bijna elf jaar. En nu zit ik dus achter een computer bij de servicedesk. Dat is wel een verschil, ja.",
+    "fragments": [
+      {
+        "script": "A: Elf jaar is lang. Wat maakte dat je toch iets anders wilde?\nB: Nou, kijk, het werk zelf vond ik altijd mooi. Ik kwam bij mensen thuis, ik kende hun verhaal, dat gaf echt voldoening.\nA: Dus het lag niet aan de inhoud.\nB: Nee, helemaal niet. Maar mijn rug begon tegen te werken. Ik heb twee keer een periode thuisgezeten, en de bedrijfsarts zei op een gegeven moment heel duidelijk: zo houd je dit niet vol tot je pensioen.\nA: Dat is een stevige boodschap.\nB: Ja. En toch was dat niet de doorslag, hoor. Wat echt meespeelde, was dat ik 's avonds thuis altijd met de computer van mijn zoon bezig was. Problemen oplossen, dingen opnieuw instellen. Mijn man zei een keer voor de grap: jij doet dat werk eigenlijk al, alleen betaalt niemand je ervoor.\nA: En toen ging je nadenken.\nB: Toen ging ik nadenken, precies. Dat is ongeveer twee jaar geleden geweest.",
+        "prompt": "Wat geeft Lianne de Groot aan als de belangrijkste reden om ander werk te zoeken?",
+        "options": [
+          "Dat haar rug het werk in de thuiszorg niet meer aankon",
+          "Dat ze de inhoud van het werk in de thuiszorg niet meer leuk vond",
+          "Dat ze merkte dat ze met computers bezig wilde zijn"
+        ],
+        "correct": 2,
+        "explanation": "Lianne zegt dat de waarschuwing van de bedrijfsarts niet de doorslag gaf, maar dat vooral meespeelde dat ze thuis altijd computerproblemen zat op te lossen. De rugklachten noemt ze wel, maar uitdrukkelijk niet als belangrijkste reden."
+      },
+      {
+        "script": "A: Hoe ben je dat traject dan op het spoor gekomen?\nB: Via een voorlichtingsavond bij een opleider hier in de regio. Daar legden ze uit hoe zo'n zij-instroomtraject werkt: acht maanden, vier dagen per week.\nA: En de vijfde dag?\nB: Die hield je vrij, zodat je ernaast nog iets kon doen. Ik heb in die periode op zaterdag en op die vrije dag doorgewerkt in de zorg, anders had ik het financieel niet gered.\nA: Moest je zelf betalen voor de opleiding?\nB: Nee, en dat was precies waarom ik het aandurfde. De kosten werden gedekt door het bedrijf dat me daarna aannam, in ruil voor een contract. Maar er zat wel een voorwaarde aan vast, en die was niet mis.\nA: Vertel.\nB: Als ik binnen twee jaar na afloop zelf zou vertrekken, moest ik een deel van de opleidingskosten terugbetalen. Dat ging om een paar duizend euro. Hoewel ik dat eerlijk gezegd redelijk vond, heb ik er wel een nacht over wakker gelegen.",
+        "prompt": "Welke afspraak maakte Lianne de Groot met het bedrijf?",
+        "options": [
+          "Dat ze een deel van de kosten zou terugbetalen als ze snel zou opstappen",
+          "Dat ze een deel van de opleiding zelf zou betalen uit haar eigen spaargeld",
+          "Dat ze naast de opleiding vier dagen per week in de zorg zou blijven werken"
+        ],
+        "correct": 0,
+        "explanation": "Het bedrijf betaalde de opleiding, maar als ze binnen twee jaar zelf zou vertrekken, moest ze een deel terugbetalen. Zelf betalen hoefde ze juist niet; dat was voor haar de reden om het aan te durven."
+      },
+      {
+        "script": "A: En hoe waren die acht maanden? Ik hoor vaak dat zo'n traject pittig is.\nB: Pittig is het goede woord, ja. Maar niet om de reden die ik vooraf dacht.\nA: Wat dacht je dan vooraf?\nB: Ik dacht: de techniek wordt mijn probleem. Ik was veertig, ik had nooit iets met programmeren gedaan. Dat zag ik echt als de grote berg.\nA: En dat viel mee?\nB: Dat viel reuze mee. Niet omdat het makkelijk was, maar omdat ze het stap voor stap opbouwden. Wat me wel tegenviel, was het studeren zelf. Ik had in geen twintig jaar meer een toets gemaakt. Ik wist gewoon niet meer hoe je leert, als je begrijpt wat ik bedoel.\nA: Dus de studievaardigheid.\nB: Precies dat. De eerste toets heb ik niet gehaald, en dat kwam hard aan. Daarna ben ik met twee anderen uit de groep gaan samenwerken, elke dinsdagavond. Dat heeft me er doorheen getrokken, meer dan welke les ook.",
+        "prompt": "Wat viel Lianne de Groot tegen tijdens het traject?",
+        "options": [
+          "Dat ze niet meer gewend was om te leren",
+          "De manier waarop de techniek werd uitgelegd",
+          "De samenwerking met anderen uit haar groep"
+        ],
+        "correct": 0,
+        "explanation": "Ze zegt dat het studeren zelf tegenviel: ze wist niet meer hoe je leert en zakte voor de eerste toets. De techniek viel juist mee, omdat die stap voor stap werd opgebouwd."
+      },
+      {
+        "script": "A: Je zit nu bij de servicedesk. Hoe verliep die eerste periode op de werkvloer?\nB: Wennen. Je komt binnen als iemand van veertig die net begint, tussen collega's van vijfentwintig die het vak al jaren doen.\nA: Werd daar iets van gezegd?\nB: Niet vervelend, nee. Maar ik merkte wel dat ze dachten: die redt het niet. En ik snap dat ook wel, want van de twaalf mensen in mijn groep zijn er uiteindelijk acht aan het werk gegaan.\nA: Acht van de twaalf. Dus vier niet.\nB: Vier niet, klopt. Twee zijn tijdens het traject gestopt en twee hebben na afloop geen plek gevonden die bij hen paste.\nA: Wat hielp jou dan wel?\nB: Mijn achtergrond, raar genoeg. Bij de servicedesk bel je de hele dag met mensen die boos of in paniek zijn. Ik heb elf jaar bij mensen thuis gestaan op momenten dat het niet goed ging. Dat rustig houden van een gesprek, dat hoef ik niet meer te leren.\nA: Dus dat nam je gewoon mee.\nB: Dat nam ik mee, ja.",
+        "prompt": "Hoeveel mensen uit de groep van Lianne de Groot zijn na het traject gaan werken?",
+        "options": [
+          "Acht",
+          "Twaalf",
+          "Vier"
+        ],
+        "correct": 0,
+        "explanation": "Lianne zegt dat van de twaalf deelnemers er uiteindelijk acht aan het werk zijn gegaan. Twaalf was de grootte van de hele groep en vier mensen vonden juist geen werk of stopten."
+      },
+      {
+        "script": "A: Als iemand nu zegt: ik wil hetzelfde doen. Wat zeg jij dan?\nB: Ik zeg nooit zomaar ja. Ik vraag eerst: heb je thuis iemand die het een jaar met je volhoudt? Want dat is echt nodig.\nA: Je bedoelt de drukte.\nB: De drukte en het geld. Ik ging er het eerste jaar in inkomen flink op achteruit, terwijl de vaste lasten gewoon doorliepen. Inmiddels verdien ik meer dan in de zorg, maar dat duurde ruim anderhalf jaar.\nA: Dus niet beginnen zonder buffer.\nB: Zo zou ik het wel samenvatten, ja. En nog iets: ga eens een dag meelopen voordat je je inschrijft. Ik heb dat gedaan bij een servicedesk, een hele dag meeluisteren met de telefoontjes.\nA: Hielp dat?\nB: Dat hielp enorm. Niet omdat ik daarna wist of ik het kon, maar omdat ik wist wat het werk echt is. De helft van de mensen die afhaakt, haakt af omdat het werk anders is dan ze dachten. Niet omdat het te moeilijk is.",
+        "prompt": "Wat raadt Lianne de Groot aan iemand aan die dezelfde overstap overweegt?",
+        "options": [
+          "Eerst een dag met het werk meelopen voordat je je aanmeldt",
+          "Pas beginnen als je er in inkomen niet op achteruitgaat",
+          "Vooral kijken of je de techniek moeilijk genoeg kunt leren"
+        ],
+        "correct": 0,
+        "explanation": "Ze adviseert om eerst een dag mee te lopen, omdat mensen vooral afhaken als het werk anders blijkt dan verwacht. Ze zegt wel dat je een financiële buffer nodig hebt, maar niet dat je inkomen gelijk moet blijven; zijzelf ging er het eerste jaar juist op achteruit."
+      }
+    ]
+  }
+]

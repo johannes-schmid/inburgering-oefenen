@@ -11,6 +11,7 @@
  *   app/favicon.ico             16 + 32 + 48, PNG-encoded ICO
  *   public/images/logo-email.png 160×160, the DARK variant — the mail header is navy
  *   public/chatgpt-icon-512.png  512×512, FULL SQUARE — the ChatGPT-directory applies its own mask
+ *   mobile/assets/adaptive-icon.png 1024×1024, the Android adaptive-icon FOREGROUND (see below)
  *
  * **The mark lives in `MARK` here and in `components/site/LogoMark.tsx`, and nowhere else.**
  * Those two are the only copies and they must be changed together — the reason this script exists
@@ -116,5 +117,15 @@ console.log('public/images/logo-email.png 160×160 (dark variant)');
    zelf, net als iOS — dus net als de apple-touch-icon zónder eigen afronding. */
 writeFileSync(join(ROOT, 'public/chatgpt-icon-512.png'), await render(page, MARK({ radius: 0 }), 512));
 console.log('public/chatgpt-icon-512.png 512×512 (square — the directory masks it itself)');
+
+/* De voorgrond van het adaptieve Android-icoon: alleen de balk en de zon, transparant. De tegel
+   is `adaptiveIcon.backgroundColor` in `mobile/app.json` (#002b6d), en de launcher kiest zelf de
+   vorm. Alleen de middelste 72 van 108dp is zichtbaar na het masker, dus de tekening staat in het
+   midden op dezelfde verhouding tot het zichtbare vlak als in de tegel van 100. */
+const FOREGROUND = MARK()
+  .replace('viewBox="0 0 100 100"', 'viewBox="-21 -25 150 150"')
+  .replace(/<rect width="100"[^>]*\/>\n\s*/, '');
+writeFileSync(join(ROOT, 'mobile/assets/adaptive-icon.png'), await render(page, FOREGROUND, 1024));
+console.log('mobile/assets/adaptive-icon.png 1024×1024 (Android foreground — the launcher masks it)');
 
 await browser.close();

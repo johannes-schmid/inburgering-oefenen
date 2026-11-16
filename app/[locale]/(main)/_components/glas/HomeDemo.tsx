@@ -5,6 +5,7 @@ import { useTranslations } from 'next-intl';
 import { ArrowRight, Check, Lock, Mic, Pause, Play, RotateCcw, Square, X } from 'lucide-react';
 import AnswerRow, { AnswerGroup, type AnswerState } from '@/components/glas/AnswerRow';
 import CategoryMark, { type Category } from '@/components/horizon/CategoryMark';
+import { glasButton } from '@/components/glas/Button';
 import { WavRecorder, canRecordWav } from '@/lib/wav-recorder';
 
 /* De proef op de homepage (variant B): zes tabbladen, één per onderdeel, elk met één opgave die
@@ -45,10 +46,14 @@ type Props = {
   luisteren: DemoListening;
   lezen: DemoMcq;
   spreken: DemoSpeaking;
-  knm: DemoMcq;
+  knm?: DemoMcq;
   formats: { luisteren: Format; lezen: Format; spreken: Format };
-  knmMinutes: number;
-  onaCards: string[];
+  knmMinutes?: number;
+  onaCards?: string[];
+  /** Alleen deze tabbladen, in de vaste volgorde (een landingspagina toont er minder). */
+  only?: readonly TabId[];
+  /** Per tabblad een knop "Start gratis" naar het echte examen (landingspagina's, 13-11). */
+  start?: Partial<Record<TabId, { href: string; label: string }>>;
 };
 
 const TABS = [
@@ -59,7 +64,7 @@ const TABS = [
   { id: 'knm', track: 'knm', time: '32:05' },
   { id: 'ona', track: 'ona', time: '' },
 ] as const satisfies readonly { id: Category; track: string; time: string }[];
-type TabId = (typeof TABS)[number]['id'];
+export type TabId = (typeof TABS)[number]['id'];
 
 const reduced = () => typeof window !== 'undefined' && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
@@ -71,16 +76,17 @@ function shake(el: Element | null | undefined) {
   );
 }
 
-export default function HomeDemo({ luisteren, lezen, spreken, knm, formats, knmMinutes, onaCards }: Props) {
+export default function HomeDemo({ luisteren, lezen, spreken, knm, formats, knmMinutes = 0, onaCards = [], only, start }: Props) {
   const t = useTranslations('home_b');
-  const [tab, setTab] = useState<TabId>('luisteren');
+  const tabs = useMemo(() => (only ? TABS.filter(x => only.includes(x.id)) : TABS), [only]);
+  const [tab, setTab] = useState<TabId>(tabs[0].id);
   const base = useId();
   const btns = useRef<(HTMLButtonElement | null)[]>([]);
-  const i = TABS.findIndex(x => x.id === tab);
-  const active = TABS[i];
+  const i = tabs.findIndex(x => x.id === tab);
+  const active = tabs[i];
 
   const go = (n: number, focus = false) => {
-    setTab(TABS[n].id);
+    setTab(tabs[n].id);
     const el = btns.current[n];
     el?.scrollIntoView({ block: 'nearest', inline: 'nearest', behavior: reduced() ? 'auto' : 'smooth' });
     if (focus) el?.focus();
@@ -91,7 +97,7 @@ export default function HomeDemo({ luisteren, lezen, spreken, knm, formats, knmM
     const step = e.key === 'ArrowRight' ? (rtl ? -1 : 1) : e.key === 'ArrowLeft' ? (rtl ? 1 : -1) : 0;
     if (!step) return;
     e.preventDefault();
-    go((i + step + TABS.length) % TABS.length, true);
+    go((i + step + tabs.length) % tabs.length, true);
   };
 
   return (
@@ -109,7 +115,7 @@ export default function HomeDemo({ luisteren, lezen, spreken, knm, formats, knmM
       </div>
 
       <div role="tablist" aria-label={t('demo_tabs_aria')} className="g-hb-tabs" onKeyDown={onKey}>
-        {TABS.map((x, n) => (
+        {tabs.map((x, n) => (
           <button
             key={x.id}
             ref={el => { btns.current[n] = el; }}
@@ -139,7 +145,7 @@ export default function HomeDemo({ luisteren, lezen, spreken, knm, formats, knmM
         {tab === 'lezen' && <Mcq item={lezen} withStimulus />}
         {tab === 'schrijven' && <Writing />}
         {tab === 'spreken' && <Speaking item={spreken} />}
-        {tab === 'knm' && <Mcq item={knm} />}
+        {tab === 'knm' && knm && <Mcq item={knm} />}
         {tab === 'ona' && <Ona cards={onaCards} />}
         <p className="g-hb-format">
           {tab === 'luisteren' && t('demo_a2_format', formats.luisteren)}
@@ -149,6 +155,12 @@ export default function HomeDemo({ luisteren, lezen, spreken, knm, formats, knmM
           {tab === 'knm' && t('demo_knm_format', { minutes: knmMinutes })}
           {tab === 'ona' && t('demo_ona_final')}
         </p>
+        {start?.[tab] && (
+          <a href={start[tab].href} className={`${glasButton({ variant: 'oranje', size: 'lg' })} g-hb-start`}>
+            {start[tab].label}
+            <ArrowRight className="rtl-flip" aria-hidden="true" />
+          </a>
+        )}
       </div>
 
       <div className="g-hb-foot">
@@ -156,9 +168,9 @@ export default function HomeDemo({ luisteren, lezen, spreken, knm, formats, knmM
           {t('demo_back')}
         </button>
         <span className="g-hb-steps" aria-hidden="true">
-          {TABS.map((x, n) => <i key={x.id} data-on={n === i || undefined} />)}
+          {tabs.map((x, n) => <i key={x.id} data-on={n === i || undefined} />)}
         </span>
-        <button type="button" className="g-hb-next" disabled={i === TABS.length - 1} onClick={() => go(i + 1)}>
+        <button type="button" className="g-hb-next" disabled={i === tabs.length - 1} onClick={() => go(i + 1)}>
           {t('demo_next')}
           <ArrowRight className="rtl-flip" aria-hidden="true" />
         </button>

@@ -38,7 +38,7 @@ export default function App() {
   const [failed, setFailed] = useState(false);
   /** Een nieuwe sleutel bouwt de webview opnieuw op, zodat de overdracht de eerste aanvraag is. */
   const [attempt, setAttempt] = useState(0);
-  const [devPath, setDevPath] = useState<{ path: string; at: number } | null>(null);
+  const [devPath, setDevPath] = useState<{ path: string; clean: boolean; scroll: number; at: number } | null>(null);
 
   function start(tokens: Tokens) {
     setFailed(false);
@@ -52,7 +52,7 @@ export default function App() {
   }, [fontsLoaded]);
 
   /* Alleen in een dev-build: een sessie uit de lokale stack aanreiken zonder door Google te
-     gaan, met `xcrun simctl openurl booted "inburgeringoefenen://dev-session#access_token=…"`,
+     gaan, met `xcrun simctl openurl` (iOS) of `adb shell am start -d` (Android)
      en een pad in het portaal openen met `…://dev-open?path=/nl/…`.
      In een release-build is `__DEV__` onwaar en bestaat deze ingang niet. */
   useEffect(() => {
@@ -60,8 +60,13 @@ export default function App() {
     const open = (url?: string | null) => {
       if (url?.startsWith(`${SCHEME}://dev-open?`)) {
         // `inburgeringoefenen://dev-open?path=/nl/dashboard/profiel` — een scherm openen om het na te kijken.
-        const path = new URLSearchParams(url.split('?')[1]).get('path');
-        if (path?.startsWith('/') && !path.startsWith('//')) setDevPath({ path, at: Date.now() });
+        // `&clean=1` verbergt de dev-balken van Next en van de site, voor schermafbeeldingen.
+        const params = new URLSearchParams(url.split('?')[1]);
+        const path = params.get('path');
+        if (path?.startsWith('/') && !path.startsWith('//')) {
+          // `&scroll=320` zet de pagina daarna op die hoogte, zodat een beeld herhaalbaar is.
+          setDevPath({ path, clean: params.get('clean') === '1', scroll: Number(params.get('scroll')) || 0, at: Date.now() });
+        }
         return;
       }
       if (!url?.startsWith(`${SCHEME}://dev-session`)) return;

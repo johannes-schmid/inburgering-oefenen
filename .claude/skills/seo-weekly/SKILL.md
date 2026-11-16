@@ -60,6 +60,29 @@ en code-opmerkingen zijn Nederlands (CLAUDE.md §11).
    alle drie de talen als de sleutel per taal bestaat. Eén PR per pagina, met in de PR-body de
    hypothese en de GSC-getallen, en een nieuwe ledger-rij (`window_end` = datum + 35 dagen).
 
+5a. **Landingspagina's — elke week** (besluit eigenaar, 13-11). Zet in
+   `seo-agent/landing-pages.json` twee à drie nieuwe voorstellen (`rules.suggestions_per_week`),
+   allemaal **richting A, "probeer direct"**: de pagina opent met één echte, al nagekeken
+   examenopgave uit onze eigen inhoud (een proefvraag uit `data/free-practice.ts` of een opgave van
+   oefenexamen 1) en heeft één knop, **"Start gratis"**, die het platform in gaat; daar wordt het
+   gratis account gevraagd. **Geen prijzen op een landingspagina.** Elke week is een andere
+   **variant**: een ander onderdeel, een andere opgave of een andere vraag van de zoeker; schrijf
+   in `variant` wat er deze week anders is.
+   - Bron per voorstel: een query uit `gsc.json` (vertoningen, positie) of, zonder vraag, het
+     concurrentenonderzoek in `competitors-analysis.json`. `demand: 0` = niet gemeten, nooit geschat.
+   - **Specifieke zoekvragen, geen oefenpagina's** (besluit eigenaar, 13-11, `rules.focus`). Een
+     landingspagina beantwoordt een vraag waar nog geen oefenpagina voor bestaat (herexamen, één
+     onderdeel gezakt, een termijn die afloopt). De bestaande `/oefenen`- en `/oefenexamen`-pagina's
+     zijn geen landingspagina en worden hier niet voorgesteld.
+   - Hooguit `rules.new_urls_per_week` nieuwe URL per week: na de spam-update van september is
+     "veel nieuwe pagina's snel" precies wat Google afstrafte. Wat niet past, schuift een week door.
+   - Vul `checks` in de volgorde van `rules.checks`. Een voorstel met een open check mag bestaan,
+     maar kan niet naar `approved`. Pas een bestaande rij alleen in `status` aan; ids nooit hergebruiken.
+   - Draai `npx vitest run tests-unit/seo-landing.test.ts`: die test leest het bestand en weigert
+     een tweede nieuwe URL in een week of een goedgekeurde rij met een open check.
+   - De voorstellen verschijnen op `/admin/seo` als rij in de tabel, achter het filter
+     **Landing pages**. Zelf bouwen doe je niet: de eigenaar keurt goed, en de kopij gaat langs Amber.
+
 6. **Rapport.** Schrijf `seo-agent/reports/<week>.md` met: samenvatting in vijf regels, het KPI-blok,
    de ledger-oordelen van deze week, de geopende PR's (link + hypothese), GEO (even weken),
    wat onbekend was en waarom, en één aanbeveling voor de eigenaar die geen PR kan zijn
