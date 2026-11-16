@@ -2034,17 +2034,6 @@
   ],
   "planned": [
     {
-      "id": "voorbeeldvragen",
-      "title": "Voorbeeldvragen inburgeringsexamen",
-      "section": "practice",
-      "demand": 53,
-      "evidence": "\"inburgeringsvragen\" had 53 impressions; Google showed /nl/oefenen at position 82, a page that doesn’t answer it.",
-      "why": "Tool intent with our own reviewed exam items: something an AI Overview can’t replace and a competitor can’t copy.",
-      "owner": "agent",
-      "week": "2026-W48",
-      "starts": "2026-11-23"
-    },
-    {
       "id": "most-missed",
       "title": "Most-missed questions in our practice exams",
       "section": "guides",

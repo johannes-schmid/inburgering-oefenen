@@ -91,6 +91,9 @@ export default function sitemap(): MetadataRoute.Sitemap {
   /* Landingspagina "herexamen" (live 16-11, nagekeken door Amber). Alleen Nederlands: de EN- en
      AR-versie zijn `noindex` (`robots` in de pagina zelf), en die twee gaan samen. */
   entries.push({ url: absUrl('nl', 'herexamen'), changeFrequency: 'monthly', priority: 0.8 });
+  /* Landingspagina "voorbeeldvragen" (live 16-11, nagekeken door Amber; besluit eigenaar om niet tot
+     week 48 te wachten). Ook alleen Nederlands, om dezelfde reden. */
+  entries.push({ url: absUrl('nl', 'voorbeeldvragen'), changeFrequency: 'monthly', priority: 0.8 });
 
   /* One overview page per (level, onderdeel).
    *

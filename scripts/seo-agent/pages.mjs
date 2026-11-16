@@ -67,15 +67,6 @@ const NOTES = {
 
 const PLANNED = [
   {
-    id: 'voorbeeldvragen',
-    title: 'Voorbeeldvragen inburgeringsexamen',
-    section: 'practice',
-    demand: 53,
-    evidence: '"inburgeringsvragen" had 53 impressions; Google showed /nl/oefenen at position 82, a page that doesn’t answer it.',
-    why: 'Tool intent with our own reviewed exam items: something an AI Overview can’t replace and a competitor can’t copy.',
-    owner: 'agent',
-  },
-  {
     id: 'most-missed',
     title: 'Most-missed questions in our practice exams',
     section: 'guides',
@@ -149,7 +140,8 @@ for (const p of out) {
 // Amber: twee per week op volgorde van vraag; de nieuwe pagina's krijgen een vaste plek in die rij,
 // pas na de schoonmaak (week 4 en 6), want nieuwe pagina's tijdens herstel zijn het patroon dat
 // Google afstrafte.
-const PLANNED_AT = [4, 6];
+// voorbeeldvragen (week 4) is op 16-11 live gegaan en staat in seo-agent/landing-pages.json.
+const PLANNED_AT = [6];
 const planned = PLANNED.map((p, n) => ({ ...p, ...week(PLANNED_AT[n]) }));
 const capacity = Array.from({ length: 26 }, (_, w) => AMBER_PER_WEEK - PLANNED_AT.filter(x => x === w).length);
 const amberQueue = out.filter(p => p.plan?.when === 'amber').sort((a, b) => b.plan.demand - a.plan.demand);

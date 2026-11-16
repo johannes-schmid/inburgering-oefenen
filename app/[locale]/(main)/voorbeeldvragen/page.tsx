@@ -26,7 +26,7 @@ import ExampleQuestion, { type ExampleItem } from './ExampleQuestion';
  *
  * **`noindex` tot Amber de tekst heeft nagekeken** (CLAUDE.md §2). Dan `REVIEWED` op true, de pagina
  * in `app/sitemap.ts` en de status in `seo-agent/landing-pages.json` op `live`. */
-const REVIEWED = false;
+const REVIEWED = true;
 
 const DUO_OEFENEN = 'https://www.inburgeren.nl/examen-doen/oefenen.jsp';
 

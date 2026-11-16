@@ -91,7 +91,7 @@
       "id": "2026-W48-voorbeeldvragen",
       "created": "2026-11-16",
       "week": "2026-W48",
-      "status": "suggested",
+      "status": "live",
       "kind": "new",
       "path": "/nl/voorbeeldvragen",
       "query": "voorbeeldvragen inburgeringsexamen",
@@ -105,10 +105,11 @@
         true,
         true,
         true,
-        false
+        true
       ],
       "owner": "amber",
-      "note": "Built 16-11 at app/[locale]/(main)/voorbeeldvragen/page.tsx. noindex and out of the sitemap until Amber has reviewed it (seo-agent/briefs/2026-11-16-voorbeeldvragen.md). Go live in week 48 at the earliest (one new URL per week; /herexamen is this week)."
+      "note": "Built 16-11, reviewed by Amber and live 16-11 (owner chose not to wait for week 48): indexable (nl only), in the sitemap.",
+      "live": "2026-11-16"
     }
   ]
 }

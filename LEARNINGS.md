@@ -6137,3 +6137,9 @@ Lokaal inloggen als admin: de wachtwoord-hook blokkeert `tests/helpers/session.m
 **Outcome:** SUCCESS (Vercel groen; live: /nl/herexamen `index, follow` en in de sitemap, /nl/voorbeeldvragen `noindex`, 2 links vanuit de blog)
 **What worked / went wrong:** `next build` met de dev-server gestopt gaf geen verouderde CSS meer. Lokale kladmappen (`.langgraph_api/`, `tests/_tmp/`, `videos/`) bewust niet meegecommit.
 **Lesson:** Een rode test op data die het bord niet kent (`kind`) eerst repareren vóór een push naar main; anders went iedereen aan een rode suite.
+
+## 2026-11-16 — Voorbeeldvragen live na review van Amber
+**Changed:** `REVIEWED = true` in `app/[locale]/(main)/voorbeeldvragen/page.tsx`, `/nl/voorbeeldvragen` in `app/sitemap.ts`, status `live` in `seo-agent/landing-pages.json`, uit `PLANNED` in `scripts/seo-agent/pages.mjs` en `seo-agent/pages.json`.
+**Outcome:** SUCCESS
+**What worked / went wrong:** De eigenaar koos ervoor niet tot week 48 te wachten, dus twee nieuwe URL's in één week (herexamen en voorbeeldvragen).
+**Lesson:** Een geplande pagina die live gaat moet ook uit `PLANNED` in `pages.mjs`; anders toont het SEO-bord hem nog als voorstel naast de live rij.
