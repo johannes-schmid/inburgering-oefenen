@@ -6131,3 +6131,9 @@ Lokaal inloggen als admin: de wachtwoord-hook blokkeert `tests/helpers/session.m
 **Outcome:** SUCCESS (1024 en 1440 px: kop op x=24, kaart scrollTop 0, kaart 892 → 748 px)
 **What worked / went wrong:** Een `overflow: hidden`-container blijft programmatisch scrollbaar. Klikken op een antwoord scrolde de kaart 66 px omhoog (lege strook onderaan, label afgesneden), en de hero schoof 43 px zijwaarts omdat de lichtvlekken 1147 px breed zijn. Na `next build` naast een draaiende dev-server serveerde die opnieuw oude CSS.
 **Lesson:** Knip decoratie af met `overflow: clip`, niet `hidden`. Draai `next build` niet terwijl de dev-server loopt, of herstart hem daarna met `rm -rf .next/dev`.
+
+## 2026-11-16 — Herexamen en voorbeeldvragen naar productie
+**Changed:** commit `e3763ec` op main (76 bestanden, incl. het lopende werk aan de iOS-app en het SEO-bord); `recommendations.json` kind `access` → `measurement`.
+**Outcome:** SUCCESS (Vercel groen; live: /nl/herexamen `index, follow` en in de sitemap, /nl/voorbeeldvragen `noindex`, 2 links vanuit de blog)
+**What worked / went wrong:** `next build` met de dev-server gestopt gaf geen verouderde CSS meer. Lokale kladmappen (`.langgraph_api/`, `tests/_tmp/`, `videos/`) bewust niet meegecommit.
+**Lesson:** Een rode test op data die het bord niet kent (`kind`) eerst repareren vóór een push naar main; anders went iedereen aan een rode suite.
