@@ -85,8 +85,9 @@ describe('free exams', () => {
     expect(isFreeKnmExam(1)).toBe(true);
     expect(isFreeKnmExam(2)).toBe(false);
     expect(isFreeExamOf(null, 1)).toBe(true);
-    // B1 gives nothing away; the null catalogue must not inherit that answer.
-    expect(isFreeExamOf('b1', 1)).toBe(false);
+    expect(isFreeExamOf('a2', 1)).toBe(true);
+    expect(isFreeExamOf('b1', 1)).toBe(true);
+    expect(isFreeExamOf('b1', 2)).toBe(false);
   });
 });
 

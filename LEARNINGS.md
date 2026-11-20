@@ -6143,3 +6143,15 @@ Lokaal inloggen als admin: de wachtwoord-hook blokkeert `tests/helpers/session.m
 **Outcome:** SUCCESS
 **What worked / went wrong:** De eigenaar koos ervoor niet tot week 48 te wachten, dus twee nieuwe URL's in één week (herexamen en voorbeeldvragen).
 **Lesson:** Een geplande pagina die live gaat moet ook uit `PLANNED` in `pages.mjs`; anders toont het SEO-bord hem nog als voorstel naast de live rij.
+
+## 2026-11-20 — Knop "Start gratis" in de kop van /oefenexamen/[level]/[skill]
+**Changed:** optionele `cta` in `OxHeader` (`app/[locale]/(main)/oefenexamen/_glas/parts.tsx`), `.g-ox-cta` in `app/glas-public-oefenexamen.css`, de keuze van het doel in `app/[locale]/(main)/oefenexamen/[level]/[skill]/page.tsx`, `start_free_*` in `messages/{nl,en,ar}.json`.
+**Outcome:** SUCCESS — tsc, unit (858 groen), next build; de acht pagina's met curl nagelopen, 390 en 1440 px bekeken (ook ar/RTL).
+**What worked / went wrong:** De knop gaat naar de proefsessie van tien vragen zonder account waar die bestaat (A2 en B1 Lezen/Luisteren), anders naar oefenexamen 1 als `isFreeExam` dat gratis noemt (A2 Schrijven/Spreken). B1 Schrijven/Spreken krijgen géén knop: volgens de code is daar niets gratis. Maar de lokale database zet `is_free = true` op oefenexamen 1 van álle B1-onderdelen, en deze CLAUDE.md zegt hetzelfde — `isFreeExam()` in `data/skills.ts` zegt "B1 heeft geen gratis examen". Code en data zijn het oneens; nog niet opgelost. De lokale stack was half gestopt (alleen db draaide na `docker start`); `supabase start` zei "already running" en startte niets — `docker start` op alle containers van het project wel.
+**Lesson:** Een "gratis"-knop leest dezelfde regel als het rooster eronder (`isFreeExam`), zodat ze elkaar nooit tegenspreken; los een verschil met de database op in die ene functie, niet in de knop.
+
+## 2026-11-20 — Oefenexamen 1 van B1 gratis in de UI (besluit eigenaar)
+**Changed:** `isFreeExam()` in `data/skills.ts` geeft nu oefenexamen 1 op beide niveaus gratis; `tests-unit/knm.test.ts` mee; de kop van B1 Schrijven/Spreken krijgt daardoor ook "Start gratis" naar oefenexamen 1.
+**Outcome:** SUCCESS — tsc, unit (858), next build; lokaal opent B1 oefenexamen 1 voor een gast (5 vragen, dan het aanmeldscherm), oefenexamen 2 stuurt door naar /register; op productie openden de vier B1-examens 1 al voor gasten.
+**What worked / went wrong:** De speler leest `exams.is_free`, de publieke pagina's lazen `isFreeExam()`. De database had B1 al gratis, de functie niet — dus het rooster toonde een gratis examen als "In het pakket". Niemand merkte het, want beide kanten werkten op zich.
+**Lesson:** Twee bronnen voor dezelfde regel (functie en kolom) lopen stil uiteen; bij elke prijswijziging beide controleren, en de unit-test op de functie laten zeggen wat de database zegt.

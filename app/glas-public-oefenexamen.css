@@ -7,6 +7,9 @@
   @media (min-width: 860px) { .g-ox-head { padding-top: calc(var(--nav-h) + 56px); } }
   .g-ox-marks { display: flex; gap: 10px; align-items: center; margin-top: 28px; }
   .g-ox-title { margin-top: 18px; max-width: 22ch; }
+  /* De gratis start: knop met de belofte ernaast, op een smal scherm eronder. */
+  .g-ox-cta { display: flex; flex-wrap: wrap; align-items: center; gap: 10px 16px; margin-top: 28px; }
+  .g-ox-cta > span { font-size: 14.5px; line-height: 1.5; color: var(--ink-2); }
   .g-ox-note { margin: 10px 0 0; font-size: 14.5px; line-height: 1.6; color: var(--ink-2); max-width: 60ch; }
 
   .g-ox-band { padding: 28px; display: flex; flex-wrap: wrap; gap: 20px 32px; align-items: center; justify-content: space-between; }

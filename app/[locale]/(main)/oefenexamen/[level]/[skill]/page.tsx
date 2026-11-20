@@ -23,6 +23,9 @@ import {
   levelLabel,
 } from '@/data/skills';
 import { fetchExamsForSkill } from '@/lib/exams';
+import { hasFreePractice } from '@/data/free-practice';
+import { hasB1FreePractice } from '@/lib/free-practice-b1';
+import { glasButton } from '@/components/glas/Button';
 import JsonLd from '@/components/JsonLd';
 import { langTag } from '@/lib/site';
 import {PROVIDER_REF, TEACHER_REF, absUrl, alternatesFor, breadcrumbs, courseId, omitEmpty, ogImageFor } from '@/lib/schema';
@@ -195,6 +198,26 @@ export default async function SkillOverviewPage({ params }: Props) {
     params: { level, skill: skillParam(skill.slug, locale), number: String(n) },
   });
 
+  /* De gratis start in de kop (20-11). Eerst de proefsessie van tien vragen zonder account —
+     de laagste drempel, en de ingang van de funnel. Waar die niet bestaat (Schrijven en
+     Spreken) naar oefenexamen 1, gratis met een account: een gast maakt de eerste vragen en
+     krijgt dan het aanmeldscherm. Is oefenexamen 1 niet gratis of niet gepubliceerd, dan staat
+     er geen knop — een "gratis" knop die op een betaalmuur uitkomt is een claim die de site niet doet. */
+  const hasTaster = level === 'a2' ? hasFreePractice(skill.slug) : hasB1FreePractice(skill.slug);
+  const freeExam = isFreeExam(level, 1) && publishedByNumber.has(1);
+  const ctaLabel = <>{t('start_free_cta')}<ArrowRight className="rtl-flip" aria-hidden="true" /></>;
+  const ctaClass = glasButton({ variant: 'navy', size: 'lg' });
+  const cta = hasTaster
+    ? {
+        note: t('start_free_taster'),
+        button: level === 'a2'
+          ? <Link href={{ pathname: '/oefenen/[skill]', params: { skill: skillParam(skill.slug, locale) } }} className={ctaClass}>{ctaLabel}</Link>
+          : <Link href={{ pathname: '/oefenen/b1/[skill]', params: { skill: skillParam(skill.slug, locale) } }} className={ctaClass}>{ctaLabel}</Link>,
+      }
+    : freeExam
+      ? { note: t('start_free_exam'), button: <Link href={playerHref(1)} className={ctaClass}>{ctaLabel}</Link> }
+      : undefined;
+
   return (
     <>
       {jsonLd && <JsonLd data={jsonLd} />}
@@ -225,6 +248,7 @@ export default async function SkillOverviewPage({ params }: Props) {
           itemsLabel: tSkills('items_label'),
           minutesLabel: tSkills('duration_label'),
         }}
+        cta={cta}
         trust={tHome('hero_badge')}
       />
 

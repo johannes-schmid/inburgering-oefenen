@@ -36,7 +36,7 @@ export function OxCrumbs({ items, label }: { items: { label: string; href?: stri
  * regel staat één keer op de pagina.
  */
 export function OxHeader({
-  crumbs, marks, title, lead, note, facts, trust,
+  crumbs, marks, title, lead, note, facts, cta, trust,
 }: {
   crumbs: ReactNode;
   marks: ReactNode;
@@ -44,6 +44,8 @@ export function OxHeader({
   lead: string;
   note?: string;
   facts?: { minutes?: number | null; items?: number | null; itemsLabel: string; minutesLabel: string; exams?: string };
+  /** De gratis start: een knop plus één regel die zegt wát er gratis is. Navy, want oranje is de ontgrendelband. */
+  cta?: { button: ReactNode; note: string };
   trust: string;
 }) {
   return (
@@ -64,6 +66,12 @@ export function OxHeader({
             <li className="g-metachip g-glass"><Clock aria-hidden="true" /><span><span className="g-tnum">{facts.minutes}</span> {facts.minutesLabel}</span></li>
           )}
         </ul>
+      )}
+      {cta && (
+        <div className="g-ox-cta">
+          {cta.button}
+          <span>{cta.note}</span>
+        </div>
       )}
       <span className="g-seal g-glass g-glass-strong mt-6">
         <img src="/images/amber-van-der-zalm-264.webp" alt="" width={30} height={30} />

@@ -352,13 +352,13 @@ export function totalExamsAtLevel(level: Level): number {
 /**
  * Is this exam free to sit?
  *
- * Only A2 exam 1 of each skill. B1 has no free exam: the free tier is the funnel into the
- * A2 product, and giving away a B1 exam as well is a pricing decision nobody has made.
- * Mirrored by `exams.is_free` in the database — this function decides what the UI offers,
- * that column decides what the player allows, and they must agree.
+ * Exam 1 of every skill, at both levels, with an account (owner's decision 2026-11-20 — B1
+ * was already `is_free` in the database, and this function said otherwise, so the overview
+ * showed a free exam as locked). Mirrored by `exams.is_free` in the database — this function
+ * decides what the UI offers, that column decides what the player allows, and they must agree.
  */
-export function isFreeExam(level: Level, examNumber: number): boolean {
-  return level === 'a2' && examNumber === 1;
+export function isFreeExam(_level: Level, examNumber: number): boolean {
+  return examNumber === 1;
 }
 
 /**
