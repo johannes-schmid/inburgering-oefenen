@@ -37,7 +37,8 @@
       "metric": "indexed + clicks on /privacybeleid",
       "source": "LEARNINGS 2026-10-05",
       "window_end": "2026-11-09",
-      "verdict": null
+      "verdict": "inconclusive",
+      "verdict_note": "/nl/privacybeleid komt in geen van beide vensters (22-10..18-11 en 24-09..21-10) voor in gsc.json page of query_page: 0 vertoningen, 0 clicks; dus ook geen kannibalisatie van merkquery's ('inburgering oefenen' staat op /nl, 420 vertoningen). Onder 50 vertoningen in beide vensters; indexering zelf is niet apart gemeten in de snapshots."
     },
     {
       "id": "2026-10-11-echte-docent",
